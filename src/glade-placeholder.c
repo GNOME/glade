@@ -39,6 +39,7 @@
 #include "glade-packing.h"
 #include "glade-clipboard.h"
 #include "glade-popup.h"
+#include "glade-command.h"
 
 #define GLADE_PLACEHOLDER_ROW_STRING  "GladePlaceholderRow"
 #define GLADE_PLACEHOLDER_COL_STRING  "GladePlaceholderColumn"
@@ -360,7 +361,6 @@ glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder, GdkEven
 		glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 }
 
-
 static void
 glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
 				   GdkEventExpose *event,
@@ -405,29 +405,6 @@ glade_placeholder_on_realize (GladePlaceholder *placeholder, gpointer not_used)
 	gdk_window_set_back_pixmap (GTK_WIDGET (placeholder)->window, pixmap, FALSE);
 }
 
-static void
-glade_placeholder_connect_mouse_signals (GladePlaceholder *placeholder,
-					 GladeProject *project)
-{
-	gtk_signal_connect (GTK_OBJECT (placeholder), "motion_notify_event",
-			    GTK_SIGNAL_FUNC (glade_placeholder_on_motion_notify_event), NULL);
-	gtk_signal_connect (GTK_OBJECT (placeholder), "button_press_event",
-			    GTK_SIGNAL_FUNC (glade_placeholder_on_button_press_event), project);
-}
-static void
-glade_placeholder_connect_draw_signals (GladePlaceholder *placeholder)
-{
-	gtk_signal_connect_after (GTK_OBJECT (placeholder), "realize",
-				  GTK_SIGNAL_FUNC (glade_placeholder_on_realize), NULL);
-	gtk_signal_connect_after (GTK_OBJECT (placeholder), "expose_event",
-				  GTK_SIGNAL_FUNC (glade_placeholder_on_expose_event), NULL);
-}
-
-static void
-glade_placeholder_on_destroy (GladePlaceholder *widget, gpointer not_used)
-{
-}
-
 #define GLADE_PLACEHOLDER_SIZE 16
 
 GladePlaceholder *
@@ -438,29 +415,36 @@ glade_placeholder_new (GladeWidget *parent)
 	g_return_val_if_fail (parent != NULL, NULL);
 
 	placeholder = gtk_drawing_area_new ();
-	gtk_object_set_data (GTK_OBJECT (placeholder),
-			     GLADE_PLACEHOLDER_PARENT_DATA,
-			     parent);
-	gtk_object_set_data (GTK_OBJECT (placeholder),
-			     GLADE_PLACEHOLDER_IS_DATA,
-			     GINT_TO_POINTER (TRUE));
+	g_object_set_data (G_OBJECT (placeholder),
+			   GLADE_PLACEHOLDER_PARENT_DATA,
+			   parent);
+	g_object_set_data (G_OBJECT (placeholder),
+			   GLADE_PLACEHOLDER_IS_DATA,
+			   GINT_TO_POINTER (TRUE));
 
 	gtk_widget_set_events (GTK_WIDGET (placeholder),
 			       gtk_widget_get_events (GTK_WIDGET (placeholder))
 			       | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK
 			       | GDK_BUTTON_RELEASE_MASK
 			       | GDK_POINTER_MOTION_MASK | GDK_BUTTON1_MOTION_MASK);
-	gtk_widget_set_usize (GTK_WIDGET (placeholder),
-			      GLADE_PLACEHOLDER_SIZE,
-			      GLADE_PLACEHOLDER_SIZE);			      
+
+	gtk_widget_set_size_request (GTK_WIDGET (placeholder),
+				     GLADE_PLACEHOLDER_SIZE,
+				     GLADE_PLACEHOLDER_SIZE);			      
+	/* mouse signals */
+	g_signal_connect (G_OBJECT (placeholder), "motion_notify_event",
+			  G_CALLBACK (glade_placeholder_on_motion_notify_event), NULL);
+	g_signal_connect (G_OBJECT (placeholder), "button_press_event",
+			  G_CALLBACK (glade_placeholder_on_button_press_event), parent->project);
+
+	/* draw signals */
+	g_signal_connect_after (G_OBJECT (placeholder), "realize",
+				G_CALLBACK (glade_placeholder_on_realize), NULL);
+	g_signal_connect_after (G_OBJECT (placeholder), "expose_event",
+				G_CALLBACK (glade_placeholder_on_expose_event), NULL);
+
 	gtk_widget_show (GTK_WIDGET (placeholder));
-	
-	glade_placeholder_connect_draw_signals  (placeholder);
-	glade_placeholder_connect_mouse_signals (placeholder, parent->project);
-	
-	gtk_signal_connect (GTK_OBJECT (placeholder), "destroy",
-			    GTK_SIGNAL_FUNC (glade_placeholder_on_destroy), NULL);
-	
+
 	return placeholder;
 }
 
@@ -517,8 +501,8 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;
 	
-	parent = gtk_object_get_data (GTK_OBJECT (placeholder),
-				      GLADE_PLACEHOLDER_PARENT_DATA);
+	parent = g_object_get_data (G_OBJECT (placeholder),
+				    GLADE_PLACEHOLDER_PARENT_DATA);
 
 	return parent;
 }
@@ -585,8 +569,8 @@ glade_placeholder_is (GtkWidget *widget)
 	gboolean is;
 
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-	data = gtk_object_get_data (GTK_OBJECT (widget),
-				    GLADE_PLACEHOLDER_IS_DATA);
+	data = g_object_get_data (G_OBJECT (widget),
+				  GLADE_PLACEHOLDER_IS_DATA);
 
 	is = GPOINTER_TO_INT (data);
 

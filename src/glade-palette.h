@@ -5,7 +5,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_PALETTE              (glade_palette_get_type ())
-#define GLADE_PALETTE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TABLE, GladePalette))
+#define GLADE_PALETTE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PALETTE, GladePalette))
 #define GLADE_PALETTE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PALETTE, GladePaletteClass))
 #define GLADE_IS_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PALETTE))
 #define GLADE_IS_PALETTE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PALETTE))
@@ -79,7 +79,6 @@ GladePalette *glade_palette_new    (GList *catalogs);
 void glade_palette_append_catalog  (GladePalette *palette, GladeCatalog *catalog);
 void glade_palette_unselect_widget (GladePalette *palette);
 
-void glade_palette_create (GladeProjectWindow *gpw); // __attribute__ ((deprecated));
 void glade_palette_clear  (GladeProjectWindow *gpw); // __attribute__ ((deprecated));
 
 G_END_DECLS

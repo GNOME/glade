@@ -153,8 +153,8 @@ glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
 {
 	GladePlaceholder *placeholder = NULL;
 
-	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
 	glade_project_remove_widget (widget);
 

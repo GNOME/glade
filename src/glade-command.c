@@ -507,7 +507,6 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 
 	if (GTK_IS_WIDGET (widget->widget)) {
 		glade_project_selection_add (widget, TRUE);
-		gtk_widget_show_all (GTK_WIDGET (widget->widget));
 	}
 
 	return FALSE;

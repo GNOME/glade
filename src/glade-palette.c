@@ -38,8 +38,8 @@
 #include "glade-widget-class.h"
 #include "glade-project-window.h"
 
-static void glade_palette_class_init (GladePaletteClass * klass);
-static void glade_palette_init (GladePalette * glade_palette);
+static void glade_palette_class_init (GladePaletteClass *class);
+static void glade_palette_init (GladePalette *glade_palette);
 
 enum
 {
@@ -48,40 +48,38 @@ enum
 
 static GtkWindowClass *parent_class = NULL;
 
-guint
+GType
 glade_palette_get_type (void)
 {
-	static guint palette_type = 0;
+	static GType type = 0;
 
-	if (!palette_type)
-	{
-		GtkTypeInfo palette_info =
-		{
-			"GladePalette",
-			sizeof (GladePalette),
+	if (!type) {
+		static const GTypeInfo info = {
 			sizeof (GladePaletteClass),
-			(GtkClassInitFunc) glade_palette_class_init,
-			(GtkObjectInitFunc) glade_palette_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_palette_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladePalette),
+			0,
+			(GInstanceInitFunc) glade_palette_init
 		};
-		
-		palette_type = gtk_type_unique (gtk_vbox_get_type (), &palette_info);
+
+		type = g_type_register_static (GTK_TYPE_VBOX, "GladePalette", &info, 0);
 	}
 
-	return palette_type;
+	return type;
 }
 
-
 static void
-glade_palette_class_init (GladePaletteClass * klass)
+glade_palette_class_init (GladePaletteClass *class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	
-	object_class = (GtkObjectClass *) klass;
+	object_class = G_OBJECT_CLASS (class);
 
-	parent_class = gtk_type_class (gtk_vbox_get_type ());
+	parent_class = g_type_class_peek_parent (class);
 }
 
 static GtkWidget *
@@ -150,7 +148,7 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 	if (!GTK_TOGGLE_BUTTON (button)->active)
 		return;
 
-	class = gtk_object_get_user_data (GTK_OBJECT (button));
+	class = g_object_get_data (G_OBJECT (button), "user");
 	g_return_if_fail (class != NULL);
 
 	gpw = glade_project_window_get ();
@@ -169,13 +167,18 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 }
 
 static gboolean
-glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *list, gint i, gint visual_pos, gint cols)
+glade_palette_attach_pixmap (GladePalette *palette,
+			     GtkWidget *table,
+			     GList *list,
+			     gint i,
+			     gint visual_pos,
+			     gint cols)
 {
 	GladeWidgetClass *class;
 	GtkWidget *gtk_pixmap;
 	GtkWidget *button;
 	gint x, y;
-	
+
 	class = g_list_nth_data (list, i);
 	g_return_val_if_fail (class != NULL, FALSE);
 
@@ -191,9 +194,9 @@ glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *lis
 	gtk_container_add (GTK_CONTAINER (button), gtk_pixmap);
 	glade_util_widget_set_tooltip (button, class->generic_name);
 
-	gtk_object_set_user_data (GTK_OBJECT (button), class);
-	gtk_signal_connect (GTK_OBJECT (button), "toggled",
-			    (GtkSignalFunc) glade_palette_button_clicked, palette);
+	g_object_set_data (G_OBJECT (button), "user", class);
+	g_signal_connect (G_OBJECT (button), "toggled",
+			  G_CALLBACK (glade_palette_button_clicked), palette);
 	
 	x = (visual_pos % cols);
 	y = (gint) (visual_pos / cols);
@@ -274,8 +277,8 @@ glade_palette_button_group_create (GladePalette *palette, gchar *name, gint *pag
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
 	g_object_set_data (G_OBJECT (button), "page", page);
-	gtk_signal_connect (GTK_OBJECT (button), "toggled",
-			    (GtkSignalFunc) on_palette_button_toggled, palette);
+	g_signal_connect (G_OBJECT (button), "toggled",
+			  G_CALLBACK (on_palette_button_toggled), palette);
 
 	return hbox;
 }
@@ -322,7 +325,7 @@ glade_palette_new (GList *catalogs)
 	palette = g_object_new (GLADE_TYPE_PALETTE, NULL);
 	if (palette == NULL)
 		return NULL;
-	
+
 	while (catalogs != NULL) {
 		glade_palette_append_catalog (palette, (GladeCatalog *) catalogs->data);
 		catalogs = g_list_next (catalogs);
@@ -354,15 +357,6 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog* catalog)
 	gtk_notebook_append_page (GTK_NOTEBOOK (palette->notebook), widget, NULL);
 
 	gtk_widget_show (palette->notebook);
-}
-
-void
-glade_palette_create (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-	
-	gpw->palette = glade_palette_new (gpw->catalogs);
-	gpw->palette->project_window = gpw;
 }
 
 void
