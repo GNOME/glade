@@ -33,6 +33,8 @@ struct _GladeProjectWindow
 	GladeClipboard *clipboard;     /* See glade-clipboard */
 	GladeProjectView *active_view; /* See glade-project-view */
 	GList *catalogs;               /* See glade-catalog */
+	GtkWidget *toolbar_undo;       /* undo item on the toolbar */
+	GtkWidget *toolbar_redo;       /* redo item on the toolbar */
 	GladeWidgetClass *add_class;   /* The GladeWidgetClass that we are about
 					* to add to a container. NULL if no
 					* class is to be added. This also has to

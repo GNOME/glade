@@ -34,6 +34,7 @@
 #include "glade-project.h"
 #include "glade-project-view.h"
 #include "glade-project-window.h"
+#include "glade-transform.h"
 
 #include <locale.h>
 #include <gmodule.h>

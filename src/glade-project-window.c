@@ -886,18 +886,18 @@ gpw_construct_toolbar (GladeProjectWindow *gpw)
 				  G_CALLBACK (gpw_save_cb),
 				  gpw, -1);
 	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-				  GTK_STOCK_UNDO,
-				  "Undo the last action",
-				  NULL,
-				  G_CALLBACK (gpw_undo_cb),
-				  gpw, -1);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-				  GTK_STOCK_REDO,
-				  "Redo the last action",
-				  NULL,
-				  G_CALLBACK (gpw_redo_cb),
-				  gpw, -1);
+	gpw->toolbar_undo = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
+						      GTK_STOCK_UNDO,
+						      "Undo the last action",
+						      NULL,
+						      G_CALLBACK (gpw_undo_cb),
+						      gpw, -1);
+	gpw->toolbar_redo = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
+						      GTK_STOCK_REDO,
+						      "Redo the last action",
+						      NULL,
+						      G_CALLBACK (gpw_redo_cb),
+						      gpw, -1);
 	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
 	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
 				  GTK_STOCK_QUIT,
@@ -1159,6 +1159,9 @@ glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 
 	glade_project_window_change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
 	glade_project_window_change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
+
+	gtk_widget_set_sensitive (gpw->toolbar_undo, undo_description != NULL);
+	gtk_widget_set_sensitive (gpw->toolbar_redo, redo_description != NULL);
 }
 
 void

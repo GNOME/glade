@@ -1,5 +1,11 @@
 2003-05-14  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-project-window.[ch]: Make the undo/redo toolbar items
+	insensitive when there are no undo/redo actions on the stack.
+	* src/main.c: fix a compiler warning.
+
+2003-05-14  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-widget.c: Change the way we load containers.  Instead of
 	creating the container, then filling it with placeholders, and then
 	replace selectively the placeholders by the children we find on the
