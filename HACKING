@@ -1,0 +1,51 @@
+
+Mailing List
+~~~~~~~~~~~~
+Glade-3 discussion takes place on glade-devel@ximian.org
+To subscribe or to consult archives visit
+http://lists.ximian.com/mailman/listinfo/glade-devel
+When posting to the list include [glade3] in the subject,
+since the list is also used for Glade-2 developement.
+
+
+Bugzilla
+~~~~~~~~
+Glade-3 bugs are tracked in the glade3 module of 
+http://bugzilla.gnome.org
+
+
+CVS
+~~~
+The Glade-3 repository is hosted at cvs.gnome.org
+To check out a copy of Glade-3 you can use the following commands:
+cvs -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome login
+[just press enter when required for a password]
+cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co glade3
+You then need to run autogen.sh and make to build Glade-3.
+
+
+Patches
+~~~~~~~
+Patches must be in the unified format (diff -u) and must include a
+ChangeLog entry. Send your patches to the mailing list and/or file
+them in bugzilla (see above)
+
+
+Coding Style
+~~~~~~~~~~~~
+Code in Glade-3 should follow the GNOME Programming Guidelines
+(http://developer.gnome.org/doc/guides/programming-guidelines/),
+basically this means being consistent with the sorrounding code.
+Naming conventions:
+- function names sholud be lowercase and prefixed with the
+  file name (or, if the function is static and the name too long,
+  with an abbreviation), e.g:
+  glade_project_window_my_function () 
+  gpw_my_loooooooooong_named_fuction ()
+- variable names should be lowercase and be short but self explanatory;
+  if you need more than one word use an underscore, e.g:
+  my_variable
+Also try to order your functions so that prototypes are not needed.
+
+
+
