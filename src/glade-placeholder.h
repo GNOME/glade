@@ -17,9 +17,8 @@ GladeWidget * glade_placeholder_get_parent (GladePlaceholder *placeholder);
 
 void glade_placeholder_add_methods_to_class (GladeWidgetClass *class);
 
-void glade_placeholder_replace (GladePlaceholder *placeholder,
-				GladeWidget *parent,
-				GladeWidget *child);
+void glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
+					    GladeWidget *widget);
 
 GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
 							  GHashTable *properties);
@@ -30,7 +29,6 @@ gboolean glade_placeholder_is (GtkWidget *widget);
 
 void glade_placeholder_remove_all (GtkWidget *widget);
 
-void glade_placeholder_fill_empty (GtkWidget *widget);
 
 G_END_DECLS
 

@@ -47,7 +47,7 @@ glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	glade_clipboard_copy (gpw->clipboard, widget);
+	glade_clipboard_add_copy (gpw->clipboard, widget);
 }
 
 static void
@@ -70,10 +70,7 @@ static void
 glade_popup_placeholder_paste_cb (GtkMenuItem *item,
 				  GladePlaceholder *placeholder)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
-
-	if (gpw->clipboard->curr)
-		glade_command_paste (gpw->clipboard->curr, placeholder);
+	glade_command_paste (placeholder);
 }
 
 static void

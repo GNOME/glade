@@ -802,17 +802,43 @@ glade_widget_new_full (GladeWidgetClass *class,
 
 	glade_packing_add_properties (widget);
 	glade_widget_create_gtk_widget (widget);
-	/*
-	glade_project_add_widget (project, widget);
 
-	if (parent)
-		parent->children = g_list_prepend (parent->children, widget);
-	*/
-	
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
 
 	return widget;
+}
+
+static void
+glade_widget_fill_empty (GtkWidget *widget)
+{
+	GList *children;
+	gboolean empty = TRUE;
+
+	if (!GTK_IS_CONTAINER (widget))
+		return;
+	
+	/* fill with placeholders the containers that are inside of this container */
+	children = gtk_container_get_children (GTK_CONTAINER (widget));
+
+	/* loop over the children of this container, and fill them with placeholders */
+	while (children != NULL) {
+		glade_widget_fill_empty (GTK_WIDGET (children->data));
+		children = children->next;
+		empty = FALSE;
+	}
+
+	if (empty) {
+		/* retrieve the desired number of placeholders that this widget should hold */
+		int nb_children = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "glade_nb_placeholders"));
+		int i;
+
+		if (nb_children == 0 && GTK_IS_BIN (widget))
+			nb_children = 1;
+
+		for (i = nb_children; i > 0; i--)
+			gtk_container_add (GTK_CONTAINER (widget), glade_placeholder_new ());
+	}
 }
 
 static GtkWidget *
@@ -1004,7 +1030,7 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 
 	/* If we are a container, add the placeholders */
 	if (g_type_is_a (class->type,  GTK_TYPE_CONTAINER))
-		glade_placeholder_fill_empty (widget->widget);
+		glade_widget_fill_empty (widget->widget);
 	
 	if (result) 
 		glade_property_query_result_destroy (result);
@@ -1197,19 +1223,30 @@ glade_widget_clone (GladeWidget *widget)
 	return clone;
 }
 
+/**
+ * glade_widget_replace_with_placeholder:
+ * @widget:
+ * @placeholder:
+ *
+ * Replaces @widget with @placeholder. If @placeholder is NULL a new one is created.
+ **/
 GladePlaceholder *
-glade_widget_replace_with_placeholder (GladeWidget *widget)
+glade_widget_replace_with_placeholder (GladeWidget *widget, GladePlaceholder *placeholder)
 {
-	GladePlaceholder *placeholder;
-	GladeWidget *parent = widget->parent;
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-	/* Replace the slot it was occuping with a placeholder */
-	placeholder = glade_placeholder_new (widget->parent);
+	if (placeholder == NULL)
+		placeholder = glade_placeholder_new (widget->parent);
+	else
+		g_return_val_if_fail (glade_placeholder_is (placeholder), NULL);
+
 	if (widget->parent->class->placeholder_replace)
-		widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
+		widget->parent->class->placeholder_replace (widget->widget,
+							    GTK_WIDGET (placeholder),
+							    widget->parent->widget);
 
 	/* Remove it from the parent's child list */
-	parent->children = g_list_remove (parent->children, widget);
+	widget->parent->children = g_list_remove (widget->parent->children, widget);
 
 	/* Return the placeholder, if some one needs it, he can use it. */
 	return placeholder;
@@ -1444,7 +1481,9 @@ glade_widget_apply_properties_from_hash (GladeWidget *widget, GHashTable *proper
 }
 
 static gboolean
-glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, GladeWidget *parent)
+glade_widget_new_child_from_node (GladeXmlNode *node,
+				  GladeProject *project,
+				  GladeWidget *parent)
 {
 	GladeXmlNode *child_node;
 	GladeXmlNode *child_properties;
@@ -1529,7 +1568,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, Gla
 		g_value_unset (&string_value);
 	}
 	
-	glade_placeholder_fill_empty (parent->widget);
+	glade_widget_fill_empty (parent->widget);
 
 	return TRUE;
 }

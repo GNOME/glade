@@ -245,8 +245,7 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 					 gpointer not_used)
 {
 	GladeProjectWindow *gpw = glade_project_window_get ();
-	GladeProject *project = glade_project_window_get_project (gpw);
-	
+
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
 
 		if (gpw->add_class != NULL) {
@@ -369,8 +368,7 @@ glade_placeholder_new ()
 
 #undef GLADE_PLACEHOLDER_SIZE
 
-void glade_placeholder_add (GladeWidgetClass *class,
-			    GladeWidget *widget)
+void glade_placeholder_add (GladeWidgetClass *class, GladeWidget *widget)
 {
 
 	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
@@ -389,12 +387,13 @@ void glade_placeholder_add (GladeWidgetClass *class,
 
 }
 
-
 GladeWidget *
 glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent = NULL;
 	GtkWidget *widget = gtk_widget_get_parent (placeholder);
+
+	g_return_val_if_fail (glade_placeholder_is (placeholder), NULL);
 
 	while (widget != NULL) {
 		parent = glade_widget_get_from_gtk_widget (widget);
@@ -409,73 +408,24 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
 }
 
 void
-glade_placeholder_replace (GladePlaceholder *placeholder, GladeWidget *parent, GladeWidget *child)
+glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
+			   	       GladeWidget *widget)
 {
-	g_return_if_fail (GTK_IS_WIDGET (placeholder));
-	
+	GladeWidget *parent;
+
+	g_return_if_fail (glade_placeholder_is (placeholder));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	parent = glade_placeholder_get_parent (placeholder);
+
 	if (parent->class->placeholder_replace != NULL)
-		parent->class->placeholder_replace (GTK_WIDGET (placeholder), child->widget, parent->widget);
+		parent->class->placeholder_replace (GTK_WIDGET (placeholder),
+						    widget->widget,
+						    parent->widget);
 	else
 		g_warning ("Could not replace a placeholder because a replace "
 			   " function has not been implemented for \"%s\"\n",
 			   parent->class->name);
-}
-
-
-
-GladePlaceholder *
-glade_placeholder_get_from_properties (GladeWidget *parent,
-				       GHashTable *properties)
-{
-	GladePlaceholder *placeholder = NULL;
-	GList *list;
-
-	if (glade_widget_class_is (parent->class, "GtkVBox") ||
-	    glade_widget_class_is (parent->class, "GtkHBox")) {
-		GtkBoxChild *box_child;
-		const gchar *val;
-		
-		list = gtk_container_children (GTK_CONTAINER (parent->widget));
-		val = g_hash_table_lookup (properties, "position");
-		if (!val)
-			return NULL;
-
-		box_child = (GtkBoxChild *) g_list_nth (list, atoi (val));
-		placeholder = box_child->widget;
-		g_assert (placeholder);
-	} else if (glade_widget_class_is (parent->class, "GtkTable")) {
-		GtkTableChild *child;
-		const char *val;
-		int col;
-		int row;
-
-		val = g_hash_table_lookup (properties, "cell_x");
-		if (!val)
-			return NULL;
-
-		col = atoi (val);
-		val = g_hash_table_lookup (properties, "cell_y");
-		if (!val)
-			return NULL;
-
-		row = atoi (val);
-
-		list = GTK_TABLE (parent->widget)->children;
-		for (; list; list = list->next) {
-			child = list->data;
-			if ((child->left_attach == col) &&
-			    (child->top_attach  == row)) {
-				placeholder = child->widget;
-				break;
-			}
-		}
-	} else if (glade_widget_class_is (parent->class, "GtkWindow")) {
-		placeholder = GTK_BIN (parent->widget)->child;
-	} else {
-		glade_implement_me ();
-	}
-
-	return placeholder;
 }
 
 gboolean
@@ -491,119 +441,5 @@ glade_placeholder_is (GtkWidget *widget)
 	is = GPOINTER_TO_INT (data);
 
 	return is;
-}
-
-
-void
-glade_placeholder_remove_all (GtkWidget *widget)
-{
-	GladeWidget *gwidget, *child_widget;
-	
-	
-	gwidget = glade_widget_get_from_gtk_widget (widget);
-	g_return_if_fail (widget != NULL);
-	
-	if (glade_widget_class_is (gwidget->class, "GtkVBox") ||
-	    glade_widget_class_is (gwidget->class, "GtkHBox")) {
-		GList *element;
-		GtkBox *box;
-		GtkBoxChild *box_child;
-
-		box = GTK_BOX (widget);
-		
-		element = g_list_first (box->children);
-		while (element != NULL) {
-			box_child = element->data;
-			if (glade_placeholder_is (box_child->widget)) {
-				child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
-				if (child_widget)
-					glade_command_delete (child_widget);
-				gtk_container_remove (GTK_CONTAINER (box),
-						      box_child->widget);
-				element = g_list_first (box->children);
-			} else {
-				element = g_list_next (element);
-			}		
-		}
-	} else if (glade_widget_class_is (gwidget->class, "GtkDialog")) {
-		GList *element;
-		GtkBox *box;
-		GtkBoxChild *box_child;
-		gint i;
-
-		box = GTK_BOX (GTK_DIALOG (widget)->vbox);
-		for (i = 0; i < 2; i++) {
-			
-			element = g_list_first (box->children);
-			
-			while (element != NULL) {
-				box_child = element->data;
-				if (glade_placeholder_is (box_child->widget)) {
-					child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
-					if (child_widget)
-						glade_command_delete (child_widget);
-					gtk_container_remove (GTK_CONTAINER (box),
-					box_child->widget);
-					element = g_list_first (box->children);
-				} else {
-					element = g_list_next (element);
-				}
-			}
-			box = GTK_BOX (GTK_DIALOG (widget)->action_area);
-		}
-	} else if (glade_widget_class_is (gwidget->class, "GtkTable")) {
-		GList *element;
-		GtkTableChild *table_child;
-
-		element = g_list_first (GTK_TABLE (widget)->children);
-		while (element != NULL) {
-			table_child = element->data;
-			if (glade_placeholder_is (table_child->widget)) {
-				child_widget = glade_widget_get_from_gtk_widget (table_child->widget);
-				if (child_widget)
-					glade_command_delete (child_widget);
-				gtk_container_remove (GTK_CONTAINER (widget),
-						      table_child->widget);
-				element = g_list_first (GTK_TABLE (widget)->children);
-			} else {
-				element = g_list_next (element);
-			}
-		}
-	} else {
-		glade_implement_me ();
-	}
-
-}
-
-void
-glade_placeholder_fill_empty (GtkWidget *widget)
-{
-	GList *children;
-	gboolean empty = TRUE;
-
-	if (!GTK_IS_CONTAINER (widget))
-		return;
-	
-	/* fill with placeholders the containers that are inside of this container */
-	children = gtk_container_get_children (GTK_CONTAINER (widget));
-
-	/* loop over the children of this container, and fill them with placeholders */
-	while (children != NULL) {
-		glade_placeholder_fill_empty (GTK_WIDGET (children->data));
-		children = children->next;
-		empty = FALSE;
-	}
-
-	if (empty) {
-		/* retrieve the desired number of placeholders that this widget should hold */
-		int nb_children = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "glade_nb_placeholders"));
-		int i;
-
-		if (nb_children == 0 && GTK_IS_BIN (widget))
-			nb_children = 1;
-
-		for (i = nb_children; i > 0; i--)
-			gtk_container_add (GTK_CONTAINER (widget), glade_placeholder_new ());
-	}
 }
 

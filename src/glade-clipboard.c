@@ -29,7 +29,6 @@
 #include "glade-widget-class.h"
 #include "glade-placeholder.h"
 #include "glade-project.h"
-#include "glade-packing.h"
 
 static void
 glade_clipboard_class_init (GladeClipboardClass *klass)
@@ -96,10 +95,9 @@ glade_clipboard_new ()
  * @clipboard: 
  * @widget: 
  * 
- * Add a GladeWidget to the Clipboard. Basically has stuff common to 
- * Cut/Copy commands.
+ * Move a GladeWidget onto the Clipboard.
  **/
-static void
+void
 glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	/*
@@ -117,65 +115,14 @@ glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 }
 
 /**
- * glade_clipboard_remove:
+ * glade_clipboard_add_copy:
  * @clipboard: 
  * @widget: 
  * 
- * Remove a GladeWidget from the Clipboard
- **/
-static void
-glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
-{
-	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
-	clipboard->curr = NULL;
-
-	/*
-	 * If there is a view present, update it.
-	 */
-	if (clipboard->view)
-		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
-}
-
-/**
- * glade_clipboard_cut:
- * @clipboard: 
- * @widget: 
- * 
- * Cut a GladeWidget onto the Clipboard. 
- **/
-GladePlaceholder *
-glade_clipboard_cut (GladeClipboard *clipboard, GladeWidget *widget)
-{
-	GladePlaceholder *placeholder = NULL;
-
-	g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
-
-	glade_project_remove_widget (widget);
-
-	/*
-	 * We ref so that the widget and its children are not destroyed.
-	 */
-	gtk_widget_ref (GTK_WIDGET (widget->widget));
-	if (widget->parent)
-		placeholder = glade_widget_replace_with_placeholder (widget);
-	else
-		gtk_widget_hide (widget->widget);
-
-	glade_clipboard_add (clipboard, widget);
-
-	return placeholder;
-}
-
-/**
- * glade_clipboard_copy:
- * @clipboard: 
- * @widget: 
- * 
- * Copy a GladeWidget onto the Clipboard. 
+ * Add a copy of a GladeWidget onto the Clipboard. 
  **/
 void
-glade_clipboard_copy (GladeClipboard *clipboard, GladeWidget *widget)
+glade_clipboard_add_copy (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	GladeWidget *copy;
 
@@ -183,69 +130,33 @@ glade_clipboard_copy (GladeClipboard *clipboard, GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	copy = glade_widget_clone (widget);
-
 	glade_clipboard_add (clipboard, copy);
 }
 
 /**
- * glade_clipboard_paste:
+ * glade_clipboard_remove:
  * @clipboard: 
- * @placeholder: 
+ * @widget: 
  * 
- * Paste a GladeWidget from the Clipboard.
+ * Remove a GladeWidget from the Clipboard
  **/
 void
-glade_clipboard_paste (GladeClipboard *clipboard,
-		       GladePlaceholder *placeholder)
+glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 {
-	GladeWidget *widget;
-	GladeWidget *parent;
-	GladeProject *project;
+	GList *list;
 
-	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
 
-	widget = clipboard->curr;
-
-	if (!widget)
-		return;
-
-	parent = glade_placeholder_get_parent (placeholder);
-
-	project = parent->project;
-
-	widget->name = glade_widget_new_name (project, widget->class);
-	widget->parent = parent;
-	glade_packing_add_properties (widget);
-	glade_project_add_widget (project, widget);
-
-	if (parent)
-		parent->children = g_list_prepend (parent->children, widget);
-
-	glade_widget_set_contents (widget);
-	glade_widget_connect_signals (widget);
+	list = g_list_first (clipboard->widgets);
+	if (list != NULL)
+		clipboard->curr = GLADE_WIDGET (list->data);
+	else
+		clipboard->curr = NULL;
 
 	/*
-	 * Toplevel widgets are not packed into other containers :-)
+	 * If there is a view present, update it.
 	 */
-	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
-		/* Signal error, if placeholder not selected */
-		if (!placeholder) {
-			glade_util_ui_warn (_("Placeholder not selected!"));
-			return;
-		}
-
-		glade_placeholder_replace (placeholder, parent, widget);
-		glade_widget_set_default_packing_options (widget);
-	}
-
-	glade_project_selection_set (widget, TRUE);
-
-	/*
-	 * This damned 'if' statement caused a 1 month delay.
-	 */
-	if (GTK_IS_WIDGET (widget->widget))
-		gtk_widget_show_all (GTK_WIDGET (widget->widget));
-
-	glade_clipboard_remove (clipboard, widget);
+	if (clipboard->view)
+		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 }
 

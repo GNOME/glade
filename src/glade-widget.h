@@ -90,8 +90,9 @@ void glade_widget_flag_unselected (GladeWidget *widget);
 void glade_widget_select (GladeWidget *widget);
 
 GladeWidget *glade_widget_clone (GladeWidget *widget);
-GladePlaceholder * glade_widget_replace_with_placeholder (GladeWidget *widget);
-GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
+GladePlaceholder *glade_widget_replace_with_placeholder (GladeWidget *widget,
+							 GladePlaceholder *placeholder);
+GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 /* Xml saving & reading */
 GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);

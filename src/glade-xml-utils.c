@@ -602,7 +602,7 @@ glade_xml_node_new (GladeXmlContext *context, const gchar *name)
 void
 glade_xml_node_delete (GladeXmlNode *node)
 {
-	xmlFreeNode ((xmlDocPtr) node);
+	xmlFreeNode ((xmlNodePtr) node);
 }
 
 GladeXmlDoc *

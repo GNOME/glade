@@ -1,3 +1,24 @@
+2003-06-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-command.c: Fix the ref/unref of widgets on creation,
+	destruction, copy & paste.
+
+2003-06-07  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-clipboard.[ch]: (cleanup) moved cut/copy logic to the
+	corresponding functions in command.c, as they were only called
+	there and since makes code similar to the create/delete commands.
+	Renamed clipboard_copy to clipboard_add_copy. Now the API for
+	a clipboard are: add, add_copy and remove.
+	clipboard->curr was set to null when removing a widget, now it
+	is set to the first widget of the clipboard->widgets list.
+
+	* src/glade-command.c: above explained changes to cut/paste,
+	cleanup/fix create/delete in ways similar to the cut/paste commands.
+
+	* src/glade-placeholder.c: misc cleanups, in particular add
+	g_return_of_fail to check the args of the functions we expose as APIs.
+
 2003-06-05  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-project-window.c: escape the underscores on the project

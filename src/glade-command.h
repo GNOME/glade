@@ -19,7 +19,7 @@ void glade_command_delete (GladeWidget *widget);
 void glade_command_create (GladeWidgetClass *class, GladePlaceholder *placeholder, GladeProject *project);
 
 void glade_command_cut   (GladeWidget *widget);
-void glade_command_paste (GladeWidget *widget, GladePlaceholder *placeholder);
+void glade_command_paste (GladePlaceholder *placeholder);
 
 G_END_DECLS
 

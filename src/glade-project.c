@@ -154,35 +154,50 @@ static void
 glade_project_add_widget_real (GladeProject *project,
 			       GladeWidget *widget)
 {
-	GladeWidget *child;
-	GList *list;
-
 	widget->project = project;
 
-	/*
-	 * Add all the children as well.
-	 */
-	list = widget->children;
-	for (; list; list = list->next) {
-		child = list->data;
-		glade_project_add_widget_real (project, child);
-		child->project = project;
-	}
-	
 	project->widgets = g_list_prepend (project->widgets, widget);
 
 	gtk_signal_emit (GTK_OBJECT (project),
 			 glade_project_signals [ADD_WIDGET], widget);
 }
 
+/**
+ * glade_project_add_widget:
+ * @project: the project the widget is added to
+ * @widget: the GladeWidget to add
+ * @parent: the GladeWidget @widget is reparented to
+ *
+ * Adds a widget to the project. Parent should be NULL for toplevels.
+ **/
 void
 glade_project_add_widget (GladeProject *project,
-			  GladeWidget  *widget)
+			  GladeWidget *widget,
+			  GladeWidget *parent)
 {
+	GladeWidget *child;
+	GList *list;
+
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_OBJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	glade_project_add_widget_real (project, widget);
+	widget->parent = parent;
+
+	/* Add all the children as well */
+	for (list = widget->children; list; list = list->next) {
+		child = list->data;
+		glade_project_add_widget_real (project, child);
+	}
+
+	/* reparent */
+	if (parent) {
+		g_return_if_fail (GLADE_IS_WIDGET (parent));
+
+		widget->parent = parent;
+		parent->children = g_list_prepend (parent->children, widget);
+	}
+
 	project->changed = TRUE;
 }
 
@@ -207,8 +222,9 @@ glade_project_remove_widget_real (GladeProject *project,
 	}
 	
 	project->selection = g_list_remove (project->selection, widget);
-	project->widgets   = g_list_remove (project->widgets, widget);
+	glade_project_selection_changed (project);
 
+	project->widgets   = g_list_remove (project->widgets, widget);
 	gtk_signal_emit (GTK_OBJECT (project),
 			 glade_project_signals [REMOVE_WIDGET], widget);
 }
@@ -223,7 +239,7 @@ glade_project_remove_widget (GladeWidget *widget)
 	project = widget->project;
 
 	glade_project_remove_widget_real (project, widget);
-	glade_project_selection_changed (project);
+
 	project->changed = TRUE;
 }
 	

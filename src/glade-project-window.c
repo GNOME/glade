@@ -355,7 +355,7 @@ gpw_copy_cb (void)
 	widget = gpw->active_widget;
 
 	if (widget)
-		glade_clipboard_copy (gpw->clipboard, widget);
+		glade_clipboard_add_copy (gpw->clipboard, widget);
 }
 
 static void
@@ -377,7 +377,8 @@ gpw_paste_cb (void)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	glade_command_paste (gpw->active_widget, gpw->active_placeholder);
+	
+	glade_command_paste (gpw->active_placeholder);
 }
 
 static void
