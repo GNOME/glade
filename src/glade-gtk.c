@@ -111,22 +111,22 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 int GLADEGTK_API
 glade_gtk_widget_condition (GladeWidgetClass *klass)
 {
-	GObject *object = g_object_new (klass->type, NULL);
+	GtkObject *object = (GtkObject*)g_object_new (klass->type, NULL);
+	gboolean result;
 
 	/* Only widgets with windows can have tooltips at present. Though
 	buttons seem to be a special case, as they are NO_WINDOW widgets
 	but have InputOnly windows, so tooltip still work. In GTK+ 2
 	menuitems are like buttons. */
-	if (!GTK_WIDGET_NO_WINDOW (object) || GTK_IS_BUTTON (object) || GTK_IS_MENU_ITEM (object))
-	{
-		gtk_object_destroy (GTK_OBJECT (object));
-		return TRUE;
-	}
-	else
-	{
-		gtk_object_destroy (GTK_OBJECT (object));
-		return FALSE;
-	}
+	result = (!GTK_WIDGET_NO_WINDOW (object) ||
+		  GTK_IS_BUTTON (object) ||
+		  GTK_IS_MENU_ITEM (object));
+
+	gtk_object_ref (object);
+	gtk_object_sink (object);
+	gtk_object_unref (object);
+
+	return result;
 }
 
 /**

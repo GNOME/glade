@@ -1,5 +1,12 @@
 2004-10-06  Morten Welinder  <terra@gnome.org>
 
+	* src/glade-gtk.c (glade_gtk_widget_condition): Fix life cycle of
+	GtkObjects.
+
+	* src/glade-xml-utils.c (glade_xml_context_destroy): Only
+	conditionally free xml document.
+	(glade_xml_context_new_real): New arg "freedoc".
+
 	* src/glade-gtk.c (glade_gtk_widget_get_tooltip): Bullet proof.
 	(glade_gtk_notebook_post_create): Actually set the property.
 

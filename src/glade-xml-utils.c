@@ -31,6 +31,7 @@ struct _GladeXmlDoc
 
 struct _GladeXmlContext {
 	GladeXmlDoc *doc;
+	gboolean freedoc;
 	xmlNsPtr  ns;
 };
 
@@ -481,12 +482,14 @@ glade_xml_search_child_required (GladeXmlNode *node, const gchar* name)
 }
 
 /* --------------------------- Parse Context ----------------------------*/
-GladeXmlContext *
-glade_xml_context_new_real (GladeXmlDoc *doc, xmlNsPtr ns)
+
+static GladeXmlContext *
+glade_xml_context_new_real (GladeXmlDoc *doc, gboolean freedoc, xmlNsPtr ns)
 {
 	GladeXmlContext *context = g_new0 (GladeXmlContext, 1);
 
 	context->doc = doc;
+	context->freedoc = freedoc;
 	context->ns  = ns;
 	
 	return context;
@@ -496,14 +499,15 @@ GladeXmlContext *
 glade_xml_context_new (GladeXmlDoc *doc, const gchar *name_space)
 {
 	/* We are not using the namespace now */
-	return glade_xml_context_new_real (doc, NULL);
+	return glade_xml_context_new_real (doc, FALSE, NULL);
 }
 
 void
 glade_xml_context_destroy (GladeXmlContext *context)
 {
 	g_return_if_fail (context != NULL);
-	xmlFreeDoc ((xmlDoc*)context->doc);
+	if (context->freedoc)
+		xmlFreeDoc ((xmlDoc*)context->doc);
 	g_free (context);
 }
 
@@ -553,7 +557,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 		return NULL;
 	}
 	
-	context = glade_xml_context_new_real ((GladeXmlDoc *)doc, name_space);
+	context = glade_xml_context_new_real ((GladeXmlDoc *)doc, TRUE, name_space);
 
 	return context;
 }
