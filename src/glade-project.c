@@ -554,6 +554,7 @@ glade_project_open (const gchar *path)
 		project->path = g_strdup_printf ("%s", path);
 		g_free (project->name);
 		project->name = g_path_get_basename (project->path);
+		project->changed = FALSE;
 	}
 
 	return project;

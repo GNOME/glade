@@ -1406,20 +1406,23 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 		child_widget = glade_placeholder_new (parent);
 		gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
 		return TRUE;
-	} else {
-		/* Get and create the widget */
-		child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
-		if (!child_node)
-			return FALSE;
-
-		child = glade_widget_new_from_node_real (child_node, project, parent);
-		if (!child)
-			/* not enough memory... and now, how can I signal it and not make the caller believe that
-			 * it was a parsing problem? */
-			return FALSE;
-
-		child_widget = child->widget;
 	}
+
+	/* Get and create the widget */
+	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
+	if (!child_node)
+		return FALSE;
+
+	child = glade_widget_new_from_node_real (child_node, project, parent);
+	if (!child)
+		/*
+		 * not enough memory... and now, how can I signal it
+		 * and not make the caller believe that it was a parsing
+		 * problem?
+		 */
+		return FALSE;
+
+	child_widget = child->widget;
 
 	gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
 

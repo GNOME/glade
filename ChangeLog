@@ -1,3 +1,15 @@
+2003-08-08  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project.c (glade_project_open): set project->changed=FALSE.
+
+	* src/glade-widget.c (glade_widget_new_child_from_node): minor code
+ 	cleanup.
+
+2003-08-07  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-gtk.c (glade_gtk_notebook_set_n_pages): when number of
+	pages decrease delete widget and remove from project. Works now.
+
 2003-08-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-catalog.[ch], glade-palette.c: Specify the order in which

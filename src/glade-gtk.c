@@ -282,14 +282,28 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 		}
 	} else {/* new_size < old_size */
 		/* The notebook has shrunk. Remove pages  */
+		GladeWidget *child_gwidget;
+		GtkWidget *child_widget;
+
+		/*
+		 * Thing to remember is that GtkNotebook starts the
+		 * page numbers from 0, not 1 (C-style). So we need to do
+		 * old_size-1, where we're referring to "nth" widget.
+		 */
 		while (old_size > new_size) {
-			/*
-			 * This is broken, we should also remove the widgets that
-			 * are in the page from the project!
+			/* Get the last widget. */
+			child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+			child_gwidget = glade_widget_get_from_gtk_widget (child_widget);
+
+			/* 
+			 * If we got it, and its not a placeholder, remove it
+			 * from project.
 			 */
-#if 0
-			gtk_notebook_remove_page (GTK_NOTEBOOK (notebook), old_size);
-#endif
+			if (child_gwidget) {
+				glade_project_remove_widget (child_gwidget);
+			}
+
+			gtk_notebook_remove_page (notebook, old_size-1);
 			old_size--;
 		}
 	}
