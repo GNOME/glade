@@ -561,35 +561,23 @@ glade_widget_ugly_hack (gpointer data)
 }
 #endif
 
-gboolean
-glade_widget_create_gtk_widget (GladeWidget *glade_widget)
+static GtkWidget *
+glade_widget_create_gtk_widget (GladeWidgetClass *class)
 {
-	GladeWidgetClass *class;
 	GtkWidget *widget;
 	GType type;
-
-	class = glade_widget->class;
 
 	type = g_type_from_name (class->name);
 
 	if (!g_type_is_a (type, G_TYPE_OBJECT)) {
-		gchar *text;
-		g_warning ("Unknown type %s read from glade file.", class->name);
-		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
-		widget = gtk_label_new (text);
-		g_free (text);
-		return FALSE;
-	} else {
-		if (g_type_is_a (type, GTK_TYPE_WIDGET))
-			widget = gtk_widget_new (type, NULL);
-		else
-			widget = g_object_new (type, NULL);
+		g_warning ("Create GtkWidget for type %s not implemented", class->name);
+		return NULL;
 	}
 
-	glade_widget->widget = widget;
-	g_signal_connect_swapped (G_OBJECT (widget), "destroy",
-				  G_CALLBACK (glade_widget_free), G_OBJECT (glade_widget));
-	g_object_set_data (G_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
+	if (g_type_is_a (type, GTK_TYPE_WIDGET))
+		widget = gtk_widget_new (type, NULL);
+	else
+		widget = g_object_new (type, NULL);
 
 	/* Ugly ugly hack. Don't even remind me about it. SEND ME PATCH !! and you'll
 	 * gain 100 love points. 
@@ -611,10 +599,10 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	 * its parent.  Otherwise, calls to gtk_widget_grab_focus et al. will fail
 	 */
 	if (class->post_create_function) {
-		class->post_create_function (G_OBJECT (glade_widget->widget));
+		class->post_create_function (G_OBJECT (widget));
 	}
 
-	return TRUE;
+	return widget;
 }
 
 void
@@ -667,7 +655,12 @@ glade_widget_new_full (GladeWidgetClass *class,
 	widget->parent  = parent;
 	widget->project = project;
 
-	glade_widget_create_gtk_widget (widget);
+	widget->widget = glade_widget_create_gtk_widget (class);
+
+	/* associate the GladeWidget to the GtkWidget */
+	g_signal_connect_swapped (G_OBJECT (widget->widget), "destroy",
+				  G_CALLBACK (glade_widget_free), G_OBJECT (widget));
+	g_object_set_data (G_OBJECT (widget->widget), GLADE_WIDGET_DATA_TAG, widget);
 
 	/* We know the parent (if we have one), we can add the packing properties */
 	if (parent)
@@ -1020,7 +1013,9 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
  * @widget: 
  * 
  * Make a copy of a #GladeWidget.
- * 
+ * You have to set name, project and parent when adding the clone
+ * to a project.
+ *
  * Return Value: the cloned GladeWidget, NULL on error.
  */
 GladeWidget *
@@ -1030,13 +1025,8 @@ glade_widget_clone (GladeWidget *widget)
 
 	g_return_val_if_fail (widget != NULL, NULL);
 
-	/*
-	 * This should be enough to clone.
-	 */
-	clone = glade_widget_new (widget->class);
-	clone->name = glade_widget_new_name (widget->project, widget->class);
-	clone->project = widget->project;
-	glade_widget_create_gtk_widget (clone);
+	/* This should be enough to clone. */
+	clone = glade_widget_new_full (widget->class, widget->project, NULL);
 
 	return clone;
 }
@@ -1098,7 +1088,7 @@ glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
  * @signal
  * 
  * Add @signal to the widget's signal list.
- **/
+ */
 void
 glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 {
@@ -1123,7 +1113,7 @@ glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
  * @signal
  * 
  * Remove @signal from the widget's signal list.
- **/
+ */
 void
 glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 {
@@ -1279,19 +1269,23 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	GladeXmlNode *child;
 	GladeWidget *widget;
 	GladeSignal *signal;
-	gchar *class_name;
+	const gchar *class_name;
+	const gchar *widget_name;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return NULL;
 
 	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
-	if (!class_name)
+	widget_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
+	if (!class_name || !widget_name)
 		return NULL;
 	class = glade_widget_class_get_by_name (class_name);
 	if (!class)
 		return NULL;
-	
 	widget = glade_widget_new_full (class, project, parent);
+	if (!widget)
+		return NULL;
+	glade_widget_set_name (widget, widget_name);
 
 	/* Properties */
 	child =	glade_xml_node_get_children (node);
