@@ -22,6 +22,7 @@
 	  <set-function>ignore</set-function>
 	  <get-function>ignore</get-function>
 	</property>
+	<property id="name" translatable="False"/>
       </properties>
     </glade-widget-class>
 
@@ -92,6 +93,8 @@
 	<property id="allow-shrink" disabled="TRUE" />
 	<property id="allow-grow" disabled="TRUE" />
 	<property id="resize-mode" disabled="TRUE" />
+	<property id="role" translatable="False"/>
+	<property id="icon-name" translatable="False"/>
       </properties>
     </glade-widget-class>
 
@@ -208,7 +211,13 @@
     
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" title="Progress Bar"/>
 
-    <glade-widget-class name="GtkImage" generic-name="image" title="Image"/>
+    <glade-widget-class name="GtkImage" generic-name="image" title="Image">
+      <properties>
+	<property id="icon-name" translatable="False"/>
+	<property id="file" translatable="False"/>
+	<property id="stock" translatable="False"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkDialog" generic-name="dialog" title="Dialog Box">
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>

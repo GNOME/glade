@@ -349,7 +349,6 @@ glade_property_write (GArray *props, GladeProperty *property, GladeInterface *in
 	if (property->class->translatable)
 	{
 		/* FIXME: implement writing the i18n metadata. */
-		g_print ("FIXME: write i18n metadata\n");
 	}
 	
 	info.value = alloc_string(interface, tmp);
@@ -369,8 +368,6 @@ glade_property_i18n_set_comment (GladeProperty *property,
 		g_free (property->i18n_comment);
 
 	property->i18n_comment = g_strdup (str);
-
-	g_print ("set comment: %s\n", str);
 }
 
 const gchar *

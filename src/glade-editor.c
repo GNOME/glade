@@ -891,50 +891,6 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 	gint lines = 1;
 
 	g_return_val_if_fail (property != NULL, NULL);
-	g_return_val_if_fail (!property->class->translatable, NULL);
-
-	class = property->class;
-
-	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
-
-	if (lines < 2) {
-		GtkWidget *entry;
-
-		entry = gtk_entry_new ();
-		
-		g_signal_connect (G_OBJECT (entry), "activate",
-				  G_CALLBACK (glade_editor_property_changed_text),
-				  property);
-		
-		g_signal_connect (G_OBJECT (entry), "focus-out-event",
-				  G_CALLBACK (glade_editor_entry_focus_out),
-				  property);
-
-		return entry;
-	} else {
-		GtkTextView *view;
-
-		view = GTK_TEXT_VIEW (gtk_text_view_new ());
-		gtk_text_view_set_editable (view, TRUE);
-
-		g_signal_connect (G_OBJECT (view), "focus-out-event",
-				  G_CALLBACK (glade_editor_text_view_focus_out),
-				  property);
-		
-		return GTK_WIDGET (view);
-	}
-
-	return NULL;
-}
-
-static GtkWidget *
-glade_editor_create_input_translatable_text (GladeEditorProperty *property)
-{
-	GladePropertyClass *class;
-	gint lines = 1;
-
-	g_return_val_if_fail (property != NULL, NULL);
-	g_return_val_if_fail (property->class->translatable, NULL);
 
 	class = property->class;
 
@@ -949,14 +905,7 @@ glade_editor_create_input_translatable_text (GladeEditorProperty *property)
 
 		entry = gtk_entry_new ();
 		gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0); 
-		
-		button = gtk_button_new_with_label ("...");
-		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
 
-		g_signal_connect (button, "clicked",
-				  G_CALLBACK (glade_editor_property_show_i18n_dialog),
-				  property);
-		
 		g_signal_connect (G_OBJECT (entry), "activate",
 				  G_CALLBACK (glade_editor_property_changed_text),
 				  property);
@@ -965,6 +914,15 @@ glade_editor_create_input_translatable_text (GladeEditorProperty *property)
 				  G_CALLBACK (glade_editor_entry_focus_out),
 				  property);
 
+		if (property->class->translatable) {
+			button = gtk_button_new_with_label ("...");
+			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+
+			g_signal_connect (button, "clicked",
+					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
+					  property);
+		}
+		
 		return hbox;
 	} else {
 		GtkWidget   *hbox;
@@ -975,20 +933,21 @@ glade_editor_create_input_translatable_text (GladeEditorProperty *property)
 
 		view = GTK_TEXT_VIEW (gtk_text_view_new ());
 		gtk_text_view_set_editable (view, TRUE);
-
 		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (view), TRUE, TRUE, 0); 
-
-		button = gtk_button_new_with_label ("...");
-		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
-
-		g_signal_connect (button, "clicked",
-				  G_CALLBACK (glade_editor_property_show_i18n_dialog),
-				  property);
 
 		g_signal_connect (G_OBJECT (view), "focus-out-event",
 				  G_CALLBACK (glade_editor_text_view_focus_out),
 				  property);
 		
+		if (property->class->translatable) {
+			button = gtk_button_new_with_label ("...");
+			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+
+			g_signal_connect (button, "clicked",
+					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
+					  property);
+		}
+
 		return hbox;
 	}
 
@@ -1141,9 +1100,6 @@ glade_editor_append_item_real (GladeEditorTable *table,
 		 G_IS_PARAM_SPEC_FLOAT(property->class->pspec)  ||
 		 G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
 		input = glade_editor_create_input_numeric (property);
-	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec) &&
-		 property->class->translatable)
-		input = glade_editor_create_input_translatable_text (property);
 	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
 		input = glade_editor_create_input_text (property);
 	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
@@ -1647,46 +1603,6 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 static void
 glade_editor_property_load_text (GladeEditorProperty *property)
 {
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->property != NULL);
-	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
-	g_return_if_fail (!property->class->translatable);
-	
-	if (GTK_IS_EDITABLE (property->input)) {
-		GtkEditable *editable = GTK_EDITABLE (property->input);
-		gint pos, insert_pos = 0;
-		const gchar *text;
-		text = g_value_get_string (property->property->value);
-		pos = gtk_editable_get_position (editable);
- 		gtk_editable_delete_text (editable, 0, -1);
-		if (text)
-			gtk_editable_insert_text (editable,
-						  text,
-						  g_utf8_strlen (text, -1),
-						  &insert_pos);
-		gtk_editable_set_position (editable, pos);
-	} else if (GTK_IS_TEXT_VIEW (property->input)) {
-		GtkTextBuffer *buffer;
-		const gchar *text;
-
-		if ((text = g_value_get_string (property->property->value)) != NULL)
-		{
-			buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->input));
-			gtk_text_buffer_set_text (buffer,
-						  text,
-						  g_utf8_strlen (text, -1));
-		}
-	} else {
-		g_warning ("Invalid Text Widget type.");
-	}
-
-	g_object_set_data (G_OBJECT (property->input), "user_data", property);
-}
-
-static void
-glade_editor_property_load_translatable_text (GladeEditorProperty *property)
-{
 	GtkBoxChild *child;
 	GtkWidget   *widget;
 	
@@ -1694,9 +1610,8 @@ glade_editor_property_load_translatable_text (GladeEditorProperty *property)
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
-	g_return_if_fail (property->class->translatable);
-	
-	/* The entry should be the first child. */
+
+	/* The entry/textview is the first child. */
 	child = GTK_BOX (property->input)->children->data;
 	widget = child->widget;
 	
@@ -1775,9 +1690,6 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_enum (property);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		glade_editor_property_load_flags (property);
-	else if (G_IS_PARAM_SPEC_STRING(class->pspec) &&
-		class->translatable)
-		glade_editor_property_load_translatable_text (property);
 	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
 		glade_editor_property_load_text (property);
 	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
