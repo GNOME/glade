@@ -545,22 +545,36 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 		GList *old_property;
 
 		/* if it's the first time we see this property, then we add it to the list of 
-		 * properties that we will keep for this widget.  Idem if the last time we saw
-		 * this property, it was not modified, and this time the property is modified
+		 * properties that we will keep the property.  Idem if the last time we saw
+		 * this property it was not modified, and this time the property is modified
 		 * (ie, we change the non modified property by the modified one). */
 		if ((old_property = g_hash_table_lookup (hash_properties, property_class->id)) == NULL ||
 		    (!((GladePropertyClass*) old_property->data)->is_modified && property_class->is_modified))
 		{
 			/* remove the old property */
 			if (old_property != NULL)
+			{
+				GList *new_head = widget_class->properties;
+
+				if (old_property == widget_class->properties)
+					new_head = g_list_next (old_property);
+
 				g_list_remove_link (widget_class->properties, old_property);
+				widget_class->properties = new_head;
+			}
 
 			g_hash_table_insert (hash_properties, property_class->id, properties_classes);
 			properties_classes = g_list_next (properties_classes);
 		} else {
 			GList *tmp = properties_classes;
+			GList *new_head = widget_class->properties;
+
+			if (tmp == widget_class->properties)
+				new_head = g_list_next (tmp);
+
 			properties_classes = g_list_next (properties_classes);
 			g_list_remove_link (widget_class->properties, tmp);
+			widget_class->properties = new_head;
 		}
 	}
 
@@ -583,6 +597,9 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
  * the xml filename.
  *
  * Return Value: The new GladeWidgetClass, or %NULL if there are any errors.
+ *
+ * TODO: this function should replace glade_widget_class_new_from_name & new_from_node
+ * when done, we should of course rename it.
  **/
 GladeWidgetClass *
 glade_widget_class_new_from_name2 (const char *name,
@@ -615,7 +632,7 @@ glade_widget_class_new_from_name2 (const char *name,
 		goto lblError;
 	}
 
-	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
+	widget_class->generic_name = g_strdup (generic_name);
 	widget_class->name = g_strdup (name);
 	widget_class->in_palette = generic_name ? TRUE : FALSE;
 

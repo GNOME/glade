@@ -9,9 +9,6 @@
     <Property Id="default-width" Default="0" Optional="True" OptionalDefault="False"/>
     <Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
 
-    <Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="width-request"/>
-    <Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="height-request"/>
-
     <Property Common="True" Id="tooltip" ParamSpec="False" Name="Tooltip">
       <Type>String</Type>
       <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
@@ -21,6 +18,4 @@
   </Properties>
 
 </GladeWidgetClass>
-	 
-	 
-	     
+

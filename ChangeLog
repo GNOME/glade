@@ -1,3 +1,9 @@
+2003-08-24  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-widget-class.c (glade_widget_class_remove_duplicated_properties): 
+	when we had a specialized property on a base widget class, if this property
+	was the first one on the list of properties, the whole list was removed.
+
 2003-08-21  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.[ch]: remove the tree structure (GladeWidget->parent
