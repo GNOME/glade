@@ -2,11 +2,16 @@
 
 SUBDIRS = src po pixmaps widgets
 
-Developmentdir = $(datadir)/applications
-Development_in_files = glade-3.desktop.in
-Development_DATA = $(Development_in_files:.desktop.in=.desktop)
-
 @INTLTOOL_DESKTOP_RULE@
+
+DESKTOP_IN_FILES = glade-3.desktop.in
+DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
+
+desktopdir = $(datadir)/applications
+desktop_DATA = $(DESKTOP_FILES)
+
+appicondir = $(datadir)/pixmaps
+appicon_DATA = glade-3.png
 
 EXTRA_DIST = \
 	glade-3.desktop.in \
@@ -15,5 +20,7 @@ EXTRA_DIST = \
 	intltool-merge.in \
 	intltool-update.in
 
-pixmapsdir = $(datadir)/pixmaps
-pixmaps_DATA = glade-3.png
+
+CLEANFILES = $(DESKTOP_FILES)
+
+DISTCLEANFILES = intltool-extract intltool-merge intltool-update
