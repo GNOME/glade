@@ -84,7 +84,6 @@
 #define GLADE_TAG_QUERY        "Query"
 #define GLADE_TAG_WINDOW_TITLE "WindowTitle"
 #define GLADE_TAG_QUESTION     "Question"
-#define GLADE_TAG_PARAM_SPEC   "ParamSpec"
 #define GLADE_TAG_VISIBLE_LINES "VisibleLines"
 #define GLADE_ENUM_DATA_TAG    "GladeEnumDataTag"
 #define GLADE_FLAGS_DATA_TAG   "GladeFlagsDataTag"

@@ -1,39 +1,27 @@
 <GladeWidgetClass>
 
-  <Name>GtkSpinButton</Name>
-  <GenericName>spinbutton</GenericName>
-  <Toplevel>False</Toplevel>
-
   <Properties>
 
-    <Property Id="climb-rate"/>
-    <Property Id="numeric"/>
-    <Property Id="update-policy"/>
-    <Property Id="snap-to-ticks"/>
-    <Property Id="wrap"/>
-
-    <Property Id="value"/>
-
-          <Property ParamSpec="FALSE" Id="minimum" Name="Min" Default="0">
-		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_spin_button_set_min</SetFunction>
-		</Property>
-          <Property ParamSpec="FALSE" Id="maximum" Name="Max" Default="100">
-		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_spin_button_set_max</SetFunction>
-		</Property>
-          <Property ParamSpec="FALSE" Id="step-increment" Name="Step Inc." Default="1">
-		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
-		</Property>
-          <Property ParamSpec="FALSE" Id="page-increment" Name="Page Inc." Default="10">
-		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
-		</Property>
-          <Property ParamSpec="FALSE" Id="page-size" Name="Page Size" Default="10">
-		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
-		</Property>
+    <Property Id="minimum" Name="Min" Default="0">
+      <Type>Float</Type>
+      <SetFunction>glade_gtk_spin_button_set_min</SetFunction>
+    </Property>
+    <Property Id="maximum" Name="Max" Default="100">
+      <Type>Float</Type>
+      <SetFunction>glade_gtk_spin_button_set_max</SetFunction>
+    </Property>
+    <Property Id="step-increment" Name="Step Inc." Default="1">
+      <Type>Float</Type>
+      <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
+    </Property>
+    <Property Id="page-increment" Name="Page Inc." Default="10">
+      <Type>Float</Type>
+      <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
+    </Property>
+    <Property Id="page-size" Name="Page Size" Default="10">
+      <Type>Float</Type>
+      <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
+    </Property>
 
  	 <!--
 	 <Parameters>

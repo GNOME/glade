@@ -4,23 +4,14 @@
 
   <Properties>
 
-    <Property Id="has-separator"/>
-    <Property Id="border-width"/>
-    <Property Id="title"/>
-    <Property Id="type"/>
-    <Property Id="window-position"/>
     <Property Id="modal">
       <SetFunction>ignore</SetFunction>
     </Property>
     <Property Id="default-width"  Default="0" Optional="True" OptionalDefault="False"/>
     <Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
-    <Property Id="allow-grow"/>
-    <Property Id="allow-shrink"/>
-    <Property Id="message-type"/>
-    <Property Id="buttons"/>
 
     <Property Common="True" Id="sensitive"/>
-    <Property Common="True" Id="tooltip" ParamSpec="False" Name="Tooltip">
+    <Property Common="True" Id="tooltip" Name="Tooltip">
       <Type>String</Type>
       <SetFunction>ignore</SetFunction>
       <GetFunction>ignore</GetFunction>
@@ -28,7 +19,6 @@
     <Property Common="True" Id="can-default"/>
     <Property Common="True" Id="has-default"/>
     <Property Common="True" Id="can-focus"/>
-    <Property Common="True" Id="extension-events"/>
 
   </Properties>
   

@@ -278,6 +278,7 @@ glade_property_class_new (void)
 	property_class->tooltip = NULL;
 	property_class->parameters = NULL;
 	property_class->choices = NULL;
+	property_class->enum_type = 0;
 	property_class->optional = FALSE;
 	property_class->optional_default = TRUE;
 	property_class->common = FALSE;
@@ -580,7 +581,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 			while (list != NULL && !found) {
 				choice = (GladeChoice *) list->data;
 				if (!g_ascii_strcasecmp (string, choice->id)) {
-					g_value_init (value, property_class->def->g_type);
+					g_value_init (value, property_class->enum_type);
 					g_value_set_enum (value, i);
 					found = TRUE;
 				}
@@ -692,6 +693,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	switch (property_class->type) {
 	case GLADE_PROPERTY_TYPE_ENUM:
 		property_class->choices = glade_property_class_get_choices_from_spec (spec);
+		property_class->enum_type = spec->value_type;
 		break;
 	case GLADE_PROPERTY_TYPE_FLAGS:
 		break;
@@ -715,26 +717,6 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	}
 
 	return property_class;
-}
-
-static GValue *
-glade_property_class_get_default (GladeXmlNode *node, GladePropertyClass *property_class)
-{
-	GValue *value;
-	gchar *temp;
-
-	temp =	glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-
-	if (!temp) {
-		/* g_debug(("Temp is NULL, we dont' have a default\n")) */;
-		return NULL;
-	}
-
-	value = glade_property_class_make_gvalue_from_string (property_class, temp);
-
-	g_free (temp);
-
-	return value;
 }
 
 #if 0 // do we still need these 2 ?
@@ -867,160 +849,131 @@ glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *ite
 	return list;
 }
 
-static void
+/**
+ * glade_property_class_update_from_node:
+ * @node: the <property> node
+ * @widget_class: the widget class
+ * @property_class: a pointer to the property class
+ *
+ * Updates the @property_class with the contents of the node in the xml
+ * file. Only the values found in the xml file are overridden.
+ *
+ * Return TRUE on success. @property_class is set to NULL if the property
+ * has Disabled="TRUE".
+ **/
+gboolean
 glade_property_class_update_from_node (GladeXmlNode *node,
 				       GladeWidgetClass *widget_class,
 				       GladePropertyClass **property_class)
 {
+	GladePropertyClass *class;
+	gchar *buff;
 	GladeXmlNode *child;
-	GladePropertyClass *pproperty_class;
-	gchar *type;
-	gchar *id;
-	gchar *name;
 
-	g_return_if_fail (glade_xml_node_verify (node, GLADE_TAG_PROPERTY));
+	g_return_val_if_fail (property_class != NULL, FALSE);
 
-	/* If we have a property like ... Disabled="TRUE"> we should
-	 * remove this property
+	/* for code cleanliness... */
+	class = *property_class;
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
+	g_return_val_if_fail (glade_xml_node_verify (node, GLADE_TAG_PROPERTY), FALSE);
+
+	/* check the id */
+	buff = glade_xml_get_property_string_required (node, GLADE_TAG_ID, NULL);
+	if (!buff)
+		return FALSE;
+	g_free (buff);
+
+	/* If Disabled="TRUE" we set *property_class to NULL, but we return TRUE.
+	 * The caller may want to remove this property from its list.
 	 */
-	if ( glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE)) {
-		if (*property_class != NULL) {
-			glade_property_class_free (*property_class);
-			*property_class = NULL;
-		}
-
-		return;
+	if (glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE)) {
+		glade_property_class_free (class);
+		class = NULL;
+		return TRUE;
 	}
 
-	id = glade_xml_get_property_string_required (node, GLADE_TAG_ID, widget_class->name);
-	if (id == NULL)
-		return;
+	/* If needed, update the name... */
+	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
+	if (buff) {
+		g_free (class->name);
+		class->name = buff;
+	}
 
-	pproperty_class = *property_class;
-	
-	/* If we have a property like ... ParamSpec="FALSE"> we should
-	 * overwrite the ParamSpec prefs.
-	 * If the property_class == NULL we should create it from .xml file
-	 */
-	if ( !glade_xml_get_property_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE) || pproperty_class == NULL) {
-		name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
-		if (name == NULL) {
-			return;
-		}
+	/* ...the type... */
+	buff = glade_xml_get_value_string (node, GLADE_TAG_TYPE);
+	if (buff) {
+		GladePropertyType type;
+		type = glade_property_type_str_to_enum (buff);
+		g_free (buff);
+		if (type == GLADE_PROPERTY_TYPE_ERROR)
+			return FALSE;
+		class->type = type;
+	}
 
-		pproperty_class = glade_property_class_new ();
+	/* ...and the tooltip */
+	buff = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
+	if (buff) {
+		g_free (class->tooltip);
+		class->tooltip = buff;
+	}
 
-		/* Ok, this property should not be loaded with ParamSpec */
-		pproperty_class->id    = id;
-		pproperty_class->name  = name;
-		pproperty_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
+	/* Get the Parameters */
+	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
+	if (child)
+		class->parameters = glade_parameter_list_new_from_node (class->parameters, child);
+	glade_parameter_get_boolean (class->parameters, "Optional", &class->optional);
 
-		/* Get the type */
-		type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, widget_class->name);
-		if (type == NULL) {
-			glade_property_class_free (pproperty_class);
-			pproperty_class = NULL;
-			return;
-		}
-		pproperty_class->type = glade_property_type_str_to_enum (type);
-		g_free (type);
-		if (pproperty_class->type == GLADE_PROPERTY_TYPE_ERROR) {
-			glade_property_class_free (pproperty_class);
-			pproperty_class = NULL;
-			return;
-		}
+	/* Get the choices */
+	if (class->type == GLADE_PROPERTY_TYPE_ENUM) {
+		gchar *type_name;
+		GType type;
 
-		/* Get the Parameters */
-		child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
-		if (child != NULL)
-			pproperty_class->parameters = glade_parameter_list_new_from_node (NULL, child);
-		glade_parameter_get_boolean (pproperty_class->parameters, "Optional", &pproperty_class->optional);
-
-		/* Get the choices */
-		if (pproperty_class->type == GLADE_PROPERTY_TYPE_ENUM) {
-			GValue *gvalue;
-			gchar *type_name;
-			GType type;
-			gchar *default_string;
-			GladeXmlNode *child;
-			child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
-			if (child == NULL) {
-				glade_property_class_free (pproperty_class);
-				pproperty_class = NULL;
-				return;
-			}
-			
-			pproperty_class->choices = glade_choice_list_new_from_node (child);
-			type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
-			if (type_name == NULL) {
-				glade_property_class_free (pproperty_class);
-				pproperty_class = NULL;
-				return;
-			}
-			
-			type = g_type_from_name (type_name);
-			if (! (type != 0)) {
-				glade_property_class_free (pproperty_class);
-				pproperty_class = NULL;
-				return;
-			}
-			gvalue = g_new0 (GValue, 1);
-			g_value_init (gvalue, type);
-			default_string = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-			pproperty_class->def = gvalue;
-			glade_property_class_free (*property_class);
-			*property_class = pproperty_class;
-		}
-		else {
+		child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
+		if (!child)
+			return FALSE;
+		class->choices = glade_choice_list_new_from_node (child);
+		type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
+		if (!type_name)
+			return FALSE;
+		type = g_type_from_name (type_name);
+		if (!(type != 0))
+			return FALSE;
+		class->enum_type = type;
+	}
 #if 0
-			/* If the property is an object Load it */
-			if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-				child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
-				if (child == NULL) {
-					glade_property_class_free (pproperty_class);
-					pproperty_class = NULL;
-					return;
-				}
-			
-				pproperty_class->child = glade_widget_class_new_from_node (child);
-			}
-#endif
-
-			pproperty_class->def = glade_property_class_get_default (node, pproperty_class);
-			glade_property_class_free (*property_class);
-			*property_class = pproperty_class;
-		}
-	
-	} else {
-		GValue *tmp;
-		tmp = glade_property_class_get_default (node, pproperty_class);
-		if (tmp != NULL) {
-			g_free (pproperty_class->def);
-			pproperty_class->def = tmp;
-		}
+	/* If the property is an object load it */
+	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+		child = glade_xml_search_child (node, GLADE_TAG_GLADE_WIDGET_CLASS);
+		if (child)
+			class->child = glade_widget_class_new_from_node (child);
 	}
-
-	/* we're modifying the default values of this property */
-	pproperty_class->is_modified = TRUE;
+#endif
+	/* Get the default */
+	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+	if (buff) {
+		g_free (class->def);
+		class->def = glade_property_class_make_gvalue_from_string (class, buff);
+		if (!class->def)
+			return FALSE;
+	}
 
 	/* Get the Query */
 	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
-	if (child != NULL)
-		pproperty_class->query = glade_query_new_from_node (child);
+	if (child)
+		class->query = glade_query_new_from_node (child);
 
-	/* Will this property go in the common tab ? */
-	pproperty_class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
-	pproperty_class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
-	if (pproperty_class->optional) {
-		pproperty_class->optional_default = glade_xml_get_property_boolean (node,
-									GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
-	}
+	/* common, optional, etc */
+	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
+	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
+	if (class->optional)
+		class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
 
-	/* Now get the list of signals that we should listen to */
-	pproperty_class->update_signals = glade_xml_read_list (node,
-							      GLADE_TAG_UPDATE_SIGNALS,
-							      GLADE_TAG_SIGNAL_NAME);
-	
+	/* The list of signals that we should listen to */
+	class->update_signals = glade_xml_read_list (node,
+						     GLADE_TAG_UPDATE_SIGNALS,
+						     GLADE_TAG_SIGNAL_NAME);
+
 	/* If this property can't be set with g_object_set, get the workarround
 	 * function
 	 */
@@ -1029,16 +982,16 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	 * the user the pain of plenty of dialog boxes.  Ideally, we should collect these errors,
 	 * and show all of them at the end of the load processus. */
 	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
-	if (child != NULL) {
+	if (child) {
 		gchar *symbol_name = glade_xml_get_content (child);
 
 		if (!widget_class->module)
 			g_warning (_("The property [%s] of the widget's class [%s] needs a special \"set\" function, but there is no library associated to this widget's class."),
-				   pproperty_class->name, widget_class->name);
+				   class->name, widget_class->name);
 
-		if (!g_module_symbol (widget_class->module, symbol_name, (gpointer *) &pproperty_class->set_function))
+		if (!g_module_symbol (widget_class->module, symbol_name, (gpointer *) &class->set_function))
 			g_warning (_("Unable to get the \"set\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"),
-				   symbol_name, pproperty_class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
+				   symbol_name, class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
 
 		g_free (symbol_name);
 	}
@@ -1047,63 +1000,23 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	 * function
 	 */
 	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
-	if (child != NULL) {
+	if (child) {
 		gchar *symbol_name = glade_xml_get_content (child);
 
 		if (!widget_class->module)
 			g_warning (_("The property [%s] of the widget's class [%s] needs a special \"get\" function, but there is no library associated to this widget's class."),
-				   pproperty_class->name, widget_class->name);
+				   class->name, widget_class->name);
 
-		if (!g_module_symbol(widget_class->module, symbol_name, (gpointer *) &pproperty_class->get_function))
+		if (!g_module_symbol(widget_class->module, symbol_name, (gpointer *) &class->get_function))
 			g_warning (_("Unable to get the \"get\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"),
-				   symbol_name, pproperty_class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
+				   symbol_name, class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
 
 		g_free (symbol_name);
 	}
 
-	return;
-}
+	/* notify that we changed the property class */
+	class->is_modified = TRUE;
 
-void
-glade_property_class_list_add_from_node (GladeXmlNode *node,
-					 GladeWidgetClass *widget_class,
-					 GList **properties)
-{
-	GladePropertyClass *property_class = NULL;
-	GladeXmlNode *child;
-	GList *list_element;
-	gchar *buff;
-
-	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTIES))
-		return;
-	
-	child = glade_xml_node_get_children (node);
-
-	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
-			return;
-		
-		list_element = g_list_last (*properties);
-		buff = glade_xml_get_property_string (child, GLADE_TAG_ID);
-		while (list_element != NULL && property_class == NULL) {
-			const char *id = ((GladePropertyClass *) list_element->data)->id;
-			if (!g_ascii_strcasecmp (id, buff))
-				property_class = (GladePropertyClass *) list_element->data;
-			else 
-				list_element = g_list_previous (list_element);
-		}
-		
-		glade_property_class_update_from_node (child, widget_class, &property_class);
-		if (list_element != NULL)
-			*properties = g_list_delete_link (*properties, list_element);
-		if (property_class != NULL) {
-			*properties = g_list_prepend (*properties, property_class);
-			property_class = NULL;
-		}
-		g_free (buff);
-	}
-
-	*properties = g_list_reverse (*properties);
-
+	return TRUE;
 }
 

@@ -159,21 +159,18 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 {
 	GladeXmlNode *child;
 	GladeChoice *choice;
-	GList *list;
+	GList *list = NULL;
 	int def_value = 0;
 	
-	if (!glade_xml_node_verify (node, GLADE_TAG_ENUMS))
-		return NULL;
+	g_return_val_if_fail (glade_xml_node_verify (node, GLADE_TAG_ENUMS), NULL);
 
-	list = NULL;
 	child = glade_xml_node_get_children (node);
-
-	for (; child != NULL; child = glade_xml_node_next (child)) {
+	for (; child; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_ENUM))
-			return NULL;
+			continue;
 		choice = glade_choice_new_from_node (child);
 		if (choice == NULL)
-			return NULL;
+			continue;
 		/* if enum_from_string is not able to find a value for this enum,
 		   we will use as value the position of the item in the enum list */
 		if (choice->value == -1)

@@ -132,6 +132,9 @@ struct _GladePropertyClass
 			    * and is NULL for other poperties.
 			    * [See glade-choice.h]
 			    */
+	GType enum_type;   /* If it is GLADE_PROPERTY_TYPE_ENUM, this holds
+			    * the GType of the enum, otherwise it's 0.
+			    */
 
 	gboolean optional; /* Some properties are optional by nature like
 			    * default width. It can be set or not set. A
@@ -195,10 +198,6 @@ GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_cla
 
 void glade_property_class_free (GladePropertyClass *class);
 
-void        glade_property_class_list_add_from_node (GladeXmlNode * node,
-						     GladeWidgetClass *class,
-						     GList **properties);
-
 GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
 
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
@@ -207,6 +206,10 @@ GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *prope
 						       const gchar *string);
 gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 						       const GValue *value);
+
+gboolean glade_property_class_update_from_node (GladeXmlNode *node,
+						GladeWidgetClass *widget_class,
+						GladePropertyClass **property_class);
 
 
 G_END_DECLS

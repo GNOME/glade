@@ -10,7 +10,7 @@
     <Property Common="True" Id="visible" Default="True">
       <SetFunction>ignore</SetFunction>
     </Property>
-    <Property Common="True" Id="tooltip" ParamSpec="False" Name="Tooltip">
+    <Property Common="True" Id="tooltip" Name="Tooltip">
       <Type>String</Type>
       <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
       <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>

@@ -274,6 +274,56 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 	return icon;
 }
 
+static void
+glade_widget_class_update_properties_from_node (GladeXmlNode *node,
+						GladeWidgetClass *widget_class)
+{
+	GladeXmlNode *child;
+	GList *properties = widget_class->properties;
+
+	child = glade_xml_node_get_children (node);
+	for (; child; child = glade_xml_node_next (child)) {
+		gchar *id;
+		GList *list;
+		GladePropertyClass *property_class;
+		gboolean updated;
+
+		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
+			continue;
+
+		id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, widget_class->name);
+		if (!id)
+			continue;
+
+		/* find the property in our list, if not found append a new property */
+		for (list = properties; list; list = list->next) {
+			gchar *tmp = GLADE_PROPERTY_CLASS (list->data)->id;
+			if (!g_ascii_strcasecmp (id, tmp))
+				break;
+		}
+		if (list) {
+			property_class = GLADE_PROPERTY_CLASS (list->data);
+		} else {
+			property_class = glade_property_class_new ();
+			property_class->id = g_strdup (id);
+			properties = g_list_append (properties, property_class);
+			list = g_list_last (properties);
+		}
+
+		updated = glade_property_class_update_from_node (child, widget_class, &property_class);
+		if (!updated) {
+			g_warning ("failed to update %s property of %s from xml", id, widget_class->name);
+			continue;
+		}
+
+		/* the property has Disabled=TRUE ... */
+		if (!property_class)
+			properties = g_list_delete_link (properties, list);
+
+		g_free (id);
+	}
+}
+
 /**
  * glade_widget_class_extend_with_file:
  * @filename: complete path name of the xml file with the description of the GladeWidgetClass
@@ -332,7 +382,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	 */
 	properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
 	if (properties)
-		glade_property_class_list_add_from_node (properties, widget_class, &widget_class->properties);
+		glade_widget_class_update_properties_from_node (properties, widget_class);
 
 	return TRUE;
 }

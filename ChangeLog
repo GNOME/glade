@@ -1,3 +1,16 @@
+2003-10-13  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade.h: remove GLADE_TAG_PARAM_SPEC. We no longer need it since
+	we list in the xml files only the overridden properties.
+	* src/glade-property-class.[ch]: add an enum_type field to hold the
+	GType of enum properties. glade_property_class_update_from_node: clean
+	up and remove the handling of ParamSpec="FALSE" since it's a leftover
+	from when we listed all the properties in the xml files.
+	glade_property_class_list_add_from_node: moved to glade-widget-class.
+	* src/glade-widget-class.c: add update_properties_from_node().
+	* widgets/*.xml: remove all the occurrencies of ParamSpec="FALSE" and
+	remove some other no longer needed properties.
+
 2003-10-06  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade.h: define GLADE_TAG_REPLACE_CHILD_FUNCTION

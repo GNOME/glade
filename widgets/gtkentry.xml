@@ -1,16 +1,12 @@
 <GladeWidgetClass>
 
-  <Name>GtkEntry</Name>
-  <GenericName>entry</GenericName>
-  <Toplevel>False</Toplevel>
-
   <Properties>
 
     <Property Id="editable"/>
     <Property Id="visibility"/>
     <Property Id="max-length"/>
 
-    <Property ParamSpec="FALSE" Id="text" Name="Text">
+    <Property Id="text" Name="Text">
        <Type>String</Type>
 	  <Tooltip>Initial Contents of the entry</Tooltip>
 	  <SetFunction>glade_gtk_entry_set_text</SetFunction>

@@ -2,15 +2,15 @@
 
   <Properties>
 
-    <Property Name="Size" Id="size" Default="3">
+    <Property Id="size" Name="Size" Default="3">
       <Type>Integer</Type>
       <Tooltip>The number of items in the box</Tooltip>
       <Parameters>
-	    <Parameter Key="Min" Value="0"/>
-	    <Parameter Key="Max" Value="10000"/>
-	    <Parameter Key="StepIncrement" Value="1"/>
-	    <Parameter Key="PageIncrement" Value="10"/>
-	    <Parameter Key="ClimbRate" Value="1"/>
+        <Parameter Key="Min" Value="0"/>
+        <Parameter Key="Max" Value="10000"/>
+        <Parameter Key="StepIncrement" Value="1"/>
+        <Parameter Key="PageIncrement" Value="10"/>
+        <Parameter Key="ClimbRate" Value="1"/>
       </Parameters>
       <Query>
         <WindowTitle>New box</WindowTitle>
