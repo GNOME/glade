@@ -427,7 +427,7 @@ glade_util_hide_window (GtkWindow *window)
  * @parent: the parent #GtkWindow for the dialog
  * @action: a #GladeUtilFileDialogType to say if the dialog will open or save
  *
- * Returns: a file chooser or file selector dialog. The caller is responsible 
+ * Returns: a file chooser dialog. The caller is responsible 
  *          for showing the dialog
  */
 GtkWidget *
@@ -439,8 +439,6 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 	g_return_val_if_fail ((action == GLADE_FILE_DIALOG_ACTION_OPEN ||
 			       action == GLADE_FILE_DIALOG_ACTION_SAVE), NULL);
 
-#if GTK_MAJOR_VERSION >= 2
-#if GTK_MINOR_VERSION >= 4
 	file_dialog = gtk_file_chooser_dialog_new (title, parent, action,
 						    GTK_STOCK_CANCEL,
 						    GTK_RESPONSE_CANCEL,
@@ -448,49 +446,9 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 						    GTK_STOCK_OPEN : GTK_STOCK_SAVE,
 						    GTK_RESPONSE_OK,
 						    NULL);
-#else
-	file_dialog = gtk_file_selection_new (title);
-#endif
-#endif
 	gtk_window_set_position (GTK_WINDOW (file_dialog), GTK_WIN_POS_CENTER);
 
 	return file_dialog;
-}
-
-/**
- * glade_util_file_dialog_get_filename:
- * @file_dialog: a #GtkWidget that is either a #GtkFileSelector or #GtkFileChooser
- *
- * Returns: The filename selected by the user.
- */
-gchar *
-glade_util_file_dialog_get_filename (GtkWidget *file_dialog)
-{
-#if GTK_MAJOR_VERSION >= 2
-#if GTK_MINOR_VERSION >= 4
-	return gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (file_dialog));
-#else
-	return gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_dialog));
-#endif
-#endif
-}
-
-/**
- * glade_util_file_dialog_set_filename:
- * @file_dialog: a #GtkWidget that is either a #GtkFileSelector or #GtkFileChooser
- * @filename: the filename to be set.
- *
- */
-void
-glade_util_file_dialog_set_filename (GtkWidget *file_dialog, gchar *filename)
-{
-#if GTK_MAJOR_VERSION >= 2
-#if GTK_MINOR_VERSION >= 4
-	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (file_dialog), filename);
-#else
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (file_dialog), filename);
-#endif
-#endif
 }
 
 /**

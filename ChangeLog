@@ -1,3 +1,15 @@
+2005-01-12  Mikael Hallendal  <micke@imendio.com>
+
+	* configure.in: Bumped GTK+ requirements to 2.4
+	* src/glade-menu-editor.c: (on_icon_button_clicked):
+	* src/glade-project-window.c: (gpw_open_cb), (gpw_save_as),
+	(gpw_save_cb), (gpw_save_as_cb), (gpw_confirm_close_project):
+	- Updated to use GtkFileChooser API directly.
+	- Cleaned up and reuse the save as code for both save and save as.
+	- Append .glade on filename if it lacks suffix.
+	* src/glade-utils.c: (glade_util_file_dialog_new):
+	- Remove the support for GtkFileSelection since we require 2.4.
+
 2005-01-12  Richard Hult  <richard@imendio.com>
 
 	* widgets/gtk+.xml: Change the min value for GtkBox size to 1 from
