@@ -16,7 +16,7 @@ if WITH_WIN32
   glade_3_LDFLAGS = glade_plugin.def
   libgladegtk_la_LDFLAGS += -no-undefined -L./ -Wl,$(bin_PROGRAMS).a $(GLADE_LIBS)
   libgladegtk_la_DEPENDENCIES = $(bin_PROGRAMS).a
-  CLEANFILES = $(bin_PROGRAMS).a $(CLEANFILES)
+  CLEANFILES = $(bin_PROGRAMS).a $(BUILT_SOURCES)
 endif
 
 INCLUDES = \
@@ -40,7 +40,7 @@ glade_3_LDADD = \
 BUILT_SOURCES = \
         glade-marshallers.c \
         glade-marshallers.h
-CLEANFILES = $(BUILT_SOURCES) $(CLEANFILES)
+CLEANFILES = $(BUILT_SOURCES)
 
 glade_3_SOURCES = \
 	main.c \
