@@ -238,9 +238,8 @@ glade_editor_property_changed_text_common (GladeProperty *property, const gchar 
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_STRING);
 	g_value_set_string (val, text);
-	glade_command_set_property (G_OBJECT (property->widget->widget),
-				    property->class->id, val);
-	
+	glade_command_set_property (property, val);
+
 	g_free (val);
 }
 
@@ -293,14 +292,14 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	GladeChoice *choice;
 	GValue *val;
 	GladeProperty *gproperty;
-	
+
 	g_return_if_fail (property != NULL);
-	
+	g_return_if_fail (property->property != NULL);
+
 	if (property->property->loading)
 		return;
-	
-	choice = g_object_get_data (G_OBJECT (menu_item),
-				      GLADE_ENUM_DATA_TAG);
+
+	choice = g_object_get_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG);
 	g_return_if_fail (choice != NULL);
 
 	val = g_new0 (GValue, 1);
@@ -308,8 +307,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	gproperty = property->property;
 	g_value_init (val, gproperty->class->def->g_type);
 	g_value_set_enum (val, choice->value);
-	glade_command_set_property (G_OBJECT (gproperty->widget->widget),
-				    gproperty->class->id, val);
+	glade_command_set_property (gproperty, val);
 
 	g_free (val);
 }
@@ -372,20 +370,17 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	case GLADE_EDITOR_INTEGER:
 		g_value_init (val, G_TYPE_INT);
 		g_value_set_int (val, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (G_OBJECT (property->property->widget->widget),
-					property->property->class->id, val);
+		glade_command_set_property (property->property, val);
 		break;
 	case GLADE_EDITOR_FLOAT:
 		g_value_init (val, G_TYPE_FLOAT);
 		g_value_set_float (val, (float) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (G_OBJECT (property->property->widget->widget),
-					property->property->class->id, val);
+		glade_command_set_property (property->property, val);
 		break;
 	case GLADE_EDITOR_DOUBLE:
 		g_value_init (val, G_TYPE_DOUBLE);
 		g_value_set_double (val, (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (G_OBJECT (property->property->widget->widget),
-					    property->property->class->id, val);
+		glade_command_set_property (property->property, val);
 		break;
 	default:
 		g_warning ("Invalid numeric_type %i\n", numeric_type);
@@ -415,8 +410,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (val, state);
-	glade_command_set_property (G_OBJECT (property->property->widget->widget),
-				    property->property->class->id, val);
+	glade_command_set_property (property->property, val);
 	g_free (val);
 }
 
@@ -442,8 +436,7 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_UINT);
 	g_value_set_uint (val, unich);
-	glade_command_set_property (G_OBJECT (property->property->widget->widget),
-				    property->property->class->id, val);
+	glade_command_set_property (property->property, val);
 	
 	g_free (val);
 	g_free (text);

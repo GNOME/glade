@@ -31,6 +31,7 @@
 #include "glade-command.h"
 #include "glade-packing.h"
 #include "glade-property.h"
+#include "glade-property-class.h"
 #include "glade-debug.h"
 #include "glade-placeholder.h"
 #include "glade-clipboard.h"
@@ -302,8 +303,7 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 typedef struct {
 	GladeCommand parent;
 
-	GObject *obj;
-	const gchar *arg_name;
+	GladeProperty *property;
 	GValue *arg_value;
 } GladeCommandSetProperty;
 
@@ -312,7 +312,7 @@ GLADE_MAKE_COMMAND (GladeCommandSetProperty, glade_command_set_property);
 #define GLADE_COMMAND_SET_PROPERTY_TYPE		(glade_command_set_property_get_type ())
 #define GLADE_COMMAND_SET_PROPERTY(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_PROPERTY_TYPE, GladeCommandSetProperty))
 #define GLADE_COMMAND_SET_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_SET_PROPERTY_TYPE, GladeCommandSetPropertyClass))
-#define IS_GLADE_COMMAND_SET_PROPERTY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_PROPERTY_TYPE))
+#define IS_GLADE_COMMAND_SET_PROPERTY(o)	(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_PROPERTY_TYPE))
 #define IS_GLADE_COMMAND_SET_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_PROPERTY_TYPE))
 
 /* Undo the last "set property command" */
@@ -329,8 +329,6 @@ glade_command_set_property_undo (GladeCommand *cmd)
 static gboolean
 glade_command_set_property_execute (GladeCommand *cmd)
 {
-	GladeProperty* property;
-	GladeWidget* gwidget;
 	GladeCommandSetProperty* me = (GladeCommandSetProperty*) cmd;
 	GValue* new_value;
 
@@ -340,13 +338,11 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	g_value_init (new_value, G_VALUE_TYPE (me->arg_value));
 	g_value_copy (me->arg_value, new_value);
 
-	/* TODO: Change the "GObject *obj" of GladeCommandSetProperty to "GtkWidget *widget" */
-	gwidget = glade_widget_get_from_gtk_widget (GTK_WIDGET (me->obj));
-	property = glade_property_get_from_id (gwidget->properties, me->arg_name);
+	/* store the current value for undo */
+	g_value_copy (me->property->value, me->arg_value);
 
-	g_value_copy (property->value, me->arg_value);
-	glade_property_set (property, new_value);
-	
+	glade_property_set (me->property, new_value);
+
 	return FALSE;
 }
 
@@ -367,7 +363,7 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 		cmd1 = (GladeCommandSetProperty*) this;
 		cmd2 = (GladeCommandSetProperty*) other;
 
-		return (cmd1->obj == cmd2->obj && strcmp (cmd1->arg_name, cmd2->arg_name) == 0);
+		return (cmd1->property == cmd2->property);
 	}
 
 	return FALSE;
@@ -376,7 +372,9 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 static void
 glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 {
-	g_return_if_fail (IS_GLADE_COMMAND_SET_PROPERTY (this) && IS_GLADE_COMMAND_SET_PROPERTY (other));
+	g_return_if_fail (IS_GLADE_COMMAND_SET_PROPERTY (this) &&
+			  IS_GLADE_COMMAND_SET_PROPERTY (other));
+
 	g_free (this->description);
 	this->description = other->description;
 	other->description = NULL;
@@ -384,74 +382,40 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 	glade_project_window_refresh_undo_redo ();
 }
 
-static gchar*
-gvalue_to_string (const GValue* pvalue)
-{
-	gchar* retval;
-	
-	switch (G_VALUE_TYPE (pvalue)) {
-	case G_TYPE_UINT:
-		/* TODO: What if this UINT doesn't represents a unichar?? */
-		retval = g_new0 (gchar, 7);
-		g_unichar_to_utf8 (g_value_get_uint (pvalue), retval);
-		*g_utf8_next_char(retval) = '\0';
-		break;
-	case G_TYPE_INT:
-		retval = g_strdup_printf ("%d", g_value_get_int (pvalue));
-		break;
-	case G_TYPE_FLOAT:
-		retval = g_strdup_printf ("%f", g_value_get_float (pvalue));
-		break;
-	case G_TYPE_DOUBLE:
-		retval = g_strdup_printf ("%lf", g_value_get_double (pvalue));
-		break;
-	case G_TYPE_BOOLEAN:
-		retval = g_strdup_printf ("%s", g_value_get_boolean (pvalue) ? _("true") : _("false"));
-		break;
-	case G_TYPE_ENUM:
-		retval = g_strdup_printf ("%d", g_value_get_enum (pvalue));
-		break;
-	case G_TYPE_STRING:
-		retval = g_strdup_printf ("%s", g_value_get_string (pvalue));
-		break;
-	default:
-		retval = g_strdup ("FIXME!");
-	}
-
-	return retval;
-}
-
 void
-glade_command_set_property (GObject *obj, const gchar* name, const GValue* pvalue)
+glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 {
 	GladeCommandSetProperty *me;
 	GladeCommand *cmd;
 	GladeProject *project;
 	GladeWidget *gwidget;
 	gchar *value_name;
-	
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
 	me = (GladeCommandSetProperty*) g_object_new (GLADE_COMMAND_SET_PROPERTY_TYPE, NULL);
 	cmd = (GladeCommand*) me;
-	
-	project = glade_project_window_get_project ();
-	gwidget = glade_widget_get_from_gtk_widget (GTK_WIDGET (obj));
-	g_assert (gwidget);
-	
-	me->obj = obj;
-	me->arg_name = name;
+
+	gwidget = property->widget;
+	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+
+	project = gwidget->project;
+
+	me->property = property;
 	me->arg_value = g_new0 (GValue, 1);
 	g_value_init (me->arg_value, G_VALUE_TYPE (pvalue));
 	g_value_copy (pvalue, me->arg_value);
 
-	value_name = gvalue_to_string(pvalue);
-	cmd->description = g_strdup_printf (_("Setting %s of %s to %s"), name, gwidget->name, value_name);
+	value_name = glade_property_class_make_string_from_gvalue (property->class, pvalue);
+	cmd->description = g_strdup_printf (_("Setting %s of %s to %s"),
+					    property->class->name, gwidget->name, value_name);
 	g_assert (cmd->description);
 	g_free (value_name);
-	
+
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	glade_command_set_property_execute (GLADE_COMMAND (me));
-	glade_command_push_undo(project, GLADE_COMMAND (me));
+	glade_command_push_undo (project, GLADE_COMMAND (me));
 }
 
 

@@ -12,7 +12,7 @@ void glade_command_redo (void);
 
 const gchar *glade_command_get_description (GList *l);
 
-void glade_command_set_property (GObject *obj, const gchar *name, const GValue *value);
+void glade_command_set_property (GladeProperty *property, const GValue *value);
 void glade_command_set_name (GladeWidget *obj, const gchar *name);
 
 void glade_command_delete (GladeWidget *widget);
