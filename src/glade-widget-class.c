@@ -271,7 +271,7 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 
 	if (class->generic_name)
 	{
-		icon_path = g_strdup_printf (PIXMAPS_DIR "/%s.png", class->generic_name);
+		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", PIXMAPS_DIR, class->generic_name);
 		icon = gtk_image_new_from_file (icon_path);
 		g_free (icon_path);
 	}

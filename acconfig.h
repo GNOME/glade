@@ -17,3 +17,5 @@
 #undef CATALOGS_DIR
 #undef MODULES_DIR
 #undef GETTEXT_PACKAGE
+@BOTTOM@
+#include "config.h.win"

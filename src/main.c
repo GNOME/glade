@@ -35,7 +35,7 @@
 #include <locale.h>
 #include <gmodule.h>
 
-#ifdef G_OS_UNIX
+#ifdef HAVE_LIBPOPT
 #include <popt.h>
 #endif
 
@@ -45,7 +45,7 @@
 
 static gchar *widget_name = NULL;
 
-#ifdef G_OS_UNIX
+#ifdef HAVE_LIBPOPT
 static struct poptOption options[] = {
 	{
 		"dump",
@@ -123,12 +123,35 @@ glade_init (void)
 	return TRUE;
 }
 
+#ifdef G_OS_WIN32
+char* g_glade_data_dir;
+char* g_pixmaps_dir;
+char* g_widgets_dir;
+char* g_catalogs_dir;
+char* g_modules_dir;
+char* g_glade_localedir;
+char* g_glade_icondir;
+#endif
+
 int
 main (int argc, char *argv[])
 {
 	GList *files = NULL;
-#ifdef G_OS_UNIX
+#ifdef HAVE_LIBPOPT
 	poptContext popt_context;
+#endif
+#ifdef G_OS_WIN32
+    gchar *prefix;
+
+    prefix = g_win32_get_package_installation_directory (NULL, NULL);
+    g_glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
+    g_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
+    g_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
+    g_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
+    g_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
+    g_glade_localedir = g_build_filename (prefix, "lib", "locale", NULL);
+    g_glade_icondir = g_build_filename (prefix, "share", "pixmaps", NULL);
+    g_free (prefix);
 #endif
 
 #ifdef ENABLE_NLS
@@ -140,7 +163,7 @@ main (int argc, char *argv[])
 
 	g_set_application_name (_("Glade-3 GUI Builder"));
 
-#ifdef G_OS_UNIX
+#ifdef HAVE_LIBPOPT
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
@@ -173,6 +196,16 @@ main (int argc, char *argv[])
 		glade_project_window_new_project ();
 
 	gtk_main ();
+
+#ifdef G_OS_WIN32
+    g_free (g_glade_data_dir);
+    g_free (g_pixmaps_dir);
+    g_free (g_widgets_dir);
+    g_free (g_catalogs_dir);
+    g_free (g_modules_dir);
+    g_free (g_glade_localedir);
+    g_free (g_glade_icondir);
+#endif
 
 	return 0;
 }

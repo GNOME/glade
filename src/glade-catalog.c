@@ -174,7 +174,7 @@ lblError:
 GList *
 glade_catalog_load_all (void)
 {
-	static const char * const filename = CATALOGS_DIR G_DIR_SEPARATOR_S "glade-palette.xml";
+	gchar *filename = g_build_filename (CATALOGS_DIR, "glade-palette.xml", NULL);
 	GladeXmlContext *context;
 	GladeXmlNode *root;
 	GladeXmlNode *xml_catalogs;
@@ -212,6 +212,7 @@ glade_catalog_load_all (void)
 	}
 
 	glade_xml_context_free (context);
+	g_free (filename);
 	return catalogs;
 }
 

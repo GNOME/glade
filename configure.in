@@ -2,6 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
 AC_INIT(src/glade-widget.c)
+AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(glade, 2.90.0)
 AM_MAINTAINER_MODE
@@ -9,10 +10,12 @@ AM_CONFIG_HEADER(config.h)
 
 AC_PROG_INTLTOOL([0.29])
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
+AC_PATH_PROG(DLLTOOL, dlltool)
 
 
 AC_ISC_POSIX
 AC_PROG_CC
+AC_DISABLE_STATIC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
@@ -89,6 +92,13 @@ AC_SUBST(pixmapsdir)
 AC_SUBST(widgetsdir)
 AC_SUBST(catalogsdir)
 AC_SUBST(modulesdir)
+
+case $host_os in
+*mingw* | pw32* | cygwin*)
+  win32=yes
+  ;;
+esac
+AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
 AC_OUTPUT([
 Makefile

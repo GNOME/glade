@@ -39,4 +39,13 @@ if test -z "$gnome_autogen" ; then
   exit 1
 fi
 
-GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen			
+automake_version=
+case `uname` in
+CYGWIN*)
+  # automake 1.4 of cygwin does not define EGREP in libtool.m4, and
+  # fails to do the file magic test when -rpath is given
+  automake_version=1.7
+  ;;
+esac
+
+REQUIRED_AUTOMAKE_VERSION="$automake_version" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen			

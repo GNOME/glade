@@ -924,6 +924,7 @@ static void gpw_about_cb (void)
 	GtkWidget *glade_image;
 	GtkWidget *version;
 	GtkWidget *description;
+	gchar *filename;
 
 	gpw = glade_project_window_get ();
 	about_dialog = gtk_dialog_new_with_buttons (_("About Glade"), GTK_WINDOW (gpw->window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -934,7 +935,9 @@ static void gpw_about_cb (void)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (about_dialog)->vbox), vbox, TRUE, TRUE, 0);
 
-	glade_image = gtk_image_new_from_file (GLADE_ICONDIR "/glade-3.png");
+	filename = g_build_filename (GLADE_ICONDIR, "glade-3.png", NULL);
+	glade_image = gtk_image_new_from_file (filename);
+	g_free (filename);
 	gtk_box_pack_start (GTK_BOX (vbox), glade_image, TRUE, TRUE, 0);
 
 	version = gtk_label_new (_("<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"));
@@ -1208,11 +1211,14 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *toolbar;
 	GtkWidget *project_view;
 	GtkWidget *statusbar;
+	gchar *filename;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_move (GTK_WINDOW (app), 0, 0);
 	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
-	gtk_window_set_default_icon_from_file (GLADE_ICONDIR"/glade-3.png", NULL);
+	filename = g_build_filename (GLADE_ICONDIR, "glade-3.png", NULL);
+	gtk_window_set_default_icon_from_file (filename, NULL);
+	g_free (filename);
 	gpw->window = app;
 
 	vbox = gtk_vbox_new (FALSE, 0);

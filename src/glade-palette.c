@@ -140,6 +140,7 @@ glade_palette_selector_new (GladePalette *palette)
 {
 	GtkWidget *hbox;
 	GtkWidget *image;
+	gchar *filename;
 
 	hbox = gtk_hbox_new (FALSE, 0);
 
@@ -147,7 +148,9 @@ glade_palette_selector_new (GladePalette *palette)
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (palette->selector), FALSE);
 	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (palette->selector));
 	gtk_button_set_relief (GTK_BUTTON (palette->selector), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_file (PIXMAPS_DIR "/selector.png");
+	filename = g_build_filename (PIXMAPS_DIR, "selector.png", NULL);
+	image = gtk_image_new_from_file (filename);
+	g_free (filename);
 
 	gtk_container_add (GTK_CONTAINER (palette->selector), image);
 	glade_util_widget_set_tooltip (palette->selector, _("Selector"));

@@ -1,24 +1,27 @@
-LIBRARY   glade_plugin
 DESCRIPTION "Implements the core glade functions needed by plugins"
 EXPORTS
-   glade_placeholder_get_type				@1
-   glade_placeholder_new					@2
-   glade_setup_log_handlers                 @3
-   glade_widget_class_get_by_name           @4
-   glade_widget_class_dump_param_specs      @5
-   glade_project_window_new                 @6
-   glade_project_window_show_all            @7
-   glade_project_new                        @8
-   glade_project_open                       @9
-   glade_project_remove_widget				@10
-   glade_register_transformations           @11
-   glade_cursor_init                        @12
-   glade_catalog_load_all                   @13
-   glade_widget_new_for_internal_child		@14
-   glade_widget_get_property				@15
-   glade_widget_get_type					@16
-   glade_project_window_new_project			@17
-   glade_project_window_open_project		@18
-   glade_property_set						@19
-   glade_project_get_tooltips				@20
-   glade_widget_get_project					@21
+   glade_catalog_load_all
+   glade_command_create
+   glade_cursor_init
+   glade_placeholder_get_type
+   glade_placeholder_new
+   glade_project_get_tooltips
+   glade_project_new
+   glade_project_open
+   glade_project_remove_widget
+   glade_project_selection_get
+   glade_project_window_get
+   glade_project_window_get_active_project
+   glade_project_window_new
+   glade_project_window_new_project
+   glade_project_window_open_project
+   glade_project_window_show_all
+   glade_property_set
+   glade_register_transformations
+   glade_setup_log_handlers
+   glade_widget_class_dump_param_specs
+   glade_widget_class_get_by_name
+   glade_widget_get_project
+   glade_widget_get_property
+   glade_widget_get_type
+   glade_widget_new_for_internal_child
