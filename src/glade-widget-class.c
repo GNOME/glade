@@ -37,12 +37,10 @@
 #include "glade.h"
 #include "glade-widget-class.h"
 #include "glade-xml-utils.h"
-#include "glade-placeholder.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-project-window.h"
 #include "glade-catalog.h"
-#include "glade-choice.h"
 #include "glade-parameter.h"
 #include "glade-debug.h"
 
@@ -131,8 +129,9 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	specs = g_object_class_list_properties (object_class, &n_specs);
 
 	last = 0;
-	for (i = 0; i < n_specs; i++) {
-		
+	for (i = 0; i < n_specs; i++)
+	{
+
 		spec = specs[i];
 
 		/* We only use the writable properties */
@@ -281,7 +280,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 			continue;
 
 		/* find the property in our list, if not found append a new property */
-		for (list = properties; list; list = list->next) {
+		for (list = properties; list; list = list->next)
+		{
 			gchar *tmp = GLADE_PROPERTY_CLASS (list->data)->id;
 			if (!g_ascii_strcasecmp (id, tmp))
 				break;
@@ -390,24 +390,6 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 }
 
 /**
- * glade_widget_class_store_with_name:
- * @widget_class: widget class to store
- *
- * Store the GladeWidgetClass on the cache, indexed by its name
- **/
-static void
-glade_widget_class_store_with_name (GladeWidgetClass *widget_class)
-{
-	/* if it's the first time we store a widget class, then initialize the widget_classes hash */
-	if (widget_classes == NULL)
-		widget_classes = g_hash_table_new (g_str_hash, g_str_equal);		
-
-	g_hash_table_insert (widget_classes, widget_class->name, widget_class);
-
-	return;
-}
-
-/**
  * glade_widget_class_get_by_name:
  * @name: name of the widget class (for instance: GtkButton)
  *
@@ -432,18 +414,16 @@ glade_widget_class_get_by_name (const char *name)
  * @widget_class: main class.
  * @parent_class: secondary class.
  *
- * Merges the contents of the parent_class on the widget_class.  It doesn't handles
- * the duplicated properties / signals.  I.e., if you have the same property / signal
- * on parent_class and on widget_class, widget_class will end having two times
- * this property.  You will have to remove the duplicates to ensure a consistent
- * widget_class.  The properties / signals of the parent_class will be appended to
+ * Merges the contents of the parent_class on the widget_class.
+ * The properties of the parent_class will be prepended to
  * those of widget_class.
  **/
 static void
-glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *parent_class)
+glade_widget_class_merge (GladeWidgetClass *widget_class,
+			  GladeWidgetClass *parent_class)
 {
-	GList *last_property;
-	GList *parent_properties;
+	GList *list;
+	GList *list2;
 
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
@@ -460,77 +440,36 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 	if (widget_class->fill_empty == NULL)
 		widget_class->fill_empty = parent_class->fill_empty;
 
-	last_property = g_list_last (widget_class->properties);
-	parent_properties = parent_class->properties;
-	for (; parent_properties; parent_properties = parent_properties->next) {
-		GladePropertyClass *property_class = (GladePropertyClass*) parent_properties->data;
-		GList *list = g_list_append (last_property, glade_property_class_clone (property_class));
-
-		if (!last_property)
-		{
-			widget_class->properties = list;
-			last_property = list;
-		}
-		else
-			last_property = list->next;
-	}
-}
-
-/**
- * glade_widget_class_remove_duplicated_properties:
- * @widget_class: class of the widget that contains the properties.
- *
- * Takes the list of properties of the widget class, and removes the duplicated properties.
- * The properties modified are prefered over the non modified ones, and the properties
- * that appear first on the list are prefered over these that appear later on the list.
- * (the first rule is more important than the second one).
- **/
-static void
-glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
-{
-	GHashTable *hash_properties = g_hash_table_new (g_str_hash, g_str_equal);
-	GList *properties_classes = widget_class->properties;
-
-	while (properties_classes != NULL)
+	/* merge the parent's properties */
+	for (list = parent_class->properties; list; list = list->next)
 	{
-		GladePropertyClass *property_class = (GladePropertyClass*) properties_classes->data;
-		GList *old_property;
+		GladePropertyClass *parent_p_class = list->data;
+		GladePropertyClass *child_p_class;
 
-		/* if it's the first time we see this property, then we add it to the list of 
-		 * properties that we will keep for this widget.  Idem if the last time we saw
-		 * this property, it was not modified, and this time the property is modified
-		 * (ie, we change the non modified property by the modified one). */
-		if ((old_property = g_hash_table_lookup (hash_properties, property_class->id)) == NULL ||
-		    (!((GladePropertyClass*) old_property->data)->is_modified && property_class->is_modified))
+		/* search the child's properties for one with the same id */
+		for (list2 = widget_class->properties; list2; list2 = list2->next)
 		{
-			/* remove the old property */
-			if (old_property != NULL)
-			{
-				GList *new_head = widget_class->properties;
+			child_p_class = list2->data;
+			if (strcmp (parent_p_class->id, child_p_class->id) == 0)
+				break;
+		}
 
-				if (old_property == widget_class->properties)
-					new_head = g_list_next (old_property);
+		/* if not found, prepend a clone of the parent's one; if found
+		 * but the parent one was modified substitute it.
+		 */
+		if (!list2)
+		{
+			GladePropertyClass *property_class;
 
-				g_list_remove_link (widget_class->properties, old_property);
-				widget_class->properties = new_head;
-			}
-
-			g_hash_table_insert (hash_properties, property_class->id, properties_classes);
-			properties_classes = g_list_next (properties_classes);
-		} else {
-			GList *tmp = properties_classes;
-			GList *new_head = widget_class->properties;
-
-			if (tmp == widget_class->properties)
-				new_head = g_list_next (tmp);
-
-			properties_classes = g_list_next (properties_classes);
-			g_list_remove_link (widget_class->properties, tmp);
-			widget_class->properties = new_head;
+			property_class = glade_property_class_clone (parent_p_class);
+			widget_class->properties = g_list_prepend (widget_class->properties, property_class);
+		}
+		else if (parent_p_class->is_modified)
+		{
+			glade_property_class_free (child_p_class);
+			list2->data = glade_property_class_clone (parent_p_class);
 		}
 	}
-
-	g_hash_table_destroy (hash_properties);
 }
 
 /**
@@ -591,11 +530,6 @@ glade_widget_class_new (const char *name,
 	}
 
 	widget_class = g_new0 (GladeWidgetClass, 1);
-	if (!widget_class)
-	{
-		g_warning (_("Not enough memory."));
-		goto lblError;
-	}
 
 	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
 	widget_class->name = g_strdup (name);
@@ -647,14 +581,12 @@ glade_widget_class_new (const char *name,
 	     parent_type != 0;
 	     parent_type = g_type_parent (parent_type))
 	{
-		GladeWidgetClass *parent_class = glade_widget_class_get_by_name (g_type_name (parent_type));
+		GladeWidgetClass *parent_class;
 
-		if (parent_class != NULL)
+		parent_class = glade_widget_class_get_by_name (g_type_name (parent_type));
+		if (parent_class)
 			glade_widget_class_merge (widget_class, parent_class);
 	}
-
-	/* remove the duplicate properties on widget_class */
-	glade_widget_class_remove_duplicated_properties (widget_class);
 
 	/* if there is an associated filename, then open and parse it */
 	if (filename != NULL)
@@ -662,8 +594,14 @@ glade_widget_class_new (const char *name,
 
 	g_free (filename);
 
-	/* store the GladeWidgetClass on the cache */
-	glade_widget_class_store_with_name (widget_class);
+	/* store the GladeWidgetClass on the cache,
+	 * if it's the first time we store a widget class, then
+	 * initialize the global widget_classes hash.
+	 */
+	if (!widget_classes)
+		widget_classes = g_hash_table_new (g_str_hash, g_str_equal);		
+
+	g_hash_table_insert (widget_classes, widget_class->name, widget_class);
 
 	return widget_class;
 
