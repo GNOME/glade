@@ -1076,26 +1076,6 @@ glade_project_window_new (GList *catalogs)
 	return gpw;
 }
 
-static void
-glade_project_window_selection_changed_cb (GladeProject *project,
-					   GladeProjectWindow *gpw)
-{
-	GList *list;
-	gint num;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
-
-	if (gpw->editor) {
-		list = glade_project_selection_get (project);
-		num = g_list_length (list);
-		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
-			glade_editor_load_widget (gpw->editor, glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data)));
-		else
-			glade_editor_load_widget (gpw->editor, NULL);
-	}
-}
-
 void
 glade_project_window_set_project (GladeProject *project)
 {
@@ -1107,12 +1087,19 @@ glade_project_window_set_project (GladeProject *project)
 
 	gpw = glade_project_window_get ();
 
+	if (gpw->project == project)
+		return;
+
 	if (g_list_find (gpw->projects, project) == NULL) {
 		g_warning ("Could not set project because it could not "
 			   " be found in the gpw->project list\n");
 		return;
 	}
-	
+
+	/* clear the selection in the previous project */
+	if (gpw->project)
+		glade_project_selection_clear (gpw->project, FALSE);
+
 	gpw->project = project;
 	gpw_refresh_title (gpw);
 
@@ -1122,11 +1109,7 @@ glade_project_window_set_project (GladeProject *project)
 		glade_project_view_set_project (view, project);
 	}
 
-	gpw->project_selection_changed_signal =
-		g_signal_connect (G_OBJECT (project), "selection_changed",
-				  G_CALLBACK (glade_project_window_selection_changed_cb),
-				  gpw);
-	
+	/* trigger the selection changed signal to update the editor */
 	glade_project_selection_changed (project);
 }
 
@@ -1134,6 +1117,31 @@ static void
 gpw_widget_name_changed_cb (GladeProject *project, GladeWidget *widget, GladeEditor *editor)
 {
 	glade_editor_update_widget_name (editor);
+}
+
+static void
+gpw_project_selection_changed_cb (GladeProject *project,
+				  GladeProjectWindow *gpw)
+{
+	GList *list;
+	gint num;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
+
+	if (gpw->project != project) {
+		glade_project_window_set_project (project);
+		return;
+	}
+
+	if (gpw->editor) {
+		list = glade_project_selection_get (project);
+		num = g_list_length (list);
+		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
+			glade_editor_load_widget (gpw->editor, glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data)));
+		else
+			glade_editor_load_widget (gpw->editor, NULL);
+	}
 }
 
 void
@@ -1175,11 +1183,12 @@ glade_project_window_add_project (GladeProject *project)
 
 	gtk_item_factory_create_item (gpw->item_factory, &(project->entry), project, 1);
 
-	/* connect the widget_changed_name signal to the editor, so that changes to the widget
-	 * name external to the properties editor (as when the user undo a widget name change)
-	 * are reflected on the widget name entry */
+	/* connect to the project signals so that the editor can be updated */
 	g_signal_connect (G_OBJECT (project), "widget_name_changed",
 			  G_CALLBACK (gpw_widget_name_changed_cb), gpw->editor);
+	g_signal_connect (G_OBJECT (project), "selection_changed",
+			  G_CALLBACK (gpw_project_selection_changed_cb), gpw);
+
 
 	glade_project_window_set_project (project);
 }

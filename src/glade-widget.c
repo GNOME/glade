@@ -280,7 +280,6 @@ glade_widget_button_press (GtkWidget *event_widget,
 			   GdkEventButton *event,
 			   gpointer not_used)
 {
-	GladeProjectWindow *gpw;
 	GladeWidget *glade_widget;
 
 	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
@@ -308,8 +307,6 @@ glade_widget_button_press (GtkWidget *event_widget,
 		g_debug(("Button press not handled yet.\n"));
 
 	g_debug(("The widget found was a %s\n", glade_widget->class->name));
-
-	gpw = glade_project_window_get ();
 
 	return FALSE;
 }

@@ -159,7 +159,7 @@ glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 		class->placeholder_replace = glade_placeholder_replace_container;
 }
 
-static void
+static gboolean
 glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 					 GdkEventButton *event,
 					 gpointer not_used)
@@ -167,25 +167,26 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 	GladeProjectWindow *gpw = glade_project_window_get ();
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
-
 		if (gpw->add_class != NULL) {
-			/* 
-			 * A widget type is selected in the palette.
+			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
 			glade_command_create (gpw->add_class, placeholder, NULL);
 			glade_project_window_set_add_class (gpw, NULL);
 		} else {
-			/* else set the current placeholder as selected */
-			glade_project_selection_set (gpw->project, placeholder, FALSE);
+			GladeWidget *parent = glade_placeholder_get_parent (placeholder);
+			glade_project_selection_set (parent->project, placeholder, TRUE);
 		}
-	} else if (event->button == 3) {
+	} else if (event->button == 3)
 		glade_popup_placeholder_pop (placeholder, event);
-	}
+
+	return TRUE;
 }
 
-static void
-glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder, GdkEventMotion *event, gpointer not_used)
+static gboolean
+glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder,
+					  GdkEventMotion *event,
+					  gpointer not_used)
 {
 	GladeProjectWindow *gpw;
 
@@ -195,6 +196,8 @@ glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder, GdkEven
 		glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
 	else
 		glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
+
+	return FALSE;
 }
 
 static gboolean

@@ -44,8 +44,6 @@ struct _GladeProjectWindow
 
 	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
-
-	guint project_selection_changed_signal;
 };
 
 
