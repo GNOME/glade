@@ -197,6 +197,44 @@ glade_project_view_populate_model (GladeProjectView *view)
 	g_list_free (toplevels);
 }
 
+static GtkTreeIter *
+gpv_find_preceeding_sibling (GtkTreeModel *model,
+			     GtkTreeIter  *parent_iter,
+			     GladeWidget  *widget)
+{
+	GtkTreeIter *retval = NULL, next;
+	GladeWidget *w, *sibling = NULL;
+
+	if (gtk_tree_model_iter_has_child (model, parent_iter))
+	{
+		gtk_tree_model_iter_children (model, &next, parent_iter);
+		while (42)
+		{
+			gtk_tree_model_get (model, &next, 
+					    WIDGET_COLUMN, &w, -1);
+		
+			/* If this sibling (w) is less than widget and
+			 * the last found sibling is less then this one
+			 */
+			if ((strcmp (glade_widget_get_name (w),
+				     glade_widget_get_name (widget)) < 0) &&
+			    (sibling == NULL || 
+			     strcmp (glade_widget_get_name (sibling),
+				     glade_widget_get_name (w)) < 0))
+			{
+				sibling = widget;
+				if (retval)
+					gtk_tree_iter_free (retval);
+				retval = gtk_tree_iter_copy (&next);
+			}
+
+			if (!gtk_tree_model_iter_next (model, &next))
+				break;
+		}
+	}
+	return retval;
+}
+
 static void
 glade_project_view_add_item (GladeProjectView *view,
 			     GladeWidget *widget)
@@ -205,7 +243,7 @@ glade_project_view_add_item (GladeProjectView *view,
 	GladeWidget  *parent;
 	GtkTreeStore *model;
 	GtkTreeIter   iter;
-	GtkTreeIter  *parent_iter = NULL, *child_iter;
+	GtkTreeIter  *parent_iter = NULL, *child_iter, *sibling_iter;
 	GList        *child_iters, *children, *l;
 	
 	g_return_if_fail (widget != NULL);
@@ -217,15 +255,20 @@ glade_project_view_add_item (GladeProjectView *view,
 	
 	model = view->model;
 
-	parent = glade_widget_get_parent (widget);
-	if (parent && (parent_iter = glade_util_find_iter_by_widget 
-		       (GTK_TREE_MODEL (model), parent, WIDGET_COLUMN)) != NULL)
-	{
-		gtk_tree_store_append (model, &iter, parent_iter);
+	/* Find parent and preceeding sibling to insert sorted */
+	if ((parent = glade_widget_get_parent (widget)) != NULL)
+		parent_iter = glade_util_find_iter_by_widget 
+			(GTK_TREE_MODEL (model), parent, WIDGET_COLUMN);
+
+	sibling_iter = gpv_find_preceeding_sibling 
+		(GTK_TREE_MODEL (model), parent_iter, widget);
+
+	/* Add to the tree sorted and free iterators */
+	gtk_tree_store_insert_after (model, &iter, parent_iter, sibling_iter);
+	if (parent_iter)
 		gtk_tree_iter_free (parent_iter);
-	}
-	else
-		gtk_tree_store_append (model, &iter, NULL);
+	if (sibling_iter)
+		gtk_tree_iter_free (sibling_iter);
 
 	gtk_tree_store_set (model, &iter, WIDGET_COLUMN, widget, -1);
 
@@ -551,7 +594,6 @@ glade_project_view_init (GladeProjectView *view)
 
 	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
 	glade_project_view_populate_model (view);
-
 
 	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (view->model),
 					      0, GTK_SORT_ASCENDING);

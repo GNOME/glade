@@ -1162,12 +1162,14 @@ glade_util_find_iter (GtkTreeModel *model,
 		gtk_tree_model_get (model, next, column, &widget, -1);
 		if (widget == NULL) {
 			g_warning ("Could not get the glade widget from the model");
-			return NULL;
+			break;
 		}
-		if (widget == findme)
+		else if (widget == findme)
+		{
 			retval = gtk_tree_iter_copy (next);
-
-		if (gtk_tree_model_iter_has_child (model, next))
+			break;
+		}
+		else if (gtk_tree_model_iter_has_child (model, next))
 		{
 			GtkTreeIter  child;
 			gtk_tree_model_iter_children (model, &child, next);
@@ -1175,6 +1177,7 @@ glade_util_find_iter (GtkTreeModel *model,
 			     (model, &child, findme, column)) != NULL)
 				break;
 		}
+
 		if (!gtk_tree_model_iter_next (model, next))
 			break;
 	}
