@@ -32,6 +32,8 @@ gint	 glade_util_check_key_is_esc	(GtkWidget *widget, GdkEventKey *event, gpoint
 gchar	*glade_util_gtk_combo_func	(gpointer data);
 gpointer glade_util_gtk_combo_find	(GtkCombo *combo);
 
+GtkWidget *glade_util_file_selection_new (const gchar *title, GtkWindow *parent);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

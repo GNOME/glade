@@ -58,47 +58,6 @@ static void gpw_undo_cb (void);
 static void gpw_redo_cb (void);
 static void gpw_about_cb (void) {}
 
-static void
-gpw_open_cb (void)
-{
-	glade_project_open (NULL);
-}
-
-static void
-gpw_delete_cb (void)
-{
-	GladeProject *project;
-	GList *selection;
-	GList *free_me;
-	GList *list;
-
-	project = glade_project_window_get_project ();
-	if (!project) {
-		g_warning ("Why is delete sensitive ? it shouldn't not be because "
-			   "we don't have a project");
-		return;
-	}
-	
-	selection = glade_project_selection_get (project);
-
-	/* We have to be carefull when deleting widgets from the selection
-	 * because when we delete each widget, the ->selection pointer changes
-	 * by the g_list_remove. Copy the list and free it after we are done
-	 */
-	list = g_list_copy (selection);
-	free_me = list;
-	for (; list; list = list->next)
-		glade_widget_delete (list->data);
-	g_list_free (free_me);
-
-	/* Right now deleting widgets like this is not a problem, cause we
-	 * don't support multiple selection. When we do, it would be nice
-	 * to have glade_project_selction_freeze the remove all the widgets
-	 * and then call glade_project_selection_thaw. This will trigger
-	 * only one selection changed signal rather than multiple ones
-	 * Chema
-	 */
-}
 
 static void
 gpw_new_cb (void)
@@ -112,15 +71,79 @@ gpw_new_cb (void)
 }
 
 static void
+gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
+{
+	GtkWidget *filesel;
+	const gchar *path;
+
+	filesel = gtk_widget_get_toplevel (widget);
+
+	/* Get the filename and destroy the dialog */
+	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
+	gtk_widget_destroy (filesel);
+
+	if (!path)
+		return;
+
+	glade_project_open (path);
+}
+
+static void
+gpw_open_cb (void)
+{
+	GladeProjectWindow *gpw;
+	GtkWidget *filesel;
+
+	gpw = glade_project_window_get ();
+
+	filesel = glade_util_file_selection_new (_("Open ..."), GTK_WINDOW (gpw->window));
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			  "clicked", G_CALLBACK (gpw_on_open_filesel_ok),
+			  NULL);
+
+	gtk_widget_show (filesel);
+}
+
+static void
+gpw_on_save_filesel_ok (GtkWidget *widget, GladeProject *project)
+{
+	GtkWidget *filesel;
+	const gchar *path;
+
+	filesel = gtk_widget_get_toplevel (widget);
+
+	/* Get the filename and hide the dialog */
+	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
+	gtk_widget_destroy (filesel);
+
+	if (!path)
+		return;
+
+	glade_project_save (project, path);
+}
+
+static void
 gpw_save_cb (void)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
+	GtkWidget *filesel;
 
 	gpw = glade_project_window_get ();
 	project = glade_project_window_get_project ();
-	if (glade_project_save (project))
-		glade_project_window_refresh_title (gpw);
+
+	if (project->path != NULL) {
+		glade_project_save (project, project->path);
+		return;
+	}
+
+	/* If instead we dont have a path yet, fire up a file selector */
+	filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
+			  project);
+
+	gtk_widget_show (filesel);
 }
 
 static void
@@ -128,11 +151,17 @@ gpw_save_as_cb (void)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
+	GtkWidget *filesel;
 
 	gpw = glade_project_window_get ();
 	project = glade_project_window_get_project ();
-	if (glade_project_save_as (project))
-		glade_project_window_refresh_title (gpw);
+
+	filesel = glade_util_file_selection_new (_("Save as ..."), GTK_WINDOW (gpw->window));
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
+			  project);
+
+	gtk_widget_show (filesel);
 }
 
 static void
@@ -174,6 +203,42 @@ gpw_paste_cb (void)
 
 	gpw = glade_project_window_get ();
 	glade_clipboard_paste (gpw->clipboard, gpw->active_placeholder);
+}
+
+static void
+gpw_delete_cb (void)
+{
+	GladeProject *project;
+	GList *selection;
+	GList *free_me;
+	GList *list;
+
+	project = glade_project_window_get_project ();
+	if (!project) {
+		g_warning ("Why is delete sensitive ? it shouldn't not be because "
+			   "we don't have a project");
+		return;
+	}
+	
+	selection = glade_project_selection_get (project);
+
+	/* We have to be carefull when deleting widgets from the selection
+	 * because when we delete each widget, the ->selection pointer changes
+	 * by the g_list_remove. Copy the list and free it after we are done
+	 */
+	list = g_list_copy (selection);
+	free_me = list;
+	for (; list; list = list->next)
+		glade_widget_delete (list->data);
+	g_list_free (free_me);
+
+	/* Right now deleting widgets like this is not a problem, cause we
+	 * don't support multiple selection. When we do, it would be nice
+	 * to have glade_project_selction_freeze the remove all the widgets
+	 * and then call glade_project_selection_thaw. This will trigger
+	 * only one selection changed signal rather than multiple ones
+	 * Chema
+	 */
 }
 
 static void

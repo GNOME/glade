@@ -93,9 +93,6 @@ struct _GladeMenuEditor
 	/* This is our key selection dialog, used for selecting accelerator keys. */
 	GtkWidget *keys_dialog;
 
-	/* This is our file selection dialog, used for selecting icons. */
-	GtkWidget *filesel;
-
 	/* This is the menu widget we are editing and the project it is in. */
 	GladeProject *project;
 	GtkMenuShell *menu;

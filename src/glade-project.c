@@ -28,12 +28,12 @@
 
 #include "glade.h"
 #include "glade-project.h"
-#include "glade-project-ui.h"
 #include "glade-project-window.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
+#include "glade-utils.h"
 
 static void glade_project_class_init (GladeProjectClass * klass);
 static void glade_project_init (GladeProject *project);
@@ -551,45 +551,6 @@ glade_project_write (GladeXmlContext *context, const GladeProject *project)
 	return node;
 }
 
-/**
- * glade_project_save_to_file:
- * @project: 
- * @file_name: 
- * 
- * Save a project
- * 
- * Return Value: TRUE on success, FALSE otherwise
- **/
-static gboolean
-glade_project_save_to_file (GladeProject *project,
-			    const gchar *full_path)
-{
-	GladeXmlContext *context;
-	GladeXmlNode *root;
-	GladeXmlDoc *xml_doc;
-	gboolean ret;
-
-	xml_doc = glade_xml_doc_new ();
-	if (xml_doc == NULL) {
-		g_warning ("Could not create xml document\n");
-		return FALSE;
-	}
-	context = glade_xml_context_new (xml_doc, NULL);
-	root = glade_project_write (context, project);
-	glade_xml_context_destroy (context);
-	if (root == NULL)
-		return FALSE;
-
-	glade_xml_doc_set_root (xml_doc, root);
-	ret = glade_xml_doc_save (xml_doc, full_path);
-	glade_xml_doc_free (xml_doc);
-
-	if (ret < 0)
-		return FALSE;
-
-	return TRUE;
-}
-
 static GladeProject *
 glade_project_new_from_node (GladeXmlNode *node)
 {
@@ -614,7 +575,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 			return NULL;
 	}
 	project->widgets = g_list_reverse (project->widgets);
-	
+
 	return project;	
 }
 
@@ -643,138 +604,94 @@ glade_project_open_from_file (const gchar *path)
 	return project;
 }
 
-
-/**
- * glade_project_save:
- * @project: 
- * 
- * Save the project, query the user for a project name if necessary
- * 
- * Return Value: TRUE if the project was saved, FALSE if the user cancelled
- *               the operation or an error was encountered while saving
- **/
-gboolean
-glade_project_save (GladeProject *project)
+static gboolean
+glade_project_save_to_file (GladeProject *project, const gchar *full_path)
 {
-	gchar *backup;
+	GladeXmlContext *context;
+	GladeXmlNode *root;
+	GladeXmlDoc *xml_doc;
+	gboolean ret;
 
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-	backup = project->path;
-
-	if (project->path == NULL) {
-		g_free (project->name);
-		project->path = glade_project_ui_get_path (_("Save ..."));
-
-		/* If the user hit cancel, restore its previous name and return */
-		if (project->path == NULL) {
-			project->path = backup;
-			return FALSE;
-		}
-
-		project->name = g_path_get_basename (project->path);
-		g_free (backup);
-	}
-
-	if (!glade_project_save_to_file (project, project->path)) {
-		glade_util_ui_warn (_("Invalid file name"));
-		g_free (project->path);
-		project->path = backup;
+	xml_doc = glade_xml_doc_new ();
+	if (xml_doc == NULL) {
+		g_warning ("Could not create xml document\n");
 		return FALSE;
 	}
+	context = glade_xml_context_new (xml_doc, NULL);
+	root = glade_project_write (context, project);
+	glade_xml_context_destroy (context);
+	if (root == NULL)
+		return FALSE;
 
-	glade_project_refresh_menu_item (project);
+	glade_xml_doc_set_root (xml_doc, root);
+	ret = glade_xml_doc_save (xml_doc, full_path);
+	glade_xml_doc_free (xml_doc);
+
+	if (ret < 0)
+		return FALSE;
+
+	g_free (project->path);
+	project->path = g_strdup_printf ("%s", full_path);
+	g_free (project->name);
+	project->name = g_path_get_basename (project->path);
 
 	return TRUE;
 }
-
-
-/**
- * glade_project_save_as:
- * @project: 
- * 
- * Query the user for a new file name and save it.
- * 
- * Return Value: TRUE if the project was saved. FALSE on error.
- **/
-gboolean
-glade_project_save_as (GladeProject *project)
-{
-	gchar *backup;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-	/* Keep the previous path */
-	backup = project->path;
-	project->path = glade_project_ui_get_path (_("Save as ..."));
-
-	/* If the user hit cancel, restore its previous name and return */
-	if (project->path == NULL) {
-		project->path = backup;
-		return FALSE;
-	}
-
-	/* On error, warn and restore its previous name and return */
-	if (!glade_project_save_to_file (project, project->path)) {
-		glade_util_ui_warn (_("Invalid file name"));
-		g_free (project->path);
-		project->path = backup;
-		return FALSE;
-	}
-
-	/* Free the backup and return; */
-	g_free (project->name);
-	project->name = g_path_get_basename (project->path);
-	glade_project_refresh_menu_item (project);
-	g_free (backup);
-
-	return TRUE;
-}	
 
 /**
  * glade_project_open:
  * @path: 
  * 
- * Open a project. If @path is NULL launches a file selector
- * 
- * Return Value: TRUE on success false on error.
+ * Open a project at the given path.
  **/
-gboolean
+void
 glade_project_open (const gchar *path)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
-	gchar *file_path = NULL;
+
+	g_return_if_fail (path != NULL);
 
 	gpw = glade_project_window_get ();
-
-	if (!path)
-		file_path = glade_project_ui_get_path (_("Open ..."));
-	else
-		file_path = g_strdup (path);
-
-	/* If the user hit cancel, return */
-	if (!file_path)
-		return FALSE;
 
 	/* If the project is previously loaded, don't re-load */
 	if ((project = glade_project_check_previously_loaded (path)) != NULL) {
 		glade_project_window_set_project (gpw, project);
-		g_free (file_path);
-		return TRUE;
+		return;
 	}
 
-	project = glade_project_open_from_file (file_path);
-
+	project = glade_project_open_from_file (path);
 	if (!project) {
 		glade_util_ui_warn (_("Could not open project."));
-		g_free (file_path);
-		return FALSE;
+		return;
 	}
 
 	glade_project_window_add_project (gpw, project);
-	g_free (file_path);
+}
 
-	return TRUE;
+/**
+ * glade_project_save:
+ * @project:
+ * @path 
+ * 
+ * Save the project to the given path
+ **/
+void
+glade_project_save (GladeProject *project, const gchar *path)
+{
+	GladeProjectWindow *gpw;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (path != NULL);
+
+	gpw = glade_project_window_get ();
+
+	if (!glade_project_save_to_file (project, path)) {
+		glade_util_ui_warn (_("Invalid file name"));
+		return;
+	}
+
+	glade_project_refresh_menu_item (project);
+	glade_project_window_refresh_title (gpw);	
 }
 

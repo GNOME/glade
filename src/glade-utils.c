@@ -269,3 +269,32 @@ gint glade_util_check_key_is_esc (GtkWidget *widget,
 	else
 		return FALSE;
 }
+
+/**
+ * glade_util_file_selection_new:
+ * @title: dialog title
+ * @parent: the window the dialog is set transient for
+ *
+ * Returns a file selection dialog. It's up to the caller to set up a
+ * callback for the OK button and then to show the dialog
+ **/
+GtkWidget *
+glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
+{
+	GtkWidget *filesel;
+
+	filesel = gtk_file_selection_new (title);
+	g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION(filesel)->cancel_button),
+				  "clicked", G_CALLBACK (gtk_widget_destroy),
+				  filesel);
+	g_signal_connect_swapped (G_OBJECT (filesel), "delete_event",
+				  G_CALLBACK (gtk_widget_destroy),
+				  filesel);
+
+	if (GTK_IS_WINDOW (parent))
+		gtk_window_set_transient_for (GTK_WINDOW (filesel), GTK_WINDOW (parent));
+
+	return filesel;
+}
+ 
+ 

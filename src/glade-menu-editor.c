@@ -62,6 +62,7 @@
 #include "glade-menu-editor.h"
 #include "glade-keys-dialog.h"
 #include "glade-project.h"
+#include "glade-utils.h"
 
 #define GladeMenuEditorIndexKey "glade-menu-editor-index-key"
 #define GladeMenuEditorStockIDKey "glade-menu-editor-stock-id"
@@ -164,8 +165,6 @@ static void on_entry_changed (GtkWidget * entry,
 			      gpointer user_data);
 static void on_icon_button_clicked (GtkWidget * button,
 				    gpointer user_data);
-static void on_icon_filesel_ok (GtkWidget * widget,
-				GladeMenuEditor *menued);
 static void on_stock_item_entry_changed (GtkWidget * entry,
 					 gpointer user_data);
 static gboolean on_label_entry_key_press (GtkWidget * widget,
@@ -327,7 +326,6 @@ static void
 glade_menu_editor_init (GladeMenuEditor * menued)
 {
 	menued->keys_dialog = NULL;
-	menued->filesel = NULL;
 	menued->project = NULL;
 	menued->menu = NULL;
 	menued->updating_widgets = FALSE;
@@ -1185,11 +1183,6 @@ glade_menu_editor_destroy (GtkObject *object)
 		menued->keys_dialog = NULL;
 	}
 
-	if (menued->filesel) {
-		gtk_widget_destroy (menued->filesel);
-		menued->filesel = NULL;
-	}
-
 	for (elem = menued->stock_items; elem; elem = elem->next)
 		g_free (elem->data);
 	g_slist_free (menued->stock_items);
@@ -1890,54 +1883,16 @@ on_delete_button_clicked (GtkWidget * widget,
 /**************************************************************************
  * File Selection for selecting icon xpm files.
  **************************************************************************/
-static void
-on_icon_button_clicked (GtkWidget * widget,
-			gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	gchar *icon;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
-
-	if (menued->filesel == NULL) {
-		menued->filesel = gtk_file_selection_new (_("Select icon"));
-		gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (menued->filesel)->ok_button),
-				    "clicked", GTK_SIGNAL_FUNC (on_icon_filesel_ok),
-				    menued);
-		gtk_signal_connect_object (GTK_OBJECT (GTK_FILE_SELECTION (menued->filesel)->cancel_button),
-					   "clicked",
-					   GTK_SIGNAL_FUNC (glade_util_hide_window),
-					   GTK_OBJECT (menued->filesel));
-		gtk_signal_connect (GTK_OBJECT (menued->filesel), "delete_event",
-				    GTK_SIGNAL_FUNC (glade_util_hide_window_on_delete),
-				    NULL);
-		gtk_signal_connect (GTK_OBJECT (menued->filesel), "key_press_event",
-				    GTK_SIGNAL_FUNC (glade_util_check_key_is_esc),
-				    GINT_TO_POINTER (GladeEscCloses));
-	}
-
-	icon = (gchar*) gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (menued->filesel), icon);
-  
-	if (GTK_IS_WINDOW (menued))
-		gtk_window_set_transient_for (GTK_WINDOW (menued->filesel),
-					      GTK_WINDOW (menued));
-	gtk_widget_show (menued->filesel);
-	gdk_window_show (menued->filesel->window);
-	gdk_window_raise (menued->filesel->window);
-}
-
 
 static void
-on_icon_filesel_ok (GtkWidget * widget,
-		    GladeMenuEditor *menued)
+on_icon_filesel_ok (GtkWidget *widget, GladeMenuEditor *menued)
 {
 	GtkWidget *filesel;
-	gchar *filename;
+	const gchar *filename;
 	gint filename_len;
 
 	filesel = gtk_widget_get_toplevel (widget);
-	filename = (gchar*) gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
+	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
 
 	/* If the filename ends in '/' it means the user wants to reset the
 	   pixmap to NULL. */
@@ -1948,9 +1903,28 @@ on_icon_filesel_ok (GtkWidget * widget,
 	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
 			filename);
 
-	glade_util_hide_window (menued->filesel);
+	gtk_widget_destroy (filesel);
 }
 
+static void
+on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *filesel;
+	const gchar *icon;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
+
+	filesel = glade_util_file_selection_new (_("Select icon"), GTK_WINDOW (menued));
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			  "clicked", G_CALLBACK (on_icon_filesel_ok),
+			  menued);
+
+	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
+	gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), icon);
+
+	gtk_widget_show (filesel);
+}
 
 /**************************************************************************
  * Utility functions
