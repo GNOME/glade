@@ -1,3 +1,12 @@
+2004-05-06  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-widget.c (glade_widget_connect_signal_handlers): don't
+	connect handlers for placeholders, and set a flag to indicate we've
+	connected a handler so we don't do it twice accidentally.
+	(glade_widget_get_parent): tidied up a little.
+
+	* src/glade.h (GLADE_TAG_EVENT_HANDLER_CONNECTED): added tag.
+
 2004-05-05  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* widgets/gtk-base.xml: Remove the accelerator label.

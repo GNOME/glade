@@ -698,8 +698,20 @@ glade_widget_retrieve_properties (GladeWidget *glade_widget)
 static void
 glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 {
-	g_signal_connect (G_OBJECT (widget_gtk), "event",
-			  G_CALLBACK (glade_widget_event), NULL);
+	/* Don't connect handlers for placeholders. */
+	if (GLADE_IS_PLACEHOLDER (widget_gtk))
+		return;
+
+	/* Check if we've already connected an event handler. */
+	if (!g_object_get_data (G_OBJECT (widget_gtk),
+				GLADE_TAG_EVENT_HANDLER_CONNECTED)) {
+		g_signal_connect (G_OBJECT (widget_gtk), "event",
+				  G_CALLBACK (glade_widget_event), NULL);
+
+		g_object_set_data (G_OBJECT (widget_gtk),
+				   GLADE_TAG_EVENT_HANDLER_CONNECTED,
+				   GINT_TO_POINTER (1));
+	}
 
 	/* We also need to get expose events for any children. */
 	if (GTK_IS_CONTAINER (widget_gtk)) {
@@ -859,14 +871,17 @@ GladeWidget *
 glade_widget_get_parent (GladeWidget *glade_widget)
 {
 	GladeWidget *parent = NULL;
-	GtkWidget *parent_widget;
+	GtkWidget *widget, *parent_widget;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (glade_widget), NULL);
 
-	if (GTK_WIDGET_TOPLEVEL (glade_widget_get_widget (glade_widget)))
+	widget = glade_widget_get_widget (glade_widget);
+
+	if (GTK_WIDGET_TOPLEVEL (widget))
 		return NULL;
 
-	parent_widget = gtk_widget_get_parent (glade_widget_get_widget (glade_widget));
+	parent_widget = gtk_widget_get_parent (widget);
+
 	parent = glade_widget_get_from_gtk_widget (parent_widget);
 
 	return parent;

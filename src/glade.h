@@ -99,6 +99,7 @@
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
 #define GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION "ChildPropertyApplies"
+#define GLADE_TAG_EVENT_HANDLER_CONNECTED "EventHandlerConnected"
 
 #define GLADE_MODIFY_PROPERTY_DATA "GladeModifyPropertyData"
 
