@@ -1247,3 +1247,44 @@ glade_gtk_dialog_child_property_applies (GtkWidget *ancestor,
 
 	return FALSE;
 }
+
+
+/**
+ * glade_gtk_radio_button_get_group:
+ * @object:
+ * @value:
+ *
+ * TODO: write me
+ */
+void GLADEGTK_API
+glade_gtk_radio_button_get_group (GObject *object, GValue *value)
+{
+	GtkRadioButton *button = GTK_RADIO_BUTTON (object);
+	GSList *group;
+	const char *name;
+
+	group = gtk_radio_button_get_group (button);
+	name = group
+		? gtk_widget_get_name (group->data)
+		: NULL;
+
+	g_value_reset (value);
+	g_value_set_string (value, name);
+}
+
+
+/**
+ * glade_gtk_radio_button_set_group:
+ * @object:
+ * @value:
+ *
+ * TODO: write me
+ */
+void GLADEGTK_API
+glade_gtk_radio_button_set_group (GObject *object, GValue *value)
+{
+	GtkRadioButton *button = GTK_RADIO_BUTTON (object);
+	const char *name = g_value_get_string (value);
+
+	/* FIXME: now what?  */
+}

@@ -1,9 +1,13 @@
 <GladeWidgetClass>
 
   <Properties>
-    <Property Id="label" default="radio button"/>
+    <Property Id="label" Default="radio button"/>
     <Property Id="draw-indicator" Default="True"/>
-    <Property Id="group" Disabled="True"/>
+    <Property Id="group" Name="Group" Default="True">
+      <Type>String</Type>
+      <SetFunction>glade_gtk_radio_button_set_group</SetFunction>
+      <GetFunction>glade_gtk_radio_button_get_group</GetFunction>
+    </Property>
   </Properties>
 
 </GladeWidgetClass>

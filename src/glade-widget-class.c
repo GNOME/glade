@@ -121,7 +121,7 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 
 	g_type_class_ref (class->type); /* hmm */
 	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
+	  * to use g_type_class_ref ();
 	  */
 
 	object_class = g_type_class_peek (class->type);

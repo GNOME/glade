@@ -552,12 +552,14 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		}
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		break;
-	default:
+	default: {
+		const char *typestr = glade_property_type_enum_to_string (type);
 		g_warning ("Could not make gvalue from string ->%s<- and type %s\n",
-			 string,
-			 glade_property_type_enum_to_string (type));
+			   string ? string : "(null)",
+			   typestr ? typestr : "(null)");
 		g_free (value);
 		value = NULL;
+	}
 	}
 
 	return value;

@@ -546,8 +546,11 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
 	{
 		property_class = list->data;
 		property = glade_property_new (property_class, widget);
-		if (!property)
+		if (!property) {
+			g_print ("Failed to create [%s] property.\n",
+				 property_class->id);
 			continue;
+		}
 
 		widget->properties = g_list_prepend (widget->properties, property);
 	}
@@ -617,23 +620,19 @@ glade_widget_get_property (GladeWidget *widget, const char *id_property)
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 	g_return_val_if_fail (id_property != NULL, NULL);
 
-	list = widget->properties;
-	for (; list; list = list->next)
-	{
+	for (list = widget->properties; list; list = list->next) {
 		property = list->data;
 		if (strcmp (property->class->id, id_property) == 0)
 			return property;
 	}
 
-	list = widget->packing_properties;
-	for (; list; list = list->next)
-	{
+	for (list = widget->packing_properties; list; list = list->next) {
 		property = list->data;
 		if (strcmp (property->class->id, id_property) == 0)
 			return property;
 	}
 
-	g_warning ("Could not get property %s for widget %s\n",
+	g_warning ("Could not get property \"%s\" for widget %s",
 		   id_property, widget->name);
 
 	return NULL;
@@ -1467,9 +1466,12 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 		return NULL;
 
 	klass = glade_widget_class_get_by_name (class_name);
-	g_free (class_name);
-	if (!klass)
+	if (!klass) {
+		g_warning ("Widget class %s unknown.", class_name);
+		g_free (class_name);
 		return NULL;
+	}
+	g_free (class_name);
 
 	widget_gtk = g_object_new (klass->type, NULL);
 
@@ -1542,16 +1544,21 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	if (internalchild)
 	{
 		GtkWidget *child_gtk = glade_widget_get_internal_child (parent, internalchild);
-		GladeWidgetClass *child_class =
-			glade_widget_class_get_by_name (G_OBJECT_TYPE_NAME (child_gtk));
+		GladeWidgetClass *child_class;
+
+		if (!child_gtk) {
+			g_warning ("Failed to locate internal child %s of %s",
+				   internalchild, glade_widget_get_name (parent));
+			return FALSE;
+		}
+		child_class = glade_widget_class_get_by_name (G_OBJECT_TYPE_NAME (child_gtk));
 		child = glade_widget_new_for_internal_child (child_class, parent, child_gtk, internalchild);
-		glade_widget_fill_from_node (child_node, child);
 		g_free (internalchild);
-	}
-	else
-	{
+		glade_widget_fill_from_node (child_node, child);
+	} else {
 		child = glade_widget_new_from_node_real (child_node, project, parent);
-		g_return_val_if_fail (child != NULL, FALSE);
+		if (!child)
+			return FALSE;
 		gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
 	}
 

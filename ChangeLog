@@ -1,5 +1,20 @@
 2004-10-06  Morten Welinder  <terra@gnome.org>
 
+	* widgets/gtkradiobutton.xml: Define the group property.
+
+	* widgets/gtk-base.xml: Load gtkradiobutton.xml
+
+	* src/glade-widget.c (glade_widget_new_child_from_node): Bullet
+	proof.
+
+	* src/glade-property-class.c
+	(glade_property_class_make_gvalue_from_string): Bullet proof.
+
+	* src/glade-gtk.c (glade_gtk_radio_button_set_group,
+	glade_gtk_radio_button_get_group): New functions.
+
+2004-10-06  Morten Welinder  <terra@gnome.org>
+
 	* src/glade-gtk.c (glade_gtk_widget_condition): Fix life cycle of
 	GtkObjects.
 
