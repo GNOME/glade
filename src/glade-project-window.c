@@ -47,9 +47,9 @@ static void gpw_save_cb (void);
 static void gpw_save_as_cb (void);
 static void gpw_quit_cb (void);
 
-static void gpw_show_palette_cb (void);
-static void gpw_show_editor_cb (void);
-static void gpw_show_widget_tree_cb (void);
+static void gpw_toggle_palette_cb (void);
+static void gpw_toggle_editor_cb (void);
+static void gpw_toggle_widget_tree_cb (void);
 static void gpw_show_clipboard_cb (void);
 
 static void gpw_undo_cb (void);
@@ -216,10 +216,11 @@ static GtkItemFactoryEntry menu_items[] =
 
   /* ============ VIEW ===================== */
   { "/View", NULL, 0, 0, "<Branch>" },
-  { "/View/Show _Palette",         NULL, gpw_show_palette_cb,     0, "<Item>" },
-  { "/View/Show Property _Editor", NULL, gpw_show_editor_cb,      0, "<Item>" },
-  { "/View/Show _Widget Tree",     NULL, gpw_show_widget_tree_cb, 0, "<Item>" },
-  { "/View/Show _Clipboard",       NULL, gpw_show_clipboard_cb,   0, "<Item>" },
+  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     0, "<ToggleItem>" },
+  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      0, "<ToggleItem>" },
+  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 0, "<ToggleItem>" },
+  { "/View/sep1",             NULL, NULL,                      0, "<Separator>" },
+  { "/View/Show _Clipboard",  NULL, gpw_show_clipboard_cb,     0, "<Item>" },
 
   /* ============ PROJECT=================== */
   { "/Project", NULL, 0, 0, "<Branch>" },
@@ -229,79 +230,6 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Help/_About", NULL, gpw_about_cb, 0 },
 };
 
-static gint
-glade_hide_on_delete_event (GtkWidget *widget, gpointer not_used)
-{
-	gtk_widget_hide (GTK_WIDGET (widget));
-
-	/* Return true so that the palette is not destroyed */
-	return TRUE;
-}
-
-static void
-glade_show_palette (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->palette_window == NULL)
-		glade_palette_create (gpw);
-
-	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
-	gtk_widget_show (GTK_WIDGET (gpw->palette_window));
-}
-
-static void
-glade_show_editor (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->editor == NULL)
-		glade_editor_create (gpw);
-	
-	gtk_widget_show_all (GTK_WIDGET (gpw->editor));
-	gtk_widget_show (GTK_WIDGET (gpw->editor_window));
-}
-
-static void
-glade_create_palette (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	gpw->palette_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
-	gpw->palette = glade_palette_new (gpw->catalogs);
-	gpw->palette->project_window = gpw;
-
-	gtk_window_set_title (gpw->palette_window, _("Palette"));
-	gtk_window_set_policy (gpw->palette_window, FALSE, FALSE, TRUE);
-
-	gtk_container_add (GTK_CONTAINER (gpw->palette_window), GTK_WIDGET (gpw->palette));
-
-	/* Delete event, don't destroy it */
-	gtk_signal_connect (GTK_OBJECT (gpw->palette_window), "delete_event",
-			    GTK_SIGNAL_FUNC (glade_hide_on_delete_event), NULL);
-}
-
-static void
-glade_create_editor (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->editor != NULL)
-		return;
-	
-	gpw->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
-	gpw->editor = GLADE_EDITOR (glade_editor_new ());
-	gpw->editor->project_window = gpw;
-
-	gtk_window_set_title  (gpw->editor_window, _("Properties"));
-	gtk_window_set_policy (gpw->editor_window, FALSE, TRUE, TRUE);
-
-	gtk_container_add (GTK_CONTAINER (gpw->editor_window), GTK_WIDGET (gpw->editor));
-
-	/* Delete event, don't destroy it */
-	gtk_signal_connect (GTK_OBJECT (gpw->editor_window), "delete_event",
-			    GTK_SIGNAL_FUNC (glade_hide_on_delete_event), NULL);
-}
 
 static void
 glade_project_window_construct_menu (GladeProjectWindow *gpw)
@@ -329,7 +257,6 @@ glade_project_window_construct_menu (GladeProjectWindow *gpw)
 	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
 				     gtk_item_factory_get_widget (item_factory, "<main>"));
 }
-
 
 static void
 glade_project_window_construct_toolbar (GladeProjectWindow *gpw)
@@ -363,7 +290,301 @@ glade_project_window_construct_toolbar (GladeProjectWindow *gpw)
 	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
 				     toolbar);
 }
+
+static gboolean
+gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used,
+		GtkItemFactory *item_factory)
+{
+	GtkWidget *palette_item;
+
+	gtk_widget_hide (GTK_WIDGET (palette));
+
+	palette_item = gtk_item_factory_get_item (item_factory, "<main>/View/Palette");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
+
+	/* Return true so that the palette is not destroyed */
+	return TRUE;
+}
+
+static void
+gpw_create_palette (GladeProjectWindow *gpw)
+{
+	GtkWidget *palette_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	gpw->palette_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+	gpw->palette = glade_palette_new (gpw->catalogs);
+	gpw->palette->project_window = gpw;
+
+	gtk_window_set_title (gpw->palette_window, _("Palette"));
+	gtk_window_set_resizable (gpw->palette_window, FALSE);
+
+	gtk_container_add (GTK_CONTAINER (gpw->palette_window), GTK_WIDGET (gpw->palette));
+
+	/* Delete event, don't destroy it */
+	g_signal_connect (G_OBJECT (gpw->palette_window), "delete_event",
+			  G_CALLBACK (gpw_hide_palette_on_delete), gpw->item_factory);
+
+	palette_item = gtk_item_factory_get_item (gpw->item_factory,
+						  "<main>/View/Palette");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+}
+
+static void
+gpw_show_palette (GladeProjectWindow *gpw)
+{
+	GtkWidget *palette_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->palette_window == NULL)
+		gpw_create_palette (gpw);
+
+	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
+	gtk_widget_show (GTK_WIDGET (gpw->palette_window));
+
+	palette_item = gtk_item_factory_get_item (gpw->item_factory,
+						  "<main>/View/Palette");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+}
+
+static void
+gpw_hide_palette (GladeProjectWindow *gpw)
+{
+	GtkWidget *palette_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	gtk_widget_hide (GTK_WIDGET (gpw->palette_window));
+
+	palette_item = gtk_item_factory_get_item (gpw->item_factory,
+						  "<main>/View/Palette");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
+}
+
+static gboolean
+gpw_hide_editor_on_delete (GtkWidget *editor, gpointer not_used,
+		GtkItemFactory *item_factory)
+{
+	GtkWidget *editor_item;
+
+	gtk_widget_hide (GTK_WIDGET (editor));
+
+	editor_item = gtk_item_factory_get_item (item_factory, "<main>/View/Property Editor");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+
+	/* Return true so that the editor is not destroyed */
+	return TRUE;
+}
+
+static void
+gpw_create_editor (GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->editor != NULL)
+		return;
 	
+	gpw->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+	gpw->editor = GLADE_EDITOR (glade_editor_new ());
+	gpw->editor->project_window = gpw;
+
+	gtk_window_set_title  (gpw->editor_window, _("Properties"));
+
+	gtk_container_add (GTK_CONTAINER (gpw->editor_window), GTK_WIDGET (gpw->editor));
+
+	/* Delete event, don't destroy it */
+	g_signal_connect (G_OBJECT (gpw->editor_window), "delete_event",
+			  G_CALLBACK (gpw_hide_editor_on_delete), gpw->item_factory);
+
+	editor_item = gtk_item_factory_get_item (gpw->item_factory,
+						 "<main>/View/Property Editor");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
+}
+
+static void
+gpw_show_editor (GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->editor == NULL)
+		gpw_create_editor (gpw);
+	
+	gtk_widget_show_all (GTK_WIDGET (gpw->editor));
+	gtk_widget_show (GTK_WIDGET (gpw->editor_window));
+
+	editor_item = gtk_item_factory_get_item (gpw->item_factory,
+						 "<main>/View/Property Editor");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
+}
+
+static void
+gpw_hide_editor (GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	gtk_widget_hide (GTK_WIDGET (gpw->editor_window));
+
+	editor_item = gtk_item_factory_get_item (gpw->item_factory,
+						 "<main>/View/Property Editor");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+}
+
+static gboolean 
+gpw_key_press_widget_tree_cb (GtkWidget *widget_tree, GdkEventKey *event,
+		GtkItemFactory *item_factory)
+{
+
+	GtkWidget *widget_tree_item;
+
+	if (event->keyval == GDK_Escape) {
+		gtk_widget_hide (widget_tree);
+		widget_tree_item = gtk_item_factory_get_item (item_factory,
+							      "<main>/View/Widget Tree");
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item),
+						FALSE);
+
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static gboolean
+gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
+		GtkItemFactory *item_factory)
+{
+	GtkWidget *widget_tree_item;
+
+	gtk_widget_hide (widget_tree);
+
+	widget_tree_item = gtk_item_factory_get_item (item_factory,
+						      "<main>/View/Widget Tree");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
+
+	/* return true so that the widget tree is not destroyed */
+	return TRUE;
+}
+
+static GtkWidget* 
+gpw_create_widget_tree (GladeProjectWindow *gpw)
+{
+	GtkWidget *widget_tree;
+	GladeProjectView *view;
+	GtkWidget *widget_tree_item;
+
+	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
+	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
+	gtk_container_add (GTK_CONTAINER (widget_tree),
+			   glade_project_view_get_widget (view));
+	gpw->views = g_list_prepend (gpw->views, view);
+	glade_project_view_set_project (view, gpw->project);
+	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
+			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->item_factory);
+	g_signal_connect (G_OBJECT (widget_tree), "key_press_event",
+			  G_CALLBACK (gpw_key_press_widget_tree_cb), gpw->item_factory);
+
+	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
+						      "<main>/View/Widget Tree");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
+
+	return widget_tree;
+}
+
+static void 
+gpw_show_widget_tree (GladeProjectWindow *gpw) 
+{
+	GtkWidget *widget_tree_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->widget_tree == NULL)
+		gpw->widget_tree = gpw_create_widget_tree (gpw);
+
+	gtk_widget_show_all (gpw->widget_tree);
+
+	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
+						     "<main>/View/Widget Tree");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
+}
+
+static void
+gpw_hide_widget_tree (GladeProjectWindow *gpw)
+{
+	GtkWidget *widget_tree_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	gtk_widget_hide (GTK_WIDGET (gpw->widget_tree));
+
+	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
+						      "<main>/View/Widget Tree");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
+
+}
+
+static void
+gpw_toggle_palette_cb (void)
+{
+	GtkWidget *palette_item;
+
+ 	GladeProjectWindow *gpw = glade_project_window_get ();
+ 
+	palette_item = gtk_item_factory_get_item (gpw->item_factory,
+						  "<main>/View/Palette");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (palette_item)))
+		gpw_show_palette (gpw);
+	else
+		gpw_hide_palette (gpw);
+}
+
+static void
+gpw_toggle_editor_cb (void)
+{
+	GtkWidget *editor_item;
+
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	editor_item = gtk_item_factory_get_item (gpw->item_factory,
+						 "<main>/View/Property Editor");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (editor_item)))
+		gpw_show_editor (gpw);
+	else
+		gpw_hide_editor (gpw);
+}
+
+static void 
+gpw_toggle_widget_tree_cb (void) 
+{
+	GtkWidget *widget_tree_item;
+
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
+						      "<main>/View/Widget Tree");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget_tree_item)))
+		gpw_show_widget_tree (gpw);
+	else
+		gpw_hide_widget_tree (gpw);
+}
+
+static void
+gpw_show_clipboard_cb (void)
+{
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	glade_clipboard_show_view (gpw);
+}
 
 static GtkWidget *
 glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
@@ -383,8 +604,8 @@ glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
 	glade_project_window_construct_toolbar (gpw);
 	glade_project_window_refresh_undo_redo (gpw);
 	
-	gtk_signal_connect (GTK_OBJECT (app), "delete_event",
-			    GTK_SIGNAL_FUNC (gpw_delete_event), NULL);
+	g_signal_connect (G_OBJECT (app), "delete_event",
+			  G_CALLBACK (gpw_delete_event), NULL);
 
 	return app;
 }
@@ -428,93 +649,11 @@ glade_project_window_new (GList *catalogs)
 	glade_project_window_set_view (gpw, view);
 
 	glade_project_window = gpw;
-	glade_create_palette (gpw);
-	glade_create_editor  (gpw);
+	gpw_create_palette (gpw);
+	gpw_create_editor  (gpw);
 	glade_clipboard_create (gpw);
 	
 	return gpw;
-}
-
-static gboolean 
-gpw_key_press_widget_tree_cb (GtkWidget *widget_tree, GdkEventKey *event,
-		gpointer not_used)
-{
-	if (event->keyval == GDK_Escape) {
-		gtk_widget_hide (widget_tree);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-static gboolean
-gpw_delete_widget_tree_cb (GtkWidget *widget_tree, gpointer not_used)
-{
-	gtk_widget_hide (widget_tree);
-
-	/* return true so that the widget tree is not destroyed */
-	return TRUE;
-}
-
-static GtkWidget* 
-glade_project_window_widget_tree_create (GladeProjectWindow *gpw)
-{
-	GtkWidget* widget_tree;
-	GladeProjectView *view;
-	
-	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
-	gtk_container_add (GTK_CONTAINER (widget_tree),
-			   glade_project_view_get_widget (view));
-	gpw->views = g_list_prepend (gpw->views, view);
-	glade_project_view_set_project (view, gpw->project);
-	gtk_signal_connect (GTK_OBJECT (widget_tree), "delete_event",
-			GTK_SIGNAL_FUNC (gpw_delete_widget_tree_cb), NULL);
-	gtk_signal_connect (GTK_OBJECT (widget_tree), "key_press_event",
-			GTK_SIGNAL_FUNC (gpw_key_press_widget_tree_cb), NULL);
-
-	return widget_tree;
-}
-
-static void 
-gpw_show_widget_tree (GladeProjectWindow *gpw) 
-{
-	if (gpw->widget_tree == NULL) 
-		gpw->widget_tree = glade_project_window_widget_tree_create (gpw);
-	
-	gtk_widget_show_all (gpw->widget_tree);
-}
-
-static void 
-gpw_show_widget_tree_cb (void) 
-{
-	GladeProjectWindow *gpw = glade_project_window_get ();
-
-	gpw_show_widget_tree (gpw);
-}
-
-static void
-gpw_show_palette_cb (void)
-{
-	GladeProjectWindow *gpw = glade_project_window_get ();
-
-	glade_show_palette (gpw);
-}
-
-static void
-gpw_show_editor_cb (void)
-{
-	GladeProjectWindow *gpw = glade_project_window_get ();
-
-	glade_show_editor (gpw);
-}
-
-static void
-gpw_show_clipboard_cb (void)
-{
-	GladeProjectWindow *gpw = glade_project_window_get ();
-
-	glade_clipboard_show_view (gpw);
 }
 
 static void
@@ -565,9 +704,9 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	}
 
 	gpw->project_selection_changed_signal =
-		gtk_signal_connect (GTK_OBJECT (project), "selection_changed",
-				    GTK_SIGNAL_FUNC (glade_project_window_selection_changed_cb),
-				    gpw);
+		g_signal_connect (G_OBJECT (project), "selection_changed",
+				  G_CALLBACK (glade_project_window_selection_changed_cb),
+				  gpw);
 	
 	glade_project_selection_changed (project);
 }
@@ -804,7 +943,6 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 	return FALSE;
 }
 
-
 GladeProject *
 glade_project_window_get_project (void)
 {
@@ -816,12 +954,10 @@ glade_project_window_get_project (void)
 	return gpw->project;
 }
 
-
-
 void
 glade_project_window_show_all (GladeProjectWindow *gpw)
 {
 	gtk_widget_show_all (gpw->window);
-	glade_show_palette (gpw);
-	glade_show_editor (gpw);
+	gpw_show_palette (gpw);
+	gpw_show_editor (gpw);
 }
