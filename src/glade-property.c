@@ -235,10 +235,8 @@ glade_property_changed_text (GladeProperty *property,
 	property->value = g_strdup (text);
 	g_free (temp);
 
-	if (property->class->id == NULL) {
-		g_print ("I don't have an id %s\n", property->class->id);
+	if (property->class->id == NULL)
 		return;
-	}
 
 	if (property->class->set_function == NULL)
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
@@ -267,8 +265,10 @@ glade_property_changed_float (GladeProperty *property, gfloat val)
 {
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
-
+	
+#if 0
 	g_print ("Changed float\n");
+#endif	
 	
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);

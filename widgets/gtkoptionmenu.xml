@@ -6,6 +6,21 @@
 
   <Properties>
 
+    <Property ParamSpec="TRUE" Id="border-width"/>
+    <Property ParamSpec="FALSE" Id="items" Name="Items">
+       <Type>Text</Type>
+	  <SetFunction>glade_gtk_option_menu_set_items</SetFunction>
+	  <Parameters>
+	     <Parameter Key="VisibleLines" Value="2"/>
+	  </Parameters>
+    </Property>
+    <!--
+    <Property ParamSpec="FALSE" Id="initial-choice" Name="Inital Choice">
+       <Type>Integer</Type>
+	  <SetFunction>glade_gtk_option_menu_set_initial_choice</SetFunction>
+    </Property>
+    -->
+    
   </Properties>
 
 </GladeWidgetClass>

@@ -4,10 +4,19 @@
   <GetTypeFunction>gtk_frame_get_type</GetTypeFunction>
   <GenericName>frame</GenericName>
   <Toplevel>False</Toplevel>
+  <Placeholder>True</Placeholder>
 
   <Properties>
 
+    <Property ParamSpec="TRUE" Id="border-width"/>
     <Property ParamSpec="TRUE" Id="label"/>
+    <Property ParamSpec="TRUE" Id="label-xalign">
+      <Parameters>
+	   <Parameter Key="StepIncrement" Value=".05"/>
+	   <Parameter Key="Default" Value="0.0"/>
+	 </Parameters>
+    </Property>
+    <Property ParamSpec="TRUE" Id="shadow"/>
 
   </Properties>
 

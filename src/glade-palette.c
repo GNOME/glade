@@ -269,7 +269,7 @@ glade_palette_init (GladePalette * palette)
 
 	gtk_window_set_title (GTK_WINDOW (palette), _("Palette"));
 	gtk_window_set_policy (GTK_WINDOW (palette),
-			       TRUE,
+			       FALSE,
 			       FALSE,
 			       TRUE);
 

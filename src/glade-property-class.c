@@ -315,6 +315,27 @@ glade_property_get_parameters_numeric (GParamSpec *spec,
 }
 
 static GList *
+glade_property_get_parameters_text (GParamSpec *spec,
+				    GladePropertyClass *class)
+{
+	GladeParameter *parameter;
+	GList *list = NULL;
+
+	g_return_val_if_fail (G_IS_PARAM_SPEC_STRING (spec), NULL);
+
+	if (G_PARAM_SPEC_STRING (spec)->default_value != NULL) {
+		/* Get the default value */
+		parameter = glade_parameter_new ();
+		parameter->key = g_strdup ("Default");
+		parameter->value = g_strdup (G_PARAM_SPEC_STRING (spec)->default_value);
+		
+		list = g_list_prepend (list, parameter);
+	}
+
+	return list;
+}
+
+static GList *
 glade_property_get_parameters_choice (GParamSpec *spec,
 				      GladePropertyClass *class)
 {
@@ -360,20 +381,18 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_CHOICE:
-		parameters = glade_property_get_parameters_choice (spec,
-								  class);
+		parameters = glade_property_get_parameters_choice (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_TEXT:
+		parameters = glade_property_get_parameters_text (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 	case GLADE_PROPERTY_TYPE_FLOAT:
 	case GLADE_PROPERTY_TYPE_DOUBLE:
-		parameters = glade_property_get_parameters_numeric (spec,
-								    class);
+		parameters = glade_property_get_parameters_numeric (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		parameters = glade_property_get_parameters_boolean (spec,
-								    class);
+		parameters = glade_property_get_parameters_boolean (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
@@ -419,6 +438,12 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	class->tooltip = g_strdup (spec->blurb);
 	class->type    = glade_property_class_get_type_from_spec (spec);
 
+	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
+		g_warning ("Could not create the \"%s\" property for the \"%s\" class\n",
+			   name, widget_class->name);
+		return NULL;
+	}
+	
 	if (class->type == GLADE_PROPERTY_TYPE_CHOICE)
 		class->choices = glade_property_class_get_choices_from_spec (spec);
 
@@ -450,9 +475,6 @@ glade_property_class_get_set_function (GladePropertyClass *class, const gchar *f
 	}
 
 	g_assert (class->set_function);
-
-	g_print ("Got the %s function for %s\n",
-		 function_name, class->name);
 
 	return TRUE;
 }

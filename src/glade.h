@@ -47,6 +47,7 @@ gchar * _ (gchar * name);
 #define GLADE_TAG_WINDOW_TITLE "WindowTitle"
 #define GLADE_TAG_QUESTION     "Question"
 #define GLADE_TAG_PARAM_SPEC   "ParamSpec"
+#define GLADE_TAG_VISIBLE_LINES "VisibleLines"
 #define GLADE_CHOICE_DATA_TAG    "GladeChoiceDataTag"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"

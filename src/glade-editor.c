@@ -218,6 +218,12 @@ glade_editor_table_new (GladeWidgetClass *class)
 
 /* ================================ Property Changed ==================================== */
 static void
+glade_editor_property_changed_text_common (GladeProperty *property, const gchar *text)
+{
+	glade_property_changed_text (property, text);
+}
+
+static void
 glade_editor_property_changed_text (GtkWidget *entry,
 				    GladeEditorProperty *property)
 {
@@ -230,11 +236,34 @@ glade_editor_property_changed_text (GtkWidget *entry,
 	
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
-	glade_property_changed_text (property->property, text);
-
+	glade_editor_property_changed_text_common (property->property, text);
+	
 	g_free (text);
 }
 
+static void
+glade_editor_property_changed_text_view (GtkTextBuffer *buffer,
+					 GladeEditorProperty *property)
+{
+	GtkTextIter start;
+	GtkTextIter end;
+	gchar *text;
+
+	g_return_if_fail (property != NULL);
+
+	if (property->loading)
+		return;
+
+	gtk_text_buffer_get_iter_at_offset (buffer, &start, 0);
+	gtk_text_buffer_get_iter_at_offset (buffer, &end,
+					    gtk_text_buffer_get_char_count (buffer));
+
+	text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+
+	glade_editor_property_changed_text_common (property->property, text);
+
+	g_free (text);
+}
 
 static void
 glade_editor_property_changed_choice (GtkWidget *menu_item,
@@ -314,12 +343,10 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		glade_property_changed_integer (property->property, integer_val);
 		break;
 	case GLADE_EDITOR_FLOAT:
-		g_print ("Changed numeric type float\n\n");
 		float_val = gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
 		glade_property_changed_float (property->property, float_val);
 		break;
 	case GLADE_EDITOR_DOUBLE:
-		g_print ("Changed numeric typoe double\n");
 		double_val = (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
 		glade_property_changed_double (property->property, double_val);
 		break;
@@ -417,7 +444,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	class = property->glade_property_class;
 
-	glade_parameter_get_integer (class->parameters, "VisibleLines", &lines);
+	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
 
 	if (lines < 2) {
 		GtkWidget *entry;
@@ -429,7 +456,20 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 		return entry;
 	} else {
-#warning FIXME GtkText is not working
+		GtkTextBuffer *buffer;
+		GtkWidget *view;
+
+		view = gtk_text_view_new ();
+		gtk_text_view_set_editable (GTK_TEXT_VIEW (view), TRUE);
+
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+
+		g_signal_connect_data (G_OBJECT (buffer), "changed",
+				       GTK_SIGNAL_FUNC (glade_editor_property_changed_text_view),
+				       property, NULL, 0);
+		
+		
+		return view;
 #if 0
 		/* This code worked with the old gtk, but the GtkText widget was
 		 * deprecated for VERY good reasons. Chema
@@ -974,11 +1014,24 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
-	g_return_if_fail (GTK_IS_EDITABLE (property->input));
 
-	gtk_editable_delete_text (GTK_EDITABLE (property->input), 0, -1);
-	gtk_editable_insert_text (GTK_EDITABLE (property->input),
-				  property->property->value, strlen (property->property->value), &pos);
+
+	if (GTK_IS_EDITABLE (property->input)) {
+		gtk_editable_delete_text (GTK_EDITABLE (property->input), 0, -1);
+		gtk_editable_insert_text (GTK_EDITABLE (property->input),
+					  property->property->value, strlen (property->property->value), &pos);
+	} else if (GTK_IS_TEXT_VIEW (property->input)) {
+		GtkTextBuffer *buffer;
+
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->input));
+
+		/* FIXME !!! Will not work with mulitybyte languajes !!. Chema */
+		gtk_text_buffer_set_text (buffer,
+					  property->property->value,
+					  strlen (property->property->value));
+	} else {
+		g_warning ("Invalid Text Widget type.");
+	}
 
 	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
 }

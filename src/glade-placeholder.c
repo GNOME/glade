@@ -138,6 +138,10 @@ glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClas
 
 	if (parent->class->placeholder_replace != NULL)
 		parent->class->placeholder_replace (placeholder, widget, parent);
+	else
+		g_warning ("A widget was added to a placeholder, but the placeholder_replace "
+			   "function has not been implemented for this class (%s)\n",
+			   class->name);
 
 	glade_project_selection_set (widget, TRUE);
 }
@@ -279,6 +283,14 @@ glade_placeholder_add (GladeWidgetClass *class,
 		return;
 	}
 
+	if ((strcmp (class->name, "GtkFrame") == 0) ||
+	    (strcmp (class->name, "GtkHandleBox") == 0)) {
+		placeholder = glade_placeholder_new (widget);
+		gtk_container_add (GTK_CONTAINER (widget->widget),
+				   placeholder);
+		return;
+	}
+	
 	if ((strcmp (class->name, "GtkVBox") == 0) ||
 	    (strcmp (class->name, "GtkHBox") == 0)) {
 		gint i;
@@ -312,6 +324,9 @@ glade_placeholder_add (GladeWidgetClass *class,
 		}
 		return;
 	}
+
+	g_warning ("A new container was cretated but there isn't any code to add a placeholder "
+		   "for this class (%s)", class->name);
 }
 
 GladeWidget *

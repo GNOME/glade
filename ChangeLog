@@ -1,3 +1,33 @@
+2001-07-10  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-gtk.c (glade_gtk_entry_set_text): implement.
+	(glade_gtk_option_menu_set_items): impl.
+	(glade_gtk_progress_bar_set_format): impl.
+
+	* src/glade-editor.c (glade_editor_property_changed_text_view): implement.
+	We can now use entries or GtkTextView for text properties
+
+2001-07-09  Chema Celorio  <chema@celorio.com>
+
+	* widgets/*.xml: add props to several widgets
+
+	* src/glade-placeholder.c (glade_placeholder_add): handle GtkHandleBox too
+
+	* src/glade-widget-class.c (glade_widget_class_add_virtual_methods): handle
+	GtkFrame too
+
+	* src/glade-editor.c (glade_editor_property_changed_numeric): remove
+	g_print's
+
+	* src/glade-property-class.c (glade_property_get_parameters_text): imlement
+	(glade_property_class_get_parameters_from_spec): and use here. We now load
+	default text values.
+
+	* widgets/gtkprogressbar.xml: add "text" which is the format
+
+	* src/glade-project-window.c (glade_project_window_query_properties): set
+	the default response
+
 2001-07-09  Chema Celorio  <chema@celorio.com>
 
 	* src/main.c (glade_init): check if g_module_supported is TRUE

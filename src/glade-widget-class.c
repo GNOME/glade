@@ -90,17 +90,23 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 {
 	g_return_if_fail (class->name != NULL);
 
-	/* I don't love this. Make it better. Chema */
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class)) {
+		/* I don't love this. Make it better. Chema */
 #warning FIXME	
-	if ((strcmp (class->name, "GtkVBox") == 0) ||
-	    (strcmp (class->name, "GtkHBox") == 0))
-		class->placeholder_replace = glade_placeholder_replace_box;
-	if (strcmp (class->name, "GtkTable") == 0)
-		class->placeholder_replace = glade_placeholder_replace_table;
-	if (strcmp (class->name, "GtkWindow") == 0)
-		class->placeholder_replace = glade_placeholder_replace_container;
-	
-	
+		if ((strcmp (class->name, "GtkVBox") == 0) ||
+		    (strcmp (class->name, "GtkHBox") == 0))
+			class->placeholder_replace = glade_placeholder_replace_box;
+		if (strcmp (class->name, "GtkTable") == 0)
+			class->placeholder_replace = glade_placeholder_replace_table;
+		if ((strcmp (class->name, "GtkWindow") == 0) ||
+		    (strcmp (class->name, "GtkFrame") == 0) ||
+		    (strcmp (class->name, "GtkHandleBox") == 0))
+			class->placeholder_replace = glade_placeholder_replace_container;
+		
+		if (class->placeholder_replace == NULL)
+			g_warning ("placeholder_replace has not been implemented for %s\n",
+				   class->name);
+	}
 }
 
 GList * 

@@ -5,7 +5,29 @@
   <Toplevel>False</Toplevel>
 
   <Properties>
-
+  
+  <!--
+    <Property ParamSpec="TRUE" Id="value"/>
+    <Property ParamSpec="TRUE" Id="minimum"/>
+    <Property ParamSpec="TRUE" Id="maximum"/>
+   -->
+   
+    <Property ParamSpec="TRUE" Id="bar-style"/>
+    <Property ParamSpec="TRUE" Id="orientation"/>
+    <Property ParamSpec="TRUE" Id="activity-mode"/>
+    <Property ParamSpec="TRUE" Id="show-text"/>
+    <Property ParamSpec="TRUE" Id="text"/>
+    <Property ParamSpec="TRUE" Id="text-xalign">
+      <Parameters>
+	   <Parameter Key="StepIncrement" Value="0.05"/>
+	 </Parameters>
+    </Property>
+    <Property ParamSpec="TRUE" Id="text-yalign">
+      <Parameters>
+	   <Parameter Key="StepIncrement" Value="0.05"/>
+	 </Parameters>
+    </Property>
+    
   </Properties>
 
 </GladeWidgetClass>

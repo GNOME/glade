@@ -520,6 +520,7 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					      NULL);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);	
 
 	vbox = GTK_DIALOG (dialog)->vbox;
 	table = gtk_table_new (0, 0, FALSE);
