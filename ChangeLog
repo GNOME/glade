@@ -1,3 +1,12 @@
+2003-04-16  Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-placeholder.c: fix an assertion.
+	* src/glade-editor.c: Add scrollbars to the properties editor.
+	* src/glade-project.[ch]: properly clear the changed flag on save; make 
+	open/save functions return TRUE on success.
+	* src/glade-project-window.c: implement a confirmation dialog to be
+	displayed on quit if any open project need saving.
+
 2003-04-16  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-catalog.c: Ported to win32.

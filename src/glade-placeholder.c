@@ -336,7 +336,8 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 			 * Else set the current placeholder as selected,
 			 * so that Paste from the Main Menu works.
 			 */
-			glade_placeholder_clear_selection_nodes (gpw->active_placeholder);
+			if (gpw->active_placeholder != NULL)
+				glade_placeholder_clear_selection_nodes (gpw->active_placeholder);
 			gpw->active_placeholder = placeholder;
 			glade_placeholder_draw_selection_nodes (placeholder);
 		}

@@ -963,6 +963,7 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	GladeEditorTable *table;
 	GtkContainer *container;
 	GList *list;
+	GtkWidget *scrolled_window;
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_widget);
@@ -983,8 +984,16 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	g_return_if_fail (table != NULL);
 	
-	/* Attach the new table */
-	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), table->table_widget,
+	/* wrap the table in a scrolled window */
+	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window),
+					       table->table_widget);
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT (GTK_BIN (scrolled_window)->child),
+				      GTK_SHADOW_NONE);
+	gtk_widget_show (scrolled_window);
+	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), scrolled_window,
 			    TRUE, TRUE, 0);
 }
 

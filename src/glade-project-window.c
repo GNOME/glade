@@ -164,9 +164,88 @@ gpw_save_as_cb (void)
 	gtk_widget_show (filesel);
 }
 
+static gboolean
+gpw_confirm_close_project (GladeProject *project)
+{
+	GladeProjectWindow *gpw;
+	GtkWidget *dialog;
+	gboolean close;
+	gint ret;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	gpw = glade_project_window_get ();
+	
+	dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->window),
+					 GTK_DIALOG_MODAL,
+					 GTK_MESSAGE_QUESTION,
+					 GTK_BUTTONS_NONE,
+					 _("Do you want to save the changes you made to the project \"%s\"? \n\n"
+					  "Your changes will be lost if you don't save them."),
+					 project->name);
+
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+				_("Do_n't save"), GTK_RESPONSE_NO,
+				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				GTK_STOCK_SAVE, GTK_RESPONSE_YES, NULL);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_dialog_set_default_response	(GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+
+	ret = gtk_dialog_run (GTK_DIALOG (dialog));
+	switch (ret) {
+		case GTK_RESPONSE_YES:
+			/* if YES we save the project: note we cannot use gpw_save_cb
+			 * since it saves the current project, while the modified project
+			 * we are saving may be not the current one.
+			 */
+			if (project->path != NULL) {
+				close = glade_project_save (project, project->path);
+			} else {
+				GtkWidget *filesel;
+
+				filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
+				g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+						  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
+						  project);
+
+				gtk_widget_show (filesel);
+				close = FALSE;
+			}
+			break;
+		case GTK_RESPONSE_NO:
+			close = TRUE;
+			break;
+		case GTK_RESPONSE_CANCEL:
+		default:
+			close = FALSE;
+	}
+
+	gtk_widget_destroy (dialog);
+	return close;
+}
+
 static void
 gpw_quit_cb (void)
 {
+	GladeProjectWindow *gpw;
+	GladeProject *project;
+	GList *list;
+	gboolean quit;
+
+	gpw = glade_project_window_get ();
+	list = gpw->projects;
+
+	for (; list; list = list->next) {
+		project = GLADE_PROJECT (list->data);
+
+		if (project->changed) {
+			quit = gpw_confirm_close_project (project);
+			if (!quit)
+				return;
+		}
+	}
+
 	gtk_main_quit ();
 }
 
@@ -802,10 +881,13 @@ gpw_toggle_clipboard_cb (void)
 		gpw_hide_clipboard_view (gpw);
 }
 
-static void
+static gboolean
 gpw_delete_event (GtkWindow *w, gpointer not_used)
 {
 	gpw_quit_cb ();
+	
+	/* return TRUE to stop other handlers */
+	return TRUE;	
 }
 
 static GtkWidget *

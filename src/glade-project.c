@@ -635,6 +635,8 @@ glade_project_save_to_file (GladeProject *project, const gchar *full_path)
 	g_free (project->name);
 	project->name = g_path_get_basename (project->path);
 
+	project->changed = FALSE;
+
 	return TRUE;
 }
 
@@ -642,31 +644,32 @@ glade_project_save_to_file (GladeProject *project, const gchar *full_path)
  * glade_project_open:
  * @path: 
  * 
- * Open a project at the given path.
+ * Open a project at the given path. Returns TRUE on success.
  **/
-void
+gboolean
 glade_project_open (const gchar *path)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
 
-	g_return_if_fail (path != NULL);
+	g_return_val_if_fail (path != NULL, FALSE);
 
 	gpw = glade_project_window_get ();
 
 	/* If the project is previously loaded, don't re-load */
 	if ((project = glade_project_check_previously_loaded (path)) != NULL) {
 		glade_project_window_set_project (gpw, project);
-		return;
+		return TRUE;
 	}
 
 	project = glade_project_open_from_file (path);
 	if (!project) {
 		glade_util_ui_warn (_("Could not open project."));
-		return;
+		return FALSE;
 	}
 
 	glade_project_window_add_project (gpw, project);
+	return TRUE;
 }
 
 /**
@@ -674,26 +677,28 @@ glade_project_open (const gchar *path)
  * @project:
  * @path 
  * 
- * Save the project to the given path
+ * Save the project to the given path. Returns TRUE on success.
  **/
-void
+gboolean
 glade_project_save (GladeProject *project, const gchar *path)
 {
 	GladeProjectWindow *gpw;
 
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (path != NULL);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	g_return_val_if_fail (path != NULL, FALSE);
 
 	gpw = glade_project_window_get ();
 
 	if (!glade_project_save_to_file (project, path)) {
 		glade_util_ui_warn (_("Invalid file name"));
-		return;
+		return FALSE;
 	}
 
 	glade_project_refresh_menu_item (project);
 	glade_project_window_refresh_title (gpw);	
 	glade_util_flash_message (gpw->statusbar_actions_context_id,
 				  _("Project '%s' saved"), project->name);
+
+	return TRUE;
 }
 
