@@ -44,6 +44,7 @@
 #include "glade-property-class.h"
 #include "glade-command.h"
 #include "glade-debug.h"
+#include "glade-gtk.h"
 
 static void glade_editor_class_init (GladeEditorClass * klass);
 static void glade_editor_init (GladeEditor * editor);
@@ -864,8 +865,7 @@ glade_editor_table_append_items (GladeEditorTable *table,
 			continue;
 		property = glade_editor_table_append_item (table, property_class);
 		if (property != NULL)
-			new_list = g_list_prepend (new_list,
-						   property);
+			new_list = g_list_prepend (new_list, property);
 	}
 
 	*list_ = new_list;
@@ -888,6 +888,7 @@ glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolea
 		glade_editor_table_append_standard_fields (table);
 	if (!glade_editor_table_append_items (table, class, &table->properties, common))
 		return NULL;
+
 	gtk_widget_show_all (table->table_widget);
 	editor->widget_tables = g_list_prepend (editor->widget_tables,
 						table);
@@ -969,7 +970,6 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 		table = glade_editor_table_create (editor, class, TRUE);
 
 	g_return_if_fail (table != NULL);
-	
 
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
@@ -1427,8 +1427,23 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
 	
+	/* gross bad hack. Add a "Edit Menu..." button if the class is GtkMenuBar.  I should expand
+	 * the gtkmenubar.xml file to allow something like this */
+	if (strcmp (class->name, "GtkMenuBar") == 0) {
+		GtkWidget *edit_menu_button;
+		GladeEditorTable *table = glade_editor_get_table_from_class (editor, class, FALSE);
+
+		g_assert (GLADE_IS_EDITOR_TABLE (table));
+
+		edit_menu_button = glade_gtk_create_menu_editor_button (item);
+		gtk_table_attach (GTK_TABLE (table->table_widget), edit_menu_button,
+				  0, 2, table->rows, table->rows + 1,
+				  GTK_EXPAND, 0, 0, 0);
+		table->rows++;
+	}
+		
 	glade_editor_load_packing_page (editor, item);
-	  
+
 	glade_signal_editor_load_widget (editor->signal_editor, item);
 
 	if (!item)

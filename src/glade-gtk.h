@@ -7,6 +7,9 @@ G_BEGIN_DECLS
 gboolean glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name);
 gboolean glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name);
 
+/* big ugly hack... bad bad Joaquin... */
+GtkWidget *glade_gtk_create_menu_editor_button (GladeWidget *item);
+
 /* Remove !! */
 gpointer glade_gtk_get_function (const gchar *name);
 
