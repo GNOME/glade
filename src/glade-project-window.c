@@ -46,15 +46,17 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
+const gchar *WINDOW_TITLE = "Glade-3 GUI Builder";
+
 static void
 gpw_refresh_title (GladeProjectWindow *gpw)
 {
 	gchar *title;
 
 	if (gpw->active_project)
-		title = g_strdup_printf ("glade3 - %s", gpw->active_project->name);
+		title = g_strdup_printf ("%s - %s", WINDOW_TITLE, gpw->active_project->name);
 	else
-		title = g_strdup_printf ("glade3");
+		title = g_strdup_printf ("%s", WINDOW_TITLE);
 
 	gtk_window_set_title (GTK_WINDOW (gpw->window), title);
 	g_free (title);
