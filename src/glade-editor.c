@@ -987,7 +987,7 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), table->table_widget,
-			    TRUE, TRUE, 0);
+			    FALSE, TRUE, 0);
 }
 
 static void
@@ -1018,7 +1018,7 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
-			    TRUE, TRUE, 0);
+			    FALSE, TRUE, 0);
 }
 
 void
@@ -1412,7 +1412,8 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	}
 
 	gtk_widget_show_all (table->table_widget);
-	gtk_container_add (container, table->table_widget);
+	gtk_box_pack_start (GTK_BOX (editor->vbox_packing), table->table_widget,
+                            FALSE, TRUE, 0);
 
 	old = table;
 }
