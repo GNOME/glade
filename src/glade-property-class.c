@@ -188,16 +188,25 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	switch (G_PARAM_SPEC_TYPE (spec))
 	{
 	case G_TYPE_PARAM_INT:
+	case G_TYPE_PARAM_UINT:
 		return GLADE_PROPERTY_TYPE_INTEGER;
 	case G_TYPE_PARAM_FLOAT:
-		g_warning ("Float not yet implemented\n");
-		break;
+		return GLADE_PROPERTY_TYPE_FLOAT;
 	case G_TYPE_PARAM_BOOLEAN:
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
 	case G_TYPE_PARAM_STRING:
 		return GLADE_PROPERTY_TYPE_TEXT;
 	case G_TYPE_PARAM_ENUM:
 		return GLADE_PROPERTY_TYPE_CHOICE;
+	case G_TYPE_PARAM_DOUBLE:
+		g_warning ("Double not implemented\n");
+		break;
+	case G_TYPE_PARAM_LONG:
+		g_warning ("Long not implemented\n");
+		break;
+	case G_TYPE_PARAM_UCHAR:
+		g_warning ("uchar not implemented\n");
+		break;
 	default:
 		g_warning ("Could not determine GladePropertyType from spec (%d)",
 			   G_PARAM_SPEC_TYPE (spec));
@@ -267,9 +276,13 @@ glade_property_get_parameters_integer (GParamSpec *spec,
 	GladeParameter *parameter;
 	gint def;
 	
-	g_return_val_if_fail (G_IS_PARAM_SPEC_INT (spec), NULL);
+	g_return_val_if_fail (G_IS_PARAM_SPEC_INT  (spec) |
+			      G_IS_PARAM_SPEC_UINT (spec), NULL);
 
-	def = (gint) G_PARAM_SPEC_INT (spec)->default_value;
+	if (G_IS_PARAM_SPEC_INT (spec))
+		def = (gint) G_PARAM_SPEC_INT (spec)->default_value;
+	else
+		def = (gint) G_PARAM_SPEC_UINT (spec)->default_value;
 	
 	parameter = glade_parameter_new ();
 	parameter->key = g_strdup ("Default");
@@ -366,7 +379,8 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	spec = glade_property_class_find_spec (widget_class, name);
 
 	if (spec == NULL) {
-		g_warning ("Could not create a property class from a param spec\n");
+		g_warning ("Could not create a property class from a param spec for *%s* with name *%s*\n",
+			   widget_class->name, name);
 		return NULL;
 	}
 
@@ -416,7 +430,7 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 	property_class->gtk_arg = glade_xml_get_value_string (node, GLADE_TAG_GTKARG);
 
 	/* Get the type */
-	type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, NULL);
+	type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, widget_class->name);
 	if (type == NULL)
 		return NULL;
 	property_class->type = glade_property_type_str_to_enum (type);

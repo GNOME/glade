@@ -12,6 +12,11 @@ widgets_DATA = \
 	gtkentry.xml \
 	gtktogglebutton.xml \
 	gtkprogressbar.xml \
-	gtkspinbutton.xml
+	gtkspinbutton.xml \
+	gtkradiobutton.xml \
+	gtkcombo.xml \
+	gtkhseparator.xml \
+	gtkvseparator.xml \
+	gtkhandlebox.xml
 
 EXTRA_DIST = $(widgets_DATA)

@@ -32,8 +32,7 @@ struct _GladeWidgetClass {
 	GType type;         /* GType of the widget */
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
-	gchar *icon;         /* Name of the icon without the prefix, for example
-				"button" */
+
 	GdkPixmap *pixmap;   /* The loaded pixmap for the icon of this widget type */
 	GdkBitmap *mask;     /* The mask for the loaded pixmap */
 	GdkPixbuf *pixbuf;  /* Temp for glade-project-view-tree. */

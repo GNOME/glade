@@ -1,3 +1,14 @@
+2001-07-05  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-property-class.c (glade_property_get_parameters_integer):
+	G_IS_PARAM_SPEC_UINT is also valid
+
+	* src/glade-widget-class.c (glade_widget_class_create_pixmap): use
+	->generic_name now
+
+	* src/glade-widget-class.h: remove ->icon it was redundant with
+	->generic_name, use ->generic_name to load icons
+
 2001-07-04  Chema Celorio  <chema@celorio.com>
 
 	* widgets/gtk*.xml: a lot of cleaning, added new files and converted old .xml

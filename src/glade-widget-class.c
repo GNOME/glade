@@ -201,7 +201,6 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
-	class->icon         = glade_xml_get_value_string_required (node, GLADE_TAG_ICON, NULL);
 
 	init_function_name = glade_xml_get_value_string_required (node, GLADE_TAG_GET_TYPE_FUNCTION, NULL);
 	if (!init_function_name)
@@ -214,7 +213,6 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 	class->signals      = glade_widget_class_list_signals (class);
 
 	if (!class->name ||
-	    !class->icon ||
 	    !class->generic_name) {
 		g_warning ("Invalid XML file. Widget Class %s\n", class->name);
 		return NULL;
@@ -246,7 +244,7 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 	
 	widget = gtk_button_new ();
 
-	full_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->icon);
+	full_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->generic_name);
 	if (stat (full_path, &s) != 0) {
 		g_warning ("Could not create a the \"%s\" GladeWidgetClass because \"%s\" does not exist",
 			   class->name, full_path);
