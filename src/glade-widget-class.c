@@ -58,17 +58,18 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 
 	tmp = g_string_new (class->name);
 
-	while (tmp->str[i]) {
-		if (isupper (tmp->str[i])) {
+	while (tmp->str[i])
+	{
+		if (g_ascii_isupper (tmp->str[i]))
+		{
 			tmp = g_string_insert_c (tmp, i++, '_');
 
 			j = 0;
-			while (isupper (tmp->str[i++]))
+			while (g_ascii_isupper (tmp->str[i++]))
 				j++;
 
-			if (j > 2) {
+			if (j > 2)
 				g_string_insert_c (tmp, i-2, '_');
-			}
 
 			continue;
 		}
@@ -91,15 +92,12 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_free (widget_class->generic_name);
 	g_free (widget_class->name);
 
-	/* delete the list holding the properties */
 	g_list_foreach (widget_class->properties, (GFunc) g_free, NULL);
 	g_list_free (widget_class->properties);
 
-	/* delete the list holding the child properties */
 	g_list_foreach (widget_class->child_properties, (GFunc) g_free, NULL);
 	g_list_free (widget_class->child_properties);
 
-	/* delete the list holding the signals */
 	g_list_foreach (widget_class->signals, (GFunc) g_free, NULL);
 	g_list_free (widget_class->signals);
 }
@@ -124,7 +122,8 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	  */
 
 	object_class = g_type_class_peek (class->type);
-	if (object_class == NULL) {
+	if (!object_class)
+	{
 		g_warning ("Class peek failed\n");
 		return NULL;
 	}
@@ -137,19 +136,23 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 		spec = specs[i];
 
 		/* We only use the writable properties */
-		if (spec->flags & G_PARAM_WRITABLE) {
+		if (spec->flags & G_PARAM_WRITABLE)
+		{
 			property_class = glade_property_class_new_from_spec (spec);
 			if (!property_class)
 				continue;
 
-			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR) {
+			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR)
+			{
 				/* The property type is not supported.  That's not an error, as there are
 				 * several standard properties that are not supposed to be edited through
 				 * the palette (as the "attributes" property of a GtkLabel) */
 				glade_property_class_free (property_class);
 				property_class = NULL;
 				continue;
-			} else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+			}
+			else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT)
+			{
 				/* We don't support these properties */
 				glade_property_class_free (property_class);
 				property_class = NULL;
@@ -158,11 +161,10 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 
 			/* should this if go into property_class_new_from_spec ? */
 			if (!g_ascii_strcasecmp (g_type_name (spec->owner_type), "GtkWidget") &&
-			    g_ascii_strcasecmp (spec->name, "name")) {
+			    g_ascii_strcasecmp (spec->name, "name"))
 				property_class->common = TRUE;
-			} else {
+			else
 				property_class->common = FALSE;
-			}
 
 			property_class->optional = FALSE;
 
@@ -195,14 +197,16 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 		return NULL;
 
 	object_class = g_type_class_peek (class->type);
-	if (object_class == NULL) {
+	if (!object_class)
+	{
 		g_warning ("Class peek failed\n");
 		return NULL;
 	}
 
 	specs = gtk_container_class_list_child_properties (object_class, &n_specs);
 
-	for (i = 0; i < n_specs; i++) {
+	for (i = 0; i < n_specs; i++)
+	{
 		spec = specs[i];
 
 		property_class = glade_property_class_new_from_spec (spec);
@@ -232,11 +236,14 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	g_return_val_if_fail (class->type != 0, NULL);
 
 	type = class->type;
-	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
-		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
+	while (g_type_is_a (type, GTK_TYPE_OBJECT))
+	{
+		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
+		{
 			sig_ids = g_signal_list_ids (type, &num_signals);
 
-			for (count = 0; count < num_signals; count++) {
+			for (count = 0; count < num_signals; count++)
+			{
 				cur = g_new0 (GladeWidgetClassSignal, 1);
 				cur->name = (gchar *) g_signal_name (sig_ids[count]);
 				cur->type = (gchar *) g_type_name (type);
@@ -273,7 +280,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 	GList *properties = widget_class->properties;
 
 	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
+	for (; child; child = glade_xml_node_next (child))
+	{
 		gchar *id;
 		GList *list;
 		GladePropertyClass *property_class;
@@ -292,9 +300,12 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 			if (!g_ascii_strcasecmp (id, tmp))
 				break;
 		}
-		if (list) {
+		if (list)
+		{
 			property_class = GLADE_PROPERTY_CLASS (list->data);
-		} else {
+		}
+		else
+		{
 			property_class = glade_property_class_new ();
 			property_class->id = g_strdup (id);
 			properties = g_list_append (properties, property_class);
@@ -302,7 +313,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 		}
 
 		updated = glade_property_class_update_from_node (child, widget_class, &property_class);
-		if (!updated) {
+		if (!updated)
+		{
 			g_warning ("failed to update %s property of %s from xml", id, widget_class->name);
 			g_free (id);
 			continue;
@@ -350,28 +362,32 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 		return FALSE;
 
 	replace_child_function_name = glade_xml_get_value_string (node, GLADE_TAG_REPLACE_CHILD_FUNCTION);
-	if (replace_child_function_name && widget_class->module) {
+	if (replace_child_function_name && widget_class->module)
+	{
 		if (!g_module_symbol (widget_class->module, replace_child_function_name, (void **) &widget_class->replace_child))
 			g_warning ("Could not find %s\n", replace_child_function_name);
 	}
 	g_free (replace_child_function_name);
 
 	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-	if (post_create_function_name && widget_class->module) {
+	if (post_create_function_name && widget_class->module)
+	{
 		if (!g_module_symbol (widget_class->module, post_create_function_name, (void **) &widget_class->post_create_function))
 			g_warning ("Could not find %s\n", post_create_function_name);
 	}
 	g_free (post_create_function_name);
 
 	fill_empty_function_name = glade_xml_get_value_string (node, GLADE_TAG_FILL_EMPTY_FUNCTION);
-	if (fill_empty_function_name && widget_class->module) {
+	if (fill_empty_function_name && widget_class->module)
+	{
 		if (!g_module_symbol (widget_class->module, fill_empty_function_name, (void **) &widget_class->fill_empty))
 			g_warning ("Could not find %s\n", fill_empty_function_name);
 	}
 	g_free (fill_empty_function_name);
 
 	get_internal_child_function_name = glade_xml_get_value_string (node, GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION);
-	if (get_internal_child_function_name && widget_class->module) {
+	if (get_internal_child_function_name && widget_class->module)
+	{
 		if (!g_module_symbol (widget_class->module, get_internal_child_function_name, (void **) &widget_class->get_internal_child))
 			g_warning ("Could not find %s\n", get_internal_child_function_name);
 	}
@@ -464,7 +480,8 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 		GladePropertyClass *property_class = (GladePropertyClass*) parent_properties->data;
 		GList *list = g_list_append (last_property, glade_property_class_clone (property_class));
 
-		if (!last_property) {
+		if (!last_property)
+		{
 			widget_class->properties = list;
 			last_property = list;
 		}
@@ -488,7 +505,8 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 	GHashTable *hash_properties = g_hash_table_new (g_str_hash, g_str_equal);
 	GList *properties_classes = widget_class->properties;
 
-	while (properties_classes != NULL) {
+	while (properties_classes != NULL)
+	{
 		GladePropertyClass *property_class = (GladePropertyClass*) properties_classes->data;
 		GList *old_property;
 
@@ -560,29 +578,35 @@ glade_widget_class_new (const char *name,
 
 	g_return_val_if_fail (name != NULL, NULL);
 
-	if (glade_widget_class_get_by_name (name) != NULL) {
+	if (glade_widget_class_get_by_name (name) != NULL)
+	{
 		g_warning ("The widget class [%s] has at least two different definitions.\n", name);
 		goto lblError;
 	}
 
-	if (base_filename != NULL) {
+	if (base_filename != NULL)
+	{
 		filename = g_strconcat (WIDGETS_DIR, "/", base_filename, NULL);
-		if (filename == NULL) {
+		if (filename == NULL)
+		{
 			g_warning (_("Not enough memory."));
 			goto lblError;
 		}
 	}
 
-	if (base_library != NULL) {
+	if (base_library != NULL)
+	{
 		library = g_strconcat (MODULES_DIR G_DIR_SEPARATOR_S, base_library, NULL);
-		if (library == NULL) {
+		if (library == NULL)
+		{
 			g_warning (_("Not enough memory."));
 			goto lblError;
 		}
 	}
 
 	widget_class = g_new0 (GladeWidgetClass, 1);
-	if (!widget_class) {
+	if (!widget_class)
+	{
 		g_warning (_("Not enough memory."));
 		goto lblError;
 	}
@@ -595,7 +619,8 @@ glade_widget_class_new (const char *name,
 	 * that only works for registered types, and the only way to register the
 	 * type is to call foo_bar_get_type() */
 	init_function_name = glade_widget_class_compose_get_type_func (widget_class);
-	if (!init_function_name) {
+	if (!init_function_name)
+	{
 		g_warning (_("Not enough memory."));
 		goto lblError;
 	}
@@ -620,9 +645,11 @@ glade_widget_class_new (const char *name,
 
 	widget_class->icon = glade_widget_class_create_icon (widget_class);
 
-	if (library != NULL) {
+	if (library)
+	{
 		widget_class->module = g_module_open (library, G_MODULE_BIND_LAZY);
-		if (!widget_class->module) {
+		if (!widget_class->module)
+		{
 			g_warning (_("Unable to open the module %s."), library);
 			goto lblError;
 		}
@@ -690,7 +717,8 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 	GladePropertyClass *property_class;
 	GList *list;
 
-	for (list = class->properties; list; list = list->next) {
+	for (list = class->properties; list; list = list->next)
+	{
 		property_class = list->data;
 		if (property_class->query != NULL)
 			return TRUE;
@@ -705,7 +733,8 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 	GList *list;
 	GladePropertyClass *pclass;
 
-	for (list = class->properties; list; list = list->next) {
+	for (list = class->properties; list; list = list->next)
+	{
 		pclass = list->data;
 		if (strcmp (pclass->id, name) == 0)
 			return TRUE;
@@ -713,62 +742,6 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 
 	return FALSE;
 }
-
-#if 0 // these two are just called in a commented out function in glade-property-class
-static void
-glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
-{
-	GObjectClass *object_class;
-	GType type;
-
-	type = glade_widget_class_get_type (class);
-	g_type_class_ref (type); /* hmm */
-	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
-	  */
-	object_class = g_type_class_peek (type);
-	if (object_class == NULL) {
-		g_warning ("Class peek failed\n");
-		*specs = NULL;
-		*n_specs = 0;
-		return;
-	}
-
-	*specs = g_object_class_list_properties (object_class, n_specs);
-}
-
-GParamSpec *
-glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
-{
-	GParamSpec **specs = NULL;
-	GParamSpec *spec;
-	gint n_specs = 0;
-	gint i;
-
-	glade_widget_class_get_specs (class, &specs, &n_specs);
-
-	for (i = 0; i < n_specs; i++) {
-		spec = specs[i];
-
-		if (!spec || !spec->name) {
-			g_warning ("Spec does not have a valid name, or invalid spec");
-			g_free (specs);
-			return NULL;
-		}
-
-		if (strcmp (spec->name, name) == 0) {
-			GParamSpec *return_me;
-			return_me = g_param_spec_ref (spec);
-			g_free (specs);
-			return return_me;
-		}
-	}
-
-	g_free (specs);
-	
-	return NULL;
-}
-#endif
 
 /**
  * glade_widget_class_dump_param_specs:
@@ -798,7 +771,8 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	  */
 
 	object_class = g_type_class_peek (class->type);
-	if (object_class == NULL) {
+	if (!object_class)
+	{
 		g_warning ("Class peek failed\n");
 		return;
 	}
@@ -808,7 +782,8 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	g_ok_print ("\nDumping ParamSpec for %s\n", class->name);
 
 	last = 0;
-	for (i = 0; i < n_specs; i++) {
+	for (i = 0; i < n_specs; i++)
+	{
 		spec = specs[i];
 		if (last != spec->owner_type)
 			g_ok_print ("\n                    --  %s -- \n",
@@ -824,39 +799,6 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 
 	g_free (specs);
 }
-
-#if 0 //we have another _get_by_name func... can this go away?
-/**
- * glade_widget_class_get_by_name:
- * @name: 
- * 
- * Find a GladeWidgetClass with the name @name.
- * 
- * Return Value: 
- **/
-GladeWidgetClass *
-glade_widget_class_get_by_name (const gchar *name)
-{
-	GladeWidgetClass *class;
-	GList *list;
-	
-	g_return_val_if_fail (name != NULL, NULL);
-
-	list = glade_catalog_get_widgets ();
-	for (; list; list = list->next) {
-		class = list->data;
-		g_return_val_if_fail (class->name != NULL, NULL);
-		if (class->name == NULL)
-			return NULL;
-		if (strcmp (class->name, name) == 0)
-			return class;
-	}
-
-	g_warning ("Class not found by name %s\n", name);
-	
-	return NULL;
-}
-#endif
 
 gboolean
 glade_widget_class_is (GladeWidgetClass *class, const gchar *name)

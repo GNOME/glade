@@ -4,6 +4,7 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_TYPE_PALETTE              (glade_palette_get_type ())
 #define GLADE_PALETTE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PALETTE, GladePalette))
 #define GLADE_PALETTE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PALETTE, GladePaletteClass))
@@ -19,7 +20,6 @@ typedef struct _GladePaletteClass	GladePaletteClass;
  * group of widgets to choose from an a table with icons for each
  * widget available.
  */
-
 struct _GladePalette
 {
 	GtkVBox vbox; /* The parent is a vbox
@@ -72,9 +72,14 @@ struct _GladePaletteClass
 	void (*widget_class_chosen) (GladePalette *palette, GladeWidgetClass *class);
 };
 
+GType glade_palette_get_type (void);
+
 GladePalette *glade_palette_new    (GList *catalogs);
+
 void glade_palette_append_catalog  (GladePalette *palette, GladeCatalog *catalog);
+
 void glade_palette_unselect_widget (GladePalette *palette);
+
 
 G_END_DECLS
 

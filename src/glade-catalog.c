@@ -37,13 +37,6 @@
 
 #define GLADE_TAG_PALETTE "GladePalette"
 
-static GList *widget_class_list  = NULL; /* A list of all the GladeWidgetClass objects loaded */
-
-GList *
-glade_catalog_get_widgets (void)
-{
-	return widget_class_list;
-}
 
 void
 glade_catalog_delete (GladeCatalog *catalog)
@@ -54,14 +47,8 @@ glade_catalog_delete (GladeCatalog *catalog)
 		return;
 
 	g_free (catalog->title);
-
-	list = catalog->widget_classes;
-	while (list != NULL)
-	{
-		glade_widget_class_free ((GladeWidgetClass*) list->data);
-		list = list->next;
-	}
-
+	for (list = catalog->widget_classes; list; list = list->next)
+		glade_widget_class_free (GLADE_WIDGET_CLASS (list->data));
 	g_list_free (catalog->widget_classes);
 	g_free (catalog);
 }
@@ -92,7 +79,7 @@ glade_catalog_load (const char *base_catalog_filename)
 
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (catalog_filename, NULL, GLADE_TAG_CATALOG);
-	if (context == NULL)
+	if (!context)
 	{
 		g_warning (_("Impossible to open the catalog [%s]."), catalog_filename);
 		goto lblError;
@@ -101,13 +88,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	doc = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
-	/* allocate the catalog */
 	catalog = g_new0 (GladeCatalog, 1);
-	if (catalog == NULL)
-	{
-		g_critical (_("Not enough memory."));
-		goto lblError;
-	}
 
 	last_widget_class = NULL;
 
@@ -134,16 +115,16 @@ glade_catalog_load (const char *base_catalog_filename)
 
 	/* build all the GladeWidgetClass'es associated with this catalog */
 	widget_node = glade_xml_node_get_children (root);
-	for (; widget_node != NULL; widget_node = glade_xml_node_next (widget_node))
+	for (; widget_node; widget_node = glade_xml_node_next (widget_node))
 	{
 		char *partial_widget_class_library = NULL;
 		char *base_widget_class_library = NULL;
-		
+
 		if (!glade_xml_node_verify (widget_node, GLADE_TAG_GLADE_WIDGET))
 			continue;
 
 		name = glade_xml_get_property_string_required (widget_node, "name", NULL);
-		if (name == NULL)
+		if (!name)
 			continue;
 
 		/* get the specific library to the widget class, if any */
@@ -248,3 +229,4 @@ GList *glade_catalog_get_widget_classes (GladeCatalog *catalog)
 	g_return_val_if_fail (catalog != NULL, NULL);
 	return catalog->widget_classes;	
 }
+

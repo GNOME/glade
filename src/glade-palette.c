@@ -30,7 +30,6 @@
 #endif
 
 #include "glade.h"
-
 #include "glade-palette.h"
 #include "glade-catalog.h"
 #include "glade-project.h"
@@ -56,8 +55,10 @@ glade_palette_get_type (void)
 {
 	static GType type = 0;
 
-	if (!type) {
-		static const GTypeInfo info = {
+	if (!type)
+	{
+		static const GTypeInfo info =
+		{
 			sizeof (GladePaletteClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
@@ -190,8 +191,8 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	gint i;
 
 	list = glade_catalog_get_widget_classes (catalog);
-
-	while (list) {
+	while (list)
+	{
 		if (((GladeWidgetClass*) list->data)->in_palette)
 			++num_visible;
 
@@ -259,16 +260,15 @@ glade_palette_init (GladePalette *palette)
 GladePalette *
 glade_palette_new (GList *catalogs)
 {
+	GList *list;
 	GladePalette *palette;
 
 	palette = g_object_new (GLADE_TYPE_PALETTE, NULL);
-	if (palette == NULL)
+	if (!palette)
 		return NULL;
 
-	while (catalogs != NULL) {
-		glade_palette_append_catalog (palette, (GladeCatalog *) catalogs->data);
-		catalogs = g_list_next (catalogs);
-	}
+	for (list = catalogs; list; list = list->next)
+		glade_palette_append_catalog (palette, GLADE_CATALOG (list->data));
 
 	return palette;
 }
