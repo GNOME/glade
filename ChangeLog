@@ -1,6 +1,11 @@
 2004-01-27  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
-    * src/glade-signal-handler.c: mark with bold the signals that have
+	* src/glade-signal-handler.c: remove the editable handler from
+	the rows that contain just the class name.
+
+2004-01-27  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-signal-handler.c: mark with bold the signals that have
 	a handler, along with the widget classes that have at least a signal
 	with a handler. Expand these classes by default in the signal editor.
 	Also make the signal's handler editable by just double-clicking in

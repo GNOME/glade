@@ -39,6 +39,7 @@ enum
 	COLUMN_AFTER,
 
 	COLUMN_AFTER_VISIBLE,
+	COLUMN_HANDLER_EDITABLE,
 	COLUMN_SLOT, /* if this row contains a "<Type...>" label */
 	COLUMN_BOLD,
 	NUM_COLUMNS
@@ -169,6 +170,7 @@ glade_signal_editor_cell_edited (GtkCellRendererText *cell,
 					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
 					    COLUMN_AFTER, FALSE,
 					    COLUMN_AFTER_VISIBLE, FALSE,
+					    COLUMN_HANDLER_EDITABLE, TRUE,
 					    COLUMN_SLOT, TRUE, -1);
 
 			/* mark the signal & class name as bold */
@@ -270,7 +272,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
  	GtkCellRenderer *renderer;
 	GtkTreeModel *model;
 
-	editor->model = gtk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN);
+	editor->model = gtk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN);
 	model = GTK_TREE_MODEL (editor->model);
 
 	view_widget = gtk_tree_view_new_with_model (model);
@@ -289,9 +291,11 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	/* handler column */
  	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "editable", TRUE, "style", PANGO_STYLE_ITALIC, "foreground", "Gray", NULL);
+	g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, "foreground", "Gray", NULL);
 	g_signal_connect (renderer, "edited", G_CALLBACK (glade_signal_editor_cell_edited), editor);
-	column = gtk_tree_view_column_new_with_attributes (_("Handler"), renderer, "text", COLUMN_HANDLER, "style_set", COLUMN_SLOT, "foreground_set", COLUMN_SLOT, NULL);
+	column = gtk_tree_view_column_new_with_attributes (_("Handler"), renderer,
+							   "text", COLUMN_HANDLER, "style_set", COLUMN_SLOT,
+							   "foreground_set", COLUMN_SLOT, "editable", COLUMN_HANDLER_EDITABLE, NULL);
  	gtk_tree_view_append_column (view, column);
 
 	/* after column */
@@ -379,7 +383,12 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 		if (strcmp(last_type, signal->type))
 		{
 			gtk_tree_store_append (editor->model, &parent_class, NULL);
-			gtk_tree_store_set (editor->model, &parent_class, COLUMN_SIGNAL, signal->type, COLUMN_AFTER_VISIBLE, FALSE, COLUMN_SLOT, FALSE, COLUMN_BOLD, FALSE, -1);
+			gtk_tree_store_set (editor->model, &parent_class,
+					    COLUMN_SIGNAL, signal->type,
+					    COLUMN_AFTER_VISIBLE, FALSE,
+					    COLUMN_HANDLER_EDITABLE, FALSE,
+					    COLUMN_SLOT, FALSE,
+					    COLUMN_BOLD, FALSE, -1);
 			last_type = signal->type;
 		}
 
@@ -391,6 +400,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					    COLUMN_SIGNAL, signal->name,
 					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
 					    COLUMN_AFTER, FALSE,
+					    COLUMN_HANDLER_EDITABLE, TRUE,
 					    COLUMN_AFTER_VISIBLE, FALSE,
 					    COLUMN_SLOT, TRUE, -1);
 		else
@@ -410,6 +420,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					    COLUMN_HANDLER, widget_signal->handler,
 					    COLUMN_AFTER, widget_signal->after,
 					    COLUMN_AFTER_VISIBLE, TRUE,
+					    COLUMN_HANDLER_EDITABLE, TRUE,
 					    COLUMN_SLOT, FALSE,
 					    COLUMN_BOLD, TRUE, -1);
 			for (i = 1; i < signals->len; i++)
@@ -420,6 +431,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 						    COLUMN_HANDLER, widget_signal->handler,
 						    COLUMN_AFTER, widget_signal->after,
 						    COLUMN_AFTER_VISIBLE, TRUE,
+						    COLUMN_HANDLER_EDITABLE, TRUE,
 						    COLUMN_SLOT, FALSE, -1);
 			}
 
@@ -429,6 +441,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
 					    COLUMN_AFTER, FALSE,
 					    COLUMN_AFTER_VISIBLE, FALSE,
+					    COLUMN_HANDLER_EDITABLE, TRUE,
 					    COLUMN_SLOT, TRUE, -1);
 		}
 	}
