@@ -29,7 +29,6 @@
 #include <gmodule.h>
 
 #include "glade.h"
-#include "glade-xml-utils.h"
 #include "glade-choice.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
@@ -986,33 +985,5 @@ glade_property_class_list_add_from_node (GladeXmlNode *node,
 
 	*properties = g_list_reverse (*properties);
 
-}
-
-/**
- * glade_property_class_create_label:
- * @class: The PropertyClass to create the name from
- * 
- * Creates a GtkLabel widget containing the name of the property.
- * This funcion is used by the property editor to create the label
- * of the property. 
- * 
- * Return Value: a GtkLabel
- **/
-GtkWidget *
-glade_property_class_create_label (GladePropertyClass *class)
-{
-	GtkWidget *label;
-	gchar *text;
-
-	text = g_strdup_printf ("%s :", class->name);
-	label = gtk_label_new (text);
-	g_free (text);
-
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-
-	/* WARNING: This is not working */
-	glade_util_widget_set_tooltip (label, class->tooltip);
-	
-	return label;
 }
 

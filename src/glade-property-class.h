@@ -192,9 +192,6 @@ GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
 
 void glade_property_class_free (GladePropertyClass *class);
 
-GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
-GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
-
 void        glade_property_class_list_add_from_node (GladeXmlNode * node,
 						     GladeWidgetClass *class,
 						     GList **properties);

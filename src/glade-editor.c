@@ -43,6 +43,7 @@
 #include "glade-debug.h"
 #include "glade-menu-editor.h"
 #include "glade-project.h"
+#include "glade-utils.h"
 
 static void glade_editor_class_init (GladeEditorClass *class);
 static void glade_editor_init (GladeEditor *editor);
@@ -685,6 +686,24 @@ glade_editor_create_input_object (GladeEditorProperty *property,
 	return NULL;
 }
 
+GtkWidget *
+glade_editor_create_item_label (GladePropertyClass *class)
+{
+	GtkWidget *label;
+	gchar *text;
+
+	text = g_strdup_printf ("%s :", class->name);
+	label = gtk_label_new (text);
+	g_free (text);
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+
+	/* WARNING: This is not working */
+	glade_util_widget_set_tooltip (label, class->tooltip);
+
+	return label;
+}
+
 static void
 glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
@@ -752,7 +771,7 @@ glade_editor_append_item_real (GladeEditorTable *table,
 		return gtk_label_new ("Implement me !");
 	}
 
-	label = glade_property_class_create_label (property->class);
+	label = glade_editor_create_item_label (property->class);
 
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, input, 1, table->rows);
