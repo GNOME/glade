@@ -1,3 +1,12 @@
+2001-08-21  Chema Celorio Foo  <chema@celorio.com>
+
+	* src/glade-catalog.c: add config.h. I am not sure i agree with Kjartan about
+	the config.h think though
+	* src/glade-placeholder.c: ditto. kmaraas didn't tested his fix i guess.
+	
+	* src/glade-property.h (GLADE_PROPERTY_OBJECT_CLASS): Fix the define to
+	pass the GladePropertyObjectClass structure to the macro. 
+
 2001-08-20  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Added "nn" and "no" to ALL_LINGUAS.
