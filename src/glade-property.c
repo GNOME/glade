@@ -92,7 +92,6 @@ glade_property_object_class_init (GladePropertyObjectClass *class)
 static void
 glade_property_init (GladeProperty *property)
 {
-
 	property->class = NULL;
 	property->value = g_new0 (GValue, 1);
 	property->enabled = TRUE;
@@ -108,9 +107,6 @@ glade_property_new (void)
 
 	return property;
 }
-
-/* We are recursing so add the prototype. Don't you love C ? */
-static GList * glade_property_list_new_from_list (GList *list, GladeWidget *widget);
 
 GladeProperty *
 glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
@@ -161,40 +157,6 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	return property;
 }
 
-static GList *
-glade_property_list_new_from_list (GList *list, GladeWidget *widget)
-{
-	GladePropertyClass *property_class;
-	GladeProperty *property;
-	GList *new_list = NULL;
-
-	for (; list != NULL; list = list->next) {
-		property_class = list->data;
-		property = glade_property_new_from_class (property_class, widget);
-		if (property == NULL)
-			continue;
-
-		property->widget = widget;
-
-		new_list = g_list_prepend (new_list, property);
-	}
-
-	new_list = g_list_reverse (new_list);
-	
-	return new_list;
-}
-
-GList *
-glade_property_list_new_from_widget_class (GladeWidgetClass *class,
-					   GladeWidget *widget)
-{
-	GList *list = NULL;
-
-	list = class->properties;
-
-	return glade_property_list_new_from_list (list, widget);
-}
-
 GladeProperty *
 glade_property_get_from_id (GList *settings_list, const gchar *id)
 {
@@ -202,9 +164,8 @@ glade_property_get_from_id (GList *settings_list, const gchar *id)
 	GladeProperty *property;
 
 	g_return_val_if_fail (id != NULL, NULL);
-	
-	list = settings_list;
-	for (; list != NULL; list = list->next) {
+
+	for (list = settings_list; list; list = list->next) {
 		property = list->data;
 		g_return_val_if_fail (property, NULL);
 		g_return_val_if_fail (property->class, NULL);
@@ -390,7 +351,6 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 	g_return_if_fail (property->value != NULL);
 	g_return_if_fail (choice != NULL);
 
-
 	g_value_set_enum (property->value, choice->value);
 
 	property->loading = TRUE;
@@ -405,10 +365,12 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 
 	glade_property_emit_changed (property);
 }
-	
+
 void
 glade_property_set (GladeProperty *property, const GValue *value)
 {
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
 	switch (property->class->type) {
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		glade_property_set_boolean (property,
@@ -440,7 +402,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 			GList * list = NULL;
 
 			list = property->class->choices;
-			for (; list != NULL; list = list->next) {
+			for (; list; list = list->next) {
 				choice = list->data;
 				if (choice->value == g_value_get_enum (value))
 					break;
@@ -473,6 +435,12 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		break;
 	}
 	
+}
+
+void
+glade_property_refresh (GladeProperty *property)
+{
+	glade_property_set (property, property->value);
 }
 
 const gchar *
@@ -544,7 +512,7 @@ glade_property_get_enum (GladeProperty *property)
 
 	value = g_value_get_enum (property->value);
 	list = property->class->choices;
-	for (; list != NULL; list = list->next) {
+	for (; list; list = list->next) {
 		choice = list->data;
 		if (choice->value == value)
 			break;
@@ -565,7 +533,6 @@ glade_property_query_result_set_int (GladePropertyQueryResult *result,
 
 	g_hash_table_insert (result->hash, (gchar *)key,
 			     GINT_TO_POINTER (value));
-
 }
 
 void
@@ -633,8 +600,7 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	 * the openning and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							     property->value);
-	if (tmp == NULL)
-	{
+	if (tmp == NULL) {
 		glade_xml_node_delete (node);
 		return NULL;
 	}
