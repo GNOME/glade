@@ -4,11 +4,11 @@
 	to GLADE_PROPERTY_OBJECT_CLASS to match up with the rest of the
 	file.
 
-	* glade-utils.c (glade_util_path_is_writable): Change the call to the
-	glade_implement_me() macro to include no parameters.
+	* src/glade-utils.c (glade_util_path_is_writable): Change the call to
+	the glade_implement_me() macro to include no parameters.
 
-	* glade-utils.h (glade_implement_me): Get rid of the argument. It's
-	not used and is called with an argument only once (and makes my
+	* src/glade-utils.h (glade_implement_me): Get rid of the argument.
+	It's not used and is called with an argument only once (and makes my
 	preprocessor barf).
 
 2001-08-17  Archit Baweja  <bighead@crosswinds.net>
