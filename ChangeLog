@@ -1,3 +1,11 @@
+2004-04-26  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-command.c (glade_command_set_property): only use the
+	property value string in the description if it is not NULL, short
+	(< 10 bytes), and doesn't contain any '_' characters. Otherwise the
+	Undo/Redo menu items get too long, and the '_' get converted to
+	underlined accelerator keys.
+
 2004-04-22  Damon Chaplin  <damon@gnome.org>
 
 	* src/glade-widget.h: included "glade-types.h", removed duplicate

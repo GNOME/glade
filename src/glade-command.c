@@ -355,6 +355,9 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 	glade_project_window_refresh_undo_redo ();
 }
 
+
+#define MAX_UNDO_MENU_ITEM_VALUE_LEN	10
+
 void
 glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 {
@@ -378,8 +381,18 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 	g_value_copy (pvalue, me->arg_value);
 
 	value_name = glade_property_class_make_string_from_gvalue (property->class, pvalue);
-	cmd->description = g_strdup_printf (_("Setting %s of %s to %s"),
-					    property->class->name, gwidget->name, value_name);
+	if (!value_name || strlen (value_name) > MAX_UNDO_MENU_ITEM_VALUE_LEN
+	    || strchr (value_name, '_')) {
+		cmd->description = g_strdup_printf (_("Setting %s of %s"),
+						    property->class->name,
+						    gwidget->name);
+
+	} else {
+		cmd->description = g_strdup_printf (_("Setting %s of %s to %s"),
+						    property->class->name,
+						    gwidget->name, value_name);
+	}
+
 	g_assert (cmd->description);
 	g_free (value_name);
 
