@@ -500,14 +500,12 @@ glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *ite
 
 	child = glade_xml_node_get_children (child);
 
-	while (child != NULL) {
-		skip_text (child);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, item_tag))
 			return NULL;
 		item = glade_xml_get_content (child);
 		if (item != NULL)
 			list = g_list_prepend (list, item);
-		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);
@@ -632,14 +630,12 @@ glade_property_class_list_new_from_node (GladeXmlNode *node, GladeWidgetClass *c
 	list = NULL;
 	child = glade_xml_node_get_children (node);
 
-	while (child != NULL) {
-		skip_text (child);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
 			return NULL;
 		property_class = glade_property_class_new_from_node (child, class);
 		if (property_class != NULL)
 			list = g_list_prepend (list, property_class);
-		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

@@ -154,15 +154,13 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 	list = NULL;
 	child = glade_xml_node_get_children (node);
 
-	while (child != NULL) {
-		skip_text (child);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_CHOICE))
 			return NULL;
 		choice = glade_choice_new_from_node (child);
 		if (choice == NULL)
 			return NULL;
 		list = g_list_prepend (list, choice);
-		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

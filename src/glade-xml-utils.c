@@ -14,6 +14,37 @@
 
 #include "glade-xml-utils.h"
 
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xmlmemory.h>
+
+struct _GladeXmlNode
+{
+	xmlNodePtr node;
+};
+
+struct _GladeXmlDoc
+{
+	xmlDoc doc;
+};
+
+struct _GladeXmlContext {
+	GladeXmlDoc *doc;
+	xmlNsPtr  ns;
+};
+
+
+/* This is used inside for loops so that we skip xml comments <!-- i am a comment ->
+ * also to skip whitespace bettween nodes
+ */
+#define skip_text(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
+			    (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
+			         node = (GladeXmlNode *)((xmlNodePtr)node)->next; continue ; };
+#define skip_text_libxml(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
+			           (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
+                                       node = ((xmlNodePtr)node)->next; continue ; };
+
 /*
  * Set a string value for a node either carried as an attibute or as
  * the content of a child.
@@ -455,18 +486,23 @@ glade_xml_utils_hash_write (GladeXmlContext *context, GHashTable *hash, const gc
 }
 #endif
 
-
 /* --------------------------- Parse Context ----------------------------*/
 GladeXmlContext *
-glade_xml_context_new (GladeXmlDoc *doc,
-		       xmlNsPtr  ns)
+glade_xml_context_new_real (GladeXmlDoc *doc, xmlNsPtr ns)
 {
 	GladeXmlContext *context = g_new0 (GladeXmlContext, 1);
-	
+
 	context->doc = doc;
 	context->ns  = ns;
 	
 	return context;
+}
+
+GladeXmlContext *
+glade_xml_context_new (GladeXmlDoc *doc, const gchar *name_space)
+{
+	/* We are not using the namespace now */
+	return glade_xml_context_new_real (doc, NULL);
 }
 
 void
@@ -518,7 +554,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 		return FALSE;
 	}
 	
-	context = glade_xml_context_new ((GladeXmlDoc *)doc, name_space);
+	context = glade_xml_context_new_real ((GladeXmlDoc *)doc, name_space);
 
 	return context;
 }
@@ -562,31 +598,45 @@ glade_xml_node_new (GladeXmlContext *context, const gchar *name)
 	return (GladeXmlNode *) xmlNewDocNode ((xmlDocPtr) context->doc, context->ns, name, NULL);
 }
 					   
-
-GladeXmlNode *
-glade_xml_context_get_root (GladeXmlContext *context)
+GladeXmlDoc *
+glade_xml_context_get_doc (GladeXmlContext *context)
 {
-	xmlNodePtr node;
+	return context->doc;
+}
 
-	node = ((xmlDocPtr)(context->doc))->children;
-
-	return (GladeXmlNode *)node;
+static gboolean
+glade_libxml_node_is_comment (xmlNodePtr node) {
+	if (node == NULL)
+		return FALSE;
+	if ((strcmp ( node->name, "text") == 0) ||
+	    (strcmp ( node->name, "comment") == 0))
+		return TRUE;
+	return FALSE;
 }
 
 GladeXmlNode *
 glade_xml_node_get_children (GladeXmlNode *node_in)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
+	xmlNodePtr children;
 
-	return (GladeXmlNode *)node->children;
+	children = node->children;
+	while (glade_libxml_node_is_comment (children))
+		children = children->next;
+
+	return (GladeXmlNode *)children;
 }
 
 GladeXmlNode *
 glade_xml_node_next (GladeXmlNode *node_in)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
-	
-	return (GladeXmlNode *)node->next;
+
+	node = node->next;
+	while (glade_libxml_node_is_comment (node))
+		node = node->next;
+
+	return (GladeXmlNode *)node;
 }
 
 const gchar *
@@ -621,7 +671,8 @@ glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path)
 {
 	xmlDocPtr doc = (xmlDocPtr) doc_in;
 
-	return xmlSaveFile (full_path, doc);
+	xmlKeepBlanksDefault (0);
+	return xmlSaveFormatFile (full_path, doc, 1);
 }
 
 void

@@ -172,10 +172,10 @@ glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
 
 	child = glade_xml_node_get_children (node);
 
-	while (child != NULL) {
-		skip_text (child);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_PARAMETER))
 			return NULL;
+		
 		parameter = glade_parameter_new_from_node (child);
 		if (parameter == NULL)
 			return NULL;
@@ -187,11 +187,10 @@ glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
 		if (findme) {
 			glade_parameter_free (findme->data);
 			findme->data = parameter;
-			child = glade_xml_node_next (child);
+			continue;
 		}
 
 		list = g_list_prepend (list, parameter);
-		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

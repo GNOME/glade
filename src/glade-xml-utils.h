@@ -4,13 +4,6 @@
 #ifndef __GLADE_XML_UTILS_H__
 #define __GLADE_XML_UTILS_H__
 
-
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-#include <libxml/parserInternals.h>
-#include <libxml/xmlmemory.h>
-#include "glade-node.h"
-
 G_BEGIN_DECLS
 
 #define GLADE_XML_CONTEXT(c)    ((GladeXmlContext *)c)
@@ -19,31 +12,6 @@ G_BEGIN_DECLS
 typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
-
-struct _GladeXmlNode
-{
-	xmlNode node;
-};
-struct _GladeXmlDoc
-{
-	xmlDoc doc;
-};
-
-struct _GladeXmlContext {
-	GladeXmlDoc *doc;
-	xmlNsPtr  ns;
-};
-
-/* This is used inside for loops so that we skip xml comments <!-- i am a comment ->
- * also to skip whitespace bettween nodes
- */
-#define skip_text(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
-			    (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
-			         node = (GladeXmlNode *)((xmlNodePtr)node)->next; continue ; };
-#define skip_text_libxml(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
-			           (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
-                                        node = ((xmlNodePtr)node)->next; continue ; };
-
 
 gchar *      glade_xml_get_content (GladeXmlNode * node); /* Get the content of the node */
 void         glade_xml_set_content (GladeXmlNode *node_in, const gchar *content);
@@ -72,13 +40,14 @@ gboolean glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 
 /* Parse Context */
-GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, xmlNsPtr name_space);
+GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);
 void              glade_xml_context_destroy (GladeXmlContext *context);
 void              glade_xml_context_free    (GladeXmlContext *context);
 GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
 						   const gchar *nspace,
 						   const gchar *root_name);
-GladeXmlNode * glade_xml_context_get_root (GladeXmlContext *context);
+GladeXmlDoc *  glade_xml_context_get_doc (GladeXmlContext *context);
+
 
 
 void glade_xml_append_child (GladeXmlNode * node, GladeXmlNode * child);
@@ -97,12 +66,17 @@ GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
 
 const gchar * glade_xml_node_get_name (GladeXmlNode *node_in);
 
+
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
 GladeXmlDoc * glade_xml_doc_new (void);
 void glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
 gint glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
 void glade_xml_doc_free (GladeXmlDoc *doc_in);
+
+
+
+
 
 G_END_DECLS
 

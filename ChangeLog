@@ -1,3 +1,14 @@
+2001-07-23  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-xml-utils.c (glade_xml_doc_save): when saving a .xml file indent
+	it as libxml did by calling SaveFormatFile and xmlKeepBlanksDefault.
+
+	* src/glade-xml-utils.h: hide the libxml internals (remove headers from the
+	.h file and into the .c file. Update all the code to not deal with libxml
+	structs directly. Changed the while loops that generated libxml nodes to for
+	loops. remove the skip_text macro and add glade_xml_node_is_comment so that
+	we can test the node for a node we should ignore (in the for loops).
+
 2001-07-22  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-utils.c (glade_util_path_is_writable): implement, new file.

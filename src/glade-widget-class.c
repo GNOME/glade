@@ -283,8 +283,9 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 GladeWidgetClass *
 glade_widget_class_new_from_name (const gchar *name)
 {
-	GladeXmlContext *context;
 	GladeWidgetClass *class;
+	GladeXmlContext *context;
+	GladeXmlDoc *doc;
 	gchar *file_name;
 
 	file_name = g_strconcat (WIDGETS_DIR, "/", name, ".xml", NULL);
@@ -292,7 +293,8 @@ glade_widget_class_new_from_name (const gchar *name)
 	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
 	if (context == NULL)
 		return NULL;
-	class = glade_widget_class_new_from_node (glade_xml_context_get_root (context));
+	doc = glade_xml_context_get_doc (context);
+	class = glade_widget_class_new_from_node (glade_xml_doc_get_root (doc));
 	glade_xml_context_free (context);
 
 	if (!glade_widget_class_create_pixmap (class))
