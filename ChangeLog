@@ -1,3 +1,9 @@
+2003-10-06  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget.c (glade_widget_new_from_class): apply queried
+	properties after fill_empty.
+	* widgets/gtkbox.xml: remove the workaround for the bug fixed above.
+
 2003-10-05  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade.h: define GLADE_TAG_FILL_EMPTY_FUNCTION

@@ -869,12 +869,11 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 
 	widget = glade_widget_new_full (class, project, parent);
 
-	glade_widget_apply_queried_properties (widget, result);
-
 	/* If we are a container, add the placeholders */
 	if (widget->class->fill_empty)
 		widget->class->fill_empty (widget->widget);
 
+	glade_widget_apply_queried_properties (widget, result);
 	if (result) 
 		glade_property_query_result_destroy (result);
 
