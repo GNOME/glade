@@ -1,5 +1,11 @@
 2003-10-20  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-editor.c (glade_editor_create_input_numeric): restore
+	a bit of (erroneusly?) commented out code that prevented to change
+	numeric properties.
+
+2003-10-20  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-project-window.[ch]: move GladeProjectQuery here and
 	remove the window_title field since it doesn't make sense, e.g. you
 	can query for different properties in the same dialog.

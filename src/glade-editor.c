@@ -593,9 +593,9 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
 
 	g_object_set_data (G_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
-	/* g_signal_connect (G_OBJECT (spin), "value_changed",
+	g_signal_connect (G_OBJECT (spin), "value_changed",
 			  G_CALLBACK (glade_editor_property_changed_numeric),
-			  property); */
+			  property);
 
 	/* Some numeric types are optional, for example the default window size, so
 	 * they have a toggle button right next to the spin button. 
