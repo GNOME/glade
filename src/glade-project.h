@@ -5,20 +5,25 @@
 G_BEGIN_DECLS
 
 
-#define GLADE_PROJECT(obj)          GTK_CHECK_CAST (obj, glade_project_get_type (), GladeProject)
-#define GLADE_PROJECT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_project_get_type (), GladeProjectClass)
-#define GLADE_IS_PROJECT(obj)       GTK_CHECK_TYPE (obj, glade_project_get_type ())
+#define GLADE_TYPE_PROJECT            (glade_project_get_type ())
+#define GLADE_PROJECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROJECT, GladeProject))
+#define GLADE_PROJECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROJECT, GladeProjectClass))
+#define GLADE_IS_PROJECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROJECT))
+#define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
+#define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
 
 typedef struct _GladeProjectClass  GladeProjectClass;
 
 /* A GladeProject is well... a project nothing more nothing less. It is the
- * memory representation of a glade file */
+ * memory representation of a glade file
+ */
 struct _GladeProject
 {
-	GtkObject object; /* We emit signals */
+	GObject object; /* We emit signals */
 
-	gchar *name;         /* The name of the project like network-conf */
-	gchar *path;         /* The full path of the xml file for this project*/
+	gchar *name;    /* The name of the project like network-conf */
+
+	gchar *path;    /* The full path of the xml file for this project*/
 
 	GtkItemFactoryEntry entry; /* The menu entry in the /Project menu */
 
@@ -46,7 +51,7 @@ struct _GladeProject
 
 struct _GladeProjectClass
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
 	void   (*add_widget)          (GladeProject *project,
 				       GladeWidget  *widget);
@@ -58,7 +63,7 @@ struct _GladeProjectClass
 };
 
 
-guint glade_project_get_type (void);
+GType glade_project_get_type (void);
 
 GladeProject *glade_project_new (gboolean untitled);
 

@@ -35,7 +35,7 @@
 #include "glade-placeholder.h"
 #include "glade-utils.h"
 
-static void glade_project_class_init (GladeProjectClass * klass);
+static void glade_project_class_init (GladeProjectClass *class);
 static void glade_project_init (GladeProject *project);
 
 enum
@@ -48,80 +48,92 @@ enum
 };
 
 static guint glade_project_signals[LAST_SIGNAL] = {0};
-static GtkObjectClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
-guint
+GType
 glade_project_get_type (void)
 {
-	static guint glade_project_type = 0;
-  
-	if (!glade_project_type)
-	{
-		GtkTypeInfo glade_project_info =
-		{
-			"GladeProject",
-			sizeof (GladeProject),
+	static GType type = 0;
+
+	if (!type) {
+		static const GTypeInfo info = {
 			sizeof (GladeProjectClass),
-			(GtkClassInitFunc) glade_project_class_init,
-			(GtkObjectInitFunc) glade_project_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_project_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeProject),
+			0,
+			(GInstanceInitFunc) glade_project_init
 		};
-		
-		glade_project_type = gtk_type_unique (gtk_object_get_type (),
-						      &glade_project_info);
+
+		type = g_type_register_static (G_TYPE_OBJECT, "GladeProject", &info, 0);
 	}
-	
-	return glade_project_type;
+
+	return type;
 }
 
 static void
-glade_project_class_init (GladeProjectClass * klass)
+glade_project_class_init (GladeProjectClass *class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	object_class = (GtkObjectClass *) klass;
+	object_class = G_OBJECT_CLASS (class);
 
-	parent_class = gtk_type_class (gtk_object_get_type ());
+	parent_class = g_type_class_peek_parent (class);
 
 	glade_project_signals[ADD_WIDGET] =
-		gtk_signal_new ("add_widget",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeProjectClass, add_widget),
-				gtk_marshal_NONE__POINTER,
-				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		g_signal_new ("add_widget",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectClass, add_widget),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE,
+			      1,
+			      G_TYPE_POINTER);
+
 	glade_project_signals[REMOVE_WIDGET] =
-		gtk_signal_new ("remove_widget",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeProjectClass, remove_widget),
-				gtk_marshal_NONE__POINTER,
-				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		g_signal_new ("remove_widget",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectClass, remove_widget),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE,
+			      1,
+			      G_TYPE_POINTER);
+
 	glade_project_signals[WIDGET_NAME_CHANGED] =
-		gtk_signal_new ("widget_name_changed",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeProjectClass, widget_name_changed),
-				gtk_marshal_NONE__POINTER,
-				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		g_signal_new ("widget_name_changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectClass, widget_name_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE,
+			      1,
+			      G_TYPE_POINTER);
+
 	glade_project_signals[SELECTION_CHANGED] =
-		gtk_signal_new ("selection_changed",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeProjectClass, selection_changed),
-				gtk_marshal_VOID__VOID,
-				GTK_TYPE_NONE, 0);
-	
-	klass->add_widget = NULL;
-	klass->remove_widget = NULL;
-	klass->widget_name_changed = NULL;
-	klass->selection_changed = NULL;
+		g_signal_new ("selection_changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectClass, selection_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+	class->add_widget = NULL;
+	class->remove_widget = NULL;
+	class->widget_name_changed = NULL;
+	class->selection_changed = NULL;
 }
 
 static void
-glade_project_init (GladeProject * project)
+glade_project_init (GladeProject *project)
 {
 	project->name = NULL;
 	project->widgets = NULL;
@@ -136,7 +148,7 @@ glade_project_new (gboolean untitled)
 	GladeProject *project;
 	static gint i = 1;
 
-	project = GLADE_PROJECT (gtk_type_new (glade_project_get_type ()));
+	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
 
 	if (untitled)
 		project->name = g_strdup_printf ("Untitled %i", i++);
@@ -147,8 +159,9 @@ glade_project_new (gboolean untitled)
 void
 glade_project_selection_changed (GladeProject *project)
 {
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [SELECTION_CHANGED]);
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [SELECTION_CHANGED],
+		       0);
 }
 
 static void
@@ -189,8 +202,10 @@ glade_project_add_widget_real (GladeProject *project,
 	gwidget->project = project;
 
 	project->widgets = g_list_prepend (project->widgets, widget);
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [ADD_WIDGET], gwidget);
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [ADD_WIDGET],
+		       0,
+		       gwidget);
 }
 
 /**
@@ -251,8 +266,10 @@ glade_project_remove_widget_real (GladeProject *project,
 	glade_project_selection_changed (project);
 
 	project->widgets = g_list_remove (project->widgets, widget);
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [REMOVE_WIDGET], widget);
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [REMOVE_WIDGET],
+		       0,
+		       widget);
 }
 
 /**
@@ -288,8 +305,10 @@ glade_project_widget_name_changed (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_OBJECT (project));
 
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [WIDGET_NAME_CHANGED], widget);
+	g_signal_emit (GTK_OBJECT (project),
+		       glade_project_signals [WIDGET_NAME_CHANGED],
+		       0,
+		       widget);
 	
 	project->changed = TRUE;
 }
