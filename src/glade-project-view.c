@@ -352,20 +352,14 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 {
 	GtkTreeModel *model;
 	GladeWidget *widget;
-	GtkTreeView *tree_view;
 	GtkTreeIter iter;
 
 	if (!view->project)
 		return TRUE;
 
-	g_return_val_if_fail (GTK_IS_TREE_SELECTION (selection), FALSE);
 	g_return_val_if_fail (GLADE_IS_PROJECT_VIEW (view), FALSE);
 
-	tree_view = gtk_tree_selection_get_tree_view (selection);
-	model = gtk_tree_view_get_model (tree_view);
-
-	g_return_val_if_fail (GTK_IS_TREE_SELECTION (selection), FALSE);
-	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), FALSE);
+	model = GTK_TREE_MODEL (view->model);
 
 	/* There are no cells selected */
 	if (!gtk_tree_selection_get_selected (selection, &model, &iter))
@@ -399,7 +393,7 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
 	if (GTK_IS_WINDOW (widget->widget))
-		gtk_window_deiconify (GTK_WINDOW (widget->widget));
+		gtk_window_present (GTK_WINDOW (widget->widget));
 
 	gtk_widget_show (widget->widget);
 }
