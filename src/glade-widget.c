@@ -856,6 +856,7 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
 			gint temp;
 			glade_property_query_result_get_int (result, pclass->id, &temp);
 			property = glade_property_get_from_id (widget->properties, pclass->id);
+
 			g_value_set_int (value, temp);
 			glade_property_set (property, value);
 		}
@@ -1280,6 +1281,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
 	widget_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
+
 	if (!class_name || !widget_name)
 		return NULL;
 	class = glade_widget_class_get_by_name (class_name);
@@ -1289,17 +1291,6 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	if (!widget)
 		return NULL;
 	glade_widget_set_name (widget, widget_name);
-
-	/* Properties */
-	child =	glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
-			continue;
-
-		if (!glade_widget_apply_property_from_node (child, widget)) {
-			return NULL;
-		}
-	}
 
 	/* Signals */
 	child =	glade_xml_node_get_children (node);
@@ -1320,6 +1311,17 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 
 		if (!glade_widget_new_child_from_node (child, project, widget)) {
+			return NULL;
+		}
+	}
+
+	/* Properties */
+	child =	glade_xml_node_get_children (node);
+	for (; child; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
+			continue;
+
+		if (!glade_widget_apply_property_from_node (child, widget)) {
 			return NULL;
 		}
 	}

@@ -1,3 +1,11 @@
+2003-08-05  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-property.c (glade_property_set): when using custom 
+	set_function, copy the GValue for the property. Fixes a couple of bugs.
+
+	* src/glade-widget.c (glade_widget_new_from_node_real): set properties
+	after setting children.
+
 2003-08-05  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget-class.[ch]: use GtkImage for the widget icon.

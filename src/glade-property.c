@@ -199,9 +199,6 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 		GObject *gobject = G_OBJECT (property->widget->widget);
 		g_object_set_property (gobject, property->class->id, value);
 	}
-
-	g_value_reset (property->value);
-	g_value_copy (value, property->value);
 }
 
 void
@@ -226,11 +223,15 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	property->loading = TRUE;
 
 	/* if there is a custom set_property use it*/
-	if (property->class->set_function)
+	if (property->class->set_function) {
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
-						  property->value);
-	else
+						  value);
+	} else {
 		glade_property_set_property (property, value);
+	}
+
+	g_value_reset (property->value);
+	g_value_copy (value, property->value);
 
 	property->loading = FALSE;
 
