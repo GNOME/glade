@@ -35,40 +35,6 @@
 
 
 void
-glade_gtk_entry_set_text (GObject *object, GValue *value)
-{
-	GtkEditable *editable = GTK_EDITABLE (object);
-	gint pos;
-	gint insert_pos = 0;
-	const gchar *text = g_value_get_string (value);
-
-	g_return_if_fail (GTK_IS_EDITABLE (object));
-
-	pos = gtk_editable_get_position (editable);
-	gtk_editable_delete_text (editable, 0, -1);
-	/* FIXME: will not work with multibyte languages (strlen) */
-	gtk_editable_insert_text (editable,
-				  text,
-				  strlen (text),
-				  &insert_pos);
-	gtk_editable_set_position (editable, pos);
-}
-
-void
-glade_gtk_entry_get_text (GObject *object, GValue *value)
-{
-	GtkEntry *entry = GTK_ENTRY (object);
-						     
-	const gchar *text;
-
-	g_return_if_fail (GTK_IS_ENTRY (entry));
-
-	text = gtk_entry_get_text (entry);
-
-	g_value_set_string (value, text);
-}
-
-void
 glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 {
 	GtkOptionMenu *option_menu; 
@@ -579,21 +545,6 @@ glade_gtk_message_dialog_post_create (GObject *object)
 	g_return_if_fail (GTK_IS_MESSAGE_DIALOG (dialog));
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
-}
-
-void
-glade_gtk_check_button_post_create (GObject *object)
-{
-	GtkCheckButton *button = GTK_CHECK_BUTTON (object);
-	GtkWidget *label;
-
-	g_return_if_fail (GTK_IS_CHECK_BUTTON (button));
-
-	label = gtk_label_new ("");
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_container_add (GTK_CONTAINER (button), label);
-	gtk_widget_show (label);
-
 }
 
 void

@@ -165,7 +165,6 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 			}
 
 			property_class->optional = FALSE;
-			property_class->update_signals = NULL;
 
 			list = g_list_prepend (list, property_class);
 		}
@@ -203,21 +202,11 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 
 	specs = gtk_container_class_list_child_properties (object_class, &n_specs);
 
-#ifdef DEBUG
-	g_print ("class %s has n child props: %d\n", class->name, n_specs);
-#endif
-
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
 
 		property_class = glade_property_class_new_from_spec (spec);
-
-#ifdef DEBUG
-		g_print ("child prop. name: %s, id: %s, type: %d\n", property_class->name, property_class->id, property_class->type);
-#endif
-
 		property_class->optional = FALSE;
-		property_class->update_signals = NULL;
 		property_class->packing = TRUE;
 
 		list = g_list_prepend (list, property_class);

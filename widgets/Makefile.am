@@ -10,7 +10,6 @@ widgets_DATA = \
 	gtkcheckbutton.xml \
 	gtkcontainer.xml \
 	gtkdialog.xml \
-	gtkentry.xml \
 	gtkframe.xml \
 	gtkhandlebox.xml \
 	gtkmenubar.xml \

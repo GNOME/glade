@@ -156,15 +156,6 @@ struct _GladePropertyClass
 				  * the type is object.
 				  */
 
-	GList *update_signals; /* A list of gchar * that contains the signal names that
-			       * this property should be listening to update itself.
-			       * For example the gtkentry wants to listen to the "change"
-			       * signal so that the "content" of the entry is updated and
-			       * stored when it is changed. A toggle button should listen to
-			       * the "toggled" signal to get the state of the property
-			       * from the real widget
-			       */
-	
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 	gboolean get_default; /* If true, when the default property is applied it is queried

@@ -430,7 +430,7 @@ glade_widget_key_press (GtkWidget *event_widget,
 	if (event->keyval == GDK_Delete)
 		glade_util_delete_selection (glade_widget->project);
 
-	return TRUE;
+	return FALSE;
 }
 
 static void
@@ -475,59 +475,6 @@ glade_widget_set_contents (GladeWidget *widget)
 		g_value_init (value, G_TYPE_STRING);
 		g_value_set_string (value, widget->name);
 		glade_property_set (property, value);
-	}
-}
-
-static void
-glade_widget_property_changed_cb (GtkWidget *w)
-{
-	GladeProperty *property;	
-	GladeWidget *widget;
-
-	widget = glade_widget_get_from_gtk_widget (w);
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	property = g_object_get_data (G_OBJECT (w), GLADE_MODIFY_PROPERTY_DATA);
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-	if (property->loading)
-		return;
-
-	glade_property_get_from_widget (property);
-
-	glade_property_refresh (property);
-}
-
-static void
-glade_widget_connect_edit_signals_with_class (GladeWidget *widget,
-					      GladePropertyClass *class)
-{
-	GladeProperty *property;
-	GList *list;
-
-	property = glade_widget_get_property_from_class (widget, class);
-	
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-	for (list = class->update_signals; list; list = list->next) {
-		g_signal_connect_after (G_OBJECT (widget->widget), list->data,
-					G_CALLBACK (glade_widget_property_changed_cb),
-					property);
-		g_object_set_data (G_OBJECT (widget->widget),
-				   GLADE_MODIFY_PROPERTY_DATA, property);
-	}
-}
-
-static void
-glade_widget_connect_edit_signals (GladeWidget *widget)
-{
-	GladePropertyClass *class;
-	GList *list;
-
-	for (list = widget->class->properties; list; list = list->next) {
-		class = list->data;
-		if (class->update_signals)
-			glade_widget_connect_edit_signals_with_class (widget,
-								      class);
 	}
 }
 
@@ -610,7 +557,6 @@ glade_widget_connect_signals (GladeWidget *widget)
 {
 	glade_widget_connect_mouse_signals (widget);
 	glade_widget_connect_keyboard_signals (widget);
-	glade_widget_connect_edit_signals  (widget);
 	glade_widget_connect_other_signals (widget);
 }
 

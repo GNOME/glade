@@ -1,3 +1,17 @@
+2003-10-31  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-gtk.c: remove not needed functions.
+	* src/glade-property-class.[ch]: get rid of updated_signlas, it was
+	unused, broken and glade-2 doesn't work like that anyway.
+	* src/glade-widget-class.c: update for the above.
+	* src/glade-widget.c: update for the above. Also return FALSE on the
+	key_pressed callback so that it is possible to type in a GtkEntry.
+	* src/glade.h: update for the above.
+	* widgets/gtkentry.xml: remove.
+	* widgets/gtktogglebutton.xml: update for the above.
+	* widgets/gtkcheckbutton.xml: ditto.
+	* widgets/gtk-base.xml: readd the files for toggle and check buttons.
+
 2003-10-27  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-property.[ch]: janitoring; remove an old prototype and

@@ -340,16 +340,6 @@ glade_property_class_clone (GladePropertyClass *property_class)
 	/* if (clon->child)
 		clon->child = glade_widget_class_clone (clon->child); */
 
-	if (clon->update_signals)
-	{
-		GList *signals;
-
-		clon->update_signals = g_list_copy (clon->update_signals);
-
-		for (signals = clon->update_signals; signals != NULL; signals = signals->next)
-			signals->data = g_strdup ((const char *) signals->data);
-	}
-
 	return clon;
 }
 
@@ -371,8 +361,6 @@ glade_property_class_free (GladePropertyClass *class)
 	g_list_free (class->choices);
 	glade_property_query_free (class->query);
 	glade_widget_class_free (class->child);
-	g_list_foreach (class->update_signals, (GFunc) g_free, NULL);
-	g_list_free (class->update_signals);
 	g_free (class);
 }
 
@@ -818,32 +806,6 @@ glade_property_class_load_from_param_spec (const gchar *name,
 }
 #endif
 
-static GList *
-glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *item_tag)
-{
-	GladeXmlNode *child;
-	GList *list = NULL;
-	gchar *item;
-
-	child = glade_xml_search_child (node, list_tag);
-	if (child == NULL)
-		return NULL;
-
-	child = glade_xml_node_get_children (child);
-
-	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify (child, item_tag))
-			return NULL;
-		item = glade_xml_get_content (child);
-		if (item != NULL)
-			list = g_list_prepend (list, item);
-	}
-
-	list = g_list_reverse (list);
-
-	return list;
-}
-
 /**
  * glade_property_class_update_from_node:
  * @node: the <property> node
@@ -963,11 +925,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	if (class->optional)
 		class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
-
-	/* The list of signals that we should listen to */
-	class->update_signals = glade_xml_read_list (node,
-						     GLADE_TAG_UPDATE_SIGNALS,
-						     GLADE_TAG_SIGNAL_NAME);
 
 	/* If this property can't be set with g_object_set, get the workarround
 	 * function
