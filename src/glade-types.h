@@ -26,6 +26,7 @@ typedef struct _GladeProjectViewTree GladeProjectViewTree;
 typedef struct _GladeProjectWindow   GladeProjectWindow;
 
 typedef struct _GladeCatalog       GladeCatalog;
+typedef struct _GladeWidgetGroup   GladeWidgetGroup;
 typedef struct _GladeCursor        GladeCursor;
 
 typedef struct _GladePlaceholder   GladePlaceholder;

@@ -1,3 +1,39 @@
+2005-01-05  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-catalog.[ch]: 
+	- Removed need for the palette file, loads all .catalog files in
+	  catalog directory.
+	- New catalog format where a catalog is one per library, for example
+	  gtk+.catalog. Each catalog contains one or more widget groups. 
+	  Widget class definitions has been separated from the grouping which
+	  means that you can have a widget in two different groups.
+	* src/glade-palette.c:
+	- Updated to add widget groups rather than catalogs to the option
+	  menu.
+	(glade_palette_widget_table_create),
+	(glade_palette_append_widget_group):
+	- Renamed from glade_palette_append_catalog.
+	(glade_palette_new):
+	* src/glade-palette.h:
+	- Made glade_palette_append_widget_group internal.
+	* src/glade-types.h:
+	- Added GladeWidgetGroup.
+	* src/glade-widget-class.c:
+	(glade_widget_class_new):
+	- Reimplemented to instead take an GladeXmlNode node and load the 
+	  widget class from there.
+	* src/glade-widget-class.h:
+	- Removed glade_widget_class_new_from_node for which the implementation
+	  was removed over a year ago.
+	* src/glade.h:
+	- Moved some GladeCatalog specific XML tags to glade-catalog.c instead.
+	* src/main.c: (glade_init):
+	- Give a warning if no catalog files where found instead of silently
+	  exit.
+	* widgets/Makefile.am:
+	* widgets/gtk+.catalog:
+	- Added gtk+.catalog
+
 2005-01-05  Richard Hult  <richard@imendio.com>
 
 	* src/glade-project-view.c (gpv_find_preceeding_sibling): Fix

@@ -140,12 +140,8 @@ struct _GladeWidgetClassSignal
 };
 
 
-GladeWidgetClass    *glade_widget_class_new                (const char       *name,
-							    const char       *generic_name,
-							    const char       *palette_name,
-							    const char       *base_filename,
-							    const char       *base_library);
-GladeWidgetClass    *glade_widget_class_new_from_node      (GladeXmlNode     *node);
+GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
+							    const gchar      *library);
 void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
 GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
 GladeWidgetClass    *glade_widget_class_get_by_type        (GType             type);

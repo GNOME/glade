@@ -1,0 +1,368 @@
+<GladeCatalog name="gtk+" library="gladegtk">
+  <GladeWidgets>
+    <GladeWidgetClass name="GtkWidget">
+      <Properties>
+	<Property Common="True" Id="visible">
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+
+	<Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="width-request"/>
+
+	<Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="height-request"/>
+
+	<Property Common="True" Id="tooltip" Name="Tooltip" Visible="glade_gtk_widget_condition" Default="">
+	  <Spec>glade_gtk_standard_string_spec</Spec>
+	  <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
+	  <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
+	</Property>
+
+	<Property Common="True" Id="events">
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkContainer">
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <ReplaceChildFunction>glade_gtk_container_replace_child</ReplaceChildFunction>
+	  <FillEmptyFunction>glade_gtk_container_fill_empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+    
+    <GladeWidgetClass name="GtkBox">
+      <Properties>
+	<Property Id="size" Name="Number of items" Query="TRUE" Default="3">
+	  <Spec>glade_gtk_standard_int_spec</Spec>
+	  <Tooltip>The number of items in the box</Tooltip>
+	  <Parameters>
+	    <Parameter Key="Min" Value="2"/>
+	    <Parameter Key="Max" Value="10000"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="10"/>
+	    <Parameter Key="ClimbRate" Value="1"/>
+	  </Parameters>
+	  <SetFunction>glade_gtk_box_set_size</SetFunction>
+	  <GetFunction>glade_gtk_box_get_size</GetFunction>
+	  <VerifyFunction>glade_gtk_box_verify_size</VerifyFunction>
+	</Property>
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+    
+    <GladeWidgetClass name="GtkPaned">
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>glade_gtk_paned_fill_empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkWindow" generic_name="window" title="Window">
+      <PostCreateFunction>glade_gtk_window_post_create</PostCreateFunction>
+
+      <Properties>
+
+	<Property Id="modal">
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+	<Property Id="default-width" Default="0" Optional="True" OptionalDefault="False"/>
+	<Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
+	<Property Id="type-hint">
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+	<Property Id="type">
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+	<Property Id="allow-shrink" Disabled="TRUE" />
+	<Property Id="allow-grow" Disabled="TRUE" />
+	<Property Id="resize-mode" Disabled="TRUE" />
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkMenuBar" generic_name="menubar" title="Menu Bar">
+      <!-- menubar is a container you can't add placeholders to it -->
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+      
+    <GladeWidgetClass name="GtkToolbar" generic_name="toolbar" title="Tool Bar">
+      <Properties>
+
+	<Property Id="size" Name="Size" Default="3" Query="TRUE">
+	  <Spec>glade_gtk_standard_int_spec</Spec>
+	  <Tooltip>The number of items in the toolbar</Tooltip>
+	  <Parameters>
+	    <Parameter Key="Min" Value="0"/>
+	    <Parameter Key="Max" Value="10000"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="10"/>
+	    <Parameter Key="ClimbRate" Value="1"/>
+	  </Parameters>
+	  <SetFunction>glade_gtk_toolbar_set_size</SetFunction>
+	  <GetFunction>glade_gtk_toolbar_get_size</GetFunction>
+	  <VerifyFunction>glade_gtk_toolbar_verify_size</VerifyFunction>
+	</Property>
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+    
+    <GladeWidgetClass name="GtkHandleBox" generic_name="handlebox" title="Handle Box" />
+
+    <GladeWidgetClass name="GtkLabel" generic_name="label" title="Label">
+      <Properties>
+	<Property Id="label" Default="label"/>
+	<Property Id="pattern" Default=""/>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkEntry" generic_name="entry" title="Text Entry"/>
+    <GladeWidgetClass name="GtkTextView" generic_name="textview" title="Text View"/>
+
+    <GladeWidgetClass name="GtkButton" generic_name="button" title="Button">
+      <Properties>
+
+	<Property Id="stock" Name="Stock Button" Default="glade-none">
+	  <Spec>glade_gtk_stock_spec</Spec>
+	  <SetFunction>glade_gtk_button_set_stock</SetFunction>
+	</Property>
+
+	<Property Id="response-id" Name="Response ID" Default="0" Common="False">
+	  <Spec>glade_gtk_standard_int_spec</Spec>
+	  <Tooltip>The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)</Tooltip>
+	  <SetFunction>ignore</SetFunction>
+	  <GetFunction>ignore</GetFunction>
+	</Property>
+
+	<Property Id="label" Default="button"/>
+
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+  
+    <GladeWidgetClass name="GtkToggleButton" generic_name="togglebutton" title="Toggle Button">
+      <Properties>
+	<Property Id="label" Default="toggle button"/>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkCheckButton" generic_name="checkbutton" title="Check Button">
+      <Properties>
+	<Property Id="label" Default="check button"/>
+	<Property Id="draw-indicator" Default="True"/>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkSpinButton" generic_name="spinbutton" title="Spin Button"/>
+
+    <GladeWidgetClass name="GtkRadioButton" generic_name="radiobutton" title="Radio Button">
+      <Properties>
+	<Property Id="label" Default="radio button"/>
+	<Property Id="draw-indicator" Default="True"/>
+	<Property Id="group" Name="Group" Default="True">
+	  <Spec>glade_gtk_standard_string_spec</Spec>
+	  <SetFunction>glade_gtk_radio_button_set_group</SetFunction>
+	  <GetFunction>glade_gtk_radio_button_get_group</GetFunction>
+	</Property>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkTreeView" generic_name="treeview" title="Tree View">
+      <PostCreateFunction>glade_gtk_tree_view_post_create</PostCreateFunction>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkCombo" generic_name="combo" title="Combo Box"/>
+    
+    <GladeWidgetClass name="GtkOptionMenu" generic_name="optionmenu" title="Option Menu"/>
+    
+    <GladeWidgetClass name="GtkProgressBar" generic_name="progressbar" title="Progress Bar"/>
+
+    <GladeWidgetClass name="GtkImage" generic_name="image" title="Image"/>
+
+    <GladeWidgetClass name="GtkDialog" generic_name="dialog" title="Dialog Box">
+      <PostCreateFunction>glade_gtk_dialog_post_create</PostCreateFunction>
+      <GetInternalChildFunction>glade_gtk_dialog_get_internal_child</GetInternalChildFunction>
+      <ChildPropertyApplies>glade_gtk_dialog_child_property_applies</ChildPropertyApplies>
+
+      <Properties>
+	<Property Id="modal">
+	  <SetFunction>ignore</SetFunction>
+	</Property>
+	<Property Id="default-width"  Default="0" Optional="True" OptionalDefault="False"/>
+	<Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>glade_gtk_dialog_fill_empty</FillEmptyFunction>
+
+	  <!-- That's supported, and IMO is the right way to handle          -->
+	  <!-- response-id (and it works), but it's not backwards compatible -->
+	  <!-- with response-id being a property as in glade-2. So by now we -->
+	  <!-- will just add a fake response-id property to buttons          -->
+	  <!--
+	  <Properties>
+	    <Property Id="response-id" Name="Response ID" Default="0" Common="False">
+	      <Spec>glade_gtk_standard_int_spec</Spec>
+	      <Tooltip>The response ID of this button in the dialog</Tooltip>
+	      <SetFunction>ignore</SetFunction>
+	      <GetFunction>ignore</GetFunction>
+	    </Property>
+	  </Properties>
+	  -->
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkHBox" generic_name="hbox" title="Horizontal Box"/>
+    <GladeWidgetClass name="GtkVBox" generic_name="vbox" title="Vertical Box"/>
+    <GladeWidgetClass name="GtkTable" generic_name="table" title="Table">
+      <Properties>
+	<Property Id="n-rows" Default="3" Query="TRUE">
+	  <Parameters>
+	    <Parameter Key="Min" Value="1"/>
+	    <Parameter Key="Max" Value="10000"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="10"/>
+	    <Parameter Key="ClimbRate" Value="1"/>
+	  </Parameters>
+	  <SetFunction>glade_gtk_table_set_n_rows</SetFunction>
+	  <VerifyFunction>glade_gtk_table_verify_n_rows</VerifyFunction>
+	</Property>
+	<Property Id="n-columns" Default="3" Query="TRUE">
+	  <Parameters>
+	    <Parameter Key="Min" Value="1"/>
+	    <Parameter Key="Max" Value="10000"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="10"/>
+	    <Parameter Key="ClibmRate" Value="1"/>
+	  </Parameters>
+	  <SetFunction>glade_gtk_table_set_n_columns</SetFunction>
+	  <VerifyFunction>glade_gtk_table_verify_n_columns</VerifyFunction>
+	</Property>
+      </Properties>
+      
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkHPaned" generic_name="hpaned" title="Horizontal Panes"/>
+
+    <GladeWidgetClass name="GtkVPaned" generic_name="vpaned" title="Vertical Panes"/>
+  
+    <GladeWidgetClass name="GtkNotebook" generic_name="notebook" title="Notebook">
+      <Properties>
+	<Property Id="pages" Name="Number of pages" Default="3" Query="TRUE">
+	  <Spec>glade_gtk_standard_int_spec</Spec>
+	  <Tooltip>The number of pages in the notebook</Tooltip>
+	  <Parameters>
+	    <Parameter Key="Min" Value="1"/>
+	    <Parameter Key="Max" Value="100"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="1"/>
+	    <Parameter Key="ClimbRate" Value="1"/>
+	  </Parameters>
+	  <SetFunction>glade_gtk_notebook_set_n_pages</SetFunction>
+	  <GetFunction>glade_gtk_notebook_get_n_pages</GetFunction>
+	  <VerifyFunction>glade_gtk_notebook_verify_n_pages</VerifyFunction>
+	</Property>
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	  <ReplaceChildFunction>glade_gtk_notebook_replace_child</ReplaceChildFunction>
+	  <Properties>
+	    <Property Id="tab-label" Name="Tab Label Text" >
+	      <Spec>glade_gtk_standard_string_spec</Spec>
+	      <Tooltip>The tab label text of this page widget</Tooltip>
+	      <SetFunction>glade_gtk_notebook_set_tab_label_text</SetFunction>
+	      <GetFunction>glade_gtk_notebook_get_tab_label_text</GetFunction>
+	    </Property>
+	  </Properties>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkFrame" generic_name="frame" title="Frame">
+      <Properties>
+	<Property Id="label" Default="Frame"/>
+      </Properties>
+    </GladeWidgetClass>
+  </GladeWidgets>
+
+  <GladeWidgetGroup name="gtk-base" title="Gtk+ Base">
+    <GladeWidgetClass name="GtkWindow"/>
+    <GladeWidgetClass name="GtkMenuBar"/>
+    <GladeWidgetClass name="GtkToolbar"/>
+    <GladeWidgetClass name="GtkHandleBox"/>
+    <GladeWidgetClass name="GtkLabel"/>
+    <GladeWidgetClass name="GtkEntry"/>
+    <GladeWidgetClass name="GtkTextView"/>
+    <GladeWidgetClass name="GtkButton"/>
+    <GladeWidgetClass name="GtkToggleButton"/>
+    <GladeWidgetClass name="GtkCheckButton"/>
+    <GladeWidgetClass name="GtkSpinButton"/>
+    <GladeWidgetClass name="GtkRadioButton"/>
+    <GladeWidgetClass name="GtkTreeView"/>
+    <GladeWidgetClass name="GtkCombo"/>
+    <GladeWidgetClass name="GtkOptionMenu"/>
+    <GladeWidgetClass name="GtkProgressBar"/>
+    <GladeWidgetClass name="GtkImage"/>
+    <GladeWidgetClass name="GtkDialog"/>
+    <GladeWidgetClass name="GtkHBox"/>
+    <GladeWidgetClass name="GtkVBox"/>
+    <GladeWidgetClass name="GtkTable"/>
+    <GladeWidgetClass name="GtkHPaned"/>
+    <GladeWidgetClass name="GtkVPaned"/>
+    <GladeWidgetClass name="GtkNotebook"/>
+    <GladeWidgetClass name="GtkFrame"/>
+  </GladeWidgetGroup>
+
+  <GladeWidgetGroup name="gtk-additional" title="Gtk+ Additional">
+    <GladeWidgetClass name="GtkWindow"/>
+  </GladeWidgetGroup>
+
+  <GladeWidgetGroup name="gtk-dialogs" title="Gtk+ Dialogs">
+  </GladeWidgetGroup>
+
+  <GladeWidgetGroup name="gtk-obsolete" title="Gtk+ Obsolete">
+  </GladeWidgetGroup>
+  
+</GladeCatalog>

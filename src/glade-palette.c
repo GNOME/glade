@@ -46,6 +46,9 @@ static guint glade_palette_signals[LAST_SIGNAL] = {0};
 
 static GtkWindowClass *parent_class = NULL;
 
+static void glade_palette_append_widget_group (GladePalette     *palette, 
+					       GladeWidgetGroup *group);
+
 static void
 glade_palette_class_init (GladePaletteClass *class)
 {
@@ -208,7 +211,8 @@ glade_palette_create_widget_class_button (GladePalette *palette,
 }
 
 static GtkWidget *
-glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
+glade_palette_widget_table_create (GladePalette     *palette, 
+				   GladeWidgetGroup *group)
 {
 	GList *list;
 	GtkWidget *sw;
@@ -216,7 +220,7 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 
 	vbox = gtk_vbox_new (FALSE, 0);
 
-	list = glade_catalog_get_widget_classes (catalog);
+	list = glade_widget_group_get_widget_classes (group);
 
 	/* Go through all the widget classes in this catalog. */
 	for (; list; list = list->next)
@@ -291,30 +295,24 @@ glade_palette_init (GladePalette *palette)
 	palette->nb_sections = 0;
 }
 
-/**
- * glade_palette_append_catalog:
- * @palette: a #GladePalette
- * @catalog: a #GladeCatalog
- * 
- * Append @catalog to the @palette.
- */
-void
-glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
+static void
+glade_palette_append_widget_group (GladePalette     *palette, 
+				   GladeWidgetGroup *group)
 {
 	gint page;
 	GtkWidget *widget;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	g_return_if_fail (catalog != NULL);
+	g_return_if_fail (group != NULL);
 
 	page = palette->nb_sections++;
 
 	/* Add the catalog's title to the GtkComboBox */
 	gtk_combo_box_append_text (GTK_COMBO_BOX (palette->catalog_selector),
-				   catalog->title);
+				   glade_widget_group_get_title (group));
 
 	/* Add the section */
-	widget = glade_palette_widget_table_create (palette, catalog);
+	widget = glade_palette_widget_table_create (palette, group);
 	gtk_notebook_append_page (GTK_NOTEBOOK (palette->notebook), widget, NULL);
 
 	gtk_widget_show (palette->notebook);
@@ -370,8 +368,20 @@ glade_palette_new (GList *catalogs)
 	palette = g_object_new (GLADE_TYPE_PALETTE, NULL);
 	g_return_val_if_fail (palette != NULL, NULL);
 
-	for (list = catalogs; list; list = list->next)
-		glade_palette_append_catalog (palette, GLADE_CATALOG (list->data));
+	for (list = catalogs; list; list = list->next) 
+	{
+		GList *l;
+
+		l = glade_catalog_get_widget_groups (GLADE_CATALOG (list->data));
+		for (; l; l = l->next)
+		{
+			GladeWidgetGroup *group = GLADE_WIDGET_GROUP (l->data);
+
+			if (glade_widget_group_get_widget_classes (group)) 
+				glade_palette_append_widget_group (palette,
+								   group);
+		}
+	}
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (palette->catalog_selector), 0);
 	return palette;

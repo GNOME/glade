@@ -124,8 +124,11 @@ glade_init (void)
 	glade_cursor_init ();
 
 	catalogs = glade_catalog_load_all ();
-	if (!catalogs)
+	if (!catalogs) 
+	{
+		g_warning ("Couldn't load any catalogs");
 		return FALSE;
+	}
 
 	project_window = glade_project_window_new (catalogs);
 
