@@ -54,7 +54,7 @@ glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 	return glade_project_new_widget_name (project, class->generic_name);
 }
 
-/**
+ /**
  * Returns a list of GladeProperties from a list of 
  * GladePropertyClass.
  */
@@ -65,7 +65,8 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 	GladeProperty *property;
 	GList *new_list = NULL;
 
-	for (; list; list = list->next) {
+	for (; list; list = list->next)
+	{
 		property_class = list->data;
 		property = glade_property_new (property_class, widget);
 		if (!property)
@@ -75,6 +76,44 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 	}
 
 	new_list = g_list_reverse (new_list);
+
+	return new_list;
+}
+
+ /**
+ * Returns a list of GladeProperties from a list of 
+ * GladePropertyClass.
+ */
+static GList *
+glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *widget)
+{
+	GladePropertyClass *property_class;
+	GladeProperty *property;
+	GList *list = container->class->child_properties;
+	GList *new_list = NULL;
+	GList *ancestor_list;
+
+	for (; list; list = list->next)
+	{
+		property_class = list->data;
+
+		if (!container->class->child_property_applies (container->widget, widget->widget, property_class->id))
+			continue;
+
+		property = glade_property_new (property_class, widget);
+		if (!property)
+			continue;
+
+		new_list = g_list_prepend (new_list, property);
+	}
+
+	new_list = g_list_reverse (new_list);
+	if (container->widget->parent != NULL)
+	{
+		ancestor_list = glade_widget_create_packing_properties (glade_widget_get_from_gtk_widget (container->widget->parent),
+									widget);
+		new_list = g_list_concat (new_list, ancestor_list);
+	}
 
 	return new_list;
 }
@@ -541,7 +580,7 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 
 	g_list_foreach(widget->packing_properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->packing_properties);
-	widget->packing_properties = glade_widget_properties_from_list (container->class->child_properties, widget);
+	widget->packing_properties = glade_widget_create_packing_properties (container, widget);
 
 	/* update the values of the properties to the ones we get from gtk */
 	for (list = widget->packing_properties; list; list = list->next)
@@ -549,10 +588,11 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 		GladeProperty *property = list->data;
 
 		g_value_reset (property->value);
-		gtk_container_child_get_property (GTK_CONTAINER (container->widget),
-						  widget->widget,
-						  property->class->id,
-						  property->value);
+		if (gtk_container_class_find_child_property (G_OBJECT_GET_CLASS (container->widget), property->class->id))
+			gtk_container_child_get_property (GTK_CONTAINER (container->widget),
+							  widget->widget,
+							  property->class->id,
+							  property->value);
 	}
 }
 
@@ -1395,7 +1435,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	/* create the packing_properties list, without setting them */
 	if (parent)
-		widget->packing_properties = glade_widget_properties_from_list (parent->class->child_properties, widget);
+		widget->packing_properties = glade_widget_create_packing_properties (parent, widget);
 
 	glade_widget_fill_from_node (node, widget);
 

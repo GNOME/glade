@@ -1,3 +1,17 @@
+2004-02-28  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-editor.c: restrict child-properties to widgets for which
+	child_property_applies returns TRUE, not only direct children.
+	* src/glade-gtk.c: implement a child_property_applies for
+	GtkDialog.
+	* src/glade-widget-class.[ch]: read child_property_applies_function_name
+	and customized child-properties under the ChildProperties tag.
+	* src/glade-widget.c: restrict child-properties to widgets for which
+	child_property_applies returns TRUE, not only direct children.
+	* src/glade.h: add the ChildProperties and ChildPropertyApplies tags.
+	* widgets/gtkdialog.xml: add a ChildPropertyApplies function, and
+	add a new ChildProperty ("response-id").
+
 2004-02-12  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-project-window.c: implement open by drag&drop.

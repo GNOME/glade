@@ -101,6 +101,12 @@ struct _GladeWidgetClass
 	void (*get_internal_child) (GtkWidget *parent,
 				    const gchar *name,
 				    GtkWidget **child);
+
+	/* Is property_class of ancestor applicable to the widget? Usually property_class only
+	 * applies to direct children of a given ancestor */
+	gboolean (*child_property_applies) (GtkWidget *ancestor,
+					    GtkWidget *widget,
+					    const char *property_id);
 };
 
 

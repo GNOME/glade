@@ -51,7 +51,7 @@
 #define GLADE_TAG_PLACEHOLDER  "Placeholder"
 #define GLADE_TAG_ICON         "Icon"
 #define GLADE_TAG_PROPERTIES   "Properties"
-#define GLADE_TAG_PACKING_PROPERTIES "PackingProperties"
+#define GLADE_TAG_CHILD_PROPERTIES   "ChildProperties"
 #define GLADE_TAG_CONTAINER    "Container"
 #define GLADE_TAG_PROPERTY     "Property"
 #define GLADE_TAG_COMMON       "Common"
@@ -97,6 +97,7 @@
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
+#define GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION "ChildPropertyApplies"
 
 #define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"
 

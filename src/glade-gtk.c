@@ -765,3 +765,22 @@ glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
 	*child = child_widget;
 }
 
+int GLADEGTK_API
+glade_gtk_dialog_child_property_applies (GtkWidget *ancestor,
+					 GtkWidget *widget,
+					 const char *property_id)
+{
+	g_return_val_if_fail (GTK_IS_DIALOG (ancestor), FALSE);
+
+	if (strcmp(property_id, "response-id") == 0)
+	{
+		if (GTK_IS_HBUTTON_BOX (widget->parent) && GTK_IS_VBOX (widget->parent->parent) &&
+		    widget->parent->parent->parent == ancestor)
+			return TRUE;
+	}
+	else if (widget->parent == ancestor)
+		return TRUE;
+
+	return FALSE;
+}
+

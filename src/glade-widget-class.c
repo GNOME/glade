@@ -190,14 +190,18 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	{
 		spec = specs[i];
 
-		property_class = glade_property_class_new_from_spec (spec);
-		if (!property_class)
-			continue;
+		/* We only use the writable properties */
+		if (spec->flags & G_PARAM_WRITABLE)
+		{
+			property_class = glade_property_class_new_from_spec (spec);
+			if (!property_class)
+				continue;
 
-		property_class->optional = FALSE;
-		property_class->packing = TRUE;
+			property_class->optional = FALSE;
+			property_class->packing = TRUE;
 
-		list = g_list_prepend (list, property_class);
+			list = g_list_prepend (list, property_class);
+		}
 	}	
 
 	list = g_list_reverse (list);
@@ -258,10 +262,11 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 
 static void
 glade_widget_class_update_properties_from_node (GladeXmlNode *node,
-						GladeWidgetClass *widget_class)
+						GladeWidgetClass *widget_class,
+						GList **pproperties)
 {
 	GladeXmlNode *child;
-	GList *properties = widget_class->properties;
+	GList *properties = *pproperties;
 
 	child = glade_xml_node_get_children (node);
 	for (; child; child = glade_xml_node_next (child))
@@ -311,6 +316,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 
 		g_free (id);
 	}
+
+	*pproperties = properties;
 }
 
 /**
@@ -334,6 +341,8 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	char *post_create_function_name;
 	char *fill_empty_function_name;
 	char *get_internal_child_function_name;
+	char *child_property_applies_function_name;
+	GList *tmp;
 
 	g_return_val_if_fail (filename != NULL, FALSE);
 
@@ -378,12 +387,33 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	}
 	g_free (get_internal_child_function_name);
 
+	child_property_applies_function_name = glade_xml_get_value_string (node, GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION);
+	if (child_property_applies_function_name && widget_class->module)
+	{
+		if (!g_module_symbol (widget_class->module, child_property_applies_function_name, (void **) &widget_class->child_property_applies))
+			g_warning ("Could not find %s\n", child_property_applies_function_name);
+	}
+	g_free (child_property_applies_function_name);
+
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
 	 */
 	properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
 	if (properties)
-		glade_widget_class_update_properties_from_node (properties, widget_class);
+		glade_widget_class_update_properties_from_node (properties, widget_class, &widget_class->properties);
+
+	/* if we found a <ChildProperties> tag on the xml file, we add the properties
+	 * that we read from the xml file to the class.
+	 */
+	properties = glade_xml_search_child (node, GLADE_TAG_CHILD_PROPERTIES);
+	if (properties)
+		glade_widget_class_update_properties_from_node (properties, widget_class, &widget_class->child_properties);
+
+	for (tmp = widget_class->child_properties; tmp != NULL; tmp = tmp->next)
+	{
+		GladePropertyClass *property_class = tmp->data;
+		property_class->packing = TRUE;
+	}
 
 	return TRUE;
 }
@@ -409,6 +439,52 @@ glade_widget_class_get_by_name (const char *name)
 }
 
 /**
+ * glade_widget_class_merge_properties:
+ * @widget_properties: Pointer to the list of properties in the widget.
+ * @parent_class: List of properties in the parent.
+ *
+ * Merges the properties found in the parent_properties list with the
+ * properties found in the widget_properties list.
+ * The properties in the parent_properties will be prepended to widget_properties.
+ **/
+static void
+glade_widget_class_merge_properties (GList **widget_properties, GList *parent_properties)
+{
+	GList *list;
+	GList *list2;
+
+	for (list = parent_properties; list; list = list->next)
+	{
+		GladePropertyClass *parent_p_class = list->data;
+		GladePropertyClass *child_p_class;
+
+		/* search the child's properties for one with the same id */
+		for (list2 = *widget_properties; list2; list2 = list2->next)
+		{
+			child_p_class = list2->data;
+			if (strcmp (parent_p_class->id, child_p_class->id) == 0)
+				break;
+		}
+
+		/* if not found, prepend a clone of the parent's one; if found
+		 * but the parent one was modified substitute it.
+		 */
+		if (!list2)
+		{
+			GladePropertyClass *property_class;
+
+			property_class = glade_property_class_clone (parent_p_class);
+			*widget_properties = g_list_prepend (*widget_properties, property_class);
+		}
+		else if (parent_p_class->is_modified)
+		{
+			glade_property_class_free (child_p_class);
+			list2->data = glade_property_class_clone (parent_p_class);
+		}
+	}
+}
+
+/**
  * glade_widget_class_merge:
  * @widget_class: main class.
  * @parent_class: secondary class.
@@ -421,9 +497,6 @@ static void
 glade_widget_class_merge (GladeWidgetClass *widget_class,
 			  GladeWidgetClass *parent_class)
 {
-	GList *list;
-	GList *list2;
-
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
 
@@ -439,36 +512,12 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 	if (widget_class->fill_empty == NULL)
 		widget_class->fill_empty = parent_class->fill_empty;
 
-	/* merge the parent's properties */
-	for (list = parent_class->properties; list; list = list->next)
-	{
-		GladePropertyClass *parent_p_class = list->data;
-		GladePropertyClass *child_p_class;
+	if (widget_class->child_property_applies == NULL)
+		widget_class->child_property_applies = parent_class->child_property_applies;
 
-		/* search the child's properties for one with the same id */
-		for (list2 = widget_class->properties; list2; list2 = list2->next)
-		{
-			child_p_class = list2->data;
-			if (strcmp (parent_p_class->id, child_p_class->id) == 0)
-				break;
-		}
-
-		/* if not found, prepend a clone of the parent's one; if found
-		 * but the parent one was modified substitute it.
-		 */
-		if (!list2)
-		{
-			GladePropertyClass *property_class;
-
-			property_class = glade_property_class_clone (parent_p_class);
-			widget_class->properties = g_list_prepend (widget_class->properties, property_class);
-		}
-		else if (parent_p_class->is_modified)
-		{
-			glade_property_class_free (child_p_class);
-			list2->data = glade_property_class_clone (parent_p_class);
-		}
-	}
+	/* merge the parent's properties & child-properties */
+	glade_widget_class_merge_properties (&widget_class->properties, parent_class->properties);
+	glade_widget_class_merge_properties (&widget_class->child_properties, parent_class->child_properties);
 }
 
 /**
@@ -518,6 +567,15 @@ glade_widget_class_load_library (const gchar *library_name)
 	}
 
 	return module;
+}
+
+static gboolean
+glade_widget_class_direct_children (GtkWidget *ancestor, GtkWidget *widget, const char *property_id)
+{
+	if (ancestor != NULL && widget->parent == ancestor)
+		return TRUE;
+
+	return FALSE;
 }
 
 /**
@@ -601,6 +659,7 @@ glade_widget_class_new (const char *name,
 	widget_class->properties = glade_widget_class_list_properties (widget_class);
 	widget_class->child_properties = glade_widget_class_list_child_properties (widget_class);
 	widget_class->signals = glade_widget_class_list_signals (widget_class);
+	widget_class->child_property_applies = glade_widget_class_direct_children;
 
 	/* is the widget a toplevel?  TODO: We're going away from this flag, and
 	 * just doing this test each time that we want to know if it's a toplevel */
