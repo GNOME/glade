@@ -1,5 +1,13 @@
 2003-10-15  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-widget-class.c (glade_widget_class_new): move extend with
+	file after merging with parent.
+	* src/glade-gtk.c: implement statusbar_get/set_has_resize_grip.
+	* widgets/gtk-base.xml: add gtkstatusbar.xml
+	* widgets/gtkstatusbar.xml: add.
+
+2003-10-15  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-property-class.c: fix thinko in last commit.
 
 2003-10-13  Paolo Borelli  <pborelli@katamail.com>

@@ -486,6 +486,32 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 }
 
 void
+glade_gtk_statusbar_get_has_resize_grip (GObject *object, GValue *value)
+{
+	GtkStatusbar *statusbar;
+
+	g_return_if_fail (GTK_IS_STATUSBAR (object));
+
+	statusbar = GTK_STATUSBAR (object);
+
+	g_value_reset (value);
+	g_value_set_boolean (value, gtk_statusbar_get_has_resize_grip (statusbar));
+}
+
+void
+glade_gtk_statusbar_set_has_resize_grip (GObject *object, GValue *value)
+{
+	GtkStatusbar *statusbar;
+	gboolean has_resize_grip;
+
+	g_return_if_fail (GTK_IS_STATUSBAR (object));
+
+	statusbar = GTK_STATUSBAR (object);
+	has_resize_grip = g_value_get_boolean (value);
+	gtk_statusbar_set_has_resize_grip (statusbar, has_resize_grip);
+}
+
+void
 empty (GObject *object, GValue *value)
 {
 }

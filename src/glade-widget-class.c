@@ -139,6 +139,8 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 		/* We only use the writable properties */
 		if (spec->flags & G_PARAM_WRITABLE) {
 			property_class = glade_property_class_new_from_spec (spec);
+			if (!property_class)
+				continue;
 
 			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR) {
 				/* The property type is not supported.  That's not an error, as there are
@@ -313,6 +315,7 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 		updated = glade_property_class_update_from_node (child, widget_class, &property_class);
 		if (!updated) {
 			g_warning ("failed to update %s property of %s from xml", id, widget_class->name);
+			g_free (id);
 			continue;
 		}
 
@@ -628,11 +631,6 @@ glade_widget_class_new (const char *name,
 		}
 	}
 
-	/* if there is an associated filename, then open and parse it */
-	if (filename != NULL)
-		glade_widget_class_extend_with_file (widget_class, filename);
-
-	g_free (filename);
 	g_free (init_function_name);
 
 	for (parent_type = g_type_parent (widget_class->type);
@@ -647,6 +645,12 @@ glade_widget_class_new (const char *name,
 
 	/* remove the duplicate properties on widget_class */
 	glade_widget_class_remove_duplicated_properties (widget_class);
+
+	/* if there is an associated filename, then open and parse it */
+	if (filename != NULL)
+		glade_widget_class_extend_with_file (widget_class, filename);
+
+	g_free (filename);
 
 	/* store the GladeWidgetClass on the cache */
 	glade_widget_class_store_with_name (widget_class);

@@ -22,6 +22,7 @@ widgets_DATA = \
 	gtkradiobutton.xml \
 	gtkseparator.xml \
 	gtkspinbutton.xml \
+	gtkstatusbar.xml \
 	gtktable.xml \
 	gtktogglebutton.xml \
 	gtkwidget.xml \
