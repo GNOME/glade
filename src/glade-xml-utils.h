@@ -67,6 +67,9 @@ GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
 						   const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 
+gchar *		alloc_string(GladeInterface *interface, const gchar *string);
+gchar *		alloc_propname(GladeInterface *interface, const gchar *string);
+
 
 G_END_DECLS
 

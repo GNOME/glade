@@ -221,44 +221,49 @@ glade_property_sync (GladeProperty *property)
 
 /**
  * glade_property_write:
- * @context: a #GladeXmlContext
- * @property: a #GladeProperty:
+ * @props: a GArray of #GladePropInfo
+ * @property: a #GladeProperty
+ * @interface: a #GladeInterface
  *
  * TODO: write me
  *
  * Returns:
  */
-GladeXmlNode *
-glade_property_write (GladeXmlContext *context, GladeProperty *property)
+gboolean
+glade_property_write (GArray *props, GladeProperty *property, GladeInterface *interface)
 {
-	GladeXmlNode *node;
+	GladePropInfo info = { 0 };
 	gchar *tmp;
 	gchar *default_str = NULL;
+	gboolean skip;
 
 	if (!property->enabled)
-		return NULL;
+		return FALSE;
 
 	if (!glade_property_class_is_visible (property->class,
 					      glade_widget_get_class (property->widget)))
-		return NULL;
-
-	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
-	if (!node)
-		return NULL;
+		return FALSE;
 
 	/* we should change each '-' by '_' on the name of the property 
          * (<property name="...">) */
 	tmp = g_strdup (property->class->id);
 	if (!tmp)
-	{
-		glade_xml_node_delete (node);
-		return NULL;
-	}
+		return FALSE;
 	glade_util_replace (tmp, '-', '_');
 
 	/* put the name="..." part on the <property ...> tag */
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, tmp);
-
+	info.name = alloc_propname(interface, tmp);
+ 	/*if (state->translate_prop && state->content->str[0] != '\0') {
+	    if (state->context_prop) 
+		info.value = alloc_string(state->interface,
+					  g_strip_context(state->content->str,
+							   dgettext(state->domain, state->content->str)));
+	    else
+		info.value = alloc_string(state->interface,
+					  dgettext(state->domain, state->content->str));
+ 	} else {
+ 	    info.value = alloc_string(state->interface, state->content->str);
+  	}*/
 	g_free (tmp);
 
 	/* convert the value of this property to a string, and put it between
@@ -266,28 +271,35 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
 	if (!tmp)
-	{
-		glade_xml_node_delete (node);
-		return NULL;
-	}
+		return FALSE;
 
 	if (property->class->def)
 	{
-		default_str =
-			glade_property_class_make_string_from_gvalue (property->class,
-								      property->class->def);
-		if (default_str && strcmp (tmp, default_str) == 0)
+		if (property->class->orig_def == NULL)
+		{
+			default_str =
+				glade_property_class_make_string_from_gvalue (property->class,
+									      property->class->def);
+			skip = default_str && !strcmp (tmp, default_str);
+			g_free (default_str);
+		}
+		else
+		{
+			skip = G_IS_PARAM_SPEC_STRING (property->class->pspec) &&
+			       tmp[0] == '\0' &&
+			       !g_value_get_string (property->class->orig_def);
+		}
+
+		if (skip)
 		{
 			g_free (tmp);
-			g_free (default_str);
-			glade_xml_node_delete (node);
-			return NULL;
+			return FALSE;
 		}
 	}
 
-	glade_xml_set_content (node, tmp);
+	info.value = alloc_string(interface, tmp);
+	g_array_append_val (props, info);
 	g_free (tmp);
-	g_free (default_str);
 
-	return node;
+	return TRUE;
 }

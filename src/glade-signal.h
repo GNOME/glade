@@ -24,9 +24,10 @@ void glade_signal_free (GladeSignal *signal);
 
 gboolean glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2);
 
-GladeXmlNode *glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
+gboolean glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
+			      GladeInterface *interface);
 
-GladeSignal *glade_signal_new_from_node (GladeXmlNode *node);
+GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info);
 
 
 G_END_DECLS

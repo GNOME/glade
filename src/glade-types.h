@@ -35,5 +35,6 @@ typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
 
+#include <glade/glade-parser.h>
 
 #endif /* __GLADE_TYPES_H__ */

@@ -683,25 +683,29 @@ glade_project_selection_get (GladeProject *project)
 
 /**
  * glade_project_write:
- * @context: a #GladeXmlContext
  * @project: a #GladeProject
  * 
- * Returns: the root node of a newly created xml representation of the
+ * Returns: a libglade's GladeInterface representation of the
  *          project and its contents
  */
-static GladeXmlNode *
-glade_project_write (GladeXmlContext *context, const GladeProject *project)
+static GladeInterface *
+glade_project_write (const GladeProject *project)
 {
-	GladeXmlNode *node;
-	GList *list;
+	GladeInterface *interface;
+	GList *list, *tops = NULL;
+	guint i;
 
-	node = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
-	if (!node)
-		return NULL;
+	interface = g_new0 (GladeInterface, 1);
+	interface->names = g_hash_table_new (g_str_hash, g_str_equal);
+	interface->strings = g_hash_table_new_full (g_str_hash,
+						    g_str_equal,
+						    (GDestroyNotify)g_free,
+						    NULL);
 
-	for (list = project->widgets; list; list = list->next) {
+	for (i = 0, list = project->widgets; list; list = list->next)
+	{
 		GladeWidget *widget;
-		GladeXmlNode *child;
+		GladeWidgetInfo *info;
 
 		widget = glade_widget_get_from_gtk_widget (list->data);
 
@@ -709,54 +713,52 @@ glade_project_write (GladeXmlContext *context, const GladeProject *project)
 		 * Append toplevel widgets. Each widget then takes
 		 * care of appending its children.
 		 */
-		if (g_type_is_a
-		    (widget->widget_class->type, GTK_TYPE_WINDOW)) {
-			child = glade_widget_write (widget, context);
-			if (!child)
+		if (g_type_is_a (widget->widget_class->type, GTK_TYPE_WINDOW))
+		{
+			info = glade_widget_write (widget, interface);
+			if (!info)
 				return NULL;
 
-			glade_xml_node_append_child (node, child);
+			tops = g_list_prepend (tops, info);
+			++i;
 		}
 	}
+	interface->n_toplevels = i;
+	interface->toplevels = (GladeWidgetInfo **) g_new (GladeWidgetInfo *, i);
+	for (i = 0, list = tops; list; list = list->next, ++i)
+		interface->toplevels[i] = list->data;
 
-	return node;
+	g_list_free (tops);
+
+	return interface;
 }
 
 static GladeProject *
-glade_project_new_from_node (GladeXmlNode *node)
+glade_project_new_from_interface (GladeInterface *interface)
 {
 	GladeProject *project;
-	GladeXmlNode *child;
 	GladeWidget *widget;
-
-	if (!glade_xml_node_verify  (node, GLADE_XML_TAG_PROJECT))
-		return NULL;
+	guint i;
 
 	project = glade_project_new (FALSE);
 	project->changed = FALSE;
 	project->selection = NULL;
 	project->widgets = NULL;
 
-	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_REQUIRES))
-			continue;
+	if (interface->n_requires)
 		g_warning ("We currently do not support projects requiring additional libs");
-	}
 
-	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_WIDGET))
-			continue;
-		widget = glade_widget_read (project, child);
-		if (!widget) {
+	for (i = 0; i < interface->n_toplevels; ++i)
+	{
+		widget = glade_widget_read (project, interface->toplevels[i]);
+		if (!widget)
+		{
 			g_warning ("Failed to read a <widget> tag");
 			continue;
 		}
-		project->widgets = g_list_append (project->widgets, widget->widget);
+		project->widgets = g_list_prepend (project->widgets, widget->widget);
 		g_object_ref (widget->widget);
 	}
-	project->widgets = g_list_reverse (project->widgets);
 
 	return project;	
 }
@@ -773,18 +775,19 @@ glade_project_new_from_node (GladeXmlNode *node)
 GladeProject *
 glade_project_open (const gchar *path)
 {
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
 	GladeProject *project;
-
-	context = glade_xml_context_new_from_path (path, NULL, GLADE_XML_TAG_PROJECT);
-	if (!context)
+	GladeInterface *interface;
+	
+	interface = glade_parser_parse_file (path, NULL);
+	if (!interface)
 		return NULL;
-	doc = glade_xml_context_get_doc (context);
-	project = glade_project_new_from_node (glade_xml_doc_get_root (doc));
-	glade_xml_context_free (context);
 
-	if (project) {
+	project = glade_project_new_from_interface (interface);
+	
+	glade_interface_destroy (interface);
+
+	if (project)
+	{
 		project->path = g_strdup_printf ("%s", path);
 		g_free (project->name);
 		project->name = g_path_get_basename (project->path);
@@ -806,32 +809,19 @@ glade_project_open (const gchar *path)
 gboolean
 glade_project_save (GladeProject *project, const gchar *path)
 {
-	GladeXmlContext *context;
-	GladeXmlNode *root;
-	GladeXmlDoc *xml_doc;
-	gboolean ret;
+	GladeInterface *interface;
 
-	xml_doc = glade_xml_doc_new ();
-	if (!xml_doc)
+	interface = glade_project_write (project);
+	if (!interface)
 	{
-		g_warning ("Could not create xml document\n");
+		g_warning ("Could not write glade document\n");
 		return FALSE;
 	}
+	glade_interface_dump (interface, path);
+	glade_interface_destroy (interface);
 
-	context = glade_xml_context_new (xml_doc, NULL);
-	root = glade_project_write (context, project);
-	glade_xml_context_destroy (context);
-	if (!root)
-		return FALSE;
-
-	glade_xml_doc_set_root (xml_doc, root);
-	ret = glade_xml_doc_save (xml_doc, path);
-	glade_xml_doc_free (xml_doc);
-
-	if (ret < 0)
-		return FALSE;
-
-	if (path != project->path) {
+	if (path != project->path)
+	{
 		g_free (project->path);
 		project->path = g_strdup_printf ("%s", path);
 	}

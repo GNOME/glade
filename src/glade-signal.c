@@ -103,44 +103,40 @@ glade_signal_clone (const GladeSignal *signal)
 
 /**
  * glade_signal_write:
- * @context: a #GladeXmlContext
- * @signal: a #GladeSignal
+ * @info:
+ * @signal:
+ * @interface:
  *
- * Returns: a new #GladeXmlNode in @context for @signal
+ * Returns: TRUE if succeed
  */
-GladeXmlNode *
-glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
+gboolean
+glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
+		     GladeInterface *interface)
 {
-	GladeXmlNode *node;
-		
-	node = glade_xml_node_new (context, GLADE_XML_TAG_SIGNAL);
+	info->name = alloc_string(interface, signal->name);
+	info->handler = alloc_string(interface, signal->name);
+	info->after = signal->after;
 
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, signal->name);
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_HANDLER, signal->handler);
-	glade_xml_node_set_property_boolean (node, GLADE_XML_TAG_AFTER, signal->after);
-
-	return node;
+	return TRUE;
 }
 
 /**
- * glade_signal_new_from_node:
- * @node: a #GladeXmlNode
+ * glade_signal_new_from_signal_info:
+ * @node: a #GladeSignalInfo
  *
  * Returns: a new #GladeSignal with the attributes defined in @node, %NULL if
  *          there is an error
  */
-GladeSignal *
-glade_signal_new_from_node (GladeXmlNode *node)
+GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 {
 	GladeSignal *signal;
 
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_SIGNAL))
-		return NULL;
+	g_return_val_if_fail (info != NULL, NULL);
 
 	signal = g_new0 (GladeSignal, 1);
-	signal->name    = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
-	signal->handler = glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER, NULL);
-	signal->after   = glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
+	signal->name = g_strdup (info->name);
+	signal->handler = g_strdup (info->handler);
+	signal->after = info->after;
 
 	if (!signal->name)
 		return NULL;

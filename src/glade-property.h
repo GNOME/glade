@@ -48,7 +48,8 @@ void glade_property_set (GladeProperty *property, const GValue *value);
 
 void glade_property_sync (GladeProperty *property);
 
-GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);
+gboolean glade_property_write (GArray *props, GladeProperty *property,
+			       GladeInterface *interface);
 
 
 G_END_DECLS

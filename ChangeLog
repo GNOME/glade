@@ -1,3 +1,33 @@
+2004-11-08  Ivan Wong  <email@ivanwong.info>
+
+	* configure.in: add dependency of libglade-2.0 >= 2.4.0
+
+	* src/glade-project.c:
+	  - fill GladeInterface of libglade: glade_project_save(),
+	    glade_project_write()
+	  - parse GladeInterface of libglade: glade_project_open(),
+	    glade_project_new_from_interface()
+
+	* src/glade-property.[ch]: glade_property_write() now fills
+	  libglade's GladePropInfo
+	
+	* src/glade-signal.[ch]: glade_signal_write()/glade_signal_new_from_signal_info()
+	  now fills/parses GladeSignalInfo of libglade.
+	
+	* src/glade-types.h: include header of libglade-parser.
+
+	* src/glade-widget.[ch]:
+	  - glade_widget_write_signals(), glade_widget_write(),
+	    glade_widget_write_child(): use libglade to save.
+	  - glade_widget_read(), glade_widget_new_from_widget_info(),
+	    glade_widget_new_child_from_child_info(),
+	    glade_widget_apply_property_from_prop_info(): use libglade to load.
+
+	* src/glade-xml-utils.h: dups of alloc_string() and alloc_propname()
+	  from libglade, will be removed.
+	
+	* widgets/gtkwidget.xml: set "Tooltip" default to empty string.
+
 2004-11-13  Ivan Wong  <email@ivanwong.info>
 
 	* main.c, src/glade.h:

@@ -103,8 +103,8 @@ void			glade_widget_change_signal_handler	(GladeWidget *widget, GladeSignal *old
 GPtrArray *		glade_widget_list_signal_handlers	(GladeWidget *widget, const char *signal_name); /* array of GladeSignal* */
 
 /* serialization */
-GladeXmlNode *		glade_widget_write			(GladeWidget *widget, GladeXmlContext *context);
-GladeWidget *		glade_widget_read			(GladeProject *project, GladeXmlNode *node);
+GladeWidgetInfo *	glade_widget_write			(GladeWidget *widget, GladeInterface *interface);
+GladeWidget *		glade_widget_read			(GladeProject *project, GladeWidgetInfo *info);
 
 /* helper functions */
 #define			glade_widget_get_from_gtk_widget(w)	g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
