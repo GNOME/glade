@@ -132,8 +132,9 @@ struct _GladePropertyClass
 			    * and is NULL for other poperties.
 			    * [See glade-choice.h]
 			    */
-	GType enum_type;   /* If it is GLADE_PROPERTY_TYPE_ENUM, this holds
-			    * the GType of the enum, otherwise it's 0.
+	GType enum_type;   /* If it is GLADE_PROPERTY_TYPE_ENUM or
+			    * GLADE_PROPERTY_TYPE_FLAGS, this holds
+			    * the GType of the enum or flags, otherwise it's 0.
 			    */
 
 	gboolean optional; /* Some properties are optional by nature like

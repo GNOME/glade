@@ -1,5 +1,28 @@
 2004-04-26  Damon Chaplin  <damon@gnome.org>
 
+	* src/glade-editor.c (flag_toggled) 
+	(glade_editor_property_show_flags_dialog): new functions to show a
+	modal dialog for modifying flags properties.
+	(glade_editor_create_input_flags): finished, using an uneditable entry
+	and a '...' button next to it to show the dialog above.
+	(glade_editor_property_load_flags): finished, by converting the flags
+	GValue to a string and setting it in the entry.
+
+	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
+	just return GLADE_PROPERTY_TYPE_FLAGS for flags types.
+	(glade_property_class_make_string_from_gvalue): support flags.
+	(glade_property_class_make_flags_from_string): new function copied
+	from libglade to parse flags from a string.
+	(glade_property_class_make_gvalue_from_string): use above function to
+	support flags.
+	(glade_property_class_new_from_spec): store the flags type in
+	enum_type.
+
+	* src/glade-property-class.h (struct _GladePropertyClass): add to
+	comment noting that enum_type is also used for flags now.
+
+2004-04-26  Damon Chaplin  <damon@gnome.org>
+
 	* src/glade-command.c (glade_command_set_property): only use the
 	property value string in the description if it is not NULL, short
 	(< 10 bytes), and doesn't contain any '_' characters. Otherwise the

@@ -259,11 +259,7 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	} else if (G_IS_PARAM_SPEC_ENUM (spec)) {
 		return GLADE_PROPERTY_TYPE_ENUM;
 	} else if (G_IS_PARAM_SPEC_FLAGS (spec)) {
-		/* FIXME: We should implement the "events" property */
-		if (g_ascii_strcasecmp (spec->name, "events") == 0)
-			return GLADE_PROPERTY_TYPE_ERROR;
-		else
-			return GLADE_PROPERTY_TYPE_FLAGS;
+		return GLADE_PROPERTY_TYPE_FLAGS;
 	} else if (G_IS_PARAM_SPEC_DOUBLE (spec)) {
 		return GLADE_PROPERTY_TYPE_DOUBLE;
 	} else if (G_IS_PARAM_SPEC_LONG (spec)) {
@@ -385,6 +381,17 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 			}
 		}
 		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		{
+			GValue tmp_value = { 0, };
+
+			g_value_init (&tmp_value, G_TYPE_STRING);
+			g_value_transform (value, &tmp_value);
+			string = g_strescape (g_value_get_string (&tmp_value),
+					      NULL);
+			g_value_unset (&tmp_value);
+		}
+		break;
 	default:
 		g_warning ("Could not make string from gvalue for type %s\n",
 			 glade_property_type_enum_to_string (type));
@@ -392,6 +399,86 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 
 	return string;
 }
+
+/* This is copied exactly from libglade. I've just renamed the function. */
+static guint
+glade_property_class_make_flags_from_string (GType type, const char *string)
+{
+    GFlagsClass *fclass;
+    gchar *endptr, *prevptr;
+    guint i, j, ret = 0;
+    char *flagstr;
+
+    ret = strtoul(string, &endptr, 0);
+    if (endptr != string) /* parsed a number */
+	return ret;
+
+    fclass = g_type_class_ref(type);
+
+
+    flagstr = g_strdup (string);
+    for (ret = i = j = 0; ; i++) {
+	gboolean eos;
+
+	eos = flagstr [i] == '\0';
+	
+	if (eos || flagstr [i] == '|') {
+	    GFlagsValue *fv;
+	    const char  *flag;
+	    gunichar ch;
+
+	    flag = &flagstr [j];
+            endptr = &flagstr [i];
+
+	    if (!eos) {
+		flagstr [i++] = '\0';
+		j = i;
+	    }
+
+            /* trim spaces */
+	    for (;;)
+	      {
+		ch = g_utf8_get_char (flag);
+		if (!g_unichar_isspace (ch))
+		  break;
+		flag = g_utf8_next_char (flag);
+	      }
+
+	    while (endptr > flag)
+	      {
+		prevptr = g_utf8_prev_char (endptr);
+		ch = g_utf8_get_char (prevptr);
+		if (!g_unichar_isspace (ch))
+		  break;
+		endptr = prevptr;
+	      }
+
+	    if (endptr > flag)
+	      {
+		*endptr = '\0';
+		fv = g_flags_get_value_by_name (fclass, flag);
+
+		if (!fv)
+		  fv = g_flags_get_value_by_nick (fclass, flag);
+
+		if (fv)
+		  ret |= fv->value;
+		else
+		  g_warning ("Unknown flag: '%s'", flag);
+	      }
+
+	    if (eos)
+		break;
+	}
+    }
+    
+    g_free (flagstr);
+
+    g_type_class_unref(fclass);
+
+    return ret;
+}
+
 
 GValue *
 glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
@@ -454,6 +541,14 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 			}
 		}
 		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		{
+			guint flags;
+
+			g_value_init (value, property_class->enum_type);
+			flags = glade_property_class_make_flags_from_string (property_class->enum_type, string);
+			g_value_set_flags (value, flags);
+		}
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		break;
 	default:
@@ -562,6 +657,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 		property_class->enum_type = spec->value_type;
 		break;
 	case GLADE_PROPERTY_TYPE_FLAGS:
+		property_class->enum_type = spec->value_type;
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		break;
