@@ -147,7 +147,7 @@ glade_signal_editor_dialog_cb (GtkButton *button, GladeSignalEditor *editor)
 			if (gtk_tree_selection_get_selected (lst_selected, &lst_model, iter)) {
 				label = g_new0 (GValue, 1);
 				gtk_tree_model_get_value (GTK_TREE_MODEL (lst_model), iter, 0, label);
-				gtk_entry_set_text (GTK_ENTRY (editor->signals_name_entry), (gchar *) label->data[0].v_pointer);
+				gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), (gchar *) label->data[0].v_pointer);
 			}
 			break;
 
@@ -196,18 +196,18 @@ glade_signal_editor_list_select_cb (GtkTreeSelection *lst_select,
 
 	label = g_new0 (GValue, 1);
 	gtk_tree_model_get_value (lst_model, &iter, 0, label);
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_name_entry), label->data[0].v_pointer);
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), label->data[0].v_pointer);
 
 	label = g_new0 (GValue, 1);
 	gtk_tree_model_get_value (lst_model, &iter, 1, label);
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_handler_entry), label->data[0].v_pointer);
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_handler_entry), label->data[0].v_pointer);
 
 	label = g_new0 (GValue, 1);
 	gtk_tree_model_get_value (lst_model, &iter, 2, label);
 	if (!strcmp (_("Yes"), label->data[0].v_pointer)) {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor->signals_after_button), TRUE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor->signal_after_button), TRUE);
 	} else {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor->signals_after_button), FALSE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor->signal_after_button), FALSE);
 	}
 
 	return TRUE;
@@ -235,7 +235,7 @@ glade_signal_editor_add_cb (GladeSignalEditor *editor)
 	g_return_if_fail (editor != NULL);
 	g_return_if_fail (editor->widget != NULL);
 
-	name_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signals_name_entry));
+	name_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signal_name_entry));
 	if (!strcmp (name_text, "")) {
 		/* FIXME: Should fix to use Gnome APIs or a glade dialog */
 		dialog = gtk_message_dialog_new (NULL, 
@@ -248,7 +248,7 @@ glade_signal_editor_add_cb (GladeSignalEditor *editor)
 		return;
 	}
 
-	handler_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signals_handler_entry));
+	handler_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signal_handler_entry));
 	if (!strcmp (handler_text, "")) {
 		/* FIXME: Should fix to use Gnome APIs or a glade dialog */
 		dialog = gtk_message_dialog_new (NULL, 
@@ -265,19 +265,19 @@ glade_signal_editor_add_cb (GladeSignalEditor *editor)
 	signal->name = g_strdup (name_text);
 	signal->handler = g_strdup (handler_text);
 	signal->after = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON 
-			(editor->signals_after_button));
+			(editor->signal_after_button));
 	editor->widget->signals = g_list_append (editor->widget->signals, signal);
 	
 	glade_signal_editor_append_signal (editor, signal);
 
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_name_entry), "");
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_handler_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_handler_entry), "");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON 
-			(editor->signals_after_button), FALSE);
+			(editor->signal_after_button), FALSE);
 }
 
 static void
-glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
+glade_signal_editor_update_cb (GladeSignalEditor *editor)
 {
 	GtkTreeIter iter;
 	GtkTreeSelection *select;
@@ -293,7 +293,7 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 	g_return_if_fail (editor != NULL);
 	g_return_if_fail (editor->widget != NULL);
 
-	name_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signals_name_entry));
+	name_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signal_name_entry));
 	if (!strcmp (name_text, "")) {
 		/* FIXME: Should fix to use Gnome APIs or a glade dialog */
 		dialog = gtk_message_dialog_new (NULL, 
@@ -306,7 +306,7 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 		return;
 	}
 
-	handler_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signals_handler_entry));
+	handler_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (editor->signal_handler_entry));
 	if (!strcmp (handler_text, "")) {
 		/* FIXME: Should fix to use Gnome APIs or a glade dialog */
 		dialog = gtk_message_dialog_new (NULL, 
@@ -342,7 +342,7 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 		gtk_tree_store_set_value (GTK_TREE_STORE (model), &iter, 0, label);
 		label->data[0].v_pointer = handler_text;
 		gtk_tree_store_set_value (GTK_TREE_STORE (model), &iter, 1, label);
-		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (editor->signals_after_button))) {
+		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (editor->signal_after_button))) {
 			label->data[0].v_pointer = _("Yes");
 		} else {
 			label->data[0].v_pointer = _("No");
@@ -357,7 +357,7 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 					sig->after == signal.after) {
 					sig->name = g_strdup (name_text);
 					sig->handler = g_strdup (handler_text);
-					sig->after = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (editor->signals_after_button));
+					sig->after = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (editor->signal_after_button));
 					break;
 			}
 		}
@@ -365,7 +365,7 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 }
 
 static void
-glade_signal_editor_delete_cb (GtkButton *button, GladeSignalEditor *editor)
+glade_signal_editor_delete_cb (GladeSignalEditor *editor)
 {
 	GtkTreeIter iter;
 	GtkTreeSelection *select;
@@ -411,16 +411,16 @@ glade_signal_editor_delete_cb (GtkButton *button, GladeSignalEditor *editor)
 }
 
 static void
-glade_signal_editor_clear_cb (GtkButton *button, GladeSignalEditor *editor)
+glade_signal_editor_clear_cb (GladeSignalEditor *editor)
 {
 
 	g_return_if_fail (editor != NULL);
 	g_return_if_fail (editor->widget != NULL);
 
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_name_entry), "");
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_handler_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_handler_entry), "");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON 
-			(editor->signals_after_button), FALSE);
+			(editor->signal_after_button), FALSE);
 }
 
 static void
@@ -469,8 +469,7 @@ glade_signal_editor_table_append_label (GtkWidget *table, const gchar *name, gin
 
 	label = gtk_label_new (name);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-	gtk_table_attach_defaults (GTK_TABLE (label), 0, 1, pos, pos + 1);
-
+	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, pos, pos + 1);
 }
 
 static GtkWidget *
@@ -482,7 +481,7 @@ glade_signal_editor_table_append_entry (GtkWidget *table,
 
 	entry  = gtk_entry_new ();
 	gtk_box_pack_start_defaults (GTK_BOX (hbox), entry);
-	gtk_table_attach_defaults (GTK_TABLE (entry), hbox, 1, 2, pos, pos + 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, pos, pos + 1);
 
 	return entry;
 }
@@ -503,16 +502,29 @@ glade_signal_editor_construct_table (GladeSignalEditor *editor)
 	hbox = gtk_hbox_new (FALSE, 0);
 	editor->signal_name_entry =
 		glade_signal_editor_table_append_entry (table, hbox, 0);
+
 	/* The "..." button */
 	button = gtk_button_new_with_label ("...");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (glade_signal_editor_dialog_cb), editor);
+			    GTK_SIGNAL_FUNC (glade_signal_editor_dialog_cb),
+			    editor);
 	gtk_box_pack_start_defaults (GTK_BOX (hbox), button);
 
 	hbox = gtk_hbox_new (FALSE, 0);
-	editor->signals_handler_entry = 
+	editor->signal_handler_entry = 
 		glade_signal_editor_table_append_entry (table, hbox, 1);
 
+	/* The Yes/No button */
+	hbox = gtk_hbox_new (FALSE, 0);
+	button = gtk_toggle_button_new ();
+	gtk_signal_connect (GTK_OBJECT (button), "toggled",
+			    GTK_SIGNAL_FUNC (glade_signal_editor_after_cb),
+			    editor);
+	gtk_box_pack_start_defaults (GTK_BOX (hbox), button);
+	gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, 2, 3);
+	editor->signal_after_button =  button;
+	
+	return table;
 }
 
 static void
@@ -521,11 +533,14 @@ glade_signal_editor_clicked_cb (GtkWidget *button, GladeSignalEditor *editor)
 	g_return_if_fail (GLADE_IS_SIGNAL_EDITOR (editor));
 
 	if (button == editor->add_button)
-		glade_signal_editor_add_cb 		
+		glade_signal_editor_add_cb (editor);
 	else if (button == editor->update_button)
+		glade_signal_editor_update_cb (editor);
 	else if (button == editor->delete_button)
+		glade_signal_editor_delete_cb (editor);
 	else if (button == editor->clear_button)
-
+		glade_signal_editor_clear_cb (editor);
+}
 		
 static GtkWidget *
 glade_signal_editor_append_button (GladeSignalEditor *editor,
@@ -539,9 +554,11 @@ glade_signal_editor_append_button (GladeSignalEditor *editor,
 			    GTK_SIGNAL_FUNC (glade_signal_editor_clicked_cb),
 			    editor);
 	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+
+	return button;
 }
 
-static void
+static GtkWidget *
 glade_signal_editor_construct_buttons (GladeSignalEditor *editor)
 {
 	GtkWidget *hbox;
@@ -552,7 +569,7 @@ glade_signal_editor_construct_buttons (GladeSignalEditor *editor)
 	editor->update_button = glade_signal_editor_append_button (editor, hbox, _("Update"));
 	editor->delete_button = glade_signal_editor_append_button (editor, hbox, _("Delete"));
 	editor->clear_button  = glade_signal_editor_append_button (editor, hbox, _("Clear"));
-		
+
 	return hbox;
 }
 
@@ -562,7 +579,6 @@ glade_signal_editor_construct (GladeSignalEditor *editor)
 	GtkWidget *vbox;
 	GtkWidget *hbox;
 	GtkWidget *scroll;
-	GtkWidget *widget;
 	GtkWidget *table;
 
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -578,19 +594,20 @@ glade_signal_editor_construct (GladeSignalEditor *editor)
 	gtk_container_add (GTK_CONTAINER (scroll), editor->signals_list);
 
 	table = glade_signal_editor_construct_table (editor);
-	gtk_box_pack_start_defaults (GTK_BOX (container), table);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
 
 	hbox = glade_signal_editor_construct_buttons (editor);
-	gtk_box_pack_start_defaults (GTK_BOX (container), hbox);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), hbox);
 
 	gtk_widget_show_all (editor->main_window);
 }
 
 
-GtkWidget 
+GtkWidget *
 glade_signal_editor_get_widget (GladeSignalEditor *editor)
 {
 	g_return_val_if_fail (GLADE_IS_SIGNAL_EDITOR (editor), NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (editor->main_window), NULL);
 	
 	return editor->main_window;
 }
@@ -610,10 +627,10 @@ glade_signal_editor_new (void)
 static void
 glade_signal_editor_set_contents (GladeSignalEditor *editor)
 {
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_name_entry), "");
-	gtk_entry_set_text (GTK_ENTRY (editor->signals_handler_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), "");
+	gtk_entry_set_text (GTK_ENTRY (editor->signal_handler_entry), "");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON 
-				      (editor->signals_after_button), FALSE);
+				      (editor->signal_after_button), FALSE);
 }
 
 void 

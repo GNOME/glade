@@ -19,9 +19,10 @@ struct _GladeSignalEditor {
 	GladeWidgetClass *class;
 
 	GtkWidget *signals_list;
-	GtkWidget *signals_name_entry;
-	GtkWidget *signals_handler_entry;
-	GtkWidget *signals_after_button; /* A GtkToggleButton */
+	
+	GtkWidget *signal_name_entry;
+	GtkWidget *signal_handler_entry;
+	GtkWidget *signal_after_button; /* A GtkToggleButton */
 
 	/* Buttons */
 	GtkWidget *add_button;
