@@ -151,7 +151,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
  * @event_widget: 
  * @event: 
  * 
- * Returns the real widget that was "clicked over" for a given event (cooridantes) and a widget
+ * Returns the real widget that was "clicked over" for a given event (coordinates) and a widget
  * For example, when a label is clicked the button press event is triggered for its parent, this
  * function takes the event and the widget that got the event and returns the real GladeWidget that was
  * clicked
@@ -228,7 +228,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 		gw = glade_widget_get_from_gtk_widget (event_widget);
 		g_warning ("We could not find the widget %s:%s\n",
 			   gtk_widget_get_name (event_widget),
-			   gw ? gw->name : "es null");
+			   gw ? gw->name : "[null]");
 		return NULL;
 	}
 #else

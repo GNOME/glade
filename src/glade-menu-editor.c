@@ -63,6 +63,7 @@
 #include "glade-keys-dialog.h"
 #include "glade-project.h"
 #include "glade-utils.h"
+#include "glade-debug.h"
 
 #define GladeMenuEditorIndexKey "glade-menu-editor-index-key"
 #define GladeMenuEditorStockIDKey "glade-menu-editor-stock-id"
@@ -1246,9 +1247,7 @@ on_entry_changed (GtkWidget *entry,
 	gboolean changed = FALSE;
 	gint row;
 
-#if 1
-	g_print ("In on_entry_changed\n");
-#endif
+	g_debug(("In on_entry_changed\n"));
 
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
 
@@ -1301,7 +1300,7 @@ on_entry_changed (GtkWidget *entry,
 	/* if the text has not changed, then just return */
 	if (item_text == NULL && *text != 0)
 		changed = TRUE;
-	else if (strcmp (text, item_text) != 0)
+	else if (item_text && text && strcmp (text, item_text) != 0)
 		changed = TRUE;
 
 	if (!changed)
