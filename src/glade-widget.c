@@ -35,6 +35,7 @@
 #include "glade-signal.h"
 #include "glade-gtk.h"
 #include "glade-packing.h"
+#include "glade-clipboard.h"
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
 
@@ -548,7 +549,7 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
  * "button1" text in it, or a label will have "label4". right after
  * it is created.
  **/
-static void
+void
 glade_widget_set_contents (GladeWidget *widget)
 {
 	GladeProperty *property = NULL;
@@ -659,7 +660,7 @@ glade_widget_ugly_hack (gpointer data)
 }
 #endif
 
-static gboolean
+gboolean
 glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 {
 	GladeWidgetClass *class;
@@ -716,7 +717,7 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	return TRUE;
 }
 
-static void
+void
 glade_widget_connect_signals (GladeWidget *widget)
 {
 	/* We can be a GtkObject. For example an adjustment. */
@@ -1052,19 +1053,35 @@ glade_widget_delete (GladeWidget *widget)
 void
 glade_widget_cut (GladeWidget *widget)
 {
-	glade_implement_me ();
+	GladeProjectWindow *gpw;
+	GladeClipboard *clipboard;
+
+	gpw = glade_project_window_get ();
+	clipboard = gpw->clipboard;
+
+	glade_clipboard_cut (clipboard, widget);
 }
 
 void
 glade_widget_copy (GladeWidget *widget)
 {
-	glade_implement_me ();
+	GladeProjectWindow *gpw;
+	GladeClipboard *clipboard;
+
+	gpw = glade_project_window_get ();
+	clipboard = gpw->clipboard;
+
+	glade_clipboard_copy (clipboard, widget);
 }
 
 void
 glade_widget_paste (GladeWidget *widget)
 {
 	glade_implement_me ();
+	/*
+	 * look in glade-placeholder.c (glade_placeholder_on_button_press_event
+	 * for the "paste" operation code.
+	 */
 }
 
 /**

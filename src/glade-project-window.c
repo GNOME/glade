@@ -27,6 +27,7 @@
 #include "glade.h"
 #include "glade-palette.h"
 #include "glade-editor.h"
+#include "glade-clipboard.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-parameter.h"
@@ -46,7 +47,7 @@ static void gpw_quit_cb (void);
 static void gpw_show_palette_cb (void);
 static void gpw_show_editor_cb (void);
 static void gpw_show_widget_tree_cb (void);
-static void gpw_show_clipboard_cb (void) {};
+static void gpw_show_clipboard_cb (void);
 
 static void gpw_undo_cb (void);
 static void gpw_redo_cb (void);
@@ -324,6 +325,7 @@ glade_project_window_new (GList *catalogs)
 	glade_project_window = gpw;
 	glade_palette_create (gpw);
 	glade_editor_create  (gpw);
+	glade_clipboard_create (gpw);
 	
 	return gpw;
 }
@@ -400,6 +402,14 @@ gpw_show_editor_cb (void)
 	GladeProjectWindow *gpw = glade_project_window_get ();
 
 	glade_editor_show (gpw);
+}
+
+static void
+gpw_show_clipboard_cb (void)
+{
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	glade_clipboard_show_view (gpw);
 }
 
 static void

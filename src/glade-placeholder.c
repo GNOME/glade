@@ -235,6 +235,18 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL) {
 		glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
 		glade_project_window_set_add_class (gpw, NULL);
+	} else if (event->button == 3) {
+		/*
+		 * If a right-click, do a PASTE from the clipboard.
+		 * FIXME: should show a menu.
+		 */
+		GladeProjectWindow *gpw;
+		GladeClipboard *clipboard;
+
+		gpw = glade_project_window_get ();
+		clipboard = gpw->clipboard;
+
+		glade_clipboard_paste (clipboard, placeholder);
 	}
 			
 }

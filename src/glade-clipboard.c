@@ -1,0 +1,298 @@
+/*
+ * glade-clipboard.c - An object for handling Cut/Copy/Paste.
+ *
+ * Copyright (C) 2001 The GNOME Foundation.
+ *
+ * Author(s):
+ *      Archit Baweja <bighead@crosswinds.net>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
+ * USA.
+ */
+
+#include <glib.h>
+#include <gtk/gtk.h>
+
+#include "glade.h"
+#include "glade-clipboard-view.h"
+#include "glade-clipboard.h"
+#include "glade-project-window.h"
+#include "glade-widget.h"
+#include "glade-widget-class.h"
+#include "glade-placeholder.h"
+#include "glade-project.h"
+
+static void
+glade_clipboard_class_init (GladeClipboardClass * klass)
+{
+
+}
+
+static void
+glade_clipboard_init (GladeClipboard * clipboard)
+{
+	clipboard->widgets = NULL;
+	clipboard->view = NULL;
+	clipboard->curr = NULL;
+}
+
+/**
+ * glade_clipboard_get_type:
+ *
+ * Creates the typecode for the GladeClipboard object type.
+ *
+ * Return value: the typecode for the GladeClipboard object type.
+ **/
+GType
+glade_clipboard_get_type ()
+{
+	static GType type = 0;
+
+	if (!type) {
+		static const GTypeInfo info = {
+			sizeof (GladeClipboardClass),
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_clipboard_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeClipboard),
+			0,
+			(GInstanceInitFunc) glade_clipboard_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "GladeClipboard", &info, 0);
+	}
+
+	return type;
+}
+
+/**
+ * glade_clipboard_new:
+ * @: 
+ * 
+ * Create a new @GladeClipboard object.
+ *
+ * Return Value: a @GladeClipboard object.
+ **/
+GladeClipboard *
+glade_clipboard_new ()
+{
+	return GLADE_CLIPBOARD (g_object_new (GLADE_TYPE_CLIPBOARD, NULL));
+}
+
+/**
+ * glade_clipboard_add:
+ * @clipboard: 
+ * @widget: 
+ * 
+ * Add a GladeWidget to the Clipboard. Basically has stuff common to 
+ * Cut/Copy commands.
+ **/
+static void
+glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
+{
+	/*
+	 * Add the GladeWidget to the list of children. And set the
+	 * latest addition, to currently selected widget in the clipboard.
+	 */
+	clipboard->widgets = g_list_prepend (clipboard->widgets, widget);
+	clipboard->curr = widget;
+
+	/*
+	 * If there is view present, update it.
+	 */
+	if (clipboard->view)
+		glade_clipboard_view_add (clipboard->view, widget);
+}
+
+/**
+ * glade_clipboard_remove:
+ * @clipboard: 
+ * @widget: 
+ * 
+ * Remove a GladeWidget from the Clipboard
+ **/
+static void
+glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
+{
+	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
+
+	/*
+	 * If there is a view present, update it.
+	 */
+	if (clipboard->view)
+		glade_clipboard_view_remove (clipboard->view, widget);
+}
+
+/**
+ * glade_clipboard_cut:
+ * @clipboard: 
+ * @widget: 
+ * 
+ * Cut a GladeWidget onto the Clipboard. 
+ **/
+void
+glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
+{
+	GladeWidget *parent;
+
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	parent = widget->parent;
+
+	glade_project_remove_widget (widget);
+
+	/*
+	 * If its not a toplevel widget, we remove it from its container.
+	 * This is all GladeWidget stuff.
+	 */
+	if (parent) {
+		GladePlaceholder *placeholder;
+
+		gtk_widget_ref (widget->widget);
+		placeholder = glade_placeholder_new (parent);
+		if (parent->class->placeholder_replace)
+			parent->class->placeholder_replace (widget->widget,
+							    GTK_WIDGET (placeholder),
+							    parent->widget);
+		gtk_widget_unref (widget->widget);
+
+		/* Remove it from the parent's child list */
+		parent->children = g_list_remove (parent->children,
+						  widget);
+	}
+
+	gtk_widget_hide (widget->widget);
+
+	glade_clipboard_add (clipboard, widget);
+}
+
+/**
+ * glade_clipboard_copy:
+ * @clipboard: 
+ * @widget: 
+ * 
+ * Copy a GladeWidget onto the Clipboard. 
+ **/
+void
+glade_clipboard_copy (GladeClipboard * clipboard, GladeWidget * widget)
+{
+	GladeWidget *copy;
+
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/*
+	 * FIXME: not sure if this is the right way to copy a struct in C.
+	 * should work though.
+	 */
+	copy = g_new0 (GladeWidget, 1);
+	*copy = *widget;
+
+	glade_clipboard_add (clipboard, copy);
+}
+
+/**
+ * glade_clipboard_paste:
+ * @clipboard: 
+ * @parent: 
+ * 
+ * Paste a GladeWidget from the Clipboard.
+ **/
+void
+glade_clipboard_paste (GladeClipboard * clipboard,
+		       GladePlaceholder * placeholder)
+{
+	GladeProjectWindow *gpw;
+	GladeWidget *widget;
+	GladeWidget *parent;
+	GladeProject *project;
+
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+
+	gpw = glade_project_window_get ();
+	widget = clipboard->curr;
+	project = glade_project_window_get_project ();
+	parent = glade_placeholder_get_parent (placeholder);
+
+	if (!widget)
+		return;
+
+	widget->name = glade_widget_new_name (project, widget->class);
+	widget->parent = parent;
+	glade_packing_add_properties (widget);
+	glade_widget_create_gtk_widget (widget);
+	glade_project_add_widget (project, widget);
+
+	if (parent)
+		parent->children =
+		    g_list_prepend (parent->children, widget);
+
+	glade_widget_set_contents (widget);
+	glade_widget_connect_signals (widget);
+	glade_placeholder_replace (placeholder, parent, widget);
+	glade_widget_set_default_packing_options (widget);
+	glade_project_selection_set (widget, TRUE);
+
+	/*
+	 * This damned 'if' statement caused a 1 month delay.
+	 */
+	if (GTK_IS_WIDGET (widget->widget))
+		gtk_widget_show (GTK_WIDGET (widget->widget));
+
+	/*
+	 * Finally remove widget from clipboard.
+	 * FIXME: should this be done? I mean should we leave a copy on the 
+	 * clipboard anyway?
+	 */
+	glade_clipboard_remove (clipboard, widget);
+}
+
+void
+glade_clipboard_create (GladeProjectWindow * gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->clipboard == NULL) {
+		GladeClipboard *clipboard;
+
+		clipboard = glade_clipboard_new ();
+		gpw->clipboard = clipboard;
+	}
+}
+
+void
+glade_clipboard_show_view (GladeProjectWindow * gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->clipboard->view == NULL) {
+		GtkWidget *view;
+
+		view = glade_clipboard_view_new (gpw->clipboard);
+		gtk_window_set_title (GTK_WINDOW (view), _("Clipboard"));
+		g_signal_connect_data (G_OBJECT (view), "delete_event",
+				       G_CALLBACK (gtk_widget_hide),
+				       view, NULL, 0);
+
+		gpw->clipboard->view = view;
+	}
+
+	if (!GTK_WIDGET_VISIBLE (gpw->clipboard->view))
+		gtk_widget_show (GTK_WIDGET (gpw->clipboard->view));
+}
