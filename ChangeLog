@@ -4,6 +4,9 @@
 	function which adds a pixbuf renderer to display an icon next to the
 	widget name.
 	(glade_project_view_init): use the above.
+	* src/glade-clipboard-view.[ch]: swith from TreeStore to ListStore.
+	(glade_clipboard_view_populate_model): simplifification.
+	(glade_clipboard_view_create_tree_view): dispaly icon.
 
 2003-08-18  Archit Baweja  <bighead@users.sourceforge.net>
 

@@ -19,7 +19,7 @@ struct _GladeClipboardView {
 	GtkWindow __parent__;
 
 	GtkWidget *widget;	   /* The GtkTreeView widget */
-	GtkTreeStore *model;	   /* The GtkTreeStore model for the View */
+	GtkListStore *model;	   /* The GtkListStore model for the View */
 	GladeClipboard *clipboard; /* The Clipboard for which this is a view */
 };
 

@@ -86,79 +86,78 @@ glade_clipboard_view_selection_changed_cb (GtkTreeSelection *sel,
 }
 
 static void
+glade_clipboard_view_populate_model (GladeClipboardView *view)
+{
+	GladeClipboard *clipboard;
+	GtkListStore *model;
+	GList *list;
+	GtkTreeIter iter;
+
+	clipboard = GLADE_CLIPBOARD (view->clipboard);
+	model = view->model;
+
+	for (list = clipboard->widgets; list; list = list->next) {
+		GladeWidget *widget;
+
+		widget = list->data;
+		gtk_list_store_append (model, &iter);
+		gtk_list_store_set (model, &iter, 0, widget, -1);
+	}
+}
+
+static void
 glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 				    GtkCellRenderer *cell,
 				    GtkTreeModel *tree_model,
 				    GtkTreeIter *iter,
 				    gpointer data)
 {
+	gboolean is_icon = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
 
 	gtk_tree_model_get (tree_model, iter, 0, &widget, -1);
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (widget->name != NULL);
-	
-	g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
-}
+	g_return_if_fail (widget->class != NULL);
+	g_return_if_fail (widget->class->icon != NULL);
 
-static void
-glade_clipboard_view_populate_model_real (GtkTreeStore *model,
-					  GList *widgets,
-					  GtkTreeIter *parent_iter,
-					  gboolean add_childs)
-{
-	GladeWidget *widget;
-	GList *list;
-	GtkTreeIter iter;
-	GtkTreeIter *copy = NULL;
-
-	list = g_list_copy (widgets);
-	for (; list; list = list->next) {
-		widget = list->data;
-		gtk_tree_store_append (model, &iter, parent_iter);
-		gtk_tree_store_set (model, &iter, 0, widget, -1);
-		if (add_childs && widget->children != NULL) {
-			copy = gtk_tree_iter_copy (&iter);
-			glade_clipboard_view_populate_model_real (model,
-								  widget->children,
-								  copy, TRUE);
-			gtk_tree_iter_free (copy);
-		}
-	}
-	g_list_free (list);
-}
-
-static void
-glade_clipboard_view_populate_model (GladeClipboardView *view)
-{
-	GList *list;
-
-	view->model = gtk_tree_store_new (1, G_TYPE_POINTER);
-	list = GLADE_CLIPBOARD (view->clipboard)->widgets;
-
-	/* add the widgets and recurse */
-	glade_clipboard_view_populate_model_real (view->model, list,
-						  NULL, FALSE);
+	if (is_icon)
+		g_object_set (G_OBJECT (cell),
+			      "pixbuf", gtk_image_get_pixbuf (GTK_IMAGE (widget->class->icon)),
+			      NULL);
+	else
+		g_object_set (G_OBJECT (cell),
+			      "text", widget->name,
+			      NULL);
 }
 
 static void
 glade_clipboard_view_create_tree_view (GladeClipboardView *view)
 {
 	GtkTreeSelection *sel;
-	GtkCellRenderer *cell;
-	GtkTreeViewColumn *col;
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
 
 	view->widget =
 	    gtk_tree_view_new_with_model (GTK_TREE_MODEL (view->model));
 
-	cell = gtk_cell_renderer_text_new ();
-	col = gtk_tree_view_column_new_with_attributes (_("Widget"),
-							cell, NULL);
-	gtk_tree_view_column_set_cell_data_func (col, cell,
+	column = gtk_tree_view_column_new ();
+	gtk_tree_view_column_set_title (column, _("Widget"));
+
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_clipboard_view_cell_function,
-						 NULL, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (view->widget), col);
+						 GINT_TO_POINTER (1), NULL);
+
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 glade_clipboard_view_cell_function,
+						 GINT_TO_POINTER (0), NULL);
+
+	gtk_tree_view_append_column (GTK_TREE_VIEW (view->widget), column);
 
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
 	g_signal_connect_data (G_OBJECT (sel), "changed",
@@ -171,7 +170,9 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 {
 	GtkWidget *scrolled_window;
 
+	view->model = gtk_list_store_new (1, G_TYPE_POINTER);
 	glade_clipboard_view_populate_model (view);
+
 	glade_clipboard_view_create_tree_view (view);
 
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
@@ -219,8 +220,8 @@ glade_clipboard_view_add (GladeClipboardView *view, GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_CLIPBOARD_VIEW (view));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	gtk_tree_store_append (view->model, &iter, NULL);
-	gtk_tree_store_set (view->model, &iter, 0, widget, -1);
+	gtk_list_store_append (view->model, &iter);
+	gtk_list_store_set (view->model, &iter, 0, widget, -1);
 }
 
 void
@@ -242,6 +243,6 @@ glade_clipboard_view_remove (GladeClipboardView *view, GladeWidget *widget)
 		} while (gtk_tree_model_iter_next (model, &iter));
 	}
 
-	gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+	gtk_list_store_remove (view->model, &iter);
 }
 
