@@ -231,16 +231,17 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 
 /* ================================ Property Changed ==================================== */
 static void
-glade_editor_property_changed_text_common (GladeProperty *property, const gchar *text)
+glade_editor_property_changed_text_common (GladeProperty *property,
+					   const gchar *text)
 {
-	GValue* val;
+	GValue val = { 0, };
 
-	val = g_new0 (GValue, 1);
-	g_value_init (val, G_TYPE_STRING);
-	g_value_set_string (val, text);
-	glade_command_set_property (property, val);
+	g_value_init (&val, G_TYPE_STRING);
+	g_value_set_string (&val, text);
 
-	g_free (val);
+	glade_command_set_property (property, &val);
+
+	g_value_unset (&val);
 }
 
 static void
@@ -290,7 +291,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 				    GladeEditorProperty *property)
 {
 	GladeChoice *choice;
-	GValue *val;
+	GValue val = { 0, };
 	GladeProperty *gproperty;
 
 	g_return_if_fail (property != NULL);
@@ -302,14 +303,13 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	choice = g_object_get_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG);
 	g_return_if_fail (choice != NULL);
 
-	val = g_new0 (GValue, 1);
-
 	gproperty = property->property;
-	g_value_init (val, gproperty->class->def->g_type);
-	g_value_set_enum (val, choice->value);
-	glade_command_set_property (gproperty, val);
 
-	g_free (val);
+	g_value_init (&val, gproperty->class->def->g_type);
+	g_value_set_enum (&val, choice->value);
+	glade_command_set_property (gproperty, &val);
+
+	g_value_unset (&val);
 }
 
 static void
@@ -355,7 +355,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 				       GladeEditorProperty *property)
 {
 	GladeEditorNumericType numeric_type;
-	GValue *val;
+	GValue val = { 0, };
 
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
@@ -364,29 +364,29 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		return;
 
 	numeric_type = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (spin), "NumericType"));
-	val = g_new0 (GValue, 1);
 
-	switch (numeric_type) {
+	switch (numeric_type)
+	{
 	case GLADE_EDITOR_INTEGER:
-		g_value_init (val, G_TYPE_INT);
-		g_value_set_int (val, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (property->property, val);
+		g_value_init (&val, G_TYPE_INT);
+		g_value_set_int (&val, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin)));
 		break;
 	case GLADE_EDITOR_FLOAT:
-		g_value_init (val, G_TYPE_FLOAT);
-		g_value_set_float (val, (gfloat) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (property->property, val);
+		g_value_init (&val, G_TYPE_FLOAT);
+		g_value_set_float (&val, (gfloat) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
 		break;
 	case GLADE_EDITOR_DOUBLE:
-		g_value_init (val, G_TYPE_DOUBLE);
-		g_value_set_double (val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
-		glade_command_set_property (property->property, val);
+		g_value_init (&val, G_TYPE_DOUBLE);
+		g_value_set_double (&val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
 		break;
 	default:
 		g_warning ("Invalid numeric_type %i\n", numeric_type);
+		return;
 	}
 
-	g_free (val);
+	glade_command_set_property (property->property, &val);
+
+	g_value_unset (&val);
 }
 
 static void
@@ -396,7 +396,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	const gchar *text[] = { GLADE_TAG_NO, GLADE_TAG_YES };
 	GtkWidget *label;
 	gboolean state;
-	GValue *val;
+	GValue val = { 0, };
 
 	g_return_if_fail (property != NULL);
 
@@ -407,44 +407,43 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	label = GTK_BIN (button)->child;
 	gtk_label_set_text (GTK_LABEL (label), text [state]);
 
-	val = g_new0 (GValue, 1);
-	g_value_init (val, G_TYPE_BOOLEAN);
-	g_value_set_boolean (val, state);
-	glade_command_set_property (property->property, val);
-	g_free (val);
+	g_value_init (&val, G_TYPE_BOOLEAN);
+	g_value_set_boolean (&val, state);
+	glade_command_set_property (property->property, &val);
+
+	g_value_unset (&val);
 }
 
 static void
 glade_editor_property_changed_unichar (GtkWidget *entry,
 				       GladeEditorProperty *property)
 {
-	GValue* val;
+	GValue val = { 0, };
 	guint len;
 	gchar *text;
 	gunichar unich;
-	
+
 	g_return_if_fail (property != NULL);
 
 	if (property->property->loading)
 		return;
-	
+
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 	len = g_utf8_strlen (text, -1);
 	g_debug (("The lenght of the string is: %d\n", len));
 	unich = g_utf8_get_char (text);
-			     
-	val = g_new0 (GValue, 1);
-	g_value_init (val, G_TYPE_UINT);
-	g_value_set_uint (val, unich);
-	glade_command_set_property (property->property, val);
-	
-	g_free (val);
+
+	g_value_init (&val, G_TYPE_UINT);
+	g_value_set_uint (&val, unich);
+	glade_command_set_property (property->property, &val);
+
+	g_value_unset (&val);
 	g_free (text);
 }
 
-static void glade_editor_property_delete_unichar (GtkEditable    *editable,
-						  gint            start_pos,
-						  gint            end_pos)
+static void glade_editor_property_delete_unichar (GtkEditable *editable,
+						  gint start_pos,
+						  gint end_pos)
 {
 	gtk_editable_select_region (editable, 0, -1);
 	g_signal_stop_emission_by_name (G_OBJECT (editable), "delete_text");
@@ -453,9 +452,9 @@ static void glade_editor_property_delete_unichar (GtkEditable    *editable,
 static void
 glade_editor_property_insert_unichar (GtkWidget *entry,
 				      const gchar *text,
-				      gint         length,
-				      gint        *position,
-				      gpointer     property)
+				      gint length,
+				      gint *position,
+				      gpointer property)
 {
 	g_signal_handlers_block_by_func (G_OBJECT (entry),
 					 G_CALLBACK (glade_editor_property_changed_unichar),
@@ -513,9 +512,9 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	list = property->class->choices;
 	menu = gtk_menu_new ();
-	for (; list != NULL; list = list->next) {
+	for (list = property->class->choices; list; list = list->next)
+	{
 		choice = (GladeChoice *)list->data;
 		menu_item = glade_editor_create_input_enum_item (property, choice);
 		gtk_widget_show (menu_item);

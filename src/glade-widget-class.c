@@ -142,23 +142,6 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 			if (!property_class)
 				continue;
 
-			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR)
-			{
-				/* The property type is not supported.  That's not an error, as there are
-				 * several standard properties that are not supposed to be edited through
-				 * the palette (as the "attributes" property of a GtkLabel) */
-				glade_property_class_free (property_class);
-				property_class = NULL;
-				continue;
-			}
-			else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT)
-			{
-				/* We don't support these properties */
-				glade_property_class_free (property_class);
-				property_class = NULL;
-				continue;
-			}
-
 			/* should this if go into property_class_new_from_spec ? */
 			if (!g_ascii_strcasecmp (g_type_name (spec->owner_type), "GtkWidget") &&
 			    g_ascii_strcasecmp (spec->name, "name"))
@@ -210,6 +193,9 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 		spec = specs[i];
 
 		property_class = glade_property_class_new_from_spec (spec);
+		if (!property_class)
+			continue;
+
 		property_class->optional = FALSE;
 		property_class->packing = TRUE;
 

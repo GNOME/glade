@@ -409,20 +409,20 @@ void
 glade_widget_set_contents (GladeWidget *widget)
 {
 	GladeProperty *property = NULL;
-	GValue *value = g_new0 (GValue, 1);
-	GladeWidgetClass *class;
 
-	class = widget->class;
-
-	if (glade_widget_class_has_property (class, "label"))
+	if (glade_widget_class_has_property (widget->class, "label"))
 		property = glade_widget_get_property_by_id (widget, "label", FALSE);
-	if (glade_widget_class_has_property (class, "title"))
+	if (glade_widget_class_has_property (widget->class, "title"))
 		property = glade_widget_get_property_by_id (widget, "title", FALSE);
 
-	if (property) {
-		g_value_init (value, G_TYPE_STRING);
-		g_value_set_string (value, widget->name);
-		glade_property_set (property, value);
+	if (property)
+	{
+		GValue value = { 0, };
+
+		g_value_init (&value, G_TYPE_STRING);
+		g_value_set_string (&value, widget->name);
+		glade_property_set (property, &value);
+		g_value_unset (&value);
 	}
 }
 
@@ -636,13 +636,24 @@ typedef struct {
 	GHashTable *hash;
 } GladePropertyQueryResult;
 
+static void
+gpq_result_free_value (GValue *value)
+{
+	if (G_VALUE_TYPE (value) != 0)
+		g_value_unset (value);
+	g_free (value);
+}
+
 static GladePropertyQueryResult *
 glade_property_query_result_new (void)
 {
 	GladePropertyQueryResult *result;
 
 	result = g_new0 (GladePropertyQueryResult, 1);
-	result->hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+	result->hash = g_hash_table_new_full (g_str_hash,
+					      g_str_equal,
+					      NULL,
+					      (GDestroyNotify) gpq_result_free_value);
 
 	return result;
 }
@@ -1222,6 +1233,7 @@ glade_widget_apply_property_from_node (GladeXmlNode *node,
 		
 	g_free (id);
 	g_free (value);
+	g_value_unset (gvalue);
 	g_free (gvalue);
 
 	return TRUE;

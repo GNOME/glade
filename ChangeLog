@@ -1,3 +1,13 @@
+2003-11-10  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-command.c: audit all the GValues and fix leaks: GValues
+	should be unset when done with them.
+	* src/galde-editor.c: ditto.
+	* src/glade-signal-editor.c: ditto.
+	* src/glade-property-class.c: ditto.
+	* src/glade-property.c: ditto.
+	* src/glade-widget.c: ditto.
+
 2003-11-09  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-catalogs.[ch]: remove catalog_get_widgets: no more needed.

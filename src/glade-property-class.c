@@ -231,11 +231,16 @@ glade_property_class_free (GladePropertyClass *class)
 		return;
 
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (class));
-	
+
 	g_free (class->id);
 	g_free (class->tooltip);
 	g_free (class->name);
-	g_free (class->def);
+	if (class->def)
+	{
+		if (G_VALUE_TYPE (class->def) != 0)
+			g_value_unset (class->def);
+		g_free (class->def);
+	}
 	g_list_foreach (class->parameters, (GFunc) glade_parameter_free, NULL);
 	g_list_free (class->parameters);
 	g_list_foreach (class->choices, (GFunc) glade_choice_free, NULL);
@@ -546,15 +551,23 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	property_class = glade_property_class_new ();
 
 	property_class->type = glade_property_class_get_type_from_spec (spec);
+	if (property_class->type == GLADE_PROPERTY_TYPE_ERROR)
+		/* no warnings, there are properties that we don't edit */
+		goto lblError;
+
 	property_class->id = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
+	if (!property_class->id || !property_class->name)
+	{
+		g_warning ("Failed to create property class from spec");
+		goto lblError;
+	}
+
 	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
 	property_class->def = glade_property_class_get_default_from_spec (spec, property_class, NULL);
 
-	g_return_val_if_fail (property_class->id != NULL, NULL);
-	g_return_val_if_fail (property_class->name != NULL, NULL);
-
-	switch (property_class->type) {
+	switch (property_class->type)
+	{
 	case GLADE_PROPERTY_TYPE_ENUM:
 		property_class->choices = glade_choice_list_new_from_spec (spec);
 		property_class->enum_type = spec->value_type;
@@ -575,12 +588,17 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		break;
+//		break;
+		goto lblError; /* we don't support this */
 	case GLADE_PROPERTY_TYPE_ERROR:
 		break;
 	}
 
 	return property_class;
+
+lblError:
+	glade_property_class_free (property_class);
+	return NULL;
 }
 
 /**
@@ -686,7 +704,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* Get the default */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 	if (buff) {
-		g_free (class->def);
+		if (class->def)
+		{
+			if (G_VALUE_TYPE (class->def) != 0)
+				g_value_unset (class->def);
+			g_free (class->def);
+		}
 		class->def = glade_property_class_make_gvalue_from_string (class, buff);
 		if (!class->def)
 			return FALSE;

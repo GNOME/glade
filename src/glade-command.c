@@ -330,18 +330,19 @@ static gboolean
 glade_command_set_property_execute (GladeCommand *cmd)
 {
 	GladeCommandSetProperty* me = (GladeCommandSetProperty*) cmd;
-	GValue* new_value;
+	GValue new_value = { 0, };
 
 	g_return_val_if_fail (me != NULL, TRUE);
 
-	new_value = g_new0 (GValue, 1);
-	g_value_init (new_value, G_VALUE_TYPE (me->arg_value));
-	g_value_copy (me->arg_value, new_value);
+	g_value_init (&new_value, G_VALUE_TYPE (me->arg_value));
+	g_value_copy (me->arg_value, &new_value);
 
 	/* store the current value for undo */
 	g_value_copy (me->property->value, me->arg_value);
 
-	glade_property_set (me->property, new_value);
+	glade_property_set (me->property, &new_value);
+
+	g_value_unset (&new_value);
 
 	return FALSE;
 }
@@ -359,7 +360,8 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 	GladeCommandSetProperty *cmd1;
 	GladeCommandSetProperty *cmd2;
 
-	if (IS_GLADE_COMMAND_SET_PROPERTY (this) && IS_GLADE_COMMAND_SET_PROPERTY (other)) {
+	if (IS_GLADE_COMMAND_SET_PROPERTY (this) && IS_GLADE_COMMAND_SET_PROPERTY (other))
+	{
 		cmd1 = (GladeCommandSetProperty*) this;
 		cmd2 = (GladeCommandSetProperty*) other;
 
@@ -417,7 +419,6 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 	glade_command_set_property_execute (GLADE_COMMAND (me));
 	glade_command_push_undo (project, GLADE_COMMAND (me));
 }
-
 
 /**************************************************/
 /*******       GLADE_COMMAND_SET_NAME       *******/

@@ -99,8 +99,11 @@ glade_property_free (GladeProperty *property)
 	property->class = NULL;
 	property->widget = NULL;
 	if (property->value)
+	{
+		g_value_unset (property->value);
 		g_free (property->value);
-	property->value = NULL;
+		property->value = NULL;
+	}
 
 #if 0
 	if (property->child)
