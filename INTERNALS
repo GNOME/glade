@@ -1,0 +1,127 @@
+Glade3 internals
+~~~~~~~~~~~~~~~~
+
+
+about this document
+===================
+
+This is a short description of the designs goals and of the
+implementation choices of Glade3. It isn't complete, but
+I hope that it may be useful.
+
+ * Note: not only I'm not the original author/designer of 
+   glade3, but also I have not touched glade3 for many months.
+
+The only reason why I'm writing this doc is that glade3 development
+has been stagnating for a long time... now it seems that there are some
+developers interested in resuming work on it, so I thought that it was 
+right to put down some notes on what I remember to ease their way
+through the glade3 codebase.
+
+Everyone who spots errors and inaccuracies in this doc, or who wants to
+add informations to it, should feel free to improve it!
+
+
+
+1) Introduction
+===============
+
+As you probably know the idea behind glade and libglade is to serialize
+the description of a Gtk+ GUI to an xml file.
+
+ * libglade takes care of reading such file at runtime and generates
+   the interface
+
+ * glade is a tool to create and edit the desired interface in an easy
+   way and then automatically serialize it to the xml file.
+
+Glade3 is a complete rewrite of the original glade and takes advantage
+of the introspection properties of the GTK+2 toolkit.
+
+
+
+2) Design goals
+===============
+
+Here are some of the goals which were considered when designing glade3
+
+ * allow to easily "plug-in" new sets ("catalogs") of GtkWidgets. For
+   instance the collections of GNOME widgets, which was hardcoded in
+   glade2, should be provided as an external addition.
+   In theory all what is required to add support for an extra collection
+   of widgets is some xml describing the widgets and, if needed, a shared
+   object which overrides some of the properties of the widgets which
+   cannot be correctly handled with introspection. [Note: as of this
+   writing this system is not fully functional and the only catalog
+   available is the normal GTK+ widget collection]
+
+ * implement full UNDO/REDO for the actions supported by glade
+
+ * implement the glade tools (palette, editor, etc) as widget themselves
+   so that it would be possible without too much work to embed them in 
+   another program (e.g. an IDE).
+
+ * FIXME: ADD OTHERS
+
+
+
+3) File Map
+===========
+
+Here is a (not complete) list of the source files of glade3, with a brief
+explanation of what they do.
+
+src subdir:
+
+ * main.c - self explanatory, it parses options, loads the available
+            catalogs and creates the main window
+
+ * glade-project-window.[ch] - the main window of glade, with menus,
+                               toolbar, etc.
+                               The GladeProjectWindow struct also
+                               contains the general state of the program
+                               (e.g. the list of open projects).
+                               There is just one instance of this
+                               structure.
+
+ * glade-palette.[ch]
+   glade-editor.[ch]
+   glade-signal-editor.[ch]
+   glade-clipboard.[ch]
+   glade-clipboard-view.[ch]
+   glade-project-view.[ch] - the editing tools offered by glade
+
+ * glade-commands.[ch] - editing actions available in glade.
+                         Implements UNDO/REDO.
+
+ * glade-projects.[ch] - object correspong to each project currently open
+                         in glade, for instance it contains the list of
+                         toplevels widgets and if the project has been
+                         modified.
+
+ * glade-widget.[ch] - probably the most important file: each GtkWidget
+                       in the project has an associated GladeWidget
+                       which contains the name, the properties, the name,
+                       the signals etc.
+ 
+ * glade-catalog.[ch] - a collection of widget classes
+
+ * glade-widget-class.[ch] - a structure describing each type of widget
+                             in a catalog.
+
+ * FIXME: add the other files
+
+ * glade-gtk.c: this implements the shared object that contains
+                overridden properties for gtk widget catalog.
+
+
+widgets subdir
+
+ * *.xml: each widget in a catalog has a corresponding xml description.
+          At some point it may be worth collapse them in just one file
+          per catalog, at the moment they are split in a file per widget
+          because at the beginning glade3 required all the properties
+          to be described in xml, but now only the properties which
+          need special handling are listed
+
+
