@@ -1,3 +1,6 @@
+#ifndef __GLADE_TYPES_H__
+#define __GLADE_TYPES_H__
+
 typedef struct _GladePaletteSection GladePaletteSection;
 
 typedef struct _GladePalette       GladePalette;
@@ -28,3 +31,5 @@ typedef struct _GladeCatalog       GladeCatalog;
 typedef struct _GladeCursor        GladeCursor;
 
 typedef struct _GtkWidget GladePlaceholder;
+
+#endif /* __GLADE_TYPES_H__ */

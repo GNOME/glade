@@ -1,3 +1,35 @@
+2002-03-28  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+ 
+ 	* src/glade-command.[ch]: Now the undo/redo system also takes in
+ 	account creation and destruction of widgets.  Also undo of
+ 	setting a text property now works.
+ 	* src/glade-widget.[ch]: ditto.
+ 	* src/glade-project-window.c: The undo/redo menu items are
+ 	inactive and showing the text "Undo: Nothing" at startup.
+ 
+2002-03-27  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+ 
+ 	* src/glade-command.[ch]: if you push several undo items, and they
+ 	can "unify", they will "unify" (or "collapse").  For instance, if
+ 	you change the value of a number with a spinbutton from 0.1 to 0.5
+ 	(0.1, 0.2, 0.3, 0.4, 0.5), the undo item will be "set this property
+ 	to 0.1", instead of having 4 undo items.  When you
+ 	undo/redo/push_undo the GUI will be notified.
+ 	* src/glade-project-window.[ch]: The undo/redo menu item are
+ 	enabled only if there is something to undo/redo, and the menu
+	items will show a description about the action.
+ 
+2002-03-27  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+ 
+ 	* src/glade-command.[ch]: infinite undo-redo system.
+ 	* src/glade-editor.c: ditto.
+ 	* src/glade-project-window.c: ditto.
+ 	* src/glade-project.[ch]: ditto.
+ 	* src/glade-property.[ch]: cosmetic changes + const fixes.
+ 	* src/glade-types.h: prevent multiple includes of this file.
+ 	* src/glade-debug.h: little macro g_debug to print debug messages
+ 	only if DEBUG is defined.
+ 	
 2002-03-27  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-clipboard.c (glade_clipboard_paste): removed call to 
@@ -9,6 +41,16 @@
 	* src/glade-clipboard-view.c
 	(glade_clipboard_view_selection_changed_cb): fixed bug.
 	
+2002-03-25  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+ 
+ 	* src/glade-xml-utils.c: use xmlDocGetRootElement(doc) instead of
+ 	just doc->children to get the root of the document.  This way, the
+ 	files will be read right event if it has comments or pi before the
+ 	root element itself.
+ 
+ 	* src/glade-project-window.c: Added "Delete" keybinding to delete
+ 	action.
+ 	
 2002-03-22  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-widget.c (glade_widget_replace_with_placeholder): new

@@ -44,7 +44,8 @@ glade_2_SOURCES = \
 	glade-packing.c \
 	glade-signal-editor.c \
 	glade-clipboard.c \
-	glade-clipboard-view.c
+	glade-clipboard-view.c \
+	glade-command.c
 
 noinst_HEADERS = \
 	glade.h \
@@ -72,4 +73,6 @@ noinst_HEADERS = \
 	glade-packing.h \
 	glade-xml-utils.h \
 	glade-clipboard.h \
-	glade-clipboard-view.h
+	glade-clipboard-view.h \
+	glade-command.h \
+	glade-debug.h

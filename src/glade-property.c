@@ -30,7 +30,7 @@
 #include "glade-property-class.h"
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
-
+#include "glade-debug.h"
 
 static void glade_property_class_init (GladePropertyObjectClass * klass);
 static void glade_property_init (GladeProperty *property);
@@ -330,17 +330,16 @@ glade_property_set_double (GladeProperty *property, gdouble val)
 	}
 
 	glade_property_emit_changed (property);
-#ifdef DEBUG
+
 	if (GTK_IS_SPIN_BUTTON (property->widget->widget)) {
-		g_debug ("It is spin button\n");
-		g_debug ("The alignement is min :%g max:%g value%g\n",
+		g_debug(("It is spin button\n"));
+		g_debug(("The alignement is min :%g max:%g value%g\n",
 			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->lower,
 			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->upper,
-			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->value);
+			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->value));
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (property->widget->widget),
 					   333.22);
 	}
-#endif	
 }
 
 void
@@ -357,19 +356,14 @@ glade_property_set_boolean (GladeProperty *property, gboolean val)
 		property->loading = TRUE;
 		if (property->class->set_function == NULL) {
 			if (GTK_IS_TABLE (property->widget->widget)) {
-#if 0
-				g_print ("Is table \n");
-#endif
+				g_debug(("Is table \n"));
 				gtk_widget_queue_resize (GTK_WIDGET (property->widget->widget));
 #if 0	
 				gtk_table_set_homogeneous (property->widget->widget, val);
 #endif	
-			} else {
+			} else
 				gtk_object_set (GTK_OBJECT (property->widget->widget),
-						property->class->id,
-						val,
-						NULL);
-			}
+						property->class->id, val, NULL);
 		}
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
@@ -404,7 +398,7 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 }
 	
 void
-glade_property_set (GladeProperty *property, GValue *value)
+glade_property_set (GladeProperty *property, const GValue *value)
 {
 	switch (property->class->type) {
 	case GLADE_PROPERTY_TYPE_BOOLEAN:

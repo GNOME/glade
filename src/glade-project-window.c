@@ -36,7 +36,10 @@
 #include "glade-project.h"
 #include "glade-project-view.h"
 #include "glade-project-window.h"
+#include "glade-command.h"
+#include "glade-debug.h"
 #include <gdk/gdkkeysyms.h>
+#include <gtk/gtkstock.h>
 
 static void gpw_new_cb (void);
 static void gpw_open_cb (void);
@@ -78,7 +81,7 @@ gpw_delete_cb (void)
 
 	/* We have to be carefull when deleting widgets from the selection
 	 * because when we delete each widget, the ->selection pointer changes
-	 * by the g_list_remove. Copy the list and freee it after we are done
+	 * by the g_list_remove. Copy the list and free it after we are done
 	 */
 	list = g_list_copy (selection);
 	free_me = list;
@@ -148,13 +151,13 @@ gpw_paste_cb (void)
 static void
 gpw_undo_cb (void)
 {
-	glade_implement_me ();
+	glade_command_undo ();
 }
 
 static void
 gpw_redo_cb (void)
 {
-	glade_implement_me ();
+	glade_command_redo ();
 }
 
 static void
@@ -183,7 +186,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Edit/C_ut",    NULL,         gpw_cut_cb,    0, "<StockItem>", GTK_STOCK_CUT },
   { "/Edit/_Copy",   NULL,         gpw_copy_cb,   0, "<StockItem>", GTK_STOCK_COPY },
   { "/Edit/_Paste",  NULL,         gpw_paste_cb,  0, "<StockItem>", GTK_STOCK_PASTE },
-  { "/Edit/_Delete", NULL,         gpw_delete_cb, 0, "<StockItem>", GTK_STOCK_DELETE },
+  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 0, "<StockItem>", GTK_STOCK_DELETE },
 
   /* ============ VIEW ===================== */
   { "/View", NULL, 0, 0, "<Branch>" },
@@ -278,6 +281,7 @@ glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
 
 	glade_project_window_construct_menu (gpw);
 	glade_project_window_construct_toolbar (gpw);
+	glade_project_window_refresh_undo_redo (gpw);
 	
 	gtk_signal_connect (GTK_OBJECT (app), "delete_event",
 			    GTK_SIGNAL_FUNC (gpw_delete_event), NULL);
@@ -503,6 +507,69 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 	g_free (entry.item_type);
 
 	glade_project_window_set_project (gpw, project);
+}
+
+static void
+change_menu_label (GladeProjectWindow *gpw, const gchar* path, const gchar* prefix, const gchar* suffix)
+{
+	gboolean sensitive = TRUE;
+	GtkBin *bin;
+	GtkLabel *label;
+	gchar *text;
+	
+	bin = GTK_BIN (gtk_item_factory_get_item (gpw->item_factory, path));
+	label = GTK_LABEL (gtk_bin_get_child (bin));
+	
+	if (prefix == NULL) {
+		gtk_label_set_text_with_mnemonic (label, suffix);
+                return;
+	}
+
+	if (suffix == NULL) {
+		suffix = _("Nothing");
+		sensitive = FALSE;
+	}
+
+	text = g_strconcat (prefix, suffix, NULL);
+
+	gtk_label_set_text_with_mnemonic (label, text);
+	gtk_widget_set_sensitive (GTK_WIDGET (bin), sensitive);
+	
+	g_free (text);
+}
+
+void
+glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
+{
+	GtkWidget *undo_widget;
+	GtkWidget *redo_widget;
+	GList *prev_redo_item;
+	GList *undo_item;
+	GList *redo_item;
+	const gchar *undo_description = NULL;
+	const gchar *redo_description = NULL;
+	GladeProject *project;
+	
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
+	
+	undo_widget = gtk_item_factory_get_item (gpw->item_factory, "<main>/Edit/Undo");
+	redo_widget = gtk_item_factory_get_item (gpw->item_factory, "<main>/Edit/Redo");
+
+	project = gpw->project;
+	if (project == NULL) {
+		undo_item = NULL;
+		redo_item = NULL;
+	}
+	else {
+		undo_item = prev_redo_item = project->prev_redo_item;
+		redo_item = (prev_redo_item == NULL) ? project->undo_stack : prev_redo_item->next;
+	}
+
+	undo_description = glade_command_get_description (undo_item);
+	redo_description = glade_command_get_description (redo_item);
+
+	change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
+	change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
 }
 
 void

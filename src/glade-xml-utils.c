@@ -518,7 +518,8 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	GladeXmlContext *context;
 	xmlDocPtr doc;
 	xmlNsPtr  name_space;
-
+	xmlNodePtr root;
+	
 	g_return_val_if_fail (full_path != NULL, NULL);
 	
 	doc = xmlParseFile (full_path);
@@ -542,11 +543,12 @@ glade_xml_context_new_from_path (const gchar *full_path,
 		return NULL;
 	}
 
-	if ((doc->children->name == NULL) ||
-	    (strcmp (doc->children->name, root_name)!=0)) {
+	root = xmlDocGetRootElement(doc);
+	if ((root->name == NULL) ||
+	    (strcmp (root->name, root_name)!=0)) {
 		g_warning ("The file did not contained the expected root name\n"
 			   "Expected \"%s\", actual : \"%s\" [%s]",
-			   root_name, doc->children->name, full_path);
+			   root_name, root->name, full_path);
 		xmlFreeDoc (doc);
 		return FALSE;
 	}
@@ -685,7 +687,7 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 {
 	xmlNodePtr node;
 
-	node = ((xmlDocPtr)(doc))->children;
+	node = xmlDocGetRootElement((xmlDocPtr)(doc));
 
 	return (GladeXmlNode *)node;
 }

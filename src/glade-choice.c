@@ -72,7 +72,7 @@ glade_enum_from_string (const gchar *string)
 		return GTK_RELIEF_HALF;
 	if (strcmp (string, "GTK_RELIEF_NONE") == 0)
 		return GTK_RELIEF_NONE;
-	
+
 	return -1;
 }
 

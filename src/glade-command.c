@@ -1,0 +1,608 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * Copyright (C) 2002 Joaquín Cuenca Abela
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * Authors:
+ *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
+ */
+#include <gtk/gtk.h>
+#include <string.h>
+#include "glade-types.h"
+#include "glade-project.h"
+#include "glade-project-window.h"
+#include "glade-xml-utils.h"
+#include "glade-widget.h"
+#include "glade-widget-class.h"
+#include "glade-command.h"
+#include "glade-property.h"
+#include "glade-debug.h"
+#include "glade-placeholder.h"
+#include "glade.h"
+
+#define GLADE_COMMAND_TYPE		(glade_command_get_type ())
+#define GLADE_COMMAND(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_TYPE, GladeCommand))
+#define GLADE_COMMAND_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_TYPE, GladeCommandClass))
+#define IS_GLADE_COMMAND(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_TYPE))
+#define IS_GLADE_COMMAND_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_TYPE))
+#define CMD_CLASS(o)			GLADE_COMMAND_CLASS (G_OBJECT_GET_CLASS(o))
+
+typedef struct {
+	GObject parent;
+	
+	const gchar *description;
+} GladeCommand;
+
+typedef gboolean (* UndoCmd)(GladeCommand *this);
+typedef gboolean (* Cmd)(GladeCommand *this);
+typedef gboolean (* Unifies)(GladeCommand *this, GladeCommand *other);
+typedef void (* Collapse)(GladeCommand *this, GladeCommand *other);
+
+typedef struct {
+	GObjectClass parent_class;
+	
+	UndoCmd undo_cmd;
+	Cmd execute_cmd;
+
+	Unifies unifies;
+	Collapse collapse;
+} GladeCommandClass;
+
+static GObjectClass* parent_class = NULL;
+
+#define MAKE_TYPE(func, type, parent)			\
+guint							\
+func ## _get_type (void)				\
+{							\
+	static guint command_type = 0;			\
+							\
+	if (!command_type)				\
+	{						\
+		static const GTypeInfo command_info =	\
+		{					\
+			sizeof (type ## Class),		\
+			NULL,				\
+			NULL,				\
+			func ## _class_init,		\
+			NULL,				\
+			NULL,				\
+			sizeof (type),			\
+			0,				\
+			NULL,				\
+			NULL				\
+		};					\
+							\
+		command_type = g_type_register_static (parent, #type,		\
+						       &command_info, 0);	\
+	}						\
+							\
+	return command_type;				\
+}							\
+
+static void
+glade_command_finalize (GObject *obj)
+{
+        GladeCommand *cmd = (GladeCommand *) obj;
+        g_return_if_fail (cmd != NULL);
+
+        /* The const was to avoid accidental changes elsewhere */
+        g_free ((gchar *) cmd->description);
+
+        /* Call the base class dtor */
+	(* G_OBJECT_CLASS (parent_class)->finalize) (obj);
+}
+
+static gboolean
+glade_command_unifies (GladeCommand *this, GladeCommand *other)
+{
+	return FALSE;
+}
+
+static void
+glade_command_collapse (GladeCommand *this, GladeCommand *other)
+{
+	g_return_if_reached ();
+}
+
+static void
+glade_command_class_init (gpointer klass_p, gpointer notused)
+{
+	GladeCommandClass* klass = klass_p;
+	GObjectClass* object_class;
+
+	object_class = (GObjectClass*) klass;
+	parent_class = (GObjectClass*) g_type_class_peek_parent (klass);
+	
+	object_class->finalize = glade_command_finalize;
+
+	klass->undo_cmd = NULL;
+	klass->execute_cmd = NULL;
+	klass->unifies = glade_command_unifies;
+	klass->collapse = glade_command_collapse;
+}
+
+static MAKE_TYPE(glade_command, GladeCommand, G_TYPE_OBJECT)
+
+#define GLADE_MAKE_COMMAND(type, func)					\
+static gboolean								\
+func ## _undo (GladeCommand *me);					\
+static gboolean								\
+func ## _execute (GladeCommand *me);					\
+static void								\
+func ## _finalize (GObject *object);					\
+static gboolean								\
+func ## _unifies (GladeCommand *this, GladeCommand *other);		\
+static void								\
+func ## _collapse (GladeCommand *this, GladeCommand *other);		\
+static void								\
+func ## _class_init (gpointer parent_tmp, gpointer notused)		\
+{									\
+	GladeCommandClass *parent = parent_tmp;				\
+	GObjectClass* object_class;					\
+	object_class = (GObjectClass*) parent;				\
+	parent->undo_cmd = (UndoCmd)& func ## _undo;			\
+	parent->execute_cmd = (Cmd)& func ## _execute;			\
+	parent->unifies = (Unifies)& func ## _unifies;			\
+	parent->collapse = (Collapse)& func ## _collapse;		\
+	object_class->finalize = func ## _finalize;			\
+}									\
+typedef struct {							\
+	GladeCommandClass cmd;						\
+} type ## Class;							\
+static MAKE_TYPE(func, type, GLADE_COMMAND_TYPE)
+
+/**************************************************/
+
+static void
+update_gui (void)
+{
+	glade_project_window_refresh_undo_redo (glade_project_window_get ());
+}
+
+void
+glade_command_undo (void)
+{
+	GladeProject* project;
+	GList* undo_stack;
+	GList* prev_redo_item;
+	GladeCommand* cmd;
+	GladeCommandClass* class;
+	
+	project = glade_project_window_get_project ();
+	g_assert (project != NULL);
+
+	undo_stack = project->undo_stack;
+	if (undo_stack == NULL)
+		return;
+
+	prev_redo_item = project->prev_redo_item;
+	if (prev_redo_item == NULL)
+		return;
+
+	cmd = GLADE_COMMAND (prev_redo_item->data);
+	class = CMD_CLASS (cmd);
+	class->undo_cmd (cmd);
+
+	project->prev_redo_item = prev_redo_item->prev;
+	update_gui ();
+}
+
+void
+glade_command_redo (void)
+{
+	GladeProject* project;
+	GList* prev_redo_item;
+	GladeCommand* cmd;
+	GladeCommandClass* class;
+	
+	project = glade_project_window_get_project ();
+	g_assert (project != NULL);
+
+	if (project->undo_stack == NULL)
+		return;
+
+	prev_redo_item = project->prev_redo_item;
+	if (prev_redo_item == NULL)
+		cmd = GLADE_COMMAND (project->undo_stack->data);
+	else {
+		if (prev_redo_item->next == NULL)
+			return;
+		
+		cmd = GLADE_COMMAND (g_list_next (prev_redo_item)->data);
+	}
+
+	g_assert (cmd != NULL);
+	
+	class = CMD_CLASS (cmd);
+	class->execute_cmd (cmd);
+
+	project->prev_redo_item = prev_redo_item ? prev_redo_item->next : project->undo_stack;
+	update_gui ();
+}
+
+const gchar*
+glade_command_get_description (GList *l)
+{
+	if (l && l->data)
+		return GLADE_COMMAND (l->data)->description;
+	else
+		return NULL;
+}
+
+static void
+glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
+{
+	GList* tmp_redo_item;
+	
+	g_assert (project != NULL);
+	g_assert (cmd != NULL);
+
+	/* If there are no "redo" items, and the last "undo" item unifies with
+	   us, then we collapse the two items in one and we're done */
+	if (project->prev_redo_item != NULL &&
+	    project->prev_redo_item->next == NULL) {
+		GladeCommand* cmd1 = project->prev_redo_item->data;
+		GladeCommandClass* klass = CMD_CLASS(cmd1);
+		
+		if ((* klass->unifies) (cmd1, cmd)) {
+			g_debug(("Command unifies.\n"));
+			(* klass->collapse) (cmd1, cmd);
+			g_object_unref (cmd);
+			return;
+		}
+	}
+	    
+	/* We should now free all the "redo" items */
+	tmp_redo_item = g_list_next (project->prev_redo_item);
+	while (tmp_redo_item)
+	{
+		g_assert (tmp_redo_item->data);
+		g_object_unref (G_OBJECT (tmp_redo_item->data));
+		tmp_redo_item = g_list_next (tmp_redo_item);
+	}
+
+	if (project->prev_redo_item) {
+		g_list_free (g_list_next (project->prev_redo_item));
+		project->prev_redo_item->next = NULL;
+	}
+	else {
+		g_list_free (project->undo_stack);
+		project->undo_stack = NULL;
+	}
+
+	/* and then push the new undo item */
+	project->undo_stack = g_list_append (project->undo_stack, cmd);
+
+	if (project->prev_redo_item == NULL)
+		project->prev_redo_item = project->undo_stack;
+	else
+		project->prev_redo_item = g_list_next (project->prev_redo_item);
+
+	update_gui ();
+}
+
+/**************************************************/
+
+typedef struct {
+	GladeCommand parent;
+
+	GObject *obj;
+	const gchar *arg_name;
+	GValue *arg_value;
+} CmdSetProperty;
+
+GLADE_MAKE_COMMAND (CmdSetProperty, cmd_set_property);
+#define CMD_SET_PROPERTY_TYPE		(cmd_set_property_get_type ())
+#define CMD_SET_PROPERTY(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), CMD_SET_PROPERTY_TYPE, CmdSetProperty))
+#define CMD_SET_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), CMD_SET_PROPERTY_TYPE, CmdSetPropertyClass))
+#define IS_CMD_SET_PROPERTY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), CMD_SET_PROPERTY_TYPE))
+#define IS_CMD_SET_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), CMD_SET_PROPERTY_TYPE))
+
+static gboolean
+cmd_set_property_undo (GladeCommand *cmd)
+{
+	return cmd_set_property_execute (cmd);
+}
+
+/**
+ * Execute the cmd and revert it.  Ie, after the execution of this
+ * function cmd will point to the undo action
+ */
+static gboolean
+cmd_set_property_execute (GladeCommand *cmd)
+{
+	GladeProperty* property;
+	GladeWidget* gwidget;
+	CmdSetProperty* me = (CmdSetProperty*) cmd;
+	GValue* new_value;
+
+	g_return_val_if_fail (me != NULL, TRUE);
+
+	new_value = g_new0 (GValue, 1);
+	g_value_init (new_value, G_VALUE_TYPE (me->arg_value));
+	g_value_copy (me->arg_value, new_value);
+
+	/* TODO: Change the "GObject *obj" of CmdSetProperty to "GtkWidget *widget" */
+	gwidget = glade_widget_get_from_gtk_widget (GTK_WIDGET (me->obj));
+	property = glade_property_get_from_id (gwidget->properties, me->arg_name);
+
+	g_value_copy (property->value, me->arg_value);
+	glade_property_set (property, new_value);
+	
+	/* yes, this call is obsolete.  Somebody please document the new g_signal_emit_by_name... */
+	gtk_signal_emit_by_name (GTK_OBJECT (property), "changed");
+	
+	return FALSE;
+}
+
+static void
+cmd_set_property_finalize (GObject *obj)
+{
+        glade_command_finalize (obj);
+}
+
+static gboolean
+cmd_set_property_unifies (GladeCommand *this, GladeCommand *other)
+{
+	CmdSetProperty *cmd1;
+	CmdSetProperty *cmd2;
+
+	if (IS_CMD_SET_PROPERTY (this) && IS_CMD_SET_PROPERTY (other)) {
+		cmd1 = (CmdSetProperty*) this;
+		cmd2 = (CmdSetProperty*) other;
+
+		return (cmd1->obj == cmd2->obj && strcmp (cmd1->arg_name, cmd2->arg_name) == 0);
+	}
+
+	return FALSE;
+}
+
+static void
+cmd_set_property_collapse (GladeCommand *this, GladeCommand *other)
+{
+	g_return_if_fail (IS_CMD_SET_PROPERTY (this) && IS_CMD_SET_PROPERTY (other));
+	g_free ((gchar*) this->description);
+	this->description = other->description;
+	other->description = NULL;
+
+	update_gui ();
+}
+
+static gchar*
+gvalue_to_string (const GValue* pvalue)
+{
+	gchar* retval;
+	
+	switch (G_VALUE_TYPE (pvalue)) {
+	case G_TYPE_INT:
+		retval = g_strdup_printf ("%d", g_value_get_int (pvalue));
+		break;
+	case G_TYPE_FLOAT:
+		retval = g_strdup_printf ("%f", g_value_get_float (pvalue));
+		break;
+	case G_TYPE_DOUBLE:
+		retval = g_strdup_printf ("%lf", g_value_get_double (pvalue));
+		break;
+	case G_TYPE_BOOLEAN:
+		retval = g_strdup_printf ("%s", g_value_get_boolean (pvalue) ? _("true") : _("false"));
+		break;
+	case G_TYPE_ENUM:
+		retval = g_strdup_printf ("%d", g_value_get_enum (pvalue));
+		break;
+	case G_TYPE_STRING:
+		retval = g_strdup_printf ("%s", g_value_get_string (pvalue));
+		break;
+	default:
+		retval = g_strdup ("FIXME!");
+	}
+
+	return retval;
+}
+
+void
+glade_cmd_set_property (GObject *obj, const gchar* name, const GValue* pvalue)
+{
+	CmdSetProperty *me;
+	GladeCommand *cmd;
+	GladeProject *project;
+	GladeWidget *gwidget;
+	gchar *value_name;
+	
+	me = (CmdSetProperty*) g_object_new (CMD_SET_PROPERTY_TYPE, NULL);
+	cmd = (GladeCommand*) me;
+	
+	project = glade_project_window_get_project ();
+	gwidget = glade_widget_get_from_gtk_widget (GTK_WIDGET (obj));
+	g_assert (gwidget);
+	
+	me->obj = obj;
+	me->arg_name = name;
+	me->arg_value = g_new0 (GValue, 1);
+	g_value_init (me->arg_value, G_VALUE_TYPE (pvalue));
+	g_value_copy (pvalue, me->arg_value);
+
+	value_name = gvalue_to_string(pvalue);
+	cmd->description = g_strdup_printf (_("Setting %s of %s to %s"), name, gwidget->name, value_name);
+	g_assert (cmd->description);
+	g_free (value_name);
+	
+	g_debug(("Pushing: %s\n", cmd->description));
+
+	cmd_set_property_execute (GLADE_COMMAND (me));
+	glade_command_push_undo(project, GLADE_COMMAND (me));
+}
+
+/***************************************************
+ * CREATE / DELETE
+ * Don't be confused by the names:
+ *   * "create" adds a GladeWidget to the project
+ *   * "delete" removes a GladeWidget from the project
+ **************************************************/
+
+typedef struct {
+	GladeCommand parent;
+
+	GladeWidget *widget;
+	GladePlaceholder *placeholder;
+	gboolean create;
+} CmdCreateDelete;
+
+GLADE_MAKE_COMMAND (CmdCreateDelete, cmd_create_delete);
+#define CMD_CREATE_DELETE_TYPE		(cmd_create_delete_get_type ())
+#define CMD_CREATE_DELETE(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), CMD_CREATE_DELETE_TYPE, CmdCreateDelete))
+#define CMD_CREATE_DELETE_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), CMD_CREATE_DELETE_TYPE, CmdCreateDeleteClass))
+#define IS_CMD_CREATE_DELETE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), CMD_CREATE_DELETE_TYPE))
+#define IS_CMD_CREATE_DELETE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), CMD_CREATE_DELETE_TYPE))
+
+static gboolean
+cmd_create_delete_undo (GladeCommand *cmd)
+{
+	return cmd_create_delete_execute (cmd);
+}
+
+static gboolean
+cmd_create_execute (CmdCreateDelete *me)
+{
+	GladeWidget *parent;
+	GladeWidget *widget = me->widget;
+	
+	if (me->placeholder) {
+		parent = glade_placeholder_get_parent (me->placeholder);
+
+		if (me->widget->parent->class->placeholder_replace)
+			me->widget->parent->class->placeholder_replace (GTK_WIDGET (me->placeholder), widget->widget, widget->parent->widget);
+
+		me->placeholder = NULL;
+		parent->children = g_list_prepend (parent->children, widget);
+	}
+
+	glade_project_selection_clear (widget->project, FALSE);
+	glade_project_add_widget (widget->project, widget);
+	glade_project_selection_add (widget, TRUE);
+	gtk_widget_show (GTK_WIDGET (widget->widget));
+	
+	return FALSE;
+}
+
+static gboolean
+cmd_delete_execute (CmdCreateDelete *me)
+{
+	GladeWidget *widget = me->widget;
+	GladeWidget *parent;
+
+	g_return_val_if_fail (widget != NULL, TRUE);
+
+	glade_project_selection_remove (widget, TRUE);
+	glade_project_remove_widget (widget);
+
+	parent = widget->parent;
+
+	if (parent) {
+		GladePlaceholder *placeholder;
+
+		/* Replace the slot it was occuping with a placeholder */
+		gtk_widget_ref (widget->widget);
+		placeholder = glade_placeholder_new (widget->parent);
+
+		if (widget->parent->class->placeholder_replace)
+			widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
+
+		/* Remove it from the parent's child list */
+		parent->children = g_list_remove (parent->children, widget);
+		me->placeholder = placeholder;
+	}
+	else {
+		me->placeholder = NULL;
+	}
+
+	gtk_widget_hide (widget->widget);
+
+	return FALSE;
+}
+
+/**
+ * Execute the cmd and revert it.  Ie, after the execution of this
+ * function cmd will point to the undo action
+ */
+static gboolean
+cmd_create_delete_execute (GladeCommand *cmd)
+{
+	CmdCreateDelete* me = (CmdCreateDelete*) cmd;
+	gboolean retval;
+	
+	if (me->create)
+		retval = cmd_create_execute (me);
+	else
+		retval = cmd_delete_execute (me);
+
+	me->create = !me->create;
+	return retval;
+}
+
+static void
+cmd_create_delete_finalize (GObject *obj)
+{
+	CmdCreateDelete *cmd = CMD_CREATE_DELETE (obj);
+	g_object_unref (cmd->widget);
+        glade_command_finalize (obj);
+}
+
+static gboolean
+cmd_create_delete_unifies (GladeCommand *this, GladeCommand *other)
+{
+	return FALSE;
+}
+
+static void
+cmd_create_delete_collapse (GladeCommand *this, GladeCommand *other)
+{
+	g_return_if_reached ();
+}
+
+static void
+glade_cmd_create_delete_common (GladeWidget *widget, gboolean create)
+{
+	CmdCreateDelete *me;
+	GladeCommand *cmd;
+	GladeProject *project;
+	
+	me = (CmdCreateDelete*) g_object_new (CMD_CREATE_DELETE_TYPE, NULL);
+	cmd = (GladeCommand*) me;
+	
+	project = glade_project_window_get_project ();
+	
+	me->widget = widget;
+	me->create = create;
+	me->placeholder = NULL;
+	cmd->description = g_strdup_printf (_("%s %s"), create ? "Create" : "Delete", widget->name);
+	
+	g_debug(("Pushing: %s\n", cmd->description));
+
+	cmd_create_delete_execute (GLADE_COMMAND (me));
+	glade_command_push_undo(project, GLADE_COMMAND (me));
+}
+
+void
+glade_cmd_delete (GladeWidget *widget)
+{
+	glade_cmd_create_delete_common (widget, FALSE);
+}
+
+void
+glade_cmd_create (GladeWidget *widget)
+{
+	glade_cmd_create_delete_common (widget, TRUE);
+}

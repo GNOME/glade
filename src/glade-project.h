@@ -35,6 +35,9 @@ struct _GladeProject
 			   * not want to loose the selection. This is a list
 			   * of GladeWidget items.
 			   */
+
+	GList *undo_stack; /* A stack with the last executed commands */
+	GList *prev_redo_item; /* Points to the item previous to the redo items */
 };
 
 struct _GladeProjectClass

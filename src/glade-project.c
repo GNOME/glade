@@ -130,6 +130,8 @@ glade_project_init (GladeProject * project)
 	project->name = NULL;
 	project->widgets = NULL;
 	project->selection = NULL;
+	project->undo_stack = NULL;
+	project->prev_redo_item = NULL;
 }
 
 static void

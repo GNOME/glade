@@ -36,6 +36,8 @@
 #include "glade-gtk.h"
 #include "glade-packing.h"
 #include "glade-clipboard.h"
+#include "glade-command.h"
+#include "glade-debug.h"
 #include <gdk/gdkkeysyms.h>
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
@@ -124,14 +126,6 @@ typedef struct
 }GladeFindInContainerData;
 
 
-#undef DEBUG
-
-#ifdef DEBUG
-#define g_debug(st) g_print st
-#else
-#define g_debug(st)
-#endif
-
 static void
 glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 {
@@ -184,9 +178,6 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	GdkWindow *parent_window;
 	gint x, win_x;
 	gint y, win_y;
-#ifdef DEBUG
-	GladeWidget *real_event_glade_widget = glade_widget_get_from_gtk_widget (event_widget);
-#endif	
 	
 	window = event->window;
 	x = event->x;
@@ -196,7 +187,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	g_debug(("Window [%d,%d]\n", win_x, win_y));
 	g_debug(("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y));
 	g_debug(("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
-		 NULL,
+		 "",
 		 gtk_widget_get_name (event_widget),
 		 GPOINTER_TO_INT (event_widget)));
 
@@ -285,7 +276,7 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 
 	if (event->button == 1) {
 		/* If this is a selection set, don't change the state of the widget
-		 * for exmaple for toggle buttons
+		 * for example for toggle buttons
 		 */
 		if (!glade_widget->selected)
 			gtk_signal_emit_stop_by_name (GTK_OBJECT (event_widget),
@@ -304,7 +295,6 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 static gboolean
 glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer not_used)
 {
-	g_debug(("button release\n"));
 	return FALSE;
 }
 
@@ -745,7 +735,6 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 			pcf (G_OBJECT (glade_widget->widget));
 
 	}
-
 	
 	return TRUE;
 }
@@ -780,13 +769,16 @@ glade_widget_new_full (GladeProject *project,
 
 	glade_packing_add_properties (widget);
 	glade_widget_create_gtk_widget (widget);
+	/*
 	glade_project_add_widget (project, widget);
 
 	if (parent)
 		parent->children = g_list_prepend (parent->children, widget);
-
+	*/
+	
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
+	glade_cmd_create (widget);
 
 	return widget;
 }
@@ -1082,10 +1074,7 @@ void
 glade_widget_delete (GladeWidget *widget)
 {
 	g_return_if_fail (widget != NULL);
-
-	glade_project_remove_widget (widget);
-	glade_widget_replace_with_placeholder (widget);
-	glade_widget_free (widget);
+	glade_cmd_delete (widget);
 }
 
 void

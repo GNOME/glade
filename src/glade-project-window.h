@@ -55,6 +55,8 @@ void glade_project_window_set_project         (GladeProjectWindow *project_windo
 void glade_project_window_add_project         (GladeProjectWindow *gpw,
 					       GladeProject *project);
 
+void glade_project_window_refresh_undo_redo   (GladeProjectWindow *gpw);
+
 gboolean glade_project_window_query_properties (GladeWidgetClass *class,
 						GladePropertyQueryResult *result);
 
