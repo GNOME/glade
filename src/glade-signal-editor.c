@@ -50,7 +50,7 @@ glade_signal_editor_append_column (GtkTreeView *view, const gint col_num, const 
 
 static gboolean
 glade_signal_editor_dialog_list_select_cb (GtkTreeSelection *lst_select, 
-					   GtkTreeModel *lst_model, GtkTreePath *lst_path, GladeSignalEditor *editor)
+					   GtkTreeModel *lst_model, GtkTreePath *lst_path, gboolean path_selected, GladeSignalEditor *editor)
 {
 	GtkTreeIter iter;
 	GValue *label;
@@ -241,7 +241,7 @@ glade_signal_editor_update_signal (GladeSignalEditor *editor, GladeSignal *signa
 
 static gboolean
 glade_signal_editor_list_select_cb (GtkTreeSelection *lst_select, 
-				    GtkTreeModel *lst_model, GtkTreePath *lst_path, GladeSignalEditor *editor)
+				    GtkTreeModel *lst_model, GtkTreePath *lst_path, gboolean path_selected, GladeSignalEditor *editor)
 {
 	GtkTreeIter iter;
 	GValue *label;
