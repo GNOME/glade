@@ -5,9 +5,12 @@
 G_BEGIN_DECLS
 
 
-#define GLADE_CLIPBOARD_VIEW(obj)         (GTK_CHECK_CAST (obj, glade_clipboard_view_get_type (), GladeClipboardView))
-#define GLADE_CLIPBOARD_VIEW_CLASS(klass) (GTK_CHECK_CLASS_CAST (klass, glade_clipboard_view_get_type (), GladeClipboardViewClass))
-#define GLADE_IS_CLIPBOARD_VIEW(obj)      (GTK_CHECK_TYPE (obj, glade_clipboard_view_get_type ()))
+#define GLADE_TYPE_CLIPBOARD_VIEW            (glade_clipboard_view_get_type ())
+#define GLADE_CLIPBOARD_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CLIPBOARD_VIEW, GladeClipboardView))
+#define GLADE_CLIPBOARD_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_CLIPBOARD_VIEW, GladeClipboardViewClass))
+#define GLADE_IS_CLIPBOARD_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CLIPBOARD_VIEW))
+#define GLADE_IS_CLIPBOARD_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CLIPBOARD_VIEW))
+#define GLADE_CLIPBOARD_VIEW_GET_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), GLADE_TYPE_CLIPBOARD_VIEW, GladeClipboardViewClass))
 
 typedef struct _GladeClipboardView GladeClipboardView;
 typedef struct _GladeClipboardViewClass GladeClipboardViewClass;
@@ -24,7 +27,7 @@ struct _GladeClipboardViewClass {
 	GtkWindowClass __parent__;
 };
 
-GtkType glade_clipboard_view_get_type ();
+GType glade_clipboard_view_get_type ();
 
 GtkWidget *glade_clipboard_view_new (GladeClipboard *clipboard);
 
@@ -36,4 +39,5 @@ void glade_clipboard_view_remove (GladeClipboardView *view,
 
 
 G_END_DECLS
+
 #endif				/* __GLADE_CLIPBOARD_VIEW_H__ */

@@ -43,31 +43,25 @@ glade_clipboard_view_init (GladeClipboardView *view)
 	view->model = NULL;
 }
 
-/**
- * glade_clipboard_view_get_type:
- *
- * Creates the typecode for the GladeClipboardView Widget type.
- *
- * Return value: the typecode for the GladeClipboardView widget type.
- **/
-GtkType
+GType
 glade_clipboard_view_get_type ()
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (!type) {
-		static const GtkTypeInfo info = {
-			"GladeClipboardView",
-			sizeof (GladeClipboardView),
+		static const GTypeInfo info = {
 			sizeof (GladeClipboardViewClass),
-			(GtkClassInitFunc) glade_clipboard_view_class_init,
-			(GtkObjectInitFunc) glade_clipboard_view_init,
-			/* reserved 1 */ NULL,
-			/* reserved 2 */ NULL,
-			(GtkClassInitFunc) NULL
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_clipboard_view_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeClipboardView),
+			0,
+			(GInstanceInitFunc) glade_clipboard_view_init
 		};
 
-		type = gtk_type_unique (gtk_window_get_type (), &info);
+		type = g_type_register_static (GTK_TYPE_WINDOW, "GladeClipboardView", &info, 0);
 	}
 
 	return type;
@@ -120,7 +114,7 @@ glade_clipboard_view_populate_model_real (GtkTreeStore *model,
 	GtkTreeIter *copy = NULL;
 
 	list = g_list_copy (widgets);
-	for (; list != NULL; list = list->next) {
+	for (; list; list = list->next) {
 		widget = list->data;
 		gtk_tree_store_append (model, &iter, parent_iter);
 		gtk_tree_store_set (model, &iter, 0, widget, -1);
@@ -197,6 +191,7 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 
 /**
  * glade_clipboard_view_new:
+ * @clipboard
  * 
  * Create a new #GladeClipboardView widget.
  *
@@ -207,7 +202,7 @@ glade_clipboard_view_new (GladeClipboard *clipboard)
 {
 	GladeClipboardView *view;
 
-	g_return_val_if_fail (clipboard != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), NULL);
 
 	view = gtk_type_new (glade_clipboard_view_get_type ());
 	view->clipboard = clipboard;
@@ -229,8 +224,7 @@ glade_clipboard_view_add (GladeClipboardView *view, GladeWidget *widget)
 }
 
 void
-glade_clipboard_view_remove (GladeClipboardView *view,
-			     GladeWidget *widget)
+glade_clipboard_view_remove (GladeClipboardView *view, GladeWidget *widget)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
