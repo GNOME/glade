@@ -1764,18 +1764,18 @@ on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
 	GtkWidget *filechooser;
 	const gchar *filename = NULL;
 	gint filename_len;
-	const gchar *icon;
+	gchar *icon;
 
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 
-	filechooser = glade_util_file_chooser_new (_("Select icon"), GTK_WINDOW (menued),
-						   GTK_FILE_CHOOSER_ACTION_OPEN);
+	filechooser = glade_util_file_dialog_new (_("Select icon"), GTK_WINDOW (menued),
+						   GLADE_FILE_DIALOG_ACTION_OPEN);
 
 	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), icon);
+	glade_util_file_dialog_set_filename (filechooser, icon);
 
 	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
-		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+		filename = glade_util_file_dialog_get_filename (filechooser);
 
 	gtk_widget_destroy (filechooser);
 

@@ -5,6 +5,14 @@
 G_BEGIN_DECLS
 
 
+typedef enum   _GladeUtilFileDialogType GladeUtilFileDialogType;
+
+enum _GladeUtilFileDialogType
+{
+        GLADE_FILE_DIALOG_ACTION_OPEN,
+        GLADE_FILE_DIALOG_ACTION_SAVE
+};
+
 #define glade_implement_me() g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, G_GNUC_FUNCTION);
 
 
@@ -25,7 +33,10 @@ void		glade_util_hide_window		(GtkWindow *window);
 gchar		*glade_util_gtk_combo_func	(gpointer data);
 gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 
-GtkWidget       *glade_util_file_chooser_new (const gchar *title, GtkWindow *parent, GtkFileChooserAction action);
+GtkWidget       *glade_util_file_dialog_new (const gchar *title, GtkWindow *parent, GladeUtilFileDialogType action);
+gchar           *glade_util_file_dialog_get_filename (GtkWidget *file_dialog);
+void             glade_util_file_dialog_set_filename (GtkWidget *file_dialog, gchar *filename);
+
 void		glade_util_replace (char *str, char a, char b);
 char		*glade_util_duplicate_underscores (const char *name);
 

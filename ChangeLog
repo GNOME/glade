@@ -1,3 +1,11 @@
+2004-11-02 Shane Butler <shane_b@users.sourceforge.net>
+
+	* src/glade-utils.[ch] (glade_util_file_dialog_new): rewrote function to create a GtkFileSelector or GtkFileChooser depending on the GTK+ version.
+	(glade_util_file_dialog_get_filename, glade_util_file_dialog_set_filename): Metods to retrieve and set the filename of whichever file selector type is supported.
+	* src/glade-project-window.c (gpw_open_cb, gpw_save_cb, gpw_save_as_cb, gpw_confirm_close_project): Update to use new functions (above).
+	* src/glade-menu-editor.c (on_icon_button_clicked): Update to new functions.
+	* configure.in: Revert back to requiring GTK+ 2.2 or above.
+
 2004-11-02  Ivan Wong <email@ivanwong.info>
 
 	* src/Makefile.am: Fix a few glitches that only show up on win32
