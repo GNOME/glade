@@ -740,7 +740,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 			continue;
 		widget = glade_widget_read (project, child);
 		if (!widget) {
-			g_warning ("Failed to read a <wideget> tag");
+			g_warning ("Failed to read a <widget> tag");
 			continue;
 		}
 		project->widgets = g_list_append (project->widgets, widget->widget);
