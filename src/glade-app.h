@@ -92,6 +92,7 @@ LIBGLADEUI_API GladeClipboard*    glade_default_app_get_clipboard (void);
 LIBGLADEUI_API GladeProject*      glade_default_app_get_active_project (void);
 LIBGLADEUI_API void               glade_default_app_update_ui (void);
 LIBGLADEUI_API GList*             glade_default_app_get_selection (void);
+LIBGLADEUI_API GList*             glade_default_app_get_projects (void);
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.

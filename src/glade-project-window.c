@@ -328,13 +328,19 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 static void
 do_close (GladeProjectWindow *gpw, GladeProject *project)
 {
-	char *item_path;
+	gchar     *item_path;
+	GtkWidget *palette_item;
 
 	item_path = g_strdup_printf ("/Project/%s", project->name);
 	gtk_item_factory_delete_item (gpw->priv->item_factory, item_path);
 	g_free (item_path);
 
 	glade_app_remove_project (GLADE_APP (gpw), project);
+
+	palette_item = gtk_item_factory_get_item 
+		(gpw->priv->item_factory,
+		 glade_default_app_get_active_project ()->entry.path);
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
 }
 
 static void
@@ -641,8 +647,8 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	collapse = gtk_button_new_with_label (_("Collapse all"));
 	gtk_box_pack_start (GTK_BOX (hbox), expand, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), collapse, FALSE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (view), TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
 	gtk_container_add (GTK_CONTAINER (widget_tree), vbox);
 
@@ -1214,7 +1220,6 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 	palette_item = gtk_item_factory_get_item 
 		(gpw->priv->item_factory,
 		 glade_default_app_get_active_project ()->entry.path);
-	gtk_menu_item_activate (GTK_MENU_ITEM (palette_item));
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
 }
 

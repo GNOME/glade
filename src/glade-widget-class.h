@@ -33,7 +33,6 @@ typedef void   (* GladeAddChildFunc)       (GObject      *parent,
 typedef void   (* GladeRemoveChildFunc)    (GObject      *parent,
 					    GObject      *child);
 
-
 /* GladeWidgetClass contains all the information we need regarding an widget
  * type. It is also used to store information that has been loaded to memory
  * for that object like the icon/mask.

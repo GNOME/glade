@@ -1114,8 +1114,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 {
 	GladeCommandCutCopyPaste *me;
 	CommandData              *cdata;
-	GladeWidget              *widget = NULL;
-	GList                    *list;
+	GladeWidget              *widget = NULL, *child;
+	GList                    *l, *list, *children, *placeholders = NULL;
 	gchar                    *fmt;
 
 	g_return_if_fail (widgets && widgets->data);
@@ -1155,15 +1155,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 					return;
 				}
 			}
-		}
-		else if (parent != NULL &&
-			 glade_util_any_gtkcontainer_relation (parent, widgets))
-		{
-			glade_util_ui_warn
-				(glade_default_app_get_window(), 
-				 _("One or more selected items must "
-				   "be pasted to a placeholder"));
-				return;
 		}
 		else if (parent == NULL)
 		{
@@ -1231,8 +1222,32 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			else if (placeholder != NULL)
 				cdata->placeholder = g_object_ref (placeholder);
 		}
-		else if (placeholder != NULL)
+		else if (type == GLADE_PASTE && placeholder != NULL)
+		{
 			cdata->placeholder = g_object_ref (placeholder);
+		}
+		else if (type == GLADE_PASTE && parent && 
+			 glade_util_gtkcontainer_relation (parent, widget))
+		{
+			if ((children = glade_widget_class_container_get_children
+			     (parent->widget_class, parent->object)) != NULL)
+			{
+				for (l = children; l && l->data; l = l->next)
+				{
+					child = l->data;
+
+					/* Find a placeholder for this child */
+					if (GLADE_IS_PLACEHOLDER (child) &&
+					    g_list_find (placeholders, child) == NULL)
+					{
+						placeholders = g_list_append (placeholders, child);
+						cdata->placeholder = g_object_ref (child);
+						break;
+					}
+				}
+				g_list_free (children);
+			}
+		}
 
 		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
@@ -1246,6 +1261,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
+
+	if (placeholders) 
+		g_list_free (placeholders);
 }
 
 /**

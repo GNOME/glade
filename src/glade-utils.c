@@ -988,6 +988,31 @@ glade_util_widget_pastable (GladeWidget *child,
 		 child->widget_class->type) != NULL) ? TRUE : FALSE;
 }
 
+/**
+ * glade_util_widget_pastable:
+ * @parent: a #GladeWidget
+ *
+ * Returns the amount of #GladePlaceholders parented by @parent
+ */
+gint
+glade_util_count_placeholders (GladeWidget *parent)
+{
+	gint placeholders = 0;
+	GList *list, *children;
+
+	/* count placeholders */
+	if ((children = glade_widget_class_container_get_children
+	     (parent->widget_class, parent->object)) != NULL)
+	{
+		for (list = children; list && list->data; list = list->next)
+		{
+			if (GLADE_IS_PLACEHOLDER (list->data))
+				placeholders++;
+		}
+		g_list_free (children);
+	}
+	return placeholders;
+}
 
 /**
  * glade_util_paste_clipboard:
@@ -1001,13 +1026,13 @@ void
 glade_util_paste_clipboard (GladePlaceholder *placeholder,
 			    GladeWidget      *parent)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
 	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
 	GList              *list;
 	GladeWidget        *widget;
+	gint                gtkcontainer_relations = 0;
 
       
-	if ((list = glade_project_selection_get (project)) != NULL)
+	if ((list = glade_default_app_get_selection ()) != NULL)
 	{
 		if (placeholder == NULL &&
 		    g_list_length (list) != 1)
@@ -1018,19 +1043,21 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 			return;
 		}
 	}
-
+	
 	if (g_list_length (clipboard->selection) == 0)
 	{
 		glade_util_ui_warn (glade_default_app_get_window (),
 				    _("No widget selected on the clipboard"));
 		return;
 	}
-
+	
 	for (list = clipboard->selection; 
 	     list && list->data; list = list->next)
 	{
 		widget = list->data;
 
+		/* Ensure a paste is supported
+		 */
 		if (parent && 
 		    glade_util_widget_pastable (widget, parent) == FALSE)
 		{
@@ -1041,7 +1068,25 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 			g_free (message);
 			return;
 		}
+
+		/* Count gtk container relations
+		 */
+		if (parent && 				
+		    glade_util_gtkcontainer_relation (parent, widget))
+			gtkcontainer_relations++;
 	}
+	
+	
+	/* Ensure enough placeholders are available */
+	if (parent &&
+	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
+	{
+		glade_util_ui_warn (glade_default_app_get_window (), 
+				    _("Insufficient amount of placeholders in "
+				      "target container"));
+		return;
+	}
+
 	glade_command_paste (clipboard->selection, parent, placeholder);
 }
 

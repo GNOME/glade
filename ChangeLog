@@ -1,3 +1,17 @@
+2005-04-02  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.c:
+	  glade_command_paste() now searches for placeholders for
+	  multi-paste circumstances.
+
+	* src/glade-project-view.c:
+	  Added code to adjust selection on project radio item
+	  on project closure (radio list still doesn't work
+	  properly).
+
+	* src/glade-utils.[ch]: glade_util_count_placeholders added
+	  paste code now considers multiple paste on gtkwidget containers.
+	
 2005-04-02  Ivan, Wong Yat Cheung  <email@ivanwong.info>
 
 	* configure.in:

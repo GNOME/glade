@@ -65,6 +65,8 @@ LIBGLADEUI_API void            glade_util_copy_selection        (void);
 LIBGLADEUI_API void            glade_util_delete_selection      (void);
 LIBGLADEUI_API void            glade_util_delete_clipboard      (void);
 
+LIBGLADEUI_API gint            glade_util_count_placeholders    (GladeWidget *parent);
+
 LIBGLADEUI_API GtkTreeIter    *glade_util_find_iter_by_widget   (GtkTreeModel *model,
 								 GladeWidget  *findme,
 								 gint          column);
