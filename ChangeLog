@@ -1,3 +1,10 @@
+2001-11-01  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* configure.in: drop the 2 from the package name, and set
+	GETTEXT_PACKAGE
+	* acconfig.h: add GETTEXT_PACKAGE
+	* src/main.c: modified the gettext args to use GETTEXT_PACKAGE
+	
 2001-10-31  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* src/glade-placeholder.[ch] (glade_placeholder_remove_all):
