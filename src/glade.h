@@ -121,4 +121,6 @@
 #define GLADE_XML_TAG_PLACEHOLDER "placeholder"
 #define GLADE_XML_TAG_INTERNAL_CHILD "internal-child"
 
+extern gboolean verbose;
+
 #endif /* __GLADE_H__ */

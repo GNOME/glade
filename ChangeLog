@@ -1,3 +1,33 @@
+2004-11-13  Ivan Wong  <email@ivanwong.info>
+
+	* main.c, src/glade.h:
+	  - add option "--verbose".
+	  - add POPT_AUTOHELP.
+	  - use dynamic version of popt on win32.
+
+	* src/glade-editor.c: Some compilers don't know __FUNCTION__,
+	  G_GNUC_FUNCTION is better.
+	
+	* src/glade-gtk.c:
+	  - GLADEGTK_API should precede return type.
+	  - glade_gtk_button_set_stock() now checks "use-underline" when "stock"
+	     is restored to glade-none.
+
+	* src/glade-menu-editor.c: MSVC doesn't know #warning,
+	  use #pragma message for that.
+
+	* src/glade-property-class.[ch]:
+	  - MSVCRT.dll hasn't got strtoll(), use _atoi64() for that.
+	  - add orig_def for storing the orginal default value that
+	    is overridden by a custom default.
+
+	* src/glade_plugin.def: added glade_editor_load_widget.
+
+	* src/glade-editor.c, src/glade-gtk.c, src/glade-parameter.c,
+	  src/glade-property-class.c, src/glade-transform.c, src/glade-widget.c:
+	  fixed some signed/unsigned mismatch and truncation warnings that only
+	  appears in MSVC.
+
 2004-11-08  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
 	* src/glade-gtk.c: bug 157289 fixed in regard with boxes and notebooks.

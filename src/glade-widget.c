@@ -349,7 +349,7 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 	GladeProperty       *glade_property;
 	GladePropertyClass  *glade_property_class;
 	GObject             *object;
-	gint                 n_props, i;
+	guint                n_props, i;
 
 	/* As a slight optimization, we never unref the class
 	 */

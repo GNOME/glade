@@ -44,27 +44,24 @@
 #endif
 
 static gchar *widget_name = NULL;
+gboolean verbose = FALSE;
 
 #ifdef HAVE_LIBPOPT
 static struct poptOption options[] = {
-	{
-		"dump",
-		'\0',
-		POPT_ARG_STRING,
-		&widget_name,
-		0,
-		"Dump the properties of a widget. --dump [gtk type] where type can be GtkWindow, GtkLabel etc.",
-		NULL
-	},
-	{
-		NULL,
-		'\0',
-		0,
-		NULL,
-		0,
-		NULL,
-		NULL
-	}
+	{ "dump", '\0', POPT_ARG_STRING, &widget_name, 0,
+	  N_("dump the properties of a widget. --dump [gtk type] "
+	     "where type can be GtkWindow, GtkLabel etc."), NULL },
+	{ "verbose", 'v', POPT_ARG_NONE, &verbose, 0,
+	  N_("be verbose."), NULL },
+#ifndef USE_POPT_DLL
+	POPT_AUTOHELP
+#else
+	/* poptHelpOptions can not be resolved during linking on Win32,
+	   get it at runtime. */
+	{ NULL, '\0', POPT_ARG_INCLUDE_TABLE, 0, 0,
+	  N_("Help options:"), NULL },
+#endif
+	POPT_TABLEEND
 };
 
 static GList *
@@ -141,17 +138,17 @@ main (int argc, char *argv[])
 	poptContext popt_context;
 #endif
 #ifdef G_OS_WIN32
-    gchar *prefix;
+	gchar *prefix;
 
-    prefix = g_win32_get_package_installation_directory (NULL, NULL);
-    g_glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
-    g_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
-    g_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
-    g_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
-    g_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
-    g_glade_localedir = g_build_filename (prefix, "lib", "locale", NULL);
-    g_glade_icondir = g_build_filename (prefix, "share", "pixmaps", NULL);
-    g_free (prefix);
+	prefix = g_win32_get_package_installation_directory (NULL, NULL);
+	g_glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
+	g_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
+	g_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
+	g_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
+	g_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
+	g_glade_localedir = g_build_filename (prefix, "lib", "locale", NULL);
+	g_glade_icondir = g_build_filename (prefix, "share", "pixmaps", NULL);
+	g_free (prefix);
 #endif
 
 #ifdef ENABLE_NLS
@@ -164,6 +161,9 @@ main (int argc, char *argv[])
 	g_set_application_name (_("Glade-3 GUI Builder"));
 
 #ifdef HAVE_LIBPOPT
+#  ifdef USE_POPT_DLL
+	options[sizeof (options) / sizeof (options[0]) - 2].arg = poptHelpOptions;
+#  endif
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
@@ -198,13 +198,13 @@ main (int argc, char *argv[])
 	gtk_main ();
 
 #ifdef G_OS_WIN32
-    g_free (g_glade_data_dir);
-    g_free (g_pixmaps_dir);
-    g_free (g_widgets_dir);
-    g_free (g_catalogs_dir);
-    g_free (g_modules_dir);
-    g_free (g_glade_localedir);
-    g_free (g_glade_icondir);
+	g_free (g_glade_data_dir);
+	g_free (g_pixmaps_dir);
+	g_free (g_widgets_dir);
+	g_free (g_catalogs_dir);
+	g_free (g_modules_dir);
+	g_free (g_glade_localedir);
+	g_free (g_glade_icondir);
 #endif
 
 	return 0;

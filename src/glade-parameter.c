@@ -309,15 +309,15 @@ glade_parameter_adjustment_new (GladePropertyClass *property_class)
 		switch (def->g_type) {
 		case G_TYPE_FLOAT:
 			value = g_value_get_float (def);
-			step_increment = 0.01;
+			step_increment = 0.01f;
 			break;
 		case G_TYPE_INT:
 			value = (float) g_value_get_int (def);
-			step_increment = 1.0;
+			step_increment = 1.0f;
 			break;
 		case G_TYPE_DOUBLE:
 			value = (float) g_value_get_double (def);
-			step_increment = 0.01;
+			step_increment = 0.01f;
 			break;
 		}
 		page_increment = 10 * step_increment;

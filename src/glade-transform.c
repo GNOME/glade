@@ -35,7 +35,7 @@ transform_string_##to_member (const GValue *src_value,					\
 }
 
 DEFINE_TRANSFORM (double, double, atof)
-DEFINE_TRANSFORM (float, float, atof)
+DEFINE_TRANSFORM (float, float, (float) atof)
 DEFINE_TRANSFORM (int, int, atoi)
 DEFINE_TRANSFORM (uint, guint, atoi)
 DEFINE_TRANSFORM (long, long, atol)

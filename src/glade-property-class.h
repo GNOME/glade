@@ -104,6 +104,9 @@ struct _GladePropertyClass
 
 	GValue *def; /* The default value for this property */
 
+	GValue *orig_def; /* If def is overridden by a xml file,
+			     it is the original value, otherwise NULL. */
+
 	GList *parameters; /* list of GladeParameter objects. This list
 			    * provides with an extra set of key-value
 			    * pairs to specify aspects of this property.

@@ -667,7 +667,7 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 	GtkWidget   *menu;
 	GtkWidget   *option_menu;
 	GEnumClass  *eclass;
-	gint         i;
+	guint        i;
 	
 	g_return_val_if_fail (property != NULL, NULL);
 	g_return_val_if_fail ((eclass = g_type_class_ref
@@ -1286,7 +1286,8 @@ glade_editor_property_load_enum (GladeEditorProperty *property)
 {
 	GladePropertyClass *pclass;
 	GEnumClass         *eclass;
-	gint                i, value;
+	guint               i;
+	gint                value;
 	GList              *list;
 
 	
@@ -1469,7 +1470,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	else if (G_IS_PARAM_SPEC_UNICHAR(class->pspec))
 		glade_editor_property_load_unichar (property);
 	else
-		g_warning ("%s : type %s not implemented (%s)\n", __FUNCTION__,
+		g_warning ("%s : type %s not implemented (%s)\n", G_GNUC_FUNCTION,
 			   class->name, g_type_name (class->pspec->value_type));
 
 	glade_editor_property_set_tooltips (property);

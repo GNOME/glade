@@ -84,7 +84,7 @@ glade_gtk_stock_get_type (void)
 	return etype;
 }
 
-GParamSpec *GLADEGTK_API
+GLADEGTK_API GParamSpec *
 glade_gtk_stock_spec (void)
 {
 	return g_param_spec_enum ("stock", "stock", "stock",
@@ -92,7 +92,7 @@ glade_gtk_stock_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
-GParamSpec *GLADEGTK_API
+GLADEGTK_API GParamSpec *
 glade_gtk_standard_int_spec (void)
 {
 	static GParamSpec *int_spec = NULL;
@@ -103,7 +103,7 @@ glade_gtk_standard_int_spec (void)
 	return int_spec;
 }
 
-GParamSpec *GLADEGTK_API
+GLADEGTK_API GParamSpec *
 glade_gtk_standard_string_spec (void)
 {
 	static GParamSpec *str_spec = NULL;
@@ -113,7 +113,7 @@ glade_gtk_standard_string_spec (void)
 	return str_spec;
 }
 
-GParamSpec *GLADEGTK_API
+GLADEGTK_API GParamSpec *
 glade_gtk_standard_float_spec (void)
 {
 	static GParamSpec *float_spec = NULL;
@@ -401,7 +401,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 {
 	GtkBox      *box;
 	GList       *child;
-	gint new_size, old_size, i;
+	guint new_size, old_size, i;
 
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
@@ -796,8 +796,8 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 		for (list = table->children; list && list->data; list = list->next)
 		{
 			GtkTableChild *child = list->data;
-			gint start = for_rows ? child->top_attach : child->left_attach;
-			gint end = for_rows ? child->bottom_attach : child->right_attach;
+			guint start = for_rows ? child->top_attach : child->left_attach;
+			guint end = for_rows ? child->bottom_attach : child->right_attach;
 
 			/* We need to completely remove it */
 			if (start >= new_size)
@@ -902,7 +902,8 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	GladeProperty *property;
 	GladeProperty *text;
 	GEnumClass    *eclass;
-	gint val, i;
+	guint i;
+	gint val;
 
 	val = g_value_get_enum (value);	
 
@@ -934,7 +935,12 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	{
 		GtkWidget *label;
 		
-		label = gtk_label_new (g_value_get_string (text->value));
+		if (g_value_get_boolean (
+			glade_widget_get_property (
+				glade_widget, "use-underline")->value))
+			label = gtk_label_new_with_mnemonic (g_value_get_string (text->value));
+		else
+			label = gtk_label_new (g_value_get_string (text->value));
 		gtk_container_add (GTK_CONTAINER (button), label);
 		gtk_widget_show_all (button);
 	}

@@ -184,7 +184,11 @@ glade_menu_editor_destroy (GtkObject *object)
 	g_slist_free (menued->stock_items);
 	menued->stock_items = NULL;
 
+#ifdef _MSC_VER
+#pragma message ("This should probably chain up to parent's destroy.")
+#else
 #warning "This should probably chain up to parent's destroy."
+#endif
 }
 
 /**

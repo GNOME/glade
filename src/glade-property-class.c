@@ -51,14 +51,20 @@ glade_property_class_new (void)
 	property_class->id = NULL;
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
+	property_class->def = NULL;
+	property_class->orig_def = NULL;
 	property_class->parameters = NULL;
+	property_class->query = FALSE;
 	property_class->optional = FALSE;
 	property_class->optional_default = TRUE;
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->is_modified = FALSE;
+	property_class->is_modified = FALSE;
+	property_class->verify_function = NULL;
 	property_class->set_function = NULL;
 	property_class->get_function = NULL;
+	property_class->visible = FALSE;
 
 	return property_class;
 }
@@ -90,6 +96,13 @@ glade_property_class_clone (GladePropertyClass *property_class)
 		clone->def = g_new0 (GValue, 1);
 		g_value_init (clone->def, property_class->pspec->value_type);
 		g_value_copy (property_class->def, clone->def);
+	}
+
+	if (G_IS_VALUE (property_class->orig_def))
+	{
+		clone->orig_def = g_new0 (GValue, 1);
+		g_value_init (clone->orig_def, property_class->pspec->value_type);
+		g_value_copy (property_class->orig_def, clone->orig_def);
 	}
 
 	if (clone->parameters)
@@ -125,6 +138,12 @@ glade_property_class_free (GladePropertyClass *class)
 	g_free (class->id);
 	g_free (class->tooltip);
 	g_free (class->name);
+	if (class->orig_def)
+	{
+		if (G_VALUE_TYPE (class->orig_def) != 0)
+			g_value_unset (class->orig_def);
+		g_free (class->orig_def);
+	}
 	if (class->def)
 	{
 		if (G_VALUE_TYPE (class->def) != 0)
@@ -154,7 +173,7 @@ glade_property_class_make_string_from_enum (GType etype, gint eval)
 {
 	GEnumClass *eclass;
 	gchar      *string = NULL;
-	gint        i;
+	guint       i;
 
 	g_return_val_if_fail ((eclass = g_type_class_ref (etype)) != NULL, NULL);
 	for (i = 0; i < eclass->n_values; i++)
@@ -174,7 +193,7 @@ glade_property_class_make_string_from_flags (GType ftype, guint fval)
 {
 	GFlagsClass *fclass;
 	gchar       *string = NULL;
-	gint         i;
+	guint        i;
 	g_return_val_if_fail ((fclass = g_type_class_ref (ftype)) != NULL, NULL);
 
 	for (i = 0; i < fclass->n_values; i++)
@@ -411,9 +430,13 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_ULONG(property_class->pspec))
 		g_value_set_ulong (value, strtoul (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_INT64(property_class->pspec))
+#ifndef G_OS_WIN32
 		g_value_set_int64 (value, strtoll (string, NULL, 10));
+#else
+		g_value_set_int64 (value, _atoi64 (string));
+#endif
 	else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
-		g_value_set_uint64 (value, strtoull (string, NULL, 10));
+		g_value_set_uint64 (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
 		g_value_set_float (value, (float) atof (string));
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
@@ -589,11 +612,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	if (buff)
 	{
 		if (class->def)
-		{
-			if (G_VALUE_TYPE (class->def) != 0)
-				g_value_unset (class->def);
-			g_free (class->def);
-		}
+			class->orig_def = class->def;
 		class->def = glade_property_class_make_gvalue_from_string (class, buff);
 		g_free (buff);
 		if (!class->def)
