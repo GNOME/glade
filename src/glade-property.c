@@ -184,290 +184,57 @@ glade_property_emit_changed (GladeProperty *property)
 	g_signal_emit (G_OBJECT (property), glade_property_signals [CHANGED], 0);
 }
 
-void
-glade_property_set_string (GladeProperty *property,
-			   const gchar *text)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-	g_return_if_fail (property->widget != NULL);
-	g_return_if_fail (property->widget->widget != NULL);
-
-	if (text == NULL)
-		return;
-
-	if (!g_value_get_string (property->value) ||
-	    (strcmp (text, g_value_get_string (property->value)) != 0))
-		g_value_set_string (property->value, text);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL)
-			g_object_set (G_OBJECT (property->widget->widget),
-				      property->class->id,
-				      g_value_get_string (property->value), NULL);
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-}
-
-void
-glade_property_set_integer (GladeProperty *property, gint val)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-
-	g_value_set_int (property->value, val);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL)
-			g_object_set (G_OBJECT (property->widget->widget),
-				      property->class->id, val, NULL);
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-}
-
-void
-glade_property_set_float (GladeProperty *property, gfloat val)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-
-	g_value_set_float (property->value, val);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL)
-			g_object_set (G_OBJECT (property->widget->widget),
-				      property->class->id, val, NULL);
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-}
-
-void
-glade_property_set_double (GladeProperty *property, gdouble val)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-
-	g_value_set_double (property->value, val);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL)
-			g_object_set (G_OBJECT (property->widget->widget),
-				      property->class->id, val, NULL);
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-
-	if (GTK_IS_SPIN_BUTTON (property->widget->widget)) {
-		g_debug(("It is spin button\n"));
-		g_debug(("The alignement is min :%g max:%g value%g\n",
-			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->lower,
-			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->upper,
-			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->value));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (property->widget->widget),
-					   333.22);
-	}
-}
-
-void
-glade_property_set_boolean (GladeProperty *property, gboolean val)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-	g_return_if_fail (property->widget != NULL);
-	g_return_if_fail (property->widget->widget != NULL);
-
-	g_value_set_boolean (property->value, val);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL) {
-			if (GTK_IS_TABLE (property->widget->widget)) {
-				g_debug(("Is table \n"));
-				gtk_widget_queue_resize (GTK_WIDGET (property->widget->widget));
-#if 0	
-				gtk_table_set_homogeneous (property->widget->widget, val);
-#endif	
-			} else
-				g_object_set (G_OBJECT (property->widget->widget),
-					      property->class->id, val, NULL);
-		}
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-}
-
-void
-glade_property_set_unichar (GladeProperty *property, gunichar val)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-
-	g_value_set_uint (property->value, val);
-
-	if (property->enabled) {
-		property->loading = TRUE;
-		if (property->class->set_function == NULL)
-			g_object_set (G_OBJECT (property->widget->widget),
-				      property->class->id, val, NULL);
-		else
-			(*property->class->set_function) (G_OBJECT (property->widget->widget),
-							  property->value);
-		property->loading = FALSE;
-	}
-
-	glade_property_emit_changed (property);
-}
-
-void
-glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->value != NULL);
-	g_return_if_fail (choice != NULL);
-
-	g_value_set_enum (property->value, choice->value);
-
-	property->loading = TRUE;
-	if (property->class->set_function == NULL)
-		g_object_set (G_OBJECT (property->widget->widget),
-			      property->class->id, choice->value, NULL);
-	else
-		(*property->class->set_function) (G_OBJECT (property->widget->widget),
-						  property->value);
-
-	property->loading = FALSE;
-
-	glade_property_emit_changed (property);
-}
-
 /**
- * packing properties are a special case because the property
- * to set is in the container. Maybe this would be nicer if done
- * overriding set/get_property of property_class, but would require
- * to change the prototype to pass down more info...
+ * Generic set function for properties that do not have a
+ * custom set_property method. This includes packing properties.
  */
 static void
-glade_property_set_packing (GladeProperty *property, const GValue *value)
+glade_property_set_property (GladeProperty *property, const GValue *value)
 {
-	GtkContainer *container;
-	GtkWidget *child;
-
-	g_return_if_fail (property->class->packing);
-
-	container = GTK_CONTAINER (property->widget->parent->widget);
-	child = property->widget->widget;
+	if (property->class->packing) {
+		GtkContainer *container = GTK_CONTAINER (property->widget->parent->widget);
+		GtkWidget *child = property->widget->widget;
+		gtk_container_child_set_property (container, child, property->class->id, value);
+	} else {
+		GObject *gobject = G_OBJECT (property->widget->widget);
+		g_object_set_property (gobject, property->class->id, value);
+	}
 
 	g_value_reset (property->value);
 	g_value_copy (value, property->value);
-
-	property->loading = TRUE;
-	gtk_container_child_set_property (container, child, property->class->id, value);
-	property->loading = FALSE;
-
-	glade_property_emit_changed (property);
 }
 
 void
 glade_property_set (GladeProperty *property, const GValue *value)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
 
-	if (property->class->packing) {
-		glade_property_set_packing (property, value);
+	if (!g_value_type_compatible (G_VALUE_TYPE (property->value),
+				      G_VALUE_TYPE (value))) {
+		g_warning ("Trying to assing an incompatible value to property %s\n",
+			    property->class->id);
 		return;
 	}
 
-	switch (property->class->type) {
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		glade_property_set_boolean (property,
-					    g_value_get_boolean (value));
-		break;
-	case GLADE_PROPERTY_TYPE_FLOAT:
-		glade_property_set_float (property,
-					  g_value_get_float (value));
-		break;
-	case GLADE_PROPERTY_TYPE_INTEGER:
-		glade_property_set_integer (property,
-					    g_value_get_int (value));
-		break;
-	case GLADE_PROPERTY_TYPE_DOUBLE:
-		glade_property_set_double (property,
-					   g_value_get_double (value));
-		break;
-	case GLADE_PROPERTY_TYPE_UNICHAR:
-		glade_property_set_unichar (property,
-					    g_value_get_uint (value));
-		break;
-	case GLADE_PROPERTY_TYPE_STRING:
-		glade_property_set_string (property,
-					   g_value_get_string (value));
-		break;
-	case GLADE_PROPERTY_TYPE_ENUM:
-		{
-			GladeChoice *choice = NULL;
-			GList * list = NULL;
+	if (!property->enabled)
+		return;
 
-			list = property->class->choices;
-			for (; list; list = list->next) {
-				choice = list->data;
-				if (choice->value == g_value_get_enum (value))
-					break;
-			}
-			if (list == NULL)
-				g_warning ("Cant find the GladePropertyChoice "
-					   "for the #%d\n", g_value_get_int (value));
-			else
-				glade_property_set_enum (property, choice);
-		}
-		break;
-	case GLADE_PROPERTY_TYPE_FLAGS:
-		glade_implement_me ();
-		break;
-	case GLADE_PROPERTY_TYPE_OBJECT:
-		glade_implement_me ();
-		g_print ("Set adjustment ->%d<-\n", GPOINTER_TO_INT (property->child));
-#if 1	
-		g_print ("Set directly \n");
+	if (property->loading)
+		return;
 
-		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
-						GTK_ADJUSTMENT (property->child));
-#else		
-		g_object_set (G_OBJECT (property->widget->widget),
-			      property->class->id, property->child, NULL);
-#endif		
-		g_print ("Adjustment has been set\n");
-		break;
-	default:
-		g_warning ("Implement set default for this type [%s]\n", property->class->name);
-		break;
-	}
+	property->loading = TRUE;
+
+	/* if there is a custom set_property use it*/
+	if (property->class->set_function)
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
+	else
+		glade_property_set_property (property, value);
+
+	property->loading = FALSE;
+
+	glade_property_emit_changed (property);
 }
 
 void

@@ -72,13 +72,6 @@ GladeProperty *glade_property_new_from_class (GladePropertyClass *class,
 void glade_property_free (GladeProperty *property);
 
 void glade_property_set         (GladeProperty *property, const GValue *value);
-void glade_property_set_string  (GladeProperty *property, const gchar *text);
-void glade_property_set_integer (GladeProperty *property, gint val);
-void glade_property_set_float   (GladeProperty *property, gfloat val);
-void glade_property_set_double  (GladeProperty *property, gdouble val);
-void glade_property_set_boolean (GladeProperty *property, gboolean val);
-void glade_property_set_unichar (GladeProperty *property, gunichar val);
-void glade_property_set_enum    (GladeProperty *property, GladeChoice *choice);
 void glade_property_refresh     (GladeProperty *property);
 
 const gchar * glade_property_get_string  (GladeProperty *property);

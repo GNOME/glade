@@ -422,6 +422,7 @@ void
 glade_widget_set_contents (GladeWidget *widget)
 {
 	GladeProperty *property = NULL;
+	GValue *value = g_new0 (GValue, 1);
 	GladeWidgetClass *class;
 
 	class = widget->class;
@@ -432,8 +433,12 @@ glade_widget_set_contents (GladeWidget *widget)
 	if (glade_widget_class_find_spec (class, "title") != NULL)
 		property = glade_property_get_from_id (widget->properties,
 						       "title");
-	if (property != NULL)
-		glade_property_set_string (property, widget->name);
+
+	if (property) {
+		g_value_init (value, G_TYPE_STRING);
+		g_value_set_string (value, widget->name);
+		glade_property_set (property, value);
+	}
 }
 
 static void
@@ -850,6 +855,9 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
 				       GladePropertyQueryResult *result)
 {
 	GList *list;
+	GValue *value = g_new0 (GValue, 1);
+
+	g_value_init (value, G_TYPE_INT);
 
 	list = widget->class->properties;
 	for (; list; list = list->next) {
@@ -859,7 +867,8 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
 			gint temp;
 			glade_property_query_result_get_int (result, pclass->id, &temp);
 			property = glade_property_get_from_id (widget->properties, pclass->id);
-			glade_property_set_integer (property, temp);
+			g_value_set_int (value, temp);
+			glade_property_set (property, value);
 		}
 	}
 }
