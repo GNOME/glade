@@ -577,13 +577,9 @@ glade_project_selection_remove (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (!glade_util_has_selection (object))
-		return;
-
-	glade_util_remove_selection (object);
-
-	if (project)
+	if ((g_list_find (project->selection, object)) != NULL)
 	{
+		glade_util_remove_selection (object);
 		project->selection = g_list_remove (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -608,13 +604,9 @@ glade_project_selection_add (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (glade_util_has_selection (object))
-		return;
-
-	glade_util_add_selection (object);
-
-	if (project)
+	if ((g_list_find (project->selection, object)) == NULL)
 	{
+		glade_util_add_selection (object);
 		project->selection = g_list_prepend (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -639,11 +631,11 @@ glade_project_selection_set (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (glade_util_has_selection (object))
-		return;
-	    
-	glade_project_selection_clear (project, FALSE);
-	glade_project_selection_add (project, object, emit_signal);
+	if ((g_list_find (project->selection, object)) == NULL)
+	{
+		glade_project_selection_clear (project, FALSE);
+		glade_project_selection_add (project, object, emit_signal);
+	}
 }	
 
 /**

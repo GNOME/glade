@@ -344,47 +344,39 @@ static void
 glade_project_view_selection_update (GladeProjectView *view,
 				     GladeProject *project)
 {
-#if 0
+	GladeWidget      *widget;
+	GladeWidgetClass *class;
 	GtkTreeSelection *selection;
-#endif	
-	GList *list;
+	GtkTreeModel     *model;
+	GtkTreeIter      *iter;
+	GList            *list;
 
 	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (view->project == project);
 
-	list = glade_project_selection_get (project);
-
-#if 0
-	g_ print ("Update dude\n");
-	
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
-	
-	g_return_if_fail (GTK_IS_TREE_SELECTION (selection));
+	model     = GTK_TREE_MODEL (view->model);
 
-	GladeWidgetClass *class;
-	GtkTreeModel *model;
-	GtkTreeIter *iter;
+	g_return_if_fail (selection != NULL);
 
-	class = glade_widget_get_class (widget);
-	
-	if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
-		return;
-	
-	model = GTK_TREE_MODEL (view->model);
+	gtk_tree_selection_unselect_all (selection);
 
-	iter = glade_project_view_find_iter_by_widget (model,
-						       widget);
+	for (list = glade_project_selection_get (project);
+	     list && list->data; list = list->next)
+	{	
+		widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
+		class  = glade_widget_get_class (widget);
 
-	if (iter) {
-		static gboolean warned = FALSE;
-		if (!warned)
-			g_print ("Update the cell. BUT HOW ??\n");
-		warned = TRUE;
+		if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
+			continue;
+
+		if ((iter = glade_project_view_find_iter_by_widget 
+		     (model, widget)) != NULL)
+		{
+			gtk_tree_selection_select_iter (selection, iter);
+		}
 	}
-
-	gtk_tree_store_remove (view->model, iter);
-#endif	
 }      
 
 static void
@@ -504,6 +496,15 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 }
 
 static void
+glade_project_view_row_cb (GtkTreeView       *tree_view,
+			   GtkTreeIter       *iter,
+			   GtkTreePath       *path,
+			   GladeProjectView  *view)
+{
+	GLADE_PROJECT_VIEW_GET_CLASS (view)->selection_update (view, view->project);
+}
+
+static void
 glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  GtkCellRenderer *cell,
 				  GtkTreeModel *tree_model,
@@ -605,17 +606,26 @@ glade_project_view_init (GladeProjectView *view)
 
 	glade_project_view_add_columns (GTK_TREE_VIEW (view->tree_view));
 
+	/* Show/Hide windows on double-click */
 	g_signal_connect (G_OBJECT (view->tree_view), "row-activated",
 			  G_CALLBACK (glade_project_view_item_activated_cb), NULL);
 
+	/* Update project selection */
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
 	g_signal_connect_data (G_OBJECT (selection), "changed",
 			       G_CALLBACK (glade_project_view_selection_changed_cb),
 			       view, NULL, 0);
 
+	/* Popup menu */
 	g_signal_connect (G_OBJECT (view->tree_view), "button-press-event",
 			  G_CALLBACK (glade_project_view_button_press_cb), view);
 	
+	/* Refresh selection */
+	g_signal_connect (G_OBJECT (view->tree_view), "row-expanded",
+			  G_CALLBACK (glade_project_view_row_cb), view);
+	g_signal_connect (G_OBJECT (view->tree_view), "row-collapsed",
+			  G_CALLBACK (glade_project_view_row_cb), view);
+
 	view->updating_selection = FALSE;
 }
 
