@@ -1232,10 +1232,11 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		GladeProperty *property = list->data;
 		if (property->class->packing)
 			continue;
+
 		child = glade_property_write (context, property);
-		if (!child) {
+		if (!child)
 			continue;
-		}
+
 		glade_xml_node_append_child (node, child);
 	}
 

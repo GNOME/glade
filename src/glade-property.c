@@ -177,6 +177,7 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 {
 	GladeXmlNode *node;
 	gchar *tmp;
+	gchar *default_str = NULL;
 
 	if (!property->enabled)
 		return NULL;
@@ -203,15 +204,28 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	 * the openning and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
-
 	if (!tmp)
 	{
 		glade_xml_node_delete (node);
 		return NULL;
 	}
 
+	if (property->class->def)
+	{
+		default_str = glade_property_class_make_string_from_gvalue (property->class,
+									    property->class->def);
+		if (!default_str || strcmp (tmp, default_str) == 0)
+		{
+			g_free (tmp);
+			g_free (default_str);
+			glade_xml_node_delete (node);
+			return NULL;
+		}
+	}
+
 	glade_xml_set_content (node, tmp);
 	g_free (tmp);
+	g_free (default_str);
 
 	return node;
 }
