@@ -60,14 +60,6 @@ void glade_property_free (GladeProperty *property);
 void glade_property_set         (GladeProperty *property, const GValue *value);
 void glade_property_refresh     (GladeProperty *property);
 
-const gchar * glade_property_get_string  (GladeProperty *property);
-gint          glade_property_get_integer (GladeProperty *property);
-gfloat        glade_property_get_float   (GladeProperty *property);
-gdouble       glade_property_get_double  (GladeProperty *property);
-gboolean      glade_property_get_boolean (GladeProperty *property);
-gunichar      glade_property_get_unichar (GladeProperty *property);
-GladeChoice * glade_property_get_enum    (GladeProperty *property);
-
 void glade_property_get_from_widget (GladeProperty *property);
 
 /* XML i/o */

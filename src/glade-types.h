@@ -1,7 +1,6 @@
 #ifndef __GLADE_TYPES_H__
 #define __GLADE_TYPES_H__
 
-typedef struct _GladePaletteSection GladePaletteSection;
 
 typedef struct _GladePalette       GladePalette;
 typedef struct _GladeEditor        GladeEditor;

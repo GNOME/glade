@@ -221,86 +221,6 @@ glade_property_refresh (GladeProperty *property)
 	glade_property_set (property, property->value);
 }
 
-const gchar *
-glade_property_get_string (GladeProperty *property)
-{
-	g_return_val_if_fail (property != NULL, NULL);
-	g_return_val_if_fail (property->value != NULL, NULL);
-
-	return g_value_get_string (property->value);
-}
-	
-gint
-glade_property_get_integer (GladeProperty *property)
-{
-	g_return_val_if_fail (property != NULL, 0);
-	g_return_val_if_fail (property->value != NULL, 0);
-
-	return g_value_get_int (property->value);	
-}
-
-gfloat
-glade_property_get_float (GladeProperty *property)
-{
-	gfloat resp;
-	g_return_val_if_fail (property != NULL, 0.0);
-	g_return_val_if_fail (property->value != NULL, 0.0);
-
-	resp = g_value_get_float (property->value);
-
-	return resp;
-}
-	
-gdouble
-glade_property_get_double (GladeProperty *property)
-{
-	g_return_val_if_fail (property != NULL, 0.0);
-	g_return_val_if_fail (property->value != NULL, 0.0);
-	
-	return g_value_get_double (property->value);
-}
-
-gboolean
-glade_property_get_boolean (GladeProperty *property)
-{
-	g_return_val_if_fail (property != NULL, FALSE);
-	g_return_val_if_fail (property->value != NULL, FALSE);
-
-	return g_value_get_boolean (property->value);
-}	
-	
-gunichar
-glade_property_get_unichar (GladeProperty *property)
-{
-	g_return_val_if_fail (property != NULL, g_utf8_get_char (" "));
-	g_return_val_if_fail (property->value != NULL, g_utf8_get_char (" "));
-	
-	return g_value_get_uint (property->value);
-}
-
-GladeChoice *
-glade_property_get_enum (GladeProperty *property)
-{
-	GladeChoice *choice = NULL;
-	GList *list;
-	gint value;
-	
-	g_return_val_if_fail (property != NULL, NULL);
-	g_return_val_if_fail (property->value != NULL, NULL);
-
-	value = g_value_get_enum (property->value);
-	list = property->class->choices;
-	for (; list; list = list->next) {
-		choice = list->data;
-		if (choice->value == value)
-			break;
-	}
-	if (list == NULL)
-		g_warning ("Cant find the GladePropertyChoice selected\n");
-
-	return choice;
-}
-
 GladeXmlNode *
 glade_property_write (GladeXmlContext *context, GladeProperty *property)
 {
@@ -366,7 +286,7 @@ void
 glade_property_get_from_widget (GladeProperty *property)
 {
 	gboolean bool = FALSE;
-	
+
 	g_value_reset (property->value);
 
 	if (property->class->get_function)
