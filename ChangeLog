@@ -1,3 +1,8 @@
+2003-11-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* glade-placeholder.c: Unref the placeholder_pixmap in the finalize
+	function instead of in the destroy function.
+
 2003-11-07  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.c: when adding the packing properties get their

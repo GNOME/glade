@@ -33,7 +33,7 @@
 
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
 static void glade_placeholder_init           (GladePlaceholder        *placeholder);
-static void glade_placeholder_destroy        (GtkObject               *object);
+static void glade_placeholder_finalize       (GObject                 *object);
 static void glade_placeholder_realize        (GtkWidget               *widget);
 static void glade_placeholder_size_allocate  (GtkWidget               *widget,
 					      GtkAllocation           *allocation);
@@ -95,12 +95,11 @@ static void
 glade_placeholder_class_init (GladePlaceholderClass *klass)
 {
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-	GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
-	object_class->destroy = glade_placeholder_destroy;
-
+	object_class->finalize = glade_placeholder_finalize;
 	widget_class->realize = glade_placeholder_realize;
 	widget_class->size_allocate = glade_placeholder_size_allocate;
 	widget_class->expose_event = glade_placeholder_expose;
@@ -123,15 +122,15 @@ glade_placeholder_new (void)
 }
 
 static void
-glade_placeholder_destroy (GtkObject *object)
+glade_placeholder_finalize (GObject *object)
 {
 	GladePlaceholder *placeholder;
 
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
-
 	placeholder = GLADE_PLACEHOLDER (object);
-	
 	g_object_unref (placeholder->placeholder_pixmap);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -172,9 +171,12 @@ glade_placeholder_realize (GtkWidget *widget)
 	glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
 
 	if (!placeholder->placeholder_pixmap)
+	{
 		placeholder->placeholder_pixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL,
 									    gtk_widget_get_colormap (GTK_WIDGET (placeholder)),
 									    NULL, NULL, placeholder_xpm);
+		g_assert(G_IS_OBJECT(placeholder->placeholder_pixmap));
+	}
 
 	if (placeholder->placeholder_pixmap == NULL) {
 		g_warning ("Could not create pixmap for the glade-placeholder");
