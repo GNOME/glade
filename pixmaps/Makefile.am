@@ -6,6 +6,9 @@ pixmaps_DATA = \
 	hbox.xpm \
 	label.xpm	\
 	table.xpm \
+	entry.xpm \
+	notebook.xpm \
+	frame.xpm \
 	\
 	selector.xpm \
 	placeholder.xpm

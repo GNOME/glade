@@ -1,18 +1,50 @@
 <GladeWidgetClass>
+
   <Name>GtkLabel</Name>
   <GetTypeFunction>gtk_label_get_type</GetTypeFunction>
   <GenericName>label</GenericName>
   <Toplevel>False</Toplevel>
   <Icon>label</Icon>
   <Properties>
+
     <Property>
-      <Type>Text</Type>
+	 <Name>label</Name>
+      <ParamSpec/>
 	 <Parameters>
         <Parameter Key="VisibleLines" Value="1"/>
 	 </Parameters>
-	 <Name>Label</Name>
-	 <Tooltip>The text to disaplay</Tooltip>
-	 <GtkArg>label</GtkArg>
     </Property>
+
+    <Property>
+	 <Name>justify</Name>
+      <ParamSpec/>
+    </Property>
+
+    <Property>
+	 <Name>wrap</Name>
+      <ParamSpec/>
+    </Property>
+
+    <Property>
+	 <Name>xalign</Name>
+      <ParamSpec/>
+    </Property>
+
+    <Property>
+	 <Name>yalign</Name>
+      <ParamSpec/>
+    </Property>
+
+    <Property>
+	 <Name>xpad</Name>
+      <ParamSpec/>
+    </Property>
+
+    <Property>
+	 <Name>ypad</Name>
+      <ParamSpec/>
+    </Property>
+
   </Properties>
+
 </GladeWidgetClass>

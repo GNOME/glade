@@ -7,19 +7,10 @@
   <Placeholder>True</Placeholder>
 
   <Properties>
+
     <Property>
-      <Type>Integer</Type>
-	 <Name>Border Width</Name>
-	 <Tooltip>The width of the border arround the container</Tooltip>
-	 <GtkArg>border-width</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="0"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
-	 </Parameters>
+      <Name>border-width</Name>
+      <ParamSpec/>
     </Property>
 
     <Property>
@@ -61,41 +52,20 @@
     </Property>
 
     <Property>
-      <Type>Boolean</Type>
-	 <Name>Homogeneous</Name>
-	 <Tooltip>If the children should be the same size</Tooltip>
-	 <GtkArg>homogeneous</GtkArg>
+	 <Name>homogeneous</Name>
+      <ParamSpec/>
     </Property>
 
     <Property>
-      <Type>Integer</Type>
-	 <Name>Row Spacing</Name>
-	 <Tooltip>The space between each row</Tooltip>
-	 <GtkArg>row-spacing</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="3"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
-	 </Parameters>
+      <Name>row-spacing</Name>
+      <ParamSpec/>
     </Property>
 
     <Property>
-      <Type>Integer</Type>
-	 <Name>Col Spacing</Name>
-	 <Tooltip>The space between each column</Tooltip>
-	 <GtkArg>column-spacing</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="3"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
-	 </Parameters>
+      <Name>column-spacing</Name>
+      <ParamSpec/>
     </Property>
 
   </Properties>
+
 </GladeWidgetClass>

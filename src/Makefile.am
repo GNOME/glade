@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-bin_PROGRAMS = glade2
+bin_PROGRAMS = glade2 
 
 INCLUDES = \
 	$(GLADE_CFLAGS) \

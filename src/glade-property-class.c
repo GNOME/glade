@@ -158,6 +158,14 @@ glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
 
 	glade_property_class_get_specs (class, &specs, &n_specs);
 
+#if 1
+	g_print ("Dumping specs for %s\n\n", class->name);
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+		g_print ("%02d - %s\n", i, spec->name); 
+	}
+#endif	
+	
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
 
@@ -191,7 +199,8 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	case G_TYPE_PARAM_ENUM:
 		return GLADE_PROPERTY_TYPE_CHOICE;
 	default:
-		g_warning ("Could not determine GladePropertyType from spec");
+		g_warning ("Could not determine GladePropertyType from spec (%d)",
+			   G_PARAM_SPEC_TYPE (spec));
 	}
 
 	return GLADE_PROPERTY_TYPE_ERROR;

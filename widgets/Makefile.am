@@ -6,6 +6,9 @@ widgets_DATA = \
 	gtklabel.xml \
 	gtkvbox.xml \
 	gtkhbox.xml \
-	gtktable.xml
+	gtktable.xml \
+	gtkframe.xml \
+	gtknotebook.xml \
+	gtkentry.xml
 
 EXTRA_DIST = $(widgets_DATA)
