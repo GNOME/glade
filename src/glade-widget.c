@@ -439,8 +439,7 @@ glade_widget_draw_selection_nodes (GladeWidget *glade_widget)
 	window = glade_widget_get_window (glade_widget, &paint_widget);
 
 	if (widget->parent) {
-		x = widget->allocation.x;
-		y = widget->allocation.y;
+		gtk_widget_translate_coordinates (widget, paint_widget, 0, 0, &x, &y);
 		w = widget->allocation.width;
 		h = widget->allocation.height;
 	} else {
@@ -498,6 +497,9 @@ glade_widget_connect_draw_signals (GladeWidget *glade_widget)
 	GtkWidget *widget = glade_widget->widget;
 
 	gtk_signal_connect_after (GTK_OBJECT (widget), "expose_event",
+				  GTK_SIGNAL_FUNC (glade_widget_expose_event_cb),
+				  glade_widget);
+	gtk_signal_connect_after (GTK_OBJECT (widget), "event_after",
 				  GTK_SIGNAL_FUNC (glade_widget_expose_event_cb),
 				  glade_widget);
 }
