@@ -23,39 +23,24 @@
         <GenericName>adjustment</GenericName>
         <Toplevel>False</Toplevel>
         <Properties>
-          <Property ParamSpec="FALSE" Id="minimum" Name="Min">
+          <Property ParamSpec="FALSE" Id="minimum" Name="Min" Default="0">
 		   <Type>Float</Type>
-             <Parameters>
-               <Parameter Key="Default" Value="0"/>
-             </Parameters>
 		   <SetFunction>glade_gtk_adjustment_set_max</SetFunction>
 		</Property>
-          <Property ParamSpec="FALSE" Id="maximum" Name="Max">
+          <Property ParamSpec="FALSE" Id="maximum" Name="Max" Default="100">
 		   <Type>Float</Type>
-             <Parameters>
-               <Parameter Key="Default" Value="100"/>
-             </Parameters>
 		   <SetFunction>glade_gtk_adjustment_set_min</SetFunction>
 		</Property>
-          <Property ParamSpec="FALSE" Id="step-increment" Name="Step Inc.">
+          <Property ParamSpec="FALSE" Id="step-increment" Name="Step Inc." Default="1">
 		   <Type>Float</Type>
-             <Parameters>
-               <Parameter Key="Default" Value="1"/>
-             </Parameters>
 		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
 		</Property>
-          <Property ParamSpec="FALSE" Id="page-increment" Name="Page Inc.">
+          <Property ParamSpec="FALSE" Id="page-increment" Name="Page Inc." Default="10">
 		   <Type>Float</Type>
-             <Parameters>
-               <Parameter Key="Default" Value="10"/>
-             </Parameters>
 		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
 		</Property>
-          <Property ParamSpec="FALSE" Id="page-size" Name="Page Size">
+          <Property ParamSpec="FALSE" Id="page-size" Name="Page Size" Default="10">
 		   <Type>Float</Type>
-             <Parameters>
-               <Parameter Key="Default" Value="10"/>
-             </Parameters>
 		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
 		</Property>
         </Properties>

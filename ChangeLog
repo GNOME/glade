@@ -1,3 +1,41 @@
+2001-08-04  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.c (glade_widget_set_default_options_real): add a packing
+	argument.
+	(glade_widget_set_default_options): we now set the default options in two
+	steps. Firts the object properties and 
+	(glade_widget_set_default_packing_options): secondly the packing properties.
+	The packing properties are applied after the widget is appended to the container
+
+	* src/glade-property-class.c (glade_property_class_get_default_from_spec):
+	default is now a member of GladePropertyClass not a GladeParameter. 
+
+	* src/glade-parameter.c (glade_parameter_adjustment_new): get the default
+	from the parameters only if def was not specified. Added a default variable
+	to the function.
+
+	* src/glade-packing.c: add file. Takes care of container packing related
+	stuff.
+
+	* src/glade-gtk.c (glade_gtk_vbox_get_size): add the prototype, still
+	no content
+	(glade_gtk_vbox_set_size): ditto.
+
+	* src/glade-editor.c (glade_editor_load_packing_page): impl. Adds
+	the packing page.
+
+	* src/Makefile.am: add packging.[ch]
+
+	* src/glade-popup.c (glade_popup_create_menu): make the popup-menu
+	work. Select now works.
+
+	* src/glade-widget.h: remove ->popup. destroy it right away. 
+
+2001-08-03  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget-class.c (glade_widget_class_list_signals): plug a memleak
+	(glade_widget_class_compose_get_type_func): plug a memleak
+
 2001-08-01  Chema Celorio  <chema@celorio.com>
 
 	* src/main.c: add <popt.h>.

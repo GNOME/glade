@@ -8,13 +8,12 @@
 
     <Property Id="border-width"/>
 
-    <Property ParamSpec="FALSE" Name="Size" Id="size">
+    <Property ParamSpec="FALSE" Name="Size" Id="size" Default="3">
       <Type>Integer</Type>
 	 <Tooltip>The number of rows in the box</Tooltip>
 	 <Parameters>
 	   <Parameter Key="Min" Value="0"/>
 	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="3"/>
 	   <Parameter Key="StepIncrement" Value="1"/>
 	   <Parameter Key="PageIncrement" Value="10"/>
 	   <Parameter Key="ClibmRate" Value="1"/>
@@ -23,6 +22,8 @@
         <WindowTitle>New vertical box</WindowTitle>
         <Question>Number of rows</Question>
       </Query>
+      <SetFunction>glade_gtk_vbox_set_size</SetFunction>
+      <GetFunction>glade_gtk_vbox_get_size</GetFunction>
     </Property>
 
     <Property Id="spacing"/>

@@ -10,16 +10,8 @@
     <Property Id="type"/>
     <Property Id="window-position"/>
     <Property Id="modal"/>
-    <Property Id="default-width">
-	 <Parameters>
-	   <Parameter Key="Default" Value="440"/>
-      </Parameters>
-    </Property>
-    <Property Id="default-height">
-	 <Parameters>
-	   <Parameter Key="Default" Value="250"/>
-      </Parameters>
-    </Property>
+    <Property Id="default-width" Default="440"/>
+    <Property Id="default-height" Default="250"/>
     <Property Id="auto-shrink"/>
     <Property Id="allow-grow"/>
     <Property Id="auto-shrink"/>
@@ -28,17 +20,14 @@
     <Property Common="TRUE" Id="y"/>
     <Property Common="TRUE" Id="width"/>
     <Property Common="TRUE" Id="height"/>
-    <Property Common="TRUE" Id="visible">
-	 <Parameters>
-	   <Parameter Key="Default" Value="True"/>
-      </Parameters>
-    </Property>
-
+    <Property Common="TRUE" Id="visible" Default="True"/>
     <Property Common="TRUE" Id="sensitive"/>
     <Property Common="TRUE" Id="can-default"/>
     <Property Common="TRUE" Id="has-default"/>
     <Property Common="TRUE" Id="can-focus"/>
+    <!-- Not yet implemented
     <Property Common="TRUE" Id="events"/>
+    -->
     <Property Common="TRUE" Id="extension-events"/>
 
   </Properties>

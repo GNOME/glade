@@ -16,13 +16,12 @@
     <Property Id="tab-vborder"/>
     <Property Id="enable-popup"/>
 
-    <Property ParamSpec="FALSE" Id="pages" Name="Number of pages">
+    <Property ParamSpec="FALSE" Id="pages" Name="Number of pages" Default="3">
       <Type>Integer</Type>
 	 <Tooltip>The number of pages in the notebook</Tooltip>
 	 <Parameters>
 	   <Parameter Key="Min" Value="1"/>
 	   <Parameter Key="Max" Value="100"/>
-	   <Parameter Key="Default" Value="3"/>
 	   <Parameter Key="StepIncrement" Value="1"/>
 	   <Parameter Key="PageIncrement" Value="1"/>
 	   <Parameter Key="ClibmRate" Value="1"/>
