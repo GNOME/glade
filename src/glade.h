@@ -123,4 +123,12 @@
 
 extern gboolean verbose;
 
+extern gchar* glade_data_dir;
+extern gchar* glade_pixmaps_dir;
+extern gchar* glade_widgets_dir;
+extern gchar* glade_catalogs_dir;
+extern gchar* glade_modules_dir;
+extern gchar* glade_locale_dir;
+extern gchar* glade_icon_dir;
+
 #endif /* __GLADE_H__ */

@@ -24,14 +24,7 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
 	$(GLADE_CFLAGS) \
-	-DGLADE_LIBDIR=\""$(libdir)"\" \
-	-DGLADE_DATADIR=\""$(datadir)"\" \
-	-DGLADE_BINDIR=\""$(bindir)"\" \
-	-DGLADE_ICONDIR=\""$(datadir)/pixmaps"\" \
-	-DGLADE_LOCALSTATEDIR=\""$(localstatedir)"\" \
-	-DGLADE_LOCALEDIR=\""$(datadir)/locale"\" \
-	-DMODULES_DIR=\""@modulesdir@"\" \
-	-DG_LOG_DOMAIN=\"Glade\"
+	-DMODULES_DIR=\""@modulesdir@"\"
 
 AM_CFLAGS = -g -Wall 
 

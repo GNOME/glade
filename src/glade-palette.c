@@ -25,10 +25,6 @@
 #include <config.h>
 #endif
 
-#ifndef PIXMAPS_DIR
-#define PIXMAPS_DIR "E:/Programmation/Glade/msvc6/pixmaps"
-#endif
-
 #include "glade.h"
 #include "glade-palette.h"
 #include "glade-catalog.h"
@@ -148,7 +144,7 @@ glade_palette_selector_new (GladePalette *palette)
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (palette->selector), FALSE);
 	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (palette->selector));
 	gtk_button_set_relief (GTK_BUTTON (palette->selector), GTK_RELIEF_NONE);
-	filename = g_build_filename (PIXMAPS_DIR, "selector.png", NULL);
+	filename = g_build_filename (glade_pixmaps_dir, "selector.png", NULL);
 	image = gtk_image_new_from_file (filename);
 	g_free (filename);
 

@@ -935,7 +935,7 @@ static void gpw_about_cb (void)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (about_dialog)->vbox), vbox, TRUE, TRUE, 0);
 
-	filename = g_build_filename (GLADE_ICONDIR, "glade-3.png", NULL);
+	filename = g_build_filename (glade_icon_dir, "glade-3.png", NULL);
 	glade_image = gtk_image_new_from_file (filename);
 	g_free (filename);
 	gtk_box_pack_start (GTK_BOX (vbox), glade_image, TRUE, TRUE, 0);
@@ -1216,7 +1216,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_move (GTK_WINDOW (app), 0, 0);
 	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
-	filename = g_build_filename (GLADE_ICONDIR, "glade-3.png", NULL);
+	filename = g_build_filename (glade_icon_dir, "glade-3.png", NULL);
 	gtk_window_set_default_icon_from_file (filename, NULL);
 	g_free (filename);
 	gpw->window = app;

@@ -237,7 +237,7 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 
 	if (class->generic_name)
 	{
-		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", PIXMAPS_DIR, class->generic_name);
+		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", glade_pixmaps_dir, class->generic_name);
 		icon = gtk_image_new_from_file (icon_path);
 		g_free (icon_path);
 	}
@@ -559,7 +559,7 @@ glade_widget_class_load_library (const gchar *library_name)
 	gchar   *path;
 	GModule *module;
 
-	path = g_module_build_path (MODULES_DIR, library_name);
+	path = g_module_build_path (glade_modules_dir, library_name);
 	if (!path)
 	{
 		g_warning (_("Not enough memory."));
@@ -641,7 +641,7 @@ glade_widget_class_new (const char *name,
 
 	if (base_filename != NULL)
 	{
-		filename = g_strconcat (WIDGETS_DIR, "/", base_filename, NULL);
+		filename = g_strconcat (glade_widgets_dir, "/", base_filename, NULL);
 		if (filename == NULL)
 		{
 			g_warning (_("Not enough memory."));

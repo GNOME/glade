@@ -1,3 +1,23 @@
+2004-11-17  Ivan Wong  <email@ivanwong.info>
+
+	* configure.in:
+	  - clean up a little bit.
+	  - drop acconfig.h, use the third arg of AC_DEFINE instead.
+	  - allow user to specify what version (dynamic/static) of
+	    libpopt is to be used (win32 only).
+
+	* acconfig.h, config.h.win: removed
+
+	* src/Makefile.am: drop flags that are never used, and probably
+	  won't be used.
+
+	* src/glade-catalog.c, src/glade-palette.c,
+	  src/glade-project-window.c, src/glade-widget-class.c,
+	  src/glade.h, src/main.c:
+	  use global variables instead of preprocessor definitions for
+	  data/locale/pixmaps/widgets/catalogs directory names.
+
+
 2004-11-13  Ivan Wong  <email@ivanwong.info>
 
 	* main.c, src/glade.h:
