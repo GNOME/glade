@@ -17,6 +17,7 @@ pixmaps_DATA = \
 	hseparator.xpm \
 	vseparator.xpm \
 	handlebox.xpm \
+	optionmenu.xpm \
 	\
 	selector.xpm \
 	placeholder.xpm

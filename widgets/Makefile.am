@@ -17,6 +17,7 @@ widgets_DATA = \
 	gtkcombo.xml \
 	gtkhseparator.xml \
 	gtkvseparator.xml \
-	gtkhandlebox.xml
+	gtkhandlebox.xml \
+	gtkoptionmenu.xml 
 
 EXTRA_DIST = $(widgets_DATA)
