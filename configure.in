@@ -7,10 +7,7 @@ AM_INIT_AUTOMAKE(glade, 2.90.0)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-AC_PROG_INTLTOOL([0.11])
-
-GNOME_COMMON_INIT
-GNOME_PLATFORM_GNOME_2(yes, force)
+AC_PROG_INTLTOOL([0.29])
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -20,7 +17,6 @@ AC_PROG_MAKE_SET
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
 
-AC_CHECK_HEADERS(os2.h)
 
 dnl ================================================================
 dnl Gettext stuff.
@@ -31,11 +27,11 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
 ALL_LINGUAS="az es ms nn no pl pt ru sv ta tr uk"
 AM_GLIB_GNU_GETTEXT
 
-dnl
+
+dnl ================================================================
 dnl Start of pkg-config checks
-dnl
-dnl    PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.10  libxml-2.0 >= 2.3.10 libgnomeui-2.0 >= 1.96.88)
-PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.10  libxml-2.0 >= 2.3.10)
+dnl ================================================================
+PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.4.0  libxml-2.0 >= 2.4.0)
 GLADE_LIBS="${GLADE_LIBS}"
 AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
