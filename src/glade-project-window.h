@@ -24,6 +24,7 @@ struct _GladeProjectWindow
 				       * items to the Project submenu
 				       */
 	GladeProject *project;         /* See glade-project */
+	GtkWidget *widget_tree;        /* The widget tree window*/
 	GladePalette *palette;         /* See glade-palette */
 	GladeEditor *editor;           /* See glade-editor */
 	GladeProjectView *active_view; /* See glade-project-view */

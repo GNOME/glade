@@ -40,8 +40,8 @@ static void gpw_quit_cb (void);
 
 static void gpw_show_palette_cb (void);
 static void gpw_show_editor_cb (void);
+static void gpw_show_widget_tree_cb (void);
 static void gpw_show_clipboard_cb (void) {};
-static void gpw_show_widget_tree_cb (void) {};
 
 static void gpw_undo_cb (void) {};
 static void gpw_redo_cb (void) {};
@@ -243,7 +243,7 @@ glade_project_window_new (GladeCatalog *catalog)
 	GladeProjectWindow *gpw;
 	GladeProjectView *view;
 
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
+	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
 	
 	gpw = g_new0 (GladeProjectWindow, 1);
 	glade_project_window_create (gpw, view);
@@ -260,7 +260,51 @@ glade_project_window_new (GladeCatalog *catalog)
 	
 	return gpw;
 }
-		
+
+static gboolean
+gpw_delete_widget_tree_cb (GtkWidget *widget_tree, gpointer not_used)
+{
+	gtk_widget_hide (widget_tree);
+
+	/* return false so that the widget tree is not destroyed */
+	return FALSE;
+}
+
+static GtkWidget* 
+glade_project_window_widget_tree_create (GladeProjectWindow *gpw)
+{
+	GtkWidget* widget_tree;
+	GladeProjectView *view;
+	
+	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
+	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
+	gtk_container_add (GTK_CONTAINER (widget_tree),
+			   glade_project_view_get_widget (view));
+	gpw->views = g_list_prepend (gpw->views, view);
+	glade_project_view_set_project (view, gpw->project);
+	gtk_signal_connect (GTK_OBJECT (widget_tree), "delete_event",
+			    GTK_SIGNAL_FUNC (gpw_delete_widget_tree_cb), NULL);
+
+	return widget_tree;
+}
+
+static void 
+gpw_show_widget_tree (GladeProjectWindow *gpw) 
+{
+	if (gpw->widget_tree == NULL) 
+		gpw->widget_tree = glade_project_window_widget_tree_create (gpw);
+	
+	gtk_widget_show_all (gpw->widget_tree);
+}
+
+static void 
+gpw_show_widget_tree_cb (void) 
+{
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	gpw_show_widget_tree (gpw);
+}
 
 static void
 gpw_show_palette_cb (void)
