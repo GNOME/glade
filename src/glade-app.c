@@ -200,7 +200,7 @@ glade_app_init (GladeApp *app)
 	
 		prefix = g_win32_get_package_installation_directory (NULL, NULL);
 		glade_pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
-		glade_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE, "catalogs", NULL);
+		glade_catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 		glade_modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
 		glade_locale_dir = g_build_filename (prefix, "share", "locale", NULL);
 		glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
