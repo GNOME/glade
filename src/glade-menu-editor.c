@@ -1168,8 +1168,6 @@ on_entry_changed (GtkWidget *entry, gpointer user_data)
 	gboolean changed = FALSE;
 	gint row;
 
-	g_debug(("In on_entry_changed\n"));
-
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
 
 	/* If we are setting the widget values, just return. */

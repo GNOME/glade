@@ -44,15 +44,6 @@
 #include "glade-project.h"
 #include "glade-utils.h"
 
-enum
-{
-	ADD_SIGNAL,
-	LAST_SIGNAL
-};
-
-
-static guint glade_editor_signals[LAST_SIGNAL] = {0};
-
 static GtkNotebookClass *parent_class = NULL;
 
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
@@ -62,24 +53,7 @@ static void glade_editor_property_load_flags (GladeEditorProperty *property);
 static void
 glade_editor_class_init (GladeEditorClass *class)
 {
-	GObjectClass *object_class;
-
-	object_class = G_OBJECT_CLASS (class);
-
 	parent_class = g_type_class_peek_parent (class);
-
-	glade_editor_signals[ADD_SIGNAL] =
-		g_signal_new ("add_signal",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeEditorClass, add_signal),
-			      NULL, NULL,
-			      glade_marshal_VOID__STRING_ULONG_UINT_STRING,
-			      G_TYPE_NONE,
-			      4,
-			      G_TYPE_STRING, G_TYPE_ULONG, G_TYPE_UINT, G_TYPE_STRING);
-
-	class->add_signal = NULL;
 }
 
 /**
@@ -451,7 +425,6 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 	if ((text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1)) != NULL)
 	{
 		len = g_utf8_strlen (text, -1);
-		g_debug (("The lenght of the string is: %d\n", len));
 		unich = g_utf8_get_char (text);
 		g_free (text);
 	}
@@ -1606,26 +1579,13 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	old = table;
 }
 
-/**
- * glade_editor_load_widget:
- * @editor: a #GladeEditor
- * @widget: a #GladeWidget
- *
- * Load @widget into @editor. If @widget is %NULL, clear the editor.
- */
-void
-glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
+static void
+glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
 	GladeWidgetClass *class;
 	GladeEditorTable *table;
 	GladeEditorProperty *property;
 	GList *list;
-
-	g_return_if_fail (GLADE_IS_EDITOR (editor));
-	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
-
-	if (editor->loaded_widget == widget)
-		return;
 
 	/* Load the GladeWidgetClass */
 	class = widget ? widget->widget_class : NULL;
@@ -1668,33 +1628,36 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 }
 
 /**
- * glade_editor_add_signal:
+ * glade_editor_load_widget:
  * @editor: a #GladeEditor
- * @signal_id:
- * @callback_name:
+ * @widget: a #GladeWidget
  *
- * TODO: write me
+ * Load @widget into @editor. If @widget is %NULL, clear the editor.
  */
 void
-glade_editor_add_signal (GladeEditor *editor,
-			 guint signal_id,
-			 const gchar *callback_name)
+glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 {
-	const gchar *widget_name;
-	const gchar *signal_name;
-	GType widget_type;
-
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
-	g_return_if_fail (callback_name != NULL);
-	g_return_if_fail (*callback_name != 0);
+	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
-	signal_name = g_signal_name (signal_id);
-	widget_name = glade_widget_get_name (editor->loaded_widget);
-	widget_type = editor->loaded_widget->widget_class->type;
+	if (editor->loaded_widget == widget)
+		return;
 
-	g_signal_emit (G_OBJECT (editor),
-		       glade_editor_signals [ADD_SIGNAL], 0,
-		       widget_name, widget_type, signal_id, callback_name);
+	glade_editor_load_widget_real (editor, widget);
+}
+
+/**
+ * glade_editor_refresh:
+ * @editor: a #GladeEditor
+ *
+ * Synchronize @editor with the currently loaded widget.
+ */
+void
+glade_editor_refresh (GladeEditor *editor)
+{
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+	if (editor->loaded_widget)
+		glade_editor_load_widget_real (editor, editor->loaded_widget);
 }
 
 gboolean

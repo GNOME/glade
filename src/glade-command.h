@@ -59,6 +59,8 @@ void glade_command_paste		(GladeWidget *parent, GladePlaceholder *placeholder);
 
 void glade_command_add_signal		(GladeWidget *glade_widget, const GladeSignal *signal);
 void glade_command_remove_signal	(GladeWidget *glade_widget, const GladeSignal *signal);
+void glade_command_change_signal	(GladeWidget *glade_widget, 
+					 const GladeSignal *old, const GladeSignal *new);
 
 
 G_END_DECLS

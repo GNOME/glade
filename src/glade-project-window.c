@@ -536,7 +536,8 @@ gpw_undo_cb (void)
 	}
 
 	glade_command_undo (gpw->active_project);
-
+	
+	glade_editor_refresh (gpw->editor);
 	glade_project_window_refresh_undo_redo ();
 }
 
@@ -554,6 +555,7 @@ gpw_redo_cb (void)
 
 	glade_command_redo (gpw->active_project);
 
+	glade_editor_refresh (gpw->editor);
 	glade_project_window_refresh_undo_redo ();
 }
 

@@ -93,8 +93,7 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
 	new_signal = glade_signal_new (signal_name, handler, userdata, lookup, !after);
 
-	/* XXX TODO: Action not yet undoable */
-	glade_widget_change_signal_handler (editor->widget, old_signal, new_signal);
+	glade_command_change_signal (editor->widget, old_signal, new_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_AFTER, !after, -1);
 
 	glade_signal_free (old_signal);
@@ -143,8 +142,7 @@ glade_signal_editor_lookup_toggled (GtkCellRendererToggle *cell,
 	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
 	new_signal = glade_signal_new (signal_name, handler, userdata, !lookup, after);
 
-	/* XXX TODO: Action not yet undoable */
-	glade_widget_change_signal_handler (editor->widget, old_signal, new_signal);
+	glade_command_change_signal (editor->widget, old_signal, new_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_LOOKUP, !lookup, -1);
 
 	glade_signal_free (old_signal);
@@ -380,7 +378,7 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 			 lookup,
 			 after);
 
-		glade_widget_change_signal_handler (glade_widget, old_signal, new_signal);
+		glade_command_change_signal (glade_widget, old_signal, new_signal);
 
 		glade_signal_free (old_signal);
 		glade_signal_free (new_signal);
@@ -449,7 +447,6 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 	else /* we're changing a signal handler's userdata */
 
 	{
-		/* XXX TODO: Action not yet undoable */
 		GladeSignal *old_signal =
 			glade_signal_new
 			(signal_name,
@@ -463,7 +460,7 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 							    lookup,
 							    after);
 
-		glade_widget_change_signal_handler (glade_widget, old_signal, new_signal);
+		glade_command_change_signal (glade_widget, old_signal, new_signal);
 
 		glade_signal_free (old_signal);
 		glade_signal_free (new_signal);

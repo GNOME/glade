@@ -230,7 +230,6 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 		
 		if (klass->unifies (cmd1, cmd))
 		{
-			g_debug(("Command unifies.\n"));
 			klass->collapse (cmd1, cmd);
 			g_object_unref (cmd);
 			return;
@@ -538,8 +537,6 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	cmd->description = g_strdup_printf (_("Renaming %s to %s"), me->old_name, me->name);
 	if (!cmd->description)
 		return;
-
-	g_debug(("Pushing: %s\n", cmd->description));
 
 	if (glade_command_set_name_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
@@ -991,14 +988,10 @@ glade_command_cut_copy_paste_common (GladeWidget           *widget,
 		glade_widget_dup (widget) :
 		g_object_ref (widget);
 	me->parent_widget  = parent;
+	me->placeholder    = g_object_ref (placeholder);
+	if (!me->placeholder && needs_placeholder)
+		me->placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
 
-	me->placeholder    =
-		(placeholder != NULL) ? placeholder :
-		(needs_placeholder    ?
-		 (GtkWidget *) glade_placeholder_new () : NULL);
-
-	if (me->placeholder) g_object_ref (placeholder);
-	
 	switch (type) {
 	case GLADE_CUT:
 		cmd->description = g_strdup_printf (_("Cut %s"), widget->name);
@@ -1010,8 +1003,6 @@ glade_command_cut_copy_paste_common (GladeWidget           *widget,
 		cmd->description = g_strdup_printf (_("Paste %s"), widget->name);
 		break;
 	}
-
-	g_debug(("Pushing: %s\n", cmd->description));
 
 	/*
 	 * Push it onto the undo stack only on success
@@ -1121,14 +1112,23 @@ glade_command_copy (GladeWidget *widget)
 /*******     GLADE_COMMAND_ADD_SIGNAL     *******/
 /*********************************************************/
 
-/* create a new GladeCommandAddRemoveSignal class.  Objects of this class will
+/* create a new GladeCommandAddRemoveChangeSignal class.  Objects of this class will
  * encapsulate an "add or remove signal handler" operation */
-typedef struct {
-	GladeCommand parent;
+typedef enum {
+	GLADE_ADD,
+	GLADE_REMOVE,
+	GLADE_CHANGE
+} GladeAddType;
 
-	gboolean add;
-	GladeSignal *signal;
-	GladeWidget *widget;
+typedef struct {
+	GladeCommand   parent;
+
+	GladeWidget   *widget;
+
+	GladeSignal   *signal;
+	GladeSignal   *new_signal;
+
+	GladeAddType   type;
 } GladeCommandAddSignal;
 
 /* standard macros */
@@ -1146,6 +1146,12 @@ glade_command_add_signal_finalize (GObject *obj)
 	glade_signal_free (cmd->signal);
 
 	g_object_unref (cmd->widget);
+
+	if (cmd->signal)
+		glade_signal_free (cmd->signal);
+	if (cmd->new_signal)
+		glade_signal_free (cmd->new_signal);
+
 	glade_command_finalize (obj);
 }
 
@@ -1159,13 +1165,29 @@ static gboolean
 glade_command_add_signal_execute (GladeCommand *this)
 {
 	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (this);
+	GladeSignal           *temp;
 
-	if (cmd->add)
+	switch (cmd->type)
+ 	{
+	case GLADE_ADD:
 		glade_widget_add_signal_handler (cmd->widget, cmd->signal);
-	else
+		cmd->type = GLADE_REMOVE;
+		break;
+	case GLADE_REMOVE:
 		glade_widget_remove_signal_handler (cmd->widget, cmd->signal);
-
-	cmd->add = !cmd->add;
+		cmd->type = GLADE_ADD;
+		break;
+	case GLADE_CHANGE:
+		glade_widget_change_signal_handler (cmd->widget, 
+						    cmd->signal, 
+						    cmd->new_signal);
+		temp            = cmd->signal;
+		cmd->signal     = cmd->new_signal;
+		cmd->new_signal = temp;
+		break;
+	default:
+		break;
+	}
 	return TRUE;
 }
 
@@ -1182,27 +1204,31 @@ glade_command_add_signal_collapse (GladeCommand *this, GladeCommand *other)
 }
 
 static void
-glade_command_add_remove_signal (GladeWidget *glade_widget, const GladeSignal *signal, gboolean add)
+glade_command_add_remove_change_signal (GladeWidget       *glade_widget,
+					const GladeSignal *signal,
+					const GladeSignal *new_signal,
+					GladeAddType       type)
 {
-	GladeCommandAddSignal *me = GLADE_COMMAND_ADD_SIGNAL (g_object_new (GLADE_COMMAND_ADD_SIGNAL_TYPE, NULL));
-	GladeCommand *cmd = GLADE_COMMAND (me);
+	GladeCommandAddSignal *me = GLADE_COMMAND_ADD_SIGNAL
+		(g_object_new (GLADE_COMMAND_ADD_SIGNAL_TYPE, NULL));
+	GladeCommand          *cmd = GLADE_COMMAND (me);
 
 	/* we can only add/remove a signal to a widget that has been wrapped by a GladeWidget */
 	g_assert (glade_widget != NULL);
 	g_assert (glade_widget->project != NULL);
 
 	me->widget       = g_object_ref(glade_widget);
-	me->add          = add;
+	me->type         = type;
 	me->signal       = glade_signal_clone (signal);
-	if (add)
-		cmd->description =
-			g_strdup_printf (_("Add signal handler %s"),
-					 signal->handler);
-	else
-		cmd->description =
-			g_strdup_printf (_("Remove signal handler %s"),
-					 signal->handler);
-
+	me->new_signal   = new_signal ? 
+		glade_signal_clone (new_signal) : NULL;
+	
+	cmd->description =
+		g_strdup_printf (type == GLADE_ADD ? _("Add signal handler %s") :
+				 type == GLADE_REMOVE ? _("Remove signal handler %s") :
+				 _("Change signal handler %s"), 
+				 signal->handler);
+	
 	if (glade_command_add_signal_execute (cmd))
 		glade_command_push_undo (glade_widget->project, cmd);
 	else
@@ -1219,7 +1245,8 @@ glade_command_add_remove_signal (GladeWidget *glade_widget, const GladeSignal *s
 void
 glade_command_add_signal (GladeWidget *glade_widget, const GladeSignal *signal)
 {
-	glade_command_add_remove_signal (glade_widget, signal, TRUE);
+	glade_command_add_remove_change_signal
+		(glade_widget, signal, NULL, GLADE_ADD);
 }
 
 /**
@@ -1232,5 +1259,23 @@ glade_command_add_signal (GladeWidget *glade_widget, const GladeSignal *signal)
 void
 glade_command_remove_signal (GladeWidget *glade_widget, const GladeSignal *signal)
 {
-	glade_command_add_remove_signal (glade_widget, signal, FALSE);
+	glade_command_add_remove_change_signal
+		(glade_widget, signal, NULL, GLADE_REMOVE);
+}
+
+/**
+ * glade_command_change_signal:
+ * @glade_widget: a #GladeWidget
+ * @old: a #GladeSignal
+ * @new: a #GladeSignal
+ *
+ * TODO: write me
+ */
+void
+glade_command_change_signal	(GladeWidget *glade_widget, 
+				 const GladeSignal *old, 
+				 const GladeSignal *new)
+{
+	glade_command_add_remove_change_signal 
+		(glade_widget, old, new, GLADE_CHANGE);
 }

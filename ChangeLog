@@ -1,3 +1,22 @@
+2004-12-28  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-command.[ch]:
+	  - Fixed placeholder refcount management in cut/copy/paste
+	  - Implemented glade_command_change_signal
+
+	* src/glade-editor.[ch]:
+	  - Removed dead code (glade_editor_add_signal stuff)
+	  - Implemented glade_editor_refresh
+
+	* src/glade-signal-editor.c:
+	  Changed callers for glade_command_change_signal
+
+	* src/glade-project-window.c:
+	  Refresh the property editor on undo/redo :)
+
+	* src/glade-debug.h, src/glade-menu-editor.c, src/glade-command.c
+	  Removed g_debug() macro and all references (gtk+-2.6 now offers this).
+	
 2004-12-24  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-widget.c: 

@@ -189,9 +189,7 @@ GladeEditor *glade_editor_new (void);
 
 void         glade_editor_load_widget        (GladeEditor *editor,
 					      GladeWidget *widget);
-void         glade_editor_add_signal         (GladeEditor *editor,
-					      guint        id_signal,
-					      const char  *callback_name);
+void         glade_editor_refresh            (GladeEditor *editor);
 void         glade_editor_update_widget_name (GladeEditor *editor);
 gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 					      GladeWidget *widget);
