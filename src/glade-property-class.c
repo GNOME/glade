@@ -913,13 +913,11 @@ glade_property_class_list_add_from_node (GladeXmlNode *node,
 		list_element = g_list_last (*properties);
 		buff = glade_xml_get_property_string (child, GLADE_TAG_ID);
 		while (list_element != NULL && property_class == NULL) {
-
 			if (!g_ascii_strcasecmp (((GladePropertyClass *) list_element->data)->id, buff))
 				property_class = (GladePropertyClass *) list_element->data;
 			else 
 				list_element = g_list_previous (list_element);
 		}
-
 		
 		glade_property_class_update_from_node (child, widget_class, &property_class);
 		if (list_element != NULL)
@@ -1034,12 +1032,9 @@ glade_property_class_list_properties (GladeWidgetClass *class)
 
 			property_class->type = glade_property_class_get_type_from_spec (spec);
 			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR) {
-				if ( g_ascii_strcasecmp (spec->name, "user-data") &&
-				     g_ascii_strcasecmp (spec->name, "name") &&
-				     g_ascii_strcasecmp (spec->name, "events")) {
-					g_warning ("Could not create the \"%s\" property for the "
-						   "\"%s\" class\n", g_param_spec_get_nick(spec), class->name);
-				}
+				/* The property type is not supported.  That's not an error, as there are
+				 * several standard properties that are not supposed to be edited through
+				 * the palette (as the "attributes" property of a GtkLabel) */
 				glade_widget_property_class_free (property_class);
 				property_class = NULL;
 				continue;
