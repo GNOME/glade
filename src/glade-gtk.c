@@ -106,7 +106,6 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 	gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 }
 
-
 void
 glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 {
@@ -565,4 +564,32 @@ glade_gtk_table_post_create (GObject *object, GValue *value)
 				   glade_placeholder_new (parent));
 	}
 }
+
+/* ------------------------------------ Fill Empty functions ------------------------------- */
+void
+glade_gtk_container_fill_empty (GObject *container)
+{
+	g_return_if_fail (GTK_IS_CONTAINER (container));
+
+	gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
+}
+
+void
+glade_gtk_dialog_fill_empty (GObject *dialog)
+{
+	g_return_if_fail (GTK_IS_DIALOG (dialog));
+
+	GtkWidget *vbox = GTK_DIALOG (dialog)->vbox;
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), glade_placeholder_new ());
+}
+
+void
+glade_gtk_paned_fill_empty (GObject *paned)
+{
+	g_return_if_fail (GTK_IS_PANED (paned));
+
+	gtk_paned_add1 (GTK_PANED (paned), glade_placeholder_new ());
+	gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
+}
+
 

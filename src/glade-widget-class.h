@@ -77,6 +77,8 @@ struct _GladeWidgetClass
 
 	void (*post_create_function) (GObject *gobject);
 
+	void (*fill_empty) (GtkWidget *widget);
+
 	gboolean in_palette;
 };
 

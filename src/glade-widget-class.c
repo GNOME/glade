@@ -301,31 +301,41 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	GladeXmlNode *properties;
 	GladeXmlNode *node;
 	char *post_create_function_name;
+	char *fill_empty_function_name;
 
 	g_return_val_if_fail (filename != NULL, FALSE);
 
 	context = glade_xml_context_new_from_path (filename, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (context != NULL) {
-		doc = glade_xml_context_get_doc (context);
-		node = glade_xml_doc_get_root (doc);
+	if (!context)
+		return FALSE;
 
-		post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-		if (post_create_function_name && widget_class->module) {
-			if (!g_module_symbol (widget_class->module, post_create_function_name, (void **) &widget_class->post_create_function))
-				g_warning ("Could not find %s\n", post_create_function_name);
-		}
-		g_free (post_create_function_name);
+	doc = glade_xml_context_get_doc (context);
+	node = glade_xml_doc_get_root (doc);
+	if (!doc || !node)
+		return FALSE;
 
-		properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
-		/* if we found a <properties> tag on the xml file, we add the properties
-		 * that we read from the xml file to the class */
-		if (properties != NULL)
-			glade_property_class_list_add_from_node (properties, widget_class, &widget_class->properties);
-
-		return TRUE;
+	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
+	if (post_create_function_name && widget_class->module) {
+		if (!g_module_symbol (widget_class->module, post_create_function_name, (void **) &widget_class->post_create_function))
+			g_warning ("Could not find %s\n", post_create_function_name);
 	}
+	g_free (post_create_function_name);
 
-	return FALSE;
+	fill_empty_function_name = glade_xml_get_value_string (node, GLADE_TAG_FILL_EMPTY_FUNCTION);
+	if (fill_empty_function_name && widget_class->module) {
+		if (!g_module_symbol (widget_class->module, fill_empty_function_name, (void **) &widget_class->fill_empty))
+			g_warning ("Could not find %s\n", fill_empty_function_name);
+	}
+	g_free (fill_empty_function_name);
+
+	/* if we found a <properties> tag on the xml file, we add the properties
+	 * that we read from the xml file to the class.
+	 */
+	properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
+	if (properties)
+		glade_property_class_list_add_from_node (properties, widget_class, &widget_class->properties);
+
+	return TRUE;
 }
 
 /**
@@ -392,6 +402,9 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
+
+	if (widget_class->fill_empty == NULL)
+		widget_class->fill_empty = parent_class->fill_empty;
 
 	last_property = g_list_last (widget_class->properties);
 	parent_properties = parent_class->properties;

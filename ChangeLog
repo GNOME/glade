@@ -1,3 +1,18 @@
+2003-10-05  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade.h: define GLADE_TAG_FILL_EMPTY_FUNCTION
+	* src/glade-widget-class.[ch]: add the fill_empty method.
+	* src/glade-widget.c: substitute glade_widget_fill_empty with the 
+	class->fill_empty method.
+	* src/glade-gtk.c: implement the fill_empty method for GtkContainer,
+	GtkDialog and GtkPaned.
+	* widgets/gtkcontainer.xml: added.
+	* widgets/gtkpaned.xml: added.
+	* widgets/gtkdialog.xml: add fill_empty method
+	* widgets/gtkbutton.xml: ditto.
+	* widgets/gtkbox.xml: ditto.
+	* widgets/gtk-base.xml: add gtkpaned and gtkcontainer.
+
 2003-10-04  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-gtk.h: remove this file.

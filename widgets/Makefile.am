@@ -8,6 +8,7 @@ widgets_DATA = \
 	gtkbox.xml \
 	gtkbutton.xml \
 	gtkcheckbutton.xml \
+	gtkcontainer.xml \
 	gtkdialog.xml \
 	gtkentry.xml \
 	gtkframe.xml \
@@ -16,6 +17,7 @@ widgets_DATA = \
 	gtkmessagedialog.xml \
 	gtknotebook.xml \
 	gtkoptionmenu.xml \
+	gtkpaned.xml \
 	gtkprogressbar.xml \
 	gtkradiobutton.xml \
 	gtkseparator.xml \

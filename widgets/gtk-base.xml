@@ -1,7 +1,9 @@
 <GladeCatalog Title="Gtk+ Basic" library="gtk">
 
   <GladeWidget name="GtkWidget" filename="gtkwidget.xml"/>
+  <GladeWidget name="GtkContainer" filename="gtkcontainer.xml"/>
   <GladeWidget name="GtkBox" filename="gtkbox.xml"/>
+  <GladeWidget name="GtkPaned" filename="gtkpaned.xml"/>
 
   <GladeWidget name="GtkWindow" generic_name="window" filename="gtkwindow.xml"/>
 
@@ -15,7 +17,7 @@
   <GladeWidget name="GtkEntry" generic_name="entry"/>
   <GladeWidget name="GtkTextView" generic_name="textview"/>
 
-  <GladeWidget name="GtkButton" generic_name="button"/>
+  <GladeWidget name="GtkButton" generic_name="button" filename="gtkbutton.xml"/>
   <GladeWidget name="GtkToggleButton" generic_name="togglebutton"/>
   <GladeWidget name="GtkCheckButton" generic_name="checkbutton"/>
   <GladeWidget name="GtkSpinButton" generic_name="spinbutton"/>
@@ -33,7 +35,7 @@
   <GladeWidget name="GtkImage" generic_name="image"/>
   <GladeWidget name="GtkDrawingArea" generic_name="drawingarea"/>
   
-  <GladeWidget name="GtkDialog" generic_name="dialog"/>
+  <GladeWidget name="GtkDialog" generic_name="dialog" filename="gtkdialog.xml"/>
   <GladeWidget name="GtkMessageDialog" generic_name="messagedialog" filename="gtkmessagedialog.xml"/>
   <GladeWidget name="GtkFileSelection" generic_name="fileselection"/>
   <GladeWidget name="GtkColorSelectionDialog" generic_name="colorselectiondialog"/>

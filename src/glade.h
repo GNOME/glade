@@ -93,6 +93,7 @@
 #define GLADE_TAG_DEFAULT      "Default"
 #define GLADE_TAG_DISABLED     "Disabled"
 #define GLADE_TAG_POST_CREATE_FUNCTION "PostCreateFunction"
+#define GLADE_TAG_FILL_EMPTY_FUNCTION "FillEmptyFunction"
 #define GLADE_TAG_IN_PALETTE   "InPalette"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"

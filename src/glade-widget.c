@@ -679,38 +679,6 @@ glade_widget_new_full (GladeWidgetClass *class,
 	return widget;
 }
 
-static void
-glade_widget_fill_empty (GtkWidget *widget)
-{
-	GList *children;
-	gboolean empty = TRUE;
-
-	if (!GTK_IS_CONTAINER (widget))
-		return;
-	
-	/* fill with placeholders the containers that are inside of this container */
-	children = gtk_container_get_children (GTK_CONTAINER (widget));
-
-	/* loop over the children of this container, and fill them with placeholders */
-	while (children != NULL) {
-		glade_widget_fill_empty (GTK_WIDGET (children->data));
-		children = children->next;
-		empty = FALSE;
-	}
-
-	if (empty) {
-		/* retrieve the desired number of placeholders that this widget should hold */
-		int nb_children = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "glade_nb_placeholders"));
-		int i;
-
-		if (nb_children == 0 && GTK_IS_BIN (widget))
-			nb_children = 1;
-
-		for (i = nb_children; i > 0; i--)
-			gtk_container_add (GTK_CONTAINER (widget), glade_placeholder_new ());
-	}
-}
-
 static GtkWidget *
 glade_widget_append_query (GtkWidget *table,
 			   GladePropertyClass *property_class,
@@ -904,8 +872,8 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 	glade_widget_apply_queried_properties (widget, result);
 
 	/* If we are a container, add the placeholders */
-	if (g_type_is_a (class->type,  GTK_TYPE_CONTAINER))
-		glade_widget_fill_empty (widget->widget);
+	if (widget->class->fill_empty)
+		widget->class->fill_empty (widget->widget);
 
 	if (result) 
 		glade_property_query_result_destroy (result);
