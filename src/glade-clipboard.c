@@ -223,8 +223,21 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
-	glade_placeholder_replace (placeholder, parent, widget);
-	glade_widget_set_default_packing_options (widget);
+
+	/*
+	 * Toplevel widgets are not packed into other containers :-)
+	 */
+	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+		/* Signal error, if placeholder not selected */
+		if (!placeholder) {
+			glade_util_ui_warn (_("Placeholder not selected!"));
+			return;
+		}
+
+		glade_placeholder_replace (placeholder, parent, widget);
+		glade_widget_set_default_packing_options (widget);
+	}
+
 	glade_widget_select (widget);
 	glade_editor_select_widget (gpw->editor, widget);
 

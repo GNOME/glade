@@ -86,13 +86,3 @@ glade_project_ui_get_path (const gchar *title)
 
 	return gtk_object_get_user_data (GTK_OBJECT (selector));
 }
-
-
-void
-glade_project_ui_warn (const gchar *warning)
-{
-	/* This are warnings to the users, use a nice dialog and stuff */
-
-	g_warning (warning);
-
-}

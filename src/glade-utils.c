@@ -24,6 +24,7 @@
 #include <gtk/gtktooltips.h>
 #include "glade.h"
 #include <gmodule.h>
+#include "glade-project-window.h"
 
 
 gboolean
@@ -83,3 +84,19 @@ glade_util_get_type_from_name (const gchar *name)
 	return type;
 }
 
+void
+glade_util_ui_warn (const gchar *warning)
+{
+	GladeProjectWindow *gpw;
+	GtkWidget *dialog;
+
+	gpw = glade_project_window_get ();
+	dialog = gtk_message_dialog_new (gpw->window, 
+					 GTK_DIALOG_DESTROY_WITH_PARENT,
+					 GTK_MESSAGE_WARNING,
+					 GTK_BUTTONS_OK,
+					 warning);
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
+}

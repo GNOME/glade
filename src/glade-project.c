@@ -632,16 +632,17 @@ glade_project_save (GladeProject *project)
 		g_free (project->name);
 		project->path = glade_project_ui_get_path (_("Save ..."));
 		project->name = g_path_get_basename (project->path);
-		glade_project_refresh_menu_item (project);
 		g_free (backup);
 	}
 
 	if (!glade_project_save_to_file (project, project->path)) {
-		glade_project_ui_warn (_("Invalid file name"));
+		glade_util_ui_warn (_("Invalid file name"));
 		g_free (project->path);
 		project->path = backup;
 		return FALSE;
 	}
+
+	glade_project_refresh_menu_item (project);
 
 	return TRUE;
 }
@@ -668,7 +669,7 @@ glade_project_save_as (GladeProject *project)
 
 	/* On error, warn and restore its previous name and return */
 	if (!glade_project_save_to_file (project, project->path)) {
-		glade_project_ui_warn (_("Invalid file name"));
+		glade_util_ui_warn (_("Invalid file name"));
 		g_free (project->path);
 		project->path = backup;
 		return FALSE;
@@ -713,7 +714,7 @@ glade_project_open (void)
 	project = glade_project_open_from_file (path);
 
 	if (!project) {
-		glade_project_ui_warn (_("Could not open project."));
+		glade_util_ui_warn (_("Could not open project."));
 		g_free (path);
 		return FALSE;
 	}

@@ -1,3 +1,24 @@
+2002-04-29  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project-window.c
+	(glade_project_window_selection_changed_cb): set gpw->active_widget.
+
+2002-04-28  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project-window.c (gpw_copy_cb): implemented.
+	(gpw_cut_cb, gpw_paste_cb): likewise.
+	(gpw_save_cb): don't refresh title, on error.
+	(gpw_save_as_cb): likewise.
+
+	* src/glade-utils.c (glade_util_ui_warn): new function.
+
+	* src/glade-clipboard.c (glade_clipboard_paste): support pasting of
+	toplevel widgets.
+
+	* src/glade-placeholder.c (glade_placeholder_on_button_press_event): 
+	set active placeholder.
+	(glade_placeholder_draw_selection_nodes): new function.
+	
 2002-04-27  Carlos Perello Marin <carlos@gnome-db.org>
 
 	* configure.in: Fixed the pixmap location.

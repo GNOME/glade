@@ -42,6 +42,8 @@
 #define GLADE_PLACEHOLDER_PARENT_DATA "GladePlaceholderParentData"
 #define GLADE_PLACEHOLDER_IS_DATA     "GladeIsPlaceholderData"
 
+#define GLADE_PLACEHOLDER_SELECTION_NODE_SIZE 7
+
 static void
 glade_placeholder_replace_box (GtkWidget *current,
 			       GtkWidget *new,
@@ -227,6 +229,88 @@ glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 			   class->name);
 }
 
+static GdkWindow*
+glade_placeholder_get_gdk_window (GladePlaceholder *placeholder,
+				  GtkWidget **paint_widget)
+{
+	GtkWidget *parent = GTK_WIDGET (placeholder)->parent;
+
+	if (parent) {
+		*paint_widget = parent;
+		return parent->window;
+	}
+
+	*paint_widget = GTK_WIDGET (placeholder);
+	return GTK_WIDGET (placeholder)->window;
+}
+
+static void
+glade_placeholder_draw_selection_nodes (GladePlaceholder *placeholder)
+{
+	GtkWidget *widget, *paint_widget;
+	GdkWindow *window;
+	GdkGC *gc;
+	gint x, y, w, h;
+	gint width, height;
+
+	widget = GTK_WIDGET (placeholder);
+	window = glade_placeholder_get_gdk_window (placeholder, &paint_widget);
+
+	if (widget->parent) {
+		gtk_widget_translate_coordinates (widget, paint_widget,
+						  0, 0, &x, &y);
+		w = widget->allocation.width;
+		h = widget->allocation.height;
+	} else {
+		x = 0;
+		y = 0;
+		gdk_window_get_size (window, &w, &h);
+	}
+
+	gc = paint_widget->style->black_gc;
+	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
+
+	width = w;
+	height = h;
+	if (width > GLADE_PLACEHOLDER_SELECTION_NODE_SIZE
+	    && height > GLADE_PLACEHOLDER_SELECTION_NODE_SIZE) {
+		gdk_draw_rectangle (window, gc, TRUE, x, y,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE, x,
+				    y + height - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x + width - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE, y,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x + width - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    y + height - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
+				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
+	}
+
+	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
+	
+	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
+}
+
+static void
+glade_placeholder_clear_selection_nodes (GladePlaceholder *placeholder)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (placeholder));
+	
+	gdk_window_clear_area (placeholder->window,
+			       placeholder->allocation.x,
+			       placeholder->allocation.y,
+			       placeholder->allocation.width,
+			       placeholder->allocation.height);
+	
+	gtk_widget_queue_draw (GTK_WIDGET (placeholder));
+}
+
 static void
 glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEventButton *event, GladeProject *project)
 {
@@ -234,9 +318,25 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 
 	gpw = glade_project_window_get ();
 	
-	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL) {
-		glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
-		glade_project_window_set_add_class (gpw, NULL);
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
+
+		if (gpw->add_class != NULL) {
+			/* 
+			 * A widget type is selected in the palette.
+			 * Add a new widget of that type.
+			 */
+			glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
+			glade_project_window_set_add_class (gpw, NULL);
+			gpw->active_placeholder = NULL;
+		} else {
+			/*
+			 * Else set the current placeholder as selected,
+			 * so that Paste from the Main Menu works.
+			 */
+			glade_placeholder_clear_selection_nodes (gpw->active_placeholder);
+			gpw->active_placeholder = placeholder;
+			glade_placeholder_draw_selection_nodes (placeholder);
+		}
 	} else if (event->button == 3) {
 		glade_popup_placeholder_pop (placeholder, event);
 	}

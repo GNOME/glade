@@ -117,8 +117,8 @@ gpw_save_cb (void)
 
 	gpw = glade_project_window_get ();
 	project = glade_project_window_get_project ();
-	glade_project_save (project);
-	glade_project_window_refresh_title (gpw);
+	if (glade_project_save (project))
+		glade_project_window_refresh_title (gpw);
 }
 
 static void
@@ -129,8 +129,8 @@ gpw_save_as_cb (void)
 
 	gpw = glade_project_window_get ();
 	project = glade_project_window_get_project ();
-	glade_project_save_as (project);
-	glade_project_window_refresh_title (gpw);
+	if (glade_project_save_as (project))
+		glade_project_window_refresh_title (gpw);
 }
 
 static void
@@ -142,19 +142,36 @@ gpw_quit_cb (void)
 static void
 gpw_copy_cb (void)
 {
-	glade_implement_me ();
+	GladeProjectWindow *gpw;
+	GladeWidget *widget;
+
+	gpw = glade_project_window_get ();
+	widget = gpw->active_widget;
+
+	if (widget)
+		glade_clipboard_copy (gpw->clipboard, widget);
 }
 
 static void
 gpw_cut_cb (void)
 {
-	glade_implement_me ();
+	GladeProjectWindow *gpw;
+	GladeWidget *widget;
+
+	gpw = glade_project_window_get ();
+	widget = gpw->active_widget;
+
+	if (widget)
+		glade_clipboard_cut (gpw->clipboard, widget);
 }
 
 static void
 gpw_paste_cb (void)
 {
-	glade_implement_me ();
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	glade_clipboard_paste (gpw->clipboard, gpw->active_placeholder);
 }
 
 static void
@@ -332,7 +349,8 @@ glade_project_window_new (GList *catalogs)
 	gpw->catalogs = catalogs;
 	gpw->views = g_list_prepend (NULL, view);
 	gpw->add_class = NULL;
-
+	gpw->active_widget = NULL;
+	gpw->active_placeholder = NULL;
 	glade_project_window_set_view (gpw, view);
 
 	glade_project_window = gpw;
@@ -438,12 +456,13 @@ glade_project_window_selection_changed_cb (GladeProject *project,
 	if (gpw->editor) {
 		list = project->selection;
 		num = g_list_length (list);
-		if (num == 1)
+		if (num == 1) {
 			glade_editor_select_widget (gpw->editor, list->data);
-		else
+			gpw->active_widget = list->data;
+		} else {
 			glade_editor_select_widget (gpw->editor, NULL);
+		}
 	}
-
 }
 
 void

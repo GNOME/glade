@@ -5,7 +5,6 @@
 G_BEGIN_DECLS
 
 gchar * glade_project_ui_get_path (const gchar *title);
-void    glade_project_ui_warn     (const gchar *warning);
 
 G_END_DECLS
 
