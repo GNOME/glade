@@ -20,7 +20,6 @@ widgets_DATA = \
 	gtkpaned.xml \
 	gtkprogressbar.xml \
 	gtkradiobutton.xml \
-	gtkseparator.xml \
 	gtkspinbutton.xml \
 	gtkstatusbar.xml \
 	gtktable.xml \
