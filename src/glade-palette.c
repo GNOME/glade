@@ -25,6 +25,10 @@
 #include <config.h>
 #endif
 
+#ifndef PIXMAPS_DIR
+#define PIXMAPS_DIR "C:/Program Files/glade/pixmap"
+#endif
+
 #include "glade.h"
 
 #include "glade-palette.h"

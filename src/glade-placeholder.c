@@ -22,8 +22,11 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <config.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+#define PIXMAP_DIR		"C:/Program Files/glade/pixmap"
 #include "glade.h"
 #include "glade-placeholder.h"
 #include "glade-cursor.h"

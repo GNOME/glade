@@ -27,13 +27,12 @@
 /* For g_file_exists */
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <string.h>
 
 #include "glade.h"
 #include "glade-xml-utils.h"
 
-#include <dirent.h>
+#include <glib/gdir.h>
 #include <gmodule.h>
 #include <ctype.h>
 

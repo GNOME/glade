@@ -22,11 +22,14 @@
 
 
 #include <string.h>
+
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
+#include <glib/gdir.h>
 
 #include "glade.h"
 #include "glade-catalog.h"
@@ -52,6 +55,14 @@ glade_catalog_new (void)
 	catalog->widgets = NULL;
 
 	return catalog;
+}
+
+static void
+glade_catalog_delete (GladeCatalog *catalog)
+{
+	g_return_if_fail (catalog);
+
+	g_free (catalog);
 }
 
 static GList *
@@ -80,7 +91,7 @@ glade_catalog_load_names_from_node (GladeXmlContext *context, GladeXmlNode *node
 	return list;
 }
 
-static void
+static gboolean
 glade_catalog_load_names_from_file (GladeCatalog *catalog, const gchar *file_name)
 {
 	GladeXmlContext *context;
@@ -89,12 +100,15 @@ glade_catalog_load_names_from_file (GladeCatalog *catalog, const gchar *file_nam
 
 	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_CATALOG);
 	if (context == NULL)
-		return;
+		return FALSE;
+
 	doc = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 	catalog->title = glade_xml_get_property_string_required (root, "Title", NULL);
 	catalog->names = glade_catalog_load_names_from_node (context, root);
 	glade_xml_context_free (context);
+
+	return TRUE;
 }
 
 static GladeCatalog *
@@ -104,7 +118,10 @@ glade_catalog_new_from_file (const gchar *file)
 
 	catalog = glade_catalog_new ();
 
-	glade_catalog_load_names_from_file (catalog, file);
+	if (!glade_catalog_load_names_from_file (catalog, file)) {
+		glade_catalog_delete (catalog);
+		return NULL;
+	}
 
 	return catalog;
 }
@@ -152,32 +169,28 @@ glade_catalog_load (const gchar *file_name)
 GList *
 glade_catalog_load_all (void)
 {
-	DIR *catalogsdir = NULL;
-	struct dirent *direntry = NULL;
-	struct stat statinfo;
+	GDir *catalogsdir = NULL;
 	GList *catalogs = NULL;
 	GladeCatalog *gcatalog = NULL;
-	gchar *filename = NULL;
+	const char *base_filename = NULL;
+	char *filename = NULL;
 
-	catalogsdir = opendir (CATALOGS_DIR);
+	catalogsdir = g_dir_open (CATALOGS_DIR, 0, NULL);
 	if (!catalogsdir) {
 		g_warning ("Could not open catalogs from %s\n", CATALOGS_DIR);
 		return NULL;
 	}
 	    
-	direntry = readdir (catalogsdir);
-	while (direntry) {
-		filename = g_strdup_printf ("%s/%s", CATALOGS_DIR, direntry->d_name);
-		stat (filename, &statinfo);
-		if (S_ISREG (statinfo.st_mode)) {
-			gcatalog = glade_catalog_load (filename);
-			if (gcatalog) 
-				catalogs = g_list_append (catalogs, gcatalog);
-		}
+	while ((base_filename = g_dir_read_name (catalogsdir)) != NULL) {
+		filename = g_strdup_printf ("%s/%s", CATALOGS_DIR, base_filename);
+		gcatalog = glade_catalog_load (filename);
+
+		if (gcatalog) 
+			catalogs = g_list_append (catalogs, gcatalog);
+
 		g_free (filename);
-		direntry = readdir (catalogsdir);
 	}
-	closedir (catalogsdir);
+	g_dir_close (catalogsdir);
 
 	return catalogs;
 }

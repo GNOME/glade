@@ -524,10 +524,12 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	
 	doc = xmlParseFile (full_path);
 	
-	if (doc == NULL) {
-		g_warning ("File not found or file with errors [%s]", full_path);
+	/* That's not an error condition.  The file is not readable, and we can't know it
+	 * before we try to read it (testing for readability is a call to race conditions).
+	 * So we should not print a warning */
+	if (doc == NULL)
 		return NULL;
-	}
+
 	if (doc->children == NULL) {
 		g_warning ("Invalid xml File, tree empty [%s]&", full_path);
 		xmlFreeDoc (doc);

@@ -1002,7 +1002,7 @@ glade_property_class_create_label (GladePropertyClass *class)
 
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 
-#warning This is not working
+	/* WARNING: This is not working */
 	glade_util_widget_set_tooltip (label, class->tooltip);
 	
 	return label;

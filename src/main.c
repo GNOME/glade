@@ -37,12 +37,15 @@
 
 #include <locale.h>
 #include <gmodule.h>
+#ifdef G_OS_UNIX
 #include <popt.h>
 
 static GList * parse_command_line (poptContext);
+#endif
 
 gchar * widget_name = NULL;
 
+#ifdef G_OS_UNIX
 static struct poptOption options[] = {
 	{
 		"dump",
@@ -63,6 +66,7 @@ static struct poptOption options[] = {
 		NULL
 	}
 };
+#endif
 
 static gint
 glade_init ()
@@ -98,8 +102,10 @@ int
 main (int argc, char *argv[])
 {
 	GladeProjectWindow *gpw;
+	GList *files = NULL;
+#ifdef G_OS_UNIX
 	poptContext popt_context;
-	GList *files;
+#endif
 
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
@@ -108,9 +114,11 @@ main (int argc, char *argv[])
 	textdomain (GETTEXT_PACKAGE);
 #endif
 						
+#ifdef G_OS_UNIX
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
+#endif
 
 	gtk_init (&argc, &argv);
 
@@ -143,6 +151,7 @@ main (int argc, char *argv[])
 	return 0;
 }
 
+#ifdef G_OS_UNIX
 static GList *
 parse_command_line (poptContext pctx)
 {
@@ -162,4 +171,5 @@ parse_command_line (poptContext pctx)
 
 	return files;
 }
+#endif
 
