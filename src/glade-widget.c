@@ -787,7 +787,6 @@ glade_widget_new_full (GladeProject *project,
 	
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
-	glade_command_create (widget);
 
 	return widget;
 }
@@ -956,12 +955,12 @@ glade_widget_new_from_class_full (GladeWidgetClass *class,
 	if (result) 
 		glade_property_query_result_destroy (result);
 
+	/* glade_command_create does a gtk_widget_show, so we should do it
+	 * after we've set the options, as sometimes these can't be set
+	 * if the widget is visible (for instance, on a GtkWindow) */
 	glade_widget_set_default_options (widget);
-
-	/* ->widget sometimes contains GtkObjects like a GtkAdjustment for example */
-	if (GTK_IS_WIDGET (widget->widget))
-		gtk_widget_show (widget->widget);
-
+	glade_command_create (widget);
+	
 	return widget;
 }
 
