@@ -329,18 +329,6 @@ glade_widget_sync_custom_props (GladeWidget *widget)
 	}
 }
 
-static void
-glade_widget_sync_query_props (GladeWidget *widget)
-{
-	GList *l;
-	for (l = widget->properties; l && l->data; l = l->next)
-	{
-		GladeProperty *prop  = GLADE_PROPERTY(l->data);
-		if (prop->class->query)
-			glade_property_sync (prop);
-	}
-}
-
 /**
  * glade_widget_build_object:
  * @klass: a #GladeWidgetClass
@@ -479,16 +467,18 @@ glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 {
 	GladeWidget *widget;
 
-	if ((widget = glade_widget_internal_new (klass, project, NULL)) != NULL &&
-	    widget->query_user)
+	if ((widget = glade_widget_internal_new (klass, project, NULL)) != NULL)
 	{
-		GladeProjectWindow *gpw = glade_project_window_get ();
-		glade_editor_query_popup (gpw->editor, widget);
+		if (widget->query_user)
+		{
+			GladeProjectWindow *gpw = glade_project_window_get ();
+			glade_editor_query_popup (gpw->editor, widget);
+		}
 
-		/* The glade editor code only sets properties if they change,
-		 * this is just in case they dont.
+		/* Properties that have custom set_functions on them need to be
+		 * explicitly synchronized.
 		 */
-		glade_widget_sync_query_props (widget);
+		glade_widget_sync_custom_props (widget);
 	}
 	return widget;
 }
@@ -512,6 +502,7 @@ glade_widget_dup (GladeWidget *template)
 					     template->project,
 					     template);
 
+	
 	if (GTK_IS_CONTAINER(template->widget))
 	{
 		children = gtk_container_get_children(GTK_CONTAINER(template->widget));
@@ -535,10 +526,11 @@ glade_widget_dup (GladeWidget *template)
 			}
 		}
 	}
-	gtk_widget_show_all (gwidget->widget);
 
 	glade_widget_copy_custom_props (gwidget, template);
 
+	gtk_widget_show_all (gwidget->widget);
+	
 	return gwidget;
 }
 

@@ -1,3 +1,14 @@
+2004-11-03  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* src/glade-command.[ch], glade-popup.c, glade-project-window.c:
+	  Implemented glade_command_copy () (undo/redo works like a charm :-)
+
+	* src/glade-widget.c: Simplified / Improved code respecting custom properties.
+
+	* src/glade-project.c: Simplified some code around selection, project management
+	  (improved fixes for bugs 156515 and 155892).
+
+
 2004-11-02 Shane Butler <shane_b@users.sourceforge.net>
 
 	* src/glade-utils.[ch] (glade_util_file_dialog_new): rewrote function to create a GtkFileSelector or GtkFileChooser depending on the GTK+ version.

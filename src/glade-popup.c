@@ -46,12 +46,7 @@ glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProjectWindow *gpw;
-	GladeWidget        *dupped;
-	gpw     = glade_project_window_get ();
-	dupped  = glade_widget_dup (widget);
-
-	glade_clipboard_add (gpw->clipboard, dupped);
+	glade_command_copy (widget);
 }
 
 static void

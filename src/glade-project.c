@@ -419,16 +419,12 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 		}
 		g_list_free (children);
 	}
-
-	if (glade_util_has_nodes (widget))
-	    glade_util_remove_nodes (widget);
 	
+	glade_project_selection_remove (project, widget, TRUE);
+
 	gwidget = glade_widget_get_from_gtk_widget (widget);
 	if (!gwidget)
 		return;
-
-	project->selection = g_list_remove (project->selection, widget);
-	glade_project_selection_changed (project);
 
 	widget_l = g_list_find (project->widgets, widget);
 	if (widget_l != NULL)
@@ -628,13 +624,11 @@ glade_project_selection_add (GladeProject *project,
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	gpw       = glade_project_window_get ();
-	has_nodes = glade_util_has_nodes (widget);
 
-	if (has_nodes && gpw->editor->loaded_widget != NULL)
+	if (glade_util_has_nodes (widget))
 		return;
 
-	if (has_nodes == FALSE)
-		glade_util_add_nodes (widget);
+	glade_util_add_nodes (widget);
 
 	if (project)
 	{
@@ -665,8 +659,7 @@ glade_project_selection_set (GladeProject *project,
 
 	gpw    = glade_project_window_get ();
 	
-	if (glade_util_has_nodes (widget) &&
-	    gpw->editor->loaded_widget != NULL)
+	if (glade_util_has_nodes (widget))
 		return;
 	    
 	glade_project_selection_clear (project, FALSE);

@@ -38,9 +38,7 @@ struct _GladeWidget
 	GtkWidget *widget; /* A pointer to the widget that was created.
 			    * and is shown as a "view" of the GladeWidget.
 			    * This widget is updated as the properties are
-			    * modified for the GladeWidget. We should not
-			    * destroy this widgets once created, we should
-			    * just hide them
+			    * modified for the GladeWidget.
 			    */
 
 	GList *properties; /* A list of GladeProperty. A GladeProperty is an

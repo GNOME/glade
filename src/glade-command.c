@@ -755,8 +755,14 @@ glade_command_create (GladeWidgetClass *class,
 	glade_palette_unselect_widget (gpw->palette);
 }
 
+typedef enum {
+	GLADE_CUT,
+	GLADE_COPY,
+	GLADE_PASTE
+} GladeCutCopyPasteType;
+
 /**
- * Cut/Paste
+ * Cut/Copy/Paste
  *
  * Following is the code to extend the GladeCommand Undo/Redo system to 
  * Clipboard functions.
@@ -767,25 +773,19 @@ typedef struct {
 	GladeClipboard *clipboard;
 	GladeWidget *widget;
 	GladePlaceholder *placeholder;
-	gboolean cut;
-} GladeCommandCutPaste;
+	GladeCutCopyPasteType type;
+} GladeCommandCutCopyPaste;
 
 
-GLADE_MAKE_COMMAND (GladeCommandCutPaste, glade_command_cut_paste);
-#define GLADE_COMMAND_CUT_PASTE_TYPE		(glade_command_cut_paste_get_type ())
-#define GLADE_COMMAND_CUT_PASTE(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_CUT_PASTE_TYPE, GladeCommandCutPaste))
-#define GLADE_COMMAND_CUT_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_CUT_PASTE_TYPE, GladeCommandCutPasteClass))
-#define GLADE_IS_COMMAND_CUT_PASTE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_CUT_PASTE_TYPE))
-#define GLADE_IS_COMMAND_CUT_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_CREATE_DELETE_TYPE))
-
-static gboolean
-glade_command_cut_paste_undo (GladeCommand *cmd)
-{
-	return glade_command_cut_paste_execute (cmd);
-}
+GLADE_MAKE_COMMAND (GladeCommandCutCopyPaste, glade_command_cut_copy_paste);
+#define GLADE_COMMAND_CUT_COPY_PASTE_TYPE		(glade_command_cut_copy_paste_get_type ())
+#define GLADE_COMMAND_CUT_COPY_PASTE(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_CUT_COPY_PASTE_TYPE, GladeCommandCutCopyPaste))
+#define GLADE_COMMAND_CUT_COPY_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_CUT_COPY_PASTE_TYPE, GladeCommandCutCopyPasteClass))
+#define GLADE_IS_COMMAND_CUT_COPY_PASTE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_CUT_COPY_PASTE_TYPE))
+#define GLADE_IS_COMMAND_CUT_COPY_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_CREATE_DELETE_TYPE))
 
 static gboolean
-glade_command_paste_execute (GladeCommandCutPaste *me)
+glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 {
 	GladeWidget *glade_widget = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
@@ -815,7 +815,7 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 }
 
 static gboolean
-glade_command_cut_execute (GladeCommandCutPaste *me)
+glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 {
 	GladeWidget *glade_widget = me->widget;
 
@@ -836,9 +836,22 @@ glade_command_cut_execute (GladeCommandCutPaste *me)
 
 	gtk_widget_hide (glade_widget->widget);
 
-	glade_project_selection_remove (glade_widget->project, glade_widget->widget, TRUE);
 	glade_project_remove_widget (glade_widget->project, glade_widget->widget);
 
+	return TRUE;
+}
+
+static gboolean
+glade_command_copy_execute (GladeCommandCutCopyPaste *me)
+{
+	glade_clipboard_add (me->clipboard, me->widget);
+	return TRUE;
+}
+
+static gboolean
+glade_command_copy_undo (GladeCommandCutCopyPaste *me)
+{
+	glade_clipboard_remove (me->clipboard, me->widget);
 	return TRUE;
 }
 
@@ -847,85 +860,129 @@ glade_command_cut_execute (GladeCommandCutPaste *me)
  * function cmd will point to the undo action
  */
 static gboolean
-glade_command_cut_paste_execute (GladeCommand *cmd)
+glade_command_cut_copy_paste_execute (GladeCommand *cmd)
 {
-	GladeCommandCutPaste *me = (GladeCommandCutPaste *) cmd;
-	gboolean retval;
+	GladeCommandCutCopyPaste *me = (GladeCommandCutCopyPaste *) cmd;
+	gboolean retval = FALSE;
 
-	if (me->cut)
+	switch (me->type)
+	{
+	case GLADE_CUT:
 		retval = glade_command_cut_execute (me);
-	else
+		break;
+	case GLADE_COPY:
+		retval = glade_command_copy_execute (me);
+		break;
+	case GLADE_PASTE:
 		retval = glade_command_paste_execute (me);
-
-	me->cut = !me->cut;
+		break;
+	}
 
 	return retval;
 }
 
-static void
-glade_command_cut_paste_finalize (GObject *obj)
+static gboolean
+glade_command_cut_copy_paste_undo (GladeCommand *cmd)
 {
-	GladeCommandCutPaste *cmd;
+	GladeCommandCutCopyPaste *me = (GladeCommandCutCopyPaste *) cmd;
+	gboolean retval = FALSE;
 
-	g_return_if_fail (GLADE_IS_COMMAND_CUT_PASTE (obj));
+	switch (me->type)
+	{
+	case GLADE_CUT:
+		retval = glade_command_paste_execute (me);
+		break;
+	case GLADE_COPY:
+		retval = glade_command_copy_undo (me);
+		break;
+	case GLADE_PASTE:
+		retval = glade_command_cut_execute (me);
+		break;
+	}
+	return retval;
+}
 
-	cmd = GLADE_COMMAND_CUT_PASTE (obj);
+static void
+glade_command_cut_copy_paste_finalize (GObject *obj)
+{
+	GladeCommandCutCopyPaste *cmd;
+
+	g_return_if_fail (GLADE_IS_COMMAND_CUT_COPY_PASTE (obj));
+
+	cmd = GLADE_COMMAND_CUT_COPY_PASTE (obj);
 
 	g_object_unref (cmd->widget);
-	g_object_unref (cmd->placeholder);
+	if (cmd->placeholder)
+		g_object_unref (cmd->placeholder);
 
 	glade_command_finalize (obj);
 }
 
 static gboolean
-glade_command_cut_paste_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_cut_copy_paste_unifies (GladeCommand *this, GladeCommand *other)
 {
 	return FALSE;
 }
 
 static void
-glade_command_cut_paste_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_cut_copy_paste_collapse (GladeCommand *this, GladeCommand *other)
 {
 	g_return_if_reached ();
 }
 
 static void
-glade_command_cut_paste_common (GladeWidget *widget,
-				GladePlaceholder *placeholder,
-				GladeProject *project,
-				gboolean cut)
+glade_command_cut_copy_paste_common (GladeWidget *widget,
+				     GladePlaceholder *placeholder,
+				     GladeProject *project,
+				     GladeCutCopyPasteType type)
 {
-	GladeCommandCutPaste *me;
+	GladeCommandCutCopyPaste *me;
 	GladeCommand *cmd;
 	GladeProjectWindow *gpw;
 
-	me = (GladeCommandCutPaste *) g_object_new (GLADE_COMMAND_CUT_PASTE_TYPE, NULL);
+	me = (GladeCommandCutCopyPaste *) g_object_new (GLADE_COMMAND_CUT_COPY_PASTE_TYPE, NULL);
 	cmd = (GladeCommand *) me;
 	
 	gpw = glade_project_window_get ();
 
-	me->cut         = cut;
-	me->widget      = g_object_ref(widget);
+	me->type        = type;
+	me->widget      =
+		(type == GLADE_COPY) ?
+		glade_widget_dup (widget) :
+		g_object_ref (widget);
 	me->placeholder = placeholder;
 	me->clipboard   = gpw->clipboard;
 
 	if (me->placeholder)
 		g_object_ref (G_OBJECT (me->placeholder));
 
-	if (cut)
+	switch (type) {
+	case GLADE_CUT:
 		cmd->description = g_strdup_printf (_("Cut %s"), widget->name);
-	else
+		break;
+	case GLADE_COPY:
+		cmd->description = g_strdup_printf (_("Copy %s"), widget->name);
+		break;
+	case GLADE_PASTE:
 		cmd->description = g_strdup_printf (_("Paste %s"), widget->name);
+		break;
+	}
 
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	/*
 	 * Push it onto the undo stack only on success
 	 */
-	if (glade_command_cut_paste_execute (cmd))
+	if (glade_command_cut_copy_paste_execute (cmd))
 		glade_command_push_undo (project, cmd);
 }
 
+/**
+ * glade_command_paste:
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ */
 void
 glade_command_paste (GladePlaceholder *placeholder)
 {
@@ -947,7 +1004,7 @@ glade_command_paste (GladePlaceholder *placeholder)
 		return;
 
 	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-	glade_command_cut_paste_common (widget, placeholder, parent->project, FALSE);
+	glade_command_cut_copy_paste_common (widget, placeholder, parent->project, GLADE_PASTE);
 }
 
 /**
@@ -974,7 +1031,34 @@ glade_command_cut (GladeWidget *widget)
 	if (widget->internal)
 		return;
 
-	glade_command_cut_paste_common (widget, NULL, widget->project, TRUE);
+	glade_command_cut_copy_paste_common (widget, NULL, widget->project, GLADE_CUT);
+}
+
+/**
+ * glade_command_copy:
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ */
+void
+glade_command_copy (GladeWidget *widget)
+{
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+
+	if (!widget) {
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		return;
+	}
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/* internal children cannot be cut. Should we notify the user? */
+	if (widget->internal)
+		return;
+
+	glade_command_cut_copy_paste_common (widget, NULL, widget->project, GLADE_COPY);
 }
 
 /*********************************************************/

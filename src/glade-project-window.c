@@ -429,7 +429,7 @@ gpw_copy_cb (void)
 		GladeWidget *widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data));
 
 		if (widget)
-			glade_clipboard_add (gpw->clipboard, widget);
+			glade_command_copy (widget);
 	}
 }
 
