@@ -63,7 +63,7 @@ static GtkNotebookClass *parent_class = NULL;
 static gboolean glade_editor_table_append_items (GladeEditorTable *table,
 						 GladeWidgetClass *class,
 						 GList **list,
-						 gboolean common);
+						 GladeEditorTableType type);
 
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
@@ -839,7 +839,7 @@ glade_editor_create_input_object (GladeEditorProperty *property,
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
 
 	glade_editor_table_append_items (table, property->class->child,
-					 &property->children, FALSE);
+					 &property->children, TABLE_TYPE_GENERAL);
 
 	return NULL;
 }
@@ -1004,7 +1004,7 @@ static gboolean
 glade_editor_table_append_items (GladeEditorTable *table,
 				 GladeWidgetClass *class,
 				 GList **list_,
-				 gboolean common)
+				 GladeEditorTableType type)
 {
 	GladeEditorProperty *property;
 	GladePropertyClass *property_class;
@@ -1018,17 +1018,20 @@ glade_editor_table_append_items (GladeEditorTable *table,
 	for (; list != NULL; list = list->next)
 	{
 		property_class = (GladePropertyClass *) list->data;
+
 		if (!glade_property_class_is_visible (property_class, class))
 			continue;
-		if (common != property_class->common)
+		if (type == TABLE_TYPE_QUERY && property_class->query == FALSE)
 			continue;
+		else if (type == TABLE_TYPE_COMMON && property_class->common == FALSE)
+			continue;
+
 		property = glade_editor_table_append_item (table, property_class);
 		if (property != NULL)
 			new_list = g_list_prepend (new_list, property);
 	}
 
 	*list_ = new_list;
-	
 	return TRUE;
 }
 
@@ -1068,13 +1071,15 @@ glade_editor_table_new (void)
 	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget),
 				    GLADE_PROPERY_TABLE_ROW_SPACING);
 
+	g_object_ref (G_OBJECT(table->table_widget));
+	
 	return table;
 }
 
 static GladeEditorTable *
 glade_editor_table_create (GladeEditor *editor,
 			   GladeWidgetClass *class,
-			   gboolean common)
+			   GladeEditorTableType type)
 {
 	GladeEditorTable *table;
 
@@ -1084,15 +1089,16 @@ glade_editor_table_create (GladeEditor *editor,
 	table = glade_editor_table_new ();
 	table->editor = editor;
 	table->glade_widget_class = class;
-	table->common = common;
-	if (!common)
+	table->type = type;
+	if (type == TABLE_TYPE_GENERAL)
 		glade_editor_table_append_standard_fields (table);
-	if (!glade_editor_table_append_items (table, class, &table->properties, common))
+	if (!glade_editor_table_append_items (table, class,
+					      &table->properties, type))
 		return NULL;
 
 	/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
 	 * xml files. */
-	if (!common && !strcmp (class->name, "GtkMenuBar")) {
+	if (type == TABLE_TYPE_GENERAL && !strcmp (class->name, "GtkMenuBar")) {
 		GtkWidget *edit_menu_button = gtk_button_new_with_label (_("Edit Menus..."));
 
 		g_signal_connect (G_OBJECT (edit_menu_button), "clicked",
@@ -1104,7 +1110,6 @@ glade_editor_table_create (GladeEditor *editor,
 	}
 
 	gtk_widget_show_all (table->table_widget);
-	editor->widget_tables = g_list_prepend (editor->widget_tables, table);
 
 	return table;
 }
@@ -1112,7 +1117,7 @@ glade_editor_table_create (GladeEditor *editor,
 static GladeEditorTable *
 glade_editor_get_table_from_class (GladeEditor *editor,
 				   GladeWidgetClass *class,
-				   gboolean common)
+				   GladeEditorTableType type)
 {
 	GladeEditorTable *table;
 	GList *list;
@@ -1120,14 +1125,16 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 	for (list = editor->widget_tables; list; list = list->next)
 	{
 		table = list->data;
-		if (common != table->common)
+		if (type != table->type)
 			continue;
 		if (table->glade_widget_class == class)
 			return table;
 	}
 
-	table = glade_editor_table_create (editor, class, common);
+	table = glade_editor_table_create (editor, class, type);
 	g_return_val_if_fail (table != NULL, NULL);
+
+	editor->widget_tables = g_list_prepend (editor->widget_tables, table);
 
 	return table;
 }
@@ -1601,15 +1608,15 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	/* Now add the new properties */
 	table = glade_editor_table_new ();
 	table->editor = editor;
-	table->common = FALSE;
-	table->packing = TRUE;
-
+	table->type   = TABLE_TYPE_PACKING;
+	
 	for (ancestor = parent; ancestor != NULL; ancestor = glade_widget_get_parent (ancestor))
 	{
  		for (list = ancestor->widget_class->child_properties; list; list = list->next)
 		{
 			property_class = list->data; 
-			if (!ancestor->widget_class->child_property_applies (ancestor->widget, widget->widget, property_class->id))
+			if (!ancestor->widget_class->child_property_applies
+			    (ancestor->widget, widget->widget, property_class->id))
 				continue;
 
 			g_assert (property_class->packing == TRUE);
@@ -1714,4 +1721,45 @@ glade_editor_add_signal (GladeEditor *editor,
 	g_signal_emit (G_OBJECT (editor),
 		       glade_editor_signals [ADD_SIGNAL], 0,
 		       widget_name, widget_type, signal_id, callback_name);
+}
+
+
+void
+glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget)
+{
+	GtkWidget           *dialog;
+	GladeEditorTable    *table;
+	gchar               *title;
+	GList               *list;
+	GladeEditorProperty *property;
+
+	title = g_strdup_printf ("%s %s", _("Create a"), widget->widget_class->name);
+
+	dialog = gtk_dialog_new_with_buttons
+		(title, NULL,
+		 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
+		 GTK_DIALOG_NO_SEPARATOR, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+	g_free (title);
+
+	table = glade_editor_get_table_from_class (editor,
+						   widget->widget_class,
+						   TABLE_TYPE_QUERY);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table->table_widget,
+			    TRUE, TRUE, 4);
+	
+	for (list = table->properties; list; list = list->next)
+	{
+		property = list->data;
+		glade_editor_property_load (property, widget);
+	}
+
+	gtk_window_set_default_size (GTK_WINDOW(dialog), 300, -1);
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
+			      table->table_widget);
+	
+	gtk_widget_destroy (dialog);
 }

@@ -785,14 +785,15 @@ glade_widget_class_get_type (GladeWidgetClass *widget)
 }
 
 /**
- * glade_widget_class_has_property:
+ * glade_widget_class_get_property_class:
  * @class: a #GladeWidgetClass
  * @name: a string
  *
- * Returns: %TRUE if @class has a property named @name, %FALSE otherwise
+ * Returns: The #GladePropertyClass object if there is one associated to this widget
+ *          class.
  */
-gboolean
-glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
+GladePropertyClass *
+glade_widget_class_get_property_class (GladeWidgetClass *class, const gchar *name)
 {
 	GList *list;
 	GladePropertyClass *pclass;
@@ -801,10 +802,9 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 	{
 		pclass = list->data;
 		if (strcmp (pclass->id, name) == 0)
-			return TRUE;
+			return pclass;
 	}
-
-	return FALSE;
+	return NULL;
 }
 
 /**

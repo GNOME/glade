@@ -855,6 +855,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
+	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, FALSE);
+
 	if (class->optional)
 		class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
 

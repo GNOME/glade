@@ -171,6 +171,26 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		return;
 	}
 
+	/* Assign property first so that; if the object need be
+	 * rebuilt, it will reflect the new value
+	 */
+	g_value_reset (property->value);
+	g_value_copy (value, property->value);
+
+	glade_property_sync(property);
+}
+
+/**
+ * glade_property_sync:
+ * @property: a #GladeProperty
+ *
+ * TODO: write me
+ */
+void
+glade_property_sync (GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
 	if (!property->enabled)
 		return;
 
@@ -179,15 +199,10 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	property->loading = TRUE;
 
-	/* Assign property first so that; if the object need be
-	 * rebuilt, it will reflect the new value
-	 */
-	g_value_reset (property->value);
-	g_value_copy (value, property->value);
-
 	if (property->class->set_function)
 		/* if there is a custom set_property, use it */
-		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
 	else if (property->class->construct_only)
 	{
 		/* In the case of construct_only, the widget must be rebuilt, here we
@@ -224,7 +239,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		}
 	}
 	else
-		glade_property_set_property (property, value);
+		glade_property_set_property (property, property->value);
 
 	property->loading = FALSE;
 }

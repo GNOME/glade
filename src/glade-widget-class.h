@@ -119,7 +119,8 @@ gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
 gboolean     glade_widget_class_is (GladeWidgetClass *class, const char *name);
 
 void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
-gboolean    glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name);
+GladePropertyClass *glade_widget_class_get_property_class (GladeWidgetClass *class,
+							   const gchar *name);
 
 
 G_END_DECLS

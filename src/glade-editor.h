@@ -17,10 +17,19 @@ G_BEGIN_DECLS
 #define GLADE_EDITOR_PROPERTY(p)    ((GladeEditorProperty *)p)
 #define GLADE_IS_EDITOR_PROPERTY(p) (p != NULL)
 
-typedef struct _GladeEditorClass    GladeEditorClass;
-typedef struct _GladeEditorTable    GladeEditorTable;
-typedef struct _GladeEditorProperty GladeEditorProperty;
+typedef struct _GladeEditorClass     GladeEditorClass;
+typedef struct _GladeEditorTable     GladeEditorTable;
+typedef struct _GladeEditorProperty  GladeEditorProperty;
+typedef enum   _GladeEditorTableType GladeEditorTableType;
 
+
+enum _GladeEditorTableType
+{
+	TABLE_TYPE_GENERAL,
+	TABLE_TYPE_COMMON,
+	TABLE_TYPE_PACKING,
+	TABLE_TYPE_QUERY
+};
 
 /* The GladeEditor is a window that is used to display and modify widget
  * properties. The glade editor contains the details of the selected
@@ -141,10 +150,9 @@ struct _GladeEditorTable
 			    * corrsponding GladeEditorProperty struct.
 			    */
 
-	gboolean common; /* Is this table to be used in the common tab ?
-			  * or the general tab ?
-			  */
-	gboolean packing;
+	GladeEditorTableType type; /* Is this table to be used in the common tab, ?
+				    * the general tab, a packing tab or the query popup ?
+				    */
 	
 	gint rows;
 };
@@ -192,6 +200,7 @@ GladeEditor *glade_editor_new (void);
 void glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget);
 void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
 void glade_editor_update_widget_name (GladeEditor *editor);
+void glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget);
 
 
 G_END_DECLS

@@ -1,3 +1,58 @@
+2004-10-28  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* src/glade-editor.[ch]: Implemented glade_editor_query_popup(), also obsoleted
+	  common & packing booleans for a more convenient GladeEditorTableType field.
+
+	* src/glade-gtk.c: 
+	  - Refitted and integrated Mickael Cornet's patch to bug 153823
+	  - glade_gtk_table_set_n_common() now refuses to shrink when it involves
+	    orhpaning widgets, Its also been improved to fill in all the blanks.
+	  - Removed all dialogs.
+	  - Fixed children are now born with size-request properties enabled.
+	  - Removed some `#if 0' code that I trust we dont need.
+	  - glade_gtk_box_set_size() Adjusted to match gtk_table behaviour
+	
+	* src/glade-plugin.h:
+	  - Added a header to the batch.
+
+	* src/glade-popup.c: glade_popup_copy_cb() now duplicates the
+	  widget in question with glade_widget_dup().
+
+	* src/glade-property-class.[ch]: glade_property_class_update_from_node() now
+	  flags properties that need a pupop dialog at creation time.
+
+	* src/glade-property.[ch]: Implemented glade_property_sync() (Sychronizes
+	  the object with its glade_property), glade_property_set() now calls
+	  glade_property_sync().
+
+	* src/glade-widget.[ch]:
+	  - Implemented glade_widget_dup().
+	  - Added call to glade_property_sync on appropriate properties that
+	    need to be synchronized after a glade_widget_rebuild().
+	  - Added a call to glade_editor_query_popup() in the appropriate situation.
+	  - glade_widget_build_object() now takes into account property_class default values
+	  - glade_widget_new() now calls new function glade_widget_sync_query_props() in
+	    popup cases (If properties dont change from there default, a synchronization is
+	    needed at this point).
+	
+	* widgets/gtkbox.xml:
+	  - Removed reference to obsoleted post_create function.
+	  - Changed `ignore' to `empty' for the fill_empty funciton.
+	  - Tagged "Size" property as type "Query".
+	  - Added Default size 3
+	  - Changed Minimum size to 2
+	
+	* widgets/gtknotebook.xml:
+	  - Tagged "pages" property as type "Query".
+	  - Removed obsolete (or never implemented) Query section.
+
+	* widgets/gtktable.xml:
+	  - Tagged "n-rows" and "n-columns" properties as type "Query".
+	  - Removed obsolete (or never implemented) Query section.
+
+	* widgets/gtklabel.xml: Added default "" value for pattern property, this
+	  works around gtk+ bug 156720 which was causing us segfaults.
+	
 2004-10-27  David Hoover <karma@deadmoose.com>
 
 	* src/Makefile.am: Fix up dependency issues with automatically generated

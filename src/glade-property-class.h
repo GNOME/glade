@@ -127,24 +127,31 @@ struct _GladePropertyClass
 			    * a spin button entry. Also the default choice
 			    * for a type == CHOICE
 			    */
+
 	GList *choices;    /* list of GladeChoice items. This is only used
 			    * for propeties of type GLADE_PROPERTY_TYPE_CHOICE
 			    * and is NULL for other poperties.
 			    * [See glade-choice.h]
 			    */
+
 	GType enum_type;   /* If it is GLADE_PROPERTY_TYPE_ENUM or
 			    * GLADE_PROPERTY_TYPE_FLAGS, this holds
 			    * the GType of the enum or flags, otherwise it's 0.
 			    */
+	gboolean query; /* Whether we should explicitly ask the user about this property
+			 * when instantiating a widget with this property (through a popup
+			 * dialog).
+			 */
 
 	gboolean optional; /* Some properties are optional by nature like
 			    * default width. It can be set or not set. A
 			    * default property has a check box in the
 			    * left that enables/disables de input
 			    */
-	gboolean optional_default; /* For optional values, what the default is */
 
+	gboolean optional_default; /* For optional values, what the default is */
 	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
+	
 	
 	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
 				  * that we need to set for this widget

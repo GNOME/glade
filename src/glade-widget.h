@@ -59,6 +59,10 @@ struct _GladeWidget
 				    * GladeWidgetClass.
 				    */
 
+	gboolean   query_user; /* Whether the user should be prompted for some initial
+				* values with a dialog popup upon creation.
+				*/
+	
 	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
 			      * indexed by its name */
 };
@@ -109,6 +113,7 @@ GladeWidget *		glade_widget_read			(GladeProject *project, GladeXmlNode *node);
 GladeWidget *		glade_widget_get_parent			(GladeWidget *widget);
 
 void                    glade_widget_rebuild                    (GladeWidget *widget);
+GladeWidget *           glade_widget_dup                        (GladeWidget *widget);
 
 G_END_DECLS
 
