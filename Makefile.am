@@ -6,14 +6,14 @@ Developmentdir = $(datadir)/gnome/apps/Development
 Development_in_files = glade2.desktop.in
 Development_DATA = $(Development_in_files:.desktop.in=.desktop)
 
-@XML_I18N_MERGE_DESKTOP_RULE@
+@INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST = \
 	glade2.desktop.in \
 	glade2.desktop \
-	xml-i18n-extract.in \
-	xml-i18n-merge.in \
-	xml-i18n-update.in
+	intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in
 
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = 
