@@ -1,5 +1,12 @@
 2004-05-05  Damon Chaplin  <damon@gnome.org>
 
+	* src/glade-widget.c (glade_widget_find_inside_container): don't
+	accept placeholders. They are handled separately, using their own
+	signal handlers. This avoids a crash, though there is still an odd
+	bug when trying to select the top-left placeholder in a table.
+	
+2004-05-05  Damon Chaplin  <damon@gnome.org>
+
 	* src/glade-widget.c (glade_widget_find_deepest_child_at_position): 
 	if we found a widget (data.found), but it isn't a container, just
 	return it. It was ignoring it and returning its parent before.
