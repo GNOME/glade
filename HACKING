@@ -36,6 +36,23 @@ Coding Style
 Code in Glade-3 should follow the GNOME Programming Guidelines
 (http://developer.gnome.org/doc/guides/programming-guidelines/),
 basically this means being consistent with the sorrounding code.
+The only exception is that we prefer having braces always on a new line
+e.g.:
+
+if (...)
+{
+	...
+}
+
+Note however that a lot of the current codebase still uses the following
+style:
+
+if (...) {
+	...
+}
+
+Over time we'll migrate to the preferred form.
+
 Naming conventions:
 - function names sholud be lowercase and prefixed with the
   file name (or, if the function is static and the name too long,
@@ -45,6 +62,7 @@ Naming conventions:
 - variable names should be lowercase and be short but self explanatory;
   if you need more than one word use an underscore, e.g:
   my_variable
+
 Also try to order your functions so that prototypes are not needed.
 
 
