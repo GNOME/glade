@@ -39,6 +39,7 @@
 #include "glade-project-window.h"
 #include "glade-command.h"
 #include "glade-debug.h"
+#include "glade-utils.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
@@ -187,12 +188,6 @@ gpw_redo_cb (void)
 	glade_command_redo ();
 }
 
-static void
-gpw_delete_event (GtkWindow *w, gpointer not_used)
-{
-	gpw_quit_cb ();
-}
-
 
 static GtkItemFactoryEntry menu_items[] =
 {
@@ -200,9 +195,10 @@ static GtkItemFactoryEntry menu_items[] =
   { "/_File",            NULL,         0,              0, "<Branch>" },
   { "/File/_New",        "<control>N",        gpw_new_cb,     0, "<StockItem>", GTK_STOCK_NEW },
   { "/File/_Open",       "<control>O",        gpw_open_cb,    0, "<StockItem>", GTK_STOCK_OPEN },
+  { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
   { "/File/_Save",       "<control>S",        gpw_save_cb,    0, "<StockItem>", GTK_STOCK_SAVE },
   { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 0, "<StockItem>", GTK_STOCK_SAVE_AS },
-  { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
+  { "/File/sep2",        NULL,                NULL,           0, "<Separator>" },
   { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    0, "<StockItem>", GTK_STOCK_QUIT },
 
 
@@ -227,13 +223,13 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Project", NULL, 0, 0, "<Branch>" },
 
   /* ============ HELP ===================== */
-  { "/_Help",       NULL, NULL, 0, "<LastBranch>" },
+  { "/_Help",       NULL, NULL, 0, "<Branch>" },
   { "/Help/_About", NULL, gpw_about_cb, 0 },
 };
 
 
 static void
-glade_project_window_construct_menu (GladeProjectWindow *gpw)
+gpw_construct_menu (GladeProjectWindow *gpw)
 {
 	GtkItemFactory *item_factory;
 	GtkAccelGroup *accel_group;
@@ -245,7 +241,7 @@ glade_project_window_construct_menu (GladeProjectWindow *gpw)
 	/* Item factory */
 	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel_group);
 	gpw->item_factory = item_factory;
-	gtk_object_ref (GTK_OBJECT (item_factory));
+	g_object_ref (G_OBJECT (item_factory));
 	gtk_object_sink (GTK_OBJECT (item_factory));
 	g_object_set_data_full (G_OBJECT (gpw->window),
 				"<main>",
@@ -260,12 +256,12 @@ glade_project_window_construct_menu (GladeProjectWindow *gpw)
 }
 
 static void
-glade_project_window_construct_toolbar (GladeProjectWindow *gpw)
+gpw_construct_toolbar (GladeProjectWindow *gpw)
 {
 	GtkWidget *toolbar;
 
 	toolbar = gtk_toolbar_new ();
-
+	
 	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
 				  GTK_STOCK_OPEN,
 				  "Open project",
@@ -292,13 +288,31 @@ glade_project_window_construct_toolbar (GladeProjectWindow *gpw)
 				     toolbar);
 }
 
+static void
+gpw_construct_statusbar (GladeProjectWindow *gpw)
+{
+	GtkWidget *statusbar;
+
+	statusbar = gtk_statusbar_new ();
+	gpw->statusbar = statusbar;
+
+	g_object_ref (G_OBJECT (statusbar));
+	gtk_object_sink (GTK_OBJECT (statusbar));
+	g_object_set_data_full (G_OBJECT (gpw->window),
+				"<main>",
+				statusbar,
+				(GDestroyNotify) g_object_unref);
+
+	gtk_box_pack_end_defaults (GTK_BOX (gpw->main_vbox), statusbar);	
+}
+
 static gboolean
 gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used,
 		GtkItemFactory *item_factory)
 {
 	GtkWidget *palette_item;
 
-	gtk_widget_hide (GTK_WIDGET (palette));
+	glade_util_hide_window (GTK_WIDGET (palette));
 
 	palette_item = gtk_item_factory_get_item (item_factory, "<main>/View/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
@@ -357,7 +371,7 @@ gpw_hide_palette (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	gtk_widget_hide (GTK_WIDGET (gpw->palette_window));
+	glade_util_hide_window (GTK_WIDGET (gpw->palette_window));
 
 	palette_item = gtk_item_factory_get_item (gpw->item_factory,
 						  "<main>/View/Palette");
@@ -370,7 +384,7 @@ gpw_hide_editor_on_delete (GtkWidget *editor, gpointer not_used,
 {
 	GtkWidget *editor_item;
 
-	gtk_widget_hide (GTK_WIDGET (editor));
+	glade_util_hide_window (GTK_WIDGET (editor));
 
 	editor_item = gtk_item_factory_get_item (item_factory, "<main>/View/Property Editor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
@@ -431,7 +445,7 @@ gpw_hide_editor (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	gtk_widget_hide (GTK_WIDGET (gpw->editor_window));
+	glade_util_hide_window (GTK_WIDGET (gpw->editor_window));
 
 	editor_item = gtk_item_factory_get_item (gpw->item_factory,
 						 "<main>/View/Property Editor");
@@ -444,7 +458,7 @@ gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
 {
 	GtkWidget *widget_tree_item;
 
-	gtk_widget_hide (widget_tree);
+	glade_util_hide_window (widget_tree);
 
 	widget_tree_item = gtk_item_factory_get_item (item_factory,
 						      "<main>/View/Widget Tree");
@@ -502,7 +516,7 @@ gpw_hide_widget_tree (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	gtk_widget_hide (GTK_WIDGET (gpw->widget_tree));
+	glade_util_hide_window (GTK_WIDGET (gpw->widget_tree));
 
 	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
 						      "<main>/View/Widget Tree");
@@ -529,7 +543,7 @@ gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
 {
 	GtkWidget *clipboard_item;
 
-	gtk_widget_hide (clipboard_view);
+	glade_util_hide_window (clipboard_view);
 
 	clipboard_item = gtk_item_factory_get_item (item_factory,
 						    "<main>/View/Clipboard");
@@ -586,7 +600,7 @@ gpw_hide_clipboard_view (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	gtk_widget_hide (GTK_WIDGET (gpw->clipboard->view));
+	glade_util_hide_window (GTK_WIDGET (gpw->clipboard->view));
 
 	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
 						    "<main>/View/Clipboard");
@@ -658,6 +672,12 @@ gpw_toggle_clipboard_cb (void)
 		gpw_hide_clipboard_view (gpw);
 }
 
+static void
+gpw_delete_event (GtkWindow *w, gpointer not_used)
+{
+	gpw_quit_cb ();
+}
+
 static GtkWidget *
 glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
 {
@@ -672,8 +692,10 @@ glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
 	gtk_container_add (GTK_CONTAINER (app), vbox);
 	gpw->main_vbox = vbox;
 
-	glade_project_window_construct_menu (gpw);
-	glade_project_window_construct_toolbar (gpw);
+	gpw_construct_menu (gpw);
+	gpw_construct_toolbar (gpw);
+	gpw_construct_statusbar (gpw);
+
 	glade_project_window_refresh_undo_redo (gpw);
 	
 	g_signal_connect (G_OBJECT (app), "delete_event",

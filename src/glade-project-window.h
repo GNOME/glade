@@ -13,11 +13,10 @@ G_BEGIN_DECLS
 
 struct _GladeProjectWindow
 {
-	GtkWidget *window; /* Main window*/
+	GtkWidget *window; /* Main window */
 	GtkWidget *main_vbox;
-	GtkWidget *statusbar; /* A pointer to the (not yet implemented)
-			       * status bar. We might have to come up with
-			       * a glade-statusbar object if it makes sense
+	GtkWidget *statusbar; /* A pointer to the status bar. We might have to come
+			       * up with a glade-statusbar object if it makes sense
 			       */
 	GtkItemFactory *item_factory; /* A pointer to the Item factory.
 				       * We need it to be able to later add

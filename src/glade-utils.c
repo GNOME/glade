@@ -21,9 +21,11 @@
  */
 
 
+#include <string.h>
 #include <gtk/gtktooltips.h>
-#include "glade.h"
+#include <gdk/gdkkeysyms.h>
 #include <gmodule.h>
+#include "glade.h"
 #include "glade-project-window.h"
 
 
@@ -83,7 +85,7 @@ glade_util_ui_warn (const gchar *warning)
 	GtkWidget *dialog;
 
 	gpw = glade_project_window_get ();
-	dialog = gtk_message_dialog_new (gpw->window, 
+	dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->window),
 					 GTK_DIALOG_DESTROY_WITH_PARENT,
 					 GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_OK,
@@ -91,4 +93,179 @@ glade_util_ui_warn (const gchar *warning)
 
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
+}
+
+static gint
+glade_util_compare_uline_labels (const gchar *labela, const gchar *labelb)
+{
+	for (;;) {
+		gunichar c1, c2;
+
+		if (*labela == '\0')
+			return (*labelb == '\0') ? 0 : -1;
+		if (*labelb == '\0')
+			return 1;
+
+		c1 = g_utf8_get_char (labela);
+		if (c1 == '_') {
+			labela = g_utf8_next_char (labela);
+			c1 = g_utf8_get_char (labela);
+		}
+
+		c2 = g_utf8_get_char (labelb);
+		if (c2 == '_') {
+			labelb = g_utf8_next_char (labelb);
+			c2 = g_utf8_get_char (labelb);
+		}
+
+		if (c1 < c2)
+			return -1;
+		if (c1 > c2)
+			return 1;
+
+		labela = g_utf8_next_char (labela);
+		labelb = g_utf8_next_char (labelb);
+	}
+
+	/* Shouldn't be reached. */
+	return 0;
+}
+
+/* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
+   any '_' characters. It isn't particularly efficient. */
+gint
+glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
+{
+	const gchar *stock_ida = a, *stock_idb = b;
+	GtkStockItem itema, itemb;
+	gboolean founda, foundb;
+	gint retval;
+
+	founda = gtk_stock_lookup (stock_ida, &itema);
+	foundb = gtk_stock_lookup (stock_idb, &itemb);
+
+	if (founda) {
+		if (!foundb)
+			retval = -1;
+		else
+			/* FIXME: Not ideal for UTF-8. */
+			retval = glade_util_compare_uline_labels (itema.label, itemb.label);
+	}
+	else {
+		if (!foundb)
+			retval = 0;
+		else
+			retval = 1;
+	}
+
+	return retval;
+}
+
+gchar *
+glade_util_gtk_combo_func (gpointer data)
+{
+	GtkListItem * listitem = data;
+
+	/* I needed to pinch this as well - Damon. */
+	static const gchar *gtk_combo_string_key = "gtk-combo-string-value";
+
+	GtkWidget *label;
+	gchar *ltext = NULL;
+
+	ltext = (gchar *) gtk_object_get_data (GTK_OBJECT (listitem),
+					       gtk_combo_string_key);
+	if (!ltext) {
+		label = GTK_BIN (listitem)->child;
+		if (!label || !GTK_IS_LABEL (label))
+			return NULL;
+		ltext = (gchar*) gtk_label_get_text (GTK_LABEL (label));
+	}
+
+	return ltext;
+}
+
+/* These are pinched from gtkcombo.c */
+gpointer /* GtkListItem *  */
+glade_util_gtk_combo_find (GtkCombo * combo)
+{
+	gchar *text;
+	gchar *ltext;
+	GList *clist;
+	int (*string_compare) (const char *, const char *);
+
+	if (combo->case_sensitive)
+		string_compare = strcmp;
+	else
+		string_compare = g_strcasecmp;
+
+	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (combo->entry));
+	clist = GTK_LIST (combo->list)->children;
+
+	while (clist && clist->data) {
+		ltext = glade_util_gtk_combo_func (GTK_LIST_ITEM (clist->data));
+		if (!ltext)
+			continue;
+		if (!(*string_compare) (ltext, text))
+			return (GtkListItem *) clist->data;
+		clist = clist->next;
+	}
+
+	return NULL;
+}
+
+/* This should be hooked up to the delete_event of windows which you want
+   to hide, so that if they are shown again they appear in the same place.
+   This stops the window manager asking the user to position the window each
+   time it is shown, which is quite annoying. */
+gint
+glade_util_hide_window_on_delete (GtkWidget * widget,
+				   GdkEvent * event,
+				   gpointer data)
+{
+	glade_util_hide_window (widget);
+	return TRUE;
+}
+
+gint
+glade_util_hide_window (GtkWidget *widget)
+{
+	gint x, y;
+	gboolean set_position = FALSE;
+
+	/* remember position of window for when it is used again */
+	if (widget->window) {
+		gdk_window_get_root_origin (widget->window, &x, &y);
+		set_position = TRUE;
+	}
+
+	gtk_widget_hide (widget);
+
+	if (set_position)
+		gtk_widget_set_uposition (widget, x, y);
+
+	return TRUE;
+}
+
+gint glade_util_check_key_is_esc (GtkWidget *widget,
+				  GdkEventKey *event,
+				  gpointer data)
+{
+	g_return_val_if_fail (GTK_IS_WINDOW (widget), FALSE);
+  
+	if (event->keyval == GDK_Escape) {
+		GladeEscAction action = GPOINTER_TO_INT (data);
+  
+		if (action == GladeEscCloses) {
+			glade_util_hide_window (widget);
+			return TRUE;
+		}
+		else if (action == GladeEscDestroys) { 
+			gtk_widget_destroy (widget);
+			return TRUE;
+		}
+		else
+			return FALSE;
+	}
+	else
+		return FALSE;
 }
