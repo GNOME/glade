@@ -6,6 +6,9 @@ bin_PROGRAMS = glade-3
 gladegtk_LTLIBRARIES = libgladegtk.la
 gladegtkdir = $(modulesdir)
 
+EXTRA_DIST = \
+             glade-marshallers.list
+
 libgladegtk_la_SOURCES = glade-gtk.c
 libgladegtk_la_LDFLAGS = -module -avoid-version
 
@@ -26,6 +29,10 @@ CFLAGS = -g -O2 -Wall
 
 glade_3_LDADD = \
 	$(GLADE_LIBS)
+
+BUILT_SOURCES = \
+        glade-marshallers.c \
+        glade-marshallers.h
 
 glade_3_SOURCES = \
 	main.c \
@@ -89,3 +96,15 @@ noinst_HEADERS = \
 	glade-transform.h \
 	glade-id-allocator.h \
 	glade-marshallers.h
+
+#
+# Marshaller generation
+#
+glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) --prefix=glade_cclosure_marshal $(srcdir)/glade-marshallers.list --header > glade-marshallers-h.tmp \
+	&& mv glade-marshallers-h.tmp glade-marshallers.h \
+	|| ( rm -f glade-marshallers-h.tmp && exit 1)
+glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) --prefix=glade_cclosure_marshal $(srcdir)/glade-marshallers.list --body > glade-marshallers-c.tmp     \
+	&& mv glade-marshallers-c.tmp glade-marshallers.c \
+	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
