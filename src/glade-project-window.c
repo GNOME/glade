@@ -43,7 +43,6 @@
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-utils.h"
-#include "glade-about.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
@@ -922,7 +921,7 @@ static void gpw_about_cb (void)
 	GtkWidget *glade_image;
 	GtkWidget *version;
 	GtkWidget *description;
-	
+
 	gpw = glade_project_window_get ();
 	about_dialog = gtk_dialog_new_with_buttons (_("About Glade"), GTK_WINDOW (gpw->window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 						    GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
