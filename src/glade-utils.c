@@ -998,12 +998,13 @@ glade_util_widget_pastable (GladeWidget *child,
  * selection (the project must have only one object selected).
  */
 void
-glade_util_paste_clipboard (GladePlaceholder *placeholder)
+glade_util_paste_clipboard (GladePlaceholder *placeholder,
+			    GladeWidget      *parent)
 {
 	GladeProject       *project = glade_default_app_get_active_project ();
 	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
-	GList              *widgets = NULL, *list;
-	GladeWidget        *widget, *parent;
+	GList              *list;
+	GladeWidget        *widget;
 
       
 	if ((list = glade_project_selection_get (project)) != NULL)
@@ -1011,29 +1012,19 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 		if (placeholder == NULL &&
 		    g_list_length (list) != 1)
 		{
-			glade_util_ui_warn (glade_default_app_get_window(),
-								_("Unable to paste to multiple widgets"));
+			glade_util_ui_warn 
+				(glade_default_app_get_window(),
+				 _("Unable to paste to multiple widgets"));
 			return;
 		}
-	}
-	else if (placeholder == NULL)
-	{
-		glade_util_ui_warn (glade_default_app_get_window (),
-							_("No target widget selected"));
-		return;
 	}
 
 	if (g_list_length (clipboard->selection) == 0)
 	{
 		glade_util_ui_warn (glade_default_app_get_window (),
-							_("No widget selected on the clipboard"));
+				    _("No widget selected on the clipboard"));
 		return;
 	}
-
-	if (placeholder)
-		parent = glade_placeholder_get_parent (placeholder);
-	else
-		parent = glade_widget_get_from_gobject (list->data);
 
 	for (list = clipboard->selection; 
 	     list && list->data; list = list->next)
@@ -1051,10 +1042,23 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 			return;
 		}
 	}
-	widgets = g_list_copy (clipboard->selection);
-	glade_command_paste (widgets, parent, placeholder);
-	g_list_free (widgets);
+	glade_command_paste (clipboard->selection, parent, placeholder);
 }
+
+
+/**
+ * glade_util_delete_clipboard:
+ *
+ * Cut the active project's selection.
+ */
+void
+glade_util_delete_clipboard (void)
+{
+	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
+
+	glade_command_delete (clipboard->selection);
+}
+
 
 /**
  * glade_util_cut_selection:

@@ -28,6 +28,7 @@
 #include "glade-clipboard-view.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
+#include "glade-popup.h"
 
 
 const gint GLADE_CLIPBOARD_VIEW_WIDTH  = 230;
@@ -151,6 +152,42 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 			      NULL);
 }
 
+static gint
+glade_clipboard_view_button_press_cb (GtkWidget          *widget,
+				      GdkEventButton     *event,
+				      GladeClipboardView *view)
+{
+	GtkTreeView      *tree_view = GTK_TREE_VIEW (widget);
+	GtkTreePath      *path      = NULL;
+	gboolean          handled   = FALSE;
+
+	if (event->window == gtk_tree_view_get_bin_window (tree_view) &&
+	    gtk_tree_view_get_path_at_pos (tree_view, event->x, event->y,
+					   &path, NULL, 
+					   NULL, NULL) && path != NULL)
+	{
+		GtkTreeIter  iter;
+		GladeWidget *widget = NULL;
+		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (view->model),
+					     &iter, path))
+		{
+			/* Alright, now we can obtain 
+			 * the widget from the iter.
+			 */
+			gtk_tree_model_get (GTK_TREE_MODEL (view->model), &iter,
+					    0, &widget, -1);
+			if (widget != NULL &&
+				    event->button == 3)
+			{
+				glade_popup_clipboard_pop (widget, event);
+				handled = TRUE;
+			}
+			gtk_tree_path_free (path);
+		}
+	}
+	return handled;
+}
+
 static void
 glade_clipboard_view_create_tree_view (GladeClipboardView *view)
 {
@@ -180,10 +217,15 @@ glade_clipboard_view_create_tree_view (GladeClipboardView *view)
 
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
 	gtk_tree_selection_set_mode (sel, GTK_SELECTION_MULTIPLE);
-
+	
 	g_signal_connect_data (G_OBJECT (sel), "changed",
 			       G_CALLBACK (glade_clipboard_view_selection_changed_cb),
 			       view, NULL, 0);
+
+	/* Popup menu */
+	g_signal_connect (G_OBJECT (view->widget), "button-press-event",
+			  G_CALLBACK (glade_clipboard_view_button_press_cb), view);
+
 }
 
 static void

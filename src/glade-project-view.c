@@ -297,10 +297,12 @@ glade_project_view_add_item (GladeProjectView *view,
 
 	/* Repopulate these children properly.
 	 */
-	if ((children = glade_widget_class_container_get_all_children
+	if (!view->is_list &&
+	    (children = glade_widget_class_container_get_all_children
 	     (widget->widget_class, widget->object)) != NULL)
 	{
-		glade_project_view_populate_model_real (model, children, &iter, TRUE);
+		glade_project_view_populate_model_real
+			(model, children, &iter, TRUE);
 		g_list_free (children);
 	}
 	
@@ -478,30 +480,26 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 	GtkTreePath      *path      = NULL;
 	gboolean          handled   = FALSE;
 
-	if (event->window == gtk_tree_view_get_bin_window (tree_view))
+	if (event->window == gtk_tree_view_get_bin_window (tree_view) &&
+	    gtk_tree_view_get_path_at_pos (tree_view, event->x, event->y,
+					   &path, NULL, 
+					   NULL, NULL) && path != NULL)
 	{
-		if (gtk_tree_view_get_path_at_pos
-		    (tree_view, event->x, event->y,
-		     &path, NULL, NULL, NULL) && path != NULL)
+		GtkTreeIter  iter;
+		GladeWidget *widget = NULL;
+		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (view->model),
+					     &iter, path))
 		{
-			GtkTreeIter  iter;
-			GladeWidget *widget = NULL;
-			if (gtk_tree_model_get_iter (GTK_TREE_MODEL (view->model),
-						     &iter, path))
+			/* Alright, now we can obtain 
+			 * the widget from the iter.
+			 */
+			gtk_tree_model_get (GTK_TREE_MODEL (view->model), &iter,
+					    WIDGET_COLUMN, &widget, -1);
+			if (widget != NULL &&
+				    event->button == 3)
 			{
-				/* Alright, now we can obtain the widget from the iter.
-				 */
-				gtk_tree_model_get (GTK_TREE_MODEL (view->model), &iter,
-						    WIDGET_COLUMN, &widget, -1);
-				if (widget != NULL)
-				{
-
-					if (event->button == 3)
-					{
-						glade_popup_widget_pop (widget, event, FALSE);
-						handled = TRUE;
-					}
-				}
+				glade_popup_widget_pop (widget, event, FALSE);
+				handled = TRUE;
 			}
 			gtk_tree_path_free (path);
 		}

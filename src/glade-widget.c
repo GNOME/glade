@@ -501,7 +501,6 @@ glade_widget_set_default_packing_properties (GladeWidget *container,
 
 	if (support) {
 		GladePropertyClass *property_class;
-		GladeProperty      *property;
 		GList              *l;
 
 		for (l = support->properties; l; l = l->next) 

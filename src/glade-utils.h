@@ -58,10 +58,12 @@ gboolean        glade_util_any_gtkcontainer_relation (GladeWidget *parent,
 gboolean        glade_util_widget_pastable       (GladeWidget *child,  
 						  GladeWidget *parent);
 
-void            glade_util_paste_clipboard       (GladePlaceholder *placeholder);
+void            glade_util_paste_clipboard       (GladePlaceholder *placeholder,
+						  GladeWidget      *parent);
 void            glade_util_cut_selection         (void);
 void            glade_util_copy_selection        (void);
 void            glade_util_delete_selection      (void);
+void            glade_util_delete_clipboard      (void);
 
 GtkTreeIter    *glade_util_find_iter_by_widget   (GtkTreeModel *model,
 						  GladeWidget  *findme,

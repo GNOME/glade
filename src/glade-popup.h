@@ -6,6 +6,7 @@ G_BEGIN_DECLS
 
 void glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add_children);
 void glade_popup_placeholder_pop (GladePlaceholder *placeholder, GdkEventButton *event);
+void glade_popup_clipboard_pop (GladeWidget *widget, GdkEventButton *event);
 
 G_END_DECLS
 

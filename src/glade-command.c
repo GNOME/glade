@@ -557,6 +557,7 @@ typedef struct {
 	
 	GList            *widgets;
 	gboolean          create;
+	gboolean          from_clipboard;
 } GladeCommandCreateDelete;
 
 GLADE_MAKE_COMMAND (GladeCommandCreateDelete, glade_command_create_delete);
@@ -575,15 +576,16 @@ glade_command_create_delete_undo (GladeCommand *cmd)
 static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
-	CommandData   *cdata;
-	GList         *list;
+	GladeClipboard   *clipboard = glade_default_app_get_clipboard();
+	CommandData      *cdata;
+	GList            *list, *wlist = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
 		cdata = list->data;
 
 		if (cdata->parent)
-	        {
+		{
 			if (cdata->placeholder)
 			{
 				glade_widget_replace
@@ -599,24 +601,41 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 					 cdata->widget->object);
 				glade_widget_set_parent (cdata->widget, cdata->parent);
 			}
+		}
+		
+		if (me->from_clipboard)
+		{
+			wlist = g_list_prepend (wlist, cdata->widget);
+		}
+		else
+		{
+			glade_project_add_object 
+				(cdata->widget->project,
+				 cdata->widget->object);
+			glade_project_selection_add
+				(cdata->widget->project, 
+				 cdata->widget->object, TRUE);
+		}
 	}
 	
-	glade_project_add_object    (cdata->widget->project, cdata->widget->object);
-	glade_project_selection_set (cdata->widget->project, cdata->widget->object, TRUE);
+	if (wlist) 
+	{
+		glade_clipboard_add (clipboard, wlist);
+		g_list_free (wlist);
+	}
 
 	if (GTK_IS_WIDGET (cdata->widget->object))
 		gtk_widget_show_all (GTK_WIDGET (cdata->widget->object));
-
-	}
-
+	
 	return TRUE;
 }
 
 static gboolean
 glade_command_delete_execute (GladeCommandCreateDelete *me)
 {
+	GladeClipboard   *clipboard = glade_default_app_get_clipboard();
 	CommandData      *cdata;
-	GList            *list;
+	GList            *list, *wlist = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
@@ -636,12 +655,27 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 								     cdata->widget->object);
 		}
 
-		glade_project_remove_object (cdata->widget->project, cdata->widget->object);
+		if (me->from_clipboard == TRUE) 
+		{
+			wlist = g_list_prepend (wlist, cdata->widget);
+		}
+		else
+		{
+			glade_project_remove_object (cdata->widget->project,
+						     cdata->widget->object);
+		}
 
 		if (GTK_IS_WIDGET (cdata->widget->object))
 			gtk_widget_hide (GTK_WIDGET (cdata->widget->object));
 		
 	}
+
+	if (wlist) 
+	{
+		glade_clipboard_remove (clipboard, wlist);
+		g_list_free (wlist);
+	}
+
 	return TRUE;
 }
 
@@ -712,13 +746,19 @@ glade_command_create_delete_collapse (GladeCommand *this, GladeCommand *other)
 void
 glade_command_delete (GList *widgets)
 {
+	GladeClipboard           *clipboard = glade_default_app_get_clipboard();
 	GladeCommandCreateDelete *me;
 	GladeWidget              *widget;
 	CommandData              *cdata;
 	GList                    *list;
 
+	g_return_if_fail (widgets != NULL);
+
  	me = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
-	me->create        = FALSE;
+	me->create         = FALSE;
+	me->from_clipboard = 
+		(g_list_find (clipboard->selection, widgets->data) != NULL);
+
 
 	/* internal children cannot be deleted. Notify the user. */
 	for (list = widgets; list && list->data; list = list->next)
@@ -1070,7 +1110,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 {
 	GladeCommandCutCopyPaste *me;
 	CommandData              *cdata;
-	GladeWidget              *widget;
+	GladeWidget              *widget = NULL;
 	GList                    *list;
 	gchar                    *fmt;
 
@@ -1095,22 +1135,25 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		fmt = (type == GLADE_CUT) ? _("Cut %s") : _("Copy %s");
 		break;
 	case GLADE_PASTE:
-		for (list = widgets; list && list->data; list = list->next)
+		if (placeholder != NULL)
 		{
-			widget = list->data;
-			if (GTK_IS_WINDOW (widget->object))
+			for (list = widgets; 
+			     list && list->data; 
+			     list = list->next)
 			{
-				glade_util_ui_warn 
-					(glade_default_app_get_window(), 
-					 _("You cannot paste a top-level "
-					   "to a placeholder."));
-				return;
+				widget = list->data;
+				if (GTK_IS_WINDOW (widget->object))
+				{
+					glade_util_ui_warn 
+						(glade_default_app_get_window(), 
+						 _("You cannot paste a top-level "
+						   "to a placeholder."));
+					return;
+				}
 			}
 		}
-
-		if (placeholder == NULL && 
-		    parent      != NULL &&
-		    glade_util_any_gtkcontainer_relation (parent, widgets))
+		else if (parent != NULL &&
+			 glade_util_any_gtkcontainer_relation (parent, widgets))
 		{
 			glade_util_ui_warn
 				(glade_default_app_get_window(), 
@@ -1118,8 +1161,23 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 				   "be pasted to a placeholder"));
 				return;
 		}
-		
-		g_return_if_fail (GLADE_IS_WIDGET (parent));
+		else if (parent == NULL)
+		{
+			for (list = widgets; 
+			     list && list->data; 
+			     list = list->next)
+			{
+				widget = list->data;
+				if (!GTK_WIDGET_TOPLEVEL (widget->object))
+				{
+					glade_util_ui_warn 
+						(glade_default_app_get_window(), 
+						 _("Only top-level widgets can be "
+						   "pasted without a parent."));
+					return;
+				}
+			}
+		}		
 		fmt = _("Paste %s");
 		break;
 	}
@@ -1131,7 +1189,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	GLADE_COMMAND (me)->description = 
 		g_strdup_printf 
 		(fmt, g_list_length (widgets) == 1 ? 
-		 widget->name : _("multiple"));
+		 GLADE_WIDGET (widgets->data)->name : _("multiple"));
 
 	for (list = widgets; list && list->data; list = list->next)
 	{

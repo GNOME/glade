@@ -525,7 +525,9 @@ glade_app_command_paste (GladeApp *app)
 {
 	if (app->priv->active_project)
 	{
-		glade_util_paste_clipboard (NULL);
+		GList *list = glade_project_selection_get (app->priv->active_project);
+
+		glade_util_paste_clipboard (NULL, list ? list->data : NULL);
 		/* Update UI. */
 		glade_app_update_ui (app);
 	}
