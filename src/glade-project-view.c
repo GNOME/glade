@@ -334,32 +334,6 @@ glade_project_view_class_init (GladeProjectViewClass *class)
 	class->selection_update = glade_project_view_selection_update;
 }
 
-static void
-glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
-				  GtkCellRenderer   *cell,
-				  GtkTreeModel      *tree_model,
-				  GtkTreeIter       *iter,
-				  gpointer           data)
-{
-	GladeWidget *widget;
-
-	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
-
-	/* The cell exists, but not widget has been asociated with it */
-	if (!widget)
-		return;
-
-	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->class != NULL);
-	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
-	g_return_if_fail (widget->class->name != NULL);
-	g_return_if_fail (widget->class->icon != NULL);
-
-	g_object_set (G_OBJECT (cell),
-		      "text", widget->name,
-		      NULL);
-}
-
 static gboolean
 glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 					 GladeProjectView  *view)
@@ -416,10 +390,64 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 }
 
 static void
-glade_project_view_init (GladeProjectView *view)
+glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
+				  GtkCellRenderer *cell,
+				  GtkTreeModel *tree_model,
+				  GtkTreeIter *iter,
+				  gpointer data)
+{
+	gboolean is_icon = GPOINTER_TO_INT (data);
+	GladeWidget *widget;
+
+	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
+
+	/* The cell exists, but not widget has been asociated with it */
+	if (!widget)
+		return;
+
+	g_return_if_fail (widget->name != NULL);
+	g_return_if_fail (widget->class != NULL);
+	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
+	g_return_if_fail (widget->class->name != NULL);
+	g_return_if_fail (widget->class->icon != NULL);
+
+	if (is_icon)
+		g_object_set (G_OBJECT (cell),
+			      "pixbuf", gtk_image_get_pixbuf (GTK_IMAGE (widget->class->icon)),
+			      NULL);
+	else
+		g_object_set (G_OBJECT (cell),
+			      "text", widget->name,
+			      NULL);
+}
+
+static void
+glade_project_view_add_columns (GtkTreeView *view)
 {
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
+
+	column = gtk_tree_view_column_new ();
+	gtk_tree_view_column_set_title (column, _("Widget"));
+
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 glade_project_view_cell_function,
+						 GINT_TO_POINTER (1), NULL);
+	
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 glade_project_view_cell_function,
+						 GINT_TO_POINTER (0), NULL);
+
+	gtk_tree_view_append_column (view, column);
+}
+
+static void
+glade_project_view_init (GladeProjectView *view)
+{
 	GtkTreeSelection *selection;
 
 	view->selected_widget = NULL;
@@ -434,10 +462,7 @@ glade_project_view_init (GladeProjectView *view)
 	/* the view now holds a reference, we can get rid of our own */
 	g_object_unref (G_OBJECT (view->model));
 
-	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Widget"), renderer, NULL);
-	gtk_tree_view_column_set_cell_data_func (column, renderer, glade_project_view_cell_function, NULL, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (view->tree_view), column);
+	glade_project_view_add_columns (GTK_TREE_VIEW (view->tree_view));
 
 	g_signal_connect (G_OBJECT (view->tree_view), "row-activated",
 			  G_CALLBACK (glade_project_view_item_activated_cb), NULL);
