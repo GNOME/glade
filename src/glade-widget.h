@@ -90,10 +90,6 @@ void glade_widget_flag_selected   (GladeWidget *widget);
 void glade_widget_flag_unselected (GladeWidget *widget);
 
 void glade_widget_select (GladeWidget *widget);
-void glade_widget_delete (GladeWidget *widget);
-void glade_widget_cut    (GladeWidget *widget);
-void glade_widget_copy   (GladeWidget *widget);
-void glade_widget_paste  (GladeWidget *widget);
 
 GladeWidget *glade_widget_clone (GladeWidget *widget);
 GladePlaceholder * glade_widget_replace_with_placeholder (GladeWidget *widget);

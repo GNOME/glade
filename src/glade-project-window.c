@@ -296,7 +296,7 @@ gpw_delete_cb (void)
 	list = g_list_copy (selection);
 	free_me = list;
 	for (; list; list = list->next)
-		glade_widget_delete (list->data);
+		glade_command_delete (list->data);
 	g_list_free (free_me);
 
 	/* Right now deleting widgets like this is not a problem, cause we

@@ -29,8 +29,8 @@ gboolean glade_placeholder_is (GtkWidget *widget);
 #endif
 
 void glade_placeholder_remove_all (GtkWidget *widget);
+
 void glade_placeholder_fill_empty (GtkWidget *widget);
-void glade_placeholder_paste_cb (GtkWidget *button, gpointer data);
 
 G_END_DECLS
 

@@ -1,3 +1,23 @@
+2003-05-11  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-command.c: fix cut & paste undo commands.  We should
+	not free the widget cutted when we destroy the cut command, as
+	we only destroy it when it's remove from the undo stack, so
+	it's undoed, and the widget is still used.
+	* src/glade-popup.c: fix the paste command when used from the
+	popup menu.  It's was putting on the undo stack the widget over
+	which we were pasting instead of the widget pasted.
+
+2003-05-09  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-popup.c: hoverhowl the popup menu so that code is 
+	saner and follows the same codepaths of Cut/Copy etc in main 
+	menu. As a nice side effect item now have icon and mnemonics.
+	* src/glade-widget.[ch]: remove remnant of the above work
+	* src/glade-placeholder.[ch]: ditto
+	* src/glade-gtk.c: update for the above
+	* src/glade-project-window.c: update for the above
+
 2003-05-08  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-project.c: fix glade_project_new_from_node so that it 

@@ -810,8 +810,13 @@ static void
 glade_command_cut_paste_finalize (GObject *obj)
 {
 	GladeCommandCutPaste *cmd = GLADE_COMMAND_CUT_PASTE (obj);
-	g_object_unref (cmd->widget);
-        glade_command_finalize (obj);
+
+	/* if a pasted item has been undoed, and now we have to forget about it,
+	 * then we should free the pasted widget (as nobody is going to use it anymore) */
+	if (!cmd->cut)
+		g_object_unref (cmd->widget);
+
+	glade_command_finalize (obj);
 }
 
 static gboolean

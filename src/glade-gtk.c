@@ -30,6 +30,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-choice.h"
+#include "glade-command.h"
 
 
 static void
@@ -230,7 +231,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 			child_property = glade_property_get_from_id (child_widget->properties, "position");
 			position = glade_property_get_integer (child_property);
 			if (position >= new_size) {
-				glade_widget_delete (child_widget);
+				glade_command_delete (child_widget);
 				gtk_container_remove (GTK_CONTAINER (box),
 						      box_child->widget);
 			}

@@ -20,58 +20,92 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
-#define GLADE_POPUP_WIDGET_POINTER "GladePopupWidgetPointer"
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
 #include "glade-placeholder.h"
+#include "glade-clipboard.h"
+#include "glade-command.h"
+#include "glade-project-window.h"
+
 
 static void
-glade_popup_menu_detach (GtkWidget *attach_widget,
-			 GtkMenu *menu)
+glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
+{
+	glade_widget_select (widget);
+}
+
+static void
+glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
+{
+	glade_command_cut (widget);
+}
+
+static void
+glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
+{
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	glade_clipboard_copy (gpw->clipboard, widget);
+}
+
+static void
+glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
+{
+	glade_implement_me ();
+	/*
+	 * look in glade-placeholder.c (glade_placeholder_on_button_press_event
+	 * for the "paste" operation code.
+	 */
+}
+
+static void
+glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
+{
+	glade_command_delete (widget);
+}
+
+static void
+glade_popup_placeholder_paste_cb (GtkMenuItem *item,
+				  GladePlaceholder *placeholder)
+{
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	if (gpw->clipboard->curr)
+		glade_command_paste (gpw->clipboard->curr, placeholder);
+}
+
+static void
+glade_popup_menu_detach (GtkWidget *attach_widget, GtkMenu *menu)
 {
 
 }
 
-static void
-glade_popup_item_activate_cb (GtkWidget *menu_item,
-			      GladeWidgetFunction function)
-{
-	GladeWidget *widget;
-
-	widget = g_object_get_data (G_OBJECT (menu_item), GLADE_POPUP_WIDGET_POINTER);
-
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (GTK_IS_WIDGET (widget->widget));
-
-	(*function) (widget);
-}
-			    
+/*
+ * If stock_id != NULL, label is ignored
+ */
 static void
 glade_popup_append_item (GtkWidget *popup_menu,
-			 GladeWidget *widget,
-			 const gchar  *label,
-			 GladeWidgetFunction function,
-			 gboolean sensitive)
+			 const gchar *stock_id,
+			 const gchar *label,
+			 gboolean sensitive,
+			 gpointer callback,
+			 gpointer data)
 {
 	GtkWidget *menu_item;
 
-	menu_item = gtk_menu_item_new_with_label (label);
+	if (stock_id != NULL)
+		menu_item = gtk_image_menu_item_new_from_stock (stock_id, NULL);
+	else
+		menu_item = gtk_menu_item_new_with_mnemonic (label);
 
-	g_object_set_data (G_OBJECT (menu_item), GLADE_POPUP_WIDGET_POINTER, widget);
-	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
-			    GTK_SIGNAL_FUNC (glade_popup_item_activate_cb),
-			    function);
+	g_signal_connect (G_OBJECT (menu_item), "activate",
+			  G_CALLBACK (callback), data);
 
 	gtk_widget_set_sensitive (menu_item, sensitive);
 	gtk_widget_show (menu_item);
-	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-			       menu_item);
+	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), menu_item);
 }
 
 static GtkWidget *
@@ -98,7 +132,6 @@ glade_popup_populate_childs(GtkWidget* popup_menu, GladeWidget* parent)
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
 				       child);
 
-			
 		parent = parent->parent;
 	}
 }
@@ -107,20 +140,19 @@ static GtkWidget *
 glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 {
 	GtkWidget *popup_menu;
-	
+
 	popup_menu = gtk_menu_new ();
 
-	glade_popup_append_item (popup_menu, widget, _("Select"),
-				 glade_widget_select, TRUE);
-	glade_popup_append_item (popup_menu, widget, _("Cut"),
-				 glade_widget_cut, TRUE);
-	glade_popup_append_item (popup_menu, widget, _("Copy"),
-				 glade_widget_copy, TRUE);
-	glade_popup_append_item (popup_menu, widget, _("Paste"),
-				 glade_widget_paste, TRUE);
-
-	glade_popup_append_item (popup_menu, widget, _("Delete"),
-				 glade_widget_delete, TRUE);
+	glade_popup_append_item (popup_menu, NULL, _("_Select"), TRUE,
+				 glade_popup_select_cb, widget);
+	glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, TRUE,
+				 glade_popup_cut_cb, widget);
+	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, TRUE,
+				 glade_popup_copy_cb, widget);
+	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
+				 glade_popup_paste_cb, widget);
+	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
+				 glade_popup_delete_cb, widget);
 
 	if (add_childs && widget->parent)
 		glade_popup_populate_childs(popup_menu, widget->parent);
@@ -132,21 +164,12 @@ static GtkWidget *
 glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 {
 	GtkWidget *popup_menu;
-	GtkWidget *menu_item;
 	GladeWidget *parent;
 	
 	popup_menu = gtk_menu_new ();
 
-	menu_item = gtk_menu_item_new_with_label (_("Paste"));
-
-	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
-			    GTK_SIGNAL_FUNC (glade_placeholder_paste_cb),
-			    placeholder);
-
-	gtk_widget_set_sensitive (menu_item, TRUE);
-	gtk_widget_show (menu_item);
-	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-			       menu_item);
+	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
+				 glade_popup_placeholder_paste_cb, placeholder);
 
 	if ((parent = glade_placeholder_get_parent(placeholder)) != NULL)
 		glade_popup_populate_childs(popup_menu, parent);
@@ -172,7 +195,8 @@ glade_popup_pop (GladeWidget *widget, GdkEventButton *event)
 }
 
 void
-glade_popup_placeholder_pop (GladePlaceholder *placeholder, GdkEventButton *event)
+glade_popup_placeholder_pop (GladePlaceholder *placeholder,
+			     GdkEventButton *event)
 {
 	GtkWidget *popup_menu;
 

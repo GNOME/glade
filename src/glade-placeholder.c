@@ -316,7 +316,9 @@ glade_placeholder_clear_selection_nodes (GladePlaceholder *placeholder)
 }
 
 static void
-glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEventButton *event, GladeProject *project)
+glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
+					 GdkEventButton *event,
+					 GladeProject *project)
 {
 	GladeProjectWindow *gpw;
 
@@ -345,7 +347,6 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 	} else if (event->button == 3) {
 		glade_popup_placeholder_pop (placeholder, event);
 	}
-			
 }
 
 static void
@@ -616,7 +617,7 @@ glade_placeholder_remove_all (GtkWidget *widget)
 			if (glade_placeholder_is (box_child->widget)) {
 				child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
 				if (child_widget)
-                                	glade_widget_delete (child_widget);
+                                	glade_command_delete (child_widget);
 	               	        gtk_container_remove (GTK_CONTAINER (box),
                         	                      box_child->widget);
 				element = g_list_first (box->children);
@@ -640,7 +641,7 @@ glade_placeholder_remove_all (GtkWidget *widget)
 				if (glade_placeholder_is (box_child->widget)) {
 					child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
 					if (child_widget)
-						glade_widget_delete (child_widget);
+						glade_command_delete (child_widget);
 					gtk_container_remove (GTK_CONTAINER (box),
 					box_child->widget);
 					element = g_list_first (box->children);
@@ -660,7 +661,7 @@ glade_placeholder_remove_all (GtkWidget *widget)
 			if (glade_placeholder_is (table_child->widget)) {
 				child_widget = glade_widget_get_from_gtk_widget (table_child->widget);
 				if (child_widget)
-					glade_widget_delete (child_widget);
+					glade_command_delete (child_widget);
 				gtk_container_remove (GTK_CONTAINER (widget),
 						      table_child->widget);
 				element = g_list_first (GTK_TABLE (widget)->children);
@@ -794,16 +795,3 @@ glade_placeholder_fill_empty (GtkWidget *widget)
 	}
 }
 
-void
-glade_placeholder_paste_cb (GtkWidget *button, gpointer data)
-{
-	GladeProjectWindow *gpw;
-
-	gpw = glade_project_window_get ();
-
-	/*
-	 * The data parameter is the placeholder we have to replace with the
-	 * widget.
-	 */
-	glade_command_paste (gpw->active_widget, GTK_WIDGET (data));
-}

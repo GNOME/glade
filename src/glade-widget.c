@@ -253,7 +253,9 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
  * Return Value: 
  **/
 static gboolean
-glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpointer not_used)
+glade_widget_button_press (GtkWidget *event_widget,
+			   GdkEventButton *event,
+			   gpointer not_used)
 {
 	GladeProjectWindow *gpw;
 	GladeWidget *glade_widget;
@@ -540,14 +542,14 @@ glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer use
 		project = glade_widget->project;
 		g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
-		/* The selection value changes when we do glade_widget_delete,
+		/* The selection value changes when we do glade_command_delete,
 		   so if we just try to follow selection->next after the
-		   glade_widget_delete, we are going directly to a segfault (if lucky) */
+		   glade_command_delete, we are going directly to a segfault (if lucky) */
 		while ((selection = glade_project_selection_get(project)) != NULL) {
 			g_return_val_if_fail (selection->data != NULL, FALSE);
 
 			glade_widget = GLADE_WIDGET (selection->data);
-			glade_widget_delete (glade_widget);
+			glade_command_delete (glade_widget);
 		}
 	}
 
@@ -1093,14 +1095,11 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
 	glade_project_widget_name_changed (widget->project, widget);
 }
 
-
-
 void
 glade_widget_select (GladeWidget *widget)
 {
 	glade_project_selection_set (widget, TRUE);
 }
-
 
 static void
 glade_widget_clear_draw_selection (GladeWidget *widget)
@@ -1225,46 +1224,6 @@ glade_widget_replace_with_placeholder (GladeWidget *widget)
 
 	/* Return the placeholder, if some one needs it, he can use it. */
 	return placeholder;
-}
-
-void
-glade_widget_delete (GladeWidget *widget)
-{
-	g_return_if_fail (widget != NULL);
-	glade_command_delete (widget);
-}
-
-void
-glade_widget_cut (GladeWidget *widget)
-{
-	GladeProjectWindow *gpw;
-	GladeClipboard *clipboard;
-
-	gpw = glade_project_window_get ();
-	clipboard = gpw->clipboard;
-	glade_command_cut (widget);
-}
-
-void
-glade_widget_copy (GladeWidget *widget)
-{
-	GladeProjectWindow *gpw;
-	GladeClipboard *clipboard;
-
-	gpw = glade_project_window_get ();
-	clipboard = gpw->clipboard;
-
-	glade_clipboard_copy (clipboard, widget);
-}
-
-void
-glade_widget_paste (GladeWidget *widget)
-{
-	glade_implement_me ();
-	/*
-	 * look in glade-placeholder.c (glade_placeholder_on_button_press_event
-	 * for the "paste" operation code.
-	 */
 }
 
 /**
