@@ -198,12 +198,13 @@ static GtkItemFactoryEntry menu_items[] =
 {
   /* ============ FILE ===================== */
   { "/_File",            NULL,         0,              0, "<Branch>" },
-  { "/File/_New",        "<control>N", gpw_new_cb,     0, "<StockItem>", GTK_STOCK_NEW },
-  { "/File/_Open",       "<control>O", gpw_open_cb,    0, "<StockItem>", GTK_STOCK_OPEN },
-  { "/File/_Save",       "<control>S", gpw_save_cb,    0, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/Save _As...", NULL,         gpw_save_as_cb, 0, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/sep1",        NULL,         NULL,           0, "<Separator>" },
-  { "/File/_Quit",       "<control>Q", gpw_quit_cb,    0, "<StockItem>", GTK_STOCK_QUIT },
+  { "/File/_New",        "<control>N",        gpw_new_cb,     0, "<StockItem>", GTK_STOCK_NEW },
+  { "/File/_Open",       "<control>O",        gpw_open_cb,    0, "<StockItem>", GTK_STOCK_OPEN },
+  { "/File/_Save",       "<control>S",        gpw_save_cb,    0, "<StockItem>", GTK_STOCK_SAVE },
+  { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 0, "<StockItem>", GTK_STOCK_SAVE_AS },
+  { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
+  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    0, "<StockItem>", GTK_STOCK_QUIT },
+
 
   /* ============ EDIT ===================== */
   { "/Edit",        NULL, 0, 0, "<Branch>" },
@@ -437,25 +438,6 @@ gpw_hide_editor (GladeProjectWindow *gpw)
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 }
 
-static gboolean 
-gpw_key_press_widget_tree_cb (GtkWidget *widget_tree, GdkEventKey *event,
-		GtkItemFactory *item_factory)
-{
-
-	GtkWidget *widget_tree_item;
-
-	if (event->keyval == GDK_Escape) {
-		gtk_widget_hide (widget_tree);
-		widget_tree_item = gtk_item_factory_get_item (item_factory,
-							      "<main>/View/Widget Tree");
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item),
-						FALSE);
-
-		return TRUE;
-	}
-	return FALSE;
-}
-
 static gboolean
 gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
 		GtkItemFactory *item_factory)
@@ -488,8 +470,6 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	glade_project_view_set_project (view, gpw->project);
 	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
 			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->item_factory);
-	g_signal_connect (G_OBJECT (widget_tree), "key_press_event",
-			  G_CALLBACK (gpw_key_press_widget_tree_cb), gpw->item_factory);
 
 	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
 						      "<main>/View/Widget Tree");
