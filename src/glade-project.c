@@ -517,7 +517,7 @@ glade_project_write (GladeXmlContext *context, const GladeProject *project)
  * @project: 
  * @file_name: 
  * 
- * Save a proejct
+ * Save a project
  * 
  * Return Value: TRUE on success, FALSE otherwise
  **/
@@ -529,9 +529,6 @@ glade_project_save_to_file (GladeProject *project,
 	GladeXmlNode *root;
 	GladeXmlDoc *xml_doc;
 	gboolean ret;
-
-	if (!glade_util_path_is_writable (full_path))
-		return FALSE;
 
 	xml_doc = glade_xml_doc_new ();
 	if (xml_doc == NULL) {

@@ -27,14 +27,6 @@
 #include "glade-project-window.h"
 
 
-gboolean
-glade_util_path_is_writable (const gchar *full_path)
-{
-	glade_implement_me ();
-
-	return TRUE;
-}
-
 void
 glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 {
