@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /* This functions are based on gnome-print/libgpa/gpa-xml.c which where in turn based on
- * gnumeric/xml-io.c  */
+ * gnumeric/xml-io.c
+ */
 /* Authors:
  *   Daniel Veillard <Daniel.Veillard@w3.org>
  *   Miguel de Icaza <miguel@gnu.org>
@@ -10,7 +11,6 @@
 #include <glib.h>
 
 #include "glade-xml-utils.h"
-
 
 /*
  * Set a string value for a node either carried as an attibute or as
@@ -195,6 +195,8 @@ glade_xml_get_boolean (xmlNodePtr node, const char *name)
 
 	return ret;
 }
+#undef GLADE_TAG_TRUE
+#undef GLADE_TAG_FALSE
 
 gchar *
 glade_xml_get_value_string_required (xmlNodePtr node, const char *name, const char *xtra)

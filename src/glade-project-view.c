@@ -27,11 +27,8 @@
 
 enum
 {
-	ITEM_SELECTED,
 	LAST_SIGNAL
 };
-
-static guint glade_project_view_signals [LAST_SIGNAL] = {0};
 
 static GtkObject *parent_class = NULL;
 
@@ -234,7 +231,7 @@ glade_project_view_add_item (GladeProjectView *view,
 			    WIDGET_COLUMN, widget,
 			    -1);
 
-	glade_project_view_select_item (view, widget);
+	glade_project_selection_set (view->project, widget, TRUE);
 }      
 
 
@@ -247,15 +244,8 @@ glade_project_view_class_init (GladeProjectViewClass * gpv_class)
 
 	parent_class = gtk_type_class (gtk_object_get_type ());
 
-	glade_project_view_signals [ITEM_SELECTED] =
-		gtk_signal_new ("item_selected",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE(object_class),
-				GTK_SIGNAL_OFFSET (GladeProjectViewClass, item_selected),
-				gtk_marshal_NONE__POINTER,
-				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
-	gpv_class->item_selected = NULL;
+#warning FIXME, revisit
+	
 	gpv_class->add_item      = glade_project_view_add_item;
 	gpv_class->set_project   = glade_project_view_set_project;
 	gpv_class->widget_name_changed = glade_project_view_widget_name_changed;
@@ -283,8 +273,8 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 }
 
 static gboolean
-glade_project_view_select_item_cb (GtkTreeSelection *selection,
-				   GladeProjectView  *view)
+glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
+					 GladeProjectView  *view)
 {
 	GtkTreeModel *model;
 	GladeWidget *widget;
@@ -308,7 +298,7 @@ glade_project_view_select_item_cb (GtkTreeSelection *selection,
 	if (widget == NULL)
 		return TRUE;
 
-	glade_project_view_select_item (view, widget);
+	glade_project_selection_set (view->project, widget, TRUE);
 
 	return TRUE;
 }
@@ -339,7 +329,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
 	g_signal_connect_data (G_OBJECT (selection),
-			       "changed", GTK_SIGNAL_FUNC (glade_project_view_select_item_cb),
+			       "changed", GTK_SIGNAL_FUNC (glade_project_view_selection_changed_cb),
 			       view, NULL, FALSE, FALSE);
 
 	gtk_widget_set_usize (widget, 272, 130);
@@ -367,8 +357,12 @@ glade_project_view_init (GladeProjectView * view)
 }
 
 void
-glade_project_view_select_item (GladeProjectView *view, GladeWidget *item)
+glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
 {
+	glade_project_selection_clear (view->project, FALSE);
+
+	g_print ("Do something\n");
+#if 0	
 	if (view->selected_widget == item)
 		return;
 
@@ -376,6 +370,7 @@ glade_project_view_select_item (GladeProjectView *view, GladeWidget *item)
 
 	gtk_signal_emit (GTK_OBJECT (view),
 			 glade_project_view_signals [ITEM_SELECTED], item);
+#endif	
 }
 
 

@@ -24,6 +24,7 @@
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
+#include "glade-widget.h"
 
 static void glade_project_class_init (GladeProjectClass * klass);
 static void glade_project_init (GladeProject *project);
@@ -34,6 +35,7 @@ enum
 	ADD_WIDGET,
 	REMOVE_WIDGET,
 	WIDGET_NAME_CHANGED,
+	SELECTION_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -96,10 +98,18 @@ glade_project_class_init (GladeProjectClass * klass)
 				GTK_SIGNAL_OFFSET (GladeProjectClass, widget_name_changed),
 				gtk_marshal_NONE__POINTER,
 				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	glade_project_signals[SELECTION_CHANGED] =
+		gtk_signal_new ("selection_changed",
+				GTK_RUN_LAST,
+				GTK_CLASS_TYPE (object_class),
+				GTK_SIGNAL_OFFSET (GladeProjectClass, selection_changed),
+				gtk_marshal_VOID__VOID,
+				GTK_TYPE_NONE, 0);
 	
 	klass->add_widget = NULL;
 	klass->remove_widget = NULL;
 	klass->widget_name_changed = NULL;
+	klass->selection_changed = NULL;
 	
 	object_class->destroy = glade_project_destroy;
 }
@@ -110,6 +120,7 @@ glade_project_init (GladeProject * project)
 {
 	project->name = NULL;
 	project->widgets = NULL;
+	project->selection = NULL;
 }
 
 static void
@@ -183,3 +194,116 @@ glade_project_get_active (void)
 		
 	return gpw->project;
 }
+
+/**
+ * glade_widget_get_by_name:
+ * @project: The project in which to look for
+ * @name: The user visible name of the widget we are looking for
+ * 
+ * Finds a GladeWidget inside a project given its name
+ * 
+ * Return Value: a pointer to the wiget, NULL if the widget does not exist
+ **/
+GladeWidget *
+glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
+{
+	GladeWidget *widget;
+	GList *list;
+
+	g_return_val_if_fail (name != NULL, NULL);
+	
+	list = project->widgets;
+	
+	for (; list != NULL; list = list->next) {
+		widget = list->data;
+		g_return_val_if_fail (widget->name != NULL, NULL);
+		if (strcmp (widget->name, name) == 0)
+			return widget;
+	}
+
+	return NULL;
+}
+
+void
+glade_project_selection_changed (GladeProject *project)
+{
+	gtk_signal_emit (GTK_OBJECT (project),
+			 glade_project_signals [SELECTION_CHANGED]);
+}
+
+void
+glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
+{
+	GladeWidget *widget;
+	GList *list;
+	
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	if (project->selection == NULL)
+		return;
+
+	list = project->selection;
+	for (; list != NULL; list = list->next) {
+		widget = list->data;
+		glade_widget_unselect (widget);
+	}
+	
+	g_list_free (project->selection);
+	project->selection = NULL;
+
+	if (emit_signal)
+		glade_project_selection_changed (project);
+}
+	
+void
+glade_project_selection_remove (GladeProject *project, GladeWidget *widget,
+				gboolean emit_signal)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET  (widget));
+
+	if (!widget->selected)
+		return;
+
+	glade_widget_unselect (widget);
+		
+	project->selection = g_list_remove (project->selection, widget);
+
+	if (emit_signal)
+		glade_project_selection_changed (project);
+}
+
+void
+glade_project_selection_add (GladeProject *project, GladeWidget *widget,
+			     gboolean emit_signal)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET  (widget));
+
+	if (widget->selected)
+		return;
+	
+	project->selection = g_list_prepend (project->selection, widget);
+	glade_widget_select (widget);
+
+	if (emit_signal)
+		glade_project_selection_changed (project);
+}
+
+void
+glade_project_selection_set (GladeProject *project, GladeWidget *widget,
+			     gboolean emit_signal)
+{
+	GList *list;
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET  (widget));
+
+	list = project->selection;
+	/* Check if the selection is different than what we have */
+	if ((list) && (list->next == NULL) && (list->data == widget))
+	    return;
+	    
+	glade_project_selection_clear (project, FALSE);
+	glade_project_selection_add   (project, widget, emit_signal);
+}	
+

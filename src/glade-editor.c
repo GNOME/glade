@@ -95,7 +95,6 @@ glade_editor_class_init (GladeEditorClass * klass)
 				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
 	klass->select_item = glade_editor_select_item_real;
-
 }
 
 static gint

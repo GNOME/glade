@@ -1,5 +1,4 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-
 #ifndef __GLADE_PROPERTY_CLASS_H__
 #define __GLADE_PROPERTY_CLASS_H__
 
@@ -22,7 +21,7 @@ typedef enum {
  * make are a GladeProperty (except for the widget name)
  * GladeProperties can be of any type of GladePropertyType
 
- Example xml
+ Sample xml
  
  Integer Type : (float is very similar)
 

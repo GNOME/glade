@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #if 0
 #include <gnome.h>
 #else
@@ -46,3 +47,4 @@ gchar * _ (gchar * name);
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
 
+#define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"

@@ -5,6 +5,7 @@
 G_BEGIN_DECLS
 
 #define GLADE_WIDGET(w) ((GladeWidget *)w)
+#define GLADE_IS_WIDGET(w) (w != NULL)
 
 /* A GladeWidget is an instance of a GladeWidgetClass. For every widget
  * in the project there is a GladeWidget
@@ -45,6 +46,8 @@ struct _GladeWidget {
 			      */
 	GList *children;     /* A list of GladeWidget childrens of this widget.
 			      */
+
+	gboolean selected;
 };
 
 
@@ -59,6 +62,9 @@ GladeProperty *    glade_widget_get_property_from_class (GladeWidget *widget,
 							 GladePropertyClass *property_class);
 
 void glade_widget_set_name (GladeWidget *widget, const gchar *name);
+
+void glade_widget_unselect (GladeWidget *widget);
+void glade_widget_select (GladeWidget *widget);
 
 G_END_DECLS
 

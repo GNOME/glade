@@ -145,8 +145,11 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 
 	gpw = glade_project_window_get ();
 	
-	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL)
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL) {
 		glade_placeholder_replace_widget (placeholder, gpw->add_class);
+		gpw->add_class = NULL;
+	}
+			
 }
 
 static void
@@ -155,7 +158,7 @@ glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder, GdkEven
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	
+
 	if (gpw->add_class == NULL)
 		glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
 	else

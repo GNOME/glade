@@ -1,25 +1,4 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
- * Copyright (C) 2001 Ximian, Inc.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
- *
- * Authors:
- *   Chema Celorio <chema@celorio.com>
- */
-
 #ifndef __GLADE_PROJECT_H__
 #define __GLADE_PROJECT_H__
 
@@ -52,18 +31,28 @@ struct _GladeProject
 	GList *widgets; /* A list of GladeWidgets that make up this project.
 			 * The widgets are stored in no particular order.
 			 */
+#if 0
+	/* Not yet used */
+	GList *views;
+#endif	
+	GList *selection; /* We need to keep the selection in the project
+			   * because we have multiple projects and when the
+			   * user switchs between them, he will probably
+			   * not want to loose the selection
+			   */
 };
 
 struct _GladeProjectClass
 {
 	GtkObjectClass parent_class;
 
-	void   (*add_widget)          (GladeProject   *project,
-				       GladeWidget    *widget);
-	void   (*remove_widget)       (GladeProject   *project,
-				       GladeWidget    *widget);
-	void   (*widget_name_changed) (GladeProject   *project,
-				       GladeWidget    *widget);
+	void   (*add_widget)          (GladeProject *project,
+				       GladeWidget  *widget);
+	void   (*remove_widget)       (GladeProject *project,
+				       GladeWidget  *widget);
+	void   (*widget_name_changed) (GladeProject *project,
+				       GladeWidget  *widget);
+	void   (*selection_changed)   (GladeProject *project); 
 };
 
 
@@ -74,9 +63,18 @@ GladeProject * glade_project_new (void);
 void glade_project_add_widget (GladeProject  *project,
 			       GladeWidget *glade_widget);
 
+GladeWidget * glade_project_get_widget_by_name (GladeProject *project, const gchar *name);
+
 void glade_project_widget_name_changed (GladeProject *project,
 					GladeWidget *widget);
+
+/* Selection */
+void glade_project_selection_set    (GladeProject *project, GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_add    (GladeProject *project, GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_remove (GladeProject *project, GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_clear  (GladeProject *project, gboolean emit_signal);
 
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */
+

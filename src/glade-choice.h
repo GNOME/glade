@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_CHOICE_H__
 #define __GLADE_CHOICE_H__
 

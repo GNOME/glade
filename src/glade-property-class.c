@@ -157,7 +157,7 @@ glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
 	gint i;
 
 	glade_property_class_get_specs (class, &specs, &n_specs);
-	
+
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
 

@@ -225,23 +225,6 @@ glade_project_window_get ()
 }
 
 static void
-glade_project_window_selection_changed (GladeProjectView *view, GladeWidget *component, GladeProjectWindow *gpw)
-{
-	GladeWidget *glade_widget;
-
-	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
-
-	glade_widget = view->selected_widget;
-
-	g_return_if_fail (gpw != NULL);
-	g_return_if_fail (gpw->editor != NULL);
-	g_return_if_fail (GLADE_IS_EDITOR (gpw->editor));
-
-	glade_editor_select_widget (gpw->editor, glade_widget);
-}
-
-
-static void
 glade_project_window_set_view (GladeProjectWindow *gpw, GladeProjectView *view)
 {
 	if (gpw->active_view == view)
@@ -252,8 +235,6 @@ glade_project_window_set_view (GladeProjectWindow *gpw, GladeProjectView *view)
 	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
 				     glade_project_view_get_widget (view));
 
-	gtk_signal_connect (GTK_OBJECT (view), "item_selected",
-			    GTK_SIGNAL_FUNC (glade_project_window_selection_changed), gpw);
 }
 
 GladeProjectWindow *
@@ -297,6 +278,27 @@ gpw_show_editor_cb (void)
 	glade_editor_show (gpw);
 }
 
+static void
+glade_project_window_selection_changed_cb (GladeProject *project,
+					   GladeProjectWindow *gpw)
+{
+	GList *list;
+	gint num;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
+
+	if (gpw->editor) {
+		list = project->selection;
+		num = g_list_length (list);
+		if (num == 1)
+			glade_editor_select_widget (gpw->editor, list->data);
+		else
+			glade_editor_select_widget (gpw->editor, NULL);
+	}
+
+}
+
 void
 glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project)
 {
@@ -319,7 +321,10 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 		glade_project_view_set_project (view, project);
 	}
 
-	
+	gpw->project_selection_changed_signal =
+		gtk_signal_connect (GTK_OBJECT (project), "selection_changed",
+				    GTK_SIGNAL_FUNC (glade_project_window_selection_changed_cb),
+				    gpw);
 }
 
 static void
@@ -479,3 +484,5 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 	
 	return FALSE;
 }
+
+

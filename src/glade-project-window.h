@@ -1,26 +1,10 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*  Gtk+ User Interface Builder
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
 #ifndef __GLADE_PROJECT_WINDOW_H__
 #define __GLADE_PROJECT_WINDOW_H__
 
 G_BEGIN_DECLS
 
+#define GLADE_IS_PROJECT_WINDOW(o) (o != NULL)
 /* A GladeProjectWindow specifies a loaded glade application.
  * it contains pointers to all the components that make up
  * the running app. This is (well should be) the only global
@@ -54,6 +38,7 @@ struct _GladeProjectWindow
 	GList *views;  /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
 
+	guint project_selection_changed_signal;
 };
 
 
