@@ -1,3 +1,14 @@
+2001-08-29  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* autogen.sh:
+	* configure.in:
+	* Makefile.am: Modified to use the new GNOME 2.0 config stuff.
+	* src/glade.h: Removed a dup "#include <libintl.h>"
+	* src/main.c: Moved the NLS stuff to be the first at main()
+	and added setlocale (LC_ALL, ""); before the bindtextdomain call
+	Now the l10n works!!!! Thanks Martin for your comments ;-)
+	* src/Makefile.am: popt is checked at configure.in
+
 2001-08-28  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-placeholder.c (glade_placeholder_add_with_result): rewrite

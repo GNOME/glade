@@ -4,21 +4,20 @@ SUBDIRS=
 bin_PROGRAMS = glade2
 
 INCLUDES = \
-	-DGLADE_LOCALE_DIR=\""$(datadir)/locale"\" \
+	-I$(top_srcdir) \
+	-I$(top_builddir) \
 	$(GLADE_CFLAGS) \
-	-I$(top_srcdir)/intl \
-	-I$(top_builddir)/intl
+	-DGLADE_LIBDIR=\""$(libdir)"\" \
+	-DGLADE_DATADIR=\""$(datadir)"\" \
+	-DGLADE_BINDIR=\""$(bindir)"\" \
+	-DGLADE_LOCALSTATEDIR=\""$(localstatedir)"\" \
+	-DGLADE_LOCALEDIR=\""$(datadir)/locale"\" \
+	-DG_LOG_DOMAIN=\"Glade\"
 
 CFLAGS = -g -O2 -Wall
 
 glade2_LDADD = \
-	$(GLADE_LIBS) \
-	$(INTLLIBS) \
-	-lpopt
-## FIXME popt should be added in configure.in and checked for
-
-glade2_DEPENDENCIES = \
-	$(INTLLIBS)
+	$(GLADE_LIBS)
 
 glade2_SOURCES = \
 	main.c \

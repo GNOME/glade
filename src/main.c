@@ -101,22 +101,23 @@ main (int argc, char *argv[])
 	poptContext popt_context;
 	GList *files;
 
+#ifdef ENABLE_NLS
+	setlocale (LC_ALL, "");
+	bindtextdomain (PACKAGE, GLADE_LOCALEDIR);
+	textdomain (PACKAGE);
+#if 0
+	g_print ("textdomain %s\n", PACKAGE);
+	g_print ("localedir  %s\n", GLADE_LOCALEDIR);
+	g_print (_("Translate me\n"));
+#endif
+#endif
+						
 	popt_context = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
 
 	gtk_init (&argc, &argv);
 	
-#ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, GLADE_LOCALE_DIR);
-	textdomain (PACKAGE);
-#if 0	
-	g_print ("textdomain %s\n", PACKAGE);
-	g_print ("localedir  %s\n", GLADE_LOCALE_DIR);
-	g_print (_("Translate me\n"));
-#endif
-#endif
-
 	if (!glade_init ())
 		return -1;
 

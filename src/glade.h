@@ -3,7 +3,6 @@
 #define __GLADE_H__
 
 #include <gtk/gtk.h>
-#include <libintl.h>
 
 /* Borrow from libgnome/libgnome.h */
 #ifdef ENABLE_NLS

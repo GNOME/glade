@@ -6,7 +6,6 @@
 #undef PACKAGE
 #undef VERSION
 #undef GLADE_DEBUG
-#undef GLADE_LOCALE_DIR
 #undef GLADE_DATA_DIR
 #undef USE_GNOME
 #undef USE_GNOME_DB
