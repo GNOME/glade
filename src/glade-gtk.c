@@ -238,6 +238,63 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size));
 }
 
+static void
+glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
+{
+	GtkNotebook *notebook;
+
+	g_value_reset (value);
+
+	notebook = GTK_NOTEBOOK (object);
+	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
+
+	g_value_set_int (value, g_list_length (notebook->children));
+}
+
+static void
+glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
+{
+	GladeWidget *widget;
+	GtkNotebook *notebook;
+	gint new_size;
+	gint old_size;
+
+	notebook = GTK_NOTEBOOK (object);
+	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
+
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (notebook));
+	g_return_if_fail (widget != NULL);
+
+	old_size = g_list_length (notebook->children);
+	new_size = g_value_get_int (value);
+
+	if (new_size == old_size)
+		return;
+
+	if (new_size > old_size) {
+		/* The notebook has grown. Add a page. */
+		while (new_size > old_size) {
+			GladePlaceholder *placeholder = glade_placeholder_new ();
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+						  GTK_WIDGET (placeholder),
+						  NULL);
+			old_size++;
+		}
+	} else {/* new_size < old_size */
+		/* The notebook has shrunk. Remove pages  */
+		while (old_size > new_size) {
+			/*
+			 * This is broken, we should also remove the widgets that
+			 * are in the page from the project!
+			 */
+#if 0
+			gtk_notebook_remove_page (GTK_NOTEBOOK (notebook), old_size);
+#endif
+			old_size--;
+		}
+	}
+}
+
 #if 0
 /* This code is working but i don't think we need it. Chema */
 static void
@@ -526,6 +583,9 @@ GladeGtkFunction functions [] = {
 	GLADE_NEW_FUNCTION(glade_gtk_box_set_size),
 	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_set_tooltip),
 	GLADE_NEW_EMPTY_FUNCTION(ignore), /* For example for gtkwindow::modal, we want to ignore the set */
+
+	GLADE_NEW_FUNCTION(glade_gtk_notebook_get_n_pages),
+	GLADE_NEW_FUNCTION(glade_gtk_notebook_set_n_pages),
 
 	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_max),
 	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_min),

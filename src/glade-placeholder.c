@@ -129,20 +129,24 @@ glade_placeholder_replace_notebook (GtkWidget *current,
 	}
 
 	page = gtk_notebook_get_nth_page (notebook, page_num);
-	label = gtk_notebook_get_tab_label (notebook, current);
-	
 	gtk_widget_ref (page);
-	gtk_widget_ref (label);
+
+	label = gtk_notebook_get_tab_label (notebook, current);
+
+	/* label may be NULL if the label was not set explicitely;
+	 * we probably sholud always craete our GladeWidget label
+	 * and add set it as tab label, but at the moment we don't.
+	 */
+	if (label)
+		gtk_widget_ref (label);
 
 	gtk_notebook_remove_page (notebook, page_num);
-	gtk_notebook_insert_page (notebook, new,
-				  label, page_num);
-	gtk_notebook_set_tab_label (notebook,
-				    new,
-				    label);
-	
-	gtk_widget_unref (label);
+	gtk_notebook_insert_page (notebook, new, label, page_num);
+	gtk_notebook_set_tab_label (notebook, new, label);
+
 	gtk_widget_unref (page);
+	if (label)
+		gtk_widget_unref (label);
 
 	gtk_notebook_set_current_page (notebook, page_num);
 }
