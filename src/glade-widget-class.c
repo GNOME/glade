@@ -258,7 +258,12 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 	class->pixmap = gdk_pixmap_colormap_create_from_xpm (NULL, gtk_widget_get_colormap (GTK_WIDGET (widget)),
 							     &class->mask, NULL, full_path);
 
-	gtk_widget_unref (widget);
+	/* This one is a special case, we create a widget and not add it
+	 * in any container so its float reference is never removed, so
+	 * to destroy de object we only need to remove this floating ref
+	 */
+	gtk_object_sink (GTK_OBJECT(widget));
+/*	gtk_widget_unref (widget);*/
 	g_free (full_path);
 	
 	return TRUE;

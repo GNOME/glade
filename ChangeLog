@@ -1,3 +1,10 @@
+2001-11-26  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-widget-class.c (glade_widget_class_create_pixmap): Fixed
+	the warning about floating references. We free the GtkButton with 
+	gtk_object_sink and not with gtk_widget_unref because this widget
+	is never inserted into a container widget.
+
 2001-11-24  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* src/glade-property-class.c: The answer is... My patch sucks!!!
