@@ -417,10 +417,11 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 		if (last != spec->owner_type)
 			g_ok_print ("\n                    --  %s -- \n",
 				 g_type_name (spec->owner_type));
-		g_ok_print ("%02d - %-25s %s\n",
+		g_ok_print ("%02d - %-25s %-25s (%s)\n",
 			 i,
 			 spec->name,
-			 g_type_name (spec->value_type));
+			 g_type_name (spec->value_type),
+			 (spec->flags & G_PARAM_WRITABLE) ? "Writable" : "ReadOnly");
 		last = spec->owner_type;
 	}
 	g_ok_print ("\n");
