@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade2\n"
-"POT-Creation-Date: 2001-12-21 18:18+0200\n"
+"POT-Creation-Date: 2005-02-28 12:26-0500\n"
 "PO-Revision-Date: 2001-12-21 18:18+0200\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -13,167 +13,485 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glade2.desktop.in.h:1
-msgid "GTK+ GUI builder"
-msgstr "Конструктор ГІК GTK+"
-
-#: glade2.desktop.in.h:2
-msgid "Glade"
-msgstr "Glade"
-
-#: src/main.c:73
-msgid ""
-"gmodule support not found. gmodule support is requiered for glade to work"
+#: glade-3.desktop.in.h:1
+msgid "Design user interfaces"
 msgstr ""
 
-#: src/glade-editor.c:144
-msgid "Properties"
-msgstr "Властивості"
+#: glade-3.desktop.in.h:2
+#, fuzzy
+msgid "Glade 3.0 GUI builder"
+msgstr "Конструктор ГІК GTK+"
 
-#: src/glade-editor.c:149 src/glade-project-view.c:472
-msgid "Widget"
-msgstr "Віджет"
+#: src/main.c:50
+msgid ""
+"dump the properties of a widget. --dump [gtk type] where type can be "
+"GtkWindow, GtkLabel etc."
+msgstr ""
 
-#: src/glade-editor.c:150
+#: src/main.c:53
+msgid "be verbose."
+msgstr ""
+
+#: src/main.c:60
+msgid "Help options:"
+msgstr ""
+
+#: src/main.c:94
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+
+#: src/main.c:118
+#, fuzzy
+msgid "Glade-3 GUI Builder"
+msgstr "Конструктор ГІК GTK+"
+
+#: src/glade-editor.c:98
+msgid "General"
+msgstr ""
+
+#: src/glade-editor.c:99
 msgid "Packing"
 msgstr ""
 
-#: src/glade-editor.c:151
+#: src/glade-editor.c:100
 msgid "Common"
 msgstr ""
 
-#: src/glade-editor.c:152 src/glade-signal-editor.c:90
+#: src/glade-editor.c:101
 msgid "Signals"
 msgstr "Сиґнали"
 
-#: src/glade-editor.c:557 src/glade-signal-editor.c:238
-#: src/glade-signal-editor.c:277 src/glade-signal-editor.c:590
+#: src/glade-editor.c:530
+msgid "Set Flags"
+msgstr ""
+
+#: src/glade-editor.c:670
+msgid "Edit Text Property"
+msgstr ""
+
+#. Text
+#: src/glade-editor.c:687
+msgid "_Text:"
+msgstr ""
+
+#: src/glade-editor.c:723
+msgid "T_ranslatable"
+msgstr ""
+
+#: src/glade-editor.c:730
+msgid "Has context _prefix"
+msgstr ""
+
+#. Comments.
+#: src/glade-editor.c:738
+msgid "Co_mments for translators:"
+msgstr ""
+
+#: src/glade-editor.c:1006
 msgid "No"
 msgstr "Ні"
 
 #. Name
-#: src/glade-editor.c:661
+#: src/glade-editor.c:1156
 msgid "Name :"
 msgstr "Назва: "
 
 #. Class
-#: src/glade-editor.c:674
+#: src/glade-editor.c:1179
 msgid "Class :"
 msgstr "Клас: "
 
-#: src/glade-palette.c:276
-msgid "Palette"
-msgstr "Палітра"
+#: src/glade-editor.c:1300
+msgid "Edit Menus..."
+msgstr ""
 
-#: src/glade-popup.c:83
-msgid "Select"
+#: src/glade-editor.c:1871
+#, c-format
+msgid "Create a %s"
+msgstr ""
+
+#. the label defaults to "Selector"
+#: src/glade-palette.c:106 src/glade-palette.c:154 src/glade-palette.c:160
+#, fuzzy
+msgid "Selector"
 msgstr "Вибрати"
 
-#: src/glade-popup.c:85
-msgid "Cut"
-msgstr "Вирізати"
+#: src/glade-popup.c:221
+#, fuzzy
+msgid "_Select"
+msgstr "Вибрати"
 
-#: src/glade-popup.c:87
-msgid "Copy"
-msgstr "Скопіювати"
+#: src/glade-project-view.c:561
+msgid "Widget"
+msgstr "Віджет"
 
-#: src/glade-popup.c:89
-msgid "Paste"
-msgstr "Вставити"
+#: src/glade-project-window.c:125
+#, fuzzy
+msgid "Open..."
+msgstr "Відкрити..."
 
-#: src/glade-popup.c:92 src/glade-signal-editor.c:641
-msgid "Delete"
-msgstr "Стерти"
+#: src/glade-project-window.c:162 src/glade-project-window.c:216
+#, c-format
+msgid "Project '%s' saved"
+msgstr ""
 
-#: src/glade-project-window.c:358
-msgid "Widget Tree"
-msgstr "Дерево віджетів"
+#. If instead we dont have a path yet, fire up a file selector
+#: src/glade-project-window.c:228
+#, fuzzy
+msgid "Save..."
+msgstr "Зберегти..."
 
-#: src/glade-project.c:548
+#: src/glade-project-window.c:240
+#, fuzzy
+msgid "Save as ..."
+msgstr "Зберегти..."
+
+#: src/glade-project-window.c:254
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them.\n"
+msgstr ""
+
+#: src/glade-project-window.c:267
+msgid "_Close without Saving"
+msgstr ""
+
+#: src/glade-project-window.c:294
 msgid "Save ..."
 msgstr "Зберегти..."
 
-#: src/glade-project.c:551
-msgid "Invalid file name"
-msgstr "Невірна назва файлу"
+#: src/glade-project-window.c:475
+msgid "Palette"
+msgstr "Палітра"
 
-#: src/glade-project.c:574
-msgid "Open ..."
-msgstr "Відкрити..."
+#: src/glade-project-window.c:548 src/glade-widget.c:183
+msgid "Properties"
+msgstr "Властивості"
 
-#: src/glade-project.c:582
+#: src/glade-project-window.c:617
+msgid "Widget Tree"
+msgstr "Дерево віджетів"
+
+#: src/glade-project-window.c:801 src/glade-project-window.c:803
+#, fuzzy
+msgid "About Glade"
+msgstr "Glade"
+
+#: src/glade-project-window.c:814
+msgid "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
+msgstr ""
+
+#: src/glade-project-window.c:819
+msgid ""
+"Glade is a User Interface Builder for GTK+ and GNOME. \n"
+"This version is a rewrite of the Glade 2.0.0 version, original from Damon "
+"Chaplin\n"
+"\n"
+"<small>(C) 2001-2004 Ximian, Inc.\n"
+"(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
+msgstr ""
+
+#. action 0 (branches and separators)
+#: src/glade-project-window.c:875
+msgid "Create a new project file"
+msgstr ""
+
+#. action 1 (New)
+#: src/glade-project-window.c:876
+msgid "Open a project file"
+msgstr ""
+
+#. action 2 (Open)
+#: src/glade-project-window.c:877
+msgid "Save the current project file"
+msgstr ""
+
+#. action 3 (Save)
+#: src/glade-project-window.c:878
+msgid "Save the current project file with a different name"
+msgstr ""
+
+#. action 4 (Save as)
+#: src/glade-project-window.c:879
+msgid "Close the current project file"
+msgstr ""
+
+#. action 5 (Close)
+#: src/glade-project-window.c:880
+msgid "Quit the program"
+msgstr ""
+
+#. action 6 (Quit)
+#: src/glade-project-window.c:882
+msgid "Undo the last action"
+msgstr ""
+
+#. action 7  (Undo)
+#: src/glade-project-window.c:883
+msgid "Redo the last action"
+msgstr ""
+
+#. action 8  (Redo)
+#: src/glade-project-window.c:884
+msgid "Cut the selection"
+msgstr ""
+
+#. action 9  (Cut)
+#: src/glade-project-window.c:885
+msgid "Copy the selection"
+msgstr ""
+
+#. action 10 (Copy)
+#: src/glade-project-window.c:886
+msgid "Paste the clipboard"
+msgstr ""
+
+#. action 11 (Paste)
+#: src/glade-project-window.c:887
+msgid "Delete the selection"
+msgstr ""
+
+#. action 12 (Delete)
+#: src/glade-project-window.c:889
+msgid "Change the visibility of the palette of widgets"
+msgstr ""
+
+#. action 13 (Palette)
+#: src/glade-project-window.c:890
+msgid "Change the visibility of the property editor"
+msgstr ""
+
+#. action 14 (Editor)
+#: src/glade-project-window.c:891
+msgid "Change the visibility of the project widget tree"
+msgstr ""
+
+#. action 15 (Tree)
+#: src/glade-project-window.c:892
+msgid "Change the visibility of the clipboard"
+msgstr ""
+
+#. action 16 (Clipboard)
+#: src/glade-project-window.c:894
+msgid "About this application"
+msgstr ""
+
+#: src/glade-project-window.c:1165
+#, fuzzy
+msgid "Could not create a new project."
+msgstr "Не вдалося відкрити проект."
+
+#: src/glade-project-window.c:1187
 msgid "Could not open project."
 msgstr "Не вдалося відкрити проект."
 
-#: src/glade-property-class.c:661
-#, c-format
-msgid "We could not find the symbol \"%s\" while trying to load \"%s\""
+#: src/glade-project-window.c:1224
+msgid "Nothing"
 msgstr ""
 
-#: src/glade-signal-editor.c:110
-msgid "Select signal"
-msgstr "Вибрати сиґнал"
+#: src/glade-project-window.c:1268
+msgid "_Undo: "
+msgstr ""
 
-#: src/glade-signal-editor.c:236 src/glade-signal-editor.c:261
-#: src/glade-signal-editor.c:275 src/glade-signal-editor.c:373
-msgid "Yes"
-msgstr "Так"
+#: src/glade-project-window.c:1269
+msgid "_Redo: "
+msgstr ""
 
-#: src/glade-signal-editor.c:298 src/glade-signal-editor.c:319
-msgid "Please enter a valid signal name"
-msgstr "Будь ласка, введіть вірна назву сиґналу"
+#: src/glade-property-class.c:670
+#, c-format
+msgid ""
+"The property [%s] of the widget's class [%s] needs a special \"set\" "
+"function, but there is no library associated to this widget's class."
+msgstr ""
 
-#: src/glade-signal-editor.c:332
-msgid "Please enter a signal handler"
-msgstr "Будь ласка, введіть обробник сиґналу"
+#: src/glade-property-class.c:677
+#, c-format
+msgid ""
+"Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
+msgstr ""
 
-#: src/glade-signal-editor.c:524
+#: src/glade-property-class.c:694 src/glade-property-class.c:715
+#, c-format
+msgid ""
+"The property [%s] of the widget's class [%s] needs a special \"get\" "
+"function, but there is no library associated to this widget's class."
+msgstr ""
+
+#: src/glade-property-class.c:701
+#, c-format
+msgid ""
+"Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
+msgstr ""
+
+#: src/glade-property-class.c:722
+#, c-format
+msgid ""
+"Unable to get the \"verify\" function [%s] of the property [%s] of the "
+"widget's class [%s] from the module [%s]: %s"
+msgstr ""
+
+#: src/glade-signal-editor.c:525
 msgid "Signal"
 msgstr "Сиґнал"
 
-#: src/glade-signal-editor.c:525
+#: src/glade-signal-editor.c:538
 msgid "Handler"
 msgstr "Обробник"
 
-#: src/glade-signal-editor.c:526
+#: src/glade-signal-editor.c:555
+msgid "User data"
+msgstr ""
+
+#: src/glade-signal-editor.c:568
+msgid "Lookup"
+msgstr ""
+
+#: src/glade-signal-editor.c:579
 msgid "After"
 msgstr "Після"
 
-#: src/glade-signal-editor.c:569
-msgid "Signal :"
-msgstr "Сиґнал: "
-
-#: src/glade-signal-editor.c:570
-msgid "Handler :"
-msgstr "Обробник: "
-
-#: src/glade-signal-editor.c:571
-msgid "After :"
-msgstr "Після: "
-
-#: src/glade-signal-editor.c:639
-msgid "Add"
-msgstr "Додати"
-
-#: src/glade-signal-editor.c:640
-msgid "Update"
-msgstr "Поновити"
-
-#: src/glade-signal-editor.c:642
-msgid "Clear"
-msgstr "Очистити"
-
-#: src/glade-utils.c:60
+#: src/glade-utils.c:138 src/glade-utils.c:172
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr ""
 
-#: src/glade-utils.c:69
+#: src/glade-utils.c:145
 #, c-format
 msgid "Could not get the type from \"%s"
 msgstr ""
 
-#: src/glade-utils.c:77
-#, c-format
-msgid "The loaded type is not a GtkWidget, while trying to load \"%s\""
+#: src/glade-utils.c:1015
+msgid "Unable to paste to multiple widgets"
 msgstr ""
+
+#: src/glade-utils.c:1022
+msgid "No target widget selected"
+msgstr ""
+
+#: src/glade-utils.c:1029
+msgid "No widget selected on the clipboard"
+msgstr ""
+
+#: src/glade-utils.c:1047
+#, c-format
+msgid "Unable to paste widget %s to parent %s"
+msgstr ""
+
+#: src/glade-utils.c:1086 src/glade-utils.c:1118 src/glade-utils.c:1149
+msgid "No widget selected!"
+msgstr ""
+
+#: src/glade-widget.c:144
+#, fuzzy
+msgid "Name"
+msgstr "Назва: "
+
+#: src/glade-widget.c:145
+msgid "The name of the widget"
+msgstr ""
+
+#: src/glade-widget.c:151
+msgid "Internal name"
+msgstr ""
+
+#: src/glade-widget.c:152
+msgid "The internal name of the widget"
+msgstr ""
+
+#: src/glade-widget.c:158
+msgid "Object"
+msgstr ""
+
+#: src/glade-widget.c:159
+msgid "The object associated"
+msgstr ""
+
+#: src/glade-widget.c:166
+#, fuzzy
+msgid "Class"
+msgstr "Клас: "
+
+#: src/glade-widget.c:167
+msgid "The class of the associated gtk+ widget"
+msgstr ""
+
+#: src/glade-widget.c:174
+msgid "Project"
+msgstr ""
+
+#: src/glade-widget.c:175
+msgid "The glade project that this widget belongs to"
+msgstr ""
+
+#: src/glade-widget.c:184
+msgid "A list of GladeProperties"
+msgstr ""
+
+#: src/glade-widget.c:190
+#, fuzzy
+msgid "Parent"
+msgstr "Палітра"
+
+#: src/glade-widget.c:191
+msgid "A pointer to the parenting GladeWidget"
+msgstr ""
+
+#: src/glade-widget-class.c:895 src/glade-widget-class.c:907
+msgid "Not enough memory."
+msgstr ""
+
+#: src/glade-widget-class.c:917
+#, c-format
+msgid "Unable to open the module %s."
+msgstr ""
+
+#~ msgid "Cut"
+#~ msgstr "Вирізати"
+
+#~ msgid "Copy"
+#~ msgstr "Скопіювати"
+
+#~ msgid "Paste"
+#~ msgstr "Вставити"
+
+#~ msgid "Delete"
+#~ msgstr "Стерти"
+
+#~ msgid "Invalid file name"
+#~ msgstr "Невірна назва файлу"
+
+#~ msgid "Select signal"
+#~ msgstr "Вибрати сиґнал"
+
+#~ msgid "Yes"
+#~ msgstr "Так"
+
+#~ msgid "Please enter a valid signal name"
+#~ msgstr "Будь ласка, введіть вірна назву сиґналу"
+
+#~ msgid "Please enter a signal handler"
+#~ msgstr "Будь ласка, введіть обробник сиґналу"
+
+#~ msgid "Signal :"
+#~ msgstr "Сиґнал: "
+
+#~ msgid "Handler :"
+#~ msgstr "Обробник: "
+
+#~ msgid "After :"
+#~ msgstr "Після: "
+
+#~ msgid "Add"
+#~ msgstr "Додати"
+
+#~ msgid "Update"
+#~ msgstr "Поновити"
+
+#~ msgid "Clear"
+#~ msgstr "Очистити"

@@ -1168,8 +1168,6 @@ on_entry_changed (GtkWidget *entry, gpointer user_data)
 	gboolean changed = FALSE;
 	gint row;
 
-	g_debug(("In on_entry_changed\n"));
-
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
 
 	/* If we are setting the widget values, just return. */
@@ -1766,7 +1764,7 @@ on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
 {
 	GladeMenuEditor *menued;
 	GtkWidget *filechooser;
-	const gchar *filename = NULL;
+	gchar *filename = NULL;
 	gint filename_len;
 	gchar *icon;
 
@@ -1775,11 +1773,11 @@ on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
 	filechooser = glade_util_file_dialog_new (_("Select icon"), GTK_WINDOW (menued),
 						   GLADE_FILE_DIALOG_ACTION_OPEN);
 
-	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	glade_util_file_dialog_set_filename (filechooser, icon);
+	icon = (gchar *)gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
+	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), icon);
 
 	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
-		filename = glade_util_file_dialog_get_filename (filechooser);
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
 
 	gtk_widget_destroy (filechooser);
 
@@ -1789,11 +1787,14 @@ on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
 	/* If the filename ends in '/' it means the user wants to reset the
 	   pixmap to NULL. */
 	filename_len = strlen (filename);
-	if (filename_len > 0 && filename[filename_len - 1] == '/')
-		filename = "";
+	if (filename_len > 0 && filename[filename_len - 1] == '/') 
+	{
+		filename[0] = '\0';
+	}
 
 	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
 			filename);
+	g_free (filename);
 }
 
 /* This checks if the given icon string is a stock icon name, and if it is

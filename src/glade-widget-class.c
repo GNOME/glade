@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2004 Imendio AB
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -40,12 +41,44 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-catalog.h"
+#include "glade-signal.h"
 #include "glade-parameter.h"
 #include "glade-debug.h"
 
 /* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
 static GHashTable *widget_classes = NULL;
 
+#define GLADE_ICON_SIZE 24
+
+typedef struct {
+	gchar *parent_name;
+	GList *packing_defaults;
+} GladeChildPacking;
+
+static void
+glade_widget_class_free_child (GladeSupportedChild *child)
+{
+	g_list_foreach (child->properties, (GFunc) glade_property_class_free, NULL);
+	g_list_free (child->properties);
+	g_free (child);
+}
+
+static void
+glade_widget_class_packing_default_free (GladePackingDefault *def)
+{
+	g_free (def->id);
+	g_free (def->value);
+}
+
+static void
+glade_widget_class_child_packing_free (GladeChildPacking *packing)
+{
+        g_free (packing->parent_name);
+
+        g_list_foreach (packing->packing_defaults,
+                        (GFunc) glade_widget_class_packing_default_free, NULL);
+        g_list_free (packing->packing_defaults);
+}
 
 /**
  * glade_widget_class_free:
@@ -62,14 +95,23 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_free (widget_class->generic_name);
 	g_free (widget_class->name);
 
-	g_list_foreach (widget_class->properties, (GFunc) g_free, NULL);
+	g_list_foreach (widget_class->properties, (GFunc) glade_property_class_free, NULL);
 	g_list_free (widget_class->properties);
 
-	g_list_foreach (widget_class->child_properties, (GFunc) g_free, NULL);
-	g_list_free (widget_class->child_properties);
+	g_list_foreach (widget_class->children, (GFunc) glade_widget_class_free_child, NULL);
+	g_list_free (widget_class->children);
 
-	g_list_foreach (widget_class->signals, (GFunc) g_free, NULL);
+	g_list_foreach (widget_class->child_packings,
+			(GFunc) glade_widget_class_child_packing_free,
+			NULL);
+
+	g_list_free (widget_class->child_packings);
+
+	g_list_foreach (widget_class->signals, (GFunc) glade_signal_free, NULL);
 	g_list_free (widget_class->signals);
+
+	if (widget_class->icon)
+		g_object_unref (G_OBJECT (widget_class->icon));
 }
 
 static GList *
@@ -193,6 +235,35 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	return list;
 }
 
+static GList *
+glade_widget_class_list_children (GladeWidgetClass *class)
+{
+	GladeSupportedChild *child;
+	GList               *children = NULL;
+
+	/* Implicitly handle GtkContainer and derivitive types and retrieve packing properties.
+	 */
+	if (g_type_is_a (class->type, GTK_TYPE_CONTAINER))
+	{
+		child = g_new0 (GladeSupportedChild, 1);
+		child->type             = GTK_TYPE_WIDGET;
+		child->properties       = glade_widget_class_list_child_properties (class);
+
+		child->add              = (GladeAddChildFunc)    gtk_container_add;
+		child->remove           = (GladeRemoveChildFunc) gtk_container_remove;
+		child->get_children     = (GladeGetChildrenFunc) gtk_container_get_children;
+		child->get_all_children =
+			(GladeGetChildrenFunc) glade_util_container_get_all_children;
+		child->set_property     =
+			(GladeChildSetPropertyFunc) gtk_container_child_set_property;
+		child->get_property     =
+			(GladeChildGetPropertyFunc) gtk_container_child_get_property;
+
+		children = g_list_append (children, child);
+	}
+	return children;
+}
+
 static GList * 
 glade_widget_class_list_signals (GladeWidgetClass *class) 
 {
@@ -206,7 +277,7 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	g_return_val_if_fail (class->type != 0, NULL);
 
 	type = class->type;
-	while (g_type_is_a (type, GTK_TYPE_OBJECT))
+	while (g_type_is_a (type, G_TYPE_OBJECT))
 	{
 		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
 		{
@@ -229,32 +300,55 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
-static GtkWidget *
+static GdkPixbuf *
 glade_widget_class_create_icon (GladeWidgetClass *class)
 {
-	GtkWidget *icon = NULL;
-	gchar *icon_path;
+	GdkPixbuf *icon  = NULL;
+	GError    *error = NULL;
+	gchar     *icon_path;
 
 	if (class->generic_name)
 	{
-		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", glade_pixmaps_dir, class->generic_name);
-		icon = gtk_image_new_from_file (icon_path);
+		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", 
+					     glade_pixmaps_dir, 
+
+					     class->generic_name);
+		if ((icon = 
+		     gdk_pixbuf_new_from_file (icon_path, &error)) == NULL)
+		{
+			g_warning ("Unable to load icon %s (%s)",
+				   class->name, error->message);
+			error = (g_error_free (error), NULL);
+
+			/* Load missing image to the stock
+			 */
+			if ((icon = gtk_icon_theme_load_icon 
+			     (gtk_icon_theme_get_default (), 
+			      GTK_STOCK_MISSING_IMAGE, 
+			      GLADE_ICON_SIZE, 
+			      GTK_ICON_LOOKUP_USE_BUILTIN, &error)) == NULL)
+			{
+				g_critical ("Unable to load an icon for "
+					    "%s from stock (%s)", 
+					    class->name, 
+					    error->message);
+				error = (g_error_free (error), NULL);
+			}
+		}
 		g_free (icon_path);
 	}
-
 	return icon;
 }
 
 static void
 glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 						GladeWidgetClass *widget_class,
-						GList **pproperties)
+						GList **properties)
 {
 	GladeXmlNode *child;
-	GList *properties = *pproperties;
 
-	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child))
+	for (child = glade_xml_node_get_children (node);
+	     child; child = glade_xml_node_next (child))
 	{
 		gchar *id;
 		GList *list;
@@ -270,12 +364,14 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 			continue;
 
 		/* find the property in our list, if not found append a new property */
-		for (list = properties; list; list = list->next)
+		for (list = *properties; list && list->data; list = list->next)
 		{
-			gchar *tmp = GLADE_PROPERTY_CLASS (list->data)->id;
-			if (!g_ascii_strcasecmp (id, tmp))
+			property_class = GLADE_PROPERTY_CLASS (list->data);
+			if (property_class->id != NULL &&
+			    g_ascii_strcasecmp (id, property_class->id) == 0)
 				break;
 		}
+
 		if (list)
 		{
 			property_class = GLADE_PROPERTY_CLASS (list->data);
@@ -284,8 +380,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 		{
 			property_class = glade_property_class_new ();
 			property_class->id = g_strdup (id);
-			properties = g_list_append (properties, property_class);
-			list = g_list_last (properties);
+			*properties = g_list_append (*properties, property_class);
+			list = g_list_last (*properties);
 		}
 
 		updated = glade_property_class_update_from_node
@@ -300,143 +396,234 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 
 		/* the property has Disabled=TRUE ... */
 		if (!property_class)
-			properties = g_list_delete_link (properties, list);
+			*properties = g_list_delete_link (*properties, list);
 
 		g_free (id);
 	}
 }
 
-/**
- * glade_widget_class_extend_with_file:
- * @filename: complete path name of the xml file with the description of the 
- *            #GladeWidgetClass
- *
- * This function extends an existing GladeWidgetClass with the data found on 
- * the file with name @filename (if it exists).  Notably, it will add new 
- * properties to the #GladeWidgetClass, or modify existing ones, in function 
- * of the contents of the file.
- *
- * Returns: %TRUE if the file exists and its format is correct, %FALSE otherwise
- */
-static gboolean
-glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char *filename)
+static void
+glade_widget_class_set_packing_defaults_from_node (GladeXmlNode     *node,
+						   GladeWidgetClass *widget_class)
 {
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
-	GladeXmlNode *properties;
-	GladeXmlNode *node;
-	char *replace_child_function_name;
-	char *post_create_function_name;
-	char *pre_create_function_name;
-	char *fill_empty_function_name;
-	char *get_internal_child_function_name;
-	char *child_property_applies_function_name;
-	GList *tmp;
+        GladeXmlNode *child;
 
-	g_return_val_if_fail (filename != NULL, FALSE);
+        child = glade_xml_node_get_children (node);
+        for (; child; child = glade_xml_node_next (child))
+        {
+                gchar             *name;
+                GladeXmlNode      *prop_node;
+		GladeChildPacking *packing;
 
-	context = glade_xml_context_new_from_path
-		(filename, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (!context)
-		return FALSE;
+                if (!glade_xml_node_verify (child, GLADE_TAG_PARENT_CLASS))
+                        continue;
 
-	doc = glade_xml_context_get_doc (context);
-	node = glade_xml_doc_get_root (doc);
-	if (!doc || !node) {
-		glade_xml_context_destroy (context);
-		return FALSE;
+                name = glade_xml_get_property_string_required (child, 
+                                                               GLADE_TAG_NAME, 
+                                                               widget_class->name);
+
+                if (!name)
+                        continue;
+
+		packing = g_new0 (GladeChildPacking, 1);
+		packing->parent_name = name;
+		packing->packing_defaults = NULL;
+
+		widget_class->child_packings = g_list_prepend (widget_class->child_packings, packing);
+
+		prop_node = glade_xml_node_get_children (child);
+                for (; prop_node; prop_node = glade_xml_node_next (prop_node))
+                {
+			GladePackingDefault *def;
+			gchar               *id;
+			gchar               *value;
+
+			id = glade_xml_get_property_string_required (prop_node,
+								     GLADE_TAG_ID,
+								     widget_class->name);
+			if (!id)
+				continue;
+
+			value = glade_xml_get_property_string_required (prop_node,
+									GLADE_TAG_DEFAULT,
+									widget_class->name);
+			if (!value)
+			{
+				g_free (id);
+				continue;
+			}
+
+			def = g_new0 (GladePackingDefault, 1);
+			def->id = id;
+			def->value = value;
+
+			packing->packing_defaults = g_list_prepend (packing->packing_defaults,
+								    def);
+                }
 	}
+}
 
-	replace_child_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_REPLACE_CHILD_FUNCTION);
+static gint
+glade_widget_class_find_child_by_type (GladeSupportedChild *child, GType type)
+{
+	return child->type - type;
+}
 
-	if (replace_child_function_name && widget_class->module)
+static void
+glade_widget_class_load_function (GladeXmlNode     *node,
+				  GModule          *module,
+				  gchar            *tagname,
+				  void            **func_location)
+{
+	gchar *buff;
+	if ((buff = glade_xml_get_value_string (node, tagname)) != NULL)
 	{
-		if (!g_module_symbol (widget_class->module,
-				      replace_child_function_name,
-				      (void **) &widget_class->replace_child))
-			g_warning ("Could not find %s\n", replace_child_function_name);
+		if (!g_module_symbol (module, buff, func_location))
+			g_warning ("Could not find %s in %s\n",
+				   buff, g_module_name (module));
+		g_free (buff);
 	}
-	g_free (replace_child_function_name);
+}
 
-	pre_create_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_PRE_CREATE_FUNCTION);
-	if (pre_create_function_name && widget_class->module)
+static void
+glade_widget_class_update_children_from_node (GladeXmlNode     *node,
+					      GladeWidgetClass *widget_class)
+{
+	GladeSupportedChild *child;
+	GladeXmlNode        *child_node, *properties;
+	gchar               *buff;
+	GList               *list;
+	GType                type;
+	
+	for (child_node = glade_xml_node_get_children (node);
+	     child_node;
+	     child_node = glade_xml_node_next (child_node))
 	{
-		if (!g_module_symbol (widget_class->module,
-				      pre_create_function_name,
-				      (void **) &widget_class->pre_create_function))
-			g_warning ("Could not find %s\n", pre_create_function_name);
-	}
-	g_free (pre_create_function_name);
 
-	post_create_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-	if (post_create_function_name && widget_class->module)
-	{
-		if (!g_module_symbol (widget_class->module,
-				      post_create_function_name,
-				      (void **) &widget_class->post_create_function))
-			g_warning ("Could not find %s\n", post_create_function_name);
-	}
-	g_free (post_create_function_name);
+		if (!glade_xml_node_verify (child_node, GLADE_TAG_CHILD))
+			continue;
 
-	fill_empty_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_FILL_EMPTY_FUNCTION);
-	if (fill_empty_function_name && widget_class->module)
-	{
-		if (!g_module_symbol (widget_class->module,
-				      fill_empty_function_name,
-				      (void **) &widget_class->fill_empty))
-			g_warning ("Could not find %s\n", fill_empty_function_name);
-	}
-	g_free (fill_empty_function_name);
+		/* Use alot of emacs realastate to ensure that we have a type. */
+		if ((buff = glade_xml_get_value_string (child_node, GLADE_TAG_TYPE)) != NULL)
+		{
+			if ((type = glade_util_get_type_from_name (buff)) == 0)
+			{
+				g_free (buff);
+				continue;
+			}
+			g_free (buff);
+		} else {
+			g_warning ("Child specified without a type, ignoring");
+			continue;
+		}
 
-	get_internal_child_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION);
-	if (get_internal_child_function_name && widget_class->module)
-	{
-		if (!g_module_symbol (widget_class->module,
-				      get_internal_child_function_name,
-				      (void **) &widget_class->get_internal_child))
-			g_warning ("Could not find %s\n", get_internal_child_function_name);
-	}
-	g_free (get_internal_child_function_name);
+		if (widget_class->children &&
+		    (list = g_list_find_custom
+		     (widget_class->children, GINT_TO_POINTER(type),
+		      (GCompareFunc)glade_widget_class_find_child_by_type)) != NULL)
+		{
+			child = (GladeSupportedChild *)list->data;
+		}
+		else
+		{
+			child                  = g_new0 (GladeSupportedChild, 1);
+			child->type            = type;
+			widget_class->children = g_list_append (widget_class->children, child);
+		}
 
-	child_property_applies_function_name =
-		glade_xml_get_value_string (node, GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION);
-	if (child_property_applies_function_name && widget_class->module)
-	{
-		if (!g_module_symbol (widget_class->module,
-				      child_property_applies_function_name,
-				      (void **) &widget_class->child_property_applies))
-			g_warning ("Could not find %s\n", child_property_applies_function_name);
+		if (widget_class->module)
+		{
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_ADD_CHILD_FUNCTION,
+							  (void **)&child->add);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_REMOVE_CHILD_FUNCTION,
+							  (void **)&child->remove);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_GET_CHILDREN_FUNCTION,
+							  (void **)&child->get_children);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_GET_ALL_CHILDREN_FUNCTION,
+							  (void **)&child->get_all_children);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_CHILD_SET_PROP_FUNCTION,
+							  (void **)&child->set_property);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_CHILD_GET_PROP_FUNCTION,
+							  (void **)&child->get_property);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_FILL_EMPTY_FUNCTION,
+							  (void **)&child->fill_empty);
+			glade_widget_class_load_function (child_node, widget_class->module,
+							  GLADE_TAG_REPLACE_CHILD_FUNCTION,
+							  (void **)&child->replace_child);
+		}
+
+		/* if we found a <Properties> tag on the xml file, we add the 
+		 * properties that we read from the xml file to the class.
+		 */
+		if ((properties =
+		     glade_xml_search_child (child_node, GLADE_TAG_PROPERTIES)) != NULL)
+		{
+			glade_widget_class_update_properties_from_node
+				(properties, widget_class, &child->properties);
+
+			for (list = child->properties; list != NULL; list = list->next)
+				((GladePropertyClass *)list->data)->packing = TRUE;
+		}
 	}
-	g_free (child_property_applies_function_name);
+}
+
+static gboolean
+glade_widget_class_extend_with_node (GladeWidgetClass *widget_class, 
+				     GladeXmlNode     *node)
+{
+	GladeXmlNode *child;
+
+	g_return_val_if_fail (widget_class != NULL, FALSE);
+	g_return_val_if_fail (node != NULL, FALSE);
+
+	if (widget_class->module)
+	{
+		glade_widget_class_load_function (node, widget_class->module,
+						  GLADE_TAG_POST_CREATE_FUNCTION,
+						  (void **)&widget_class->post_create_function);
+
+		glade_widget_class_load_function (node, widget_class->module,
+						  GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
+						  (void **)&widget_class->get_internal_child);
+
+		glade_widget_class_load_function (node, widget_class->module,
+						  GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION,
+						  (void **)
+						  &widget_class->child_property_applies);
+	}
 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
 	 */
-	properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
-	if (properties)
-		glade_widget_class_update_properties_from_node
-			(properties, widget_class, &widget_class->properties);
-
-	/* if we found a <ChildProperties> tag on the xml file, we add the 
-         * properties that we read from the xml file to the class.
-	 */
-	properties = glade_xml_search_child (node, GLADE_TAG_CHILD_PROPERTIES);
-	if (properties)
-		glade_widget_class_update_properties_from_node
-			(properties, widget_class, &widget_class->child_properties);
-
-	for (tmp = widget_class->child_properties; tmp != NULL; tmp = tmp->next)
+	child = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
+	if (child)
 	{
-		GladePropertyClass *property_class = tmp->data;
-		property_class->packing = TRUE;
+		glade_widget_class_update_properties_from_node (child,
+								widget_class,
+								&widget_class->properties);
 	}
 
-	glade_xml_context_destroy (context);
+	child = glade_xml_search_child (node, GLADE_TAG_CHILDREN);
+	if (child)
+	{
+		glade_widget_class_update_children_from_node (child,
+							      widget_class);
+	}
+
+	child = glade_xml_search_child (node, GLADE_TAG_PACKING_DEFAULTS);
+	if (child)
+	{
+		glade_widget_class_set_packing_defaults_from_node (child,
+								   widget_class);
+	}
+
 	return TRUE;
 }
 
@@ -455,6 +642,61 @@ glade_widget_class_get_by_name (const char *name)
 	else
 		return NULL;
 }
+
+typedef struct
+{
+	GType              type;
+	GladeWidgetClass  *class;
+} GladeClassSearchPair;
+
+static void
+search_class_by_type (gchar                *name,
+		      GladeWidgetClass     *class,
+		      GladeClassSearchPair *pair)
+{
+	if (class->type == pair->type)
+		pair->class = class;
+}
+
+GladeWidgetClass *
+glade_widget_class_get_by_type (GType type)
+{
+	GladeClassSearchPair pair = { type, NULL };
+	
+	if (widget_classes != NULL)
+	{
+		g_hash_table_foreach (widget_classes, (GHFunc)search_class_by_type, &pair);
+	}
+	return pair.class;
+}
+
+typedef struct
+{
+	GType  type;
+	GList *list;
+} GladeClassAccumPair;
+
+static void
+accum_class_by_type (gchar                *name,
+		     GladeWidgetClass     *class,
+		     GladeClassAccumPair  *pair)
+{
+	if (g_type_is_a (class->type, pair->type))
+		pair->list = g_list_prepend (pair->list, class);
+}
+
+GList *
+glade_widget_class_get_derived_types  (GType type)
+{
+	GladeClassAccumPair pair = { type, NULL };
+
+		if (widget_classes != NULL)
+	{
+		g_hash_table_foreach (widget_classes, (GHFunc)accum_class_by_type, &pair);
+	}
+	return pair.list;
+}
+
 
 /**
  * glade_widget_class_merge_properties:
@@ -486,7 +728,8 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
 		}
 
 		/* if not found, prepend a clone of the parent's one; if found
-		 * but the parent one was modified substitute it.
+		 * but the parent one was modified (and not the child one)
+		 * substitute it.
 		 */
 		if (!list2)
 		{
@@ -495,13 +738,104 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
 			property_class = glade_property_class_clone (parent_p_class);
 			*widget_properties = g_list_prepend (*widget_properties, property_class);
 		}
-		else if (parent_p_class->is_modified)
+		else if (parent_p_class->is_modified && !child_p_class->is_modified)
 		{
 			glade_property_class_free (child_p_class);
 			list2->data = glade_property_class_clone (parent_p_class);
 		}
 	}
 }
+
+static GladeSupportedChild *
+glade_widget_class_clone_child (GladeSupportedChild *child)
+{
+	GladeSupportedChild *clone;
+	GList               *props;
+	
+	clone = g_new0 (GladeSupportedChild, 1);
+
+	clone->type          = child->type;
+	clone->add           = child->add;
+	clone->get_children  = child->get_children;
+	clone->set_property  = child->set_property;
+	clone->get_property  = child->get_property;
+	clone->fill_empty    = child->fill_empty;
+	clone->replace_child = child->replace_child;
+
+	for (props = child->properties;
+	     props && props->data;
+	     props = props->next)
+	{
+		clone->properties =
+			g_list_prepend (clone->properties, 
+					glade_property_class_clone (props->data));
+	}
+	clone->properties = g_list_reverse (clone->properties);
+
+	return clone;
+}
+
+static void
+glade_widget_class_merge_child (GladeSupportedChild *widgets_child,
+				GladeSupportedChild *parents_child)
+{
+	if (!widgets_child->add)
+		widgets_child->add              = parents_child->add;
+	if (!widgets_child->remove)
+		widgets_child->remove           = parents_child->remove;
+	if (!widgets_child->get_children)
+		widgets_child->get_children     = parents_child->get_children;
+	if (!widgets_child->get_all_children)
+		widgets_child->get_all_children = parents_child->get_all_children;
+	if (!widgets_child->set_property)
+		widgets_child->set_property     = parents_child->set_property;
+	if (!widgets_child->get_property)
+		widgets_child->get_property     = parents_child->get_property;
+	if (!widgets_child->fill_empty)
+		widgets_child->fill_empty       = parents_child->fill_empty;
+	if (!widgets_child->replace_child)
+		widgets_child->replace_child    = parents_child->replace_child;
+
+	glade_widget_class_merge_properties
+		(&widgets_child->properties, parents_child->properties);
+}
+
+static void
+glade_widget_class_merge_children (GList **widget_children,
+				   GList  *parent_children)
+{
+	GList *list;
+	GList *list2;
+
+	for (list = parent_children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *parents_child = list->data;
+		GladeSupportedChild *widgets_child = NULL;
+
+		for (list2 = *widget_children; list2 && list2->data; list2 = list2->next)
+		{
+			widgets_child = list2->data;
+			if (widgets_child->type == parents_child->type)
+				break;
+		}
+
+		/* if not found, prepend a clone of the parent's one; if found
+		 * but the parent one was modified (and not the child one)
+		 * substitute it.
+		 */
+		if (!list2)
+		{
+			*widget_children =
+				g_list_prepend (*widget_children,
+						glade_widget_class_clone_child (parents_child));
+		}
+		else
+		{
+			glade_widget_class_merge_child (widgets_child, parents_child);
+		}
+	}
+}
+
 
 /**
  * glade_widget_class_merge:
@@ -519,26 +853,22 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
 
-	if (widget_class->replace_child == NULL)
-		widget_class->replace_child = parent_class->replace_child;
-
-	if (widget_class->pre_create_function == NULL)
-		widget_class->pre_create_function = parent_class->pre_create_function;
-
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
 
-	if (widget_class->fill_empty == NULL)
-		widget_class->fill_empty = parent_class->fill_empty;
+	if (widget_class->get_internal_child == NULL)
+		widget_class->get_internal_child = parent_class->get_internal_child;
 
 	if (widget_class->child_property_applies == NULL)
 		widget_class->child_property_applies = parent_class->child_property_applies;
 
-	/* merge the parent's properties & child-properties */
+	/* merge the parent's properties */
 	glade_widget_class_merge_properties
 		(&widget_class->properties, parent_class->properties);
-	glade_widget_class_merge_properties
-		(&widget_class->child_properties, parent_class->child_properties);
+
+	/* merge the parent's supported children */
+	glade_widget_class_merge_children
+		(&widget_class->children, parent_class->children);
 }
 
 /**
@@ -599,93 +929,77 @@ glade_widget_class_direct_children (GtkWidget *ancestor, GtkWidget *widget, cons
 	return FALSE;
 }
 
-/**
- * glade_widget_class_new:
- * @name: name of the widget class (for instance: GtkButton)
- * @generic_name: base of the name for the widgets of this class 
- *                (for instance: button). This parameter is optional. For 
- *                abstract classes there is no need to supply a generic_name.
- * @base_filename: filename containing a further description of the widget, 
- *                 without the directory (optional).
- *
- * Creates a new #GladeWidgetClass, initializing it with the
- * name, generic_name and base_filename.
- *
- * The widget class will be first build using the information that the GLib 
- * object system returns, and then it will be expanded (optionally) with the 
- * information contained on the xml filename.
- *
- * Returns: a new #GladeWidgetClass, or %NULL if there are any errors
- */
 GladeWidgetClass *
-glade_widget_class_new (const char *name,
-			const char *generic_name,
-			const char *palette_name,
-			const char *base_filename,
-			const char *base_library)
+glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 {
-	GladeWidgetClass *widget_class = NULL;
-	char *filename = NULL;
-	char *init_function_name = NULL;
-	GModule *module = NULL;
-	GType parent_type;
+	GladeWidgetClass *widget_class;
+	gchar            *name;
+	gchar            *generic_name;
+	gchar            *title;
+	GModule          *module;
+	GType             parent_type;
 
-	g_return_val_if_fail (name != NULL, NULL);
-
-	if (glade_widget_class_get_by_name (name) != NULL)
+	if (!glade_xml_node_verify (class_node, GLADE_TAG_GLADE_WIDGET_CLASS))
 	{
-		g_warning ("The widget class [%s] has at least two different definitions.\n",
-			   name);
-		goto lblError;
+		g_warning ("Widget class node is not '%s'", 
+			   GLADE_TAG_GLADE_WIDGET_CLASS);
+		return NULL;
+	}
+	
+	name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
+	if (!name)
+	{
+		g_warning ("Required property 'name' not found in '%s'",
+			   GLADE_TAG_GLADE_WIDGET_CLASS);
+		return NULL;
 	}
 
-	if (base_filename != NULL)
+	if (glade_widget_class_get_by_name (name)) 
 	{
-		filename = g_strconcat (glade_widgets_dir, "/", base_filename, NULL);
-		if (filename == NULL)
+		g_warning ("Widget class '%s' already defined", name);
+
+		g_free (name);
+		return NULL;
+	}
+
+	generic_name = glade_xml_get_property_string (class_node, 
+						      GLADE_TAG_GENERIC_NAME);
+	title = glade_xml_get_property_string (class_node, GLADE_TAG_TITLE);
+
+	module = NULL;
+	if (library) 
+	{
+		module = glade_widget_class_load_library (library);
+		if (!module)
 		{
-			g_warning (_("Not enough memory."));
-			goto lblError;
+			g_warning ("Failed to load external library '%s'",
+				   library);
+			g_free (name);
+			g_free (generic_name);
+			g_free (title);
+			return NULL;
 		}
 	}
-
-	if (base_library != NULL)
-	{
-		module = glade_widget_class_load_library (base_library);
-		if (!module)
-			goto lblError;
-	}
-
-	widget_class = g_new0 (GladeWidgetClass, 1);
-
-	widget_class->module = module;
-
-	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
-	widget_class->palette_name = palette_name ? g_strdup (palette_name) : NULL;
-	widget_class->name = g_strdup (name);
-	widget_class->in_palette = generic_name ? TRUE : FALSE;
-
-	/* we can't just call g_type_from_name (name) to get the type, because
-	 * that only works for registered types, and the only way to register the
-	 * type is to call foo_bar_get_type() */
-	init_function_name = glade_util_compose_get_type_func (widget_class->name);
-	if (!init_function_name)
-	{
-		g_warning (_("Not enough memory."));
-		goto lblError;
-	}
-
-	widget_class->type = glade_util_get_type_from_name (init_function_name);
-	if (widget_class->type == 0)
-		goto lblError;
 	
-	widget_class->properties = glade_widget_class_list_properties (widget_class);
-	widget_class->child_properties = glade_widget_class_list_child_properties (widget_class);
-	widget_class->signals = glade_widget_class_list_signals (widget_class);
-	widget_class->child_property_applies = glade_widget_class_direct_children;
-	widget_class->icon = glade_widget_class_create_icon (widget_class);
+	widget_class = g_new0 (GladeWidgetClass, 1);
+	widget_class->name         = name;
+	widget_class->module       = module;
+	widget_class->generic_name = generic_name;
+	widget_class->palette_name = title;
+	widget_class->in_palette   = title ? TRUE : FALSE;
 
-	g_free (init_function_name);
+	widget_class->type = glade_util_get_type_from_name (name);
+	if (widget_class->type == 0)
+	{
+		glade_widget_class_free (widget_class);
+		return NULL;
+	}
+
+	widget_class->properties = glade_widget_class_list_properties (widget_class);
+	widget_class->signals    = glade_widget_class_list_signals (widget_class);
+	widget_class->children   = glade_widget_class_list_children (widget_class);
+	widget_class->icon       = glade_widget_class_create_icon (widget_class);
+	widget_class->child_property_applies = glade_widget_class_direct_children;
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;
@@ -701,29 +1015,19 @@ glade_widget_class_new (const char *name,
 			glade_widget_class_merge (widget_class, parent_class);
 		}
 	}
-
-	/* if there is an associated filename, then open and parse it */
-	if (filename != NULL)
-		glade_widget_class_extend_with_file (widget_class, filename);
-
-	g_free (filename);
-
+	
+	if (glade_xml_node_get_children (class_node))
+		glade_widget_class_extend_with_node (widget_class, class_node);
+	
 	/* store the GladeWidgetClass on the cache,
 	 * if it's the first time we store a widget class, then
 	 * initialize the global widget_classes hash.
 	 */
 	if (!widget_classes)
 		widget_classes = g_hash_table_new (g_str_hash, g_str_equal);		
-
 	g_hash_table_insert (widget_classes, widget_class->name, widget_class);
-
+	
 	return widget_class;
-
-lblError:
-	g_free (filename);
-	g_free (init_function_name);
-	glade_widget_class_free (widget_class);
-	return NULL;
 }
 
 /**
@@ -761,15 +1065,28 @@ glade_widget_class_get_type (GladeWidgetClass *widget)
 GladePropertyClass *
 glade_widget_class_get_property_class (GladeWidgetClass *class, const gchar *name)
 {
-	GList *list;
+	GList *list, *l;
 	GladePropertyClass *pclass;
 
-	for (list = class->properties; list; list = list->next)
+	for (list = class->properties; list && list->data; list = list->next)
 	{
 		pclass = list->data;
 		if (strcmp (pclass->id, name) == 0)
 			return pclass;
 	}
+
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+	
+		for (l = support->properties; l && l->data; l = l->next)
+		{
+			pclass = l->data;
+			if (strcmp (pclass->id, name) == 0)
+				return pclass;
+		}
+	}
+
 	return NULL;
 }
 
@@ -829,20 +1146,289 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 }
 
 /**
- * glade_widget_class_is:
+ * glade_widget_class_get_child_support:
  * @class: a #GladeWidgetClass
- * @name: a string
+ * @child_type: a #GType
+ * 
+ * Returns: The #GladeSupportedChild object appropriate to use for
+ * container vfuncs for this child_type if this child type is supported,
+ * otherwise NULL.
  *
- * Returns: %TRUE if @class is named @name, %FALSE otherwise
  */
-gboolean
-glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
+GladeSupportedChild *
+glade_widget_class_get_child_support  (GladeWidgetClass *class,
+				       GType             child_type)
 {
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
-	g_return_val_if_fail (name != NULL, FALSE);
+	GList               *list;
+	GladeSupportedChild *child, *ret = NULL;
 
-	if (strcmp (class->name, name) == 0)
-		return TRUE;
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		child = list->data;
+		if (g_type_is_a (child_type, child->type))
+		{
+			if (ret == NULL)
+				ret = child;
+			else if (g_type_depth (ret->type) < 
+				 g_type_depth (child->type))
+				ret = child;
+		}
+	}
+	return ret;
+}
 
+
+void
+glade_widget_class_container_add (GladeWidgetClass *class,
+				  GObject          *container,
+				  GObject          *child)
+{
+	GladeSupportedChild *support;
+
+	if ((support =
+	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
+	{
+		if (support->add) 
+			support->add (container, child);
+		else
+			g_warning ("No add support for type %s in %s",
+				   g_type_name (support->type),
+				   class->name);
+	}
+	else
+		g_warning ("No support for type %s in %s",
+			   g_type_name (G_OBJECT_TYPE (child)),
+			   class->name);
+}
+
+void
+glade_widget_class_container_remove (GladeWidgetClass *class,
+				     GObject          *container,
+				     GObject          *child)
+{
+	GladeSupportedChild *support;
+
+	if ((support =
+	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
+	{
+		if (support->remove)
+			support->remove (container, child);
+		else
+			g_warning ("No remove support for type %s in %s",
+				   g_type_name (support->type),
+				   class->name);
+	}
+	else
+		g_warning ("No support for type %s in %s",
+			   g_type_name (G_OBJECT_TYPE (child)),
+			   class->name);
+}
+
+GList *
+glade_widget_class_container_get_children (GladeWidgetClass *class,
+					   GObject          *container)
+{
+	GList *list, *children = NULL;
+
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+		if (support->get_children)
+			children = g_list_concat (children, support->get_children (container));
+	}
+	return children;
+}
+
+GList *
+glade_widget_class_container_get_all_children (GladeWidgetClass *class,
+					       GObject          *container)
+{
+	GList *list, *children = NULL;
+
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+		if (support->get_all_children)
+			children = g_list_concat (children,
+						  support->get_all_children (container));
+	}
+	return children;
+}
+
+void
+glade_widget_class_container_set_property (GladeWidgetClass *class,
+					   GObject      *container,
+					   GObject      *child,
+					   const gchar  *property_name,
+					   const GValue *value)
+{
+	GladeSupportedChild *support;
+
+	if ((support =
+	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
+	{
+		if (support->set_property)
+			support->set_property (container, child,
+					       property_name, value);
+		else
+			g_warning ("No set_property support for type %s in %s",
+				   g_type_name (support->type), class->name);
+	}
+	else
+		g_warning ("No support for type %s in %s",
+			   g_type_name (G_OBJECT_TYPE (child)),
+			   class->name);
+}
+
+
+void
+glade_widget_class_container_get_property (GladeWidgetClass *class,
+					   GObject      *container,
+					   GObject      *child,
+					   const gchar  *property_name,
+					   GValue       *value)
+{
+	GladeSupportedChild *support;
+
+	if ((support =
+	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
+	{
+		if (support->get_property)
+			support->get_property (container, child,
+					       property_name, value);
+		else
+			g_warning ("No get_property support for type %s in %s",
+				   g_type_name (support->type), class->name);
+	}
+	else
+		g_warning ("No support for type %s in %s",
+			   g_type_name (G_OBJECT_TYPE (child)),
+			   class->name);
+}
+
+void
+glade_widget_class_container_fill_empty (GladeWidgetClass *class,
+					 GObject          *container)
+{
+	GladeSupportedChild *support;
+	GList               *list;
+
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		support = list->data;
+		if (support->fill_empty)
+			support->fill_empty (container);
+	}
+}
+
+void
+glade_widget_class_container_replace_child (GladeWidgetClass *class,
+					    GObject      *container,
+					    GObject      *old,
+					    GObject      *new)
+{
+	GladeSupportedChild *support;
+
+	if ((support =
+	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (old))) != NULL)
+	{
+		if (support->replace_child)
+			support->replace_child (container, old, new);
+		else
+			g_warning ("No replace_child support for type %s in %s",
+				   g_type_name (support->type), class->name);
+	}
+	else
+		g_warning ("No support for type %s in %s",
+			   g_type_name (G_OBJECT_TYPE (old)), class->name);
+}
+
+gboolean
+glade_widget_class_contains_non_widgets (GladeWidgetClass *class)
+{
+	GList *list;
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+		if (!g_type_is_a (support->type, GTK_TYPE_WIDGET))
+			return TRUE;
+	}
 	return FALSE;
 }
+
+static GladeChildPacking *
+glade_widget_class_get_child_packing (GladeWidgetClass *child_class,
+				      GladeWidgetClass *parent_class)
+{
+	GList *l;
+	
+	for (l = child_class->child_packings; l; l = l->next) 
+	{
+		GladeChildPacking *packing;
+
+		packing = (GladeChildPacking *) l->data;
+
+		if (strcmp (packing->parent_name, parent_class->name) == 0)
+			return packing;
+	}
+
+	return NULL;
+}
+
+static GladePackingDefault *
+glade_widget_class_get_packing_default_internal (GladeChildPacking *packing,
+						 const gchar       *id)
+{
+	GList *l;
+
+	for (l = packing->packing_defaults; l; l = l->next)
+	{
+		GladePackingDefault *def;
+
+		def = (GladePackingDefault *) l->data;
+
+		if (strcmp (def->id, id) == 0) 
+			return def;
+	}
+
+	return NULL;
+}
+
+GladePackingDefault *
+glade_widget_class_get_packing_default (GladeWidgetClass *child_class,
+					GladeWidgetClass *container_class,
+					const gchar      *id)
+{
+	GladeChildPacking *packing = NULL;
+	GladeWidgetClass  *p_class;
+	GType              p_type;
+
+	p_type = container_class->type;
+	p_class = container_class;
+	while (p_class)
+	{
+		GType old_p_type;
+
+		packing = glade_widget_class_get_child_packing (child_class,
+								p_class);
+		if (packing)
+		{
+			GladePackingDefault *def;
+
+			def = glade_widget_class_get_packing_default_internal (packing, id);
+			if (def)
+				return def;
+		}
+
+		old_p_type = p_type;
+		p_type = g_type_parent (p_type);
+
+		if (!p_type)
+			break;
+		
+		p_class = glade_widget_class_get_by_type (p_type);
+	}
+
+	return NULL;
+}
+

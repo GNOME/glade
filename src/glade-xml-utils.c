@@ -704,3 +704,37 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 
 	return (GladeXmlNode *)node;
 }
+
+gchar *
+alloc_string(GladeInterface *interface, const gchar *string)
+{
+    gchar *s;
+
+    s = g_hash_table_lookup(interface->strings, string);
+    if (!s)
+	{
+		s = g_strdup(string);
+		g_hash_table_insert(interface->strings, s, s);
+    }
+
+    return s;
+}
+
+gchar *
+alloc_propname(GladeInterface *interface, const gchar *string)
+{
+    static GString *norm_str;
+    guint i;
+
+    if (!norm_str)
+	norm_str = g_string_new_len(NULL, 64);
+
+    /* assign the string to norm_str */
+    g_string_assign(norm_str, string);
+    /* convert all dashes to underscores */
+    for (i = 0; i < norm_str->len; i++)
+	if (norm_str->str[i] == '-')
+	    norm_str->str[i] = '_';
+
+    return alloc_string(interface, norm_str->str);
+}

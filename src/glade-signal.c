@@ -38,14 +38,19 @@
  *
  * Returns: the new #GladeSignal
  */
-GladeSignal *
-glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
+GladeSignal *glade_signal_new (const gchar *name,
+			       const gchar *handler,
+			       const gchar *userdata,
+			       gboolean     lookup,
+			       gboolean     after)
 {
 	GladeSignal *signal = g_new0 (GladeSignal, 1);
 
-	signal->name = g_strdup (name);
-	signal->handler = g_strdup (handler);
-	signal->after = after;
+	signal->name     = g_strdup (name);
+	signal->handler  = g_strdup (handler);
+	signal->userdata = userdata ? g_strdup (userdata) : NULL;
+	signal->lookup   = lookup;
+	signal->after    = after;
 
 	return signal;
 }
@@ -63,6 +68,7 @@ glade_signal_free (GladeSignal *signal)
 
 	g_free (signal->name);
 	g_free (signal->handler);
+	if (signal->userdata) g_free (signal->userdata);
 	g_free (signal);
 }
 
@@ -77,15 +83,19 @@ gboolean
 glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 {
 	gboolean ret = FALSE;
-
 	g_return_val_if_fail (GLADE_IS_SIGNAL (sig1), FALSE);
 	g_return_val_if_fail (GLADE_IS_SIGNAL (sig2), FALSE);
-
-	if (!strcmp (sig1->name, sig2->name) &&
-	    !strcmp (sig1->handler, sig2->handler) &&
-	    sig1->after == sig2->after)
+	
+	if (!strcmp (sig1->name, sig2->name)        &&
+	    !strcmp (sig1->handler, sig2->handler)  &&
+	    sig1->after  == sig2->after             &&
+	    sig1->lookup == sig2->lookup)
+	{
+		if ((sig1->userdata == NULL && sig2->userdata == NULL) ||
+		    (sig1->userdata != NULL && sig2->userdata != NULL  &&
+		     !strcmp (sig1->userdata, sig2->userdata)))
 			ret = TRUE;
-
+	}
 	return ret;
 }
 
@@ -98,49 +108,52 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 GladeSignal *
 glade_signal_clone (const GladeSignal *signal)
 {
-	return glade_signal_new (signal->name, signal->handler, signal->after);
+	return glade_signal_new (signal->name,
+				 signal->handler,
+				 signal->userdata,
+				 signal->lookup,
+				 signal->after);
 }
 
 /**
  * glade_signal_write:
- * @context: a #GladeXmlContext
- * @signal: a #GladeSignal
+ * @info:
+ * @signal:
+ * @interface:
  *
- * Returns: a new #GladeXmlNode in @context for @signal
+ * Returns: TRUE if succeed
  */
-GladeXmlNode *
-glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
+gboolean
+glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
+		     GladeInterface *interface)
 {
-	GladeXmlNode *node;
-		
-	node = glade_xml_node_new (context, GLADE_XML_TAG_SIGNAL);
-
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, signal->name);
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_HANDLER, signal->handler);
-	glade_xml_node_set_property_boolean (node, GLADE_XML_TAG_AFTER, signal->after);
-
-	return node;
+	info->name    = alloc_string(interface, signal->name);
+	info->handler = alloc_string(interface, signal->handler);
+	info->object  =
+		signal->userdata ?
+		alloc_string(interface, signal->userdata) : NULL;
+	info->after   = signal->after;
+	info->lookup  = signal->lookup;
+	return TRUE;
 }
 
 /**
- * glade_signal_new_from_node:
- * @node: a #GladeXmlNode
+ * glade_signal_new_from_signal_info:
+ * @node: a #GladeSignalInfo
  *
  * Returns: a new #GladeSignal with the attributes defined in @node, %NULL if
  *          there is an error
  */
-GladeSignal *
-glade_signal_new_from_node (GladeXmlNode *node)
+GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 {
 	GladeSignal *signal;
 
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_SIGNAL))
-		return NULL;
+	g_return_val_if_fail (info != NULL, NULL);
 
 	signal = g_new0 (GladeSignal, 1);
-	signal->name    = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
-	signal->handler = glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER, NULL);
-	signal->after   = glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
+	signal->name = g_strdup (info->name);
+	signal->handler = g_strdup (info->handler);
+	signal->after = info->after;
 
 	if (!signal->name)
 		return NULL;

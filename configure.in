@@ -12,7 +12,6 @@ AC_PROG_INTLTOOL([0.29])
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
-
 AC_ISC_POSIX
 AC_PROG_CC
 AC_DISABLE_STATIC
@@ -36,7 +35,7 @@ AM_GLIB_GNU_GETTEXT
 dnl ================================================================
 dnl Start of pkg-config checks
 dnl ================================================================
-PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.2.0 libxml-2.0 >= 2.4.0)
+PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.4.0  libxml-2.0 >= 2.4.0)
 AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
 
@@ -112,6 +111,7 @@ pixmaps/Makefile
 widgets/Makefile
 po/Makefile.in
 src/Makefile
+src/libgladeui-1.0.pc
 ])
 
 echo "

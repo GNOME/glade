@@ -22,7 +22,6 @@ typedef struct _GladeEditorTable     GladeEditorTable;
 typedef struct _GladeEditorProperty  GladeEditorProperty;
 typedef enum   _GladeEditorTableType GladeEditorTableType;
 
-
 enum _GladeEditorTableType
 {
 	TABLE_TYPE_GENERAL,
@@ -61,13 +60,6 @@ struct _GladeEditor
 					 * when we switch from widgets of the
 					 * same class
 					 */
-	GtkTooltips *tooltips;   /* The tooltips for the editor. This are not
-				  * beeing used ATM. I wonder if they should
-				  * go into GladeWidgetClass since they are
-				  * different for each class or if this
-				  * will point to the tooltips for that
-				  * class. Oh well, we'll see
-				  */
 	GtkWidget *vbox_widget;  /* The editor has (at this moment) four tabs
 				  * this are pointers to the vboxes inside
 				  * each tab. The vboxes are wrapped into a
@@ -195,12 +187,13 @@ GType glade_editor_get_type (void);
 
 GladeEditor *glade_editor_new (void);
 
-void glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget);
-void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
-void glade_editor_update_widget_name (GladeEditor *editor);
-
-gboolean glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget);
-
+void         glade_editor_load_widget        (GladeEditor *editor,
+					      GladeWidget *widget);
+void         glade_editor_refresh            (GladeEditor *editor);
+void         glade_editor_update_widget_name (GladeEditor *editor);
+gboolean     glade_editor_query_dialog       (GladeEditor *editor,
+					      GladeWidget *widget);
+gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
 
 G_END_DECLS
 

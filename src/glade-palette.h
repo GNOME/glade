@@ -64,14 +64,13 @@ struct _GladePaletteClass
 {
 	GtkVBoxClass parent_class;
 
-	void (*toggled) (GladePalette *palette);
+	void (*toggled)        (GladePalette *palette);
+	void (*catalog_change) (GladePalette *palette);
 };
 
 GType glade_palette_get_type (void);
 
 GladePalette *glade_palette_new (GList *catalogs);
-
-void glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog);
 
 void glade_palette_unselect_widget (GladePalette *palette);
 

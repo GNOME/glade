@@ -11,7 +11,8 @@ typedef struct _GladeClipboard     GladeClipboard;
 
 typedef struct _GladeWidget        GladeWidget;
 typedef struct _GladeWidgetClass   GladeWidgetClass;
-typedef struct _GladeWidgetClassSignal   GladeWidgetClassSignal;
+typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
+typedef struct _GladePackagingDefault  GladePackingDefault;
 
 typedef struct _GladeProperty      GladeProperty;
 typedef struct _GladePropertyClass GladePropertyClass;
@@ -26,6 +27,7 @@ typedef struct _GladeProjectViewTree GladeProjectViewTree;
 typedef struct _GladeProjectWindow   GladeProjectWindow;
 
 typedef struct _GladeCatalog       GladeCatalog;
+typedef struct _GladeWidgetGroup   GladeWidgetGroup;
 typedef struct _GladeCursor        GladeCursor;
 
 typedef struct _GladePlaceholder   GladePlaceholder;
@@ -35,5 +37,6 @@ typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
 
+#include "glade-parser.h"
 
 #endif /* __GLADE_TYPES_H__ */

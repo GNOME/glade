@@ -38,13 +38,22 @@ enum
 	COLUMN_SIGNAL,
 	COLUMN_HANDLER,
 	COLUMN_AFTER,
+	COLUMN_USERDATA,
+	COLUMN_LOOKUP,
 
+	COLUMN_USERDATA_SLOT,
+	COLUMN_LOOKUP_VISIBLE,
 	COLUMN_AFTER_VISIBLE,
 	COLUMN_HANDLER_EDITABLE,
+	COLUMN_USERDATA_EDITABLE,
 	COLUMN_SLOT, /* if this row contains a "<Type...>" label */
 	COLUMN_BOLD,
 	NUM_COLUMNS
 };
+
+#define HANDLER_DEFAULT  "<Type the signal's handler here>"
+#define USERDATA_DEFAULT "<Type the object's name or symbol to lookup here>"
+
 
 static void
 glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
@@ -58,13 +67,20 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	GladeSignal *old_signal;
 	GladeSignal *new_signal;
 	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
-	char *signal_name;
-	char *handler;
-	gboolean after;
+	gchar     *signal_name;
+	gchar     *handler;
+	gchar     *userdata;
+	gboolean   lookup;
+	gboolean   after;
 
 	/* get toggled iter */
 	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter, COLUMN_SIGNAL, &signal_name, COLUMN_HANDLER, &handler, COLUMN_AFTER, &after, -1);
+	gtk_tree_model_get (model, &iter,
+			    COLUMN_SIGNAL,  &signal_name,
+			    COLUMN_HANDLER, &handler,
+			    COLUMN_USERDATA,&userdata,
+			    COLUMN_LOOKUP,  &lookup,
+			    COLUMN_AFTER,   &after, -1);
 	if (signal_name == NULL)
 	{
 		if (!gtk_tree_model_iter_parent (model, &iter_parent, &iter))
@@ -74,11 +90,10 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 		g_assert (signal_name != NULL);
 	}
 
-	old_signal = glade_signal_new (signal_name, handler, after);
-	new_signal = glade_signal_new (signal_name, handler, !after);
+	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
+	new_signal = glade_signal_new (signal_name, handler, userdata, lookup, !after);
 
-	/* TODO: Action not yet undoable */
-	glade_widget_change_signal_handler (editor->widget, old_signal, new_signal);
+	glade_command_change_signal (editor->widget, old_signal, new_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_AFTER, !after, -1);
 
 	glade_signal_free (old_signal);
@@ -86,7 +101,58 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	gtk_tree_path_free (path);
 	g_free (signal_name);
 	g_free (handler);
+	g_free (userdata);
 }
+
+static void
+glade_signal_editor_lookup_toggled (GtkCellRendererToggle *cell,
+				    gchar                 *path_str,
+				    gpointer               data)
+{
+	GladeSignalEditor *editor = (GladeSignalEditor*) data;
+	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
+	GtkTreeIter  iter;
+	GtkTreeIter iter_parent;
+	GladeSignal *old_signal;
+	GladeSignal *new_signal;
+	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+	gchar     *signal_name;
+	gchar     *handler;
+	gchar     *userdata;
+	gboolean   lookup;
+	gboolean   after;
+
+	/* get toggled iter */
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_tree_model_get (model, &iter,
+			    COLUMN_SIGNAL,  &signal_name,
+			    COLUMN_HANDLER, &handler,
+			    COLUMN_USERDATA,&userdata,
+			    COLUMN_LOOKUP,  &lookup,
+			    COLUMN_AFTER,   &after, -1);
+	if (signal_name == NULL)
+	{
+		if (!gtk_tree_model_iter_parent (model, &iter_parent, &iter))
+			g_assert (FALSE);
+
+		gtk_tree_model_get (model, &iter_parent, COLUMN_SIGNAL, &signal_name, -1);
+		g_assert (signal_name != NULL);
+	}
+
+	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
+	new_signal = glade_signal_new (signal_name, handler, userdata, !lookup, after);
+
+	glade_command_change_signal (editor->widget, old_signal, new_signal);
+	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_LOOKUP, !lookup, -1);
+
+	glade_signal_free (old_signal);
+	glade_signal_free (new_signal);
+	gtk_tree_path_free (path);
+	g_free (signal_name);
+	g_free (handler);
+	g_free (userdata);
+}
+
 
 static gboolean
 glade_signal_editor_is_valid_identifier (const char *text)
@@ -115,11 +181,17 @@ append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
 
 	gtk_tree_store_append (GTK_TREE_STORE (model), &iter_new_slot, iter_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter_new_slot,
-			    COLUMN_HANDLER, _("<Type the signal's handler here>"),
-			    COLUMN_AFTER, FALSE,
-			    COLUMN_AFTER_VISIBLE, FALSE,
+			    COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+			    COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+			    COLUMN_LOOKUP,           FALSE,
+			    COLUMN_LOOKUP_VISIBLE,   FALSE,
 			    COLUMN_HANDLER_EDITABLE, TRUE,
-			    COLUMN_SLOT, TRUE, -1);
+			    COLUMN_USERDATA_EDITABLE,FALSE,
+			    COLUMN_AFTER,            FALSE,
+			    COLUMN_AFTER_VISIBLE,    FALSE,
+			    COLUMN_SLOT,             TRUE,
+			    COLUMN_USERDATA_SLOT,    TRUE,
+			    -1);
 	gtk_tree_model_iter_parent (model, &iter_class, iter_signal);
 
 	/* mark the signal & class name as bold */
@@ -160,13 +232,22 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter)
 
 	do
 	{
-		char *handler;
+		gchar *handler;
 		gboolean after;
 		gboolean slot;
 		gboolean visible;
 
-		gtk_tree_model_get (model, &iter_next, COLUMN_HANDLER, &handler, COLUMN_AFTER, &after, COLUMN_SLOT, &slot, COLUMN_AFTER_VISIBLE, &visible, -1);
-		gtk_tree_store_set (GTK_TREE_STORE (model), iter, COLUMN_HANDLER, handler, COLUMN_AFTER, after, COLUMN_SLOT, slot, COLUMN_AFTER_VISIBLE, visible, -1);
+		gtk_tree_model_get (model,                &iter_next,
+				    COLUMN_HANDLER,       &handler,
+				    COLUMN_AFTER,         &after,
+				    COLUMN_SLOT,          &slot,
+				    COLUMN_AFTER_VISIBLE, &visible, -1);
+
+		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
+				    COLUMN_HANDLER,         handler,
+				    COLUMN_AFTER,           after,
+				    COLUMN_SLOT,            slot,
+				    COLUMN_AFTER_VISIBLE,   visible, -1);
 		g_free (handler);
 
 		*iter = iter_next;
@@ -178,35 +259,55 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter)
 	if (!gtk_tree_model_iter_has_child (model, &iter_signal))
 	{
 		/* mark the signal & class name as normal */
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter_signal, COLUMN_BOLD, FALSE, -1);
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter_class, COLUMN_BOLD, FALSE, -1);
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter_signal,
+				    COLUMN_BOLD, FALSE, -1);
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter_class,
+				    COLUMN_BOLD, FALSE, -1);
 	}
 }
 
 static gboolean
-is_void_signal_handler (const char *signal_handler)
+is_void_signal_handler (const gchar *signal_handler)
 {
-	return (signal_handler == NULL || *signal_handler == 0 || strcmp (signal_handler, _("<Type the signal's handler here>")) == 0);
+	return ( signal_handler == NULL ||
+		*signal_handler == 0    ||
+		 strcmp (signal_handler, _(HANDLER_DEFAULT)) == 0);
+}
+
+static gboolean
+is_void_user_data (const gchar *user_data)
+{
+	return ( user_data == NULL ||
+		*user_data == 0    ||
+		 strcmp (user_data, _(USERDATA_DEFAULT)) == 0);
 }
 
 static void
-glade_signal_editor_cell_edited (GtkCellRendererText *cell,
-				 const gchar         *path_str,
-				 const gchar         *new_handler,
-				 gpointer             data)
+glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
+					 const gchar         *path_str,
+					 const gchar         *new_handler,
+					 gpointer             data)
 {
 	GladeWidget *glade_widget = ((GladeSignalEditor*) data)->widget;
 	GtkTreeModel *model = GTK_TREE_MODEL (((GladeSignalEditor*) data)->model);
 	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
 	GtkTreeIter iter;
 	GtkTreeIter iter_signal;
-	char *signal_name;
-	char *old_handler;
-	gboolean after;
-	gboolean slot;
+	gchar    *signal_name;
+	gchar    *old_handler;
+	gchar    *userdata;
+	gboolean  lookup;
+	gboolean  after;
+	gboolean  slot;
 
 	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter, COLUMN_SIGNAL, &signal_name, COLUMN_HANDLER, &old_handler, COLUMN_AFTER, &after, COLUMN_SLOT, &slot, -1);
+	gtk_tree_model_get (model,           &iter,
+			    COLUMN_SIGNAL,   &signal_name,
+			    COLUMN_HANDLER,  &old_handler,
+			    COLUMN_USERDATA, &userdata,
+			    COLUMN_LOOKUP,   &lookup,
+			    COLUMN_AFTER,    &after,
+			    COLUMN_SLOT,     &slot, -1);
 
 	if (signal_name == NULL)
 	{
@@ -226,10 +327,15 @@ glade_signal_editor_cell_edited (GtkCellRendererText *cell,
 	/* we're adding a new handler */
 	if (slot && !is_void_signal_handler(new_handler))
 	{
-		GladeSignal *new_signal = glade_signal_new (signal_name, new_handler, FALSE);
+		GladeSignal *new_signal = glade_signal_new (signal_name, new_handler,
+							    NULL, FALSE, FALSE);
 		glade_command_add_signal (glade_widget, new_signal);
 		glade_signal_free (new_signal);
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, new_handler, COLUMN_AFTER_VISIBLE, TRUE, COLUMN_SLOT, FALSE, -1);
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+				    COLUMN_HANDLER,          new_handler,
+				    COLUMN_AFTER_VISIBLE,    TRUE,
+				    COLUMN_SLOT,             FALSE,
+				    COLUMN_USERDATA_EDITABLE,TRUE, -1);
 
 		/* append a <Type...> slot */
 		append_slot (model, &iter_signal);
@@ -238,9 +344,17 @@ glade_signal_editor_cell_edited (GtkCellRendererText *cell,
 	/* we're removing a signal handler */
 	if (!slot && is_void_signal_handler(new_handler))
 	{
-		GladeSignal *old_signal = glade_signal_new (signal_name, old_handler, after);
+		GladeSignal *old_signal = glade_signal_new (signal_name, old_handler,
+							    userdata, lookup, after);
 		glade_command_remove_signal (glade_widget, old_signal);
 		glade_signal_free (old_signal);
+
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+				    COLUMN_LOOKUP_VISIBLE,   FALSE,
+				    COLUMN_LOOKUP,           FALSE,
+				    COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				    COLUMN_USERDATA_SLOT,    TRUE,
+				    COLUMN_USERDATA_EDITABLE,FALSE, -1);
 
 		remove_slot (model, &iter);
 	}
@@ -248,21 +362,118 @@ glade_signal_editor_cell_edited (GtkCellRendererText *cell,
 	/* we're changing a signal handler */
 	if (!slot && !is_void_signal_handler(new_handler))
 	{
-		/* TODO: Action not yet undoable */
-		GladeSignal *old_signal = glade_signal_new (signal_name, old_handler, after);
-		GladeSignal *new_signal = glade_signal_new (signal_name, new_handler, after);
+		GladeSignal *old_signal =
+			glade_signal_new
+			(signal_name,
+			 old_handler,
+			 is_void_user_data(userdata) ? NULL : userdata,
+			 lookup,
+			 after);
+		GladeSignal *new_signal =
+			glade_signal_new
+			(signal_name,
+			 new_handler,
+			 is_void_user_data(userdata) ? NULL : userdata,
+			 lookup,
+			 after);
 
-		glade_widget_change_signal_handler (glade_widget, old_signal, new_signal);
+		glade_command_change_signal (glade_widget, old_signal, new_signal);
 
 		glade_signal_free (old_signal);
 		glade_signal_free (new_signal);
 
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, new_handler, COLUMN_AFTER_VISIBLE, TRUE, COLUMN_SLOT, FALSE, -1);
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+				    COLUMN_HANDLER,       new_handler,
+				    COLUMN_AFTER_VISIBLE, TRUE,
+				    COLUMN_SLOT,          FALSE,
+				    COLUMN_USERDATA_EDITABLE,TRUE, -1);
 	}
 
 	gtk_tree_path_free (path);
 	g_free (signal_name);
 	g_free (old_handler);
+	g_free (userdata);
+}
+
+
+
+static void
+glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
+					  const gchar         *path_str,
+					  const gchar         *new_userdata,
+					  gpointer             data)
+{
+	GladeWidget  *glade_widget = ((GladeSignalEditor*) data)->widget;
+	GtkTreeModel *model = GTK_TREE_MODEL (((GladeSignalEditor*) data)->model);
+	GtkTreePath  *path = gtk_tree_path_new_from_string (path_str);
+	GtkTreeIter iter;
+	GtkTreeIter iter_signal;
+	gchar *signal_name;
+	gchar *old_userdata;
+	gchar *handler;
+	gboolean after;
+	gboolean lookup;
+	
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_tree_model_get (model,           &iter,
+			    COLUMN_SIGNAL,   &signal_name,
+			    COLUMN_HANDLER,  &handler,
+			    COLUMN_USERDATA, &old_userdata,
+			    COLUMN_LOOKUP,   &lookup,
+			    COLUMN_AFTER,    &after, -1);
+
+	if (signal_name == NULL)
+	{
+		if (!gtk_tree_model_iter_parent (model, &iter_signal, &iter))
+			g_assert (FALSE);
+
+		gtk_tree_model_get (model, &iter_signal, COLUMN_SIGNAL, &signal_name, -1);
+		g_assert (signal_name != NULL);
+	}
+	else
+		iter_signal = iter;
+
+
+	/* We are removing userdata */
+	if (is_void_user_data(new_userdata))
+	{
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+				    COLUMN_USERDATA_SLOT,  TRUE,
+				    COLUMN_USERDATA,       _(USERDATA_DEFAULT),
+				    COLUMN_LOOKUP,         FALSE,
+				    COLUMN_LOOKUP_VISIBLE, FALSE, -1);
+	}
+	else /* we're changing a signal handler's userdata */
+
+	{
+		GladeSignal *old_signal =
+			glade_signal_new
+			(signal_name,
+			 handler,
+			 is_void_user_data(old_userdata) ? NULL : old_userdata,
+			 lookup,
+			 after);
+		GladeSignal *new_signal = glade_signal_new (signal_name,
+							    handler,
+							    new_userdata,
+							    lookup,
+							    after);
+
+		glade_command_change_signal (glade_widget, old_signal, new_signal);
+
+		glade_signal_free (old_signal);
+		glade_signal_free (new_signal);
+
+		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+				    COLUMN_USERDATA_SLOT,  FALSE,
+				    COLUMN_USERDATA,       new_userdata,
+				    COLUMN_LOOKUP_VISIBLE, TRUE,
+				    -1);
+	}
+	gtk_tree_path_free (path);
+	g_free (signal_name);
+	g_free (handler);
+	g_free (old_userdata);
 }
 
 static void
@@ -281,7 +492,22 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
  	GtkCellRenderer *renderer;
 	GtkTreeModel *model;
 
-	editor->model = gtk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN, G_TYPE_BOOLEAN);
+	editor->model = gtk_tree_store_new
+		(NUM_COLUMNS,
+		 G_TYPE_STRING,   /* Signal  value      */
+		 G_TYPE_STRING,   /* Handler value      */
+		 G_TYPE_BOOLEAN,  /* After   value      */
+		 G_TYPE_STRING,   /* User data value    */
+		 G_TYPE_BOOLEAN,  /* module lookup string for
+				   * user data */
+		 G_TYPE_BOOLEAN,  /* Whether userdata is a slot */
+		 G_TYPE_BOOLEAN,  /* Lookup visibility  */
+		 G_TYPE_BOOLEAN,  /* After   visibility */
+		 G_TYPE_BOOLEAN,  /* Handler editable   */
+		 G_TYPE_BOOLEAN,  /* Userdata editable  */
+		 G_TYPE_BOOLEAN,  /* New slot           */
+		 G_TYPE_BOOLEAN); /* Mark with bold     */
+
 	model = GTK_TREE_MODEL (editor->model);
 
 	view_widget = gtk_tree_view_new_with_model (model);
@@ -292,25 +518,67 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	g_signal_connect(view, "row-activated", (GCallback) row_activated, NULL);
 
-	/* signal column */
+	/************************ signal column ************************/
  	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), "weight", PANGO_WEIGHT_BOLD, NULL); 
-	column = gtk_tree_view_column_new_with_attributes (_("Signal"), renderer, "text", COLUMN_SIGNAL, "weight-set", COLUMN_BOLD, NULL);
+	column = gtk_tree_view_column_new_with_attributes
+		(_("Signal"), renderer, "text", COLUMN_SIGNAL, "weight-set", COLUMN_BOLD, NULL);
  	gtk_tree_view_append_column (view, column);
 
-	/* handler column */
+	/************************ handler column ************************/
  	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, "foreground", "Gray", NULL);
-	g_signal_connect (renderer, "edited", G_CALLBACK (glade_signal_editor_cell_edited), editor);
-	column = gtk_tree_view_column_new_with_attributes (_("Handler"), renderer,
-							   "text", COLUMN_HANDLER, "style_set", COLUMN_SLOT,
-							   "foreground_set", COLUMN_SLOT, "editable", COLUMN_HANDLER_EDITABLE, NULL);
+	g_object_set (G_OBJECT (renderer),
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+	
+	g_signal_connect (renderer, "edited",
+			  G_CALLBACK (glade_signal_editor_handler_cell_edited), editor);
+
+	column = gtk_tree_view_column_new_with_attributes
+		(_("Handler"),     renderer,
+		 "text",           COLUMN_HANDLER,
+		 "style_set",      COLUMN_SLOT,
+		 "foreground_set", COLUMN_SLOT,
+		 "editable",       COLUMN_HANDLER_EDITABLE, NULL);
+
  	gtk_tree_view_append_column (view, column);
 
-	/* after column */
+	/************************ userdata column ************************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer),
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+
+	g_signal_connect (renderer, "edited",
+			  G_CALLBACK (glade_signal_editor_userdata_cell_edited), editor);
+	column = gtk_tree_view_column_new_with_attributes
+		(_("User data"), renderer,
+		 "text",           COLUMN_USERDATA,
+		 "style_set",      COLUMN_USERDATA_SLOT,
+		 "foreground_set", COLUMN_USERDATA_SLOT,
+		 "editable",       COLUMN_USERDATA_EDITABLE, NULL);
+
+ 	gtk_tree_view_append_column (view, column);
+
+	/************************ lookup column ************************/
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	g_signal_connect (renderer, "toggled",
+			  G_CALLBACK (glade_signal_editor_lookup_toggled), editor);
+	column = gtk_tree_view_column_new_with_attributes
+		(_("Lookup"), renderer,
+		 "active",  COLUMN_LOOKUP,
+		 "visible", COLUMN_LOOKUP_VISIBLE, NULL);
+
+ 	gtk_tree_view_append_column (view, column);
+	
+	/************************ after column ************************/
 	renderer = gtk_cell_renderer_toggle_new ();
-	g_signal_connect (renderer, "toggled", G_CALLBACK (glade_signal_editor_after_toggled), editor);
- 	column = gtk_tree_view_column_new_with_attributes (_("After"), renderer, "active", COLUMN_AFTER, "visible", COLUMN_AFTER_VISIBLE, NULL);
+	g_signal_connect (renderer, "toggled",
+			  G_CALLBACK (glade_signal_editor_after_toggled), editor);
+ 	column = gtk_tree_view_column_new_with_attributes
+		(_("After"), renderer,
+		 "active",  COLUMN_AFTER,
+		 "visible", COLUMN_AFTER_VISIBLE, NULL);
  	gtk_tree_view_append_column (view, column);
 
 	return view_widget;
@@ -387,7 +655,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GladeWidget *widget)
 {
 	GList *list;
-	const char *last_type = "";
+	const gchar *last_type = "";
 	GtkTreeIter iter;
 	GtkTreeIter parent_class;
 	GtkTreeIter parent_signal;
@@ -405,19 +673,24 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	if (!widget)
 		return;
 
+	/* Loop over every signal type
+	 */
 	for (list = editor->class->signals; list; list = list->next)
 	{
 		GladeWidgetClassSignal *signal = (GladeWidgetClassSignal *) list->data;
   
+		/* Add class name that this signal belongs to.
+		 */
 		if (strcmp(last_type, signal->type))
 		{
 			gtk_tree_store_append (editor->model, &parent_class, NULL);
-			gtk_tree_store_set (editor->model, &parent_class,
-					    COLUMN_SIGNAL, signal->type,
-					    COLUMN_AFTER_VISIBLE, FALSE,
-					    COLUMN_HANDLER_EDITABLE, FALSE,
-					    COLUMN_SLOT, FALSE,
-					    COLUMN_BOLD, FALSE, -1);
+			gtk_tree_store_set    (editor->model,          &parent_class,
+					       COLUMN_SIGNAL,           signal->type,
+					       COLUMN_AFTER_VISIBLE,    FALSE,
+					       COLUMN_HANDLER_EDITABLE, FALSE,
+					       COLUMN_USERDATA_EDITABLE,FALSE,
+					       COLUMN_SLOT,             FALSE,
+					       COLUMN_BOLD,             FALSE, -1);
 			last_type = signal->type;
 		}
 
@@ -425,54 +698,96 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 		signals = glade_widget_list_signal_handlers (widget, signal->name);
 
 		if (!signals || signals->len == 0)
-			gtk_tree_store_set (editor->model, &parent_signal,
-					    COLUMN_SIGNAL, signal->name,
-					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
-					    COLUMN_AFTER, FALSE,
-					    COLUMN_HANDLER_EDITABLE, TRUE,
-					    COLUMN_AFTER_VISIBLE, FALSE,
-					    COLUMN_SLOT, TRUE, -1);
+		{
+			gtk_tree_store_set
+				(editor->model,          &parent_signal,
+				 COLUMN_SIGNAL,           signal->name,
+				 COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 COLUMN_AFTER,            FALSE,
+				 COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 COLUMN_LOOKUP,           FALSE,
+				 COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 COLUMN_HANDLER_EDITABLE, TRUE,
+				 COLUMN_USERDATA_EDITABLE,FALSE,
+				 COLUMN_AFTER_VISIBLE,    FALSE,
+				 COLUMN_SLOT,             TRUE,
+				 COLUMN_USERDATA_SLOT,    TRUE,
+				 -1);
+		}
 		else
 		{
-			size_t i;
+			gint i;
 			GtkTreePath *path_parent_class;
-			GladeSignal *widget_signal = (GladeSignal*) g_ptr_array_index (signals, 0);
+			GladeSignal *widget_signal =
+				(GladeSignal*) g_ptr_array_index (signals, 0);
 
 			/* mark the class of this signal as bold and expand it, 
                          * as there is at least one signal with handler */
 			gtk_tree_store_set (editor->model, &parent_class, COLUMN_BOLD, TRUE, -1);
-			path_parent_class = gtk_tree_model_get_path (GTK_TREE_MODEL (editor->model), &parent_class);
-			gtk_tree_view_expand_row (GTK_TREE_VIEW (editor->signals_list), path_parent_class, FALSE);
+			path_parent_class =
+				gtk_tree_model_get_path (GTK_TREE_MODEL (editor->model),
+							 &parent_class);
+			gtk_tree_view_expand_row (GTK_TREE_VIEW (editor->signals_list),
+						  path_parent_class, FALSE);
 			gtk_tree_path_free (path_parent_class);
 
-			gtk_tree_store_set (editor->model, &parent_signal,
-					    COLUMN_SIGNAL, signal->name,
-					    COLUMN_HANDLER, widget_signal->handler,
-					    COLUMN_AFTER, widget_signal->after,
-					    COLUMN_AFTER_VISIBLE, TRUE,
-					    COLUMN_HANDLER_EDITABLE, TRUE,
-					    COLUMN_SLOT, FALSE,
-					    COLUMN_BOLD, TRUE, -1);
+			gtk_tree_store_set
+				(editor->model,            &parent_signal,
+				 COLUMN_SIGNAL,             signal->name,
+				 COLUMN_HANDLER,            widget_signal->handler,
+				 COLUMN_AFTER,              widget_signal->after,
+				 COLUMN_USERDATA,
+				 widget_signal->userdata ?
+				 widget_signal->userdata : _(USERDATA_DEFAULT),
+				 COLUMN_LOOKUP,             widget_signal->lookup,
+				 COLUMN_LOOKUP_VISIBLE,
+				 widget_signal->userdata ?  TRUE : FALSE,
+				 COLUMN_AFTER_VISIBLE,      TRUE,
+				 COLUMN_HANDLER_EDITABLE,   TRUE,
+				 COLUMN_USERDATA_EDITABLE,  TRUE,
+				 COLUMN_SLOT,               FALSE,
+				 COLUMN_USERDATA_SLOT,
+				 widget_signal->userdata  ? FALSE : TRUE,
+				 COLUMN_BOLD,               TRUE, -1);
+
 			for (i = 1; i < signals->len; i++)
 			{
 				widget_signal = (GladeSignal*) g_ptr_array_index (signals, i);
 				gtk_tree_store_append (editor->model, &iter, &parent_signal);
-				gtk_tree_store_set (editor->model, &iter,
-						    COLUMN_HANDLER, widget_signal->handler,
-						    COLUMN_AFTER, widget_signal->after,
-						    COLUMN_AFTER_VISIBLE, TRUE,
-						    COLUMN_HANDLER_EDITABLE, TRUE,
-						    COLUMN_SLOT, FALSE, -1);
+
+				gtk_tree_store_set
+					(editor->model,            &iter,
+					 COLUMN_HANDLER,            widget_signal->handler,
+					 COLUMN_AFTER,              widget_signal->after,
+					 COLUMN_USERDATA,
+					 widget_signal->userdata  ?
+					 widget_signal->userdata : _(USERDATA_DEFAULT),
+					 COLUMN_LOOKUP,           widget_signal->lookup,
+					 COLUMN_LOOKUP_VISIBLE,
+					 widget_signal->userdata  ? TRUE : FALSE,
+					 COLUMN_AFTER_VISIBLE,      TRUE,
+					 COLUMN_HANDLER_EDITABLE,   TRUE,
+					 COLUMN_USERDATA_EDITABLE,  TRUE,
+					 COLUMN_SLOT,               FALSE,
+					 COLUMN_USERDATA_SLOT,
+					 widget_signal->userdata  ? FALSE : TRUE,
+					 -1);
 			}
 
 			/* add the <Type...> slot */
 			gtk_tree_store_append (editor->model, &iter, &parent_signal);
-			gtk_tree_store_set (editor->model, &iter,
-					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
-					    COLUMN_AFTER, FALSE,
-					    COLUMN_AFTER_VISIBLE, FALSE,
-					    COLUMN_HANDLER_EDITABLE, TRUE,
-					    COLUMN_SLOT, TRUE, -1);
+			gtk_tree_store_set
+				(editor->model,          &iter,
+				 COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 COLUMN_AFTER,            FALSE,
+				 COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 COLUMN_LOOKUP,           FALSE,
+				 COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 COLUMN_HANDLER_EDITABLE, TRUE,
+				 COLUMN_USERDATA_EDITABLE,FALSE,
+				 COLUMN_AFTER_VISIBLE,    FALSE,
+				 COLUMN_SLOT,             TRUE,
+				 COLUMN_USERDATA_SLOT,    TRUE, -1);
 		}
 	}
 

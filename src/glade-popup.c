@@ -28,54 +28,96 @@
 #include "glade-clipboard.h"
 #include "glade-command.h"
 #include "glade-project.h"
-#include "glade-project-window.h"
+#include "glade-app.h"
 
 static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	if (widget)
-		glade_project_selection_set (widget->project, widget->widget, TRUE);
+	glade_project_selection_set
+		(widget->project, glade_widget_get_object (widget), TRUE);
 }
 
 static void
 glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_command_cut (widget);
+	GladeProject       *project = glade_default_app_get_active_project ();
+
+	/* Assign selection first */
+	if (glade_project_is_selected
+	    (project, glade_widget_get_object (widget)) == FALSE)
+		glade_project_selection_set
+			(project, glade_widget_get_object (widget), FALSE);
+
+	glade_util_cut_selection ();
 }
 
 static void
 glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_command_copy (widget);
+	GladeProject       *project = glade_default_app_get_active_project ();
+
+	/* Assign selection first */
+	if (glade_project_is_selected
+	    (project, glade_widget_get_object (widget)) == FALSE)
+		glade_project_selection_set
+			(project, glade_widget_get_object (widget), FALSE);
+
+	glade_util_copy_selection ();
 }
 
 static void
 glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_implement_me ();
-	/*
-	 * look in glade-placeholder.c (glade_placeholder_on_button_press_event
-	 * for the "paste" operation code.
+	GladeProject       *project = glade_default_app_get_active_project ();
+
+	/* The selected widget is the paste destination
 	 */
+	glade_project_selection_set
+		(project, glade_widget_get_object (widget), FALSE);
+
+	glade_util_paste_clipboard (NULL);
 }
 
 static void
 glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_command_delete (widget);
+	GladeProject       *project = glade_default_app_get_active_project ();
+
+	/* Assign selection first */
+	if (glade_project_is_selected
+	    (project, glade_widget_get_object (widget)) == FALSE)
+		glade_project_selection_set
+			(project, glade_widget_get_object (widget), FALSE);
+
+	glade_util_delete_selection ();
 }
 
 static void
-glade_popup_placeholder_paste_cb (GtkMenuItem *item,
+glade_popup_placeholder_paste_cb (GtkMenuItem      *item,
 				  GladePlaceholder *placeholder)
 {
-	glade_command_paste (placeholder);
+	GladeProject       *project = glade_default_app_get_active_project ();
+
+	glade_project_selection_clear (project, FALSE);
+
+	glade_util_paste_clipboard (placeholder);
+}
+
+static void
+glade_popup_add_item_cb (GtkMenuItem *item,
+			 GladeWidget *widget)
+{
+	GladeWidgetClass    *class;
+
+	if ((class =
+	     g_object_get_data (G_OBJECT (item), "widget_class")) != 0)
+		glade_command_create (class, widget, NULL, NULL);
 }
 
 /*
  * If stock_id != NULL, label is ignored
  */
-static void
+static GtkWidget *
 glade_popup_append_item (GtkWidget *popup_menu,
 			 const gchar *stock_id,
 			 const gchar *label,
@@ -96,6 +138,8 @@ glade_popup_append_item (GtkWidget *popup_menu,
 	gtk_widget_set_sensitive (menu_item, sensitive);
 	gtk_widget_show (menu_item);
 	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), menu_item);
+
+	return menu_item;
 }
 
 static GtkWidget *
@@ -126,6 +170,47 @@ glade_popup_populate_childs (GtkWidget* popup_menu, GladeWidget* parent)
 	}
 }
 
+static void
+glade_popup_add_children (GtkWidget* popup_menu, GladeWidget *widget)
+{
+	GtkWidget *menu_item =
+		gtk_image_menu_item_new_from_stock (GTK_STOCK_ADD, NULL);
+	GtkWidget *add_menu  = gtk_menu_new ();
+	GList     *list, *types, *l;
+
+	gtk_widget_show (menu_item);
+	gtk_widget_show (add_menu);
+
+	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), menu_item);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), add_menu);
+		
+	for (list = widget->widget_class->children;
+	     list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+		
+		if (g_type_is_a (support->type, GTK_TYPE_WIDGET))
+			continue;
+
+		if ((types =
+		     glade_widget_class_get_derived_types (support->type)) != NULL)
+		{
+			for (l = types; l && l->data; l = l->next)
+			{
+				GladeWidgetClass *class = l->data;
+				GtkWidget        *item =
+					glade_popup_append_item
+					(add_menu, NULL, g_type_name (class->type),
+					 TRUE, glade_popup_add_item_cb, widget);
+				g_object_set_data (G_OBJECT (item),
+						   "widget_class", class);
+
+			}
+			g_list_free (types);
+		}
+	}
+}
+
 static GtkWidget *
 glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 {
@@ -143,6 +228,9 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 				 glade_popup_paste_cb, widget);
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
+
+	if (glade_widget_class_contains_non_widgets (widget->widget_class))
+		glade_popup_add_children (popup_menu, widget);
 
 	if (add_childs &&
 	    !g_type_is_a (widget->widget_class->type, GTK_TYPE_WINDOW)) {
@@ -165,7 +253,7 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
 				 glade_popup_placeholder_paste_cb, placeholder);
 
-	if ((parent = glade_util_get_parent(GTK_WIDGET (placeholder))) != NULL)
+	if ((parent = glade_placeholder_get_parent(placeholder)) != NULL)
 		glade_popup_populate_childs(popup_menu, parent);
 
 	return popup_menu;
@@ -175,11 +263,12 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
  * glade_popup_widget_pop:
  * @widget:
  * @event:
+ * @add_children:
  *
  * TODO: write me
  */
 void
-glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
+glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add_children)
 {
 	GtkWidget *popup_menu;
 	gint button;
@@ -187,7 +276,7 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	popup_menu = glade_popup_create_menu (widget, TRUE);
+	popup_menu = glade_popup_create_menu (widget, add_children);
 
 	if (event)
 	{

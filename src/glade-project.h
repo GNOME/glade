@@ -33,8 +33,8 @@ struct _GladeProject
 			      * requested
 			      */
 
-	GList *widgets; /* A list of #GtkWidgets that make up this project.
-			 * The widgets are stored in no particular order.
+	GList *objects; /* A list of #GObjects that make up this project.
+			 * The objects are stored in no particular order.
 			 */
 
 	GList *selection; /* We need to keep the selection in the project
@@ -55,40 +55,46 @@ struct _GladeProjectClass
 {
 	GObjectClass parent_class;
 
-	void   (*add_widget)          (GladeProject *project,
+	void   (*add_object)          (GladeProject *project,
 				       GladeWidget  *widget);
-	void   (*remove_widget)       (GladeProject *project,
+	void   (*remove_object)       (GladeProject *project,
 				       GladeWidget  *widget);
 	void   (*widget_name_changed) (GladeProject *project,
 				       GladeWidget  *widget);
 	void   (*selection_changed)   (GladeProject *project); 
 };
 
+GType         glade_project_get_type (void);
 
-GType glade_project_get_type (void);
-
-GladeProject *glade_project_new (gboolean untitled);
-
-GladeProject *glade_project_open (const gchar *path);
-gboolean glade_project_save (GladeProject *project, const gchar *path);
-
-void glade_project_add_widget (GladeProject *project, GtkWidget *widget);
-void glade_project_remove_widget (GladeProject *project, GtkWidget *widget);
-
-GladeWidget *glade_project_get_widget_by_name (GladeProject *project, const char *name);
-char *glade_project_new_widget_name (GladeProject *project, const char *base_name);
-
-void glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name);
-GtkTooltips *glade_project_get_tooltips (GladeProject *project);
+GladeProject *glade_project_new                 (gboolean     untitled);
+GladeProject *glade_project_open                (const gchar  *path);
+gboolean      glade_project_save                (GladeProject *project, 
+						 const gchar  *path, 
+						 GError      **error);
+void          glade_project_add_object          (GladeProject *project, GObject     *object);
+void          glade_project_remove_object       (GladeProject *project, GObject     *object);
+GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
+char         *glade_project_new_widget_name     (GladeProject *project, const char  *base_name);
+void          glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,
+						 const char   *old_name);
+GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
 
 /* Selection */
-void glade_project_selection_set     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
-void glade_project_selection_add     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
-void glade_project_selection_remove  (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
-void glade_project_selection_clear   (GladeProject *project, gboolean emit_signal);
-void glade_project_selection_changed (GladeProject *project);
-
-GList *glade_project_selection_get (GladeProject *project);
+gboolean      glade_project_is_selected         (GladeProject *project,
+						 GObject      *object);
+void          glade_project_selection_set       (GladeProject *project,
+						 GObject      *object,
+						 gboolean      emit_signal);
+void          glade_project_selection_add       (GladeProject *project,
+						 GObject      *object,
+						 gboolean      emit_signal);
+void          glade_project_selection_remove    (GladeProject *project,
+						 GObject      *object,
+						 gboolean      emit_signal);
+void          glade_project_selection_clear     (GladeProject *project,
+						 gboolean      emit_signal);
+void          glade_project_selection_changed   (GladeProject *project);
+GList        *glade_project_selection_get       (GladeProject *project);
 
 
 G_END_DECLS

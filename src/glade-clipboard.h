@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_CLIPBOARD_H__
 #define __GLADE_CLIPBOARD_H__
 
@@ -12,13 +13,9 @@ typedef struct _GladeClipboardClass GladeClipboardClass;
 struct _GladeClipboard {
 	GObject __parent__;
 
-	GList *widgets;		/* A list of GladeWidget's on the clipboard */
-
-	GladeWidget *curr;	/* The currently selected GladeWidget in the
-				 * Clipboard
-				 */
-
-	GtkWidget *view;	/* see glade-clipboard-view.c */
+	GList     *widgets;     /* A list of GladeWidget's on the clipboard */
+	GList     *selection;   /* Selection list of GladeWidget's */
+	GtkWidget *view;        /* see glade-clipboard-view.c */
 };
 
 struct _GladeClipboardClass {
@@ -26,12 +23,19 @@ struct _GladeClipboardClass {
 };
 
 
-GType glade_clipboard_get_type ();
+GType           glade_clipboard_get_type         (void);
 
-GladeClipboard *glade_clipboard_new ();
+GladeClipboard *glade_clipboard_new              (void);
+void            glade_clipboard_add              (GladeClipboard *clipboard, 
+						  GList          *widgets);
+void            glade_clipboard_remove           (GladeClipboard *clipboard, 
+						  GList          *widgets);
 
-void glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget);
-void glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget);
+void            glade_clipboard_selection_add    (GladeClipboard *clipboard, 
+						  GladeWidget    *widget);
+void            glade_clipboard_selection_remove (GladeClipboard *clipboard, 
+						  GladeWidget    *widget);
+void            glade_clipboard_selection_clear  (GladeClipboard *clipboard);
 
 
 G_END_DECLS

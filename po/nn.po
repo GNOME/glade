@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade 0.6.2\n"
-"POT-Creation-Date: 2001-09-19 16:49+0200\n"
+"POT-Creation-Date: 2005-02-28 12:26-0500\n"
 "PO-Revision-Date: 2001-06-25 18:55+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (Nynorsk)\n"
@@ -13,191 +13,529 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glade2.desktop.in.h:1
-msgid "GTK+ GUI builder"
+#: glade-3.desktop.in.h:1
+msgid "Design user interfaces"
 msgstr ""
 
-#: glade2.desktop.in.h:2
-msgid "Glade"
-msgstr "Glade"
+#: glade-3.desktop.in.h:2
+msgid "Glade 3.0 GUI builder"
+msgstr ""
 
-#: src/main.c:73
+#: src/main.c:50
 msgid ""
-"gmodule support not found. gmodule support is requiered for glade to work"
+"dump the properties of a widget. --dump [gtk type] where type can be "
+"GtkWindow, GtkLabel etc."
 msgstr ""
 
-#: src/main.c:111
-msgid "Translate me\n"
-msgstr ""
-
-#: src/glade-editor.c:144
-msgid "Properties"
-msgstr "Eigenskapar"
-
-#: src/glade-editor.c:149 src/glade-project-view.c:474
+#: src/main.c:53
 #, fuzzy
-msgid "Widget"
-msgstr "Breidd"
+msgid "be verbose."
+msgstr "Omvendt"
 
-#: src/glade-editor.c:150
+#: src/main.c:60
+#, fuzzy
+msgid "Help options:"
+msgstr "Generelle val"
+
+#: src/main.c:94
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+
+#: src/main.c:118
+msgid "Glade-3 GUI Builder"
+msgstr ""
+
+#: src/glade-editor.c:98
+msgid "General"
+msgstr "Generelt"
+
+#: src/glade-editor.c:99
 #, fuzzy
 msgid "Packing"
 msgstr "&Bak"
 
-#: src/glade-editor.c:151
+#: src/glade-editor.c:100
 #, fuzzy
 msgid "Common"
 msgstr "Kommentar"
 
-#: src/glade-editor.c:152 src/glade-signal-editor.c:90
+#: src/glade-editor.c:101
 #, fuzzy
 msgid "Signals"
 msgstr "Signal"
 
-#: src/glade-editor.c:557 src/glade-signal-editor.c:238
-#: src/glade-signal-editor.c:277 src/glade-signal-editor.c:590
+#: src/glade-editor.c:530
+msgid "Set Flags"
+msgstr ""
+
+#: src/glade-editor.c:670
+msgid "Edit Text Property"
+msgstr ""
+
+#. Text
+#: src/glade-editor.c:687
+#, fuzzy
+msgid "_Text:"
+msgstr "Tekst:"
+
+#: src/glade-editor.c:723
+#, fuzzy
+msgid "T_ranslatable"
+msgstr "Omsett i:"
+
+#: src/glade-editor.c:730
+msgid "Has context _prefix"
+msgstr ""
+
+#. Comments.
+#: src/glade-editor.c:738
+msgid "Co_mments for translators:"
+msgstr ""
+
+#: src/glade-editor.c:1006
 msgid "No"
 msgstr "Nei"
 
 #. Name
-#: src/glade-editor.c:661
+#: src/glade-editor.c:1156
 #, fuzzy
 msgid "Name :"
 msgstr "Namn:"
 
 #. Class
-#: src/glade-editor.c:674
+#: src/glade-editor.c:1179
 #, fuzzy
 msgid "Class :"
 msgstr "Klasse:"
 
-#: src/glade-palette.c:273
+#: src/glade-editor.c:1300
 #, fuzzy
-msgid "Palette"
-msgstr "&Palett"
+msgid "Edit Menus..."
+msgstr "Rediger K-meny"
 
-#: src/glade-popup.c:83
-msgid "Select"
+#: src/glade-editor.c:1871
+#, fuzzy, c-format
+msgid "Create a %s"
+msgstr "Lagar ei ny fil"
+
+#. the label defaults to "Selector"
+#: src/glade-palette.c:106 src/glade-palette.c:154 src/glade-palette.c:160
+#, fuzzy
+msgid "Selector"
 msgstr "Vel"
 
-#: src/glade-popup.c:85
-msgid "Cut"
-msgstr "Klipp ut"
-
-#: src/glade-popup.c:87
-msgid "Copy"
-msgstr "Kopier"
-
-#: src/glade-popup.c:89
-msgid "Paste"
-msgstr "Lim inn"
-
-#: src/glade-popup.c:92 src/glade-signal-editor.c:641
-msgid "Delete"
-msgstr "Slett"
-
-#: src/glade-project-window.c:359
+#: src/glade-popup.c:221
 #, fuzzy
-msgid "Widget Tree"
-msgstr "Element til venstre"
+msgid "_Select"
+msgstr "Vel"
 
-#: src/glade-project.c:548
+#: src/glade-project-view.c:561
+#, fuzzy
+msgid "Widget"
+msgstr "Breidd"
+
+#: src/glade-project-window.c:125
+#, fuzzy
+msgid "Open..."
+msgstr "Opna ..."
+
+#: src/glade-project-window.c:162 src/glade-project-window.c:216
+#, fuzzy, c-format
+msgid "Project '%s' saved"
+msgstr "Prosjektnamn"
+
+#. If instead we dont have a path yet, fire up a file selector
+#: src/glade-project-window.c:228
+#, fuzzy
+msgid "Save..."
+msgstr "Lagra som"
+
+#: src/glade-project-window.c:240
+#, fuzzy
+msgid "Save as ..."
+msgstr "Lagra som"
+
+#: src/glade-project-window.c:254
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them.\n"
+msgstr ""
+
+#: src/glade-project-window.c:267
+msgid "_Close without Saving"
+msgstr ""
+
+#: src/glade-project-window.c:294
 #, fuzzy
 msgid "Save ..."
 msgstr "Lagra som"
 
-#: src/glade-project.c:551
+#: src/glade-project-window.c:475
 #, fuzzy
-msgid "Invalid file name"
-msgstr "Ugyldig(e) filnamn"
+msgid "Palette"
+msgstr "&Palett"
 
-#: src/glade-project.c:574
+#: src/glade-project-window.c:548 src/glade-widget.c:183
+msgid "Properties"
+msgstr "Eigenskapar"
+
+#: src/glade-project-window.c:617
 #, fuzzy
-msgid "Open ..."
-msgstr "Opna ..."
+msgid "Widget Tree"
+msgstr "Element til venstre"
 
-#: src/glade-project.c:582
+#: src/glade-project-window.c:801 src/glade-project-window.c:803
+#, fuzzy
+msgid "About Glade"
+msgstr "Avslutt Kscd"
+
+#: src/glade-project-window.c:814
+msgid "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
+msgstr ""
+
+#: src/glade-project-window.c:819
+msgid ""
+"Glade is a User Interface Builder for GTK+ and GNOME. \n"
+"This version is a rewrite of the Glade 2.0.0 version, original from Damon "
+"Chaplin\n"
+"\n"
+"<small>(C) 2001-2004 Ximian, Inc.\n"
+"(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
+msgstr ""
+
+#. action 0 (branches and separators)
+#: src/glade-project-window.c:875
+#, fuzzy
+msgid "Create a new project file"
+msgstr "Lagar eit nytt prosjekt"
+
+#. action 1 (New)
+#: src/glade-project-window.c:876
+#, fuzzy
+msgid "Open a project file"
+msgstr "Prosjektkompilatoren"
+
+#. action 2 (Open)
+#: src/glade-project-window.c:877
+#, fuzzy
+msgid "Save the current project file"
+msgstr "Døyp om denne profilen"
+
+#. action 3 (Save)
+#: src/glade-project-window.c:878
+msgid "Save the current project file with a different name"
+msgstr ""
+
+#. action 4 (Save as)
+#: src/glade-project-window.c:879
+#, fuzzy
+msgid "Close the current project file"
+msgstr "Døyp om denne profilen"
+
+#. action 5 (Close)
+#: src/glade-project-window.c:880
+#, fuzzy
+msgid "Quit the program"
+msgstr "PID-en til programmet."
+
+#. action 6 (Quit)
+#: src/glade-project-window.c:882
+msgid "Undo the last action"
+msgstr ""
+
+#. action 7  (Undo)
+#: src/glade-project-window.c:883
+msgid "Redo the last action"
+msgstr ""
+
+#. action 8  (Redo)
+#: src/glade-project-window.c:884
+#, fuzzy
+msgid "Cut the selection"
+msgstr "Valg-modus"
+
+#. action 9  (Cut)
+#: src/glade-project-window.c:885
+#, fuzzy
+msgid "Copy the selection"
+msgstr "Skule"
+
+#. action 10 (Copy)
+#: src/glade-project-window.c:886
+#, fuzzy
+msgid "Paste the clipboard"
+msgstr "Kopier til utklippstavla"
+
+#. action 11 (Paste)
+#: src/glade-project-window.c:887
+#, fuzzy
+msgid "Delete the selection"
+msgstr "Sentrer dei valte elementa"
+
+#. action 12 (Delete)
+#: src/glade-project-window.c:889
+#, fuzzy
+msgid "Change the visibility of the palette of widgets"
+msgstr "Sentrer dei valte elementa"
+
+#. action 13 (Palette)
+#: src/glade-project-window.c:890
+#, fuzzy
+msgid "Change the visibility of the property editor"
+msgstr "Viser fileigenskapane"
+
+#. action 14 (Editor)
+#: src/glade-project-window.c:891
+#, fuzzy
+msgid "Change the visibility of the project widget tree"
+msgstr "Sett prosjektnamnet her."
+
+#. action 15 (Tree)
+#: src/glade-project-window.c:892
+msgid "Change the visibility of the clipboard"
+msgstr ""
+
+#. action 16 (Clipboard)
+#: src/glade-project-window.c:894
+msgid "About this application"
+msgstr ""
+
+#: src/glade-project-window.c:1165
+#, fuzzy
+msgid "Could not create a new project."
+msgstr "Lagar eit nytt prosjekt"
+
+#: src/glade-project-window.c:1187
 #, fuzzy
 msgid "Could not open project."
 msgstr "Kunne ikkje opna fil"
 
-#: src/glade-property-class.c:624
-#, c-format
-msgid "We could not find the symbol \"%s\" while trying to load \"%s\""
-msgstr ""
-
-#: src/glade-signal-editor.c:110
+#: src/glade-project-window.c:1224
 #, fuzzy
-msgid "Select signal"
-msgstr "Vel alle"
+msgid "Nothing"
+msgstr "Ikkje kjend"
 
-#: src/glade-signal-editor.c:236 src/glade-signal-editor.c:261
-#: src/glade-signal-editor.c:275 src/glade-signal-editor.c:373
-msgid "Yes"
-msgstr "Ja"
+#: src/glade-project-window.c:1268
+#, fuzzy
+msgid "_Undo: "
+msgstr "Angra"
 
-#: src/glade-signal-editor.c:298 src/glade-signal-editor.c:319
-msgid "Please enter a valid signal name"
+#: src/glade-project-window.c:1269
+#, fuzzy
+msgid "_Redo: "
+msgstr "Gjer om"
+
+#: src/glade-property-class.c:670
+#, c-format
+msgid ""
+"The property [%s] of the widget's class [%s] needs a special \"set\" "
+"function, but there is no library associated to this widget's class."
 msgstr ""
 
-#: src/glade-signal-editor.c:332
-msgid "Please enter a signal handler"
+#: src/glade-property-class.c:677
+#, c-format
+msgid ""
+"Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: src/glade-signal-editor.c:524
+#: src/glade-property-class.c:694 src/glade-property-class.c:715
+#, c-format
+msgid ""
+"The property [%s] of the widget's class [%s] needs a special \"get\" "
+"function, but there is no library associated to this widget's class."
+msgstr ""
+
+#: src/glade-property-class.c:701
+#, c-format
+msgid ""
+"Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
+msgstr ""
+
+#: src/glade-property-class.c:722
+#, c-format
+msgid ""
+"Unable to get the \"verify\" function [%s] of the property [%s] of the "
+"widget's class [%s] from the module [%s]: %s"
+msgstr ""
+
+#: src/glade-signal-editor.c:525
 msgid "Signal"
 msgstr "Signal"
 
-#: src/glade-signal-editor.c:525
+#: src/glade-signal-editor.c:538
 #, fuzzy
 msgid "Handler"
 msgstr "Deklarasjonsfil"
 
-#: src/glade-signal-editor.c:526
+#: src/glade-signal-editor.c:555
+msgid "User data"
+msgstr ""
+
+#: src/glade-signal-editor.c:568
+msgid "Lookup"
+msgstr ""
+
+#: src/glade-signal-editor.c:579
 msgid "After"
 msgstr "Etter"
 
-#: src/glade-signal-editor.c:569
-#, fuzzy
-msgid "Signal :"
-msgstr "Signal"
-
-#: src/glade-signal-editor.c:570
-#, fuzzy
-msgid "Handler :"
-msgstr "Meldingshovud:"
-
-#: src/glade-signal-editor.c:571
-#, fuzzy
-msgid "After :"
-msgstr "Etter"
-
-#: src/glade-signal-editor.c:639
-msgid "Add"
-msgstr "Legg til"
-
-#: src/glade-signal-editor.c:640
-msgid "Update"
-msgstr "Oppdater"
-
-#: src/glade-signal-editor.c:642
-msgid "Clear"
-msgstr "Tøm"
-
-#: src/glade-utils.c:60
+#: src/glade-utils.c:138 src/glade-utils.c:172
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr ""
 
-#: src/glade-utils.c:69
+#: src/glade-utils.c:145
 #, fuzzy, c-format
 msgid "Could not get the type from \"%s"
 msgstr "Kunne ikkje overføra fila til URL-en %1."
 
-#: src/glade-utils.c:77
-#, c-format
-msgid "The loaded type is not a GtkWidget, while trying to load \"%s\""
+#: src/glade-utils.c:1015
+#, fuzzy
+msgid "Unable to paste to multiple widgets"
+msgstr "Startar vindaugsbehandlaren."
+
+#: src/glade-utils.c:1022
+#, fuzzy
+msgid "No target widget selected"
+msgstr "vis trådar som tre"
+
+#: src/glade-utils.c:1029
+#, fuzzy
+msgid "No widget selected on the clipboard"
+msgstr "Kopier til utklippstavla"
+
+#: src/glade-utils.c:1047
+#, fuzzy, c-format
+msgid "Unable to paste widget %s to parent %s"
+msgstr "Du må velja ein prosess først."
+
+#: src/glade-utils.c:1086 src/glade-utils.c:1118 src/glade-utils.c:1149
+#, fuzzy
+msgid "No widget selected!"
+msgstr "Denne mappa kan ikkje slettast."
+
+#: src/glade-widget.c:144
+msgid "Name"
+msgstr "Namn"
+
+#: src/glade-widget.c:145
+#, fuzzy
+msgid "The name of the widget"
+msgstr "Namnet på fila programmet skal skriva til"
+
+#: src/glade-widget.c:151
+#, fuzzy
+msgid "Internal name"
+msgstr "&Intervall:"
+
+#: src/glade-widget.c:152
+#, fuzzy
+msgid "The internal name of the widget"
+msgstr "Namnet på fila programmet skal skriva til"
+
+#: src/glade-widget.c:158
+#, fuzzy
+msgid "Object"
+msgstr "Objekt"
+
+#: src/glade-widget.c:159
+#, fuzzy
+msgid "The object associated"
+msgstr "Prosjektkompilatoren"
+
+#: src/glade-widget.c:166
+#, fuzzy
+msgid "Class"
+msgstr "Klasse:"
+
+#: src/glade-widget.c:167
+#, fuzzy
+msgid "The class of the associated gtk+ widget"
+msgstr "Namnet på fila programmet skal skriva til"
+
+#: src/glade-widget.c:174
+#, fuzzy
+msgid "Project"
+msgstr "Prosjekt"
+
+#: src/glade-widget.c:175
+msgid "The glade project that this widget belongs to"
 msgstr ""
+
+#: src/glade-widget.c:184
+msgid "A list of GladeProperties"
+msgstr ""
+
+#: src/glade-widget.c:190
+#, fuzzy
+msgid "Parent"
+msgstr "Skriv ut"
+
+#: src/glade-widget.c:191
+msgid "A pointer to the parenting GladeWidget"
+msgstr ""
+
+#: src/glade-widget-class.c:895 src/glade-widget-class.c:907
+msgid "Not enough memory."
+msgstr ""
+
+#: src/glade-widget-class.c:917
+#, c-format
+msgid "Unable to open the module %s."
+msgstr ""
+
+#~ msgid "Glade"
+#~ msgstr "Glade"
+
+#~ msgid "Cut"
+#~ msgstr "Klipp ut"
+
+#~ msgid "Copy"
+#~ msgstr "Kopier"
+
+#~ msgid "Paste"
+#~ msgstr "Lim inn"
+
+#~ msgid "Delete"
+#~ msgstr "Slett"
+
+#, fuzzy
+#~ msgid "Invalid file name"
+#~ msgstr "Ugyldig(e) filnamn"
+
+#, fuzzy
+#~ msgid "Select signal"
+#~ msgstr "Vel alle"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#, fuzzy
+#~ msgid "Signal :"
+#~ msgstr "Signal"
+
+#, fuzzy
+#~ msgid "Handler :"
+#~ msgstr "Meldingshovud:"
+
+#, fuzzy
+#~ msgid "After :"
+#~ msgstr "Etter"
+
+#~ msgid "Add"
+#~ msgstr "Legg til"
+
+#~ msgid "Update"
+#~ msgstr "Oppdater"
+
+#~ msgid "Clear"
+#~ msgstr "Tøm"
 
 #~ msgid "Grid Options"
 #~ msgstr "Val for rutenett"
@@ -257,10 +595,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Couldn't delete widget."
 #~ msgstr "Kunne ikkje sletta fila %1"
-
-#, fuzzy
-#~ msgid "The widget can't be deleted"
-#~ msgstr "Denne mappa kan ikkje slettast."
 
 #, fuzzy
 #~ msgid "Border Width:"
@@ -415,10 +749,6 @@ msgstr ""
 #~ msgstr "Ukjend feil."
 
 #, fuzzy
-#~ msgid "You need to select a widget to paste into"
-#~ msgstr "Du må velja ein prosess først."
-
-#, fuzzy
 #~ msgid "Sorry - pasting over a GnomeDockItem is not implemented yet."
 #~ msgstr "Orsak, funksjonen er ikkje implementert enno."
 
@@ -459,15 +789,6 @@ msgstr ""
 
 #~ msgid "Scores"
 #~ msgstr "Poeng"
-
-#~ msgid "Undo"
-#~ msgstr "Angra"
-
-#~ msgid "Redo"
-#~ msgstr "Gjer om"
-
-#~ msgid "Print"
-#~ msgstr "Skriv ut"
 
 #~ msgid "Search"
 #~ msgstr "Søk"
@@ -665,10 +986,6 @@ msgstr ""
 #~ msgstr "&Anna"
 
 #, fuzzy
-#~ msgid "NotShown"
-#~ msgstr "Ikkje kjend"
-
-#, fuzzy
 #~ msgid "Select Accelerator Key"
 #~ msgstr "Sje&kk akseleratorar"
 
@@ -689,9 +1006,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Accelerator"
 #~ msgstr "Akselerasjon"
-
-#~ msgid "Name"
-#~ msgstr "Namn"
 
 #~ msgid "Active"
 #~ msgstr "Aktivt"
@@ -716,10 +1030,6 @@ msgstr ""
 
 #~ msgid "Label:"
 #~ msgstr "Etikett:"
-
-#, fuzzy
-#~ msgid "The name of the widget"
-#~ msgstr "Namnet på fila programmet skal skriva til"
 
 #, fuzzy
 #~ msgid "Icon:"
@@ -809,10 +1119,6 @@ msgstr ""
 #~ msgstr "Kunne ikkje overføra fila til URL-en %1."
 
 #, fuzzy
-#~ msgid "Selector"
-#~ msgstr "Vel"
-
-#, fuzzy
 #~ msgid ""
 #~ "The project directory is not set.\n"
 #~ "Please set it using the Project Options dialog.\n"
@@ -835,9 +1141,6 @@ msgstr ""
 #~ msgid "Project Options"
 #~ msgstr "Prosjektval"
 
-#~ msgid "General"
-#~ msgstr "Generelt"
-
 #, fuzzy
 #~ msgid "Basic Options:"
 #~ msgstr "Kscd-val"
@@ -854,23 +1157,11 @@ msgstr ""
 #~ msgstr "Bla gjennom ..."
 
 #, fuzzy
-#~ msgid "The name of the current project"
-#~ msgstr "Døyp om denne profilen"
-
-#, fuzzy
 #~ msgid "Project Name:"
 #~ msgstr "Prosjektnamn"
 
-#, fuzzy
-#~ msgid "The name of the program"
-#~ msgstr "PID-en til programmet."
-
 #~ msgid "Program Name:"
 #~ msgstr "Programnamn:"
-
-#, fuzzy
-#~ msgid "The project file"
-#~ msgstr "Prosjektkompilatoren"
 
 #, fuzzy
 #~ msgid "Project File:"
@@ -918,10 +1209,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "C Options"
 #~ msgstr "Val"
-
-#, fuzzy
-#~ msgid "General Options:"
-#~ msgstr "Generelle val"
 
 #, fuzzy
 #~ msgid "Gettext Support"
@@ -981,10 +1268,6 @@ msgstr ""
 #~ msgstr "Lenkjarval"
 
 #, fuzzy
-#~ msgid "Translatable Strings:"
-#~ msgstr "Omsett i:"
-
-#, fuzzy
 #~ msgid "Save Translatable Strings"
 #~ msgstr "Omse&tt tekst (msgstr):"
 
@@ -1020,10 +1303,6 @@ msgstr ""
 #~ msgstr "Nytt prosjekt"
 
 #, fuzzy
-#~ msgid "Create a new project"
-#~ msgstr "Lagar eit nytt prosjekt"
-
-#, fuzzy
 #~ msgid "_Build Source Code"
 #~ msgstr "Vis kjeldekode"
 
@@ -1044,40 +1323,20 @@ msgstr ""
 #~ msgstr "Slett"
 
 #, fuzzy
-#~ msgid "Delete the selected widget"
-#~ msgstr "Sentrer dei valte elementa"
-
-#, fuzzy
 #~ msgid "Show _Palette"
 #~ msgstr "Vis dato"
-
-#, fuzzy
-#~ msgid "Show the palette of widgets"
-#~ msgstr "Sentrer dei valte elementa"
 
 #, fuzzy
 #~ msgid "Show Property _Editor"
 #~ msgstr "Vis kolonnenummer"
 
 #, fuzzy
-#~ msgid "Show the property editor"
-#~ msgstr "Viser fileigenskapane"
-
-#, fuzzy
 #~ msgid "Show Widget _Tree"
 #~ msgstr "Vis skjulte ressursar"
 
 #, fuzzy
-#~ msgid "Show the widget tree"
-#~ msgstr "vis trådar som tre"
-
-#, fuzzy
 #~ msgid "Show _Clipboard"
 #~ msgstr "&Til utklippstavle"
-
-#, fuzzy
-#~ msgid "Show the clipboard"
-#~ msgstr "Kopier til utklippstavla"
 
 #, fuzzy
 #~ msgid "Show _Grid"
@@ -1146,10 +1405,6 @@ msgstr ""
 #~ msgid "Project Options..."
 #~ msgstr "Prosjektval"
 
-#, fuzzy
-#~ msgid "Quit Glade"
-#~ msgstr "Avslutt Kscd"
-
 #~ msgid "Edit"
 #~ msgstr "Rediger"
 
@@ -1171,10 +1426,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Show Widget Tree"
 #~ msgstr "Vis skjulte ressursar"
-
-#, fuzzy
-#~ msgid "Show the project widget tree"
-#~ msgstr "Sett prosjektnamnet her."
 
 #, fuzzy
 #~ msgid "Show Clipboard"
@@ -1237,10 +1488,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Error saving project."
 #~ msgstr "Feil ved lagring av innstillingar."
-
-#, fuzzy
-#~ msgid "Project saved."
-#~ msgstr "Prosjektnamn"
 
 #, fuzzy
 #~ msgid "Errors writing source code"
@@ -1335,10 +1582,6 @@ msgstr ""
 #~ msgid "Properties: <none>"
 #~ msgstr "Eigenskapar for"
 
-#, fuzzy
-#~ msgid "The class of the widget"
-#~ msgstr "Namnet på fila programmet skal skriva til"
-
 #~ msgid "Width:"
 #~ msgstr "Breidd:"
 
@@ -1429,9 +1672,6 @@ msgstr ""
 #~ msgid "Background:"
 #~ msgstr "Bakgrunn:"
 
-#~ msgid "Text:"
-#~ msgstr "Tekst:"
-
 #, fuzzy
 #~ msgid "Base:"
 #~ msgstr "Basis"
@@ -1520,10 +1760,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Data:"
 #~ msgstr "&Data"
-
-#, fuzzy
-#~ msgid "Object:"
-#~ msgstr "Objekt"
 
 #, fuzzy
 #~ msgid "Accelerators"
@@ -1824,10 +2060,6 @@ msgstr ""
 #~ "Invalid directory:\n"
 #~ "  %s\n"
 #~ msgstr "Ugyldig katalog oppgitt!"
-
-#, fuzzy
-#~ msgid "Projects"
-#~ msgstr "Prosjekt"
 
 #, fuzzy
 #~ msgid "project"
@@ -2226,10 +2458,6 @@ msgstr ""
 #~ msgid "Fixed Positions"
 #~ msgstr "Mappeposisjon"
 
-#, fuzzy
-#~ msgid "Font Selection"
-#~ msgstr "Skule"
-
 #~ msgid "Select Font"
 #~ msgstr "Vel skrifttype"
 
@@ -2544,10 +2772,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Popup Menu"
 #~ msgstr "Programstartmeny"
-
-#, fuzzy
-#~ msgid "Edit Menus..."
-#~ msgstr "Rediger K-meny"
 
 #, fuzzy
 #~ msgid "Edit Menu"
@@ -3137,10 +3361,6 @@ msgstr ""
 #~ msgstr "Namn:"
 
 #, fuzzy
-#~ msgid "The name to pass to the window manager"
-#~ msgstr "Startar vindaugsbehandlaren."
-
-#, fuzzy
 #~ msgid "WM Class:"
 #~ msgstr "Klasse:"
 
@@ -3159,10 +3379,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "The starting time"
 #~ msgstr "Omstartar"
-
-#, fuzzy
-#~ msgid "Interval:"
-#~ msgstr "&Intervall:"
 
 #~ msgid "Start"
 #~ msgstr "Start"
@@ -3212,10 +3428,6 @@ msgstr ""
 #~ msgid "Loop Type:"
 #~ msgstr "&Repeteringsstil"
 
-#, fuzzy
-#~ msgid "Reverse:"
-#~ msgstr "Omvendt"
-
 #~ msgid "Speed:"
 #~ msgstr "Fart"
 
@@ -3226,10 +3438,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "_New File"
 #~ msgstr "Ny fil"
-
-#, fuzzy
-#~ msgid "Create a new file"
-#~ msgstr "Lagar ei ny fil"
 
 #~ msgid "New File"
 #~ msgstr "Ny fil"
@@ -3530,10 +3738,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Gnome Icon Entry"
 #~ msgstr "Gå til oppføring"
-
-#, fuzzy
-#~ msgid "The selection mode"
-#~ msgstr "Valg-modus"
 
 #, fuzzy
 #~ msgid "Icon Width:"

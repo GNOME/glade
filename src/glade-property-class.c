@@ -34,6 +34,7 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-editor.h"
 #include "glade-debug.h"
 
 /**
@@ -65,6 +66,7 @@ glade_property_class_new (void)
 	property_class->set_function = NULL;
 	property_class->get_function = NULL;
 	property_class->visible = FALSE;
+	property_class->translatable = TRUE;
 
 	return property_class;
 }
@@ -408,7 +410,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	GValue *value = g_new0 (GValue, 1);
 
 	g_value_init (value, property_class->pspec->value_type);
-
+	
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
 		gint eval = glade_property_class_make_enum_from_string
@@ -475,17 +477,18 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 {
 	GladePropertyClass *property_class;
 
+	g_return_val_if_fail (spec != NULL, NULL);
+	
 	property_class = glade_property_class_new ();
 
 	property_class->pspec = spec;
 
-	/* We dont edit objects or pointers as properties.
+	/* Register only editable properties.
 	 */
-	if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec) ||
-	    G_IS_PARAM_SPEC_POINTER(property_class->pspec))
+	if (!glade_editor_editable_property (property_class->pspec))
 		goto lblError;
 	
-	property_class->id = g_strdup (spec->name);
+	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
 	if (!property_class->id || !property_class->name)
 	{
@@ -568,7 +571,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		return TRUE;
 	}
 
-	visible = glade_xml_get_property_string (node, "Visible");
+	visible = glade_xml_get_property_string (node, GLADE_TAG_VISIBLE);
 	if (visible)
 	{
 		if (!g_module_symbol (widget_class->module, visible, (void **) &class->visible))
@@ -591,6 +594,22 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	{
 		class->pspec = glade_utils_get_pspec_from_funcname (buff);
  		g_free (buff);
+
+		/* ... get the tooltip from the pspec ... */
+		if (class->pspec)
+			class->tooltip = g_strdup (g_param_spec_get_blurb (class->pspec));
+	} else {
+		if (!class->pspec) 
+		{
+			/* If catalog file didn't specify a pspec function
+			 * and this property isn't fund by introspection
+			 * we simply handle it as a property that has been
+			 * disabled.
+			 */
+			glade_property_class_free (class);
+			*property_class = NULL;
+			return TRUE;
+		}
 	}
 
 	/* ...and the tooltip */
@@ -605,7 +624,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
 	if (child)
 		class->parameters = glade_parameter_list_new_from_node (class->parameters, child);
-	glade_parameter_get_boolean (class->parameters, "Optional", &class->optional);
+	glade_parameter_get_boolean (class->parameters, GLADE_TAG_OPTIONAL, &class->optional);
 		
 	/* Get the default */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
@@ -619,11 +638,16 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			return FALSE;
 	}
 
+	/* Whether or not the property is translatable. This is only used for
+	 * string properties.
+	 */
+	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
+
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, FALSE);
-
+	
 	if (class->optional)
 		class->optional_default =
 			glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);

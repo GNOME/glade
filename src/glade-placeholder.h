@@ -31,10 +31,9 @@ struct _GladePlaceholderClass
 };
 
 
-GType glade_placeholder_get_type (void) G_GNUC_CONST;
-
-GtkWidget *glade_placeholder_new (void);
-
+GType        glade_placeholder_get_type   (void) G_GNUC_CONST;
+GtkWidget   *glade_placeholder_new        (void);
+GladeWidget *glade_placeholder_get_parent (GladePlaceholder *placeholder);
 
 G_END_DECLS
 

@@ -17,7 +17,6 @@ enum _GladeUtilFileDialogType
 
 
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
-gchar          *glade_util_compose_get_type_func (gchar *name);
 GType		glade_util_get_type_from_name	(const gchar *name);
 GParamSpec     *glade_utils_get_pspec_from_funcname (const gchar *funcname);
 void		glade_util_ui_warn		(GtkWidget *parent, const gchar *warning);
@@ -27,32 +26,46 @@ void		glade_util_flash_message	(GtkWidget *statusbar,
 
 /* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
    any '_' characters. It isn't particularly efficient. */
-gint		glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
+gint            glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
 
-void		glade_util_hide_window		(GtkWindow *window);
-gchar		*glade_util_gtk_combo_func	(gpointer data);
+void            glade_util_hide_window		(GtkWindow *window);
+gchar          *glade_util_gtk_combo_func	(gpointer data);
 gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 
-GtkWidget       *glade_util_file_dialog_new (const gchar *title, GtkWindow *parent, GladeUtilFileDialogType action);
-gchar           *glade_util_file_dialog_get_filename (GtkWidget *file_dialog);
-void             glade_util_file_dialog_set_filename (GtkWidget *file_dialog, gchar *filename);
+GtkWidget      *glade_util_file_dialog_new (const gchar *title,
+					    GtkWindow *parent,
+					    GladeUtilFileDialogType action);
+void            glade_util_replace (char *str, char a, char b);
+gchar          *glade_util_duplicate_underscores (const char *name);
 
-void		glade_util_replace (char *str, char a, char b);
-char		*glade_util_duplicate_underscores (const char *name);
-
-void		glade_util_delete_selection (GladeProject *project);
-
-void		glade_util_add_nodes (GtkWidget *widget);
-void		glade_util_remove_nodes (GtkWidget *widget);
-gboolean	glade_util_has_nodes (GtkWidget *widget);
+void		glade_util_add_selection    (GtkWidget *widget);
+void		glade_util_remove_selection (GtkWidget *widget);
+gboolean	glade_util_has_selection    (GtkWidget *widget);
+void		glade_util_clear_selection  (void);
+GList          *glade_util_get_selection    (void);
 void		glade_util_queue_draw_nodes (GdkWindow *window);
 
-GladeWidget	*glade_util_get_parent (GtkWidget *w);
-GList           *glade_util_container_get_all_children (GtkContainer *container);
-void		glade_util_object_set_property (GObject *object, GladeProperty *property);
+GladeWidget    *glade_util_get_parent (GtkWidget *w);
+GList          *glade_util_container_get_all_children (GtkContainer *container);
 
-GList           *glade_util_uri_list_parse (const gchar* uri_list);
+GList          *glade_util_uri_list_parse (const gchar* uri_list);
 
+gboolean        glade_util_gtkcontainer_relation     (GladeWidget *parent,
+						      GladeWidget *widget);
+gboolean        glade_util_any_gtkcontainer_relation (GladeWidget *parent, 
+						      GList       *widgets);
+
+gboolean        glade_util_widget_pastable       (GladeWidget *child,  
+						  GladeWidget *parent);
+
+void            glade_util_paste_clipboard       (GladePlaceholder *placeholder);
+void            glade_util_cut_selection         (void);
+void            glade_util_copy_selection        (void);
+void            glade_util_delete_selection      (void);
+
+GtkTreeIter    *glade_util_find_iter_by_widget   (GtkTreeModel *model,
+						  GladeWidget  *findme,
+						  gint          column);
 
 G_END_DECLS
 

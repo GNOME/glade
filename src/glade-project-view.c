@@ -20,11 +20,13 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include <string.h>
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-project.h"
 #include "glade-widget-class.h"
 #include "glade-project-view.h"
+#include "glade-popup.h"
 
 enum
 {
@@ -75,83 +77,42 @@ enum
 	N_COLUMNS
 };
 
-static GtkTreeIter *
-glade_project_view_find_iter (GtkTreeModel *model,
-			      GtkTreeIter *iter,
-			      GladeWidget *findme)
+static GList *
+glade_project_view_list_child_iters (GtkTreeStore *model,
+				     GladeWidget  *parent)
 {
-	GladeWidget *widget;
-	GtkTreeIter *next;
+	GList *children, *l, *child_iters = NULL;
 
-	next = gtk_tree_iter_copy (iter);
-	
-	while (TRUE)
+	if ((children = glade_widget_class_container_get_all_children
+	     (parent->widget_class, parent->object)) != NULL)
 	{
-		gtk_tree_model_get (model, next, WIDGET_COLUMN, &widget, -1);
-		if (widget == NULL) {
-			g_warning ("Could not get the glade widget from the model");
-			return NULL;
-		}
-		if (widget == findme)
-			return gtk_tree_iter_copy (next);
-		/* Me ? leaking ? nah .... */
-#if 1
-		if (gtk_tree_model_iter_has_child (model, next))
+		for (l = children; l && l->data; l = l->next)
 		{
-			GtkTreeIter *child = g_new0 (GtkTreeIter, 1);
-			GtkTreeIter *retval = NULL;
-			gtk_tree_model_iter_children (model, child, next);
-			retval = glade_project_view_find_iter (model,
-							       child,
-							       findme);
-			if (retval != NULL)
-				return retval;
+			GObject     *object = l->data;
+			GladeWidget *gwidget;
+			if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
+			{
+				GtkTreeIter *iter;
+				if ((iter = glade_util_find_iter_by_widget
+				     (GTK_TREE_MODEL (model), gwidget, WIDGET_COLUMN)) != NULL)
+				{
+					child_iters = g_list_prepend (child_iters, iter);
+				}
+			}
 		}
-#endif	
-		if (!gtk_tree_model_iter_next (model, next))
-			break;
+		g_list_free (children);
 	}
-
-	return NULL;
+	return g_list_reverse (child_iters);
 }
 
-/**
- * glade_project_view_find_iter_by_widget:
- * @model: a #GtkTreeModel
- * @findme: a #GladeWidget
- *
- * Looks through @model for the #GtkTreeIter corresponding to @findme.
- *
- * Returns: the #GtkTreeIter from @model corresponding to @findme
- */
-GtkTreeIter *
-glade_project_view_find_iter_by_widget (GtkTreeModel *model,
-					GladeWidget *findme)
-{
-	GtkTreeIter iter;
-	GtkTreeIter *retval;
-
-	if (!gtk_tree_model_get_iter_root (model, &iter))
-	{
-		g_warning ("Could not find first widget.");
-		return NULL;
-	}
-
-	retval = glade_project_view_find_iter (model, &iter, findme);
-
-	if (!retval)
-		g_warning ("Could not find iterator for %s\n", findme->name);
-
-	return retval;
-}
 
 static void
 glade_project_view_widget_name_changed (GladeProjectView *view,
 					GladeWidget *findme)
 {
 	GtkTreeModel *model;
-	GtkTreeIter *iter;
-	GtkTreePath *path;
+	GtkTreeIter  *iter;
+	GtkTreePath  *path;
 
 	if (view->is_list &&
 	    !g_type_is_a (findme->widget_class->type, GTK_TYPE_WINDOW))
@@ -159,12 +120,12 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 
 	model = GTK_TREE_MODEL (view->model);
 
-	iter = glade_project_view_find_iter_by_widget (model, findme);
-
-	if (iter)
+	if ((iter = glade_util_find_iter_by_widget 
+	     (model, findme, WIDGET_COLUMN)) != NULL)
 	{
 		path = gtk_tree_model_get_path (model, iter);
 		gtk_tree_model_row_changed (model, path, iter);
+		gtk_tree_iter_free (iter);
 	}
 }
 
@@ -178,8 +139,8 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 					GtkTreeIter *parent_iter,
 					gboolean add_childs)
 {
-	GList *list;
-	GtkTreeIter iter;
+	GList *children, *list;
+	GtkTreeIter       iter;
 
 	list = g_list_copy (widgets);
 	list = g_list_reverse (list);
@@ -187,28 +148,26 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 	{
 		GladeWidget *widget;
 
-		widget = glade_widget_get_from_gtk_widget (list->data);
-		if (widget)
+		if ((widget = glade_widget_get_from_gobject (list->data)) != NULL)
 		{
 			gtk_tree_store_append (model, &iter, parent_iter);
-			gtk_tree_store_set (model, &iter,
-					    WIDGET_COLUMN, widget,
-					    -1);
-		}
+			gtk_tree_store_set    (model, &iter, WIDGET_COLUMN, widget, -1);
 
-		if (add_childs && GTK_IS_CONTAINER (list->data))
-		{
-			GList *children;
-			GtkTreeIter *copy = NULL;
+			if (add_childs &&
+			    (children = glade_widget_class_container_get_all_children
+			     (widget->widget_class, widget->object)) != NULL)
+			{
+				GtkTreeIter *copy = NULL;
 
-			copy = gtk_tree_iter_copy (&iter);
-			children = gtk_container_get_children (GTK_CONTAINER (list->data));
-			glade_project_view_populate_model_real (model, children, copy, TRUE);
-			gtk_tree_iter_free (copy);
-			g_list_free (children);
+				copy = gtk_tree_iter_copy (&iter);
+				glade_project_view_populate_model_real
+					(model, children, copy, TRUE);
+				gtk_tree_iter_free (copy);
+
+				g_list_free (children);
+			}
 		}
 	}
-
 	g_list_free (list);
 }
 
@@ -224,13 +183,11 @@ glade_project_view_populate_model (GladeProjectView *view)
 		return;
 
 	/* Make a list of only the toplevel widgets */
-	for (list = project->widgets; list; list = list->next)
+	for (list = project->objects; list; list = list->next)
 	{
-		GtkWidget *widget;
-
-		widget = GTK_WIDGET (list->data);
-		if (GTK_WIDGET_TOPLEVEL (widget))
-			toplevels = g_list_append (toplevels, widget);
+		GObject *object = G_OBJECT (list->data);
+		if (GTK_IS_WIDGET (object) && GTK_WIDGET_TOPLEVEL (object))
+			toplevels = g_list_append (toplevels, object);
 	}
 
 	/* add the widgets and recurse */
@@ -240,16 +197,65 @@ glade_project_view_populate_model (GladeProjectView *view)
 	g_list_free (toplevels);
 }
 
+static GtkTreeIter *
+gpv_find_preceeding_sibling (GtkTreeModel *model,
+			     GtkTreeIter  *parent_iter,
+			     GladeWidget  *widget)
+{
+	GtkTreeIter *retval = NULL, next;
+	GladeWidget *w, *sibling = NULL;
+
+	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
+
+	if (!parent_iter)
+	{
+		if (!gtk_tree_model_get_iter_first (model, &next))
+			return NULL;
+	}
+	else
+	{
+		g_return_val_if_fail
+			(gtk_tree_model_iter_has_child (model,
+							parent_iter), NULL);
+		gtk_tree_model_iter_children (model, &next, parent_iter);
+	}
+
+	while (42)
+	{
+		gtk_tree_model_get (model, &next, WIDGET_COLUMN, &w, -1);
+		
+		/* If this sibling (w) is less than widget and
+		 * the last found sibling is less then this one
+		 */
+		if ((strcmp (glade_widget_get_name (w),
+			     glade_widget_get_name (widget)) < 0) &&
+		    (sibling == NULL || 
+		     strcmp (glade_widget_get_name (sibling),
+			     glade_widget_get_name (w)) < 0))
+		{
+			sibling = widget;
+			if (retval)
+				gtk_tree_iter_free (retval);
+			retval = gtk_tree_iter_copy (&next);
+		}
+
+		if (!gtk_tree_model_iter_next (model, &next))
+			break;
+	}
+	return retval;
+}
+
 static void
 glade_project_view_add_item (GladeProjectView *view,
 			     GladeWidget *widget)
 {
 	GladeWidgetClass *class;
-	GladeWidget *parent;
+	GladeWidget  *parent;
 	GtkTreeStore *model;
-	GtkTreeIter iter;
-	GtkTreeIter *parent_iter = NULL;
-
+	GtkTreeIter   iter;
+	GtkTreeIter  *parent_iter = NULL, *child_iter, *sibling_iter;
+	GList        *child_iters, *children, *l;
+	
 	g_return_if_fail (widget != NULL);
 
 	class = glade_widget_get_class (widget);
@@ -259,18 +265,48 @@ glade_project_view_add_item (GladeProjectView *view,
 	
 	model = view->model;
 
-	parent = glade_widget_get_parent (widget);
-	if (parent)
-		parent_iter = glade_project_view_find_iter_by_widget (GTK_TREE_MODEL (model),
-								      parent);
+	/* Find parent and preceeding sibling to insert sorted */
+	if ((parent = glade_widget_get_parent (widget)) != NULL)
+		parent_iter = glade_util_find_iter_by_widget 
+			(GTK_TREE_MODEL (model), parent, WIDGET_COLUMN);
 
-	gtk_tree_store_append (model, &iter, parent_iter);
-	gtk_tree_store_set (model, &iter,
-			    WIDGET_COLUMN, widget,
-			    -1);
+	sibling_iter = gpv_find_preceeding_sibling 
+		(GTK_TREE_MODEL (model), parent_iter, widget);
 
+	/* Add to the tree sorted and free iterators */
+	gtk_tree_store_insert_after (model, &iter, parent_iter, sibling_iter);
+	if (parent_iter)
+		gtk_tree_iter_free (parent_iter);
+	if (sibling_iter)
+		gtk_tree_iter_free (sibling_iter);
+
+	gtk_tree_store_set (model, &iter, WIDGET_COLUMN, widget, -1);
+
+	/* Remove all children */
+	if ((child_iters = 
+	     glade_project_view_list_child_iters (model, widget)) != NULL)
+	{
+		for (l = child_iters; l && l->data; l = l->next)
+		{
+			child_iter = l->data;
+			gtk_tree_store_remove (model, child_iter);
+			gtk_tree_iter_free (child_iter);
+		}
+		g_list_free (child_iters);
+	}
+
+	/* Repopulate these children properly.
+	 */
+	if ((children = glade_widget_class_container_get_all_children
+	     (widget->widget_class, widget->object)) != NULL)
+	{
+		glade_project_view_populate_model_real (model, children, &iter, TRUE);
+		g_list_free (children);
+	}
+	
 	view->updating_selection = TRUE;
-	glade_project_selection_set (widget->project, widget->widget, TRUE);
+	glade_project_selection_set (widget->project,
+				     glade_widget_get_object (widget), TRUE);
 	view->updating_selection = FALSE;
 }      
 
@@ -279,8 +315,8 @@ glade_project_view_remove_item (GladeProjectView *view,
 				GladeWidget *widget)
 {
 	GladeWidgetClass *class;
-	GtkTreeModel *model;
-	GtkTreeIter *iter;
+	GtkTreeModel     *model;
+	GtkTreeIter      *iter;
 
 	class = glade_widget_get_class (widget);
 	
@@ -289,8 +325,12 @@ glade_project_view_remove_item (GladeProjectView *view,
 	
 	model = GTK_TREE_MODEL (view->model);
 
-	iter = glade_project_view_find_iter_by_widget (model, widget);
-	gtk_tree_store_remove (view->model, iter);
+	if ((iter = glade_util_find_iter_by_widget
+	     (model, widget, WIDGET_COLUMN)) != NULL)
+	{
+		gtk_tree_store_remove (view->model, iter);
+		gtk_tree_iter_free (iter);
+	}
 }      
 
 /**
@@ -304,47 +344,48 @@ static void
 glade_project_view_selection_update (GladeProjectView *view,
 				     GladeProject *project)
 {
-#if 0
+	GladeWidget      *widget;
+	GladeWidgetClass *class;
 	GtkTreeSelection *selection;
-#endif	
-	GList *list;
+	GtkTreeModel     *model;
+	GtkTreeIter      *iter;
+	GList            *list;
 
 	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (view->project == project);
 
-	list = glade_project_selection_get (project);
-
-#if 0
-	g_ print ("Update dude\n");
-	
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
-	
-	g_return_if_fail (GTK_IS_TREE_SELECTION (selection));
+	model     = GTK_TREE_MODEL (view->model);
 
-	GladeWidgetClass *class;
-	GtkTreeModel *model;
-	GtkTreeIter *iter;
+	g_return_if_fail (selection != NULL);
 
-	class = glade_widget_get_class (widget);
-	
-	if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
-		return;
-	
-	model = GTK_TREE_MODEL (view->model);
+	view->updating_treeview = TRUE;
 
-	iter = glade_project_view_find_iter_by_widget (model,
-						       widget);
+	gtk_tree_selection_unselect_all (selection);
 
-	if (iter) {
-		static gboolean warned = FALSE;
-		if (!warned)
-			g_print ("Update the cell. BUT HOW ??\n");
-		warned = TRUE;
+	for (list = glade_project_selection_get (project);
+	     list && list->data; list = list->next)
+	{	
+		if ((widget = glade_widget_get_from_gobject
+		     (G_OBJECT (list->data))) != NULL)
+		{
+			class  = glade_widget_get_class (widget);
+
+			if (view->is_list && 
+			    !g_type_is_a (class->type, GTK_TYPE_WINDOW))
+				continue;
+
+			if ((iter = glade_util_find_iter_by_widget 
+			     (model, widget, WIDGET_COLUMN)) != NULL)
+			{
+				gtk_tree_selection_select_iter (selection, iter);
+				gtk_tree_iter_free (iter);
+			}
+		}
 	}
 
-	gtk_tree_store_remove (view->model, iter);
-#endif	
+	view->updating_treeview = FALSE;
 }      
 
 static void
@@ -356,42 +397,44 @@ glade_project_view_class_init (GladeProjectViewClass *class)
 
 	parent_class = g_type_class_peek_parent (class);
 
-	class->add_item	= glade_project_view_add_item;
-	class->remove_item = glade_project_view_remove_item;
-	class->set_project = glade_project_view_set_project;
-	class->widget_name_changed = glade_project_view_widget_name_changed;
-	class->selection_update = glade_project_view_selection_update;
+	class->add_item             = glade_project_view_add_item;
+	class->remove_item          = glade_project_view_remove_item;
+	class->set_project          = glade_project_view_set_project;
+	class->widget_name_changed  = glade_project_view_widget_name_changed;
+	class->selection_update     = glade_project_view_selection_update;
 }
+
+
+static void
+gpw_foreach_add_selection (GtkTreeModel *model, 
+			   GtkTreePath  *path,
+			   GtkTreeIter  *iter, 
+			   gpointer      data)
+{
+	GladeWidget      *widget;
+	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
+	glade_project_selection_add (widget->project,
+				     glade_widget_get_object (widget), FALSE);
+}
+
 
 static gboolean
 glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 					 GladeProjectView  *view)
 {
-	GtkTreeModel *model;
-	GladeWidget *widget;
-	GtkTreeIter iter;
-
-	if (!view->project)
-		return TRUE;
-
 	g_return_val_if_fail (GLADE_IS_PROJECT_VIEW (view), FALSE);
 
-	model = GTK_TREE_MODEL (view->model);
+	if (view->project != NULL &&
+	    view->updating_treeview == FALSE)
+	{
+		view->updating_selection = TRUE;
 
-	/* There are no cells selected */
-	if (!gtk_tree_selection_get_selected (selection, &model, &iter))
-		return TRUE;
-
-	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
-
-	/* The cell exists, but not widget has been asociated with it */
-	if (widget == NULL)
-		return TRUE;
-
-	view->updating_selection = TRUE;
-	glade_project_selection_set (widget->project, widget->widget, TRUE);
-	view->updating_selection = FALSE;
-
+		glade_project_selection_clear (view->project, FALSE);
+		gtk_tree_selection_selected_foreach (selection, gpw_foreach_add_selection, view);
+		glade_project_selection_changed (view->project);
+		
+		view->updating_selection = FALSE;
+	}
 	return TRUE;
 }
 
@@ -401,25 +444,78 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 				      GtkTreeViewColumn *column,
 				      gpointer notused)
 {
-	GladeWidget *widget;
+	GladeWidget  *widget;
+	GObject      *object;
 	GtkTreeModel *model;
-	GtkTreeIter iter;
-
+	GtkTreeIter   iter;
+	
 	model = gtk_tree_view_get_model (view);
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
-	if (GTK_IS_WINDOW (widget->widget))
+	if ((object = glade_widget_get_object (widget)) != NULL)
 	{
-		if (GTK_WIDGET_VISIBLE (widget->widget))
-			gtk_widget_hide (widget->widget);
-		else
-			gtk_window_present (GTK_WINDOW (widget->widget));
+		if (GTK_IS_WINDOW (object))
+		{
+			if (GTK_WIDGET_VISIBLE (object))
+				gtk_widget_hide (GTK_WIDGET(object));
+			else
+				gtk_window_present (GTK_WINDOW (object));
+		}
+		else if (GTK_IS_WIDGET (object))
+		{
+			gtk_widget_show (GTK_WIDGET(object));
+		}
 	}
-	else
+}
+
+static gint
+glade_project_view_button_press_cb (GtkWidget        *widget,
+				    GdkEventButton   *event,
+				    GladeProjectView *view)
+{
+	GtkTreeView      *tree_view = GTK_TREE_VIEW (widget);
+	GtkTreePath      *path      = NULL;
+	gboolean          handled   = FALSE;
+
+	if (event->window == gtk_tree_view_get_bin_window (tree_view))
 	{
-		gtk_widget_show (widget->widget);
+		if (gtk_tree_view_get_path_at_pos
+		    (tree_view, event->x, event->y,
+		     &path, NULL, NULL, NULL) && path != NULL)
+		{
+			GtkTreeIter  iter;
+			GladeWidget *widget = NULL;
+			if (gtk_tree_model_get_iter (GTK_TREE_MODEL (view->model),
+						     &iter, path))
+			{
+				/* Alright, now we can obtain the widget from the iter.
+				 */
+				gtk_tree_model_get (GTK_TREE_MODEL (view->model), &iter,
+						    WIDGET_COLUMN, &widget, -1);
+				if (widget != NULL)
+				{
+
+					if (event->button == 3)
+					{
+						glade_popup_widget_pop (widget, event, FALSE);
+						handled = TRUE;
+					}
+				}
+			}
+			gtk_tree_path_free (path);
+		}
 	}
+	return handled;
+}
+
+static void
+glade_project_view_row_cb (GtkTreeView       *tree_view,
+			   GtkTreeIter       *iter,
+			   GtkTreePath       *path,
+			   GladeProjectView  *view)
+{
+	GLADE_PROJECT_VIEW_GET_CLASS (view)->selection_update (view, view->project);
 }
 
 static void
@@ -429,7 +525,7 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  GtkTreeIter *iter,
 				  gpointer data)
 {
-	gboolean is_icon = GPOINTER_TO_INT (data);
+	gboolean     is_icon = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
 
 	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
@@ -440,17 +536,14 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	g_return_if_fail (widget->name != NULL);
 	g_return_if_fail (widget->widget_class != NULL);
-	g_return_if_fail (GPOINTER_TO_INT (widget->widget_class) > 5000);
 	g_return_if_fail (widget->widget_class->name != NULL);
 	g_return_if_fail (widget->widget_class->icon != NULL);
 
 	if (is_icon)
 	{
-		if (gtk_image_get_storage_type GTK_IMAGE (widget->widget_class->icon) != GTK_IMAGE_PIXBUF)
-			return;
-
-		g_object_set (G_OBJECT (cell), "pixbuf",
-			      gtk_image_get_pixbuf (GTK_IMAGE (widget->widget_class->icon)), NULL);
+		g_object_set (G_OBJECT (cell), 
+			      "pixbuf", widget->widget_class->icon, 
+			      NULL);
 	}
 	else
 	{
@@ -482,11 +575,24 @@ glade_project_view_add_columns (GtkTreeView *view)
 	gtk_tree_view_append_column (view, column);
 }
 
+static gint
+glade_project_view_sort_func (GtkTreeModel *model,
+			      GtkTreeIter  *a,
+			      GtkTreeIter  *b,
+			      gpointer      user_data)
+{
+	GladeWidget  *widget_a, *widget_b;
+	gtk_tree_model_get (model, a, WIDGET_COLUMN, &widget_a, -1);
+	gtk_tree_model_get (model, b, WIDGET_COLUMN, &widget_b, -1);
+	return strcmp (glade_widget_get_name (widget_a),
+		       glade_widget_get_name (widget_b));
+}
+
 static void
 glade_project_view_init (GladeProjectView *view)
 {
 	GtkTreeSelection *selection;
-
+	
 	view->selected_widget = NULL;
 	view->project = NULL;
 	view->add_widget_signal_id = 0;
@@ -494,6 +600,13 @@ glade_project_view_init (GladeProjectView *view)
 	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
 	glade_project_view_populate_model (view);
 
+	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (view->model),
+					      0, GTK_SORT_ASCENDING);
+
+	gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (view->model), 0,
+					 glade_project_view_sort_func,
+					 NULL, NULL);
+ 
 	view->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (view->model));
 
 	/* the view now holds a reference, we can get rid of our own */
@@ -501,15 +614,29 @@ glade_project_view_init (GladeProjectView *view)
 
 	glade_project_view_add_columns (GTK_TREE_VIEW (view->tree_view));
 
+	/* Show/Hide windows on double-click */
 	g_signal_connect (G_OBJECT (view->tree_view), "row-activated",
 			  G_CALLBACK (glade_project_view_item_activated_cb), NULL);
 
+	/* Update project selection */
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
 	g_signal_connect_data (G_OBJECT (selection), "changed",
 			       G_CALLBACK (glade_project_view_selection_changed_cb),
 			       view, NULL, 0);
+	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
+
+	/* Popup menu */
+	g_signal_connect (G_OBJECT (view->tree_view), "button-press-event",
+			  G_CALLBACK (glade_project_view_button_press_cb), view);
+	
+	/* Refresh selection */
+	g_signal_connect (G_OBJECT (view->tree_view), "row-expanded",
+			  G_CALLBACK (glade_project_view_row_cb), view);
+	g_signal_connect (G_OBJECT (view->tree_view), "row-collapsed",
+			  G_CALLBACK (glade_project_view_row_cb), view);
 
 	view->updating_selection = FALSE;
+	view->updating_treeview  = FALSE;
 }
 
 static void
@@ -572,8 +699,8 @@ glade_project_view_new (GladeProjectViewType type)
 	else
 		view->is_list = FALSE;
 
-	gtk_container_add (GTK_CONTAINER (view), view->tree_view);
-
+ 	gtk_container_add (GTK_CONTAINER (view), view->tree_view);
+	
 	return view;
 }
 

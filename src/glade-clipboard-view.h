@@ -17,10 +17,12 @@ typedef struct _GladeClipboardViewClass GladeClipboardViewClass;
 
 struct _GladeClipboardView {
 	GtkWindow __parent__;
-
-	GtkWidget *widget;	   /* The GtkTreeView widget */
-	GtkListStore *model;	   /* The GtkListStore model for the View */
+	
+	GtkWidget      *widget;    /* The GtkTreeView widget */
+	GtkListStore   *model;     /* The GtkListStore model for the View */
 	GladeClipboard *clipboard; /* The Clipboard for which this is a view */
+	gboolean        updating;  /* Prevent feedback from treeview when changing
+				    * the selecion. */
 };
 
 struct _GladeClipboardViewClass {
@@ -37,6 +39,7 @@ void glade_clipboard_view_add (GladeClipboardView *view,
 void glade_clipboard_view_remove (GladeClipboardView *view,
 				  GladeWidget *widget);
 
+void glade_clipboard_view_refresh_sel (GladeClipboardView *view);
 
 G_END_DECLS
 

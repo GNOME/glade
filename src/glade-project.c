@@ -34,10 +34,10 @@
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
 #include "glade-placeholder.h"
-#include "glade-project-window.h"
 #include "glade-editor.h"
 #include "glade-utils.h"
 #include "glade-id-allocator.h"
+#include "glade-app.h"
 
 static void glade_project_class_init (GladeProjectClass *class);
 static void glade_project_init (GladeProject *project);
@@ -101,7 +101,7 @@ glade_project_class_init (GladeProjectClass *class)
 		g_signal_new ("add_widget",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeProjectClass, add_widget),
+			      G_STRUCT_OFFSET (GladeProjectClass, add_object),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__POINTER,
 			      G_TYPE_NONE,
@@ -112,7 +112,7 @@ glade_project_class_init (GladeProjectClass *class)
 		g_signal_new ("remove_widget",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeProjectClass, remove_widget),
+			      G_STRUCT_OFFSET (GladeProjectClass, remove_object),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__POINTER,
 			      G_TYPE_NONE,
@@ -143,8 +143,8 @@ glade_project_class_init (GladeProjectClass *class)
 	object_class->finalize = glade_project_finalize;
 	object_class->dispose = glade_project_dispose;
 	
-	class->add_widget = NULL;
-	class->remove_widget = NULL;
+	class->add_object = NULL;
+	class->remove_object = NULL;
 	class->widget_name_changed = NULL;
 	class->selection_changed = NULL;
 }
@@ -153,7 +153,7 @@ static void
 glade_project_init (GladeProject *project)
 {
 	project->name = NULL;
-	project->widgets = NULL;
+	project->objects = NULL;
 	project->selection = NULL;
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
@@ -212,8 +212,8 @@ glade_project_dispose (GObject *object)
 	glade_project_list_unref (project->prev_redo_item);
 	project->prev_redo_item = NULL;
 
-	glade_project_list_unref (project->widgets);
-	project->widgets = NULL;
+	glade_project_list_unref (project->objects);
+	project->objects = NULL;
 
 	g_object_unref (project->tooltips);
 	project->tooltips = NULL;
@@ -267,64 +267,53 @@ glade_project_on_widget_notify (GladeWidget *widget, GParamSpec *arg, GladeProje
 
 	case 'p':
 		if (strcmp (arg->name, "project") == 0)
-			glade_project_remove_widget (project, glade_widget_get_widget (widget));
+			glade_project_remove_object (project, glade_widget_get_object (widget));
 	}
 }
 
 /**
- * glade_project_add_widget:
- * @project: the project the widget is added to
- * @widget: the GtkWidget to add
+ * glade_project_add_object:
+ * @project: the #GladeProject the widget is added to
+ * @object: the #GObject to add
  *
- * Adds a widget to the project.
+ * Adds an object to the project.
  */
 void
-glade_project_add_widget (GladeProject *project, GtkWidget *widget)
+glade_project_add_object (GladeProject *project, GObject *object)
 {
-	GladeWidget *gwidget;
-
+	GladeWidget          *gwidget;
+	GList                *list, *children;
+	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (G_IS_OBJECT      (object));
 
 	/* We don't list placeholders */
-	if (GLADE_IS_PLACEHOLDER (widget))
+	if (GLADE_IS_PLACEHOLDER (object))
 		return;
 
-	/* If it's a container add the children as well */
-	if (GTK_IS_CONTAINER (widget))
-	{
-		GList *list, *children;
-		GtkWidget *child;
+	/* Only widgets accounted for in the catalog or widgets declared
+	 * in the plugin with glade_widget_new_for_internal_child () are
+	 * usefull in the project.
+	 */
+	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
+		return;
 
-		children = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (list = children; list; list = list->next)
-		{
-			child = list->data;
-			glade_project_add_widget (project, child);
-		}
+	if ((children = glade_widget_class_container_get_children
+	     (gwidget->widget_class, gwidget->object)) != NULL)
+	{
+		for (list = children; list && list->data; list = list->next)
+			glade_project_add_object (project, G_OBJECT (list->data));
 		g_list_free (children);
 	}
 
-	gwidget = glade_widget_get_from_gtk_widget (widget);
-
-	/* The internal widgets (e.g. the label of a GtkButton) are handled
-	 * by gtk and don't have an associated GladeWidget: we don't want to
-	 * add these to our list. It would be nicer to have a flag to check
-	 * (as we do for placeholders) instead of checking for the associated
-	 * GladeWidget, so that we can assert that if a widget is _not_ internal,
-	 * it _must_ have a corresponding GladeWidget... Anyway this suffice
-	 * for now.
-	 */
-	if (!gwidget)
-		return;
-
 	glade_widget_set_project (gwidget, project);
-	g_hash_table_insert (project->widget_old_names, gwidget, g_strdup (glade_widget_get_name (gwidget)));
+	g_hash_table_insert (project->widget_old_names,
+			     gwidget, g_strdup (glade_widget_get_name (gwidget)));
 
-	g_signal_connect (G_OBJECT (gwidget), "notify", (GCallback) glade_project_on_widget_notify, project);
+	g_signal_connect (G_OBJECT (gwidget), "notify",
+			  (GCallback) glade_project_on_widget_notify, project);
 
-	project->widgets = g_list_prepend (project->widgets, widget);
-	g_object_ref (widget);
+	project->objects = g_list_prepend (project->objects, g_object_ref (object));
 	project->changed = TRUE;
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
@@ -383,7 +372,7 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 }
 
 /**
- * glade_project_remove_widget:
+ * glade_project_remove_object:
  * @project: a #GladeProject
  * @widget: the #GtkWidget to remove
  *
@@ -394,45 +383,36 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
  * way UNDO can work.
  */
 void
-glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
+glade_project_remove_object (GladeProject *project, GObject *object)
 {
-	GladeWidget *gwidget;
-	GList *widget_l;
+	GladeWidget          *gwidget;
+	GList                *link, *list, *children;
 	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (GLADE_IS_PLACEHOLDER (widget))
+	if (GLADE_IS_PLACEHOLDER (object))
 		return;
 
-	/* If it's a container remove the children as well */
-	if (GTK_IS_CONTAINER (widget))
+	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
+		return;
+	
+	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
+								   gwidget->object)) != NULL)
 	{
-		GList *list, *children;
-		GtkWidget *child;
-
-		children = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (list = children; list; list = list->next)
-		{
-			child = list->data;
-			glade_project_remove_widget (project, child);
-		}
+		for (list = children; list && list->data; list = list->next)
+			glade_project_remove_object (project, G_OBJECT (list->data));
 		g_list_free (children);
 	}
 	
-	glade_project_selection_remove (project, widget, TRUE);
+	glade_project_selection_remove (project, object, TRUE);
 
-	gwidget = glade_widget_get_from_gtk_widget (widget);
-	if (!gwidget)
-		return;
-
-	widget_l = g_list_find (project->widgets, widget);
-	if (widget_l != NULL)
+	if ((link = g_list_find (project->objects, object)) != NULL)
 	{
-		g_object_unref (widget);
+		g_object_unref (object);
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
-		project->widgets = g_list_delete_link (project->widgets, widget_l);
+		project->objects = g_list_delete_link (project->objects, link);
 	}
 
 	project->changed = TRUE;
@@ -483,10 +463,10 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	g_return_val_if_fail (name != NULL, NULL);
 
-	for (list = project->widgets; list; list = list->next) {
+	for (list = project->objects; list; list = list->next) {
 		GladeWidget *widget;
 
-		widget = glade_widget_get_from_gtk_widget (list->data);
+		widget = glade_widget_get_from_gobject (list->data);
 		g_return_val_if_fail (widget->name != NULL, NULL);
 		if (strcmp (widget->name, name) == 0)
 			return widget;
@@ -540,6 +520,21 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 }
 
 /**
+ * glade_project_is_selected:
+ * @project: a #GladeProject
+ * @object: a #GObject
+ *
+ * Returns: whether @object is in @project selection
+ */
+gboolean
+glade_project_is_selected (GladeProject *project,
+			   GObject      *object)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	return (g_list_find (project->selection, object)) != NULL;
+}
+
+/**
  * glade_project_selection_clear:
  * @project: a #GladeProject
  * @emit_signal: whether or not to emit a signal indication a selection change
@@ -551,19 +546,11 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 {
-	GtkWidget *widget;
-	GList *list;
-
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-
 	if (project->selection == NULL)
 		return;
 
-	for (list = project->selection; list; list = list->next)
-	{
-		widget = list->data;
-		glade_util_remove_nodes (widget);
-	}
+	glade_util_clear_selection ();
 
 	g_list_free (project->selection);
 	project->selection = NULL;
@@ -584,20 +571,17 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
  */
 void
 glade_project_selection_remove (GladeProject *project,
-				GtkWidget *widget,
-				gboolean emit_signal)
+				GObject      *object,
+				gboolean      emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (!glade_util_has_nodes (widget))
-		return;
-
-	glade_util_remove_nodes (widget);
-
-	if (project)
+	if (glade_project_is_selected (project, object))
 	{
-		project->selection = g_list_remove (project->selection, widget);
+		if (GTK_IS_WIDGET (object))
+			glade_util_remove_selection (GTK_WIDGET (object));
+		project->selection = g_list_remove (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -615,21 +599,18 @@ glade_project_selection_remove (GladeProject *project,
  */
 void
 glade_project_selection_add (GladeProject *project,
-			     GtkWidget *widget,
-			     gboolean emit_signal)
+			     GObject      *object,
+			     gboolean      emit_signal)
 {
-	gboolean            has_nodes;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (G_IS_OBJECT      (object));
+	g_return_if_fail (g_list_find (project->objects, object) != NULL);
 
-	if (glade_util_has_nodes (widget))
-		return;
-
-	glade_util_add_nodes (widget);
-
-	if (project)
+	if (glade_project_is_selected (project, object) == FALSE)
 	{
-		project->selection = g_list_prepend (project->selection, widget);
+		if (GTK_IS_WIDGET (object))
+			glade_util_add_selection (GTK_WIDGET (object));
+		project->selection = g_list_prepend (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -647,17 +628,19 @@ glade_project_selection_add (GladeProject *project,
  */
 void
 glade_project_selection_set (GladeProject *project,
-			     GtkWidget *widget,
-			     gboolean emit_signal)
+			     GObject      *object,
+			     gboolean      emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_WIDGET (widget));
+	g_return_if_fail (G_IS_OBJECT      (object));
+	g_return_if_fail (g_list_find (project->objects, object) != NULL);
 
-	if (glade_util_has_nodes (widget))
-		return;
-	    
-	glade_project_selection_clear (project, FALSE);
-	glade_project_selection_add (project, widget, emit_signal);
+	if (glade_project_is_selected (project, object) == FALSE ||
+	    g_list_length (project->selection) != 1)
+	{
+		glade_project_selection_clear (project, FALSE);
+		glade_project_selection_add (project, object, emit_signal);
+	}
 }	
 
 /**
@@ -677,80 +660,85 @@ glade_project_selection_get (GladeProject *project)
 
 /**
  * glade_project_write:
- * @context: a #GladeXmlContext
  * @project: a #GladeProject
  * 
- * Returns: the root node of a newly created xml representation of the
+ * Returns: a libglade's GladeInterface representation of the
  *          project and its contents
  */
-static GladeXmlNode *
-glade_project_write (GladeXmlContext *context, const GladeProject *project)
+static GladeInterface *
+glade_project_write (const GladeProject *project)
 {
-	GladeXmlNode *node;
-	GList *list;
+	GladeInterface *interface;
+	GList *list, *tops = NULL;
+	guint i;
 
-	node = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
-	if (!node)
-		return NULL;
+	interface = g_new0 (GladeInterface, 1);
+	interface->names = g_hash_table_new (g_str_hash, g_str_equal);
+	interface->strings = g_hash_table_new_full (g_str_hash,
+						    g_str_equal,
+						    (GDestroyNotify)g_free,
+						    NULL);
 
-	for (list = project->widgets; list; list = list->next) {
+        for (i = 0, list = project->objects; list; list = list->next)
+	{
 		GladeWidget *widget;
-		GladeXmlNode *child;
+		GladeWidgetInfo *info;
 
-		widget = glade_widget_get_from_gtk_widget (list->data);
+		widget = glade_widget_get_from_gobject (list->data);
 
 		/* 
 		 * Append toplevel widgets. Each widget then takes
 		 * care of appending its children.
 		 */
-		if (g_type_is_a
-		    (widget->widget_class->type, GTK_TYPE_WINDOW)) {
-			child = glade_widget_write (widget, context);
-			if (!child)
+		if (g_type_is_a (widget->widget_class->type, GTK_TYPE_WINDOW))
+		{
+			info = glade_widget_write (widget, interface);
+			if (!info)
 				return NULL;
 
-			glade_xml_node_append_child (node, child);
+			tops = g_list_prepend (tops, info);
+			++i;
 		}
 	}
+	interface->n_toplevels = i;
+        interface->toplevels = (GladeWidgetInfo **) g_new (GladeWidgetInfo *, i);
+        for (i = 0, list = tops; list; list = list->next, ++i)
+            interface->toplevels[i] = list->data;
 
-	return node;
+	g_list_free (tops);
+
+	return interface;
 }
 
 static GladeProject *
-glade_project_new_from_node (GladeXmlNode *node)
+glade_project_new_from_interface (GladeInterface *interface)
 {
 	GladeProject *project;
-	GladeXmlNode *child;
 	GladeWidget *widget;
-
-	if (!glade_xml_node_verify  (node, GLADE_XML_TAG_PROJECT))
-		return NULL;
+	guint i;
 
 	project = glade_project_new (FALSE);
 	project->changed = FALSE;
 	project->selection = NULL;
-	project->widgets = NULL;
+	project->objects = NULL;
 
-	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_REQUIRES))
-			continue;
+	if (interface->n_requires)
 		g_warning ("We currently do not support projects requiring additional libs");
-	}
 
-	child = glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_WIDGET))
-			continue;
-		widget = glade_widget_read (project, child);
-		if (!widget) {
+	for (i = 0; i < interface->n_toplevels; ++i)
+	{
+		widget = glade_widget_read (project, interface->toplevels[i]);
+		if (!widget)
+		{
 			g_warning ("Failed to read a <widget> tag");
 			continue;
 		}
-		project->widgets = g_list_append (project->widgets, widget->widget);
-		g_object_ref (widget->widget);
+		glade_project_add_object (project, widget->object);
+
+/* 		project->objects = g_list_prepend (project->objects, */
+/* 						   glade_widget_get_object(widget)); */
+/* 		g_object_ref (glade_widget_get_object(widget)); */
 	}
-	project->widgets = g_list_reverse (project->widgets);
 
 	return project;	
 }
@@ -767,18 +755,19 @@ glade_project_new_from_node (GladeXmlNode *node)
 GladeProject *
 glade_project_open (const gchar *path)
 {
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
 	GladeProject *project;
-
-	context = glade_xml_context_new_from_path (path, NULL, GLADE_XML_TAG_PROJECT);
-	if (!context)
+	GladeInterface *interface;
+	
+	interface = glade_parser_parse_file (path, NULL);
+	if (!interface)
 		return NULL;
-	doc = glade_xml_context_get_doc (context);
-	project = glade_project_new_from_node (glade_xml_doc_get_root (doc));
-	glade_xml_context_free (context);
 
-	if (project) {
+	project = glade_project_new_from_interface (interface);
+	
+	glade_interface_destroy (interface);
+
+	if (project)
+        {
 		project->path = g_strdup_printf ("%s", path);
 		g_free (project->name);
 		project->name = g_path_get_basename (project->path);
@@ -791,41 +780,31 @@ glade_project_open (const gchar *path)
 /**
  * glade_project_save:
  * @project: a #GladeProject
- * @path:
+ * @path: location to save glade file
+ * @error: an error from the G_FILE_ERROR domain.
  * 
  * Saves @project to the given path. 
  *
  * Returns: %TRUE on success, %FALSE on failure
  */
 gboolean
-glade_project_save (GladeProject *project, const gchar *path)
+glade_project_save (GladeProject *project, const gchar *path, GError **error)
 {
-	GladeXmlContext *context;
-	GladeXmlNode *root;
-	GladeXmlDoc *xml_doc;
-	gboolean ret;
+	GladeInterface *interface;
+	gboolean        ret;
 
-	xml_doc = glade_xml_doc_new ();
-	if (!xml_doc)
+	interface = glade_project_write (project);
+	if (!interface)
 	{
-		g_warning ("Could not create xml document\n");
+		g_warning ("Could not write glade document\n");
 		return FALSE;
 	}
 
-	context = glade_xml_context_new (xml_doc, NULL);
-	root = glade_project_write (context, project);
-	glade_xml_context_destroy (context);
-	if (!root)
-		return FALSE;
+	ret = glade_interface_dump_full (interface, path, error);
+	glade_interface_destroy (interface);
 
-	glade_xml_doc_set_root (xml_doc, root);
-	ret = glade_xml_doc_save (xml_doc, path);
-	glade_xml_doc_free (xml_doc);
-
-	if (ret < 0)
-		return FALSE;
-
-	if (path != project->path) {
+	if (path != project->path)
+        {
 		g_free (project->path);
 		project->path = g_strdup_printf ("%s", path);
 	}
@@ -834,7 +813,7 @@ glade_project_save (GladeProject *project, const gchar *path)
 
 	project->changed = FALSE;
 
-	return TRUE;
+	return ret;
 }
 
 /**
@@ -848,3 +827,4 @@ glade_project_get_tooltips (GladeProject *project)
 {
 	return project->tooltips;
 }
+

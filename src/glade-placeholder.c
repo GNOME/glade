@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 #include "glade-placeholder.h"
 #include "glade-xml-utils.h"
-#include "glade-project-window.h"
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-palette.h"
@@ -31,7 +30,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-utils.h"
-
+#include "glade-app.h"
 
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
 static void glade_placeholder_init           (GladePlaceholder        *placeholder);
@@ -249,9 +248,8 @@ static GladeProject*
 glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;
-
-	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-	return parent->project;
+	parent = glade_placeholder_get_parent (placeholder);
+	return parent ? parent->project : NULL;
 }
 
 static gboolean
@@ -280,13 +278,12 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 static gboolean                                                                 
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
-	GladeProjectWindow *gpw;                                                
+	GladeWidgetClass *add_class;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	gpw = glade_project_window_get ();
-
-        if (gpw->add_class == NULL)                                             
+	add_class = glade_default_app_get_add_class ();
+	if (add_class == NULL)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
 	else
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
@@ -297,13 +294,16 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 static gboolean
 glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-	GladeProjectWindow *gpw;
 	GladePlaceholder *placeholder;
 	GladeProject *project;
+	GladeWidgetClass *add_class, *alt_class;
+	GladePalette *palette;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	gpw = glade_project_window_get ();
+	add_class = glade_default_app_get_add_class ();
+	alt_class = glade_default_app_get_alt_class ();
+	palette = glade_default_app_get_palette ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 	project = glade_placeholder_get_project (placeholder);
 
@@ -312,20 +312,36 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		if (gpw->add_class != NULL)
+		if (event->state & GDK_CONTROL_MASK)
+		{
+			if (glade_util_has_selection (widget))
+				glade_util_remove_selection (widget);
+			else
+				glade_util_add_selection (widget);
+		} 
+		else if ((add_class != NULL)        ||
+			 ((event->state & GDK_SHIFT_MASK) &&
+			  alt_class != NULL))
 		{
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
-			glade_command_create (gpw->add_class, placeholder,
-					      project);
+			glade_command_create
+				(add_class ? add_class : alt_class, 
+				 glade_placeholder_get_parent (placeholder),
+				 placeholder, project);
 
 			/* reset the palette */
-			glade_palette_unselect_widget (gpw->palette);
+			glade_palette_unselect_widget (palette);
 		}
-		else
+		else if (glade_util_has_selection (widget) == FALSE ||
+			 g_list_length (glade_util_get_selection ()) != 1)
 		{
-			glade_project_selection_set (project, GTK_WIDGET (placeholder), TRUE);
+			glade_project_selection_clear 
+				(glade_default_app_get_active_project (),
+				 TRUE);
+			glade_util_clear_selection ();
+			glade_util_add_selection (widget);
 		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
@@ -344,4 +360,22 @@ glade_placeholder_popup_menu (GtkWidget *widget)
 	glade_popup_placeholder_pop (GLADE_PLACEHOLDER (widget), NULL);
 
 	return TRUE;
+}
+
+GladeWidget *
+glade_placeholder_get_parent (GladePlaceholder *placeholder)
+{
+	GtkWidget   *widget;
+	GladeWidget *parent = NULL;
+
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
+
+	for (widget  = gtk_widget_get_parent (GTK_WIDGET (placeholder));
+	     widget != NULL;
+	     widget = gtk_widget_get_parent (widget))
+	{
+		if ((parent = glade_widget_get_from_gobject (widget)) != NULL)
+			break;
+	}
+	return parent;
 }

@@ -3,7 +3,7 @@ SUBDIRS=
 
 bin_PROGRAMS = glade-3
 
-gladegtk_LTLIBRARIES = libgladegtk.la
+gladegtk_LTLIBRARIES = libgladegtk.la libgladeui.la
 gladegtkdir = $(modulesdir)
 
 CLEANFILES = $(BUILT_SOURCES)
@@ -28,15 +28,18 @@ INCLUDES = \
 
 AM_CFLAGS = -g -Wall 
 
-glade_3_LDADD = \
-	$(GLADE_LIBS)
-
 BUILT_SOURCES = \
         glade-marshallers.c \
         glade-marshallers.h
 
+glade_3_LDADD = \
+	libgladeui.la
+
 glade_3_SOURCES = \
-	main.c \
+	glade-project-window.c \
+	main.c
+
+libgladeui_la_SOURCES = \
 	glade-debug.c \
 	glade-project.c \
 	glade-parameter.c \
@@ -63,9 +66,15 @@ glade_3_SOURCES = \
 	glade-keys-dialog.c \
 	glade-transform.c \
 	glade-id-allocator.c \
-	glade-marshallers.c
+	glade-marshallers.c \
+	glade-parser.c \
+	glade-app.c
 
-noinst_HEADERS = \
+libgladeui_la_LIBADD = \
+	$(GLADE_LIBS)
+
+libgladeuiincludedir=$(includedir)/libgladeui-1.0/libgladeui
+libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-debug.h \
 	glade-project.h \
@@ -94,7 +103,14 @@ noinst_HEADERS = \
 	glade-keys-dialog.h \
 	glade-transform.h \
 	glade-id-allocator.h \
-	glade-marshallers.h
+	glade-marshallers.h \
+	glade-parser.h \
+	glade-app.h \
+	glade-plugin.h \
+	fixed_bg.xpm
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libgladeui-1.0.pc
 
 $(bin_PROGRAMS).a: $(bin_PROGRAMS)
 	$(DLLTOOL) -D $(bin_PROGRAMS) -d glade_plugin.def -l $(bin_PROGRAMS).a
