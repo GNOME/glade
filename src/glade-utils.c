@@ -32,6 +32,8 @@
 #include "glade-placeholder.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
+#include "glade-property.h"
+#include "glade-property-class.h"
 
 #define GLADE_UTIL_ID_EXPOSE "glade_util_id_expose"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
@@ -478,35 +480,16 @@ glade_util_get_parent (GtkWidget *w)
 	do
 	{
 		widget = gtk_widget_get_parent (widget);
-		parent = glade_widget_get_from_gtk_widget (widget);
-
-		if (parent != NULL)
-			return parent;
+		if (widget != NULL)
+		{
+			parent = glade_widget_get_from_gtk_widget (widget);
+			if (parent != NULL)
+				return parent;
+		}
 	}
 	while (widget != NULL);
 
 	return NULL;
-}
-
-void
-glade_util_replace_placeholder (GladePlaceholder *placeholder,
-		   	        GladeWidget *widget)
-{
-	GladeWidget *parent;
-
-	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-
-	if (parent->class->replace_child)
-		parent->class->replace_child (GTK_WIDGET (placeholder),
-					      widget->widget,
-					      parent->widget);
-	else
-		g_warning ("Could not replace a placeholder because a replace "
-			   " function has not been implemented for \"%s\"\n",
-			   parent->class->name);
 }
 
 /*
@@ -606,3 +589,20 @@ glade_util_uri_list_parse (const gchar *uri_list)
 	return g_list_reverse (result);
 }
 
+void glade_util_object_set_property (GObject *object, GladeProperty *property)
+{
+	GValue void_string = {0,};
+	GValue *value = property->value;
+
+	if (G_VALUE_HOLDS_STRING (property->value) && g_value_get_string (property->value) == NULL)
+	{
+		g_value_init (&void_string, G_TYPE_STRING);
+		g_value_set_static_string (&void_string, "");
+		value = &void_string;
+	}
+
+	if (property->class->set_function)
+		property->class->set_function (object, value);
+	else
+		g_object_set_property (object, property->class->id, value);
+}

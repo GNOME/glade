@@ -47,6 +47,7 @@ struct _GladeProject
 	GList *undo_stack; /* A stack with the last executed commands */
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
 	GHashTable *widget_names_allocator; /* hash table with the used widget names */
+	GHashTable *widget_old_names; /* widget -> old name of the widget */
 };
 
 struct _GladeProjectClass

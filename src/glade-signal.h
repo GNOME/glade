@@ -19,10 +19,10 @@ struct _GladeSignal
 GladeSignal *glade_signal_new (const gchar *name,
 			       const gchar *handler,
 			       gboolean after);
-GladeSignal *glade_signal_copy (GladeSignal *signal);
+GladeSignal *glade_signal_clone (const GladeSignal *signal);
 void glade_signal_free (GladeSignal *signal);
 
-gboolean glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2);
+gboolean glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2);
 
 GladeXmlNode *glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
 

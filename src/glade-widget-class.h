@@ -2,7 +2,9 @@
 #ifndef __GLADE_WIDGET_CLASS_H__
 #define __GLADE_WIDGET_CLASS_H__
 
+#include <glib-object.h>
 #include <gmodule.h>
+#include <gtk/gtkwidget.h>
 #include "glade-types.h"
 
 G_BEGIN_DECLS
@@ -16,7 +18,7 @@ typedef enum {
 #define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
 #define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
 
-#define GLADE_WIDGET_FLAGS(gw)           ((GLADE_WIDGET(gw)->class)->flags)
+#define GLADE_WIDGET_FLAGS(gw)           ((GLADE_WIDGET(gw)->widget_class)->flags)
 #define GLADE_WIDGET_IS_TOPLEVEL(gw)     ((GLADE_WIDGET_FLAGS(gw) & GLADE_TOPLEVEL) != 0)
 #define GLADE_WIDGET_ADD_PLACEHOLDER(gw) ((GLADE_WIDGET_FLAGS(gw) & GLADE_ADD_PLACEHOLDER) != 0)
 
@@ -37,7 +39,6 @@ struct _GladeWidgetClass
 	GType type;          /* GType of the widget */
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
-	gchar *xml_file;     /* Name of the xml file for this type without a path */
 
 	GtkWidget *icon;     /* The GtkImage icon for the widget */
 

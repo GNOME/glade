@@ -1,5 +1,7 @@
 <GladeWidgetClass>
 
+  <PostCreateFunction>glade_gtk_box_post_create</PostCreateFunction>
+
   <Properties>
 
     <Property Id="size" Name="Size" Default="3">
@@ -12,9 +14,6 @@
         <Parameter Key="PageIncrement" Value="10"/>
         <Parameter Key="ClimbRate" Value="1"/>
       </Parameters>
-      <Query>
-        <Question>Number of items on the box</Question>
-      </Query>
       <SetFunction>glade_gtk_box_set_size</SetFunction>
       <GetFunction>glade_gtk_box_get_size</GetFunction>
     </Property>

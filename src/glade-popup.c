@@ -49,7 +49,7 @@ glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	glade_clipboard_add_copy (gpw->clipboard, widget);
+	glade_clipboard_add (gpw->clipboard, widget);
 }
 
 static void

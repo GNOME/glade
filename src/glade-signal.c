@@ -51,7 +51,7 @@ glade_signal_free (GladeSignal *signal)
 }
 
 gboolean
-glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2)
+glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 {
 	gboolean ret = FALSE;
 
@@ -67,7 +67,7 @@ glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2)
 }
 
 GladeSignal *
-glade_signal_copy (GladeSignal *signal)
+glade_signal_clone (const GladeSignal *signal)
 {
 	return glade_signal_new (signal->name, signal->handler, signal->after);
 }

@@ -2,37 +2,38 @@
 #ifndef __GLADE_WIDGET_H__
 #define __GLADE_WIDGET_H__
 
-#include "glade-types.h"
+#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
+ 
+#define GLADE_TYPE_WIDGET            (glade_widget_get_type ())
+#define GLADE_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WIDGET, GladeWidget))
+#define GLADE_WIDGET_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET, GladeWidgetKlass))
+#define GLADE_IS_WIDGET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET))
+#define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
+#define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
+typedef struct _GladeWidget		GladeWidget;
+typedef struct _GladeWidgetKlass	GladeWidgetKlass;
 
-#define GLADE_WIDGET(w) ((GladeWidget *)w)
-#define GLADE_IS_WIDGET(w) (w != NULL)
-
-/* A GladeWidget is an instance of a GladeWidgetClass.
- * Each GtkWidget in the project has an associated GladeWidget.
- */
 struct _GladeWidget
 {
-	GladeWidgetClass *class; /* The class of the widget.
-				  * [see glade-widget-class.h ]
-				  */
+	GObject object;
 
-	GladeProject *project; /* A pointer to the project that this
-				* widget belongs to. Do we really need it ?
-				*/
+	GladeWidgetClass *widget_class;
+	GladeProject *project; /* A pointer to the project that this widget belongs to. */
 
-	gchar *name; /* The name of the widet. For example window1 or
-		      * button2. This is a unique name and is the one
-		      * used when loading widget with libglade
-		      */
+	char *name; /* The name of the widet. For example window1 or
+		     * button2. This is a unique name and is the one
+		     * used when loading widget with libglade
+		     */
 
-	gchar *internal; /* If the widget is an internal child of 
-			  * another widget this is the name of the 
-			  * internal child, otherwise is NULL.
-			  * Internal children cannot be deleted.
-			  */
+	char *internal; /* If the widget is an internal child of 
+			 * another widget this is the name of the 
+			 * internal child, otherwise is NULL.
+			 * Internal children cannot be deleted.
+			 */
 
 	GtkWidget *widget; /* A pointer to the widget that was created.
 			    * and is shown as a "view" of the GladeWidget.
@@ -58,59 +59,55 @@ struct _GladeWidget
 				    * GladeWidgetClass.
 				    */
 
-	GHashTable *signals;      /* A table with a list of GladeSignals, indexed by its name */
+	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
+			      * indexed by its name */
 };
 
+struct _GladeWidgetKlass
+{
+	GObjectClass parent_class;
 
-gchar *glade_widget_new_name (GladeProject *project, GladeWidgetClass *class);
-void glade_widget_set_contents (GladeWidget *widget);
-void glade_widget_connect_signals (GladeWidget *widget);
+	void   (*add_signal_handler)	(GladeWidget *widget,
+					 GladeSignal *signal_handler);
+	void   (*remove_signal_handler)	(GladeWidget *widget,
+					 GladeSignal *signal_handler);
+	void   (*change_signal_handler)	(GladeWidget *widget,
+					 GladeSignal *old_signal_handler,
+					 GladeSignal *new_signal_handler);
+};
 
-void glade_widget_set_packing_properties (GladeWidget *widget,
-					  GladeWidget *container);
+GType			glade_widget_get_type			(void);
+GladeWidget *		glade_widget_new			(GladeWidgetClass *klass, GladeProject *project);
+GladeWidget *		glade_widget_new_for_internal_child	(GladeWidgetClass *klass, GladeWidget *parent, GtkWidget *internal_widget, const char *internal_name);
 
-GladeWidget *glade_widget_new_from_class (GladeWidgetClass *class,
-					  GladeProject *project);
+void			glade_widget_set_name			(GladeWidget *widget, const char *name);
+void			glade_widget_set_internal		(GladeWidget *widget, const char *internal);
+void			glade_widget_set_widget			(GladeWidget *widget, GtkWidget *widget_gtk);
+void			glade_widget_set_project		(GladeWidget *widget, GladeProject *project);
 
-GladeWidget *glade_widget_new_for_internal_child (GladeWidgetClass *class,
-						  GladeWidget *parent,
-						  GtkWidget *widget,
-						  const gchar *internal);
+const char *		glade_widget_get_name			(GladeWidget *widget);
+const char *		glade_widget_get_internal		(GladeWidget *widget);
+GladeWidgetClass *	glade_widget_get_class			(GladeWidget *widget);
+GladeProject *		glade_widget_get_project		(GladeWidget *widget);
+GtkWidget *		glade_widget_get_widget			(GladeWidget *widget);
+GladeProperty *		glade_widget_get_property		(GladeWidget *widget, const char *id_property);
 
-const gchar *glade_widget_get_name  (GladeWidget *widget);
+void			glade_widget_replace			(GtkWidget *old_widget, GtkWidget *new_widget);
 
-GladeWidgetClass *glade_widget_get_class (GladeWidget *widget);
+/* widget signals */
+void			glade_widget_add_signal_handler		(GladeWidget *widget, GladeSignal *signal_handler);
+void			glade_widget_remove_signal_handler	(GladeWidget *widget, GladeSignal *signal_handler);
+void			glade_widget_change_signal_handler	(GladeWidget *widget, GladeSignal *old_signal_handler, GladeSignal *new_signal_handler);
+GPtrArray *		glade_widget_list_signal_handlers	(GladeWidget *widget, const char *signal_name); /* array of GladeSignal* */
 
-GladeProperty *glade_widget_get_property_by_class (GladeWidget *widget,
-						   GladePropertyClass *property_class);
+/* serialization */
+GladeXmlNode *		glade_widget_write			(GladeWidget *widget, GladeXmlContext *context);
+GladeWidget *		glade_widget_read			(GladeProject *project, GladeXmlNode *node);
 
-GladeProperty *glade_widget_get_property_by_id (GladeWidget *widget,
-						const gchar *id,
-						gboolean packing);
-
-void glade_widget_set_name (GladeWidget *widget, const gchar *name);
-
-GladeWidget *glade_widget_clone (GladeWidget *widget);
-
-void glade_widget_replace_with_placeholder (GladeWidget *widget,
-					    GladePlaceholder *placeholder);
-
-GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
-
-GladeWidget *glade_widget_get_parent (GladeWidget *widget);
-
-/* Widget signal*/
-GladeSignal *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);
-GArray *glade_widget_find_signals_by_name (GladeWidget *widget, const char *name);
-void glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal);
-void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
-
-
-/* Xml saving & reading */
-GladeXmlNode *glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
-GladeWidget *glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project);
-
+/* helper functions */
+#define			glade_widget_get_from_gtk_widget(w)	g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
+GladeWidget *		glade_widget_get_parent			(GladeWidget *widget);
 
 G_END_DECLS
 
-#endif /* __GLADE_WIDGET_H__ */
+#endif __GLADE_WIDGET_H__

@@ -99,8 +99,6 @@
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
 #define GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION "ChildPropertyApplies"
 
-#define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"
-
 #define GLADE_MODIFY_PROPERTY_DATA "GladeModifyPropertyData"
 
 #define GLADE_XML_TAG_PROJECT  "glade-interface"

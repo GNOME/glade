@@ -415,18 +415,18 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 		return;
 
 	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->class != NULL);
-	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
-	g_return_if_fail (widget->class->name != NULL);
-	g_return_if_fail (widget->class->icon != NULL);
+	g_return_if_fail (widget->widget_class != NULL);
+	g_return_if_fail (GPOINTER_TO_INT (widget->widget_class) > 5000);
+	g_return_if_fail (widget->widget_class->name != NULL);
+	g_return_if_fail (widget->widget_class->icon != NULL);
 
 	if (is_icon)
 	{
-		if (gtk_image_get_storage_type GTK_IMAGE (widget->class->icon) != GTK_IMAGE_PIXBUF)
+		if (gtk_image_get_storage_type GTK_IMAGE (widget->widget_class->icon) != GTK_IMAGE_PIXBUF)
 			return;
 
 		g_object_set (G_OBJECT (cell), "pixbuf",
-			      gtk_image_get_pixbuf (GTK_IMAGE (widget->class->icon)), NULL);
+			      gtk_image_get_pixbuf (GTK_IMAGE (widget->widget_class->icon)), NULL);
 	}
 	else
 	{

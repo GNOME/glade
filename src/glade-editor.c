@@ -1307,7 +1307,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		return;
 	}
 
-	property->property = glade_widget_get_property_by_class (widget, class);
+	property->property = glade_widget_get_property (widget, class->id);
 
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->class == property->class);
@@ -1403,10 +1403,10 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 
 	for (ancestor = parent; ancestor != NULL; ancestor = glade_widget_get_parent (ancestor))
 	{
- 		for (list = ancestor->class->child_properties; list; list = list->next)
+ 		for (list = ancestor->widget_class->child_properties; list; list = list->next)
 		{
 			property_class = list->data; 
-			if (!ancestor->class->child_property_applies (ancestor->widget, widget->widget, property_class->id))
+			if (!ancestor->widget_class->child_property_applies (ancestor->widget, widget->widget, property_class->id))
 				continue;
 
 			g_assert (property_class->packing == TRUE);
@@ -1445,7 +1445,7 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 		return;
 
 	/* Load the GladeWidgetClass */
-	class = widget ? widget->class : NULL;
+	class = widget ? widget->widget_class : NULL;
 	if (editor->loaded_class != class)
 		glade_editor_load_widget_class (editor, class);
 

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2003 Joaquin Cuenca Abela
+ * Copyright (C) 2003, 2004 Joaquin Cuenca Abela
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -134,7 +134,10 @@ glade_placeholder_finalize (GObject *object)
 
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
 	placeholder = GLADE_PLACEHOLDER (object);
-	g_object_unref (placeholder->placeholder_pixmap);
+
+	/* placeholder->placeholder_pixmap can be NULL if the placeholder is destroyed before it's realized */
+	if (placeholder->placeholder_pixmap)
+		g_object_unref (placeholder->placeholder_pixmap);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }

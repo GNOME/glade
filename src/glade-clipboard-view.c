@@ -119,12 +119,12 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->class != NULL);
-	g_return_if_fail (widget->class->icon != NULL);
+	g_return_if_fail (widget->widget_class != NULL);
+	g_return_if_fail (widget->widget_class->icon != NULL);
 
 	if (is_icon)
 		g_object_set (G_OBJECT (cell),
-			      "pixbuf", gtk_image_get_pixbuf (GTK_IMAGE (widget->class->icon)),
+			      "pixbuf", gtk_image_get_pixbuf (GTK_IMAGE (widget->widget_class->icon)),
 			      NULL);
 	else
 		g_object_set (G_OBJECT (cell),

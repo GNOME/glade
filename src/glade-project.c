@@ -149,6 +149,7 @@ glade_project_init (GladeProject *project)
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
 	project->widget_names_allocator = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) glade_id_allocator_free);
+	project->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
 }
 
 GladeProject *
@@ -206,7 +207,8 @@ glade_project_finalize (GObject *object)
 	g_free (project->path);
 	
 	g_hash_table_destroy (project->widget_names_allocator);
-	
+	g_hash_table_destroy (project->widget_old_names);
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -216,6 +218,28 @@ glade_project_selection_changed (GladeProject *project)
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [SELECTION_CHANGED],
 		       0);
+}
+
+static void
+glade_project_on_widget_notify (GladeWidget *widget, GParamSpec *arg, GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	switch (arg->name[0])
+	{
+	case 'n':
+		if (strcmp (arg->name, "name") == 0)
+		{
+			const char *old_name = g_hash_table_lookup (project->widget_old_names, widget);
+			glade_project_widget_name_changed (project, widget, old_name);
+			g_hash_table_insert (project->widget_old_names, widget, g_strdup (glade_widget_get_name (widget)));
+		}
+
+	case 'p':
+		if (strcmp (arg->name, "project") == 0)
+			glade_project_remove_widget (project, glade_widget_get_widget (widget));
+	}
 }
 
 /**
@@ -238,12 +262,14 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 		return;
 
 	/* If it's a container add the children as well */
-	if (GTK_IS_CONTAINER (widget)) {
+	if (GTK_IS_CONTAINER (widget))
+	{
 		GList *list;
 		GtkWidget *child;
 
 		list = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (; list; list = list->next) {
+		for (; list; list = list->next)
+		{
 			child = list->data;
 			glade_project_add_widget (project, child);
 		}
@@ -254,7 +280,7 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 	/* The internal widgets (e.g. the label of a GtkButton) are handled
 	 * by gtk and don't have an associated GladeWidget: we don't want to
 	 * add these to our list. It would be nicer to have a flag to check
-	 * (as we do for placeholdres) instead of checking for the associated
+	 * (as we do for placeholders) instead of checking for the associated
 	 * GladeWidget, so that we can assert that if a widget is _not_ internal,
 	 * it _must_ have a corresponding GladeWidget... Anyway this suffice
 	 * for now.
@@ -262,7 +288,10 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 	if (!gwidget)
 		return;
 
-	gwidget->project = project;
+	glade_widget_set_project (gwidget, project);
+	g_hash_table_insert (project->widget_old_names, gwidget, g_strdup (glade_widget_get_name (gwidget)));
+
+	g_signal_connect (G_OBJECT (gwidget), "notify", (GCallback) glade_project_on_widget_notify, project);
 
 	project->widgets = g_list_prepend (project->widgets, widget);
 	g_object_ref (widget);
@@ -274,7 +303,7 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 }
 
 void
-glade_project_release_widget_name (GladeProject *project, const char *widget_name)
+glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_widget, const char *widget_name)
 {
 	const char *first_number = widget_name;
 	char *end_number;
@@ -311,6 +340,7 @@ glade_project_release_widget_name (GladeProject *project, const char *widget_nam
 	glade_id_allocator_release (id_allocator, id);
 
  lblend:
+	g_hash_table_remove (project->widget_old_names, glade_widget);
 	g_free (base_widget_name);
 }
 
@@ -322,7 +352,7 @@ glade_project_release_widget_name (GladeProject *project, const char *widget_nam
  * Remove a widget from the project.
  * Note that when removing the GtkWidget from the project we
  * don't change ->project in the associated GladeWidget, this
- * way UNDO works.
+ * way UNDO can work.
  */
 void
 glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
@@ -337,12 +367,14 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 		return;
 
 	/* If it's a container remove the children as well */
-	if (GTK_IS_CONTAINER (widget)) {
+	if (GTK_IS_CONTAINER (widget))
+	{
 		GList *list;
 		GtkWidget *child;
 
 		list = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (; list; list = list->next) {
+		for (; list; list = list->next)
+		{
 			child = list->data;
 			glade_project_remove_widget (project, child);
 		}
@@ -359,7 +391,7 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 	if (widget_l != NULL)
 	{
 		g_object_unref (widget);
-		glade_project_release_widget_name (project, gwidget->name);
+		glade_project_release_widget_name (project, gwidget, glade_widget_get_name (gwidget));
 		project->widgets = g_list_delete_link (project->widgets, widget_l);
 	}
 
@@ -376,7 +408,7 @@ glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, c
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	glade_project_release_widget_name (project, old_name);
+	glade_project_release_widget_name (project, widget, old_name);
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [WIDGET_NAME_CHANGED],
@@ -433,7 +465,8 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 	GladeIDAllocator *id_allocator;
 	guint i = 1;
 	
-	while (TRUE) {
+	while (TRUE)
+	{
 		id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
 
 		if (id_allocator == NULL)
@@ -575,7 +608,7 @@ glade_project_write (GladeXmlContext *context, const GladeProject *project)
 		 * care of appending its children.
 		 */
 		if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
-			child = glade_widget_write (context, widget);
+			child = glade_widget_write (widget, context);
 			if (!child)
 				return NULL;
 
@@ -612,7 +645,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 	for (; child; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_WIDGET))
 			continue;
-		widget = glade_widget_new_from_node (child, project);
+		widget = glade_widget_read (project, child);
 		if (!widget) {
 			g_warning ("Failed to read a <wideget> tag");
 			continue;

@@ -36,6 +36,7 @@
 #include "glade-debug.h"
 #include "glade-placeholder.h"
 #include "glade-clipboard.h"
+#include "glade-signal.h"
 #include "glade.h"
 
 
@@ -305,7 +306,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 
 	g_value_unset (&new_value);
 
-	return FALSE;
+	return TRUE;
 }
 
 static void
@@ -436,7 +437,7 @@ glade_command_set_name_execute (GladeCommand *cmd)
 	me->old_name = me->name;
 	me->name = tmp;
 
-	return FALSE;
+	return TRUE;
 }
 
 static void
@@ -547,18 +548,8 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	GladeWidget *widget = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
 
-	glade_widget_set_contents (widget);
-
 	if (!GTK_WIDGET_TOPLEVEL (widget->widget))
-	{
-		GladeWidget *parent;
-
-		glade_util_replace_placeholder (placeholder, widget);
-
-		/* we can now add the packing properties */
-		parent = glade_widget_get_parent (widget);
-		glade_widget_set_packing_properties (widget, parent);
-	}
+		glade_widget_replace (GTK_WIDGET (placeholder), widget->widget);
 
 	glade_project_add_widget (widget->project, widget->widget);
 	glade_project_selection_set (widget->project, widget->widget, TRUE);
@@ -578,13 +569,15 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 	g_return_val_if_fail (widget != NULL, TRUE);
 
 	parent = glade_widget_get_parent (widget);
-	if (parent) {
-		if (me->placeholder == NULL) {
+	if (parent)
+	{
+		if (me->placeholder == NULL)
+		{
 			me->placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
-		glade_widget_replace_with_placeholder (widget, me->placeholder);
+		glade_widget_replace (widget->widget, GTK_WIDGET (me->placeholder));
 	}
 
 	gtk_widget_hide (widget->widget);
@@ -668,7 +661,7 @@ glade_command_create_delete_common (GladeWidget *widget,
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)));
-		glade_command_push_undo(widget->project, GLADE_COMMAND (me));
+		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
 }
 
 void
@@ -704,7 +697,8 @@ glade_command_create (GladeWidgetClass *class,
 	gpw = glade_project_window_get ();
 	g_return_if_fail (GLADE_IS_PALETTE (gpw->palette));
 
-	if (placeholder) {
+	if (placeholder)
+	{
 		parent = glade_util_get_parent (GTK_WIDGET (placeholder));
 		g_return_if_fail (parent != NULL);
 	}
@@ -712,7 +706,7 @@ glade_command_create (GladeWidgetClass *class,
 	if (!project)
 		project = parent->project;
 
-	widget = glade_widget_new_from_class (class, project);
+	widget = glade_widget_new (class, project);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if (widget == NULL)
@@ -756,38 +750,29 @@ glade_command_cut_paste_undo (GladeCommand *cmd)
 static gboolean
 glade_command_paste_execute (GladeCommandCutPaste *me)
 {
-	GladeWidget *widget = me->widget;
+	GladeWidget *glade_widget = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
 	GladeWidget *parent;
 	GladeProject *project;
 
-	g_return_val_if_fail (g_list_find (me->clipboard->widgets, widget), TRUE);
+	g_return_val_if_fail (g_list_find (me->clipboard->widgets, glade_widget), TRUE);
 
 	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
 	project = parent->project;
 
-	widget->name = glade_widget_new_name (project, widget->class);
-
-	glade_widget_set_contents (widget);
-	glade_widget_connect_signals (widget);
-
-	if (!GTK_WIDGET_TOPLEVEL (widget->widget))
+	if (!GTK_WIDGET_TOPLEVEL (glade_widget->widget))
 	{
-		gtk_widget_ref (GTK_WIDGET (placeholder));
-
-		glade_util_replace_placeholder (placeholder, widget);
-
-		/* we may have changed the parent, regenerate packing properties */
-		glade_widget_set_packing_properties (widget, parent);
+		g_object_ref (G_OBJECT (placeholder));
+		glade_widget_replace (GTK_WIDGET (placeholder), glade_widget->widget);
 	}
 
-	glade_project_add_widget (project, widget->widget);
-	glade_project_selection_set (widget->project, widget->widget, TRUE);
+	glade_project_add_widget (project, glade_widget->widget);
+	glade_project_selection_set (glade_widget->project, glade_widget->widget, TRUE);
 
-	if (GTK_IS_WIDGET (widget->widget))
-		gtk_widget_show_all (GTK_WIDGET (widget->widget));
+	if (GTK_IS_WIDGET (glade_widget->widget))
+		gtk_widget_show_all (GTK_WIDGET (glade_widget->widget));
 
-	glade_clipboard_remove (me->clipboard, widget);
+	glade_clipboard_remove (me->clipboard, glade_widget);
 
 	return TRUE;
 }
@@ -795,27 +780,27 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 static gboolean
 glade_command_cut_execute (GladeCommandCutPaste *me)
 {
-	GladeWidget *widget = me->widget;
-	GladeWidget *parent;
+	GladeWidget *glade_widget = me->widget;
 
-	g_return_val_if_fail (widget != NULL, TRUE);
+	g_return_val_if_fail (glade_widget != NULL, TRUE);
 
-	glade_clipboard_add (me->clipboard, widget);
+	glade_clipboard_add (me->clipboard, glade_widget);
 
-	parent = glade_widget_get_parent (widget);
-	if (parent) {
-		if (me->placeholder == NULL) {
+	if (glade_widget_get_parent (glade_widget))
+	{
+		if (me->placeholder == NULL)
+		{
 			me->placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
-		glade_widget_replace_with_placeholder (widget, me->placeholder);
+		glade_widget_replace (glade_widget->widget, GTK_WIDGET (me->placeholder));
 	}
 
-	gtk_widget_hide (widget->widget);
+	gtk_widget_hide (glade_widget->widget);
 
-	glade_project_selection_remove (widget->project, widget->widget, TRUE);
-	glade_project_remove_widget (widget->project, widget->widget);
+	glade_project_selection_remove (glade_widget->project, glade_widget->widget, TRUE);
+	glade_project_remove_widget (glade_widget->project, glade_widget->widget);
 
 	return TRUE;
 }
@@ -893,15 +878,18 @@ glade_command_cut_paste_common (GladeWidget *widget,
 	if (me->placeholder)
 		g_object_ref (G_OBJECT (me->placeholder));
 
-	cmd->description = g_strdup_printf (_("%s %s"), cut ? "Cut" : "Paste", widget->name);
+	if (cut)
+		cmd->description = g_strdup_printf (_("Cut %s"), widget->name);
+	else
+		cmd->description = g_strdup_printf (_("Paste %s"), widget->name);
 
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	/*
 	 * Push it onto the undo stack only on success
 	 */
-	if (glade_command_cut_paste_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (project, GLADE_COMMAND (me));
+	if (glade_command_cut_paste_execute (cmd))
+		glade_command_push_undo (project, cmd);
 }
 
 void
@@ -921,12 +909,10 @@ glade_command_paste (GladePlaceholder *placeholder)
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 
 	widget = gpw->clipboard->curr;
-
 	if (widget == NULL)
 		return;
 
 	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-
 	glade_command_cut_paste_common (widget, placeholder, parent->project, FALSE);
 }
 
@@ -951,3 +937,101 @@ glade_command_cut (GladeWidget *widget)
 	glade_command_cut_paste_common (widget, NULL, widget->project, TRUE);
 }
 
+/*********************************************************/
+/*******     GLADE_COMMAND_ADD_SIGNAL     *******/
+/*********************************************************/
+
+/* create a new GladeCommandAddRemoveSignal class.  Objects of this class will
+ * encapsulate an "add or remove signal handler" operation */
+typedef struct {
+	GladeCommand parent;
+
+	gboolean add;
+	GladeSignal *signal;
+	GtkWidget *widget;
+} GladeCommandAddSignal;
+
+/* standard macros */
+GLADE_MAKE_COMMAND (GladeCommandAddSignal, glade_command_add_signal);
+#define GLADE_COMMAND_ADD_SIGNAL_TYPE		(glade_command_add_signal_get_type ())
+#define GLADE_COMMAND_ADD_SIGNAL(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_ADD_SIGNAL_TYPE, GladeCommandAddSignal))
+#define GLADE_COMMAND_ADD_SIGNAL_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_ADD_SIGNAL_TYPE, GladeCommandAddSignalClass))
+#define GLADE_IS_COMMAND_ADD_SIGNAL(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_ADD_SIGNAL_TYPE))
+#define GLADE_IS_COMMAND_ADD_SIGNAL_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_ADD_SIGNAL_TYPE))
+
+static void
+glade_command_add_signal_finalize (GObject *obj)
+{
+	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (obj);
+	glade_signal_free (cmd->signal);
+	g_object_unref (cmd->widget);
+	glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_add_signal_undo (GladeCommand *this)
+{
+	return glade_command_add_signal_execute (this);
+}
+
+static gboolean
+glade_command_add_signal_execute (GladeCommand *this)
+{
+	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (this);
+
+	if (cmd->add)
+		glade_widget_add_signal_handler (glade_widget_get_from_gtk_widget (cmd->widget), cmd->signal);
+	else
+		glade_widget_remove_signal_handler (glade_widget_get_from_gtk_widget (cmd->widget), cmd->signal);
+
+	cmd->add = !cmd->add;
+	return TRUE;
+}
+
+static gboolean
+glade_command_add_signal_unifies (GladeCommand *this, GladeCommand *other)
+{
+	return FALSE;
+}
+
+static void
+glade_command_add_signal_collapse (GladeCommand *this, GladeCommand *other)
+{
+	g_return_if_reached ();
+}
+
+static void
+glade_command_add_remove_signal(GladeWidget *glade_widget, const GladeSignal *signal, gboolean add)
+{
+	GladeCommandAddSignal *me = GLADE_COMMAND_ADD_SIGNAL (g_object_new (GLADE_COMMAND_ADD_SIGNAL_TYPE, NULL));
+	GladeCommand *cmd = GLADE_COMMAND (me);
+	GtkWidget *widget = glade_widget_get_widget (glade_widget);
+
+	/* we can only add/remove a signal to a widget that has been wrapped by a GladeWidget */
+	g_assert (glade_widget != NULL);
+	g_assert (glade_widget->project != NULL);
+
+	g_object_ref (widget);
+	me->widget = widget;
+	me->add = add;
+	me->signal = glade_signal_clone (signal);
+	if (add)
+		cmd->description = g_strdup_printf (_("Add signal handler %s"), signal->handler);
+	else
+		cmd->description = g_strdup_printf (_("Remove signal handler %s"), signal->handler);
+
+	if (glade_command_add_signal_execute (cmd))
+		glade_command_push_undo (glade_widget->project, cmd);
+}
+
+void
+glade_command_add_signal(GladeWidget *glade_widget, const GladeSignal *signal)
+{
+	glade_command_add_remove_signal (glade_widget, signal, TRUE);
+}
+
+void
+glade_command_remove_signal(GladeWidget *glade_widget, const GladeSignal *signal)
+{
+	glade_command_add_remove_signal (glade_widget, signal, FALSE);
+}

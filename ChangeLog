@@ -1,3 +1,45 @@
+2004-04-21  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* pixmaps/fontselectiondialog.png, [vh]paned.png, messagedialog.png:
+	fix 3 bad pixels in the shadow of these icons.
+	* src/glade-clipboard-view.c, glade-editor.c, glade-project-view.c,
+	glade-widget-class.h: account for changes on GladeWidget.
+	* src/glade-command.[ch]: account for changes on GladeWidget, and add
+	a new command for add/remove signal handlers.
+	* src/glade-signal.[ch]: rename glade_signal_compare by glade_signal_equal
+	and glade_signal_copy by glade_signal_clone.
+	* src/glade-utils.[ch]: move glade_util_replace_placeholder in a generalized
+	form to glade-widget.c. Make glade_util_get_parent work even for toplevels.
+	New glade_util_object_set_property function to set a property on a
+	GladeWidget using the set_property specified in GladeWidgetClass if any
+	(or g_object_set_property otherwise).
+	* src/glade-widget.[ch]: rewritten from scratch as a GObject. It exposes a
+	new API. It also fixes several bugs.
+	* src/glade-property.[ch]: account for changes on GladeWidget, and assure
+	that we don't assing a widget with an ID higher than needed.
+	* src/glade-signal-editor.[ch]: account for changes on glade-widget.c. The
+	API for adding/changing/removing signals handlers has changed, so this file
+	is quite affected. Chop the biggests functions for clarity. Account for the
+	new command add/remove signal handler (to get TODO/REDO functionality).
+	* src/glade-placeholder.c: fix the destruction of placeholders that don't
+	reach the realized stage.
+	* src/glade-gtk.c: move much of the fill empty functions to post create,
+	querying for properties as size, nb-rows, etc. when needed. Add some
+	placeholders to the action area of a dialog box.
+	* src/glade-clipboard.[ch]: As glade-widget now has a reference count,
+	remove glade_clipboard_add_copy, and use only glade_clipboard_add.
+	* src/glade-popup.c, glade-project-window.c: Account for changes on
+	glade-clipboard.c.
+	* widgets/gtk-base.xml: Add a file for GtkLabel and GtkFrame.
+	* widgets/gtk-box.xml: remove the fill empty function and add a post create
+	function (post create will query the number of items in the box and add
+	the placeholders).
+	* widgets/gtkbutton.xml, gtklabel.xml, gtktogglebutton.xml,
+	gtkcheckbutton.xml, gtkradiobutton.xml: Add a default label.
+	* widgets/gtktable.xml: simplify and remove fill empty (post create will
+	do the work, querying for the number of rows and columns).
+	* widgets/gtkframe.xml: simplify and set a default label.
+
 2004-03-12  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-id-allocater.c: fix a typo.

@@ -41,17 +41,20 @@ struct _GladeCommandClass
 
 GType glade_command_get_type (void);
 
-void glade_command_undo (GladeProject *project);
-void glade_command_redo (GladeProject *project);
+void glade_command_undo			(GladeProject *project);
+void glade_command_redo			(GladeProject *project);
 
-void glade_command_set_property (GladeProperty *property, const GValue *value);
-void glade_command_set_name (GladeWidget *obj, const gchar *name);
+void glade_command_set_property		(GladeProperty *property, const GValue *value);
+void glade_command_set_name		(GladeWidget *glade_widget, const gchar *name);
 
-void glade_command_delete (GladeWidget *widget);
-void glade_command_create (GladeWidgetClass *class, GladePlaceholder *placeholder, GladeProject *project);
+void glade_command_delete		(GladeWidget *glade_widget);
+void glade_command_create		(GladeWidgetClass *widget_class, GladePlaceholder *placeholder, GladeProject *project);
 
-void glade_command_cut   (GladeWidget *widget);
-void glade_command_paste (GladePlaceholder *placeholder);
+void glade_command_cut			(GladeWidget *glade_widget);
+void glade_command_paste		(GladePlaceholder *placeholder);
+
+void glade_command_add_signal		(GladeWidget *glade_widget, const GladeSignal *signal);
+void glade_command_remove_signal	(GladeWidget *glade_widget, const GladeSignal *signal);
 
 
 G_END_DECLS

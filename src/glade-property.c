@@ -124,13 +124,13 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 	if (property->class->packing)
 	{
 		GladeWidget *parent = glade_widget_get_parent (property->widget);
-		GtkContainer *container = GTK_CONTAINER (parent->widget);
-		GtkWidget *child = property->widget->widget;
+		GtkContainer *container = GTK_CONTAINER (glade_widget_get_widget (parent));
+		GtkWidget *child = glade_widget_get_widget (property->widget);
 		gtk_container_child_set_property (container, child, property->class->id, value);
 	}
 	else
 	{
-		GObject *gobject = G_OBJECT (property->widget->widget);
+		GObject *gobject = G_OBJECT (glade_widget_get_widget (property->widget));
 		g_object_set_property (gobject, property->class->id, value);
 	}
 }
@@ -158,14 +158,9 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	/* if there is a custom set_property use it*/
 	if (property->class->set_function)
-	{
-		(*property->class->set_function) (G_OBJECT (property->widget->widget),
-						  value);
-	}
+		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
 	else
-	{
 		glade_property_set_property (property, value);
-	}
 
 	g_value_reset (property->value);
 	g_value_copy (value, property->value);

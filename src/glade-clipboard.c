@@ -100,6 +100,7 @@ glade_clipboard_new ()
 void
 glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 {
+	g_object_ref (G_OBJECT (widget));
 	/*
 	 * Add the GladeWidget to the list of children. And set the
 	 * latest addition, to currently selected widget in the clipboard.
@@ -115,25 +116,6 @@ glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 }
 
 /**
- * glade_clipboard_add_copy:
- * @clipboard: 
- * @widget: 
- * 
- * Add a copy of a GladeWidget onto the Clipboard. 
- **/
-void
-glade_clipboard_add_copy (GladeClipboard *clipboard, GladeWidget *widget)
-{
-	GladeWidget *copy;
-
-	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	copy = glade_widget_clone (widget);
-	glade_clipboard_add (clipboard, copy);
-}
-
-/**
  * glade_clipboard_remove:
  * @clipboard: 
  * @widget: 
@@ -146,6 +128,7 @@ glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 	GList *list;
 
 	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
+	g_object_unref (G_OBJECT (widget));
 
 	list = g_list_first (clipboard->widgets);
 	if (list != NULL)
