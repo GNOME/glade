@@ -274,7 +274,7 @@ glade_xml_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _defaul
  * the content of a child.
  */
 gboolean
-glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _default)
+glade_xml_get_property_boolean (GladeXmlNode *node_in, const char *name, gboolean _default)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar * value;
@@ -563,7 +563,7 @@ glade_xml_context_free (GladeXmlContext *context)
 
 
 void
-glade_xml_append_child (GladeXmlNode *node_in, GladeXmlNode *child_in)
+glade_xml_node_append_child (GladeXmlNode *node_in, GladeXmlNode *child_in)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 	xmlNodePtr child = (xmlNodePtr) child_in;

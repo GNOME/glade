@@ -75,14 +75,14 @@ glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
  * Return Value: 
  **/
 static GladeWidget *
-glade_widget_new (GladeWidgetClass *class)
+glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 {
 	GladeWidget *widget;
 
 	widget = g_new0 (GladeWidget, 1);
 	widget->name     = NULL;
 	widget->widget   = NULL;
-	widget->project  = NULL;
+	widget->project  = project;
 	widget->class    = class;
 	widget->properties = glade_property_list_new_from_widget_class (class, widget);
 	widget->parent   = NULL;
@@ -273,9 +273,9 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 
 	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
 
-#ifdef DEBUG	
+#ifdef DEBUG
 	g_debug ("button press for a %s\n", glade_widget->class->name);
-#endif	
+#endif
 	if (!glade_widget) {
 		g_warning ("Button press event but the gladewidget was not found\n");
 		return FALSE;
@@ -317,7 +317,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 	return FALSE;
 }
 
-void
+static void
 glade_property_refresh (GladeProperty *property)
 {
 	switch (property->class->type) {
@@ -342,18 +342,19 @@ glade_property_refresh (GladeProperty *property)
 					   glade_property_get_string (property));
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-		glade_property_set_choice (property,
-					   glade_property_get_choice (property));
+		glade_property_set_enum (property,
+					 glade_property_get_enum (property));
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		g_print ("Set adjustment\n");
+		g_print ("Set adjustment (refresh) %d\n", GPOINTER_TO_INT (property->child));
 #if 1	
-		g_print ("Set directly \n");
 #if 0
 		glade_widget_set_default_options_real (property->child, packing);
 #endif	
+		g_print ("Set directly \n");
 		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
 						GTK_ADJUSTMENT (property->child));
+		g_print ("DONE : Set directly\n");
 #else		
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id,
@@ -581,7 +582,7 @@ glade_widget_property_changed_cb (GtkWidget *w)
 		return;
 
 	glade_property_get_from_widget (property);
-	
+
 	glade_property_refresh (property);
 }
 
@@ -706,11 +707,11 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 
 	}
 	
-#if 1
-	gtk_timeout_add ( 100, glade_widget_ugly_hack, glade_widget);
-	gtk_timeout_add ( 400, glade_widget_ugly_hack, glade_widget);
-	gtk_timeout_add (1000, glade_widget_ugly_hack, glade_widget);
-#endif	
+	if (g_type_is_a (type, GTK_TYPE_WIDGET)) {
+		gtk_timeout_add ( 100, glade_widget_ugly_hack, glade_widget);
+		gtk_timeout_add ( 400, glade_widget_ugly_hack, glade_widget);
+		gtk_timeout_add (1000, glade_widget_ugly_hack, glade_widget);
+	}
 	
 	return TRUE;
 }
@@ -738,8 +739,7 @@ glade_widget_new_full (GladeProject *project,
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	widget = glade_widget_new (class);
-	widget->project = project;
+	widget = glade_widget_new (class, project);
 	widget->name    = glade_widget_new_name (project, class);
 	widget->parent  = parent;
 
@@ -776,7 +776,7 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-		
+
 	if (glade_widget_class_has_queries (class)) {
 		result = glade_property_query_result_new ();
 		if (glade_project_window_query_properties (class, result))
@@ -797,7 +797,7 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 	/* ->widget sometimes contains GtkObjects like a GtkAdjustment for example */
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show (widget->widget);
-	
+
 	return widget;
 }
 
@@ -805,7 +805,7 @@ GladeWidget *
 glade_widget_new_from_class (GladeWidgetClass *class, GladeWidget *parent)
 {
 	GladeProject *project;
-	
+
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (parent->project), NULL);
@@ -876,7 +876,8 @@ glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gbo
 
 	if (list == NULL) {
 		if (!silent)
-			g_warning ("Could not find the GladeProperty to load from -%s-",
+			g_warning ("Could not find the GladeProperty %s:%s",
+				   class->id,
 				   class->name);
 		return NULL;
 	}
@@ -1126,7 +1127,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		child = glade_property_write (context, property);
 		if (child == NULL)
 			continue;
-		glade_xml_append_child (node, child);
+		glade_xml_node_append_child (node, child);
 	}
 
 	/* Signals */
@@ -1136,7 +1137,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		child = glade_signal_write (context, signal);
 		if (child == NULL)
 			return NULL;
-		glade_xml_append_child (node, child);
+		glade_xml_node_append_child (node, child);
 	}
 
 	/* Children */
@@ -1144,13 +1145,13 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	for (; list != NULL; list = list->next) {
 		child_widget = list->data;
 		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
-		glade_xml_append_child (node, child_tag);
+		glade_xml_node_append_child (node, child_tag);
 
 		/* write the widget */
 		child = glade_widget_write (context, child_widget);
 		if (child == NULL)
 			return NULL;
-		glade_xml_append_child (child_tag, child);
+		glade_xml_node_append_child (child_tag, child);
 		
 		/* Append the packing properties */
 		packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
@@ -1163,9 +1164,9 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 			packing_property = glade_property_write (context, property);
 			if (packing_property == NULL)
 				continue;
-			glade_xml_append_child (packing, packing_property);
+			glade_xml_node_append_child (packing, packing_property);
 		}
-		glade_xml_append_child (child_tag, packing);
+		glade_xml_node_append_child (child_tag, packing);
 		/* */
 		
 

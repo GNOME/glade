@@ -923,6 +923,7 @@ glade_packing_init (void)
 	gint num;
 	gint i;
 
+
 	num = sizeof (table_props) / sizeof (GladePackingProperty);
 	for (i = 0; i < num; i++)
 		glade_packing_add_property (&table_properties, table_props[i]);
@@ -947,14 +948,29 @@ static void
 glade_packing_add_properties_from_list (GladeWidget *widget,
 					GList *list)
 {
+	GladePackingProperties *packing_properties;
 	GladePropertyClass *class;
 	GladeProperty *property;
 
+	packing_properties = glade_packing_property_get_from_class (widget->class,
+								  widget->parent->class);
 	for (; list != NULL; list = list->next) {
 		class = list->data;
 		property = glade_property_new_from_class (class, widget);
 		property->widget = widget;
 		widget->properties = g_list_append (widget->properties, property);
+
+		if (packing_properties) {
+			GValue *gvalue;
+			const gchar *value;
+			value = g_hash_table_lookup (packing_properties->properties,
+						     property->class->id);
+			if (value) {
+				gvalue = glade_property_class_make_gvalue_from_string (property->class->type, value);
+				g_free (property->value);
+				property->value = gvalue;
+			}
+		}
 	}
 
 }
@@ -975,7 +991,7 @@ glade_packing_add_properties (GladeWidget *widget)
 	
 	if (widget->parent == NULL)
 		return;
-	class = widget->parent->class->name;	
+	class = widget->parent->class->name;
 
 	if (strcmp (class, "GtkTable") == 0)
 		glade_packing_add_properties_from_list (widget, table_properties);
@@ -984,4 +1000,24 @@ glade_packing_add_properties (GladeWidget *widget)
 	    (strcmp (class, "GtkVBox") == 0))
 		glade_packing_add_properties_from_list (widget, box_properties);
 
+}
+
+
+GladePackingProperties *
+glade_packing_property_get_from_class (GladeWidgetClass *class,
+				       GladeWidgetClass *container_class)
+{
+	GladePackingProperties *property = NULL;
+	GList *list;
+
+	list = class->packing_properties;
+	for (; list; list = list->next) {
+		property = list->data;
+		if (property->container_class == container_class)
+			break;
+	}
+	if (list == NULL)
+		return NULL;
+
+	return property;
 }

@@ -26,26 +26,32 @@ G_BEGIN_DECLS
 
  */
 struct _GladeChoice {
+	GType type;
 
 	gchar *name;     /* Name of the choice to be used in the gui. This
 			  * field is translated. Like "Top Level" or "Ok"
 			  * (for GTK_WINDOW_TOPLEVEL & GNOME_STOCK_BUTTON_OK
 			  */
+	gchar *id;
+#if 0	
 	gchar *symbol;   /* Symbol for the choice. Like GTK_WINDOW_TOPLEVEL (which
 			  * is an integer) or GNOME_STOCK_BUTTON_FOO (which is
 			  * not an integer). For integers which are enum'ed values
 			  * this symbol is converted to its value
 			  */
+#endif	
 	
 	gint value;       /* The enum value of the symbol. The symbol GTK_WINDOW_
 			   * TOPLEVEL will be 0 and GTK_WINDOW_POPUP will be 1
 			   */
 
+#if 0	
 	const gchar *string; /* For non-integer values like GNOME_STOCK_BUTTON_OK
-			      * it points to a string inside the librarry that
+			      * it points to a string inside the library that
 			      * contains it.
 			      * See glade-choice.c#glade_string_from_sring
 			      */
+#endif	
 };
 
 

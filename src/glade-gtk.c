@@ -25,8 +25,11 @@
 
 #include "glade.h"
 #include "glade-widget.h"
+#include "glade-widget-class.h"
 #include "glade-placeholder.h"
+#include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-choice.h"
 
 static gint
 glade_widget_ugly_hack (gpointer data)
@@ -144,6 +147,8 @@ glade_gtk_adjustment_set_min (GObject *object, GValue *value)
 
 	adjustment->lower = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
+
+	g_print ("Set min !!\n");
 }
 
 static void
@@ -364,6 +369,71 @@ glade_gtk_table_set_n_columns (GObject *object, GValue *value)
 	glade_gtk_table_set_n_common (object, value, FALSE);
 }
 
+static void
+glade_gtk_button_set_stock (GObject *object, GValue *value)
+{
+	GladeWidget *glade_widget;
+	GtkWidget *button;
+	GtkStockItem item;
+	GladeChoice *choice = NULL;
+	GladeProperty *property;
+	GladeProperty *text;
+	GList *list;
+	gint val;
+
+	val = g_value_get_enum (value);	
+
+	button = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_BUTTON (button));
+	glade_widget = glade_widget_get_from_gtk_widget (button);
+	g_return_if_fail (glade_widget != NULL);
+
+	property = glade_property_get_from_id (glade_widget->properties,
+					       "stock");
+	text = glade_property_get_from_id (glade_widget->properties,
+					   "label");
+	
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (text != NULL);
+
+	list = property->class->choices;
+	for (; list; list = list->next) {
+		choice = list->data;
+		if (val == choice->value)
+			break;
+	}
+	g_return_if_fail (list != NULL);
+
+	gtk_container_remove (GTK_CONTAINER (button),
+			      GTK_BIN (button)->child);
+	
+	if (!gtk_stock_lookup (choice->id, &item))
+	{
+		GtkWidget *label;
+		
+		label = gtk_label_new (g_value_get_string (text->value));
+		gtk_container_add (GTK_CONTAINER (button), label);
+		gtk_widget_show_all (button);
+	} else {
+		GtkWidget *label;
+		GtkWidget *image;
+		GtkWidget *hbox;
+
+		hbox = gtk_hbox_new (FALSE, 1);
+		label = gtk_label_new_with_mnemonic (item.label);
+		image = gtk_image_new_from_stock (choice->id,
+						  GTK_ICON_SIZE_BUTTON);
+
+		gtk_label_set_mnemonic_widget (GTK_LABEL (label),
+					       button);
+
+		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+		gtk_box_pack_end (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+		gtk_container_add (GTK_CONTAINER (button), hbox);
+		
+		gtk_widget_show_all (button);
+	}
+}
 
 static void
 empty (GObject *object, GValue *value)
@@ -437,6 +507,8 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_entry_get_text",          glade_gtk_entry_get_text},
 	{"glade_gtk_box_get_size",            glade_gtk_box_get_size},
 	{"glade_gtk_widget_get_tooltip",      empty},
+
+	{"glade_gtk_button_set_stock",        glade_gtk_button_set_stock},
 
 #if 0	
 	{"glade_gtk_table_get_n_rows",        glade_gtk_table_get_n_rows},

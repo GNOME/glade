@@ -25,11 +25,11 @@
         <Properties>
           <Property ParamSpec="FALSE" Id="minimum" Name="Min" Default="0">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_max</SetFunction>
+		   <SetFunction>glade_gtk_adjustment_set_min</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="maximum" Name="Max" Default="100">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_min</SetFunction>
+		   <SetFunction>glade_gtk_adjustment_set_max</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="step-increment" Name="Step Inc." Default="1">
 		   <Type>Float</Type>

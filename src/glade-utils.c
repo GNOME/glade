@@ -23,7 +23,7 @@
 
 #include <gtk/gtktooltips.h>
 #include "glade.h"
-
+#include <gmodule.h>
 
 
 gboolean
@@ -44,3 +44,42 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 
 	return;
 }
+
+GType
+glade_util_get_type_from_name (const gchar *name)
+{
+	static GModule *allsymbols;
+	guint (*get_type) ();
+	GType type;
+	
+	if (!allsymbols)
+		allsymbols = g_module_open (NULL, 0);
+	
+	if (!g_module_symbol (allsymbols, name,
+			      (gpointer) &get_type)) {
+		g_warning (_("We could not find the symbol \"%s\""),
+			   name);
+		return FALSE;
+	}
+
+	g_assert (get_type);
+	type = get_type ();
+
+	if (type == 0) {
+		g_warning(_("Could not get the type from \"%s"),
+			  name);
+		return FALSE;
+	}
+
+/* Disabled for GtkAdjustment, but i'd like to check for this somehow. Chema */
+#if 0	
+	if (!g_type_is_a (type, gtk_widget_get_type ())) {
+		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
+			   class->name);
+		return FALSE;
+	}
+#endif
+
+	return type;
+}
+

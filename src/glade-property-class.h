@@ -68,7 +68,7 @@ typedef enum {
     </Property>
 
 
- Choice Type :
+ Enum Type :
 
         <Property>
       <Type>Choice</Type>
@@ -78,6 +78,8 @@ typedef enum {
 	 <Parameters>
 	   <Parameter Key="Default" Value="GTK_WIN_POS_NONE"/>
 	 </Parameters>
+	 <Enums>
+	   <Enum>String Equiv</Enum>
 	 <Choices>
 	   <Choice>
 	     <Name>None</Name>

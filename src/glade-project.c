@@ -405,7 +405,7 @@ glade_project_write_widgets (const GladeProject *project, GladeXmlContext *conte
 		if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 			child = glade_widget_write (context, widget);
 			if (child != NULL)
-				glade_xml_append_child (node, child);
+				glade_xml_node_append_child (node, child);
 			else
 				return FALSE;
 		}

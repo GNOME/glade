@@ -427,7 +427,6 @@ glade_project_view_button_press_cb (GtkTreeView *view, GdkEventButton *event)
 		GtkTreeIter iter;
 		GladeWidget *widget;
 
-		g_print ("Double click\n");
 		if (!gtk_tree_view_get_path_at_pos (view,
 						    event->window,
 						    event->x, event->y,
@@ -475,9 +474,6 @@ glade_project_view_create_widget (GladeProjectView *view)
 	column = gtk_tree_view_column_new_with_attributes (_("Widget"), cell, NULL);
 	gtk_tree_view_column_set_cell_data_func (column, cell, glade_project_view_cell_function, NULL, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
-
-	gtk_object_unref (GTK_OBJECT (column));
-	gtk_object_unref (GTK_OBJECT (cell));
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
 	g_signal_connect_data (G_OBJECT (selection),

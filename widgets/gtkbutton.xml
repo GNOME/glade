@@ -7,9 +7,29 @@
 
     <Property Id="label"/>
     <Property Id="relief"/>
-    
+    <Property Id="stock" Default="glade-none" ParamSpec="False" Name="Stock Button">
+      <Type>Enum</Type>
+      <Enums EnumType="GtkReliefStyle">
+        <Enum Id="glade-none" Name="None"/>
+        <Enum Id="gtk-ok"     Name="Ok"/>
+        <Enum Id="gtk-cancel" Name="Cancel"/>
+      </Enums>
+    <SetFunction>glade_gtk_button_set_stock</SetFunction>
+    </Property>
   </Properties>
   
+
+  <PackingProperties>
+    <Container Id="GtkTable">
+      <Packing Id="xexpand">True</Packing>
+      <Packing Id="yexpand">True</Packing>
+      <Packing Id="yshrink">False</Packing>
+      <Packing Id="xshrink">False</Packing>
+      <Packing Id="xfill">True</Packing>
+      <Packing Id="yfill">True</Packing>
+    </Container>
+  </PackingProperties>
+
 </GladeWidgetClass>
 	 
 	 

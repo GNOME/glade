@@ -321,9 +321,8 @@ glade_project_window_new (GladeCatalog *catalog)
 	gpw->add_class = NULL;
 
 	glade_project_window_set_view (gpw, view);
-	
-	glade_project_window = gpw;
 
+	glade_project_window = gpw;
 	glade_palette_create (gpw);
 	glade_editor_create  (gpw);
 	

@@ -1,3 +1,57 @@
+2001-09-03  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-project-view.c (glade_project_view_create_widget): 
+
+2001-09-03  Chema Celorio  <chema@celorio.com>
+
+	* src/glade.h: add new xml tags
+
+	* src/glade-xml-utils.h: standarize a lot of the calls to xml-utils and rename all the
+	calling funcitions to the new names
+
+	* src/glade-widget.c (glade_widget_new): add a project parameter needed for loading
+	objects.
+	(glade_widget_create_gtk_widget): only call the widget resize when the object is an
+	actual widget (v.s. beeing an object like a gtkadjustment)
+
+	* src/glade-widget-class.c (glade_widget_class_set_type): call get_type_from_name
+	and move the code to get the type there
+	(glade_widget_class_load_packing_properties_from_node): impl.
+	(glade_widget_class_load_packing_properties): impl.
+
+	* src/glade-utils.c (glade_util_get_type_from_name): move here
+
+	* src/glade-property.c (glade_property_new_from_class): set property->child for
+	type = _TYPE_OBJECT
+	(glade_property_set_enum): s/choice/enum
+
+	* src/glade-packing.c (glade_packing_add_properties_from_list): add packing
+	properties too
+	(glade_packing_property_get_from_class): impl.
+
+	* src/glade-gtk.c (glade_gtk_button_set_stock): implement stock buttons
+
+	* src/glade-editor.c (glade_editor_property_changed_enum): s/choice/enum
+
+	* src/glade-choice.c (glade_enum_from_string): add a temp entry
+	for gtk-ok, glade-none and gtk-cancel.
+	(glade_choice_list_new_from_node): change the XML tag name to ENUMS
+	from CHOICE
+
+	* src/glade-catalog.h: add prototype for glade_catalog_get
+
+	* src/glade-catalog.c (glade_catalog_get): impl.
+	(glade_catalog_load): after loading all the widgets load the
+	packing properties.
+
+2001-08-29  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget-class.c (glade_util_get_type_from_name): 
+
+	* src/glade-property-class.c (glade_property_class_create_label): Try to
+	add a tooltip for the editor labels, not working yet.
+
+
 2001-08-29  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* autogen.sh:
@@ -12,6 +66,7 @@
 2001-08-28  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-placeholder.c (glade_placeholder_add_with_result): rewrite
+	(glade_placeholder_is): impl.
 
 	* src/glade-widget-class.c (glade_widget_class_is): impl.
 

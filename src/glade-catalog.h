@@ -21,6 +21,7 @@ struct _GladeCatalog
 };
 
 GladeCatalog * glade_catalog_load (void);
+GladeCatalog * glade_catalog_get (void);
 
 G_END_DECLS
 

@@ -48,6 +48,7 @@
 #include "glade-choice.h"
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
+#include "glade-packing.h"
 
 
 static gchar *
@@ -144,47 +145,25 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 static gboolean
 glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function_name)
 {
-	static GModule *allsymbols;
-	guint (*get_type) ();
 	GType type;
 
 	class->type = 0;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
 	g_return_val_if_fail (init_function_name != NULL, FALSE);
-	
-	if (!allsymbols)
-		allsymbols = g_module_open (NULL, 0);
-	
-	if (!g_module_symbol (allsymbols, init_function_name,
-			      (gpointer) &get_type)) {
-		g_warning (_("We could not find the symbol \"%s\" while trying to load \"%s\""),
-			   init_function_name, class->name);
-		return FALSE;
-	}
 
-	g_assert (get_type);
-	type = get_type ();
-
-	if (type == 0) {
-		g_warning(_("Could not get the type from \"%s\" while trying to load \"%s\""),
-			  init_function_name, class->name);
+	type = glade_util_get_type_from_name (init_function_name);
+	if (type == 0)
 		return FALSE;
-	}
-
-/* Disabled for GtkAdjustment, but i'd like to check for this somehow. Chema */
-#if 0	
-	if (!g_type_is_a (type, gtk_widget_get_type ())) {
-		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
-			   class->name);
-		return FALSE;
-	}
-#endif
 
 	class->type = type;
+
+	if (type == 0)
+		return FALSE;
 	
 	return TRUE;
 }
+
 		
 GladeWidgetClass *
 glade_widget_class_new_from_node (GladeXmlNode *node)
@@ -290,6 +269,7 @@ glade_widget_class_new_from_name (const gchar *name)
 		return NULL;
 	doc = glade_xml_context_get_doc (context);
 	class = glade_widget_class_new_from_node (glade_xml_doc_get_root (doc));
+	class->xml_file = g_strdup (name);
 	glade_xml_context_free (context);
 
 	if (!glade_widget_class_create_pixmap (class))
@@ -443,14 +423,15 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 GladeWidgetClass *
 glade_widget_class_get_by_name (const gchar *name)
 {
-	GladeProjectWindow *gpw;
+	GladeCatalog *catalog;
 	GladeWidgetClass *class;
 	GList *list;
 	
 	g_return_val_if_fail (name != NULL, NULL);
 
-	gpw = glade_project_window_get ();
-	list = gpw->catalog->widgets;
+	catalog = glade_catalog_get ();
+	g_return_val_if_fail (catalog != NULL, NULL);
+	list = catalog->widgets;
 	for (; list != NULL; list = list->next) {
 		class = list->data;
 		g_return_val_if_fail (class->name != NULL, NULL);
@@ -476,4 +457,74 @@ glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
 		return TRUE;
 
 	return FALSE;
+}
+
+static void
+glade_widget_class_load_packing_properties_from_node (GladeXmlNode *node,
+						      GladeWidgetClass *class)
+{
+	GladeXmlNode *child;
+	
+	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
+		return;
+
+	child = glade_xml_search_child (node, GLADE_TAG_PACKING_PROPERTIES);
+	if (!child)
+		return;
+	
+	child = glade_xml_node_get_children (child);
+	for (; child; child = glade_xml_node_next (child)) {
+		GladePackingProperties *properties;
+		GladeWidgetClass *container_class;
+		GladeXmlNode *child2;
+		GHashTable *hash;
+		gchar *container_name;
+
+		hash = g_hash_table_new (g_str_hash, g_str_equal);
+		
+		child2 = glade_xml_node_get_children (child);
+		for (; child2; child2 = glade_xml_node_next (child2)) {
+			gchar *container_id;
+			gchar *content;
+			
+			container_id = glade_xml_get_property_string (child2,
+								      GLADE_TAG_ID);
+			content = glade_xml_get_content (child2);
+			g_hash_table_insert (hash, container_id, content);
+		}
+
+		container_name = glade_xml_get_property_string (child,
+								GLADE_TAG_ID);
+		container_class = glade_widget_class_get_by_name (container_name);
+		if (container_class == NULL) {
+			g_warning ("Could not find GladeWidget for %s\n", container_name);
+			return;
+		}
+		g_free (container_name);
+		
+		properties = g_new0 (GladePackingProperties, 1);
+		properties->container_class = container_class;
+		properties->properties = hash;
+		class->packing_properties = g_list_prepend (class->packing_properties, properties);
+	}
+	
+}
+
+void
+glade_widget_class_load_packing_properties (GladeWidgetClass *class)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc *doc;
+	gchar *file_name;
+
+	file_name = g_strconcat (WIDGETS_DIR, "/", class->xml_file, ".xml", NULL);
+	
+	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
+	if (context == NULL)
+		return;
+	doc = glade_xml_context_get_doc (context);
+	glade_widget_class_load_packing_properties_from_node (glade_xml_doc_get_root (doc), class);
+	glade_xml_context_free (context);
+
+	g_free (file_name);
 }

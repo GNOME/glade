@@ -134,6 +134,13 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	
 	property->class = class;
 
+	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+		property->child = glade_widget_new_from_class (class->child,
+							       widget);
+		return property;
+	}
+	
+	/* Create an empty default if the class does not specify a default value */
 	if (!class->def) {
 		property->value = glade_property_class_make_gvalue_from_string (class->type, "");
 		return property;
@@ -145,37 +152,11 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_FLOAT:
 		property->enabled = class->optional_default;
 		/* Fall thru */
+	case GLADE_PROPERTY_TYPE_ENUM:
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 	case GLADE_PROPERTY_TYPE_STRING:
 		g_value_init (property->value, class->def->g_type);
 		g_value_copy (class->def, property->value);
-		break;
-	case GLADE_PROPERTY_TYPE_ENUM:
-#if 0	
-		list = class->choices;
-		if (string != NULL) {
-			for (;list != NULL; list = list->next) {
-				choice = list->data;
-				if (strcmp (choice->symbol, string) == 0)
-					break;
-			}
-			if (list != NULL) {
-				value = g_strdup (string);
-				break;
-			}
-		}
-		list = class->choices;
-		if (list == NULL) {
-			g_warning ("class->choices is NULL. This should not happen\n");
-			value = g_strdup ("ERROR");
-			break;
-		}
-		choice = list->data;
-		g_warning ("Invalid default tag \"%s\" for property \"%s\", setting deafult to %s (%s)",
-			   choice->name, class->id,
-			   choice->symbol, string);
-		value = g_strdup (choice->symbol);
-#endif	
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 #if 0	
@@ -183,11 +164,6 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 #endif	
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-#if 0
-		value = NULL;
-		property->child = glade_widget_new_from_class (class->child,
-							       widget);
-#endif	
 		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		g_warning ("Invalid Glade property type (%d)\n", class->type);
@@ -403,14 +379,14 @@ glade_property_set_boolean (GladeProperty *property, gboolean val)
 }
 
 void
-glade_property_set_choice (GladeProperty *property, GladeChoice *choice)
+glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 {
-#if 0	
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
 	g_return_if_fail (choice != NULL);
 
-	g_value_set_enum (property->value, 0);
+
+	g_value_set_enum (property->value, choice->value);
 
 	property->loading = TRUE;
 	if (property->class->set_function == NULL)
@@ -422,7 +398,6 @@ glade_property_set_choice (GladeProperty *property, GladeChoice *choice)
 	property->loading = FALSE;
 
 	glade_property_emit_changed (property);
-#endif	
 }
 	
 void
@@ -434,8 +409,10 @@ glade_property_set (GladeProperty *property, GValue *value)
 					    g_value_get_boolean (value));
 		break;
 	case GLADE_PROPERTY_TYPE_FLOAT:
+		g_print ("1 %s \n", property->class->name);
 		glade_property_set_float (property,
 					  g_value_get_float (value));
+		g_print ("End:1\n");
 		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		glade_property_set_integer (property,
@@ -453,7 +430,7 @@ glade_property_set (GladeProperty *property, GValue *value)
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		glade_implement_me ();
-		g_print ("Set adjustment\n");
+		g_print ("Set adjustment ->%d<-\n", GPOINTER_TO_INT (property->child));
 #if 1	
 		g_print ("Set directly \n");
 #if 0
@@ -499,7 +476,9 @@ glade_property_get_float (GladeProperty *property)
 	gfloat resp;
 	g_return_val_if_fail (property != NULL, 0.0);
 	g_return_val_if_fail (property->value != NULL, 0.0);
+
 	resp = g_value_get_float (property->value);
+
 	return resp;
 }
 	
@@ -522,25 +501,24 @@ glade_property_get_boolean (GladeProperty *property)
 }	
 	
 GladeChoice *
-glade_property_get_choice (GladeProperty *property)
+glade_property_get_enum (GladeProperty *property)
 {
 	GladeChoice *choice = NULL;
-#if 0	
 	GList *list;
-#endif	
+	gint value;
 	
 	g_return_val_if_fail (property != NULL, NULL);
 	g_return_val_if_fail (property->value != NULL, NULL);
-#if 0
+
+	value = g_value_get_enum (property->value);
 	list = property->class->choices;
 	for (; list != NULL; list = list->next) {
 		choice = list->data;
-		if (strcmp (choice->symbol, property->value) == 0)
+		if (choice->value == value)
 			break;
 	}
 	if (list == NULL)
 		g_warning ("Cant find the GladePropertyChoice selected\n");
-#endif
 
 	return choice;
 }

@@ -72,6 +72,14 @@ glade_enum_from_string (const gchar *string)
 		return GTK_RELIEF_HALF;
 	if (strcmp (string, "GTK_RELIEF_NONE") == 0)
 		return GTK_RELIEF_NONE;
+	if (strcmp (string, "glade-none") == 0)
+		return 0;
+	if (strcmp (string, "gtk-ok") == 0)
+		return 1;
+	if (strcmp (string, "gtk-cancel") == 0)
+		return 2;
+
+	g_print ("Could not get Enum from string %s\n", string);
 
 	return -1;
 }
@@ -83,13 +91,16 @@ glade_string_from_string (const gchar *string)
 	
 	if (strcmp (string, "-") == 0)
 		return "None";
-#if 0  /* Add the gtk stock buttons list here. Gtk takes care of stock
+#if 1  /* Add the gtk stock buttons list here. Gtk takes care of stock
 	* items now
 	*/
-	if (strcmp (string, "GNOME_STOCK_BUTTON_OK") == 0)
-		return GNOME_STOCK_BUTTON_OK;
-	if (strcmp (string, "GNOME_STOCK_BUTTON_CANCEL") == 0)
-		return GNOME_STOCK_BUTTON_CANCEL;
+	if (strcmp (string, "GTK_STOCK_OK") == 0)
+		return GTK_STOCK_OK;
+	if (strcmp (string, "GTK_STOCK_CANCEL") == 0)
+		return GTK_STOCK_CANCEL;
+#endif
+#if 0	
+
 	if (strcmp (string, "GNOME_STOCK_BUTTON_YES") == 0)
 		return GNOME_STOCK_BUTTON_YES;
 	if (strcmp (string, "GNOME_STOCK_BUTTON_NO") == 0)
@@ -123,17 +134,25 @@ glade_choice_new_from_node (GladeXmlNode *node)
 {
 	GladeChoice *choice;
 
-	if (!glade_xml_node_verify (node, GLADE_TAG_CHOICE))
+	if (!glade_xml_node_verify (node, GLADE_TAG_ENUM))
 		return NULL;
 	
 	choice = glade_choice_new ();
-	choice->name   = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
-	choice->symbol = glade_xml_get_value_string_required (node, GLADE_TAG_SYMBOL, NULL);
-	choice->value  = glade_enum_from_string (choice->symbol);
+	choice->name   = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, NULL);
+	choice->id     = glade_xml_get_property_string_required (node, GLADE_TAG_ID, NULL);
+#if 0	
+	choice->symbol = glade_xml_get_property_string_required (node, GLADE_TAG_SYMBOL, NULL);
+#endif
+	choice->value  = glade_enum_from_string (choice->id);
+#if 0	
 	if (choice->value == -1)
-		choice->string = glade_string_from_string (choice->symbol);
+		choice->string = glade_string_from_string (choice->id);
+#endif	
 
+#if 0	
 	if ((choice->value == -1 && choice->string == NULL) || !choice->name) {
+#endif	
+	if (!choice->name) {
 		g_warning ("Could not create Choice from node");
 		return NULL;
 	}
@@ -148,14 +167,14 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 	GladeChoice *choice;
 	GList *list;
 
-	if (!glade_xml_node_verify (node, GLADE_TAG_ENUM))
+	if (!glade_xml_node_verify (node, GLADE_TAG_ENUMS))
 		return NULL;
 
 	list = NULL;
 	child = glade_xml_node_get_children (node);
 
 	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify (child, GLADE_TAG_CHOICE))
+		if (!glade_xml_node_verify (child, GLADE_TAG_ENUM))
 			return NULL;
 		choice = glade_choice_new_from_node (child);
 		if (choice == NULL)

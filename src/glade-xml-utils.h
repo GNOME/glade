@@ -12,6 +12,12 @@ typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
 
+/* search child */
+GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
+GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
+
+/* content */
+
 gchar *      glade_xml_get_content (GladeXmlNode * node); /* Get the content of the node */
 void         glade_xml_set_content (GladeXmlNode *node_in, const gchar *content);
 
@@ -25,32 +31,15 @@ gchar *      glade_xml_get_value_string_required (GladeXmlNode * node,
 
 gboolean glade_xml_get_boolean (GladeXmlNode * node, const char *name, gboolean _default);
 
-GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
-GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
-
-gboolean     glade_xml_node_verify (GladeXmlNode * node, const gchar *name);
-gboolean     glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
 void         glade_xml_set_value (GladeXmlNode * node, const char *name, const char *val);
 
 /* Properties */ 
-gchar * glade_xml_get_property_string_required (GladeXmlNode *node_in, const char *name, const char *xtra);
-gchar * glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
-gboolean glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _default);
+gchar *  glade_xml_get_property_string_required (GladeXmlNode *node_in, const char *name, const char *xtra);
+gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
+gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const char *name, gboolean _default);
+
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);
-
-/* Parse Context */
-GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);
-void              glade_xml_context_destroy (GladeXmlContext *context);
-void              glade_xml_context_free    (GladeXmlContext *context);
-GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
-						   const gchar *nspace,
-						   const gchar *root_name);
-GladeXmlDoc *  glade_xml_context_get_doc (GladeXmlContext *context);
-
-
-
-void glade_xml_append_child (GladeXmlNode * node, GladeXmlNode * child);
 
 /* Hash */
 GHashTable * glade_xml_utils_new_hash_from_node (GladeXmlNode * tree, const gchar *hash_type);
@@ -63,19 +52,27 @@ GladeXmlNode * glade_xml_utils_hash_write (GladeXmlContext *context,
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
-
-const gchar * glade_xml_node_get_name (GladeXmlNode *node_in);
+gboolean       glade_xml_node_verify (GladeXmlNode * node, const gchar *name);
+gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
+const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
+void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * child);
 
 
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
-GladeXmlDoc * glade_xml_doc_new (void);
-void glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
-gint glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
-void glade_xml_doc_free (GladeXmlDoc *doc_in);
+GladeXmlDoc *  glade_xml_doc_new (void);
+void           glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
+void           glade_xml_doc_free (GladeXmlDoc *doc_in);
+gint           glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
 
-
-
+/* Parse Context */
+GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);
+void              glade_xml_context_destroy (GladeXmlContext *context);
+void              glade_xml_context_free    (GladeXmlContext *context);
+GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
+						   const gchar *nspace,
+						   const gchar *root_name);
+GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 
 
 G_END_DECLS

@@ -32,6 +32,7 @@ struct _GladeWidgetClass {
 	GType type;         /* GType of the widget */
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
+	gchar *xml_file;     /* Name of the xml file for this type without a path */
 
 	GdkPixmap *pixmap;   /* The loaded pixmap for the icon of this widget type */
 	GdkBitmap *mask;     /* The mask for the loaded pixmap */
@@ -53,6 +54,8 @@ struct _GladeWidgetClass {
 			      */
 	
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
+	
+	GList *packing_properties; /* List of Packing GladePackingProperties */
 
 	void (*placeholder_replace) (GtkWidget *current,
 				     GtkWidget *new,
@@ -83,6 +86,9 @@ gboolean      glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
 /* ParamSpec stuff */
 GParamSpec * glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
 void         glade_widget_class_dump_param_specs (GladeWidgetClass *class);
+
+/* Packing properties */
+void         glade_widget_class_load_packing_properties (GladeWidgetClass *class);
 
 G_END_DECLS
 

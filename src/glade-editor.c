@@ -278,7 +278,7 @@ glade_editor_property_changed_text_view (GtkTextBuffer *buffer,
 }
 
 static void
-glade_editor_property_changed_choice (GtkWidget *menu_item,
+glade_editor_property_changed_enum (GtkWidget *menu_item,
 				      GladeEditorProperty *property)
 {
 	GladeChoice *choice;
@@ -289,10 +289,10 @@ glade_editor_property_changed_choice (GtkWidget *menu_item,
 		return;
 	
 	choice = gtk_object_get_data (GTK_OBJECT (menu_item),
-				      GLADE_CHOICE_DATA_TAG);
+				      GLADE_ENUM_DATA_TAG);
 	g_return_if_fail (choice != NULL);
 	
-	glade_property_set_choice (property->property, choice);
+	glade_property_set_enum (property->property, choice);
 }
 
 static void
@@ -343,6 +343,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	gint integer_val;
 	
 	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->property != NULL);
 
 	if (property->property->loading)
 		return;
@@ -400,8 +401,8 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 
 /* ================================ Create inputs ==================================== */
 static GtkWidget *
-glade_editor_create_input_choice_item (GladeEditorProperty *property,
-				       GladeChoice *choice)
+glade_editor_create_input_enum_item (GladeEditorProperty *property,
+				     GladeChoice *choice)
 {
 	GtkWidget *menu_item;
 	const gchar *name;
@@ -410,15 +411,15 @@ glade_editor_create_input_choice_item (GladeEditorProperty *property,
 	menu_item = gtk_menu_item_new_with_label (name);
 
 	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_choice), property);
+			    GTK_SIGNAL_FUNC (glade_editor_property_changed_enum), property);
 
-	gtk_object_set_data (GTK_OBJECT (menu_item), GLADE_CHOICE_DATA_TAG, choice);
+	gtk_object_set_data (GTK_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, choice);
 
 	return menu_item;
 }
 
 static GtkWidget *
-glade_editor_create_input_choice (GladeEditorProperty *property)
+glade_editor_create_input_enum (GladeEditorProperty *property)
 {
 	GladeChoice *choice;
 	GtkWidget *menu_item;
@@ -432,7 +433,7 @@ glade_editor_create_input_choice (GladeEditorProperty *property)
 	menu = gtk_menu_new ();
 	for (; list != NULL; list = list->next) {
 		choice = (GladeChoice *)list->data;
-		menu_item = glade_editor_create_input_choice_item (property, choice);
+		menu_item = glade_editor_create_input_enum_item (property, choice);
 		gtk_widget_show (menu_item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 	}
@@ -598,7 +599,7 @@ glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *pro
 		input = glade_editor_create_input_text (property);
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-		input = glade_editor_create_input_choice (property);
+		input = glade_editor_create_input_enum (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		g_warning ("The widget type %s does not have an input implemented\n",
@@ -928,6 +929,8 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 
 	if (property->property->value->g_type == G_TYPE_INT)
 		val = (gfloat) g_value_get_int (property->property->value);
+	else if (property->property->value->g_type == G_TYPE_DOUBLE)
+		val = (gfloat) g_value_get_double (property->property->value);
 	else
 		val = g_value_get_float (property->property->value);
 
@@ -959,9 +962,8 @@ glade_editor_property_load_double (GladeEditorProperty *property)
 
 
 static void
-glade_editor_property_load_choice (GladeEditorProperty *property)
+glade_editor_property_load_enum (GladeEditorProperty *property)
 {
-#if 0	
 	GladePropertyClass *pclass;
 	GladeChoice *choice;
 	GList *list;
@@ -976,8 +978,9 @@ glade_editor_property_load_choice (GladeEditorProperty *property)
 
 	list = pclass->choices;
 	for (; list != NULL; list = list->next) {
+		gint value = g_value_get_enum (property->property->value);
 		choice = (GladeChoice *)list->data;
-		if (strcmp (choice->symbol, property->property->value) == 0)
+		if (choice->value == value)
 			break;
 		idx ++;
 	}
@@ -992,7 +995,6 @@ glade_editor_property_load_choice (GladeEditorProperty *property)
 		GtkMenuItem *menu_item = list->data;
 		gtk_object_set_user_data (GTK_OBJECT (menu_item), property);
 	}
-#endif	
 }
 
 static void
@@ -1072,15 +1074,17 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void
-glade_editor_property_load_object (GladeEditorProperty *property)
+glade_editor_property_load_object (GladeEditorProperty *property, GladeWidget *widget)
 {
 	GladeEditorProperty *child;
 	GList *list;
 
+	g_return_if_fail (property != NULL);
+
 	list = property->children;
 	for (; list != NULL; list = list->next) {
 		child = list->data;
-		glade_editor_property_load (child, property->property->widget);
+		glade_editor_property_load (child, widget);
 	}
 		
 }
@@ -1093,6 +1097,11 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (property));
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property->class));
 
+	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+		glade_editor_property_load_object (property, widget);
+		return;
+	}
+	
 	property->property = glade_widget_get_property_from_class (widget, class);
 
 	g_return_if_fail (property->property != NULL);
@@ -1117,17 +1126,18 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_integer (property);
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-		glade_editor_property_load_choice (property);
+		glade_editor_property_load_enum (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		glade_editor_property_load_other_widgets (property);
 		break;
-	case GLADE_PROPERTY_TYPE_OBJECT:
-		glade_editor_property_load_object (property);
-		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		g_warning ("%s : type %i not implemented\n", __FUNCTION__,
 			   class->type);
+		break;
+	default:
+		g_assert_not_reached ();
+		break;
 	}
 
 	glade_editor_property_set_tooltips (property);
@@ -1244,6 +1254,10 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	for (; list != NULL; list = list->next) {
 		property = list->data;
 		glade_editor_property_load (property, item);
+		
+		if (property->class->type == GLADE_PROPERTY_TYPE_OBJECT)
+			continue;
+		
 		glade_editor_property_connect_signals (property, item);
 	}
 	

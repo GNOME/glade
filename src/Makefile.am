@@ -14,7 +14,7 @@ INCLUDES = \
 	-DGLADE_LOCALEDIR=\""$(datadir)/locale"\" \
 	-DG_LOG_DOMAIN=\"Glade\"
 
-CFLAGS = -g -O2 -Wall
+CFLAGS = -g -O2 -Wall 
 
 glade2_LDADD = \
 	$(GLADE_LIBS)

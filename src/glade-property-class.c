@@ -38,6 +38,16 @@
 #include <stdlib.h>
 #include <gmodule.h>
 
+#if 0
+typedef struct GladePropertyTypeTable {
+	const gchar *xml_tag;
+	GladePropertyType glade_type;
+	GType *g_type;
+};
+
+/* #warning Implement me. */
+#endif
+
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
 {
@@ -49,7 +59,7 @@ glade_property_type_str_to_enum (const gchar *str)
 		return GLADE_PROPERTY_TYPE_FLOAT;
 	if (strcmp (str, GLADE_TAG_INTEGER) == 0)
 		return GLADE_PROPERTY_TYPE_INTEGER;
-	if (strcmp (str, GLADE_TAG_CHOICE) == 0)
+	if (strcmp (str, GLADE_TAG_ENUM) == 0)
 		return GLADE_PROPERTY_TYPE_ENUM;
 	if (strcmp (str, GLADE_TAG_OTHER_WIDGETS) == 0)
 		return GLADE_PROPERTY_TYPE_OTHER_WIDGETS;
@@ -129,6 +139,10 @@ glade_property_class_new (void)
 	property_class = g_new0 (GladePropertyClass, 1);
 	property_class->type = GLADE_PROPERTY_TYPE_ERROR;
 	property_class->id = NULL;
+#if 0	
+	g_print ("New property class %d. Id:%d\n",
+		 GPOINTER_TO_INT (property_class), GPOINTER_TO_INT (property_class->id));
+#endif
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
 	property_class->parameters = NULL;
@@ -198,7 +212,13 @@ glade_property_class_choice_new_from_value (GEnumValue value)
 
 	choice = glade_choice_new ();
 	choice->name = g_strdup (value.value_nick);
+	choice->id     = g_strdup (value.value_name);
+#if 0	
+	g_print ("Choice Id is %s\n", choice->id);
+#endif
+#if 0	
 	choice->symbol = g_strdup (value.value_name);
+#endif	
 	choice->value  = value.value;
 
 	return choice;
@@ -281,9 +301,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyType type,
 		string = g_strdup (g_value_get_string (value));
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-#if 0
 		glade_implement_me ();
-#endif	
 		break;
 	default:
 		g_warning ("Could not make string from gvalue for type %s\n",
@@ -324,11 +342,17 @@ glade_property_class_make_gvalue_from_string (GladePropertyType type,
 		g_value_set_string (value, string);
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
+		glade_implement_me ();
+#if 0	
+		g_value_init (value);
 		g_free (value);
 		value = NULL;
+#endif	
+		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
 		break;
 	default:
-		g_warning ("Could not make gvalue from string %s and type %s\n",
+		g_warning ("Could not make gvalue from string ->%s<- and type %s\n",
 			 string,
 			 glade_property_type_enum_to_string (type));
 		g_free (value);
@@ -349,12 +373,8 @@ glade_property_class_get_default_from_spec (GParamSpec *spec,
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_ENUM:
-#if 0	
-		g_value_init (value, G_TYPE_ENUM);
-		if (!G_VALUE_HOLDS_ENUM (value))
-			g_print ("Error\n");
+		g_value_init (value, spec->value_type);
 		g_value_set_enum (value, G_PARAM_SPEC_ENUM (spec)->default_value);
-#endif	
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		g_value_init (value, G_TYPE_STRING);
@@ -506,8 +526,12 @@ glade_property_class_get_default (GladeXmlNode *node, GladePropertyType type)
 
 	temp =	glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 
-	if (!temp)
+	if (!temp) {
+#if 0	
+		g_print ("Temp is NULL, we dont' have a default\n");
+#endif	
 		return NULL;
+	}
 
 	value = glade_property_class_make_gvalue_from_string (type, temp);
 
@@ -660,10 +684,10 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 
 	
 	/* Will this property go in the common tab ? */
-	property_class->common   = glade_xml_property_get_boolean (node, GLADE_TAG_COMMON,  FALSE);
-	property_class->optional = glade_xml_property_get_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
+	property_class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
+	property_class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	if (property_class->optional) {
-		property_class->optional_default = glade_xml_property_get_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
+		property_class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
 	}
 
 	/* Now get the list of signals that we should listen to */
@@ -695,7 +719,7 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	 * We can have a property like ... ParamSpec="TRUE"> 
 	 * Or a child like <ParamSpec/>, but this will be deprecated
 	 */
-	if (glade_xml_property_get_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE)) {
+	if (glade_xml_get_property_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE)) {
 		gboolean retval;
 		
 		retval = glade_property_class_load_from_param_spec (id, property_class, widget_class, node);
@@ -735,10 +759,25 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 
 	/* Get the choices */
 	if (property_class->type == GLADE_PROPERTY_TYPE_ENUM) {
-		child = glade_xml_search_child_required (node, GLADE_TAG_ENUM);
+		GValue *gvalue;
+		gchar *type_name;
+		GType type;
+		gchar *default_string;
+		GladeXmlNode *child;
+		child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
 		if (child == NULL)
 			return NULL;
 		property_class->choices = glade_choice_list_new_from_node (child);
+		type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
+		if (type_name == NULL)
+			return NULL;
+		type = g_type_from_name (type_name);
+		g_return_val_if_fail (type != 0, NULL);
+		gvalue = g_new0 (GValue, 1);
+		g_value_init (gvalue, type);
+		default_string = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+		property_class->def = gvalue;
+		return property_class;
 	}
 
 	/* If the property is an object Load it */
@@ -747,11 +786,10 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 		if (child == NULL)
 			return NULL;
 		property_class->child = glade_widget_class_new_from_node (child);
+		g_print ("Loaded %s\n", property_class->child->name);
 	}
 
-	/* Get the default value */
 	property_class->def = glade_property_class_get_default (node, property_class->type);
-
 	
 	return property_class;
 }
@@ -849,6 +887,9 @@ glade_property_class_create_label (GladePropertyClass *class)
 	g_free (text);
 
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+
+#warning This is not working
+	glade_util_widget_set_tooltip (label, class->tooltip);
 	
 	return label;
 }

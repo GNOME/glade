@@ -14,14 +14,13 @@ TODO
 OPEN ITEMS [PLease let me know before starting working on any of this]
 ----------
 - Implement file opened history feature.
-- Implement gtk stock buttons.
 - gtklabels can't be selected. This looks like a fun thing and maybe tricky
   to fix. I am guessing that gtklabeles don't like the idea of disabling
   double buffering because of pango, but this is just a guess.
 - Implement show clipboard (blocks on copy/cut)
 - Implement the menu bar widget and the menu editor. 
 - Implement the glade-property type "File". For example to be used with a pixmap
-that specifies a file.
+  that specifies a file.
 - The tree view does not remember if the "leafs" are opened or closed
   when switching between projects, or when reconstructing it. The tree view
   should remember the states of the leafs. Some of this functionality might
@@ -63,6 +62,8 @@ DONE [just as a reference]
   This does not allow checkbuttons to be set/unset or buttons to be pressed.
 - Fix multiple lines GladeEditor text entries. See glade-editor.c,
 function : glade_editor_create_input_text.
+- Implement gtk stock buttons. 
+
 (Shane)
 - Signal editor
 - Implement the popup menu option "Select", it needs to create submenus for
@@ -73,3 +74,15 @@ function : glade_editor_create_input_text.
 NOT YET (Items that we need to do, but are not a priority right now)
 ------- 
 - Implement the custom widget
+
+Problems found with the gtk-spin button
+- Does not emit a click up, click down signal
+- If you change the max or min of the adjustment and emit an adjustment
+  changed signal it does not evaluates if the current value is inside the range
+- The inability to be used wihtout an adjustment (clock)
+
+discuss with jamesh
+- How are we going to save pixmaps
+- How are we going to save custom widgets
+- How are we going to save gtkadjusments of gtkspinbuttons
+- How are we going to save entry properties for a gtk_combo

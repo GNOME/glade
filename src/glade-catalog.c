@@ -28,6 +28,14 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
+GladeCatalog *glade_catalog = NULL;
+
+GladeCatalog *
+glade_catalog_get (void)
+{
+	return glade_catalog;
+}
+
 static GladeCatalog *
 glade_catalog_new (void)
 {
@@ -118,6 +126,15 @@ glade_catalog_load (void)
 	}
 
 	catalog->widgets = g_list_reverse (new_list);
+
+	glade_catalog = catalog;
+	
+	list = catalog->widgets;
+	for (; list != NULL; list = list->next) {
+		class = list->data;
+		glade_widget_class_load_packing_properties (class);
+	}
+
 
 	return catalog;
 }
