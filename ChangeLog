@@ -1,5 +1,25 @@
 2004-10-04  Morten Welinder  <terra@gnome.org>
 
+	* src/glade-utils.c (glade_util_widget_set_tooltip): Plug leak.
+
+	* src/glade-editor.c (glade_editor_load_common_page): Plug leak.
+	(glade_editor_load_widget_page): Plug leak.
+	(glade_editor_load_common_page): Plug leak.
+
+	* src/glade-gtk.c (glade_gtk_table_set_n_common): Plug leak.
+
+	* src/glade-project.c (glade_project_add_widget): Plug leak.
+	(glade_project_remove_widget): Plug leak.
+
+	* src/glade-project-window.c (do_close): Split out from
+	gpw_close_cb.
+	(gpw_quit_cb): Close all windows.
+
+	* src/glade-widget.c (glade_widget_new_for_internal_child): Plug
+	leak.
+	(glade_widget_new_from_node_real): Plug leak.
+	(glade_widget_new): Plug leak.
+
 	* src/glade-catalog.c (glade_catalog_load): Plug leak.
 
 	* src/glade-property-class.c

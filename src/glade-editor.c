@@ -1178,17 +1178,18 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 {
 	GladeEditorTable *table;
 	GtkContainer *container;
-	GList *list;
+	GList *list, *children;
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_widget);
-	list = gtk_container_get_children (container);
-	for (; list; list = list->next) {
+	children = gtk_container_get_children (container);
+	for (list = children; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
 		gtk_widget_ref (widget);
 		gtk_container_remove (container, widget);
 	}
+	g_list_free (children);
 
 	if (!class)
 		return;
@@ -1205,17 +1206,18 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 {
 	GladeEditorTable *table;
 	GtkContainer *container;
-	GList *list;
+	GList *list, *children;
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_common);
-	list = gtk_container_get_children (container);
-	for (; list; list = list->next) {
+	children = gtk_container_get_children (container);
+	for (list = children; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
 		gtk_widget_ref (widget);
 		gtk_container_remove (container, widget);
 	}
+	g_list_free (children);
 
 	if (!class)
 		return;
@@ -1609,17 +1611,17 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	GladeWidget *parent;
 	GladeWidget *ancestor;
 	GtkContainer *container;
-	GList *list;
+	GList *list, *children;
 
 	/* Remove the old properties */
 	container = GTK_CONTAINER (editor->vbox_packing);
-	list = gtk_container_get_children (container);
-	for (; list; list = list->next)
-	{
+	children = gtk_container_get_children (container);
+	for (list = children; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
 		gtk_container_remove (container, widget);
 	}
+	g_list_free (children);
 
 	/* Free the old structs */
 	if (old)

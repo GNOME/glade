@@ -213,16 +213,19 @@ glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 {
 	GObject *widget = g_object_new (klass->type, NULL);
 	GObject *glade_widget;
+	char *widget_name;
 
 	if (klass->pre_create_function)
 		klass->pre_create_function (G_OBJECT (widget));
 
+	widget_name = glade_project_new_widget_name (project, klass->generic_name);
 	glade_widget = g_object_new (GLADE_TYPE_WIDGET,
 				     "class", klass,
 				     "project", project,
-				     "name", glade_project_new_widget_name (project, klass->generic_name),
+				     "name", widget_name,
 				     "widget", widget,
 				     NULL);
+	g_free (widget_name);
 
 	if (klass->post_create_function)
 		klass->post_create_function (G_OBJECT (widget));
@@ -247,12 +250,15 @@ GladeWidget *
 glade_widget_new_for_internal_child (GladeWidgetClass *klass, GladeWidget *parent, GtkWidget *internal_widget, const char *internal_name)
 {
 	GladeProject *project = glade_widget_get_project (parent);
-	return (GladeWidget *) g_object_new (GLADE_TYPE_WIDGET,
-					     "class", klass,
-					     "project", project,
-					     "name", glade_project_new_widget_name (project, klass->generic_name),
-					     "internal", internal_name,
-					     "widget", internal_widget, NULL);
+	char *widget_name = glade_project_new_widget_name (project, klass->generic_name);
+	GladeWidget *result = g_object_new (GLADE_TYPE_WIDGET,
+					    "class", klass,
+					    "project", project,
+					    "name", widget_name,
+					    "internal", internal_name,
+					    "widget", internal_widget, NULL);
+	g_free (widget_name);
+	return result;
 }
 
 static void
@@ -266,6 +272,8 @@ glade_widget_finalize (GObject *object)
 	g_free (widget->name);
 	g_free (widget->internal);
 	g_hash_table_destroy (widget->signals);
+
+	g_print ("%s\n", __func__);
 }
 
 static void
@@ -296,6 +304,8 @@ glade_widget_dispose (GObject *object)
 		g_list_free (widget->packing_properties);
 		widget->packing_properties = NULL;
 	}
+
+	g_print ("%s\n", __func__);
 }
 
 /**
@@ -1392,6 +1402,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	GladeWidget *widget;
 	const gchar *class_name;
 	GObject *widget_gtk;
+	char *widget_name;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return NULL;
@@ -1409,9 +1420,11 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	if (klass->pre_create_function)
 		klass->pre_create_function (widget_gtk);
 
+	widget_name = glade_project_new_widget_name (project, klass->generic_name);
 	widget = g_object_new (GLADE_TYPE_WIDGET, "class", klass, "project", project,
-			       "name", glade_project_new_widget_name (project, klass->generic_name),
+			       "name", widget_name,
 			       "widget", widget_gtk, NULL);
+	g_free (widget_name);
 
 	/* create the packing_properties list, without setting them */
 	if (parent)

@@ -320,13 +320,34 @@ gpw_confirm_close_project (GladeProject *project)
 }
 
 static void
+do_close (GladeProjectWindow *gpw, GladeProject *project)
+{
+	char *item_path;
+	GList *list;
+
+	item_path = g_strdup_printf ("/Project/%s", project->name);
+	gtk_item_factory_delete_item (gpw->item_factory, item_path);
+	g_free (item_path);
+
+	for (list = project->widgets; list; list = list->next)
+	{
+		GtkWidget *widget;
+
+		widget = list->data;
+		if (GTK_WIDGET_TOPLEVEL (widget))
+			gtk_widget_destroy (widget);
+	}
+
+	gpw->projects = g_list_remove (gpw->projects, project);
+}
+
+
+static void
 gpw_close_cb (void)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
 	gboolean close;
-	char *item_path;
-	GList *list;
 	
 	gpw = glade_project_window_get ();
 	project = gpw->project;
@@ -341,29 +362,16 @@ gpw_close_cb (void)
 				return;
 	}
 
-	item_path = g_strdup_printf ("/Project/%s", project->name);
-	if (!item_path)
-	{
-		g_critical ("Not enough memory!");
-		return;
-	}
+	do_close (gpw, project);
 
-	gtk_item_factory_delete_item (gpw->item_factory, item_path);
-
-	for (list = project->widgets; list; list = list->next)
-	{
-		GtkWidget *widget;
-
-		widget = list->data;
-		if (GTK_WIDGET_TOPLEVEL (widget))
-			gtk_widget_destroy (widget);
-	}
-
-	gpw->projects = g_list_remove (gpw->projects, project);
+	/* this is needed to prevent clearing the selection of a closed project 
+         */
+	gpw->project = NULL;
 
 	/* If no more projects */
 	if (gpw->projects == NULL)
 	{
+		GList *list;
 		for (list = gpw->views; list; list = list->next)
 		{
 			GladeProjectView *view;
@@ -371,16 +379,11 @@ gpw_close_cb (void)
 			view = GLADE_PROJECT_VIEW (list->data);
 			glade_project_view_set_project (view, NULL);
 		}
-		gpw->project = NULL;
 		gpw_refresh_title (gpw);
 		glade_editor_load_widget (gpw->editor, NULL);
 		gtk_widget_set_sensitive (GTK_WIDGET (gpw->palette), FALSE);
 		return;
 	}
-
-	/* this is needed to prevent clearing the selection of a closed project 
-         */
-	gpw->project = NULL;
 
 	glade_project_window_set_project (gpw->projects->data);
 }
@@ -389,23 +392,26 @@ static void
 gpw_quit_cb (void)
 {
 	GladeProjectWindow *gpw;
-	GladeProject *project;
 	GList *list;
-	gboolean quit;
 
 	gpw = glade_project_window_get ();
 
 	for (list = gpw->projects; list; list = list->next)
 	{
-		project = GLADE_PROJECT (list->data);
+		GladeProject *project = GLADE_PROJECT (list->data);
 
 		if (project->changed)
 		{
-			quit = gpw_confirm_close_project (project);
+			gboolean quit = gpw_confirm_close_project (project);
 			if (!quit)
 				return;
 		}
 	}
+
+	while (gpw->projects) {
+		GladeProject *project = GLADE_PROJECT (gpw->projects->data);
+		do_close (gpw, project);
+	} 
 
 	gtk_main_quit ();
 }

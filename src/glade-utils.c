@@ -48,12 +48,13 @@
 void
 glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 {
-	GtkTooltips *tooltip;
+	GtkTooltips *tooltips;
 
-	tooltip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tooltip, widget, str, NULL);
-
-	return;
+	tooltips = gtk_tooltips_new ();
+	g_object_set_data_full (G_OBJECT (widget),
+				"tooltips", tooltips,
+				(GDestroyNotify) g_object_unref);
+	gtk_tooltips_set_tip (tooltips, widget, str, NULL);
 }
 
 /**

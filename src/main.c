@@ -92,7 +92,7 @@ parse_command_line (poptContext pctx)
 #endif
 
 static gint
-glade_init ()
+glade_init (void)
 {
 	GladeProjectWindow *project_window;
 	GList *catalogs;

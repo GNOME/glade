@@ -559,7 +559,7 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 		}
 	} else {
 		/* Remove from the bottom up */
-		GList *list = g_list_reverse (g_list_copy (gtk_container_get_children (GTK_CONTAINER (table))));
+		GList *list = g_list_reverse (gtk_container_get_children (GTK_CONTAINER (table)));
 		GList *freeme = list;
 		for (; list; list = list->next) {
 			GtkTableChild *child = list->data;

@@ -205,16 +205,17 @@ glade_project_dispose (GObject *object)
 	GladeProject *project = GLADE_PROJECT (object);
 
 	glade_project_list_unref (project->undo_stack);
-	glade_project_list_unref (project->prev_redo_item);
-	glade_project_list_unref (project->widgets);
-	g_object_unref (project->tooltips);
-
 	project->undo_stack = NULL;
+
+	glade_project_list_unref (project->prev_redo_item);
 	project->prev_redo_item = NULL;
+
+	glade_project_list_unref (project->widgets);
 	project->widgets = NULL;
+
+	g_object_unref (project->tooltips);
 	project->tooltips = NULL;
 
-	
 	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
@@ -290,15 +291,16 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 	/* If it's a container add the children as well */
 	if (GTK_IS_CONTAINER (widget))
 	{
-		GList *list;
+		GList *list, *children;
 		GtkWidget *child;
 
-		list = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (; list; list = list->next)
+		children = gtk_container_get_children (GTK_CONTAINER (widget));
+		for (list = children; list; list = list->next)
 		{
 			child = list->data;
 			glade_project_add_widget (project, child);
 		}
+		g_list_free (children);
 	}
 
 	gwidget = glade_widget_get_from_gtk_widget (widget);
@@ -404,15 +406,16 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 	/* If it's a container remove the children as well */
 	if (GTK_IS_CONTAINER (widget))
 	{
-		GList *list;
+		GList *list, *children;
 		GtkWidget *child;
 
-		list = gtk_container_get_children (GTK_CONTAINER (widget));
-		for (; list; list = list->next)
+		children = gtk_container_get_children (GTK_CONTAINER (widget));
+		for (list = children; list; list = list->next)
 		{
 			child = list->data;
 			glade_project_remove_widget (project, child);
 		}
+		g_list_free (children);
 	}
 
 	gwidget = glade_widget_get_from_gtk_widget (widget);
@@ -841,4 +844,3 @@ glade_project_get_tooltips (GladeProject *project)
 {
 	return project->tooltips;
 }
-
