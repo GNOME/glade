@@ -4,9 +4,13 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_EDITOR(obj)          GTK_CHECK_CAST (obj, glade_editor_get_type (), GladeEditor)
-#define GLADE_EDITOR_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_editor_get_type (), GladeEditorClass)
-#define GLADE_IS_EDITOR(obj)       GTK_CHECK_TYPE (obj, glade_editor_get_type ())
+#define GLADE_EDITOR(obj)           GTK_CHECK_CAST (obj, glade_editor_get_type (), GladeEditor)
+#define GLADE_EDITOR_CLASS(klass)   GTK_CHECK_CLASS_CAST (klass, glade_editor_get_type (), GladeEditorClass)
+#define GLADE_IS_EDITOR(obj)        GTK_CHECK_TYPE (obj, glade_editor_get_type ())
+#define GLADE_EDITOR_TABLE(t)       ((GladeEditorTable *)t)
+#define GLADE_IS_EDITOR_TABLE(t)    (t != NULL)
+#define GLADE_EDITOR_PROPERTY(p)    ((GladeEditorProperty *)p)
+#define GLADE_IS_EDITOR_PROPERTY(p) (p != NULL)
 
 typedef struct _GladeEditorClass    GladeEditorClass;
 typedef struct _GladeEditorTable    GladeEditorTable;
@@ -101,6 +105,10 @@ struct _GladeEditorClass
  */
 struct _GladeEditorTable
 {
+	GladeEditor *editor; /* Handy pointer that avoids havving to pass the
+			      * editor arround.
+			      */
+	
 	GladeWidgetClass *glade_widget_class; /* The GladeWidgetClass this
 					       * table belongs to.
 					       */
@@ -125,6 +133,8 @@ struct _GladeEditorTable
 			    * For each row in the gtk_table, there is a
 			    * corrsponding GladeEditorProperty struct.
 			    */
+
+	gint rows;
 };
 
 /* For every GladePropertyClass we have a GladeEditorProperty that is
@@ -132,7 +142,7 @@ struct _GladeEditorTable
  */
 struct _GladeEditorProperty
 {
-	GladePropertyClass *glade_property_class; /* The class this property
+	GladePropertyClass *class; /* The class this property
 						   * corresponds to.
 						   */
 
@@ -150,6 +160,10 @@ struct _GladeEditorProperty
 			   * when we receive a "changed" signal we know that nothing has
 			   * really changed, we just loaded a new glade widget
 			   */
+
+	GList *children; /* Used for class->type = OBJECT. Where a sigle entry corresponds
+			  * to a number of inputs
+			  */
 };
 
 typedef enum {

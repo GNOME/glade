@@ -1,3 +1,42 @@
+2001-07-15  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget-class.c (glade_widget_class_new_from_node): init_function is
+	not required in the xml files.
+	(glade_widget_class_new_from_node): make non-static cause a property can now have
+	a child like a spin button has a gtk_adjustment
+
+	* src/glade-property.h: a property can have a ->child.
+
+	* src/glade-property.c (glade_property_new_from_string): handl type _OBJECT
+
+	* src/glade-property-class.h: we can only have one child per property. Rename
+	children to child
+
+	* src/glade-property-class.c (glade_property_class_get_type_from_spec): handle
+	_OBJECT
+	(glade_property_class_new_from_node): if we have child object, load it.
+
+	* src/glade-gtk.c (glade_gtk_option_menu_set_items): rename _append to _shell_append
+	to remove warning.
+	(glade_gtk_adjustment_set_max): impl.
+	(glade_gtk_adjustment_set_min): impl.
+
+	* src/glade-editor.h (struct _GladeEditorTable): add tabel->editor, this cleans
+	up the fucntion prototypes cause we have one less argument to pass.
+
+	* src/glade-editor.c (glade_editor_append_item_real): rename and change
+	arguments to that we can recurse
+	(glade_editor_table_append_items): ditto
+	(glade_editor_property_load_object): impl.
+	(glade_editor_property_load): change so that we can recurse
+
+	* src/glade-property-class.h: add ->child for property type == OBJECT
+
+	* src/glade-editor.c (glade_editor_create_input_object): implement
+
+	* src/glade-widget-class.c (glade_widget_class_new_from_node): make non
+	static and add to headers since we are recursing for type object
+
 2001-07-14  Archit Baweja  <bighead@crosswinds.net>
 
 	* src/glade-widget-class.c (glade_widget_class_compose_get_type_func): 

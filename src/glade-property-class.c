@@ -161,9 +161,12 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	case G_TYPE_PARAM_UCHAR:
 		g_warning ("uchar not implemented\n");
 		break;
+	case G_TYPE_PARAM_OBJECT:
+		return GLADE_PROPERTY_TYPE_OBJECT;
 	default:
-		g_warning ("Could not determine GladePropertyType from spec (%d)",
-			   G_PARAM_SPEC_TYPE (spec));
+		g_warning ("Could not determine GladePropertyType from spec (%d,%s)",
+			   G_PARAM_SPEC_TYPE (spec),
+			   G_PARAM_SPEC_TYPE_NAME (spec));
 	}
 
 	return GLADE_PROPERTY_TYPE_ERROR;
@@ -397,7 +400,6 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		g_print ("get parameters from spec for type object not implemented\n");
 		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		break;
@@ -551,6 +553,10 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 
 	/* If the property is an object Load it */
 	if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+		child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
+		if (child == NULL)
+			return NULL;
+		property_class->child = glade_widget_class_new_from_node (child);
 	}
 
 	/* If this property can't be set with g_object_set, get the workarround

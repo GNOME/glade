@@ -32,6 +32,8 @@ struct _GladeProperty {
 			   */
 
 	GList *views; /* A list of GladePropertyView items */
+
+	GladeWidget *child; /* A GladeProperty of type object has a child */
 		       
 };
 
@@ -66,10 +68,8 @@ GladeChoice * glade_property_get_choice  (GladeProperty *property);
 /* Get a GladeProperty */
 GladeProperty * glade_property_get_from_name (GList *property_list,
 					      const gchar *name);
-GladeProperty * glade_property_get_from_class (GladeWidget *widget,
-					       GladePropertyClass *class);
-GladeProperty * glade_property_get_from_id     (GList *settings_list,
-						const gchar *id);
+GladeProperty * glade_property_get_from_id   (GList *settings_list,
+					      const gchar *id);
 
 /* Property Queries */
 GladePropertyQueryResult * glade_property_query_result_new (void);

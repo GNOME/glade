@@ -15,19 +15,32 @@
 
     <Property ParamSpec="TRUE" Id="value"/>
 
-    <Property Name="Adjustment" Id="adjustment">
+    <Property ParamSpec="FALSE" Id="adjustment" Name="Adjustment">
       <Type>Object</Type>
-	 <GladeObject>
+      <GladeWidgetClass>
 	   <Name>GtkAdjustment</Name>
+        <GetTypeFunction>gtk_adjustment_get_type</GetTypeFunction>
+        <GenericName>adjustment</GenericName>
+        <Toplevel>False</Toplevel>
         <Properties>
-          <Property ParamSpec="TRUE" Id="climb-rate"/>
-          <Property ParamSpec="TRUE" Id="digits"/>
-          <Property ParamSpec="TRUE" Id="numeric"/>
-          <Property ParamSpec="TRUE" Id="update-policy"/>
+          <Property ParamSpec="FALSE" Id="minimum" Name="Min">
+		   <Type>Float</Type>
+             <Parameters>
+               <Parameter Key="Default" Value="1.23456"/>
+             </Parameters>
+		   <SetFunction>glade_gtk_adjustment_set_max</SetFunction>
+		</Property>
+          <Property ParamSpec="FALSE" Id="maximum" Name="Max">
+		   <Type>Float</Type>
+             <Parameters>
+               <Parameter Key="Default" Value="5.43210"/>
+             </Parameters>
+		   <SetFunction>glade_gtk_adjustment_set_min</SetFunction>
+		</Property>
         </Properties>
-	 </GladeObject>
-	 
-	 <!--
+      </GladeWidgetClass>
+
+ 	 <!--
 	 <Parameters>
 	   <Parameter Key="Default" Value="1"/>
 	   <Parameter Key="Min" Value="0"/>

@@ -70,6 +70,7 @@ struct _GladeWidgetClassSignal {
 };
 
 GladeWidgetClass * glade_widget_class_new_from_name (const gchar *name);
+GladeWidgetClass * glade_widget_class_new_from_node (xmlNodePtr node);
 GladeWidgetClass * glade_widget_class_get_by_name (const gchar *name);
 
 const gchar * glade_widget_class_get_name (GladeWidgetClass *class);

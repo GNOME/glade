@@ -75,6 +75,7 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 		xmlFree (val);
 		return ret;
 	}
+
 	child = node->children;
 
 	while (child != NULL) {

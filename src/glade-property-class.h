@@ -136,12 +136,13 @@ struct _GladePropertyClass {
 
 	GladePropertyQuery *query;
 
-	GList *children; /* A list of GladeWidgetClass pointer of objects
-			 * that we need to set for this widget
-			 * for example : GtkSpinButton has a Adjustment inside
-			 * a GtkCombo has an entry inside and a GtkClist which
-			 * makes a drop dowm menu
-			 */
+	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
+				  * that we need to set for this widget
+				  * for example : GtkSpinButton has a Adjustment inside
+				  * a GtkCombo has an entry inside and a GtkClist which
+				  * makes a drop dowm menu. This is only valid with
+				  * the type is object.
+				  */
 
 	void (*set_function) (GObject *object,
 			      const gchar *value);

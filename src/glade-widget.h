@@ -89,6 +89,7 @@ void glade_widget_delete (GladeWidget *widget);
 
 GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

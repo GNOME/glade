@@ -40,13 +40,17 @@ glade_property_new (void)
 	property->class = NULL;
 	property->value = NULL;
 	property->enabled = TRUE;
+	property->child = NULL;
 
 	return property;
 }
 
 
+/* We are recursing so add the prototype. Don't you love C ? */
+static GList * glade_property_list_new_from_list (GList *list, GladeWidget *widget);
+
 static GladeProperty *
-glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
+glade_property_new_from_string (const gchar *string, GladePropertyClass *class, GladeWidget *widget)
 {
 	GladeProperty *property;
 	gchar *value = NULL;
@@ -140,7 +144,9 @@ glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
 		value = g_strdup ("");
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		g_print ("Dunno what to do with type object \n");
+		value = NULL;
+		property->child = glade_widget_new_from_class (class->child,
+							       widget);
 		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		g_warning ("Invalid Glade property type (%d)\n", class->type);
@@ -152,23 +158,20 @@ glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
 	return property;
 }
 
-GList *
-glade_property_list_new_from_widget_class (GladeWidgetClass *class,
-					   GladeWidget *widget)
+static GList *
+glade_property_list_new_from_list (GList *list, GladeWidget *widget)
 {
 	GladePropertyClass *property_class;
 	GladeProperty *property;
-	GList *list = NULL;
 	GList *new_list = NULL;
 	gchar *def;
 
-	list = class->properties;
 	for (; list != NULL; list = list->next) {
 		property_class = list->data;
 		def = NULL;
 		glade_parameter_get_string (property_class->parameters,
 					    "Default", &def);
-		property = glade_property_new_from_string (def, property_class);
+		property = glade_property_new_from_string (def, property_class, widget);
 		if (property == NULL)
 			continue;
 
@@ -180,10 +183,21 @@ glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 		new_list = g_list_prepend (new_list, property);
 	}
 
-
 	new_list = g_list_reverse (new_list);
 	
 	return new_list;
+}
+
+
+GList *
+glade_property_list_new_from_widget_class (GladeWidgetClass *class,
+					   GladeWidget *widget)
+{
+	GList *list = NULL;
+
+	list = class->properties;
+
+	return glade_property_list_new_from_list (list, widget);
 }
 
 
@@ -266,15 +280,16 @@ glade_property_changed_float (GladeProperty *property, gfloat val)
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
 	
-#if 0
-	g_print ("Changed float\n");
-#endif	
-	
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);
 
-	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->id, val, NULL);
+	if (property->class->set_function == NULL)
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id, val, NULL);
+	else
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
+	
 }
 
 void
@@ -290,13 +305,13 @@ glade_property_changed_double (GladeProperty *property, gdouble val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);
 
-#if 0	
+#if 0 
 	gvalue = g_value_init (gvalue, G_TYPE_DOUBLE);
 	g_value_set_double (gvalue, val);
 #endif	
 
-#if 0	
-	g_print ("Changed double to %g \"%s\" -->%s<-- but using gvalue @%d\n",
+#ifdef DEBUG
+	g_debug ("Changed double to %g \"%s\" -->%s<-- but using gvalue @%d\n",
 		 val,
 		 property->value,
 		 property->class->gtk_arg,
@@ -306,10 +321,10 @@ glade_property_changed_double (GladeProperty *property, gdouble val)
 	g_object_set (G_OBJECT (property->widget->widget),
 		      property->class->id, val, NULL);
 
-#if 0	
+#ifdef DEBUG
 	if (GTK_IS_SPIN_BUTTON (property->widget->widget)) {
-		g_print ("It is spin button\n");
-		g_print ("The alignement is min :%g max:%g value%g\n",
+		g_debug ("It is spin button\n");
+		g_debug ("The alignement is min :%g max:%g value%g\n",
 			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->lower,
 			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->upper,
 			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->value);
@@ -318,11 +333,9 @@ glade_property_changed_double (GladeProperty *property, gdouble val)
 	}
 #endif	
 #if 0	
-	g_print ("Setting-------------------- 222222222\n");
 	g_object_set (G_OBJECT (property->widget->widget),
 		      property->class->gtk_arg,
 		      gvalue, NULL);
-	g_print ("DONE: Setting-------------------------\n");
 #endif
 }
 
@@ -420,26 +433,6 @@ glade_property_get_choice (GladeProperty *property)
 
 	return choice;
 }
-
-GladeProperty *
-glade_property_get_from_class (GladeWidget *widget,
-			       GladePropertyClass *class)
-{
-	GladeProperty *property;
-	GList *list;
-
-	list = widget->properties;
-	for (; list != NULL; list = list->next) {
-		property = list->data;
-		if (property->class == class)
-			return property;
-	}
-
-	g_warning ("Could not find property from class\n");
-
-	return NULL;
-}
-
 
 void
 glade_property_query_result_set_int (GladePropertyQueryResult *result,

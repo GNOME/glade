@@ -21,6 +21,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "glade.h"
 #include "glade-property-class.h"
@@ -60,7 +61,7 @@ glade_gtk_option_menu_set_items (GObject *object, const gchar *items)
 		
 		menu_item = gtk_menu_item_new_with_label (pos);
 		gtk_widget_show (menu_item);
-		gtk_menu_append (GTK_MENU (menu), menu_item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 		
 		pos = item_end + 1;
 	}
@@ -80,9 +81,33 @@ glade_gtk_progress_bar_set_format (GObject *object, const gchar *format)
 	gtk_progress_set_format_string (GTK_PROGRESS (bar), format);
 }
 
+static void
+glade_gtk_adjustment_set_max (GObject *object, const gchar *string)
+{
+	GtkAdjustment *adjustment;
+	gfloat val;
 
+	val = atof (string);
 
+	adjustment = GTK_ADJUSTMENT (object);
 
+	adjustment->upper = val;
+	gtk_adjustment_changed (adjustment);
+}
+
+static void
+glade_gtk_adjustment_set_min (GObject *object, const gchar *string)
+{
+	GtkAdjustment *adjustment;
+	gfloat val;
+
+	val = atof (string);
+
+	adjustment = GTK_ADJUSTMENT (object);
+
+	adjustment->lower = val;
+	gtk_adjustment_changed (adjustment);
+}
 
 
 /* ================ Temp hack =================== */
@@ -98,6 +123,8 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_entry_set_text",          &glade_gtk_entry_set_text},
 	{"glade_gtk_option_menu_set_items",   &glade_gtk_option_menu_set_items},
 	{"glade_gtk_progress_bar_set_format", &glade_gtk_progress_bar_set_format},
+	{"glade_gtk_adjustment_set_max",      &glade_gtk_adjustment_set_max},
+	{"glade_gtk_adjustment_set_min",      &glade_gtk_adjustment_set_min},
 };
 	
 gboolean

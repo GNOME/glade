@@ -123,7 +123,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 	GladeFindInContainerData *data = data_in;
 
 #ifdef DEBUG
-	g_print ("In find_child_at: %s X:%i Y:%i W:%i H:%i\n"
+	g_debug ("In find_child_at: %s X:%i Y:%i W:%i H:%i\n"
 		 "  so this means that if we are in the %d-%d , %d-%d range. We are ok\n",
 		 gtk_widget_get_name (widget),
 		 widget->allocation.x, widget->allocation.y,
@@ -140,7 +140,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 	    && (widget->allocation.y + widget->allocation.height >= data->y))
 	{
 #ifdef DEBUG	
-		g_print ("Found it!\n");
+		g_debug ("Found it!\n");
 #endif	
 		data->found_child = widget;
 	}
@@ -177,9 +177,9 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	y = event->y;
 	gdk_window_get_position (event_widget->window, &win_x, &win_y);
 #ifdef DEBUG	
-	g_print ("Window [%d,%d]\n", win_x, win_y);
-	g_print ("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y);
-	g_print ("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
+	g_debug ("Window [%d,%d]\n", win_x, win_y);
+	g_debug ("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y);
+	g_debug ("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
 		 NULL,
 		 gtk_widget_get_name (event_widget),
 		 GPOINTER_TO_INT (event_widget));
@@ -189,7 +189,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	while (window && window != parent_window) {
 		gdk_window_get_position (window, &win_x, &win_y);
 #ifdef DEBUG	
-		g_print ("	  adding X:%d Y:%d - We now have : %d %d\n",
+		g_debug ("	  adding X:%d Y:%d - We now have : %d %d\n",
 			 win_x, win_y, x + win_x, y + win_y);
 #endif	
 		x += win_x;
@@ -205,7 +205,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 
 	while (GTK_IS_CONTAINER (temp)) {
 #ifdef DEBUG	
-		g_print ("\"%s\" is a container, check inside each child\n",
+		g_debug ("\"%s\" is a container, check inside each child\n",
 			 gtk_widget_get_name (temp));
 #endif
 		data.found_child = NULL;
@@ -218,7 +218,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 				g_assert (found->widget == data.found_child);
 			} else {
 #ifdef DEBUG	
-				g_print ("Temp was not a GladeWidget, it was a %s\n",
+				g_debug ("Temp was not a GladeWidget, it was a %s\n",
 					 gtk_widget_get_name (temp));
 #endif	
 			}
@@ -243,7 +243,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 #endif
 	
 #ifdef DEBUG
-	g_print ("We found a \"%s\", child at %d,%d\n",
+	g_debug ("We found a \"%s\", child at %d,%d\n",
 		 gtk_widget_get_name (found->widget), data.x, data.y);
 #endif	
 	return found;
@@ -267,23 +267,27 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
 
 #ifdef DEBUG	
-	g_print ("button press for a %s\n", glade_widget->class->name);
+	g_debug ("button press for a %s\n", glade_widget->class->name);
 #endif	
 	if (!glade_widget) {
 		g_warning ("Button press event but the gladewidget was not found\n");
 		return FALSE;
 	}
 
-	g_print ("Event button %d\n", event->button);
+#ifdef DEBUG	
+	g_debug ("Event button %d\n", event->button);
+#endif	
 	if (event->button == 1)
 		glade_project_selection_set (glade_widget, TRUE);
 	else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
+#ifdef DEBUG	
 	else
-		g_print ("Button press not handled yet.\n");
+		g_debug ("Button press not handled yet.\n");
+#endif
 
 #ifdef DEBUG	
-	g_print ("The widget found was a %s\n", glade_widget->class->name);
+	g_debug ("The widget found was a %s\n", glade_widget->class->name);
 #endif
 
 	return FALSE;
@@ -294,13 +298,11 @@ static gboolean
 glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer not_used)
 {
 #ifdef DEBUG	
-	g_print ("button release\n");
+	g_debug ("button release\n");
 #endif
 	return FALSE;
 }
 
-
-#if 1
 /**
  * glade_widget_set_default_options:
  * @widget: 
@@ -341,14 +343,16 @@ glade_widget_set_default_options (GladeWidget *widget)
 			glade_property_changed_choice (property,
 						       glade_property_get_choice (property));
 			break;
+		case GLADE_PROPERTY_TYPE_OBJECT:
+			glade_widget_set_default_options (property->child);
+			break;
 		default:
-			g_warning ("Implement set default for this type\n");
+			g_warning ("Implement set default for this type [%s]\n", property->class->name);
 			break;
 		}
 	}
 	       
 }
-#endif
 
 static GladeWidget *
 glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk_widget, const gchar *name, GladeWidget *parent)
@@ -523,29 +527,37 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	name = glade_widget_new_name (project, class);
 
 	type = g_type_from_name (class->name);
-	if (! g_type_is_a (type, GTK_TYPE_WIDGET)) {
+	if (! g_type_is_a (type, G_TYPE_OBJECT)) {
 		gchar *text;
 		g_warning ("Unknown type %s read from glade file.", class->name);
  		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
 		widget = gtk_label_new (text);
 		g_free (text);
 	} else {
-		widget = gtk_widget_new (type, NULL);
+		if (g_type_is_a (type, GTK_TYPE_WIDGET))
+			widget = gtk_widget_new (type, NULL);
+		else
+			widget = g_object_new (type, NULL);
 	}
 
 	glade_widget = glade_widget_register (project, class, widget, name, parent);
 	
 	glade_widget_set_default_options (glade_widget);
-	/* We need to be able to get to the GladeWidget * from a GtkWidget * */
+	/* We need to be able to get to the GladeWidget * from a GtkWidget so add
+	 * the GladeWidget pointer to the GtkWidget
+	 */
 	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
+	glade_project_add_widget (project, glade_widget);
+	g_free (name);
+
+	if (!g_type_is_a (type, GTK_TYPE_WIDGET))
+		return glade_widget;
+		
 	glade_widget_set_contents (glade_widget);
 	glade_widget_connect_mouse_signals (glade_widget);
 	glade_widget_connect_draw_signals (glade_widget);
 	
-	glade_project_add_widget (project, glade_widget);
-	
-	g_free (name);
 	
 	return glade_widget;
 }
@@ -582,7 +594,9 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
 		glade_placeholder_add (class, glade_widget, result);
 
-	gtk_widget_show (glade_widget->widget);
+	/* ->widget sometimes contains GtkObjects like a GtkAdjustment for example */
+	if (GTK_IS_WIDGET (glade_widget->widget))
+		gtk_widget_show (glade_widget->widget);
 	
 	if (result) 
 		glade_property_query_result_destroy (result);
@@ -627,6 +641,35 @@ glade_widget_get_class (GladeWidget *widget)
 }
 
 
+
+static GladeProperty *
+glade_widget_get_property_from_list (GList *list, GladePropertyClass *class)
+{
+	GladeProperty *property = NULL;
+
+	if (list == NULL)
+		return NULL;
+
+	for (; list != NULL; list = list->next) {
+		property = list->data;
+		if (property->class == class)
+			break;
+		if (property->child != NULL) {
+			property = glade_widget_get_property_from_list (property->child->properties,
+									class);
+			if (property != NULL)
+				break;
+		}
+	}
+	if (list == NULL) {
+		g_warning ("Could not find the GladeProperty to load.\n");
+		return NULL;
+	}
+
+	return property;
+}
+
+
 /**
  * glade_widget_get_property_from_class:
  * @widget: 
@@ -640,23 +683,12 @@ GladeProperty *
 glade_widget_get_property_from_class (GladeWidget *widget,
 				      GladePropertyClass *property_class)
 {
-	GladeProperty *property = NULL;
 	GList *list;
 	
 	list = widget->properties;
-	for (; list != NULL; list = list->next) {
-		property = list->data;
-		if (property->class == property_class)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Could not find the GladeProperty to load\n");
-		return NULL;
-	}
 
-	return property;
+	return glade_widget_get_property_from_list (list, property_class);
 }
-
 
 /**
  * glade_widget_set_name:

@@ -53,6 +53,11 @@ static guint glade_editor_signals[LAST_SIGNAL] = {0};
 static GtkWindowClass *parent_class = NULL;
 static void glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget);
 
+
+/* We use this function recursively so we need to declare it */
+static gboolean glade_editor_table_append_items (GladeEditorTable *table, GladeWidgetClass *class,
+						 GList **list);
+
 guint
 glade_editor_get_type (void)
 {
@@ -199,6 +204,7 @@ glade_editor_table_new (GladeWidgetClass *class)
 	table->glade_widget_class = class;
 	table->table_widget = gtk_table_new (0, 0, FALSE);
 	table->properties = NULL;
+	table->rows = 0;
 
 	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget),
 				    GLADE_PROPERY_TABLE_ROW_SPACING);
@@ -408,7 +414,6 @@ glade_editor_create_input_choice_item (GladeEditorProperty *property,
 static GtkWidget *
 glade_editor_create_input_choice (GladeEditorProperty *property)
 {
-	GladePropertyClass *class;
 	GladeChoice *choice;
 	GtkWidget *menu_item;
 	GtkWidget *menu;
@@ -417,9 +422,7 @@ glade_editor_create_input_choice (GladeEditorProperty *property)
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	class = property->glade_property_class;
-
-	list = class->choices;
+	list = property->class->choices;
 	menu = gtk_menu_new ();
 	for (; list != NULL; list = list->next) {
 		choice = (GladeChoice *)list->data;
@@ -442,7 +445,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	class = property->glade_property_class;
+	class = property->class;
 
 	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
 
@@ -515,7 +518,7 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	class = property->glade_property_class;
+	class = property->class;
 
 	adjustment = glade_parameter_adjustment_new (class->parameters);
 
@@ -526,7 +529,6 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	gtk_signal_connect (GTK_OBJECT (spin), "changed",
 			    GTK_SIGNAL_FUNC (glade_editor_property_changed_numeric),
 			    property);
-
 
 	/* Some numeric types are optional, for example the default window size, so
 	 * they have a toggle button right next to the spin button. 
@@ -574,7 +576,7 @@ glade_editor_create_input_boolean (GladeEditorProperty *property)
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	class = property->glade_property_class;
+	class = property->class;
 
 	button = gtk_toggle_button_new_with_label (_("No"));
 
@@ -585,16 +587,26 @@ glade_editor_create_input_boolean (GladeEditorProperty *property)
 }
 
 static GtkWidget *
-glade_editor_create_input (GladeEditorProperty *property)
+glade_editor_create_input_object (GladeEditorProperty *property, GladeEditorTable *table)
 {
-	GladePropertyType type;
+	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
+	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
+
+	glade_editor_table_append_items (table, property->class->child, &property->children);
+
+	return NULL;
+}
+
+static GtkWidget *
+glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *property)
+{
+	GtkWidget *label;
 	GtkWidget *input = NULL;
 
-	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property->class), NULL);
 
-	type = property->glade_property_class->type;
-	
-	switch (type) {
+	switch (property->class->type) {
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		input = glade_editor_create_input_boolean (property);
 		break;
@@ -614,66 +626,58 @@ glade_editor_create_input (GladeEditorProperty *property)
 		input = glade_editor_create_input_choice (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
-		g_warning ("The widget type %d does not have an input implemented\n", type);
+		g_warning ("The widget type %s does not have an input implemented\n",
+			   property->class->name);
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		return gtk_label_new ("Implement object");
+		glade_editor_create_input_object (property, table);
+		/* We don't need to add an input for the object, the object
+		 * has added its childs already
+		 */
+		return NULL;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		return gtk_label_new ("Error !");
 
 	}
 
 	if (input == NULL) {
-		g_warning ("Can't create an input widget for type %i\n", type);
+		g_warning ("Can't create an input widget for type %s\n",
+			   property->class->name);
 		return gtk_label_new ("Implement me !");
 	}
 
+
+	label = glade_property_class_create_label (property->class);
+	
+	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
+	glade_editor_table_attach (table->table_widget, input, 1, table->rows);
+	table->rows++;
+	
 	return input;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static GladeEditorProperty *
-glade_editor_property_new (GladeEditor *editor,
-			   GladePropertyClass *property_class)
+glade_editor_table_append_item (GladeEditorTable *table,
+				GladePropertyClass *class)
 {
-	GladeEditorProperty *editor_property;
+	GladeEditorProperty *property;
 
-	editor_property = g_new0 (GladeEditorProperty, 1);
+	property = g_new0 (GladeEditorProperty, 1);
 	
-	editor_property->glade_property_class = property_class;
-	editor_property->input = glade_editor_create_input (editor_property);
-	editor_property->property = NULL;
+	property->class = class;
+	property->children = NULL;
+	property->input = glade_editor_append_item_real (table, property);
+	property->property = NULL;
 
-	return editor_property;
+	return property;
 }
 
 static void
-glade_editor_create_widget_table_from_class_common (GladeEditor *editor,
-						    GladeEditorTable *table,
-						    gint *row_)
+glade_editor_table_append_common (GladeEditorTable *table)
 {
 	GtkWidget *gtk_table;
 	GtkWidget *label;
 	GtkWidget *entry;
-	gint row = *row_;
 
 	gtk_table = table->table_widget;
 	
@@ -684,13 +688,12 @@ glade_editor_create_widget_table_from_class_common (GladeEditor *editor,
 	table->name_entry = entry;
 	gtk_signal_connect (GTK_OBJECT (entry), "changed",
 			    GTK_SIGNAL_FUNC (glade_editor_widget_name_changed),
-			    editor);
+			    table->editor);
 
-	glade_editor_table_attach (gtk_table, label, 0, row);
-	glade_editor_table_attach (gtk_table, entry, 1, row);
+	glade_editor_table_attach (gtk_table, label, 0, table->rows);
+	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
+	table->rows++;
 	
-	row++;
-
 	/* Class */
 	label = gtk_label_new (_("Class :"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
@@ -698,63 +701,56 @@ glade_editor_create_widget_table_from_class_common (GladeEditor *editor,
 	gtk_entry_set_text (GTK_ENTRY (entry), table->glade_widget_class->name);
 	gtk_entry_set_editable (GTK_ENTRY (entry), FALSE);
 
-	glade_editor_table_attach (gtk_table, label, 0, row);
-	glade_editor_table_attach (gtk_table, entry, 1, row);
-	
-	row++;
+	glade_editor_table_attach (gtk_table, label, 0, table->rows);
+	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
+	table->rows++;
 
-	*row_ = row;
+}
+
+static gboolean
+glade_editor_table_append_items (GladeEditorTable *table,
+				 GladeWidgetClass *class,
+				 GList **list_)
+{
+	GladeEditorProperty *property;
+	GladePropertyClass *property_class;
+	GList *list;
+	GList *new_list;
+
+	new_list = *list_;
+
+	list = class->properties;
+
+	for (; list != NULL; list = list->next) {
+		property_class = (GladePropertyClass *) list->data;
+		property = glade_editor_table_append_item (table, property_class);
+		if (property != NULL)
+			new_list = g_list_prepend (new_list,
+						   property);
+	}
+
+	*list_ = new_list;
+	
+	return TRUE;
 }
 
 static GladeEditorTable *
-glade_editor_create_table_from_class (GladeEditor *editor,
-				      GladeWidgetClass *class)
+glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class)
 {
-	GladePropertyClass *property_class;
 	GladeEditorTable *table;
-	GtkWidget *gtk_table;
-	GtkWidget *label;
-	GList *list;
-	gint row = 0;
+
+	g_return_val_if_fail (GLADE_IS_EDITOR (editor), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
 	table = glade_editor_table_new (class);
-	gtk_table = table->table_widget;
-
-	/* Add the common fields. Name & Class */
-	glade_editor_create_widget_table_from_class_common (editor,
-							    table,
-							    &row);
-	list = class->properties;
-	for (; list != NULL; list = list->next) {
-		GladeEditorProperty *editor_property;
-		
-		property_class = (GladePropertyClass *) list->data;
-
-		/* Special cases */
-
-		
-		label = glade_property_class_create_label (property_class);
-		if (label == NULL)
-			return NULL;
-		editor_property = glade_editor_property_new (editor,
-							     property_class);
-		if (editor_property == NULL)
-			return NULL;
-
-		table->properties = g_list_prepend (table->properties,
-						    editor_property);
-		
-		glade_editor_table_attach (gtk_table, label, 0, row);
-		glade_editor_table_attach (gtk_table, editor_property->input,
-					   1, row);
-
-		row++;
-	}
-
-	gtk_widget_show_all (gtk_table);
-
+	table->editor = editor;
+	glade_editor_table_append_common (table);
+	if (!glade_editor_table_append_items (table, class, &table->properties))
+		return NULL;
+	gtk_widget_show_all (table->table_widget);
 	editor->widget_tables = g_list_prepend (editor->widget_tables,
 						table);
+
 	return table;
 }
 
@@ -783,7 +779,7 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	table = glade_editor_get_table_from_class (editor, class);
 	if (table == NULL)
-		table = glade_editor_create_table_from_class (editor, class);
+		table = glade_editor_table_create (editor, class);
 
 	g_return_if_fail (table != NULL);
 	
@@ -1036,22 +1032,39 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
 }
 
+/* We are recursing so we need the prototype beforehand. Don't you love C ? */
+static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
+
+static void
+glade_editor_property_load_object (GladeEditorProperty *property)
+{
+	GladeEditorProperty *child;
+	GList *list;
+
+	list = property->children;
+	for (; list != NULL; list = list->next) {
+		child = list->data;
+		glade_editor_property_load (child, property->property->widget);
+	}
+		
+}
 
 static void
 glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 {
-	GladePropertyClass *property_class = property->glade_property_class;
+	GladePropertyClass *class = property->class;
 
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->glade_property_class != NULL);
-			  
-	property->loading = TRUE;
-	property->property = glade_property_get_from_class (widget, property_class);
+	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (property));
+	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property->class));
+
+	property->property = glade_widget_get_property_from_class (widget, class);
 
 	g_return_if_fail (property->property != NULL);
-	g_return_if_fail (property->property->class == property->glade_property_class);
-	
-	switch (property_class->type) {
+	g_return_if_fail (property->property->class == property->class);
+
+	property->loading = TRUE;
+
+	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_TEXT:
 		glade_editor_property_load_text (property);
 		break;
@@ -1074,9 +1087,11 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_other_widgets (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
+		glade_editor_property_load_object (property);
+		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		g_warning ("%s : type %i not implemented\n", __FUNCTION__,
-			   property_class->type);
+			   class->type);
 	}
 
 	property->loading = FALSE;
@@ -1086,9 +1101,9 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 static void
 glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 {
-	GladeEditorTable *table;
 	GladeEditorProperty *property;
 	GladeWidgetClass *class;
+	GladeEditorTable *table;
 	GList *list;
 
 	/* Load the GladeWidgetClass */

@@ -102,7 +102,6 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 
 	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class)) {
 		/* I don't love this. Make it better. Chema */
-#warning FIXME	
 		if ((strcmp (class->name, "GtkVBox") == 0) ||
 		    (strcmp (class->name, "GtkHBox") == 0))
 			class->placeholder_replace = glade_placeholder_replace_box;
@@ -184,19 +183,22 @@ glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function
 		return FALSE;
 	}
 
+/* Disabled for GtkAdjustment, but i'd like to check for this somehow */
+#if 0	
 	if (!g_type_is_a (type, gtk_widget_get_type ())) {
 		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
 			   class->name);
 		return FALSE;
 	}
+#endif
 
 	class->type = type;
 	
 	return TRUE;
 }
 		
-static GladeWidgetClass *
-glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
+GladeWidgetClass *
+glade_widget_class_new_from_node (xmlNodePtr node)
 {
 	GladeWidgetClass *class;
 	xmlNodePtr child;
@@ -213,7 +215,7 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
-	init_function_name = glade_xml_get_value_string_required (node, GLADE_TAG_GET_TYPE_FUNC, NULL);
+	init_function_name  = glade_xml_get_value_string (node, GLADE_TAG_GET_TYPE_FUNCTION);
 
 	if (!init_function_name) {
 		init_function_name = glade_widget_class_compose_get_type_func (class);
@@ -290,7 +292,7 @@ glade_widget_class_new_from_name (const gchar *name)
 	context = glade_xml_parse_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
 	if (context == NULL)
 		return NULL;
-	class = glade_widget_class_new_from_node (context, context->doc->children);
+	class = glade_widget_class_new_from_node (context->doc->children);
 	glade_xml_parse_context_free (context);
 
 	if (!glade_widget_class_create_pixmap (class))
@@ -311,16 +313,6 @@ GType
 glade_widget_class_get_type (GladeWidgetClass *widget)
 {
 	return widget->type;
-}
-
-void
-glade_widget_class_create (GladeWidgetClass *glade_widget)
-{
-	GtkWidget *widget;
-
-	widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-
-	gtk_widget_show (widget);
 }
 
 /**
@@ -383,14 +375,6 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 
 	glade_widget_class_get_specs (class, &specs, &n_specs);
 
-#if 0
-	g_print ("Dumping specs for %s\n\n", class->name);
-	for (i = 0; i < n_specs; i++) {
-		spec = specs[i];
-		g_print ("%02d - %s\n", i, spec->name); 
-	}
-#endif	
-	
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
 
