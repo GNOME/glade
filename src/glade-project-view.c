@@ -436,35 +436,12 @@ glade_project_view_init (GladeProjectView *view)
 			  G_CALLBACK (glade_project_view_item_activated_cb), NULL);
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
-	g_signal_connect_data (G_OBJECT (selection),
-			       "changed", G_CALLBACK (glade_project_view_selection_changed_cb),
+	g_signal_connect_data (G_OBJECT (selection), "changed",
+			       G_CALLBACK (glade_project_view_selection_changed_cb),
 			       view, NULL, 0);
 
 	view->updating_selection = FALSE;
 }
-
-#if 0
-void
-glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
-{
-#warning FIGURE IT OUT	
-	view->updating_selection = TRUE;
-	glade_project_selection_clear (view->project, FALSE);
-	view->updating_selection = FALSE;
-
-	glade_implement_me ();
-#if 1
-	if (view->selected_widget == item)
-		return;
-
-	view->selected_widget = item;
-
-	gtk_signal_emit (GTK_OBJECT (view),
-			 glade_project_view_signals [ITEM_SELECTED], item);
-#endif	
-}
-#endif
-
 
 static void
 glade_project_view_add_widget_cb (GladeProject *project,

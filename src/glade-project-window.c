@@ -288,8 +288,7 @@ gpw_close_cb (void)
 	}
 
 	item_path = g_strdup_printf ("/Project/%s", project->name);
-	if (!item_path)
-	{
+	if (!item_path)	{
 		g_critical ("Not enough memory!");
 		return;
 	}
@@ -316,9 +315,11 @@ gpw_close_cb (void)
 		}
 		gpw->project = NULL;
 		gpw_refresh_title (gpw);
+		glade_editor_load_widget (gpw->editor, NULL);
+		gtk_widget_set_sensitive (GTK_WIDGET (gpw->palette), FALSE);
 		return;
 	}
-	
+
 	glade_project_window_set_project (gpw->projects->data);
 }
 
@@ -1146,7 +1147,7 @@ gpw_project_selection_changed_cb (GladeProject *project,
 
 void
 glade_project_window_add_project (GladeProject *project)
- {
+{
 	GladeProjectWindow *gpw;
 	GList *list;
 	char *underscored_name;
@@ -1189,6 +1190,8 @@ glade_project_window_add_project (GladeProject *project)
 	g_signal_connect (G_OBJECT (project), "selection_changed",
 			  G_CALLBACK (gpw_project_selection_changed_cb), gpw);
 
+	/* make sure the palette is sensitive */
+	gtk_widget_set_sensitive (GTK_WIDGET (gpw->palette), TRUE);
 
 	glade_project_window_set_project (project);
 }
