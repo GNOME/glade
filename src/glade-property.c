@@ -98,23 +98,17 @@ glade_property_init (GladeProperty *property)
 	property->child = NULL;
 }
 
-static GladeProperty *
-glade_property_new (void)
+GladeProperty *
+glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 {
 	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
 	property = g_object_new (GLADE_TYPE_PROPERTY, NULL);
-
-	return property;
-}
-
-GladeProperty *
-glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
-{
-	GladeProperty *property;
-	property = glade_property_new ();
-	
 	property->class = class;
+	property->widget = widget;
 
 	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 		property->child = glade_widget_new_from_class (class->child,
@@ -122,13 +116,13 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 							       widget);
 		return property;
 	}
-	
+
 	/* Create an empty default if the class does not specify a default value */
 	if (!class->def) {
 		property->value = glade_property_class_make_gvalue_from_string (class, "");
 		return property;
 	}
-			
+
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_DOUBLE:
 	case GLADE_PROPERTY_TYPE_INTEGER:

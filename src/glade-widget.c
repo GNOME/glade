@@ -68,11 +68,9 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 
 	for (; list; list = list->next) {
 		property_class = list->data;
-		property = glade_property_new_from_class (property_class, widget);
-		if (property == NULL)
+		property = glade_property_new (property_class, widget);
+		if (!property)
 			continue;
-
-		property->widget = widget;
 
 		new_list = g_list_prepend (new_list, property);
 	}

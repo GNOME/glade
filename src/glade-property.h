@@ -53,10 +53,8 @@ struct _GladePropertyObjectClass
 
 GType glade_property_get_type (void);
 
-GList *glade_property_list_new_from_widget_class (GladeWidgetClass *class,
-						  GladeWidget *widget);
-GladeProperty *glade_property_new_from_class (GladePropertyClass *class,
-					      GladeWidget *widget);
+GladeProperty *glade_property_new (GladePropertyClass *class, GladeWidget *widget);
+
 void glade_property_free (GladeProperty *property);
 
 void glade_property_set         (GladeProperty *property, const GValue *value);

@@ -1,5 +1,11 @@
 2003-10-27  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-property.[ch]: janitoring; remove an old prototype and
+	consolidate property_new().
+	* src/glade-widget.c: fix up the only caller.
+
+2003-10-27  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-gtk.c: move internal children creation to the post_create
 	method, since it's executed also when loading a .glade file. Implement
 	the get_internal_child method for GtkDialog.
