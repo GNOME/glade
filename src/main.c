@@ -43,6 +43,18 @@
 #include <stdlib.h> /* __argc & __argv on the windows build */
 #endif
 
+gchar *glade_data_dir = GLADE_DATA_DIR;
+gchar *glade_pixmaps_dir = PIXMAPS_DIR;
+gchar *glade_widgets_dir = WIDGETS_DIR;
+gchar *glade_catalogs_dir = CATALOGS_DIR;
+#ifdef MODULES_DIR
+gchar *glade_modules_dir = MODULES_DIR;
+#else
+gchar *glade_modules_dir = NULL;
+#endif
+gchar *glade_locale_dir = LOCALE_DIR;
+gchar *glade_icon_dir = ICONS_DIR;
+
 static gchar *widget_name = NULL;
 gboolean verbose = FALSE;
 
@@ -120,16 +132,6 @@ glade_init (void)
 	return TRUE;
 }
 
-#ifdef G_OS_WIN32
-char* g_glade_data_dir;
-char* g_pixmaps_dir;
-char* g_widgets_dir;
-char* g_catalogs_dir;
-char* g_modules_dir;
-char* g_glade_localedir;
-char* g_glade_icondir;
-#endif
-
 int
 main (int argc, char *argv[])
 {
@@ -141,19 +143,19 @@ main (int argc, char *argv[])
 	gchar *prefix;
 
 	prefix = g_win32_get_package_installation_directory (NULL, NULL);
-	g_glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
-	g_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
-	g_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
-	g_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
-	g_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
-	g_glade_localedir = g_build_filename (prefix, "lib", "locale", NULL);
-	g_glade_icondir = g_build_filename (prefix, "share", "pixmaps", NULL);
+	glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
+	glade_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
+	glade_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
+	glade_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
+	glade_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
+	glade_locale_dir = g_build_filename (prefix, "lib", "locale", NULL);
+	glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
 	g_free (prefix);
 #endif
 
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
-	bindtextdomain (GETTEXT_PACKAGE, GLADE_LOCALEDIR);
+	bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 #endif
@@ -198,13 +200,13 @@ main (int argc, char *argv[])
 	gtk_main ();
 
 #ifdef G_OS_WIN32
-	g_free (g_glade_data_dir);
-	g_free (g_pixmaps_dir);
-	g_free (g_widgets_dir);
-	g_free (g_catalogs_dir);
-	g_free (g_modules_dir);
-	g_free (g_glade_localedir);
-	g_free (g_glade_icondir);
+	g_free (glade_data_dir);
+	g_free (glade_pixmaps_dir);
+	g_free (glade_widgets_dir);
+	g_free (glade_catalogs_dir);
+	g_free (glade_modules_dir);
+	g_free (glade_locale_dir);
+	g_free (glade_icon_dir);
 #endif
 
 	return 0;

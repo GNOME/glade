@@ -75,7 +75,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	char *base_library = NULL;
 	GList *last_widget_class = NULL;
 
-	catalog_filename = g_strdup_printf ("%s%c%s", CATALOGS_DIR, G_DIR_SEPARATOR, base_catalog_filename);
+	catalog_filename = g_strdup_printf ("%s%c%s", glade_catalogs_dir, G_DIR_SEPARATOR, base_catalog_filename);
 	if (catalog_filename == NULL)
 	{
 		g_critical (_("Not enough memory."));
@@ -174,7 +174,7 @@ lblError:
 GList *
 glade_catalog_load_all (void)
 {
-	gchar *filename = g_build_filename (CATALOGS_DIR, "glade-palette.xml", NULL);
+	gchar *filename = g_build_filename (glade_catalogs_dir, "glade-palette.xml", NULL);
 	GladeXmlContext *context;
 	GladeXmlNode *root;
 	GladeXmlNode *xml_catalogs;
