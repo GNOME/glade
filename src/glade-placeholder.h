@@ -29,6 +29,9 @@ GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
 gboolean glade_placeholder_is (GtkWidget *widget);
 #endif
 
+void glade_placeholder_remove_all (GtkWidget *widget);
+void glade_placeholder_fill_empty (GtkWidget *widget);
+
 G_END_DECLS
 
 #endif /* __GLADE_PLACEHOLDER_H__ */

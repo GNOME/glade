@@ -33,6 +33,7 @@
 #include "glade-property-class.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
+#include "glade-packing.h"
 
 #define GLADE_PLACEHOLDER_ROW_STRING  "GladePlaceholderRow"
 #define GLADE_PLACEHOLDER_COL_STRING  "GladePlaceholderColumn"
@@ -457,3 +458,128 @@ glade_placeholder_is (GtkWidget *widget)
 	return is;
 }
 
+
+void
+glade_placeholder_remove_all (GtkWidget *widget)
+{
+	GladeWidget *gwidget, *child_widget;
+	
+	
+	gwidget = glade_widget_get_from_gtk_widget (widget);
+	g_return_if_fail (widget != NULL);
+	
+	if (glade_widget_class_is (gwidget->class, "GtkVBox") ||
+	    glade_widget_class_is (gwidget->class, "GtkHBox")) {
+		GList *element;
+		GtkBoxChild *box_child;
+		
+		element = g_list_first (GTK_BOX (widget)->children);
+		while (element != NULL) {
+			box_child = element->data;
+			if (glade_placeholder_is (box_child->widget)) {
+				child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
+				if (child_widget)
+                                	glade_widget_delete (child_widget);
+	               	        gtk_container_remove (GTK_CONTAINER (widget),
+                        	                      box_child->widget);
+				element = g_list_first (GTK_BOX (widget)->children);
+			} else {
+				element = g_list_next (element);
+			}		
+		}
+	} else if (glade_widget_class_is (gwidget->class, "GtkTable")) {
+		GList *element;
+		GtkTableChild *table_child;
+
+		element = g_list_first (GTK_TABLE (widget)->children);
+		while (element != NULL) {
+			table_child = element->data;
+			if (glade_placeholder_is (table_child->widget)) {
+				child_widget = glade_widget_get_from_gtk_widget (table_child->widget);
+				if (child_widget)
+					glade_widget_delete (child_widget);
+				gtk_container_remove (GTK_CONTAINER (widget),
+						      table_child->widget);
+				element = g_list_first (GTK_TABLE (widget)->children);
+			} else {
+				element = g_list_next (element);
+			}
+		}
+	} else {
+		glade_implement_me ();
+	}
+
+}
+
+void
+glade_placeholder_fill_empty (GtkWidget *widget)
+{
+	GladeWidget *gwidget;
+
+	gwidget = glade_widget_get_from_gtk_widget (widget);
+	g_return_if_fail (widget != NULL);
+
+	if (glade_widget_class_is (gwidget->class, "GtkVBox") ||
+	    glade_widget_class_is (gwidget->class, "GtkHBox")) {
+		GList *element;
+		GtkBox *box;
+		GtkBoxChild *box_child;
+		GladeProperty *property;
+		gint size, i, position;
+
+		box = GTK_BOX (widget);
+		
+		property = glade_property_get_from_id   (gwidget->properties, "size");
+		size = glade_property_get_integer (property);
+
+		element = g_list_first (box->children);
+		if (element)
+			box_child = element->data;
+		else
+			box_child = NULL;
+		i = 0;
+		while (i < size) {
+			GtkWidget *child;
+			GladeWidget *glade_widget_child;
+
+			if (box_child != NULL) {
+				child = box_child->widget;
+				glade_widget_child = glade_widget_get_from_gtk_widget (child);
+			
+				property = glade_property_get_from_id (glade_widget_child->properties,
+							       "position");
+				position = glade_property_get_integer (property);
+			} else {
+				position = size;
+			}
+
+			while (i++ < position) {
+				GladePlaceholder *placeholder;
+				
+				placeholder = glade_placeholder_new (gwidget);
+				gtk_box_pack_start_defaults (box, GTK_WIDGET (placeholder));
+			}
+			
+		}
+	} else if (glade_widget_class_is (gwidget->class, "GtkTable")) {
+		GtkTable *table;
+		gint i,j;
+
+		table = GTK_TABLE (widget);
+		
+		for (i = 0; i < table->ncols; i++) {
+			for (j = 0; j < table->nrows; j++) {
+
+				if (!glade_packing_table_get_child_at (table, i, j)) {
+					GladePlaceholder *placeholder;
+
+					placeholder = glade_placeholder_new (gwidget);
+					gtk_table_attach_defaults (table, GTK_WIDGET (placeholder),
+								   i, i+1, j, j+1);
+				}
+			}
+		}
+	} else {
+		glade_implement_me ();
+	}
+}

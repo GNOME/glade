@@ -205,46 +205,52 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	GtkBox *box;
 	gint new_size;
 	gint old_size;
-
+	
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
-		
-	new_size = g_value_get_int (value);
-	old_size = g_list_length (box->children);
-
-	if (new_size == old_size)
-		return;
 
 	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (box));
 	g_return_if_fail (widget != NULL);
 
+	old_size = g_list_length (box->children);
+	new_size = g_value_get_int (value);
+
+	if (new_size == old_size)
+		return;
+
+	glade_placeholder_remove_all (GTK_WIDGET (box));
+
 	if (new_size > old_size) {
-		/* The box has grown, add some placeholders */
-		int i = new_size - old_size;
-		for (; i > 0; i--) {
-			GladePlaceholder *placeholder;
-			placeholder = glade_placeholder_new (widget);
-			gtk_box_pack_start_defaults (box,
-						     GTK_WIDGET (placeholder));
-		}
-	} else {
+		/* The box has grown */
+		/* We don't need to do anything here because the box's property "size"
+		 * is already updated :-? */
+
+	} else if (new_size < old_size) {
 		/* The box has shrunk. Remove the widgets that are on those slots */
-		GList *childs;
-		int num = old_size;
-		int i = old_size - new_size;
-		childs = box->children;
-		for (; i > 0; i--) {
+		GList *child;
+		int i = old_size;
+		int position;
+		child = g_list_last (box->children);
+		while (child && i > new_size) {
 			GtkBoxChild *box_child;
 			GladeWidget *child_widget;
-			box_child = g_list_nth_data (childs, --num);
+			GladeProperty *child_property;
+			
+			box_child = (GtkBoxChild *) child->data;
 			child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
-			if (child_widget)
+			child_property = glade_property_get_from_id (child_widget->properties, "position");
+			position = glade_property_get_integer (child_property);
+			if (position >= new_size) {
 				glade_widget_delete (child_widget);
-			gtk_container_remove (GTK_CONTAINER (box),
-					      box_child->widget);
-			g_assert (childs == box->children);
+				gtk_container_remove (GTK_CONTAINER (box),
+						      box_child->widget);
+			}
+			i = position;
+			child = g_list_last (box->children);
 		}
-	}
+	} /* else the size is == */
+	
+	glade_placeholder_fill_empty (GTK_WIDGET (box));
 
 	/* see glade-widget.c#ugly_hack for an explanation */
 	gtk_timeout_add ( 100, glade_widget_ugly_hack, box);
@@ -298,33 +304,15 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 	if (new_size < 1)
 		return;
 
+	glade_placeholder_remove_all (GTK_WIDGET (table));
+	
 	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
 	g_return_if_fail (widget != NULL);
 
 	if (new_size > old_size) {
-		gint max = for_rows ? table->ncols : table->nrows;
-		int j = 0;
-		int i =  old_size;
-		
-		for (; i < new_size; i++) {
-			for (j = 0; j < max; j++) {
-				GladePlaceholder *placeholder;
-				placeholder = glade_placeholder_new (widget);
-				if (for_rows)
-					gtk_table_attach_defaults (
-						table,
-						GTK_WIDGET (placeholder),
-						j, j + 1,
-						i, i + 1);
-				else
-					gtk_table_attach_defaults (
-						table,
-						GTK_WIDGET (placeholder),
-						i, i + 1,
-						j, j + 1);
-			}
-		}
-		
+		gtk_table_resize (table,
+				  for_rows ? new_size : table->nrows,
+				  for_rows ? table->ncols : new_size);
 	} else {
 		/* Remove from the bottom up */
 		GList *list = g_list_reverse (g_list_copy (table->children));
@@ -352,6 +340,8 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 				  for_rows ? new_size : table->nrows,
 				  for_rows ? table->ncols : new_size);
 	}
+
+	glade_placeholder_fill_empty (GTK_WIDGET (table));
 
 	/* see glade-widget.c#ugly_hack for an explanation */
 	gtk_timeout_add ( 100, glade_widget_ugly_hack, table);

@@ -15,7 +15,8 @@ void glade_packing_init (void);
 void glade_packing_add_properties (GladeWidget *widget);
 GladePackingProperties * glade_packing_property_get_from_class (GladeWidgetClass *class,
 								GladeWidgetClass *container_class);
-
+GtkTableChild * glade_packing_table_get_child_at (GtkTable *table,
+						  gint col, gint row);
 
 G_END_DECLS
 

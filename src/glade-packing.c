@@ -213,7 +213,7 @@ glade_packing_table_get_child (GObject *object)
 	return table_child;
 }				
 
-static GtkTableChild *
+GtkTableChild *
 glade_packing_table_get_child_at (GtkTable *table, gint col, gint row)
 {
 	GtkTableChild *child;
@@ -234,8 +234,10 @@ glade_packing_table_get_child_at (GtkTable *table, gint col, gint row)
 			return child;
 	}
 
-	g_warning ("Could not get widget inside GtkTable at pos %d,%d\n",
-		   row, col);
+	/* We use this function now to know if a col,row is free or not, so
+	 * we should not show a warning */
+/*	g_warning ("Could not get widget inside GtkTable at pos %d,%d\n",
+		   row, col);*/
 
 	return NULL;
 }

@@ -1,3 +1,16 @@
+2001-10-31  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-placeholder.[ch] (glade_placeholder_remove_all):
+	* src/glade-placeholder.[ch] (glade_placeholder_fill_empty): Added
+	those new functions to remove/fill all widget's placeholders.
+	* src/glade-gtk.c (glade_gtk_table_set_n_common):
+	* src/glade-gtk.c (glade_gtk_box_set_size): Modified to remove all
+	placeholders, modify the widget and then fill all the empty childs
+	with placeholders using glade_placeholder_remove_all &&
+	glade_placeholder_fill_empty.
+	* src/glade-packing.[ch] (glade_packing_table_get_child_at): We need it
+	as no static function for the glade_placeholder_fill_empty function
+	
 2001-10-06  Michael Meeks  <michael@ximian.com>
 
 	* src/glade-project-view.c (glade_project_view_create_widget): 
