@@ -1,3 +1,9 @@
+2004-07-26  Shane Butler  <shane_b@users.sourceforge.net>
+
+	* widgets/gtkbox.xml: Fixed bug with loading GtkBoxes where too
+	many items were added (resize to see). Removed Default (this is
+	done in glade_gtk_box_post_create() anyway) and set the Min to 1.
+
 2004-06-16  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-utils.c (glade_util_file_chooser_new): center the
