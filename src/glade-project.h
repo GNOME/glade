@@ -48,6 +48,7 @@ struct _GladeProject
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
 	GHashTable *widget_names_allocator; /* hash table with the used widget names */
 	GHashTable *widget_old_names; /* widget -> old name of the widget */
+	GtkTooltips *tooltips;
 };
 
 struct _GladeProjectClass
@@ -78,6 +79,7 @@ GladeWidget *glade_project_get_widget_by_name (GladeProject *project, const char
 char *glade_project_new_widget_name (GladeProject *project, const char *base_name);
 
 void glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name);
+GtkTooltips *glade_project_get_tooltips (GladeProject *project);
 
 /* Selection */
 void glade_project_selection_set     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);

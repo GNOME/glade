@@ -97,46 +97,6 @@ glade_property_type_enum_to_string (GladePropertyType type)
 	return NULL;
 }
 
-static GladePropertyQuery *
-glade_query_new_from_node (GladeXmlNode *node)
-{
-	GladePropertyQuery *query;
-
-	if (!glade_xml_node_verify (node, GLADE_TAG_QUERY))
-		return NULL;
-
-	query = g_new0 (GladePropertyQuery, 1);
-	query->question = glade_xml_get_value_string_required (node, GLADE_TAG_QUESTION, NULL);
-	if (!query->question)
-		return NULL;
-
-	return query;
-}
-
-static GladePropertyQuery *
-glade_property_query_clone (GladePropertyQuery *query)
-{
-	GladePropertyQuery *clone;
-
-	g_return_val_if_fail (query != NULL, NULL);
-	g_return_val_if_fail (query->question != NULL, NULL);
-
-	clone = g_new0 (GladePropertyQuery, 1);
-	clone->question = g_strdup (query->question);
-
-	return clone;
-}
-
-static void
-glade_property_query_free (GladePropertyQuery *query)
-{
-	if (query == NULL)
-		return;
-
-	g_free (query->question);
-	g_free (query);
-}
-
 GladePropertyClass *
 glade_property_class_new (void)
 {
@@ -203,9 +163,6 @@ glade_property_class_clone (GladePropertyClass *property_class)
 			choice->data = glade_choice_clone ((GladeChoice*) choice->data);
 	}
 
-	if (clon->query)
-		clon->query = glade_property_query_clone (clon->query);
-
 	/* ok, wtf? what is the child member for? */
 	/* if (clon->child)
 		clon->child = glade_widget_class_clone (clon->child); */
@@ -234,7 +191,6 @@ glade_property_class_free (GladePropertyClass *class)
 	g_list_free (class->parameters);
 	g_list_foreach (class->choices, (GFunc) glade_choice_free, NULL);
 	g_list_free (class->choices);
-	glade_property_query_free (class->query);
 	glade_widget_class_free (class->child);
 	g_free (class);
 }
@@ -686,6 +642,15 @@ lblError:
 	return NULL;
 }
 
+gboolean
+glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class)
+{
+	if (property_class->visible)
+		return property_class->visible (widget_class);
+
+	return TRUE;
+}
+
 /**
  * glade_property_class_update_from_node:
  * @node: the <property> node
@@ -705,6 +670,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 {
 	GladePropertyClass *class;
 	gchar *buff;
+	char *visible;
 	GladeXmlNode *child;
 
 	g_return_val_if_fail (property_class != NULL, FALSE);
@@ -724,22 +690,34 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* If Disabled="TRUE" we set *property_class to NULL, but we return TRUE.
 	 * The caller may want to remove this property from its list.
 	 */
-	if (glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE)) {
+	if (glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE))
+	{
 		glade_property_class_free (class);
 		*property_class = NULL;
 		return TRUE;
 	}
 
+	visible = glade_xml_get_property_string (node, "Visible");
+	if (visible)
+	{
+		if (!g_module_symbol (widget_class->module, visible, (void **) &class->visible))
+			g_warning ("Could not find %s\n", visible);
+
+		g_free (visible);
+	}
+
 	/* If needed, update the name... */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
-	if (buff) {
+	if (buff)
+	{
 		g_free (class->name);
 		class->name = buff;
 	}
 
 	/* ...the type... */
 	buff = glade_xml_get_value_string (node, GLADE_TAG_TYPE);
-	if (buff) {
+	if (buff)
+	{
 		GladePropertyType type;
 		type = glade_property_type_str_to_enum (buff);
 		g_free (buff);
@@ -750,7 +728,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 
 	/* ...and the tooltip */
 	buff = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
-	if (buff) {
+	if (buff)
+	{
 		g_free (class->tooltip);
 		class->tooltip = buff;
 	}
@@ -805,11 +784,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		if (!class->def)
 			return FALSE;
 	}
-
-	/* Get the Query */
-	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
-	if (child)
-		class->query = glade_query_new_from_node (child);
 
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);

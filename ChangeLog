@@ -1,3 +1,35 @@
+2004-05-05  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* widgets/gtk-base.xml: Remove the accelerator label.
+
+	* widgets/gtkdialog.xml, gtkmessagedialog.xml, gtkwindow.xml: Remove
+	the tooltip property. Now it's only specified in gtk-widget.xml.
+
+	* widgets/gtkwidget.xml: Add a tooltip property.
+
+	* pixmaps/hpaned.png,vpaned.png: swap these two icons.
+
+	* src/glade-gtk.c: Implement glade_gtk_widget_set_tooltip, still not
+	finished.
+
+	* src/glade-editor.c: Don't show "invisible" properties.
+
+	* src/glade-property-class.[c,h]: Remove GladePropertyQuery. Now the
+	queries are done in glade-gtk.c. Add a glade_property_class_is_visible
+	function, that says if a property should be visible in the properties
+	editor. The difference with Disabled is that the visible status
+	will be checked when the property is added to the editor (and thus
+	the check is done against the real GladeWidgetClass, say "GtkLabel")
+	and Disabled is checked at the creation of GladePropertyQuery
+	(and thus the check is done with a possibly abstract GladeWidgetClass,
+	as "GtkWidget"). In addition, "Visible" specify a function that
+	returns true or false in function of the GladeWidgetClass passed.
+	That way implementing "tooltips" property becomes much less cumbersome.
+
+	* src/glade-project.[c,h]: Add a GtkTooltips to the project.
+
+	* src/glade_plugin.def: Add to two new functions to be used by glade-gtk.c
+
 2004-05-05  Damon Chaplin  <damon@gnome.org>
 
 	* src/glade-widget.c (glade_widget_find_inside_container): don't

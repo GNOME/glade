@@ -150,6 +150,7 @@ glade_project_init (GladeProject *project)
 	project->prev_redo_item = NULL;
 	project->widget_names_allocator = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) glade_id_allocator_free);
 	project->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
+	project->tooltips = gtk_tooltips_new ();
 }
 
 GladeProject *
@@ -189,11 +190,13 @@ glade_project_dispose (GObject *object)
 	glade_project_list_unref (project->undo_stack);
 	glade_project_list_unref (project->prev_redo_item);
 	glade_project_list_unref (project->widgets);
+	g_object_unref (project->tooltips);
 
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
 	project->widgets = NULL;
-	
+	project->tooltips = NULL;
+
 	
 	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -732,5 +735,10 @@ glade_project_save (GladeProject *project, const gchar *path)
 	project->changed = FALSE;
 
 	return TRUE;
+}
+
+GtkTooltips *glade_project_get_tooltips (GladeProject *project)
+{
+	return project->tooltips;
 }
 

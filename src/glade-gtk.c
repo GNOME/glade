@@ -95,6 +95,49 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 	gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 }
 
+int GLADEGTK_API
+glade_gtk_widget_condition (GladeWidgetClass *klass)
+{
+	GObject *object = g_object_new (klass->type, NULL);
+
+	/* Only widgets with windows can have tooltips at present. Though
+	buttons seem to be a special case, as they are NO_WINDOW widgets
+	but have InputOnly windows, so tooltip still work. In GTK+ 2
+	menuitems are like buttons. */
+	if (!GTK_WIDGET_NO_WINDOW (object) || GTK_IS_BUTTON (object) || GTK_IS_MENU_ITEM (object))
+	{
+		gtk_object_destroy (GTK_OBJECT (object));
+		return TRUE;
+	}
+	else
+	{
+		gtk_object_destroy (GTK_OBJECT (object));
+		return FALSE;
+	}
+}
+
+void GLADEGTK_API
+glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
+{
+	GladeWidget *glade_widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (object));
+	GladeProject *project = glade_widget_get_project (glade_widget);
+	GtkTooltips *tooltips = glade_project_get_tooltips (project);
+	const char *tooltip;
+
+	/* TODO: handle GtkToolItems with gtk_tool_item_set_tooltip() */
+	tooltip = g_value_get_string (value);
+	if (tooltip && *tooltip)
+		gtk_tooltips_set_tip (tooltips, GTK_WIDGET (object), tooltip, "tip_private");
+/*	else
+		gtk_tooltips_remove ? */
+}
+
+void GLADEGTK_API
+glade_gtk_widget_get_tooltip (GObject *object, GValue *value)
+{
+	g_print ("get_tooltip\n");
+}
+
 void GLADEGTK_API
 glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 {

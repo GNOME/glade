@@ -1027,8 +1027,11 @@ glade_editor_table_append_items (GladeEditorTable *table,
 
 	list = class->properties;
 
-	for (; list != NULL; list = list->next) {
+	for (; list != NULL; list = list->next)
+	{
 		property_class = (GladePropertyClass *) list->data;
+		if (!glade_property_class_is_visible (property_class, class))
+			continue;
 		if (common != property_class->common)
 			continue;
 		property = glade_editor_table_append_item (table, property_class);
@@ -1126,7 +1129,8 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 	GladeEditorTable *table;
 	GList *list;
 
-	for (list = editor->widget_tables; list; list = list->next) {
+	for (list = editor->widget_tables; list; list = list->next)
+	{
 		table = list->data;
 		if (common != table->common)
 			continue;

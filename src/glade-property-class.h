@@ -177,25 +177,16 @@ struct _GladePropertyClass
 		       * to the function that can set this property. The functions
 		       * to work arround this problems are inside glade-gtk.c
 		       */
-};
-
-/**
- * For now it only contains a string with the question for the query,
- * since we only support numerical queries... when we add support for
- * others queries it should contain something more complicated, maybe
- * a whole GtkWidget (look at the query you get when creating a GtkDialog
- * in glade-2
- */
-struct _GladePropertyQuery
-{
-	gchar *question;
+	gboolean (*visible) (GladeWidgetClass *widget_class);
 };
 
 GladePropertyClass * glade_property_class_new (void);
 GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
 GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_class);
 
-void glade_property_class_free (GladePropertyClass *class);
+void glade_property_class_free (GladePropertyClass *property_class);
+
+gboolean glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class);
 
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
