@@ -1,0 +1,219 @@
+This document describes how to add widgets to Glade
+---------------------------------------------------
+
+The widgets that are available in the Glade UI builder are handled in a
+dynamic way and additional widgets can be added, for example from other
+libraries, by installing a widget plugin.
+
+A widget plugin consists of a catalog file and a shared library and
+icons for the widgets to use in the widget palette.
+
+The catalog file is written in an XML format that will be described
+below. There is also a DTD for the format which can be found in XXX.
+
+Many properties of widgets can be handled automatically by the GObject
+introspection features. Not all of them can though, and advanced widgets
+often also need additional support from code. This is specified in the
+catalog file, where you can override default values, hide properties,
+specify functions to call in the installed plugin, etc.
+
+The catalog file is also used to group the widgets in groups that
+correspond to the groups in the Glade widget palette. You can also
+specify which property page each property should be displayed on
+(e.g. the "common" page or the "packing" page).
+
+*** FIXME: check if above is really possible, and how it's done.
+
+In theory, the catalog file should be enough, but most widgets also need
+supporting code to be usable in Glade, which is where the plugin library
+comes in. An example of both a catalog file and plugin library can be
+found in the Glade sources, since the GTK+ widget set that is supported
+by default in Glade also is implemented this way. The catalog file is
+located in widgets/gtk+.xml, and the source code in src/glade-gtk.c. The
+catalog file starts by specifying the name of the catalog and the plugin
+library to use:
+
+<glade-catalog name="gtk+" library="gladegtk">
+  <glade-widget-classes>
+
+    ... widgets go here
+
+
+Widgets
+-------
+
+Let's look at the XML for a simple widget, GtkLabel:
+
+    <glade-widget-class name="GtkLabel" generic-name="label" title="Label">
+       ...
+    </glade-widget-class>
+
+The name is the class name of the widget. Generic name is used to get
+the icon name for the widget palette, and is a regular icon theme
+icon. The generic name is also used to generate a default name for
+instances of the widget in the UI editor.
+
+
+Properties
+----------
+
+Let's expand the example from above:
+
+    <glade-widget-class name="GtkLabel" generic-name="label" title="Label">
+      <properties>
+	<property id="label" default="label"/>
+	<property id="pattern" default=""/>
+      </properties>
+    </glade-widget-class>
+
+The default values of two properties, label and pattern, have been
+overridden.
+
+You can also mark a property as optional, in which case there is a
+checkbutton displayed next to it in the editor and the property will
+only be set if the checkbutton is enabled:
+
+	<property id="my-property" optional="True" optional-default="False" default="my-value"/>
+
+The "optional-default" parameter specifies if the checkbutton should be
+checked or not by default. An example of "optional" is used is the
+default width and height of a window where you sometimes don't want to
+set a value.
+
+Normally, the tooltip for the property is retrieved through GObject
+introspection but if for some reason the value is not usable, it can be
+overridden:
+
+	<property id="label" default="label"/>
+          <tooltip>A tooltip for this property</tooltip>
+	</property>
+
+Some widgets need special handling for properties with support code in
+the plugin library. The functions available are:
+
+	<property ...>
+	  <set-function>my_widget_set_my_property</set-function>
+	  <get-function>my_widget_get_my_property</get-function>
+	  <verify-function>my_widget_verify_my_property</verify-function>
+	</property>
+
+Set and get should be self-explanatory, and the verify function is used
+to verify that the value the user has entered is OK.
+
+There is also a function for deciding if a property should be shown in
+the UI or not, conditionally:
+
+*** FIXME: check why visible is a parameter instead of a tag.
+
+        <property id="tooltip" name="tooltip" visible="glade_gtk_widget_condition">
+
+The main use for this is to hide properties for certain sub-classes
+where they don't make sense.
+
+For properties where the type needs to be special-cased in the editor,
+for example like the size property of a container which isn't a real
+GObject property, the GParamSpec constructor can be specified:
+
+	<property ...>
+	  <spec>my_param_spec</spec>
+	</property>
+
+*** FIXME: Shouldn't this be called spec-function for consistency?
+
+*** FIXME: write about common="True/False", other notebook pages?
+
+The functions listed should have the following signatures:
+
+void        set_function     (GObject *object, GValue *value);
+void        get_function     (GObject *object, GValue *value);
+gboolean    verify_function  (GObject *object, GValue *value);
+GParamSpec *spec_function    (void);
+gboolean    visible_function (GladeWidgetClass *klass);
+
+
+Querying the user
+-----------------
+
+Some properties might make sense to query the user for before creating a
+widget. This is used for instance for the size of boxes and number of
+buttons in a dialog. To achieve this, simply set the query parameter of
+the property:
+
+	<property id="my-property" default="1" query="True">
+          ...
+	</property>
+
+
+Property parameters
+-------------------
+
+Properties can have additional parameters that affect the behavior of
+them in the editor. For numeric properties this lets you set the
+behavior of the spinbutton used to enter the value. Example:
+
+	<property id="n-rows" default="3" query="True">
+	  <parameters>
+	    <parameter key="Min" value="1"/>
+	    <parameter key="Max" value="10000"/>
+	    <parameter key="StepIncrement" value="1"/>
+	    <parameter key="PageIncrement" value="10"/>
+	    <parameter key="ClimbRate" value="1"/>
+	  </parameters>
+	</property>
+
+*** FIXME: Are there parameters for strings etc?
+
+
+Container widgets
+-----------------
+
+*** FIXME: child properties, packing, functions, ...
+
+
+Grouping
+--------
+
+The widgets are groups in different groups in the Glade UI. Those groups
+are defined in the catalog file as follows:
+
+ <glade-widget-group name="my-widgets" title="My widgets">
+    <glade-widget-class-ref name="MyFirstWidget"/>
+    <glade-widget-class-ref name="MysecondWidget"/>
+
+    ...
+ </glade-widget-group>
+
+
+The file should contain one or more widgets groups.
+
+
+Validating the catalog file
+---------------------------
+
+The DTD that is shipped with Glade can be used to validate your catalog
+file. Note that properties must be entered in the same order as they are
+specified in the DTD for the validation to pass.
+
+To validate a fil, do this:
+
+ xmllint --dtdvalid glade-catalog.dtd --noout my-catalog.xml
+
+
+
+Installing a plugin
+-------------------
+
+To install a widget plugin, the catalog XML file should be copied into
+the catalog directory:
+
+  $(datadir)/glade-3/catalogs
+
+*** FIXME: Fix the version to be like this.
+
+The plugin library should be installed into the modules directory:
+
+ $(libdir)/glade/
+
+*** FIXME: Shouldn't this be glade-3 for consistency?
+
+
