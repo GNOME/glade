@@ -23,13 +23,6 @@
 #define GLADE_MENU_EDITOR_H
 
 
-#include <gdk/gdk.h>
-#include <gtk/gtkmenushell.h>
-#include <gtk/gtkwindow.h>
-
-#include "glade.h"
-#include "glade-project.h"
-
 G_BEGIN_DECLS
 
 #define GLADE_MENU_EDITOR(obj)          GTK_CHECK_CAST (obj, glade_menu_editor_get_type (), GladeMenuEditor)
@@ -120,16 +113,11 @@ struct _GladeMenuEditorClass
 };
 
 
-GType      glade_menu_editor_get_type    (void);
+GType glade_menu_editor_get_type (void);
 
-/* This creates a menu editor to edit the given menubar or popup menu in
-   the given project. When the user selects the 'OK' or 'Apply' buttons,
-   the menu widget will be updated. If the menu is destroyed, the menu editor
-   is automatically destroyed as well. */
-GtkWidget* glade_menu_editor_new         (GladeProject    *project,
-					  GtkMenuShell    *menu);
+GtkWidget* glade_menu_editor_new (GladeProject *project, GtkMenuShell *menu);
+
 
 G_END_DECLS
-
 
 #endif /* GLADE_MENU_EDITOR_H */

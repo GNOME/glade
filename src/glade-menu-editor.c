@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-
-/*  Gtk+ User Interface Builder
+/*
+ *  Gtk+ User Interface Builder
  *  Copyright (C) 1998  Damon Chaplin
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  */
 
 /*
- * The Menu Editor window, based on initial work by Javier Arriero PaÅÌs
+ * The Menu Editor window, based on initial work by Javier Arriero PaÌs
  * and John Looney.  Adapted to glade-3 by Joaquin Cuenca Abela
  */
 
@@ -27,38 +27,10 @@
 #include <time.h>
 
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkarrow.h>
-#include <gtk/gtkaccellabel.h>
-#include <gtk/gtkclist.h>
-#include <gtk/gtkcombo.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkeventbox.h>
-#include <gtk/gtkfilesel.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhseparator.h>
-#include <gtk/gtkiconfactory.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkimagemenuitem.h>
-#include <gtk/gtklist.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenubar.h>
-#include <gtk/gtkradiobutton.h>
-#include <gtk/gtkradiomenuitem.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktearoffmenuitem.h>
-#include <gtk/gtkvbox.h>
 
 #undef USE_GNOME
 
-#ifdef USE_GNOME
-#include <gnome.h>
-#include "glade_gnome.h"
-#endif
-
+#include "glade.h"
 #include "glade-menu-editor.h"
 #include "glade-keys-dialog.h"
 #include "glade-project.h"
@@ -69,29 +41,28 @@
 #define GladeMenuEditorStockIDKey "glade-menu-editor-stock-id"
 
 /* How many pixels to indent levels of the menu hierarchy in the clist. */
-#define GB_INDENT	10
+#define GLADE_MENU_EDITOR_INDENT 10
 
 /* The text to display if the item is a separator. */
-#define GB_SEPARATOR_TEXT "---"
+#define GLADE_MENU_EDITOR_SEPARATOR "---"
 
-/* This sets the order of the clist columns. */
-#define GB_MENUED_NUM_COLS 8
-
-#define GLD_COL_LABEL	0
-#define GLD_COL_TYPE	1
-#define GLD_COL_ACCEL	2
-#define GLD_COL_NAME	3
-#define GLD_COL_HANDLER	4
-#define GLD_COL_ACTIVE	5
-#define GLD_COL_GROUP	6
-#define GLD_COL_ICON	7
+enum {
+	LABEL_COLUMN = 0,
+	TYPE_COLUMN,
+	ACCEL_COLUMN,
+	NAME_COLUMN,
+	HANDLER_COLUMN,
+	ACTIVE_COLUMN,
+	GROUP_COLUMN,
+	ICON_COLUMN,
+	N_COLUMNS
+};
 
 typedef enum {
 	GB_MENU_ITEM_NORMAL,
 	GB_MENU_ITEM_CHECK,
 	GB_MENU_ITEM_RADIO
 } GbMenuItemType;
-
 
 /* This holds information on one menu item. */
 typedef struct _GbMenuItemData GbMenuItemData;
@@ -105,14 +76,14 @@ struct _GbMenuItemData
 	gchar *icon;		/* Icon filename, or Stock icon name. */
 	gchar *tooltip;		/* Tooltip text. */
 	GbMenuItemType type;	/* Type - normal/check/radio. */
-	gboolean active;		/* If the item is initially active. */
+	gboolean active;	/* If the item is initially active. */
 	GbMenuItemData *group;	/* Points to the item data of the first widget
 				   in the radio group, or NULL if it is in its
 				   own group or is the first item in group. */
-	guint8 modifiers;		/* Control/Shift/Alt flags. */
-	gchar *key;			/* Name of accelerator key. */
+	guint8 modifiers;	/* Control/Shift/Alt flags. */
+	gchar *key;		/* Name of accelerator key. */
 
-	gint level;			/* Level in menu hierarchy. */
+	gint level;		/* Level in menu hierarchy. */
 	gboolean generate_name;	/* If the name should be auto-generated. */
 	gboolean generate_handler;	/* If the handler should be auto-generated. */
 
@@ -123,177 +94,1163 @@ struct _GbMenuItemData
 };
 
 
-static void glade_menu_editor_class_init (GladeMenuEditorClass * klass);
-static void glade_menu_editor_init (GladeMenuEditor * dialog);
+static void set_entry_text (GtkEntry *entry, const gchar *text);
+static void glade_menu_editor_reset (GladeMenuEditor *menued);
+
+
+static void glade_menu_editor_class_init (GladeMenuEditorClass *class);
+static void glade_menu_editor_init (GladeMenuEditor *dialog);
 static void glade_menu_editor_destroy (GtkObject *object);
 
-/* If the menu widget we are editing is destroyed, the menu editor is destroyed
-   as well. */
-static void glade_menu_editor_on_menu_destroyed (GtkWidget *menu,
-						 GtkWidget *menued);
-
-static void on_menu_editor_ok (GtkWidget *button,
-			       GladeMenuEditor *menued);
-static void on_menu_editor_apply (GtkWidget *button,
-				  GladeMenuEditor *menued);
-static void on_menu_editor_close (GtkWidget *widget,
-				  GladeMenuEditor *menued);
-
-/* This sets the menubar/popup menu whose children are displayed in the
-   menu editor, i.e. converted to items in the clist. */
-static void glade_menu_editor_set_menu	 (GladeMenuEditor *menued,
-					  GtkMenuShell    *menu);
-
-/* This updates the given widget, based on the settings in the menu editor.
-   It removes all the current children of the menu and recreates it. */
-static void glade_menu_editor_update_menu (GladeMenuEditor *menued);
-
-
-static gboolean on_key_press (GtkWidget * widget,
-			      GdkEventKey * event,
-			      gpointer user_data);
-static void on_clist_select_row (GtkWidget * clist,
-				 gint row,
-				 gint column,
-				 GdkEventButton * event,
-				 gpointer user_data);
-static void on_clist_unselect_row (GtkWidget * clist,
-				   gint row,
-				   gint column,
-				   GdkEventButton * event,
-				   gpointer user_data);
-static void on_entry_changed (GtkWidget * entry,
-			      gpointer user_data);
-static void on_icon_button_clicked (GtkWidget * button,
-				    gpointer user_data);
-static void on_stock_item_entry_changed (GtkWidget * entry,
-					 gpointer user_data);
-static gboolean on_label_entry_key_press (GtkWidget * widget,
-					  GdkEventKey * event,
-					  gpointer user_data);
-static void on_radiobutton_toggled (GtkWidget * togglebutton,
-				    gpointer user_data);
-static void on_checkbutton_toggled (GtkWidget * togglebutton,
-				    gpointer user_data);
-static void on_state_button_toggled (GtkToggleButton * togglebutton,
-				     gpointer user_data);
-static void on_accel_key_button_clicked (GtkButton * button,
-					 gpointer user_data);
-static void on_up_button_clicked (GtkButton * button,
-				  gpointer user_data);
-static void on_down_button_clicked (GtkButton * button,
-				    gpointer user_data);
-static void on_left_button_clicked (GtkButton * button,
-				    gpointer user_data);
-static void on_right_button_clicked (GtkButton * button,
-				     gpointer user_data);
-static void on_add_button_clicked (GtkWidget * button,
-				   gpointer user_data);
-static void on_add_child_button_clicked (GtkWidget * button,
-					 gpointer user_data);
-static void on_add_separator_button_clicked (GtkWidget * button,
-					     gpointer user_data);
-static void add_item (GladeMenuEditor * menued,
-		      gboolean as_child,
-		      gboolean separator);
-static void on_delete_button_clicked (GtkWidget * widget,
-				      gpointer user_data);
-
-static gint get_selected_row (GladeMenuEditor * menued);
-static GbMenuItemData* get_selected_item (GladeMenuEditor * menued);
-static void set_interface_state (GladeMenuEditor * menued);
-static gchar *get_accel_string (gchar * key,
-				guint8 modifiers);
-static void insert_item (GtkCList * clist,
-			 GbMenuItemData * item,
-			 gint row);
-static void ensure_visible (GtkWidget *clist,
-			    gint row);
-static void update_current_item (GladeMenuEditor * menued);
-static gboolean item_property_changed (gchar *new, gchar *old);
-static gchar* copy_item_property (gchar *property);
-static void clear_form (GladeMenuEditor * menued,
-			gboolean full);
-static void show_item_properties (GladeMenuEditor * menued);
-static void insert_items (GtkWidget * clist,
-			  GList * items,
-			  gint row);
-static GList *remove_item_and_children (GtkWidget * clist,
-					gint row);
-static GtkWidget* create_radio_menu_item (GtkMenuShell *menu,
-					  GbMenuItemData *item,
-					  GHashTable *group_hash);
-static gchar* generate_name (GladeMenuEditor *menued,
-			     gchar *label);
-static gchar* generate_handler (GladeMenuEditor *menued,
-				gint row,
-				gchar *label,
-				gchar *name);
-static void check_generated_handlers (GladeMenuEditor *menued);
-static gboolean is_parent (GladeMenuEditor *menued,
-			   gint row);
-static void set_submenu (GladeMenuEditor *menued,
-			 GtkMenuShell    *menu,
-			 gint	      level);
-static void glade_menu_editor_reset (GladeMenuEditor *menued);
-static void glade_menu_editor_free_item (GbMenuItemData *item);
-
-static void update_radio_groups (GladeMenuEditor * menued);
-static void normalize_radio_groups (GladeMenuEditor * menued);
-static GbMenuItemData* find_radio_group (GtkRadioMenuItem *menuitem,
-					 GList **groups,
-					 GbMenuItemData *item);
-static void remove_from_radio_group (GladeMenuEditor * menued,
-				     GbMenuItemData *item);
-
 static GtkWindowClass *parent_class = NULL;
-
 
 GType
 glade_menu_editor_get_type (void)
 {
-	static GType glade_menu_editor_type = 0;
+	static GType type = 0;
 
-	if (!glade_menu_editor_type) {
-		GtkTypeInfo glade_menu_editor_info = {
-			"GladeMenuEditor",
-			sizeof (GladeMenuEditor),
+	if (!type) {
+		static const GTypeInfo info = {
 			sizeof (GladeMenuEditorClass),
-			(GtkClassInitFunc) glade_menu_editor_class_init,
-			(GtkObjectInitFunc) glade_menu_editor_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_menu_editor_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeMenuEditor),
+			0,
+			(GInstanceInitFunc) glade_menu_editor_init,
 		};
 
-		glade_menu_editor_type = gtk_type_unique (gtk_window_get_type (),
-							  &glade_menu_editor_info);
+		type = g_type_register_static (GTK_TYPE_WINDOW, "GladeMenuEditor", &info, 0);
 	}
 
-	return glade_menu_editor_type;
+	return type;
 }
 
 static void
-glade_menu_editor_class_init (GladeMenuEditorClass * class)
+glade_menu_editor_class_init (GladeMenuEditorClass *class)
 {
-	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
+	GtkObjectClass *object_class;
 
-	object_class = (GtkObjectClass *) class;
-	widget_class = (GtkWidgetClass *) class;
+	widget_class = GTK_WIDGET_CLASS (class);
+	object_class = GTK_OBJECT_CLASS (class);
 
-	parent_class = gtk_type_class (gtk_window_get_type ());
+	parent_class = g_type_class_peek_parent (class);
 
 	object_class->destroy = glade_menu_editor_destroy;
 }
 
+static void
+glade_menu_editor_init (GladeMenuEditor * menued)
+{
+	menued->keys_dialog = NULL;
+	menued->project = NULL;
+	menued->menu = NULL;
+	menued->updating_widgets = FALSE;
+	menued->gnome_support = FALSE;
+}
+
+static void
+glade_menu_editor_destroy (GtkObject *object)
+{
+	GladeMenuEditor *menued;
+	GSList *elem;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (GLADE_IS_MENU_EDITOR (object));
+
+	menued = GLADE_MENU_EDITOR (object);
+
+	/* Free all the GbMenuItemData elements & disconnect our destroy handler
+	   on the menu widget. */
+	glade_menu_editor_reset (menued);
+
+	if (menued->keys_dialog) {
+		gtk_widget_destroy (menued->keys_dialog);
+		menued->keys_dialog = NULL;
+	}
+
+	for (elem = menued->stock_items; elem; elem = elem->next)
+		g_free (elem->data);
+	g_slist_free (menued->stock_items);
+	menued->stock_items = NULL;
+}
+
+/**
+ * This returns the index of the currently selected row in the clist, or -1
+ * if no item is currently selected.
+ */
+static gint
+get_selected_row (GladeMenuEditor *menued)
+{
+	if (GTK_CLIST (menued->clist)->selection == NULL)
+		return -1;
+	return GPOINTER_TO_INT (GTK_CLIST (menued->clist)->selection->data);
+}
+
+/**
+ * This returns the currently selected item, or NULL if no item is 
+ * currently selected.
+ */
+static GbMenuItemData*
+get_selected_item (GladeMenuEditor * menued)
+{
+	GbMenuItemData *item;
+	gint row;
+
+	row = get_selected_row (menued);
+	if (row == -1)
+		return NULL;
+	item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+	return item;
+}
+
+/**
+ * This set the sensitivity of the buttons according to the current state.
+ */
+static void
+set_interface_state (GladeMenuEditor * menued)
+{
+	GbMenuItemData *item, *tmp_item;
+	GtkCList *clist;
+	gboolean up_button_sens = FALSE, down_button_sens = FALSE;
+	gboolean left_button_sens = FALSE, right_button_sens = FALSE;
+	gboolean add_button_sens = FALSE, delete_button_sens = FALSE;
+	gboolean state_sens = FALSE, group_sens = FALSE;
+	gboolean form_sens = FALSE, type_sens = FALSE, accel_sens = FALSE;
+	gboolean label_sens = FALSE, icon_sens = FALSE;
+	gint index;
+
+	clist = GTK_CLIST (menued->clist);
+
+	/* Figure out which of the arrow buttons should be sensitive. */
+
+	/* The Add button is always sensitive, since empty labels are separators. */
+	add_button_sens = TRUE;
+
+	/* The Delete button and the entire form are sensitive if an item is
+	   selected in the clist. */
+	index = get_selected_row (menued);
+	if (index != -1) {
+		form_sens = TRUE;
+		type_sens = TRUE;
+		label_sens = TRUE;
+		icon_sens = TRUE;
+		delete_button_sens = TRUE;
+
+		if (index > 0)
+			up_button_sens = TRUE;
+		if (index < clist->rows - 1)
+			down_button_sens = TRUE;
+
+		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, index);
+		if (item->level > 0)
+			left_button_sens = TRUE;
+
+		/* The accelerator modifier and key are sensitive if this is not a
+		   toplevel item on a menubar. */
+		if (!GTK_IS_MENU_BAR (menued->menu) || item->level != 0)
+			accel_sens = TRUE;
+
+		if (index > 0) {
+			tmp_item = (GbMenuItemData *) gtk_clist_get_row_data (clist,
+									      index - 1);
+			if (tmp_item->level >= item->level)
+				right_button_sens = TRUE;
+		}
+
+		/* Figure out if the radio group widgets should be sensitive. */
+		if (GTK_TOGGLE_BUTTON (menued->radio_radiobutton)->active) {
+			group_sens = TRUE;
+			state_sens = TRUE;
+			icon_sens = FALSE;
+		}
+
+		if (GTK_TOGGLE_BUTTON (menued->check_radiobutton)->active) {
+			state_sens = TRUE;
+			icon_sens = FALSE;
+		}
+
+		if (item->stock_item_index) {
+			/* For the 'New' menu item, a label and tooltip must be provided. */
+			if (menued->gnome_support) {
+#ifdef USE_GNOME
+				if (item->stock_item_index != GladeStockMenuItemNew)
+					label_sens = FALSE;
+#endif
+			} else {
+				/* We don't allow the "New" label to be changed for GTK+ stock
+				   items now, to be compatable with libglade. It did make it a
+				   bit too complicated anyway. */
+#if 0
+				const char *stock_id = g_slist_nth_data (menued->stock_items,
+									 item->stock_item_index - 1);
+				if (strcmp (stock_id, GTK_STOCK_NEW))
+#endif
+					label_sens = FALSE;
+			}
+
+			icon_sens = FALSE;
+			type_sens = FALSE;
+			accel_sens = FALSE;
+		}
+	}
+
+	/* Now set the sensitivity of the widgets. */
+	gtk_widget_set_sensitive (menued->stock_label, form_sens);
+	gtk_widget_set_sensitive (menued->stock_combo, form_sens);
+
+	gtk_widget_set_sensitive (menued->icon_label, icon_sens);
+	gtk_widget_set_sensitive (menued->icon_widget, icon_sens);
+	gtk_widget_set_sensitive (menued->icon_button, icon_sens);
+
+	gtk_widget_set_sensitive (menued->name_label, form_sens);
+	gtk_widget_set_sensitive (menued->name_entry, form_sens);
+	gtk_widget_set_sensitive (menued->handler_label, form_sens);
+	gtk_widget_set_sensitive (menued->handler_entry, form_sens);
+
+	gtk_widget_set_sensitive (menued->label_label, label_sens);
+	gtk_widget_set_sensitive (menued->label_entry, label_sens);
+	gtk_widget_set_sensitive (menued->tooltip_label, label_sens);
+	gtk_widget_set_sensitive (menued->tooltip_entry, label_sens);
+
+	gtk_widget_set_sensitive (menued->add_button, add_button_sens);
+	gtk_widget_set_sensitive (menued->add_separator_button, add_button_sens);
+	gtk_widget_set_sensitive (menued->delete_button, delete_button_sens);
+
+	gtk_widget_set_sensitive (menued->type_frame, type_sens);
+	gtk_widget_set_sensitive (menued->state_label, state_sens);
+	gtk_widget_set_sensitive (menued->state_togglebutton, state_sens);
+	gtk_widget_set_sensitive (menued->group_label, group_sens);
+	gtk_widget_set_sensitive (menued->group_combo, group_sens);
+
+	gtk_widget_set_sensitive (menued->accel_frame, accel_sens);
+}
+
+/**
+ * This clears the form, ready to add a new item. If full is TRUE it resets
+ * the type checkbuttons, group and accelerator modifiers. When adding items
+ * full is set to FALSE so the user can add several items of the same type.
+ */
+static void
+clear_form (GladeMenuEditor *menued, gboolean full)
+{
+	gtk_list_select_item (GTK_LIST (GTK_COMBO (menued->stock_combo)->list), 0);
+	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry), "");
+	set_entry_text (GTK_ENTRY (menued->label_entry), "");
+	set_entry_text (GTK_ENTRY (menued->name_entry), "");
+	set_entry_text (GTK_ENTRY (menued->handler_entry), "");
+	set_entry_text (GTK_ENTRY (menued->tooltip_entry), "");
+	set_entry_text (GTK_ENTRY (menued->accel_key_entry), "");
+
+	if (full) {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
+		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), FALSE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), FALSE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), FALSE);
+	}
+}
+
+/* Make sure all item group fields point to the first item in the group. */
+static void
+normalize_radio_groups (GladeMenuEditor *menued)
+{
+	GbMenuItemData *item, *group;
+	GList *groups = NULL;
+	gint rows, row;
+
+	/* Step through each row checking each radio item. */
+	rows = GTK_CLIST (menued->clist)->rows;
+	for (row = 0; row < rows; row++) {
+		item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+		if (item->type != GB_MENU_ITEM_RADIO)
+			continue;
+
+		/* Follow the chain of groups until we get the real one. */
+		group = item->group;
+		while (group && group->group && group->group != group)
+			group = group->group;
+
+		/* If it is a new group, add it to the list. */
+		if (!group || group == item) {
+			groups = g_list_prepend (groups, item);
+			item->group = NULL;
+		}
+		/* Else check if the group item is after the current one. If it is,
+		   then we make the current item the group leader. We assume that if
+		   we haven't seen the group item yet, it must be after this one. */
+		else if (!g_list_find (groups, group)) {
+			groups = g_list_prepend (groups, item);
+			group->group = item;
+			item->group = NULL;
+		} else {
+			item->group = group;
+		}
+	}
+
+	g_list_free (groups);
+}
+
+/* This recreates the list of available radio groups, and puts them in the
+   combo's drop-down list. */
+static void
+update_radio_groups (GladeMenuEditor * menued)
+{
+	GbMenuItemData *item, *tmp_item;
+	GList *groups = NULL, *elem;
+	gint item_row, row, parent_row, rows;
+	GtkCombo *combo;
+	GtkList *list;
+	GtkWidget *li;
+
+	/* Make sure all item group fields point to the first item in the group. */
+	normalize_radio_groups (menued);
+
+	item_row = get_selected_row (menued);
+	if (item_row == -1) {
+		gtk_list_clear_items (GTK_LIST (GTK_COMBO (menued->group_combo)->list),
+				      0, -1);
+		return;
+	}
+
+	item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), item_row);
+
+	/* Step backwards to find the parent item. */
+	parent_row = -1;
+	for (row = item_row - 1; row > 0; row--) {
+		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+		if (tmp_item->level < item->level) {
+			parent_row = row;
+			break;
+		}
+	}
+
+	/* Now step through the items, checking all items that are on the same
+	   level as the current one, until we reach the end of the list or find an
+	   item on a higher level. */
+	rows = GTK_CLIST (menued->clist)->rows;
+	for (row = parent_row + 1; row < rows; row++) {
+		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+		if (tmp_item->level < item->level)
+			break;
+
+		if (tmp_item->level == item->level
+		    && tmp_item->type == GB_MENU_ITEM_RADIO
+		    && tmp_item->name && tmp_item->name[0]) {
+			/* If the item has its group set to NULL or itself, then it is a new
+			   group, so add its name. */
+			if (!tmp_item->group || tmp_item->group == tmp_item)
+				groups = g_list_prepend (groups, tmp_item->name);
+		}
+	}
+
+	groups = g_list_sort (groups, (GCompareFunc)strcmp);
+
+	combo = GTK_COMBO (menued->group_combo);
+	list = GTK_LIST (combo->list);
+
+	/* We have to block the combo's list's selection changed signal, or it
+	   causes problems. */
+	gtk_signal_handler_block (GTK_OBJECT (list),
+				  GTK_COMBO (menued->group_combo)->list_change_id);
+
+	gtk_list_clear_items (list, 0, -1);
+
+	/* Add the special 'New' item to create a new group. */
+	li = gtk_list_item_new_with_label (_("New"));
+	gtk_widget_show (li);
+	gtk_container_add (GTK_CONTAINER (list), li);
+	gtk_combo_set_item_string (combo, GTK_ITEM (li), "");
+
+	/* Add a separator. */
+	li = gtk_list_item_new ();
+	gtk_widget_show (li);
+	gtk_container_add (GTK_CONTAINER (list), li);
+
+	for (elem = groups; elem; elem = elem->next) {
+		li = gtk_list_item_new_with_label (elem->data);
+		gtk_widget_show (li);
+		gtk_container_add (GTK_CONTAINER (list), li);
+	}
+
+	gtk_signal_handler_unblock (GTK_OBJECT (list),
+				    GTK_COMBO (menued->group_combo)->list_change_id);
+	g_list_free (groups);
+}
+
+/* This finds the group item to use for the given radiomenuitem widget.
+   It searches the list of group items to find the first one that is also in
+   the radiomenuitem's group list. If none is found, it creates a new group
+   and adds it to the list. */
+static GbMenuItemData*
+find_radio_group (GtkRadioMenuItem *menuitem,
+		  GList **groups,
+		  GbMenuItemData *item)
+{
+	GSList *item_group_list;
+	GList *elem;
+
+	item_group_list = menuitem->group;
+
+	/* The groups list contains pairs of GSList + GbMenuItemData*. */
+	for (elem = *groups; elem; elem = elem->next->next) {
+		GSList *elem_group = elem->data;
+		GbMenuItemData *elem_item = elem->next->data;
+
+		if (elem_group == item_group_list)
+			return elem_item;
+	}
+
+	/* We couldn't find an existing group that matches, so we create a new one.
+	 */
+	*groups = g_list_prepend (*groups, item);
+	*groups = g_list_prepend (*groups, item_group_list);
+
+	return NULL;
+}
+
+/* This is called to make sure that no items have the given item as their
+   group leader. It is called when an item is removed, or when its type is
+   changed from a radio item to something else.
+
+   It steps through the list, checking for radio items with
+   the group field set to the given item. The first time it finds one, it
+   creates a new group. It sets the group field of all other items in the
+   same group to the new first item in the group. */
+static void
+remove_from_radio_group (GladeMenuEditor * menued,
+			 GbMenuItemData *item)
+{
+	GbMenuItemData *new_group_item = NULL;
+	gint rows, row;
+
+	rows = GTK_CLIST (menued->clist)->rows;
+	for (row = 0; row < rows; row++) {
+		GbMenuItemData *tmp_item;
+		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+
+		if (tmp_item->type == GB_MENU_ITEM_RADIO
+		    && tmp_item->group == item && tmp_item != item) {
+			if (new_group_item) {
+				tmp_item->group = new_group_item;
+			}
+			else {
+				tmp_item->group = NULL;
+				new_group_item = tmp_item;
+			}
+		}
+	}
+}
+
+static gchar *
+get_stock_item_label (GladeMenuEditor *menued, gint stock_item_index)
+{
+	if (menued->gnome_support) {
+#ifdef USE_GNOME
+		/* Most of the label text is from Gnome, but 2 of them are ours,
+		   so we use a utility function to find the translation. */
+		return glade_gnome_gettext (GladeStockMenuItemValues[stock_item_index].label);
+#else
+		/* This shouldn't happen. */
+		g_warning ("Trying to use GNOME stock items in GTK+ version of Glade");
+		return NULL;
+#endif
+	} else {
+		gchar *stock_id;
+		GtkStockItem item;
+
+		if (stock_item_index <= 0)
+			return _("None");
+
+		stock_id = g_slist_nth_data (menued->stock_items, stock_item_index - 1);
+		gtk_stock_lookup (stock_id, &item);
+
+		return item.label;
+	}
+}
+
+/* This gets a string representing the accelerator key + modifiers.
+   It returns a pointer to a static buffer. */
+static gchar *
+get_accel_string (gchar * key, guint8 modifiers)
+{
+	static gchar buffer[32];
+
+	buffer[0] = '\0';
+	if (modifiers & GDK_CONTROL_MASK)
+		strcat (buffer, "C+");
+	if (modifiers & GDK_SHIFT_MASK)
+		strcat (buffer, "S+");
+	if (modifiers & GDK_MOD1_MASK)
+		strcat (buffer, "A+");
+	if (key)
+		strcat (buffer, key);
+	return buffer;
+}
+
+/* This returns the default name of the widget, given its label. The returned
+   string should be freed at some point. */
+static gchar*
+generate_name (GladeMenuEditor *menued,
+	       gchar *label)
+{
+	gchar *prefix, *name, *src, *dest;
+
+	/* For empty labels, i.e. separators, use 'separator'. */
+	if (label == NULL || label[0] == '\0') {
+		return glade_project_new_widget_name (menued->project, "separator");
+	}
+
+	prefix = g_malloc (strlen (label) + 1);
+	/* Convert spaces to underscores, and ignore periods (e.g. in "Open...")
+	   and underscores (e.g. in "_Open"). */
+	for (src = label, dest = prefix; *src; src++) {
+		if (*src == ' ')
+			*dest++ = '_';
+		else if (*src == '.')
+			continue;
+		else if (*src == '_')
+			continue;
+		else
+			*dest++ = *src;
+	}
+	*dest = '\0';
+
+	if (dest >= prefix + strlen (label) + 1)
+		g_warning ("Buffer overflow");
+
+	/* Get rid of any trailing digits. */
+	dest--;
+	while (*dest >= '0' && *dest <= '9') {
+		*dest = '\0';
+		dest--;
+	}
+
+	name = glade_project_new_widget_name (menued->project, prefix);
+	g_free (prefix);
+
+	return name;
+}
+
+/* This returns TRUE id the item in the given row is a parent, or FALSE
+   if the row doesn't exist or isn't a parent. */
+static gboolean
+is_parent (GladeMenuEditor *menued,
+	   gint row)
+{
+	GtkCList *clist;
+	GbMenuItemData *item, *next_item;
+
+	clist = GTK_CLIST (menued->clist);
+	if (row < 0 || row >= clist->rows - 1)
+		return FALSE;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row);
+	next_item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row + 1);
+	if (next_item->level > item->level)
+		return TRUE;
+	return FALSE;
+}
+
+/* This returns the default 'activate' handler name, given the name of the
+   item. The returned string should be freed at some point. */
+static gchar*
+generate_handler (GladeMenuEditor *menued, gint row, gchar *label, gchar *name)
+{
+	gchar *handler, *start = "on_", *end = "_activate";
+
+	/* For empty labels, i.e. separators, and items with submenus, there is no
+	   handler by default. */
+	if (label == NULL || label[0] == '\0' || is_parent (menued, row))
+		return NULL;
+
+	handler = g_malloc (strlen (name) + strlen (start) + strlen (end) + 1);
+	strcpy (handler, start);
+	strcat (handler, name);
+	strcat (handler, end);
+
+	return handler;
+}
+
+/**
+ * This shows the properties of the item currently selected in the clist.
+ */
+static void
+show_item_properties (GladeMenuEditor *menued)
+{
+	GbMenuItemData *item;
+	GtkWidget *clist;
+
+	clist = menued->clist;
+	item = get_selected_item (menued);
+	if (item == NULL)
+		return;
+
+	menued->updating_widgets = TRUE;
+
+	/* Now set them to the item's properties. */
+	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry),
+			get_stock_item_label (menued, item->stock_item_index));
+#if 0
+	g_print ("Setting label_entry to: %s\n", item->label);
+#endif
+	set_entry_text (GTK_ENTRY (menued->label_entry), item->label);
+#if 0
+	g_print ("Setting name_entry to: %s\n", item->name);
+#endif
+	set_entry_text (GTK_ENTRY (menued->name_entry), item->name);
+#if 0
+	g_print ("Setting handler_entry to: %s\n", item->handler);
+#endif
+	set_entry_text (GTK_ENTRY (menued->handler_entry), item->handler);
+	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
+			item->icon);
+	set_entry_text (GTK_ENTRY (menued->tooltip_entry), item->tooltip);
+
+	if (item->type == GB_MENU_ITEM_NORMAL) {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
+		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
+	} else if (item->type == GB_MENU_ITEM_CHECK) {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->check_radiobutton), TRUE);
+		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
+	} else {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->radio_radiobutton), TRUE);
+		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry),
+				item->group ? item->group->name : item->name);
+	}
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->state_togglebutton), item->active);
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), (item->modifiers & GDK_CONTROL_MASK) ? TRUE : FALSE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), (item->modifiers & GDK_SHIFT_MASK) ? TRUE : FALSE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), (item->modifiers & GDK_MOD1_MASK) ? TRUE : FALSE);
+	set_entry_text (GTK_ENTRY (menued->accel_key_entry),
+			item->key ? item->key : "");
+
+	update_radio_groups (menued);
+
+	menued->updating_widgets = FALSE;
+}
+
+/* This returns a copy of the given property string, or NULL if it is an
+   empty string. */
+static gchar*
+copy_item_property (gchar *property)
+{
+	if (property[0] == '\0')
+		return NULL;
+	return g_strdup (property);
+}
+
+/* This checks if the new value is different to the old, but an empty string
+   in new is taken to be equal to NULL as well. */
+static gboolean
+item_property_changed (gchar *new, gchar *old)
+{
+	if (old == NULL)
+		return (new == NULL || new[0] == '\0') ? FALSE : TRUE;
+	if (new == NULL)
+		return TRUE;
+	if (!strcmp (old, new))
+		return FALSE;
+	return TRUE;
+}
+
+/**
+ * This makes sure the default handlers are updated as items are moved around.
+ */
+static void
+check_generated_handlers (GladeMenuEditor *menued)
+{
+	GtkCList *clist;
+	GbMenuItemData *item;
+	gint row;
+	gchar *handler;
+
+	clist = GTK_CLIST (menued->clist);
+	for (row = 0; row < clist->rows; row++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row);
+		if (item->generate_handler) {
+			handler = generate_handler (menued, row, item->label, item->name);
+			if (item_property_changed (handler, item->handler)) {
+				g_free (item->handler);
+				item->handler = handler;
+				gtk_clist_set_text (clist, row, HANDLER_COLUMN, handler);
+			}
+			else {
+				g_free (handler);
+			}
+		}
+	}
+}
+
+static GbMenuItemData *
+find_group_item (GladeMenuEditor *menued, char *group_name)
+{
+	gint rows, row;
+
+	if (!group_name || !group_name[0])
+		return NULL;
+
+	rows = GTK_CLIST (menued->clist)->rows;
+
+	for (row = 0; row < rows; row++) {
+		GbMenuItemData *item;
+		item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+
+		if (item->name && !strcmp (item->name, group_name))
+			return item;
+	}
+
+	return NULL;
+}
+
+/* This updates the currently selected item in the clist, updating each field
+   if it is different to the settings in the form elements. */
+static void
+update_current_item (GladeMenuEditor * menued)
+{
+	GbMenuItemData *item, *group_item;
+	GtkCList *clist;
+	gchar *name, *label, *handler, *tooltip, *group_name, *key;
+	gchar *icon;
+	GbMenuItemType type;
+	gint row;
+	guint8 modifiers;
+	gboolean active, update_accelerator = FALSE;
+
+	clist = GTK_CLIST (menued->clist);
+	row = get_selected_row (menued);
+	if (row == -1)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist),
+							  row);
+
+	name = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->name_entry));
+	if (item_property_changed (name, item->name)) {
+		g_free (item->name);
+		item->name = copy_item_property (name);
+		gtk_clist_set_text (clist, row, NAME_COLUMN,
+				    item->name ? item->name : "");
+	}
+
+	label = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->label_entry));
+	if (item_property_changed (label, item->label)) {
+		g_free (item->label);
+		item->label = copy_item_property (label);
+		gtk_clist_set_text (clist, row, LABEL_COLUMN,
+				    item->label ? item->label : GLADE_MENU_EDITOR_SEPARATOR);
+	}
+
+	handler = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->handler_entry));
+	if (item_property_changed (handler, item->handler)) {
+		g_free (item->handler);
+		item->handler = copy_item_property (handler);
+		gtk_clist_set_text (clist, row, HANDLER_COLUMN,
+				    item->handler ? item->handler : "");
+
+		/* This is a flag to indicate that the last_mod_time should be set when
+		   the 'Apply' button is clicked. */
+		item->last_mod_time = (time_t) -2;
+	}
+
+	icon = (gchar*) gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
+	if (item_property_changed (icon, item->icon)) {
+		g_free (item->icon);
+		item->icon = copy_item_property (icon);
+		gtk_clist_set_text (clist, row, ICON_COLUMN,
+				    item->icon ? item->icon : "");
+	}
+
+	tooltip = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->tooltip_entry));
+	if (item_property_changed (tooltip, item->tooltip)) {
+		g_free (item->tooltip);
+		item->tooltip = copy_item_property (tooltip);
+	}
+
+	if (GTK_TOGGLE_BUTTON (menued->normal_radiobutton)->active)
+		type = GB_MENU_ITEM_NORMAL;
+	else if (GTK_TOGGLE_BUTTON (menued->check_radiobutton)->active)
+		type = GB_MENU_ITEM_CHECK;
+	else
+		type = GB_MENU_ITEM_RADIO;
+	if (item->type != type) {
+		/* If the item is changing from a radio item to something else, make
+		   sure other items in the same group no longer point to it. */
+		if (item->type == GB_MENU_ITEM_RADIO)
+			remove_from_radio_group (menued, item);
+
+		item->type = type;
+		if (type == GB_MENU_ITEM_NORMAL)
+			gtk_clist_set_text (clist, row, TYPE_COLUMN, "");
+		else if (type == GB_MENU_ITEM_CHECK)
+			gtk_clist_set_text (clist, row, TYPE_COLUMN, _("Check"));
+		else if (type == GB_MENU_ITEM_RADIO)
+			gtk_clist_set_text (clist, row, TYPE_COLUMN, _("Radio"));
+	}
+
+	active = GTK_TOGGLE_BUTTON (menued->state_togglebutton)->active	? TRUE : FALSE;
+	if (active != item->active) {
+		item->active = active;
+		gtk_clist_set_text (clist, row, ACTIVE_COLUMN, active ? _("Yes") : "");
+	}
+
+	group_name = (gchar*) gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry));
+	group_item = find_group_item (menued, group_name);
+	if (group_item != item->group) {
+		char *group_text = group_item ? group_item->name : item->name;
+		if (item->type != GB_MENU_ITEM_RADIO)
+			group_text = NULL;
+		item->group = group_item;
+		gtk_clist_set_text (clist, row, GROUP_COLUMN,
+				    group_text ? group_text : "");
+	}
+
+	key = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->accel_key_entry));
+	if (item_property_changed (key, item->key)) {
+		g_free (item->key);
+		item->key = copy_item_property (key);
+		update_accelerator = TRUE;
+	}
+
+	modifiers = 0;
+	if (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton)->active)
+		modifiers |= GDK_CONTROL_MASK;
+	if (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton)->active)
+		modifiers |= GDK_SHIFT_MASK;
+	if (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton)->active)
+		modifiers |= GDK_MOD1_MASK;
+	if (modifiers != item->modifiers) {
+		item->modifiers = modifiers;
+		update_accelerator = TRUE;
+	}
+
+	if (update_accelerator)
+		gtk_clist_set_text (clist, row, ACCEL_COLUMN,
+				    get_accel_string (item->key, item->modifiers));
+
+	set_interface_state (menued);
+}
+
+/* This makes sure the given row is visible. */
+static void
+ensure_visible (GtkWidget *clist, gint row)
+{
+	if (gtk_clist_row_is_visible (GTK_CLIST (clist), row) != GTK_VISIBILITY_FULL)
+		gtk_clist_moveto(GTK_CLIST(clist), row, -1, 0.5, 0);
+}
+
+/**
+ * This adds the item to the clist at the given position.
+ */
+static void
+insert_item (GtkCList *clist, GbMenuItemData *item, gint row)
+{
+	gchar *rowdata[N_COLUMNS];
+
+	/* Empty labels are understood to be separators. */
+	if (item->label && strlen (item->label) > 0)
+		rowdata[LABEL_COLUMN] = item->label;
+	else
+		rowdata[LABEL_COLUMN] = GLADE_MENU_EDITOR_SEPARATOR;
+	if (item->type == GB_MENU_ITEM_NORMAL)
+		rowdata[TYPE_COLUMN] = "";
+	else if (item->type == GB_MENU_ITEM_CHECK)
+		rowdata[TYPE_COLUMN] = _("Check");
+	else if (item->type == GB_MENU_ITEM_RADIO)
+		rowdata[TYPE_COLUMN] = _("Radio");
+	rowdata[ACCEL_COLUMN] = get_accel_string (item->key, item->modifiers);
+	rowdata[NAME_COLUMN] = item->name ? item->name : "";
+	rowdata[HANDLER_COLUMN] = item->handler ? item->handler : "";
+	rowdata[ICON_COLUMN] = item->icon ? item->icon : "";
+	rowdata[ACTIVE_COLUMN] = item->active ? _("Yes") : "";
+	rowdata[GROUP_COLUMN] = item->group ? item->group->name : item->name;
+	if (item->type != GB_MENU_ITEM_RADIO || !rowdata[GROUP_COLUMN])
+		rowdata[GROUP_COLUMN] = "";
+
+	if (row >= 0)
+		gtk_clist_insert (clist, row, rowdata);
+	else
+		row = gtk_clist_append (GTK_CLIST (clist), rowdata);
+
+	gtk_clist_set_row_data (GTK_CLIST (clist), row, item);
+	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GLADE_MENU_EDITOR_INDENT);
+}
+
+/**
+ * This inserts the given list of items at the given position in the clist.
+ */
+static void
+insert_items (GtkWidget *clist, GList *items, gint row)
+{
+	GbMenuItemData *item;
+
+	for (; items; items = items->next) {
+		item = (GbMenuItemData *) items->data;
+		insert_item (GTK_CLIST (clist), item, row++);
+	}
+}
+
+/**
+ * This adds a new menuitem. If separator is FALSE, it adds a normal item
+ * with the label 'New Item'. If separator is TRUE it adds a separator.
+ * It is added to the clist beneath the currently selected item, or at the
+ * end of the list if no item is selected. If as_child is TRUE it adds the
+ * item as a child of the selected item, else it adds it as a sibling.
+ */
+static void
+add_item (GladeMenuEditor *menued, gboolean as_child, gboolean separator)
+{
+	GbMenuItemData *item, *selected_item;
+	GtkWidget *clist;
+	gint row;
+
+	item = g_new0 (GbMenuItemData, 1);
+	item->stock_item_index = 0;
+
+	if (separator) {
+		item->label = NULL;
+		item->name = glade_project_new_widget_name (menued->project, "separator");
+	} else {
+		item->label = glade_project_new_widget_name (menued->project, "item");
+		item->name = g_strdup (item->label);
+	}
+
+	item->handler = generate_handler (menued, -1, item->label, item->name);
+	/* This is a flag to indicate that the last_mod_time should be set when
+	   the 'Apply' button is clicked. */
+	item->last_mod_time = (time_t) -2;
+	item->icon = NULL;
+	item->tooltip = NULL;
+	item->type = GB_MENU_ITEM_NORMAL;
+	item->active = FALSE;
+	item->group = NULL;
+	item->modifiers = 0;
+	item->key = NULL;
+	item->level = 0;
+	item->generate_name = TRUE;
+	item->generate_handler = TRUE;
+
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row != -1) {
+		selected_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+		item->level = selected_item->level + (as_child ? 1 : 0);
+		insert_item (GTK_CLIST (clist), item, row + 1);
+		gtk_clist_select_row (GTK_CLIST (clist), row + 1, 0);
+		ensure_visible (clist, row + 1);
+	} else {
+		item->level = 0;
+		insert_item (GTK_CLIST (clist), item, -1);
+		gtk_clist_select_row (GTK_CLIST (clist), GTK_CLIST (clist)->rows - 1, 0);
+		ensure_visible (clist, GTK_CLIST (clist)->rows - 1);
+	}
+
+	set_interface_state (menued);
+	gtk_widget_grab_focus (menued->label_entry);
+	gtk_editable_select_region (GTK_EDITABLE (menued->label_entry), 0, -1);
+}
+
+/**
+ * This removes an item and its children from the clist, and returns
+ * a list of the removed items.
+ */
+static GList *
+remove_item_and_children (GtkWidget *clist, gint row)
+{
+	GList *items = NULL;
+	GbMenuItemData *item;
+	gint level;
+
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	level = item->level;
+	items = g_list_append (items, item);
+	gtk_clist_remove (GTK_CLIST (clist), row);
+
+	while (row < GTK_CLIST (clist)->rows) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+		if (item->level > level) {
+			items = g_list_append (items, item);
+			gtk_clist_remove (GTK_CLIST (clist), row);
+		}
+		else
+			break;
+	}
+	return items;
+}
+
+static void
+glade_menu_editor_free_item (GbMenuItemData *item)
+{
+#if 0
+	g_free (item->name);
+	g_free (item->label);
+	g_free (item->handler);
+	g_free (item->icon);
+	g_free (item->tooltip);
+	g_free (item->key);
+
+	if (item->wdata)
+		glade_widget_data_free (item->wdata);
+
+	g_free (item);
+#endif
+}
+
+
+/**************************************************************************
+ * Signal Handlers
+ **************************************************************************/
+
+static void
+on_clist_select_row (GtkWidget * clist,
+		     gint row,
+		     gint column,
+		     GdkEventButton * event,
+		     gpointer user_data)
+{
+	GladeMenuEditor *menued;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (clist));
+
+	show_item_properties (menued);
+
+	if (event && !GTK_WIDGET_HAS_FOCUS (clist))
+		gtk_widget_grab_focus (clist);
+
+	set_interface_state (menued);
+}
+
+static void
+on_clist_unselect_row (GtkWidget * clist,
+		       gint row,
+		       gint column,
+		       GdkEventButton * event,
+		       gpointer user_data)
+{
+	GladeMenuEditor *menued;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (clist));
+
+	clear_form (menued, FALSE);
+
+	if (event && !GTK_WIDGET_HAS_FOCUS (clist))
+		gtk_widget_grab_focus (clist);
+
+	set_interface_state (menued);
+}
+
+/* This will only call update_current_item if the text is different to the
+   corresponding item field, since we don't want to propogate updates when
+   we are setting the entry. */
+static void
+on_entry_changed (GtkWidget *entry, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkCList *clist;
+	GbMenuItemData *item;
+	gchar *text, *item_text;
+	gboolean changed = FALSE;
+	gint row;
+
+	g_debug(("In on_entry_changed\n"));
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
+
+	/* If we are setting the widget values, just return. */
+	if (menued->updating_widgets)
+		return;
+
+	clist = GTK_CLIST (menued->clist);
+	row = get_selected_row (menued);
+
+	if (row == -1)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
+
+	/* put the new text on the "text" variable */
+	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (entry));
+
+	/* put the old text on the "item_text" variable */
+	if (entry == menued->label_entry) {
+		item_text = item->label;
+	} else if (entry == menued->name_entry) {    
+		item_text = item->name;
+	} else if (entry == menued->handler_entry) {
+		item_text = item->handler;
+	} else if (entry == GTK_COMBO (menued->icon_widget)->entry) {
+		/* If the user selects the 'None' item from the combo, we reset the
+		   text to "" and return. This callback will be called again. */
+		if (!strcmp (text, _("None"))) {
+			set_entry_text (GTK_ENTRY (entry), "");
+			return;
+		}
+
+		item_text = item->icon;
+	} else if (entry == menued->tooltip_entry) {
+		item_text = item->tooltip;
+	} else if (entry == GTK_COMBO (menued->group_combo)->entry) {
+		item_text = item->group ? item->group->name : item->name;
+	} else if (entry == menued->accel_key_entry) {
+		item_text = item->key;
+	} else
+		return;
+
+	/* if the text has not changed, then just return */
+	if (item_text == NULL && *text != 0)
+		changed = TRUE;
+	else if (item_text && text && strcmp (text, item_text) != 0)
+		changed = TRUE;
+
+	if (!changed)
+		return;
+	
+	if (entry == menued->label_entry) {
+		if (item->generate_name) {
+			/*** glade_project_release_widget_name (menued->project, item->name); ***/
+			g_free (item->name);
+			item->name = generate_name (menued, text);
+			set_entry_text (GTK_ENTRY (menued->name_entry),
+					item->name ? item->name : "");
+			gtk_clist_set_text (clist, row, NAME_COLUMN,
+					    item->name ? item->name : "");
+			if (item->generate_handler) {
+				g_free (item->handler);
+					
+				item->handler = generate_handler (menued, row, text,
+								  item->name);
+				set_entry_text (GTK_ENTRY (menued->handler_entry),
+						item->handler ? item->handler : "");
+				gtk_clist_set_text (clist, row, HANDLER_COLUMN,
+						    item->handler ? item->handler : "");
+			}
+		}
+	} else if (entry == menued->name_entry) {
+		item->generate_name = FALSE;
+		if (item->generate_handler) {
+			g_free (item->handler);
+			item->handler = generate_handler (menued, row, item->label,
+							  text);
+			set_entry_text (GTK_ENTRY (menued->handler_entry),
+					item->handler ? item->handler : "");
+			gtk_clist_set_text (clist, row, HANDLER_COLUMN,
+					    item->handler ? item->handler : "");
+		}
+	} else if (entry == menued->handler_entry) {
+		item->generate_handler = FALSE;
+	}
+
+	update_current_item (menued);
+	set_interface_state (menued);
+}
 
 /* FIXME: This is mostly a temporary hack until GtkEntry is fixed in GTK+
    2.0.x so we don't get "changed" twice when we call gtk_entry_set_text().
    Though we also need this to set it to "" when NULL is passed in. */
 static void
-set_entry_text (GtkEntry *entry,
-		const gchar *text)
+set_entry_text (GtkEntry *entry, const gchar *text)
 {
 	gint tmp_pos;
 
@@ -314,21 +1271,911 @@ set_entry_text (GtkEntry *entry,
 	gtk_editable_insert_text (editable, text, strlen (text), &tmp_pos);
 }
 
+/* This will only call update_current_item if the text is different to the
+   corresponding item field, since we don't want to propogate updates when
+   we are setting the entry. */
+static void
+on_stock_item_entry_changed (GtkWidget * entry,
+			     gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkCList *clist;
+	GbMenuItemData *item;
+	gint row;
+	GtkListItem *listitem;
+	gint stock_item_index = 0;
+	const gchar *text;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
+
+	text = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry));
+	/* FIXME GTK+ 1.3.x bug workaround. It emits "changed" twice, once when the
+	   existing text is deleted. So we just return if the text is empty. */
+	if (text[0] == '\0')
+		return;
+
+	clist = GTK_CLIST (menued->clist);
+	row = get_selected_row (menued);
+	if (row == -1)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist),
+							  row);
+
+	/* Find the index of the selected item. */
+	listitem = glade_util_gtk_combo_find (GTK_COMBO (menued->stock_combo));
+	g_return_if_fail (listitem != NULL);
+
+	if (menued->gnome_support) {
+#ifdef USE_GNOME
+		stock_item_index = g_list_index (GTK_LIST (GTK_COMBO (menued->stock_combo)->list)->children, listitem);
+#endif
+	}
+	else {
+		stock_item_index = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (listitem), GladeMenuEditorIndexKey));
+	}
+
+	if (item->stock_item_index != stock_item_index) {
+		item->stock_item_index = stock_item_index;
+
+		/* If the stock item is reset to 'None', get a new item name, and reset
+		   generate_name/handler to TRUE. */
+		if (stock_item_index == 0) {
+			item->generate_name = TRUE;
+			item->generate_handler = TRUE;
+
+			item->label = glade_project_new_widget_name (menued->project, "item");
+			item->name = g_strdup (item->label);
+			item->handler = generate_handler (menued, row, item->label,
+							  item->name);
+			show_item_properties (menued);
+
+			gtk_clist_set_text (clist, row, LABEL_COLUMN,
+					    item->label ? item->label : GLADE_MENU_EDITOR_SEPARATOR);
+			gtk_clist_set_text (clist, row, NAME_COLUMN,
+					    item->name ? item->name : "");
+			gtk_clist_set_text (clist, row, HANDLER_COLUMN,
+					    item->handler ? item->handler : "");
+		}
+		else {
+			/* These will trigger callbacks, and will generate the name
+			   and handler if appropriate. */
+			set_entry_text (GTK_ENTRY (menued->label_entry),
+					gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry)));
+
+			/* Stock menu items are all normal items. */
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
+			set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
+
+			/* Reset the accelerator keys, as that is handled automatically. */
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), FALSE);
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), FALSE);
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), FALSE);
+			set_entry_text (GTK_ENTRY (menued->accel_key_entry), "");
+		}
+	}
+
+	set_interface_state (menued);
+}
+
+static gboolean
+on_label_entry_key_press (GtkWidget *widget,
+			  GdkEventKey *event,
+			  gpointer user_data)
+{
+	GladeMenuEditor *menued;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (widget));
+
+	/* If the Return key is pressed, we add a new item beneath the selected item.
+	   This makes it very easy to add several menus. If the Control key is
+	   pressed, we add the item as a child, otherwise we add it as a sibling. */
+	if (event->keyval == GDK_Return) {
+		if (event->state & GDK_CONTROL_MASK) {
+			add_item (menued, TRUE, FALSE);
+			/* Since we are added a child, we may need to set the parent's
+			   handler to NULL if it has been auto-generated. */
+			check_generated_handlers (menued);
+		} else {
+			add_item (menued, FALSE, FALSE);
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
 
 static void
-glade_menu_editor_init (GladeMenuEditor * menued)
+on_radiobutton_toggled (GtkWidget *togglebutton, gpointer user_data)
 {
-	menued->keys_dialog = NULL;
-	menued->project = NULL;
-	menued->menu = NULL;
-	menued->updating_widgets = FALSE;
-	menued->gnome_support = FALSE;
+	GladeMenuEditor *menued;
+	GbMenuItemData *item;
+	GbMenuItemType type = 0;
+	gboolean changed = FALSE;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
+	item = get_selected_item (menued);
+	if (item == NULL)
+		return;
+
+	if (togglebutton == menued->normal_radiobutton)
+		type = GB_MENU_ITEM_NORMAL;
+	else if (togglebutton == menued->check_radiobutton)
+		type = GB_MENU_ITEM_CHECK;
+	else if (togglebutton == menued->radio_radiobutton)
+		type = GB_MENU_ITEM_RADIO;
+
+	if (GTK_TOGGLE_BUTTON (togglebutton)->active) {
+		if (type != item->type)
+			changed = TRUE;
+	} else {
+		if (type == item->type)
+			changed = TRUE;
+	}
+
+	if (changed) {
+		update_current_item (menued);
+		set_interface_state (menued);
+	}
+}
+
+static void
+on_checkbutton_toggled (GtkWidget *togglebutton, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GbMenuItemData *item;
+	guint active;
+	guint8 currently_active = 0;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
+	active = GTK_TOGGLE_BUTTON (togglebutton)->active;
+	item = get_selected_item (menued);
+	if (item == NULL)
+		return;
+	if (togglebutton == menued->accel_ctrl_checkbutton)
+		currently_active = item->modifiers & GDK_CONTROL_MASK;
+	if (togglebutton == menued->accel_shift_checkbutton)
+		currently_active = item->modifiers & GDK_SHIFT_MASK;
+	if (togglebutton == menued->accel_alt_checkbutton)
+		currently_active = item->modifiers & GDK_MOD1_MASK;
+
+	if ((active && !currently_active) || (!active && currently_active)) {
+		update_current_item (menued);
+		set_interface_state (menued);
+	}
+}
+
+static void
+on_state_button_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GbMenuItemData *item;
+	GtkWidget *label;
+	guint active;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
+	active = GTK_TOGGLE_BUTTON (togglebutton)->active;
+	label = GTK_BIN (togglebutton)->child;
+	gtk_label_set_text (GTK_LABEL (label), active ? _("Yes") : _("No"));
+
+	item = get_selected_item (menued);
+	if (item == NULL)
+		return;
+	if ((item->active && !active) || (!item->active && active))
+		update_current_item (menued);
+}
+
+static void
+on_accel_key_button_clicked (GtkButton *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	gint response;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+
+	if (menued->keys_dialog == NULL) {
+		menued->keys_dialog = glade_keys_dialog_new ();
+		g_signal_connect (G_OBJECT (menued->keys_dialog), "delete_event",
+				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+	}
+
+	response = gtk_dialog_run (GTK_DIALOG (menued->keys_dialog));
+	if (response == GTK_RESPONSE_OK) {
+		gchar *key_sym;
+
+		key_sym = glade_keys_dialog_get_selected_key_symbol (GLADE_KEYS_DIALOG (menued->keys_dialog));
+		if (key_sym)
+			set_entry_text (GTK_ENTRY (menued->accel_key_entry), key_sym);
+	}
+	gtk_widget_hide (menued->keys_dialog);
+}
+
+static void
+on_up_button_clicked (GtkButton *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *clist;
+	GbMenuItemData *item, *prev_item;
+	gint row, new_row, i, level;
+	GList *items;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row == -1 || row == 0)
+		return;
+
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	level = item->level;
+
+	/* Find the new position of the item and its children. */
+	new_row = -1;
+	for (i = row - 1; i >= 0; i--) {
+		prev_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist),
+								       i);
+		if (prev_item->level == level) {
+			new_row = i;
+			break;
+		}
+		else if (prev_item->level < level)
+			break;
+	}
+
+	/* Return if we can't move the item up. */
+	if (new_row == -1)
+		return;
+
+	/* Remove item and children. */
+	items = remove_item_and_children (clist, row);
+
+	/* Now insert at new position. */
+	insert_items (clist, items, new_row);
+	ensure_visible (clist, new_row);
+
+	g_list_free (items);
+
+	/* Make sure all items in the group point to the first one. */
+	normalize_radio_groups (menued);
+
+	gtk_clist_select_row (GTK_CLIST (clist), new_row, 0);
+	set_interface_state (menued);
+}
+
+static void
+on_down_button_clicked (GtkButton *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *clist;
+	GbMenuItemData *item, *next_item;
+	gint row, new_row, i, level;
+	gboolean found_next_item;
+	GList *items;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row == -1 || row == GTK_CLIST (clist)->rows - 1)
+		return;
+
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	level = item->level;
+
+	/* Find the new position of the item and its children. */
+	new_row = -1;
+	found_next_item = FALSE;
+	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
+		next_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
+		/* We have to skip all the children of the next item as well. */
+		if (next_item->level == level) {
+			if (found_next_item) {
+				new_row = i;
+				break;
+			}
+			else
+				found_next_item = TRUE;
+		}
+		else if (next_item->level < level)
+			break;
+	}
+
+	/* Return if we can't move the item up. */
+	if (new_row == -1) {
+		if (found_next_item)
+			new_row = i;
+		else
+			return;
+	}
+
+	/* Remove item and children. */
+	items = remove_item_and_children (clist, row);
+	/* Remember that the new_row needs to be shifted because we deleted items. */
+	new_row -= g_list_length (items);
+
+	/* Now insert at new position. */
+	insert_items (clist, items, new_row);
+	ensure_visible (clist, new_row);
+
+	g_list_free (items);
+
+	/* Make sure all items in the group point to the first one. */
+	normalize_radio_groups (menued);
+
+	gtk_clist_select_row (GTK_CLIST (clist), new_row, 0);
+	set_interface_state (menued);
+}
+
+static void
+on_left_button_clicked (GtkButton *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *clist;
+	GbMenuItemData *item;
+	gint row, i, level;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row == -1)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	level = item->level;
+	if (item->level > 0)
+		item->level--;
+	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GLADE_MENU_EDITOR_INDENT);
+
+	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
+		if (item->level <= level)
+			break;
+		item->level--;
+		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
+				     item->level * GLADE_MENU_EDITOR_INDENT);
+	}
+	check_generated_handlers (menued);
+	set_interface_state (menued);
+}
+
+static void
+on_right_button_clicked (GtkButton *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *clist;
+	GbMenuItemData *item, *prev_item;
+	gint row, i, level;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row == -1 || row == 0)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	prev_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist),
+							       row - 1);
+	if (prev_item->level < item->level)
+		return;
+
+	level = item->level;
+	item->level++;
+	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GLADE_MENU_EDITOR_INDENT);
+
+	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
+		if (item->level <= level)
+			break;
+		item->level++;
+		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
+				     item->level * GLADE_MENU_EDITOR_INDENT);
+	}
+
+	check_generated_handlers (menued);
+	set_interface_state (menued);
+}
+
+static void
+on_add_button_clicked (GtkWidget *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	add_item (menued, FALSE, FALSE);
+}
+
+static void
+on_add_child_button_clicked (GtkWidget *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	add_item (menued, TRUE, FALSE);
+}
+
+static void
+on_add_separator_button_clicked (GtkWidget *button, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
+	add_item (menued, FALSE, TRUE);
+}
+
+static void
+on_delete_button_clicked (GtkWidget *widget, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *clist;
+	GbMenuItemData *item;
+	gint row, level, i;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
+	clist = menued->clist;
+	row = get_selected_row (menued);
+	if (row == -1)
+		return;
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
+	level = item->level;
+
+	gtk_clist_remove (GTK_CLIST (clist), row);
+
+	/* Update any other items in the same radio group. */
+	if (item->type == GB_MENU_ITEM_RADIO)
+		remove_from_radio_group (menued, item);
+
+	glade_menu_editor_free_item (item);
+
+	/* Move all children up a level */
+	for (i = row; i < GTK_CLIST (clist)->rows; i++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
+		if (item->level <= level)
+			break;
+		item->level--;
+		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
+				     item->level * GLADE_MENU_EDITOR_INDENT);
+	}
+
+	gtk_clist_select_row (GTK_CLIST (clist), row, 0);
+	set_interface_state (menued);
+}
+
+static gboolean
+on_key_press (GtkWidget * widget,
+	      GdkEventKey * event,
+	      gpointer user_data)
+{
+	switch (event->keyval) {
+	case GDK_Delete:
+		on_delete_button_clicked (widget, NULL);
+		break;
+	}
+
+	return FALSE;
+}
+
+/**************************************************************************
+ * File Selection for selecting icon xpm files.
+ **************************************************************************/
+static void
+on_icon_filesel_ok (GtkWidget *widget, GladeMenuEditor *menued)
+{
+	GtkWidget *filesel;
+	const gchar *filename;
+	gint filename_len;
+
+	filesel = gtk_widget_get_toplevel (widget);
+	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
+
+	/* If the filename ends in '/' it means the user wants to reset the
+	   pixmap to NULL. */
+	filename_len = strlen (filename);
+	if (filename_len > 0 && filename[filename_len - 1] == '/')
+		filename = "";
+
+	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
+			filename);
+
+	gtk_widget_destroy (filesel);
+}
+
+static void
+on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
+{
+	GladeMenuEditor *menued;
+	GtkWidget *filesel;
+	const gchar *icon;
+
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
+
+	filesel = glade_util_file_selection_new (_("Select icon"), GTK_WINDOW (menued));
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			  "clicked", G_CALLBACK (on_icon_filesel_ok),
+			  menued);
+
+	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
+	gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), icon);
+
+	gtk_widget_show (filesel);
+}
+
+/* This checks if the given icon string is a stock icon name, and if it is
+   it returns the stock ID instead. If not, it just returns the icon. */
+static gchar *
+get_stock_id_from_icon_name (GladeMenuEditor *menued, gchar *icon)
+{
+	GList *clist;
+
+	if (!icon || *icon == '\0')
+		return NULL;
+
+	clist = GTK_LIST (GTK_COMBO (menued->icon_widget)->list)->children;
+
+	while (clist && clist->data) {
+		gchar* ltext = glade_util_gtk_combo_func (GTK_LIST_ITEM (clist->data));
+		if (!ltext)
+			continue;
+		if (!strcmp (ltext, icon)) {
+			gchar *stock_id = gtk_object_get_data (GTK_OBJECT (clist->data),
+							       GladeMenuEditorStockIDKey);
+			return stock_id;
+		}
+		clist = clist->next;
+	}
+
+	return icon;
+}
+
+/* This creates a radio menu item using the appropriate radio group.
+   If the item's group is not NULL and doesn't points to the item itself,
+   then it will search the list of groups to find the group. If it can't find
+   a group, or it didn't have one it creates a new group.
+   If it creates a new group it adds this item to the list of groups. */
+static GtkWidget*
+create_radio_menu_item (GtkMenuShell *menu,
+			GbMenuItemData *item,
+			GHashTable *group_hash)
+{
+	GtkWidget *menuitem;
+	GSList *group = NULL;
+
+	if (item->group && item->group != item) {
+		GtkRadioMenuItem *group_widget = g_hash_table_lookup (group_hash,
+								      item->group);
+		if (group_widget)
+			group = gtk_radio_menu_item_get_group (group_widget);
+	}
+
+	menuitem = gtk_radio_menu_item_new (group);
+	if (!group)
+		g_hash_table_insert (group_hash, item, menuitem);
+
+	return menuitem;
+}
+
+/* This updates the menu, based on the settings in the menu editor.
+   It removes all the current children of the menu and recreates it.
+   Note that it has to reload all the xpm files for pixmaps, so its not
+   very efficient, but they're small so it shouldn't be too bad. */
+static void
+glade_menu_editor_update_menu (GladeMenuEditor *menued)
+{
+	GbMenuItemData *item;
+	GtkWidget *menuitem, *label, *prev_item = NULL, *child_menu;
+	GtkCList *clist;
+	GtkMenuShell *current_menu;
+	GList *menus;
+	GHashTable *group_hash;
+	gchar *child_name;
+	gint i, level;
+	/*** GbWidget *gbwidget;
+	GladeWidgetData *wdata; ***/
+	GtkAccelGroup *accel_group;
+	GtkWidget *pixmap = NULL;
+	gboolean use_pixmap_menu_item;
+	gchar *stock_id, *icon_name;
+#ifdef USE_GNOME
+	GnomeUIInfo *uiinfo;
+#endif
+
+	/* Remove existing children of the menu. Note that this will result in the
+	   old widget names being released, so we need to reserve the new names,
+	   even if they are the same. */
+	while (menued->menu->children) {
+		menuitem = menued->menu->children->data;
+		gtk_widget_destroy (menuitem);
+	}
+
+	/* FIXME: This seems to be necessary to re-initialise the menu. I don't know
+	   why. */
+	menued->menu->menu_flag = TRUE;
+
+	clist = GTK_CLIST (menued->clist);
+
+	/* Now reserve all the the new widget names. */
+	for (i = 0; i < clist->rows; i++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, i);
+
+		if (item->name && item->name[0])
+			; /*** glade_project_reserve_name (menued->project, item->name); ***/
+	}
+
+	/* Now add widgets according to the items in the menu editor clist. */
+	level = 0;
+	menus = g_list_append (NULL, menued->menu);
+	group_hash = g_hash_table_new (NULL, NULL);
+
+	/* Make sure all items in the group point to the first one. */
+	normalize_radio_groups (menued);
+
+	for (i = 0; i < clist->rows; i++) {
+		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, i);
+
+		icon_name = get_stock_id_from_icon_name (menued, item->icon);
+		stock_id = NULL;
+
+#if 0
+		/*** ***/
+		if (item->level > level) {
+			child_menu = gb_widget_new_full ("GtkMenu", FALSE, NULL, NULL, 0, 0,
+							 NULL, GB_CREATING, NULL);
+			child_name = g_strdup_printf ("%s_menu", prev_item->name);
+			gtk_widget_set_name (child_menu, child_name);
+			g_free (child_name);
+			level = item->level;
+			/* We use the menus GList as a stack, pushing menus onto the
+			   front. */
+			menus = g_list_prepend (menus, child_menu);
+			gtk_menu_item_set_submenu (GTK_MENU_ITEM (prev_item), child_menu);
+			tree_add_widget (child_menu);
+		}
+#endif
+		while (item->level < level) {
+			/* This removes/pops the first menu in the list. */
+			menus = g_list_remove_link (menus, menus);
+			level--;
+		}
+		current_menu = GTK_MENU_SHELL (menus->data);
+
+		if (item->label && strlen (item->label) > 0) {
+			label = gtk_accel_label_new ("");
+			gtk_label_set_text_with_mnemonic (GTK_LABEL (label), item->label);
+			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+			gtk_widget_show (label);
+
+			pixmap = NULL;
+			use_pixmap_menu_item = FALSE;
+
+			if (menued->gnome_support) {
+#ifdef USE_GNOME
+				if (item->stock_item_index) {
+					uiinfo = &GladeStockMenuItemValues[item->stock_item_index];
+					if (uiinfo->pixmap_type == GNOME_APP_PIXMAP_STOCK) {
+						pixmap = gtk_image_new_from_stock (uiinfo->pixmap_info,
+										   GTK_ICON_SIZE_MENU);
+						use_pixmap_menu_item = TRUE;
+					}
+				}
+#endif
+			}
+			else {
+				if (item->stock_item_index) {
+					stock_id = g_slist_nth_data (menued->stock_items,
+								     item->stock_item_index - 1);
+#if 0
+					g_print ("Stock ID for icon: %s\n", stock_id);
+#endif
+					pixmap = gtk_image_new_from_stock (stock_id,
+									   GTK_ICON_SIZE_MENU);
+					use_pixmap_menu_item = TRUE;
+				}
+			}
+
+#if 0
+			if (!item->stock_item_index && icon_name) {
+				pixmap = gb_widget_new ("GtkImage", NULL);
+				if (glade_util_check_is_stock_id (icon_name)) {
+					gtk_image_set_from_stock (GTK_IMAGE (pixmap), icon_name,
+								  GTK_ICON_SIZE_MENU);
+				}
+				else {
+					gtk_image_set_from_file (GTK_IMAGE (pixmap), icon_name);
+
+					/* Add the pixmap to the project, so the file is copied.
+					   It should be removed from the project in the menuitem
+					   GbWidget.destroy function. */
+					glade_project_add_pixmap (menued->project, icon_name);
+				}
+				gb_widget_set_child_name (pixmap, GladeChildMenuItemImage);
+				use_pixmap_menu_item = TRUE;
+			}
+#endif
+			
+			if (item->type == GB_MENU_ITEM_NORMAL) {
+				if (use_pixmap_menu_item) {
+					menuitem = gtk_image_menu_item_new ();
+					if (pixmap) {
+						gtk_widget_show (pixmap);
+						gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem),
+									       pixmap);
+					}
+				} else {
+					menuitem = gtk_menu_item_new ();
+				}
+				gtk_container_add (GTK_CONTAINER (menuitem), label);
+			} else if (item->type == GB_MENU_ITEM_CHECK) {
+				menuitem = gtk_check_menu_item_new ();
+				if (item->active)
+					gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem),
+									TRUE);
+				gtk_container_add (GTK_CONTAINER (menuitem), label);
+			} else {
+				menuitem = create_radio_menu_item (current_menu,
+								   item, group_hash);
+				if (item->active)
+					gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem),
+									TRUE);
+				gtk_container_add (GTK_CONTAINER (menuitem), label);
+			}
+
+			gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (label), menuitem);
+		} else {
+			/* This creates a separator. */
+			menuitem = gtk_menu_item_new ();
+		}
+		gtk_widget_show (menuitem);
+
+		/* Save the stock name and icon in the menuitem. */
+		if (item->stock_item_index) {
+			if (menued->gnome_support) {
+#ifdef USE_GNOME
+				gtk_object_set_data (GTK_OBJECT (menuitem),
+						     GladeMenuItemStockIndexKey,
+						     GINT_TO_POINTER (item->stock_item_index));
+#endif
+			} else {
+				gchar *stock_id;
+
+				stock_id = g_slist_nth_data (menued->stock_items,
+							     item->stock_item_index - 1);
+
+				gtk_object_set_data_full (GTK_OBJECT (menuitem),
+							  GLADE_MENU_ITEM_STOCK_ID_KEY,
+							  g_strdup (stock_id),
+							  g_free);
+			}
+		} else if (item->icon) {
+			gtk_object_set_data_full (GTK_OBJECT (pixmap), GLADE_ICON_KEY,
+						  g_strdup (icon_name), g_free);
+		}
+
+
+		/* Turn it into a GbWidget, and add the 'activate' handler and the
+		   accelerator. */
+		if (item->name == NULL || item->name[0] == '\0') {
+			g_free (item->name);
+			item->name = glade_project_new_widget_name (menued->project, "item");
+		}
+
+		/*** gbwidget = gb_widget_lookup_class (gtk_type_name (GTK_OBJECT_TYPE (menuitem)));
+
+		if (item->wdata)
+			wdata = glade_widget_data_copy (item->wdata);
+		else
+			wdata = glade_widget_data_new (gbwidget);
+
+		wdata->gbwidget = gbwidget;
+
+		gb_widget_create_from_full (menuitem, NULL, wdata);
+		gtk_widget_set_name (menuitem, item->name);
+
+		if (item->active)
+			wdata->flags |= GLADE_ACTIVE;
+		else
+			wdata->flags &= ~GLADE_ACTIVE;
+
+		g_free (wdata->tooltip);
+		wdata->tooltip = g_strdup (item->tooltip); ***/
+		/* FIXME: Should set tooltip? Or for Gnome install in appbar? */
+
+#if 0
+		/*** ***/
+		if (item->handler && strlen (item->handler) > 0) {
+			GladeSignal *signal = g_new (GladeSignal, 1);
+			signal->name = g_strdup ("activate");
+			signal->handler = g_strdup (item->handler);
+			signal->object = NULL;
+			signal->after = FALSE;
+			signal->data = NULL;
+
+			/* If the last mod time is set to the special value, we set it to
+			   the current time now. */
+			if (item->last_mod_time == (time_t) -2) {
+				item->last_mod_time = time (NULL);
+				if (item->last_mod_time == (time_t) -1)
+					g_warning ("Can't get current time");
+			}
+
+			signal->last_modification_time = item->last_mod_time;
+			wdata->signals = g_list_append (wdata->signals, signal);
+		}
+
+		if (item->key && strlen (item->key) > 0) {
+			GladeAccelerator *accel = g_new (GladeAccelerator, 1);
+			guint key;
+			accel->modifiers = item->modifiers;
+			accel->key = g_strdup (item->key);
+			accel->signal = g_strdup ("activate");
+			wdata->accelerators = g_list_append (wdata->accelerators, accel);
+
+			/* We can only add accelerators to menus, not menubars. */
+			if (GTK_IS_MENU (current_menu)) {
+				key = glade_keys_dialog_find_key (item->key);
+				accel_group = GTK_MENU (current_menu)->accel_group;
+				gtk_widget_add_accelerator (menuitem, "activate", accel_group,
+							    key, item->modifiers,
+							    GTK_ACCEL_VISIBLE);
+			}
+		}
+
+		if (menued->gnome_support) {
+#ifdef USE_GNOME
+			/* For stock menu items, we use the configured accelerator keys. */
+			if (GTK_IS_MENU (current_menu)
+			    && item->stock_item_index && uiinfo->accelerator_key != 0) {
+				accel_group = GTK_MENU (current_menu)->accel_group;
+				gtk_widget_add_accelerator (menuitem, "activate", accel_group,
+							    uiinfo->accelerator_key,
+							    uiinfo->ac_mods,
+							    GTK_ACCEL_VISIBLE);
+			}
+#endif
+		} else {
+			/* For stock menu items, we use the configured accelerator keys. */
+			if (GTK_IS_MENU (current_menu) && item->stock_item_index && stock_id) {
+				GtkStockItem item;
+
+				gtk_stock_lookup (stock_id, &item);
+				if (item.keyval) {
+					accel_group = GTK_MENU (current_menu)->accel_group;
+					gtk_widget_add_accelerator (menuitem, "activate",
+								    accel_group,
+								    item.keyval, item.modifier,
+								    GTK_ACCEL_VISIBLE);
+				}
+			}
+		}
+#endif
+		/* Add the menuitem to the current menu. */
+		gtk_menu_shell_append (current_menu, menuitem);
+		/*** tree_add_widget (menuitem); ***/
+		prev_item = menuitem;
+	}
+	g_list_free (menus);
+	g_hash_table_destroy (group_hash);
+
+	/* Make sure the displayed item is correct. */
+	show_item_properties (menued);
+}
+
+static void
+on_menu_editor_ok (GtkWidget *button, GladeMenuEditor *menued)
+{
+	glade_menu_editor_update_menu (menued);
+	gtk_widget_destroy (GTK_WIDGET (menued));
+}
+
+static void
+on_menu_editor_apply (GtkWidget *button, GladeMenuEditor *menued)
+{
+	glade_menu_editor_update_menu (menued);
+}
+
+static void
+on_menu_editor_close (GtkWidget *widget, GladeMenuEditor *menued)
+{
+	gtk_widget_destroy (GTK_WIDGET (menued));
 }
 
 
+/**************************************************************************
+ * Public functions
+ **************************************************************************/
+
 static void
-glade_menu_editor_construct (GladeMenuEditor * menued,
-			     GladeProject * project)
+glade_menu_editor_construct (GladeMenuEditor *menued,
+			     GladeProject *project)
 {
 	GtkWidget *vbox2, *vbox1, *scrolled_win;
 	GtkWidget *hbox1;
@@ -354,7 +2201,7 @@ glade_menu_editor_construct (GladeMenuEditor * menued,
 	GtkWidget *hbuttonbox1;
 	GtkWidget *listitem;
 	GtkTooltips *tooltips;
-	gchar *titles[GB_MENUED_NUM_COLS];
+	gchar *titles[N_COLUMNS];
 	gint row;
 	GSList *elem;
 	gchar *stock_id;
@@ -391,16 +2238,16 @@ glade_menu_editor_construct (GladeMenuEditor * menued,
 	gtk_widget_show (vbox1);
 	gtk_box_pack_start (GTK_BOX (hbox1), vbox1, TRUE, TRUE, 0);
 
-	titles[GLD_COL_LABEL]		= _("Label");
-	titles[GLD_COL_TYPE]		= _("Type");
-	titles[GLD_COL_ACCEL]		= _("Accelerator");
-	titles[GLD_COL_NAME]		= _("Name");
-	titles[GLD_COL_HANDLER]	= _("Handler");
-	titles[GLD_COL_ACTIVE]	= _("Active");
-	titles[GLD_COL_GROUP]		= _("Group");
-	titles[GLD_COL_ICON]		= _("Icon");
+	titles[LABEL_COLUMN]		= _("Label");
+	titles[TYPE_COLUMN]		= _("Type");
+	titles[ACCEL_COLUMN]		= _("Accelerator");
+	titles[NAME_COLUMN]		= _("Name");
+	titles[HANDLER_COLUMN]	= _("Handler");
+	titles[ACTIVE_COLUMN]	= _("Active");
+	titles[GROUP_COLUMN]		= _("Group");
+	titles[ICON_COLUMN]		= _("Icon");
 
-	menued->clist = gtk_clist_new_with_titles (GB_MENUED_NUM_COLS, titles);
+	menued->clist = gtk_clist_new_with_titles (N_COLUMNS, titles);
 	gtk_widget_show (menued->clist);
 	GTK_WIDGET_SET_FLAGS (menued->clist, GTK_CAN_FOCUS);
 	gtk_signal_connect (GTK_OBJECT (menued->clist), "key_press_event",
@@ -411,14 +2258,14 @@ glade_menu_editor_construct (GladeMenuEditor * menued,
 			    GTK_SIGNAL_FUNC (on_clist_select_row), NULL);
 	gtk_signal_connect (GTK_OBJECT (menued->clist), "unselect_row",
 			    GTK_SIGNAL_FUNC (on_clist_unselect_row), NULL);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_LABEL, 144);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_TYPE, 42);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_ACCEL, 120);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_NAME, 100);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_HANDLER, 172);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_ICON, 172);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_ACTIVE, 42);
-	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GLD_COL_GROUP, 75);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), LABEL_COLUMN, 144);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), TYPE_COLUMN, 42);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), ACCEL_COLUMN, 120);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), NAME_COLUMN, 100);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), HANDLER_COLUMN, 172);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), ICON_COLUMN, 172);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), ACTIVE_COLUMN, 42);
+	gtk_clist_set_column_width (GTK_CLIST (menued->clist), GROUP_COLUMN, 75);
 	gtk_clist_column_titles_show (GTK_CLIST (menued->clist));
 	gtk_clist_column_titles_passive (GTK_CLIST (menued->clist));
 
@@ -1142,1914 +2989,10 @@ glade_menu_editor_construct (GladeMenuEditor * menued,
 	set_interface_state (menued);
 }
 
-
-GtkWidget*
-glade_menu_editor_new         (GladeProject    *project,
-			       GtkMenuShell    *menu)
-{
-	GladeMenuEditor *menued;
-
-	menued = gtk_type_new (glade_menu_editor_get_type ());
-	glade_menu_editor_construct (menued, project);
-	glade_menu_editor_set_menu (menued, menu);
-
-	return GTK_WIDGET (menued);
-}
-
-static void
-glade_menu_editor_destroy (GtkObject *object)
-{
-	GladeMenuEditor *menued;
-	GSList *elem;
-
-	g_return_if_fail (object != NULL);
-	g_return_if_fail (GLADE_IS_MENU_EDITOR (object));
-
-	menued = GLADE_MENU_EDITOR (object);
-
-	/* Free all the GbMenuItemData elements & disconnect our destroy handler
-	   on the menu widget. */
-	glade_menu_editor_reset (menued);
-
-	if (menued->keys_dialog) {
-		gtk_widget_destroy (menued->keys_dialog);
-		menued->keys_dialog = NULL;
-	}
-
-	for (elem = menued->stock_items; elem; elem = elem->next)
-		g_free (elem->data);
-	g_slist_free (menued->stock_items);
-	menued->stock_items = NULL;
-}
-
-
-/**************************************************************************
- * Signal Handlers
- **************************************************************************/
-
-static void
-on_clist_select_row (GtkWidget * clist,
-		     gint row,
-		     gint column,
-		     GdkEventButton * event,
-		     gpointer user_data)
-{
-	GladeMenuEditor *menued;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (clist));
-
-	show_item_properties (menued);
-
-	if (event && !GTK_WIDGET_HAS_FOCUS (clist))
-		gtk_widget_grab_focus (clist);
-
-	set_interface_state (menued);
-}
-
-static void
-on_clist_unselect_row (GtkWidget * clist,
-		       gint row,
-		       gint column,
-		       GdkEventButton * event,
-		       gpointer user_data)
-{
-	GladeMenuEditor *menued;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (clist));
-
-	clear_form (menued, FALSE);
-
-	if (event && !GTK_WIDGET_HAS_FOCUS (clist))
-		gtk_widget_grab_focus (clist);
-
-	set_interface_state (menued);
-}
-
-/* This will only call update_current_item if the text is different to the
-   corresponding item field, since we don't want to propogate updates when
-   we are setting the entry. */
-static void
-on_entry_changed (GtkWidget *entry,
-		  gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkCList *clist;
-	GbMenuItemData *item;
-	gchar *text, *item_text;
-	gboolean changed = FALSE;
-	gint row;
-
-	g_debug(("In on_entry_changed\n"));
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
-
-	/* If we are setting the widget values, just return. */
-	if (menued->updating_widgets)
-		return;
-
-	clist = GTK_CLIST (menued->clist);
-	row = get_selected_row (menued);
-
-	if (row == -1)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-
-	/* put the new text on the "text" variable */
-	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (entry));
-
-	/* put the old text on the "item_text" variable */
-	if (entry == menued->label_entry) {
-		item_text = item->label;
-	}
-	else if (entry == menued->name_entry) {    
-		item_text = item->name;
-	}
-	else if (entry == menued->handler_entry) {
-		item_text = item->handler;
-	}
-	else if (entry == GTK_COMBO (menued->icon_widget)->entry) {
-		/* If the user selects the 'None' item from the combo, we reset the
-		   text to "" and return. This callback will be called again. */
-		if (!strcmp (text, _("None"))) {
-			set_entry_text (GTK_ENTRY (entry), "");
-			return;
-		}
-
-		item_text = item->icon;
-	}
-	else if (entry == menued->tooltip_entry) {
-		item_text = item->tooltip;
-	}
-	else if (entry == GTK_COMBO (menued->group_combo)->entry) {
-		item_text = item->group ? item->group->name : item->name;
-	}
-	else if (entry == menued->accel_key_entry) {
-		item_text = item->key;
-	}
-	else
-		return;
-
-	/* if the text has not changed, then just return */
-	if (item_text == NULL && *text != 0)
-		changed = TRUE;
-	else if (item_text && text && strcmp (text, item_text) != 0)
-		changed = TRUE;
-
-	if (!changed)
-		return;
-	
-	if (entry == menued->label_entry) {
-		if (item->generate_name) {
-			/*** glade_project_release_widget_name (menued->project, item->name); ***/
-			g_free (item->name);
-			item->name = generate_name (menued, text);
-			set_entry_text (GTK_ENTRY (menued->name_entry),
-					item->name ? item->name : "");
-			gtk_clist_set_text (clist, row, GLD_COL_NAME,
-					    item->name ? item->name : "");
-			if (item->generate_handler) {
-				g_free (item->handler);
-					
-				item->handler = generate_handler (menued, row, text,
-								  item->name);
-				set_entry_text (GTK_ENTRY (menued->handler_entry),
-						item->handler ? item->handler : "");
-				gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
-						    item->handler ? item->handler : "");
-			}
-		}
-	}
-	else if (entry == menued->name_entry) {
-		item->generate_name = FALSE;
-		if (item->generate_handler) {
-			g_free (item->handler);
-			item->handler = generate_handler (menued, row, item->label,
-							  text);
-			set_entry_text (GTK_ENTRY (menued->handler_entry),
-					item->handler ? item->handler : "");
-			gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
-					    item->handler ? item->handler : "");
-		}
-	}
-	else if (entry == menued->handler_entry) {
-		item->generate_handler = FALSE;
-	}
-
-	update_current_item (menued);
-	set_interface_state (menued);
-}
-
-
-/* This will only call update_current_item if the text is different to the
-   corresponding item field, since we don't want to propogate updates when
-   we are setting the entry. */
-static void
-on_stock_item_entry_changed (GtkWidget * entry,
-			     gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkCList *clist;
-	GbMenuItemData *item;
-	gint row;
-	GtkListItem *listitem;
-	gint stock_item_index = 0;
-	const gchar *text;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
-
-	text = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry));
-	/* FIXME GTK+ 1.3.x bug workaround. It emits "changed" twice, once when the
-	   existing text is deleted. So we just return if the text is empty. */
-	if (text[0] == '\0')
-		return;
-
-	clist = GTK_CLIST (menued->clist);
-	row = get_selected_row (menued);
-	if (row == -1)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist),
-							  row);
-
-	/* Find the index of the selected item. */
-	listitem = glade_util_gtk_combo_find (GTK_COMBO (menued->stock_combo));
-	g_return_if_fail (listitem != NULL);
-
-	if (menued->gnome_support) {
-#ifdef USE_GNOME
-		stock_item_index = g_list_index (GTK_LIST (GTK_COMBO (menued->stock_combo)->list)->children, listitem);
-#endif
-	}
-	else {
-		stock_item_index = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (listitem), GladeMenuEditorIndexKey));
-	}
-
-	if (item->stock_item_index != stock_item_index) {
-		item->stock_item_index = stock_item_index;
-
-		/* If the stock item is reset to 'None', get a new item name, and reset
-		   generate_name/handler to TRUE. */
-		if (stock_item_index == 0) {
-			item->generate_name = TRUE;
-			item->generate_handler = TRUE;
-
-			item->label = glade_project_new_widget_name (menued->project, "item");
-			item->name = g_strdup (item->label);
-			item->handler = generate_handler (menued, row, item->label,
-							  item->name);
-			show_item_properties (menued);
-
-			gtk_clist_set_text (clist, row, GLD_COL_LABEL,
-					    item->label ? item->label : GB_SEPARATOR_TEXT);
-			gtk_clist_set_text (clist, row, GLD_COL_NAME,
-					    item->name ? item->name : "");
-			gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
-					    item->handler ? item->handler : "");
-		}
-		else {
-			/* These will trigger callbacks, and will generate the name
-			   and handler if appropriate. */
-			set_entry_text (GTK_ENTRY (menued->label_entry),
-					gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry)));
-
-			/* Stock menu items are all normal items. */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
-			set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
-
-			/* Reset the accelerator keys, as that is handled automatically. */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), FALSE);
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), FALSE);
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), FALSE);
-			set_entry_text (GTK_ENTRY (menued->accel_key_entry), "");
-		}
-	}
-
-	set_interface_state (menued);
-}
-
-
-static gboolean
-on_label_entry_key_press (GtkWidget * widget,
-			  GdkEventKey * event,
-			  gpointer user_data)
-{
-	GladeMenuEditor *menued;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (widget));
-
-	/* If the Return key is pressed, we add a new item beneath the selected item.
-	   This makes it very easy to add several menus. If the Control key is
-	   pressed, we add the item as a child, otherwise we add it as a sibling. */
-	if (event->keyval == GDK_Return) {
-		if (event->state & GDK_CONTROL_MASK) {
-			add_item (menued, TRUE, FALSE);
-			/* Since we are added a child, we may need to set the parent's
-			   handler to NULL if it has been auto-generated. */
-			check_generated_handlers (menued);
-		}
-		else {
-			add_item (menued, FALSE, FALSE);
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-
-static void
-on_radiobutton_toggled (GtkWidget * togglebutton,
-			gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GbMenuItemData *item;
-	GbMenuItemType type = 0;
-	gboolean changed = FALSE;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
-	item = get_selected_item (menued);
-	if (item == NULL)
-		return;
-
-	if (togglebutton == menued->normal_radiobutton)
-		type = GB_MENU_ITEM_NORMAL;
-	else if (togglebutton == menued->check_radiobutton)
-		type = GB_MENU_ITEM_CHECK;
-	else if (togglebutton == menued->radio_radiobutton)
-		type = GB_MENU_ITEM_RADIO;
-
-	if (GTK_TOGGLE_BUTTON (togglebutton)->active) {
-		if (type != item->type)
-			changed = TRUE;
-	}
-	else {
-		if (type == item->type)
-			changed = TRUE;
-	}
-
-	if (changed) {
-		update_current_item (menued);
-		set_interface_state (menued);
-	}
-}
-
-static void
-on_checkbutton_toggled (GtkWidget * togglebutton,
-			gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GbMenuItemData *item;
-	guint active;
-	guint8 currently_active = 0;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
-	active = GTK_TOGGLE_BUTTON (togglebutton)->active;
-	item = get_selected_item (menued);
-	if (item == NULL)
-		return;
-	if (togglebutton == menued->accel_ctrl_checkbutton)
-		currently_active = item->modifiers & GDK_CONTROL_MASK;
-	if (togglebutton == menued->accel_shift_checkbutton)
-		currently_active = item->modifiers & GDK_SHIFT_MASK;
-	if (togglebutton == menued->accel_alt_checkbutton)
-		currently_active = item->modifiers & GDK_MOD1_MASK;
-
-	if ((active && !currently_active) || (!active && currently_active)) {
-		update_current_item (menued);
-		set_interface_state (menued);
-	}
-}
-
-static void
-on_state_button_toggled (GtkToggleButton * togglebutton,
-			 gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GbMenuItemData *item;
-	GtkWidget *label;
-	guint active;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (togglebutton)));
-	active = GTK_TOGGLE_BUTTON (togglebutton)->active;
-	label = GTK_BIN (togglebutton)->child;
-	gtk_label_set_text (GTK_LABEL (label), active ? _("Yes") : _("No"));
-
-	item = get_selected_item (menued);
-	if (item == NULL)
-		return;
-	if ((item->active && !active) || (!item->active && active))
-		update_current_item (menued);
-}
-
-
-/**************************************************************************
- * Accelerator Keys Dialog.
- **************************************************************************/
-static void
-on_accel_key_button_clicked (GtkButton *button, gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	gint response;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-
-	if (menued->keys_dialog == NULL) {
-		menued->keys_dialog = glade_keys_dialog_new ();
-		g_signal_connect (G_OBJECT (menued->keys_dialog), "delete_event",
-				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-	}
-
-	response = gtk_dialog_run (GTK_DIALOG (menued->keys_dialog));
-	if (response == GTK_RESPONSE_OK) {
-		gchar *key_sym;
-
-		key_sym = glade_keys_dialog_get_selected_key_symbol (GLADE_KEYS_DIALOG (menued->keys_dialog));
-		if (key_sym)
-			set_entry_text (GTK_ENTRY (menued->accel_key_entry), key_sym);
-	}
-	gtk_widget_hide (menued->keys_dialog);
-}
-
-
-/**************************************************************************
- * Arrow Button callbacks.
- **************************************************************************/
-
-static void
-on_up_button_clicked (GtkButton * button,
-		      gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *clist;
-	GbMenuItemData *item, *prev_item;
-	gint row, new_row, i, level;
-	GList *items;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row == -1 || row == 0)
-		return;
-
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	level = item->level;
-
-	/* Find the new position of the item and its children. */
-	new_row = -1;
-	for (i = row - 1; i >= 0; i--) {
-		prev_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist),
-								       i);
-		if (prev_item->level == level) {
-			new_row = i;
-			break;
-		}
-		else if (prev_item->level < level)
-			break;
-	}
-
-	/* Return if we can't move the item up. */
-	if (new_row == -1)
-		return;
-
-	/* Remove item and children. */
-	items = remove_item_and_children (clist, row);
-
-	/* Now insert at new position. */
-	insert_items (clist, items, new_row);
-	ensure_visible (clist, new_row);
-
-	g_list_free (items);
-
-	/* Make sure all items in the group point to the first one. */
-	normalize_radio_groups (menued);
-
-	gtk_clist_select_row (GTK_CLIST (clist), new_row, 0);
-	set_interface_state (menued);
-}
-
-static void
-on_down_button_clicked (GtkButton * button,
-			gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *clist;
-	GbMenuItemData *item, *next_item;
-	gint row, new_row, i, level;
-	gboolean found_next_item;
-	GList *items;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row == -1 || row == GTK_CLIST (clist)->rows - 1)
-		return;
-
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	level = item->level;
-
-	/* Find the new position of the item and its children. */
-	new_row = -1;
-	found_next_item = FALSE;
-	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
-		next_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist),
-								       i);
-		/* We have to skip all the children of the next item as well. */
-		if (next_item->level == level) {
-			if (found_next_item) {
-				new_row = i;
-				break;
-			}
-			else
-				found_next_item = TRUE;
-		}
-		else if (next_item->level < level)
-			break;
-	}
-
-	/* Return if we can't move the item up. */
-	if (new_row == -1) {
-		if (found_next_item)
-			new_row = i;
-		else
-			return;
-	}
-
-	/* Remove item and children. */
-	items = remove_item_and_children (clist, row);
-	/* Remember that the new_row needs to be shifted because we deleted items. */
-	new_row -= g_list_length (items);
-
-	/* Now insert at new position. */
-	insert_items (clist, items, new_row);
-	ensure_visible (clist, new_row);
-
-	g_list_free (items);
-
-	/* Make sure all items in the group point to the first one. */
-	normalize_radio_groups (menued);
-
-	gtk_clist_select_row (GTK_CLIST (clist), new_row, 0);
-	set_interface_state (menued);
-}
-
-static void
-on_left_button_clicked (GtkButton * button,
-			gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *clist;
-	GbMenuItemData *item;
-	gint row, i, level;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row == -1)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	level = item->level;
-	if (item->level > 0)
-		item->level--;
-	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GB_INDENT);
-
-	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
-		if (item->level <= level)
-			break;
-		item->level--;
-		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
-				     item->level * GB_INDENT);
-	}
-	check_generated_handlers (menued);
-	set_interface_state (menued);
-}
-
-static void
-on_right_button_clicked (GtkButton * button,
-			 gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *clist;
-	GbMenuItemData *item, *prev_item;
-	gint row, i, level;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row == -1 || row == 0)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	prev_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist),
-							       row - 1);
-	if (prev_item->level < item->level)
-		return;
-
-	level = item->level;
-	item->level++;
-	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GB_INDENT);
-
-	for (i = row + 1; i < GTK_CLIST (clist)->rows; i++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
-		if (item->level <= level)
-			break;
-		item->level++;
-		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
-				     item->level * GB_INDENT);
-	}
-
-	check_generated_handlers (menued);
-	set_interface_state (menued);
-}
-
-static void
-on_add_button_clicked (GtkWidget * button,
-		       gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	add_item (menued, FALSE, FALSE);
-}
-
-static void
-on_add_child_button_clicked (GtkWidget * button,
-			     gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	add_item (menued, TRUE, FALSE);
-}
-
-
-/**************************************************************************
- * 
- **************************************************************************/
-
-static void
-on_add_separator_button_clicked (GtkWidget * button,
-				 gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
-	add_item (menued, FALSE, TRUE);
-}
-
-static gboolean
-on_key_press (GtkWidget * widget,
-	      GdkEventKey * event,
-	      gpointer user_data)
-{
-	switch (event->keyval) {
-	case GDK_Delete:
-		on_delete_button_clicked (widget, NULL);
-		break;
-	}
-
-	return FALSE;
-}
-
-static void
-on_delete_button_clicked (GtkWidget * widget,
-			  gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *clist;
-	GbMenuItemData *item;
-	gint row, level, i;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row == -1)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	level = item->level;
-
-	gtk_clist_remove (GTK_CLIST (clist), row);
-
-	/* Update any other items in the same radio group. */
-	if (item->type == GB_MENU_ITEM_RADIO)
-		remove_from_radio_group (menued, item);
-
-	glade_menu_editor_free_item (item);
-
-	/* Move all children up a level */
-	for (i = row; i < GTK_CLIST (clist)->rows; i++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), i);
-		if (item->level <= level)
-			break;
-		item->level--;
-		gtk_clist_set_shift (GTK_CLIST (clist), i, 0, 0,
-				     item->level * GB_INDENT);
-	}
-
-	gtk_clist_select_row (GTK_CLIST (clist), row, 0);
-	set_interface_state (menued);
-}
-
-
-/**************************************************************************
- * File Selection for selecting icon xpm files.
- **************************************************************************/
-
-static void
-on_icon_filesel_ok (GtkWidget *widget, GladeMenuEditor *menued)
-{
-	GtkWidget *filesel;
-	const gchar *filename;
-	gint filename_len;
-
-	filesel = gtk_widget_get_toplevel (widget);
-	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
-
-	/* If the filename ends in '/' it means the user wants to reset the
-	   pixmap to NULL. */
-	filename_len = strlen (filename);
-	if (filename_len > 0 && filename[filename_len - 1] == '/')
-		filename = "";
-
-	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
-			filename);
-
-	gtk_widget_destroy (filesel);
-}
-
-static void
-on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *filesel;
-	const gchar *icon;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
-
-	filesel = glade_util_file_selection_new (_("Select icon"), GTK_WINDOW (menued));
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			  "clicked", G_CALLBACK (on_icon_filesel_ok),
-			  menued);
-
-	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), icon);
-
-	gtk_widget_show (filesel);
-}
-
-/**************************************************************************
- * Utility functions
- **************************************************************************/
-
-
-/* This returns the index of the currently selected row in the clist, or -1
-   if no item is currently selected. */
-static gint
-get_selected_row (GladeMenuEditor * menued)
-{
-	if (GTK_CLIST (menued->clist)->selection == NULL)
-		return -1;
-	return GPOINTER_TO_INT (GTK_CLIST (menued->clist)->selection->data);
-}
-
-/* This returns the currently selected item, or NULL if no item is currently
-   selected. */
-static GbMenuItemData*
-get_selected_item (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item;
-	gint row;
-
-	row = get_selected_row (menued);
-	if (row == -1)
-		return NULL;
-	item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-	return item;
-}
-
-/* This set the sensitivity of the buttons according to the current state. */
-static void
-set_interface_state (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item, *tmp_item;
-	GtkCList *clist;
-	gboolean up_button_sens = FALSE, down_button_sens = FALSE;
-	gboolean left_button_sens = FALSE, right_button_sens = FALSE;
-	gboolean add_button_sens = FALSE, delete_button_sens = FALSE;
-	gboolean state_sens = FALSE, group_sens = FALSE;
-	gboolean form_sens = FALSE, type_sens = FALSE, accel_sens = FALSE;
-	gboolean label_sens = FALSE, icon_sens = FALSE;
-	gint index;
-
-	clist = GTK_CLIST (menued->clist);
-
-	/* Figure out which of the arrow buttons should be sensitive. */
-
-	/* The Add button is always sensitive, since empty labels are separators. */
-	add_button_sens = TRUE;
-
-	/* The Delete button and the entire form are sensitive if an item is
-	   selected in the clist. */
-	index = get_selected_row (menued);
-	if (index != -1) {
-		form_sens = TRUE;
-		type_sens = TRUE;
-		label_sens = TRUE;
-		icon_sens = TRUE;
-		delete_button_sens = TRUE;
-
-		if (index > 0)
-			up_button_sens = TRUE;
-		if (index < clist->rows - 1)
-			down_button_sens = TRUE;
-
-		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, index);
-		if (item->level > 0)
-			left_button_sens = TRUE;
-
-		/* The accelerator modifier and key are sensitive if this is not a
-		   toplevel item on a menubar. */
-		if (!GTK_IS_MENU_BAR (menued->menu) || item->level != 0)
-			accel_sens = TRUE;
-
-		if (index > 0) {
-			tmp_item = (GbMenuItemData *) gtk_clist_get_row_data (clist,
-									      index - 1);
-			if (tmp_item->level >= item->level)
-				right_button_sens = TRUE;
-		}
-
-		/* Figure out if the radio group widgets should be sensitive. */
-		if (GTK_TOGGLE_BUTTON (menued->radio_radiobutton)->active) {
-			group_sens = TRUE;
-			state_sens = TRUE;
-			icon_sens = FALSE;
-		}
-
-		if (GTK_TOGGLE_BUTTON (menued->check_radiobutton)->active) {
-			state_sens = TRUE;
-			icon_sens = FALSE;
-		}
-
-		if (item->stock_item_index) {
-			/* For the 'New' menu item, a label and tooltip must be provided. */
-			if (menued->gnome_support) {
-#ifdef USE_GNOME
-				if (item->stock_item_index != GladeStockMenuItemNew)
-					label_sens = FALSE;
-#endif
-			}
-			else {
-				/* We don't allow the "New" label to be changed for GTK+ stock
-				   items now, to be compatable with libglade. It did make it a
-				   bit too complicated anyway. */
-#if 0
-				const char *stock_id = g_slist_nth_data (menued->stock_items,
-									 item->stock_item_index - 1);
-				if (strcmp (stock_id, GTK_STOCK_NEW))
-#endif
-					label_sens = FALSE;
-			}
-
-			icon_sens = FALSE;
-			type_sens = FALSE;
-			accel_sens = FALSE;
-		}
-	}
-
-	/* Now set the sensitivity of the widgets. */
-	gtk_widget_set_sensitive (menued->stock_label, form_sens);
-	gtk_widget_set_sensitive (menued->stock_combo, form_sens);
-
-	gtk_widget_set_sensitive (menued->icon_label, icon_sens);
-	gtk_widget_set_sensitive (menued->icon_widget, icon_sens);
-	gtk_widget_set_sensitive (menued->icon_button, icon_sens);
-
-	gtk_widget_set_sensitive (menued->name_label, form_sens);
-	gtk_widget_set_sensitive (menued->name_entry, form_sens);
-	gtk_widget_set_sensitive (menued->handler_label, form_sens);
-	gtk_widget_set_sensitive (menued->handler_entry, form_sens);
-
-	gtk_widget_set_sensitive (menued->label_label, label_sens);
-	gtk_widget_set_sensitive (menued->label_entry, label_sens);
-	gtk_widget_set_sensitive (menued->tooltip_label, label_sens);
-	gtk_widget_set_sensitive (menued->tooltip_entry, label_sens);
-
-	gtk_widget_set_sensitive (menued->add_button, add_button_sens);
-	gtk_widget_set_sensitive (menued->add_separator_button, add_button_sens);
-	gtk_widget_set_sensitive (menued->delete_button, delete_button_sens);
-
-	gtk_widget_set_sensitive (menued->type_frame, type_sens);
-	gtk_widget_set_sensitive (menued->state_label, state_sens);
-	gtk_widget_set_sensitive (menued->state_togglebutton, state_sens);
-	gtk_widget_set_sensitive (menued->group_label, group_sens);
-	gtk_widget_set_sensitive (menued->group_combo, group_sens);
-
-	gtk_widget_set_sensitive (menued->accel_frame, accel_sens);
-}
-
-
-/* This gets a string representing the accelerator key + modifiers.
-   It returns a pointer to a static buffer. */
-static gchar *
-get_accel_string (gchar * key, guint8 modifiers)
-{
-	static gchar buffer[32];
-
-	buffer[0] = '\0';
-	if (modifiers & GDK_CONTROL_MASK)
-		strcat (buffer, "C+");
-	if (modifiers & GDK_SHIFT_MASK)
-		strcat (buffer, "S+");
-	if (modifiers & GDK_MOD1_MASK)
-		strcat (buffer, "A+");
-	if (key)
-		strcat (buffer, key);
-	return buffer;
-}
-
-
-static gchar*
-get_stock_item_label (GladeMenuEditor * menued, gint stock_item_index)
-{
-	if (menued->gnome_support) {
-#ifdef USE_GNOME
-		/* Most of the label text is from Gnome, but 2 of them are ours,
-		   so we use a utility function to find the translation. */
-		return glade_gnome_gettext (GladeStockMenuItemValues[stock_item_index].label);
-#else
-		/* This shouldn't happen. */
-		g_warning ("Trying to use GNOME stock items in GTK+ version of Glade");
-		return NULL;
-#endif
-	}
-	else {
-		gchar *stock_id;
-		GtkStockItem item;
-
-		if (stock_item_index <= 0)
-			return _("None");
-
-		stock_id = g_slist_nth_data (menued->stock_items, stock_item_index - 1);
-		gtk_stock_lookup (stock_id, &item);
-
-		return item.label;
-	}
-}
-
-
-/* This shows the properties of the item currently selected in the clist. */
-static void
-show_item_properties (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item;
-	GtkWidget *clist;
-
-	clist = menued->clist;
-	item = get_selected_item (menued);
-	if (item == NULL)
-		return;
-
-	menued->updating_widgets = TRUE;
-
-	/* Now set them to the item's properties. */
-	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->stock_combo)->entry),
-			get_stock_item_label (menued, item->stock_item_index));
-#if 0
-	g_print ("Setting label_entry to: %s\n", item->label);
-#endif
-	set_entry_text (GTK_ENTRY (menued->label_entry), item->label);
-#if 0
-	g_print ("Setting name_entry to: %s\n", item->name);
-#endif
-	set_entry_text (GTK_ENTRY (menued->name_entry), item->name);
-#if 0
-	g_print ("Setting handler_entry to: %s\n", item->handler);
-#endif
-	set_entry_text (GTK_ENTRY (menued->handler_entry), item->handler);
-	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
-			item->icon);
-	set_entry_text (GTK_ENTRY (menued->tooltip_entry), item->tooltip);
-
-	if (item->type == GB_MENU_ITEM_NORMAL) {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
-		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
-	}
-	else if (item->type == GB_MENU_ITEM_CHECK) {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->check_radiobutton), TRUE);
-		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry), "");
-	}
-	else {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->radio_radiobutton), TRUE);
-		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry),
-				item->group ? item->group->name : item->name);
-	}
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->state_togglebutton), item->active);
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), (item->modifiers & GDK_CONTROL_MASK) ? TRUE : FALSE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), (item->modifiers & GDK_SHIFT_MASK) ? TRUE : FALSE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), (item->modifiers & GDK_MOD1_MASK) ? TRUE : FALSE);
-	set_entry_text (GTK_ENTRY (menued->accel_key_entry),
-			item->key ? item->key : "");
-
-	update_radio_groups (menued);
-
-	menued->updating_widgets = FALSE;
-}
-
-/* This adds a new menuitem. If separator is FALSE, it adds a normal item
-   with the label 'New Item'. If separator is TRUE it adds a separator.
-   It is added to the clist beneath the currently selected item, or at the
-   end of the list if no item is selected. If as_child is TRUE it adds the
-   item as a child of the selected item, else it adds it as a sibling.
-*/
-static void
-add_item (GladeMenuEditor *menued,
-	  gboolean as_child,
-	  gboolean separator)
-{
-	GbMenuItemData *item, *selected_item;
-	GtkWidget *clist;
-	gint row;
-
-	item = g_new0 (GbMenuItemData, 1);
-	item->stock_item_index = 0;
-	if (separator) {
-		item->label = NULL;
-		item->name = glade_project_new_widget_name (menued->project, "separator");
-	}
-	else {
-		item->label = glade_project_new_widget_name (menued->project, "item");
-		item->name = g_strdup (item->label);
-	}
-	item->handler = generate_handler (menued, -1, item->label, item->name);
-	/* This is a flag to indicate that the last_mod_time should be set when
-	   the 'Apply' button is clicked. */
-	item->last_mod_time = (time_t) -2;
-	item->icon = NULL;
-	item->tooltip = NULL;
-	item->type = GB_MENU_ITEM_NORMAL;
-	item->active = FALSE;
-	item->group = NULL;
-	item->modifiers = 0;
-	item->key = NULL;
-	item->level = 0;
-	item->generate_name = TRUE;
-	item->generate_handler = TRUE;
-
-	clist = menued->clist;
-	row = get_selected_row (menued);
-	if (row != -1) {
-		selected_item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-		item->level = selected_item->level + (as_child ? 1 : 0);
-		insert_item (GTK_CLIST (clist), item, row + 1);
-		gtk_clist_select_row (GTK_CLIST (clist), row + 1, 0);
-		ensure_visible (clist, row + 1);
-	}
-	else {
-		item->level = 0;
-		insert_item (GTK_CLIST (clist), item, -1);
-		gtk_clist_select_row (GTK_CLIST (clist), GTK_CLIST (clist)->rows - 1, 0);
-		ensure_visible (clist, GTK_CLIST (clist)->rows - 1);
-	}
-
-	set_interface_state (menued);
-	gtk_widget_grab_focus (menued->label_entry);
-	gtk_editable_select_region (GTK_EDITABLE (menued->label_entry), 0, -1);
-}
-
-/* This adds the item to the clist at the given position. */
-static void
-insert_item (GtkCList * clist, GbMenuItemData * item, gint row)
-{
-	gchar *rowdata[GB_MENUED_NUM_COLS];
-
-	/* Empty labels are understood to be separators. */
-	if (item->label && strlen (item->label) > 0)
-		rowdata[GLD_COL_LABEL] = item->label;
-	else
-		rowdata[GLD_COL_LABEL] = GB_SEPARATOR_TEXT;
-	if (item->type == GB_MENU_ITEM_NORMAL)
-		rowdata[GLD_COL_TYPE] = "";
-	else if (item->type == GB_MENU_ITEM_CHECK)
-		rowdata[GLD_COL_TYPE] = _("Check");
-	else if (item->type == GB_MENU_ITEM_RADIO)
-		rowdata[GLD_COL_TYPE] = _("Radio");
-	rowdata[GLD_COL_ACCEL] = get_accel_string (item->key, item->modifiers);
-	rowdata[GLD_COL_NAME] = item->name ? item->name : "";
-	rowdata[GLD_COL_HANDLER] = item->handler ? item->handler : "";
-	rowdata[GLD_COL_ICON] = item->icon ? item->icon : "";
-	rowdata[GLD_COL_ACTIVE] = item->active ? _("Yes") : "";
-	rowdata[GLD_COL_GROUP] = item->group ? item->group->name : item->name;
-	if (item->type != GB_MENU_ITEM_RADIO || !rowdata[GLD_COL_GROUP])
-		rowdata[GLD_COL_GROUP] = "";
-
-	if (row >= 0)
-		gtk_clist_insert (clist, row, rowdata);
-	else
-		row = gtk_clist_append (GTK_CLIST (clist), rowdata);
-
-	gtk_clist_set_row_data (GTK_CLIST (clist), row, item);
-	gtk_clist_set_shift (GTK_CLIST (clist), row, 0, 0, item->level * GB_INDENT);
-}
-
-/* This makes sure the given row is visible. */
-static void
-ensure_visible (GtkWidget *clist,
-		gint row)
-{
-	if (gtk_clist_row_is_visible (GTK_CLIST (clist), row)
-	    != GTK_VISIBILITY_FULL)
-		gtk_clist_moveto(GTK_CLIST(clist), row, -1, 0.5, 0);
-}
-
-
-static GbMenuItemData*
-find_group_item (GladeMenuEditor * menued, char *group_name)
-{
-	gint rows, row;
-
-	if (!group_name || !group_name[0])
-		return NULL;
-
-	rows = GTK_CLIST (menued->clist)->rows;
-
-	for (row = 0; row < rows; row++) {
-		GbMenuItemData *item;
-		item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-
-		if (item->name && !strcmp (item->name, group_name))
-			return item;
-	}
-
-	return NULL;
-}
-
-
-/* This updates the currently selected item in the clist, updating each field
-   if it is different to the settings in the form elements. */
-static void
-update_current_item (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item, *group_item;
-	GtkCList *clist;
-	gchar *name, *label, *handler, *tooltip, *group_name, *key;
-	gchar *icon;
-	GbMenuItemType type;
-	gint row;
-	guint8 modifiers;
-	gboolean active, update_accelerator = FALSE;
-
-	clist = GTK_CLIST (menued->clist);
-	row = get_selected_row (menued);
-	if (row == -1)
-		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist),
-							  row);
-
-	name = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->name_entry));
-	if (item_property_changed (name, item->name)) {
-		g_free (item->name);
-		item->name = copy_item_property (name);
-		gtk_clist_set_text (clist, row, GLD_COL_NAME,
-				    item->name ? item->name : "");
-	}
-
-	label = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->label_entry));
-	if (item_property_changed (label, item->label)) {
-		g_free (item->label);
-		item->label = copy_item_property (label);
-		gtk_clist_set_text (clist, row, GLD_COL_LABEL,
-				    item->label ? item->label : GB_SEPARATOR_TEXT);
-	}
-
-	handler = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->handler_entry));
-	if (item_property_changed (handler, item->handler)) {
-		g_free (item->handler);
-		item->handler = copy_item_property (handler);
-		gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
-				    item->handler ? item->handler : "");
-
-		/* This is a flag to indicate that the last_mod_time should be set when
-		   the 'Apply' button is clicked. */
-		item->last_mod_time = (time_t) -2;
-	}
-
-	icon = (gchar*) gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	if (item_property_changed (icon, item->icon)) {
-		g_free (item->icon);
-		item->icon = copy_item_property (icon);
-		gtk_clist_set_text (clist, row, GLD_COL_ICON,
-				    item->icon ? item->icon : "");
-	}
-
-	tooltip = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->tooltip_entry));
-	if (item_property_changed (tooltip, item->tooltip)) {
-		g_free (item->tooltip);
-		item->tooltip = copy_item_property (tooltip);
-	}
-
-	if (GTK_TOGGLE_BUTTON (menued->normal_radiobutton)->active)
-		type = GB_MENU_ITEM_NORMAL;
-	else if (GTK_TOGGLE_BUTTON (menued->check_radiobutton)->active)
-		type = GB_MENU_ITEM_CHECK;
-	else
-		type = GB_MENU_ITEM_RADIO;
-	if (item->type != type) {
-		/* If the item is changing from a radio item to something else, make
-		   sure other items in the same group no longer point to it. */
-		if (item->type == GB_MENU_ITEM_RADIO)
-			remove_from_radio_group (menued, item);
-
-		item->type = type;
-		if (type == GB_MENU_ITEM_NORMAL)
-			gtk_clist_set_text (clist, row, GLD_COL_TYPE, "");
-		else if (type == GB_MENU_ITEM_CHECK)
-			gtk_clist_set_text (clist, row, GLD_COL_TYPE, _("Check"));
-		else if (type == GB_MENU_ITEM_RADIO)
-			gtk_clist_set_text (clist, row, GLD_COL_TYPE, _("Radio"));
-	}
-
-	active = GTK_TOGGLE_BUTTON (menued->state_togglebutton)->active
-		? TRUE : FALSE;
-	if (active != item->active) {
-		item->active = active;
-		gtk_clist_set_text (clist, row, GLD_COL_ACTIVE, active ? _("Yes") : "");
-	}
-
-	group_name = (gchar*) gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry));
-	group_item = find_group_item (menued, group_name);
-	if (group_item != item->group) {
-		char *group_text = group_item ? group_item->name : item->name;
-		if (item->type != GB_MENU_ITEM_RADIO)
-			group_text = NULL;
-		item->group = group_item;
-		gtk_clist_set_text (clist, row, GLD_COL_GROUP,
-				    group_text ? group_text : "");
-	}
-
-	key = (gchar*) gtk_entry_get_text (GTK_ENTRY (menued->accel_key_entry));
-	if (item_property_changed (key, item->key)) {
-		g_free (item->key);
-		item->key = copy_item_property (key);
-		update_accelerator = TRUE;
-	}
-
-	modifiers = 0;
-	if (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton)->active)
-		modifiers |= GDK_CONTROL_MASK;
-	if (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton)->active)
-		modifiers |= GDK_SHIFT_MASK;
-	if (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton)->active)
-		modifiers |= GDK_MOD1_MASK;
-	if (modifiers != item->modifiers) {
-		item->modifiers = modifiers;
-		update_accelerator = TRUE;
-	}
-
-	if (update_accelerator)
-		gtk_clist_set_text (clist, row, GLD_COL_ACCEL,
-				    get_accel_string (item->key, item->modifiers));
-
-	set_interface_state (menued);
-}
-
-/* This checks if the new value is different to the old, but an empty string
-   in new is taken to be equal to NULL as well. */
-static gboolean
-item_property_changed (gchar *new, gchar *old)
-{
-	if (old == NULL)
-		return (new == NULL || new[0] == '\0') ? FALSE : TRUE;
-	if (new == NULL)
-		return TRUE;
-	if (!strcmp (old, new))
-		return FALSE;
-	return TRUE;
-}
-
-/* This returns a copy of the given property string, or NULL if it is an
-   empty string. */
-static gchar*
-copy_item_property (gchar *property)
-{
-	if (property[0] == '\0')
-		return NULL;
-	return g_strdup (property);
-}
-
-
-/* This clears the form, ready to add a new item. If full is TRUE it resets
-   the type checkbuttons, group and accelerator modifiers. When adding items
-   full is set to FALSE so the user can add several items of the same type. */
-static void
-clear_form (GladeMenuEditor * menued,
-	    gboolean full)
-{
-	gtk_list_select_item (GTK_LIST (GTK_COMBO (menued->stock_combo)->list), 0);
-	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry), "");
-	set_entry_text (GTK_ENTRY (menued->label_entry), "");
-	set_entry_text (GTK_ENTRY (menued->name_entry), "");
-	set_entry_text (GTK_ENTRY (menued->handler_entry), "");
-	set_entry_text (GTK_ENTRY (menued->tooltip_entry), "");
-	set_entry_text (GTK_ENTRY (menued->accel_key_entry), "");
-
-	if (full) {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->normal_radiobutton), TRUE);
-		set_entry_text (GTK_ENTRY (GTK_COMBO (menued->group_combo)->entry),
-				"");
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_ctrl_checkbutton), FALSE);
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_shift_checkbutton), FALSE);
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (menued->accel_alt_checkbutton), FALSE);
-	}
-}
-
-
-/* This removes an item and its children from the clist, and returns a list
-   of the removed items. */
-static GList *
-remove_item_and_children (GtkWidget * clist,
-			  gint row)
-{
-	GList *items = NULL;
-	GbMenuItemData *item;
-	gint level;
-
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-	level = item->level;
-	items = g_list_append (items, item);
-	gtk_clist_remove (GTK_CLIST (clist), row);
-
-	while (row < GTK_CLIST (clist)->rows) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (clist), row);
-		if (item->level > level) {
-			items = g_list_append (items, item);
-			gtk_clist_remove (GTK_CLIST (clist), row);
-		}
-		else
-			break;
-	}
-	return items;
-}
-
-/* This inserts the given list of items at the given position in the clist. */
-static void
-insert_items (GtkWidget * clist,
-	      GList * items,
-	      gint row)
-{
-	GbMenuItemData *item;
-
-	while (items) {
-		item = (GbMenuItemData *) items->data;
-		insert_item (GTK_CLIST (clist), item, row++);
-		items = items->next;
-	}
-}
-
-
-/* This returns the default name of the widget, given its label. The returned
-   string should be freed at some point. */
-static gchar*
-generate_name (GladeMenuEditor *menued,
-	       gchar *label)
-{
-	gchar *prefix, *name, *src, *dest;
-
-	/* For empty labels, i.e. separators, use 'separator'. */
-	if (label == NULL || label[0] == '\0') {
-		return glade_project_new_widget_name (menued->project, "separator");
-	}
-
-	prefix = g_malloc (strlen (label) + 1);
-	/* Convert spaces to underscores, and ignore periods (e.g. in "Open...")
-	   and underscores (e.g. in "_Open"). */
-	for (src = label, dest = prefix; *src; src++) {
-		if (*src == ' ')
-			*dest++ = '_';
-		else if (*src == '.')
-			continue;
-		else if (*src == '_')
-			continue;
-		else
-			*dest++ = *src;
-	}
-	*dest = '\0';
-
-	if (dest >= prefix + strlen (label) + 1)
-		g_warning ("Buffer overflow");
-
-	/* Get rid of any trailing digits. */
-	dest--;
-	while (*dest >= '0' && *dest <= '9') {
-		*dest = '\0';
-		dest--;
-	}
-
-	name = glade_project_new_widget_name (menued->project, prefix);
-	g_free (prefix);
-
-	return name;
-}
-
-/* This returns the default 'activate' handler name, given the name of the
-   item. The returned string should be freed at some point. */
-static gchar*
-generate_handler (GladeMenuEditor *menued, gint row, gchar *label, gchar *name)
-{
-	gchar *handler, *start = "on_", *end = "_activate";
-
-	/* For empty labels, i.e. separators, and items with submenus, there is no
-	   handler by default. */
-	if (label == NULL || label[0] == '\0' || is_parent (menued, row))
-		return NULL;
-
-	handler = g_malloc (strlen (name) + strlen (start) + strlen (end) + 1);
-	strcpy (handler, start);
-	strcat (handler, name);
-	strcat (handler, end);
-
-	return handler;
-}
-
-
-/* This makes sure the default handlers are updated as items are moved around.
- */
-static void
-check_generated_handlers (GladeMenuEditor *menued)
-{
-	GtkCList *clist;
-	GbMenuItemData *item;
-	gint row;
-	gchar *handler;
-
-	clist = GTK_CLIST (menued->clist);
-	for (row = 0; row < clist->rows; row++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row);
-		if (item->generate_handler) {
-			handler = generate_handler (menued, row, item->label, item->name);
-			if (item_property_changed (handler, item->handler)) {
-				g_free (item->handler);
-				item->handler = handler;
-				gtk_clist_set_text (clist, row, GLD_COL_HANDLER, handler);
-			}
-			else {
-				g_free (handler);
-			}
-		}
-	}
-}
-
-
-/* This returns TRUE id the item in the given row is a parent, or FALSE
-   if the row doesn't exist or isn't a parent. */
-static gboolean
-is_parent (GladeMenuEditor *menued,
-	   gint row)
-{
-	GtkCList *clist;
-	GbMenuItemData *item, *next_item;
-
-	clist = GTK_CLIST (menued->clist);
-	if (row < 0 || row >= clist->rows - 1)
-		return FALSE;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row);
-	next_item = (GbMenuItemData *) gtk_clist_get_row_data (clist, row + 1);
-	if (next_item->level > item->level)
-		return TRUE;
-	return FALSE;
-}
-
-
-static void
-on_menu_editor_ok (GtkWidget *button,
-		   GladeMenuEditor *menued)
-{
-	glade_menu_editor_update_menu (menued);
-	gtk_widget_destroy (GTK_WIDGET (menued));
-}
-
-static void
-on_menu_editor_apply (GtkWidget *button,
-		      GladeMenuEditor *menued)
-{
-	glade_menu_editor_update_menu (menued);
-}
-
-
-static void
-on_menu_editor_close (GtkWidget *widget,
-		      GladeMenuEditor *menued)
-{
-	gtk_widget_destroy (GTK_WIDGET (menued));
-}
-
-
-/**************************************************************************
- * Public functions
- **************************************************************************/
-
-/* This checks if the given icon string is a stock icon name, and if it is
-   it returns the stock ID instead. If not, it just returns the icon. */
-static gchar*
-get_stock_id_from_icon_name (GladeMenuEditor    *menued,
-			     gchar		*icon)
-{
-	GList *clist;
-
-	if (!icon || *icon == '\0')
-		return NULL;
-
-	clist = GTK_LIST (GTK_COMBO (menued->icon_widget)->list)->children;
-
-	while (clist && clist->data) {
-		gchar* ltext = glade_util_gtk_combo_func (GTK_LIST_ITEM (clist->data));
-		if (!ltext)
-			continue;
-		if (!strcmp (ltext, icon)) {
-			gchar *stock_id = gtk_object_get_data (GTK_OBJECT (clist->data),
-							       GladeMenuEditorStockIDKey);
-			return stock_id;
-		}
-		clist = clist->next;
-	}
-
-	return icon;
-}
-
-
-/* This updates the menu, based on the settings in the menu editor.
-   It removes all the current children of the menu and recreates it.
-   Note that it has to reload all the xpm files for pixmaps, so its not
-   very efficient, but they're small so it shouldn't be too bad. */
-static void
-glade_menu_editor_update_menu (GladeMenuEditor *menued)
-{
-	GbMenuItemData *item;
-	GtkWidget *menuitem, *label, *prev_item = NULL, *child_menu;
-	GtkCList *clist;
-	GtkMenuShell *current_menu;
-	GList *menus;
-	GHashTable *group_hash;
-	gchar *child_name;
-	gint i, level;
-	/*** GbWidget *gbwidget;
-	GladeWidgetData *wdata; ***/
-	GtkAccelGroup *accel_group;
-	GtkWidget *pixmap = NULL;
-	gboolean use_pixmap_menu_item;
-	gchar *stock_id, *icon_name;
-#ifdef USE_GNOME
-	GnomeUIInfo *uiinfo;
-#endif
-
-	/* Remove existing children of the menu. Note that this will result in the
-	   old widget names being released, so we need to reserve the new names,
-	   even if they are the same. */
-	while (menued->menu->children) {
-		menuitem = menued->menu->children->data;
-		gtk_widget_destroy (menuitem);
-	}
-
-	/* FIXME: This seems to be necessary to re-initialise the menu. I don't know
-	   why. */
-	menued->menu->menu_flag = TRUE;
-
-	clist = GTK_CLIST (menued->clist);
-
-	/* Now reserve all the the new widget names. */
-	for (i = 0; i < clist->rows; i++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, i);
-
-		if (item->name && item->name[0])
-			; /*** glade_project_reserve_name (menued->project, item->name); ***/
-	}
-
-	/* Now add widgets according to the items in the menu editor clist. */
-	level = 0;
-	menus = g_list_append (NULL, menued->menu);
-	group_hash = g_hash_table_new (NULL, NULL);
-
-	/* Make sure all items in the group point to the first one. */
-	normalize_radio_groups (menued);
-
-	for (i = 0; i < clist->rows; i++) {
-		item = (GbMenuItemData *) gtk_clist_get_row_data (clist, i);
-
-		icon_name = get_stock_id_from_icon_name (menued, item->icon);
-		stock_id = NULL;
-
-#if 0
-		/*** ***/
-		if (item->level > level) {
-			child_menu = gb_widget_new_full ("GtkMenu", FALSE, NULL, NULL, 0, 0,
-							 NULL, GB_CREATING, NULL);
-			child_name = g_strdup_printf ("%s_menu", prev_item->name);
-			gtk_widget_set_name (child_menu, child_name);
-			g_free (child_name);
-			level = item->level;
-			/* We use the menus GList as a stack, pushing menus onto the
-			   front. */
-			menus = g_list_prepend (menus, child_menu);
-			gtk_menu_item_set_submenu (GTK_MENU_ITEM (prev_item), child_menu);
-			tree_add_widget (child_menu);
-		}
-#endif
-		while (item->level < level) {
-			/* This removes/pops the first menu in the list. */
-			menus = g_list_remove_link (menus, menus);
-			level--;
-		}
-		current_menu = GTK_MENU_SHELL (menus->data);
-
-		if (item->label && strlen (item->label) > 0) {
-			label = gtk_accel_label_new ("");
-			gtk_label_set_text_with_mnemonic (GTK_LABEL (label), item->label);
-			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-			gtk_widget_show (label);
-
-			pixmap = NULL;
-			use_pixmap_menu_item = FALSE;
-
-			if (menued->gnome_support) {
-#ifdef USE_GNOME
-				if (item->stock_item_index) {
-					uiinfo = &GladeStockMenuItemValues[item->stock_item_index];
-					if (uiinfo->pixmap_type == GNOME_APP_PIXMAP_STOCK) {
-						pixmap = gtk_image_new_from_stock (uiinfo->pixmap_info,
-										   GTK_ICON_SIZE_MENU);
-						use_pixmap_menu_item = TRUE;
-					}
-				}
-#endif
-			}
-			else {
-				if (item->stock_item_index) {
-					stock_id = g_slist_nth_data (menued->stock_items,
-								     item->stock_item_index - 1);
-#if 0
-					g_print ("Stock ID for icon: %s\n", stock_id);
-#endif
-					pixmap = gtk_image_new_from_stock (stock_id,
-									   GTK_ICON_SIZE_MENU);
-					use_pixmap_menu_item = TRUE;
-				}
-			}
-
-#if 0
-			if (!item->stock_item_index && icon_name) {
-				pixmap = gb_widget_new ("GtkImage", NULL);
-				if (glade_util_check_is_stock_id (icon_name)) {
-					gtk_image_set_from_stock (GTK_IMAGE (pixmap), icon_name,
-								  GTK_ICON_SIZE_MENU);
-				}
-				else {
-					gtk_image_set_from_file (GTK_IMAGE (pixmap), icon_name);
-
-					/* Add the pixmap to the project, so the file is copied.
-					   It should be removed from the project in the menuitem
-					   GbWidget.destroy function. */
-					glade_project_add_pixmap (menued->project, icon_name);
-				}
-				gb_widget_set_child_name (pixmap, GladeChildMenuItemImage);
-				use_pixmap_menu_item = TRUE;
-			}
-#endif
-			
-			if (item->type == GB_MENU_ITEM_NORMAL) {
-				if (use_pixmap_menu_item) {
-					menuitem = gtk_image_menu_item_new ();
-					if (pixmap) {
-						gtk_widget_show (pixmap);
-						gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem),
-									       pixmap);
-					}
-				}
-				else {
-					menuitem = gtk_menu_item_new ();
-				}
-				gtk_container_add (GTK_CONTAINER (menuitem), label);
-			}
-			else if (item->type == GB_MENU_ITEM_CHECK) {
-				menuitem = gtk_check_menu_item_new ();
-				if (item->active)
-					gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem),
-									TRUE);
-				gtk_container_add (GTK_CONTAINER (menuitem), label);
-			}
-			else {
-				menuitem = create_radio_menu_item (current_menu,
-								   item, group_hash);
-				if (item->active)
-					gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem),
-									TRUE);
-				gtk_container_add (GTK_CONTAINER (menuitem), label);
-			}
-
-			gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (label), menuitem);
-		}
-		else {
-			/* This creates a separator. */
-			menuitem = gtk_menu_item_new ();
-		}
-		gtk_widget_show (menuitem);
-
-		/* Save the stock name and icon in the menuitem. */
-		if (item->stock_item_index) {
-			if (menued->gnome_support) {
-#ifdef USE_GNOME
-				gtk_object_set_data (GTK_OBJECT (menuitem),
-						     GladeMenuItemStockIndexKey,
-						     GINT_TO_POINTER (item->stock_item_index));
-#endif
-			}
-			else {
-				gchar *stock_id;
-
-				stock_id = g_slist_nth_data (menued->stock_items,
-							     item->stock_item_index - 1);
-
-				gtk_object_set_data_full (GTK_OBJECT (menuitem),
-							  GLADE_MENU_ITEM_STOCK_ID_KEY,
-							  g_strdup (stock_id),
-							  g_free);
-			}
-		}
-		else if (item->icon) {
-			gtk_object_set_data_full (GTK_OBJECT (pixmap), GLADE_ICON_KEY,
-						  g_strdup (icon_name), g_free);
-		}
-
-
-		/* Turn it into a GbWidget, and add the 'activate' handler and the
-		   accelerator. */
-		if (item->name == NULL || item->name[0] == '\0') {
-			g_free (item->name);
-			item->name = glade_project_new_widget_name (menued->project, "item");
-		}
-
-		/*** gbwidget = gb_widget_lookup_class (gtk_type_name (GTK_OBJECT_TYPE (menuitem)));
-
-		if (item->wdata)
-			wdata = glade_widget_data_copy (item->wdata);
-		else
-			wdata = glade_widget_data_new (gbwidget);
-
-		wdata->gbwidget = gbwidget;
-
-		gb_widget_create_from_full (menuitem, NULL, wdata);
-		gtk_widget_set_name (menuitem, item->name);
-
-		if (item->active)
-			wdata->flags |= GLADE_ACTIVE;
-		else
-			wdata->flags &= ~GLADE_ACTIVE;
-
-		g_free (wdata->tooltip);
-		wdata->tooltip = g_strdup (item->tooltip); ***/
-		/* FIXME: Should set tooltip? Or for Gnome install in appbar? */
-
-#if 0
-		/*** ***/
-		if (item->handler && strlen (item->handler) > 0) {
-			GladeSignal *signal = g_new (GladeSignal, 1);
-			signal->name = g_strdup ("activate");
-			signal->handler = g_strdup (item->handler);
-			signal->object = NULL;
-			signal->after = FALSE;
-			signal->data = NULL;
-
-			/* If the last mod time is set to the special value, we set it to
-			   the current time now. */
-			if (item->last_mod_time == (time_t) -2) {
-				item->last_mod_time = time (NULL);
-				if (item->last_mod_time == (time_t) -1)
-					g_warning ("Can't get current time");
-			}
-
-			signal->last_modification_time = item->last_mod_time;
-			wdata->signals = g_list_append (wdata->signals, signal);
-		}
-
-		if (item->key && strlen (item->key) > 0) {
-			GladeAccelerator *accel = g_new (GladeAccelerator, 1);
-			guint key;
-			accel->modifiers = item->modifiers;
-			accel->key = g_strdup (item->key);
-			accel->signal = g_strdup ("activate");
-			wdata->accelerators = g_list_append (wdata->accelerators, accel);
-
-			/* We can only add accelerators to menus, not menubars. */
-			if (GTK_IS_MENU (current_menu)) {
-				key = glade_keys_dialog_find_key (item->key);
-				accel_group = GTK_MENU (current_menu)->accel_group;
-				gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-							    key, item->modifiers,
-							    GTK_ACCEL_VISIBLE);
-			}
-		}
-
-		if (menued->gnome_support) {
-#ifdef USE_GNOME
-			/* For stock menu items, we use the configured accelerator keys. */
-			if (GTK_IS_MENU (current_menu)
-			    && item->stock_item_index && uiinfo->accelerator_key != 0) {
-				accel_group = GTK_MENU (current_menu)->accel_group;
-				gtk_widget_add_accelerator (menuitem, "activate", accel_group,
-							    uiinfo->accelerator_key,
-							    uiinfo->ac_mods,
-							    GTK_ACCEL_VISIBLE);
-			}
-#endif
-		}
-		else {
-			/* For stock menu items, we use the configured accelerator keys. */
-			if (GTK_IS_MENU (current_menu) && item->stock_item_index && stock_id) {
-				GtkStockItem item;
-
-				gtk_stock_lookup (stock_id, &item);
-				if (item.keyval) {
-					accel_group = GTK_MENU (current_menu)->accel_group;
-					gtk_widget_add_accelerator (menuitem, "activate",
-								    accel_group,
-								    item.keyval, item.modifier,
-								    GTK_ACCEL_VISIBLE);
-				}
-			}
-		}
-#endif
-		/* Add the menuitem to the current menu. */
-		gtk_menu_shell_append (current_menu, menuitem);
-		/*** tree_add_widget (menuitem); ***/
-		prev_item = menuitem;
-	}
-	g_list_free (menus);
-	g_hash_table_destroy (group_hash);
-
-	/* Make sure the displayed item is correct. */
-	show_item_properties (menued);
-}
-
-
-/* This creates a radio menu item using the appropriate radio group.
-   If the item's group is not NULL and doesn't points to the item itself,
-   then it will search the list of groups to find the group. If it can't find
-   a group, or it didn't have one it creates a new group.
-   If it creates a new group it adds this item to the list of groups. */
-static GtkWidget*
-create_radio_menu_item (GtkMenuShell *menu,
-			GbMenuItemData *item,
-			GHashTable *group_hash)
-{
-	GtkWidget *menuitem;
-	GSList *group = NULL;
-
-	if (item->group && item->group != item) {
-		GtkRadioMenuItem *group_widget = g_hash_table_lookup (group_hash,
-								      item->group);
-		if (group_widget)
-			group = gtk_radio_menu_item_get_group (group_widget);
-	}
-
-	menuitem = gtk_radio_menu_item_new (group);
-	if (!group)
-		g_hash_table_insert (group_hash, item, menuitem);
-
-	return menuitem;
-}
-
-
-static void
-glade_menu_editor_on_menu_destroyed (GtkWidget *menu,
-				     GtkWidget *menued)
-{
-	gtk_widget_destroy (menued);
-}
-
-
-/* This converts the given menu/menubar into the list of items displayed in
-   the menu editor. */
-static void
-glade_menu_editor_set_menu	 (GladeMenuEditor *menued,
-				  GtkMenuShell    *menu)
-{
-	/* First clear any current items and radio groups. */
-	glade_menu_editor_reset (menued);
-
-	/* Connect to the destroy signal of the menu widget, so we can destroy the
-	   menu editor when the widget is destroyed. */
-	menued->menu_destroy_handler_id = gtk_signal_connect (GTK_OBJECT (menu),
-							      "destroy",
-							      GTK_SIGNAL_FUNC (glade_menu_editor_on_menu_destroyed),
-							      menued);
-
-	/* Now add each of the menus/menuitems in the given menu. */
-	menued->menu = menu;
-
-	set_submenu (menued, menu, 0);
-}
-
-
 /* This checks if the given icon_name is a stock ID, and if it is it returns
    the text to display instead. If not, it returns icon_name. */
-static gchar*
-get_icon_name_from_stock_id (GladeMenuEditor *menued,
-			     gchar	     *icon_name)
+static gchar *
+get_icon_name_from_stock_id (GladeMenuEditor *menued, gchar *icon_name)
 {
 	GtkStockItem item;
 
@@ -3058,7 +3001,6 @@ get_icon_name_from_stock_id (GladeMenuEditor *menued,
 	else
 		return icon_name;
 }
-
 
 /* This recursively adds menus. */
 static void
@@ -3218,6 +3160,52 @@ set_submenu (GladeMenuEditor *menued,
 #endif
 }
 
+static void
+glade_menu_editor_on_menu_destroyed (GtkWidget *menu, GtkWidget *menued)
+{
+	gtk_widget_destroy (menued);
+}
+
+/**
+ * This converts the given menu/menubar into the list of items displayed in
+ * the menu editor.
+ */
+static void
+glade_menu_editor_set_menu (GladeMenuEditor *menued, GtkMenuShell *menu)
+{
+	/* First clear any current items and radio groups. */
+	glade_menu_editor_reset (menued);
+
+	/* Connect to the destroy signal of the menu widget, so we can destroy the
+	   menu editor when the widget is destroyed. */
+	menued->menu_destroy_handler_id = gtk_signal_connect (GTK_OBJECT (menu),
+							      "destroy",
+							      GTK_SIGNAL_FUNC (glade_menu_editor_on_menu_destroyed),
+							      menued);
+
+	/* Now add each of the menus/menuitems in the given menu. */
+	menued->menu = menu;
+
+	set_submenu (menued, menu, 0);
+}
+
+/**
+ * This creates a menu editor to edit the given menubar or popup menu in
+ * the given project. When the user selects the 'OK' or 'Apply' buttons,
+ * the menu widget will be updated. If the menu is destroyed, the menu editor
+ * is automatically destroyed as well.
+ */
+GtkWidget*
+glade_menu_editor_new (GladeProject *project, GtkMenuShell *menu)
+{
+	GladeMenuEditor *menued;
+
+	menued = gtk_type_new (glade_menu_editor_get_type ());
+	glade_menu_editor_construct (menued, project);
+	glade_menu_editor_set_menu (menued, menu);
+
+	return GTK_WIDGET (menued);
+}
 
 /* This clears the clist, freeing all GbMenuItemDatas, and resets the radio
    group combo, freeing all the current radio groups. */
@@ -3243,218 +3231,5 @@ glade_menu_editor_reset (GladeMenuEditor *menued)
 
 	gtk_list_clear_items (GTK_LIST (GTK_COMBO (menued->group_combo)->list),
 			      0, -1);
-}
-
-
-static void
-glade_menu_editor_free_item (GbMenuItemData *item)
-{
-#if 0
-	g_free (item->name);
-	g_free (item->label);
-	g_free (item->handler);
-	g_free (item->icon);
-	g_free (item->tooltip);
-	g_free (item->key);
-
-	if (item->wdata)
-		glade_widget_data_free (item->wdata);
-
-	g_free (item);
-#endif
-}
-
-
-/* Make sure all item group fields point to the first item in the group. */
-static void
-normalize_radio_groups (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item, *group;
-	GList *groups = NULL;
-	gint rows, row;
-
-	/* Step through each row checking each radio item. */
-	rows = GTK_CLIST (menued->clist)->rows;
-	for (row = 0; row < rows; row++) {
-		item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-		if (item->type != GB_MENU_ITEM_RADIO)
-			continue;
-
-		/* Follow the chain of groups until we get the real one. */
-		group = item->group;
-		while (group && group->group && group->group != group)
-			group = group->group;
-
-		/* If it is a new group, add it to the list. */
-		if (!group || group == item) {
-			groups = g_list_prepend (groups, item);
-			item->group = NULL;
-		}
-		/* Else check if the group item is after the current one. If it is,
-		   then we make the current item the group leader. We assume that if
-		   we haven't seen the group item yet, it must be after this one. */
-		else if (!g_list_find (groups, group)) {
-			groups = g_list_prepend (groups, item);
-			group->group = item;
-			item->group = NULL;
-		}
-		else {
-			item->group = group;
-		}
-	}
-
-	g_list_free (groups);
-}
-
-
-/* This recreates the list of available radio groups, and puts them in the
-   combo's drop-down list. */
-static void
-update_radio_groups (GladeMenuEditor * menued)
-{
-	GbMenuItemData *item, *tmp_item;
-	GList *groups = NULL, *elem;
-	gint item_row, row, parent_row, rows;
-	GtkCombo *combo;
-	GtkList *list;
-	GtkWidget *li;
-
-	/* Make sure all item group fields point to the first item in the group. */
-	normalize_radio_groups (menued);
-
-	item_row = get_selected_row (menued);
-	if (item_row == -1) {
-		gtk_list_clear_items (GTK_LIST (GTK_COMBO (menued->group_combo)->list),
-				      0, -1);
-		return;
-	}
-
-	item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), item_row);
-
-	/* Step backwards to find the parent item. */
-	parent_row = -1;
-	for (row = item_row - 1; row > 0; row--) {
-		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-		if (tmp_item->level < item->level) {
-			parent_row = row;
-			break;
-		}
-	}
-
-	/* Now step through the items, checking all items that are on the same
-	   level as the current one, until we reach the end of the list or find an
-	   item on a higher level. */
-	rows = GTK_CLIST (menued->clist)->rows;
-	for (row = parent_row + 1; row < rows; row++) {
-		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-		if (tmp_item->level < item->level)
-			break;
-
-		if (tmp_item->level == item->level
-		    && tmp_item->type == GB_MENU_ITEM_RADIO
-		    && tmp_item->name && tmp_item->name[0]) {
-			/* If the item has its group set to NULL or itself, then it is a new
-			   group, so add its name. */
-			if (!tmp_item->group || tmp_item->group == tmp_item)
-				groups = g_list_prepend (groups, tmp_item->name);
-		}
-	}
-
-	groups = g_list_sort (groups, (GCompareFunc)strcmp);
-
-	combo = GTK_COMBO (menued->group_combo);
-	list = GTK_LIST (combo->list);
-
-	/* We have to block the combo's list's selection changed signal, or it
-	   causes problems. */
-	gtk_signal_handler_block (GTK_OBJECT (list),
-				  GTK_COMBO (menued->group_combo)->list_change_id);
-
-	gtk_list_clear_items (list, 0, -1);
-
-	/* Add the special 'New' item to create a new group. */
-	li = gtk_list_item_new_with_label (_("New"));
-	gtk_widget_show (li);
-	gtk_container_add (GTK_CONTAINER (list), li);
-	gtk_combo_set_item_string (combo, GTK_ITEM (li), "");
-
-	/* Add a separator. */
-	li = gtk_list_item_new ();
-	gtk_widget_show (li);
-	gtk_container_add (GTK_CONTAINER (list), li);
-
-	for (elem = groups; elem; elem = elem->next) {
-		li = gtk_list_item_new_with_label (elem->data);
-		gtk_widget_show (li);
-		gtk_container_add (GTK_CONTAINER (list), li);
-	}
-
-	gtk_signal_handler_unblock (GTK_OBJECT (list),
-				    GTK_COMBO (menued->group_combo)->list_change_id);
-	g_list_free (groups);
-}
-
-
-/* This finds the group item to use for the given radiomenuitem widget.
-   It searches the list of group items to find the first one that is also in
-   the radiomenuitem's group list. If none is found, it creates a new group
-   and adds it to the list. */
-static GbMenuItemData*
-find_radio_group (GtkRadioMenuItem *menuitem, GList **groups,
-		  GbMenuItemData *item)
-{
-	GSList *item_group_list;
-	GList *elem;
-
-	item_group_list = menuitem->group;
-
-	/* The groups list contains pairs of GSList + GbMenuItemData*. */
-	for (elem = *groups; elem; elem = elem->next->next) {
-		GSList *elem_group = elem->data;
-		GbMenuItemData *elem_item = elem->next->data;
-
-		if (elem_group == item_group_list)
-			return elem_item;
-	}
-
-	/* We couldn't find an existing group that matches, so we create a new one.
-	 */
-	*groups = g_list_prepend (*groups, item);
-	*groups = g_list_prepend (*groups, item_group_list);
-	return NULL;
-}
-
-
-/* This is called to make sure that no items have the given item as their
-   group leader. It is called when an item is removed, or when its type is
-   changed from a radio item to something else.
-
-   It steps through the list, checking for radio items with
-   the group field set to the given item. The first time it finds one, it
-   creates a new group. It sets the group field of all other items in the
-   same group to the new first item in the group. */
-static void
-remove_from_radio_group (GladeMenuEditor * menued,
-			 GbMenuItemData *item)
-{
-	GbMenuItemData *new_group_item = NULL;
-	gint rows, row;
-
-	rows = GTK_CLIST (menued->clist)->rows;
-	for (row = 0; row < rows; row++) {
-		GbMenuItemData *tmp_item;
-		tmp_item = gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
-
-		if (tmp_item->type == GB_MENU_ITEM_RADIO
-		    && tmp_item->group == item && tmp_item != item) {
-			if (new_group_item) {
-				tmp_item->group = new_group_item;
-			}
-			else {
-				tmp_item->group = NULL;
-				new_group_item = tmp_item;
-			}
-		}
-	}
 }
 
