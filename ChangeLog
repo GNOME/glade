@@ -1,3 +1,19 @@
+2004-11-08  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* src/glade-gtk.c: bug 157289 fixed in regard with boxes and notebooks.
+
+2004-11-08 Shane Butler <shane_b@users.sourceforge.net>
+
+	* src/glade-gtk.c (glade_gtk_notebook_get_tab_label_text, 
+	  glade_gtk_notebook_set_tab_label_text): New functions to handle setting the tab 
+	  label text on the GtkNotebook child widget. (glade_gtk_notebook_replace_child): 
+	  Make it so the label is handled correctly and the correct notebook page is 
+	  still selected.
+	* widgets/gtknotebook.xml: Updated with tab label hook functions.
+	* src/glade-widget.c: Choose the mapped widget rather than just the last child 
+	  widget in the list.
+	* src/main.c (glade_init): Spelling mistake reported by Andrew Burton <adb@iinet.net.au>.
+	
 2004-11-05  David Hoover <karma@deadmoose.com>
 
 	* src/glade-project-view.c: when double-clicking on a window in the 

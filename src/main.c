@@ -99,7 +99,7 @@ glade_init (void)
 
 	if (!g_module_supported ())
 	{
-		g_warning (_("gmodule support not found. gmodule support is requiered "
+		g_warning (_("gmodule support not found. gmodule support is required "
 			     "for glade to work"));
 		return FALSE;
 	}

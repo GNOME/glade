@@ -198,7 +198,7 @@ glade_gtk_widget_condition (GladeWidgetClass *klass)
 }
 
 /**
- * glade_gtk-widget_set_tooltip:
+ * glade_gtk_widget_set_tooltip:
  * @object:
  * @value:
  *
@@ -221,7 +221,7 @@ glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 }
 
 /**
- * glade_gtk-widget_get_tooltip:
+ * glade_gtk_widget_get_tooltip:
  * @object:
  * @value:
  *
@@ -362,6 +362,33 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (box->children));
 }
 
+static gint
+glade_gtk_box_get_first_blank (GtkBox *box)
+{
+	GList       *child;
+	GladeWidget *gwidget;
+	gint         position;
+	
+	for (child = box->children, position = 0;
+	     child && child->data;
+	     child = child->next, position++)
+	{
+		GtkWidget *widget = ((GtkBoxChild *) (child->data))->widget;
+
+		if ((gwidget = glade_widget_get_from_gtk_widget (widget)) != NULL)
+		{
+			gint gwidget_position;
+			GladeProperty *property =
+				glade_widget_get_property (gwidget, "position");
+			gwidget_position = g_value_get_int (property->value);
+
+			if ((gwidget_position - position) > 0)
+				return position;
+		}
+	}
+	return position;
+}
+
 /**
  * glade_gtk_box_set_size:
  * @object:
@@ -372,16 +399,12 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_box_set_size (GObject *object, GValue *value)
 {
-	GladeWidget *widget;
-	GtkBox *box;
-	GList *child;
+	GtkBox      *box;
+	GList       *child;
 	gint new_size, old_size, i;
 
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
-
-	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (box));
-	g_return_if_fail (widget != NULL);
 
 	old_size = g_list_length (box->children);
 	new_size = g_value_get_int (value);
@@ -391,8 +414,13 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	for (i = 0; i < new_size; i++)
 	{
 		if (g_list_length(box->children) < (i + 1))
-			gtk_container_add (GTK_CONTAINER (box),
-					   GTK_WIDGET (glade_placeholder_new ()));
+		{
+			GtkWidget *placeholder = glade_placeholder_new ();
+			gint       blank       = glade_gtk_box_get_first_blank (box);
+
+			gtk_container_add (GTK_CONTAINER (box), placeholder);
+			gtk_box_reorder_child (box, placeholder, blank);
+		}
 	}
 
 	/* The box has shrunk. Remove the widgets that are on those slots */
@@ -401,9 +429,8 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	     child = g_list_last (box->children), old_size--)
 	{
 		GtkWidget *child_widget = ((GtkBoxChild *) (child->data))->widget;
-		GladeWidget *glade_widget;
 
-		if ((glade_widget = glade_widget_get_from_gtk_widget (child_widget)) != NULL)
+		if (glade_widget_get_from_gtk_widget (child_widget))
 			/* In this case, refuse to shrink */
 			break;
 
@@ -531,6 +558,73 @@ glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 }
 
 /**
+ * glade_gtk_notebook_get_tab_label_text:
+ * @object: A GtkWidget which is a page on the notebook.
+ * @value: The label text is returned as a GValue.
+ *
+ * Gets the tab label text of a GtkNotebook child widget.
+ */
+void GLADEGTK_API
+glade_gtk_notebook_get_tab_label_text (GObject *object, GValue *value)
+{
+	GtkNotebook *notebook;
+	GtkWidget *child;
+
+	g_value_reset (value);
+	child = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_WIDGET (child));
+	notebook = GTK_NOTEBOOK (gtk_widget_get_parent (child));
+	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
+
+	g_value_set_string (value, 
+		gtk_notebook_get_tab_label_text (notebook, child));
+}
+
+/**
+ * glade_gtk_notebook_set_tab_label_text:
+ * @object: A GtkWidget which is a page on the notebook.
+ * @value: The new label text to be set.
+ *
+ * Sets the tab label text of a GtkNotebook child widget.
+ */
+void GLADEGTK_API
+glade_gtk_notebook_set_tab_label_text (GObject *object, GValue *value)
+{
+	GtkNotebook *notebook;
+	GtkWidget *child;
+
+	child = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_WIDGET (child));
+	notebook = GTK_NOTEBOOK (gtk_widget_get_parent (child));
+	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
+
+	gtk_notebook_set_tab_label_text (notebook, child, 
+					 g_value_get_string (value));
+}
+
+static gint
+glade_gtk_notebook_get_first_blank_page (GtkNotebook *notebook)
+{
+	GladeWidget *gwidget;
+	GtkWidget   *widget;
+	gint         position;
+	for (position = 0; position < gtk_notebook_get_n_pages (notebook); position++)
+	{
+		widget = gtk_notebook_get_nth_page (notebook, position);
+		if ((gwidget = glade_widget_get_from_gtk_widget (widget)) != NULL)
+		{
+ 			GladeProperty *property =
+				glade_widget_get_property (gwidget, "position");
+			gint gwidget_position = g_value_get_int (property->value);
+
+			if ((gwidget_position - position) > 0)
+				return position;
+		}
+	}
+	return position;
+}
+
+/**
  * glade_gtk_notebook_set_n_pages:
  * @object:
  * @value:
@@ -554,13 +648,12 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 
 	new_size = g_value_get_int (value);
 
-
 	/* Ensure base size of notebook */
-	for (i = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)); i < new_size; i++)
+	for (i = gtk_notebook_get_n_pages (notebook); i < new_size; i++)
 	{
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
-					  glade_placeholder_new (),
-					  NULL);
+		gint position = glade_gtk_notebook_get_first_blank_page (notebook);
+		gtk_notebook_insert_page (notebook, glade_placeholder_new (),
+					  NULL, position);
 	}
 
 	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
@@ -647,7 +740,7 @@ glade_gtk_table_widget_exceeds_bounds (GtkTable *table, gint n_rows, gint n_cols
 }
 
 /**
- * glade_gtk_notebook_set_n_common:
+ * glade_gtk_table_set_n_common:
  * @object:
  * @value:
  *
@@ -1264,12 +1357,14 @@ glade_gtk_notebook_replace_child (GtkWidget *current,
 
 	gtk_notebook_remove_page (notebook, page_num);
 	gtk_notebook_insert_page (notebook, new, label, page_num);
-	gtk_notebook_set_tab_label (notebook, new, label);
 
 	gtk_widget_unref (page);
 	if (label)
 		gtk_widget_unref (label);
 
+	/* There seems to be a GtkNotebook bug where if the page is
+	 * not shown first it will not set the current page */
+	gtk_widget_show (new);
 	gtk_notebook_set_current_page (notebook, page_num);
 }
 
