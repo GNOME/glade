@@ -27,6 +27,7 @@ glade2_SOURCES = \
 	glade-placeholder.c \
 	glade-project-view.c \
 	glade-project-window.c \
+	glade-project-ui.c \
 	glade-widget-class.c \
 	glade-xml-utils.c \
 	glade-palette.c \
@@ -52,6 +53,7 @@ noinst_HEADERS = \
 	glade-palette.h \
 	glade-cursor.h \
 	glade-project-window.h \
+	glade-project-ui.h \
 	glade-types.h \
 	glade-widget.h \
 	glade-widget-class.h \

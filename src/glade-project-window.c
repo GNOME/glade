@@ -69,7 +69,10 @@ gpw_new_cb (void)
 static void
 gpw_save_cb (void)
 {
-	g_print ("Implement me !\n");
+	GladeProject *project;
+
+	project = glade_project_window_get_project ();
+	glade_project_save (project);
 }
 
 static void
@@ -573,3 +576,13 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 }
 
 
+GladeProject *
+glade_project_window_get_project (void)
+{
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	g_return_val_if_fail (GLADE_IS_PROJECT_WINDOW (gpw), NULL);
+
+	return gpw->project;
+}

@@ -17,10 +17,7 @@ struct _GladeProject
 	GtkObject object; /* We emit have signals so we are a GtkObject */
 
 	gchar *name;         /* The name of the project like network-conf */
-	gchar *xml_filename; /* The name of the xml file on this (w/o the path)*/
-	gchar *directory;    /* The path this project resides in. The directory 
-			      * plus the xml_filename make the full path.
-			      */
+	gchar *path;         /* The full path of the xml file for this project*/
 
 	gboolean changed;    /* A flag that is set when a project has changes
 			      * if this flag is not set we don't have to query
@@ -31,10 +28,7 @@ struct _GladeProject
 	GList *widgets; /* A list of GladeWidgets that make up this project.
 			 * The widgets are stored in no particular order.
 			 */
-#if 0
-	/* Not yet used */
-	GList *views;
-#endif	
+
 	GList *selection; /* We need to keep the selection in the project
 			   * because we have multiple projects and when the
 			   * user switchs between them, he will probably
@@ -57,9 +51,15 @@ struct _GladeProjectClass
 
 
 guint glade_project_get_type (void);
+
 GladeProject * glade_project_get_active (void);
 GladeProject * glade_project_new (void);
 
+
+/* Project operations */
+gboolean       glade_project_save (GladeProject *project);
+
+/* Widget related stuff */
 void glade_project_add_widget (GladeProject  *project,
 			       GladeWidget *glade_widget);
 
@@ -72,7 +72,6 @@ void glade_project_widget_name_changed (GladeProject *project,
 void glade_project_selection_set    (GladeWidget *widget, gboolean emit_signal);
 void glade_project_selection_add    (GladeWidget *widget, gboolean emit_signal);
 void glade_project_selection_remove (GladeWidget *widget, gboolean emit_signal);
-
 void glade_project_selection_clear  (GladeProject *project, gboolean emit_signal);
 
 G_END_DECLS

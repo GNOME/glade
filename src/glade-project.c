@@ -25,6 +25,7 @@
 #include <string.h>
 #include "glade.h"
 #include "glade-project.h"
+#include "glade-project-ui.h"
 #include "glade-project-window.h"
 #include "glade-widget.h"
 
@@ -226,6 +227,19 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 	return NULL;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 void
 glade_project_selection_changed (GladeProject *project)
 {
@@ -318,3 +332,48 @@ glade_project_selection_set (GladeWidget *widget,
 	glade_project_selection_add   (widget, emit_signal);
 }	
 
+
+/**
+ * glade_project_save_to_file:
+ * @project: 
+ * @file_name: 
+ * 
+ * Save a proejct
+ * 
+ * Return Value: TRUE on success, FALSE otherwise
+ **/
+gboolean
+glade_project_save_to_file (GladeProject *project,
+			    const gchar *file_name)
+{
+	g_print ("Save %s to %s\n", project->name, file_name);
+
+	return TRUE;
+}
+
+
+/**
+ * glade_project_save:
+ * @project: 
+ * 
+ * Save the project, query the user for a proeject name if necessary
+ * 
+ * Return Value: TRUE if the project was saved, FALSE if the user cancelled
+ *               the operation or an error was encountered while saving
+ **/
+gboolean
+glade_project_save (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	if (project->path == NULL)
+		project->path = glade_project_ui_save_get_name (project);
+
+	if (project->path == NULL)
+		return FALSE;
+
+	glade_project_save_to_file (project, project->path);
+
+	return TRUE;
+}
+	
