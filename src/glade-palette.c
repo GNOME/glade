@@ -253,35 +253,6 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	return table;
 }
 
-static gint
-on_palette_button_toggled (GtkWidget *button, GladePalette *palette)
-{
-	gint *page;
-
-	page = g_object_get_data (G_OBJECT (button), "page");
-	gtk_notebook_set_page (GTK_NOTEBOOK (palette->notebook), *page);
-	return TRUE;
-}
-
-static GtkWidget *
-glade_palette_button_group_create (GladePalette *palette, gchar *name, gint *page)
-{
-	GtkWidget *button;
-	GtkWidget *hbox;
-
-	hbox = gtk_hbox_new (TRUE, 0);
-	
-	button = gtk_radio_button_new_with_label (palette->sections_button_group, name);
-	palette->sections_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
-	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
-	g_object_set_data (G_OBJECT (button), "page", page);
-	g_signal_connect (G_OBJECT (button), "toggled",
-			  G_CALLBACK (on_palette_button_toggled), palette);
-
-	return hbox;
-}
-
 static void
 glade_palette_init (GladePalette *palette)
 {
@@ -334,23 +305,39 @@ glade_palette_new (GList *catalogs)
 	return palette;
 }
 
+static gint
+glade_palette_on_catalog_button_toggled (GtkWidget *button,
+					 GladePalette *palette)
+{
+	gint page;
+
+	page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "page"));
+	gtk_notebook_set_page (GTK_NOTEBOOK (palette->notebook), page);
+
+	return TRUE;
+}
+
 void
 glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 {
+	gint page;
+	GtkWidget *button;
 	GtkWidget *widget;
-	gint *page;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
 	g_return_if_fail (catalog != NULL);
 
-	/* Add the title of the catalog to the palette */
-	page = g_malloc (sizeof (int));
-	if (page == NULL)
-		return; /* TODO: Add a GError argument to be able to signal out of memory conditions */
-	
-	*page = palette->nb_sections++;
-	widget = glade_palette_button_group_create (palette, catalog->title, page);
-	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), widget, FALSE, TRUE, 3);
+	page = palette->nb_sections++;
+
+	/* Add the button */ 
+	button = gtk_radio_button_new_with_label (palette->sections_button_group, catalog->title);
+	palette->sections_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
+	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
+	g_object_set_data (G_OBJECT (button), "page", GINT_TO_POINTER (page));
+	g_signal_connect (G_OBJECT (button), "toggled",
+			  G_CALLBACK (glade_palette_on_catalog_button_toggled),
+			  palette);
+	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), button, FALSE, TRUE, 3);
 
 	/* Add the section */
 	widget = glade_palette_widget_table_create (palette, catalog);
