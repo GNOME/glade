@@ -54,7 +54,6 @@ struct _GladeProjectView
 				      * for the project changed selection
 				      * signal
 				      */
-				      
 };
 
 struct _GladeProjectViewClass

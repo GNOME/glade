@@ -112,16 +112,25 @@ gpw_new_cb (void)
 static void
 gpw_save_cb (void)
 {
+	GladeProjectWindow *gpw;
 	GladeProject *project;
 
+	gpw = glade_project_window_get ();
 	project = glade_project_window_get_project ();
 	glade_project_save (project);
+	glade_project_window_refresh_title (gpw);
 }
 
 static void
 gpw_save_as_cb (void)
 {
-	glade_project_save_as (glade_project_window_get_project ());
+	GladeProjectWindow *gpw;
+	GladeProject *project;
+
+	gpw = glade_project_window_get ();
+	project = glade_project_window_get_project ();
+	glade_project_save_as (project);
+	glade_project_window_refresh_title (gpw);
 }
 
 static void
@@ -442,7 +451,6 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 {
 	GladeProjectView *view;
 	GList *list;
-	gchar *title;
 
 	if (g_list_find (gpw->projects, project) == NULL) {
 		g_warning ("Could not set project because it could not "
@@ -452,11 +460,9 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	
 	gpw->project = project;
 	if (project) {
-		title = g_strdup_printf ("glade2 : %s", project->name);
-		gtk_window_set_title (GTK_WINDOW (gpw->window), title);
-		g_free (title);
+		glade_project_window_refresh_title (gpw);
 	} else {
-		gtk_window_set_title (GTK_WINDOW (gpw->window), "glade 2");
+		gtk_window_set_title (GTK_WINDOW (gpw->window), "glade2");
 	}
 
 	list = gpw->views;
@@ -473,7 +479,7 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	glade_project_selection_changed (project);
 }
 
-static void
+void
 glade_project_window_set_project_cb (GladeProject *project)
 {
 	GladeProjectWindow *gpw;
@@ -485,32 +491,23 @@ glade_project_window_set_project_cb (GladeProject *project)
 void
 glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project)
 {
-	GtkItemFactoryEntry entry;
-
 	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	
 	gpw->projects = g_list_prepend (gpw->projects, project);
-	
-	entry.path = g_strdup_printf ("/Project/%s", project->name);
-	entry.accelerator = NULL;
-	entry.callback = glade_project_window_set_project_cb;
-	entry.callback_action = 0;
-	entry.item_type = g_strdup ("<Item>");
-	
-	gtk_item_factory_create_item (gpw->item_factory,
-				      &entry,
-				      project,
-				      1);
 
-	g_free (entry.path);
-	g_free (entry.item_type);
+	/* Add the project in the /Project menu. */
+	gtk_item_factory_create_item (gpw->item_factory, &(project->entry),
+				      project, 1);
 
 	glade_project_window_set_project (gpw, project);
 }
 
-static void
-change_menu_label (GladeProjectWindow *gpw, const gchar* path, const gchar* prefix, const gchar* suffix)
+void
+glade_project_window_change_menu_label (GladeProjectWindow *gpw,
+					const gchar *path,
+					const gchar *prefix,
+					const gchar *suffix)
 {
 	gboolean sensitive = TRUE;
 	GtkBin *bin;
@@ -568,8 +565,17 @@ glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 	undo_description = glade_command_get_description (undo_item);
 	redo_description = glade_command_get_description (redo_item);
 
-	change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
-	change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
+	glade_project_window_change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
+	glade_project_window_change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
+}
+
+void
+glade_project_window_refresh_title (GladeProjectWindow *gpw)
+{
+	gchar *title;
+	title = g_strdup_printf ("glade2 : %s", gpw->project->name);
+	gtk_window_set_title (GTK_WINDOW (gpw->window), title);
+	g_free (title);
 }
 
 void

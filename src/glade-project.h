@@ -19,6 +19,8 @@ struct _GladeProject
 	gchar *name;         /* The name of the project like network-conf */
 	gchar *path;         /* The full path of the xml file for this project*/
 
+	GtkItemFactoryEntry entry; /* The menu entry in the /Project menu */
+
 	gboolean changed;    /* A flag that is set when a project has changes
 			      * if this flag is not set we don't have to query
 			      * for confirmation after a close or exit is

@@ -1,4 +1,24 @@
+2002-04-16  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project.c (glade_project_check_previously_loaded): new.
+	(glade_project_open): call above.
+
+2002-04-14  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project.c (glade_project_update_menu_path): new function.
+	(glade_project_refresh_menu_item): likewise.
+	(glade_project_new, glade_project_open): update the menu item.
+	(glade_project_save, glade_project_save_as): likewise.
+
 2002-04-13  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project.c (glade_project_save): update project->name.
+	(glade_project_save_as): likewise.
+	(glade_project_open_from_file): likewise.
+
+	* src/glade-project-window.c (glade_project_window_refresh_title): new.
+	(gpw_save_cb): update title.
+	(gpw_save_as_cb): likewise.
 
 	* src/glade-clipboard.c (glade_clipboard_paste): removed call to
 	glade_widget_create_gtk_widget ().

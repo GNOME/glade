@@ -50,12 +50,16 @@ GladeProject *       glade_project_window_get_project ();
 void                 glade_project_window_show_all (GladeProjectWindow *gpw);
 
 void glade_project_window_set_add_class       (GladeProjectWindow *gpw, GladeWidgetClass *class);
+
+void glade_project_window_set_project_cb (GladeProject *project);
+
 void glade_project_window_set_project         (GladeProjectWindow *project_window,
 					       GladeProject       *project);
 void glade_project_window_add_project         (GladeProjectWindow *gpw,
 					       GladeProject *project);
 
 void glade_project_window_refresh_undo_redo   (GladeProjectWindow *gpw);
+void glade_project_window_refresh_title       (GladeProjectWindow *gpw);
 
 gboolean glade_project_window_query_properties (GladeWidgetClass *class,
 						GladePropertyQueryResult *result);
