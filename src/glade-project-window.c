@@ -471,6 +471,9 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 {
 	GtkItemFactoryEntry entry;
 
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	
 	gpw->projects = g_list_prepend (gpw->projects, project);
 	
 	entry.path = g_strdup_printf ("/Project/%s", project->name);

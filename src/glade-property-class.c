@@ -131,10 +131,10 @@ glade_property_class_new (void)
 	property_class->parameters = NULL;
 	property_class->choices = NULL;
 	property_class->optional = FALSE;
+	property_class->optional_default = TRUE;
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->get_default = FALSE;
-	property_class->apply_first_time = FALSE;
 	property_class->query = NULL;
 	property_class->set_function = NULL;
 
@@ -277,6 +277,11 @@ glade_property_class_make_string_from_gvalue (GladePropertyType type,
 	case GLADE_PROPERTY_TYPE_STRING:
 		string = g_strdup (g_value_get_string (value));
 		break;
+	case GLADE_PROPERTY_TYPE_ENUM:
+#if 0
+		glade_implement_me ();
+#endif	
+		break;
 	default:
 		g_warning ("Could not make string from gvalue for type %s\n",
 			 glade_property_type_enum_to_string (type));
@@ -314,6 +319,10 @@ glade_property_class_make_gvalue_from_string (GladePropertyType type,
 	case GLADE_PROPERTY_TYPE_STRING:
 		g_value_init (value, G_TYPE_STRING);
 		g_value_set_string (value, string);
+		break;
+	case GLADE_PROPERTY_TYPE_ENUM:
+		g_free (value);
+		value = NULL;
 		break;
 	default:
 		g_warning ("Could not make gvalue from string %s and type %s\n",
@@ -653,7 +662,6 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	property_class->optional = glade_xml_property_get_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	if (property_class->optional) {
 		property_class->optional_default = glade_xml_property_get_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
-		property_class->apply_first_time = glade_xml_property_get_boolean (node, GLADE_TAG_APPLY_FIRST_TIME, FALSE);
 	}
 
 	/* Now get the list of signals that we should listen to */

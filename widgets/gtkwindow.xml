@@ -3,6 +3,7 @@
   <GenericName>window</GenericName>
   <Toplevel>True</Toplevel>
   <Placeholder>True</Placeholder>
+  <PostCreateFunction>glade_gtk_window_post_create</PostCreateFunction>
 
   <Properties>
 
@@ -13,8 +14,8 @@
     <Property Id="modal">
       <SetFunction>ignore</SetFunction>
     </Property>
-    <Property Id="default-width"  Default="440" Optional="True" OptionalDefault="False" ApplyFirstTime="True"/>
-    <Property Id="default-height" Default="250" Optional="True" OptionalDefault="False" ApplyFirstTime="True"/>
+    <Property Id="default-width"  Default="0" Optional="True" OptionalDefault="False"/>
+    <Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
     <Property Id="allow-grow"/>
     <Property Id="allow-shrink"/>
 

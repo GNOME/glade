@@ -57,6 +57,8 @@ struct _GladeWidgetClass {
 	void (*placeholder_replace) (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container);
+
+	gchar *post_create_function;
 };
 
 /* GladeWidgetClassSignal contains all the info we need for a given signal, such as
@@ -77,7 +79,7 @@ const gchar * glade_widget_class_get_name (GladeWidgetClass *class);
 GType 	      glade_widget_class_get_type (GladeWidgetClass *class);
 gboolean      glade_widget_class_has_queries (GladeWidgetClass *class);
 
-
+gboolean      glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
 /* ParamSpec stuff */
 GParamSpec * glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
 void         glade_widget_class_dump_param_specs (GladeWidgetClass *class);

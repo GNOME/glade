@@ -158,10 +158,9 @@ struct _GladePropertyClass {
 			       * the "toggled" signal to get the state of the property
 			       * from the real widget
 			       */
-
+	
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
-	gboolean apply_first_time; /* Temp hack */
 	gboolean get_default; /* If true, when the default property is applied it is queried
 			       * from the GtkWidget rather than setting it to some value. We need
 			       * this for example for the packing position in a gtkbox, we container
@@ -195,7 +194,8 @@ GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gcha
 
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
-GValue * glade_property_class_make_gvalue_from_string (GladePropertyType type, const gchar *string);
+GValue * glade_property_class_make_gvalue_from_string (GladePropertyType type,
+						       const gchar *string);
 gchar *  glade_property_class_make_string_from_gvalue (GladePropertyType type,
 						       const GValue *value);
 

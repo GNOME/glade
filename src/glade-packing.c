@@ -378,22 +378,19 @@ glade_packing_box_position_set (GObject *object, const GValue *value)
 		child = box_child->widget;
 		glade_widget_child = glade_widget_get_from_gtk_widget (child);
 
-		if (!glade_widget_child) {
-			g_warning ("Could not get the GladeWidget to set packing position");
+		/* This is a placeholder */
+		if (!glade_widget_child)
 			continue;
-		}
 
 		property = glade_property_get_from_id (glade_widget_child->properties,
 						       "position");
 
-		/* If we have a placeholder in the Box the property will not be found */
-		if (property)
-			glade_packing_box_position_get (G_OBJECT (child), property->value);
+		glade_packing_box_position_get (G_OBJECT (child), property->value);
 
 		/* We should pass a FALSE argument so that this property is not added to the
 		 * undo stack
 		 * Also we should have a generic way to update a property, here we know is interger
-		 * but it shuold be done with a generic fuction
+		 * but it should be done with a generic fuction
 		 */
 	}
 	

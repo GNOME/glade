@@ -2,6 +2,7 @@
   <Name>GtkCheckButton</Name>
   <GenericName>checkbutton</GenericName>
   <Toplevel>False</Toplevel>
+  <PostCreateFunction>glade_gtk_check_button_post_create</PostCreateFunction>
 
   <Properties>
 
@@ -16,7 +17,7 @@
     <Property Id="draw-indicator" Default="True"/>
 
   </Properties>
-  
+
 </GladeWidgetClass>
 	 
 	 

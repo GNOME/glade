@@ -1,3 +1,48 @@
+2001-08-13  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.h: remove the packing memebers, we where not using them.
+
+	* src/glade-widget.c (glade_widget_button_press): if the widget is not
+	selected, stop the emision of the button clicked event.
+	(glade_widget_set_default_options_real): remove the code for handling
+	->apply_first_time.
+	(glade_widget_ugly_hack): add an ugly hack till i figure out the real
+	problem of the placeholders not beeing drawn inside containers.
+	(glade_widget_clear_draw_selection): function used when we unselect an
+	item so that it gets redrawn and the selection nodes cleared.
+	(glade_widget_properties_hash_from_node): impl.
+	(glade_widget_apply_property_from_hash_item): impl.
+	(glade_widget_new_child_from_node): impl.
+
+	* src/glade-widget-class.c (glade_widget_class_new_from_node): load
+	postcreatefunction
+	(glade_widget_class_is): implement.
+
+	* src/glade-property.c (glade_property_set): implement.
+
+	* src/glade-property-class.h: remove ->apply_first_time
+
+	* src/glade-project-window.c (glade_project_window_add_project): add
+	two g_return_val_if_fail
+
+	* src/glade-project-view.c (glade_project_view_widget_name_changed): if
+	view->is_list and the widget is not a toplevel, return.
+
+	* src/glade-placeholder.c (glade_placeholder_add_methods_to_class):
+	make all methods static. implement.
+	(glade_placeholder_add): take a rows & cols argument and not a
+	GladePropertyQueryResult.
+	:use glade_widget_class_is and not a strcmp 
+	(glade_placeholder_add_with_result): impl.
+	(glade_placeholder_replace): impl.
+	(glade_placeholder_get_from_properties): impl.
+
+	* src/glade-packing.c (glade_packing_box_position_set): remove a
+	warning
+
+	* src/glade-gtk.c (glade_gtk_window_post_create): impl.
+	(glade_gtk_check_button_post_create): impl.
+
 2001-08-11  Chema Celorio  <chema@celorio.com>
 
 	* src/glade.h: try to fix gettext support. Duno why translations are not

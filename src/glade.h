@@ -57,7 +57,6 @@
 #define GLADE_TAG_COMMON       "Common"
 #define GLADE_TAG_OPTIONAL     "Optional"
 #define GLADE_TAG_OPTIONAL_DEFAULT "OptionalDefault"
-#define GLADE_TAG_APPLY_FIRST_TIME "ApplyFirstTime"
 #define GLADE_TAG_TYPE         "Type"
 #define GLADE_TAG_TOOLTIP      "Tooltip"
 #define GLADE_TAG_GTKARG       "GtkArg"
@@ -89,6 +88,7 @@
 #define GLADE_TAG_UPDATE_SIGNALS "UpdateSignals"
 #define GLADE_TAG_SIGNAL_NAME "SignalName"
 #define GLADE_TAG_DEFAULT      "Default"
+#define GLADE_TAG_POST_CREATE_FUNCTION "PostCreateFunction"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"

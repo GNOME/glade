@@ -33,6 +33,7 @@
 #include "glade-popup.h"
 #include "glade-placeholder.h"
 #include "glade-signal.h"
+#include "glade-gtk.h"
 #include "glade-packing.h"
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
@@ -282,10 +283,17 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 
 #ifdef DEBUG	
 	g_debug ("Event button %d\n", event->button);
-#endif	
-	if (event->button == 1)
+#endif
+
+	if (event->button == 1) {
+		/* If this is a selection set, don't change the state of the widget
+		 * for exmaple for toggle buttons
+		 */
+		if (!glade_widget->selected)
+			gtk_signal_emit_stop_by_name (GTK_OBJECT (event_widget),
+						      "button_press_event");
 		glade_project_selection_set (glade_widget, TRUE);
-	else if (event->button == 3)
+	} else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
 #ifdef DEBUG	
 	else
@@ -386,14 +394,6 @@ glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 			continue;
 		}
 
-		if (property->class->apply_first_time && !property->enabled) {
-			property->enabled = TRUE;
-			property->loading = TRUE;
-			glade_property_refresh (property);
-			property->loading = FALSE;
-			property->enabled = FALSE;
-		}
-
 		property->loading = TRUE;
 		glade_property_refresh (property);
 		property->loading = FALSE;
@@ -459,7 +459,7 @@ glade_widget_draw_selection_nodes (GladeWidget *glade_widget)
 		y = 0;
 		gdk_window_get_size (window, &w, &h);
 	}
-	
+
 	gc = paint_widget->style->black_gc;
 	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
 
@@ -484,18 +484,22 @@ glade_widget_draw_selection_nodes (GladeWidget *glade_widget)
 			    x, y, width - 1, height - 1);
 	
 	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
+	
 }
 
-static void
+static gint
 glade_widget_expose_event_cb (GtkWidget *widget, GdkEventExpose *event,
 			      GladeWidget *glade_widget)
 {
-	g_return_if_fail (GTK_IS_WIDGET (widget));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
 	g_assert (widget == glade_widget->widget);
 
 	if (glade_widget->selected)
 		glade_widget_draw_selection_nodes (glade_widget);
+
+	return FALSE;
 }
 
 static void
@@ -506,11 +510,6 @@ glade_widget_connect_draw_signals (GladeWidget *glade_widget)
 	gtk_signal_connect_after (GTK_OBJECT (widget), "expose_event",
 				  GTK_SIGNAL_FUNC (glade_widget_expose_event_cb),
 				  glade_widget);
-
-	/* We need to turn doble buffering off since we are going
-	 * to draw the selection nodes over the widget
-	 */
-	gtk_widget_set_double_buffered (widget, FALSE);
 }
 
 static void
@@ -641,6 +640,22 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
+/* Sigh.
+ * Fix, Fix, fix. Turn this off to see why this is here.
+ * Add a gtkwindow and a gtkvbox to reproduce
+ * Some werid redraw problems that i can't figure out.
+ * Chema
+ */
+static gint
+glade_widget_ugly_hack (gpointer data)
+{
+	GladeWidget *widget = data;
+	
+	gtk_widget_queue_resize (widget->widget);
+	
+	return FALSE;
+}
+
 static gboolean
 glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 {
@@ -668,6 +683,31 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	glade_widget->widget = widget;
 
 	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
+
+	/* Ugly ugly hack. Don't even remind me about it. SEND ME PATCH !! and you'll
+	 * gain 100 love points. 
+	 * 100ms works for me, but since i don't know what the problem is i'll add a couple
+	 * of more times the call for slower systems or systems under heavy workload, no harm
+	 * done with an extra queue_resize.
+	 * This was not needed for gtk 1.3.5 but needed for 1.3.7.
+	 * To reproduce the problem, remove this timeouts and create a gtkwindow
+	 * and then a gtkvbox inside it. It will not draw correctly.
+	 * Chema
+	 */
+	if (class->post_create_function) {
+		void (*pcf) (GObject *object);
+		pcf = glade_gtk_get_function (class->post_create_function);
+		if (!pcf)
+			g_warning ("Could not find %s\n", class->post_create_function);
+		else
+			pcf (G_OBJECT (glade_widget->widget));
+
+	}
+
+		
+	gtk_timeout_add ( 100, glade_widget_ugly_hack, glade_widget);
+	gtk_timeout_add ( 400, glade_widget_ugly_hack, glade_widget);
+	gtk_timeout_add (1000, glade_widget_ugly_hack, glade_widget);
 	
 	return TRUE;
 }
@@ -743,10 +783,8 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 	widget = glade_widget_new_full (project, class, parent);
 
 	/* If we are a container, add the placeholders */
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class)) {
-		g_print ("Add placeholder \n");
-		glade_placeholder_add (class, widget, result);
-	}
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
+		glade_placeholder_add_with_result (class, widget, result);
 
 	if (result) 
 		glade_property_query_result_destroy (result);
@@ -897,9 +935,27 @@ glade_widget_select (GladeWidget *widget)
 }
 
 
-/* I don't think this flag is beeing used at all, but for now it is queueing
- * redraws. Chema.
- */
+static void
+glade_widget_clear_draw_selection (GladeWidget *widget)
+{
+	GdkWindow *window;
+	
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	
+	if (widget->parent)
+		window = widget->parent->widget->window;
+	else
+		window = widget->widget->window;
+	
+	gdk_window_clear_area (window,
+			       widget->widget->allocation.x,
+			       widget->widget->allocation.y,
+			       widget->widget->allocation.width,
+			       widget->widget->allocation.height);
+	
+	gtk_widget_queue_draw (widget->widget);
+}
+
 /**
  * glade_widget_flag_unselected:
  * @widget: 
@@ -912,7 +968,8 @@ glade_widget_flag_unselected (GladeWidget *widget)
 	g_return_if_fail (widget->selected);
 	
 	widget->selected = FALSE;
-	gtk_widget_queue_draw (widget->widget);
+
+	glade_widget_clear_draw_selection (widget);
 }
 
 /**
@@ -1118,6 +1175,7 @@ static gboolean
 glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 {
 	GladeProperty *property;
+	GValue *gvalue;
 	gchar *value;
 	gchar *id;
 
@@ -1129,23 +1187,29 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 
 	property = glade_property_get_from_id (widget->properties,
 					       id);
-		
-	g_print ("Apply %s with %s\n", id, value);
+	if (property == NULL) {
+		g_warning ("Could not apply property from node. Id :%s\n",
+			   id);
+		return FALSE;
+	}
 
+	gvalue = glade_property_class_make_gvalue_from_string (property->class->type,
+							       value);
+
+	glade_property_set (property, gvalue);
+		
 	g_free (id);
 	g_free (value);
+	g_free (gvalue);
 
 	return TRUE;
 }
 
-static void
-glade_widget_load_child_from_node (GladeXmlNode *node)
-{
-	g_print ("Foo\n");
-}
+static gboolean
+glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, GladeWidget *parent);
 
-GladeWidget *
-glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project)
+static GladeWidget *
+glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, GladeWidget *parent)
 {
 	GladeWidgetClass *class;
 	GladeXmlNode *child;
@@ -1162,23 +1226,135 @@ glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project)
 	if (!class)
 		return NULL;
 	
-	widget = glade_widget_new_full (project,
-					class,
-					NULL);
+	widget = glade_widget_new_full (project, class,	parent);
 
-	g_print ("The %s widget has %d properties\n", widget->name,
-		 g_list_length (widget->properties));
-	
 	child =	glade_xml_node_get_children (node);
 	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!(glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD) ||
-		      glade_xml_node_verify (child, GLADE_XML_TAG_PROPERTY)))
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
+			continue;
+		
+		if (!glade_widget_apply_property_from_node (child, widget)) {
 			return NULL;
-		if (glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
-			glade_widget_load_child_from_node (child);
-		else
-			glade_widget_apply_property_from_node (child, widget);
+		}
 	}
-					    
+
+	child =	glade_xml_node_get_children (node);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
+			continue;
+		
+		if (!glade_widget_new_child_from_node (child, project, widget)) {
+			return NULL;
+		}
+	}
+
+	gtk_widget_show_all (widget->widget);
+
 	return widget;
+}
+
+static GHashTable *
+glade_widget_properties_hash_from_node (GladeXmlNode *node)
+{
+	GladeXmlNode *child;
+	GHashTable *hash;
+	gchar *id;
+	gchar *value;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_PACKING))
+		return NULL;
+
+	hash = g_hash_table_new_full (g_str_hash,
+				      g_str_equal,
+				      g_free,
+				      g_free);
+	
+	child = glade_xml_node_get_children (node);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify (child, GLADE_XML_TAG_PROPERTY)) {
+			return NULL;
+		}
+
+		id    = glade_xml_get_property_string_required (child, GLADE_XML_TAG_NAME, NULL);
+		value = glade_xml_get_content (child);
+
+		if (!value || !id) {
+			g_warning ("Invalid property %s:%s\n", value, id);
+			return NULL;
+		}
+
+		g_hash_table_insert (hash, id, value);
+	}
+	
+	return hash;
+}
+
+static void
+glade_widget_apply_property_from_hash_item (gpointer key, gpointer val, gpointer data)
+{
+	GladeProperty *property;
+	GladeWidget *widget = data;
+	GValue *gvalue;
+	const gchar *id = key;
+	const gchar *value = val;
+
+	property = glade_property_get_from_id (widget->properties, id);
+	g_assert (property);
+
+	gvalue = glade_property_class_make_gvalue_from_string (property->class->type,
+							       value);
+
+	glade_property_set (property, gvalue);
+}
+	
+static void
+glade_widget_apply_properties_from_hash (GladeWidget *widget, GHashTable *properties)
+{
+	g_hash_table_foreach (properties, glade_widget_apply_property_from_hash_item, widget);
+}
+
+static gboolean
+glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, GladeWidget *parent)
+{
+	GladeXmlNode *child_node;
+	GladeWidget *child;
+	GtkWidget *placeholder;
+	GHashTable *packing_properties;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
+		return FALSE;
+
+	/* Get the packing properties */
+	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_PACKING);
+	if (!child_node)
+		return FALSE;
+	packing_properties = glade_widget_properties_hash_from_node (child_node);
+	if (packing_properties == NULL)
+		return FALSE;
+
+	/* Get and create the widget */
+	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
+	if (!child_node)
+		return FALSE;
+	child = glade_widget_new_from_node_real (child_node, project, parent);
+	g_assert (child);
+
+	/* Get the placeholder and replace it with the widget */
+	placeholder = glade_placeholder_get_from_properties (parent, packing_properties);
+	if (placeholder)
+		glade_placeholder_replace (placeholder, parent, child);
+	else
+		gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
+
+	/* Apply the properties and free the hash that contains them */
+	glade_widget_apply_properties_from_hash (child, packing_properties);
+	g_hash_table_destroy (packing_properties);
+	
+	return TRUE;
+}
+
+GladeWidget *
+glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project)
+{
+	return glade_widget_new_from_node_real (node, project, NULL);
 }

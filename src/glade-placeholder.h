@@ -6,27 +6,24 @@ G_BEGIN_DECLS
 
 void          glade_placeholder_add (GladeWidgetClass *class,
 				     GladeWidget *widget,
-				     GladePropertyQueryResult *result);
+				     gint rows, gint columns);
+
+void          glade_placeholder_add_with_result (GladeWidgetClass *class,
+						 GladeWidget *widget,
+						 GladePropertyQueryResult *result);
 
 GladePlaceholder * glade_placeholder_new (GladeWidget *parent);
 
 GladeWidget * glade_placeholder_get_parent (GladePlaceholder *placeholder);
 
+void glade_placeholder_add_methods_to_class (GladeWidgetClass *class);
 
-/* Hacks */
-void          glade_placeholder_replace_box       (GtkWidget *current,
-						   GtkWidget *new,
-						   GtkWidget *container);
-void          glade_placeholder_replace_table     (GtkWidget *current,
-						   GtkWidget *new,
-						   GtkWidget *container);
-void          glade_placeholder_replace_container (GtkWidget *current,
-						   GtkWidget *new,
-						   GtkWidget *container);
-void          glade_placeholder_replace_notebook  (GtkWidget *current,
-						   GtkWidget *new,
-						   GtkWidget *container);
+void glade_placeholder_replace (GladePlaceholder *placeholder,
+				GladeWidget *parent,
+				GladeWidget *child);
 
+GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
+							  GHashTable *properties);
 
 G_END_DECLS
 

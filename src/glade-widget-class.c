@@ -99,24 +99,8 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 {
 	g_return_if_fail (class->name != NULL);
 
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class)) {
-		/* I don't love this. Make it better. Chema */
-		if ((strcmp (class->name, "GtkVBox") == 0) ||
-		    (strcmp (class->name, "GtkHBox") == 0))
-			class->placeholder_replace = glade_placeholder_replace_box;
-		if (strcmp (class->name, "GtkTable") == 0)
-			class->placeholder_replace = glade_placeholder_replace_table;
-		if (strcmp (class->name, "GtkNotebook") == 0)
-			class->placeholder_replace = glade_placeholder_replace_notebook;
-		if ((strcmp (class->name, "GtkWindow")    == 0) ||
-		    (strcmp (class->name, "GtkFrame")     == 0) ||
-		    (strcmp (class->name, "GtkHandleBox") == 0 ))
-			class->placeholder_replace = glade_placeholder_replace_container;
-		
-		if (class->placeholder_replace == NULL)
-			g_warning ("placeholder_replace has not been implemented for %s\n",
-				   class->name);
-	}
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class))
+		glade_placeholder_add_methods_to_class (class);
 }
 
 GList * 
@@ -249,6 +233,9 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
 	else
 		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
+
+	/* <PostCreateFunction> */
+	class->post_create_function = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
 
 	glade_widget_class_add_virtual_methods (class);
 	
@@ -474,3 +461,15 @@ glade_widget_class_get_by_name (const gchar *name)
 	return NULL;
 }
 
+
+gboolean
+glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
+	g_return_val_if_fail (name != NULL, FALSE);
+
+	if (strcmp (class->name, name) == 0)
+		return TRUE;
+
+	return FALSE;
+}

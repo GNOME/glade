@@ -50,22 +50,6 @@ struct _GladeWidget {
 			      */
 
 	gboolean selected;
-
-	/* Packing */
-	gint attach_left;
-	gint attach_right;
-	gint attach_top;
-	gint attach_bottom;
-
-	gint padding_horizontal;
-	gint padding_vertical;
-
-	gboolean expand_x : 1;
-	gboolean expand_y : 1;
-	gboolean shrink_x : 1;
-	gboolean shrink_y : 1;
-	gboolean fill_x   : 1;
-	gboolean fill_y   : 1;
 };
 
 /* GladeWidgetSignal is a structure that holds information about a signal a

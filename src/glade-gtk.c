@@ -222,6 +222,35 @@ empty (GObject *object, GValue *value)
 {
 }
 
+
+/* ------------------------------------ Post Create functions ------------------------------ */
+static void
+glade_gtk_window_post_create (GObject *object, GValue *not_used)
+{
+	GtkWindow *window = GTK_WINDOW (object);
+
+	g_return_if_fail (GTK_IS_WINDOW (window));
+
+	gtk_window_set_default_size (window, 440, 250);
+}
+
+static void
+glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
+{
+	GtkCheckButton *button = GTK_CHECK_BUTTON (object);
+	GtkWidget *label;
+
+	g_return_if_fail (GTK_IS_CHECK_BUTTON (button));
+
+	label = gtk_label_new ("");
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_container_add (GTK_CONTAINER (button), label);
+	gtk_widget_show (label);
+
+}
+
+
+
 /* ================ Temp hack =================== */
 /* We have this table, but what we should do is use gmodule for this,
  * however this requires that we link with libtool cause right now
@@ -252,11 +281,13 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_adjustment_set_page_increment", glade_gtk_adjustment_set_page_increment},
 	{"glade_gtk_adjustment_set_page_size",      glade_gtk_adjustment_set_page_size},
 
+	{"glade_gtk_check_button_post_create",      glade_gtk_check_button_post_create},
+	{"glade_gtk_window_post_create",            glade_gtk_window_post_create},
 
 
 };
 
-static gpointer
+gpointer
 glade_gtk_get_function (const gchar *name)
 {
 	gint num;

@@ -134,7 +134,11 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 {
 	GtkTreeModel *model;
 	GtkTreeIter *iter;
-		
+
+
+	if (view->is_list && !GLADE_WIDGET_IS_TOPLEVEL (findme))
+		return;
+	
 	model = GTK_TREE_MODEL (view->model);
 
 	iter = glade_project_view_find_iter_by_widget (model,

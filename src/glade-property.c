@@ -269,8 +269,10 @@ glade_property_set_string (GladeProperty *property,
 	g_return_if_fail (property->value != NULL);
 	g_return_if_fail (property->widget != NULL);
 	g_return_if_fail (property->widget->widget != NULL);
+	g_return_if_fail (text != NULL);
 
-	if (strcmp (text, g_value_get_string) != 0)
+	if (!g_value_get_string (property->value) ||
+	    (strcmp (text, g_value_get_string (property->value)) != 0))
 		g_value_set_string (property->value, text);
 
 	if (property->enabled) {
@@ -423,7 +425,55 @@ glade_property_set_choice (GladeProperty *property, GladeChoice *choice)
 #endif	
 }
 	
-
+void
+glade_property_set (GladeProperty *property, GValue *value)
+{
+	switch (property->class->type) {
+	case GLADE_PROPERTY_TYPE_BOOLEAN:
+		glade_property_set_boolean (property,
+					    g_value_get_boolean (value));
+		break;
+	case GLADE_PROPERTY_TYPE_FLOAT:
+		glade_property_set_float (property,
+					  g_value_get_float (value));
+		break;
+	case GLADE_PROPERTY_TYPE_INTEGER:
+		glade_property_set_integer (property,
+					    g_value_get_int (value));
+		break;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		glade_property_set_double (property,
+					   g_value_get_double (value));
+		break;
+	case GLADE_PROPERTY_TYPE_STRING:
+		glade_property_set_string (property,
+					   g_value_get_string (value));
+		break;
+	case GLADE_PROPERTY_TYPE_ENUM:
+		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		glade_implement_me ();
+		g_print ("Set adjustment\n");
+#if 1	
+		g_print ("Set directly \n");
+#if 0
+		glade_widget_set_default_options_real (property->child, packing);
+#endif	
+		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
+						GTK_ADJUSTMENT (property->child));
+#else		
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id,
+				property->child, NULL);
+#endif		
+		g_print ("Adjustment has been set\n");
+		break;
+	default:
+		g_warning ("Implement set default for this type [%s]\n", property->class->name);
+		break;
+	}
+	
+}
 
 const gchar *
 glade_property_get_string (GladeProperty *property)

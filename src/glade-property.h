@@ -73,6 +73,7 @@ GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 GladeProperty * glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget);
 void glade_property_free (GladeProperty *property);
 
+void glade_property_set         (GladeProperty *property, GValue *value);
 void glade_property_set_string  (GladeProperty *property, const gchar *text);
 void glade_property_set_integer (GladeProperty *property, gint val);
 void glade_property_set_float   (GladeProperty *property, gfloat val);
