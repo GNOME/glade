@@ -1,0 +1,26 @@
+<GladeWidgetClass>
+  <Name>GtkBox</Name>
+
+  <Properties>
+
+    <Property Name="Size" Id="size" Default="3">
+      <Type>Integer</Type>
+      <Tooltip>The number of colunms in the box</Tooltip>
+      <Parameters>
+	    <Parameter Key="Min" Value="0"/>
+	    <Parameter Key="Max" Value="10000"/>
+	    <Parameter Key="StepIncrement" Value="1"/>
+	    <Parameter Key="PageIncrement" Value="10"/>
+	    <Parameter Key="ClimbRate" Value="1"/>
+      </Parameters>
+      <Query>
+        <WindowTitle>New box</WindowTitle>
+        <Question>Number of items on the box</Question>
+      </Query>
+      <SetFunction>glade_gtk_box_set_size</SetFunction>
+      <GetFunction>glade_gtk_box_get_size</GetFunction>
+    </Property>
+
+  </Properties>
+
+</GladeWidgetClass>

@@ -1,55 +1,58 @@
-<GladeCatalog Title="GTK + Basic">
+<GladeCatalog Title="Gtk+ Basic">
 
-  <GladeWidget>gtkwindow</GladeWidget>
+  <GladeWidget name="GtkWidget" filename="gtkwidget.xml"/>
+  <GladeWidget name="GtkBox" filename="gtkbox.xml"/>
 
-  <GladeWidget>gtkmenubar</GladeWidget>
-  <GladeWidget>gtktoolbar</GladeWidget>
-  <GladeWidget>gtkhandlebox</GladeWidget>
+  <GladeWidget name="GtkWindow" generic_name="window" filename="gtkwindow.xml"/>
 
-  <GladeWidget>gtklabel</GladeWidget>
-  <GladeWidget>gtkaccellabel</GladeWidget>
+  <GladeWidget name="GtkMenuBar" generic_name="menubar"/>
+  <GladeWidget name="GtkToolbar" generic_name="toolbar"/>
+  <GladeWidget name="GtkHandleBox" generic_name="handlebox"/>
 
-  <GladeWidget>gtkentry</GladeWidget>
-  <GladeWidget>gtktextview</GladeWidget>
+  <GladeWidget name="GtkLabel" generic_name="label"/>
+  <GladeWidget name="GtkAccelLabel" generic_name="accellabel"/>
 
-  <GladeWidget>gtkbutton</GladeWidget>
-  <GladeWidget>gtktogglebutton</GladeWidget>
-  <GladeWidget>gtkcheckbutton</GladeWidget>
-  <GladeWidget>gtkspinbutton</GladeWidget>
-  <GladeWidget>gtkradiobutton</GladeWidget>
+  <GladeWidget name="GtkEntry" generic_name="entry"/>
+  <GladeWidget name="GtkTextView" generic_name="textview"/>
 
-  <GladeWidget>gtktreeview</GladeWidget>
+  <GladeWidget name="GtkButton" generic_name="button"/>
+  <GladeWidget name="GtkToggleButton" generic_name="togglebutton"/>
+  <GladeWidget name="GtkCheckButton" generic_name="checkbutton"/>
+  <GladeWidget name="GtkSpinButton" generic_name="spinbutton"/>
+  <GladeWidget name="GtkRadioButton" generic_name="radiobutton"/>
 
-  <GladeWidget>gtkcombo</GladeWidget>
-  <GladeWidget>gtkoptionmenu</GladeWidget>
-  <GladeWidget>gtkprogressbar</GladeWidget>
-  <GladeWidget>gtkstatusbar</GladeWidget>
+  <GladeWidget name="GtkTreeView" generic_name="treeview"/>
 
-  <GladeWidget>gtkhseparator</GladeWidget>
-  <GladeWidget>gtkvseparator</GladeWidget>
+  <GladeWidget name="GtkCombo" generic_name="combo"/>
+  <GladeWidget name="GtkOptionMenu" generic_name="optionmenu"/>
+  <GladeWidget name="GtkProgressBar" generic_name="progressbar"/>
+  <GladeWidget name="GtkStatusbar" generic_name="statusbar"/>
 
-  <GladeWidget>gtkimage</GladeWidget>
-  <GladeWidget>gtkdrawingarea</GladeWidget>
+  <GladeWidget name="GtkHSeparator" generic_name="hseparator"/>
+  <GladeWidget name="GtkVSeparator" generic_name="vseparator"/>
+
+  <GladeWidget name="GtkImage" generic_name="image"/>
+  <GladeWidget name="GtkDrawingArea" generic_name="drawingarea"/>
   
-  <GladeWidget>gtkdialog</GladeWidget>
-  <GladeWidget>gtkmessagedialog</GladeWidget>
-  <GladeWidget>gtkfileselection</GladeWidget>
-  <GladeWidget>gtkcolorselectiondialog</GladeWidget>
-  <GladeWidget>gtkfontselectiondialog</GladeWidget>
+  <GladeWidget name="GtkDialog" generic_name="dialog"/>
+  <GladeWidget name="GtkMessageDialog" generic_name="messagedialog"/>
+  <GladeWidget name="GtkFileSelection" generic_name="fileselection"/>
+  <GladeWidget name="GtkColorSelectionDialog" generic_name="colorselectiondialog"/>
+  <GladeWidget name="GtkFontSelectionDialog" generic_name="fontselectiondialog"/>
 
-  <GladeWidget>gtkhbox</GladeWidget>
-  <GladeWidget>gtkvbox</GladeWidget>
-  <GladeWidget>gtktable</GladeWidget>
-  <GladeWidget>gtkfixed</GladeWidget>
+  <GladeWidget name="GtkHBox" generic_name="hbox"/>
+  <GladeWidget name="GtkVBox" generic_name="vbox"/>
+  <GladeWidget name="GtkTable" generic_name="table" filename="gtktable.xml"/>
+  <GladeWidget name="GtkFixed" generic_name="fixed"/>
 
-  <GladeWidget>gtkhbuttonbox</GladeWidget>
-  <GladeWidget>gtkvbuttonbox</GladeWidget>
-  <GladeWidget>gtkhpaned</GladeWidget>
-  <GladeWidget>gtkvpaned</GladeWidget>
+  <GladeWidget name="GtkHButtonBox" generic_name="hbuttonbox"/>
+  <GladeWidget name="GtkVButtonBox" generic_name="vbuttonbox"/>
+  <GladeWidget name="GtkHPaned" generic_name="hpaned"/>
+  <GladeWidget name="GtkVPaned" generic_name="vpaned"/>
   
-  <GladeWidget>gtknotebook</GladeWidget>
-  <GladeWidget>gtkframe</GladeWidget>
-  <GladeWidget>gtkscrolledwindow</GladeWidget>
-  <GladeWidget>gtkviewport</GladeWidget>
+  <GladeWidget name="GtkNotebook" generic_name="notebook"/>
+  <GladeWidget name="GtkFrame" generic_name="frame"/>
+  <GladeWidget name="GtkScrolledWindow" generic_name="scrolledwindow"/>
+  <GladeWidget name="GtkViewport" generic_name="viewport"/>
 
 </GladeCatalog>
