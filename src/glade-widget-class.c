@@ -80,6 +80,7 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 	
 	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
 		return NULL;
+
 	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
 	if (child == NULL)
 		return FALSE;
@@ -89,7 +90,7 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
 	class->icon         = glade_xml_get_value_string_required (node, GLADE_TAG_ICON, NULL);
-	class->properties   = glade_property_class_list_new_from_node (child);
+	class->properties   = glade_property_class_list_new_from_node (child, class);
 
 	if (!class->name ||
 	    !class->icon ||

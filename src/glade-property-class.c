@@ -126,19 +126,169 @@ glade_property_class_new (void)
 	return property_class;
 }
 
+static void
+glade_property_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
+{
+	GObjectClass *object_class;
+	GType type;
+	
+	type = gtk_window_get_type ();
+	g_type_class_ref (type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+	object_class = g_type_class_peek (type);
+	if (object_class == NULL)
+		g_print ("error\n");
+
+	/* Use private interface for now, fix later */
+	*specs = object_class->property_specs;
+	*n_specs = object_class->n_property_specs;
+}
+
+static GParamSpec *
+glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
+{
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	gint n_specs = 0;
+	gint i;
+
+	glade_property_class_get_specs (class, &specs, &n_specs);
+	
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+
+		if (!spec || !spec->name) {
+			g_warning ("Spec does not have a valid name, or invalid spec");
+			return NULL;
+		}
+		
+		if (strcmp (spec->name, name) == 0)
+			return spec;
+	}
+
+	g_warning ("Could not find spec by name %s\n", name);
+
+	return NULL;
+}
+			
+
+static GladePropertyType
+glade_property_class_get_type_from_spec (GParamSpec *spec)
+{
+	switch (G_PARAM_SPEC_TYPE (spec))
+	{
+#if 0	
+	case G_TYPE_PARAM_INT:
+	case G_TYPE_PARAM_FLOAT:
+	case G_TYPE_PARAM_BOOLEAN:
+		break;
+#endif
+	case G_TYPE_PARAM_STRING:
+		return GLADE_PROPERTY_TYPE_TEXT;
+	case G_TYPE_PARAM_ENUM:
+		return GLADE_PROPERTY_TYPE_CHOICE;
+	default:
+		g_warning ("Could not determine GladePropertyType from spec");
+		return GLADE_PROPERTY_TYPE_ERROR;
+	}
+	
+}
+
+static GladeChoice *
+glade_property_class_get_choice_from_value (GEnumValue value)
+{
+	GladeChoice *choice;
+
+	choice = glade_choice_new ();
+	choice->name = g_strdup (value.value_nick);
+	choice->symbol = g_strdup (value.value_name);
+	choice->value  = value.value;
+
+	return choice;
+}
+
+static GList *
+glade_property_class_get_choices_from_spec (GParamSpec *spec)
+{
+	GladeChoice *choice;
+	GEnumClass *class;
+	GEnumValue value;
+	GEnumValue default_value;
+	GList *list = NULL;
+	gint num;
+	gint i;
+
+	class = G_PARAM_SPEC_ENUM (spec)->enum_class;
+	num = class->n_values;
+	for (i = 0; i < num; i++) {
+		value = class->values[i];
+		choice = glade_property_class_get_choice_from_value (value);
+		if (choice)
+			list = g_list_prepend (list, choice);
+	}
+	list = g_list_reverse (list);
+
+#warning How can I determine the default value ??	
+	g_print ("NUm is %d, list size is %d\n", num, g_list_length (list));
+
+	return list;
+}
 
 static GladePropertyClass *
-glade_property_class_new_from_node (xmlNodePtr node)
+glade_property_class_new_from_param_spec (const gchar *name, GladeWidgetClass *widget_class)
 {
-	GladePropertyClass *property_class;
+	GladePropertyClass *class;
+	GParamSpec *spec;
+
+	spec = glade_property_class_find_spec (widget_class, name);
+
+	if (spec == NULL) {
+		g_warning ("Could not create a property class from a param spec\n");
+		return NULL;
+	}
+
+	class = glade_property_class_new ();
+	class->name    = g_strdup (spec->nick);
+	class->tooltip = g_strdup (spec->blurb);
+	class->gtk_arg = g_strdup (name);
+	class->type    = glade_property_class_get_type_from_spec (spec);
+
+	if (class->type == GLADE_PROPERTY_TYPE_CHOICE)
+		class->choices = glade_property_class_get_choices_from_spec (spec);
+	
+	return class;
+}
+				  
+
+static GladePropertyClass *
+glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_class)
+{
+	GladePropertyClass *property_class; 
 	xmlNodePtr child;
 	gchar *type;
+	gchar *name;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
 		return NULL;
-	
+
+	name = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
+
+	if (name == NULL)
+		return NULL;
+
+	/* Can we load this property from the ParamSpec ? */
+	child = glade_xml_search_child (node, GLADE_TAG_PARAM_SPEC);
+	if (child) {
+		property_class = glade_property_class_new_from_param_spec (name, widget_class);
+		g_free (name);
+		return property_class;
+	}
+
 	property_class = glade_property_class_new ();
-	property_class->name    = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
+	property_class->name    = name;
+	
 	property_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
 	property_class->gtk_arg = glade_xml_get_value_string (node, GLADE_TAG_GTKARG);
 
@@ -176,7 +326,7 @@ glade_property_class_new_from_node (xmlNodePtr node)
 
 
 GList *
-glade_property_class_list_new_from_node (xmlNodePtr node)
+glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class)
 {
 	GladePropertyClass *property_class;
 	xmlNodePtr child;
@@ -192,15 +342,17 @@ glade_property_class_list_new_from_node (xmlNodePtr node)
 		skip_text (child);
 		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
 			return NULL;
-		property_class = glade_property_class_new_from_node (child);
-		if (property_class == NULL)
+		property_class = glade_property_class_new_from_node (child, class);
+		if (property_class == NULL) {
+			g_print ("NUll\n");
 			return NULL;
+		}
 		list = g_list_prepend (list, property_class);
 		child = child->next;
 	}
 
 	list = g_list_reverse (list);
-	
+
 	return list;
 }
 

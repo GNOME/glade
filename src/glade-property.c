@@ -102,14 +102,16 @@ glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
 		break;
 	case GLADE_PROPERTY_TYPE_CHOICE:
 		list = class->choices;
-		for (;list != NULL; list = list->next) {
-			choice = list->data;
-			if (strcmp (choice->symbol, string) == 0)
+		if (string != NULL) {
+			for (;list != NULL; list = list->next) {
+				choice = list->data;
+				if (strcmp (choice->symbol, string) == 0)
+					break;
+			}
+			if (list != NULL) {
+				value = g_strdup (string);
 				break;
-		}
-		if (list != NULL) {
-			value = g_strdup (string);
-			break;
+			}
 		}
 		list = class->choices;
 		if (list == NULL) {

@@ -16,7 +16,8 @@ struct _XmlParseContext {
 	xmlNsPtr  ns;
 };
 
-#define skip_text(node) if (strcmp ( ((xmlNodePtr)node)->name, "text") == 0) { \
+#define skip_text(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
+			    (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
 			node = ((xmlNodePtr)node)->next; continue ; };
 
 

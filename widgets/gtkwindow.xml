@@ -23,6 +23,11 @@
     </Property>
 
     <Property>
+	 <Name>title</Name>
+      <ParamSpec/>
+    </Property>
+<!--
+    <Property>
       <Type>Text</Type>
 	 <Name>Title</Name>
 	 <Tooltip>The title of the window</Tooltip>
@@ -32,25 +37,11 @@
 	   <Parameter Key="Default" Value=""/>
 	 </Parameters>
     </Property>
-    
+-->
+
     <Property>
-      <Type>Choice</Type>
-	 <Name>Type</Name>
-	 <Tooltip>The type of the window</Tooltip>
-	 <GtkArg>type</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Default" Value="GTK_WINDOW_TOPLEVEL"/>
-	 </Parameters>
-	 <Choices>
-	   <Choice>
-	     <Name>Top Level</Name>
-		<Symbol>GTK_WINDOW_TOPLEVEL</Symbol>
-	   </Choice>
-	   <Choice>
-	     <Name>Popup</Name>
-		<Symbol>GTK_WINDOW_POPUP</Symbol>
-	   </Choice>
-	 </Choices>
+	 <Name>type</Name>
+      <ParamSpec/>
     </Property>
     
     <Property>
@@ -112,7 +103,8 @@
 	   <Parameter Key="StepIncrement" Value="1"/>
 	   <Parameter Key="PageIncrement" Value="10"/>
 	   <Parameter Key="ClimbRate" Value="1"/>
-	   <Parameter Key="Optional" Value="False"/>
+	   <Parameter Key="Optional" Value="True"/>
+	   <Parameter Key="OptionalDefault" Value="False"/>
 	 </Parameters>
     </Property>
     

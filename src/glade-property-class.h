@@ -135,7 +135,7 @@ struct _GladePropertyClass {
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
 GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
 
-GList * glade_property_class_list_new_from_node (xmlNodePtr node);
+GList * glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class);
 
 G_END_DECLS
 
