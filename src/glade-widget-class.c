@@ -633,6 +633,7 @@ glade_widget_class_new_from_name2 (const char *name,
 		goto lblError;
 
 	widget_class->properties = glade_widget_class_list_properties (widget_class);
+	widget_class->child_properties = glade_widget_class_list_child_properties (widget_class);
 	widget_class->signals = glade_widget_class_list_signals (widget_class);
 
 	/* is the widget a toplevel?  TODO: We're going away from this flag, and
