@@ -47,20 +47,28 @@
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
 
-#if 0 /* Keep arround */
+
 static gchar *
 glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 {
 	gchar *retval;
 	GString *tmp;
-	gint i = 1;
+	gint i = 1, j;
 
 	tmp = g_string_new (class->name);
 
 	while (tmp->str[i]) {
 		if (isupper (tmp->str[i])) {
-			tmp = g_string_insert_c (tmp, i, '_');
-			i+=2;
+			tmp = g_string_insert_c (tmp, i++, '_');
+
+			j = 0;
+			while (isupper (tmp->str[i++]))
+				j++;
+
+			if (j > 2) {
+				g_string_insert_c (tmp, i-2, '_');
+			}
+
 			continue;
 		}
 		i++;
@@ -72,7 +80,7 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 
 	return retval;
 }
-#endif
+
 
 static GladeWidgetClass *
 glade_widget_class_new (void)
@@ -205,10 +213,14 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
+	init_function_name = glade_xml_get_value_string_required (node, GLADE_TAG_GET_TYPE_FUNC, NULL);
 
-	init_function_name = glade_xml_get_value_string_required (node, GLADE_TAG_GET_TYPE_FUNCTION, NULL);
-	if (!init_function_name)
-		return FALSE;
+	if (!init_function_name) {
+		init_function_name = glade_widget_class_compose_get_type_func (class);
+		if (!init_function_name)
+			return FALSE;
+	}
+
 	if (!glade_widget_class_set_type (class, init_function_name))
 		return NULL;
 	g_free (init_function_name);

@@ -1,3 +1,12 @@
+2001-07-14  Archit Baweja  <bighead@crosswinds.net>
+
+	* src/glade-widget-class.c (glade_widget_class_compose_get_type_func): 
+	changed to negate use of <GetTypeFunction> in the XML files.
+
+	* src/glade-widget-class.c (glade_widget_class_new_from_node): check
+	if get_type function is provided in GetTypeFunction tag. Else use above
+	function.
+	
 2001-07-15  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-property.c (glade_property_changed_choice): set the property
