@@ -288,6 +288,17 @@ glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name)
 	return ret;
 }
 
+void
+glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	if (value)
+		glade_xml_set_property (node, name, GLADE_TAG_TRUE);
+	else
+		glade_xml_set_property (node, name, GLADE_TAG_FALSE);
+}
+
 
 #undef GLADE_TAG_TRUE
 #undef GLADE_TAG_FALSE

@@ -68,3 +68,5 @@ gchar * _ (gchar * name);
 #define GLADE_XML_TAG_HANDLER  "handler"
 #define GLADE_XML_TAG_NAME     "name"
 #define GLADE_XML_TAG_CHILD    "child"
+#define GLADE_XML_TAG_SIGNAL   "signal"
+#define GLADE_XML_TAG_AFTER    "after"

@@ -27,6 +27,7 @@
 
 #include "glade-widget.h"
 #include "glade-widget-class.h"
+#include "glade-signal.h"
 #include "glade-signal-editor.h"
 
 
@@ -205,7 +206,7 @@ glade_signal_editor_dialog_cb (GtkButton *button, GladeSignalEditor *editor)
  * update the item at position 'iter' to the value of 'signal'
  */
 static void 
-glade_signal_editor_update_signal (GladeSignalEditor *editor, GladeWidgetSignal *signal,
+glade_signal_editor_update_signal (GladeSignalEditor *editor, GladeSignal *signal,
 				   GtkTreeIter *iter)
 {
 	GtkTreeStore *lst_model;
@@ -344,14 +345,14 @@ glade_signal_editor_clear_entries (GladeSignalEditor *editor)
 			(editor->signal_after_button), FALSE);
 }
 
-static GladeWidgetSignal *
+static GladeSignal *
 glade_signal_editor_get_signal_at_iter (GladeSignalEditor *editor, GtkTreeIter *iter)
 {
-	GladeWidgetSignal *signal;
+	GladeSignal *signal;
 	GtkTreeModel *model;
 	GValue *label;
 
-	signal = g_new0 (GladeWidgetSignal, 1);
+	signal = g_new0 (GladeSignal, 1);
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (editor->signals_list));
 
 	label = g_new0 (GValue, 1);
@@ -378,20 +379,20 @@ glade_signal_editor_get_signal_at_iter (GladeSignalEditor *editor, GtkTreeIter *
  * is appended to the list, however if a signal is supplied as old_signal,
  * the func will find that signal and update it rather than add a new signal
  */
-static GladeWidgetSignal *
+static GladeSignal *
 glade_signal_editor_update_widget_signal (GladeSignalEditor *editor, 
-		GladeWidgetSignal *old_signal)
+					  GladeSignal *old_signal)
 {
-	GladeWidgetSignal *signal = NULL;
-	GladeWidgetSignal *sigtmp;
+	GladeSignal *signal = NULL;
+	GladeSignal *sigtmp;
 	GList *list;
 
 	if (old_signal == NULL) {
-		signal = g_new0 (GladeWidgetSignal, 1);
+		signal = g_new0 (GladeSignal, 1);
 		editor->widget->signals = g_list_append (editor->widget->signals, signal);
 	} else {
 		for (list = editor->widget->signals; list != NULL; list = list->next) {
-			sigtmp = (GladeWidgetSignal *) list->data;
+			sigtmp = (GladeSignal *) list->data;
 			if (!strcmp (sigtmp->name, old_signal->name) &&
 					!strcmp (sigtmp->handler, old_signal->handler) &&
 					sigtmp->after == old_signal->after) {
@@ -416,7 +417,7 @@ glade_signal_editor_update_widget_signal (GladeSignalEditor *editor,
 static void
 glade_signal_editor_add_cb (GladeSignalEditor *editor)
 {
-	GladeWidgetSignal *signal;
+	GladeSignal *signal;
 
 	g_return_if_fail (editor != NULL);
 	g_return_if_fail (editor->widget != NULL);
@@ -436,8 +437,8 @@ glade_signal_editor_update_cb (GladeSignalEditor *editor)
 	GtkTreeIter iter;
 	GtkTreeSelection *select;
 	GtkTreeModel *model;
-	GladeWidgetSignal *old_sig;
-	GladeWidgetSignal *new_sig;
+	GladeSignal *old_sig;
+	GladeSignal *new_sig;
 
 	g_return_if_fail (editor != NULL);
 	g_return_if_fail (editor->widget != NULL);
@@ -462,8 +463,8 @@ glade_signal_editor_delete_cb (GladeSignalEditor *editor)
 	GtkTreeIter iter;
 	GtkTreeSelection *select;
 	GtkTreeModel *model;
-	GladeWidgetSignal *signal;
-	GladeWidgetSignal *sig;
+	GladeSignal *signal;
+	GladeSignal *sig;
 	GList *list;
 
 	g_return_if_fail (editor != NULL);
@@ -479,7 +480,7 @@ glade_signal_editor_delete_cb (GladeSignalEditor *editor)
 
 		list = editor->widget->signals;
 		for ( ; list != NULL; list = list->next) {
-			sig = (GladeWidgetSignal *) list->data;
+			sig = (GladeSignal *) list->data;
 			if (!strcmp (sig->name, signal->name) &&
 					!strcmp (sig->handler, signal->handler) &&
 					sig->after == signal->after) {
@@ -693,7 +694,7 @@ glade_signal_editor_new (void)
 void 
 glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget)
 {
-	GladeWidgetSignal *signal;
+	GladeSignal *signal;
 	GtkTreeStore *model;
 	GList *list;
 

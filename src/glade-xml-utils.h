@@ -38,6 +38,7 @@ gchar * glade_xml_get_property_string_required (GladeXmlNode *node_in, const cha
 gchar * glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
 gboolean glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name);
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
+void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);
 
 /* Parse Context */
 GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);

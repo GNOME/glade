@@ -22,7 +22,6 @@
 
 #include <string.h>
 
-#include <string.h>
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-project-ui.h"

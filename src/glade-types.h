@@ -2,11 +2,11 @@ typedef struct _GladePaletteSection GladePaletteSection;
 
 typedef struct _GladePalette		GladePalette;
 typedef struct _GladeEditor        GladeEditor;
-typedef struct _GladeSignalEditor    GladeSignalEditor;
+typedef struct _GladeSignal        GladeSignal;
+typedef struct _GladeSignalEditor  GladeSignalEditor;
 typedef struct _GladeProject       GladeProject;
 
 typedef struct _GladeWidget        GladeWidget;
-typedef struct _GladeWidgetSignal        GladeWidgetSignal;
 typedef struct _GladeWidgetClass   GladeWidgetClass;
 typedef struct _GladeWidgetClassSignal   GladeWidgetClassSignal;
 

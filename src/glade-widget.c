@@ -32,6 +32,7 @@
 #include "glade-property-class.h"
 #include "glade-popup.h"
 #include "glade-placeholder.h"
+#include "glade-signal.h"
 
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
@@ -820,7 +821,10 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 {
 	GladeProperty *property;
 	GladeXmlNode *node;
-	GladeXmlNode *child;
+	GladeXmlNode *child;     /* This is the <widget name="foo" ..> tag */
+	GladeXmlNode *child_tag; /* This is the <child> tag */
+	GladeWidget *child_widget;
+	GladeSignal *signal;
 	GList *list;
 	
 	g_return_val_if_fail (GLADE_XML_IS_CONTEXT (context), NULL);
@@ -840,6 +844,26 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		glade_xml_append_child (node, child);
 	}
 
+	list = widget->signals;
+	for (; list != NULL; list = list->next) {
+		signal = list->data;
+		child = glade_signal_write (context, signal);
+		if (child == NULL)
+			return NULL;
+		glade_xml_append_child (node, child);
+	}
+
+	
+	list = widget->children;
+	for (; list != NULL; list = list->next) {
+		child_widget = list->data;
+		child = glade_widget_write (context, child_widget);
+		if (child == NULL)
+			return NULL;
+		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+		glade_xml_append_child (node, child_tag);
+		glade_xml_append_child (child_tag, child);
+	}
 
 	return node;
 }
