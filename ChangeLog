@@ -1,3 +1,15 @@
+2005-01-06  Richard Hult  <richard@imendio.com>
+
+        * src/glade-property-class.h (struct _GladePropertyClass): Add
+        translatable value.
+
+	* src/glade-property-class.c (glade_property_class_new): Init
+	translatable value.
+        (glade_property_class_update_from_node): Use defines for visible
+        and optional tags and parse translatable.
+
+        * src/glade.h: Add tags for visible and translatable.
+
 2005-01-06  Mikael Hallendal  <micke@imendio.com>
 
 	* src/glade-catalog.c: (catalog_load), (catalog_load_classes),

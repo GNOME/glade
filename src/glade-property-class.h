@@ -133,6 +133,11 @@ struct _GladePropertyClass
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
+	gboolean translatable; /* The property should be translatable, which
+				* means that it needs extra parameters in the
+				* UI.
+				*/
+	
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 

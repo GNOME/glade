@@ -66,6 +66,7 @@ glade_property_class_new (void)
 	property_class->set_function = NULL;
 	property_class->get_function = NULL;
 	property_class->visible = FALSE;
+	property_class->translatable = TRUE;
 
 	return property_class;
 }
@@ -568,7 +569,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		return TRUE;
 	}
 
-	visible = glade_xml_get_property_string (node, "Visible");
+	visible = glade_xml_get_property_string (node, GLADE_TAG_VISIBLE);
 	if (visible)
 	{
 		if (!g_module_symbol (widget_class->module, visible, (void **) &class->visible))
@@ -609,7 +610,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
 	if (child)
 		class->parameters = glade_parameter_list_new_from_node (class->parameters, child);
-	glade_parameter_get_boolean (class->parameters, "Optional", &class->optional);
+	glade_parameter_get_boolean (class->parameters, GLADE_TAG_OPTIONAL, &class->optional);
 		
 	/* Get the default */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
@@ -623,6 +624,11 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			return FALSE;
 	}
 
+	/* Whether or not the property is translatable. This is only used for
+	 * string properties.
+	 */
+	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, FALSE);
+	
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);

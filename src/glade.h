@@ -126,6 +126,7 @@
 #define GLADE_TAG_COMMON                          "common"
 #define GLADE_TAG_OPTIONAL                        "optional"
 #define GLADE_TAG_OPTIONAL_DEFAULT                "optional-default"
+#define GLADE_TAG_VISIBLE                         "visible"
 #define GLADE_TAG_GENERIC_NAME                    "generic-name"
 #define GLADE_TAG_NAME                            "name"
 #define GLADE_TAG_TITLE                           "title"
@@ -135,6 +136,7 @@
 #define GLADE_TAG_VALUE                           "value"
 #define GLADE_TAG_CHILD                           "child"
 #define GLADE_TAG_CHILDREN                        "children"
+#define GLADE_TAG_TRANSLATABLE                    "translatable"
 
 extern gboolean verbose;
 
