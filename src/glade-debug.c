@@ -41,9 +41,8 @@ glade_log_handler (const char *domain,
 	static volatile int want_breakpoint = 1;
 
 	g_log_default_handler (domain, level, message, data);
-	if (want_breakpoint && ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */)) != 0)) {
+	if (want_breakpoint && ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */)) != 0))
 		G_BREAKPOINT ();
-	}
 }
 
 static void

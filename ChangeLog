@@ -1,3 +1,11 @@
+2004-05-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-widget.c: Removed some code in
+	glade_widget_create_packing_properties needed to handle
+	"grand-children" properties, as it doesn't works if the widgets
+	are not yet chained (and that happens when reading a glade file),
+	and we still don't use "grand-children" properties.
+
 2004-05-07  Damon Chaplin  <damon@gnome.org>
 
 	* src/glade-project-window.c (gpw_save_cb): check the return value

@@ -890,6 +890,12 @@ glade_widget_get_parent (GladeWidget *glade_widget)
 /**
  * Returns a list of GladeProperties from a list of 
  * GladePropertyClass.
+ *
+ * Note: The code #if 0'ed supposes that the widgets are chained, i.e. widget is
+ * already inside container, and container is inside its container, etc. until
+ * the toplevel. However that's false upon reading from a xml file. The code
+ * is only useful for "grand-child" properties, that are still not used, so
+ * we can by now let it #if 0'ed.
  */
 static GList *
 glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *widget)
@@ -897,17 +903,21 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 	GladePropertyClass *property_class;
 	GladeProperty *property;
 	GladeWidgetClass *container_class = glade_widget_get_class (container);
-	GladeWidget *parent;
 	GList *list = container_class->child_properties;
 	GList *new_list = NULL;
+#if 0
+	GladeWidget *parent;
 	GList *ancestor_list;
+#endif
 
 	for (; list; list = list->next)
 	{
 		property_class = list->data;
 
+#if 0
 		if (!container_class->child_property_applies (container->widget, widget->widget, property_class->id))
 			continue;
+#endif
 
 		property = glade_property_new (property_class, widget);
 		if (!property)
@@ -916,6 +926,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		new_list = g_list_prepend (new_list, property);
 	}
 
+#if 0
 	new_list = g_list_reverse (new_list);
 	parent = glade_widget_get_parent (container);
 	if (parent != NULL)
@@ -923,6 +934,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		ancestor_list = glade_widget_create_packing_properties (parent, widget);
 		new_list = g_list_concat (new_list, ancestor_list);
 	}
+#endif
 
 	return new_list;
 }
