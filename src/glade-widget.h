@@ -24,7 +24,7 @@ struct _GladeWidget
 	GladeWidgetClass *widget_class;
 	GladeProject *project; /* A pointer to the project that this widget belongs to. */
 
-	char *name; /* The name of the widet. For example window1 or
+	char *name; /* The name of the widget. For example window1 or
 		     * button2. This is a unique name and is the one
 		     * used when loading widget with libglade
 		     */
