@@ -11,22 +11,17 @@ plus :
 TODO
 ====
 
-TAKEN ITEMS (someone is already working on)
------------
-- File loading and saving
-- Common part of the editor
-
 OPEN ITEMS [PLease let me know before starting working on any of this]
 ----------
 - Implement glade_widget_delete inside glade-widget.c, delete can already
 be called from the popup menu.
 - Implement the popup menu option "Select", it needs to create submenus for
-every parent widget and a "Select" option inside it. Inside glade-popup.c
+  every parent widget and a "Select" option inside it. Inside glade-popup.c
 - Implement file opened history feature.
 - Implement gtk stock buttons.
 - gtklabels can't be selected. This looks like a fun thing and maybe tricky
-to fix. I am guessing that gtklabeles don't like the idea of disabling
-double buffering because of pango, but this is just a guess.
+  to fix. I am guessing that gtklabeles don't like the idea of disabling
+  double buffering because of pango, but this is just a guess.
 - Implement show clipboard (blocks on copy/cut)
 - Implement the menu bar widget and the menu editor. 
 - Implement the glade-property type "File". For example to be used with a pixmap

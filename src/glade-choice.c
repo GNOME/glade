@@ -119,7 +119,7 @@ glade_string_from_string (const gchar *string)
 }
 
 static GladeChoice *
-glade_choice_new_from_node (xmlNodePtr node)
+glade_choice_new_from_node (GladeXmlNode *node)
 {
 	GladeChoice *choice;
 
@@ -142,17 +142,17 @@ glade_choice_new_from_node (xmlNodePtr node)
 }
 
 GList *
-glade_choice_list_new_from_node (xmlNodePtr node)
+glade_choice_list_new_from_node (GladeXmlNode *node)
 {
+	GladeXmlNode *child;
 	GladeChoice *choice;
-	xmlNodePtr child;
 	GList *list;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_CHOICES))
 		return NULL;
 
 	list = NULL;
-	child = node->children;
+	child = glade_xml_node_get_children (node);
 
 	while (child != NULL) {
 		skip_text (child);
@@ -162,7 +162,7 @@ glade_choice_list_new_from_node (xmlNodePtr node)
 		if (choice == NULL)
 			return NULL;
 		list = g_list_prepend (list, choice);
-		child = child->next;
+		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

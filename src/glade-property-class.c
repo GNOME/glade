@@ -98,7 +98,7 @@ glade_property_query_new (void)
 
 	
 static GladePropertyQuery *
-glade_query_new_from_node (xmlNodePtr node)
+glade_query_new_from_node (GladeXmlNode *node)
 {
 	GladePropertyQuery *query;
 	
@@ -377,10 +377,10 @@ glade_property_get_parameters_choice (GParamSpec *spec,
 static GList *
 glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 					       GladePropertyClass *class,
-					       xmlNodePtr node)
+					       GladeXmlNode *node)
 {
 	GList *parameters = NULL;
-	xmlNodePtr child;
+	GladeXmlNode *child;
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_CHOICE:
@@ -421,7 +421,7 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 static GladePropertyClass *
 glade_property_class_new_from_param_spec (const gchar *name,
 					  GladeWidgetClass *widget_class,
-					  xmlNodePtr node)
+					  GladeXmlNode *node)
 {
 	GladePropertyClass *class;
 	GParamSpec *spec;
@@ -488,9 +488,9 @@ glade_property_class_get_set_function (GladePropertyClass *class, const gchar *f
 }
 
 static GList *
-glade_xml_read_list (xmlNodePtr node, const gchar *list_tag, const gchar *item_tag)
+glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *item_tag)
 {
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	GList *list = NULL;
 	gchar *item;
 
@@ -498,7 +498,7 @@ glade_xml_read_list (xmlNodePtr node, const gchar *list_tag, const gchar *item_t
 	if (child == NULL)
 		return NULL;
 
-	child = child->children;
+	child = glade_xml_node_get_children (child);
 
 	while (child != NULL) {
 		skip_text (child);
@@ -507,7 +507,7 @@ glade_xml_read_list (xmlNodePtr node, const gchar *list_tag, const gchar *item_t
 		item = glade_xml_get_content (child);
 		if (item != NULL)
 			list = g_list_prepend (list, item);
-		child = child->next;
+		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);
@@ -517,10 +517,10 @@ glade_xml_read_list (xmlNodePtr node, const gchar *list_tag, const gchar *item_t
 
 
 static GladePropertyClass *
-glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_class)
+glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget_class)
 {
 	GladePropertyClass *property_class; 
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	gchar *type;
 	gchar *id;
 	gchar *name;
@@ -528,7 +528,7 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
 		return NULL;
 
-	id = glade_xml_get_value_string_required (node, GLADE_TAG_ID, widget_class->name);
+	id = glade_xml_get_property_string_required (node, GLADE_TAG_ID, widget_class->name);
 	if (id == NULL)
 		return NULL;
 
@@ -537,9 +537,7 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 	 * We can have a property like ... ParamSpec="TRUE"> 
 	 * Or a child like <ParamSpec/>, but this will be deprecated
 	 */
-	child = glade_xml_search_child (node, GLADE_TAG_PARAM_SPEC);
-	if (child ||
-	    glade_xml_get_boolean (node, GLADE_TAG_PARAM_SPEC)) {
+	if (glade_xml_property_get_boolean (node, GLADE_TAG_PARAM_SPEC)) {
 		property_class = glade_property_class_new_from_param_spec (id, widget_class, node);
 		g_free (id);
 		if (property_class == NULL)
@@ -548,7 +546,7 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 	}
 
 
-	name = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, widget_class->name);
+	name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
 	if (name == NULL)
 		return NULL;
 
@@ -622,17 +620,17 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 }
 
 GList *
-glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class)
+glade_property_class_list_new_from_node (GladeXmlNode *node, GladeWidgetClass *class)
 {
 	GladePropertyClass *property_class;
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	GList *list;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTIES))
 		return NULL;
 
 	list = NULL;
-	child = node->children;
+	child = glade_xml_node_get_children (node);
 
 	while (child != NULL) {
 		skip_text (child);
@@ -641,7 +639,7 @@ glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *clas
 		property_class = glade_property_class_new_from_node (child, class);
 		if (property_class != NULL)
 			list = g_list_prepend (list, property_class);
-		child = child->next;
+		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

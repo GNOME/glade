@@ -193,7 +193,7 @@ glade_project_view_populate_model (GtkTreeStore *model,
 	list = project->widgets;
 	for (; list != NULL; list = list->next) {
 		widget = list->data;
-		if (GLADE_WIDGET_TOPLEVEL (widget))
+		if (GLADE_WIDGET_IS_TOPLEVEL (widget))
 			toplevels = g_list_append (toplevels, widget);
 	}
 

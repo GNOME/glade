@@ -1,3 +1,15 @@
+2001-07-22  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-utils.c (glade_util_path_is_writable): implement, new file.
+
+	* src/glade-property.c (glade_property_write): implement.
+
+	* src/glade-widget.c (glade_widget_write): add content.
+
+	* src/glade-xml-utils.c (glade_xml_set_value): fix a lot of the broken issues.
+	Don't confuse properties for node content. Use GladeXmlNode as API entry.
+	Lots of small new functions, lots of cleanup.
+
 2001-07-21  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-project.c (glade_project_save): impl.

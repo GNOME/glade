@@ -170,7 +170,7 @@ struct _GladePropertyClass {
 
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
 GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
-GList * glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class);
+GList *     glade_property_class_list_new_from_node (GladeXmlNode * node, GladeWidgetClass *class);
 
 GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
 

@@ -7,6 +7,7 @@ gchar * _ (gchar * name);
 #endif
 
 #include "glade-types.h"
+#include "glade-utils.h"
 #include "glade-xml-utils.h"
 
 #define GLADE_PATH_SEP_STR "/"
@@ -57,3 +58,13 @@ gchar * _ (gchar * name);
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
 
 #define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"
+
+#define GLADE_XML_TAG_PROJECT  "glade-interface"
+#define GLADE_XML_TAG_WIDGET   "widget"
+#define GLADE_XML_TAG_PROPERTY "property"
+#define GLADE_XML_TAG_CLASS    "class"
+#define GLADE_XML_TAG_ID       "id"
+#define GLADE_XML_TAG_SIGNAL   "signal"
+#define GLADE_XML_TAG_HANDLER  "handler"
+#define GLADE_XML_TAG_NAME     "name"
+#define GLADE_XML_TAG_CHILD    "child"

@@ -13,7 +13,7 @@ typedef enum {
 #define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
 
 #define GLADE_WIDGET_FLAGS(gw)           ((GLADE_WIDGET(gw)->class)->flags)
-#define GLADE_WIDGET_TOPLEVEL(gw)        ((GLADE_WIDGET_FLAGS(gw) & GLADE_TOPLEVEL) != 0)
+#define GLADE_WIDGET_IS_TOPLEVEL(gw)     ((GLADE_WIDGET_FLAGS(gw) & GLADE_TOPLEVEL) != 0)
 #define GLADE_WIDGET_ADD_PLACEHOLDER(gw) ((GLADE_WIDGET_FLAGS(gw) & GLADE_ADD_PLACEHOLDER) != 0)
 
 #define GLADE_WIDGET_CLASS_FLAGS(gwc)           ((GLADE_WIDGET_CLASS(gwc)->flags))
@@ -70,7 +70,7 @@ struct _GladeWidgetClassSignal {
 };
 
 GladeWidgetClass * glade_widget_class_new_from_name (const gchar *name);
-GladeWidgetClass * glade_widget_class_new_from_node (xmlNodePtr node);
+GladeWidgetClass * glade_widget_class_new_from_node (GladeXmlNode *node);
 GladeWidgetClass * glade_widget_class_get_by_name (const gchar *name);
 
 const gchar * glade_widget_class_get_name (GladeWidgetClass *class);

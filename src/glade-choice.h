@@ -51,7 +51,7 @@ struct _GladeChoice {
 
 GladeChoice * glade_choice_new (void);
 
-GList * glade_choice_list_new_from_node (xmlNodePtr node);
+GList * glade_choice_list_new_from_node (GladeXmlNode *node);
 
 G_END_DECLS
 

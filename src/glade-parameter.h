@@ -39,7 +39,7 @@ void glade_parameter_get_boolean (GList *parameters, const gchar *key, gboolean 
 void glade_parameter_get_string  (GList *parameters, const gchar *key, gchar **value);
 
 
-GList * glade_parameter_list_new_from_node (GList *list, xmlNodePtr node);
+GList * glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node);
 
 /* Convenience functions */
 GtkAdjustment * glade_parameter_adjustment_new (GList *parameters);

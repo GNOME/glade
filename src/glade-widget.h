@@ -89,6 +89,9 @@ void glade_widget_delete (GladeWidget *widget);
 
 GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
+/* Xml saving & reading */
+GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
+
 
 G_END_DECLS
 

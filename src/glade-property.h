@@ -86,6 +86,9 @@ void glade_property_query_result_set_int (GladePropertyQueryResult *result,
 					  const gchar *key,
 					  gint value);
 
+/* XML i/o */
+GladeXmlNode * glade_property_write (GladeXmlContext *context, GladeProperty *property);
+
 
 G_END_DECLS
 

@@ -5,6 +5,7 @@
 G_BEGIN_DECLS
 
 gchar * glade_project_ui_save_get_name (GladeProject *project);
+void    glade_project_ui_warn (GladeProject *project, const gchar *warning);
 
 G_END_DECLS
 

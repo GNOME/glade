@@ -19,10 +19,10 @@
  * the content of a child.
  */
 void
-glade_xml_set_value (xmlNodePtr node, const char *name, const char *val)
+glade_xml_set_value (GladeXmlNode *node_in, const char *name, const char *val)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	char *ret;
-	xmlNodePtr child;
 
 	ret = xmlGetProp (node, name);
 	if (ret != NULL){
@@ -30,21 +30,13 @@ glade_xml_set_value (xmlNodePtr node, const char *name, const char *val)
 		xmlSetProp (node, name, val);
 		return;
 	}
-	child = node->children;
-	while (child != NULL){
-		if (!strcmp (child->name, name)){
-			xmlNodeSetContent (child, val);
-			return;
-		}
-		child = child->next;
-	}
-	xmlSetProp (node, name, val);
 }
 
 
 gchar *
-glade_xml_get_content (xmlNodePtr node)
+glade_xml_get_content (GladeXmlNode *node_in)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar *ret;
 	char *val;
 
@@ -53,6 +45,14 @@ glade_xml_get_content (xmlNodePtr node)
 	xmlFree (val);
 	
 	return ret;
+}
+
+void
+glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	xmlNodeSetContent(node, content);
 }
 
 /*
@@ -68,13 +68,6 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 {
 	char *ret, *val;
 	xmlNodePtr child;
-
-	val = (char *) xmlGetProp (node, name);
-	if (val != NULL) {
-		ret = g_strdup (val);
-		xmlFree (val);
-		return ret;
-	}
 
 	child = node->children;
 
@@ -96,11 +89,11 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 	return NULL;
 }
 
-
-
 gboolean
-glade_xml_node_verify (xmlNodePtr node, const gchar *name)
+glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
 	g_return_val_if_fail (node != NULL, FALSE);
 	
 	if (strcmp (node->name, name) != 0) {
@@ -117,8 +110,9 @@ glade_xml_node_verify (xmlNodePtr node, const gchar *name)
  * the content of a child.
  */
 gboolean
-glade_xml_get_value_int (xmlNodePtr node, const char *name, int *val)
+glade_xml_get_value_int (GladeXmlNode *node_in, const char *name, int *val)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	char *ret;
 	int i;
 	int res;
@@ -147,7 +141,7 @@ glade_xml_get_value_int (xmlNodePtr node, const char *name, int *val)
  * Return Value: 
  **/
 gboolean
-glade_xml_get_value_int_required (xmlNodePtr node, const char *name, int *val)
+glade_xml_get_value_int_required (GladeXmlNode *node, const char *name, int *val)
 {
 	gboolean ret;
 	
@@ -155,7 +149,7 @@ glade_xml_get_value_int_required (xmlNodePtr node, const char *name, int *val)
 
 	if (ret == FALSE)
 		g_warning ("The file did not contained the required value \"%s\"\n"
-			   "Under the \"%s\" tag.", name, node->name);
+			   "Under the \"%s\" tag.", name, glade_xml_node_get_name (node));
 			
 	return ret;
 }
@@ -166,10 +160,36 @@ glade_xml_get_value_int_required (xmlNodePtr node, const char *name, int *val)
  * the content of a child.
  */
 gchar *
-glade_xml_get_value_string (xmlNodePtr node, const char *name)
+glade_xml_get_value_string (GladeXmlNode *node_in, const char *name)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	return glade_xml_get_value (node, name);
 }
+
+static char *
+glade_xml_get_property (xmlNodePtr node, const char *name)
+{
+	char *ret, *val;
+
+	val = (char *) xmlGetProp (node, name);
+	if (val != NULL) {
+		ret = g_strdup (val);
+		xmlFree (val);
+		return ret;
+	}
+
+	return NULL;
+}
+
+
+static void
+glade_xml_set_property (xmlNodePtr node, const char *name, const char *value)
+{
+	if (value != NULL) {
+		xmlSetProp (node, name, value);
+	}
+}
+
 
 #define GLADE_TAG_TRUE   "True"
 #define GLADE_TAG_FALSE  "False"
@@ -180,8 +200,9 @@ glade_xml_get_value_string (xmlNodePtr node, const char *name)
  * the content of a child.
  */
 gboolean
-glade_xml_get_boolean (xmlNodePtr node, const char *name)
+glade_xml_get_boolean (GladeXmlNode *node_in, const char *name)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar * value;
 	gboolean ret = FALSE;
 
@@ -204,14 +225,48 @@ glade_xml_get_boolean (xmlNodePtr node, const char *name)
 
 	return ret;
 }
+
+/*
+ * Get a String value for a node either carried as an attibute or as
+ * the content of a child.
+ */
+gboolean
+glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gchar * value;
+	gboolean ret = FALSE;
+
+	value = glade_xml_get_property (node, name);
+	if (value == NULL)
+		return FALSE;
+	
+	if (strcmp (value, GLADE_TAG_FALSE) == 0)
+		ret = FALSE;
+	else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
+		ret = FALSE;
+	else if (strcmp (value, GLADE_TAG_TRUE) == 0)
+		ret = TRUE;
+	else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
+		ret = TRUE;
+	else	
+		g_warning ("Boolean tag unrecognized *%s*\n", value);
+
+	g_free (value);
+
+	return ret;
+}
+
+
 #undef GLADE_TAG_TRUE
 #undef GLADE_TAG_FALSE
 #undef GLADE_TAG_TRUE2
 #undef GLADE_TAG_FALSE2
 
 gchar *
-glade_xml_get_value_string_required (xmlNodePtr node, const char *name, const char *xtra)
+glade_xml_get_value_string_required (GladeXmlNode *node_in, const char *name, const char *xtra)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar *value = glade_xml_get_value (node, name);
 
 	if (value == NULL) {
@@ -225,20 +280,55 @@ glade_xml_get_value_string_required (xmlNodePtr node, const char *name, const ch
 	return value;
 }
 
+gchar *
+glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return glade_xml_get_property (node, name);
+}
+
+void
+glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	glade_xml_set_property (node, name, string);
+}
+
+
+gchar *
+glade_xml_get_property_string_required (GladeXmlNode *node_in, const char *name, const char *xtra)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gchar *value = glade_xml_get_property_string (node_in, name);
+
+	if (value == NULL) {
+		if (xtra == NULL)
+			g_warning ("The file did not contained the required property \"%s\"\n"
+				   "Under the \"%s\" tag.", name, node->name);
+		else
+			g_warning ("The file did not contained the required property \"%s\"\n"
+				   "Under the \"%s\" tag (%s).", name, node->name, xtra);
+	}
+	return value;
+}
+
 
 
 /*
  * Search a child by name,
  */
-xmlNodePtr
-glade_xml_search_child (xmlNodePtr node, const char *name)
+GladeXmlNode *
+glade_xml_search_child (GladeXmlNode *node_in, const char *name)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	xmlNodePtr child;
 
 	child = node->children;
 	while (child != NULL){
 		if (!strcmp (child->name, name))
-			return child;
+			return (GladeXmlNode *)child;
 		child = child->next;
 	}
 
@@ -255,16 +345,16 @@ glade_xml_search_child (xmlNodePtr node, const char *name)
  *
  * Return Value: 
  **/
-xmlNodePtr
-glade_xml_search_child_required (xmlNodePtr tree, const gchar* name)
+GladeXmlNode *
+glade_xml_search_child_required (GladeXmlNode *node, const gchar* name)
 {
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	
-	child = glade_xml_search_child (tree, name);
+	child = glade_xml_search_child (node, name);
 
 	if (child == NULL)
 		g_warning ("The file did not contained the required tag \"%s\"\n"
-			   "Under the \"%s\" node.", name, tree->name);
+			   "Under the \"%s\" node.", name, glade_xml_node_get_name (node));
 
 	return child;
 }
@@ -274,10 +364,10 @@ glade_xml_search_child_required (xmlNodePtr tree, const gchar* name)
 
 
 static void
-glade_xml_utils_new_hash_item_from_node (xmlNodePtr tree,
-				   gchar **key_,
-				   gchar **value_,
-				   const gchar *hash_type)
+glade_xml_utils_new_hash_item_from_node (xmlNodePtr node,
+					 gchar **key_,
+					 gchar **value_,
+					 const gchar *hash_type)
 {
 	gchar *key;
 	gchar *value;
@@ -285,8 +375,8 @@ glade_xml_utils_new_hash_item_from_node (xmlNodePtr tree,
 	*key_   = NULL;
 	*value_ = NULL;
 
-	key = g_strdup (tree->name);
-	value = xmlNodeGetContent(tree);
+	key = g_strdup (node->name);
+	value = xmlNodeGetContent (node);
 
 	*key_   = key;
 	*value_ = value;
@@ -296,30 +386,27 @@ glade_xml_utils_new_hash_item_from_node (xmlNodePtr tree,
 }
 
 GHashTable *
-glade_xml_utils_new_hash_from_node (xmlNodePtr tree_, const gchar *hash_type)
+glade_xml_utils_new_hash_from_node (GladeXmlNode *node_in, const gchar *hash_type)
 {
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	GHashTable *hash;
-	xmlNodePtr node;
-	xmlNodePtr tree;
 	gchar *key;
 	gchar *value;
 
-	g_return_val_if_fail (tree_ != NULL, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
 	g_return_val_if_fail (hash_type != NULL, NULL);
 
-	tree = tree_;
-	
-	if (!glade_xml_node_verify (tree, hash_type))
+	if (!glade_xml_node_verify (node_in, hash_type))
 		return NULL;
 		
 	hash = g_hash_table_new (g_str_hash, g_str_equal);
 	/* This is not an error, since the hash can be empty */
-	if (tree->children == NULL)
+	if (node->children == NULL)
 		return hash;
 
-	node = tree->children;
+	node = node->children;
 	while (node != NULL) {
-		skip_text (node);
+		skip_text_libxml (node);
 		glade_xml_utils_new_hash_item_from_node (node, &key, &value, hash_type);
 		if ((key == NULL) || (value == NULL))
 			return NULL;
@@ -330,19 +417,19 @@ glade_xml_utils_new_hash_from_node (xmlNodePtr tree_, const gchar *hash_type)
 	return hash;
 }
 
-
+#if 0
 static void
 glade_xml_utils_hash_item_write (gpointer key_in, gpointer value_in, gpointer data)
 {
-	xmlNodePtr item;
-	xmlNodePtr node;
+	GladeXmlNode *item;
+	GladeXmlNode *node;
 	gchar *key;
 	gchar *value;
 
 	key   = (gchar *) key_in;
 	value = (gchar *) value_in;
-	node  = (xmlNodePtr) data;
-	
+	node  = (GladeXmlNode *) data;
+
 	item = xmlNewChild (node, NULL, key, value);
 
 	if (item == NULL)
@@ -350,15 +437,15 @@ glade_xml_utils_hash_item_write (gpointer key_in, gpointer value_in, gpointer da
 			   key, value);
 }	
 
-xmlNodePtr
-glade_xml_utils_hash_write (XmlParseContext *context, GHashTable *hash, const gchar *name)
+GladeXmlNode *
+glade_xml_utils_hash_write (GladeXmlContext *context, GHashTable *hash, const gchar *name)
 {
-	xmlNodePtr node;
+	GladeXmlNode *node;
 	
 	g_return_val_if_fail (context != NULL, NULL);
 	g_return_val_if_fail (hash    != NULL, NULL);
 
-	node = xmlNewDocNode (context->doc, context->ns, name, NULL);
+	node = glade_xml_node_new (context, name)
 
 	g_hash_table_foreach (hash,
 			      glade_xml_utils_hash_item_write,
@@ -366,15 +453,16 @@ glade_xml_utils_hash_write (XmlParseContext *context, GHashTable *hash, const gc
 
 	return node;
 }
+#endif
 
 
 /* --------------------------- Parse Context ----------------------------*/
-XmlParseContext *
-glade_xml_parse_context_new (xmlDocPtr             doc,
-		       xmlNsPtr              ns)
+GladeXmlContext *
+glade_xml_context_new (GladeXmlDoc *doc,
+		       xmlNsPtr  ns)
 {
-	XmlParseContext *context = g_new0 (XmlParseContext, 1);
-
+	GladeXmlContext *context = g_new0 (GladeXmlContext, 1);
+	
 	context->doc = doc;
 	context->ns  = ns;
 	
@@ -382,19 +470,19 @@ glade_xml_parse_context_new (xmlDocPtr             doc,
 }
 
 void
-glade_xml_parse_context_destroy (XmlParseContext *context)
+glade_xml_context_destroy (GladeXmlContext *context)
 {
 	g_return_if_fail (context != NULL);
 	g_free (context);
 }
 
 
-XmlParseContext *
-glade_xml_parse_context_new_from_path (const gchar *full_path,
+GladeXmlContext *
+glade_xml_context_new_from_path (const gchar *full_path,
 				 const gchar *nspace,
 				 const gchar *root_name)
 {
-	XmlParseContext *context;
+	GladeXmlContext *context;
 	xmlDocPtr doc;
 	xmlNsPtr  name_space;
 
@@ -430,20 +518,127 @@ glade_xml_parse_context_new_from_path (const gchar *full_path,
 		return FALSE;
 	}
 	
-	context = glade_xml_parse_context_new (doc, name_space);
+	context = glade_xml_context_new ((GladeXmlDoc *)doc, name_space);
 
 	return context;
 }
 
-gboolean
-glade_xml_parse_context_free (XmlParseContext *context)
+/**
+ * glade_xml_context_free:
+ * @context: 
+ * 
+ * Similar to glade_xml_context_destroy but it also frees the document set in the context
+ **/
+void
+glade_xml_context_free (GladeXmlContext *context)
 {
-	g_return_val_if_fail (context != NULL, FALSE);
-
-	xmlFreeDoc (context->doc);
-	glade_xml_parse_context_destroy (context);
-
-	return TRUE;
+	g_return_if_fail (context != NULL);
+	if (context->doc)
+		xmlFreeDoc ((xmlDocPtr) context->doc);
+	context->doc = NULL;
+			
+	g_free (context);
 }
 
+
+void
+glade_xml_append_child (GladeXmlNode *node_in, GladeXmlNode *child_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	xmlNodePtr child = (xmlNodePtr) child_in;
+	
+	g_return_if_fail (node  != NULL);
+	g_return_if_fail (child != NULL);
+	
+	xmlAddChild (node, child);
+}
+
+GladeXmlNode *
+glade_xml_node_new (GladeXmlContext *context, const gchar *name)
+{
+	g_return_val_if_fail (context != NULL, NULL);
+	g_return_val_if_fail (name != NULL, NULL);
+
+	return (GladeXmlNode *) xmlNewDocNode ((xmlDocPtr) context->doc, context->ns, name, NULL);
+}
+					   
+
+GladeXmlNode *
+glade_xml_context_get_root (GladeXmlContext *context)
+{
+	xmlNodePtr node;
+
+	node = ((xmlDocPtr)(context->doc))->children;
+
+	return (GladeXmlNode *)node;
+}
+
+GladeXmlNode *
+glade_xml_node_get_children (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return (GladeXmlNode *)node->children;
+}
+
+GladeXmlNode *
+glade_xml_node_next (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	
+	return (GladeXmlNode *)node->next;
+}
+
+const gchar *
+glade_xml_node_get_name (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return node->name;
+}
+	
+
+GladeXmlDoc *
+glade_xml_doc_new (void)
+{
+	xmlDocPtr xml_doc = xmlNewDoc ("1.0");
+
+	return (GladeXmlDoc *)xml_doc;
+}
+	
+	
+void
+glade_xml_doc_set_root (GladeXmlDoc *doc_in, GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	xmlDocPtr doc = (xmlDocPtr) doc_in;
+
+	xmlDocSetRootElement (doc, node);
+}
+
+gint
+glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path)
+{
+	xmlDocPtr doc = (xmlDocPtr) doc_in;
+
+	return xmlSaveFile (full_path, doc);
+}
+
+void
+glade_xml_doc_free (GladeXmlDoc *doc_in)
+{
+	xmlDocPtr doc = (xmlDocPtr) doc_in;
+	
+	xmlFreeDoc (doc);
+}
+
+GladeXmlNode *
+glade_xml_doc_get_root (GladeXmlDoc *doc)
+{
+	xmlNodePtr node;
+
+	node = ((xmlDocPtr)(doc))->children;
+
+	return (GladeXmlNode *)node;
+}
 

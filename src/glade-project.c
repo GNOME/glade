@@ -28,6 +28,9 @@
 #include "glade-project-ui.h"
 #include "glade-project-window.h"
 #include "glade-widget.h"
+#include "glade-widget-class.h"
+#include "glade-xml-utils.h"
+#include "glade-widget.h"
 
 static void glade_project_class_init (GladeProjectClass * klass);
 static void glade_project_init (GladeProject *project);
@@ -334,6 +337,61 @@ glade_project_selection_set (GladeWidget *widget,
 
 
 /**
+ * glade_project_write_widgets:
+ * @context: 
+ * @node: 
+ * 
+ * Give a project it appends to @node all the toplevel widgets. Each widget is responsible
+ * for appending it's childrens
+ * 
+ * Return Value: FALSE on error, TRUE otherwise
+ **/
+static gboolean
+glade_project_write_widgets (const GladeProject *project, GladeXmlContext *context, GladeXmlNode *node)
+{
+	GladeXmlNode *child;
+	GladeWidget *widget;
+	GList *list;
+
+	list = project->widgets;
+	for (; list != NULL; list = list->next) {
+		widget = list->data;
+		if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+			child = glade_widget_write (context, widget);
+			if (child != NULL)
+				glade_xml_append_child (node, child);
+			else
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+/**
+ * glade_project_write:
+ * @project: 
+ * 
+ * Retrns the root node of a newly created xml representation of the project and its contents
+ * 
+ * Return Value: 
+ **/
+static GladeXmlNode *
+glade_project_write (GladeXmlContext *context, const GladeProject *project)
+{
+	GladeXmlNode *node;
+
+	node = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
+	if (node == NULL)
+		return NULL;
+
+	if (!glade_project_write_widgets (project, context, node))
+		return NULL;
+
+	return node;
+}
+
+/**
  * glade_project_save_to_file:
  * @project: 
  * @file_name: 
@@ -342,11 +400,35 @@ glade_project_selection_set (GladeWidget *widget,
  * 
  * Return Value: TRUE on success, FALSE otherwise
  **/
-gboolean
+static gboolean
 glade_project_save_to_file (GladeProject *project,
-			    const gchar *file_name)
+			    const gchar * full_path)
 {
-	g_print ("Save %s to %s\n", project->name, file_name);
+	GladeXmlContext *context;
+	GladeXmlNode *root;
+	GladeXmlDoc *xml_doc;
+	gboolean ret;
+
+	if (!glade_util_path_is_writable (full_path))
+		return FALSE;
+
+	xml_doc = glade_xml_doc_new ();
+	if (xml_doc == NULL) {
+		g_warning ("Could not create xml document\n");
+		return FALSE;
+	}
+	context = glade_xml_context_new (xml_doc, NULL);
+	root = glade_project_write (context, project);
+	glade_xml_context_destroy (context);
+	if (root == NULL)
+		return FALSE;
+
+	glade_xml_doc_set_root (xml_doc, root);
+	ret = glade_xml_doc_save (xml_doc, full_path);
+	glade_xml_doc_free (xml_doc);
+
+	if (ret < 0)
+		return FALSE;
 
 	return TRUE;
 }
@@ -369,10 +451,10 @@ glade_project_save (GladeProject *project)
 	if (project->path == NULL)
 		project->path = glade_project_ui_save_get_name (project);
 
-	if (project->path == NULL)
+	if (!glade_project_save_to_file (project, project->path)) {
+		glade_project_ui_warn (project, _("Invalid file name"));
 		return FALSE;
-
-	glade_project_save_to_file (project, project->path);
+	}
 
 	return TRUE;
 }

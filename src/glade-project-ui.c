@@ -28,26 +28,31 @@
 #define GLADE_SELECTOR_FILENAME "GladeFileSelectorFilename"
 
 static gint
-glade_project_ui_delete_event_cb (GtkWidget *widget, GdkEventAny *event)
+glade_project_ui_delete_event_cb (GtkWidget *selector, GdkEventAny *event)
 {
 	gtk_main_quit ();
 
+	gtk_object_set_user_data (GTK_OBJECT (selector), NULL);
+	
 	return TRUE;
 }
 
 static gint
-glade_project_ui_cancel_clicked (GtkWidget *button, gpointer not_used)
+glade_project_ui_selector_clicked (GtkWidget *button, GtkWidget *selector)
 {
+	g_return_val_if_fail (GTK_IS_FILE_SELECTION (selector), FALSE);
+
+	if (button == GTK_FILE_SELECTION (selector)->ok_button) {
+		const gchar *file;
+		file = gtk_file_selection_get_filename (GTK_FILE_SELECTION (selector));
+		gtk_object_set_user_data (GTK_OBJECT (selector), g_strdup (file));
+	} else 
+		gtk_object_set_user_data (GTK_OBJECT (selector), NULL);
+		
 	gtk_main_quit ();
 
-	return TRUE;
-}
-
-static gint
-glade_project_ui_ok_clicked (GtkWidget *button, gpointer not_used)
-{
-	gtk_main_quit ();
-
+	gtk_widget_hide (selector);
+	
 	return TRUE;
 }
 
@@ -62,14 +67,14 @@ glade_project_ui_save_get_name (GladeProject *project)
 
 	gtk_signal_connect (GTK_OBJECT(GTK_FILE_SELECTION(selector)->ok_button),
 			    "clicked",
-			    GTK_SIGNAL_FUNC (glade_project_ui_ok_clicked),
-			    NULL);
+			    GTK_SIGNAL_FUNC (glade_project_ui_selector_clicked),
+			    selector);
 	gtk_signal_connect (GTK_OBJECT(GTK_FILE_SELECTION(selector)->cancel_button),
 			    "clicked",
-			    GTK_SIGNAL_FUNC (glade_project_ui_cancel_clicked),
-			    NULL);
+			    GTK_SIGNAL_FUNC (glade_project_ui_selector_clicked),
+			    selector);
 	
-	gtk_signal_connect( GTK_OBJECT(selector), "delete_event",
+	gtk_signal_connect (GTK_OBJECT(selector), "delete_event",
 			    GTK_SIGNAL_FUNC (glade_project_ui_delete_event_cb),
 			    NULL);
 	
@@ -77,8 +82,15 @@ glade_project_ui_save_get_name (GladeProject *project)
 
 	gtk_main ();
 
-	return g_strdup ("Foo.xml");
+	return gtk_object_get_user_data (GTK_OBJECT (selector));
 }
 
 
+void
+glade_project_ui_warn (GladeProject *project, const gchar *warning)
+{
+	/* This are warnings to the users, use a nice dialog and stuff */
 
+	g_warning (warning);
+
+}

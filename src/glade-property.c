@@ -479,3 +479,16 @@ glade_property_query_result_destroy (GladePropertyQueryResult *result)
 	
 	g_free (result);
 }
+
+GladeXmlNode *
+glade_property_write (GladeXmlContext *context, GladeProperty *property)
+{
+	GladeXmlNode *node;
+
+	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
+	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, property->class->id);
+	glade_xml_set_content (node, property->value);
+	
+	return node;
+}
+	

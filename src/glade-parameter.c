@@ -124,7 +124,7 @@ glade_parameter_new (void)
 }
 
 static GladeParameter *
-glade_parameter_new_from_node (xmlNodePtr node)
+glade_parameter_new_from_node (GladeXmlNode *node)
 {
 	GladeParameter *parameter;
 
@@ -132,8 +132,8 @@ glade_parameter_new_from_node (xmlNodePtr node)
 		return NULL;
 	
 	parameter = glade_parameter_new ();
-	parameter->key   = glade_xml_get_value_string_required (node, GLADE_TAG_KEY, NULL);
-	parameter->value = glade_xml_get_value_string_required (node, GLADE_TAG_VALUE, NULL);
+	parameter->key   = glade_xml_get_property_string_required (node, GLADE_TAG_KEY, NULL);
+	parameter->value = glade_xml_get_property_string_required (node, GLADE_TAG_VALUE, NULL);
 
 	if (!parameter->key || !parameter->value)
 		return NULL;
@@ -158,10 +158,10 @@ glade_parameter_list_find_by_key (GList *list, const gchar *key)
 		
 
 GList *
-glade_parameter_list_new_from_node (GList *list, xmlNodePtr node)
+glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
 {
 	GladeParameter *parameter;
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	GList *findme;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PARAMETERS))
@@ -170,7 +170,7 @@ glade_parameter_list_new_from_node (GList *list, xmlNodePtr node)
 	if (child == NULL)
 		return NULL;
 
-	child = node->children;
+	child = glade_xml_node_get_children (node);
 
 	while (child != NULL) {
 		skip_text (child);
@@ -187,11 +187,11 @@ glade_parameter_list_new_from_node (GList *list, xmlNodePtr node)
 		if (findme) {
 			glade_parameter_free (findme->data);
 			findme->data = parameter;
-			child = child->next;
+			child = glade_xml_node_next (child);
 		}
 
 		list = g_list_prepend (list, parameter);
-		child = child->next;
+		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);

@@ -814,3 +814,34 @@ glade_widget_new_from_class_name (const gchar *name,
 }
 	
 
+
+GladeXmlNode *
+glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
+{
+	GladeProperty *property;
+	GladeXmlNode *node;
+	GladeXmlNode *child;
+	GList *list;
+	
+	g_return_val_if_fail (GLADE_XML_IS_CONTEXT (context), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
+
+	glade_xml_node_set_property_string (node, GLADE_XML_TAG_CLASS, widget->class->name);
+	glade_xml_node_set_property_string (node, GLADE_XML_TAG_ID, widget->name);
+	
+	list = widget->properties;
+	for (; list != NULL; list = list->next) {
+		property = list->data;
+		child = glade_property_write (context, property);
+		if (child == NULL)
+			return NULL;
+		glade_xml_append_child (node, child);
+	}
+
+
+	return node;
+}
+
+	

@@ -42,9 +42,9 @@ glade_catalog_new (void)
 }
 
 static GList *
-glade_catalog_load_names_from_node (XmlParseContext *context, xmlNodePtr node)
+glade_catalog_load_names_from_node (GladeXmlContext *context, GladeXmlNode *node)
 {
-	xmlNodePtr child;
+	GladeXmlNode *child;
 	GList *list;
 	gchar *name;
 
@@ -52,7 +52,7 @@ glade_catalog_load_names_from_node (XmlParseContext *context, xmlNodePtr node)
 		return NULL;
 
 	list = NULL;
-	child = node->children;
+	child = glade_xml_node_get_children (node);
 	while (child != NULL) {
 		skip_text (child);
 		if (!glade_xml_node_verify (child, GLADE_TAG_GLADE_WIDGET))
@@ -61,7 +61,7 @@ glade_catalog_load_names_from_node (XmlParseContext *context, xmlNodePtr node)
 		if (name == NULL)
 			return NULL;
 		list = g_list_prepend (list, name);
-		child = child->next;
+		child = glade_xml_node_next (child);
 	}
 
 	list = g_list_reverse (list);
@@ -72,13 +72,15 @@ glade_catalog_load_names_from_node (XmlParseContext *context, xmlNodePtr node)
 static void
 glade_catalog_load_names_from_file (GladeCatalog *catalog, const gchar *file_name)
 {
-	XmlParseContext *context;
+	GladeXmlContext *context;
+	GladeXmlNode *root;
 
-	context = glade_xml_parse_context_new_from_path (file_name, NULL, GLADE_TAG_CATALOG);
-	if (context == NULL) return;
-	catalog->names = glade_catalog_load_names_from_node (context, context->doc->children);
-	glade_xml_parse_context_free (context);
-		
+	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_CATALOG);
+	if (context == NULL)
+		return;
+	root = glade_xml_doc_get_root (context->doc);
+	catalog->names = glade_catalog_load_names_from_node (context, root);
+	glade_xml_context_free (context);
 }
 
 static GladeCatalog *
