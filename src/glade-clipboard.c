@@ -52,7 +52,7 @@ glade_clipboard_init (GladeClipboard *clipboard)
  * Returns: the typecode for the #GladeClipboard object type
  */
 GType
-glade_clipboard_get_type ()
+glade_clipboard_get_type (void)
 {
 	static GType type = 0;
 
@@ -82,7 +82,7 @@ glade_clipboard_get_type ()
  * Returns: a new #GladeClipboard object
  */
 GladeClipboard *
-glade_clipboard_new ()
+glade_clipboard_new (void)
 {
 	return GLADE_CLIPBOARD (g_object_new (GLADE_TYPE_CLIPBOARD, NULL));
 }

@@ -216,7 +216,7 @@ glade_editor_init (GladeEditor *editor)
  * Returns: a new #GladeEditor
  */
 GladeEditor *
-glade_editor_new ()
+glade_editor_new (void)
 {
 	GladeEditor *editor;
 

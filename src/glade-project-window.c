@@ -959,7 +959,7 @@ static void gpw_about_cb (void)
 static GtkItemFactoryEntry menu_items[] =
 {
   /* ============ FILE ============ */
-  { "/_File", NULL, 0, 0, "<Branch>" },
+  { "/_File", NULL, NULL, 0, "<Branch>" },
   { "/File/_New",        "<control>N",        gpw_new_cb,     1, "<StockItem>", GTK_STOCK_NEW },
   { "/File/_Open",       "<control>O",        gpw_open_cb,    2, "<StockItem>", GTK_STOCK_OPEN },
   { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
@@ -970,7 +970,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    6, "<StockItem>", GTK_STOCK_QUIT },
 
   /* ============ EDIT ============ */
-  { "/Edit", NULL, 0, 0, "<Branch>" },
+  { "/Edit", NULL, NULL, 0, "<Branch>" },
   { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,    7, "<StockItem>", GTK_STOCK_UNDO },
   { "/Edit/_Redo",   "<control>R", gpw_redo_cb,    8, "<StockItem>", GTK_STOCK_REDO },
   { "/Edit/sep1",    NULL,         NULL,           0, "<Separator>" },
@@ -980,14 +980,14 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Edit/_Delete", "Delete",     gpw_delete_cb, 12, "<StockItem>", GTK_STOCK_DELETE },
 
   /* ============ VIEW ============ */
-  { "/View", NULL, 0, 0, "<Branch>" },
+  { "/View", NULL, NULL, 0, "<Branch>" },
   { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     13, "<ToggleItem>" },
   { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      14, "<ToggleItem>" },
   { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 15, "<ToggleItem>" },
   { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   16, "<ToggleItem>" },
 
   /* =========== PROJECT ========== */
-  { "/Project", NULL, 0, 0, "<Branch>" },
+  { "/Project", NULL, NULL, 0, "<Branch>" },
 
   /* ============ HELP ============ */
   { "/_Help",       NULL, NULL, 0, "<Branch>" },
@@ -1252,7 +1252,7 @@ static GladeProjectWindow *glade_project_window = NULL;
  * Returns: the #GladeProjectWindow
  */
 GladeProjectWindow *
-glade_project_window_get ()
+glade_project_window_get (void)
 {
 	return glade_project_window;
 }
@@ -1357,7 +1357,7 @@ glade_project_window_add_project (GladeProject *project)
 	project->entry.path = g_strdup_printf ("/Project/%s", underscored_name);
 	g_free (underscored_name);
 	project->entry.accelerator = NULL;
-	project->entry.callback = glade_project_window_set_project;
+	project->entry.callback = (GtkItemFactoryCallback)glade_project_window_set_project;
 	project->entry.callback_action = 0;
 	project->entry.item_type = g_strdup ("<Item>");
 
@@ -1517,7 +1517,7 @@ glade_project_window_refresh_undo_redo (void)
  * TODO: write me
  */
 void
-glade_project_window_show_all ()
+glade_project_window_show_all (void)
 {
 	GladeProjectWindow *gpw;
 

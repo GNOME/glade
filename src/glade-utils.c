@@ -686,7 +686,7 @@ glade_util_add_nodes (GtkWidget *widget)
 void
 glade_util_remove_nodes (GtkWidget *widget)
 {
-	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES, 0);
+	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES, GINT_TO_POINTER (0));
 
 	/* We redraw the parent, since the selection rectangle may not be
 	   cleared if we just redraw the widget itself. */
