@@ -31,6 +31,7 @@
 #include "glade-project.h"
 #include "glade-project-view.h"
 #include "glade-project-window.h"
+#include <gdk/gdkkeysyms.h>
 
 static void gpw_new_cb (void);
 static void gpw_open_cb (void);
@@ -261,13 +262,24 @@ glade_project_window_new (GladeCatalog *catalog)
 	return gpw;
 }
 
+static gboolean 
+gpw_key_press_widget_tree_cb (GtkWidget *widget_tree, GdkEventKey *event,
+		gpointer not_used)
+{
+	if (event->keyval == GDK_Escape) {
+		gtk_widget_hide (widget_tree);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 static gboolean
 gpw_delete_widget_tree_cb (GtkWidget *widget_tree, gpointer not_used)
 {
 	gtk_widget_hide (widget_tree);
 
-	/* return false so that the widget tree is not destroyed */
-	return FALSE;
+	/* return true so that the widget tree is not destroyed */
+	return TRUE;
 }
 
 static GtkWidget* 
@@ -284,7 +296,9 @@ glade_project_window_widget_tree_create (GladeProjectWindow *gpw)
 	gpw->views = g_list_prepend (gpw->views, view);
 	glade_project_view_set_project (view, gpw->project);
 	gtk_signal_connect (GTK_OBJECT (widget_tree), "delete_event",
-			    GTK_SIGNAL_FUNC (gpw_delete_widget_tree_cb), NULL);
+			GTK_SIGNAL_FUNC (gpw_delete_widget_tree_cb), NULL);
+	gtk_signal_connect (GTK_OBJECT (widget_tree), "key_press_event",
+			GTK_SIGNAL_FUNC (gpw_key_press_widget_tree_cb), NULL);
 
 	return widget_tree;
 }

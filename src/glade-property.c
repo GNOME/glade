@@ -237,7 +237,6 @@ glade_property_changed_integer (GladeProperty *property, gint val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%i", val);
 
-	g_print ("Setting the value to %s\n", property->value);
 	gtk_object_set (GTK_OBJECT (property->widget->widget),
 			property->class->gtk_arg, val, NULL);
 }
