@@ -4,6 +4,7 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_WIDGET(w) ((GladeWidget *)w)
 #define GLADE_IS_WIDGET(w) (w != NULL)
 
@@ -11,8 +12,8 @@ G_BEGIN_DECLS
  * in the project there is a GladeWidget
  */
 
-struct _GladeWidget {
-
+struct _GladeWidget
+{
 	GladeWidgetClass *class; /* The class of the widget.
 				  * [see glade-widget-class.h ]
 				  */
@@ -70,12 +71,11 @@ GladeProperty *    glade_widget_get_property_from_class (GladeWidget *widget,
 
 void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 
-/* Widget functions */
-typedef void (*GladeWidgetFunction) (GladeWidget *widget);
-
 GladeWidget *glade_widget_clone (GladeWidget *widget);
-GladePlaceholder *glade_widget_replace_with_placeholder (GladeWidget *widget,
-							 GladePlaceholder *placeholder);
+
+void glade_widget_replace_with_placeholder (GladeWidget *widget,
+					    GladePlaceholder *placeholder);
+
 GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 /* Widget signal*/
@@ -87,6 +87,7 @@ void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
 /* Xml saving & reading */
 GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
 GladeWidget *  glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project);
+
 
 G_END_DECLS
 

@@ -49,7 +49,7 @@
  * Allocates a new name for a specific GladeWidgetClass.
  * 
  * Return Value: a newly allocated name for the widget. Caller must g_free it
- **/
+ */
 gchar *
 glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 {
@@ -81,14 +81,6 @@ glade_widget_property_list_from_class (GladeWidgetClass *class,
 	return new_list;
 }
 
-/**
- * glade_widget_new:
- * @class: The GladeWidgeClass of the GladeWidget
- * 
- * Allocates a new GladeWidget structure and fills in the required memebers.
- * 
- * Return Value: 
- **/
 static GladeWidget *
 glade_widget_new (GladeWidgetClass *class)
 {
@@ -114,7 +106,7 @@ glade_widget_new (GladeWidgetClass *class)
  * 
  * Return Value: a GladeWidget pointer for @widget, NULL if the widget does not
  *               have a GladeWidget counterpart.
- **/
+ */
 GladeWidget *
 glade_widget_get_from_gtk_widget (GtkWidget *widget)
 {
@@ -175,7 +167,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
  * clicked
  * 
  * Return Value: 
- **/
+ */
 static GladeWidget *
 glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *event)
 {
@@ -268,7 +260,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
  * Handle the button press event for every GladeWidget
  * 
  * Return Value: 
- **/
+ */
 static gboolean
 glade_widget_button_press (GtkWidget *event_widget,
 			   GdkEventButton *event,
@@ -316,7 +308,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
  * @widget: 
  * 
  * Takes care of applying the default values to a newly created widget
- **/
+ */
 static void
 glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 {
@@ -357,7 +349,7 @@ glade_widget_set_default_options (GladeWidget *widget)
  * because we weed to add the widget to the container before we
  * apply the packing options
  *
- **/
+ */
 void
 glade_widget_set_default_packing_options (GladeWidget *widget)
 {
@@ -429,7 +421,7 @@ glade_widget_connect_keyboard_signals (GladeWidget *glade_widget)
  * Loads the name of the widget. For example a button will have the
  * "button1" text in it, or a label will have "label4". right after
  * it is created.
- **/
+ */
 void
 glade_widget_set_contents (GladeWidget *widget)
 {
@@ -747,7 +739,7 @@ glade_widget_query_properties_set (gpointer key_,
  * of columns he wants.
  * 
  * Return Value: FALSE if the query was canceled
- **/
+ */
 gboolean 
 glade_widget_query_properties (GladeWidgetClass *class,
 			       GladePropertyQueryResult *result)
@@ -821,7 +813,7 @@ glade_widget_query_properties (GladeWidgetClass *class,
  * @widget: widget that will receive the set of queried properties
  * @result: values of the queried properties
  * 
- **/
+ */
 static void
 glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryResult *result)
 {
@@ -851,7 +843,7 @@ glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryRe
  * if needed.
  * 
  * Return Value: A newly creatred GladeWidget, NULL on user cancel or error	
- **/
+ */
 GladeWidget *
 glade_widget_new_from_class (GladeWidgetClass *class,
 			     GladeProject *project,
@@ -907,7 +899,7 @@ glade_widget_get_class (GladeWidget *widget)
  * This function recurses into child objects if needed.
  * 
  * Return Value: 
- **/
+ */
 static GladeProperty *
 glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gboolean silent)
 {
@@ -947,7 +939,7 @@ glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gbo
  * Given a glade Widget, it returns the property that correspons to @property_class
  * 
  * Return Value: 
- **/
+ */
 GladeProperty *
 glade_widget_get_property_from_class (GladeWidget *widget,
 				      GladePropertyClass *property_class)
@@ -972,7 +964,7 @@ glade_widget_get_property_from_class (GladeWidget *widget,
  * @name: 
  * 
  * Sets the name of a widget
- **/
+ */
 void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
@@ -990,7 +982,7 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
  * Make a copy of a #GladeWidget.
  * 
  * Return Value: the cloned GladeWidget, NULL on error.
- **/
+ */
 GladeWidget *
 glade_widget_clone (GladeWidget *widget)
 {
@@ -1014,28 +1006,27 @@ glade_widget_clone (GladeWidget *widget)
  * @widget:
  * @placeholder:
  *
- * Replaces @widget with @placeholder. If @placeholder is NULL a new one is created.
- **/
-GladePlaceholder *
-glade_widget_replace_with_placeholder (GladeWidget *widget, GladePlaceholder *placeholder)
+ * Replaces @widget with @placeholder.
+ */
+void
+glade_widget_replace_with_placeholder (GladeWidget *widget,
+				       GladePlaceholder *placeholder)
 {
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	GladeWidget *parent;
 
-	if (placeholder == NULL)
-		placeholder = glade_placeholder_new (widget->parent);
-	else
-		g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 
-	if (widget->parent->class->placeholder_replace)
-		widget->parent->class->placeholder_replace (widget->widget,
-							    GTK_WIDGET (placeholder),
-							    widget->parent->widget);
+	parent = widget->parent;
 
-	/* Remove it from the parent's child list */
-	widget->parent->children = g_list_remove (widget->parent->children, widget);
+	if (parent->class->placeholder_replace) {
+		parent->class->placeholder_replace (widget->widget,
+						    GTK_WIDGET (placeholder),
+						    parent->widget);
 
-	/* Return the placeholder, if some one needs it, he can use it. */
-	return placeholder;
+		/* Remove it from the parent's child list */
+		widget->parent->children = g_list_remove (widget->parent->children, widget);
+	}
 }
 
 /**
@@ -1457,8 +1448,6 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 		g_value_unset (&string_value);
 	}
 	
-	glade_widget_fill_empty (parent->widget);
-
 	return TRUE;
 }
 

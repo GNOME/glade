@@ -20,6 +20,7 @@
  *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
  *   Archit Baweja <bighead@users.sourceforge.net>
  */
+
 #include <gtk/gtk.h>
 #include <string.h>
 #include "glade-types.h"
@@ -594,13 +595,13 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 
 	g_return_val_if_fail (widget != NULL, TRUE);
 
-	if (widget->parent != NULL)
-	{
-		GladePlaceholder *old_placeholder = me->placeholder;
-
-		me->placeholder = glade_widget_replace_with_placeholder (widget, old_placeholder);
-		if (me->placeholder != old_placeholder)
+	if (widget->parent) {
+		if (me->placeholder == NULL) {
+			me->placeholder = glade_placeholder_new (widget->parent);
 			g_object_ref (G_OBJECT (me->placeholder));
+		}
+
+		glade_widget_replace_with_placeholder (widget, me->placeholder);
 	}
 
 	gtk_widget_hide (widget->widget);
@@ -800,12 +801,13 @@ glade_command_cut_execute (GladeCommandCutPaste *me)
 
 	glade_clipboard_add (me->clipboard, widget);
 
-	if (widget->parent != NULL){
-		GladePlaceholder *old_placeholder = me->placeholder;
-
-		me->placeholder = glade_widget_replace_with_placeholder (widget, old_placeholder);
-		if (me->placeholder != old_placeholder)
+	if (widget->parent) {
+		if (me->placeholder == NULL) {
+			me->placeholder = glade_placeholder_new (widget->parent);
 			g_object_ref (G_OBJECT (me->placeholder));
+		}
+
+		glade_widget_replace_with_placeholder (widget, me->placeholder);
 	}
 
 	gtk_widget_hide (widget->widget);
