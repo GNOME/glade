@@ -636,8 +636,9 @@ glade_property_class_load_from_param_spec (const gchar *name,
 	class->type    = glade_property_class_get_type_from_spec (spec);
 
 	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
-		g_warning ("Could not create the \"%s\" property for the \"%s\" class\n",
-			   name, widget_class->name);
+		g_free (class->id);
+		g_free (class->name);
+		g_free (class->tooltip);
 		return FALSE;
 	}
 	
