@@ -33,6 +33,7 @@ glade_3_LDADD = \
 BUILT_SOURCES = \
         glade-marshallers.c \
         glade-marshallers.h
+CLEANFILES = $(BUILT_SOURCES)
 
 glade_3_SOURCES = \
 	main.c \
@@ -100,11 +101,11 @@ noinst_HEADERS = \
 #
 # Marshaller generation
 #
-glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL)
+glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL) Makefile.am
 	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --header > glade-marshallers-h.tmp \
 	&& mv glade-marshallers-h.tmp glade-marshallers.h \
 	|| ( rm -f glade-marshallers-h.tmp && exit 1)
-glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
+glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL) Makefile.am
 	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --body > glade-marshallers-c.tmp     \
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
