@@ -83,9 +83,9 @@ gpw_refresh_project_entry (GladeProject *project)
 static void
 gpw_new_cb (void)
 {
- 	GladeProject *project;
- 
- 	project = glade_project_new (TRUE);
+	GladeProject *project;
+
+	project = glade_project_new (TRUE);
 	glade_project_window_add_project (project);
 }
 
@@ -300,7 +300,7 @@ gpw_close_cb (void)
 
 		widget = GLADE_WIDGET (list->data)->widget;
 		if (GTK_WIDGET_TOPLEVEL (widget))
-			gtk_widget_destroy (widget);
+			gtk_widget_hide (widget);
 	}
 
 	gpw->projects = g_list_remove (gpw->projects, project);

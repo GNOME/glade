@@ -1123,7 +1123,6 @@ glade_editor_property_load_double (GladeEditorProperty *property)
 	glade_editor_property_load_integer (property);
 }
 
-
 static void
 glade_editor_property_load_enum (GladeEditorProperty *property)
 {
@@ -1336,13 +1335,6 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 }
 
 static void
-glade_editor_table_free (GladeEditorTable *me)
-{
-	if (me)
-		g_free (me);
-}
-
-static void
 glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 {
 	static GladeEditorTable *old = NULL;
@@ -1364,9 +1356,8 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 
 	/* Free the old structs */
 	if (old)
-		glade_editor_table_free (old);
-	list = old_props;
-	for (; list; list = list->next)
+		g_free (old);
+	for (list = old_props; list; list = list->next)
 		g_free (list->data);
 	old_props = NULL;
 	old = NULL;
