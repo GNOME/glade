@@ -176,29 +176,28 @@ glade_widget_property_class_free (GladePropertyClass *class)
 static GladePropertyType
 glade_property_class_get_type_from_spec (GParamSpec *spec)
 {
-	GType spec_type = G_PARAM_SPEC_TYPE (spec);
 	
-	if (G_IS_PARAM_SPEC_INT (spec_type) || G_IS_PARAM_SPEC_UINT (spec_type)) {
+	if (G_IS_PARAM_SPEC_INT (spec) || G_IS_PARAM_SPEC_UINT (spec)) {
 		return GLADE_PROPERTY_TYPE_INTEGER;
-	} else if (G_IS_PARAM_SPEC_FLOAT (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_FLOAT (spec)) {
 		return GLADE_PROPERTY_TYPE_FLOAT;
-	} else if (G_IS_PARAM_SPEC_BOOLEAN (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_BOOLEAN (spec)) {
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
-	} else if (G_IS_PARAM_SPEC_STRING (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_STRING (spec)) {
 		/* FIXME: We should solve the "name" conflict with a better solution */
 		if (!g_ascii_strcasecmp ( spec->name, "name"))
 			return GLADE_PROPERTY_TYPE_ERROR;
 		else
 			return GLADE_PROPERTY_TYPE_STRING;
-	} else if (G_IS_PARAM_SPEC_ENUM (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_ENUM (spec)) {
 		return GLADE_PROPERTY_TYPE_ENUM;
-	} else if (G_IS_PARAM_SPEC_DOUBLE (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_DOUBLE (spec)) {
 		return GLADE_PROPERTY_TYPE_DOUBLE;
-	} else if (G_IS_PARAM_SPEC_LONG (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_LONG (spec)) {
 		g_warning ("Long not implemented\n");
-	} else if (G_IS_PARAM_SPEC_UCHAR (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_UCHAR (spec)) {
 		g_warning ("uchar not implemented\n");
-	} else if (G_IS_PARAM_SPEC_OBJECT (spec_type)) {
+	} else if (G_IS_PARAM_SPEC_OBJECT (spec)) {
 		return GLADE_PROPERTY_TYPE_OBJECT;
 	} else {
 		/*FIXME: We should implement the "events" property */
