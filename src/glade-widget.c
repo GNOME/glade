@@ -1262,10 +1262,14 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 }
 
 static gboolean
-glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, GladeWidget *parent);
+glade_widget_new_child_from_node (GladeXmlNode *node,
+				  GladeProject *project,
+				  GladeWidget *parent);
 
 static GladeWidget *
-glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, GladeWidget *parent)
+glade_widget_new_from_node_real (GladeXmlNode *node,
+				 GladeProject *project,
+				 GladeWidget *parent)
 {
 	GladeWidgetClass *class;
 	GladeXmlNode *child;
@@ -1285,8 +1289,9 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 	
 	widget = glade_widget_new_full (class, project, parent);
 
+	/* Properties */
 	child =	glade_xml_node_get_children (node);
-	for (; child != NULL; child = glade_xml_node_next (child)) {
+	for (; child; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
 			continue;
 
@@ -1295,29 +1300,26 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 		}
 	}
 
-	/* If we are a container, add the placeholders */
-/*	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
-		glade_placeholder_add (class, widget); */
-		
-	child =	glade_xml_node_get_children (node);
-	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
-			continue;
-		
-		if (!glade_widget_new_child_from_node (child, project, widget)) {
-			return NULL;
-		}
-	}
-
 	/* Signals */
 	child =	glade_xml_node_get_children (node);
-	for (; child != NULL; child = glade_xml_node_next (child)) {
+	for (; child; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_SIGNAL))
 			continue;
-		
+
 		signal = glade_signal_new_from_node (child);
 		if (signal) {
 			glade_widget_add_signal (widget, signal);
+		}
+	}
+
+	/* Children */
+	child =	glade_xml_node_get_children (node);
+	for (; child; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
+			continue;
+
+		if (!glade_widget_new_child_from_node (child, project, widget)) {
+			return NULL;
 		}
 	}
 
@@ -1325,6 +1327,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 
 	return widget;
 }
+
+#if 0 /* do we still need these 3 functions ? */
 
 static GHashTable *
 glade_widget_properties_hash_from_node (GladeXmlNode *node)
@@ -1390,6 +1394,8 @@ glade_widget_apply_properties_from_hash (GladeWidget *widget, GHashTable *proper
 {
 	g_hash_table_foreach (properties, glade_widget_apply_property_from_hash_item, widget);
 }
+
+#endif
 
 static gboolean
 glade_widget_new_child_from_node (GladeXmlNode *node,

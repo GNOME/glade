@@ -4,12 +4,6 @@
 
 G_BEGIN_DECLS
 
-void          glade_placeholder_add (GladeWidgetClass *class,
-				     GladeWidget *widget);
-
-void          glade_placeholder_add_with_result (GladeWidgetClass *class,
-						 GladeWidget *widget,
-						 GladePropertyQueryResult *result);
 
 GladePlaceholder * glade_placeholder_new ();
 
@@ -20,14 +14,9 @@ void glade_placeholder_add_methods_to_class (GladeWidgetClass *class);
 void glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 					    GladeWidget *widget);
 
-GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
-							  GHashTable *properties);
-
 /* remember to convert GladePlaceholder to a true GtkWidget, and convert this
  * function to a macro */
 gboolean GLADE_IS_PLACEHOLDER (GtkWidget *widget);
-
-void glade_placeholder_remove_all (GtkWidget *widget);
 
 
 G_END_DECLS

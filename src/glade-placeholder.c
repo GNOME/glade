@@ -37,7 +37,6 @@
 #include "glade-project.h"
 #include "glade-project-window.h"
 #include "glade-packing.h"
-#include "glade-clipboard.h"
 #include "glade-popup.h"
 #include "glade-command.h"
 
@@ -287,25 +286,6 @@ glade_placeholder_new ()
 }
 
 #undef GLADE_PLACEHOLDER_SIZE
-
-void glade_placeholder_add (GladeWidgetClass *class, GladeWidget *widget)
-{
-
-	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
-		GladePlaceholder *placeholder;
-
-		placeholder = glade_placeholder_new (widget);
-		if (glade_widget_class_is (class, "GtkDialog")) {
-			gtk_container_add (GTK_CONTAINER (GTK_DIALOG (widget->widget)->vbox),
-					   GTK_WIDGET (placeholder));
-			placeholder = glade_placeholder_new (widget);
-			gtk_container_add (GTK_CONTAINER (GTK_DIALOG (widget->widget)->action_area),
-					   GTK_WIDGET (placeholder));
-		} else
-			gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
-	}
-
-}
 
 GladeWidget *
 glade_placeholder_get_parent (GladePlaceholder *placeholder)
