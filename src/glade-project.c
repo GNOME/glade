@@ -557,6 +557,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 		widget = glade_widget_new_from_node (child, project);
 		if (widget == NULL)
 			return NULL;
+		project->widgets = g_list_append (project->widgets, widget);
 	}
 	project->widgets = g_list_reverse (project->widgets);
 
