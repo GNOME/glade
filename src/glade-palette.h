@@ -25,10 +25,6 @@ struct _GladePalette
 	GtkVBox vbox; /* The parent is a vbox
 		       */
 
-	GladeProjectWindow *project_window; /* A pointer to the GladeProjectWin.
-					     * this palette belongs to
-					     */
-
 	GtkTooltips *tooltips; /* Tooltips, currently unimplemented */
 
 #if 0

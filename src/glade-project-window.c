@@ -468,7 +468,6 @@ gpw_create_palette (GladeProjectWindow *gpw)
 
 	gpw->palette_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
 	gpw->palette = glade_palette_new (gpw->catalogs);
-	gpw->palette->project_window = gpw;
 
 	gtk_window_set_title (gpw->palette_window, _("Palette"));
 	gtk_window_set_resizable (gpw->palette_window, FALSE);
