@@ -21,6 +21,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 
 #include "glade.h"
 #include "glade-placeholder.h"

@@ -32,6 +32,8 @@
 #include "glade-xml-utils.h"
 
 #include <dirent.h>
+#include <gmodule.h>
+#include <ctype.h>
 
 #include <gtk/gtkenums.h> /* This should go away. Chema */
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -43,6 +45,32 @@
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
 
+#if 0 /* Keep arround */
+static gchar *
+glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
+{
+	gchar *retval;
+	GString *tmp;
+	gint i = 1;
+
+	tmp = g_string_new (class->name);
+
+	while (tmp->str[i]) {
+		if (isupper (tmp->str[i])) {
+			tmp = g_string_insert_c (tmp, i, '_');
+			i+=2;
+			continue;
+		}
+		i++;
+	}
+
+	retval = g_strconcat (g_strdup (tmp->str), "_get_type", NULL);
+	g_strdown (retval);
+	g_string_free (tmp, TRUE);
+
+	return retval;
+}
+#endif
 
 static GladeWidgetClass *
 glade_widget_class_new (void)
@@ -52,6 +80,7 @@ glade_widget_class_new (void)
 	widget = g_new0 (GladeWidgetClass, 1);
 	widget->flags = 0;
 	widget->placeholder_replace = NULL;
+	widget->type = 0;
 
 	return widget;
 }
@@ -111,12 +140,60 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
+static gboolean
+glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function_name)
+{
+	static GModule *allsymbols;
+	guint (*get_type) ();
+	GType type;
+
+	class->type = 0;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
+	g_return_val_if_fail (init_function_name != NULL, FALSE);
+	
+	if (!g_module_supported ()) {
+		g_warning (_("gmodule support not found. gmodule support is requiered "
+			     "for glade to work"));
+		return FALSE;
+	}
+			
+	if (!allsymbols)
+		allsymbols = g_module_open (NULL, 0);
+	
+	if (!g_module_symbol (allsymbols, init_function_name,
+			      (gpointer) &get_type)) {
+		g_warning (_("We could not find the symbol \"%s\" while trying to load \"%s\""),
+			   init_function_name, class->name);
+		return FALSE;
+	}
+
+	g_assert (get_type);
+	type = get_type ();
+
+	if (type == 0) {
+		g_warning(_("Could not get the type from \"%s\" while trying to load \"%s\""), class->name);
+		return FALSE;
+	}
+
+	if (!g_type_is_a (type, gtk_widget_get_type ())) {
+		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
+			   class->name);
+		return FALSE;
+	}
+
+	class->type = type;
+	
+	return TRUE;
+}
+		
 static GladeWidgetClass *
 glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 {
 	GladeWidgetClass *class;
 	xmlNodePtr child;
-	
+	gchar *init_function_name;
+
 	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
 		return NULL;
 
@@ -129,6 +206,14 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
 	class->icon         = glade_xml_get_value_string_required (node, GLADE_TAG_ICON, NULL);
+
+	init_function_name = glade_xml_get_value_string_required (node, GLADE_TAG_GET_TYPE_FUNCTION, NULL);
+	if (!init_function_name)
+		return FALSE;
+	if (!glade_widget_class_set_type (class, init_function_name))
+		return NULL;
+	g_free (init_function_name);
+
 	class->properties   = glade_property_class_list_new_from_node (child, class);
 	class->signals      = glade_widget_class_list_signals (class);
 
@@ -160,6 +245,8 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 	struct stat s;
 	GtkWidget *widget;
 	gchar *full_path;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
 	
 	widget = gtk_button_new ();
 
@@ -185,7 +272,7 @@ GladeWidgetClass *
 glade_widget_class_new_from_name (const gchar *name)
 {
 	XmlParseContext *context;
-	GladeWidgetClass *widget;
+	GladeWidgetClass *class;
 	gchar *file_name;
 
 	file_name = g_strconcat (WIDGETS_DIR, "/", name, ".xml", NULL);
@@ -193,21 +280,27 @@ glade_widget_class_new_from_name (const gchar *name)
 	context = glade_xml_parse_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
 	if (context == NULL)
 		return NULL;
-	widget = glade_widget_class_new_from_node (context, context->doc->children);
+	class = glade_widget_class_new_from_node (context, context->doc->children);
 	glade_xml_parse_context_free (context);
 
-	if (!glade_widget_class_create_pixmap (widget))
+	if (!glade_widget_class_create_pixmap (class))
 		return NULL;
 
 	g_free (file_name);
 	
-	return widget;
+	return class;
 }
 
 const gchar *
 glade_widget_class_get_name (GladeWidgetClass *widget)
 {
 	return widget->name;
+}
+
+GType
+glade_widget_class_get_type (GladeWidgetClass *widget)
+{
+	return widget->type;
 }
 
 void

@@ -185,7 +185,6 @@ glade_parameter_list_new_from_node (GList *list, xmlNodePtr node)
 		findme = glade_parameter_list_find_by_key (list,
 							   parameter->key);
 		if (findme) {
-			g_print ("We foind one, replace it\n");
 			glade_parameter_free (findme->data);
 			findme->data = parameter;
 			child = child->next;

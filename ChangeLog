@@ -1,3 +1,12 @@
+2001-06-28  Archit Baweja  <bighead@crosswinds.net>
+
+	* src/glade.h (GLADE_TAB_GET_TYPE_FUNCTION): new #define.
+
+	* src/glade-widget-class.c (glade_widget_class_new_from_node):  added
+	code to	search for _get_type () function and initialize the GType.
+	(glade_widget_class_compose_get_type_func): new function.
+	(glade_widget_class_get_type): new function.
+
 2001-06-27  Chema Celorio  <chema@celorio.com>
  
  	* src/glade-widget-class.[ch], src/glade-widget.[ch]: Store signals
@@ -16,7 +25,7 @@
 
 	* missing, mkinstalldirs: Removed, are generated files.
 	* ChangeLog: Changed the previous date entry to the Gnome's standar one.
-	
+
 2001-06-21 Jonathan Blandford  <jrb@webwynk.net>
 
 	* src/glade-property-class.c (glade_property_class_get_specs):

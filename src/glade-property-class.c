@@ -131,8 +131,8 @@ glade_property_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gi
 {
 	GObjectClass *object_class;
 	GType type;
-	
-	type = gtk_window_get_type ();
+
+	type = glade_widget_class_get_type (class);
 	g_type_class_ref (type); /* hmm */
 	 /* We count on the fact we have an instance, or else we'd have
 	  * touse g_type_class_ref ();
@@ -250,8 +250,6 @@ glade_property_get_parameters_boolean (GParamSpec *spec,
 	parameter->key = g_strdup ("Default");
 	parameter->value = def ? g_strdup (GLADE_TAG_TRUE) : g_strdup (GLADE_TAG_FALSE); 
 
-	g_print ("Para %s\n", parameter->value);
-	
 	return g_list_prepend (NULL, parameter);
 }
 
@@ -317,7 +315,6 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 	GList *parameters = NULL;
 	xmlNodePtr child;
 
-	g_print ("Go %s\n", class->name);
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_CHOICE:
 		parameters = glade_property_get_parameters_choice (spec,
@@ -336,7 +333,6 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 								    class);
 		break;
 	default:
-		g_print ("No parameters for %s\n", class->name);
 	}
 
 	/* Get the parameters that are specified on the glade file,

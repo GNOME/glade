@@ -11,6 +11,7 @@ gchar * _ (gchar * name);
 
 #define GLADE_PATH_SEP_STR "/"
 #define GLADE_TAG_GLADE_WIDGET_CLASS "GladeWidgetClass"
+#define GLADE_TAG_GET_TYPE_FUNCTION "GetTypeFunction"
 #define GLADE_TAG_GENERIC_NAME "GenericName"
 #define GLADE_TAG_NAME         "Name"
 #define GLADE_TAG_KEY          "Key"

@@ -10,6 +10,7 @@ typedef enum {
 } GladeWidgetClassFlags;
 
 #define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
+#define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
 
 #define GLADE_WIDGET_FLAGS(gw)           ((GLADE_WIDGET(gw)->class)->flags)
 #define GLADE_WIDGET_TOPLEVEL(gw)        ((GLADE_WIDGET_FLAGS(gw) & GLADE_TOPLEVEL) != 0)
@@ -27,6 +28,8 @@ typedef enum {
  * for that object like the icon/mask.
  */
 struct _GladeWidgetClass {
+
+	GType type;         /* GType of the widget */
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
 	gchar *icon;         /* Name of the icon without the prefix, for example
@@ -70,6 +73,7 @@ struct _GladeWidgetClassSignal {
 GladeWidgetClass * glade_widget_class_new_from_name (const gchar *name);
 
 const gchar * glade_widget_class_get_name (GladeWidgetClass *class);
+GType 	      glade_widget_class_get_type (GladeWidgetClass *class);
 gboolean      glade_widget_class_has_queries (GladeWidgetClass *class);
 
 G_END_DECLS
