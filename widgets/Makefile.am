@@ -1,5 +1,5 @@
 catalogs_DATA = \
-	gtk+.catalog \
+	gtk+.xml \
 	glade-palette.xml \
 	gtk-base.xml \
 	gtk-additional.xml \

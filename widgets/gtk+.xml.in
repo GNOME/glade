@@ -1,5 +1,6 @@
 <GladeCatalog name="gtk+" library="gladegtk">
   <GladeWidgets>
+    <!-- Gtk+ Base -->
     <GladeWidgetClass name="GtkWidget">
       <Properties>
 	<Property Common="True" Id="visible">
@@ -325,6 +326,121 @@
 	<Property Id="label" Default="Frame"/>
       </Properties>
     </GladeWidgetClass>
+
+    <!-- Gtk+ Additional -->
+    <GladeWidgetClass name="GtkHScale" generic_name="hscale" title="Horizontal Scale"/>
+    
+    <GladeWidgetClass name="GtkVScale" generic_name="vscale" title="Vertical Scale"/>
+
+    <GladeWidgetClass name="GtkCalendar" generic_name="calendar" title="Calendar"/>
+    
+    <GladeWidgetClass name="GtkMenu" generic_name="menu" title="Popup Menu"/>
+
+    <GladeWidgetClass name="GtkHScrollbar" generic_name="hscrollbar" title="Horizontal Scrollbar"/>
+
+    <GladeWidgetClass name="GtkVScrollbar" generic_name="vscrollbar" title="Vertical Scrollbar"/>
+
+    <GladeWidgetClass name="GtkHButtonBox" generic_name="hbuttonbox" title="Horizontal Button Box"/>
+
+    <GladeWidgetClass name="GtkVButtonBox" generic_name="vbuttonbox" title="Vertical Button Box"/>
+
+    <GladeWidgetClass name="GtkHSeparator" generic_name="hseparator" title="Horizontal Separator"/>
+
+    <GladeWidgetClass name="GtkVSeparator" generic_name="vseparator" title="Vertical Separator"/>
+
+    <GladeWidgetClass name="GtkStatusbar" generic_name="statusbar" title="Status Bar">
+      <Properties>
+	<Property Id="size" Disabled="TRUE" />
+	<Property Id="has-resize-grip" Name="Has Resize Grip" Default="TRUE">
+	  <Type>Boolean</Type>
+	  <Tooltip>Set if the statusbar has a resize grip or not</Tooltip>
+	  <SetFunction>glade_gtk_statusbar_set_has_resize_grip</SetFunction>
+	  <GetFunction>glade_gtk_statusbar_get_has_resize_grip</GetFunction>
+	</Property>
+      </Properties>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkArrow" generic_name="arrow" title="Arrow"/>
+    <GladeWidgetClass name="GtkLayout" generic_name="layout" title="Layout"/>
+    
+    <GladeWidgetClass name="GtkFixed" generic_name="fixed" title="Fixed">
+      <PostCreateFunction>glade_gtk_fixed_post_create</PostCreateFunction>
+
+      <Children>
+	<Child>
+	  <Type>GtkWidget</Type>
+	  <FillEmptyFunction>empty</FillEmptyFunction>
+	</Child>
+      </Children>
+    </GladeWidgetClass>
+    
+    <GladeWidgetClass name="GtkDrawingArea" generic_name="drawingarea" title="Drawing Area"/>
+    
+    <GladeWidgetClass name="GtkViewport" generic_name="viewport" title="Viewport"/>
+    
+    <GladeWidgetClass name="GtkScrolledWindow" generic_name="scrolledwindow" title="Scrolled Window"/>
+  
+    <!-- NOT AVAILABLES ON WIN32
+    <GladeWidgetClass name="GtkPlug" generic_name="plug" title="Plug"/>
+    <GladeWidgetClass name="GtkSocket" generic_name="socket" title="Socket"/>
+    -->
+    
+    <!-- Gtk+ Dialogs -->
+    <GladeWidgetClass name="GtkColorSelectionDialog" generic_name="colorselectiondialog" title="Color Selection Dialog"/>
+    
+    <GladeWidgetClass name="GtkFileChooserDialog" generic_name="filechooserdialog" title="File Chooser Dialog"/>
+    
+    <GladeWidgetClass name="GtkFontSelectionDialog" generic_name="fontselectiondialog" title="Font Selection Dialog"/>
+    
+    <GladeWidgetClass name="GtkInputDialog" generic_name="inputdialog" title="Input Dialog"/>
+    
+    <GladeWidgetClass name="GtkMessageDialog" generic_name="messagedialog" title="Message Dialog">
+      <PostCreateFunction>glade_gtk_message_dialog_post_create</PostCreateFunction>
+
+      <Properties>
+
+	<Property Id="modal">
+	  <SetFunction>ignore</SetFunction>
+	</Property>
+	<Property Id="default-width"  Default="0" Optional="True" OptionalDefault="False"/>
+	<Property Id="default-height" Default="0" Optional="True" OptionalDefault="False"/>
+
+	<Property Common="True" Id="sensitive"/>
+	<Property Common="True" Id="can-default"/>
+	<Property Common="True" Id="has-default"/>
+	<Property Common="True" Id="can-focus"/>
+      </Properties>
+    </GladeWidgetClass>
+
+    <!-- Gtk+ Obsolete -->
+    <GladeWidgetClass name="GtkRuler">
+      <Properties>
+	<Property Default="10.0" Id="upper"/>
+	<Property Default="5.0" Id="position"/>
+	<Property Default="10.0" Id="max-size"/>
+      </Properties>
+    </GladeWidgetClass>
+
+    <GladeWidgetClass name="GtkHRuler" generic_name="hruler" title="Horizontal Ruler"/>
+    
+    <GladeWidgetClass name="GtkVRuler" generic_name="vruler" title="Vertical Ruler"/>
+  
+    <GladeWidgetClass name="GtkColorSelection" generic_name="colorselection" title="Color Selection"/>
+    
+    <GladeWidgetClass name="GtkFontSelection" generic_name="fontselection" title="Font Selection"/>
+    
+    <GladeWidgetClass name="GtkCurve" generic_name="curve" title="Curve"/>
+    
+    <GladeWidgetClass name="GtkGammaCurve" generic_name="gammacurve" title="Gamma Curve"/>
+
+    <GladeWidgetClass name="GtkFileSelection" generic_name="fileselection" title="File Selection"/>
   </GladeWidgets>
 
   <GladeWidgetGroup name="gtk-base" title="Gtk+ Base">
@@ -356,13 +472,40 @@
   </GladeWidgetGroup>
 
   <GladeWidgetGroup name="gtk-additional" title="Gtk+ Additional">
-    <GladeWidgetClass name="GtkWindow"/>
+    <GladeWidgetClass name="GtkHScale"/>
+    <GladeWidgetClass name="GtkVScale"/>
+    <GladeWidgetClass name="GtkCalendar"/>
+    <GladeWidgetClass name="GtkMenu"/>
+    <GladeWidgetClass name="GtkHScrollbar"/>
+    <GladeWidgetClass name="GtkVScrollbar"/>
+    <GladeWidgetClass name="GtkHButtonBox"/>
+    <GladeWidgetClass name="GtkVButtonBox"/>
+    <GladeWidgetClass name="GtkHSeparator"/>
+    <GladeWidgetClass name="GtkVSeparator"/>
+    <GladeWidgetClass name="GtkStatusbar"/>
+    <GladeWidgetClass name="GtkArrow"/>
+    <GladeWidgetClass name="GtkLayout"/>
+    <GladeWidgetClass name="GtkFixed"/>
+    <GladeWidgetClass name="GtkDrawingArea"/>
+    <GladeWidgetClass name="GtkViewport"/>
+    <GladeWidgetClass name="GtkScrolledWindow"/>
   </GladeWidgetGroup>
 
-  <GladeWidgetGroup name="gtk-dialogs" title="Gtk+ Dialogs">
+  <GladeWidgetGroup name="gtk-dialogs" title="Gtk+ Standard Dialogs">
+    <GladeWidgetClass name="GtkColorSelectionDialog"/>
+    <GladeWidgetClass name="GtkFileChooserDialog"/>
+    <GladeWidgetClass name="GtkFontSelectionDialog"/>
+    <GladeWidgetClass name="GtkInputDialog"/>
+    <GladeWidgetClass name="GtkMessageDialog"/>
   </GladeWidgetGroup>
 
   <GladeWidgetGroup name="gtk-obsolete" title="Gtk+ Obsolete">
+    <GladeWidgetClass name="GtkHRuler"/>
+    <GladeWidgetClass name="GtkVRuler"/>
+    <GladeWidgetClass name="GtkColorSelection"/>
+    <GladeWidgetClass name="GtkFontSelection"/>
+    <GladeWidgetClass name="GtkCurve"/>
+    <GladeWidgetClass name="GtkGammaCurve"/>
+    <GladeWidgetClass name="GtkFileSelection"/>
   </GladeWidgetGroup>
-  
 </GladeCatalog>

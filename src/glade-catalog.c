@@ -148,8 +148,8 @@ catalog_load_widgets (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
 			continue;
 	
-		widget_class = glade_widget_class_new_from_node (node, 
-								 catalog->library);
+		widget_class = glade_widget_class_new (node, 
+						       catalog->library);
 
 		catalog->widget_classes = g_list_prepend (catalog->widget_classes,
 							  widget_class);
@@ -264,7 +264,7 @@ glade_catalog_load_all (void)
 	{
 		gchar *catalog_filename;
 
-		if (!g_str_has_suffix (filename, ".catalog")) 
+		if (!g_str_has_suffix (filename, ".xml")) 
 			continue;
 
 		catalog_filename = g_build_filename (glade_catalogs_dir,

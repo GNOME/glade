@@ -1,5 +1,14 @@
 2005-01-05  Mikael Hallendal  <micke@imendio.com>
 
+	* src/glade-catalog.c: (catalog_load_widgets),
+	(glade_catalog_load_all):
+	* widgets/Makefile.am:
+	* widgets/gtk+.catalog: Removed
+	* widgets/gtk+.xml: Added
+	- Revert and continue to call catalog files .xml
+
+2005-01-05  Mikael Hallendal  <micke@imendio.com>
+
 	* src/glade-catalog.[ch]: 
 	- Removed need for the palette file, loads all .catalog files in
 	  catalog directory.
