@@ -54,17 +54,7 @@
 gchar *
 glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 {
-	gint i = 1;
-	gchar *name;
-
-	while (TRUE) {
-		name = g_strdup_printf ("%s%i", class->generic_name, i);
-		if (glade_project_get_widget_by_name (project, name) == NULL)
-			return name;
-		g_free (name);
-		i++;
-	}
-
+	return glade_project_new_widget_name (project, class->generic_name);
 }
 
 /**

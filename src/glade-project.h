@@ -40,6 +40,7 @@ struct _GladeProject
 
 	GList *undo_stack; /* A stack with the last executed commands */
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
+	GHashTable *unique_id_hash; /* hash table with the latest used widget name */
 };
 
 struct _GladeProjectClass
@@ -58,8 +59,8 @@ struct _GladeProjectClass
 
 guint glade_project_get_type (void);
 
-GladeProject * glade_project_get_active (void);
-GladeProject * glade_project_new (gboolean untitled);
+GladeProject *glade_project_get_active (void);
+GladeProject *glade_project_new (gboolean untitled);
 
 
 /* Project operations */
@@ -73,7 +74,8 @@ void glade_project_remove_widget (GladeWidget *widget);
 void glade_project_add_widget (GladeProject  *project,
 			       GladeWidget *glade_widget);
 
-GladeWidget * glade_project_get_widget_by_name (GladeProject *project, const gchar *name);
+GladeWidget *glade_project_get_widget_by_name (GladeProject *project, const char *name);
+char *glade_project_new_widget_name (GladeProject *project, const char *base_name);
 
 void glade_project_widget_name_changed (GladeProject *project,
 					GladeWidget *widget);
@@ -85,7 +87,7 @@ void glade_project_selection_remove  (GladeWidget *widget, gboolean emit_signal)
 void glade_project_selection_clear   (GladeProject *project, gboolean emit_signal);
 void glade_project_selection_changed (GladeProject *project);
 
-GList * glade_project_selection_get (GladeProject *project);
+GList *glade_project_selection_get (GladeProject *project);
 
 G_END_DECLS
 

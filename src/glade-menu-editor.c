@@ -1243,7 +1243,7 @@ on_clist_unselect_row (GtkWidget * clist,
    corresponding item field, since we don't want to propogate updates when
    we are setting the entry. */
 static void
-on_entry_changed (GtkWidget * entry,
+on_entry_changed (GtkWidget *entry,
 		  gpointer user_data)
 {
 	GladeMenuEditor *menued;
@@ -1253,34 +1253,27 @@ on_entry_changed (GtkWidget * entry,
 	gboolean changed = FALSE;
 	gint row;
 
-#if 0
+#if 1
 	g_print ("In on_entry_changed\n");
 #endif
 
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (entry));
 
 	/* If we are setting the widget values, just return. */
-#if 1
 	if (menued->updating_widgets)
 		return;
-#endif
 
 	clist = GTK_CLIST (menued->clist);
 	row = get_selected_row (menued);
-#if 0
-	g_print ("Selected row: %i\n", row);
-#endif
+
 	if (row == -1)
 		return;
-	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist),
-							  row);
-#if 0
-	g_print ("Item %p Label:%s Name:%s Handler:%s\n", item, item->label,
-		 item->name, item->handler);
-#endif
+	item = (GbMenuItemData *) gtk_clist_get_row_data (GTK_CLIST (menued->clist), row);
 
+	/* put the new text on the "text" variable */
 	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (entry));
 
+	/* put the old text on the "item_text" variable */
 	if (entry == menued->label_entry) {
 		item_text = item->label;
 	}
@@ -1290,17 +1283,16 @@ on_entry_changed (GtkWidget * entry,
 	else if (entry == menued->handler_entry) {
 		item_text = item->handler;
 	}
-	else if (entry == GTK_COMBO (menued->icon_widget)->entry)
-		{
-			/* If the user selects the 'None' item from the combo, we reset the
-			   text to "" and return. This callback will be called again. */
-			if (!strcmp (text, _("None"))) {
-				set_entry_text (GTK_ENTRY (entry), "");
-				return;
-			}
-
-			item_text = item->icon;
+	else if (entry == GTK_COMBO (menued->icon_widget)->entry) {
+		/* If the user selects the 'None' item from the combo, we reset the
+		   text to "" and return. This callback will be called again. */
+		if (!strcmp (text, _("None"))) {
+			set_entry_text (GTK_ENTRY (entry), "");
+			return;
 		}
+
+		item_text = item->icon;
+	}
 	else if (entry == menued->tooltip_entry) {
 		item_text = item->tooltip;
 	}
@@ -1313,56 +1305,54 @@ on_entry_changed (GtkWidget * entry,
 	else
 		return;
 
-	if (item_text == NULL) {
-		if (strlen (text) > 0)
-			changed = TRUE;
-	}
-	else {
-		if (strcmp (text, item_text))
-			changed = TRUE;
-	}
+	/* if the text has not changed, then just return */
+	if (item_text == NULL && *text != 0)
+		changed = TRUE;
+	else if (strcmp (text, item_text) != 0)
+		changed = TRUE;
 
-	if (changed) {
-		if (entry == menued->label_entry) {
-			if (item->generate_name) {
-				/*** glade_project_release_widget_name (menued->project, item->name); ***/
-				g_free (item->name);
-				item->name = generate_name (menued, text);
-				set_entry_text (GTK_ENTRY (menued->name_entry),
-						item->name ? item->name : "");
-				gtk_clist_set_text (clist, row, GLD_COL_NAME,
-						    item->name ? item->name : "");
-				if (item->generate_handler) {
-					g_free (item->handler);
-					
-					item->handler = generate_handler (menued, row, text,
-									  item->name);
-					set_entry_text (GTK_ENTRY (menued->handler_entry),
-							item->handler ? item->handler : "");
-					gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
-							    item->handler ? item->handler : "");
-				}
-			}
-		}
-		else if (entry == menued->name_entry) {
-			item->generate_name = FALSE;
+	if (!changed)
+		return;
+	
+	if (entry == menued->label_entry) {
+		if (item->generate_name) {
+			/*** glade_project_release_widget_name (menued->project, item->name); ***/
+			g_free (item->name);
+			item->name = generate_name (menued, text);
+			set_entry_text (GTK_ENTRY (menued->name_entry),
+					item->name ? item->name : "");
+			gtk_clist_set_text (clist, row, GLD_COL_NAME,
+					    item->name ? item->name : "");
 			if (item->generate_handler) {
 				g_free (item->handler);
-				item->handler = generate_handler (menued, row, item->label,
-								  text);
+					
+				item->handler = generate_handler (menued, row, text,
+								  item->name);
 				set_entry_text (GTK_ENTRY (menued->handler_entry),
 						item->handler ? item->handler : "");
 				gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
 						    item->handler ? item->handler : "");
 			}
 		}
-		else if (entry == menued->handler_entry) {
-			item->generate_handler = FALSE;
-		}
-
-		update_current_item (menued);
-		set_interface_state (menued);
 	}
+	else if (entry == menued->name_entry) {
+		item->generate_name = FALSE;
+		if (item->generate_handler) {
+			g_free (item->handler);
+			item->handler = generate_handler (menued, row, item->label,
+							  text);
+			set_entry_text (GTK_ENTRY (menued->handler_entry),
+					item->handler ? item->handler : "");
+			gtk_clist_set_text (clist, row, GLD_COL_HANDLER,
+					    item->handler ? item->handler : "");
+		}
+	}
+	else if (entry == menued->handler_entry) {
+		item->generate_handler = FALSE;
+	}
+
+	update_current_item (menued);
+	set_interface_state (menued);
 }
 
 
@@ -1418,8 +1408,7 @@ on_stock_item_entry_changed (GtkWidget * entry,
 			item->generate_name = TRUE;
 			item->generate_handler = TRUE;
 
-			/*** item->label = glade_project_new_widget_name (menued->project,
-								     "item"); ***/
+			item->label = glade_project_new_widget_name (menued->project, "item");
 			item->name = g_strdup (item->label);
 			item->handler = generate_handler (menued, row, item->label,
 							  item->name);
@@ -2243,11 +2232,10 @@ add_item (GladeMenuEditor *menued,
 	item->stock_item_index = 0;
 	if (separator) {
 		item->label = NULL;
-		item->name = NULL; /*** glade_project_new_widget_name (menued->project,
-							    _("separator")); ***/
+		item->name = glade_project_new_widget_name (menued->project, "separator");
 	}
 	else {
-		item->label = g_strdup ("item"); /*** glade_project_new_widget_name (menued->project, "item"); ***/
+		item->label = glade_project_new_widget_name (menued->project, "item");
 		item->name = g_strdup (item->label);
 	}
 	item->handler = generate_handler (menued, -1, item->label, item->name);
@@ -2586,7 +2574,7 @@ generate_name (GladeMenuEditor *menued,
 
 	/* For empty labels, i.e. separators, use 'separator'. */
 	if (label == NULL || label[0] == '\0') {
-		return strdup ("separator1"); /*** glade_project_new_widget_name (menued->project, _("separator")); ***/
+		return glade_project_new_widget_name (menued->project, "separator");
 	}
 
 	prefix = g_malloc (strlen (label) + 1);
@@ -2614,7 +2602,7 @@ generate_name (GladeMenuEditor *menued,
 		dest--;
 	}
 
-	name = strdup ("toto"); /*** glade_project_new_widget_name (menued->project, prefix); ***/
+	name = glade_project_new_widget_name (menued->project, prefix);
 	g_free (prefix);
 
 	return name;
@@ -2953,7 +2941,7 @@ glade_menu_editor_update_menu (GladeMenuEditor *menued)
 		   accelerator. */
 		if (item->name == NULL || item->name[0] == '\0') {
 			g_free (item->name);
-			item->name = NULL; /*** glade_project_new_widget_name (menued->project, "item"); ***/
+			item->name = glade_project_new_widget_name (menued->project, "item");
 		}
 
 		/*** gbwidget = gb_widget_lookup_class (gtk_type_name (GTK_OBJECT_TYPE (menuitem)));

@@ -330,7 +330,7 @@ glade_project_get_active (void)
 }
 
 /**
- * glade_widget_get_by_name:
+ * glade_project_get_widget_by_name:
  * @project: The project in which to look for
  * @name: The user visible name of the widget we are looking for
  * 
@@ -358,6 +358,41 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 	return NULL;
 }
 
+/**
+ * glade_project_new_widget_name:
+ * @project: The project in which we will insert this widget
+ * @base_name: base name of the widget to create
+ *
+ * Creates a new name for the widget that doesn't collides with
+ * any of the names on the project passed as argument.  This name
+ * will start with @base_name.
+ *
+ * Return Value: a string to the new name, NULL if there is not enough memory
+ **/
+char *
+glade_project_new_widget_name (GladeProject *project, const char *base_name)
+{
+	gint i = 1;
+	gchar *name;
+
+	while (TRUE) {
+		name = g_strdup_printf ("%s%i", base_name, i);
+		/* not enough memory? */
+		if (name == NULL)
+			break;
+
+		/* ok, there is no widget with this name, so return the name */
+		if (glade_project_get_widget_by_name (project, name) == NULL)
+			return name;
+
+		/* we already have a widget with this name, so free the name and
+		 * try again with another number */
+		g_free (name);
+		i++;
+	}
+
+	return NULL;
+}
 
 
 
