@@ -83,16 +83,22 @@ struct _GladeWidgetClass
 			       GtkWidget *new,
 			       GtkWidget *container);
 
-	/* Executed after widget creation: e.g. sets the size of a window to a 
-	 * sane default.
+	/* Executed after widget creation: it takes care of creating the
+	 * GladeWidgets associated with internal children. It's also the place
+	 * to set sane defaults, e.g. set the size of a window.
 	 */
 	void (*post_create_function) (GObject *gobject);
 
 	/* If the widget is a container, this method takes care of adding the
-	 * needed placeholders. If the widget has internal children, this method
-	 * must create the associated GladeWidgets.
+	 * needed placeholders.
 	 */
 	void (*fill_empty) (GtkWidget *widget);
+
+	/* Retrieves the the internal child of the given name.
+	 */
+	void (*get_internal_child) (GtkWidget *parent,
+				    const gchar *name,
+				    GtkWidget **child);
 };
 
 

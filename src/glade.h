@@ -93,6 +93,7 @@
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION "ReplaceChildFunction"
 #define GLADE_TAG_POST_CREATE_FUNCTION "PostCreateFunction"
 #define GLADE_TAG_FILL_EMPTY_FUNCTION "FillEmptyFunction"
+#define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION "GetInternalChildFunction"
 #define GLADE_TAG_IN_PALETTE   "InPalette"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"

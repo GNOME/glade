@@ -347,6 +347,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	char *replace_child_function_name;
 	char *post_create_function_name;
 	char *fill_empty_function_name;
+	char *get_internal_child_function_name;
 
 	g_return_val_if_fail (filename != NULL, FALSE);
 
@@ -379,6 +380,13 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 			g_warning ("Could not find %s\n", fill_empty_function_name);
 	}
 	g_free (fill_empty_function_name);
+
+	get_internal_child_function_name = glade_xml_get_value_string (node, GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION);
+	if (get_internal_child_function_name && widget_class->module) {
+		if (!g_module_symbol (widget_class->module, get_internal_child_function_name, (void **) &widget_class->get_internal_child))
+			g_warning ("Could not find %s\n", get_internal_child_function_name);
+	}
+	g_free (get_internal_child_function_name);
 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.

@@ -604,13 +604,6 @@ glade_widget_create_gtk_widget (GladeWidgetClass *class)
 	 * Cuenca
 	 */
 
-	/* We need to call the post_create_function after the embed of the widget in
-	 * its parent.  Otherwise, calls to gtk_widget_grab_focus et al. will fail
-	 */
-	if (class->post_create_function) {
-		class->post_create_function (G_OBJECT (widget));
-	}
-
 	return widget;
 }
 
@@ -686,6 +679,11 @@ glade_widget_new_full (GladeWidgetClass *class,
 		return NULL;
 
 	glade_widget_associate_with_gtk_widget (widget, gtk_widget);
+
+	/* associate internal children and set sane defaults */
+	if (class->post_create_function) {
+		class->post_create_function (G_OBJECT (gtk_widget));
+	}
 
 	return widget;
 }
@@ -1349,37 +1347,25 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 				  GladeProject *project,
 				  GladeWidget *parent);
 
-static GladeWidget *
-glade_widget_new_from_node_real (GladeXmlNode *node,
-				 GladeProject *project,
-				 GladeWidget *parent)
+static void
+glade_widget_fill_from_node (GladeXmlNode *node, GladeWidget *widget)
 {
-	GladeWidgetClass *class;
 	GladeXmlNode *child;
-	GladeWidget *widget;
-	GladeSignal *signal;
 	const gchar *class_name;
 	const gchar *widget_name;
 
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
-		return NULL;
+		return;
 
 	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
 	widget_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
 	if (!class_name || !widget_name)
-		return NULL;
+		return;
 
-	class = glade_widget_class_get_by_name (class_name);
-	if (!class)
-		return NULL;
-
-	widget = glade_widget_new_full (class, project);
-	if (!widget)
-		return NULL;
-
+	g_assert (strcmp (class_name, widget->class->name) == 0);
 	glade_widget_set_name (widget, widget_name);
-	if (parent)
-		glade_widget_set_packing_properties (widget, parent->class);
 
 	/* Children */
 	child =	glade_xml_node_get_children (node);
@@ -1387,7 +1373,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
 			continue;
 
-		if (!glade_widget_new_child_from_node (child, project, widget)) {
+		if (!glade_widget_new_child_from_node (child, widget->project, widget)) {
 			g_warning ("Failed to read child");
 			continue;
 		}
@@ -1396,6 +1382,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	/* Signals */
 	child =	glade_xml_node_get_children (node);
 	for (; child; child = glade_xml_node_next (child)) {
+		GladeSignal *signal;
+
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_SIGNAL))
 			continue;
 
@@ -1418,10 +1406,67 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 		}
 	}
+}
+
+GladeWidget *
+glade_widget_new_from_node_real (GladeXmlNode *node,
+				 GladeProject *project,
+				 GladeWidget *parent)
+{
+	GladeWidgetClass *class;
+	GladeWidget *widget;
+	const gchar *class_name;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+		return NULL;
+
+	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
+	if (!class_name)
+		return NULL;
+
+	class = glade_widget_class_get_by_name (class_name);
+	if (!class)
+		return NULL;
+
+	widget = glade_widget_new_full (class, project);
+	if (!widget)
+		return NULL;
+
+	if (parent)
+		glade_widget_set_packing_properties (widget, parent->class);
+
+	glade_widget_fill_from_node (node, widget);
 
 	gtk_widget_show_all (widget->widget);
 
 	return widget;
+}
+
+/**
+ * When looking for an internal child we have to walk up the hierarchy...
+ */
+static GladeWidget *
+glade_widget_get_internal_child (GladeWidget *parent,
+				 const gchar *internal)
+{
+	GladeWidget *ancestor;
+	GladeWidget *child = NULL;
+
+	ancestor = parent;
+	while (ancestor) {
+		if (ancestor->class->get_internal_child) {
+			GtkWidget *widget;
+			ancestor->class->get_internal_child (ancestor->widget, internal, &widget);
+			if (widget) {
+				child = glade_widget_get_from_gtk_widget (widget);
+				if (child)
+					break;
+			}
+		}
+		ancestor = glade_widget_get_parent (ancestor);
+	}
+
+	return child;
 }
 
 static gboolean
@@ -1437,14 +1482,6 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return FALSE;
 
-	/* we don't support internal children yet... */
-	internalchild = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
-	if (internalchild) {
-		g_warning ("Internal Child not supported yet");
-		g_free (internalchild);
-		return FALSE;
-	}
-
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
 	if (child_node) {
@@ -1452,21 +1489,32 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 		return TRUE;
 	}
 
-	/* Get and create the widget */
+	/* then it must be a widget */
 	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
 	if (!child_node)
 		return FALSE;
 
-	child = glade_widget_new_from_node_real (child_node, project, parent);
-	if (!child)
-		/*
-		 * not enough memory... and now, how can I signal it
-		 * and not make the caller believe that it was a parsing
-		 * problem?
-		 */
-		return FALSE;
+	/* is it an internal child? */
+	internalchild = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
+	if (internalchild) {
+		child = glade_widget_get_internal_child (parent, internalchild);
+		if (!child) {
+			g_warning ("Failed to get internal child %s", internalchild);
+			g_free (internalchild);
+			return FALSE;
+		}
+		glade_widget_fill_from_node (child_node, child);
+	} else {
+		child = glade_widget_new_from_node_real (child_node, project, parent);
+		if (!child)
+			/* not enough memory... and now, how can I signal it
+			 * and not make the caller believe that it was a parsing
+			 * problem?
+			 */
+			return FALSE;
 
-	gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
+		gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
+	}
 
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
@@ -1486,7 +1534,6 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 			/* the tag should have the form <property name="...id...">...value...</property>*/
 			id = glade_xml_get_property_string_required (child_properties, GLADE_XML_TAG_NAME, NULL);
 			value = glade_xml_get_content (child_properties);
-
 			if (!value || !id) {
 				g_warning ("Invalid property %s:%s\n", value, id);
 				g_free (value);
@@ -1496,8 +1543,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 			glade_util_replace (id, '_', '-');
 			property = glade_property_get_from_id (child->packing_properties, id);
-
-			if (property == NULL) {
+			if (!property) {
 				g_warning ("Could not apply property from node. Id :%s\n",
 					   id);
 				continue;

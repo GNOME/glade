@@ -524,7 +524,7 @@ ignore (GObject *object, GValue *value)
 
 /* ------------------------------------ Post Create functions ------------------------------ */
 void
-glade_gtk_window_post_create (GObject *object, GValue *not_used)
+glade_gtk_window_post_create (GObject *object)
 {
 	GtkWindow *window = GTK_WINDOW (object);
 
@@ -534,17 +534,45 @@ glade_gtk_window_post_create (GObject *object, GValue *not_used)
 }
 
 void
-glade_gtk_dialog_post_create (GObject *object, GValue *not_used)
+glade_gtk_dialog_post_create (GObject *object)
 {
 	GtkDialog *dialog = GTK_DIALOG (object);
+	GladeWidget *widget;
+	GladeWidget *vbox_widget;
+	GladeWidget *actionarea_widget;
+	GladeWidgetClass *child_class;
 
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (dialog));
+	if (!widget)
+		return;
+
+	/* create the GladeWidgets for internal childrens */
+	child_class = glade_widget_class_get_by_name ("GtkVBox");
+	if (!child_class)
+		return;
+
+	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
+							   dialog->vbox, "vbox");
+	if (!vbox_widget)
+		return;
+
+	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
+	if (!child_class)
+		return;
+
+	actionarea_widget = glade_widget_new_for_internal_child (child_class, vbox_widget,
+								 dialog->action_area, "action_area");
+	if (!actionarea_widget)
+		return;
+
+	/* set a reasonable default size for a dialog */
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
 void
-glade_gtk_message_dialog_post_create (GObject *object, GValue *not_used)
+glade_gtk_message_dialog_post_create (GObject *object)
 {
 	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
 
@@ -554,7 +582,7 @@ glade_gtk_message_dialog_post_create (GObject *object, GValue *not_used)
 }
 
 void
-glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
+glade_gtk_check_button_post_create (GObject *object)
 {
 	GtkCheckButton *button = GTK_CHECK_BUTTON (object);
 	GtkWidget *label;
@@ -569,7 +597,7 @@ glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
 }
 
 void
-glade_gtk_table_post_create (GObject *object, GValue *value)
+glade_gtk_table_post_create (GObject *object)
 {
 	GtkTable *table = GTK_TABLE (object);
 	GList *list;
@@ -698,42 +726,11 @@ glade_gtk_container_fill_empty (GObject *container)
 void
 glade_gtk_dialog_fill_empty (GObject *dialog)
 {
-	GtkWidget *vbox;
-	GtkWidget *action_area;
-	GladeWidget *widget;
-	GladeWidget *vbox_widget;
-	GladeWidget *actionarea_widget;
-	GladeWidgetClass *child_class;
-
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
-	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (dialog));
-	if (!widget)
-		return;
-
-	/* create the GladeWidgets for internal childrens */
-	vbox = GTK_DIALOG (dialog)->vbox;
-	child_class = glade_widget_class_get_by_name ("GtkVBox");
-	if (!child_class)
-		return;
-
-	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
-							   vbox, "vbox");
-	if (!vbox_widget)
-		return;
-
-	action_area = GTK_DIALOG (dialog)->action_area;
-	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
-	if (!child_class)
-		return;
-
-	actionarea_widget = glade_widget_new_for_internal_child (child_class, vbox_widget,
-								 action_area, "action_area");
-	if (!actionarea_widget)
-		return;
-
 	/* add a placeholder in the vbox */
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), glade_placeholder_new ());
+	gtk_box_pack_start_defaults (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+				     glade_placeholder_new ());
 }
 
 void
@@ -745,4 +742,23 @@ glade_gtk_paned_fill_empty (GObject *paned)
 	gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
 }
 
+/* -------------------------------- Get Internal Child functions --------------------------- */
+void
+glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
+				     const gchar *name,
+				     GtkWidget **child)
+{
+	GtkWidget *child_widget;
+
+	g_return_if_fail (GTK_IS_DIALOG (dialog));
+
+	if (strcmp ("vbox", name) == 0)
+		child_widget = GTK_DIALOG (dialog)->vbox;
+	else if (strcmp ("action_area", name) == 0)
+		child_widget = GTK_DIALOG (dialog)->action_area;
+	else
+		child_widget = NULL;
+
+	*child = child_widget;
+}
 

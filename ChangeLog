@@ -1,3 +1,14 @@
+2003-10-27  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-gtk.c: move internal children creation to the post_create
+	method, since it's executed also when loading a .glade file. Implement
+	the get_internal_child method for GtkDialog.
+	* src/glade-widget-class.[ch]: add the get_internal_child method.
+	* src/glade-widget.c: factor out fill_from_node from new_from_node and
+	use it for internal children. Add glade_widget_get_internal_child.
+	* src/glade.h: define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION.
+	* widgets/gtkdialog.xml: add the get_internal_child function.
+
 2003-10-23  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.[ch]: add glade_widget_new_for_internal_child and
