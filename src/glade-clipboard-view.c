@@ -143,7 +143,7 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	if (is_icon)
 		g_object_set (G_OBJECT (cell),
-			      "pixbuf", gtk_image_get_pixbuf (GTK_IMAGE (widget->widget_class->icon)),
+			      "pixbuf", widget->widget_class->icon,
 			      NULL);
 	else
 		g_object_set (G_OBJECT (cell),

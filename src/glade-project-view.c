@@ -522,7 +522,7 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  GtkTreeIter *iter,
 				  gpointer data)
 {
-	gboolean is_icon = GPOINTER_TO_INT (data);
+	gboolean     is_icon = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
 
 	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
@@ -533,19 +533,14 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	g_return_if_fail (widget->name != NULL);
 	g_return_if_fail (widget->widget_class != NULL);
-	g_return_if_fail (GPOINTER_TO_INT (widget->widget_class) > 5000);
 	g_return_if_fail (widget->widget_class->name != NULL);
 	g_return_if_fail (widget->widget_class->icon != NULL);
 
 	if (is_icon)
 	{
-		if (gtk_image_get_storage_type
-		    (GTK_IMAGE (widget->widget_class->icon)) != GTK_IMAGE_PIXBUF)
-			return;
-
-		g_object_set (G_OBJECT (cell), "pixbuf",
-			      gtk_image_get_pixbuf
-			      (GTK_IMAGE (widget->widget_class->icon)), NULL);
+		g_object_set (G_OBJECT (cell), 
+			      "pixbuf", widget->widget_class->icon, 
+			      NULL);
 	}
 	else
 	{

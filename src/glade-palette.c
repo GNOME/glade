@@ -183,9 +183,11 @@ glade_palette_create_widget_class_button (GladePalette *palette,
 	GtkWidget *label;
 	GtkWidget *radio;
 	GtkWidget *hbox;
+	GtkWidget *image;
 
 	label = gtk_label_new (widget_class->palette_name);
 	radio = gtk_radio_button_new (palette->widgets_button_group);
+	image = gtk_image_new_from_pixbuf (widget_class->icon);
 
 	g_object_set_data (G_OBJECT (radio), GLADE_PALETTE_BUTTON_CLASS_DATA,
 			   widget_class);
@@ -194,9 +196,8 @@ glade_palette_create_widget_class_button (GladePalette *palette,
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 
 	hbox = gtk_hbox_new (FALSE, 2);
-	gtk_box_pack_start (GTK_BOX (hbox), widget_class->icon,
-			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 1);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE,  TRUE,  1);
 
 	gtk_button_set_relief (GTK_BUTTON (radio), GTK_RELIEF_NONE);
 	gtk_container_add (GTK_CONTAINER (radio), hbox);
@@ -220,7 +221,8 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	/* Go through all the widget classes in this catalog. */
 	for (; list; list = list->next)
 	{
-		GladeWidgetClass *gwidget_class = GLADE_WIDGET_CLASS (list->data);
+		GladeWidgetClass *gwidget_class = 
+			GLADE_WIDGET_CLASS (list->data);
 
 		/*
 		 * If the widget class wants to be in the palette (I don't
@@ -228,7 +230,9 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 		 */
 		if (gwidget_class->in_palette)
 		{
-			GtkWidget *button = glade_palette_create_widget_class_button (palette, gwidget_class);
+			GtkWidget *button = 
+				glade_palette_create_widget_class_button
+				(palette, gwidget_class);
 			gtk_box_pack_start (GTK_BOX (vbox), button,
 					    FALSE, FALSE, 0);
 		}

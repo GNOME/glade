@@ -333,7 +333,8 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			/* reset the palette */
 			glade_palette_unselect_widget (gpw->palette);
 		}
-		else
+		else if (glade_util_has_selection (widget) == FALSE ||
+			 g_list_length (glade_util_get_selection ()) != 1)
 		{
 			glade_project_selection_clear 
 				(glade_project_window_get_active_project 

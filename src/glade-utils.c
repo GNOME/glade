@@ -857,6 +857,17 @@ glade_util_has_selection (GtkWidget *widget)
 	return g_list_find (glade_util_selection, widget) != NULL;
 }
 
+/**
+ * glade_util_get_selectoin:
+ *
+ * Returns: The list of selected #GtkWidgets
+ */
+GList *
+glade_util_get_selection ()
+{
+	return glade_util_selection;
+}
+
 /*
  * taken from gtk... maybe someday we can convince them to
  * expose gtk_container_get_all_children

@@ -1,3 +1,17 @@
+2005-01-02  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-clipboard-view.c, src/glade-palette.c, 
+	  src/glade-project-view.c, src/glade-widget-class.[ch], src/main.c:
+	    - Changed GladeWidgetClass (class)->icon from GtkImage --> GdkPixbuf
+	    - Now unavailable images showup properly on the project-view and the
+	      clipboard.
+	    - Needed to implement a little hack to provoke gtk+ to work properly
+	      (See main.c  `gtk_icon_factory_lookup_default ("");')
+
+	* src/glade-placeholder.c, src/glade-utils.c:
+	  Fixed flicker on button-click (No need to clear the project and the 
+	  selection and then reselect if you are already selected).
+	
 2005-01-01  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-command.c: g_list_prepend in loops and 

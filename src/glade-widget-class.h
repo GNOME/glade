@@ -44,7 +44,7 @@ struct _GladeWidgetClass
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
 
-	GtkWidget *icon;     /* The GtkImage icon for the widget */
+	GdkPixbuf *icon;     /* The GdkPixbuf icon for the widget */
 
 	gchar *generic_name; /* Use to generate names of new widgets, for
 			      * example "button" so that we generate button1,

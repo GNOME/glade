@@ -45,6 +45,7 @@ void		glade_util_add_selection    (GtkWidget *widget);
 void		glade_util_remove_selection (GtkWidget *widget);
 gboolean	glade_util_has_selection    (GtkWidget *widget);
 void		glade_util_clear_selection  (void);
+GList          *glade_util_get_selection    (void);
 void		glade_util_queue_draw_nodes (GdkWindow *window);
 
 GladeWidget    *glade_util_get_parent (GtkWidget *w);
