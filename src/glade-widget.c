@@ -198,7 +198,7 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeWidgetKlass, change_signal_handler),
 			      NULL, NULL,
-			      glade_cclosure_marshal_VOID__POINTER_POINTER,
+			      glade_marshal_VOID__POINTER_POINTER,
 			      G_TYPE_NONE,
 			      2,
 			      G_TYPE_POINTER, G_TYPE_POINTER);

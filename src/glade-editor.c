@@ -40,6 +40,7 @@
 #include "glade-property-class.h"
 #include "glade-command.h"
 #include "glade-debug.h"
+#include "glade-marshallers.h"
 #include "glade-menu-editor.h"
 #include "glade-project.h"
 #include "glade-utils.h"
@@ -66,48 +67,6 @@ static gboolean glade_editor_table_append_items (GladeEditorTable *table,
 
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
-
-/* marshallers */
-
-static void
-glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING (GClosure     *closure,
-						     GValue       *return_value,
-						     guint         n_param_values,
-						     const GValue *param_values,
-						     gpointer      invocation_hint,
-						     gpointer      marshal_data)
-{
-	typedef void (*GMarshalFunc_VOID__STRING_ULONG_UINT_STRING) (gpointer     data1,
-								     gpointer     arg_1,
-								     gulong       arg_2,
-								     guint        arg_3,
-								     gpointer     arg_4,
-								     gpointer     data2);
-	GMarshalFunc_VOID__STRING_ULONG_UINT_STRING callback;
-	GCClosure *cc = (GCClosure*) closure;
-	gpointer data1, data2;
-
-	g_return_if_fail (n_param_values == 5);
-
-	if (G_CCLOSURE_SWAP_DATA (closure))
-	{
-		data1 = closure->data;
-		data2 = g_value_peek_pointer (param_values + 0);
-	}
-	else
-	{
-		data1 = g_value_peek_pointer (param_values + 0);
-		data2 = closure->data;
-	}
-	callback = (GMarshalFunc_VOID__STRING_ULONG_UINT_STRING) (marshal_data ? marshal_data : cc->callback);
-
-	callback (data1,
-		  (char*) g_value_get_string (param_values + 1),
-		  g_value_get_ulong (param_values + 2),
-		  g_value_get_uint (param_values + 3),
-		  (char*) g_value_get_string (param_values + 4),
-		  data2);
-}
 
 /**
  * glade_editor_get_type:
@@ -155,7 +114,7 @@ glade_editor_class_init (GladeEditorClass *class)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeEditorClass, add_signal),
 			      NULL, NULL,
-			      glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING,
+			      glade_marshal_VOID__STRING_ULONG_UINT_STRING,
 			      G_TYPE_NONE,
 			      4,
 			      G_TYPE_STRING, G_TYPE_ULONG, G_TYPE_UINT, G_TYPE_STRING);
