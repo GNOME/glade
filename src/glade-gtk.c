@@ -867,6 +867,8 @@ glade_gtk_notebook_post_create (GObject *object)
 
 	g_value_init (&value, G_TYPE_INT);
 	g_value_set_int (&value, ask_for_number(_("Create a notebook"), _("Number of pages:"), 0, 100, 3));
+
+	// FIXME: Shouldn't we actually set this?
 }
 
 /**

@@ -275,24 +275,27 @@ glade_widget_dispose (GObject *object)
 
 	g_return_if_fail (GLADE_IS_WIDGET (object));
 
-	if (widget->project)
+	if (widget->project) {
 		g_object_unref (widget->project);
+		widget->project = NULL;
+	}
 
-	if (widget->widget)
+	if (widget->widget) {
 		g_object_unref (widget->widget);
+		widget->widget = NULL;
+	}
 
-	if (widget->properties)
-		g_list_foreach (widget->properties, (GFunc) g_object_unref, NULL);
-	g_list_free (widget->properties);
+	if (widget->properties) {
+		g_list_foreach (widget->properties, (GFunc) glade_property_free, NULL);
+		g_list_free (widget->properties);
+		widget->properties = NULL;
+	}
 
-	if (widget->packing_properties)
-		g_list_foreach (widget->packing_properties, (GFunc) g_object_unref, NULL);
-	g_list_free (widget->packing_properties);
-
-	widget->project = NULL;
-	widget->widget = NULL;
-	widget->properties = NULL;
-	widget->packing_properties = NULL;
+	if (widget->packing_properties) {
+		g_list_foreach (widget->packing_properties, (GFunc) glade_property_free, NULL);
+		g_list_free (widget->packing_properties);
+		widget->packing_properties = NULL;
+	}
 }
 
 /**
