@@ -559,7 +559,7 @@ glade_project_open_from_file (const gchar *path)
  * glade_project_save:
  * @project: 
  * 
- * Save the project, query the user for a proeject name if necessary
+ * Save the project, query the user for a project name if necessary
  * 
  * Return Value: TRUE if the project was saved, FALSE if the user cancelled
  *               the operation or an error was encountered while saving
@@ -579,7 +579,40 @@ glade_project_save (GladeProject *project)
 
 	return TRUE;
 }
-	
+
+
+/**
+ * glade_project_save_as:
+ * @project: 
+ * 
+ * Query the user for a new file name and save it.
+ * 
+ * Return Value: TRUE if the project was saved. FALSE on error.
+ **/
+gboolean
+glade_project_save_as (GladeProject *project)
+{
+	gchar *backup;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	/* Keep the previous path */
+	backup = project->path;
+	project->path = glade_project_ui_get_path (_("Save ..."));
+
+	/* On error, warn and restore its previous name and return */
+	if (!glade_project_save_to_file (project, project->path)) {
+		glade_project_ui_warn (_("Invalid file name"));
+		g_free (project->path);
+		project->path = backup;
+		return FALSE;
+	}
+
+	/* Free the backup and return; */
+	g_free (backup);
+
+	return TRUE;
+}	
 
 /**
  * glade_project_open:

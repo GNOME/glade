@@ -121,7 +121,7 @@ gpw_save_cb (void)
 static void
 gpw_save_as_cb (void)
 {
-	glade_implement_me ();
+	glade_project_save_as (glade_project_window_get_project ());
 }
 
 static void
