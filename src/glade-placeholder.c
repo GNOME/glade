@@ -27,6 +27,7 @@
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-popup.h"
+#include "glade-cursor.h"
 #include "glade-utils.h"
 
 
@@ -39,8 +40,10 @@ static void glade_placeholder_size_allocate  (GtkWidget               *widget,
 static void glade_placeholder_send_configure (GladePlaceholder        *placeholder);
 static gboolean glade_placeholder_expose     (GtkWidget               *widget,
 					      GdkEventExpose          *event);
+static gboolean glade_placeholder_motion_notify_event (GtkWidget      *widget,
+						       GdkEventMotion *event);
 static gboolean glade_placeholder_button_press (GtkWidget             *widget,
-					      GdkEventButton          *event);
+						GdkEventButton        *event);
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -101,6 +104,7 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	widget_class->realize = glade_placeholder_realize;
 	widget_class->size_allocate = glade_placeholder_size_allocate;
 	widget_class->expose_event = glade_placeholder_expose;
+	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
 }
 
@@ -115,7 +119,7 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 GtkWidget*
 glade_placeholder_new (void)
 {
-  return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
+	return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
 }
 
 static void
@@ -153,7 +157,10 @@ glade_placeholder_realize (GtkWidget *widget)
 	attributes.wclass = GDK_INPUT_OUTPUT;
 	attributes.visual = gtk_widget_get_visual (widget);
 	attributes.colormap = gtk_widget_get_colormap (widget);
-	attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK;
+	attributes.event_mask = gtk_widget_get_events (widget) |
+				GDK_EXPOSURE_MASK              |
+				GDK_BUTTON_PRESS_MASK          |
+				GDK_POINTER_MOTION_MASK;
 
 	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
@@ -235,14 +242,32 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	return FALSE;
 }
 
+static gboolean                                                                 
+glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
+{
+	GladeProjectWindow *gpw;                                                
+
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
+
+	gpw = glade_project_window_get ();
+
+        if (gpw->add_class == NULL)                                             
+                glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+	else
+                glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
+
+	return FALSE;
+}
+
 static gboolean
 glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
+	GladeProjectWindow *gpw;
 	GladePlaceholder *placeholder;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
+	gpw = glade_project_window_get ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
