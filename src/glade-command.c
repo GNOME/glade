@@ -38,34 +38,6 @@
 #include "glade.h"
 
 
-#define GLADE_TYPE_COMMAND            (glade_command_get_type ())
-#define GLADE_COMMAND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_COMMAND, GladeCommand))
-#define GLADE_COMMAND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_COMMAND, GladeCommandClass))
-#define GLADE_IS_COMMAND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_COMMAND))
-#define GLADE_IS_COMMAND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMMAND))
-#define GLADE_COMMAND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMMAND, GladeCommandClass))
-
-typedef struct {
-	GObject parent;
-	
-	gchar *description;
-} GladeCommand;
-
-typedef gboolean (* UndoCmd)(GladeCommand *this);
-typedef gboolean (* Cmd)(GladeCommand *this);
-typedef gboolean (* Unifies)(GladeCommand *this, GladeCommand *other);
-typedef void (* Collapse)(GladeCommand *this, GladeCommand *other);
-
-typedef struct {
-	GObjectClass parent_class;
-	
-	UndoCmd undo_cmd;
-	Cmd execute_cmd;
-
-	Unifies unifies;
-	Collapse collapse;
-} GladeCommandClass;
-
 static GObjectClass* parent_class = NULL;
 
 #define MAKE_TYPE(func, type, parent)			\
@@ -135,7 +107,9 @@ glade_command_class_init (GladeCommandClass *klass)
 	klass->collapse = glade_command_collapse;
 }
 
-static MAKE_TYPE (glade_command, GladeCommand, G_TYPE_OBJECT)
+/* compose the _get_type function for GladeCommand */
+MAKE_TYPE (glade_command, GladeCommand, G_TYPE_OBJECT)
+
 
 #define GLADE_MAKE_COMMAND(type, func)					\
 static gboolean								\
@@ -153,11 +127,11 @@ func ## _class_init (gpointer parent_tmp, gpointer notused)		\
 {									\
 	GladeCommandClass *parent = parent_tmp;				\
 	GObjectClass* object_class;					\
-	object_class = (GObjectClass*) parent;				\
-	parent->undo_cmd = (UndoCmd)& func ## _undo;			\
-	parent->execute_cmd = (Cmd)& func ## _execute;			\
-	parent->unifies = (Unifies)& func ## _unifies;			\
-	parent->collapse = (Collapse)& func ## _collapse;		\
+	object_class = G_OBJECT_CLASS (parent);				\
+	parent->undo_cmd =  func ## _undo;				\
+	parent->execute_cmd =  func ## _execute;			\
+	parent->unifies =  func ## _unifies;				\
+	parent->collapse =  func ## _collapse;				\
 	object_class->finalize = func ## _finalize;			\
 }									\
 typedef struct {							\
@@ -223,15 +197,6 @@ glade_command_redo (GladeProject *project)
 	class->execute_cmd (cmd);
 
 	project->prev_redo_item = prev_redo_item ? prev_redo_item->next : project->undo_stack;
-}
-
-const gchar*
-glade_command_get_description (GList *l)
-{
-	if (l && l->data)
-		return GLADE_COMMAND (l->data)->description;
-	else
-		return NULL;
 }
 
 static void

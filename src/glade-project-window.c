@@ -1293,17 +1293,21 @@ glade_project_window_refresh_undo_redo (void)
 	gpw = glade_project_window_get ();
 
 	project = gpw->project;
-	if (project == NULL) {
+	if (!project)
+	{
 		undo_item = NULL;
 		redo_item = NULL;
 	}
-	else {
+	else
+	{
 		undo_item = prev_redo_item = project->prev_redo_item;
 		redo_item = (prev_redo_item == NULL) ? project->undo_stack : prev_redo_item->next;
-	}
 
-	undo_description = glade_command_get_description (undo_item);
-	redo_description = glade_command_get_description (redo_item);
+		if (undo_item && undo_item->data)
+			undo_description = GLADE_COMMAND (undo_item->data)->description;
+		if (redo_item && redo_item->data)
+			redo_description = GLADE_COMMAND (redo_item->data)->description;
+	}
 
 	glade_project_window_change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
 	glade_project_window_change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
