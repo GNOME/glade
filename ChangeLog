@@ -1,3 +1,8 @@
+2003-08-18  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* widgets/gtktable.xml (<WindowTitle>): s/New vertical box/table.
+	* widgets/gtkbox.xml (<Tooltips>): s/columns/items.
+
 2003-08-17  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-project-view.c (glade_project_view_populate_model_real):
@@ -20,7 +25,6 @@
 	merge.
 	* src/glade-project.c (glade_project_remove_widget_real):the 
 	remove_widget signal should pass a GladeWidget as data, not a GtkWidget.
-
 2003-08-08  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-project.c (glade_project_open): set project->changed=FALSE.

@@ -37,7 +37,7 @@ struct _GladePalette
 #endif	
 	GtkWidget *groups_vbox; /* The vbox that contains the titles of the sections */
 	GtkWidget *label; /* The label contains the text of the selected
-			   * widget that is goingt to be added. For examle
+			   * widget that is going to be added. For examle
 			   * when a button is selcted it contains GtkButton
 			   * it contains the text "Selector" when we are
 			   * in select widget mode
