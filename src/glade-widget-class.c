@@ -91,6 +91,7 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 	g_return_if_fail (class->name != NULL);
 
 	/* I don't love this. Make it better. Chema */
+#warning FIXME	
 	if ((strcmp (class->name, "GtkVBox") == 0) ||
 	    (strcmp (class->name, "GtkHBox") == 0))
 		class->placeholder_replace = glade_placeholder_replace_box;

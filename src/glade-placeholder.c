@@ -39,8 +39,8 @@ glade_placeholder_replace_box (GladePlaceholder *placeholder,
 			       GladeWidget *widget,
 			       GladeWidget *parent)
 {
-	/* Some Gtk Hackery. */
-	GtkBoxChild *child_info;
+	/* Some Gtk Hackery. Not beautifull but needed. */
+	GtkBoxChild *child_info = NULL;
 	GtkWidget *child;
 	GtkBox *box;
 	GList *list;
@@ -78,8 +78,8 @@ glade_placeholder_replace_table (GladePlaceholder *placeholder,
 				 GladeWidget *widget,
 				 GladeWidget *parent)
 {
-	/* Some Gtk Hackery */
-	GtkTableChild *table_child;
+	/* Some Gtk Hackery. Not beautifull, but needed */
+	GtkTableChild *table_child = NULL;
 	GtkWidget *child;
 	GtkTable *table;
 	GList *list;

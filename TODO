@@ -1,0 +1,51 @@
+This is the current state of the TODO items for glade2. Please keep
+in mind that for the first milestone we just want to clone the orignal
+glade minus :
+- gtk advanced widgets
+- gnome/gnome-db widets
+- bonobo controls
+plus :
+- Undo/redo
+- Multiple project support
+
+TODO
+====
+
+TAKEN ITEMS (someone is already working on)
+-----------
+- File loading and saving
+- Cleaning and adding new .xml descriptions for widgets
+- Signal editor
+- Common part of the editor
+
+OPEN ITEMS [PLease let me know before starting working on any of this]
+----------
+- Implement glade_widget_delete inside glade-widget.c, delete can already
+be called from the popup menu.
+- Implement the popup menu option "Select", it needs to create submenus for
+every parent widget and a "Select" option inside it. Inside glade-popup.c
+- Implement file opened history feature.
+- Implement gtk stock buttons.
+- gtklabels can't be selected. This looks like a fun thing and maybe tricky
+to fix. I am guessing that gtklabeles don't like the idea of disabling
+double buffering because of pango, but this is just a guess.
+- Implement show clipboard (blocks on copy/cut)
+- Fix "click thru". When we click on a widget we grab the mouse clicked event.
+This does not allow checkbuttons to be set/unset or buttons to be pressed.
+- Implement the menu bar widget and the menu editor. 
+- Implement the glade-property type "File". For example to be used with a pixmap
+that specifies a file.
+- Fix multiple lines GladeEditor text entries. See glade-editor.c,
+function : glade_editor_create_input_text.
+- Implement tooltips for the "Widget" page of the widget editor.
+
+NOT-SO-EASY TO IMPLEMENT ITEMS
+------------------------------
+This items may prove tricky to implement if they are "done right"
+- The packing tab of the editor
+- Undo/Redo
+- Copy/Cut/Paste
+
+NOT YET (Items that we need to do, but are not a priority right now)
+------- 
+- Implement the custom widget

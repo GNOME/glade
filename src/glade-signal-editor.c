@@ -88,7 +88,7 @@ glade_signal_editor_dialog_cb (GtkButton *button, GladeSignalEditor *editor)
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), GTK_WIDGET (scroll));
 
 
-	lst_model = GTK_TREE_MODEL (gtk_tree_store_new_with_types (1, G_TYPE_STRING));
+	lst_model = GTK_TREE_MODEL (gtk_tree_store_new (1, G_TYPE_STRING));
 
 	lst_view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (lst_model)));
 	gtk_widget_set_usize (GTK_WIDGET (lst_view), 150, 200);
@@ -443,7 +443,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	GtkTreeView *view;
 	GtkWidget *view_widget;
 	
-	model = gtk_tree_store_new_with_types (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+	model = gtk_tree_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
 	view_widget = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
 	view = GTK_TREE_VIEW (view_widget);

@@ -424,7 +424,10 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 		return entry;
 	} else {
 #warning FIXME GtkText is not working
-#if 0	
+#if 0
+		/* This code worked with the old gtk, but the GtkText widget was
+		 * deprecated for VERY good reasons. Chema
+		 */
 		GtkWidget *text;
 		GtkWidget *scrolled_window;
 		gint line_height;

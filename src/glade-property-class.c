@@ -148,7 +148,7 @@ glade_property_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gi
 	*specs = g_object_class_list_properties (object_class, n_specs);
 }
 
-static GParamSpec *
+GParamSpec *
 glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
 {
 	GParamSpec **specs = NULL;
@@ -165,12 +165,10 @@ glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
 			g_warning ("Spec does not have a valid name, or invalid spec");
 			return NULL;
 		}
-		
+
 		if (strcmp (spec->name, name) == 0)
 			return spec;
 	}
-
-	g_warning ("Could not find spec by name %s\n", name);
 
 	return NULL;
 }

@@ -50,6 +50,8 @@ struct _GladeWidget {
 			      */
 
 	gboolean selected;
+
+	GtkWidget *popup_menu;
 };
 
 /* GladeWidgetSignal is a structure that holds information about a signal a
@@ -73,8 +75,15 @@ GladeProperty *    glade_widget_get_property_from_class (GladeWidget *widget,
 
 void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 
+
+/* Widget functions */
+typedef void (*GladeWidgetFunction) (GladeWidget *widget);
+
 void glade_widget_unselect (GladeWidget *widget);
 void glade_widget_select (GladeWidget *widget);
+void glade_widget_delete (GladeWidget *widget);
+
+GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 G_END_DECLS
 

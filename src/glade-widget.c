@@ -30,6 +30,7 @@
 #include "glade-project-window.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-popup.h"
 #include "glade-placeholder.h"
 
 
@@ -98,7 +99,7 @@ glade_widget_new (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk
  * Return Value: a GladeWidget pointer for @widget, NULL if the widget does not
  *               have a GladeWidget counterpart.
  **/
-static GladeWidget *
+GladeWidget *
 glade_widget_get_from_gtk_widget (GtkWidget *widget)
 {
 	return gtk_object_get_data (GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
@@ -148,7 +149,6 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 /**
  * glade_widget_get_from_event_widget:
  * @event_widget: 
- * @event_glade_widget: 
  * @event: 
  * 
  * Returns the real widget that was "clicked over" for a given event (cooridantes) and a widget
@@ -159,7 +159,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
  * Return Value: 
  **/
 static GladeWidget *
-glade_widget_get_from_event_widget (GtkWidget *event_widget, GladeWidget *event_glade_widget, GdkEventButton *event)
+glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *event)
 {
 	GladeFindInContainerData data;
 	GladeWidget *found = NULL;
@@ -179,12 +179,10 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GladeWidget *event_
 #ifdef DEBUG	
 	g_print ("Window [%d,%d]\n", win_x, win_y);
 	g_print ("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y);
-	g_print ("The widget that received the event was \"%s\" a \"%s\" [%d]\n"
-		 "The REAL widget is %s\n",
-		 glade_widget_get_name (event_glade_widget),
+	g_print ("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
+		 NULL,
 		 gtk_widget_get_name (event_widget),
-		 GPOINTER_TO_INT (event_widget),
-		 glade_widget_get_name (real_event_glade_widget));
+		 GPOINTER_TO_INT (event_widget));
 #endif	
 
 	parent_window = event_widget->parent ? event_widget->parent->window : event_widget->window;
@@ -252,29 +250,38 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GladeWidget *event_
 }
 
 static gboolean
-glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, GladeWidget *event_glade_widget)
+glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpointer not_used)
 {
 	GladeWidget *glade_widget;
 
+	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
+
 #ifdef DEBUG	
-	g_print ("button press for a %s\n", event_glade_widget->class->name);
+	g_print ("button press for a %s\n", glade_widget->class->name);
 #endif	
+	if (!glade_widget) {
+		g_warning ("Button press event but the gladewidget was not found\n");
+		return FALSE;
+	}
 
-	glade_widget = glade_widget_get_from_event_widget (event_widget, event_glade_widget, event);
-
-	if (glade_widget)
-		glade_project_selection_set (glade_widget->project, glade_widget, TRUE);
+	g_print ("Event button %d\n", event->button);
+	if (event->button == 1)
+		glade_project_selection_set (glade_widget, TRUE);
+	else if (event->button == 3)
+		glade_popup_pop (glade_widget, event);
+	else
+		g_print ("BUtton press not handled yet.\n");
 
 #ifdef DEBUG	
 	g_print ("The widget found was a %s\n", glade_widget->class->name);
-#endif	
-	
+#endif
+
 	return TRUE;
 }
 #undef DEBUG
 
 static gboolean
-glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, GladeWidget *glade_widget)
+glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer not_used)
 {
 #ifdef DEBUG	
 	g_print ("button release\n");
@@ -458,9 +465,36 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 	}
 	  
 	gtk_signal_connect (GTK_OBJECT (widget), "button_press_event",
-			    GTK_SIGNAL_FUNC (glade_widget_button_press), glade_widget);
+			    GTK_SIGNAL_FUNC (glade_widget_button_press), NULL);
 	gtk_signal_connect (GTK_OBJECT (widget), "button_release_event",
-			    GTK_SIGNAL_FUNC (glade_widget_button_release), glade_widget);
+			    GTK_SIGNAL_FUNC (glade_widget_button_release), NULL);
+}
+
+
+/**
+ * glade_widget_set_contents:
+ * @widget: 
+ * 
+ * Loads the name of the widget. For example a button will have the
+ * "button1" text in it, or a label will have "label4". right after
+ * it is created.
+ **/
+static void
+glade_widget_set_contents (GladeWidget *widget)
+{
+	GladeProperty *property = NULL;
+	GladeWidgetClass *class;
+
+	class = widget->class;
+
+	if (glade_property_class_find_spec (class, "label") != NULL)
+		property = glade_property_get_from_gtk_arg (widget->properties,
+							   "label");
+	if (glade_property_class_find_spec (class, "title") != NULL)
+		property = glade_property_get_from_gtk_arg (widget->properties,
+							   "title");
+	if (property != NULL)
+		glade_property_changed_text (property, widget->name);
 }
 
 static GladeWidget *
@@ -492,20 +526,7 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	/* We need to be able to get to the GladeWidget * from a GtkWidget * */
 	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
-	
-	/* FIXME */
-	if ((strcmp (class->name, "GtkLabel") == 0) ||
-	    (strcmp (class->name, "GtkButton") == 0)) {
-		GladeProperty *property;
-		
-		property = glade_property_get_from_name (glade_widget->properties,
-							 "Label");
-		if (property != NULL)
-			glade_property_changed_text (property, name);
-		else
-			g_warning ("Could not set the label to the widget name\n");
-	}
-
+	glade_widget_set_contents (glade_widget);
 	glade_widget_connect_mouse_signals (glade_widget);
 	glade_widget_connect_draw_signals (glade_widget);
 	
@@ -635,4 +656,11 @@ glade_widget_select (GladeWidget *widget)
 
 	widget->selected = TRUE;
 	gtk_widget_queue_draw (widget->widget);
+}
+
+void
+glade_widget_delete (GladeWidget *widget)
+{
+	g_print ("Implement delete. Widget : %s\n",
+		 glade_widget_get_name (widget));
 }

@@ -176,17 +176,20 @@ glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 
 
 GladeProperty *
-glade_property_get_from_name (GList *settings_list, const gchar *name)
+glade_property_get_from_gtk_arg (GList *settings_list, const gchar *arg)
 {
 	GList *list;
 	GladeProperty *property;
 
-	g_return_val_if_fail (name != NULL, NULL);
+	g_return_val_if_fail (arg != NULL, NULL);
 	
 	list = settings_list;
 	for (; list != NULL; list = list->next) {
 		property = list->data;
-		if (strcmp (property->class->name, name) == 0)
+		g_return_val_if_fail (property, NULL);
+		g_return_val_if_fail (property->class, NULL);
+		g_return_val_if_fail (property->class->gtk_arg, NULL);
+		if (strcmp (property->class->gtk_arg, arg) == 0)
 			return property;
 	}
 
@@ -250,6 +253,9 @@ glade_property_changed_float (GladeProperty *property, gfloat val)
 
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);
+
+	gtk_object_set (GTK_OBJECT (property->widget->widget),
+			property->class->gtk_arg, val, NULL);
 }
 
 void

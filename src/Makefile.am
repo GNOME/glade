@@ -33,6 +33,7 @@ glade2_SOURCES = \
 	glade-cursor.c \
 	glade-property.c \
 	glade-property-class.c \
+	glade-popup.c \
 	glade-widget.c \
 	glade-catalog.c \
 	glade-choice.c \
@@ -55,6 +56,7 @@ noinst_HEADERS = \
 	glade-widget-class.h \
 	glade-property.h \
 	glade-property-class.h \
+	glade-popup.h \
 	glade-choice.h \
 	glade-catalog.h \
 	glade-xml-utils.h

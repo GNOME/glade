@@ -231,7 +231,7 @@ glade_project_view_add_item (GladeProjectView *view,
 			    WIDGET_COLUMN, widget,
 			    -1);
 
-	glade_project_selection_set (view->project, widget, TRUE);
+	glade_project_selection_set (widget, TRUE);
 }      
 
 
@@ -298,7 +298,7 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	if (widget == NULL)
 		return TRUE;
 
-	glade_project_selection_set (view->project, widget, TRUE);
+	glade_project_selection_set (widget, TRUE);
 
 	return TRUE;
 }
@@ -313,7 +313,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 	GtkWidget *widget;
 	GtkWidget *scrolled_window;
 
-	model = gtk_tree_store_new_with_types (1, GTK_TYPE_POINTER);
+	model = gtk_tree_store_new (1, GTK_TYPE_POINTER);
 	view->model = model;
 	
 	glade_project_view_populate_model (model, view);
@@ -321,7 +321,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 
 	cell = gtk_cell_renderer_text_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("Widget", cell, NULL);
-	gtk_tree_view_column_set_cell_data_func (column, glade_project_view_cell_function, NULL, NULL);
+	gtk_tree_view_column_set_cell_data_func (column, cell, glade_project_view_cell_function, NULL, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
 
 	gtk_object_unref (GTK_OBJECT (column));
@@ -330,7 +330,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
 	g_signal_connect_data (G_OBJECT (selection),
 			       "changed", GTK_SIGNAL_FUNC (glade_project_view_selection_changed_cb),
-			       view, NULL, FALSE, FALSE);
+			       view, NULL, 0);
 
 	gtk_widget_set_usize (widget, 272, 130);
 	gtk_widget_show (widget);

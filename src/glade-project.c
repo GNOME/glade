@@ -20,6 +20,7 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include <string.h>
 
 #include <string.h>
 #include "glade.h"
@@ -257,12 +258,15 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 }
 	
 void
-glade_project_selection_remove (GladeProject *project, GladeWidget *widget,
+glade_project_selection_remove (GladeWidget *widget,
 				gboolean emit_signal)
 {
-	g_return_if_fail (GLADE_IS_PROJECT (project));
+	GladeProject *project;
+	
 	g_return_if_fail (GLADE_IS_WIDGET  (widget));
-
+	project = widget->project;
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	
 	if (!widget->selected)
 		return;
 
@@ -275,11 +279,14 @@ glade_project_selection_remove (GladeProject *project, GladeWidget *widget,
 }
 
 void
-glade_project_selection_add (GladeProject *project, GladeWidget *widget,
+glade_project_selection_add (GladeWidget *widget,
 			     gboolean emit_signal)
 {
-	g_return_if_fail (GLADE_IS_PROJECT (project));
+	GladeProject *project;
+
 	g_return_if_fail (GLADE_IS_WIDGET  (widget));
+	project = widget->project;
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	if (widget->selected)
 		return;
@@ -292,19 +299,22 @@ glade_project_selection_add (GladeProject *project, GladeWidget *widget,
 }
 
 void
-glade_project_selection_set (GladeProject *project, GladeWidget *widget,
+glade_project_selection_set (GladeWidget *widget,
 			     gboolean emit_signal)
 {
+	GladeProject *project;
 	GList *list;
-	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET  (widget));
 
+	project = widget->project;
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+		
 	list = project->selection;
 	/* Check if the selection is different than what we have */
 	if ((list) && (list->next == NULL) && (list->data == widget))
 	    return;
 	    
 	glade_project_selection_clear (project, FALSE);
-	glade_project_selection_add   (project, widget, emit_signal);
+	glade_project_selection_add   (widget, emit_signal);
 }	
 

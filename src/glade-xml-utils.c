@@ -8,6 +8,7 @@
  *   Chema Celorio <chema@gnome.org>
  */
 
+#include <string.h>
 #include <glib.h>
 #include <string.h>
 
