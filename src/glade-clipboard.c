@@ -253,36 +253,3 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 	glade_clipboard_remove (clipboard, widget);
 }
 
-void
-glade_clipboard_create (GladeProjectWindow * gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->clipboard == NULL) {
-		GladeClipboard *clipboard;
-
-		clipboard = glade_clipboard_new ();
-		gpw->clipboard = clipboard;
-	}
-}
-
-void
-glade_clipboard_show_view (GladeProjectWindow * gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->clipboard->view == NULL) {
-		GtkWidget *view;
-
-		view = glade_clipboard_view_new (gpw->clipboard);
-		gtk_window_set_title (GTK_WINDOW (view), _("Clipboard"));
-		g_signal_connect_data (G_OBJECT (view), "delete_event",
-				       G_CALLBACK (gtk_widget_hide),
-				       view, NULL, 0);
-
-		gpw->clipboard->view = view;
-	}
-
-	if (!GTK_WIDGET_VISIBLE (gpw->clipboard->view))
-		gtk_widget_show (GTK_WIDGET (gpw->clipboard->view));
-}

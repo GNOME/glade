@@ -28,6 +28,7 @@
 #include "glade-palette.h"
 #include "glade-editor.h"
 #include "glade-clipboard.h"
+#include "glade-clipboard-view.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-parameter.h"
@@ -50,7 +51,7 @@ static void gpw_quit_cb (void);
 static void gpw_toggle_palette_cb (void);
 static void gpw_toggle_editor_cb (void);
 static void gpw_toggle_widget_tree_cb (void);
-static void gpw_show_clipboard_cb (void);
+static void gpw_toggle_clipboard_cb (void);
 
 static void gpw_undo_cb (void);
 static void gpw_redo_cb (void);
@@ -219,8 +220,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     0, "<ToggleItem>" },
   { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      0, "<ToggleItem>" },
   { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 0, "<ToggleItem>" },
-  { "/View/sep1",             NULL, NULL,                      0, "<Separator>" },
-  { "/View/Show _Clipboard",  NULL, gpw_show_clipboard_cb,     0, "<Item>" },
+  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   0, "<ToggleItem>" },
 
   /* ============ PROJECT=================== */
   { "/Project", NULL, 0, 0, "<Branch>" },
@@ -530,6 +530,90 @@ gpw_hide_widget_tree (GladeProjectWindow *gpw)
 
 }
 
+static void 
+gpw_create_clipboard (GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->clipboard == NULL) {
+		GladeClipboard *clipboard;
+
+		clipboard = glade_clipboard_new ();
+		gpw->clipboard = clipboard;
+	}
+}
+
+static gboolean
+gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
+		GtkItemFactory *item_factory)
+{
+	GtkWidget *clipboard_item;
+
+	gtk_widget_hide (clipboard_view);
+
+	clipboard_item = gtk_item_factory_get_item (item_factory,
+						    "<main>/View/Clipboard");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), FALSE);
+
+	/* return true so that the clipboard view is not destroyed */
+	return TRUE;
+}
+
+static void 
+gpw_create_clipboard_view (GladeProjectWindow *gpw)
+{
+	GtkWidget *view;
+	GtkWidget *clipboard_item;
+
+	gpw_create_clipboard (gpw);
+	
+	view = glade_clipboard_view_new (gpw->clipboard);
+	gtk_window_set_title (GTK_WINDOW (view), _("Clipboard"));
+	g_signal_connect (G_OBJECT (view), "delete_event",
+			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
+			  gpw->item_factory);
+	gpw->clipboard->view = view;
+
+	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
+						    "<main>/View/Clipboard");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), TRUE);
+}
+
+static void
+gpw_show_clipboard_view (GladeProjectWindow *gpw)
+{
+	GtkWidget *clipboard_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->clipboard == NULL)
+		gpw_create_clipboard (gpw);
+
+	if (gpw->clipboard->view == NULL)
+		gpw_create_clipboard_view (gpw);
+	
+	gtk_widget_show_all (GTK_WIDGET (gpw->clipboard->view));
+
+	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
+						    "<main>/View/Clipboard");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), TRUE);
+}
+
+static void
+gpw_hide_clipboard_view (GladeProjectWindow *gpw)
+{
+	GtkWidget *clipboard_item;
+
+	g_return_if_fail (gpw != NULL);
+
+	gtk_widget_hide (GTK_WIDGET (gpw->clipboard->view));
+
+	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
+						    "<main>/View/Clipboard");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), FALSE);
+
+}
+
 static void
 gpw_toggle_palette_cb (void)
 {
@@ -579,11 +663,19 @@ gpw_toggle_widget_tree_cb (void)
 }
 
 static void
-gpw_show_clipboard_cb (void)
+gpw_toggle_clipboard_cb (void)
 {
+	GtkWidget *clipboard_item;
+
 	GladeProjectWindow *gpw = glade_project_window_get ();
 
-	glade_clipboard_show_view (gpw);
+	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
+						    "<main>/View/Clipboard");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (clipboard_item)))
+		gpw_show_clipboard_view (gpw);
+	else
+		gpw_hide_clipboard_view (gpw);
 }
 
 static GtkWidget *
@@ -651,7 +743,7 @@ glade_project_window_new (GList *catalogs)
 	glade_project_window = gpw;
 	gpw_create_palette (gpw);
 	gpw_create_editor  (gpw);
-	glade_clipboard_create (gpw);
+	gpw_create_clipboard (gpw);
 	
 	return gpw;
 }

@@ -1,3 +1,11 @@
+2003-03-13 Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-project-window.c: turn also the "Show Clipboard" menu item
+	into a toggle item.
+	* src/glade-clipboard.[ch]: removed glade_clipboard_create() and
+	glade_clipboard_show_view(), replaced by equivalent static functions 
+	in glade-project-window.c where they belong.
+
 2003-03-12  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-property-class.c: fix a memory leak, and remove yet another

@@ -32,8 +32,5 @@ void glade_clipboard_copy (GladeClipboard * clipboard,
 void glade_clipboard_paste (GladeClipboard * clipboard,
 			    GladePlaceholder * placeholder);
 
-void glade_clipboard_create (GladeProjectWindow * gpw);
-void glade_clipboard_show_view (GladeProjectWindow * gpw);
-
 G_END_DECLS
 #endif				/* __GLADE_CLIPBOARD_H__ */
