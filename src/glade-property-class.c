@@ -477,6 +477,8 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 {
 	GladePropertyClass *property_class;
 
+	g_return_val_if_fail (spec != NULL, NULL);
+	
 	property_class = glade_property_class_new ();
 
 	property_class->pspec = spec;
@@ -596,6 +598,18 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		/* ... get the tooltip from the pspec ... */
 		if (class->pspec)
 			class->tooltip = g_strdup (g_param_spec_get_blurb (class->pspec));
+	} else {
+		if (!class->pspec) 
+		{
+			/* If catalog file didn't specify a pspec function
+			 * and this property isn't fund by introspection
+			 * we simply handle it as a property that has been
+			 * disabled.
+			 */
+			glade_property_class_free (class);
+			*property_class = NULL;
+			return TRUE;
+		}
 	}
 
 	/* ...and the tooltip */

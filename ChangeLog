@@ -1,3 +1,14 @@
+2005-01-12  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-property-class.c:
+	(glade_property_class_new_from_spec):
+	- Added parameter check on spec.
+	(glade_property_class_update_from_node):
+	- Handle properties not found by introspection and that don't
+	  specify a spec-function in the catalog file as disabled properties.
+	  Fixes a crash when loading the catalog file that has GTK+ 2.6 
+	  properties overridden in GTK+ 2.4.
+
 2005-01-12  Richard Hult  <richard@imendio.com>
 
 	* widgets/adding-widgets.txt: Add first cut at documentation for
