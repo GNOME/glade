@@ -1448,8 +1448,11 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 	glade_editor_load_packing_page (editor, widget);
 	glade_signal_editor_load_widget (editor->signal_editor, widget);
 
-	if (widget == NULL) /* we are just clearing, we are done */
+	/* we are just clearing, we are done */
+	if (widget == NULL) {
+		editor->loaded_widget = NULL;
 		return;
+	}
 
 	editor->loading = TRUE;
 
@@ -1500,3 +1503,4 @@ glade_editor_add_signal (GladeEditor *editor,
 		       glade_editor_signals [ADD_SIGNAL], 0,
 		       widget_name, widget_type, signal_id, callback_name);
 }
+
