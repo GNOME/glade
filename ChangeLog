@@ -1,3 +1,11 @@
+2004-12-24  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-widget.c: 
+	  - No need to free property lists in dispose if we do that in finalize.
+	  - Fixed leak where widget creation is canceled by the query popup
+            (Verified that widget is not in a container or in the project at
+	    unref time, safe).
+	
 2004-12-22  Gustavo Noronha Silva <kov@debian.org>
 
 	* src/glade-palette.c, src/glade-project-window.c

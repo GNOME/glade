@@ -544,7 +544,10 @@ glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *pr
 
 			/* If user pressed cancel on query popup. */
 			if (!glade_editor_query_dialog (gpw->editor, widget))
+			{
+				g_object_unref (G_OBJECT (widget));
 				return NULL;
+			}
 		}
 
 		/* Properties that have custom set_functions on them need to be
@@ -732,11 +735,17 @@ glade_widget_finalize (GObject *object)
 	g_free (widget->internal);
 	g_hash_table_destroy (widget->signals);
 
-	g_list_foreach (widget->properties, (GFunc)glade_property_free, NULL);
-	g_list_free (widget->properties);
-
-	g_list_foreach (widget->packing_properties, (GFunc)glade_property_free, NULL);
-	g_list_free (widget->packing_properties);
+	if (widget->properties)
+	{
+		g_list_foreach (widget->properties, (GFunc)glade_property_free, NULL);
+		g_list_free (widget->properties);
+	}
+	
+	if (widget->packing_properties)
+	{
+		g_list_foreach (widget->packing_properties, (GFunc)glade_property_free, NULL);
+		g_list_free (widget->packing_properties);
+	}
 	
 	G_OBJECT_CLASS(parent_class)->finalize(object);
 }
@@ -755,18 +764,6 @@ glade_widget_dispose (GObject *object)
 	if (widget->object)
 		widget->object =
 			(g_object_unref (widget->object), NULL);
-
-	if (widget->properties) {
-		g_list_foreach (widget->properties, (GFunc) glade_property_free, NULL);
-		g_list_free (widget->properties);
-		widget->properties = NULL;
-	}
-
-	if (widget->packing_properties) {
-		g_list_foreach (widget->packing_properties, (GFunc) glade_property_free, NULL);
-		g_list_free (widget->packing_properties);
-		widget->packing_properties = NULL;
-	}
 
  	if (G_OBJECT_CLASS(parent_class)->dispose)
 		G_OBJECT_CLASS(parent_class)->dispose(object);
