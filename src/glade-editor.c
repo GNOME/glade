@@ -44,9 +44,6 @@
 #include "glade-project.h"
 #include "glade-utils.h"
 
-static void glade_editor_class_init (GladeEditorClass *class);
-static void glade_editor_init (GladeEditor *editor);
-
 enum
 {
 	ADD_SIGNAL,
@@ -58,46 +55,9 @@ static guint glade_editor_signals[LAST_SIGNAL] = {0};
 
 static GtkNotebookClass *parent_class = NULL;
 
-/* We use this function recursively so we need to declare it */
-static gboolean glade_editor_table_append_items (GladeEditorTable *table,
-						 GladeWidgetClass *class,
-						 GList **list,
-						 GladeEditorTableType type);
-
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
-
-/**
- * glade_editor_get_type:
- *
- * Creates the typecode for the #GladeEditor object type.
- *
- * Returns: the typecode for the #GladeEditor object type
- */
-GType
-glade_editor_get_type (void)
-{
-	static GType type = 0;
-
-	if (!type) {
-		static const GTypeInfo info = {
-			sizeof (GladeEditorClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_editor_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladeEditor),
-			0,
-			(GInstanceInitFunc) glade_editor_init
-		};
-
-		type = g_type_register_static (GTK_TYPE_NOTEBOOK, "GladeEditor", &info, 0);
-	}
-
-	return type;
-}
 
 static void
 glade_editor_class_init (GladeEditorClass *class)
@@ -172,6 +132,37 @@ glade_editor_init (GladeEditor *editor)
 }
 
 /**
+ * glade_editor_get_type:
+ *
+ * Creates the typecode for the #GladeEditor object type.
+ *
+ * Returns: the typecode for the #GladeEditor object type
+ */
+GType
+glade_editor_get_type (void)
+{
+	static GType type = 0;
+
+	if (!type) {
+		static const GTypeInfo info = {
+			sizeof (GladeEditorClass),
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_editor_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeEditor),
+			0,
+			(GInstanceInitFunc) glade_editor_init
+		};
+
+		type = g_type_register_static (GTK_TYPE_NOTEBOOK, "GladeEditor", &info, 0);
+	}
+
+	return type;
+}
+
+/**
  * glade_editor_new:
  *
  * Returns: a new #GladeEditor
@@ -214,14 +205,18 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 /* ============================ Property Changed ============================ */
 static void
 glade_editor_property_changed_text_common (GladeProperty *property,
-					   const gchar *text)
+					   const gchar *text,
+					   gboolean from_query_dialog)
 {
 	GValue val = { 0, };
 
 	g_value_init (&val, G_TYPE_STRING);
 	g_value_set_string (&val, text);
 
-	glade_command_set_property (property, &val);
+	if (from_query_dialog == TRUE)
+		glade_property_set (property, &val);
+	else 
+		glade_command_set_property (property, &val);
 
 	g_value_unset (&val);
 }
@@ -238,7 +233,10 @@ glade_editor_property_changed_text (GtkWidget           *entry,
 		return;
 	
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
-	glade_editor_property_changed_text_common (property->property, text);
+
+	glade_editor_property_changed_text_common (property->property, text,
+						   property->from_query_dialog);
+
 	g_free (text);
 
 	glade_editor_property_load (property, property->property->widget);
@@ -274,7 +272,10 @@ glade_editor_text_view_focus_out (GtkTextView         *view,
 					    gtk_text_buffer_get_char_count (buffer));
 
 	text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
-	glade_editor_property_changed_text_common (property->property, text);
+
+	glade_editor_property_changed_text_common (property->property, text,
+						   property->from_query_dialog);
+
 	g_free (text);
 	
 	glade_editor_property_load (property, property->property->widget);
@@ -301,7 +302,11 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 
 	g_value_init (&val, gproperty->class->pspec->value_type);
 	g_value_set_enum (&val, ival);
-	glade_command_set_property (gproperty, &val);
+
+	if (property->from_query_dialog)
+		glade_property_set (gproperty, &val);
+	else
+		glade_command_set_property (gproperty, &val);
 
 	g_value_unset (&val);
 
@@ -388,7 +393,10 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		g_warning ("Unsupported type %s\n",
 			   g_type_name(property->class->pspec->value_type));
 
-	glade_command_set_property (property->property, &val);
+	if (property->from_query_dialog)
+		glade_property_set (property->property, &val);
+	else
+		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
 
@@ -415,7 +423,11 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 
 	g_value_init (&val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (&val, state);
-	glade_command_set_property (property->property, &val);
+
+	if (property->from_query_dialog)
+		glade_property_set (property->property, &val);
+	else
+		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
 
@@ -446,8 +458,12 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 
 	g_value_init (&val, G_TYPE_UINT);
 	g_value_set_uint (&val, unich);
-	glade_command_set_property (property->property, &val);
-	
+
+	if (property->from_query_dialog)
+		glade_property_set (property->property, &val);
+	else
+		glade_command_set_property (property->property, &val);
+
 	g_value_unset (&val);
 	glade_editor_property_load (property, property->property->widget);
 }
@@ -638,7 +654,12 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 
 			g_value_init (&val, G_VALUE_TYPE (property->property->value));
 			g_value_set_flags (&val, new_value);
-			glade_command_set_property (property->property, &val);
+
+			if (property->from_query_dialog)
+				glade_property_set (property->property, &val);
+			else
+				glade_command_set_property (property->property, &val);
+
 			g_value_unset (&val);
 
 			/* Update the entry in the property editor. */
@@ -940,7 +961,8 @@ glade_editor_append_item_real (GladeEditorTable *table,
 
 static GladeEditorProperty *
 glade_editor_table_append_item (GladeEditorTable *table,
-				GladePropertyClass *class)
+				GladePropertyClass *class,
+				gboolean from_query_dialog)
 {
 	GladeEditorProperty *property;
 
@@ -949,8 +971,11 @@ glade_editor_table_append_item (GladeEditorTable *table,
 	property->class = class;
 	property->children = NULL;
 
+	/* Set this before creating the widget. */
+	property->from_query_dialog = from_query_dialog;
 	property->input = glade_editor_append_item_real (table, property);
 	property->property = NULL;
+
 
 	return property;
 }
@@ -1026,8 +1051,12 @@ glade_editor_table_append_items (GladeEditorTable *table,
 			continue;
 		else if (type == TABLE_TYPE_GENERAL && property_class->common == TRUE)
 			continue;
-		
-		property = glade_editor_table_append_item (table, property_class);
+
+		if (type == TABLE_TYPE_QUERY)
+			property = glade_editor_table_append_item (table, property_class, TRUE);
+		else
+			property = glade_editor_table_append_item (table, property_class, FALSE);
+			
 		if (property != NULL)
 			new_list = g_list_prepend (new_list, property);
 	}
@@ -1565,7 +1594,7 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	{
 		property = list->data;
 		g_assert (property->class->packing == TRUE);
-		editor_property = glade_editor_table_append_item (table, property->class);
+		editor_property = glade_editor_table_append_item (table, property->class, FALSE);
 		old_props       = g_list_prepend (old_props, editor_property);
 		glade_editor_property_load (editor_property, widget);
 	}
@@ -1668,45 +1697,56 @@ glade_editor_add_signal (GladeEditor *editor,
 		       widget_name, widget_type, signal_id, callback_name);
 }
 
-
-void
-glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget)
+gboolean
+glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 {
 	GtkWidget           *dialog;
 	GladeEditorTable    *table;
 	gchar               *title;
 	GList               *list;
 	GladeEditorProperty *property;
+	gint		     answer;
+	gboolean	     retval = TRUE;
 
 	title = g_strdup_printf (_("Create a %s"), widget->widget_class->name);
 
 	dialog = gtk_dialog_new_with_buttons
 		(title, NULL,
 		 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
-		 GTK_DIALOG_NO_SEPARATOR, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+		 GTK_DIALOG_NO_SEPARATOR,
+		 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		 GTK_STOCK_OK, GTK_RESPONSE_OK,
+		 NULL);
 	g_free (title);
 
 	table = glade_editor_get_table_from_class (editor,
 						   widget->widget_class,
 						   TABLE_TYPE_QUERY);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table->table_widget,
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    table->table_widget,
 			    TRUE, TRUE, 4);
-	
 	for (list = table->properties; list; list = list->next)
 	{
 		property = list->data;
 		glade_editor_property_load (property, widget);
 	}
 
-	gtk_window_set_default_size (GTK_WINDOW(dialog), 300, -1);
+	answer = gtk_dialog_run (GTK_DIALOG (dialog));
 
-	gtk_dialog_run (GTK_DIALOG (dialog));
+	/*
+	 * If user cancel's we cancel the whole "create operation" by
+	 * return FALSE. glade_widget_new() will see the FALSE, and
+	 * take care of canceling the "create" operation.
+	 */
+	if (answer == GTK_RESPONSE_CANCEL)
+		retval = FALSE;
 
 	gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
 			      table->table_widget);
 	
 	gtk_widget_destroy (dialog);
+	return retval;
 }
 
 

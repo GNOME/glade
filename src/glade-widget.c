@@ -513,7 +513,7 @@ glade_widget_internal_new (const gchar      *name,
 				     "object",      object,
 				     NULL);
 
-	return (GladeWidget *) glade_widget;
+	return GLADE_WIDGET (glade_widget);
 }
 
 /**
@@ -541,7 +541,10 @@ glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *pr
 		if (widget->query_user)
 		{
 			GladeProjectWindow *gpw = glade_project_window_get ();
-			glade_editor_query_popup (gpw->editor, widget);
+
+			/* If user pressed cancel on query popup. */
+			if (!glade_editor_query_dialog (gpw->editor, widget))
+				return NULL;
 		}
 
 		/* Properties that have custom set_functions on them need to be

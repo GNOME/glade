@@ -93,7 +93,7 @@ glade_clipboard_new (void)
  * @widget: a #GladeWidget
  * 
  * Adds @widget to @clipboard.
- * This increses the reference count of @widget.
+ * This increases the reference count of @widget.
  */
 void
 glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)

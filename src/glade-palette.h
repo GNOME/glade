@@ -31,7 +31,7 @@ struct _GladePalette
 				    * selector button is pressed.
 				    */
 
-	GtkWidget *selector; /* The selevtor is a button that is
+	GtkWidget *selector; /* The selector is a button that is
 			      * clicked to cancel the add widget action.
 			      * This sets our cursor back to the "select
 			      * widget" mode. This button is part of the
@@ -44,14 +44,15 @@ struct _GladePalette
 			    * class is selected
 			    */
 
-	GtkWidget *groups_vbox; /* The vbox that contains the titles of the sections */
 
 	GtkWidget *notebook; /* Where we store the different catalogs */
 
 	gint nb_sections; /* The number of sections in this palette */
-	GSList *sections_button_group; /* Each section of the palette has
-					* a button. This is the button_group_list
-					*/
+
+	GtkWidget *catalog_selector; /* The combo_box with the names of the
+				      * various catalogs so the user can select
+				      * it.
+				      */
 
 	GSList *widgets_button_group; /* Each widget in a section has a button
 				       * in the palette. This is the button

@@ -605,11 +605,8 @@ glade_project_selection_add (GladeProject *project,
 			     GObject      *object,
 			     gboolean      emit_signal)
 {
-	GladeProjectWindow *gpw;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
-
-	gpw       = glade_project_window_get ();
 
 	if (glade_util_has_selection (object))
 		return;
@@ -639,12 +636,9 @@ glade_project_selection_set (GladeProject *project,
 			     GObject      *object,
 			     gboolean      emit_signal)
 {
-	GladeProjectWindow *gpw;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	gpw    = glade_project_window_get ();
-	
 	if (glade_util_has_selection (object))
 		return;
 	    

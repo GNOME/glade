@@ -155,8 +155,8 @@ struct _GladeEditorTable
 struct _GladeEditorProperty
 {
 	GladePropertyClass *class; /* The class this property
-						   * corresponds to.
-						   */
+				    * corresponds to.
+				    */
 
 	GladeProperty *property; /* The loaded GladeProperty
 				  */
@@ -177,6 +177,10 @@ struct _GladeEditorProperty
 	GList *children; /* Used for class->type = OBJECT. Where a sigle entry corresponds
 			  * to a number of inputs
 			  */
+
+	gboolean from_query_dialog; /* If this input is part of a query dialog
+				     * this is TRUE.
+				     */
 };
 
 GType glade_editor_get_type (void);
@@ -189,7 +193,7 @@ void         glade_editor_add_signal         (GladeEditor *editor,
 					      guint        id_signal,
 					      const char  *callback_name);
 void         glade_editor_update_widget_name (GladeEditor *editor);
-void         glade_editor_query_popup        (GladeEditor *editor,
+gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 					      GladeWidget *widget);
 gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
 
