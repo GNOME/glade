@@ -64,9 +64,13 @@ struct _GladeWidgetSignal {
 };
 
 
-GladeWidget * glade_widget_new_from_class (GladeProject *project,
-					   GladeWidgetClass *class,
+GladeWidget * glade_widget_new_toplevel (GladeProject *project,
+					 GladeWidgetClass *class);
+GladeWidget * glade_widget_new_from_class (GladeWidgetClass *class,
 					   GladeWidget *widget);
+GladeWidget * glade_widget_new_from_class_name (const gchar *class_name,
+						GladeWidget *parent);
+
 
 const gchar *      glade_widget_get_name  (GladeWidget *widget);
 GladeWidgetClass * glade_widget_get_class (GladeWidget *widget);

@@ -348,6 +348,9 @@ glade_property_changed_choice (GladeProperty *property, GladeChoice *choice)
 
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", choice->symbol);
+
+	gtk_object_set (GTK_OBJECT (property->widget->widget),
+			property->class->id, choice->value, NULL);
 }
 	
 

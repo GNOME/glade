@@ -151,7 +151,7 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
 		project = glade_project_get_active ();
 		g_return_if_fail (project != NULL);
-		glade_widget_new_from_class (project, class, NULL);
+		glade_widget_new_toplevel (project, class);
 		dont_recurse = TRUE;
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button), TRUE);
 		dont_recurse = FALSE;

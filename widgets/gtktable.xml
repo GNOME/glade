@@ -18,7 +18,6 @@
       <Type>Integer</Type>
 	 <Name>Rows</Name>
 	 <Tooltip>The number of rows in the table</Tooltip>
-	 <GtkArg>rows</GtkArg>
 	 <Parameters>
 	   <Parameter Key="Min" Value="0"/>
 	   <Parameter Key="Max" Value="10000"/>
@@ -33,11 +32,9 @@
       </Query>
     </Property>
 
-    <Property Id="columns">
+    <Property Id="columns" Name="Columns">
       <Type>Integer</Type>
-	 <Name>Columns</Name>
 	 <Tooltip>The number of columnd in the table</Tooltip>
-	 <GtkArg>columns</GtkArg>
 	 <Parameters>
 	   <Parameter Key="Min" Value="0"/>
 	   <Parameter Key="Max" Value="10000"/>

@@ -116,11 +116,47 @@ glade_placeholder_replace_table (GladePlaceholder *placeholder,
 
 void
 glade_placeholder_replace_container (GladePlaceholder *placeholder,
-				 GladeWidget *widget,
-				 GladeWidget *parent)
+				     GladeWidget *widget,
+				     GladeWidget *parent)
 {
 	gtk_container_remove (GTK_CONTAINER (parent->widget), placeholder);
 	gtk_container_add (GTK_CONTAINER (parent->widget), widget->widget);
+}
+
+void
+glade_placeholder_replace_notebook (GladePlaceholder *placeholder,
+				    GladeWidget *widget,
+				    GladeWidget *parent)
+{
+	GtkNotebook *notebook;
+	GtkWidget *page;
+	GtkWidget *label;
+	gint page_num;
+
+	notebook = GTK_NOTEBOOK (parent->widget);
+	page_num = gtk_notebook_page_num (notebook,  GTK_WIDGET (placeholder));
+	if (page_num == -1) {
+		g_warning ("GtkNotebookPage not found\n");
+		return;
+	}
+
+	page = gtk_notebook_get_nth_page (notebook, page_num);
+	label = gtk_notebook_get_tab_label (notebook, GTK_WIDGET (placeholder));
+	
+	gtk_widget_ref (page);
+	gtk_widget_ref (label);
+
+	gtk_notebook_remove_page (notebook, page_num);
+	gtk_notebook_insert_page (notebook, widget->widget,
+				  label, page_num);
+	gtk_notebook_set_tab_label (notebook,
+				    widget->widget,
+				    label);
+	
+	gtk_widget_unref (label);
+	gtk_widget_unref (page);
+
+	gtk_notebook_set_current_page (notebook, page_num);
 }
 
 static void
@@ -132,7 +168,7 @@ glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClas
 	parent = glade_placeholder_get_parent (placeholder);
 	g_return_if_fail (parent != NULL);
 
-	widget = glade_widget_new_from_class (parent->project, class, parent);
+	widget = glade_widget_new_from_class (class, parent);
 	if (widget == NULL)
 		return;
 
@@ -321,6 +357,31 @@ glade_placeholder_add (GladeWidgetClass *class,
 							   col, col+1,
 							   row, row+1);
 			}
+		}
+		return;
+	}
+
+
+	if ((strcmp (class->name, "GtkNotebook") == 0)) {
+		GladeWidgetClass *label_class;
+		GladeWidget *label;
+		gint page;
+		gint pages = 3;
+
+		glade_property_query_result_get_int (result, "pages", &pages);
+
+		label_class = glade_widget_class_get_by_name ("GtkLabel");
+		g_return_if_fail (label_class != NULL);
+
+		for (page = 0; page < pages; page++) {
+			label = glade_widget_new_from_class_name ("GtkLabel",
+								  widget);
+			g_return_if_fail (GTK_IS_WIDGET (label->widget));
+			placeholder = glade_placeholder_new (widget);
+			gtk_notebook_append_page (GTK_NOTEBOOK (widget->widget),
+						  placeholder,
+						  label->widget);
+				
 		}
 		return;
 	}

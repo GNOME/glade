@@ -562,14 +562,15 @@ glade_widget_create_gtk_widget (GladeProject *project,
  * 
  * Return Value: A newly creatred GladeWidget, NULL on user cancel or error	
  **/
-GladeWidget *
-glade_widget_new_from_class (GladeProject *project, GladeWidgetClass *class, GladeWidget *parent)
+static GladeWidget *
+glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project, GladeWidget *parent)
 {
 	GladePropertyQueryResult *result = NULL;
 	GladeWidget *glade_widget;
 
-	g_return_val_if_fail (project != NULL, NULL);
-
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+		
 	if (glade_widget_class_has_queries (class)) {
 		result = glade_property_query_result_new ();
 		if (glade_project_window_query_properties (class, result))
@@ -588,7 +589,30 @@ glade_widget_new_from_class (GladeProject *project, GladeWidgetClass *class, Gla
 
 	return glade_widget;
 }
+
+GladeWidget *
+glade_widget_new_from_class (GladeWidgetClass *class, GladeWidget *parent)
+{
+	GladeProject *project;
 	
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
+	g_return_val_if_fail (GLADE_IS_PROJECT (parent->project), NULL);
+
+	project = parent->project;
+
+	return glade_widget_new_from_class_full (class, project, parent);
+}
+	
+GladeWidget *
+glade_widget_new_toplevel (GladeProject *project, GladeWidgetClass *class)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
+	return glade_widget_new_from_class_full (class, project, NULL);
+}
+
 
 const gchar *
 glade_widget_get_name (GladeWidget *widget)
@@ -677,3 +701,33 @@ glade_widget_delete (GladeWidget *widget)
 	g_print ("Implement delete. Widget : %s\n",
 		 glade_widget_get_name (widget));
 }
+
+/**
+ * glade_widget_new_from_class_name:
+ * @class_name: 
+ * @parent: 
+ * 
+ * Given a class name, it creates a GladeWidget
+ * 
+ * Return Value: the newly created GladeWidget, NULL on error
+ **/
+GladeWidget *
+glade_widget_new_from_class_name (const gchar *name,
+				  GladeWidget *parent)
+{
+	GladeWidgetClass *class;
+	GladeWidget *widget;
+
+	g_return_val_if_fail (name != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
+
+	class = glade_widget_class_get_by_name (name);
+	if (class == NULL)
+		return NULL;
+
+	widget = glade_widget_new_from_class (class, parent);
+
+	return widget;
+}
+	
+

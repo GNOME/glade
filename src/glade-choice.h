@@ -4,6 +4,10 @@
 
 G_BEGIN_DECLS
 
+#define GLADE_CHOICE(c) ((GladeChoice *)c)
+#define GLADE_IS_CHOICE(c) (c != NULL)
+
+
 /* GladeChoice is used for GladeProperties of type "choice"
  * each property of type choice has a list of GladeChoice objects.
  * [see glade-property ]

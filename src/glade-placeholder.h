@@ -21,6 +21,10 @@ void          glade_placeholder_replace_table     (GladePlaceholder *placeholder
 void          glade_placeholder_replace_container (GladePlaceholder *placeholder,
 						   GladeWidget *widget,
 						   GladeWidget *parent);
+void          glade_placeholder_replace_notebook  (GladePlaceholder *placeholder,
+						   GladeWidget *widget,
+						   GladeWidget *parent);
+
 
 G_END_DECLS
 

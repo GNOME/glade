@@ -4,10 +4,35 @@
   <GetTypeFunction>gtk_notebook_get_type</GetTypeFunction>
   <GenericName>notebook</GenericName>
   <Toplevel>False</Toplevel>
+  <Placeholder>True</Placeholder>
 
   <Properties>
 
-    <Property ParamSpec="TRUE" Id="name"/>
+    <Property ParamSpec="TRUE" Id="border-width"/>
+    <Property ParamSpec="TRUE" Id="show-tabs"/>
+    <Property ParamSpec="TRUE" Id="show-border"/>
+    <Property ParamSpec="TRUE" Id="tab-pos"/>
+    <Property ParamSpec="TRUE" Id="scrollable"/>
+    <Property ParamSpec="TRUE" Id="tab-hborder"/>
+    <Property ParamSpec="TRUE" Id="tab-vborder"/>
+    <Property ParamSpec="TRUE" Id="enable-popup"/>
+
+    <Property ParamSpec="FALSE" Id="pages" Name="Number of pages">
+      <Type>Integer</Type>
+	 <Tooltip>The number of pages in the notebook</Tooltip>
+	 <Parameters>
+	   <Parameter Key="Min" Value="1"/>
+	   <Parameter Key="Max" Value="100"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="1"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+      <Query>
+        <WindowTitle>New Notebook</WindowTitle>
+        <Question>Number of pages</Question>
+      </Query>
+    </Property>
 
   </Properties>
 

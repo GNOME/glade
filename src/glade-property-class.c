@@ -170,7 +170,7 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 }
 
 static GladeChoice *
-glade_property_class_get_choice_from_value (GEnumValue value)
+glade_property_class_choice_new_from_value (GEnumValue value)
 {
 	GladeChoice *choice;
 
@@ -196,7 +196,7 @@ glade_property_class_get_choices_from_spec (GParamSpec *spec)
 	num = class->n_values;
 	for (i = 0; i < num; i++) {
 		value = class->values[i];
-		choice = glade_property_class_get_choice_from_value (value);
+		choice = glade_property_class_choice_new_from_value (value);
 		if (choice)
 			list = g_list_prepend (list, choice);
 	}

@@ -41,6 +41,8 @@
 #include "glade-placeholder.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-project-window.h"
+#include "glade-catalog.h"
 #include "glade-choice.h"
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
@@ -98,9 +100,11 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 			class->placeholder_replace = glade_placeholder_replace_box;
 		if (strcmp (class->name, "GtkTable") == 0)
 			class->placeholder_replace = glade_placeholder_replace_table;
-		if ((strcmp (class->name, "GtkWindow") == 0) ||
-		    (strcmp (class->name, "GtkFrame") == 0) ||
-		    (strcmp (class->name, "GtkHandleBox") == 0))
+		if (strcmp (class->name, "GtkNotebook") == 0)
+			class->placeholder_replace = glade_placeholder_replace_notebook;
+		if ((strcmp (class->name, "GtkWindow")    == 0) ||
+		    (strcmp (class->name, "GtkFrame")     == 0) ||
+		    (strcmp (class->name, "GtkHandleBox") == 0 ))
 			class->placeholder_replace = glade_placeholder_replace_container;
 		
 		if (class->placeholder_replace == NULL)
@@ -407,3 +411,30 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 		g_print ("%02d - %s\n", i, spec->name); 
 	}
 }
+
+
+GladeWidgetClass *
+glade_widget_class_get_by_name (const gchar *name)
+{
+	GladeProjectWindow *gpw;
+	GladeWidgetClass *class;
+	GList *list;
+	
+	g_return_val_if_fail (name != NULL, NULL);
+
+	gpw = glade_project_window_get ();
+	list = gpw->catalog->widgets;
+	for (; list != NULL; list = list->next) {
+		class = list->data;
+		g_return_val_if_fail (class->name != NULL, NULL);
+		if (class->name == NULL)
+			return NULL;
+		if (strcmp (class->name, name) == 0)
+			return class;
+	}
+
+	g_warning ("Class not found by name %s\n", name);
+	
+	return NULL;
+}
+

@@ -1,3 +1,23 @@
+2001-07-15  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-property.c (glade_property_changed_choice): set the property
+
+	* src/glade-widget.c (glade_widget_new_from_class_name): implement
+	(glade_widget_new_from_class): no need to pass the project. We know
+	it from parent->project. Update all the calls to this function
+	(glade_widget_new_toplevel): impl.
+
+	* src/glade-widget-class.c (glade_widget_class_get_by_name): implement
+
+	* src/glade-placeholder.c (glade_placeholder_replace_notebook): implement
+
+	* widgets/gtknotebook.xml: add properties
+
+	* src/glade-placeholder.c (glade_placeholder_add): handle notebook
+
+	* src/glade-widget-class.c (glade_widget_class_add_virtual_methods): handle
+	gtk_notebook.
+
 2001-07-10  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-gtk.c (glade_gtk_entry_set_text): implement.
