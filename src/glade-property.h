@@ -38,9 +38,9 @@ struct _GladeProperty
 			   * of the property->input state for the loaded
 			   * widget.
 			   */
-
+#if 0
 	GladeWidget *child; /* A GladeProperty of type object has a child */
-
+#endif
 	gboolean loading;
 };
 
@@ -69,10 +69,6 @@ gunichar      glade_property_get_unichar (GladeProperty *property);
 GladeChoice * glade_property_get_enum    (GladeProperty *property);
 
 void glade_property_get_from_widget (GladeProperty *property);
-
-/* Get a GladeProperty */
-GladeProperty *glade_property_get_from_id (GList *settings_list,
-					   const gchar *id);
 
 /* XML i/o */
 GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);

@@ -95,7 +95,7 @@ glade_property_init (GladeProperty *property)
 	property->class = NULL;
 	property->value = g_new0 (GValue, 1);
 	property->enabled = TRUE;
-	property->child = NULL;
+//	property->child = NULL;
 }
 
 GladeProperty *
@@ -110,12 +110,14 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	property->class = class;
 	property->widget = widget;
 
+#if 0
 	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 		property->child = glade_widget_new_from_class (class->child,
 							       widget->project,
 							       widget);
 		return property;
 	}
+#endif
 
 	/* Create an empty default if the class does not specify a default value */
 	if (!class->def) {
@@ -150,26 +152,6 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	}
 
 	return property;
-}
-
-GladeProperty *
-glade_property_get_from_id (GList *settings_list, const gchar *id)
-{
-	GList *list;
-	GladeProperty *property;
-
-	g_return_val_if_fail (id != NULL, NULL);
-
-	for (list = settings_list; list; list = list->next) {
-		property = list->data;
-		g_return_val_if_fail (property, NULL);
-		g_return_val_if_fail (property->class, NULL);
-		g_return_val_if_fail (property->class->id, NULL);
-		if (strcmp (property->class->id, id) == 0)
-			return property;
-	}
-
-	return NULL;
 }
 
 static void
@@ -372,8 +354,10 @@ glade_property_free (GladeProperty *property)
 		g_free (property->value);
 	property->value = NULL;
 
+#if 0
 	if (property->child)
 		g_warning ("Implmenet free property->child\n");
+#endif
 
 	g_free (property);
 }

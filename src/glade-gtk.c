@@ -404,11 +404,8 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	glade_widget = glade_widget_get_from_gtk_widget (button);
 	g_return_if_fail (glade_widget != NULL);
 
-	property = glade_property_get_from_id (glade_widget->properties,
-					       "stock");
-	text = glade_property_get_from_id (glade_widget->properties,
-					   "label");
-	
+	property = glade_widget_get_property_by_id (glade_widget, "stock", FALSE);
+	text = glade_widget_get_property_by_id (glade_widget, "label", FALSE);
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (text != NULL);
 

@@ -1308,7 +1308,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		return;
 	}
 
-	property->property = glade_widget_get_property_from_class (widget, class);
+	property->property = glade_widget_get_property_by_class (widget, class);
 
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->class == property->class);

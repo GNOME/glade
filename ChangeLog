@@ -2,6 +2,13 @@
 
 	* glade-3.desktop.in: minor updates from glade-2.
 	* Makefile.am: remove .dektop file on make clean.
+	* src/glade-property.[ch]: ifdef out the ->child member since it's
+	unused.
+	* src/glade-widget.[ch]: move here the get_property_by_id function and
+	simplify the get_property_by_class. Use apply_property_from_node also
+	for packing properties.
+	* src/glade-gtk.c: fixups for the above changes.
+	* src/glade-editor.c: ditto.
 
 2003-10-31  Paolo Borelli  <pborelli@katamail.com>
 

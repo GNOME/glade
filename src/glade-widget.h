@@ -82,8 +82,12 @@ const gchar *glade_widget_get_name  (GladeWidget *widget);
 
 GladeWidgetClass *glade_widget_get_class (GladeWidget *widget);
 
-GladeProperty *glade_widget_get_property_from_class (GladeWidget *widget,
-						     GladePropertyClass *property_class);
+GladeProperty *glade_widget_get_property_by_class (GladeWidget *widget,
+						   GladePropertyClass *property_class);
+
+GladeProperty *glade_widget_get_property_by_id (GladeWidget *widget,
+						const gchar *id,
+						gboolean packing);
 
 void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 

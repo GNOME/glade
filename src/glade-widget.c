@@ -464,11 +464,9 @@ glade_widget_set_contents (GladeWidget *widget)
 	class = widget->class;
 
 	if (glade_widget_class_has_property (class, "label"))
-		property = glade_property_get_from_id (widget->properties,
-						       "label");
+		property = glade_widget_get_property_by_id (widget, "label", FALSE);
 	if (glade_widget_class_has_property (class, "title"))
-		property = glade_property_get_from_id (widget->properties,
-						       "title");
+		property = glade_widget_get_property_by_id (widget, "title", FALSE);
 
 	if (property) {
 		g_value_init (value, G_TYPE_STRING);
@@ -929,51 +927,7 @@ glade_widget_get_class (GladeWidget *widget)
 }
 
 /**
- * glade_widget_get_property_from_list:
- * @list: The list of GladeProperty
- * @class: The Class that we are trying to match with GladeProperty
- * @silent: True if we should warn when a property is not included in the list
- * 
- * Give a list of GladeProperties find the one that has ->class = to @class.
- * This function recurses into child objects if needed.
- * 
- * Return Value: 
- **/
-static GladeProperty *
-glade_widget_get_property_from_list (GList *list,
-				     GladePropertyClass *class,
-				     gboolean silent)
-{
-	GladeProperty *property = NULL;
-
-	if (list == NULL)
-		return NULL;
-
-	for (; list; list = list->next) {
-		property = list->data;
-		if (property->class == class)
-			break;
-		if (property->child != NULL) {
-			property = glade_widget_get_property_from_list (property->child->properties,
-									class, TRUE);
-			if (property != NULL)
-				break;
-		}
-	}
-
-	if (list == NULL) {
-		if (!silent)
-			g_warning ("Could not find the GladeProperty %s:%s",
-				   class->id,
-				   class->name);
-		return NULL;
-	}
-
-	return property;
-}
-
-/**
- * glade_widget_get_property_from_class:
+ * glade_widget_get_property_by_class:
  * @widget: 
  * @property_class: 
  * 
@@ -982,24 +936,56 @@ glade_widget_get_property_from_list (GList *list,
  * Return Value: 
  **/
 GladeProperty *
-glade_widget_get_property_from_class (GladeWidget *widget,
-				      GladePropertyClass *property_class)
+glade_widget_get_property_by_class (GladeWidget *widget,
+				    GladePropertyClass *property_class)
 {
 	GladeProperty *property;
 	GList *list;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
 
 	if (property_class->packing)
 		list = widget->packing_properties;
 	else
 		list = widget->properties;
 
-	property = glade_widget_get_property_from_list (list, property_class, FALSE);
+	for (; list; list = list->next) {
+		property = list->data;
+		if (property->class == property_class)
+			return property;
+	}
 
-	if (!property)
-		g_warning ("Could not get property for widget %s of %s class\n",
-			   widget->name, widget->class->name);
+	g_warning ("Could not get property for widget %s of %s class\n",
+		   widget->name, property_class->name);
+	return NULL;
+}
 
-	return property;
+GladeProperty *
+glade_widget_get_property_by_id (GladeWidget *widget,
+				 const gchar *id,
+				 gboolean packing)
+{
+	GList *list;
+	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (id != NULL, NULL);
+
+	if (packing)
+		list = widget->packing_properties;
+	else
+		list = widget->properties;
+
+	for (; list; list = list->next) {
+		property = list->data;
+		if (strcmp (property->class->id, id) == 0)
+			return property;
+	}
+
+	g_warning ("Could not get property %s for widget %s\n",
+		   id, widget->name);
+	return NULL;
 }
 
 /**
@@ -1251,7 +1237,9 @@ glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget)
 }
 
 static gboolean
-glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
+glade_widget_apply_property_from_node (GladeXmlNode *node,
+				       GladeWidget *widget,
+				       gboolean packing)
 {
 	GladeProperty *property;
 	GValue *gvalue;
@@ -1260,22 +1248,16 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 
 	id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
 	value = glade_xml_get_content (node);
-
 	if (!value || !id)
 		return FALSE;
 
 	glade_util_replace (id, '_', '-');
-	property = glade_property_get_from_id (widget->properties, id);
-
-	if (property == NULL) {
-		g_warning ("Could not apply property from node. Id :%s\n",
-			   id);
+	property = glade_widget_get_property_by_id (widget, id, packing);
+	if (!property)
 		return FALSE;
-	}
 
 	gvalue = glade_property_class_make_gvalue_from_string (property->class,
 							       value);
-
 	glade_property_set (property, gvalue);
 		
 	g_free (id);
@@ -1344,7 +1326,7 @@ glade_widget_fill_from_node (GladeXmlNode *node, GladeWidget *widget)
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
 			continue;
 
-		if (!glade_widget_apply_property_from_node (child, widget)) {
+		if (!glade_widget_apply_property_from_node (child, widget, FALSE)) {
 			g_warning ("Failed to apply property");
 			continue;
 		}
@@ -1419,7 +1401,6 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 {
 	gchar *internalchild;
 	GladeXmlNode *child_node;
-	GladeXmlNode *child_properties;
 	GladeWidget *child;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
@@ -1462,44 +1443,19 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
 	if (child_node) {
-		child_properties = glade_xml_node_get_children (child_node);
+		GladeXmlNode *property_node;
+		property_node = glade_xml_node_get_children (child_node);
 
-		for (; child_properties; child_properties = glade_xml_node_next (child_properties)) {
-			GladeProperty *property;
-			char *id;
-			char *value;
-			GValue *gvalue;
+		for (; property_node; property_node = glade_xml_node_next (property_node)) {
 
 			/* we should be on a <property ...> tag */
-			if (!glade_xml_node_verify (child_properties, GLADE_XML_TAG_PROPERTY))
+			if (!glade_xml_node_verify (property_node, GLADE_XML_TAG_PROPERTY))
 				continue;
 
-			/* the tag should have the form <property name="...id...">...value...</property>*/
-			id = glade_xml_get_property_string_required (child_properties, GLADE_XML_TAG_NAME, NULL);
-			value = glade_xml_get_content (child_properties);
-			if (!value || !id) {
-				g_warning ("Invalid property %s:%s\n", value, id);
-				g_free (value);
-				g_free (id);
+			if (!glade_widget_apply_property_from_node (property_node, child, TRUE)) {
+				g_warning ("Failed to apply packing property");
 				continue;
 			}
-
-			glade_util_replace (id, '_', '-');
-			property = glade_property_get_from_id (child->packing_properties, id);
-			if (!property) {
-				g_warning ("Could not apply property from node. Id :%s\n",
-					   id);
-				continue;
-			}
-
-			gvalue = glade_property_class_make_gvalue_from_string (property->class,
-							   		       value);
-
-			glade_property_set (property, gvalue);
-
-			g_free (value);
-			g_free (id);
-			g_free (gvalue);
 		}
 	}
 
