@@ -29,9 +29,6 @@
 #include <sys/stat.h>
 #include <string.h>
 
-#include "glade.h"
-#include "glade-xml-utils.h"
-
 #include <glib/gdir.h>
 #include <gmodule.h>
 #include <ctype.h>
@@ -39,6 +36,8 @@
 #include <gtk/gtkenums.h> /* This should go away. Chema */
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include "glade.h"
+#include "glade-xml-utils.h"
 #include "glade-placeholder.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
@@ -83,7 +82,6 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 	return retval;
 }
 
-
 static GladeWidgetClass *
 glade_widget_class_new (void)
 {
@@ -94,6 +92,7 @@ glade_widget_class_new (void)
 	class->placeholder_replace = NULL;
 	class->type = 0;
 	class->properties = NULL;
+	class->packing_properties = NULL;
 
 	return class;
 }
@@ -107,10 +106,10 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 		glade_placeholder_add_methods_to_class (class);
 }
 
-GList * 
+static GList * 
 glade_widget_class_list_signals (GladeWidgetClass *class) 
 {
-	GList *signals;
+	GList *signals = NULL;
 	GType type;
 	guint count;
 	guint *sig_ids;
@@ -119,7 +118,6 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 
 	g_return_val_if_fail (class->type != 0, NULL);
 
-	signals = NULL;
 	type = class->type;
 	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
 		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
@@ -141,8 +139,67 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
+static GList *
+glade_widget_class_list_properties (GladeWidgetClass *class)
+{
+	GladePropertyClass *property_class;
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	GType last;
+	gint n_specs = 0;
+	gint i;
+	GList *list = NULL;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
+	glade_widget_class_get_specs (class, &specs, &n_specs);
+
+	last = 0;
+	for (i = 0; i < n_specs; i++) {
+		
+		spec = specs[i];
+
+		/* We only use the writable properties */
+		if (spec->flags & G_PARAM_WRITABLE) {
+			property_class = glade_property_class_new_from_spec (spec);
+
+			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR) {
+				/* The property type is not supported.  That's not an error, as there are
+				 * several standard properties that are not supposed to be edited through
+				 * the palette (as the "attributes" property of a GtkLabel) */
+				glade_property_class_free (property_class);
+				property_class = NULL;
+				continue;
+			} else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+				/* We don't support these properties */
+				glade_property_class_free (property_class);
+				property_class = NULL;
+				continue;
+			}
+
+			/* should this if go into property_class_new_from_spec ? */
+			if (!g_ascii_strcasecmp (g_type_name (spec->owner_type), "GtkWidget") &&
+			    g_ascii_strcasecmp (spec->name, "name")) {
+				property_class->common = TRUE;
+			} else {
+				property_class->common = FALSE;
+			}
+
+			property_class->optional = FALSE;
+			property_class->update_signals = NULL;
+
+			list = g_list_prepend (list, property_class);
+		}
+	}
+
+	list = g_list_reverse (list);
+
+	return list;
+}
+
 static gboolean
-glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function_name)
+glade_widget_class_set_type (GladeWidgetClass *class,
+			     const gchar *init_function_name)
 {
 	GType type;
 
@@ -163,7 +220,6 @@ glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function
 	return TRUE;
 }
 
-		
 GladeWidgetClass *
 glade_widget_class_new_from_node (GladeXmlNode *node)
 {
@@ -179,12 +235,11 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
 
-	if (!class->name ||
-	    !class->generic_name) {
+	if (!class->name || !class->generic_name) {
 		g_warning ("Invalid XML file. Widget Class %s\n", class->name);
 		return NULL;
 	}
-	
+
 	init_function_name  = glade_xml_get_value_string (node, GLADE_TAG_GET_TYPE_FUNCTION);
 	if (!init_function_name) {
 		init_function_name = glade_widget_class_compose_get_type_func (class);
@@ -196,18 +251,17 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 		return NULL;
 	g_free (init_function_name);
 
-
 	/* <Properties> */
 	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
 	if (child == NULL)
 		return FALSE;
-	
-	class->properties = glade_property_class_list_properties (class);
+
+	class->properties = glade_widget_class_list_properties (class);
 	glade_property_class_list_add_from_node (child, class, &class->properties);
 
+	/* Signals */
 	class->signals    = glade_widget_class_list_signals (class);
 
-	
 	/* Get the flags */
 	if (glade_xml_get_boolean (node, GLADE_TAG_TOPLEVEL, FALSE))
 		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_TOPLEVEL);
@@ -336,7 +390,9 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 
 /* ParamSpec stuff */
 void
-glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
+glade_widget_class_get_specs (GladeWidgetClass *class,
+			      GParamSpec ***specs,
+			      gint *n_specs)
 {
 	GObjectClass *object_class;
 	GType type;
@@ -385,9 +441,10 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 	}
 
 	g_free (specs);
-	
+
 	return NULL;
 }
+
 /**
  * glade_widget_class_dump_param_specs:
  * @class: 
@@ -427,7 +484,6 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	g_ok_print ("\n");
 }
 
-
 /**
  * glade_widget_class_get_by_name:
  * @name: 
@@ -445,7 +501,7 @@ glade_widget_class_get_by_name (const gchar *name)
 	g_return_val_if_fail (name != NULL, NULL);
 
 	list = glade_catalog_get_widgets ();
-	for (; list != NULL; list = list->next) {
+	for (; list; list = list->next) {
 		class = list->data;
 		g_return_val_if_fail (class->name != NULL, NULL);
 		if (class->name == NULL)
@@ -458,7 +514,6 @@ glade_widget_class_get_by_name (const gchar *name)
 	
 	return NULL;
 }
-
 
 gboolean
 glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
@@ -541,3 +596,4 @@ glade_widget_class_load_packing_properties (GladeWidgetClass *class)
 
 	g_free (file_name);
 }
+

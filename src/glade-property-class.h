@@ -2,9 +2,8 @@
 #ifndef __GLADE_PROPERTY_CLASS_H__
 #define __GLADE_PROPERTY_CLASS_H__
 
-#include "glade-xml-utils.h"
-
 G_BEGIN_DECLS
+
 
 typedef enum {
 	GLADE_PROPERTY_TYPE_BOOLEAN,
@@ -102,8 +101,8 @@ typedef enum {
 #define GLADE_PROPERTY_CLASS(gpc) ((GladePropertyClass *) gpc)
 #define GLADE_IS_PROPERTY_CLASS(gpc) (gpc != NULL)
 
-struct _GladePropertyClass {
-
+struct _GladePropertyClass
+{
 	GladePropertyType type; /* The type of property from GladePropertyType
 				 */
 
@@ -188,10 +187,13 @@ struct _GladePropertyClass {
 };
 
 GladePropertyClass * glade_property_class_new (void);
+GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
+
+void glade_property_class_free (GladePropertyClass *class);
 
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
 GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
-GList     * glade_property_class_list_properties (GladeWidgetClass *class);
+
 void        glade_property_class_list_add_from_node (GladeXmlNode * node,
 						     GladeWidgetClass *class,
 						     GList **properties);
@@ -204,6 +206,7 @@ GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *prope
 						       const gchar *string);
 gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 						       const GValue *value);
+
 
 G_END_DECLS
 
