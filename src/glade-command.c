@@ -505,9 +505,11 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	glade_project_selection_clear (widget->project, FALSE);
 	glade_project_add_widget (widget->project, widget);
 
-	if (GTK_IS_WIDGET (widget->widget))
+	if (GTK_IS_WIDGET (widget->widget)) {
 		glade_project_selection_add (widget, TRUE);
-	
+		gtk_widget_show_all (GTK_WIDGET (widget->widget));
+	}
+
 	return FALSE;
 }
 
@@ -644,13 +646,15 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 {
 	glade_clipboard_paste (me->clipboard, me->placeholder);
 
+	me->placeholder = NULL;
+
 	return TRUE;
 }
 
 static gboolean
 glade_command_cut_execute (GladeCommandCutPaste *me)
 {
-	glade_clipboard_cut (me->clipboard, me->widget);
+	me->placeholder = glade_clipboard_cut (me->clipboard, me->widget);
 
 	return TRUE;
 }

@@ -25,12 +25,12 @@ struct _GladeClipboardClass {
 GType glade_clipboard_get_type ();
 GladeClipboard *glade_clipboard_new ();
 
-void glade_clipboard_cut (GladeClipboard * clipboard,
-			  GladeWidget * widget);
-void glade_clipboard_copy (GladeClipboard * clipboard,
-			   GladeWidget * widget);
-void glade_clipboard_paste (GladeClipboard * clipboard,
-			    GladePlaceholder * placeholder);
+GladePlaceholder * glade_clipboard_cut    (GladeClipboard * clipboard,
+					   GladeWidget * widget);
+void               glade_clipboard_copy   (GladeClipboard * clipboard,
+					   GladeWidget * widget);
+void               glade_clipboard_paste  (GladeClipboard * clipboard,
+					   GladePlaceholder * placeholder);
 
 G_END_DECLS
 #endif				/* __GLADE_CLIPBOARD_H__ */

@@ -112,6 +112,7 @@ glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
 	 * latest addition, to currently selected widget in the clipboard.
 	 */
 	clipboard->widgets = g_list_prepend (clipboard->widgets, widget);
+	clipboard->curr = widget;
 
 	/*
 	 * If there is view present, update it.
@@ -147,9 +148,11 @@ glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
  * 
  * Cut a GladeWidget onto the Clipboard. 
  **/
-void
+GladePlaceholder *
 glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
 {
+	GladePlaceholder *placeholder = NULL;
+
 	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
@@ -160,11 +163,13 @@ glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
 	 */
 	gtk_widget_ref (GTK_WIDGET (widget->widget));
 	if (widget->parent)
-		glade_widget_replace_with_placeholder (widget);
+		placeholder = glade_widget_replace_with_placeholder (widget);
 	else
 		gtk_widget_hide (widget->widget);
 
 	glade_clipboard_add (clipboard, widget);
+
+	return placeholder;
 }
 
 /**
@@ -246,6 +251,8 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 	 */
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show_all (GTK_WIDGET (widget->widget));
+
+	gpw->active_placeholder = NULL;
 
 	/*
 	 * Finally remove widget from clipboard.

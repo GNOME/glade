@@ -238,12 +238,19 @@ glade_clipboard_view_remove (GladeClipboardView * view,
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
+	GladeWidget *clip_widget;
 
 	g_return_if_fail (GLADE_IS_CLIPBOARD_VIEW (view));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	model = GTK_TREE_MODEL (view->model);
-	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
-	if (gtk_tree_selection_get_selected (sel, &model, &iter))
-		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+	if (gtk_tree_model_get_iter_first (model, &iter)) {
+		do {
+			gtk_tree_model_get (model, &iter, 0, &clip_widget, -1);
+			if (widget == clip_widget)
+				break;
+		} while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
 }

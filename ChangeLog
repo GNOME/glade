@@ -1,3 +1,17 @@
+2003-04-25  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_remove): remove
+	widget based on the pointer, not selection.
+
+	* src/glade-clipboard.c	(glade_clipboard_add): set clipboard->curr
+	to the widget added.
+	(glade_clipboard_cut): return placeholder.
+	(glade_clipboard_paste): set active_placeholder = NULL. Stops crashes
+	when undo/redo-ing cut/paste.
+
+	* src/glade-command.c (glade_command_create_execute): show all widgets.
+	Previously forgot to show the contents.
+
 2003-04-22  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/main.c: remove the command line that you usually get on a
