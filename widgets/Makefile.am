@@ -1,5 +1,5 @@
 catalogs_DATA = \
-	gtk-palette.xml \
+	glade-palette.xml \
 	gtk-base.xml \
 	gtk-additional.xml
 	
@@ -15,16 +15,17 @@ widgets_DATA = \
 	gtkmenubar.xml \
 	gtkmessagedialog.xml \
 	gtknotebook.xml \
+	gtkoptionmenu.xml \
 	gtkprogressbar.xml \
 	gtkradiobutton.xml \
 	gtkseparator.xml \
 	gtkspinbutton.xml \
 	gtktable.xml \
-	gtktextview.xml \
-	gtktoolbar.xml \
+	gtktogglebutton.xml \
 	gtkwidget.xml \
 	gtkwindow.xml
 
 EXTRA_DIST = \
 	$(catalogs_DATA) \
 	$(widgets_DATA)
+
