@@ -14,7 +14,7 @@ typedef struct _GladeProjectClass  GladeProjectClass;
  * memory representation of a glade file */
 struct _GladeProject
 {
-	GtkObject object; /* We emit have signals so we are a GtkObject */
+	GtkObject object; /* We emit signals */
 
 	gchar *name;         /* The name of the project like network-conf */
 	gchar *path;         /* The full path of the xml file for this project*/

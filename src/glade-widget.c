@@ -640,6 +640,7 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
+#if 1
 /* Sigh.
  * Fix, Fix, fix. Turn this off to see why this is here.
  * Add a gtkwindow and a gtkvbox to reproduce
@@ -655,6 +656,7 @@ glade_widget_ugly_hack (gpointer data)
 	
 	return FALSE;
 }
+#endif
 
 static gboolean
 glade_widget_create_gtk_widget (GladeWidget *glade_widget)
@@ -703,11 +705,12 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 			pcf (G_OBJECT (glade_widget->widget));
 
 	}
-
-		
+	
+#if 1
 	gtk_timeout_add ( 100, glade_widget_ugly_hack, glade_widget);
 	gtk_timeout_add ( 400, glade_widget_ugly_hack, glade_widget);
 	gtk_timeout_add (1000, glade_widget_ugly_hack, glade_widget);
+#endif	
 	
 	return TRUE;
 }

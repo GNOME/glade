@@ -184,6 +184,16 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (box->children));
 }
 
+static gint
+glade_widget_ugly_hack (gpointer data)
+{
+	GtkWidget *widget = data;
+	
+	gtk_widget_queue_resize (widget);
+	
+	return FALSE;
+}
+
 static void
 glade_gtk_box_set_size (GObject *object, GValue *value)
 {
@@ -213,8 +223,25 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 						     GTK_WIDGET (placeholder));
 		}
 	} else {
-		glade_implement_me ();
+		GList *childs;
+		int num = old_size;
+		int i = old_size - new_size;
+		childs = box->children;
+		for (; i > 0; i--) {
+			GtkBoxChild *box_child;
+			GladeWidget *child_widget;
+			box_child = g_list_nth_data (childs, --num);
+			child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
+			if (child_widget)
+				glade_widget_delete (child_widget);
+			gtk_container_remove (GTK_CONTAINER (box),
+					      box_child->widget);
+			g_assert (childs == box->children);
+		}
 	}
+
+	/* see glade-widget.c#ugly_hack for an explanation */
+	gtk_timeout_add ( 100, glade_widget_ugly_hack, box);
 }
 
 static void
