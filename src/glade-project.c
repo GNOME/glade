@@ -258,6 +258,13 @@ glade_project_add_widget (GladeProject *project,
 	glade_project_set_changed (project, TRUE);
 }
 
+/**
+ * Please be careful, this function removes the widget from the project,
+ * but it doesn't remove the project reference from the widget.  I.e.
+ * widget->project (and it's children ->project) is not set to NULL.
+ *
+ * We don't want to set it to NULL to the UNDO to work.
+ */
 static void
 glade_project_remove_widget_real (GladeProject *project,
 				  GladeWidget *widget)
@@ -265,13 +272,10 @@ glade_project_remove_widget_real (GladeProject *project,
 	GladeWidget *child;
 	GList *list;
 
-	widget->project = NULL;
-
 	list = widget->children;
 	for (; list; list = list->next) {
 		child = list->data;
 		glade_project_remove_widget_real (project, child);
-		child->project = NULL;
 	}
 	
 	project->selection = g_list_remove (project->selection, widget);

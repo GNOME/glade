@@ -262,16 +262,7 @@ glade_project_view_remove_item (GladeProjectView *view,
 	
 	model = GTK_TREE_MODEL (view->model);
 
-	iter = glade_project_view_find_iter_by_widget (model,
-						       widget);
-
-	if (iter) {
-		static gboolean warned = FALSE;
-		if (!warned)
-			g_print ("Update the cell. BUT HOW ??\n");
-		warned = TRUE;
-	}
-
+	iter = glade_project_view_find_iter_by_widget (model, widget);
 	gtk_tree_store_remove (view->model, iter);
 }      
 
