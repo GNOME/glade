@@ -106,35 +106,6 @@ glade_widget_new (GladeWidgetClass *class)
 	return widget;
 }
 
-static void
-glade_widget_free (GladeWidget *widget)
-{
-	GList *list;
-	
-	widget->class = NULL;
-	widget->project = NULL;
-	widget->name = NULL;
-	widget->widget = NULL;
-	widget->parent = NULL;
-
-	list = widget->properties;
-	for (; list; list = list->next)
-		glade_property_free (list->data);
-	widget->properties = NULL;
-
-	list = widget->signals;
-	for (; list; list = list->next)
-		glade_signal_free (list->data);
-	widget->signals = NULL;
-	
-	list = widget->children;
-	for (; list; list = list->next)
-		glade_widget_free (list->data);
-	widget->children = NULL;
-
-	g_free (widget);
-}
-
 /**
  * glade_widget_get_from_gtk_widget:
  * @widget: 
@@ -539,6 +510,41 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
+/**
+ * Free the GladeWidget associated to a widget. Note that this is
+ * connected to the destroy event of the corresponding GtkWidget so
+ * it does not need to recurse, since Gtk takes care of destroying
+ * all the children.
+ * You should not be calling this function explicitely, if needed
+ * just destroy widget->widget.
+ */
+static void
+glade_widget_free (GladeWidget *widget)
+{
+	GList *list;
+	
+	widget->class = NULL;
+	widget->project = NULL;
+	widget->widget = NULL;
+	widget->parent = NULL;
+
+	if (widget->name)
+		g_free (widget->name);
+	widget->name = NULL;
+
+	list = widget->properties;
+	for (; list; list = list->next)
+		glade_property_free (list->data);
+	widget->properties = NULL;
+
+	list = widget->signals;
+	for (; list; list = list->next)
+		glade_signal_free (list->data);
+	widget->signals = NULL;
+
+	g_free (widget);
+}
+
 #if 0
 /* Sigh.
  * Fix, Fix, fix. Turn this off to see why this is here.
@@ -583,7 +589,8 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	}
 
 	glade_widget->widget = widget;
-	g_signal_connect_swapped (G_OBJECT (widget), "destroy", G_CALLBACK (glade_widget_free), G_OBJECT (glade_widget));
+	g_signal_connect_swapped (G_OBJECT (widget), "destroy",
+				  G_CALLBACK (glade_widget_free), G_OBJECT (glade_widget));
 	g_object_set_data (G_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
 	/* Ugly ugly hack. Don't even remind me about it. SEND ME PATCH !! and you'll

@@ -305,7 +305,7 @@ gpw_close_cb (void)
 
 		widget = GLADE_WIDGET (list->data)->widget;
 		if (GTK_WIDGET_TOPLEVEL (widget))
-			gtk_widget_hide (widget);
+			gtk_widget_destroy (widget);
 	}
 
 	gpw->projects = g_list_remove (gpw->projects, project);
@@ -324,6 +324,9 @@ gpw_close_cb (void)
 		gtk_widget_set_sensitive (GTK_WIDGET (gpw->palette), FALSE);
 		return;
 	}
+
+	/* this is needed to prevent clearing the selection of a closed project */
+	gpw->project = NULL;
 
 	glade_project_window_set_project (gpw->projects->data);
 }
@@ -1112,8 +1115,7 @@ glade_project_window_set_project (GladeProject *project)
 	gpw->project = project;
 	gpw_refresh_title (gpw);
 
-	list = gpw->views;
-	for (; list != NULL; list = list->next) {
+	for (list = gpw->views; list; list = list->next) {
 		view = list->data;
 		glade_project_view_set_project (view, project);
 	}
