@@ -54,10 +54,15 @@ struct _GladeChoice {
 #endif	
 };
 
+GladeChoice *glade_choice_new (void);
 
-GladeChoice * glade_choice_new (void);
+GladeChoice *glade_choice_clone (GladeChoice *choice);
 
-GList * glade_choice_list_new_from_node (GladeXmlNode *node);
+void glade_choice_free (GladeChoice *choice);
+
+GList *glade_choice_list_new_from_spec (GParamSpec *spec);
+
+GList *glade_choice_list_new_from_node (GladeXmlNode *node);
 
 G_END_DECLS
 

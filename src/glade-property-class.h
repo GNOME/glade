@@ -201,8 +201,6 @@ GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_cla
 
 void glade_property_class_free (GladePropertyClass *class);
 
-GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
-
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
 GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,

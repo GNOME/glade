@@ -24,7 +24,6 @@
 
 #include "glade.h"
 #include "glade-xml-utils.h"
-
 #include "glade-choice.h"
 
 GladeChoice *
@@ -37,6 +36,30 @@ glade_choice_new (void)
 	return choice;
 }
 
+GladeChoice *
+glade_choice_clone (GladeChoice *choice)
+{
+	GladeChoice *clone;
+
+	clone = glade_choice_new ();
+	clone->id = g_strdup (choice->id);
+	clone->name = g_strdup (choice->name);
+	clone->type = choice->type;
+	clone->value = choice->value;
+
+	return clone;
+}
+
+void
+glade_choice_free (GladeChoice *choice)
+{
+	if (choice == NULL)
+		return;
+
+	g_free (choice->name);
+	g_free (choice->id);
+	g_free (choice);
+}
 
 /* This should go outside and it should be generated from ./make_enums.pl taking enums.txt
  * as input. Chema */
@@ -122,6 +145,42 @@ glade_string_from_string (const gchar *string)
 	return NULL;
 }
 #endif
+
+static GladeChoice *
+glade_choice_new_from_value (GEnumValue value)
+{
+	GladeChoice *choice;
+
+	choice = glade_choice_new ();
+	choice->name = g_strdup (value.value_nick);
+	choice->id = g_strdup (value.value_name);
+	choice->value = value.value;
+
+	return choice;
+}
+
+GList *
+glade_choice_list_new_from_spec (GParamSpec *spec)
+{
+	GladeChoice *choice;
+	GEnumClass *class;
+	GEnumValue value;
+	GList *list = NULL;
+	gint num;
+	gint i;
+
+	class = G_PARAM_SPEC_ENUM (spec)->enum_class;
+	num = class->n_values;
+	for (i = 0; i < num; i++) {
+		value = class->values[i];
+		choice = glade_choice_new_from_value (value);
+		if (choice)
+			list = g_list_prepend (list, choice);
+	}
+	list = g_list_reverse (list);
+
+	return list;
+}
 
 static GladeChoice *
 glade_choice_new_from_node (GladeXmlNode *node)

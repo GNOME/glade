@@ -37,112 +37,6 @@
 #include "glade-property-class.h"
 #include "glade-debug.h"
 
-#if 0
-typedef struct GladePropertyTypeTable {
-	const gchar *xml_tag;
-	GladePropertyType glade_type;
-	GType *g_type;
-};
-
-/* #warning Implement me. */
-#endif
-
-static GladeChoice *
-glade_property_class_choice_new_from_value (GEnumValue value)
-{
-	GladeChoice *choice;
-
-	choice = glade_choice_new ();
-	choice->name = g_strdup (value.value_nick);
-	choice->id   = g_strdup (value.value_name);
-
-	/*
-	  g_debug(("Choice Id is %s\n", choice->id));
-	  choice->symbol = g_strdup (value.value_name);
-	*/
-	
-	choice->value  = value.value;
-
-	return choice;
-}
-
-static GList *
-glade_property_class_get_choices_from_spec (GParamSpec *spec)
-{
-	GladeChoice *choice;
-	GEnumClass *class;
-	GEnumValue value;
-	GList *list = NULL;
-	gint num;
-	gint i;
-
-	class = G_PARAM_SPEC_ENUM (spec)->enum_class;
-	num = class->n_values;
-	for (i = 0; i < num; i++) {
-		value = class->values[i];
-		choice = glade_property_class_choice_new_from_value (value);
-		if (choice)
-			list = g_list_prepend (list, choice);
-	}
-	list = g_list_reverse (list);
-
-	return list;
-}
-
-static GladeChoice *
-glade_property_class_choice_clone (GladeChoice *choice)
-{
-	GladeChoice *clon;
-
-	clon = glade_choice_new ();
-	clon->id = g_strdup (choice->id);
-	clon->name = g_strdup (choice->name);
-	clon->type = choice->type;
-	clon->value = choice->value;
-
-	return clon;
-}
-
-static void
-glade_property_class_choice_free (GladeChoice *choice)
-{
-	if (choice == NULL)
-		return;
-
-	g_free (choice->name);
-	g_free (choice->id);
-	g_free (choice);
-}
-
-#if 0
-static gchar *
-glade_property_get_default_choice (GParamSpec *spec,
-				   GladePropertyClass *class)
-{
-	GladeChoice *choice = NULL;
-	GList *list;
-	gint def;
-
-	g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (spec), NULL);
-		
-	def = (gint) G_PARAM_SPEC_ENUM (spec)->default_value;
-		
-	list = class->choices;
-	for (; list != NULL; list = list->next) {
-		choice = list->data;
-		if (choice->value == def)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Could not find the default value for %s\n", spec->nick);
-		if (class->choices == NULL)
-			return NULL;
-		choice = class->choices->data;
-	}
-
-	return g_strdup (choice->symbol);
-}
-#endif
 
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
@@ -217,7 +111,7 @@ static GladePropertyQuery *
 glade_query_new_from_node (GladeXmlNode *node)
 {
 	GladePropertyQuery *query;
-	
+
 	if (!glade_xml_node_verify (node, GLADE_TAG_QUERY))
 		return NULL;
 
@@ -262,12 +156,6 @@ glade_property_class_new (void)
 	property_class = g_new0 (GladePropertyClass, 1);
 	property_class->type = GLADE_PROPERTY_TYPE_ERROR;
 	property_class->id = NULL;
-
-	/*
-	  g_debug(("New property class %d. Id:%d\n",
-	           GPOINTER_TO_INT (property_class), GPOINTER_TO_INT (property_class->id)));
-	*/
-	
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
 	property_class->parameters = NULL;
@@ -291,15 +179,9 @@ glade_property_class_clone (GladePropertyClass *property_class)
 {
 	GladePropertyClass *clon;
 
-	if (property_class == NULL)
-		return NULL;
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
 
 	clon = g_new0 (GladePropertyClass, 1);
-	if (clon == NULL)
-	{
-		g_warning ("Out of memory.");
-		return NULL;
-	}
 
 	memcpy (clon, property_class, sizeof(GladePropertyClass));
 	clon->id = g_strdup (clon->id);
@@ -330,7 +212,7 @@ glade_property_class_clone (GladePropertyClass *property_class)
 		clon->choices = g_list_copy (clon->choices);
 
 		for (choice = clon->choices; choice != NULL; choice = choice->next)
-			choice->data = glade_property_class_choice_clone ((GladeChoice*) choice->data);
+			choice->data = glade_choice_clone ((GladeChoice*) choice->data);
 	}
 
 	if (clon->query)
@@ -357,7 +239,7 @@ glade_property_class_free (GladePropertyClass *class)
 	g_free (class->def);
 	g_list_foreach (class->parameters, (GFunc) glade_parameter_free, NULL);
 	g_list_free (class->parameters);
-	g_list_foreach (class->choices, (GFunc) glade_property_class_choice_free, NULL);
+	g_list_foreach (class->choices, (GFunc) glade_choice_free, NULL);
 	g_list_free (class->choices);
 	glade_property_query_free (class->query);
 	glade_widget_class_free (class->child);
@@ -675,7 +557,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
 	switch (property_class->type) {
 	case GLADE_PROPERTY_TYPE_ENUM:
-		property_class->choices = glade_property_class_get_choices_from_spec (spec);
+		property_class->choices = glade_choice_list_new_from_spec (spec);
 		property_class->enum_type = spec->value_type;
 		break;
 	case GLADE_PROPERTY_TYPE_FLAGS:
@@ -701,110 +583,6 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
 	return property_class;
 }
-
-#if 0 // do we still need these 2 ?
-static GList *
-glade_property_class_get_parameters_from_spec (GParamSpec *spec,
-					       GladePropertyClass *class,
-					       GladeXmlNode *node)
-{
-	GList *parameters = NULL;
-	GladeXmlNode *child;
-
-	switch (class->type) {
-	case GLADE_PROPERTY_TYPE_ENUM:
-		break;
-	case GLADE_PROPERTY_TYPE_FLAGS:
-		break;
-	case GLADE_PROPERTY_TYPE_STRING:
-		break;
-	case GLADE_PROPERTY_TYPE_INTEGER:
-	case GLADE_PROPERTY_TYPE_FLOAT:
-	case GLADE_PROPERTY_TYPE_DOUBLE:
-		parameters = glade_property_get_parameters_numeric (spec, class);
-		break;
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		break;
-	case GLADE_PROPERTY_TYPE_UNICHAR:
-		break;
-	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
-		break;
-	case GLADE_PROPERTY_TYPE_OBJECT:
-		break;
-	case GLADE_PROPERTY_TYPE_ERROR:
-		break;
-	}
-
-	/* Get the parameters that are specified on the glade file,
-	 * they can overwrite gtk+ settings. For example the default
-	 * size of a GtkWindow is 0,0 which we need to overwrite.
-	 */
-	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
-	if (child != NULL)
-		parameters = glade_parameter_list_new_from_node (parameters,
-								 child);
-	
-	return parameters;
-}
-
-/**
- * glade_property_class_load_from_param_spec:
- * @name: 
- * @class: 
- * @widget_class: 
- * @node: 
- * 
- * Loads the members of @class that we get from gtk's ParamSpec
- * 
- * Return Value: 
- **/
-static gboolean
-glade_property_class_load_from_param_spec (const gchar *name,
-					   GladePropertyClass *class,
-					   GladeWidgetClass *widget_class,
-					   GladeXmlNode *node)
-{
-	GParamSpec *spec;
-	gchar *def;
-
-	spec = glade_widget_class_find_spec (widget_class, name);
-
-	if (spec == NULL) {
-		g_warning ("Could not create a property class from a param spec for *%s* with name *%s*\n",
-			   widget_class->name, name);
-		return FALSE;
-	}
-
-	class->id      = g_strdup (spec->name);
-	class->name    = g_strdup (g_param_spec_get_nick (spec));
-	class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
-	class->type    = glade_property_class_get_type_from_spec (spec);
-
-	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
-		g_free (class->id);
-		g_free (class->name);
-		g_free (class->tooltip);
-		return FALSE;
-	}
-	
-	if (class->type == GLADE_PROPERTY_TYPE_ENUM)
-		class->choices = glade_property_class_get_choices_from_spec (spec);
-
-	/* We want to use the parm spec default only when the xml files do not provide a
-	 * default value
-	 */
-	def = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-	if (def) {
-		class->def = glade_property_class_get_default (node, class);
-		g_free (def);
-	} else {
-		class->def = glade_property_class_get_default_from_spec (spec, class, node);
-	}
-	class->parameters = glade_property_class_get_parameters_from_spec (spec, class, node);
-	
-	return TRUE;
-}
-#endif
 
 /**
  * glade_property_class_update_from_node:
