@@ -150,7 +150,7 @@ glade_editor_new (void)
 
 	editor = g_object_new (GLADE_TYPE_EDITOR, NULL);
 
-	gtk_widget_set_size_request (GTK_WIDGET (editor), 350, 450);
+	/* gtk_widget_set_size_request (GTK_WIDGET (editor), 350, 450); */
 	
 	return editor;
 }
@@ -1052,7 +1052,7 @@ glade_editor_create_item_label (GladePropertyClass *class)
 	label = gtk_label_new (text);
 	g_free (text);
 
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 
 	/* we need to wrap the label in an event box to add tooltips */
 	eventbox = gtk_event_box_new ();
@@ -1069,7 +1069,7 @@ glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint ro
 /* 				   pos, pos+1, row, row +1); */
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  pos ? GTK_EXPAND | GTK_FILL : GTK_SHRINK,
+			  pos ? GTK_EXPAND | GTK_FILL : GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  2, 0);
 
@@ -1154,7 +1154,7 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 	
 	/* Name */
 	label = gtk_label_new (_("Name :"));
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 	entry = gtk_entry_new ();
 	table->name_entry = entry;
 	g_signal_connect (G_OBJECT (entry), "changed",
@@ -1177,7 +1177,7 @@ glade_editor_table_append_class_field (GladeEditorTable *table)
 	
 	/* Class */
 	label = gtk_label_new (_("Class :"));
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 	entry = gtk_entry_new ();
 	gtk_entry_set_text (GTK_ENTRY (entry), table->glade_widget_class->name);
 	gtk_editable_set_editable (GTK_EDITABLE (entry), FALSE);
