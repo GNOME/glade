@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Paolo Borelli <pborelli@katamail.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -211,6 +212,54 @@ gpw_confirm_close_project (GladeProject *project)
 
 	gtk_widget_destroy (dialog);
 	return close;
+}
+
+static void
+gpw_close_cb (void)
+{
+	GladeProjectWindow *gpw;
+	GladeProject *project;
+	gboolean close;
+	GList *list;
+
+	gpw = glade_project_window_get ();
+	project = gpw->project;
+
+	if (project == NULL)
+		return;
+
+	if (project->changed) {
+		close = gpw_confirm_close_project (project);
+			if (!close)
+				return;
+	}
+
+	gtk_item_factory_delete_entry (gpw->item_factory, &(project->entry));
+
+	for (list = project->widgets; list; list = list->next) {
+		GtkWidget *widget;
+
+		widget = GLADE_WIDGET (list->data)->widget;
+		if (GTK_WIDGET_TOPLEVEL (widget))
+			gtk_widget_destroy (widget);
+	}
+
+	gpw->projects = g_list_remove (gpw->projects, project);
+
+	/* If no more projects */
+	if (gpw->projects == NULL) {
+		for (list = gpw->views; list; list = list->next) {
+			GladeProjectView *view;
+			
+			view = GLADE_PROJECT_VIEW (list->data);
+			glade_project_view_set_project (view, NULL);
+		}
+		gpw->project = NULL;
+		glade_project_window_refresh_title (gpw);
+		return;
+	}
+	
+	glade_project_window_set_project (gpw, gpw->projects->data);
 }
 
 static void
@@ -702,31 +751,32 @@ static GtkItemFactoryEntry menu_items[] =
   { "/File/_Save",       "<control>S",        gpw_save_cb,    3, "<StockItem>", GTK_STOCK_SAVE },
   { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 4, "<StockItem>", GTK_STOCK_SAVE_AS },
   { "/File/sep2",        NULL,                NULL,           0, "<Separator>" },
-  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    5, "<StockItem>", GTK_STOCK_QUIT },
+  { "/File/_Close",      "<control>W",        gpw_close_cb,   5, "<StockItem>", GTK_STOCK_CLOSE },
+  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    6, "<StockItem>", GTK_STOCK_QUIT },
 
   /* ============ EDIT ============ */
   { "/Edit", NULL, 0, 0, "<Branch>" },
-  { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,    6, "<StockItem>", GTK_STOCK_UNDO },
-  { "/Edit/_Redo",   "<control>R", gpw_redo_cb,    7, "<StockItem>", GTK_STOCK_REDO },
+  { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,    7, "<StockItem>", GTK_STOCK_UNDO },
+  { "/Edit/_Redo",   "<control>R", gpw_redo_cb,    8, "<StockItem>", GTK_STOCK_REDO },
   { "/Edit/sep1",    NULL,         NULL,           0, "<Separator>" },
-  { "/Edit/C_ut",    NULL,         gpw_cut_cb,     8, "<StockItem>", GTK_STOCK_CUT },
-  { "/Edit/_Copy",   NULL,         gpw_copy_cb,    9, "<StockItem>", GTK_STOCK_COPY },
-  { "/Edit/_Paste",  NULL,         gpw_paste_cb,  10, "<StockItem>", GTK_STOCK_PASTE },
-  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 11, "<StockItem>", GTK_STOCK_DELETE },
+  { "/Edit/C_ut",    NULL,         gpw_cut_cb,     9, "<StockItem>", GTK_STOCK_CUT },
+  { "/Edit/_Copy",   NULL,         gpw_copy_cb,   10, "<StockItem>", GTK_STOCK_COPY },
+  { "/Edit/_Paste",  NULL,         gpw_paste_cb,  11, "<StockItem>", GTK_STOCK_PASTE },
+  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 12, "<StockItem>", GTK_STOCK_DELETE },
 
   /* ============ VIEW ============ */
   { "/View", NULL, 0, 0, "<Branch>" },
-  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     12, "<ToggleItem>" },
-  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      13, "<ToggleItem>" },
-  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 14, "<ToggleItem>" },
-  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   15, "<ToggleItem>" },
+  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     13, "<ToggleItem>" },
+  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      14, "<ToggleItem>" },
+  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 15, "<ToggleItem>" },
+  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   16, "<ToggleItem>" },
 
   /* =========== PROJECT ========== */
   { "/Project", NULL, 0, 0, "<Branch>" },
 
   /* ============ HELP ============ */
   { "/_Help",       NULL, NULL, 0, "<Branch>" },
-  { "/Help/_About", NULL, gpw_about_cb, 16 },
+  { "/Help/_About", NULL, gpw_about_cb, 17 },
 };
 
 /*
@@ -738,22 +788,23 @@ static const gchar *menu_tips[] =
 	N_("Create a new project file"),	/* action 1 (New)  */
 	N_("Open a project file"),		/* action 2 (Open) */
 	N_("Save the current project file"),	/* action 3 (Save) */
-	N_("Save the current project file with a different name"),	/* action 4 (Save as) */ 
-	N_("Quit the program"),			/* action 5 (Quit) */
+	N_("Save the current project file with a different name"),	/* action 4 (Save as) */
+	N_("Close the current project file"),	/* action 5 (Close) */
+	N_("Quit the program"),			/* action 6 (Quit) */
 
-	N_("Undo the last action"),		/* action 6  (Undo) */ 
-	N_("Redo the last action"),		/* action 7  (Redo) */
-	N_("Cut the selection"),		/* action 8  (Cut)  */
-	N_("Copy the selection"),		/* action 9  (Copy) */
-	N_("Paste the clipboard"),		/* action 10 (Paste) */
-	N_("Delete the selection"),		/* action 11 (Delete) */
+	N_("Undo the last action"),		/* action 7  (Undo) */ 
+	N_("Redo the last action"),		/* action 8  (Redo) */
+	N_("Cut the selection"),		/* action 9  (Cut)  */
+	N_("Copy the selection"),		/* action 10 (Copy) */
+	N_("Paste the clipboard"),		/* action 11 (Paste) */
+	N_("Delete the selection"),		/* action 12 (Delete) */
 
-	N_("Change the visibility of the palette of widgets"),	/* action 12 (Palette) */
-	N_("Change the visibility of the property editor"),	/* action 13 (Editor) */
-	N_("Change the visibility of the project widget tree"),	/* action 14 (Tree) */
-	N_("Change the visibility of the clipboard"),		/* action 15 (Clipboard) */
+	N_("Change the visibility of the palette of widgets"),	/* action 13 (Palette) */
+	N_("Change the visibility of the property editor"),	/* action 14 (Editor) */
+	N_("Change the visibility of the project widget tree"),	/* action 15 (Tree) */
+	N_("Change the visibility of the clipboard"),		/* action 16 (Clipboard) */
 
-	N_("About this application"),		/* action 16 (About) */
+	N_("About this application"),		/* action 17 (About) */
 };
 
 static void
@@ -983,6 +1034,8 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	GladeProjectView *view;
 	GList *list;
 
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
 	if (g_list_find (gpw->projects, project) == NULL) {
 		g_warning ("Could not set project because it could not "
 			   " be found in the gpw->project list\n");
@@ -990,11 +1043,7 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	}
 	
 	gpw->project = project;
-	if (project) {
-		glade_project_window_refresh_title (gpw);
-	} else {
-		gtk_window_set_title (GTK_WINDOW (gpw->window), "glade3");
-	}
+	glade_project_window_refresh_title (gpw);
 
 	list = gpw->views;
 	for (; list != NULL; list = list->next) {
@@ -1116,7 +1165,12 @@ void
 glade_project_window_refresh_title (GladeProjectWindow *gpw)
 {
 	gchar *title;
-	title = g_strdup_printf ("glade3 - %s", gpw->project->name);
+
+	if (gpw->project)
+		title = g_strdup_printf ("glade3 - %s", gpw->project->name);
+	else
+		title = g_strdup_printf ("glade3");
+
 	gtk_window_set_title (GTK_WINDOW (gpw->window), title);
 	g_free (title);
 }

@@ -615,6 +615,10 @@ glade_project_view_set_project (GladeProjectView *view,
 	while (gtk_tree_model_get_iter_root (model, &iter))
 		gtk_tree_store_remove (view->model, &iter);
 
+	/* if we were passed project == NULL, we are done */
+	if (project == NULL)
+		return;
+
 	view->project = project;
 	
 	glade_project_view_populate_model (view->model, view);
