@@ -144,6 +144,8 @@ struct _GladePropertyClass
 			    */
 	gboolean optional_default; /* For optional values, what the default is */
 
+	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
+	
 	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
 				  * that we need to set for this widget
 				  * for example : GtkSpinButton has a Adjustment inside
@@ -193,7 +195,6 @@ gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *prope
 gboolean glade_property_class_update_from_node (GladeXmlNode *node,
 						GladeWidgetClass *widget_class,
 						GladePropertyClass **property_class);
-
 
 G_END_DECLS
 

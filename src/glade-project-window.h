@@ -25,7 +25,8 @@ struct _GladeProjectWindow
 				       * We need it to be able to later add
 				       * items to the Project submenu
 				       */
-	GladeProject *project;         /* See glade-project */
+	GladeProject *active_project;  /* Currently active project (if there is at least one
+				        * project; then this is always valid) */
 	GtkWidget *widget_tree;        /* The widget tree window*/
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GladePalette *palette;         /* See glade-palette */
@@ -60,6 +61,7 @@ void glade_project_window_open_project (const gchar *path);
 
 void glade_project_window_refresh_undo_redo (void);
 
+GladeProject *glade_project_window_get_active_project (GladeProjectWindow *gpw);
 
 G_END_DECLS
 

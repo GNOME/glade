@@ -108,6 +108,8 @@ GladeWidget *		glade_widget_read			(GladeProject *project, GladeXmlNode *node);
 #define			glade_widget_get_from_gtk_widget(w)	g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
 GladeWidget *		glade_widget_get_parent			(GladeWidget *widget);
 
+void                    glade_widget_rebuild                    (GladeWidget *widget);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

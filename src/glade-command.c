@@ -408,8 +408,6 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 	g_assert (cmd->description);
 	g_free (value_name);
 
-	g_debug(("Pushing: %s\n", cmd->description));
-
 	glade_command_set_property_execute (GLADE_COMMAND (me));
 	glade_command_push_undo (gwidget->project, GLADE_COMMAND (me));
 }
@@ -552,6 +550,8 @@ typedef struct {
 	GladeWidget *widget;
 	GladePlaceholder *placeholder;
 	gboolean create;
+
+	gulong  handler_id;
 } GladeCommandCreateDelete;
 
 GLADE_MAKE_COMMAND (GladeCommandCreateDelete, glade_command_create_delete);
@@ -619,7 +619,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 static gboolean
 glade_command_create_delete_execute (GladeCommand *cmd)
 {
-	GladeCommandCreateDelete* me = (GladeCommandCreateDelete*) cmd;
+	GladeCommandCreateDelete *me = (GladeCommandCreateDelete*) cmd;
 	gboolean retval;
 
 	if (me->create)
@@ -643,7 +643,7 @@ glade_command_create_delete_finalize (GObject *obj)
 
 	g_object_unref (cmd->placeholder);
 	g_object_unref (cmd->widget);
-
+	
 	glade_command_finalize (obj);
 }
 
@@ -673,17 +673,15 @@ glade_command_create_delete_common (GladeWidget *widget,
  	me = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
  	cmd = GLADE_COMMAND (me);
 
- 	me->widget = widget;
- 	me->create = create;
-	me->placeholder = placeholder;
-	cmd->description = g_strdup_printf (_("%s %s"), create ? "Create" : "Delete", widget->name);
-
-	g_object_ref (G_OBJECT (widget->widget));
-
+ 	me->widget       = g_object_ref(widget);
+ 	me->create       = create;
+	me->placeholder  = placeholder;
+	cmd->description =
+		g_strdup_printf (_("%s %s"), create ?
+				 "Create" : "Delete", widget->name);
+	
 	if (placeholder)
 		g_object_ref (G_OBJECT (placeholder));
-
-	g_debug(("Pushing: %s\n", cmd->description));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)));
 		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
@@ -906,13 +904,10 @@ glade_command_cut_paste_common (GladeWidget *widget,
 	
 	gpw = glade_project_window_get ();
 
-	me->cut = cut;
-	me->widget = widget;
+	me->cut         = cut;
+	me->widget      = g_object_ref(widget);
 	me->placeholder = placeholder;
-	me->clipboard = gpw->clipboard;
-
-	if (me->widget)
-		g_object_ref (G_OBJECT (widget->widget));
+	me->clipboard   = gpw->clipboard;
 
 	if (me->placeholder)
 		g_object_ref (G_OBJECT (me->placeholder));
@@ -993,7 +988,7 @@ typedef struct {
 
 	gboolean add;
 	GladeSignal *signal;
-	GtkWidget *widget;
+	GladeWidget *widget;
 } GladeCommandAddSignal;
 
 /* standard macros */
@@ -1009,6 +1004,7 @@ glade_command_add_signal_finalize (GObject *obj)
 {
 	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (obj);
 	glade_signal_free (cmd->signal);
+
 	g_object_unref (cmd->widget);
 	glade_command_finalize (obj);
 }
@@ -1025,9 +1021,9 @@ glade_command_add_signal_execute (GladeCommand *this)
 	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (this);
 
 	if (cmd->add)
-		glade_widget_add_signal_handler (glade_widget_get_from_gtk_widget (cmd->widget), cmd->signal);
+		glade_widget_add_signal_handler (cmd->widget, cmd->signal);
 	else
-		glade_widget_remove_signal_handler (glade_widget_get_from_gtk_widget (cmd->widget), cmd->signal);
+		glade_widget_remove_signal_handler (cmd->widget, cmd->signal);
 
 	cmd->add = !cmd->add;
 	return TRUE;
@@ -1050,20 +1046,22 @@ glade_command_add_remove_signal (GladeWidget *glade_widget, const GladeSignal *s
 {
 	GladeCommandAddSignal *me = GLADE_COMMAND_ADD_SIGNAL (g_object_new (GLADE_COMMAND_ADD_SIGNAL_TYPE, NULL));
 	GladeCommand *cmd = GLADE_COMMAND (me);
-	GtkWidget *widget = glade_widget_get_widget (glade_widget);
 
 	/* we can only add/remove a signal to a widget that has been wrapped by a GladeWidget */
 	g_assert (glade_widget != NULL);
 	g_assert (glade_widget->project != NULL);
 
-	g_object_ref (widget);
-	me->widget = widget;
-	me->add = add;
-	me->signal = glade_signal_clone (signal);
+	me->widget       = g_object_ref(glade_widget);
+	me->add          = add;
+	me->signal       = glade_signal_clone (signal);
 	if (add)
-		cmd->description = g_strdup_printf (_("Add signal handler %s"), signal->handler);
+		cmd->description =
+			g_strdup_printf (_("Add signal handler %s"),
+					 signal->handler);
 	else
-		cmd->description = g_strdup_printf (_("Remove signal handler %s"), signal->handler);
+		cmd->description =
+			g_strdup_printf (_("Remove signal handler %s"),
+					 signal->handler);
 
 	if (glade_command_add_signal_execute (cmd))
 		glade_command_push_undo (glade_widget->project, cmd);

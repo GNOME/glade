@@ -10,25 +10,8 @@
 G_BEGIN_DECLS
 
 
-typedef enum {
-	GLADE_TOPLEVEL        = 1 << 2,
-	GLADE_ADD_PLACEHOLDER = 1 << 3,
-} GladeWidgetClassFlags;
-
 #define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
 #define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
-
-#define GLADE_WIDGET_FLAGS(gw)           ((GLADE_WIDGET(gw)->widget_class)->flags)
-#define GLADE_WIDGET_IS_TOPLEVEL(gw)     ((GLADE_WIDGET_FLAGS(gw) & GLADE_TOPLEVEL) != 0)
-#define GLADE_WIDGET_ADD_PLACEHOLDER(gw) ((GLADE_WIDGET_FLAGS(gw) & GLADE_ADD_PLACEHOLDER) != 0)
-
-#define GLADE_WIDGET_CLASS_FLAGS(gwc)           ((GLADE_WIDGET_CLASS(gwc)->flags))
-#define GLADE_WIDGET_CLASS_TOPLEVEL(gwc)        ((GLADE_WIDGET_CLASS_FLAGS(gwc) & GLADE_TOPLEVEL) != 0)
-#define GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(gwc) ((GLADE_WIDGET_CLASS_FLAGS(gwc) & GLADE_ADD_PLACEHOLDER) != 0)
-
-#define GLADE_WIDGET_CLASS_SET_FLAGS(gwc,flag)	  G_STMT_START{ (GLADE_WIDGET_CLASS_FLAGS (gwc) |= (flag)); }G_STMT_END
-#define GLADE_WIDGET_CLASS_UNSET_FLAGS(gwc,flag)  G_STMT_START{ (GLADE_WIDGET_CLASS_FLAGS (gwc) &= ~(flag)); }G_STMT_END
-
 
 /* GladeWidgetClass contains all the information we need regarding an widget
  * type. It is also used to store information that has been loaded to memory
@@ -47,8 +30,6 @@ struct _GladeWidgetClass
 			      * button2, buttonX ..
 			      */
 	gchar *palette_name; /* Name used in the palette */
-
-	gint flags;          /* See GladeWidgetClassFlags above */
 
 	GList *properties;   /* List of GladePropertyClass objects.
 			      * [see glade-property.h ] this list contains

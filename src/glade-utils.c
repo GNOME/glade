@@ -51,6 +51,8 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 	GtkTooltips *tooltips;
 
 	tooltips = gtk_tooltips_new ();
+	g_object_ref (G_OBJECT (tooltips));
+	gtk_object_sink (GTK_OBJECT (tooltips));
 	g_object_set_data_full (G_OBJECT (widget),
 				"tooltips", tooltips,
 				(GDestroyNotify) g_object_unref);
@@ -69,7 +71,7 @@ GType
 glade_util_get_type_from_name (const gchar *name)
 {
 	static GModule *allsymbols;
-	guint (*get_type) ();
+	GType (*get_type) ();
 	GType type;
 
 	if (!allsymbols)
@@ -88,7 +90,7 @@ glade_util_get_type_from_name (const gchar *name)
 	if (type == 0) {
 		g_warning(_("Could not get the type from \"%s"),
 			  name);
-		return FALSE;
+		return 0;
 	}
 
 /* Disabled for GtkAdjustment, but i'd like to check for this somehow. Chema */
@@ -365,7 +367,8 @@ glade_util_file_chooser_new (const gchar *title, GtkWindow *parent,
 	file_chooser = gtk_file_chooser_dialog_new (title, parent, action,
 						    GTK_STOCK_CANCEL,
 						    GTK_RESPONSE_CANCEL,
-						    action == GTK_FILE_CHOOSER_ACTION_OPEN ? GTK_STOCK_OPEN : GTK_STOCK_SAVE,
+						    action == GTK_FILE_CHOOSER_ACTION_OPEN ?
+						    GTK_STOCK_OPEN : GTK_STOCK_SAVE,
 						    GTK_RESPONSE_OK,
 						    NULL);
 
@@ -469,17 +472,21 @@ glade_util_draw_nodes (GdkWindow *window, GdkGC *gc,
 	if (width > GLADE_UTIL_SELECTION_NODE_SIZE && height > GLADE_UTIL_SELECTION_NODE_SIZE) {
 		gdk_draw_rectangle (window, gc, TRUE,
 				    x, y,
-				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+				    GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE);
 		gdk_draw_rectangle (window, gc, TRUE,
 				    x, y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+				    GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE);
 		gdk_draw_rectangle (window, gc, TRUE,
 				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE, y,
-				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+				    GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE);
 		gdk_draw_rectangle (window, gc, TRUE,
 				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE,
 				    y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+				    GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE);
 	}
 
 	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
@@ -565,34 +572,34 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
 gboolean
 glade_util_draw_nodes_idle (GdkWindow *expose_win)
 {
-	GladeWidget *expose_gwidget;
 	GtkWidget *expose_widget;
 	gint expose_win_x, expose_win_y;
 	gint expose_win_w, expose_win_h;
-	GdkWindow *expose_toplevel;
+	GladeWidget *expose_gwidget;
+	GdkWindow   *expose_toplevel;
 	GdkGC *gc;
 	GList *elem;
 
+
+	/* Find the corresponding GtkWidget and GladeWidget. */
+	gdk_window_get_user_data (expose_win, (gpointer *)&expose_widget);
+	if ((expose_gwidget = glade_widget_get_from_gtk_widget(expose_widget)) == NULL)
+	{
+		expose_gwidget = glade_util_get_parent (expose_widget);
+	}
+	g_assert(expose_gwidget);
+	
 	/* Check that the window is still alive. */
 	if (!gdk_window_is_viewable (expose_win))
 		goto out;
 
-	/* Find the corresponding GtkWidget and GladeWidget. */
-	gdk_window_get_user_data (expose_win, (gpointer*) &expose_widget);
 	gc = expose_widget->style->black_gc;
-
-	expose_gwidget = glade_widget_get_from_gtk_widget (expose_widget);
-	if (!expose_gwidget)
-		expose_gwidget = glade_util_get_parent (expose_widget);
-	if (!expose_gwidget)
-		goto out;
 
 	/* Calculate the offset of the expose window within its toplevel. */
 	glade_util_calculate_window_offset (expose_win,
 					    &expose_win_x,
 					    &expose_win_y,
 					    &expose_toplevel);
-
 
 	gdk_drawable_get_size (expose_win,
 			       &expose_win_w, &expose_win_h);
@@ -633,8 +640,8 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 
  out:
 	/* Remove the reference added in glade_util_queue_draw_nodes(). */
-	gdk_window_unref (expose_win);
-
+	g_object_unref(G_OBJECT(expose_gwidget));
+	
 	/* Return FALSE so the idle handler isn't called again. */
 	return FALSE;
 }
@@ -643,7 +650,7 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 
 /**
  * glade_util_queue_draw_nodes:
- * @window:
+ * @window: A #GdkWindow
  *
  * This function should be called whenever a widget in the interface receives 
  * an expose event. It sets up an idle function which will redraw any selection
@@ -652,16 +659,30 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 void
 glade_util_queue_draw_nodes (GdkWindow *window)
 {
+	GtkWidget   *widget;
+	GladeWidget *gwidget;
+
 	g_return_if_fail (GDK_IS_WINDOW (window));
 
-	/* We need to ref the window, to make sure it isn't freed before
-	   our idle function is called. We unref it there. */
-	gdk_window_ref (window);
+	gdk_window_get_user_data (window, (gpointer *)&widget);
+	if ((gwidget = glade_widget_get_from_gtk_widget(widget)) == NULL)
+	{
+		gwidget = glade_util_get_parent (widget);
+	}
 
-	g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
-			 (GSourceFunc) glade_util_draw_nodes_idle,
-			 window, NULL);
+	if (gwidget) {
+		g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
+				 (GSourceFunc)glade_util_draw_nodes_idle,
+				 window, NULL);
+
+		/* We need to ref the glade widget, to make sure it isn't freed before
+		 * our idle function is called. We unref it there. (ofcourse, the glade
+		 * widget holds reference to everything we need there).
+		 */
+		g_object_ref (G_OBJECT(gwidget));
+	}
 }
+
 
 /**
  * glade_util_add_nodes:
@@ -702,7 +723,8 @@ glade_util_remove_nodes (GtkWidget *widget)
 gboolean
 glade_util_has_nodes (GtkWidget *widget)
 {
-	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES)) != 0;
+	return GPOINTER_TO_INT (g_object_get_data
+				(G_OBJECT (widget), GLADE_UTIL_HAS_NODES)) != 0;
 }
 
 /**
@@ -885,8 +907,9 @@ glade_util_object_set_property (GObject *object, GladeProperty *property)
 {
 	GValue void_string = {0,};
 	GValue *value = property->value;
-
-	if (G_VALUE_HOLDS_STRING (property->value) && g_value_get_string (property->value) == NULL)
+	
+	if (G_VALUE_HOLDS_STRING (property->value) &&
+	    g_value_get_string (property->value) == NULL)
 	{
 		g_value_init (&void_string, G_TYPE_STRING);
 		g_value_set_static_string (&void_string, "");

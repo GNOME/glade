@@ -41,13 +41,25 @@ static void glade_widget_class_init			(GladeWidgetKlass *klass);
 static void glade_widget_init				(GladeWidget *widget);
 static void glade_widget_finalize			(GObject *object);
 static void glade_widget_dispose			(GObject *object);
-static void glade_widget_set_real_property		(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
-static void glade_widget_get_real_property		(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-static void glade_widget_set_class			(GladeWidget *widget, GladeWidgetClass *klass);
-static void glade_widget_real_add_signal_handler	(GladeWidget *widget, GladeSignal *signal_handler);
-static void glade_widget_real_remove_signal_handler	(GladeWidget *widget, GladeSignal *signal_handler);
-static void glade_widget_real_change_signal_handler	(GladeWidget *widget, GladeSignal *old_signal_handler, GladeSignal *new_signal_handler);
-static void glade_widget_set_packing_properties		(GladeWidget *widget, GladeWidget *container);
+static void glade_widget_set_real_property		(GObject *object,
+							 guint    prop_id,
+							 const GValue *value,
+							 GParamSpec *pspec);
+static void glade_widget_get_real_property		(GObject *object,
+							 guint prop_id,
+							 GValue *value,
+							 GParamSpec *pspec);
+static void glade_widget_set_class			(GladeWidget *widget,
+							 GladeWidgetClass *klass);
+static void glade_widget_real_add_signal_handler	(GladeWidget *widget,
+							 GladeSignal *signal_handler);
+static void glade_widget_real_remove_signal_handler	(GladeWidget *widget,
+							 GladeSignal *signal_handler);
+static void glade_widget_real_change_signal_handler	(GladeWidget *widget,
+							 GladeSignal *old_signal_handler,
+							 GladeSignal *new_signal_handler);
+static void glade_widget_set_packing_properties		(GladeWidget *widget,
+							 GladeWidget *container);
 
 enum
 {
@@ -120,22 +132,46 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 	klass->add_signal_handler = glade_widget_real_add_signal_handler;
 	klass->remove_signal_handler = glade_widget_real_remove_signal_handler;
 	klass->change_signal_handler = glade_widget_real_change_signal_handler;
+	
+	g_object_class_install_property
+		(object_class, PROP_NAME,
+		 g_param_spec_string ("name", _("Name"),
+				      _("The name of the widget"),
+				      NULL,
+				      G_PARAM_READWRITE |
+				      G_PARAM_CONSTRUCT));
+	g_object_class_install_property
+		(object_class, PROP_INTERNAL,
+		 g_param_spec_string ("internal", _("Internal name"),
+				      _("The internal name of the widget"),
+				      NULL, G_PARAM_READWRITE |
+				      G_PARAM_CONSTRUCT));
+	
+	g_object_class_install_property
+		(object_class, PROP_WIDGET,
+		 g_param_spec_object ("widget", _("Widget"),
+				      _("The gtk+ widget associated"),
+				      GTK_TYPE_WIDGET,
+				      G_PARAM_READWRITE |
+				      G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class, PROP_NAME,
-					 g_param_spec_string ("name", _("Name"), _("The name of the widget"),
-							      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-	g_object_class_install_property (object_class, PROP_INTERNAL,
-					 g_param_spec_string ("internal", _("Internal name"), _("The internal name of the widget"),
-							      NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-	g_object_class_install_property (object_class, PROP_WIDGET,
-					 g_param_spec_object ("widget", _("Widget"), _("The gtk+ widget associated"),
-							      GTK_TYPE_WIDGET, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-	g_object_class_install_property (object_class, PROP_CLASS,
-					 g_param_spec_pointer ("class", _("Class"), _("The class of the associated gtk+ widget"),
-							       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-	g_object_class_install_property (object_class, PROP_PROJECT,
-					 g_param_spec_object ("project", _("Project"), _("The glade project that this widget belongs to"),
-							      GLADE_TYPE_PROJECT, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property
+		(object_class, PROP_CLASS,
+		   g_param_spec_pointer ("class", _("Class"),
+					 _("The class of the associated"
+					   " gtk+ widget"),
+					 G_PARAM_READWRITE |
+					 G_PARAM_CONSTRUCT_ONLY));
+
+	g_object_class_install_property
+		(object_class, PROP_PROJECT,
+		 g_param_spec_object ("project", _("Project"),
+				      _("The glade project that "
+					"this widget belongs to"),
+				      GLADE_TYPE_PROJECT,
+				      G_PARAM_READWRITE |
+				      G_PARAM_CONSTRUCT));
+
 	glade_widget_signals[ADD_SIGNAL_HANDLER] =
 		g_signal_new ("add_signal_handler",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -178,7 +214,8 @@ free_signals (gpointer value)
 	if (signals == NULL)
 		return;
 
-	/* g_ptr_array_foreach (signals, (GFunc) glade_signal_free, NULL); only available in modern versions of Gtk+ */
+	/* g_ptr_array_foreach (signals, (GFunc) glade_signal_free, NULL);
+	 * only available in modern versions of Gtk+ */
 	nb_signals = signals->len;
 	for (i = 0; i < nb_signals; i++)
 		glade_signal_free (g_ptr_array_index (signals, i));
@@ -196,7 +233,10 @@ glade_widget_init (GladeWidget *widget)
 	widget->widget = NULL;
 	widget->properties = NULL;
 	widget->packing_properties = NULL;
-	widget->signals = g_hash_table_new_full (g_str_hash, g_str_equal, (GDestroyNotify) g_free, (GDestroyNotify) free_signals);
+	widget->signals = g_hash_table_new_full
+		(g_str_hash, g_str_equal,
+		 (GDestroyNotify) g_free,
+		 (GDestroyNotify) free_signals);
 }
 
 static void
@@ -241,6 +281,88 @@ glade_widget_debug (GladeWidget *widget)
 }
 
 
+/**
+ * glade_widget_build_object:
+ * @klass: a #GladeWidgetClass
+ * @widget: a #GladeWidget
+ * 
+ * This function creates a new GObject who's parameters are based
+ * on the GType of the GladeWidgetClass and its default values, if a
+ * GladeWidget is specified, it will be used to apply the values currently in use.
+ *
+ * Returns: A newly created GObject
+ */
+static GObject *
+glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
+{
+	GArray         *params;
+	GObjectClass   *oclass;
+	GParamSpec    **pspec;
+	GladeProperty  *glade_property;
+	GObject        *object;
+	gint            n_props, i;
+
+	/* As a slight optimization, we never unref the class
+	 */
+	oclass = g_type_class_ref(klass->type);
+	pspec  = g_object_class_list_properties (oclass, &n_props);
+	params = g_array_new(FALSE, FALSE, sizeof(GParameter));
+
+	for (i = 0; i < n_props; i++)
+	{
+		GParameter parameter = { 0, };
+
+		if (!glade_widget_class_has_property(klass, pspec[i]->name))
+			/* Ignore properties that are not accounted for
+			 * by the GladeWidgetClass
+			 */
+			continue;
+		
+		parameter.name       = pspec[i]->name; /* No need to dup this */
+		g_value_init(&parameter.value, pspec[i]->value_type);
+
+		/* If a widget is specified and has a value set for that
+		 * property, then that value will be used (otherwise, we
+		 * use the default value)
+		 */
+		if (widget &&
+		    (glade_property =
+		     glade_widget_get_property(widget, parameter.name)) != NULL)
+		{
+			if (g_value_type_compatible(G_VALUE_TYPE(glade_property->value),
+						    G_VALUE_TYPE(&parameter.value)))
+				g_value_copy(glade_property->value, &parameter.value);
+			else
+			{
+				g_critical("Type mismatch on %s property of %s",
+					   parameter.name, widget->widget_class->name);
+				continue;
+			}
+		}
+		else
+			g_param_value_set_default (pspec[i], &parameter.value);
+
+		g_array_append_val(params, parameter);
+	}
+	g_free(pspec);
+
+
+	/* Create the new object with the correct parameters.
+	 */
+	object = g_object_newv(klass->type, params->len,
+			       (GParameter *)params->data);
+	
+	/* Cleanup parameters
+	 */
+	for (i = 0; i < params->len; i++)
+	{
+		GParameter parameter = g_array_index(params, GParameter, i);
+		g_value_unset(&parameter.value);
+	}
+	g_array_free(params, TRUE);
+
+	return object;
+}
 
 /**
  * glade_widget_new:
@@ -254,10 +376,12 @@ glade_widget_debug (GladeWidget *widget)
 GladeWidget *
 glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 {
-	GObject *widget = g_object_new (klass->type, NULL);
+	GObject *widget;
 	GObject *glade_widget;
-	char *widget_name;
+	gchar *widget_name;
 
+	widget = glade_widget_build_object(klass, NULL);
+	
 	if (klass->pre_create_function)
 		klass->pre_create_function (G_OBJECT (widget));
 
@@ -270,13 +394,46 @@ glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 				     NULL);
 	g_free (widget_name);
 
-	if (klass->post_create_function)
-		klass->post_create_function (G_OBJECT (widget));
-	if (klass->fill_empty)
-		klass->fill_empty (GTK_WIDGET (widget));
-
 	return (GladeWidget *) glade_widget;
 }
+
+
+/**
+ * glade_widget_rebuild:
+ * @glade_widget: a #GladeWidget
+ *
+ * Replaces the current widget instance with
+ * a new one while preserving all properties children and
+ * takes care of reparenting.
+ *
+ */
+void
+glade_widget_rebuild (GladeWidget *glade_widget)
+{
+	GtkWidget        *new_widget, *old_widget;
+	GladeWidgetClass *klass = glade_widget->widget_class;
+
+	/* Clear the project selection before destroying this widget */
+	glade_project_selection_clear(glade_widget->project, TRUE);
+
+	/* Hold a reference to the old widget while we transport properties
+	 * and children from it
+	 */
+	new_widget = GTK_WIDGET(glade_widget_build_object(klass, glade_widget));
+	old_widget = g_object_ref(G_OBJECT(glade_widget_get_widget(glade_widget)));
+
+	glade_project_remove_widget(glade_widget->project, old_widget);
+
+	glade_widget_set_widget(glade_widget, new_widget);
+
+	g_object_unref(G_OBJECT(old_widget));
+	gtk_widget_show_all(new_widget);
+
+	/* Set the new widget as the current selection */
+	glade_project_add_widget(glade_widget->project, new_widget);
+	glade_project_selection_set(glade_widget->project, new_widget, TRUE);
+}
+
 
 /**
  * glade_widget_new_for_internal_child:
@@ -290,16 +447,19 @@ glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
  * Returns:
  */
 GladeWidget *
-glade_widget_new_for_internal_child (GladeWidgetClass *klass, GladeWidget *parent, GtkWidget *internal_widget, const char *internal_name)
+glade_widget_new_for_internal_child (GladeWidgetClass *klass,
+				     GladeWidget      *parent,
+				     GtkWidget        *internal_widget,
+				     const gchar      *internal_name)
 {
 	GladeProject *project = glade_widget_get_project (parent);
-	char *widget_name = glade_project_new_widget_name (project, klass->generic_name);
-	GladeWidget *widget = g_object_new (GLADE_TYPE_WIDGET,
-					    "class", klass,
-					    "project", project,
-					    "name", widget_name,
-					    "internal", internal_name,
-					    "widget", internal_widget, NULL);
+	gchar *widget_name    = glade_project_new_widget_name (project, klass->generic_name);
+	GladeWidget *widget   = g_object_new (GLADE_TYPE_WIDGET,
+					      "class", klass,
+					      "project", project,
+					      "name", widget_name,
+					      "internal", internal_name,
+					      "widget", internal_widget, NULL);
 	g_free (widget_name);
 	return widget;
 }
@@ -311,12 +471,11 @@ glade_widget_finalize (GObject *object)
 
 	g_return_if_fail (GLADE_IS_WIDGET (object));
 
-	glade_widget_class_free (widget->widget_class);
 	g_free (widget->name);
 	g_free (widget->internal);
 	g_hash_table_destroy (widget->signals);
 
-	g_print ("%s\n", __func__);
+	G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
 static void
@@ -348,7 +507,8 @@ glade_widget_dispose (GObject *object)
 		widget->packing_properties = NULL;
 	}
 
-	g_print ("%s\n", __func__);
+ 	if (G_OBJECT_CLASS(parent_class)->dispose)
+		G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
 /**
@@ -390,11 +550,14 @@ glade_widget_remove_signal_handler (GladeWidget *widget, GladeSignal *signal_han
  * TODO: write me
  */
 void
-glade_widget_change_signal_handler (GladeWidget *widget, GladeSignal *old_signal_handler, GladeSignal *new_signal_handler)
+glade_widget_change_signal_handler (GladeWidget *widget,
+				    GladeSignal *old_signal_handler,
+				    GladeSignal *new_signal_handler)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	g_signal_emit (widget, glade_widget_signals[CHANGE_SIGNAL_HANDLER], 0, old_signal_handler, new_signal_handler);
+	g_signal_emit (widget, glade_widget_signals[CHANGE_SIGNAL_HANDLER], 0,
+		       old_signal_handler, new_signal_handler);
 }
 
 static void
@@ -416,13 +579,16 @@ glade_widget_set_real_property (GObject         *object,
 		glade_widget_set_internal (widget, g_value_get_string (value));
 		break;
 	case PROP_WIDGET:
-		glade_widget_set_widget (widget, GTK_WIDGET (g_value_get_object (value)));
+		glade_widget_set_widget (widget, GTK_WIDGET
+					 (g_value_get_object (value)));
 		break;
 	case PROP_PROJECT:
-		glade_widget_set_project (widget, GLADE_PROJECT (g_value_get_object (value)));
+		glade_widget_set_project (widget, GLADE_PROJECT
+					  (g_value_get_object (value)));
 		break;
 	case PROP_CLASS:
-		glade_widget_set_class (widget, GLADE_WIDGET_CLASS (g_value_get_pointer (value)));
+		glade_widget_set_class (widget, GLADE_WIDGET_CLASS
+					(g_value_get_pointer (value)));
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -471,7 +637,7 @@ glade_widget_get_real_property (GObject         *object,
  * Sets @widget's name to @name.
  */
 void
-glade_widget_set_name (GladeWidget *widget, const char *name)
+glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	if (widget->name != name) {
@@ -487,7 +653,7 @@ glade_widget_set_name (GladeWidget *widget, const char *name)
  *
  * Returns: a pointer to @widget's name
  */
-const char *
+const gchar *
 glade_widget_get_name (GladeWidget *widget)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -502,7 +668,7 @@ glade_widget_get_name (GladeWidget *widget)
  * TODO: write me
  */
 void
-glade_widget_set_internal (GladeWidget *widget, const char *internal)
+glade_widget_set_internal (GladeWidget *widget, const gchar *internal)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	if (widget->internal != internal) {
@@ -520,7 +686,7 @@ glade_widget_set_internal (GladeWidget *widget, const char *internal)
  *
  * Returns: 
  */
-const char *
+const gchar *
 glade_widget_get_internal (GladeWidget *widget)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -612,7 +778,7 @@ glade_widget_get_project (GladeWidget *widget)
  * Returns: the #GladeProperty in @widget named @id_property
  */
 GladeProperty *
-glade_widget_get_property (GladeWidget *widget, const char *id_property)
+glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 {
 	GList *list;
 	GladeProperty *property;
@@ -674,7 +840,9 @@ glade_widget_find_inside_container (GtkWidget *widget, GladeFindInContainerData 
 }
 
 static GladeWidget *
-glade_widget_find_deepest_child_at_position (GtkContainer *toplevel, GtkContainer *container, int top_x, int top_y)
+glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
+					     GtkContainer *container,
+					     int top_x, int top_y)
 {
 	GladeFindInContainerData data;
 	data.x = top_x;
@@ -682,10 +850,12 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel, GtkContaine
 	data.toplevel = GTK_WIDGET (toplevel);
 	data.found = NULL;
 
-	gtk_container_forall (container, (GtkCallback) glade_widget_find_inside_container, &data);
+	gtk_container_forall (container, (GtkCallback)
+			      glade_widget_find_inside_container, &data);
 
 	if (data.found && GTK_IS_CONTAINER (data.found))
-		return glade_widget_find_deepest_child_at_position (toplevel, GTK_CONTAINER (data.found), top_x, top_y);
+		return glade_widget_find_deepest_child_at_position
+			(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
 	else if (data.found)
 		return glade_widget_get_from_gtk_widget (data.found);
 	else
@@ -716,7 +886,9 @@ glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 		return NULL;
 
 	gtk_widget_translate_coordinates (base, toplevel_widget, x, y, &top_x, &top_y);
-	return glade_widget_find_deepest_child_at_position (GTK_CONTAINER (toplevel_widget), GTK_CONTAINER (toplevel_widget), top_x, top_y);
+	return glade_widget_find_deepest_child_at_position
+		(GTK_CONTAINER (toplevel_widget),
+		 GTK_CONTAINER (toplevel_widget), top_x, top_y);
 }
 
 static gboolean
@@ -728,14 +900,18 @@ glade_widget_button_press (GtkWidget *widget,
 	double y = event->y;
 	GladeWidget *glade_widget;
 
-	glade_widget = glade_widget_retrieve_from_position (widget, (int) (x + 0.5), (int) (y + 0.5));
+	glade_widget = glade_widget_retrieve_from_position
+		(widget, (int) (x + 0.5), (int) (y + 0.5));
 	widget = glade_widget_get_widget (glade_widget);
 
 	/* make sure to grab focus, since we may stop default handlers */
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
-	if (event->type != GDK_BUTTON_PRESS)
+	/* Allow plugins to use shift/cntl possibilities */
+	if ((event->type != GDK_BUTTON_PRESS) ||
+	    (event->state & GDK_SHIFT_MASK) != 0 ||
+	    (event->state & GDK_CONTROL_MASK) != 0)
 		return FALSE;
 
 	if (event->button == 1)
@@ -745,6 +921,7 @@ glade_widget_button_press (GtkWidget *widget,
 			return FALSE;
 
 		glade_project_selection_set (glade_widget->project, widget, TRUE);
+
 		return TRUE;
 	}
 	else if (event->button == 3)
@@ -801,58 +978,6 @@ glade_widget_event (GtkWidget *widget,
 	return FALSE;
 }
 
-static void
-glade_widget_apply_properties (GladeWidget *glade_widget)
-{
-	GList *properties;
-	GtkWidget *widget;
-	GObject *object;
-
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
-	g_return_if_fail (glade_widget->properties != NULL);
-
-	properties = glade_widget->properties;
-	widget = glade_widget->widget;
-	object = G_OBJECT (widget);
-	g_object_freeze_notify (object);
-
-	while (properties != NULL)
-	{
-		glade_util_object_set_property (object, GLADE_PROPERTY (properties->data));
-		properties = properties->next;
-	}
-
-	g_object_thaw_notify (G_OBJECT (widget));
-}
-
-static void
-glade_widget_retrieve_properties (GladeWidget *glade_widget)
-{
-	GList *properties;
-	GtkWidget *widget;
-	GObject *object;
-
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
-	g_return_if_fail (glade_widget->properties != NULL);
-
-	properties = glade_widget->properties;
-	widget = glade_widget->widget;
-	object = G_OBJECT (widget);
-
-	while (properties != NULL)
-	{
-		GladeProperty *property = GLADE_PROPERTY (properties->data);
-		GladePropertyClass *property_class = property->class;
-
-		g_value_reset (property->value);
-		g_object_get_property (object, property_class->id, property->value);
-
-		properties = properties->next;
-	}
-
-	g_object_thaw_notify (G_OBJECT (widget));
-}
-
 /* Connects a signal handler to the 'event' signal for a widget and
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
@@ -882,61 +1007,162 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 	}
 }
 
+
+/**
+ * glade_widget_transport_children:
+ * @gwidget: A #GladeWidget
+ * @from_container: A #GtkContainer
+ * @to_container: A #GtkContainer
+ * 
+ * Transports all children from @from_container to @to_container
+ *
+ * Returns: whether any children were transported
+ */
+static gboolean
+glade_widget_transport_children (GladeWidget  *gwidget,
+				 GtkContainer *from_container,
+				 GtkContainer *to_container)
+{
+	GList *children, *l;
+	if (from_container != NULL &&
+	    (l = children =
+	     gtk_container_get_children(from_container)) != NULL)
+	{
+		while (l && l->data)
+		{
+			GtkWidget *child = (GtkWidget *)l->data;
+				
+			/* If this widget is a container, all children get a temporary
+			 * reference and are moved from the old container, to the new
+			 * container and thier child properties are applied.
+			 */
+			g_object_ref(child);
+			gtk_container_remove(GTK_CONTAINER(from_container), child);
+			gtk_container_add(GTK_CONTAINER(to_container), child);
+			glade_widget_set_packing_properties
+				(glade_widget_get_from_gtk_widget (child), gwidget);
+			g_object_unref(child);
+				
+			l = l->next;
+		}
+		g_list_free(children);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_update_parent:
+ * @gwidget: A #GladeWidget
+ * @old_widget: A #GtkWidget
+ * @new_widget: A #GtkWidget
+ *
+ * Finds @widget's parent #GladeWidget and calls the replace_child func
+ * and takes care of packing
+ *
+ * Returns: whether this widget had a parent.
+ */
+static gboolean
+glade_widget_update_parent(GladeWidget *gwidget, GtkWidget *old_widget, GtkWidget *new_widget)
+{
+	GladeWidget *parent;
+
+	/* Take care of reparenting, if needed (i.e.: if not a GtkWindow)
+	 */
+	if (old_widget && (parent = glade_util_get_parent (old_widget)) != NULL)
+	{
+		if (parent->widget_class->replace_child)
+		{
+			if (old_widget)
+				parent->widget_class->replace_child
+					(GTK_WIDGET(old_widget),
+					 GTK_WIDGET(new_widget),
+					 glade_widget_get_widget (parent));
+
+			glade_widget_set_packing_properties (gwidget, parent);
+		}
+		else
+			g_warning ("Unable to set packing properties on new instance: replace "
+				   "function has not been implemented for \"%s\"\n",
+				   parent->widget_class->name);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 /**
  * glade_widget_set_widget:
- * @glade_widget:
- * @widget_gtk:
+ * @gwidget:
+ * @new_widget:
  *
  * TODO: write me
  */
 void
-glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
+glade_widget_set_widget (GladeWidget *gwidget, GtkWidget *new_widget)
 {
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
-	g_return_if_fail (GTK_IS_WIDGET (widget_gtk));
-	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (widget_gtk), glade_widget->widget_class->type));
+	GladeWidgetClass *klass;
+	GtkWidget        *old_widget;
+	
+	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+	g_return_if_fail (GTK_IS_WIDGET (new_widget));
+	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (new_widget),
+				       gwidget->widget_class->type));
 
-	if (glade_widget->widget)
-	{
-		g_object_set_data (G_OBJECT (glade_widget->widget), "GladeWidgetDataTag", NULL);
-		g_object_unref (glade_widget->widget);
-	}
+	klass      = gwidget->widget_class;
+	old_widget = gwidget->widget;
+	
+	/* Call custom notification of widget creation in plugin */
+	if (klass->post_create_function)
+		klass->post_create_function (G_OBJECT(new_widget));
 
-	g_object_ref (widget_gtk);
-	glade_widget->widget = widget_gtk;
-	g_object_set_data (G_OBJECT (widget_gtk), "GladeWidgetDataTag", glade_widget);
+	/* Add internal reference to new widget */
+	gwidget->widget = g_object_ref (G_OBJECT(new_widget));
+	g_object_set_data (G_OBJECT (new_widget), "GladeWidgetDataTag", gwidget);
 
-	gtk_widget_add_events (widget_gtk, GDK_BUTTON_PRESS_MASK |
+	/* Take care of events and toolkit signals */
+	gtk_widget_add_events (new_widget, GDK_BUTTON_PRESS_MASK |
 					   GDK_BUTTON_RELEASE_MASK |
 					   GDK_KEY_PRESS_MASK);
 
-	if (GTK_WIDGET_TOPLEVEL (widget_gtk))
-		g_signal_connect (G_OBJECT (widget_gtk), "delete_event",
+	if (GTK_WIDGET_TOPLEVEL (new_widget))
+		g_signal_connect (G_OBJECT (new_widget), "delete_event",
 				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
-	g_signal_connect (G_OBJECT (widget_gtk), "popup_menu",
+	g_signal_connect (G_OBJECT (new_widget), "popup_menu",
 			  G_CALLBACK (glade_widget_popup_menu), NULL);
-	g_signal_connect (G_OBJECT (widget_gtk), "key_press_event",
+	g_signal_connect (G_OBJECT (new_widget), "key_press_event",
 			  G_CALLBACK (glade_widget_key_press), NULL);
 
-	glade_widget_connect_signal_handlers (widget_gtk, NULL);
+	glade_widget_connect_signal_handlers (new_widget, NULL);
 
-	if (glade_widget->internal == NULL)
+	
+	/* Take care of children
+	 */
+	if (GTK_IS_CONTAINER (new_widget) &&
+	    glade_widget_transport_children (gwidget,
+					     GTK_CONTAINER(old_widget),
+					     GTK_CONTAINER(new_widget)) == FALSE)
 	{
-		/* we should set the values of the properties of this widget 
-                 * from the default values that we gather from the class of 
-                 * this widget */
-		glade_widget_apply_properties (glade_widget);
-	}
-	else
-	{
-		GladeWidget *parent = glade_widget_get_parent (glade_widget);
-
-		/* set packing properties */
-		glade_widget_set_packing_properties (glade_widget, parent);
+		/* There we're no children to transport, call fill empty */
+		if (klass->fill_empty)
+			klass->fill_empty (new_widget);
 	}
 
-	g_object_notify (G_OBJECT (glade_widget), "widget");
+	/* Take care of reparenting and packing.
+	 */
+	if (glade_widget_update_parent(gwidget, old_widget, new_widget) == FALSE)
+	{
+		/* TODO: We have to take care of GtkWindow positioning
+		 * (in the case of parentless widgets)
+		 */
+	}
+
+	/* Remove internal reference to old widget */
+	if (old_widget) {
+		g_object_set_data (G_OBJECT (old_widget), "GladeWidgetDataTag", NULL);
+		g_object_unref (G_OBJECT (old_widget));
+	}
+	g_object_notify (G_OBJECT (gwidget), "widget");
 }
 
 /**
@@ -1002,7 +1228,9 @@ glade_widget_real_remove_signal_handler (GladeWidget *widget, GladeSignal *signa
 }
 
 static void
-glade_widget_real_change_signal_handler (GladeWidget *widget, GladeSignal *old_signal_handler, GladeSignal *new_signal_handler)
+glade_widget_real_change_signal_handler (GladeWidget *widget,
+					 GladeSignal *old_signal_handler,
+					 GladeSignal *new_signal_handler)
 {
 	GPtrArray *signals;
 	GladeSignal *tmp_signal_handler;
@@ -1037,7 +1265,8 @@ glade_widget_real_change_signal_handler (GladeWidget *widget, GladeSignal *old_s
 }
 
 GPtrArray *
-glade_widget_list_signal_handlers (GladeWidget *widget, const char *signal_name) /* array of GladeSignal* */
+glade_widget_list_signal_handlers (GladeWidget *widget,
+				   const gchar *signal_name) /* array of GladeSignal* */
 {
 	return g_hash_table_lookup (widget->signals, signal_name);
 }
@@ -1090,7 +1319,8 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		property_class = list->data;
 
 #if 0
-		if (!container_class->child_property_applies (container->widget, widget->widget, property_class->id))
+		if (!container_class->child_property_applies
+		    (container->widget, widget->widget, property_class->id))
 			continue;
 #endif
 
@@ -1148,7 +1378,8 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 		GladeProperty *property = list->data;
 
 		g_value_reset (property->value);
-		if (gtk_container_class_find_child_property (G_OBJECT_GET_CLASS (container->widget), property->class->id))
+		if (gtk_container_class_find_child_property
+		    (G_OBJECT_GET_CLASS (container->widget), property->class->id))
 			gtk_container_child_get_property (GTK_CONTAINER (container->widget),
 							  widget->widget,
 							  property->class->id,
@@ -1161,12 +1392,13 @@ glade_widget_set_packing_properties (GladeWidget *widget,
  * @old_widget: a #GtkWidget
  * @new_widget: a #GtkWidget
  * 
- * TODO: write me
+ * Replaces a GtkWidget with another GtkWidget inside a GtkContainer.
+ *
+ * Note that both GtkWidgets must be owned by a GladeWidget.
  */
 void
 glade_widget_replace (GtkWidget *old_widget, GtkWidget *new_widget)
 {
-	GladeWidget *parent = NULL;
 	GladeWidget *gnew_widget = NULL;
 	GladeWidget *gold_widget = NULL;
 	GtkWidget *real_new_widget = new_widget;
@@ -1183,19 +1415,7 @@ glade_widget_replace (GtkWidget *old_widget, GtkWidget *new_widget)
 	if (gold_widget)
 		real_old_widget = glade_widget_get_widget (gold_widget);
 
-	parent = glade_util_get_parent (old_widget);
-	g_assert (parent);
-
-	if (parent->widget_class->replace_child)
-	{
-		parent->widget_class->replace_child (real_old_widget, real_new_widget, glade_widget_get_widget (parent));
-		if (gnew_widget)
-			glade_widget_set_packing_properties (gnew_widget, parent);
-	}
-	else
-		g_warning ("Could not replace a placeholder because a replace "
-			   " function has not been implemented for \"%s\"\n",
-			   parent->widget_class->name);
+	glade_widget_update_parent(gnew_widget, old_widget, new_widget);
 }
 
 /* XML Serialization */
@@ -1249,7 +1469,8 @@ glade_widget_write (GladeWidget *widget, GladeXmlContext *context)
 
 	node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
 
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_CLASS, widget->widget_class->name);
+	glade_xml_node_set_property_string (node, GLADE_XML_TAG_CLASS,
+					    widget->widget_class->name);
 	glade_xml_node_set_property_string (node, GLADE_XML_TAG_ID, widget->name);
 
 	/* Write the properties */
@@ -1270,7 +1491,9 @@ glade_widget_write (GladeWidget *widget, GladeXmlContext *context)
 	/* Signals */
 	write_signals_context.node = node;
 	write_signals_context.context = context;
-	g_hash_table_foreach (widget->signals, glade_widget_write_signals, &write_signals_context);
+	g_hash_table_foreach (widget->signals,
+			      glade_widget_write_signals,
+			      &write_signals_context);
 
 	/* Children */
 	if (GTK_IS_CONTAINER (widget->widget)) {
@@ -1312,7 +1535,8 @@ glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget)
 		return NULL;
 
 	if (child_widget->internal)
-		glade_xml_node_set_property_string (child_tag, GLADE_XML_TAG_INTERNAL_CHILD, child_widget->internal);
+		glade_xml_node_set_property_string
+			(child_tag, GLADE_XML_TAG_INTERNAL_CHILD, child_widget->internal);
 
 	child = glade_widget_write (child_widget, context);
 	if (!child)
@@ -1456,7 +1680,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	GladeWidget *widget;
 	gchar *class_name;
 	GObject *widget_gtk;
-	char *widget_name;
+	gchar *widget_name;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return NULL;
@@ -1486,7 +1710,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	/* create the packing_properties list, without setting them */
 	if (parent)
-		widget->packing_properties = glade_widget_create_packing_properties (parent, widget);
+		widget->packing_properties =
+			glade_widget_create_packing_properties (parent, widget);
 
 	glade_widget_fill_from_node (node, widget);
 
@@ -1502,10 +1727,13 @@ static GtkWidget *
 glade_widget_get_internal_child (GladeWidget *parent,
 				 const gchar *internal)
 {
-	while (parent) {
-		if (parent->widget_class->get_internal_child) {
+	while (parent)
+	{
+		if (parent->widget_class->get_internal_child)
+		{
 			GtkWidget *widget_gtk;
-			parent->widget_class->get_internal_child (parent->widget, internal, &widget_gtk);
+			parent->widget_class->get_internal_child (parent->widget,
+								  internal, &widget_gtk);
 			return widget_gtk;
 		}
 		parent = glade_widget_get_parent (parent);
@@ -1552,7 +1780,8 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 			return FALSE;
 		}
 		child_class = glade_widget_class_get_by_name (G_OBJECT_TYPE_NAME (child_gtk));
-		child = glade_widget_new_for_internal_child (child_class, parent, child_gtk, internalchild);
+		child = glade_widget_new_for_internal_child (child_class, parent,
+							     child_gtk, internalchild);
 		g_free (internalchild);
 		glade_widget_fill_from_node (child_node, child);
 	} else {
@@ -1575,7 +1804,8 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 			if (!glade_xml_node_verify (property_node, GLADE_XML_TAG_PROPERTY))
 				continue;
 
-			if (!glade_widget_apply_property_from_node (property_node, child, TRUE)) {
+			if (!glade_widget_apply_property_from_node (property_node, child, TRUE))
+			{
 				g_warning ("Failed to apply packing property");
 				continue;
 			}

@@ -153,7 +153,8 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 	GtkTreeIter *iter;
 	GtkTreePath *path;
 
-	if (view->is_list && !GLADE_WIDGET_IS_TOPLEVEL (findme))
+	if (view->is_list &&
+	    !g_type_is_a (findme->widget_class->type, GTK_TYPE_WINDOW))
 		return;
 
 	model = GTK_TREE_MODEL (view->model);
@@ -252,8 +253,8 @@ glade_project_view_add_item (GladeProjectView *view,
 	g_return_if_fail (widget != NULL);
 
 	class = glade_widget_get_class (widget);
-	
-	if (view->is_list && !GLADE_WIDGET_CLASS_TOPLEVEL (class))
+
+	if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
 		return;
 	
 	model = view->model;
@@ -283,7 +284,7 @@ glade_project_view_remove_item (GladeProjectView *view,
 
 	class = glade_widget_get_class (widget);
 	
-	if (view->is_list && !GLADE_WIDGET_CLASS_TOPLEVEL (class))
+	if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
 		return;
 	
 	model = GTK_TREE_MODEL (view->model);
@@ -327,7 +328,7 @@ glade_project_view_selection_update (GladeProjectView *view,
 
 	class = glade_widget_get_class (widget);
 	
-	if (view->is_list && !GLADE_WIDGET_CLASS_TOPLEVEL (class))
+	if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
 		return;
 	
 	model = GTK_TREE_MODEL (view->model);

@@ -51,8 +51,8 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 {
 	gchar *title;
 
-	if (gpw->project)
-		title = g_strdup_printf ("glade3 - %s", gpw->project->name);
+	if (gpw->active_project)
+		title = g_strdup_printf ("glade3 - %s", gpw->active_project->name);
 	else
 		title = g_strdup_printf ("glade3");
 
@@ -90,7 +90,7 @@ glade_project_window_set_project (GladeProject *project)
 
 	gpw = glade_project_window_get ();
 
-	if (gpw->project == project)
+	if (gpw->active_project == project)
 		return;
 
 	if (!g_list_find (gpw->projects, project))
@@ -101,10 +101,10 @@ glade_project_window_set_project (GladeProject *project)
 	}
 
 	/* clear the selection in the previous project */
-	if (gpw->project)
-		glade_project_selection_clear (gpw->project, FALSE);
+	if (gpw->active_project)
+		glade_project_selection_clear (gpw->active_project, FALSE);
 
-	gpw->project = project;
+	gpw->active_project = project;
 	gpw_refresh_title (gpw);
 
 	for (list = gpw->views; list; list = list->next)
@@ -178,7 +178,7 @@ gpw_save_cb (void)
 	const gchar *path = NULL;
 
 	gpw = glade_project_window_get ();
-	project = gpw->project;
+	project = gpw->active_project;
 
 	if (project->path != NULL) {
 		if (glade_project_save (project, project->path)) {
@@ -222,7 +222,7 @@ gpw_save_as_cb (void)
 	const gchar *path = NULL;
 
 	gpw = glade_project_window_get ();
-	project = gpw->project;
+	project = gpw->active_project;
 
 	filechooser = glade_util_file_chooser_new (_("Save as ..."), GTK_WINDOW (gpw->window),
 						   GTK_FILE_CHOOSER_ACTION_SAVE);
@@ -349,7 +349,7 @@ gpw_close_cb (void)
 	gboolean close;
 	
 	gpw = glade_project_window_get ();
-	project = gpw->project;
+	project = gpw->active_project;
 
 	if (!project)
 		return;
@@ -365,7 +365,7 @@ gpw_close_cb (void)
 
 	/* this is needed to prevent clearing the selection of a closed project 
          */
-	gpw->project = NULL;
+	gpw->active_project = NULL;
 
 	/* If no more projects */
 	if (gpw->projects == NULL)
@@ -422,7 +422,7 @@ gpw_copy_cb (void)
 	GList *list;
 
 	gpw = glade_project_window_get ();
-	list = glade_project_selection_get (gpw->project);
+	list = glade_project_selection_get (gpw->active_project);
 	/* TODO: support multiple selected items */
 	if (list != NULL && list->next == NULL)
 	{
@@ -440,7 +440,7 @@ gpw_cut_cb (void)
 	GList *list;
 
 	gpw = glade_project_window_get ();
-	list = glade_project_selection_get (gpw->project);
+	list = glade_project_selection_get (gpw->active_project);
 	/* TODO: support multiple selected items */
 	if (list != NULL && list->next == NULL)
 	{
@@ -459,7 +459,7 @@ gpw_paste_cb (void)
 
 	gpw = glade_project_window_get ();
 
-	selection = glade_project_selection_get (gpw->project);
+	selection = glade_project_selection_get (gpw->active_project);
 	if (selection != NULL && selection->next == NULL && GLADE_IS_PLACEHOLDER (selection->data))
 		glade_command_paste (GLADE_PLACEHOLDER (selection->data));
 }
@@ -470,16 +470,15 @@ gpw_delete_cb (void)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	if (!gpw->project)
+	if (!gpw->active_project)
 	{
 		g_warning ("delete should not be sensitive: we don't have a project");
 		return;
 	}
 
 	/* glade_util_delete_selection performs a glade_command_delete
-	 * on each of the selected widgets 
-         */
-	glade_util_delete_selection (gpw->project);
+	 * on each of the selected widgets */
+	glade_util_delete_selection (gpw->active_project);
 }
 
 static void
@@ -488,13 +487,13 @@ gpw_undo_cb (void)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	if (!gpw->project)
+	if (!gpw->active_project)
 	{
 		g_warning ("undo should not be sensitive: we don't have a project");
 		return;
 	}
 
-	glade_command_undo (gpw->project);
+	glade_command_undo (gpw->active_project);
 
 	glade_project_window_refresh_undo_redo ();
 }
@@ -505,13 +504,13 @@ gpw_redo_cb (void)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	if (!gpw->project)
+	if (!gpw->active_project)
 	{
 		g_warning ("redo should not be sensitive: we don't have a project");
 		return;
 	}
 
-	glade_command_redo (gpw->project);
+	glade_command_redo (gpw->active_project);
 
 	glade_project_window_refresh_undo_redo ();
 }
@@ -543,9 +542,9 @@ gpw_palette_button_clicked (GladePalette *palette, gpointer not_used)
 	class = palette->current;
 
 	/* class may be NULL if the selector was pressed */
-	if (class && GLADE_WIDGET_CLASS_TOPLEVEL (class))
+	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
 	{
-		glade_command_create (class, NULL, gpw->project);
+		glade_command_create (class, NULL, gpw->active_project);
 		gpw->add_class = NULL;
 	}
 	else
@@ -719,7 +718,7 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
 	gpw->views = g_list_prepend (gpw->views, view);
-	glade_project_view_set_project (view, gpw->project);
+	glade_project_view_set_project (view, gpw->active_project);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
 					GTK_POLICY_NEVER, GTK_POLICY_NEVER);
@@ -1139,8 +1138,10 @@ gpw_construct_statusbar (GladeProjectWindow *gpw)
 
 	statusbar = gtk_statusbar_new ();
 	gpw->statusbar = statusbar;
-	gpw->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "menu");
-	gpw->statusbar_actions_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "actions");
+	gpw->statusbar_menu_context_id =
+		gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "menu");
+	gpw->statusbar_actions_context_id =
+		gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "actions");
 
 	return statusbar;
 }
@@ -1301,7 +1302,7 @@ gpw_project_selection_changed_cb (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
 
-	if (gpw->project != project)
+	if (gpw->active_project != project)
 	{
 		glade_project_window_set_project (project);
 		return;
@@ -1312,7 +1313,9 @@ gpw_project_selection_changed_cb (GladeProject *project,
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
-			glade_editor_load_widget (gpw->editor, glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data)));
+			glade_editor_load_widget (gpw->editor,
+						  glade_widget_get_from_gtk_widget
+						  (GTK_WIDGET (list->data)));
 		else
 			glade_editor_load_widget (gpw->editor, NULL);
 	}
@@ -1486,7 +1489,7 @@ glade_project_window_refresh_undo_redo (void)
 
 	gpw = glade_project_window_get ();
 
-	project = gpw->project;
+	project = gpw->active_project;
 	if (!project)
 	{
 		undo_item = NULL;
@@ -1525,4 +1528,10 @@ glade_project_window_show_all (void)
 	gtk_widget_show_all (gpw->window);
 	gpw_show_palette (gpw);
 	gpw_show_editor (gpw);
+}
+
+GladeProject *
+glade_project_window_get_active_project (GladeProjectWindow *gpw)
+{
+	return gpw->active_project;
 }

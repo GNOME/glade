@@ -26,6 +26,8 @@
 #include <gtk/gtk.h>
 #include "glade-plugin.h"
 
+#include "../pixmaps/fixed_bg.xpm"
+
 /* Borrow from libgnome/libgnome.h */
 #ifdef ENABLE_NLS
 #    include <libintl.h>
@@ -57,6 +59,11 @@
 #define GLADEGTK_API
 #endif
 
+/* ------------------------------------ Constants ------------------------------ */
+#define FIXED_DEFAULT_CHILD_WIDTH  100
+#define FIXED_DEFAULT_CHILD_HEIGHT 60
+
+/* ------------------------------------ Custom Properties ------------------------------ */
 /**
  * glade_gtk_option_menu_set_items:
  * @object:
@@ -108,7 +115,7 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
  *
  * TODO: write me
  */
-int GLADEGTK_API
+gint GLADEGTK_API
 glade_gtk_widget_condition (GladeWidgetClass *klass)
 {
 	GtkObject *object = (GtkObject*)g_object_new (klass->type, NULL);
@@ -326,7 +333,8 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 		/* The box has grown. Add placeholders */
 		while (new_size > old_size)
 		{
-			GladePlaceholder *placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
+			GladePlaceholder *placeholder =
+				GLADE_PLACEHOLDER (glade_placeholder_new ());
 			gtk_container_add (GTK_CONTAINER (box), GTK_WIDGET (placeholder));
 			old_size++;
 		}
@@ -344,7 +352,8 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 
 			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
 			if (glade_widget) /* it may be NULL, e.g a placeholder */
-				glade_project_remove_widget (glade_widget->project, child_widget);
+				glade_project_remove_widget
+					(glade_widget->project, child_widget);
 
 			gtk_container_remove (GTK_CONTAINER (box), child_widget);
 
@@ -418,7 +427,8 @@ glade_gtk_toolbar_set_size (GObject *object, GValue *value)
 
 			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
 			if (glade_widget)
-				glade_project_remove_widget (glade_widget->project, child_widget);
+				glade_project_remove_widget
+					(glade_widget->project, child_widget);
 
 			gtk_container_remove (GTK_CONTAINER (toolbar), child_widget);
 
@@ -478,7 +488,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	if (new_size > old_size) {
 		/* The notebook has grown. Add a page. */
 		while (new_size > old_size) {
-			GladePlaceholder *placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
+			GladePlaceholder *placeholder =
+				GLADE_PLACEHOLDER (glade_placeholder_new ());
 			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
 						  GTK_WIDGET (placeholder),
 						  NULL);
@@ -504,7 +515,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 			 * from project.
 			 */
 			if (child_gwidget)
-				glade_project_remove_widget (child_gwidget->project, child_widget);
+				glade_project_remove_widget
+					(child_gwidget->project, child_widget);
 
 			gtk_notebook_remove_page (notebook, old_size-1);
 			old_size--;
@@ -524,9 +536,9 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
 	GtkTable *table;
-	int new_size;
-	int old_size;
-	int i, j;
+	gint new_size;
+	gint old_size;
+	gint i, j;
 
 	table = GTK_TABLE (object);
 	g_return_if_fail (GTK_IS_TABLE (table));
@@ -548,19 +560,22 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 
 			for (i = 0; i < table->ncols; i++)
 				for (j = old_size; j < table->nrows; j++)
-					gtk_table_attach_defaults (table, glade_placeholder_new (),
+					gtk_table_attach_defaults
+						(table, glade_placeholder_new (),
 								   i, i + 1, j, j + 1);
 		} else {
 			gtk_table_resize (table, table->nrows, new_size);
 
 			for (i = old_size; i < table->ncols; i++)
 				for (j = 0; j < table->nrows; j++)
-					gtk_table_attach_defaults (table, glade_placeholder_new (),
+					gtk_table_attach_defaults
+						(table, glade_placeholder_new (),
 								   i, i + 1, j, j + 1);
 		}
 	} else {
 		/* Remove from the bottom up */
-		GList *list = g_list_reverse (gtk_container_get_children (GTK_CONTAINER (table)));
+		GList *list = g_list_reverse
+			(g_list_copy (gtk_container_get_children (GTK_CONTAINER (table))));
 		GList *freeme = list;
 		for (; list; list = list->next) {
 			GtkTableChild *child = list->data;
@@ -574,11 +589,13 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 				continue;
 			}
 
-			/* If the widget spans beyond the new border, we should resize it to fit on the new table */
+			/* If the widget spans beyond the new border,
+			 * we should resize it to fit on the new table */
 			if (end > new_size)
-				gtk_container_child_set (GTK_CONTAINER (table), GTK_WIDGET (child),
-							 for_rows ? "bottom_attach" : "right_attach",
-							 new_size, NULL);
+				gtk_container_child_set
+					(GTK_CONTAINER (table), GTK_WIDGET (child),
+					 for_rows ? "bottom_attach" : "right_attach",
+					 new_size, NULL);
 			
 		}
 		g_list_free (freeme);
@@ -587,7 +604,9 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 				  for_rows ? table->ncols : new_size);
 	}
 
-	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size * (for_rows ? table->ncols : table->nrows)));
+	g_object_set_data (object, "glade_nb_placeholders",
+			   GINT_TO_POINTER
+			   (new_size * (for_rows ? table->ncols : table->nrows)));
 }
 
 /**
@@ -790,22 +809,25 @@ glade_gtk_tree_view_pre_create (GObject *object)
 	g_object_unref (G_OBJECT (store));
 
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes ("Column 1", renderer, "text", 0, NULL);
+	column = gtk_tree_view_column_new_with_attributes
+		("Column 1", renderer, "text", 0, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes ("Column 2", renderer, "text", 1, NULL);
+	column = gtk_tree_view_column_new_with_attributes
+		("Column 2", renderer, "text", 1, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 }
 
 /* ------------------------- Post Create functions ------------------------- */
-static int
-ask_for_number (const char *title, const char *name, int min, int max, int def)
+static gint
+ask_for_number (const gchar *title, const gchar *name, gint min, gint max, gint def)
 {
-	int number;
-	GtkWidget *dialog = gtk_dialog_new_with_buttons (title, NULL,
-							 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR,
-							 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+	gint number;
+	GtkWidget *dialog = gtk_dialog_new_with_buttons
+		(title, NULL,
+		 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR,
+		 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
 	GtkWidget *label = gtk_label_new (name);
 	GtkWidget *spin_button = gtk_spin_button_new_with_range ((double) min, (double) max, 1.0);
 	GtkWidget *hbox = gtk_hbox_new (FALSE, 4);
@@ -826,7 +848,9 @@ ask_for_number (const char *title, const char *name, int min, int max, int def)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox, TRUE, TRUE, 4);
 
 	gtk_widget_show_all (hbox);
-	/* even if the user destroys the dialog box, we retrieve the number and we accept it.  I.e., this function never fails */
+
+	/* even if the user destroys the dialog box, we retrieve the number and we accept it.
+	 * I.e., this function never fails */
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
 	number = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin_button));
@@ -845,11 +869,14 @@ ask_for_number (const char *title, const char *name, int min, int max, int def)
 void GLADEGTK_API
 glade_gtk_box_post_create (GObject *object)
 {
-	GladeProperty *property = glade_widget_get_property (glade_widget_get_from_gtk_widget (object), "size");
+	GladeProperty *property =
+		glade_widget_get_property
+		(glade_widget_get_from_gtk_widget (object), "size");
 	GValue value = {0,};
 
 	g_value_init (&value, G_TYPE_INT);
-	g_value_set_int (&value, ask_for_number(_("Create a box"), _("Number of items:"), 0, 10000, 3));
+	g_value_set_int (&value, ask_for_number(_("Create a box"),
+						_("Number of items:"), 0, 10000, 3));
 
 	glade_property_set (property, &value);
 }
@@ -863,13 +890,90 @@ glade_gtk_box_post_create (GObject *object)
 void GLADEGTK_API
 glade_gtk_notebook_post_create (GObject *object)
 {
-	GladeProperty *property = glade_widget_get_property (glade_widget_get_from_gtk_widget (object), "size");
 	GValue value = {0,};
-
 	g_value_init (&value, G_TYPE_INT);
-	g_value_set_int (&value, ask_for_number(_("Create a notebook"), _("Number of pages:"), 0, 100, 3));
+	g_value_set_int (&value, ask_for_number(_("Create a notebook"),
+						_("Number of pages:"), 0, 100, 3));
+}
 
-	glade_property_set (property, &value);
+static gboolean
+glade_gtk_fixed_button_press (GtkWidget       *widget,
+			      GdkEventButton  *event,
+			      gpointer         user_data)
+{
+	GladeProjectWindow *gpw;
+	
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
+	{
+		gpw = glade_project_window_get ();
+		if (gpw->add_class != NULL)
+		{
+			GtkWidget *placeholder = glade_placeholder_new ();
+			GList     *selection;
+			/* A widget type is selected in the palette.
+			 * Create a placeholder at the mouse position and
+			 * add a new widget of that type with a default
+			 * size request.
+			 */
+			gtk_fixed_put(GTK_FIXED(widget), placeholder,
+				      (gint)event->x, (gint)event->y);
+
+			glade_command_create (gpw->add_class,
+					      GLADE_PLACEHOLDER(placeholder), NULL);
+
+			selection = glade_project_selection_get
+				(glade_project_window_get_active_project(gpw));
+			gtk_widget_set_size_request(GTK_WIDGET(selection->data),
+						    FIXED_DEFAULT_CHILD_WIDTH,
+						    FIXED_DEFAULT_CHILD_HEIGHT);
+
+			
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+void
+glade_gtk_fixed_finalize(GdkPixmap *backing)
+{
+	g_object_unref(backing);
+}
+
+void
+glade_gtk_fixed_realize (GtkWidget *widget)
+{
+	GdkPixmap *backing =
+		gdk_pixmap_colormap_create_from_xpm_d (NULL, gtk_widget_get_colormap (widget),
+						       NULL, NULL, fixed_bg_xpm);
+	gdk_window_set_back_pixmap (widget->window, backing, FALSE);
+	/* For cleanup later
+	 */
+	g_object_weak_ref(G_OBJECT(widget), (GWeakNotify)glade_gtk_fixed_finalize, backing);
+}
+
+void GLADEGTK_API
+glade_gtk_fixed_post_create (GObject *object)
+{
+	/* Only widgets with windows can recieve
+	 * mouse events
+	 */
+	GTK_WIDGET_UNSET_FLAGS(object, GTK_NO_WINDOW);
+	gtk_widget_add_events(GTK_WIDGET(object),
+			      GDK_BUTTON_PRESS_MASK |
+			      GDK_BUTTON_RELEASE_MASK |
+			      GDK_ENTER_NOTIFY_MASK |
+			      GDK_LEAVE_NOTIFY_MASK);
+
+	/* For backing pixmap
+	 */
+	g_signal_connect_after(object, "realize",
+			       G_CALLBACK(glade_gtk_fixed_realize), NULL);
+	
+	/* Menu will be activated on mouse clicks
+	 */
+	g_signal_connect(object, "button-press-event",
+			 G_CALLBACK(glade_gtk_fixed_button_press), NULL);
 }
 
 /**
@@ -886,9 +990,12 @@ glade_gtk_table_post_create (GObject *object)
 	GladeProperty *property_cols = glade_widget_get_property (widget, "n-columns");
 	GValue gvrows = {0,};
 	GValue gvcols = {0,};
-	GtkWidget *dialog = gtk_dialog_new_with_buttons (_("Create a table"), NULL,
-							 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR,
-							 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+	GtkWidget *dialog =
+		gtk_dialog_new_with_buttons (_("Create a table"), NULL,
+					     GTK_DIALOG_MODAL |
+					     GTK_DIALOG_DESTROY_WITH_PARENT |
+					     GTK_DIALOG_NO_SEPARATOR,
+					     GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
 	GtkWidget *label_rows = gtk_label_new (_("Number of rows:"));
 	GtkWidget *label_cols = gtk_label_new (_("Number of columns:"));
 	GtkWidget *spin_button_rows = gtk_spin_button_new_with_range (0.0, 10000.0, 1.0);
@@ -922,11 +1029,14 @@ glade_gtk_table_post_create (GObject *object)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table, TRUE, TRUE, 0);
 
 	gtk_widget_show_all (table);
-	/* even if the user destroys the dialog box, we retrieve the number and we accept it.  I.e., this function never fails */
+	/* even if the user destroys the dialog box, we retrieve the number and we accept it.
+	 * I.e., this function never fails */
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
-	g_value_set_int (&gvrows, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin_button_rows)));
-	g_value_set_int (&gvcols, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin_button_cols)));
+	g_value_set_int (&gvrows, gtk_spin_button_get_value_as_int
+			 (GTK_SPIN_BUTTON (spin_button_rows)));
+	g_value_set_int (&gvcols, gtk_spin_button_get_value_as_int
+			 (GTK_SPIN_BUTTON (spin_button_cols)));
 
 	glade_property_set (property_rows, &gvrows);
 	glade_property_set (property_cols, &gvcols);
@@ -984,9 +1094,13 @@ glade_gtk_dialog_post_create (GObject *object)
 	if (!child_class)
 		return;
 
-	gtk_box_pack_start (GTK_BOX (dialog->action_area), GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (dialog->action_area), GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
-	actionarea_widget = glade_widget_new_for_internal_child (child_class, vbox_widget, dialog->action_area, "action_area");
+	gtk_box_pack_start (GTK_BOX (dialog->action_area),
+			    GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (dialog->action_area),
+			    GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
+	actionarea_widget =
+		glade_widget_new_for_internal_child
+		(child_class, vbox_widget, dialog->action_area, "action_area");
 	if (!actionarea_widget)
 		return;
 
@@ -1056,30 +1170,35 @@ glade_gtk_container_replace_child (GtkWidget *current,
 	if (current->parent != container)
 		return;
 
-	param_spec = gtk_container_class_list_child_properties (G_OBJECT_GET_CLASS (container), &nproperties);
-	value = calloc (nproperties, sizeof (GValue));
-	if (nproperties != 0 && (param_spec == 0 || value == 0))
-		// TODO: Signal the not enough memory condition
-		return;
+	param_spec = gtk_container_class_list_child_properties
+		(G_OBJECT_GET_CLASS (container), &nproperties);
+	value = g_malloc0 (sizeof(GValue) * nproperties);
 
 	for (i = 0; i < nproperties; i++) {
 		g_value_init (&value[i], param_spec[i]->value_type);
-		gtk_container_child_get_property (GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
+		gtk_container_child_get_property
+			(GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
 	}
 
 	gtk_container_remove (GTK_CONTAINER (container), current);
 	gtk_container_add (GTK_CONTAINER (container), new);
 
-	for (i = 0; i < nproperties; i++)
-		gtk_container_child_set_property (GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
-
+	for (i = 0; i < nproperties; i++) {
+		gtk_container_child_set_property
+			(GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
+	}
+	
 	for (i = 0; i < nproperties; i++)
 		g_value_unset (&value[i]);
 
 	g_free (param_spec);
-	free (value);
+	g_free (value);
 
 #if 0
+	/* If there is still no reason to keep this around come release
+	 * time, kill it.
+	 */
+
 	gtk_widget_unparent (child_info->widget);
 	child_info->widget = new;
 	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
@@ -1156,8 +1275,16 @@ void GLADEGTK_API
 glade_gtk_container_fill_empty (GObject *container)
 {
 	g_return_if_fail (GTK_IS_CONTAINER (container));
-
+	
 	gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
+}
+
+void GLADEGTK_API
+glade_gtk_fixed_fill_empty (GObject *fixed)
+{
+	/* This is here purly to override `glade_gtk_container_fill_empty()'
+	 * there is to be no placeholder by default.
+	 */
 }
 
 /**
@@ -1238,7 +1365,8 @@ glade_gtk_dialog_child_property_applies (GtkWidget *ancestor,
 
 	if (strcmp(property_id, "response-id") == 0)
 	{
-		if (GTK_IS_HBUTTON_BOX (widget->parent) && GTK_IS_VBOX (widget->parent->parent) &&
+		if (GTK_IS_HBUTTON_BOX (widget->parent) &&
+		    GTK_IS_VBOX (widget->parent->parent) &&
 		    widget->parent->parent->parent == ancestor)
 			return TRUE;
 	}

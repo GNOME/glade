@@ -5,6 +5,8 @@
 #include "glade-widget-class.h"
 #include "glade-widget.h"
 #include "glade-project.h"
+#include "glade-project-window.h"
+#include "glade-command.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-choice.h"

@@ -1,3 +1,52 @@
+2004-10-22  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* src/glade-gtk.c: Added functionality for GtkFixed (also replaced some 
+	  ints with gints and chopped down some lines).
+
+	* src/glade-plugin.h: Added some headers for the plugin (needed for
+	  GtkFixed)
+
+	* src/glade-popup.c,src/glade-project.c: Replaced reference to 
+	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on 
+	  GladeWidgetClass).
+
+	* src/glade-project-view.c: Replaced reference to 
+	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on 
+	  GladeWidgetClass).
+
+	* src/glade-project-window.[ch]: Replace gpw->project with 
+	  gpw->active_project and added 
+	  glade_project_window_get_active_project() for clarity's sake.
+
+	* src/glade-property-class.h: Added construct_only as a quick reference 
+	  (to G_PARAM_CONSTRUCT_ONLY).
+
+	* src/glade-property.c: glade_property_set() will now check for 
+	  construct_only and call glade_widget_rebuild_instance() if needed.
+
+	* src/glade-utils.c: fixed the queue_nodes code to add a reference on 
+	  the GladeWidget pertaining to the expose event, since the code 
+	  depends on the existance of the GladeWidget, the GtkWidget and the 
+	  GdkWindow as opposed to only the GdkWindow 
+
+	* src/glade-widget-class.c: Update construct_only tab upon construction 
+	  of GladePropertyClass structs. Removed set of depricated flags on 
+	  GladeWidgetClass.
+
+	* src/glade-widget-class.h: Removed depricated flag macro definitions 
+	  (and removed the flags)
+
+	* src/glade-widget.c:
+	- Fixed Segfaults (Removed glade_widget_class_free() in finalize)
+	- Objects are now built with thier properties as paramaters of 
+	  g_object_newv
+	- Added glade_widget_rebuild_instance for the purpose of changing 
+	  properties that are flagged as G_PARAM_CONSTRUCT_ONLY.
+
+	* pixmaps/fixed_bg.xpm: New picture for background of GtkFixed.
+
+	* widgets/gtkfixed.xml,widgets/Makefile.am: Add definition of GtkFixed.
+
 2004-10-06  Morten Welinder  <terra@gnome.org>
 
 	* widgets/gtkradiobutton.xml: Define the group property.

@@ -162,7 +162,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (value != NULL);
-
+	
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
 		g_warning ("Trying to assign an incompatible value to property %s\n",
@@ -178,14 +178,20 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	property->loading = TRUE;
 
-	/* if there is a custom set_property, use it */
-	if (property->class->set_function)
+	/* Assign property first so that; if the object need be
+	 * rebuilt, it will reflect the new value
+	 */
+	g_value_reset (property->value);
+	g_value_copy (value, property->value);
+
+	if (property->class->construct_only)
+		/* if we cant set it, rebuild it */
+		glade_widget_rebuild (property->widget);
+	else if (property->class->set_function)
+		/* if there is a custom set_property, use it */
 		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
 	else
 		glade_property_set_property (property, value);
-
-	g_value_reset (property->value);
-	g_value_copy (value, property->value);
 
 	property->loading = FALSE;
 }
