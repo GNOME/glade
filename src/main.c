@@ -37,11 +37,14 @@
 
 #include <locale.h>
 #include <gmodule.h>
-#include <stdlib.h> /* __argc & __argv on the windows build */
 #ifdef G_OS_UNIX
 #include <popt.h>
 
 static GList * parse_command_line (poptContext);
+#endif
+
+#ifdef G_OS_WIN32
+#include <stdlib.h> /* __argc & __argv on the windows build */
 #endif
 
 gchar * widget_name = NULL;
@@ -80,7 +83,10 @@ glade_init ()
 			     "for glade to work"));
 		return FALSE;
 	}
-			
+
+	/* register transformation functions */
+	glade_register_transformations ();
+
 	/*
 	 * 1. Init the cursors
 	 * 2. Create the catalog

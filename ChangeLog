@@ -1,3 +1,19 @@
+2003-05-14  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-widget.c: Change the way we load containers.  Instead of
+	creating the container, then filling it with placeholders, and then
+	replace selectively the placeholders by the children we find on the
+	xml file, we create the container, add the children we find, and
+	we complete with placeholders.  At the same time, I changed the
+	requeriments on the xml file to remain compatible with glade-2 format.
+	* src/glade.h: Added GLADE_XML_TAG_PLACEHOLDER to keep compatibility
+	with glade-2 xml's format.
+	* src/main.c: register a bunch of transformations from strings to
+	various fundamental GTypes, to be able to read from a string to a
+	GValue just using g_value_transform.
+	* src/glade-transform.[ch]: transformations from string to various
+	fundamental GTypes.
+
 2003-05-12  Shane Butler  <shane_b@users.sourceforge.net>
 
 	* src/glade-editor.c: Change the packing in the load_*_page functions

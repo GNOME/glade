@@ -1401,8 +1401,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 	}
 
 	/* If we are a container, add the placeholders */
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
-		glade_placeholder_add (class, widget);
+/*	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
+		glade_placeholder_add (class, widget); */
 		
 	child =	glade_xml_node_get_children (node);
 	for (; child != NULL; child = glade_xml_node_next (child)) {
@@ -1488,52 +1488,90 @@ static gboolean
 glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, GladeWidget *parent)
 {
 	GladeXmlNode *child_node;
+	GladeXmlNode *child_properties;
 	GladeWidget *child;
-	GtkWidget *placeholder;
-	GHashTable *packing_properties;
+	GtkWidget *child_widget;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return FALSE;
 
+	/* is it a placeholder? */
+	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
+	if (child_node)
+		child_widget = glade_placeholder_new (parent);
+	else
+	{
+		/* Get and create the widget */
+		child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
+		if (!child_node)
+			return FALSE;
+
+		child = glade_widget_new_from_node_real (child_node, project, parent);
+		if (!child)
+			/* not enough memory... and now, how can I signal it and not make the caller believe that
+			 * it was a parsing problem? */
+			return FALSE;
+
+		child_widget = child->widget;
+	}
+
+	gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
+
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
-	if (child_node)
-		packing_properties = glade_widget_properties_hash_from_node (child_node);
-	else
-		packing_properties = g_hash_table_new (NULL, NULL);
+	if (child_node) {
+		GValue string_value = { 0, };
 
-	if (packing_properties == NULL)
-		return FALSE;
+		g_value_init (&string_value, G_TYPE_STRING);
+		child_properties = glade_xml_node_get_children (child_node);
 
-	/* Get and create the widget */
-	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
-	if (!child_node)
-	{
-		g_hash_table_destroy (packing_properties);
-		return FALSE;
+		for (; child_properties != NULL; child_properties = glade_xml_node_next (child_properties)) {
+			GParamSpec *param_spec;
+			char *id;
+			char *value;
+			GValue gvalue = { 0, };
+
+			/* we should be on a <property ...> tag */
+			if (!glade_xml_node_verify (child_properties, GLADE_XML_TAG_PROPERTY))
+				continue;
+
+			/* the tag should have the form <property name="...id...">...value...</property>*/
+			id = glade_xml_get_property_string_required (child_properties, GLADE_XML_TAG_NAME, NULL);
+			value = glade_xml_get_content (child_properties);
+
+			if (!value || !id) {
+				g_warning ("Invalid property %s:%s\n", value, id);
+				g_free (value);
+				g_free (id);
+				continue;
+			}
+
+			glade_util_replace (id, '_', '-');
+			param_spec = gtk_container_class_find_child_property (G_OBJECT_GET_CLASS (parent->widget), id);
+			if (!param_spec) {
+				g_warning ("Invalid property [%s] for container [%s]\n", id, parent->name);
+				g_free (value);
+				g_free (id);
+				continue;
+			}
+
+			g_value_set_string_take_ownership (&string_value, value);
+
+			g_value_init (&gvalue, G_PARAM_SPEC_VALUE_TYPE (param_spec));
+			if (g_value_transform (&string_value, &gvalue))
+			{
+				gtk_container_child_set_property (GTK_CONTAINER (parent->widget), child_widget, id, &gvalue);
+				g_value_unset (&gvalue);
+			}
+			else
+				g_warning ("Not able to apply the value [%s] to the type [%s]\n", value, id);
+		}
+
+		g_value_unset (&string_value);
 	}
-
-	child = glade_widget_new_from_node_real (child_node, project, parent);
-	if (!child)
-	{
-		/* not enough memory... and now, how can I signal it and not make the caller believe that
-		 * it was a parsing problem? */
-		g_hash_table_destroy (packing_properties);
-		return FALSE;
-	}
-
-	/* Get the placeholder and replace it with the widget */
-	placeholder = glade_placeholder_get_from_properties (parent, packing_properties);
-	if (placeholder) {
-		glade_placeholder_replace (placeholder, parent, child);
-	} else {
-		gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
-	}
-
-	/* Apply the properties and free the hash that contains them */
-	glade_widget_apply_properties_from_hash (child, packing_properties);
-	g_hash_table_destroy (packing_properties);
 	
+	glade_placeholder_fill_empty (parent->widget);
+
 	return TRUE;
 }
 

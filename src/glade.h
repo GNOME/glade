@@ -112,5 +112,5 @@
 #define GLADE_XML_TAG_SIGNAL   "signal"
 #define GLADE_XML_TAG_AFTER    "after"
 #define GLADE_XML_TAG_PACKING  "packing"
-
+#define GLADE_XML_TAG_PLACEHOLDER "placeholder"
 #endif /* __GLADE_H__ */
