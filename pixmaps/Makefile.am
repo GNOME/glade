@@ -8,6 +8,9 @@ pixmaps_DATA = \
 	table.xpm \
 	entry.xpm \
 	notebook.xpm \
+	togglebutton.xpm \
+	spinbutton.xpm \
+	progressbar.xpm \
 	frame.xpm \
 	\
 	selector.xpm \

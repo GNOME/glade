@@ -9,6 +9,9 @@ widgets_DATA = \
 	gtktable.xml \
 	gtkframe.xml \
 	gtknotebook.xml \
-	gtkentry.xml
+	gtkentry.xml \
+	gtktogglebutton.xml \
+	gtkprogressbar.xml \
+	gtkspinbutton.xml
 
 EXTRA_DIST = $(widgets_DATA)
