@@ -21,6 +21,7 @@
  */
 
 
+#include <gtk/gtktooltips.h>
 #include "glade.h"
 
 
@@ -31,4 +32,15 @@ glade_util_path_is_writable (const gchar *full_path)
 	glade_implement_me (NULL);
 
 	return TRUE;
+}
+
+void
+glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
+{
+	GtkTooltips *tooltip;
+
+	tooltip = gtk_tooltips_new ();
+	gtk_tooltips_set_tip (tooltip, widget, str, NULL);
+
+	return;
 }

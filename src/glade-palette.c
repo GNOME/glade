@@ -177,6 +177,7 @@ glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *lis
 	palette->widgets_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 	gtk_container_add (GTK_CONTAINER (button), gtk_pixmap);
+	glade_util_widget_set_tooltip (button, class->generic_name);
 
 	gtk_object_set_user_data (GTK_OBJECT (button), class);
 	gtk_signal_connect (GTK_OBJECT (button), "toggled",

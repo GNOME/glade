@@ -866,6 +866,18 @@ glade_editor_load_class (GladeEditor *editor, GladeWidgetClass *class)
 
 /* ================================ Load properties ================================== */
 static void
+glade_editor_property_set_tooltips (GladeEditorProperty *property)
+{
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->class != NULL);
+	g_return_if_fail (property->input != NULL);
+
+	glade_util_widget_set_tooltip (property->input, property->class->tooltip);
+
+	return;
+}
+
+static void
 glade_editor_property_load_integer (GladeEditorProperty *property)
 {
 	GtkWidget *spin = NULL;
@@ -1113,6 +1125,8 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		g_warning ("%s : type %i not implemented\n", __FUNCTION__,
 			   class->type);
 	}
+
+	glade_editor_property_set_tooltips (property);
 
 	property->property->loading = FALSE;
 }
