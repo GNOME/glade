@@ -4,6 +4,7 @@ SUBDIRS=
 bin_PROGRAMS = glade2
 
 INCLUDES = \
+	-DGLADE_LOCALE_DIR=\""$(datadir)/locale"\" \
 	$(GLADE_CFLAGS) \
 	-I$(top_srcdir)/intl \
 	-I$(top_builddir)/intl
