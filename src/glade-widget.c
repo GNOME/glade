@@ -1072,7 +1072,7 @@ glade_widget_delete (GladeWidget *widget)
 		placeholder = glade_placeholder_new (widget->parent);
 		if (widget->parent->class->placeholder_replace)
 			widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
-b
+
 		/* Remove it from the parent's child list */
 		parent->children = g_list_remove (parent->children,
 						  widget);
