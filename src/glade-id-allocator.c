@@ -23,7 +23,7 @@
 
 #include <glib.h>
 #include <string.h>
-#include "glade-allocator.h"
+#include "glade-id-allocator.h"
 
 #define INITIAL_WORDS 4
 

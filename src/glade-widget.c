@@ -1016,7 +1016,7 @@ glade_widget_get_property_by_id (GladeWidget *widget,
 void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
-	const char *old_name;
+	char *old_name;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (name != NULL);
