@@ -1,3 +1,60 @@
+2004-12-18  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-editor.c (glade_editor_table_append_item): Added
+	gboolean from_query_dialog parameter to function definition.
+	All callers changed.
+	(glade_editor_property_changed_text_common): added from_query_dialog
+	parameter.
+
+	* src/glade-editor.c: removed prototypes for glade_editor_init() 
+	and glade_editor_class_init() and moved definition of
+	glade_editor_get_type lower().
+
+	* src/glade-command.c (glade_command_set_name): push action onto undo
+	stack only if execute is successfully.
+
+	* src/glade-editor.c (glade_editor_query_dialog): renamed from 
+	glade_editor_query_popup(). I feel a *_popup() is mis-named (atleast
+	from a Gtk+ point of view, since a popup in Gtk+ is a right click menu)
+	All callers changed.
+
+2004-12-17  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-command.c (glade_command_create_delete_common): there
+	was a semi-colon immediately after the if-statement on the same line.
+	So glade_command_push_undo go called no matter what. Fixed.
+
+	* src/glade-project.c (glade_project_selection_set): no need to get
+	GladeProjectWindow ptr.
+	(glade_project_selection_add): likewise.
+
+	* src/glade-editor.c (glade_editor_query_popup): don't set a default
+	size for query popup dialogs.
+	Show a "Cancel" button to cancel operation.
+	Also, if "Cancel" button pressed, return FALSE to stop "create" command
+	(glade_editor_table_append_items): we're not using this recursively.
+	Remove prototype.
+	* src/glade-widget.c (glade_widget_new): if glade_editor_query_popup
+	returns FALSE, stop "create" command.
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_construct): use 
+	named constants instead of "magic numbers" for the height and width of
+	the clipboard view window.
+	* src/glade-project-window.c (gpw_create_widget_tree): don't use magic
+	numbers for gtk_window_set_default_size(). Use named constants.
+
+	* src/glade-placeholder.c (glade_placeholder_button_press): since
+	we can, why not extract the GladeProject for calling
+	glade_command_create instead of leave it to glade_command_create to get
+	project.
+	(glade_placeholder_button_press): reset palette here. No need to do it
+	in glade_command_create.
+
+	* src/glade-command.c (glade_command_cut): notify the user if user
+	tries to cut a widget which is internal to a composite widget.
+	(glade_command_copy): likewise.
+	(glade_command_delete): likewise.
+
 2004-12-16  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* widgets/gtk-obsolete.xml: added entry for GtkFileSelection

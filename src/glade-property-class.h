@@ -124,7 +124,7 @@ struct _GladePropertyClass
 	gboolean optional; /* Some properties are optional by nature like
 			    * default width. It can be set or not set. A
 			    * default property has a check box in the
-			    * left that enables/disables de input
+			    * left that enables/disables the input
 			    */
 
 	gboolean optional_default; /* For optional values, what the default is */

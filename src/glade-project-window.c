@@ -47,6 +47,8 @@
 #include <gtk/gtkstock.h>
 
 const gchar *WINDOW_TITLE = "Glade-3 GUI Builder";
+const gint   GLADE_WIDGET_TREE_WIDTH  = 230;
+const gint   GLADE_WIDGET_TREE_HEIGHT = 300;
 
 static void
 gpw_refresh_title (GladeProjectWindow *gpw)
@@ -715,7 +717,9 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	GtkWidget *widget_tree_item;
 
 	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size (GTK_WINDOW (widget_tree), 230, 300);
+	gtk_window_set_default_size (GTK_WINDOW (widget_tree),
+				     GLADE_WIDGET_TREE_WIDTH,
+				     GLADE_WIDGET_TREE_HEIGHT);
 	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);

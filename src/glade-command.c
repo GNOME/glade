@@ -306,7 +306,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	GladeCommandSetProperty* me = (GladeCommandSetProperty*) cmd;
 	GValue new_value = { 0, };
 
-	g_return_val_if_fail (me != NULL, TRUE);
+	g_return_val_if_fail (me != NULL, FALSE);
 
 	g_value_init (&new_value, G_VALUE_TYPE (me->arg_value));
 	g_value_copy (me->arg_value, &new_value);
@@ -408,8 +408,12 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 	g_assert (cmd->description);
 	g_free (value_name);
 
-	glade_command_set_property_execute (GLADE_COMMAND (me));
-	glade_command_push_undo (gwidget->project, GLADE_COMMAND (me));
+	/* Push onto undo stack only if it executes successfully. */
+	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
+		glade_command_push_undo (gwidget->project, GLADE_COMMAND (me));
+	else
+		/* No leaks on my shift! */
+		g_object_unref (G_OBJECT (me));
 }
 
 /**************************************************/
@@ -536,8 +540,10 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 
 	g_debug(("Pushing: %s\n", cmd->description));
 
-	glade_command_set_name_execute (GLADE_COMMAND (me));
-	glade_command_push_undo (widget->project, GLADE_COMMAND (me));
+	if (glade_command_set_name_execute (GLADE_COMMAND (me)))
+		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
+	else
+		g_object_unref (G_OBJECT (me));
 }
 
 /***************************************************
@@ -677,14 +683,16 @@ glade_command_create_delete_common (GladeWidget *widget,
  	me->create       = create;
 	me->placeholder  = placeholder;
 	cmd->description =
-		g_strdup_printf (_("%s %s"), create ?
-				 "Create" : "Delete", widget->name);
-	
+		g_strdup_printf ("%s %s", (create ? _("Create") : _("Delete")),
+				 widget->name);
+
 	if (placeholder)
 		g_object_ref (G_OBJECT (placeholder));
 
-	if (glade_command_create_delete_execute (GLADE_COMMAND (me)));
+	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
+	else
+		g_object_unref (G_OBJECT (me));
 }
 
 /**
@@ -698,41 +706,35 @@ glade_command_delete (GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	/* internal children cannot be deleted. Should we notify the user? */
+	/* internal children cannot be deleted. Notify the user. */
 	if (widget->internal)
+	{
+		glade_util_ui_warn (glade_project_window_get()->window, _("You cannot delete a widget internal to a composite widget."));
 		return;
+	}
 
 	glade_command_create_delete_common (widget, NULL, FALSE);
 }
 
 /**
- * Creates a new widget.  In placeholder we expect the placeholder that will
- * be substituted by the new widget (if any), and in project the project that
- * the new widget will be assigned to (if NULL, the project will be extracted
- * from the placeholder).
- */
-/**
  * glade_command_create:
- * @class:
- * @placeholder:
- * @project:
+ * @class:		the class of the widget (GtkWindow or GtkButton)
+ * @placeholder:	the placeholder which will be substituted by the widget
+ * @project:            the project his widget belongs to.
  *
- * TODO: write me
+ * Creates a new widget of @class and put in place of the @placeholder
+ * in the @project
  */
 void
 glade_command_create (GladeWidgetClass *class,
 		      GladePlaceholder *placeholder,
 		      GladeProject *project)
 {
-	GladeProjectWindow *gpw;
 	GladeWidget *widget;
 	GladeWidget *parent = NULL;
 
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
 	g_return_if_fail (placeholder != NULL || GLADE_IS_PROJECT (project));
-
-	gpw = glade_project_window_get ();
-	g_return_if_fail (GLADE_IS_PALETTE (gpw->palette));
 
 	if (placeholder)
 	{
@@ -750,9 +752,6 @@ glade_command_create (GladeWidgetClass *class,
 		return;
 
 	glade_command_create_delete_common (widget, placeholder, TRUE);
-
-	/* reset the palette */
-	glade_palette_unselect_widget (gpw->palette);
 }
 
 typedef enum {
@@ -975,6 +974,8 @@ glade_command_cut_copy_paste_common (GladeWidget *widget,
 	 */
 	if (glade_command_cut_copy_paste_execute (cmd))
 		glade_command_push_undo (project, cmd);
+	else
+		g_object_unref (G_OBJECT (me));
 }
 
 /**
@@ -992,7 +993,8 @@ glade_command_paste (GladePlaceholder *placeholder)
 
 	gpw = glade_project_window_get ();
 
-	if (!placeholder) {
+	if (!placeholder)
+	{
 		glade_util_ui_warn (gpw->window, _("Placeholder not selected!"));
 		return;
 	}
@@ -1020,16 +1022,20 @@ glade_command_cut (GladeWidget *widget)
 
 	gpw = glade_project_window_get ();
 
-	if (!widget) {
+	if (!widget)
+	{
 		glade_util_ui_warn (gpw->window, _("No widget selected!"));
 		return;
 	}
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	/* internal children cannot be cut. Should we notify the user? */
+	/* internal children cannot be cut. Notify the user. */
 	if (widget->internal)
+	{
+		glade_util_ui_warn (gpw->window, _("You cannot cut a widget internal to a composite widget."));
 		return;
+	}
 
 	glade_command_cut_copy_paste_common (widget, NULL, widget->project, GLADE_CUT);
 }
@@ -1047,16 +1053,20 @@ glade_command_copy (GladeWidget *widget)
 
 	gpw = glade_project_window_get ();
 
-	if (!widget) {
+	if (!widget)
+	{
 		glade_util_ui_warn (gpw->window, _("No widget selected!"));
 		return;
 	}
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	/* internal children cannot be cut. Should we notify the user? */
+	/* internal children cannot be copied. Notify the user */
 	if (widget->internal)
+	{
+		glade_util_ui_warn (gpw->window, _("You cannot copy a widget internal to a composite widget."));
 		return;
+	}
 
 	glade_command_cut_copy_paste_common (widget, NULL, widget->project, GLADE_COPY);
 }
@@ -1149,6 +1159,8 @@ glade_command_add_remove_signal (GladeWidget *glade_widget, const GladeSignal *s
 
 	if (glade_command_add_signal_execute (cmd))
 		glade_command_push_undo (glade_widget->project, cmd);
+	else
+		g_object_unref (G_OBJECT (me));
 }
 
 /**

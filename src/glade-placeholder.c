@@ -26,6 +26,7 @@
 #include "glade-project-window.h"
 #include "glade-project.h"
 #include "glade-command.h"
+#include "glade-palette.h"
 #include "glade-popup.h"
 #include "glade-cursor.h"
 #include "glade-widget.h"
@@ -298,28 +299,32 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
 	GladeProjectWindow *gpw;
 	GladePlaceholder *placeholder;
+	GladeProject *project;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
 	gpw = glade_project_window_get ();
 	placeholder = GLADE_PLACEHOLDER (widget);
+	project = glade_placeholder_get_project (placeholder);
 
 	if (!GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		if (gpw->add_class != NULL) {
+		if (gpw->add_class != NULL)
+		{
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
-			glade_command_create (gpw->add_class, placeholder, NULL);
+			glade_command_create (gpw->add_class, placeholder,
+					      project);
+
+			/* reset the palette */
+			glade_palette_unselect_widget (gpw->palette);
 		}
 		else
 		{
-			GladeProject *project;
-
-			project = glade_placeholder_get_project (placeholder);
 			glade_project_selection_set (project, GTK_WIDGET (placeholder), TRUE);
 		}
 	}

@@ -29,6 +29,9 @@
 #include "glade-widget-class.h"
 
 
+const gint GLADE_CLIPBOARD_VIEW_WIDTH  = 230;
+const gint GLADE_CLIPBOARD_VIEW_HEIGHT = 200;
+
 static void
 glade_clipboard_view_class_init (GladeClipboardViewClass *class)
 {
@@ -189,7 +192,10 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 	gtk_container_add (GTK_CONTAINER (scrolled_window), view->widget);
 	gtk_container_add (GTK_CONTAINER (view), scrolled_window);
 
-	gtk_window_set_default_size (GTK_WINDOW (view), 272, 130);
+	gtk_window_set_default_size (GTK_WINDOW (view),
+				     GLADE_CLIPBOARD_VIEW_WIDTH,
+				     GLADE_CLIPBOARD_VIEW_HEIGHT);
+
 	gtk_window_set_type_hint (GTK_WINDOW (view), GDK_WINDOW_TYPE_HINT_UTILITY);
 
 	gtk_widget_show_all (scrolled_window);

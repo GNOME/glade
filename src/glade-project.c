@@ -618,12 +618,9 @@ glade_project_selection_add (GladeProject *project,
 			     GtkWidget *widget,
 			     gboolean emit_signal)
 {
-	GladeProjectWindow *gpw;
 	gboolean            has_nodes;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
-
-	gpw       = glade_project_window_get ();
 
 	if (glade_util_has_nodes (widget))
 		return;
@@ -653,12 +650,9 @@ glade_project_selection_set (GladeProject *project,
 			     GtkWidget *widget,
 			     gboolean emit_signal)
 {
-	GladeProjectWindow *gpw;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-	gpw    = glade_project_window_get ();
-	
 	if (glade_util_has_nodes (widget))
 		return;
 	    
