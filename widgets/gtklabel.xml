@@ -17,7 +17,40 @@
     <Property Id="yalign"/>
     <Property Id="xpad"/>
     <Property Id="ypad"/>
+
+    <Property Common="TRUE" Id="x"/>
+    <Property Common="TRUE" Id="y"/>
+    <Property Common="TRUE" Id="width"/>
+    <Property Common="TRUE" Id="height"/>
+    <Property Common="TRUE" Id="visible" Default="True"/>
+    <Property Common="TRUE" Id="sensitive"/>
+    <Property Common="TRUE" Id="can-default"/>
+    <Property Common="TRUE" Id="has-default"/>
+    <Property Common="TRUE" Id="can-focus"/>
+    <!-- Not yet implemented
+    <Property Common="TRUE" Id="events"/>
+    -->
+    <Property Common="TRUE" Id="extension-events"/>
   
   </Properties>
+
+  <PackingDefaults>
+
+    <PackingDefault id="GtkTable">
+       <Property Id="xexpand" Value="True"/>
+       <Property Id="yexpand" Value="False"/>
+       <Property Id="xshrink" Value="True"/>
+       <Property Id="yshrink" Value="False"/>
+       <Property Id="xfill" Value="False"/>
+       <Property Id="yfill" Value="True"/>
+    </PackingDefault>
+
+    <PackingDefault id="GtkHBox">
+       <Property Id="expand"    Value="True"/>
+       <Property Id="fill"      Value="False"/>
+       <Property Id="packstart" Value="False"/>
+    </PackingDefault>
+
+  </PackingDefaults>
 
 </GladeWidgetClass>

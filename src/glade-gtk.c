@@ -26,20 +26,37 @@
 #include "glade.h"
 #include "glade-property-class.h"
 
-static void
-glade_gtk_entry_set_text (GObject *object, const gchar *text)
-{
-	GtkEntry *entry = GTK_ENTRY (object);
 
-	g_return_if_fail (GTK_IS_ENTRY (entry));
-	
-	gtk_entry_set_text (GTK_ENTRY (object), text);
+static void
+glade_gtk_entry_set_text (GObject *object, const gchar *string)
+{
+	GtkEditable *editable = GTK_EDITABLE (object);
+	gint pos;
+	gint insert_pos = 0;
+
+	g_return_if_fail (GTK_IS_EDITABLE (object));
+
+	pos = gtk_editable_get_position (editable);
+	gtk_editable_delete_text (editable, 0, -1);
+	/* FIXME: will not work with multibyte languages (strlen) */
+	gtk_editable_insert_text (editable,
+				  string,
+				  strlen (string),
+				  &insert_pos);
+	gtk_editable_set_position (editable, pos);
 }
 
-static void
+static gchar *
 glade_gtk_entry_get_text (GObject *object)
 {
-	glade_implement_me ();
+	GtkEntry *entry = GTK_ENTRY (object);
+	const gchar *text;
+
+	g_return_val_if_fail (GTK_IS_ENTRY (entry), NULL);
+
+	text = gtk_entry_get_text (entry);
+
+	return g_strdup (text);
 }
 
 static void
@@ -100,6 +117,7 @@ glade_gtk_adjustment_set_max (GObject *object, const gchar *string)
 	adjustment->upper = val;
 	gtk_adjustment_changed (adjustment);
 }
+
 
 static void
 glade_gtk_adjustment_set_min (GObject *object, const gchar *string)
@@ -193,7 +211,6 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_adjustment_set_step_increment", &glade_gtk_adjustment_set_step_increment},
 	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
 	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
-
 };
 
 static gpointer

@@ -1,3 +1,89 @@
+2001-08-07  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.c (glade_widget_property_changed_cb): add a temp hack to set
+	the properties. 
+	(glade_property_get): ditto to get the properties from a widget.
+	(glade_widget_toplevel_delete_event_cb): handle the delete event for toplevels
+	(glade_widget_connect_other_signals): impl.
+
+	* src/glade-property.c (glade_property_get_type): glade property is now an object
+	and emits a changed signal.
+
+	* src/glade-property-class.c (glade_property_class_new_from_node): load before
+	deciding if this prop will be loading with paramspec
+
+	* src/glade-project-view.c (glade_project_view_button_press_cb): implement.
+	Double clicking on a widget on the list gtk_widget_show's it.
+
+	* src/glade-gtk.c (glade_gtk_entry_set_text): preserve the cursor position.
+
+	* src/glade-editor.c (glade_editor_property_connect_signals): impl.
+	(glade_editor_property_changed_cb): impl.
+
+	* src/glade-property.h: add -> loading
+
+	* src/glade-editor.h (struct _GladeEditorTable): remove ->loading
+
+	* src/glade-editor.c (glade_editor_property_load_text): when loading text
+	preserve the cursor position.
+	* src/glade-editor.c : use property->loading and not property->property->loading
+
+2001-08-06  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.c (glade_widget_set_default_options_real): handle the case
+	where the property is queried from the gtkwidget v.s. setting a default one.
+	(glade_widget_free): implement.
+	(glade_widget_delete): add content.
+	(glade_widget_write): when saving a widget, add the packing properties too.
+
+	* src/glade-signal.c (glade_signal_free): impl.
+
+	* src/glade-signal-editor.c (glade_signal_editor_load_widget): handle a
+	widget->class = NULL for clearing the signal editor.
+
+	* src/glade-property.c (glade_property_new_from_class): handle properties
+	that the default is fetched from the gtkwidget itself, not set.
+	(glade_property_free): implement.
+
+	* src/glade-project.c (glade_project_selection_changed): implement.
+	(glade_project_remove_widget_real): impl.
+	(glade_project_remove_widget): impl.
+
+	* src/glade-project-window.c (gpw_delete_cb): implement.
+
+	* src/glade-project-view.h (struct _GladeProjectView): add the remove
+	signal id to the struct.
+
+	* src/glade-project-view.c (glade_project_view_remove_item): implement
+	for "Delete"
+	(glade_project_view_remove_widget_cb): ditto
+	(glade_project_view_set_project): connect and disconnect ->remove_item
+
+	* src/glade-placeholder.c (glade_placeholder_replace_$x): where
+	x are all the containers. Modify this functions so that we can
+	use them to replace a placeholder with a widget and the other
+	way arround. We need this when we delete a widget and want to
+	put a placeholder where the widget was.
+
+	* src/glade-packing.c (glade_packing_container_set_flag): impl.
+	(glade_packing_container_set_integer): impl.
+	(glade_packing_container_set_boolean): impl.
+	(glade_packing_table_set_flag): impl.
+	(glade_packing_table_set_integer): impl.
+	(glade_packing_box_set_boolean): impl.
+	(glade_packing_box_set_integer): impl.
+	(glade_packing_box_position_get): impl.
+	(glade_packing_box_position_set): when setting the pos of a child update the
+	property->value of the rest, cause it has (most likely) changed.
+	(table_props): add the rest of the properties
+	(box_props): ditto
+
+	* src/glade-editor.c (glade_editor_load_widget_page): handle a NULL class to
+	clear the page
+	(glade_editor_load_common_page): ditto
+	(glade_editor_load_item): ditto
+	(glade_editor_select_item_real): ditto
+
 2001-08-05  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "tr" to the languages list.

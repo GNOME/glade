@@ -589,6 +589,12 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	/* Will this property go in the common tab ? */
 	property_class->common  = glade_xml_property_get_boolean (node, GLADE_TAG_COMMON, FALSE);
 	property_class->def     = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+
+	/* Now get the list of signals that we should listen to */
+	property_class->update_signals = glade_xml_read_list (node,
+							      GLADE_TAG_UPDATE_SIGNALS,
+							      GLADE_TAG_SIGNAL_NAME);
+
 	
 	/* Should we load this property from the ParamSpec ? 
 	 * We can have a property like ... ParamSpec="TRUE"> 
@@ -666,11 +672,6 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 		glade_property_class_get_get_function (property_class, content);
 		g_free (content);
 	}
-
-	/* Now get the list of signals that we should listen to */
-	property_class->update_signals = glade_xml_read_list (node,
-							      GLADE_TAG_UPDATE_SIGNALS,
-							      GLADE_TAG_SIGNAL_NAME);
 
 	return property_class;
 }

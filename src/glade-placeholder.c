@@ -287,6 +287,8 @@ glade_placeholder_on_destroy (GladePlaceholder *widget, gpointer not_used)
 {
 }
 
+#define GLADE_PLACEHOLDER_SIZE 16
+
 GladePlaceholder *
 glade_placeholder_new (GladeWidget *parent)
 {
@@ -300,7 +302,9 @@ glade_placeholder_new (GladeWidget *parent)
 			       | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK
 			       | GDK_BUTTON_RELEASE_MASK
 			       | GDK_POINTER_MOTION_MASK | GDK_BUTTON1_MOTION_MASK);
-
+	gtk_widget_set_usize (GTK_WIDGET (placeholder),
+			      GLADE_PLACEHOLDER_SIZE,
+			      GLADE_PLACEHOLDER_SIZE);			      
 	gtk_widget_show (GTK_WIDGET (placeholder));
 	
 	glade_placeholder_connect_draw_signals  (placeholder);
@@ -362,10 +366,13 @@ glade_placeholder_add (GladeWidgetClass *class,
 		for (row = 0; row < rows; row++) {
 			for (col = 0; col < cols; col++) {
 				placeholder = glade_placeholder_new (widget);
-				gtk_table_attach_defaults (GTK_TABLE (widget->widget),
-							   GTK_WIDGET (placeholder),
-							   col, col+1,
-							   row, row+1);
+				gtk_table_attach (GTK_TABLE (widget->widget),
+						  GTK_WIDGET (placeholder),
+						  col, col+1,
+						  row, row+1,
+						  GTK_EXPAND | GTK_FILL, 
+						  GTK_EXPAND | GTK_FILL,
+						  0, 0);
 			}
 		}
 		return;

@@ -67,6 +67,7 @@ gchar * _ (gchar * name);
 #define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"
 
 #define GLADE_GET_DEFAULT_FROM_WIDGET "GladeGetDefaultFromWidget"
+#define GLADE_MODIFY_PROPERTY_DATA "GladeModifyPropertyData"
 
 #define GLADE_XML_TAG_PROJECT  "glade-interface"
 #define GLADE_XML_TAG_WIDGET   "widget"

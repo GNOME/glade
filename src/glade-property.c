@@ -31,16 +31,93 @@
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
 
+
+static void glade_property_class_init (GladePropertyObjectClass * klass);
+static void glade_property_init (GladeProperty *property);
+static void glade_property_destroy (GtkObject *object);
+
+enum
+{
+	CHANGED,
+	LAST_SIGNAL
+};
+
+static guint glade_property_signals[LAST_SIGNAL] = {0};
+static GtkObjectClass *parent_class = NULL;
+
+guint
+glade_property_get_type (void)
+{
+	static guint type = 0;
+  
+	if (!type)
+	{
+		GtkTypeInfo info =
+		{
+			"GladeProperty",
+			sizeof (GladeProperty),
+			sizeof (GladePropertyObjectClass),
+			(GtkClassInitFunc) glade_property_class_init,
+			(GtkObjectInitFunc) glade_property_init,
+			/* reserved_1 */ NULL,
+			/* reserved_2 */ NULL,
+			(GtkClassInitFunc) NULL,
+		};
+		
+		type = gtk_type_unique (gtk_object_get_type (),
+					&info);
+	}
+	
+	return type;
+}
+
+static void
+glade_property_class_init (GladePropertyObjectClass * klass)
+{
+	GtkObjectClass *object_class;
+
+	object_class = (GtkObjectClass *) klass;
+
+	parent_class = gtk_type_class (gtk_object_get_type ());
+
+	glade_property_signals[CHANGED] =
+		gtk_signal_new ("changed",
+				GTK_RUN_LAST,
+				GTK_CLASS_TYPE (object_class),
+				GTK_SIGNAL_OFFSET (GladePropertyObjectClass, changed),
+				gtk_marshal_VOID__VOID,
+				GTK_TYPE_NONE, 0);
+	
+	klass->changed = NULL;
+
+	object_class->destroy = glade_property_destroy;
+}
+
+
+static void
+glade_property_init (GladeProperty *property)
+{
+
+	property->class = NULL;
+	property->value = NULL;
+	property->enabled = TRUE;
+	property->child = NULL;
+}
+
+static void
+glade_property_destroy (GtkObject *object)
+{
+	GladeProperty *property;
+
+	property = GLADE_PROPERTY (object);
+}
+
 static GladeProperty *
 glade_property_new (void)
 {
 	GladeProperty *property;
 
-	property = g_new0 (GladeProperty, 1);
-	property->class = NULL;
-	property->value = NULL;
-	property->enabled = TRUE;
-	property->child = NULL;
+	property = GLADE_PROPERTY (gtk_type_new (glade_property_get_type ()));
 
 	return property;
 }
@@ -237,6 +314,12 @@ glade_property_get_from_id (GList *settings_list, const gchar *id)
 
 
 
+static void
+glade_property_emit_changed (GladeProperty *property)
+{
+	gtk_signal_emit (GTK_OBJECT (property),
+			 glade_property_signals [CHANGED]);
+}
 
 void
 glade_property_changed_text (GladeProperty *property,
@@ -248,14 +331,18 @@ glade_property_changed_text (GladeProperty *property,
 	g_return_if_fail (property->value != NULL);
 	g_return_if_fail (property->widget != NULL);
 	g_return_if_fail (property->widget->widget != NULL);
-	
+
 	temp = property->value;
 	property->value = g_strdup (text);
 	g_free (temp);
 
+#if 0	
+	/* Why is this here ????? Chema */
 	if (property->class->id == NULL)
 		return;
+#endif	
 
+	property->loading = TRUE;
 	if (property->class->set_function == NULL)
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id,
@@ -263,6 +350,9 @@ glade_property_changed_text (GladeProperty *property,
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
+	property->loading = FALSE;
+
+	glade_property_emit_changed (property);
 }
 
 void
@@ -274,12 +364,14 @@ glade_property_changed_integer (GladeProperty *property, gint val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%i", val);
 
+	property->loading = TRUE;
 	if (property->class->set_function == NULL)
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id, val, NULL);
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
+	property->loading = FALSE;
 }
 
 void
@@ -291,12 +383,14 @@ glade_property_changed_float (GladeProperty *property, gfloat val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);
 
+	property->loading = TRUE;
 	if (property->class->set_function == NULL)
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id, val, NULL);
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
+	property->loading = FALSE;
 	
 }
 
@@ -358,6 +452,7 @@ glade_property_changed_boolean (GladeProperty *property, gboolean val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", val ? GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 
+	property->loading = TRUE;
 	if (property->class->set_function == NULL)
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id,
@@ -366,6 +461,9 @@ glade_property_changed_boolean (GladeProperty *property, gboolean val)
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
+	property->loading = FALSE;
+
+	glade_property_emit_changed (property);
 	
 }
 

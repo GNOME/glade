@@ -239,7 +239,7 @@ glade_editor_property_changed_text (GtkWidget *entry,
 
 	g_return_if_fail (property != NULL);
 
-	if (property->loading)
+	if (property->property->loading)
 		return;
 	
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
@@ -259,7 +259,7 @@ glade_editor_property_changed_text_view (GtkTextBuffer *buffer,
 
 	g_return_if_fail (property != NULL);
 
-	if (property->loading)
+	if (property->property->loading)
 		return;
 
 	gtk_text_buffer_get_iter_at_offset (buffer, &start, 0);
@@ -281,7 +281,7 @@ glade_editor_property_changed_choice (GtkWidget *menu_item,
 
 	g_return_if_fail (property != NULL);
 	
-	if (property->loading)
+	if (property->property->loading)
 		return;
 	
 	choice = gtk_object_get_data (GTK_OBJECT (menu_item),
@@ -305,7 +305,7 @@ glade_editor_property_changed_enabled (GtkWidget *button,
 
 	g_return_if_fail (property != NULL);
 	
-	if (property->loading)
+	if (property->property->loading)
 		return;
 
 	/* Ok, this is hackish but i can't think of a better way
@@ -340,7 +340,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	
 	g_return_if_fail (property != NULL);
 
-	if (property->loading)
+	if (property->property->loading)
 		return;
 
 	numeric_type = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (spin), "NumericType"));
@@ -373,7 +373,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 
 	g_return_if_fail (property != NULL);
 
-	if (property->loading)
+	if (property->property->loading)
 		return;
 
 	state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
@@ -1019,18 +1019,21 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 static void
 glade_editor_property_load_text (GladeEditorProperty *property)
 {
-	gint pos = 0;
-
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
 
-
 	if (GTK_IS_EDITABLE (property->input)) {
-		gtk_editable_delete_text (GTK_EDITABLE (property->input), 0, -1);
-		gtk_editable_insert_text (GTK_EDITABLE (property->input),
-					  property->property->value, strlen (property->property->value), &pos);
+		GtkEditable *editable = GTK_EDITABLE (property->input);
+		gint pos, insert_pos = 0;
+		pos = gtk_editable_get_position (editable);
+ 		gtk_editable_delete_text (editable, 0, -1);
+		gtk_editable_insert_text (editable,
+					  property->property->value,
+					  strlen (property->property->value),
+					  &insert_pos);
+		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (property->input)) {
 		GtkTextBuffer *buffer;
 
@@ -1077,7 +1080,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->class == property->class);
 
-	property->loading = TRUE;
+	property->property->loading = TRUE;
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_TEXT:
@@ -1109,7 +1112,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 			   class->type);
 	}
 
-	property->loading = FALSE;
+	property->property->loading = FALSE;
 }
 
 static void
@@ -1172,7 +1175,27 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 
 	old = table;
 }
-	
+
+static void
+glade_editor_property_changed_cb (GladeProperty *property,
+				  GladeEditorProperty *editor_property)
+{
+	g_return_if_fail (property == editor_property->property);
+
+	glade_editor_property_load (editor_property, property->widget);
+}
+
+static void
+glade_editor_property_connect_signals (GladeEditorProperty *editor_property,
+				       GladeWidget *widget)
+{
+	GladeProperty *property = editor_property->property;
+
+	gtk_signal_connect (GTK_OBJECT (property), "changed",
+			    GTK_SIGNAL_FUNC (glade_editor_property_changed_cb),
+			    editor_property);
+}
+
 static void
 glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 {
@@ -1201,6 +1224,7 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	for (; list != NULL; list = list->next) {
 		property = list->data;
 		glade_editor_property_load (property, item);
+		glade_editor_property_connect_signals (property, item);
 	}
 	
 	/* Load each GladeEditorProperty for the common tab*/
@@ -1237,7 +1261,7 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 static void
 glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 {
-	GladeEditorTable *table;
+ GladeEditorTable *table;
 	
 	if (editor->loaded_widget == widget)
 		return;

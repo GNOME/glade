@@ -7,7 +7,12 @@
 
     <Property Id="border-width"/>
     <Property Id="label"/>
-    <Property Id="active"/>
+    <Property Id="active">
+	  <UpdateSignals>
+	    <SignalName>toggled</SignalName>
+	  </UpdateSignals>
+    </Property>
+
     <Property Id="draw-indicator" Default="True"/>
 
   </Properties>

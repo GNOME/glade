@@ -340,6 +340,36 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	return TRUE;
 }
 
+static gint
+glade_project_view_button_press_cb (GtkTreeView *view, GdkEventButton *event)
+{
+	GtkTreeModel *model;
+
+	model = gtk_tree_view_get_model (view);
+	
+	if (event->type == GDK_2BUTTON_PRESS) {
+		GtkTreePath * path = gtk_tree_path_new ();
+		GtkTreeIter iter;
+		GladeWidget *widget;
+
+		if (!gtk_tree_view_get_path_at_pos (view,
+						    event->window,
+						    event->x, event->y,
+						    &path, NULL, NULL, NULL))
+		    return FALSE;
+		if (!gtk_tree_model_get_iter (model, &iter, path))
+		    return FALSE;
+		    
+		gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
+		gtk_tree_path_free (path);
+		if (!widget)
+			return FALSE;
+		gtk_widget_show (widget->widget);
+	}
+
+	return FALSE;
+}
+
 static GtkWidget *
 glade_project_view_create_widget (GladeProjectView *view)
 {
@@ -355,6 +385,9 @@ glade_project_view_create_widget (GladeProjectView *view)
 	
 	glade_project_view_populate_model (model, view);
 	widget = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
+	g_signal_connect_data (G_OBJECT (widget), "button_press_event",
+			       G_CALLBACK (glade_project_view_button_press_cb),
+			       NULL, NULL, 0);
 
 	cell = gtk_cell_renderer_text_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("Widget", cell, NULL);
@@ -413,24 +446,24 @@ glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
 
 static void
 glade_project_view_add_widget_cb (GladeProject *project,
-						    GladeWidget *widget,
-						    GladeProjectView *view)
+				  GladeWidget *widget,
+				  GladeProjectView *view)
 {
         GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->add_item (view, widget);
 }
 
 static void
 glade_project_view_remove_widget_cb (GladeProject *project,
-						    GladeWidget *widget,
-						    GladeProjectView *view)
+				     GladeWidget *widget,
+				     GladeProjectView *view)
 {
         GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->remove_item (view, widget);
 }
 
 static void
 glade_project_view_widget_name_changed_cb (GladeProject *project,
-								   GladeWidget *widget,
-								   GladeProjectView *view)
+					   GladeWidget *widget,
+					   GladeProjectView *view)
 {
         GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->widget_name_changed (view, widget);
 }

@@ -4,15 +4,19 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_PROPERTY(p)    ((GladeProperty *)p)
-#define GLADE_IS_PROPERTY(p) (p != NULL)
+#define GLADE_PROPERTY(obj)          GTK_CHECK_CAST (obj, glade_property_get_type (), GladeProperty)
+#define GLADE_PROPERTY_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_property_get_type (), GladePropertyClass)
+#define GLADE_IS_PROPERTY(obj)       GTK_CHECK_TYPE (obj, glade_property_get_type ())
 
+typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
 
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.
  */
 struct _GladeProperty {
+	
+	GObject object; 
 
 	GladePropertyClass *class; /* A pointer to the GladeProperty that this
 				    * setting specifies
@@ -38,7 +42,15 @@ struct _GladeProperty {
 	GList *views; /* A list of GladePropertyView items */
 
 	GladeWidget *child; /* A GladeProperty of type object has a child */
-		       
+
+	gboolean loading;
+};
+
+struct _GladePropertyObjectClass
+{
+	GtkObjectClass parent_class;
+
+	void   (*changed)          (GladeProperty *property, const gchar *value);
 };
 
 struct _GladePropertyQuery {
@@ -50,6 +62,8 @@ struct _GladePropertyQueryResult {
 	GHashTable *hash;
 };
 	
+
+guint glade_property_get_type (void);
 
 GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 						   GladeWidget *widget);

@@ -143,7 +143,7 @@ glade_project_new (void)
 	GladeProject *project;
 	static gint i = 1;
 
-	project = GLADE_PROJECT (gtk_type_new (glade_project_get_type()));
+	project = GLADE_PROJECT (gtk_type_new (glade_project_get_type ()));
 	project->name = g_strdup_printf ("Untitled %i", i++);
 	
 	return project;

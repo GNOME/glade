@@ -343,7 +343,9 @@ glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 			property->value = temp;
 			continue;
 		}
-		
+
+		property->loading = TRUE;
+			
 		switch (property->class->type) {
 		case GLADE_PROPERTY_TYPE_BOOLEAN:
 			glade_property_changed_boolean (property,
@@ -387,6 +389,7 @@ glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 			g_warning ("Implement set default for this type [%s]\n", property->class->name);
 			break;
 		}
+		property->loading = FALSE;
 	}
 	       
 }
@@ -574,10 +577,68 @@ glade_widget_set_contents (GladeWidget *widget)
 		glade_property_changed_text (property, widget->name);
 }
 
-static void
-foo (GtkWidget *w)
+static gchar *
+glade_property_get (GladeProperty *property)
 {
-	g_print ("Foo\n");
+	gchar *resp;
+	
+	if (property->class->get_function)
+		resp = (*property->class->get_function)
+			(G_OBJECT (property->widget->widget));
+	else {
+		gboolean bool;
+		switch (property->class->type) {
+		case GLADE_PROPERTY_TYPE_BOOLEAN:
+			gtk_object_get (GTK_OBJECT (property->widget->widget),
+					property->class->id,
+					&bool,
+					NULL);
+			resp = bool ?
+				g_strdup (GLADE_TAG_TRUE) :
+				g_strdup (GLADE_TAG_FALSE);
+			break;
+		default:
+			resp = NULL;
+			break;
+		}
+	}
+
+	return resp;
+}
+
+static void
+glade_widget_property_changed_cb (GtkWidget *w)
+{
+	GladeProperty *property;	
+	GladeWidget *widget;
+	gchar *new = NULL;
+	
+	widget = glade_widget_get_from_gtk_widget (w);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	property = gtk_object_get_data (GTK_OBJECT (w),
+					GLADE_MODIFY_PROPERTY_DATA);
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	if (property->loading)
+		return;
+
+	new = glade_property_get (property);
+
+	switch (property->class->type) {
+	case GLADE_PROPERTY_TYPE_TEXT:
+		glade_property_changed_text (property, new);
+		break;
+	case GLADE_PROPERTY_TYPE_BOOLEAN:
+		if (new && strcmp (new, GLADE_TAG_TRUE) == 0)
+			glade_property_changed_boolean (property, TRUE);
+		else
+			glade_property_changed_boolean (property, FALSE);
+		break;
+	default:
+		break;
+	}
+
+	g_free (new);
 }
 
 static void
@@ -593,10 +654,14 @@ glade_widget_connect_edit_signals_with_class (GladeWidget *widget,
 	
 	list = class->update_signals;
 	for (; list != NULL; list = list->next) {
-		gtk_signal_connect (GTK_OBJECT (widget->widget), list->data,
-				    GTK_SIGNAL_FUNC (foo), property);
+		gtk_signal_connect_after (GTK_OBJECT (widget->widget), list->data,
+					  GTK_SIGNAL_FUNC (glade_widget_property_changed_cb),
+					  property);
+		gtk_object_set_data (GTK_OBJECT (widget->widget),
+				     GLADE_MODIFY_PROPERTY_DATA, property);
 	}
 }
+
 
 static void
 glade_widget_connect_edit_signals (GladeWidget *widget)
@@ -610,6 +675,24 @@ glade_widget_connect_edit_signals (GladeWidget *widget)
 		if (class->update_signals)
 			glade_widget_connect_edit_signals_with_class (widget,
 								      class);
+	}
+}
+
+static gint
+glade_widget_toplevel_delete_event_cb (GtkWidget *widget, gpointer not_used)
+{
+	gtk_widget_hide (widget);
+
+	return TRUE;
+}
+
+static void
+glade_widget_connect_other_signals (GladeWidget *widget)
+{
+	if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+		gtk_signal_connect (GTK_OBJECT (widget->widget), "delete_event",
+				    GTK_SIGNAL_FUNC (glade_widget_toplevel_delete_event_cb),
+				    NULL);
 	}
 }
 
@@ -654,7 +737,13 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	glade_widget_connect_mouse_signals (glade_widget);
 	glade_widget_connect_draw_signals (glade_widget);
 	glade_widget_connect_edit_signals (glade_widget);
-	
+	glade_widget_connect_other_signals (glade_widget);
+
+	if (GTK_IS_TABLE (glade_widget->widget)) {
+		g_print ("Is table\n");
+		gtk_table_set_homogeneous (GTK_TABLE (glade_widget->widget),
+					   FALSE);
+	}
 	return glade_widget;
 }
 
@@ -720,10 +809,14 @@ glade_widget_new_from_class (GladeWidgetClass *class, GladeWidget *parent)
 GladeWidget *
 glade_widget_new_toplevel (GladeProject *project, GladeWidgetClass *class)
 {
+	GladeWidget *widget;
+	
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	return glade_widget_new_from_class_full (class, project, NULL);
+	widget = glade_widget_new_from_class_full (class, project, NULL);
+	
+	return widget;
 }
 
 

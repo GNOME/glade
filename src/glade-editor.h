@@ -159,12 +159,13 @@ struct _GladeEditorProperty
 			   * depending on the property type.
 			   * [see glade-property.h and glade-property-class.h]
 			   */
-
+#if 0
 	gboolean loading; /* We set this flag when we are loading a new GladeProperty
 			   * into this GladeEditorProperty. This flag is used so that
 			   * when we receive a "changed" signal we know that nothing has
 			   * really changed, we just loaded a new glade widget
 			   */
+#endif	
 
 	GList *children; /* Used for class->type = OBJECT. Where a sigle entry corresponds
 			  * to a number of inputs
