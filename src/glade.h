@@ -88,6 +88,7 @@
 #define GLADE_TAG_UPDATE_SIGNALS "UpdateSignals"
 #define GLADE_TAG_SIGNAL_NAME "SignalName"
 #define GLADE_TAG_DEFAULT      "Default"
+#define GLADE_TAG_DISABLED     "Disabled"
 #define GLADE_TAG_POST_CREATE_FUNCTION "PostCreateFunction"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"

@@ -708,6 +708,15 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
 		return;
 
+	/* If we have a property like ... Disabled="TRUE"> we should
+	 * remove this property
+	 */
+	if ( glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE)) {
+		if (*property_class != NULL) {
+			glade_widget_property_class_free (*property_class);
+			*property_class = NULL;
+		}
+	}
 	id = glade_xml_get_property_string_required (node, GLADE_TAG_ID, widget_class->name);
 	if (id == NULL)
 		return;
@@ -814,11 +823,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		}
 	}
 
-	/* FIXME: This should never occur... */
-	if (pproperty_class == NULL) {
-		g_error ("pproperty is NULL!!\n");
-		return;
-	}
 	/* Get the Query */
 	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
 	if (child != NULL)
@@ -891,9 +895,9 @@ glade_property_class_list_add_from_node (GladeXmlNode *node,
 
 		
 		glade_property_class_update_from_node (child, widget_class, &property_class);
+		if (list_element != NULL)
+			*properties = g_list_delete_link (*properties, list_element);
 		if (property_class != NULL) {
-			if (list_element != NULL)
-				*properties = g_list_delete_link (*properties, list_element);
 			*properties = g_list_prepend (*properties, property_class);
 			property_class = NULL;
 		}

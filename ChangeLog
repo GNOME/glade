@@ -1,5 +1,11 @@
 2001-12-03  Carlos Perelló Marín <carlos@gnome-db.org>
 
+	* src/glade.h: Added GLADE_TAG_DISABLED.
+	* src/glade-property-class.c (glade_property_class_update_from_node):
+	Added a check for properties that are disabled at .xml files.
+	
+2001-12-03  Carlos Perelló Marín <carlos@gnome-db.org>
+
 	* configure.in: Reverted my change about GETTEXT_PACKAGE. We should
 	use the "standar" name (glade-2.0 instead of glade-2).
 	* acconfig.h, configure.in, src/glade-catalog.c, widgets/Makefile.am:
