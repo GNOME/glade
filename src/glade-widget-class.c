@@ -472,6 +472,55 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 }
 
 /**
+ * glade_widget_class_load_library:
+ * @library_name: name of the library .
+ *
+ * Loads the named library from the Glade modules directory, or failing that
+ * from the standard platform specific directories.
+ *
+ * The @library_name should not include any platform specifix prefix or suffix,
+ * those are automatically added, if needed, by g_module_build_path()
+ *
+ * @returns: a #GModule on success, or %NULL on failure.
+ */
+static GModule *
+glade_widget_class_load_library (const gchar *library_name)
+{
+	gchar   *path;
+	GModule *module;
+
+	path = g_module_build_path (MODULES_DIR, library_name);
+	if (!path)
+	{
+		g_warning (_("Not enough memory."));
+		return NULL;
+	}
+
+	module = g_module_open (path, G_MODULE_BIND_LAZY);
+	g_free (path);
+
+	if (!module)
+	{
+		path = g_module_build_path (NULL, library_name);
+		if (!path)
+		{
+			g_warning (_("Not enough memory."));
+			return NULL;
+		}
+
+		module = g_module_open (path, G_MODULE_BIND_LAZY);
+		g_free (path);
+	}
+
+	if (!module)
+	{
+		g_warning (_("Unable to open the module %s."), library_name);
+	}
+
+	return module;
+}
+
+/**
  * glade_widget_class_new:
  * @name: name of the widget class (for instance: GtkButton)
  * @generic_name: base of the name for the widgets of this class (for instance: button).
@@ -496,8 +545,8 @@ glade_widget_class_new (const char *name,
 {
 	GladeWidgetClass *widget_class = NULL;
 	char *filename = NULL;
-	char *library = NULL;
 	char *init_function_name = NULL;
+	GModule *module = NULL;
 	GType parent_type;
 
 	g_return_val_if_fail (name != NULL, NULL);
@@ -520,15 +569,14 @@ glade_widget_class_new (const char *name,
 
 	if (base_library != NULL)
 	{
-		library = g_strconcat (MODULES_DIR G_DIR_SEPARATOR_S, base_library, NULL);
-		if (library == NULL)
-		{
-			g_warning (_("Not enough memory."));
+		module = glade_widget_class_load_library (base_library);
+		if (!module)
 			goto lblError;
-		}
 	}
 
 	widget_class = g_new0 (GladeWidgetClass, 1);
+
+	widget_class->module = module;
 
 	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
 	widget_class->name = g_strdup (name);
@@ -564,16 +612,6 @@ glade_widget_class_new (const char *name,
 
 	widget_class->icon = glade_widget_class_create_icon (widget_class);
 
-	if (library)
-	{
-		widget_class->module = g_module_open (library, G_MODULE_BIND_LAZY);
-		if (!widget_class->module)
-		{
-			g_warning (_("Unable to open the module %s."), library);
-			goto lblError;
-		}
-	}
-
 	g_free (init_function_name);
 
 	for (parent_type = g_type_parent (widget_class->type);
@@ -606,7 +644,6 @@ glade_widget_class_new (const char *name,
 
 lblError:
 	g_free (filename);
-	g_free (library);
 	g_free (init_function_name);
 	glade_widget_class_free (widget_class);
 	return NULL;

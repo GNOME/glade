@@ -66,7 +66,6 @@ glade_catalog_load (const char *base_catalog_filename)
 	char *generic_name = NULL;
 	char *catalog_filename = NULL;
 	char *base_filename = NULL;
-	char *partial_library = NULL;
 	char *base_library = NULL;
 	GList *last_widget_class = NULL;
 
@@ -102,22 +101,12 @@ glade_catalog_load (const char *base_catalog_filename)
 	}
 
 	/* get the library to be used by this catalog (if any) */
-	partial_library = glade_xml_get_property_string (root, "library");
-	if (partial_library && *partial_library)
-	{
-		base_library = g_strdup_printf ("libglade%s", partial_library);
-		if (!base_library)
-		{
-			g_critical (_("Not enough memory."));
-			goto lblError;
-		}
-	}
+	base_library = glade_xml_get_property_string (root, "library");
 
 	/* build all the GladeWidgetClass'es associated with this catalog */
 	widget_node = glade_xml_node_get_children (root);
 	for (; widget_node; widget_node = glade_xml_node_next (widget_node))
 	{
-		char *partial_widget_class_library = NULL;
 		char *base_widget_class_library = NULL;
 
 		if (!glade_xml_node_verify (widget_node, GLADE_TAG_GLADE_WIDGET))
@@ -128,16 +117,7 @@ glade_catalog_load (const char *base_catalog_filename)
 			continue;
 
 		/* get the specific library to the widget class, if any */
-		partial_widget_class_library = glade_xml_get_property_string (widget_node, "library");
-		if (partial_widget_class_library && *partial_widget_class_library)
-		{
-			base_widget_class_library = g_strdup_printf ("libglade%s", partial_widget_class_library);
-			if (!base_widget_class_library)
-			{
-				g_critical (_("Not enough memory."));
-				continue;
-			}
-		}
+		base_widget_class_library = glade_xml_get_property_string (widget_node, "library");
 
 		generic_name = glade_xml_get_property_string (widget_node, "generic_name");
 		base_filename = glade_xml_get_property_string (widget_node, "filename");
@@ -157,7 +137,6 @@ glade_catalog_load (const char *base_catalog_filename)
 		g_free (name);
 		g_free (generic_name);
 		g_free (base_filename);
-		g_free (partial_widget_class_library);
 		g_free (base_widget_class_library);
 	}
 
@@ -169,7 +148,6 @@ lblError:
 	glade_xml_context_free (context);
 	g_free (catalog_filename);
 	g_free (catalog);
-	g_free (partial_library);
 	g_free (base_library);
 	return NULL;
 }

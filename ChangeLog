@@ -1,3 +1,19 @@
+2004-01-09  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* src/glade-catalog.c
+	* src/glade-widget-class.c
+	* widgets/gtk-additional.xml
+	* widgets/gtk-base.xml: Instead of playing tricks with the library
+	filename, use the given name verbatim and let GModule handle platform
+	specifics.  Load the library from Glade modules directory, or failing
+	that from standard library paths.
+
+2004-01-08  Tommi Komulainen  <tommi.komulainen@nokia.com>
+
+	* src/glade-widget-class.c: load the library module before attempting
+	to call *_get_type since the function could be located in dependent
+	libraries.
+
 2003-11-29  Paolo Borelli  <pborelli@katamail.com>
 
 	* widgets/gtkmenubar.xml: override fill_empty with ignore.
