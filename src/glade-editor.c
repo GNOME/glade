@@ -689,6 +689,7 @@ glade_editor_create_input_object (GladeEditorProperty *property,
 GtkWidget *
 glade_editor_create_item_label (GladePropertyClass *class)
 {
+	GtkWidget *eventbox;
 	GtkWidget *label;
 	gchar *text;
 
@@ -698,10 +699,12 @@ glade_editor_create_item_label (GladePropertyClass *class)
 
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 
-	/* WARNING: This is not working */
-	glade_util_widget_set_tooltip (label, class->tooltip);
+	/* we need to wrap the label in an event box to add tooltips */
+	eventbox = gtk_event_box_new ();
+	gtk_container_add (GTK_CONTAINER (eventbox), label);
+	glade_util_widget_set_tooltip (eventbox, class->tooltip);
 
-	return label;
+	return eventbox;
 }
 
 static void

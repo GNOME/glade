@@ -500,3 +500,4 @@ glade_util_delete_selection (void)
 
 	g_list_free (free_me);
 }
+
