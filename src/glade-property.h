@@ -25,7 +25,7 @@ struct _GladeProperty
 	GValue *value; /* The value of the property
 			*/
 
-	gboolean enabled; /* Enables is a flag that is used for GladeProperties
+	gboolean enabled; /* Enabled is a flag that is used for GladeProperties
 			   * that have the optional flag set to let us know
 			   * if this widget has this GladeSetting enabled or
 			   * not. (Like default size, it can be specified or

@@ -734,32 +734,6 @@ glade_widget_class_get_type (GladeWidgetClass *widget)
 	return widget->type;
 }
 
-/**
- * glade_widget_class_has_queries:
- * @class: 
- * 
- * A way to know if this class has a property that requires us to query the
- * user before creating the widget.
- * 
- * Return Value: TRUE if the GladeWidgetClass requires a query to the user
- *               before creationg.
- **/
-gboolean
-glade_widget_class_has_queries (GladeWidgetClass *class)
-{
-	GladePropertyClass *property_class;
-	GList *list;
-
-	for (list = class->properties; list; list = list->next)
-	{
-		property_class = list->data;
-		if (property_class->query != NULL)
-			return TRUE;
-	}
-
-	return FALSE;
-}
-
 gboolean
 glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 {
