@@ -360,23 +360,31 @@ glade_project_view_selection_update (GladeProjectView *view,
 
 	g_return_if_fail (selection != NULL);
 
+	view->updating_treeview = TRUE;
+
 	gtk_tree_selection_unselect_all (selection);
 
 	for (list = glade_project_selection_get (project);
 	     list && list->data; list = list->next)
 	{	
-		widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
-		class  = glade_widget_get_class (widget);
-
-		if (view->is_list && !g_type_is_a (class->type, GTK_TYPE_WINDOW))
-			continue;
-
-		if ((iter = glade_project_view_find_iter_by_widget 
-		     (model, widget)) != NULL)
+		if ((widget = glade_widget_get_from_gobject
+		     (G_OBJECT (list->data))) != NULL)
 		{
-			gtk_tree_selection_select_iter (selection, iter);
+			class  = glade_widget_get_class (widget);
+
+			if (view->is_list && 
+			    !g_type_is_a (class->type, GTK_TYPE_WINDOW))
+				continue;
+
+			if ((iter = glade_project_view_find_iter_by_widget 
+			     (model, widget)) != NULL)
+			{
+				gtk_tree_selection_select_iter (selection, iter);
+			}
 		}
 	}
+
+	view->updating_treeview = FALSE;
 }      
 
 static void
@@ -388,43 +396,44 @@ glade_project_view_class_init (GladeProjectViewClass *class)
 
 	parent_class = g_type_class_peek_parent (class);
 
-	class->add_item	= glade_project_view_add_item;
-	class->remove_item = glade_project_view_remove_item;
-	class->set_project = glade_project_view_set_project;
-	class->widget_name_changed = glade_project_view_widget_name_changed;
-	class->selection_update = glade_project_view_selection_update;
+	class->add_item             = glade_project_view_add_item;
+	class->remove_item          = glade_project_view_remove_item;
+	class->set_project          = glade_project_view_set_project;
+	class->widget_name_changed  = glade_project_view_widget_name_changed;
+	class->selection_update     = glade_project_view_selection_update;
 }
+
+
+static void
+gpw_foreach_add_selection (GtkTreeModel *model, 
+			   GtkTreePath  *path,
+			   GtkTreeIter  *iter, 
+			   gpointer      data)
+{
+	GladeWidget      *widget;
+	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
+	glade_project_selection_add (widget->project,
+				     glade_widget_get_object (widget), FALSE);
+}
+
 
 static gboolean
 glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 					 GladeProjectView  *view)
 {
-	GtkTreeModel *model;
-	GladeWidget *widget;
-	GtkTreeIter iter;
-
-	if (!view->project)
-		return TRUE;
-
 	g_return_val_if_fail (GLADE_IS_PROJECT_VIEW (view), FALSE);
 
-	model = GTK_TREE_MODEL (view->model);
+	if (view->project != NULL &&
+	    view->updating_treeview == FALSE)
+	{
+		view->updating_selection = TRUE;
 
-	/* There are no cells selected */
-	if (!gtk_tree_selection_get_selected (selection, &model, &iter))
-		return TRUE;
-
-	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
-
-	/* The cell exists, but not widget has been asociated with it */
-	if (widget == NULL)
-		return TRUE;
-
-	view->updating_selection = TRUE;
-	glade_project_selection_set (widget->project,
-				     glade_widget_get_object (widget), TRUE);
-	view->updating_selection = FALSE;
-
+		glade_project_selection_clear (view->project, FALSE);
+		gtk_tree_selection_selected_foreach (selection, gpw_foreach_add_selection, view);
+		glade_project_selection_changed (view->project);
+		
+		view->updating_selection = FALSE;
+	}
 	return TRUE;
 }
 
@@ -464,11 +473,11 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 				    GdkEventButton   *event,
 				    GladeProjectView *view)
 {
-	GtkTreeView *tree_view = GTK_TREE_VIEW (widget);
-	GtkTreePath *path = NULL;
+	GtkTreeView      *tree_view = GTK_TREE_VIEW (widget);
+	GtkTreePath      *path      = NULL;
+	gboolean          handled   = FALSE;
 
-	if (event->button == 3 &&
-	    event->window == gtk_tree_view_get_bin_window (tree_view))
+	if (event->window == gtk_tree_view_get_bin_window (tree_view))
 	{
 		if (gtk_tree_view_get_path_at_pos
 		    (tree_view, event->x, event->y,
@@ -485,14 +494,18 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 						    WIDGET_COLUMN, &widget, -1);
 				if (widget != NULL)
 				{
-					glade_popup_widget_pop (widget, event, FALSE);
+
+					if (event->button == 3)
+					{
+						glade_popup_widget_pop (widget, event, FALSE);
+						handled = TRUE;
+					}
 				}
 			}
 			gtk_tree_path_free (path);
 		}
-		return TRUE;
 	}
-	return FALSE;
+	return handled;
 }
 
 static void
@@ -615,6 +628,7 @@ glade_project_view_init (GladeProjectView *view)
 	g_signal_connect_data (G_OBJECT (selection), "changed",
 			       G_CALLBACK (glade_project_view_selection_changed_cb),
 			       view, NULL, 0);
+	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
 
 	/* Popup menu */
 	g_signal_connect (G_OBJECT (view->tree_view), "button-press-event",
@@ -627,6 +641,7 @@ glade_project_view_init (GladeProjectView *view)
 			  G_CALLBACK (glade_project_view_row_cb), view);
 
 	view->updating_selection = FALSE;
+	view->updating_treeview  = FALSE;
 }
 
 static void

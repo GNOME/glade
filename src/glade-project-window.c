@@ -421,106 +421,25 @@ gpw_quit_cb (void)
 static void
 gpw_copy_cb (void)
 {
-	GladeProjectWindow *gpw;
-	GList *list;
-
-	gpw = glade_project_window_get ();
-	list = glade_project_selection_get (gpw->active_project);
-	/* TODO: support multiple selected items */
-	if (list != NULL && list->next == NULL)
-	{
-		GladeWidget *widget = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
-
-		if (widget)
-			glade_command_copy (widget);
-	}
+	glade_util_copy_selection ();
 }
 
 static void
 gpw_cut_cb (void)
 {
-	GladeProjectWindow *gpw;
-	GList *list;
-
-	gpw = glade_project_window_get ();
-	list = glade_project_selection_get (gpw->active_project);
-
-	/* TODO: support multiple selected items */
-	if (list != NULL && list->next == NULL)
-	{
-		GladeWidget *widget = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
-		GladeWidget *parent;
-
-		gboolean need_placeholder = FALSE;
-
-		if (!widget)
-		{
-			GladeProjectWindow *gpw = glade_project_window_get ();
-			glade_util_ui_warn (gpw->window, _("No widget selected!"));
-			return;
-		}
-
-		if ((parent = glade_widget_get_parent (widget)) != NULL)
-			need_placeholder =
-				glade_util_gtkcontainer_relation (parent, widget);
-		glade_command_cut (widget, need_placeholder);
-	}
+	glade_util_cut_selection ();
 }
 
 static void
 gpw_paste_cb (void)
 {
-	GladeProjectWindow *gpw;
-	GList *list;
-
-	gpw = glade_project_window_get ();
-	list = glade_project_selection_get (gpw->active_project);
-
-	/* TODO: support multiple selected items */
-	if (list != NULL && list->next == NULL)
-	{
-		GladePlaceholder *placeholder = NULL;
-		GladeWidget      *widget;
-
-
-		if (GLADE_IS_PLACEHOLDER (list->data))
-		{
-			placeholder = list->data;
-			widget = glade_placeholder_get_parent (placeholder);
-		}
-		else
-		{
-			widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
-		}
-		
-		if (!widget)
-		{
-			GladeProjectWindow *gpw = glade_project_window_get ();
-			glade_util_ui_warn (gpw->window,
-					    _("No widget or placeholder selected!"));
-			return;
-		}
-
-		if (glade_util_widget_pastable (widget))
-			glade_command_paste (widget, placeholder);
-	}
+	glade_util_paste_clipboard ();
 }
 
 static void
 gpw_delete_cb (void)
 {
-	GladeProjectWindow *gpw;
-
-	gpw = glade_project_window_get ();
-	if (!gpw->active_project)
-	{
-		g_warning ("delete should not be sensitive: we don't have a project");
-		return;
-	}
-
-	/* glade_util_delete_selection performs a glade_command_delete
-	 * on each of the selected widgets */
-	glade_util_delete_selection (gpw->active_project);
+	glade_util_delete_selection ();
 }
 
 static void
@@ -589,6 +508,7 @@ gpw_palette_button_clicked (GladePalette *palette, gpointer not_used)
 	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
 	{
 		glade_command_create (class, NULL, NULL, gpw->active_project);
+		glade_palette_unselect_widget (gpw->palette);
 		gpw->add_class = NULL;
 	}
 	else

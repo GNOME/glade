@@ -41,8 +41,6 @@ void            glade_util_file_dialog_set_filename (GtkWidget *file_dialog, gch
 void            glade_util_replace (char *str, char a, char b);
 gchar          *glade_util_duplicate_underscores (const char *name);
 
-void		glade_util_delete_selection (GladeProject *project);
-
 void		glade_util_add_selection    (GObject   *object);
 void		glade_util_remove_selection (GObject   *object);
 gboolean	glade_util_has_selection    (GObject   *object);
@@ -54,7 +52,12 @@ GList          *glade_util_container_get_all_children (GtkContainer *container);
 GList          *glade_util_uri_list_parse (const gchar* uri_list);
 
 gboolean        glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget);
-gboolean        glade_util_widget_pastable (GladeWidget *parent);
+gboolean        glade_util_widget_pastable       (GladeWidget *child,  GladeWidget *parent);
+
+void            glade_util_paste_clipboard       (void);
+void            glade_util_cut_selection         (void);
+void            glade_util_copy_selection        (void);
+void            glade_util_delete_selection      (void);
 
 G_END_DECLS
 

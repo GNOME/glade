@@ -830,42 +830,6 @@ glade_util_has_selection (GObject *object)
 				(object, GLADE_UTIL_HAS_NODES)) != 0;
 }
 
-/**
- * glade_util_delete_selection:
- * @project: a #GladeProject
- *
- * TODO: write me
- */
-void
-glade_util_delete_selection (GladeProject *project)
-{
-	GList *selection;
-	GList *free_me;
-	GList *list;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	selection = glade_project_selection_get (project);
-	if (!selection)
-		return;
-
-	/* We have to be careful when deleting widgets from the selection
-	 * because when we delete each widget, the selection pointer changes
-	 * due to the g_list_remove performed by glade_command_delete.
-	 * Copy the list and free it after we are done
-	 */
-	free_me = g_list_copy (selection);
-	for (list = free_me; list; list = list->next) {
-		GladeWidget *glade_widget;
-
-		glade_widget = glade_widget_get_from_gobject (list->data);
-		if (glade_widget)
-			glade_command_delete (glade_widget);
-	}
-
-	g_list_free (free_me);
-}
-
 /*
  * taken from gtk... maybe someday we can convince them to
  * expose gtk_container_get_all_children
@@ -982,6 +946,8 @@ gboolean
 glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 {
 	GladeSupportedChild *support;
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
 	return (GTK_IS_CONTAINER (parent->object)                      &&
 		(support = glade_widget_class_get_child_support
 		 (parent->widget_class, widget->widget_class->type))   &&
@@ -990,25 +956,149 @@ glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 
 /**
  * glade_util_gtkcontainer_relation:
+ * @child: a GladeWidget
  * @widget: a GladeWidget
  *
- * Returns whether this widget has an implementation to parent
- * the primary selection on the clipboard.
+ * Returns whether this parent widget has an implementation to parent child.
  */
 gboolean
-glade_util_widget_pastable (GladeWidget *parent)
+glade_util_widget_pastable (GladeWidget *child,
+			    GladeWidget *parent)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET (child),  FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
+	return (glade_widget_class_get_child_support
+		(parent->widget_class,
+		 child->widget_class->type) != NULL) ? TRUE : FALSE;
+}
+
+
+void
+glade_util_paste_clipboard (void)
 {
 	GladeProjectWindow *gpw;
-	GladeClipboard     *clipboard;
-	GladeWidget        *clip_widget;
-	
-	gpw         = glade_project_window_get ();
-	clipboard   = gpw->clipboard;
-	clip_widget = clipboard->curr;
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget, *parent;
+	GladePlaceholder   *placeholder = NULL;
 
-	if (clip_widget)
-		return (glade_widget_class_get_child_support
-			(parent->widget_class,
-			 clip_widget->widget_class->type) != NULL) ? TRUE : FALSE;
-	return FALSE;
+	gpw = glade_project_window_get ();
+
+	if ((list = glade_project_selection_get (gpw->active_project)) == NULL)
+	{
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		return;
+	}
+	else if (g_list_length (list) > 1)
+	{
+		glade_util_ui_warn 
+			(gpw->window, _("Unable to paste to multiple widgets"));
+		return;
+	}
+
+	if (GLADE_IS_PLACEHOLDER (list->data))
+	{
+		placeholder = list->data;
+		parent      = glade_placeholder_get_parent (placeholder);
+	}
+	else
+		parent = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+
+	/* TODO Multiple selection on clipboard */
+	if ((widget = gpw->clipboard->curr) != NULL)
+	{
+		if (parent && 
+		    glade_util_widget_pastable (widget, parent) == FALSE)
+		{
+			gchar *message = g_strdup_printf
+				(_("Unable to paste widget %s to parent %s"),
+				 widget->name, parent->name);
+			glade_util_ui_warn (gpw->window, message);
+			g_free (message);
+			return;
+		}
+		widgets = g_list_append (widgets, widget);
+		glade_command_paste (widgets, parent, placeholder);
+		g_list_free (widgets);
+	}
+}
+
+void
+glade_util_cut_selection (void)
+{
+	GladeProjectWindow *gpw;
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+
+	gpw = glade_project_window_get ();
+	
+	for (list = glade_project_selection_get (gpw->active_project);
+	     list && list->data; list = list->next)
+	{
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+	}
+
+	if (widgets)
+	{
+		glade_command_cut (widgets);
+		g_list_free (widgets);
+	}
+	else
+	{
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+	}
+}
+
+void
+glade_util_copy_selection (void)
+{
+	GladeProjectWindow *gpw;
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+
+	gpw = glade_project_window_get ();
+	
+	for (list = glade_project_selection_get (gpw->active_project);
+	     list && list->data; list = list->next)
+	{
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+	}
+
+	if (widgets)
+	{
+		glade_command_copy (widgets);
+		g_list_free (widgets);
+	}
+	else
+	{
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+	}
+}
+
+void
+glade_util_delete_selection (void)
+{
+	GladeProjectWindow *gpw;
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+
+	gpw = glade_project_window_get ();
+	
+	for (list = glade_project_selection_get (gpw->active_project);
+	     list && list->data; list = list->next)
+	{
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+	}
+
+	if (widgets)
+	{
+		glade_command_delete (widgets);
+		g_list_free (widgets);
+	}
+	else
+	{
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+	}
 }

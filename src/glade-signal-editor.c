@@ -362,7 +362,6 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 	/* we're changing a signal handler */
 	if (!slot && !is_void_signal_handler(new_handler))
 	{
-		/* XXX TODO: Action not yet undoable */
 		GladeSignal *old_signal =
 			glade_signal_new
 			(signal_name,

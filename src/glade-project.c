@@ -527,6 +527,21 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 }
 
 /**
+ * glade_project_is_selected:
+ * @project: a #GladeProject
+ * @object: a #GObject
+ *
+ * Returns: whether @object is in @project selection
+ */
+gboolean
+glade_project_is_selected (GladeProject *project,
+			   GObject      *object)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	return (g_list_find (project->selection, object)) != NULL;
+}
+
+/**
  * glade_project_selection_clear:
  * @project: a #GladeProject
  * @emit_signal: whether or not to emit a signal indication a selection change
@@ -577,7 +592,7 @@ glade_project_selection_remove (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if ((g_list_find (project->selection, object)) != NULL)
+	if (glade_project_is_selected (project, object))
 	{
 		glade_util_remove_selection (object);
 		project->selection = g_list_remove (project->selection, object);
@@ -604,7 +619,7 @@ glade_project_selection_add (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if ((g_list_find (project->selection, object)) == NULL)
+	if (glade_project_is_selected (project, object) == FALSE)
 	{
 		glade_util_add_selection (object);
 		project->selection = g_list_prepend (project->selection, object);
@@ -631,7 +646,8 @@ glade_project_selection_set (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if ((g_list_find (project->selection, object)) == NULL)
+	if (glade_project_is_selected (project, object) == FALSE ||
+	    g_list_length (project->selection) != 1)
 	{
 		glade_project_selection_clear (project, FALSE);
 		glade_project_selection_add (project, object, emit_signal);
@@ -819,3 +835,4 @@ glade_project_get_tooltips (GladeProject *project)
 {
 	return project->tooltips;
 }
+

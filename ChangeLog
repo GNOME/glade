@@ -1,5 +1,24 @@
 2004-12-29  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
+	* src/glade-command.[ch]: Multiple widgets in Cut/Copy/Paste/Delete commands
+
+	* src/glade-placeholder.c: Changed callers.
+
+	* src/glade-popup.c, src/glade-project-window.c: Use glade-utils for 
+	  Cut/Copy/Paste/Delete
+
+	* src/glade-project-view.[ch]: Implemented multiple selection.
+
+	* src/glade-project.[ch]: Implemented glade_project_is_selected.
+
+	* src/glade-utils.[ch]: Implemented: glade_util_paste_clipboard (), 
+	  glade_util_cut_selection (), glade_util_copy_selection () and 
+	  glade_util_delete_selection ().
+
+	* src/glade-widget.c: Implemented multiple selection.
+	
+2004-12-29  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
 	* src/glade-project-view.c: Selection on treeview now follows
 	  project->selection.
 

@@ -1191,9 +1191,10 @@ glade_widget_button_press (GtkWidget *widget,
 			   GdkEventButton *event,
 			   gpointer unused_data)
 {
-	double x = event->x;
-	double y = event->y;
+	double       x = event->x;
+	double       y = event->y;
 	GladeWidget *glade_widget;
+	gboolean     handled = FALSE;
 
 	glade_widget = glade_widget_retrieve_from_position
 		(widget, (int) (x + 0.5), (int) (y + 0.5));
@@ -1203,31 +1204,41 @@ glade_widget_button_press (GtkWidget *widget,
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
-	/* Allow plugins to use shift/cntl possibilities */
-	if ((event->type != GDK_BUTTON_PRESS) ||
-	    (event->state & GDK_SHIFT_MASK) != 0 ||
-	    (event->state & GDK_CONTROL_MASK) != 0)
-		return FALSE;
-
+	/* if it's already selected don't stop default handlers, e.g. toggle button */
 	if (event->button == 1)
 	{
-		/* if it's already selected don't stop default handlers, e.g. toggle button */
-		if (glade_util_has_selection (G_OBJECT(widget)))
+		if (event->state & GDK_CONTROL_MASK)
 		{
-			return FALSE;
+			if (glade_project_is_selected (glade_widget->project,
+						       glade_widget->object))
+				glade_project_selection_remove 
+					(glade_widget->project, 
+					 glade_widget->object, TRUE);
+			else
+				glade_project_selection_add
+					(glade_widget->project, 
+					 glade_widget->object, TRUE);
+			handled = TRUE;
 		}
-
-		glade_project_selection_set (glade_widget->project, G_OBJECT(widget), TRUE);
-
-		return TRUE;
+		else
+		{
+			if (glade_project_is_selected 
+			    (glade_widget->project, glade_widget->object) == FALSE ||
+			    g_list_length (glade_widget->project->selection) != 1)
+			{
+				glade_project_selection_set (glade_widget->project, 
+							     glade_widget->object, TRUE);
+				handled = TRUE;
+			}
+		}
 	}
 	else if (event->button == 3)
 	{
 		glade_popup_widget_pop (glade_widget, event, TRUE);
-		return TRUE;
+		handled = TRUE;
 	}
 
-	return FALSE;
+	return handled;
 }
 
 static gboolean
@@ -1244,7 +1255,7 @@ glade_widget_key_press (GtkWidget *event_widget,
 	/* We will delete all the selected items */
 	if (event->keyval == GDK_Delete)
 	{
-		glade_util_delete_selection (glade_widget_get_project (glade_widget));
+		glade_util_delete_selection ();
 		return TRUE;
 	}
 
@@ -1646,8 +1657,6 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 {
 	GladeWidget *gnew_widget = NULL;
 	GladeWidget *gold_widget = NULL;
-	GObject     *real_new_object = new_object;
-	GObject     *real_old_object = old_object;
 
 	g_return_if_fail (G_IS_OBJECT (old_object));
 	g_return_if_fail (G_IS_OBJECT (new_object));
@@ -1655,22 +1664,12 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 	gnew_widget = glade_widget_get_from_gobject (new_object);
 	gold_widget = glade_widget_get_from_gobject (old_object);
 
-	if (gnew_widget)
-	{
-		real_new_object = glade_widget_get_object (gnew_widget);
-		gnew_widget->parent = parent;
-	}
+	if (gnew_widget) gnew_widget->parent = parent;
+	if (gold_widget) gold_widget->parent = NULL;
 
-	if (gold_widget)
-	{
-		real_old_object = glade_widget_get_object (gold_widget);
-		gold_widget->parent = NULL;
-	}
-
-	glade_widget_class_container_replace_child (parent->widget_class,
-						    parent->object,
-						    real_old_object,
-						    real_new_object);
+	glade_widget_class_container_replace_child 
+		(parent->widget_class, parent->object,
+		 old_object, new_object);
 
 	if (gnew_widget)
 		glade_widget_set_packing_properties (gnew_widget, parent);

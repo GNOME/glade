@@ -56,6 +56,9 @@ struct _GladeProjectView
 				      * for the project changed selection
 				      * signal
 				      */
+	gboolean updating_treeview; /* Eliminate feedback from the tree-view 
+				     * (same as updating_selection)
+				     */
 };
 
 struct _GladeProjectViewClass

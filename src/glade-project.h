@@ -78,6 +78,8 @@ void          glade_project_widget_name_changed (GladeProject *project, GladeWid
 GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
 
 /* Selection */
+gboolean      glade_project_is_selected         (GladeProject *project,
+						 GObject      *object);
 void          glade_project_selection_set       (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
@@ -91,6 +93,7 @@ void          glade_project_selection_clear     (GladeProject *project,
 						 gboolean      emit_signal);
 void          glade_project_selection_changed   (GladeProject *project);
 GList        *glade_project_selection_get       (GladeProject *project);
+
 
 G_END_DECLS
 
