@@ -26,7 +26,7 @@
 #endif
 
 #ifndef PIXMAPS_DIR
-#define PIXMAPS_DIR "C:/Program Files/glade/pixmap"
+#define PIXMAPS_DIR "E:/Programmation/Glade/msvc6/pixmaps"
 #endif
 
 #include "glade.h"
@@ -140,7 +140,8 @@ glade_palette_selector_new (GladePalette *palette)
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (palette->selector), FALSE);
 	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (palette->selector));
 	gtk_button_set_relief (GTK_BUTTON (palette->selector), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_file (PIXMAPS_DIR "/selector.xpm");
+	image = gtk_image_new_from_file (PIXMAPS_DIR "/selector.png");
+
 	gtk_container_add (GTK_CONTAINER (palette->selector), image);
 	glade_util_widget_set_tooltip (palette->selector, _("Selector"));
 
@@ -149,9 +150,10 @@ glade_palette_selector_new (GladePalette *palette)
 
 	/* the label defaults to "Selector" */
 	palette->label = gtk_label_new (_("Selector"));
+	gtk_misc_set_alignment (GTK_MISC (palette->label), 0.0, 0.5);
 
 	gtk_box_pack_start (GTK_BOX (hbox), palette->selector, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), palette->label, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), palette->label, TRUE, TRUE, 2);
 
 	gtk_widget_show_all (hbox);
 
@@ -202,36 +204,65 @@ glade_palette_attach_icon (GladePalette *palette,
 static GtkWidget *
 glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 {
-	GtkWidget *table;
 	GList *list;
-	gint num = 0;
-	gint num_visible = 0;
-	gint visual_pos = 0;
-	gint rows;
-	gint cols = 4;
-	gint i;
+	GtkVBox *vbox;
+	GtkHBox *hbox;
+	GtkLabel *label;
+	GtkRadioButton *radio;
+	GtkScrolledWindow *scrolled_window;
+	int nb_rows = 0;
+	int row = 0;
 
 	list = glade_catalog_get_widget_classes (catalog);
 	while (list)
 	{
-		if (((GladeWidgetClass*) list->data)->in_palette)
-			++num_visible;
+		GladeWidgetClass *widget_class = (GladeWidgetClass*) list->data;
+		if (widget_class->in_palette)
+			nb_rows++;
 
 		list = list->next;
 	}
 
+	vbox = GTK_VBOX (gtk_vbox_new (FALSE, 0));
+
 	list = glade_catalog_get_widget_classes (catalog);
+	while (list)
+	{
+		GladeWidgetClass *widget_class = (GladeWidgetClass*) list->data;
+		if (widget_class->in_palette)
+		{
+			label = GTK_LABEL (gtk_label_new (widget_class->generic_name));
+			radio = GTK_RADIO_BUTTON (gtk_radio_button_new (palette->widgets_button_group));
 
-	num = g_list_length (list);
-	rows = (gint)((num_visible - 1)/ cols) + 1;
+			g_object_set_data (G_OBJECT (radio), "user", list->data);
+			palette->widgets_button_group = gtk_radio_button_get_group (radio);
+			gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (radio), FALSE);
+			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 
-	table = gtk_table_new (rows, cols, TRUE);
+			hbox = GTK_HBOX (gtk_hbox_new (FALSE, 2));
+			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (widget_class->icon), FALSE, FALSE, 0);
+			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), TRUE, TRUE, 1);
 
-	for (i = 0; i < num; i++)
-		if (glade_palette_attach_icon (palette, table, list, i, visual_pos, cols))
-			++visual_pos;
+			gtk_button_set_relief (GTK_BUTTON (radio), GTK_RELIEF_NONE);
+			gtk_container_add (GTK_CONTAINER (radio), GTK_WIDGET (hbox));
 
-	return table;
+			g_signal_connect (G_OBJECT (radio), "toggled",
+					  G_CALLBACK (glade_palette_on_button_toggled), palette);
+
+			gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (radio), FALSE, FALSE, 0);
+			row++;
+		}
+
+		list = list->next;
+	}
+
+	scrolled_window = GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL));
+	gtk_scrolled_window_set_policy (scrolled_window, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (scrolled_window, GTK_WIDGET (vbox));
+	gtk_scrolled_window_set_shadow_type (scrolled_window, GTK_SHADOW_NONE);
+	gtk_widget_set_size_request (GTK_WIDGET (scrolled_window), -1, 400);
+
+	return GTK_WIDGET (scrolled_window);
 }
 
 static void
@@ -246,7 +277,7 @@ glade_palette_init (GladePalette *palette)
 
 	/* Selector */
 	selector_hbox = glade_palette_selector_new (palette);
-	gtk_box_pack_start (GTK_BOX (palette), selector_hbox, FALSE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (palette), selector_hbox, FALSE, TRUE, 0);
 
 	/* Separator */
 	widget = gtk_hseparator_new ();
@@ -264,7 +295,7 @@ glade_palette_init (GladePalette *palette)
 	palette->notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (palette->notebook), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (palette->notebook), FALSE);
-	gtk_box_pack_end (GTK_BOX (palette), palette->notebook, FALSE, TRUE, 3);
+	gtk_box_pack_end (GTK_BOX (palette), palette->notebook, TRUE, TRUE, 0);
 
 	palette->nb_sections = 0;
 }
@@ -301,7 +332,7 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 	g_signal_connect (G_OBJECT (button), "toggled",
 			  G_CALLBACK (glade_palette_on_catalog_button_toggled),
 			  palette);
-	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), button, FALSE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), button, FALSE, TRUE, 0);
 
 	/* Add the section */
 	widget = glade_palette_widget_table_create (palette, catalog);

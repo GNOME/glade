@@ -1,7 +1,9 @@
 catalogs_DATA = \
 	glade-palette.xml \
 	gtk-base.xml \
-	gtk-additional.xml
+	gtk-additional.xml \
+	gtk-dialogs.xml \
+	gtk-obsolete.xml
 	
 widgets_DATA = \
 	gtkaccellabel.xml \

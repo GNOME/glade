@@ -249,7 +249,7 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 	GtkWidget *icon;
 	gchar *icon_path;
 
-	icon_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->generic_name);
+	icon_path = g_strdup_printf (PIXMAPS_DIR "/%s.png", class->generic_name);
 	icon = gtk_image_new_from_file (icon_path);
 	g_free (icon_path);
 

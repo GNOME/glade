@@ -1,3 +1,17 @@
+2004-02-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-palette.c: change the table with the widgets
+	to a vertical box, where each widget lies in a row
+	(the icon of the widget next to its label).
+	* src/glade-project-window.c: make the palette resizable.
+	* src/glade-widget-class.c: load png files instead of xpm
+	files for the icons of the widgets.
+	* widgets/glade-palette.xml, gtk-base.xml, gtk-additional.xml,
+	gtk-dialogs.xml, gtk-obsolete.xml: Change the layout of the
+	palette.
+	* pixmaps/*.png: 24bpp alpha blended icons for the widgets.
+	Most of them come from the jimmac collection.
+
 2004-02-01  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-project-view.c: use gtk_window_present instead of 
