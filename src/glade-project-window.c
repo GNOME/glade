@@ -235,31 +235,35 @@ gpw_confirm_close_project (GladeProject *project)
 
 	ret = gtk_dialog_run (GTK_DIALOG (dialog));
 	switch (ret) {
-		case GTK_RESPONSE_YES:
-			/* if YES we save the project: note we cannot use gpw_save_cb
-			 * since it saves the current project, while the modified project
-			 * we are saving may be not the current one.
-			 */
-			if (project->path != NULL) {
-				close = glade_project_save (project, project->path);
-			} else {
-				GtkWidget *filesel;
+	case GTK_RESPONSE_YES:
+		/* if YES we save the project: note we cannot use gpw_save_cb
+		 * since it saves the current project, while the modified project
+		 * we are saving may be not the current one.
+		 */
+		if (project->path != NULL) {
+			close = glade_project_save (project, project->path);
+		} else {
+			GtkWidget *filesel;
 
-				filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
-				g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-						  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
-						  project);
+			filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
+			g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+					  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
+					  project);
 
-				gtk_widget_show (filesel);
-				close = FALSE;
-			}
-			break;
-		case GTK_RESPONSE_NO:
-			close = TRUE;
-			break;
-		case GTK_RESPONSE_CANCEL:
-		default:
+			gtk_widget_show (filesel);
 			close = FALSE;
+		}
+	break;
+	case GTK_RESPONSE_NO:
+		close = TRUE;
+		break;
+	case GTK_RESPONSE_CANCEL:
+	case GTK_RESPONSE_DELETE_EVENT:
+		close = FALSE;
+		break;
+	default:
+		g_assert_not_reached ();
+		close = FALSE;
 	}
 
 	gtk_widget_destroy (dialog);
@@ -457,6 +461,7 @@ gpw_create_palette (GladeProjectWindow *gpw)
 	gpw->palette = glade_palette_new (gpw->catalogs);
 
 	gtk_window_set_title (gpw->palette_window, _("Palette"));
+	gtk_window_set_type_hint (gpw->palette_window, GDK_WINDOW_TYPE_HINT_UTILITY);
 	gtk_window_set_resizable (gpw->palette_window, FALSE);
 
 	gtk_container_add (GTK_CONTAINER (gpw->palette_window), GTK_WIDGET (gpw->palette));
@@ -535,6 +540,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gpw->editor->project_window = gpw;
 
 	gtk_window_set_title  (gpw->editor_window, _("Properties"));
+	gtk_window_set_type_hint (gpw->editor_window, GDK_WINDOW_TYPE_HINT_UTILITY);
 
 	gtk_container_add (GTK_CONTAINER (gpw->editor_window), GTK_WIDGET (gpw->editor));
 
@@ -605,6 +611,7 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size (GTK_WINDOW (widget_tree), 230, 300);
 	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
+	gtk_window_set_type_hint (GTK_WINDOW (widget_tree), GDK_WINDOW_TYPE_HINT_UTILITY);
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
 	gpw->views = g_list_prepend (gpw->views, view);

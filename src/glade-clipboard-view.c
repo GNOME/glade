@@ -181,14 +181,15 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 	glade_clipboard_view_create_tree_view (view);
 
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-					(scrolled_window),
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
 	gtk_container_add (GTK_CONTAINER (scrolled_window), view->widget);
 	gtk_container_add (GTK_CONTAINER (view), scrolled_window);
 
 	gtk_window_set_default_size (GTK_WINDOW (view), 272, 130);
+	gtk_window_set_type_hint (GTK_WINDOW (view), GDK_WINDOW_TYPE_HINT_UTILITY);
+
 	gtk_widget_show_all (scrolled_window);
 
 	return;
