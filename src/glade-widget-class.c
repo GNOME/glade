@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2004 Imendio AB
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -484,39 +485,14 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 	}
 }
 
-/**
- * glade_widget_class_extend_with_file:
- * @filename: complete path name of the xml file with the description of the 
- *            #GladeWidgetClass
- *
- * This function extends an existing GladeWidgetClass with the data found on 
- * the file with name @filename (if it exists).  Notably, it will add new 
- * properties to the #GladeWidgetClass, or modify existing ones, in function 
- * of the contents of the file.
- *
- * Returns: %TRUE if the file exists and its format is correct, %FALSE otherwise
- */
 static gboolean
-glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char *filename)
+glade_widget_class_extend_with_node (GladeWidgetClass *widget_class, 
+				     GladeXmlNode     *node)
 {
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
-	GladeXmlNode *properties;
-	GladeXmlNode *node;
+	GladeXmlNode *child;
 
-	g_return_val_if_fail (filename != NULL, FALSE);
-
-	context = glade_xml_context_new_from_path
-		(filename, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (!context)
-		return FALSE;
-
-	doc = glade_xml_context_get_doc (context);
-	node = glade_xml_doc_get_root (doc);
-	if (!doc || !node) {
-		glade_xml_context_destroy (context);
-		return FALSE;
-	}
+	g_return_val_if_fail (widget_class != NULL, FALSE);
+	g_return_val_if_fail (node != NULL, FALSE);
 
 	if (widget_class->module)
 	{
@@ -537,16 +513,21 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
 	 */
-	properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
-	if (properties)
-		glade_widget_class_update_properties_from_node
-			(properties, widget_class, &widget_class->properties);
+	child = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
+	if (child)
+	{
+		glade_widget_class_update_properties_from_node (child,
+								widget_class,
+								&widget_class->properties);
+	}
 
-	properties = glade_xml_search_child (node, GLADE_TAG_CHILDREN);
-	if (properties)
-		glade_widget_class_update_children_from_node (properties, widget_class);
+	child = glade_xml_search_child (node, GLADE_TAG_CHILDREN);
+	if (child)
+	{
+		glade_widget_class_update_children_from_node (child,
+							      widget_class);
+	}
 
-	glade_xml_context_destroy (context);
 	return TRUE;
 }
 
@@ -852,84 +833,77 @@ glade_widget_class_direct_children (GtkWidget *ancestor, GtkWidget *widget, cons
 	return FALSE;
 }
 
-/**
- * glade_widget_class_new:
- * @name: name of the widget class (for instance: GtkButton)
- * @generic_name: base of the name for the widgets of this class 
- *                (for instance: button). This parameter is optional. For 
- *                abstract classes there is no need to supply a generic_name.
- * @base_filename: filename containing a further description of the widget, 
- *                 without the directory (optional).
- *
- * Creates a new #GladeWidgetClass, initializing it with the
- * name, generic_name and base_filename.
- *
- * The widget class will be first build using the information that the GLib 
- * object system returns, and then it will be expanded (optionally) with the 
- * information contained on the xml filename.
- *
- * Returns: a new #GladeWidgetClass, or %NULL if there are any errors
- */
 GladeWidgetClass *
-glade_widget_class_new (const char *name,
-			const char *generic_name,
-			const char *palette_name,
-			const char *base_filename,
-			const char *base_library)
+glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 {
-	GladeWidgetClass *widget_class = NULL;
-	char *filename = NULL;
-	char *init_function_name = NULL;
-	GModule *module = NULL;
-	GType parent_type;
+	GladeWidgetClass *widget_class;
+	gchar            *name;
+	gchar            *generic_name;
+	gchar            *title;
+	GModule          *module;
+	GType             parent_type;
 
-	g_return_val_if_fail (name != NULL, NULL);
-
-	if (glade_widget_class_get_by_name (name) != NULL)
+	if (!glade_xml_node_verify (class_node, GLADE_TAG_GLADE_WIDGET_CLASS))
 	{
-		g_warning ("The widget class [%s] has at least two different definitions.\n",
-			   name);
-		goto lblError;
+		g_warning ("Widget class node is not '%s'", 
+			   GLADE_TAG_GLADE_WIDGET_CLASS);
+		return NULL;
+	}
+	
+	name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
+	if (!name)
+	{
+		g_warning ("Required property 'name' not found in '%s'",
+			   GLADE_TAG_GLADE_WIDGET_CLASS);
+		return NULL;
 	}
 
-	if (base_filename != NULL)
+	if (glade_widget_class_get_by_name (name)) 
 	{
-		filename = g_strconcat (glade_widgets_dir, "/", base_filename, NULL);
-		if (filename == NULL)
+		g_warning ("Widget class '%s' already defined", name);
+
+		g_free (name);
+		return NULL;
+	}
+
+	generic_name = glade_xml_get_property_string (class_node, 
+						      GLADE_TAG_GENERIC_NAME);
+	title = glade_xml_get_property_string (class_node, GLADE_TAG_TITLE);
+
+	module = NULL;
+	if (library) 
+	{
+		module = glade_widget_class_load_library (library);
+		if (!module)
 		{
-			g_warning (_("Not enough memory."));
-			goto lblError;
+			g_warning ("Failed to load external library '%s'",
+				   library);
+			g_free (name);
+			g_free (generic_name);
+			g_free (title);
+			return NULL;
 		}
 	}
+	
+	widget_class = g_new0 (GladeWidgetClass, 1);
+	widget_class->name         = name;
+	widget_class->module       = module;
+	widget_class->generic_name = generic_name;
+	widget_class->palette_name = title;
+	widget_class->in_palette   = title ? TRUE : FALSE;
 
-	if (base_library != NULL)
+	widget_class->type = glade_util_get_type_from_name (name);
+	if (widget_class->type == 0)
 	{
-		module = glade_widget_class_load_library (base_library);
-		if (!module)
-			goto lblError;
+		glade_widget_class_free (widget_class);
+		return NULL;
 	}
 
-	widget_class = g_new0 (GladeWidgetClass, 1);
-
-	widget_class->module = module;
-
-	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
-	widget_class->palette_name = palette_name ? g_strdup (palette_name) : NULL;
-	widget_class->name = g_strdup (name);
-	widget_class->in_palette = palette_name ? TRUE : FALSE;
-
-	widget_class->type = glade_util_get_type_from_name (widget_class->name);
-	if (widget_class->type == 0)
-		goto lblError;
-	
 	widget_class->properties = glade_widget_class_list_properties (widget_class);
 	widget_class->signals    = glade_widget_class_list_signals (widget_class);
 	widget_class->children   = glade_widget_class_list_children (widget_class);
 	widget_class->icon       = glade_widget_class_create_icon (widget_class);
-
 	widget_class->child_property_applies = glade_widget_class_direct_children;
-
-	g_free (init_function_name);
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;
@@ -945,29 +919,19 @@ glade_widget_class_new (const char *name,
 			glade_widget_class_merge (widget_class, parent_class);
 		}
 	}
-
-	/* if there is an associated filename, then open and parse it */
-	if (filename != NULL)
-		glade_widget_class_extend_with_file (widget_class, filename);
-
-	g_free (filename);
-
+	
+	if (glade_xml_node_get_children (class_node))
+		glade_widget_class_extend_with_node (widget_class, class_node);
+	
 	/* store the GladeWidgetClass on the cache,
 	 * if it's the first time we store a widget class, then
 	 * initialize the global widget_classes hash.
 	 */
 	if (!widget_classes)
 		widget_classes = g_hash_table_new (g_str_hash, g_str_equal);		
-
 	g_hash_table_insert (widget_classes, widget_class->name, widget_class);
-
+	
 	return widget_class;
-
-lblError:
-	g_free (filename);
-	g_free (init_function_name);
-	glade_widget_class_free (widget_class);
-	return NULL;
 }
 
 /**

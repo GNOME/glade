@@ -208,7 +208,10 @@ gpv_find_preceeding_sibling (GtkTreeModel *model,
 	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
 
 	if (!parent_iter)
-		gtk_tree_model_get_iter_first (model, &next);
+	{
+		if (!gtk_tree_model_get_iter_first (model, &next))
+			return NULL;
+	}
 	else
 	{
 		g_return_val_if_fail
@@ -216,7 +219,7 @@ gpv_find_preceeding_sibling (GtkTreeModel *model,
 							parent_iter), NULL);
 		gtk_tree_model_iter_children (model, &next, parent_iter);
 	}
-		
+
 	while (42)
 	{
 		gtk_tree_model_get (model, &next, WIDGET_COLUMN, &w, -1);

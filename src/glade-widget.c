@@ -1841,7 +1841,7 @@ glade_widget_value_from_prop_info (GladePropInfo    *info,
 	GladePropertyClass  *pclass;
 	GValue              *gvalue = NULL;
 	gchar               *id;
-	
+
 	g_return_val_if_fail (info   != NULL, NULL);
 
 	id = g_strdup (info->name);
@@ -1870,6 +1870,7 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 	g_return_val_if_fail (widget != NULL, FALSE);
 
 	id = g_strdup (info->name);
+
 	glade_util_replace (id, '_', '-');
 	property = glade_widget_get_property (widget, id);
 	g_free (id);
@@ -1952,9 +1953,12 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 }
 
 static GValue *
-glade_widget_get_property_from_widget_info (GladeWidgetClass *class,
-					    GladeWidgetInfo  *info,
-					    const gchar      *name)
+glade_widget_get_property_from_widget_info (GladeWidgetClass  *class,
+					    GladeWidgetInfo   *info,
+					    const gchar       *name,
+					    gboolean          *translatable,
+					    gboolean          *has_context,
+					    gchar            **comment)
 {
 	GValue *value = NULL;
 	gint   i;
@@ -1970,6 +1974,18 @@ glade_widget_get_property_from_widget_info (GladeWidgetClass *class,
 		if (!strcmp (id, name))
 		{
 			g_free (id);
+
+			/* FIXME: Waiting for a solution in libglade for i18n
+			 * metadata.
+			 */
+			
+			if (translatable)
+				*translatable = FALSE; /*pinfo->translatable;*/
+			if (has_context)
+				*has_context = FALSE; /*pinfo->has_context;*/
+			if (comment)
+				*comment = NULL; /*g_strdup (pinfo->comment);*/
+			
 			return glade_widget_value_from_prop_info (pinfo, class);
 		}
 		g_free (id);
@@ -2000,15 +2016,32 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 		GladePropertyClass *pclass = list->data;
 		GValue             *value;
 		GladeProperty      *property;
+		gboolean            translatable;
+		gboolean            has_context;
+		gchar              *comment = NULL;
 
 		/* If there is a value in the XML, initialize property with it,
 		 * otherwise initialize property to default.
 		 */
-		value             = glade_widget_get_property_from_widget_info
-			(class, info, pclass->id);
+		value = glade_widget_get_property_from_widget_info (class,
+								    info,
+								    pclass->id,
+								    &translatable,
+								    &has_context,
+								    &comment);
+		
 		property          = glade_property_new (pclass, NULL, value);
 		property->enabled = value ? TRUE : property->enabled;
-		properties        = g_list_prepend (properties, property);
+
+		if (value) {
+			glade_property_i18n_set_translatable (property, translatable);
+			glade_property_i18n_set_has_context (property, has_context);
+			glade_property_i18n_set_comment (property, comment);
+		}
+
+		g_free (comment);
+
+		properties = g_list_prepend (properties, property);
 	}
 	return g_list_reverse (properties);
 }
@@ -2044,7 +2077,8 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 		/* Try filling parameter with value from widget info.
 		 */
 		if ((value = glade_widget_get_property_from_widget_info
-		     (widget_class, info, parameter.name)) != NULL)
+		     (widget_class, info, parameter.name,
+		      NULL, NULL, NULL)) != NULL)
 		{
 			if (g_value_type_compatible (G_VALUE_TYPE (value),
 						     G_VALUE_TYPE (&parameter.value)))
