@@ -22,6 +22,7 @@
 
 #include "glade.h"
 #include "glade-widget.h"
+#include "glade-widget-class.h"
 #include "glade-popup.h"
 #include "glade-placeholder.h"
 #include "glade-clipboard.h"
@@ -130,7 +131,7 @@ glade_popup_populate_childs(GtkWidget* popup_menu, GladeWidget* parent)
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
 				       child);
 
-		parent = parent->parent;
+		parent = glade_widget_get_parent (parent);
 	}
 }
 
@@ -152,8 +153,11 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
-	if (add_childs && widget->parent)
-		glade_popup_populate_childs(popup_menu, widget->parent);
+	if (add_childs && !GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+		GladeWidget *parent = glade_widget_get_parent (widget);
+		g_return_val_if_fail (GLADE_IS_WIDGET (parent), popup_menu);
+		glade_popup_populate_childs(popup_menu, parent);
+	}
 
 	return popup_menu;
 }

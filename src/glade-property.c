@@ -192,7 +192,8 @@ static void
 glade_property_set_property (GladeProperty *property, const GValue *value)
 {
 	if (property->class->packing) {
-		GtkContainer *container = GTK_CONTAINER (property->widget->parent->widget);
+		GladeWidget *parent = glade_widget_get_parent (property->widget);
+		GtkContainer *container = GTK_CONTAINER (parent->widget);
 		GtkWidget *child = property->widget->widget;
 		gtk_container_child_set_property (container, child, property->class->id, value);
 	} else {

@@ -573,12 +573,12 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	GladeWidget *widget = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
 
-	glade_project_add_widget (widget->project, widget, widget->parent);
-	glade_project_selection_set (widget->project, widget->widget, TRUE);
-
 	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 		glade_placeholder_replace_with_widget (placeholder, widget);
 	}
+
+	glade_project_add_widget (widget->project, widget->widget);
+	glade_project_selection_set (widget->project, widget->widget, TRUE);
 
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show_all (widget->widget);
@@ -590,12 +590,14 @@ static gboolean
 glade_command_delete_execute (GladeCommandCreateDelete *me)
 {
 	GladeWidget *widget = me->widget;
+	GladeWidget *parent;
 
 	g_return_val_if_fail (widget != NULL, TRUE);
 
-	if (widget->parent) {
+	parent = glade_widget_get_parent (widget);
+	if (parent) {
 		if (me->placeholder == NULL) {
-			me->placeholder = glade_placeholder_new (widget->parent);
+			me->placeholder = glade_placeholder_new ();
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
@@ -604,7 +606,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 
 	gtk_widget_hide (widget->widget);
 
-	glade_project_remove_widget (widget);
+	glade_project_remove_widget (widget->project, widget->widget);
 
 	return TRUE;
 }
@@ -779,7 +781,7 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 		glade_placeholder_replace_with_widget (placeholder, widget);
 	}
 
-	glade_project_add_widget (project, widget, parent);
+	glade_project_add_widget (project, widget->widget);
 	glade_project_selection_set (widget->project, widget->widget, TRUE);
 
 	if (GTK_IS_WIDGET (widget->widget))
@@ -794,14 +796,16 @@ static gboolean
 glade_command_cut_execute (GladeCommandCutPaste *me)
 {
 	GladeWidget *widget = me->widget;
+	GladeWidget *parent;
 
 	g_return_val_if_fail (widget != NULL, TRUE);
 
 	glade_clipboard_add (me->clipboard, widget);
 
-	if (widget->parent) {
+	parent = glade_widget_get_parent (widget);
+	if (parent) {
 		if (me->placeholder == NULL) {
-			me->placeholder = glade_placeholder_new (widget->parent);
+			me->placeholder = glade_placeholder_new ();
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
@@ -810,7 +814,7 @@ glade_command_cut_execute (GladeCommandCutPaste *me)
 
 	gtk_widget_hide (widget->widget);
 
-	glade_project_remove_widget (widget);
+	glade_project_remove_widget (widget->project, widget->widget);
 
 	return TRUE;
 }

@@ -164,11 +164,20 @@ glade_project_selection_changed (GladeProject *project)
 		       0);
 }
 
-static void
-glade_project_add_widget_real (GladeProject *project,
-			       GtkWidget *widget)
+/**
+ * glade_project_add_widget:
+ * @project: the project the widget is added to
+ * @widget: the GtkWidget to add
+ *
+ * Adds a widget to the project.
+ */
+void
+glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 {
 	GladeWidget *gwidget;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	/* We don't list placeholders */
 	if (GLADE_IS_PLACEHOLDER (widget))
@@ -182,7 +191,7 @@ glade_project_add_widget_real (GladeProject *project,
 		list = gtk_container_get_children (GTK_CONTAINER (widget));
 		for (; list; list = list->next) {
 			child = list->data;
-			glade_project_add_widget_real (project, child);
+			glade_project_add_widget (project, child);
 		}
 	}
 
@@ -202,6 +211,7 @@ glade_project_add_widget_real (GladeProject *project,
 	gwidget->project = project;
 
 	project->widgets = g_list_prepend (project->widgets, widget);
+	project->changed = TRUE;
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
 		       0,
@@ -209,45 +219,22 @@ glade_project_add_widget_real (GladeProject *project,
 }
 
 /**
- * glade_project_add_widget:
- * @project: the project the widget is added to
- * @widget: the GladeWidget to add
- * @parent: the GladeWidget @widget is reparented to
+ * glade_project_remove_widget:
+ * @project: the project the widget is removed from
+ * @widget: the GtkWidget to remove
  *
- * Adds a widget to the project. Parent should be NULL for toplevels.
- */
-void
-glade_project_add_widget (GladeProject *project,
-			  GladeWidget *widget,
-			  GladeWidget *parent)
-{
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	glade_project_add_widget_real (project, widget->widget);
-
-	/* reparent */
-	widget->parent = parent;
-	if (parent) {
-		g_return_if_fail (GLADE_IS_WIDGET (parent));
-
-		widget->parent = parent;
-		parent->children = g_list_append (parent->children, widget);
-	}
-
-	project->changed = TRUE;
-}
-
-/**
+ * Remove a widget from the project.
  * Note that when removing the GtkWidget from the project we
  * don't change ->project in the associated GladeWidget, this
  * way UNDO works.
  */
-static void
-glade_project_remove_widget_real (GladeProject *project,
-				  GtkWidget *widget)
+void
+glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 {
 	GladeWidget *gwidget;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	if (GLADE_IS_PLACEHOLDER (widget))
 		return;
@@ -260,7 +247,7 @@ glade_project_remove_widget_real (GladeProject *project,
 		list = gtk_container_get_children (GTK_CONTAINER (widget));
 		for (; list; list = list->next) {
 			child = list->data;
-			glade_project_remove_widget_real (project, child);
+			glade_project_remove_widget (project, child);
 		}
 	}
 
@@ -272,36 +259,11 @@ glade_project_remove_widget_real (GladeProject *project,
 	glade_project_selection_changed (project);
 
 	project->widgets = g_list_remove (project->widgets, widget);
+	project->changed = TRUE;
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [REMOVE_WIDGET],
 		       0,
 		       gwidget);
-}
-
-/**
- * glade_project_remove_widget:
- * @widget: the GladeWidget to remove
- *
- * Remove a widget from the project.
- */
-void
-glade_project_remove_widget (GladeWidget *widget)
-{
-	GladeWidget *parent;
-
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	glade_project_remove_widget_real (widget->project, widget->widget);
-
-	/* remove from the parent's children list */
-	parent = widget->parent;
-	if (parent) {
-		g_return_if_fail (GLADE_IS_WIDGET (parent));
-
-		parent->children = g_list_remove (parent->children, widget);
-	}
-
-	widget->project->changed = TRUE;
 }
 
 void

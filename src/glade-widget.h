@@ -8,10 +8,9 @@ G_BEGIN_DECLS
 #define GLADE_WIDGET(w) ((GladeWidget *)w)
 #define GLADE_IS_WIDGET(w) (w != NULL)
 
-/* A GladeWidget is an instance of a GladeWidgetClass. For every widget
- * in the project there is a GladeWidget
+/* A GladeWidget is an instance of a GladeWidgetClass.
+ * Each GtkWidget in the project has an associated GladeWidget.
  */
-
 struct _GladeWidget
 {
 	GladeWidgetClass *class; /* The class of the widget.
@@ -52,33 +51,28 @@ struct _GladeWidget
 				    */
 
 	GList *signals;      /* A list of GladeSignals */
-
-	/* Tree Structure */
-	GladeWidget *parent; /* The parent of this widget, NULL if this is a
-			      * toplevel widget.
-			      */
-	GList *children;     /* A list of GladeWidget childrens of this widget.
-			      */
 };
 
 
-gchar *	glade_widget_new_name (GladeProject *project, GladeWidgetClass *class);
+gchar *glade_widget_new_name (GladeProject *project, GladeWidgetClass *class);
 void glade_widget_set_contents (GladeWidget *widget);
 void glade_widget_connect_signals (GladeWidget *widget);
 
 void glade_widget_set_packing_properties (GladeWidget *widget,
 					  GladeWidgetClass *container_class);
 
-GladeWidget * glade_widget_new_from_class (GladeWidgetClass *class,
-					   GladeProject *project,
-					   GladeWidget *parent);
+GladeWidget *glade_widget_new_from_class (GladeWidgetClass *class,
+					  GladeProject *project,
+					  GladeWidget *parent);
 
 void glade_widget_set_default_packing_options (GladeWidget *widget);
 
-const gchar *      glade_widget_get_name  (GladeWidget *widget);
-GladeWidgetClass * glade_widget_get_class (GladeWidget *widget);
-GladeProperty *    glade_widget_get_property_from_class (GladeWidget *widget,
-							 GladePropertyClass *property_class);
+const gchar *glade_widget_get_name  (GladeWidget *widget);
+
+GladeWidgetClass *glade_widget_get_class (GladeWidget *widget);
+
+GladeProperty *glade_widget_get_property_from_class (GladeWidget *widget,
+						     GladePropertyClass *property_class);
 
 void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 
@@ -88,6 +82,8 @@ void glade_widget_replace_with_placeholder (GladeWidget *widget,
 					    GladePlaceholder *placeholder);
 
 GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
+
+GladeWidget *glade_widget_get_parent (GladeWidget *widget);
 
 /* Widget signal*/
 GList *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);

@@ -218,6 +218,7 @@ glade_project_view_add_item (GladeProjectView *view,
 			     GladeWidget *widget)
 {
 	GladeWidgetClass *class;
+	GladeWidget *parent;
 	GtkTreeStore *model;
 	GtkTreeIter iter;
 	GtkTreeIter *parent_iter = NULL;
@@ -231,10 +232,11 @@ glade_project_view_add_item (GladeProjectView *view,
 	
 	model = view->model;
 
-	if (widget->parent != NULL)
+	parent = glade_widget_get_parent (widget);
+	if (parent)
 		parent_iter = glade_project_view_find_iter_by_widget (GTK_TREE_MODEL (model),
-								      widget->parent);
-	
+								      parent);
+
 	gtk_tree_store_append (model, &iter, parent_iter);
 	gtk_tree_store_set (model, &iter,
 			    WIDGET_COLUMN, widget,

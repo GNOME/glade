@@ -104,8 +104,6 @@ glade_widget_new (GladeWidgetClass *class)
 	/* we don't have packing properties until we container add the widget */
 	widget->packing_properties = NULL;
 	widget->signals  = NULL;
-	widget->parent   = NULL;
-	widget->children = NULL;
 
 	return widget;
 }
@@ -127,6 +125,34 @@ glade_widget_get_from_gtk_widget (GtkWidget *widget)
 	glade_widget = g_object_get_data (G_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
 
 	return glade_widget;
+}
+
+/**
+ * glade_widget_get_parent:
+ * @widget
+ *
+ * Convenience function to retrieve the GladeWidget associated
+ * to the parent of @widget.
+ * Returns NULL if it is a toplevel.
+ **/
+GladeWidget *
+glade_widget_get_parent (GladeWidget *widget)
+{
+	GladeWidget *parent = NULL;
+	GtkWidget *parent_widget;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	if (GLADE_WIDGET_IS_TOPLEVEL (widget))
+		return NULL;
+
+	parent_widget = gtk_widget_get_parent (widget->widget);
+	g_return_val_if_fail (parent_widget != NULL, NULL);
+
+	parent = glade_widget_get_from_gtk_widget (parent_widget);
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
+
+	return parent;
 }
 
 /* A temp data struct that we use when looking for a widget inside a container
@@ -529,7 +555,6 @@ glade_widget_free (GladeWidget *widget)
 	widget->class = NULL;
 	widget->project = NULL;
 	widget->widget = NULL;
-	widget->parent = NULL;
 
 	if (widget->name)
 		g_free (widget->name);
@@ -636,7 +661,6 @@ glade_widget_new_full (GladeWidgetClass *class,
 
 	widget = glade_widget_new (class);
 	widget->name    = glade_widget_new_name (project, class);
-	widget->parent  = parent;
 	widget->project = project;
 
 	widget->widget = glade_widget_create_gtk_widget (class);
@@ -1037,15 +1061,12 @@ glade_widget_replace_with_placeholder (GladeWidget *widget,
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 
-	parent = widget->parent;
+	parent = glade_widget_get_parent (widget);
 
 	if (parent->class->placeholder_replace) {
 		parent->class->placeholder_replace (widget->widget,
 						    GTK_WIDGET (placeholder),
 						    parent->widget);
-
-		/* Remove it from the parent's child list */
-		widget->parent->children = g_list_remove (widget->parent->children, widget);
 	}
 }
 
@@ -1403,7 +1424,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
 	if (child_node) {
-		child_widget = glade_placeholder_new (parent);
+		child_widget = glade_placeholder_new ();
 		gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
 		return TRUE;
 	}

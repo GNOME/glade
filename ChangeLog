@@ -1,3 +1,16 @@
+2003-08-21  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget.[ch]: remove the tree structure (GladeWidget->parent
+	and GladeWidget->children) from struct GladeWidget: gtk holds that info
+	for us.
+	* src/glade-project.[ch]: adapt for the above, it allows to simplify
+	add_widget and remove_widget.
+	* src/glade-command.c: adapt for the above changes.
+	* src/glade-project-view.c: ditto.
+	* src/glade-popuc.c: ditto.
+	* src/glade-editor.c: ditto.
+	* src/glade-gtk.c: ditto.
+
 2003-08-20  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-project-view.c (glade_project_view_add_columns): new 

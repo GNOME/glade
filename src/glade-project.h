@@ -70,11 +70,8 @@ GladeProject *glade_project_new (gboolean untitled);
 GladeProject *glade_project_open (const gchar *path);
 gboolean glade_project_save (GladeProject *project, const gchar *path);
 
-/* Widget related stuff */
-void glade_project_remove_widget (GladeWidget *widget);
-void glade_project_add_widget (GladeProject  *project,
-			       GladeWidget *widget,
-			       GladeWidget *parent);
+void glade_project_add_widget (GladeProject *project, GtkWidget *widget);
+void glade_project_remove_widget (GladeProject *project, GtkWidget *widget);
 
 GladeWidget *glade_project_get_widget_by_name (GladeProject *project, const char *name);
 char *glade_project_new_widget_name (GladeProject *project, const char *base_name);

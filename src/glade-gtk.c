@@ -226,7 +226,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 
 			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
 			if (glade_widget) /* it may be NULL, e.g a placeholder */
-				glade_project_remove_widget (glade_widget);
+				glade_project_remove_widget (glade_widget->project, child_widget);
 
 			gtk_container_remove (GTK_CONTAINER (box), child_widget);
 
@@ -299,9 +299,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 			 * If we got it, and its not a placeholder, remove it
 			 * from project.
 			 */
-			if (child_gwidget) {
-				glade_project_remove_widget (child_gwidget);
-			}
+			if (child_gwidget)
+				glade_project_remove_widget (child_gwidget->project, child_widget);
 
 			gtk_notebook_remove_page (notebook, old_size-1);
 			old_size--;
