@@ -326,26 +326,38 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 }
 
 static void
+gpw_select_project_menu (GladeProjectWindow *gpw)
+{
+	GladeProject *project;
+	GList        *projects;
+	GtkWidget    *palette_item;
+
+	for (projects = glade_app_get_projects (GLADE_APP (gpw));
+	     projects && projects->data; projects = projects->next)
+	{
+		project      = projects->data;
+		palette_item = gtk_item_factory_get_item 
+			(gpw->priv->item_factory, project->entry.path);
+		gtk_check_menu_item_set_draw_as_radio
+			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+		gtk_check_menu_item_set_active 
+			(GTK_CHECK_MENU_ITEM (palette_item), 
+			 (glade_app_get_active_project 
+			  (GLADE_APP (gpw)) == project));
+	}
+}
+
+static void
 do_close (GladeProjectWindow *gpw, GladeProject *project)
 {
-	GladeProject *active;
 	gchar        *item_path;
-	GtkWidget    *palette_item;
 
 	item_path = g_strdup_printf ("/Project/%s", project->name);
 	gtk_item_factory_delete_item (gpw->priv->item_factory, item_path);
 	g_free (item_path);
 
 	glade_app_remove_project (GLADE_APP (gpw), project);
-
-	if ((active = glade_default_app_get_active_project ()))
-	{
-		palette_item = gtk_item_factory_get_item 
-			(gpw->priv->item_factory,
-			 active->entry.path);
-		gtk_check_menu_item_set_active
-			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
-	}
+	gpw_select_project_menu (gpw);
 }
 
 static void
@@ -1158,45 +1170,27 @@ glade_project_window_create (GladeProjectWindow *gpw)
 }
 
 static void
-glade_project_window_set_project (GladeProject *project)
+glade_project_window_set_project (GladeProject *project,
+				  guint         action,
+				  GtkWidget    *item)
 {
 	GladeProjectWindow *gpw = g_object_get_data (G_OBJECT (project), "gpw");
-	glade_app_set_project (GLADE_APP (gpw), project);
-}
 
-static void
-gpw_link_project_radio_menu (GladeProjectWindow *gpw)
-{
-	GList            *list;
-	GSList           *group = NULL;
-	GtkRadioMenuItem *ritem;
-	GladeProject     *project;
-
-	if (g_list_length (glade_default_app_get_projects ()) <= 1)
-		return;
-
-	for (list = glade_default_app_get_projects ();
-	     list && list->data; list = list->next)
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
 	{
-		project = list->data;
-		ritem   = (GtkRadioMenuItem *)gtk_item_factory_get_widget
-			(gpw->priv->item_factory, project->entry.path);
+		glade_app_set_project (GLADE_APP (gpw), project);
 
-		if (group == NULL)
-			group = gtk_radio_menu_item_get_group (ritem);
-		else
-		{
-			gtk_radio_menu_item_set_group (ritem, group);
-			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (ritem), TRUE);
-		}
+		/* Ensure correct selection
+		 */
+		gpw_select_project_menu (gpw);
 	}
 }
+
 
 static void
 glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project)
 {
 	gchar *underscored_name;
-	GtkWidget *palette_item;
 
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 	
@@ -1210,21 +1204,19 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 
  	/* Add the project in the /Project menu. */
 	project->entry.path = g_strdup_printf ("/Project/%s", underscored_name);
-	g_free (underscored_name);
 	project->entry.accelerator = NULL;
 	project->entry.callback = (GtkItemFactoryCallback)glade_project_window_set_project;
 	project->entry.callback_action = 0;
-	project->entry.item_type = g_strdup ("<RadioItem>");
+	project->entry.item_type = g_strdup ("<CheckItem>");
+
+	g_free (underscored_name);
+
 	g_object_set_data (G_OBJECT (project), "gpw", gpw);
 	gtk_item_factory_create_item (gpw->priv->item_factory, &(project->entry), project, 1);
 
-	/* Ensure radio group & correct selection
+	/* Ensure correct selection
 	 */
-	gpw_link_project_radio_menu (gpw);
-	palette_item = gtk_item_factory_get_item 
-		(gpw->priv->item_factory,
-		 glade_default_app_get_active_project ()->entry.path);
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+	gpw_select_project_menu (gpw);
 }
 
 /**
