@@ -1160,6 +1160,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	GladeXmlNode *packing;
 	GladeWidget *child_widget;
 	GladeSignal *signal;
+	GtkWidget *gtk_widget;
 	GList *list;
 	GList *list2;
 
@@ -1194,33 +1195,51 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	}
 
 	/* Children */
-	list = widget->children;
+	if (GTK_IS_CONTAINER (widget->widget))
+		list = gtk_container_get_children (GTK_CONTAINER (widget->widget));
+	else
+		list = NULL;
+
 	for (; list != NULL; list = list->next) {
-		child_widget = list->data;
+		gtk_widget = GTK_WIDGET (list->data);
+		child_widget = glade_widget_get_from_gtk_widget (gtk_widget);
+		if (!child_widget && !GLADE_IS_PLACEHOLDER (gtk_widget))
+			continue;
+
 		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
 		glade_xml_node_append_child (node, child_tag);
 
-		/* write the widget */
-		child = glade_widget_write (context, child_widget);
-		if (child == NULL)
-			return NULL;
-		glade_xml_node_append_child (child_tag, child);
-		
-		/* Append the packing properties */
-		packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
-		list2 = child_widget->properties;
-		for (; list2 != NULL; list2 = list2->next) {
-			GladeXmlNode *packing_property;
-			property = list2->data;
-			if (!property->class->packing) 
-				continue;
-			packing_property = glade_property_write (context, property);
-			if (packing_property == NULL)
-				continue;
-			glade_xml_node_append_child (packing, packing_property);
-		}
-		glade_xml_node_append_child (child_tag, packing);
+		if (child_widget)
+		{
+			/* write the widget */
+			child = glade_widget_write (context, child_widget);
+			if (child == NULL)
+				return NULL;
 
+			glade_xml_node_append_child (child_tag, child);
+
+			/* Append the packing properties */
+			packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
+			list2 = child_widget->properties;
+			for (; list2 != NULL; list2 = list2->next) {
+				GladeXmlNode *packing_property;
+				property = list2->data;
+				if (!property->class->packing) 
+					continue;
+				packing_property = glade_property_write (context, property);
+				if (packing_property == NULL)
+					continue;
+				glade_xml_node_append_child (packing, packing_property);
+				glade_xml_node_append_child (child_tag, packing);
+			}
+		}
+		else
+		{
+			/* a placeholder */
+			child = glade_xml_node_new (context, GLADE_XML_TAG_PLACEHOLDER);
+			glade_xml_node_append_child (child_tag, child);
+			/* TODO: write the placeholder packing properties */
+		}
 	}
 
 	return node;
