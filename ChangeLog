@@ -1,3 +1,12 @@
+2001-11-23  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
+	Fixed the API change, G_PARAM_SPEC_TYPE (spec) can not be used in
+	a switch any more, so we change it to if (...) {} else {}...
+	This fix the compile problem, but I think that we have to search for
+	other change that mades glade2 unuseful :-( (or that this patch is
+	not a good patch...).
+
 2001-11-21  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* configure.in: We need now latest gtk2 version.

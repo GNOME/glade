@@ -176,39 +176,35 @@ glade_widget_property_class_free (GladePropertyClass *class)
 static GladePropertyType
 glade_property_class_get_type_from_spec (GParamSpec *spec)
 {
-	switch (G_PARAM_SPEC_TYPE (spec))
-	{
-	case G_TYPE_PARAM_INT:
-	case G_TYPE_PARAM_UINT:
+	GType spec_type = G_PARAM_SPEC_TYPE (spec);
+	
+	if (G_IS_PARAM_SPEC_INT (spec_type) || G_IS_PARAM_SPEC_UINT (spec_type)) {
 		return GLADE_PROPERTY_TYPE_INTEGER;
-	case G_TYPE_PARAM_FLOAT:
+	} else if (G_IS_PARAM_SPEC_FLOAT (spec_type)) {
 		return GLADE_PROPERTY_TYPE_FLOAT;
-	case G_TYPE_PARAM_BOOLEAN:
+	} else if (G_IS_PARAM_SPEC_BOOLEAN (spec_type)) {
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
-	case G_TYPE_PARAM_STRING:
+	} else if (G_IS_PARAM_SPEC_STRING (spec_type)) {
 		/* FIXME: We should solve the "name" conflict with a better solution */
 		if (!g_ascii_strcasecmp ( spec->name, "name"))
 			return GLADE_PROPERTY_TYPE_ERROR;
 		else
 			return GLADE_PROPERTY_TYPE_STRING;
-	case G_TYPE_PARAM_ENUM:
+	} else if (G_IS_PARAM_SPEC_ENUM (spec_type)) {
 		return GLADE_PROPERTY_TYPE_ENUM;
-	case G_TYPE_PARAM_DOUBLE:
+	} else if (G_IS_PARAM_SPEC_DOUBLE (spec_type)) {
 		return GLADE_PROPERTY_TYPE_DOUBLE;
-	case G_TYPE_PARAM_LONG:
+	} else if (G_IS_PARAM_SPEC_LONG (spec_type)) {
 		g_warning ("Long not implemented\n");
-		break;
-	case G_TYPE_PARAM_UCHAR:
+	} else if (G_IS_PARAM_SPEC_UCHAR (spec_type)) {
 		g_warning ("uchar not implemented\n");
-		break;
-	case G_TYPE_PARAM_OBJECT:
+	} else if (G_IS_PARAM_SPEC_OBJECT (spec_type)) {
 		return GLADE_PROPERTY_TYPE_OBJECT;
-	default:
+	} else {
 		/*FIXME: We should implement the "events" property */
 		if (g_ascii_strcasecmp ( spec->name, "user-data") &&
 		    g_ascii_strcasecmp ( spec->name, "events")) {
-			g_warning ("Could not determine GladePropertyType from spec (%d,%s)",
-				   G_PARAM_SPEC_TYPE (spec),
+			g_warning ("Could not determine GladePropertyType from spec (%s)",
 				   G_PARAM_SPEC_TYPE_NAME (spec));
 		}
 	}
