@@ -76,8 +76,8 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 		i++;
 	}
 
-	retval = g_strconcat (tmp->str, "_get_type", NULL);
-	g_strdown (retval);
+	tmp = g_string_append (tmp, "_get_type");
+        retval = g_ascii_strdown (tmp->str, tmp->len);
 	g_string_free (tmp, TRUE);
 
 	return retval;
@@ -420,8 +420,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	g_return_val_if_fail (filename != NULL, FALSE);
 
 	context = glade_xml_context_new_from_path (filename, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (context != NULL)
-	{
+	if (context != NULL) {
 		doc = glade_xml_context_get_doc (context);
 		node = glade_xml_doc_get_root (doc);
 		properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
@@ -503,28 +502,25 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 		widget_class->post_create_function = parent_class->post_create_function;
 
 	tmp1 = widget_class->properties;
-	while (tmp1 != NULL)
-	{
+	while (tmp1 != NULL) {
 		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
 		g_debug (("%s from %s\n", property_class->id, widget_class->name));
 		tmp1 = g_list_next (tmp1);
 	}
 	tmp1 = parent_class->properties;
-	while (tmp1 != NULL)
-	{
+	while (tmp1 != NULL) {
 		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
 		g_debug (("%s from %s\n", property_class->id, parent_class->name));
 		tmp1 = g_list_next (tmp1);
 	}
 
 	last_property = g_list_last (widget_class->properties);
-	for (parent_properties = parent_class->properties; parent_properties != NULL; parent_properties = parent_properties->next)
-	{
+	parent_properties = parent_class->properties;
+	for (; parent_properties; parent_properties = parent_properties->next) {
 		GladePropertyClass *property_class = (GladePropertyClass*) parent_properties->data;
 		GList *list = g_list_append (last_property, glade_property_class_clone (property_class));
 
-		if (!last_property)
-		{
+		if (!last_property) {
 			widget_class->properties = list;
 			last_property = list;
 		}
@@ -533,8 +529,7 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 	}
 
 	tmp1 = widget_class->properties;
-	while (tmp1 != NULL)
-	{
+	while (tmp1 != NULL) {
 		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
 		g_debug (("Result %s\n", property_class->id));
 		tmp1 = g_list_next (tmp1);
@@ -556,8 +551,7 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 	GHashTable *hash_properties = g_hash_table_new (g_str_hash, g_str_equal);
 	GList *properties_classes = widget_class->properties;
 
-	while (properties_classes != NULL)
-	{
+	while (properties_classes != NULL) {
 		GladePropertyClass *property_class = (GladePropertyClass*) properties_classes->data;
 		GList *old_property;
 
@@ -574,9 +568,7 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 
 			g_hash_table_insert (hash_properties, property_class->id, properties_classes);
 			properties_classes = g_list_next (properties_classes);
-		}
-		else
-		{
+		} else {
 			GList *tmp = properties_classes;
 			properties_classes = g_list_next (properties_classes);
 			g_list_remove_link (widget_class->properties, tmp);
@@ -604,7 +596,9 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
  * Return Value: The new GladeWidgetClass, or %NULL if there are any errors.
  **/
 GladeWidgetClass *
-glade_widget_class_new_from_name2 (const char *name, const char *generic_name, const char *base_filename)
+glade_widget_class_new_from_name2 (const char *name,
+				   const char *generic_name,
+				   const char *base_filename)
 {
 	GladeWidgetClass *widget_class = NULL;
 	char *filename = NULL;
@@ -613,25 +607,21 @@ glade_widget_class_new_from_name2 (const char *name, const char *generic_name, c
 
 	g_return_val_if_fail (name != NULL, NULL);
 
-	if (glade_widget_class_get_from_name (name) != NULL)
-	{
+	if (glade_widget_class_get_from_name (name) != NULL) {
 		g_warning ("The widget class [%s] has at least two different definitions.\n", name);
 		goto lblError;
 	}
 
-	if (base_filename != NULL)
-	{
+	if (base_filename != NULL) {
 		filename = g_strconcat (WIDGETS_DIR, "/", base_filename, NULL);
-		if (filename == NULL)
-		{
+		if (filename == NULL) {
 			g_warning ("Not enough memory.");
 			goto lblError;
 		}
 	}
 
 	widget_class = glade_widget_class_new ();
-	if (widget_class == NULL)
-	{
+	if (!widget_class) {
 		g_warning ("Not enough memory.");
 		goto lblError;
 	}
@@ -644,8 +634,7 @@ glade_widget_class_new_from_name2 (const char *name, const char *generic_name, c
 	 * that only works for registered types, and the only way to register the
 	 * type is to call foo_bar_get_type() */
 	init_function_name = glade_widget_class_compose_get_type_func (widget_class);
-	if (!init_function_name)
-	{
+	if (!init_function_name) {
 		g_warning ("Not enough memory.");
 		goto lblError;
 	}
@@ -779,8 +768,8 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 	return FALSE;
 }
 
-/* ParamSpec stuff */
-void
+#if 0 // these two are just called in a commented out function in glade-property-class
+static void
 glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
 {
 	GObjectClass *object_class;
@@ -833,6 +822,7 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 	
 	return NULL;
 }
+#endif
 
 /**
  * glade_widget_class_dump_param_specs:

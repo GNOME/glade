@@ -96,10 +96,6 @@ gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
 
 gboolean     glade_widget_class_is (GladeWidgetClass *class, const char *name);
 
-/* ParamSpec stuff */
-void         glade_widget_class_get_specs (GladeWidgetClass *class,
-					   GParamSpec ***specs, gint *n_specs);
-GParamSpec *glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
 void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
 gboolean    glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name);
 
