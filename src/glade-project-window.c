@@ -478,7 +478,7 @@ glade_project_append_query (GtkWidget *table, GladePropertyClass *property_class
 				   0, 1, row, row +1);
 
 	/* Spin/Entry */
-	adjustment = glade_parameter_adjustment_new (property_class->parameters);
+	adjustment = glade_parameter_adjustment_new (property_class->parameters, property_class->def);
 	spin = gtk_spin_button_new (adjustment, 1, 0);
 	gtk_widget_show (spin);
 	gtk_table_attach_defaults (GTK_TABLE (table), spin,

@@ -137,6 +137,8 @@ struct _GladeEditorTable
 	gboolean common; /* Is this table to be used in the common tab ?
 			  * or the general tab ?
 			  */
+	gboolean packing;
+	
 	gint rows;
 };
 

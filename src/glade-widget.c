@@ -33,7 +33,7 @@
 #include "glade-popup.h"
 #include "glade-placeholder.h"
 #include "glade-signal.h"
-
+#include "glade-packing.h"
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
 
@@ -103,7 +103,11 @@ glade_widget_new (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk
 GladeWidget *
 glade_widget_get_from_gtk_widget (GtkWidget *widget)
 {
-	return gtk_object_get_data (GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
+	GladeWidget *glade_widget;
+
+	glade_widget = gtk_object_get_data (GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
+
+	return glade_widget;
 }
 
 /* A temp data struct that we use when looking for a widget inside a container
@@ -304,6 +308,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 	return FALSE;
 }
 
+
 /**
  * glade_widget_set_default_options:
  * @widget: 
@@ -311,7 +316,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
  * Takes care of applying the default values to a newly created widget
  **/
 static void
-glade_widget_set_default_options (GladeWidget *widget)
+glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 {
 	GladeProperty *property;
 	GList *list;
@@ -319,6 +324,10 @@ glade_widget_set_default_options (GladeWidget *widget)
 	list = widget->properties;
 	for (; list != NULL; list = list->next) {
 		property = list->data;
+
+		if (property->class->packing != packing)
+			continue;
+		
 		switch (property->class->type) {
 		case GLADE_PROPERTY_TYPE_BOOLEAN:
 			glade_property_changed_boolean (property,
@@ -348,7 +357,7 @@ glade_widget_set_default_options (GladeWidget *widget)
 			g_print ("Set adjustment\n");
 #if 1
 			g_print ("Set directly \n");
-			glade_widget_set_default_options (property->child);
+			glade_widget_set_default_options_real (property->child, packing);
 			gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
 							GTK_ADJUSTMENT (property->child));
 #else	
@@ -366,6 +375,27 @@ glade_widget_set_default_options (GladeWidget *widget)
 	       
 }
 
+static void
+glade_widget_set_default_options (GladeWidget *widget)
+{
+	glade_widget_set_default_options_real (widget, FALSE);
+}
+
+/**
+ * glade_widget_set_default_packing_options:
+ * @widget: 
+ * 
+ * We need to have a different funcition for setting packing options
+ * because we weed to add the widget to the container before we
+ * apply the packing options
+ *
+ **/
+void
+glade_widget_set_default_packing_options (GladeWidget *widget)
+{
+	glade_widget_set_default_options_real (widget, TRUE);
+}
+
 static GladeWidget *
 glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk_widget, const gchar *name, GladeWidget *parent)
 {
@@ -375,8 +405,10 @@ glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
 	glade_widget = glade_widget_new (project, class, gtk_widget, name);
-
 	glade_widget->parent = parent;
+
+	glade_packing_add_properties (glade_widget);
+	
 	if (parent)
 		parent->children = g_list_prepend (parent->children, glade_widget);
 
@@ -518,7 +550,7 @@ glade_widget_set_contents (GladeWidget *widget)
 
 	if (glade_widget_class_find_spec (class, "label") != NULL)
 		property = glade_property_get_from_id (widget->properties,
-							   "label");
+						       "label");
 	if (glade_widget_class_find_spec (class, "title") != NULL)
 		property = glade_property_get_from_id (widget->properties,
 						       "title");
@@ -592,11 +624,7 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	}
 
 	glade_widget = glade_widget_register (project, class, widget, name, parent);
-	
-	glade_widget_set_default_options (glade_widget);
-	/* We need to be able to get to the GladeWidget * from a GtkWidget so add
-	 * the GladeWidget pointer to the GtkWidget
-	 */
+
 	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
 	glade_project_add_widget (project, glade_widget);
@@ -653,6 +681,11 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 	if (result) 
 		glade_property_query_result_destroy (result);
 
+	/* We need to set the default options after adding it to the placeholder cause
+	 * there are packing options too
+	 */
+	glade_widget_set_default_options (glade_widget);
+	
 	return glade_widget;
 }
 
@@ -762,7 +795,23 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
 
 
 void
-glade_widget_unselect (GladeWidget *widget)
+glade_widget_select (GladeWidget *widget)
+{
+	glade_project_selection_set (widget, TRUE);
+}
+
+
+/* I don't think this flag is beeing used at all, but for now it is queueing
+ * redraws. Chema.
+ */
+/**
+ * glade_widget_flag_unselected:
+ * @widget: 
+ * 
+ * Flag the widget as unselected
+ **/
+void
+glade_widget_flag_unselected (GladeWidget *widget)
 {
 	g_return_if_fail (widget->selected);
 	
@@ -770,8 +819,14 @@ glade_widget_unselect (GladeWidget *widget)
 	gtk_widget_queue_draw (widget->widget);
 }
 
+/**
+ * glade_widget_flag_selected:
+ * @widget: 
+ * 
+ * Flags the widget as selected
+ **/
 void
-glade_widget_select (GladeWidget *widget)
+glade_widget_flag_selected (GladeWidget *widget)
 {
 	g_return_if_fail (!widget->selected);
 
@@ -783,6 +838,27 @@ void
 glade_widget_delete (GladeWidget *widget)
 {
 	g_print ("Implement delete. Widget : %s\n",
+		 glade_widget_get_name (widget));
+}
+
+void
+glade_widget_cut (GladeWidget *widget)
+{
+	g_print ("Implement cut. Widget : %s\n",
+		 glade_widget_get_name (widget));
+}
+
+void
+glade_widget_copy (GladeWidget *widget)
+{
+	g_print ("Implement copy. Widget : %s\n",
+		 glade_widget_get_name (widget));
+}
+
+void
+glade_widget_paste (GladeWidget *widget)
+{
+	g_print ("Implement paste. Widget : %s\n",
 		 glade_widget_get_name (widget));
 }
 

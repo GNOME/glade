@@ -117,7 +117,7 @@ glade_query_new_from_node (GladeXmlNode *node)
 	return query;	
 }
 
-static GladePropertyClass *
+GladePropertyClass *
 glade_property_class_new (void)
 {
 	GladePropertyClass *property_class;
@@ -131,6 +131,7 @@ glade_property_class_new (void)
 	property_class->choices = NULL;
 	property_class->optional = FALSE;
 	property_class->common = FALSE;
+	property_class->packing = FALSE;
 	property_class->query = NULL;
 	property_class->set_function = NULL;
 
@@ -221,22 +222,17 @@ glade_property_class_get_choices_from_spec (GParamSpec *spec)
 	return list;
 }
 
-static GList *
-glade_property_get_parameters_boolean (GParamSpec *spec,
-				       GladePropertyClass *class)
+static gchar *
+glade_property_get_default_boolean (GParamSpec *spec,
+				    GladePropertyClass *class)
 {
-	GladeParameter *parameter;
 	gint def;
 	
 	g_return_val_if_fail (G_IS_PARAM_SPEC_BOOLEAN (spec), NULL);
 
 	def = (gint) G_PARAM_SPEC_BOOLEAN (spec)->default_value;
-	
-	parameter = glade_parameter_new ();
-	parameter->key = g_strdup ("Default");
-	parameter->value = def ? g_strdup (GLADE_TAG_TRUE) : g_strdup (GLADE_TAG_FALSE); 
 
-	return g_list_prepend (NULL, parameter);
+	return def ? g_strdup (GLADE_TAG_TRUE) : g_strdup (GLADE_TAG_FALSE); 
 }
 
 static gchar *
@@ -256,6 +252,92 @@ glade_property_get_parameter_numeric_default (GParamSpec *spec)
 		g_warning ("glade_propery_get_parameter_numeric_item invalid ParamSpec (default)\n");
 
 	return value;
+}
+
+static gchar *
+glade_property_get_default_text (GParamSpec *spec,
+				 GladePropertyClass *class)
+{
+	g_return_val_if_fail (G_IS_PARAM_SPEC_STRING (spec), NULL);
+
+	if (G_PARAM_SPEC_STRING (spec)->default_value != NULL)
+		return g_strdup (G_PARAM_SPEC_STRING (spec)->default_value);
+	
+	return NULL;
+}
+
+static gchar *
+glade_property_get_default_choice (GParamSpec *spec,
+				      GladePropertyClass *class)
+{
+	GladeChoice *choice = NULL;
+	GList *list;
+	gint def;
+
+	g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (spec), NULL);
+		
+	def = (gint) G_PARAM_SPEC_ENUM (spec)->default_value;
+		
+	list = class->choices;
+	for (; list != NULL; list = list->next) {
+		choice = list->data;
+		if (choice->value == def)
+			break;
+	}
+	if (list == NULL) {
+		g_warning ("Could not find the default value for %s\n", spec->nick);
+		if (class->choices == NULL)
+			return NULL;
+		choice = class->choices->data;
+	}
+
+	return g_strdup (choice->symbol);
+}
+
+static gchar *
+glade_property_get_default_numeric (GParamSpec *spec,
+				    GladePropertyClass *class)
+{
+	g_return_val_if_fail (G_IS_PARAM_SPEC_INT    (spec) |
+			      G_IS_PARAM_SPEC_UINT   (spec) |
+			      G_IS_PARAM_SPEC_FLOAT  (spec) |
+			      G_IS_PARAM_SPEC_DOUBLE (spec), NULL);
+
+	return glade_property_get_parameter_numeric_default (spec);
+}
+
+
+static gchar *
+glade_property_class_get_default_from_spec (GParamSpec *spec,
+					    GladePropertyClass *class,
+					    GladeXmlNode *node)
+{
+	gchar *def = NULL;
+
+	switch (class->type) {
+	case GLADE_PROPERTY_TYPE_CHOICE:
+		def = glade_property_get_default_choice (spec, class);
+		break;
+	case GLADE_PROPERTY_TYPE_TEXT:
+		def = glade_property_get_default_text (spec, class);
+		break;
+	case GLADE_PROPERTY_TYPE_INTEGER:
+	case GLADE_PROPERTY_TYPE_FLOAT:
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		def = glade_property_get_default_numeric (spec, class);
+		break;
+	case GLADE_PROPERTY_TYPE_BOOLEAN:
+		def = glade_property_get_default_boolean (spec, class);
+		break;
+	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
+		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		break;
+	case GLADE_PROPERTY_TYPE_ERROR:
+		break;
+	}
+
+	return def;
 }
 
 static gchar *
@@ -296,6 +378,7 @@ glade_property_get_parameter_numeric_max (GParamSpec *spec)
 	return value;
 }
 
+
 static GList *
 glade_property_get_parameters_numeric (GParamSpec *spec,
 				       GladePropertyClass *class)
@@ -308,12 +391,6 @@ glade_property_get_parameters_numeric (GParamSpec *spec,
 			      G_IS_PARAM_SPEC_FLOAT  (spec) |
 			      G_IS_PARAM_SPEC_DOUBLE (spec), NULL);
 
-	/* Get the default value */
-	parameter = glade_parameter_new ();
-	parameter->key = g_strdup ("Default");
-	parameter->value = glade_property_get_parameter_numeric_default (spec);
-	list = g_list_prepend (list, parameter);
-	
 	/* Get the min value */
 	parameter = glade_parameter_new ();
 	parameter->key = g_strdup ("Min");
@@ -330,63 +407,7 @@ glade_property_get_parameters_numeric (GParamSpec *spec,
 	return list;
 }
 
-static GList *
-glade_property_get_parameters_text (GParamSpec *spec,
-				    GladePropertyClass *class)
-{
-	GladeParameter *parameter;
-	GList *list = NULL;
 
-	g_return_val_if_fail (G_IS_PARAM_SPEC_STRING (spec), NULL);
-
-	if (G_PARAM_SPEC_STRING (spec)->default_value != NULL) {
-		/* Get the default value */
-		parameter = glade_parameter_new ();
-		parameter->key = g_strdup ("Default");
-		parameter->value = g_strdup (G_PARAM_SPEC_STRING (spec)->default_value);
-		
-		list = g_list_prepend (list, parameter);
-	}
-
-	return list;
-}
-
-static GList *
-glade_property_get_parameters_choice (GParamSpec *spec,
-				      GladePropertyClass *class)
-{
-	GladeParameter *parameter;
-	GladeChoice *choice = NULL;
-	GList *list;
-	gint def;
-
-	g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (spec), NULL);
-		
-	def = (gint) G_PARAM_SPEC_ENUM (spec)->default_value;
-		
-	list = class->choices;
-	for (; list != NULL; list = list->next) {
-		choice = list->data;
-		if (choice->value == def)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Could not find the default value for %s\n", spec->nick);
-		if (class->choices == NULL)
-			return NULL;
-		choice = class->choices->data;
-	}
-
-	parameter = glade_parameter_new ();
-	parameter->key = g_strdup ("Default");
-	parameter->value = g_strdup (choice->symbol);
-
-	/* The "list" pointer is now used for something else */
-	list = g_list_prepend (NULL, parameter);
-	
-	return list;
-}
-	
 static GList *
 glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 					       GladePropertyClass *class,
@@ -397,10 +418,8 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_CHOICE:
-		parameters = glade_property_get_parameters_choice (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_TEXT:
-		parameters = glade_property_get_parameters_text (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 	case GLADE_PROPERTY_TYPE_FLOAT:
@@ -408,7 +427,6 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 		parameters = glade_property_get_parameters_numeric (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		parameters = glade_property_get_parameters_boolean (spec, class);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
@@ -472,6 +490,11 @@ glade_property_class_load_from_param_spec (const gchar *name,
 	if (class->type == GLADE_PROPERTY_TYPE_CHOICE)
 		class->choices = glade_property_class_get_choices_from_spec (spec);
 
+	/* We want to use the parm spec default only when the xml files do not provide a
+	 * default value
+	 */
+	if (class->def == NULL)
+		class->def        = glade_property_class_get_default_from_spec    (spec, class, node);
 	class->parameters = glade_property_class_get_parameters_from_spec (spec, class, node);
 	
 	return TRUE;
@@ -561,9 +584,11 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
 	if (child != NULL)
 		property_class->query = glade_query_new_from_node (child);
+
 	
 	/* Will this property go in the common tab ? */
-	property_class->common = glade_xml_property_get_boolean (node, GLADE_TAG_COMMON, FALSE);
+	property_class->common  = glade_xml_property_get_boolean (node, GLADE_TAG_COMMON, FALSE);
+	property_class->def     = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 	
 	/* Should we load this property from the ParamSpec ? 
 	 * We can have a property like ... ParamSpec="TRUE"> 
@@ -579,7 +604,7 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 			glade_widget_property_class_free (property_class);
 			property_class = NULL;
 		}
-		
+
 		return property_class;
 	}
 
@@ -722,9 +747,6 @@ glade_property_class_list_new_from_node (GladeXmlNode *node, GladeWidgetClass *c
 
 
 
-
-
-
 /**
  * glade_property_class_create_label:
  * @class: The PropertyClass to create the name from
@@ -749,7 +771,3 @@ glade_property_class_create_label (GladePropertyClass *class)
 	
 	return label;
 }
-
-
-
-

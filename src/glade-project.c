@@ -263,7 +263,7 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 	list = project->selection;
 	for (; list != NULL; list = list->next) {
 		widget = list->data;
-		glade_widget_unselect (widget);
+		glade_widget_flag_unselected (widget);
 	}
 	
 	g_list_free (project->selection);
@@ -286,7 +286,7 @@ glade_project_selection_remove (GladeWidget *widget,
 	if (!widget->selected)
 		return;
 
-	glade_widget_unselect (widget);
+	glade_widget_flag_unselected (widget);
 		
 	project->selection = g_list_remove (project->selection, widget);
 
@@ -308,7 +308,7 @@ glade_project_selection_add (GladeWidget *widget,
 		return;
 	
 	project->selection = g_list_prepend (project->selection, widget);
-	glade_widget_select (widget);
+	glade_widget_flag_selected (widget);
 
 	if (emit_signal)
 		glade_project_selection_changed (project);

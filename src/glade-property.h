@@ -53,6 +53,7 @@ struct _GladePropertyQueryResult {
 
 GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 						   GladeWidget *widget);
+GladeProperty * glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget);
 
 void glade_property_changed_text    (GladeProperty *property, const gchar *text);
 void glade_property_changed_integer (GladeProperty *property, gint val);

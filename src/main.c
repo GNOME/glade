@@ -27,6 +27,7 @@
 #include "glade-editor.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
+#include "glade-packing.h"
 #include "glade-palette.h"
 #include "glade-project.h"
 #include "glade-project-view.h"
@@ -35,8 +36,6 @@
 #include <gmodule.h>
 #include <popt.h>
 
-#define FIX_POPT
-#ifdef FIX_POPT
 static void parse_command_line (poptContext);
 
 gchar * widget_name = NULL;
@@ -48,7 +47,7 @@ static struct poptOption options[] = {
 		POPT_ARG_STRING,
 		&widget_name,
 		0,
-		"Dump a widget",
+		"Dump the properties of a widget. --dump [gtk type] where type can be GtkWindow, GtkLabel etc.",
 		NULL
 	},
 	{
@@ -61,7 +60,6 @@ static struct poptOption options[] = {
 		NULL
 	}
 };
-#endif
 
 static gint
 glade_init ()
@@ -83,6 +81,7 @@ glade_init ()
 	 * 4. Create the project window
 	 */
 	glade_cursor_init ();
+	glade_packing_init ();
 
 	catalog = glade_catalog_load ();
 	if (catalog == NULL)
@@ -99,9 +98,7 @@ glade_init ()
 int
 main (int argc, char *argv[])
 {
-#ifdef FIX_POPT	
 	poptContext pctx = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
-#endif	
 
 #if 0	
 #if 1
@@ -124,10 +121,7 @@ main (int argc, char *argv[])
 	if (!glade_init ())
 		return -1;
 
-#ifdef FIX_POPT
 	parse_command_line (pctx);
-#endif	
-
 	poptFreeContext (pctx);
 
 	if (widget_name == NULL) {
@@ -146,7 +140,6 @@ main (int argc, char *argv[])
 }
 
 
-#ifdef FIX_POPT
 static void
 parse_command_line (poptContext pctx)
 {
@@ -165,7 +158,13 @@ parse_command_line (poptContext pctx)
 	files = g_list_reverse (files);
 
 }
-#endif	
 
+void
+g_scanner_stat_mode (void)
+{
+	g_print ("foo\n");
+}
+		
 
 gchar * _ (gchar * name) { return name;};
+

@@ -179,6 +179,8 @@ glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClas
 			   "function has not been implemented for this class (%s)\n",
 			   class->name);
 
+	glade_widget_set_default_packing_options (widget);
+	
 	glade_project_selection_set (widget, TRUE);
 }
 

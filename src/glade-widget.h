@@ -34,11 +34,11 @@ struct _GladeWidget {
 			    * just hide them
 			    */
 	
-	GList * properties; /* A list of GladeProperty. A GladeProperty is an
-			     * instance of a GladePropertyClass. If a
-			     * GladePropertyClass for a gtkbutton is label, its
-			     * property is "Ok". 
-			     */
+	GList *properties; /* A list of GladeProperty. A GladeProperty is an
+			    * instance of a GladePropertyClass. If a
+			    * GladePropertyClass for a gtkbutton is label, its
+			    * property is "Ok". 
+			    */
 
 	GList *signals;      /* A list of GladeWidgetSignals */
 
@@ -51,7 +51,21 @@ struct _GladeWidget {
 
 	gboolean selected;
 
-	GtkWidget *popup_menu;
+	/* Packing */
+	gint attach_left;
+	gint attach_right;
+	gint attach_top;
+	gint attach_bottom;
+
+	gint padding_horizontal;
+	gint padding_vertical;
+
+	gboolean expand_x : 1;
+	gboolean expand_y : 1;
+	gboolean shrink_x : 1;
+	gboolean shrink_y : 1;
+	gboolean fill_x   : 1;
+	gboolean fill_y   : 1;
 };
 
 /* GladeWidgetSignal is a structure that holds information about a signal a
@@ -70,6 +84,7 @@ GladeWidget * glade_widget_new_from_class (GladeWidgetClass *class,
 					   GladeWidget *widget);
 GladeWidget * glade_widget_new_from_class_name (const gchar *class_name,
 						GladeWidget *parent);
+void glade_widget_set_default_packing_options (GladeWidget *widget);
 
 
 const gchar *      glade_widget_get_name  (GladeWidget *widget);
@@ -83,9 +98,14 @@ void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 /* Widget functions */
 typedef void (*GladeWidgetFunction) (GladeWidget *widget);
 
-void glade_widget_unselect (GladeWidget *widget);
+void glade_widget_flag_selected   (GladeWidget *widget);
+void glade_widget_flag_unselected (GladeWidget *widget);
+
 void glade_widget_select (GladeWidget *widget);
 void glade_widget_delete (GladeWidget *widget);
+void glade_widget_cut    (GladeWidget *widget);
+void glade_widget_copy   (GladeWidget *widget);
+void glade_widget_paste  (GladeWidget *widget);
 
 GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 

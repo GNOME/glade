@@ -49,13 +49,14 @@ glade_property_new (void)
 /* We are recursing so add the prototype. Don't you love C ? */
 static GList * glade_property_list_new_from_list (GList *list, GladeWidget *widget);
 
-static GladeProperty *
-glade_property_new_from_string (const gchar *string, GladePropertyClass *class, GladeWidget *widget)
+GladeProperty *
+glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 {
 	GladeProperty *property;
 	gchar *value = NULL;
 	gfloat float_val;
 	gint int_val;
+	gchar *string = class->def;
 
 	/* move somewhere else */
 	GladeChoice *choice;
@@ -164,21 +165,14 @@ glade_property_list_new_from_list (GList *list, GladeWidget *widget)
 	GladePropertyClass *property_class;
 	GladeProperty *property;
 	GList *new_list = NULL;
-	gchar *def;
 
 	for (; list != NULL; list = list->next) {
 		property_class = list->data;
-		def = NULL;
-		glade_parameter_get_string (property_class->parameters,
-					    "Default", &def);
-		property = glade_property_new_from_string (def, property_class, widget);
+		property = glade_property_new_from_class (property_class, widget);
 		if (property == NULL)
 			continue;
 
 		property->widget = widget;
-
-		if (def)
-			g_free (def);
 
 		new_list = g_list_prepend (new_list, property);
 	}
@@ -270,8 +264,13 @@ glade_property_changed_integer (GladeProperty *property, gint val)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%i", val);
 
-	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->id, val, NULL);
+	if (property->class->set_function == NULL)
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id, val, NULL);
+	else
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
+	
 }
 
 void
@@ -344,12 +343,21 @@ glade_property_changed_boolean (GladeProperty *property, gboolean val)
 {
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
+	g_return_if_fail (property->widget != NULL);
+	g_return_if_fail (property->widget->widget != NULL);
 
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", val ? GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 
-	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->id, val, NULL);
+	if (property->class->set_function == NULL)
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id,
+				val,
+				NULL);
+	else
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
+	
 }
 
 void
@@ -362,8 +370,12 @@ glade_property_changed_choice (GladeProperty *property, GladeChoice *choice)
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", choice->symbol);
 
-	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->id, choice->value, NULL);
+	if (property->class->set_function == NULL)
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id, choice->value, NULL);
+	else
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
 }
 	
 

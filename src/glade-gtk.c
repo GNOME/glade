@@ -141,6 +141,7 @@ glade_gtk_adjustment_set_page_increment (GObject *object, const gchar *string)
 	adjustment->page_increment = val;
 	gtk_adjustment_changed (adjustment);
 }
+
 static void
 glade_gtk_adjustment_set_page_size (GObject *object, const gchar *string)
 {
@@ -155,6 +156,18 @@ glade_gtk_adjustment_set_page_size (GObject *object, const gchar *string)
 	gtk_adjustment_changed (adjustment);
 }
 
+
+static void
+glade_gtk_vbox_get_size (GObject *object, const gchar *string)
+{
+	g_print ("Get size\n");
+}
+
+static void
+glade_gtk_vbox_set_size (GObject *object, const gchar *string)
+{
+	g_print ("Set size\n");
+}
 
 /* ================ Temp hack =================== */
 typedef struct _GladeGtkFunction GladeGtkFunction;
@@ -174,6 +187,8 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_adjustment_set_step_increment", &glade_gtk_adjustment_set_step_increment},
 	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
 	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
+	{"glade_gtk_vbox_set_size",           &glade_gtk_vbox_set_size},
+	{"glade_gtk_vbox_get_size",           &glade_gtk_vbox_get_size},
 };
 
 static gpointer

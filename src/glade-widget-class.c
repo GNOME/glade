@@ -74,7 +74,7 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 		i++;
 	}
 
-	retval = g_strconcat (g_strdup (tmp->str), "_get_type", NULL);
+	retval = g_strconcat (tmp->str, "_get_type", NULL);
 	g_strdown (retval);
 	g_string_free (tmp, TRUE);
 
@@ -146,6 +146,7 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 
 				signals = g_list_append (signals, (GladeWidgetClassSignal *) cur);
 			}
+			g_free (sig_ids);
 		}
 
 		type = g_type_parent (type);
@@ -386,13 +387,20 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 
 		if (!spec || !spec->name) {
 			g_warning ("Spec does not have a valid name, or invalid spec");
+			g_free (specs);
 			return NULL;
 		}
 
-		if (strcmp (spec->name, name) == 0)
-			return spec;
+		if (strcmp (spec->name, name) == 0) {
+			GParamSpec *return_me;
+			return_me = g_param_spec_ref (spec);
+			g_free (specs);
+			return return_me;
+		}
 	}
 
+	g_free (specs);
+	
 	return NULL;
 }
 /**

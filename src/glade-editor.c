@@ -473,38 +473,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 				       GTK_SIGNAL_FUNC (glade_editor_property_changed_text_view),
 				       property, NULL, 0);
 		
-		
 		return view;
-#if 0
-		/* This code worked with the old gtk, but the GtkText widget was
-		 * deprecated for VERY good reasons. Chema
-		 */
-		GtkWidget *text;
-		GtkWidget *scrolled_window;
-		gint line_height;
-		gint height;
-
-		scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-		text = gtk_text_new (NULL, NULL);
-		gtk_text_set_editable ((GtkText *)text, TRUE);
-
-		gtk_container_add (GTK_CONTAINER (scrolled_window), text);
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-		line_height = text->style->font->ascent + text->style->font->descent;
-		/* We add 8 for the text's border height etc. */
-		height = lines * line_height;
-		height -= 20;
-		/* This is not working */
-		gtk_widget_set_usize (text, -1, height);
-		
-		gtk_signal_connect (GTK_OBJECT (text), "changed",
-				    GTK_SIGNAL_FUNC (glade_editor_property_changed_text), property);
-		property->input = text;
-		
-		return scrolled_window;
-#endif
-		return NULL;
 	}
 
 	return NULL;
@@ -522,7 +491,7 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 
 	class = property->class;
 
-	adjustment = glade_parameter_adjustment_new (class->parameters);
+	adjustment = glade_parameter_adjustment_new (class->parameters, class->def);
 
 	spin  = gtk_spin_button_new (adjustment, 10,
 				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
@@ -849,9 +818,9 @@ glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
 static void
 glade_editor_load_class (GladeEditor *editor, GladeWidgetClass *class)
 {
-	glade_editor_load_widget_page (editor, class);
-	glade_editor_load_common_page (editor, class);
-	glade_editor_load_signal_page (editor, class);
+	glade_editor_load_widget_page  (editor, class);
+	glade_editor_load_common_page  (editor, class);
+	glade_editor_load_signal_page  (editor, class);
 
 	editor->loaded_class = class;
 }
@@ -1019,6 +988,7 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
+	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (property->input));
 
 	if (strcmp (property->property->value, GLADE_TAG_TRUE) == 0)
 		state = TRUE;
@@ -1135,6 +1105,62 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	property->loading = FALSE;
 }
 
+static void
+glade_editor_table_free (GladeEditorTable *me)
+{
+	if (me)
+		g_free (me);
+}
+
+static void
+glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
+{
+	static GladeEditorTable *old = NULL;
+	static GList *old_props = NULL;
+	GladeEditorProperty *editor_property;
+	GladeEditorTable *table;
+	GladeProperty *property;
+	GtkContainer *container;
+	GList *list;
+
+	/* Remove the old properties */
+	container = GTK_CONTAINER (editor->vbox_packing);
+	list = gtk_container_children (container);
+	for (; list; list = list->next) {
+		GtkWidget *widget = list->data;
+		g_return_if_fail (GTK_IS_WIDGET (widget));
+		gtk_container_remove (container, widget);
+	}
+
+	/* Free the old structs */
+	if (old)
+		glade_editor_table_free (old);
+	list = old_props;
+	for (; list; list = list->next)
+		g_free (list->data);
+	old_props = NULL;
+
+	/* Now add the new properties */
+	table = glade_editor_table_new (widget->class);
+	table->editor = editor;
+	table->common = FALSE;
+	table->packing = TRUE;
+	
+	list = widget->properties;
+	for (; list; list = list->next) {
+		property = list->data; 
+		if (property->class->packing) {
+			editor_property = glade_editor_table_append_item (table, property->class);
+			old_props = g_list_prepend (old_props, editor_property);
+			glade_editor_property_load (editor_property, widget);
+		}
+	}
+
+	gtk_widget_show_all (table->table_widget);
+	gtk_container_add (container, table->table_widget);
+
+	old = table;
+}
 	
 static void
 glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
@@ -1167,6 +1193,9 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 		glade_editor_property_load (property, item);
 	}
 
+	/* Load the Packin tab */
+	glade_editor_load_packing_page (editor, item);
+	  
 	glade_signal_editor_load_widget (editor->signal_editor, item);
 }
 

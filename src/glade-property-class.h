@@ -113,6 +113,7 @@ struct _GladePropertyClass {
 	gchar *tooltip; /* The tooltip. Currently unimplemented. Not sure if
 			 * it should go here
 			 */
+	gchar *def; /* The default value for this property */
 
 	GList *parameters; /* list of GladeParameter objects. This list
 			    * provides with an extra set of key-value
@@ -134,7 +135,10 @@ struct _GladePropertyClass {
 			    * left that enables/disables de input
 			    */
 
-	GladePropertyQuery *query;
+	GladePropertyQuery *query; /* Some widgets require us to query the user
+				    * before creating the widget. Like a vbox will
+				    * want to know the number of columns.
+				    */
 
 	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
 				  * that we need to set for this widget
@@ -154,6 +158,7 @@ struct _GladePropertyClass {
 			       */
 
 	gboolean common; /* Common properties go in the common tab */
+	gboolean packing; /* Packing properties go in the packing tab */
 
 	void (*set_function) (GObject *object,
 			      const gchar *value);
@@ -169,6 +174,8 @@ struct _GladePropertyClass {
 		       * to work arround this problems are inside glade-gtk.c
 		       */
 };
+
+GladePropertyClass * glade_property_class_new (void);
 
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
 GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);

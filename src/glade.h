@@ -54,6 +54,7 @@ gchar * _ (gchar * name);
 #define GLADE_CHOICE_DATA_TAG    "GladeChoiceDataTag"
 #define GLADE_TAG_UPDATE_SIGNALS "UpdateSignals"
 #define GLADE_TAG_SIGNAL_NAME "SignalName"
+#define GLADE_TAG_DEFAULT      "Default"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"
