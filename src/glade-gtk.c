@@ -1150,6 +1150,34 @@ glade_gtk_window_post_create (GObject *object)
 	gtk_window_set_default_size (window, 440, 250);
 }
 
+void GLADEGTK_API
+glade_gtk_menu_bar_post_create (GObject *object)
+{
+	GtkMenuBar *menu_bar;
+	GtkWidget  *item;
+	GtkWidget  *parent;
+
+	g_return_if_fail (GTK_IS_MENU_BAR (object));
+	
+	menu_bar = GTK_MENU_BAR (object);
+	parent = gtk_widget_get_parent (GTK_WIDGET (menu_bar));
+
+	if (!parent) 
+		g_print ("NOOOOO PARENT\n");
+
+	gtk_box_set_child_packing (GTK_BOX (parent), GTK_WIDGET (menu_bar),
+				   FALSE, TRUE, 0, GTK_PACK_START);
+	
+	item = gtk_menu_item_new_with_mnemonic (_("_File"));
+	gtk_menu_bar_append (menu_bar, item);
+	
+	item = gtk_menu_item_new_with_mnemonic (_("_Edit"));
+	gtk_menu_bar_append (menu_bar, item);
+	
+	item = gtk_menu_item_new_with_mnemonic (_("_Help"));
+	gtk_menu_bar_append (menu_bar, item);
+}
+
 /**
  * glade_gtk_dialog_post_create:
  * @object:

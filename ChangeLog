@@ -1,3 +1,22 @@
+2005-01-13  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):
+	* src/glade-types.h:
+	* src/glade-widget-class.c:
+	(glade_widget_class_packing_default_free),
+	(glade_widget_class_child_packing_free), (glade_widget_class_free),
+	(glade_widget_class_set_packing_defaults_from_node),
+	(glade_widget_class_extend_with_node),
+	(glade_widget_class_get_packing_defaults):
+	* src/glade-widget-class.h:
+	- Parsing part of getting packing defaults working. Now the information
+	  needs to be used when packing.
+	* src/glade.h:
+	* widgets/glade-catalog.dtd:
+	- Added packing-defaults with sub nodes
+	* widgets/gtk+.xml:
+	- Added packing defaults for menu bar in GtkBox.
+
 2005-01-12  Mikael Hallendal  <micke@imendio.com>
 
 	* configure.in: Bumped GTK+ requirements to 2.4

@@ -7,13 +7,14 @@
                         library  CDATA #IMPLIED
 			requires CDATA #IMPLIED>
 
-<!ELEMENT glade-widget-classes (glade-widget-class*)>
+<!ELEMENT glade-widget-classes (glade-widget-class+)>
 
 <!ELEMENT glade-widget-class (post-create-function?,
 			      get-internal-child-function?,
 			      child-property-applies-function?,
 			      properties?,
-			      children?)>
+			      children?,
+			      packing-defaults?)>
 
 <!ATTLIST glade-widget-class name         CDATA #REQUIRED
                              generic-name CDATA #IMPLIED
@@ -87,4 +88,13 @@
 
 <!ELEMENT glade-widget-class-ref EMPTY>
 <!ATTLIST glade-widget-class-ref name CDATA #REQUIRED>
+
+<!ELEMENT packing-defaults (parent-class+)>
+
+<!ELEMENT parent-class (child-property+)>
+<!ATTLIST parent-class name CDATA #REQUIRED>
+
+<!ELEMENT child-property EMPTY>
+<!ATTLIST child-property id      CDATA #REQUIRED
+                         default CDATA #REQUIRED>
 

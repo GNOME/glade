@@ -64,6 +64,7 @@ struct _GladeWidgetClass
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
 	GList *children;    /* List of GladeSupportedChild objects */
+        GList *packing_defaults; /* List of GladeChildProperty objects */
 
 	GModule *module;	/* Module with the (optional) special functions
 				 * needed for placeholder_replace, post_create_function
@@ -138,7 +139,15 @@ struct _GladeWidgetClassSignal
 	gchar *type;         /* Name of the object class that this signal belongs to
 			      * eg GtkButton */
 };
-
+ 
+/* Need to go through all properties in catalog file and compare 
+ * against parent class.
+ */
+struct _GladePackagingDefault
+{
+        gchar *id;
+	gchar *value;
+};
 
 GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
 							    const gchar      *library);
@@ -181,6 +190,8 @@ void                 glade_widget_class_container_replace_child    (GladeWidgetC
 								    GObject      *new);
 gboolean             glade_widget_class_contains_non_widgets       (GladeWidgetClass *class);
 
+GList *              glade_widget_class_get_packing_defaults       (GladeWidgetClass *class,
+                                                                    GladeWidgetClass *parent);
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_CLASS_H__ */
