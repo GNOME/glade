@@ -36,7 +36,6 @@
 #include "glade-editor.h"
 #include "glade-signal-editor.h"
 #include "glade-parameter.h"
-#include "glade-project-window.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-command.h"
@@ -864,32 +863,21 @@ glade_editor_table_append_items (GladeEditorTable *table,
 }
 
 static void
-glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
+glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
 {
-	GtkMenuBar *menubar = NULL;
+	GtkWidget *menubar;
 	GtkWidget *menu_editor;
-	GladeProjectWindow *gpw;
 	GladeProject *project;
-	GList *list;
 
-	gpw = glade_project_window_get ();
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+	g_return_if_fail (editor->loaded_widget != NULL);
 
-	project = gpw->project;
+	menubar = editor->loaded_widget->widget;
+	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
+
+	project = editor->loaded_widget->project;
 	g_return_if_fail (project != NULL);
 
-	list = glade_project_selection_get (project);
-	for (; list != NULL; list = list->next) {
-		if (GTK_IS_MENU_BAR (list->data)) {
-			menubar = GTK_MENU_BAR (list->data);
-			break;
-		}
-	}
-
-	/* if the user was able to click on the "Edit Menus...",
-	 * that's because the menu bar was selected
-	 */
-	g_assert (GTK_IS_MENU_BAR (menubar));
-	
 	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
 	gtk_widget_show (GTK_WIDGET (menu_editor));
 }
@@ -938,7 +926,7 @@ glade_editor_table_create (GladeEditor *editor,
 		GtkWidget *edit_menu_button = gtk_button_new_with_label (_("Edit Menus..."));
 
 		g_signal_connect (G_OBJECT (edit_menu_button), "clicked",
-				  G_CALLBACK (glade_editor_on_edit_menu_click), NULL);
+				  G_CALLBACK (glade_editor_on_edit_menu_click), editor);
 		gtk_table_attach (GTK_TABLE (table->table_widget), edit_menu_button,
 				  0, 2, table->rows, table->rows + 1,
 				  GTK_EXPAND, 0, 0, 0);
