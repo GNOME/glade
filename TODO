@@ -32,8 +32,6 @@ Difficult or Big tasks:
     * menu/menubar (see menu editor)
     * toolbar (probably should only need some custom methods in glade-gtk)
     * entry (works fine, but the selection drawing is wrong)
-    * dialog (need to figure out how to hadle the response-id property of
-      the buttons in a dialog)
 [ ] Implement the glade-property type "File". For example to be used with a 
     pixmap that specifies a file.
 [X] Undo/Redo infrastructure.
@@ -52,7 +50,7 @@ Difficult or Big tasks:
 Normal tasks:
 ~~~~~~~~~~~~~
 
-[ ] Implement the about box. We were lazily waiting for GtkAbout (see bugzilla
+[X] Implement the about box. We were lazily waiting for GtkAbout (see bugzilla
     #109435) but it seems it will be delayed to Gtk+-2.6.
 [ ] Implement file opened history feature (without EggRecent stuff since we don't
     want to have additional deps)
@@ -72,7 +70,7 @@ Normal tasks:
 Non Developer tasks:
 ~~~~~~~~~~~~~~~~~~~~
 
-[ ] Design missing icons for some of the widgets (e.g. GtkMessageDialog)
+[ ] Design missing icons for some of the widgets (e.g. GtkProgressBar)
 [ ] Review the translation stuff since it may be way out of date (translation
     themself may wait when strings are less likely to change)
 [ ] Move the documentation which is in glade-2 (Maybe it's better wait also

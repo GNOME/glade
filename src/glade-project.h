@@ -46,7 +46,7 @@ struct _GladeProject
 
 	GList *undo_stack; /* A stack with the last executed commands */
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
-	GHashTable *unique_id_hash; /* hash table with the latest used widget name */
+	GHashTable *widget_names_allocator; /* hash table with the used widget names */
 };
 
 struct _GladeProjectClass
@@ -76,8 +76,7 @@ void glade_project_remove_widget (GladeProject *project, GtkWidget *widget);
 GladeWidget *glade_project_get_widget_by_name (GladeProject *project, const char *name);
 char *glade_project_new_widget_name (GladeProject *project, const char *base_name);
 
-void glade_project_widget_name_changed (GladeProject *project,
-					GladeWidget *widget);
+void glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name);
 
 /* Selection */
 void glade_project_selection_set     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);

@@ -54,7 +54,8 @@ glade_3_SOURCES = \
 	glade-command.c \
 	glade-menu-editor.c \
 	glade-keys-dialog.c \
-	glade-transform.c
+	glade-transform.c \
+	glade-id-allocator.c
 
 noinst_HEADERS = \
 	glade.h \
@@ -84,4 +85,5 @@ noinst_HEADERS = \
 	glade-command.h \
 	glade-menu-editor.h \
 	glade-keys-dialog.h \
-	glade-transform.h
+	glade-transform.h \
+	glade-id-allocator.h

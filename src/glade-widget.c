@@ -153,7 +153,7 @@ glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 	widget->widget   = NULL;
 	widget->class    = class;
 	widget->properties = glade_widget_properties_from_list (class->properties, widget);
-	/* we don't have packing properties until we container add the widget */
+	/* we don't have packing properties until a container packs the widget */
 	widget->packing_properties = NULL;
 	widget->signals  = g_hash_table_new_full (g_str_hash, g_str_equal, (GDestroyNotify) g_free, (GDestroyNotify) glade_widget_free_signals);
 
@@ -1016,14 +1016,18 @@ glade_widget_get_property_by_id (GladeWidget *widget,
 void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
+	const char *old_name;
+
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (name != NULL);
 
-	if (widget->name)
-		g_free (widget->name);
+	old_name = widget->name;
 	widget->name = g_strdup (name);
 
-	glade_project_widget_name_changed (widget->project, widget);
+	glade_project_widget_name_changed (widget->project, widget, old_name);
+
+	if (old_name)
+		g_free (old_name);
 }
 
 /**

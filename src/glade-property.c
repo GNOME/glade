@@ -20,6 +20,7 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include <stdio.h>
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
 
@@ -76,7 +77,7 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_STRING:
 	case GLADE_PROPERTY_TYPE_UNICHAR:
 		g_value_init (property->value, class->def->g_type);
-		g_value_copy (class->def, property->value);
+		g_value_copy (class->def, property->value); // glade_property_set (property, class->def);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 #if 0	
@@ -107,7 +108,7 @@ glade_property_free (GladeProperty *property)
 
 #if 0
 	if (property->child)
-		g_warning ("Implmenet free property->child\n");
+		g_warning ("Implemenet free property->child\n");
 #endif
 
 	g_free (property);
@@ -214,7 +215,7 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	{
 		default_str = glade_property_class_make_string_from_gvalue (property->class,
 									    property->class->def);
-		if (!default_str || strcmp (tmp, default_str) == 0)
+		if (default_str && strcmp (tmp, default_str) == 0)
 		{
 			g_free (tmp);
 			g_free (default_str);

@@ -25,6 +25,7 @@
 #endif
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "glade.h"
 #include "glade-project.h"
@@ -34,9 +35,12 @@
 #include "glade-widget.h"
 #include "glade-placeholder.h"
 #include "glade-utils.h"
+#include "glade-id-allocator.h"
 
 static void glade_project_class_init (GladeProjectClass *class);
 static void glade_project_init (GladeProject *project);
+static void glade_project_finalize (GObject *object);
+static void glade_project_dispose (GObject *object);
 
 enum
 {
@@ -55,7 +59,8 @@ glade_project_get_type (void)
 {
 	static GType type = 0;
 
-	if (!type) {
+	if (!type)
+	{
 		static const GTypeInfo info = {
 			sizeof (GladeProjectClass),
 			(GBaseInitFunc) NULL,
@@ -126,6 +131,9 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      0);
 
+	object_class->finalize = glade_project_finalize;
+	object_class->dispose = glade_project_dispose;
+	
 	class->add_widget = NULL;
 	class->remove_widget = NULL;
 	class->widget_name_changed = NULL;
@@ -140,6 +148,7 @@ glade_project_init (GladeProject *project)
 	project->selection = NULL;
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
+	project->widget_names_allocator = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) glade_id_allocator_free);
 }
 
 GladeProject *
@@ -154,6 +163,51 @@ glade_project_new (gboolean untitled)
 		project->name = g_strdup_printf ("Untitled %i", i++);
 
 	return project;
+}
+
+static void
+glade_project_list_unref (GList *original_list)
+{
+	GList *l = original_list;
+	while (l != NULL)
+	{
+		g_object_unref (G_OBJECT (l->data));
+		l = l->next;
+	}
+
+	l = original_list;
+	if (l != NULL)
+		g_list_free (l);
+}
+
+static void
+glade_project_dispose (GObject *object)
+{
+	GladeProject *project = GLADE_PROJECT (object);
+
+	glade_project_list_unref (project->undo_stack);
+	glade_project_list_unref (project->prev_redo_item);
+	glade_project_list_unref (project->widgets);
+
+	project->undo_stack = NULL;
+	project->prev_redo_item = NULL;
+	project->widgets = NULL;
+	
+	
+	G_OBJECT_CLASS (parent_class)->dispose (object);
+}
+
+static void
+glade_project_finalize (GObject *object)
+{
+	GladeProject *project = GLADE_PROJECT (object);
+
+	g_free (project->name);
+	g_free (project->path);
+	
+	g_hash_table_destroy (project->widget_names_allocator);
+	
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 void
@@ -211,11 +265,53 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 	gwidget->project = project;
 
 	project->widgets = g_list_prepend (project->widgets, widget);
+	g_object_ref (widget);
 	project->changed = TRUE;
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
 		       0,
 		       gwidget);
+}
+
+void
+glade_project_release_widget_name (GladeProject *project, const char *widget_name)
+{
+	const char *first_number = widget_name;
+	char *end_number;
+	char *base_widget_name;
+	GladeIDAllocator *id_allocator;
+	gunichar ch;
+	int id;
+
+	do
+	{
+		ch = g_utf8_get_char (first_number);
+
+		if (ch == 0 || g_unichar_isdigit (ch))
+			break;
+
+		first_number = g_utf8_next_char (first_number);
+	}
+	while (TRUE);
+
+	if (ch == 0)
+		return;
+
+	base_widget_name = g_strdup (widget_name);
+	*(base_widget_name + (first_number - widget_name)) = 0;
+	
+	id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_widget_name);
+	if (id_allocator == NULL)
+		goto lblend;
+
+	id = (int) strtol (first_number, &end_number, 10);
+	if (*end_number != 0)
+		goto lblend;
+
+	glade_id_allocator_release (id_allocator, id);
+
+ lblend:
+	g_free (base_widget_name);
 }
 
 /**
@@ -232,7 +328,8 @@ void
 glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 {
 	GladeWidget *gwidget;
-
+	GList *widget_l;
+	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
@@ -258,7 +355,14 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 	project->selection = g_list_remove (project->selection, widget);
 	glade_project_selection_changed (project);
 
-	project->widgets = g_list_remove (project->widgets, widget);
+	widget_l = g_list_find (project->widgets, widget);
+	if (widget_l != NULL)
+	{
+		g_object_unref (widget);
+		glade_project_release_widget_name (project, gwidget->name);
+		project->widgets = g_list_delete_link (project->widgets, widget_l);
+	}
+
 	project->changed = TRUE;
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [REMOVE_WIDGET],
@@ -267,12 +371,13 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 }
 
 void
-glade_project_widget_name_changed (GladeProject *project,
-				   GladeWidget *widget)
+glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
+	glade_project_release_widget_name (project, old_name);
+	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [WIDGET_NAME_CHANGED],
 		       0,
@@ -324,14 +429,21 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 char *
 glade_project_new_widget_name (GladeProject *project, const char *base_name)
 {
-	gint i = 1;
 	gchar *name;
-
+	GladeIDAllocator *id_allocator;
+	guint i = 1;
+	
 	while (TRUE) {
-		name = g_strdup_printf ("%s%i", base_name, i);
-		/* not enough memory? */
-		if (name == NULL)
-			break;
+		id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
+
+		if (id_allocator == NULL)
+		{
+			id_allocator = glade_id_allocator_new ();
+			g_hash_table_insert (project->widget_names_allocator, g_strdup (base_name), id_allocator);
+		}
+
+		i = glade_id_allocator_alloc (id_allocator);
+		name = g_strdup_printf ("%s%u", base_name, i);
 
 		/* ok, there is no widget with this name, so return the name */
 		if (glade_project_get_widget_by_name (project, name) == NULL)
@@ -506,6 +618,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 			continue;
 		}
 		project->widgets = g_list_append (project->widgets, widget->widget);
+		g_object_ref (widget->widget);
 	}
 	project->widgets = g_list_reverse (project->widgets);
 

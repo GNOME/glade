@@ -1,3 +1,16 @@
+2004-03-09  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-property.c (glade_property_write): write properties that
+	have a default value of NULL.
+	* src/glade-project.c: micro-manage the new names of widgets. As soon
+	as a new slot is available (for instance, if you change the name
+	of button3, then button3 becomes available) its used for a new
+	widget.
+	* src/glade-project.c (glade_project_dispose, glade_project_finalize):
+	implement dispose and finalize methods for GladeProject.
+	* src/glade-id-allocator.[ch]: code to manage the ids availables for
+	widgets. Code from Owen Taylor.
+	
 2004-02-29  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* pixmaps/dialog.png: fix some pixels in the shadow that didn't have
