@@ -462,7 +462,7 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	if (project) {
 		glade_project_window_refresh_title (gpw);
 	} else {
-		gtk_window_set_title (GTK_WINDOW (gpw->window), "glade2");
+		gtk_window_set_title (GTK_WINDOW (gpw->window), "glade3");
 	}
 
 	list = gpw->views;
@@ -573,7 +573,7 @@ void
 glade_project_window_refresh_title (GladeProjectWindow *gpw)
 {
 	gchar *title;
-	title = g_strdup_printf ("glade2 : %s", gpw->project->name);
+	title = g_strdup_printf ("glade3 : %s", gpw->project->name);
 	gtk_window_set_title (GTK_WINDOW (gpw->window), title);
 	g_free (title);
 }

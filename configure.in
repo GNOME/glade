@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 AC_INIT(src/glade-widget.c)
 
-AM_INIT_AUTOMAKE(glade, 0.0.22)
+AM_INIT_AUTOMAKE(glade, 2.90.0)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
@@ -24,7 +24,7 @@ AC_CHECK_HEADERS(os2.h)
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
-GETTEXT_PACKAGE=glade-2.0
+GETTEXT_PACKAGE=glade-3.0
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
 ALL_LINGUAS="az es ms nn no pl pt ru sv ta tr uk"
@@ -40,7 +40,7 @@ AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
 
 AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is required to build
-glade2. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
+glade 3.0. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
 
 
 dnl ================================================================
@@ -62,19 +62,19 @@ dnl ================================================================
 dnl PIXMAPS 
 dnl ================================================================
 if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps")
-  pixmapsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
-  AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
-  widgetsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
-  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalogs")
-  catalogsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalogs"
+  AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps")
+  pixmapsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps"
+  AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets")
+  widgetsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets"
+  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs")
+  catalogsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs"
 else
-  AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps")
+  AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps")
   pixmapsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
-  AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
-  widgetsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
-  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/catalogs")
-  catalogsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/catalogs"
+  AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets")
+  widgetsdir="${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets"
+  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs")
+  catalogsdir="${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs"
 fi
 
 AC_SUBST(pixmapsdir)

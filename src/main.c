@@ -108,7 +108,7 @@ main (int argc, char *argv[])
 	textdomain (GETTEXT_PACKAGE);
 #endif
 						
-	popt_context = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
+	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
 

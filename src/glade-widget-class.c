@@ -394,7 +394,7 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
  * @class: 
  * 
  * Dump to the console the properties of the Widget as specified
- * by gtk+. You can also run glade2 with : "glade2 --dump GtkWindow" to
+ * by gtk+. You can also run glade3 with : "glade3 --dump GtkWindow" to
  * get dump a widget class properties.
  * 
  * Return Value: 

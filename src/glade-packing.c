@@ -293,7 +293,7 @@ glade_packing_table_child_has_span (GtkTableChild *child)
  *    and move H to slot one, move G to slot two, slot 3 & 4 have /'s
  * 5: I increments by one
  *    I am going to go crazy !;-) add a warning to the user about
- *    glade2 beeing too stupid at this point. Implement smarter code later.
+ *    glade3 beeing too stupid at this point. Implement smarter code later.
  */
 static void
 glade_packing_table_cell_common_set (GObject *object, const GValue *value, gboolean is_x)

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 SUBDIRS=
 
-bin_PROGRAMS = glade-2
+bin_PROGRAMS = glade-3
 
 INCLUDES = \
 	-I$(top_srcdir) \
@@ -16,10 +16,10 @@ INCLUDES = \
 
 CFLAGS = -g -O2 -Wall 
 
-glade_2_LDADD = \
+glade_3_LDADD = \
 	$(GLADE_LIBS)
 
-glade_2_SOURCES = \
+glade_3_SOURCES = \
 	main.c \
 	glade-project.c \
 	glade-parameter.c \
