@@ -20,6 +20,9 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "glade.h"
 

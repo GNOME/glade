@@ -23,6 +23,10 @@
 
 #define GLADE_PROPERY_TABLE_ROW_SPACING 2
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
 

@@ -22,6 +22,10 @@
 
 #define GLADE_POPUP_WIDGET_POINTER "GladePopupWidgetPointer"
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"

@@ -20,6 +20,10 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 /* For g_file_exists */
 #include <sys/types.h>
 #include <sys/stat.h>

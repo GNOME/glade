@@ -2,7 +2,6 @@
 #ifndef __GLADE_H__
 #define __GLADE_H__
 
-#include <config.h>
 #include <gtk/gtk.h>
 #include <libintl.h>
 
