@@ -238,6 +238,8 @@ glade_xml_set_property (xmlNodePtr node, const char *name, const char *value)
 #define GLADE_TAG_FALSE  "False"
 #define GLADE_TAG_TRUE2  "TRUE"
 #define GLADE_TAG_FALSE2 "FALSE"
+#define GLADE_TAG_TRUE3  "yes"
+#define GLADE_TAG_FALSE3 "no"
 /*
  * Get a String value for a node either carried as an attibute or as
  * the content of a child.
@@ -257,9 +259,13 @@ glade_xml_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _defaul
 		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
 		ret = FALSE;
+	else if (strcmp (value, GLADE_TAG_FALSE3) == 0)
+		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_TRUE) == 0)
 		ret = TRUE;
 	else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
+		ret = TRUE;
+	else if (strcmp (value, GLADE_TAG_TRUE3) == 0)
 		ret = TRUE;
 	else	
 		g_warning ("Boolean tag unrecognized *%s*\n", value);
@@ -288,9 +294,13 @@ glade_xml_get_property_boolean (GladeXmlNode *node_in, const char *name, gboolea
 		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
 		ret = FALSE;
+	else if (strcmp (value, GLADE_TAG_FALSE3) == 0)
+		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_TRUE) == 0)
 		ret = TRUE;
 	else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
+		ret = TRUE;
+	else if (strcmp (value, GLADE_TAG_TRUE3) == 0)
 		ret = TRUE;
 	else	
 		g_warning ("Boolean tag unrecognized *%s*\n", value);
@@ -316,6 +326,8 @@ glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, g
 #undef GLADE_TAG_FALSE
 #undef GLADE_TAG_TRUE2
 #undef GLADE_TAG_FALSE2
+#undef GLADE_TAG_TRUE3
+#undef GLADE_TAG_FALSE3
 
 gchar *
 glade_xml_get_value_string_required (GladeXmlNode *node_in, const char *name, const char *xtra)

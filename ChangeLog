@@ -1,3 +1,12 @@
+2001-12-01  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-gtk.c (glade_gtk_message_dialog_post_create): Added to
+	resize the gtkmessagedialog widget.
+	* src/glade-xml-utils.c: Added the TRUE && FALSE values that libglade
+	use (yes/no).
+	* widgets/gtkfileselection.xml: Fixed. It's a top level widget.
+	* widgets/gtkmessagedialog.xml: Updated with defaults.
+
 2001-11-28  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* src/glade-gtk.c (glade_gtk_dialog_post_create): Added to resize

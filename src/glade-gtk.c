@@ -453,6 +453,16 @@ glade_gtk_dialog_post_create (GObject *object, GValue *not_used)
 }
 
 static void
+glade_gtk_message_dialog_post_create (GObject *object, GValue *not_used)
+{
+	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+
+	g_return_if_fail (GTK_IS_MESSAGE_DIALOG (dialog));
+
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
+}
+
+static void
 glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
 {
 	GtkCheckButton *button = GTK_CHECK_BUTTON (object);
@@ -533,6 +543,7 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_check_button_post_create",      glade_gtk_check_button_post_create},
 	{"glade_gtk_window_post_create",            glade_gtk_window_post_create},
 	{"glade_gtk_dialog_post_create",            glade_gtk_dialog_post_create},
+	{"glade_gtk_message_dialog_post_create",    glade_gtk_message_dialog_post_create},
 	{"glade_gtk_table_post_create",             glade_gtk_table_post_create},
 };
 
