@@ -785,8 +785,8 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	dialog = gtk_dialog_new_with_buttons (NULL /* name */,
 					      NULL /* parent, FIXME: parent should be the project window */,
 					      GTK_DIALOG_MODAL,
-					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					      NULL);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);	
