@@ -44,11 +44,13 @@
 #include "glade-project.h"
 #include "glade-utils.h"
 
+
 static GtkNotebookClass *parent_class = NULL;
 
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
+static void glade_editor_property_load_text (GladeEditorProperty *property);
 
 static void
 glade_editor_class_init (GladeEditorClass *class)
@@ -646,6 +648,166 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 	gtk_widget_destroy (dialog);
 }
 
+static void
+glade_editor_property_show_i18n_dialog (GtkWidget           *entry,
+					GladeEditorProperty *property)
+{
+	GtkWidget     *editor;
+	GtkWidget     *dialog;
+	GtkWidget     *vbox, *hbox;
+	GtkWidget     *label;
+	GtkWidget     *sw;
+	GtkWidget     *text_view, *comment_view;
+	GtkTextBuffer *text_buffer, *comment_buffer;
+	GtkWidget     *translatable_button, *context_button;
+	const gchar   *text;
+	gint           res;
+	gchar         *str;
+
+	g_return_if_fail (property != NULL);
+
+	editor = gtk_widget_get_toplevel (entry);
+	dialog = gtk_dialog_new_with_buttons (_("Edit Text Property"),
+					      GTK_WINDOW (editor),
+					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OK, GTK_RESPONSE_OK,
+					      NULL);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+	vbox = gtk_vbox_new (FALSE, 6);
+	gtk_widget_show (vbox);
+
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+
+	/* Text */
+	label = gtk_label_new_with_mnemonic (_("_Text:"));
+	gtk_widget_show (label);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_widget_set_size_request (sw, 400, 200);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+
+	text_view = gtk_text_view_new ();
+	gtk_widget_show (text_view);
+
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), text_view);
+		
+	gtk_container_add (GTK_CONTAINER (sw), text_view);
+
+	text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
+
+	text = g_value_get_string (property->property->value);
+	if (text)
+	{
+		gtk_text_buffer_set_text (text_buffer,
+					  text,
+					  -1);
+	}
+	
+	/* Translatable and context prefix. */
+	hbox = gtk_hbox_new (FALSE, 12);
+	gtk_widget_show (hbox);
+
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+	translatable_button = gtk_check_button_new_with_mnemonic (_("T_ranslatable"));
+	gtk_widget_show (translatable_button);
+	gtk_box_pack_start (GTK_BOX (hbox), translatable_button, FALSE, FALSE, 0);
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (translatable_button),
+				      glade_property_i18n_get_translatable (property->property));
+
+	context_button = gtk_check_button_new_with_mnemonic (_("Has context _prefix"));
+	gtk_widget_show (context_button);
+	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button),
+				      glade_property_i18n_get_has_context (property->property));
+	
+	/* Comments. */
+	label = gtk_label_new_with_mnemonic (_("Co_mments for translators:"));
+	gtk_widget_show (label);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+
+	comment_view = gtk_text_view_new ();
+	gtk_widget_show (comment_view);
+
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), comment_view);
+
+	gtk_container_add (GTK_CONTAINER (sw), comment_view);
+
+	comment_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (comment_view));
+
+	text = glade_property_i18n_get_comment (property->property);
+	if (text)
+	{
+		gtk_text_buffer_set_text (comment_buffer,
+					  text,
+					  -1);
+	}
+	
+	res = gtk_dialog_run (GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_OK) {
+		GtkTextIter start, end;
+		
+		/* Get the new values. */
+		glade_property_i18n_set_translatable (
+			property->property,
+			gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button)));
+		glade_property_i18n_set_has_context (
+			property->property,
+			gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button)));
+
+		/* Text */
+		gtk_text_buffer_get_bounds (text_buffer, &start, &end);
+		str = gtk_text_buffer_get_text (text_buffer, &start, &end, TRUE);
+		if (str[0] == '\0')
+		{
+			g_free (str);
+			str = NULL;
+		}
+		
+		glade_editor_property_changed_text_common (property->property, str,
+							   property->from_query_dialog);
+		
+		g_free (str);
+		
+		glade_editor_property_load (property, property->property->widget);
+
+		/* Comment */
+		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
+		str = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
+		if (str[0] == '\0')
+		{
+			g_free (str);
+			str = NULL;
+		}
+
+		glade_property_i18n_set_comment (property->property, str);
+		g_free (str);
+	}
+
+	gtk_widget_destroy (dialog);
+}
+
 /* ============================= Create inputs ============================= */
 static GtkWidget *
 glade_editor_create_input_enum_item (GladeEditorProperty *property,
@@ -729,6 +891,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 	gint lines = 1;
 
 	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail (!property->class->translatable, NULL);
 
 	class = property->class;
 
@@ -736,9 +899,9 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	if (lines < 2) {
 		GtkWidget *entry;
-		
-		entry = gtk_entry_new ();
 
+		entry = gtk_entry_new ();
+		
 		g_signal_connect (G_OBJECT (entry), "activate",
 				  G_CALLBACK (glade_editor_property_changed_text),
 				  property);
@@ -749,18 +912,84 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 		return entry;
 	} else {
-		GtkTextView   *view;
-		GtkTextBuffer *buffer;
+		GtkTextView *view;
 
 		view = GTK_TEXT_VIEW (gtk_text_view_new ());
-		buffer = gtk_text_view_get_buffer (view);
-
 		gtk_text_view_set_editable (view, TRUE);
 
 		g_signal_connect (G_OBJECT (view), "focus-out-event",
 				  G_CALLBACK (glade_editor_text_view_focus_out),
 				  property);
+		
 		return GTK_WIDGET (view);
+	}
+
+	return NULL;
+}
+
+static GtkWidget *
+glade_editor_create_input_translatable_text (GladeEditorProperty *property)
+{
+	GladePropertyClass *class;
+	gint lines = 1;
+
+	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail (property->class->translatable, NULL);
+
+	class = property->class;
+
+	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
+
+	if (lines < 2) {
+		GtkWidget *hbox;
+		GtkWidget *entry;
+		GtkWidget *button;
+
+		hbox = gtk_hbox_new (FALSE, 0);
+
+		entry = gtk_entry_new ();
+		gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0); 
+		
+		button = gtk_button_new_with_label ("...");
+		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+
+		g_signal_connect (button, "clicked",
+				  G_CALLBACK (glade_editor_property_show_i18n_dialog),
+				  property);
+		
+		g_signal_connect (G_OBJECT (entry), "activate",
+				  G_CALLBACK (glade_editor_property_changed_text),
+				  property);
+		
+		g_signal_connect (G_OBJECT (entry), "focus-out-event",
+				  G_CALLBACK (glade_editor_entry_focus_out),
+				  property);
+
+		return hbox;
+	} else {
+		GtkWidget   *hbox;
+		GtkTextView *view;
+		GtkWidget   *button;
+		
+		hbox = gtk_hbox_new (FALSE, 0);
+
+		view = GTK_TEXT_VIEW (gtk_text_view_new ());
+		gtk_text_view_set_editable (view, TRUE);
+
+		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (view), TRUE, TRUE, 0); 
+
+		button = gtk_button_new_with_label ("...");
+		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+
+		g_signal_connect (button, "clicked",
+				  G_CALLBACK (glade_editor_property_show_i18n_dialog),
+				  property);
+
+		g_signal_connect (G_OBJECT (view), "focus-out-event",
+				  G_CALLBACK (glade_editor_text_view_focus_out),
+				  property);
+		
+		return hbox;
 	}
 
 	return NULL;
@@ -912,6 +1141,11 @@ glade_editor_append_item_real (GladeEditorTable *table,
 		 G_IS_PARAM_SPEC_FLOAT(property->class->pspec)  ||
 		 G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
 		input = glade_editor_create_input_numeric (property);
+	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec) &&
+		 property->class->translatable)
+		input = glade_editor_create_input_translatable_text (property);
+	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
+		input = glade_editor_create_input_text (property);
 	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
 		input = glade_editor_create_input_text (property);
 	else if (G_IS_PARAM_SPEC_UNICHAR(property->class->pspec))
@@ -1417,7 +1651,8 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
-
+	g_return_if_fail (!property->class->translatable);
+	
 	if (GTK_IS_EDITABLE (property->input)) {
 		GtkEditable *editable = GTK_EDITABLE (property->input);
 		gint pos, insert_pos = 0;
@@ -1438,6 +1673,53 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 		if ((text = g_value_get_string (property->property->value)) != NULL)
 		{
 			buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->input));
+			gtk_text_buffer_set_text (buffer,
+						  text,
+						  g_utf8_strlen (text, -1));
+		}
+	} else {
+		g_warning ("Invalid Text Widget type.");
+	}
+
+	g_object_set_data (G_OBJECT (property->input), "user_data", property);
+}
+
+static void
+glade_editor_property_load_translatable_text (GladeEditorProperty *property)
+{
+	GtkBoxChild *child;
+	GtkWidget   *widget;
+	
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->property != NULL);
+	g_return_if_fail (property->property->value != NULL);
+	g_return_if_fail (property->input != NULL);
+	g_return_if_fail (property->class->translatable);
+	
+	/* The entry should be the first child. */
+	child = GTK_BOX (property->input)->children->data;
+	widget = child->widget;
+	
+	if (GTK_IS_EDITABLE (widget)) {
+		GtkEditable *editable = GTK_EDITABLE (widget);
+		gint pos, insert_pos = 0;
+		const gchar *text;
+		text = g_value_get_string (property->property->value);
+		pos = gtk_editable_get_position (editable);
+ 		gtk_editable_delete_text (editable, 0, -1);
+		if (text)
+			gtk_editable_insert_text (editable,
+						  text,
+						  g_utf8_strlen (text, -1),
+						  &insert_pos);
+		gtk_editable_set_position (editable, pos);
+	} else if (GTK_IS_TEXT_VIEW (widget)) {
+		GtkTextBuffer *buffer;
+		const gchar *text;
+
+		if ((text = g_value_get_string (property->property->value)) != NULL)
+		{
+			buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
 			gtk_text_buffer_set_text (buffer,
 						  text,
 						  g_utf8_strlen (text, -1));
@@ -1493,6 +1775,9 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_enum (property);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		glade_editor_property_load_flags (property);
+	else if (G_IS_PARAM_SPEC_STRING(class->pspec) &&
+		class->translatable)
+		glade_editor_property_load_translatable_text (property);
 	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
 		glade_editor_property_load_text (property);
 	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))

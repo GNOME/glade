@@ -627,8 +627,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* Whether or not the property is translatable. This is only used for
 	 * string properties.
 	 */
-	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, FALSE);
-	
+	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
+
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);

@@ -55,6 +55,10 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget, GValue *valu
 	property->value   = value;
 	property->enabled = TRUE;
 
+	property->i18n_translatable = FALSE;
+	property->i18n_has_context = FALSE;
+	property->i18n_comment = NULL;
+	
 	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
 	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
 	    G_IS_PARAM_SPEC_LONG (class->pspec)    ||
@@ -100,10 +104,14 @@ glade_property_dup (GladeProperty *template, GladeWidget *widget)
 	property->widget  = widget;
 	property->value   = g_new0 (GValue, 1);
 	property->enabled = template->enabled;
-	
+
 	g_value_init (property->value, template->value->g_type);
 	g_value_copy (template->value, property->value);
 
+	property->i18n_translatable = template->i18n_translatable;
+	property->i18n_has_context = template->i18n_has_context;
+	property->i18n_comment = g_strdup (template->i18n_comment);
+	
 	return property;
 }
 
@@ -125,6 +133,8 @@ glade_property_free (GladeProperty *property)
 		property->value = NULL;
 	}
 
+	g_free (property->i18n_comment);
+	
 	g_free (property);
 }
 
@@ -336,9 +346,62 @@ glade_property_write (GArray *props, GladeProperty *property, GladeInterface *in
 		}
 	}
 
+	if (property->class->translatable)
+	{
+		/* FIXME: implement writing the i18n metadata. */
+		g_print ("FIXME: write i18n metadata\n");
+	}
+	
 	info.value = alloc_string(interface, tmp);
 	g_array_append_val (props, info);
 	g_free (tmp);
 
 	return TRUE;
 }
+
+/* Parameters for translatable properties. */
+
+void
+glade_property_i18n_set_comment (GladeProperty *property,
+				 const gchar    *str)
+{
+	if (property->i18n_comment)
+		g_free (property->i18n_comment);
+
+	property->i18n_comment = g_strdup (str);
+
+	g_print ("set comment: %s\n", str);
+}
+
+const gchar *
+glade_property_i18n_get_comment (GladeProperty *property)
+{
+	return property->i18n_comment;
+}
+
+void
+glade_property_i18n_set_translatable (GladeProperty *property,
+				      gboolean       translatable)
+{
+	property->i18n_translatable = translatable;
+}
+
+gboolean
+glade_property_i18n_get_translatable (GladeProperty *property)
+{
+	return property->i18n_translatable;
+}
+
+void
+glade_property_i18n_set_has_context (GladeProperty *property,
+				     gboolean       has_context)
+{
+	property->i18n_has_context = has_context;
+}
+
+gboolean
+glade_property_i18n_get_has_context (GladeProperty *property)
+{
+	return property->i18n_has_context;
+}
+

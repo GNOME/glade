@@ -1,3 +1,25 @@
+2005-01-07  Richard Hult  <richard@imendio.com>
+
+	* src/glade-editor.c: (glade_editor_property_show_i18n_dialog),
+	(glade_editor_create_input_text),
+	(glade_editor_create_input_translatable_text),
+	(glade_editor_append_item_real),
+	(glade_editor_property_load_text),
+	(glade_editor_property_load_translatable_text),
+	(glade_editor_property_load): Add i18n string handling.
+
+	* src/glade-property.h:
+	* src/glade-property.c: (glade_property_new), (glade_property_dup),
+	(glade_property_free), (glade_property_write),
+	(glade_property_i18n_*): Add i18n handling.
+
+	* src/glade-widget.c: (glade_widget_value_from_prop_info),
+	(glade_widget_apply_property_from_prop_info),
+	(glade_widget_get_property_from_widget_info),
+	(glade_widget_properties_from_widget_info),
+	(glade_widget_params_from_widget_info): Read i18n metadata
+	(doesn't read anything yet, we need to sort out libglade first).
+
 2005-01-06  Richard Hult  <richard@imendio.com>
 
         * src/glade-property-class.h (struct _GladePropertyClass): Add
