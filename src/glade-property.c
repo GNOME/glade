@@ -219,8 +219,7 @@ glade_property_get_from_id (GList *settings_list, const gchar *id)
 static void
 glade_property_emit_changed (GladeProperty *property)
 {
-	gtk_signal_emit (GTK_OBJECT (property),
-			 glade_property_signals [CHANGED]);
+	g_signal_emit (G_OBJECT (property), glade_property_signals [CHANGED], 0);
 }
 
 void
@@ -265,8 +264,8 @@ glade_property_set_integer (GladeProperty *property, gint val)
 	if (property->enabled) {
 		property->loading = TRUE;
 		if (property->class->set_function == NULL)
-			gtk_object_set (GTK_OBJECT (property->widget->widget),
-					property->class->id, val, NULL);
+			g_object_set (G_OBJECT (property->widget->widget),
+				      property->class->id, val, NULL);
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
 							  property->value);
@@ -287,8 +286,8 @@ glade_property_set_float (GladeProperty *property, gfloat val)
 	if (property->enabled) {
 		property->loading = TRUE;
 		if (property->class->set_function == NULL)
-			gtk_object_set (GTK_OBJECT (property->widget->widget),
-					property->class->id, val, NULL);
+			g_object_set (G_OBJECT (property->widget->widget),
+				      property->class->id, val, NULL);
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
 							  property->value);
@@ -309,8 +308,8 @@ glade_property_set_double (GladeProperty *property, gdouble val)
 	if (property->enabled) {
 		property->loading = TRUE;
 		if (property->class->set_function == NULL)
-			gtk_object_set (GTK_OBJECT (property->widget->widget),
-					property->class->id, val, NULL);
+			g_object_set (G_OBJECT (property->widget->widget),
+				      property->class->id, val, NULL);
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
 							  property->value);
@@ -350,8 +349,8 @@ glade_property_set_boolean (GladeProperty *property, gboolean val)
 				gtk_table_set_homogeneous (property->widget->widget, val);
 #endif	
 			} else
-				gtk_object_set (GTK_OBJECT (property->widget->widget),
-						property->class->id, val, NULL);
+				g_object_set (G_OBJECT (property->widget->widget),
+					      property->class->id, val, NULL);
 		}
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
@@ -373,8 +372,8 @@ glade_property_set_unichar (GladeProperty *property, gunichar val)
 	if (property->enabled) {
 		property->loading = TRUE;
 		if (property->class->set_function == NULL)
-			gtk_object_set (GTK_OBJECT (property->widget->widget),
-					property->class->id, val, NULL);
+			g_object_set (G_OBJECT (property->widget->widget),
+				      property->class->id, val, NULL);
 		else
 			(*property->class->set_function) (G_OBJECT (property->widget->widget),
 							  property->value);
@@ -396,8 +395,8 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 
 	property->loading = TRUE;
 	if (property->class->set_function == NULL)
-		gtk_object_set (GTK_OBJECT (property->widget->widget),
-				property->class->id, choice->value, NULL);
+		g_object_set (G_OBJECT (property->widget->widget),
+			      property->class->id, choice->value, NULL);
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
@@ -464,9 +463,8 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
 						GTK_ADJUSTMENT (property->child));
 #else		
-		gtk_object_set (GTK_OBJECT (property->widget->widget),
-				property->class->id,
-				property->child, NULL);
+		g_object_set (G_OBJECT (property->widget->widget),
+			      property->class->id, property->child, NULL);
 #endif		
 		g_print ("Adjustment has been set\n");
 		break;
@@ -663,7 +661,6 @@ glade_property_free (GladeProperty *property)
 	g_free (property);
 }
 
-
 void
 glade_property_get_from_widget (GladeProperty *property)
 {
@@ -676,10 +673,8 @@ glade_property_get_from_widget (GladeProperty *property)
 	else {
 		switch (property->class->type) {
 		case GLADE_PROPERTY_TYPE_BOOLEAN:
-			gtk_object_get (GTK_OBJECT (property->widget->widget),
-					property->class->id,
-					&bool,
-					NULL);
+			g_object_get (G_OBJECT (property->widget->widget),
+				      property->class->id, &bool, NULL);
 			g_value_set_boolean (property->value, bool);
 			break;
 		default:
