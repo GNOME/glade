@@ -37,6 +37,12 @@ glade_gtk_entry_set_text (GObject *object, const gchar *text)
 }
 
 static void
+glade_gtk_entry_get_text (GObject *object)
+{
+	g_print ("IMplement get text functikon\n");
+}
+
+static void
 glade_gtk_option_menu_set_items (GObject *object, const gchar *items)
 {
 	GtkOptionMenu *option_menu; 
@@ -158,9 +164,9 @@ struct _GladeGtkFunction {
 	gpointer function;
 };
 
-
 GladeGtkFunction functions [] = {
 	{"glade_gtk_entry_set_text",          &glade_gtk_entry_set_text},
+	{"glade_gtk_entry_get_text",          &glade_gtk_entry_get_text},
 	{"glade_gtk_option_menu_set_items",   &glade_gtk_option_menu_set_items},
 	{"glade_gtk_progress_bar_set_format", &glade_gtk_progress_bar_set_format},
 	{"glade_gtk_adjustment_set_max",      &glade_gtk_adjustment_set_max},
@@ -169,25 +175,39 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
 	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
 };
-	
-gboolean
-glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *function_name)
+
+static gpointer
+glade_gtk_get_function (const gchar *name)
 {
 	gint num;
 	gint i;
 
 	num = sizeof (functions) / sizeof (GladeGtkFunction);
 	for (i = 0; i < num; i++) {
-		if (strcmp (function_name, functions[i].name) == 0)
+		if (strcmp (name, functions[i].name) == 0)
 			break;
 	}
 	if (i == num) {
-		g_warning ("Could not find the function %s for %s\n",
-			   function_name, class->name);
-		return FALSE;
+		g_warning ("Could not find the function %s\n",
+			   name);
+		return NULL;
 	}
 
-	class->set_function = functions[i].function;
+	return functions[i].function;
+}
+
+gboolean
+glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name)
+{
+	class->get_function = glade_gtk_get_function (name);
+
+	return TRUE;
+}
+
+gboolean
+glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name)
+{
+	class->set_function = glade_gtk_get_function (name);
 
 	return TRUE;
 }

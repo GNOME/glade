@@ -453,7 +453,13 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	
 	return class;
 }
-				  
+
+static gboolean
+glade_property_class_get_get_function (GladePropertyClass *class, const gchar *function_name)
+{
+	return glade_gtk_get_get_function_hack (class, function_name);
+}
+
 static gboolean
 glade_property_class_get_set_function (GladePropertyClass *class, const gchar *function_name)
 {
@@ -480,6 +486,35 @@ glade_property_class_get_set_function (GladePropertyClass *class, const gchar *f
 
 	return TRUE;
 }
+
+static GList *
+glade_xml_read_list (xmlNodePtr node, const gchar *list_tag, const gchar *item_tag)
+{
+	xmlNodePtr child;
+	GList *list = NULL;
+	gchar *item;
+
+	child = glade_xml_search_child (node, list_tag);
+	if (child == NULL)
+		return NULL;
+
+	child = child->children;
+
+	while (child != NULL) {
+		skip_text (child);
+		if (!glade_xml_node_verify (child, item_tag))
+			return NULL;
+		item = glade_xml_get_content (child);
+		if (item != NULL)
+			list = g_list_prepend (list, item);
+		child = child->next;
+	}
+
+	list = g_list_reverse (list);
+
+	return list;
+}
+
 
 static GladePropertyClass *
 glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_class)
@@ -568,10 +603,23 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 		glade_property_class_get_set_function (property_class, content);
 		g_free (content);
 	}
+	/* If this property can't be set with g_object_get, get the workarround
+	 * function
+	 */
+	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
+	if (child != NULL) {
+		gchar * content = glade_xml_get_content (child);
+		glade_property_class_get_get_function (property_class, content);
+		g_free (content);
+	}
+
+	/* Now get the list of signals that we should listen to */
+	property_class->update_signals = glade_xml_read_list (node,
+							      GLADE_TAG_UPDATE_SIGNALS,
+							      GLADE_TAG_SIGNAL_NAME);
 
 	return property_class;
 }
-
 
 GList *
 glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class)

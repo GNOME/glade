@@ -4,6 +4,10 @@
 
 G_BEGIN_DECLS
 
+#define GLADE_PROPERTY(p)    ((GladeProperty *)p)
+#define GLADE_IS_PROPERTY(p) (p != NULL)
+
+
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.

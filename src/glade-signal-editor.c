@@ -206,7 +206,7 @@ glade_signal_editor_dialog_cb (GtkButton *button, GladeSignalEditor *editor)
  */
 static void 
 glade_signal_editor_update_signal (GladeSignalEditor *editor, GladeWidgetSignal *signal,
-		GtkTreeIter *iter)
+				   GtkTreeIter *iter)
 {
 	GtkTreeStore *lst_model;
 	GValue *label;
@@ -236,7 +236,7 @@ glade_signal_editor_update_signal (GladeSignalEditor *editor, GladeWidgetSignal 
 
 static gboolean
 glade_signal_editor_list_select_cb (GtkTreeSelection *lst_select, 
-		GtkTreeModel *lst_model, GtkTreePath *lst_path, GladeSignalEditor *editor)
+				    GtkTreeModel *lst_model, GtkTreePath *lst_path, GladeSignalEditor *editor)
 {
 	GtkTreeIter iter;
 	GValue *label;
@@ -364,6 +364,7 @@ glade_signal_editor_get_signal_at_iter (GladeSignalEditor *editor, GtkTreeIter *
 
 	label = g_new0 (GValue, 1);
 	gtk_tree_model_get_value (GTK_TREE_MODEL (model), iter, 2, label);
+	
 	if (!strcmp ((gchar *) label->data[0].v_pointer, _("Yes")))
 		signal->after = TRUE;
 	else 

@@ -14,8 +14,6 @@ TODO
 TAKEN ITEMS (someone is already working on)
 -----------
 - File loading and saving
-- Cleaning and adding new .xml descriptions for widgets
-- Signal editor
 - Common part of the editor
 
 OPEN ITEMS [PLease let me know before starting working on any of this]
@@ -45,6 +43,15 @@ that specifies a file.
     \__ D
   When hiding the childs of "A" and showingt htem again, the state of B and its
   childs is lost, this should go into gtk+.
+- Implement the about box.
+- Adding new widgets 
+
+NOT-SO-EASY TO IMPLEMENT ITEMS
+------------------------------
+This items may prove tricky to implement if they are "done right"
+- The packing tab of the editor
+- Undo/Redo
+- Copy/Cut/Paste
     
 DONE [just as a reference]
 --------------------------
@@ -56,14 +63,9 @@ DONE [just as a reference]
   This does not allow checkbuttons to be set/unset or buttons to be pressed.
 - Fix multiple lines GladeEditor text entries. See glade-editor.c,
 function : glade_editor_create_input_text.
+(Shane)
+- Signal editor
     	
-NOT-SO-EASY TO IMPLEMENT ITEMS
-------------------------------
-This items may prove tricky to implement if they are "done right"
-- The packing tab of the editor
-- Undo/Redo
-- Copy/Cut/Paste
-
 NOT YET (Items that we need to do, but are not a priority right now)
 ------- 
 - Implement the custom widget

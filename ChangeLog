@@ -1,3 +1,15 @@
+2001-07-16  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.c (glade_widget_connect_edit_signals_with_class): impl.
+	(glade_widget_connect_edit_signals): impl.
+
+	* src/glade-property-class.h: add ->update_signals and ->get_function
+
+	* src/glade-property-class.c (glade_xml_read_list): implement. Keep here for now
+	but should go into xml utils.
+
+	* src/glade-gtk.c (glade_gtk_get_set_function_hack): implement.
+
 2001-07-15  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-widget-class.c (glade_widget_class_new_from_node): init_function is

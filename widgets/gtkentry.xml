@@ -14,6 +14,10 @@
        <Type>Text</Type>
 	  <Tooltip>Initial Contents of the entry</Tooltip>
 	  <SetFunction>glade_gtk_entry_set_text</SetFunction>
+	  <GetFunction>glade_gtk_entry_get_text</GetFunction>
+	  <UpdateSignals>
+	    <SignalName>changed</SignalName>
+	  </UpdateSignals>
     </Property>
 
   </Properties>

@@ -144,9 +144,24 @@ struct _GladePropertyClass {
 				  * the type is object.
 				  */
 
+	GList *update_signals; /* A list of gchar * that contains the signal names that
+			       * this property should be listening to update itself.
+			       * For example the gtkentry wants to listen to the "change"
+			       * signal so that the "content" of the entry is updated and
+			       * stored when it is changed. A toggle button should listen to
+			       * the "toggled" signal to get the state of the property
+			       * from the real widget
+			       */
+
 	void (*set_function) (GObject *object,
 			      const gchar *value);
 		       /* If this property can't be set with g_object_set then
+		       * we need to implement it inside glade. This is a pointer
+		       * to the function that can set this property. The functions
+		       * to work arround this problems are inside glade-gtk.c
+		       */
+	void (*get_function) (GObject *object);
+		       /* If this property can't be get with g_object_get then
 		       * we need to implement it inside glade. This is a pointer
 		       * to the function that can set this property. The functions
 		       * to work arround this problems are inside glade-gtk.c

@@ -525,6 +525,45 @@ glade_widget_set_contents (GladeWidget *widget)
 		glade_property_changed_text (property, widget->name);
 }
 
+static void
+foo (GtkWidget *w)
+{
+	g_print ("Foo\n");
+}
+
+static void
+glade_widget_connect_edit_signals_with_class (GladeWidget *widget,
+					      GladePropertyClass *class)
+{
+	GladeProperty *property;
+	GList *list;
+
+	property = glade_widget_get_property_from_class (widget, class);
+	
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	
+	list = class->update_signals;
+	for (; list != NULL; list = list->next) {
+		gtk_signal_connect (GTK_OBJECT (widget->widget), list->data,
+				    GTK_SIGNAL_FUNC (foo), property);
+	}
+}
+
+static void
+glade_widget_connect_edit_signals (GladeWidget *widget)
+{
+	GladePropertyClass *class;
+	GList *list;
+
+	list = widget->class->properties;
+	for (; list != NULL; list = list->next) {
+		class = list->data;
+		if (class->update_signals)
+			glade_widget_connect_edit_signals_with_class (widget,
+								      class);
+	}
+}
+
 static GladeWidget *
 glade_widget_create_gtk_widget (GladeProject *project,
 				GladeWidgetClass *class,
@@ -568,6 +607,7 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	glade_widget_set_contents (glade_widget);
 	glade_widget_connect_mouse_signals (glade_widget);
 	glade_widget_connect_draw_signals (glade_widget);
+	glade_widget_connect_edit_signals (glade_widget);
 	
 	
 	return glade_widget;

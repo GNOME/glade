@@ -44,8 +44,8 @@ static void gpw_show_editor_cb (void);
 static void gpw_show_widget_tree_cb (void);
 static void gpw_show_clipboard_cb (void) {};
 
-static void gpw_undo_cb (void) {};
-static void gpw_redo_cb (void) {};
+static void gpw_undo_cb (void);
+static void gpw_redo_cb (void);
 static void gpw_delete_cb (void) {};
 static void gpw_about_cb (void) {};
 
@@ -100,6 +100,18 @@ static void
 gpw_paste_cb (void)
 {
 	g_print ("Paste !\n");
+}
+
+static void
+gpw_undo_cb (void)
+{
+	g_print ("Undo\n");
+}
+
+static void
+gpw_redo_cb (void)
+{
+	g_print ("Redo\n");
 }
 
 static void
