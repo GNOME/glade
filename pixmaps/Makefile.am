@@ -1,6 +1,7 @@
 pixmaps_DATA = \
 	window.xpm \
 	button.xpm \
+	checkbutton.xpm \
 	vbox.xpm \
 	hbox.xpm \
 	label.xpm	\

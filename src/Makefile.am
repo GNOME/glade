@@ -36,7 +36,8 @@ glade2_SOURCES = \
 	glade-widget.c \
 	glade-catalog.c \
 	glade-choice.c \
-	glade-editor.c 
+	glade-editor.c \
+	glade-signal-editor.c
 
 noinst_HEADERS = \
 	glade.h \
@@ -45,6 +46,7 @@ noinst_HEADERS = \
 	glade-parameter.h \
 	glade-placeholder.h \
 	glade-editor.h \
+	glade-signal-editor.h \
 	glade-palette.h \
 	glade-cursor.h \
 	glade-project-window.h \

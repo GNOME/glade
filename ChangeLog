@@ -1,4 +1,14 @@
 2001-06-27  Chema Celorio  <chema@celorio.com>
+ 
+ 	* src/glade-widget-class.[ch], src/glade-widget.[ch]: Store signals
+ 	  available to a widget in the GladeWidgetClass and instances and their
+ 	  handlers in GladeWidget.
+ 	* src/glade-editor.[ch], src/glade-signal-editor.[ch]: Add new signal editor
+ 	  and add provsions for GladeEditor to use.
+ 	* src/glade-types.h: Add typedefs for GladeSignalEditor, GladeWidgetSignal
+ 	  and GladeWidgetClassSignal.
+ 
+2001-06-27  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-property-class.c (glade_property_class_get_specs): 
 

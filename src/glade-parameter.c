@@ -21,6 +21,7 @@
  */
 
 #include <stdlib.h> /* for atoi and atof */
+#include <string.h>
 
 #include "glade.h"
 #include "glade-xml-utils.h"
@@ -98,6 +99,20 @@ glade_parameter_get_string (GList *parameters, const gchar *key, gchar **value)
 		}
 	}
 }
+
+static void
+glade_parameter_free (GladeParameter *parameter)
+{
+	g_return_if_fail (parameter->key);
+	g_return_if_fail (parameter->value);
+
+	g_free (parameter->key);
+	g_free (parameter->value);
+	parameter->key = NULL;
+	parameter->value = NULL;
+	g_free (parameter);
+}
+
 GladeParameter *
 glade_parameter_new (void)
 {
@@ -127,11 +142,27 @@ glade_parameter_new_from_node (xmlNodePtr node)
 }
 
 GList *
-glade_parameter_list_new_from_node (xmlNodePtr node)
+glade_parameter_list_find_by_key (GList *list, const gchar *key)
+{
+	GladeParameter *parameter;
+	
+	for (; list != NULL; list = list->next) {
+		parameter = list->data;
+		g_return_val_if_fail (parameter->key != NULL, NULL);
+		if (strcmp (parameter->key, key) == 0)
+			return list;
+	}
+
+	return NULL;
+}
+		
+
+GList *
+glade_parameter_list_new_from_node (GList *list, xmlNodePtr node)
 {
 	GladeParameter *parameter;
 	xmlNodePtr child;
-	GList *list;
+	GList *findme;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PARAMETERS))
 		return NULL;
@@ -139,7 +170,6 @@ glade_parameter_list_new_from_node (xmlNodePtr node)
 	if (child == NULL)
 		return NULL;
 
-	list = NULL;
 	child = node->children;
 
 	while (child != NULL) {
@@ -149,6 +179,18 @@ glade_parameter_list_new_from_node (xmlNodePtr node)
 		parameter = glade_parameter_new_from_node (child);
 		if (parameter == NULL)
 			return NULL;
+		/* Is this parameter already there ? just replace
+		 * the pointer and free the old one
+		 */
+		findme = glade_parameter_list_find_by_key (list,
+							   parameter->key);
+		if (findme) {
+			g_print ("We foind one, replace it\n");
+			glade_parameter_free (findme->data);
+			findme->data = parameter;
+			child = child->next;
+		}
+
 		list = g_list_prepend (list, parameter);
 		child = child->next;
 	}

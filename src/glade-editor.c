@@ -24,6 +24,7 @@
 #define GLADE_PROPERY_TABLE_ROW_SPACING 2
 
 #include <stdlib.h> /* for atoi and atof */
+#include <string.h>
 
 #include "glade.h"
 
@@ -31,6 +32,7 @@
 #include "glade-widget-class.h"
 #include "glade-choice.h"
 #include "glade-editor.h"
+#include "glade-signal-editor.h"
 #include "glade-parameter.h"
 #include "glade-project-window.h"
 #include "glade-property.h"
@@ -734,9 +736,21 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 }
 
 static void
+glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
+{
+
+	if (editor->signal_editor == NULL) {
+		editor->signal_editor = glade_signal_editor_new ();
+		gtk_box_pack_start (GTK_BOX (editor->vbox_signals), glade_signal_editor_get_widget (editor->signal_editor),
+				TRUE, TRUE, 0);
+	}
+}
+
+static void
 glade_editor_load_class (GladeEditor *editor, GladeWidgetClass *class)
 {
 	glade_editor_load_widget_page (editor, class);
+	glade_editor_load_signal_page (editor, class);
 
 	editor->loaded_class = class;
 }
@@ -997,6 +1011,8 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 		property = list->data;
 		glade_editor_property_load (property, item);
 	}
+
+	glade_signal_editor_load_widget (editor->signal_editor, item);
 }
 
 

@@ -8,28 +8,6 @@
   <Properties>
 
     <Property>
-      <Type>Integer</Type>
-	 <Name>Border Width</Name>
-	 <Tooltip>The width of the border arround the container</Tooltip>
-	 <GtkArg>border-width</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="31"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
-	 </Parameters>
-    </Property>
-
-<!--
-    <Property>
-      <Name>border-width</Name>
-      <ParamSpec/>
-    </Property>
--->
-
-    <Property>
 	 <Name>title</Name>
       <ParamSpec/>
     </Property>
@@ -48,41 +26,23 @@
 	 <Name>modal</Name>
       <ParamSpec/>
     </Property>
-    
+
     <Property>
-      <Type>Integer</Type>
-	 <Name>Default Width</Name>
-	 <Tooltip>The default width of the window</Tooltip>
-<!--	 <GtkArg>fixme</GtkArg> -->
+      <Name>default-width</Name>
+      <ParamSpec/>
 	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="0"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClimbRate" Value="1"/>
-	   <Parameter Key="Optional" Value="True"/>
-	   <Parameter Key="OptionalDefault" Value="False"/>
-	 </Parameters>
+	   <Parameter Key="Default" Value="440"/>
+      </Parameters>
     </Property>
-    
+
     <Property>
-      <Type>Integer</Type>
-	 <Name>Default Height</Name>
-	 <Tooltip>The default height of the window</Tooltip>
-<!--	 <GtkArg>fixme</GtkArg> -->
+      <Name>default-height</Name>
+      <ParamSpec/>
 	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="0"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClimbRate" Value="1"/>
-	   <Parameter Key="Optional" Value="True"/>
-	   <Parameter Key="OptionalDefault" Value="False"/>
-	 </Parameters>
+	   <Parameter Key="Default" Value="300"/>
+      </Parameters>
     </Property>
-    
+
     <Property>
 	 <Name>allow-shrink</Name>
       <ParamSpec/>
@@ -99,19 +59,21 @@
     </Property>
 
     <!-- Dunno what this does, dunno if we should remove it -->
+<!--
     <Property>
       <Type>Text</Type>
 	 <Name>WM Name</Name>
 	 <Tooltip>The name to pass to the window manager</Tooltip>
-<!--	 <GtkArg>fixme</GtkArg> -->
+	 <GtkArg>fixme</GtkArg> 
     </Property>
     
     <Property>
       <Type>Text</Type>
 	 <Name>WM Class</Name>
 	 <Tooltip>The class name to pass to the window manager</Tooltip>
-<!--	 <GtkArg>fixme</GtkArg> -->
+	 <GtkArg>fixme</GtkArg> 
     </Property>
+-->
     
   </Properties>
 </GladeWidgetClass>

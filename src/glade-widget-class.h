@@ -50,9 +50,21 @@ struct _GladeWidgetClass {
 			      * editor.
 			      */
 
+	GList *signals;     /* List of GladeWidgetClassSignal objects */
+
 	void (*placeholder_replace) (GladePlaceholder *placeholder,
 				     GladeWidget *widget,
 				     GladeWidget *parent);
+};
+
+/* GladeWidgetClassSignal contains all the info we need for a given signal, such as
+ * the signal name, and maybe more in the future 
+ */
+struct _GladeWidgetClassSignal {
+
+	gchar *name;         /* Name of the signal, eg clicked */
+	gchar *type;         /* Name of the object class that this signal belongs to
+			      * eg GtkButton */
 };
 
 GladeWidgetClass * glade_widget_class_new_from_name (const gchar *name);

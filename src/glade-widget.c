@@ -284,7 +284,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, GladeWidg
 }
 
 
-#if 0
+#if 1
 /**
  * glade_widget_set_default_options:
  * @widget: 
@@ -344,21 +344,6 @@ glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget
 	if (parent)
 		parent->children = g_list_prepend (parent->children, glade_widget);
 
-#if 0	
-	glade_widget_set_default_options (glade_widget);
-#else
-	{
-		static gboolean warned = FALSE;
-		if (!warned) {
-			g_print ("Not setting the default options yet\n");
-			warned = TRUE;
-		}
-	}
-#endif	
-
-	/* Add a pointer to the GladeWidget in the GtkWidget */
-	gtk_object_set_data (GTK_OBJECT (gtk_widget), GLADE_WIDGET_DATA_TAG, glade_widget);
-	
 	return glade_widget;
 }
 
@@ -502,7 +487,12 @@ glade_widget_create_gtk_widget (GladeProject *project,
 	}
 
 	glade_widget = glade_widget_register (project, class, widget, name, parent);
+	
+	glade_widget_set_default_options (glade_widget);
+	/* We need to be able to get to the GladeWidget * from a GtkWidget * */
+	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
+	
 	/* FIXME */
 	if ((strcmp (class->name, "GtkLabel") == 0) ||
 	    (strcmp (class->name, "GtkButton") == 0)) {
@@ -592,7 +582,7 @@ GladeProperty *
 glade_widget_get_property_from_class (GladeWidget *widget,
 				      GladePropertyClass *property_class)
 {
-	GladeProperty *property;
+	GladeProperty *property = NULL;
 	GList *list;
 	
 	list = widget->properties;

@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <config.h>
 
@@ -72,6 +73,44 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 	
 }
 
+GList * 
+glade_widget_class_list_signals (GladeWidgetClass *class) 
+{
+	GList *signals;
+	GType type;
+	guint count;
+	guint *sig_ids;
+	guint num_signals;
+	GladeWidgetClassSignal *cur;
+
+	signals = NULL;
+	/* FIXME: This should work. Apparently this is because you need to have an 
+	 * instance of an object before you can get its type?!? need to fix this 
+	 * to use class->type when bighead applys his patch. - shane
+	 */
+	type = g_type_from_name (class->name);
+
+	g_return_val_if_fail (type != 0, NULL);
+
+	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
+		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
+			sig_ids = g_signal_list_ids (type, &num_signals);
+
+			for (count = 0; count < num_signals; count++) {
+				cur = g_new0 (GladeWidgetClassSignal, 1);
+				cur->name = (gchar *) g_signal_name (sig_ids[count]);
+				cur->type = (gchar *) g_type_name (type);
+
+				signals = g_list_append (signals, (GladeWidgetClassSignal *) cur);
+			}
+		}
+
+		type = g_type_parent (type);
+	}
+
+	return signals;
+}
+
 static GladeWidgetClass *
 glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 {
@@ -91,6 +130,7 @@ glade_widget_class_new_from_node (XmlParseContext *context, xmlNodePtr node)
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
 	class->icon         = glade_xml_get_value_string_required (node, GLADE_TAG_ICON, NULL);
 	class->properties   = glade_property_class_list_new_from_node (child, class);
+	class->signals      = glade_widget_class_list_signals (class);
 
 	if (!class->name ||
 	    !class->icon ||

@@ -88,10 +88,10 @@ glade_project_view_find_iter (GtkTreeModel *model,
 			return gtk_tree_iter_copy (next);
 		/* Me ? leaking ? nah .... */
 #if 1
-		if (gtk_tree_model_iter_has_child (model, iter)) {
+		if (gtk_tree_model_iter_has_child (model, next)) {
 			GtkTreeIter *child = g_new0 (GtkTreeIter, 1);
-			GtkTreeIter *retval = g_new0 (GtkTreeIter, 1);
-			gtk_tree_model_iter_children (model, child, iter);
+			GtkTreeIter *retval = NULL;
+			gtk_tree_model_iter_children (model, child, next);
 			retval = glade_project_view_find_iter (model,
 							       child,
 							       findme);

@@ -2,6 +2,7 @@ widgets_DATA = \
 	catalog.xml \
 	gtkwindow.xml \
 	gtkbutton.xml \
+	gtkcheckbutton.xml \
 	gtklabel.xml \
 	gtkvbox.xml \
 	gtkhbox.xml \

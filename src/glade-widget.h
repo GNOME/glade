@@ -40,6 +40,8 @@ struct _GladeWidget {
 			     * property is "Ok". 
 			     */
 
+	GList *signals;      /* A list of GladeWidgetSignals */
+
 	/* Tree Structure */
 	GladeWidget *parent; /* The parent of this widget, NULL if this is a
 			      * toplevel widget.
@@ -50,6 +52,14 @@ struct _GladeWidget {
 	gboolean selected;
 };
 
+/* GladeWidgetSignal is a structure that holds information about a signal a
+ * widget wants for handle / listen for. 
+ */
+struct _GladeWidgetSignal {
+	gchar *name;         /* Signal name eg "clicked" */
+	gchar *handler;      /* Handler function eg "gtk_main_quit" */
+	gboolean after;      /* Connect after TRUE or FALSE */
+};
 
 
 GladeWidget * glade_widget_new_from_class (GladeProject *project,

@@ -64,9 +64,10 @@ struct _GladeEditor
 	GtkWidget *vbox_common;   /* We might not need this pointer. Not yet
 				   * implemented
 				   */
-	GtkWidget *vbox_signals;  /* We might not need this pointer. Not yet
-				   * implemented.
-				   */
+	GtkWidget *vbox_signals;  /* Widget from the GladeSignalEditor is placed
+					 * here
+					 */
+	GladeSignalEditor *signal_editor;
 
 	GList * widget_tables; /* A list of GladeEditorTable. We have a table
 				* (gtktable) for each GladeWidgetClass, if

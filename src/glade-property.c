@@ -21,6 +21,7 @@
  */
 
 #include <stdlib.h> /* for atoi and atof */
+#include <string.h>
 
 #include "glade.h"
 #include "glade-choice.h"
