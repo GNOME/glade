@@ -26,6 +26,7 @@
 
 #include "glade.h"
 #include "glade-widget-class.h"
+#include "glade-debug.h"
 #include "glade-editor.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
@@ -40,12 +41,6 @@
 #include <gmodule.h>
 #ifdef G_OS_UNIX
 #include <popt.h>
-#include <signal.h>
-
-#ifndef RETSIGTYPE
-#define RETSIGTYPE void
-#endif
-
 static GList * parse_command_line (poptContext);
 #endif
 
@@ -78,43 +73,6 @@ static struct poptOption options[] = {
 };
 #endif
 
-
-static void
-log_handler (const char *domain,
-             GLogLevelFlags level,
-             const char *message,
-             gpointer data)
-{
-	g_log_default_handler (domain, level, message, data);
-	if ((level & (G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)) != 0) {
-#ifdef G_OS_WIN32
-		__asm { int 3 }
-#else
-		RETSIGTYPE (* saved_handler) (int);
-        
-		saved_handler = signal (SIGINT, SIG_IGN);
-		raise (SIGINT);
-		signal (SIGINT, saved_handler);
-#endif
-	}
-}
-
-static void
-set_log_handler (const char *domain)
-{
-	g_log_set_handler (domain, G_LOG_LEVEL_MASK, log_handler, NULL);
-}
-
-static void
-setup_handlers ()
-{
-	set_log_handler ("");
-	set_log_handler ("GLib");
-	set_log_handler ("GLib-GObject");
-	set_log_handler ("Gtk");
-	set_log_handler ("Gdk");
-}
-
 static gint
 glade_init ()
 {
@@ -133,8 +91,7 @@ glade_init ()
 	/*
 	 * 1. Init the cursors
 	 * 2. Create the catalog
-	 * 3. Create the project
-	 * 4. Create the project window
+	 * 3. Create the project window
 	 */
 	glade_cursor_init ();
 	glade_packing_init ();
@@ -171,7 +128,7 @@ main (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
-	setup_handlers ();
+	glade_setup_log_handlers ();
 
 	if (!glade_init ())
 		return -1;
@@ -187,7 +144,7 @@ main (int argc, char *argv[])
 	glade_project_window_show_all ();
 
 	if (files) {
-		for (; files != NULL; files = files->next) {
+		for (; files; files = files->next) {
 			GladeProject *project;
 			project = glade_project_open (files->data);
 			glade_project_window_add_project (project);
@@ -197,7 +154,7 @@ main (int argc, char *argv[])
 		project = glade_project_new (TRUE);
 		glade_project_window_add_project (project);
 	}
-			
+
 	gtk_main ();
 
 	return 0;

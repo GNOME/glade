@@ -21,6 +21,7 @@ glade_3_LDADD = \
 
 glade_3_SOURCES = \
 	main.c \
+	glade-debug.c \
 	glade-project.c \
 	glade-parameter.c \
 	glade-placeholder.c \
@@ -51,6 +52,7 @@ glade_3_SOURCES = \
 
 noinst_HEADERS = \
 	glade.h \
+	glade-debug.h \
 	glade-project.h \
 	glade-project-view.h \
 	glade-parameter.h \
@@ -76,7 +78,6 @@ noinst_HEADERS = \
 	glade-clipboard.h \
 	glade-clipboard-view.h \
 	glade-command.h \
-	glade-debug.h \
 	glade-menu-editor.h \
 	glade-keys-dialog.h \
 	glade-transform.h
