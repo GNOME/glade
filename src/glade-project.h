@@ -4,6 +4,7 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_PROJECT(obj)          GTK_CHECK_CAST (obj, glade_project_get_type (), GladeProject)
 #define GLADE_PROJECT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_project_get_type (), GladeProjectClass)
 #define GLADE_IS_PROJECT(obj)       GTK_CHECK_TYPE (obj, glade_project_get_type ())
@@ -27,7 +28,7 @@ struct _GladeProject
 			      * requested
 			      */
 
-	GList *widgets; /* A list of GladeWidgets that make up this project.
+	GList *widgets; /* A list of GtkWidgets that make up this project.
 			 * The widgets are stored in no particular order.
 			 */
 
@@ -84,6 +85,7 @@ void glade_project_selection_clear   (GladeProject *project, gboolean emit_signa
 void glade_project_selection_changed (GladeProject *project);
 
 GList *glade_project_selection_get (GladeProject *project);
+
 
 G_END_DECLS
 

@@ -1,4 +1,14 @@
-2003-08-01  Paolo BOrelli  <pborelli@katamail.com>
+2003-08-03  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-project.[ch]: turn the list
+	of widgets making up a project from a list
+	of GladeWidgets to one of GtkWidgets. Also
+	cleanup project_write a little.
+	* src/glade-project-view.c: update for the
+	above change.
+	* src/glade-project-window.c: ditto.
+
+2003-08-01  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-editor.c: make tooltips work
 	on the labels in the editor.

@@ -283,7 +283,7 @@ gpw_close_cb (void)
 	gpw = glade_project_window_get ();
 	project = gpw->project;
 
-	if (project == NULL)
+	if (!project)
 		return;
 
 	if (project->changed) {
@@ -303,7 +303,7 @@ gpw_close_cb (void)
 	for (list = project->widgets; list; list = list->next) {
 		GtkWidget *widget;
 
-		widget = GLADE_WIDGET (list->data)->widget;
+		widget = list->data;
 		if (GTK_WIDGET_TOPLEVEL (widget))
 			gtk_widget_destroy (widget);
 	}
@@ -314,7 +314,7 @@ gpw_close_cb (void)
 	if (gpw->projects == NULL) {
 		for (list = gpw->views; list; list = list->next) {
 			GladeProjectView *view;
-			
+
 			view = GLADE_PROJECT_VIEW (list->data);
 			glade_project_view_set_project (view, NULL);
 		}

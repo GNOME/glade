@@ -158,7 +158,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 
 	list = g_list_copy (widgets);
 	list = g_list_reverse (list);
-	for (; list != NULL; list = list->next) {
+	for (; list; list = list->next) {
 		widget = list->data;
 		gtk_tree_store_append (model, &iter, parent_iter);
 		gtk_tree_store_set (model, &iter,
@@ -182,18 +182,18 @@ glade_project_view_populate_model (GtkTreeStore *model,
 				   GladeProjectView *view)
 {
 	GladeProject *project;
-	GladeWidget *widget;
 	GList *list;
 	GList *toplevels = NULL;
 
 	project = view->project;
-	if (project == NULL)
+	if (!project)
 		return;
 
 	/* Make a list of only the toplevel widgets */
-	list = project->widgets;
-	for (; list != NULL; list = list->next) {
-		widget = list->data;
+	for (list = project->widgets; list; list = list->next) {
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gtk_widget (list->data);
 		if (GLADE_WIDGET_IS_TOPLEVEL (widget))
 			toplevels = g_list_append (toplevels, widget);
 	}
