@@ -1132,18 +1132,20 @@ glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget)
 	glade_xml_node_append_child (child_tag, child);
 
 	/* Append the packing properties */
-	packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
-	glade_xml_node_append_child (child_tag, packing);
-	list = child_widget->packing_properties;
-	for (; list; list = list->next) {
-		GladeProperty *property;
-		GladeXmlNode *packing_property;
-		property = list->data;
-		g_assert (property->class->packing == TRUE);
-		packing_property = glade_property_write (context, property);
-		if (!packing_property)
-			continue;
-		glade_xml_node_append_child (packing, packing_property);
+	if (child_widget->packing_properties != NULL) {
+		packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
+		glade_xml_node_append_child (child_tag, packing);
+		list = child_widget->packing_properties;
+		for (; list; list = list->next) {
+			GladeProperty *property;
+			GladeXmlNode *packing_property;
+			property = list->data;
+			g_assert (property->class->packing == TRUE);
+			packing_property = glade_property_write (context, property);
+			if (!packing_property)
+				continue;
+			glade_xml_node_append_child (packing, packing_property);
+		}
 	}
 
 	return child_tag;
