@@ -44,118 +44,6 @@
 #define GLADE_PLACEHOLDER_PARENT_DATA "GladePlaceholderParentData"
 #define GLADE_PLACEHOLDER_IS_DATA     "GladeIsPlaceholderData"
 
-static void
-glade_placeholder_replace_container (GtkWidget *current,
-				     GtkWidget *new,
-				     GtkWidget *container)
-{
-	GParamSpec **param_spec;
-	GValue *value;
-	guint nproperties;
-	guint i;
-
-	if (current->parent != container)
-		return;
-
-	param_spec = gtk_container_class_list_child_properties (G_OBJECT_GET_CLASS (container), &nproperties);
-	value = calloc (nproperties, sizeof (GValue));
-	if (nproperties != 0 && (param_spec == 0 || value == 0))
-		// TODO: Signal the not enough memory condition
-		return;
-
-	for (i = 0; i < nproperties; i++)
-	{
-		g_value_init (&value[i], param_spec[i]->value_type);
-		gtk_container_child_get_property (GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
-	}
-
-	gtk_container_remove (GTK_CONTAINER (container), current);
-	gtk_container_add (GTK_CONTAINER (container), new);
-
-	for (i = 0; i < nproperties; i++)
-		gtk_container_child_set_property (GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
-
-	for (i = 0; i < nproperties; i++)
-		g_value_unset (&value[i]);
-
-	g_free (param_spec);
-	free (value);
-
-#if 0
-	gtk_widget_unparent (child_info->widget);
-	child_info->widget = new;
-	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
-
-	/* */
-	child = new;
-	if (GTK_WIDGET_REALIZED (container))
-		gtk_widget_realize (child);
-	if (GTK_WIDGET_VISIBLE (container) && GTK_WIDGET_VISIBLE (child)) {
-		if (GTK_WIDGET_MAPPED (container))
-			gtk_widget_map (child);
-		gtk_widget_queue_resize (child);
-	}
-	/* */
-#endif
-}
-
-/**
- * glade_placeholder_replace_notebook:
- * @current: the current widget that is going to be replaced
- * @new: the new widget that is going to replace
- * @container: the container
- * 
- * Replaces a widget inside a notebook with a new widget.
- **/
-static void
-glade_placeholder_replace_notebook (GtkWidget *current,
-				    GtkWidget *new,
-				    GtkWidget *container)
-{
-	GtkNotebook *notebook;
-	GtkWidget *page;
-	GtkWidget *label;
-	gint page_num;
-
-	notebook = GTK_NOTEBOOK (container);
-	page_num = gtk_notebook_page_num (notebook, current);
-	if (page_num == -1) {
-		g_warning ("GtkNotebookPage not found\n");
-		return;
-	}
-
-	page = gtk_notebook_get_nth_page (notebook, page_num);
-	gtk_widget_ref (page);
-
-	label = gtk_notebook_get_tab_label (notebook, current);
-
-	/* label may be NULL if the label was not set explicitely;
-	 * we probably sholud always craete our GladeWidget label
-	 * and add set it as tab label, but at the moment we don't.
-	 */
-	if (label)
-		gtk_widget_ref (label);
-
-	gtk_notebook_remove_page (notebook, page_num);
-	gtk_notebook_insert_page (notebook, new, label, page_num);
-	gtk_notebook_set_tab_label (notebook, new, label);
-
-	gtk_widget_unref (page);
-	if (label)
-		gtk_widget_unref (label);
-
-	gtk_notebook_set_current_page (notebook, page_num);
-}
-
-void
-glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
-{
-	/* This is ugly, make it better. Chema */
-	if (g_type_is_a (class->type, GTK_TYPE_NOTEBOOK))
-		class->placeholder_replace = glade_placeholder_replace_notebook;
-	else if (g_type_is_a (class->type, GTK_TYPE_CONTAINER))
-		class->placeholder_replace = glade_placeholder_replace_container;
-}
 
 static gboolean
 glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
@@ -317,10 +205,10 @@ glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 
 	parent = glade_placeholder_get_parent (placeholder);
 
-	if (parent->class->placeholder_replace != NULL)
-		parent->class->placeholder_replace (GTK_WIDGET (placeholder),
-						    widget->widget,
-						    parent->widget);
+	if (parent->class->replace_child)
+		parent->class->replace_child (GTK_WIDGET (placeholder),
+					      widget->widget,
+					      parent->widget);
 	else
 		g_warning ("Could not replace a placeholder because a replace "
 			   " function has not been implemented for \"%s\"\n",

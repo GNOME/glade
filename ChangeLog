@@ -1,5 +1,20 @@
 2003-10-06  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade.h: define GLADE_TAG_REPLACE_CHILD_FUNCTION
+	* src/glade-widget-class.[ch]: rename the placeholder_replace method
+	to replace_child and get it from the xml. add_virtual_methods() is no
+	more.
+	* src/glade-placholder.[ch]: rename the replace_placeholder* functions
+	and move them to glade-gtk.c where they belong. add_method_to_class is 
+	gone.
+	* src/glade-gtk.c: see above.
+	* src/glade-widget.c: fixup for the above changes.
+	* widgets/gtk-base.xml: extend gtknotebook with file.
+	* widgets/gtknotebook.xml: add ReplaceChildFunction.
+	* widgets/gtkcontainer.xml: ditto.
+
+2003-10-06  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-widget.c (glade_widget_new_from_class): apply queried
 	properties after fill_empty.
 	* widgets/gtkbox.xml: remove the workaround for the bug fixed above.

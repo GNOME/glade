@@ -11,8 +11,6 @@ GladePlaceholder * glade_placeholder_new ();
 
 GladeWidget * glade_placeholder_get_parent (GladePlaceholder *placeholder);
 
-void glade_placeholder_add_methods_to_class (GladeWidgetClass *class);
-
 void glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 					    GladeWidget *widget);
 

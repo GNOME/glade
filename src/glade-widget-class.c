@@ -261,15 +261,6 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
-static void
-glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
-{
-	g_return_if_fail (class->name != NULL);
-
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class))
-		glade_placeholder_add_methods_to_class (class);
-}
-
 static GtkWidget *
 glade_widget_class_create_icon (GladeWidgetClass *class)
 {
@@ -300,6 +291,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	GladeXmlDoc *doc;
 	GladeXmlNode *properties;
 	GladeXmlNode *node;
+	char *replace_child_function_name;
 	char *post_create_function_name;
 	char *fill_empty_function_name;
 
@@ -313,6 +305,13 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	node = glade_xml_doc_get_root (doc);
 	if (!doc || !node)
 		return FALSE;
+
+	replace_child_function_name = glade_xml_get_value_string (node, GLADE_TAG_REPLACE_CHILD_FUNCTION);
+	if (replace_child_function_name && widget_class->module) {
+		if (!g_module_symbol (widget_class->module, replace_child_function_name, (void **) &widget_class->replace_child))
+			g_warning ("Could not find %s\n", replace_child_function_name);
+	}
+	g_free (replace_child_function_name);
 
 	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
 	if (post_create_function_name && widget_class->module) {
@@ -399,6 +398,9 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 
 	if (GLADE_WIDGET_CLASS_FLAGS (widget_class) == 0)
 		widget_class->flags = parent_class->flags;
+
+	if (widget_class->replace_child == NULL)
+		widget_class->replace_child = parent_class->replace_child;
 
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
@@ -580,7 +582,6 @@ glade_widget_class_new (const char *name,
 	if (filename != NULL)
 		glade_widget_class_extend_with_file (widget_class, filename);
 
-	glade_widget_class_add_virtual_methods (widget_class);
 	g_free (filename);
 	g_free (init_function_name);
 

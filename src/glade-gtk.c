@@ -565,6 +565,101 @@ glade_gtk_table_post_create (GObject *object, GValue *value)
 	}
 }
 
+/* --------------------------------- Replace child functions ------------------------------- */
+void
+glade_gtk_container_replace_child (GtkWidget *current,
+				   GtkWidget *new,
+				   GtkWidget *container)
+{
+	GParamSpec **param_spec;
+	GValue *value;
+	guint nproperties;
+	guint i;
+
+	if (current->parent != container)
+		return;
+
+	param_spec = gtk_container_class_list_child_properties (G_OBJECT_GET_CLASS (container), &nproperties);
+	value = calloc (nproperties, sizeof (GValue));
+	if (nproperties != 0 && (param_spec == 0 || value == 0))
+		// TODO: Signal the not enough memory condition
+		return;
+
+	for (i = 0; i < nproperties; i++) {
+		g_value_init (&value[i], param_spec[i]->value_type);
+		gtk_container_child_get_property (GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
+	}
+
+	gtk_container_remove (GTK_CONTAINER (container), current);
+	gtk_container_add (GTK_CONTAINER (container), new);
+
+	for (i = 0; i < nproperties; i++)
+		gtk_container_child_set_property (GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
+
+	for (i = 0; i < nproperties; i++)
+		g_value_unset (&value[i]);
+
+	g_free (param_spec);
+	free (value);
+
+#if 0
+	gtk_widget_unparent (child_info->widget);
+	child_info->widget = new;
+	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
+
+	/* */
+	child = new;
+	if (GTK_WIDGET_REALIZED (container))
+		gtk_widget_realize (child);
+	if (GTK_WIDGET_VISIBLE (container) && GTK_WIDGET_VISIBLE (child)) {
+		if (GTK_WIDGET_MAPPED (container))
+			gtk_widget_map (child);
+		gtk_widget_queue_resize (child);
+	}
+	/* */
+#endif
+}
+
+void
+glade_gtk_notebook_replace_child (GtkWidget *current,
+				  GtkWidget *new,
+				  GtkWidget *container)
+{
+	GtkNotebook *notebook;
+	GtkWidget *page;
+	GtkWidget *label;
+	gint page_num;
+
+	notebook = GTK_NOTEBOOK (container);
+	page_num = gtk_notebook_page_num (notebook, current);
+	if (page_num == -1) {
+		g_warning ("GtkNotebookPage not found\n");
+		return;
+	}
+
+	page = gtk_notebook_get_nth_page (notebook, page_num);
+	gtk_widget_ref (page);
+
+	label = gtk_notebook_get_tab_label (notebook, current);
+
+	/* label may be NULL if the label was not set explicitely;
+	 * we probably sholud always craete our GladeWidget label
+	 * and add set it as tab label, but at the moment we don't.
+	 */
+	if (label)
+		gtk_widget_ref (label);
+
+	gtk_notebook_remove_page (notebook, page_num);
+	gtk_notebook_insert_page (notebook, new, label, page_num);
+	gtk_notebook_set_tab_label (notebook, new, label);
+
+	gtk_widget_unref (page);
+	if (label)
+		gtk_widget_unref (label);
+
+	gtk_notebook_set_current_page (notebook, page_num);
+}
+
 /* ------------------------------------ Fill Empty functions ------------------------------- */
 void
 glade_gtk_container_fill_empty (GObject *container)

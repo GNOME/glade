@@ -6,6 +6,7 @@
 
 G_BEGIN_DECLS
 
+
 typedef enum {
 	GLADE_TOPLEVEL        = 1 << 2,
 	GLADE_ADD_PLACEHOLDER = 1 << 3,
@@ -24,6 +25,7 @@ typedef enum {
 
 #define GLADE_WIDGET_CLASS_SET_FLAGS(gwc,flag)	  G_STMT_START{ (GLADE_WIDGET_CLASS_FLAGS (gwc) |= (flag)); }G_STMT_END
 #define GLADE_WIDGET_CLASS_UNSET_FLAGS(gwc,flag)  G_STMT_START{ (GLADE_WIDGET_CLASS_FLAGS (gwc) &= ~(flag)); }G_STMT_END
+
 
 /* GladeWidgetClass contains all the information we need regarding an widget
  * type. It is also used to store information that has been loaded to memory
@@ -69,18 +71,29 @@ struct _GladeWidgetClass
 	GModule *module;	/* Module with the (optional) special functions
 				 * needed for placeholder_replace, post_create_function
 				 * and the set & get functions of the properties
-				 * of this class */
-
-	void (*placeholder_replace) (GtkWidget *current,
-				     GtkWidget *new,
-				     GtkWidget *container);
-
-	void (*post_create_function) (GObject *gobject);
-
-	void (*fill_empty) (GtkWidget *widget);
+				 * of this class.
+				 */
 
 	gboolean in_palette;
+
+	/* This method replaces a child widget with another one: it's used to replace
+	 * a placeholder with a widget and viceversa.
+	 */
+	void (*replace_child) (GtkWidget *current,
+			       GtkWidget *new,
+			       GtkWidget *container);
+
+	/* Executed after widget creation: e.g. sets the size of a window to a 
+	 * sane default.
+	 */
+	void (*post_create_function) (GObject *gobject);
+
+	/* If the widget is a container, this method takes care of adding the
+	 * needed placeholders.
+	 */
+	void (*fill_empty) (GtkWidget *widget);
 };
+
 
 /* GladeWidgetClassSignal contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
@@ -91,6 +104,7 @@ struct _GladeWidgetClassSignal
 	gchar *type;         /* Name of the object class that this signal belongs to
 			      * eg GtkButton */
 };
+
 
 GladeWidgetClass *glade_widget_class_new (const char *name, const char *generic_name, const char *base_filename, const char *base_library);
 GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);

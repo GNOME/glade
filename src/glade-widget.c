@@ -1029,10 +1029,10 @@ glade_widget_replace_with_placeholder (GladeWidget *widget,
 
 	parent = glade_widget_get_parent (widget);
 
-	if (parent->class->placeholder_replace) {
-		parent->class->placeholder_replace (widget->widget,
-						    GTK_WIDGET (placeholder),
-						    parent->widget);
+	if (parent->class->replace_child) {
+		parent->class->replace_child (widget->widget,
+					      GTK_WIDGET (placeholder),
+					      parent->widget);
 	}
 }
 

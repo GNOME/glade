@@ -1,20 +1,8 @@
 <GladeWidgetClass>
 
-  <Name>GtkNotebook</Name>
-  <GenericName>notebook</GenericName>
-  <Toplevel>False</Toplevel>
-  <Placeholder>True</Placeholder>
+  <ReplaceChildFunction>glade_gtk_notebook_replace_child</ReplaceChildFunction>
 
   <Properties>
-
-    <Property Id="border-width"/>
-    <Property Id="show-tabs"/>
-    <Property Id="show-border"/>
-    <Property Id="tab-pos"/>
-    <Property Id="scrollable"/>
-    <Property Id="tab-hborder"/>
-    <Property Id="tab-vborder"/>
-    <Property Id="enable-popup"/>
 
     <Property ParamSpec="FALSE" Id="pages" Name="Number of pages" Default="3">
       <Type>Integer</Type>
