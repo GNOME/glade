@@ -1,3 +1,14 @@
+2003-08-15  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-parameter.c: set 0.01 as the step for float and double parameters.
+	* src/glade-widget-class.c: parse the PostCreateFunction value on
+	glade_widget_class_extend_with_file.
+	* widgets/gtkwindow.xml: put again the PostCreateFunction to set a reasonable
+	default size for a window.
+	* widgets/gtkmessagedialog.xml: reuse this xml file.
+	* widgets/*.xml: remove some unneed tags, as name and generic_name, as now
+	there are defined on gtk-base and gtk-additional.xml files.
+
 2003-08-14  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget-class.[ch]: reapply minor cleanups after Joaquin's
@@ -33,7 +44,7 @@
 	  gtkwidgets and gtkboxes.  Coupled with the above changes, it
 	  makes almost every xml file obsolete.
 
-2003-08-07  Paolo BOrelli  <pborelli@katamail.com>
+2003-08-07  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-utils.[ch]: remove dependency on glade-project-window.h.
 	* src/glade-project-window.c: fix for the above.

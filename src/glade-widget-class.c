@@ -416,6 +416,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	GladeXmlDoc *doc;
 	GladeXmlNode *properties;
 	GladeXmlNode *node;
+	char *post_create_function_name;
 
 	g_return_val_if_fail (filename != NULL, FALSE);
 
@@ -423,6 +424,15 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	if (context != NULL) {
 		doc = glade_xml_context_get_doc (context);
 		node = glade_xml_doc_get_root (doc);
+
+		post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
+		if (post_create_function_name) {
+			widget_class->post_create_function = glade_gtk_get_function (post_create_function_name);
+			if (!widget_class->post_create_function)
+				g_warning ("Could not find %s\n", post_create_function_name);
+		}
+		g_free (post_create_function_name);
+
 		properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
 		/* if we found a <properties> tag on the xml file, we add the properties
 		 * that we read from the xml file to the class */
@@ -490,7 +500,6 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 {
 	GList *last_property;
 	GList *parent_properties;
-	GList *tmp1;
 
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
@@ -500,19 +509,6 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
-
-	tmp1 = widget_class->properties;
-	while (tmp1 != NULL) {
-		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
-		g_debug (("%s from %s\n", property_class->id, widget_class->name));
-		tmp1 = g_list_next (tmp1);
-	}
-	tmp1 = parent_class->properties;
-	while (tmp1 != NULL) {
-		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
-		g_debug (("%s from %s\n", property_class->id, parent_class->name));
-		tmp1 = g_list_next (tmp1);
-	}
 
 	last_property = g_list_last (widget_class->properties);
 	parent_properties = parent_class->properties;
@@ -526,13 +522,6 @@ glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *pare
 		}
 		else
 			last_property = list->next;
-	}
-
-	tmp1 = widget_class->properties;
-	while (tmp1 != NULL) {
-		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
-		g_debug (("Result %s\n", property_class->id));
-		tmp1 = g_list_next (tmp1);
 	}
 }
 

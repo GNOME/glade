@@ -26,6 +26,7 @@
 #include "glade.h"
 #include "glade-xml-utils.h"
 #include "glade-parameter.h"
+#include "glade-property-class.h"
 
 void
 glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value)
@@ -221,29 +222,34 @@ glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
  * Return Value: A newly created GtkAdjustment
  **/
 GtkAdjustment *
-glade_parameter_adjustment_new (GList *parameters, const GValue *def)
+glade_parameter_adjustment_new (GladePropertyClass *property_class)
 {
+	GList *parameters = property_class->parameters;
+	GValue *def = property_class->def;
 	GtkAdjustment *adjustment;
 	gfloat value = 1;
 	gfloat lower = 0;
 	gfloat upper = 999999;
-
-	gfloat step_increment = 1;
-	gfloat page_increment = 265;
-	gfloat climb_rate = 1;
+	gfloat step_increment = 1.0;
+	gfloat page_increment = 10.0;
+	gfloat climb_rate = 1.0;
 
 	if (def) {
 		switch (def->g_type) {
 		case G_TYPE_FLOAT:
 			value = g_value_get_float (def);
+			step_increment = 0.01;
 			break;
 		case G_TYPE_INT:
 			value = (float) g_value_get_int (def);
+			step_increment = 1.0;
 			break;
 		case G_TYPE_DOUBLE:
 			value = (float) g_value_get_double (def);
+			step_increment = 0.01;
 			break;
 		}
+		page_increment = 10 * step_increment;
 	}
 
 	glade_parameter_get_float (parameters, "Min",     &lower);

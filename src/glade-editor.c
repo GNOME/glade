@@ -579,28 +579,28 @@ static GtkWidget *
 glade_editor_create_input_numeric (GladeEditorProperty *property,
 				   GladeEditorNumericType numeric_type)
 {
-	GladePropertyClass *class;
+	GladePropertyClass *property_class;
 	GtkAdjustment *adjustment;
 	GtkWidget *spin;
 
 	g_return_val_if_fail (property != NULL, NULL);
 
-	class = property->class;
+	property_class = property->class;
 
-	adjustment = glade_parameter_adjustment_new (class->parameters, class->def);
+	adjustment = glade_parameter_adjustment_new (property_class);
 
-	spin  = gtk_spin_button_new (adjustment, 10,
+	spin  = gtk_spin_button_new (adjustment, 4,
 				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
 
 	g_object_set_data (G_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
-	g_signal_connect (G_OBJECT (spin), "value_changed",
+	/* g_signal_connect (G_OBJECT (spin), "value_changed",
 			  G_CALLBACK (glade_editor_property_changed_numeric),
-			  property);
+			  property); */
 
 	/* Some numeric types are optional, for example the default window size, so
 	 * they have a toggle button right next to the spin button. 
 	 */
-	if (class->optional) {
+	if (property_class->optional) {
 		GtkWidget *check;
 		GtkWidget *hbox;
 		check = gtk_check_button_new ();
