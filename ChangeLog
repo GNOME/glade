@@ -1,3 +1,19 @@
+2004-05-05  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-widget.c (glade_widget_find_deepest_child_at_position): 
+	if we found a widget (data.found), but it isn't a container, just
+	return it. It was ignoring it and returning its parent before.
+	(glade_widget_event): renamed from glade_widget_expose(). It is now
+	called for all events, for all widgets (except placeholders).
+	(glade_widget_connect_signal_handlers): was connect_to_expose_event().
+	It now connects to the "event" signal for all widgets instead of
+	just "expose_event".
+	(glade_widget_set_widget): call above function, and don't connect
+	to "button_press_event" any more.
+
+	* widgets/gtkwidget.xml: Don't set the "events" property within Glade,
+	since we need to modify it ourselves to get button events etc.
+
 2004-05-03  Damon Chaplin  <damon@gnome.org>
 
 	* src/glade-utils.c (glade_util_queue_draw_nodes): new function to

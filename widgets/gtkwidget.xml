@@ -6,6 +6,10 @@
     </Property>
 	<Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="width-request"/>
 	<Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="height-request"/>
+    <Property Common="True" Id="events">
+      <SetFunction>ignore</SetFunction>
+      <GetFunction>ignore</GetFunction>
+    </Property>
   </Properties>
 </GladeWidgetClass>
 
