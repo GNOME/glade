@@ -68,7 +68,8 @@ glade_property_type_str_to_enum (const gchar *str)
 gchar *
 glade_property_type_enum_to_string (GladePropertyType type)
 {
-	switch (type) {
+	switch (type)
+	{
 	case GLADE_PROPERTY_TYPE_STRING:
 		return GLADE_TAG_STRING;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
@@ -97,17 +98,6 @@ glade_property_type_enum_to_string (GladePropertyType type)
 }
 
 static GladePropertyQuery *
-glade_property_query_new (void)
-{
-	GladePropertyQuery *query;
-
-	query = g_new0 (GladePropertyQuery, 1);
-	query->question = NULL;
-
-	return query;
-}
-
-static GladePropertyQuery *
 glade_query_new_from_node (GladeXmlNode *node)
 {
 	GladePropertyQuery *query;
@@ -115,27 +105,26 @@ glade_query_new_from_node (GladeXmlNode *node)
 	if (!glade_xml_node_verify (node, GLADE_TAG_QUERY))
 		return NULL;
 
-	query = glade_property_query_new ();
-
-	query->question     = glade_xml_get_value_string_required (node, GLADE_TAG_QUESTION, NULL);
-
+	query = g_new0 (GladePropertyQuery, 1);
+	query->question = glade_xml_get_value_string_required (node, GLADE_TAG_QUESTION, NULL);
 	if (!query->question)
 		return NULL;
 
-	return query;	
+	return query;
 }
 
 static GladePropertyQuery *
 glade_property_query_clone (GladePropertyQuery *query)
 {
-	GladePropertyQuery *clon;
+	GladePropertyQuery *clone;
 
 	g_return_val_if_fail (query != NULL, NULL);
+	g_return_val_if_fail (query->question != NULL, NULL);
 
-	clon = glade_property_query_new ();
-	clon->question = g_strdup (clon->question);
+	clone = g_new0 (GladePropertyQuery, 1);
+	clone->question = g_strdup (query->question);
 
-	return clon;
+	return clone;
 }
 
 static void
