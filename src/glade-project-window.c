@@ -213,17 +213,18 @@ gpw_confirm_close_project (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
 	gpw = glade_project_window_get ();
-	
+
+	msg = g_strdup_printf (_("<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n\n"
+				 "Your changes will be lost if you don't save them.\n"), project->name);
+
 	dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->window),
 					 GTK_DIALOG_MODAL,
 					 GTK_MESSAGE_QUESTION,
 					 GTK_BUTTONS_NONE,
-					 NULL);
-
-	msg = g_strdup_printf (_("<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n\n"
-				 "Your changes will be lost if you don't save them.\n"), project->name);
-	gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), msg);
+					 msg);
 	g_free(msg);
+
+	gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
 				_("_Close without Saving"), GTK_RESPONSE_NO,
