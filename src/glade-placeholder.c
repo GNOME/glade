@@ -29,6 +29,7 @@
 #include "glade-popup.h"
 #include "glade-utils.h"
 
+
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
 static void glade_placeholder_init           (GladePlaceholder        *placeholder);
 static void glade_placeholder_destroy        (GtkObject               *object);
@@ -92,6 +93,8 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 {
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 	GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->destroy = glade_placeholder_destroy;
 
@@ -259,10 +262,5 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 		glade_popup_placeholder_pop (placeholder, event);
 
 	return TRUE;
-}
-
-/* TODO: Remove me.  Put me on a glade_utils... or glade_widget_class... */
-void glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
-{
 }
 

@@ -33,9 +33,7 @@
 #include <gtk/gtkwidget.h>
 #include "glade-types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 
 #define GLADE_TYPE_PLACEHOLDER            (glade_placeholder_get_type ())
@@ -45,9 +43,6 @@ extern "C" {
 #define GLADE_IS_PLACEHOLDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PLACEHOLDER))
 #define GLADE_PLACEHOLDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PLACEHOLDER, GladePlaceholderClass))
 
-
-typedef struct _GladePlaceholder       GladePlaceholder;
-typedef struct _GladePlaceholderClass  GladePlaceholderClass;
 
 struct _GladePlaceholder
 {
@@ -62,15 +57,11 @@ struct _GladePlaceholderClass
 };
 
 
-GType      glade_placeholder_get_type   (void) G_GNUC_CONST;
-GtkWidget* glade_placeholder_new   (void);
+GType glade_placeholder_get_type (void) G_GNUC_CONST;
 
-/* TODO: Remove me */
-void	   glade_placeholder_add_methods_to_class (GladeWidgetClass *class);
+GtkWidget *glade_placeholder_new (void);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
+G_END_DECLS
 
 #endif /* __GLADE_PLACEHOLDER_H__ */

@@ -1,3 +1,12 @@
+2003-11-05  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-placeholder.[ch]: move typedefs to glade-types.h to fix
+	compilation on linux. Remove add_method_to_class since it's not needed.
+	* src/glade-xml-utils.h: move typedefs to glade-types.h
+	* src/glade-types.h: add mentioned types.
+	* src/glade-widget-class.h: remove forward decls, include glade-types.
+	* src/glade-widget.h: ditto.
+
 2003-11-02  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-placeholder.[ch]: rewrite it as a GtkWidget.  Moved some

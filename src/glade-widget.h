@@ -2,23 +2,10 @@
 #ifndef __GLADE_WIDGET_H__
 #define __GLADE_WIDGET_H__
 
+#include "glade-types.h"
+
 G_BEGIN_DECLS
 
-/* forward declarations */
-struct _GladeWidgetClass;
-typedef struct _GladeWidgetClass GladeWidgetClass;
-struct _GladeProject;
-typedef struct _GladeProject GladeProject;
-struct _GtkWidget;
-typedef struct _GtkWidget GtkWidget;
-struct _GList;
-typedef struct _GList GList;
-struct _GladePropertyClass;
-typedef struct _GladePropertyClass GladePropertyClass;
-struct _GladeXmlNode;
-typedef struct _GladeXmlNode GladeXmlNode;
-struct _GladeXmlContext;
-typedef struct _GladeXmlContext GladeXmlContext;
 
 #define GLADE_WIDGET(w) ((GladeWidget *)w)
 #define GLADE_IS_WIDGET(w) (w != NULL)
@@ -122,8 +109,8 @@ void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
 
 
 /* Xml saving & reading */
-GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
-GladeWidget *  glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project);
+GladeXmlNode *glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
+GladeWidget *glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project);
 
 
 G_END_DECLS

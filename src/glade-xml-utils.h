@@ -3,14 +3,14 @@
 #ifndef __GLADE_XML_UTILS_H__
 #define __GLADE_XML_UTILS_H__
 
+#include "glade-types.h"
+
 G_BEGIN_DECLS
+
 
 #define GLADE_XML_CONTEXT(c)    ((GladeXmlContext *)c)
 #define GLADE_XML_IS_CONTEXT(c) (c != NULL)
 
-typedef struct _GladeXmlContext GladeXmlContext;
-typedef struct _GladeXmlNode    GladeXmlNode;
-typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 /* search child */
 GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
