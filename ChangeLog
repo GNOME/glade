@@ -1,3 +1,11 @@
+2004-01-22  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-signal-editor.c: fix some bugs in the signal editor. Now it's
+	more or less bug free (I hope), but the UI still needs a bit of love.
+	* src/glade-widget.[ch]: change the signals from a hash that points
+	to a GList, to a hash that points to an GArray. The change it
+	also solves some bugs in the old implementation.
+
 2004-01-19  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-signal.c: make the "signal" column non editable in the

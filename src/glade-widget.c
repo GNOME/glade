@@ -79,6 +79,18 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 	return new_list;
 }
 
+static void
+glade_widget_free_signals (gpointer value)
+{
+	GList *signals = (GList*) value;
+
+	if (signals)
+	{
+		g_list_foreach (signals, (GFunc) glade_signal_free, NULL);
+		g_list_free (signals);
+	}
+}
+
 /**
  * glade_widget_new:
  * @class: The GladeWidgeClass of the GladeWidget
@@ -104,7 +116,7 @@ glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 	widget->properties = glade_widget_properties_from_list (class->properties, widget);
 	/* we don't have packing properties until we container add the widget */
 	widget->packing_properties = NULL;
-	widget->signals  = g_hash_table_new (g_str_hash, g_str_equal);
+	widget->signals  = g_hash_table_new_full (g_str_hash, g_str_equal, (GDestroyNotify) g_free, (GDestroyNotify) glade_widget_free_signals);
 
 	return widget;
 }
@@ -435,20 +447,6 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
-static gboolean
-glade_widget_free_signals (gpointer key, gpointer value, gpointer user_data)
-{
-	GList *signals = (GList*) value;
-
-	if (signals)
-	{
-		g_list_foreach (signals, (GFunc) glade_signal_free, NULL);
-		g_list_free (signals);
-	}
-
-	return TRUE;
-}
-
 /**
  * Free the GladeWidget associated to a widget. Note that this is
  * connected to the destroy event of the corresponding GtkWidget so
@@ -472,6 +470,7 @@ glade_widget_free (GladeWidget *widget)
 	g_list_foreach(widget->packing_properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->packing_properties);
 	g_hash_table_foreach_remove (widget->signals, (GHRFunc) glade_widget_free_signals, NULL);
+	g_hash_table_destroy (widget->signals);
 
 	g_free (widget);
 }
@@ -1033,14 +1032,13 @@ glade_widget_replace_with_placeholder (GladeWidget *widget,
 
 	parent = glade_widget_get_parent (widget);
 
-	if (parent->class->replace_child) {
+	if (parent->class->replace_child)
 		parent->class->replace_child (widget->widget,
 					      GTK_WIDGET (placeholder),
 					      parent->widget);
-	}
 }
 
-GList *
+GArray *
 glade_widget_find_signals_by_name (GladeWidget *widget, const char *name)
 {
 	return g_hash_table_lookup (widget->signals, name);
@@ -1054,19 +1052,27 @@ glade_widget_find_signals_by_name (GladeWidget *widget, const char *name)
  * Find the element in the signal list of the widget with the same
  * signal as @signal or NULL if not present.
  */
-GList *
+GladeSignal *
 glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
 {
-	GList *list;
+	size_t i;
+	GArray *signals = glade_widget_find_signals_by_name (widget, signal->name);
 
-	for (list = glade_widget_find_signals_by_name (widget, signal->name);
-	     list; list = list->next)
+	if (!signals)
+		return NULL;
+
+	for (i = 0; i < signals->len; i++)
 	{
-		if (glade_signal_compare (GLADE_SIGNAL (list->data), signal))
-			return list;
+		GladeSignal *ret_signal = (GladeSignal*) g_array_index (signals, GladeSignal*, i);
+		if (glade_signal_compare (ret_signal, signal))
+		{
+			g_debug (("glade_widget_find_signal (%s, %s, %s) found\n", signal->name, signal->handler, signal->after ? "TRUE" : "FALSE"));
+			return ret_signal;
+		}
 	}
 
 	/* not found... */
+	g_debug (("glade_widget_find_signal (%s, %s, %s) not found\n", signal->name, signal->handler, signal->after ? "TRUE" : "FALSE"));
 	return NULL;
 }
 
@@ -1080,28 +1086,22 @@ glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
 void
 glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 {
-	GList *found;
-	GList *old_signals;
+
+	GArray *signals;
+	GladeSignal *new_signal;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
-	found = glade_widget_find_signal (widget, signal);
-	if (found)
+	signals = glade_widget_find_signals_by_name (widget, signal->name);
+	if (!signals)
 	{
-		glade_signal_free (signal);
-		return;
+		signals = g_array_new (FALSE, FALSE, sizeof (GladeSignal*));
+		g_hash_table_insert (widget->signals, g_strdup (signal->name), signals);
 	}
 
-	old_signals = glade_widget_find_signals_by_name (widget, signal->name);
-	if (old_signals)
-	{
-		g_hash_table_insert (widget->signals, signal->name, g_list_append (old_signals, signal));
-		return;
-	}
-
-	g_hash_table_insert(widget->signals, signal->name, g_list_append (NULL, signal));
-	return;
+	new_signal = glade_signal_copy (signal);
+	g_array_append_val (signals, new_signal);
 }
 
 /**
@@ -1114,20 +1114,37 @@ glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 void
 glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 {
-	GList *found;
-	char *signal_name;
+	GArray *signals;
+	GladeSignal *tmp_signal;
+	size_t i;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
-	signal_name = g_strdup (signal->name);
-	found = glade_widget_find_signal (widget, signal);
-	if (found)
+	signals = glade_widget_find_signals_by_name (widget, signal->name);
+	if (!signals)
 	{
-		glade_signal_free (GLADE_SIGNAL (found->data));
-		g_hash_table_insert (widget->signals, signal_name, g_list_delete_link (found, found));
+		/* trying to remove an inexistent signal? */
+		g_assert (FALSE);
+		return;
 	}
-	g_free (signal_name);
+
+	for (i = 0; i < signals->len; i++)
+	{
+		tmp_signal = g_array_index (signals, GladeSignal*, i);
+		if (glade_signal_compare (tmp_signal, signal))
+			break;
+	}
+
+	if (i == signals->len)
+	{
+		/* trying to remove an inexistent signal? */
+		g_assert (FALSE);
+		return;
+	}
+
+	glade_signal_free (tmp_signal);
+	g_array_remove_index (signals, i);
 }
 
 static GladeXmlNode *
@@ -1144,11 +1161,12 @@ glade_widget_write_signals (gpointer key, gpointer value, gpointer user_data)
 {
 	WriteSignalsContext *write_signals_context = (WriteSignalsContext *) user_data;
 	GladeXmlNode *child;
+	size_t i;
 
-	GList *list = (GList *) value;
-	for (; list; list = list->next)
+	GArray *signals = (GArray *) value;
+	for (i = 0; i < signals->len; i++)
 	{
-		GladeSignal *signal = list->data;
+		GladeSignal *signal = g_array_index (signals, GladeSignal*, i);
 		child = glade_signal_write (write_signals_context->context, signal);
 		if (!child)
 			continue;

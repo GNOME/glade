@@ -100,8 +100,8 @@ GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
 GladeWidget *glade_widget_get_parent (GladeWidget *widget);
 
 /* Widget signal*/
-GList *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);
-GList *glade_widget_find_signals_by_name (GladeWidget *widget, const char *name);
+GladeSignal *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);
+GArray *glade_widget_find_signals_by_name (GladeWidget *widget, const char *name);
 void glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal);
 void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
 

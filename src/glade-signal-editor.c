@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Shane Butler <shane_b@users.sourceforge.net>
+ *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
 
 
@@ -54,7 +55,7 @@ after_toggled (GtkCellRendererToggle *cell,
 	char *handler;
 	char *signal_name;
 	GladeSignal *old_signal;
-	GList *lsignal;
+	GladeSignal *signal;
 	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
 	gboolean after;
 
@@ -71,10 +72,10 @@ after_toggled (GtkCellRendererToggle *cell,
 	}
 
 	old_signal = glade_signal_new (signal_name, handler, after);
-	lsignal = glade_widget_find_signal (editor->widget, old_signal);
+	signal = glade_widget_find_signal (editor->widget, old_signal);
 
 	after = !after;
-	((GladeSignal*) lsignal->data)->after = after;
+	signal->after = after;
 
 	/* set new value */
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_AFTER, after, -1);
@@ -117,11 +118,9 @@ cell_edited (GtkCellRendererText *cell,
 	GtkTreeIter *iter2;
 	GladeSignal *old_signal;
 	GladeSignal *signal;
-	GList *lsignal;
 	gchar *signal_name;
 	gboolean after;
 	char *old_handler;
-	gboolean child = TRUE;
 
 	gtk_tree_model_get_iter (model, &iter, path);
 	iter2 = gtk_tree_iter_copy (&iter);
@@ -139,8 +138,9 @@ cell_edited (GtkCellRendererText *cell,
 		iter_parent = iter;
 
 	old_signal = glade_signal_new (signal_name, old_handler, after);
-	lsignal = glade_widget_find_signal (editor->widget, old_signal);
-	signal = lsignal ? lsignal->data : NULL;
+	g_free (old_handler);
+	g_free (signal_name);
+	signal = glade_widget_find_signal (editor->widget, old_signal);
 
 	/* check that the new_text is a valid identifier.  TODO: I don't like that! We're throwing away the text of the user
 	 * without even giving him an explanation.  We should keep the text and say him that it's invalid, and why.  The
@@ -152,12 +152,11 @@ cell_edited (GtkCellRendererText *cell,
 		if (signal == NULL)
 		{
 			/* we're adding a new signal */
-			signal = glade_signal_copy (old_signal);
-			g_free (signal->handler);
-			signal->handler = g_strdup (new_text);
+			g_free (old_signal->handler);
+			old_signal->handler = g_strdup (new_text);
 
-			glade_widget_add_signal (editor->widget, signal);
-			gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, signal->handler, COLUMN_VISIBLE, TRUE, COLUMN_SLOT, FALSE, -1);
+			glade_widget_add_signal (editor->widget, old_signal);
+			gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, old_signal->handler, COLUMN_VISIBLE, TRUE, COLUMN_SLOT, FALSE, -1);
 
 			/* TODO: Add the <Type...> item */
 			gtk_tree_store_append (GTK_TREE_STORE (model), &iter_new_slot, &iter_parent);
@@ -187,8 +186,31 @@ cell_edited (GtkCellRendererText *cell,
 		{
 			/* we're erasing a signal */
 			glade_widget_remove_signal (editor->widget, signal);
-			gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, _("<Type the signal's handler here>"),
-					    COLUMN_AFTER, FALSE, COLUMN_VISIBLE, FALSE, COLUMN_SLOT, TRUE, -1);
+			if (memcmp(&iter_parent, &iter, sizeof(GtkTreeIter)) == 0)
+			{
+				/* ok, we're editing the very first signal, and thus we can't just remove the entire row,
+				 * as it also contains the signal's name */
+				char *next_handler;
+				gboolean next_after;
+				gboolean next_visible;
+				gboolean next_slot;
+				GtkTreeIter next_iter;
+
+				gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, _("<Type the signal's handler here>"),
+						    COLUMN_AFTER, FALSE, COLUMN_VISIBLE, FALSE, COLUMN_SLOT, TRUE, -1);
+
+				/* TODO: Copy the first children of iter to iter, and remove it */
+				/* we're at the top, and we're erasing something.  There should be at least a <Type...> child! */
+				g_assert (gtk_tree_model_iter_has_child (model, &iter));
+
+				gtk_tree_model_iter_nth_child (model, &next_iter, &iter, 0);
+				gtk_tree_model_get (model, &next_iter, COLUMN_HANDLER, &next_handler, COLUMN_AFTER, &next_after, COLUMN_VISIBLE, &next_visible, COLUMN_SLOT, &next_slot, -1);
+				gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_HANDLER, next_handler, COLUMN_AFTER, next_after, COLUMN_VISIBLE, next_visible, COLUMN_SLOT, next_slot, -1);
+				gtk_tree_store_remove (GTK_TREE_STORE (model), &next_iter);
+				g_free (next_handler);
+			}
+			else
+				gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
 		}
 	}
 
@@ -292,7 +314,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	GtkTreeIter parent_class;
 	GtkTreeIter parent_signal;
 	GtkTreePath *path_first;
-	GList *signals;
+	GArray *signals;
 
 	g_return_if_fail (GLADE_IS_SIGNAL_EDITOR (editor));
 	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
@@ -319,7 +341,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 		gtk_tree_store_append (editor->model, &parent_signal, &parent_class);
 		signals = glade_widget_find_signals_by_name (widget, signal->name);
 
-		if (!signals)
+		if (!signals || signals->len == 0)
 			gtk_tree_store_set (editor->model, &parent_signal,
 					    COLUMN_SIGNAL, signal->name,
 					    COLUMN_HANDLER, _("<Type the signal's handler here>"),
@@ -328,7 +350,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					    COLUMN_SLOT, TRUE, -1);
 		else
 		{
-			GladeSignal *widget_signal = (GladeSignal*) signals->data;
+			size_t i;
+			GladeSignal *widget_signal = (GladeSignal*) g_array_index (signals, GladeSignal*, 0);
 
 			gtk_tree_store_set (editor->model, &parent_signal,
 					    COLUMN_SIGNAL, signal->name,
@@ -336,9 +359,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					    COLUMN_AFTER, widget_signal->after,
 					    COLUMN_VISIBLE, TRUE,
 					    COLUMN_SLOT, FALSE, -1);
-			for (signals = signals->next; signals; signals = signals->next)
+			for (i = 1; i < signals->len; i++)
 			{
-				widget_signal = (GladeSignal*) signals->data;
+				widget_signal = (GladeSignal*) g_array_index (signals, GladeSignal*, i);
 				gtk_tree_store_append (editor->model, &iter, &parent_signal);
 				gtk_tree_store_set (editor->model, &iter,
 						    COLUMN_HANDLER, widget_signal->handler,
