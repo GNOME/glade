@@ -113,5 +113,4 @@
 #define GLADE_XML_TAG_AFTER    "after"
 #define GLADE_XML_TAG_PACKING  "packing"
 
-
 #endif /* __GLADE_H__ */
