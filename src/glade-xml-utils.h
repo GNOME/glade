@@ -1,5 +1,4 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-
 /* TODO : s/glade_xml_get_/glade_xml_node_get/g */
 #ifndef __GLADE_XML_UTILS_H__
 #define __GLADE_XML_UTILS_H__
@@ -30,6 +29,7 @@ GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const cha
 GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
 
 gboolean     glade_xml_node_verify (GladeXmlNode * node, const gchar *name);
+gboolean     glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
 void         glade_xml_set_value (GladeXmlNode * node, const char *name, const char *val);
 
 /* Properties */ 

@@ -74,17 +74,17 @@ glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
  * Return Value: 
  **/
 static GladeWidget *
-glade_widget_new (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk_widget, const gchar *name)
+glade_widget_new (GladeWidgetClass *class)
 {
 	GladeWidget *widget;
 
 	widget = g_new0 (GladeWidget, 1);
-	widget->name = g_strdup (name);
-	widget->widget = gtk_widget;
-	widget->project = project;
-	widget->class = class;
+	widget->name     = NULL;
+	widget->widget   = NULL;
+	widget->project  = NULL;
+	widget->class    = class;
 	widget->properties = glade_property_list_new_from_widget_class (class, widget);
-	widget->parent = NULL;
+	widget->parent   = NULL;
 	widget->children = NULL;
 	widget->selected = FALSE;
 
@@ -309,6 +309,56 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 	return FALSE;
 }
 
+void
+glade_property_refresh (GladeProperty *property)
+{
+	switch (property->class->type) {
+	case GLADE_PROPERTY_TYPE_BOOLEAN:
+		glade_property_set_boolean (property,
+					    glade_property_get_boolean (property));
+		break;
+	case GLADE_PROPERTY_TYPE_FLOAT:
+		glade_property_set_float (property,
+					  glade_property_get_float (property));
+		break;
+	case GLADE_PROPERTY_TYPE_INTEGER:
+		glade_property_set_integer (property,
+					    glade_property_get_integer (property));
+		break;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		glade_property_set_double (property,
+					   glade_property_get_double (property));
+		break;
+	case GLADE_PROPERTY_TYPE_STRING:
+		glade_property_set_string (property,
+					   glade_property_get_string (property));
+		break;
+	case GLADE_PROPERTY_TYPE_ENUM:
+		glade_property_set_choice (property,
+					   glade_property_get_choice (property));
+		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		g_print ("Set adjustment\n");
+#if 1	
+		g_print ("Set directly \n");
+#if 0
+		glade_widget_set_default_options_real (property->child, packing);
+#endif	
+		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
+						GTK_ADJUSTMENT (property->child));
+#else		
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id,
+				property->child, NULL);
+#endif		
+		g_print ("Adjustment has been set\n");
+		break;
+	default:
+		g_warning ("Implement set default for this type [%s]\n", property->class->name);
+		break;
+	}
+}
+
 /**
  * glade_widget_set_default_options:
  * @widget: 
@@ -329,69 +379,27 @@ glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 			continue;
 
 		/* For some properties, we get the value from the GtkWidget, for example the
-		 * "position" packing property
+		 * "position" packing property. See g-p-class.h ->get_default. Chema
 		 */
-		if (property->value && (strcmp (property->value, GLADE_GET_DEFAULT_FROM_WIDGET) == 0)) {
-			gchar *temp;
-			if (!property->class->get_function) {
-				g_warning ("Class %s is get_default_from_widget but no get function specified",
-					   property->class->name);
-				temp = g_strdup ("Error");
-			} else
-				temp = (*property->class->get_function) (G_OBJECT (widget->widget));
-			g_free (property->value);
-			property->value = temp;
+		if (property->class->get_default) {
+			glade_property_get_from_widget (property);
 			continue;
 		}
 
-		property->loading = TRUE;
-			
-		switch (property->class->type) {
-		case GLADE_PROPERTY_TYPE_BOOLEAN:
-			glade_property_changed_boolean (property,
-							glade_property_get_boolean (property));
-			break;
-		case GLADE_PROPERTY_TYPE_FLOAT:
-			glade_property_changed_float (property,
-						      glade_property_get_float (property));
-			break;
-		case GLADE_PROPERTY_TYPE_INTEGER:
-			glade_property_changed_integer (property,
-							glade_property_get_integer (property));
-			break;
-		case GLADE_PROPERTY_TYPE_DOUBLE:
-			glade_property_changed_double (property,
-						       glade_property_get_double (property));
-			break;
-		case GLADE_PROPERTY_TYPE_TEXT:
-			glade_property_changed_text (property,
-						     glade_property_get_text (property));
-			break;
-		case GLADE_PROPERTY_TYPE_CHOICE:
-			glade_property_changed_choice (property,
-						       glade_property_get_choice (property));
-			break;
-		case GLADE_PROPERTY_TYPE_OBJECT:
-			g_print ("Set adjustment\n");
-#if 1
-			g_print ("Set directly \n");
-			glade_widget_set_default_options_real (property->child, packing);
-			gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
-							GTK_ADJUSTMENT (property->child));
-#else	
-			gtk_object_set (GTK_OBJECT (property->widget->widget),
-					property->class->id,
-					property->child, NULL);
-#endif	
-			g_print ("Adjustment has been set\n");
-			break;
-		default:
-			g_warning ("Implement set default for this type [%s]\n", property->class->name);
-			break;
+		if (property->class->apply_first_time && !property->enabled) {
+			property->enabled = TRUE;
+			property->loading = TRUE;
+			glade_property_refresh (property);
+			property->loading = FALSE;
+			property->enabled = FALSE;
 		}
+
+		property->loading = TRUE;
+		glade_property_refresh (property);
 		property->loading = FALSE;
+
 	}
-	       
+
 }
 
 static void
@@ -413,25 +421,6 @@ void
 glade_widget_set_default_packing_options (GladeWidget *widget)
 {
 	glade_widget_set_default_options_real (widget, TRUE);
-}
-
-static GladeWidget *
-glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk_widget, const gchar *name, GladeWidget *parent)
-{
-	GladeWidget *glade_widget;
-
-	g_return_val_if_fail (name != NULL, NULL);
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-	glade_widget = glade_widget_new (project, class, gtk_widget, name);
-	glade_widget->parent = parent;
-
-	glade_packing_add_properties (glade_widget);
-	
-	if (parent)
-		parent->children = g_list_prepend (parent->children, glade_widget);
-
-	return glade_widget;
 }
 
 static GdkWindow*
@@ -574,36 +563,7 @@ glade_widget_set_contents (GladeWidget *widget)
 		property = glade_property_get_from_id (widget->properties,
 						       "title");
 	if (property != NULL)
-		glade_property_changed_text (property, widget->name);
-}
-
-static gchar *
-glade_property_get (GladeProperty *property)
-{
-	gchar *resp;
-	
-	if (property->class->get_function)
-		resp = (*property->class->get_function)
-			(G_OBJECT (property->widget->widget));
-	else {
-		gboolean bool;
-		switch (property->class->type) {
-		case GLADE_PROPERTY_TYPE_BOOLEAN:
-			gtk_object_get (GTK_OBJECT (property->widget->widget),
-					property->class->id,
-					&bool,
-					NULL);
-			resp = bool ?
-				g_strdup (GLADE_TAG_TRUE) :
-				g_strdup (GLADE_TAG_FALSE);
-			break;
-		default:
-			resp = NULL;
-			break;
-		}
-	}
-
-	return resp;
+		glade_property_set_string (property, widget->name);
 }
 
 static void
@@ -611,8 +571,7 @@ glade_widget_property_changed_cb (GtkWidget *w)
 {
 	GladeProperty *property;	
 	GladeWidget *widget;
-	gchar *new = NULL;
-	
+
 	widget = glade_widget_get_from_gtk_widget (w);
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	property = gtk_object_get_data (GTK_OBJECT (w),
@@ -622,23 +581,9 @@ glade_widget_property_changed_cb (GtkWidget *w)
 	if (property->loading)
 		return;
 
-	new = glade_property_get (property);
-
-	switch (property->class->type) {
-	case GLADE_PROPERTY_TYPE_TEXT:
-		glade_property_changed_text (property, new);
-		break;
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		if (new && strcmp (new, GLADE_TAG_TRUE) == 0)
-			glade_property_changed_boolean (property, TRUE);
-		else
-			glade_property_changed_boolean (property, FALSE);
-		break;
-	default:
-		break;
-	}
-
-	g_free (new);
+	glade_property_get_from_widget (property);
+	
+	glade_property_refresh (property);
 }
 
 static void
@@ -696,59 +641,80 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
-static GladeWidget *
-glade_widget_create_gtk_widget (GladeProject *project,
-				GladeWidgetClass *class,
-				GladeWidget *parent)
+static gboolean
+glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 {
-	GladeWidget *glade_widget;
-	GType type;
+	GladeWidgetClass *class;
 	GtkWidget *widget;
-	gchar *name;
+	GType type;
 
-
+	class = glade_widget->class;
 	type = g_type_from_name (class->name);
-	if (! g_type_is_a (type, G_TYPE_OBJECT)) {
+	
+	if (!g_type_is_a (type, G_TYPE_OBJECT)) {
 		gchar *text;
 		g_warning ("Unknown type %s read from glade file.", class->name);
  		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
 		widget = gtk_label_new (text);
 		g_free (text);
+		return FALSE;
 	} else {
 		if (g_type_is_a (type, GTK_TYPE_WIDGET))
 			widget = gtk_widget_new (type, NULL);
 		else
 			widget = g_object_new (type, NULL);
 	}
-
-	name = glade_widget_new_name (project, class);
-	glade_widget = glade_widget_register (project, class, widget, name, parent);
-	g_free (name);
+	
+	glade_widget->widget = widget;
 
 	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
+	
+	return TRUE;
+}
 
-	glade_project_add_widget (project, glade_widget);
+static void
+glade_widget_connect_signals (GladeWidget *widget)
+{
+	/* We can be a GtkObject. For example an adjustment. */
+	if (!GTK_IS_WIDGET (widget->widget))
+		return;
+	
+	glade_widget_connect_mouse_signals (widget);
+	glade_widget_connect_draw_signals  (widget);
+	glade_widget_connect_edit_signals  (widget);
+	glade_widget_connect_other_signals (widget);
+}
 
-	/* We can be a GtkObject for example, like an adjustment */
-	if (!g_type_is_a (type, GTK_TYPE_WIDGET))
-		return glade_widget;
-		
-	glade_widget_set_contents (glade_widget);
-	glade_widget_connect_mouse_signals (glade_widget);
-	glade_widget_connect_draw_signals (glade_widget);
-	glade_widget_connect_edit_signals (glade_widget);
-	glade_widget_connect_other_signals (glade_widget);
+static GladeWidget *
+glade_widget_new_full (GladeProject *project,
+		       GladeWidgetClass *class,
+		       GladeWidget *parent)
+{
+	GladeWidget *widget;
 
-	if (GTK_IS_TABLE (glade_widget->widget)) {
-		g_print ("Is table\n");
-		gtk_table_set_homogeneous (GTK_TABLE (glade_widget->widget),
-					   FALSE);
-	}
-	return glade_widget;
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
+	widget = glade_widget_new (class);
+	widget->project = project;
+	widget->name    = glade_widget_new_name (project, class);
+	widget->parent  = parent;
+
+	glade_packing_add_properties (widget);
+	glade_widget_create_gtk_widget (widget);
+	glade_project_add_widget (project, widget);
+
+	if (parent)
+		parent->children = g_list_prepend (parent->children, widget);
+
+	glade_widget_set_contents (widget);
+	glade_widget_connect_signals (widget);
+
+	return widget;
 }
 
 /**
- * glade_widget_new_from_class:
+ * glade_widget_new_from_class_full:
  * @project: 
  * @class:
  * @parent: the parent of the new widget, should be NULL for toplevel widgets
@@ -763,7 +729,7 @@ static GladeWidget *
 glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project, GladeWidget *parent)
 {
 	GladePropertyQueryResult *result = NULL;
-	GladeWidget *glade_widget;
+	GladeWidget *widget;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
@@ -774,22 +740,24 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 			return NULL;
 	}
 
-	glade_widget = glade_widget_create_gtk_widget (project, class, parent);
+	widget = glade_widget_new_full (project, class, parent);
 
-	/* IF we are a container, add the placeholders */
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
-		glade_placeholder_add (class, glade_widget, result);
+	/* If we are a container, add the placeholders */
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class)) {
+		g_print ("Add placeholder \n");
+		glade_placeholder_add (class, widget, result);
+	}
 
-	/* ->widget sometimes contains GtkObjects like a GtkAdjustment for example */
-	if (GTK_IS_WIDGET (glade_widget->widget))
-		gtk_widget_show (glade_widget->widget);
-	
 	if (result) 
 		glade_property_query_result_destroy (result);
 
-	glade_widget_set_default_options (glade_widget);
+	glade_widget_set_default_options (widget);
+
+	/* ->widget sometimes contains GtkObjects like a GtkAdjustment for example */
+	if (GTK_IS_WIDGET (widget->widget))
+		gtk_widget_show (widget->widget);
 	
-	return glade_widget;
+	return widget;
 }
 
 GladeWidget *
@@ -834,6 +802,17 @@ glade_widget_get_class (GladeWidget *widget)
 
 
 
+/**
+ * glade_widget_get_property_from_list:
+ * @list: The list of GladeProperty
+ * @class: The Class that we are trying to match with GladePropery
+ * @silent: True if we shuold warn when a property is not included in the list
+ * 
+ * Give a list of GladeProperties find the one that has ->class = to @class.
+ * This function recurses into child objects if needed.
+ * 
+ * Return Value: 
+ **/
 static GladeProperty *
 glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gboolean silent)
 {
@@ -1069,7 +1048,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	GladeSignal *signal;
 	GList *list;
 	GList *list2;
-	
+
 	g_return_val_if_fail (GLADE_XML_IS_CONTEXT (context), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
@@ -1086,7 +1065,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 			continue;
 		child = glade_property_write (context, property);
 		if (child == NULL)
-			return NULL;
+			continue;
 		glade_xml_append_child (node, child);
 	}
 
@@ -1104,13 +1083,15 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	list = widget->children;
 	for (; list != NULL; list = list->next) {
 		child_widget = list->data;
+		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+		glade_xml_append_child (node, child_tag);
+
+		/* write the widget */
 		child = glade_widget_write (context, child_widget);
 		if (child == NULL)
 			return NULL;
-		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
-		glade_xml_append_child (node, child_tag);
 		glade_xml_append_child (child_tag, child);
-
+		
 		/* Append the packing properties */
 		packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
 		list2 = child_widget->properties;
@@ -1121,14 +1102,83 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 				continue;
 			packing_property = glade_property_write (context, property);
 			if (packing_property == NULL)
-				return NULL;
+				continue;
 			glade_xml_append_child (packing, packing_property);
 		}
 		glade_xml_append_child (child_tag, packing);
 		/* */
+		
+
 	}
 
 	return node;
 }
 
+static gboolean
+glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
+{
+	GladeProperty *property;
+	gchar *value;
+	gchar *id;
+
+	id    = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
+	value = glade_xml_get_content (node);
+
+	if (!value || !id)
+		return FALSE;
+
+	property = glade_property_get_from_id (widget->properties,
+					       id);
+		
+	g_print ("Apply %s with %s\n", id, value);
+
+	g_free (id);
+	g_free (value);
+
+	return TRUE;
+}
+
+static void
+glade_widget_load_child_from_node (GladeXmlNode *node)
+{
+	g_print ("Foo\n");
+}
+
+GladeWidget *
+glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project)
+{
+	GladeWidgetClass *class;
+	GladeXmlNode *child;
+	GladeWidget *widget;
+	gchar *class_name;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+		return NULL;
+
+	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
+	if (!class_name)
+		return NULL;
+	class = glade_widget_class_get_by_name (class_name);
+	if (!class)
+		return NULL;
 	
+	widget = glade_widget_new_full (project,
+					class,
+					NULL);
+
+	g_print ("The %s widget has %d properties\n", widget->name,
+		 g_list_length (widget->properties));
+	
+	child =	glade_xml_node_get_children (node);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
+		if (!(glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD) ||
+		      glade_xml_node_verify (child, GLADE_XML_TAG_PROPERTY)))
+			return NULL;
+		if (glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
+			glade_widget_load_child_from_node (child);
+		else
+			glade_widget_apply_property_from_node (child, widget);
+	}
+					    
+	return widget;
+}

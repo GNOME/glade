@@ -148,7 +148,7 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 	GladeChoice *choice;
 	GList *list;
 
-	if (!glade_xml_node_verify (node, GLADE_TAG_CHOICES))
+	if (!glade_xml_node_verify (node, GLADE_TAG_ENUM))
 		return NULL;
 
 	list = NULL;

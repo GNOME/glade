@@ -24,11 +24,14 @@ struct _GladeProperty {
 	GladeWidget *widget; /* A pointer to the GladeWidget that this
 			      * GladeProperty is modifying
 			      */
-	
+
+	GValue *value;
+#if 0	
 	gchar *value; /* A string representation of the value. Depending
 		       * on the property->type it can contain an integer
 		       * a "False" or "True" string or a string itself
 		       */
+#endif	
 
 	gboolean enabled; /* Enables is a flag that is used for GladeProperties
 			   * that have the optional flag set to let us know
@@ -70,20 +73,22 @@ GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 GladeProperty * glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget);
 void glade_property_free (GladeProperty *property);
 
-void glade_property_changed_text    (GladeProperty *property, const gchar *text);
-void glade_property_changed_integer (GladeProperty *property, gint val);
-void glade_property_changed_float   (GladeProperty *property, gfloat val);
-void glade_property_changed_double  (GladeProperty *property, gdouble val);
-void glade_property_changed_boolean (GladeProperty *property, gboolean val);
-void glade_property_changed_choice  (GladeProperty *property, GladeChoice *choice);
+void glade_property_set_string  (GladeProperty *property, const gchar *text);
+void glade_property_set_integer (GladeProperty *property, gint val);
+void glade_property_set_float   (GladeProperty *property, gfloat val);
+void glade_property_set_double  (GladeProperty *property, gdouble val);
+void glade_property_set_boolean (GladeProperty *property, gboolean val);
+void glade_property_set_choice  (GladeProperty *property, GladeChoice *choice);
 
-const gchar * glade_property_get_text    (GladeProperty *property);
+const gchar * glade_property_get_string  (GladeProperty *property);
 gint          glade_property_get_integer (GladeProperty *property);
 gfloat        glade_property_get_float   (GladeProperty *property);
 gdouble       glade_property_get_double  (GladeProperty *property);
 gboolean      glade_property_get_boolean (GladeProperty *property);
 GladeChoice * glade_property_get_choice  (GladeProperty *property);
 
+
+void glade_property_get_from_widget (GladeProperty *property);
 
 /* Get a GladeProperty */
 GladeProperty * glade_property_get_from_id   (GList *settings_list,

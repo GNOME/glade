@@ -4,8 +4,8 @@
 
 G_BEGIN_DECLS
 
-gchar * glade_project_ui_save_get_name (GladeProject *project);
-void    glade_project_ui_warn (GladeProject *project, const gchar *warning);
+gchar * glade_project_ui_get_path (const gchar *title);
+void    glade_project_ui_warn     (const gchar *warning);
 
 G_END_DECLS
 

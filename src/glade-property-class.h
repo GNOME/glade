@@ -11,8 +11,8 @@ typedef enum {
 	GLADE_PROPERTY_TYPE_FLOAT,
 	GLADE_PROPERTY_TYPE_INTEGER,
 	GLADE_PROPERTY_TYPE_DOUBLE,
-	GLADE_PROPERTY_TYPE_TEXT,
-	GLADE_PROPERTY_TYPE_CHOICE,
+	GLADE_PROPERTY_TYPE_STRING,
+	GLADE_PROPERTY_TYPE_ENUM,
 	GLADE_PROPERTY_TYPE_OTHER_WIDGETS,
 	GLADE_PROPERTY_TYPE_OBJECT,
 	GLADE_PROPERTY_TYPE_ERROR
@@ -113,7 +113,8 @@ struct _GladePropertyClass {
 	gchar *tooltip; /* The tooltip. Currently unimplemented. Not sure if
 			 * it should go here
 			 */
-	gchar *def; /* The default value for this property */
+
+	GValue *def; /* The default value for this property */
 
 	GList *parameters; /* list of GladeParameter objects. This list
 			    * provides with an extra set of key-value
@@ -134,6 +135,7 @@ struct _GladePropertyClass {
 			    * default property has a check box in the
 			    * left that enables/disables de input
 			    */
+	gboolean optional_default; /* For optional values, what the default is */
 
 	GladePropertyQuery *query; /* Some widgets require us to query the user
 				    * before creating the widget. Like a vbox will
@@ -159,15 +161,23 @@ struct _GladePropertyClass {
 
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
+	gboolean apply_first_time; /* Temp hack */
+	gboolean get_default; /* If true, when the default property is applied it is queried
+			       * from the GtkWidget rather than setting it to some value. We need
+			       * this for example for the packing position in a gtkbox, we container
+			       * add the widget, then we query the property to get the position it
+			       * was added into.
+			       */
 
 	void (*set_function) (GObject *object,
-			      const gchar *value);
+			      const GValue *value);
 		       /* If this property can't be set with g_object_set then
 		       * we need to implement it inside glade. This is a pointer
 		       * to the function that can set this property. The functions
 		       * to work arround this problems are inside glade-gtk.c
 		       */
-	gchar * (*get_function) (GObject *object);
+	void (*get_function) (GObject *object,
+			      GValue *value);
 		       /* If this property can't be get with g_object_get then
 		       * we need to implement it inside glade. This is a pointer
 		       * to the function that can set this property. The functions
@@ -184,6 +194,10 @@ GList *     glade_property_class_list_new_from_node (GladeXmlNode * node, GladeW
 GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
 
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
+
+GValue * glade_property_class_make_gvalue_from_string (GladePropertyType type, const gchar *string);
+gchar *  glade_property_class_make_string_from_gvalue (GladePropertyType type,
+						       const GValue *value);
 
 G_END_DECLS
 

@@ -30,14 +30,7 @@ static void
 glade_popup_menu_detach (GtkWidget *attach_widget,
 			 GtkMenu *menu)
 {
-	/* We don't need a detach function. do we ? Chema. */
-#if 0
-	GladeWidget *widget;
-	gtk_widget_destroy (GTK_WIDGET (menu));
-	
-	widget = glade_widget_get_from_gtk_widget (attach_widget);
-	widget->popup_menu = NULL;
-#endif	
+
 }
 
 static void

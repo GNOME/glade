@@ -54,11 +54,14 @@ struct _GladeProjectClass
 guint glade_project_get_type (void);
 
 GladeProject * glade_project_get_active (void);
-GladeProject * glade_project_new (void);
+GladeProject * glade_project_new (gboolean untitled);
 
 
 /* Project operations */
 gboolean       glade_project_save (GladeProject *project);
+gboolean       glade_project_open ();
+GladeProject * glade_project_open_from_file (const gchar *path);
+
 
 /* Widget related stuff */
 void glade_project_remove_widget (GladeWidget *widget);
@@ -71,10 +74,11 @@ void glade_project_widget_name_changed (GladeProject *project,
 					GladeWidget *widget);
 
 /* Selection */
-void glade_project_selection_set    (GladeWidget *widget, gboolean emit_signal);
-void glade_project_selection_add    (GladeWidget *widget, gboolean emit_signal);
-void glade_project_selection_remove (GladeWidget *widget, gboolean emit_signal);
-void glade_project_selection_clear  (GladeProject *project, gboolean emit_signal);
+void glade_project_selection_set     (GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_add     (GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_remove  (GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_clear   (GladeProject *project, gboolean emit_signal);
+void glade_project_selection_changed (GladeProject *project);
 
 GList * glade_project_selection_get (GladeProject *project);
 

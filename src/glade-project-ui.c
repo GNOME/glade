@@ -33,6 +33,8 @@ glade_project_ui_delete_event_cb (GtkWidget *selector, GdkEventAny *event)
 	gtk_main_quit ();
 
 	gtk_object_set_user_data (GTK_OBJECT (selector), NULL);
+
+	gtk_widget_hide (selector);
 	
 	return TRUE;
 }
@@ -57,11 +59,11 @@ glade_project_ui_selector_clicked (GtkWidget *button, GtkWidget *selector)
 }
 
 gchar *
-glade_project_ui_save_get_name (GladeProject *project)
+glade_project_ui_get_path (const gchar *title)
 {
 	GtkWidget *selector;
 
-	selector = gtk_file_selection_new (_("Save ..."));
+	selector = gtk_file_selection_new (title);
 
 	gtk_window_set_modal (GTK_WINDOW (selector), TRUE);
 
@@ -87,7 +89,7 @@ glade_project_ui_save_get_name (GladeProject *project)
 
 
 void
-glade_project_ui_warn (GladeProject *project, const gchar *warning)
+glade_project_ui_warn (const gchar *warning)
 {
 	/* This are warnings to the users, use a nice dialog and stuff */
 

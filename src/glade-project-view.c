@@ -151,7 +151,8 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 static void
 glade_project_view_populate_model_real (GtkTreeStore *model,
 					GList *widgets,
-					GtkTreeIter *parent_iter)
+					GtkTreeIter *parent_iter,
+					gboolean add_childs)
 {
 	GladeWidget *widget;
 	GList *list;
@@ -166,14 +167,16 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 		gtk_tree_store_set (model, &iter,
 				    WIDGET_COLUMN, widget,
 				    -1);
-		if (widget->children != NULL) {
+		if (add_childs && widget->children != NULL) {
 			copy = gtk_tree_iter_copy (&iter);
 			glade_project_view_populate_model_real (model,
 								widget->children,
-								copy);
+								copy,
+								TRUE);
 			gtk_tree_iter_free (copy);
 		}
 	}
+	g_list_free (list);
 }
 
 static void
@@ -198,7 +201,8 @@ glade_project_view_populate_model (GtkTreeStore *model,
 	}
 
 	/* add the widgets and recurse */
-	glade_project_view_populate_model_real (model, toplevels, NULL);
+	glade_project_view_populate_model_real (model, toplevels,
+						NULL, !view->is_list);
 
 	g_list_free (toplevels);
 }
@@ -231,7 +235,9 @@ glade_project_view_add_item (GladeProjectView *view,
 			    WIDGET_COLUMN, widget,
 			    -1);
 
+	view->updating_selection = TRUE;
 	glade_project_selection_set (widget, TRUE);
+	view->updating_selection = FALSE;
 }      
 
 static void
@@ -263,6 +269,60 @@ glade_project_view_remove_item (GladeProjectView *view,
 }      
 
 
+/**
+ * glade_project_view_selection_update:
+ * @view: 
+ * @widget: 
+ * 
+ * The project selection has changed, update our state to reflect the changes.
+ **/
+static void
+glade_project_view_selection_update (GladeProjectView *view,
+				     GladeProject *project)
+{
+#if 0
+	GtkTreeSelection *selection;
+#endif	
+	GList *list;
+
+	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (view->project == project);
+
+	list = glade_project_selection_get (project);
+
+#if 0
+	g_ print ("Update dude\n");
+	
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
+	
+	g_return_if_fail (GTK_IS_TREE_SELECTION (selection));
+
+	GladeWidgetClass *class;
+	GtkTreeModel *model;
+	GtkTreeIter *iter;
+
+	class = glade_widget_get_class (widget);
+	
+	if (view->is_list && !GLADE_WIDGET_CLASS_TOPLEVEL (class))
+		return;
+	
+	model = GTK_TREE_MODEL (view->model);
+
+	iter = glade_project_view_find_iter_by_widget (model,
+						       widget);
+
+	if (iter) {
+		static gboolean warned = FALSE;
+		if (!warned)
+			g_print ("Update the cell. BUT HOW ??\n");
+		warned = TRUE;
+	}
+
+	gtk_tree_store_remove (view->model, iter);
+#endif	
+}      
+
 static void
 glade_project_view_class_init (GladeProjectViewClass * gpv_class)
 {
@@ -276,6 +336,7 @@ glade_project_view_class_init (GladeProjectViewClass * gpv_class)
 	gpv_class->remove_item   = glade_project_view_remove_item;
 	gpv_class->set_project   = glade_project_view_set_project;
 	gpv_class->widget_name_changed = glade_project_view_widget_name_changed;
+	gpv_class->selection_update = glade_project_view_selection_update;
 }
 
 static void
@@ -309,6 +370,7 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 		      NULL);
 }
 
+
 static gboolean
 glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 					 GladeProjectView  *view)
@@ -317,6 +379,9 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	GladeWidget *widget;
 	GtkTreeView *tree_view;
 	GtkTreeIter iter;
+
+	if (!view->project)
+		return TRUE;
 
 	g_return_val_if_fail (GTK_IS_TREE_SELECTION (selection), FALSE);
 	g_return_val_if_fail (GLADE_IS_PROJECT_VIEW (view), FALSE);
@@ -335,7 +400,9 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	if (widget == NULL)
 		return TRUE;
 
+	view->updating_selection = TRUE;
 	glade_project_selection_set (widget, TRUE);
+	view->updating_selection = FALSE;
 
 	return TRUE;
 }
@@ -348,22 +415,29 @@ glade_project_view_button_press_cb (GtkTreeView *view, GdkEventButton *event)
 	model = gtk_tree_view_get_model (view);
 	
 	if (event->type == GDK_2BUTTON_PRESS) {
-		GtkTreePath * path = gtk_tree_path_new ();
+		GtkTreePath *path = gtk_tree_path_new ();
 		GtkTreeIter iter;
 		GladeWidget *widget;
 
+		g_print ("Double click\n");
 		if (!gtk_tree_view_get_path_at_pos (view,
 						    event->window,
 						    event->x, event->y,
-						    &path, NULL, NULL, NULL))
-		    return FALSE;
-		if (!gtk_tree_model_get_iter (model, &iter, path))
-		    return FALSE;
+						    &path, NULL, NULL, NULL)) {
+			g_print ("Could not get path at pos\n");
+			return FALSE;
+		}
+		if (!gtk_tree_model_get_iter (model, &iter, path)) {
+			g_print ("could not get iter\n");
+			return FALSE;
+		}
 		    
 		gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 		gtk_tree_path_free (path);
-		if (!widget)
+		if (!widget) {
+			g_print ("Could not get widget\n");
 			return FALSE;
+		}
 		gtk_widget_show (widget->widget);
 	}
 
@@ -390,7 +464,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 			       NULL, NULL, 0);
 
 	cell = gtk_cell_renderer_text_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("Widget", cell, NULL);
+	column = gtk_tree_view_column_new_with_attributes (_("Widget"), cell, NULL);
 	gtk_tree_view_column_set_cell_data_func (column, cell, glade_project_view_cell_function, NULL, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
 
@@ -423,16 +497,21 @@ glade_project_view_init (GladeProjectView * view)
 	view->add_widget_signal_id = 0;
 
 	view->widget = glade_project_view_create_widget (view);
+	view->updating_selection = FALSE;
 	gtk_widget_show (view->widget);
 }
 
+#if 0
 void
 glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
 {
+#warning FIGURE IT OUT	
+	view->updating_selection = TRUE;
 	glade_project_selection_clear (view->project, FALSE);
+	view->updating_selection = FALSE;
 
 	glade_implement_me ();
-#if 0	
+#if 1
 	if (view->selected_widget == item)
 		return;
 
@@ -442,6 +521,7 @@ glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
 			 glade_project_view_signals [ITEM_SELECTED], item);
 #endif	
 }
+#endif
 
 
 static void
@@ -468,6 +548,18 @@ glade_project_view_widget_name_changed_cb (GladeProject *project,
         GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->widget_name_changed (view, widget);
 }
 
+static void
+glade_project_view_selection_update_cb (GladeProject *project,
+					GladeProjectView *view)
+{
+	/* This view caused this selection change in the project, since we
+	 * already know about it we don't need updating. Chema
+	 */
+	if (view->updating_selection)
+		return;
+
+        GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->selection_update (view, project);
+}
 
 /**
  * glade_project_view_new:
@@ -515,30 +607,41 @@ glade_project_view_set_project (GladeProjectView *view,
 		gtk_signal_disconnect (GTK_OBJECT (view->project), view->add_widget_signal_id);
 		gtk_signal_disconnect (GTK_OBJECT (view->project), view->remove_widget_signal_id);
 		gtk_signal_disconnect (GTK_OBJECT (view->project), view->widget_name_changed_signal_id);
+		gtk_signal_disconnect (GTK_OBJECT (view->project), view->selection_changed_signal_id);
 	}
 
-	view->project = project;
-	
 	model = GTK_TREE_MODEL (view->model);
+
+	/* Set to null while we remove all the items from the store, because we are going to trigger
+	 * selection_changed signal emisions on the View. By setting the project to NULL, _selection_changed_cb
+	 * will just return. Chema
+	 */	 
+	view->project = NULL;
 
 	while (gtk_tree_model_get_iter_root (model, &iter))
 		gtk_tree_store_remove (view->model, &iter);
 
+	view->project = project;
+	
 	glade_project_view_populate_model (view->model, view);
 
 	/* Here we connect to all the signals of the project that interests us */
 	view->add_widget_signal_id =
 		gtk_signal_connect (GTK_OBJECT (project), "add_widget",
-						GTK_SIGNAL_FUNC (glade_project_view_add_widget_cb),
-						view);
+				    GTK_SIGNAL_FUNC (glade_project_view_add_widget_cb),
+				    view);
 	view->remove_widget_signal_id =
 		gtk_signal_connect (GTK_OBJECT (project), "remove_widget",
-						GTK_SIGNAL_FUNC (glade_project_view_remove_widget_cb),
-						view);
+				    GTK_SIGNAL_FUNC (glade_project_view_remove_widget_cb),
+				    view);
 	view->widget_name_changed_signal_id =
 		gtk_signal_connect (GTK_OBJECT (project), "widget_name_changed",
-						GTK_SIGNAL_FUNC (glade_project_view_widget_name_changed_cb),
-						view);
+				    GTK_SIGNAL_FUNC (glade_project_view_widget_name_changed_cb),
+				    view);
+	view->selection_changed_signal_id =
+		gtk_signal_connect (GTK_OBJECT (project), "selection_changed",
+				    GTK_SIGNAL_FUNC (glade_project_view_selection_update_cb),
+				    view);
 }
 
 /**

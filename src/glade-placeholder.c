@@ -20,7 +20,6 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
-#include <config.h>
 #include <string.h>
 
 #include "glade.h"
@@ -45,7 +44,7 @@ glade_placeholder_replace_box (GtkWidget *current,
 	GtkWidget *child;
 	GtkBox *box;
 	GList *list;
-		
+
 	box = GTK_BOX (container);
 
 	list = box->children;
@@ -201,7 +200,7 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 	
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL) {
 		glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
-		gpw->add_class = NULL;
+		glade_project_window_set_add_class (gpw, NULL);
 	}
 			
 }
@@ -347,8 +346,10 @@ glade_placeholder_add (GladeWidgetClass *class,
 		gint size;
 		
 		glade_property_query_result_get_int (result, "size", &size);
+		g_print ("Size is %d\n", size);
 
 		for (i = 0; i < size; i++) {
+			g_print ("Add placeholder %d\n", size);
 			placeholder = glade_placeholder_new (widget);
 			gtk_box_pack_start_defaults (GTK_BOX (widget->widget),
 						     GTK_WIDGET (placeholder));

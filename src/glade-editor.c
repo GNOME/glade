@@ -228,7 +228,7 @@ glade_editor_table_new (GladeWidgetClass *class)
 static void
 glade_editor_property_changed_text_common (GladeProperty *property, const gchar *text)
 {
-	glade_property_changed_text (property, text);
+	glade_property_set_string (property, text);
 }
 
 static void
@@ -245,7 +245,7 @@ glade_editor_property_changed_text (GtkWidget *entry,
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
 	glade_editor_property_changed_text_common (property->property, text);
-	
+
 	g_free (text);
 }
 
@@ -288,7 +288,7 @@ glade_editor_property_changed_choice (GtkWidget *menu_item,
 				      GLADE_CHOICE_DATA_TAG);
 	g_return_if_fail (choice != NULL);
 	
-	glade_property_changed_choice (property->property, choice);
+	glade_property_set_choice (property->property, choice);
 }
 
 static void
@@ -348,15 +348,15 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	switch (numeric_type) {
 	case GLADE_EDITOR_INTEGER:
 		integer_val = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin));
-		glade_property_changed_integer (property->property, integer_val);
+		glade_property_set_integer (property->property, integer_val);
 		break;
 	case GLADE_EDITOR_FLOAT:
 		float_val = gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
-		glade_property_changed_float (property->property, float_val);
+		glade_property_set_float (property->property, float_val);
 		break;
 	case GLADE_EDITOR_DOUBLE:
 		double_val = (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
-		glade_property_changed_double (property->property, double_val);
+		glade_property_set_double (property->property, double_val);
 		break;
 	default:
 		g_warning ("Invalid numeric_type %i\n", numeric_type);
@@ -380,7 +380,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	label = GTK_BIN (button)->child;
 	gtk_label_set_text (GTK_LABEL (label), text [state]);
 
-	glade_property_changed_boolean (property->property, state);
+	glade_property_set_boolean (property->property, state);
 }
 
 
@@ -481,7 +481,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 static GtkWidget *
 glade_editor_create_input_numeric (GladeEditorProperty *property,
-				   GladeEditorNumericType numeric_type)
+							GladeEditorNumericType numeric_type)
 {
 	GladePropertyClass *class;
 	GtkAdjustment *adjustment;
@@ -494,7 +494,7 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	adjustment = glade_parameter_adjustment_new (class->parameters, class->def);
 
 	spin  = gtk_spin_button_new (adjustment, 10,
-				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
+						    numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
 
 	gtk_object_set_data (GTK_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
 	gtk_signal_connect (GTK_OBJECT (spin), "changed",
@@ -590,10 +590,10 @@ glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *pro
 	case GLADE_PROPERTY_TYPE_DOUBLE:
 		input = glade_editor_create_input_double (property);
 		break;
-	case GLADE_PROPERTY_TYPE_TEXT:
+	case GLADE_PROPERTY_TYPE_STRING:
 		input = glade_editor_create_input_text (property);
 		break;
-	case GLADE_PROPERTY_TYPE_CHOICE:
+	case GLADE_PROPERTY_TYPE_ENUM:
 		input = glade_editor_create_input_choice (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
@@ -909,7 +909,12 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		spin = property->input;
 	}
 
-	val = atof (property->property->value);
+
+	if (property->property->value->g_type == G_TYPE_INT)
+		val = (gfloat) g_value_get_int (property->property->value);
+	else
+		val = g_value_get_float (property->property->value);
+
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
 	gtk_object_set_user_data (GTK_OBJECT (spin), property);
 }
@@ -940,6 +945,7 @@ glade_editor_property_load_double (GladeEditorProperty *property)
 static void
 glade_editor_property_load_choice (GladeEditorProperty *property)
 {
+#if 0	
 	GladePropertyClass *pclass;
 	GladeChoice *choice;
 	GList *list;
@@ -951,7 +957,7 @@ glade_editor_property_load_choice (GladeEditorProperty *property)
 	g_return_if_fail (property->input != NULL);
 	
 	pclass = property->property->class;
-	
+
 	list = pclass->choices;
 	for (; list != NULL; list = list->next) {
 		choice = (GladeChoice *)list->data;
@@ -970,7 +976,7 @@ glade_editor_property_load_choice (GladeEditorProperty *property)
 		GtkMenuItem *menu_item = list->data;
 		gtk_object_set_user_data (GTK_OBJECT (menu_item), property);
 	}
-
+#endif	
 }
 
 static void
@@ -997,16 +1003,7 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 	g_return_if_fail (property->input != NULL);
 	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (property->input));
 
-	if (strcmp (property->property->value, GLADE_TAG_TRUE) == 0)
-		state = TRUE;
-	else if (strcmp (property->property->value, GLADE_TAG_FALSE) == 0)
-		state = FALSE;
-	else {
-		g_warning ("Invalid boolean settings %s [%s],%s,%s)\n",
-			   property->property->value, property->property->class->name,
-			   GLADE_TAG_TRUE, GLADE_TAG_FALSE);
-		state = FALSE;
-	}
+	state = g_value_get_boolean (property->property->value);
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (property->input), state);
 	label = GTK_BIN (property->input)->child;
@@ -1027,22 +1024,27 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 	if (GTK_IS_EDITABLE (property->input)) {
 		GtkEditable *editable = GTK_EDITABLE (property->input);
 		gint pos, insert_pos = 0;
+		const gchar *text;
+		text = g_value_get_string (property->property->value);
 		pos = gtk_editable_get_position (editable);
  		gtk_editable_delete_text (editable, 0, -1);
-		gtk_editable_insert_text (editable,
-					  property->property->value,
-					  strlen (property->property->value),
-					  &insert_pos);
+		if (text)
+			gtk_editable_insert_text (editable,
+						  text,
+						  strlen (text),
+						  &insert_pos);
 		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (property->input)) {
 		GtkTextBuffer *buffer;
+		const gchar *text;
 
+		text = g_value_get_string (property->property->value);
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->input));
 
 		/* FIXME !!! Will not work with mulitybyte languajes !!. Chema */
 		gtk_text_buffer_set_text (buffer,
-					  property->property->value,
-					  strlen (property->property->value));
+					  text,
+					  strlen (text));
 	} else {
 		g_warning ("Invalid Text Widget type.");
 	}
@@ -1083,7 +1085,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	property->property->loading = TRUE;
 
 	switch (class->type) {
-	case GLADE_PROPERTY_TYPE_TEXT:
+	case GLADE_PROPERTY_TYPE_STRING:
 		glade_editor_property_load_text (property);
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
@@ -1098,7 +1100,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		glade_editor_property_load_integer (property);
 		break;
-	case GLADE_PROPERTY_TYPE_CHOICE:
+	case GLADE_PROPERTY_TYPE_ENUM:
 		glade_editor_property_load_choice (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
@@ -1181,7 +1183,7 @@ glade_editor_property_changed_cb (GladeProperty *property,
 				  GladeEditorProperty *editor_property)
 {
 	g_return_if_fail (property == editor_property->property);
-
+	
 	glade_editor_property_load (editor_property, property->widget);
 }
 
@@ -1204,13 +1206,13 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	GladeEditorTable *table;
 	GList *list;
 
+	editor->loaded_widget = item;
+
 	/* Load the GladeWidgetClass */
 	class = item ? item->class : NULL;
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
 	
-	editor->loaded_widget = item;
-
 	glade_editor_load_packing_page (editor, item);
 	  
 	glade_signal_editor_load_widget (editor->signal_editor, item);
@@ -1261,8 +1263,8 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 static void
 glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 {
- GladeEditorTable *table;
-	
+	GladeEditorTable *table;
+
 	if (editor->loaded_widget == widget)
 		return;
 

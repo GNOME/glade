@@ -51,7 +51,7 @@ static void gpw_about_cb (void) {};
 static void
 gpw_open_cb (void)
 {
-	glade_implement_me ();
+	glade_project_open ();
 }
 
 static void
@@ -96,7 +96,7 @@ gpw_new_cb (void)
 	GladeProjectWindow *gpw;
 	GladeProject *project;
 
-	project = glade_project_new ();
+	project = glade_project_new (TRUE);
 	gpw = glade_project_window_get ();
 	glade_project_window_add_project (gpw, project);
 }
@@ -427,6 +427,12 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 	GladeProjectView *view;
 	GList *list;
 	gchar *title;
+
+	if (g_list_find (gpw->projects, project) == NULL) {
+		g_warning ("Could not set project because it could not "
+			   " be found in the gpw->project list\n");
+		return;
+	}
 	
 	gpw->project = project;
 	if (project) {
@@ -447,6 +453,8 @@ glade_project_window_set_project (GladeProjectWindow *gpw, GladeProject *project
 		gtk_signal_connect (GTK_OBJECT (project), "selection_changed",
 				    GTK_SIGNAL_FUNC (glade_project_window_selection_changed_cb),
 				    gpw);
+	
+	glade_project_selection_changed (project);
 }
 
 static void
@@ -486,6 +494,10 @@ void
 glade_project_window_set_add_class (GladeProjectWindow *gpw, GladeWidgetClass *class)
 {
 	gpw->add_class = class;
+
+	if (!class && gpw->palette)
+		glade_palette_clear (gpw);
+	
 }
 
 static GtkWidget *
@@ -570,6 +582,7 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					      NULL);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);	
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);	
 
 	vbox = GTK_DIALOG (dialog)->vbox;

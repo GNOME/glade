@@ -110,7 +110,7 @@ GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 /* Xml saving & reading */
 GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
-
+GladeWidget *  glade_widget_new_from_node (GladeXmlNode *node, GladeProject *project);
 
 G_END_DECLS
 

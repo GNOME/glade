@@ -69,8 +69,9 @@ struct _GladePaletteClass
 
 };
 
-void  glade_palette_create (GladeProjectWindow *gpw);
-void  glade_palette_show   (GladeProjectWindow *gpw);
+void glade_palette_create (GladeProjectWindow *gpw);
+void glade_palette_show   (GladeProjectWindow *gpw);
+void glade_palette_clear  (GladeProjectWindow *gpw);
 
 G_END_DECLS
 

@@ -26,8 +26,6 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <config.h>
-
 #include "glade.h"
 #include "glade-xml-utils.h"
 
@@ -181,7 +179,8 @@ glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function
 	type = get_type ();
 
 	if (type == 0) {
-		g_warning(_("Could not get the type from \"%s\" while trying to load \"%s\""), class->name);
+		g_warning(_("Could not get the type from \"%s\" while trying to load \"%s\""),
+			  init_function_name, class->name);
 		return FALSE;
 	}
 

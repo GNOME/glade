@@ -12,12 +12,12 @@ G_BEGIN_DECLS
 struct _GladeCatalog
 {
 	GList *names;   /* Contains the list of names that we are going
-				  * to try to load. This is basically a memory
-				  * representation of catalog.xml
-				  */
+			 * to try to load. This is basically a memory
+			 * representation of catalog.xml
+			 */
 	GList *widgets; /* Contains the list of GladeWidgetClass objects 
-				  * that where successfully loaded from disk
-				  */
+			 * that where successfully loaded from disk
+			 */
 };
 
 GladeCatalog * glade_catalog_load (void);

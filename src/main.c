@@ -20,8 +20,6 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
-#include <config.h>
-
 #include "glade.h"
 #include "glade-widget-class.h"
 #include "glade-editor.h"
@@ -36,7 +34,7 @@
 #include <gmodule.h>
 #include <popt.h>
 
-static void parse_command_line (poptContext);
+static GList * parse_command_line (poptContext);
 
 gchar * widget_name = NULL;
 
@@ -65,7 +63,6 @@ static gint
 glade_init ()
 {
 	GladeProjectWindow *project_window;
-	GladeProject *project;
 	GladeCatalog *catalog;
 
 	if (!g_module_supported ()) {
@@ -87,60 +84,66 @@ glade_init ()
 	if (catalog == NULL)
 		return FALSE;
 
-	project = glade_project_new ();
-
 	project_window = glade_project_window_new (catalog);
-	glade_project_window_add_project (project_window, project);
-	
+
 	return TRUE;
 }
 
 int
 main (int argc, char *argv[])
 {
-	poptContext pctx = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
+	GladeProjectWindow *gpw;
+	GladeProject *project;
+	poptContext popt_context;
+	GList *files;
 
-#if 0	
-#if 1
-	gnome_init_with_popt_table ("Glade2", VERSION, argc, argv, options, 0, &pctx);
-#else
-	gnome_program_init ("Glade2", VERSION, &libgnomeui_module_info,
-			    argc, argv, NULL);
-#endif
-#else
+	popt_context = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
+	files = parse_command_line (popt_context);
+	poptFreeContext (popt_context);
+
 	gtk_init (&argc, &argv);
-#endif	
 	
-#if 0
 #ifdef ENABLE_NLS
 	bindtextdomain (PACKAGE, GLADE_LOCALE_DIR);
 	textdomain (PACKAGE);
+#if 0	
+	g_print ("textdomain %s\n", PACKAGE);
+	g_print ("localedir  %s\n", GLADE_LOCALE_DIR);
+	g_print (_("Translate me\n"));
 #endif
-#endif	
+#endif
 
 	if (!glade_init ())
 		return -1;
 
-	parse_command_line (pctx);
-	poptFreeContext (pctx);
-
-	if (widget_name == NULL) {
-		GladeProjectWindow *gpw;
-		gpw = glade_project_window_get ();
-		glade_project_window_show_all (gpw);
-		gtk_main ();
-	} else {
+	if (widget_name != NULL) {
 		GladeWidgetClass *class;
 		class = glade_widget_class_get_by_name (widget_name);
 		if (class)
 			glade_widget_class_dump_param_specs (class);
+		return 0;
 	}
+
+	gpw = glade_project_window_get ();
+	glade_project_window_show_all (gpw);
+
+	if (files) {
+		for (; files != NULL; files = files->next) {
+			project = glade_project_open_from_file (files->data);
+			glade_project_window_add_project (gpw, project);
+		}
+	} else {
+		project = glade_project_new (TRUE);
+		glade_project_window_add_project (gpw, project);
+	}
+			
+	gtk_main ();
 
 	return 0;
 }
 
 
-static void
+static GList *
 parse_command_line (poptContext pctx)
 {
 	const gchar **args;
@@ -157,7 +160,6 @@ parse_command_line (poptContext pctx)
 
 	files = g_list_reverse (files);
 
+	return files;
 }
-
-gchar * _ (gchar * name) { return name;};
 

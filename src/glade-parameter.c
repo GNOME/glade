@@ -208,7 +208,7 @@ glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
  * Return Value: A newly created GtkAdjustment
  **/
 GtkAdjustment *
-glade_parameter_adjustment_new (GList *parameters, const gchar *def)
+glade_parameter_adjustment_new (GList *parameters, const GValue *def)
 {
 	GtkAdjustment *adjustment;
 	gfloat value = 1;
@@ -219,11 +219,20 @@ glade_parameter_adjustment_new (GList *parameters, const gchar *def)
 	gfloat page_increment = 265;
 	gfloat climb_rate = 1;
 
-	if (def)
-		value = atof (def);
-	else
-		glade_parameter_get_float (parameters, "Default", &value);
-		
+	if (def) {
+		switch (def->g_type) {
+		case G_TYPE_FLOAT:
+			value = g_value_get_float (def);
+			break;
+		case G_TYPE_INT:
+			value = (float) g_value_get_int (def);
+			break;
+		case G_TYPE_DOUBLE:
+			value = (float) g_value_get_double (def);
+			break;
+		}
+	}
+
 	glade_parameter_get_float (parameters, "Min",     &lower);
 	glade_parameter_get_float (parameters, "Max",     &upper);
 	glade_parameter_get_float (parameters, "StepIncrement", &step_increment);

@@ -1,3 +1,50 @@
+2001-08-11  Chema Celorio  <chema@celorio.com>
+
+	* src/glade.h: try to fix gettext support. Duno why translations are not
+	working. Feel free to fix it ;-).
+
+	* src/glade-widget.c (glade_property_refresh): implement
+	(glade_widget_new): clean widget creation
+	(glade_widget_new_full): ditto
+	(glade_widget_get_from_gtk_widget): ditto
+	(glade_widget_apply_property_from_node): impl.
+	(glade_widget_new_from_node): impl.
+
+	* src/glade-property.c : port to GValue
+	* src/glade-property.h: ditto
+
+	* src/glade-property-class.c : port to GValue
+	* src/glade-property-class.h : ditto
+
+	* src/glade-project.c (glade_project_new_from_node): implement.
+	(glade_project_open_from_file): implement.
+	(glade_project_open): implemnt.
+
+	* src/glade-project-view.h (struct _GladeProjectViewClass): add a
+	selection_update signal.
+
+	* src/glade-project-view.c (glade_project_view_populate_model_real): add a
+	add_childs parameter
+	(glade_project_view_selection_update): implment (not yet working)
+
+	* src/glade-parameter.c (glade_parameter_adjustment_new): port to GValue
+
+	* src/glade-palette.c (glade_palette_clear): impl.
+
+	* src/glade-gtk.c: port to GValue from string
+	(glade_gtk_box_set_size): impl.
+
+	* src/glade-editor.c (glade_editor_property_changed_*): use g_property_set_foo
+	rather than g_property_changed_foo.
+	port to GValues from string
+
+	* src/glade-choice.c (glade_choice_list_new_from_node): use _TAG_ENUM and
+	not _CHOICES
+
+	* src/glade-catalog.c: remove <config.h>
+
+	* src/Makefile.am (SUBDIRS): remove tests
+
 2001-08-07  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-widget.c (glade_widget_property_changed_cb): add a temp hack to set

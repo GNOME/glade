@@ -24,15 +24,17 @@
 #include <stdlib.h>
 
 #include "glade.h"
+#include "glade-widget.h"
+#include "glade-placeholder.h"
 #include "glade-property-class.h"
 
-
 static void
-glade_gtk_entry_set_text (GObject *object, const gchar *string)
+glade_gtk_entry_set_text (GObject *object, GValue *value)
 {
 	GtkEditable *editable = GTK_EDITABLE (object);
 	gint pos;
 	gint insert_pos = 0;
+	const gchar *text = g_value_get_string (value);
 
 	g_return_if_fail (GTK_IS_EDITABLE (object));
 
@@ -40,33 +42,40 @@ glade_gtk_entry_set_text (GObject *object, const gchar *string)
 	gtk_editable_delete_text (editable, 0, -1);
 	/* FIXME: will not work with multibyte languages (strlen) */
 	gtk_editable_insert_text (editable,
-				  string,
-				  strlen (string),
+				  text,
+				  strlen (text),
 				  &insert_pos);
 	gtk_editable_set_position (editable, pos);
 }
 
-static gchar *
-glade_gtk_entry_get_text (GObject *object)
+static void
+glade_gtk_entry_get_text (GObject *object, GValue *value)
 {
 	GtkEntry *entry = GTK_ENTRY (object);
+						     
 	const gchar *text;
 
-	g_return_val_if_fail (GTK_IS_ENTRY (entry), NULL);
+	g_return_if_fail (GTK_IS_ENTRY (entry));
 
 	text = gtk_entry_get_text (entry);
 
-	return g_strdup (text);
+	g_value_set_string (value, text);
 }
 
 static void
-glade_gtk_option_menu_set_items (GObject *object, const gchar *items)
+glade_gtk_option_menu_set_items (GObject *object, GValue *value)
+/*const gchar *items)*/
 {
 	GtkOptionMenu *option_menu; 
 	GtkWidget *menu;
-	const gchar *pos = items;
-	const gchar *items_end = &items[strlen (items)];
+	const gchar *items;
+	const gchar *pos;
+	const gchar *items_end;
 
+	items = g_value_get_string (value);
+	pos = items;
+	items_end = &items[strlen (items)];
+	
 	option_menu = GTK_OPTION_MENU (object);
 	g_return_if_fail (GTK_IS_OPTION_MENU (option_menu));
 	menu = gtk_option_menu_get_menu (option_menu);
@@ -94,9 +103,10 @@ glade_gtk_option_menu_set_items (GObject *object, const gchar *items)
 
 
 static void
-glade_gtk_progress_bar_set_format (GObject *object, const gchar *format)
+glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 {
 	GtkProgressBar *bar;
+	const gchar *format = g_value_get_string (value);
 
 	bar = GTK_PROGRESS_BAR (object);
 	g_return_if_fail (GTK_IS_PROGRESS_BAR (bar));
@@ -105,86 +115,111 @@ glade_gtk_progress_bar_set_format (GObject *object, const gchar *format)
 }
 
 static void
-glade_gtk_adjustment_set_max (GObject *object, const gchar *string)
+glade_gtk_adjustment_set_max (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
-	gfloat val;
-
-	val = atof (string);
 
 	adjustment = GTK_ADJUSTMENT (object);
 
-	adjustment->upper = val;
+	adjustment->upper = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 
 static void
-glade_gtk_adjustment_set_min (GObject *object, const gchar *string)
+glade_gtk_adjustment_set_min (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
-	gfloat val;
-
-	val = atof (string);
 
 	adjustment = GTK_ADJUSTMENT (object);
 
-	adjustment->lower = val;
+	adjustment->lower = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 static void
-glade_gtk_adjustment_set_step_increment (GObject *object, const gchar *string)
+glade_gtk_adjustment_set_step_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
-	gfloat val;
-
-	val = atof (string);
 
 	adjustment = GTK_ADJUSTMENT (object);
 
-	adjustment->step_increment = val;
-	gtk_adjustment_changed (adjustment);
-}
-static void
-glade_gtk_adjustment_set_page_increment (GObject *object, const gchar *string)
-{
-	GtkAdjustment *adjustment;
-	gfloat val;
-
-	val = atof (string);
-
-	adjustment = GTK_ADJUSTMENT (object);
-
-	adjustment->page_increment = val;
+	adjustment->step_increment = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 static void
-glade_gtk_adjustment_set_page_size (GObject *object, const gchar *string)
+glade_gtk_adjustment_set_page_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
-	gfloat val;
-
-	val = atof (string);
 
 	adjustment = GTK_ADJUSTMENT (object);
 
-	adjustment->page_size = val;
+	adjustment->page_increment = g_value_get_float (value);
+	gtk_adjustment_changed (adjustment);
+}
+
+static void
+glade_gtk_adjustment_set_page_size (GObject *object, GValue *value)
+{
+	GtkAdjustment *adjustment;
+
+	adjustment = GTK_ADJUSTMENT (object);
+
+	adjustment->page_size = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 
 static void
-glade_gtk_vbox_get_size (GObject *object, const gchar *string)
+glade_gtk_box_get_size (GObject *object, GValue *value)
 {
-	glade_implement_me ();
+	GtkBox *box;
+
+	g_value_reset (value);
+
+	box = GTK_BOX (object);
+	g_return_if_fail (GTK_IS_BOX (box));
+	
+	g_value_set_int (value, g_list_length (box->children));
 }
 
 static void
-glade_gtk_vbox_set_size (GObject *object, const gchar *string)
+glade_gtk_box_set_size (GObject *object, GValue *value)
 {
-	glade_implement_me ();
+	GladeWidget *widget;
+	GtkBox *box;
+	gint new_size;
+	gint old_size;
+
+	box = GTK_BOX (object);
+	g_return_if_fail (GTK_IS_BOX (box));
+		
+	new_size = g_value_get_int (value);
+	old_size = g_list_length (box->children);
+
+	if (new_size == old_size)
+		return;
+
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (box));
+	g_return_if_fail (widget != NULL);
+
+	if (new_size > old_size) {
+		int i = new_size - old_size;
+		for (; i > 0; i--) {
+			GladePlaceholder *placeholder;
+			placeholder = glade_placeholder_new (widget);
+			gtk_box_pack_start_defaults (box,
+						     GTK_WIDGET (placeholder));
+		}
+	} else {
+		glade_implement_me ();
+	}
+}
+
+static void
+empty (GObject *object, GValue *value)
+{
 }
 
 /* ================ Temp hack =================== */
@@ -196,21 +231,29 @@ typedef struct _GladeGtkFunction GladeGtkFunction;
 
 struct _GladeGtkFunction {
 	const gchar *name;
-	gpointer function;
+	void (* function) (GObject *object, GValue *value);
 };
 
 GladeGtkFunction functions [] = {
-	{"glade_gtk_entry_set_text",          &glade_gtk_entry_set_text},
-	{"glade_gtk_entry_get_text",          &glade_gtk_entry_get_text},
-	{"glade_gtk_option_menu_set_items",   &glade_gtk_option_menu_set_items},
-	{"glade_gtk_progress_bar_set_format", &glade_gtk_progress_bar_set_format},
-	{"glade_gtk_vbox_set_size",           &glade_gtk_vbox_set_size},
-	{"glade_gtk_vbox_get_size",           &glade_gtk_vbox_get_size},
-	{"glade_gtk_adjustment_set_max",      &glade_gtk_adjustment_set_max},
-	{"glade_gtk_adjustment_set_min",      &glade_gtk_adjustment_set_min},
-	{"glade_gtk_adjustment_set_step_increment", &glade_gtk_adjustment_set_step_increment},
-	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
-	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
+	{"glade_gtk_entry_get_text",          glade_gtk_entry_get_text},
+	{"glade_gtk_box_get_size",            glade_gtk_box_get_size},
+	{"glade_gtk_widget_get_tooltip",      empty},
+
+	{"glade_gtk_entry_set_text",          glade_gtk_entry_set_text},
+	{"glade_gtk_option_menu_set_items",   glade_gtk_option_menu_set_items},
+	{"glade_gtk_progress_bar_set_format", glade_gtk_progress_bar_set_format},
+	{"glade_gtk_box_set_size",            glade_gtk_box_set_size},
+	{"glade_gtk_widget_set_tooltip",      empty},
+	{"ignore",                            empty}, /* For example for gtkwindow::modal, we want to ignore the set */
+
+	{"glade_gtk_adjustment_set_max",            glade_gtk_adjustment_set_max},
+	{"glade_gtk_adjustment_set_min",            glade_gtk_adjustment_set_min},
+	{"glade_gtk_adjustment_set_step_increment", glade_gtk_adjustment_set_step_increment},
+	{"glade_gtk_adjustment_set_page_increment", glade_gtk_adjustment_set_page_increment},
+	{"glade_gtk_adjustment_set_page_size",      glade_gtk_adjustment_set_page_size},
+
+
+
 };
 
 static gpointer

@@ -13,7 +13,6 @@ G_BEGIN_DECLS
 
 gboolean glade_util_path_is_writable (const gchar *full_path);
 
-
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

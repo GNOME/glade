@@ -21,7 +21,6 @@
  */
 
 
-#include <config.h>
 #include "glade.h"
 
 #include "glade-palette.h"
@@ -340,4 +339,18 @@ glade_palette_create (GladeProjectWindow *gpw)
 		gtk_box_pack_start (GTK_BOX (gpw->palette->vbox), widget, FALSE, TRUE, 3);
 	}
 
+}
+
+void
+glade_palette_clear  (GladeProjectWindow *gpw)
+{
+	GladePalette *palette;
+
+	palette = gpw->palette;
+	
+	if (!GLADE_IS_PALETTE (palette))
+		return;
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button),
+				      TRUE);
 }

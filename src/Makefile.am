@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-SUBDIRS=tests
+SUBDIRS=
 
 bin_PROGRAMS = glade2
 

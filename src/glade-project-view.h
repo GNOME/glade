@@ -21,6 +21,7 @@ struct _GladeProjectView
 	GObject parent;
 
 	GtkWidget *widget;
+	GtkTreeView *tree_view;
 
 	GladeProject *project; /* A pointer so that we can get back to the
 				* project that we are a view for
@@ -37,8 +38,8 @@ struct _GladeProjectView
 				      * we stop listening to the old project
 				      */
 	gulong remove_widget_signal_id;
-	
 	gulong widget_name_changed_signal_id;
+	gulong selection_changed_signal_id;
 
 
 	GtkTreeStore *model; /* Model */
@@ -46,6 +47,14 @@ struct _GladeProjectView
 	gboolean is_list; /* If true the view is a list, if false the view
 			   * is a tree
 			   */
+
+	gboolean updating_selection; /* True when we are going to set the
+				      * project selction. So that we don't
+				      * recurse cause we are also listening
+				      * for the project changed selection
+				      * signal
+				      */
+				      
 };
 
 struct _GladeProjectViewClass
@@ -64,9 +73,15 @@ struct _GladeProjectViewClass
 				 GladeWidget *widget);
 	void   (*widget_name_changed) (GladeProjectView *view,
 				       GladeWidget *widget);
-
 	void   (*set_project)   (GladeProjectView *view,
 				 GladeProject *project);
+	/* Selection update is when the project changes the selection
+	 * and we need to update our state, selection changed functions
+	 * are the other way arround, the selection in the view changed
+	 * and we need to let the project know about it. Chema
+	 */
+	void   (*selection_update) (GladeProjectView *view,
+				    GladeProject *project);
 };
 
 typedef enum {

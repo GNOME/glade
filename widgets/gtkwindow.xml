@@ -6,29 +6,36 @@
 
   <Properties>
 
+    <Property Id="border-width"/>
     <Property Id="title"/>
     <Property Id="type"/>
     <Property Id="window-position"/>
-    <Property Id="modal"/>
-    <Property Id="default-width" Default="440"/>
-    <Property Id="default-height" Default="250"/>
-    <Property Id="auto-shrink"/>
+    <Property Id="modal">
+      <SetFunction>ignore</SetFunction>
+    </Property>
+    <Property Id="default-width"  Default="440" Optional="True" OptionalDefault="False" ApplyFirstTime="True"/>
+    <Property Id="default-height" Default="250" Optional="True" OptionalDefault="False" ApplyFirstTime="True"/>
     <Property Id="allow-grow"/>
-    <Property Id="auto-shrink"/>
+    <Property Id="allow-shrink"/>
 
-    <Property Common="TRUE" Id="x"/>
-    <Property Common="TRUE" Id="y"/>
-    <Property Common="TRUE" Id="width"/>
-    <Property Common="TRUE" Id="height"/>
-    <Property Common="TRUE" Id="visible" Default="True"/>
-    <Property Common="TRUE" Id="sensitive"/>
-    <Property Common="TRUE" Id="can-default"/>
-    <Property Common="TRUE" Id="has-default"/>
-    <Property Common="TRUE" Id="can-focus"/>
+    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="width-request"/>
+    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="height-request"/>
+    <Property Common="True" Id="visible" Default="True">
+      <SetFunction>ignore</SetFunction>
+    </Property>
+    <Property Common="True" Id="sensitive"/>
+    <Property Common="True" Id="tooltip" ParamSpec="False" Name="Tooltip">
+      <Type>String</Type>
+      <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
+      <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
+    </Property>
+    <Property Common="True" Id="can-default"/>
+    <Property Common="True" Id="has-default"/>
+    <Property Common="True" Id="can-focus"/>
     <!-- Not yet implemented
-    <Property Common="TRUE" Id="events"/>
+    <Property Common="True" Id="events"/>
     -->
-    <Property Common="TRUE" Id="extension-events"/>
+    <Property Common="True" Id="extension-events"/>
 
   </Properties>
 

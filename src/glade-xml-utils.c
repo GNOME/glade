@@ -120,7 +120,7 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 	return NULL;
 }
 
-static gboolean
+gboolean
 glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
@@ -470,44 +470,6 @@ glade_xml_utils_new_hash_from_node (GladeXmlNode *node_in, const gchar *hash_typ
 
 	return hash;
 }
-
-#if 0
-static void
-glade_xml_utils_hash_item_write (gpointer key_in, gpointer value_in, gpointer data)
-{
-	GladeXmlNode *item;
-	GladeXmlNode *node;
-	gchar *key;
-	gchar *value;
-
-	key   = (gchar *) key_in;
-	value = (gchar *) value_in;
-	node  = (GladeXmlNode *) data;
-
-	item = xmlNewChild (node, NULL, key, value);
-
-	if (item == NULL)
-		g_warning ("Could not add the key \"%s\" with value \"%s\" to the tree",
-			   key, value);
-}	
-
-GladeXmlNode *
-glade_xml_utils_hash_write (GladeXmlContext *context, GHashTable *hash, const gchar *name)
-{
-	GladeXmlNode *node;
-	
-	g_return_val_if_fail (context != NULL, NULL);
-	g_return_val_if_fail (hash    != NULL, NULL);
-
-	node = glade_xml_node_new (context, name)
-
-	g_hash_table_foreach (hash,
-			      glade_xml_utils_hash_item_write,
-			      node);
-
-	return node;
-}
-#endif
 
 /* --------------------------- Parse Context ----------------------------*/
 GladeXmlContext *

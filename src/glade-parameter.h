@@ -42,7 +42,7 @@ void glade_parameter_get_string  (GList *parameters, const gchar *key, gchar **v
 GList * glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node);
 
 /* Convenience functions */
-GtkAdjustment * glade_parameter_adjustment_new (GList *parameters, const gchar *def);
+GtkAdjustment * glade_parameter_adjustment_new (GList *parameters, const GValue *def);
 
 G_END_DECLS
 

@@ -138,13 +138,15 @@ glade_project_destroy (GtkObject *object)
 }
 
 GladeProject *
-glade_project_new (void)
+glade_project_new (gboolean untitled)
 {
 	GladeProject *project;
 	static gint i = 1;
 
 	project = GLADE_PROJECT (gtk_type_new (glade_project_get_type ()));
-	project->name = g_strdup_printf ("Untitled %i", i++);
+
+	if (untitled)
+		project->name = g_strdup_printf ("Untitled %i", i++);
 	
 	return project;
 }
@@ -164,8 +166,8 @@ glade_project_selection_changed (GladeProject *project)
 
 
 void
-glade_project_add_widget (GladeProject  *project,
-			  GladeWidget *widget)
+glade_project_add_widget (GladeProject *project,
+			  GladeWidget  *widget)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_OBJECT (project));
@@ -360,11 +362,10 @@ glade_project_selection_set (GladeWidget *widget,
 
 	project = widget->project;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-		
+
 	list = project->selection;
-	/* Check if the selection is different than what we have */
 	if ((list) && (list->next == NULL) && (list->data == widget))
-	    return;
+		return;
 	    
 	glade_project_selection_clear (project, FALSE);
 	glade_project_selection_add   (widget, emit_signal);
@@ -475,6 +476,56 @@ glade_project_save_to_file (GladeProject *project,
 }
 
 
+static GladeProject *
+glade_project_new_from_node (GladeXmlNode *node)
+{
+	GladeProject *project;
+	GladeXmlNode *child;
+	GladeWidget *widget;
+	
+	if (!glade_xml_node_verify  (node, GLADE_XML_TAG_PROJECT))
+		return NULL;
+
+	project = glade_project_new (FALSE);
+	project->name = g_strdup ("Fixme");
+	project->changed = FALSE;
+	project->selection = NULL;
+	project->widgets = NULL;
+	
+	child = glade_xml_node_get_children (node);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify (child, GLADE_XML_TAG_WIDGET))
+			return NULL;
+		widget = glade_widget_new_from_node (child, project);
+		if (widget == NULL)
+			return NULL;
+	}
+	project->widgets = g_list_reverse (project->widgets);
+	
+	return project;	
+}
+
+GladeProject *
+glade_project_open_from_file (const gchar *path)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc *doc;
+	GladeProject *project;
+
+	context = glade_xml_context_new_from_path (path, NULL, GLADE_XML_TAG_PROJECT);
+	if (context == NULL)
+		return NULL;
+	doc = glade_xml_context_get_doc (context);
+	project = glade_project_new_from_node (glade_xml_doc_get_root (doc));
+	glade_xml_context_free (context);
+
+	if (project)
+		project->path = g_strdup_printf ("%s", path);
+	
+	return project;
+}
+
+
 /**
  * glade_project_save:
  * @project: 
@@ -490,13 +541,50 @@ glade_project_save (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
 	if (project->path == NULL)
-		project->path = glade_project_ui_save_get_name (project);
+		project->path = glade_project_ui_get_path (_("Save ..."));
 
 	if (!glade_project_save_to_file (project, project->path)) {
-		glade_project_ui_warn (project, _("Invalid file name"));
+		glade_project_ui_warn (_("Invalid file name"));
 		return FALSE;
 	}
 
 	return TRUE;
 }
+	
+
+/**
+ * glade_project_open:
+ * @: 
+ * 
+ * Open a project. Launches a file selector
+ * 
+ * Return Value: TRUE on success false on error.
+ **/
+gboolean
+glade_project_open (void)
+{
+	GladeProjectWindow *gpw;
+	GladeProject *project;
+	gchar *path;
+	
+	path = glade_project_ui_get_path (_("Open ..."));
+
+	if (!path)
+		return FALSE;
+
+	project = glade_project_open_from_file (path);
+
+	if (!project) {
+		glade_project_ui_warn (_("Could not open project."));
+		g_free (path);
+		return FALSE;
+	}
+
+	gpw = glade_project_window_get ();
+	glade_project_window_add_project (gpw, project);
+	g_free (path);
+
+	return TRUE;
+}
+
 	
