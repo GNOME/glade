@@ -244,8 +244,6 @@ glade_project_view_class_init (GladeProjectViewClass * gpv_class)
 
 	parent_class = gtk_type_class (gtk_object_get_type ());
 
-#warning FIXME, revisit
-	
 	gpv_class->add_item      = glade_project_view_add_item;
 	gpv_class->set_project   = glade_project_view_set_project;
 	gpv_class->widget_name_changed = glade_project_view_widget_name_changed;
@@ -413,6 +411,7 @@ glade_project_view_new (GladeProjectViewType type)
 	return view;
 }
 
+
 /**
  * glade_project_view_set_project:
  * @view: The view we are setting the new project for
@@ -440,8 +439,8 @@ glade_project_view_set_project (GladeProjectView *view,
 	view->project = project;
 	
 	model = GTK_TREE_MODEL (view->model);
-	
-	while (!gtk_tree_model_get_iter_root (model, &iter))
+
+	while (gtk_tree_model_get_iter_root (model, &iter))
 		gtk_tree_store_remove (view->model, &iter);
 
 	glade_project_view_populate_model (view->model, view);
