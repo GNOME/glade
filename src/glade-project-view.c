@@ -410,9 +410,16 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
 	if (GTK_IS_WINDOW (widget->widget))
-		gtk_window_present (GTK_WINDOW (widget->widget));
-
-	gtk_widget_show (widget->widget);
+	{
+		if (GTK_WIDGET_VISIBLE (widget->widget))
+			gtk_widget_hide (widget->widget);
+		else
+			gtk_window_present (GTK_WINDOW (widget->widget));
+	}
+	else
+	{
+		gtk_widget_show (widget->widget);
+	}
 }
 
 static void
