@@ -19,7 +19,7 @@ G_BEGIN_DECLS
 	   <Parameter Key="Default" Value="0"/>
 	   <Parameter Key="StepIncrement" Value="1"/>
 	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
+	   <Parameter Key="ClimbRate" Value="1"/>
 	 </Parameters>
     </Property>
 
