@@ -28,6 +28,7 @@
 #include "glade-command.h"
 #include "glade-popup.h"
 #include "glade-cursor.h"
+#include "glade-widget.h"
 #include "glade-utils.h"
 
 

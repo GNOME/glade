@@ -10,7 +10,7 @@ G_BEGIN_DECLS
 #define GLADE_PALETTE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PALETTE, GladePaletteClass))
 #define GLADE_IS_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PALETTE))
 #define GLADE_IS_PALETTE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PALETTE))
-#define GLADE_PALETTE_GET_CLASS(obj)    (G_TYPE_CHECK_CLASS_TYPE ((obj), GLADE_TYPE_PALETTE, GladePaletteClass))
+#define GLADE_PALETTE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PALETTE, GladePaletteClass))
 
 typedef struct _GladePaletteClass	GladePaletteClass;
 

@@ -421,8 +421,7 @@ gpw_delete_cb (void)
 
 	gpw = glade_project_window_get ();
 	if (!gpw->project) {
-		g_warning ("Why is delete sensitive ? it shouldn't not be because "
-			   "we don't have a project");
+		g_warning ("delete should not be sensitive: we don't have a project");
 		return;
 	}
 
@@ -434,13 +433,33 @@ gpw_delete_cb (void)
 static void
 gpw_undo_cb (void)
 {
-	glade_command_undo ();
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	if (!gpw->project) {
+		g_warning ("undo should not be sensitive: we don't have a project");
+		return;
+	}
+
+	glade_command_undo (gpw->project);
+
+	glade_project_window_refresh_undo_redo ();
 }
 
 static void
 gpw_redo_cb (void)
 {
-	glade_command_redo ();
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	if (!gpw->project) {
+		g_warning ("redo should not be sensitive: we don't have a project");
+		return;
+	}
+
+	glade_command_redo (gpw->project);
+
+	glade_project_window_refresh_undo_redo ();
 }
 
 static gboolean

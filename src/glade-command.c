@@ -37,12 +37,13 @@
 #include "glade-clipboard.h"
 #include "glade.h"
 
-#define GLADE_COMMAND_TYPE		(glade_command_get_type ())
-#define GLADE_COMMAND(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_TYPE, GladeCommand))
-#define GLADE_COMMAND_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_TYPE, GladeCommandClass))
-#define GLADE_IS_COMMAND(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_TYPE))
-#define GLADE_IS_COMMAND_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_TYPE))
-#define CMD_CLASS(o)			GLADE_COMMAND_CLASS (G_OBJECT_GET_CLASS(o))
+
+#define GLADE_TYPE_COMMAND            (glade_command_get_type ())
+#define GLADE_COMMAND(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_COMMAND, GladeCommand))
+#define GLADE_COMMAND_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_COMMAND, GladeCommandClass))
+#define GLADE_IS_COMMAND(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_COMMAND))
+#define GLADE_IS_COMMAND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMMAND))
+#define GLADE_COMMAND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMMAND, GladeCommandClass))
 
 typedef struct {
 	GObject parent;
@@ -68,32 +69,30 @@ typedef struct {
 static GObjectClass* parent_class = NULL;
 
 #define MAKE_TYPE(func, type, parent)			\
-guint							\
+GType							\
 func ## _get_type (void)				\
 {							\
-	static guint command_type = 0;			\
+	static GType cmd_type = 0;			\
 							\
-	if (!command_type)				\
+	if (!cmd_type)					\
 	{						\
-		static const GTypeInfo command_info =	\
+		static const GTypeInfo info =		\
 		{					\
 			sizeof (type ## Class),		\
-			NULL,				\
-			NULL,				\
-			func ## _class_init,		\
-			NULL,				\
+			(GBaseInitFunc) NULL,		\
+			(GBaseFinalizeFunc) NULL,	\
+			(GClassInitFunc) func ## _class_init,	\
+			(GClassFinalizeFunc) NULL,	\
 			NULL,				\
 			sizeof (type),			\
 			0,				\
-			NULL,				\
-			NULL				\
+			(GInstanceInitFunc) NULL	\
 		};					\
 							\
-		command_type = g_type_register_static (parent, #type,		\
-						       &command_info, 0);	\
+		cmd_type = g_type_register_static (parent, #type, &info, 0);	\
 	}						\
 							\
-	return command_type;				\
+	return cmd_type;				\
 }							\
 
 static void
@@ -121,14 +120,13 @@ glade_command_collapse (GladeCommand *this, GladeCommand *other)
 }
 
 static void
-glade_command_class_init (gpointer klass_p, gpointer notused)
+glade_command_class_init (GladeCommandClass *klass)
 {
-	GladeCommandClass* klass = klass_p;
 	GObjectClass* object_class;
 
-	object_class = (GObjectClass*) klass;
-	parent_class = (GObjectClass*) g_type_class_peek_parent (klass);
-	
+	object_class = G_OBJECT_CLASS (klass);
+	parent_class = g_type_class_peek_parent (klass);
+
 	object_class->finalize = glade_command_finalize;
 
 	klass->undo_cmd = NULL;
@@ -137,7 +135,7 @@ glade_command_class_init (gpointer klass_p, gpointer notused)
 	klass->collapse = glade_command_collapse;
 }
 
-static MAKE_TYPE(glade_command, GladeCommand, G_TYPE_OBJECT)
+static MAKE_TYPE (glade_command, GladeCommand, G_TYPE_OBJECT)
 
 #define GLADE_MAKE_COMMAND(type, func)					\
 static gboolean								\
@@ -165,21 +163,19 @@ func ## _class_init (gpointer parent_tmp, gpointer notused)		\
 typedef struct {							\
 	GladeCommandClass cmd;						\
 } type ## Class;							\
-static MAKE_TYPE(func, type, GLADE_COMMAND_TYPE)
+static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 
 /**************************************************/
 
 void
-glade_command_undo (void)
+glade_command_undo (GladeProject *project)
 {
-	GladeProject* project;
 	GList* undo_stack;
 	GList* prev_redo_item;
 	GladeCommand* cmd;
 	GladeCommandClass* class;
 
-	project = glade_project_window_get_project ();
-	g_assert (project != NULL);
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	undo_stack = project->undo_stack;
 	if (undo_stack == NULL)
@@ -190,31 +186,31 @@ glade_command_undo (void)
 		return;
 
 	cmd = GLADE_COMMAND (prev_redo_item->data);
-	class = CMD_CLASS (cmd);
+	class = GLADE_COMMAND_GET_CLASS (cmd);
 	class->undo_cmd (cmd);
 
 	project->prev_redo_item = prev_redo_item->prev;
-	glade_project_window_refresh_undo_redo ();
 }
 
 void
-glade_command_redo (void)
+glade_command_redo (GladeProject *project)
 {
-	GladeProject* project;
 	GList* prev_redo_item;
 	GladeCommand* cmd;
 	GladeCommandClass* class;
 	
-	project = glade_project_window_get_project ();
-	g_assert (project != NULL);
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	if (project->undo_stack == NULL)
 		return;
 
 	prev_redo_item = project->prev_redo_item;
 	if (prev_redo_item == NULL)
+	{
 		cmd = GLADE_COMMAND (project->undo_stack->data);
-	else {
+	}
+	else
+	{
 		if (prev_redo_item->next == NULL)
 			return;
 		
@@ -222,12 +218,11 @@ glade_command_redo (void)
 	}
 
 	g_assert (cmd != NULL);
-	
-	class = CMD_CLASS (cmd);
+
+	class = GLADE_COMMAND_GET_CLASS (cmd);
 	class->execute_cmd (cmd);
 
 	project->prev_redo_item = prev_redo_item ? prev_redo_item->next : project->undo_stack;
-	glade_project_window_refresh_undo_redo ();
 }
 
 const gchar*
@@ -243,28 +238,26 @@ static void
 glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 {
 	GList* tmp_redo_item;
-	
-	if (project == NULL) {
-		return;
-	}
 
-	g_assert (cmd != NULL);
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_COMMAND (cmd));
 
 	/* If there are no "redo" items, and the last "undo" item unifies with
 	   us, then we collapse the two items in one and we're done */
-	if (project->prev_redo_item != NULL &&
-	    project->prev_redo_item->next == NULL) {
+	if (project->prev_redo_item != NULL && project->prev_redo_item->next == NULL)
+	{
 		GladeCommand* cmd1 = project->prev_redo_item->data;
-		GladeCommandClass* klass = CMD_CLASS(cmd1);
+		GladeCommandClass* klass = GLADE_COMMAND_GET_CLASS (cmd1);
 		
-		if (klass->unifies (cmd1, cmd)) {
+		if (klass->unifies (cmd1, cmd))
+		{
 			g_debug(("Command unifies.\n"));
 			klass->collapse (cmd1, cmd);
 			g_object_unref (cmd);
 			return;
 		}
 	}
-	    
+
 	/* We should now free all the "redo" items */
 	tmp_redo_item = g_list_next (project->prev_redo_item);
 	while (tmp_redo_item)
@@ -274,11 +267,13 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 		tmp_redo_item = g_list_next (tmp_redo_item);
 	}
 
-	if (project->prev_redo_item) {
+	if (project->prev_redo_item)
+	{
 		g_list_free (g_list_next (project->prev_redo_item));
 		project->prev_redo_item->next = NULL;
 	}
-	else {
+	else
+	{
 		g_list_free (project->undo_stack);
 		project->undo_stack = NULL;
 	}
@@ -347,7 +342,6 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	return FALSE;
 }
 
-/* finalize the set property object.  This object doesn't allocates */
 static void
 glade_command_set_property_finalize (GObject *obj)
 {
@@ -479,7 +473,6 @@ glade_command_set_name_execute (GladeCommand *cmd)
 	return FALSE;
 }
 
-/* finalize the set property object. */
 static void
 glade_command_set_name_finalize (GObject *obj)
 {
@@ -501,9 +494,10 @@ glade_command_set_name_unifies (GladeCommand *this, GladeCommand *other)
 	GladeCommandSetName *cmd1;
 	GladeCommandSetName *cmd2;
 
-	if (GLADE_IS_COMMAND_SET_NAME (this) && GLADE_IS_COMMAND_SET_NAME (other)) {
-		cmd1 = (GladeCommandSetName*) this;
-		cmd2 = (GladeCommandSetName*) other;
+	if (GLADE_IS_COMMAND_SET_NAME (this) && GLADE_IS_COMMAND_SET_NAME (other))
+	{
+		cmd1 = GLADE_COMMAND_SET_NAME (this);
+		cmd2 = GLADE_COMMAND_SET_NAME (other);
 
 		return (cmd1->widget == cmd2->widget);
 	}
@@ -539,8 +533,8 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (name != NULL);
 
-	me = (GladeCommandSetName*) g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
-	cmd = (GladeCommand*) me;
+	me = g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
+	cmd = GLADE_COMMAND (me);
 
 	me->widget = widget;
 	me->name = g_strdup (name);
@@ -553,7 +547,7 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	glade_command_set_name_execute (GLADE_COMMAND (me));
-	glade_command_push_undo(widget->project, GLADE_COMMAND (me));
+	glade_command_push_undo (widget->project, GLADE_COMMAND (me));
 }
 
 /***************************************************
@@ -692,8 +686,8 @@ glade_command_create_delete_common (GladeWidget *widget,
 	GladeCommandCreateDelete *me;
 	GladeCommand *cmd;
 
- 	me = (GladeCommandCreateDelete*) g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
- 	cmd = (GladeCommand*) me;
+ 	me = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
+ 	cmd = GLADE_COMMAND (me);
 
  	me->widget = widget;
  	me->create = create;

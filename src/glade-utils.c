@@ -30,6 +30,7 @@
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-placeholder.h"
+#include "glade-widget.h"
 #include "glade-widget-class.h"
 
 #define GLADE_UTIL_ID_EXPOSE "glade_util_id_expose"

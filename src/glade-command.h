@@ -3,12 +3,13 @@
 #define __GLADE_COMMAND_H__
 
 #include <glib-object.h>
-#include "glade-widget.h"
+#include "glade-types.h"
 
 G_BEGIN_DECLS
 
-void glade_command_undo (void);
-void glade_command_redo (void);
+
+void glade_command_undo (GladeProject *project);
+void glade_command_redo (GladeProject *project);
 
 const gchar *glade_command_get_description (GList *l);
 
@@ -20,6 +21,7 @@ void glade_command_create (GladeWidgetClass *class, GladePlaceholder *placeholde
 
 void glade_command_cut   (GladeWidget *widget);
 void glade_command_paste (GladePlaceholder *placeholder);
+
 
 G_END_DECLS
 
