@@ -27,13 +27,8 @@ struct _GladeProperty
 			      * GladeProperty is modifying
 			      */
 
-	GValue *value;
-#if 0	
-	gchar *value; /* A string representation of the value. Depending
-		       * on the property->type it can contain an integer
-		       * a "False" or "True" string or a string itself
-		       */
-#endif	
+	GValue *value; /* The value of the property
+			*/
 
 	gboolean enabled; /* Enables is a flag that is used for GladeProperties
 			   * that have the optional flag set to let us know
@@ -43,8 +38,6 @@ struct _GladeProperty
 			   * of the property->input state for the loaded
 			   * widget.
 			   */
-
-	GList *views; /* A list of GladePropertyView items */
 
 	GladeWidget *child; /* A GladeProperty of type object has a child */
 

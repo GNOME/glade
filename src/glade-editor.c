@@ -393,11 +393,11 @@ static void
 glade_editor_property_changed_boolean (GtkWidget *button,
 				       GladeEditorProperty *property)
 {
-	const gchar * text [] = { GLADE_TAG_NO, GLADE_TAG_YES };
+	const gchar *text[] = { GLADE_TAG_NO, GLADE_TAG_YES };
 	GtkWidget *label;
 	gboolean state;
 	GValue *val;
-	
+
 	g_return_if_fail (property != NULL);
 
 	if (property->property->loading)
@@ -526,6 +526,12 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 	gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 
 	return option_menu;
+}
+
+static GtkWidget *
+glade_editor_create_input_flags (GladeEditorProperty *property) 
+{
+	return gtk_label_new ("Fix Me");
 }
 
 static GtkWidget *
@@ -716,6 +722,9 @@ glade_editor_append_item_real (GladeEditorTable *table,
 	case GLADE_PROPERTY_TYPE_ENUM:
 		input = glade_editor_create_input_enum (property);
 		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		input = glade_editor_create_input_flags (property);
+		break;
 	case GLADE_PROPERTY_TYPE_UNICHAR:
 		input = glade_editor_create_input_unichar (property);
 		break;
@@ -731,7 +740,10 @@ glade_editor_append_item_real (GladeEditorTable *table,
 		return NULL;
 	case GLADE_PROPERTY_TYPE_ERROR:
 		return gtk_label_new ("Error !");
-
+	default:
+		g_warning ("This type %s does not have an input implemented\n",
+			   property->class->name);
+		return gtk_label_new ("Fix me !");
 	}
 
 	if (input == NULL) {
@@ -741,11 +753,11 @@ glade_editor_append_item_real (GladeEditorTable *table,
 	}
 
 	label = glade_property_class_create_label (property->class);
-	
+
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, input, 1, table->rows);
 	table->rows++;
-	
+
 	return input;
 }
 
@@ -756,9 +768,10 @@ glade_editor_table_append_item (GladeEditorTable *table,
 	GladeEditorProperty *property;
 
 	property = g_new0 (GladeEditorProperty, 1);
-	
+
 	property->class = class;
 	property->children = NULL;
+
 	property->input = glade_editor_append_item_real (table, property);
 	property->property = NULL;
 
@@ -1152,6 +1165,12 @@ glade_editor_property_load_enum (GladeEditorProperty *property)
 }
 
 static void
+glade_editor_property_load_flags (GladeEditorProperty *property)
+{
+	glade_implement_me ();
+}
+
+static void
 glade_editor_property_load_other_widgets (GladeEditorProperty *property)
 {
 	g_return_if_fail (property != NULL);
@@ -1166,7 +1185,7 @@ static void
 glade_editor_property_load_boolean (GladeEditorProperty *property)
 {
 	GtkWidget *label;
-	const gchar * text [] = { GLADE_TAG_NO, GLADE_TAG_YES };
+	const gchar *text[] = { GLADE_TAG_NO, GLADE_TAG_YES };
 	gboolean state;
 
 	g_return_if_fail (property != NULL);
@@ -1181,7 +1200,7 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 	label = GTK_BIN (property->input)->child;
 	g_return_if_fail (GTK_IS_LABEL (label));
 	gtk_label_set_text (GTK_LABEL (label), text [state]);
-	
+
 	g_object_set_data (G_OBJECT (property->input), "user_data", property);
 }
 
@@ -1279,7 +1298,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_object (property, widget);
 		return;
 	}
-	
+
 	property->property = glade_widget_get_property_from_class (widget, class);
 
 	g_return_if_fail (property->property != NULL);
@@ -1305,6 +1324,9 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
 		glade_editor_property_load_enum (property);
+		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		glade_editor_property_load_flags (property);
 		break;
 	case GLADE_PROPERTY_TYPE_UNICHAR:
 		glade_editor_property_load_unichar (property);

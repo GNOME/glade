@@ -36,7 +36,6 @@
 #include "glade-property-class.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
-#include "glade-packing.h"
 #include "glade-popup.h"
 #include "glade-command.h"
 

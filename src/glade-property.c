@@ -136,6 +136,7 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 		property->enabled = class->optional_default;
 		/* Fall thru */
 	case GLADE_PROPERTY_TYPE_ENUM:
+	case GLADE_PROPERTY_TYPE_FLAGS:
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 	case GLADE_PROPERTY_TYPE_STRING:
 	case GLADE_PROPERTY_TYPE_UNICHAR:
@@ -414,6 +415,9 @@ glade_property_set (GladeProperty *property, const GValue *value)
 				glade_property_set_enum (property, choice);
 		}
 		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		glade_implement_me ();
+		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		glade_implement_me ();
 		g_print ("Set adjustment ->%d<-\n", GPOINTER_TO_INT (property->child));
@@ -434,7 +438,6 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		g_warning ("Implement set default for this type [%s]\n", property->class->name);
 		break;
 	}
-	
 }
 
 void
@@ -599,7 +602,8 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	/* convert the value of this property to a string, and put it between
 	 * the openning and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
-							     property->value);
+							    property->value);
+
 	if (tmp == NULL) {
 		glade_xml_node_delete (node);
 		return NULL;

@@ -64,6 +64,8 @@ glade_property_type_str_to_enum (const gchar *str)
 		return GLADE_PROPERTY_TYPE_INTEGER;
 	if (strcmp (str, GLADE_TAG_ENUM) == 0)
 		return GLADE_PROPERTY_TYPE_ENUM;
+	if (strcmp (str, GLADE_TAG_FLAGS) == 0)
+		return GLADE_PROPERTY_TYPE_FLAGS;
 	if (strcmp (str, GLADE_TAG_OTHER_WIDGETS) == 0)
 		return GLADE_PROPERTY_TYPE_OTHER_WIDGETS;
 	if (strcmp (str, GLADE_TAG_OBJECT) == 0)
@@ -92,6 +94,8 @@ glade_property_type_enum_to_string (GladePropertyType type)
 		return GLADE_TAG_DOUBLE;
 	case GLADE_PROPERTY_TYPE_ENUM:
 		return GLADE_TAG_ENUM;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		return GLADE_TAG_FLAGS;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		return GLADE_TAG_OTHER_WIDGETS;
 	case GLADE_PROPERTY_TYPE_OBJECT:
@@ -198,6 +202,12 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 			return GLADE_PROPERTY_TYPE_STRING;
 	} else if (G_IS_PARAM_SPEC_ENUM (spec)) {
 		return GLADE_PROPERTY_TYPE_ENUM;
+	} else if (G_IS_PARAM_SPEC_FLAGS (spec)) {
+		/* FIXME: We should implement the "events" property */
+		if (g_ascii_strcasecmp (spec->name, "events") == 0)
+			return GLADE_PROPERTY_TYPE_ERROR;
+		else
+			return GLADE_PROPERTY_TYPE_FLAGS;
 	} else if (G_IS_PARAM_SPEC_DOUBLE (spec)) {
 		return GLADE_PROPERTY_TYPE_DOUBLE;
 	} else if (G_IS_PARAM_SPEC_LONG (spec)) {
@@ -211,8 +221,7 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 		return GLADE_PROPERTY_TYPE_ERROR;
 	} else {
 		/* FIXME: We should implement the "events" property */
-		if (g_ascii_strcasecmp (spec->name, "user-data") &&
-		    g_ascii_strcasecmp (spec->name, "events")) {
+		if (g_ascii_strcasecmp (spec->name, "user-data")) {
 			g_warning ("Could not determine GladePropertyType from spec (%s) (%s)",
 				   G_PARAM_SPEC_TYPE_NAME (spec), g_type_name (G_PARAM_SPEC_VALUE_TYPE (spec)));
 		}
@@ -234,6 +243,10 @@ glade_property_class_get_default_from_spec (GParamSpec *spec,
 	case GLADE_PROPERTY_TYPE_ENUM:
 		g_value_init (value, spec->value_type);
 		g_value_set_enum (value, G_PARAM_SPEC_ENUM (spec)->default_value);
+		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
+		g_value_init (value, spec->value_type);
+		g_value_set_flags (value, G_PARAM_SPEC_FLAGS (spec)->default_value);
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		g_value_init (value, G_TYPE_STRING);
@@ -280,7 +293,7 @@ glade_property_class_choice_new_from_value (GEnumValue value)
 
 	choice = glade_choice_new ();
 	choice->name = g_strdup (value.value_nick);
-	choice->id     = g_strdup (value.value_name);
+	choice->id   = g_strdup (value.value_name);
 
 	/*
 	  g_debug(("Choice Id is %s\n", choice->id));
@@ -549,9 +562,13 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
 	property_class->def = glade_property_class_get_default_from_spec (spec, property_class, NULL);
 
+	g_return_val_if_fail (property_class->name != NULL, NULL);
+
 	switch (property_class->type) {
 	case GLADE_PROPERTY_TYPE_ENUM:
 		property_class->choices = glade_property_class_get_choices_from_spec (spec);
+		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		break;
@@ -606,6 +623,8 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_ENUM:
+		break;
+	case GLADE_PROPERTY_TYPE_FLAGS:
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		break;
