@@ -89,7 +89,8 @@ struct _GladeWidgetClass
 	void (*post_create_function) (GObject *gobject);
 
 	/* If the widget is a container, this method takes care of adding the
-	 * needed placeholders.
+	 * needed placeholders. If the widget has internal children, this method
+	 * must create the associated GladeWidgets.
 	 */
 	void (*fill_empty) (GtkWidget *widget);
 };

@@ -26,6 +26,12 @@ struct _GladeWidget
 		      * used when loading widget with libglade
 		      */
 
+	gchar *internal; /* If the widget is an internal child of 
+			  * another widget this is the name of the 
+			  * internal child, otherwise is NULL.
+			  * Internal children cannot be deleted.
+			  */
+
 	GtkWidget *widget; /* A pointer to the widget that was created.
 			    * and is shown as a "view" of the GladeWidget.
 			    * This widget is updated as the properties are
@@ -64,6 +70,11 @@ void glade_widget_set_packing_properties (GladeWidget *widget,
 GladeWidget *glade_widget_new_from_class (GladeWidgetClass *class,
 					  GladeProject *project,
 					  GladeWidget *parent);
+
+GladeWidget *glade_widget_new_for_internal_child (GladeWidgetClass *class,
+						  GladeWidget *parent,
+						  GtkWidget *widget,
+						  const gchar *internal);
 
 void glade_widget_set_default_packing_options (GladeWidget *widget);
 

@@ -698,9 +698,41 @@ glade_gtk_container_fill_empty (GObject *container)
 void
 glade_gtk_dialog_fill_empty (GObject *dialog)
 {
+	GtkWidget *vbox;
+	GtkWidget *action_area;
+	GladeWidget *widget;
+	GladeWidget *vbox_widget;
+	GladeWidget *actionarea_widget;
+	GladeWidgetClass *child_class;
+
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
-	GtkWidget *vbox = GTK_DIALOG (dialog)->vbox;
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (dialog));
+	if (!widget)
+		return;
+
+	/* create the GladeWidgets for internal childrens */
+	vbox = GTK_DIALOG (dialog)->vbox;
+	child_class = glade_widget_class_get_by_name ("GtkVBox");
+	if (!child_class)
+		return;
+
+	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
+							   vbox, "vbox");
+	if (!vbox_widget)
+		return;
+
+	action_area = GTK_DIALOG (dialog)->action_area;
+	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
+	if (!child_class)
+		return;
+
+	actionarea_widget = glade_widget_new_for_internal_child (child_class, vbox_widget,
+								 action_area, "action_area");
+	if (!actionarea_widget)
+		return;
+
+	/* add a placeholder in the vbox */
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), glade_placeholder_new ());
 }
 

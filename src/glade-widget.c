@@ -100,6 +100,7 @@ glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 	widget = g_new0 (GladeWidget, 1);
 	widget->project = project;
 	widget->name    = glade_widget_new_name (project, class);
+	widget->internal = NULL;
 	widget->widget   = NULL;
 	widget->class    = class;
 	widget->properties = glade_widget_properties_from_list (class->properties, widget);
@@ -145,7 +146,7 @@ glade_widget_get_parent (GladeWidget *widget)
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-	if (GLADE_WIDGET_IS_TOPLEVEL (widget))
+	if (GTK_WIDGET_TOPLEVEL (widget->widget))
 		return NULL;
 
 	parent_widget = gtk_widget_get_parent (widget->widget);
@@ -555,9 +556,8 @@ glade_widget_free (GladeWidget *widget)
 	widget->project = NULL;
 	widget->widget = NULL;
 
-	if (widget->name)
-		g_free (widget->name);
-	widget->name = NULL;
+	g_free (widget->name);
+	g_free (widget->internal);
 
 	g_list_foreach(widget->properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->properties);
@@ -689,6 +689,39 @@ glade_widget_new_full (GladeWidgetClass *class,
 	return widget;
 }
 
+/**
+ * glade_widget_new_for_internal_child
+ * @class
+ * @parent
+ * @widget
+ * @internal
+ * 
+ * Creates, fills and associate a GladeWidget to the GtkWidget of
+ * internal childern.
+ **/
+GladeWidget *
+glade_widget_new_for_internal_child (GladeWidgetClass *class,
+				     GladeWidget *parent,
+				     GtkWidget *widget,
+				     const gchar *internal)
+{
+	GladeWidget *glade_widget;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (internal != NULL, NULL);
+
+	glade_widget = glade_widget_new (class, parent->project);
+	if (!glade_widget)
+		return NULL;
+
+	glade_widget_associate_with_gtk_widget (glade_widget, widget);
+	glade_widget_set_packing_properties (glade_widget, parent->class);
+	glade_widget->internal = g_strdup (internal);
+
+	return glade_widget;
+}
 /**
  * Temp struct to hold the results of a query.
  * The keys of the hashtable are the GladePropertyClass->id , while the

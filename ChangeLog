@@ -1,3 +1,14 @@
+2003-10-23  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget.[ch]: add glade_widget_new_for_internal_child and
+	add an internal field to the GladeWidget struct.
+	* src/glade-gtk.c: create the GladeWidgets for the internal children
+	in dialog_fill_empty
+	* src/glade-placeholder.c: don't walk up the widget hierarchy when 
+	getting the parent.
+	* src/glade-widget-class.h: add comment about internal children.
+	* src/glade-command.c: prevent internal children from being deleted.
+
 2003-10-22  Paolo Borelli  <pborelli@katamail.com>
 
 	* widgets/gtk-base.xml: readd hseparator and vseparator since they

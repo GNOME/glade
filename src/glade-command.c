@@ -691,6 +691,10 @@ glade_command_delete (GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
+	/* internal children cannot be deleted. Should we notify the user? */
+	if (widget->internal)
+		return;
+
 	glade_command_create_delete_common (widget, NULL, FALSE);
 }
 
@@ -940,6 +944,10 @@ glade_command_cut (GladeWidget *widget)
 	}
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/* internal children cannot be cut. Should we notify the user? */
+	if (widget->internal)
+		return;
 
 	glade_command_cut_paste_common (widget, NULL, widget->project, TRUE);
 }

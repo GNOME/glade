@@ -178,20 +178,17 @@ GladeWidget *
 glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent = NULL;
-	GtkWidget *widget = gtk_widget_get_parent (placeholder);
+	GtkWidget *widget;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
 
-	while (widget != NULL) {
-		parent = glade_widget_get_from_gtk_widget (widget);
+	widget = gtk_widget_get_parent (placeholder);
+	g_return_val_if_fail (widget != NULL, NULL);
 
-		if (parent != NULL)
-			return parent;
+	parent = glade_widget_get_from_gtk_widget (widget);
+	g_return_val_if_fail (parent != NULL, NULL);
 
-		widget = gtk_widget_get_parent (widget);
-	}
-
-	return NULL;
+	return parent;
 }
 
 void
