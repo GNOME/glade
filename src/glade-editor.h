@@ -97,7 +97,6 @@ struct _GladeEditorClass
 {
 	GtkNotebookClass parent_class;
 
-	void   (*select_item) (GladeEditor *editor, GladeWidget *widget);
 	void   (*add_signal) (GladeEditor *editor, const char *id_widget,
 			      GType type_widget, guint id_signal,
 			      const char *callback_name);
@@ -190,7 +189,7 @@ GType glade_editor_get_type (void);
 
 GladeEditor *glade_editor_new (void);
 
-void glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
+void glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget);
 void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
 void glade_editor_update_widget_name (GladeEditor *editor);
 

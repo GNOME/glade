@@ -1106,11 +1106,11 @@ glade_project_window_selection_changed_cb (GladeProject *project,
 		list = project->selection;
 		num = g_list_length (list);
 		if (num == 1) {
-			glade_editor_select_widget (gpw->editor, list->data);
+			glade_editor_load_widget (gpw->editor, list->data);
 			gpw->active_widget = list->data;
 			gpw->active_placeholder = NULL;
 		} else {
-			glade_editor_select_widget (gpw->editor, NULL);
+			glade_editor_load_widget (gpw->editor, NULL);
 		}
 	}
 }
