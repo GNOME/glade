@@ -850,7 +850,7 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 		return NULL;
 	}
 	
-	name = glade_xml_get_property_string (class_node, "name");
+	name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
 	if (!name)
 	{
 		g_warning ("Required property 'name' not found in '%s'",
@@ -867,8 +867,8 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 	}
 
 	generic_name = glade_xml_get_property_string (class_node, 
-							   "generic_name");
-	title = glade_xml_get_property_string (class_node, "title");
+						      GLADE_TAG_GENERIC_NAME);
+	title = glade_xml_get_property_string (class_node, GLADE_TAG_TITLE);
 
 	module = NULL;
 	if (library) 

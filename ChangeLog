@@ -1,3 +1,17 @@
+2005-01-06  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-catalog.c: (catalog_load), (catalog_load_group):
+	* src/glade-widget-class.c: (glade_widget_class_new):
+	- Make sure to use the GLADE_TAG defines instead of hardcoding strings.
+	- Makes it easier to update the format.
+	* src/glade.h:
+	- Updated to use new format.
+	- Needs some more work, unsure of which tags/attributes are used in 
+	  the catalogs and which are for something else.
+	* widgets/Makefile.am:
+	* widgets/gtk+.xml:
+	- Update the catalog format to be more .glade like.
+	
 2005-01-05  Mikael Hallendal  <micke@imendio.com>
 
 	* src/glade-catalog.c: (catalog_load_widgets),

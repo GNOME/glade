@@ -36,10 +36,6 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
-#define GLADE_TAG_CATALOG "GladeCatalog"
-#define GLADE_TAG_WIDGETS "GladeWidgets"
-#define GLADE_TAG_WIDGET_GROUP "GladeWidgetGroup"
-
 struct _GladeCatalog
 {
 	gchar *library;
@@ -77,7 +73,8 @@ catalog_load (const char *filename)
 	g_print ("Loading catalog: %s\n", filename);
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
-						   NULL, GLADE_TAG_CATALOG);
+						   NULL, 
+						   GLADE_TAG_GLADE_CATALOG);
 	if (!context) 
 	{
 		g_warning ("Couldn't load catalog [%s].", filename);
@@ -87,17 +84,17 @@ catalog_load (const char *filename)
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
-	if (!glade_xml_node_verify (root, GLADE_TAG_CATALOG)) 
+	if (!glade_xml_node_verify (root, GLADE_TAG_GLADE_CATALOG)) 
 	{
 		g_warning ("Catalog root node is not '%s', skipping %s",
-			   GLADE_TAG_CATALOG, filename);
+			   GLADE_TAG_GLADE_CATALOG, filename);
 		glade_xml_context_free (context);
 		return NULL;
 	}
 
 	catalog = g_new0 (GladeCatalog, 1);
 
-	catalog->name = glade_xml_get_property_string (root, "name");
+	catalog->name = glade_xml_get_property_string (root, GLADE_TAG_NAME);
 	if (!catalog->name) 
 	{
 		g_warning ("Couldn't find required property 'name' in catalog root node");
@@ -106,7 +103,8 @@ catalog_load (const char *filename)
 		return NULL;
 	}
 	
-	catalog->library = glade_xml_get_property_string (root, "library");
+	catalog->library = glade_xml_get_property_string (root, 
+							  GLADE_TAG_LIBRARY);
 
 	node = glade_xml_node_get_children (root);
 	for (; node; node = glade_xml_node_next (node))
@@ -114,11 +112,11 @@ catalog_load (const char *filename)
 		const gchar *node_name;
 
 		node_name = glade_xml_node_get_name (node);
-		if (strcmp (node_name, GLADE_TAG_WIDGETS) == 0) 
+		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGETS) == 0) 
 		{
 			catalog_load_widgets (catalog, node);
 		}
-		else if (strcmp (node_name, GLADE_TAG_WIDGET_GROUP) == 0)
+		else if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_GROUP) == 0)
 		{
 			catalog_load_group (catalog, node);
 		}
@@ -129,6 +127,8 @@ catalog_load (const char *filename)
 	catalog->widget_groups = g_list_reverse (catalog->widget_groups);
 
 	glade_xml_context_free (context);
+
+	g_print ("Successfully parsed catalog: %s\n", catalog->name);
 
 	return catalog;
 }
@@ -166,7 +166,8 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 
 	group = g_new0 (GladeWidgetGroup, 1);
 	
-	group->name = glade_xml_get_property_string (group_node, "name");
+	group->name = glade_xml_get_property_string (group_node, 
+						     GLADE_TAG_NAME);
 	if (!group->name) 
 	{ 
 		g_warning ("Required property 'name' not found in group node");
@@ -175,7 +176,8 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		return FALSE;
 	}
 	
-	group->title = glade_xml_get_property_string (group_node, "title");
+	group->title = glade_xml_get_property_string (group_node,
+						      GLADE_TAG_TITLE);
 	if (!group->title) 
 	{ 
 		g_warning ("Required property 'title' not found in group node");
@@ -200,7 +202,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
 			continue;
 
-		name = glade_xml_get_property_string (node, "name");
+		name = glade_xml_get_property_string (node, GLADE_TAG_NAME);
 		if (!name) 
 		{
 			g_warning ("Couldn't find required property on %s",
