@@ -6,6 +6,7 @@ G_BEGIN_DECLS
 
 
 #define GLADE_IS_PROJECT_WINDOW(o) (o != NULL)
+
 /* A GladeProjectWindow specifies a loaded glade application.
  * it contains pointers to all the components that make up
  * the running app. This is (well should be) the only global
@@ -49,11 +50,13 @@ struct _GladeProjectWindow
 
 GladeProjectWindow *glade_project_window_new (GList *catalogs);
 
-GladeProjectWindow *glade_project_window_get ();
+GladeProjectWindow *glade_project_window_get (void);
 
-void glade_project_window_show_all ();
+void glade_project_window_show_all (void);
 
-void glade_project_window_add_project (GladeProject *project);
+void glade_project_window_new_project (void);
+
+void glade_project_window_open_project (const gchar *path);
 
 void glade_project_window_refresh_undo_redo (void);
 

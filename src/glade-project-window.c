@@ -120,10 +120,7 @@ glade_project_window_set_project (GladeProject *project)
 static void
 gpw_new_cb (void)
 {
-	GladeProject *project;
-
-	project = glade_project_new (TRUE);
-	glade_project_window_add_project (project);
+	glade_project_window_new_project ();
 }
 
 static void
@@ -131,7 +128,6 @@ gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
 {
 	GtkWidget *filesel;
 	const gchar *path;
-	GladeProject *project;
 
 	filesel = gtk_widget_get_toplevel (widget);
 
@@ -142,17 +138,7 @@ gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
 	if (!path)
 		return;
 
-	project = glade_project_open (path);
-	if (!project)
-	{
-		GladeProjectWindow *gpw;
-
-		gpw = glade_project_window_get ();
-		glade_util_ui_warn (gpw->window, _("Could not open project."));
-		return;
-	}
-
-	glade_project_window_add_project (project);
+	glade_project_window_open_project (path);
 }
 
 static void
@@ -1254,7 +1240,7 @@ gpw_project_selection_changed_cb (GladeProject *project,
 	}
 }
 
-void
+static void
 glade_project_window_add_project (GladeProject *project)
 {
 	GladeProjectWindow *gpw;
@@ -1308,6 +1294,46 @@ glade_project_window_add_project (GladeProject *project)
 	gtk_widget_set_sensitive (GTK_WIDGET (gpw->palette), TRUE);
 
 	glade_project_window_set_project (project);
+}
+
+void
+glade_project_window_new_project (void)
+{
+	GladeProject *project;
+
+	project = glade_project_new (TRUE);
+	if (!project)
+	{
+		GladeProjectWindow *gpw;
+
+		gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("Could create new project."));
+
+		return;
+	}
+
+	glade_project_window_add_project (project);
+}
+
+void
+glade_project_window_open_project (const gchar *path)
+{
+	GladeProject *project;
+
+	g_return_if_fail (path != NULL);
+
+	project = glade_project_open (path);
+	if (!project)
+	{
+		GladeProjectWindow *gpw;
+
+		gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("Could not open project."));
+
+		return;
+	}
+
+	glade_project_window_add_project (project);
 }
 
 void

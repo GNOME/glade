@@ -29,7 +29,6 @@
 #include "glade-debug.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-project.h"
 #include "glade-project-window.h"
 #include "glade-transform.h"
 
@@ -166,20 +165,12 @@ main (int argc, char *argv[])
 	glade_project_window_show_all ();
 
 	if (files)
-	{
 		for (; files; files = files->next)
 		{
-			GladeProject *project;
-			project = glade_project_open (files->data);
-			glade_project_window_add_project (project);
+			glade_project_window_open_project (files->data);
 		}
-	}
 	else
-	{
-		GladeProject *project;
-		project = glade_project_new (TRUE);
-		glade_project_window_add_project (project);
-	}
+		glade_project_window_new_project ();
 
 	gtk_main ();
 
