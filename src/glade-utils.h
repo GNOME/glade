@@ -5,18 +5,8 @@
 G_BEGIN_DECLS
 
 
-/* Function is a GNU extension */
-#ifndef __GNUC__
-#define __FUNCTION__   ""
-#endif
+#define glade_implement_me() g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, G_GNUC_FUNCTION);
 
-#define glade_implement_me() g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, __FUNCTION__); 
-
-typedef enum
-{
-	GladeEscCloses,
-	GladeEscDestroys
-} GladeEscAction;
 
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 GType		glade_util_get_type_from_name	(const gchar *name);
@@ -30,7 +20,6 @@ void		glade_util_flash_message	(GtkWidget *statusbar,
 gint		glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
 
 void		glade_util_hide_window		(GtkWindow *window);
-gint		glade_util_check_key_is_esc	(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gchar		*glade_util_gtk_combo_func	(gpointer data);
 gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 

@@ -288,31 +288,6 @@ glade_util_hide_window (GtkWindow *window)
 	gtk_window_move(window, x, y);
 }
 
-gint
-glade_util_check_key_is_esc (GtkWidget *widget,
-				  GdkEventKey *event,
-				  gpointer data)
-{
-	g_return_val_if_fail (GTK_IS_WINDOW (widget), FALSE);
-  
-	if (event->keyval == GDK_Escape) {
-		GladeEscAction action = GPOINTER_TO_INT (data);
-  
-		if (action == GladeEscCloses) {
-			glade_util_hide_window (GTK_WINDOW (widget));
-			return TRUE;
-		}
-		else if (action == GladeEscDestroys) { 
-			gtk_widget_destroy (widget);
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
-	else
-		return FALSE;
-}
-
 /**
  * glade_util_file_selection_new:
  * @title: dialog title
@@ -356,7 +331,6 @@ glade_util_replace (char *str, char a, char b)
 		str = g_utf8_next_char (str);
 	}
 }
-
 
 /**
  * duplicates the string passed as argument, but changing each underscore

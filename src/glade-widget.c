@@ -32,7 +32,6 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-popup.h"
-#include "glade-placeholder.h"
 #include "glade-signal.h"
 #include "glade-clipboard.h"
 #include "glade-command.h"
@@ -76,7 +75,7 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 	}
 
 	new_list = g_list_reverse (new_list);
-	
+
 	return new_list;
 }
 
@@ -411,7 +410,7 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 					       | GDK_BUTTON_RELEASE_MASK);
 		}
 	}
-	  
+
 	g_signal_connect (G_OBJECT (widget), "button_press_event",
 			  G_CALLBACK (glade_widget_button_press), NULL);
 	g_signal_connect (G_OBJECT (widget), "button_release_event",
