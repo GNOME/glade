@@ -55,11 +55,12 @@ struct _GladeEditor
 				  * will point to the tooltips for that
 				  * class. Oh well, we'll see
 				  */
-	GtkWidget *vbox_widget;  /* The editor has (at this moment) for tabs
+	GtkWidget *vbox_widget;  /* The editor has (at this moment) four tabs
 				  * this are pointers to the vboxes inside
-				  * each tab. The vbox_widget is deparented
-				  * and parented with
-				  * GladeWidgetClass->table_widget
+				  * each tab. The vboxes are wrapped into a
+				  * scrolled window.
+				  * The vbox_widget is deparented and parented
+				  * with GladeWidgetClass->table_widget
 				  * when a widget is selecteed.
 				  */
 	GtkWidget *vbox_packing;  /* We might not need this pointer. Not yet

@@ -1,5 +1,15 @@
 2003-04-21  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-editor.c: fix a crash when you remove a item from a window.
+	The crash was introduced by me when doing the menu bar editor.
+
+2003-04-21  Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-editor.[ch]: previous patch to add scrollbars was broken,
+	do things properly.
+
+2003-04-21  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-property-class.c: kill some compiler warnings.
 	* src/glade-parameter.c: ditto.
 	* src/glade-project-view.c: ditto.

@@ -180,16 +180,26 @@ glade_editor_delete_event (GladeEditor *editor, gpointer not_used)
 }
 
 GtkWidget *
-my_notebook_page (const gchar *name, GtkWidget *notebook)
+glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 {
 	GtkWidget *vbox;
+	GtkWidget *scrolled_window;
 	GtkWidget *label;
 	static gint page = 0;
 
 	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_widget_set_usize (vbox, -1, 350);
+
+	/* wrap the vbox in a scrolled window */
+	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window),
+					       GTK_WIDGET (vbox));
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT (GTK_BIN (scrolled_window)->child),
+				      GTK_SHADOW_NONE);
+
 	label = gtk_label_new (name);
-	gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), vbox, label, page++);
+	gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), scrolled_window, label, page++);
 
 	return vbox;
 }
@@ -199,10 +209,10 @@ glade_editor_init (GladeEditor *editor)
 {
 	editor->tooltips = gtk_tooltips_new ();
 
-	editor->vbox_widget  = my_notebook_page (_("Widget"), GTK_WIDGET (editor));
-	editor->vbox_packing = my_notebook_page (_("Packing"), GTK_WIDGET (editor));
-	editor->vbox_common  = my_notebook_page (_("Common"), GTK_WIDGET (editor));
-	editor->vbox_signals = my_notebook_page (_("Signals"), GTK_WIDGET (editor));
+	editor->vbox_widget  = glade_editor_notebook_page (_("Widget"), GTK_WIDGET (editor));
+	editor->vbox_packing = glade_editor_notebook_page (_("Packing"), GTK_WIDGET (editor));
+	editor->vbox_common  = glade_editor_notebook_page (_("Common"), GTK_WIDGET (editor));
+	editor->vbox_signals = glade_editor_notebook_page (_("Signals"), GTK_WIDGET (editor));
 	editor->widget_tables = NULL;
 	editor->loading = FALSE;
 
@@ -214,7 +224,13 @@ glade_editor_init (GladeEditor *editor)
 GladeEditor *
 glade_editor_new ()
 {
-	return GLADE_EDITOR (gtk_type_new (glade_editor_get_type ()));
+	GladeEditor *editor;
+
+	editor = GLADE_EDITOR (gtk_type_new (glade_editor_get_type ()));
+
+	gtk_widget_set_size_request (GTK_WIDGET (editor), 350, 450);
+	
+	return editor;
 }
 
 static void
@@ -238,8 +254,6 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 static void
 glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
-	gtk_widget_set_usize (child, pos == 0 ? 100 : 120, -1);
-	
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
 			  GTK_EXPAND | GTK_FILL, 0, 0, 0);
@@ -963,7 +977,6 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	GladeEditorTable *table;
 	GtkContainer *container;
 	GList *list;
-	GtkWidget *scrolled_window;
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_widget);
@@ -977,23 +990,15 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	if (!class)
 		return;
-	
+
 	table = glade_editor_get_table_from_class (editor, class, FALSE);
 	if (table == NULL)
 		table = glade_editor_table_create (editor, class, FALSE);
 
 	g_return_if_fail (table != NULL);
-	
-	/* wrap the table in a scrolled window */
-	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window),
-					       table->table_widget);
-	gtk_viewport_set_shadow_type (GTK_VIEWPORT (GTK_BIN (scrolled_window)->child),
-				      GTK_SHADOW_NONE);
-	gtk_widget_show (scrolled_window);
-	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), scrolled_window,
+
+	/* Attach the new table */
+	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), table->table_widget,
 			    TRUE, TRUE, 0);
 }
 
@@ -1479,9 +1484,6 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
 	
-	if (strcmp (class->name, "GtkMenuBar") == 0) {
-	}
-		
 	glade_editor_load_packing_page (editor, item);
 
 	glade_signal_editor_load_widget (editor->signal_editor, item);
