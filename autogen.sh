@@ -39,7 +39,7 @@ if test -z "$gnome_autogen" ; then
   exit 1
 fi
 
-automake_version=1.7
+automake_version=
 case `uname` in
 CYGWIN*)
   # automake 1.4 of cygwin does not define EGREP in libtool.m4, and
