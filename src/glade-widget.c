@@ -737,12 +737,15 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 
 	if (glade_widget->internal == NULL)
 	{
+		klass = glade_widget->widget_class;
+		if (klass->pre_create_function)
+			klass->pre_create_function (G_OBJECT (widget_gtk));
+
 		/* we should set the values of the properties of this widget from the
 		 * default values that we gather from the class of this widget, and
 		 * apply the post_create_function and fill_empty functions */
 		glade_widget_apply_properties (glade_widget);
 
-		klass = glade_widget->widget_class;
 		g_assert (klass != NULL);
 		if (klass->post_create_function)
 			klass->post_create_function (G_OBJECT (widget_gtk));

@@ -339,6 +339,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	GladeXmlNode *node;
 	char *replace_child_function_name;
 	char *post_create_function_name;
+	char *pre_create_function_name;
 	char *fill_empty_function_name;
 	char *get_internal_child_function_name;
 	char *child_property_applies_function_name;
@@ -362,6 +363,14 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 			g_warning ("Could not find %s\n", replace_child_function_name);
 	}
 	g_free (replace_child_function_name);
+
+	pre_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_PRE_CREATE_FUNCTION);
+	if (pre_create_function_name && widget_class->module)
+	{
+		if (!g_module_symbol (widget_class->module, pre_create_function_name, (void **) &widget_class->pre_create_function))
+			g_warning ("Could not find %s\n", pre_create_function_name);
+	}
+	g_free (pre_create_function_name);
 
 	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
 	if (post_create_function_name && widget_class->module)

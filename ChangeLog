@@ -1,3 +1,19 @@
+2004-04-30  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-widget-class.c: Add support for a PreCreateFunction,
+	a function that will got called before the widget's properties
+	are initialized with the values specified in the xml files.
+
+	* src/glade-widget.c: Call the PreCreateFunction before initilizing
+	the widget's properties.
+
+	* src/glade-gtk.c: Add a PreCreateFunction for adding two
+	columns to GtkTreeView.
+
+	* widgets/gtk-basic.xml: Add a file to customize GtkTreeView behaviour.
+
+	* widgets/gtktreeview.xml: Add a PreCreateFunction for GtkTreeView.
+
 2004-04-30  Damon Chaplin  <damon@gnome.org>
 
 	* src/glade-widget.c (glade_widget_expose): new function called

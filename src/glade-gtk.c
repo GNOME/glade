@@ -576,6 +576,27 @@ ignore (GObject *object, GValue *value)
 }
 
 
+/* ------------------------------------ Pre Create functions ------------------------------ */
+void GLADEGTK_API
+glade_gtk_tree_view_pre_create_function (GObject *object)
+{
+	GtkWidget *tree_view = GTK_WIDGET (object);
+	GtkTreeStore *store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
+	g_object_unref (G_OBJECT (store));
+
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes ("Column 1", renderer, "text", 0, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes ("Column 2", renderer, "text", 1, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+}
+
 /* ------------------------------------ Post Create functions ------------------------------ */
 static int
 ask_for_number (const char *title, const char *name, int min, int max, int def)

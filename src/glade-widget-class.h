@@ -92,6 +92,10 @@ struct _GladeWidgetClass
 	 */
 	void (*post_create_function) (GObject *gobject);
 
+	/* Executed before setting the properties of the widget to its initial
+	 * value as specified in the xml file */
+	void (*pre_create_function) (GObject *gobject);
+
 	/* If the widget is a container, this method takes care of adding the
 	 * needed placeholders.
 	 */
