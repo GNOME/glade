@@ -35,7 +35,7 @@ struct _GladeProject
 			   * because we have multiple projects and when the
 			   * user switchs between them, he will probably
 			   * not want to loose the selection. This is a list
-			   * of GladeWidget items.
+			   * of GtkWidget items.
 			   */
 
 	GList *undo_stack; /* A stack with the last executed commands */
@@ -77,9 +77,9 @@ void glade_project_widget_name_changed (GladeProject *project,
 					GladeWidget *widget);
 
 /* Selection */
-void glade_project_selection_set     (GladeWidget *widget, gboolean emit_signal);
-void glade_project_selection_add     (GladeWidget *widget, gboolean emit_signal);
-void glade_project_selection_remove  (GladeWidget *widget, gboolean emit_signal);
+void glade_project_selection_set     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
+void glade_project_selection_add     (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
+void glade_project_selection_remove  (GladeProject *project, GtkWidget *widget, gboolean emit_signal);
 void glade_project_selection_clear   (GladeProject *project, gboolean emit_signal);
 void glade_project_selection_changed (GladeProject *project);
 

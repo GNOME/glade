@@ -48,8 +48,6 @@ struct _GladeWidget {
 			      */
 	GList *children;     /* A list of GladeWidget childrens of this widget.
 			      */
-
-	gboolean selected;
 };
 
 
@@ -74,11 +72,6 @@ void glade_widget_set_name (GladeWidget *widget, const gchar *name);
 
 /* Widget functions */
 typedef void (*GladeWidgetFunction) (GladeWidget *widget);
-
-void glade_widget_flag_selected   (GladeWidget *widget);
-void glade_widget_flag_unselected (GladeWidget *widget);
-
-void glade_widget_select (GladeWidget *widget);
 
 GladeWidget *glade_widget_clone (GladeWidget *widget);
 GladePlaceholder *glade_widget_replace_with_placeholder (GladeWidget *widget,

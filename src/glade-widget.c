@@ -41,8 +41,6 @@
 #include "glade-debug.h"
 #include <gdk/gdkkeysyms.h>
 
-#define GLADE_WIDGET_SELECTION_NODE_SIZE 7
-
 /**
  * glade_widget_new_name:
  * @project:
@@ -79,7 +77,6 @@ glade_widget_new (GladeWidgetClass *class)
 	widget->properties = glade_property_list_new_from_widget_class (class, widget);
 	widget->parent   = NULL;
 	widget->children = NULL;
-	widget->selected = FALSE;
 
 	return widget;
 }
@@ -301,10 +298,10 @@ glade_widget_button_press (GtkWidget *event_widget,
 		/* If this is a selection set, don't change the state of the widget
 		 * for example for toggle buttons
 		 */
-		if (!glade_widget->selected)
+		if (!glade_util_has_nodes (glade_widget->widget))
 			gtk_signal_emit_stop_by_name (GTK_OBJECT (event_widget),
 						      "button_press_event");
-		glade_project_selection_set (glade_widget, TRUE);
+		glade_project_selection_set (glade_widget->project, glade_widget->widget, TRUE);
 	} else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
 	else
@@ -313,7 +310,6 @@ glade_widget_button_press (GtkWidget *event_widget,
 	g_debug(("The widget found was a %s\n", glade_widget->class->name));
 
 	gpw = glade_project_window_get ();
-	gpw->active_placeholder = NULL;
 
 	return FALSE;
 }
@@ -435,98 +431,6 @@ glade_widget_set_default_packing_options (GladeWidget *widget)
 	glade_widget_set_default_options_real (widget, TRUE);
 }
 
-static GdkWindow*
-glade_widget_get_window (GladeWidget *widget, GtkWidget **paint_widget)
-{
-	GtkWidget *parent = widget->widget->parent;
-	
-	if (parent) {
-		*paint_widget = parent;
-		return parent->window;
-	}
-
-	*paint_widget = widget->widget;
-	return widget->widget->window;
-}
-
-static void
-glade_widget_draw_selection_nodes (GladeWidget *glade_widget)
-{
-	GtkWidget *widget, *paint_widget;
-	GdkWindow *window;
-	GdkGC *gc;
-	gint x, y, w, h;
-	gint width, height;
-
-	widget = glade_widget->widget;
-	window = glade_widget_get_window (glade_widget, &paint_widget);
-
-	if (widget->parent) {
-		gtk_widget_translate_coordinates (widget, paint_widget, 0, 0, &x, &y);
-		w = widget->allocation.width;
-		h = widget->allocation.height;
-	} else {
-		x = 0;
-		y = 0;
-		gdk_window_get_size (window, &w, &h);
-	}
-
-	gc = paint_widget->style->black_gc;
-	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
-
-	width = w;
-	height = h;
-	if (width > GLADE_WIDGET_SELECTION_NODE_SIZE && height > GLADE_WIDGET_SELECTION_NODE_SIZE) {
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x, y,
-				    GLADE_WIDGET_SELECTION_NODE_SIZE, GLADE_WIDGET_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x, y + height - GLADE_WIDGET_SELECTION_NODE_SIZE,
-				    GLADE_WIDGET_SELECTION_NODE_SIZE, GLADE_WIDGET_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_WIDGET_SELECTION_NODE_SIZE, y,
-				    GLADE_WIDGET_SELECTION_NODE_SIZE, GLADE_WIDGET_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_WIDGET_SELECTION_NODE_SIZE,
-				    y + height - GLADE_WIDGET_SELECTION_NODE_SIZE,
-				    GLADE_WIDGET_SELECTION_NODE_SIZE, GLADE_WIDGET_SELECTION_NODE_SIZE);
-	}
-	gdk_draw_rectangle (window, gc, FALSE,
-			    x, y, width - 1, height - 1);
-	
-	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
-	
-	g_debug(("Drawing nodes x: %d y: %d w: %d h: %d\n", x, y, width, height));
-}
-
-static gboolean
-glade_widget_expose_event_cb (GtkWidget *widget, GdkEventExpose *event,
-			      GladeWidget *glade_widget)
-{
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-
-	g_assert (widget == glade_widget->widget);
-
-	if (glade_widget->selected)
-		glade_widget_draw_selection_nodes (glade_widget);
-
-	return FALSE;
-}
-
-static void
-glade_widget_connect_draw_signals (GladeWidget *glade_widget)
-{
-	GtkWidget *widget = glade_widget->widget;
-
-	gtk_signal_connect_after (GTK_OBJECT (widget), "expose_event",
-				  GTK_SIGNAL_FUNC (glade_widget_expose_event_cb),
-				  glade_widget);
-	gtk_signal_connect_after (GTK_OBJECT (widget), "event_after",
-				  GTK_SIGNAL_FUNC (glade_widget_expose_event_cb),
-				  glade_widget);
-}
-
 static void
 glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 {
@@ -557,31 +461,16 @@ static gboolean
 glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer user_data)
 {
 	GladeWidget *glade_widget = GLADE_WIDGET (user_data);
-	GladeProject *project;
-	GList *selection;
 	
 	g_return_val_if_fail (GTK_IS_WIDGET (event_widget), FALSE);
 	g_return_val_if_fail (glade_widget->widget == event_widget, FALSE);
 
-	if (event->keyval == GDK_Delete) {
-		/* We will delete all the selected items */
-		project = glade_widget->project;
-		g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-		/* The selection value changes when we do glade_command_delete,
-		   so if we just try to follow selection->next after the
-		   glade_command_delete, we are going directly to a segfault (if lucky) */
-		while ((selection = glade_project_selection_get(project)) != NULL) {
-			g_return_val_if_fail (selection->data != NULL, FALSE);
-
-			glade_widget = GLADE_WIDGET (selection->data);
-			glade_command_delete (glade_widget);
-		}
-	}
+	/* We will delete all the selected items */
+	if (event->keyval == GDK_Delete)
+		glade_util_delete_selection ();
 
 	g_debug(("glade_widget_key_press\n"));
-	/* TODO: It's TRUE, but I should put FALSE by now to make the menu editor work... */
-	return FALSE;
+	return TRUE;
 }
 
 static void
@@ -781,7 +670,6 @@ glade_widget_connect_signals (GladeWidget *widget)
 {
 	glade_widget_connect_mouse_signals (widget);
 	glade_widget_connect_keyboard_signals (widget);
-	glade_widget_connect_draw_signals  (widget);
 	glade_widget_connect_edit_signals  (widget);
 	glade_widget_connect_other_signals (widget);
 }
@@ -1139,12 +1027,6 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
 	glade_project_widget_name_changed (widget->project, widget);
 }
 
-void
-glade_widget_select (GladeWidget *widget)
-{
-	glade_project_selection_set (widget, TRUE);
-}
-
 static void
 glade_widget_clear_draw_selection (GladeWidget *widget)
 {
@@ -1163,37 +1045,6 @@ glade_widget_clear_draw_selection (GladeWidget *widget)
 			       widget->widget->allocation.width,
 			       widget->widget->allocation.height);
 	
-	gtk_widget_queue_draw (widget->widget);
-}
-
-/**
- * glade_widget_flag_unselected:
- * @widget: 
- * 
- * Flag the widget as unselected
- **/
-void
-glade_widget_flag_unselected (GladeWidget *widget)
-{
-	g_return_if_fail (widget->selected);
-
-	widget->selected = FALSE;
-
-	glade_widget_clear_draw_selection (widget);
-}
-
-/**
- * glade_widget_flag_selected:
- * @widget: 
- * 
- * Flags the widget as selected
- **/
-void
-glade_widget_flag_selected (GladeWidget *widget)
-{
-	g_return_if_fail (!widget->selected);
-
-	widget->selected = TRUE;
 	gtk_widget_queue_draw (widget->widget);
 }
 
@@ -1238,7 +1089,7 @@ glade_widget_replace_with_placeholder (GladeWidget *widget, GladePlaceholder *pl
 	if (placeholder == NULL)
 		placeholder = glade_placeholder_new (widget->parent);
 	else
-		g_return_val_if_fail (glade_placeholder_is (placeholder), NULL);
+		g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
 
 	if (widget->parent->class->placeholder_replace)
 		widget->parent->class->placeholder_replace (widget->widget,

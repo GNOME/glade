@@ -39,6 +39,7 @@
 #include "glade-project.h"
 #include "glade-project-view.h"
 #include "glade-project-window.h"
+#include "glade-placeholder.h"
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-utils.h"
@@ -349,72 +350,57 @@ static void
 gpw_copy_cb (void)
 {
 	GladeProjectWindow *gpw;
-	GladeWidget *widget;
+	GList *list;
 
 	gpw = glade_project_window_get ();
-	widget = gpw->active_widget;
+	list = glade_project_selection_get (gpw->project);
+	/* TODO: support multiple selected items */
+	if (list != NULL && list->next == NULL)
+	{
+		GladeWidget *widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data));
 
-	if (widget)
-		glade_clipboard_add_copy (gpw->clipboard, widget);
+		if (widget)
+			glade_clipboard_add_copy (gpw->clipboard, widget);
+	}
 }
 
 static void
 gpw_cut_cb (void)
 {
 	GladeProjectWindow *gpw;
-	GladeWidget *widget;
+	GList *list;
 
 	gpw = glade_project_window_get ();
-	widget = gpw->active_widget;
+	list = glade_project_selection_get (gpw->project);
+	/* TODO: support multiple selected items */
+	if (list != NULL && list->next == NULL)
+	{
+		GladeWidget *widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data));
 
-	if (widget)
-		glade_command_cut (widget);
+		if (widget)
+			glade_command_cut (widget);
+	}
 }
 
 static void
 gpw_paste_cb (void)
 {
 	GladeProjectWindow *gpw;
+	GList *selection;
 
 	gpw = glade_project_window_get ();
-	
-	glade_command_paste (gpw->active_placeholder);
+
+	selection = glade_project_selection_get (gpw->project);
+	if (selection != NULL && selection->next == NULL && GLADE_IS_PLACEHOLDER (selection->data))
+		glade_command_paste ((GladePlaceholder*) selection->data);
 }
 
 static void
 gpw_delete_cb (void)
 {
-	GladeProject *project;
-	GList *selection;
-	GList *free_me;
-	GList *list;
-
-	project = glade_project_window_get_project ();
-	if (!project) {
-		g_warning ("Why is delete sensitive ? it shouldn't not be because "
-			   "we don't have a project");
-		return;
-	}
-	
-	selection = glade_project_selection_get (project);
-
-	/* We have to be carefull when deleting widgets from the selection
-	 * because when we delete each widget, the ->selection pointer changes
-	 * by the g_list_remove. Copy the list and free it after we are done
-	 */
-	list = g_list_copy (selection);
-	free_me = list;
-	for (; list; list = list->next)
-		glade_command_delete (list->data);
-	g_list_free (free_me);
-
-	/* Right now deleting widgets like this is not a problem, cause we
-	 * don't support multiple selection. When we do, it would be nice
-	 * to have glade_project_selction_freeze the remove all the widgets
-	 * and then call glade_project_selection_thaw. This will trigger
-	 * only one selection changed signal rather than multiple ones
-	 * Chema
-	 */
+	/* glade_util_delete_selection performs a glade_command_delete
+	 * on each of the selected widgets */
+	glade_util_delete_selection ();
 }
 
 static void
@@ -1079,8 +1065,6 @@ glade_project_window_new (GList *catalogs)
 	gpw = g_new0 (GladeProjectWindow, 1);
 	gpw->catalogs = catalogs;
 	gpw->add_class = NULL;
-	gpw->active_widget = NULL;
-	gpw->active_placeholder = NULL;
 
 	glade_project_window = gpw;
 
@@ -1103,15 +1087,12 @@ glade_project_window_selection_changed_cb (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
 
 	if (gpw->editor) {
-		list = project->selection;
+		list = glade_project_selection_get (project);
 		num = g_list_length (list);
-		if (num == 1) {
-			glade_editor_load_widget (gpw->editor, list->data);
-			gpw->active_widget = list->data;
-			gpw->active_placeholder = NULL;
-		} else {
+		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
+			glade_editor_load_widget (gpw->editor, glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data)));
+		else
 			glade_editor_load_widget (gpw->editor, NULL);
-		}
 	}
 }
 

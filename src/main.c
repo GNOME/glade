@@ -40,6 +40,7 @@
 #include <gmodule.h>
 #ifdef G_OS_UNIX
 #include <popt.h>
+#include <signal.h>
 
 static GList * parse_command_line (poptContext);
 #endif
@@ -72,6 +73,43 @@ static struct poptOption options[] = {
 	}
 };
 #endif
+
+
+static void
+log_handler (const char *domain,
+             GLogLevelFlags level,
+             const char *message,
+             gpointer data)
+{
+    g_log_default_handler (domain, level, message, data);
+    if ((level & (G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)) != 0) {
+#ifdef G_OS_WIN32
+		__asm { int 3 }
+#else
+        RETSIGTYPE (* saved_handler) (int);
+        
+        saved_handler = signal (SIGINT, SIG_IGN);
+        raise (SIGINT);
+        signal (SIGINT, saved_handler);
+#endif
+    }
+}
+
+static void
+set_log_handler (const char *domain)
+{
+    g_log_set_handler (domain, G_LOG_LEVEL_MASK, log_handler, NULL);
+}
+
+static void
+setup_handlers ()
+{
+    set_log_handler ("");
+    set_log_handler ("GLib");
+    set_log_handler ("GLib-GObject");
+    set_log_handler ("Gtk");
+    set_log_handler ("Gdk");
+}
 
 static gint
 glade_init ()
@@ -128,6 +166,8 @@ main (int argc, char *argv[])
 #endif
 
 	gtk_init (&argc, &argv);
+
+	setup_handlers ();
 
 	if (!glade_init ())
 		return -1;

@@ -133,7 +133,7 @@ glade_packing_table_set_integer (GObject *object, const GValue *value, const gch
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 /* #warning This is broken, a placeholder should be a subclass of a GladeWidget */
-	if (glade_placeholder_is (widget)) {
+	if (GLADE_IS_PLACEHOLDER (widget)) {
 		table = GTK_TABLE (glade_placeholder_get_parent (widget)->widget);
 	} else {
 		glade_widget = glade_widget_get_from_gtk_widget (widget);
@@ -555,7 +555,7 @@ glade_packing_table_span_common_set (GObject *object, const GValue *value, gbool
 			else
 				old_table_child = glade_packing_table_get_child_at (table, i, current_pos + new_span - 1);
 			g_return_if_fail (old_table_child != NULL);
-			if (!glade_placeholder_is (old_table_child->widget)) {
+			if (!GLADE_IS_PLACEHOLDER (old_table_child->widget)) {
 				g_print ("I can't change the span of a widget if i don't have a placeholder to remove");
 				return;
 			}

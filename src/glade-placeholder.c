@@ -46,8 +46,6 @@
 #define GLADE_PLACEHOLDER_PARENT_DATA "GladePlaceholderParentData"
 #define GLADE_PLACEHOLDER_IS_DATA     "GladeIsPlaceholderData"
 
-#define GLADE_PLACEHOLDER_SELECTION_NODE_SIZE 7
-
 static void
 glade_placeholder_replace_container (GtkWidget *current,
 				     GtkWidget *new,
@@ -177,73 +175,6 @@ glade_placeholder_get_gdk_window (GladePlaceholder *placeholder,
 }
 
 static void
-glade_placeholder_draw_selection_nodes (GladePlaceholder *placeholder)
-{
-	GtkWidget *widget, *paint_widget;
-	GdkWindow *window;
-	GdkGC *gc;
-	gint x, y, w, h;
-	gint width, height;
-
-	widget = GTK_WIDGET (placeholder);
-	window = glade_placeholder_get_gdk_window (placeholder, &paint_widget);
-
-	if (widget->parent) {
-		gtk_widget_translate_coordinates (widget, paint_widget,
-						  0, 0, &x, &y);
-		w = widget->allocation.width;
-		h = widget->allocation.height;
-	} else {
-		x = 0;
-		y = 0;
-		gdk_window_get_size (window, &w, &h);
-	}
-
-	gc = paint_widget->style->black_gc;
-	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
-
-	width = w;
-	height = h;
-	if (width > GLADE_PLACEHOLDER_SELECTION_NODE_SIZE
-	    && height > GLADE_PLACEHOLDER_SELECTION_NODE_SIZE) {
-		gdk_draw_rectangle (window, gc, TRUE, x, y,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE, x,
-				    y + height - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE, y,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    y + height - GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE,
-				    GLADE_PLACEHOLDER_SELECTION_NODE_SIZE);
-	}
-
-	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
-	
-	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
-}
-
-static void
-glade_placeholder_clear_selection_nodes (GladePlaceholder *placeholder)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (placeholder));
-	
-	gdk_window_clear_area (placeholder->window,
-			       placeholder->allocation.x,
-			       placeholder->allocation.y,
-			       placeholder->allocation.width,
-			       placeholder->allocation.height);
-	
-	gtk_widget_queue_draw (GTK_WIDGET (placeholder));
-}
-
-static void
 glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 					 GdkEventButton *event,
 					 gpointer not_used)
@@ -259,16 +190,9 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 			 */
 			glade_command_create (gpw->add_class, placeholder, NULL);
 			glade_project_window_set_add_class (gpw, NULL);
-			gpw->active_placeholder = NULL;
 		} else {
-			/*
-			 * Else set the current placeholder as selected,
-			 * so that Paste from the Main Menu works.
-			 */
-			if (gpw->active_placeholder != NULL)
-				glade_placeholder_clear_selection_nodes (gpw->active_placeholder);
-			gpw->active_placeholder = placeholder;
-			glade_placeholder_draw_selection_nodes (placeholder);
+			/* else set the current placeholder as selected */
+			glade_project_selection_set (gpw->project, placeholder, FALSE);
 		}
 	} else if (event->button == 3) {
 		glade_popup_placeholder_pop (placeholder, event);
@@ -288,7 +212,7 @@ glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder, GdkEven
 		glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 }
 
-static void
+static gboolean
 glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
 				   GdkEventExpose *event,
 				   gpointer not_used)
@@ -302,15 +226,17 @@ glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
 	
 	light_gc = widget->style->light_gc [GTK_STATE_NORMAL];
 	dark_gc  = widget->style->dark_gc  [GTK_STATE_NORMAL];
-	gdk_window_get_size (widget->window, &w, &h);
+	gdk_window_get_size (event->window, &w, &h);
 
-	gdk_draw_line (widget->window, light_gc, 0, 0, w - 1, 0);
-	gdk_draw_line (widget->window, light_gc, 0, 0, 0, h - 1);
-	gdk_draw_line (widget->window, dark_gc, 0, h - 1, w - 1, h - 1);
-	gdk_draw_line (widget->window, dark_gc, w - 1, 0, w - 1, h - 1);
+	gdk_draw_line (event->window, light_gc, 0, 0, w - 1, 0);
+	gdk_draw_line (event->window, light_gc, 0, 0, 0, h - 1);
+	gdk_draw_line (event->window, dark_gc, 0, h - 1, w - 1, h - 1);
+	gdk_draw_line (event->window, dark_gc, w - 1, 0, w - 1, h - 1);
+
+	return FALSE;
 }
 
-static void
+static gboolean
 glade_placeholder_on_realize (GladePlaceholder *placeholder, gpointer not_used)
 {
 	static GdkPixmap *pixmap = NULL;
@@ -326,10 +252,12 @@ glade_placeholder_on_realize (GladePlaceholder *placeholder, gpointer not_used)
 		
 	if (pixmap == NULL) {
 		g_warning ("Could not create pixmap for the glade-placeholder");
-		return;
+		return FALSE;
 	}
 	
 	gdk_window_set_back_pixmap (GTK_WIDGET (placeholder)->window, pixmap, FALSE);
+
+	return FALSE;
 }
 
 #define GLADE_PLACEHOLDER_SIZE 16
@@ -397,7 +325,7 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
 	GladeWidget *parent = NULL;
 	GtkWidget *widget = gtk_widget_get_parent (placeholder);
 
-	g_return_val_if_fail (glade_placeholder_is (placeholder), NULL);
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
 
 	while (widget != NULL) {
 		parent = glade_widget_get_from_gtk_widget (widget);
@@ -417,7 +345,7 @@ glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 {
 	GladeWidget *parent;
 
-	g_return_if_fail (glade_placeholder_is (placeholder));
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	parent = glade_placeholder_get_parent (placeholder);
@@ -433,7 +361,7 @@ glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 }
 
 gboolean
-glade_placeholder_is (GtkWidget *widget)
+GLADE_IS_PLACEHOLDER (GtkWidget *widget)
 {
 	gpointer data;
 	gboolean is;

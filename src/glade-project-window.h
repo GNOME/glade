@@ -42,11 +42,6 @@ struct _GladeProjectWindow
 					* in the GladePalette
 					*/
 
-	GladeWidget *active_widget;     /* The currently selected widget */
-	GladePlaceholder *active_placeholder; /* The currently selected
-					       * placeholder
-					       */
-
 	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
 

@@ -1,3 +1,24 @@
+2003-06-19  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-utils.[ch]: implement {add,remove,has}_nodes,
+	to add,remove,test nodes to any GtkWidget (used to
+	select or deselect a widget).
+
+	* src/glade-widget.[ch]: remove the selected flag, use
+	glade_util_has_nodes instead.  Also remove the handler
+	on expose events, use add_nodes instead. The handler has
+	been fixed, now it draws on the double buffered window.
+
+	* src/glade-placeholder.[ch]: remove the selected_placeholder
+	flag.  Remove the handler on expose events to draw the nodes,
+	use add_nodes instead. The handler to draw the border has
+	been fixed,	as now it returns false instead void (it was
+	undetermined if the event was propaged after this handler
+	or not).
+
+	* src/glade-project*, glade-editor.c, glade-packing.c,
+	glade-command.c, glade-popup.c: account for the above changes.
+
 2003-06-19  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-signal-editor.c: plug my leaks.

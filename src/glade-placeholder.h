@@ -23,9 +23,9 @@ void glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
 GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
 							  GHashTable *properties);
 
-#if 1
-gboolean glade_placeholder_is (GtkWidget *widget);
-#endif
+/* remember to convert GladePlaceholder to a true GtkWidget, and convert this
+ * function to a macro */
+gboolean GLADE_IS_PLACEHOLDER (GtkWidget *widget);
 
 void glade_placeholder_remove_all (GtkWidget *widget);
 

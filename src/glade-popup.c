@@ -26,13 +26,14 @@
 #include "glade-placeholder.h"
 #include "glade-clipboard.h"
 #include "glade-command.h"
+#include "glade-project.h"
 #include "glade-project-window.h"
-
 
 static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_widget_select (widget);
+	if (widget)
+		glade_project_selection_set (widget->project, widget->widget, TRUE);
 }
 
 static void

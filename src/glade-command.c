@@ -610,7 +610,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	GladePlaceholder *placeholder = me->placeholder;
 
 	glade_project_add_widget (widget->project, widget, widget->parent);
-	glade_project_selection_set (widget, TRUE);
+	glade_project_selection_set (widget->project, widget->widget, TRUE);
 
 	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 		glade_placeholder_replace_with_widget (placeholder, widget);
@@ -812,7 +812,7 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 	}
 
 	glade_project_add_widget (project, widget, parent);
-	glade_project_selection_set (widget, TRUE);
+	glade_project_selection_set (widget->project, widget->widget, TRUE);
 
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show_all (GTK_WIDGET (widget->widget));
@@ -938,7 +938,7 @@ glade_command_paste (GladePlaceholder *placeholder)
 		return;
 	}
 
-	g_return_if_fail (glade_placeholder_is (placeholder));
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 	
 	gpw = glade_project_window_get ();
 	widget = gpw->clipboard->curr;

@@ -233,7 +233,7 @@ glade_project_view_add_item (GladeProjectView *view,
 			    -1);
 
 	view->updating_selection = TRUE;
-	glade_project_selection_set (widget, TRUE);
+	glade_project_selection_set (widget->project, widget->widget, TRUE);
 	view->updating_selection = FALSE;
 }      
 
@@ -346,8 +346,6 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
 	g_return_if_fail (widget->class->name != NULL);
 	g_return_if_fail (widget->class->pixbuf != NULL);
-	g_return_if_fail ((widget->selected == TRUE) ||
-			  (widget->selected == FALSE));
 	g_return_if_fail (GDK_IS_PIXBUF (widget->class->pixbuf));
 
 	g_object_set (G_OBJECT (cell),
@@ -387,7 +385,7 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 		return TRUE;
 
 	view->updating_selection = TRUE;
-	glade_project_selection_set (widget, TRUE);
+	glade_project_selection_set (widget->project, widget->widget, TRUE);
 	view->updating_selection = FALSE;
 
 	return TRUE;

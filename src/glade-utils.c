@@ -27,7 +27,12 @@
 #include <gmodule.h>
 #include "glade.h"
 #include "glade-project-window.h"
+#include "glade-project.h"
+#include "glade-command.h"
+#include "glade-debug.h"
 
+#define GLADE_UTIL_ID_EXPOSE "glade_util_id_expose"
+#define GLADE_UTIL_SELECTION_NODE_SIZE 7
 
 void
 glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
@@ -388,4 +393,104 @@ char *glade_util_duplicate_underscores (const char *name)
 	memcpy (tmp_underscored, last_tmp, tmp - last_tmp + 1);
 
 	return underscored_name;
+}
+
+static GtkWidget *selected = NULL;
+static gint id_expose = 0;
+
+static gboolean
+glade_util_draw_nodes (GtkWidget *widget, GdkEventExpose *expose, gpointer unused)
+{
+	GdkGC *gc = widget->style->black_gc;
+	gint x, y;
+	gint width, height;
+	GdkWindow *window = expose->window;
+	gpointer data;
+
+	gdk_window_get_user_data(window, &data);
+	gtk_widget_translate_coordinates (widget, GTK_WIDGET (data), 0, 0, &x, &y);
+	width = widget->allocation.width;
+	height = widget->allocation.height;
+
+	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
+
+	if (width > GLADE_UTIL_SELECTION_NODE_SIZE && height > GLADE_UTIL_SELECTION_NODE_SIZE) {
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x, y,
+				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x, y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE, y,
+				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+		gdk_draw_rectangle (window, gc, TRUE,
+				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE,
+				    y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
+				    GLADE_UTIL_SELECTION_NODE_SIZE, GLADE_UTIL_SELECTION_NODE_SIZE);
+	}
+
+	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
+
+	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
+	g_debug (("(%d, %d, %d, %d)\n", expose->area.x, expose->area.y, expose->area.width, expose->area.height));
+
+	return FALSE;
+}
+
+void glade_util_add_nodes (GtkWidget *widget)
+{
+	gint id;
+
+	id = g_signal_connect_after (G_OBJECT (widget), "expose_event",
+				     G_CALLBACK (glade_util_draw_nodes), NULL);
+	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE, GINT_TO_POINTER (id));
+	gtk_widget_queue_draw (widget);
+}
+
+void glade_util_remove_nodes (GtkWidget *widget)
+{
+	gint id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE));
+
+	g_return_if_fail (id != 0);
+
+	g_signal_handler_disconnect (G_OBJECT (widget), id);
+	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE, 0);
+	gtk_widget_queue_draw (widget);
+}
+
+gboolean glade_util_has_nodes (GtkWidget *widget)
+{
+	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE)) != 0;
+}
+
+void glade_util_delete_selection (void)
+{
+	GladeProject *project;
+	GladeWidget *glade_widget;
+	GList *selection;
+	GList *free_me;
+	GList *list;
+
+	project = glade_project_window_get_project ();
+	if (!project) {
+		g_warning ("Why is delete sensitive ? it shouldn't not be because "
+			   "we don't have a project");
+		return;
+	}
+	
+	selection = glade_project_selection_get (project);
+
+	/* We have to be careful when deleting widgets from the selection
+	 * because when we delete each widget, the selection pointer changes
+	 * due to the g_list_remove performed by glade_command_delete.
+	 * Copy the list and free it after we are done
+	 */
+	list = g_list_copy (selection);
+	free_me = list;
+	for (; list; list = list->next)
+		if ((glade_widget = glade_widget_get_from_gtk_widget (list->data)) != NULL)
+			glade_command_delete (glade_widget);
+
+	g_list_free (free_me);
 }

@@ -841,7 +841,6 @@ static void
 glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
 {
 	GtkMenuBar *menubar = NULL;
-	GladeWidget *widget;
 	GtkWidget *menu_editor;
 	GladeProjectWindow *gpw;
 	GladeProject *project;
@@ -854,9 +853,8 @@ glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
 
 	list = glade_project_selection_get (project);
 	for (; list != NULL; list = list->next) {
-		widget = GLADE_WIDGET (list->data);
-		if (GTK_IS_MENU_BAR (widget->widget)) {
-			menubar = GTK_MENU_BAR (widget->widget);
+		if (GTK_IS_MENU_BAR (list->data)) {
+			menubar = GTK_MENU_BAR (list->data);
 			break;
 		}
 	}
@@ -1478,7 +1476,6 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 	}
 
 	editor->loaded_widget = widget;
-
 	editor->loading = FALSE;
 }
 
