@@ -320,7 +320,7 @@ glade_util_file_chooser_new (const gchar *title, GtkWindow *parent,
 						    GTK_RESPONSE_OK,
 						    NULL);
 
-	gtk_window_set_position (GTK_WINDOW (file_chooser), GTK_WIN_POS_CENTER_ALWAYS);
+	gtk_window_set_position (GTK_WINDOW (file_chooser), GTK_WIN_POS_CENTER);
 
 	return file_chooser;
 }
