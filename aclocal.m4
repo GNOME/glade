@@ -159,6 +159,8 @@ done<<>>dnl>>)
 changequote([,]))])
 
 
+define([HACK_SUBST], defn([AC_SUBST]))
+
 # serial 1 AC_PROG_XML_I18N_TOOLS
 AC_DEFUN(AC_PROG_XML_I18N_TOOLS,
 [
@@ -166,54 +168,40 @@ AC_DEFUN(AC_PROG_XML_I18N_TOOLS,
 dnl This is a hack - we use the expansion of AC_SUBST instead of
 dnl AC_SUBST itself to avoid automake putting 
 dnl XML_I18N_MERGE_OAF_RULE = @XML_I18N_MERGE_OAF_RULE@
-dnl in all the Makefile.in's
+dnl in all the Makefile.in's, because that will blow up when substituted.
 XML_I18N_MERGE_OAF_RULE='\%.oaf : \%.oaf.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -o $(top_srcdir)/po $< [$]*.oaf'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_OAF_RULE@%[$]XML_I18N_MERGE_OAF_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_OAF_RULE)
 
 dnl same deal
 XML_I18N_MERGE_KEYS_RULE='\%.keys : \%.keys.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -k $(top_srcdir)/po $< [$]*.keys'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_KEYS_RULE@%[$]XML_I18N_MERGE_KEYS_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_KEYS_RULE)
 
 dnl same deal
 XML_I18N_MERGE_DESKTOP_RULE='\%.desktop : \%.desktop.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -d $(top_srcdir)/po $< [$]*.desktop'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_DESKTOP_RULE@%[$]XML_I18N_MERGE_DESKTOP_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_DESKTOP_RULE)
 
 dnl same deal
 XML_I18N_MERGE_DIRECTORY_RULE='\%.directory : \%.directory.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -d $(top_srcdir)/po $< [$]*.directory'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_DIRECTORY_RULE@%[$]XML_I18N_MERGE_DIRECTORY_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_DIRECTORY_RULE)
 
 dnl same deal
 XML_I18N_MERGE_SOUNDLIST_RULE='\%.soundlist : \%.soundlist.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -d $(top_srcdir)/po $< [$]*.soundlist'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_SOUNDLIST_RULE@%[$]XML_I18N_MERGE_SOUNDLIST_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_SOUNDLIST_RULE)
 
 dnl same deal
 XML_I18N_MERGE_PONG_RULE='\%.pong : \%.pong.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -x $(top_srcdir)/po $< [$]*.pong'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_PONG_RULE@%[$]XML_I18N_MERGE_PONG_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_PONG_RULE)
 
 dnl same deal
 XML_I18N_MERGE_XML_RULE='\%.xml : \%.xml.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
 	$(top_builddir)/xml-i18n-merge -x $(top_srcdir)/po $< [$]*.xml'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_XML_RULE@%[$]XML_I18N_MERGE_XML_RULE%g
-AC_DIVERT_POP()dnl
+HACK_SUBST(XML_I18N_MERGE_XML_RULE)
 
 # Always use our own xml-i18n-tools.
 XML_I18N_EXTRACT='$(top_builddir)/xml-i18n-extract'
@@ -224,13 +212,6 @@ AC_SUBST(XML_I18N_MERGE)dnl
 
 XML_I18N_UPDATE='$(top_builddir)/xml-i18n-update'
 AC_SUBST(XML_I18N_UPDATE)dnl
-
-dnl same deal
-XML_I18N_MERGE_SOUNDLIST_RULE='\%.soundlist : \%.soundlist.in $(top_builddir)/xml-i18n-merge $(top_srcdir)/po/*.po\
-	$(top_builddir)/xml-i18n-merge -d $(top_srcdir)/po $< [$]*.soundlist'
-AC_DIVERT_PUSH(AC_DIVERSION_SED)dnl
-s%@XML_I18N_MERGE_SOUNDLIST_RULE@%[$]XML_I18N_MERGE_SOUNDLIST_RULE%g
-AC_DIVERT_POP()dnl
 
 AC_PATH_PROG(XML_I18N_TOOLS_PERL, perl)
 if test -z "$XML_I18N_TOOLS_PERL"; then
@@ -243,15 +224,15 @@ fi
 dnl  manually sed perl in so people don't have to put the xml-i18n-tools scripts in their 
 dnl  AC_OUTPUT
 AC_OUTPUT_COMMANDS([
-sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${ac_given_srcdir}/xml-i18n-extract.in > xml-i18n-extract;
+sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${srcdir}/xml-i18n-extract.in > xml-i18n-extract;
 chmod ugo+x xml-i18n-extract;
 chmod u+w xml-i18n-extract;
 
-sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${ac_given_srcdir}/xml-i18n-merge.in > xml-i18n-merge;
+sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${srcdir}/xml-i18n-merge.in > xml-i18n-merge;
 chmod ugo+x xml-i18n-merge;
 chmod u+w xml-i18n-merge;
 
-sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${ac_given_srcdir}/xml-i18n-update.in > xml-i18n-update;
+sed -e "s:@XML_I18N_TOOLS_PERL@:${XML_I18N_TOOLS_PERL}:;" < ${srcdir}/xml-i18n-update.in > xml-i18n-update;
 chmod ugo+x xml-i18n-update;
 chmod u+w xml-i18n-update;
 ], XML_I18N_TOOLS_PERL=${XML_I18N_TOOLS_PERL})
