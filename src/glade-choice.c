@@ -26,6 +26,11 @@
 #include "glade-xml-utils.h"
 #include "glade-choice.h"
 
+/**
+ * glade_choice_new:
+ *
+ * Returns: a new #GladeChoice
+ */
 GladeChoice *
 glade_choice_new (void)
 {
@@ -36,6 +41,12 @@ glade_choice_new (void)
 	return choice;
 }
 
+/**
+ * glade_choice_clone:
+ * @choice: a #GladeChoice
+ *
+ * Returns: a new #GladeChoice cloned from @choice
+ */
 GladeChoice *
 glade_choice_clone (GladeChoice *choice)
 {
@@ -50,6 +61,12 @@ glade_choice_clone (GladeChoice *choice)
 	return clone;
 }
 
+/**
+ * glade_choice_free:
+ * @choice: a #GladeChoice
+ *
+ * Frees @choice and its associated memory.
+ */
 void
 glade_choice_free (GladeChoice *choice)
 {
@@ -159,6 +176,14 @@ glade_choice_new_from_value (GEnumValue value)
 	return choice;
 }
 
+/**
+ * glade_choice_list_new_from_spec:
+ * @spec: a #GParamSpec
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GList *
 glade_choice_list_new_from_spec (GParamSpec *spec)
 {
@@ -213,6 +238,14 @@ glade_choice_new_from_node (GladeXmlNode *node)
 	return choice;
 }
 
+/**
+ * glade_choice_list_new_from_node:
+ * @node: a #GladeXmlNode
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GList *
 glade_choice_list_new_from_node (GladeXmlNode *node)
 {

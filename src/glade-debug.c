@@ -38,7 +38,7 @@ glade_log_handler (const char *domain,
              const char *message,
              gpointer data)
 {
-	static volatile int want_breakpoint = 1;
+	static volatile int want_breakpoint = 0;
 
 	g_log_default_handler (domain, level, message, data);
 	if (want_breakpoint && ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */)) != 0))
@@ -51,6 +51,12 @@ glade_set_log_handler (const char *domain)
 	g_log_set_handler (domain, G_LOG_LEVEL_MASK, glade_log_handler, NULL);
 }
 
+/**
+ * glade_setup_log_handlers:
+ *
+ * Sets up a log handler to manage all %G_LOG_LEVEL_MASK errors of domain:
+ * GLib, GLib-GObject, Gtk, Gdk, and domainless.
+ */
 void
 glade_setup_log_handlers ()
 {

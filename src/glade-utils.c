@@ -38,6 +38,13 @@
 #define GLADE_UTIL_HAS_NODES "glade_util_has_nodes"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
 
+/**
+ * glade_util_widget_set_tooltip:
+ * @widget: a #GtkWidget
+ * @str: a string
+ *
+ * Creates a new tooltip from @str and sets @widget to use it.
+ */
 void
 glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 {
@@ -49,6 +56,14 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 	return;
 }
 
+/**
+ * glade_util_get_type_from_name:
+ * @name:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GType
 glade_util_get_type_from_name (const gchar *name)
 {
@@ -87,6 +102,14 @@ glade_util_get_type_from_name (const gchar *name)
 	return type;
 }
 
+/**
+ * glade_util_ui_warn:
+ * @parent: a #GtkWindow cast as a #GtkWidget
+ * @warning: a string
+ *
+ * Creates a new warning dialog window as a child of @parent containing
+ * the text of @warning, runs it, then destroys it on close.
+ */
 void
 glade_util_ui_warn (GtkWidget *parent, const gchar *warning)
 {
@@ -188,8 +211,17 @@ glade_util_compare_uline_labels (const gchar *labela, const gchar *labelb)
 	return 0;
 }
 
-/* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
-   any '_' characters. It isn't particularly efficient. */
+/**
+ * glade_util_compare_stock_labels:
+ * @a: a #gconstpointer to a #GtkStockItem
+ * @b: a #gconstpointer to a #GtkStockItem
+ *
+ * This is a #GCompareFunc that compares the labels of two stock items, 
+ * ignoring any '_' characters. It isn't particularly efficient.
+ *
+ * Returns: negative value if @a < @b; zero if @a = @b; 
+ *          positive value if @a > @b
+ */
 gint
 glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
 {
@@ -220,6 +252,14 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
 	return retval;
 }
 
+/**
+ * glade_util_gtk_combo_func:
+ * @data:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 gchar *
 glade_util_gtk_combo_func (gpointer data)
 {
@@ -244,6 +284,14 @@ glade_util_gtk_combo_func (gpointer data)
 }
 
 /* These are pinched from gtkcombo.c */
+/**
+ * glade_util_gtk_combo_find:
+ * @combo:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 gpointer /* GtkListItem *  */
 glade_util_gtk_combo_find (GtkCombo * combo)
 {
@@ -274,12 +322,12 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 
 /**
  * glade_util_hide_window:
- * @window:
+ * @window: a #GtkWindow
  *
  * If you use this function to handle the delete_event of a window, when it
  * will be shown again it will appear in the position where it was before
  * beeing hidden.
- **/
+ */
 void
 glade_util_hide_window (GtkWindow *window)
 {
@@ -298,12 +346,12 @@ glade_util_hide_window (GtkWindow *window)
 /**
  * glade_util_file_chooser_new:
  * @title: dialog title
- * @parent: the window the dialog is set transient for
+ * @parent: the parent #GtkWindow for the dialog
  * @action: a #GtkFileChooserAction to say if the dialog will open or save
  *
- * Returns a file chooser dialog. It's up to the caller 
- * to show the dialog
- **/
+ * Returns: a file chooser dialog. The caller is responsible for showing the
+ *          dialog
+ */
 GtkWidget *
 glade_util_file_chooser_new (const gchar *title, GtkWindow *parent, 
 			     GtkFileChooserAction action)
@@ -326,7 +374,12 @@ glade_util_file_chooser_new (const gchar *title, GtkWindow *parent,
 }
 
 /**
- * changes each occurence of the character a on the string str by the character b.
+ * glade_util_replace:
+ * @str: a string
+ * @a: a #char
+ * @b: a #char
+ *
+ * Replaces each occurance of the character @a in @str to @b.
  */
 void
 glade_util_replace (char *str, char a, char b)
@@ -343,9 +396,13 @@ glade_util_replace (char *str, char a, char b)
 }
 
 /**
- * duplicates the string passed as argument, but changing each underscore
- * in the original string by two underscores.  Returns a newly allocated
- * string.
+ * glade_util_duplicate_underscores:
+ * @name: a string
+ *
+ * Duplicates @name, but the copy has two underscores in place of any single
+ * underscore in the original.
+ *
+ * Returns: a newly allocated string
  */
 char *
 glade_util_duplicate_underscores (const char *name)
@@ -494,10 +551,16 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
 	return FALSE;
 }
 
-/* This is called to redraw any selection nodes that intersect the given
-   exposed window. It steps through all the selected widgets, converts the
-   coordinates so they are relative to the exposed window, then calls
-   glade_util_draw_nodes() to draw the selection nodes if appropriate. */
+/**
+ * glade_util_draw_nodes_idle:
+ * @expose_win: a #GdkWindow
+ *
+ * Redraws any selection nodes that intersect @expose_win. Steps through all
+ * selected widgets, finds their coordinates, and calls glade_util_draw_nodes()
+ * if appropriate.
+ *
+ * Returns: %FALSE
+ */
 gboolean
 glade_util_draw_nodes_idle (GdkWindow *expose_win)
 {
@@ -577,9 +640,14 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 
 #define GLADE_DRAW_NODES_IDLE_PRIORITY	GTK_PRIORITY_DEFAULT + 10
 
-/* This should be called whenever a widget in the interface receives an
-   expose event. It sets up an idle function which will redraw any selection
-   nodes that intersect the exposed window. */
+/**
+ * glade_util_queue_draw_nodes:
+ * @window:
+ *
+ * This function should be called whenever a widget in the interface receives 
+ * an expose event. It sets up an idle function which will redraw any selection
+ * nodes that intersect the the exposed window.
+ */
 void
 glade_util_queue_draw_nodes (GdkWindow *window)
 {
@@ -594,6 +662,12 @@ glade_util_queue_draw_nodes (GdkWindow *window)
 			 window, NULL);
 }
 
+/**
+ * glade_util_add_nodes:
+ * @widget: a #GtkWidget
+ *
+ * TODO: write me
+ */
 void
 glade_util_add_nodes (GtkWidget *widget)
 {
@@ -602,6 +676,12 @@ glade_util_add_nodes (GtkWidget *widget)
 	gtk_widget_queue_draw (widget);
 }
 
+/**
+ * glade_util_remove_nodes:
+ * @widget: a #GtkWidget
+ *
+ * TODO: write me
+ */
 void
 glade_util_remove_nodes (GtkWidget *widget)
 {
@@ -612,12 +692,24 @@ glade_util_remove_nodes (GtkWidget *widget)
 	gtk_widget_queue_draw (widget->parent ? widget->parent : widget);
 }
 
+/**
+ * glade_util_has_nodes:
+ * @widget: a #GtkWidget
+ *
+ * Returns: %TRUE if @widget has nodes, %FALSE otherwise
+ */
 gboolean
 glade_util_has_nodes (GtkWidget *widget)
 {
 	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES)) != 0;
 }
 
+/**
+ * glade_util_delete_selection:
+ * @project: a #GladeProject
+ *
+ * TODO: write me
+ */
 void
 glade_util_delete_selection (GladeProject *project)
 {
@@ -648,6 +740,14 @@ glade_util_delete_selection (GladeProject *project)
 	g_list_free (free_me);
 }
 
+/**
+ * glade_util_get_parent:
+ * @w: a #GtkWidget
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeWidget *
 glade_util_get_parent (GtkWidget *w)
 {
@@ -683,6 +783,12 @@ gtk_container_children_callback (GtkWidget *widget,
 	*children = g_list_prepend (*children, widget);
 }
 
+/**
+ * glade_util_container_get_all_children:
+ * @container: a #GtkContainer
+ *
+ * Returns: a #GList giving the contents of @container
+ */
 GList *
 glade_util_container_get_all_children (GtkContainer *container)
 {
@@ -705,8 +811,8 @@ glade_util_container_get_all_children (GtkContainer *container)
  * such as one you would get on a drop operation.
  * This is mostly stolen from gnome-vfs-uri.c.
  *
- * Returns a GList of gchars.
- **/
+ * Returns: a #GList of gchars.
+ */
 GList *
 glade_util_uri_list_parse (const gchar *uri_list)
 {
@@ -766,6 +872,13 @@ glade_util_uri_list_parse (const gchar *uri_list)
 	return g_list_reverse (result);
 }
 
+/**
+ * glade_util_object_set_property:
+ * @object: a #GObject
+ * @property: a #GladeProperty
+ *
+ * TODO: write me
+ */
 void
 glade_util_object_set_property (GObject *object, GladeProperty *property)
 {

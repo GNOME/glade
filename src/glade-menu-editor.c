@@ -104,6 +104,13 @@ static void glade_menu_editor_destroy (GtkObject *object);
 
 static GtkWindowClass *parent_class = NULL;
 
+/**
+ * glade_menu_editor_get_type:
+ *
+ * Creates the typecode for the #GladeMenuEditor object type.
+ *
+ * Returns: the typecode for the #GladeMenuEditor object type
+ */
 GType
 glade_menu_editor_get_type (void)
 {
@@ -3167,10 +3174,16 @@ glade_menu_editor_set_menu (GladeMenuEditor *menued, GtkMenuShell *menu)
 }
 
 /**
+ * glade_menu_editor_new:
+ * @project:
+ * @menu:
+ *
  * This creates a menu editor to edit the given menubar or popup menu in
  * the given project. When the user selects the 'OK' or 'Apply' buttons,
  * the menu widget will be updated. If the menu is destroyed, the menu editor
  * is automatically destroyed as well.
+ *
+ * Returns: a new #GtkMenuEditor, cast as a #GtkWidget
  */
 GtkWidget*
 glade_menu_editor_new (GladeProject *project, GtkMenuShell *menu)
@@ -3209,4 +3222,3 @@ glade_menu_editor_reset (GladeMenuEditor *menued)
 	gtk_list_clear_items (GTK_LIST (GTK_COMBO (menued->group_combo)->list),
 			      0, -1);
 }
-

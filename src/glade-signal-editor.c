@@ -340,6 +340,13 @@ glade_signal_editor_construct (GladeSignalEditor *editor)
 	gtk_widget_show_all (editor->main_window);
 }
 
+/**
+ * glade_signal_editor_get_widget:
+ * @editor: a #GladeSignalEditor
+ *
+ * Returns: the #GtkWidget that is the main window for @editor, or %NULL if
+ *          it does not exist
+ */
 GtkWidget *
 glade_signal_editor_get_widget (GladeSignalEditor *editor)
 {
@@ -349,6 +356,12 @@ glade_signal_editor_get_widget (GladeSignalEditor *editor)
 	return editor->main_window;
 }
 
+/**
+ * glade_signal_editor_new:
+ * @editor: a #GladeEditor
+ *
+ * Returns: a new #GladeSignalEditor associated with @editor
+ */
 GladeSignalEditor *
 glade_signal_editor_new (GladeEditor *editor)
 {
@@ -362,6 +375,13 @@ glade_signal_editor_new (GladeEditor *editor)
 	return signal_editor;
 }
 
+/**
+ * glade_signal_editor_load_widget:
+ * @editor: a #GladeSignalEditor
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ */
 void 
 glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GladeWidget *widget)
@@ -418,7 +438,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 			GtkTreePath *path_parent_class;
 			GladeSignal *widget_signal = (GladeSignal*) g_ptr_array_index (signals, 0);
 
-			/* mark the class of this signal as bold and expand it, as there is at least one signal with handler */
+			/* mark the class of this signal as bold and expand it, 
+                         * as there is at least one signal with handler */
 			gtk_tree_store_set (editor->model, &parent_class, COLUMN_BOLD, TRUE, -1);
 			path_parent_class = gtk_tree_model_get_path (GTK_TREE_MODEL (editor->model), &parent_class);
 			gtk_tree_view_expand_row (GTK_TREE_VIEW (editor->signals_list), path_parent_class, FALSE);
@@ -459,4 +480,3 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	gtk_tree_view_expand_row (GTK_TREE_VIEW (editor->signals_list), path_first, FALSE);
 	gtk_tree_path_free (path_first);
 }
-

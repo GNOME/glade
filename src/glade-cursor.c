@@ -25,6 +25,13 @@
 
 GladeCursor *cursor = NULL;
 
+/**
+ * glade_cursor_set:
+ * @window: a #GdkWindow
+ * @type: a #GladeCursorType
+ *
+ * Sets the cursor for @window to something appropriate based on @type.
+ */
 void
 glade_cursor_set (GdkWindow *window, GladeCursorType type)
 {
@@ -41,6 +48,11 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 
 }
 
+/**
+ * glade_cursor_init:
+ *
+ * Initializes cursors for use with glade_cursor_set().
+ */
 void
 glade_cursor_init (void)
 {

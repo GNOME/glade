@@ -143,6 +143,12 @@ static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 
 /**************************************************/
 
+/**
+ * glade_command_undo:
+ * @project: a #GladeProject
+ *
+ * Undoes the last command performed in @project.
+ */
 void
 glade_command_undo (GladeProject *project)
 {
@@ -168,6 +174,12 @@ glade_command_undo (GladeProject *project)
 	project->prev_redo_item = prev_redo_item->prev;
 }
 
+/**
+ * glade_command_redo:
+ * @project: a #GladeProject
+ *
+ * Redoes the last undone command in @project.
+ */
 void
 glade_command_redo (GladeProject *project)
 {
@@ -285,8 +297,8 @@ glade_command_set_property_undo (GladeCommand *cmd)
 }
 
 /**
- * Execute the set property command and revert it.  Ie, after the execution of this
- * function cmd will point to the undo action
+ * Execute the set property command and revert it. IE, after the execution of 
+ * this function cmd will point to the undo action
  */
 static gboolean
 glade_command_set_property_execute (GladeCommand *cmd)
@@ -677,6 +689,12 @@ glade_command_create_delete_common (GladeWidget *widget,
 		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
 }
 
+/**
+ * glade_command_delete:
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ */
 void
 glade_command_delete (GladeWidget *widget)
 {
@@ -694,6 +712,14 @@ glade_command_delete (GladeWidget *widget)
  * be substituted by the new widget (if any), and in project the project that
  * the new widget will be assigned to (if NULL, the project will be extracted
  * from the placeholder).
+ */
+/**
+ * glade_command_create:
+ * @class:
+ * @placeholder:
+ * @project:
+ *
+ * TODO: write me
  */
 void
 glade_command_create (GladeWidgetClass *class,
@@ -929,6 +955,12 @@ glade_command_paste (GladePlaceholder *placeholder)
 	glade_command_cut_paste_common (widget, placeholder, parent->project, FALSE);
 }
 
+/**
+ * glade_command_cut:
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ */
 void
 glade_command_cut (GladeWidget *widget)
 {
@@ -1014,7 +1046,7 @@ glade_command_add_signal_collapse (GladeCommand *this, GladeCommand *other)
 }
 
 static void
-glade_command_add_remove_signal(GladeWidget *glade_widget, const GladeSignal *signal, gboolean add)
+glade_command_add_remove_signal (GladeWidget *glade_widget, const GladeSignal *signal, gboolean add)
 {
 	GladeCommandAddSignal *me = GLADE_COMMAND_ADD_SIGNAL (g_object_new (GLADE_COMMAND_ADD_SIGNAL_TYPE, NULL));
 	GladeCommand *cmd = GLADE_COMMAND (me);
@@ -1037,14 +1069,28 @@ glade_command_add_remove_signal(GladeWidget *glade_widget, const GladeSignal *si
 		glade_command_push_undo (glade_widget->project, cmd);
 }
 
+/**
+ * glade_command_add_signal:
+ * @glade_widget: a #GladeWidget
+ * @signal: a #GladeSignal
+ *
+ * TODO: write me
+ */
 void
-glade_command_add_signal(GladeWidget *glade_widget, const GladeSignal *signal)
+glade_command_add_signal (GladeWidget *glade_widget, const GladeSignal *signal)
 {
 	glade_command_add_remove_signal (glade_widget, signal, TRUE);
 }
 
+/**
+ * glade_command_remove_signal:
+ * @glade_widget: a #GladeWidget
+ * @signal: a #GladeSignal
+ *
+ * TODO: write me
+ */
 void
-glade_command_remove_signal(GladeWidget *glade_widget, const GladeSignal *signal)
+glade_command_remove_signal (GladeWidget *glade_widget, const GladeSignal *signal)
 {
 	glade_command_add_remove_signal (glade_widget, signal, FALSE);
 }

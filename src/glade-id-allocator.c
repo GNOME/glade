@@ -27,6 +27,11 @@
 
 #define INITIAL_WORDS 4
 
+/**
+ * glade_id_allocator_new:
+ *
+ * Returns: a new #GladeIDAllocator
+ */
 GladeIDAllocator *
 glade_id_allocator_new (void)
 {
@@ -39,6 +44,12 @@ glade_id_allocator_new (void)
 	return allocator;
 }
 
+/**
+ * glade_id_allocator_free:
+ * @allocator: a #GladeIDAllocator
+ *
+ * Frees @allocator and its associated memory
+ */
 void
 glade_id_allocator_free (GladeIDAllocator *allocator)
 {
@@ -79,7 +90,13 @@ first_set_bit (guint32 word)
 	return result + table[word & 0xf];
 }
 
-
+/**
+ * glade_id_allocator_alloc:
+ * @allocator: a #GladeIDAllocator
+ *
+ * TODO: write me
+ * Returns:
+ */
 guint
 glade_id_allocator_alloc (GladeIDAllocator *allocator)
 {
@@ -109,6 +126,13 @@ glade_id_allocator_alloc (GladeIDAllocator *allocator)
 	}
 }
 
+/**
+ * glade_id_allocator_release:
+ * @allocator:
+ * @id:
+ *
+ * TODO: write me
+ */
 void
 glade_id_allocator_release (GladeIDAllocator *allocator,
 			guint         id)
@@ -117,7 +141,7 @@ glade_id_allocator_release (GladeIDAllocator *allocator,
 	allocator->data[id >> 5] |= 1 << (id & 31);
 }
 
-/* test of allocator
+#ifdef GLADE_ID_ALLOCATOR_TEST
 int main (int argc, char **argv)
 {
 	GladeIDAllocator *allocator = glade_id_allocator_new ();
@@ -146,4 +170,4 @@ int main (int argc, char **argv)
 
 	return 0;
 }
-*/
+#endif

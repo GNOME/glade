@@ -50,6 +50,13 @@ static guint glade_palette_signals[LAST_SIGNAL] = {0};
 
 static GtkWindowClass *parent_class = NULL;
 
+/**
+ * glade_palette_get_type:
+ *
+ * Creates the typecode for the #GladePalette object type.
+ *
+ * Returns: the typecode for the #GladePalette object type
+ */
 GType
 glade_palette_get_type (void)
 {
@@ -312,6 +319,13 @@ glade_palette_on_catalog_button_toggled (GtkWidget *button,
 	return TRUE;
 }
 
+/**
+ * glade_palette_append_catalog:
+ * @palette: a #GladePalette
+ * @catalog: a #GladeCatalog
+ * 
+ * TODO: write me
+ */
 void
 glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 {
@@ -341,6 +355,14 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 	gtk_widget_show (palette->notebook);
 }
 
+/**
+ * glade_palette_new:
+ * @catalogs:
+ * 
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladePalette *
 glade_palette_new (GList *catalogs)
 {
@@ -356,6 +378,12 @@ glade_palette_new (GList *catalogs)
 	return palette;
 }
 
+/**
+ * glade_palette_unselect_widget:
+ * @palette:
+ *
+ * TODO: write me
+ */
 void
 glade_palette_unselect_widget (GladePalette *palette)
 {
@@ -363,4 +391,3 @@ glade_palette_unselect_widget (GladePalette *palette)
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->selector), TRUE);
 }
-

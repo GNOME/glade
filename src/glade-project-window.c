@@ -275,8 +275,8 @@ gpw_confirm_close_project (GladeProject *project)
 	switch (ret) {
 	case GTK_RESPONSE_YES:
 		/* if YES we save the project: note we cannot use gpw_save_cb
-		 * since it saves the current project, while the modified project
-		 * we are saving may be not the current one.
+		 * since it saves the current project, while the modified 
+                 * project we are saving may be not the current one.
 		 */
 		if (project->path != NULL)
 		{
@@ -378,7 +378,8 @@ gpw_close_cb (void)
 		return;
 	}
 
-	/* this is needed to prevent clearing the selection of a closed project */
+	/* this is needed to prevent clearing the selection of a closed project 
+         */
 	gpw->project = NULL;
 
 	glade_project_window_set_project (gpw->projects->data);
@@ -471,7 +472,8 @@ gpw_delete_cb (void)
 	}
 
 	/* glade_util_delete_selection performs a glade_command_delete
-	 * on each of the selected widgets */
+	 * on each of the selected widgets 
+         */
 	glade_util_delete_selection (gpw->project);
 }
 
@@ -1238,12 +1240,25 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 static GladeProjectWindow *glade_project_window = NULL;
 
+/**
+ * glade_project_window_get:
+ *
+ * Returns: the #GladeProjectWindow
+ */
 GladeProjectWindow *
 glade_project_window_get ()
 {
 	return glade_project_window;
 }
 
+/**
+ * glade_project_window_new:
+ * @catalogs:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeProjectWindow *
 glade_project_window_new (GList *catalogs)
 {
@@ -1354,6 +1369,11 @@ glade_project_window_add_project (GladeProject *project)
 	glade_project_window_set_project (project);
 }
 
+/**
+ * glade_project_window_new_project:
+ *
+ * Creates a new #GladeProject and adds it to the #GladeProjectWindow.
+ */
 void
 glade_project_window_new_project (void)
 {
@@ -1373,6 +1393,12 @@ glade_project_window_new_project (void)
 	glade_project_window_add_project (project);
 }
 
+/**
+ * glade_project_window_open_project:
+ * @path: a string containing a filename
+ *
+ * Opens the project specified by @path and adds it to the #GladeProjectWindow.
+ */
 void
 glade_project_window_open_project (const gchar *path)
 {
@@ -1394,6 +1420,15 @@ glade_project_window_open_project (const gchar *path)
 	glade_project_window_add_project (project);
 }
 
+/**
+ * glade_project_window_change_menu_label:
+ * @gpw:
+ * @path:
+ * @prefix:
+ * @suffix:
+ *
+ * TODO: write me
+ */
 void
 glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 					const gchar *path,
@@ -1428,6 +1463,11 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 	g_free (text);
 }
 
+/**
+ * glade_project_window_refresh_undo_redo:
+ *
+ * TODO: write me
+ */
 void
 glade_project_window_refresh_undo_redo (void)
 {
@@ -1465,6 +1505,11 @@ glade_project_window_refresh_undo_redo (void)
 	gtk_widget_set_sensitive (gpw->toolbar_redo, redo_description != NULL);
 }
 
+/**
+ * glade_project_window_show_all:
+ *
+ * TODO: write me
+ */
 void
 glade_project_window_show_all ()
 {
@@ -1476,4 +1521,3 @@ glade_project_window_show_all ()
 	gpw_show_palette (gpw);
 	gpw_show_editor (gpw);
 }
-

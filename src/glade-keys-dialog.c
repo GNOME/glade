@@ -1401,10 +1401,10 @@ static GtkDialogClass *parent_class;
 /**
  * glade_keys_dialog_get_type:
  *
- * Creates the typecode for the GladeKeysDialog object type.
+ * Creates the typecode for the #GladeKeysDialog object type.
  *
- * Return value: the typecode for the GladeKeysDialog object type.
- **/
+ * Returns: the typecode for the #GladeKeysDialog object type
+ */
 GType
 glade_keys_dialog_get_type (void)
 {
@@ -1525,7 +1525,9 @@ glade_keys_dialog_init (GladeKeysDialog *dialog)
  * glade_keys_dialog_new:
  *
  * Creates a dialog to select an accelerator key.
- **/ 
+ *
+ * Returns: the new dialog cast as a #GtkWidget
+ */ 
 GtkWidget *
 glade_keys_dialog_new (void)
 {
@@ -1538,11 +1540,13 @@ glade_keys_dialog_new (void)
 
 /**
  * glade_keys_dialog_get_selected_key_symbol:
+ * @dialog: a #GladeKeysDialog
  *
- * Retrieves the currently selected key. Returns NULL if no key is selected.
- * You are supposed to run this after having received an OK response from 
- * the dialog.
- **/ 
+ * Retrieves the selected key in @dialog. You are supposed to run this after 
+ * having received an OK response from the dialog.
+ *
+ * Returns: the currently selected key, or %NULL if none is selected
+ */ 
 gchar *
 glade_keys_dialog_get_selected_key_symbol (GladeKeysDialog *dialog)
 {
@@ -1561,4 +1565,3 @@ glade_keys_dialog_get_selected_key_symbol (GladeKeysDialog *dialog)
 
 	return key_sym;
 }
-

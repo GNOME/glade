@@ -54,6 +54,13 @@ enum
 static guint glade_project_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
 
+/**
+ * glade_project_get_type:
+ *
+ * Creates the typecode for the #GladeProject object type.
+ *
+ * Returns: the typecode for the #GladeProject object type
+ */
 GType
 glade_project_get_type (void)
 {
@@ -153,6 +160,16 @@ glade_project_init (GladeProject *project)
 	project->tooltips = gtk_tooltips_new ();
 }
 
+/**
+ * glade_project_new:
+ * @untitled: Whether or not this project is untitled
+ *
+ * Creates a new #GladeProject. If @untitled is %TRUE, sets the project's
+ * name to "Untitled 1" or some such, giving a unique number each time
+ * called.
+ *
+ * Returns: a new #GladeProject
+ */
 GladeProject *
 glade_project_new (gboolean untitled)
 {
@@ -215,6 +232,12 @@ glade_project_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+/**
+ * glade_project_selection_changed:
+ * @project: a #GladeProject
+ *
+ * Causes @project to emit a "selection_changed" signal.
+ */
 void
 glade_project_selection_changed (GladeProject *project)
 {
@@ -305,6 +328,14 @@ glade_project_add_widget (GladeProject *project, GtkWidget *widget)
 		       gwidget);
 }
 
+/**
+ * glade_project_release_widget_name:
+ * @project: a #GladeProject
+ * @glade_widget:
+ * @widget_name:
+ *
+ * TODO: Write me
+ */
 void
 glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_widget, const char *widget_name)
 {
@@ -349,12 +380,13 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 
 /**
  * glade_project_remove_widget:
- * @project: the project the widget is removed from
- * @widget: the GtkWidget to remove
+ * @project: a #GladeProject
+ * @widget: the #GtkWidget to remove
  *
- * Remove a widget from the project.
- * Note that when removing the GtkWidget from the project we
- * don't change ->project in the associated GladeWidget, this
+ * Removes @widget from @project.
+ *
+ * Note that when removing the #GtkWidget from the project we
+ * don't change ->project in the associated #GladeWidget; this
  * way UNDO can work.
  */
 void
@@ -405,6 +437,14 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 		       gwidget);
 }
 
+/**
+ * glade_project_widget_name_changed:
+ * @project: a #GladeProject
+ * @widget: a #GladeWidget
+ * @old_name:
+ *
+ * TODO: write me
+ */
 void
 glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name)
 {
@@ -423,12 +463,12 @@ glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, c
 
 /**
  * glade_project_get_widget_by_name:
- * @project: The project in which to look for
+ * @project: a #GladeProject
  * @name: The user visible name of the widget we are looking for
  * 
- * Finds a GladeWidget inside a project given its name
+ * Searches through @project looking for a #GladeWidget named @name.
  * 
- * Return Value: a pointer to the wiget, NULL if the widget does not exist
+ * Returns: a pointer to the widget, %NULL if the widget does not exist
  */
 GladeWidget *
 glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
@@ -452,14 +492,14 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 
 /**
  * glade_project_new_widget_name:
- * @project: The project in which we will insert this widget
+ * @project: a #GladeProject
  * @base_name: base name of the widget to create
  *
- * Creates a new name for the widget that doesn't collides with
- * any of the names on the project passed as argument.  This name
- * will start with @base_name.
+ * Creates a new name for a widget that doesn't collide with any of the names 
+ * already in @project. This name will start with @base_name.
  *
- * Return Value: a string to the new name, NULL if there is not enough memory
+ * Returns: a string containing the new name, %NULL if there is not enough 
+ *          memory for this string
  */
 char *
 glade_project_new_widget_name (GladeProject *project, const char *base_name)
@@ -494,6 +534,15 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 	return NULL;
 }
 
+/**
+ * glade_project_selection_clear:
+ * @project: a #GladeProject
+ * @emit_signal: whether or not to emit a signal indication a selection change
+ *
+ * TODO: write me
+ *
+ * If @emit_signal is %TRUE, calls glade_project_selection_changed().
+ */
 void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 {
@@ -518,6 +567,16 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 		glade_project_selection_changed (project);
 }
 
+/**
+ * glade_project_selection_remove:
+ * @project: a #GladeProject
+ * @widget:
+ * @emit_signal: whether or not to emit a signal indication a selection change
+ *
+ * TODO: write me
+ *
+ * If @emit_signal is %TRUE, calls glade_project_selection_changed().
+ */
 void
 glade_project_selection_remove (GladeProject *project,
 				GtkWidget *widget,
@@ -539,6 +598,16 @@ glade_project_selection_remove (GladeProject *project,
 	}
 }
 
+/**
+ * glade_project_selection_add:
+ * @project: a #GladeProject
+ * @widget:
+ * @emit_signal: whether or not to emit a signal indication a selection change
+ *
+ * TODO: write me
+ *
+ * If @emit_signal is %TRUE, calls glade_project_selection_changed().
+ */
 void
 glade_project_selection_add (GladeProject *project,
 			     GtkWidget *widget,
@@ -560,6 +629,16 @@ glade_project_selection_add (GladeProject *project,
 	}
 }
 
+/**
+ * glade_project_selection_set:
+ * @project: a #GladeProject
+ * @widget:
+ * @emit_signal: whether or not to emit a signal indication a selection change
+ *
+ * TODO: write me
+ *
+ * If @emit_signal is %TRUE, calls glade_project_selection_changed().
+ */
 void
 glade_project_selection_set (GladeProject *project,
 			     GtkWidget *widget,
@@ -575,6 +654,13 @@ glade_project_selection_set (GladeProject *project,
 	glade_project_selection_add (project, widget, emit_signal);
 }	
 
+/**
+ * glade_project_selection_get:
+ * @project: a #GladeProject
+ *
+ * Returns: a #GList containing the #GtkWidget items currently selected in 
+ *          @project
+ */
 GList *
 glade_project_selection_get (GladeProject *project)
 {
@@ -585,10 +671,11 @@ glade_project_selection_get (GladeProject *project)
 
 /**
  * glade_project_write:
- * @project: 
+ * @context: a #GladeXmlContext
+ * @project: a #GladeProject
  * 
- * Returns the root node of a newly created xml representation of the
- * project and its contents.
+ * Returns: the root node of a newly created xml representation of the
+ *          project and its contents
  */
 static GladeXmlNode *
 glade_project_write (GladeXmlContext *context, const GladeProject *project)
@@ -663,10 +750,12 @@ glade_project_new_from_node (GladeXmlNode *node)
 
 /**
  * glade_project_open:
- * @path: 
+ * @path:
  * 
- * Open a project at the given path.
- * On success returns the opened project else NULL.
+ * Opens a project at the given path.
+ *
+ * Returns: a new #GladeProject for the opened project on success, %NULL on 
+ *          failure
  */
 GladeProject *
 glade_project_open (const gchar *path)
@@ -694,10 +783,12 @@ glade_project_open (const gchar *path)
 
 /**
  * glade_project_save:
- * @project:
- * @path 
+ * @project: a #GladeProject
+ * @path:
  * 
- * Save the project to the given path. Returns TRUE on success.
+ * Saves @project to the given path. 
+ *
+ * Returns: %TRUE on success, %FALSE on failure
  */
 gboolean
 glade_project_save (GladeProject *project, const gchar *path)
@@ -739,7 +830,14 @@ glade_project_save (GladeProject *project, const gchar *path)
 	return TRUE;
 }
 
-GtkTooltips *glade_project_get_tooltips (GladeProject *project)
+/**
+ * glade_project_get_tooltips:
+ * @project: a #GladeProject
+ *
+ * Returns: a #GtkTooltips object containing all tooltips for @project
+ */
+GtkTooltips *
+glade_project_get_tooltips (GladeProject *project)
 {
 	return project->tooltips;
 }

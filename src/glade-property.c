@@ -33,7 +33,15 @@
 #include "glade-widget-class.h"
 #include "glade-debug.h"
 
-
+/**
+ * glade_property_new:
+ * @class:
+ * @widget:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeProperty *
 glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 {
@@ -58,7 +66,8 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	}
 #endif
 
-	/* Create an empty default if the class does not specify a default value */
+	/* Create an empty default if the class does not specify a default 
+         * value */
 	if (!class->def)
 	{
 		property->value = glade_property_class_make_gvalue_from_string (class, "");
@@ -93,7 +102,13 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 
 	return property;
 }
-	
+
+/**
+ * glade_property_free:
+ * @property: a #GladeProperty
+ *
+ * Frees @property and its associated memory.
+ */
 void
 glade_property_free (GladeProperty *property)
 {
@@ -135,6 +150,13 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 	}
 }
 
+/**
+ * glade_property_set:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
 void
 glade_property_set (GladeProperty *property, const GValue *value)
 {
@@ -143,7 +165,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
-		g_warning ("Trying to assing an incompatible value to property %s\n",
+		g_warning ("Trying to assign an incompatible value to property %s\n",
 			    property->class->id);
 		return;
 	}
@@ -156,7 +178,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	property->loading = TRUE;
 
-	/* if there is a custom set_property use it */
+	/* if there is a custom set_property, use it */
 	if (property->class->set_function)
 		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
 	else
@@ -168,6 +190,15 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	property->loading = FALSE;
 }
 
+/**
+ * glade_property_write:
+ * @context: a #GladeXmlContext
+ * @property: a #GladeProperty:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeXmlNode *
 glade_property_write (GladeXmlContext *context, GladeProperty *property)
 {
@@ -185,7 +216,8 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	if (!node)
 		return NULL;
 
-	/* we should change each '-' by '_' on the name of the property (<property name="...">) */
+	/* we should change each '-' by '_' on the name of the property 
+         * (<property name="...">) */
 	tmp = g_strdup (property->class->id);
 	if (!tmp)
 	{
@@ -200,7 +232,7 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	g_free (tmp);
 
 	/* convert the value of this property to a string, and put it between
-	 * the openning and the closing of the property tag */
+	 * the opening and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
 	if (!tmp)
@@ -228,4 +260,3 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 
 	return node;
 }
-

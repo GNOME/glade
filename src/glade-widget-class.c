@@ -80,6 +80,12 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 	return retval;
 }
 
+/**
+ * glade_widget_class_free:
+ * @widget_class: a #GladeWidgetClass
+ *
+ * Frees @widget_class and its associated memory.
+ */
 void
 glade_widget_class_free (GladeWidgetClass *widget_class)
 {
@@ -325,14 +331,16 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 
 /**
  * glade_widget_class_extend_with_file:
- * @filename: complete path name of the xml file with the description of the GladeWidgetClass
+ * @filename: complete path name of the xml file with the description of the 
+ *            #GladeWidgetClass
  *
- * This function extends an existing GladeWidgetClass with the data found on the file
- * with name @filename (if it exists).  Notably, it will add new properties to the
- * GladeWidgetClass, or modify existing ones, in function of the contents of the file.
+ * This function extends an existing GladeWidgetClass with the data found on 
+ * the file with name @filename (if it exists).  Notably, it will add new 
+ * properties to the #GladeWidgetClass, or modify existing ones, in function 
+ * of the contents of the file.
  *
- * @returns: TRUE if the file exists and its format is correct, FALSE otherwise.
- **/
+ * Returns: %TRUE if the file exists and its format is correct, %FALSE otherwise
+ */
 static gboolean
 glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char *filename)
 {
@@ -414,8 +422,8 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 	if (properties)
 		glade_widget_class_update_properties_from_node (properties, widget_class, &widget_class->properties);
 
-	/* if we found a <ChildProperties> tag on the xml file, we add the properties
-	 * that we read from the xml file to the class.
+	/* if we found a <ChildProperties> tag on the xml file, we add the 
+         * properties that we read from the xml file to the class.
 	 */
 	properties = glade_xml_search_child (node, GLADE_TAG_CHILD_PROPERTIES);
 	if (properties)
@@ -434,12 +442,8 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
  * glade_widget_class_get_by_name:
  * @name: name of the widget class (for instance: GtkButton)
  *
- * Returns an already created GladeWidgetClass with the name passed as argument.
- *
- * If we have not yet created any GladeWidgetClass, this function will return %NULL.
- *
- * Return Value: An existing GladeWidgetClass with the name passed as argument,
- * or %NULL if such a class doesn't exist.
+ * Returns: an existing #GladeWidgetClass with the name equaling @name,
+ *          or %NULL if such a class doesn't exist
  **/
 GladeWidgetClass *
 glade_widget_class_get_by_name (const char *name)
@@ -456,8 +460,9 @@ glade_widget_class_get_by_name (const char *name)
  * @parent_class: List of properties in the parent.
  *
  * Merges the properties found in the parent_properties list with the
- * properties found in the widget_properties list.
- * The properties in the parent_properties will be prepended to widget_properties.
+ * properties found in the @widget_properties list.
+ * The properties in the parent_properties will be prepended to 
+ * @widget_properties.
  **/
 static void
 glade_widget_class_merge_properties (GList **widget_properties, GList *parent_properties)
@@ -501,10 +506,10 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
  * @widget_class: main class.
  * @parent_class: secondary class.
  *
- * Merges the contents of the parent_class on the widget_class.
- * The properties of the parent_class will be prepended to
- * those of widget_class.
- **/
+ * Merges the contents of the @parent_class on the @widget_class.
+ * The properties of the @parent_class will be prepended to
+ * those of @widget_class.
+ */
 static void
 glade_widget_class_merge (GladeWidgetClass *widget_class,
 			  GladeWidgetClass *parent_class)
@@ -537,7 +542,7 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 
 /**
  * glade_widget_class_load_library:
- * @library_name: name of the library .
+ * @library_name: name of the library
  *
  * Loads the named library from the Glade modules directory, or failing that
  * from the standard platform specific directories.
@@ -545,7 +550,7 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
  * The @library_name should not include any platform specifix prefix or suffix,
  * those are automatically added, if needed, by g_module_build_path()
  *
- * @returns: a #GModule on success, or %NULL on failure.
+ * Returns: a #GModule on success, or %NULL on failure.
  */
 static GModule *
 glade_widget_class_load_library (const gchar *library_name)
@@ -596,20 +601,21 @@ glade_widget_class_direct_children (GtkWidget *ancestor, GtkWidget *widget, cons
 /**
  * glade_widget_class_new:
  * @name: name of the widget class (for instance: GtkButton)
- * @generic_name: base of the name for the widgets of this class (for instance: button).
- * This parameter is optional.  For abstract classes there is no need to supply a generic_name.
- * @base_filename: filename containing a further description of the widget, without
- * the directory (optional).
+ * @generic_name: base of the name for the widgets of this class 
+ *                (for instance: button). This parameter is optional. For 
+ *                abstract classes there is no need to supply a generic_name.
+ * @base_filename: filename containing a further description of the widget, 
+ *                 without the directory (optional).
  *
- * Creates a new GladeWidgetClass, initializing it with the
+ * Creates a new #GladeWidgetClass, initializing it with the
  * name, generic_name and base_filename.
  *
- * The widget class will be first build using the information that the GLib object system
- * returns, and then it will be expanded (optionally) with the information contained on
- * the xml filename.
+ * The widget class will be first build using the information that the GLib 
+ * object system returns, and then it will be expanded (optionally) with the 
+ * information contained on the xml filename.
  *
- * Return Value: The new GladeWidgetClass, or %NULL if there are any errors.
- **/
+ * Returns: a new #GladeWidgetClass, or %NULL if there are any errors
+ */
 GladeWidgetClass *
 glade_widget_class_new (const char *name,
 			const char *generic_name,
@@ -725,18 +731,37 @@ lblError:
 	return NULL;
 }
 
+/**
+ * glade_widget_class_get_name:
+ * @widget: a #GladeWidgetClass
+ *
+ * Returns: the name of @widget
+ */
 const gchar *
 glade_widget_class_get_name (GladeWidgetClass *widget)
 {
 	return widget->name;
 }
 
+/**
+ * glade_widget_class_get_type:
+ * @widget: a #GladeWidgetClass
+ *
+ * Returns: the #GType of @widget
+ */
 GType
 glade_widget_class_get_type (GladeWidgetClass *widget)
 {
 	return widget->type;
 }
 
+/**
+ * glade_widget_class_has_property:
+ * @class: a #GladeWidgetClass
+ * @name: a string
+ *
+ * Returns: %TRUE if @class has a property named @name, %FALSE otherwise
+ */
 gboolean
 glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 {
@@ -755,14 +780,12 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 
 /**
  * glade_widget_class_dump_param_specs:
- * @class: 
+ * @class: a #GladeWidgetClass
  * 
- * Dump to the console the properties of the Widget as specified
- * by gtk+. You can also run glade3 with : "glade3 --dump GtkWindow" to
+ * Dump to the console the properties of @class as specified
+ * by gtk+. You can also run glade3 with : "glade-3 --dump GtkWindow" to
  * get dump a widget class properties.
- * 
- * Return Value: 
- **/
+ */
 void
 glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 {
@@ -777,7 +800,7 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 
 	g_type_class_ref (class->type); /* hmm */
 	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
+	  * to use g_type_class_ref ();
 	  */
 
 	object_class = g_type_class_peek (class->type);
@@ -810,6 +833,13 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	g_free (specs);
 }
 
+/**
+ * glade_widget_class_is:
+ * @class: a #GladeWidgetClass
+ * @name: a string
+ *
+ * Returns: %TRUE if @class is named @name, %FALSE otherwise
+ */
 gboolean
 glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
 {
@@ -821,4 +851,3 @@ glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
 
 	return FALSE;
 }
-

@@ -70,6 +70,13 @@ enum
 static guint glade_widget_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
 
+/**
+ * glade_widget_get_type:
+ *
+ * Creates the typecode for the #GladeWidget object type.
+ *
+ * Returns: the typecode for the #GladeWidget object type
+ */
 GType
 glade_widget_get_type (void)
 {
@@ -192,6 +199,15 @@ glade_widget_init (GladeWidget *widget)
 	widget->signals = g_hash_table_new_full (g_str_hash, g_str_equal, (GDestroyNotify) g_free, (GDestroyNotify) free_signals);
 }
 
+/**
+ * glade_widget_new:
+ * @klass: a #GladeWidgetClass
+ * @project: a #GladeProject
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeWidget *
 glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 {
@@ -216,6 +232,17 @@ glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 	return (GladeWidget *) glade_widget;
 }
 
+/**
+ * glade_widget_new_for_internal_child:
+ * @klass:
+ * @parent:
+ * @internal_widget:
+ * @internal_name:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladeWidget *
 glade_widget_new_for_internal_child (GladeWidgetClass *klass, GladeWidget *parent, GtkWidget *internal_widget, const char *internal_name)
 {
@@ -268,6 +295,13 @@ glade_widget_dispose (GObject *object)
 	widget->packing_properties = NULL;
 }
 
+/**
+ * glade_widget_add_signal_handler:
+ * @widget:
+ * @signal_handler:
+ *
+ * TODO: write me
+ */
 void
 glade_widget_add_signal_handler	(GladeWidget *widget, GladeSignal *signal_handler)
 {
@@ -276,6 +310,13 @@ glade_widget_add_signal_handler	(GladeWidget *widget, GladeSignal *signal_handle
 	g_signal_emit (widget, glade_widget_signals[ADD_SIGNAL_HANDLER], 0, signal_handler);
 }
 
+/**
+ * glade_widget_remove_signal_handler:
+ * @widget:
+ * @signal_handler:
+ *
+ * TODO: write me
+ */
 void
 glade_widget_remove_signal_handler (GladeWidget *widget, GladeSignal *signal_handler)
 {
@@ -284,6 +325,14 @@ glade_widget_remove_signal_handler (GladeWidget *widget, GladeSignal *signal_han
 	g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, signal_handler);
 }
 
+/**
+ * glade_widget_change_signal_handler:
+ * @widget:
+ * @old_signal_handler:
+ * @new_signal_handler:
+ *
+ * TODO: write me
+ */
 void
 glade_widget_change_signal_handler (GladeWidget *widget, GladeSignal *old_signal_handler, GladeSignal *new_signal_handler)
 {
@@ -358,6 +407,13 @@ glade_widget_get_real_property (GObject         *object,
 	}
 }
 
+/**
+ * glade_widget_set_name:
+ * @widget: a #GladeWidget
+ * @name: a string
+ *
+ * Sets @widget's name to @name.
+ */
 void
 glade_widget_set_name (GladeWidget *widget, const char *name)
 {
@@ -368,6 +424,12 @@ glade_widget_set_name (GladeWidget *widget, const char *name)
 	g_object_notify (G_OBJECT (widget), "name");
 }
 
+/**
+ * glade_widget_get_name:
+ * @widget: a #GladeWidget
+ *
+ * Returns: a pointer to @widget's name
+ */
 const char *
 glade_widget_get_name (GladeWidget *widget)
 {
@@ -375,6 +437,13 @@ glade_widget_get_name (GladeWidget *widget)
 	return widget->name;
 }
 
+/**
+ * glade_widget_set_internal:
+ * @widget:
+ * @internal:
+ *
+ * TODO: write me
+ */
 void
 glade_widget_set_internal (GladeWidget *widget, const char *internal)
 {
@@ -385,6 +454,14 @@ glade_widget_set_internal (GladeWidget *widget, const char *internal)
 	g_object_notify (G_OBJECT (widget), "internal");
 }
 
+/**
+ * glade_widget_get_internal:
+ * @widget: a #GladeWidget
+ *
+ * TODO: write me
+ *
+ * Returns: 
+ */
 const char *
 glade_widget_get_internal (GladeWidget *widget)
 {
@@ -420,6 +497,12 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
 	widget->properties = g_list_reverse (widget->properties);
 }
 
+/**
+ * glade_widget_get_class:
+ * @widget: a #GladeWidget
+ *
+ * Returns: the #GladeWidgetclass of @widget
+ */
 GladeWidgetClass *
 glade_widget_get_class (GladeWidget *widget)
 {
@@ -427,6 +510,13 @@ glade_widget_get_class (GladeWidget *widget)
 	return widget->widget_class;
 }
 
+/**
+ * glade_widget_set_project:
+ * @widget: a #GladeWidget
+ * @project: a #GladeProject
+ *
+ * Makes @widget belong to @project.
+ */
 void
 glade_widget_set_project (GladeWidget *widget, GladeProject *project)
 {
@@ -438,6 +528,12 @@ glade_widget_set_project (GladeWidget *widget, GladeProject *project)
 	g_object_notify (G_OBJECT (widget), "project");
 }
 
+/**
+ * glade_widget_get_project:
+ * @widget: a #GladeWidget
+ * 
+ * Returns: the #GladeProject that @widget belongs to
+ */
 GladeProject *
 glade_widget_get_project (GladeWidget *widget)
 {
@@ -445,6 +541,13 @@ glade_widget_get_project (GladeWidget *widget)
 	return widget->project;
 }
 
+/**
+ * glade_widget_get_property:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a property
+ *
+ * Returns: the #GladeProperty in @widget named @id_property
+ */
 GladeProperty *
 glade_widget_get_property (GladeWidget *widget, const char *id_property)
 {
@@ -532,17 +635,16 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel, GtkContaine
 
 /**
  * glade_widget_retrieve_from_position:
- * @base: 
- * @x: 
- * @y:
+ * @base: a #GtkWidget 
+ * @x: an int
+ * @y: an int
  * 
- * Returns the real widget that was "clicked over" for a given event (coordinates) and a widget
- * For example, when a label is clicked the button press event is triggered for its parent, this
- * function takes the event and the widget that got the event and returns the real GladeWidget that was
- * clicked
- * 
- * Return Value: 
- **/
+ * Returns: the real widget that was "clicked over" for a given event 
+ * (coordinates) and a widget. 
+ * For example, when a label is clicked the button press event is triggered 
+ * for its parent, this function takes the event and the widget that got the 
+ * event and returns the real #GladeWidget that was clicked
+ */
 static GladeWidget *
 glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 {
@@ -721,6 +823,13 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 	}
 }
 
+/**
+ * glade_widget_set_widget:
+ * @glade_widget:
+ * @widget_gtk:
+ *
+ * TODO: write me
+ */
 void
 glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 {
@@ -755,8 +864,9 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 
 	if (glade_widget->internal == NULL)
 	{
-		/* we should set the values of the properties of this widget from the
-		 * default values that we gather from the class of this widget */
+		/* we should set the values of the properties of this widget 
+                 * from the default values that we gather from the class of 
+                 * this widget */
 		glade_widget_apply_properties (glade_widget);
 	}
 	else
@@ -770,6 +880,12 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 	g_object_notify (G_OBJECT (glade_widget), "widget");
 }
 
+/**
+ * glade_widget_get_widget:
+ * @widget: a #GladeWidget
+ *
+ * Returns: the #GtkWidget associated with @widget
+ */
 GtkWidget *
 glade_widget_get_widget (GladeWidget *widget)
 {
@@ -981,6 +1097,13 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 	}
 }
 
+/**
+ * glade_widget_replace:
+ * @old_widget: a #GtkWidget
+ * @new_widget: a #GtkWidget
+ * 
+ * TODO: write me
+ */
 void
 glade_widget_replace (GtkWidget *old_widget, GtkWidget *new_widget)
 {
@@ -1045,6 +1168,15 @@ glade_widget_write_signals (gpointer key, gpointer value, gpointer user_data)
 	}
 }
 
+/**
+ * glade_widget_write:
+ * @widget:
+ * @context:
+ *
+ * TODO: write me
+ *
+ * Returns: 
+ */
 GladeXmlNode *
 glade_widget_write (GladeWidget *widget, GladeXmlContext *context)
 {
@@ -1393,6 +1525,14 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	return TRUE;
 }
 
+
+/**
+ * glade_widget_read:
+ * @project: a #GladeProject
+ * @node: a #GladeXmlNode
+ *
+ * Returns: a new #GladeWidget in @project, based off the contents of @node
+ */
 GladeWidget *
 glade_widget_read (GladeProject *project, GladeXmlNode *node)
 {

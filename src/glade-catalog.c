@@ -37,7 +37,12 @@
 
 #define GLADE_TAG_PALETTE "GladePalette"
 
-
+/**
+ * glade_catalog_delete:
+ * @catalog:
+ * 
+ * Frees @catalog and its associated memory.
+ */
 void
 glade_catalog_delete (GladeCatalog *catalog)
 {
@@ -158,6 +163,13 @@ lblError:
 	return NULL;
 }
 
+/**
+ * glade_catalog_load_all:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GList *
 glade_catalog_load_all (void)
 {
@@ -202,15 +214,28 @@ glade_catalog_load_all (void)
 	return catalogs;
 }
 
-const char *glade_catalog_get_title (GladeCatalog *catalog)
+/**
+ * glade_catalog_get_title:
+ * @catalog: a #GladeCatalog
+ *
+ * Returns: a pointer to the title of @catalog
+ */
+const char *
+glade_catalog_get_title (GladeCatalog *catalog)
 {
 	g_return_val_if_fail (catalog != NULL, NULL);
 	return catalog->title;
 }
 
-GList *glade_catalog_get_widget_classes (GladeCatalog *catalog)
+/**
+ * glade_catalog_get_widget_classes:
+ * @catalog: a #GladeCatalog
+ *
+ * Returns: a #GList containing the widget classes in @catalog
+ */
+GList *
+glade_catalog_get_widget_classes (GladeCatalog *catalog)
 {
 	g_return_val_if_fail (catalog != NULL, NULL);
 	return catalog->widget_classes;	
 }
-

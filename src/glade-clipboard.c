@@ -47,10 +47,10 @@ glade_clipboard_init (GladeClipboard *clipboard)
 /**
  * glade_clipboard_get_type:
  *
- * Creates the typecode for the GladeClipboard object type.
+ * Creates the typecode for the #GladeClipboard object type.
  *
- * Return value: the typecode for the GladeClipboard object type.
- **/
+ * Returns: the typecode for the #GladeClipboard object type
+ */
 GType
 glade_clipboard_get_type ()
 {
@@ -78,12 +78,9 @@ glade_clipboard_get_type ()
 
 /**
  * glade_clipboard_new:
- * @: 
  * 
- * Create a new @GladeClipboard object.
- *
- * Return Value: a @GladeClipboard object.
- **/
+ * Returns: a new #GladeClipboard object
+ */
 GladeClipboard *
 glade_clipboard_new ()
 {
@@ -92,11 +89,12 @@ glade_clipboard_new ()
 
 /**
  * glade_clipboard_add:
- * @clipboard: 
- * @widget: 
+ * @clipboard: a #GladeClipboard
+ * @widget: a #GladeWidget
  * 
- * Move a GladeWidget onto the Clipboard.
- **/
+ * Adds @widget to @clipboard.
+ * This increses the reference count of @widget.
+ */
 void
 glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 {
@@ -117,11 +115,11 @@ glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 
 /**
  * glade_clipboard_remove:
- * @clipboard: 
- * @widget: 
+ * @clipboard: a #GladeClipboard
+ * @widget: a #GladeWidget
  * 
- * Remove a GladeWidget from the Clipboard
- **/
+ * Removes a @widget from @clipboard.
+ */
 void
 glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 {
@@ -142,4 +140,3 @@ glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 	if (clipboard->view)
 		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 }
-

@@ -105,7 +105,7 @@ static GtkWidget *
 glade_popup_create_menu (GladeWidget *widget, gboolean add_childs);
 
 static void
-glade_popup_populate_childs(GtkWidget* popup_menu, GladeWidget* parent)
+glade_popup_populate_childs (GtkWidget* popup_menu, GladeWidget* parent)
 {
 	while (parent) {
 		GtkWidget *child;
@@ -173,6 +173,13 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 	return popup_menu;
 }
 
+/**
+ * glade_popup_widget_pop:
+ * @widget:
+ * @event:
+ *
+ * TODO: write me
+ */
 void
 glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 {
@@ -199,6 +206,13 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 			NULL, NULL, button, event_time);
 }
 
+/**
+ * glade_popup_placeholder_pop:
+ * @placeholder:
+ * @event:
+ *
+ * TODO: write me
+ */
 void
 glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 			     GdkEventButton *event)
@@ -225,4 +239,3 @@ glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
 			NULL, NULL, button, event_time);
 }
-

@@ -63,7 +63,7 @@ Normal tasks:
       B__ C
       | 
       \__ D
-    When hiding the childs of "A" and showingt htem again, the state of B and its
+    When hiding the childs of "A" and showing them again, the state of B and its
     childs is lost, this should go into gtk+.
 
 
@@ -84,7 +84,7 @@ Problems found with the gtk-spin button
 - Does not emit a click up, click down signal
 - If you change the max or min of the adjustment and emit an adjustment
   changed signal it does not evaluates if the current value is inside the range
-- The inability to be used wihtout an adjustment (clock)
+- The inability to be used without an adjustment (clock)
 
 discuss with jamesh
 - How are we going to save pixmaps

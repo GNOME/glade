@@ -28,6 +28,15 @@
 #include "glade-parameter.h"
 #include "glade-property-class.h"
 
+/**
+ * glade_parameter_get_integer:
+ * @parameters: a #GList of #GladeParameters
+ * @key: a string containing the parameter name
+ * @value: a pointer to a #gint
+ *
+ * Searches through @parameters looking for a #GladeParameter named @key. If
+ * found, it stores a #gint representation of its value into @value.
+ */
 void
 glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value)
 {
@@ -44,6 +53,15 @@ glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value)
 	}
 }
 
+/**
+ * glade_parameter_get_float:
+ * @parameters: a #GList of #GladeParameters
+ * @key: a string containing the parameter name
+ * @value: a pointer to a #gfloat
+ *
+ * Searches through @parameters looking for a #GladeParameter named @key. If
+ * found, it stores a #gfloat representation of its value into @value.
+ */
 void
 glade_parameter_get_float (GList *parameters, const gchar *key, gfloat *value)
 {
@@ -60,7 +78,15 @@ glade_parameter_get_float (GList *parameters, const gchar *key, gfloat *value)
 	}
 }
 
-
+/**
+ * glade_parameter_get_boolean:
+ * @parameters: a #GList of #GladeParameters
+ * @key: a string containing the parameter name
+ * @value: a pointer to a #gboolean
+ *
+ * Searches through @parameters looking for a #GladeParameter named @key. If
+ * found, it stores a #gboolean representation of its value into @value.
+ */
 void
 glade_parameter_get_boolean (GList *parameters, const gchar *key, gboolean *value)
 {
@@ -83,6 +109,16 @@ glade_parameter_get_boolean (GList *parameters, const gchar *key, gboolean *valu
 	}
 }
 
+/**
+ * glade_parameter_get_string:
+ * @parameters: a #GList of #GladeParameters
+ * @key: a string containing the parameter name
+ * @value: a pointer to an string
+ *
+ * Searches through @parameters looking for a #GladeParameter named @key. If
+ * found, it stores a newly copied string representation of its value into 
+ * @value.
+ */
 void
 glade_parameter_get_string (GList *parameters, const gchar *key, gchar **value)
 {
@@ -101,6 +137,12 @@ glade_parameter_get_string (GList *parameters, const gchar *key, gchar **value)
 	}
 }
 
+/**
+ * glade_parameter_free:
+ * @parameter: a #GladeParameter
+ *
+ * Frees @parameter and its associated memory.
+ */
 void
 glade_parameter_free (GladeParameter *parameter)
 {
@@ -112,6 +154,11 @@ glade_parameter_free (GladeParameter *parameter)
 	g_free (parameter);
 }
 
+/**
+ * glade_parameter_new:
+ *
+ * Returns: a new #GladeParameter
+ */
 GladeParameter *
 glade_parameter_new (void)
 {
@@ -122,19 +169,25 @@ glade_parameter_new (void)
 	return parameter;
 }
 
+/**
+ * glade_parameter_clone:
+ * @parameter: a #GladeParameter
+ *
+ * Returns: a new #GladeParameter cloned from @parameter
+ */
 GladeParameter *
 glade_parameter_clone (GladeParameter *parameter)
 {
-	GladeParameter *clon;
+	GladeParameter *clone;
 
 	if (parameter == NULL)
 		return NULL;
 
-	clon = glade_parameter_new ();
-	clon->key = g_strdup (parameter->key);
-	clon->value = g_strdup (parameter->value);
+	clone = glade_parameter_new ();
+	clone->key = g_strdup (parameter->key);
+	clone->value = g_strdup (parameter->value);
 
-	return clon;
+	return clone;
 }
 
 static GladeParameter *
@@ -155,6 +208,17 @@ glade_parameter_new_from_node (GladeXmlNode *node)
 	return parameter;
 }
 
+/**
+ * glade_parameter_list_find_by_key:
+ * @list: a #GList containing #GladeParameters
+ * @key: a string used as a parameter key
+ *
+ * Searches through @list looking for a node which contains a
+ * #GladeParameter matching @key
+ * 
+ * Returns: the #GList node containing the located #GladeParameter,
+ *          or %NULL if none is found
+ */
 GList *
 glade_parameter_list_find_by_key (GList *list, const gchar *key)
 {
@@ -170,7 +234,15 @@ glade_parameter_list_find_by_key (GList *list, const gchar *key)
 	return NULL;
 }
 		
-
+/**
+ * glade_parameter_list_new_from_node:
+ * @list: a #GList node
+ * @node: a #GladeXmlNode
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GList *
 glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
 {
@@ -212,15 +284,14 @@ glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node)
 	return list;
 }
 	
-
 /**
  * glade_parameter_adjustment_new:
- * @parameter: 
+ * @property_class: a #GladePropertyClass
  * 
- * Creates a GtkAdjustment from a list of parameters.
+ * Creates a #GtkAdjustment from the list of parameters inside @property_class.
  * 
- * Return Value: A newly created GtkAdjustment
- **/
+ * Returns: a new #GtkAdjustment
+ */
 GtkAdjustment *
 glade_parameter_adjustment_new (GladePropertyClass *property_class)
 {
@@ -266,4 +337,3 @@ glade_parameter_adjustment_new (GladePropertyClass *property_class)
 							 climb_rate));
 	return adjustment;
 }
-

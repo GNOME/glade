@@ -43,6 +43,13 @@ glade_clipboard_view_init (GladeClipboardView *view)
 	view->model = NULL;
 }
 
+/**
+ * glade_clipboard_view_get_type:
+ *
+ * Creates the typecode for the #GladeClipboardView object type.
+ *
+ * Returns: the typecode for the #GladeClipboardView object type
+ */
 GType
 glade_clipboard_view_get_type ()
 {
@@ -192,12 +199,12 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 
 /**
  * glade_clipboard_view_new:
- * @clipboard
+ * @clipboard: a #GladeClipboard
  * 
- * Create a new #GladeClipboardView widget.
+ * Create a new #GladeClipboardView widget for @clipboard.
  *
- * Return Value: a #GtkWidget.
- **/
+ * Returns: a new #GladeClipboardView cast to be a #GtkWidget
+ */
 GtkWidget *
 glade_clipboard_view_new (GladeClipboard *clipboard)
 {
@@ -212,6 +219,13 @@ glade_clipboard_view_new (GladeClipboard *clipboard)
 	return GTK_WIDGET (view);
 }
 
+/**
+ * glade_clipboard_view_add:
+ * @view: a #GladeClipboardView
+ * @widget: a #GladeWidget
+ *
+ * Adds @widget to @view.
+ */
 void
 glade_clipboard_view_add (GladeClipboardView *view, GladeWidget *widget)
 {
@@ -224,6 +238,13 @@ glade_clipboard_view_add (GladeClipboardView *view, GladeWidget *widget)
 	gtk_list_store_set (view->model, &iter, 0, widget, -1);
 }
 
+/**
+ * glade_cliboard_view_remove:
+ * @view: a #GladeClipboardView
+ * @widget: a #GladeWidget
+ *
+ * Removes @widget from @view.
+ */
 void
 glade_clipboard_view_remove (GladeClipboardView *view, GladeWidget *widget)
 {
@@ -245,4 +266,3 @@ glade_clipboard_view_remove (GladeClipboardView *view, GladeWidget *widget)
 
 	gtk_list_store_remove (view->model, &iter);
 }
-

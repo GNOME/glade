@@ -37,7 +37,13 @@
 #include "glade-property-class.h"
 #include "glade-debug.h"
 
-
+/**
+ * glade_property_type_str_to_enum:
+ * @str: a string representation of a property type
+ *
+ * Returns: the #GladePropertyType described by @str, or 
+ *          %GLADE_PROPERTY_TYPE_ERROR if we do not recognize @str
+ */
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
 {
@@ -65,6 +71,13 @@ glade_property_type_str_to_enum (const gchar *str)
 	return GLADE_PROPERTY_TYPE_ERROR;
 }
 
+/**
+ * glade_property_type_enum_to_string:
+ * @type: a #GladePropertyType
+ *
+ * Returns: a string representing @type, or %NULL if @type is
+ *          either not recognized or is %GLADE_PROPERTY_TYPE_ERROR
+ */
 gchar *
 glade_property_type_enum_to_string (GladePropertyType type)
 {
@@ -97,6 +110,11 @@ glade_property_type_enum_to_string (GladePropertyType type)
 	return NULL;
 }
 
+/**
+ * glade_property_class_new:
+ *
+ * Returns: a new #GladePropertyClass
+ */
 GladePropertyClass *
 glade_property_class_new (void)
 {
@@ -121,54 +139,66 @@ glade_property_class_new (void)
 	return property_class;
 }
 
+/**
+ * glade_property_class_clone:
+ * @property_class: a #GladePropertyClass
+ *
+ * Returns: a new #GladePropertyClass cloned from @property_class
+ */
 GladePropertyClass *
 glade_property_class_clone (GladePropertyClass *property_class)
 {
-	GladePropertyClass *clon;
+	GladePropertyClass *clone;
 
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), NULL);
 
-	clon = g_new0 (GladePropertyClass, 1);
+	clone = g_new0 (GladePropertyClass, 1);
 
-	memcpy (clon, property_class, sizeof(GladePropertyClass));
-	clon->id = g_strdup (clon->id);
-	clon->name = g_strdup (clon->name);
-	clon->tooltip = g_strdup (clon->tooltip);
+	memcpy (clone, property_class, sizeof(GladePropertyClass));
+	clone->id = g_strdup (clone->id);
+	clone->name = g_strdup (clone->name);
+	clone->tooltip = g_strdup (clone->tooltip);
 
 	if (G_IS_VALUE (property_class->def))
 	{
-		clon->def = g_new0 (GValue, 1);
-		g_value_init (clon->def, G_VALUE_TYPE (property_class->def));
-		g_value_copy (property_class->def, clon->def);
+		clone->def = g_new0 (GValue, 1);
+		g_value_init (clone->def, G_VALUE_TYPE (property_class->def));
+		g_value_copy (property_class->def, clone->def);
 	}
 
-	if (clon->parameters)
+	if (clone->parameters)
 	{
 		GList *parameter;
 
-		clon->parameters = g_list_copy (clon->parameters);
+		clone->parameters = g_list_copy (clone->parameters);
 
-		for (parameter = clon->parameters; parameter != NULL; parameter = parameter->next)
+		for (parameter = clone->parameters; parameter != NULL; parameter = parameter->next)
 			parameter->data = glade_parameter_clone ((GladeParameter*) parameter->data);
 	}
 
-	if (clon->choices)
+	if (clone->choices)
 	{
 		GList *choice;
 
-		clon->choices = g_list_copy (clon->choices);
+		clone->choices = g_list_copy (clone->choices);
 
-		for (choice = clon->choices; choice != NULL; choice = choice->next)
+		for (choice = clone->choices; choice != NULL; choice = choice->next)
 			choice->data = glade_choice_clone ((GladeChoice*) choice->data);
 	}
 
 	/* ok, wtf? what is the child member for? */
-	/* if (clon->child)
-		clon->child = glade_widget_class_clone (clon->child); */
+	/* if (clone->child)
+		clone->child = glade_widget_class_clone (clone->child); */
 
-	return clon;
+	return clone;
 }
 
+/**
+ * glade_property_class_free:
+ * @class: a #GladePropertyClass
+ *
+ * Frees @class and its associated memory.
+ */
 void
 glade_property_class_free (GladePropertyClass *class)
 {
@@ -292,6 +322,15 @@ glade_property_class_get_default_from_spec (GParamSpec *spec,
 	return value;
 }
 
+/**
+ * glade_property_class_make_string_from_gvalue:
+ * @property_class:
+ * @value:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
@@ -433,7 +472,15 @@ glade_property_class_make_flags_from_string (GType type, const char *string)
     return ret;
 }
 
-
+/**
+ * glade_property_class_make_gvalue_from_string:
+ * @property_class:
+ * @string:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GValue *
 glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 					      const gchar *string)
@@ -581,6 +628,14 @@ glade_property_get_parameters_numeric (GParamSpec *spec,
 	return list;
 }
 
+/**
+ * glade_property_class_new_from_spec:
+ * @spec:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GladePropertyClass *
 glade_property_class_new_from_spec (GParamSpec *spec)
 {
@@ -640,6 +695,15 @@ lblError:
 	return NULL;
 }
 
+/**
+ * glade_property_class_is_visible:
+ * @property_class:
+ * @widget_class:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 gboolean
 glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class)
 {
@@ -658,9 +722,9 @@ glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidget
  * Updates the @property_class with the contents of the node in the xml
  * file. Only the values found in the xml file are overridden.
  *
- * Return TRUE on success. @property_class is set to NULL if the property
- * has Disabled="TRUE".
- **/
+ * Returns: %TRUE on success. @property_class is set to NULL if the property
+ *          has Disabled="TRUE".
+ */
 gboolean
 glade_property_class_update_from_node (GladeXmlNode *node,
 				       GladeWidgetClass *widget_class,
@@ -793,10 +857,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* If this property can't be set with g_object_set, get the work around
 	 * function
 	 */
-	/* I use here a g_warning to signal these errors instead of a dialog box, as if there is one
-	 * of this kind of errors, there will probably a lot of them, and we don't want to inflict
-	 * the user the pain of plenty of dialog boxes.  Ideally, we should collect these errors,
-	 * and show all of them at the end of the load processus. */
+	/* I use here a g_warning to signal these errors instead of a dialog 
+         * box, as if there is one of this kind of errors, there will probably 
+         * a lot of them, and we don't want to inflict the user the pain of 
+         * plenty of dialog boxes.  Ideally, we should collect these errors, 
+         * and show all of them at the end of the load process.
+         */
 	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
 	if (child)
 	{

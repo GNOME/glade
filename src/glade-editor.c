@@ -109,6 +109,13 @@ glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING (GClosure     *closure,
 		  data2);
 }
 
+/**
+ * glade_editor_get_type:
+ *
+ * Creates the typecode for the #GladeEditor object type.
+ *
+ * Returns: the typecode for the #GladeEditor object type
+ */
 GType
 glade_editor_get_type (void)
 {
@@ -156,6 +163,15 @@ glade_editor_class_init (GladeEditorClass *class)
 	class->add_signal = NULL;
 }
 
+/**
+ * glade_editor_notebook_page:
+ * @name:
+ * @notebook:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GtkWidget *
 glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 {
@@ -194,6 +210,11 @@ glade_editor_init (GladeEditor *editor)
 	editor->loading = FALSE;
 }
 
+/**
+ * glade_editor_new:
+ *
+ * Returns: a new #GladeEditor
+ */
 GladeEditor *
 glade_editor_new ()
 {
@@ -231,7 +252,7 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	g_free (new_name);
 }
 
-/* ================================ Property Changed ==================================== */
+/* ============================ Property Changed ============================ */
 static void
 glade_editor_property_changed_text_common (GladeProperty *property,
 					   const gchar *text)
@@ -642,7 +663,7 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 	gtk_widget_destroy (dialog);
 }
 
-/* ================================ Create inputs ==================================== */
+/* ============================= Create inputs ============================= */
 static GtkWidget *
 glade_editor_create_input_enum_item (GladeEditorProperty *property,
 				     GladeChoice *choice)
@@ -864,6 +885,14 @@ glade_editor_create_input_object (GladeEditorProperty *property,
 	return NULL;
 }
 
+/**
+ * glade_editor_create_item_labe:
+ * @class:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
 GtkWidget *
 glade_editor_create_item_label (GladePropertyClass *class)
 {
@@ -1198,6 +1227,12 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 			    FALSE, TRUE, 0);
 }
 
+/**
+ * glade_editor_update_widget_name:
+ * @editor: a #GladeEditor
+ *
+ * TODO: write me
+ */
 void
 glade_editor_update_widget_name (GladeEditor *editor)
 {
@@ -1229,7 +1264,7 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 	editor->loaded_class = class;
 }
 
-/* ================================ Load properties ================================== */
+/* ============================ Load properties ============================ */
 static void
 glade_editor_property_set_tooltips (GladeEditorProperty *property)
 {
@@ -1632,11 +1667,11 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 
 /**
  * glade_editor_load_widget:
- * @editor: 
- * @widget: 
+ * @editor: a #GladeEditor
+ * @widget: a #GladeWidget
  *
- * Load @widget into the editor, if widget is NULL clear the editor.
- **/
+ * Load @widget into @editor. If @widget is %NULL, clear the editor.
+ */
 void
 glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 {
@@ -1690,6 +1725,14 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 	editor->loading = FALSE;
 }
 
+/**
+ * glade_editor_add_signal:
+ * @editor: a #GladeEditor
+ * @signal_id:
+ * @callback_name:
+ *
+ * TODO: write me
+ */
 void
 glade_editor_add_signal (GladeEditor *editor,
 			 guint signal_id,
@@ -1711,4 +1754,3 @@ glade_editor_add_signal (GladeEditor *editor,
 		       glade_editor_signals [ADD_SIGNAL], 0,
 		       widget_name, widget_type, signal_id, callback_name);
 }
-

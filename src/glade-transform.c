@@ -54,6 +54,11 @@ transform_string_boolean (const GValue *src_value, GValue *dest_value)
 		dest_value->data[0].v_int = 0;
 }
 
+/**
+ * glade_register_transformations:
+ *
+ * TODO: write me
+ */
 void
 glade_register_transformations (void)
 {

@@ -66,7 +66,13 @@ static char *placeholder_xpm[] = {
 	"  ..    "
 };
 
-
+/**
+ * glade_placeholder_get_type:
+ *
+ * Creates the typecode for the #GladePlaceholder object type.
+ *
+ * Returns: the typecode for the #GladePlaceholder object type
+ */
 GType
 glade_placeholder_get_type (void)
 {
@@ -121,7 +127,12 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 	gtk_widget_show (GTK_WIDGET (placeholder));
 }
 
-GtkWidget*
+/**
+ * glade_placeholder_new:
+ * 
+ * Returns: a new #GladePlaceholder cast as a #GtkWidget
+ */
+GtkWidget *
 glade_placeholder_new (void)
 {
 	return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
@@ -135,7 +146,8 @@ glade_placeholder_finalize (GObject *object)
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
 	placeholder = GLADE_PLACEHOLDER (object);
 
-	/* placeholder->placeholder_pixmap can be NULL if the placeholder is destroyed before it's realized */
+	/* placeholder->placeholder_pixmap can be NULL if the placeholder is 
+         * destroyed before it's realized */
 	if (placeholder->placeholder_pixmap)
 		g_object_unref (placeholder->placeholder_pixmap);
 
@@ -328,4 +340,3 @@ glade_placeholder_popup_menu (GtkWidget *widget)
 
 	return TRUE;
 }
-

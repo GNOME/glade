@@ -33,7 +33,7 @@ struct _GladeProject
 			      * requested
 			      */
 
-	GList *widgets; /* A list of GtkWidgets that make up this project.
+	GList *widgets; /* A list of #GtkWidgets that make up this project.
 			 * The widgets are stored in no particular order.
 			 */
 
@@ -41,7 +41,7 @@ struct _GladeProject
 			   * because we have multiple projects and when the
 			   * user switchs between them, he will probably
 			   * not want to loose the selection. This is a list
-			   * of GtkWidget items.
+			   * of #GtkWidget items.
 			   */
 
 	GList *undo_stack; /* A stack with the last executed commands */

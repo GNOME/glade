@@ -36,6 +36,13 @@ static GtkScrolledWindow *parent_class = NULL;
 static void glade_project_view_class_init (GladeProjectViewClass *class);
 static void glade_project_view_init (GladeProjectView *view);
 
+/**
+ * glade_project_view_get_type:
+ *
+ * Creates the typecode for the #GladeProjectView object type.
+ *
+ * Returns: the typecode for the #GladeProjectView object type
+ */
 GType
 glade_project_view_get_type (void)
 {
@@ -108,6 +115,15 @@ glade_project_view_find_iter (GtkTreeModel *model,
 	return NULL;
 }
 
+/**
+ * glade_project_view_find_iter_by_widget:
+ * @model: a #GtkTreeModel
+ * @findme: a #GladeWidget
+ *
+ * Looks through @model for the #GtkTreeIter corresponding to @findme.
+ *
+ * Returns: the #GtkTreeIter from @model corresponding to @findme
+ */
 GtkTreeIter *
 glade_project_view_find_iter_by_widget (GtkTreeModel *model,
 					GladeWidget *findme)
@@ -278,11 +294,11 @@ glade_project_view_remove_item (GladeProjectView *view,
 
 /**
  * glade_project_view_selection_update:
- * @view: 
- * @widget: 
+ * @view: a #GladeProjectView
+ * @widget: a #GladeProject
  * 
  * The project selection has changed, update our state to reflect the changes.
- **/
+ */
 static void
 glade_project_view_selection_update (GladeProjectView *view,
 				     GladeProject *project)
@@ -527,12 +543,12 @@ glade_project_view_selection_update_cb (GladeProject *project,
 
 /**
  * glade_project_view_new:
- * @type: the type of the view. It can be list or tree.
+ * @type: a #GladeProjectViewType
  * 
- * Creates a new project view and ready to be used
+ * Creates a new #GladeProjectView of type @type
  * 
- * Return Value: a newly created project view
- **/
+ * Returns: a new #GladeProjectView
+ */
 GladeProjectView *
 glade_project_view_new (GladeProjectViewType type)
 {
@@ -555,12 +571,12 @@ glade_project_view_new (GladeProjectViewType type)
 
 /**
  * glade_project_view_set_project:
- * @view: The view we are setting the new project for
- * @project: The project the view will represent, this can be NULL for stop beeing
- *           a view of a project.
+ * @view: a #GladeProjectView
+ * @project: a #GladeProject or %NULL
  *
- * Sets the project of a view. 
- **/
+ * Sets the project of @view to @project. If @project is %NULL, @view will
+ * stop being a view of a project.
+ */
 void
 glade_project_view_set_project (GladeProjectView *view,
 				GladeProject	 *project)
@@ -588,9 +604,10 @@ glade_project_view_set_project (GladeProjectView *view,
 
 	model = GTK_TREE_MODEL (view->model);
 
-	/* Set to null while we remove all the items from the store, because we are going to trigger
-	 * selection_changed signal emisions on the View. By setting the project to NULL, _selection_changed_cb
-	 * will just return. Chema
+	/* Set to null while we remove all the items from the store, because we 
+         * are going to trigger selection_changed signal emisions on the View. 
+         * By setting the project to NULL, _selection_changed_cb will just 
+         * return.
 	 */	 
 	view->project = NULL;
 
@@ -607,7 +624,7 @@ glade_project_view_set_project (GladeProjectView *view,
 
 	glade_project_view_populate_model (view);
 
-	/* Here we connect to all the signals of the project that interests us */
+	/* Here we connect to all the signals of the project that interest us */
 	view->add_widget_signal_id =
 		g_signal_connect (G_OBJECT (project), "add_widget",
 				  G_CALLBACK (glade_project_view_add_widget_cb),
@@ -628,15 +645,12 @@ glade_project_view_set_project (GladeProjectView *view,
 
 /**
  * glade_project_view_get_project:
- * @view: 
+ * @view: a #GladeProjectView
  * 
- * Get's the project of a view
- * 
- * Return Value: the project this view is representing
- **/
+ * Returns: the #GladeProject @view represents
+ */
 GladeProject *
 glade_project_view_get_project (GladeProjectView *view)
 {
 	return view->project;
 }
-

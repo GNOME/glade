@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/* This functions are based on gnome-print/libgpa/gpa-xml.c which where in turn based on
- * gnumeric/xml-io.c
+/* This functions are based on gnome-print/libgpa/gpa-xml.c which were in turn 
+ * based on gnumeric/xml-io.c
  */
 /* Authors:
  *   Daniel Veillard <Daniel.Veillard@w3.org>
@@ -35,8 +35,9 @@ struct _GladeXmlContext {
 };
 
 
-/* This is used inside for loops so that we skip xml comments <!-- i am a comment ->
- * also to skip whitespace bettween nodes
+/* This is used inside for loops so that we skip xml comments 
+ * <!-- i am a comment ->
+ * also to skip whitespace between nodes
  */
 #define skip_text(node) if ((strcmp ( ((xmlNodePtr)node)->name, "text") == 0) ||\
 			    (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
@@ -45,9 +46,13 @@ struct _GladeXmlContext {
 			           (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
                                        node = ((xmlNodePtr)node)->next; continue ; };
 
-/*
- * Set a string value for a node either carried as an attibute or as
- * the content of a child.
+/**
+ * glade_xml_set_value:
+ * @node_in: a #GladeXmlNode
+ * @name: a string
+ * @val: a string
+ *
+ * Sets the property @name in @node_in to @val
  */
 void
 glade_xml_set_value (GladeXmlNode *node_in, const char *name, const char *val)
@@ -64,6 +69,14 @@ glade_xml_set_value (GladeXmlNode *node_in, const char *name, const char *val)
 	}
 }
 
+/**
+ * glade_xml_get_content:
+ * @node_in: a #GladeXmlNode
+ *
+ * Returns a string containing the content of @node_in.
+ * Note: It is the caller's responsibility to free the memory used by this 
+ * string.
+ */
 gchar *
 glade_xml_get_content (GladeXmlNode *node_in)
 {
@@ -78,6 +91,13 @@ glade_xml_get_content (GladeXmlNode *node_in)
 	return ret;
 }
 
+/**
+ * glade_xml_set_content:
+ * @node_in: a #GladeXmlNode
+ * @content: a string
+ *
+ * Sets the content of @node to @content.
+ */
 void
 glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
 {
@@ -119,6 +139,13 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 	return NULL;
 }
 
+/**
+ * glade_xml_node_verify_silent:
+ * @node_in: a #GladeXmlNode
+ * @name: a string
+ *
+ * Returns: %TRUE if @node_in's name is equal to @name, %FALSE otherwise
+ */
 gboolean
 glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name)
 {
@@ -131,6 +158,16 @@ glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name)
 	return TRUE;
 }
 
+/**
+ * glade_xml_node_verify:
+ * @node_in: a #GladeXmlNode
+ * @name: a string
+ *
+ * This is a wrapper around glade_xml_node_verify_silent(), only it emits
+ * a g_warning() if @node_in has a name different than @name.
+ *
+ * Returns: %TRUE if @node_in's name is equal to @name, %FALSE otherwise
+ */
 gboolean
 glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
 {
@@ -146,9 +183,16 @@ glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
 	return TRUE;
 }
 
-/*
- * Get an integer value for a node either carried as an attibute or as
+/**
+ * glade_xml_get_value_int:
+ * @node_in: a #GladeXmlNode
+ * @name: a string
+ * @val: a pointer to an #int
+ *
+ * Gets an integer value for a node either carried as an attribute or as
  * the content of a child.
+ *
+ * Returns: %TRUE if the node is found, %FALSE otherwise
  */
 gboolean
 glade_xml_get_value_int (GladeXmlNode *node_in, const char *name, int *val)
@@ -174,14 +218,14 @@ glade_xml_get_value_int (GladeXmlNode *node_in, const char *name, int *val)
 
 /**
  * glade_xml_get_value_int_required:
- * @node: 
- * @name: 
- * @val: 
+ * @node: a #GladeXmlNode
+ * @name: a string
+ * @val: a pointer to an #int
  * 
- * A wrapper arround get_value_int that displays a warning if the
- * node did not contained the requested tag
+ * This is a wrapper around glade_xml_get_value_int(), only it emits
+ * a g_warning() if @node_in did not contain the requested tag
  * 
- * Return Value: 
+ * Returns:
  **/
 gboolean
 glade_xml_get_value_int_required (GladeXmlNode *node, const char *name, int *val)
@@ -640,6 +684,12 @@ glade_xml_doc_free (GladeXmlDoc *doc_in)
 	xmlFreeDoc (doc);
 }
 
+/**
+ * glade_xml_doc_get_root:
+ * @doc: a #GladeXmlDoc
+ *
+ * Returns: the #GladeXmlNode that is the document root of @doc
+ */
 GladeXmlNode *
 glade_xml_doc_get_root (GladeXmlDoc *doc)
 {
@@ -649,4 +699,3 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 
 	return (GladeXmlNode *)node;
 }
-

@@ -27,7 +27,17 @@
 #include "glade-signal.h"
 #include "glade-xml-utils.h"
 
-
+/**
+ * glade_signal_new:
+ * @name: a name for the signal
+ * @handler: a handler function for the signal
+ * @after: #gboolean indicating whether this handler should be called after
+ *         the default handler
+ *
+ * Creates a new #GladeSignal with the given parameters.
+ *
+ * Returns: the new #GladeSignal
+ */
 GladeSignal *
 glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
 {
@@ -40,6 +50,12 @@ glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
 	return signal;
 }
 
+/**
+ * glade_signal_free:
+ * @signal: a #GladeSignal
+ *
+ * Frees @signal and its associated memory.
+ */
 void
 glade_signal_free (GladeSignal *signal)
 {
@@ -50,6 +66,13 @@ glade_signal_free (GladeSignal *signal)
 	g_free (signal);
 }
 
+/**
+ * glade_signal_equal:
+ * @sig1: a #GladeSignal
+ * @sig2: a #GladeSignal
+ *
+ * Returns: %TRUE if @sig1 and @sig2 have identical attributes, %FALSE otherwise
+ */
 gboolean
 glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 {
@@ -66,12 +89,25 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 	return ret;
 }
 
+/**
+ * glade_signal_clone:
+ * @signal: a #GladeSignal
+ *
+ * Returns: a new #GladeSignal with the same attributes as @signal
+ */
 GladeSignal *
 glade_signal_clone (const GladeSignal *signal)
 {
 	return glade_signal_new (signal->name, signal->handler, signal->after);
 }
 
+/**
+ * glade_signal_write:
+ * @context: a #GladeXmlContext
+ * @signal: a #GladeSignal
+ *
+ * Returns: a new #GladeXmlNode in @context for @signal
+ */
 GladeXmlNode *
 glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 {
@@ -86,6 +122,13 @@ glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 	return node;
 }
 
+/**
+ * glade_signal_new_from_node:
+ * @node: a #GladeXmlNode
+ *
+ * Returns: a new #GladeSignal with the attributes defined in @node, %NULL if
+ *          there is an error
+ */
 GladeSignal *
 glade_signal_new_from_node (GladeXmlNode *node)
 {
@@ -104,4 +147,3 @@ glade_signal_new_from_node (GladeXmlNode *node)
 
 	return signal;
 }
-
