@@ -154,16 +154,15 @@ gpw_open_cb (void)
 static void
 gpw_save (GladeProject *project, const gchar *path)
 {
-	GladeProjectWindow *gpw;
+	GladeProjectWindow  *gpw   = glade_project_window_get ();
+	GError              *error = NULL;
 
 	gpw = glade_project_window_get ();
 	
-	if (!glade_project_save (project, path))
+	if (!glade_project_save (project, path, &error))
 	{
-		GladeProjectWindow *gpw;
-
-		gpw = glade_project_window_get ();
-		glade_util_ui_warn (gpw->window, _("Invalid file name"));
+		glade_util_ui_warn (gpw->window, error->message);
+		g_error_free (error);
 		return;
 	}
 
@@ -177,28 +176,29 @@ gpw_save (GladeProject *project, const gchar *path)
 static void
 gpw_save_cb (void)
 {
-	GladeProjectWindow *gpw;
-	GladeProject *project;
-	GtkWidget *filechooser;
-	const gchar *path = NULL;
+	GladeProjectWindow *gpw = glade_project_window_get ();
+	GladeProject       *project;
+	GtkWidget          *filechooser;
+	const gchar        *path  = NULL;
+	GError             *error = NULL;
 
-	gpw = glade_project_window_get ();
 	project = gpw->active_project;
 
-	if (project->path != NULL) {
-		if (glade_project_save (project, project->path)) {
-			glade_util_flash_message (gpw->statusbar,
-						  gpw->statusbar_actions_context_id,
-						  _("Project '%s' saved"),
-						  project->name);
-		} else {
-			GladeProjectWindow *gpw;
-
-			gpw = glade_project_window_get ();
-			glade_util_ui_warn (gpw->window,
-					    _("Invalid file name"));
+	if (project->path != NULL) 
+	{
+		if (glade_project_save (project, project->path, &error)) 
+		{
+			glade_util_flash_message 
+				(gpw->statusbar,
+				 gpw->statusbar_actions_context_id,
+				 _("Project '%s' saved"),
+				 project->name);
+		} 
+		else 
+		{
+			glade_util_ui_warn (gpw->window, error->message);
+			g_error_free (error);
 		}
-
 		return;
 	}
 
@@ -251,6 +251,7 @@ gpw_confirm_close_project (GladeProject *project)
 	gboolean close = FALSE;
 	char *msg;
 	gint ret;
+	GError *error = NULL;
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
@@ -284,7 +285,12 @@ gpw_confirm_close_project (GladeProject *project)
 		 */
 		if (project->path != NULL)
 		{
-			close = glade_project_save (project, project->path);
+			if ((close = glade_project_save
+			     (project, project->path, &error)) == FALSE)
+			{
+				glade_util_ui_warn (gpw->window, error->message);
+				g_error_free (error);
+			}
 		}
 		else
 		{
@@ -433,7 +439,7 @@ gpw_cut_cb (void)
 static void
 gpw_paste_cb (void)
 {
-	glade_util_paste_clipboard ();
+	glade_util_paste_clipboard (NULL);
 }
 
 static void
@@ -511,11 +517,22 @@ gpw_palette_button_clicked (GladePalette *palette, gpointer not_used)
 		glade_palette_unselect_widget (gpw->palette);
 		gpw->add_class = NULL;
 	}
-	else
-	{
-		gpw->add_class = class;
-	}
+	else if ((gpw->add_class = class) != NULL)
+		gpw->alt_class = class;
+
 }
+
+static void
+gpw_palette_catalog_changed (GladePalette *palette, gpointer not_used)
+{
+	GladeProjectWindow *gpw = glade_project_window_get ();
+
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
+
+	glade_palette_unselect_widget (gpw->palette);
+	gpw->alt_class = gpw->add_class = NULL;
+}
+
 
 static void
 gpw_create_palette (GladeProjectWindow *gpw)
@@ -542,6 +559,9 @@ gpw_create_palette (GladeProjectWindow *gpw)
 
 	g_signal_connect (G_OBJECT (gpw->palette), "toggled",
 			  G_CALLBACK (gpw_palette_button_clicked), NULL);
+
+	g_signal_connect (G_OBJECT (gpw->palette), "catalog-changed",
+			  G_CALLBACK (gpw_palette_catalog_changed), NULL);
 
 	palette_item = gtk_item_factory_get_item (gpw->item_factory,
 						  "<main>/View/Palette");
@@ -1247,6 +1267,7 @@ glade_project_window_new (GList *catalogs)
 	gpw = g_new0 (GladeProjectWindow, 1);
 	gpw->catalogs = catalogs;
 	gpw->add_class = NULL;
+	gpw->alt_class = NULL;
 
 	glade_project_window = gpw;
 

@@ -1041,57 +1041,57 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			      gpointer         user_data)
 {
 	GladeProjectWindow *gpw;
+	GladeWidget   *gwidget;
+	GladeWidget   *fixed_gwidget;
+	GladeProperty *property;
+	GValue         value = { 0, };
 	
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		gpw = glade_project_window_get ();
-		if (gpw->add_class != NULL)
+		gpw           = glade_project_window_get ();
+		fixed_gwidget = glade_widget_get_from_gobject (widget);
+
+		/* If there is a class to add and we successfully
+		 * create a widget.
+		 */
+		if (((gpw->add_class != NULL)         ||
+		     ((event->state & GDK_SHIFT_MASK) &&
+		      gpw->alt_class != NULL))        &&
+		    ((gwidget = glade_command_create
+		      (gpw->add_class ? gpw->add_class : gpw->alt_class,
+		       fixed_gwidget, NULL, fixed_gwidget->project)) != NULL))
 		{
-			GtkWidget     *new_widget;
-			GladeWidget   *new_gwidget;
-			GladeWidget   *fixed_gwidget;
-			GladeProperty *property;
-			GList         *selection;
-			GValue         value = { 0, };
+			/* reset the palette */
+			glade_palette_unselect_widget (gpw->palette);
 
-			fixed_gwidget = glade_widget_get_from_gobject (widget);
-			
-			glade_command_create (gpw->add_class, fixed_gwidget, NULL, NULL);
-
-			selection = glade_project_selection_get
-				(glade_project_window_get_active_project(gpw));
-
-			new_widget  = GTK_WIDGET(selection->data);
-			new_gwidget = glade_widget_get_from_gobject(new_widget);
-			
 			g_value_init (&value, G_TYPE_INT);
-
-			property = glade_widget_get_property (new_gwidget, "x");
+			
+			property = glade_widget_get_property (gwidget, "x");
 			property->enabled = TRUE;
 			g_value_set_int (&value, event->x);
 			glade_property_set (property, &value);
-
-			property = glade_widget_get_property (new_gwidget, "y");
+			
+			property = glade_widget_get_property (gwidget, "y");
 			property->enabled = TRUE;
 			g_value_set_int (&value, event->y);
 			glade_property_set (property, &value);
 			
-			property = glade_widget_get_property (new_gwidget, "width-request");
+			property = glade_widget_get_property
+				(gwidget, "width-request");
 			property->enabled = TRUE;
 			g_value_set_int (&value, FIXED_DEFAULT_CHILD_WIDTH);
 			glade_property_set (property, &value);
-
-			property = glade_widget_get_property (new_gwidget, "height-request");
+			
+			property = glade_widget_get_property
+				(gwidget, "height-request");
 			property->enabled = TRUE;
 			g_value_set_int (&value, FIXED_DEFAULT_CHILD_HEIGHT);
 			glade_property_set (property, &value);
-
+			
 			/* We need to resync the editor so that width-request/height-request
 			 * are actualy enabled in the editor
 			 */
-			glade_editor_load_widget (gpw->editor, NULL);
-			glade_editor_load_widget (gpw->editor, new_gwidget);
-			
+			glade_editor_refresh (gpw->editor);
 		}
 		return TRUE;
 	}

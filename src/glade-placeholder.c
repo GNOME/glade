@@ -311,21 +311,35 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		if (gpw->add_class != NULL)
+		if (event->state & GDK_CONTROL_MASK)
+		{
+			if (glade_util_has_selection (widget))
+				glade_util_remove_selection (widget);
+			else
+				glade_util_add_selection (widget);
+		} 
+		else if ((gpw->add_class != NULL)        ||
+			 ((event->state & GDK_SHIFT_MASK) &&
+			  gpw->alt_class != NULL))
 		{
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
-			glade_command_create (gpw->add_class, 
-					      glade_placeholder_get_parent (placeholder),
-					      placeholder, project);
+			glade_command_create
+				(gpw->add_class ? gpw->add_class : gpw->alt_class, 
+				 glade_placeholder_get_parent (placeholder),
+				 placeholder, project);
 
 			/* reset the palette */
 			glade_palette_unselect_widget (gpw->palette);
 		}
 		else
 		{
-			glade_project_selection_set (project, G_OBJECT (placeholder), TRUE);
+			glade_project_selection_clear 
+				(glade_project_window_get_active_project 
+				 (gpw), TRUE);
+			glade_util_clear_selection ();
+			glade_util_add_selection (widget);
 		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)

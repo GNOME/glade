@@ -750,7 +750,7 @@ glade_command_delete (GList *widgets)
 			g_object_ref (G_OBJECT (cdata->placeholder));
 			gtk_object_sink (GTK_OBJECT (cdata->placeholder));
 		}
-		me->widgets = g_list_append (me->widgets, cdata);
+		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
 
 	if (g_list_length (widgets) == 1)
@@ -775,8 +775,10 @@ glade_command_delete (GList *widgets)
  *
  * Creates a new widget of @class and put in place of the @placeholder
  * in the @project
+ *
+ * Returns the newly created widget.
  */
-void
+GladeWidget *
 glade_command_create (GladeWidgetClass *class,
 		      GladeWidget      *parent,
 		      GladePlaceholder *placeholder,
@@ -784,11 +786,12 @@ glade_command_create (GladeWidgetClass *class,
 {
 	GladeCommandCreateDelete *me;
 	CommandData              *cdata;
+	GladeWidget              *widget;
 		
-	g_return_if_fail (class   != NULL);
-	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_val_if_fail (class != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	if (g_type_is_a (class->type, GTK_TYPE_WINDOW) == FALSE)
-		g_return_if_fail (GLADE_IS_WIDGET (parent));
+		g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 
  	me            = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
 	me->create    = TRUE;
@@ -802,11 +805,12 @@ glade_command_create (GladeWidgetClass *class,
 
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
-	if ((cdata->widget = glade_widget_new (parent, class, project)) == NULL)
+	if ((widget = glade_widget_new (parent, class, project)) == NULL)
 	{
 		g_object_unref (G_OBJECT (me));
-		return;
+		return NULL;
 	}
+	cdata->widget = widget;
 
 	GLADE_COMMAND (me)->description  =
 		g_strdup_printf (_("Create %s"), 
@@ -816,6 +820,8 @@ glade_command_create (GladeWidgetClass *class,
 		glade_command_push_undo (project, GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
+
+	return widget;
 }
 
 typedef enum {
@@ -955,7 +961,7 @@ glade_command_copy_execute (GladeCommandCutCopyPaste *me)
 	GList              *list, *add = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
-		g_list_prepend (add, ((CommandData *)list->data)->widget);
+		add = g_list_prepend (add, ((CommandData *)list->data)->widget);
 
 	if (add)
 	{
@@ -972,7 +978,7 @@ glade_command_copy_undo (GladeCommandCutCopyPaste *me)
 	GList              *list, *remove = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
-		g_list_prepend (remove, ((CommandData *)list->data)->widget);
+		remove = g_list_prepend (remove, ((CommandData *)list->data)->widget);
 
 	if (remove)
 	{
@@ -1072,11 +1078,10 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	GladeCommandCutCopyPaste *me;
 	CommandData              *cdata;
 	GladeWidget              *widget;
-	GladeProject             *project;
 	GList                    *list;
 	gchar                    *fmt;
 
-	g_return_if_fail (widgets != NULL);
+	g_return_if_fail (widgets && widgets->data);
 
 	/* Some prelimenary error checking here */
 	switch (type) {
@@ -1127,8 +1132,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	}
 
 	/* And now we feel safe enough to go on and create */
-	widget             = widgets->data;
-	project            = widget->project;
 	me                 = (GladeCommandCutCopyPaste *) 
 		g_object_new (GLADE_COMMAND_CUT_COPY_PASTE_TYPE, NULL);
 	me->type           = type;
@@ -1173,14 +1176,16 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		else if (placeholder != NULL)
 			cdata->placeholder = g_object_ref (placeholder);
 
-		me->widgets = g_list_append (me->widgets, cdata);
+		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
 
 	/*
 	 * Push it onto the undo stack only on success
 	 */
 	if (glade_command_cut_copy_paste_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (project, GLADE_COMMAND (me));
+		glade_command_push_undo 
+			(glade_project_window_get_active_project (gpw),
+			 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 }

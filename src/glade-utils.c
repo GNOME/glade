@@ -37,8 +37,12 @@
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
 
-#define GLADE_UTIL_HAS_NODES "glade_util_has_nodes"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
+
+/* List of widgets that have selection
+ */
+static GList *glade_util_selection = NULL;
+
 
 /**
  * glade_util_widget_set_tooltip:
@@ -687,19 +691,16 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 	GtkWidget *expose_widget;
 	gint expose_win_x, expose_win_y;
 	gint expose_win_w, expose_win_h;
-	GladeWidget *expose_gwidget;
 	GdkWindow   *expose_toplevel;
 	GdkGC *gc;
 	GList *elem;
 
-	/* Find the corresponding GtkWidget and GladeWidget. */
-	gdk_window_get_user_data (expose_win, (gpointer *)&expose_widget);
-	if ((expose_gwidget = glade_widget_get_from_gobject(expose_widget)) == NULL)
-		goto out;
-
 	/* Check that the window is still alive. */
 	if (!gdk_window_is_viewable (expose_win))
 		goto out;
+
+	/* Find the corresponding GtkWidget */
+	gdk_window_get_user_data (expose_win, (gpointer *)&expose_widget);
 
 	gc = expose_widget->style->black_gc;
 
@@ -712,17 +713,14 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 	gdk_drawable_get_size (expose_win,
 			       &expose_win_w, &expose_win_h);
 
-	/* Step through all the selected widgets in the project. */
-	for (elem = expose_gwidget->project->selection; elem; elem = elem->next) {
+	/* Step through all the selected widgets. */
+	for (elem = glade_util_selection; elem; elem = elem->next) {
 
 		GtkWidget *sel_widget;
 		GdkWindow *sel_win, *sel_toplevel;
 		gint sel_x, sel_y, x, y, w, h;
 
 		sel_widget = elem->data;
-		
-		if (!GTK_IS_WIDGET (sel_widget))
-			continue;
 		
 		if ((sel_win = glade_util_get_window_positioned_in (sel_widget)) == NULL)
 			continue;
@@ -787,47 +785,76 @@ glade_util_queue_draw_nodes (GdkWindow *window)
  * glade_util_add_selection:
  * @widget: a #GtkWidget
  *
- * TODO: write me
+ * Add visual selection to this GtkWidget
  */
 void
-glade_util_add_selection (GObject *object)
+glade_util_add_selection (GtkWidget *widget)
 {
-	g_object_set_data (object, GLADE_UTIL_HAS_NODES,
-			   GINT_TO_POINTER (1));
-	if (GTK_IS_WIDGET (object))
-		gtk_widget_queue_draw (GTK_WIDGET (object));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	if (glade_util_has_selection (widget))
+		return;
+
+	glade_util_selection = 
+		g_list_prepend (glade_util_selection, widget);
+	gtk_widget_queue_draw (widget);
 }
 
 /**
  * glade_util_remove_selection:
  * @widget: a #GtkWidget
  *
- * TODO: write me
+ * Remove visual selection from this GtkWidget
  */
 void
-glade_util_remove_selection (GObject *object)
+glade_util_remove_selection (GtkWidget *widget)
 {
-	g_object_set_data (object, GLADE_UTIL_HAS_NODES, GINT_TO_POINTER (0));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	if (!glade_util_has_selection (widget))
+		return;
+
+	glade_util_selection = 
+		g_list_remove (glade_util_selection, widget);
 
 	/* We redraw the parent, since the selection rectangle may not be
 	   cleared if we just redraw the widget itself. */
-	if (GTK_IS_WIDGET (object))
-		gtk_widget_queue_draw (GTK_WIDGET (object)->parent ?
-				       GTK_WIDGET (object)->parent :
-				       GTK_WIDGET (object));
+	gtk_widget_queue_draw (widget->parent ?
+			       widget->parent : widget);
+}
+
+/**
+ * glade_util_clear_selection:
+ *
+ * Clear all visual selections
+ */
+void
+glade_util_clear_selection (void)
+{
+	GtkWidget *widget;
+	GList     *list;
+
+	for (list = glade_util_selection;
+	     list && list->data;
+	     list = list->next)
+	{
+		widget = list->data;
+		gtk_widget_queue_draw (widget->parent ?
+				       widget->parent : widget);
+	}
+	glade_util_selection =
+		(g_list_free (glade_util_selection), NULL);
 }
 
 /**
  * glade_util_has_selectoin:
  * @widget: a #GtkWidget
  *
- * Returns: %TRUE if @widget has nodes, %FALSE otherwise
+ * Returns: %TRUE if @widget has visual selection, %FALSE otherwise
  */
 gboolean
-glade_util_has_selection (GObject *object)
+glade_util_has_selection (GtkWidget *widget)
 {
-	return GPOINTER_TO_INT (g_object_get_data
-				(object, GLADE_UTIL_HAS_NODES)) != 0;
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	return g_list_find (glade_util_selection, widget) != NULL;
 }
 
 /*
@@ -995,39 +1022,47 @@ glade_util_widget_pastable (GladeWidget *child,
 
 /**
  * glade_util_paste_clipboard:
+ * @placeholder: The #GladePlaceholder to paste the clipboard item to,
+ *               if NULL; paste to the selected object in the active project.
  *
  * Paste the clipboard selection to the active project's 
  * selection (the project must have only one object selected).
  */
 void
-glade_util_paste_clipboard (void)
+glade_util_paste_clipboard (GladePlaceholder *placeholder)
 {
-	GladeProjectWindow *gpw;
+	GladeProjectWindow *gpw     = glade_project_window_get ();
+	GladeProject       *project = glade_project_window_get_active_project (gpw);
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget, *parent;
-	GladePlaceholder   *placeholder = NULL;
 
-	gpw = glade_project_window_get ();
-
-	if ((list = glade_project_selection_get (gpw->active_project)) == NULL)
+      
+	if ((list = glade_project_selection_get (project)) != NULL)
 	{
-		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		if (placeholder == NULL &&
+		    g_list_length (list) != 1)
+		{
+			glade_util_ui_warn 
+				(gpw->window, _("Unable to paste to multiple widgets"));
+			return;
+		}
+	}
+	else if (placeholder == NULL)
+	{
+		glade_util_ui_warn (gpw->window, _("No target widget selected"));
 		return;
 	}
-	else if (g_list_length (list) > 1)
+
+	if (g_list_length (gpw->clipboard->selection) == 0)
 	{
-		glade_util_ui_warn 
-			(gpw->window, _("Unable to paste to multiple widgets"));
+		glade_util_ui_warn (gpw->window, _("No widget selected on the clipboard"));
 		return;
 	}
 
-	if (GLADE_IS_PLACEHOLDER (list->data))
-	{
-		placeholder = list->data;
-		parent      = glade_placeholder_get_parent (placeholder);
-	}
+	if (placeholder)
+		parent = glade_placeholder_get_parent (placeholder);
 	else
-		parent = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		parent = glade_widget_get_from_gobject (list->data);
 
 	for (list = gpw->clipboard->selection; 
 	     list && list->data; list = list->next)
@@ -1058,13 +1093,12 @@ glade_util_paste_clipboard (void)
 void
 glade_util_cut_selection (void)
 {
-	GladeProjectWindow *gpw;
+	GladeProjectWindow *gpw     = glade_project_window_get ();
+	GladeProject       *project = glade_project_window_get_active_project (gpw);
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
-
-	gpw = glade_project_window_get ();
 	
-	for (list = glade_project_selection_get (gpw->active_project);
+	for (list = glade_project_selection_get (project);
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -1090,17 +1124,17 @@ glade_util_cut_selection (void)
 void
 glade_util_copy_selection (void)
 {
-	GladeProjectWindow *gpw;
+	GladeProjectWindow *gpw     = glade_project_window_get ();
+	GladeProject       *project = glade_project_window_get_active_project (gpw);
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
-
-	gpw = glade_project_window_get ();
 	
-	for (list = glade_project_selection_get (gpw->active_project);
+	for (list = glade_project_selection_get (project);
 	     list && list->data; list = list->next)
 	{
-		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
-		widgets = g_list_prepend (widgets, widget);
+		if ((widget = 
+		     glade_widget_get_from_gobject (list->data)) != NULL)
+			widgets = g_list_prepend (widgets, widget);
 	}
 
 	if (widgets)
@@ -1155,8 +1189,14 @@ glade_util_find_iter (GtkTreeModel *model,
 {
 	GtkTreeIter *retval = NULL;
 	GladeWidget *widget;
-	GtkTreeIter *next = gtk_tree_iter_copy (iter);
-	
+	GtkTreeIter *next;
+
+	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
+	g_return_val_if_fail (iter != NULL, NULL);
+
+	next = gtk_tree_iter_copy (iter);
+	g_return_val_if_fail (next != NULL, NULL);
+
 	while (retval == NULL)
 	{
 		gtk_tree_model_get (model, next, column, &widget, -1);
@@ -1205,7 +1245,7 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 				gint          column)
 {
 	GtkTreeIter iter;
-	if (gtk_tree_model_get_iter_root (model, &iter))
+	if (gtk_tree_model_get_iter_first (model, &iter))
 	{
 		return glade_util_find_iter (model, &iter, findme, column);
 	}

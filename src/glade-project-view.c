@@ -205,32 +205,39 @@ gpv_find_preceeding_sibling (GtkTreeModel *model,
 	GtkTreeIter *retval = NULL, next;
 	GladeWidget *w, *sibling = NULL;
 
-	if (gtk_tree_model_iter_has_child (model, parent_iter))
-	{
-		gtk_tree_model_iter_children (model, &next, parent_iter);
-		while (42)
-		{
-			gtk_tree_model_get (model, &next, 
-					    WIDGET_COLUMN, &w, -1);
-		
-			/* If this sibling (w) is less than widget and
-			 * the last found sibling is less then this one
-			 */
-			if ((strcmp (glade_widget_get_name (w),
-				     glade_widget_get_name (widget)) < 0) &&
-			    (sibling == NULL || 
-			     strcmp (glade_widget_get_name (sibling),
-				     glade_widget_get_name (w)) < 0))
-			{
-				sibling = widget;
-				if (retval)
-					gtk_tree_iter_free (retval);
-				retval = gtk_tree_iter_copy (&next);
-			}
+	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
 
-			if (!gtk_tree_model_iter_next (model, &next))
-				break;
+	if (!parent_iter)
+		gtk_tree_model_get_iter_first (model, &next);
+	else
+	{
+		g_return_val_if_fail
+			(gtk_tree_model_iter_has_child (model,
+							parent_iter), NULL);
+		gtk_tree_model_iter_children (model, &next, parent_iter);
+	}
+		
+	while (42)
+	{
+		gtk_tree_model_get (model, &next, WIDGET_COLUMN, &w, -1);
+		
+		/* If this sibling (w) is less than widget and
+		 * the last found sibling is less then this one
+		 */
+		if ((strcmp (glade_widget_get_name (w),
+			     glade_widget_get_name (widget)) < 0) &&
+		    (sibling == NULL || 
+		     strcmp (glade_widget_get_name (sibling),
+			     glade_widget_get_name (w)) < 0))
+		{
+			sibling = widget;
+			if (retval)
+				gtk_tree_iter_free (retval);
+			retval = gtk_tree_iter_copy (&next);
 		}
+
+		if (!gtk_tree_model_iter_next (model, &next))
+			break;
 	}
 	return retval;
 }

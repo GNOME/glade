@@ -1,3 +1,34 @@
+2005-01-01  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-command.c: g_list_prepend in loops and 
+	  glade_project_window_get_active_project to get the active project.
+
+	* src/glade-placeholder.c: Fixed selection in placeholders and now create
+	  previously selected widget class objects with SHIFT->leftclick. 
+
+	* src/glade-popup.c: glade_project_window_get_active_project to get the 
+	  active project, fixed paste in clipboard.
+
+	* src/glade-project-window.[ch]: Fixed bug 162102, (no error messages 
+	  when save fails) mostly in the patch to libglade sitting on bug 161903 
+	  which now offers fine grained error detection on save. Also implemented 
+	  alt_class which is available to create widgets with SHIFT->leftclick.
+
+	* src/glade-project.[ch]: Adaptation to upgraded glade-utils selection 
+	  scheme plus some modifications pertaining to bug 162102.
+	
+	* src/glade-utils.[ch]: Upgraded selection scheme, fixed some bugs in the
+	  "cut/copy/paste/delete"-"selection/clipboard" helpers.
+
+	* src/glade-palette.[ch]: Implemented "catalog-changed" signal so that 
+	  glade-project-window can refresh add_class/alt_class when the currently
+	  selected catalog changes.
+
+	* src/glade-gtk.c: Implemented alt_class and fixed brokenness that had went
+	  unnoticed (segfaults on child properties).
+
+	* src/glade-project-view.[ch]: Fixed sorting for toplevels.
+	
 2004-12-31  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-project-view.c: Now treestore items are inserted sorted

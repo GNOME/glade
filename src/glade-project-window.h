@@ -37,12 +37,20 @@ struct _GladeProjectWindow
 	GList *catalogs;               /* See glade-catalog */
 	GtkWidget *toolbar_undo;       /* undo item on the toolbar */
 	GtkWidget *toolbar_redo;       /* redo item on the toolbar */
+
 	GladeWidgetClass *add_class;   /* The GladeWidgetClass that we are about
 					* to add to a container. NULL if no
 					* class is to be added. This also has to
 					* be in sync with the depressed button
 					* in the GladePalette
 					*/
+
+	GladeWidgetClass *alt_class;  /* The alternate class is always the same as
+				       * add_class except when add_class is NULL. (This is
+				       * so that the user can enter many of the same widget
+				       * without having to reselect widgets in the palette).
+				       */
+
 
 	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */

@@ -291,27 +291,20 @@ glade_project_add_object (GladeProject *project, GObject *object)
 	if (GLADE_IS_PLACEHOLDER (object))
 		return;
 
+	/* Only widgets accounted for in the catalog or widgets declared
+	 * in the plugin with glade_widget_new_for_internal_child () are
+	 * usefull in the project.
+	 */
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
 
-	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
-								   gwidget->object)) != NULL)
+	if ((children = glade_widget_class_container_get_children
+	     (gwidget->widget_class, gwidget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 			glade_project_add_object (project, G_OBJECT (list->data));
 		g_list_free (children);
 	}
-
-	/* The internal widgets (e.g. the label of a GtkButton) are handled
-	 * by gtk and don't have an associated GladeWidget: we don't want to
-	 * add these to our list. It would be nicer to have a flag to check
-	 * (as we do for placeholders) instead of checking for the associated
-	 * GladeWidget, so that we can assert that if a widget is _not_ internal,
-	 * it _must_ have a corresponding GladeWidget... Anyway this suffice
-	 * for now.
-	 */
-	if (!gwidget)
-		return;
 
 	glade_widget_set_project (gwidget, project);
 	g_hash_table_insert (project->widget_old_names,
@@ -553,19 +546,11 @@ glade_project_is_selected (GladeProject *project,
 void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 {
-	GObject *object;
-	GList *list;
-
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-
 	if (project->selection == NULL)
 		return;
 
-	for (list = project->selection; list; list = list->next)
-	{
-		object = list->data;
-		glade_util_remove_selection (object);
-	}
+	glade_util_clear_selection ();
 
 	g_list_free (project->selection);
 	project->selection = NULL;
@@ -594,7 +579,8 @@ glade_project_selection_remove (GladeProject *project,
 
 	if (glade_project_is_selected (project, object))
 	{
-		glade_util_remove_selection (object);
+		if (GTK_IS_WIDGET (object))
+			glade_util_remove_selection (GTK_WIDGET (object));
 		project->selection = g_list_remove (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -618,10 +604,12 @@ glade_project_selection_add (GladeProject *project,
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
+	g_return_if_fail (g_list_find (project->objects, object) != NULL);
 
 	if (glade_project_is_selected (project, object) == FALSE)
 	{
-		glade_util_add_selection (object);
+		if (GTK_IS_WIDGET (object))
+			glade_util_add_selection (GTK_WIDGET (object));
 		project->selection = g_list_prepend (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -645,6 +633,7 @@ glade_project_selection_set (GladeProject *project,
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
+	g_return_if_fail (g_list_find (project->objects, object) != NULL);
 
 	if (glade_project_is_selected (project, object) == FALSE ||
 	    g_list_length (project->selection) != 1)
@@ -791,16 +780,18 @@ glade_project_open (const gchar *path)
 /**
  * glade_project_save:
  * @project: a #GladeProject
- * @path:
+ * @path: location to save glade file
+ * @error: an error from the G_FILE_ERROR domain.
  * 
  * Saves @project to the given path. 
  *
  * Returns: %TRUE on success, %FALSE on failure
  */
 gboolean
-glade_project_save (GladeProject *project, const gchar *path)
+glade_project_save (GladeProject *project, const gchar *path, GError **error)
 {
 	GladeInterface *interface;
+	gboolean        ret;
 
 	interface = glade_project_write (project);
 	if (!interface)
@@ -808,7 +799,8 @@ glade_project_save (GladeProject *project, const gchar *path)
 		g_warning ("Could not write glade document\n");
 		return FALSE;
 	}
-	glade_interface_dump (interface, path);
+
+	ret = glade_interface_dump_full (interface, path, error);
 	glade_interface_destroy (interface);
 
 	if (path != project->path)
@@ -821,7 +813,7 @@ glade_project_save (GladeProject *project, const gchar *path)
 
 	project->changed = FALSE;
 
-	return TRUE;
+	return ret;
 }
 
 /**

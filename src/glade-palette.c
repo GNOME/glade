@@ -36,6 +36,7 @@
 enum
 {
 	TOGGLED,
+	CATALOG_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -54,6 +55,10 @@ glade_palette_class_init (GladePaletteClass *class)
 
 	parent_class = g_type_class_peek_parent (class);
 
+
+	class->toggled        = NULL;
+	class->catalog_change = NULL;
+
 	glade_palette_signals[TOGGLED] =
 		g_signal_new ("toggled",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -63,6 +68,18 @@ glade_palette_class_init (GladePaletteClass *class)
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
 			      0);
+
+	glade_palette_signals[CATALOG_CHANGED] =
+		g_signal_new ("catalog-changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladePaletteClass, catalog_change),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+
 }
 
 static void
@@ -108,6 +125,9 @@ glade_palette_on_catalog_selector_changed (GtkWidget *combo_box,
 
 	/* Select that catalog in the notebook. */
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (palette->notebook), page);
+
+	g_signal_emit (G_OBJECT (palette), glade_palette_signals[CATALOG_CHANGED], 0);
+
 }
 
 static GtkWidget *

@@ -68,7 +68,9 @@ GType         glade_project_get_type (void);
 
 GladeProject *glade_project_new                 (gboolean     untitled);
 GladeProject *glade_project_open                (const gchar  *path);
-gboolean      glade_project_save                (GladeProject *project, const gchar *path);
+gboolean      glade_project_save                (GladeProject *project, 
+						 const gchar  *path, 
+						 GError      **error);
 void          glade_project_add_object          (GladeProject *project, GObject     *object);
 void          glade_project_remove_object       (GladeProject *project, GObject     *object);
 GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
