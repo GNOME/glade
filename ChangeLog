@@ -1,3 +1,9 @@
+2003-08-25  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-widget.c (glade_widget_new_from_node_real): replace call to
+	glade_widget_class_get_by_name to glade_widget_class_get_from_name.
+	Fixes .glade load bug.
+
 2003-08-24  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-widget-class.c (glade_widget_class_remove_duplicated_properties): 

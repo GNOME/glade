@@ -1292,7 +1292,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	if (!class_name || !widget_name)
 		return NULL;
-	class = glade_widget_class_get_by_name (class_name);
+	class = glade_widget_class_get_from_name (class_name);
 	if (!class)
 		return NULL;
 	widget = glade_widget_new_full (class, project, parent);
