@@ -10,9 +10,11 @@ typedef enum {
 	GLADE_PROPERTY_TYPE_BOOLEAN,
 	GLADE_PROPERTY_TYPE_FLOAT,
 	GLADE_PROPERTY_TYPE_INTEGER,
+	GLADE_PROPERTY_TYPE_DOUBLE,
 	GLADE_PROPERTY_TYPE_TEXT,
 	GLADE_PROPERTY_TYPE_CHOICE,
 	GLADE_PROPERTY_TYPE_OTHER_WIDGETS,
+	GLADE_PROPERTY_TYPE_OBJECT,
 	GLADE_PROPERTY_TYPE_ERROR
 } GladePropertyType;
 
@@ -94,19 +96,22 @@ typedef enum {
 
  */
 
+#define GLADE_PROPERTY_CLASS(gpc) ((GladePropertyClass *) gpc)
+#define GLADE_IS_PROPERTY_CLASS(gpc) (gpc != NULL)
+
 struct _GladePropertyClass {
 
 	GladePropertyType type; /* The type of property from GladePropertyType
 				 */
 
-	gchar *name;     /* The name of the property. Like "Label" or "xpad"
+	gchar *id;       /* The id of the property. Like "label" or "xpad"
+			  * this is a non-translatable string
+			  */
+	gchar *name;     /* The name of the property. Like "Label" or "X Pad"
 			  * this is a translatable string
 			  */
 	gchar *tooltip; /* The tooltip. Currently unimplemented. Not sure if
 			 * it should go here
-			 */
-	gchar *gtk_arg; /* The gtk arg to modify this property. Like
-			 * "label" from "GtkLabel::label"
 			 */
 
 	GList *parameters; /* list of GladeParameter objects. This list
@@ -129,7 +134,22 @@ struct _GladePropertyClass {
 			    * left that enables/disables de input
 			    */
 
-	GladePropertyQuery *query; 
+	GladePropertyQuery *query;
+
+	GList *children; /* A list of GladeWidgetClass pointer of objects
+			 * that we need to set for this widget
+			 * for example : GtkSpinButton has a Adjustment inside
+			 * a GtkCombo has an entry inside and a GtkClist which
+			 * makes a drop dowm menu
+			 */
+
+	void (*set_function) (GObject *object,
+			      const gchar *value);
+		       /* If this property can't be set with g_object_set then
+		       * we need to implement it inside glade. This is a pointer
+		       * to the function that can set this property. The functions
+		       * to work arround this problems are inside glade-gtk.c
+		       */
 };
 
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
@@ -137,6 +157,8 @@ GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
 GList * glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *class);
 
 GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
+
+gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
 G_END_DECLS
 

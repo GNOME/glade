@@ -284,7 +284,7 @@ glade_placeholder_add (GladeWidgetClass *class,
 		gint i;
 		gint size;
 		
-		glade_property_query_result_get_int (result, "Size", &size);
+		glade_property_query_result_get_int (result, "size", &size);
 
 		for (i = 0; i < size; i++) {
 			placeholder = glade_placeholder_new (widget);
@@ -296,10 +296,10 @@ glade_placeholder_add (GladeWidgetClass *class,
 	
 	if ((strcmp (class->name, "GtkTable") == 0)) {
 		gint row, col;
-		gint rows, cols;
-		
-		glade_property_query_result_get_int (result, "Rows", &rows);
-		glade_property_query_result_get_int (result, "Columns", &cols);
+		gint rows = 6, cols = 6;
+
+		glade_property_query_result_get_int (result, "rows", &rows);
+		glade_property_query_result_get_int (result, "columns", &cols);
 
 		for (row = 0; row < rows; row++) {
 			for (col = 0; col < cols; col++) {

@@ -170,8 +170,10 @@ glade_xml_get_value_string (xmlNodePtr node, const char *name)
 	return glade_xml_get_value (node, name);
 }
 
-#define GLADE_TAG_TRUE  "True"
-#define GLADE_TAG_FALSE "False"
+#define GLADE_TAG_TRUE   "True"
+#define GLADE_TAG_FALSE  "False"
+#define GLADE_TAG_TRUE2  "TRUE"
+#define GLADE_TAG_FALSE2 "FALSE"
 /*
  * Get a String value for a node either carried as an attibute or as
  * the content of a child.
@@ -188,7 +190,11 @@ glade_xml_get_boolean (xmlNodePtr node, const char *name)
 	
 	if (strcmp (value, GLADE_TAG_FALSE) == 0)
 		ret = FALSE;
+	else if (strcmp (value, GLADE_TAG_FALSE2) == 0)
+		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_TRUE) == 0)
+		ret = TRUE;
+	else if (strcmp (value, GLADE_TAG_TRUE2) == 0)
 		ret = TRUE;
 	else	
 		g_warning ("Boolean tag unrecognized *%s*\n", value);
@@ -199,6 +205,8 @@ glade_xml_get_boolean (xmlNodePtr node, const char *name)
 }
 #undef GLADE_TAG_TRUE
 #undef GLADE_TAG_FALSE
+#undef GLADE_TAG_TRUE2
+#undef GLADE_TAG_FALSE2
 
 gchar *
 glade_xml_get_value_string_required (xmlNodePtr node, const char *name, const char *xtra)

@@ -216,7 +216,7 @@ glade_parameter_adjustment_new (GList *parameters)
 	gfloat lower = 0;
 	gfloat upper = 999999;
 
-	gfloat step_increment = 0.01;
+	gfloat step_increment = 1;
 	gfloat page_increment = 265;
 	gfloat climb_rate = 1;
 
@@ -226,7 +226,7 @@ glade_parameter_adjustment_new (GList *parameters)
 	glade_parameter_get_float (parameters, "StepIncrement", &step_increment);
 	glade_parameter_get_float (parameters, "PageIncrement", &page_increment);
 	glade_parameter_get_float (parameters, "ClimbRate", &climb_rate);
-	
+
 	adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (value,
 							 lower,
 							 upper,
@@ -235,3 +235,4 @@ glade_parameter_adjustment_new (GList *parameters)
 							 climb_rate));
 	return adjustment;
 }
+

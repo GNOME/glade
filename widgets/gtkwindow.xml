@@ -7,75 +7,26 @@
 
   <Properties>
 
-    <Property>
-	 <Name>title</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-	 <Name>type</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-	 <Name>window-position</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-	 <Name>modal</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-      <Name>default-width</Name>
-      <ParamSpec/>
+    <Property ParamSpec="TRUE" Id="title"/>
+    <Property ParamSpec="TRUE" Id="type"/>
+    <Property ParamSpec="TRUE" Id="window-position"/>
+    <Property ParamSpec="TRUE" Id="modal"/>
+    <Property ParamSpec="TRUE" Id="default-width">
 	 <Parameters>
 	   <Parameter Key="Default" Value="440"/>
       </Parameters>
     </Property>
-
-    <Property>
-      <Name>default-height</Name>
-      <ParamSpec/>
+    <Property ParamSpec="TRUE" Id="default-height">
 	 <Parameters>
-	   <Parameter Key="Default" Value="300"/>
+	   <Parameter Key="Default" Value="250"/>
       </Parameters>
     </Property>
-
-    <Property>
-	 <Name>allow-shrink</Name>
-      <ParamSpec/>
-    </Property>
-    
-    <Property>
-	 <Name>allow-grow</Name>
-      <ParamSpec/>
-    </Property>
-    
-    <Property>
-	 <Name>auto-shrink</Name>
-      <ParamSpec/>
-    </Property>
-
-    <!-- Dunno what this does, dunno if we should remove it -->
-<!--
-    <Property>
-      <Type>Text</Type>
-	 <Name>WM Name</Name>
-	 <Tooltip>The name to pass to the window manager</Tooltip>
-	 <GtkArg>fixme</GtkArg> 
-    </Property>
-    
-    <Property>
-      <Type>Text</Type>
-	 <Name>WM Class</Name>
-	 <Tooltip>The class name to pass to the window manager</Tooltip>
-	 <GtkArg>fixme</GtkArg> 
-    </Property>
--->
+    <Property ParamSpec="TRUE" Id="auto-shrink"/>
+    <Property ParamSpec="TRUE" Id="allow-grow"/>
+    <Property ParamSpec="TRUE" Id="auto-shrink"/>
     
   </Properties>
+  
 </GladeWidgetClass>
 	 
 	 

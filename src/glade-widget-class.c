@@ -148,12 +148,6 @@ glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
 	g_return_val_if_fail (init_function_name != NULL, FALSE);
 	
-	if (!g_module_supported ()) {
-		g_warning (_("gmodule support not found. gmodule support is requiered "
-			     "for glade to work"));
-		return FALSE;
-	}
-			
 	if (!allsymbols)
 		allsymbols = g_module_open (NULL, 0);
 	
@@ -331,4 +325,79 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 	}
 
 	return FALSE;
+}
+
+
+/* ParamSpec stuff */
+static void
+glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
+{
+	GObjectClass *object_class;
+	GType type;
+
+	type = glade_widget_class_get_type (class);
+	g_type_class_ref (type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+	object_class = g_type_class_peek (type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		*specs = NULL;
+		*n_specs = 0;
+		return;
+	}
+
+	*specs = g_object_class_list_properties (object_class, n_specs);
+}
+
+GParamSpec *
+glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
+{
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	gint n_specs = 0;
+	gint i;
+
+	glade_widget_class_get_specs (class, &specs, &n_specs);
+
+#if 0
+	g_print ("Dumping specs for %s\n\n", class->name);
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+		g_print ("%02d - %s\n", i, spec->name); 
+	}
+#endif	
+	
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+
+		if (!spec || !spec->name) {
+			g_warning ("Spec does not have a valid name, or invalid spec");
+			return NULL;
+		}
+
+		if (strcmp (spec->name, name) == 0)
+			return spec;
+	}
+
+	return NULL;
+}
+			
+void
+glade_widget_class_dump_param_specs (GladeWidgetClass *class)
+{
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	gint n_specs = 0;
+	gint i;
+
+	glade_widget_class_get_specs (class, &specs, &n_specs);
+
+	g_print ("Dumping ParamSpec for %s\n", class->name);
+	
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+		g_print ("%02d - %s\n", i, spec->name); 
+	}
 }

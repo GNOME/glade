@@ -1,3 +1,88 @@
+2001-07-09  Chema Celorio  <chema@celorio.com>
+
+	* src/main.c (glade_init): check if g_module_supported is TRUE
+	in here, if it isn't there is no point in running glade2
+
+	* src/glade.h (GLADE_TAG_SET_FUNCTION): add the new tags beeing
+	used in the .xml files
+
+	* src/glade-xml-utils.c (glade_xml_get_boolean): accept
+	"TRUE" and "FALSE" as valid (before only "True" & "False")
+
+	* src/glade-widget.c (glade_widget_button_press): return FLASE
+	so that the emision continues (fixes clicking over items)
+	(glade_widget_button_release): ditto
+
+	* src/glade-widget-class.h: add the spec function prototypes
+
+	* src/glade-widget-class.c (glade_widget_class_get_specs): move
+	here from glade_propery_class.
+	(glade_widget_class_find_spec): ditto
+	(glade_widget_class_dump_param_specs): implement
+
+	* src/glade-property.h: add the headers for the _double functions
+
+	* src/glade-property.c (glade_property_new_from_string): handle
+	double type
+	(glade_property_changed_double): implement 
+	(glade_property_get_double): impl.
+
+	* src/glade-property-class.h: add _TYPE_DOUBLE and _TYPE_OBJECT
+	remove class->gtk_arg add class->id. Fixed the code all over
+	to use ->id and ->name correctly.
+	- add children for child objects and set_function to set properties
+	that gtk is not exposing
+
+	* src/glade-property-class.c: add frames for handling _TYPE_OBJECT
+	no content tho
+	(glade_property_get_parameter_numeric_default): 
+	(glade_property_get_parameter_numeric_min): 
+	(glade_property_get_parameter_numeric_max): impl.
+	(glade_property_get_parameters_numeric): clean
+	(glade_property_class_get_set_function): implement but not use yet
+	cause I could not get it to work. Use glade_gtk_get_set_function_hack
+	for now.
+	(glade_property_class_new_from_node): change to reflect new changes
+	in .xml format
+
+	* src/glade-project-window.c (glade_project_window_query_properties):
+	use ->id and not ->name
+
+	* src/glade-placeholder.c (glade_placeholder_add): s/Size/size
+	s/Rows/rows since we use class->id and not class->name
+
+	* src/glade-parameter.c (glade_parameter_adjustment_new): make
+	the increment 1 so that integers can be changed if the increment
+	is not specified
+
+	* src/glade-palette.c (glade_palette_init): set the policy of the
+	pallete (which is a gtkwindow)
+
+	* src/glade-editor.h: add GladeEditorNumericType to share functions
+	that interact with numbers
+
+	* src/glade-editor.c (glade_editor_property_changed_numeric): handle
+	integers, floats and doubles. rename from _changed_integer
+	(glade_editor_create_input): handle double
+	(glade_editor_property_load_double): impl.
+
+	* src/Makefile.am: add glade-gtk.[ch]
+
+	* src/glade-property-class.c (glade_property_class_get_set_function):
+	implement
+
+	* widgets/gtk*.xml: clean lots of files, changed the format it is now
+	a lot better.
+
+	* src/glade-gtk.c (glade_gtk_entry_set_text): implement
+	(glade_gtk_get_set_function_hack): implement a temp hack to find
+	function pointers at run time, i could not make gmodule work.
+
+2001-07-07  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-widget.c (glade_widget_button_release): return FALSE so that
+	the propagation continues.
+
 2001-07-05  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-property-class.c (glade_property_get_parameters_integer):

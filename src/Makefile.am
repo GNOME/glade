@@ -38,6 +38,7 @@ glade2_SOURCES = \
 	glade-catalog.c \
 	glade-choice.c \
 	glade-editor.c \
+	glade-gtk.c \
 	glade-signal-editor.c
 
 noinst_HEADERS = \
@@ -58,5 +59,6 @@ noinst_HEADERS = \
 	glade-property-class.h \
 	glade-popup.h \
 	glade-choice.h \
+	glade-gtk.h \
 	glade-catalog.h \
 	glade-xml-utils.h

@@ -85,6 +85,16 @@ glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
 					     "OptionalDefault",
 					     &property->enabled);
 		break;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		if (string)
+			float_val = atof (string);
+		else
+			float_val = 0;
+		value = g_strdup_printf ("%g", float_val);
+		glade_parameter_get_boolean (class->parameters,
+					     "OptionalDefault",
+					     &property->enabled);
+		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		if (string)
 			int_val = atoi (string);
@@ -122,15 +132,17 @@ glade_property_new_from_string (const gchar *string, GladePropertyClass *class)
 		}
 		choice = list->data;
 		g_warning ("Invalid default tag \"%s\" for property \"%s\", setting deafult to %s (%s)",
-			   choice->name, class->name,
+			   choice->name, class->id,
 			   choice->symbol, string);
 		value = g_strdup (choice->symbol);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		value = g_strdup ("");
 		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		g_print ("Dunno what to do with type object \n");
+		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
-	default:
 		g_warning ("Invalid Glade property type (%d)\n", class->type);
 		break;
 	}
@@ -176,20 +188,20 @@ glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 
 
 GladeProperty *
-glade_property_get_from_gtk_arg (GList *settings_list, const gchar *arg)
+glade_property_get_from_id (GList *settings_list, const gchar *id)
 {
 	GList *list;
 	GladeProperty *property;
 
-	g_return_val_if_fail (arg != NULL, NULL);
+	g_return_val_if_fail (id != NULL, NULL);
 	
 	list = settings_list;
 	for (; list != NULL; list = list->next) {
 		property = list->data;
 		g_return_val_if_fail (property, NULL);
 		g_return_val_if_fail (property->class, NULL);
-		g_return_val_if_fail (property->class->gtk_arg, NULL);
-		if (strcmp (property->class->gtk_arg, arg) == 0)
+		g_return_val_if_fail (property->class->id, NULL);
+		if (strcmp (property->class->id, id) == 0)
 			return property;
 	}
 
@@ -223,13 +235,18 @@ glade_property_changed_text (GladeProperty *property,
 	property->value = g_strdup (text);
 	g_free (temp);
 
-	if (property->class->gtk_arg == NULL) {
-		g_print ("I don't have a gtk arg for %s\n", property->class->name);
+	if (property->class->id == NULL) {
+		g_print ("I don't have an id %s\n", property->class->id);
 		return;
 	}
-	
-	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->gtk_arg, property->value, NULL);
+
+	if (property->class->set_function == NULL)
+		gtk_object_set (GTK_OBJECT (property->widget->widget),
+				property->class->id,
+				property->value, NULL);
+	else
+		(*property->class->set_function) (G_OBJECT (property->widget->widget),
+						  property->value);
 }
 
 void
@@ -242,7 +259,7 @@ glade_property_changed_integer (GladeProperty *property, gint val)
 	property->value = g_strdup_printf ("%i", val);
 
 	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->gtk_arg, val, NULL);
+			property->class->id, val, NULL);
 }
 
 void
@@ -251,11 +268,62 @@ glade_property_changed_float (GladeProperty *property, gfloat val)
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
 
+	g_print ("Changed float\n");
+	
 	g_free (property->value);
 	property->value = g_strdup_printf ("%g", val);
 
 	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->gtk_arg, val, NULL);
+			property->class->id, val, NULL);
+}
+
+void
+glade_property_changed_double (GladeProperty *property, gdouble val)
+{
+#if 0	
+	GValue *gvalue = g_new0 (GValue, 1);
+#endif	
+	
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->value != NULL);
+
+	g_free (property->value);
+	property->value = g_strdup_printf ("%g", val);
+
+#if 0	
+	gvalue = g_value_init (gvalue, G_TYPE_DOUBLE);
+	g_value_set_double (gvalue, val);
+#endif	
+
+#if 0	
+	g_print ("Changed double to %g \"%s\" -->%s<-- but using gvalue @%d\n",
+		 val,
+		 property->value,
+		 property->class->gtk_arg,
+		 GPOINTER_TO_INT (gvalue));
+#endif	
+
+	g_object_set (G_OBJECT (property->widget->widget),
+		      property->class->id, val, NULL);
+
+#if 0	
+	if (GTK_IS_SPIN_BUTTON (property->widget->widget)) {
+		g_print ("It is spin button\n");
+		g_print ("The alignement is min :%g max:%g value%g\n",
+			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->lower,
+			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->upper,
+			 GTK_SPIN_BUTTON (property->widget->widget)->adjustment->value);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (property->widget->widget),
+					   333.22);
+	}
+#endif	
+#if 0	
+	g_print ("Setting-------------------- 222222222\n");
+	g_object_set (G_OBJECT (property->widget->widget),
+		      property->class->gtk_arg,
+		      gvalue, NULL);
+	g_print ("DONE: Setting-------------------------\n");
+#endif
 }
 
 void
@@ -268,7 +336,7 @@ glade_property_changed_boolean (GladeProperty *property, gboolean val)
 	property->value = g_strdup_printf ("%s", val ? GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 
 	gtk_object_set (GTK_OBJECT (property->widget->widget),
-			property->class->gtk_arg, val, NULL);
+			property->class->id, val, NULL);
 }
 
 void
@@ -311,6 +379,14 @@ glade_property_get_float (GladeProperty *property)
 	return atof (property->value);
 }
 	
+gdouble
+glade_property_get_double (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, 0.0);
+	g_return_val_if_fail (property->value != NULL, 0.0);
+	
+	return (gdouble) atof (property->value);
+}
 
 gboolean
 glade_property_get_boolean (GladeProperty *property)

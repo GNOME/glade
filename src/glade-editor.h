@@ -151,7 +151,13 @@ struct _GladeEditorProperty
 			   * really changed, we just loaded a new glade widget
 			   */
 };
-	
+
+typedef enum {
+	GLADE_EDITOR_INTEGER,
+	GLADE_EDITOR_FLOAT,
+	GLADE_EDITOR_DOUBLE,
+}GladeEditorNumericType;
+
 void  glade_editor_create (GladeProjectWindow *gpw);
 void  glade_editor_show   (GladeProjectWindow *gpw);
 void  glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);

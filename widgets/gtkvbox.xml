@@ -7,24 +7,27 @@
 
   <Properties>
 
-    <Property>
-      <Name>border-width</Name>
-      <ParamSpec/>
-    </Property>
+    <Property ParamSpec="TRUE" Id="border-width"/>
 
-    <Property>
-      <Name>size</Name>
-      <ParamSpec/>
+    <Property Name="Size" Id="size">
+      <Type>Integer</Type>
+	 <Tooltip>The number of rows in the box</Tooltip>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
       <Query>
         <WindowTitle>New vertical box</WindowTitle>
         <Question>Number of rows</Question>
       </Query>
     </Property>
 
-    <Property>
-      <Name>spacing</Name>
-      <ParamSpec/>
-    </Property>
+    <Property ParamSpec="TRUE" Id="spacing"/>
 
   </Properties>
+  
 </GladeWidgetClass>

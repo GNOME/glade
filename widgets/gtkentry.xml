@@ -7,19 +7,14 @@
 
   <Properties>
 
-    <Property>
-	 <Name>editable</Name>
-      <ParamSpec/>
-    </Property>
+    <Property ParamSpec="TRUE" Id="editable"/>
+    <Property ParamSpec="TRUE" Id="visibility"/>
+    <Property ParamSpec="TRUE" Id="max-length"/>
 
-    <Property>
-	 <Name>visibility</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-	 <Name>max-length</Name>
-      <ParamSpec/>
+    <Property ParamSpec="FALSE" Id="text" Name="Text">
+       <Type>Text</Type>
+	  <Tooltip>Initial Contents of the entry</Tooltip>
+	  <SetFunction>glade_gtk_entry_set_text</SetFunction>
     </Property>
 
   </Properties>

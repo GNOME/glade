@@ -6,16 +6,12 @@
 
   <Properties>
 
-    <Property>
-      <Name>label</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
+    <Property ParamSpec="TRUE" Id="label"/>
+  
+    <Property Name="Stock Button" Id="stock-button">
       <Type>Choice</Type>
 	 <Name>Stock Button</Name>
 	 <Tooltip>The GNOME stock button to use</Tooltip>
-	 <GtkArg>fixme</GtkArg>
 	 <Parameters>
 	   <Parameter Key="Default" Value="GTK_RELIEF_NORMAL"/>
 	 </Parameters>
@@ -36,6 +32,7 @@
     </Property>
     
   </Properties>
+  
 </GladeWidgetClass>
 	 
 	 

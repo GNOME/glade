@@ -32,6 +32,8 @@
 #include "glade-project-view.h"
 #include "glade-project-window.h"
 
+#include <gmodule.h>
+
 #ifdef FIX_POPT
 static void parse_command_line (poptContext);
 
@@ -54,7 +56,13 @@ glade_init ()
 	GladeProjectWindow *project_window;
 	GladeProject *project;
 	GladeCatalog *catalog;
-	
+
+	if (!g_module_supported ()) {
+		g_warning (_("gmodule support not found. gmodule support is requiered "
+			     "for glade to work"));
+		return FALSE;
+	}
+			
 	/*
 	 * 1. Init the cursors
 	 * 2. Create the catalog

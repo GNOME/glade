@@ -1,4 +1,5 @@
 <GladeWidgetClass>
+
   <Name>GtkSpinButton</Name>
   <GetTypeFunction>gtk_spin_button_get_type</GetTypeFunction>
   <GenericName>spinbutton</GenericName>
@@ -6,7 +7,41 @@
 
   <Properties>
 
+    <Property ParamSpec="TRUE" Id="climb-rate"/>
+    <Property ParamSpec="TRUE" Id="digits"/>
+    <Property ParamSpec="TRUE" Id="numeric"/>
+    <Property ParamSpec="TRUE" Id="update-policy"/>
+    <Property ParamSpec="TRUE" Id="snap-to-ticks"/>
+    <Property ParamSpec="TRUE" Id="wrap"/>
 
+    <Property ParamSpec="TRUE" Id="value"/>
+
+    <Property Name="Adjustment" Id="adjustment">
+      <Type>Object</Type>
+	 <GladeObject>
+	   <Name>GtkAdjustment</Name>
+        <GetTypeFunction>gtk_adjustment_get_type</GetTypeFunction>
+        <Properties>
+          <Property ParamSpec="TRUE" Id="climb-rate"/>
+          <Property ParamSpec="TRUE" Id="digits"/>
+          <Property ParamSpec="TRUE" Id="numeric"/>
+          <Property ParamSpec="TRUE" Id="update-policy"/>
+        </Properties>
+	 </GladeObject>
+	 
+	 <!--
+	 <Parameters>
+	   <Parameter Key="Default" Value="1"/>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="100"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="PageSize" Value="10"/>
+	 </Parameters>
+	 -->
+	 
+    </Property>
+    
   </Properties>
 
 </GladeWidgetClass>

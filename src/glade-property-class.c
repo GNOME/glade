@@ -29,7 +29,10 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-gtk.h"
+
 #include <string.h>
+#include <gmodule.h>
 
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
@@ -46,14 +49,16 @@ glade_property_type_str_to_enum (const gchar *str)
 		return GLADE_PROPERTY_TYPE_CHOICE;
 	if (strcmp (str, GLADE_TAG_OTHER_WIDGETS) == 0)
 		return GLADE_PROPERTY_TYPE_OTHER_WIDGETS;
+	if (strcmp (str, GLADE_TAG_OBJECT) == 0)
+		return GLADE_PROPERTY_TYPE_OBJECT;
 
 	g_warning ("Could not determine the property type from *%s*\n", str);
 
 	return GLADE_PROPERTY_TYPE_ERROR;
 }
 
-const gchar *
-glade_property_type_enum_to_str (GladePropertyType type)
+gchar *
+glade_property_type_enum_to_string (GladePropertyType type)
 {
 	switch (type) {
 	case GLADE_PROPERTY_TYPE_TEXT:
@@ -64,12 +69,16 @@ glade_property_type_enum_to_str (GladePropertyType type)
 		return GLADE_TAG_FLOAT;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		return GLADE_TAG_INTEGER;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		return GLADE_TAG_DOUBLE;
 	case GLADE_PROPERTY_TYPE_CHOICE:
 		return GLADE_TAG_CHOICE;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		return GLADE_TAG_OTHER_WIDGETS;
-	default:
-		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		return GLADE_TAG_OBJECT;
+	case GLADE_PROPERTY_TYPE_ERROR:
+		return NULL;
 	}
 
 	return NULL;
@@ -115,72 +124,18 @@ glade_property_class_new (void)
 
 	property_class = g_new0 (GladePropertyClass, 1);
 	property_class->type = GLADE_PROPERTY_TYPE_ERROR;
+	property_class->id = NULL;
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
-	property_class->gtk_arg = NULL;
 	property_class->parameters = NULL;
 	property_class->choices = NULL;
 	property_class->optional = FALSE;
 	property_class->query = NULL;
+	property_class->set_function = NULL;
 
 	return property_class;
 }
 
-static void
-glade_property_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
-{
-	GObjectClass *object_class;
-	GType type;
-
-	type = glade_widget_class_get_type (class);
-	g_type_class_ref (type); /* hmm */
-	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
-	  */
-	object_class = g_type_class_peek (type);
-	if (object_class == NULL) {
-		g_warning ("Class peek failed\n");
-		*specs = NULL;
-		*n_specs = 0;
-		return;
-	}
-
-	*specs = g_object_class_list_properties (object_class, n_specs);
-}
-
-GParamSpec *
-glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name)
-{
-	GParamSpec **specs = NULL;
-	GParamSpec *spec;
-	gint n_specs = 0;
-	gint i;
-
-	glade_property_class_get_specs (class, &specs, &n_specs);
-
-#if 0
-	g_print ("Dumping specs for %s\n\n", class->name);
-	for (i = 0; i < n_specs; i++) {
-		spec = specs[i];
-		g_print ("%02d - %s\n", i, spec->name); 
-	}
-#endif	
-	
-	for (i = 0; i < n_specs; i++) {
-		spec = specs[i];
-
-		if (!spec || !spec->name) {
-			g_warning ("Spec does not have a valid name, or invalid spec");
-			return NULL;
-		}
-
-		if (strcmp (spec->name, name) == 0)
-			return spec;
-	}
-
-	return NULL;
-}
-			
 
 static GladePropertyType
 glade_property_class_get_type_from_spec (GParamSpec *spec)
@@ -199,8 +154,7 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	case G_TYPE_PARAM_ENUM:
 		return GLADE_PROPERTY_TYPE_CHOICE;
 	case G_TYPE_PARAM_DOUBLE:
-		g_warning ("Double not implemented\n");
-		break;
+		return GLADE_PROPERTY_TYPE_DOUBLE;
 	case G_TYPE_PARAM_LONG:
 		g_warning ("Long not implemented\n");
 		break;
@@ -269,26 +223,95 @@ glade_property_get_parameters_boolean (GParamSpec *spec,
 	return g_list_prepend (NULL, parameter);
 }
 
+static gchar *
+glade_property_get_parameter_numeric_default (GParamSpec *spec)
+{
+	gchar *value = NULL;
+	
+	if (G_IS_PARAM_SPEC_INT (spec))
+		value = g_strdup_printf ("%d", G_PARAM_SPEC_INT (spec)->default_value);
+	else if (G_IS_PARAM_SPEC_UINT (spec))
+		value = g_strdup_printf ("%u", G_PARAM_SPEC_UINT (spec)->default_value);
+	else if (G_IS_PARAM_SPEC_FLOAT (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_FLOAT (spec)->default_value);
+	else if (G_IS_PARAM_SPEC_DOUBLE (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_DOUBLE (spec)->default_value);
+	else
+		g_warning ("glade_propery_get_parameter_numeric_item invalid ParamSpec (default)\n");
+
+	return value;
+}
+
+static gchar *
+glade_property_get_parameter_numeric_min (GParamSpec *spec)
+{
+	gchar *value = NULL;
+	
+	if (G_IS_PARAM_SPEC_INT (spec))
+		value = g_strdup_printf ("%d", G_PARAM_SPEC_INT (spec)->minimum);
+	else if (G_IS_PARAM_SPEC_UINT (spec))
+		value = g_strdup_printf ("%u", G_PARAM_SPEC_UINT (spec)->minimum);
+	else if (G_IS_PARAM_SPEC_FLOAT (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_FLOAT (spec)->minimum);
+	else if (G_IS_PARAM_SPEC_DOUBLE (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_DOUBLE (spec)->minimum);
+	else
+		g_warning ("glade_propery_get_parameter_numeric_item invalid ParamSpec (min)\n");
+
+	return value;
+}
+
+static gchar *
+glade_property_get_parameter_numeric_max (GParamSpec *spec)
+{
+	gchar *value = NULL;
+	
+	if (G_IS_PARAM_SPEC_INT (spec))
+		value = g_strdup_printf ("%d", G_PARAM_SPEC_INT (spec)->maximum);
+	else if (G_IS_PARAM_SPEC_UINT (spec))
+		value = g_strdup_printf ("%u", G_PARAM_SPEC_UINT (spec)->maximum);
+	else if (G_IS_PARAM_SPEC_FLOAT (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_FLOAT (spec)->maximum);
+	else if (G_IS_PARAM_SPEC_DOUBLE (spec))
+		value = g_strdup_printf ("%g", G_PARAM_SPEC_DOUBLE (spec)->maximum);
+	else 
+		g_warning ("glade_propery_get_parameter_numeric_item invalid ParamSpec (max)\n");
+
+	return value;
+}
+
 static GList *
-glade_property_get_parameters_integer (GParamSpec *spec,
+glade_property_get_parameters_numeric (GParamSpec *spec,
 				       GladePropertyClass *class)
 {
 	GladeParameter *parameter;
-	gint def;
-	
-	g_return_val_if_fail (G_IS_PARAM_SPEC_INT  (spec) |
-			      G_IS_PARAM_SPEC_UINT (spec), NULL);
+	GList *list = NULL;
 
-	if (G_IS_PARAM_SPEC_INT (spec))
-		def = (gint) G_PARAM_SPEC_INT (spec)->default_value;
-	else
-		def = (gint) G_PARAM_SPEC_UINT (spec)->default_value;
-	
+	g_return_val_if_fail (G_IS_PARAM_SPEC_INT    (spec) |
+			      G_IS_PARAM_SPEC_UINT   (spec) |
+			      G_IS_PARAM_SPEC_FLOAT  (spec) |
+			      G_IS_PARAM_SPEC_DOUBLE (spec), NULL);
+
+	/* Get the default value */
 	parameter = glade_parameter_new ();
 	parameter->key = g_strdup ("Default");
-	parameter->value = g_strdup_printf ("%i", def);
+	parameter->value = glade_property_get_parameter_numeric_default (spec);
+	list = g_list_prepend (list, parameter);
+	
+	/* Get the min value */
+	parameter = glade_parameter_new ();
+	parameter->key = g_strdup ("Min");
+	parameter->value = glade_property_get_parameter_numeric_min (spec);
+	list = g_list_prepend (list, parameter);
+	
+	/* Get the max value */
+	parameter = glade_parameter_new ();
+	parameter->key = g_strdup ("Max");
+	parameter->value = glade_property_get_parameter_numeric_max (spec);
+	list = g_list_prepend (list, parameter);
 
-	return g_list_prepend (NULL, parameter);
+
+	return list;
 }
 
 static GList *
@@ -343,16 +366,22 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 	case GLADE_PROPERTY_TYPE_TEXT:
 		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
-		parameters = glade_property_get_parameters_integer (spec,
-								    class);
-		break;
 	case GLADE_PROPERTY_TYPE_FLOAT:
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		parameters = glade_property_get_parameters_numeric (spec,
+								    class);
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		parameters = glade_property_get_parameters_boolean (spec,
 								    class);
 		break;
-	default:
+	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
+		break;
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		g_print ("get parameters from spec for type object not implemented\n");
+		break;
+	case GLADE_PROPERTY_TYPE_ERROR:
+		break;
 	}
 
 	/* Get the parameters that are specified on the glade file,
@@ -376,7 +405,7 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	GladePropertyClass *class;
 	GParamSpec *spec;
 
-	spec = glade_property_class_find_spec (widget_class, name);
+	spec = glade_widget_class_find_spec (widget_class, name);
 
 	if (spec == NULL) {
 		g_warning ("Could not create a property class from a param spec for *%s* with name *%s*\n",
@@ -385,9 +414,9 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	}
 
 	class = glade_property_class_new ();
+	class->id      = g_strdup (spec->name);
 	class->name    = g_strdup (spec->nick);
 	class->tooltip = g_strdup (spec->blurb);
-	class->gtk_arg = g_strdup (name);
 	class->type    = glade_property_class_get_type_from_spec (spec);
 
 	if (class->type == GLADE_PROPERTY_TYPE_CHOICE)
@@ -398,6 +427,35 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	return class;
 }
 				  
+static gboolean
+glade_property_class_get_set_function (GladePropertyClass *class, const gchar *function_name)
+{
+	static GModule *allsymbols;
+
+	/* This is not working ... So add a temp hack */
+	return glade_gtk_get_set_function_hack (class, function_name);
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
+	g_return_val_if_fail (class->set_function == NULL, FALSE);
+	g_return_val_if_fail (function_name != NULL, FALSE);
+	
+	if (!allsymbols)
+		allsymbols = g_module_open (NULL, 0);
+	
+	if (!g_module_symbol (allsymbols, function_name,
+			      (gpointer) &class->set_function)) {
+		g_warning (_("We could not find the symbol \"%s\" while trying to load \"%s\""),
+			   function_name, class->name);
+		return FALSE;
+	}
+
+	g_assert (class->set_function);
+
+	g_print ("Got the %s function for %s\n",
+		 function_name, class->name);
+
+	return TRUE;
+}
 
 static GladePropertyClass *
 glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_class)
@@ -405,29 +463,41 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 	GladePropertyClass *property_class; 
 	xmlNodePtr child;
 	gchar *type;
+	gchar *id;
 	gchar *name;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
 		return NULL;
 
-	name = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
-
-	if (name == NULL)
+	id = glade_xml_get_value_string_required (node, GLADE_TAG_ID, widget_class->name);
+	if (id == NULL)
 		return NULL;
 
-	/* Should we load this property from the ParamSpec ? */
+	
+	/* Should we load this property from the ParamSpec ? 
+	 * We can have a property like ... ParamSpec="TRUE"> 
+	 * Or a child like <ParamSpec/>, but this will be deprecated
+	 */
 	child = glade_xml_search_child (node, GLADE_TAG_PARAM_SPEC);
-	if (child) {
-		property_class = glade_property_class_new_from_param_spec (name, widget_class, node);
-		g_free (name);
+	if (child ||
+	    glade_xml_get_boolean (node, GLADE_TAG_PARAM_SPEC)) {
+		property_class = glade_property_class_new_from_param_spec (id, widget_class, node);
+		g_free (id);
+		if (property_class == NULL)
+			glade_widget_class_dump_param_specs (widget_class);
 		return property_class;
 	}
 
+
+	name = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, widget_class->name);
+	if (name == NULL)
+		return NULL;
+
+	/* Ok, this property should not be loaded with ParamSpec */
 	property_class = glade_property_class_new ();
-	property_class->name    = name;
-	
+	property_class->id    = id;
+	property_class->name  = name;
 	property_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
-	property_class->gtk_arg = glade_xml_get_value_string (node, GLADE_TAG_GTKARG);
 
 	/* Get the type */
 	type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, widget_class->name);
@@ -457,7 +527,20 @@ glade_property_class_new_from_node (xmlNodePtr node, GladeWidgetClass *widget_cl
 		property_class->choices = glade_choice_list_new_from_node (child);
 	}
 
-	
+	/* If the property is an object Load it */
+	if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+	}
+
+	/* If this property can't be set with g_object_set, get the workarround
+	 * function
+	 */
+	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
+	if (child != NULL) {
+		gchar * content = glade_xml_get_content (child);
+		glade_property_class_get_set_function (property_class, content);
+		g_free (content);
+	}
+
 	return property_class;
 }
 
@@ -480,9 +563,8 @@ glade_property_class_list_new_from_node (xmlNodePtr node, GladeWidgetClass *clas
 		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
 			return NULL;
 		property_class = glade_property_class_new_from_node (child, class);
-		if (property_class == NULL)
-			return NULL;
-		list = g_list_prepend (list, property_class);
+		if (property_class != NULL)
+			list = g_list_prepend (list, property_class);
 		child = child->next;
 	}
 

@@ -533,7 +533,7 @@ glade_project_window_query_properties (GladeWidgetClass *class,
 		property_class = list->data;
 		if (property_class->query) {
 			spin = glade_project_append_query (table, property_class, row++);
-			g_hash_table_insert (hash, property_class->name, spin);
+			g_hash_table_insert (hash, property_class->id, spin);
 		}
 	}
 	if (spin == NULL)

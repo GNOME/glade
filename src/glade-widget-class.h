@@ -75,6 +75,11 @@ const gchar * glade_widget_class_get_name (GladeWidgetClass *class);
 GType 	      glade_widget_class_get_type (GladeWidgetClass *class);
 gboolean      glade_widget_class_has_queries (GladeWidgetClass *class);
 
+
+/* ParamSpec stuff */
+GParamSpec * glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
+void         glade_widget_class_dump_param_specs (GladeWidgetClass *class);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_CLASS_H__ */

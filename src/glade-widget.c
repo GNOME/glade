@@ -249,6 +249,16 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	return found;
 }
 
+/**
+ * glade_widget_button_press:
+ * @event_widget: 
+ * @event: 
+ * @not_used: 
+ * 
+ * Handle the button press event for every GladeWidget
+ * 
+ * Return Value: 
+ **/
 static gboolean
 glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpointer not_used)
 {
@@ -270,13 +280,13 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 	else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
 	else
-		g_print ("BUtton press not handled yet.\n");
+		g_print ("Button press not handled yet.\n");
 
 #ifdef DEBUG	
 	g_print ("The widget found was a %s\n", glade_widget->class->name);
 #endif
 
-	return TRUE;
+	return FALSE;
 }
 #undef DEBUG
 
@@ -286,8 +296,7 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 #ifdef DEBUG	
 	g_print ("button release\n");
 #endif
-	
-	return TRUE;
+	return FALSE;
 }
 
 
@@ -319,6 +328,10 @@ glade_widget_set_default_options (GladeWidget *widget)
 		case GLADE_PROPERTY_TYPE_INTEGER:
 			glade_property_changed_integer (property,
 							glade_property_get_integer (property));
+			break;
+		case GLADE_PROPERTY_TYPE_DOUBLE:
+			glade_property_changed_double (property,
+						       glade_property_get_double (property));
 			break;
 		case GLADE_PROPERTY_TYPE_TEXT:
 			glade_property_changed_text (property,
@@ -487,12 +500,12 @@ glade_widget_set_contents (GladeWidget *widget)
 
 	class = widget->class;
 
-	if (glade_property_class_find_spec (class, "label") != NULL)
-		property = glade_property_get_from_gtk_arg (widget->properties,
+	if (glade_widget_class_find_spec (class, "label") != NULL)
+		property = glade_property_get_from_id (widget->properties,
 							   "label");
-	if (glade_property_class_find_spec (class, "title") != NULL)
-		property = glade_property_get_from_gtk_arg (widget->properties,
-							   "title");
+	if (glade_widget_class_find_spec (class, "title") != NULL)
+		property = glade_property_get_from_id (widget->properties,
+						       "title");
 	if (property != NULL)
 		glade_property_changed_text (property, widget->name);
 }

@@ -51,12 +51,14 @@ GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 void glade_property_changed_text    (GladeProperty *property, const gchar *text);
 void glade_property_changed_integer (GladeProperty *property, gint val);
 void glade_property_changed_float   (GladeProperty *property, gfloat val);
+void glade_property_changed_double  (GladeProperty *property, gdouble val);
 void glade_property_changed_boolean (GladeProperty *property, gboolean val);
 void glade_property_changed_choice  (GladeProperty *property, GladeChoice *choice);
 
 const gchar * glade_property_get_text    (GladeProperty *property);
 gint          glade_property_get_integer (GladeProperty *property);
 gfloat        glade_property_get_float   (GladeProperty *property);
+gdouble       glade_property_get_double  (GladeProperty *property);
 gboolean      glade_property_get_boolean (GladeProperty *property);
 GladeChoice * glade_property_get_choice  (GladeProperty *property);
 
@@ -66,8 +68,8 @@ GladeProperty * glade_property_get_from_name (GList *property_list,
 					      const gchar *name);
 GladeProperty * glade_property_get_from_class (GladeWidget *widget,
 					       GladePropertyClass *class);
-GladeProperty * glade_property_get_from_gtk_arg (GList *settings_list,
-						 const gchar *arg);
+GladeProperty * glade_property_get_from_id     (GList *settings_list,
+						const gchar *id);
 
 /* Property Queries */
 GladePropertyQueryResult * glade_property_query_result_new (void);

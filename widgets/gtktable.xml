@@ -7,12 +7,14 @@
 
   <Properties>
 
-    <Property>
-      <Name>border-width</Name>
-      <ParamSpec/>
+    <Property ParamSpec="TRUE" Id="n-rows">
+      <Query>
+        <WindowTitle>New vertical box</WindowTitle>
+        <Question>Number of rows</Question>
+      </Query>
     </Property>
-
-    <Property>
+  
+    <Property Id="rows">
       <Type>Integer</Type>
 	 <Name>Rows</Name>
 	 <Tooltip>The number of rows in the table</Tooltip>
@@ -31,7 +33,7 @@
       </Query>
     </Property>
 
-    <Property>
+    <Property Id="columns">
       <Type>Integer</Type>
 	 <Name>Columns</Name>
 	 <Tooltip>The number of columnd in the table</Tooltip>
@@ -50,20 +52,9 @@
       </Query>
     </Property>
 
-    <Property>
-	 <Name>homogeneous</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-      <Name>row-spacing</Name>
-      <ParamSpec/>
-    </Property>
-
-    <Property>
-      <Name>column-spacing</Name>
-      <ParamSpec/>
-    </Property>
+    <Property ParamSpec="TRUE" Id="homogeneous"/>
+    <Property ParamSpec="TRUE" Id="row-spacing"/>
+    <Property ParamSpec="TRUE" Id="column-spacing"/>
 
   </Properties>
 

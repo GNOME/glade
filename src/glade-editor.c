@@ -293,33 +293,39 @@ glade_editor_property_changed_enabled (GtkWidget *button,
 }
 
 static void
-glade_editor_property_changed_integer (GtkWidget *spin,
+glade_editor_property_changed_numeric (GtkWidget *spin,
 				       GladeEditorProperty *property)
 {
-	gint val;
-
-	g_return_if_fail (property != NULL);
+	GladeEditorNumericType numeric_type;
+	gdouble double_val;
+	gfloat float_val;
+	gint integer_val;
 	
+	g_return_if_fail (property != NULL);
+
 	if (property->loading)
 		return;
 
-	val = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin));
-	glade_property_changed_integer (property->property, val);
-}
+	numeric_type = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (spin), "NumericType"));
 
-static void
-glade_editor_property_changed_float (GtkWidget *spin,
-				     GladeEditorProperty *property)
-{
-	gfloat val;
-
-	g_return_if_fail (property != NULL);
-	
-	if (property->loading)
-		return;
-
-	val = gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
-	glade_property_changed_float (property->property, val);
+	switch (numeric_type) {
+	case GLADE_EDITOR_INTEGER:
+		integer_val = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin));
+		glade_property_changed_integer (property->property, integer_val);
+		break;
+	case GLADE_EDITOR_FLOAT:
+		g_print ("Changed numeric type float\n\n");
+		float_val = gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
+		glade_property_changed_float (property->property, float_val);
+		break;
+	case GLADE_EDITOR_DOUBLE:
+		g_print ("Changed numeric typoe double\n");
+		double_val = (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin));
+		glade_property_changed_double (property->property, double_val);
+		break;
+	default:
+		g_warning ("Invalid numeric_type %i\n", numeric_type);
+	}
 }
 
 static void
@@ -461,7 +467,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 static GtkWidget *
 glade_editor_create_input_numeric (GladeEditorProperty *property,
-				   gboolean is_integer)
+				   GladeEditorNumericType numeric_type)
 {
 	GladePropertyClass *class;
 	GtkAdjustment *adjustment;
@@ -472,18 +478,19 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	class = property->glade_property_class;
 
 	adjustment = glade_parameter_adjustment_new (class->parameters);
-	
-	spin  = gtk_spin_button_new (adjustment, 10, is_integer ? 0 : 2);
-	
-	if (is_integer)
-		gtk_signal_connect (GTK_OBJECT (spin), "changed",
-				    GTK_SIGNAL_FUNC (glade_editor_property_changed_integer),
-				    property);
-	else
-		gtk_signal_connect (GTK_OBJECT (spin), "changed",
-				    GTK_SIGNAL_FUNC (glade_editor_property_changed_float),
-				    property);
 
+	spin  = gtk_spin_button_new (adjustment, 10,
+				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
+
+	gtk_object_set_data (GTK_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
+	gtk_signal_connect (GTK_OBJECT (spin), "changed",
+			    GTK_SIGNAL_FUNC (glade_editor_property_changed_numeric),
+			    property);
+
+
+	/* Some numeric types are optional, for example the default window size, so
+	 * they have a toggle button right next to the spin button. 
+	 */
 	if (class->optional) {
 		GtkWidget *check;
 		GtkWidget *hbox;
@@ -504,13 +511,19 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 static GtkWidget *
 glade_editor_create_input_integer (GladeEditorProperty *property)
 {
-	return glade_editor_create_input_numeric (property, TRUE);
+	return glade_editor_create_input_numeric (property, GLADE_EDITOR_INTEGER);
 }
 
 static GtkWidget *
 glade_editor_create_input_float (GladeEditorProperty *property)
 {
-	return glade_editor_create_input_numeric (property, FALSE);
+	return glade_editor_create_input_numeric (property, GLADE_EDITOR_FLOAT);
+}
+
+static GtkWidget *
+glade_editor_create_input_double (GladeEditorProperty *property)
+{
+	return glade_editor_create_input_numeric (property, GLADE_EDITOR_DOUBLE);
 }
 
 static GtkWidget *
@@ -531,7 +544,7 @@ glade_editor_create_input_boolean (GladeEditorProperty *property)
 	return button;
 }
 
-GtkWidget *
+static GtkWidget *
 glade_editor_create_input (GladeEditorProperty *property)
 {
 	GladePropertyType type;
@@ -551,6 +564,9 @@ glade_editor_create_input (GladeEditorProperty *property)
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		input = glade_editor_create_input_integer (property);
 		break;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		input = glade_editor_create_input_double (property);
+		break;
 	case GLADE_PROPERTY_TYPE_TEXT:
 		input = glade_editor_create_input_text (property);
 		break;
@@ -560,7 +576,11 @@ glade_editor_create_input (GladeEditorProperty *property)
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		g_warning ("The widget type %d does not have an input implemented\n", type);
 		break;
-	default:
+	case GLADE_PROPERTY_TYPE_OBJECT:
+		return gtk_label_new ("Implement object");
+	case GLADE_PROPERTY_TYPE_ERROR:
+		return gtk_label_new ("Error !");
+
 	}
 
 	if (input == NULL) {
@@ -669,6 +689,10 @@ glade_editor_create_table_from_class (GladeEditor *editor,
 		GladeEditorProperty *editor_property;
 		
 		property_class = (GladePropertyClass *) list->data;
+
+		/* Special cases */
+
+		
 		label = glade_property_class_create_label (property_class);
 		if (label == NULL)
 			return NULL;
@@ -835,13 +859,24 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		spin = property->input;
 	}
 
-	val = atoi (property->property->value);
+	val = atof (property->property->value);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
 	gtk_object_set_user_data (GTK_OBJECT (spin), property);
 }
 
 static void
 glade_editor_property_load_float (GladeEditorProperty *property)
+{
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->property != NULL);
+	g_return_if_fail (property->property->value != NULL);
+	g_return_if_fail (property->input != NULL);
+
+	glade_editor_property_load_integer (property);
+}
+
+static void
+glade_editor_property_load_double (GladeEditorProperty *property)
 {
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
@@ -973,6 +1008,9 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_FLOAT:
 		glade_editor_property_load_float (property);
 		break;
+	case GLADE_PROPERTY_TYPE_DOUBLE:
+		glade_editor_property_load_double (property);
+		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		glade_editor_property_load_integer (property);
 		break;
@@ -982,7 +1020,8 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		glade_editor_property_load_other_widgets (property);
 		break;
-	default:
+	case GLADE_PROPERTY_TYPE_OBJECT:
+	case GLADE_PROPERTY_TYPE_ERROR:
 		g_warning ("%s : type %i not implemented\n", __FUNCTION__,
 			   property_class->type);
 	}

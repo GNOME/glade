@@ -6,36 +6,10 @@
 
   <Properties>
 
-    <Property>
-      <Name>label</Name>
-      <ParamSpec/>
-    </Property>
+    <Property ParamSpec="TRUE" Id="label"/>
 
-    <Property>
-      <Type>Choice</Type>
-	 <Name>Stock Button</Name>
-	 <Tooltip>The GNOME stock button to use</Tooltip>
-	 <GtkArg>fixme</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Default" Value="GTK_RELIEF_NORMAL"/>
-	 </Parameters>
-	 <Choices>
-	   <Choice>
-	     <Name>Normal</Name>
-		<Symbol>GTK_RELIEF_NORMAL</Symbol>
-	   </Choice>
-	   <Choice>
-	     <Name>Half</Name>
-		<Symbol>GTK_RELIEF_HALF</Symbol>
-	   </Choice>
-	   <Choice>
-	     <Name>None</Name>
-		<Symbol>GTK_RELIEF_NONE</Symbol>
-	   </Choice>
-	 </Choices>
-    </Property>
-    
   </Properties>
+  
 </GladeWidgetClass>
 	 
 	 

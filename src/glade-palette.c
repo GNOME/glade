@@ -268,7 +268,11 @@ glade_palette_init (GladePalette * palette)
 	GtkWidget *widget;
 
 	gtk_window_set_title (GTK_WINDOW (palette), _("Palette"));
-	
+	gtk_window_set_policy (GTK_WINDOW (palette),
+			       TRUE,
+			       FALSE,
+			       TRUE);
+
 	palette->tooltips = gtk_tooltips_new ();
 	palette->widgets_button_group = NULL;
 	palette->sections_button_group = NULL;
