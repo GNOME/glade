@@ -348,4 +348,3 @@ glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
 	return filesel;
 }
  
- 

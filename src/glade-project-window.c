@@ -170,6 +170,7 @@ gpw_confirm_close_project (GladeProject *project)
 	GladeProjectWindow *gpw;
 	GtkWidget *dialog;
 	gboolean close;
+	char *msg;
 	gint ret;
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
@@ -180,12 +181,15 @@ gpw_confirm_close_project (GladeProject *project)
 					 GTK_DIALOG_MODAL,
 					 GTK_MESSAGE_QUESTION,
 					 GTK_BUTTONS_NONE,
-					 _("Do you want to save the changes you made to the project \"%s\"? \n\n"
-					  "Your changes will be lost if you don't save them."),
-					 project->name);
+					 NULL);
+
+	msg = g_strdup_printf (_("<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n\n"
+				 "Your changes will be lost if you don't save them.\n"), project->name);
+	gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), msg);
+	g_free(msg);
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-				_("Do_n't save"), GTK_RESPONSE_NO,
+				_("_Close without Saving"), GTK_RESPONSE_NO,
 				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				GTK_STOCK_SAVE, GTK_RESPONSE_YES, NULL);
 
