@@ -1,26 +1,6 @@
 <GladeWidgetClass>
 
-  <Name>GtkMenuBar</Name>
-  <GenericName>menubar</GenericName>
-  <Toplevel>False</Toplevel>
-  <CreateFunction>glade_gtk_menu_bar_create</CreateFunction>
+  <!-- menubar is a container you can't add placeholders to it -->
+  <FillEmptyFunction>ignore</FillEmptyFunction>
 
-  <Properties>
-
-    <Property Common="True" Id="visible" Default="True">
-      <SetFunction>ignore</SetFunction>
-    </Property>
-    <Property Common="True" Id="tooltip" Name="Tooltip">
-      <Type>String</Type>
-      <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
-      <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
-    </Property>
-    <Property Common="True" Id="sensitive"/>
-    <!-- Not yet implemented
-    <Property Common="True" Id="events"/>
-    -->
-    <Property Common="True" Id="extension-events"/>
-
-  </Properties>
-  
 </GladeWidgetClass>

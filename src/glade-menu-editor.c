@@ -2384,13 +2384,12 @@ glade_menu_editor_construct (GladeMenuEditor *menued,
 
 			stock_id = elem->data;
 
-#if 0
-			g_print ("Stock ID: %s\n", stock_id);
-#endif
-
 			/* Check that the icon has a menu size. */
 			icon_set = gtk_icon_factory_lookup_default (stock_id);
-			gtk_icon_set_get_sizes (icon_set,	&sizes, &n_sizes);
+			if (!icon_set)
+				continue;
+
+			gtk_icon_set_get_sizes (icon_set, &sizes, &n_sizes);
 			has_menu_size = FALSE;
 			for (i = 0; i < n_sizes; i++) {
 				if (sizes[i] == GTK_ICON_SIZE_MENU)
@@ -2398,12 +2397,8 @@ glade_menu_editor_construct (GladeMenuEditor *menued,
 			}
 			g_free (sizes);
 
-			if (!has_menu_size) {
-#if 0
-				g_print ("Skipping: %s\n", stock_id);
-#endif
+			if (!has_menu_size)
 				continue;
-			}
 
 			if (gtk_stock_lookup (stock_id, &item)) {
 				listitem = gtk_list_item_new ();
@@ -2431,11 +2426,6 @@ glade_menu_editor_construct (GladeMenuEditor *menued,
 							   GTK_ITEM (listitem), item.label);
 				
 				gtk_container_add (GTK_CONTAINER (GTK_COMBO (menued->stock_combo)->list), listitem);
-			}
-			else {
-#if 0
-				g_print ("Lookup failed for stock_id: %s (probably a stock image only\n", stock_id);
-#endif
 			}
 		}
 		gtk_signal_connect (GTK_OBJECT (GTK_COMBO (menued->stock_combo)->entry),
@@ -2653,26 +2643,20 @@ glade_menu_editor_construct (GladeMenuEditor *menued,
 
 		stock_id = elem->data;
 
-#if 0
-		g_print ("Stock ID: %s\n", stock_id);
-#endif
-
 		/* Check that the icon has a menu size. */
 		icon_set = gtk_icon_factory_lookup_default (stock_id);
-		gtk_icon_set_get_sizes (icon_set,	&sizes, &n_sizes);
+		if (!icon_set)
+			continue;
+
+		gtk_icon_set_get_sizes (icon_set, &sizes, &n_sizes);
 		has_menu_size = FALSE;
 		for (i = 0; i < n_sizes; i++) {
 			if (sizes[i] == GTK_ICON_SIZE_MENU)
 				has_menu_size = TRUE;
 		}
 		g_free (sizes);
-
-		if (!has_menu_size) {
-#if 0
-			g_print ("Skipping: %s\n", stock_id);
-#endif
+		if (!has_menu_size)
 			continue;
-		}
 
 		image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_MENU);
 		if (image) {

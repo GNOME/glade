@@ -1,3 +1,10 @@
+2003-11-29  Paolo Borelli  <pborelli@katamail.com>
+
+	* widgets/gtkmenubar.xml: override fill_empty with ignore.
+	* widgets/gtk-base.xml: add gtkmenubar.xml.
+	* src/glade-menu-editor.c: gtk_icon_factory_lookup_default may return
+	NULL: avoid segfault.
+
 2003-11-28  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-palette.[ch]: implement the selector.

@@ -559,7 +559,8 @@ glade_project_save (GladeProject *project, const gchar *path)
 	gboolean ret;
 
 	xml_doc = glade_xml_doc_new ();
-	if (!xml_doc) {
+	if (!xml_doc)
+	{
 		g_warning ("Could not create xml document\n");
 		return FALSE;
 	}
