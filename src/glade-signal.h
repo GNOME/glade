@@ -4,17 +4,26 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_SIGNAL(s) ((GladeSignal *)s)
 #define GLADE_IS_SIGNAL(s) (s != NULL)
 
-struct _GladeSignal {
+struct _GladeSignal
+{
 	gchar *name;         /* Signal name eg "clicked" */
 	gchar *handler;      /* Handler function eg "gtk_main_quit" */
 	gboolean after;      /* Connect after TRUE or FALSE */
 };
 
-GladeXmlNode * glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
+
+GladeSignal *glade_signal_new (const gchar *name,
+			       const gchar *handler,
+			       gboolean after);
+
 void glade_signal_free (GladeSignal *signal);
+
+GladeXmlNode *glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
+
 
 G_END_DECLS
 

@@ -27,6 +27,25 @@
 #include "glade.h"
 #include "glade-signal.h"
 
+GladeSignal *
+glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
+{
+	GladeSignal *signal = g_new0 (GladeSignal, 1);
+
+	signal->name = g_strdup (name);
+	signal->handler = g_strdup (handler);
+	signal->after = after;
+
+	return signal;
+}
+
+void
+glade_signal_free (GladeSignal *signal)
+{
+	g_free (signal->name);
+	g_free (signal->handler);
+	g_free (signal);
+}
 
 GladeXmlNode *
 glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
@@ -42,10 +61,3 @@ glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 	return node;
 }
 
-void
-glade_signal_free (GladeSignal *signal)
-{
-	g_free (signal->name);
-	g_free (signal->handler);
-	g_free (signal);
-}

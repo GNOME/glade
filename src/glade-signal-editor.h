@@ -4,23 +4,25 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_SIGNAL_EDITOR(e) ((GladeSignalEditor *)e)
 #define GLADE_IS_SIGNAL_EDITOR(e) (e != NULL)
 
 /* The GladeSignalEditor is used to house the signal editor interface and
  * associated functionality.
  */
-struct _GladeSignalEditor {
-	
+struct _GladeSignalEditor
+{
 	GtkWidget *main_window;  /* A vbox where all the widgets are added */
 
 	GladeWidget *widget;
 	GladeWidgetClass *class;
 
 	GladeEditor *editor;
-	
+
 	GtkWidget *signals_list;
-	
+	GtkTreeStore *model;
+
 	GtkWidget *signal_name_entry;
 	GtkWidget *signal_handler_entry;
 	GtkWidget *signal_after_button;
@@ -28,13 +30,17 @@ struct _GladeSignalEditor {
 	/* Buttons */
 	GtkWidget *add_button;
 	GtkWidget *update_button;
-	GtkWidget *delete_button;
+	GtkWidget *remove_button;
 	GtkWidget *clear_button;
 };
 
-GtkWidget *         glade_signal_editor_get_widget (GladeSignalEditor *editor);
-GladeSignalEditor * glade_signal_editor_new (GladeEditor *editor);
-void                glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
+
+GtkWidget *glade_signal_editor_get_widget (GladeSignalEditor *editor);
+
+GladeSignalEditor *glade_signal_editor_new (GladeEditor *editor);
+
+void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
+
 
 G_END_DECLS
 

@@ -4,6 +4,7 @@
 
 G_BEGIN_DECLS
 
+
 typedef enum {
 	GLADE_TOPLEVEL        = 1 << 2,
 	GLADE_ADD_PLACEHOLDER = 1 << 3,
@@ -27,16 +28,16 @@ typedef enum {
  * type. It is also used to store information that has been loaded to memory
  * for that object like the icon/mask.
  */
-struct _GladeWidgetClass {
-
-	GType type;         /* GType of the widget */
+struct _GladeWidgetClass
+{
+	GType type;          /* GType of the widget */
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
 	gchar *xml_file;     /* Name of the xml file for this type without a path */
 
 	GdkPixmap *pixmap;   /* The loaded pixmap for the icon of this widget type */
 	GdkBitmap *mask;     /* The mask for the loaded pixmap */
-	GdkPixbuf *pixbuf;  /* Temp for glade-project-view-tree. */
+	GdkPixbuf *pixbuf;   /* Temp for glade-project-view-tree. */
 
 	gchar *generic_name; /* Use to generate names of new widgets, for
 			      * example "button" so that we generate button1,
@@ -68,30 +69,32 @@ struct _GladeWidgetClass {
 /* GladeWidgetClassSignal contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
  */
-struct _GladeWidgetClassSignal {
-
+struct _GladeWidgetClassSignal
+{
 	gchar *name;         /* Name of the signal, eg clicked */
 	gchar *type;         /* Name of the object class that this signal belongs to
 			      * eg GtkButton */
 };
 
-GladeWidgetClass * glade_widget_class_new_from_name (const gchar *name);
-GladeWidgetClass * glade_widget_class_new_from_node (GladeXmlNode *node);
-GladeWidgetClass * glade_widget_class_get_by_name (const gchar *name);
+GladeWidgetClass *glade_widget_class_new_from_name (const gchar *name);
+GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);
+GladeWidgetClass *glade_widget_class_get_by_name (const gchar *name);
 
-const gchar * glade_widget_class_get_name (GladeWidgetClass *class);
-GType 	      glade_widget_class_get_type (GladeWidgetClass *class);
-gboolean      glade_widget_class_has_queries (GladeWidgetClass *class);
+const gchar *glade_widget_class_get_name (GladeWidgetClass *class);
+GType 	     glade_widget_class_get_type (GladeWidgetClass *class);
+gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
 
-gboolean      glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
+gboolean     glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
+
 /* ParamSpec stuff */
 void         glade_widget_class_get_specs (GladeWidgetClass *class,
 					   GParamSpec ***specs, gint *n_specs);
-GParamSpec * glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
-void         glade_widget_class_dump_param_specs (GladeWidgetClass *class);
+GParamSpec *glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
+void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
 
 /* Packing properties */
-void         glade_widget_class_load_packing_properties (GladeWidgetClass *class);
+void        glade_widget_class_load_packing_properties (GladeWidgetClass *class);
+
 
 G_END_DECLS
 

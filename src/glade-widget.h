@@ -40,7 +40,7 @@ struct _GladeWidget {
 			    * property is "Ok". 
 			    */
 
-	GList *signals;      /* A list of GladeWidgetSignals */
+	GList *signals;      /* A list of GladeSignals */
 
 	/* Tree Structure */
 	GladeWidget *parent; /* The parent of this widget, NULL if this is a
@@ -50,15 +50,6 @@ struct _GladeWidget {
 			      */
 
 	gboolean selected;
-};
-
-/* GladeWidgetSignal is a structure that holds information about a signal a
- * widget wants for handle / listen for. 
- */
-struct _GladeWidgetSignal {
-	gchar *name;         /* Signal name eg "clicked" */
-	gchar *handler;      /* Handler function eg "gtk_main_quit" */
-	gboolean after;      /* Connect after TRUE or FALSE */
 };
 
 
@@ -93,6 +84,14 @@ GladeWidget *glade_widget_clone (GladeWidget *widget);
 GladePlaceholder *glade_widget_replace_with_placeholder (GladeWidget *widget,
 							 GladePlaceholder *placeholder);
 GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
+
+/* Widget signal*/
+void glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal);
+void glade_widget_update_signal (GladeWidget *widget,
+				 GladeSignal *new_signal,
+				 GladeSignal *old_signal);
+void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
+
 
 /* Xml saving & reading */
 GladeXmlNode * glade_widget_write (GladeXmlContext *context, GladeWidget *widget);
