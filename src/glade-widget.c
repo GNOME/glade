@@ -619,21 +619,9 @@ glade_widget_expose (GtkWidget *widget,
 		     GdkEventExpose *event,
 		     gpointer unused_data)
 {
-	GladeWidget *glade_widget;
-
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
 
-	glade_widget = glade_widget_get_from_gtk_widget (widget);
-
-	/* Note that this may be an internal child widget that doesn't have
-	   a corresponding GladeWidget, so we try to find its parent. */
-	if (!glade_widget)
-		glade_widget = glade_util_get_parent (widget);
-
-	if (!glade_widget)
-		return FALSE;
-
-	glade_project_queue_expose_handler (glade_widget->project);
+	glade_util_queue_draw_nodes (event->window);
 
 	/* FIXME: For GtkFixed & GtkLayout we can draw the grid here.
 	   (But don't draw it for internal children). */

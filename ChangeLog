@@ -1,3 +1,18 @@
+2004-05-03  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-utils.c (glade_util_queue_draw_nodes): new function to
+	queue a draw of the selection nodes, for the given GdkWindow.
+	(glade_util_draw_nodes_idle): new idle function to redraw any
+	selection nodes within the given window that has received an expose
+	signal. (The old method didn't work on win32 as gdk_gc_set_subwindow()
+	doesn't work there.)
+
+	* src/glade-placeholder.c (glade_placeholder_expose): 
+	* src/glade-widget.c (glade_widget_expose): just call
+	glade_util_queue_draw_nodes() to queue a draw of the selection nodes.
+
+	* src/glade-project.[ch]: removed expose handler stuff.
+
 2004-05-01  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-catalog.c: fix a double free if a palette name is lacking in

@@ -372,12 +372,12 @@ glade_util_duplicate_underscores (const char *name)
 	return underscored_name;
 }
 
-/* This returns the window to draw on for a given widget.
-   Usually we draw on the widget's parent's window, since we know that will
-   cover the widget's entire allocated area. But if the widget is a toplevel,
-   we draw on its own window, as it doesn't have a parent. */
+/* This returns the window that the given widget's position is relative to.
+   Usually this is the widget's parent's window. But if the widget is a
+   toplevel, we use its own window, as it doesn't have a parent.
+   Some widgets also lay out widgets in different ways. */
 static GdkWindow*
-glade_util_get_window_to_draw_on (GtkWidget *widget)
+glade_util_get_window_positioned_in (GtkWidget *widget)
 {
 	GtkWidget *parent;
 
@@ -404,30 +404,11 @@ glade_util_get_window_to_draw_on (GtkWidget *widget)
 	return widget->window;
 }
 
-void
-glade_util_draw_nodes (GtkWidget *widget)
+static void
+glade_util_draw_nodes (GdkWindow *window, GdkGC *gc,
+		       gint x, gint y,
+		       gint width, gint height)
 {
-	GdkGC *gc;
-	gint x, y;
-	gint width, height;
-	GdkWindow *window;
-	GtkWidget *window_owner;
-
-	/* Check widget is drawable. */
-	if (!GTK_WIDGET_DRAWABLE (widget))
-		return;
-
-	window = glade_util_get_window_to_draw_on (widget);
-	gdk_window_get_user_data (window, (gpointer*) &window_owner);
-	gc = window_owner->style->black_gc;
-
-	x = widget->allocation.x;
-	y = widget->allocation.y;
-	width = widget->allocation.width;
-	height = widget->allocation.height;
-
-	gdk_gc_set_subwindow (gc, GDK_INCLUDE_INFERIORS);
-
 	if (width > GLADE_UTIL_SELECTION_NODE_SIZE && height > GLADE_UTIL_SELECTION_NODE_SIZE) {
 		gdk_draw_rectangle (window, gc, TRUE,
 				    x, y,
@@ -445,8 +426,174 @@ glade_util_draw_nodes (GtkWidget *widget)
 	}
 
 	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
+}
 
-	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
+/* This calculates the offset of the given window within its toplevel.
+   It also returns the toplevel. */
+static void
+glade_util_calculate_window_offset (GdkWindow *window,
+				    gint *x, gint *y,
+				    GdkWindow **toplevel)
+{
+	gint tmp_x, tmp_y;
+
+	/* Calculate the offset of the window within its toplevel. */
+	*x = 0;
+	*y = 0;
+
+	for (;;) {
+		if (gdk_window_get_window_type (window) != GDK_WINDOW_CHILD)
+			break;
+		gdk_window_get_position (window, &tmp_x, &tmp_y);
+		*x += tmp_x;
+		*y += tmp_y;
+		window = gdk_window_get_parent (window);
+	}
+
+	*toplevel = window;
+}
+
+/* This returns TRUE if it is OK to draw the selection nodes for the given
+   selected widget inside the given window that has received an expose event.
+   For most widgets it returns TRUE, but if a selected widget is inside a
+   widget like a viewport, that uses its own coordinate system, then it only
+   returns TRUE if the expose window is inside the viewport as well. */
+static gboolean
+glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
+			   GdkWindow *expose_win)
+{
+	GtkWidget *widget, *viewport = NULL;
+	GdkWindow *viewport_win = NULL;
+
+	/* Check if the selected widget is inside a viewport. */
+	for (widget = sel_widget->parent; widget; widget = widget->parent) {
+		if (GTK_IS_VIEWPORT (widget)) {
+			viewport = widget;
+			viewport_win = GTK_VIEWPORT (widget)->bin_window;
+			break;
+		}
+	}
+
+	/* If there is no viewport-type widget above the selected widget,
+	   it is OK to draw the selection anywhere. */
+	if (!viewport)
+		return TRUE;
+
+	/* If we have a viewport-type widget, check if the expose_win is
+	   beneath the viewport. If it is, we can draw in it. If not, we
+	   can't.*/
+	for (;;) {
+		if (expose_win == sel_win)
+			return TRUE;
+		if (expose_win == viewport_win)
+			return FALSE;
+		if (gdk_window_get_window_type (expose_win) != GDK_WINDOW_CHILD)
+			break;
+		expose_win = gdk_window_get_parent (expose_win);
+	}
+
+	return FALSE;
+}
+
+/* This is called to redraw any selection nodes that intersect the given
+   exposed window. It steps through all the selected widgets, converts the
+   coordinates so they are relative to the exposed window, then calls
+   glade_util_draw_nodes() to draw the selection nodes if appropriate. */
+gboolean
+glade_util_draw_nodes_idle (GdkWindow *expose_win)
+{
+	GladeWidget *expose_gwidget;
+	GtkWidget *expose_widget;
+	gint expose_win_x, expose_win_y;
+	gint expose_win_w, expose_win_h;
+	GdkWindow *expose_toplevel;
+	GdkGC *gc;
+	GList *elem;
+
+	/* Check that the window is still alive. */
+	if (!gdk_window_is_viewable (expose_win))
+		goto out;
+
+	/* Find the corresponding GtkWidget and GladeWidget. */
+	gdk_window_get_user_data (expose_win, (gpointer*) &expose_widget);
+	gc = expose_widget->style->black_gc;
+
+	expose_gwidget = glade_widget_get_from_gtk_widget (expose_widget);
+	if (!expose_gwidget)
+		expose_gwidget = glade_util_get_parent (expose_widget);
+	if (!expose_gwidget)
+		goto out;
+
+	/* Calculate the offset of the expose window within its toplevel. */
+	glade_util_calculate_window_offset (expose_win,
+					    &expose_win_x,
+					    &expose_win_y,
+					    &expose_toplevel);
+
+
+	gdk_drawable_get_size (expose_win,
+			       &expose_win_w, &expose_win_h);
+
+	/* Step through all the selected widgets in the project. */
+	for (elem = expose_gwidget->project->selection; elem; elem = elem->next) {
+		GtkWidget *sel_widget;
+		GdkWindow *sel_win, *sel_toplevel;
+		gint sel_x, sel_y, x, y, w, h;
+
+		sel_widget = elem->data;
+		sel_win = glade_util_get_window_positioned_in (sel_widget);
+
+		/* Calculate the offset of the selected widget's window
+		   within its toplevel. */
+		glade_util_calculate_window_offset (sel_win, &sel_x, &sel_y,
+						    &sel_toplevel);
+
+		/* We only draw the nodes if the window that got the expose
+		   event is in the same toplevel as the selected widget. */
+		if (expose_toplevel == sel_toplevel
+		    && glade_util_can_draw_nodes (sel_widget, sel_win,
+						  expose_win)) {
+			x = sel_x + sel_widget->allocation.x - expose_win_x;
+			y = sel_y + sel_widget->allocation.y - expose_win_y;
+			w = sel_widget->allocation.width;
+			h = sel_widget->allocation.height;
+
+			/* Draw the selection nodes if they intersect the
+			   expose window bounds. */
+			if (x < expose_win_w && x + w >= 0
+			    && y < expose_win_h && y + h >= 0) {
+				glade_util_draw_nodes (expose_win, gc,
+						       x, y, w, h);
+			}
+		}
+	}
+
+
+ out:
+	/* Remove the reference added in glade_util_queue_draw_nodes(). */
+	gdk_window_unref (expose_win);
+
+	/* Return FALSE so the idle handler isn't called again. */
+	return FALSE;
+}
+
+#define GLADE_DRAW_NODES_IDLE_PRIORITY	GTK_PRIORITY_DEFAULT + 10
+
+/* This should be called whenever a widget in the interface receives an
+   expose event. It sets up an idle function which will redraw any selection
+   nodes that intersect the exposed window. */
+void
+glade_util_queue_draw_nodes (GdkWindow *window)
+{
+	g_return_if_fail (GDK_IS_WINDOW (window));
+
+	/* We need to ref the window, to make sure it isn't freed before
+	   our idle function is called. We unref it there. */
+	gdk_window_ref (window);
+
+	g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
+			 (GSourceFunc) glade_util_draw_nodes_idle,
+			 window, NULL);
 }
 
 void

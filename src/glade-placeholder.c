@@ -244,7 +244,6 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
 static gboolean
 glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 {
-	GladeProject *project;
 	GdkGC *light_gc;
 	GdkGC *dark_gc;
 	gint w, h;
@@ -260,8 +259,7 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	gdk_draw_line (event->window, dark_gc, 0, h - 1, w - 1, h - 1);
 	gdk_draw_line (event->window, dark_gc, w - 1, 0, w - 1, h - 1);
 
-	project = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
-	glade_project_queue_expose_handler (project);
+	glade_util_queue_draw_nodes (event->window);
 
 	return FALSE;
 }
