@@ -604,10 +604,19 @@ gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
 	return TRUE;
 }
 
+static void 
+gpw_expand_treeview (GtkButton *button, GtkTreeView *tree)
+{
+	gtk_tree_view_expand_all (tree);
+	gtk_widget_queue_draw (GTK_WIDGET (tree));
+}
+
+
+
 static GtkWidget* 
 gpw_create_widget_tree (GladeProjectWindow *gpw)
 {
-	GtkWidget *widget_tree;
+	GtkWidget *widget_tree, *hbox, *vbox, *expand, *collapse;
 	GladeProjectView *view;
 	GtkWidget *widget_tree_item;
 
@@ -615,6 +624,7 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	gtk_window_set_default_size (GTK_WINDOW (widget_tree),
 				     GLADE_WIDGET_TREE_WIDTH,
 				     GLADE_WIDGET_TREE_HEIGHT);
+
 	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
@@ -623,10 +633,30 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
 					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	gtk_container_add (GTK_CONTAINER (widget_tree), GTK_WIDGET (view));
+
+	/* Add control buttons to the treeview. */
+	hbox     = gtk_hbox_new (TRUE, 0);
+	vbox     = gtk_vbox_new (FALSE, 0);
+	expand   = gtk_button_new_with_label (_("Expand all"));
+	collapse = gtk_button_new_with_label (_("Collapse all"));
+	gtk_box_pack_start (GTK_BOX (hbox), expand, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), collapse, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (view), TRUE, TRUE, 0);
+
+	gtk_container_add (GTK_CONTAINER (widget_tree), vbox);
 
 	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
 			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->item_factory);
+
+	g_signal_connect (G_OBJECT (expand), "clicked",
+			  G_CALLBACK (gpw_expand_treeview), 
+			  view->tree_view);
+
+	g_signal_connect_swapped (G_OBJECT (collapse), "clicked",
+				  G_CALLBACK (gtk_tree_view_collapse_all), 
+				  view->tree_view);
+
 
 	widget_tree_item = gtk_item_factory_get_item (gpw->priv->item_factory,
 						      "<main>/View/Widget Tree");

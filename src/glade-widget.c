@@ -1267,15 +1267,10 @@ glade_widget_button_press (GtkWidget *widget,
 		}
 		else
 		{
-			if (glade_project_is_selected 
-			    (glade_widget->project, glade_widget->object) == FALSE ||
-			    g_list_length (glade_widget->project->selection) != 1)
-			{
-				glade_util_clear_selection ();
-				glade_project_selection_set (glade_widget->project, 
+			glade_util_clear_selection ();
+			glade_project_selection_set (glade_widget->project, 
 							     glade_widget->object, TRUE);
-				handled = TRUE;
-			}
+			handled = TRUE;
 		}
 	}
 	else if (event->button == 3)

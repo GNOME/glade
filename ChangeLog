@@ -1,3 +1,18 @@
+2005-03-31  Tristan Van Berkom <tvb@gnome.org>
+
+	* Added MAINTAINERS file.
+	
+	* AUTHORS: Added me to authors list
+
+	* src/glade-popup.c: Fixed selection bug (placeholders 
+	  werent loosing selection when selection changes through
+	  the popup).
+
+	* src/glade-project-window.c: Added "Expand all"/"Collapse all" in
+	  the widget tree veiw (bug 164740)
+
+	* src/glade-widget.c: Remove redundant paranoia code.
+
 2005-03-14  Naba Kumar  <naba@gnome.org>
 
 	* pixmaps/Makefile.am,

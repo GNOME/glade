@@ -33,6 +33,7 @@
 static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
+	glade_util_clear_selection ();
 	glade_project_selection_set
 		(widget->project, glade_widget_get_object (widget), TRUE);
 }
