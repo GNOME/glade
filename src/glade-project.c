@@ -265,7 +265,8 @@ glade_project_remove_widget_real (GladeProject *project,
 	}
 
 	gwidget = glade_widget_get_from_gtk_widget (widget);
-	g_assert (GLADE_IS_WIDGET (gwidget));
+	if (!gwidget)
+		return;
 
 	project->selection = g_list_remove (project->selection, widget);
 	glade_project_selection_changed (project);
