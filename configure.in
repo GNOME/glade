@@ -12,7 +12,6 @@ AC_PROG_INTLTOOL([0.29])
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
-
 AC_ISC_POSIX
 AC_PROG_CC
 AC_DISABLE_STATIC
@@ -112,6 +111,7 @@ pixmaps/Makefile
 widgets/Makefile
 po/Makefile.in
 src/Makefile
+src/libgladeui-1.0.pc
 ])
 
 echo "

@@ -1,3 +1,21 @@
+2005-02-04  Naba Kumar  <naba@gnome.org>
+
+	* configure.in, src/Makefile.am, (new) src/glade-app.c,
+	(new) src/glade-app.h, (new) src/glade-command.c,
+	(new) src/libgladeui-1.0.pc.in,
+	src/glade-gtk.c, src/glade-placeholder.c, src/glade-popup.c,
+	src/glade-project-window.c, src/glade-project-window.h,
+	src/glade-project.c, src/glade-utils.c, src/glade-widget.c,
+	src/main.c:
+	- Segregated UI and application engine.
+	- Created a library for the engine (libgladeui).
+	- glade application specific UI in glade-3 executable.
+	- GladeApp class representing glade.
+	- GladeProjectWindow class (subclass of GladeApp) implements
+	UI for glade3 application.
+	- Fixed other files to use glade_default_app_* API to
+	retrieve various engine elements.
+
 2005-01-16  Mikael Hallendal  <micke@imendio.com>
 
 	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):

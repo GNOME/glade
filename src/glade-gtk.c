@@ -1040,7 +1040,6 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			      GdkEventButton  *event,
 			      gpointer         user_data)
 {
-	GladeProjectWindow *gpw;
 	GladeWidget   *gwidget;
 	GladeWidget   *fixed_gwidget;
 	GladeProperty *property;
@@ -1048,21 +1047,22 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 	
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		gpw           = glade_project_window_get ();
 		fixed_gwidget = glade_widget_get_from_gobject (widget);
 
 		/* If there is a class to add and we successfully
 		 * create a widget.
 		 */
-		if (((gpw->add_class != NULL)         ||
+		if (((glade_default_app_get_add_class() != NULL)         ||
 		     ((event->state & GDK_SHIFT_MASK) &&
-		      gpw->alt_class != NULL))        &&
+		      glade_default_app_get_alt_class() != NULL))        &&
 		    ((gwidget = glade_command_create
-		      (gpw->add_class ? gpw->add_class : gpw->alt_class,
+		      (glade_default_app_get_add_class() ?
+			   	glade_default_app_get_add_class() :
+			   	 glade_default_app_get_alt_class(),
 		       fixed_gwidget, NULL, fixed_gwidget->project)) != NULL))
 		{
 			/* reset the palette */
-			glade_palette_unselect_widget (gpw->palette);
+			glade_palette_unselect_widget (glade_default_app_get_palette());
 
 			g_value_init (&value, G_TYPE_INT);
 			
@@ -1091,7 +1091,7 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			/* We need to resync the editor so that width-request/height-request
 			 * are actualy enabled in the editor
 			 */
-			glade_editor_refresh (gpw->editor);
+			glade_editor_refresh (glade_default_app_get_editor());
 		}
 		return TRUE;
 	}

@@ -34,10 +34,10 @@
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
 #include "glade-placeholder.h"
-#include "glade-project-window.h"
 #include "glade-editor.h"
 #include "glade-utils.h"
 #include "glade-id-allocator.h"
+#include "glade-app.h"
 
 static void glade_project_class_init (GladeProjectClass *class);
 static void glade_project_init (GladeProject *project);

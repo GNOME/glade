@@ -27,10 +27,8 @@
 #include "glade.h"
 #include "glade-widget-class.h"
 #include "glade-debug.h"
-#include "glade-cursor.h"
-#include "glade-catalog.h"
 #include "glade-project-window.h"
-#include "glade-transform.h"
+#include "glade-app.h"
 
 #include <locale.h>
 #include <gmodule.h>
@@ -42,18 +40,6 @@
 #ifdef G_OS_WIN32
 #include <stdlib.h> /* __argc & __argv on the windows build */
 #endif
-
-gchar *glade_data_dir = GLADE_DATA_DIR;
-gchar *glade_pixmaps_dir = PIXMAPS_DIR;
-gchar *glade_widgets_dir = WIDGETS_DIR;
-gchar *glade_catalogs_dir = CATALOGS_DIR;
-#ifdef MODULES_DIR
-gchar *glade_modules_dir = MODULES_DIR;
-#else
-gchar *glade_modules_dir = NULL;
-#endif
-gchar *glade_locale_dir = LOCALE_DIR;
-gchar *glade_icon_dir = ICONS_DIR;
 
 static gchar *widget_name = NULL;
 gboolean verbose = FALSE;
@@ -103,9 +89,6 @@ parse_command_line (poptContext pctx)
 static gint
 glade_init (void)
 {
-	GladeProjectWindow *project_window;
-	GList *catalogs;
-
 	if (!g_module_supported ())
 	{
 		g_warning (_("gmodule support not found. gmodule support is required "
@@ -113,47 +96,16 @@ glade_init (void)
 		return FALSE;
 	}
 
-	/* register transformation functions */
-	glade_register_transformations ();
-
-	/*
-	 * 1. Init the cursors
-	 * 2. Create the catalog
-	 * 3. Create the project window
-	 */
-	glade_cursor_init ();
-
-	catalogs = glade_catalog_load_all ();
-	if (!catalogs) 
-	{
-		g_warning ("Couldn't load any catalogs");
-		return FALSE;
-	}
-
-	project_window = glade_project_window_new (catalogs);
-
 	return TRUE;
 }
 
 int
 main (int argc, char *argv[])
 {
+	GladeProjectWindow *project_window;
 	GList *files = NULL;
 #ifdef HAVE_LIBPOPT
 	poptContext popt_context;
-#endif
-#ifdef G_OS_WIN32
-	gchar *prefix;
-
-	prefix = g_win32_get_package_installation_directory (NULL, NULL);
-	glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
-	glade_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
-	glade_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
-	glade_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
-	glade_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
-	glade_locale_dir = g_build_filename (prefix, "lib", "locale", NULL);
-	glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
-	g_free (prefix);
 #endif
 
 #ifdef ENABLE_NLS
@@ -188,6 +140,9 @@ main (int argc, char *argv[])
 	if (!glade_init ())
 		return -1;
 
+	project_window = glade_project_window_new ();
+	glade_default_app_set (GLADE_APP (project_window));
+	
 	if (widget_name != NULL)
 	{
 		GladeWidgetClass *class;
@@ -197,19 +152,20 @@ main (int argc, char *argv[])
 		return 0;
 	}
 
-	glade_project_window_show_all ();
+	glade_project_window_show_all (project_window);
 
 	if (files)
 		for (; files; files = files->next)
 		{
-			glade_project_window_open_project (files->data);
+			glade_project_window_open_project (project_window, files->data);
 		}
 	else
-		glade_project_window_new_project ();
+		glade_project_window_new_project (project_window);
 
 	gtk_main ();
 
-#ifdef G_OS_WIN32
+/* FIXME: Move this to glade-app.c */
+#ifdef G_OS_WIN32 
 	g_free (glade_data_dir);
 	g_free (glade_pixmaps_dir);
 	g_free (glade_widgets_dir);

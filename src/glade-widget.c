@@ -35,7 +35,7 @@
 #include "glade-signal.h"
 #include "glade-popup.h"
 #include "glade-editor.h"
-#include "glade-project-window.h"
+#include "glade-app.h"
 #include <glib.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -585,10 +585,10 @@ glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *pr
 
 		if (widget->query_user)
 		{
-			GladeProjectWindow *gpw = glade_project_window_get ();
+			GladeEditor *editor = glade_default_app_get_editor ();
 
 			/* If user pressed cancel on query popup. */
-			if (!glade_editor_query_dialog (gpw->editor, widget))
+			if (!glade_editor_query_dialog (editor, widget))
 			{
 				g_object_unref (G_OBJECT (widget));
 				return NULL;

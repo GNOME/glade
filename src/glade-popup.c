@@ -28,7 +28,7 @@
 #include "glade-clipboard.h"
 #include "glade-command.h"
 #include "glade-project.h"
-#include "glade-project-window.h"
+#include "glade-app.h"
 
 static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
@@ -40,8 +40,7 @@ glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw); 
+	GladeProject       *project = glade_default_app_get_active_project ();
 
 	/* Assign selection first */
 	if (glade_project_is_selected
@@ -55,8 +54,7 @@ glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw); 
+	GladeProject       *project = glade_default_app_get_active_project ();
 
 	/* Assign selection first */
 	if (glade_project_is_selected
@@ -70,8 +68,7 @@ glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw); 
+	GladeProject       *project = glade_default_app_get_active_project ();
 
 	/* The selected widget is the paste destination
 	 */
@@ -84,8 +81,7 @@ glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw); 
+	GladeProject       *project = glade_default_app_get_active_project ();
 
 	/* Assign selection first */
 	if (glade_project_is_selected
@@ -100,8 +96,7 @@ static void
 glade_popup_placeholder_paste_cb (GtkMenuItem      *item,
 				  GladePlaceholder *placeholder)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw); 
+	GladeProject       *project = glade_default_app_get_active_project ();
 
 	glade_project_selection_clear (project, FALSE);
 

@@ -1000,8 +1000,8 @@ glade_util_widget_pastable (GladeWidget *child,
 void
 glade_util_paste_clipboard (GladePlaceholder *placeholder)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw);
+	GladeProject       *project = glade_default_app_get_active_project ();
+	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget, *parent;
 
@@ -1011,20 +1011,22 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 		if (placeholder == NULL &&
 		    g_list_length (list) != 1)
 		{
-			glade_util_ui_warn 
-				(gpw->window, _("Unable to paste to multiple widgets"));
+			glade_util_ui_warn (glade_default_app_get_window(),
+								_("Unable to paste to multiple widgets"));
 			return;
 		}
 	}
 	else if (placeholder == NULL)
 	{
-		glade_util_ui_warn (gpw->window, _("No target widget selected"));
+		glade_util_ui_warn (glade_default_app_get_window (),
+							_("No target widget selected"));
 		return;
 	}
 
-	if (g_list_length (gpw->clipboard->selection) == 0)
+	if (g_list_length (clipboard->selection) == 0)
 	{
-		glade_util_ui_warn (gpw->window, _("No widget selected on the clipboard"));
+		glade_util_ui_warn (glade_default_app_get_window (),
+							_("No widget selected on the clipboard"));
 		return;
 	}
 
@@ -1033,7 +1035,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 	else
 		parent = glade_widget_get_from_gobject (list->data);
 
-	for (list = gpw->clipboard->selection; 
+	for (list = clipboard->selection; 
 	     list && list->data; list = list->next)
 	{
 		widget = list->data;
@@ -1044,12 +1046,12 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 			gchar *message = g_strdup_printf
 				(_("Unable to paste widget %s to parent %s"),
 				 widget->name, parent->name);
-			glade_util_ui_warn (gpw->window, message);
+			glade_util_ui_warn (glade_default_app_get_window (), message);
 			g_free (message);
 			return;
 		}
 	}
-	widgets = g_list_copy (gpw->clipboard->selection);
+	widgets = g_list_copy (clipboard->selection);
 	glade_command_paste (widgets, parent, placeholder);
 	g_list_free (widgets);
 }
@@ -1062,8 +1064,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder)
 void
 glade_util_cut_selection (void)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw);
+	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	
@@ -1081,7 +1082,8 @@ glade_util_cut_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		glade_util_ui_warn (glade_default_app_get_window (),
+							_("No widget selected!"));
 	}
 }
 
@@ -1093,8 +1095,7 @@ glade_util_cut_selection (void)
 void
 glade_util_copy_selection (void)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
-	GladeProject       *project = glade_project_window_get_active_project (gpw);
+	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	
@@ -1113,7 +1114,8 @@ glade_util_copy_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		glade_util_ui_warn (glade_default_app_get_window(),
+							_("No widget selected!"));
 	}
 }
 
@@ -1125,13 +1127,11 @@ glade_util_copy_selection (void)
 void
 glade_util_delete_selection (void)
 {
-	GladeProjectWindow *gpw;
+	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 
-	gpw = glade_project_window_get ();
-	
-	for (list = glade_project_selection_get (gpw->active_project);
+	for (list = glade_project_selection_get (project);
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -1145,10 +1145,10 @@ glade_util_delete_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		glade_util_ui_warn (glade_default_app_get_window(),
+							_("No widget selected!"));
 	}
 }
-
 
 static GtkTreeIter *
 glade_util_find_iter (GtkTreeModel *model,

@@ -25,7 +25,6 @@
 #include <string.h>
 #include "glade-types.h"
 #include "glade-project.h"
-#include "glade-project-window.h"
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
@@ -38,7 +37,7 @@
 #include "glade-clipboard.h"
 #include "glade-signal.h"
 #include "glade.h"
-
+#include "glade-app.h"
 
 typedef struct {
 	GladeWidget      *widget;
@@ -271,7 +270,7 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 	else
 		project->prev_redo_item = g_list_next (project->prev_redo_item);
 
-	glade_project_window_refresh_undo_redo ();
+	glade_default_app_update_ui ();
 }
 
 /**************************************************/
@@ -368,7 +367,7 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 	this->description = other->description;
 	other->description = NULL;
 
-	glade_project_window_refresh_undo_redo ();
+	glade_default_app_update_ui ();
 }
 
 
@@ -519,7 +518,7 @@ glade_command_set_name_collapse (GladeCommand *this, GladeCommand *other)
 	g_free (this->description);
 	this->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
 
-	glade_project_window_refresh_undo_redo ();
+	glade_default_app_update_ui ();
 }
 
 /* this function takes the ownership of name */
@@ -727,7 +726,7 @@ glade_command_delete (GList *widgets)
 		widget = list->data;
 		if (widget->internal)
 		{
-			glade_util_ui_warn (glade_project_window_get()->window,
+			glade_util_ui_warn (glade_default_app_get_window(),
 					    _("You cannot delete a widget internal to a composite widget."));
 			return;
 		}
@@ -852,7 +851,6 @@ GLADE_MAKE_COMMAND (GladeCommandCutCopyPaste, glade_command_cut_copy_paste);
 static gboolean
 glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProjectWindow *gpw     = glade_project_window_get ();
 	GladeProject       *project = 
 		(me->widgets && me->widgets->data) ?
 		((CommandData *)me->widgets->data)->widget->project : NULL;
@@ -905,7 +903,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 
 		if (remove)
 		{
-			glade_clipboard_remove (gpw->clipboard, remove);
+			glade_clipboard_remove (glade_default_app_get_clipboard(), remove);
 			g_list_free (remove);
 		}
 	}
@@ -915,7 +913,6 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 static gboolean
 glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
 	CommandData        *cdata;
 	GList              *list, *add = NULL;
 
@@ -947,7 +944,7 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 
 	if (add)
 	{
-		glade_clipboard_add (gpw->clipboard, add);
+		glade_clipboard_add (glade_default_app_get_clipboard(), add);
 		g_list_free (add);
 	}
 	return TRUE;
@@ -956,7 +953,6 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 static gboolean
 glade_command_copy_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
 	GList              *list, *add = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
@@ -964,7 +960,7 @@ glade_command_copy_execute (GladeCommandCutCopyPaste *me)
 
 	if (add)
 	{
-		glade_clipboard_add (gpw->clipboard, add);
+		glade_clipboard_add (glade_default_app_get_clipboard(), add);
 		g_list_free (add);
 	}
 	return TRUE;
@@ -973,7 +969,6 @@ glade_command_copy_execute (GladeCommandCutCopyPaste *me)
 static gboolean
 glade_command_copy_undo (GladeCommandCutCopyPaste *me)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
 	GList              *list, *remove = NULL;
 
 	for (list = me->widgets; list && list->data; list = list->next)
@@ -981,7 +976,7 @@ glade_command_copy_undo (GladeCommandCutCopyPaste *me)
 
 	if (remove)
 	{
-		glade_clipboard_remove (gpw->clipboard, remove);
+		glade_clipboard_remove (glade_default_app_get_clipboard(), remove);
 		g_list_free (remove);
 	}
 	return TRUE;
@@ -1073,7 +1068,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 				     GladePlaceholder      *placeholder,
 				     GladeCutCopyPasteType  type)
 {
-	GladeProjectWindow       *gpw = glade_project_window_get ();
 	GladeCommandCutCopyPaste *me;
 	CommandData              *cdata;
 	GladeWidget              *widget;
@@ -1092,7 +1086,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			if (widget->internal)
 			{
 				glade_util_ui_warn 
-					(gpw->window, 
+					(glade_default_app_get_window(), 
 					 _("You cannot copy/cut a widget "
 					   "internal to a composite widget."));
 				return;
@@ -1107,7 +1101,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			if (GTK_IS_WINDOW (widget->object))
 			{
 				glade_util_ui_warn 
-					(gpw->window, 
+					(glade_default_app_get_window(), 
 					 _("You cannot paste a top-level "
 					   "to a placeholder."));
 				return;
@@ -1119,7 +1113,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		    glade_util_any_gtkcontainer_relation (parent, widgets))
 		{
 			glade_util_ui_warn
-				(gpw->window, 
+				(glade_default_app_get_window(), 
 				 _("One or more selected items must "
 				   "be pasted to a placeholder"));
 				return;
@@ -1183,7 +1177,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	 */
 	if (glade_command_cut_copy_paste_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo 
-			(glade_project_window_get_active_project (gpw),
+			(glade_default_app_get_active_project(),
 			 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
@@ -1200,11 +1194,10 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 void
 glade_command_paste (GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
-	GladeProjectWindow  *gpw = glade_project_window_get ();
 	if (placeholder != NULL && g_list_length (widgets) != 1)
 	{
 		glade_util_ui_warn 
-			(gpw->window, 
+			(glade_default_app_get_window(), 
 			 _("You cannot paste more than one widget to a placeholder."));
 		return;
 	}
