@@ -7,8 +7,6 @@ pixmaps_DATA = \
 	table.xpm \
 	\
 	selector.xpm \
-	placeholder.xpm \
-	\
-	glade_logo.png
+	placeholder.xpm
 
 EXTRA_DIST = $(pixmaps_DATA)
