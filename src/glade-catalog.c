@@ -36,6 +36,8 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
+#define d(x)
+
 struct _GladeCatalog
 {
 	gchar *library;
@@ -70,7 +72,7 @@ catalog_load (const char *filename)
 	GladeXmlNode    *root;
 	GladeXmlNode    *node;
 
-	g_print ("Loading catalog: %s\n", filename);
+	d(g_print ("Loading catalog: %s\n", filename));
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
 						   NULL, 
@@ -128,7 +130,7 @@ catalog_load (const char *filename)
 
 	glade_xml_context_free (context);
 
-	g_print ("Successfully parsed catalog: %s\n", catalog->name);
+	d(g_print ("Successfully parsed catalog: %s\n", catalog->name));
 
 	return catalog;
 }
@@ -186,7 +188,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		return FALSE;	
 	}
 
-	g_print ("Loading widget group: %s\n", group->title);
+	d(g_print ("Loading widget group: %s\n", group->title));
 
 	group->widget_classes = NULL;
 

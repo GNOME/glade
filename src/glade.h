@@ -111,7 +111,7 @@
 #define GLADE_TAG_GET_ALL_CHILDREN_FUNCTION       "get-all-children-function"
 #define GLADE_TAG_CHILD_SET_PROP_FUNCTION         "child-set-property-function"
 #define GLADE_TAG_CHILD_GET_PROP_FUNCTION         "child-get-property-function"
-#define GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION "child-property-applies"
+#define GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION "child-property-applies-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
 #define GLADE_TAG_PROPERTY                        "property"
 #define GLADE_TAG_TYPE                            "type"

@@ -213,7 +213,7 @@
     <glade-widget-class name="GtkDialog" generic-name="dialog" title="Dialog Box">
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_dialog_get_internal_child</get-internal-child-function>
-      <child-property-applies>glade_gtk_dialog_child_property_applies</child-property-applies>
+      <child-property-applies-function>glade_gtk_dialog_child_property_applies</child-property-applies-function>
 
       <properties>
 	<property id="modal">
@@ -307,8 +307,8 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
+	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
 	    <property id="tab-label" name="Tab Label Text" >
 	      <spec>glade_gtk_standard_string_spec</spec>
