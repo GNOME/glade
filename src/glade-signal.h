@@ -19,7 +19,7 @@ struct _GladeSignal
 GladeSignal *glade_signal_new (const gchar *name,
 			       const gchar *handler,
 			       gboolean after);
-
+GladeSignal *glade_signal_copy (GladeSignal *signal);
 void glade_signal_free (GladeSignal *signal);
 
 gboolean glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2);

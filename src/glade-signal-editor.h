@@ -22,16 +22,7 @@ struct _GladeSignalEditor
 
 	GtkWidget *signals_list;
 	GtkTreeStore *model;
-
-	GtkWidget *signal_name_entry;
-	GtkWidget *signal_handler_entry;
-	GtkWidget *signal_after_button;
-
-	/* Buttons */
-	GtkWidget *add_button;
-	GtkWidget *update_button;
-	GtkWidget *remove_button;
-	GtkWidget *clear_button;
+	GtkTreeView *tree_view;
 };
 
 

@@ -66,6 +66,12 @@ glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2)
 	return ret;
 }
 
+GladeSignal *
+glade_signal_copy (GladeSignal *signal)
+{
+	return glade_signal_new (signal->name, signal->handler, signal->after);
+}
+
 GladeXmlNode *
 glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 {

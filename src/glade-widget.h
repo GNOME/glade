@@ -58,7 +58,7 @@ struct _GladeWidget
 				    * GladeWidgetClass.
 				    */
 
-	GList *signals;      /* A list of GladeSignals */
+	GHashTable *signals;      /* A table with a list of GladeSignals, indexed by its name */
 };
 
 
@@ -101,6 +101,7 @@ GladeWidget *glade_widget_get_parent (GladeWidget *widget);
 
 /* Widget signal*/
 GList *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);
+GList *glade_widget_find_signals_by_name (GladeWidget *widget, const char *name);
 void glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal);
 void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
 

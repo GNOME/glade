@@ -104,7 +104,7 @@ glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 	widget->properties = glade_widget_properties_from_list (class->properties, widget);
 	/* we don't have packing properties until we container add the widget */
 	widget->packing_properties = NULL;
-	widget->signals  = NULL;
+	widget->signals  = g_hash_table_new (g_str_hash, g_str_equal);
 
 	return widget;
 }
@@ -435,6 +435,20 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
+static gboolean
+glade_widget_free_signals (gpointer key, gpointer value, gpointer user_data)
+{
+	GList *signals = (GList*) value;
+
+	if (signals)
+	{
+		g_list_foreach (signals, (GFunc) glade_signal_free, NULL);
+		g_list_free (signals);
+	}
+
+	return TRUE;
+}
+
 /**
  * Free the GladeWidget associated to a widget. Note that this is
  * connected to the destroy event of the corresponding GtkWidget so
@@ -457,8 +471,7 @@ glade_widget_free (GladeWidget *widget)
 	g_list_free (widget->properties);
 	g_list_foreach(widget->packing_properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->packing_properties);
-	g_list_foreach(widget->signals, (GFunc) glade_signal_free, NULL);
-	g_list_free (widget->signals);
+	g_hash_table_foreach_remove (widget->signals, (GHRFunc) glade_widget_free_signals, NULL);
 
 	g_free (widget);
 }
@@ -1027,6 +1040,12 @@ glade_widget_replace_with_placeholder (GladeWidget *widget,
 	}
 }
 
+GList *
+glade_widget_find_signals_by_name (GladeWidget *widget, const char *name)
+{
+	return g_hash_table_lookup (widget->signals, name);
+}
+
 /**
  * glade_widget_find_signal:
  * @widget
@@ -1040,10 +1059,11 @@ glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
 {
 	GList *list;
 
-	for (list = widget->signals; list; list = list->next) {
-		GladeSignal *tmp = GLADE_SIGNAL (list->data);
-		if (glade_signal_compare (tmp, signal))
-				return list;
+	for (list = glade_widget_find_signals_by_name (widget, signal->name);
+	     list; list = list->next)
+	{
+		if (glade_signal_compare (GLADE_SIGNAL (list->data), signal))
+			return list;
 	}
 
 	/* not found... */
@@ -1061,17 +1081,26 @@ void
 glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 {
 	GList *found;
+	GList *old_signals;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
 	found = glade_widget_find_signal (widget, signal);
-	if (found) {
+	if (found)
+	{
 		glade_signal_free (signal);
 		return;
 	}
 
-	widget->signals = g_list_append (widget->signals, signal);
+	old_signals = glade_widget_find_signals_by_name (widget, signal->name);
+	if (old_signals)
+	{
+		g_hash_table_insert (widget->signals, signal->name, g_list_append (old_signals, signal));
+		return;
+	}
+
+	g_hash_table_insert(widget->signals, signal->name, g_list_append (NULL, signal));
 	return;
 }
 
@@ -1086,26 +1115,54 @@ void
 glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 {
 	GList *found;
+	char *signal_name;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
+	signal_name = g_strdup (signal->name);
 	found = glade_widget_find_signal (widget, signal);
-	if (found) {
-		g_list_remove_link (widget->signals, found);
+	if (found)
+	{
 		glade_signal_free (GLADE_SIGNAL (found->data));
-		g_list_free_1 (found);
+		g_hash_table_insert (widget->signals, signal_name, g_list_delete_link (found, found));
 	}
+	g_free (signal_name);
 }
 
 static GladeXmlNode *
 glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget);
+
+typedef struct _WriteSignalsContext
+{
+	GladeXmlContext *context;
+	GladeXmlNode *node;
+} WriteSignalsContext;
+
+static void
+glade_widget_write_signals (gpointer key, gpointer value, gpointer user_data)
+{
+	WriteSignalsContext *write_signals_context = (WriteSignalsContext *) user_data;
+	GladeXmlNode *child;
+
+	GList *list = (GList *) value;
+	for (; list; list = list->next)
+	{
+		GladeSignal *signal = list->data;
+		child = glade_signal_write (write_signals_context->context, signal);
+		if (!child)
+			continue;
+
+		glade_xml_node_append_child (write_signals_context->node, child);
+	}
+}
 
 GladeXmlNode *
 glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 {
 	GladeXmlNode *node;
 	GladeXmlNode *child;
+	WriteSignalsContext write_signals_context;
 	GList *list;
 
 	g_return_val_if_fail (GLADE_XML_IS_CONTEXT (context), NULL);
@@ -1130,15 +1187,9 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	}
 
 	/* Signals */
-	list = widget->signals;
-	for (; list; list = list->next) {
-		GladeSignal *signal = list->data;
-		child = glade_signal_write (context, signal);
-		if (!child) {
-			continue;
-		}
-		glade_xml_node_append_child (node, child);
-	}
+	write_signals_context.node = node;
+	write_signals_context.context = context;
+	g_hash_table_foreach (widget->signals, glade_widget_write_signals, &write_signals_context);
 
 	/* Children */
 	if (GTK_IS_CONTAINER (widget->widget)) {
