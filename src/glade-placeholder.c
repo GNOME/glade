@@ -159,21 +159,6 @@ glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 		class->placeholder_replace = glade_placeholder_replace_container;
 }
 
-static GdkWindow*
-glade_placeholder_get_gdk_window (GladePlaceholder *placeholder,
-				  GtkWidget **paint_widget)
-{
-	GtkWidget *parent = GTK_WIDGET (placeholder)->parent;
-
-	if (parent) {
-		*paint_widget = parent;
-		return parent->window;
-	}
-
-	*paint_widget = GTK_WIDGET (placeholder);
-	return GTK_WIDGET (placeholder)->window;
-}
-
 static void
 glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 					 GdkEventButton *event,

@@ -292,7 +292,8 @@ glade_util_hide_window (GtkWindow *window)
 	gtk_window_move(window, x, y);
 }
 
-gint glade_util_check_key_is_esc (GtkWidget *widget,
+gint
+glade_util_check_key_is_esc (GtkWidget *widget,
 				  GdkEventKey *event,
 				  gpointer data)
 {
@@ -366,7 +367,8 @@ glade_util_replace (char *str, char a, char b)
  * in the original string by two underscores.  Returns a newly allocated
  * string, or NULL if there is not enough memory.
  */
-char *glade_util_duplicate_underscores (const char *name)
+char *
+glade_util_duplicate_underscores (const char *name)
 {
 	const char *tmp;
 	const char *last_tmp = name;
@@ -438,7 +440,8 @@ glade_util_draw_nodes (GtkWidget *widget, GdkEventExpose *expose, gpointer unuse
 	return FALSE;
 }
 
-void glade_util_add_nodes (GtkWidget *widget)
+void
+glade_util_add_nodes (GtkWidget *widget)
 {
 	gint id;
 
@@ -448,7 +451,8 @@ void glade_util_add_nodes (GtkWidget *widget)
 	gtk_widget_queue_draw (widget);
 }
 
-void glade_util_remove_nodes (GtkWidget *widget)
+void
+glade_util_remove_nodes (GtkWidget *widget)
 {
 	gint id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE));
 
@@ -459,12 +463,14 @@ void glade_util_remove_nodes (GtkWidget *widget)
 	gtk_widget_queue_draw (widget);
 }
 
-gboolean glade_util_has_nodes (GtkWidget *widget)
+gboolean
+glade_util_has_nodes (GtkWidget *widget)
 {
 	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE)) != 0;
 }
 
-void glade_util_delete_selection (void)
+void
+glade_util_delete_selection (void)
 {
 	GladeProject *project;
 	GladeWidget *glade_widget;

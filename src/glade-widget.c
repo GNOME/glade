@@ -1027,27 +1027,6 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
 	glade_project_widget_name_changed (widget->project, widget);
 }
 
-static void
-glade_widget_clear_draw_selection (GladeWidget *widget)
-{
-	GdkWindow *window;
-	
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	
-	if (widget->parent)
-		window = widget->parent->widget->window;
-	else
-		window = widget->widget->window;
-	
-	gdk_window_clear_area (window,
-			       widget->widget->allocation.x,
-			       widget->widget->allocation.y,
-			       widget->widget->allocation.width,
-			       widget->widget->allocation.height);
-	
-	gtk_widget_queue_draw (widget->widget);
-}
-
 /**
  * glade_widget_clone:
  * @widget: 
