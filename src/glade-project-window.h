@@ -28,7 +28,7 @@ struct _GladeProjectWindow
 	GladePalette *palette;         /* See glade-palette */
 	GladeEditor *editor;           /* See glade-editor */
 	GladeProjectView *active_view; /* See glade-project-view */
-	GList *catalog;                /* See glade-catalog */
+	GList *catalogs;               /* See glade-catalog */
 	GladeWidgetClass *add_class;   /* The GladeWidgetClass that we are about
 					* to add to a container. NULL if no
 					* class is to be added. This also has to
@@ -43,7 +43,7 @@ struct _GladeProjectWindow
 };
 
 
-GladeProjectWindow * glade_project_window_new (GList *catalog);
+GladeProjectWindow * glade_project_window_new (GList *catalogs);
 GladeProjectWindow * glade_project_window_get ();
 GladeProject *       glade_project_window_get_project ();
 void                 glade_project_window_show_all (GladeProjectWindow *gpw);

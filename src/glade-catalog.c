@@ -32,12 +32,13 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
-GladeCatalog *glade_catalog = NULL;
+GList *glade_catalog_list = NULL; /* A list of GladeCatalog items */
+GList *widget_class_list  = NULL; /* A list of all the GladeWidgetClass objects loaded */
 
-GladeCatalog *
-glade_catalog_get (void)
+GList *
+glade_catalog_get_widgets (void)
 {
-	return glade_catalog;
+	return widget_class_list;
 }
 
 static GladeCatalog *
@@ -109,7 +110,7 @@ glade_catalog_new_from_file (const gchar *file)
 }
 
 GladeCatalog *
-glade_catalog_load (gchar *file_name)
+glade_catalog_load (const gchar *file_name)
 {
 	GladeWidgetClass *class;
 	GladeCatalog *catalog;
@@ -127,12 +128,16 @@ glade_catalog_load (gchar *file_name)
 		name = list->data;
 		class = glade_widget_class_new_from_name (name);
 		if (class == NULL) continue;
-		new_list = g_list_prepend (new_list, class);
+		new_list          = g_list_prepend (new_list, class); 
+		widget_class_list = g_list_prepend (widget_class_list, class);
+		/* We keep a list per catalog (group) and a general list of
+		 * all widgets loaded
+		 */
 	}
 
 	catalog->widgets = g_list_reverse (new_list);
 
-	glade_catalog = catalog;
+	glade_catalog_list = g_list_prepend (glade_catalog_list, catalog);
 	
 	list = catalog->widgets;
 	for (; list != NULL; list = list->next) {
@@ -155,6 +160,11 @@ glade_catalog_load_all (void)
 	gchar *filename = NULL;
 
 	catalogsdir = opendir (CATALOG_DIR);
+	if (!catalogsdir) {
+		g_warning ("Could not open catalogs from %s\n", CATALOG_DIR);
+		return NULL;
+	}
+	    
 	direntry = readdir (catalogsdir);
 	while (direntry) {
 		filename = g_strdup_printf ("%s/%s", CATALOG_DIR, direntry->d_name);

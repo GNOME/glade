@@ -462,7 +462,7 @@ glade_placeholder_get_from_properties (GladeWidget *parent,
 			}
 		}
 	} else if (glade_widget_class_is (parent->class, "GtkWindow")) {
-		placeholder = NULL;
+		placeholder = GTK_BIN (parent->widget)->child;
 	} else {
 		glade_implement_me ();
 	}

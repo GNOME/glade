@@ -21,10 +21,11 @@ struct _GladeCatalog
 			 */
 };
 
-GladeCatalog * glade_catalog_load (gchar *file_name);
+GladeCatalog * glade_catalog_load (const gchar *file_name);
 GladeCatalog * glade_catalog_get (void);
 
 GList * glade_catalog_load_all (void);
+GList * glade_catalog_get_widgets (void); /* This prolly should be in glade-widget-class.c */
 
 G_END_DECLS
 

@@ -306,7 +306,7 @@ glade_project_window_set_view (GladeProjectWindow *gpw, GladeProjectView *view)
 }
 
 GladeProjectWindow *
-glade_project_window_new (GList *catalog)
+glade_project_window_new (GList *catalogs)
 {
 	GladeProjectWindow *gpw;
 	GladeProjectView *view;
@@ -315,7 +315,7 @@ glade_project_window_new (GList *catalog)
 	
 	gpw = g_new0 (GladeProjectWindow, 1);
 	glade_project_window_create (gpw, view);
-	gpw->catalog = catalog;
+	gpw->catalogs = catalogs;
 	gpw->views = g_list_prepend (NULL, view);
 	gpw->add_class = NULL;
 

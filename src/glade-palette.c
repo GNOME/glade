@@ -344,7 +344,7 @@ glade_palette_create (GladeProjectWindow *gpw)
 		/* FIXME: I think that I should not tell you why. This code
 		 * do what it should do, but it sucks a lot.
 		 */
-		catalogs = gpw->catalog;
+		catalogs = gpw->catalogs;
 
 		/* Groups */
 		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){
@@ -362,7 +362,7 @@ glade_palette_create (GladeProjectWindow *gpw)
 		gtk_box_pack_start (GTK_BOX (palette->vbox), widget,
 				    FALSE, TRUE, 3);
 
-		catalogs = gpw->catalog;
+		catalogs = gpw->catalogs;
 
 		/* Sections */
 		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){

@@ -438,15 +438,12 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 GladeWidgetClass *
 glade_widget_class_get_by_name (const gchar *name)
 {
-	GladeCatalog *catalog;
 	GladeWidgetClass *class;
 	GList *list;
 	
 	g_return_val_if_fail (name != NULL, NULL);
 
-	catalog = glade_catalog_get ();
-	g_return_val_if_fail (catalog != NULL, NULL);
-	list = catalog->widgets;
+	list = glade_catalog_get_widgets ();
 	for (; list != NULL; list = list->next) {
 		class = list->data;
 		g_return_val_if_fail (class->name != NULL, NULL);
