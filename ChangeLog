@@ -1,3 +1,7 @@
+2004-11-02  Ivan Wong <email@ivanwong.info>
+
+	* src/Makefile.am: Fix a few glitches that only show up on win32
+
 2004-11-02  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
 	* Removed GladePropertyType completely from the source in favor of 
@@ -20,9 +24,11 @@
 	  g_strdup_printf(_("Create a %s"), type);
 
 2004-11-02  David Hoover <karma@deadmoose.com>
+
 	* src/Makefile.am: fix up CLEANFILES problem
 
 2004-11-02  Ivan Wong <email@ivanwong.info>
+
 	* acconfig.h, autogen.sh, config.h.win, configure.in, src/Makefile.am,
 	  src/glade-catalog.c, src/glade-palette.c, src/glade-project-window.c,
 	  src/glade-widget-class.c, src/glade_plugin.def, src/main.c: Win32

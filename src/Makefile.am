@@ -6,6 +6,7 @@ bin_PROGRAMS = glade-3
 gladegtk_LTLIBRARIES = libgladegtk.la
 gladegtkdir = $(modulesdir)
 
+CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
              glade-marshallers.list
 
@@ -15,8 +16,8 @@ libgladegtk_la_LDFLAGS = -module -avoid-version
 if WITH_WIN32
   glade_3_LDFLAGS = glade_plugin.def
   libgladegtk_la_LDFLAGS += -no-undefined -L./ -Wl,$(bin_PROGRAMS).a $(GLADE_LIBS)
-  libgladegtk_la_DEPENDENCIES = $(bin_PROGRAMS).a
-  CLEANFILES = $(bin_PROGRAMS).a $(BUILT_SOURCES)
+libgladegtk_la_DEPENDENCIES = $(bin_PROGRAMS).a
+  CLEANFILES += $(bin_PROGRAMS).a
 endif
 
 INCLUDES = \
@@ -40,7 +41,6 @@ glade_3_LDADD = \
 BUILT_SOURCES = \
         glade-marshallers.c \
         glade-marshallers.h
-CLEANFILES = $(BUILT_SOURCES)
 
 glade_3_SOURCES = \
 	main.c \
