@@ -32,9 +32,8 @@
 #include "glade-widget-class.h"
 #include "glade-debug.h"
 
-static void glade_property_class_init (GladePropertyObjectClass * klass);
+static void glade_property_object_class_init (GladePropertyObjectClass *class);
 static void glade_property_init (GladeProperty *property);
-static void glade_property_destroy (GtkObject *object);
 
 enum
 {
@@ -45,54 +44,50 @@ enum
 static guint glade_property_signals[LAST_SIGNAL] = {0};
 static GtkObjectClass *parent_class = NULL;
 
-guint
+GType
 glade_property_get_type (void)
 {
-	static guint type = 0;
-  
-	if (!type)
-	{
-		GtkTypeInfo info =
-		{
-			"GladeProperty",
-			sizeof (GladeProperty),
+	static GType type = 0;
+
+	if (!type) {
+		static const GTypeInfo info = {
 			sizeof (GladePropertyObjectClass),
-			(GtkClassInitFunc) glade_property_class_init,
-			(GtkObjectInitFunc) glade_property_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_property_object_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeProperty),
+			0,
+			(GInstanceInitFunc) glade_property_init
 		};
-		
-		type = gtk_type_unique (gtk_object_get_type (),
-					&info);
+
+		type = g_type_register_static (G_TYPE_OBJECT, "GladeProperty", &info, 0);
 	}
-	
+
 	return type;
 }
 
 static void
-glade_property_class_init (GladePropertyObjectClass * klass)
+glade_property_object_class_init (GladePropertyObjectClass *class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	object_class = (GtkObjectClass *) klass;
+	object_class = G_OBJECT_CLASS (class);
 
-	parent_class = gtk_type_class (gtk_object_get_type ());
+	parent_class = g_type_class_peek_parent (class);
 
 	glade_property_signals[CHANGED] =
-		gtk_signal_new ("changed",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladePropertyObjectClass, changed),
-				gtk_marshal_VOID__VOID,
-				GTK_TYPE_NONE, 0);
-	
-	klass->changed = NULL;
+		g_signal_new ("changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladePropertyObjectClass, changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 
-	object_class->destroy = glade_property_destroy;
+	class->changed = NULL;
 }
-
 
 static void
 glade_property_init (GladeProperty *property)
@@ -104,24 +99,15 @@ glade_property_init (GladeProperty *property)
 	property->child = NULL;
 }
 
-static void
-glade_property_destroy (GtkObject *object)
-{
-	GladeProperty *property;
-
-	property = GLADE_PROPERTY (object);
-}
-
 static GladeProperty *
 glade_property_new (void)
 {
 	GladeProperty *property;
 
-	property = GLADE_PROPERTY (gtk_type_new (glade_property_get_type ()));
+	property = g_object_new (GLADE_TYPE_PROPERTY, NULL);
 
 	return property;
 }
-
 
 /* We are recursing so add the prototype. Don't you love C ? */
 static GList * glade_property_list_new_from_list (GList *list, GladeWidget *widget);
@@ -198,7 +184,6 @@ glade_property_list_new_from_list (GList *list, GladeWidget *widget)
 	return new_list;
 }
 
-
 GList *
 glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 					   GladeWidget *widget)
@@ -209,7 +194,6 @@ glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 
 	return glade_property_list_new_from_list (list, widget);
 }
-
 
 GladeProperty *
 glade_property_get_from_id (GList *settings_list, const gchar *id)
@@ -704,3 +688,4 @@ glade_property_get_from_widget (GladeProperty *property)
 		}
 	}
 }
+

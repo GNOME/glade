@@ -4,9 +4,11 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_PROPERTY(obj)                 GTK_CHECK_CAST (obj, glade_property_get_type (), GladeProperty)
-#define GLADE_PROPERTY_OBJECT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_property_get_type (), GladePropertyObjectClass)
-#define GLADE_IS_PROPERTY(obj)              GTK_CHECK_TYPE (obj, glade_property_get_type ())
+
+#define GLADE_TYPE_PROPERTY                (glade_property_get_type ())
+#define GLADE_PROPERTY(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROPERTY, GladeProperty))
+#define GLADE_PROPERTY_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyObjectClass))
+#define GLADE_IS_PROPERTY(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROPERTY))
 
 typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
 
@@ -14,8 +16,8 @@ typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
  * There will be one GladePropertyClass for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.
  */
-struct _GladeProperty {
-	
+struct _GladeProperty
+{
 	GObject object; 
 
 	GladePropertyClass *class; /* A pointer to the GladeProperty that this
@@ -56,21 +58,24 @@ struct _GladePropertyObjectClass
 	void   (*changed)          (GladeProperty *property, const gchar *value);
 };
 
-struct _GladePropertyQuery {
+struct _GladePropertyQuery
+{
 	gchar *window_title;
 	gchar *question;
 };
 
-struct _GladePropertyQueryResult {
+struct _GladePropertyQueryResult
+{
 	GHashTable *hash;
 };
 	
 
-guint glade_property_get_type (void);
+GType glade_property_get_type (void);
 
-GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
-						   GladeWidget *widget);
-GladeProperty * glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget);
+GList *glade_property_list_new_from_widget_class (GladeWidgetClass *class,
+						  GladeWidget *widget);
+GladeProperty *glade_property_new_from_class (GladePropertyClass *class,
+					      GladeWidget *widget);
 void glade_property_free (GladeProperty *property);
 
 void glade_property_set         (GladeProperty *property, const GValue *value);
@@ -90,16 +95,15 @@ gboolean      glade_property_get_boolean (GladeProperty *property);
 gunichar      glade_property_get_unichar (GladeProperty *property);
 GladeChoice * glade_property_get_enum    (GladeProperty *property);
 
-
 void glade_property_get_from_widget (GladeProperty *property);
 
 /* Get a GladeProperty */
-GladeProperty * glade_property_get_from_id   (GList *settings_list,
-					      const gchar *id);
+GladeProperty *glade_property_get_from_id (GList *settings_list,
+					   const gchar *id);
 
 /* Property Queries */
-GladePropertyQueryResult * glade_property_query_result_new (void);
-void                       glade_property_query_result_destroy (GladePropertyQueryResult *result);
+GladePropertyQueryResult *glade_property_query_result_new (void);
+void glade_property_query_result_destroy (GladePropertyQueryResult *result);
 
 void glade_property_query_result_get_int (GladePropertyQueryResult *result,
 					  const gchar *name,
@@ -109,7 +113,7 @@ void glade_property_query_result_set_int (GladePropertyQueryResult *result,
 					  gint value);
 
 /* XML i/o */
-GladeXmlNode * glade_property_write (GladeXmlContext *context, GladeProperty *property);
+GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);
 
 
 G_END_DECLS
