@@ -1,3 +1,48 @@
+2001-08-01  Chema Celorio  <chema@celorio.com>
+
+	* src/main.c: add <popt.h>.
+	implement : ./glade2 --dump {widget} to dump to the console the
+	properties of a widget.
+
+	* src/glade.h: add _TAG_COMMON
+
+	* src/glade-xml-utils.c (glade_xml_get_boolean): take a default value
+	that should be used if the node is not found
+	(glade_xml_property_get_boolean): ditto for properties.
+
+	* src/glade-widget-class.c (glade_widget_class_dump_param_specs):
+	improve. dump the type and the object the property belongs to.
+
+	* src/glade-property-class.c (glade_widget_property_class_free):
+	implement.
+	(glade_property_class_load_from_param_spec): don't create the
+	PropertyClass in here
+	(glade_property_class_new_from_node): the query should be read
+	before the ParamSpec, if we are loading with ParamSpec we want
+	to be able to specify a query.
+
+	* src/glade-project-window.c (glade_project_window_create): do not
+	_show_all when creating a project_window
+	(glade_project_window_show_all): implement
+
+	* src/glade-placeholder.c (glade_placeholder_add): the properites
+	for the GtkTable are n-rows and n-columns not rows-columns
+
+	* src/glade-palette.c (glade_palette_create): implement. 
+
+	* src/glade-editor.h: add ->common for the common tab of the editor
+
+	* src/glade-editor.c (glade_editor_table_append_items): add a common
+	parameter for the common tab of the editor.
+	(glade_editor_get_table_from_class): add a common parameter, when
+	getting a table verify that common = table->common
+	(glade_editor_load_common_page): implement.
+	(glade_editor_load_class): load the common page too
+	(glade_editor_create): do not show the editor when it is created
+
+	* src/Makefile.am: remove empty variables.
+	Add -lpopt. We are NOT checking in configure.in for popt yet.
+
 2001-07-23  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-xml-utils.c (glade_xml_doc_save): when saving a .xml file indent

@@ -46,6 +46,7 @@ struct _GladeProjectWindow
 GladeProjectWindow * glade_project_window_new (GladeCatalog *catalog);
 GladeProjectWindow * glade_project_window_get ();
 GladeProject *       glade_project_window_get_project ();
+void                 glade_project_window_show_all (GladeProjectWindow *gpw);
 
 void glade_project_window_set_add_class       (GladeProjectWindow *gpw, GladeWidgetClass *class);
 void glade_project_window_set_project         (GladeProjectWindow *project_window,

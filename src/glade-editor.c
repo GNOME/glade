@@ -55,8 +55,10 @@ static void glade_editor_select_item_real (GladeEditor *editor, GladeWidget *wid
 
 
 /* We use this function recursively so we need to declare it */
-static gboolean glade_editor_table_append_items (GladeEditorTable *table, GladeWidgetClass *class,
-						 GList **list);
+static gboolean glade_editor_table_append_items (GladeEditorTable *table,
+						 GladeWidgetClass *class,
+						 GList **list,
+						 gboolean common);
 
 guint
 glade_editor_get_type (void)
@@ -592,7 +594,7 @@ glade_editor_create_input_object (GladeEditorProperty *property, GladeEditorTabl
 	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
 
-	glade_editor_table_append_items (table, property->class->child, &property->children);
+	glade_editor_table_append_items (table, property->class->child, &property->children, FALSE);
 
 	return NULL;
 }
@@ -673,7 +675,7 @@ glade_editor_table_append_item (GladeEditorTable *table,
 }
 
 static void
-glade_editor_table_append_common (GladeEditorTable *table)
+glade_editor_table_append_standard_fields (GladeEditorTable *table)
 {
 	GtkWidget *gtk_table;
 	GtkWidget *label;
@@ -710,7 +712,8 @@ glade_editor_table_append_common (GladeEditorTable *table)
 static gboolean
 glade_editor_table_append_items (GladeEditorTable *table,
 				 GladeWidgetClass *class,
-				 GList **list_)
+				 GList **list_,
+				 gboolean common)
 {
 	GladeEditorProperty *property;
 	GladePropertyClass *property_class;
@@ -723,6 +726,8 @@ glade_editor_table_append_items (GladeEditorTable *table,
 
 	for (; list != NULL; list = list->next) {
 		property_class = (GladePropertyClass *) list->data;
+		if (common != property_class->common)
+			continue;
 		property = glade_editor_table_append_item (table, property_class);
 		if (property != NULL)
 			new_list = g_list_prepend (new_list,
@@ -735,7 +740,7 @@ glade_editor_table_append_items (GladeEditorTable *table,
 }
 
 static GladeEditorTable *
-glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class)
+glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolean common)
 {
 	GladeEditorTable *table;
 
@@ -744,8 +749,10 @@ glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class)
 
 	table = glade_editor_table_new (class);
 	table->editor = editor;
-	glade_editor_table_append_common (table);
-	if (!glade_editor_table_append_items (table, class, &table->properties))
+	table->common = common;
+	if (!common)
+		glade_editor_table_append_standard_fields (table);
+	if (!glade_editor_table_append_items (table, class, &table->properties, common))
 		return NULL;
 	gtk_widget_show_all (table->table_widget);
 	editor->widget_tables = g_list_prepend (editor->widget_tables,
@@ -755,7 +762,7 @@ glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class)
 }
 
 static GladeEditorTable *
-glade_editor_get_table_from_class (GladeEditor *editor, GladeWidgetClass *class)
+glade_editor_get_table_from_class (GladeEditor *editor, GladeWidgetClass *class, gboolean common)
 {
 	GladeEditorTable *table;
 	GList *list;
@@ -763,6 +770,8 @@ glade_editor_get_table_from_class (GladeEditor *editor, GladeWidgetClass *class)
 	list = editor->widget_tables;
 	for (; list != NULL; list = list->next) {
 		table = list->data;
+		if (common != table->common)
+			continue;
 		if (table->glade_widget_class == class)
 			return table;
 	}
@@ -777,9 +786,9 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	GtkContainer *container;
 	GList *list;
 
-	table = glade_editor_get_table_from_class (editor, class);
+	table = glade_editor_get_table_from_class (editor, class, FALSE);
 	if (table == NULL)
-		table = glade_editor_table_create (editor, class);
+		table = glade_editor_table_create (editor, class, FALSE);
 
 	g_return_if_fail (table != NULL);
 	
@@ -799,13 +808,41 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 }
 
 static void
+glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
+{
+	GladeEditorTable *table;
+	GtkContainer *container;
+	GList *list;
+
+	table = glade_editor_get_table_from_class (editor, class, TRUE);
+	if (table == NULL)
+		table = glade_editor_table_create (editor, class, TRUE);
+
+	g_return_if_fail (table != NULL);
+	
+	/* Remove the old table that was in this container */
+	container = GTK_CONTAINER (editor->vbox_common);
+	list = gtk_container_children (container);
+	for (; list; list = list->next) {
+		GtkWidget *widget = list->data;
+		g_return_if_fail (GTK_IS_WIDGET (widget));
+		gtk_widget_ref (widget);
+		gtk_container_remove (container, widget);
+	}
+
+	/* Attach the new table */
+	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
+			    TRUE, TRUE, 0);
+}
+
+static void
 glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
 {
-
 	if (editor->signal_editor == NULL) {
 		editor->signal_editor = glade_signal_editor_new ();
-		gtk_box_pack_start (GTK_BOX (editor->vbox_signals), glade_signal_editor_get_widget (editor->signal_editor),
-				TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (editor->vbox_signals),
+				    glade_signal_editor_get_widget (editor->signal_editor),
+				    TRUE, TRUE, 0);
 	}
 }
 
@@ -813,6 +850,7 @@ static void
 glade_editor_load_class (GladeEditor *editor, GladeWidgetClass *class)
 {
 	glade_editor_load_widget_page (editor, class);
+	glade_editor_load_common_page (editor, class);
 	glade_editor_load_signal_page (editor, class);
 
 	editor->loaded_class = class;
@@ -1110,12 +1148,19 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	class = item->class;
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
-
 	
 	editor->loaded_widget = item;
 
 	/* Load each GladeEditorProperty */
-	table = glade_editor_get_table_from_class (editor, class);
+	table = glade_editor_get_table_from_class (editor, class, FALSE);
+	list = table->properties;
+	for (; list != NULL; list = list->next) {
+		property = list->data;
+		glade_editor_property_load (property, item);
+	}
+
+	/* Load each GladeEditorProperty for the common tab*/
+	table = glade_editor_get_table_from_class (editor, class, TRUE);
 	list = table->properties;
 	for (; list != NULL; list = list->next) {
 		property = list->data;
@@ -1149,7 +1194,7 @@ glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 	glade_editor_load_item (editor, widget);
 
 	editor->loading = TRUE;
-	table = glade_editor_get_table_from_class (editor, widget->class);
+	table = glade_editor_get_table_from_class (editor, widget->class, FALSE);
 	g_return_if_fail (table != NULL);
 	gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
 	editor->loading = FALSE;
@@ -1171,29 +1216,17 @@ glade_editor_show (GladeProjectWindow *gpw)
 {
 	g_return_if_fail (gpw != NULL);
 
-	if (gpw->editor == NULL) {
-		gpw->editor = GLADE_EDITOR (glade_editor_new ());
-		gpw->editor->project_window = gpw;
-	}
-
+	if (gpw->editor == NULL)
+		glade_editor_create (gpw);
+	
 	gtk_widget_show_all (GTK_WIDGET (gpw->editor));
 }
 
 void
 glade_editor_create (GladeProjectWindow *gpw)
 {
-	glade_editor_show (gpw);
+	if (gpw->editor == NULL) {
+		gpw->editor = GLADE_EDITOR (glade_editor_new ());
+		gpw->editor->project_window = gpw;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

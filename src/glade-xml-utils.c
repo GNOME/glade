@@ -120,18 +120,30 @@ glade_xml_get_value (xmlNodePtr node, const char *name)
 	return NULL;
 }
 
-gboolean
-glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
+static gboolean
+glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 
 	g_return_val_if_fail (node != NULL, FALSE);
 	
 	if (strcmp (node->name, name) != 0) {
+		return FALSE;
+	}
+	return TRUE;
+}
+
+gboolean
+glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	if (!glade_xml_node_verify_silent (node_in, name)) {
 		g_warning  ("Expected node was \"%s\", encountered \"%s\"",
 			    name, node->name);
 		return FALSE;
 	}
+
 	return TRUE;
 }
 
@@ -231,7 +243,7 @@ glade_xml_set_property (xmlNodePtr node, const char *name, const char *value)
  * the content of a child.
  */
 gboolean
-glade_xml_get_boolean (GladeXmlNode *node_in, const char *name)
+glade_xml_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _default)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar * value;
@@ -239,7 +251,7 @@ glade_xml_get_boolean (GladeXmlNode *node_in, const char *name)
 
 	value = glade_xml_get_value (node, name);
 	if (value == NULL)
-		return FALSE;
+		return _default;
 	
 	if (strcmp (value, GLADE_TAG_FALSE) == 0)
 		ret = FALSE;
@@ -262,7 +274,7 @@ glade_xml_get_boolean (GladeXmlNode *node_in, const char *name)
  * the content of a child.
  */
 gboolean
-glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name)
+glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _default)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar * value;
@@ -270,8 +282,8 @@ glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name)
 
 	value = glade_xml_get_property (node, name);
 	if (value == NULL)
-		return FALSE;
-	
+		return _default;
+
 	if (strcmp (value, GLADE_TAG_FALSE) == 0)
 		ret = FALSE;
 	else if (strcmp (value, GLADE_TAG_FALSE2) == 0)

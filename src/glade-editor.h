@@ -134,6 +134,9 @@ struct _GladeEditorTable
 			    * corrsponding GladeEditorProperty struct.
 			    */
 
+	gboolean common; /* Is this table to be used in the common tab ?
+			  * or the general tab ?
+			  */
 	gint rows;
 };
 

@@ -85,14 +85,15 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 static GladeWidgetClass *
 glade_widget_class_new (void)
 {
-	GladeWidgetClass *widget;
+	GladeWidgetClass *class;
 
-	widget = g_new0 (GladeWidgetClass, 1);
-	widget->flags = 0;
-	widget->placeholder_replace = NULL;
-	widget->type = 0;
+	class = g_new0 (GladeWidgetClass, 1);
+	class->flags = 0;
+	class->placeholder_replace = NULL;
+	class->type = 0;
+	class->properties = NULL;
 
-	return widget;
+	return class;
 }
 
 static void
@@ -207,16 +208,18 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
 		return NULL;
 
-	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
-	if (child == NULL)
-		return FALSE;
-
 	class = glade_widget_class_new ();
 
 	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
 	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
-	init_function_name  = glade_xml_get_value_string (node, GLADE_TAG_GET_TYPE_FUNCTION);
 
+	if (!class->name ||
+	    !class->generic_name) {
+		g_warning ("Invalid XML file. Widget Class %s\n", class->name);
+		return NULL;
+	}
+	
+	init_function_name  = glade_xml_get_value_string (node, GLADE_TAG_GET_TYPE_FUNCTION);
 	if (!init_function_name) {
 		init_function_name = glade_widget_class_compose_get_type_func (class);
 		if (!init_function_name)
@@ -227,21 +230,22 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 		return NULL;
 	g_free (init_function_name);
 
-	class->properties   = glade_property_class_list_new_from_node (child, class);
-	class->signals      = glade_widget_class_list_signals (class);
 
-	if (!class->name ||
-	    !class->generic_name) {
-		g_warning ("Invalid XML file. Widget Class %s\n", class->name);
-		return NULL;
-	}
+	/* <Properties> */
+	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
+	if (child == NULL)
+		return FALSE;
+	class->properties = glade_property_class_list_new_from_node (child, class);
+
+	class->signals    = glade_widget_class_list_signals (class);
+
 	
 	/* Get the flags */
-	if (glade_xml_get_boolean (node, GLADE_TAG_TOPLEVEL))
+	if (glade_xml_get_boolean (node, GLADE_TAG_TOPLEVEL, FALSE))
 		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_TOPLEVEL);
 	else
 		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_TOPLEVEL);
-	if (glade_xml_get_boolean (node, GLADE_TAG_PLACEHOLDER))
+	if (glade_xml_get_boolean (node, GLADE_TAG_PLACEHOLDER, FALSE))
 		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
 	else
 		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
@@ -391,23 +395,42 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 
 	return NULL;
 }
-			
+/**
+ * glade_widget_class_dump_param_specs:
+ * @class: 
+ * 
+ * Dump to the console the properties of the Widget as specified
+ * by gtk+. You can also run glade2 with : "glade2 --dump GtkWindow" to
+ * get the widget properties.
+ * 
+ * Return Value: 
+ **/
 void
 glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 {
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
+	GType last;
 	gint n_specs = 0;
 	gint i;
 
 	glade_widget_class_get_specs (class, &specs, &n_specs);
 
-	g_print ("Dumping ParamSpec for %s\n", class->name);
-	
+	g_print ("\nDumping ParamSpec for %s\n", class->name);
+
+	last = 0;
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
-		g_print ("%02d - %s\n", i, spec->name); 
+		if (last != spec->owner_type)
+			g_print ("\n                    --  %s -- \n",
+				 g_type_name (spec->owner_type));
+		g_print ("%02d - %-25s %s\n",
+			 i,
+			 spec->name,
+			 g_type_name (spec->value_type));
+		last = spec->owner_type;
 	}
+	g_print ("\n");
 }
 
 

@@ -346,8 +346,8 @@ glade_placeholder_add (GladeWidgetClass *class,
 		gint row, col;
 		gint rows = 6, cols = 6;
 
-		glade_property_query_result_get_int (result, "rows", &rows);
-		glade_property_query_result_get_int (result, "columns", &cols);
+		glade_property_query_result_get_int (result, "n-rows", &rows);
+		glade_property_query_result_get_int (result, "n-columns", &cols);
 
 		for (row = 0; row < rows; row++) {
 			for (col = 0; col < cols; col++) {

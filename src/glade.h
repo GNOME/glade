@@ -23,6 +23,7 @@ gchar * _ (gchar * name);
 #define GLADE_TAG_ICON         "Icon"
 #define GLADE_TAG_PROPERTIES   "Properties"
 #define GLADE_TAG_PROPERTY     "Property"
+#define GLADE_TAG_COMMON       "Common"
 #define GLADE_TAG_TYPE         "Type"
 #define GLADE_TAG_TOOLTIP      "Tooltip"
 #define GLADE_TAG_GTKARG       "GtkArg"

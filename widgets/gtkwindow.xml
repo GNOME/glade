@@ -6,26 +6,43 @@
 
   <Properties>
 
-    <Property ParamSpec="TRUE" Id="title"/>
-    <Property ParamSpec="TRUE" Id="type"/>
-    <Property ParamSpec="TRUE" Id="window-position"/>
-    <Property ParamSpec="TRUE" Id="modal"/>
-    <Property ParamSpec="TRUE" Id="default-width">
+    <Property Id="title"/>
+    <Property Id="type"/>
+    <Property Id="window-position"/>
+    <Property Id="modal"/>
+    <Property Id="default-width">
 	 <Parameters>
 	   <Parameter Key="Default" Value="440"/>
       </Parameters>
     </Property>
-    <Property ParamSpec="TRUE" Id="default-height">
+    <Property Id="default-height">
 	 <Parameters>
 	   <Parameter Key="Default" Value="250"/>
       </Parameters>
     </Property>
-    <Property ParamSpec="TRUE" Id="auto-shrink"/>
-    <Property ParamSpec="TRUE" Id="allow-grow"/>
-    <Property ParamSpec="TRUE" Id="auto-shrink"/>
-    
+    <Property Id="auto-shrink"/>
+    <Property Id="allow-grow"/>
+    <Property Id="auto-shrink"/>
+
+    <Property Common="TRUE" Id="x"/>
+    <Property Common="TRUE" Id="y"/>
+    <Property Common="TRUE" Id="width"/>
+    <Property Common="TRUE" Id="height"/>
+    <Property Common="TRUE" Id="visible">
+	 <Parameters>
+	   <Parameter Key="Default" Value="True"/>
+      </Parameters>
+    </Property>
+
+    <Property Common="TRUE" Id="sensitive"/>
+    <Property Common="TRUE" Id="can-default"/>
+    <Property Common="TRUE" Id="has-default"/>
+    <Property Common="TRUE" Id="can-focus"/>
+    <Property Common="TRUE" Id="events"/>
+    <Property Common="TRUE" Id="extension-events"/>
+
   </Properties>
-  
+
 </GladeWidgetClass>
 	 
 	 

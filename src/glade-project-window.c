@@ -243,8 +243,6 @@ glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
 	gtk_signal_connect (GTK_OBJECT (app), "delete_event",
 			    GTK_SIGNAL_FUNC (gpw_delete_event), NULL);
 
-	gtk_widget_show_all (app);
-	
 	return app;
 }
 
@@ -585,4 +583,14 @@ glade_project_window_get_project (void)
 	g_return_val_if_fail (GLADE_IS_PROJECT_WINDOW (gpw), NULL);
 
 	return gpw->project;
+}
+
+
+
+void
+glade_project_window_show_all (GladeProjectWindow *gpw)
+{
+	gtk_widget_show_all (gpw->window);
+	glade_palette_show (gpw);
+	glade_editor_show (gpw);
 }

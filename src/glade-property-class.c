@@ -130,12 +130,25 @@ glade_property_class_new (void)
 	property_class->parameters = NULL;
 	property_class->choices = NULL;
 	property_class->optional = FALSE;
+	property_class->common = FALSE;
 	property_class->query = NULL;
 	property_class->set_function = NULL;
 
 	return property_class;
 }
 
+#define MY_FREE(foo) if(foo) g_free(foo); foo = NULL
+
+static void
+glade_widget_property_class_free (GladePropertyClass *class)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (class));
+	
+	MY_FREE (class->name);
+	MY_FREE (class->tooltip);
+	MY_FREE (class);
+}
+#undef MY_FREE	
 
 static GladePropertyType
 glade_property_class_get_type_from_spec (GParamSpec *spec)
@@ -418,12 +431,23 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 }
 
 
-static GladePropertyClass *
-glade_property_class_new_from_param_spec (const gchar *name,
-					  GladeWidgetClass *widget_class,
-					  GladeXmlNode *node)
+/**
+ * glade_property_class_load_from_param_spec:
+ * @name: 
+ * @class: 
+ * @widget_class: 
+ * @node: 
+ * 
+ * Loads the members of @class that we get from gtk's ParamSpec
+ * 
+ * Return Value: 
+ **/
+static gboolean
+glade_property_class_load_from_param_spec (const gchar *name,
+					   GladePropertyClass *class,
+					   GladeWidgetClass *widget_class,
+					   GladeXmlNode *node)
 {
-	GladePropertyClass *class;
 	GParamSpec *spec;
 
 	spec = glade_widget_class_find_spec (widget_class, name);
@@ -431,10 +455,9 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	if (spec == NULL) {
 		g_warning ("Could not create a property class from a param spec for *%s* with name *%s*\n",
 			   widget_class->name, name);
-		return NULL;
+		return FALSE;
 	}
 
-	class = glade_property_class_new ();
 	class->id      = g_strdup (spec->name);
 	class->name    = g_strdup (spec->nick);
 	class->tooltip = g_strdup (spec->blurb);
@@ -443,7 +466,7 @@ glade_property_class_new_from_param_spec (const gchar *name,
 	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
 		g_warning ("Could not create the \"%s\" property for the \"%s\" class\n",
 			   name, widget_class->name);
-		return NULL;
+		return FALSE;
 	}
 	
 	if (class->type == GLADE_PROPERTY_TYPE_CHOICE)
@@ -451,7 +474,7 @@ glade_property_class_new_from_param_spec (const gchar *name,
 
 	class->parameters = glade_property_class_get_parameters_from_spec (spec, class, node);
 	
-	return class;
+	return TRUE;
 }
 
 static gboolean
@@ -530,26 +553,41 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	if (id == NULL)
 		return NULL;
 
+	property_class = glade_property_class_new ();
+
+	/* We first load the members that can be present in a property defined by a ParamSpec */
+	
+	/* Get the Query */
+	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
+	if (child != NULL)
+		property_class->query = glade_query_new_from_node (child);
+	
+	/* Will this property go in the common tab ? */
+	property_class->common = glade_xml_property_get_boolean (node, GLADE_TAG_COMMON, FALSE);
 	
 	/* Should we load this property from the ParamSpec ? 
 	 * We can have a property like ... ParamSpec="TRUE"> 
 	 * Or a child like <ParamSpec/>, but this will be deprecated
 	 */
-	if (glade_xml_property_get_boolean (node, GLADE_TAG_PARAM_SPEC)) {
-		property_class = glade_property_class_new_from_param_spec (id, widget_class, node);
+	if (glade_xml_property_get_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE)) {
+		gboolean retval;
+		
+		retval = glade_property_class_load_from_param_spec (id, property_class, widget_class, node);
 		g_free (id);
-		if (property_class == NULL)
+		if (retval == FALSE) {
 			glade_widget_class_dump_param_specs (widget_class);
+			glade_widget_property_class_free (property_class);
+			property_class = NULL;
+		}
+		
 		return property_class;
 	}
-
 
 	name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
 	if (name == NULL)
 		return NULL;
 
 	/* Ok, this property should not be loaded with ParamSpec */
-	property_class = glade_property_class_new ();
 	property_class->id    = id;
 	property_class->name  = name;
 	property_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
@@ -569,11 +607,6 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 		property_class->parameters = glade_parameter_list_new_from_node (NULL, child);
 	glade_parameter_get_boolean (property_class->parameters, "Optional", &property_class->optional);
 
-	/* Get the Query */
-	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
-	if (child != NULL)
-		property_class->query = glade_query_new_from_node (child);
-	
 	/* Get the choices */
 	if (property_class->type == GLADE_PROPERTY_TYPE_CHOICE) {
 		child = glade_xml_search_child_required (node, GLADE_TAG_CHOICES);

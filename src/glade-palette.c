@@ -311,10 +311,19 @@ glade_palette_new ()
 void
 glade_palette_show (GladeProjectWindow *gpw)
 {
-	GtkWidget *widget;
-	
 	g_return_if_fail (gpw != NULL);
 
+	if (gpw->palette == NULL)
+		glade_palette_create (gpw);
+	
+	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
+}
+
+void
+glade_palette_create (GladeProjectWindow *gpw)
+{
+	GtkWidget *widget;
+	
 	if (gpw->palette == NULL) {
 		GladePalette *palette;
 
@@ -331,11 +340,4 @@ glade_palette_show (GladeProjectWindow *gpw)
 		gtk_box_pack_start (GTK_BOX (gpw->palette->vbox), widget, FALSE, TRUE, 3);
 	}
 
-	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
-}
-
-void
-glade_palette_create (GladeProjectWindow *gpw)
-{
-	glade_palette_show (gpw);
 }

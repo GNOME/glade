@@ -153,6 +153,8 @@ struct _GladePropertyClass {
 			       * from the real widget
 			       */
 
+	gboolean common; /* Common properties go in the common tab */
+
 	void (*set_function) (GObject *object,
 			      const gchar *value);
 		       /* If this property can't be set with g_object_set then

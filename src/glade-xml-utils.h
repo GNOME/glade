@@ -24,19 +24,18 @@ gchar *      glade_xml_get_value_string_required (GladeXmlNode * node,
 					    const char *name,
 					    const char *xtra_info);
 
-gboolean glade_xml_get_boolean (GladeXmlNode * node, const char *name);
+gboolean glade_xml_get_boolean (GladeXmlNode * node, const char *name, gboolean _default);
 
 GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
 GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
 
 gboolean     glade_xml_node_verify (GladeXmlNode * node, const gchar *name);
-
 void         glade_xml_set_value (GladeXmlNode * node, const char *name, const char *val);
 
 /* Properties */ 
 gchar * glade_xml_get_property_string_required (GladeXmlNode *node_in, const char *name, const char *xtra);
 gchar * glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
-gboolean glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name);
+gboolean glade_xml_property_get_boolean (GladeXmlNode *node_in, const char *name, gboolean _default);
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);
 

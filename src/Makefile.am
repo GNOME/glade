@@ -1,21 +1,19 @@
 ## Process this file with automake to produce Makefile.in
 
-bin_PROGRAMS = glade2 
+bin_PROGRAMS = glade2
 
 INCLUDES = \
 	$(GLADE_CFLAGS) \
 	-I$(top_srcdir)/intl \
 	-I$(top_builddir)/intl
 
-DIST_SUBDIRS = 
-
 CFLAGS = -g -O2 -Wall
-
-SUBDIRS = 
 
 glade2_LDADD = \
 	$(GLADE_LIBS) \
-	$(INTLLIBS)
+	$(INTLLIBS) \
+	-lpopt
+## FIXME popt should be added in configure.in and checked for
 
 glade2_DEPENDENCIES = \
 	$(INTLLIBS)

@@ -51,7 +51,7 @@ struct _GladeWidgetClass {
 			      * Each property creates an input in the propety
 			      * editor.
 			      */
-
+	
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
 	void (*placeholder_replace) (GladePlaceholder *placeholder,

@@ -33,11 +33,24 @@
 #include "glade-project-window.h"
 
 #include <gmodule.h>
+#include <popt.h>
 
+#define FIX_POPT
 #ifdef FIX_POPT
 static void parse_command_line (poptContext);
 
+gchar * widget_name = NULL;
+
 static struct poptOption options[] = {
+	{
+		"dump",
+		'\0',
+		POPT_ARG_STRING,
+		&widget_name,
+		0,
+		"Dump a widget",
+		NULL
+	},
 	{
 		NULL,
 		'\0',
@@ -79,7 +92,6 @@ glade_init ()
 
 	project_window = glade_project_window_new (catalog);
 	glade_project_window_add_project (project_window, project);
-	gtk_widget_show (project_window->window);
 	
 	return TRUE;
 }
@@ -88,7 +100,7 @@ int
 main (int argc, char *argv[])
 {
 #ifdef FIX_POPT	
-	poptContext pctx;
+	poptContext pctx = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);
 #endif	
 
 #if 0	
@@ -116,7 +128,19 @@ main (int argc, char *argv[])
 	parse_command_line (pctx);
 #endif	
 
-	gtk_main ();
+	poptFreeContext (pctx);
+
+	if (widget_name == NULL) {
+		GladeProjectWindow *gpw;
+		gpw = glade_project_window_get ();
+		glade_project_window_show_all (gpw);
+		gtk_main ();
+	} else {
+		GladeWidgetClass *class;
+		class = glade_widget_class_get_by_name (widget_name);
+		if (class)
+			glade_widget_class_dump_param_specs (class);
+	}
 
 	return 0;
 }
@@ -126,24 +150,20 @@ main (int argc, char *argv[])
 static void
 parse_command_line (poptContext pctx)
 {
-#if 0  /* The new gnome-libs is crashing here .. */
 	const gchar **args;
-	gchar *arg_filename = NULL;
+	GList *files = NULL;
 	gint i;
 
-	g_print ("Get args. .\n");
+	/* I have not figured out how popt works, but we need to call this function to make it work */
+	poptGetNextOpt(pctx);
 	args = poptGetArgs (pctx);
 
-	g_print ("Arg_filename %s\n", arg_filename);
 	for (i = 0; args && args[i]; i++) {
-		if (arg_filename == NULL)
-			arg_filename = (gchar*) args[i];
+		files = g_list_prepend (files, g_strdup (args[i]));
 	}
 
-	g_print ("Arg_filename %s\n", arg_filename);
-	
-	poptFreeContext (pctx);
-#endif	
+	files = g_list_reverse (files);
+
 }
 #endif	
 
