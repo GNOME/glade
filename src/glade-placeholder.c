@@ -273,15 +273,16 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 	gpw = glade_project_window_get ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 
-	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
+	{
 		if (gpw->add_class != NULL) {
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
 			glade_command_create (gpw->add_class, placeholder, NULL);
-			glade_project_window_set_add_class (gpw, NULL);
 		}
-		else {
+		else
+		{
 			GladeWidget *parent = glade_util_get_parent (GTK_WIDGET (placeholder));
 			glade_project_selection_set (parent->project, GTK_WIDGET (placeholder), TRUE);
 		}

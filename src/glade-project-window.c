@@ -528,20 +528,25 @@ gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used,
 }
 
 static void
-gpw_palette_button_clicked (GladePalette *palette, GladeWidgetClass *class)
+gpw_palette_button_clicked (GladePalette *palette, gpointer not_used)
 {
 	GladeProjectWindow *gpw;
+	GladeWidgetClass *class;
+
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
 
 	gpw = glade_project_window_get ();
+	class = palette->current;
 
-	if (GLADE_WIDGET_CLASS_TOPLEVEL (class))
+	/* class may be NULL if the selector was pressed */
+	if (class && GLADE_WIDGET_CLASS_TOPLEVEL (class))
 	{
 		glade_command_create (class, NULL, gpw->project);
-		glade_project_window_set_add_class (gpw, NULL);
+		gpw->add_class = NULL;
 	}
 	else
 	{
-		glade_project_window_set_add_class (gpw, class);
+		gpw->add_class = class;
 	}
 }
 
@@ -1342,15 +1347,6 @@ glade_project_window_refresh_undo_redo (void)
 
 	gtk_widget_set_sensitive (gpw->toolbar_undo, undo_description != NULL);
 	gtk_widget_set_sensitive (gpw->toolbar_redo, redo_description != NULL);
-}
-
-void
-glade_project_window_set_add_class (GladeProjectWindow *gpw, GladeWidgetClass *class)
-{
-	gpw->add_class = class;
-
-	if (!class && gpw->palette)
-		glade_palette_unselect_widget(gpw->palette);
 }
 
 void

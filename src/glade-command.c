@@ -29,6 +29,7 @@
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
+#include "glade-palette.h"
 #include "glade-command.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
@@ -693,11 +694,15 @@ glade_command_create (GladeWidgetClass *class,
 		      GladePlaceholder *placeholder,
 		      GladeProject *project)
 {
+	GladeProjectWindow *gpw;
 	GladeWidget *widget;
 	GladeWidget *parent = NULL;
 
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
 	g_return_if_fail (placeholder != NULL || GLADE_IS_PROJECT (project));
+
+	gpw = glade_project_window_get ();
+	g_return_if_fail (GLADE_IS_PALETTE (gpw->palette));
 
 	if (placeholder) {
 		parent = glade_util_get_parent (GTK_WIDGET (placeholder));
@@ -714,6 +719,9 @@ glade_command_create (GladeWidgetClass *class,
 		return;
 
 	glade_command_create_delete_common (widget, placeholder, TRUE);
+
+	/* reset the palette */
+	glade_palette_unselect_widget (gpw->palette);
 }
 
 /**

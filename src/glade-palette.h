@@ -2,6 +2,8 @@
 #ifndef __GLADE_PALETTE_H__
 #define __GLADE_PALETTE_H__
 
+#include "glade-types.h"
+
 G_BEGIN_DECLS
 
 
@@ -22,61 +24,53 @@ typedef struct _GladePaletteClass	GladePaletteClass;
  */
 struct _GladePalette
 {
-	GtkVBox vbox; /* The parent is a vbox
-		       */
+	GtkVBox vbox; /* The parent is a vbox */
 
-	GtkTooltips *tooltips; /* Tooltips, currently unimplemented */
+	GladeWidgetClass *current; /* The GladeWidgetClass corrisponding
+				    * to the selected button. NULL if the
+				    * selector button is pressed.
+				    */
 
-#if 0
-	/* Not beeing used yet */
-	GtkWidget *selector; /* The group selector. This is a button that is
+	GtkWidget *selector; /* The selevtor is a button that is
 			      * clicked to cancel the add widget action.
 			      * This sets our cursor back to the "select
-			      * widget" mode
+			      * widget" mode. This button is part of the
+			      * widgets_button_group, so that when no widget
+			      * is selected, this button is pressed.
 			      */
-#endif	
+
+	GtkWidget *label;  /* A label which contains the name of the class
+			    * currently selected or "Selector" if no widget
+			    * class is selected
+			    */
+
 	GtkWidget *groups_vbox; /* The vbox that contains the titles of the sections */
-	GtkWidget *label; /* The label contains the text of the selected
-			   * widget that is going to be added. For examle
-			   * when a button is selcted it contains GtkButton
-			   * it contains the text "Selector" when we are
-			   * in select widget mode
-			   */
+
 	GtkWidget *notebook; /* Where we store the different catalogs */
 
 	gint nb_sections; /* The number of sections in this palette */
 	GSList *sections_button_group; /* Each section of the palette has
 					* a button. This is the button_group_list
 					*/
+
 	GSList *widgets_button_group; /* Each widget in a section has a button
 				       * in the palette. This is the button
-				       * group. This will move away when
-				       * multiple sections are implemented.
-				       * most likely into GladeCatalog
+				       * group, since only one may be pressed.
 				       */
-				       
-	GtkWidget *dummy_button; /* Each button_group needs a button
-				  * selected all the time. This dummy button
-				  * is never disaplayed nor _contained_add'ed
-				  * and it is selected when we don't want
-				  * to have a button "pressed in" for the group.
-				  * Will also move to GladeCatalog since it
-				  * is part of the widgets_button_group
-				  */
 };
 
 struct _GladePaletteClass
 {
 	GtkVBoxClass parent_class;
 
-	void (*widget_class_chosen) (GladePalette *palette, GladeWidgetClass *class);
+	void (*toggled) (GladePalette *palette);
 };
 
 GType glade_palette_get_type (void);
 
-GladePalette *glade_palette_new    (GList *catalogs);
+GladePalette *glade_palette_new (GList *catalogs);
 
-void glade_palette_append_catalog  (GladePalette *palette, GladeCatalog *catalog);
+void glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog);
 
 void glade_palette_unselect_widget (GladePalette *palette);
 

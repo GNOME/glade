@@ -53,11 +53,9 @@ GladeProjectWindow *glade_project_window_get ();
 
 void glade_project_window_show_all ();
 
-void glade_project_window_set_add_class       (GladeProjectWindow *gpw, GladeWidgetClass *class);
+void glade_project_window_add_project (GladeProject *project);
 
-void glade_project_window_add_project         (GladeProject *project);
-
-void glade_project_window_refresh_undo_redo   (void);
+void glade_project_window_refresh_undo_redo (void);
 
 
 G_END_DECLS
