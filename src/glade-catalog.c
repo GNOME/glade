@@ -64,6 +64,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	GladeCatalog *catalog = NULL;
 	char *name = NULL;
 	char *generic_name = NULL;
+	char *palette_name = NULL;
 	char *catalog_filename = NULL;
 	char *base_filename = NULL;
 	char *base_library = NULL;
@@ -92,7 +93,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	last_widget_class = NULL;
 
 	/* read the title of this catalog */
-	catalog->title = glade_xml_get_property_string_required (root, "Title", NULL);
+	catalog->title = glade_xml_get_property_string_required (root, "Title", catalog_filename);
 
 	if (!glade_xml_node_verify (root, GLADE_TAG_CATALOG))
 	{
@@ -112,7 +113,7 @@ glade_catalog_load (const char *base_catalog_filename)
 		if (!glade_xml_node_verify (widget_node, GLADE_TAG_GLADE_WIDGET))
 			continue;
 
-		name = glade_xml_get_property_string_required (widget_node, "name", NULL);
+		name = glade_xml_get_property_string_required (widget_node, "name", catalog_filename);
 		if (!name)
 			continue;
 
@@ -120,9 +121,12 @@ glade_catalog_load (const char *base_catalog_filename)
 		base_widget_class_library = glade_xml_get_property_string (widget_node, "library");
 
 		generic_name = glade_xml_get_property_string (widget_node, "generic_name");
+		if (generic_name != NULL)
+			palette_name = glade_xml_get_property_string_required (widget_node, "palette_name", name);
+		
 		base_filename = glade_xml_get_property_string (widget_node, "filename");
 
-		widget_class = glade_widget_class_new (name, generic_name, base_filename,
+		widget_class = glade_widget_class_new (name, generic_name, palette_name, base_filename,
 						       base_widget_class_library ? base_widget_class_library : base_library);
 		if (widget_class)
 		{
@@ -136,6 +140,7 @@ glade_catalog_load (const char *base_catalog_filename)
 
 		g_free (name);
 		g_free (generic_name);
+		g_free (palette_name);
 		g_free (base_filename);
 		g_free (base_widget_class_library);
 	}

@@ -45,6 +45,7 @@ struct _GladeWidgetClass
 			      * example "button" so that we generate button1,
 			      * button2, buttonX ..
 			      */
+	gchar *palette_name; /* Name used in the palette */
 
 	gint flags;          /* See GladeWidgetClassFlags above */
 
@@ -114,7 +115,7 @@ struct _GladeWidgetClassSignal
 };
 
 
-GladeWidgetClass *glade_widget_class_new (const char *name, const char *generic_name, const char *base_filename, const char *base_library);
+GladeWidgetClass *glade_widget_class_new (const char *name, const char *generic_name, const char *palette_name, const char *base_filename, const char *base_library);
 GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);
 void glade_widget_class_free (GladeWidgetClass *widget_class);
 GladeWidgetClass *glade_widget_class_get_by_name (const char *name);

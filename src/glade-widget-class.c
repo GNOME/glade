@@ -540,6 +540,7 @@ glade_widget_class_load_library (const gchar *library_name)
 GladeWidgetClass *
 glade_widget_class_new (const char *name,
 			const char *generic_name,
+			const char *palette_name,
 			const char *base_filename,
 			const char *base_library)
 {
@@ -579,6 +580,7 @@ glade_widget_class_new (const char *name,
 	widget_class->module = module;
 
 	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
+	widget_class->palette_name = palette_name ? g_strdup (palette_name) : NULL;
 	widget_class->name = g_strdup (name);
 	widget_class->in_palette = generic_name ? TRUE : FALSE;
 

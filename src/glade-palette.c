@@ -231,7 +231,7 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 		GladeWidgetClass *widget_class = (GladeWidgetClass*) list->data;
 		if (widget_class->in_palette)
 		{
-			label = GTK_LABEL (gtk_label_new (widget_class->generic_name));
+			label = GTK_LABEL (gtk_label_new (widget_class->palette_name));
 			radio = GTK_RADIO_BUTTON (gtk_radio_button_new (palette->widgets_button_group));
 
 			g_object_set_data (G_OBJECT (radio), "user", list->data);

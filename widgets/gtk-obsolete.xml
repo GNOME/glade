@@ -1,18 +1,13 @@
 <GladeCatalog Title="Gtk+ Obsolete" library="gladegtk">
 
   <GladeWidget name="GtkRuler" filename="gtkruler.xml"/>
-  <GladeWidget name="GtkHRuler" generic_name="hruler"/>
-  <GladeWidget name="GtkVRuler" generic_name="vruler"/>
+  <GladeWidget name="GtkHRuler" generic_name="hruler" palette_name="Horizontal Ruler"/>
+  <GladeWidget name="GtkVRuler" generic_name="vruler" palette_name="Vertical Ruler"/>
   
-  <GladeWidget name="GtkColorSelection" generic_name="colorselection"/>
-  <GladeWidget name="GtkFontSelection" generic_name="fontselection"/>
+  <GladeWidget name="GtkColorSelection" generic_name="colorselection" palette_name="Color Selection"/>
+  <GladeWidget name="GtkFontSelection" generic_name="fontselection" palette_name="Font Selection"/>
 
-  <GladeWidget name="GtkCurve" generic_name="curve"/>
-  <GladeWidget name="GtkGammaCurve" generic_name="gammacurve"/>
-
-<!-- NOT AVAILABLES ON WIN32
-  <GladeWidget name="GtkPlug" generic_name="plug"/>
-  <GladeWidget name="GtkSocket" generic_name="socket"/>
--->
+  <GladeWidget name="GtkCurve" generic_name="curve" palette_name="Curve"/>
+  <GladeWidget name="GtkGammaCurve" generic_name="gammacurve" palette_name="Gamma Curve"/>
 
 </GladeCatalog>

@@ -1,5 +1,16 @@
 2004-02-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-catalog.c (glade_catalog_load): Load the "palette_name" attribute
+	on each widget class which has a "generic_name".
+	* src/glade-palette.c (glade_palette_widget_table_create): Use the "palette_name"
+	attribute as the label of the widget class in the palette.
+	* src/glade-widget-class.[ch] (glade_widget_class_new): set the "palette_name"
+	attribute as a member of the widget class.
+	* widgets/gtk-base.xml, gtk-additional.xml, gtk-dialogs.xml, gtk-obsolete.xml:
+	Set the "palette_name" attribute of each widget class.
+
+2004-02-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-palette.c: change the table with the widgets
 	to a vertical box, where each widget lies in a row
 	(the icon of the widget next to its label).
