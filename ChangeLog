@@ -1,5 +1,11 @@
 2003-06-18  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-signal.[ch]: implement signal_new_from_node.
+	* src/glade-widget.c: use the above: we can read signal
+	from saved files.
+
+2003-06-18  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-editor.c: set loaded_widget to NULL on clear.
 
 2003-06-17  Paolo Borelli  <pborelli@katamail.com>

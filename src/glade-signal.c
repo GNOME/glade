@@ -26,6 +26,8 @@
 
 #include "glade.h"
 #include "glade-signal.h"
+#include "glade-xml-utils.h"
+
 
 GladeSignal *
 glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
@@ -59,5 +61,26 @@ glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 	glade_xml_node_set_property_boolean (node, GLADE_XML_TAG_AFTER, signal->after);
 
 	return node;
+}
+
+GladeSignal *
+glade_signal_new_from_node (GladeXmlNode *node)
+{
+	GladeSignal *signal;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_SIGNAL))
+		return NULL;
+
+	signal = g_new0 (GladeSignal, 1);
+	signal->name    = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
+	signal->handler = glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER, NULL);
+	signal->after   = glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
+
+	if (!signal->name) {
+		g_warning ("Could not create Signal from node");
+		return NULL;
+	}
+
+	return signal;
 }
 

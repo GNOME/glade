@@ -1467,6 +1467,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 	GladeWidgetClass *class;
 	GladeXmlNode *child;
 	GladeWidget *widget;
+	GladeSignal *signal;
 	gchar *class_name;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
@@ -1502,6 +1503,18 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 		
 		if (!glade_widget_new_child_from_node (child, project, widget)) {
 			return NULL;
+		}
+	}
+
+	/* Signals */
+	child =	glade_xml_node_get_children (node);
+	for (; child != NULL; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_SIGNAL))
+			continue;
+		
+		signal = glade_signal_new_from_node (child);
+		if (signal) {
+			glade_widget_add_signal (widget, signal);
 		}
 	}
 

@@ -24,6 +24,8 @@ void glade_signal_free (GladeSignal *signal);
 
 GladeXmlNode *glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
 
+GladeSignal *glade_signal_new_from_node (GladeXmlNode *node);
+
 
 G_END_DECLS
 
