@@ -104,12 +104,8 @@ main (int argc, char *argv[])
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, GLADE_LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
-#if 0
-	g_print ("textdomain %s\n", GETTEXT_PACKAGE);
-	g_print ("localedir  %s\n", GLADE_LOCALEDIR);
-	g_print (_("Translate me\n"));
-#endif
 #endif
 						
 	popt_context = poptGetContext ("Glade2", argc, (const char **) argv, options, 0);

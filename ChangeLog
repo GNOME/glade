@@ -1,5 +1,10 @@
 2001-11-04  Carlos Perelló Marín <carlos@gnome-db.org>
 
+	* src/main.c: Added a call to bind_textdomain_codeset to
+	fix the encoding always as UTF-8. This fix all UTF-8 warnings
+
+2001-11-04  Carlos Perelló Marín <carlos@gnome-db.org>
+
 	* configure.in:
 	* Makefile.am: Migrated to intltool
 
