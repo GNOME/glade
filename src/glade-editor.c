@@ -422,7 +422,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		break;
 	case GLADE_EDITOR_FLOAT:
 		g_value_init (val, G_TYPE_FLOAT);
-		g_value_set_float (val, gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
+		g_value_set_float (val, (float) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
 		glade_command_set_property (G_OBJECT (property->property->widget->widget),
 					property->property->class->id, val);
 		break;
@@ -1547,15 +1547,6 @@ glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget)
 
 	gtk_signal_emit (GTK_OBJECT (editor),
 			 glade_editor_signals [SELECT_ITEM], widget);
-}
-	
-void
-glade_editor_create (GladeProjectWindow *gpw)
-{
-	if (gpw->editor == NULL) {
-		gpw->editor = GLADE_EDITOR (glade_editor_new ());
-		gpw->editor->project_window = gpw;
-	}
 }
 
 void glade_editor_add_signal (GladeEditor *editor, guint signal_id,

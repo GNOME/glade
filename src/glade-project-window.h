@@ -28,7 +28,7 @@ struct _GladeProjectWindow
 	GtkWidget *widget_tree;        /* The widget tree window*/
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GladePalette *palette;         /* See glade-palette */
-	GtkWindow *editor_window;     /* The window that will contain the editor */
+	GtkWindow *editor_window;      /* The window that will contain the editor */
 	GladeEditor *editor;           /* See glade-editor */
 	GladeClipboard *clipboard;     /* See glade-clipboard */
 	GladeProjectView *active_view; /* See glade-project-view */
@@ -68,9 +68,6 @@ void glade_project_window_add_project         (GladeProjectWindow *gpw,
 
 void glade_project_window_refresh_undo_redo   (GladeProjectWindow *gpw);
 void glade_project_window_refresh_title       (GladeProjectWindow *gpw);
-
-gboolean glade_project_window_query_properties (GladeWidgetClass *class,
-						GladePropertyQueryResult *result);
 
 G_END_DECLS
 

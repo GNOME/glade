@@ -264,37 +264,27 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 	return NULL;
 }
 
-/* This should be hooked up to the delete_event of windows which you want
-   to hide, so that if they are shown again they appear in the same place.
-   This stops the window manager asking the user to position the window each
-   time it is shown, which is quite annoying. */
-gint
-glade_util_hide_window_on_delete (GtkWidget * widget,
-				   GdkEvent * event,
-				   gpointer data)
-{
-	glade_util_hide_window (widget);
-	return TRUE;
-}
-
-gint
-glade_util_hide_window (GtkWidget *widget)
+/**
+ * glade_util_hide_window:
+ * @window:
+ *
+ * If you use this function to handle the delete_event of a window, when it
+ * will be shown again it will appear in the position where it was before
+ * beeing hidden.
+ **/
+void
+glade_util_hide_window (GtkWindow *window)
 {
 	gint x, y;
-	gboolean set_position = FALSE;
+
+	g_return_if_fail (GTK_IS_WINDOW (window));
 
 	/* remember position of window for when it is used again */
-	if (widget->window) {
-		gdk_window_get_root_origin (widget->window, &x, &y);
-		set_position = TRUE;
-	}
+	gtk_window_get_position (window, &x, &y);
 
-	gtk_widget_hide (widget);
+	gtk_widget_hide (GTK_WIDGET (window));
 
-	if (set_position)
-		gtk_widget_set_uposition (widget, x, y);
-
-	return TRUE;
+	gtk_window_move(window, x, y);
 }
 
 gint glade_util_check_key_is_esc (GtkWidget *widget,
@@ -307,7 +297,7 @@ gint glade_util_check_key_is_esc (GtkWidget *widget,
 		GladeEscAction action = GPOINTER_TO_INT (data);
   
 		if (action == GladeEscCloses) {
-			glade_util_hide_window (widget);
+			glade_util_hide_window (GTK_WINDOW (widget));
 			return TRUE;
 		}
 		else if (action == GladeEscDestroys) { 
@@ -347,4 +337,5 @@ glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
 
 	return filesel;
 }
+ 
  

@@ -1,3 +1,25 @@
+2003-04-21  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-property-class.c: kill some compiler warnings.
+	* src/glade-parameter.c: ditto.
+	* src/glade-project-view.c: ditto.
+	* src/glade-widget.c: ditto.
+
+2003-04-21  Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-widget.c: move here the query_property functions
+	* src/glade-project-window.[ch]: removed the above, those functione 
+	belong to glade-widget.c
+
+2003-04-21  Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-editor.[ch]: remove glade_editor_create().
+	* src/glade-utils.[ch]: remove glade_util_hide_window_on_delete(),
+	reimplemented glade_util_hide_window() so that it does  not use
+	deprecated functions; it now returns void.
+	* src/glade-project-window.c: updated the callers.
+	* src/glade-menu-editor.c: updated the callers.
+
 2003-04-17  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-project-window.c: modify the confirmation dialog on quit

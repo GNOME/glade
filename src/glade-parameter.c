@@ -53,7 +53,7 @@ glade_parameter_get_float (GList *parameters, const gchar *key, gfloat *value)
 	for (; list != NULL; list = list->next) {
 		parameter = list->data;
 		if (strcmp (key, parameter->key) == 0) {
-			*value = atof (parameter->value);
+			*value = (float) atof (parameter->value);
 			return;
 		}
 	}

@@ -359,7 +359,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		break;
 	case GLADE_PROPERTY_TYPE_FLOAT:
 		g_value_init (value, G_TYPE_FLOAT);
-		g_value_set_float (value, atof (string));
+		g_value_set_float (value, (float) atof (string));
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		g_value_init (value, G_TYPE_BOOLEAN);

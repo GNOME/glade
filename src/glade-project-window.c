@@ -31,7 +31,6 @@
 #include "glade-clipboard-view.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
-#include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-project.h"
@@ -525,7 +524,7 @@ gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used,
 {
 	GtkWidget *palette_item;
 
-	glade_util_hide_window (GTK_WIDGET (palette));
+	glade_util_hide_window (GTK_WINDOW (palette));
 
 	palette_item = gtk_item_factory_get_item (item_factory, "<main>/View/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
@@ -584,7 +583,7 @@ gpw_hide_palette (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	glade_util_hide_window (GTK_WIDGET (gpw->palette_window));
+	glade_util_hide_window (gpw->palette_window);
 
 	palette_item = gtk_item_factory_get_item (gpw->item_factory,
 						  "<main>/View/Palette");
@@ -597,7 +596,7 @@ gpw_hide_editor_on_delete (GtkWidget *editor, gpointer not_used,
 {
 	GtkWidget *editor_item;
 
-	glade_util_hide_window (GTK_WIDGET (editor));
+	glade_util_hide_window (GTK_WINDOW (editor));
 
 	editor_item = gtk_item_factory_get_item (item_factory, "<main>/View/Property Editor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
@@ -658,7 +657,7 @@ gpw_hide_editor (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	glade_util_hide_window (GTK_WIDGET (gpw->editor_window));
+	glade_util_hide_window (gpw->editor_window);
 
 	editor_item = gtk_item_factory_get_item (gpw->item_factory,
 						 "<main>/View/Property Editor");
@@ -671,7 +670,7 @@ gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
 {
 	GtkWidget *widget_tree_item;
 
-	glade_util_hide_window (widget_tree);
+	glade_util_hide_window (GTK_WINDOW (widget_tree));
 
 	widget_tree_item = gtk_item_factory_get_item (item_factory,
 						      "<main>/View/Widget Tree");
@@ -729,7 +728,7 @@ gpw_hide_widget_tree (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	glade_util_hide_window (GTK_WIDGET (gpw->widget_tree));
+	glade_util_hide_window (GTK_WINDOW (gpw->widget_tree));
 
 	widget_tree_item = gtk_item_factory_get_item (gpw->item_factory,
 						      "<main>/View/Widget Tree");
@@ -756,7 +755,7 @@ gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
 {
 	GtkWidget *clipboard_item;
 
-	glade_util_hide_window (clipboard_view);
+	glade_util_hide_window (GTK_WINDOW (clipboard_view));
 
 	clipboard_item = gtk_item_factory_get_item (item_factory,
 						    "<main>/View/Clipboard");
@@ -813,7 +812,7 @@ gpw_hide_clipboard_view (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	glade_util_hide_window (GTK_WIDGET (gpw->clipboard->view));
+	glade_util_hide_window (GTK_WINDOW (gpw->clipboard->view));
 
 	clipboard_item = gtk_item_factory_get_item (gpw->item_factory,
 						    "<main>/View/Clipboard");
@@ -1128,129 +1127,6 @@ glade_project_window_set_add_class (GladeProjectWindow *gpw, GladeWidgetClass *c
 	if (!class && gpw->palette)
 		glade_palette_clear (gpw);
 	
-}
-
-static GtkWidget *
-glade_project_append_query (GtkWidget *table, GladePropertyClass *property_class, gint row)
-{
-	GladePropertyQuery *query;
-	GtkAdjustment *adjustment;
-	GtkWidget *label;
-	GtkWidget *spin;
-	gchar *text;
-
-	query = property_class->query;
-	
-	if (property_class->type != GLADE_PROPERTY_TYPE_INTEGER) {
-		g_warning ("We can only query integer types for now. Trying to query %d. FIXME please ;-)", property_class->type);
-		return NULL;
-	}
-	
-	/* Label */
-	text = g_strdup_printf ("%s :", query->question);
-	label = gtk_label_new (text);
-	g_free (text);
-	gtk_widget_show (label);
-	gtk_table_attach_defaults (GTK_TABLE (table), label,
-				   0, 1, row, row +1);
-
-	/* Spin/Entry */
-	adjustment = glade_parameter_adjustment_new (property_class->parameters, property_class->def);
-	spin = gtk_spin_button_new (adjustment, 1, 0);
-	gtk_widget_show (spin);
-	gtk_table_attach_defaults (GTK_TABLE (table), spin,
-				   1, 2, row, row +1);
-
-	return spin;
-}
-
-void
-glade_project_window_query_properties_set (gpointer key_,
-					   gpointer value_,
-					   gpointer user_data)
-{
-	GladePropertyQueryResult *result = user_data;
-	GtkWidget *spin = value_;
-	const gchar *key = key_;
-	gint num;
-
-	num = (gint) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin));
-	glade_property_query_result_set_int (result, key, num);
-}
-
-/**
- * glade_project_window_query_properties:
- * @class: 
- * @result: 
- * 
- * Queries the user for some property values before a GladeWidget creation
- * for example before creating a GtkVBox we want to ask the user the number
- * of columns he wants.
- * 
- * Return Value: FALSE if the query was canceled
- **/
-gboolean 
-glade_project_window_query_properties (GladeWidgetClass *class,
-				       GladePropertyQueryResult *result)
-{
-	GladePropertyClass *property_class;
-	GHashTable *hash;
-	GtkWidget *dialog;
-	GtkWidget *table;
-	GtkWidget *vbox;
-	GtkWidget *spin = NULL;
-	GList *list;
-	gint response;
-	gint row = 0;
-
-	g_return_val_if_fail (class  != NULL, FALSE);
-	g_return_val_if_fail (result != NULL, FALSE);
-
-	dialog = gtk_dialog_new_with_buttons (NULL /* name */,
-					      NULL /* parent, FIXME: parent should be the project window */,
-					      GTK_DIALOG_MODAL,
-					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					      NULL);
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);	
-	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);	
-
-	vbox = GTK_DIALOG (dialog)->vbox;
-	table = gtk_table_new (0, 0, FALSE);
-	gtk_widget_show (table);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
-	
-	hash = g_hash_table_new (g_str_hash, g_str_equal);
-
-	list = class->properties;
-	for (; list != NULL; list = list->next) {
-		property_class = list->data;
-		if (property_class->query) {
-			spin = glade_project_append_query (table, property_class, row++);
-			g_hash_table_insert (hash, property_class->id, spin);
-		}
-	}
-	if (spin == NULL)
-		return TRUE;
-
-	response = gtk_dialog_run (GTK_DIALOG (dialog));
-	switch (response) {
-	case GTK_RESPONSE_ACCEPT:
-		g_hash_table_foreach (hash,
-				      glade_project_window_query_properties_set,
-				      result);
-		break;
-	case GTK_RESPONSE_REJECT:
-		gtk_widget_destroy (dialog);
-		return TRUE;
-	default:
-		g_warning ("Dunno what to do, unexpected GtkResponse");
-	}
-
-	g_hash_table_destroy (hash);
-	gtk_widget_destroy (dialog);
-	
-	return FALSE;
 }
 
 GladeProject *

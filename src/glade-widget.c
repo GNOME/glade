@@ -28,6 +28,7 @@
 #include "glade-placeholder.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
+#include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-popup.h"
@@ -170,8 +171,8 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	gint y, win_y;
 	
 	window = event->window;
-	x = event->x;
-	y = event->y;
+	x = (int) (event->x + 0.5);
+	y = (int) (event->y + 0.5);
 	gdk_window_get_position (event_widget->window, &win_x, &win_y);
 
 	/*
@@ -791,6 +792,132 @@ glade_widget_new_full (GladeProject *project,
 	return widget;
 }
 
+static GtkWidget *
+glade_widget_append_query (GtkWidget *table,
+			   GladePropertyClass *property_class,
+			   gint row)
+{
+	GladePropertyQuery *query;
+	GtkAdjustment *adjustment;
+	GtkWidget *label;
+	GtkWidget *spin;
+	gchar *text;
+
+	query = property_class->query;
+	
+	if (property_class->type != GLADE_PROPERTY_TYPE_INTEGER) {
+		g_warning ("We can only query integer types for now. Trying to query %d. FIXME please ;-)", property_class->type);
+		return NULL;
+	}
+	
+	/* Label */
+	text = g_strdup_printf ("%s :", query->question);
+	label = gtk_label_new (text);
+	g_free (text);
+	gtk_widget_show (label);
+	gtk_table_attach_defaults (GTK_TABLE (table), label,
+				   0, 1, row, row +1);
+
+	/* Spin/Entry */
+	adjustment = glade_parameter_adjustment_new (property_class->parameters, property_class->def);
+	spin = gtk_spin_button_new (adjustment, 1, 0);
+	gtk_widget_show (spin);
+	gtk_table_attach_defaults (GTK_TABLE (table), spin,
+				   1, 2, row, row +1);
+
+	return spin;
+}
+
+void
+glade_widget_query_properties_set (gpointer key_,
+				   gpointer value_,
+				   gpointer user_data)
+{
+	GladePropertyQueryResult *result = user_data;
+	GtkWidget *spin = value_;
+	const gchar *key = key_;
+	gint num;
+
+	num = (gint) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin));
+	glade_property_query_result_set_int (result, key, num);
+}
+
+/**
+ * glade_widget_query_properties:
+ * @class: 
+ * @result: 
+ * 
+ * Queries the user for some property values before a GladeWidget creation
+ * for example before creating a GtkVBox we want to ask the user the number
+ * of columns he wants.
+ * 
+ * Return Value: FALSE if the query was canceled
+ **/
+gboolean 
+glade_widget_query_properties (GladeWidgetClass *class,
+			       GladePropertyQueryResult *result)
+{
+	GladePropertyClass *property_class;
+	GHashTable *hash;
+	GtkWidget *dialog;
+	GtkWidget *table;
+	GtkWidget *vbox;
+	GtkWidget *spin = NULL;
+	GList *list;
+	gint response;
+	gint row = 0;
+
+	g_return_val_if_fail (class  != NULL, FALSE);
+	g_return_val_if_fail (result != NULL, FALSE);
+
+	dialog = gtk_dialog_new_with_buttons (NULL /* name */,
+					      NULL /* parent, FIXME: parent should be the project window */,
+					      GTK_DIALOG_MODAL,
+					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					      NULL);
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);	
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);	
+
+	vbox = GTK_DIALOG (dialog)->vbox;
+	table = gtk_table_new (0, 0, FALSE);
+	gtk_widget_show (table);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
+	
+	hash = g_hash_table_new (g_str_hash, g_str_equal);
+
+	list = class->properties;
+	for (; list != NULL; list = list->next) {
+		property_class = list->data;
+		if (property_class->query) {
+			spin = glade_widget_append_query (table, property_class, row++);
+			g_hash_table_insert (hash, property_class->id, spin);
+		}
+	}
+	if (spin == NULL)
+		return TRUE;
+
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+	switch (response) {
+	case GTK_RESPONSE_ACCEPT:
+		g_hash_table_foreach (hash,
+				      glade_widget_query_properties_set,
+				      result);
+		break;
+	case GTK_RESPONSE_REJECT:
+		gtk_widget_destroy (dialog);
+		return TRUE;
+	default:
+		g_warning ("Dunno what to do, unexpected GtkResponse");
+	}
+
+	g_hash_table_destroy (hash);
+	gtk_widget_destroy (dialog);
+	
+	return FALSE;
+}
+
 /**
  * glade_widget_new_from_class_full:
  * @project: 
@@ -804,7 +931,9 @@ glade_widget_new_full (GladeProject *project,
  * Return Value: A newly creatred GladeWidget, NULL on user cancel or error	
  **/
 static GladeWidget *
-glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project, GladeWidget *parent)
+glade_widget_new_from_class_full (GladeWidgetClass *class,
+				  GladeProject *project,
+				  GladeWidget *parent)
 {
 	GladePropertyQueryResult *result = NULL;
 	GladeWidget *widget;
@@ -814,7 +943,7 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 
 	if (glade_widget_class_has_queries (class)) {
 		result = glade_property_query_result_new ();
-		if (glade_project_window_query_properties (class, result))
+		if (glade_widget_query_properties (class, result))
 			return NULL;
 	}
 

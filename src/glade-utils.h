@@ -26,9 +26,7 @@ void     glade_util_flash_message	(guint context_id, gchar *format, ...);
    any '_' characters. It isn't particularly efficient. */
 gint     glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
 
-gpointer glade_util_gtk_combo_find	(GtkCombo *combo);
-gint	 glade_util_hide_window_on_delete (GtkWidget *widget, GdkEvent *event, gpointer data);
-gint	 glade_util_hide_window	(GtkWidget *widget);
+void	 glade_util_hide_window		(GtkWindow *window);
 gint	 glade_util_check_key_is_esc	(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gchar	*glade_util_gtk_combo_func	(gpointer data);
 gpointer glade_util_gtk_combo_find	(GtkCombo *combo);

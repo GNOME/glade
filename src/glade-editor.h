@@ -183,7 +183,6 @@ typedef enum {
 
 GladeEditor *glade_editor_new (void);
 
-void glade_editor_create (GladeProjectWindow *gpw);
 void glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
 void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
 

@@ -1599,7 +1599,7 @@ on_keys_dialog_response (GtkWidget * widget, gint response_id,
 		}
 	}
 
-	glade_util_hide_window (menued->keys_dialog);
+	glade_util_hide_window (GTK_WINDOW (menued->keys_dialog));
 }
 
 
