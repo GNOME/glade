@@ -70,7 +70,7 @@ if test "x${prefix}" = "xNONE"; then
   catalogsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs"
 else
   AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps")
-  pixmapsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
+  pixmapsdir="${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps"
   AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets")
   widgetsdir="${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets"
   AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs")
