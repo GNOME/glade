@@ -62,6 +62,7 @@ struct _GladeWidgetClass {
 				     GtkWidget *container);
 
 	gchar *post_create_function;
+	gboolean in_palette;
 };
 
 /* GladeWidgetClassSignal contains all the info we need for a given signal, such as

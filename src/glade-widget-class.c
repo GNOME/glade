@@ -221,6 +221,7 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 
 	/* <PostCreateFunction> */
 	class->post_create_function = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
+	class->in_palette = glade_xml_get_boolean (node, GLADE_TAG_IN_PALETTE, TRUE);
 
 	glade_widget_class_add_virtual_methods (class);
 	

@@ -76,6 +76,7 @@ glade_enum_from_string (const gchar *string)
 	return -1;
 }
 
+#if 0
 static gchar *
 glade_string_from_string (const gchar *string)
 {
@@ -120,6 +121,7 @@ glade_string_from_string (const gchar *string)
 
 	return NULL;
 }
+#endif
 
 static GladeChoice *
 glade_choice_new_from_node (GladeXmlNode *node)

@@ -33,6 +33,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-gtk.h"
+#include "glade-debug.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -55,6 +56,8 @@ glade_property_type_str_to_enum (const gchar *str)
 		return GLADE_PROPERTY_TYPE_STRING;
 	if (strcmp (str, GLADE_TAG_BOOLEAN) == 0)
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
+	if (strcmp (str, GLADE_TAG_UNICHAR) == 0)
+		return GLADE_PROPERTY_TYPE_UNICHAR;
 	if (strcmp (str, GLADE_TAG_FLOAT) == 0)
 		return GLADE_PROPERTY_TYPE_FLOAT;
 	if (strcmp (str, GLADE_TAG_INTEGER) == 0)
@@ -79,6 +82,8 @@ glade_property_type_enum_to_string (GladePropertyType type)
 		return GLADE_TAG_STRING;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		return GLADE_TAG_BOOLEAN;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		return GLADE_TAG_UNICHAR;
 	case GLADE_PROPERTY_TYPE_FLOAT:
 		return GLADE_TAG_FLOAT;
 	case GLADE_PROPERTY_TYPE_INTEGER:
@@ -139,10 +144,12 @@ glade_property_class_new (void)
 	property_class = g_new0 (GladePropertyClass, 1);
 	property_class->type = GLADE_PROPERTY_TYPE_ERROR;
 	property_class->id = NULL;
-#if 0	
-	g_print ("New property class %d. Id:%d\n",
-		 GPOINTER_TO_INT (property_class), GPOINTER_TO_INT (property_class->id));
-#endif
+
+	/*
+	  g_debug(("New property class %d. Id:%d\n",
+	           GPOINTER_TO_INT (property_class), GPOINTER_TO_INT (property_class->id)));
+	*/
+	
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
 	property_class->parameters = NULL;
@@ -183,6 +190,8 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 		return GLADE_PROPERTY_TYPE_FLOAT;
 	} else if (G_IS_PARAM_SPEC_BOOLEAN (spec)) {
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
+	} else if (G_IS_PARAM_SPEC_UNICHAR (spec)) {
+		return GLADE_PROPERTY_TYPE_UNICHAR;
 	} else if (G_IS_PARAM_SPEC_STRING (spec)) {
 		/* FIXME: We should solve the "name" conflict with a better solution */
 		if (!g_ascii_strcasecmp ( spec->name, "name"))
@@ -221,12 +230,12 @@ glade_property_class_choice_new_from_value (GEnumValue value)
 	choice = glade_choice_new ();
 	choice->name = g_strdup (value.value_nick);
 	choice->id     = g_strdup (value.value_name);
-#if 0	
-	g_print ("Choice Id is %s\n", choice->id);
-#endif
-#if 0	
-	choice->symbol = g_strdup (value.value_name);
-#endif	
+
+	/*
+	  g_debug(("Choice Id is %s\n", choice->id));
+	  choice->symbol = g_strdup (value.value_name);
+	*/
+	
 	choice->value  = value.value;
 
 	return choice;
@@ -306,6 +315,11 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		string = g_strdup_printf ("%s", g_value_get_boolean (value) ?
 					  GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		string = g_malloc (7);
+		g_unichar_to_utf8 (g_value_get_uint (value), string);
+		*g_utf8_next_char(string) = '\0';
+		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		string = g_strdup (g_value_get_string (value));
 		break;
@@ -353,6 +367,10 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 			g_value_set_boolean (value, TRUE);
 		else
 			g_value_set_boolean (value, FALSE);
+		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		g_value_init (value, G_TYPE_UINT);
+		g_value_set_uint (value, g_utf8_get_char (string));
 		break;
 	case GLADE_PROPERTY_TYPE_DOUBLE:
 		g_value_init (value, G_TYPE_DOUBLE);
@@ -437,6 +455,10 @@ glade_property_class_get_default_from_spec (GParamSpec *spec,
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		g_value_init (value, G_TYPE_BOOLEAN);
 		g_value_set_boolean (value, G_PARAM_SPEC_BOOLEAN (spec)->default_value);
+		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		g_value_init (value, G_TYPE_UINT);
+		g_value_set_uint (value, G_PARAM_SPEC_UNICHAR (spec)->default_value);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
@@ -537,6 +559,8 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 		break;
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
@@ -566,9 +590,7 @@ glade_property_class_get_default (GladeXmlNode *node, GladePropertyClass *proper
 	temp =	glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 
 	if (!temp) {
-#if 0	
-		g_print ("Temp is NULL, we dont' have a default\n");
-#endif	
+		/* g_debug(("Temp is NULL, we dont' have a default\n")) */;
 		return NULL;
 	}
 
@@ -718,7 +740,10 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			glade_widget_property_class_free (*property_class);
 			*property_class = NULL;
 		}
+
+		return;
 	}
+
 	id = glade_xml_get_property_string_required (node, GLADE_TAG_ID, widget_class->name);
 	if (id == NULL)
 		return;
@@ -1020,6 +1045,8 @@ glade_property_class_list_properties (GladeWidgetClass *class)
 				continue;
 			} else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 				/* We don't support this properties */
+				glade_widget_property_class_free (property_class);
+				property_class = NULL;
 				continue;
 			} else if (property_class->type == GLADE_PROPERTY_TYPE_ENUM) {
 				property_class->choices = glade_property_class_get_choices_from_spec (spec);
@@ -1051,6 +1078,8 @@ glade_property_class_list_properties (GladeWidgetClass *class)
 						glade_property_get_parameters_numeric (spec, property_class);
 					break;
 				case GLADE_PROPERTY_TYPE_BOOLEAN:
+					break;
+				case GLADE_PROPERTY_TYPE_UNICHAR:
 					break;
 				case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 					break;

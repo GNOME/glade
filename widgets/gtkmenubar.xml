@@ -3,11 +3,13 @@
   <Name>GtkMenuBar</Name>
   <GenericName>menubar</GenericName>
   <Toplevel>False</Toplevel>
+  <CreateFunction>glade_gtk_menu_bar_create</CreateFunction>
+  <PostCreateFunction>glade_gtk_menu_bar_post_create</PostCreateFunction>
 
   <Properties>
 
-    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="width-request"/>
-    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="height-request"/>
+    <Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="width-request"/>
+    <Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="height-request"/>
     <Property Common="True" Id="visible" Default="True">
       <SetFunction>ignore</SetFunction>
     </Property>
@@ -16,6 +18,11 @@
       <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
       <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
     </Property>
+    <Property Common="True" Id="sensitive"/>
+    <!-- Not yet implemented
+    <Property Common="True" Id="events"/>
+    -->
+    <Property Common="True" Id="extension-events"/>
 
   </Properties>
   

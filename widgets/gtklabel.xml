@@ -20,7 +20,9 @@
 
     <Property Common="True" Id="width-request"/>
     <Property Common="True" Id="height-request"/>
-    <Property Common="True" Id="visible" Default="True"/>
+    <Property Common="True" Id="visible" Default="True">
+      <SetFunction>ignore</SetFunction>
+    </Property>
     <Property Common="True" Id="sensitive"/>
     <Property Common="True" Id="can-default"/>
     <Property Common="True" Id="has-default"/>

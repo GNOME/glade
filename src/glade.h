@@ -71,6 +71,7 @@
 #define GLADE_TAG_NO           "No"
 #define GLADE_TAG_STRING       "String"
 #define GLADE_TAG_BOOLEAN      "Boolean"
+#define GLADE_TAG_UNICHAR      "Unichar"
 #define GLADE_TAG_FLOAT        "Float"
 #define GLADE_TAG_INTEGER      "Integer"
 #define GLADE_TAG_DOUBLE       "Double"
@@ -90,6 +91,7 @@
 #define GLADE_TAG_DEFAULT      "Default"
 #define GLADE_TAG_DISABLED     "Disabled"
 #define GLADE_TAG_POST_CREATE_FUNCTION "PostCreateFunction"
+#define GLADE_TAG_IN_PALETTE   "InPalette"
 
 #define GLADE_TAG_CATALOG      "GladeCatalog"
 #define GLADE_TAG_GLADE_WIDGET "GladeWidget"

@@ -184,19 +184,21 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	y = event->y;
 	gdk_window_get_position (event_widget->window, &win_x, &win_y);
 
+	/*
 	g_debug(("Window [%d,%d]\n", win_x, win_y));
 	g_debug(("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y));
 	g_debug(("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
 		 "",
 		 gtk_widget_get_name (event_widget),
 		 GPOINTER_TO_INT (event_widget)));
-
+	*/
+	
 	parent_window = event_widget->parent ? event_widget->parent->window : event_widget->window;
 	while (window && window != parent_window) {
 		
 		gdk_window_get_position (window, &win_x, &win_y);
-		g_debug(("	  adding X:%d Y:%d - We now have : %d %d\n",
-			 win_x, win_y, x + win_x, y + win_y));
+		/* g_debug(("	  adding X:%d Y:%d - We now have : %d %d\n",
+		   win_x, win_y, x + win_x, y + win_y)); */
 		x += win_x;
 		y += win_y;
 		window = gdk_window_get_parent (window);
@@ -242,9 +244,10 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 #else
 	g_return_val_if_fail (found != NULL, NULL);
 #endif
-	
+	/*	
 	g_debug(("We found a \"%s\", child at %d,%d\n",
 		 gtk_widget_get_name (found->widget), data.x, data.y));
+	*/
 	return found;
 }
 
@@ -306,6 +309,10 @@ glade_property_refresh (GladeProperty *property)
 		glade_property_set_boolean (property,
 					    glade_property_get_boolean (property));
 		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		glade_property_set_unichar (property,
+					    glade_property_get_unichar (property));
+		break;
 	case GLADE_PROPERTY_TYPE_FLOAT:
 		glade_property_set_float (property,
 					  glade_property_get_float (property));
@@ -327,21 +334,21 @@ glade_property_refresh (GladeProperty *property)
 					 glade_property_get_enum (property));
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
-		g_print ("Set adjustment (refresh) %d\n", GPOINTER_TO_INT (property->child));
+		g_debug(("Set adjustment (refresh) %d\n", GPOINTER_TO_INT (property->child)));
 #if 1	
 #if 0
 		glade_widget_set_default_options_real (property->child, packing);
 #endif	
-		g_print ("Set directly \n");
+		g_debug(("Set directly \n"));
 		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
 						GTK_ADJUSTMENT (property->child));
-		g_print ("DONE : Set directly\n");
+		g_debug(("DONE : Set directly\n"));
 #else		
 		gtk_object_set (GTK_OBJECT (property->widget->widget),
 				property->class->id,
 				property->child, NULL);
 #endif		
-		g_print ("Adjustment has been set\n");
+		g_debug(("Adjustment has been set\n"));
 		break;
 	default:
 		g_warning ("Implement set default for this type [%s]\n", property->class->name);
@@ -467,9 +474,10 @@ glade_widget_draw_selection_nodes (GladeWidget *glade_widget)
 	
 	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
 	
+	g_debug(("Drawing nodes x: %d y: %d w: %d h: %d\n", x, y, width, height));
 }
 
-static gint
+static gboolean
 glade_widget_expose_event_cb (GtkWidget *widget, GdkEventExpose *event,
 			      GladeWidget *glade_widget)
 {
@@ -542,12 +550,13 @@ glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer use
 			g_return_val_if_fail (selection->data != NULL, FALSE);
 
 			glade_widget = GLADE_WIDGET (selection->data);
-
 			glade_widget_delete (glade_widget);
 		}
 	}
 
-	return TRUE;
+	g_debug(("glade_widget_key_press\n"));
+	/* TODO: It's TRUE, but I should put FALSE by now to make the menu editor work... */
+	return FALSE;
 }
 
 static void
@@ -691,12 +700,13 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	GType type;
 
 	class = glade_widget->class;
+
 	type = g_type_from_name (class->name);
 	
 	if (!g_type_is_a (type, G_TYPE_OBJECT)) {
 		gchar *text;
 		g_warning ("Unknown type %s read from glade file.", class->name);
- 		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
+		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
 		widget = gtk_label_new (text);
 		g_free (text);
 		return FALSE;
@@ -721,11 +731,14 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	 * and then a gtkvbox inside it. It will not draw correctly.
 	 * Chema
 	 */
-	/* This hack makes glade segfault if you delete glade_widget before 1 sec has ellapsed
+	/* That hack makes glade segfault if you delete glade_widget before 1 sec has ellapsed
 	 * since its creation (glade_widget will point to garbage).  With gtk 1.3.12 everything
-	 * seems to be ok without the timeouts, so I will leave them commentted out by now.
+	 * seems to be ok without the timeouts, so I will remove it by now.
 	 * Cuenca
 	 */
+	
+	/* We need to call the post_create_function after the embed of the widget in
+	   its parent.  Otherwise, calls to gtk_widget_grab_focus et al. will fail */
 	if (class->post_create_function) {
 		void (*pcf) (GObject *object);
 		pcf = glade_gtk_get_function (class->post_create_function);
@@ -733,9 +746,8 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 			g_warning ("Could not find %s\n", class->post_create_function);
 		else
 			pcf (G_OBJECT (glade_widget->widget));
-
 	}
-	
+
 	return TRUE;
 }
 
@@ -778,7 +790,7 @@ glade_widget_new_full (GladeProject *project,
 	
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
-	glade_cmd_create (widget);
+	glade_command_create (widget);
 
 	return widget;
 }
@@ -1074,7 +1086,7 @@ void
 glade_widget_delete (GladeWidget *widget)
 {
 	g_return_if_fail (widget != NULL);
-	glade_cmd_delete (widget);
+	glade_command_delete (widget);
 }
 
 void

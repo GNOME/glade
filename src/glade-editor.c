@@ -42,6 +42,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-command.h"
+#include "glade-debug.h"
 
 static void glade_editor_class_init (GladeEditorClass * klass);
 static void glade_editor_init (GladeEditor * editor);
@@ -238,7 +239,7 @@ glade_editor_property_changed_text_common (GladeProperty *property, const gchar 
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_STRING);
 	g_value_set_string (val, text);
-	glade_cmd_set_property (G_OBJECT (property->widget->widget), property->class->id, val);
+	glade_command_set_property (G_OBJECT (property->widget->widget), property->class->id, val);
 	
 	g_free (val);
 }
@@ -307,7 +308,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	gproperty = property->property;
 	g_value_init (val, gproperty->class->def->g_type);
 	g_value_set_enum (val, choice->value);
-	glade_cmd_set_property (G_OBJECT (gproperty->widget->widget),
+	glade_command_set_property (G_OBJECT (gproperty->widget->widget),
 				gproperty->class->id, val);
 
 	g_free (val);
@@ -371,19 +372,19 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	case GLADE_EDITOR_INTEGER:
 		g_value_init (val, G_TYPE_INT);
 		g_value_set_int (val, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin)));
-		glade_cmd_set_property (G_OBJECT (property->property->widget->widget),
+		glade_command_set_property (G_OBJECT (property->property->widget->widget),
 					property->property->class->id, val);
 		break;
 	case GLADE_EDITOR_FLOAT:
 		g_value_init (val, G_TYPE_FLOAT);
 		g_value_set_float (val, gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
-		glade_cmd_set_property (G_OBJECT (property->property->widget->widget),
+		glade_command_set_property (G_OBJECT (property->property->widget->widget),
 					property->property->class->id, val);
 		break;
 	case GLADE_EDITOR_DOUBLE:
 		g_value_init (val, G_TYPE_DOUBLE);
 		g_value_set_double (val, (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
-		glade_cmd_set_property (G_OBJECT (property->property->widget->widget),
+		glade_command_set_property (G_OBJECT (property->property->widget->widget),
 					property->property->class->id, val);
 		break;
 	default:
@@ -414,12 +415,77 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (val, state);
-	glade_cmd_set_property (G_OBJECT (property->property->widget->widget), property->property->class->id, val);
+	glade_command_set_property (G_OBJECT (property->property->widget->widget), property->property->class->id, val);
 	g_free (val);
 }
 
+static void
+glade_editor_property_changed_unichar (GtkWidget *entry,
+				       GladeEditorProperty *property)
+{
+	GValue* val;
+	guint len;
+	gchar *text;
+	gunichar unich;
+	
+	g_return_if_fail (property != NULL);
 
+	if (property->property->loading)
+		return;
+	
+	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+	len = g_utf8_strlen (text, -1);
+	g_debug (("The lenght of the string is: %d\n", len));
+	unich = g_utf8_get_char (text);
+			     
+	val = g_new0 (GValue, 1);
+	g_value_init (val, G_TYPE_UINT);
+	g_value_set_uint (val, unich);
+	glade_command_set_property (G_OBJECT (property->property->widget->widget), property->property->class->id, val);
+	
+	g_free (val);
+	g_free (text);
+}
 
+static void glade_editor_property_delete_unichar (GtkEditable    *editable,
+						  gint            start_pos,
+						  gint            end_pos)
+{
+	gtk_editable_select_region (editable, 0, -1);
+	gtk_signal_emit_stop_by_name (GTK_OBJECT (editable), "delete_text");
+}
+
+static void
+glade_editor_property_insert_unichar (GtkWidget *entry,
+				      const gchar *text,
+				      gint         length,
+				      gint        *position,
+				      gpointer     property)
+{
+	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
+					  GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar),
+					  property);
+	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
+					  GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar),
+					  property);
+	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
+					  GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar),
+					  property);
+	gtk_editable_delete_text (GTK_EDITABLE (entry), 0, -1);
+	*position = 0;
+	gtk_editable_insert_text (GTK_EDITABLE (entry), text, 1, position);
+	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
+					    GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar),
+					    property);
+	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
+					    GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar),
+					    property);
+	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
+					    GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar),
+					    property);
+	gtk_signal_emit_stop_by_name (GTK_OBJECT (entry), "insert_text");
+	glade_editor_property_changed_unichar (entry, property);
+}
 
 
 
@@ -577,12 +643,9 @@ glade_editor_create_input_double (GladeEditorProperty *property)
 static GtkWidget *
 glade_editor_create_input_boolean (GladeEditorProperty *property)
 {
-	GladePropertyClass *class;
 	GtkWidget *button;
 
 	g_return_val_if_fail (property != NULL, NULL);
-
-	class = property->class;
 
 	button = gtk_toggle_button_new_with_label (_("No"));
 
@@ -590,6 +653,27 @@ glade_editor_create_input_boolean (GladeEditorProperty *property)
 			    GTK_SIGNAL_FUNC (glade_editor_property_changed_boolean), property);
 
 	return button;
+}
+
+static GtkWidget *
+glade_editor_create_input_unichar (GladeEditorProperty *property)
+{
+	GtkWidget *entry;
+
+	g_return_val_if_fail (property != NULL, NULL);
+
+	entry = gtk_entry_new ();
+	/* it's 2 to prevent spirious beeps... */
+	gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
+	
+	gtk_signal_connect (GTK_OBJECT (entry), "changed",
+			    GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar), property);
+	gtk_signal_connect (GTK_OBJECT (entry), "insert_text",
+			    GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar), property);
+	gtk_signal_connect (GTK_OBJECT (entry), "delete_text",
+			    GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar), property);
+
+	return entry;
 }
 
 static GtkWidget *
@@ -630,6 +714,9 @@ glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *pro
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
 		input = glade_editor_create_input_enum (property);
+		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		input = glade_editor_create_input_unichar (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		g_warning ("The widget type %s does not have an input implemented\n",
@@ -1079,7 +1166,7 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 		if (text)
 			gtk_editable_insert_text (editable,
 						  text,
-						  strlen (text),
+						  g_utf8_strlen (text, -1),
 						  &insert_pos);
 		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (property->input)) {
@@ -1089,12 +1176,35 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 		text = g_value_get_string (property->property->value);
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->input));
 
-		/* FIXME !!! Will not work with mulitybyte languajes !!. Chema */
 		gtk_text_buffer_set_text (buffer,
 					  text,
-					  strlen (text));
+					  g_utf8_strlen (text, -1));
 	} else {
 		g_warning ("Invalid Text Widget type.");
+	}
+
+	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
+}
+
+static void
+glade_editor_property_load_unichar (GladeEditorProperty *property)
+{
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->property != NULL);
+	g_return_if_fail (property->property->value != NULL);
+	g_return_if_fail (property->input != NULL);
+
+	if (GTK_IS_EDITABLE (property->input)) {
+		GtkEditable *editable = GTK_EDITABLE (property->input);
+		gint insert_pos = 0;
+		gunichar ch;
+		gchar utf8st[6];
+
+		ch = g_value_get_uint (property->property->value);
+
+		g_unichar_to_utf8 (ch, utf8st);
+ 		gtk_editable_delete_text (editable, 0, -1);
+		gtk_editable_insert_text (editable, utf8st, 1, &insert_pos);
 	}
 
 	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
@@ -1157,6 +1267,9 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
 		glade_editor_property_load_enum (property);
+		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		glade_editor_property_load_unichar (property);
 		break;
 	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
 		glade_editor_property_load_other_widgets (property);

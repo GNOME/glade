@@ -163,8 +163,8 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 	}
 }
 
-static void
-glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *list, gint i, gint cols)
+static gboolean
+glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *list, gint i, gint visual_pos, gint cols)
 {
 	GladeWidgetClass *class;
 	GtkWidget *gtk_pixmap;
@@ -172,7 +172,11 @@ glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *lis
 	gint x, y;
 	
 	class = g_list_nth_data (list, i);
-	g_return_if_fail (class != NULL);
+	g_return_val_if_fail (class != NULL, FALSE);
+
+	if (!class->in_palette)
+		return FALSE;
+	
 	gtk_pixmap = glade_palette_widget_create_icon_from_class (class);
 
 	button = gtk_radio_button_new (palette->widgets_button_group);
@@ -186,14 +190,15 @@ glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *lis
 	gtk_signal_connect (GTK_OBJECT (button), "toggled",
 			    (GtkSignalFunc) glade_palette_button_clicked, palette);
 	
-	x = (i%cols);
-	y = (gint) (i/cols);
+	x = (visual_pos % cols);
+	y = (gint) (visual_pos / cols);
 	gtk_table_attach (GTK_TABLE (table),
 			  button,
 			  x, x + 1,
 			  y, y + 1,
 			  0, 0,
 			  0, 0);
+	return TRUE;
 }
 
 static GtkWidget *
@@ -202,14 +207,26 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	GtkWidget *table;
 	GtkWidget *dummy;
 	GList *list;
-	gint num;
+	gint num = 0;
+	gint num_visible = 0;
+	gint visual_pos = 0;
 	gint rows;
 	gint cols = 4;
 	gint i;
 
 	list = catalog->widgets;
+
+	while (list) {
+		if (((GladeWidgetClass*) list->data)->in_palette)
+			++num_visible;
+
+		list = list->next;
+	}
+
+	list = catalog->widgets;
+
 	num = g_list_length (list);
-	rows = (gint)((num - 1)/ cols) + 1;
+	rows = (gint)((num_visible - 1)/ cols) + 1;
 
 	table = gtk_table_new (rows, cols, TRUE);
 
@@ -222,9 +239,9 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	palette->widgets_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (dummy));
 	palette->dummy_button = dummy;
 	
-	for (i = 0; i < num; i++) {
-		glade_palette_attach_pixmap (palette, table, list, i, cols);
-	}
+	for (i = 0; i < num; i++)
+		if (glade_palette_attach_pixmap (palette, table, list, i, visual_pos, cols))
+			++visual_pos;
 	
 	return table;
 }

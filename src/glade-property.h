@@ -79,6 +79,7 @@ void glade_property_set_integer (GladeProperty *property, gint val);
 void glade_property_set_float   (GladeProperty *property, gfloat val);
 void glade_property_set_double  (GladeProperty *property, gdouble val);
 void glade_property_set_boolean (GladeProperty *property, gboolean val);
+void glade_property_set_unichar (GladeProperty *property, gunichar val);
 void glade_property_set_enum    (GladeProperty *property, GladeChoice *choice);
 
 const gchar * glade_property_get_string  (GladeProperty *property);
@@ -86,6 +87,7 @@ gint          glade_property_get_integer (GladeProperty *property);
 gfloat        glade_property_get_float   (GladeProperty *property);
 gdouble       glade_property_get_double  (GladeProperty *property);
 gboolean      glade_property_get_boolean (GladeProperty *property);
+gunichar      glade_property_get_unichar (GladeProperty *property);
 GladeChoice * glade_property_get_enum    (GladeProperty *property);
 
 

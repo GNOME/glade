@@ -155,6 +155,7 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	case GLADE_PROPERTY_TYPE_ENUM:
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
 	case GLADE_PROPERTY_TYPE_STRING:
+	case GLADE_PROPERTY_TYPE_UNICHAR:
 		g_value_init (property->value, class->def->g_type);
 		g_value_copy (class->def, property->value);
 		break;
@@ -375,6 +376,28 @@ glade_property_set_boolean (GladeProperty *property, gboolean val)
 }
 
 void
+glade_property_set_unichar (GladeProperty *property, gunichar val)
+{
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (property->value != NULL);
+
+	g_value_set_uint (property->value, val);
+
+	if (property->enabled) {
+		property->loading = TRUE;
+		if (property->class->set_function == NULL)
+			gtk_object_set (GTK_OBJECT (property->widget->widget),
+					property->class->id, val, NULL);
+		else
+			(*property->class->set_function) (G_OBJECT (property->widget->widget),
+							  property->value);
+		property->loading = FALSE;
+	}
+
+	glade_property_emit_changed (property);
+}
+
+void
 glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 {
 	g_return_if_fail (property != NULL);
@@ -418,6 +441,10 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	case GLADE_PROPERTY_TYPE_DOUBLE:
 		glade_property_set_double (property,
 					   g_value_get_double (value));
+		break;
+	case GLADE_PROPERTY_TYPE_UNICHAR:
+		glade_property_set_unichar (property,
+					    g_value_get_uint (value));
 		break;
 	case GLADE_PROPERTY_TYPE_STRING:
 		glade_property_set_string (property,
@@ -513,6 +540,15 @@ glade_property_get_boolean (GladeProperty *property)
 	return g_value_get_boolean (property->value);
 }	
 	
+gunichar
+glade_property_get_unichar (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, g_utf8_get_char (" "));
+	g_return_val_if_fail (property->value != NULL, g_utf8_get_char (" "));
+	
+	return g_value_get_uint (property->value);
+}
+
 GladeChoice *
 glade_property_get_enum (GladeProperty *property)
 {
