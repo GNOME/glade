@@ -1,3 +1,14 @@
+2002-01-29  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* Makefile.am: Install .desktop file into the proper location for
+	GNOME2 (PREFIX/share/applications).	
+	* glade-2.desktop.in: Renamed from glade2.desktop.in to use the same
+	standar as glade1 port.
+	Added a Categories field for GNOME 2 panel.
+	Tweak the Name to follow the HIG.
+	All those changes are a copy of the changes by Seth at glade1 port.
+	* glade-2.png: Added.
+
 2002-01-13  Hasbullah Bin Pit  <sebol@ikhlas.com>
 
         * configure.in Added ms (Malay/B.Melayu) to ALL_LINGUAS.

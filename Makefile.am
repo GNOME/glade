@@ -2,21 +2,21 @@
 
 SUBDIRS = src po pixmaps widgets
 
-Developmentdir = $(datadir)/gnome/apps/Development
-Development_in_files = glade2.desktop.in
+Developmentdir = $(datadir)/applications
+Development_in_files = glade-2.desktop.in
 Development_DATA = $(Development_in_files:.desktop.in=.desktop)
 
 @INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST = \
-	glade2.desktop.in \
-	glade2.desktop \
+	glade-2.desktop.in \
+	glade-2.png \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
 
 pixmapsdir = $(datadir)/pixmaps
-pixmaps_DATA = 
+pixmaps_DATA = glade-2.png
 
 # Now, we are using pkg-config so, we don't need the m4 macros anymore ;-)
 # I suppose that we could disable this.
