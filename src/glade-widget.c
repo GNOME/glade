@@ -302,55 +302,41 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	return found;
 }
 
-/**
- * glade_widget_button_press:
- * @event_widget: 
- * @event: 
- * @not_used: 
- * 
- * Handle the button press event for every GladeWidget
- * 
- * Return Value: 
- **/
 static gboolean
-glade_widget_button_press (GtkWidget *event_widget,
+glade_widget_button_press (GtkWidget *widget,
 			   GdkEventButton *event,
 			   gpointer not_used)
 {
 	GladeWidget *glade_widget;
 
-	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
-
-	g_debug(("button press for a %s\n", glade_widget->class->name));
-
-	if (!glade_widget) {
+	glade_widget = glade_widget_get_from_event_widget (widget, event);
+	if (!glade_widget)
+	{
 		g_warning ("Button press event but the gladewidget was not found\n");
 		return FALSE;
 	}
 
-	g_debug(("Event button %d\n", event->button));
+	/* make sure to grab focus, since we may stop default handlers */
+	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
+		gtk_widget_grab_focus (widget);
 
-	if (event->button == 1) {
-		/* If this is a selection set, don't change the state of the widget
-		 * for example for toggle buttons
-		 */
-		if (!glade_util_has_nodes (glade_widget->widget))
-			g_signal_stop_emission_by_name (G_OBJECT (event_widget),
-							"button_press_event");
-		glade_project_selection_set (glade_widget->project, glade_widget->widget, TRUE);
-	} else if (event->button == 3)
-		glade_popup_pop (glade_widget, event);
-	else
-		g_debug(("Button press not handled yet.\n"));
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
+	{
+		/* if it's already selected don't stop default handlers, e.g. toggle button */
+		if (glade_util_has_nodes (widget))
+			return FALSE;
 
-	g_debug(("The widget found was a %s\n", glade_widget->class->name));
+		glade_project_selection_set (glade_widget->project, widget, TRUE);
 
-	return FALSE;
-}
+		return TRUE;
+	}
+	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+	{
+		glade_popup_widget_pop (glade_widget, event);
 
-static gboolean
-glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer not_used)
-{
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
@@ -359,25 +345,14 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 {
 	GtkWidget *widget = glade_widget->widget;
 
-	if (!GTK_WIDGET_NO_WINDOW (widget)) {
-		if (!GTK_WIDGET_REALIZED (widget))
-			gtk_widget_set_events (widget, gtk_widget_get_events (widget)
-					       | GDK_BUTTON_PRESS_MASK
-					       | GDK_BUTTON_RELEASE_MASK);
-		else {
-			GdkEventMask event_mask;
-
-			event_mask = gdk_window_get_events (widget->window);
-			gdk_window_set_events (widget->window, event_mask
-					       | GDK_BUTTON_PRESS_MASK
-					       | GDK_BUTTON_RELEASE_MASK);
-		}
+	if (!GTK_WIDGET_NO_WINDOW (widget))
+	{
+		gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK |
+					       GDK_BUTTON_RELEASE_MASK);
 	}
 
 	g_signal_connect (G_OBJECT (widget), "button_press_event",
 			  G_CALLBACK (glade_widget_button_press), NULL);
-	g_signal_connect (G_OBJECT (widget), "button_release_event",
-			  G_CALLBACK (glade_widget_button_release), NULL);
 }
 
 static gboolean
@@ -390,7 +365,10 @@ glade_widget_key_press (GtkWidget *event_widget,
 
 	/* We will delete all the selected items */
 	if (event->keyval == GDK_Delete)
+	{
 		glade_util_delete_selection (glade_widget->project);
+		return TRUE;
+	}
 
 	return FALSE;
 }
@@ -400,10 +378,8 @@ glade_widget_connect_keyboard_signals (GladeWidget *glade_widget)
 {
 	GtkWidget *widget = glade_widget->widget;
 
-	if (!GTK_WIDGET_NO_WINDOW(widget)) {
-		gtk_widget_set_events (widget, gtk_widget_get_events (widget)
-				       | GDK_KEY_PRESS_MASK);
-	}
+	if (!GTK_WIDGET_NO_WINDOW(widget))
+		gtk_widget_add_events (widget, GDK_KEY_PRESS_MASK);
 
 	g_signal_connect (G_OBJECT (widget), "key_press_event",
 			  G_CALLBACK (glade_widget_key_press), glade_widget);
@@ -438,13 +414,27 @@ glade_widget_set_contents (GladeWidget *widget)
 	}
 }
 
+static gboolean
+glade_widget_popup_menu (GtkWidget *widget, GladeWidget *glade_widget)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET (glade_widget), FALSE);
+
+	glade_popup_widget_pop (glade_widget, NULL);
+
+	return TRUE;
+}
+
 static void
 glade_widget_connect_other_signals (GladeWidget *widget)
 {
-	if (GTK_WIDGET_TOPLEVEL (widget->widget)) {
+	if (GTK_WIDGET_TOPLEVEL (widget->widget))
+	{
 		g_signal_connect (G_OBJECT (widget->widget), "delete_event",
 				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 	}
+
+	g_signal_connect (G_OBJECT (widget->widget), "popup_menu",
+			  G_CALLBACK (glade_widget_popup_menu), widget);
 }
 
 /**
@@ -1450,7 +1440,8 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
-	if (child_node) {
+	if (child_node)
+	{
 		gtk_container_add (GTK_CONTAINER (parent->widget), glade_placeholder_new ());
 		return TRUE;
 	}
@@ -1462,15 +1453,19 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 	/* is it an internal child? */
 	internalchild = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
-	if (internalchild) {
+	if (internalchild)
+	{
 		child = glade_widget_get_internal_child (parent, internalchild);
-		if (!child) {
+		if (!child)
+		{
 			g_warning ("Failed to get internal child %s", internalchild);
 			g_free (internalchild);
 			return FALSE;
 		}
 		glade_widget_fill_from_node (child_node, child);
-	} else {
+	}
+	else
+	{
 		child = glade_widget_new_from_node_real (child_node, project, parent);
 		if (!child)
 			/* not enough memory... and now, how can I signal it
@@ -1484,12 +1479,13 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
-	if (child_node) {
+	if (child_node)
+	{
 		GladeXmlNode *property_node;
+
 		property_node = glade_xml_node_get_children (child_node);
-
-		for (; property_node; property_node = glade_xml_node_next (property_node)) {
-
+		for (; property_node; property_node = glade_xml_node_next (property_node))
+		{
 			/* we should be on a <property ...> tag */
 			if (!glade_xml_node_verify (property_node, GLADE_XML_TAG_PROPERTY))
 				continue;

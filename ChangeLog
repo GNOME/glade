@@ -1,3 +1,11 @@
+2004-01-23  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-placeholder.c: make the widget focusable and handle the
+	popup-menu signal so that SHIFT+F10 works.
+	* src/glade-placeholder.h: remove erroneus LGPL license.
+	* src/glade-widget.c: handle popup-menu and minor cleanups.
+	* src/glade-popup.[ch]: update for the above changes.
+
 2004-01-22  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-signal-editor.c: fix some bugs in the signal editor. Now it's

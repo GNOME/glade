@@ -45,6 +45,8 @@ static gboolean glade_placeholder_motion_notify_event (GtkWidget      *widget,
 						       GdkEventMotion *event);
 static gboolean glade_placeholder_button_press (GtkWidget             *widget,
 						GdkEventButton        *event);
+static gboolean glade_placeholder_popup_menu (GtkWidget               *widget);
+
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -106,12 +108,15 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	widget_class->expose_event = glade_placeholder_expose;
 	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
+	widget_class->popup_menu = glade_placeholder_popup_menu;
 }
 
 static void
 glade_placeholder_init (GladePlaceholder *placeholder)
 {
 	placeholder->placeholder_pixmap = NULL;
+
+	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (placeholder), GTK_CAN_FOCUS);
 
 	gtk_widget_show (GTK_WIDGET (placeholder));
 }
@@ -273,6 +278,9 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 	gpw = glade_project_window_get ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 
+	if (!GTK_WIDGET_HAS_FOCUS (widget))
+		gtk_widget_grab_focus (widget);
+
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
 		if (gpw->add_class != NULL) {
@@ -287,8 +295,20 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			glade_project_selection_set (parent->project, GTK_WIDGET (placeholder), TRUE);
 		}
 	}
-	else if (event->button == 3)
+	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+	{
 		glade_popup_placeholder_pop (placeholder, event);
+	}
+
+	return TRUE;
+}
+
+static gboolean
+glade_placeholder_popup_menu (GtkWidget *widget)
+{
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
+
+	glade_popup_placeholder_pop (GLADE_PLACEHOLDER (widget), NULL);
 
 	return TRUE;
 }

@@ -75,12 +75,6 @@ glade_popup_placeholder_paste_cb (GtkMenuItem *item,
 	glade_command_paste (placeholder);
 }
 
-static void
-glade_popup_menu_detach (GtkWidget *attach_widget, GtkMenu *menu)
-{
-
-}
-
 /*
  * If stock_id != NULL, label is ignored
  */
@@ -180,20 +174,29 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 }
 
 void
-glade_popup_pop (GladeWidget *widget, GdkEventButton *event)
+glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 {
 	GtkWidget *popup_menu;
+	gint button;
+	gint event_time;
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	popup_menu = glade_popup_create_menu (widget, TRUE);
 
-	gtk_menu_attach_to_widget (GTK_MENU (popup_menu),
-				   GTK_WIDGET (widget->widget),
-				   glade_popup_menu_detach);
+	if (event)
+	{
+		button = event->button;
+		event_time = event->time;
+	}
+	else
+	{
+		button = 0;
+		event_time = gtk_get_current_event_time ();
+	}
 
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
-			NULL, NULL,
-			event->button, event->time);
-
+			NULL, NULL, button, event_time);
 }
 
 void
@@ -201,15 +204,25 @@ glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 			     GdkEventButton *event)
 {
 	GtkWidget *popup_menu;
+	gint button;
+	gint event_time;
+
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 
 	popup_menu = glade_popup_create_placeholder_menu (placeholder);
 
-	gtk_menu_attach_to_widget (GTK_MENU (popup_menu),
-				   GTK_WIDGET (placeholder),
-				   glade_popup_menu_detach);
+	if (event)
+	{
+		button = event->button;
+		event_time = event->time;
+	}
+	else
+	{
+		button = 0;
+		event_time = gtk_get_current_event_time ();
+	}
 
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
-			NULL, NULL,
-			event->button, event->time);
+			NULL, NULL, button, event_time);
 }
 
