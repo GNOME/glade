@@ -1,5 +1,12 @@
 2001-11-28  Carlos Perelló Marín <carlos@gnome-db.org>
 
+	* src/glade-gtk.c (glade_gtk_dialog_post_create): Added to resize
+	the gtkdialog widget.
+	* src/glade-placeholder.c: Added full support for GtkDialog.
+	* widgets/gtkdialog.xml: Default preferences.
+
+2001-11-28  Carlos Perelló Marín <carlos@gnome-db.org>
+
 	* src/glade-placeholder.c (glade_placeholder_add): Implemented.
 	* src/glade-placeholder.c (glade_placeholder_add_with_result): Now
 	calls to glade_placeholder_add to share some code.
