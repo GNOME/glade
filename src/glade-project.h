@@ -66,7 +66,6 @@ GladeProject * glade_project_new (gboolean untitled);
 gboolean       glade_project_save (GladeProject *project);
 gboolean       glade_project_save_as (GladeProject *project);
 gboolean       glade_project_open ();
-GladeProject * glade_project_open_from_file (const gchar *path);
 
 
 /* Widget related stuff */

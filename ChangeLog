@@ -1,3 +1,9 @@
+2003-03-27  Paolo Borelli
+
+	* src/glade-project.[ch]: make glade_project_open_from_file() static
+	and fix the callers. This fixes the (unlikely) case of passing the 
+	same file more than once on the command line.
+
 2003-03-25  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-gtk.c: create a "Edit Menus..." button that... surprise!

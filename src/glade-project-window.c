@@ -61,7 +61,7 @@ static void gpw_about_cb (void) {}
 static void
 gpw_open_cb (void)
 {
-	glade_project_open ();
+	glade_project_open (NULL);
 }
 
 static void

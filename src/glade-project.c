@@ -150,7 +150,7 @@ glade_project_destroy (GtkObject *object)
 }
 
 static GladeProject *
-glade_project_check_previously_loaded (gchar *path)
+glade_project_check_previously_loaded (const gchar *path)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
@@ -163,7 +163,7 @@ glade_project_check_previously_loaded (gchar *path)
 		project = GLADE_PROJECT (list->data);
 
 		if (project->path != NULL && !strcmp (project->path, path))
-				return project;
+			return project;
 	}
 
 	return NULL;
@@ -497,7 +497,7 @@ glade_project_write_widgets (const GladeProject *project, GladeXmlContext *conte
  * glade_project_write:
  * @project: 
  * 
- * Retrns the root node of a newly created xml representation of the project and its contents
+ * Returns the root node of a newly created xml representation of the project and its contents
  * 
  * Return Value: 
  **/
@@ -527,7 +527,7 @@ glade_project_write (GladeXmlContext *context, const GladeProject *project)
  **/
 static gboolean
 glade_project_save_to_file (GladeProject *project,
-			    const gchar * full_path)
+			    const gchar *full_path)
 {
 	GladeXmlContext *context;
 	GladeXmlNode *root;
@@ -554,7 +554,6 @@ glade_project_save_to_file (GladeProject *project,
 
 	return TRUE;
 }
-
 
 static GladeProject *
 glade_project_new_from_node (GladeXmlNode *node)
@@ -584,7 +583,7 @@ glade_project_new_from_node (GladeXmlNode *node)
 	return project;	
 }
 
-GladeProject *
+static GladeProject *
 glade_project_open_from_file (const gchar *path)
 {
 	GladeXmlContext *context;
@@ -699,41 +698,48 @@ glade_project_save_as (GladeProject *project)
 
 /**
  * glade_project_open:
- * @: 
+ * @path: 
  * 
- * Open a project. Launches a file selector
+ * Open a project. If @path is NULL launches a file selector
  * 
  * Return Value: TRUE on success false on error.
  **/
 gboolean
-glade_project_open (void)
+glade_project_open (const gchar *path)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
-	gchar *path;
-	
+	gchar *file_path = NULL;
+
 	gpw = glade_project_window_get ();
-	path = glade_project_ui_get_path (_("Open ..."));
 
 	if (!path)
+		file_path = glade_project_ui_get_path (_("Open ..."));
+	else
+		file_path = g_strdup (path);
+
+	/* If the user hit cancel, return */
+	if (!file_path)
 		return FALSE;
 
 	/* If the project is previously loaded, don't re-load */
 	if ((project = glade_project_check_previously_loaded (path)) != NULL) {
 		glade_project_window_set_project (gpw, project);
+		g_free (file_path);
 		return TRUE;
 	}
 
-	project = glade_project_open_from_file (path);
+	project = glade_project_open_from_file (file_path);
 
 	if (!project) {
 		glade_util_ui_warn (_("Could not open project."));
-		g_free (path);
+		g_free (file_path);
 		return FALSE;
 	}
 
 	glade_project_window_add_project (gpw, project);
-	g_free (path);
+	g_free (file_path);
 
 	return TRUE;
 }
+
