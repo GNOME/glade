@@ -127,7 +127,7 @@ glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 	/* TODO: handle GtkToolItems with gtk_tool_item_set_tooltip() */
 	tooltip = g_value_get_string (value);
 	if (tooltip && *tooltip)
-		gtk_tooltips_set_tip (tooltips, GTK_WIDGET (object), tooltip, "tip_private");
+		gtk_tooltips_set_tip (tooltips, GTK_WIDGET (object), tooltip, NULL);
 /*	else
 		gtk_tooltips_remove ? */
 }
@@ -135,7 +135,10 @@ glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_widget_get_tooltip (GObject *object, GValue *value)
 {
-	g_print ("get_tooltip\n");
+	GtkTooltipsData *tooltips_data = gtk_tooltips_data_get (GTK_WIDGET (object));
+	
+	g_value_reset (value);
+	g_value_set_string (value, tooltips_data->tip_text);
 }
 
 void GLADEGTK_API

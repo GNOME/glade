@@ -1156,8 +1156,7 @@ glade_widget_apply_property_from_node (GladeXmlNode *node,
 	if (!property)
 		return FALSE;
 
-	gvalue = glade_property_class_make_gvalue_from_string (property->class,
-							       value);
+	gvalue = glade_property_class_make_gvalue_from_string (property->class, value);
 	glade_property_set (property, gvalue);
 		
 	g_free (id);
