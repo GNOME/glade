@@ -103,6 +103,8 @@ glade_catalog_load (void)
 	gchar *name;
 
 	catalog = glade_catalog_new_from_file (WIDGETS_DIR "/catalog.xml");
+	if (catalog == NULL)
+		return NULL;
 
 	list = catalog->names;
 	new_list = NULL;
