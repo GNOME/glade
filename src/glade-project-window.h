@@ -4,13 +4,13 @@
 
 G_BEGIN_DECLS
 
+
 #define GLADE_IS_PROJECT_WINDOW(o) (o != NULL)
 /* A GladeProjectWindow specifies a loaded glade application.
  * it contains pointers to all the components that make up
  * the running app. This is (well should be) the only global
  * variable in the application.
  */
-
 struct _GladeProjectWindow
 {
 	GtkWidget *window; /* Main window */
@@ -47,19 +47,18 @@ struct _GladeProjectWindow
 };
 
 
-GladeProjectWindow * glade_project_window_new (GList *catalogs);
-GladeProjectWindow * glade_project_window_get ();
-GladeProject *       glade_project_window_get_project ();
+GladeProjectWindow *glade_project_window_new (GList *catalogs);
+
+GladeProjectWindow *glade_project_window_get ();
 
 void glade_project_window_show_all ();
 
 void glade_project_window_set_add_class       (GladeProjectWindow *gpw, GladeWidgetClass *class);
 
-void glade_project_window_set_project         (GladeProject *project);
-
 void glade_project_window_add_project         (GladeProject *project);
 
 void glade_project_window_refresh_undo_redo   (void);
+
 
 G_END_DECLS
 

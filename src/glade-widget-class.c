@@ -39,7 +39,6 @@
 #include "glade-xml-utils.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-project-window.h"
 #include "glade-catalog.h"
 #include "glade-parameter.h"
 #include "glade-debug.h"
