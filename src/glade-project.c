@@ -241,8 +241,7 @@ glade_project_add_widget_real (GladeProject *project,
 		child->project = project;
 	}
 	
-	project->selection = g_list_prepend (project->selection, widget);
-	project->widgets   = g_list_prepend (project->widgets, widget);
+	project->widgets = g_list_prepend (project->widgets, widget);
 
 	gtk_signal_emit (GTK_OBJECT (project),
 			 glade_project_signals [ADD_WIDGET], widget);

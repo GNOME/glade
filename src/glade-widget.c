@@ -1015,7 +1015,7 @@ void
 glade_widget_flag_unselected (GladeWidget *widget)
 {
 	g_return_if_fail (widget->selected);
-	
+
 	widget->selected = FALSE;
 
 	glade_widget_clear_draw_selection (widget);
