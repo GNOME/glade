@@ -2,31 +2,40 @@
 #ifndef __GLADE_PROJECT_VIEW_H__
 #define __GLADE_PROJECT_VIEW_H__
 
-#include <gtk/gtkclist.h>
-#include "glade-project.h"
-
 G_BEGIN_DECLS
 
-#define GLADE_PROJECT_VIEW_TYPE	         (glade_project_view_get_type ())
-#define GLADE_PROJECT_VIEW(obj)          GTK_CHECK_CAST (obj, glade_project_view_get_type (), GladeProjectView)
-#define GLADE_PROJECT_VIEW_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_project_view_get_type (), GladeProjectViewClass)
-#define GLADE_IS_PROJECT_VIEW(obj)       GTK_CHECK_TYPE (obj, glade_project_view_get_type ())
+
+#define GLADE_TYPE_PROJECT_VIEW            (glade_project_view_get_type ())
+#define GLADE_PROJECT_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROJECT_VIEW, GladeProjectView))
+#define GLADE_PROJECT_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROJECT_VIEW, GladeProjectViewClass))
+#define GLADE_IS_PROJECT_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROJECT_VIEW))
+#define GLADE_IS_PROJECT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT_VIEW))
+#define GLADE_PROJECT_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT_VIEW, GladeProjectViewClass))
+
+
+/* A view of a GladeProject. */
 
 typedef struct _GladeProjectViewClass  GladeProjectViewClass;
 
-/* A view of a GladeProject. */
-   
 struct _GladeProjectView
 {
-	GObject parent;
+	GtkScrolledWindow scrolled_window; /* The project view is a scrolled
+					    * window containing a tree view
+					    * of the project
+					    */
 
-	GtkWidget *widget;
-	GtkTreeView *tree_view;
+	GtkTreeStore *model; /* The model */
+
+	GtkWidget *tree_view; /* The view */
+
+	gboolean is_list; /* If true the view is a list, if false the view
+			   * is a tree
+			   */
 
 	GladeProject *project; /* A pointer so that we can get back to the
 				* project that we are a view for
 				*/
-	
+
 	GladeWidget *selected_widget; /* The selected GladeWidget for this view
 				       * Selection should really be a GList not
 				       * a GladeWidget since we should support
@@ -41,13 +50,6 @@ struct _GladeProjectView
 	gulong widget_name_changed_signal_id;
 	gulong selection_changed_signal_id;
 
-
-	GtkTreeStore *model; /* Model */
-
-	gboolean is_list; /* If true the view is a list, if false the view
-			   * is a tree
-			   */
-
 	gboolean updating_selection; /* True when we are going to set the
 				      * project selection. So that we don't
 				      * recurse cause we are also listening
@@ -58,7 +60,7 @@ struct _GladeProjectView
 
 struct _GladeProjectViewClass
 {
-	GtkObjectClass parent_class;
+	GtkScrolledWindowClass parent_class;
 
 	/* We use this signal so that projects can be advised that
 	 * a widget has been selected
@@ -88,16 +90,18 @@ typedef enum {
 	GLADE_PROJECT_VIEW_TREE,
 } GladeProjectViewType;
 
-guint               glade_project_view_get_type (void);
-GladeProjectView  * glade_project_view_new (GladeProjectViewType type);
 
-GladeProject* glade_project_view_get_project   (GladeProjectView *project_view);
-void	      glade_project_view_set_project   (GladeProjectView *project_view,
-						GladeProject	 *project);
+GType glade_project_view_get_type (void);
 
-GtkWidget * glade_project_view_get_widget (GladeProjectView *view);
+GladeProjectView *glade_project_view_new (GladeProjectViewType type);
+
+GladeProject *glade_project_view_get_project (GladeProjectView *project_view);
+
+void glade_project_view_set_project (GladeProjectView *project_view,
+				     GladeProject *project);
 
 void glade_project_view_select_item (GladeProjectView *view, GladeWidget *item);
+
 
 G_END_DECLS
 

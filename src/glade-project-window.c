@@ -616,12 +616,18 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	GtkWidget *widget_tree_item;
 
 	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size (GTK_WINDOW (widget_tree), 230, 300);
 	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
+
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
-	gtk_container_add (GTK_CONTAINER (widget_tree),
-			   glade_project_view_get_widget (view));
 	gpw->views = g_list_prepend (gpw->views, view);
 	glade_project_view_set_project (view, gpw->project);
+
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
+					GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+
+	gtk_container_add (GTK_CONTAINER (widget_tree), GTK_WIDGET (view));
+
 	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
 			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->item_factory);
 
@@ -987,6 +993,21 @@ gpw_construct_toolbar (GladeProjectWindow *gpw)
 }
 
 static GtkWidget *
+gpw_construct_project_view (GladeProjectWindow *gpw)
+{
+	GladeProjectView *view;
+
+	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
+	gpw->views = g_list_prepend (NULL, view);
+	gpw->active_view = view;
+
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+	return GTK_WIDGET (view);
+}
+
+static GtkWidget *
 gpw_construct_statusbar (GladeProjectWindow *gpw)
 {
 	GtkWidget *statusbar;
@@ -1015,28 +1036,26 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *vbox;
 	GtkWidget *menubar;
 	GtkWidget *toolbar;
+	GtkWidget *project_view;
 	GtkWidget *statusbar;
-	GladeProjectView *view;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
 	gpw->window = app;
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (app), vbox);
 	gpw->main_vbox = vbox;
 
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
-	gpw->views = g_list_prepend (NULL, view);
-	gpw->active_view = view;
-
 	menubar = gpw_construct_menu (gpw);
 	toolbar = gpw_construct_toolbar (gpw);
+	project_view = gpw_construct_project_view (gpw);
 	statusbar = gpw_construct_statusbar (gpw);
 
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), menubar);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), toolbar);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), glade_project_view_get_widget (view));
-	gtk_box_pack_end_defaults (GTK_BOX (vbox), statusbar);
+	gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), project_view, TRUE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX (vbox), statusbar, FALSE, TRUE, 0);
 
 	glade_project_window_refresh_undo_redo ();
 
