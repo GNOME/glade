@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade 0.5.5\n"
-"POT-Creation-Date: 2001-08-20 00:40+0200\n"
-"PO-Revision-Date: 2001-08-20 00:41+0200\n"
+"POT-Creation-Date: 2001-09-19 16:45+0200\n"
+"PO-Revision-Date: 2001-09-19 16:45+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,16 +25,18 @@ msgstr "Glade"
 msgid ""
 "gmodule support not found. gmodule support is requiered for glade to work"
 msgstr ""
+"ingen støtte for gmodule funnet. støtte for gmodule kreves for a glade skal "
+"fungere"
 
-#: src/main.c:116
+#: src/main.c:111
 msgid "Translate me\n"
-msgstr ""
+msgstr "Oversett meg\n"
 
 #: src/glade-editor.c:144
 msgid "Properties"
 msgstr "Egenskaper"
 
-#: src/glade-editor.c:149 src/glade-project-view.c:475
+#: src/glade-editor.c:149 src/glade-project-view.c:474
 msgid "Widget"
 msgstr "Widget"
 
@@ -50,18 +52,18 @@ msgstr "Felles"
 msgid "Signals"
 msgstr "Signaler"
 
-#: src/glade-editor.c:556 src/glade-signal-editor.c:238
+#: src/glade-editor.c:557 src/glade-signal-editor.c:238
 #: src/glade-signal-editor.c:277 src/glade-signal-editor.c:590
 msgid "No"
 msgstr "Nei"
 
 #. Name
-#: src/glade-editor.c:660
+#: src/glade-editor.c:661
 msgid "Name :"
 msgstr "Navn:"
 
 #. Class
-#: src/glade-editor.c:673
+#: src/glade-editor.c:674
 msgid "Class :"
 msgstr "Klasse:"
 
@@ -89,7 +91,7 @@ msgstr "Lim inn"
 msgid "Delete"
 msgstr "Slett"
 
-#: src/glade-project-window.c:360
+#: src/glade-project-window.c:359
 msgid "Widget Tree"
 msgstr "Widget-tre"
 
@@ -109,10 +111,10 @@ msgstr "Åpne..."
 msgid "Could not open project."
 msgstr "Kunne ikke åpne prosjekt."
 
-#: src/glade-property-class.c:601 src/glade-widget-class.c:161
+#: src/glade-property-class.c:624
 #, c-format
 msgid "We could not find the symbol \"%s\" while trying to load \"%s\""
-msgstr ""
+msgstr "Kunne ikke finne symbolet \"%s\" under lasting av \"%s\""
 
 #: src/glade-signal-editor.c:110
 msgid "Select signal"
@@ -125,11 +127,11 @@ msgstr "Ja"
 
 #: src/glade-signal-editor.c:298 src/glade-signal-editor.c:319
 msgid "Please enter a valid signal name"
-msgstr ""
+msgstr "Vennligst oppgi et gyldig navn på signal"
 
 #: src/glade-signal-editor.c:332
 msgid "Please enter a signal handler"
-msgstr ""
+msgstr "Vennligst oppgi en signalhåndterer"
 
 #: src/glade-signal-editor.c:524
 msgid "Signal"
@@ -167,15 +169,20 @@ msgstr "Oppdater"
 msgid "Clear"
 msgstr "Tøm"
 
-#: src/glade-widget-class.c:170
+#: src/glade-utils.c:60
 #, c-format
-msgid "Could not get the type from \"%s\" while trying to load \"%s\""
-msgstr ""
+msgid "We could not find the symbol \"%s\""
+msgstr "Kunne ikke finne symbolet \"%s\""
 
-#: src/glade-widget-class.c:178
+#: src/glade-utils.c:69
+#, c-format
+msgid "Could not get the type from \"%s"
+msgstr "Kunne ikke hente type fra \"%s"
+
+#: src/glade-utils.c:77
 #, c-format
 msgid "The loaded type is not a GtkWidget, while trying to load \"%s\""
-msgstr ""
+msgstr "Lastet type er ikke et GtkWidget, under lasting av \"%s\""
 
 #~ msgid "Grid Options"
 #~ msgstr "Alternativer for rutenett"
@@ -2923,9 +2930,6 @@ msgstr ""
 
 #~ msgid "If an insensitive version of the pixmap is built automatically"
 #~ msgstr "Om en insensitiv versjon av bildet lages automatisk"
-
-#~ msgid "Couldn't create pixmap from file"
-#~ msgstr "Kunne ikke opprette bilde fra filen"
 
 #~ msgid "Pixmap"
 #~ msgstr "Bilde"
