@@ -312,7 +312,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
-			glade_command_create (gpw->add_class, placeholder, NULL);
+			glade_command_create (gpw->add_class, NULL, placeholder, NULL);
 		}
 		else
 		{

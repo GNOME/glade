@@ -216,8 +216,15 @@ glade_property_sync (GladeProperty *property)
 		 * updating the selection if the widget was selected.
 		 */
 		GList    *selection;
-		gboolean  reselect = FALSE;
-		if (property->widget->project)
+		gboolean  reselect  = FALSE;
+		gboolean  inproject =
+			property->widget->project ?
+			(glade_project_get_widget_by_name
+			 (property->widget->project,
+			  property->widget->name) ? TRUE : FALSE) : FALSE;
+
+		
+		if (inproject)
 		{
 			if ((selection =
 			     glade_project_selection_get (property->widget->project)) != NULL &&
@@ -235,7 +242,7 @@ glade_property_sync (GladeProperty *property)
 
 		glade_widget_rebuild (property->widget);
 
-		if (property->widget->project)
+		if (inproject)
 		{
 			glade_project_add_object (property->widget->project,
 						  glade_widget_get_object (property->widget));

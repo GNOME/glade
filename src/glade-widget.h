@@ -81,7 +81,8 @@ struct _GladeWidgetKlass
 };
 
 GType			glade_widget_get_type		    (void);
-GladeWidget *		glade_widget_new		    (GladeWidgetClass *klass,
+GladeWidget *		glade_widget_new		    (GladeWidget      *widget,
+							     GladeWidgetClass *klass,
 							     GladeProject     *project);
 GladeWidget *		glade_widget_new_for_internal_child (GladeWidgetClass *klass,
 							     GladeWidget      *parent,
@@ -134,6 +135,8 @@ GladeWidget            *glade_widget_read                   (GladeProject     *p
     g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
 
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
+void                    glade_widget_set_parent             (GladeWidget      *widget,
+							     GladeWidget      *parent);
 
 
 G_END_DECLS

@@ -148,6 +148,8 @@ GladeWidgetClass    *glade_widget_class_new                (const char       *na
 GladeWidgetClass    *glade_widget_class_new_from_node      (GladeXmlNode     *node);
 void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
 GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
+GladeWidgetClass    *glade_widget_class_get_by_type        (GType             type);
+GList               *glade_widget_class_get_derived_types  (GType             type);
 GType 	             glade_widget_class_get_type           (GladeWidgetClass *class);
 void                 glade_widget_class_dump_param_specs   (GladeWidgetClass *class);
 GladePropertyClass  *glade_widget_class_get_property_class (GladeWidgetClass *class,

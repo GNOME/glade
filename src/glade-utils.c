@@ -27,6 +27,7 @@
 #include <gmodule.h>
 #include "glade.h"
 #include "glade-project.h"
+#include "glade-project-window.h"
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-placeholder.h"
@@ -34,6 +35,7 @@
 #include "glade-widget-class.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-clipboard.h"
 
 #define GLADE_UTIL_HAS_NODES "glade_util_has_nodes"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
@@ -712,13 +714,19 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 
 	/* Step through all the selected widgets in the project. */
 	for (elem = expose_gwidget->project->selection; elem; elem = elem->next) {
+
 		GtkWidget *sel_widget;
 		GdkWindow *sel_win, *sel_toplevel;
 		gint sel_x, sel_y, x, y, w, h;
 
 		sel_widget = elem->data;
-		sel_win = glade_util_get_window_positioned_in (sel_widget);
-
+		
+		if (!GTK_IS_WIDGET (sel_widget))
+			continue;
+		
+		if ((sel_win = glade_util_get_window_positioned_in (sel_widget)) == NULL)
+			continue;
+		
 		/* Calculate the offset of the selected widget's window
 		   within its toplevel. */
 		glade_util_calculate_window_offset (sel_win, &sel_x, &sel_y,
@@ -776,7 +784,7 @@ glade_util_queue_draw_nodes (GdkWindow *window)
 
 
 /**
- * glade_util_add_nodes:
+ * glade_util_add_selection:
  * @widget: a #GtkWidget
  *
  * TODO: write me
@@ -791,7 +799,7 @@ glade_util_add_selection (GObject *object)
 }
 
 /**
- * glade_util_remove_nodes:
+ * glade_util_remove_selection:
  * @widget: a #GtkWidget
  *
  * TODO: write me
@@ -810,7 +818,7 @@ glade_util_remove_selection (GObject *object)
 }
 
 /**
- * glade_util_has_nodes:
+ * glade_util_has_selectoin:
  * @widget: a #GtkWidget
  *
  * Returns: %TRUE if @widget has nodes, %FALSE otherwise
@@ -962,29 +970,45 @@ glade_util_uri_list_parse (const gchar *uri_list)
 }
 
 /**
- * glade_util_object_set_property:
- * @object: a #GObject
- * @property: a #GladeProperty
+ * glade_util_gtkcontainer_relation:
+ * @widget: a GladeWidget
+ * @parent: a GladeWidget
  *
- * TODO: write me
+ *
+ * Returns whether this widget is parented by a GtkContainer
+ * and that it is parented through the GtkContainer interface.
  */
-void
-glade_util_object_set_property (GObject *object, GladeProperty *property)
+gboolean
+glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 {
-	GValue void_string = {0,};
-	GValue *value = property->value;
-	
-	if (G_VALUE_HOLDS_STRING (property->value) &&
-	    g_value_get_string (property->value) == NULL)
-	{
-		g_value_init (&void_string, G_TYPE_STRING);
-		g_value_set_static_string (&void_string, "");
-		value = &void_string;
-	}
-
-	if (property->class->set_function)
-		property->class->set_function (object, value);
-	else
-		g_object_set_property (object, property->class->id, value);
+	GladeSupportedChild *support;
+	return (GTK_IS_CONTAINER (parent->object)                      &&
+		(support = glade_widget_class_get_child_support
+		 (parent->widget_class, widget->widget_class->type))   &&
+		(support->type == GTK_TYPE_WIDGET));
 }
 
+/**
+ * glade_util_gtkcontainer_relation:
+ * @widget: a GladeWidget
+ *
+ * Returns whether this widget has an implementation to parent
+ * the primary selection on the clipboard.
+ */
+gboolean
+glade_util_widget_pastable (GladeWidget *parent)
+{
+	GladeProjectWindow *gpw;
+	GladeClipboard     *clipboard;
+	GladeWidget        *clip_widget;
+	
+	gpw         = glade_project_window_get ();
+	clipboard   = gpw->clipboard;
+	clip_widget = clipboard->curr;
+
+	if (clip_widget)
+		return (glade_widget_class_get_child_support
+			(parent->widget_class,
+			 clip_widget->widget_class->type) != NULL) ? TRUE : FALSE;
+	return FALSE;
+}

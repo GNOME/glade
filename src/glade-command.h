@@ -48,11 +48,14 @@ void glade_command_set_property		(GladeProperty *property, const GValue *value);
 void glade_command_set_name		(GladeWidget *glade_widget, const gchar *name);
 
 void glade_command_delete		(GladeWidget *glade_widget);
-void glade_command_create		(GladeWidgetClass *widget_class, GladePlaceholder *placeholder, GladeProject *project);
+void glade_command_create		(GladeWidgetClass *widget_class,
+					 GladeWidget      *parent,
+					 GladePlaceholder *placeholder,
+					 GladeProject     *project);
 
-void glade_command_cut			(GladeWidget *glade_widget);
+void glade_command_cut                  (GladeWidget *widget, gboolean needs_placeholder);
 void glade_command_copy			(GladeWidget *glade_widget);
-void glade_command_paste		(GladePlaceholder *placeholder);
+void glade_command_paste		(GladeWidget *parent, GladePlaceholder *placeholder);
 
 void glade_command_add_signal		(GladeWidget *glade_widget, const GladeSignal *signal);
 void glade_command_remove_signal	(GladeWidget *glade_widget, const GladeSignal *signal);

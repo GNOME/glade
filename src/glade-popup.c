@@ -41,23 +41,49 @@ glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_command_cut (widget);
+	GladeWidget *parent;
+	gboolean need_placeholder = FALSE;
+
+	if (!widget)
+	{
+		GladeProjectWindow *gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		return;
+	}
+
+	/* If this widget is parented through the GtkContainer interface,
+	 * a placeholder will be needed.
+	 */
+	if ((parent = glade_widget_get_parent (widget)) != NULL)
+		need_placeholder =
+			glade_util_gtkcontainer_relation (parent, widget);
+	glade_command_cut (widget, need_placeholder);
 }
 
 static void
 glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 {
+	if (!widget)
+	{
+		GladeProjectWindow *gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		return;
+	}
+
 	glade_command_copy (widget);
 }
 
 static void
 glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	glade_implement_me ();
-	/*
-	 * look in glade-placeholder.c (glade_placeholder_on_button_press_event
-	 * for the "paste" operation code.
-	 */
+	if (!widget)
+	{
+		GladeProjectWindow *gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
+		return;
+	}
+
+	glade_command_paste (widget, NULL);
 }
 
 static void
@@ -70,17 +96,24 @@ static void
 glade_popup_placeholder_paste_cb (GtkMenuItem *item,
 				  GladePlaceholder *placeholder)
 {
-	glade_command_paste (placeholder);
+	if (!placeholder)
+	{
+		GladeProjectWindow *gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("No placeholder selected!"));
+		return;
+	}
+	glade_command_paste (glade_placeholder_get_parent (placeholder),
+			     placeholder);
 }
 
 static void
 glade_popup_add_item_cb (GtkMenuItem *item,
 			 GladeWidget *widget)
 {
-	GladeSupportedChild *support =
-		g_object_get_data (G_OBJECT (item), "support");
-
-	/* XXX finish me !!! */
+	GladeWidgetClass    *class;
+	if ((class =
+	     g_object_get_data (G_OBJECT (item), "widget_class")) != 0)
+		glade_command_create (class, widget, NULL, NULL);
 }
 
 /*
@@ -145,14 +178,11 @@ glade_popup_add_children (GtkWidget* popup_menu, GladeWidget *widget)
 	GtkWidget *menu_item =
 		gtk_image_menu_item_new_from_stock (GTK_STOCK_ADD, NULL);
 	GtkWidget *add_menu  = gtk_menu_new ();
-	GtkWidget *seperator = gtk_menu_item_new ();
-	GList     *list;
+	GList     *list, *types, *l;
 
 	gtk_widget_show (menu_item);
-	gtk_widget_show (seperator);
 	gtk_widget_show (add_menu);
 
-	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), seperator);
 	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), menu_item);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), add_menu);
 		
@@ -160,18 +190,28 @@ glade_popup_add_children (GtkWidget* popup_menu, GladeWidget *widget)
 	     list && list->data; list = list->next)
 	{
 		GladeSupportedChild *support = list->data;
-		GtkWidget           *item;
 		
 		if (g_type_is_a (support->type, GTK_TYPE_WIDGET))
 			continue;
 
-		item = glade_popup_append_item (add_menu, NULL, g_type_name (support->type),
-						TRUE, glade_popup_add_item_cb, widget);
+		if ((types =
+		     glade_widget_class_get_derived_types (support->type)) != NULL)
+		{
+			for (l = types; l && l->data; l = l->next)
+			{
+				GladeWidgetClass *class = l->data;
+				GtkWidget        *item =
+					glade_popup_append_item
+					(add_menu, NULL, g_type_name (class->type),
+					 TRUE, glade_popup_add_item_cb, widget);
+				g_object_set_data (G_OBJECT (item),
+						   "widget_class", class);
 
-		g_object_set_data (G_OBJECT (item), "support", support);
+			}
+			g_list_free (types);
+		}
 	}
 }
-
 
 static GtkWidget *
 glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
@@ -186,8 +226,12 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 				 glade_popup_cut_cb, widget);
 	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, TRUE,
 				 glade_popup_copy_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
-				 glade_popup_paste_cb, widget);
+
+
+	if (glade_util_widget_pastable (widget))
+		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
+					 glade_popup_paste_cb, widget);
+	
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
@@ -225,11 +269,12 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
  * glade_popup_widget_pop:
  * @widget:
  * @event:
+ * @add_children:
  *
  * TODO: write me
  */
 void
-glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
+glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add_children)
 {
 	GtkWidget *popup_menu;
 	gint button;
@@ -237,7 +282,7 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	popup_menu = glade_popup_create_menu (widget, TRUE);
+	popup_menu = glade_popup_create_menu (widget, add_children);
 
 	if (event)
 	{

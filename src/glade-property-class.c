@@ -409,7 +409,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	GValue *value = g_new0 (GValue, 1);
 
 	g_value_init (value, property_class->pspec->value_type);
-
+	
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
 		gint eval = glade_property_class_make_enum_from_string
@@ -591,6 +591,10 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	{
 		class->pspec = glade_utils_get_pspec_from_funcname (buff);
  		g_free (buff);
+
+		/* ... get the tooltip from the pspec ... */
+		if (class->pspec)
+			class->tooltip = g_strdup (g_param_spec_get_blurb (class->pspec));
 	}
 
 	/* ...and the tooltip */
@@ -623,7 +627,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, FALSE);
-
+	
 	if (class->optional)
 		class->optional_default =
 			glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);

@@ -22,7 +22,6 @@ typedef struct _GladeEditorTable     GladeEditorTable;
 typedef struct _GladeEditorProperty  GladeEditorProperty;
 typedef enum   _GladeEditorTableType GladeEditorTableType;
 
-
 enum _GladeEditorTableType
 {
 	TABLE_TYPE_GENERAL,
@@ -61,13 +60,6 @@ struct _GladeEditor
 					 * when we switch from widgets of the
 					 * same class
 					 */
-	GtkTooltips *tooltips;   /* The tooltips for the editor. This are not
-				  * beeing used ATM. I wonder if they should
-				  * go into GladeWidgetClass since they are
-				  * different for each class or if this
-				  * will point to the tooltips for that
-				  * class. Oh well, we'll see
-				  */
 	GtkWidget *vbox_widget;  /* The editor has (at this moment) four tabs
 				  * this are pointers to the vboxes inside
 				  * each tab. The vboxes are wrapped into a

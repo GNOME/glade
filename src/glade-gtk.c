@@ -79,7 +79,7 @@ glade_gtk_stock_get_type (void)
 			{ 4,   "Close",  "gtk-close"  },
 			{ 0, NULL, NULL }
 		};
-		etype = g_enum_register_static ("GtkTtScrollType", values);
+		etype = g_enum_register_static ("GladeGtkStockType", values);
 	}
 	return etype;
 }
@@ -1047,23 +1047,16 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 		gpw = glade_project_window_get ();
 		if (gpw->add_class != NULL)
 		{
-			GtkWidget     *placeholder = glade_placeholder_new ();
 			GtkWidget     *new_widget;
 			GladeWidget   *new_gwidget;
+			GladeWidget   *fixed_gwidget;
 			GladeProperty *property;
 			GList         *selection;
 			GValue         value = { 0, };
 
-			/* A widget type is selected in the palette.
-			 * Create a placeholder at the mouse position and
-			 * add a new widget of that type with a default
-			 * size request.
-			 */
-			gtk_fixed_put(GTK_FIXED(widget), placeholder,
-				      (gint)event->x, (gint)event->y);
-
-			glade_command_create (gpw->add_class,
-					      GLADE_PLACEHOLDER(placeholder), NULL);
+			fixed_gwidget = glade_widget_get_from_gobject (widget);
+			
+			glade_command_create (gpw->add_class, fixed_gwidget, NULL, NULL);
 
 			selection = glade_project_selection_get
 				(glade_project_window_get_active_project(gpw));
@@ -1073,6 +1066,16 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			
 			g_value_init (&value, G_TYPE_INT);
 
+			property = glade_widget_get_property (new_gwidget, "x");
+			property->enabled = TRUE;
+			g_value_set_int (&value, event->x);
+			glade_property_set (property, &value);
+
+			property = glade_widget_get_property (new_gwidget, "y");
+			property->enabled = TRUE;
+			g_value_set_int (&value, event->y);
+			glade_property_set (property, &value);
+			
 			property = glade_widget_get_property (new_gwidget, "width-request");
 			property->enabled = TRUE;
 			g_value_set_int (&value, FIXED_DEFAULT_CHILD_WIDTH);
@@ -1086,7 +1089,8 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			/* We need to resync the editor so that width-request/height-request
 			 * are actualy enabled in the editor
 			 */
-			glade_editor_load_widget (gpw->editor, gpw->editor->loaded_widget);
+			glade_editor_load_widget (gpw->editor, NULL);
+			glade_editor_load_widget (gpw->editor, new_gwidget);
 			
 		}
 		return TRUE;

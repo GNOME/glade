@@ -244,7 +244,7 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	g_return_val_if_fail (class->type != 0, NULL);
 
 	type = class->type;
-	while (g_type_is_a (type, GTK_TYPE_OBJECT))
+	while (g_type_is_a (type, G_TYPE_OBJECT))
 	{
 		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
 		{
@@ -286,10 +286,9 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 static void
 glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 						GladeWidgetClass *widget_class,
-						GList **pproperties)
+						GList **properties)
 {
 	GladeXmlNode *child;
-	GList *properties = *pproperties;
 
 	for (child = glade_xml_node_get_children (node);
 	     child; child = glade_xml_node_next (child))
@@ -308,12 +307,14 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 			continue;
 
 		/* find the property in our list, if not found append a new property */
-		for (list = properties; list; list = list->next)
+		for (list = *properties; list && list->data; list = list->next)
 		{
-			gchar *tmp = GLADE_PROPERTY_CLASS (list->data)->id;
-			if (!g_ascii_strcasecmp (id, tmp))
+			property_class = GLADE_PROPERTY_CLASS (list->data);
+			if (property_class->id != NULL &&
+			    g_ascii_strcasecmp (id, property_class->id) == 0)
 				break;
 		}
+
 		if (list)
 		{
 			property_class = GLADE_PROPERTY_CLASS (list->data);
@@ -322,8 +323,8 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 		{
 			property_class = glade_property_class_new ();
 			property_class->id = g_strdup (id);
-			properties = g_list_append (properties, property_class);
-			list = g_list_last (properties);
+			*properties = g_list_append (*properties, property_class);
+			list = g_list_last (*properties);
 		}
 
 		updated = glade_property_class_update_from_node
@@ -338,7 +339,7 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 
 		/* the property has Disabled=TRUE ... */
 		if (!property_class)
-			properties = g_list_delete_link (properties, list);
+			*properties = g_list_delete_link (*properties, list);
 
 		g_free (id);
 	}
@@ -407,7 +408,7 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 		}
 		else
 		{
-			child                  = g_new (GladeSupportedChild, 1);
+			child                  = g_new0 (GladeSupportedChild, 1);
 			child->type            = type;
 			widget_class->children = g_list_append (widget_class->children, child);
 		}
@@ -536,6 +537,61 @@ glade_widget_class_get_by_name (const char *name)
 	else
 		return NULL;
 }
+
+typedef struct
+{
+	GType              type;
+	GladeWidgetClass  *class;
+} GladeClassSearchPair;
+
+static void
+search_class_by_type (gchar                *name,
+		      GladeWidgetClass     *class,
+		      GladeClassSearchPair *pair)
+{
+	if (class->type == pair->type)
+		pair->class = class;
+}
+
+GladeWidgetClass *
+glade_widget_class_get_by_type (GType type)
+{
+	GladeClassSearchPair pair = { type, NULL };
+	
+	if (widget_classes != NULL)
+	{
+		g_hash_table_foreach (widget_classes, (GHFunc)search_class_by_type, &pair);
+	}
+	return pair.class;
+}
+
+typedef struct
+{
+	GType  type;
+	GList *list;
+} GladeClassAccumPair;
+
+static void
+accum_class_by_type (gchar                *name,
+		     GladeWidgetClass     *class,
+		     GladeClassAccumPair  *pair)
+{
+	if (g_type_is_a (class->type, pair->type))
+		pair->list = g_list_prepend (pair->list, class);
+}
+
+GList *
+glade_widget_class_get_derived_types  (GType type)
+{
+	GladeClassAccumPair pair = { type, NULL };
+
+		if (widget_classes != NULL)
+	{
+		g_hash_table_foreach (widget_classes, (GHFunc)accum_class_by_type, &pair);
+	}
+	return pair.list;
+}
+
 
 /**
  * glade_widget_class_merge_properties:
@@ -832,7 +888,7 @@ glade_widget_class_new (const char *name,
 	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
 	widget_class->palette_name = palette_name ? g_strdup (palette_name) : NULL;
 	widget_class->name = g_strdup (name);
-	widget_class->in_palette = generic_name ? TRUE : FALSE;
+	widget_class->in_palette = palette_name ? TRUE : FALSE;
 
 	widget_class->type = glade_util_get_type_from_name (widget_class->name);
 	if (widget_class->type == 0)

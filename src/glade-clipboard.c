@@ -140,3 +140,5 @@ glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 	if (clipboard->view)
 		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 }
+
+

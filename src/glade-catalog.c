@@ -124,11 +124,8 @@ glade_catalog_load (const char *base_catalog_filename)
 
 		/* get the specific library to the widget class, if any */
 		base_widget_class_library = glade_xml_get_property_string (widget_node, "library");
-
 		generic_name = glade_xml_get_property_string (widget_node, "generic_name");
-		palette_name = NULL;
-		if (generic_name != NULL)
-			palette_name = glade_xml_get_property_string_required (widget_node, "palette_name", name);
+		palette_name = glade_xml_get_property_string (widget_node, "palette_name");
 		
 		base_filename = glade_xml_get_property_string (widget_node, "filename");
 

@@ -1,3 +1,72 @@
+2004-12-15  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-catalog.c: pallet_name is no longer "required" in the catalog,
+	  if it is present, then the widget goes in the pallet, if there is a generic
+	  name, it will be used in the case of non-widgets.
+
+	* src/glade-command.c: glade_command_create no longer nescesitates a placeholder
+	    and now has a "parent" argument for the case of (!toplevel && non-widget)
+	    (surrounding code adjusted to work with non-widgets, glade_command_delete 
+	     stuff included).
+	
+	* src/glade-editor.c: 
+	    - Widget page is now called General page
+	    - Name field not appended to non-widgets
+	    - Adjusted text inputs to only set properties on TAB or ENTER
+	      (or focus changes in the case of multi line entries)
+	      This heavily reduces spamming of the property system as properties
+	      dont get synchronized for every single charachter change.
+
+	* src/glade-signal-editor.c: Implemented "object" and "lookup" fields.
+
+	* src/glade-signal.c: Implemented "object" and "lookup" fields.
+	
+	* src/glade-gtk.c: GtkFixed code fixed to not needlessly create placeholders
+	  at child create time (go directly to glade_command_create() without passing
+	  go or collecting 200 dollars).
+	    (Also fixed name of enum type glade_gtk_stock_get_type)
+	
+	* src/glade-placeholder.c: Use new glade_command_create ()
+
+	* src/glade-popup.c: 
+	    - Added code needed for addition of non-widgets.
+	    - Added "add_children" arg to glade_popup_widget_pop ()
+	
+	* src/glade-project-view.c:
+	    - fixed bug 145299.
+	    - Added popup code to treeview.
+	    - Sort widgets in treeview alphabeticly
+	    - Window is now scrollable.
+	
+	* src/glade-project-window.c: Fixed some error messages, used new 
+	  glade_command_create()
+
+	* src/glade-property.c: Fixed a bug in rebuilding of widgets
+	  (project list needs to be searched to find out if the widget is
+	  actualy in the project).
+
+	* src/glade-property-class.c: Made custom props load tooltips from pspec
+	  blurbs as well as the xml file.
+	
+	* src/glade-utils.c: 
+	    - glade_utils_draw_nodes_idle(), dont try to draw nodes on non-widgets.
+	    - added glade_util_widget_pastable()
+	    - added glade_util_gtkcontainer_relation()
+	
+	* src/glade-widget-class.[ch]: 
+	    - added glade_widget_class_get_by_type ()
+	    - added glade_widget_class_get_derived_types ()
+
+	* src/glade-widget.c: 
+	    - added glade_widget_sync_packing_props ()
+	    - added glade_widget_set_parent ().
+	    - Made widgets parent a property of widget
+	    - glade_widget_new() now takes a "parent" argument.
+	    - removed glade_widget_update_parent() which was more confusing
+	      than anything else.
+	    - glade_widget_dup() now duplicates widget names as well.
+
+
 2004-11-16  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
 	* Replaced `GtkWidget *' with `GObject *' throughout the code

@@ -331,7 +331,7 @@ do_close (GladeProjectWindow *gpw, GladeProject *project)
 	for (list = project->objects; list; list = list->next)
 	{
 		GObject *object = list->data;
-		if (GTK_WIDGET_TOPLEVEL (object))
+		if (GTK_IS_WIDGET (object) && GTK_WIDGET_TOPLEVEL (object))
 			gtk_widget_destroy (GTK_WIDGET(object));
 	}
 
@@ -439,13 +439,26 @@ gpw_cut_cb (void)
 
 	gpw = glade_project_window_get ();
 	list = glade_project_selection_get (gpw->active_project);
+
 	/* TODO: support multiple selected items */
 	if (list != NULL && list->next == NULL)
 	{
 		GladeWidget *widget = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		GladeWidget *parent;
 
-		if (widget)
-			glade_command_cut (widget);
+		gboolean need_placeholder = FALSE;
+
+		if (!widget)
+		{
+			GladeProjectWindow *gpw = glade_project_window_get ();
+			glade_util_ui_warn (gpw->window, _("No widget selected!"));
+			return;
+		}
+
+		if ((parent = glade_widget_get_parent (widget)) != NULL)
+			need_placeholder =
+				glade_util_gtkcontainer_relation (parent, widget);
+		glade_command_cut (widget, need_placeholder);
 	}
 }
 
@@ -453,13 +466,39 @@ static void
 gpw_paste_cb (void)
 {
 	GladeProjectWindow *gpw;
-	GList *selection;
+	GList *list;
 
 	gpw = glade_project_window_get ();
+	list = glade_project_selection_get (gpw->active_project);
 
-	selection = glade_project_selection_get (gpw->active_project);
-	if (selection != NULL && selection->next == NULL && GLADE_IS_PLACEHOLDER (selection->data))
-		glade_command_paste (GLADE_PLACEHOLDER (selection->data));
+	/* TODO: support multiple selected items */
+	if (list != NULL && list->next == NULL)
+	{
+		GladePlaceholder *placeholder = NULL;
+		GladeWidget      *widget;
+
+
+		if (GLADE_IS_PLACEHOLDER (list->data))
+		{
+			placeholder = list->data;
+			widget = glade_placeholder_get_parent (placeholder);
+		}
+		else
+		{
+			widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
+		}
+		
+		if (!widget)
+		{
+			GladeProjectWindow *gpw = glade_project_window_get ();
+			glade_util_ui_warn (gpw->window,
+					    _("No widget or placeholder selected!"));
+			return;
+		}
+
+		if (glade_util_widget_pastable (widget))
+			glade_command_paste (widget, placeholder);
+	}
 }
 
 static void
@@ -542,7 +581,7 @@ gpw_palette_button_clicked (GladePalette *palette, gpointer not_used)
 	/* class may be NULL if the selector was pressed */
 	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
 	{
-		glade_command_create (class, NULL, gpw->active_project);
+		glade_command_create (class, NULL, NULL, gpw->active_project);
 		gpw->add_class = NULL;
 	}
 	else
@@ -719,7 +758,7 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	glade_project_view_set_project (view, gpw->active_project);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
-					GTK_POLICY_NEVER, GTK_POLICY_NEVER);
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	gtk_container_add (GTK_CONTAINER (widget_tree), GTK_WIDGET (view));
 
@@ -1317,9 +1356,9 @@ gpw_project_selection_changed_cb (GladeProject *project,
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
-			glade_editor_load_widget (gpw->editor,
-						  glade_widget_get_from_gobject
-						  (GTK_WIDGET (list->data)));
+			glade_editor_load_widget
+				(gpw->editor,
+				 glade_widget_get_from_gobject (list->data));
 		else
 			glade_editor_load_widget (gpw->editor, NULL);
 	}
@@ -1454,7 +1493,7 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 	
 	bin = GTK_BIN (gtk_item_factory_get_item (gpw->item_factory, path));
 	label = GTK_LABEL (gtk_bin_get_child (bin));
-	
+
 	if (prefix == NULL)
 	{
 		gtk_label_set_text_with_mnemonic (label, suffix);

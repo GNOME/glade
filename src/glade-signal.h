@@ -10,15 +10,21 @@ G_BEGIN_DECLS
 
 struct _GladeSignal
 {
-	gchar *name;         /* Signal name eg "clicked" */
-	gchar *handler;      /* Handler function eg "gtk_main_quit" */
-	gboolean after;      /* Connect after TRUE or FALSE */
+	gchar    *name;         /* Signal name eg "clicked"            */
+	gchar    *handler;      /* Handler function eg "gtk_main_quit" */
+	gchar    *userdata;     /* User data signal handler argument   */
+	gboolean  lookup;       /* Whether user_data should be looked up
+				 * with the GModule interface by libglade.
+				 */
+	gboolean  after;        /* Connect after TRUE or FALSE         */
 };
 
 
 GladeSignal *glade_signal_new (const gchar *name,
 			       const gchar *handler,
-			       gboolean after);
+			       const gchar *userdata,
+			       gboolean     lookup,
+			       gboolean     after);
 GladeSignal *glade_signal_clone (const GladeSignal *signal);
 void glade_signal_free (GladeSignal *signal);
 

@@ -742,9 +742,11 @@ glade_project_new_from_interface (GladeInterface *interface)
 			g_warning ("Failed to read a <widget> tag");
 			continue;
 		}
-		project->objects = g_list_prepend (project->objects,
-						   glade_widget_get_object(widget));
-		g_object_ref (glade_widget_get_object(widget));
+		glade_project_add_object (project, widget->object);
+
+/* 		project->objects = g_list_prepend (project->objects, */
+/* 						   glade_widget_get_object(widget)); */
+/* 		g_object_ref (glade_widget_get_object(widget)); */
 	}
 
 	return project;	
