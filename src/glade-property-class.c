@@ -238,9 +238,8 @@ static GladePropertyQuery *
 glade_property_query_clone (GladePropertyQuery *query)
 {
 	GladePropertyQuery *clon;
-	
-	if (query == NULL)
-		return NULL;
+
+	g_return_val_if_fail (query != NULL, NULL);
 
 	clon = glade_property_query_new ();
 	clon->window_title = g_strdup (query->window_title);
@@ -339,7 +338,8 @@ glade_property_class_clone (GladePropertyClass *property_class)
 			choice->data = glade_property_class_choice_clone ((GladeChoice*) choice->data);
 	}
 
-	clon->query = glade_property_query_clone (clon->query);
+	if (clon->query)
+		clon->query = glade_property_query_clone (clon->query);
 
 	/* ok, wtf? what is the child member for? */
 	/* if (clon->child)
@@ -671,7 +671,6 @@ glade_property_get_parameters_numeric (GParamSpec *spec,
 	parameter->value = glade_property_get_parameter_numeric_max (spec);
 	list = g_list_prepend (list, parameter);
 
-
 	return list;
 }
 
@@ -688,6 +687,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
 	property_class->def = glade_property_class_get_default_from_spec (spec, property_class, NULL);
 
+	g_return_val_if_fail (property_class->id != NULL, NULL);
 	g_return_val_if_fail (property_class->name != NULL, NULL);
 
 	switch (property_class->type) {
@@ -889,7 +889,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	 */
 	if (glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE)) {
 		glade_property_class_free (class);
-		class = NULL;
+		*property_class = NULL;
 		return TRUE;
 	}
 
