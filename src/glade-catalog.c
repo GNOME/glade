@@ -23,6 +23,10 @@
 
 #include <string.h>
 #include <config.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <unistd.h>
 
 #include "glade.h"
 #include "glade-catalog.h"
@@ -87,6 +91,7 @@ glade_catalog_load_names_from_file (GladeCatalog *catalog, const gchar *file_nam
 		return;
 	doc = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
+	catalog->title = glade_xml_get_property_string_required (root, "Title", NULL);
 	catalog->names = glade_catalog_load_names_from_node (context, root);
 	glade_xml_context_free (context);
 }
@@ -104,7 +109,7 @@ glade_catalog_new_from_file (const gchar *file)
 }
 
 GladeCatalog *
-glade_catalog_load (void)
+glade_catalog_load (gchar *file_name)
 {
 	GladeWidgetClass *class;
 	GladeCatalog *catalog;
@@ -112,7 +117,7 @@ glade_catalog_load (void)
 	GList *new_list;
 	gchar *name;
 
-	catalog = glade_catalog_new_from_file (WIDGETS_DIR "/catalog.xml");
+	catalog = glade_catalog_new_from_file (file_name);
 	if (catalog == NULL)
 		return NULL;
 
@@ -138,4 +143,31 @@ glade_catalog_load (void)
 
 	return catalog;
 }
-		
+
+GList *
+glade_catalog_load_all (void)
+{
+	DIR *catalogsdir = NULL;
+	struct dirent *direntry = NULL;
+	struct stat statinfo;
+	GList *catalogs = NULL;
+	GladeCatalog *gcatalog = NULL;
+	gchar *filename = NULL;
+
+	catalogsdir = opendir (CATALOG_DIR);
+	direntry = readdir (catalogsdir);
+	while (direntry) {
+		filename = g_strdup_printf ("%s/%s", CATALOG_DIR, direntry->d_name);
+		stat (filename, &statinfo);
+		if (S_ISREG (statinfo.st_mode)) {
+			gcatalog = glade_catalog_load (filename);
+			if (gcatalog) 
+				catalogs = g_list_append (catalogs, gcatalog);
+		}
+		g_free (filename);
+		direntry = readdir (catalogsdir);
+	}
+	closedir (catalogsdir);
+
+	return catalogs;
+}

@@ -197,9 +197,8 @@ glade_palette_attach_pixmap (GladePalette *palette, GtkWidget *table, GList *lis
 }
 
 static GtkWidget *
-glade_palette_widget_table_create (GladePalette *palette)
+glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 {
-	GladeProjectWindow *gpw;
 	GtkWidget *table;
 	GtkWidget *dummy;
 	GList *list;
@@ -208,8 +207,7 @@ glade_palette_widget_table_create (GladePalette *palette)
 	gint cols = 4;
 	gint i;
 
-	gpw = palette->project_window;
-	list = gpw->catalog->widgets;
+	list = catalog->widgets;
 	num = g_list_length (list);
 	rows = (gint)((num - 1)/ cols) + 1;
 
@@ -234,21 +232,26 @@ glade_palette_widget_table_create (GladePalette *palette)
 static gint
 on_palette_button_toggled (GtkWidget *button, GladePalette *palette)
 {
+	gint *page;
+
+	page = g_object_get_data (G_OBJECT (button), "page");
+	gtk_notebook_set_page (GTK_NOTEBOOK (palette->notebook), *page);
 	return TRUE;
 }
 
 static GtkWidget *
-glade_palette_button_group_create (GladePalette *palette)
+glade_palette_button_group_create (GladePalette *palette, gchar *name, gint *page)
 {
 	GtkWidget *button;
 	GtkWidget *hbox;
 
 	hbox = gtk_hbox_new (TRUE, 0);
 	
-	button = gtk_radio_button_new_with_label (palette->sections_button_group, "GTK + Basic");
+	button = gtk_radio_button_new_with_label (palette->sections_button_group, name);
 	palette->sections_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
+	g_object_set_data (G_OBJECT (button), "page", page);
 	gtk_signal_connect (GTK_OBJECT (button), "toggled",
 			    (GtkSignalFunc) on_palette_button_toggled, palette);
 
@@ -290,15 +293,11 @@ glade_palette_init (GladePalette * palette)
 	/* Separator */
 	widget = gtk_hseparator_new ();
 	gtk_box_pack_start (GTK_BOX (palette->vbox), widget, FALSE, TRUE, 3);
-	
-	/* Groups */
-	widget = glade_palette_button_group_create (palette);
-	gtk_box_pack_start (GTK_BOX (palette->vbox), widget, FALSE, TRUE, 3);
-	
-	/* Separator */
-	widget = gtk_hseparator_new ();
-	gtk_box_pack_start (GTK_BOX (palette->vbox), widget, FALSE, TRUE, 3);
 
+	/* Notebook */
+	palette->notebook = gtk_notebook_new ();
+	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (palette->notebook), FALSE);
+	
 	/* Delete event, don't destroy it */
 	gtk_signal_connect (GTK_OBJECT (palette), "delete_event",
 			    GTK_SIGNAL_FUNC (glade_palette_delete_event), NULL);
@@ -326,6 +325,8 @@ void
 glade_palette_create (GladeProjectWindow *gpw)
 {
 	GtkWidget *widget;
+	GList *catalogs;
+	gint i;
 	
 	if (gpw->palette == NULL) {
 		GladePalette *palette;
@@ -339,8 +340,41 @@ glade_palette_create (GladeProjectWindow *gpw)
 		 * cause we don't have a pointer to palette->project_window when
 		 * we are in glade_palette_init ()
 		 */
-		widget = glade_palette_widget_table_create (gpw->palette);
-		gtk_box_pack_start (GTK_BOX (gpw->palette->vbox), widget, FALSE, TRUE, 3);
+
+		/* FIXME: I think that I should not tell you why. This code
+		 * do what it should do, but it sucks a lot.
+		 */
+		catalogs = gpw->catalog;
+
+		/* Groups */
+		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){
+			gint *page = g_malloc (sizeof (int));
+			*page = i;
+			widget = glade_palette_button_group_create (palette,
+								    ((GladeCatalog *)catalogs->data)->title,
+								    page);
+			gtk_box_pack_start (GTK_BOX (palette->vbox), widget,
+					    FALSE, TRUE, 3);
+		}
+
+		/* Separator */
+		widget = gtk_hseparator_new ();
+		gtk_box_pack_start (GTK_BOX (palette->vbox), widget,
+				    FALSE, TRUE, 3);
+
+		catalogs = gpw->catalog;
+
+		/* Sections */
+		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){
+			widget = glade_palette_widget_table_create (gpw->palette,
+								    catalogs->data);
+			gtk_notebook_append_page (GTK_NOTEBOOK (palette->notebook),
+						  widget, NULL);
+		}
+
+		gtk_box_pack_end (GTK_BOX (palette->vbox), palette->notebook,
+				  FALSE, TRUE, 3);
+		gtk_widget_show (palette->notebook);
 	}
 
 }

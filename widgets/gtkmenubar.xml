@@ -6,6 +6,17 @@
 
   <Properties>
 
+    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="width-request"/>
+    <Property Common="True" Optional="True" OptioanlDefault="False" Default="0" Id="height-request"/>
+    <Property Common="True" Id="visible" Default="True">
+      <SetFunction>ignore</SetFunction>
+    </Property>
+    <Property Common="True" Id="tooltip" ParamSpec="False" Name="Tooltip">
+      <Type>String</Type>
+      <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
+      <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
+    </Property>
+
   </Properties>
   
 </GladeWidgetClass>

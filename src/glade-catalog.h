@@ -11,6 +11,7 @@ G_BEGIN_DECLS
 
 struct _GladeCatalog
 {
+	gchar *title;	/* Title for this catalog */
 	GList *names;   /* Contains the list of names that we are going
 			 * to try to load. This is basically a memory
 			 * representation of catalog.xml
@@ -20,8 +21,10 @@ struct _GladeCatalog
 			 */
 };
 
-GladeCatalog * glade_catalog_load (void);
+GladeCatalog * glade_catalog_load (gchar *file_name);
 GladeCatalog * glade_catalog_get (void);
+
+GList * glade_catalog_load_all (void);
 
 G_END_DECLS
 

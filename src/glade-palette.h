@@ -42,6 +42,7 @@ struct _GladePalette
 			   * it contains the text "Selector" when we are
 			   * in select widget mode
 			   */
+	GtkWidget *notebook; /* Where we store the different catalogs */
 
 	GSList *sections_button_group; /* Each section of the palette has
 					* a button. This is the button_group_list

@@ -66,15 +66,20 @@ if test "x${prefix}" = "xNONE"; then
   pixmapsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
   AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
   widgetsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
+  AC_DEFINE_UNQUOTED(CATALOG_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalog")
+  catalogdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalog"
 else
   AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps")
   pixmapsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
   AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
   widgetsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
+  AC_DEFINE_UNQUOTED(CATALOG_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/catalog")
+  catalogdir="${prefix}/${DATADIRNAME}/${PACKAGE}/catalog"
 fi
 
 AC_SUBST(pixmapsdir)
 AC_SUBST(widgetsdir)
+AC_SUBST(catalogdir)
 
 AC_OUTPUT([
 Makefile

@@ -1,5 +1,8 @@
+catalog_DATA = \
+	gtk-base.xml \
+	gtk-additional.xml
+	
 widgets_DATA = \
-	catalog.xml \
 	gtkaccellabel.xml \
 	gtkalignment.xml \
 	gtkarrow.xml \
@@ -60,4 +63,6 @@ widgets_DATA = \
 	gtkvseparator.xml \
 	gtkwindow.xml
 
-EXTRA_DIST = $(widgets_DATA)
+EXTRA_DIST = \
+	$(catalog_DATA) \
+	$(widgets_DATA)

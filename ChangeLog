@@ -1,5 +1,31 @@
 2001-12-02  Carlos Perelló Marín <carlos@gnome-db.org>
 
+	* acconfig.h, configure.in: Added CATALOG_DIR to store catalogs
+	* src/glade-catalog.* (glade_catalog_load_all): Added to load
+	several catalogs from $prefix/share/glade/catalog/*.xml. It calls
+	the old glade_catalog_load with a new arg which is the catalog
+	file name.
+	* src/glade-catalog.h: Added the title gchar* to store the title 
+	for this catalog.
+	* src/glade-palette.h: Added a notebook at GladePalette object.
+	* src/glade-palette.c (glade_palette_init): We create a notebook
+	to store several catalogs.
+	* src/glade-palette.c (glade_palette_create): Really ugly hack that
+	needs to be FIXED when we finish glade2 functionality. Sorry, it's a
+	fast hack that works.
+	* src/glade-palette.c (on_palette_button_toggled): Implemented, we
+	change the notebook page.
+	* src/glade-project-window.*:
+	* src/main.c: Instead of GladeCatalog we have now a list (GList) of
+	GladeCatalog.
+	* widgets/gtkmenubar.xml: Added some default values.
+	* widgets/gtk-base.xml: Added. It has the catalog for gtk2 base.
+	* widgets/gtk-additional.xml: Added. It has the catalog for gtk2
+	additional.
+	* widgets/catalog.xml: Removed, now we have several catalogs.
+
+2001-12-02  Carlos Perelló Marín <carlos@gnome-db.org>
+
 	* widgets/gtkinputdialog.xml: It does not need placeholder.
 
 2001-12-02  Shane Butler <shane_b@users.sourceforge.net>

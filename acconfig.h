@@ -14,4 +14,5 @@
 #undef USING_OAF
 #undef PIXMAPS_DIR
 #undef WIDGETS_DIR
+#undef CATALOG_DIR
 #undef GETTEXT_PACKAGE

@@ -67,7 +67,7 @@ static gint
 glade_init ()
 {
 	GladeProjectWindow *project_window;
-	GladeCatalog *catalog;
+	GList *catalog;
 
 	if (!g_module_supported ()) {
 		g_warning (_("gmodule support not found. gmodule support is requiered "
@@ -84,7 +84,7 @@ glade_init ()
 	glade_cursor_init ();
 	glade_packing_init ();
 
-	catalog = glade_catalog_load ();
+	catalog = glade_catalog_load_all ();
 	if (catalog == NULL)
 		return FALSE;
 

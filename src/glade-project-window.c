@@ -306,7 +306,7 @@ glade_project_window_set_view (GladeProjectWindow *gpw, GladeProjectView *view)
 }
 
 GladeProjectWindow *
-glade_project_window_new (GladeCatalog *catalog)
+glade_project_window_new (GList *catalog)
 {
 	GladeProjectWindow *gpw;
 	GladeProjectView *view;
