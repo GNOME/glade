@@ -1372,7 +1372,8 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	/* Remove the old properties */
 	container = GTK_CONTAINER (editor->vbox_packing);
 	list = gtk_container_get_children (container);
-	for (; list; list = list->next) {
+	for (; list; list = list->next)
+	{
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
 		gtk_container_remove (container, widget);
@@ -1400,7 +1401,8 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	table->common = FALSE;
 	table->packing = TRUE;
 
- 	for (list = parent->class->child_properties; list; list = list->next) {
+ 	for (list = parent->class->child_properties; list; list = list->next)
+	{
 		property_class = list->data; 
 		g_assert (property_class->packing == TRUE);
 		editor_property = glade_editor_table_append_item (table, property_class);
@@ -1413,26 +1415,6 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
                             FALSE, TRUE, 0);
 
 	old = table;
-}
-
-static void
-glade_editor_property_changed_cb (GladeProperty *property,
-				  GladeEditorProperty *editor_property)
-{
-	g_return_if_fail (property == editor_property->property);
-
-	glade_editor_property_load (editor_property, property->widget);
-}
-
-static void
-glade_editor_property_connect_signals (GladeEditorProperty *editor_property,
-				       GladeWidget *widget)
-{
-	GladeProperty *property = editor_property->property;
-
-	g_signal_connect (G_OBJECT (property), "changed",
-			  G_CALLBACK (glade_editor_property_changed_cb),
-			  editor_property);
 }
 
 /**
@@ -1465,7 +1447,8 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 	glade_signal_editor_load_widget (editor->signal_editor, widget);
 
 	/* we are just clearing, we are done */
-	if (widget == NULL) {
+	if (widget == NULL)
+	{
 		editor->loaded_widget = NULL;
 		return;
 	}
@@ -1476,19 +1459,16 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 	table = glade_editor_get_table_from_class (editor, class, FALSE);
 	gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
 
-	for (list = table->properties; list; list = list->next) {
+	for (list = table->properties; list; list = list->next)
+	{
 		property = list->data;
-
 		glade_editor_property_load (property, widget);
-		if (property->class->type == GLADE_PROPERTY_TYPE_OBJECT)
-			continue;
-
-		glade_editor_property_connect_signals (property, widget);
 	}
 
 	/* Load each GladeEditorProperty for the common tab */
 	table = glade_editor_get_table_from_class (editor, class, TRUE);
-	for (list = table->properties; list; list = list->next) {
+	for (list = table->properties; list; list = list->next)
+	{
 		property = list->data;
 		glade_editor_property_load (property, widget);
 	}

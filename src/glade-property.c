@@ -32,73 +32,6 @@
 #include "glade-widget-class.h"
 #include "glade-debug.h"
 
-static void glade_property_object_class_init (GladePropertyObjectClass *class);
-static void glade_property_init (GladeProperty *property);
-
-enum
-{
-	CHANGED,
-	LAST_SIGNAL
-};
-
-static guint glade_property_signals[LAST_SIGNAL] = {0};
-static GtkObjectClass *parent_class = NULL;
-
-GType
-glade_property_get_type (void)
-{
-	static GType type = 0;
-
-	if (!type)
-	{
-		static const GTypeInfo info =
-		{
-			sizeof (GladePropertyObjectClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_property_object_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladeProperty),
-			0,
-			(GInstanceInitFunc) glade_property_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT, "GladeProperty", &info, 0);
-	}
-
-	return type;
-}
-
-static void
-glade_property_object_class_init (GladePropertyObjectClass *class)
-{
-	GObjectClass *object_class;
-
-	object_class = G_OBJECT_CLASS (class);
-
-	parent_class = g_type_class_peek_parent (class);
-
-	glade_property_signals[CHANGED] =
-		g_signal_new ("changed",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladePropertyObjectClass, changed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE, 0);
-
-	class->changed = NULL;
-}
-
-static void
-glade_property_init (GladeProperty *property)
-{
-	property->class = NULL;
-	property->value = g_new0 (GValue, 1);
-	property->enabled = TRUE;
-//	property->child = NULL;
-}
 
 GladeProperty *
 glade_property_new (GladePropertyClass *class, GladeWidget *widget)
@@ -108,11 +41,14 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-	property = g_object_new (GLADE_TYPE_PROPERTY, NULL);
+	property = g_new0 (GladeProperty, 1);
 	property->class = class;
 	property->widget = widget;
-
+	property->value = g_new0 (GValue, 1);
+	property->enabled = TRUE;
 #if 0
+	property->child = NULL;
+
 	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 		property->child = glade_widget_new_from_class (class->child,
 							       widget->project,
@@ -156,11 +92,22 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 
 	return property;
 }
-
-static void
-glade_property_emit_changed (GladeProperty *property)
+	
+void
+glade_property_free (GladeProperty *property)
 {
-	g_signal_emit (G_OBJECT (property), glade_property_signals [CHANGED], 0);
+	property->class = NULL;
+	property->widget = NULL;
+	if (property->value)
+		g_free (property->value);
+	property->value = NULL;
+
+#if 0
+	if (property->child)
+		g_warning ("Implmenet free property->child\n");
+#endif
+
+	g_free (property);
 }
 
 /**
@@ -220,8 +167,6 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	g_value_copy (value, property->value);
 
 	property->loading = FALSE;
-
-	glade_property_emit_changed (property);
 }
 
 GladeXmlNode *
@@ -233,7 +178,6 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	if (!property->enabled)
 		return NULL;
 
-	/* create a new node <property ...> */
 	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
 	if (!node)
 		return NULL;
@@ -266,24 +210,6 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	glade_xml_set_content (node, tmp);
 	g_free (tmp);
 
-	/* return the created node */
 	return node;
-}
-	
-void
-glade_property_free (GladeProperty *property)
-{
-	property->class = NULL;
-	property->widget = NULL;
-	if (property->value)
-		g_free (property->value);
-	property->value = NULL;
-
-#if 0
-	if (property->child)
-		g_warning ("Implmenet free property->child\n");
-#endif
-
-	g_free (property);
 }
 

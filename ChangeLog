@@ -1,3 +1,9 @@
+2003-1109   Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-property.[ch]: turn GladeProperty into a simple struct
+	instead of a GObject.
+	* src/glade-editor.c: fixup for the above change.
+
 2003-11-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* glade-placeholder.c: Unref the placeholder_pixmap in the finalize

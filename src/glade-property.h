@@ -5,12 +5,9 @@
 G_BEGIN_DECLS
 
 
-#define GLADE_TYPE_PROPERTY                (glade_property_get_type ())
-#define GLADE_PROPERTY(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROPERTY, GladeProperty))
-#define GLADE_PROPERTY_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyObjectClass))
-#define GLADE_IS_PROPERTY(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROPERTY))
+#define GLADE_PROPERTY(p) ((GladeProperty *)p)
+#define GLADE_IS_PROPERTY(p) (p != NULL)
 
-typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
 
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
@@ -18,8 +15,6 @@ typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
  */
 struct _GladeProperty
 {
-	GObject object; 
-
 	GladePropertyClass *class; /* A pointer to the GladeProperty that this
 				    * setting specifies
 				    */
@@ -44,14 +39,6 @@ struct _GladeProperty
 	gboolean loading;
 };
 
-struct _GladePropertyObjectClass
-{
-	GtkObjectClass parent_class;
-
-	void   (*changed)          (GladeProperty *property, const gchar *value);
-};
-
-GType glade_property_get_type (void);
 
 GladeProperty *glade_property_new (GladePropertyClass *class, GladeWidget *widget);
 
@@ -59,7 +46,6 @@ void glade_property_free (GladeProperty *property);
 
 void glade_property_set (GladeProperty *property, const GValue *value);
 
-/* XML i/o */
 GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);
 
 
