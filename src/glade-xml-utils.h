@@ -41,13 +41,6 @@ gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const char *name
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);
 
-/* Hash */
-GHashTable * glade_xml_utils_new_hash_from_node (GladeXmlNode * tree, const gchar *hash_type);
-
-GladeXmlNode * glade_xml_utils_hash_write (GladeXmlContext *context,
-				       GHashTable *hash,
-				       const gchar *name);
-
 /* Node operations */
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
 void           glade_xml_node_delete (GladeXmlNode *node);
@@ -57,7 +50,6 @@ gboolean       glade_xml_node_verify (GladeXmlNode * node, const gchar *name);
 gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
 const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
 void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * child);
-
 
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
