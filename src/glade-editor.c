@@ -113,7 +113,6 @@ glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING (GClosure     *closure,
 		  data2);
 }
 
-
 guint
 glade_editor_get_type (void)
 {
@@ -138,7 +137,6 @@ glade_editor_get_type (void)
 
 	return editor_type;
 }
-
 
 static void
 glade_editor_class_init (GladeEditorClass * klass)
@@ -168,15 +166,6 @@ glade_editor_class_init (GladeEditorClass * klass)
 
 	klass->select_item = glade_editor_select_item_real;
 	klass->add_signal = NULL;
-}
-
-static gint
-glade_editor_delete_event (GladeEditor *editor, gpointer not_used)
-{
-	gtk_widget_hide (GTK_WIDGET (editor));
-
-	/* Return true so that the editor is not destroyed */
-	return TRUE;
 }
 
 GtkWidget *
@@ -215,10 +204,6 @@ glade_editor_init (GladeEditor *editor)
 	editor->vbox_signals = glade_editor_notebook_page (_("Signals"), GTK_WIDGET (editor));
 	editor->widget_tables = NULL;
 	editor->loading = FALSE;
-
-	gtk_signal_connect (GTK_OBJECT (editor), "delete_event",
-			    GTK_SIGNAL_FUNC (glade_editor_delete_event), NULL);
-	
 }
 
 GladeEditor *
