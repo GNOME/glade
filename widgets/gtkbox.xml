@@ -1,15 +1,14 @@
 <GladeWidgetClass>
 
-  <PostCreateFunction>glade_gtk_box_post_create</PostCreateFunction>
-  <FillEmptyFunction>ignore</FillEmptyFunction>
+  <FillEmptyFunction>empty</FillEmptyFunction>
 
   <Properties>
 
-    <Property Id="size" Name="Size">
+    <Property Id="size" Name="Number of items" Query="TRUE" Default="3">
       <Type>Integer</Type>
       <Tooltip>The number of items in the box</Tooltip>
       <Parameters>
-        <Parameter Key="Min" Value="1"/>
+        <Parameter Key="Min" Value="2"/>
         <Parameter Key="Max" Value="10000"/>
         <Parameter Key="StepIncrement" Value="1"/>
         <Parameter Key="PageIncrement" Value="10"/>

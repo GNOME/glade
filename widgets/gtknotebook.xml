@@ -4,7 +4,7 @@
 
   <Properties>
 
-    <Property Id="pages" Name="Number of pages" Default="3">
+    <Property Id="pages" Name="Number of pages" Default="3" Query="TRUE">
       <Type>Integer</Type>
       <Tooltip>The number of pages in the notebook</Tooltip>
       <Parameters>
@@ -14,9 +14,6 @@
         <Parameter Key="PageIncrement" Value="1"/>
         <Parameter Key="ClibmRate" Value="1"/>
       </Parameters>
-      <Query>
-        <Question>Number of pages</Question>
-      </Query>
       <SetFunction>glade_gtk_notebook_set_n_pages</SetFunction>
       <GetFunction>glade_gtk_notebook_get_n_pages</GetFunction>
     </Property>
