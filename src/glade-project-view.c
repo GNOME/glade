@@ -138,6 +138,7 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 {
 	GtkTreeModel *model;
 	GtkTreeIter *iter;
+	GtkTreePath *path;
 
 
 	if (view->is_list && !GLADE_WIDGET_IS_TOPLEVEL (findme))
@@ -149,10 +150,8 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 						       findme);
 
 	if (iter) {
-		static gboolean warned = FALSE;
-		if (!warned)
-			g_print ("Update the cell. BUT HOW ??\n");
-		warned = TRUE;
+		path = gtk_tree_model_get_path (model, iter);
+		gtk_tree_model_row_changed (model, path, iter);
 	}
 }
 
