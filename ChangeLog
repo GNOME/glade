@@ -1,3 +1,12 @@
+2004-05-07  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-project-window.c (gpw_save_cb): check the return value
+	from glade_project_save() and pop up a dialog if there is an error.
+
+	* src/glade-project.c (glade_project_save): only copy the path if
+	it is different from the current path. It was freeing the old path
+	then trying to copy it, resulting in bits of rubbish.
+
 2004-05-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-gtk.c: Remove the tooltips when needed.

@@ -201,12 +201,20 @@ gpw_save_cb (void)
 	gpw = glade_project_window_get ();
 	project = gpw->project;
 
-	if (project->path != NULL)
-	{
-		glade_project_save (project, project->path);
-		glade_util_flash_message (gpw->statusbar,
-					  gpw->statusbar_actions_context_id,
-					  _("Project '%s' saved"), project->name);
+	if (project->path != NULL) {
+		if (glade_project_save (project, project->path)) {
+			glade_util_flash_message (gpw->statusbar,
+						  gpw->statusbar_actions_context_id,
+						  _("Project '%s' saved"),
+						  project->name);
+		} else {
+			GladeProjectWindow *gpw;
+
+			gpw = glade_project_window_get ();
+			glade_util_ui_warn (gpw->window,
+					    _("Invalid file name"));
+		}
+
 		return;
 	}
 

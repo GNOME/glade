@@ -727,8 +727,10 @@ glade_project_save (GladeProject *project, const gchar *path)
 	if (ret < 0)
 		return FALSE;
 
-	g_free (project->path);
-	project->path = g_strdup_printf ("%s", path);
+	if (path != project->path) {
+		g_free (project->path);
+		project->path = g_strdup_printf ("%s", path);
+	}
 	g_free (project->name);
 	project->name = g_path_get_basename (project->path);
 
