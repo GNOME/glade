@@ -33,8 +33,8 @@ AM_GLIB_GNU_GETTEXT
 dnl
 dnl Start of pkg-config checks
 dnl
-dnl    PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.7  libxml-2.0 >= 2.3.10 libgnomeui-2.0 >= 1.96.88)
-PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.7  libxml-2.0 >= 2.3.10)
+dnl    PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.10  libxml-2.0 >= 2.3.10 libgnomeui-2.0 >= 1.96.88)
+PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 1.3.10  libxml-2.0 >= 2.3.10)
 GLADE_LIBS="${GLADE_LIBS}"
 AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
