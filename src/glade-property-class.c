@@ -48,6 +48,103 @@ typedef struct GladePropertyTypeTable {
 /* #warning Implement me. */
 #endif
 
+static GladeChoice *
+glade_property_class_choice_new_from_value (GEnumValue value)
+{
+	GladeChoice *choice;
+
+	choice = glade_choice_new ();
+	choice->name = g_strdup (value.value_nick);
+	choice->id   = g_strdup (value.value_name);
+
+	/*
+	  g_debug(("Choice Id is %s\n", choice->id));
+	  choice->symbol = g_strdup (value.value_name);
+	*/
+	
+	choice->value  = value.value;
+
+	return choice;
+}
+
+static GList *
+glade_property_class_get_choices_from_spec (GParamSpec *spec)
+{
+	GladeChoice *choice;
+	GEnumClass *class;
+	GEnumValue value;
+	GList *list = NULL;
+	gint num;
+	gint i;
+
+	class = G_PARAM_SPEC_ENUM (spec)->enum_class;
+	num = class->n_values;
+	for (i = 0; i < num; i++) {
+		value = class->values[i];
+		choice = glade_property_class_choice_new_from_value (value);
+		if (choice)
+			list = g_list_prepend (list, choice);
+	}
+	list = g_list_reverse (list);
+
+	return list;
+}
+
+static GladeChoice *
+glade_property_class_choice_clone (GladeChoice *choice)
+{
+	GladeChoice *clon;
+
+	clon = glade_choice_new ();
+	clon->id = g_strdup (choice->id);
+	clon->name = g_strdup (choice->name);
+	clon->type = choice->type;
+	clon->value = choice->value;
+
+	return clon;
+}
+
+static void
+glade_property_class_choice_free (GladeChoice *choice)
+{
+	if (choice == NULL)
+		return;
+
+	g_free (choice->name);
+	g_free (choice->id);
+	g_free (choice);
+}
+
+#if 0
+static gchar *
+glade_property_get_default_choice (GParamSpec *spec,
+				   GladePropertyClass *class)
+{
+	GladeChoice *choice = NULL;
+	GList *list;
+	gint def;
+
+	g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (spec), NULL);
+		
+	def = (gint) G_PARAM_SPEC_ENUM (spec)->default_value;
+		
+	list = class->choices;
+	for (; list != NULL; list = list->next) {
+		choice = list->data;
+		if (choice->value == def)
+			break;
+	}
+	if (list == NULL) {
+		g_warning ("Could not find the default value for %s\n", spec->nick);
+		if (class->choices == NULL)
+			return NULL;
+		choice = class->choices->data;
+	}
+
+	return g_strdup (choice->symbol);
+}
+#endif
+
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
 {
@@ -138,6 +235,32 @@ glade_query_new_from_node (GladeXmlNode *node)
 	return query;	
 }
 
+static GladePropertyQuery *
+glade_property_query_clone (GladePropertyQuery *query)
+{
+	GladePropertyQuery *clon;
+	
+	if (query == NULL)
+		return NULL;
+
+	clon = glade_property_query_new ();
+	clon->window_title = g_strdup (query->window_title);
+	clon->question = g_strdup (clon->question);
+
+	return clon;
+}
+
+static void
+glade_property_query_free (GladePropertyQuery *query)
+{
+	if (query == NULL)
+		return;
+
+	g_free (query->window_title);
+	g_free (query->question);
+	g_free (query);
+}
+
 GladePropertyClass *
 glade_property_class_new (void)
 {
@@ -161,10 +284,78 @@ glade_property_class_new (void)
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->get_default = FALSE;
+	property_class->is_modified = FALSE;
 	property_class->query = NULL;
 	property_class->set_function = NULL;
+	property_class->get_function = NULL;
 
 	return property_class;
+}
+
+GladePropertyClass *
+glade_property_class_clone (GladePropertyClass *property_class)
+{
+	GladePropertyClass *clon;
+
+	if (property_class == NULL)
+		return NULL;
+
+	clon = g_new0 (GladePropertyClass, 1);
+	if (clon == NULL)
+	{
+		g_warning ("Out of memory.");
+		return NULL;
+	}
+
+	memcpy (clon, property_class, sizeof(GladePropertyClass));
+	clon->id = g_strdup (clon->id);
+	clon->name = g_strdup (clon->name);
+	clon->tooltip = g_strdup (clon->tooltip);
+
+	if (G_IS_VALUE (property_class->def))
+	{
+		clon->def = g_new0 (GValue, 1);
+		g_value_init (clon->def, G_VALUE_TYPE (property_class->def));
+		g_value_copy (property_class->def, clon->def);
+	}
+
+	if (clon->parameters)
+	{
+		GList *parameter;
+
+		clon->parameters = g_list_copy (clon->parameters);
+
+		for (parameter = clon->parameters; parameter != NULL; parameter = parameter->next)
+			parameter->data = glade_parameter_clone ((GladeParameter*) parameter->data);
+	}
+
+	if (clon->choices)
+	{
+		GList *choice;
+
+		clon->choices = g_list_copy (clon->choices);
+
+		for (choice = clon->choices; choice != NULL; choice = choice->next)
+			choice->data = glade_property_class_choice_clone ((GladeChoice*) choice->data);
+	}
+
+	clon->query = glade_property_query_clone (clon->query);
+
+	/* ok, wtf? what is the child member for? */
+	/* if (clon->child)
+		clon->child = glade_widget_class_clone (clon->child); */
+
+	if (clon->update_signals)
+	{
+		GList *signals;
+
+		clon->update_signals = g_list_copy (clon->update_signals);
+
+		for (signals = clon->update_signals; signals != NULL; signals = signals->next)
+			signals->data = g_strdup ((const char *) signals->data);
+	}
+
+	return clon;
 }
 
 void
@@ -175,11 +366,19 @@ glade_property_class_free (GladePropertyClass *class)
 
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (class));
 	
-	g_free (class->name);
+	g_free (class->id);
 	g_free (class->tooltip);
+	g_free (class->name);
+	g_free (class->def);
+	g_list_foreach (class->parameters, (GFunc) glade_parameter_free, NULL);
+	g_list_free (class->parameters);
+	g_list_foreach (class->choices, (GFunc) glade_property_class_choice_free, NULL);
+	g_list_free (class->choices);
+	glade_property_query_free (class->query);
+	glade_widget_class_free (class->child);
+	g_list_foreach (class->update_signals, (GFunc) g_free, NULL);
+	g_list_free (class->update_signals);
 	g_free (class);
-
-	class = NULL;
 }
 
 static GladePropertyType
@@ -284,78 +483,6 @@ glade_property_class_get_default_from_spec (GParamSpec *spec,
 
 	return value;
 }
-
-static GladeChoice *
-glade_property_class_choice_new_from_value (GEnumValue value)
-{
-	GladeChoice *choice;
-
-	choice = glade_choice_new ();
-	choice->name = g_strdup (value.value_nick);
-	choice->id   = g_strdup (value.value_name);
-
-	/*
-	  g_debug(("Choice Id is %s\n", choice->id));
-	  choice->symbol = g_strdup (value.value_name);
-	*/
-	
-	choice->value  = value.value;
-
-	return choice;
-}
-
-static GList *
-glade_property_class_get_choices_from_spec (GParamSpec *spec)
-{
-	GladeChoice *choice;
-	GEnumClass *class;
-	GEnumValue value;
-	GList *list = NULL;
-	gint num;
-	gint i;
-
-	class = G_PARAM_SPEC_ENUM (spec)->enum_class;
-	num = class->n_values;
-	for (i = 0; i < num; i++) {
-		value = class->values[i];
-		choice = glade_property_class_choice_new_from_value (value);
-		if (choice)
-			list = g_list_prepend (list, choice);
-	}
-	list = g_list_reverse (list);
-
-	return list;
-}
-
-#if 0
-static gchar *
-glade_property_get_default_choice (GParamSpec *spec,
-				   GladePropertyClass *class)
-{
-	GladeChoice *choice = NULL;
-	GList *list;
-	gint def;
-
-	g_return_val_if_fail (G_IS_PARAM_SPEC_ENUM (spec), NULL);
-		
-	def = (gint) G_PARAM_SPEC_ENUM (spec)->default_value;
-		
-	list = class->choices;
-	for (; list != NULL; list = list->next) {
-		choice = list->data;
-		if (choice->value == def)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Could not find the default value for %s\n", spec->nick);
-		if (class->choices == NULL)
-			return NULL;
-		choice = class->choices->data;
-	}
-
-	return g_strdup (choice->symbol);
-}
-#endif
 
 gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
@@ -785,8 +912,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	gchar *id;
 	gchar *name;
 
-	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
-		return;
+	g_return_if_fail (glade_xml_node_verify (node, GLADE_TAG_PROPERTY));
 
 	/* If we have a property like ... Disabled="TRUE"> we should
 	 * remove this property
@@ -878,7 +1004,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			pproperty_class->def = gvalue;
 			glade_property_class_free (*property_class);
 			*property_class = pproperty_class;
-		} else {
+		}
+		else {
 			/* If the property is an object Load it */
 			if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 				child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
@@ -904,6 +1031,9 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			pproperty_class->def = tmp;
 		}
 	}
+
+	/* we're modifying the default values of this property */
+	pproperty_class->is_modified = TRUE;
 
 	/* Get the Query */
 	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
@@ -967,7 +1097,8 @@ glade_property_class_list_add_from_node (GladeXmlNode *node,
 		list_element = g_list_last (*properties);
 		buff = glade_xml_get_property_string (child, GLADE_TAG_ID);
 		while (list_element != NULL && property_class == NULL) {
-			if (!g_ascii_strcasecmp (((GladePropertyClass *) list_element->data)->id, buff))
+			const char *id = ((GladePropertyClass *) list_element->data)->id;
+			if (!g_ascii_strcasecmp (id, buff))
 				property_class = (GladePropertyClass *) list_element->data;
 			else 
 				list_element = g_list_previous (list_element);

@@ -45,7 +45,10 @@
 #include "glade-choice.h"
 #include "glade-parameter.h"
 #include "glade-gtk.h"
+#include "glade-debug.h"
 
+/* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
+static GHashTable *widget_classes = NULL;
 
 static gchar *
 glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
@@ -73,9 +76,8 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 		i++;
 	}
 
-	tmp = g_string_append (tmp, "_get_type");
-	retval = g_ascii_strdown (tmp->str, tmp->len);
-
+	retval = g_strconcat (tmp->str, "_get_type", NULL);
+	g_strdown (retval);
 	g_string_free (tmp, TRUE);
 
 	return retval;
@@ -94,6 +96,28 @@ glade_widget_class_new (void)
 	class->child_properties = NULL;
 
 	return class;
+}
+
+void
+glade_widget_class_free (GladeWidgetClass *widget_class)
+{
+	if (widget_class == NULL)
+		return;
+
+	g_free (widget_class->generic_name);
+	g_free (widget_class->name);
+
+	/* delete the list holding the properties */
+	g_list_foreach (widget_class->properties, (GFunc) g_free, NULL);
+	g_list_free (widget_class->properties);
+
+	/* delete the list holding the child properties */
+	g_list_foreach (widget_class->child_properties, (GFunc) g_free, NULL);
+	g_list_free (widget_class->child_properties);
+
+	/* delete the list holding the signals */
+	g_list_foreach (widget_class->signals, (GFunc) g_free, NULL);
+	g_list_free (widget_class->signals);
 }
 
 static GList *
@@ -375,6 +399,309 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 	return icon;
 }
 
+/**
+ * glade_widget_class_extend_with_file:
+ * @filename: complete path name of the xml file with the description of the GladeWidgetClass
+ *
+ * This function extends an existing GladeWidgetClass with the data found on the file
+ * with name @filename (if it exists).  Notably, it will add new properties to the
+ * GladeWidgetClass, or modify existing ones, in function of the contents of the file.
+ *
+ * @returns: TRUE if the file exists and its format is correct, FALSE otherwise.
+ **/
+static gboolean
+glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char *filename)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc *doc;
+	GladeXmlNode *properties;
+	GladeXmlNode *node;
+
+	g_return_val_if_fail (filename != NULL, FALSE);
+
+	context = glade_xml_context_new_from_path (filename, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
+	if (context != NULL)
+	{
+		doc = glade_xml_context_get_doc (context);
+		node = glade_xml_doc_get_root (doc);
+		properties = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
+		/* if we found a <properties> tag on the xml file, we add the properties
+		 * that we read from the xml file to the class */
+		if (properties != NULL)
+			glade_property_class_list_add_from_node (properties, widget_class, &widget_class->properties);
+
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+/**
+ * glade_widget_class_store_with_name:
+ * @widget_class: widget class to store
+ *
+ * Store the GladeWidgetClass on the cache, indexed by its name
+ **/
+static void
+glade_widget_class_store_with_name (GladeWidgetClass *widget_class)
+{
+	/* if it's the first time we store a widget class, then initialize the widget_classes hash */
+	if (widget_classes == NULL)
+		widget_classes = g_hash_table_new (g_str_hash, g_str_equal);		
+
+	g_hash_table_insert (widget_classes, widget_class->name, widget_class);
+
+	return;
+}
+
+/**
+ * glade_widget_class_get_from_name:
+ * @name: name of the widget class (for instance: GtkButton)
+ *
+ * Returns an already created GladeWidgetClass with the name passed as argument.
+ *
+ * If we have not yet created any GladeWidgetClass, this function will return %NULL.
+ *
+ * Return Value: An existing GladeWidgetClass with the name passed as argument,
+ * or %NULL if such a class doesn't exist.
+ **/
+GladeWidgetClass *
+glade_widget_class_get_from_name (const char *name)
+{
+	if (widget_classes != NULL)
+		return g_hash_table_lookup (widget_classes, name);
+	else
+		return NULL;
+}
+
+/**
+ * glade_widget_class_merge:
+ * @widget_class: main class.
+ * @parent_class: secondary class.
+ *
+ * Merges the contents of the parent_class on the widget_class.  It doesn't handles
+ * the duplicated properties / signals.  I.e., if you have the same property / signal
+ * on parent_class and on widget_class, widget_class will end having two times
+ * this property.  You will have to remove the duplicates to ensure a consistent
+ * widget_class.  The properties / signals of the parent_class will be appended to
+ * those of widget_class.
+ **/
+static void
+glade_widget_class_merge (GladeWidgetClass *widget_class, GladeWidgetClass *parent_class)
+{
+	GList *last_property;
+	GList *parent_properties;
+	GList *tmp1;
+
+	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
+	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
+
+	if (GLADE_WIDGET_CLASS_FLAGS (widget_class) == 0)
+		widget_class->flags = parent_class->flags;
+
+	if (widget_class->post_create_function == NULL)
+		widget_class->post_create_function = parent_class->post_create_function;
+
+	tmp1 = widget_class->properties;
+	while (tmp1 != NULL)
+	{
+		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
+		g_debug (("%s from %s\n", property_class->id, widget_class->name));
+		tmp1 = g_list_next (tmp1);
+	}
+	tmp1 = parent_class->properties;
+	while (tmp1 != NULL)
+	{
+		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
+		g_debug (("%s from %s\n", property_class->id, parent_class->name));
+		tmp1 = g_list_next (tmp1);
+	}
+
+	last_property = g_list_last (widget_class->properties);
+	for (parent_properties = parent_class->properties; parent_properties != NULL; parent_properties = parent_properties->next)
+	{
+		GladePropertyClass *property_class = (GladePropertyClass*) parent_properties->data;
+		GList *list = g_list_append (last_property, glade_property_class_clone (property_class));
+
+		if (!last_property)
+		{
+			widget_class->properties = list;
+			last_property = list;
+		}
+		else
+			last_property = list->next;
+	}
+
+	tmp1 = widget_class->properties;
+	while (tmp1 != NULL)
+	{
+		GladePropertyClass *property_class = (GladePropertyClass*) tmp1->data;
+		g_debug (("Result %s\n", property_class->id));
+		tmp1 = g_list_next (tmp1);
+	}
+}
+
+/**
+ * glade_widget_class_remove_duplicated_properties:
+ * @widget_class: class of the widget that contains the properties.
+ *
+ * Takes the list of properties of the widget class, and removes the duplicated properties.
+ * The properties modified are prefered over the non modified ones, and the properties
+ * that appear first on the list are prefered over these that appear later on the list.
+ * (the first rule is more important than the second one).
+ **/
+static void
+glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
+{
+	GHashTable *hash_properties = g_hash_table_new (g_str_hash, g_str_equal);
+	GList *properties_classes = widget_class->properties;
+
+	while (properties_classes != NULL)
+	{
+		GladePropertyClass *property_class = (GladePropertyClass*) properties_classes->data;
+		GList *old_property;
+
+		/* if it's the first time we see this property, then we add it to the list of 
+		 * properties that we will keep for this widget.  Idem if the last time we saw
+		 * this property, it was not modified, and this time the property is modified
+		 * (ie, we change the non modified property by the modified one). */
+		if ((old_property = g_hash_table_lookup (hash_properties, property_class->id)) == NULL ||
+		    (!((GladePropertyClass*) old_property->data)->is_modified && property_class->is_modified))
+		{
+			/* remove the old property */
+			if (old_property != NULL)
+				g_list_remove_link (widget_class->properties, old_property);
+
+			g_hash_table_insert (hash_properties, property_class->id, properties_classes);
+			properties_classes = g_list_next (properties_classes);
+		}
+		else
+		{
+			GList *tmp = properties_classes;
+			properties_classes = g_list_next (properties_classes);
+			g_list_remove_link (widget_class->properties, tmp);
+		}
+	}
+
+	g_hash_table_destroy (hash_properties);
+}
+
+/**
+ * glade_widget_class_new_from_name2:
+ * @name: name of the widget class (for instance: GtkButton)
+ * @generic_name: base of the name for the widgets of this class (for instance: button).
+ * This parameter is optional.  For abstract classes there is no need to supply a generic_name.
+ * @base_filename: filename containing a further description of the widget, without
+ * the directory (optional).
+ *
+ * Creates a new GladeWidgetClass, initializing it with the
+ * name, generic_name and base_filename.
+ *
+ * The widget class will be first build using the information that the GLib object system
+ * returns, and then it will be expanded (optionally) with the information contained on
+ * the xml filename.
+ *
+ * Return Value: The new GladeWidgetClass, or %NULL if there are any errors.
+ **/
+GladeWidgetClass *
+glade_widget_class_new_from_name2 (const char *name, const char *generic_name, const char *base_filename)
+{
+	GladeWidgetClass *widget_class = NULL;
+	char *filename = NULL;
+	char *init_function_name = NULL;
+	GType parent_type;
+
+	g_return_val_if_fail (name != NULL, NULL);
+
+	if (glade_widget_class_get_from_name (name) != NULL)
+	{
+		g_warning ("The widget class [%s] has at least two different definitions.\n", name);
+		goto lblError;
+	}
+
+	if (base_filename != NULL)
+	{
+		filename = g_strconcat (WIDGETS_DIR, "/", base_filename, NULL);
+		if (filename == NULL)
+		{
+			g_warning ("Not enough memory.");
+			goto lblError;
+		}
+	}
+
+	widget_class = glade_widget_class_new ();
+	if (widget_class == NULL)
+	{
+		g_warning ("Not enough memory.");
+		goto lblError;
+	}
+
+	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
+	widget_class->name = g_strdup (name);
+	widget_class->in_palette = generic_name ? TRUE : FALSE;
+
+	/* we can't just call g_type_from_name (name) to get the type, because
+	 * that only works for registered types, and the only way to register the
+	 * type is to call foo_bar_get_type() */
+	init_function_name = glade_widget_class_compose_get_type_func (widget_class);
+	if (!init_function_name)
+	{
+		g_warning ("Not enough memory.");
+		goto lblError;
+	}
+
+	widget_class->type = glade_util_get_type_from_name (init_function_name);
+	if (widget_class->type == 0)
+		goto lblError;
+
+	widget_class->properties = glade_widget_class_list_properties (widget_class);
+	widget_class->signals = glade_widget_class_list_signals (widget_class);
+
+	/* is the widget a toplevel?  TODO: We're going away from this flag, and
+	 * just doing this test each time that we want to know if it's a toplevel */
+	if (g_type_is_a (widget_class->type, GTK_TYPE_WINDOW))
+		GLADE_WIDGET_CLASS_SET_FLAGS (widget_class, GLADE_TOPLEVEL);
+
+	/* is the widget a container?  TODO: We're going away from this flag, and
+	 * just doing this test each time that we want to know if it's a container */
+	if (g_type_is_a (widget_class->type, GTK_TYPE_CONTAINER))
+		GLADE_WIDGET_CLASS_SET_FLAGS (widget_class, GLADE_ADD_PLACEHOLDER);
+
+	widget_class->icon = glade_widget_class_create_icon (widget_class);
+
+	/* if there is an associated filename, then open and parse it */
+	if (filename != NULL)
+		glade_widget_class_extend_with_file (widget_class, filename);
+
+	glade_widget_class_add_virtual_methods (widget_class);
+	g_free (filename);
+	g_free (init_function_name);
+
+	for (parent_type = g_type_parent (widget_class->type);
+	     parent_type != 0;
+	     parent_type = g_type_parent (parent_type))
+	{
+		GladeWidgetClass *parent_class = glade_widget_class_get_from_name (g_type_name (parent_type));
+
+		if (parent_class != NULL)
+			glade_widget_class_merge (widget_class, parent_class);
+	}
+
+	/* remove the duplicate properties on widget_class */
+	glade_widget_class_remove_duplicated_properties (widget_class);
+
+	/* store the GladeWidgetClass on the cache */
+	glade_widget_class_store_with_name (widget_class);
+
+	return widget_class;
+
+lblError:
+	g_free (filename);
+	g_free (init_function_name);
+	glade_widget_class_free (widget_class);
+	return NULL;
+}
+
 GladeWidgetClass *
 glade_widget_class_new_from_name (const gchar *name)
 {
@@ -450,6 +777,61 @@ glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 	}
 
 	return FALSE;
+}
+
+/* ParamSpec stuff */
+void
+glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
+{
+	GObjectClass *object_class;
+	GType type;
+
+	type = glade_widget_class_get_type (class);
+	g_type_class_ref (type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+	object_class = g_type_class_peek (type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		*specs = NULL;
+		*n_specs = 0;
+		return;
+	}
+
+	*specs = g_object_class_list_properties (object_class, n_specs);
+}
+
+GParamSpec *
+glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
+{
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	gint n_specs = 0;
+	gint i;
+
+	glade_widget_class_get_specs (class, &specs, &n_specs);
+
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+
+		if (!spec || !spec->name) {
+			g_warning ("Spec does not have a valid name, or invalid spec");
+			g_free (specs);
+			return NULL;
+		}
+
+		if (strcmp (spec->name, name) == 0) {
+			GParamSpec *return_me;
+			return_me = g_param_spec_ref (spec);
+			g_free (specs);
+			return return_me;
+		}
+	}
+
+	g_free (specs);
+	
+	return NULL;
 }
 
 /**

@@ -12,20 +12,14 @@ G_BEGIN_DECLS
 struct _GladeCatalog
 {
 	gchar *title;	/* Title for this catalog */
-	GList *names;   /* Contains the list of names that we are going
-			 * to try to load. This is basically a memory
-			 * representation of catalog.xml
-			 */
-	GList *widgets; /* Contains the list of GladeWidgetClass objects 
-			 * that where successfully loaded from disk
-			 */
+	GList *widget_classes; /* list of widget classes contained on this catalog */
 };
 
-GladeCatalog * glade_catalog_load (const gchar *file_name);
-GladeCatalog * glade_catalog_get (void);
-
+void glade_catalog_delete (GladeCatalog *catalog);
 GList * glade_catalog_load_all (void);
-GList * glade_catalog_get_widgets (void); /* This prolly should be in glade-widget-class.c */
+GList *glade_catalog_get_widgets (void); /* This probally should be in glade-widget-class.c */
+const char *glade_catalog_get_title (GladeCatalog *catalog);
+GList *glade_catalog_get_widget_classes (GladeCatalog *catalog);
 
 G_END_DECLS
 

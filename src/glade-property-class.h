@@ -19,7 +19,7 @@ typedef enum {
 	GLADE_PROPERTY_TYPE_ERROR
 } GladePropertyType;
 
-/* The GladeProperty object describes a settable paramter of a widget.
+/* The GladeProperty object describes a settable parameter of a widget.
  * All entries that the user can change in the first page of the GladeEditor
  * make are a GladeProperty (except for the widget name)
  * GladeProperties can be of any type of GladePropertyType
@@ -170,6 +170,8 @@ struct _GladePropertyClass
 			       * add the widget, then we query the property to get the position it
 			       * was added into.
 			       */
+	gboolean is_modified; /* If true, this property_class has been "modified" from the
+			       * the standard property by a xml file. */
 
 	void (*set_function) (GObject *object,
 			      const GValue *value);
@@ -189,6 +191,7 @@ struct _GladePropertyClass
 
 GladePropertyClass * glade_property_class_new (void);
 GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
+GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_class);
 
 void glade_property_class_free (GladePropertyClass *class);
 

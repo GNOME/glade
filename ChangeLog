@@ -1,3 +1,19 @@
+2003-08-07  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-catalog.[ch], glade-palette.c: Specify the order in which
+	  the catalogs should appear on the palette (read it from
+	  widgets/glade-palette.xml).  Also changed a bit the format of
+	  the catalogs.
+	* src/glade-parameter.[ch], glade-property-class.[ch], glade-widget-class.[ch],
+	  glade-widget.c, glade-xml-utils.h: Inherit properties specified on a
+	  xml file from a base class to an inherited class.  It makes possible
+	  to specify something special for (for instance) GtkWidget, and
+	  make it inherit for each GtkWidget.  
+	* widgets/glade-palette.xml: specify the order of the catalogs.
+	* widgets/gtkwidget.xml, gtkbox.xml: specify common properties for
+	  gtkwidgets and gtkboxes.  Coupled with the above changes, it
+	  makes almost every xml file obsolete.
+
 2003-08-07  Paolo BOrelli  <pborelli@katamail.com>
 
 	* src/glade-utils.[ch]: remove dependency on glade-project-window.h.

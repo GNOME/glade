@@ -48,7 +48,7 @@
  * Allocates a new name for a specific GladeWidgetClass.
  * 
  * Return Value: a newly allocated name for the widget. Caller must g_free it
- */
+ **/
 gchar *
 glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 {
@@ -82,6 +82,14 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 	return new_list;
 }
 
+/**
+ * glade_widget_new:
+ * @class: The GladeWidgeClass of the GladeWidget
+ * 
+ * Allocates a new GladeWidget structure and fills in the required memebers.
+ * 
+ * Return Value: 
+ **/
 static GladeWidget *
 glade_widget_new (GladeWidgetClass *class)
 {
@@ -110,7 +118,7 @@ glade_widget_new (GladeWidgetClass *class)
  * 
  * Return Value: a GladeWidget pointer for @widget, NULL if the widget does not
  *               have a GladeWidget counterpart.
- */
+ **/
 GladeWidget *
 glade_widget_get_from_gtk_widget (GtkWidget *widget)
 {
@@ -171,7 +179,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
  * clicked
  * 
  * Return Value: 
- */
+ **/
 static GladeWidget *
 glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *event)
 {
@@ -264,7 +272,7 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
  * Handle the button press event for every GladeWidget
  * 
  * Return Value: 
- */
+ **/
 static gboolean
 glade_widget_button_press (GtkWidget *event_widget,
 			   GdkEventButton *event,
@@ -340,10 +348,14 @@ glade_widget_set_default_options (GladeWidget *widget)
 }
 
 /**
+ * glade_widget_set_default_packing_options:
+ * @widget: 
+ * 
  * We need to have a different function for setting packing options
  * because we need to add the widget to the container before we
  * apply the packing options.
- */
+ *
+ **/
 void
 glade_widget_set_default_packing_options (GladeWidget *widget)
 {
@@ -417,7 +429,7 @@ glade_widget_connect_keyboard_signals (GladeWidget *glade_widget)
  * Loads the name of the widget. For example a button will have the
  * "button1" text in it, or a label will have "label4". right after
  * it is created.
- */
+ **/
 void
 glade_widget_set_contents (GladeWidget *widget)
 {
@@ -514,8 +526,6 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 static void
 glade_widget_free (GladeWidget *widget)
 {
-	GList *list;
-	
 	widget->class = NULL;
 	widget->project = NULL;
 	widget->widget = NULL;
@@ -525,41 +535,15 @@ glade_widget_free (GladeWidget *widget)
 		g_free (widget->name);
 	widget->name = NULL;
 
-	list = widget->properties;
-	for (; list; list = list->next)
-		glade_property_free (list->data);
-	widget->properties = NULL;
-
-	list = widget->packing_properties;
-	for (; list; list = list->next)
-		glade_property_free (list->data);
-	widget->properties = NULL;
-
-	list = widget->signals;
-	for (; list; list = list->next)
-		glade_signal_free (list->data);
-	widget->signals = NULL;
+	g_list_foreach(widget->properties, (GFunc) glade_property_free, NULL);
+	g_list_free (widget->properties);
+	g_list_foreach(widget->packing_properties, (GFunc) glade_property_free, NULL);
+	g_list_free (widget->packing_properties);
+	g_list_foreach(widget->signals, (GFunc) glade_signal_free, NULL);
+	g_list_free (widget->signals);
 
 	g_free (widget);
 }
-
-#if 0
-/* Sigh.
- * Fix, Fix, fix. Turn this off to see why this is here.
- * Add a gtkwindow and a gtkvbox to reproduce
- * Some werid redraw problems that i can't figure out.
- * Chema
- */
-static gint
-glade_widget_ugly_hack (gpointer data)
-{
-	GladeWidget *widget = data;
-	
-	gtk_widget_queue_resize (widget->widget);
-	
-	return FALSE;
-}
-#endif
 
 static GtkWidget *
 glade_widget_create_gtk_widget (GladeWidgetClass *class)
@@ -764,7 +748,7 @@ glade_widget_query_properties_set (gpointer key_,
  * of columns he wants.
  * 
  * Return Value: FALSE if the query was canceled
- */
+ **/
 gboolean 
 glade_widget_query_properties (GladeWidgetClass *class,
 			       GladePropertyQueryResult *result)
@@ -874,7 +858,7 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
  * if needed.
  * 
  * Return Value: A newly creatred GladeWidget, NULL on user cancel or error	
- */
+ **/
 GladeWidget *
 glade_widget_new_from_class (GladeWidgetClass *class,
 			     GladeProject *project,
@@ -924,11 +908,13 @@ glade_widget_get_class (GladeWidget *widget)
  * glade_widget_get_property_from_list:
  * @list: The list of GladeProperty
  * @class: The Class that we are trying to match with GladeProperty
- * @silent: True if we shuold warn when a property is not included in the list
+ * @silent: True if we should warn when a property is not included in the list
  * 
- * Given a list of GladeProperties find the one that has ->class = to @class.
+ * Give a list of GladeProperties find the one that has ->class = to @class.
  * This function recurses into child objects if needed.
- */
+ * 
+ * Return Value: 
+ **/
 static GladeProperty *
 glade_widget_get_property_from_list (GList *list,
 				     GladePropertyClass *class,
@@ -970,7 +956,7 @@ glade_widget_get_property_from_list (GList *list,
  * Given a glade Widget, it returns the property that correspons to @property_class
  * 
  * Return Value: 
- */
+ **/
 GladeProperty *
 glade_widget_get_property_from_class (GladeWidget *widget,
 				      GladePropertyClass *property_class)
@@ -998,7 +984,7 @@ glade_widget_get_property_from_class (GladeWidget *widget,
  * @name: 
  * 
  * Sets the name of a widget
- */
+ **/
 void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
@@ -1092,7 +1078,7 @@ glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
  * @signal
  * 
  * Add @signal to the widget's signal list.
- */
+ **/
 void
 glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 {
@@ -1117,7 +1103,7 @@ glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
  * @signal
  * 
  * Remove @signal from the widget's signal list.
- */
+ **/
 void
 glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 {
@@ -1214,7 +1200,8 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 				glade_xml_node_append_child (packing, packing_property);
 				glade_xml_node_append_child (child_tag, packing);
 			}
-		} else {
+		}
+		else {
 			/* a placeholder */
 			child = glade_xml_node_new (context, GLADE_XML_TAG_PLACEHOLDER);
 			glade_xml_node_append_child (child_tag, child);

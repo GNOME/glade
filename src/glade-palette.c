@@ -189,7 +189,7 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	gint cols = 4;
 	gint i;
 
-	list = catalog->widgets;
+	list = glade_catalog_get_widget_classes (catalog);
 
 	while (list) {
 		if (((GladeWidgetClass*) list->data)->in_palette)
@@ -198,7 +198,7 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 		list = list->next;
 	}
 
-	list = catalog->widgets;
+	list = glade_catalog_get_widget_classes (catalog);
 
 	num = g_list_length (list);
 	rows = (gint)((num_visible - 1)/ cols) + 1;

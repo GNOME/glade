@@ -14,7 +14,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 /* search child */
 GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
-GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
+GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const char* name);
 
 /* content */
 

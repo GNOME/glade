@@ -32,6 +32,8 @@ struct _GladeParameter {
 };
 
 GladeParameter * glade_parameter_new (void);
+GladeParameter *glade_parameter_clone (GladeParameter *parameter);
+void glade_parameter_free (GladeParameter *parameter);
 
 void glade_parameter_get_float   (GList *parameters, const gchar *key, gfloat *value);
 void glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value);

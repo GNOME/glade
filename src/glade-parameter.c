@@ -100,16 +100,14 @@ glade_parameter_get_string (GList *parameters, const gchar *key, gchar **value)
 	}
 }
 
-static void
+void
 glade_parameter_free (GladeParameter *parameter)
 {
-	g_return_if_fail (parameter->key);
-	g_return_if_fail (parameter->value);
+	if (!parameter)
+		return;
 
 	g_free (parameter->key);
 	g_free (parameter->value);
-	parameter->key = NULL;
-	parameter->value = NULL;
 	g_free (parameter);
 }
 
@@ -121,6 +119,21 @@ glade_parameter_new (void)
 	parameter = g_new0 (GladeParameter, 1);
 
 	return parameter;
+}
+
+GladeParameter *
+glade_parameter_clone (GladeParameter *parameter)
+{
+	GladeParameter *clon;
+
+	if (parameter == NULL)
+		return NULL;
+
+	clon = glade_parameter_new ();
+	clon->key = g_strdup (parameter->key);
+	clon->value = g_strdup (parameter->value);
+
+	return clon;
 }
 
 static GladeParameter *

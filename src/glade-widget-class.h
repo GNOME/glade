@@ -84,19 +84,24 @@ struct _GladeWidgetClassSignal
 			      * eg GtkButton */
 };
 
-GladeWidgetClass *glade_widget_class_new_from_name (const gchar *name);
+GladeWidgetClass *glade_widget_class_new_from_name (const char *name);
+GladeWidgetClass *glade_widget_class_new_from_name2 (const char *name, const char *generic_name, const char *base_filename);
 GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);
-GladeWidgetClass *glade_widget_class_get_by_name (const gchar *name);
+void glade_widget_class_free (GladeWidgetClass *widget_class);
+GladeWidgetClass *glade_widget_class_get_by_name (const char *name);
 
 const gchar *glade_widget_class_get_name (GladeWidgetClass *class);
 GType 	     glade_widget_class_get_type (GladeWidgetClass *class);
 gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
 
-gboolean     glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
+gboolean     glade_widget_class_is (GladeWidgetClass *class, const char *name);
 
-gboolean     glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name);
-
+/* ParamSpec stuff */
+void         glade_widget_class_get_specs (GladeWidgetClass *class,
+					   GParamSpec ***specs, gint *n_specs);
+GParamSpec *glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
 void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
+gboolean    glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name);
 
 
 G_END_DECLS
