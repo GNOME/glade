@@ -630,6 +630,8 @@ ask_for_number (const char *title, const char *name, int min, int max, int def)
 	GtkWidget *spin_button = gtk_spin_button_new_with_range ((double) min, (double) max, 1.0);
 	GtkWidget *hbox = gtk_hbox_new (FALSE, 4);
 
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 
 	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spin_button), 0);
@@ -692,6 +694,8 @@ glade_gtk_table_post_create (GObject *object)
 	GtkWidget *spin_button_rows = gtk_spin_button_new_with_range (0.0, 10000.0, 1.0);
 	GtkWidget *spin_button_cols = gtk_spin_button_new_with_range (0.0, 10000.0, 1.0);
 	GtkWidget *table = gtk_table_new (2, 2, TRUE);
+
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 
 	g_value_init (&gvrows, G_TYPE_INT);
 	g_value_init (&gvcols, G_TYPE_INT);

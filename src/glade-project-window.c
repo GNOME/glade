@@ -557,6 +557,7 @@ gpw_create_palette (GladeProjectWindow *gpw)
 	gtk_window_set_title (gpw->palette_window, _("Palette"));
 	gtk_window_set_type_hint (gpw->palette_window, GDK_WINDOW_TYPE_HINT_UTILITY);
 	gtk_window_set_resizable (gpw->palette_window, TRUE);
+	gtk_window_move (gpw->palette_window, 0, 250);
 
 	gtk_container_add (GTK_CONTAINER (gpw->palette_window), GTK_WIDGET (gpw->palette));
 
@@ -634,7 +635,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gpw->editor->project_window = gpw;
 
 	gtk_window_set_title  (gpw->editor_window, _("Properties"));
-	gtk_window_set_type_hint (gpw->editor_window, GDK_WINDOW_TYPE_HINT_UTILITY);
+	gtk_window_move (gpw->editor_window, 350, 0);
 
 	gtk_container_add (GTK_CONTAINER (gpw->editor_window), GTK_WIDGET (gpw->editor));
 
@@ -705,7 +706,6 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size (GTK_WINDOW (widget_tree), 230, 300);
 	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
-	gtk_window_set_type_hint (GTK_WINDOW (widget_tree), GDK_WINDOW_TYPE_HINT_UTILITY);
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
 	gpw->views = g_list_prepend (gpw->views, view);
@@ -1103,13 +1103,6 @@ gpw_construct_toolbar (GladeProjectWindow *gpw)
 						      NULL,
 						      G_CALLBACK (gpw_redo_cb),
 						      gpw, -1);
-	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-				  GTK_STOCK_QUIT,
-				  "Quit glade",
-				  NULL,
-				  G_CALLBACK (gpw_quit_cb),
-				  gpw, -1);
 
 	return toolbar;	
 }
@@ -1206,6 +1199,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *statusbar;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_move (GTK_WINDOW (app), 0, 0);
 	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
 	gtk_window_set_default_icon_from_file (GLADE_ICONDIR"/glade-3.png", NULL);
 	gpw->window = app;

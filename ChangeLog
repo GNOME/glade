@@ -1,3 +1,20 @@
+2004-05-08  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-gtk.c (ask_for_number, glade_gtk_table_post_create): set
+	the dialog positions to GTK_WIN_POS_MOUSE. Since we don't set a parent
+	window they currently seem to default to the middle of the screen,
+	which is annoying.
+
+	* src/glade-project-window.c (gpw_construct_toolbar): removed Quit,
+	since the GNOME HIG says we shouldn't have it in the toolbar.
+	(gpw_create_widget_tree, gpw_create_editor): don't set type hint to
+	GDK_WINDOW_TYPE_HINT_UTILITY, since that makes them stay on top all
+	the time, but they are too big and get in the way.
+	(gpw_create_palette, gpw_create_editor) 
+	(glade_project_window_create): set initial positions of windows to
+	something reasonable. Hopefully we will save window positions between
+	sessions in future.
+
 2004-05-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-widget.c: Removed some code in
