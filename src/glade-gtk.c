@@ -63,6 +63,67 @@
 #define FIXED_DEFAULT_CHILD_WIDTH  100
 #define FIXED_DEFAULT_CHILD_HEIGHT 60
 
+
+
+/* ---------------------------- Custom Property definitions ------------------------ */
+static GType
+glade_gtk_stock_get_type (void)
+{
+	static GType etype = 0;
+	if (etype == 0) {
+		static const GEnumValue values[] = {
+			{ 0,   "None",   "glade-none" },
+			{ 1,   "Ok",     "gtk-ok"     },
+			{ 2,   "Cancel", "gtk-cancel" },
+			{ 3,   "Apply",  "gtk-apply"  },
+			{ 4,   "Close",  "gtk-close"  },
+			{ 0, NULL, NULL }
+		};
+		etype = g_enum_register_static ("GtkTtScrollType", values);
+	}
+	return etype;
+}
+
+GParamSpec *GLADEGTK_API
+glade_gtk_stock_spec (void)
+{
+	return g_param_spec_enum ("stock", "stock", "stock",
+				  glade_gtk_stock_get_type (),
+				  0, G_PARAM_READWRITE);
+}
+
+GParamSpec *GLADEGTK_API
+glade_gtk_standard_int_spec (void)
+{
+	static GParamSpec *int_spec = NULL;
+	if (!int_spec)
+		int_spec = g_param_spec_int ("int", "int", "int",
+					     0, G_MAXINT,
+					     0, G_PARAM_READWRITE);
+	return int_spec;
+}
+
+GParamSpec *GLADEGTK_API
+glade_gtk_standard_string_spec (void)
+{
+	static GParamSpec *str_spec = NULL;
+	if (!str_spec)
+		str_spec = g_param_spec_string ("string", "string", "string",
+						"", G_PARAM_READWRITE);
+	return str_spec;
+}
+
+GParamSpec *GLADEGTK_API
+glade_gtk_standard_float_spec (void)
+{
+	static GParamSpec *float_spec = NULL;
+	if (!float_spec)
+		float_spec = g_param_spec_float ("float", "float", "float",
+						 0.0F, G_MAXFLOAT, 0.0F,
+						 G_PARAM_READWRITE);
+	return float_spec;
+}
+
 /* ------------------------------------ Custom Properties ------------------------------ */
 /**
  * glade_gtk_option_menu_set_items:
@@ -329,10 +390,9 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	 */
 	for (i = 0; i < new_size; i++)
 	{
-		if (i + 1 < g_list_length(box->children))
-			continue;
-		gtk_container_add (GTK_CONTAINER (box),
-				   GTK_WIDGET (glade_placeholder_new ()));
+		if (g_list_length(box->children) < (i + 1))
+			gtk_container_add (GTK_CONTAINER (box),
+					   GTK_WIDGET (glade_placeholder_new ()));
 	}
 
 	/* The box has shrunk. Remove the widgets that are on those slots */
@@ -343,13 +403,32 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 		GtkWidget *child_widget = ((GtkBoxChild *) (child->data))->widget;
 		GladeWidget *glade_widget;
 
-		glade_widget = glade_widget_get_from_gtk_widget (child_widget);
-		if (glade_widget)
+		if ((glade_widget = glade_widget_get_from_gtk_widget (child_widget)) != NULL)
 			/* In this case, refuse to shrink */
 			break;
 
 		gtk_container_remove (GTK_CONTAINER (box), child_widget);
 	}
+}
+
+gboolean GLADEGTK_API
+glade_gtk_box_verify_size (GObject *object, GValue *value)
+{
+	GtkBox *box = GTK_BOX(object);
+	GList  *child;
+	gint    old_size = g_list_length (box->children);
+	gint    new_size = g_value_get_int (value);
+
+	for (child = g_list_last (box->children);
+	     child && old_size > new_size;
+	     child = g_list_previous (child), old_size--)
+	{
+		GtkWidget *widget = ((GtkBoxChild *) (child->data))->widget;
+		if (glade_widget_get_from_gtk_widget (widget) != NULL)
+			/* In this case, refuse to shrink */
+			return FALSE;
+	}
+	return TRUE;
 }
 
 /**
@@ -382,47 +461,53 @@ glade_gtk_toolbar_get_size (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_toolbar_set_size (GObject *object, GValue *value)
 {
-	GladeWidget *widget;
-	GtkToolbar *toolbar;
-	gint new_size;
-	gint old_size;
+	GtkToolbar  *toolbar  = GTK_TOOLBAR (object);
+	gint         new_size = g_value_get_int (value);
+	gint         old_size = toolbar->num_children;
+	GList       *child;
 
-	g_return_if_fail (GTK_IS_TOOLBAR (object));
-
-	toolbar = GTK_TOOLBAR (object);
-	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (toolbar));
-	g_return_if_fail (widget != NULL);
-
-	old_size = toolbar->num_children;
-	new_size = g_value_get_int (value);
-
-	if (new_size == old_size)
-		return;
-
-	if (new_size > old_size) {
-		while (new_size > old_size) {
-			GtkWidget *placeholder = glade_placeholder_new ();
-			gtk_toolbar_append_widget (toolbar, placeholder, NULL, NULL);
-			old_size++;
-		}
-	} else {
-		GList *child = g_list_last (toolbar->children);
-
-		while (child && old_size > new_size) {
-			GtkWidget *child_widget = ((GtkToolbarChild *) child->data)->widget;
-			GladeWidget *glade_widget;
-
-			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
-			if (glade_widget)
-				glade_project_remove_widget
-					(glade_widget->project, child_widget);
-
-			gtk_container_remove (GTK_CONTAINER (toolbar), child_widget);
-
-			child = g_list_last (toolbar->children);
-			old_size--;
-		}
+	g_print ("Toolbar (set) old size: %d, new size %d\n", old_size, new_size);
+	/* Ensure base size
+	 */
+	while (new_size > old_size) {
+		gtk_toolbar_append_widget (toolbar, glade_placeholder_new (), NULL, NULL);
+		old_size++;
 	}
+
+	for (child = g_list_last (toolbar->children);
+	     child && old_size > new_size;
+	     child = g_list_last (toolbar->children), old_size--)
+	{
+		GtkWidget *child_widget = ((GtkToolbarChild *) child->data)->widget;
+		
+		if (glade_widget_get_from_gtk_widget (child_widget))
+			break;
+
+		gtk_container_remove (GTK_CONTAINER (toolbar), child_widget);
+	}
+	g_print ("Toolbar (set) now size %d\n", toolbar->num_children);
+}
+
+gboolean GLADEGTK_API
+glade_gtk_toolbar_verify_size (GObject *object, GValue *value)
+{
+	GtkToolbar  *toolbar  = GTK_TOOLBAR (object);
+	gint         new_size = g_value_get_int (value);
+	gint         old_size = toolbar->num_children;
+	GList       *child;
+
+	g_print ("Toolbar (verify) old size: %d, new size %d\n", old_size, new_size);
+
+	for (child = g_list_last (toolbar->children);
+	     child && old_size > new_size;
+	     child = g_list_previous (child), old_size--)
+	{
+		GtkWidget *child_widget = ((GtkToolbarChild *) child->data)->widget;
+		
+		if (glade_widget_get_from_gtk_widget (child_widget))
+			return FALSE;
+	}
+	return TRUE;
 }
 
 /**
@@ -457,7 +542,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
 	GtkNotebook *notebook;
-	gint new_size;
+	GtkWidget   *child_widget;
+	gint new_size, i;
 	gint old_size;
 
 	notebook = GTK_NOTEBOOK (object);
@@ -466,51 +552,62 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (notebook));
 	g_return_if_fail (widget != NULL);
 
-	old_size = g_list_length (notebook->children);
 	new_size = g_value_get_int (value);
 
-	if (new_size == old_size)
-		return;
 
-	if (new_size > old_size) {
-		/* The notebook has grown. Add a page. */
-		while (new_size > old_size) {
-			GladePlaceholder *placeholder =
-				GLADE_PLACEHOLDER (glade_placeholder_new ());
-			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
-						  GTK_WIDGET (placeholder),
-						  NULL);
-			old_size++;
-		}
-	} else {/* new_size < old_size */
-		/* The notebook has shrunk. Remove pages  */
-		GladeWidget *child_gwidget;
-		GtkWidget *child_widget;
+	/* Ensure base size of notebook */
+	for (i = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)); i < new_size; i++)
+	{
+		gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+					  glade_placeholder_new (),
+					  NULL);
+	}
 
-		/*
-		 * Thing to remember is that GtkNotebook starts the
-		 * page numbers from 0, not 1 (C-style). So we need to do
-		 * old_size-1, where we're referring to "nth" widget.
+	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
+
+
+	/*
+	 * Thing to remember is that GtkNotebook starts the
+	 * page numbers from 0, not 1 (C-style). So we need to do
+	 * old_size-1, where we're referring to "nth" widget.
+	 */
+	while (old_size > new_size) {
+		/* Get the last widget. */
+		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+
+		/* 
+		 * If we got it, and its not a placeholder, remove it
+		 * from project.
 		 */
-		while (old_size > new_size) {
-			/* Get the last widget. */
-			child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
-			child_gwidget = glade_widget_get_from_gtk_widget (child_widget);
+		if (glade_widget_get_from_gtk_widget (child_widget))
+			break;
 
-			/* 
-			 * If we got it, and its not a placeholder, remove it
-			 * from project.
-			 */
-			if (child_gwidget)
-				glade_project_remove_widget
-					(child_gwidget->project, child_widget);
-
-			gtk_notebook_remove_page (notebook, old_size-1);
-			old_size--;
-		}
+		gtk_notebook_remove_page (notebook, old_size-1);
+		old_size--;
 	}
 }
 
+gboolean GLADEGTK_API
+glade_gtk_notebook_verify_n_pages (GObject *object, GValue *value)
+{
+	GtkNotebook *notebook = GTK_NOTEBOOK(object);
+	GtkWidget *child_widget;
+	gint old_size, new_size = g_value_get_int (value);
+	
+	for (old_size = gtk_notebook_get_n_pages (notebook);
+	     old_size > new_size; old_size--) {
+		/* Get the last widget. */
+		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+
+		/* 
+		 * If we got it, and its not a placeholder, remove it
+		 * from project.
+		 */
+		if (glade_widget_get_from_gtk_widget (child_widget))
+			return FALSE;
+	}
+	return TRUE;
+}
 
 static gboolean
 glade_gtk_table_has_child (GtkTable *table,
@@ -561,14 +658,14 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
 	GtkTable *table;
-	gint new_size;
-	gint old_size;
+	guint new_size;
+	guint old_size;
 	gint i, j;
 
 	table = GTK_TABLE (object);
 	g_return_if_fail (GTK_IS_TABLE (table));
 
-	new_size = g_value_get_int (value);
+	new_size = g_value_get_uint (value);
 	old_size = for_rows ? table->nrows : table->ncols;
 
 	if (new_size < 1)
@@ -668,6 +765,34 @@ glade_gtk_table_set_n_columns (GObject *object, GValue *value)
 	glade_gtk_table_set_n_common (object, value, FALSE);
 }
 
+static gboolean 
+glade_gtk_table_verify_n_common (GObject *object, GValue *value, gboolean for_rows)
+{
+	GtkTable *table = GTK_TABLE(object);
+	guint new_size = g_value_get_uint (value);
+
+	if (glade_gtk_table_widget_exceeds_bounds
+	    (table,
+	     for_rows ? new_size : table->nrows,
+	     for_rows ? table->ncols : new_size))
+		/* Refuse to shrink if it means orphaning widgets */
+		return FALSE;
+
+	return TRUE;
+}
+
+gboolean GLADEGTK_API
+glade_gtk_table_verify_n_rows (GObject *object, GValue *value)
+{
+	return glade_gtk_table_verify_n_common (object, value, TRUE);
+}
+
+gboolean GLADEGTK_API
+glade_gtk_table_verify_n_columns (GObject *object, GValue *value)
+{
+	return glade_gtk_table_verify_n_common (object, value, FALSE);
+}
+
 /**
  * glade_gtk_button_set_stock:
  * @object:
@@ -681,11 +806,10 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	GladeWidget *glade_widget;
 	GtkWidget *button;
 	GtkStockItem item;
-	GladeChoice *choice = NULL;
 	GladeProperty *property;
 	GladeProperty *text;
-	GList *list;
-	gint val;
+	GEnumClass    *eclass;
+	gint val, i;
 
 	val = g_value_get_enum (value);	
 
@@ -696,23 +820,24 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 
 	property = glade_widget_get_property (glade_widget, "stock");
 	text = glade_widget_get_property (glade_widget, "label");
+
+	eclass = g_type_class_ref (property->class->pspec->value_type);
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (text != NULL);
 
-	list = property->class->choices;
-	for (; list; list = list->next)
+	for (i = 0; i < eclass->n_values; i++)
 	{
-		choice = list->data;
-		if (val == choice->value)
+		if (val == eclass->values[i].value)
 			break;
 	}
-	g_return_if_fail (list != NULL);
+
+	g_return_if_fail (i < eclass->n_values);
 
 	if (GTK_BIN (button)->child)
 		gtk_container_remove (GTK_CONTAINER (button),
 				      GTK_BIN (button)->child);
 	
-	if (!gtk_stock_lookup (choice->id, &item))
+	if (!gtk_stock_lookup (eclass->values[i].value_nick, &item))
 	{
 		GtkWidget *label;
 		
@@ -728,7 +853,7 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 
 		hbox = gtk_hbox_new (FALSE, 1);
 		label = gtk_label_new_with_mnemonic (item.label);
-		image = gtk_image_new_from_stock (choice->id,
+		image = gtk_image_new_from_stock (eclass->values[i].value_nick,
 						  GTK_ICON_SIZE_BUTTON);
 
 		gtk_label_set_mnemonic_widget (GTK_LABEL (label),
@@ -740,6 +865,8 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 		
 		gtk_widget_show_all (button);
 	}
+
+	g_type_class_unref (eclass);
 }
 
 /**

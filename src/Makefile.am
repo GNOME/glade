@@ -59,7 +59,6 @@ glade_3_SOURCES = \
 	glade-popup.c \
 	glade-widget.c \
 	glade-catalog.c \
-	glade-choice.c \
 	glade-editor.c \
 	glade-utils.c \
 	glade-signal.c \
@@ -91,7 +90,6 @@ noinst_HEADERS = \
 	glade-property.h \
 	glade-property-class.h \
 	glade-popup.h \
-	glade-choice.h \
 	glade-catalog.h \
 	glade-utils.h \
 	glade-signal.h \

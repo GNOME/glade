@@ -32,7 +32,6 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
-#include "glade-choice.h"
 #include "glade-editor.h"
 #include "glade-signal-editor.h"
 #include "glade-parameter.h"
@@ -65,6 +64,7 @@ static gboolean glade_editor_table_append_items (GladeEditorTable *table,
 						 GList **list,
 						 GladeEditorTableType type);
 
+static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
 
@@ -242,6 +242,8 @@ glade_editor_property_changed_text (GtkWidget *entry,
 	glade_editor_property_changed_text_common (property->property, text);
 
 	g_free (text);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void
@@ -266,13 +268,15 @@ glade_editor_property_changed_text_view (GtkTextBuffer *buffer,
 	glade_editor_property_changed_text_common (property->property, text);
 
 	g_free (text);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void
 glade_editor_property_changed_enum (GtkWidget *menu_item,
 				    GladeEditorProperty *property)
 {
-	GladeChoice *choice;
+	gint   ival;
 	GValue val = { 0, };
 	GladeProperty *gproperty;
 
@@ -282,16 +286,17 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	if (property->property->loading)
 		return;
 
-	choice = g_object_get_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG);
-	g_return_if_fail (choice != NULL);
+	ival = GPOINTER_TO_INT(g_object_get_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG));
 
 	gproperty = property->property;
 
-	g_value_init (&val, gproperty->class->def->g_type);
-	g_value_set_enum (&val, choice->value);
+	g_value_init (&val, gproperty->class->pspec->value_type);
+	g_value_set_enum (&val, ival);
 	glade_command_set_property (gproperty, &val);
 
 	g_value_unset (&val);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void
@@ -336,7 +341,6 @@ static void
 glade_editor_property_changed_numeric (GtkWidget *spin,
 				       GladeEditorProperty *property)
 {
-	GladeEditorNumericType numeric_type;
 	GValue val = { 0, };
 
 	g_return_if_fail (property != NULL);
@@ -345,30 +349,41 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	if (property->property->loading)
 		return;
 
-	numeric_type = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (spin), "NumericType"));
-
-	switch (numeric_type)
-	{
-	case GLADE_EDITOR_INTEGER:
-		g_value_init (&val, G_TYPE_INT);
-		g_value_set_int (&val, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spin)));
-		break;
-	case GLADE_EDITOR_FLOAT:
-		g_value_init (&val, G_TYPE_FLOAT);
-		g_value_set_float (&val, (gfloat) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
-		break;
-	case GLADE_EDITOR_DOUBLE:
-		g_value_init (&val, G_TYPE_DOUBLE);
-		g_value_set_double (&val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
-		break;
-	default:
-		g_warning ("Invalid numeric_type %i\n", numeric_type);
-		return;
-	}
+	g_value_init (&val, property->class->pspec->value_type);
+	
+	if (G_IS_PARAM_SPEC_INT(property->class->pspec))
+		g_value_set_int (&val, gtk_spin_button_get_value_as_int
+				 (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
+		g_value_set_uint (&val, gtk_spin_button_get_value_as_int
+				  (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
+		g_value_set_long (&val, (glong)gtk_spin_button_get_value_as_int
+				  (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
+		g_value_set_ulong (&val, (gulong)gtk_spin_button_get_value_as_int
+				   (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
+		g_value_set_int64 (&val, (gint64)gtk_spin_button_get_value_as_int
+				  (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
+		g_value_set_uint64 (&val, (guint64)gtk_spin_button_get_value_as_int
+				   (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
+		g_value_set_float (&val, (gfloat) gtk_spin_button_get_value
+				   (GTK_SPIN_BUTTON (spin)));
+	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
+		g_value_set_double (&val, gtk_spin_button_get_value
+				    (GTK_SPIN_BUTTON (spin)));
+	else
+		g_warning ("Unsupported type %s\n",
+			   g_type_name(property->class->pspec->value_type));
 
 	glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void
@@ -394,6 +409,8 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void
@@ -421,6 +438,8 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 
 	g_value_unset (&val);
 	g_free (text);
+
+	glade_editor_property_load (property, property->property->widget);
 }
 
 static void glade_editor_property_delete_unichar (GtkEditable *editable,
@@ -625,19 +644,18 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 /* ============================= Create inputs ============================= */
 static GtkWidget *
 glade_editor_create_input_enum_item (GladeEditorProperty *property,
-				     GladeChoice *choice)
+				     const gchar         *name,
+				     gint                 value)
 {
 	GtkWidget *menu_item;
-	const gchar *name;
 
-	name = choice->name;
 	menu_item = gtk_menu_item_new_with_label (name);
 
 	g_signal_connect (G_OBJECT (menu_item), "activate",
 			  G_CALLBACK (glade_editor_property_changed_enum),
 			  property);
 
-	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, choice);
+	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, GINT_TO_POINTER(value));
 
 	return menu_item;
 }
@@ -645,25 +663,31 @@ glade_editor_create_input_enum_item (GladeEditorProperty *property,
 static GtkWidget *
 glade_editor_create_input_enum (GladeEditorProperty *property)
 {
-	GladeChoice *choice;
-	GtkWidget *menu_item;
-	GtkWidget *menu;
-	GtkWidget *option_menu;
-	GList *list;
-
+	GtkWidget   *menu_item;
+	GtkWidget   *menu;
+	GtkWidget   *option_menu;
+	GEnumClass  *eclass;
+	gint         i;
+	
 	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail ((eclass = g_type_class_ref
+			       (property->class->pspec->value_type)) != NULL, NULL);
 
 	menu = gtk_menu_new ();
-	for (list = property->class->choices; list; list = list->next)
+
+	for (i = 0; i < eclass->n_values; i++)
 	{
-		choice = (GladeChoice *)list->data;
-		menu_item = glade_editor_create_input_enum_item (property, choice);
+		menu_item = glade_editor_create_input_enum_item (property,
+								 eclass->values[i].value_name,
+								 eclass->values[i].value);
 		gtk_widget_show (menu_item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 	}
 
 	option_menu = gtk_option_menu_new ();
 	gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+
+	g_type_class_unref (eclass);
 
 	return option_menu;
 }
@@ -735,8 +759,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 }
 
 static GtkWidget *
-glade_editor_create_input_numeric (GladeEditorProperty *property,
-				   GladeEditorNumericType numeric_type)
+glade_editor_create_input_numeric (GladeEditorProperty *property)
 {
 	GladePropertyClass *property_class;
 	GtkAdjustment *adjustment;
@@ -749,9 +772,10 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	adjustment = glade_parameter_adjustment_new (property_class);
 
 	spin  = gtk_spin_button_new (adjustment, 4,
-				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
+				     G_IS_PARAM_SPEC_FLOAT(property->class->pspec) ||
+				     G_IS_PARAM_SPEC_DOUBLE(property->class->pspec)
+				     ? 2 : 0);
 
-	g_object_set_data (G_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
 	g_signal_connect (G_OBJECT (spin), "value_changed",
 			  G_CALLBACK (glade_editor_property_changed_numeric),
 			  property);
@@ -774,24 +798,6 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	}
 
 	return spin;
-}
-
-static GtkWidget *
-glade_editor_create_input_integer (GladeEditorProperty *property)
-{
-	return glade_editor_create_input_numeric (property, GLADE_EDITOR_INTEGER);
-}
-
-static GtkWidget *
-glade_editor_create_input_float (GladeEditorProperty *property)
-{
-	return glade_editor_create_input_numeric (property, GLADE_EDITOR_FLOAT);
-}
-
-static GtkWidget *
-glade_editor_create_input_double (GladeEditorProperty *property)
-{
-	return glade_editor_create_input_numeric (property, GLADE_EDITOR_DOUBLE);
 }
 
 static GtkWidget *
@@ -831,21 +837,8 @@ glade_editor_create_input_unichar (GladeEditorProperty *property)
 	return entry;
 }
 
-static GtkWidget *
-glade_editor_create_input_object (GladeEditorProperty *property,
-				  GladeEditorTable *table)
-{
-	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
-	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
-
-	glade_editor_table_append_items (table, property->class->child,
-					 &property->children, TABLE_TYPE_GENERAL);
-
-	return NULL;
-}
-
 /**
- * glade_editor_create_item_labe:
+ * glade_editor_create_item_label:
  * @class:
  *
  * TODO: write me
@@ -891,49 +884,26 @@ glade_editor_append_item_real (GladeEditorTable *table,
 	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property->class), NULL);
 
-	switch (property->class->type) {
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		input = glade_editor_create_input_boolean (property);
-		break;
-	case GLADE_PROPERTY_TYPE_FLOAT:
-		input = glade_editor_create_input_float (property);
-		break;
-	case GLADE_PROPERTY_TYPE_INTEGER:
-		input = glade_editor_create_input_integer (property);
-		break;
-	case GLADE_PROPERTY_TYPE_DOUBLE:
-		input = glade_editor_create_input_double (property);
-		break;
-	case GLADE_PROPERTY_TYPE_STRING:
-		input = glade_editor_create_input_text (property);
-		break;
-	case GLADE_PROPERTY_TYPE_ENUM:
+	if (G_IS_PARAM_SPEC_ENUM(property->class->pspec))
 		input = glade_editor_create_input_enum (property);
-		break;
-	case GLADE_PROPERTY_TYPE_FLAGS:
+	else if (G_IS_PARAM_SPEC_FLAGS(property->class->pspec))
 		input = glade_editor_create_input_flags (property);
-		break;
-	case GLADE_PROPERTY_TYPE_UNICHAR:
+	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
+		input = glade_editor_create_input_boolean (property);
+	else if (G_IS_PARAM_SPEC_INT(property->class->pspec)    ||
+		 G_IS_PARAM_SPEC_UINT(property->class->pspec)   ||
+		 G_IS_PARAM_SPEC_LONG(property->class->pspec)   ||
+		 G_IS_PARAM_SPEC_ULONG(property->class->pspec)  ||
+		 G_IS_PARAM_SPEC_INT64(property->class->pspec)  ||
+		 G_IS_PARAM_SPEC_UINT64(property->class->pspec) ||
+		 G_IS_PARAM_SPEC_FLOAT(property->class->pspec)  ||
+		 G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
+		input = glade_editor_create_input_numeric (property);
+	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
+		input = glade_editor_create_input_text (property);
+	else if (G_IS_PARAM_SPEC_UNICHAR(property->class->pspec))
 		input = glade_editor_create_input_unichar (property);
-		break;
-	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
-		g_warning ("The widget type %s does not have an input implemented\n",
-			   property->class->name);
-		break;
-	case GLADE_PROPERTY_TYPE_OBJECT:
-		glade_editor_create_input_object (property, table);
-		/* We don't need to add an input for the object, the object
-		 * has added its childs already
-		 */
-		return NULL;
-	case GLADE_PROPERTY_TYPE_ERROR:
-		return gtk_label_new ("Error !");
-	default:
-		g_warning ("This type %s does not have an input implemented\n",
-			   property->class->name);
-		return gtk_label_new ("Fix me !");
-	}
-
+	
 	if (input == NULL) {
 		g_warning ("Can't create an input widget for type %s\n",
 			   property->class->name);
@@ -1055,7 +1025,7 @@ glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
 	gtk_widget_show (GTK_WIDGET (menu_editor));
 }
 
-#define GLADE_PROPERY_TABLE_ROW_SPACING 2
+#define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 
 static GladeEditorTable *
 glade_editor_table_new (void)
@@ -1069,7 +1039,7 @@ glade_editor_table_new (void)
 	table->rows = 0;
 
 	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget),
-				    GLADE_PROPERY_TABLE_ROW_SPACING);
+				    GLADE_PROPERTY_TABLE_ROW_SPACING);
 
 	g_object_ref (G_OBJECT(table->table_widget));
 	
@@ -1249,15 +1219,12 @@ static void
 glade_editor_property_load_integer (GladeEditorProperty *property)
 {
 	GtkWidget *spin = NULL;
-	GList *parameters;
 	gfloat val;
 
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
-	
-	parameters = property->property->class->parameters;
 
 	if (property->property->class->optional) {
 		GtkBoxChild *child;
@@ -1289,74 +1256,67 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		spin = property->input;
 	}
 
-
-	if (G_VALUE_TYPE (property->property->value) == G_TYPE_INT)
+	if (G_IS_PARAM_SPEC_INT(property->class->pspec))
 		val = (gfloat) g_value_get_int (property->property->value);
-	else if (G_VALUE_TYPE (property->property->value) == G_TYPE_DOUBLE)
+	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
+		val = (gfloat) g_value_get_uint (property->property->value);		
+	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
+		val = (gfloat) g_value_get_long (property->property->value);		
+	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
+		val = (gfloat) g_value_get_ulong (property->property->value);		
+	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
+		val = (gfloat) g_value_get_int64 (property->property->value);		
+	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
+		val = (gfloat) g_value_get_uint64 (property->property->value);		
+	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
 		val = (gfloat) g_value_get_double (property->property->value);
-	else
+	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
 		val = g_value_get_float (property->property->value);
+	else
+		g_warning ("Unsupported type %s\n",
+			   g_type_name(property->class->pspec->value_type));
 
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
+
 	g_object_set_data (G_OBJECT (spin), "user_data", property);
-}
-
-static void
-glade_editor_property_load_float (GladeEditorProperty *property)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->property != NULL);
-	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
-
-	glade_editor_property_load_integer (property);
-}
-
-static void
-glade_editor_property_load_double (GladeEditorProperty *property)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->property != NULL);
-	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
-
-	glade_editor_property_load_integer (property);
 }
 
 static void
 glade_editor_property_load_enum (GladeEditorProperty *property)
 {
 	GladePropertyClass *pclass;
-	GladeChoice *choice;
-	GList *list;
-	gint idx = 0;
+	GEnumClass         *eclass;
+	gint                i, value;
+	GList              *list;
 
+	
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
+	g_return_if_fail ((eclass = g_type_class_ref
+			   (property->class->pspec->value_type)) != NULL);
 	
 	pclass = property->property->class;
 
-	list = pclass->choices;
-	for (; list != NULL; list = list->next) {
-		gint value = g_value_get_enum (property->property->value);
-		choice = (GladeChoice *)list->data;
-		if (choice->value == value)
+	value = g_value_get_enum (property->property->value);
+
+	for (i = 0; i < eclass->n_values; i++)
+	{
+		if (eclass->values[i].value == value)
 			break;
-		idx ++;
 	}
-
-	if (list == NULL)
-		idx = 0;
-
-	gtk_option_menu_set_history (GTK_OPTION_MENU (property->input), idx);
+	
+	gtk_option_menu_set_history (GTK_OPTION_MENU (property->input),
+				     i < eclass->n_values ? i : 0);
 
 	list = GTK_MENU_SHELL (GTK_OPTION_MENU (property->input)->menu)->children;
 	for (; list != NULL; list = list->next) {
 		GtkMenuItem *menu_item = list->data;
 		g_object_set_data (G_OBJECT (menu_item), "user_data",  property);
 	}
+
+	g_type_class_unref (eclass);
 }
 
 static void
@@ -1386,17 +1346,6 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 
 	gtk_entry_set_text (GTK_ENTRY (entry), text);
 	g_free (text);
-}
-
-static void
-glade_editor_property_load_other_widgets (GladeEditorProperty *property)
-{
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (property->property != NULL);
-	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
-
-	g_warning ("Implement me (%s)!\n", G_GNUC_FUNCTION);
 }
 
 static void
@@ -1484,26 +1433,6 @@ glade_editor_property_load_unichar (GladeEditorProperty *property)
 	g_object_set_data (G_OBJECT (property->input), "user_data", property);
 }
 
-/* We are recursing so we need the prototype beforehand. Don't you love C ? */
-static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
-
-static void
-glade_editor_property_load_object (GladeEditorProperty *property,
-				   GladeWidget *widget)
-{
-	GladeEditorProperty *child;
-	GList *list;
-
-	g_return_if_fail (property != NULL);
-
-	list = property->children;
-	for (; list != NULL; list = list->next) {
-		child = list->data;
-		glade_editor_property_load (child, widget);
-	}
-		
-}
-
 static void
 glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 {
@@ -1512,11 +1441,6 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (property));
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property->class));
 
-	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-		glade_editor_property_load_object (property, widget);
-		return;
-	}
-
 	property->property = glade_widget_get_property (widget, class->id);
 
 	g_return_if_fail (property->property != NULL);
@@ -1524,42 +1448,29 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 
 	property->property->loading = TRUE;
 
-	switch (class->type) {
-	case GLADE_PROPERTY_TYPE_STRING:
-		glade_editor_property_load_text (property);
-		break;
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-		glade_editor_property_load_boolean (property);
-		break;
-	case GLADE_PROPERTY_TYPE_FLOAT:
-		glade_editor_property_load_float (property);
-		break;
-	case GLADE_PROPERTY_TYPE_DOUBLE:
-		glade_editor_property_load_double (property);
-		break;
-	case GLADE_PROPERTY_TYPE_INTEGER:
-		glade_editor_property_load_integer (property);
-		break;
-	case GLADE_PROPERTY_TYPE_ENUM:
+
+	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
 		glade_editor_property_load_enum (property);
-		break;
-	case GLADE_PROPERTY_TYPE_FLAGS:
+	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		glade_editor_property_load_flags (property);
-		break;
-	case GLADE_PROPERTY_TYPE_UNICHAR:
+	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
+		glade_editor_property_load_text (property);
+	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
+		glade_editor_property_load_boolean (property);
+	else if (G_IS_PARAM_SPEC_FLOAT(class->pspec)  ||
+		 G_IS_PARAM_SPEC_DOUBLE(class->pspec) ||
+		 G_IS_PARAM_SPEC_INT(class->pspec)    ||
+		 G_IS_PARAM_SPEC_UINT(class->pspec)   ||
+		 G_IS_PARAM_SPEC_LONG(class->pspec)   ||
+		 G_IS_PARAM_SPEC_ULONG(class->pspec)  ||
+		 G_IS_PARAM_SPEC_INT64(class->pspec)  ||
+		 G_IS_PARAM_SPEC_UINT64(class->pspec))
+		glade_editor_property_load_integer (property);
+	else if (G_IS_PARAM_SPEC_UNICHAR(class->pspec))
 		glade_editor_property_load_unichar (property);
-		break;
-	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
-		glade_editor_property_load_other_widgets (property);
-		break;
-	case GLADE_PROPERTY_TYPE_ERROR:
-		g_warning ("%s : type %i not implemented\n", G_GNUC_FUNCTION,
-			   class->type);
-		break;
-	default:
-		g_assert_not_reached ();
-		break;
-	}
+	else
+		g_warning ("%s : type %s not implemented (%s)\n", __FUNCTION__,
+			   class->name, g_type_name (class->pspec->value_type));
 
 	glade_editor_property_set_tooltips (property);
 
@@ -1733,7 +1644,7 @@ glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget)
 	GList               *list;
 	GladeEditorProperty *property;
 
-	title = g_strdup_printf ("%s %s", _("Create a"), widget->widget_class->name);
+	title = g_strdup_printf (_("Create a %s"), widget->widget_class->name);
 
 	dialog = gtk_dialog_new_with_buttons
 		(title, NULL,

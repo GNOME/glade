@@ -47,40 +47,6 @@
 static GHashTable *widget_classes = NULL;
 
 
-static gchar *
-glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
-{
-	gchar *retval;
-	GString *tmp;
-	gint i = 1, j;
-
-	tmp = g_string_new (class->name);
-
-	while (tmp->str[i])
-	{
-		if (g_ascii_isupper (tmp->str[i]))
-		{
-			tmp = g_string_insert_c (tmp, i++, '_');
-
-			j = 0;
-			while (g_ascii_isupper (tmp->str[i++]))
-				j++;
-
-			if (j > 2)
-				g_string_insert_c (tmp, i-2, '_');
-
-			continue;
-		}
-		i++;
-	}
-
-	tmp = g_string_append (tmp, "_get_type");
-        retval = g_ascii_strdown (tmp->str, tmp->len);
-	g_string_free (tmp, TRUE);
-
-	return retval;
-}
-
 /**
  * glade_widget_class_free:
  * @widget_class: a #GladeWidgetClass
@@ -702,7 +668,7 @@ glade_widget_class_new (const char *name,
 	/* we can't just call g_type_from_name (name) to get the type, because
 	 * that only works for registered types, and the only way to register the
 	 * type is to call foo_bar_get_type() */
-	init_function_name = glade_widget_class_compose_get_type_func (widget_class);
+	init_function_name = glade_util_compose_get_type_func (widget_class->name);
 	if (!init_function_name)
 	{
 		g_warning (_("Not enough memory."));

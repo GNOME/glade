@@ -187,12 +187,6 @@ struct _GladeEditorProperty
 			  */
 };
 
-typedef enum {
-	GLADE_EDITOR_INTEGER,
-	GLADE_EDITOR_FLOAT,
-	GLADE_EDITOR_DOUBLE,
-}GladeEditorNumericType;
-
 GType glade_editor_get_type (void);
 
 GladeEditor *glade_editor_new (void);

@@ -9,7 +9,9 @@ G_BEGIN_DECLS
 
 
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
+gchar          *glade_util_compose_get_type_func (gchar *name);
 GType		glade_util_get_type_from_name	(const gchar *name);
+GParamSpec     *glade_utils_get_pspec_from_funcname (const gchar *funcname);
 void		glade_util_ui_warn		(GtkWidget *parent, const gchar *warning);
 void		glade_util_flash_message	(GtkWidget *statusbar, 
 						 guint context_id,

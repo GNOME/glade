@@ -4,7 +4,7 @@
     <Property Id="label" Default="radio button"/>
     <Property Id="draw-indicator" Default="True"/>
     <Property Id="group" Name="Group" Default="True">
-      <Type>String</Type>
+      <Spec>glade_gtk_standard_string_spec</Spec>
       <SetFunction>glade_gtk_radio_button_set_group</SetFunction>
       <GetFunction>glade_gtk_radio_button_get_group</GetFunction>
     </Property>

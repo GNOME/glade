@@ -420,6 +420,9 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 		g_list_free (children);
 	}
 
+	if (glade_util_has_nodes (widget))
+	    glade_util_remove_nodes (widget);
+	
 	gwidget = glade_widget_get_from_gtk_widget (widget);
 	if (!gwidget)
 		return;
@@ -431,7 +434,8 @@ glade_project_remove_widget (GladeProject *project, GtkWidget *widget)
 	if (widget_l != NULL)
 	{
 		g_object_unref (widget);
-		glade_project_release_widget_name (project, gwidget, glade_widget_get_name (gwidget));
+		glade_project_release_widget_name (project, gwidget,
+						   glade_widget_get_name (gwidget));
 		project->widgets = g_list_delete_link (project->widgets, widget_l);
 	}
 

@@ -5,19 +5,12 @@
   <Properties>
 
     <Property Id="stock" Name="Stock Button" Default="glade-none">
-      <Type>Enum</Type>
-      <Enums EnumType="GtkReliefStyle">
-        <Enum Id="glade-none" Name="None"/>
-        <Enum Id="gtk-ok"     Name="Ok"/>
-        <Enum Id="gtk-cancel" Name="Cancel"/>
-        <Enum Id="gtk-apply" Name="Apply"/>
-        <Enum Id="gtk-close" Name="Close"/>
-      </Enums>
+      <Spec>glade_gtk_stock_spec</Spec>
       <SetFunction>glade_gtk_button_set_stock</SetFunction>
     </Property>
 
     <Property Id="response-id" Name="Response ID" Default="0" Common="False">
-      <Type>Integer</Type>
+      <Spec>glade_gtk_standard_int_spec</Spec>
       <Tooltip>The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)</Tooltip>
       <SetFunction>ignore</SetFunction>
       <GetFunction>ignore</GetFunction>

@@ -1,9 +1,11 @@
 <GladeWidgetClass>
 
+  <FillEmptyFunction>empty</FillEmptyFunction>
+
   <Properties>
 
-    <Property Id="size" Name="Size" Default="3">
-      <Type>Integer</Type>
+    <Property Id="size" Name="Size" Default="3" Query="TRUE">
+      <Spec>glade_gtk_standard_int_spec</Spec>
       <Tooltip>The number of items in the toolbar</Tooltip>
       <Parameters>
         <Parameter Key="Min" Value="0"/>
@@ -12,11 +14,9 @@
         <Parameter Key="PageIncrement" Value="10"/>
         <Parameter Key="ClimbRate" Value="1"/>
       </Parameters>
-      <Query>
-        <Question>Number of items</Question>
-      </Query>
       <SetFunction>glade_gtk_toolbar_set_size</SetFunction>
       <GetFunction>glade_gtk_toolbar_get_size</GetFunction>
+      <VerifyFunction>glade_gtk_toolbar_verify_size</VerifyFunction>
     </Property>
 
   </Properties>

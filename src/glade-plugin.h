@@ -10,7 +10,6 @@
 #include "glade-editor.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-choice.h"
 #include "glade-types.h"
 
 #endif

@@ -5,7 +5,7 @@
   <Properties>
 
     <Property Id="size" Name="Number of items" Query="TRUE" Default="3">
-      <Type>Integer</Type>
+      <Spec>glade_gtk_standard_int_spec</Spec>
       <Tooltip>The number of items in the box</Tooltip>
       <Parameters>
         <Parameter Key="Min" Value="2"/>
@@ -16,6 +16,7 @@
       </Parameters>
       <SetFunction>glade_gtk_box_set_size</SetFunction>
       <GetFunction>glade_gtk_box_get_size</GetFunction>
+      <VerifyFunction>glade_gtk_box_verify_size</VerifyFunction>
     </Property>
 
   </Properties>

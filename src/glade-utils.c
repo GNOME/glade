@@ -60,6 +60,48 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 }
 
 /**
+ * glade_util_compose_get_type_func:
+ * @name:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+gchar *
+glade_util_compose_get_type_func (gchar *name)
+{
+	gchar *retval;
+	GString *tmp;
+	gint i = 1, j;
+
+	tmp = g_string_new (name);
+
+	while (tmp->str[i])
+	{
+		if (g_ascii_isupper (tmp->str[i]))
+		{
+			tmp = g_string_insert_c (tmp, i++, '_');
+
+			j = 0;
+			while (g_ascii_isupper (tmp->str[i++]))
+				j++;
+
+			if (j > 2)
+				g_string_insert_c (tmp, i-2, '_');
+
+			continue;
+		}
+		i++;
+	}
+
+	tmp = g_string_append (tmp, "_get_type");
+        retval = g_ascii_strdown (tmp->str, tmp->len);
+	g_string_free (tmp, TRUE);
+
+	return retval;
+}
+
+/**
  * glade_util_get_type_from_name:
  * @name:
  *
@@ -70,7 +112,7 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 GType
 glade_util_get_type_from_name (const gchar *name)
 {
-	static GModule *allsymbols;
+	static GModule *allsymbols = NULL;
 	GType (*get_type) ();
 	GType type;
 
@@ -93,16 +135,38 @@ glade_util_get_type_from_name (const gchar *name)
 		return 0;
 	}
 
-/* Disabled for GtkAdjustment, but i'd like to check for this somehow. Chema */
-#if 0	
-	if (!g_type_is_a (type, gtk_widget_get_type ())) {
-		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
-			   class->name);
+	return type;
+}
+
+/**
+ * glade_utils_get_pspec_from_funcname:
+ * @name:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+GParamSpec *
+glade_utils_get_pspec_from_funcname (const gchar *funcname)
+{
+	static GModule *allsymbols     = NULL;
+	GParamSpec     *pspec          = NULL;
+	GParamSpec     *(*get_pspec)() = NULL;
+	
+	if (!allsymbols)
+		allsymbols = g_module_open (NULL, 0);
+
+	if (!g_module_symbol (allsymbols, funcname,
+			      (gpointer) &get_pspec)) {
+		g_warning (_("We could not find the symbol \"%s\""),
+			   funcname);
 		return FALSE;
 	}
-#endif
 
-	return type;
+	g_assert (get_pspec);
+	pspec = get_pspec ();
+
+	return pspec;
 }
 
 /**
@@ -921,3 +985,4 @@ glade_util_object_set_property (GObject *object, GladeProperty *property)
 	else
 		g_object_set_property (object, property->class->id, value);
 }
+

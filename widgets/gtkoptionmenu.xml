@@ -7,7 +7,7 @@
 
     <Property Id="border-width"/>
     <Property Id="items" Name="Items">
-       <Type>String</Type>
+       <Spec>glade_gtk_standard_string_spec</Spec>
 	  <SetFunction>glade_gtk_option_menu_set_items</SetFunction>
 	  <Parameters>
 	     <Parameter Key="VisibleLines" Value="2"/>
@@ -15,7 +15,7 @@
     </Property>
     <!--
     <Property ParamSpec="FALSE" Id="initial-choice" Name="Inital Choice">
-       <Type>Integer</Type>
+       <Spec>glade_gtk_standard_int_spec</Spec>
 	  <SetFunction>glade_gtk_option_menu_set_initial_choice</SetFunction>
     </Property>
     -->

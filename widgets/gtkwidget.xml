@@ -11,7 +11,7 @@
 	<Property Common="True" Optional="True" OptionalDefault="False" Default="0" Id="height-request"/>
 
     <Property Common="True" Id="tooltip" Name="Tooltip" Visible="glade_gtk_widget_condition">
-      <Type>String</Type>
+      <Spec>glade_gtk_standard_string_spec</Spec>
       <SetFunction>glade_gtk_widget_set_tooltip</SetFunction>
       <GetFunction>glade_gtk_widget_get_tooltip</GetFunction>
     </Property>

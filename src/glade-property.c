@@ -25,7 +25,6 @@
 #include <string.h>
 
 #include "glade.h"
-#include "glade-choice.h"
 #include "glade-widget.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
@@ -56,16 +55,6 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 	property->widget = widget;
 	property->value = g_new0 (GValue, 1);
 	property->enabled = TRUE;
-#if 0
-	property->child = NULL;
-
-	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-		property->child = glade_widget_new_from_class (class->child,
-							       widget->project,
-							       widget);
-		return property;
-	}
-#endif
 
 	/* Create an empty default if the class does not specify a default 
          * value */
@@ -75,31 +64,14 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 		return property;
 	}
 
-	switch (class->type) {
-	case GLADE_PROPERTY_TYPE_DOUBLE:
-	case GLADE_PROPERTY_TYPE_INTEGER:
-	case GLADE_PROPERTY_TYPE_FLOAT:
+	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
+	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
+	    G_IS_PARAM_SPEC_INT (class->pspec)     ||
+	    G_IS_PARAM_SPEC_UINT (class->pspec))
 		property->enabled = class->optional_default;
-		/* Fall thru */
-	case GLADE_PROPERTY_TYPE_ENUM:
-	case GLADE_PROPERTY_TYPE_FLAGS:
-	case GLADE_PROPERTY_TYPE_BOOLEAN:
-	case GLADE_PROPERTY_TYPE_STRING:
-	case GLADE_PROPERTY_TYPE_UNICHAR:
-		g_value_init (property->value, class->def->g_type);
-		g_value_copy (class->def, property->value); // glade_property_set (property, class->def);
-		break;
-	case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
-#if 0	
-		value = g_strdup ("");
-#endif	
-		break;
-	case GLADE_PROPERTY_TYPE_OBJECT:
-		break;
-	case GLADE_PROPERTY_TYPE_ERROR:
-		g_warning ("Invalid Glade property type (%d)\n", class->type);
-		break;
-	}
+	
+	g_value_init (property->value, class->def->g_type);
+	g_value_copy (class->def, property->value);
 
 	return property;
 }
@@ -121,11 +93,6 @@ glade_property_free (GladeProperty *property)
 		g_free (property->value);
 		property->value = NULL;
 	}
-
-#if 0
-	if (property->child)
-		g_warning ("Implemenet free property->child\n");
-#endif
 
 	g_free (property);
 }
@@ -171,6 +138,14 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		return;
 	}
 
+	if (property->class->verify_function)
+	{
+		GObject *object =
+			G_OBJECT(glade_widget_get_widget (property->widget));
+		if (property->class->verify_function (object, value) == FALSE)
+			return;
+	}
+	
 	/* Assign property first so that; if the object need be
 	 * rebuilt, it will reflect the new value
 	 */
@@ -263,7 +238,8 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	if (!property->enabled)
 		return NULL;
 
-	if (!glade_property_class_is_visible (property->class, glade_widget_get_class (property->widget)))
+	if (!glade_property_class_is_visible (property->class,
+					      glade_widget_get_class (property->widget)))
 		return NULL;
 
 	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
@@ -297,8 +273,9 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 
 	if (property->class->def)
 	{
-		default_str = glade_property_class_make_string_from_gvalue (property->class,
-									    property->class->def);
+		default_str =
+			glade_property_class_make_string_from_gvalue (property->class,
+								      property->class->def);
 		if (default_str && strcmp (tmp, default_str) == 0)
 		{
 			g_free (tmp);

@@ -4,21 +4,6 @@
 
 G_BEGIN_DECLS
 
-
-typedef enum {
-	GLADE_PROPERTY_TYPE_BOOLEAN,
-	GLADE_PROPERTY_TYPE_FLOAT,
-	GLADE_PROPERTY_TYPE_INTEGER,
-	GLADE_PROPERTY_TYPE_DOUBLE,
-	GLADE_PROPERTY_TYPE_STRING,
-	GLADE_PROPERTY_TYPE_UNICHAR,
-	GLADE_PROPERTY_TYPE_ENUM,
-	GLADE_PROPERTY_TYPE_FLAGS,
-	GLADE_PROPERTY_TYPE_OTHER_WIDGETS,
-	GLADE_PROPERTY_TYPE_OBJECT,
-	GLADE_PROPERTY_TYPE_ERROR
-} GladePropertyType;
-
 /* The GladeProperty object describes a settable parameter of a widget.
  * All entries that the user can change in the first page of the GladeEditor
  * make are a GladeProperty (except for the widget name)
@@ -104,8 +89,8 @@ typedef enum {
 
 struct _GladePropertyClass
 {
-	GladePropertyType type; /* The type of property from GladePropertyType
-				 */
+	GParamSpec *pspec; /* The Parameter Specification for this property.
+			    */
 
 	gchar *id;       /* The id of the property. Like "label" or "xpad"
 			  * this is a non-translatable string
@@ -128,16 +113,6 @@ struct _GladePropertyClass
 			    * for a type == CHOICE
 			    */
 
-	GList *choices;    /* list of GladeChoice items. This is only used
-			    * for propeties of type GLADE_PROPERTY_TYPE_CHOICE
-			    * and is NULL for other poperties.
-			    * [See glade-choice.h]
-			    */
-
-	GType enum_type;   /* If it is GLADE_PROPERTY_TYPE_ENUM or
-			    * GLADE_PROPERTY_TYPE_FLAGS, this holds
-			    * the GType of the enum or flags, otherwise it's 0.
-			    */
 	gboolean query; /* Whether we should explicitly ask the user about this property
 			 * when instantiating a widget with this property (through a popup
 			 * dialog).
@@ -152,24 +127,22 @@ struct _GladePropertyClass
 	gboolean optional_default; /* For optional values, what the default is */
 	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
 	
-	
-	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
-				  * that we need to set for this widget
-				  * for example : GtkSpinButton has a Adjustment inside
-				  * a GtkCombo has an entry inside and a GtkClist which
-				  * makes a drop dowm menu. This is only valid with
-				  * the type is object.
-				  */
-
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 
+	gboolean (*verify_function) (GObject *object,
+				     const GValue *value);
+                       /* Delagate to verify if this is a valid value for this property,
+		       * if this function exists and returns FALSE, then glade_property_set
+		       * will abort before making any changes
+		       */
+	
 	void (*set_function) (GObject *object,
 			      const GValue *value);
-		       /* If this property can't be set with g_object_set then
+	               /* If this property can't be set with g_object_set then
 		       * we need to implement it inside glade. This is a pointer
 		       * to the function that can set this property. The functions
 		       * to work arround these problems are inside glade-gtk.c
@@ -191,8 +164,6 @@ GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_cla
 void glade_property_class_free (GladePropertyClass *property_class);
 
 gboolean glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class);
-
-gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
 GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 						       const gchar *string);

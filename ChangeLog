@@ -1,3 +1,24 @@
+2004-11-02  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* Removed GladePropertyType completely from the source in favor of 
+	  GParamSpec.
+	* Removed GladeChoice code, and replaced all references thereof
+	* Custom types must now provide a function to retrieve a GParamSpec for 
+	  that type (xml files and glade-gtk backend updated accordingly).
+	* Removed "child" member from GladePropertyType in order to avoid 
+	  confusion (Note, I will add support for non-widget types + all types 
+	  allowed to have children, in a more flexable way, for now I got rid 
+	  of all mention of "child" since it wasn't implemented and mostly 
+	  `#if 0'd out anyway)
+	* Implemented <VerifyFunction> in xml files and in the glade-gtk 
+	  backend.
+	* Added support for numerical types long/ulong/int64/uint64 to the 
+	  editor.
+	* src/glade-project.c: glade_project_remove_widget() Now removes nodes 
+	  on widget to remove, this fixes bug 156515.
+	* src/glade-editor.c: Fixed popup name to 
+	  g_strdup_printf(_("Create a %s"), type);
+
 2004-11-02  David Hoover <karma@deadmoose.com>
 	* src/Makefile.am: fix up CLEANFILES problem
 

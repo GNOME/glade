@@ -18,7 +18,7 @@
      So by now we will just add a fake response-id property to buttons
   <ChildProperties>
     <Property Id="response-id" Name="Response ID" Default="0" Common="False">
-      <Type>Integer</Type>
+      <Spec>glade_gtk_standard_int_spec</Spec>
       <Tooltip>The response ID of this button in the dialog</Tooltip>
       <SetFunction>ignore</SetFunction>
       <GetFunction>ignore</GetFunction>
