@@ -195,7 +195,7 @@ glade_project_add_widget (GladeProject *project,
 		g_return_if_fail (GLADE_IS_WIDGET (parent));
 
 		widget->parent = parent;
-		parent->children = g_list_prepend (parent->children, widget);
+		parent->children = g_list_append (parent->children, widget);
 	}
 
 	project->changed = TRUE;
@@ -212,15 +212,21 @@ static void
 glade_project_remove_widget_real (GladeProject *project,
 				  GladeWidget *widget)
 {
-	GladeWidget *child;
+	GladeWidget *parent = widget->parent;
 	GList *list;
 
-	list = widget->children;
-	for (; list; list = list->next) {
-		child = list->data;
+	for (list = widget->children; list; list = list->next) {
+		GladeWidget *child = list->data;
 		glade_project_remove_widget_real (project, child);
 	}
-	
+
+	/* remove from the parent's children list */
+	if (parent) {
+		g_return_if_fail (GLADE_IS_WIDGET (parent));
+
+		parent->children = g_list_remove (parent->children, widget);
+	}
+
 	project->selection = g_list_remove (project->selection, widget);
 	glade_project_selection_changed (project);
 
@@ -228,13 +234,13 @@ glade_project_remove_widget_real (GladeProject *project,
 	gtk_signal_emit (GTK_OBJECT (project),
 			 glade_project_signals [REMOVE_WIDGET], widget);
 }
-			     
+
 void
 glade_project_remove_widget (GladeWidget *widget)
 {
 	GladeProject *project;
 
-	g_return_if_fail (widget != NULL);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	project = widget->project;
 

@@ -3,6 +3,8 @@
 	* src/glade-signal-editor.c: plug my leaks.
 	* src/glade-widget.c: remove glade_widget_update_signal.
 	* src/glade-signal.c: add signal_compare.
+	* src/glade-project: when removing a widget, also remove
+	it from its parent's children list.
 
 2003-06-18  Paolo Borelli  <pborelli@katamail.com>
 
