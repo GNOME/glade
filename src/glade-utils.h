@@ -37,6 +37,9 @@ GladeWidget	*glade_util_get_parent (GtkWidget *w);
 void		glade_util_replace_placeholder (GladePlaceholder *placeholder, GladeWidget *widget);
 GList           *glade_util_container_get_all_children (GtkContainer *container);
 
+GList           *glade_util_uri_list_parse (const gchar* uri_list);
+
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

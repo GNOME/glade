@@ -1134,6 +1134,50 @@ gpw_construct_statusbar (GladeProjectWindow *gpw)
 	return statusbar;
 }
 
+enum
+{
+	TARGET_URI_LIST
+};
+
+static GtkTargetEntry drop_types[] =
+{
+	{"text/uri-list", 0, TARGET_URI_LIST}
+};
+
+static void
+gpw_drag_data_received (GtkWidget *widget,
+			GdkDragContext *context,
+			gint x, gint y,
+			GtkSelectionData *selection_data,
+			guint info, guint time, gpointer data)
+{
+	gchar *uri_list;
+	GList *list = NULL;
+
+	if (info != TARGET_URI_LIST)
+		return;
+
+	/*
+	 * Mmh... it looks like on Windows selection_data->data is not
+	 * NULL terminated, so we need to make sure our local copy is.
+	 */
+	uri_list = g_new (gchar, selection_data->length + 1);
+	memcpy (uri_list, selection_data->data, selection_data->length);
+	uri_list[selection_data->length] = 0;
+
+	list = glade_util_uri_list_parse (uri_list);
+	for (; list; list = list->next)
+	{
+		if (list->data)
+			glade_project_window_open_project (list->data);
+
+		/* we can now free each string in the list */
+		g_free (list->data);
+	}
+
+	g_list_free (list);
+}
+
 static gboolean
 gpw_delete_event (GtkWindow *w, gpointer not_used)
 {
@@ -1174,11 +1218,20 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	glade_project_window_refresh_undo_redo ();
 
+	/* support for opening a file by dragging onto the project window */
+	gtk_drag_dest_set (app,
+			   GTK_DEST_DEFAULT_ALL,
+			   drop_types, G_N_ELEMENTS (drop_types),
+			   GDK_ACTION_COPY | GDK_ACTION_MOVE);
+
+	g_signal_connect (G_OBJECT (app), "drag-data-received",
+			  G_CALLBACK (gpw_drag_data_received), NULL);
+
 	g_signal_connect (G_OBJECT (app), "delete_event",
 			  G_CALLBACK (gpw_delete_event), NULL);
 }
 
-GladeProjectWindow * glade_project_window = NULL;
+static GladeProjectWindow *glade_project_window = NULL;
 
 GladeProjectWindow *
 glade_project_window_get ()
