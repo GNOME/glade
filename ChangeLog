@@ -1,9 +1,12 @@
 2003-07-17  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.c: fix widget_free, it 
-	should not recurse.
+	should not recurse. Fix logic of property
+	query.
 	* src/glade-project-window.c: fix close
 	properly (hopefully).
+	* src/glade-command.c: fix segfault on 
+	widget creation.
 
 2003-07-11  Paolo Borelli  <pborelli@katamail.com>
 

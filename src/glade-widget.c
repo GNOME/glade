@@ -792,7 +792,7 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	if (spin == NULL) {
 		g_hash_table_destroy (hash);
 		gtk_widget_destroy (GTK_WIDGET (dialog));
-		return TRUE;
+		return FALSE;
 	}
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -805,15 +805,15 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	case GTK_RESPONSE_REJECT:
 	case GTK_RESPONSE_DELETE_EVENT:
 		gtk_widget_destroy (dialog);
-		return TRUE;
+		return FALSE;
 	default:
 		g_assert_not_reached ();
 	}
 
 	g_hash_table_destroy (hash);
 	gtk_widget_destroy (dialog);
-	
-	return FALSE;
+
+	return TRUE;
 }
 
 /**
@@ -865,7 +865,7 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 
 	if (glade_widget_class_has_queries (class)) {
 		result = glade_property_query_result_new ();
-		if (glade_widget_query_properties (class, result))
+		if (!glade_widget_query_properties (class, result))
 			return NULL;
 	}
 
@@ -876,7 +876,7 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 	/* If we are a container, add the placeholders */
 	if (g_type_is_a (class->type,  GTK_TYPE_CONTAINER))
 		glade_widget_fill_empty (widget->widget);
-	
+
 	if (result) 
 		glade_property_query_result_destroy (result);
 

@@ -717,6 +717,11 @@ glade_command_create (GladeWidgetClass *class,
 		project = parent->project;
 
 	widget = glade_widget_new_from_class (class, project, parent);
+
+	/* widget may be null, e.g. the user clicked cancel on a query */
+	if (widget == NULL)
+		return;
+
 	glade_command_create_delete_common (widget, placeholder, TRUE);
 }
 
