@@ -29,7 +29,7 @@
 gboolean
 glade_util_path_is_writable (const gchar *full_path)
 {
-	glade_implement_me (NULL);
+	glade_implement_me ();
 
 	return TRUE;
 }

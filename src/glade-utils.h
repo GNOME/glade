@@ -9,7 +9,7 @@ G_BEGIN_DECLS
 #define __FUNCTION__   ""
 #endif
 
-#define glade_implement_me(m) g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, __FUNCTION__); 
+#define glade_implement_me() g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, __FUNCTION__); 
 
 gboolean glade_util_path_is_writable (const gchar *full_path);
 
