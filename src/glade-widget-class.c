@@ -26,7 +26,6 @@
 
 /* For g_file_exists */
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <string.h>
 
 #include <glib/gdir.h>
@@ -34,7 +33,6 @@
 #include <ctype.h>
 
 #include <gtk/gtkenums.h> /* This should go away. Chema */
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "glade.h"
 #include "glade-widget-class.h"
@@ -75,8 +73,9 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 		i++;
 	}
 
-	retval = g_strconcat (tmp->str, "_get_type", NULL);
-	g_strdown (retval);
+	tmp = g_string_append (tmp, "_get_type");
+	retval = g_ascii_strdown (tmp->str, tmp->len);
+
 	g_string_free (tmp, TRUE);
 
 	return retval;
@@ -363,46 +362,17 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	return class;
 }
 
-static gboolean
-glade_widget_class_create_pixmap (GladeWidgetClass *class)
+static GtkWidget *
+glade_widget_class_create_icon (GladeWidgetClass *class)
 {
-	struct stat s;
-	GtkWidget *widget;
-	gchar *full_path;
-	gchar *default_path;
+	GtkWidget *icon;
+	gchar *icon_path;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
-	
-	widget = gtk_button_new ();
+	icon_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->generic_name);
+	icon = gtk_image_new_from_file (icon_path);
+	g_free (icon_path);
 
-	full_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->generic_name);
-	if (stat (full_path, &s) != 0) {
-		default_path = g_strdup (PIXMAPS_DIR "/custom.xpm");
-		if (stat (default_path, &s) != 0) {
-			g_warning ("Could not create a the \"%s\" GladeWidgetClass because \"%s\" does not exist", class->name, full_path);
-			g_free (full_path);
-			g_free (default_path);
-			return FALSE;
-		} else {
-			g_free (full_path);
-			full_path = default_path;
-		}
-	}
-
-	class->pixbuf = gdk_pixbuf_new_from_file (full_path, NULL);
-
-	class->pixmap = gdk_pixmap_colormap_create_from_xpm (NULL, gtk_widget_get_colormap (GTK_WIDGET (widget)),
-							     &class->mask, NULL, full_path);
-
-	/* This one is a special case, we create a widget and not add it
-	 * in any container so its float reference is never removed, so
-	 * to destroy de object we only need to remove this floating ref
-	 */
-	gtk_object_sink (GTK_OBJECT(widget));
-/*	gtk_widget_unref (widget);*/
-	g_free (full_path);
-	
-	return TRUE;
+	return icon;
 }
 
 GladeWidgetClass *
@@ -414,20 +384,19 @@ glade_widget_class_new_from_name (const gchar *name)
 	gchar *file_name;
 
 	file_name = g_strconcat (WIDGETS_DIR, "/", name, ".xml", NULL);
-	
+
 	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (context == NULL)
+	if (!context)
 		return NULL;
 	doc = glade_xml_context_get_doc (context);
 	class = glade_widget_class_new_from_node (glade_xml_doc_get_root (doc));
 	class->xml_file = g_strdup (name);
 	glade_xml_context_free (context);
 
-	if (!glade_widget_class_create_pixmap (class))
-		return NULL;
+	class->icon = glade_widget_class_create_icon (class);
 
 	g_free (file_name);
-	
+
 	return class;
 }
 

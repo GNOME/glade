@@ -35,9 +35,7 @@ struct _GladeWidgetClass
 	gchar *name;         /* Name of the widget, for example GtkButton */
 	gchar *xml_file;     /* Name of the xml file for this type without a path */
 
-	GdkPixmap *pixmap;   /* The loaded pixmap for the icon of this widget type */
-	GdkBitmap *mask;     /* The mask for the loaded pixmap */
-	GdkPixbuf *pixbuf;   /* Temp for glade-project-view-tree. */
+	GtkWidget *icon;     /* The GtkImage icon for the widget */
 
 	gchar *generic_name; /* Use to generate names of new widgets, for
 			      * example "button" so that we generate button1,

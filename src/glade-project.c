@@ -303,13 +303,13 @@ glade_project_widget_name_changed (GladeProject *project,
 				   GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GTK_IS_OBJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	g_signal_emit (GTK_OBJECT (project),
+	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [WIDGET_NAME_CHANGED],
 		       0,
 		       widget);
-	
+
 	project->changed = TRUE;
 }
 

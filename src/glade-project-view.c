@@ -338,15 +338,14 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
 
 	/* The cell exists, but not widget has been asociated with it */
-	if (widget == NULL)
+	if (!widget)
 		return;
 
 	g_return_if_fail (widget->name != NULL);
 	g_return_if_fail (widget->class != NULL);
 	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
 	g_return_if_fail (widget->class->name != NULL);
-	g_return_if_fail (widget->class->pixbuf != NULL);
-	g_return_if_fail (GDK_IS_PIXBUF (widget->class->pixbuf));
+	g_return_if_fail (widget->class->icon != NULL);
 
 	g_object_set (G_OBJECT (cell),
 		      "text", widget->name,

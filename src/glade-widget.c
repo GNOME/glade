@@ -1001,6 +1001,9 @@ glade_widget_get_property_from_class (GladeWidget *widget,
 void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (name != NULL);
+
 	if (widget->name)
 		g_free (widget->name);
 	widget->name = g_strdup (name);

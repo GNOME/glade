@@ -357,7 +357,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 {
 	GladeEditorNumericType numeric_type;
 	GValue *val;
-	
+
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
 
@@ -375,12 +375,12 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		break;
 	case GLADE_EDITOR_FLOAT:
 		g_value_init (val, G_TYPE_FLOAT);
-		g_value_set_float (val, (float) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
+		g_value_set_float (val, (gfloat) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
 		glade_command_set_property (property->property, val);
 		break;
 	case GLADE_EDITOR_DOUBLE:
 		g_value_init (val, G_TYPE_DOUBLE);
-		g_value_set_double (val, (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
+		g_value_set_double (val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
 		glade_command_set_property (property->property, val);
 		break;
 	default:
@@ -827,12 +827,11 @@ glade_editor_table_append_standard_fields (GladeEditorTable *table)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 	entry = gtk_entry_new ();
 	gtk_entry_set_text (GTK_ENTRY (entry), table->glade_widget_class->name);
-	gtk_entry_set_editable (GTK_ENTRY (entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (entry), FALSE);
 
 	glade_editor_table_attach (gtk_table, label, 0, table->rows);
 	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
 	table->rows++;
-
 }
 
 static gboolean
@@ -983,7 +982,7 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_widget);
-	list = gtk_container_children (container);
+	list = gtk_container_get_children (container);
 	for (; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
@@ -1010,7 +1009,7 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_common);
-	list = gtk_container_children (container);
+	list = gtk_container_get_children (container);
 	for (; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));
@@ -1383,7 +1382,7 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 
 	/* Remove the old properties */
 	container = GTK_CONTAINER (editor->vbox_packing);
-	list = gtk_container_children (container);
+	list = gtk_container_get_children (container);
 	for (; list; list = list->next) {
 		GtkWidget *widget = list->data;
 		g_return_if_fail (GTK_IS_WIDGET (widget));

@@ -97,28 +97,11 @@ glade_palette_class_init (GladePaletteClass *class)
 }
 
 static GtkWidget *
-my_gtk_pixmap (const gchar *file, GtkWidget *palette)
-{
-	GtkWidget *gtk_pixmap;
-	GdkPixmap *gdk_pixmap = NULL;
-	GdkBitmap *gdk_bitmap = NULL;
-
-	gdk_pixmap = gdk_pixmap_colormap_create_from_xpm (NULL, gtk_widget_get_colormap (GTK_WIDGET (palette)),
-							  &gdk_bitmap, NULL, file);
-	gtk_pixmap = gtk_pixmap_new (gdk_pixmap, gdk_bitmap);
-
-	gdk_pixmap_unref (gdk_pixmap);
-	gdk_bitmap_unref (gdk_bitmap);
-	
-	return gtk_pixmap;
-}
-
-static GtkWidget *
 glade_palette_selector_new (GladePalette *palette)
 {
 	GtkWidget *hbox;
 	GtkWidget *button;
-	GtkWidget *pixmap;
+	GtkWidget *image;
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	button = gtk_toggle_button_new ();
@@ -127,24 +110,12 @@ glade_palette_selector_new (GladePalette *palette)
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), palette->label, FALSE, FALSE, 0);
 
-	pixmap = my_gtk_pixmap (PIXMAPS_DIR "/selector.xpm", GTK_WIDGET (palette));
-	gtk_container_add (GTK_CONTAINER (button), pixmap);
-	
+	image = gtk_image_new_from_file (PIXMAPS_DIR "/selector.xpm");
+	gtk_container_add (GTK_CONTAINER (button), image);
+
 	gtk_widget_show_all (hbox);
-	
+
 	return hbox;	
-}
-
-static GtkWidget *
-glade_palette_widget_create_icon_from_class (GladeWidgetClass *class)
-{
-	GtkWidget *pixmap;
-
-	g_return_val_if_fail (class != NULL, NULL);
-
-	pixmap = gtk_pixmap_new (class->pixmap, class->mask);
-
-	return pixmap;
 }
 
 static void
@@ -166,15 +137,14 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 }
 
 static gboolean
-glade_palette_attach_pixmap (GladePalette *palette,
-			     GtkWidget *table,
-			     GList *list,
-			     gint i,
-			     gint visual_pos,
-			     gint cols)
+glade_palette_attach_icon (GladePalette *palette,
+			   GtkWidget *table,
+			   GList *list,
+			   gint i,
+			   gint visual_pos,
+			   gint cols)
 {
 	GladeWidgetClass *class;
-	GtkWidget *gtk_pixmap;
 	GtkWidget *button;
 	gint x, y;
 
@@ -183,20 +153,18 @@ glade_palette_attach_pixmap (GladePalette *palette,
 
 	if (!class->in_palette)
 		return FALSE;
-	
-	gtk_pixmap = glade_palette_widget_create_icon_from_class (class);
 
 	button = gtk_radio_button_new (palette->widgets_button_group);
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
-	palette->widgets_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
+	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-	gtk_container_add (GTK_CONTAINER (button), gtk_pixmap);
+	gtk_container_add (GTK_CONTAINER (button), class->icon);
 	glade_util_widget_set_tooltip (button, class->generic_name);
 
 	g_object_set_data (G_OBJECT (button), "user", class);
 	g_signal_connect (G_OBJECT (button), "toggled",
 			  G_CALLBACK (glade_palette_button_clicked), palette);
-	
+
 	x = (visual_pos % cols);
 	y = (gint) (visual_pos / cols);
 	gtk_table_attach (GTK_TABLE (table),
@@ -243,13 +211,13 @@ glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 	 * all the time. Chema
 	 */
 	dummy = gtk_radio_button_new (palette->widgets_button_group);
-	palette->widgets_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (dummy));
+	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dummy));
 	palette->dummy_button = dummy;
-	
+
 	for (i = 0; i < num; i++)
-		if (glade_palette_attach_pixmap (palette, table, list, i, visual_pos, cols))
+		if (glade_palette_attach_icon (palette, table, list, i, visual_pos, cols))
 			++visual_pos;
-	
+
 	return table;
 }
 
@@ -312,7 +280,7 @@ glade_palette_on_catalog_button_toggled (GtkWidget *button,
 	gint page;
 
 	page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "page"));
-	gtk_notebook_set_page (GTK_NOTEBOOK (palette->notebook), page);
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (palette->notebook), page);
 
 	return TRUE;
 }
@@ -331,7 +299,7 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 
 	/* Add the button */ 
 	button = gtk_radio_button_new_with_label (palette->sections_button_group, catalog->title);
-	palette->sections_button_group = gtk_radio_button_group (GTK_RADIO_BUTTON (button));
+	palette->sections_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
 	g_object_set_data (G_OBJECT (button), "page", GINT_TO_POINTER (page));
 	g_signal_connect (G_OBJECT (button), "toggled",
