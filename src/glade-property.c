@@ -49,8 +49,10 @@ glade_property_get_type (void)
 {
 	static GType type = 0;
 
-	if (!type) {
-		static const GTypeInfo info = {
+	if (!type)
+	{
+		static const GTypeInfo info =
+		{
 			sizeof (GladePropertyObjectClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
@@ -120,7 +122,8 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget)
 #endif
 
 	/* Create an empty default if the class does not specify a default value */
-	if (!class->def) {
+	if (!class->def)
+	{
 		property->value = glade_property_class_make_gvalue_from_string (class, "");
 		return property;
 	}
@@ -167,12 +170,15 @@ glade_property_emit_changed (GladeProperty *property)
 static void
 glade_property_set_property (GladeProperty *property, const GValue *value)
 {
-	if (property->class->packing) {
+	if (property->class->packing)
+	{
 		GladeWidget *parent = glade_widget_get_parent (property->widget);
 		GtkContainer *container = GTK_CONTAINER (parent->widget);
 		GtkWidget *child = property->widget->widget;
 		gtk_container_child_set_property (container, child, property->class->id, value);
-	} else {
+	}
+	else
+	{
 		GObject *gobject = G_OBJECT (property->widget->widget);
 		g_object_set_property (gobject, property->class->id, value);
 	}
@@ -184,8 +190,8 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (value != NULL);
 
-	if (!g_value_type_compatible (G_VALUE_TYPE (property->value),
-				      G_VALUE_TYPE (value))) {
+	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
+	{
 		g_warning ("Trying to assing an incompatible value to property %s\n",
 			    property->class->id);
 		return;
@@ -200,10 +206,13 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	property->loading = TRUE;
 
 	/* if there is a custom set_property use it*/
-	if (property->class->set_function) {
+	if (property->class->set_function)
+	{
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  value);
-	} else {
+	}
+	else
+	{
 		glade_property_set_property (property, value);
 	}
 
@@ -213,12 +222,6 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	property->loading = FALSE;
 
 	glade_property_emit_changed (property);
-}
-
-void
-glade_property_refresh (GladeProperty *property)
-{
-	glade_property_set (property, property->value);
 }
 
 GladeXmlNode *
@@ -237,7 +240,8 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 
 	/* we should change each '-' by '_' on the name of the property (<property name="...">) */
 	tmp = g_strdup (property->class->id);
-	if (!tmp) {
+	if (!tmp)
+	{
 		glade_xml_node_delete (node);
 		return NULL;
 	}
@@ -253,7 +257,8 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
 
-	if (!tmp) {
+	if (!tmp)
+	{
 		glade_xml_node_delete (node);
 		return NULL;
 	}
@@ -280,28 +285,5 @@ glade_property_free (GladeProperty *property)
 #endif
 
 	g_free (property);
-}
-
-void
-glade_property_get_from_widget (GladeProperty *property)
-{
-	gboolean bool = FALSE;
-
-	g_value_reset (property->value);
-
-	if (property->class->get_function)
-		(*property->class->get_function) (G_OBJECT (property->widget->widget), property->value);
-	else {
-		switch (property->class->type) {
-		case GLADE_PROPERTY_TYPE_BOOLEAN:
-			g_object_get (G_OBJECT (property->widget->widget),
-				      property->class->id, &bool, NULL);
-			g_value_set_boolean (property->value, bool);
-			break;
-		default:
-			glade_implement_me ();
-			break;
-		}
-	}
 }
 

@@ -158,12 +158,7 @@ struct _GladePropertyClass
 
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
-	gboolean get_default; /* If true, when the default property is applied it is queried
-			       * from the GtkWidget rather than setting it to some value. We need
-			       * this for example for the packing position in a gtkbox, we container
-			       * add the widget, then we query the property to get the position it
-			       * was added into.
-			       */
+
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 

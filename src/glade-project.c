@@ -357,7 +357,8 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 	if (project->selection == NULL)
 		return;
 
-	for (list = project->selection; list; list = list->next) {
+	for (list = project->selection; list; list = list->next)
+	{
 		widget = list->data;
 		glade_util_remove_nodes (widget);
 	}
@@ -375,15 +376,16 @@ glade_project_selection_remove (GladeProject *project,
 				gboolean emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	if (!glade_util_has_nodes (widget))
 		return;
 
 	glade_util_remove_nodes (widget);
 
-	if (project) {
+	if (project)
+	{
 		project->selection = g_list_remove (project->selection, widget);
-
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -395,15 +397,16 @@ glade_project_selection_add (GladeProject *project,
 			     gboolean emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	if (glade_util_has_nodes (widget))
 		return;
 
 	glade_util_add_nodes (widget);
 
-	if (project) {
+	if (project)
+	{
 		project->selection = g_list_prepend (project->selection, widget);
-
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -415,6 +418,7 @@ glade_project_selection_set (GladeProject *project,
 			     gboolean emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	if (glade_util_has_nodes (widget))
 		return;
@@ -426,6 +430,8 @@ glade_project_selection_set (GladeProject *project,
 GList *
 glade_project_selection_get (GladeProject *project)
 {
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
 	return project->selection;
 }
 

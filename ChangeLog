@@ -1,3 +1,13 @@
+2003-11-07  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget.c: when adding the packing properties get their
+	value from gtk. Remove two unused functions.
+	* src/glade-command.c: set the packing properties after having
+	container_add'ed the widget.
+	* src/glade-property.[ch]: remove get_from_widget, no more needed.
+	* src/galde-property-class.[ch]: remove class->get_default.
+	* src/glade-project.c: check the parameters of some functions.
+
 2003-11-06  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* glade-3.png: restore the good png.

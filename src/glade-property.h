@@ -57,10 +57,7 @@ GladeProperty *glade_property_new (GladePropertyClass *class, GladeWidget *widge
 
 void glade_property_free (GladeProperty *property);
 
-void glade_property_set         (GladeProperty *property, const GValue *value);
-void glade_property_refresh     (GladeProperty *property);
-
-void glade_property_get_from_widget (GladeProperty *property);
+void glade_property_set (GladeProperty *property, const GValue *value);
 
 /* XML i/o */
 GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);

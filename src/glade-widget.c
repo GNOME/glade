@@ -342,55 +342,6 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 	return FALSE;
 }
 
-/**
- * Set the deafault value to the given list of properties.
- */
-static void
-glade_widget_set_default_options_real (GList *properties)
-{
-	GladeProperty *property;
-	GList *list;
-
-	for (list = properties; list; list = list->next) {
-		property = list->data;
-
-		/* For some properties, we get the value from the GtkWidget, for example the
-		 * "position" packing property. See g-p-class.h ->get_default. Chema
-		 */
-		if (property->class->get_default) {
-			glade_property_get_from_widget (property);
-			continue;
-		}
-
-		property->loading = TRUE;
-		glade_property_refresh (property);
-		property->loading = FALSE;
-	}
-}
-
-static void
-glade_widget_set_default_options (GladeWidget *widget)
-{
-	glade_widget_set_default_options_real (widget->properties);
-}
-
-/**
- * glade_widget_set_default_packing_options:
- * @widget: 
- * 
- * We need to have a different function for setting packing options
- * because we need to add the widget to the container before we
- * apply the packing options.
- *
- **/
-void
-glade_widget_set_default_packing_options (GladeWidget *widget)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	glade_widget_set_default_options_real (widget->packing_properties);
-}
-
 static void
 glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 {
@@ -569,19 +520,33 @@ glade_widget_connect_signals (GladeWidget *widget)
  */
 void
 glade_widget_set_packing_properties (GladeWidget *widget,
-				     GladeWidgetClass *container_class)
+				     GladeWidget *container)
 {
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (GLADE_IS_WIDGET_CLASS (container_class));
+	GList *list;
 
-	/*
-	 * toplevls do not have packing properties, so should not be
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (container));
+
+	/* toplevels do not have packing properties, so should not be
 	 * passed to this function.
 	 */
 	g_return_if_fail (!GTK_WIDGET_TOPLEVEL (widget->widget));
 
+	g_list_foreach(widget->packing_properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->packing_properties);
-	widget->packing_properties = glade_widget_properties_from_list (container_class->child_properties, widget);
+	widget->packing_properties = glade_widget_properties_from_list (container->class->child_properties, widget);
+
+	/* update the values of the properties to the ones we get from gtk */
+	for (list = widget->packing_properties; list; list = list->next)
+	{
+		GladeProperty *property = list->data;
+
+		g_value_reset (property->value);
+		gtk_container_child_get_property (GTK_CONTAINER (container->widget),
+						  widget->widget,
+						  property->class->id,
+						  property->value);
+	}
 }
 
 static void
@@ -657,7 +622,7 @@ glade_widget_new_for_internal_child (GladeWidgetClass *class,
 		return NULL;
 
 	glade_widget_associate_with_gtk_widget (glade_widget, widget);
-	glade_widget_set_packing_properties (glade_widget, parent->class);
+	glade_widget_set_packing_properties (glade_widget, parent);
 	glade_widget->internal = g_strdup (internal);
 
 	return glade_widget;
@@ -879,8 +844,7 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
  **/
 GladeWidget *
 glade_widget_new_from_class (GladeWidgetClass *class,
-			     GladeProject *project,
-			     GladeWidget *parent)
+			     GladeProject *project)
 {
 	GladePropertyQueryResult *result = NULL;
 	GladeWidget *widget;
@@ -888,7 +852,8 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	if (glade_widget_class_has_queries (class)) {
+	if (glade_widget_class_has_queries (class))
+	{
 		result = glade_property_query_result_new ();
 		if (!glade_widget_query_properties (class, result))
 			return NULL;
@@ -896,17 +861,12 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 
 	widget = glade_widget_new_full (class, project);
 
-	/* We know the parent (if we have one), we can add the packing properties */
-	if (parent)
-		glade_widget_set_packing_properties (widget, parent->class);
-
 	/* If we are a container, add the placeholders */
 	if (widget->class->fill_empty)
 		widget->class->fill_empty (widget->widget);
 
-	glade_widget_set_default_options (widget);
-
-	if (result) {
+	if (result)
+	{
 		glade_widget_apply_queried_properties (widget, result);
 		glade_property_query_result_destroy (result);
 	}
@@ -1357,8 +1317,9 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	if (!widget)
 		return NULL;
 
+	/* create the packing_properties list, without setting them */
 	if (parent)
-		glade_widget_set_packing_properties (widget, parent->class);
+		widget->packing_properties = glade_widget_properties_from_list (parent->class->child_properties, widget);
 
 	glade_widget_fill_from_node (node, widget);
 

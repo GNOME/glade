@@ -165,7 +165,6 @@ glade_property_class_new (void)
 	property_class->optional_default = TRUE;
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
-	property_class->get_default = FALSE;
 	property_class->is_modified = FALSE;
 	property_class->query = NULL;
 	property_class->set_function = NULL;

@@ -67,18 +67,15 @@ void glade_widget_set_contents (GladeWidget *widget);
 void glade_widget_connect_signals (GladeWidget *widget);
 
 void glade_widget_set_packing_properties (GladeWidget *widget,
-					  GladeWidgetClass *container_class);
+					  GladeWidget *container);
 
 GladeWidget *glade_widget_new_from_class (GladeWidgetClass *class,
-					  GladeProject *project,
-					  GladeWidget *parent);
+					  GladeProject *project);
 
 GladeWidget *glade_widget_new_for_internal_child (GladeWidgetClass *class,
 						  GladeWidget *parent,
 						  GtkWidget *widget,
 						  const gchar *internal);
-
-void glade_widget_set_default_packing_options (GladeWidget *widget);
 
 const gchar *glade_widget_get_name  (GladeWidget *widget);
 

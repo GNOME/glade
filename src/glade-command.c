@@ -575,8 +575,15 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 
 	glade_widget_set_contents (widget);
 
-	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+	if (!GTK_WIDGET_TOPLEVEL (widget->widget))
+	{
+		GladeWidget *parent;
+
 		glade_util_replace_placeholder (placeholder, widget);
+
+		/* we can now add the packing properties */
+		parent = glade_widget_get_parent (widget);
+		glade_widget_set_packing_properties (widget, parent);
 	}
 
 	glade_project_add_widget (widget->project, widget->widget);
@@ -723,7 +730,7 @@ glade_command_create (GladeWidgetClass *class,
 	if (!project)
 		project = parent->project;
 
-	widget = glade_widget_new_from_class (class, project, parent);
+	widget = glade_widget_new_from_class (class, project);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if (widget == NULL)
@@ -779,12 +786,14 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
 
-	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+	if (!GTK_WIDGET_TOPLEVEL (widget->widget))
+	{
 		gtk_widget_ref (GTK_WIDGET (placeholder));
 
-		/* we may have changed the parent, regenerate packing properties */
-		glade_widget_set_packing_properties (widget, parent->class);
 		glade_util_replace_placeholder (placeholder, widget);
+
+		/* we may have changed the parent, regenerate packing properties */
+		glade_widget_set_packing_properties (widget, parent);
 	}
 
 	glade_project_add_widget (project, widget->widget);
@@ -820,6 +829,7 @@ glade_command_cut_execute (GladeCommandCutPaste *me)
 
 	gtk_widget_hide (widget->widget);
 
+	glade_project_selection_remove (widget->project, widget->widget, TRUE);
 	glade_project_remove_widget (widget->project, widget->widget);
 
 	return TRUE;
