@@ -746,6 +746,7 @@ glade_widget_query_properties (GladeWidgetClass *class,
 {
 	GladePropertyClass *property_class;
 	GHashTable *hash;
+	gchar *title;
 	GtkWidget *dialog;
 	GtkWidget *table;
 	GtkWidget *vbox;
@@ -754,15 +755,17 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	gint response;
 	gint row = 0;
 
-	g_return_val_if_fail (class  != NULL, FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
 	g_return_val_if_fail (result != NULL, FALSE);
 
-	dialog = gtk_dialog_new_with_buttons (NULL /* name */,
+	title = g_strdup_printf (_("New %s"), class->name);
+	dialog = gtk_dialog_new_with_buttons (title,
 					      NULL /* parent, FIXME: parent should be the project window */,
 					      GTK_DIALOG_MODAL,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					      NULL);
+	g_free (title);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);	
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);	
