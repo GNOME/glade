@@ -37,6 +37,7 @@
 
 #include <locale.h>
 #include <gmodule.h>
+#include <stdlib.h> /* __argc & __argv on the windows build */
 #ifdef G_OS_UNIX
 #include <popt.h>
 
@@ -170,6 +171,24 @@ parse_command_line (poptContext pctx)
 	files = g_list_reverse (files);
 
 	return files;
+}
+#endif
+
+
+#ifdef G_OS_WIN32
+/* In case we build this as a windowed application */
+
+#ifdef __GNUC__
+#define _stdcall  __attribute__((stdcall))
+#endif
+
+int _stdcall
+WinMain (struct HINSTANCE__ *hInstance,
+		 struct HINSTANCE__ *hPrevInstance,
+		 char               *lpszCmdLine,
+		 int                 nCmdShow)
+{
+	return main (__argc, __argv);
 }
 #endif
 

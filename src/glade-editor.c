@@ -1536,7 +1536,8 @@ glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget)
 			 glade_editor_signals [SELECT_ITEM], widget);
 }
 
-void glade_editor_add_signal (GladeEditor *editor, guint signal_id,
+void
+glade_editor_add_signal (GladeEditor *editor, guint signal_id,
 			      const char *callback_name)
 {
 	const char *widget_name;
