@@ -1063,7 +1063,8 @@ glade_widget_write (GladeWidget *widget, GladeXmlContext *context)
 
 	/* Write the properties */
 	list = widget->properties;
-	for (; list; list = list->next) {
+	for (; list; list = list->next)
+	{
 		GladeProperty *property = list->data;
 		if (property->class->packing)
 			continue;
@@ -1087,9 +1088,9 @@ glade_widget_write (GladeWidget *widget, GladeXmlContext *context)
 			GtkWidget *child_widget;
 			child_widget = GTK_WIDGET (list->data);
 			child = glade_widget_write_child (context, child_widget);
-			if (!child) {
+			if (!child)
 				continue;
-	 		}
+
 			glade_xml_node_append_child (node, child);
 	 	}
 	}

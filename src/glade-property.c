@@ -178,6 +178,9 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	if (!property->enabled)
 		return NULL;
 
+	if (!glade_property_class_is_visible (property->class, glade_widget_get_class (property->widget)))
+		return NULL;
+
 	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
 	if (!node)
 		return NULL;

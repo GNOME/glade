@@ -144,11 +144,6 @@ struct _GladePropertyClass
 			    */
 	gboolean optional_default; /* For optional values, what the default is */
 
-	GladePropertyQuery *query; /* Some widgets require us to query the user
-				    * before creating the widget. Like a vbox will
-				    * want to know the number of columns.
-				    */
-
 	GladeWidgetClass *child; /* A  GladeWidgetClass pointer of objects
 				  * that we need to set for this widget
 				  * for example : GtkSpinButton has a Adjustment inside

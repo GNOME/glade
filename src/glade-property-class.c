@@ -240,8 +240,7 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 
 static GValue *
 glade_property_class_get_default_from_spec (GParamSpec *spec,
-					    GladePropertyClass *class,
-					    GladeXmlNode *node)
+					    GladePropertyClass *class)
 {
 	GValue *value;
 
@@ -604,7 +603,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	}
 
 	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
-	property_class->def = glade_property_class_get_default_from_spec (spec, property_class, NULL);
+	property_class->def = glade_property_class_get_default_from_spec (spec, property_class);
 
 	switch (property_class->type)
 	{
@@ -773,7 +772,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 #endif
 	/* Get the default */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-	if (buff) {
+	if (buff)
+	{
 		if (class->def)
 		{
 			if (G_VALUE_TYPE (class->def) != 0)
@@ -791,7 +791,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	if (class->optional)
 		class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
 
-	/* If this property can't be set with g_object_set, get the workarround
+	/* If this property can't be set with g_object_set, get the work around
 	 * function
 	 */
 	/* I use here a g_warning to signal these errors instead of a dialog box, as if there is one
@@ -799,7 +799,8 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	 * the user the pain of plenty of dialog boxes.  Ideally, we should collect these errors,
 	 * and show all of them at the end of the load processus. */
 	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
-	if (child) {
+	if (child)
+	{
 		gchar *symbol_name = glade_xml_get_content (child);
 
 		if (!widget_class->module)
@@ -813,11 +814,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		g_free (symbol_name);
 	}
 
-	/* If this property can't be get with g_object_get, get the workarround
+	/* If this property can't be get with g_object_get, get the work around
 	 * function
 	 */
 	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
-	if (child) {
+	if (child)
+	{
 		gchar *symbol_name = glade_xml_get_content (child);
 
 		if (!widget_class->module)
@@ -836,4 +838,3 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 
 	return TRUE;
 }
-
