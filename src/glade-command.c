@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
+ *   Archit Baweja <bighead@users.sourceforge.net>
  */
 #include <gtk/gtk.h>
 #include <string.h>
@@ -31,6 +32,7 @@
 #include "glade-property.h"
 #include "glade-debug.h"
 #include "glade-placeholder.h"
+#include "glade-clipboard.h"
 #include "glade.h"
 
 #define GLADE_COMMAND_TYPE		(glade_command_get_type ())
@@ -606,4 +608,132 @@ void
 glade_command_create (GladeWidget *widget)
 {
 	glade_command_create_delete_common (widget, TRUE);
+}
+
+/**
+ * Cut/Paste
+ *
+ * Following is the code to extend the GladeCommand Undo/Redo system to 
+ * Clipboard functions.
+ **/
+typedef struct {
+	GladeCommand parent;
+
+	GladeClipboard *clipboard;
+	GladeWidget *widget;
+	GladePlaceholder *placeholder;
+	gboolean cut;
+} GladeCommandCutPaste;
+
+
+GLADE_MAKE_COMMAND (GladeCommandCutPaste, glade_command_cut_paste);
+#define GLADE_COMMAND_CUT_PASTE_TYPE		(glade_command_cut_paste_get_type ())
+#define GLADE_COMMAND_CUT_PASTE(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_CUT_PASTE_TYPE, GladeCommandCutPaste))
+#define GLADE_COMMAND_CUT_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_CUT_PASTE_TYPE, GladeCommandCutPasteClass))
+#define IS_GLADE_COMMAND_CUT_PASTE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_CUT_PASTE_TYPE))
+#define IS_GLADE_COMMAND_CUT_PASTE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_CREATE_DELETE_TYPE))
+
+static gboolean
+glade_command_cut_paste_undo (GladeCommand *cmd)
+{
+	return glade_command_cut_paste_execute (cmd);
+}
+
+static gboolean
+glade_command_paste_execute (GladeCommandCutPaste *me)
+{
+	glade_clipboard_paste (me->clipboard, me->placeholder);
+
+	return TRUE;
+}
+
+static gboolean
+glade_command_cut_execute (GladeCommandCutPaste *me)
+{
+	glade_clipboard_cut (me->clipboard, me->widget);
+
+	return TRUE;
+}
+
+/**
+ * Execute the cmd and revert it.  Ie, after the execution of this
+ * function cmd will point to the undo action
+ */
+static gboolean
+glade_command_cut_paste_execute (GladeCommand *cmd)
+{
+	GladeCommandCutPaste *me = (GladeCommandCutPaste *) cmd;
+	gboolean retval;
+	
+	if (me->cut)
+		retval = glade_command_cut_execute (me);
+	else
+		retval = glade_command_paste_execute (me);
+
+	me->cut = !me->cut;
+	return retval;
+}
+
+static void
+glade_command_cut_paste_finalize (GObject *obj)
+{
+	GladeCommandCutPaste *cmd = GLADE_COMMAND_CUT_PASTE (obj);
+	g_object_unref (cmd->widget);
+        glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_cut_paste_unifies (GladeCommand *this, GladeCommand *other)
+{
+	return FALSE;
+}
+
+static void
+glade_command_cut_paste_collapse (GladeCommand *this, GladeCommand *other)
+{
+	g_return_if_reached ();
+}
+
+static void
+glade_command_cut_paste_common (GladeWidget *widget,
+				GladePlaceholder *placeholder,
+				gboolean cut)
+{
+	GladeCommandCutPaste *me;
+	GladeCommand *cmd;
+	GladeProject *project;
+	GladeProjectWindow *gpw;
+
+	me = (GladeCommandCutPaste *) g_object_new (GLADE_COMMAND_CUT_PASTE_TYPE, NULL);
+	cmd = (GladeCommand *) me;
+	
+	project = glade_project_window_get_project ();
+	gpw = glade_project_window_get ();
+
+	me->cut = cut;
+	me->widget = widget;
+	me->placeholder = placeholder;
+	me->clipboard = gpw->clipboard;
+	
+	cmd->description = g_strdup_printf (_("%s %s"), cut ? "Cut" : "Paste", widget->name);
+	
+	g_debug(("Pushing: %s\n", cmd->description));
+
+	/*
+	 * Push it onto the undo stack only on success
+	 */
+	if (glade_command_cut_paste_execute (GLADE_COMMAND (me)))
+		glade_command_push_undo (project, GLADE_COMMAND (me));
+}
+
+void
+glade_command_paste (GladeWidget *widget, GladePlaceholder *placeholder)
+{
+	glade_command_cut_paste_common (widget, placeholder, FALSE);
+}
+
+void
+glade_command_cut (GladeWidget *widget)
+{
+	glade_command_cut_paste_common (widget, NULL, TRUE);
 }

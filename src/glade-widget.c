@@ -1243,8 +1243,7 @@ glade_widget_cut (GladeWidget *widget)
 
 	gpw = glade_project_window_get ();
 	clipboard = gpw->clipboard;
-
-	glade_clipboard_cut (clipboard, widget);
+	glade_command_cut (widget);
 }
 
 void

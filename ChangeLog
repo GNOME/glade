@@ -68,6 +68,20 @@
 	* config.h.win: config file for win32.  Rename it to config.h before
 	trying to compile on windows.
 
+2003-04-04  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-project-window.c (gpw_cut_cb): use glade_command_cut().
+	(gpw_paste_cb): use glade_command_paste().
+
+	* src/glade-placeholder.c (glade_placeholder_paste_cb): likewise.
+
+	* src/glade-widget.c (glade_widget_cut): likewise.
+
+2002-05-26  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-command.c (glade_command_cut_paste_*): cut/paste through
+	the undo/redo system.
+
 2003-04-02  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-menu-editor.c: Fix the segfault when adding a new menu item.

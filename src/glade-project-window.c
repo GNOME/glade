@@ -275,7 +275,7 @@ gpw_cut_cb (void)
 	widget = gpw->active_widget;
 
 	if (widget)
-		glade_clipboard_cut (gpw->clipboard, widget);
+		glade_command_cut (widget);
 }
 
 static void
@@ -284,7 +284,7 @@ gpw_paste_cb (void)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
-	glade_clipboard_paste (gpw->clipboard, gpw->active_placeholder);
+	glade_command_paste (gpw->active_widget, gpw->active_placeholder);
 }
 
 static void

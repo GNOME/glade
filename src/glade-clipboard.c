@@ -4,7 +4,7 @@
  * Copyright (C) 2001 The GNOME Foundation.
  *
  * Author(s):
- *      Archit Baweja <bighead@crosswinds.net>
+ *      Archit Baweja <bighead@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

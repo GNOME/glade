@@ -798,12 +798,13 @@ glade_placeholder_fill_empty (GtkWidget *widget)
 void
 glade_placeholder_paste_cb (GtkWidget *button, gpointer data)
 {
-	GladePlaceholder *placeholder = GTK_WIDGET (data);
 	GladeProjectWindow *gpw;
-	GladeClipboard *clipboard;
 
 	gpw = glade_project_window_get ();
-	clipboard = gpw->clipboard;
 
-	glade_clipboard_paste (clipboard, placeholder);
+	/*
+	 * The data parameter is the placeholder we have to replace with the
+	 * widget.
+	 */
+	glade_command_paste (gpw->active_widget, GTK_WIDGET (data));
 }
