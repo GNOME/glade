@@ -139,6 +139,30 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
+static void
+glade_widget_class_get_specs (GladeWidgetClass *class,
+			      GParamSpec ***specs,
+			      gint *n_specs)
+{
+	GObjectClass *object_class;
+	GType type;
+
+	type = glade_widget_class_get_type (class);
+	g_type_class_ref (type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+	object_class = g_type_class_peek (type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		*specs = NULL;
+		*n_specs = 0;
+		return;
+	}
+
+	*specs = g_object_class_list_properties (object_class, n_specs);
+}
+
 static GList *
 glade_widget_class_list_properties (GladeWidgetClass *class)
 {
@@ -193,6 +217,8 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	}
 
 	list = g_list_reverse (list);
+
+	g_free (specs);
 
 	return list;
 }
@@ -387,32 +413,6 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 	return FALSE;
 }
 
-
-/* ParamSpec stuff */
-void
-glade_widget_class_get_specs (GladeWidgetClass *class,
-			      GParamSpec ***specs,
-			      gint *n_specs)
-{
-	GObjectClass *object_class;
-	GType type;
-
-	type = glade_widget_class_get_type (class);
-	g_type_class_ref (type); /* hmm */
-	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
-	  */
-	object_class = g_type_class_peek (type);
-	if (object_class == NULL) {
-		g_warning ("Class peek failed\n");
-		*specs = NULL;
-		*n_specs = 0;
-		return;
-	}
-
-	*specs = g_object_class_list_properties (object_class, n_specs);
-}
-
 GParamSpec *
 glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 {
@@ -482,6 +482,8 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 		last = spec->owner_type;
 	}
 	g_ok_print ("\n");
+
+	g_free (specs);
 }
 
 /**

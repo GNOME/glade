@@ -149,7 +149,7 @@ glade_widget_get_from_gtk_widget (GtkWidget *widget)
 {
 	GladeWidget *glade_widget;
 
-	glade_widget = gtk_object_get_data (GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
+	glade_widget = g_object_get_data (G_OBJECT (widget), GLADE_WIDGET_DATA_TAG);
 
 	return glade_widget;
 }
@@ -157,13 +157,11 @@ glade_widget_get_from_gtk_widget (GtkWidget *widget)
 /* A temp data struct that we use when looking for a widget inside a container
  * we need a struct, because the forall can only pass one pointer
  */
-typedef struct
-{
-    gint x;
-    gint y;
-    GtkWidget *found_child;
-}GladeFindInContainerData;
-
+typedef struct {
+	gint x;
+	gint y;
+	GtkWidget *found_child;
+} GladeFindInContainerData;
 
 static void
 glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
@@ -188,7 +186,7 @@ glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 	    && (widget->allocation.y <= data->y)
 	    && (widget->allocation.x + widget->allocation.width >= data->x)
 	    && (widget->allocation.y + widget->allocation.height >= data->y)
-	    && gtk_object_get_data(GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG))
+	    && g_object_get_data(G_OBJECT (widget), GLADE_WIDGET_DATA_TAG))
 	{
 		g_debug(("Found it!\n"));
 		data->found_child = widget;
@@ -323,8 +321,8 @@ glade_widget_button_press (GtkWidget *event_widget,
 		 * for example for toggle buttons
 		 */
 		if (!glade_util_has_nodes (glade_widget->widget))
-			gtk_signal_emit_stop_by_name (GTK_OBJECT (event_widget),
-						      "button_press_event");
+			g_signal_stop_emission_by_name (G_OBJECT (event_widget),
+							"button_press_event");
 		glade_project_selection_set (glade_widget->project, glade_widget->widget, TRUE);
 	} else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
@@ -415,14 +413,16 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 		}
 	}
 	  
-	gtk_signal_connect (GTK_OBJECT (widget), "button_press_event",
-			    GTK_SIGNAL_FUNC (glade_widget_button_press), NULL);
-	gtk_signal_connect (GTK_OBJECT (widget), "button_release_event",
-			    GTK_SIGNAL_FUNC (glade_widget_button_release), NULL);
+	g_signal_connect (G_OBJECT (widget), "button_press_event",
+			  G_CALLBACK (glade_widget_button_press), NULL);
+	g_signal_connect (G_OBJECT (widget), "button_release_event",
+			  G_CALLBACK (glade_widget_button_release), NULL);
 }
 
 static gboolean
-glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer user_data)
+glade_widget_key_press(GtkWidget *event_widget,
+		       GdkEventKey *event,
+		       gpointer user_data)
 {
 	GladeWidget *glade_widget = GLADE_WIDGET (user_data);
 	
@@ -447,8 +447,8 @@ glade_widget_connect_keyboard_signals (GladeWidget *glade_widget)
 				       | GDK_KEY_PRESS_MASK);
 	}
 
-	gtk_signal_connect (GTK_OBJECT (widget), "key_press_event",
-			    GTK_SIGNAL_FUNC (glade_widget_key_press), glade_widget);
+	g_signal_connect (G_OBJECT (widget), "key_press_event",
+			  G_CALLBACK (glade_widget_key_press), glade_widget);
 }
 
 /**
@@ -485,8 +485,7 @@ glade_widget_property_changed_cb (GtkWidget *w)
 
 	widget = glade_widget_get_from_gtk_widget (w);
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	property = gtk_object_get_data (GTK_OBJECT (w),
-					GLADE_MODIFY_PROPERTY_DATA);
+	property = g_object_get_data (G_OBJECT (w), GLADE_MODIFY_PROPERTY_DATA);
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
 	if (property->loading)
@@ -507,14 +506,13 @@ glade_widget_connect_edit_signals_with_class (GladeWidget *widget,
 	property = glade_widget_get_property_from_class (widget, class);
 	
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	
-	list = class->update_signals;
-	for (; list != NULL; list = list->next) {
-		gtk_signal_connect_after (GTK_OBJECT (widget->widget), list->data,
-					  GTK_SIGNAL_FUNC (glade_widget_property_changed_cb),
-					  property);
-		gtk_object_set_data (GTK_OBJECT (widget->widget),
-				     GLADE_MODIFY_PROPERTY_DATA, property);
+
+	for (list = class->update_signals; list; list = list->next) {
+		g_signal_connect_after (G_OBJECT (widget->widget), list->data,
+					G_CALLBACK (glade_widget_property_changed_cb),
+					property);
+		g_object_set_data (G_OBJECT (widget->widget),
+				   GLADE_MODIFY_PROPERTY_DATA, property);
 	}
 }
 
@@ -524,8 +522,7 @@ glade_widget_connect_edit_signals (GladeWidget *widget)
 	GladePropertyClass *class;
 	GList *list;
 
-	list = widget->class->properties;
-	for (; list != NULL; list = list->next) {
+	for (list = widget->class->properties; list; list = list->next) {
 		class = list->data;
 		if (class->update_signals)
 			glade_widget_connect_edit_signals_with_class (widget,
@@ -533,21 +530,12 @@ glade_widget_connect_edit_signals (GladeWidget *widget)
 	}
 }
 
-static gint
-glade_widget_toplevel_delete_event_cb (GtkWidget *widget, gpointer not_used)
-{
-	gtk_widget_hide (widget);
-
-	return TRUE;
-}
-
 static void
 glade_widget_connect_other_signals (GladeWidget *widget)
 {
 	if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
-		gtk_signal_connect (GTK_OBJECT (widget->widget), "delete_event",
-				    GTK_SIGNAL_FUNC (glade_widget_toplevel_delete_event_cb),
-				    NULL);
+		g_signal_connect (G_OBJECT (widget->widget), "delete_event",
+				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 	}
 }
 
@@ -808,10 +796,11 @@ glade_widget_query_properties (GladeWidgetClass *class,
 				      result);
 		break;
 	case GTK_RESPONSE_REJECT:
+	case GTK_RESPONSE_DELETE_EVENT:
 		gtk_widget_destroy (dialog);
 		return TRUE;
 	default:
-		g_warning ("Dunno what to do, unexpected GtkResponse");
+		g_assert_not_reached ();
 	}
 
 	g_hash_table_destroy (hash);
