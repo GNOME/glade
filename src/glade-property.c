@@ -427,6 +427,22 @@ glade_property_set (GladeProperty *property, GValue *value)
 					   g_value_get_string (value));
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
+		{
+			GladeChoice *choice = NULL;
+			GList * list = NULL;
+
+			list = property->class->choices;
+			for (; list != NULL; list = list->next) {
+				choice = list->data;
+				if (choice->value == g_value_get_enum (value))
+					break;
+			}
+			if (list == NULL)
+				g_warning ("Cant find the GladePropertyChoice "
+					   "for the #%d\n", g_value_get_int (value));
+			else
+				glade_property_set_enum (property, choice);
+		}
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		glade_implement_me ();

@@ -361,12 +361,30 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		g_value_set_string (value, string);
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-		glade_implement_me ();
-#if 0	
-		g_value_init (value);
-		g_free (value);
-		value = NULL;
-#endif	
+		{
+			GList *list;
+			GladeChoice *choice;
+			gint i = 0;
+			gboolean found = FALSE;
+
+			list = g_list_first (property_class->choices);
+			while (list != NULL && !found) {
+				choice = (GladeChoice *) list->data;
+				if (!g_ascii_strcasecmp (string, choice->id)) {
+					g_value_init (value, property_class->def->g_type);
+					g_value_set_enum (value, i);
+					found = TRUE;
+				}
+
+				list = g_list_next (list);
+				i++;
+			}
+			if (!found) {
+				g_warning ("Could not found choice for %s\n", string);
+				g_free (value);
+				value = NULL;
+			}
+		}
 		break;
 	case GLADE_PROPERTY_TYPE_OBJECT:
 		break;
