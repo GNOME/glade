@@ -1,5 +1,16 @@
 2004-10-04  Morten Welinder  <terra@gnome.org>
 
+	* src/glade-catalog.c (glade_catalog_load): Plug leak.
+
+	* src/glade-property-class.c
+	(glade_property_class_update_from_node): Plug leak.
+	(glade_property_class_update_from_node): Plug leak.
+
+	* src/glade-xml-utils.c (glade_xml_context_destroy): Plug leak.
+
+	* src/glade-widget-class.c (glade_widget_class_extend_with_file):
+	Plug leaks.
+
 	* src/glade-widget.c (glade_widget_finalize): Don't try to destroy
 	a hash table with g_object_unref.
 	(glade_widget_dispose): Glade properties are not GObjects, so

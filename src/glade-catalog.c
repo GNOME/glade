@@ -153,6 +153,7 @@ glade_catalog_load (const char *base_catalog_filename)
 
 	glade_xml_context_free (context);
 	g_free (catalog_filename);
+	g_free (base_library);
 	return catalog;
 
 lblError:

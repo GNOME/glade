@@ -818,6 +818,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			if (!type_name)
 				break;
 			type = g_type_from_name (type_name);
+			g_free (type_name);
 			if (!(type != 0))
 				break;
 			class->enum_type = type;
@@ -844,6 +845,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			g_free (class->def);
 		}
 		class->def = glade_property_class_make_gvalue_from_string (class, buff);
+		g_free (buff);
 		if (!class->def)
 			return FALSE;
 	}

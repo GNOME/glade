@@ -364,8 +364,10 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 
 	doc = glade_xml_context_get_doc (context);
 	node = glade_xml_doc_get_root (doc);
-	if (!doc || !node)
+	if (!doc || !node) {
+		glade_xml_context_destroy (context);
 		return FALSE;
+	}
 
 	replace_child_function_name = glade_xml_get_value_string (node, GLADE_TAG_REPLACE_CHILD_FUNCTION);
 	if (replace_child_function_name && widget_class->module)
@@ -435,6 +437,7 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 		property_class->packing = TRUE;
 	}
 
+	glade_xml_context_destroy (context);
 	return TRUE;
 }
 

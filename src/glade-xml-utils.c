@@ -503,6 +503,7 @@ void
 glade_xml_context_destroy (GladeXmlContext *context)
 {
 	g_return_if_fail (context != NULL);
+	xmlFreeDoc ((xmlDoc*)context->doc);
 	g_free (context);
 }
 
