@@ -522,6 +522,7 @@ GladeGtkFunction functions [] = {
 
 	{"glade_gtk_check_button_post_create",      glade_gtk_check_button_post_create},
 	{"glade_gtk_window_post_create",            glade_gtk_window_post_create},
+	{"glade_gtk_dialog_post_create",            glade_gtk_window_post_create},
 	{"glade_gtk_table_post_create",             glade_gtk_table_post_create},
 };
 

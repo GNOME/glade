@@ -2,6 +2,8 @@ pixmaps_DATA = \
 	window.xpm \
 	button.xpm \
 	checkbutton.xpm \
+	custom.xpm \
+	dialog.xpm \
 	vbox.xpm \
 	hbox.xpm \
 	label.xpm	\
@@ -18,8 +20,42 @@ pixmaps_DATA = \
 	vseparator.xpm \
 	handlebox.xpm \
 	optionmenu.xpm \
-	\
 	selector.xpm \
-	placeholder.xpm
+	placeholder.xpm \
+	accellabel.xpm \
+	alignment.xpm \
+	arrow.xpm \
+	aspectframe.xpm \
+	calendar.xpm \
+	colorselection.xpm \
+	colorselectiondialog.xpm \
+	curve.xpm \
+	drawingarea.xpm \
+	eventbox.xpm \
+	fileselection.xpm \
+	fixed.xpm \
+	fontselection.xpm \
+	fontselectiondialog.xpm \
+	gammacurve.xpm \
+	hbuttonbox.xpm \
+	hpaned.xpm \
+	hruler.xpm \
+	hscale.xpm \
+	hscrollbar.xpm \
+	image.xpm \
+	inputdialog.xpm \
+	layout.xpm \
+	menubar.xpm \
+	scrolledwindow.xpm \
+	statusbar.xpm \
+	textview.xpm \
+	toolbar.xpm \
+	treeview.xpm \
+	vbuttonbox.xpm \
+	viewport.xpm \
+	vpaned.xpm \
+	vruler.xpm \
+	vscale.xpm \
+	vscrollbar.xpm
 
 EXTRA_DIST = $(pixmaps_DATA)

@@ -428,7 +428,6 @@ glade_project_view_button_press_cb (GtkTreeView *view, GdkEventButton *event)
 		GladeWidget *widget;
 
 		if (!gtk_tree_view_get_path_at_pos (view,
-						    event->window,
 						    event->x, event->y,
 						    &path, NULL, NULL, NULL)) {
 			g_print ("Could not get path at pos\n");

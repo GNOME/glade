@@ -162,6 +162,9 @@ glade_property_class_new (void)
 static void
 glade_widget_property_class_free (GladePropertyClass *class)
 {
+	if (class == NULL)
+		return;
+
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (class));
 	
 	MY_FREE (class->name);
@@ -183,7 +186,11 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	case G_TYPE_PARAM_BOOLEAN:
 		return GLADE_PROPERTY_TYPE_BOOLEAN;
 	case G_TYPE_PARAM_STRING:
-		return GLADE_PROPERTY_TYPE_STRING;
+		/* FIXME: We should solve the "name" conflict with a better solution */
+		if (!g_ascii_strcasecmp ( spec->name, "name"))
+			return GLADE_PROPERTY_TYPE_ERROR;
+		else
+			return GLADE_PROPERTY_TYPE_STRING;
 	case G_TYPE_PARAM_ENUM:
 		return GLADE_PROPERTY_TYPE_ENUM;
 	case G_TYPE_PARAM_DOUBLE:
@@ -197,9 +204,13 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 	case G_TYPE_PARAM_OBJECT:
 		return GLADE_PROPERTY_TYPE_OBJECT;
 	default:
-		g_warning ("Could not determine GladePropertyType from spec (%d,%s)",
-			   G_PARAM_SPEC_TYPE (spec),
-			   G_PARAM_SPEC_TYPE_NAME (spec));
+		/*FIXME: We should implement the "events" property */
+		if (g_ascii_strcasecmp ( spec->name, "user-data") &&
+		    g_ascii_strcasecmp ( spec->name, "events")) {
+			g_warning ("Could not determine GladePropertyType from spec (%d,%s)",
+				   G_PARAM_SPEC_TYPE (spec),
+				   G_PARAM_SPEC_TYPE_NAME (spec));
+		}
 	}
 
 	return GLADE_PROPERTY_TYPE_ERROR;
@@ -278,10 +289,11 @@ glade_property_get_default_choice (GParamSpec *spec,
 #endif
 
 gchar *
-glade_property_class_make_string_from_gvalue (GladePropertyType type,
+glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
 {
 	gchar *string = NULL;
+	GladePropertyType type = property_class->type;
 
 	switch (type) {
 	case GLADE_PROPERTY_TYPE_INTEGER:
@@ -301,7 +313,18 @@ glade_property_class_make_string_from_gvalue (GladePropertyType type,
 		string = g_strdup (g_value_get_string (value));
 		break;
 	case GLADE_PROPERTY_TYPE_ENUM:
-		glade_implement_me ();
+		{
+			GList *list;
+			GladeChoice *choice;
+
+			list = g_list_nth (property_class->choices, g_value_get_enum (value));
+			if (list != NULL) {
+				choice = (GladeChoice *) list->data;
+				string = g_strdup (choice->id);
+			} else {
+				g_warning ("Could not found choice #%d\n", g_value_get_enum (value));
+			}
+		}
 		break;
 	default:
 		g_warning ("Could not make string from gvalue for type %s\n",
@@ -312,10 +335,11 @@ glade_property_class_make_string_from_gvalue (GladePropertyType type,
 }
 
 GValue *
-glade_property_class_make_gvalue_from_string (GladePropertyType type,
+glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 					      const gchar *string)
 {
 	GValue *value = g_new0 (GValue, 1);
+	GladePropertyType type = property_class->type;
 	
 	switch (type) {
 	case GLADE_PROPERTY_TYPE_INTEGER:
@@ -519,7 +543,7 @@ glade_property_class_get_parameters_from_spec (GParamSpec *spec,
 }
 
 static GValue *
-glade_property_class_get_default (GladeXmlNode *node, GladePropertyType type)
+glade_property_class_get_default (GladeXmlNode *node, GladePropertyClass *property_class)
 {
 	GValue *value;
 	gchar *temp;
@@ -533,7 +557,7 @@ glade_property_class_get_default (GladeXmlNode *node, GladePropertyType type)
 		return NULL;
 	}
 
-	value = glade_property_class_make_gvalue_from_string (type, temp);
+	value = glade_property_class_make_gvalue_from_string (property_class, temp);
 
 	g_free (temp);
 
@@ -570,8 +594,8 @@ glade_property_class_load_from_param_spec (const gchar *name,
 	}
 
 	class->id      = g_strdup (spec->name);
-	class->name    = g_strdup (g_param_get_nick (spec));
-	class->tooltip = g_strdup (g_param_get_blurb (spec));
+	class->name    = g_strdup (g_param_spec_get_nick (spec));
+	class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
 	class->type    = glade_property_class_get_type_from_spec (spec);
 
 	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
@@ -588,7 +612,7 @@ glade_property_class_load_from_param_spec (const gchar *name,
 	 */
 	def = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 	if (def) {
-		class->def = glade_property_class_get_default (node, class->type);
+		class->def = glade_property_class_get_default (node, class);
 		g_free (def);
 	} else {
 		class->def = glade_property_class_get_default_from_spec (spec, class, node);
@@ -657,51 +681,156 @@ glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *ite
 	return list;
 }
 
-static GladePropertyClass *
-glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget_class)
+static void
+glade_property_class_update_from_node (GladeXmlNode *node,
+				       GladeWidgetClass *widget_class,
+				       GladePropertyClass **property_class)
 {
-	GladePropertyClass *property_class; 
 	GladeXmlNode *child;
+	GladePropertyClass *pproperty_class;
 	gchar *type;
 	gchar *id;
 	gchar *name;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTY))
-		return NULL;
+		return;
 
 	id = glade_xml_get_property_string_required (node, GLADE_TAG_ID, widget_class->name);
 	if (id == NULL)
-		return NULL;
+		return;
 
-	property_class = glade_property_class_new ();
-
-	/* We first load the members that can be present in a property defined by a ParamSpec */
+	pproperty_class = *property_class;
 	
+	/* If we have a property like ... ParamSpec="FALSE"> we should
+	 * overwrite the ParamSpec prefs.
+	 * If the property_class == NULL we should create it from .xml file
+	 */
+	if ( !glade_xml_get_property_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE) || pproperty_class == NULL) {
+		name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
+		if (name == NULL)
+			return;
+
+		pproperty_class = glade_property_class_new ();
+
+		/* Ok, this property should not be loaded with ParamSpec */
+		pproperty_class->id    = id;
+		pproperty_class->name  = name;
+		pproperty_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
+
+		/* Get the type */
+		type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, widget_class->name);
+		if (type == NULL) {
+			glade_widget_property_class_free (pproperty_class);
+			pproperty_class = NULL;
+			return;
+		}
+		pproperty_class->type = glade_property_type_str_to_enum (type);
+		g_free (type);
+		if (pproperty_class->type == GLADE_PROPERTY_TYPE_ERROR) {
+			glade_widget_property_class_free (pproperty_class);
+			pproperty_class = NULL;
+			return;
+		}
+
+		/* Get the Parameters */
+		child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
+		if (child != NULL)
+			pproperty_class->parameters = glade_parameter_list_new_from_node (NULL, child);
+		glade_parameter_get_boolean (pproperty_class->parameters, "Optional", &pproperty_class->optional);
+
+		/* Get the choices */
+		if (pproperty_class->type == GLADE_PROPERTY_TYPE_ENUM) {
+			GValue *gvalue;
+			gchar *type_name;
+			GType type;
+			gchar *default_string;
+			GladeXmlNode *child;
+			child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
+			if (child == NULL) {
+				glade_widget_property_class_free (pproperty_class);
+				pproperty_class = NULL;
+				return;
+			}
+			
+			pproperty_class->choices = glade_choice_list_new_from_node (child);
+			type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
+			if (type_name == NULL) {
+				glade_widget_property_class_free (pproperty_class);
+				pproperty_class = NULL;
+				return;
+			}
+			
+			type = g_type_from_name (type_name);
+			if (! (type != 0)) {
+				glade_widget_property_class_free (pproperty_class);
+				pproperty_class = NULL;
+				return;
+			}
+			gvalue = g_new0 (GValue, 1);
+			g_value_init (gvalue, type);
+			default_string = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+			pproperty_class->def = gvalue;
+			glade_widget_property_class_free (*property_class);
+			*property_class = pproperty_class;
+			return;
+		}
+
+		/* If the property is an object Load it */
+		if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+			child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
+			if (child == NULL) {
+				glade_widget_property_class_free (pproperty_class);
+				pproperty_class = NULL;
+				return;
+			}
+			
+			pproperty_class->child = glade_widget_class_new_from_node (child);
+			g_print ("Loaded %s\n", pproperty_class->child->name);
+		}
+
+		pproperty_class->def = glade_property_class_get_default (node, pproperty_class);
+		glade_widget_property_class_free (*property_class);
+		*property_class = pproperty_class;
+	
+	} else {
+		GValue *tmp;
+		tmp = glade_property_class_get_default (node, pproperty_class);
+		if (tmp != NULL) {
+			g_free (pproperty_class->def);
+			pproperty_class->def = tmp;
+		}
+	}
+
+	/* FIXME: This should never occur... */
+	if (pproperty_class == NULL) {
+		g_error ("pproperty is NULL!!\n");
+		return;
+	}
 	/* Get the Query */
 	child = glade_xml_search_child (node, GLADE_TAG_QUERY);
 	if (child != NULL)
-		property_class->query = glade_query_new_from_node (child);
+		pproperty_class->query = glade_query_new_from_node (child);
 
-	
 	/* Will this property go in the common tab ? */
-	property_class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
-	property_class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
-	if (property_class->optional) {
-		property_class->optional_default = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
+	pproperty_class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
+	pproperty_class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
+	if (pproperty_class->optional) {
+		pproperty_class->optional_default = glade_xml_get_property_boolean (node,
+									GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
 	}
 
 	/* Now get the list of signals that we should listen to */
-	property_class->update_signals = glade_xml_read_list (node,
+	pproperty_class->update_signals = glade_xml_read_list (node,
 							      GLADE_TAG_UPDATE_SIGNALS,
 							      GLADE_TAG_SIGNAL_NAME);
-
+	
 	/* If this property can't be set with g_object_set, get the workarround
 	 * function
 	 */
 	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
 	if (child != NULL) {
 		gchar * content = glade_xml_get_content (child);
-		glade_property_class_get_set_function (property_class, content);
+		glade_property_class_get_set_function (pproperty_class, content);
 		g_free (content);
 	}
 	/* If this property can't be get with g_object_get, get the workarround
@@ -710,114 +839,56 @@ glade_property_class_new_from_node (GladeXmlNode *node, GladeWidgetClass *widget
 	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
 	if (child != NULL) {
 		gchar * content = glade_xml_get_content (child);
-		glade_property_class_get_get_function (property_class, content);
+		glade_property_class_get_get_function (pproperty_class, content);
 		g_free (content);
 	}
 
-	
-	/* Should we load this property from the ParamSpec ? 
-	 * We can have a property like ... ParamSpec="TRUE"> 
-	 * Or a child like <ParamSpec/>, but this will be deprecated
-	 */
-	if (glade_xml_get_property_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE)) {
-		gboolean retval;
-		
-		retval = glade_property_class_load_from_param_spec (id, property_class, widget_class, node);
-		g_free (id);
-		if (retval == FALSE) {
-			glade_widget_class_dump_param_specs (widget_class);
-			glade_widget_property_class_free (property_class);
-			property_class = NULL;
-		}
-
-		return property_class;
-	}
-
-	name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
-	if (name == NULL)
-		return NULL;
-
-	/* Ok, this property should not be loaded with ParamSpec */
-	property_class->id    = id;
-	property_class->name  = name;
-	property_class->tooltip = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
-
-	/* Get the type */
-	type = glade_xml_get_value_string_required (node, GLADE_TAG_TYPE, widget_class->name);
-	if (type == NULL)
-		return NULL;
-	property_class->type = glade_property_type_str_to_enum (type);
-	g_free (type);
-	if (property_class->type == GLADE_PROPERTY_TYPE_ERROR)
-		return NULL;
-
-	/* Get the Parameters */
-	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
-	if (child != NULL)
-		property_class->parameters = glade_parameter_list_new_from_node (NULL, child);
-	glade_parameter_get_boolean (property_class->parameters, "Optional", &property_class->optional);
-
-	/* Get the choices */
-	if (property_class->type == GLADE_PROPERTY_TYPE_ENUM) {
-		GValue *gvalue;
-		gchar *type_name;
-		GType type;
-		gchar *default_string;
-		GladeXmlNode *child;
-		child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
-		if (child == NULL)
-			return NULL;
-		property_class->choices = glade_choice_list_new_from_node (child);
-		type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
-		if (type_name == NULL)
-			return NULL;
-		type = g_type_from_name (type_name);
-		g_return_val_if_fail (type != 0, NULL);
-		gvalue = g_new0 (GValue, 1);
-		g_value_init (gvalue, type);
-		default_string = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-		property_class->def = gvalue;
-		return property_class;
-	}
-
-	/* If the property is an object Load it */
-	if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-		child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
-		if (child == NULL)
-			return NULL;
-		property_class->child = glade_widget_class_new_from_node (child);
-		g_print ("Loaded %s\n", property_class->child->name);
-	}
-
-	property_class->def = glade_property_class_get_default (node, property_class->type);
-	
-	return property_class;
+	return;
 }
 
-GList *
-glade_property_class_list_new_from_node (GladeXmlNode *node, GladeWidgetClass *class)
+
+void
+glade_property_class_list_add_from_node (GladeXmlNode *node,
+					 GladeWidgetClass *widget_class,
+					 GList **properties)
 {
-	GladePropertyClass *property_class;
+	GladePropertyClass *property_class = NULL;
 	GladeXmlNode *child;
-	GList *list;
+	GList *list_element;
+	gchar *buff;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_PROPERTIES))
-		return NULL;
-
-	list = NULL;
+		return;
+	
 	child = glade_xml_node_get_children (node);
 
 	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_PROPERTY))
-			return NULL;
-		property_class = glade_property_class_new_from_node (child, class);
-		if (property_class != NULL)
-			list = g_list_prepend (list, property_class);
+			return;
+		
+		list_element = g_list_last (*properties);
+		buff = glade_xml_get_property_string (child, GLADE_TAG_ID);
+		while (list_element != NULL && property_class == NULL) {
+
+			if (!g_ascii_strcasecmp (((GladePropertyClass *) list_element->data)->id, buff))
+				property_class = (GladePropertyClass *) list_element->data;
+			else 
+				list_element = g_list_previous (list_element);
+		}
+
+		
+		glade_property_class_update_from_node (child, widget_class, &property_class);
+		if (property_class != NULL) {
+			if (list_element != NULL)
+				*properties = g_list_delete_link (*properties, list_element);
+			*properties = g_list_prepend (*properties, property_class);
+			property_class = NULL;
+		}
+		g_free (buff);
 	}
 
-	list = g_list_reverse (list);
+	*properties = g_list_reverse (*properties);
 
-	return list;
 }
 
 
@@ -893,3 +964,87 @@ glade_property_class_create_label (GladePropertyClass *class)
 	
 	return label;
 }
+
+GList *
+glade_property_class_list_properties (GladeWidgetClass *class)
+{
+	GladePropertyClass *property_class;
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	GType last;
+	gint n_specs = 0;
+	gint i;
+	GList *list;
+
+	glade_widget_class_get_specs (class, &specs, &n_specs);
+
+	last = 0;
+	list = NULL;
+	for (i = 0; i < n_specs; i++) {
+		
+		spec = specs[i];
+
+		/* We only use the writable properties */
+		if (spec->flags & G_PARAM_WRITABLE) {
+			property_class = glade_property_class_new ();
+
+			property_class->type = glade_property_class_get_type_from_spec (spec);
+			if (property_class->type == GLADE_PROPERTY_TYPE_ERROR) {
+				if ( g_ascii_strcasecmp (spec->name, "user-data") &&
+				     g_ascii_strcasecmp (spec->name, "name") &&
+				     g_ascii_strcasecmp (spec->name, "events")) {
+					g_warning ("Could not create the \"%s\" property for the "
+						   "\"%s\" class\n", g_param_spec_get_nick(spec), class->name);
+				}
+				glade_widget_property_class_free (property_class);
+				property_class = NULL;
+				continue;
+			} else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+				/* We don't support this properties */
+				continue;
+			} else if (property_class->type == GLADE_PROPERTY_TYPE_ENUM) {
+				property_class->choices = glade_property_class_get_choices_from_spec (spec);
+			}
+
+			if ( !g_ascii_strcasecmp ( g_type_name (spec->owner_type), "GtkWidget") &&
+			     g_ascii_strcasecmp (spec->name, "name")) {
+				property_class->common = TRUE;
+			} else {
+				property_class->common = FALSE;
+			}
+			property_class->optional = FALSE;
+			property_class->update_signals = NULL;
+			property_class->id = g_strdup (spec->name);
+			property_class->name = g_strdup (g_param_spec_get_nick (spec));
+			property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
+			property_class->def = glade_property_class_get_default_from_spec
+										(spec, property_class, NULL);
+
+			switch (property_class->type) {
+				case GLADE_PROPERTY_TYPE_ENUM:
+					break;
+				case GLADE_PROPERTY_TYPE_STRING:
+					break;
+				case GLADE_PROPERTY_TYPE_INTEGER:
+				case GLADE_PROPERTY_TYPE_FLOAT:
+				case GLADE_PROPERTY_TYPE_DOUBLE:
+					property_class->parameters = 
+						glade_property_get_parameters_numeric (spec, property_class);
+					break;
+				case GLADE_PROPERTY_TYPE_BOOLEAN:
+					break;
+				case GLADE_PROPERTY_TYPE_OTHER_WIDGETS:
+					break;
+				case GLADE_PROPERTY_TYPE_OBJECT:
+					break;
+				case GLADE_PROPERTY_TYPE_ERROR:
+					break;
+			}
+			list = g_list_prepend (list, property_class);
+		}	
+	}
+	list = g_list_reverse (list);
+	return list;
+}
+
+

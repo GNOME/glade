@@ -190,15 +190,18 @@ GladePropertyClass * glade_property_class_new (void);
 
 GtkWidget * glade_property_class_create_label (GladePropertyClass *pclass);
 GtkWidget * glade_property_class_create_input (GladePropertyClass *pclass);
-GList *     glade_property_class_list_new_from_node (GladeXmlNode * node, GladeWidgetClass *class);
+GList     * glade_property_class_list_properties (GladeWidgetClass *class);
+void        glade_property_class_list_add_from_node (GladeXmlNode * node,
+						     GladeWidgetClass *class,
+						     GList **properties);
 
 GParamSpec * glade_property_class_find_spec (GladeWidgetClass *class, const gchar *name);
 
 gchar * glade_property_type_enum_to_string (GladePropertyType type);
 
-GValue * glade_property_class_make_gvalue_from_string (GladePropertyType type,
+GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 						       const gchar *string);
-gchar *  glade_property_class_make_string_from_gvalue (GladePropertyType type,
+gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 						       const GValue *value);
 
 G_END_DECLS

@@ -202,7 +202,9 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
 	if (child == NULL)
 		return FALSE;
-	class->properties = glade_property_class_list_new_from_node (child, class);
+	
+	class->properties = glade_property_class_list_properties (class);
+	glade_property_class_list_add_from_node (child, class, &class->properties);
 
 	class->signals    = glade_widget_class_list_signals (class);
 
@@ -231,6 +233,7 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 	struct stat s;
 	GtkWidget *widget;
 	gchar *full_path;
+	gchar *default_path;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
 	
@@ -238,9 +241,16 @@ glade_widget_class_create_pixmap (GladeWidgetClass *class)
 
 	full_path = g_strdup_printf (PIXMAPS_DIR "/%s.xpm", class->generic_name);
 	if (stat (full_path, &s) != 0) {
-		g_warning ("Could not create a the \"%s\" GladeWidgetClass because \"%s\" does not exist",
-			   class->name, full_path);
-		return FALSE;
+		default_path = g_strdup (PIXMAPS_DIR "/custom.xpm");
+		if (stat (default_path, &s) != 0) {
+			g_warning ("Could not create a the \"%s\" GladeWidgetClass because \"%s\" does not exist", class->name, full_path);
+			g_free (full_path);
+			g_free (default_path);
+			return FALSE;
+		} else {
+			g_free (full_path);
+			full_path = default_path;
+		}
 	}
 
 	class->pixbuf = gdk_pixbuf_new_from_file (full_path, NULL);
@@ -320,7 +330,7 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 
 
 /* ParamSpec stuff */
-static void
+void
 glade_widget_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gint *n_specs)
 {
 	GObjectClass *object_class;

@@ -1,3 +1,48 @@
+2001-11-21  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
+	Ignored the ParamSpec "name". We should solve this problem with a
+	better solution. The problem is that at .xml file we don't have
+	a property "name" we have it outside the Property section.
+
+2001-11-20  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-property-class.*
+	(glade_property_class_make_string_from_gvalue): Implemented the ENUM
+	type. We have change the first arg to get a GladePropertyClass instead
+	a GladePropertyType to do it.
+	(glade_property_class_make_gvalue_from_string): ditto.
+	
+2001-11-16  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-project-view.c (glade_project_view_button_press_cb): Fixed
+	the gtk_tree_view_get_path_at_pos API change.
+	* src/glade-property-class.c: /s/g_param_get_nick/g_param_spec_get_nick/
+	/s/g_param_get_blurb/g_param_spec_get_blurb/ to fix an API change.
+	* pixmaps/*.xpm: Added lot of pixmaps from glade1
+	* src/glade-gtk.c, src/glade-placeholder.c: Started the GtkDialog
+	support.
+
+2001-11-11  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* src/glade-property-class.* (glade_property_class_list_properties):
+	Added this function, it returns a GList of properties from GParamSpec.
+	* src/glade-property-class.* (glade_property_class_list_new_from_node):
+	Renamed to glade_property_class_list_add_from_node. It gets a GList like
+	the glade_property_class_list_properties one and add the defaults && 
+	new properties from .xml files.
+	* src/glade-widget-clas.* (glade_widget_class_get_specs): Changed as a
+	public function, we need it at glade-property-class.c
+
+2001-11-07  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* pixmaps/custom.xpm: Added the custom pixmap to put it as the default
+	one if a widget has not a pixmap.
+	* src/glade-widget-class.c (glade_widget_class_create_pixmap): If we
+	don't find the pixmap for one widget, we use the default one.
+	* widgets/*.xml: Added all the remain gtk widgets but the deprecated
+	ones, we should start adding support for all those widgets.
+	
 2001-11-04  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* src/main.c: Added a call to bind_textdomain_codeset to

@@ -904,7 +904,7 @@ glade_packing_add_property (GList **list, GladePackingProperty prop)
 	class->set_function = prop.set_function;
 	class->get_function = prop.get_function;
 	if (prop.def)
-		class->def = glade_property_class_make_gvalue_from_string (prop.type, prop.def);
+		class->def = glade_property_class_make_gvalue_from_string (class, prop.def);
 	class->get_default = prop.get_default;
 
 	*list = g_list_prepend (*list, class);
@@ -968,7 +968,7 @@ glade_packing_add_properties_from_list (GladeWidget *widget,
 			value = g_hash_table_lookup (packing_properties->properties,
 						     property->class->id);
 			if (value) {
-				gvalue = glade_property_class_make_gvalue_from_string (property->class->type, value);
+				gvalue = glade_property_class_make_gvalue_from_string (property->class, value);
 				g_free (property->value);
 				property->value = gvalue;
 			}

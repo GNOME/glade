@@ -207,8 +207,7 @@ glade_project_window_construct_menu (GladeProjectWindow *gpw)
 
 	/* Accelerators */
 	accel_group = gtk_accel_group_new ();
-	gtk_accel_group_attach (accel_group, G_OBJECT (gpw->window));
-	gtk_accel_group_unref (accel_group);
+	gtk_window_add_accel_group (GTK_WINDOW (gpw->window), accel_group);
       
 	/* Item factory */
 	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel_group);

@@ -142,7 +142,7 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	
 	/* Create an empty default if the class does not specify a default value */
 	if (!class->def) {
-		property->value = glade_property_class_make_gvalue_from_string (class->type, "");
+		property->value = glade_property_class_make_gvalue_from_string (class, "");
 		return property;
 	}
 			
@@ -580,7 +580,7 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 
 	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
 	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, property->class->id);
-	temp = glade_property_class_make_string_from_gvalue (property->class->type,
+	temp = glade_property_class_make_string_from_gvalue (property->class,
 							     property->value);
 	glade_xml_set_content (node, temp);
 	g_free (temp);

@@ -120,6 +120,15 @@ glade_placeholder_replace_table (GtkWidget *current,
 }
 
 static void
+glade_placeholder_replace_dialog (GtkWidget *current,
+				  GtkWidget *new,
+				  GtkWidget *container)
+{
+
+	glade_placeholder_replace_box (current, new, GTK_DIALOG (container)->vbox);
+}
+
+static void
 glade_placeholder_replace_container (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container)
@@ -203,6 +212,8 @@ glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 		class->placeholder_replace = glade_placeholder_replace_table;
 	if (strcmp (class->name, "GtkNotebook") == 0)
 		class->placeholder_replace = glade_placeholder_replace_notebook;
+	if (strcmp (class->name, "GtkDialog") == 0)
+		class->placeholder_replace = glade_placeholder_replace_dialog;
 	if ((strcmp (class->name, "GtkWindow")    == 0) ||
 	    (strcmp (class->name, "GtkFrame")     == 0) ||
 	    (strcmp (class->name, "GtkHandleBox") == 0 ))
@@ -370,8 +381,13 @@ glade_placeholder_add_with_result (GladeWidgetClass *class,
 	
 	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
 		GladePlaceholder *placeholder;
+
 		placeholder = glade_placeholder_new (widget);
-		gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
+		if (glade_widget_class_is (class, "GtkDialog"))
+			gtk_container_add (GTK_CONTAINER (GTK_DIALOG (widget->widget)->vbox),
+					   GTK_WIDGET (placeholder));
+		else
+			gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
 		return;
 	}
 
@@ -412,10 +428,14 @@ glade_placeholder_get_from_properties (GladeWidget *parent,
 	GList *list;
 
 	if (glade_widget_class_is (parent->class, "GtkVBox") ||
-	    glade_widget_class_is (parent->class, "GtkHBox")) {
+	    glade_widget_class_is (parent->class, "GtkHBox") ||
+	    glade_widget_class_is (parent->class, "GtkDialog")) {
 		GtkBoxChild *box_child;
 		const gchar *val;
-		list = gtk_container_children (GTK_CONTAINER (parent->widget));
+		if (glade_widget_class_is (parent->class, "GtkDialog"))
+			list = gtk_container_children (GTK_CONTAINER ( GTK_DIALOG (parent->widget)->vbox));
+		else
+			list = gtk_container_children (GTK_CONTAINER (parent->widget));
 		val = g_hash_table_lookup (properties, "position");
 		box_child = (GtkBoxChild *) g_list_nth (list, atoi (val));
 		placeholder = box_child->widget;
@@ -469,20 +489,27 @@ glade_placeholder_remove_all (GtkWidget *widget)
 	g_return_if_fail (widget != NULL);
 	
 	if (glade_widget_class_is (gwidget->class, "GtkVBox") ||
-	    glade_widget_class_is (gwidget->class, "GtkHBox")) {
+	    glade_widget_class_is (gwidget->class, "GtkHBox") ||
+	    glade_widget_class_is (gwidget->class, "GtkDialog")) {
 		GList *element;
+		GtkBox *box;
 		GtkBoxChild *box_child;
+
+		if (glade_widget_class_is (gwidget->class, "GtkDialog"))
+			box = GTK_BOX (GTK_DIALOG (widget)->vbox);
+		else
+			box = GTK_BOX (widget);
 		
-		element = g_list_first (GTK_BOX (widget)->children);
+		element = g_list_first (box->children);
 		while (element != NULL) {
 			box_child = element->data;
 			if (glade_placeholder_is (box_child->widget)) {
 				child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
 				if (child_widget)
                                 	glade_widget_delete (child_widget);
-	               	        gtk_container_remove (GTK_CONTAINER (widget),
+	               	        gtk_container_remove (GTK_CONTAINER (box),
                         	                      box_child->widget);
-				element = g_list_first (GTK_BOX (widget)->children);
+				element = g_list_first (box->children);
 			} else {
 				element = g_list_next (element);
 			}		
@@ -520,14 +547,18 @@ glade_placeholder_fill_empty (GtkWidget *widget)
 	g_return_if_fail (widget != NULL);
 
 	if (glade_widget_class_is (gwidget->class, "GtkVBox") ||
-	    glade_widget_class_is (gwidget->class, "GtkHBox")) {
+	    glade_widget_class_is (gwidget->class, "GtkHBox") ||
+	    glade_widget_class_is (gwidget->class, "GtkDialog")) {
 		GList *element;
 		GtkBox *box;
 		GtkBoxChild *box_child;
 		GladeProperty *property;
 		gint size, i, position;
 
-		box = GTK_BOX (widget);
+		if (glade_widget_class_is (gwidget->class, "GtkDialog"))
+			box = GTK_BOX (GTK_DIALOG (widget)->vbox);
+		else
+			box = GTK_BOX (widget);
 		
 		property = glade_property_get_from_id   (gwidget->properties, "size");
 		size = glade_property_get_integer (property);

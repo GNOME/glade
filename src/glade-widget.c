@@ -1197,7 +1197,7 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 		return FALSE;
 	}
 
-	gvalue = glade_property_class_make_gvalue_from_string (property->class->type,
+	gvalue = glade_property_class_make_gvalue_from_string (property->class,
 							       value);
 
 	glade_property_set (property, gvalue);
@@ -1305,7 +1305,7 @@ glade_widget_apply_property_from_hash_item (gpointer key, gpointer val, gpointer
 	property = glade_property_get_from_id (widget->properties, id);
 	g_assert (property);
 
-	gvalue = glade_property_class_make_gvalue_from_string (property->class->type,
+	gvalue = glade_property_class_make_gvalue_from_string (property->class,
 							       value);
 
 	glade_property_set (property, gvalue);

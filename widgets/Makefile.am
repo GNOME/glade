@@ -1,23 +1,63 @@
 widgets_DATA = \
 	catalog.xml \
-	gtkwindow.xml \
+	gtkaccellabel.xml \
+	gtkalignment.xml \
+	gtkarrow.xml \
+	gtkaspectframe.xml \
 	gtkbutton.xml \
+	gtkcalendar.xml \
 	gtkcheckbutton.xml \
-	gtklabel.xml \
-	gtkvbox.xml \
-	gtkhbox.xml \
-	gtktable.xml \
-	gtkframe.xml \
-	gtknotebook.xml \
-	gtkentry.xml \
-	gtktogglebutton.xml \
-	gtkprogressbar.xml \
-	gtkspinbutton.xml \
-	gtkradiobutton.xml \
+	gtkcolorselectiondialog.xml \
+	gtkcolorselection.xml \
 	gtkcombo.xml \
-	gtkhseparator.xml \
-	gtkvseparator.xml \
+	gtkcurve.xml \
+	gtkdialog.xml \
+	gtkdrawingarea.xml \
+	gtkentry.xml \
+	gtkeventbox.xml \
+	gtkfileselection.xml \
+	gtkfixed.xml \
+	gtkfontselectiondialog.xml \
+	gtkfontselection.xml \
+	gtkframe.xml \
+	gtkgammacurve.xml \
 	gtkhandlebox.xml \
-	gtkoptionmenu.xml 
+	gtkhbox.xml \
+	gtkhbuttonbox.xml \
+	gtkhpaned.xml \
+	gtkhruler.xml \
+	gtkhscale.xml \
+	gtkhscrollbar.xml \
+	gtkhseparator.xml \
+	gtkimage.xml \
+	gtkinputdialog.xml \
+	gtklabel.xml \
+	gtklayout.xml \
+	gtkmenubar.xml \
+	gtkmenu.xml \
+	gtkmessagedialog.xml \
+	gtknotebook.xml \
+	gtkoptionmenu.xml \
+	gtkplug.xml \
+	gtkprogressbar.xml \
+	gtkradiobutton.xml \
+	gtkscrolledwindow.xml \
+	gtksocket.xml \
+	gtkspinbutton.xml \
+	gtkstatusbar.xml \
+	gtktable.xml \
+	gtktextview.xml \
+	gtktogglebutton.xml \
+	gtktoolbar.xml \
+	gtktreeview.xml \
+	gtkvbox.xml \
+	gtkvbuttonbox.xml \
+	gtkviewport.xml \
+	gtkvpaned.xml \
+	gtkvruler.xml \
+	gtkvscale.xml \
+	gtkvscrollbar.xml \
+	gtkvseparator.xml \
+	gtkwindow.xml
 
 EXTRA_DIST = $(widgets_DATA)
