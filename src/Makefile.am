@@ -25,7 +25,7 @@ INCLUDES = \
 	-DMODULES_DIR=\""@modulesdir@"\" \
 	-DG_LOG_DOMAIN=\"Glade\"
 
-CFLAGS = -g -O2 -Wall 
+CFLAGS = -g -Wall 
 
 glade_3_LDADD = \
 	$(GLADE_LIBS)

@@ -413,25 +413,19 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	GtkWidget        *new_widget, *old_widget;
 	GladeWidgetClass *klass = glade_widget->widget_class;
 
-	/* Clear the project selection before destroying this widget */
-	glade_project_selection_clear(glade_widget->project, TRUE);
-
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
 	new_widget = GTK_WIDGET(glade_widget_build_object(klass, glade_widget));
 	old_widget = g_object_ref(G_OBJECT(glade_widget_get_widget(glade_widget)));
 
-	glade_project_remove_widget(glade_widget->project, old_widget);
-
 	glade_widget_set_widget(glade_widget, new_widget);
 
-	g_object_unref(G_OBJECT(old_widget));
+	/* Must use gtk_widget_destroy here for cases like dialogs and toplevels
+	 * (otherwise I'd prefer g_object_unref() )
+	 */
+	gtk_widget_destroy(old_widget);
 	gtk_widget_show_all(new_widget);
-
-	/* Set the new widget as the current selection */
-	glade_project_add_widget(glade_widget->project, new_widget);
-	glade_project_selection_set(glade_widget->project, new_widget, TRUE);
 }
 
 
@@ -1007,7 +1001,6 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 	}
 }
 
-
 /**
  * glade_widget_transport_children:
  * @gwidget: A #GladeWidget
@@ -1016,44 +1009,37 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
  * 
  * Transports all children from @from_container to @to_container
  *
- * Returns: whether any children were transported
  */
-static gboolean
+static void
 glade_widget_transport_children (GladeWidget  *gwidget,
 				 GtkContainer *from_container,
 				 GtkContainer *to_container)
 {
-	GList *children, *l;
-	if (from_container != NULL &&
-	    (l = children =
-	     gtk_container_get_children(from_container)) != NULL)
+	GList *l, *children =
+		from_container ? gtk_container_get_children(from_container) : NULL;
+
+	for (l = children; l && l->data; l = l->next)
 	{
-		while (l && l->data)
-		{
-			GtkWidget *child = (GtkWidget *)l->data;
+		GtkWidget *child = (GtkWidget *)l->data;
 				
-			/* If this widget is a container, all children get a temporary
-			 * reference and are moved from the old container, to the new
-			 * container and thier child properties are applied.
-			 */
-			g_object_ref(child);
-			gtk_container_remove(GTK_CONTAINER(from_container), child);
-			gtk_container_add(GTK_CONTAINER(to_container), child);
-			glade_widget_set_packing_properties
-				(glade_widget_get_from_gtk_widget (child), gwidget);
-			g_object_unref(child);
+		/* If this widget is a container, all children get a temporary
+		 * reference and are moved from the old container, to the new
+		 * container and thier child properties are applied.
+		 */
+		g_object_ref(child);
+		gtk_container_remove(GTK_CONTAINER(from_container), child);
+		gtk_container_add(GTK_CONTAINER(to_container), child);
+		glade_widget_set_packing_properties
+			(glade_widget_get_from_gtk_widget (child), gwidget);
+		g_object_unref(child);
 				
-			l = l->next;
-		}
-		g_list_free(children);
-		return TRUE;
 	}
-	return FALSE;
+	g_list_free(children);
 }
 
 /**
  * glade_widget_update_parent:
- * @gwidget: A #GladeWidget
+ * @widget: A #GladeWidget
  * @old_widget: A #GtkWidget
  * @new_widget: A #GtkWidget
  *
@@ -1075,8 +1061,7 @@ glade_widget_update_parent(GladeWidget *gwidget, GtkWidget *old_widget, GtkWidge
 		{
 			if (old_widget)
 				parent->widget_class->replace_child
-					(GTK_WIDGET(old_widget),
-					 GTK_WIDGET(new_widget),
+					(old_widget, new_widget,
 					 glade_widget_get_widget (parent));
 
 			glade_widget_set_packing_properties (gwidget, parent);
@@ -1111,51 +1096,57 @@ glade_widget_set_widget (GladeWidget *gwidget, GtkWidget *new_widget)
 	klass      = gwidget->widget_class;
 	old_widget = gwidget->widget;
 	
-	/* Call custom notification of widget creation in plugin */
-	if (klass->post_create_function)
-		klass->post_create_function (G_OBJECT(new_widget));
-
 	/* Add internal reference to new widget */
 	gwidget->widget = g_object_ref (G_OBJECT(new_widget));
 	g_object_set_data (G_OBJECT (new_widget), "GladeWidgetDataTag", gwidget);
 
-	/* Take care of events and toolkit signals */
-	gtk_widget_add_events (new_widget, GDK_BUTTON_PRESS_MASK |
-					   GDK_BUTTON_RELEASE_MASK |
-					   GDK_KEY_PRESS_MASK);
+	if (gwidget->internal == NULL)
+	{
+		/* Call custom notification of widget creation in plugin */
+		if (klass->post_create_function)
+			klass->post_create_function (G_OBJECT(new_widget));
 
-	if (GTK_WIDGET_TOPLEVEL (new_widget))
-		g_signal_connect (G_OBJECT (new_widget), "delete_event",
-				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+		/* Take care of events and toolkit signals.
+		 */
+		gtk_widget_add_events (new_widget, GDK_BUTTON_PRESS_MASK |
+				       GDK_BUTTON_RELEASE_MASK |
+				       GDK_KEY_PRESS_MASK);
 
-	g_signal_connect (G_OBJECT (new_widget), "popup_menu",
-			  G_CALLBACK (glade_widget_popup_menu), NULL);
-	g_signal_connect (G_OBJECT (new_widget), "key_press_event",
-			  G_CALLBACK (glade_widget_key_press), NULL);
+		if (GTK_WIDGET_TOPLEVEL (new_widget))
+			g_signal_connect (G_OBJECT (new_widget), "delete_event",
+					  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
-	glade_widget_connect_signal_handlers (new_widget, NULL);
+		g_signal_connect (G_OBJECT (new_widget), "popup_menu",
+				  G_CALLBACK (glade_widget_popup_menu), NULL);
+		g_signal_connect (G_OBJECT (new_widget), "key_press_event",
+				  G_CALLBACK (glade_widget_key_press), NULL);
+
+		glade_widget_connect_signal_handlers (new_widget, NULL);
 
 	
-	/* Take care of children
-	 */
-	if (GTK_IS_CONTAINER (new_widget) &&
-	    glade_widget_transport_children (gwidget,
-					     GTK_CONTAINER(old_widget),
-					     GTK_CONTAINER(new_widget)) == FALSE)
-	{
-		/* There we're no children to transport, call fill empty */
-		if (klass->fill_empty)
-			klass->fill_empty (new_widget);
+		/* Take care of reparenting and packing.
+		 */
+		if (glade_widget_update_parent(gwidget, old_widget, new_widget) == FALSE)
+		{
+			/* XXX We have to take care of GtkWindow positioning
+			 * (in the case of parentless widgets)
+			 */
+		}
 	}
 
-	/* Take care of reparenting and packing.
+	if (GTK_IS_CONTAINER (new_widget) &&
+	    (GTK_IS_BIN(new_widget) == FALSE || GTK_BIN(new_widget)->child == NULL))
+		glade_widget_transport_children (gwidget,
+						 GTK_CONTAINER(old_widget),
+						 GTK_CONTAINER(new_widget));
+
+	
+	/* Call fill empty function regardless of whether there were children before
+	 * it is the plugin's responsability to check if it is empty or not.
 	 */
-	if (glade_widget_update_parent(gwidget, old_widget, new_widget) == FALSE)
-	{
-		/* TODO: We have to take care of GtkWindow positioning
-		 * (in the case of parentless widgets)
-		 */
-	}
+	if (klass->fill_empty)
+		klass->fill_empty (new_widget);
+	
 
 	/* Remove internal reference to old widget */
 	if (old_widget) {
@@ -1415,7 +1406,7 @@ glade_widget_replace (GtkWidget *old_widget, GtkWidget *new_widget)
 	if (gold_widget)
 		real_old_widget = glade_widget_get_widget (gold_widget);
 
-	glade_widget_update_parent(gnew_widget, old_widget, new_widget);
+	glade_widget_update_parent(gnew_widget, real_old_widget, real_new_widget);
 }
 
 /* XML Serialization */

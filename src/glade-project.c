@@ -34,6 +34,8 @@
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
 #include "glade-placeholder.h"
+#include "glade-project-window.h"
+#include "glade-editor.h"
 #include "glade-utils.h"
 #include "glade-id-allocator.h"
 
@@ -616,13 +618,19 @@ glade_project_selection_add (GladeProject *project,
 			     GtkWidget *widget,
 			     gboolean emit_signal)
 {
+	GladeProjectWindow *gpw;
+	gboolean            has_nodes;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-	if (glade_util_has_nodes (widget))
+	gpw       = glade_project_window_get ();
+	has_nodes = glade_util_has_nodes (widget);
+
+	if (has_nodes && gpw->editor->loaded_widget != NULL)
 		return;
 
-	glade_util_add_nodes (widget);
+	if (has_nodes == FALSE)
+		glade_util_add_nodes (widget);
 
 	if (project)
 	{
@@ -647,10 +655,14 @@ glade_project_selection_set (GladeProject *project,
 			     GtkWidget *widget,
 			     gboolean emit_signal)
 {
+	GladeProjectWindow *gpw;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
-	if (glade_util_has_nodes (widget))
+	gpw    = glade_project_window_get ();
+	
+	if (glade_util_has_nodes (widget) &&
+	    gpw->editor->loaded_widget != NULL)
 		return;
 	    
 	glade_project_selection_clear (project, FALSE);

@@ -1,3 +1,39 @@
+2004-10-26  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* src/Makefile.am: CFLAGS was `-O2 -g', for now just `-g'. (Mixing 
+	  these two compiler options can cause really bad indigestion, i.e. 
+	  untracable bugs).
+
+	* src/glade-gtk.c: 
+	    - empty(): now serves as a standard noop for fill-empty functions 
+	      (as ignore() noop serves for get/set property).
+	    - glade_gtk_fixed_post_create(): Removed useless 
+	      gtk_widget_add_events() line.
+	    - glade_gtk_message_dialog_post_create: Fixed 155849, Message 
+	      dialog children
+	      are now selectable usable through the UI.
+	    - glade_gtk_fixed_fill_empty(): Obsoleted by `empty()'
+
+	* src/glade-project.c: glade_project_selection_add()/
+	  glade_project_selection_set():
+	  Functions no longer prematurly returns if the editor has no widget 
+	  loaded. (This is bug 155892)
+
+	* src/glade-property.c: glade_property_set() Function now takes care of 
+	  removing widgets from and adding widgets to the project if that 
+	  widget belongs to a project in the case of construct_only, also, if 
+	  that widget is in the selection list, the selection list is handled 
+	  here too.
+
+	* src/glade-widget.c: 
+	    - glade_widget_rebuild() Removed logic that handles 
+	      project/selection lists in favor of code in glade-property.c
+	    - Added roboustness around glade_widget_set_widget() and
+	      glade_widget_transport_children().
+
+	* widgets/gtkfixed.xml: Replaced fill-empty reference in favor of 
+	  `empty()'.
+
 2004-10-26  David Hoover <karma@deadmoose.com>
 
 	* src/Makefile.am,src/glade-editor.c,src/glade-marshallers.list,

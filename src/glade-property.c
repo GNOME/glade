@@ -30,6 +30,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-parameter.h"
+#include "glade-project.h"
 #include "glade-widget-class.h"
 #include "glade-debug.h"
 
@@ -184,12 +185,44 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	g_value_reset (property->value);
 	g_value_copy (value, property->value);
 
-	if (property->class->construct_only)
-		/* if we cant set it, rebuild it */
-		glade_widget_rebuild (property->widget);
-	else if (property->class->set_function)
+	if (property->class->set_function)
 		/* if there is a custom set_property, use it */
 		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
+	else if (property->class->construct_only)
+	{
+		/* In the case of construct_only, the widget must be rebuilt, here we
+		 * take care of updating the project if the widget is in a project and
+		 * updating the selection if the widget was selected.
+		 */
+		GList    *selection;
+		gboolean  reselect = FALSE;
+		if (property->widget->project)
+		{
+			if ((selection =
+			     glade_project_selection_get (property->widget->project)) != NULL &&
+			    g_list_find(selection, property->widget->widget) != NULL)
+			{
+				reselect = TRUE;
+				glade_project_selection_remove(property->widget->project,
+							       property->widget->widget,
+							       FALSE);
+			}
+			glade_project_remove_widget (property->widget->project,
+						     property->widget->widget);
+		}
+
+		glade_widget_rebuild (property->widget);
+
+		if (property->widget->project)
+		{
+			glade_project_add_widget (property->widget->project,
+						  property->widget->widget);
+			if (reselect)
+				glade_project_selection_add(property->widget->project,
+							    property->widget->widget,
+							    TRUE);
+		}
+	}
 	else
 		glade_property_set_property (property, value);
 

@@ -531,7 +531,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
  *
  * TODO: write me
  */
-void GLADEGTK_API
+static void
 glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
@@ -755,9 +755,10 @@ glade_gtk_statusbar_set_has_resize_grip (GObject *object, GValue *value)
  * @value: a #GValue
  *
  * This function does absolutely nothing
+ * (and is for use in overriding fill_empty functions).
  */
 void GLADEGTK_API
-empty (GObject *object, GValue *value)
+empty (GObject *container)
 {
 }
 
@@ -959,12 +960,6 @@ glade_gtk_fixed_post_create (GObject *object)
 	 * mouse events
 	 */
 	GTK_WIDGET_UNSET_FLAGS(object, GTK_NO_WINDOW);
-	gtk_widget_add_events(GTK_WIDGET(object),
-			      GDK_BUTTON_PRESS_MASK |
-			      GDK_BUTTON_RELEASE_MASK |
-			      GDK_ENTER_NOTIFY_MASK |
-			      GDK_LEAVE_NOTIFY_MASK);
-
 	/* For backing pixmap
 	 */
 	g_signal_connect_after(object, "realize",
@@ -1108,6 +1103,7 @@ glade_gtk_dialog_post_create (GObject *object)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
+
 /**
  * glade_gtk_message_dialog_post_create:
  * @object:
@@ -1117,12 +1113,43 @@ glade_gtk_dialog_post_create (GObject *object)
 void GLADEGTK_API
 glade_gtk_message_dialog_post_create (GObject *object)
 {
-	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
-
+	GtkDialog   *dialog = GTK_DIALOG (object);
+	GladeWidget *widget;
+	GladeWidget *vbox_widget;
+	GladeWidget *actionarea_widget;
+	GladeWidgetClass *child_class;
+	
 	g_return_if_fail (GTK_IS_MESSAGE_DIALOG (dialog));
 
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (dialog));
+	if (!widget)
+		return;
+
+	
+	/* create the GladeWidgets for internal children */
+	child_class = glade_widget_class_get_by_name ("GtkVBox");
+	if (!child_class)
+		return;
+
+	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
+							   dialog->vbox, "vbox");
+	if (!vbox_widget)
+		return;
+
+	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
+	if (!child_class)
+		return;
+
+	actionarea_widget =
+		glade_widget_new_for_internal_child
+		(child_class, vbox_widget, dialog->action_area, "action_area");
+	if (!actionarea_widget)
+		return;
+
+	
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
 }
+
 
 #if 0
 void GLADEGTK_API
@@ -1193,27 +1220,6 @@ glade_gtk_container_replace_child (GtkWidget *current,
 
 	g_free (param_spec);
 	g_free (value);
-
-#if 0
-	/* If there is still no reason to keep this around come release
-	 * time, kill it.
-	 */
-
-	gtk_widget_unparent (child_info->widget);
-	child_info->widget = new;
-	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
-
-	/* */
-	child = new;
-	if (GTK_WIDGET_REALIZED (container))
-		gtk_widget_realize (child);
-	if (GTK_WIDGET_VISIBLE (container) && GTK_WIDGET_VISIBLE (child)) {
-		if (GTK_WIDGET_MAPPED (container))
-			gtk_widget_map (child);
-		gtk_widget_queue_resize (child);
-	}
-	/* */
-#endif
 }
 
 /**
@@ -1277,14 +1283,6 @@ glade_gtk_container_fill_empty (GObject *container)
 	g_return_if_fail (GTK_IS_CONTAINER (container));
 	
 	gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
-}
-
-void GLADEGTK_API
-glade_gtk_fixed_fill_empty (GObject *fixed)
-{
-	/* This is here purly to override `glade_gtk_container_fill_empty()'
-	 * there is to be no placeholder by default.
-	 */
 }
 
 /**
