@@ -44,8 +44,18 @@ glade_clipboard_view_selection_changed_cb (GtkTreeSelection * sel,
 		return;
 	gtk_tree_model_get (model, &iter, 0, &widget, -1);
 
-	if (widget)
-		view->clipboard->curr = widget;
+	/*
+	 * FIXME: I think this is a bit hack-ish. If so, I'm not proud of it.
+	 */
+	if (widget) {
+		GladeWidget *real_widget;
+		GList *list = view->clipboard->widgets;
+		for (; list; list = list->next) {
+			real_widget = (GladeWidget *) list->data;
+			if (!strcmp (real_widget->name, widget->name))
+				view->clipboard->curr = real_widget;
+		}
+	}
 }
 
 static void

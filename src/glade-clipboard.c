@@ -116,7 +116,7 @@ glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
 	 * If there is view present, update it.
 	 */
 	if (clipboard->view)
-		glade_clipboard_view_add (clipboard->view, widget);
+		glade_clipboard_view_add (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 }
 
 /**
@@ -136,7 +136,7 @@ glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
 	 * If there is a view present, update it.
 	 */
 	if (clipboard->view)
-		glade_clipboard_view_remove (clipboard->view, widget);
+		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 }
 
 /**
@@ -149,36 +149,11 @@ glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
 void
 glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
 {
-	GladeWidget *parent;
-
 	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	parent = widget->parent;
-
 	glade_project_remove_widget (widget);
-
-	/*
-	 * If its not a toplevel widget, we remove it from its container.
-	 * This is all GladeWidget stuff.
-	 */
-	if (parent) {
-		GladePlaceholder *placeholder;
-
-		gtk_widget_ref (widget->widget);
-		placeholder = glade_placeholder_new (parent);
-		if (parent->class->placeholder_replace)
-			parent->class->placeholder_replace (widget->widget,
-							    GTK_WIDGET (placeholder),
-							    parent->widget);
-		gtk_widget_unref (widget->widget);
-
-		/* Remove it from the parent's child list */
-		parent->children = g_list_remove (parent->children,
-						  widget);
-	}
-
-	gtk_widget_hide (widget->widget);
+	glade_widget_replace_with_placeholder (widget);
 
 	glade_clipboard_add (clipboard, widget);
 }
@@ -247,8 +222,7 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
 	glade_placeholder_replace (placeholder, parent, widget);
-	glade_widget_set_default_packing_options (widget);
-	glade_project_selection_set (widget, TRUE);
+	glade_widget_select (widget);
 
 	/*
 	 * This damned 'if' statement caused a 1 month delay.

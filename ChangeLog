@@ -1,3 +1,21 @@
+2002-03-27  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard.c (glade_clipboard_paste): removed call to 
+	glade_widget_set_default_packing_options (). Fixed "clipboard copy"
+	bug.
+
+2002-03-23  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard-view.c
+	(glade_clipboard_view_selection_changed_cb): fixed bug.
+	
+2002-03-22  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-widget.c (glade_widget_replace_with_placeholder): new
+	function. This piece if code was badly needed as a seperate function.
+	Changed all callers.
+	(glade_widget_delete): call above.
+
 2002-03-20  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* src/glade-widget.c: fixed a small bug. Thanks Justin Zaun.

@@ -552,7 +552,7 @@ glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer use
 			g_return_val_if_fail (selection->data != NULL, FALSE);
 
 			glade_widget = GLADE_WIDGET (selection->data);
-			/* g_print ("Widget %s deleted.\n", glade_widget->name); */
+
 			glade_widget_delete (glade_widget);
 		}
 	}
@@ -1056,16 +1056,12 @@ glade_widget_free (GladeWidget *widget)
 }
 
 void
-glade_widget_delete (GladeWidget *widget)
+glade_widget_replace_with_placeholder (GladeWidget *widget)
 {
 	GladeWidget *parent;
 
-	g_return_if_fail (widget != NULL);
-
-	glade_project_remove_widget (widget);
-
 	parent = widget->parent;
-	
+
 	if (parent) {
 		GladePlaceholder *placeholder;
 		/* Replace the slot it was occuping with a placeholder */
@@ -1080,7 +1076,15 @@ glade_widget_delete (GladeWidget *widget)
 	} else {
 		gtk_widget_destroy (widget->widget);
 	}
+}
 
+void
+glade_widget_delete (GladeWidget *widget)
+{
+	g_return_if_fail (widget != NULL);
+
+	glade_project_remove_widget (widget);
+	glade_widget_replace_with_placeholder (widget);
 	glade_widget_free (widget);
 }
 
