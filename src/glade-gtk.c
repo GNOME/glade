@@ -199,7 +199,7 @@ glade_gtk_get_function (const gchar *name)
 gboolean
 glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name)
 {
-	class->get_function = glade_gtk_get_function (name);
+	class->set_function = glade_gtk_get_function (name);
 
 	return TRUE;
 }
@@ -207,7 +207,7 @@ glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name)
 gboolean
 glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name)
 {
-	class->set_function = glade_gtk_get_function (name);
+	class->get_function = glade_gtk_get_function (name);
 
 	return TRUE;
 }
