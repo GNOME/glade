@@ -34,12 +34,22 @@ struct _GladeWidget
 			    * destroy this widgets once created, we should
 			    * just hide them
 			    */
-	
+
 	GList *properties; /* A list of GladeProperty. A GladeProperty is an
 			    * instance of a GladePropertyClass. If a
 			    * GladePropertyClass for a gtkbutton is label, its
 			    * property is "Ok". 
 			    */
+
+	GList *packing_properties; /* A list of GladeProperty. Note that these
+				    * properties are related to the container
+				    * of the widget, thus they change after
+				    * pasting the widget to a different
+				    * container. Toplevels widget do not have
+				    * packing properties.
+				    * See also child_properties of 
+				    * GladeWidgetClass.
+				    */
 
 	GList *signals;      /* A list of GladeSignals */
 
@@ -57,12 +67,15 @@ gboolean glade_widget_create_gtk_widget (GladeWidget *glade_widget);
 void glade_widget_set_contents (GladeWidget *widget);
 void glade_widget_connect_signals (GladeWidget *widget);
 
+
+void glade_widget_set_packing_properties (GladeWidget *widget,
+					  GladeWidgetClass *container_class);
+
 GladeWidget * glade_widget_new_from_class (GladeWidgetClass *class,
 					   GladeProject *project,
 					   GladeWidget *parent);
 
 void glade_widget_set_default_packing_options (GladeWidget *widget);
-
 
 const gchar *      glade_widget_get_name  (GladeWidget *widget);
 GladeWidgetClass * glade_widget_get_class (GladeWidget *widget);

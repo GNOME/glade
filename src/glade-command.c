@@ -30,7 +30,6 @@
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-command.h"
-#include "glade-packing.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-debug.h"
@@ -579,7 +578,6 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 
 	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 		glade_placeholder_replace_with_widget (placeholder, widget);
-		glade_widget_set_default_packing_options (widget);
 	}
 
 	if (GTK_IS_WIDGET (widget->widget))
@@ -769,7 +767,6 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 	project = parent->project;
 
 	widget->name = glade_widget_new_name (project, widget->class);
-	glade_packing_add_properties (widget);
 
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
@@ -777,8 +774,9 @@ glade_command_paste_execute (GladeCommandCutPaste *me)
 	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 		gtk_widget_ref (GTK_WIDGET (placeholder));
 
+		/* we may have changed the parent, regenerate packing properties */
+		glade_widget_set_packing_properties (widget, parent->class);
 		glade_placeholder_replace_with_widget (placeholder, widget);
-		glade_widget_set_default_packing_options (widget);
 	}
 
 	glade_project_add_widget (project, widget, parent);

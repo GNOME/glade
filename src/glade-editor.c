@@ -1355,7 +1355,7 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	static GList *old_props = NULL;
 	GladeEditorProperty *editor_property;
 	GladeEditorTable *table;
-	GladeProperty *property;
+	GladePropertyClass *property_class;
 	GtkContainer *container;
 	GList *list;
 
@@ -1379,20 +1379,23 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	if (!widget)
 		return;
 
+	/* if the widget is a toplevel there are no packing properties */
+	if (!widget->parent)
+		return;
+
 	/* Now add the new properties */
 	table = glade_editor_table_new ();
 	table->editor = editor;
 	table->common = FALSE;
 	table->packing = TRUE;
 
-	list = widget->properties;
-	for (; list; list = list->next) {
-		property = list->data; 
-		if (property->class->packing) {
-			editor_property = glade_editor_table_append_item (table, property->class);
-			old_props = g_list_prepend (old_props, editor_property);
-			glade_editor_property_load (editor_property, widget);
-		}
+	list = widget->parent->class->child_properties;
+ 	for (; list; list = list->next) {
+		property_class = list->data; 
+		g_assert (property_class->packing == TRUE);
+		editor_property = glade_editor_table_append_item (table, property_class);
+		old_props = g_list_prepend (old_props, editor_property);
+		glade_editor_property_load (editor_property, widget);
 	}
 
 	gtk_widget_show_all (table->table_widget);

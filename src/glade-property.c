@@ -367,10 +367,42 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 	glade_property_emit_changed (property);
 }
 
+/**
+ * packing properties are a special case because the property
+ * to set is in the container. Maybe this would be nicer if done
+ * overriding set/get_property of property_class, but would require
+ * to change the prototype to pass down more info...
+ */
+static void
+glade_property_set_packing (GladeProperty *property, const GValue *value)
+{
+	GtkContainer *container;
+	GtkWidget *child;
+
+	g_return_if_fail (property->class->packing);
+
+	container = GTK_CONTAINER (property->widget->parent->widget);
+	child = property->widget->widget;
+
+	g_value_reset (property->value);
+	g_value_copy (value, property->value);
+
+	property->loading = TRUE;
+	gtk_container_child_set_property (container, child, property->class->id, value);
+	property->loading = FALSE;
+
+	glade_property_emit_changed (property);
+}
+
 void
 glade_property_set (GladeProperty *property, const GValue *value)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	if (property->class->packing) {
+		glade_property_set_packing (property, value);
+		return;
+	}
 
 	switch (property->class->type) {
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
@@ -423,9 +455,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 		g_print ("Set adjustment ->%d<-\n", GPOINTER_TO_INT (property->child));
 #if 1	
 		g_print ("Set directly \n");
-#if 0
-		glade_widget_set_default_options_real (property->child, packing);
-#endif	
+
 		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
 						GTK_ADJUSTMENT (property->child));
 #else		

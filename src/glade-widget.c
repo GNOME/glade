@@ -35,7 +35,6 @@
 #include "glade-placeholder.h"
 #include "glade-signal.h"
 #include "glade-gtk.h"
-#include "glade-packing.h"
 #include "glade-clipboard.h"
 #include "glade-command.h"
 #include "glade-debug.h"
@@ -56,16 +55,18 @@ glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 	return glade_project_new_widget_name (project, class->generic_name);
 }
 
+/**
+ * Returns a list of GladeProperties from a list of 
+ * GladePropertyClass.
+ */
 static GList *
-glade_widget_property_list_from_class (GladeWidgetClass *class,
-				       GladeWidget *widget)
+glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 {
-	GList *list = NULL;
 	GladePropertyClass *property_class;
 	GladeProperty *property;
 	GList *new_list = NULL;
 
-	for (list = class->properties; list; list = list->next) {
+	for (; list; list = list->next) {
 		property_class = list->data;
 		property = glade_property_new_from_class (property_class, widget);
 		if (property == NULL)
@@ -91,7 +92,10 @@ glade_widget_new (GladeWidgetClass *class)
 	widget->widget   = NULL;
 	widget->project  = NULL;
 	widget->class    = class;
-	widget->properties = glade_widget_property_list_from_class (class, widget);
+	widget->properties = glade_widget_properties_from_list (class->properties, widget);
+	/* we don't have packing properties until we container add the widget */
+	widget->packing_properties = NULL;
+	widget->signals  = NULL;
 	widget->parent   = NULL;
 	widget->children = NULL;
 
@@ -304,22 +308,16 @@ glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer 
 }
 
 /**
- * glade_widget_set_default_options:
- * @widget: 
- * 
- * Takes care of applying the default values to a newly created widget
+ * Set the deafault value to the given list of properties.
  */
 static void
-glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
+glade_widget_set_default_options_real (GList *properties)
 {
 	GladeProperty *property;
 	GList *list;
 
-	for (list = widget->properties; list; list = list->next) {
+	for (list = properties; list; list = list->next) {
 		property = list->data;
-
-		if (property->class->packing != packing)
-			continue;
 
 		/* For some properties, we get the value from the GtkWidget, for example the
 		 * "position" packing property. See g-p-class.h ->get_default. Chema
@@ -338,22 +336,20 @@ glade_widget_set_default_options_real (GladeWidget *widget, gboolean packing)
 static void
 glade_widget_set_default_options (GladeWidget *widget)
 {
-	glade_widget_set_default_options_real (widget, FALSE);
+	glade_widget_set_default_options_real (widget->properties);
 }
 
 /**
- * glade_widget_set_default_packing_options:
- * @widget: 
- * 
- * We need to have a different funcition for setting packing options
- * because we weed to add the widget to the container before we
- * apply the packing options
- *
+ * We need to have a different function for setting packing options
+ * because we need to add the widget to the container before we
+ * apply the packing options.
  */
 void
 glade_widget_set_default_packing_options (GladeWidget *widget)
 {
-	glade_widget_set_default_options_real (widget, TRUE);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	glade_widget_set_default_options_real (widget->packing_properties);
 }
 
 static void
@@ -529,6 +525,11 @@ glade_widget_free (GladeWidget *widget)
 		glade_property_free (list->data);
 	widget->properties = NULL;
 
+	list = widget->packing_properties;
+	for (; list; list = list->next)
+		glade_property_free (list->data);
+	widget->properties = NULL;
+
 	list = widget->signals;
 	for (; list; list = list->next)
 		glade_signal_free (list->data);
@@ -624,6 +625,33 @@ glade_widget_connect_signals (GladeWidget *widget)
 	glade_widget_connect_other_signals (widget);
 }
 
+/**
+ * glade_widget_set_packing_properties:
+ * @widget:
+ * @container_class:
+ *
+ * Generates the packing_properties list of the widget, given
+ * the class of the container we are adding the widget to.
+ * If the widget already has packing_properties, but the container
+ * has changed, the current list is freed and replaced.
+ */
+void
+glade_widget_set_packing_properties (GladeWidget *widget,
+				     GladeWidgetClass *container_class)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET_CLASS (container_class));
+
+	/*
+	 * toplevls do not have packing properties, so should not be
+	 * passed to this function.
+	 */
+	g_return_if_fail (!GTK_WIDGET_TOPLEVEL (widget->widget));
+
+	g_list_free (widget->packing_properties);
+	widget->packing_properties = glade_widget_properties_from_list (container_class->child_properties, widget);
+}
+
 static GladeWidget *
 glade_widget_new_full (GladeWidgetClass *class,
 		       GladeProject *project,
@@ -638,8 +666,11 @@ glade_widget_new_full (GladeWidgetClass *class,
 	widget->parent  = parent;
 	widget->project = project;
 
-	glade_packing_add_properties (widget);
 	glade_widget_create_gtk_widget (widget);
+
+	/* We know the parent (if we have one), we can add the packing properties */
+	if (parent)
+		glade_widget_set_packing_properties (widget, parent->class);
 
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
@@ -815,7 +846,8 @@ glade_widget_query_properties (GladeWidgetClass *class,
  * 
  */
 static void
-glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryResult *result)
+glade_widget_apply_queried_properties (GladeWidget *widget,
+				       GladePropertyQueryResult *result)
 {
 	GList *list;
 
@@ -882,7 +914,7 @@ glade_widget_get_name (GladeWidget *widget)
 {
 	return widget->name;
 }
-		
+
 GladeWidgetClass *
 glade_widget_get_class (GladeWidget *widget)
 {
@@ -892,16 +924,16 @@ glade_widget_get_class (GladeWidget *widget)
 /**
  * glade_widget_get_property_from_list:
  * @list: The list of GladeProperty
- * @class: The Class that we are trying to match with GladePropery
+ * @class: The Class that we are trying to match with GladeProperty
  * @silent: True if we shuold warn when a property is not included in the list
  * 
- * Give a list of GladeProperties find the one that has ->class = to @class.
+ * Given a list of GladeProperties find the one that has ->class = to @class.
  * This function recurses into child objects if needed.
- * 
- * Return Value: 
  */
 static GladeProperty *
-glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gboolean silent)
+glade_widget_get_property_from_list (GList *list,
+				     GladePropertyClass *class,
+				     gboolean silent)
 {
 	GladeProperty *property = NULL;
 
@@ -947,7 +979,10 @@ glade_widget_get_property_from_class (GladeWidget *widget,
 	GladeProperty *property;
 	GList *list;
 
-	list = widget->properties;
+	if (property_class->packing)
+		list = widget->packing_properties;
+	else
+		list = widget->properties;
 
 	property = glade_widget_get_property_from_list (list, property_class, FALSE);
 
@@ -1169,12 +1204,11 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 
 			/* Append the packing properties */
 			packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
-			list2 = child_widget->properties;
+			list2 = child_widget->packing_properties;
 			for (; list2; list2 = list2->next) {
 				GladeXmlNode *packing_property;
 				property = list2->data;
-				if (!property->class->packing) 
-					continue;
+				g_assert (property->class->packing == TRUE);
 				packing_property = glade_property_write (context, property);
 				if (packing_property == NULL)
 					continue;
@@ -1200,14 +1234,14 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 	gchar *id;
 
 	id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
-	glade_util_replace (id, '_', '-');
 	value = glade_xml_get_content (node);
 
 	if (!value || !id)
 		return FALSE;
 
-	property = glade_property_get_from_id (widget->properties,
-					       id);
+	glade_util_replace (id, '_', '-');
+	property = glade_property_get_from_id (widget->properties, id);
+
 	if (property == NULL) {
 		g_warning ("Could not apply property from node. Id :%s\n",
 			   id);
@@ -1377,9 +1411,11 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
-	if (child_node)
+	if (child_node) {
 		child_widget = glade_placeholder_new (parent);
-	else {
+		gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
+		return TRUE;
+	} else {
 		/* Get and create the widget */
 		child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
 		if (!child_node)
@@ -1399,16 +1435,13 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
 	if (child_node) {
-		GValue string_value = { 0, };
-
-		g_value_init (&string_value, G_TYPE_STRING);
 		child_properties = glade_xml_node_get_children (child_node);
 
-		for (; child_properties != NULL; child_properties = glade_xml_node_next (child_properties)) {
-			GParamSpec *param_spec;
+		for (; child_properties; child_properties = glade_xml_node_next (child_properties)) {
+			GladeProperty *property;
 			char *id;
 			char *value;
-			GValue gvalue = { 0, };
+			GValue *gvalue;
 
 			/* we should be on a <property ...> tag */
 			if (!glade_xml_node_verify (child_properties, GLADE_XML_TAG_PROPERTY))
@@ -1426,28 +1459,25 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 			}
 
 			glade_util_replace (id, '_', '-');
-			param_spec = gtk_container_class_find_child_property (G_OBJECT_GET_CLASS (parent->widget), id);
-			if (!param_spec) {
-				g_warning ("Invalid property [%s] for container [%s]\n", id, parent->name);
-				g_free (value);
-				g_free (id);
+			property = glade_property_get_from_id (child->packing_properties, id);
+
+			if (property == NULL) {
+				g_warning ("Could not apply property from node. Id :%s\n",
+					   id);
 				continue;
 			}
 
-			g_value_set_string_take_ownership (&string_value, value);
+			gvalue = glade_property_class_make_gvalue_from_string (property->class,
+							   		       value);
 
-			g_value_init (&gvalue, G_PARAM_SPEC_VALUE_TYPE (param_spec));
-			if (g_value_transform (&string_value, &gvalue)) {
-				gtk_container_child_set_property (GTK_CONTAINER (parent->widget), child_widget, id, &gvalue);
-				g_value_unset (&gvalue);
-			}
-			else
-				g_warning ("Not able to apply the value [%s] to the type [%s]\n", value, id);
+			glade_property_set (property, gvalue);
+
+			g_free (value);
+			g_free (id);
+			g_free (gvalue);
 		}
-
-		g_value_unset (&string_value);
 	}
-	
+
 	return TRUE;
 }
 

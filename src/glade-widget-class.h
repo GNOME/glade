@@ -53,16 +53,26 @@ struct _GladeWidgetClass
 			      * Each property creates an input in the propety
 			      * editor.
 			      */
-	
+
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
-	
-	GList *packing_properties; /* List of Packing GladePackingProperties */
+
+	GList *child_properties;   /* List of GladePropertyClass objects
+				    * representing child_properties of a
+				    * GtkContainer (the list is empty if the
+				    * class isn't a container).
+				    * Note that the actual GladeProperty
+				    * corresponding to each class end up
+				    * in the packing_properties list of
+				    * each _child_ of the container and thus
+				    * are edited when the _child_ is selected.
+				    */
 
 	void (*placeholder_replace) (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container);
 
 	gchar *post_create_function;
+
 	gboolean in_palette;
 };
 
@@ -89,9 +99,6 @@ gboolean     glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
 /* ParamSpec stuff */
 GParamSpec *glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
 void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
-
-/* Packing properties */
-void        glade_widget_class_load_packing_properties (GladeWidgetClass *class);
 
 
 G_END_DECLS

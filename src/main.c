@@ -30,7 +30,6 @@
 #include "glade-editor.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-packing.h"
 #include "glade-palette.h"
 #include "glade-project.h"
 #include "glade-project-view.h"
@@ -94,7 +93,6 @@ glade_init ()
 	 * 3. Create the project window
 	 */
 	glade_cursor_init ();
-	glade_packing_init ();
 
 	catalogs = glade_catalog_load_all ();
 	if (catalogs == NULL)

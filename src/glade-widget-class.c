@@ -46,7 +46,6 @@
 #include "glade-choice.h"
 #include "glade-parameter.h"
 #include "glade-widget-class.h"
-#include "glade-packing.h"
 
 
 static gchar *
@@ -92,7 +91,7 @@ glade_widget_class_new (void)
 	class->placeholder_replace = NULL;
 	class->type = 0;
 	class->properties = NULL;
-	class->packing_properties = NULL;
+	class->child_properties = NULL;
 
 	return class;
 }
@@ -223,6 +222,58 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	return list;
 }
 
+static GList * 
+glade_widget_class_list_child_properties (GladeWidgetClass *class) 
+{
+	GladePropertyClass *property_class;
+	GObjectClass *object_class;
+	GParamSpec **specs = NULL;
+	GParamSpec *spec;
+	gint n_specs = 0;
+	gint i;
+	GList *list = NULL;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
+	/* only containers have child propeties */
+	if (!g_type_is_a (class->type, GTK_TYPE_CONTAINER))
+		return NULL;
+
+	object_class = g_type_class_peek (class->type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		return NULL;
+	}
+
+	specs = gtk_container_class_list_child_properties (object_class, &n_specs);
+
+#ifdef DEBUG
+	g_print ("class %s has n child props: %d\n", class->name, n_specs);
+#endif
+
+	for (i = 0; i < n_specs; i++) {
+		spec = specs[i];
+
+		property_class = glade_property_class_new_from_spec (spec);
+
+#ifdef DEBUG
+		g_print ("child prop. name: %s, id: %s, type: %d\n", property_class->name, property_class->id, property_class->type);
+#endif
+
+		property_class->optional = FALSE;
+		property_class->update_signals = NULL;
+		property_class->packing = TRUE;
+
+		list = g_list_prepend (list, property_class);
+	}	
+
+	list = g_list_reverse (list);
+
+	g_free (specs);
+
+	return list;
+}
+
 static gboolean
 glade_widget_class_set_type (GladeWidgetClass *class,
 			     const gchar *init_function_name)
@@ -277,7 +328,7 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 		return NULL;
 	g_free (init_function_name);
 
-	/* <Properties> */
+	/* Properties */
 	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
 	if (child == NULL)
 		return FALSE;
@@ -285,8 +336,15 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	class->properties = glade_widget_class_list_properties (class);
 	glade_property_class_list_add_from_node (child, class, &class->properties);
 
+	/* Child properties */
+	/* TODO: we probably want to override/add some packing properties from
+	 * the xml file like we do foe normal properties, in other words we may 
+	 * need a function similar to 	glade_property_class_list_add_from_node
+	 */
+	class->child_properties = glade_widget_class_list_child_properties (class);
+
 	/* Signals */
-	class->signals    = glade_widget_class_list_signals (class);
+	class->signals = glade_widget_class_list_signals (class);
 
 	/* Get the flags */
 	if (glade_xml_get_boolean (node, GLADE_TAG_TOPLEVEL, FALSE))
@@ -303,7 +361,7 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	class->in_palette = glade_xml_get_boolean (node, GLADE_TAG_IN_PALETTE, TRUE);
 
 	glade_widget_class_add_virtual_methods (class);
-	
+
 	return class;
 }
 
@@ -403,8 +461,7 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 	GladePropertyClass *property_class;
 	GList *list;
 
-	list = class->properties;
-	for (; list != NULL; list = list->next) {
+	for (list = class->properties; list; list = list->next) {
 		property_class = list->data;
 		if (property_class->query != NULL)
 			return TRUE;
@@ -527,75 +584,5 @@ glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
 		return TRUE;
 
 	return FALSE;
-}
-
-static void
-glade_widget_class_load_packing_properties_from_node (GladeXmlNode *node,
-						      GladeWidgetClass *class)
-{
-	GladeXmlNode *child;
-	
-	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
-		return;
-
-	child = glade_xml_search_child (node, GLADE_TAG_PACKING_PROPERTIES);
-	if (!child)
-		return;
-	
-	child = glade_xml_node_get_children (child);
-	for (; child; child = glade_xml_node_next (child)) {
-		GladePackingProperties *properties;
-		GladeWidgetClass *container_class;
-		GladeXmlNode *child2;
-		GHashTable *hash;
-		gchar *container_name;
-
-		hash = g_hash_table_new (g_str_hash, g_str_equal);
-		
-		child2 = glade_xml_node_get_children (child);
-		for (; child2; child2 = glade_xml_node_next (child2)) {
-			gchar *container_id;
-			gchar *content;
-			
-			container_id = glade_xml_get_property_string (child2,
-								      GLADE_TAG_ID);
-			content = glade_xml_get_content (child2);
-			g_hash_table_insert (hash, container_id, content);
-		}
-
-		container_name = glade_xml_get_property_string (child,
-								GLADE_TAG_ID);
-		container_class = glade_widget_class_get_by_name (container_name);
-		if (container_class == NULL) {
-			g_warning ("Could not find GladeWidget for %s\n", container_name);
-			return;
-		}
-		g_free (container_name);
-		
-		properties = g_new0 (GladePackingProperties, 1);
-		properties->container_class = container_class;
-		properties->properties = hash;
-		class->packing_properties = g_list_prepend (class->packing_properties, properties);
-	}
-	
-}
-
-void
-glade_widget_class_load_packing_properties (GladeWidgetClass *class)
-{
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
-	gchar *file_name;
-
-	file_name = g_strconcat (WIDGETS_DIR, "/", class->xml_file, ".xml", NULL);
-	
-	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (context == NULL)
-		return;
-	doc = glade_xml_context_get_doc (context);
-	glade_widget_class_load_packing_properties_from_node (glade_xml_doc_get_root (doc), class);
-	glade_xml_context_free (context);
-
-	g_free (file_name);
 }
 

@@ -1,3 +1,17 @@
+2003-07-26  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget-class.[ch]: introduce
+	child_properties to get packing properties
+	from the GObject system.
+	* src/glade-widget.[ch]: separate packing
+	properties from normal properties and
+	take advantage of the above.
+	* src/glade-editor.c: update for the above
+	* src/glade-property.c: ditto.
+	* src/glade-command.c: ditto.
+	* src/glade-catalog.c: ditto.
+	* src/main.c: ditto.
+
 2003-07-25  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.[ch]: simplify

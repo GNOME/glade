@@ -77,7 +77,7 @@ glade_catalog_load_names_from_node (GladeXmlContext *context, GladeXmlNode *node
 
 	list = NULL;
 	child = glade_xml_node_get_children (node);
-	for (; child != NULL; child = glade_xml_node_next (child)) {
+	for (; child; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_TAG_GLADE_WIDGET))
 			return NULL;
 		name = glade_xml_get_content (child);
@@ -87,7 +87,7 @@ glade_catalog_load_names_from_node (GladeXmlContext *context, GladeXmlNode *node
 	}
 
 	list = g_list_reverse (list);
-	
+
 	return list;
 }
 
@@ -156,13 +156,6 @@ glade_catalog_load (const gchar *file_name)
 
 	glade_catalog_list = g_list_prepend (glade_catalog_list, catalog);
 	
-	list = catalog->widgets;
-	for (; list != NULL; list = list->next) {
-		class = list->data;
-		glade_widget_class_load_packing_properties (class);
-	}
-
-
 	return catalog;
 }
 
