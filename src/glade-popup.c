@@ -113,6 +113,7 @@ glade_popup_add_item_cb (GtkMenuItem *item,
 			 GladeWidget *widget)
 {
 	GladeWidgetClass    *class;
+
 	if ((class =
 	     g_object_get_data (G_OBJECT (item), "widget_class")) != 0)
 		glade_command_create (class, widget, NULL, NULL);

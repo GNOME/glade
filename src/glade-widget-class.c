@@ -50,12 +50,34 @@ static GHashTable *widget_classes = NULL;
 
 #define GLADE_ICON_SIZE 24
 
+typedef struct {
+	gchar *parent_name;
+	GList *packing_defaults;
+} GladeChildPacking;
+
 static void
 glade_widget_class_free_child (GladeSupportedChild *child)
 {
 	g_list_foreach (child->properties, (GFunc) glade_property_class_free, NULL);
 	g_list_free (child->properties);
 	g_free (child);
+}
+
+static void
+glade_widget_class_packing_default_free (GladePackingDefault *def)
+{
+	g_free (def->id);
+	g_free (def->value);
+}
+
+static void
+glade_widget_class_child_packing_free (GladeChildPacking *packing)
+{
+        g_free (packing->parent_name);
+
+        g_list_foreach (packing->packing_defaults,
+                        (GFunc) glade_widget_class_packing_default_free, NULL);
+        g_list_free (packing->packing_defaults);
 }
 
 /**
@@ -78,6 +100,12 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 
 	g_list_foreach (widget_class->children, (GFunc) glade_widget_class_free_child, NULL);
 	g_list_free (widget_class->children);
+
+	g_list_foreach (widget_class->child_packings,
+			(GFunc) glade_widget_class_child_packing_free,
+			NULL);
+
+	g_list_free (widget_class->child_packings);
 
 	g_list_foreach (widget_class->signals, (GFunc) glade_signal_free, NULL);
 	g_list_free (widget_class->signals);
@@ -374,6 +402,67 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 	}
 }
 
+static void
+glade_widget_class_set_packing_defaults_from_node (GladeXmlNode     *node,
+						   GladeWidgetClass *widget_class)
+{
+        GladeXmlNode *child;
+
+        child = glade_xml_node_get_children (node);
+        for (; child; child = glade_xml_node_next (child))
+        {
+                gchar             *name;
+                GladeXmlNode      *prop_node;
+		GladeChildPacking *packing;
+
+                if (!glade_xml_node_verify (child, GLADE_TAG_PARENT_CLASS))
+                        continue;
+
+                name = glade_xml_get_property_string_required (child, 
+                                                               GLADE_TAG_NAME, 
+                                                               widget_class->name);
+
+                if (!name)
+                        continue;
+
+		packing = g_new0 (GladeChildPacking, 1);
+		packing->parent_name = name;
+		packing->packing_defaults = NULL;
+
+		widget_class->child_packings = g_list_prepend (widget_class->child_packings, packing);
+
+		prop_node = glade_xml_node_get_children (child);
+                for (; prop_node; prop_node = glade_xml_node_next (prop_node))
+                {
+			GladePackingDefault *def;
+			gchar               *id;
+			gchar               *value;
+
+			id = glade_xml_get_property_string_required (prop_node,
+								     GLADE_TAG_ID,
+								     widget_class->name);
+			if (!id)
+				continue;
+
+			value = glade_xml_get_property_string_required (prop_node,
+									GLADE_TAG_DEFAULT,
+									widget_class->name);
+			if (!value)
+			{
+				g_free (id);
+				continue;
+			}
+
+			def = g_new0 (GladePackingDefault, 1);
+			def->id = id;
+			def->value = value;
+
+			packing->packing_defaults = g_list_prepend (packing->packing_defaults,
+								    def);
+                }
+	}
+}
+
 static gint
 glade_widget_class_find_child_by_type (GladeSupportedChild *child, GType type)
 {
@@ -526,6 +615,13 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 	{
 		glade_widget_class_update_children_from_node (child,
 							      widget_class);
+	}
+
+	child = glade_xml_search_child (node, GLADE_TAG_PACKING_DEFAULTS);
+	if (child)
+	{
+		glade_widget_class_set_packing_defaults_from_node (child,
+								   widget_class);
 	}
 
 	return TRUE;
@@ -1092,7 +1188,7 @@ glade_widget_class_container_add (GladeWidgetClass *class,
 	if ((support =
 	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
 	{
-		if (support->add)
+		if (support->add) 
 			support->add (container, child);
 		else
 			g_warning ("No add support for type %s in %s",
@@ -1259,3 +1355,80 @@ glade_widget_class_contains_non_widgets (GladeWidgetClass *class)
 	}
 	return FALSE;
 }
+
+static GladeChildPacking *
+glade_widget_class_get_child_packing (GladeWidgetClass *child_class,
+				      GladeWidgetClass *parent_class)
+{
+	GList *l;
+	
+	for (l = child_class->child_packings; l; l = l->next) 
+	{
+		GladeChildPacking *packing;
+
+		packing = (GladeChildPacking *) l->data;
+
+		if (strcmp (packing->parent_name, parent_class->name) == 0)
+			return packing;
+	}
+
+	return NULL;
+}
+
+static GladePackingDefault *
+glade_widget_class_get_packing_default_internal (GladeChildPacking *packing,
+						 const gchar       *id)
+{
+	GList *l;
+
+	for (l = packing->packing_defaults; l; l = l->next)
+	{
+		GladePackingDefault *def;
+
+		def = (GladePackingDefault *) l->data;
+
+		if (strcmp (def->id, id) == 0) 
+			return def;
+	}
+
+	return NULL;
+}
+
+GladePackingDefault *
+glade_widget_class_get_packing_default (GladeWidgetClass *child_class,
+					GladeWidgetClass *container_class,
+					const gchar      *id)
+{
+	GladeChildPacking *packing = NULL;
+	GladeWidgetClass  *p_class;
+	GType              p_type;
+
+	p_type = container_class->type;
+	p_class = container_class;
+	while (p_class)
+	{
+		GType old_p_type;
+
+		packing = glade_widget_class_get_child_packing (child_class,
+								p_class);
+		if (packing)
+		{
+			GladePackingDefault *def;
+
+			def = glade_widget_class_get_packing_default_internal (packing, id);
+			if (def)
+				return def;
+		}
+
+		old_p_type = p_type;
+		p_type = g_type_parent (p_type);
+
+		if (!p_type)
+			break;
+		
+		p_class = glade_widget_class_get_by_type (p_type);
+	}
+
+	return NULL;
+}
+

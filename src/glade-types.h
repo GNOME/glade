@@ -11,7 +11,8 @@ typedef struct _GladeClipboard     GladeClipboard;
 
 typedef struct _GladeWidget        GladeWidget;
 typedef struct _GladeWidgetClass   GladeWidgetClass;
-typedef struct _GladeWidgetClassSignal   GladeWidgetClassSignal;
+typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
+typedef struct _GladePackagingDefault  GladePackingDefault;
 
 typedef struct _GladeProperty      GladeProperty;
 typedef struct _GladePropertyClass GladePropertyClass;

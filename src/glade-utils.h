@@ -35,9 +35,6 @@ gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 GtkWidget      *glade_util_file_dialog_new (const gchar *title,
 					    GtkWindow *parent,
 					    GladeUtilFileDialogType action);
-gchar          *glade_util_file_dialog_get_filename (GtkWidget *file_dialog);
-void            glade_util_file_dialog_set_filename (GtkWidget *file_dialog, gchar *filename);
-
 void            glade_util_replace (char *str, char a, char b);
 gchar          *glade_util_duplicate_underscores (const char *name);
 

@@ -309,6 +309,7 @@ glade_widget_copy_packing_props (GladeWidget *parent,
 				 GladeWidget *template)
 {
 	GList *l;
+
 	glade_widget_set_packing_properties (child, parent);
 
 	for (l = child->packing_properties; l && l->data; l = l->next)
@@ -476,7 +477,7 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 	 */
 	object = g_object_newv(klass->type, params->len,
 			       (GParameter *)params->data);
-	
+
 	/* Cleanup parameters
 	 */
 	for (i = 0; i < params->len; i++)
@@ -489,6 +490,50 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 	return object;
 }
 
+static void
+glade_widget_set_default_packing_properties (GladeWidget *container,
+					     GladeWidget *child)
+{
+	GladeSupportedChild *support;
+
+	support = glade_widget_class_get_child_support (container->widget_class,
+							child->widget_class->type);
+
+	if (support) {
+		GladePropertyClass *property_class;
+		GladeProperty      *property;
+		GList              *l;
+
+		for (l = support->properties; l; l = l->next) 
+		{
+			GladePackingDefault *def;
+			GValue             *value;
+
+			property_class = l->data;
+
+			def = glade_widget_class_get_packing_default (child->widget_class, 
+								      container->widget_class, 
+								      property_class->id);
+			
+			if (!def)
+				continue;
+
+			/* Check value type */
+			value = glade_property_class_make_gvalue_from_string (property_class,
+									      def->value);
+
+			glade_widget_class_container_set_property (container->widget_class,
+								   container->object,
+								   child->object,
+								   property_class->id,
+								   value);
+
+			g_value_unset (value);
+			g_free (value);
+		}
+	}
+}
+
 static GladeWidget *
 glade_widget_internal_new (const gchar      *name,
 			   GladeWidget      *parent,
@@ -499,7 +544,7 @@ glade_widget_internal_new (const gchar      *name,
 	GObject *object;
 	GObject *glade_widget;
 	GList   *properties = NULL;
-	
+
 	object = glade_widget_build_object(klass, template);
 	if (template)
 		properties = glade_widget_dup_properties (template->properties);
@@ -532,7 +577,7 @@ glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *pr
 	gchar       *widget_name =
 		glade_project_new_widget_name
 		(project, klass->generic_name);
-	
+
 	if ((widget = glade_widget_internal_new
 	     (widget_name, parent, klass, project, NULL)) != NULL)
 	{
@@ -1626,6 +1671,9 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 
 	g_list_foreach (widget->packing_properties, (GFunc) glade_property_free, NULL);
 	g_list_free (widget->packing_properties);
+
+	glade_widget_set_default_packing_properties (container, widget);
+	
 	widget->packing_properties = glade_widget_create_packing_properties (container, widget);
 
 	/* update the values of the properties to the ones we get from gtk */
@@ -1672,9 +1720,8 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 		(parent->widget_class, parent->object,
 		 old_object, new_object);
 
-	if (gnew_widget)
+	if (gnew_widget) 
 		glade_widget_set_packing_properties (gnew_widget, parent);
-
 }
 
 /* XML Serialization */
@@ -2137,7 +2184,7 @@ glade_widget_new_from_widget_info (GladeWidgetInfo *info,
 		g_warning ("Widget class %s unknown.", info->classname);
 		return NULL;
 	}
-
+	
 	params     = glade_widget_params_from_widget_info (klass, info);
 	properties = glade_widget_properties_from_widget_info (klass, info);
 	

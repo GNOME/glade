@@ -137,6 +137,9 @@
 #define GLADE_TAG_CHILD                           "child"
 #define GLADE_TAG_CHILDREN                        "children"
 #define GLADE_TAG_TRANSLATABLE                    "translatable"
+#define GLADE_TAG_PACKING_DEFAULTS                "packing-defaults"
+#define GLADE_TAG_PARENT_CLASS                    "parent-class"
+#define GLADE_TAG_CHILD_PROPERTY                  "child-property"
 
 extern gboolean verbose;
 

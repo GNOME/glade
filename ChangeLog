@@ -1,3 +1,58 @@
+2005-01-16  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):
+	- Removed temporary hack
+	* src/glade-widget-class.[ch]:
+	(glade_widget_class_free):
+	- Free default packing list
+	(glade_widget_class_set_packing_defaults_from_node):
+	- Read default child packings from catalog file.
+	(glade_widget_class_get_child_packing):
+	(glade_widget_class_get_packing_default_internal):
+	- Added
+	(glade_widget_class_get_packing_default):
+	- Added, used to get the default child packing when packing a widget
+	  into a specific container.
+	* src/glade-widget.c: (glade_widget_copy_packing_props),
+	(glade_widget_set_default_packing_properties):
+	- Added, sets the default packing properties.
+	(glade_widget_set_packing_properties):
+	- Call set_default_packing_properties.
+	* widgets/gtk+.xml:
+	- Added default packings for some widgets. Should be added to a lot
+	  more of them.
+
+2005-01-13  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):
+	* src/glade-types.h:
+	* src/glade-widget-class.c:
+	(glade_widget_class_packing_default_free),
+	(glade_widget_class_child_packing_free), (glade_widget_class_free),
+	(glade_widget_class_set_packing_defaults_from_node),
+	(glade_widget_class_extend_with_node),
+	(glade_widget_class_get_packing_defaults):
+	* src/glade-widget-class.h:
+	- Parsing part of getting packing defaults working. Now the information
+	  needs to be used when packing.
+	* src/glade.h:
+	* widgets/glade-catalog.dtd:
+	- Added packing-defaults with sub nodes
+	* widgets/gtk+.xml:
+	- Added packing defaults for menu bar in GtkBox.
+
+2005-01-12  Mikael Hallendal  <micke@imendio.com>
+
+	* configure.in: Bumped GTK+ requirements to 2.4
+	* src/glade-menu-editor.c: (on_icon_button_clicked):
+	* src/glade-project-window.c: (gpw_open_cb), (gpw_save_as),
+	(gpw_save_cb), (gpw_save_as_cb), (gpw_confirm_close_project):
+	- Updated to use GtkFileChooser API directly.
+	- Cleaned up and reuse the save as code for both save and save as.
+	- Append .glade on filename if it lacks suffix.
+	* src/glade-utils.c: (glade_util_file_dialog_new):
+	- Remove the support for GtkFileSelection since we require 2.4.
+
 2005-01-12  Richard Hult  <richard@imendio.com>
 
 	* widgets/gtk+.xml: Change the min value for GtkBox size to 1 from
