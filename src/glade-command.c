@@ -579,6 +579,8 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	CommandData      *cdata;
 	GList            *list, *wlist = NULL;
 
+	glade_util_clear_selection ();
+
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
 		cdata = list->data;
@@ -1139,40 +1141,33 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		fmt = (type == GLADE_CUT) ? _("Cut %s") : _("Copy %s");
 		break;
 	case GLADE_PASTE:
-		if (placeholder != NULL)
+
+		for (list = widgets; 
+		     list && list->data; 
+		     list = list->next)
 		{
-			for (list = widgets; 
-			     list && list->data; 
-			     list = list->next)
+			widget = list->data;
+			if (parent == NULL &&
+			    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
 			{
-				widget = list->data;
-				if (GTK_IS_WINDOW (widget->object))
-				{
-					glade_util_ui_warn 
-						(glade_default_app_get_window(), 
-						 _("You cannot paste a top-level "
-						   "to a placeholder."));
-					return;
-				}
+				glade_util_ui_warn 
+					(glade_default_app_get_window(), 
+					 _("Only top-level widgets can be "
+					   "pasted without a parent."));
+				return;
+			}
+
+			if (placeholder &&
+			    GTK_WIDGET_TOPLEVEL (widget->object))
+			{
+				glade_util_ui_warn 
+					(glade_default_app_get_window(), 
+					 _("You cannot paste a top-level "
+					   "to a placeholder."));
+				return;
 			}
 		}
-		else if (parent == NULL)
-		{
-			for (list = widgets; 
-			     list && list->data; 
-			     list = list->next)
-			{
-				widget = list->data;
-				if (!GTK_WIDGET_TOPLEVEL (widget->object))
-				{
-					glade_util_ui_warn 
-						(glade_default_app_get_window(), 
-						 _("Only top-level widgets can be "
-						   "pasted without a parent."));
-					return;
-				}
-			}
-		}		
+		
 		fmt = _("Paste %s");
 		break;
 	}
@@ -1204,6 +1199,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
+		else if (type == GLADE_PASTE && placeholder)
+			cdata->parent = glade_placeholder_get_parent (placeholder);
 		else 
 			cdata->parent = parent;
 
@@ -1222,15 +1219,16 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			else if (placeholder != NULL)
 				cdata->placeholder = g_object_ref (placeholder);
 		}
-		else if (type == GLADE_PASTE && placeholder != NULL)
+		else if (type == GLADE_PASTE && placeholder != NULL &&
+			 g_list_length (widgets) == 1)
 		{
 			cdata->placeholder = g_object_ref (placeholder);
 		}
-		else if (type == GLADE_PASTE && parent && 
-			 glade_util_gtkcontainer_relation (parent, widget))
+		else if (type == GLADE_PASTE && 
+			 glade_util_gtkcontainer_relation (cdata->parent, widget))
 		{
 			if ((children = glade_widget_class_container_get_children
-			     (parent->widget_class, parent->object)) != NULL)
+			     (cdata->parent->widget_class, cdata->parent->object)) != NULL)
 			{
 				for (l = children; l && l->data; l = l->next)
 				{
@@ -1277,13 +1275,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 void
 glade_command_paste (GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
-	if (placeholder != NULL && g_list_length (widgets) != 1)
-	{
-		glade_util_ui_warn 
-			(glade_default_app_get_window(), 
-			 _("You cannot paste more than one widget to a placeholder."));
-		return;
-	}
 	glade_command_cut_copy_paste_common (widgets, parent, placeholder, GLADE_PASTE);
 }
 

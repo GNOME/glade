@@ -328,8 +328,9 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 static void
 do_close (GladeProjectWindow *gpw, GladeProject *project)
 {
-	gchar     *item_path;
-	GtkWidget *palette_item;
+	GladeProject *active;
+	gchar        *item_path;
+	GtkWidget    *palette_item;
 
 	item_path = g_strdup_printf ("/Project/%s", project->name);
 	gtk_item_factory_delete_item (gpw->priv->item_factory, item_path);
@@ -337,10 +338,14 @@ do_close (GladeProjectWindow *gpw, GladeProject *project)
 
 	glade_app_remove_project (GLADE_APP (gpw), project);
 
-	palette_item = gtk_item_factory_get_item 
-		(gpw->priv->item_factory,
-		 glade_default_app_get_active_project ()->entry.path);
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+	if ((active = glade_default_app_get_active_project ()))
+	{
+		palette_item = gtk_item_factory_get_item 
+			(gpw->priv->item_factory,
+			 active->entry.path);
+		gtk_check_menu_item_set_active
+			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+	}
 }
 
 static void
@@ -360,7 +365,6 @@ gpw_close_cb (GladeProjectWindow *gpw)
 			if (!close)
 				return;
 	}
-
 	do_close (gpw, project);
 }
 

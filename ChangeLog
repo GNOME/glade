@@ -1,3 +1,12 @@
+2005-04-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.c: fixed selection bug, modified multiple
+	  paste behaviour; now when pasting multiple widgets to a placeholder,
+	  the immediate parent of the placeholder is used as the target.
+
+	* src/glade-project-window.c:
+	  do_close () fixed segfault when closing last project.
+
 2005-04-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c:

@@ -1075,8 +1075,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 		    glade_util_gtkcontainer_relation (parent, widget))
 			gtkcontainer_relations++;
 	}
-	
-	
+
 	/* Ensure enough placeholders are available */
 	if (parent &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
