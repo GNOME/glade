@@ -163,14 +163,14 @@ struct _GladePropertyClass
 		       /* If this property can't be set with g_object_set then
 		       * we need to implement it inside glade. This is a pointer
 		       * to the function that can set this property. The functions
-		       * to work arround this problems are inside glade-gtk.c
+		       * to work arround these problems are inside glade-gtk.c
 		       */
 	void (*get_function) (GObject *object,
 			      GValue *value);
 		       /* If this property can't be get with g_object_get then
 		       * we need to implement it inside glade. This is a pointer
-		       * to the function that can set this property. The functions
-		       * to work arround this problems are inside glade-gtk.c
+		       * to the function that can get this property. The functions
+		       * to work arround these problems are inside glade-gtk.c
 		       */
 	gboolean (*visible) (GladeWidgetClass *widget_class);
 };
