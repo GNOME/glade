@@ -62,9 +62,19 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 	GladeChoice *choice;
 	GList *list;
 
+
 	property = glade_property_new ();
 	
 	property->class = class;
+
+	/* For some properties, we don't know its value utill we add the widget and
+	 * pack it in a container. For example for a "pos" packing property we need
+	 * to pack the property first, the query the property to know the value
+	 */
+	if (string && strcmp (string, GLADE_GET_DEFAULT_FROM_WIDGET) == 0) {
+		property->value = g_strdup (string);
+		return property;
+	}
 
 	switch (class->type) {
 	case GLADE_PROPERTY_TYPE_BOOLEAN:
@@ -270,7 +280,6 @@ glade_property_changed_integer (GladeProperty *property, gint val)
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
-	
 }
 
 void
@@ -504,3 +513,17 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	return node;
 }
 	
+void
+glade_property_free (GladeProperty *property)
+{
+	property->class = NULL;
+	property->widget = NULL;
+	if (property->value)
+		g_free (property->value);
+	property->value = NULL;
+
+	if (property->child)
+		g_warning ("Implmenet free property->child\n");
+
+	g_free (property);
+}

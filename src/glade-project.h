@@ -32,7 +32,8 @@ struct _GladeProject
 	GList *selection; /* We need to keep the selection in the project
 			   * because we have multiple projects and when the
 			   * user switchs between them, he will probably
-			   * not want to loose the selection
+			   * not want to loose the selection. This is a list
+			   * of GladeWidget items.
 			   */
 };
 
@@ -60,6 +61,7 @@ GladeProject * glade_project_new (void);
 gboolean       glade_project_save (GladeProject *project);
 
 /* Widget related stuff */
+void glade_project_remove_widget (GladeWidget *widget);
 void glade_project_add_widget (GladeProject  *project,
 			       GladeWidget *glade_widget);
 
@@ -73,6 +75,8 @@ void glade_project_selection_set    (GladeWidget *widget, gboolean emit_signal);
 void glade_project_selection_add    (GladeWidget *widget, gboolean emit_signal);
 void glade_project_selection_remove (GladeWidget *widget, gboolean emit_signal);
 void glade_project_selection_clear  (GladeProject *project, gboolean emit_signal);
+
+GList * glade_project_selection_get (GladeProject *project);
 
 G_END_DECLS
 

@@ -159,12 +159,5 @@ parse_command_line (poptContext pctx)
 
 }
 
-void
-g_scanner_stat_mode (void)
-{
-	g_print ("foo\n");
-}
-		
-
 gchar * _ (gchar * name) { return name;};
 

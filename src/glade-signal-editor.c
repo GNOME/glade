@@ -342,7 +342,7 @@ glade_signal_editor_clear_entries (GladeSignalEditor *editor)
 	gtk_entry_set_text (GTK_ENTRY (editor->signal_name_entry), "");
 	gtk_entry_set_text (GTK_ENTRY (editor->signal_handler_entry), "");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON 
-			(editor->signal_after_button), FALSE);
+				      (editor->signal_after_button), FALSE);
 }
 
 static GladeSignal *
@@ -702,9 +702,12 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget)
 	gtk_tree_store_clear (model);
 
 	editor->widget = widget;
-	editor->class = widget->class;
+	editor->class = widget ? widget->class : NULL;
 
 	glade_signal_editor_clear_entries (editor);
+
+	if (!widget)
+		return;
 	
 	list = widget->signals;
 	for (; list != NULL; list = list->next) {

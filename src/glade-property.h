@@ -54,6 +54,7 @@ struct _GladePropertyQueryResult {
 GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 						   GladeWidget *widget);
 GladeProperty * glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget);
+void glade_property_free (GladeProperty *property);
 
 void glade_property_changed_text    (GladeProperty *property, const gchar *text);
 void glade_property_changed_integer (GladeProperty *property, gint val);
@@ -71,8 +72,6 @@ GladeChoice * glade_property_get_choice  (GladeProperty *property);
 
 
 /* Get a GladeProperty */
-GladeProperty * glade_property_get_from_name (GList *property_list,
-					      const gchar *name);
 GladeProperty * glade_property_get_from_id   (GList *settings_list,
 					      const gchar *id);
 

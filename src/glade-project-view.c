@@ -157,7 +157,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 	GList *list;
 	GtkTreeIter iter;
 	GtkTreeIter *copy = NULL;
-	
+
 	list = g_list_copy (widgets);
 	list = g_list_reverse (list);
 	for (; list != NULL; list = list->next) {
@@ -234,6 +234,34 @@ glade_project_view_add_item (GladeProjectView *view,
 	glade_project_selection_set (widget, TRUE);
 }      
 
+static void
+glade_project_view_remove_item (GladeProjectView *view,
+				GladeWidget *widget)
+{
+	GladeWidgetClass *class;
+	GtkTreeModel *model;
+	GtkTreeIter *iter;
+
+	class = glade_widget_get_class (widget);
+	
+	if (view->is_list && !GLADE_WIDGET_CLASS_TOPLEVEL (class))
+		return;
+	
+	model = GTK_TREE_MODEL (view->model);
+
+	iter = glade_project_view_find_iter_by_widget (model,
+						       widget);
+
+	if (iter) {
+		static gboolean warned = FALSE;
+		if (!warned)
+			g_print ("Update the cell. BUT HOW ??\n");
+		warned = TRUE;
+	}
+
+	gtk_tree_store_remove (view->model, iter);
+}      
+
 
 static void
 glade_project_view_class_init (GladeProjectViewClass * gpv_class)
@@ -245,6 +273,7 @@ glade_project_view_class_init (GladeProjectViewClass * gpv_class)
 	parent_class = gtk_type_class (gtk_object_get_type ());
 
 	gpv_class->add_item      = glade_project_view_add_item;
+	gpv_class->remove_item   = glade_project_view_remove_item;
 	gpv_class->set_project   = glade_project_view_set_project;
 	gpv_class->widget_name_changed = glade_project_view_widget_name_changed;
 }
@@ -263,6 +292,16 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	/* The cell exists, but not widget has been asociated with it */
 	if (widget == NULL)
 		return;
+	
+	g_return_if_fail (widget->name != NULL);
+	g_return_if_fail (widget->class != NULL);
+	g_return_if_fail (GPOINTER_TO_INT (widget->class) > 5000);
+	g_return_if_fail (widget->class->name != NULL);
+	g_return_if_fail (widget->class->pixbuf != NULL);
+	g_return_if_fail ((widget->selected == TRUE) ||
+			  (widget->selected == FALSE));
+	g_return_if_fail (GDK_IS_PIXBUF (widget->class->pixbuf));
+	
 
 	g_object_set (G_OBJECT (cell),
 		      "text", widget->name,
@@ -359,7 +398,7 @@ glade_project_view_selection_changed (GladeProjectView *view, GladeWidget *item)
 {
 	glade_project_selection_clear (view->project, FALSE);
 
-	g_print ("Do something\n");
+	glade_implement_me ();
 #if 0	
 	if (view->selected_widget == item)
 		return;
@@ -378,6 +417,14 @@ glade_project_view_add_widget_cb (GladeProject *project,
 						    GladeProjectView *view)
 {
         GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->add_item (view, widget);
+}
+
+static void
+glade_project_view_remove_widget_cb (GladeProject *project,
+						    GladeWidget *widget,
+						    GladeProjectView *view)
+{
+        GLADE_PROJECT_VIEW_CLASS (GTK_OBJECT_GET_CLASS(view))->remove_item (view, widget);
 }
 
 static void
@@ -433,6 +480,7 @@ glade_project_view_set_project (GladeProjectView *view,
 	/* This view stops listening to the old project (if there was one) */
 	if (view->project != NULL) {
 		gtk_signal_disconnect (GTK_OBJECT (view->project), view->add_widget_signal_id);
+		gtk_signal_disconnect (GTK_OBJECT (view->project), view->remove_widget_signal_id);
 		gtk_signal_disconnect (GTK_OBJECT (view->project), view->widget_name_changed_signal_id);
 	}
 
@@ -449,6 +497,10 @@ glade_project_view_set_project (GladeProjectView *view,
 	view->add_widget_signal_id =
 		gtk_signal_connect (GTK_OBJECT (project), "add_widget",
 						GTK_SIGNAL_FUNC (glade_project_view_add_widget_cb),
+						view);
+	view->remove_widget_signal_id =
+		gtk_signal_connect (GTK_OBJECT (project), "remove_widget",
+						GTK_SIGNAL_FUNC (glade_project_view_remove_widget_cb),
 						view);
 	view->widget_name_changed_signal_id =
 		gtk_signal_connect (GTK_OBJECT (project), "widget_name_changed",

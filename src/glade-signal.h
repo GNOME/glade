@@ -14,6 +14,7 @@ struct _GladeSignal {
 };
 
 GladeXmlNode * glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
+void glade_signal_free (GladeSignal *signal);
 
 G_END_DECLS
 

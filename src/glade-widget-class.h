@@ -54,9 +54,9 @@ struct _GladeWidgetClass {
 	
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
-	void (*placeholder_replace) (GladePlaceholder *placeholder,
-				     GladeWidget *widget,
-				     GladeWidget *parent);
+	void (*placeholder_replace) (GtkWidget *current,
+				     GtkWidget *new,
+				     GtkWidget *container);
 };
 
 /* GladeWidgetClassSignal contains all the info we need for a given signal, such as

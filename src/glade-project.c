@@ -155,6 +155,13 @@ glade_project_set_changed (GladeProject *project, gboolean changed)
 	project->changed = changed;
 }
 
+void
+glade_project_selection_changed (GladeProject *project)
+{
+	gtk_signal_emit (GTK_OBJECT (project),
+			 glade_project_signals [SELECTION_CHANGED]);
+}
+
 
 void
 glade_project_add_widget (GladeProject  *project,
@@ -171,6 +178,42 @@ glade_project_add_widget (GladeProject  *project,
 	glade_project_set_changed (project, TRUE);
 }
 
+static void
+glade_project_remove_widget_real (GladeProject *project,
+				  GladeWidget *widget)
+{
+	GladeWidget *child;
+	GList *list;
+
+	list = widget->children;
+	for (; list; list = list->next) {
+		child = list->data;
+		glade_project_remove_widget_real (project,
+						  child);
+	}
+	
+	project->selection = g_list_remove (project->selection, widget);
+	project->widgets   = g_list_remove (project->widgets, widget);
+
+	gtk_signal_emit (GTK_OBJECT (project),
+			 glade_project_signals [REMOVE_WIDGET], widget);
+}
+			     
+void
+glade_project_remove_widget (GladeWidget *widget)
+{
+	GladeProject *project;
+
+	g_return_if_fail (widget != NULL);
+
+	project = widget->project;
+	
+	glade_project_remove_widget_real (project, widget);
+
+	glade_project_selection_changed (project);
+	glade_project_set_changed (project, TRUE);
+}
+	
 void
 glade_project_widget_name_changed (GladeProject *project,
 				   GladeWidget *widget)
@@ -241,13 +284,6 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 
 
 
-
-void
-glade_project_selection_changed (GladeProject *project)
-{
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [SELECTION_CHANGED]);
-}
 
 void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
@@ -333,6 +369,12 @@ glade_project_selection_set (GladeWidget *widget,
 	glade_project_selection_clear (project, FALSE);
 	glade_project_selection_add   (widget, emit_signal);
 }	
+
+GList *
+glade_project_selection_get (GladeProject *project)
+{
+	return project->selection;
+}
 
 
 /**

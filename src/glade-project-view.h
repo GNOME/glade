@@ -36,7 +36,10 @@ struct _GladeProjectView
 				      * connected to so that when the project changes
 				      * we stop listening to the old project
 				      */
+	gulong remove_widget_signal_id;
+	
 	gulong widget_name_changed_signal_id;
+
 
 	GtkTreeStore *model; /* Model */
 
@@ -56,6 +59,8 @@ struct _GladeProjectViewClass
 				 GladeWidget *component);
 
 	void   (*add_item)      (GladeProjectView *view,
+				 GladeWidget *widget);
+	void   (*remove_item)   (GladeProjectView *view,
 				 GladeWidget *widget);
 	void   (*widget_name_changed) (GladeProjectView *view,
 				       GladeWidget *widget);

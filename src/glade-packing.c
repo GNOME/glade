@@ -21,6 +21,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "glade.h"
 #include "glade-packing.h"
@@ -32,51 +33,223 @@
 GList *table_properties = NULL;
 GList *box_properties = NULL;
 
+/* ---------------------------------- container child properties ------------------------------ */
 static void
-glade_packing_x_expand_set (GObject *object, const gchar *value)
+glade_packing_container_set_flag (GtkContainer *container,
+				  GtkWidget *widget,
+				  gboolean value,
+				  const gchar *prop,
+				  guint flag)
 {
-	g_print ("X expand set %s\n", value);
-}
-			    
-static void
-glade_packing_y_expand_set (GObject *object, const gchar *value)
-{
-	g_print ("Y expand set %s\n", value);
+	GValue gvalue = { 0, };
+	guint old;
+	guint new;
+	
+	g_value_init (&gvalue, G_TYPE_UINT);
+	gtk_container_child_get_property (container,
+					  widget,
+					  prop,
+					  &gvalue);
+	
+	old = g_value_get_uint (&gvalue);
+	/* Clear the old flag */
+	new = old & (~flag);
+	/* Set it */
+	new |= (value ? flag : 0);
+	g_value_set_uint (&gvalue, new);
+
+	gtk_container_child_set_property (container,
+					  widget,
+					  prop,
+					  &gvalue);
 }
 
 static void
-glade_packing_x_shrink_set (GObject *object, const gchar *value)
+glade_packing_container_set_integer (GtkContainer *container,
+				     GtkWidget *widget,
+				     gboolean value,
+				     const gchar *property)
 {
-	g_print ("X shrink set %s\n", value);
-}
-			    
-static void
-glade_packing_y_shrink_set (GObject *object, const gchar *value)
-{
-	g_print ("Y shrink set %s\n", value);
+	GValue gvalue = { 0, };
+	
+	g_value_init (&gvalue, G_TYPE_UINT);
+	g_value_set_uint (&gvalue, value);
+
+	gtk_container_child_set_property (container,
+					  widget,
+					  property,
+					  &gvalue);
 }
 
 static void
-glade_packing_x_fill_set (GObject *object, const gchar *value)
+glade_packing_container_set_boolean (GtkContainer *container,
+				     GtkWidget *widget,
+				     gboolean value,
+				     const gchar *property)
 {
-	g_print ("X fill set %s\n", value);
+	GValue gvalue = { 0, };
+	
+	g_value_init (&gvalue, G_TYPE_BOOLEAN);
+	g_value_set_boolean (&gvalue, value);
+
+	gtk_container_child_set_property (container,
+					  widget,
+					  property,
+					  &gvalue);
 }
-			    
+
+/* ---------------------------------------- Table ---------------------------*/
 static void
-glade_packing_y_fill_set (GObject *object, const gchar *value)
+glade_packing_table_set_flag (GObject *object, const gchar *value, const gchar *prop, guint flag)
 {
-	g_print ("Y fill set %s\n", value);
+	GladeWidget *glade_widget;
+	GtkWidget *widget;
+	GtkTable *table;
+	gboolean val;
+  
+	g_return_if_fail (value != NULL);
+	widget = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	glade_widget = glade_widget_get_from_gtk_widget (widget);
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+	table = GTK_TABLE (glade_widget->parent->widget);
+
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	val = (strcmp (value, GLADE_TAG_TRUE) == 0) ? TRUE : FALSE;
+	
+	glade_packing_container_set_flag (GTK_CONTAINER (table), widget,
+					  val, prop, flag);
 }
 
 static void
-glade_packing_expand_set (GObject *object, const gchar *value)
+glade_packing_table_set_integer (GObject *object, const gchar *value, const gchar *prop)
+{
+	GladeWidget *glade_widget;
+	GtkWidget *widget;
+	GtkTable *table;
+	gboolean val;
+  
+	g_return_if_fail (value != NULL);
+	widget = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	glade_widget = glade_widget_get_from_gtk_widget (widget);
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+	table = GTK_TABLE (glade_widget->parent->widget);
+
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	val = atoi (value);
+	
+	glade_packing_container_set_integer (GTK_CONTAINER (table), widget,
+					     val, prop);
+}
+
+static void
+glade_packing_table_x_expand_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "x_options", GTK_EXPAND);
+}
+
+static void
+glade_packing_table_y_expand_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "y_options", GTK_EXPAND);
+}
+
+static void
+glade_packing_table_x_shrink_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "x_options", GTK_SHRINK);
+}
+
+static void
+glade_packing_table_y_shrink_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "y_options", GTK_SHRINK);
+}
+
+static void
+glade_packing_table_x_fill_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "x_options", GTK_FILL);
+}			    
+
+static void
+glade_packing_table_y_fill_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_flag (object, value, "y_options", GTK_FILL);
+}
+
+static void
+glade_packing_table_padding_h_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_integer (object, value, "x_padding");
+}
+
+static void
+glade_packing_table_padding_v_set (GObject *object, const gchar *value)
+{
+	glade_packing_table_set_integer (object, value, "y_padding");
+}				
+
+
+static void
+glade_packing_table_cell_x_set (GObject *object, const gchar *value)
+{
+	glade_implement_me ();
+}				
+
+static void
+glade_packing_table_cell_y_set (GObject *object, const gchar *value)
+{
+	glade_implement_me ();
+}				
+
+static void
+glade_packing_table_span_x_set (GObject *object, const gchar *value)
+{
+	glade_implement_me ();
+}				
+
+static void
+glade_packing_table_span_y_set (GObject *object, const gchar *value)
+{
+	glade_implement_me ();
+}				
+/* --------------------- box ----------------------------------- */
+static void
+glade_packing_box_set_boolean (GObject *object, const gchar *value, const gchar *property)
+{
+	GladeWidget *glade_widget;
+	GtkWidget *widget;
+	GtkBox *box;
+	gboolean val;
+	
+	widget = GTK_WIDGET (object);
+	g_return_if_fail (GTK_IS_WIDGET (widget));
+	glade_widget = glade_widget_get_from_gtk_widget (widget);
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+	box = GTK_BOX (glade_widget->parent->widget);
+
+	g_return_if_fail (GTK_IS_BOX (box));
+
+	val = (strcmp (value, GLADE_TAG_TRUE) == 0) ? TRUE : FALSE;
+
+	glade_packing_container_set_boolean (GTK_CONTAINER (box),
+					     widget,
+					     val,
+					     property);
+}
+
+static void
+glade_packing_box_set_integer (GObject *object, const gchar *value,
+			       const gchar *property)
 {
 	GladeWidget *glade_widget;
 	GtkBox *box;
 	GtkWidget *widget;
-	gboolean expand, fill;
-	gint padding;
-	GtkPackType pack_type;
+	gint val;
 
 	widget = GTK_WIDGET (object);
 	g_return_if_fail (GTK_IS_WIDGET (widget));
@@ -86,24 +259,119 @@ glade_packing_expand_set (GObject *object, const gchar *value)
 
 	g_return_if_fail (GTK_IS_BOX (box));
 
-	gtk_box_query_child_packing (box, widget,
-				     &expand, &fill, &padding, &pack_type);
+	val = atoi (value);
+	
+	glade_packing_container_set_integer (GTK_CONTAINER (box),
+					     widget,
+					     val,
+					     property);
+}
 
-	expand = (strcmp (value, GLADE_TAG_TRUE) == 0);
+/**
+ * glade_packing_expand_set:
+ * @object: 
+ * @value: 
+ * 
+ * Sets the expand property of a widget inside a Gtk[HV]Box
+ **/
+static void
+glade_packing_box_expand_set (GObject *object, const gchar *value)
+{
+	glade_packing_box_set_boolean (object, value, "expand");
+}
 
-	gtk_box_set_child_packing (box, widget,
-				   expand, fill, padding, pack_type);
+/**
+ * glade_packing_fill_set:
+ * @object: 
+ * @value: 
+ * 
+ * Sets the fill property of a widget inside a Gtk[VH]Box
+ **/
+static void
+glade_packing_box_fill_set (GObject *object, const gchar *value)
+{
+	glade_packing_box_set_boolean (object, value, "fill");
+}
+
+/**
+ * glade_packing_pack_start_set:
+ * @object: 
+ * @value: 
+ * 
+ * Sets the pack_start property for a widget inside a Gtk[HV]Box
+ **/
+static void
+glade_packing_box_pack_start_set (GObject *object, const gchar *value)
+{
+	gchar *temp;
+
+	/* Reverse value, because pack start is an enum, not a boolean.
+	 * Chema
+	 */
+	if (strcmp (value, GLADE_TAG_TRUE) == 0)
+		temp = g_strdup (GLADE_TAG_FALSE);
+	else
+		temp = g_strdup (GLADE_TAG_TRUE);
+	
+	glade_packing_box_set_boolean (object, temp, "pack_type");
+
+	g_free (temp);
+}
+
+/**
+ * glade_packing_padding_set:
+ * @object: 
+ * @value: 
+ * 
+ * Sets the padding for widgets inside a GtkVBox or GtkHBox
+ **/
+static void
+glade_packing_box_padding_set (GObject *object, const gchar *value)
+{
+	glade_packing_box_set_integer (object, value, "padding");
+}
+
+static gchar *
+glade_packing_box_position_get (GObject *object)
+{
+	GladeWidget *glade_widget;
+	GtkBoxChild *box_child = NULL;
+	GtkWidget *widget;
+	GtkBox *box;
+	GList *list;
+	gint i;
+	
+	widget = GTK_WIDGET (object);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+	glade_widget = glade_widget_get_from_gtk_widget (widget);
+	g_return_val_if_fail (GLADE_IS_WIDGET (glade_widget), NULL);
+	box = GTK_BOX (glade_widget->parent->widget);
+	g_return_val_if_fail (GTK_IS_BOX (box), NULL);
+
+	list = box->children;
+	for (; list; list = list->next) {
+		box_child = list->data;
+		if (box_child->widget == widget)
+			break;
+	}
+	if (list == NULL) {
+		g_warning ("Could not find the position in the GtkBox");
+		return g_strdup ("Error");
+	}
+
+	i = g_list_index (box->children, box_child);
+	
+	return g_strdup_printf ("%d", i);
 }
 
 static void
-glade_packing_fill_set (GObject *object, const gchar *value)
+glade_packing_box_position_set (GObject *object, const gchar *value)
 {
 	GladeWidget *glade_widget;
-	GtkBox *box;
+	GladeWidget *glade_widget_child;
 	GtkWidget *widget;
-	gboolean expand, fill;
-	gint padding;
-	GtkPackType pack_type;
+	GList *list;
+	GtkBox *box;
 
 	widget = GTK_WIDGET (object);
 	g_return_if_fail (GTK_IS_WIDGET (widget));
@@ -111,44 +379,42 @@ glade_packing_fill_set (GObject *object, const gchar *value)
 	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
 	box = GTK_BOX (glade_widget->parent->widget);
 
-	g_return_if_fail (GTK_IS_BOX (box));
+	gtk_box_reorder_child (box, widget, atoi (value));
 
-	gtk_box_query_child_packing (box, widget,
-				     &expand, &fill, &padding, &pack_type);
+	/* This all works fine, but we need to update the position property
+	 * of the other children in this box since it has changed.
+	 */
+	list = box->children;
+	for (; list; list = list->next) {
+		GladeProperty *property;
+		GtkBoxChild *box_child;
+		GtkWidget *child;
 
-	fill = (strcmp (value, GLADE_TAG_TRUE) == 0);
+		box_child = list->data;
+		child = box_child->widget;
+		glade_widget_child = glade_widget_get_from_gtk_widget (child);
 
-	gtk_box_set_child_packing (box, widget,
-				   expand, fill, padding, pack_type);
+		if (!glade_widget_child) {
+			g_warning ("Could not get the GladeWidget to set packing position");
+			continue;
+		}
+
+		property = glade_property_get_from_id (glade_widget_child->properties,
+						       "position");
+
+		/* If we have a placeholder in the Box the property will not be found */
+		if (property) {
+			g_free (property->value);
+			property->value = glade_packing_box_position_get (G_OBJECT (child));
+		}
+
+		/* We should pass a FALSE argument so that this property is not added to the
+		 * undo stack
+		 * Also we should have a generic way to update a property, here we know is interger
+		 * but it shuold be done with a generic fuction
+		 */
+	}
 }
-
-static void
-glade_packing_pack_start_set (GObject *object, const gchar *value)
-{
-	GladeWidget *glade_widget;
-	GtkBox *box;
-	GtkWidget *widget;
-	gboolean expand, fill;
-	gint padding;
-	GtkPackType pack_type;
-
-	widget = GTK_WIDGET (object);
-	g_return_if_fail (GTK_IS_WIDGET (widget));
-	glade_widget = glade_widget_get_from_gtk_widget (widget);
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
-	box = GTK_BOX (glade_widget->parent->widget);
-
-	g_return_if_fail (GTK_IS_BOX (box));
-
-	gtk_box_query_child_packing (box, widget,
-				     &expand, &fill, &padding, &pack_type);
-
-	pack_type = (strcmp (value, GLADE_TAG_TRUE) == 0) ? GTK_PACK_START : GTK_PACK_END;
-
-	gtk_box_set_child_packing (box, widget,
-				   expand, fill, padding, pack_type);
-}
-
 
 typedef struct _GladePackingProperty GladePackingProperty;
 struct _GladePackingProperty
@@ -156,10 +422,44 @@ struct _GladePackingProperty
 	const gchar *name;
 	const gchar *id;
 	void (*set_function) (GObject *object, const gchar *value);
+	gchar * (*get_function) (GObject *object);
 	GladePropertyType type;
 	const gchar *def;
 };
 
+GladePackingProperty table_props[] =
+{
+	{"Cell X",    "cell_x",    glade_packing_table_cell_x_set,    NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"Cell Y",    "cell_y",    glade_packing_table_cell_y_set,    NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"Col Span",  "col_span",  glade_packing_table_span_x_set,    NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"Row Span",  "row_span",  glade_packing_table_span_y_set,    NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"H Padding", "h_padding", glade_packing_table_padding_h_set, NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"V Padding", "v_padding", glade_packing_table_padding_v_set, NULL,              GLADE_PROPERTY_TYPE_INTEGER, "0"},
+
+	{"X Expand", "xexpand", glade_packing_table_x_expand_set, NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+	{"Y Expand", "yexpand", glade_packing_table_y_expand_set, NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+	{"X Shrink", "xshrink", glade_packing_table_x_shrink_set, NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+	{"Y Shrink", "yshrink", glade_packing_table_y_shrink_set, NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+	{"X Fill",   "xfill",   glade_packing_table_x_fill_set,   NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+	{"Y Fill",   "yfill",   glade_packing_table_y_fill_set,   NULL,              GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
+};
+
+GladePackingProperty box_props[] =
+{
+	{"Position",   "position",  glade_packing_box_position_set,   glade_packing_box_position_get, GLADE_PROPERTY_TYPE_INTEGER, GLADE_GET_DEFAULT_FROM_WIDGET},
+	{"Padding",    "padding",   glade_packing_box_padding_set,    NULL,                           GLADE_PROPERTY_TYPE_INTEGER, "0"},
+	{"Expand",     "expand",    glade_packing_box_expand_set,     NULL,                           GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_TRUE},
+	{"Fill",       "fill",      glade_packing_box_fill_set,       NULL,                           GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_TRUE},
+	{"Pack Start", "packstart", glade_packing_box_pack_start_set, NULL,                           GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_TRUE},
+};
+
+/**
+ * glade_packing_add_property:
+ * @list: The list of GladePropertyClass items that we are adding to
+ * @prop: a structure containing the data for the GladePropertyClass we are adding
+ * 
+ * Addss a property class to the list
+ **/
 static void
 glade_packing_add_property (GList **list, GladePackingProperty prop)
 {
@@ -172,29 +472,22 @@ glade_packing_add_property (GList **list, GladePackingProperty prop)
 	class->tooltip = g_strdup ("Implement me");
 	class->type    = prop.type;
 	class->set_function = prop.set_function;
+	class->get_function = prop.get_function;
 	if (prop.def)
 		class->def = g_strdup (prop.def);
 
 	*list = g_list_prepend (*list, class);
 }
 
-GladePackingProperty table_props[] =
-{
-	{"X Expand", "xexpand", glade_packing_x_expand_set, GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-	{"Y Expand", "yexpand", glade_packing_y_expand_set, GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-	{"X Shrink", "xshrink", glade_packing_x_shrink_set, GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-	{"Y Shrink", "yshrink", glade_packing_y_shrink_set, GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-	{"X Fill",   "xfill",   glade_packing_x_fill_set,   GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-	{"Y Fill",   "yfill",   glade_packing_y_fill_set,   GLADE_PROPERTY_TYPE_BOOLEAN, NULL},
-};
 
-GladePackingProperty box_props[] =
-{
-	{"Expand",     "expand",    glade_packing_expand_set,     GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_FALSE},
-	{"Fill",       "fill",      glade_packing_fill_set,       GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_FALSE},
-	{"Pack Start", "packstart", glade_packing_pack_start_set, GLADE_PROPERTY_TYPE_BOOLEAN, GLADE_TAG_TRUE},
-};
-
+/**
+ * glade_packing_init:
+ * @void: 
+ * 
+ * Initializes the property clases for the different containers. A widget has different packing
+ * properties depending on the container it is beeing added to. This function initializes the
+ * lists of property classes that we are later going to add (when a widget i created).
+ **/
 void
 glade_packing_init (void)
 {
@@ -213,13 +506,21 @@ glade_packing_init (void)
 	
 }
 
+/**
+ * glade_packing_add_properties_from_list:
+ * @widget: The widget that we are adding the properites to
+ * @list: The list of GladePropertyClass that we want to add to @widget
+ * 
+ * Adds a set of properites to a widget based on a list of GladePropertyClass.
+ **/
+/* Should this be in glade_widget ??. Chema */
 static void
 glade_packing_add_properties_from_list (GladeWidget *widget,
 					GList *list)
 {
 	GladePropertyClass *class;
 	GladeProperty *property;
-	
+
 	for (; list != NULL; list = list->next) {
 		class = list->data;
 		property = glade_property_new_from_class (class, widget);
@@ -229,10 +530,19 @@ glade_packing_add_properties_from_list (GladeWidget *widget,
 
 }
 
+/**
+ * glade_packing_add_properties:
+ * @widget: The widget that we want to add the properties to
+ * 
+ * Adds the packing properties to a GladeWidget depending on it's container.
+ * the packing properties change depending on the container a widget is using.
+ * so we can only add them after we container_add it.
+ **/
 void
 glade_packing_add_properties (GladeWidget *widget)
 {
 	gchar *class;
+
 	
 	if (widget->parent == NULL)
 		return;
@@ -244,4 +554,5 @@ glade_packing_add_properties (GladeWidget *widget)
 	if ((strcmp (class, "GtkHBox") == 0) ||
 	    (strcmp (class, "GtkVBox") == 0))
 		glade_packing_add_properties_from_list (widget, box_properties);
+
 }

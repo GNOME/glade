@@ -7,6 +7,7 @@ G_BEGIN_DECLS
 void glade_packing_init (void);
 void glade_packing_add_properties (GladeWidget *widget);
 
+
 G_END_DECLS
 
 #endif /* __GLADE_PACKING_H__ */

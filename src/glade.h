@@ -6,6 +6,11 @@
 gchar * _ (gchar * name);
 #endif
 
+#define g_ok_print g_print
+/* I always grep for g_print to find left over debuging print's
+ * so for now, use g_ok_print on the code that is ment to do a g_print
+ * (like --dump GtkWindow). Later rename to g_print. Chema
+ */
 #include "glade-types.h"
 #include "glade-utils.h"
 #include "glade-xml-utils.h"
@@ -61,6 +66,8 @@ gchar * _ (gchar * name);
 
 #define GLADE_WIDGET_DATA_TAG "GladeWidgetDataTag"
 
+#define GLADE_GET_DEFAULT_FROM_WIDGET "GladeGetDefaultFromWidget"
+
 #define GLADE_XML_TAG_PROJECT  "glade-interface"
 #define GLADE_XML_TAG_WIDGET   "widget"
 #define GLADE_XML_TAG_PROPERTY "property"
@@ -72,3 +79,6 @@ gchar * _ (gchar * name);
 #define GLADE_XML_TAG_CHILD    "child"
 #define GLADE_XML_TAG_SIGNAL   "signal"
 #define GLADE_XML_TAG_AFTER    "after"
+#define GLADE_XML_TAG_PACKING  "packing"
+
+

@@ -7,6 +7,9 @@ G_BEGIN_DECLS
 gboolean glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name);
 gboolean glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name);
 
+/* Remove !! */
+gpointer glade_gtk_get_function (const gchar *name);
+
 G_END_DECLS
 
 #endif /* __GLADE_GTK_H__ */

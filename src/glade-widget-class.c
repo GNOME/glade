@@ -185,7 +185,7 @@ glade_widget_class_set_type (GladeWidgetClass *class, const gchar *init_function
 		return FALSE;
 	}
 
-/* Disabled for GtkAdjustment, but i'd like to check for this somehow */
+/* Disabled for GtkAdjustment, but i'd like to check for this somehow. Chema */
 #if 0	
 	if (!g_type_is_a (type, gtk_widget_get_type ())) {
 		g_warning (_("The loaded type is not a GtkWidget, while trying to load \"%s\""),
@@ -409,7 +409,7 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
  * 
  * Dump to the console the properties of the Widget as specified
  * by gtk+. You can also run glade2 with : "glade2 --dump GtkWindow" to
- * get the widget properties.
+ * get dump a widget class properties.
  * 
  * Return Value: 
  **/
@@ -424,24 +424,32 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 
 	glade_widget_class_get_specs (class, &specs, &n_specs);
 
-	g_print ("\nDumping ParamSpec for %s\n", class->name);
+	g_ok_print ("\nDumping ParamSpec for %s\n", class->name);
 
 	last = 0;
 	for (i = 0; i < n_specs; i++) {
 		spec = specs[i];
 		if (last != spec->owner_type)
-			g_print ("\n                    --  %s -- \n",
+			g_ok_print ("\n                    --  %s -- \n",
 				 g_type_name (spec->owner_type));
-		g_print ("%02d - %-25s %s\n",
+		g_ok_print ("%02d - %-25s %s\n",
 			 i,
 			 spec->name,
 			 g_type_name (spec->value_type));
 		last = spec->owner_type;
 	}
-	g_print ("\n");
+	g_ok_print ("\n");
 }
 
 
+/**
+ * glade_widget_class_get_by_name:
+ * @name: 
+ * 
+ * Find a GladeWidgetClass with the name @name.
+ * 
+ * Return Value: 
+ **/
 GladeWidgetClass *
 glade_widget_class_get_by_name (const gchar *name)
 {

@@ -372,7 +372,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	gboolean state;
 
 	g_return_if_fail (property != NULL);
-	
+
 	if (property->loading)
 		return;
 
@@ -755,12 +755,6 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	GtkContainer *container;
 	GList *list;
 
-	table = glade_editor_get_table_from_class (editor, class, FALSE);
-	if (table == NULL)
-		table = glade_editor_table_create (editor, class, FALSE);
-
-	g_return_if_fail (table != NULL);
-	
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_widget);
 	list = gtk_container_children (container);
@@ -771,6 +765,15 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 		gtk_container_remove (container, widget);
 	}
 
+	if (!class)
+		return;
+	
+	table = glade_editor_get_table_from_class (editor, class, FALSE);
+	if (table == NULL)
+		table = glade_editor_table_create (editor, class, FALSE);
+
+	g_return_if_fail (table != NULL);
+	
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), table->table_widget,
 			    TRUE, TRUE, 0);
@@ -783,12 +786,6 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 	GtkContainer *container;
 	GList *list;
 
-	table = glade_editor_get_table_from_class (editor, class, TRUE);
-	if (table == NULL)
-		table = glade_editor_table_create (editor, class, TRUE);
-
-	g_return_if_fail (table != NULL);
-	
 	/* Remove the old table that was in this container */
 	container = GTK_CONTAINER (editor->vbox_common);
 	list = gtk_container_children (container);
@@ -798,6 +795,16 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 		gtk_widget_ref (widget);
 		gtk_container_remove (container, widget);
 	}
+
+	if (!class)
+		return;
+	
+	table = glade_editor_get_table_from_class (editor, class, TRUE);
+	if (table == NULL)
+		table = glade_editor_table_create (editor, class, TRUE);
+
+	g_return_if_fail (table != NULL);
+	
 
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
@@ -1139,6 +1146,10 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	for (; list; list = list->next)
 		g_free (list->data);
 	old_props = NULL;
+	old = NULL;
+
+	if (!widget)
+		return;
 
 	/* Now add the new properties */
 	table = glade_editor_table_new (widget->class);
@@ -1171,12 +1182,19 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	GList *list;
 
 	/* Load the GladeWidgetClass */
-	class = item->class;
+	class = item ? item->class : NULL;
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
 	
 	editor->loaded_widget = item;
 
+	glade_editor_load_packing_page (editor, item);
+	  
+	glade_signal_editor_load_widget (editor->signal_editor, item);
+
+	if (!item)
+		return;
+	
 	/* Load each GladeEditorProperty */
 	table = glade_editor_get_table_from_class (editor, class, FALSE);
 	list = table->properties;
@@ -1184,7 +1202,7 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 		property = list->data;
 		glade_editor_property_load (property, item);
 	}
-
+	
 	/* Load each GladeEditorProperty for the common tab*/
 	table = glade_editor_get_table_from_class (editor, class, TRUE);
 	list = table->properties;
@@ -1193,10 +1211,6 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 		glade_editor_property_load (property, item);
 	}
 
-	/* Load the Packin tab */
-	glade_editor_load_packing_page (editor, item);
-	  
-	glade_signal_editor_load_widget (editor->signal_editor, item);
 }
 
 
@@ -1212,6 +1226,14 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 
 
 
+/**
+ * glade_editor_select_item_real:
+ * @editor: 
+ * @widget: the widget to load into the editor. Can be NULL if we want
+ *          to clear the editor. 
+ * 
+ * Select an item and load it into the editor
+ **/
 static void
 glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 {
@@ -1222,6 +1244,9 @@ glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 
 	glade_editor_load_item (editor, widget);
 
+	if (!widget)
+		return;
+			
 	editor->loading = TRUE;
 	table = glade_editor_get_table_from_class (editor, widget->class, FALSE);
 	g_return_if_fail (table != NULL);
@@ -1233,9 +1258,7 @@ void
 glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
-	g_return_if_fail (widget != NULL);
-	g_return_if_fail (GTK_IS_WIDGET (widget->widget));
-	
+
 	gtk_signal_emit (GTK_OBJECT (editor),
 			 glade_editor_signals [SELECT_ITEM], widget);
 }

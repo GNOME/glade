@@ -46,13 +46,48 @@ static void gpw_show_clipboard_cb (void) {};
 
 static void gpw_undo_cb (void);
 static void gpw_redo_cb (void);
-static void gpw_delete_cb (void) {};
 static void gpw_about_cb (void) {};
 
 static void
 gpw_open_cb (void)
 {
-	g_print ("Implement me !\n");
+	glade_implement_me ();
+}
+
+static void
+gpw_delete_cb (void)
+{
+	GladeProject *project;
+	GList *selection;
+	GList *free_me;
+	GList *list;
+
+	project = glade_project_window_get_project ();
+	if (!project) {
+		g_warning ("Why is delete sensitive ? it shouldn't not be because "
+			   "we don't have a project");
+		return;
+	}
+	
+	selection = glade_project_selection_get (project);
+
+	/* We have to be carefull when deleting widgets from the selection
+	 * because when we delete each widget, the ->selection pointer changes
+	 * by the g_list_remove. Copy the list and freee it after we are done
+	 */
+	list = g_list_copy (selection);
+	free_me = list;
+	for (; list; list = list->next)
+		glade_widget_delete (list->data);
+	g_list_free (free_me);
+
+	/* Right now deleting widgets like this is not a problem, cause we
+	 * don't support multiple selection. When we do, it would be nice
+	 * to have glade_project_selction_freeze the remove all the widgets
+	 * and then call glade_project_selection_thaw. This will trigger
+	 * only one selection changed signal rather than multiple ones
+	 * Chema
+	 */
 }
 
 static void
@@ -78,7 +113,7 @@ gpw_save_cb (void)
 static void
 gpw_save_as_cb (void)
 {
-	g_print ("Implement me !\n");
+	glade_implement_me ();
 }
 
 static void
@@ -90,31 +125,31 @@ gpw_quit_cb (void)
 static void
 gpw_copy_cb (void)
 {
-	g_print ("Copy !\n");
+	glade_implement_me ();
 }
 
 static void
 gpw_cut_cb (void)
 {
-	g_print ("Cut !\n");
+	glade_implement_me ();
 }
 
 static void
 gpw_paste_cb (void)
 {
-	g_print ("Paste !\n");
+	glade_implement_me ();
 }
 
 static void
 gpw_undo_cb (void)
 {
-	g_print ("Undo\n");
+	glade_implement_me ();
 }
 
 static void
 gpw_redo_cb (void)
 {
-	g_print ("Redo\n");
+	glade_implement_me ();
 }
 
 static void
@@ -168,7 +203,7 @@ glade_project_window_construct_menu (GladeProjectWindow *gpw)
 
 	/* Accelerators */
 	accel_group = gtk_accel_group_new ();
-	gtk_accel_group_attach (accel_group, GTK_OBJECT (gpw->window));
+	gtk_accel_group_attach (accel_group, G_OBJECT (gpw->window));
 	gtk_accel_group_unref (accel_group);
       
 	/* Item factory */
@@ -507,6 +542,8 @@ glade_project_window_query_properties_set (gpointer key_,
  * @result: 
  * 
  * Queries the user for some property values before a GladeWidget creation
+ * for example before creating a GtkVBox we want to ask the user the number
+ * of columns he wants.
  * 
  * Return Value: FALSE if the query was canceled
  **/

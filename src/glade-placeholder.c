@@ -36,9 +36,9 @@
 #define GLADE_PLACEHOLDER_COL_STRING "GladePlaceholderColumn"
 
 void
-glade_placeholder_replace_box (GladePlaceholder *placeholder,
-			       GladeWidget *widget,
-			       GladeWidget *parent)
+glade_placeholder_replace_box (GtkWidget *current,
+			       GtkWidget *new,
+			       GtkWidget *container)
 {
 	/* Some Gtk Hackery. Not beautifull but needed. */
 	GtkBoxChild *child_info = NULL;
@@ -46,12 +46,12 @@ glade_placeholder_replace_box (GladePlaceholder *placeholder,
 	GtkBox *box;
 	GList *list;
 		
-	box = GTK_BOX (parent->widget);
+	box = GTK_BOX (container);
 
 	list = box->children;
 	for (; list != NULL; list = list->next) {
 		child_info = list->data;
-		if (child_info->widget == placeholder)
+		if (child_info->widget == current)
 			break;
 	}
 	if (list == NULL) {
@@ -59,11 +59,11 @@ glade_placeholder_replace_box (GladePlaceholder *placeholder,
 		return;
 	}
 	gtk_widget_unparent (child_info->widget);
-	child_info->widget = widget->widget;
+	child_info->widget = new;
 	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (box));
 
 	/* */
-	child = widget->widget;
+	child = new;
 	if (GTK_WIDGET_REALIZED (box))
 		gtk_widget_realize (child);
 	if (GTK_WIDGET_VISIBLE (box) && GTK_WIDGET_VISIBLE (child)) {
@@ -75,9 +75,9 @@ glade_placeholder_replace_box (GladePlaceholder *placeholder,
 }
 
 void
-glade_placeholder_replace_table (GladePlaceholder *placeholder,
-				 GladeWidget *widget,
-				 GladeWidget *parent)
+glade_placeholder_replace_table (GtkWidget *current,
+				 GtkWidget *new,
+				 GtkWidget *container)
 {
 	/* Some Gtk Hackery. Not beautifull, but needed */
 	GtkTableChild *table_child = NULL;
@@ -85,12 +85,12 @@ glade_placeholder_replace_table (GladePlaceholder *placeholder,
 	GtkTable *table;
 	GList *list;
 
-	table = GTK_TABLE (parent->widget);
+	table = GTK_TABLE (container);
 	list = table->children;
 		
 	for (; list != NULL; list = list->next) {
 		table_child = list->data;
-		if (table_child->widget == placeholder)
+		if (table_child->widget == current)
 			break;
 	}
 	if (list == NULL) {
@@ -99,11 +99,11 @@ glade_placeholder_replace_table (GladePlaceholder *placeholder,
 	}
 	
 	gtk_widget_unparent (table_child->widget);
-	table_child->widget = widget->widget;
+	table_child->widget = new;
 	gtk_widget_set_parent (table_child->widget, GTK_WIDGET (table));
 	
 	/* */
-	child = widget->widget;
+	child = new;
 	if (GTK_WIDGET_REALIZED (child->parent))
 		gtk_widget_realize (child);
 	if (GTK_WIDGET_VISIBLE (child->parent) && GTK_WIDGET_VISIBLE (child)) {
@@ -115,42 +115,50 @@ glade_placeholder_replace_table (GladePlaceholder *placeholder,
 }
 
 void
-glade_placeholder_replace_container (GladePlaceholder *placeholder,
-				     GladeWidget *widget,
-				     GladeWidget *parent)
+glade_placeholder_replace_container (GtkWidget *current,
+				     GtkWidget *new,
+				     GtkWidget *container)
 {
-	gtk_container_remove (GTK_CONTAINER (parent->widget), placeholder);
-	gtk_container_add (GTK_CONTAINER (parent->widget), widget->widget);
+	gtk_container_remove (GTK_CONTAINER (container), current);
+	gtk_container_add (GTK_CONTAINER (container), new);
 }
 
+/**
+ * glade_placeholder_replace_notebook:
+ * @current: the current widget that is going to be replaced
+ * @new: the new widget that is going to replace
+ * @container: the container
+ * 
+ * Replaces a widget inside a notebook with a new widget.
+ **/
 void
-glade_placeholder_replace_notebook (GladePlaceholder *placeholder,
-				    GladeWidget *widget,
-				    GladeWidget *parent)
+glade_placeholder_replace_notebook (GtkWidget *current,
+				    GtkWidget *new,
+				    GtkWidget *container)
 {
 	GtkNotebook *notebook;
 	GtkWidget *page;
 	GtkWidget *label;
 	gint page_num;
 
-	notebook = GTK_NOTEBOOK (parent->widget);
-	page_num = gtk_notebook_page_num (notebook,  GTK_WIDGET (placeholder));
+	notebook = GTK_NOTEBOOK (container);
+	page_num = gtk_notebook_page_num (notebook, current);
 	if (page_num == -1) {
 		g_warning ("GtkNotebookPage not found\n");
 		return;
 	}
 
 	page = gtk_notebook_get_nth_page (notebook, page_num);
-	label = gtk_notebook_get_tab_label (notebook, GTK_WIDGET (placeholder));
+	label = gtk_notebook_get_tab_label (notebook, current);
 	
 	gtk_widget_ref (page);
 	gtk_widget_ref (label);
 
 	gtk_notebook_remove_page (notebook, page_num);
-	gtk_notebook_insert_page (notebook, widget->widget,
+	gtk_notebook_insert_page (notebook, new,
 				  label, page_num);
 	gtk_notebook_set_tab_label (notebook,
-				    widget->widget,
+				    new,
 				    label);
 	
 	gtk_widget_unref (label);
@@ -173,7 +181,7 @@ glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClas
 		return;
 
 	if (parent->class->placeholder_replace != NULL)
-		parent->class->placeholder_replace (placeholder, widget, parent);
+		parent->class->placeholder_replace (GTK_WIDGET (placeholder), widget->widget, parent->widget);
 	else
 		g_warning ("A widget was added to a placeholder, but the placeholder_replace "
 			   "function has not been implemented for this class (%s)\n",
@@ -279,13 +287,13 @@ glade_placeholder_on_destroy (GladePlaceholder *widget, gpointer not_used)
 {
 }
 
-static GladePlaceholder *
-glade_placeholder_new (GladeWidget *glade_widget)
+GladePlaceholder *
+glade_placeholder_new (GladeWidget *parent)
 {
 	GladePlaceholder *placeholder;
 
 	placeholder = gtk_drawing_area_new ();
-	gtk_object_set_user_data (GTK_OBJECT (placeholder), glade_widget);
+	gtk_object_set_user_data (GTK_OBJECT (placeholder), parent);
 
 	gtk_widget_set_events (GTK_WIDGET (placeholder),
 			       gtk_widget_get_events (GTK_WIDGET (placeholder))
@@ -296,7 +304,7 @@ glade_placeholder_new (GladeWidget *glade_widget)
 	gtk_widget_show (GTK_WIDGET (placeholder));
 	
 	glade_placeholder_connect_draw_signals  (placeholder);
-	glade_placeholder_connect_mouse_signals (placeholder, glade_widget->project);
+	glade_placeholder_connect_mouse_signals (placeholder, parent->project);
 	
 	gtk_signal_connect (GTK_OBJECT (placeholder), "destroy",
 			    GTK_SIGNAL_FUNC (glade_placeholder_on_destroy), NULL);

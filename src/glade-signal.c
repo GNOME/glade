@@ -41,3 +41,11 @@ glade_signal_write (GladeXmlContext *context, GladeSignal *signal)
 
 	return node;
 }
+
+void
+glade_signal_free (GladeSignal *signal)
+{
+	g_free (signal->name);
+	g_free (signal->handler);
+	g_free (signal);
+}

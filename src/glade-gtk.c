@@ -39,7 +39,7 @@ glade_gtk_entry_set_text (GObject *object, const gchar *text)
 static void
 glade_gtk_entry_get_text (GObject *object)
 {
-	g_print ("IMplement get text functikon\n");
+	glade_implement_me ();
 }
 
 static void
@@ -160,16 +160,20 @@ glade_gtk_adjustment_set_page_size (GObject *object, const gchar *string)
 static void
 glade_gtk_vbox_get_size (GObject *object, const gchar *string)
 {
-	g_print ("Get size\n");
+	glade_implement_me ();
 }
 
 static void
 glade_gtk_vbox_set_size (GObject *object, const gchar *string)
 {
-	g_print ("Set size\n");
+	glade_implement_me ();
 }
 
 /* ================ Temp hack =================== */
+/* We have this table, but what we should do is use gmodule for this,
+ * however this requires that we link with libtool cause right now
+ * we are loosing the symbols. Chema
+ */
 typedef struct _GladeGtkFunction GladeGtkFunction;
 
 struct _GladeGtkFunction {
@@ -182,13 +186,14 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_entry_get_text",          &glade_gtk_entry_get_text},
 	{"glade_gtk_option_menu_set_items",   &glade_gtk_option_menu_set_items},
 	{"glade_gtk_progress_bar_set_format", &glade_gtk_progress_bar_set_format},
+	{"glade_gtk_vbox_set_size",           &glade_gtk_vbox_set_size},
+	{"glade_gtk_vbox_get_size",           &glade_gtk_vbox_get_size},
 	{"glade_gtk_adjustment_set_max",      &glade_gtk_adjustment_set_max},
 	{"glade_gtk_adjustment_set_min",      &glade_gtk_adjustment_set_min},
 	{"glade_gtk_adjustment_set_step_increment", &glade_gtk_adjustment_set_step_increment},
 	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
 	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
-	{"glade_gtk_vbox_set_size",           &glade_gtk_vbox_set_size},
-	{"glade_gtk_vbox_get_size",           &glade_gtk_vbox_get_size},
+
 };
 
 static gpointer
