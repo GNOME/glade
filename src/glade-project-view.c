@@ -419,7 +419,7 @@ glade_project_view_init (GladeProjectView *view)
 	view->project = NULL;
 	view->add_widget_signal_id = 0;
 
-	view->model = gtk_tree_store_new (N_COLUMNS, GTK_TYPE_POINTER);
+	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
 	glade_project_view_populate_model (view->model, view);
 
 	view->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (view->model));
@@ -528,10 +528,14 @@ glade_project_view_set_project (GladeProjectView *view,
 
 	/* This view stops listening to the old project (if there was one) */
 	if (view->project != NULL) {
-		gtk_signal_disconnect (GTK_OBJECT (view->project), view->add_widget_signal_id);
-		gtk_signal_disconnect (GTK_OBJECT (view->project), view->remove_widget_signal_id);
-		gtk_signal_disconnect (GTK_OBJECT (view->project), view->widget_name_changed_signal_id);
-		gtk_signal_disconnect (GTK_OBJECT (view->project), view->selection_changed_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (view->project),
+					     view->add_widget_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (view->project),
+					     view->remove_widget_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (view->project),
+					     view->widget_name_changed_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (view->project),
+					     view->selection_changed_signal_id);
 	}
 
 	model = GTK_TREE_MODEL (view->model);

@@ -212,7 +212,7 @@ glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
 	
 	light_gc = widget->style->light_gc [GTK_STATE_NORMAL];
 	dark_gc  = widget->style->dark_gc  [GTK_STATE_NORMAL];
-	gdk_window_get_size (event->window, &w, &h);
+	gdk_drawable_get_size (event->window, &w, &h);
 
 	gdk_draw_line (event->window, light_gc, 0, 0, w - 1, 0);
 	gdk_draw_line (event->window, light_gc, 0, 0, 0, h - 1);
