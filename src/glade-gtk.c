@@ -165,7 +165,8 @@ glade_gtk_widget_get_tooltip (GObject *object, GValue *value)
 	GtkTooltipsData *tooltips_data = gtk_tooltips_data_get (GTK_WIDGET (object));
 	
 	g_value_reset (value);
-	g_value_set_string (value, tooltips_data->tip_text);
+	g_value_set_string (value,
+			    tooltips_data ? tooltips_data->tip_text : NULL);
 }
 
 /**
@@ -868,7 +869,7 @@ glade_gtk_notebook_post_create (GObject *object)
 	g_value_init (&value, G_TYPE_INT);
 	g_value_set_int (&value, ask_for_number(_("Create a notebook"), _("Number of pages:"), 0, 100, 3));
 
-	// FIXME: Shouldn't we actually set this?
+	glade_property_set (property, &value);
 }
 
 /**

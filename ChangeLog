@@ -1,3 +1,20 @@
+2004-10-06  Morten Welinder  <terra@gnome.org>
+
+	* src/glade-gtk.c (glade_gtk_widget_get_tooltip): Bullet proof.
+	(glade_gtk_notebook_post_create): Actually set the property.
+
+	* src/glade-widget.c (glade_widget_debug_real,
+	glade_widget_debug): New functions.
+	(glade_widget_set_name): Bullet proof.
+	(glade_widget_set_internal): Ditto.
+	(glade_widget_set_project): Ditto.
+	(glade_widget_fill_from_node): Plug leaks.
+	(glade_widget_new_from_node_real): Plug leak.
+	(glade_widget_new_child_from_node): Fix loading of internal
+	children and plug leak.
+	(glade_widget_get_internal_child): Change to return GtkWidget
+	because the GladeWidget may not be connected yet.
+
 2004-10-04  Morten Welinder  <terra@gnome.org>
 
 	* src/glade-utils.c (glade_util_widget_set_tooltip): Plug leak.
