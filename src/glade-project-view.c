@@ -145,32 +145,41 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 	}
 }
 
+/**
+ * Note that widgets is a list of GtkWidgets, while what we store
+ * in the model are the associated GladeWidgets.
+ */
 static void
 glade_project_view_populate_model_real (GtkTreeStore *model,
 					GList *widgets,
 					GtkTreeIter *parent_iter,
 					gboolean add_childs)
 {
-	GladeWidget *widget;
 	GList *list;
 	GtkTreeIter iter;
-	GtkTreeIter *copy = NULL;
 
 	list = g_list_copy (widgets);
 	list = g_list_reverse (list);
 	for (; list; list = list->next) {
-		widget = list->data;
-		gtk_tree_store_append (model, &iter, parent_iter);
-		gtk_tree_store_set (model, &iter,
-				    WIDGET_COLUMN, widget,
-				    -1);
-		if (add_childs && widget->children != NULL) {
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gtk_widget (list->data);
+		if (widget) {
+			gtk_tree_store_append (model, &iter, parent_iter);
+			gtk_tree_store_set (model, &iter,
+					    WIDGET_COLUMN, widget,
+					    -1);
+		}
+
+		if (add_childs && GTK_IS_CONTAINER (list->data)) {
+			GList *children;
+			GtkTreeIter *copy = NULL;
+
 			copy = gtk_tree_iter_copy (&iter);
-			glade_project_view_populate_model_real (model,
-								widget->children,
-								copy,
-								TRUE);
+			children = gtk_container_get_children (GTK_CONTAINER (list->data));
+			glade_project_view_populate_model_real (model, children, copy, TRUE);
 			gtk_tree_iter_free (copy);
+			g_list_free (children);
 		}
 	}
 
@@ -178,8 +187,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 }
 
 static void
-glade_project_view_populate_model (GtkTreeStore *model,
-				   GladeProjectView *view)
+glade_project_view_populate_model (GladeProjectView *view)
 {
 	GladeProject *project;
 	GList *list;
@@ -191,15 +199,15 @@ glade_project_view_populate_model (GtkTreeStore *model,
 
 	/* Make a list of only the toplevel widgets */
 	for (list = project->widgets; list; list = list->next) {
-		GladeWidget *widget;
+		GtkWidget *widget;
 
-		widget = glade_widget_get_from_gtk_widget (list->data);
-		if (GLADE_WIDGET_IS_TOPLEVEL (widget))
+		widget = GTK_WIDGET (list->data);
+		if (GTK_WIDGET_TOPLEVEL (widget))
 			toplevels = g_list_append (toplevels, widget);
 	}
 
 	/* add the widgets and recurse */
-	glade_project_view_populate_model_real (model, toplevels,
+	glade_project_view_populate_model_real (view->model, toplevels,
 						NULL, !view->is_list);
 
 	g_list_free (toplevels);
@@ -419,7 +427,7 @@ glade_project_view_init (GladeProjectView *view)
 	view->add_widget_signal_id = 0;
 
 	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
-	glade_project_view_populate_model (view->model, view);
+	glade_project_view_populate_model (view);
 
 	view->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (view->model));
 
@@ -556,7 +564,7 @@ glade_project_view_set_project (GladeProjectView *view,
 
 	view->project = project;
 
-	glade_project_view_populate_model (view->model, view);
+	glade_project_view_populate_model (view);
 
 	/* Here we connect to all the signals of the project that interests us */
 	view->add_widget_signal_id =
