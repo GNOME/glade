@@ -374,7 +374,7 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	g_object_set (G_OBJECT (cell),
 		      "text", widget->name,
-		      "pixbuf", widget->class->pixbuf,
+/*		      "pixbuf", widget->class->pixbuf, */
 		      NULL);
 }
 
@@ -470,7 +470,7 @@ glade_project_view_create_widget (GladeProjectView *view)
 			       G_CALLBACK (glade_project_view_button_press_cb),
 			       NULL, NULL, 0);
 
-	cell = gtk_cell_renderer_text_pixbuf_new ();
+	cell = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Widget"), cell, NULL);
 	gtk_tree_view_column_set_cell_data_func (column, cell, glade_project_view_cell_function, NULL, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);

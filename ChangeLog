@@ -1,3 +1,14 @@
+2001-10-06  Michael Meeks  <michael@ximian.com>
+
+	* src/glade-project-view.c (glade_project_view_create_widget): 
+	use cell_render_text, text_pixbuf seems to have vanished.
+	(glade_project_view_cell_function): don't set a pixbuf on the
+	items, sadly.
+
+	* src/glade-property-class.c
+	(glade_property_class_load_from_param_spec): upd. for new
+	g_param_ accessors.
+
 2001-09-24  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "ta" to the languages list.

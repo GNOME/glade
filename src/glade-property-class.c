@@ -570,8 +570,8 @@ glade_property_class_load_from_param_spec (const gchar *name,
 	}
 
 	class->id      = g_strdup (spec->name);
-	class->name    = g_strdup (spec->nick);
-	class->tooltip = g_strdup (spec->blurb);
+	class->name    = g_strdup (g_param_get_nick (spec));
+	class->tooltip = g_strdup (g_param_get_blurb (spec));
 	class->type    = glade_property_class_get_type_from_spec (spec);
 
 	if (class->type == GLADE_PROPERTY_TYPE_ERROR) {
