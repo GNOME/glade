@@ -13,8 +13,16 @@
         <Enum Id="gtk-apply" Name="Apply"/>
         <Enum Id="gtk-close" Name="Close"/>
       </Enums>
-    <SetFunction>glade_gtk_button_set_stock</SetFunction>
+      <SetFunction>glade_gtk_button_set_stock</SetFunction>
     </Property>
+
+    <Property Id="response-id" Name="Response ID" Default="0" Common="False">
+      <Type>Integer</Type>
+      <Tooltip>The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)</Tooltip>
+      <SetFunction>ignore</SetFunction>
+      <GetFunction>ignore</GetFunction>
+    </Property>
+
   </Properties>
   
 </GladeWidgetClass>

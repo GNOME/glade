@@ -1,5 +1,14 @@
 2004-02-28  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* widgets/gtkdialog.xml: comment out "response-id" as a ChildProperty
+	to retain compatibility with glade-2.  We should reput "response-id"
+	as a ChildProperty if that gets indeed accepted as a child-property
+	in gtk+ itself.
+	* widgets/gtkbutton.xml: add a "response-id" property to each button,
+	to keep backwards compatibility with glade-2.
+
+2004-02-28  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-editor.c: restrict child-properties to widgets for which
 	child_property_applies returns TRUE, not only direct children.
 	* src/glade-gtk.c: implement a child_property_applies for

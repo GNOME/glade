@@ -18,6 +18,9 @@
     </Property>
   </Properties>
 
+<!-- That's supported, and IMO is the right way to handle response-id (and it works),
+     but it's not backwards compatible with response-id being a property as in glade-2.
+     So by now we will just add a fake response-id property to buttons
   <ChildProperties>
     <Property Id="response-id" Name="Response ID" Default="0" Common="False">
       <Type>Integer</Type>
@@ -26,5 +29,6 @@
       <GetFunction>ignore</GetFunction>
     </Property>
   </ChildProperties>
+-->
 
 </GladeWidgetClass>
