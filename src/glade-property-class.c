@@ -208,7 +208,6 @@ glade_property_query_new (void)
 	GladePropertyQuery *query;
 
 	query = g_new0 (GladePropertyQuery, 1);
-	query->window_title = NULL;
 	query->question = NULL;
 
 	return query;
@@ -224,11 +223,9 @@ glade_query_new_from_node (GladeXmlNode *node)
 
 	query = glade_property_query_new ();
 
-	query->window_title = glade_xml_get_value_string_required (node, GLADE_TAG_WINDOW_TITLE, NULL);
 	query->question     = glade_xml_get_value_string_required (node, GLADE_TAG_QUESTION, NULL);
 
-	if ((query->window_title == NULL) ||
-	    (query->question == NULL))
+	if (!query->question)
 		return NULL;
 
 	return query;	
@@ -242,7 +239,6 @@ glade_property_query_clone (GladePropertyQuery *query)
 	g_return_val_if_fail (query != NULL, NULL);
 
 	clon = glade_property_query_new ();
-	clon->window_title = g_strdup (query->window_title);
 	clon->question = g_strdup (clon->question);
 
 	return clon;
@@ -254,7 +250,6 @@ glade_property_query_free (GladePropertyQuery *query)
 	if (query == NULL)
 		return;
 
-	g_free (query->window_title);
 	g_free (query->question);
 	g_free (query);
 }

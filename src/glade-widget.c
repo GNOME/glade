@@ -679,6 +679,61 @@ glade_widget_new_full (GladeWidgetClass *class,
 	return widget;
 }
 
+/**
+ * Temp struct to hold the results of a query.
+ * The keys of the hashtable are the GladePropertyClass->id , while the
+ * values are the GValues the user sets for the property.
+ */
+typedef struct {
+	GHashTable *hash;
+} GladePropertyQueryResult;
+
+static GladePropertyQueryResult *
+glade_property_query_result_new (void)
+{
+	GladePropertyQueryResult *result;
+
+	result = g_new0 (GladePropertyQueryResult, 1);
+	result->hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
+	return result;
+}
+
+static void
+glade_property_query_result_destroy (GladePropertyQueryResult *result)
+{
+	g_return_if_fail (result != NULL);
+
+	g_hash_table_destroy (result->hash);
+	result->hash = NULL;
+	
+	g_free (result);
+}
+
+static void
+glade_widget_query_set_result (gpointer _key,
+			       gpointer _value,
+			       gpointer _data)
+{
+	gchar *property_id = _key;
+	GtkWidget *widget = _value;
+	GladePropertyQueryResult *result = _data;
+
+	gint num;
+	GValue *value = g_new0 (GValue, 1);
+
+	g_value_init (value, G_TYPE_INT);
+
+	/* TODO: for now we only support quering int properties through a 
+	 * spinbutton. In the future we should have a different function for
+	 * each GladePropertyClass which requires it.
+	 */
+	num = (gint) gtk_spin_button_get_value (GTK_SPIN_BUTTON (widget));
+	g_value_set_int (value, num);
+
+	g_hash_table_insert (result->hash, property_id, value);
+}
+
 static GtkWidget *
 glade_widget_append_query (GtkWidget *table,
 			   GladePropertyClass *property_class,
@@ -713,20 +768,6 @@ glade_widget_append_query (GtkWidget *table,
 				   1, 2, row, row +1);
 
 	return spin;
-}
-
-void
-glade_widget_query_properties_set (gpointer key_,
-				   gpointer value_,
-				   gpointer user_data)
-{
-	GladePropertyQueryResult *result = user_data;
-	GtkWidget *spin = value_;
-	const gchar *key = key_;
-	gint num;
-
-	num = (gint) gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin));
-	glade_property_query_result_set_int (result, key, num);
 }
 
 /**
@@ -774,7 +815,7 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	table = gtk_table_new (0, 0, FALSE);
 	gtk_widget_show (table);
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
-	
+
 	hash = g_hash_table_new (g_str_hash, g_str_equal);
 
 	for (list = class->properties; list; list = list->next) {
@@ -794,7 +835,7 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	switch (response) {
 	case GTK_RESPONSE_ACCEPT:
 		g_hash_table_foreach (hash,
-				      glade_widget_query_properties_set,
+				      glade_widget_query_set_result,
 				      result);
 		break;
 	case GTK_RESPONSE_REJECT:
@@ -822,20 +863,20 @@ glade_widget_apply_queried_properties (GladeWidget *widget,
 				       GladePropertyQueryResult *result)
 {
 	GList *list;
-	GValue *value = g_new0 (GValue, 1);
 
-	g_value_init (value, G_TYPE_INT);
+	for (list = widget->properties; list; list = list->next) {
+		GladeProperty *property;
+		GladePropertyClass *pclass;
+		GValue *value;
 
-	list = widget->class->properties;
-	for (; list; list = list->next) {
-		GladePropertyClass *pclass = list->data;
+		property = GLADE_PROPERTY (list->data);
+		pclass = property->class;
 		if (pclass->query) {
-			GladeProperty *property;
-			gint temp;
-			glade_property_query_result_get_int (result, pclass->id, &temp);
-			property = glade_property_get_from_id (widget->properties, pclass->id);
-
-			g_value_set_int (value, temp);
+			value = g_hash_table_lookup (result->hash, pclass->id);
+			if (!value) {
+				g_warning ("Property value not found in query result");
+				continue;
+			}
 			glade_property_set (property, value);
 		}
 	}
@@ -876,11 +917,12 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 	if (widget->class->fill_empty)
 		widget->class->fill_empty (widget->widget);
 
-	glade_widget_apply_queried_properties (widget, result);
-	if (result) 
-		glade_property_query_result_destroy (result);
-
 	glade_widget_set_default_options (widget);
+
+	if (result) {
+		glade_widget_apply_queried_properties (widget, result);
+		glade_property_query_result_destroy (result);
+	}
 
 	return widget;
 }

@@ -1,5 +1,18 @@
 2003-10-20  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-project-window.[ch]: move GladeProjectQuery here and
+	remove the window_title field since it doesn't make sense, e.g. you
+	can query for different properties in the same dialog.
+	* src/glade-widget.c: move QueryResult struct here and cleanup the
+	query logic a little.
+	* src/glade-property.[ch]: delete stuff moved elsewhere.
+	* src/glade.h: remove the WindowTitle tag.
+	* widgets/gtkbox.xml: remove WindowTitle.
+	* widgets/gtktable.xml: ditto.
+	* widgets/gtknotebook.xml: ditto.
+
+2003-10-20  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-widget.c (glade_widget_query_properties): set the query
 	dialog title.
 

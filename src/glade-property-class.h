@@ -192,6 +192,18 @@ struct _GladePropertyClass
 		       */
 };
 
+/**
+ * For now it only contains a string with the question for the query,
+ * since we only support numerical queries... when we add support for
+ * others queries it should contain something more complicated, maybe
+ * a whole GtkWidget (look at the query you get when creating a GtkDialog
+ * in glade-2
+ */
+struct _GladePropertyQuery
+{
+	gchar *question;
+};
+
 GladePropertyClass * glade_property_class_new (void);
 GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
 GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_class);

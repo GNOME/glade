@@ -325,51 +325,6 @@ glade_property_get_enum (GladeProperty *property)
 	return choice;
 }
 
-void
-glade_property_query_result_set_int (GladePropertyQueryResult *result,
-				     const gchar *key,
-				     gint value)
-{
-	g_return_if_fail (result != NULL);
-	g_return_if_fail (key != NULL);
-
-	g_hash_table_insert (result->hash, (gchar *)key,
-			     GINT_TO_POINTER (value));
-}
-
-void
-glade_property_query_result_get_int (GladePropertyQueryResult *result,
-				     const gchar *key,
-				     gint *return_value)
-{
-	g_return_if_fail (result != NULL);
-	g_return_if_fail (key != NULL);
-
-	*return_value = GPOINTER_TO_INT (g_hash_table_lookup (result->hash, key));
-}
-
-GladePropertyQueryResult *
-glade_property_query_result_new (void)
-{
-	GladePropertyQueryResult *result;
-
-	result = g_new0 (GladePropertyQueryResult, 1);
-	result->hash = g_hash_table_new (g_str_hash, g_str_equal);
-
-	return result;
-}
-
-void
-glade_property_query_result_destroy (GladePropertyQueryResult *result)
-{
-	g_return_if_fail (result != NULL);
-
-	g_hash_table_destroy (result->hash);
-	result->hash = NULL;
-	
-	g_free (result);
-}
-
 GladeXmlNode *
 glade_property_write (GladeXmlContext *context, GladeProperty *property)
 {

@@ -51,18 +51,6 @@ struct _GladePropertyObjectClass
 	void   (*changed)          (GladeProperty *property, const gchar *value);
 };
 
-struct _GladePropertyQuery
-{
-	gchar *window_title;
-	gchar *question;
-};
-
-struct _GladePropertyQueryResult
-{
-	GHashTable *hash;
-};
-	
-
 GType glade_property_get_type (void);
 
 GList *glade_property_list_new_from_widget_class (GladeWidgetClass *class,
@@ -87,17 +75,6 @@ void glade_property_get_from_widget (GladeProperty *property);
 /* Get a GladeProperty */
 GladeProperty *glade_property_get_from_id (GList *settings_list,
 					   const gchar *id);
-
-/* Property Queries */
-GladePropertyQueryResult *glade_property_query_result_new (void);
-void glade_property_query_result_destroy (GladePropertyQueryResult *result);
-
-void glade_property_query_result_get_int (GladePropertyQueryResult *result,
-					  const gchar *name,
-					  gint *return_value);
-void glade_property_query_result_set_int (GladePropertyQueryResult *result,
-					  const gchar *key,
-					  gint value);
 
 /* XML i/o */
 GladeXmlNode *glade_property_write (GladeXmlContext *context, GladeProperty *property);

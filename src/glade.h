@@ -82,7 +82,6 @@
 #define GLADE_TAG_SET_FUNCTION "SetFunction"
 #define GLADE_TAG_GET_FUNCTION "GetFunction"
 #define GLADE_TAG_QUERY        "Query"
-#define GLADE_TAG_WINDOW_TITLE "WindowTitle"
 #define GLADE_TAG_QUESTION     "Question"
 #define GLADE_TAG_VISIBLE_LINES "VisibleLines"
 #define GLADE_ENUM_DATA_TAG    "GladeEnumDataTag"
