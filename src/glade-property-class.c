@@ -199,6 +199,8 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 		g_warning ("uchar not implemented\n");
 	} else if (G_IS_PARAM_SPEC_OBJECT (spec)) {
 		return GLADE_PROPERTY_TYPE_OBJECT;
+		/*	} else if (G_IS_PARAM_SPEC_BOXED (spec)) {
+			return GLADE_PROPERTY_TYPE_BOXED; */
 	} else {
 		/*FIXME: We should implement the "events" property */
 		if (g_ascii_strcasecmp ( spec->name, "user-data") &&
@@ -729,8 +731,9 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	 */
 	if ( !glade_xml_get_property_boolean (node, GLADE_TAG_PARAM_SPEC, TRUE) || pproperty_class == NULL) {
 		name = glade_xml_get_property_string_required (node, GLADE_TAG_NAME, widget_class->name);
-		if (name == NULL)
+		if (name == NULL) {
 			return;
+		}
 
 		pproperty_class = glade_property_class_new ();
 
@@ -794,25 +797,24 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			pproperty_class->def = gvalue;
 			glade_widget_property_class_free (*property_class);
 			*property_class = pproperty_class;
-			return;
 		}
-
-		/* If the property is an object Load it */
-		if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-			child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
-			if (child == NULL) {
-				glade_widget_property_class_free (pproperty_class);
-				pproperty_class = NULL;
-				return;
-			}
+		else {
+			/* If the property is an object Load it */
+			if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
+				child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
+				if (child == NULL) {
+					glade_widget_property_class_free (pproperty_class);
+					pproperty_class = NULL;
+					return;
+				}
 			
-			pproperty_class->child = glade_widget_class_new_from_node (child);
-			g_print ("Loaded %s\n", pproperty_class->child->name);
-		}
+				pproperty_class->child = glade_widget_class_new_from_node (child);
+			}
 
-		pproperty_class->def = glade_property_class_get_default (node, pproperty_class);
-		glade_widget_property_class_free (*property_class);
-		*property_class = pproperty_class;
+			pproperty_class->def = glade_property_class_get_default (node, pproperty_class);
+			glade_widget_property_class_free (*property_class);
+			*property_class = pproperty_class;
+		}
 	
 	} else {
 		GValue *tmp;

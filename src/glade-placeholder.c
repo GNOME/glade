@@ -34,6 +34,8 @@
 #include "glade-project.h"
 #include "glade-project-window.h"
 #include "glade-packing.h"
+#include "glade-clipboard.h"
+#include "glade-popup.h"
 
 #define GLADE_PLACEHOLDER_ROW_STRING  "GladePlaceholderRow"
 #define GLADE_PLACEHOLDER_COL_STRING  "GladePlaceholderColumn"
@@ -236,17 +238,7 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEvent
 		glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
 		glade_project_window_set_add_class (gpw, NULL);
 	} else if (event->button == 3) {
-		/*
-		 * If a right-click, do a PASTE from the clipboard.
-		 * FIXME: should show a menu.
-		 */
-		GladeProjectWindow *gpw;
-		GladeClipboard *clipboard;
-
-		gpw = glade_project_window_get ();
-		clipboard = gpw->clipboard;
-
-		glade_clipboard_paste (clipboard, placeholder);
+		glade_popup_placeholder_pop (placeholder, event);
 	}
 			
 }
@@ -697,4 +689,17 @@ glade_placeholder_fill_empty (GtkWidget *widget)
 	} else {
 		glade_implement_me ();
 	}
+}
+
+void
+glade_placeholder_paste_cb (GtkWidget *button, gpointer data)
+{
+	GladePlaceholder *placeholder = GTK_WIDGET (data);
+	GladeProjectWindow *gpw;
+	GladeClipboard *clipboard;
+
+	gpw = glade_project_window_get ();
+	clipboard = gpw->clipboard;
+
+	glade_clipboard_paste (clipboard, placeholder);
 }

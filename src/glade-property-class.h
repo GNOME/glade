@@ -127,7 +127,7 @@ struct _GladePropertyClass {
 			    * for a type == CHOICE
 			    */
 	GList *choices;    /* list of GladeChoice items. This is only used
-			    * for propeties of type GLADE_PROPERYT_TYPE_CHOICE
+			    * for propeties of type GLADE_PROPERTY_TYPE_CHOICE
 			    * and is NULL for other poperties.
 			    * [See glade-choice.h]
 			    */

@@ -62,6 +62,11 @@ struct _GladeWidgetSignal {
 };
 
 
+gchar *	glade_widget_new_name (GladeProject *project, GladeWidgetClass *class);
+gboolean glade_widget_create_gtk_widget (GladeWidget *glade_widget);
+void glade_widget_set_contents (GladeWidget *widget);
+void glade_widget_connect_signals (GladeWidget *widget);
+
 GladeWidget * glade_widget_new_toplevel (GladeProject *project,
 					 GladeWidgetClass *class);
 GladeWidget * glade_widget_new_from_class (GladeWidgetClass *class,

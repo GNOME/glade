@@ -33,6 +33,7 @@
 #include "glade-widget-class.h"
 #include "glade-placeholder.h"
 #include "glade-project.h"
+#include "glade-packing.h"
 
 static void
 glade_clipboard_class_init (GladeClipboardClass * klass)
@@ -110,7 +111,6 @@ glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
 	 * latest addition, to currently selected widget in the clipboard.
 	 */
 	clipboard->widgets = g_list_prepend (clipboard->widgets, widget);
-	clipboard->curr = widget;
 
 	/*
 	 * If there is view present, update it.
@@ -130,6 +130,7 @@ static void
 glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
 {
 	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
+	clipboard->curr = NULL;
 
 	/*
 	 * If there is a view present, update it.

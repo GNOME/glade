@@ -29,6 +29,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
+#include "glade-placeholder.h"
 
 static void
 glade_popup_menu_detach (GtkWidget *attach_widget,
@@ -74,7 +75,36 @@ glade_popup_append_item (GtkWidget *popup_menu,
 }
 
 static GtkWidget *
-glade_popup_create_menu (GladeWidget *widget,  gboolean add_childs)
+glade_popup_create_menu (GladeWidget *widget, gboolean add_childs);
+
+static void
+glade_popup_populate_childs(GtkWidget* popup_menu, GladeWidget* parent)
+{
+	while (parent) {
+		GtkWidget *child;
+		GtkWidget *child_menu;
+		GtkWidget *separator;
+
+		separator = gtk_menu_item_new ();
+		gtk_widget_show (separator);
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
+				       separator);
+			
+		child = gtk_menu_item_new_with_label (parent->name);
+		child_menu = glade_popup_create_menu (parent, FALSE);
+		gtk_menu_item_set_submenu (GTK_MENU_ITEM (child),
+					   child_menu);
+		gtk_widget_show (child);
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
+				       child);
+
+			
+		parent = parent->parent;
+	}
+}
+
+static GtkWidget *
+glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 {
 	GtkWidget *popup_menu;
 	
@@ -92,31 +122,34 @@ glade_popup_create_menu (GladeWidget *widget,  gboolean add_childs)
 	glade_popup_append_item (popup_menu, widget, _("Delete"),
 				 glade_widget_delete, TRUE);
 
-	if (add_childs && widget->parent) {
-		GladeWidget *parent = widget->parent;
+	if (add_childs && widget->parent)
+		glade_popup_populate_childs(popup_menu, widget->parent);
 
-		while (parent) {
-			GtkWidget *child;
-			GtkWidget *child_menu;
-			GtkWidget *separator;
+	return popup_menu;
+}
 
-			separator = gtk_menu_item_new ();
-			gtk_widget_show (separator);
-			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-					       separator);
-			
-			child = gtk_menu_item_new_with_label (parent->name);
-			child_menu = glade_popup_create_menu (parent, FALSE);
-			gtk_menu_item_set_submenu (GTK_MENU_ITEM (child),
-						   child_menu);
-			gtk_widget_show (child);
-			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-					       child);
+static GtkWidget *
+glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
+{
+	GtkWidget *popup_menu;
+	GtkWidget *menu_item;
+	GladeWidget *parent;
+	
+	popup_menu = gtk_menu_new ();
 
-			
-			parent = parent->parent;
-		}
-	}
+	menu_item = gtk_menu_item_new_with_label (_("Paste"));
+
+	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
+			    GTK_SIGNAL_FUNC (glade_placeholder_paste_cb),
+			    placeholder);
+
+	gtk_widget_set_sensitive (menu_item, TRUE);
+	gtk_widget_show (menu_item);
+	gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
+			       menu_item);
+
+	if ((parent = glade_placeholder_get_parent(placeholder)) != NULL)
+		glade_popup_populate_childs(popup_menu, parent);
 
 	return popup_menu;
 }
@@ -137,3 +170,20 @@ glade_popup_pop (GladeWidget *widget, GdkEventButton *event)
 			event->button, event->time);
 
 }
+
+void
+glade_popup_placeholder_pop (GladePlaceholder *placeholder, GdkEventButton *event)
+{
+	GtkWidget *popup_menu;
+
+	popup_menu = glade_popup_create_placeholder_menu (placeholder);
+
+	gtk_menu_attach_to_widget (GTK_MENU (popup_menu),
+				   GTK_WIDGET (placeholder),
+				   glade_popup_menu_detach);
+
+	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
+			NULL, NULL,
+			event->button, event->time);
+}
+

@@ -31,15 +31,6 @@
 #include "glade-property-class.h"
 #include "glade-choice.h"
 
-static gint
-glade_widget_ugly_hack (gpointer data)
-{
-	GtkWidget *widget = data;
-	
-	gtk_widget_queue_resize (widget);
-	
-	return FALSE;
-}
 
 static void
 glade_gtk_entry_set_text (GObject *object, GValue *value)
@@ -251,9 +242,6 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	} /* else the size is == */
 	
 	glade_placeholder_fill_empty (GTK_WIDGET (box));
-
-	/* see glade-widget.c#ugly_hack for an explanation */
-	gtk_timeout_add ( 100, glade_widget_ugly_hack, box);
 }
 
 #if 0
@@ -342,9 +330,6 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 	}
 
 	glade_placeholder_fill_empty (GTK_WIDGET (table));
-
-	/* see glade-widget.c#ugly_hack for an explanation */
-	gtk_timeout_add ( 100, glade_widget_ugly_hack, table);
 }
 
 static void
@@ -500,7 +485,6 @@ glade_gtk_table_post_create (GObject *object, GValue *value)
 	}
 }
 
-
 /* ================ Temp hack =================== */
 /* We have this table, but what we should do is use gmodule for this,
  * however this requires that we link with libtool cause right now
@@ -513,39 +497,45 @@ struct _GladeGtkFunction {
 	void (* function) (GObject *object, GValue *value);
 };
 
-GladeGtkFunction functions [] = {
-	{"glade_gtk_entry_get_text",          glade_gtk_entry_get_text},
-	{"glade_gtk_box_get_size",            glade_gtk_box_get_size},
-	{"glade_gtk_widget_get_tooltip",      empty},
+#define GLADE_NEW_FUNCTION(name) {#name, name}
+#define GLADE_NEW_EMPTY_FUNCTION(name) {#name, empty}
 
-	{"glade_gtk_button_set_stock",        glade_gtk_button_set_stock},
+GladeGtkFunction functions [] = {
+	GLADE_NEW_FUNCTION(glade_gtk_entry_get_text),
+	GLADE_NEW_FUNCTION(glade_gtk_box_get_size),
+	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_get_tooltip),
+
+	GLADE_NEW_FUNCTION(glade_gtk_button_set_stock),
 
 #if 0	
-	{"glade_gtk_table_get_n_rows",        glade_gtk_table_get_n_rows},
-	{"glade_gtk_table_get_n_columns",     glade_gtk_table_get_n_columns},
+	GLADE_NEW_FUNCTION(glade_gtk_table_get_n_rows),
+	GLADE_NEW_FUNCTION(glade_gtk_table_get_n_columns),
 #endif	
-	{"glade_gtk_table_set_n_rows",        glade_gtk_table_set_n_rows},
-	{"glade_gtk_table_set_n_columns",     glade_gtk_table_set_n_columns},
+	GLADE_NEW_FUNCTION(glade_gtk_table_set_n_rows),
+	GLADE_NEW_FUNCTION(glade_gtk_table_set_n_columns),
 
-	{"glade_gtk_entry_set_text",          glade_gtk_entry_set_text},
-	{"glade_gtk_option_menu_set_items",   glade_gtk_option_menu_set_items},
-	{"glade_gtk_progress_bar_set_format", glade_gtk_progress_bar_set_format},
-	{"glade_gtk_box_set_size",            glade_gtk_box_set_size},
-	{"glade_gtk_widget_set_tooltip",      empty},
-	{"ignore",                            empty}, /* For example for gtkwindow::modal, we want to ignore the set */
+	GLADE_NEW_FUNCTION(glade_gtk_entry_set_text),
+	GLADE_NEW_FUNCTION(glade_gtk_option_menu_set_items),
+	GLADE_NEW_FUNCTION(glade_gtk_progress_bar_set_format),
+	GLADE_NEW_FUNCTION(glade_gtk_box_set_size),
+	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_set_tooltip),
+	GLADE_NEW_EMPTY_FUNCTION(ignore), /* For example for gtkwindow::modal, we want to ignore the set */
 
-	{"glade_gtk_adjustment_set_max",            glade_gtk_adjustment_set_max},
-	{"glade_gtk_adjustment_set_min",            glade_gtk_adjustment_set_min},
-	{"glade_gtk_adjustment_set_step_increment", glade_gtk_adjustment_set_step_increment},
-	{"glade_gtk_adjustment_set_page_increment", glade_gtk_adjustment_set_page_increment},
-	{"glade_gtk_adjustment_set_page_size",      glade_gtk_adjustment_set_page_size},
+	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_max),
+	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_min),
+	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_step_increment),
+	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_page_increment),
+	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_page_size),
 
-	{"glade_gtk_check_button_post_create",      glade_gtk_check_button_post_create},
-	{"glade_gtk_window_post_create",            glade_gtk_window_post_create},
-	{"glade_gtk_dialog_post_create",            glade_gtk_dialog_post_create},
-	{"glade_gtk_message_dialog_post_create",    glade_gtk_message_dialog_post_create},
-	{"glade_gtk_table_post_create",             glade_gtk_table_post_create},
+	GLADE_NEW_FUNCTION(glade_gtk_check_button_post_create),
+	GLADE_NEW_FUNCTION(glade_gtk_window_post_create),
+	GLADE_NEW_FUNCTION(glade_gtk_dialog_post_create),
+	GLADE_NEW_FUNCTION(glade_gtk_message_dialog_post_create),
+	GLADE_NEW_FUNCTION(glade_gtk_table_post_create)
 };
+
+#undef GLADE_NEW_FUNCTION
+#undef GLADE_NEW_EMPTY_FUNCTION
 
 gpointer
 glade_gtk_get_function (const gchar *name)

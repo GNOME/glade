@@ -373,7 +373,6 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 
 	g_object_set (G_OBJECT (cell),
 		      "text", widget->name,
-/*		      "pixbuf", widget->class->pixbuf, */
 		      NULL);
 }
 
@@ -399,7 +398,9 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	g_return_val_if_fail (GTK_IS_TREE_SELECTION (selection), FALSE);
 	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), FALSE);
 
-	gtk_tree_selection_get_selected (selection, &model, &iter);
+	/* There are no cells selected */
+	if (!gtk_tree_selection_get_selected (selection, &model, &iter))
+		return TRUE;
 
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 

@@ -527,7 +527,7 @@ glade_project_append_query (GtkWidget *table, GladePropertyClass *property_class
 	query = property_class->query;
 	
 	if (property_class->type != GLADE_PROPERTY_TYPE_INTEGER) {
-		g_warning ("We can only query integer types for now. FIXME please ;-)");
+		g_warning ("We can only query integer types for now. Trying to query %d. FIXME please ;-)", property_class->type);
 		return NULL;
 	}
 	

@@ -72,15 +72,7 @@ glade_enum_from_string (const gchar *string)
 		return GTK_RELIEF_HALF;
 	if (strcmp (string, "GTK_RELIEF_NONE") == 0)
 		return GTK_RELIEF_NONE;
-	if (strcmp (string, "glade-none") == 0)
-		return 0;
-	if (strcmp (string, "gtk-ok") == 0)
-		return 1;
-	if (strcmp (string, "gtk-cancel") == 0)
-		return 2;
-
-	g_print ("Could not get Enum from string %s\n", string);
-
+	
 	return -1;
 }
 
@@ -166,7 +158,8 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 	GladeXmlNode *child;
 	GladeChoice *choice;
 	GList *list;
-
+	int def_value = 0;
+	
 	if (!glade_xml_node_verify (node, GLADE_TAG_ENUMS))
 		return NULL;
 
@@ -179,7 +172,12 @@ glade_choice_list_new_from_node (GladeXmlNode *node)
 		choice = glade_choice_new_from_node (child);
 		if (choice == NULL)
 			return NULL;
+		/* if enum_from_string is not able to find a value for this enum,
+		   we will use as value the position of the item in the enum list */
+		if (choice->value == -1)
+			choice->value = def_value;
 		list = g_list_prepend (list, choice);
+		++def_value;
 	}
 
 	list = g_list_reverse (list);

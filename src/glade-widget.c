@@ -36,6 +36,7 @@
 #include "glade-gtk.h"
 #include "glade-packing.h"
 #include "glade-clipboard.h"
+#include <gdk/gdkkeysyms.h>
 
 #define GLADE_WIDGET_SELECTION_NODE_SIZE 7
 
@@ -123,32 +124,40 @@ typedef struct
 }GladeFindInContainerData;
 
 
-/* #define DEBUG */
+#undef DEBUG
+
+#ifdef DEBUG
+#define g_debug(st) g_print st
+#else
+#define g_debug(st)
+#endif
+
 static void
 glade_widget_find_inside_container (GtkWidget *widget, gpointer data_in)
 {
 	GladeFindInContainerData *data = data_in;
 
-#ifdef DEBUG
-	g_debug ("In find_child_at: %s X:%i Y:%i W:%i H:%i\n"
+	g_debug(("In find_child_at: %s X:%i Y:%i W:%i H:%i\n"
 		 "  so this means that if we are in the %d-%d , %d-%d range. We are ok\n",
 		 gtk_widget_get_name (widget),
 		 widget->allocation.x, widget->allocation.y,
 		 widget->allocation.width, widget->allocation.height,
 		 widget->allocation.x, widget->allocation.x + widget->allocation.width,
-		 widget->allocation.y, widget->allocation.y + widget->allocation.height);
-#endif	
+		 widget->allocation.y, widget->allocation.y + widget->allocation.height));
 
 	/* Notebook pages are visible but not mapped if they are not showing. */
+	/* We should not consider objects that doesn't have the GLADE_WIDGET_DATA_TAG,
+	   that way we would only take in account widgets modifiables by the user
+	   (for instance, the widgets that are inside a font dialog are not modifiables
+	   by the user) */
 	if (GTK_WIDGET_VISIBLE (widget) && GTK_WIDGET_MAPPED (widget)
 	    && (widget->allocation.x <= data->x)
 	    && (widget->allocation.y <= data->y)
 	    && (widget->allocation.x + widget->allocation.width >= data->x)
-	    && (widget->allocation.y + widget->allocation.height >= data->y))
+	    && (widget->allocation.y + widget->allocation.height >= data->y)
+	    && gtk_object_get_data(GTK_OBJECT (widget), GLADE_WIDGET_DATA_TAG))
 	{
-#ifdef DEBUG	
-		g_debug ("Found it!\n");
-#endif	
+		g_debug(("Found it!\n"));
 		data->found_child = widget;
 	}
 }
@@ -183,23 +192,20 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	x = event->x;
 	y = event->y;
 	gdk_window_get_position (event_widget->window, &win_x, &win_y);
-#ifdef DEBUG	
-	g_debug ("Window [%d,%d]\n", win_x, win_y);
-	g_debug ("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y);
-	g_debug ("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
+
+	g_debug(("Window [%d,%d]\n", win_x, win_y));
+	g_debug(("\n\nWe want to find the real widget that was clicked at %d,%d\n", x, y));
+	g_debug(("The widget that received the event was \"%s\" a \"%s\" [%d]\n",
 		 NULL,
 		 gtk_widget_get_name (event_widget),
-		 GPOINTER_TO_INT (event_widget));
-#endif	
+		 GPOINTER_TO_INT (event_widget)));
 
 	parent_window = event_widget->parent ? event_widget->parent->window : event_widget->window;
 	while (window && window != parent_window) {
 		
 		gdk_window_get_position (window, &win_x, &win_y);
-#ifdef DEBUG	
-		g_debug ("	  adding X:%d Y:%d - We now have : %d %d\n",
-			 win_x, win_y, x + win_x, y + win_y);
-#endif	
+		g_debug(("	  adding X:%d Y:%d - We now have : %d %d\n",
+			 win_x, win_y, x + win_x, y + win_y));
 		x += win_x;
 		y += win_y;
 		window = gdk_window_get_parent (window);
@@ -212,10 +218,8 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	found = glade_widget_get_from_gtk_widget (event_widget);
 
 	while (GTK_IS_CONTAINER (temp)) {
-#ifdef DEBUG	
-		g_debug ("\"%s\" is a container, check inside each child\n",
-			 gtk_widget_get_name (temp));
-#endif
+		g_debug(("\"%s\" is a container, check inside each child\n",
+			 gtk_widget_get_name (temp)));
 		data.found_child = NULL;
 		gtk_container_forall (GTK_CONTAINER (temp),
 				      (GtkCallback) glade_widget_find_inside_container, &data);
@@ -225,10 +229,8 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 				found = glade_widget_get_from_gtk_widget (temp);
 				g_assert (found->widget == data.found_child);
 			} else {
-#ifdef DEBUG	
-				g_debug ("Temp was not a GladeWidget, it was a %s\n",
-					 gtk_widget_get_name (temp));
-#endif	
+				g_debug(("Temp was not a GladeWidget, it was a %s\n",
+					 gtk_widget_get_name (temp)));
 			}
 		} else {
 			/* The user clicked on the container itself */
@@ -250,10 +252,8 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 	g_return_val_if_fail (found != NULL, NULL);
 #endif
 	
-#ifdef DEBUG
-	g_debug ("We found a \"%s\", child at %d,%d\n",
-		 gtk_widget_get_name (found->widget), data.x, data.y);
-#endif	
+	g_debug(("We found a \"%s\", child at %d,%d\n",
+		 gtk_widget_get_name (found->widget), data.x, data.y));
 	return found;
 }
 
@@ -274,17 +274,14 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 
 	glade_widget = glade_widget_get_from_event_widget (event_widget, event);
 
-#ifdef DEBUG
-	g_debug ("button press for a %s\n", glade_widget->class->name);
-#endif
+	g_debug(("button press for a %s\n", glade_widget->class->name));
+
 	if (!glade_widget) {
 		g_warning ("Button press event but the gladewidget was not found\n");
 		return FALSE;
 	}
 
-#ifdef DEBUG	
-	g_debug ("Event button %d\n", event->button);
-#endif
+	g_debug(("Event button %d\n", event->button));
 
 	if (event->button == 1) {
 		/* If this is a selection set, don't change the state of the widget
@@ -296,25 +293,18 @@ glade_widget_button_press (GtkWidget *event_widget, GdkEventButton *event, gpoin
 		glade_project_selection_set (glade_widget, TRUE);
 	} else if (event->button == 3)
 		glade_popup_pop (glade_widget, event);
-#ifdef DEBUG	
 	else
-		g_debug ("Button press not handled yet.\n");
-#endif
+		g_debug(("Button press not handled yet.\n"));
 
-#ifdef DEBUG	
-	g_debug ("The widget found was a %s\n", glade_widget->class->name);
-#endif
+	g_debug(("The widget found was a %s\n", glade_widget->class->name));
 
 	return FALSE;
 }
-#undef DEBUG
 
 static gboolean
 glade_widget_button_release (GtkWidget *widget, GdkEventButton *event, gpointer not_used)
 {
-#ifdef DEBUG	
-	g_debug ("button release\n");
-#endif
+	g_debug(("button release\n"));
 	return FALSE;
 }
 
@@ -540,6 +530,49 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 			    GTK_SIGNAL_FUNC (glade_widget_button_release), NULL);
 }
 
+static gboolean
+glade_widget_key_press(GtkWidget *event_widget, GdkEventKey *event, gpointer user_data)
+{
+	GladeWidget *glade_widget = GLADE_WIDGET (user_data);
+	GladeProject *project;
+	GList *selection;
+	
+	g_return_val_if_fail (GTK_IS_WIDGET (event_widget), FALSE);
+	g_return_val_if_fail (glade_widget->widget == event_widget, FALSE);
+
+	if (event->keyval == GDK_Delete) {
+		/* We will delete all the selected items */
+		project = glade_widget->project;
+		g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+		/* The selection value changes when we do glade_widget_delete,
+		   so if we just try to follow selection->next after the
+		   glade_widget_delete, we are going directly to a segfault (if lucky) */
+		while ((selection = glade_project_selection_get(project)) != NULL) {
+			g_return_val_if_fail (selection->data != NULL, FALSE);
+
+			glade_widget = GLADE_WIDGET (selection->data);
+			/* g_print ("Widget %s deleted.\n", glade_widget->name); */
+			glade_widget_delete (glade_widget);
+		}
+	}
+
+	return TRUE;
+}
+
+static void
+glade_widget_connect_keyboard_signals (GladeWidget *glade_widget)
+{
+	GtkWidget *widget = glade_widget->widget;
+
+	if (!GTK_WIDGET_NO_WINDOW(widget)) {
+		gtk_widget_set_events (widget, gtk_widget_get_events (widget)
+				       | GDK_KEY_PRESS_MASK);
+	}
+
+	gtk_signal_connect (GTK_OBJECT (widget), "key_press_event",
+			    GTK_SIGNAL_FUNC (glade_widget_key_press), glade_widget);
+}
 
 /**
  * glade_widget_set_contents:
@@ -642,7 +675,7 @@ glade_widget_connect_other_signals (GladeWidget *widget)
 	}
 }
 
-#if 1
+#if 0
 /* Sigh.
  * Fix, Fix, fix. Turn this off to see why this is here.
  * Add a gtkwindow and a gtkvbox to reproduce
@@ -698,6 +731,11 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	 * and then a gtkvbox inside it. It will not draw correctly.
 	 * Chema
 	 */
+	/* This hack makes glade segfault if you delete glade_widget before 1 sec has ellapsed
+	 * since its creation (glade_widget will point to garbage).  With gtk 1.3.12 everything
+	 * seems to be ok without the timeouts, so I will leave them commentted out by now.
+	 * Cuenca
+	 */
 	if (class->post_create_function) {
 		void (*pcf) (GObject *object);
 		pcf = glade_gtk_get_function (class->post_create_function);
@@ -707,12 +745,7 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 			pcf (G_OBJECT (glade_widget->widget));
 
 	}
-	
-	if (g_type_is_a (type, GTK_TYPE_WIDGET)) {
-		gtk_timeout_add ( 100, glade_widget_ugly_hack, glade_widget);
-		gtk_timeout_add ( 400, glade_widget_ugly_hack, glade_widget);
-		gtk_timeout_add (1000, glade_widget_ugly_hack, glade_widget);
-	}
+
 	
 	return TRUE;
 }
@@ -725,6 +758,7 @@ glade_widget_connect_signals (GladeWidget *widget)
 		return;
 	
 	glade_widget_connect_mouse_signals (widget);
+	glade_widget_connect_keyboard_signals (widget);
 	glade_widget_connect_draw_signals  (widget);
 	glade_widget_connect_edit_signals  (widget);
 	glade_widget_connect_other_signals (widget);
@@ -1038,7 +1072,7 @@ glade_widget_delete (GladeWidget *widget)
 		placeholder = glade_placeholder_new (widget->parent);
 		if (widget->parent->class->placeholder_replace)
 			widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
-
+b
 		/* Remove it from the parent's child list */
 		parent->children = g_list_remove (parent->children,
 						  widget);
@@ -1184,8 +1218,6 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 			glade_xml_node_append_child (packing, packing_property);
 		}
 		glade_xml_node_append_child (child_tag, packing);
-		/* */
-		
 
 	}
 

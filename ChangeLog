@@ -1,3 +1,53 @@
+2002-03-12  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_remove): check for
+	return value of gtk_tree_selection_get_selected. Fixed nasty bug.
+
+2002-03-04  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+
+	* glade-placeholder.c: includes to fix warnings, and implementation
+	of the popup menu of the placeholder.
+	* glade-popup.[ch]: popup menu for the placeholder plus a little
+	reorganisation of the code to share implementation of the general
+	popup menu and the placeholder one.
+	* glade-property.c: silent g_print.
+	* glade-widget.c: defined g_debug to g_print if DEBUG is defined,
+	defined to void otherwise.  I was tracking the "can not select GtkLabels"
+	bug when I did this change, and now I'm not able to reproduce anymore
+	the bug.  Dunno what's going on...
+	
+2002-03-02  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+
+	* glade-choice.c (glade_choice_list_new_from_node): Now you don't need
+	to tweak glade_enum_from_string just to be able to use a new item
+	in an enum.  Glade will automatically assign a new value to each item.
+	* glade-choice.c (glade_enum_from_string): Commented out the cases glade-none,
+	gtk-ok & gtk-cancel, not needed any more due to the precedent fix.
+	* glade-property-class.c (glade_property_class_update_from_node): Fixed
+	the Enum properties that used a custom set or get function (the custom
+	set function was never being used).  It fixes, for instance, the gtk-button
+	stock property.
+	* gtkbutton.xml: Added access to two other stock buttons (apply & close).
+
+2002-02-28  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+
+	* glade-widget.c (glade_widget_key_press): Fixed segfault when
+	deleting two or more object in a row.
+
+2002-02-28  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+
+	* glade-widget.c: Delete key deletes selected widgets.  I've also
+	fixed the selection in Selectors (File/Font/Color/...).
+	* glade-widget.c (glade_widget_create_gtk_widget): Commentted out
+	the timeouts in this function.  With 1.3.12 everything is drawed ok,
+	and these timeouts where producing a segfault if you tried to delete
+	an item before 1 sec has ellapsed since the creation of the widget.
+	* glade-gtk.c: Removed redundancies in the "functions" array.
+	* glade-placeholder.c: Added missing include.
+	* glade-project-view.c (glade_project_view_selection_changed_cb):
+	Fixed segfault when deleting a window that was also selected in
+	the glade-project-view.
+	
 2002-01-29  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* Makefile.am: Install .desktop file into the proper location for

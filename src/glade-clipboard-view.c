@@ -38,9 +38,10 @@ glade_clipboard_view_selection_changed_cb (GtkTreeSelection * sel,
 	GtkTreeIter iter;
 	GladeWidget *widget;
 	GtkTreeModel *model;
-
+	
 	model = GTK_TREE_MODEL (view->model);
-	gtk_tree_selection_get_selected (sel, &model, &iter);
+	if (!gtk_tree_selection_get_selected (sel, &model, &iter))
+		return;
 	gtk_tree_model_get (model, &iter, 0, &widget, -1);
 
 	if (widget)
@@ -124,7 +125,7 @@ glade_clipboard_view_create_tree_view (GladeClipboardView * view)
 
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
 	g_signal_connect_data (G_OBJECT (sel), "changed",
-			       glade_clipboard_view_selection_changed_cb,
+			       G_CALLBACK (glade_clipboard_view_selection_changed_cb),
 			       view, NULL, 0);
 
 	gtk_widget_set_usize (view->widget, 272, 130);
@@ -241,8 +242,8 @@ glade_clipboard_view_remove (GladeClipboardView * view,
 	g_return_if_fail (GLADE_IS_CLIPBOARD_VIEW (view));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (view->widget));
+	model = GTK_TREE_MODEL (view->model);
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->widget));
-	gtk_tree_selection_get_selected (sel, &model, &iter);
-	gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
 }

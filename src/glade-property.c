@@ -357,7 +357,9 @@ glade_property_set_boolean (GladeProperty *property, gboolean val)
 		property->loading = TRUE;
 		if (property->class->set_function == NULL) {
 			if (GTK_IS_TABLE (property->widget->widget)) {
+#if 0
 				g_print ("Is table \n");
+#endif
 				gtk_widget_queue_resize (GTK_WIDGET (property->widget->widget));
 #if 0	
 				gtk_table_set_homogeneous (property->widget->widget, val);
@@ -395,6 +397,7 @@ glade_property_set_enum (GladeProperty *property, GladeChoice *choice)
 	else
 		(*property->class->set_function) (G_OBJECT (property->widget->widget),
 						  property->value);
+
 	property->loading = FALSE;
 
 	glade_property_emit_changed (property);

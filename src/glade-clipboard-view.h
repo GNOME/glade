@@ -11,9 +11,9 @@ typedef struct _GladeClipboardViewClass GladeClipboardViewClass;
 struct _GladeClipboardView {
 	GtkWindow __parent__;
 
-	GtkWidget *widget;	/* The GtkTreeView widget */
-	GtkTreeStore *model;	/* The GtkTreeStore model for the View */
-	GladeClipboard *clipboard;	/* The Clipboard for which this is a view */
+	GtkWidget *widget;	   /* The GtkTreeView widget */
+	GtkTreeStore *model;	   /* The GtkTreeStore model for the View */
+	GladeClipboard *clipboard; /* The Clipboard for which this is a view */
 };
 
 struct _GladeClipboardViewClass {
