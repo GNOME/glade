@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * glade-clipboard.c - An object for handling Cut/Copy/Paste.
  *
@@ -39,9 +40,9 @@ glade_clipboard_class_init (GladeClipboardClass *klass)
 static void
 glade_clipboard_init (GladeClipboard *clipboard)
 {
-	clipboard->widgets = NULL;
-	clipboard->view = NULL;
-	clipboard->curr = NULL;
+	clipboard->widgets   = NULL;
+	clipboard->view      = NULL;
+	clipboard->selection = NULL;
 }
 
 /**
@@ -90,55 +91,115 @@ glade_clipboard_new (void)
 /**
  * glade_clipboard_add:
  * @clipboard: a #GladeClipboard
- * @widget: a #GladeWidget
+ * @widgets: a #GList of #GladeWidgets
  * 
- * Adds @widget to @clipboard.
- * This increases the reference count of @widget.
+ * Adds @widgets to @clipboard.
+ * This increases the reference count of each #GladeWidget in @widgets.
  */
 void
-glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
+glade_clipboard_add (GladeClipboard *clipboard, GList *widgets)
 {
-	g_object_ref (G_OBJECT (widget));
-	/*
-	 * Add the GladeWidget to the list of children. And set the
-	 * latest addition, to currently selected widget in the clipboard.
-	 */
-	clipboard->widgets = g_list_prepend (clipboard->widgets, widget);
-	clipboard->curr = widget;
+	GladeWidget *widget;
+	GList       *list;
 
 	/*
-	 * If there is view present, update it.
+	 * Clear selection for the new widgets.
 	 */
-	if (clipboard->view)
-		glade_clipboard_view_add (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
+	glade_clipboard_selection_clear (clipboard);
+
+	/*
+	 * Add the widgets to the list of children.
+	 */
+	for (list = widgets; list && list->data; list = list->next)
+	{
+		widget             = list->data;
+		clipboard->widgets = 
+			g_list_prepend (clipboard->widgets, 
+					g_object_ref (G_OBJECT (widget)));
+		/*
+		 * Update view.
+		 */
+		glade_clipboard_selection_add (clipboard, widget);
+		if (clipboard->view)
+		{
+			glade_clipboard_view_add
+				(GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
+			glade_clipboard_view_refresh_sel 
+				(GLADE_CLIPBOARD_VIEW (clipboard->view));
+		}
+	}
+
 }
 
 /**
  * glade_clipboard_remove:
  * @clipboard: a #GladeClipboard
- * @widget: a #GladeWidget
+ * @widgets: a #GList of #GladeWidgets
  * 
- * Removes a @widget from @clipboard.
+ * Removes @widgets from @clipboard.
  */
 void
-glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
+glade_clipboard_remove (GladeClipboard *clipboard, GList *widgets)
 {
-	GList *list;
+	GladeWidget *widget;
+	GList       *list;
 
-	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
-	g_object_unref (G_OBJECT (widget));
+	for (list = widgets; list && list->data; list = list->next)
+	{
+		widget               = list->data;
 
-	list = g_list_first (clipboard->widgets);
-	if (list != NULL)
-		clipboard->curr = GLADE_WIDGET (list->data);
-	else
-		clipboard->curr = NULL;
+		clipboard->widgets   = 
+			g_list_remove (clipboard->widgets, widget);
+		glade_clipboard_selection_remove (clipboard, widget);
 
-	/*
-	 * If there is a view present, update it.
+		/*
+		 * If there is a view present, update it.
+		 */
+		if (clipboard->view)
+			glade_clipboard_view_remove
+				(GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
+		
+		g_object_unref (G_OBJECT (widget));
+	}
+
+	/* 
+	 * Only default selection if nescisary
 	 */
-	if (clipboard->view)
-		glade_clipboard_view_remove (GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
+	if ((g_list_length (clipboard->selection) < 1) &&
+	    (list = g_list_first (clipboard->widgets)) != NULL)
+	{
+		glade_clipboard_selection_add
+			(clipboard, GLADE_WIDGET (list->data));
+		glade_clipboard_view_refresh_sel 
+			(GLADE_CLIPBOARD_VIEW (clipboard->view));
+	}
 }
 
+void
+glade_clipboard_selection_add (GladeClipboard *clipboard, 
+			       GladeWidget    *widget)
+{
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	g_return_if_fail (GLADE_IS_WIDGET    (widget));
+	clipboard->selection =
+		g_list_prepend (clipboard->selection, widget);
+}
+
+void
+glade_clipboard_selection_remove (GladeClipboard *clipboard, 
+				  GladeWidget    *widget)
+{
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	g_return_if_fail (GLADE_IS_WIDGET    (widget));
+	clipboard->selection = 
+		g_list_remove (clipboard->selection, widget);
+}
+
+void
+glade_clipboard_selection_clear (GladeClipboard *clipboard)
+{
+	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
+	clipboard->selection = 
+		(g_list_free (clipboard->selection), NULL);
+}
 

@@ -51,13 +51,22 @@ GList          *glade_util_container_get_all_children (GtkContainer *container);
 
 GList          *glade_util_uri_list_parse (const gchar* uri_list);
 
-gboolean        glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget);
-gboolean        glade_util_widget_pastable       (GladeWidget *child,  GladeWidget *parent);
+gboolean        glade_util_gtkcontainer_relation     (GladeWidget *parent,
+						      GladeWidget *widget);
+gboolean        glade_util_any_gtkcontainer_relation (GladeWidget *parent, 
+						      GList       *widgets);
+
+gboolean        glade_util_widget_pastable       (GladeWidget *child,  
+						  GladeWidget *parent);
 
 void            glade_util_paste_clipboard       (void);
 void            glade_util_cut_selection         (void);
 void            glade_util_copy_selection        (void);
 void            glade_util_delete_selection      (void);
+
+GtkTreeIter    *glade_util_find_iter_by_widget   (GtkTreeModel *model,
+						  GladeWidget  *findme,
+						  gint          column);
 
 G_END_DECLS
 

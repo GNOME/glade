@@ -955,7 +955,27 @@ glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 }
 
 /**
- * glade_util_gtkcontainer_relation:
+ * glade_util_any_gtkcontainer_relation:
+ * @widget: a GladeWidget
+ * @parent: a GladeWidget
+ *
+ *
+ * Returns whether any of these widgets are parented by a GtkContainer
+ * through the GtkContainer interface.
+ */
+gboolean
+glade_util_any_gtkcontainer_relation (GladeWidget *parent, GList *widgets)
+{
+	GList *list;
+	for (list = widgets; list && list->data; list = list->next)
+		if (glade_util_gtkcontainer_relation 
+		    (parent, GLADE_WIDGET (list->data)))
+		    return TRUE;
+	return FALSE;
+}
+
+/**
+ * glade_util_widget_pastable:
  * @child: a GladeWidget
  * @widget: a GladeWidget
  *
@@ -973,6 +993,12 @@ glade_util_widget_pastable (GladeWidget *child,
 }
 
 
+/**
+ * glade_util_paste_clipboard:
+ *
+ * Paste the clipboard selection to the active project's 
+ * selection (the project must have only one object selected).
+ */
 void
 glade_util_paste_clipboard (void)
 {
@@ -1003,9 +1029,11 @@ glade_util_paste_clipboard (void)
 	else
 		parent = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 
-	/* TODO Multiple selection on clipboard */
-	if ((widget = gpw->clipboard->curr) != NULL)
+	for (list = gpw->clipboard->selection; 
+	     list && list->data; list = list->next)
 	{
+		widget = list->data;
+
 		if (parent && 
 		    glade_util_widget_pastable (widget, parent) == FALSE)
 		{
@@ -1016,12 +1044,17 @@ glade_util_paste_clipboard (void)
 			g_free (message);
 			return;
 		}
-		widgets = g_list_append (widgets, widget);
-		glade_command_paste (widgets, parent, placeholder);
-		g_list_free (widgets);
 	}
+	widgets = g_list_copy (gpw->clipboard->selection);
+	glade_command_paste (widgets, parent, placeholder);
+	g_list_free (widgets);
 }
 
+/**
+ * glade_util_cut_selection:
+ *
+ * Cut the active project's selection.
+ */
 void
 glade_util_cut_selection (void)
 {
@@ -1049,6 +1082,11 @@ glade_util_cut_selection (void)
 	}
 }
 
+/**
+ * glade_util_copy_selection:
+ *
+ * Copy the active project's selection.
+ */
 void
 glade_util_copy_selection (void)
 {
@@ -1076,6 +1114,11 @@ glade_util_copy_selection (void)
 	}
 }
 
+/**
+ * glade_util_delete_selection:
+ *
+ * Delete the active project's selection.
+ */
 void
 glade_util_delete_selection (void)
 {
@@ -1101,4 +1144,67 @@ glade_util_delete_selection (void)
 	{
 		glade_util_ui_warn (gpw->window, _("No widget selected!"));
 	}
+}
+
+
+static GtkTreeIter *
+glade_util_find_iter (GtkTreeModel *model,
+		      GtkTreeIter  *iter,
+		      GladeWidget  *findme,
+		      gint          column)
+{
+	GtkTreeIter *retval = NULL;
+	GladeWidget *widget;
+	GtkTreeIter *next = gtk_tree_iter_copy (iter);
+	
+	while (retval == NULL)
+	{
+		gtk_tree_model_get (model, next, column, &widget, -1);
+		if (widget == NULL) {
+			g_warning ("Could not get the glade widget from the model");
+			return NULL;
+		}
+		if (widget == findme)
+			retval = gtk_tree_iter_copy (next);
+
+		if (gtk_tree_model_iter_has_child (model, next))
+		{
+			GtkTreeIter  child;
+			gtk_tree_model_iter_children (model, &child, next);
+			if ((retval = glade_util_find_iter
+			     (model, &child, findme, column)) != NULL)
+				break;
+		}
+		if (!gtk_tree_model_iter_next (model, next))
+			break;
+	}
+	gtk_tree_iter_free (next);
+
+	return retval;
+}
+
+/**
+ * glade_util_find_iter_by_widget:
+ * @model: a #GtkTreeModel
+ * @findme: a #GladeWidget
+ * @column: a #gint
+ *
+ * Looks through @model for the #GtkTreeIter corresponding to 
+ * @findme under @column.
+ *
+ * Returns: a newly allocated #GtkTreeIter from @model corresponding
+ * to @findme which should be freed with gtk_tree_iter_free()
+ * 
+ */
+GtkTreeIter *
+glade_util_find_iter_by_widget (GtkTreeModel *model,
+				GladeWidget  *findme,
+				gint          column)
+{
+	GtkTreeIter iter;
+	if (gtk_tree_model_get_iter_root (model, &iter))
+	{
+		return glade_util_find_iter (model, &iter, findme, column);
+	}
+	return NULL;
 }

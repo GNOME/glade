@@ -1,3 +1,25 @@
+2004-12-31  Tristan Van Berkom  <tvb@cvs.gnome.org>
+
+	* src/glade-clipboard-view.c, src/glade-clipboard.[ch]:
+	  - Added emacs c-basic-offset: 8.
+	  - Implemented multiple selection on the clipboard
+	
+	* src/glade-command.c: Adjusted to multiple selection on clipboard,
+	  allow glade_command_paste with multiple widgets if
+	    a.) They are not being pasted to a placeholder (i.e. widget tree)
+	    b.) They are not parented through the GtkContainer --> GtkWidget 
+		parenting pipeline (see glade-widget-class.[ch] for the container 
+		abstraction interface and see glade_util_gtkcontainer_relation).
+	
+	* src/glade-popup.c: Added comment and removed unused variables.
+
+	* src/glade-project-view.c: Moved glade_project_view_find_iter_by_widget 
+	  to now be a generic glade_util_find_iter_by_widget
+	  (also plugged leaks with gtk_tree_iter_free (iter))
+
+	* src/glade-utils.[ch]: Added glade_util_find_iter_by_widget () and 
+	  glade_util_any_gtkcontainer_relation ().
+	
 2004-12-29  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-command.[ch]: Multiple widgets in Cut/Copy/Paste/Delete commands

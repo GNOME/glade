@@ -76,6 +76,9 @@ glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
+
+	/* The selected widget is the paste destination
+	 */
 	glade_project_selection_set (gpw->active_project,
 				     glade_widget_get_object (widget), FALSE);
 	glade_util_paste_clipboard ();
@@ -104,8 +107,6 @@ glade_popup_placeholder_paste_cb (GtkMenuItem *item,
 				  GladePlaceholder *placeholder)
 {
 	GladeProjectWindow *gpw;
-	GList              *widgets = NULL, *list;
-	GladeWidget        *w, *parent;
 
 	gpw = glade_project_window_get ();
 	glade_project_selection_set (gpw->active_project,

@@ -77,68 +77,6 @@ enum
 	N_COLUMNS
 };
 
-static GtkTreeIter *
-glade_project_view_find_iter (GtkTreeModel *model,
-			      GtkTreeIter *iter,
-			      GladeWidget *findme)
-{
-	GladeWidget *widget;
-	GtkTreeIter *next;
-
-	next = gtk_tree_iter_copy (iter);
-	
-	while (TRUE)
-	{
-		gtk_tree_model_get (model, next, WIDGET_COLUMN, &widget, -1);
-		if (widget == NULL) {
-			g_warning ("Could not get the glade widget from the model");
-			return NULL;
-		}
-		if (widget == findme)
-			return gtk_tree_iter_copy (next);
-		/* Me ? leaking ? nah .... */
-#if 1
-		if (gtk_tree_model_iter_has_child (model, next))
-		{
-			GtkTreeIter *child = g_new0 (GtkTreeIter, 1);
-			GtkTreeIter *retval = NULL;
-			gtk_tree_model_iter_children (model, child, next);
-			retval = glade_project_view_find_iter (model,
-							       child,
-							       findme);
-			if (retval != NULL)
-				return retval;
-		}
-#endif	
-		if (!gtk_tree_model_iter_next (model, next))
-			break;
-	}
-
-	return NULL;
-}
-
-/**
- * glade_project_view_find_iter_by_widget:
- * @model: a #GtkTreeModel
- * @findme: a #GladeWidget
- *
- * Looks through @model for the #GtkTreeIter corresponding to @findme.
- *
- * Returns: the #GtkTreeIter from @model corresponding to @findme
- */
-GtkTreeIter *
-glade_project_view_find_iter_by_widget (GtkTreeModel *model,
-					GladeWidget *findme)
-{
-	GtkTreeIter iter;
-
-	if (!gtk_tree_model_get_iter_root (model, &iter))
-	{
-		return NULL;
-	}
-	return glade_project_view_find_iter (model, &iter, findme);
-}
-
 static GList *
 glade_project_view_list_child_iters (GtkTreeStore *model,
 				     GladeWidget  *parent)
@@ -155,9 +93,8 @@ glade_project_view_list_child_iters (GtkTreeStore *model,
 			if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
 			{
 				GtkTreeIter *iter;
-
-				if ((iter = glade_project_view_find_iter_by_widget
-				     (GTK_TREE_MODEL (model), gwidget)) != NULL)
+				if ((iter = glade_util_find_iter_by_widget
+				     (GTK_TREE_MODEL (model), gwidget, WIDGET_COLUMN)) != NULL)
 				{
 					child_iters = g_list_prepend (child_iters, iter);
 				}
@@ -174,8 +111,8 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 					GladeWidget *findme)
 {
 	GtkTreeModel *model;
-	GtkTreeIter *iter;
-	GtkTreePath *path;
+	GtkTreeIter  *iter;
+	GtkTreePath  *path;
 
 	if (view->is_list &&
 	    !g_type_is_a (findme->widget_class->type, GTK_TYPE_WINDOW))
@@ -183,12 +120,12 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 
 	model = GTK_TREE_MODEL (view->model);
 
-	iter = glade_project_view_find_iter_by_widget (model, findme);
-
-	if (iter)
+	if ((iter = glade_util_find_iter_by_widget 
+	     (model, findme, WIDGET_COLUMN)) != NULL)
 	{
 		path = gtk_tree_model_get_path (model, iter);
 		gtk_tree_model_row_changed (model, path, iter);
+		gtk_tree_iter_free (iter);
 	}
 }
 
@@ -214,7 +151,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 		if ((widget = glade_widget_get_from_gobject (list->data)) != NULL)
 		{
 			gtk_tree_store_append (model, &iter, parent_iter);
-			gtk_tree_store_set (model, &iter, WIDGET_COLUMN, widget, -1);
+			gtk_tree_store_set    (model, &iter, WIDGET_COLUMN, widget, -1);
 
 			if (add_childs &&
 			    (children = glade_widget_class_container_get_all_children
@@ -281,11 +218,15 @@ glade_project_view_add_item (GladeProjectView *view,
 	model = view->model;
 
 	parent = glade_widget_get_parent (widget);
-	if (parent)
-		parent_iter = glade_project_view_find_iter_by_widget (GTK_TREE_MODEL (model),
-								      parent);
+	if (parent && (parent_iter = glade_util_find_iter_by_widget 
+		       (GTK_TREE_MODEL (model), parent, WIDGET_COLUMN)) != NULL)
+	{
+		gtk_tree_store_append (model, &iter, parent_iter);
+		gtk_tree_iter_free (parent_iter);
+	}
+	else
+		gtk_tree_store_append (model, &iter, NULL);
 
-	gtk_tree_store_append (model, &iter, parent_iter);
 	gtk_tree_store_set (model, &iter, WIDGET_COLUMN, widget, -1);
 
 	/* Remove all children */
@@ -296,7 +237,9 @@ glade_project_view_add_item (GladeProjectView *view,
 		{
 			child_iter = l->data;
 			gtk_tree_store_remove (model, child_iter);
+			gtk_tree_iter_free (child_iter);
 		}
+		g_list_free (child_iters);
 	}
 
 	/* Repopulate these children properly.
@@ -319,8 +262,8 @@ glade_project_view_remove_item (GladeProjectView *view,
 				GladeWidget *widget)
 {
 	GladeWidgetClass *class;
-	GtkTreeModel *model;
-	GtkTreeIter *iter;
+	GtkTreeModel     *model;
+	GtkTreeIter      *iter;
 
 	class = glade_widget_get_class (widget);
 	
@@ -329,8 +272,12 @@ glade_project_view_remove_item (GladeProjectView *view,
 	
 	model = GTK_TREE_MODEL (view->model);
 
-	if ((iter = glade_project_view_find_iter_by_widget (model, widget)) != NULL)
+	if ((iter = glade_util_find_iter_by_widget
+	     (model, widget, WIDGET_COLUMN)) != NULL)
+	{
 		gtk_tree_store_remove (view->model, iter);
+		gtk_tree_iter_free (iter);
+	}
 }      
 
 /**
@@ -376,10 +323,11 @@ glade_project_view_selection_update (GladeProjectView *view,
 			    !g_type_is_a (class->type, GTK_TYPE_WINDOW))
 				continue;
 
-			if ((iter = glade_project_view_find_iter_by_widget 
-			     (model, widget)) != NULL)
+			if ((iter = glade_util_find_iter_by_widget 
+			     (model, widget, WIDGET_COLUMN)) != NULL)
 			{
 				gtk_tree_selection_select_iter (selection, iter);
+				gtk_tree_iter_free (iter);
 			}
 		}
 	}
