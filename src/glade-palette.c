@@ -311,6 +311,7 @@ glade_palette_init (GladePalette *palette)
 	/* Notebook */
 	palette->notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (palette->notebook), FALSE);
+	gtk_notebook_set_show_border (GTK_NOTEBOOK (palette->notebook), FALSE);
 	gtk_box_pack_end (GTK_BOX (palette), palette->notebook, FALSE, TRUE, 3);
 
 	palette->nb_sections = 0;
@@ -334,7 +335,7 @@ glade_palette_new (GList *catalogs)
 }
 
 void
-glade_palette_append_catalog (GladePalette *palette, GladeCatalog* catalog)
+glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 {
 	GtkWidget *widget;
 	gint *page;
