@@ -666,22 +666,28 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	glade_parameter_get_boolean (class->parameters, "Optional", &class->optional);
 
 	/* Get the choices */
-	if (class->type == GLADE_PROPERTY_TYPE_ENUM) {
-		gchar *type_name;
-		GType type;
+	do
+	{
+		if (class->type == GLADE_PROPERTY_TYPE_ENUM)
+		{
+			gchar *type_name;
+			GType type;
 
-		child = glade_xml_search_child_required (node, GLADE_TAG_ENUMS);
-		if (!child)
-			return FALSE;
-		class->choices = glade_choice_list_new_from_node (child);
-		type_name = glade_xml_get_property_string_required (child, "EnumType", NULL);
-		if (!type_name)
-			return FALSE;
-		type = g_type_from_name (type_name);
-		if (!(type != 0))
-			return FALSE;
-		class->enum_type = type;
+			child = glade_xml_search_child (node, GLADE_TAG_ENUMS);
+			if (!child)
+				break;
+			class->choices = glade_choice_list_new_from_node (child);
+			type_name = glade_xml_get_property_string (child, "EnumType");
+			if (!type_name)
+				break;
+			type = g_type_from_name (type_name);
+			if (!(type != 0))
+				break;
+			class->enum_type = type;
+		}
 	}
+	while (FALSE);
+		
 #if 0
 	/* If the property is an object load it */
 	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {

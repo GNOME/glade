@@ -1,5 +1,12 @@
 2004-01-27  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-property-class.c (glade_property_class_update_from_node):
+	make TagEnums and EnumType non required for enum properties.
+	* widgets/gtkwindow.xml: ignore type-hint, as it can't be set
+	after the window becames visible.
+
+2004-01-27  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-signal-handler.c: remove the editable handler from
 	the rows that contain just the class name.
 

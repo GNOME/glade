@@ -417,7 +417,7 @@ glade_xml_search_child (GladeXmlNode *node_in, const char *name)
  * @tree: 
  * @name: 
  * 
- * just a small wrapper arround glade_xml_searc_hchild that displays
+ * just a small wrapper arround glade_xml_search_child that displays
  * an error if the child was not found
  *
  * Return Value: 
