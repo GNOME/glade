@@ -20,6 +20,8 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include <string.h>
+
 #include "glade.h"
 #include "glade-xml-utils.h"
 

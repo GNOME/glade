@@ -9,6 +9,7 @@
  */
 
 #include <glib.h>
+#include <string.h>
 
 #include "glade-xml-utils.h"
 

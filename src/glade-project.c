@@ -21,6 +21,7 @@
  */
 
 
+#include <string.h>
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
