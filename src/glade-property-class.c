@@ -183,7 +183,6 @@ glade_widget_property_class_free (GladePropertyClass *class)
 static GladePropertyType
 glade_property_class_get_type_from_spec (GParamSpec *spec)
 {
-	
 	if (G_IS_PARAM_SPEC_INT (spec) || G_IS_PARAM_SPEC_UINT (spec)) {
 		return GLADE_PROPERTY_TYPE_INTEGER;
 	} else if (G_IS_PARAM_SPEC_FLOAT (spec)) {
@@ -208,14 +207,15 @@ glade_property_class_get_type_from_spec (GParamSpec *spec)
 		g_warning ("uchar not implemented\n");
 	} else if (G_IS_PARAM_SPEC_OBJECT (spec)) {
 		return GLADE_PROPERTY_TYPE_OBJECT;
-		/*	} else if (G_IS_PARAM_SPEC_BOXED (spec)) {
-			return GLADE_PROPERTY_TYPE_BOXED; */
+	} else if (G_IS_PARAM_SPEC_BOXED (spec)) {
+		/* FIXME: Implement at least the special case of when the boxed type is GdkColor */
+		return GLADE_PROPERTY_TYPE_ERROR;
 	} else {
-		/*FIXME: We should implement the "events" property */
-		if (g_ascii_strcasecmp ( spec->name, "user-data") &&
-		    g_ascii_strcasecmp ( spec->name, "events")) {
-			g_warning ("Could not determine GladePropertyType from spec (%s)",
-				   G_PARAM_SPEC_TYPE_NAME (spec));
+		/* FIXME: We should implement the "events" property */
+		if (g_ascii_strcasecmp (spec->name, "user-data") &&
+		    g_ascii_strcasecmp (spec->name, "events")) {
+			g_warning ("Could not determine GladePropertyType from spec (%s) (%s)",
+				   G_PARAM_SPEC_TYPE_NAME (spec), g_type_name (G_PARAM_SPEC_VALUE_TYPE (spec)));
 		}
 	}
 
@@ -1044,7 +1044,7 @@ glade_property_class_list_properties (GladeWidgetClass *class)
 				property_class = NULL;
 				continue;
 			} else if (property_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
-				/* We don't support this properties */
+				/* We don't support these properties */
 				glade_widget_property_class_free (property_class);
 				property_class = NULL;
 				continue;
@@ -1052,8 +1052,8 @@ glade_property_class_list_properties (GladeWidgetClass *class)
 				property_class->choices = glade_property_class_get_choices_from_spec (spec);
 			}
 
-			if ( !g_ascii_strcasecmp ( g_type_name (spec->owner_type), "GtkWidget") &&
-			     g_ascii_strcasecmp (spec->name, "name")) {
+			if (!g_ascii_strcasecmp (g_type_name (spec->owner_type), "GtkWidget") &&
+			    g_ascii_strcasecmp (spec->name, "name")) {
 				property_class->common = TRUE;
 			} else {
 				property_class->common = FALSE;

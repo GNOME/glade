@@ -246,7 +246,9 @@ glade_property_set_string (GladeProperty *property,
 	g_return_if_fail (property->value != NULL);
 	g_return_if_fail (property->widget != NULL);
 	g_return_if_fail (property->widget->widget != NULL);
-	g_return_if_fail (text != NULL);
+
+	if (text == NULL)
+		return;
 
 	if (!g_value_get_string (property->value) ||
 	    (strcmp (text, g_value_get_string (property->value)) != 0))

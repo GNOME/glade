@@ -1,5 +1,13 @@
 2003-03-09  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-command.c: if we create a non GtkWidget (as a GtkAlignment)
+	we should not call gtk_widget_show on it.
+	* src/glade-property.c: handle the case where the text passed to
+	glade_property_set_string is NULL.
+	* src/glade-property-class.c: fix a typo.
+
+2003-03-09  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-projects.c: fix an assertion due to the double insertion
 	of new widgets on the selected list.
 
