@@ -2,6 +2,8 @@
 
 	* src/glade-widget-class.[ch]: reapply minor cleanups after Joaquin's
 	merge.
+	* src/glade-project.c (glade_project_remove_widget_real):the 
+	remove_widget signal should pass a GladeWidget as data, not a GtkWidget.
 
 2003-08-08  Archit Baweja  <bighead@users.sourceforge.net>
 

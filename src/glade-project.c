@@ -247,6 +247,8 @@ static void
 glade_project_remove_widget_real (GladeProject *project,
 				  GtkWidget *widget)
 {
+	GladeWidget *gwidget;
+
 	if (GLADE_IS_PLACEHOLDER (widget))
 		return;
 
@@ -262,6 +264,9 @@ glade_project_remove_widget_real (GladeProject *project,
 		}
 	}
 
+	gwidget = glade_widget_get_from_gtk_widget (widget);
+	g_assert (GLADE_IS_WIDGET (gwidget));
+
 	project->selection = g_list_remove (project->selection, widget);
 	glade_project_selection_changed (project);
 
@@ -269,7 +274,7 @@ glade_project_remove_widget_real (GladeProject *project,
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [REMOVE_WIDGET],
 		       0,
-		       widget);
+		       gwidget);
 }
 
 /**
