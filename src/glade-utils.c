@@ -201,14 +201,16 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
 	founda = gtk_stock_lookup (stock_ida, &itema);
 	foundb = gtk_stock_lookup (stock_idb, &itemb);
 
-	if (founda) {
+	if (founda)
+	{
 		if (!foundb)
 			retval = -1;
 		else
 			/* FIXME: Not ideal for UTF-8. */
 			retval = glade_util_compare_uline_labels (itema.label, itemb.label);
 	}
-	else {
+	else
+	{
 		if (!foundb)
 			retval = 0;
 		else
@@ -306,12 +308,21 @@ GtkWidget *
 glade_util_file_chooser_new (const gchar *title, GtkWindow *parent, 
 			     GtkFileChooserAction action)
 {
-	g_assert (action == GTK_FILE_CHOOSER_ACTION_OPEN || action == GTK_FILE_CHOOSER_ACTION_SAVE);
-	return gtk_file_chooser_dialog_new (title, parent, action,
-					    GTK_STOCK_CANCEL,
-					    GTK_RESPONSE_CANCEL,
-					    action == GTK_FILE_CHOOSER_ACTION_OPEN ? GTK_STOCK_OPEN : GTK_STOCK_SAVE, GTK_RESPONSE_OK,
-					    NULL);
+	GtkWidget *file_chooser;
+
+	g_return_val_if_fail ((action == GTK_FILE_CHOOSER_ACTION_OPEN ||
+			       action == GTK_FILE_CHOOSER_ACTION_SAVE), NULL);
+
+	file_chooser = gtk_file_chooser_dialog_new (title, parent, action,
+						    GTK_STOCK_CANCEL,
+						    GTK_RESPONSE_CANCEL,
+						    action == GTK_FILE_CHOOSER_ACTION_OPEN ? GTK_STOCK_OPEN : GTK_STOCK_SAVE,
+						    GTK_RESPONSE_OK,
+						    NULL);
+
+	gtk_window_set_position (GTK_WINDOW (file_chooser), GTK_WIN_POS_CENTER_ALWAYS);
+
+	return file_chooser;
 }
 
 /**
@@ -322,7 +333,8 @@ glade_util_replace (char *str, char a, char b)
 {
 	g_return_if_fail (str != NULL);
 
-	while (*str != 0) {
+	while (*str != 0)
+	{
 		if (*str == a)
 			*str = b;
 
@@ -555,7 +567,6 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 		}
 	}
 
-
  out:
 	/* Remove the reference added in glade_util_queue_draw_nodes(). */
 	gdk_window_unref (expose_win);
@@ -755,7 +766,8 @@ glade_util_uri_list_parse (const gchar *uri_list)
 	return g_list_reverse (result);
 }
 
-void glade_util_object_set_property (GObject *object, GladeProperty *property)
+void
+glade_util_object_set_property (GObject *object, GladeProperty *property)
 {
 	GValue void_string = {0,};
 	GValue *value = property->value;
