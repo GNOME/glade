@@ -159,15 +159,15 @@ glade_catalog_load_all (void)
 	GladeCatalog *gcatalog = NULL;
 	gchar *filename = NULL;
 
-	catalogsdir = opendir (CATALOG_DIR);
+	catalogsdir = opendir (CATALOGS_DIR);
 	if (!catalogsdir) {
-		g_warning ("Could not open catalogs from %s\n", CATALOG_DIR);
+		g_warning ("Could not open catalogs from %s\n", CATALOGS_DIR);
 		return NULL;
 	}
 	    
 	direntry = readdir (catalogsdir);
 	while (direntry) {
-		filename = g_strdup_printf ("%s/%s", CATALOG_DIR, direntry->d_name);
+		filename = g_strdup_printf ("%s/%s", CATALOGS_DIR, direntry->d_name);
 		stat (filename, &statinfo);
 		if (S_ISREG (statinfo.st_mode)) {
 			gcatalog = glade_catalog_load (filename);

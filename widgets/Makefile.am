@@ -1,4 +1,4 @@
-catalog_DATA = \
+catalogs_DATA = \
 	gtk-base.xml \
 	gtk-additional.xml
 	
@@ -64,5 +64,5 @@ widgets_DATA = \
 	gtkwindow.xml
 
 EXTRA_DIST = \
-	$(catalog_DATA) \
+	$(catalogs_DATA) \
 	$(widgets_DATA)

@@ -1,3 +1,26 @@
+2001-12-03  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* configure.in: Reverted my change about GETTEXT_PACKAGE. We should
+	use the "standar" name (glade-2.0 instead of glade-2).
+	* acconfig.h, configure.in, src/glade-catalog.c, widgets/Makefile.am:
+	/s/catalog/catalogs/ && /s/CATALOG/CATALOGS/ when we are talking about
+	the dir name where we store all catalogs files.
+	
+2001-12-02  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-catalog.c (glade_catalog_load): keep a list of all the
+	GladeWidgetClass that we loaded
+
+	* src/main.c (glade_init): s/catalog/catalogs
+	* src/glade-project-window.h (struct _GladeProjectWindow): ditto
+	* src/glade-project-window.c (glade_project_window_new): ditto
+
+	* src/glade-placeholder.c (glade_placeholder_get_from_properties):
+	return GTK_BIN (parent->widget)->child if we have a GtkWindow
+
+	* src/glade-catalog.c (glade_catalog_load): constify
+	(glade_catalog_load_all): check if we where able to open the directory
+
 2001-12-02  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* acconfig.h, configure.in: Added CATALOG_DIR to store catalogs

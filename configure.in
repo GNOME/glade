@@ -24,7 +24,7 @@ AC_CHECK_HEADERS(os2.h)
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
-GETTEXT_PACKAGE=glade-2
+GETTEXT_PACKAGE=glade-2.0
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
 ALL_LINGUAS="az es nn no ru sv ta tr"
@@ -66,20 +66,20 @@ if test "x${prefix}" = "xNONE"; then
   pixmapsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
   AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
   widgetsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
-  AC_DEFINE_UNQUOTED(CATALOG_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalog")
-  catalogdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalog"
+  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalogs")
+  catalogsdir="${ac_default_prefix}/${DATADIRNAME}/${PACKAGE}/catalogs"
 else
   AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps")
   pixmapsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/pixmaps"
   AC_DEFINE_UNQUOTED(WIDGETS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/widgets")
   widgetsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/widgets"
-  AC_DEFINE_UNQUOTED(CATALOG_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/catalog")
-  catalogdir="${prefix}/${DATADIRNAME}/${PACKAGE}/catalog"
+  AC_DEFINE_UNQUOTED(CATALOGS_DIR, "${prefix}/${DATADIRNAME}/${PACKAGE}/catalogs")
+  catalogsdir="${prefix}/${DATADIRNAME}/${PACKAGE}/catalogs"
 fi
 
 AC_SUBST(pixmapsdir)
 AC_SUBST(widgetsdir)
-AC_SUBST(catalogdir)
+AC_SUBST(catalogsdir)
 
 AC_OUTPUT([
 Makefile
