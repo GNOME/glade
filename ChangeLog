@@ -1,5 +1,14 @@
 2001-11-28  Carlos Perelló Marín <carlos@gnome-db.org>
 
+	* src/glade-placeholder.c (glade_placeholder_add): Implemented.
+	* src/glade-placeholder.c (glade_placeholder_add_with_result): Now
+	calls to glade_placeholder_add to share some code.
+	* src/glade-widget.c (glade_widget_new_from_node_real): Fixed a bug
+	that didn't add a placeholder when we load a top level widget from a
+	.glade file without a child inside it.
+
+2001-11-28  Carlos Perelló Marín <carlos@gnome-db.org>
+
 	* src/glade-property-class.c
 	(glade_property_class_make_gvalue_from_string): Implemented the
 	GLADE_PROPERTY_TYPE_ENUM.

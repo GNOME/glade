@@ -5,8 +5,7 @@
 G_BEGIN_DECLS
 
 void          glade_placeholder_add (GladeWidgetClass *class,
-				     GladeWidget *widget,
-				     gint rows, gint columns);
+				     GladeWidget *widget);
 
 void          glade_placeholder_add_with_result (GladeWidgetClass *class,
 						 GladeWidget *widget,

@@ -788,7 +788,7 @@ glade_widget_new_from_class_full (GladeWidgetClass *class, GladeProject *project
 	/* If we are a container, add the placeholders */
 	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
 		glade_placeholder_add_with_result (class, widget, result);
-
+	
 	if (result) 
 		glade_property_query_result_destroy (result);
 
@@ -1242,6 +1242,10 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 		}
 	}
 
+	/* If we are a container, add the placeholders */
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
+		glade_placeholder_add (class, widget);
+		
 	child =	glade_xml_node_get_children (node);
 	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))

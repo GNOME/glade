@@ -357,6 +357,22 @@ glade_placeholder_new (GladeWidget *parent)
 
 #undef GLADE_PLACEHOLDER_SIZE
 
+void glade_placeholder_add (GladeWidgetClass *class,
+			    GladeWidget *widget)
+{
+
+	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
+		GladePlaceholder *placeholder;
+
+		placeholder = glade_placeholder_new (widget);
+		if (glade_widget_class_is (class, "GtkDialog"))
+			gtk_container_add (GTK_CONTAINER (GTK_DIALOG (widget->widget)->vbox),
+					   GTK_WIDGET (placeholder));
+		else
+			gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
+	}
+
+}
 void
 glade_placeholder_add_with_result (GladeWidgetClass *class,
 				   GladeWidget *widget,
@@ -378,18 +394,8 @@ glade_placeholder_add_with_result (GladeWidgetClass *class,
 			glade_property_set_integer (property, temp);
 		}
 	}
-	
-	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
-		GladePlaceholder *placeholder;
 
-		placeholder = glade_placeholder_new (widget);
-		if (glade_widget_class_is (class, "GtkDialog"))
-			gtk_container_add (GTK_CONTAINER (GTK_DIALOG (widget->widget)->vbox),
-					   GTK_WIDGET (placeholder));
-		else
-			gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
-		return;
-	}
+	glade_placeholder_add (class, widget);
 
 }
 
