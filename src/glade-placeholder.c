@@ -53,24 +53,33 @@ glade_placeholder_replace_container (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container)
 {
-	GtkBoxChild *child_info = NULL;
-	GtkWidget *child;
-	GList *list;
+	GParamSpec **param_spec;
+	GValue *value;
+	guint nproperties;
+	guint i;
 
-	list = gtk_container_get_children (GTK_CONTAINER (container));
-	for (; list != NULL; list = list->next) {
-		child_info = list->data;
-
-		if (child_info->widget == current)
-			break;
-
-		if (GTK_IS_CONTAINER (child_info->widget))
-			glade_placeholder_replace_container (current, new, container);
-	}
-
-	if (list == NULL)
+	if (current->parent != container)
 		return;
 
+	param_spec = gtk_container_class_list_child_properties (G_OBJECT_GET_CLASS (container), &nproperties);
+	value = g_malloc (sizeof (value) * nproperties);
+	if (nproperties != 0 && (param_spec == 0 || value == 0))
+		// TODO: Signal the not enough memory condition
+		return;
+
+	for (i = 0; i < nproperties; i++)
+		gtk_container_child_get_property (GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
+
+	gtk_container_remove (GTK_CONTAINER (container), current);
+	gtk_container_add (GTK_CONTAINER (container), new);
+
+	for (i = 0; i < nproperties; i++)
+		gtk_container_child_set_property (GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
+
+	g_free (param_spec);
+	g_free (value);
+
+#if 0
 	gtk_widget_unparent (child_info->widget);
 	child_info->widget = new;
 	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
@@ -85,6 +94,7 @@ glade_placeholder_replace_container (GtkWidget *current,
 		gtk_widget_queue_resize (child);
 	}
 	/* */
+#endif
 }
 
 /**
