@@ -61,11 +61,8 @@ guint glade_project_get_type (void);
 
 GladeProject *glade_project_new (gboolean untitled);
 
-
-/* Project operations */
+GladeProject *glade_project_open (const gchar *path);
 gboolean glade_project_save (GladeProject *project, const gchar *path);
-gboolean glade_project_open (const gchar *path);
-
 
 /* Widget related stuff */
 void glade_project_remove_widget (GladeWidget *widget);

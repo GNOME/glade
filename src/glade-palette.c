@@ -36,15 +36,18 @@
 #include "glade-project.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
-#include "glade-project-window.h"
+
 
 static void glade_palette_class_init (GladePaletteClass *class);
 static void glade_palette_init (GladePalette *glade_palette);
 
 enum
 {
+	WIDGET_CLASS_CHOSEN,
 	LAST_SIGNAL
 };
+
+static guint glade_palette_signals[LAST_SIGNAL] = {0};
 
 static GtkWindowClass *parent_class = NULL;
 
@@ -80,6 +83,17 @@ glade_palette_class_init (GladePaletteClass *class)
 	object_class = G_OBJECT_CLASS (class);
 
 	parent_class = g_type_class_peek_parent (class);
+
+	glade_palette_signals[WIDGET_CLASS_CHOSEN] =
+		g_signal_new ("toggled",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladePaletteClass, widget_class_chosen),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE,
+			      1,
+			      G_TYPE_POINTER);
 }
 
 static GtkWidget *
@@ -136,33 +150,19 @@ glade_palette_widget_create_icon_from_class (GladeWidgetClass *class)
 static void
 glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 {
-	GladeProjectWindow *gpw;
 	GladeWidgetClass *class;
-	GladeProject *project;
-	static gboolean dont_recurse = FALSE;
-
-	if (dont_recurse)
-		return;
 
 	if (!GTK_TOGGLE_BUTTON (button)->active)
+		return;
+
+	if (button == palette->dummy_button)
 		return;
 
 	class = g_object_get_data (G_OBJECT (button), "user");
 	g_return_if_fail (class != NULL);
 
-	gpw = glade_project_window_get ();
-
-	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
-		project = gpw->project;
-		g_return_if_fail (project != NULL);
-		glade_widget_new_toplevel (project, class);
-		dont_recurse = TRUE;
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button), TRUE);
-		dont_recurse = FALSE;
-		glade_project_window_set_add_class (gpw, NULL);
-	} else {
-		glade_project_window_set_add_class (gpw, class);
-	}
+	g_signal_emit (G_OBJECT (palette),
+		       glade_palette_signals[WIDGET_CLASS_CHOSEN], 0, class);
 }
 
 static gboolean

@@ -22,9 +22,6 @@
  * USA.
  */
 
-#include <glib.h>
-#include <gtk/gtk.h>
-
 #include "glade.h"
 #include "glade-clipboard-view.h"
 #include "glade-clipboard.h"
@@ -34,16 +31,15 @@
 #include "glade-placeholder.h"
 #include "glade-project.h"
 #include "glade-packing.h"
-#include "glade-editor.h"
 
 static void
-glade_clipboard_class_init (GladeClipboardClass * klass)
+glade_clipboard_class_init (GladeClipboardClass *klass)
 {
 
 }
 
 static void
-glade_clipboard_init (GladeClipboard * clipboard)
+glade_clipboard_init (GladeClipboard *clipboard)
 {
 	clipboard->widgets = NULL;
 	clipboard->view = NULL;
@@ -105,7 +101,7 @@ glade_clipboard_new ()
  * Cut/Copy commands.
  **/
 static void
-glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
+glade_clipboard_add (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	/*
 	 * Add the GladeWidget to the list of children. And set the
@@ -129,7 +125,7 @@ glade_clipboard_add (GladeClipboard * clipboard, GladeWidget * widget)
  * Remove a GladeWidget from the Clipboard
  **/
 static void
-glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
+glade_clipboard_remove (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	clipboard->widgets = g_list_remove (clipboard->widgets, widget);
 	clipboard->curr = NULL;
@@ -149,7 +145,7 @@ glade_clipboard_remove (GladeClipboard * clipboard, GladeWidget * widget)
  * Cut a GladeWidget onto the Clipboard. 
  **/
 GladePlaceholder *
-glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
+glade_clipboard_cut (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	GladePlaceholder *placeholder = NULL;
 
@@ -180,7 +176,7 @@ glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
  * Copy a GladeWidget onto the Clipboard. 
  **/
 void
-glade_clipboard_copy (GladeClipboard * clipboard, GladeWidget * widget)
+glade_clipboard_copy (GladeClipboard *clipboard, GladeWidget *widget)
 {
 	GladeWidget *copy;
 
@@ -200,19 +196,25 @@ glade_clipboard_copy (GladeClipboard * clipboard, GladeWidget * widget)
  * Paste a GladeWidget from the Clipboard.
  **/
 void
-glade_clipboard_paste (GladeClipboard * clipboard,
-		       GladePlaceholder * placeholder)
+glade_clipboard_paste (GladeClipboard *clipboard,
+		       GladePlaceholder *placeholder)
 {
-	GladeProjectWindow *gpw;
 	GladeWidget *widget;
 	GladeWidget *parent;
 	GladeProject *project;
 
 	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
 
-	gpw = glade_project_window_get ();
 	widget = clipboard->curr;
+
+	/*
+	 * FIXME: I think that GladePlaceholder should have a pointer
+	 * to the project it belongs to, as GladeWidget does. This way
+	 * the clipboard can be independent from glade-project-window.
+	 * 	Paolo.
+	 */
 	project = glade_project_window_get_project ();
+
 	parent = glade_placeholder_get_parent (placeholder);
 
 	if (!widget)
@@ -243,16 +245,13 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 		glade_widget_set_default_packing_options (widget);
 	}
 
-	glade_widget_select (widget);
-	glade_editor_select_widget (gpw->editor, widget);
+	glade_project_selection_set (widget, TRUE);
 
 	/*
 	 * This damned 'if' statement caused a 1 month delay.
 	 */
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show_all (GTK_WIDGET (widget->widget));
-
-	gpw->active_placeholder = NULL;
 
 	/*
 	 * Finally remove widget from clipboard.

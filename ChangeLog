@@ -1,3 +1,19 @@
+2003-05-17  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-clipboard.c: no need to call glade_editor_select_widget,
+	as it is already called when the selection_changed signal is
+	emitted. Move gpw->active_placeholder = NULL in the signal handler
+	in glade-project-window.c.
+	* src/glade-project.[ch]: decouple the project object from
+	glade-project-window.
+	* src/palette.[ch]: make the palette emit a signal when the user
+	choose a widget class instead of directly messing with the current
+	project.
+	* src/glade-project-window.[ch]: move here the things removed
+	from glade-project. Slightly change some APIs. Connect a handler
+	to the above signal. See also changes on glade-clipboard.c
+	* src/main.c: update for the above.
+
 2003-05-14  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-project-window.[ch]: Make the undo/redo toolbar items

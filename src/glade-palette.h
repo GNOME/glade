@@ -73,6 +73,7 @@ struct _GladePaletteClass
 {
 	GtkVBoxClass parent_class;
 
+	void (*widget_class_chosen) (GladePalette *palette, GladeWidgetClass *class);
 };
 
 GladePalette *glade_palette_new    (GList *catalogs);

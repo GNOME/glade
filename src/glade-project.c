@@ -28,7 +28,6 @@
 
 #include "glade.h"
 #include "glade-project.h"
-#include "glade-project-window.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-xml-utils.h"
@@ -37,7 +36,6 @@
 
 static void glade_project_class_init (GladeProjectClass * klass);
 static void glade_project_init (GladeProject *project);
-static void glade_project_destroy (GtkObject *object);
 
 enum
 {
@@ -119,10 +117,7 @@ glade_project_class_init (GladeProjectClass * klass)
 	klass->remove_widget = NULL;
 	klass->widget_name_changed = NULL;
 	klass->selection_changed = NULL;
-	
-	object_class->destroy = glade_project_destroy;
 }
-
 
 static void
 glade_project_init (GladeProject * project)
@@ -132,65 +127,6 @@ glade_project_init (GladeProject * project)
 	project->selection = NULL;
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
-
-	/* Setup the /Project menu item */
-	project->entry.accelerator = NULL;
-	project->entry.callback = glade_project_window_set_project_cb;
-	project->entry.callback_action = 0;
-	project->entry.item_type = g_strdup ("<Item>");
-}
-
-static void
-glade_project_destroy (GtkObject *object)
-{
-	GladeProject *project;
-
-	project = GLADE_PROJECT (object);
-
-}
-
-static GladeProject *
-glade_project_check_previously_loaded (const gchar *path)
-{
-	GladeProjectWindow *gpw;
-	GladeProject *project;
-	GList *list;
-
-	gpw = glade_project_window_get ();
-	list = gpw->projects;
-
-	for (; list; list = list->next) {
-		project = GLADE_PROJECT (list->data);
-
-		if (project->path != NULL && !strcmp (project->path, path))
-			return project;
-	}
-
-	return NULL;
-}
-
-static void
-glade_project_update_menu_path (GladeProject *project)
-{
-	g_free (project->entry.path);
-
-	project->entry.path = g_strdup_printf ("/Project/%s", project->name);
-}
-
-static void
-glade_project_refresh_menu_item (GladeProject *project)
-{
-	GladeProjectWindow *gpw;
-	GtkWidget *label;
-
-	gpw = glade_project_window_get ();
-	label = gtk_bin_get_child (GTK_BIN (gtk_item_factory_get_item (gpw->item_factory, project->entry.path)));
-
-	/* Change the menu item's label */
-	gtk_label_set_text (GTK_LABEL (label), project->name);
-
-	/* Update the path entry, for future changes. */
-	glade_project_update_menu_path (project);
 }
 
 GladeProject *
@@ -204,15 +140,7 @@ glade_project_new (gboolean untitled)
 	if (untitled)
 		project->name = g_strdup_printf ("Untitled %i", i++);
 
-	glade_project_update_menu_path (project);
-
 	return project;
-}
-
-static void
-glade_project_set_changed (GladeProject *project, gboolean changed)
-{
-	project->changed = changed;
 }
 
 void
@@ -255,7 +183,7 @@ glade_project_add_widget (GladeProject *project,
 	g_return_if_fail (GTK_IS_OBJECT (project));
 
 	glade_project_add_widget_real (project, widget);
-	glade_project_set_changed (project, TRUE);
+	project->changed = TRUE;
 }
 
 /**
@@ -293,11 +221,10 @@ glade_project_remove_widget (GladeWidget *widget)
 	g_return_if_fail (widget != NULL);
 
 	project = widget->project;
-	
-	glade_project_remove_widget_real (project, widget);
 
+	glade_project_remove_widget_real (project, widget);
 	glade_project_selection_changed (project);
-	glade_project_set_changed (project, TRUE);
+	project->changed = TRUE;
 }
 	
 void
@@ -310,7 +237,7 @@ glade_project_widget_name_changed (GladeProject *project,
 	gtk_signal_emit (GTK_OBJECT (project),
 			 glade_project_signals [WIDGET_NAME_CHANGED], widget);
 	
-	glade_project_set_changed (project, TRUE);
+	project->changed = TRUE;
 }
 
 /**
@@ -377,18 +304,6 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 
 	return NULL;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
@@ -564,8 +479,15 @@ glade_project_new_from_node (GladeXmlNode *node)
 	return project;	
 }
 
-static GladeProject *
-glade_project_open_from_file (const gchar *path)
+/**
+ * glade_project_open:
+ * @path: 
+ * 
+ * Open a project at the given path.
+ * On success returns the opened project else NULL.
+ **/
+GladeProject *
+glade_project_open (const gchar *path)
 {
 	GladeXmlContext *context;
 	GladeXmlDoc *doc;
@@ -582,15 +504,20 @@ glade_project_open_from_file (const gchar *path)
 		project->path = g_strdup_printf ("%s", path);
 		g_free (project->name);
 		project->name = g_path_get_basename (project->path);
-		/* Setup the menu item to be shown in the /Project menu. */
-		glade_project_update_menu_path (project);
 	}
 
 	return project;
 }
 
-static gboolean
-glade_project_save_to_file (GladeProject *project, const gchar *full_path)
+/**
+ * glade_project_save:
+ * @project:
+ * @path 
+ * 
+ * Save the project to the given path. Returns TRUE on success.
+ **/
+gboolean
+glade_project_save (GladeProject *project, const gchar *path)
 {
 	GladeXmlContext *context;
 	GladeXmlNode *root;
@@ -609,80 +536,18 @@ glade_project_save_to_file (GladeProject *project, const gchar *full_path)
 		return FALSE;
 
 	glade_xml_doc_set_root (xml_doc, root);
-	ret = glade_xml_doc_save (xml_doc, full_path);
+	ret = glade_xml_doc_save (xml_doc, path);
 	glade_xml_doc_free (xml_doc);
 
 	if (ret < 0)
 		return FALSE;
 
 	g_free (project->path);
-	project->path = g_strdup_printf ("%s", full_path);
+	project->path = g_strdup_printf ("%s", path);
 	g_free (project->name);
 	project->name = g_path_get_basename (project->path);
 
 	project->changed = FALSE;
-
-	return TRUE;
-}
-
-/**
- * glade_project_open:
- * @path: 
- * 
- * Open a project at the given path. Returns TRUE on success.
- **/
-gboolean
-glade_project_open (const gchar *path)
-{
-	GladeProjectWindow *gpw;
-	GladeProject *project;
-
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	gpw = glade_project_window_get ();
-
-	/* If the project is previously loaded, don't re-load */
-	if ((project = glade_project_check_previously_loaded (path)) != NULL) {
-		glade_project_window_set_project (gpw, project);
-		return TRUE;
-	}
-
-	project = glade_project_open_from_file (path);
-	if (!project) {
-		glade_util_ui_warn (_("Could not open project."));
-		return FALSE;
-	}
-
-	glade_project_window_add_project (gpw, project);
-	return TRUE;
-}
-
-/**
- * glade_project_save:
- * @project:
- * @path 
- * 
- * Save the project to the given path. Returns TRUE on success.
- **/
-gboolean
-glade_project_save (GladeProject *project, const gchar *path)
-{
-	GladeProjectWindow *gpw;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	gpw = glade_project_window_get ();
-
-	if (!glade_project_save_to_file (project, path)) {
-		glade_util_ui_warn (_("Invalid file name"));
-		return FALSE;
-	}
-
-	glade_project_refresh_menu_item (project);
-	glade_project_window_refresh_title (gpw);	
-	glade_util_flash_message (gpw->statusbar_actions_context_id,
-				  _("Project '%s' saved"), project->name);
 
 	return TRUE;
 }

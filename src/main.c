@@ -109,7 +109,6 @@ glade_init ()
 int
 main (int argc, char *argv[])
 {
-	GladeProjectWindow *gpw;
 	GList *files = NULL;
 #ifdef G_OS_UNIX
 	poptContext popt_context;
@@ -141,17 +140,18 @@ main (int argc, char *argv[])
 		return 0;
 	}
 
-	gpw = glade_project_window_get ();
-	glade_project_window_show_all (gpw);
+	glade_project_window_show_all ();
 
 	if (files) {
 		for (; files != NULL; files = files->next) {
-			glade_project_open (files->data);
+			GladeProject *project;
+			project = glade_project_open (files->data);
+			glade_project_window_add_project (project);
 		}
 	} else {
 		GladeProject *project;
 		project = glade_project_new (TRUE);
-		glade_project_window_add_project (gpw, project);
+		glade_project_window_add_project (project);
 	}
 			
 	gtk_main ();

@@ -47,7 +47,7 @@ struct _GladeProjectWindow
 					       * placeholder
 					       */
 
-	GList *views;  /* A list of GladeProjectView item */
+	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
 
 	guint project_selection_changed_signal;
@@ -57,16 +57,14 @@ struct _GladeProjectWindow
 GladeProjectWindow * glade_project_window_new (GList *catalogs);
 GladeProjectWindow * glade_project_window_get ();
 GladeProject *       glade_project_window_get_project ();
-void                 glade_project_window_show_all (GladeProjectWindow *gpw);
+
+void glade_project_window_show_all ();
 
 void glade_project_window_set_add_class       (GladeProjectWindow *gpw, GladeWidgetClass *class);
 
-void glade_project_window_set_project_cb (GladeProject *project);
+void glade_project_window_set_project         (GladeProject *project);
 
-void glade_project_window_set_project         (GladeProjectWindow *project_window,
-					       GladeProject       *project);
-void glade_project_window_add_project         (GladeProjectWindow *gpw,
-					       GladeProject *project);
+void glade_project_window_add_project         (GladeProject *project);
 
 void glade_project_window_refresh_undo_redo   (GladeProjectWindow *gpw);
 void glade_project_window_refresh_title       (GladeProjectWindow *gpw);
