@@ -2,8 +2,9 @@
 #ifndef __GLADE_WIDGET_CLASS_H__
 #define __GLADE_WIDGET_CLASS_H__
 
-G_BEGIN_DECLS
+#include <gmodule.h>
 
+G_BEGIN_DECLS
 
 typedef enum {
 	GLADE_TOPLEVEL        = 1 << 2,
@@ -65,6 +66,11 @@ struct _GladeWidgetClass
 				    * are edited when the _child_ is selected.
 				    */
 
+	GModule *module;	/* Module with the (optional) special functions
+				 * needed for placeholder_replace, post_create_function
+				 * and the set & get functions of the properties
+				 * of this class */
+
 	void (*placeholder_replace) (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container);
@@ -84,8 +90,7 @@ struct _GladeWidgetClassSignal
 			      * eg GtkButton */
 };
 
-GladeWidgetClass *glade_widget_class_new_from_name (const char *name);
-GladeWidgetClass *glade_widget_class_new_from_name2 (const char *name, const char *generic_name, const char *base_filename);
+GladeWidgetClass *glade_widget_class_new (const char *name, const char *generic_name, const char *base_filename, const char *base_library);
 GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);
 void glade_widget_class_free (GladeWidgetClass *widget_class);
 GladeWidgetClass *glade_widget_class_get_by_name (const char *name);

@@ -3,6 +3,12 @@ SUBDIRS=
 
 bin_PROGRAMS = glade-3
 
+gladegtk_LTLIBRARIES = libgladegtk.la
+gladegtkdir = $(modulesdir)
+
+libgladegtk_la_SOURCES = glade-gtk.c
+libgladegtk_la_LDFLAGS = -module -avoid-version
+
 INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
@@ -13,6 +19,7 @@ INCLUDES = \
 	-DGLADE_ICONDIR=\""$(datadir)/pixmaps"\" \
 	-DGLADE_LOCALSTATEDIR=\""$(localstatedir)"\" \
 	-DGLADE_LOCALEDIR=\""$(datadir)/locale"\" \
+	-DMODULES_DIR=\""@modulesdir@"\" \
 	-DG_LOG_DOMAIN=\"Glade\"
 
 CFLAGS = -g -O2 -Wall 
@@ -39,7 +46,6 @@ glade_3_SOURCES = \
 	glade-catalog.c \
 	glade-choice.c \
 	glade-editor.c \
-	glade-gtk.c \
 	glade-utils.c \
 	glade-signal.c \
 	glade-signal-editor.c \
@@ -69,7 +75,6 @@ noinst_HEADERS = \
 	glade-property-class.h \
 	glade-popup.h \
 	glade-choice.h \
-	glade-gtk.h \
 	glade-catalog.h \
 	glade-utils.h \
 	glade-signal.h \

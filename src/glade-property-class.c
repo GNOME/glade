@@ -35,7 +35,6 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-gtk.h"
 #include "glade-debug.h"
 
 #if 0
@@ -842,39 +841,6 @@ glade_property_class_load_from_param_spec (const gchar *name,
 }
 #endif
 
-static gboolean
-glade_property_class_get_get_function (GladePropertyClass *class, const gchar *function_name)
-{
-	return glade_gtk_get_get_function_hack (class, function_name);
-}
-
-static gboolean
-glade_property_class_get_set_function (GladePropertyClass *class, const gchar *function_name)
-{
-	static GModule *allsymbols;
-
-	/* This is not working ... So add a temp hack */
-	return glade_gtk_get_set_function_hack (class, function_name);
-
-	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
-	g_return_val_if_fail (class->set_function == NULL, FALSE);
-	g_return_val_if_fail (function_name != NULL, FALSE);
-	
-	if (!allsymbols)
-		allsymbols = g_module_open (NULL, 0);
-	
-	if (!g_module_symbol (allsymbols, function_name,
-			      (gpointer) &class->set_function)) {
-		g_warning (_("We could not find the symbol \"%s\" while trying to load \"%s\""),
-			   function_name, class->name);
-		return FALSE;
-	}
-
-	g_assert (class->set_function);
-
-	return TRUE;
-}
-
 static GList *
 glade_xml_read_list (GladeXmlNode *node, const gchar *list_tag, const gchar *item_tag)
 {
@@ -1006,6 +972,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			*property_class = pproperty_class;
 		}
 		else {
+#if 0
 			/* If the property is an object Load it */
 			if (pproperty_class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 				child = glade_xml_search_child_required (node, GLADE_TAG_GLADE_WIDGET_CLASS);
@@ -1017,6 +984,7 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			
 				pproperty_class->child = glade_widget_class_new_from_node (child);
 			}
+#endif
 
 			pproperty_class->def = glade_property_class_get_default (node, pproperty_class);
 			glade_property_class_free (*property_class);
@@ -1056,20 +1024,41 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	/* If this property can't be set with g_object_set, get the workarround
 	 * function
 	 */
+	/* I use here a g_warning to signal these errors instead of a dialog box, as if there is one
+	 * of this kind of errors, there will probably a lot of them, and we don't want to inflict
+	 * the user the pain of plenty of dialog boxes.  Ideally, we should collect these errors,
+	 * and show all of them at the end of the load processus. */
 	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
 	if (child != NULL) {
-		gchar * content = glade_xml_get_content (child);
-		glade_property_class_get_set_function (pproperty_class, content);
-		g_free (content);
+		gchar *symbol_name = glade_xml_get_content (child);
+
+		if (!widget_class->module)
+			g_warning (_("The property [%s] of the widget's class [%s] needs a special \"set\" function, but there is no library associated to this widget's class."),
+				   pproperty_class->name, widget_class->name);
+
+		if (!g_module_symbol (widget_class->module, symbol_name, (gpointer *) &pproperty_class->set_function))
+			g_warning (_("Unable to get the \"set\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"),
+				   symbol_name, pproperty_class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
+
+		g_free (symbol_name);
 	}
+
 	/* If this property can't be get with g_object_get, get the workarround
 	 * function
 	 */
 	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
 	if (child != NULL) {
-		gchar * content = glade_xml_get_content (child);
-		glade_property_class_get_get_function (pproperty_class, content);
-		g_free (content);
+		gchar *symbol_name = glade_xml_get_content (child);
+
+		if (!widget_class->module)
+			g_warning (_("The property [%s] of the widget's class [%s] needs a special \"get\" function, but there is no library associated to this widget's class."),
+				   pproperty_class->name, widget_class->name);
+
+		if (!g_module_symbol(widget_class->module, symbol_name, (gpointer *) &pproperty_class->get_function))
+			g_warning (_("Unable to get the \"get\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"),
+				   symbol_name, pproperty_class->name, widget_class->name, g_module_name (widget_class->module), g_module_error ());
+
+		g_free (symbol_name);
 	}
 
 	return;

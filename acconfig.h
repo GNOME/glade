@@ -15,4 +15,5 @@
 #undef PIXMAPS_DIR
 #undef WIDGETS_DIR
 #undef CATALOGS_DIR
+#undef MODULES_DIR
 #undef GETTEXT_PACKAGE

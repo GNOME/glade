@@ -37,7 +37,6 @@
 
 #define GLADE_TAG_PALETTE "GladePalette"
 
-static GList *glade_catalog_list = NULL; /* A list of GladeCatalog items */
 static GList *widget_class_list  = NULL; /* A list of all the GladeWidgetClass objects loaded */
 
 GList *
@@ -80,12 +79,14 @@ glade_catalog_load (const char *base_catalog_filename)
 	char *generic_name = NULL;
 	char *catalog_filename = NULL;
 	char *base_filename = NULL;
+	char *partial_library = NULL;
+	char *base_library = NULL;
 	GList *last_widget_class = NULL;
 
 	catalog_filename = g_strdup_printf ("%s%c%s", CATALOGS_DIR, G_DIR_SEPARATOR, base_catalog_filename);
 	if (catalog_filename == NULL)
 	{
-		g_critical ("Not enough memory.");
+		g_critical (_("Not enough memory."));
 		goto lblError;
 	}
 
@@ -93,7 +94,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	context = glade_xml_context_new_from_path (catalog_filename, NULL, GLADE_TAG_CATALOG);
 	if (context == NULL)
 	{
-		g_warning ("Impossible to open the catalog [%s].", catalog_filename);
+		g_warning (_("Impossible to open the catalog [%s]."), catalog_filename);
 		goto lblError;
 	}
 
@@ -104,7 +105,7 @@ glade_catalog_load (const char *base_catalog_filename)
 	catalog = g_new0 (GladeCatalog, 1);
 	if (catalog == NULL)
 	{
-		g_critical ("Not enough memory.");
+		g_critical (_("Not enough memory."));
 		goto lblError;
 	}
 
@@ -115,14 +116,29 @@ glade_catalog_load (const char *base_catalog_filename)
 
 	if (!glade_xml_node_verify (root, GLADE_TAG_CATALOG))
 	{
-		g_warning ("The root node of [%s] has a name different from %s.", catalog_filename, GLADE_TAG_CATALOG);
+		g_warning (_("The root node of [%s] has a name different from %s."), catalog_filename, GLADE_TAG_CATALOG);
 		goto lblError;
+	}
+
+	/* get the library to be used by this catalog (if any) */
+	partial_library = glade_xml_get_property_string (root, "library");
+	if (partial_library && *partial_library)
+	{
+		base_library = g_strdup_printf ("libglade%s", partial_library);
+		if (!base_library)
+		{
+			g_critical (_("Not enough memory."));
+			goto lblError;
+		}
 	}
 
 	/* build all the GladeWidgetClass'es associated with this catalog */
 	widget_node = glade_xml_node_get_children (root);
 	for (; widget_node != NULL; widget_node = glade_xml_node_next (widget_node))
 	{
+		char *partial_widget_class_library = NULL;
+		char *base_widget_class_library = NULL;
+		
 		if (!glade_xml_node_verify (widget_node, GLADE_TAG_GLADE_WIDGET))
 			continue;
 
@@ -130,10 +146,23 @@ glade_catalog_load (const char *base_catalog_filename)
 		if (name == NULL)
 			continue;
 
+		/* get the specific library to the widget class, if any */
+		partial_widget_class_library = glade_xml_get_property_string (widget_node, "library");
+		if (partial_widget_class_library && *partial_widget_class_library)
+		{
+			base_widget_class_library = g_strdup_printf ("libglade%s", partial_widget_class_library);
+			if (!base_widget_class_library)
+			{
+				g_critical (_("Not enough memory."));
+				continue;
+			}
+		}
+
 		generic_name = glade_xml_get_property_string (widget_node, "generic_name");
 		base_filename = glade_xml_get_property_string (widget_node, "filename");
 
-		widget_class = glade_widget_class_new_from_name2 (name, generic_name, base_filename);
+		widget_class = glade_widget_class_new (name, generic_name, base_filename,
+						       base_widget_class_library ? base_widget_class_library : base_library);
 		if (widget_class)
 		{
 			last_widget_class = g_list_append (last_widget_class, widget_class);
@@ -147,6 +176,8 @@ glade_catalog_load (const char *base_catalog_filename)
 		g_free (name);
 		g_free (generic_name);
 		g_free (base_filename);
+		g_free (partial_widget_class_library);
+		g_free (base_widget_class_library);
 	}
 
 	glade_xml_context_free (context);
@@ -157,6 +188,8 @@ lblError:
 	glade_xml_context_free (context);
 	g_free (catalog_filename);
 	g_free (catalog);
+	g_free (partial_library);
+	g_free (base_library);
 	return NULL;
 }
 

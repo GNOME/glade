@@ -34,7 +34,7 @@
 #include "glade-command.h"
 
 
-static void
+void
 glade_gtk_entry_set_text (GObject *object, GValue *value)
 {
 	GtkEditable *editable = GTK_EDITABLE (object);
@@ -54,7 +54,7 @@ glade_gtk_entry_set_text (GObject *object, GValue *value)
 	gtk_editable_set_position (editable, pos);
 }
 
-static void
+void
 glade_gtk_entry_get_text (GObject *object, GValue *value)
 {
 	GtkEntry *entry = GTK_ENTRY (object);
@@ -68,7 +68,7 @@ glade_gtk_entry_get_text (GObject *object, GValue *value)
 	g_value_set_string (value, text);
 }
 
-static void
+void
 glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 {
 	GtkOptionMenu *option_menu; 
@@ -107,7 +107,7 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 }
 
 
-static void
+void
 glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 {
 	GtkProgressBar *bar;
@@ -119,7 +119,7 @@ glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 	gtk_progress_set_format_string (GTK_PROGRESS (bar), format);
 }
 
-static void
+void
 glade_gtk_spin_button_set_max (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -131,7 +131,7 @@ glade_gtk_spin_button_set_max (GObject *object, GValue *value)
 }
 
 
-static void
+void
 glade_gtk_spin_button_set_min (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -142,7 +142,7 @@ glade_gtk_spin_button_set_min (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-static void
+void
 glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -153,7 +153,7 @@ glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-static void
+void
 glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -164,7 +164,7 @@ glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-static void
+void
 glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -176,7 +176,7 @@ glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 }
 
 
-static void
+void
 glade_gtk_box_get_size (GObject *object, GValue *value)
 {
 	GtkBox *box;
@@ -189,7 +189,7 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (box->children));
 }
 
-static void
+void
 glade_gtk_box_set_size (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
@@ -238,7 +238,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size));
 }
 
-static void
+void
 glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 {
 	GtkNotebook *notebook;
@@ -251,7 +251,7 @@ glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (notebook->children));
 }
 
-static void
+void
 glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
@@ -310,7 +310,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 
 #if 0
 /* This code is working but i don't think we need it. Chema */
-static void
+void
 glade_gtk_table_get_n_rows (GObject *object, GValue *value)
 {
 	GtkTable *table;
@@ -323,7 +323,7 @@ glade_gtk_table_get_n_rows (GObject *object, GValue *value)
 	g_value_set_int (value, table->nrows);
 }
 
-static void
+void
 glade_gtk_table_get_n_columns (GObject *object, GValue *value)
 {
 	GtkTable *table;
@@ -337,7 +337,7 @@ glade_gtk_table_get_n_columns (GObject *object, GValue *value)
 }
 #endif
 
-static void
+void
 glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
@@ -408,19 +408,19 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size * (for_rows ? table->ncols : table->nrows)));
 }
 
-static void
+void
 glade_gtk_table_set_n_rows (GObject *object, GValue *value)
 {
 	glade_gtk_table_set_n_common (object, value, TRUE);
 }
 
-static void
+void
 glade_gtk_table_set_n_columns (GObject *object, GValue *value)
 {
 	glade_gtk_table_set_n_common (object, value, FALSE);
 }
 
-static void
+void
 glade_gtk_button_set_stock (GObject *object, GValue *value)
 {
 	GladeWidget *glade_widget;
@@ -486,14 +486,19 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	}
 }
 
-static void
+void
 empty (GObject *object, GValue *value)
+{
+}
+
+void
+ignore (GObject *object, GValue *value)
 {
 }
 
 
 /* ------------------------------------ Post Create functions ------------------------------ */
-static void
+void
 glade_gtk_window_post_create (GObject *object, GValue *not_used)
 {
 	GtkWindow *window = GTK_WINDOW (object);
@@ -503,7 +508,7 @@ glade_gtk_window_post_create (GObject *object, GValue *not_used)
 	gtk_window_set_default_size (window, 440, 250);
 }
 
-static void
+void
 glade_gtk_dialog_post_create (GObject *object, GValue *not_used)
 {
 	GtkDialog *dialog = GTK_DIALOG (object);
@@ -513,7 +518,7 @@ glade_gtk_dialog_post_create (GObject *object, GValue *not_used)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
-static void
+void
 glade_gtk_message_dialog_post_create (GObject *object, GValue *not_used)
 {
 	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
@@ -523,7 +528,7 @@ glade_gtk_message_dialog_post_create (GObject *object, GValue *not_used)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
 }
 
-static void
+void
 glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
 {
 	GtkCheckButton *button = GTK_CHECK_BUTTON (object);
@@ -538,7 +543,7 @@ glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
 
 }
 
-static void
+void
 glade_gtk_table_post_create (GObject *object, GValue *value)
 {
 	GtkTable *table = GTK_TABLE (object);
@@ -559,96 +564,5 @@ glade_gtk_table_post_create (GObject *object, GValue *value)
 		gtk_container_add (GTK_CONTAINER (table),
 				   glade_placeholder_new (parent));
 	}
-}
-
-/* ================ Temp hack =================== */
-/* We have this table, but what we should do is use gmodule for this,
- * however this requires that we link with libtool cause right now
- * we are loosing the symbols. Chema
- */
-typedef struct _GladeGtkFunction GladeGtkFunction;
-
-struct _GladeGtkFunction {
-	const gchar *name;
-	void (* function) (GObject *object, GValue *value);
-};
-
-#define GLADE_NEW_FUNCTION(name) {#name, name}
-#define GLADE_NEW_EMPTY_FUNCTION(name) {#name, empty}
-
-GladeGtkFunction functions [] = {
-	GLADE_NEW_FUNCTION(glade_gtk_entry_get_text),
-	GLADE_NEW_FUNCTION(glade_gtk_box_get_size),
-	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_get_tooltip),
-
-	GLADE_NEW_FUNCTION(glade_gtk_button_set_stock),
-
-#if 0	
-	GLADE_NEW_FUNCTION(glade_gtk_table_get_n_rows),
-	GLADE_NEW_FUNCTION(glade_gtk_table_get_n_columns),
-#endif	
-	GLADE_NEW_FUNCTION(glade_gtk_table_set_n_rows),
-	GLADE_NEW_FUNCTION(glade_gtk_table_set_n_columns),
-
-	GLADE_NEW_FUNCTION(glade_gtk_entry_set_text),
-	GLADE_NEW_FUNCTION(glade_gtk_option_menu_set_items),
-	GLADE_NEW_FUNCTION(glade_gtk_progress_bar_set_format),
-	GLADE_NEW_FUNCTION(glade_gtk_box_set_size),
-	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_set_tooltip),
-	GLADE_NEW_EMPTY_FUNCTION(ignore), /* For example for gtkwindow::modal, we want to ignore the set */
-
-	GLADE_NEW_FUNCTION(glade_gtk_notebook_get_n_pages),
-	GLADE_NEW_FUNCTION(glade_gtk_notebook_set_n_pages),
-
-	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_max),
-	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_min),
-	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_step_increment),
-	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_page_increment),
-	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_page_size),
-
-	GLADE_NEW_FUNCTION(glade_gtk_check_button_post_create),
-	GLADE_NEW_FUNCTION(glade_gtk_window_post_create),
-	GLADE_NEW_FUNCTION(glade_gtk_dialog_post_create),
-	GLADE_NEW_FUNCTION(glade_gtk_message_dialog_post_create),
-	GLADE_NEW_FUNCTION(glade_gtk_table_post_create)
-};
-
-#undef GLADE_NEW_FUNCTION
-#undef GLADE_NEW_EMPTY_FUNCTION
-
-gpointer
-glade_gtk_get_function (const gchar *name)
-{
-	gint num;
-	gint i;
-
-	num = sizeof (functions) / sizeof (GladeGtkFunction);
-	for (i = 0; i < num; i++) {
-		if (strcmp (name, functions[i].name) == 0)
-			break;
-	}
-	if (i == num) {
-		g_warning ("Could not find the function %s\n",
-			   name);
-		return NULL;
-	}
-
-	return functions[i].function;
-}
-
-gboolean
-glade_gtk_get_set_function_hack (GladePropertyClass *class, const gchar *name)
-{
-	class->set_function = glade_gtk_get_function (name);
-
-	return TRUE;
-}
-
-gboolean
-glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name)
-{
-	class->get_function = glade_gtk_get_function (name);
-
-	return TRUE;
 }
 

@@ -34,7 +34,6 @@
 #include "glade-popup.h"
 #include "glade-placeholder.h"
 #include "glade-signal.h"
-#include "glade-gtk.h"
 #include "glade-clipboard.h"
 #include "glade-command.h"
 #include "glade-debug.h"

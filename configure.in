@@ -12,12 +12,13 @@ AC_PROG_INTLTOOL([0.11])
 GNOME_COMMON_INIT
 GNOME_PLATFORM_GNOME_2(yes, force)
 
-AM_PROG_LIBTOOL
-
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+
+AC_LIBTOOL_DLOPEN
+AC_PROG_LIBTOOL
 
 AC_CHECK_HEADERS(os2.h)
 
@@ -77,9 +78,19 @@ else
   catalogsdir="${prefix}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs"
 fi
 
+dnl ================================================================
+dnl MODULES
+dnl ================================================================
+if test "x${libdir}" = "xNONE"; then
+  modulesdir="${ac_default_libdir}/${PACKAGE}"
+else
+  modulesdir="${libdir}/${PACKAGE}"
+fi
+
 AC_SUBST(pixmapsdir)
 AC_SUBST(widgetsdir)
 AC_SUBST(catalogsdir)
+AC_SUBST(modulesdir)
 
 AC_OUTPUT([
 Makefile

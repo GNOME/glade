@@ -44,7 +44,6 @@
 #include "glade-catalog.h"
 #include "glade-choice.h"
 #include "glade-parameter.h"
-#include "glade-gtk.h"
 #include "glade-debug.h"
 
 /* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
@@ -81,21 +80,6 @@ glade_widget_class_compose_get_type_func (GladeWidgetClass *class)
 	g_string_free (tmp, TRUE);
 
 	return retval;
-}
-
-static GladeWidgetClass *
-glade_widget_class_new (void)
-{
-	GladeWidgetClass *class;
-
-	class = g_new0 (GladeWidgetClass, 1);
-	class->flags = 0;
-	class->placeholder_replace = NULL;
-	class->type = 0;
-	class->properties = NULL;
-	class->child_properties = NULL;
-
-	return class;
 }
 
 void
@@ -277,29 +261,6 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return signals;
 }
 
-static gboolean
-glade_widget_class_set_type (GladeWidgetClass *class,
-			     const gchar *init_function_name)
-{
-	GType type;
-
-	class->type = 0;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), FALSE);
-	g_return_val_if_fail (init_function_name != NULL, FALSE);
-
-	type = glade_util_get_type_from_name (init_function_name);
-	if (type == 0)
-		return FALSE;
-
-	class->type = type;
-
-	if (type == 0)
-		return FALSE;
-	
-	return TRUE;
-}
-
 static void
 glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 {
@@ -307,83 +268,6 @@ glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
 
 	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class))
 		glade_placeholder_add_methods_to_class (class);
-}
-
-GladeWidgetClass *
-glade_widget_class_new_from_node (GladeXmlNode *node)
-{
-	GladeWidgetClass *class;
-	GladeXmlNode *child;
-	gchar *init_function_name;
-	gchar *post_create_function_name;
-
-	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
-		return NULL;
-
-	class = glade_widget_class_new ();
-
-	class->name         = glade_xml_get_value_string_required (node, GLADE_TAG_NAME, NULL);
-	class->generic_name = glade_xml_get_value_string_required (node, GLADE_TAG_GENERIC_NAME, NULL);
-
-	if (!class->name || !class->generic_name) {
-		g_warning ("Invalid XML file. Widget Class %s\n", class->name);
-		return NULL;
-	}
-
-	init_function_name  = glade_xml_get_value_string (node, GLADE_TAG_GET_TYPE_FUNCTION);
-	if (!init_function_name) {
-		init_function_name = glade_widget_class_compose_get_type_func (class);
-		if (!init_function_name)
-			return FALSE;
-	}
-
-	if (!glade_widget_class_set_type (class, init_function_name))
-		return NULL;
-	g_free (init_function_name);
-
-	/* Properties.
-	 * if needed add/override properties listed in the xml file.
-	 */
-	class->properties = glade_widget_class_list_properties (class);
-	child = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
-	if (child)
-		glade_property_class_list_add_from_node (child, class, &class->properties);
-
-	/* Child properties */
-	/* TODO: we probably want to override/add some packing properties from
-	 * the xml file like we do foe normal properties, in other words we may 
-	 * need a function similar to 	glade_property_class_list_add_from_node
-	 */
-	class->child_properties = glade_widget_class_list_child_properties (class);
-
-	/* Signals */
-	class->signals = glade_widget_class_list_signals (class);
-
-	/* Get the flags */
-	if (glade_xml_get_boolean (node, GLADE_TAG_TOPLEVEL, FALSE))
-		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_TOPLEVEL);
-	else
-		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_TOPLEVEL);
-	if (glade_xml_get_boolean (node, GLADE_TAG_PLACEHOLDER, FALSE))
-		GLADE_WIDGET_CLASS_SET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
-	else
-		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
-
-	/* placeholder_replace */
-	glade_widget_class_add_virtual_methods (class);
-
-	/* PostCreateFunction */
-	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-	if (post_create_function_name) {
-		class->post_create_function = glade_gtk_get_function (post_create_function_name);
-		if (!class->post_create_function)
-			g_warning ("Could not find %s\n", post_create_function_name);
-	}
-	g_free (post_create_function_name);
-
-	class->in_palette = glade_xml_get_boolean (node, GLADE_TAG_IN_PALETTE, TRUE);
-
-	return class;
 }
 
 static GtkWidget *
@@ -426,9 +310,8 @@ glade_widget_class_extend_with_file (GladeWidgetClass *widget_class, const char 
 		node = glade_xml_doc_get_root (doc);
 
 		post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-		if (post_create_function_name) {
-			widget_class->post_create_function = glade_gtk_get_function (post_create_function_name);
-			if (!widget_class->post_create_function)
+		if (post_create_function_name && widget_class->module) {
+			if (!g_module_symbol (widget_class->module, post_create_function_name, (void **) &widget_class->post_create_function))
 				g_warning ("Could not find %s\n", post_create_function_name);
 		}
 		g_free (post_create_function_name);
@@ -464,7 +347,7 @@ glade_widget_class_store_with_name (GladeWidgetClass *widget_class)
 }
 
 /**
- * glade_widget_class_get_from_name:
+ * glade_widget_class_get_by_name:
  * @name: name of the widget class (for instance: GtkButton)
  *
  * Returns an already created GladeWidgetClass with the name passed as argument.
@@ -545,8 +428,8 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 		GList *old_property;
 
 		/* if it's the first time we see this property, then we add it to the list of 
-		 * properties that we will keep the property.  Idem if the last time we saw
-		 * this property it was not modified, and this time the property is modified
+		 * properties that we will keep for this widget.  Idem if the last time we saw
+		 * this property, it was not modified, and this time the property is modified
 		 * (ie, we change the non modified property by the modified one). */
 		if ((old_property = g_hash_table_lookup (hash_properties, property_class->id)) == NULL ||
 		    (!((GladePropertyClass*) old_property->data)->is_modified && property_class->is_modified))
@@ -582,7 +465,7 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
 }
 
 /**
- * glade_widget_class_new_from_name2:
+ * glade_widget_class_new:
  * @name: name of the widget class (for instance: GtkButton)
  * @generic_name: base of the name for the widgets of this class (for instance: button).
  * This parameter is optional.  For abstract classes there is no need to supply a generic_name.
@@ -597,17 +480,16 @@ glade_widget_class_remove_duplicated_properties (GladeWidgetClass *widget_class)
  * the xml filename.
  *
  * Return Value: The new GladeWidgetClass, or %NULL if there are any errors.
- *
- * TODO: this function should replace glade_widget_class_new_from_name & new_from_node
- * when done, we should of course rename it.
  **/
 GladeWidgetClass *
-glade_widget_class_new_from_name2 (const char *name,
-				   const char *generic_name,
-				   const char *base_filename)
+glade_widget_class_new (const char *name,
+			const char *generic_name,
+			const char *base_filename,
+			const char *base_library)
 {
 	GladeWidgetClass *widget_class = NULL;
 	char *filename = NULL;
+	char *library = NULL;
 	char *init_function_name = NULL;
 	GType parent_type;
 
@@ -621,18 +503,26 @@ glade_widget_class_new_from_name2 (const char *name,
 	if (base_filename != NULL) {
 		filename = g_strconcat (WIDGETS_DIR, "/", base_filename, NULL);
 		if (filename == NULL) {
-			g_warning ("Not enough memory.");
+			g_warning (_("Not enough memory."));
 			goto lblError;
 		}
 	}
 
-	widget_class = glade_widget_class_new ();
+	if (base_library != NULL) {
+		library = g_strconcat (MODULES_DIR G_DIR_SEPARATOR_S, base_library, NULL);
+		if (library == NULL) {
+			g_warning (_("Not enough memory."));
+			goto lblError;
+		}
+	}
+
+	widget_class = g_new0 (GladeWidgetClass, 1);
 	if (!widget_class) {
-		g_warning ("Not enough memory.");
+		g_warning (_("Not enough memory."));
 		goto lblError;
 	}
 
-	widget_class->generic_name = g_strdup (generic_name);
+	widget_class->generic_name = generic_name ? g_strdup (generic_name) : NULL;
 	widget_class->name = g_strdup (name);
 	widget_class->in_palette = generic_name ? TRUE : FALSE;
 
@@ -641,7 +531,7 @@ glade_widget_class_new_from_name2 (const char *name,
 	 * type is to call foo_bar_get_type() */
 	init_function_name = glade_widget_class_compose_get_type_func (widget_class);
 	if (!init_function_name) {
-		g_warning ("Not enough memory.");
+		g_warning (_("Not enough memory."));
 		goto lblError;
 	}
 
@@ -664,6 +554,14 @@ glade_widget_class_new_from_name2 (const char *name,
 		GLADE_WIDGET_CLASS_SET_FLAGS (widget_class, GLADE_ADD_PLACEHOLDER);
 
 	widget_class->icon = glade_widget_class_create_icon (widget_class);
+
+	if (library != NULL) {
+		widget_class->module = g_module_open (library, G_MODULE_BIND_LAZY);
+		if (!widget_class->module) {
+			g_warning (_("Unable to open the module %s."), library);
+			goto lblError;
+		}
+	}
 
 	/* if there is an associated filename, then open and parse it */
 	if (filename != NULL)
@@ -693,34 +591,10 @@ glade_widget_class_new_from_name2 (const char *name,
 
 lblError:
 	g_free (filename);
+	g_free (library);
 	g_free (init_function_name);
 	glade_widget_class_free (widget_class);
 	return NULL;
-}
-
-GladeWidgetClass *
-glade_widget_class_new_from_name (const gchar *name)
-{
-	GladeWidgetClass *class;
-	GladeXmlContext *context;
-	GladeXmlDoc *doc;
-	gchar *file_name;
-
-	file_name = g_strconcat (WIDGETS_DIR, "/", name, ".xml", NULL);
-
-	context = glade_xml_context_new_from_path (file_name, NULL, GLADE_TAG_GLADE_WIDGET_CLASS);
-	if (!context)
-		return NULL;
-	doc = glade_xml_context_get_doc (context);
-	class = glade_widget_class_new_from_node (glade_xml_doc_get_root (doc));
-	class->xml_file = g_strdup (name);
-	glade_xml_context_free (context);
-
-	class->icon = glade_widget_class_create_icon (class);
-
-	g_free (file_name);
-
-	return class;
 }
 
 const gchar *

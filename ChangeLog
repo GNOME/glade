@@ -1,3 +1,27 @@
+2003-10-04  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-catalog.c: read the name of the plugin to be used by each
+	catalog and pass it to the constructor of glade-widget-class.  Also
+	if a specific class has a specific plugin name to be used, use it instead
+	of the generic of the whole catalog.
+	* src/glade-gtk.c: remove the "static" from the functions that should
+	be exported, and remove the "temp hack" that was used to load the
+	address of the functions, as it's no more needed.
+	* src/glade-property-class.c: remove glade_property_class_get_{get,set}_function
+	and use g_module_symbol instead.
+	* src/glade-widget-class.c: use g_module_symbol instead of the previous {get,set}
+	functions.  Remove unused functions.  Rename glade_widget_class_new_from_name2
+	to glade_widget_class_new as it's the only constructor.  Use the plugin
+	name that glade-widget-class passed to the constructor and load it.
+	* src/glade-widget-class.h: add a GModule* by GladeWidgetClass.
+	* src/glade-widget.c: remove the #include <glade-gtk.h>
+	* widgets/gtk-additional.xml: add the name of the plugin ("gtk") for all the
+	widgets on gtk-additional.
+	* widgets/gtk-base.xml: ditto
+	* widgets/gtkwidget.xml: remove the "name" tag, as it's not need.
+	* widgets/gtkwindow.xml: change glade_gtk_widget_{get,set}_tooltip by "ignore",
+	as that's what these functions do.
+
 2003-09-02  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade.h: add the internal child tag.
