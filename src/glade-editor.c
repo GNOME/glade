@@ -27,6 +27,7 @@
 #include <config.h>
 #endif
 
+#include <stdio.h>
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
 
@@ -50,6 +51,7 @@ static void glade_editor_init (GladeEditor * editor);
 enum
 {
 	SELECT_ITEM,
+	ADD_SIGNAL,
 	LAST_SIGNAL
 };
 
@@ -65,6 +67,50 @@ static gboolean glade_editor_table_append_items (GladeEditorTable *table,
 						 GladeWidgetClass *class,
 						 GList **list,
 						 gboolean common);
+
+
+/* marshallers */
+
+static void
+glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING (GClosure     *closure,
+						     GValue       *return_value,
+						     guint         n_param_values,
+						     const GValue *param_values,
+						     gpointer      invocation_hint,
+						     gpointer      marshal_data)
+{
+	typedef void (*GMarshalFunc_VOID__STRING_ULONG_UINT_STRING) (gpointer     data1,
+								     gpointer     arg_1,
+								     gulong       arg_2,
+								     guint        arg_3,
+								     gpointer     arg_4,
+								     gpointer     data2);
+	GMarshalFunc_VOID__STRING_ULONG_UINT_STRING callback;
+	GCClosure *cc = (GCClosure*) closure;
+	gpointer data1, data2;
+
+	g_return_if_fail (n_param_values == 5);
+
+	if (G_CCLOSURE_SWAP_DATA (closure))
+	{
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	}
+	else
+	{
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+	callback = (GMarshalFunc_VOID__STRING_ULONG_UINT_STRING) (marshal_data ? marshal_data : cc->callback);
+
+	callback (data1,
+		  (char*) g_value_get_string (param_values + 1),
+		  g_value_get_ulong (param_values + 2),
+		  g_value_get_uint (param_values + 3),
+		  (char*) g_value_get_string (param_values + 4),
+		  data2);
+}
+
 
 guint
 glade_editor_get_type (void)
@@ -106,10 +152,20 @@ glade_editor_class_init (GladeEditorClass * klass)
 				GTK_RUN_LAST,
 				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (GladeEditorClass, select_item),
-				gtk_marshal_NONE__POINTER,
+				gtk_marshal_VOID__POINTER,
 				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
+	glade_editor_signals[ADD_SIGNAL] =
+		gtk_signal_new ("add_signal",
+				GTK_RUN_LAST,
+				GTK_CLASS_TYPE (object_class),
+				GTK_SIGNAL_OFFSET (GladeEditorClass, add_signal),
+				glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING,
+				GTK_TYPE_NONE, 4,
+				GTK_TYPE_STRING, GTK_TYPE_ULONG, GTK_TYPE_UINT, GTK_TYPE_STRING);
+
 	klass->select_item = glade_editor_select_item_real;
+	klass->add_signal = NULL;
 }
 
 static gint
@@ -924,7 +980,7 @@ static void
 glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
 {
 	if (editor->signal_editor == NULL) {
-		editor->signal_editor = glade_signal_editor_new ();
+		editor->signal_editor = glade_signal_editor_new (editor);
 		gtk_box_pack_start (GTK_BOX (editor->vbox_signals),
 				    glade_signal_editor_get_widget (editor->signal_editor),
 				    TRUE, TRUE, 0);
@@ -1445,4 +1501,24 @@ glade_editor_create (GladeProjectWindow *gpw)
 		gpw->editor = GLADE_EDITOR (glade_editor_new ());
 		gpw->editor->project_window = gpw;
 	}
+}
+
+void glade_editor_add_signal (GladeEditor *editor, guint signal_id,
+			      const char *callback_name)
+{
+	const char *widget_name;
+	const char *signal_name;
+	GType widget_type;
+	
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+	g_return_if_fail (callback_name != NULL);
+	g_return_if_fail (*callback_name != 0);
+
+	signal_name = g_signal_name (signal_id);
+	widget_name = glade_widget_get_name (editor->loaded_widget);
+	widget_type = glade_widget_class_get_type (glade_widget_get_class (editor->loaded_widget));
+	
+	gtk_signal_emit (GTK_OBJECT (editor),
+			 glade_editor_signals [ADD_SIGNAL], widget_name, widget_type,
+			 signal_id, callback_name);
 }

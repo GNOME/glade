@@ -17,6 +17,8 @@ struct _GladeSignalEditor {
 	GladeWidget *widget;
 	GladeWidgetClass *class;
 
+	GladeEditor *editor;
+	
 	GtkWidget *signals_list;
 	
 	GtkWidget *signal_name_entry;
@@ -31,7 +33,7 @@ struct _GladeSignalEditor {
 };
 
 GtkWidget *         glade_signal_editor_get_widget (GladeSignalEditor *editor);
-GladeSignalEditor * glade_signal_editor_new (void);
+GladeSignalEditor * glade_signal_editor_new (GladeEditor *editor);
 void                glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 
 G_END_DECLS

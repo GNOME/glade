@@ -33,6 +33,7 @@
 #include "glade-widget-class.h"
 #include "glade-signal.h"
 #include "glade-signal-editor.h"
+#include "glade-editor.h"
 
 
 static void
@@ -432,6 +433,9 @@ glade_signal_editor_add_cb (GladeSignalEditor *editor)
 	signal = glade_signal_editor_update_widget_signal (editor, NULL);
 	glade_signal_editor_update_signal (editor, signal, NULL);
 
+	glade_editor_add_signal (editor->editor, g_signal_lookup (signal->name, editor->widget->class->type),
+				 signal->handler);
+				 
 	glade_signal_editor_clear_entries (editor);
 }
 
@@ -684,15 +688,16 @@ glade_signal_editor_get_widget (GladeSignalEditor *editor)
 }
 
 GladeSignalEditor*
-glade_signal_editor_new (void)
+glade_signal_editor_new (GladeEditor *editor)
 {
-	GladeSignalEditor *editor;
+	GladeSignalEditor *signal_editor;
 
-	editor = g_new0 (GladeSignalEditor, 1);
+	signal_editor = g_new0 (GladeSignalEditor, 1);
 
-	glade_signal_editor_construct (editor);
-
-	return editor;
+	glade_signal_editor_construct (signal_editor);
+	signal_editor->editor = editor;
+	
+	return signal_editor;
 }
 
 void 

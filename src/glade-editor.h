@@ -69,8 +69,8 @@ struct _GladeEditor
 				   * implemented
 				   */
 	GtkWidget *vbox_signals;  /* Widget from the GladeSignalEditor is placed
-					 * here
-					 */
+				   * here
+				   */
 	GladeSignalEditor *signal_editor;
 
 	GList * widget_tables; /* A list of GladeEditorTable. We have a table
@@ -93,6 +93,9 @@ struct _GladeEditorClass
 	GtkNotebookClass parent_class;
 
 	void   (*select_item) (GladeEditor *editor, GladeWidget *widget);
+	void   (*add_signal) (GladeEditor *editor, const char *id_widget,
+			      GType type_widget, guint id_signal,
+			      const char *callback_name);
 };
 
 /* For each glade widget class that we have modified, we create a
@@ -180,8 +183,9 @@ typedef enum {
 
 GladeEditor *glade_editor_new (void);
 
-void  glade_editor_create (GladeProjectWindow *gpw);
-void  glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
+void glade_editor_create (GladeProjectWindow *gpw);
+void glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
+void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
 
 G_END_DECLS
 

@@ -35,6 +35,7 @@
 #include "glade-project-view.h"
 #include "glade-project-window.h"
 
+#include <locale.h>
 #include <gmodule.h>
 #include <popt.h>
 

@@ -1,3 +1,11 @@
+2003-03-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-signal-editor.[ch]: inform glade-editor when a new
+	signal has been added.
+	* src/glade-editor.[ch]: broadcast a new "add_signal" signal
+	when the user creates a new signal for the selected widget.
+	* src/main.c: add a #include <locale.h> for the setlocale function.
+
 2003-03-06  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-palette.[ch]: convert the palette to a "non window"
