@@ -114,7 +114,7 @@ glade_project_view_find_iter_by_widget (GtkTreeModel *model,
 	GtkTreeIter iter;
 	GtkTreeIter *retval;
 
-	if (!gtk_tree_model_get_first (model, &iter)) {
+	if (!gtk_tree_model_get_iter_root (model, &iter)) {
 		g_warning ("Cound not find first widget.");
 		return NULL;
 	}
@@ -441,7 +441,7 @@ glade_project_view_set_project (GladeProjectView *view,
 	
 	model = GTK_TREE_MODEL (view->model);
 	
-	while (gtk_tree_model_get_first (model, &iter))
+	while (!gtk_tree_model_get_iter_root (model, &iter))
 		gtk_tree_store_remove (view->model, &iter);
 
 	glade_project_view_populate_model (view->model, view);
