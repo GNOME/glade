@@ -208,8 +208,6 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	if (new_size == old_size)
 		return;
 
-	glade_placeholder_remove_all (GTK_WIDGET (box));
-
 	if (new_size > old_size) {
 		/* The box has grown */
 		/* We don't need to do anything here because the box's property "size"
@@ -239,8 +237,6 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 			child = g_list_last (box->children);
 		}
 	} /* else the size is == */
-	
-	glade_placeholder_fill_empty (GTK_WIDGET (box));
 }
 
 #if 0

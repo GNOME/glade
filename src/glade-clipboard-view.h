@@ -1,10 +1,14 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_CLIPBOARD_VIEW_H__
 #define __GLADE_CLIPBOARD_VIEW_H__
 
 G_BEGIN_DECLS
-#define GLADE_CLIPBOARD_VIEW(obj)           (GTK_CHECK_CAST (obj, glade_clipboard_view_get_type (), GladeClipboardView))
+
+
+#define GLADE_CLIPBOARD_VIEW(obj)         (GTK_CHECK_CAST (obj, glade_clipboard_view_get_type (), GladeClipboardView))
 #define GLADE_CLIPBOARD_VIEW_CLASS(klass) (GTK_CHECK_CLASS_CAST (klass, glade_clipboard_view_get_type (), GladeClipboardViewClass))
-#define GLADE_IS_CLIPBOARD_VIEW(obj)        (GTK_CHECK_TYPE (obj, glade_clipboard_view_get_type ()))
+#define GLADE_IS_CLIPBOARD_VIEW(obj)      (GTK_CHECK_TYPE (obj, glade_clipboard_view_get_type ()))
+
 typedef struct _GladeClipboardView GladeClipboardView;
 typedef struct _GladeClipboardViewClass GladeClipboardViewClass;
 
@@ -21,12 +25,15 @@ struct _GladeClipboardViewClass {
 };
 
 GtkType glade_clipboard_view_get_type ();
-GtkWidget *glade_clipboard_view_new (GladeClipboard * clipboard);
 
-void glade_clipboard_view_add (GladeClipboardView * view,
-			       GladeWidget * widget);
-void glade_clipboard_view_remove (GladeClipboardView * view,
-				  GladeWidget * widget);
+GtkWidget *glade_clipboard_view_new (GladeClipboard *clipboard);
+
+void glade_clipboard_view_add (GladeClipboardView *view,
+			       GladeWidget *widget);
+
+void glade_clipboard_view_remove (GladeClipboardView *view,
+				  GladeWidget *widget);
+
 
 G_END_DECLS
 #endif				/* __GLADE_CLIPBOARD_VIEW_H__ */

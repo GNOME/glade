@@ -49,101 +49,42 @@
 #define GLADE_PLACEHOLDER_SELECTION_NODE_SIZE 7
 
 static void
-glade_placeholder_replace_box (GtkWidget *current,
-			       GtkWidget *new,
-			       GtkWidget *container)
-{
-	/* Some Gtk Hackery. Not beautifull but needed. */
-	GtkBoxChild *child_info = NULL;
-	GtkWidget *child;
-	GtkBox *box;
-	GList *list;
-
-	box = GTK_BOX (container);
-
-	list = box->children;
-	for (; list != NULL; list = list->next) {
-		child_info = list->data;
-		if (child_info->widget == current)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Error while replacing a widget in a GtkBox. The old widget could not be found\n");
-		return;
-	}
-	gtk_widget_unparent (child_info->widget);
-	child_info->widget = new;
-	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (box));
-
-	/* */
-	child = new;
-	if (GTK_WIDGET_REALIZED (box))
-		gtk_widget_realize (child);
-	if (GTK_WIDGET_VISIBLE (box) && GTK_WIDGET_VISIBLE (child)) {
-		if (GTK_WIDGET_MAPPED (box))
-			gtk_widget_map (child);
-		gtk_widget_queue_resize (child);
-	}
-	/* */
-}
-
-static void
-glade_placeholder_replace_table (GtkWidget *current,
-				 GtkWidget *new,
-				 GtkWidget *container)
-{
-	/* Some Gtk Hackery. Not beautifull, but needed */
-	GtkTableChild *table_child = NULL;
-	GtkWidget *child;
-	GtkTable *table;
-	GList *list;
-
-	table = GTK_TABLE (container);
-	list = table->children;
-		
-	for (; list != NULL; list = list->next) {
-		table_child = list->data;
-		if (table_child->widget == current)
-			break;
-	}
-	if (list == NULL) {
-		g_warning ("Error while adding a widget to a GtkTable\n");
-		return;
-	}
-	
-	gtk_widget_unparent (table_child->widget);
-	table_child->widget = new;
-	gtk_widget_set_parent (table_child->widget, GTK_WIDGET (table));
-	
-	/* */
-	child = new;
-	if (GTK_WIDGET_REALIZED (child->parent))
-		gtk_widget_realize (child);
-	if (GTK_WIDGET_VISIBLE (child->parent) && GTK_WIDGET_VISIBLE (child)) {
-		if (GTK_WIDGET_MAPPED (child->parent))
-			gtk_widget_map (child);
-		gtk_widget_queue_resize (child);
-	}
-	/* */
-}
-
-static void
-glade_placeholder_replace_dialog (GtkWidget *current,
-				  GtkWidget *new,
-				  GtkWidget *container)
-{
-
-	glade_placeholder_replace_box (current, new, GTK_DIALOG (container)->vbox);
-	glade_placeholder_replace_box (current, new, GTK_DIALOG (container)->action_area);
-}
-
-static void
 glade_placeholder_replace_container (GtkWidget *current,
 				     GtkWidget *new,
 				     GtkWidget *container)
 {
-	gtk_container_remove (GTK_CONTAINER (container), current);
-	gtk_container_add (GTK_CONTAINER (container), new);
+	GtkBoxChild *child_info = NULL;
+	GtkWidget *child;
+	GList *list;
+
+	list = gtk_container_get_children (GTK_CONTAINER (container));
+	for (; list != NULL; list = list->next) {
+		child_info = list->data;
+
+		if (child_info->widget == current)
+			break;
+
+		if (GTK_IS_CONTAINER (child_info->widget))
+			glade_placeholder_replace_container (current, new, container);
+	}
+
+	if (list == NULL)
+		return;
+
+	gtk_widget_unparent (child_info->widget);
+	child_info->widget = new;
+	gtk_widget_set_parent (child_info->widget, GTK_WIDGET (container));
+
+	/* */
+	child = new;
+	if (GTK_WIDGET_REALIZED (container))
+		gtk_widget_realize (child);
+	if (GTK_WIDGET_VISIBLE (container) && GTK_WIDGET_VISIBLE (child)) {
+		if (GTK_WIDGET_MAPPED (container))
+			gtk_widget_map (child);
+		gtk_widget_queue_resize (child);
+	}
+	/* */
 }
 
 /**
@@ -214,23 +155,10 @@ void
 glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 {
 	/* This is ugly, make it better. Chema */
-	if ((strcmp (class->name, "GtkVBox") == 0) ||
-	    (strcmp (class->name, "GtkHBox") == 0))
-		class->placeholder_replace = glade_placeholder_replace_box;
-	if (strcmp (class->name, "GtkTable") == 0)
-		class->placeholder_replace = glade_placeholder_replace_table;
-	if (strcmp (class->name, "GtkNotebook") == 0)
+	if (g_type_is_a (class->type, GTK_TYPE_NOTEBOOK))
 		class->placeholder_replace = glade_placeholder_replace_notebook;
-	if (strcmp (class->name, "GtkDialog") == 0)
-		class->placeholder_replace = glade_placeholder_replace_dialog;
-	if ((strcmp (class->name, "GtkWindow")    == 0) ||
-	    (strcmp (class->name, "GtkFrame")     == 0) ||
-	    (strcmp (class->name, "GtkHandleBox") == 0 ))
+	else if (g_type_is_a (class->type, GTK_TYPE_CONTAINER))
 		class->placeholder_replace = glade_placeholder_replace_container;
-	
-	if (class->placeholder_replace == NULL)
-		g_warning ("placeholder_replace has not been implemented for %s\n",
-			   class->name);
 }
 
 static GdkWindow*
@@ -693,7 +621,7 @@ glade_placeholder_fill_empty (GtkWidget *widget)
 
 		box = GTK_BOX (widget);
 		
-		property = glade_property_get_from_id   (gwidget->properties, "size");
+		property = glade_property_get_from_id (gwidget->properties, "size");
 		size = glade_property_get_integer (property);
 
 		element = g_list_first (box->children);

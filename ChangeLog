@@ -1,5 +1,10 @@
 2003-05-17  Paolo Borelli  <pborelli@katamail.com>
 
+	* src/glade-clipboard-view.[ch]: do not include 
+	glade-project-window.h and some minor cleanups
+
+2003-05-17  Paolo Borelli  <pborelli@katamail.com>
+
 	* src/glade-clipboard.c: no need to call glade_editor_select_widget,
 	as it is already called when the selection_changed signal is
 	emitted. Move gpw->active_placeholder = NULL in the signal handler
