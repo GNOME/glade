@@ -2,6 +2,12 @@
 
 	* src/glade-widget.c (glade_widget_write_child): don't save empty packing tag.
 
+2004-05-17  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-utils.c (glade_util_file_chooser_new): the order of buttons
+	should be Cancel then Open/Save, not the other way around (as per HIG)
+	Fixed :-).
+
 2004-05-16  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-menu-editor.c, glade-project-window.c, glade-utils.[ch]:

@@ -308,8 +308,9 @@ glade_util_file_chooser_new (const gchar *title, GtkWindow *parent,
 {
 	g_assert (action == GTK_FILE_CHOOSER_ACTION_OPEN || action == GTK_FILE_CHOOSER_ACTION_SAVE);
 	return gtk_file_chooser_dialog_new (title, parent, action,
+					    GTK_STOCK_CANCEL,
+					    GTK_RESPONSE_CANCEL,
 					    action == GTK_FILE_CHOOSER_ACTION_OPEN ? GTK_STOCK_OPEN : GTK_STOCK_SAVE, GTK_RESPONSE_OK,
-					    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					    NULL);
 }
 
