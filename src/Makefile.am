@@ -10,6 +10,7 @@ INCLUDES = \
 	-DGLADE_LIBDIR=\""$(libdir)"\" \
 	-DGLADE_DATADIR=\""$(datadir)"\" \
 	-DGLADE_BINDIR=\""$(bindir)"\" \
+	-DGLADE_ICONDIR=\""$(datadir)/pixmaps"\" \
 	-DGLADE_LOCALSTATEDIR=\""$(localstatedir)"\" \
 	-DGLADE_LOCALEDIR=\""$(datadir)/locale"\" \
 	-DG_LOG_DOMAIN=\"Glade\"

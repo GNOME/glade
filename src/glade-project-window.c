@@ -1058,6 +1058,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
+	gtk_window_set_default_icon_from_file (GLADE_ICONDIR"/glade-3.png", NULL);
 	gpw->window = app;
 
 	vbox = gtk_vbox_new (FALSE, 0);
