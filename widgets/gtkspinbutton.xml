@@ -14,36 +14,26 @@
 
     <Property Id="value"/>
 
-    <Property ParamSpec="FALSE" Id="adjustment" Name="Adjustment">
-      <Type>Object</Type>
-      <GladeWidgetClass>
-	   <Name>GtkAdjustment</Name>
-        <GetTypeFunction>gtk_adjustment_get_type</GetTypeFunction>
-        <GenericName>adjustment</GenericName>
-        <Toplevel>False</Toplevel>
-        <Properties>
           <Property ParamSpec="FALSE" Id="minimum" Name="Min" Default="0">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_min</SetFunction>
+		   <SetFunction>glade_gtk_spin_button_set_min</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="maximum" Name="Max" Default="100">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_max</SetFunction>
+		   <SetFunction>glade_gtk_spin_button_set_max</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="step-increment" Name="Step Inc." Default="1">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
+		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="page-increment" Name="Page Inc." Default="10">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
+		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
 		</Property>
           <Property ParamSpec="FALSE" Id="page-size" Name="Page Size" Default="10">
 		   <Type>Float</Type>
-		   <SetFunction>glade_gtk_adjustment_set_step_increment</SetFunction>
+		   <SetFunction>glade_gtk_spin_button_set_step_increment</SetFunction>
 		</Property>
-        </Properties>
-      </GladeWidgetClass>
 
  	 <!--
 	 <Parameters>
@@ -56,8 +46,6 @@
 	 </Parameters>
 	 -->
 	 
-    </Property>
-    
   </Properties>
 
 </GladeWidgetClass>

@@ -118,11 +118,11 @@ glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 }
 
 static void
-glade_gtk_adjustment_set_max (GObject *object, GValue *value)
+glade_gtk_spin_button_set_max (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
 
-	adjustment = GTK_ADJUSTMENT (object);
+	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
 
 	adjustment->upper = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
@@ -130,46 +130,44 @@ glade_gtk_adjustment_set_max (GObject *object, GValue *value)
 
 
 static void
-glade_gtk_adjustment_set_min (GObject *object, GValue *value)
+glade_gtk_spin_button_set_min (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
 
-	adjustment = GTK_ADJUSTMENT (object);
+	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
 
 	adjustment->lower = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
-
-	g_print ("Set min !!\n");
 }
 
 static void
-glade_gtk_adjustment_set_step_increment (GObject *object, GValue *value)
+glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
 
-	adjustment = GTK_ADJUSTMENT (object);
+	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
 
 	adjustment->step_increment = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 static void
-glade_gtk_adjustment_set_page_increment (GObject *object, GValue *value)
+glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
 
-	adjustment = GTK_ADJUSTMENT (object);
+	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
 
 	adjustment->page_increment = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
 }
 
 static void
-glade_gtk_adjustment_set_page_size (GObject *object, GValue *value)
+glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
 
-	adjustment = GTK_ADJUSTMENT (object);
+	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
 
 	adjustment->page_size = g_value_get_float (value);
 	gtk_adjustment_changed (adjustment);
@@ -521,11 +519,11 @@ GladeGtkFunction functions [] = {
 	GLADE_NEW_EMPTY_FUNCTION(glade_gtk_widget_set_tooltip),
 	GLADE_NEW_EMPTY_FUNCTION(ignore), /* For example for gtkwindow::modal, we want to ignore the set */
 
-	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_max),
-	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_min),
-	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_step_increment),
-	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_page_increment),
-	GLADE_NEW_FUNCTION(glade_gtk_adjustment_set_page_size),
+	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_max),
+	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_min),
+	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_step_increment),
+	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_page_increment),
+	GLADE_NEW_FUNCTION(glade_gtk_spin_button_set_page_size),
 
 	GLADE_NEW_FUNCTION(glade_gtk_check_button_post_create),
 	GLADE_NEW_FUNCTION(glade_gtk_window_post_create),

@@ -1,5 +1,13 @@
 2003-03-11  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
+	* src/glade-gtk.c: rename glade_gtk_adjustment_set_* to
+	glade_gtk_spin_button_set_*, as these functions will only
+	be useful for GtkSpinButton's
+	* widgets/gtkspinbutton.xml: expose directly the properties
+	that were before available only through the inner adjustment.
+
+2003-03-11  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
 	* src/glade-project.c: remove the use of glade_util_path_is_writable.
 	* src/glade-utils.[ch]: remove glade_util_path_is_writable.
 
