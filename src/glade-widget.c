@@ -344,7 +344,18 @@ glade_widget_set_default_options (GladeWidget *widget)
 						       glade_property_get_choice (property));
 			break;
 		case GLADE_PROPERTY_TYPE_OBJECT:
+			g_print ("Set adjustment\n");
+#if 1
+			g_print ("Set directly \n");
 			glade_widget_set_default_options (property->child);
+			gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (property->widget->widget),
+							GTK_ADJUSTMENT (property->child));
+#else	
+			gtk_object_set (GTK_OBJECT (property->widget->widget),
+					property->class->id,
+					property->child, NULL);
+#endif	
+			g_print ("Adjustment has been set\n");
 			break;
 		default:
 			g_warning ("Implement set default for this type [%s]\n", property->class->name);

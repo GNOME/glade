@@ -109,6 +109,46 @@ glade_gtk_adjustment_set_min (GObject *object, const gchar *string)
 	gtk_adjustment_changed (adjustment);
 }
 
+static void
+glade_gtk_adjustment_set_step_increment (GObject *object, const gchar *string)
+{
+	GtkAdjustment *adjustment;
+	gfloat val;
+
+	val = atof (string);
+
+	adjustment = GTK_ADJUSTMENT (object);
+
+	adjustment->step_increment = val;
+	gtk_adjustment_changed (adjustment);
+}
+static void
+glade_gtk_adjustment_set_page_increment (GObject *object, const gchar *string)
+{
+	GtkAdjustment *adjustment;
+	gfloat val;
+
+	val = atof (string);
+
+	adjustment = GTK_ADJUSTMENT (object);
+
+	adjustment->page_increment = val;
+	gtk_adjustment_changed (adjustment);
+}
+static void
+glade_gtk_adjustment_set_page_size (GObject *object, const gchar *string)
+{
+	GtkAdjustment *adjustment;
+	gfloat val;
+
+	val = atof (string);
+
+	adjustment = GTK_ADJUSTMENT (object);
+
+	adjustment->page_size = val;
+	gtk_adjustment_changed (adjustment);
+}
+
 
 /* ================ Temp hack =================== */
 typedef struct _GladeGtkFunction GladeGtkFunction;
@@ -125,6 +165,9 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_progress_bar_set_format", &glade_gtk_progress_bar_set_format},
 	{"glade_gtk_adjustment_set_max",      &glade_gtk_adjustment_set_max},
 	{"glade_gtk_adjustment_set_min",      &glade_gtk_adjustment_set_min},
+	{"glade_gtk_adjustment_set_step_increment", &glade_gtk_adjustment_set_step_increment},
+	{"glade_gtk_adjustment_set_page_increment", &glade_gtk_adjustment_set_page_increment},
+	{"glade_gtk_adjustment_set_page_size",      &glade_gtk_adjustment_set_page_size},
 };
 	
 gboolean
