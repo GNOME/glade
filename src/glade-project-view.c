@@ -537,9 +537,12 @@ glade_project_view_new (GladeProjectViewType type)
 {
 	GladeProjectView *view = g_object_new (GLADE_TYPE_PROJECT_VIEW, NULL);
 
-	if (type == GLADE_PROJECT_VIEW_LIST)
+	if (type == GLADE_PROJECT_VIEW_LIST) {
 		view->is_list = TRUE;
-	else
+
+		/* in the main window list we don't want the header */
+		gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view->tree_view), FALSE);
+	} else
 		view->is_list = FALSE;
 
 	gtk_container_add (GTK_CONTAINER (view), view->tree_view);
