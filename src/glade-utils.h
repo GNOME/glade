@@ -32,6 +32,7 @@ void		glade_util_delete_selection (GladeProject *project);
 void		glade_util_add_nodes (GtkWidget *widget);
 void		glade_util_remove_nodes (GtkWidget *widget);
 gboolean	glade_util_has_nodes (GtkWidget *widget);
+void		glade_util_draw_nodes (GtkWidget *widget);
 
 GladeWidget	*glade_util_get_parent (GtkWidget *w);
 GList           *glade_util_container_get_all_children (GtkContainer *container);

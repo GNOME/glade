@@ -48,6 +48,10 @@ struct _GladeProject
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
 	GHashTable *widget_names_allocator; /* hash table with the used widget names */
 	GHashTable *widget_old_names; /* widget -> old name of the widget */
+
+	guint expose_handler_id; /* ID of idle function called to draw the
+				  * selection rectangless.
+				  */
 };
 
 struct _GladeProjectClass
@@ -88,6 +92,10 @@ void glade_project_selection_changed (GladeProject *project);
 
 GList *glade_project_selection_get (GladeProject *project);
 
+
+/* Sets up an idle handler to draw the selection rectangles. This should be
+   called whenever a widget gets an "expose_event" signal. */
+void glade_project_queue_expose_handler (GladeProject *project);
 
 G_END_DECLS
 

@@ -1,3 +1,41 @@
+2004-04-30  Damon Chaplin  <damon@gnome.org>
+
+	* src/glade-widget.c (glade_widget_expose): new function called
+	whenever a widget receives an "expose_event" signal. It calls
+	glade_project_queue_expose_handler() to ensure the selection
+	rectangles are drawn later.
+	(glade_widget_connect_to_expose_event): recursively connects to
+	the "expose_event" signal to call above function.
+	(glade_widget_set_widget): call above function to connect signals.
+
+	* src/glade-utils.c (glade_util_get_window_to_draw_on): new function
+	to return the window to draw selection rectangles/nodes on for a
+	given widget.
+	(glade_util_draw_nodes): use the above function to get the window.
+	Use the GC of the widget owning the window. Use the widget's
+	allocation rather than translating the coordinates, since that isn't
+	needed. I think this works OK for normal widgets with/without their
+	own window, and for widgets inside a GtkViewport. We may need to
+	tweak it for widgets inside a GtkLayout.
+	(glade_util_add_nodes, glade_util_remove_nodes) 
+	(glade_util_has_nodes): we don't need to connect/disconnect signal
+	handlers here any more, so we just save a binary value indicating
+	if the widget has nodes or not.
+
+	* src/glade-project.c (glade_project_queue_expose_handler): new
+	function to set up an idle handler which will draw the selection
+	rectangles.
+	(glade_project_expose_handler): draws the selection rectangles.
+	(glade_project_finalize): remove any existing idle handler source.
+
+	* src/glade-project.h (struct _GladeProject): added expose_handler_id
+	which we use for the idle handler which draws selection rectangles.
+
+	* src/glade-placeholder.c (glade_placeholder_get_project): new
+	utility function to get the project the placeholder is in.
+	(glade_placeholder_button_press): use new utility function above.
+	(glade_placeholder_expose): call glade_project_queue_expose_handler().
+
 2004-04-29  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-signal-editor.c: fix the erasing of signal handlers,

@@ -603,6 +603,33 @@ glade_widget_key_press (GtkWidget *event_widget,
 	return FALSE;
 }
 
+static gboolean
+glade_widget_expose (GtkWidget *widget,
+		     GdkEventExpose *event,
+		     gpointer unused_data)
+{
+	GladeWidget *glade_widget;
+
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+
+	glade_widget = glade_widget_get_from_gtk_widget (widget);
+
+	/* Note that this may be an internal child widget that doesn't have
+	   a corresponding GladeWidget, so we try to find its parent. */
+	if (!glade_widget)
+		glade_widget = glade_util_get_parent (widget);
+
+	if (!glade_widget)
+		return FALSE;
+
+	glade_project_queue_expose_handler (glade_widget->project);
+
+	/* FIXME: For GtkFixed & GtkLayout we can draw the grid here.
+	   (But don't draw it for internal children). */
+
+	return FALSE;
+}
+
 static void
 glade_widget_apply_properties (GladeWidget *glade_widget)
 {
@@ -655,6 +682,23 @@ glade_widget_retrieve_properties (GladeWidget *glade_widget)
 	g_object_thaw_notify (G_OBJECT (widget));
 }
 
+/* Connects a signal handler to the 'expose_event' signal for a widget and
+   all its children recursively. We need this to draw the selection
+   rectangles. */
+static void
+glade_widget_connect_to_expose_event (GtkWidget *widget_gtk, gpointer data)
+{
+	g_signal_connect (G_OBJECT (widget_gtk), "expose_event",
+			  G_CALLBACK (glade_widget_expose), NULL);
+
+	/* We also need to get expose events for any children. */
+	if (GTK_IS_CONTAINER (widget_gtk)) {
+		gtk_container_forall (GTK_CONTAINER (widget_gtk), 
+				      glade_widget_connect_to_expose_event,
+				      NULL);
+	}
+}
+
 void
 glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 {
@@ -688,6 +732,8 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 			  G_CALLBACK (glade_widget_button_press), NULL);
 	g_signal_connect (G_OBJECT (widget_gtk), "key_press_event",
 			  G_CALLBACK (glade_widget_key_press), NULL);
+
+	glade_widget_connect_to_expose_event (widget_gtk, NULL);
 
 	if (glade_widget->internal == NULL)
 	{

@@ -209,6 +209,11 @@ glade_project_finalize (GObject *object)
 	g_hash_table_destroy (project->widget_names_allocator);
 	g_hash_table_destroy (project->widget_old_names);
 
+	if (project->expose_handler_id) {
+		g_source_remove (project->expose_handler_id);
+		project->expose_handler_id = 0;
+	}
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -734,3 +739,32 @@ glade_project_save (GladeProject *project, const gchar *path)
 	return TRUE;
 }
 
+static gboolean
+glade_project_expose_handler (GladeProject *project)
+{
+	GList *elem;
+	GtkWidget *widget;
+
+	/* Step through the selected widgets, drawing the selection rectangles
+	   around them. */
+	for (elem = project->selection; elem; elem = elem->next) {
+		widget = elem->data;
+		glade_util_draw_nodes (widget);
+	}
+
+	project->expose_handler_id = 0;
+
+	/* Return FALSE so this handler isn't called again. */
+	return FALSE;
+}
+
+#define GLADE_EXPOSE_HANDLER_PRIORITY	GTK_PRIORITY_DEFAULT + 10
+
+void
+glade_project_queue_expose_handler (GladeProject *project)
+{
+	/* Add an idle handler, if it isn't already registered. */
+	if (project->expose_handler_id == 0) {
+		project->expose_handler_id = g_idle_add_full (GLADE_EXPOSE_HANDLER_PRIORITY, (GSourceFunc) glade_project_expose_handler, project, NULL);
+	}
+}

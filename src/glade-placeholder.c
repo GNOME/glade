@@ -232,9 +232,19 @@ glade_placeholder_send_configure (GladePlaceholder *placeholder)
 	gdk_event_free (event);
 }
 
+static GladeProject*
+glade_placeholder_get_project (GladePlaceholder *placeholder)
+{
+	GladeWidget *parent;
+
+	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+	return parent->project;
+}
+
 static gboolean
 glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 {
+	GladeProject *project;
 	GdkGC *light_gc;
 	GdkGC *dark_gc;
 	gint w, h;
@@ -249,6 +259,9 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	gdk_draw_line (event->window, light_gc, 0, 0, 0, h - 1);
 	gdk_draw_line (event->window, dark_gc, 0, h - 1, w - 1, h - 1);
 	gdk_draw_line (event->window, dark_gc, w - 1, 0, w - 1, h - 1);
+
+	project = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
+	glade_project_queue_expose_handler (project);
 
 	return FALSE;
 }
@@ -294,8 +307,10 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 		}
 		else
 		{
-			GladeWidget *parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-			glade_project_selection_set (parent->project, GTK_WIDGET (placeholder), TRUE);
+			GladeProject *project;
+
+			project = glade_placeholder_get_project (placeholder);
+			glade_project_selection_set (project, GTK_WIDGET (placeholder), TRUE);
 		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)

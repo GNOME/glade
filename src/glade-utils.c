@@ -35,7 +35,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 
-#define GLADE_UTIL_ID_EXPOSE "glade_util_id_expose"
+#define GLADE_UTIL_HAS_NODES "glade_util_has_nodes"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
 
 void
@@ -372,17 +372,57 @@ glade_util_duplicate_underscores (const char *name)
 	return underscored_name;
 }
 
-static gboolean
-glade_util_draw_nodes (GtkWidget *widget, GdkEventExpose *expose, gpointer unused)
+/* This returns the window to draw on for a given widget.
+   Usually we draw on the widget's parent's window, since we know that will
+   cover the widget's entire allocated area. But if the widget is a toplevel,
+   we draw on its own window, as it doesn't have a parent. */
+static GdkWindow*
+glade_util_get_window_to_draw_on (GtkWidget *widget)
 {
-	GdkGC *gc = widget->style->black_gc;
+	GtkWidget *parent;
+
+	parent = widget->parent;
+
+#ifdef USE_GNOME
+	/* BonoboDockItem widgets use a different window when floating.
+	   FIXME: I've left this here so we remember to add it when we add
+	   GNOME support. */
+	if (BONOBO_IS_DOCK_ITEM (widget)
+	    && BONOBO_DOCK_ITEM (widget)->is_floating) {
+		return BONOBO_DOCK_ITEM (widget)->float_window;
+	}
+
+	if (parent && BONOBO_IS_DOCK_ITEM (parent)
+	    && BONOBO_DOCK_ITEM (parent)->is_floating) {
+		return BONOBO_DOCK_ITEM (parent)->float_window;
+	}
+#endif
+
+	if (parent)
+		return parent->window;
+
+	return widget->window;
+}
+
+void
+glade_util_draw_nodes (GtkWidget *widget)
+{
+	GdkGC *gc;
 	gint x, y;
 	gint width, height;
-	GdkWindow *window = expose->window;
-	gpointer data;
+	GdkWindow *window;
+	GtkWidget *window_owner;
 
-	gdk_window_get_user_data(window, &data);
-	gtk_widget_translate_coordinates (widget, GTK_WIDGET (data), 0, 0, &x, &y);
+	/* Check widget is drawable. */
+	if (!GTK_WIDGET_DRAWABLE (widget))
+		return;
+
+	window = glade_util_get_window_to_draw_on (widget);
+	gdk_window_get_user_data (window, (gpointer*) &window_owner);
+	gc = window_owner->style->black_gc;
+
+	x = widget->allocation.x;
+	y = widget->allocation.y;
 	width = widget->allocation.width;
 	height = widget->allocation.height;
 
@@ -407,38 +447,30 @@ glade_util_draw_nodes (GtkWidget *widget, GdkEventExpose *expose, gpointer unuse
 	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
 
 	gdk_gc_set_subwindow (gc, GDK_CLIP_BY_CHILDREN);
-	g_debug (("(%d, %d, %d, %d)\n", expose->area.x, expose->area.y, expose->area.width, expose->area.height));
-
-	return FALSE;
 }
 
 void
 glade_util_add_nodes (GtkWidget *widget)
 {
-	gint id;
-
-	id = g_signal_connect_after (G_OBJECT (widget), "expose_event",
-				     G_CALLBACK (glade_util_draw_nodes), NULL);
-	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE, GINT_TO_POINTER (id));
+	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES,
+			   GINT_TO_POINTER (1));
 	gtk_widget_queue_draw (widget);
 }
 
 void
 glade_util_remove_nodes (GtkWidget *widget)
 {
-	gint id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE));
+	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES, 0);
 
-	g_return_if_fail (id != 0);
-
-	g_signal_handler_disconnect (G_OBJECT (widget), id);
-	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE, 0);
-	gtk_widget_queue_draw (widget);
+	/* We redraw the parent, since the selection rectangle may not be
+	   cleared if we just redraw the widget itself. */
+	gtk_widget_queue_draw (widget->parent ? widget->parent : widget);
 }
 
 gboolean
 glade_util_has_nodes (GtkWidget *widget)
 {
-	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_ID_EXPOSE)) != 0;
+	return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES)) != 0;
 }
 
 void
