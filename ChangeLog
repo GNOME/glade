@@ -1,3 +1,17 @@
+2005-04-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.[ch]: Added global selection API which takes multiple
+	  projects into account.
+
+	* src/glade-command.c, src/glade-project-view.c, 
+	  src/glade-utils.c, src/glade-widget.c: 
+	  Use new selection API / Support paste on top-levels
+	  which change projects.
+
+	* src/glade-project.[ch]: Added glade_project_has_object ()
+
+	* src/glade-project-window.c: Made project menu items radio.
+	
 2005-03-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-view.c: fixed dialog behavior in list mode.

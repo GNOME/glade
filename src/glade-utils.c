@@ -1068,11 +1068,10 @@ glade_util_delete_clipboard (void)
 void
 glade_util_cut_selection (void)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	
-	for (list = glade_project_selection_get (project);
+	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -1099,11 +1098,10 @@ glade_util_cut_selection (void)
 void
 glade_util_copy_selection (void)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	
-	for (list = glade_project_selection_get (project);
+	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		if ((widget = 
@@ -1131,11 +1129,10 @@ glade_util_copy_selection (void)
 void
 glade_util_delete_selection (void)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 
-	for (list = glade_project_selection_get (project);
+	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));

@@ -37,8 +37,8 @@ static void
 glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
 	glade_util_clear_selection ();
-	glade_project_selection_set
-		(widget->project, glade_widget_get_object (widget), TRUE);
+	glade_default_app_selection_set
+		(glade_widget_get_object (widget), TRUE);
 }
 
 static void
@@ -52,8 +52,8 @@ glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 	if (glade_project_is_selected
 	    (project, glade_widget_get_object (widget)) == FALSE)
 	{
-		glade_project_selection_set
-			(project, glade_widget_get_object (widget), FALSE);
+		glade_default_app_selection_set
+			(glade_widget_get_object (widget), FALSE);
 	}
 	glade_util_cut_selection ();
 }
@@ -68,8 +68,8 @@ glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 	/* Assign selection first */
 	if (glade_project_is_selected
 	    (project, glade_widget_get_object (widget)) == FALSE)
-		glade_project_selection_set
-			(project, glade_widget_get_object (widget), FALSE);
+		glade_default_app_selection_set
+			(glade_widget_get_object (widget), FALSE);
 
 	glade_util_copy_selection ();
 }
@@ -77,14 +77,12 @@ glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 static void
 glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
-
 	glade_util_clear_selection ();
 
 	/* The selected widget is the paste destination
 	 */
-	glade_project_selection_set
-		(project, glade_widget_get_object (widget), FALSE);
+	glade_default_app_selection_set
+		(glade_widget_get_object (widget), FALSE);
 
 	glade_util_paste_clipboard (NULL, widget);
 }
@@ -97,8 +95,8 @@ glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 	/* Assign selection first */
 	if (glade_project_is_selected
 	    (project, glade_widget_get_object (widget)) == FALSE)
-		glade_project_selection_set
-			(project, glade_widget_get_object (widget), FALSE);
+		glade_default_app_selection_set
+			(glade_widget_get_object (widget), FALSE);
 
 	glade_util_delete_selection ();
 }
@@ -123,10 +121,8 @@ static void
 glade_popup_placeholder_paste_cb (GtkMenuItem      *item,
 				  GladePlaceholder *placeholder)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
-
 	glade_util_clear_selection ();
-	glade_project_selection_clear (project, FALSE);
+	glade_default_app_selection_clear (FALSE);
 
 	glade_util_paste_clipboard (placeholder, 
 				    glade_placeholder_get_parent (placeholder));
@@ -140,10 +136,8 @@ static void
 glade_popup_clipboard_paste_cb (GtkMenuItem      *item,
 				GladeWidget      *widget)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
-
 	glade_util_clear_selection ();
-	glade_project_selection_clear (project, FALSE);
+	glade_default_app_selection_clear (FALSE);
 
 	glade_util_paste_clipboard (NULL, NULL);
 }

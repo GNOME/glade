@@ -375,12 +375,6 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_APP (app));
 
-	if (app->priv->active_project != project)
-	{
-		glade_app_set_project (app, project);
-		return;
-	}
-
 	if (app->priv->editor)
 	{
 		list = glade_project_selection_get (project);
@@ -626,6 +620,13 @@ glade_default_app_get_clipboard (void)
 	return glade_app_get_clipboard (glade_default_app);
 }
 
+GList*
+glade_default_app_get_projects (void)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_get_projects (glade_default_app);
+}
+
 GladeProject*
 glade_default_app_get_active_project (void)
 {
@@ -639,3 +640,119 @@ glade_default_app_update_ui (void)
 	g_return_if_fail (glade_default_app != NULL);
 	glade_app_update_ui (glade_default_app);
 }
+
+GList*
+glade_default_app_get_selection (void)
+{
+	GList *selection = NULL, *list;
+	GladeProject *project;
+
+	for (list = glade_default_app_get_projects (); 
+	     list && list->data; list = list->next)
+	{
+		/* Only one project may have selection at a time
+		 */
+		project = list->data;
+		if (glade_project_selection_get (project))
+		{
+			selection = glade_project_selection_get (project);
+			break;
+		}
+	}
+	return selection;
+}
+
+
+gboolean
+glade_default_app_is_selected (GObject      *object)
+{
+	return (g_list_find (glade_default_app_get_selection (), 
+			     object) != NULL);
+}
+
+void
+glade_default_app_selection_set (GObject      *object,
+				 gboolean      emit_signal)
+{
+	GList        *list;
+	GladeProject *project;
+
+	for (list = glade_default_app_get_projects ();
+	     list && list->data; list = list->next)
+	{
+		project = list->data;
+		if (glade_project_has_object (project, object))
+			glade_project_selection_set (project, 
+						     object, 
+						     emit_signal);
+		else
+			glade_project_selection_clear (project, emit_signal);
+	}
+
+	/* Instead of calling selection_set after all
+	 * the selection_clear calls (lazy).
+	 */
+	glade_util_add_selection (GTK_WIDGET (object));
+}
+
+void
+glade_default_app_selection_add (GObject      *object,
+				 gboolean      emit_signal)
+{
+	GList        *list;
+	GladeWidget  *widget   = glade_widget_get_from_gobject (object),  
+		*selected;
+	GladeProject *project  = glade_widget_get_project (widget);
+
+	/* Ignore request if the there is a selection 
+	 * from another project.
+	 */
+	if ((list = glade_default_app_get_selection ()) != NULL)
+	{
+		selected = glade_widget_get_from_gobject (list->data);
+		if (glade_widget_get_project (selected) != project)
+			return;
+	}
+	glade_project_selection_add (project, object, emit_signal);
+}
+
+void
+glade_default_app_selection_remove (GObject      *object,
+				    gboolean      emit_signal)
+{
+	GladeWidget  *widget   = glade_widget_get_from_gobject (object);
+	GladeProject *project  = glade_widget_get_project (widget);;
+
+	glade_project_selection_remove (project, object, emit_signal);
+}
+
+void
+glade_default_app_selection_clear (gboolean      emit_signal)
+{
+	GList        *list;
+	GladeProject *project;
+
+	for (list = glade_default_app_get_projects ();
+	     list && list->data; list = list->next)
+	{
+		project = list->data;
+		glade_project_selection_clear (project, emit_signal);
+	}
+}
+
+void
+glade_default_app_selection_changed (void)
+{
+	GList        *list;
+	GladeProject *project;
+
+	for (list = glade_default_app_get_projects ();
+	     list && list->data; list = list->next)
+	{
+		project = list->data;
+		glade_project_selection_changed (project);
+	}
+}
+
+
+G_END_DECLS

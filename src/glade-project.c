@@ -322,6 +322,21 @@ glade_project_add_object (GladeProject *project, GObject *object)
 }
 
 /**
+ * glade_project_has_object:
+ * @project: the #GladeProject the widget is added to
+ * @object: the #GObject to search
+ *
+ * Returns whether this object is in this project.
+ */
+gboolean
+glade_project_has_object (GladeProject *project, GObject *object)
+{
+	g_return_val_if_fail (project != NULL, FALSE);
+	g_return_val_if_fail (object  != NULL, FALSE);
+	return (g_list_find (project->objects, object)) != NULL;
+}
+
+/**
  * glade_project_release_widget_name:
  * @project: a #GladeProject
  * @glade_widget:

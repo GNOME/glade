@@ -612,9 +612,8 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 			glade_project_add_object 
 				(cdata->widget->project,
 				 cdata->widget->object);
-			glade_project_selection_add
-				(cdata->widget->project, 
-				 cdata->widget->object, TRUE);
+			glade_default_app_selection_add 
+				(cdata->widget->object, TRUE);
 		}
 	}
 	
@@ -876,8 +875,10 @@ typedef enum {
  **/
 typedef struct {
 	GladeCommand           parent;
+	GladeProject          *project;
 	GList                 *widgets;
 	GladeCutCopyPasteType  type;
+	gboolean               from_clipboard;
 } GladeCommandCutCopyPaste;
 
 
@@ -891,15 +892,13 @@ GLADE_MAKE_COMMAND (GladeCommandCutCopyPaste, glade_command_cut_copy_paste);
 static gboolean
 glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProject       *project = 
-		(me->widgets && me->widgets->data) ?
-		((CommandData *)me->widgets->data)->widget->project : NULL;
+	GladeProject       *project = glade_default_app_get_active_project ();
 	CommandData        *cdata;
 	GList              *list, *remove = NULL;
 
 	if (project && me->widgets)
 	{
-		glade_project_selection_clear (project, FALSE);
+		glade_default_app_selection_clear (FALSE);
 
 		for (list = me->widgets; list && list->data; list = list->next)
 		{
@@ -927,19 +926,25 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 								 cdata->parent);
 				}
 			}
+
+			/* Toplevels get pasted to the active project */
+			if (me->from_clipboard && 
+			    GTK_WIDGET_TOPLEVEL (cdata->widget->object))
+				glade_project_add_object 
+					(project, cdata->widget->object);
+			else
+				glade_project_add_object
+					(me->project, 
+					 cdata->widget->object);
 			
-			glade_project_add_object
-				(cdata->widget->project, 
-				 cdata->widget->object);
-			glade_project_selection_add
-				(cdata->widget->project, 
-				 cdata->widget->object, FALSE);
+			glade_default_app_selection_add
+				(cdata->widget->object, FALSE);
 
 			if (GTK_IS_WIDGET (cdata->widget->object))
 				gtk_widget_show_all
 					(GTK_WIDGET (cdata->widget->object));
 		}
-		glade_project_selection_changed (project);
+		glade_default_app_selection_changed ();
 
 		if (remove)
 		{
@@ -1182,14 +1187,17 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		break;
 	}
 
+	widget = GLADE_WIDGET (widgets->data);
+
 	/* And now we feel safe enough to go on and create */
 	me                 = (GladeCommandCutCopyPaste *) 
 		g_object_new (GLADE_COMMAND_CUT_COPY_PASTE_TYPE, NULL);
+	me->project        = glade_widget_get_project (widget);
 	me->type           = type;
+	me->from_clipboard = (type == GLADE_PASTE);
 	GLADE_COMMAND (me)->description = 
-		g_strdup_printf 
-		(fmt, g_list_length (widgets) == 1 ? 
-		 GLADE_WIDGET (widgets->data)->name : _("multiple"));
+		g_strdup_printf (fmt, g_list_length (widgets) == 1 ? 
+				 widget->name : _("multiple"));
 
 	for (list = widgets; list && list->data; list = list->next)
 	{

@@ -1255,20 +1255,18 @@ glade_widget_button_press (GtkWidget *widget,
 		{
 			if (glade_project_is_selected (glade_widget->project,
 						       glade_widget->object))
-				glade_project_selection_remove 
-					(glade_widget->project, 
-					 glade_widget->object, TRUE);
+				glade_default_app_selection_remove 
+					(glade_widget->object, TRUE);
 			else
-				glade_project_selection_add
-					(glade_widget->project, 
-					 glade_widget->object, TRUE);
+				glade_default_app_selection_add
+					(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
 		else
 		{
 			glade_util_clear_selection ();
-			glade_project_selection_set (glade_widget->project, 
-							     glade_widget->object, TRUE);
+			glade_default_app_selection_set 
+				(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
 	}

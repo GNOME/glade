@@ -27,6 +27,7 @@
 #include "glade-widget-class.h"
 #include "glade-project-view.h"
 #include "glade-popup.h"
+#include "glade-app.h"
 
 enum
 {
@@ -307,8 +308,8 @@ glade_project_view_add_item (GladeProjectView *view,
 	}
 	
 	view->updating_selection = TRUE;
-	glade_project_selection_set (widget->project,
-				     glade_widget_get_object (widget), TRUE);
+	glade_default_app_selection_set 
+		(glade_widget_get_object (widget), TRUE);
 	view->updating_selection = FALSE;
 }      
 
@@ -356,6 +357,7 @@ glade_project_view_selection_update (GladeProjectView *view,
 	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (view->project == project);
+
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view->tree_view));
 	model     = GTK_TREE_MODEL (view->model);
@@ -415,8 +417,8 @@ gpw_foreach_add_selection (GtkTreeModel *model,
 {
 	GladeWidget      *widget;
 	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
-	glade_project_selection_add (widget->project,
-				     glade_widget_get_object (widget), FALSE);
+	glade_default_app_selection_add
+		(glade_widget_get_object (widget), FALSE);
 }
 
 
@@ -431,9 +433,9 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	{
 		view->updating_selection = TRUE;
 
-		glade_project_selection_clear (view->project, FALSE);
+		glade_default_app_selection_clear (FALSE);
 		gtk_tree_selection_selected_foreach (selection, gpw_foreach_add_selection, view);
-		glade_project_selection_changed (view->project);
+		glade_default_app_selection_changed ();
 		
 		view->updating_selection = FALSE;
 	}

@@ -73,6 +73,7 @@ gboolean      glade_project_save                (GladeProject *project,
 						 GError      **error);
 void          glade_project_add_object          (GladeProject *project, GObject     *object);
 void          glade_project_remove_object       (GladeProject *project, GObject     *object);
+gboolean      glade_project_has_object          (GladeProject *project, GObject     *object);
 GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
 char         *glade_project_new_widget_name     (GladeProject *project, const char  *base_name);
 void          glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,

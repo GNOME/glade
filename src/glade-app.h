@@ -89,8 +89,24 @@ GladeWidgetClass*  glade_default_app_get_add_class (void);
 GladeWidgetClass*  glade_default_app_get_alt_class (void);
 GladePalette*      glade_default_app_get_palette (void);
 GladeClipboard*    glade_default_app_get_clipboard (void);
+GList*             glade_default_app_get_projects (void);
 GladeProject*      glade_default_app_get_active_project (void);
 void               glade_default_app_update_ui (void);
+GList*             glade_default_app_get_selection (void);
+
+/* These handle selection on a global scope and take care
+ * of multiple project logic.
+ */
+gboolean           glade_default_app_is_selected      (GObject      *object);
+void               glade_default_app_selection_set    (GObject      *object,
+						       gboolean      emit_signal);
+void               glade_default_app_selection_add    (GObject      *object,
+						       gboolean      emit_signal);
+void               glade_default_app_selection_remove (GObject      *object,
+						       gboolean      emit_signal);
+void               glade_default_app_selection_clear  (gboolean      emit_signal);
+void               glade_default_app_selection_changed(void);
+
 
 G_END_DECLS
 
