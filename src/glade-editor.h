@@ -4,9 +4,14 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_EDITOR(obj)           GTK_CHECK_CAST (obj, glade_editor_get_type (), GladeEditor)
-#define GLADE_EDITOR_CLASS(klass)   GTK_CHECK_CLASS_CAST (klass, glade_editor_get_type (), GladeEditorClass)
-#define GLADE_IS_EDITOR(obj)        GTK_CHECK_TYPE (obj, glade_editor_get_type ())
+
+#define GLADE_TYPE_EDITOR            (glade_editor_get_type ())
+#define GLADE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR, GladeEditor))
+#define GLADE_EDITOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EDITOR, GladeEditorClass))
+#define GLADE_IS_EDITOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EDITOR))
+#define GLADE_IS_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EDITOR))
+#define GLADE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_EDITOR, GladeEditorClass))
+
 #define GLADE_EDITOR_TABLE(t)       ((GladeEditorTable *)t)
 #define GLADE_IS_EDITOR_TABLE(t)    (t != NULL)
 #define GLADE_EDITOR_PROPERTY(p)    ((GladeEditorProperty *)p)
@@ -16,7 +21,6 @@ typedef struct _GladeEditorClass    GladeEditorClass;
 typedef struct _GladeEditorTable    GladeEditorTable;
 typedef struct _GladeEditorProperty GladeEditorProperty;
 
-guint glade_editor_get_type (void);
 
 /* The GladeEditor is a window that is used to display and modify widget
  * properties. The glade editor contains the details of the selected
@@ -182,11 +186,14 @@ typedef enum {
 	GLADE_EDITOR_DOUBLE,
 }GladeEditorNumericType;
 
+GType glade_editor_get_type (void);
+
 GladeEditor *glade_editor_new (void);
 
 void glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
 void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
 void glade_editor_update_widget_name (GladeEditor *editor);
+
 
 G_END_DECLS
 

@@ -313,22 +313,6 @@ glade_project_widget_name_changed (GladeProject *project,
 	glade_project_set_changed (project, TRUE);
 }
 
-
-GladeProject *
-glade_project_get_active (void)
-{
-	GladeProjectWindow *gpw;
-	
-	gpw = glade_project_window_get ();
-
-	if (gpw == NULL) {
-		g_warning ("Could not get the active project\n");
-		return NULL;
-	}
-		
-	return gpw->project;
-}
-
 /**
  * glade_project_get_widget_by_name:
  * @project: The project in which to look for

@@ -1127,8 +1127,7 @@ glade_project_window_set_add_class (GladeProjectWindow *gpw, GladeWidgetClass *c
 	gpw->add_class = class;
 
 	if (!class && gpw->palette)
-		glade_palette_clear (gpw);
-	
+		glade_palette_unselect_widget(gpw->palette);
 }
 
 GladeProject *

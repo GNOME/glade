@@ -79,8 +79,6 @@ GladePalette *glade_palette_new    (GList *catalogs);
 void glade_palette_append_catalog  (GladePalette *palette, GladeCatalog *catalog);
 void glade_palette_unselect_widget (GladePalette *palette);
 
-void glade_palette_clear  (GladeProjectWindow *gpw); // __attribute__ ((deprecated));
-
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_H__ */

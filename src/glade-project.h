@@ -59,7 +59,6 @@ struct _GladeProjectClass
 
 guint glade_project_get_type (void);
 
-GladeProject *glade_project_get_active (void);
 GladeProject *glade_project_new (gboolean untitled);
 
 

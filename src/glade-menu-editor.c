@@ -1544,7 +1544,7 @@ on_state_button_toggled (GtkToggleButton * togglebutton,
  * Accelerator Keys Dialog.
  **************************************************************************/
 static void
-on_accel_key_button_clicked (GtkButton * button, gpointer user_data)
+on_accel_key_button_clicked (GtkButton *button, gpointer user_data)
 {
 	GladeMenuEditor *menued;
 	gint response;
@@ -1553,6 +1553,8 @@ on_accel_key_button_clicked (GtkButton * button, gpointer user_data)
 
 	if (menued->keys_dialog == NULL) {
 		menued->keys_dialog = glade_keys_dialog_new ();
+		g_signal_connect (G_OBJECT (menued->keys_dialog), "delete_event",
+				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 	}
 
 	response = gtk_dialog_run (GTK_DIALOG (menued->keys_dialog));

@@ -121,7 +121,6 @@ glade_palette_selector_new (GladePalette *palette)
 	return hbox;	
 }
 
-
 static GtkWidget *
 glade_palette_widget_create_icon_from_class (GladeWidgetClass *class)
 {
@@ -152,9 +151,9 @@ glade_palette_button_clicked (GtkWidget *button, GladePalette *palette)
 	g_return_if_fail (class != NULL);
 
 	gpw = glade_project_window_get ();
-	
+
 	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
-		project = glade_project_get_active ();
+		project = gpw->project;
 		g_return_if_fail (project != NULL);
 		glade_widget_new_toplevel (project, class);
 		dont_recurse = TRUE;
@@ -340,7 +339,7 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog* catalog)
 	GtkWidget *widget;
 	gint *page;
 
-	g_return_if_fail (palette != NULL);
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
 	g_return_if_fail (catalog != NULL);
 
 	/* Add the title of the catalog to the palette */
@@ -362,12 +361,8 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog* catalog)
 void
 glade_palette_unselect_widget (GladePalette *palette)
 {
-	g_return_if_fail (palette != NULL);
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
+
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button), TRUE);
 }
 
-void
-glade_palette_clear (GladeProjectWindow *gpw)
-{
-	glade_palette_unselect_widget(gpw->palette);
-}

@@ -21,8 +21,6 @@
  */
 
 
-#define GLADE_PROPERY_TABLE_ROW_SPACING 2
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -47,8 +45,8 @@
 #include "glade-menu-editor.h"
 #include "glade-project.h"
 
-static void glade_editor_class_init (GladeEditorClass * klass);
-static void glade_editor_init (GladeEditor * editor);
+static void glade_editor_class_init (GladeEditorClass *class);
+static void glade_editor_init (GladeEditor *editor);
 
 enum
 {
@@ -113,59 +111,62 @@ glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING (GClosure     *closure,
 		  data2);
 }
 
-guint
+GType
 glade_editor_get_type (void)
 {
-	static guint editor_type = 0;
+	static GType type = 0;
 
-	if (!editor_type)
-	{
-		GtkTypeInfo editor_info =
-		{
-			"GladeEditor",
-			sizeof (GladeEditor),
+	if (!type) {
+		static const GTypeInfo info = {
 			sizeof (GladeEditorClass),
-			(GtkClassInitFunc) glade_editor_class_init,
-			(GtkObjectInitFunc) glade_editor_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_editor_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeEditor),
+			0,
+			(GInstanceInitFunc) glade_editor_init
 		};
-		
-		editor_type = gtk_type_unique (gtk_notebook_get_type (), &editor_info);
+
+		type = g_type_register_static (GTK_TYPE_NOTEBOOK, "GladeEditor", &info, 0);
 	}
 
-	return editor_type;
+	return type;
 }
 
 static void
-glade_editor_class_init (GladeEditorClass * klass)
+glade_editor_class_init (GladeEditorClass *class)
 {
-	GtkObjectClass *object_class;
-	
-	object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (gtk_notebook_get_type ());
+	object_class = G_OBJECT_CLASS (class);
+
+	parent_class = g_type_class_peek_parent (class);
 
 	glade_editor_signals[SELECT_ITEM] =
-		gtk_signal_new ("select_item",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeEditorClass, select_item),
-				gtk_marshal_VOID__POINTER,
-				GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
+		g_signal_new ("select_item",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeEditorClass, select_item),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE,
+			      1,
+			      G_TYPE_POINTER);
 	glade_editor_signals[ADD_SIGNAL] =
-		gtk_signal_new ("add_signal",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (GladeEditorClass, add_signal),
-				glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING,
-				GTK_TYPE_NONE, 4,
-				GTK_TYPE_STRING, GTK_TYPE_ULONG, GTK_TYPE_UINT, GTK_TYPE_STRING);
+		g_signal_new ("add_signal",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeEditorClass, add_signal),
+			      NULL, NULL,
+			      glade_editor_marshal_VOID__STRING_ULONG_UINT_STRING,
+			      G_TYPE_NONE,
+			      4,
+			      G_TYPE_STRING, G_TYPE_ULONG, G_TYPE_UINT, G_TYPE_STRING);
 
-	klass->select_item = glade_editor_select_item_real;
-	klass->add_signal = NULL;
+	class->select_item = glade_editor_select_item_real;
+	class->add_signal = NULL;
 }
 
 GtkWidget *
@@ -211,7 +212,7 @@ glade_editor_new ()
 {
 	GladeEditor *editor;
 
-	editor = GLADE_EDITOR (gtk_type_new (glade_editor_get_type ()));
+	editor = g_object_new (GLADE_TYPE_EDITOR, NULL);
 
 	gtk_widget_set_size_request (GTK_WIDGET (editor), 350, 450);
 	
@@ -243,44 +244,6 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	g_free (new_name);
 }
 
-static void
-glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
-{
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  GTK_EXPAND | GTK_FILL, 0, 0, 0);
-}
-
-
-
-static GladeEditorTable *
-glade_editor_table_new (GladeWidgetClass *class)
-{
-	GladeEditorTable *table;
-
-	table = g_new0 (GladeEditorTable, 1);
-
-	table->glade_widget_class = class;
-	table->table_widget = gtk_table_new (0, 0, FALSE);
-	table->properties = NULL;
-	table->rows = 0;
-
-	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget),
-				    GLADE_PROPERY_TABLE_ROW_SPACING);
-
-	return table;
-}
-
-
-
-
-
-
-
-
-
-
-
 /* ================================ Property Changed ==================================== */
 static void
 glade_editor_property_changed_text_common (GladeProperty *property, const gchar *text)
@@ -290,7 +253,8 @@ glade_editor_property_changed_text_common (GladeProperty *property, const gchar 
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_STRING);
 	g_value_set_string (val, text);
-	glade_command_set_property (G_OBJECT (property->widget->widget), property->class->id, val);
+	glade_command_set_property (G_OBJECT (property->widget->widget),
+				    property->class->id, val);
 	
 	g_free (val);
 }
@@ -339,7 +303,7 @@ glade_editor_property_changed_text_view (GtkTextBuffer *buffer,
 
 static void
 glade_editor_property_changed_enum (GtkWidget *menu_item,
-				      GladeEditorProperty *property)
+				    GladeEditorProperty *property)
 {
 	GladeChoice *choice;
 	GValue *val;
@@ -350,7 +314,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	if (property->property->loading)
 		return;
 	
-	choice = gtk_object_get_data (GTK_OBJECT (menu_item),
+	choice = g_object_get_data (G_OBJECT (menu_item),
 				      GLADE_ENUM_DATA_TAG);
 	g_return_if_fail (choice != NULL);
 
@@ -360,7 +324,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	g_value_init (val, gproperty->class->def->g_type);
 	g_value_set_enum (val, choice->value);
 	glade_command_set_property (G_OBJECT (gproperty->widget->widget),
-				gproperty->class->id, val);
+				    gproperty->class->id, val);
 
 	g_free (val);
 }
@@ -399,7 +363,7 @@ glade_editor_property_changed_enabled (GtkWidget *button,
 	
 	state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 	gtk_widget_set_sensitive (spin, state);
-	property = gtk_object_get_user_data (GTK_OBJECT (button));
+	property = g_object_get_data (G_OBJECT (button), "user_data");
 	property->property->enabled = state;
 }
 
@@ -416,7 +380,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	if (property->property->loading)
 		return;
 
-	numeric_type = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (spin), "NumericType"));
+	numeric_type = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (spin), "NumericType"));
 	val = g_new0 (GValue, 1);
 
 	switch (numeric_type) {
@@ -436,7 +400,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		g_value_init (val, G_TYPE_DOUBLE);
 		g_value_set_double (val, (gdouble) gtk_spin_button_get_value_as_float (GTK_SPIN_BUTTON (spin)));
 		glade_command_set_property (G_OBJECT (property->property->widget->widget),
-					property->property->class->id, val);
+					    property->property->class->id, val);
 		break;
 	default:
 		g_warning ("Invalid numeric_type %i\n", numeric_type);
@@ -466,7 +430,8 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (val, state);
-	glade_command_set_property (G_OBJECT (property->property->widget->widget), property->property->class->id, val);
+	glade_command_set_property (G_OBJECT (property->property->widget->widget),
+				    property->property->class->id, val);
 	g_free (val);
 }
 
@@ -492,7 +457,8 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 	val = g_new0 (GValue, 1);
 	g_value_init (val, G_TYPE_UINT);
 	g_value_set_uint (val, unich);
-	glade_command_set_property (G_OBJECT (property->property->widget->widget), property->property->class->id, val);
+	glade_command_set_property (G_OBJECT (property->property->widget->widget),
+				    property->property->class->id, val);
 	
 	g_free (val);
 	g_free (text);
@@ -503,7 +469,7 @@ static void glade_editor_property_delete_unichar (GtkEditable    *editable,
 						  gint            end_pos)
 {
 	gtk_editable_select_region (editable, 0, -1);
-	gtk_signal_emit_stop_by_name (GTK_OBJECT (editable), "delete_text");
+	g_signal_stop_emission_by_name (G_OBJECT (editable), "delete_text");
 }
 
 static void
@@ -513,38 +479,30 @@ glade_editor_property_insert_unichar (GtkWidget *entry,
 				      gint        *position,
 				      gpointer     property)
 {
-	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
-					  GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar),
-					  property);
-	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
-					  GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar),
-					  property);
-	gtk_signal_handler_block_by_func (GTK_OBJECT (entry),
-					  GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar),
-					  property);
+	g_signal_handlers_block_by_func (G_OBJECT (entry),
+					 G_CALLBACK (glade_editor_property_changed_unichar),
+					 property);
+	g_signal_handlers_block_by_func (G_OBJECT (entry),
+					 G_CALLBACK (glade_editor_property_insert_unichar),
+					 property);
+	g_signal_handlers_block_by_func (G_OBJECT (entry),
+					 G_CALLBACK (glade_editor_property_delete_unichar),
+					 property);
 	gtk_editable_delete_text (GTK_EDITABLE (entry), 0, -1);
 	*position = 0;
 	gtk_editable_insert_text (GTK_EDITABLE (entry), text, 1, position);
-	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
-					    GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar),
-					    property);
-	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
-					    GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar),
-					    property);
-	gtk_signal_handler_unblock_by_func (GTK_OBJECT (entry),
-					    GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar),
-					    property);
-	gtk_signal_emit_stop_by_name (GTK_OBJECT (entry), "insert_text");
+	g_signal_handlers_unblock_by_func (G_OBJECT (entry),
+					   G_CALLBACK (glade_editor_property_changed_unichar),
+					   property);
+	g_signal_handlers_unblock_by_func (G_OBJECT (entry),
+					   G_CALLBACK (glade_editor_property_insert_unichar),
+					   property);
+	g_signal_handlers_unblock_by_func (G_OBJECT (entry),
+					   G_CALLBACK (glade_editor_property_delete_unichar),
+					   property);
+	g_signal_stop_emission_by_name (G_OBJECT (entry), "insert_text");
 	glade_editor_property_changed_unichar (entry, property);
 }
-
-
-
-
-
-
-
-
 
 /* ================================ Create inputs ==================================== */
 static GtkWidget *
@@ -557,10 +515,11 @@ glade_editor_create_input_enum_item (GladeEditorProperty *property,
 	name = choice->name;
 	menu_item = gtk_menu_item_new_with_label (name);
 
-	gtk_signal_connect (GTK_OBJECT (menu_item), "activate",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_enum), property);
+	g_signal_connect (G_OBJECT (menu_item), "activate",
+			  G_CALLBACK (glade_editor_property_changed_enum),
+			  property);
 
-	gtk_object_set_data (GTK_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, choice);
+	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, choice);
 
 	return menu_item;
 }
@@ -608,8 +567,9 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 		
 		entry = gtk_entry_new ();
 
-		gtk_signal_connect (GTK_OBJECT (entry), "changed",
-				    GTK_SIGNAL_FUNC (glade_editor_property_changed_text), property);
+		g_signal_connect (G_OBJECT (entry), "changed",
+				  G_CALLBACK (glade_editor_property_changed_text),
+				  property);
 
 		return entry;
 	} else {
@@ -622,7 +582,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
 
 		g_signal_connect_data (G_OBJECT (buffer), "changed",
-				       GTK_SIGNAL_FUNC (glade_editor_property_changed_text_view),
+				       G_CALLBACK (glade_editor_property_changed_text_view),
 				       property, NULL, 0);
 		
 		return view;
@@ -633,7 +593,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 static GtkWidget *
 glade_editor_create_input_numeric (GladeEditorProperty *property,
-							GladeEditorNumericType numeric_type)
+				   GladeEditorNumericType numeric_type)
 {
 	GladePropertyClass *class;
 	GtkAdjustment *adjustment;
@@ -646,12 +606,12 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 	adjustment = glade_parameter_adjustment_new (class->parameters, class->def);
 
 	spin  = gtk_spin_button_new (adjustment, 10,
-						    numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
+				     numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
 
-	gtk_object_set_data (GTK_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
-	gtk_signal_connect (GTK_OBJECT (spin), "value_changed",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_numeric),
-			    property);
+	g_object_set_data (G_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
+	g_signal_connect (G_OBJECT (spin), "value_changed",
+			  G_CALLBACK (glade_editor_property_changed_numeric),
+			  property);
 
 	/* Some numeric types are optional, for example the default window size, so
 	 * they have a toggle button right next to the spin button. 
@@ -663,10 +623,10 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 		hbox = gtk_hbox_new (FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox), spin,  TRUE, TRUE, 0);
-		
-		gtk_signal_connect (GTK_OBJECT (check), "toggled",
-				    GTK_SIGNAL_FUNC (glade_editor_property_changed_enabled),
-				    property);
+
+		g_signal_connect (G_OBJECT (check), "toggled",
+				  G_CALLBACK (glade_editor_property_changed_enabled),
+				  property);
 		return hbox;
 	}
 
@@ -700,8 +660,9 @@ glade_editor_create_input_boolean (GladeEditorProperty *property)
 
 	button = gtk_toggle_button_new_with_label (_("No"));
 
-	gtk_signal_connect (GTK_OBJECT (button), "toggled",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_boolean), property);
+	g_signal_connect (G_OBJECT (button), "toggled",
+			  G_CALLBACK (glade_editor_property_changed_boolean),
+			  property);
 
 	return button;
 }
@@ -717,29 +678,40 @@ glade_editor_create_input_unichar (GladeEditorProperty *property)
 	/* it's 2 to prevent spirious beeps... */
 	gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
 	
-	gtk_signal_connect (GTK_OBJECT (entry), "changed",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_unichar), property);
-	gtk_signal_connect (GTK_OBJECT (entry), "insert_text",
-			    GTK_SIGNAL_FUNC (glade_editor_property_insert_unichar), property);
-	gtk_signal_connect (GTK_OBJECT (entry), "delete_text",
-			    GTK_SIGNAL_FUNC (glade_editor_property_delete_unichar), property);
+	g_signal_connect (G_OBJECT (entry), "changed",
+			  G_CALLBACK (glade_editor_property_changed_unichar), property);
+	g_signal_connect (G_OBJECT (entry), "insert_text",
+			  G_CALLBACK (glade_editor_property_insert_unichar), property);
+	g_signal_connect (G_OBJECT (entry), "delete_text",
+			  G_CALLBACK (glade_editor_property_delete_unichar), property);
 
 	return entry;
 }
 
 static GtkWidget *
-glade_editor_create_input_object (GladeEditorProperty *property, GladeEditorTable *table)
+glade_editor_create_input_object (GladeEditorProperty *property,
+				  GladeEditorTable *table)
 {
 	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
 
-	glade_editor_table_append_items (table, property->class->child, &property->children, FALSE);
+	glade_editor_table_append_items (table, property->class->child,
+					 &property->children, FALSE);
 
 	return NULL;
 }
 
+static void
+glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
+{
+	gtk_table_attach_defaults (GTK_TABLE (table), child,
+				   pos, pos+1, row, row +1);
+
+}
+
 static GtkWidget *
-glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *property)
+glade_editor_append_item_real (GladeEditorTable *table,
+			       GladeEditorProperty *property)
 {
 	GtkWidget *label;
 	GtkWidget *input = NULL;
@@ -790,7 +762,6 @@ glade_editor_append_item_real (GladeEditorTable *table, GladeEditorProperty *pro
 		return gtk_label_new ("Implement me !");
 	}
 
-
 	label = glade_property_class_create_label (property->class);
 	
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
@@ -830,9 +801,9 @@ glade_editor_table_append_standard_fields (GladeEditorTable *table)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 	entry = gtk_entry_new ();
 	table->name_entry = entry;
-	gtk_signal_connect (GTK_OBJECT (entry), "changed",
-			    GTK_SIGNAL_FUNC (glade_editor_widget_name_changed),
-			    table->editor);
+	g_signal_connect (G_OBJECT (entry), "changed",
+			  G_CALLBACK (glade_editor_widget_name_changed),
+			  table->editor);
 
 	glade_editor_table_attach (gtk_table, label, 0, table->rows);
 	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
@@ -886,12 +857,15 @@ glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
 	GtkMenuBar *menubar = NULL;
 	GladeWidget *widget;
 	GtkWidget *menu_editor;
+	GladeProjectWindow *gpw;
 	GladeProject *project;
 	GList *list;
-	
-	project = glade_project_get_active ();
-	g_assert (project != NULL);
-	
+
+	gpw = glade_project_window_get ();
+
+	project = gpw->project;
+	g_return_if_fail (project != NULL);
+
 	list = glade_project_selection_get (project);
 	for (; list != NULL; list = list->next) {
 		widget = GLADE_WIDGET (list->data);
@@ -901,16 +875,39 @@ glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
 		}
 	}
 
-	/* if the user was able to click on the "Edit Menus...", that's because the menu bar was selected */
+	/* if the user was able to click on the "Edit Menus...",
+	 * that's because the menu bar was selected
+	 */
 	g_assert (GTK_IS_MENU_BAR (menubar));
 	
 	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
 	gtk_widget_show (GTK_WIDGET (menu_editor));
 }
 
+#define GLADE_PROPERY_TABLE_ROW_SPACING 2
 
 static GladeEditorTable *
-glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolean common)
+glade_editor_table_new (GladeWidgetClass *class)
+{
+	GladeEditorTable *table;
+
+	table = g_new0 (GladeEditorTable, 1);
+
+	table->glade_widget_class = class;
+	table->table_widget = gtk_table_new (0, 0, FALSE);
+	table->properties = NULL;
+	table->rows = 0;
+
+	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget),
+				    GLADE_PROPERY_TABLE_ROW_SPACING);
+
+	return table;
+}
+
+static GladeEditorTable *
+glade_editor_table_create (GladeEditor *editor,
+			   GladeWidgetClass *class,
+			   gboolean common)
 {
 	GladeEditorTable *table;
 
@@ -1056,38 +1053,6 @@ glade_editor_load_class (GladeEditor *editor, GladeWidgetClass *class)
 	editor->loaded_class = class;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ================================ Load properties ================================== */
 static void
 glade_editor_property_set_tooltips (GladeEditorProperty *property)
@@ -1140,7 +1105,7 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		gtk_widget_set_sensitive (GTK_WIDGET (spin), property->property->enabled);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
 					      property->property->enabled);
-		gtk_object_set_user_data (GTK_OBJECT (button), property);
+		g_object_set_data (G_OBJECT (button), "user_data", property);
 	} else {
 		spin = property->input;
 	}
@@ -1154,7 +1119,7 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		val = g_value_get_float (property->property->value);
 
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
-	gtk_object_set_user_data (GTK_OBJECT (spin), property);
+	g_object_set_data (G_OBJECT (spin), "user_data", property);
 }
 
 static void
@@ -1212,7 +1177,7 @@ glade_editor_property_load_enum (GladeEditorProperty *property)
 	list = GTK_MENU_SHELL (GTK_OPTION_MENU (property->input)->menu)->children;
 	for (; list != NULL; list = list->next) {
 		GtkMenuItem *menu_item = list->data;
-		gtk_object_set_user_data (GTK_OBJECT (menu_item), property);
+		g_object_set_data (G_OBJECT (menu_item), "user_data",  property);
 	}
 }
 
@@ -1247,7 +1212,7 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 	g_return_if_fail (GTK_IS_LABEL (label));
 	gtk_label_set_text (GTK_LABEL (label), text [state]);
 	
-	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
+	g_object_set_data (G_OBJECT (property->input), "user_data", property);
 }
 
 static void
@@ -1285,7 +1250,7 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 		g_warning ("Invalid Text Widget type.");
 	}
 
-	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
+	g_object_set_data (G_OBJECT (property->input), "user_data", property);
 }
 
 static void
@@ -1309,14 +1274,15 @@ glade_editor_property_load_unichar (GladeEditorProperty *property)
 		gtk_editable_insert_text (editable, utf8st, 1, &insert_pos);
 	}
 
-	gtk_object_set_user_data (GTK_OBJECT (property->input), property);
+	g_object_set_data (G_OBJECT (property->input), "user_data", property);
 }
 
 /* We are recursing so we need the prototype beforehand. Don't you love C ? */
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void
-glade_editor_property_load_object (GladeEditorProperty *property, GladeWidget *widget)
+glade_editor_property_load_object (GladeEditorProperty *property,
+				   GladeWidget *widget)
 {
 	GladeEditorProperty *child;
 	GList *list;
@@ -1466,9 +1432,9 @@ glade_editor_property_connect_signals (GladeEditorProperty *editor_property,
 {
 	GladeProperty *property = editor_property->property;
 
-	gtk_signal_connect (GTK_OBJECT (property), "changed",
-			    GTK_SIGNAL_FUNC (glade_editor_property_changed_cb),
-			    editor_property);
+	g_signal_connect (G_OBJECT (property), "changed",
+			  G_CALLBACK (glade_editor_property_changed_cb),
+			  editor_property);
 }
 
 static void
@@ -1549,13 +1515,14 @@ glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 
-	gtk_signal_emit (GTK_OBJECT (editor),
-			 glade_editor_signals [SELECT_ITEM], widget);
+	g_signal_emit (G_OBJECT (editor),
+		       glade_editor_signals [SELECT_ITEM], 0, widget);
 }
 
 void
-glade_editor_add_signal (GladeEditor *editor, guint signal_id,
-			      const char *callback_name)
+glade_editor_add_signal (GladeEditor *editor,
+			 guint signal_id,
+			 const char *callback_name)
 {
 	const char *widget_name;
 	const char *signal_name;
@@ -1569,7 +1536,7 @@ glade_editor_add_signal (GladeEditor *editor, guint signal_id,
 	widget_name = glade_widget_get_name (editor->loaded_widget);
 	widget_type = glade_widget_class_get_type (glade_widget_get_class (editor->loaded_widget));
 
-	gtk_signal_emit (GTK_OBJECT (editor),
-			 glade_editor_signals [ADD_SIGNAL], widget_name, widget_type,
-			 signal_id, callback_name);
+	g_signal_emit (G_OBJECT (editor),
+		       glade_editor_signals [ADD_SIGNAL], 0,
+		       widget_name, widget_type, signal_id, callback_name);
 }
