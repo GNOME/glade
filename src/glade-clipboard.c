@@ -212,11 +212,10 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 
 	if (!widget)
 		return;
-
+	
 	widget->name = glade_widget_new_name (project, widget->class);
 	widget->parent = parent;
 	glade_packing_add_properties (widget);
-	glade_widget_create_gtk_widget (widget);
 	glade_project_add_widget (project, widget);
 
 	if (parent)
