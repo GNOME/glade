@@ -67,6 +67,7 @@ libgladeui_la_SOURCES = \
 	glade-transform.c \
 	glade-id-allocator.c \
 	glade-marshallers.c \
+	glade-parser.c \
 	glade-app.c
 
 libgladeui_la_LIBADD = \
@@ -103,6 +104,7 @@ libgladeuiinclude_HEADERS = \
 	glade-transform.h \
 	glade-id-allocator.h \
 	glade-marshallers.h \
+	glade-parser.h \
 	glade-app.h
 
 pkgconfigdir = $(libdir)/pkgconfig
