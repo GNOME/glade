@@ -18,9 +18,8 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Paolo Borelli <pborelli@katamail.com>
  */
-
-/* TODO : code from glade-signal-editor shuold really be here , not there */
 
 #include <string.h>
 
@@ -44,9 +43,27 @@ glade_signal_new (const gchar *name, const gchar *handler, gboolean after)
 void
 glade_signal_free (GladeSignal *signal)
 {
+	g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
 	g_free (signal->name);
 	g_free (signal->handler);
 	g_free (signal);
+}
+
+gboolean
+glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2)
+{
+	gboolean ret = FALSE;
+
+	g_return_val_if_fail (GLADE_IS_SIGNAL (sig1), FALSE);
+	g_return_val_if_fail (GLADE_IS_SIGNAL (sig2), FALSE);
+
+	if (!strcmp (sig1->name, sig2->name) &&
+	    !strcmp (sig1->handler, sig2->handler) &&
+	    sig1->after == sig2->after)
+			ret = TRUE;
+
+	return ret;
 }
 
 GladeXmlNode *

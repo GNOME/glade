@@ -1,3 +1,9 @@
+2003-06-19  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-signal-editor.c: plug my leaks.
+	* src/glade-widget.c: remove glade_widget_update_signal.
+	* src/glade-signal.c: add signal_compare.
+
 2003-06-18  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-signal.[ch]: implement signal_new_from_node.

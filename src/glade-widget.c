@@ -1253,19 +1253,21 @@ glade_widget_replace_with_placeholder (GladeWidget *widget, GladePlaceholder *pl
 }
 
 /**
- * Find the list element in the signal list with the same signal
- * or NULL if is not present.
+ * glade_widget_find_signal:
+ * @widget
+ * @signal
+ * 
+ * Find the element in the signal list of the widget with the same
+ * signal as @signal or NULL if not present.
  */
-static GList *
+GList *
 glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal)
 {
 	GList *list;
 
 	for (list = widget->signals; list; list = list->next) {
 		GladeSignal *tmp = GLADE_SIGNAL (list->data);
-		if (!strcmp (tmp->name, signal->name) &&
-		    !strcmp (tmp->handler, signal->handler) &&
-		    tmp->after == signal->after)
+		if (glade_signal_compare (tmp, signal))
 				return list;
 	}
 
@@ -1289,40 +1291,13 @@ glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal)
 	g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
 	found = glade_widget_find_signal (widget, signal);
-	if (found)
-		return;
-
-	widget->signals = g_list_append (widget->signals, signal);
-	return;
-}
-
-/**
- * glade_widget_update_signal:
- * @widget
- * @new_signal
- * @old_signal
- * 
- * Updates @old_signal in the widget's signal list with @new_signal.
- **/
-void
-glade_widget_update_signal (GladeWidget *widget,
-			    GladeSignal *new_signal,
-			    GladeSignal *old_signal)
-{
-	GList *found;
-
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (GLADE_IS_SIGNAL (new_signal));
-	g_return_if_fail (GLADE_IS_SIGNAL (old_signal));
-
-	found = glade_widget_find_signal (widget, old_signal);
 	if (found) {
-		found->data = new_signal;
+		glade_signal_free (signal);
 		return;
 	}
 
-	/* if we didn't find the signal in the list, add it */
-	widget->signals = g_list_append (widget->signals, new_signal);
+	widget->signals = g_list_append (widget->signals, signal);
+	return;
 }
 
 /**
@@ -1343,6 +1318,7 @@ glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 	found = glade_widget_find_signal (widget, signal);
 	if (found) {
 		g_list_remove_link (widget->signals, found);
+		glade_signal_free (GLADE_SIGNAL (found->data));
 		g_list_free_1 (found);
 	}
 }

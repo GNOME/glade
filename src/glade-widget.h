@@ -86,10 +86,8 @@ GladePlaceholder *glade_widget_replace_with_placeholder (GladeWidget *widget,
 GladeWidget *glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 /* Widget signal*/
+GList *glade_widget_find_signal (GladeWidget *widget, GladeSignal *signal);
 void glade_widget_add_signal (GladeWidget *widget, GladeSignal *signal);
-void glade_widget_update_signal (GladeWidget *widget,
-				 GladeSignal *new_signal,
-				 GladeSignal *old_signal);
 void glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal);
 
 

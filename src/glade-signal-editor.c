@@ -330,32 +330,33 @@ glade_signal_editor_clear_entries (GladeSignalEditor *editor)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor->signal_after_button), FALSE);
 }
 
+/**
+ * Note that this function returns a newly allocated GladeSignal,
+ * which the caller shuold take care of freeing.
+ */
 static GladeSignal *
 glade_signal_editor_get_signal_at_iter (GladeSignalEditor *editor,
 					GtkTreeIter *iter)
 {
 	GladeSignal *signal;
-	GtkTreeModel *model;
-	GValue *label;
+	gchar *name;
+	gchar *handler;
+	gchar *after_label;
+	gboolean after;
 
-	signal = g_new0 (GladeSignal, 1);
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (editor->signals_list));
+	gtk_tree_model_get (GTK_TREE_MODEL (editor->model), iter,
+			    0, &name, 1, &handler, 2, &after_label, -1);
 
-	label = g_new0 (GValue, 1);
-	gtk_tree_model_get_value (GTK_TREE_MODEL (model), iter, 0, label);
-	signal->name = (gchar *) label->data[0].v_pointer;
+	if (!strcmp (after_label, _("Yes")))
+		after = TRUE;
+	else
+		after = FALSE;
 
-	label = g_new0 (GValue, 1);
-	gtk_tree_model_get_value (GTK_TREE_MODEL (model), iter, 1, label);
-	signal->handler = (gchar *) label->data[0].v_pointer;
+	signal = glade_signal_new (name, handler, after);
 
-	label = g_new0 (GValue, 1);
-	gtk_tree_model_get_value (GTK_TREE_MODEL (model), iter, 2, label);
-	
-	if (!strcmp ((gchar *) label->data[0].v_pointer, _("Yes")))
-		signal->after = TRUE;
-	else 
-		signal->after = FALSE;
+	g_free (name);
+	g_free (handler);
+	g_free (after_label);
 
 	return signal;
 }
@@ -386,23 +387,31 @@ glade_signal_editor_update_cb (GtkButton *button, GladeSignalEditor *editor)
 	GtkTreeIter iter;
 	GtkTreeSelection *select;
 	GtkTreeModel *model;
-	GladeSignal *old_sig;
-	GladeSignal *new_sig;
+	GladeSignal *updated_sig;
 
 	g_return_if_fail (GLADE_IS_SIGNAL_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (editor->widget));
 
-	new_sig = glade_signal_editor_validate_entries (editor);
-	if (!new_sig)
+	updated_sig = glade_signal_editor_validate_entries (editor);
+	if (!updated_sig)
 		return;
 
 	model = GTK_TREE_MODEL (editor->model);
 	select = gtk_tree_view_get_selection (GTK_TREE_VIEW (editor->signals_list));
 
 	if (gtk_tree_selection_get_selected (select, &model, &iter) == TRUE) {
-		old_sig = glade_signal_editor_get_signal_at_iter (editor, &iter);
-		glade_widget_update_signal (editor->widget, new_sig, old_sig);
-		glade_signal_editor_update_signal_view (editor, new_sig, &iter);
+		GladeSignal *signal;
+		GList *found;
+
+		signal = glade_signal_editor_get_signal_at_iter (editor, &iter);
+		found = glade_widget_find_signal (editor->widget, signal);
+		glade_signal_free (signal);
+
+		if (found) {
+			glade_signal_free (GLADE_SIGNAL (found->data));
+			found->data = updated_sig;
+			glade_signal_editor_update_signal_view (editor, updated_sig, &iter);
+		}
 	}
 }
 

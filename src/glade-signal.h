@@ -22,6 +22,8 @@ GladeSignal *glade_signal_new (const gchar *name,
 
 void glade_signal_free (GladeSignal *signal);
 
+gboolean glade_signal_compare (GladeSignal *sig1, GladeSignal *sig2);
+
 GladeXmlNode *glade_signal_write (GladeXmlContext *context, GladeSignal *signal);
 
 GladeSignal *glade_signal_new_from_node (GladeXmlNode *node);
