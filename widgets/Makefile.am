@@ -23,6 +23,7 @@ widgets_DATA = \
 	gtkstatusbar.xml \
 	gtktable.xml \
 	gtktogglebutton.xml \
+	gtktoolbar.xml \
 	gtkwidget.xml \
 	gtkwindow.xml
 

@@ -202,6 +202,64 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 }
 
 void GLADEGTK_API
+glade_gtk_toolbar_get_size (GObject *object, GValue *value)
+{
+	GtkToolbar *toolbar;
+
+	g_return_if_fail (GTK_IS_TOOLBAR (object));
+
+	g_value_reset (value);
+	toolbar = GTK_TOOLBAR (object);
+
+	g_value_set_int (value, toolbar->num_children);
+}
+
+void GLADEGTK_API
+glade_gtk_toolbar_set_size (GObject *object, GValue *value)
+{
+	GladeWidget *widget;
+	GtkToolbar *toolbar;
+	gint new_size;
+	gint old_size;
+
+	g_return_if_fail (GTK_IS_TOOLBAR (object));
+
+	toolbar = GTK_TOOLBAR (object);
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (toolbar));
+	g_return_if_fail (widget != NULL);
+
+	old_size = toolbar->num_children;
+	new_size = g_value_get_int (value);
+
+	if (new_size == old_size)
+		return;
+
+	if (new_size > old_size) {
+		while (new_size > old_size) {
+			GtkWidget *placeholder = glade_placeholder_new ();
+			gtk_toolbar_append_widget (toolbar, placeholder, NULL, NULL);
+			old_size++;
+		}
+	} else {
+		GList *child = g_list_last (toolbar->children);
+
+		while (child && old_size > new_size) {
+			GtkWidget *child_widget = ((GtkToolbarChild *) child->data)->widget;
+			GladeWidget *glade_widget;
+
+			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
+			if (glade_widget)
+				glade_project_remove_widget (glade_widget->project, child_widget);
+
+			gtk_container_remove (GTK_CONTAINER (toolbar), child_widget);
+
+			child = g_list_last (toolbar->children);
+			old_size--;
+		}
+	}
+}
+
+void GLADEGTK_API
 glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 {
 	GtkNotebook *notebook;
