@@ -501,7 +501,7 @@ glade_editor_create_input_numeric (GladeEditorProperty *property,
 						    numeric_type == GLADE_EDITOR_INTEGER ? 0 : 2);
 
 	gtk_object_set_data (GTK_OBJECT (spin), "NumericType", GINT_TO_POINTER (numeric_type));
-	gtk_signal_connect (GTK_OBJECT (spin), "changed",
+	gtk_signal_connect (GTK_OBJECT (spin), "value_changed",
 			    GTK_SIGNAL_FUNC (glade_editor_property_changed_numeric),
 			    property);
 

@@ -504,7 +504,6 @@ glade_property_class_get_default (GladeXmlNode *node, GladePropertyType type)
 	GValue *value;
 	gchar *temp;
 
-	value = g_new0 (GValue, 1);
 	temp =	glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 
 	if (!temp)

@@ -28,6 +28,16 @@
 #include "glade-placeholder.h"
 #include "glade-property-class.h"
 
+static gint
+glade_widget_ugly_hack (gpointer data)
+{
+	GtkWidget *widget = data;
+	
+	gtk_widget_queue_resize (widget);
+	
+	return FALSE;
+}
+
 static void
 glade_gtk_entry_set_text (GObject *object, GValue *value)
 {
@@ -64,7 +74,6 @@ glade_gtk_entry_get_text (GObject *object, GValue *value)
 
 static void
 glade_gtk_option_menu_set_items (GObject *object, GValue *value)
-/*const gchar *items)*/
 {
 	GtkOptionMenu *option_menu; 
 	GtkWidget *menu;
@@ -184,16 +193,6 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (box->children));
 }
 
-static gint
-glade_widget_ugly_hack (gpointer data)
-{
-	GtkWidget *widget = data;
-	
-	gtk_widget_queue_resize (widget);
-	
-	return FALSE;
-}
-
 static void
 glade_gtk_box_set_size (GObject *object, GValue *value)
 {
@@ -215,6 +214,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	g_return_if_fail (widget != NULL);
 
 	if (new_size > old_size) {
+		/* The box has grown, add some placeholders */
 		int i = new_size - old_size;
 		for (; i > 0; i--) {
 			GladePlaceholder *placeholder;
@@ -223,6 +223,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 						     GTK_WIDGET (placeholder));
 		}
 	} else {
+		/* The box has shrunk. Remove the widgets that are on those slots */
 		GList *childs;
 		int num = old_size;
 		int i = old_size - new_size;
@@ -244,6 +245,8 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	gtk_timeout_add ( 100, glade_widget_ugly_hack, box);
 }
 
+#if 0
+/* This code is working but i don't think we need it. Chema */
 static void
 glade_gtk_table_get_n_rows (GObject *object, GValue *value)
 {
@@ -269,9 +272,10 @@ glade_gtk_table_get_n_columns (GObject *object, GValue *value)
 
 	g_value_set_int (value, table->ncols);
 }
+#endif
 
 static void
-glade_gtk_table_set_n_rows (GObject *object, GValue *value)
+glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
 	GtkTable *table;
@@ -282,27 +286,37 @@ glade_gtk_table_set_n_rows (GObject *object, GValue *value)
 	g_return_if_fail (GTK_IS_TABLE (table));
 
 	new_size = g_value_get_int (value);
-	old_size = table->nrows;
+	old_size = for_rows ? table->nrows : table->ncols;
 
 	if (new_size == old_size)
 		return;
-	
+	if (new_size < 1)
+		return;
+
 	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
 	g_return_if_fail (widget != NULL);
 
 	if (new_size > old_size) {
-		gint cols = table->ncols;
+		gint max = for_rows ? table->ncols : table->nrows;
 		int j = 0;
-		int i = new_size - old_size;
-		for (; i > 0; i--) {
-			for (; j < cols; j++) {
+		int i =  old_size;
+		
+		for (; i < new_size; i++) {
+			for (j = 0; j < max; j++) {
 				GladePlaceholder *placeholder;
 				placeholder = glade_placeholder_new (widget);
-				gtk_table_attach_defaults (
-					table,
-					GTK_WIDGET (placeholder),
-					j, j + 1,
-					old_size + i - 1, old_size + i);
+				if (for_rows)
+					gtk_table_attach_defaults (
+						table,
+						GTK_WIDGET (placeholder),
+						j, j + 1,
+						i, i + 1);
+				else
+					gtk_table_attach_defaults (
+						table,
+						GTK_WIDGET (placeholder),
+						i, i + 1,
+						j, j + 1);
 			}
 		}
 		
@@ -312,21 +326,26 @@ glade_gtk_table_set_n_rows (GObject *object, GValue *value)
 		GList *freeme = list;
 		for (; list; list = list->next) {
 			GtkTableChild *child = list->data;
+			gint start = for_rows ?
+				child->top_attach : child->left_attach;
+			gint end = for_rows ?
+				child->bottom_attach : child->right_attach;
 			/* We need to completely remove it */
-			if (child->top_attach >= new_size) {
+			if (start >= new_size) {
 				gtk_container_remove (GTK_CONTAINER (table),
 						      child->widget);
 				continue;
 			}
 			/* We need to change the span */
 			/* For we to code this, span has to be working */
-			if (child->bottom_attach > new_size)
-				g_print ("IMPLEMENTME: Partially remove it\n");
+			if (end > new_size)
+				g_print ("Change the span <---------\n");
+			
 		}
 		g_list_free (freeme);
 		gtk_table_resize (table,
-				  new_size,
-				  table->ncols);
+				  for_rows ? new_size : table->nrows,
+				  for_rows ? table->ncols : new_size);
 	}
 
 	/* see glade-widget.c#ugly_hack for an explanation */
@@ -334,66 +353,15 @@ glade_gtk_table_set_n_rows (GObject *object, GValue *value)
 }
 
 static void
+glade_gtk_table_set_n_rows (GObject *object, GValue *value)
+{
+	glade_gtk_table_set_n_common (object, value, TRUE);
+}
+
+static void
 glade_gtk_table_set_n_columns (GObject *object, GValue *value)
 {
-	GladeWidget *widget;
-	GtkTable *table;
-	gint new_size;
-	gint old_size;
-
-	table = GTK_TABLE (object);
-	g_return_if_fail (GTK_IS_TABLE (table));
-
-	new_size = g_value_get_int (value);
-	old_size = table->ncols;
-
-	if (new_size == old_size)
-		return;
-	
-	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
-	g_return_if_fail (widget != NULL);
-
-	if (new_size > old_size) {
-		gint rows = table->nrows;
-		int j = 0;
-		int i = new_size - old_size;
-		for (; i > 0; i--) {
-			for (; j < rows; j++) {
-				GladePlaceholder *placeholder;
-				placeholder = glade_placeholder_new (widget);
-				gtk_table_attach_defaults (
-					table,
-					GTK_WIDGET (placeholder),
-					old_size + i - 1, old_size + i,
-					j, j + 1);
-			}
-		}
-		
-	} else {
-		/* Remove from the bottom up */
-		GList *list = g_list_reverse (g_list_copy (table->children));
-		GList *freeme = list;
-		for (; list; list = list->next) {
-			GtkTableChild *child = list->data;
-			/* We need to completely remove it */
-			if (child->left_attach >= new_size) {
-				gtk_container_remove (GTK_CONTAINER (table),
-						      child->widget);
-				continue;
-			}
-			/* We need to change the span */
-			/* For we to code this, span has to be working */
-			if (child->right_attach > new_size)
-				g_print ("IMPLEMENTME : Partially remove it\n");
-		}
-		g_list_free (freeme);
-		gtk_table_resize (table,
-				  table->nrows,
-				  new_size);
-	}
-
-	/* see glade-widget.c#ugly_hack for an explanation */
-	gtk_timeout_add ( 100, glade_widget_ugly_hack, table);
+	glade_gtk_table_set_n_common (object, value, FALSE);
 }
 
 
@@ -429,6 +397,28 @@ glade_gtk_check_button_post_create (GObject *object, GValue *not_used)
 
 }
 
+static void
+glade_gtk_table_post_create (GObject *object, GValue *value)
+{
+	GtkTable *table = GTK_TABLE (object);
+	GList *list;
+
+	g_return_if_fail (GTK_IS_TABLE (table));
+	list = table->children;
+
+	/* When we create a table and we are loading from disk a glade
+	 * file, we need to add a placeholder because the size can't be
+	 * 0 so gtk+ adds a widget that we don't want there.
+	 * GtkBox is does not have this problem because
+	 * a size of 0x0 is the default one. Check if the size is 0
+	 * and that we don't have a children.
+	 */
+	if (g_list_length (list) == 0) {
+		GladeWidget *parent = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
+		gtk_container_add (GTK_CONTAINER (table),
+				   glade_placeholder_new (parent));
+	}
+}
 
 
 /* ================ Temp hack =================== */
@@ -448,7 +438,7 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_box_get_size",            glade_gtk_box_get_size},
 	{"glade_gtk_widget_get_tooltip",      empty},
 
-#if 1
+#if 0	
 	{"glade_gtk_table_get_n_rows",        glade_gtk_table_get_n_rows},
 	{"glade_gtk_table_get_n_columns",     glade_gtk_table_get_n_columns},
 #endif	
@@ -470,8 +460,7 @@ GladeGtkFunction functions [] = {
 
 	{"glade_gtk_check_button_post_create",      glade_gtk_check_button_post_create},
 	{"glade_gtk_window_post_create",            glade_gtk_window_post_create},
-
-
+	{"glade_gtk_table_post_create",             glade_gtk_table_post_create},
 };
 
 gpointer

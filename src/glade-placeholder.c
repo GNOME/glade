@@ -30,12 +30,14 @@
 #include "glade-widget-class.h"
 #include "glade-widget.h"
 #include "glade-property.h"
+#include "glade-property-class.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
 
-#define GLADE_PLACEHOLDER_ROW_STRING "GladePlaceholderRow"
-#define GLADE_PLACEHOLDER_COL_STRING "GladePlaceholderColumn"
-
+#define GLADE_PLACEHOLDER_ROW_STRING  "GladePlaceholderRow"
+#define GLADE_PLACEHOLDER_COL_STRING  "GladePlaceholderColumn"
+#define GLADE_PLACEHOLDER_PARENT_DATA "GladePlaceholderParentData"
+#define GLADE_PLACEHOLDER_IS_DATA     "GladeIsPlaceholderData"
 static void
 glade_placeholder_replace_box (GtkWidget *current,
 			       GtkWidget *new,
@@ -311,8 +313,15 @@ glade_placeholder_new (GladeWidget *parent)
 {
 	GladePlaceholder *placeholder;
 
+	g_return_val_if_fail (parent != NULL, NULL);
+
 	placeholder = gtk_drawing_area_new ();
-	gtk_object_set_user_data (GTK_OBJECT (placeholder), parent);
+	gtk_object_set_data (GTK_OBJECT (placeholder),
+			     GLADE_PLACEHOLDER_PARENT_DATA,
+			     parent);
+	gtk_object_set_data (GTK_OBJECT (placeholder),
+			     GLADE_PLACEHOLDER_IS_DATA,
+			     GINT_TO_POINTER (TRUE));
 
 	gtk_widget_set_events (GTK_WIDGET (placeholder),
 			       gtk_widget_get_events (GTK_WIDGET (placeholder))
@@ -332,9 +341,15 @@ glade_placeholder_new (GladeWidget *parent)
 	
 	return placeholder;
 }
+
 #undef GLADE_PLACEHOLDER_SIZE
 
 
+/* This function is no longer used. We add a placholder to all the containers
+ * then when we apply the properties, the size property will add the containers
+ * for us. Chema
+ */
+#if 0
 void
 glade_placeholder_add (GladeWidgetClass *class,
 		       GladeWidget *widget,
@@ -366,6 +381,13 @@ glade_placeholder_add (GladeWidgetClass *class,
 #endif	
 		return;
 		/* This function shuold not exist */
+		/* Because we just set the property of size to a value
+		 * the set_size function for boxes will take care of
+		 * adding the new widgets ( I think ? ;-), but can't
+		 * remeber with detail.
+		 *
+		 * Chema.
+		 */
 	}
 	
 	if (glade_widget_class_is (class, "GtkTable")) {
@@ -413,17 +435,36 @@ glade_placeholder_add (GladeWidgetClass *class,
 	g_warning ("A new container was cretated but there isn't any code to add a placeholder "
 		   "for this class (%s)", class->name);
 }
+#endif
 
 void
 glade_placeholder_add_with_result (GladeWidgetClass *class,
 				   GladeWidget *widget,
 				   GladePropertyQueryResult *result)
 {
-	gint rows = 0, columns = 0;
+	GList *list;
+
+	list = class->properties;
+	for (; list; list = list->next) {
+		GladePropertyClass *class = list->data;
+		if (class->query) {
+			GladeProperty *property;
+			gint temp;
+			glade_property_query_result_get_int (result,
+							     class->id,
+							     &temp);
+			property = glade_property_get_from_id (widget->properties,
+							       class->id);
+			glade_property_set_integer (property, temp);
+		}
+	}
+	
+
+#if 0	
+	GladeProperty *property;
 
 	if (glade_widget_class_is (class, "GtkVBox") ||
 	    glade_widget_class_is (class, "GtkHBox")) {
-		GladeProperty *property;
 		gint size;
 		glade_property_query_result_get_int (result, "size", &size);
 		property = glade_property_get_from_id (widget->properties,
@@ -432,14 +473,31 @@ glade_placeholder_add_with_result (GladeWidgetClass *class,
 	}
 
 	if (glade_widget_class_is (class, "GtkTable")) {
+		gint rows;
+		gint columns;
 		glade_property_query_result_get_int (result, "n-rows", &rows);
+		property = glade_property_get_from_id (widget->properties, "n-rows");
+		glade_property_set_integer (property, rows);
+						       
 		glade_property_query_result_get_int (result, "n-columns", &columns);
+		property = glade_property_get_from_id (widget->properties, "n-columns");
+		glade_property_set_integer (property, columns);
 	}
 
-	if (glade_widget_class_is (class, "GtkNotebook"))
-		glade_property_query_result_get_int (result, "pages", &rows);
+	if (glade_widget_class_is (class, "GtkNotebook")) {
+		gint pages;
+		glade_property_query_result_get_int (result, "pages", &pages);
+		/* FIXME . Set integer of property */
+	}
+#endif	
 
-	glade_placeholder_add (class, widget, rows, columns);
+	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
+		GladePlaceholder *placeholder;
+		placeholder = glade_placeholder_new (widget);
+		gtk_container_add (GTK_CONTAINER (widget->widget), GTK_WIDGET (placeholder));
+		return;
+	}
+
 }
 
 
@@ -448,7 +506,8 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;
 	
-	parent = gtk_object_get_user_data (GTK_OBJECT (placeholder));
+	parent = gtk_object_get_data (GTK_OBJECT (placeholder),
+				      GLADE_PLACEHOLDER_PARENT_DATA);
 
 	return parent;
 }
@@ -461,7 +520,7 @@ glade_placeholder_replace (GladePlaceholder *placeholder, GladeWidget *parent, G
 	if (parent->class->placeholder_replace != NULL)
 		parent->class->placeholder_replace (GTK_WIDGET (placeholder), child->widget, parent->widget);
 	else
-		g_warning ("Could not replace a placeholder because we don't have a replace "
+		g_warning ("Could not replace a placeholder because a replace "
 			   " function has not been implemented for \"%s\"\n",
 			   parent->class->name);
 }
@@ -475,20 +534,66 @@ glade_placeholder_get_from_properties (GladeWidget *parent,
 	GladePlaceholder *placeholder = NULL;
 	GList *list;
 
-	list = gtk_container_children (GTK_CONTAINER (parent->widget));
+#if 0	
+	g_print ("Parent Class is %s\n", parent->class->name);
+#endif
 	
 	if (glade_widget_class_is (parent->class, "GtkVBox") ||
 	    glade_widget_class_is (parent->class, "GtkHBox")) {
 		GtkBoxChild *box_child;
 		const gchar *val;
+		list = gtk_container_children (GTK_CONTAINER (parent->widget));
 		val = g_hash_table_lookup (properties, "position");
 		box_child = (GtkBoxChild *) g_list_nth (list, atoi (val));
 		placeholder = box_child->widget;
+		g_assert (placeholder);
+#if 0
+		if (!placeholder && list)
+			placeholder = ((GtkBoxChild *)list->data)->widget;
+#endif	
+	} else if (glade_widget_class_is (parent->class, "GtkTable")) {
+		GtkTableChild *child;
+		gint col = atoi (g_hash_table_lookup (properties, "cell_x"));
+		gint row = atoi (g_hash_table_lookup (properties, "cell_y"));
+		list = GTK_TABLE (parent->widget)->children;
+		for (; list; list = list->next) {
+			child = list->data;
+			if ((child->left_attach == col) &&
+			    (child->top_attach  == row)) {
+				placeholder = child->widget;
+				break;
+			}
+		}
+		g_assert_not_reached ();
+#if 0	
+		/* Get the first free placeholder */
+		/* Should this be an error ? */
+		if (!placeholder && list) {
+			g_print ("Not found \n");
+			placeholder = ((GtkTableChild *)list->data)->widget;
+		}
+#endif	
+	} else if (glade_widget_class_is (parent->class, "GtkWindow")) {
+		placeholder = NULL;
+	} else {
+		glade_implement_me ();
 	}
 
-	/* Get the first free placeholder */
-	if (!placeholder && list)
-		placeholder = list->data;
-	
 	return placeholder;
 }
+
+gboolean
+glade_placeholder_is (GtkWidget *widget)
+{
+	gpointer data;
+	gboolean is;
+
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	data = gtk_object_get_data (GTK_OBJECT (widget),
+				    GLADE_PLACEHOLDER_IS_DATA);
+
+	is = GPOINTER_TO_INT (data);
+
+	return is;
+}
+

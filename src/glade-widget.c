@@ -1235,7 +1235,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_PROPERTY))
 			continue;
-		
+
 		if (!glade_widget_apply_property_from_node (child, widget)) {
 			return NULL;
 		}
@@ -1344,10 +1344,11 @@ glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, Gla
 
 	/* Get the placeholder and replace it with the widget */
 	placeholder = glade_placeholder_get_from_properties (parent, packing_properties);
-	if (placeholder)
+	if (placeholder) {
 		glade_placeholder_replace (placeholder, parent, child);
-	else
+	} else {
 		gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
+	}
 
 	/* Apply the properties and free the hash that contains them */
 	glade_widget_apply_properties_from_hash (child, packing_properties);

@@ -25,6 +25,10 @@ void glade_placeholder_replace (GladePlaceholder *placeholder,
 GladePlaceholder * glade_placeholder_get_from_properties (GladeWidget *parent,
 							  GHashTable *properties);
 
+#if 1
+gboolean glade_placeholder_is (GtkWidget *widget);
+#endif
+
 G_END_DECLS
 
 #endif /* __GLADE_PLACEHOLDER_H__ */

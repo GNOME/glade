@@ -3,6 +3,7 @@
   <GenericName>table</GenericName>
   <Toplevel>False</Toplevel>
   <Placeholder>True</Placeholder>
+  <PostCreateFunction>glade_gtk_table_post_create</PostCreateFunction>
 
   <Properties>
 
@@ -19,7 +20,9 @@
         <Question>Number of rows</Question>
       </Query>
       <SetFunction>glade_gtk_table_set_n_rows</SetFunction>
+      <!--
       <GetFunction>glade_gtk_table_get_n_rows</GetFunction>
+      -->
     </Property>
 
     <Property Id="n-columns" Default="3">
@@ -35,7 +38,9 @@
         <Question>Number of columns</Question>
       </Query>
       <SetFunction>glade_gtk_table_set_n_columns</SetFunction>
+      <!--
       <GetFunction>glade_gtk_table_get_n_columns</GetFunction>
+      -->
     </Property>
 
     <Property Id="homogeneous"/>

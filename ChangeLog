@@ -1,3 +1,35 @@
+2001-08-28  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-placeholder.c (glade_placeholder_add_with_result): rewrite
+
+	* src/glade-widget-class.c (glade_widget_class_is): impl.
+
+	* src/glade-placeholder.c (glade_placeholder_new): set the parent
+	as a data (not user) member. Also set True so that we can use :
+
+	* src/glade-packing.c (glade_packing_table_get_child_at): implement.
+	(glade_packing_table_child_has_span): impl.
+	(glade_packing_table_cell_common_set): impl.
+	(glade_packing_table_cell_x_set): impl.
+	(glade_packing_table_cell_y_set): impl.
+	(glade_packing_table_span_common_set): impl.
+	(glade_packing_table_span_x_set): impl.
+	(glade_packing_table_span_y_set): impl.
+
+	* src/glade-gtk.c (glade_gtk_table_get_n_rows): disable
+	(glade_gtk_table_get_n_columns): ditto
+	(glade_gtk_table_set_n_common): use for both x & y. Add
+	support for childs that have spans.
+	(glade_gtk_table_set_n_rows): call _n_common
+	(glade_gtk_table_set_n_columns): call _n_common
+	(glade_gtk_table_post_create): implement
+
+2001-08-26  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-editor.c (glade_editor_create_input_numeric): connect to the
+	value_changed signal of the spin button, not the changed signal of the
+	entry.
+
 2001-08-24  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-gtk.c (glade_gtk_table_get_n_rows): 
