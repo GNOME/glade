@@ -1,12 +1,11 @@
-TODO (Last update: August 26, 2003)
+TODO (Last update: November 14, 2003)
 ===================================
 
-This file may be out of date: ask on glade-devel@ximian.com before starting
-any work.
+This file may be out of date: to avoid duplicated efforts ask on 
+glade-devel@ximian.com before starting any work.
 
 Here you can find a list of TODOs for glade3; items marked with [X] are
-completed, items marked with [W] are under work: be sure to ask on the list
-if you plan to work on these to avoid duplicated efforts.
+completed, items marked with [W] are work in progress.
 You may also want to check the glade3 module in bugzilla.gnome.org.
 
 Please keep in mind that for the first milestone we just want to clone the
@@ -24,21 +23,30 @@ plus :
 
 
 
-
 Difficult or Big tasks:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 [W] Implement the menu editor.
-[ ] Finish support for all the Gtk widgets.
+[ ] Finish support for all the Gtk widgets. In particular the following widget
+    are known to be currently broken:
+    * menu/menubar (see menu editor)
+    * toolbar (probably should only need some custom methods in glade-gtk)
+    * entry (works fine, but the selection drawing is wrong)
+    * dialog (need to figure out how to hadle the response-id property of
+      the buttons in a dialog)
 [ ] Implement the glade-property type "File". For example to be used with a 
     pixmap that specifies a file.
-[X] Undo/Redo everywhere.
+[X] Undo/Redo infrastructure.
+[X] Undo/Redo for add/delete, cut/paste, set name, set property.
+[ ] Undo/Redo for add/remove signal.
 [X] Cut/Copy/Paste.
 [X] The packing tab of the editor. This is done, but it may turn out that we
     want to override some of the packing properties from the xml file.
 [X] Make new catalogs actually "pluggable" (e.g. having glade-gtk.so instead
     of the temporary hack in glade-gtk.[ch] )
 [X] Win32 port
+[ ] Update the build system (this actually isn't difficult or big, but some
+    autotools knowledge is required; pay attention to not break Windows port)
 
 
 Normal tasks:
