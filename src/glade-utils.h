@@ -44,6 +44,8 @@ void		glade_util_add_nodes (GtkWidget *widget);
 void		glade_util_remove_nodes (GtkWidget *widget);
 gboolean	glade_util_has_nodes (GtkWidget *widget);
 
+GList           *glade_util_container_get_all_children (GtkContainer *container);
+
 
 G_END_DECLS
 

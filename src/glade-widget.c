@@ -37,6 +37,7 @@
 #include "glade-clipboard.h"
 #include "glade-command.h"
 #include "glade-debug.h"
+#include "glade-utils.h"
 #include <gdk/gdkkeysyms.h>
 
 /**
@@ -1205,7 +1206,6 @@ glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget);
 GladeXmlNode *
 glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 {
-
 	GladeXmlNode *node;
 	GladeXmlNode *child;
 	GList *list;
@@ -1244,7 +1244,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 
 	/* Children */
 	if (GTK_IS_CONTAINER (widget->widget)) {
-		list = gtk_container_get_children (GTK_CONTAINER (widget->widget));
+		list = glade_util_container_get_all_children (GTK_CONTAINER (widget->widget));
 		for (; list; list = list->next) {
 			GtkWidget *child_widget;
 			child_widget = GTK_WIDGET (list->data);
@@ -1279,8 +1279,10 @@ glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget)
 
 	child_widget = glade_widget_get_from_gtk_widget (gtk_widget);
 	if (!child_widget)
-		/* internal child... */
 		return NULL;
+
+	if (child_widget->internal)
+		glade_xml_node_set_property_string (child_tag, GLADE_XML_TAG_INTERNAL_CHILD, child_widget->internal);
 
 	child = glade_widget_write (context, child_widget);
 		if (!child) {

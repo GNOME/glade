@@ -1,7 +1,8 @@
 2003-10-23  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-widget.[ch]: add glade_widget_new_for_internal_child and
-	add an internal field to the GladeWidget struct.
+	add an internal field to the GladeWidget struct. Handle writing the
+	internal-child attribute to the glade file; reading still needs work.
 	* src/glade-gtk.c: create the GladeWidgets for the internal children
 	in dialog_fill_empty
 	* src/glade-placeholder.c: don't walk up the widget hierarchy when 
