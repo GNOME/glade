@@ -1,4 +1,10 @@
+2004-10-04  Morten Welinder  <terra@gnome.org>
+
+	* src/glade-widget.c (glade_widget_finalize): Don't try to destroy
+	a hash table with g_object_unref.
+
 2004-09-23  David Hoover <karma@deadmoose.com>
+
 	* src/*.c: mass addition of new gtk-doc-style comments for functions,
 	some cleanup of language & formatting in existing comments, minor 
 	whitespace fixes, etc.
@@ -2937,4 +2943,3 @@
 2001-06-16  Chema Celorio  <chema@celorio.com>
 
 	* 0.0.11 : Multiple projects support
-

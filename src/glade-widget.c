@@ -265,7 +265,7 @@ glade_widget_finalize (GObject *object)
 	glade_widget_class_free (widget->widget_class);
 	g_free (widget->name);
 	g_free (widget->internal);
-	g_object_unref (widget->signals);
+	g_hash_table_destroy (widget->signals);
 }
 
 static void
