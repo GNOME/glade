@@ -67,8 +67,8 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
  *
  * Returns:
  */
-gchar *
-glade_util_compose_get_type_func (gchar *name)
+static gchar *
+glade_util_compose_get_type_func (const gchar *name)
 {
 	gchar *retval;
 	GString *tmp;
@@ -114,27 +114,32 @@ glade_util_get_type_from_name (const gchar *name)
 {
 	static GModule *allsymbols = NULL;
 	GType (*get_type) ();
-	GType type;
+	GType type = 0;
+	gchar  *func_name;
 
-	if (!allsymbols)
-		allsymbols = g_module_open (NULL, 0);
+	if ((func_name = glade_util_compose_get_type_func (name)) != NULL)
+	{
+		
+		if (!allsymbols)
+			allsymbols = g_module_open (NULL, 0);
 
-	if (!g_module_symbol (allsymbols, name,
-			      (gpointer) &get_type)) {
-		g_warning (_("We could not find the symbol \"%s\""),
-			   name);
-		return FALSE;
+		if (g_module_symbol (allsymbols, func_name,
+				      (gpointer) &get_type))
+		{
+			g_assert (get_type);
+			type = get_type ();
+		} else {
+			g_warning (_("We could not find the symbol \"%s\""),
+				   func_name);
+		}
+		g_free (func_name);
 	}
-
-	g_assert (get_type);
-	type = get_type ();
 
 	if (type == 0) {
 		g_warning(_("Could not get the type from \"%s"),
 			  name);
-		return 0;
 	}
-
+	
 	return type;
 }
 
@@ -685,15 +690,11 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 	GdkGC *gc;
 	GList *elem;
 
-
 	/* Find the corresponding GtkWidget and GladeWidget. */
 	gdk_window_get_user_data (expose_win, (gpointer *)&expose_widget);
-	if ((expose_gwidget = glade_widget_get_from_gtk_widget(expose_widget)) == NULL)
-	{
-		expose_gwidget = glade_util_get_parent (expose_widget);
-	}
-	g_assert(expose_gwidget);
-	
+	if ((expose_gwidget = glade_widget_get_from_gobject(expose_widget)) == NULL)
+		goto out;
+
 	/* Check that the window is still alive. */
 	if (!gdk_window_is_viewable (expose_win))
 		goto out;
@@ -745,7 +746,7 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 
  out:
 	/* Remove the reference added in glade_util_queue_draw_nodes(). */
-	g_object_unref(G_OBJECT(expose_gwidget));
+	g_object_unref (G_OBJECT (expose_win));
 	
 	/* Return FALSE so the idle handler isn't called again. */
 	return FALSE;
@@ -764,28 +765,13 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 void
 glade_util_queue_draw_nodes (GdkWindow *window)
 {
-	GtkWidget   *widget;
-	GladeWidget *gwidget;
-
 	g_return_if_fail (GDK_IS_WINDOW (window));
 
-	gdk_window_get_user_data (window, (gpointer *)&widget);
-	if ((gwidget = glade_widget_get_from_gtk_widget(widget)) == NULL)
-	{
-		gwidget = glade_util_get_parent (widget);
-	}
+	g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
+			 (GSourceFunc)glade_util_draw_nodes_idle,
+			 window, NULL);
 
-	if (gwidget) {
-		g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
-				 (GSourceFunc)glade_util_draw_nodes_idle,
-				 window, NULL);
-
-		/* We need to ref the glade widget, to make sure it isn't freed before
-		 * our idle function is called. We unref it there. (ofcourse, the glade
-		 * widget holds reference to everything we need there).
-		 */
-		g_object_ref (G_OBJECT(gwidget));
-	}
+	g_object_ref (G_OBJECT (window));
 }
 
 
@@ -796,11 +782,12 @@ glade_util_queue_draw_nodes (GdkWindow *window)
  * TODO: write me
  */
 void
-glade_util_add_nodes (GtkWidget *widget)
+glade_util_add_selection (GObject *object)
 {
-	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES,
+	g_object_set_data (object, GLADE_UTIL_HAS_NODES,
 			   GINT_TO_POINTER (1));
-	gtk_widget_queue_draw (widget);
+	if (GTK_IS_WIDGET (object))
+		gtk_widget_queue_draw (GTK_WIDGET (object));
 }
 
 /**
@@ -810,13 +797,16 @@ glade_util_add_nodes (GtkWidget *widget)
  * TODO: write me
  */
 void
-glade_util_remove_nodes (GtkWidget *widget)
+glade_util_remove_selection (GObject *object)
 {
-	g_object_set_data (G_OBJECT (widget), GLADE_UTIL_HAS_NODES, GINT_TO_POINTER (0));
+	g_object_set_data (object, GLADE_UTIL_HAS_NODES, GINT_TO_POINTER (0));
 
 	/* We redraw the parent, since the selection rectangle may not be
 	   cleared if we just redraw the widget itself. */
-	gtk_widget_queue_draw (widget->parent ? widget->parent : widget);
+	if (GTK_IS_WIDGET (object))
+		gtk_widget_queue_draw (GTK_WIDGET (object)->parent ?
+				       GTK_WIDGET (object)->parent :
+				       GTK_WIDGET (object));
 }
 
 /**
@@ -826,10 +816,10 @@ glade_util_remove_nodes (GtkWidget *widget)
  * Returns: %TRUE if @widget has nodes, %FALSE otherwise
  */
 gboolean
-glade_util_has_nodes (GtkWidget *widget)
+glade_util_has_selection (GObject *object)
 {
 	return GPOINTER_TO_INT (g_object_get_data
-				(G_OBJECT (widget), GLADE_UTIL_HAS_NODES)) != 0;
+				(object, GLADE_UTIL_HAS_NODES)) != 0;
 }
 
 /**
@@ -860,41 +850,12 @@ glade_util_delete_selection (GladeProject *project)
 	for (list = free_me; list; list = list->next) {
 		GladeWidget *glade_widget;
 
-		glade_widget = glade_widget_get_from_gtk_widget (list->data);
+		glade_widget = glade_widget_get_from_gobject (list->data);
 		if (glade_widget)
 			glade_command_delete (glade_widget);
 	}
 
 	g_list_free (free_me);
-}
-
-/**
- * glade_util_get_parent:
- * @w: a #GtkWidget
- *
- * TODO: write me
- *
- * Returns:
- */
-GladeWidget *
-glade_util_get_parent (GtkWidget *w)
-{
-	GtkWidget *widget = w;
-	GladeWidget *parent = NULL;
-
-	do
-	{
-		widget = gtk_widget_get_parent (widget);
-		if (widget != NULL)
-		{
-			parent = glade_widget_get_from_gtk_widget (widget);
-			if (parent != NULL)
-				return parent;
-		}
-	}
-	while (widget != NULL);
-
-	return NULL;
 }
 
 /*

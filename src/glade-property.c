@@ -43,35 +43,66 @@
  * Returns:
  */
 GladeProperty *
-glade_property_new (GladePropertyClass *class, GladeWidget *widget)
+glade_property_new (GladePropertyClass *class, GladeWidget *widget, GValue *value)
 {
 	GladeProperty *property;
 
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-	property = g_new0 (GladeProperty, 1);
-	property->class = class;
-	property->widget = widget;
-	property->value = g_new0 (GValue, 1);
+	property          = g_new0 (GladeProperty, 1);
+	property->class   = class;
+	property->widget  = widget;
+	property->value   = value;
 	property->enabled = TRUE;
-
-	/* Create an empty default if the class does not specify a default 
-         * value */
-	if (!class->def)
-	{
-		property->value = glade_property_class_make_gvalue_from_string (class, "");
-		return property;
-	}
 
 	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
 	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
+	    G_IS_PARAM_SPEC_LONG (class->pspec)    ||
+	    G_IS_PARAM_SPEC_ULONG (class->pspec)   ||
+	    G_IS_PARAM_SPEC_INT64 (class->pspec)   ||
+	    G_IS_PARAM_SPEC_UINT64 (class->pspec)  ||
 	    G_IS_PARAM_SPEC_INT (class->pspec)     ||
 	    G_IS_PARAM_SPEC_UINT (class->pspec))
 		property->enabled = class->optional_default;
 	
-	g_value_init (property->value, class->def->g_type);
-	g_value_copy (class->def, property->value);
+	/* Create an empty default if the class does not specify a default value */
+	if (property->value == NULL)
+	{
+		if (!class->def)
+			property->value =
+				glade_property_class_make_gvalue_from_string (class, "");
+		else
+		{
+			property->value = g_new0 (GValue, 1);
+			g_value_init (property->value, class->def->g_type);
+			g_value_copy (class->def, property->value);
+		}
+	}
+	return property;
+}
+
+/**
+ * glade_property_dup:
+ * @template:
+ * @widget:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+GladeProperty *
+glade_property_dup (GladeProperty *template, GladeWidget *widget)
+{
+	GladeProperty *property;
+
+	property = g_new0 (GladeProperty, 1);
+	property->class   = template->class;
+	property->widget  = widget;
+	property->value   = g_new0 (GValue, 1);
+	property->enabled = template->enabled;
+	
+	g_value_init (property->value, template->value->g_type);
+	g_value_copy (template->value, property->value);
 
 	return property;
 }
@@ -106,14 +137,15 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 {
 	if (property->class->packing)
 	{
-		GladeWidget *parent = glade_widget_get_parent (property->widget);
-		GtkContainer *container = GTK_CONTAINER (glade_widget_get_widget (parent));
-		GtkWidget *child = glade_widget_get_widget (property->widget);
-		gtk_container_child_set_property (container, child, property->class->id, value);
+		GladeWidget          *parent = glade_widget_get_parent (property->widget);
+		GladeWidget          *child  = property->widget;
+		glade_widget_class_container_set_property (parent->widget_class,
+							   parent->object, child->object,
+							   property->class->id, value);
 	}
 	else
 	{
-		GObject *gobject = G_OBJECT (glade_widget_get_widget (property->widget));
+		GObject *gobject = G_OBJECT (glade_widget_get_object (property->widget));
 		g_object_set_property (gobject, property->class->id, value);
 	}
 }
@@ -140,8 +172,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	if (property->class->verify_function)
 	{
-		GObject *object =
-			G_OBJECT(glade_widget_get_widget (property->widget));
+		GObject *object = glade_widget_get_object (property->widget);
 		if (property->class->verify_function (object, value) == FALSE)
 			return;
 	}
@@ -176,8 +207,8 @@ glade_property_sync (GladeProperty *property)
 
 	if (property->class->set_function)
 		/* if there is a custom set_property, use it */
-		(*property->class->set_function) (G_OBJECT (property->widget->widget),
-						  property->value);
+		(*property->class->set_function)
+			(glade_widget_get_object (property->widget), property->value);
 	else if (property->class->construct_only)
 	{
 		/* In the case of construct_only, the widget must be rebuilt, here we
@@ -190,27 +221,28 @@ glade_property_sync (GladeProperty *property)
 		{
 			if ((selection =
 			     glade_project_selection_get (property->widget->project)) != NULL &&
-			    g_list_find(selection, property->widget->widget) != NULL)
+			    g_list_find(selection,
+					glade_widget_get_object (property->widget)) != NULL)
 			{
 				reselect = TRUE;
-				glade_project_selection_remove(property->widget->project,
-							       property->widget->widget,
-							       FALSE);
+				glade_project_selection_remove
+					(property->widget->project,
+					 glade_widget_get_object (property->widget), FALSE);
 			}
-			glade_project_remove_widget (property->widget->project,
-						     property->widget->widget);
+			glade_project_remove_object (property->widget->project,
+						     glade_widget_get_object (property->widget));
 		}
 
 		glade_widget_rebuild (property->widget);
 
 		if (property->widget->project)
 		{
-			glade_project_add_widget (property->widget->project,
-						  property->widget->widget);
+			glade_project_add_object (property->widget->project,
+						  glade_widget_get_object (property->widget));
 			if (reselect)
-				glade_project_selection_add(property->widget->project,
-							    property->widget->widget,
-							    TRUE);
+				glade_project_selection_add
+					(property->widget->project,
+					 glade_widget_get_object (property->widget), TRUE);
 		}
 	}
 	else

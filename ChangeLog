@@ -1,3 +1,42 @@
+2004-11-16  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
+
+	* Replaced `GtkWidget *' with `GObject *' throughout the code
+
+	* Removed glade_util_get_parent and replaced with 
+	  glade_placeholder_get_parent or glade_widget_get_parent where 
+	  appropriate.
+
+	* Implemented a container abstraction layer which allows any object to 
+	  be a container through the xml catalog interface (GtkContainer is 
+	  handled implicitly).
+
+	* Straightened out a few crooked header files.
+	
+	* Reworked loading a bit so that GladeProperties are loaded with the 
+	  values found in the xml file and that g_object_newv is called with 
+	  those values as well.
+
+	* Deprecated / Removed useless pre_create functions, anything that was 
+	  a pre_create is now done in post create without any regression.
+
+	* glade_gtk_container_fill_empty now checks if there are existing 
+	  children before adding one.
+
+	* Added comment on how to fix glade-project-view
+
+	* Half implemented addition of non-widget children in glade-popup.c
+
+	* glade-utils "nodes" code now also serves as a selection marker for
+	  any non-widget objects (widgets are still handled by drawing 
+	  selections). Also reverted my change to queue_draw_nodes... seems to 
+	  work for now.
+
+	* For now I removed the unused notion of "grand-child" packing 
+	  properties (that will have to be inspected and implemented properly 
+	  if need be).
+
+	* updated XML files accordingly.
+
 2004-11-17  Ivan Wong  <email@ivanwong.info>
 
 	* configure.in:

@@ -1,7 +1,5 @@
 <GladeWidgetClass>
 
-  <FillEmptyFunction>empty</FillEmptyFunction>
-
   <Properties>
 
     <Property Id="size" Name="Size" Default="3" Query="TRUE">
@@ -20,5 +18,12 @@
     </Property>
 
   </Properties>
+
+  <Children>
+    <Child>
+      <Type>GtkWidget</Type>
+      <FillEmptyFunction>empty</FillEmptyFunction>
+    </Child>
+  </Children>
 
 </GladeWidgetClass>

@@ -203,7 +203,7 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	if (editor->loading)
 		return;
 
-	g_return_if_fail (GTK_IS_WIDGET (editor->loaded_widget->widget));
+	g_return_if_fail (GTK_IS_WIDGET (editor->loaded_widget->object));
 
 	widget = editor->loaded_widget;
 	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
@@ -1015,7 +1015,7 @@ glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 	g_return_if_fail (editor->loaded_widget != NULL);
 
-	menubar = editor->loaded_widget->widget;
+	menubar = GTK_WIDGET(editor->loaded_widget->object);
 	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
 
 	project = editor->loaded_widget->project;
@@ -1219,7 +1219,7 @@ static void
 glade_editor_property_load_integer (GladeEditorProperty *property)
 {
 	GtkWidget *spin = NULL;
-	gfloat val;
+	gfloat     val  = 0.0F;
 
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->property != NULL);
@@ -1483,13 +1483,13 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 {
 	static GladeEditorTable *old = NULL;
 	static GList *old_props = NULL;
+
 	GladeEditorProperty *editor_property;
-	GladeEditorTable *table;
-	GladePropertyClass *property_class;
-	GladeWidget *parent;
-	GladeWidget *ancestor;
-	GtkContainer *container;
-	GList *list, *children;
+	GladeEditorTable    *table;
+	GladeProperty       *property;
+	GladeWidget         *parent;
+	GtkContainer        *container;
+	GList               *list, *children;
 
 	/* Remove the old properties */
 	container = GTK_CONTAINER (editor->vbox_packing);
@@ -1513,29 +1513,21 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 		return;
 
 	/* if the widget is a toplevel there are no packing properties */
-	parent = glade_widget_get_parent (widget);
-	if (!parent)
+	if ((parent = glade_widget_get_parent (widget)) == NULL)
 		return;
 
 	/* Now add the new properties */
 	table = glade_editor_table_new ();
 	table->editor = editor;
 	table->type   = TABLE_TYPE_PACKING;
-	
-	for (ancestor = parent; ancestor != NULL; ancestor = glade_widget_get_parent (ancestor))
-	{
- 		for (list = ancestor->widget_class->child_properties; list; list = list->next)
-		{
-			property_class = list->data; 
-			if (!ancestor->widget_class->child_property_applies
-			    (ancestor->widget, widget->widget, property_class->id))
-				continue;
 
-			g_assert (property_class->packing == TRUE);
-			editor_property = glade_editor_table_append_item (table, property_class);
-			old_props = g_list_prepend (old_props, editor_property);
-			glade_editor_property_load (editor_property, widget);
-		}
+	for (list = widget->packing_properties; list && list->data; list = list->next)
+	{
+		property = list->data;
+		g_assert (property->class->packing == TRUE);
+		editor_property = glade_editor_table_append_item (table, property->class);
+		old_props       = g_list_prepend (old_props, editor_property);
+		glade_editor_property_load (editor_property, widget);
 	}
 
 	gtk_widget_show_all (table->table_widget);
@@ -1628,7 +1620,7 @@ glade_editor_add_signal (GladeEditor *editor,
 
 	signal_name = g_signal_name (signal_id);
 	widget_name = glade_widget_get_name (editor->loaded_widget);
-	widget_type = glade_widget_class_get_type (glade_widget_get_class (editor->loaded_widget));
+	widget_type = editor->loaded_widget->widget_class->type;
 
 	g_signal_emit (G_OBJECT (editor),
 		       glade_editor_signals [ADD_SIGNAL], 0,
@@ -1674,4 +1666,25 @@ glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget)
 			      table->table_widget);
 	
 	gtk_widget_destroy (dialog);
+}
+
+
+gboolean
+glade_editor_editable_property (GParamSpec  *pspec)
+{
+	g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+	return 
+		(G_IS_PARAM_SPEC_ENUM(pspec)    ||
+		 G_IS_PARAM_SPEC_FLAGS(pspec)   ||
+		 G_IS_PARAM_SPEC_STRING(pspec)  ||
+		 G_IS_PARAM_SPEC_BOOLEAN(pspec) ||
+		 G_IS_PARAM_SPEC_FLOAT(pspec)   ||
+		 G_IS_PARAM_SPEC_DOUBLE(pspec)  ||
+		 G_IS_PARAM_SPEC_INT(pspec)     ||
+		 G_IS_PARAM_SPEC_UINT(pspec)    ||
+		 G_IS_PARAM_SPEC_LONG(pspec)    ||
+		 G_IS_PARAM_SPEC_ULONG(pspec)   ||
+		 G_IS_PARAM_SPEC_INT64(pspec)   ||
+		 G_IS_PARAM_SPEC_UINT64(pspec)  ||
+		 G_IS_PARAM_SPEC_UNICHAR(pspec)) ? TRUE : FALSE;
 }

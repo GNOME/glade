@@ -1,6 +1,11 @@
 <GladeWidgetClass>
 
   <!-- menubar is a container you can't add placeholders to it -->
-  <FillEmptyFunction>ignore</FillEmptyFunction>
+  <Children>
+    <Child>
+      <Type>GtkWidget</Type>
+      <FillEmptyFunction>empty</FillEmptyFunction>
+    </Child>
+  </Children>
 
 </GladeWidgetClass>

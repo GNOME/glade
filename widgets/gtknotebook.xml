@@ -1,9 +1,5 @@
 <GladeWidgetClass>
 
-  <FillEmptyFunction>empty</FillEmptyFunction>
-
-  <ReplaceChildFunction>glade_gtk_notebook_replace_child</ReplaceChildFunction>
-
   <Properties>
 
     <Property Id="pages" Name="Number of pages" Default="3" Query="TRUE">
@@ -23,13 +19,20 @@
 
   </Properties>
 
-  <ChildProperties>
-    <Property Id="tab-label" Name="Tab Label Text" >
-      <Spec>glade_gtk_standard_string_spec</Spec>
-      <Tooltip>The tab label text of this page widget</Tooltip>
-      <SetFunction>glade_gtk_notebook_set_tab_label_text</SetFunction>
-      <GetFunction>glade_gtk_notebook_get_tab_label_text</GetFunction>
-    </Property>
-  </ChildProperties>
+  <Children>
+     <Child>
+       <Type>GtkWidget</Type>
+       <FillEmptyFunction>empty</FillEmptyFunction>
+       <ReplaceChildFunction>glade_gtk_notebook_replace_child</ReplaceChildFunction>
+       <Properties>
+         <Property Id="tab-label" Name="Tab Label Text" >
+           <Spec>glade_gtk_standard_string_spec</Spec>
+           <Tooltip>The tab label text of this page widget</Tooltip>
+           <SetFunction>glade_gtk_notebook_set_tab_label_text</SetFunction>
+           <GetFunction>glade_gtk_notebook_get_tab_label_text</GetFunction>
+         </Property>
+       </Properties>
+     </Child>
+  </Children>
 
 </GladeWidgetClass>

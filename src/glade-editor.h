@@ -191,11 +191,15 @@ GType glade_editor_get_type (void);
 
 GladeEditor *glade_editor_new (void);
 
-void glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget);
-void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
-void glade_editor_update_widget_name (GladeEditor *editor);
-void glade_editor_query_popup (GladeEditor *editor, GladeWidget *widget);
-
+void         glade_editor_load_widget        (GladeEditor *editor,
+					      GladeWidget *widget);
+void         glade_editor_add_signal         (GladeEditor *editor,
+					      guint        id_signal,
+					      const char  *callback_name);
+void         glade_editor_update_widget_name (GladeEditor *editor);
+void         glade_editor_query_popup        (GladeEditor *editor,
+					      GladeWidget *widget);
+gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
 
 G_END_DECLS
 

@@ -17,7 +17,6 @@ enum _GladeUtilFileDialogType
 
 
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
-gchar          *glade_util_compose_get_type_func (gchar *name);
 GType		glade_util_get_type_from_name	(const gchar *name);
 GParamSpec     *glade_utils_get_pspec_from_funcname (const gchar *funcname);
 void		glade_util_ui_warn		(GtkWidget *parent, const gchar *warning);
@@ -42,9 +41,9 @@ char		*glade_util_duplicate_underscores (const char *name);
 
 void		glade_util_delete_selection (GladeProject *project);
 
-void		glade_util_add_nodes (GtkWidget *widget);
-void		glade_util_remove_nodes (GtkWidget *widget);
-gboolean	glade_util_has_nodes (GtkWidget *widget);
+void		glade_util_add_selection    (GObject   *object);
+void		glade_util_remove_selection (GObject   *object);
+gboolean	glade_util_has_selection    (GObject   *object);
 void		glade_util_queue_draw_nodes (GdkWindow *window);
 
 GladeWidget	*glade_util_get_parent (GtkWidget *w);

@@ -1,7 +1,5 @@
 <GladeWidgetClass>
 
-  <FillEmptyFunction>ignore</FillEmptyFunction>
-
   <Properties>
 
     <Property Id="stock" Name="Stock Button" Default="glade-none">
@@ -16,8 +14,15 @@
       <GetFunction>ignore</GetFunction>
     </Property>
 
-	<Property Id="label" Default="button"/>
+    <Property Id="label" Default="button"/>
 
   </Properties>
+
+  <Children>
+    <Child>
+      <Type>GtkWidget</Type>
+      <FillEmptyFunction>empty</FillEmptyFunction>
+    </Child>
+  </Children>
   
 </GladeWidgetClass>

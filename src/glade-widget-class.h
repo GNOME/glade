@@ -13,6 +13,27 @@ G_BEGIN_DECLS
 #define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
 #define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
 
+typedef struct _GladeSupportedChild  GladeSupportedChild;
+
+
+typedef void (* GladeChildSetPropertyFunc) (GObject      *container,
+					    GObject      *child,
+					    const gchar  *property_name,
+					    const GValue *value);
+
+typedef void (* GladeChildGetPropertyFunc) (GObject      *container,
+					    GObject      *child,
+					    const gchar  *property_name,
+					    GValue       *value);
+
+typedef GList *(* GladeGetChildrenFunc)    (GObject      *container);
+
+typedef void   (* GladeAddChildFunc)       (GObject      *parent,
+					    GObject      *child);
+typedef void   (* GladeRemoveChildFunc)    (GObject      *parent,
+					    GObject      *child);
+
+
 /* GladeWidgetClass contains all the information we need regarding an widget
  * type. It is also used to store information that has been loaded to memory
  * for that object like the icon/mask.
@@ -29,6 +50,7 @@ struct _GladeWidgetClass
 			      * example "button" so that we generate button1,
 			      * button2, buttonX ..
 			      */
+
 	gchar *palette_name; /* Name used in the palette */
 
 	GList *properties;   /* List of GladePropertyClass objects.
@@ -41,16 +63,7 @@ struct _GladeWidgetClass
 
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
-	GList *child_properties;   /* List of GladePropertyClass objects
-				    * representing child_properties of a
-				    * GtkContainer (the list is empty if the
-				    * class isn't a container).
-				    * Note that the actual GladeProperty
-				    * corresponding to each class end up
-				    * in the packing_properties list of
-				    * each _child_ of the container and thus
-				    * are edited when the _child_ is selected.
-				    */
+	GList *children;    /* List of GladeSupportedChild objects */
 
 	GModule *module;	/* Module with the (optional) special functions
 				 * needed for placeholder_replace, post_create_function
@@ -60,39 +73,59 @@ struct _GladeWidgetClass
 
 	gboolean in_palette;
 
-	/* This method replaces a child widget with another one: it's used to replace
-	 * a placeholder with a widget and viceversa.
-	 */
-	void (*replace_child) (GtkWidget *current,
-			       GtkWidget *new,
-			       GtkWidget *container);
-
 	/* Executed after widget creation: it takes care of creating the
 	 * GladeWidgets associated with internal children. It's also the place
 	 * to set sane defaults, e.g. set the size of a window.
 	 */
-	void (*post_create_function) (GObject *gobject);
-
-	/* Executed before setting the properties of the widget to its initial
-	 * value as specified in the xml file */
-	void (*pre_create_function) (GObject *gobject);
-
-	/* If the widget is a container, this method takes care of adding the
-	 * needed placeholders.
-	 */
-	void (*fill_empty) (GtkWidget *widget);
+	void (*post_create_function) (GObject      *gobject);
 
 	/* Retrieves the the internal child of the given name.
 	 */
-	void (*get_internal_child) (GtkWidget *parent,
-				    const gchar *name,
-				    GtkWidget **child);
+	void (*get_internal_child)   (GObject      *parent,
+				      const gchar  *name,
+				      GObject     **child);
 
 	/* Is property_class of ancestor applicable to the widget? Usually property_class only
 	 * applies to direct children of a given ancestor */
 	gboolean (*child_property_applies) (GtkWidget *ancestor,
 					    GtkWidget *widget,
-					    const char *property_id);
+					    const gchar *property_id);
+};
+
+struct _GladeSupportedChild
+{
+	GType        type;         /* This supported child type */
+
+	GList       *properties;   /* List of GladePropertyClass objects representing
+				    * child_properties of a container (the list is empty if
+				    * this container has no child_properties)
+				    * Note that the actual GladeProperty corresponding to
+				    * each class end up in the packing_properties list of
+				    * each _child_ of the container and thus are edited
+				    * when the _child_ is selected.
+				    */
+
+	GladeAddChildFunc             add;              /* Adds a new child of this type */
+	GladeRemoveChildFunc          remove;           /* Removes a child from the container */
+	GladeGetChildrenFunc          get_children;     /* Returns a list of children for this
+							 * type, not including internals
+							 */
+	GladeGetChildrenFunc          get_all_children; /* Returns a list of children of this
+							 * type, including internals
+							 */
+	
+	GladeChildSetPropertyFunc     set_property; /* Sets/Gets a packing property */
+	GladeChildGetPropertyFunc     get_property; /* for this child */
+	
+	void      (* fill_empty)     (GObject      *container); /* Used for placeholders in
+								 * GtkContainers */
+
+	void      (* replace_child)  (GObject      *container,  /* This method replaces a  */
+				      GObject      *old,        /* child widget with */
+				      GObject      *new);       /* another one: it's used to
+								 * replace a placeholder with
+								 * a widget and viceversa.
+								 */
 };
 
 
@@ -107,21 +140,48 @@ struct _GladeWidgetClassSignal
 };
 
 
-GladeWidgetClass *glade_widget_class_new (const char *name, const char *generic_name, const char *palette_name, const char *base_filename, const char *base_library);
-GladeWidgetClass *glade_widget_class_new_from_node (GladeXmlNode *node);
-void glade_widget_class_free (GladeWidgetClass *widget_class);
-GladeWidgetClass *glade_widget_class_get_by_name (const char *name);
+GladeWidgetClass    *glade_widget_class_new                (const char       *name,
+							    const char       *generic_name,
+							    const char       *palette_name,
+							    const char       *base_filename,
+							    const char       *base_library);
+GladeWidgetClass    *glade_widget_class_new_from_node      (GladeXmlNode     *node);
+void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
+GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
+GType 	             glade_widget_class_get_type           (GladeWidgetClass *class);
+void                 glade_widget_class_dump_param_specs   (GladeWidgetClass *class);
+GladePropertyClass  *glade_widget_class_get_property_class (GladeWidgetClass *class,
+							    const gchar      *name);
+GladeSupportedChild *glade_widget_class_get_child_support  (GladeWidgetClass *class,
+							    GType             child_type);
 
-const gchar *glade_widget_class_get_name (GladeWidgetClass *class);
-GType 	     glade_widget_class_get_type (GladeWidgetClass *class);
-gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
-
-gboolean     glade_widget_class_is (GladeWidgetClass *class, const char *name);
-
-void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
-GladePropertyClass *glade_widget_class_get_property_class (GladeWidgetClass *class,
-							   const gchar *name);
-
+void                 glade_widget_class_container_add              (GladeWidgetClass *class,
+								    GObject          *container,
+								    GObject          *child);
+void                 glade_widget_class_container_remove           (GladeWidgetClass *class,
+								    GObject          *container,
+								    GObject          *child);
+GList               *glade_widget_class_container_get_children     (GladeWidgetClass *class,
+								    GObject          *container);
+GList               *glade_widget_class_container_get_all_children (GladeWidgetClass *class,
+								    GObject          *container);
+void                 glade_widget_class_container_set_property     (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *child,
+								    const gchar  *property_name,
+								    const GValue *value);
+void                 glade_widget_class_container_get_property     (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *child,
+								    const gchar  *property_name,
+								    GValue       *value);
+void                 glade_widget_class_container_fill_empty       (GladeWidgetClass *class,
+								    GObject      *container);
+void                 glade_widget_class_container_replace_child    (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *old,
+								    GObject      *new);
+gboolean             glade_widget_class_contains_non_widgets       (GladeWidgetClass *class);
 
 G_END_DECLS
 

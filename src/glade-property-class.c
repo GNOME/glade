@@ -34,6 +34,7 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
+#include "glade-editor.h"
 #include "glade-debug.h"
 
 /**
@@ -479,13 +480,12 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
 	property_class->pspec = spec;
 
-	/* We dont edit objects or pointers as properties.
+	/* Register only editable properties.
 	 */
-	if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec) ||
-	    G_IS_PARAM_SPEC_POINTER(property_class->pspec))
+	if (!glade_editor_editable_property (property_class->pspec))
 		goto lblError;
 	
-	property_class->id = g_strdup (spec->name);
+	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
 	if (!property_class->id || !property_class->name)
 	{

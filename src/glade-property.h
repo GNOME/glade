@@ -40,7 +40,9 @@ struct _GladeProperty
 };
 
 
-GladeProperty *glade_property_new (GladePropertyClass *class, GladeWidget *widget);
+GladeProperty *glade_property_new (GladePropertyClass *class,
+				   GladeWidget        *widget,
+				   GValue             *value);
 
 void glade_property_free (GladeProperty *property);
 
@@ -51,6 +53,7 @@ void glade_property_sync (GladeProperty *property);
 gboolean glade_property_write (GArray *props, GladeProperty *property,
 			       GladeInterface *interface);
 
+GladeProperty *glade_property_dup (GladeProperty *template, GladeWidget *widget);
 
 G_END_DECLS
 

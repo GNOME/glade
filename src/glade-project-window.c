@@ -328,13 +328,11 @@ do_close (GladeProjectWindow *gpw, GladeProject *project)
 	gtk_item_factory_delete_item (gpw->item_factory, item_path);
 	g_free (item_path);
 
-	for (list = project->widgets; list; list = list->next)
+	for (list = project->objects; list; list = list->next)
 	{
-		GtkWidget *widget;
-
-		widget = list->data;
-		if (GTK_WIDGET_TOPLEVEL (widget))
-			gtk_widget_destroy (widget);
+		GObject *object = list->data;
+		if (GTK_WIDGET_TOPLEVEL (object))
+			gtk_widget_destroy (GTK_WIDGET(object));
 	}
 
 	gpw->projects = g_list_remove (gpw->projects, project);
@@ -426,7 +424,7 @@ gpw_copy_cb (void)
 	/* TODO: support multiple selected items */
 	if (list != NULL && list->next == NULL)
 	{
-		GladeWidget *widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data));
+		GladeWidget *widget = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 
 		if (widget)
 			glade_command_copy (widget);
@@ -444,7 +442,7 @@ gpw_cut_cb (void)
 	/* TODO: support multiple selected items */
 	if (list != NULL && list->next == NULL)
 	{
-		GladeWidget *widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (list->data));
+		GladeWidget *widget = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 
 		if (widget)
 			glade_command_cut (widget);
@@ -1320,7 +1318,7 @@ gpw_project_selection_changed_cb (GladeProject *project,
 		num = g_list_length (list);
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
 			glade_editor_load_widget (gpw->editor,
-						  glade_widget_get_from_gtk_widget
+						  glade_widget_get_from_gobject
 						  (GTK_WIDGET (list->data)));
 		else
 			glade_editor_load_widget (gpw->editor, NULL);

@@ -1,5 +1,11 @@
 <GladeWidgetClass>
   <PostCreateFunction>glade_gtk_fixed_post_create</PostCreateFunction>
-  <FillEmptyFunction>empty</FillEmptyFunction>
+
+  <Children>
+     <Child>
+         <Type>GtkWidget</Type>
+         <FillEmptyFunction>empty</FillEmptyFunction>
+     </Child>
+  </Children>
 </GladeWidgetClass>
 

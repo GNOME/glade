@@ -248,9 +248,8 @@ static GladeProject*
 glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;
-
-	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
-	return parent->project;
+	parent = glade_placeholder_get_parent (placeholder);
+	return parent ? parent->project : NULL;
 }
 
 static gboolean
@@ -320,7 +319,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			GladeProject *project;
 
 			project = glade_placeholder_get_project (placeholder);
-			glade_project_selection_set (project, GTK_WIDGET (placeholder), TRUE);
+			glade_project_selection_set (project, G_OBJECT (placeholder), TRUE);
 		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
@@ -339,4 +338,22 @@ glade_placeholder_popup_menu (GtkWidget *widget)
 	glade_popup_placeholder_pop (GLADE_PLACEHOLDER (widget), NULL);
 
 	return TRUE;
+}
+
+GladeWidget *
+glade_placeholder_get_parent (GladePlaceholder *placeholder)
+{
+	GtkWidget   *widget;
+	GladeWidget *parent = NULL;
+
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
+
+	for (widget  = gtk_widget_get_parent (GTK_WIDGET (placeholder));
+	     widget != NULL;
+	     widget = gtk_widget_get_parent (widget))
+	{
+		if ((parent = glade_widget_get_from_gobject (widget)) != NULL)
+			break;
+	}
+	return parent;
 }

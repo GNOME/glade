@@ -570,17 +570,19 @@ glade_command_create_delete_undo (GladeCommand *cmd)
 static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
-	GladeWidget *widget = me->widget;
+	GladeWidget      *widget      = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
 
-	if (!GTK_WIDGET_TOPLEVEL (widget->widget))
-		glade_widget_replace (GTK_WIDGET (placeholder), widget->widget);
+	if (!GTK_WIDGET_TOPLEVEL (widget->object))
+		glade_widget_replace
+			(glade_placeholder_get_parent (placeholder),
+			 G_OBJECT (placeholder), widget->object);
 
-	glade_project_add_widget (widget->project, widget->widget);
-	glade_project_selection_set (widget->project, widget->widget, TRUE);
+	glade_project_add_object    (widget->project, widget->object);
+	glade_project_selection_set (widget->project, widget->object, TRUE);
 
-	if (GTK_IS_WIDGET (widget->widget))
-		gtk_widget_show_all (widget->widget);
+	if (GTK_IS_WIDGET (widget->object))
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
 
 	return TRUE;
 }
@@ -602,12 +604,15 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
-		glade_widget_replace (widget->widget, GTK_WIDGET (me->placeholder));
+		glade_widget_replace
+			(glade_widget_get_parent (widget),
+			 widget->object, G_OBJECT (me->placeholder));
 	}
 
-	gtk_widget_hide (widget->widget);
+	if (GTK_IS_WIDGET (widget->object))
+		gtk_widget_hide (GTK_WIDGET (widget->object));
 
-	glade_project_remove_widget (widget->project, widget->widget);
+	glade_project_remove_object (widget->project, widget->object);
 
 	return TRUE;
 }
@@ -641,7 +646,9 @@ glade_command_create_delete_finalize (GObject *obj)
 
 	cmd = GLADE_COMMAND_CREATE_DELETE (obj);
 
-	g_object_unref (cmd->placeholder);
+	if (cmd->placeholder)
+		g_object_unref (cmd->placeholder);
+
 	g_object_unref (cmd->widget);
 	
 	glade_command_finalize (obj);
@@ -734,12 +741,13 @@ glade_command_create (GladeWidgetClass *class,
 	gpw = glade_project_window_get ();
 	g_return_if_fail (GLADE_IS_PALETTE (gpw->palette));
 
-	if (placeholder)
+	/* AFAIK Only GtkWindow and derivaitves can be toplevels. */
+	if (g_type_is_a (class->type, GTK_TYPE_WINDOW) == FALSE)
 	{
-		parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+		parent = glade_placeholder_get_parent (placeholder);
 		g_return_if_fail (parent != NULL);
 	}
-
+	
 	if (!project)
 		project = parent->project;
 
@@ -794,20 +802,22 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 
 	g_return_val_if_fail (g_list_find (me->clipboard->widgets, glade_widget), TRUE);
 
-	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+	parent  = glade_placeholder_get_parent (placeholder);
 	project = parent->project;
 
-	if (!GTK_WIDGET_TOPLEVEL (glade_widget->widget))
+	if (!GTK_WIDGET_TOPLEVEL (glade_widget->object))
 	{
 		g_object_ref (G_OBJECT (placeholder));
-		glade_widget_replace (GTK_WIDGET (placeholder), glade_widget->widget);
+		glade_widget_replace
+			(glade_placeholder_get_parent (placeholder),
+			 G_OBJECT (placeholder), glade_widget->object);
 	}
 
-	glade_project_add_widget (project, glade_widget->widget);
-	glade_project_selection_set (glade_widget->project, glade_widget->widget, TRUE);
+	glade_project_add_object    (project,               glade_widget->object);
+	glade_project_selection_set (glade_widget->project, glade_widget->object, TRUE);
 
-	if (GTK_IS_WIDGET (glade_widget->widget))
-		gtk_widget_show_all (GTK_WIDGET (glade_widget->widget));
+	if (GTK_IS_WIDGET (glade_widget->object))
+		gtk_widget_show_all (GTK_WIDGET (glade_widget->object));
 
 	glade_clipboard_remove (me->clipboard, glade_widget);
 
@@ -831,12 +841,15 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 			g_object_ref (G_OBJECT (me->placeholder));
 		}
 
-		glade_widget_replace (glade_widget->widget, GTK_WIDGET (me->placeholder));
+		glade_widget_replace
+			(glade_widget_get_parent (glade_widget),
+			 glade_widget->object, G_OBJECT (me->placeholder));
 	}
 
-	gtk_widget_hide (glade_widget->widget);
+	if (GTK_IS_WIDGET (glade_widget->object))
+		gtk_widget_hide (GTK_WIDGET (glade_widget->object));
 
-	glade_project_remove_widget (glade_widget->project, glade_widget->widget);
+	glade_project_remove_object (glade_widget->project, glade_widget->object);
 
 	return TRUE;
 }
@@ -1003,7 +1016,7 @@ glade_command_paste (GladePlaceholder *placeholder)
 	if (widget == NULL)
 		return;
 
-	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+	parent = glade_placeholder_get_parent (placeholder);
 	glade_command_cut_copy_paste_common (widget, placeholder, parent->project, GLADE_PASTE);
 }
 
