@@ -41,8 +41,10 @@ glade_project_view_get_type (void)
 {
 	static GType type = 0;
 
-	if (!type) {
-		static const GTypeInfo info = {
+	if (!type)
+	{
+		static const GTypeInfo info =
+		{
 			sizeof (GladeProjectViewClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
@@ -76,7 +78,8 @@ glade_project_view_find_iter (GtkTreeModel *model,
 
 	next = gtk_tree_iter_copy (iter);
 	
-	while (TRUE) {
+	while (TRUE)
+	{
 		gtk_tree_model_get (model, next, WIDGET_COLUMN, &widget, -1);
 		if (widget == NULL) {
 			g_warning ("Could not get the glade widget from the model");
@@ -86,7 +89,8 @@ glade_project_view_find_iter (GtkTreeModel *model,
 			return gtk_tree_iter_copy (next);
 		/* Me ? leaking ? nah .... */
 #if 1
-		if (gtk_tree_model_iter_has_child (model, next)) {
+		if (gtk_tree_model_iter_has_child (model, next))
+		{
 			GtkTreeIter *child = g_new0 (GtkTreeIter, 1);
 			GtkTreeIter *retval = NULL;
 			gtk_tree_model_iter_children (model, child, next);
@@ -111,14 +115,15 @@ glade_project_view_find_iter_by_widget (GtkTreeModel *model,
 	GtkTreeIter iter;
 	GtkTreeIter *retval;
 
-	if (!gtk_tree_model_get_iter_root (model, &iter)) {
+	if (!gtk_tree_model_get_iter_root (model, &iter))
+	{
 		g_warning ("Cound not find first widget.");
 		return NULL;
 	}
 
 	retval = glade_project_view_find_iter (model, &iter, findme);
 
-	if (retval == NULL)
+	if (!retval)
 		g_warning ("Could not find iterator for %s\n", findme->name);
 
 	return retval;
@@ -134,12 +139,13 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 
 	if (view->is_list && !GLADE_WIDGET_IS_TOPLEVEL (findme))
 		return;
-	
+
 	model = GTK_TREE_MODEL (view->model);
 
 	iter = glade_project_view_find_iter_by_widget (model, findme);
 
-	if (iter) {
+	if (iter)
+	{
 		path = gtk_tree_model_get_path (model, iter);
 		gtk_tree_model_row_changed (model, path, iter);
 	}
@@ -160,18 +166,21 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 
 	list = g_list_copy (widgets);
 	list = g_list_reverse (list);
-	for (; list; list = list->next) {
+	for (; list; list = list->next)
+	{
 		GladeWidget *widget;
 
 		widget = glade_widget_get_from_gtk_widget (list->data);
-		if (widget) {
+		if (widget)
+		{
 			gtk_tree_store_append (model, &iter, parent_iter);
 			gtk_tree_store_set (model, &iter,
 					    WIDGET_COLUMN, widget,
 					    -1);
 		}
 
-		if (add_childs && GTK_IS_CONTAINER (list->data)) {
+		if (add_childs && GTK_IS_CONTAINER (list->data))
+		{
 			GList *children;
 			GtkTreeIter *copy = NULL;
 
@@ -198,7 +207,8 @@ glade_project_view_populate_model (GladeProjectView *view)
 		return;
 
 	/* Make a list of only the toplevel widgets */
-	for (list = project->widgets; list; list = list->next) {
+	for (list = project->widgets; list; list = list->next)
+	{
 		GtkWidget *widget;
 
 		widget = GTK_WIDGET (list->data);
@@ -388,6 +398,9 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
+	if (GTK_IS_WINDOW (widget->widget))
+		gtk_window_deiconify (GTK_WINDOW (widget->widget));
+
 	gtk_widget_show (widget->widget);
 }
 
@@ -527,12 +540,14 @@ glade_project_view_new (GladeProjectViewType type)
 {
 	GladeProjectView *view = g_object_new (GLADE_TYPE_PROJECT_VIEW, NULL);
 
-	if (type == GLADE_PROJECT_VIEW_LIST) {
+	if (type == GLADE_PROJECT_VIEW_LIST)
+	{
 		view->is_list = TRUE;
 
 		/* in the main window list we don't want the header */
 		gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view->tree_view), FALSE);
-	} else
+	}
+	else
 		view->is_list = FALSE;
 
 	gtk_container_add (GTK_CONTAINER (view), view->tree_view);
@@ -561,7 +576,8 @@ glade_project_view_set_project (GladeProjectView *view,
 		return;
 
 	/* This view stops listening to the old project (if there was one) */
-	if (view->project != NULL) {
+	if (view->project != NULL)
+	{
 		g_signal_handler_disconnect (G_OBJECT (view->project),
 					     view->add_widget_signal_id);
 		g_signal_handler_disconnect (G_OBJECT (view->project),
