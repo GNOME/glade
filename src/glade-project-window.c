@@ -229,6 +229,80 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Help/_About", NULL, gpw_about_cb, 0 },
 };
 
+static gint
+glade_hide_on_delete_event (GtkWidget *widget, gpointer not_used)
+{
+	gtk_widget_hide (GTK_WIDGET (widget));
+
+	/* Return true so that the palette is not destroyed */
+	return TRUE;
+}
+
+static void
+glade_show_palette (GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->palette_window == NULL)
+		glade_palette_create (gpw);
+
+	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
+	gtk_widget_show (GTK_WIDGET (gpw->palette_window));
+}
+
+static void
+glade_show_editor (GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->editor == NULL)
+		glade_editor_create (gpw);
+	
+	gtk_widget_show_all (GTK_WIDGET (gpw->editor));
+	gtk_widget_show (GTK_WIDGET (gpw->editor_window));
+}
+
+static void
+glade_create_palette (GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	gpw->palette_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+	gpw->palette = glade_palette_new (gpw->catalogs);
+	gpw->palette->project_window = gpw;
+
+	gtk_window_set_title (gpw->palette_window, _("Palette"));
+	gtk_window_set_policy (gpw->palette_window, FALSE, FALSE, TRUE);
+
+	gtk_container_add (GTK_CONTAINER (gpw->palette_window), GTK_WIDGET (gpw->palette));
+
+	/* Delete event, don't destroy it */
+	gtk_signal_connect (GTK_OBJECT (gpw->palette_window), "delete_event",
+			    GTK_SIGNAL_FUNC (glade_hide_on_delete_event), NULL);
+}
+
+static void
+glade_create_editor (GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	if (gpw->editor != NULL)
+		return;
+	
+	gpw->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+	gpw->editor = GLADE_EDITOR (glade_editor_new ());
+	gpw->editor->project_window = gpw;
+
+	gtk_window_set_title  (gpw->editor_window, _("Properties"));
+	gtk_window_set_policy (gpw->editor_window, FALSE, TRUE, TRUE);
+
+	gtk_container_add (GTK_CONTAINER (gpw->editor_window), GTK_WIDGET (gpw->editor));
+
+	/* Delete event, don't destroy it */
+	gtk_signal_connect (GTK_OBJECT (gpw->editor_window), "delete_event",
+			    GTK_SIGNAL_FUNC (glade_hide_on_delete_event), NULL);
+}
+
 static void
 glade_project_window_construct_menu (GladeProjectWindow *gpw)
 {
@@ -354,8 +428,8 @@ glade_project_window_new (GList *catalogs)
 	glade_project_window_set_view (gpw, view);
 
 	glade_project_window = gpw;
-	glade_palette_create (gpw);
-	glade_editor_create  (gpw);
+	glade_create_palette (gpw);
+	glade_create_editor  (gpw);
 	glade_clipboard_create (gpw);
 	
 	return gpw;
@@ -424,7 +498,7 @@ gpw_show_palette_cb (void)
 {
 	GladeProjectWindow *gpw = glade_project_window_get ();
 
-	glade_palette_show (gpw);
+	glade_show_palette (gpw);
 }
 
 static void
@@ -432,7 +506,7 @@ gpw_show_editor_cb (void)
 {
 	GladeProjectWindow *gpw = glade_project_window_get ();
 
-	glade_editor_show (gpw);
+	glade_show_editor (gpw);
 }
 
 static void
@@ -748,6 +822,6 @@ void
 glade_project_window_show_all (GladeProjectWindow *gpw)
 {
 	gtk_widget_show_all (gpw->window);
-	glade_palette_show (gpw);
-	glade_editor_show (gpw);
+	glade_show_palette (gpw);
+	glade_show_editor (gpw);
 }

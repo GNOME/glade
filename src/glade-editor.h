@@ -24,7 +24,7 @@ guint glade_editor_get_type (void);
  */
 struct _GladeEditor
 {
-	GtkWindow window;  /* The editor (for now) a toplevel window */
+	GtkNotebook notebook;  /* The editor is a notebook */
 	
 	GladeProjectWindow *project_window; /* This editor belongs to this
 					     * project_window
@@ -90,7 +90,7 @@ struct _GladeEditor
 
 struct _GladeEditorClass
 {
-	GtkWindowClass parent_class;
+	GtkNotebookClass parent_class;
 
 	void   (*select_item) (GladeEditor *editor, GladeWidget *widget);
 };
@@ -178,8 +178,9 @@ typedef enum {
 	GLADE_EDITOR_DOUBLE,
 }GladeEditorNumericType;
 
+GladeEditor *glade_editor_new (void);
+
 void  glade_editor_create (GladeProjectWindow *gpw);
-void  glade_editor_show   (GladeProjectWindow *gpw);
 void  glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
 
 G_END_DECLS

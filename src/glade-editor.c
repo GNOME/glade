@@ -56,7 +56,7 @@ enum
 
 static guint glade_editor_signals[LAST_SIGNAL] = {0};
 
-static GtkWindowClass *parent_class = NULL;
+static GtkNotebookClass *parent_class = NULL;
 static void glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget);
 
 
@@ -85,7 +85,7 @@ glade_editor_get_type (void)
 			(GtkClassInitFunc) NULL,
 		};
 		
-		editor_type = gtk_type_unique (gtk_window_get_type (), &editor_info);
+		editor_type = gtk_type_unique (gtk_notebook_get_type (), &editor_info);
 	}
 
 	return editor_type;
@@ -99,7 +99,7 @@ glade_editor_class_init (GladeEditorClass * klass)
 	
 	object_class = (GtkObjectClass *) klass;
 
-	parent_class = gtk_type_class (gtk_window_get_type ());
+	parent_class = gtk_type_class (gtk_notebook_get_type ());
 
 	glade_editor_signals[SELECT_ITEM] =
 		gtk_signal_new ("select_item",
@@ -139,37 +139,24 @@ my_notebook_page (const gchar *name, GtkWidget *notebook)
 static void
 glade_editor_init (GladeEditor *editor)
 {
-	GtkWidget *notebook;
-
 	editor->tooltips = gtk_tooltips_new ();
 
-	gtk_window_set_title  (GTK_WINDOW (editor), _("Properties"));
-	gtk_window_set_policy (GTK_WINDOW (editor), FALSE, TRUE, TRUE);
-
-	notebook = gtk_notebook_new ();
-	
-	editor->vbox_widget  = my_notebook_page (_("Widget"), notebook);
-	editor->vbox_packing = my_notebook_page (_("Packing"), notebook);
-	editor->vbox_common  = my_notebook_page (_("Common"), notebook);
-	editor->vbox_signals = my_notebook_page (_("Signals"), notebook);
+	editor->vbox_widget  = my_notebook_page (_("Widget"), GTK_WIDGET (editor));
+	editor->vbox_packing = my_notebook_page (_("Packing"), GTK_WIDGET (editor));
+	editor->vbox_common  = my_notebook_page (_("Common"), GTK_WIDGET (editor));
+	editor->vbox_signals = my_notebook_page (_("Signals"), GTK_WIDGET (editor));
 	editor->widget_tables = NULL;
 	editor->loading = FALSE;
-
-	gtk_container_add (GTK_CONTAINER (editor), notebook);
 
 	gtk_signal_connect (GTK_OBJECT (editor), "delete_event",
 			    GTK_SIGNAL_FUNC (glade_editor_delete_event), NULL);
 	
 }
 
-static GladeEditor *
+GladeEditor *
 glade_editor_new ()
 {
-	GladeEditor *editor;
-
-	editor = GLADE_EDITOR (gtk_type_new (glade_editor_get_type ()));
-	
-	return editor;
+	return GLADE_EDITOR (gtk_type_new (glade_editor_get_type ()));
 }
 
 static void
@@ -1414,19 +1401,6 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * glade_editor_select_item_real:
  * @editor: 
@@ -1464,17 +1438,6 @@ glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget)
 			 glade_editor_signals [SELECT_ITEM], widget);
 }
 	
-void
-glade_editor_show (GladeProjectWindow *gpw)
-{
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->editor == NULL)
-		glade_editor_create (gpw);
-	
-	gtk_widget_show_all (GTK_WIDGET (gpw->editor));
-}
-
 void
 glade_editor_create (GladeProjectWindow *gpw)
 {

@@ -25,7 +25,9 @@ struct _GladeProjectWindow
 				       */
 	GladeProject *project;         /* See glade-project */
 	GtkWidget *widget_tree;        /* The widget tree window*/
+	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GladePalette *palette;         /* See glade-palette */
+	GtkWindow *editor_window;     /* The window that will contain the editor */
 	GladeEditor *editor;           /* See glade-editor */
 	GladeClipboard *clipboard;     /* See glade-clipboard */
 	GladeProjectView *active_view; /* See glade-project-view */

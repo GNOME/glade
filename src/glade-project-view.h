@@ -28,7 +28,7 @@ struct _GladeProjectView
 				*/
 	
 	GladeWidget *selected_widget; /* The selected GladeWidget for this view
-				       * Selection shuold really be a GList not
+				       * Selection should really be a GList not
 				       * a GladeWidget since we should support
 				       * multiple selections.
 				       */
@@ -49,7 +49,7 @@ struct _GladeProjectView
 			   */
 
 	gboolean updating_selection; /* True when we are going to set the
-				      * project selction. So that we don't
+				      * project selection. So that we don't
 				      * recurse cause we are also listening
 				      * for the project changed selection
 				      * signal

@@ -4,11 +4,15 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_PALETTE(obj)          GTK_CHECK_CAST (obj, glade_palette_get_type (), GladePalette)
-#define GLADE_PALETTE_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_palette_get_type (), GladePaletteClass)
-#define GLADE_IS_PALETTE(obj)       GTK_CHECK_TYPE (obj, glade_palette_get_type ())
+#define GLADE_TYPE_PALETTE              (glade_palette_get_type ())
+#define GLADE_PALETTE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TABLE, GladePalette))
+#define GLADE_PALETTE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PALETTE, GladePaletteClass))
+#define GLADE_IS_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PALETTE))
+#define GLADE_IS_PALETTE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PALETTE))
+#define GLADE_PALETTE_GET_CLASS(obj)    (G_TYPE_CHECK_CLASS_TYPE ((obj), GLADE_TYPE_PALETTE, GladePaletteClass))
 
-typedef struct _GladePaletteClass	 GladePaletteClass;
+typedef struct _GladePaletteClass	GladePaletteClass;
+
 
 /* The GladePalette is used so that the user can choose a widget to be
  * created. It is Composed by a section where you can select the
@@ -18,14 +22,14 @@ typedef struct _GladePaletteClass	 GladePaletteClass;
 
 struct _GladePalette
 {
-	GtkWindow window; /* Yes a palette is a toplevel window (for now)
-			   */
+	GtkVBox vbox; /* The parent is a vbox
+		       */
 
 	GladeProjectWindow *project_window; /* A pointer to the GladeProjectWin.
 					     * this palette belongs to
 					     */
 
-	GtkTooltips *tooltips; /* Tooltips, currently uniumplemented */
+	GtkTooltips *tooltips; /* Tooltips, currently unimplemented */
 
 #if 0
 	/* Not beeing used yet */
@@ -35,7 +39,7 @@ struct _GladePalette
 			      * widget" mode
 			      */
 #endif	
-	GtkWidget *vbox; /* The main vbox of the palette */
+	GtkWidget *groups_vbox; /* The vbox that contains the titles of the sections */
 	GtkWidget *label; /* The label contains the text of the selected
 			   * widget that is goingt to be added. For examle
 			   * when a button is selcted it contains GtkButton
@@ -44,6 +48,7 @@ struct _GladePalette
 			   */
 	GtkWidget *notebook; /* Where we store the different catalogs */
 
+	gint nb_sections; /* The number of sections in this palette */
 	GSList *sections_button_group; /* Each section of the palette has
 					* a button. This is the button_group_list
 					*/
@@ -66,13 +71,16 @@ struct _GladePalette
 
 struct _GladePaletteClass
 {
-	GtkWindowClass parent_class;
+	GtkVBoxClass parent_class;
 
 };
 
-void glade_palette_create (GladeProjectWindow *gpw);
-void glade_palette_show   (GladeProjectWindow *gpw);
-void glade_palette_clear  (GladeProjectWindow *gpw);
+GladePalette *glade_palette_new    (GList *catalogs);
+void glade_palette_append_catalog  (GladePalette *palette, GladeCatalog *catalog);
+void glade_palette_unselect_widget (GladePalette *palette);
+
+void glade_palette_create (GladeProjectWindow *gpw); // __attribute__ ((deprecated));
+void glade_palette_clear  (GladeProjectWindow *gpw); // __attribute__ ((deprecated));
 
 G_END_DECLS
 

@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -62,7 +63,7 @@ glade_palette_get_type (void)
 			(GtkClassInitFunc) NULL,
 		};
 		
-		palette_type = gtk_type_unique (gtk_window_get_type (), &palette_info);
+		palette_type = gtk_type_unique (gtk_vbox_get_type (), &palette_info);
 	}
 
 	return palette_type;
@@ -76,7 +77,7 @@ glade_palette_class_init (GladePaletteClass * klass)
 	
 	object_class = (GtkObjectClass *) klass;
 
-	parent_class = gtk_type_class (gtk_window_get_type ());
+	parent_class = gtk_type_class (gtk_vbox_get_type ());
 }
 
 static GtkWidget *
@@ -275,137 +276,100 @@ glade_palette_button_group_create (GladePalette *palette, gchar *name, gint *pag
 	return hbox;
 }
 
-static gint
-glade_palette_delete_event (GladePalette *palette, gpointer not_used)
-{
-	gtk_widget_hide (GTK_WIDGET (palette));
-
-	/* Return true so that the pallete is not destroyed */
-	return TRUE;
-}
-
 static void
-glade_palette_init (GladePalette * palette)
+glade_palette_init (GladePalette *palette)
 {
 	GtkWidget *selector;
 	GtkWidget *widget;
-
-	gtk_window_set_title (GTK_WINDOW (palette), _("Palette"));
-	gtk_window_set_policy (GTK_WINDOW (palette),
-			       FALSE,
-			       FALSE,
-			       TRUE);
 
 	palette->tooltips = gtk_tooltips_new ();
 	palette->widgets_button_group = NULL;
 	palette->sections_button_group = NULL;
 
-	palette->vbox = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (palette), palette->vbox);
-
 	/* Selector */
 	selector = glade_palette_selector_new (palette);
-	gtk_box_pack_start (GTK_BOX (palette->vbox), selector, FALSE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (palette), selector, FALSE, TRUE, 3);
+
+	/* Separator */
+	widget = gtk_hseparator_new ();
+	gtk_box_pack_start (GTK_BOX (palette), widget, FALSE, TRUE, 3);
+
+	/* Groups */
+	palette->groups_vbox = gtk_vbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (palette), palette->groups_vbox, FALSE, TRUE, 0);
 	
 	/* Separator */
 	widget = gtk_hseparator_new ();
-	gtk_box_pack_start (GTK_BOX (palette->vbox), widget, FALSE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (palette), widget, FALSE, TRUE, 3);
 
 	/* Notebook */
 	palette->notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (palette->notebook), FALSE);
-	
-	/* Delete event, don't destroy it */
-	gtk_signal_connect (GTK_OBJECT (palette), "delete_event",
-			    GTK_SIGNAL_FUNC (glade_palette_delete_event), NULL);
-	
+	gtk_box_pack_end (GTK_BOX (palette), palette->notebook, FALSE, TRUE, 3);
+
+	palette->nb_sections = 0;
 }
 
-static GladePalette *
-glade_palette_new ()
+GladePalette *
+glade_palette_new (GList *catalogs)
 {
-	return GLADE_PALETTE (gtk_type_new (glade_palette_get_type ()));
+	GladePalette *palette;
+
+	palette = g_object_new (GLADE_TYPE_PALETTE, NULL);
+	if (palette == NULL)
+		return NULL;
+	
+	while (catalogs != NULL) {
+		glade_palette_append_catalog (palette, (GladeCatalog *) catalogs->data);
+		catalogs = g_list_next (catalogs);
+	}
+
+	return palette;
 }
 
 void
-glade_palette_show (GladeProjectWindow *gpw)
+glade_palette_append_catalog (GladePalette *palette, GladeCatalog* catalog)
 {
-	g_return_if_fail (gpw != NULL);
+	GtkWidget *widget;
+	gint *page;
 
-	if (gpw->palette == NULL)
-		glade_palette_create (gpw);
+	g_return_if_fail (palette != NULL);
+	g_return_if_fail (catalog != NULL);
+
+	/* Add the title of the catalog to the palette */
+	page = g_malloc (sizeof (int));
+	if (page == NULL)
+		return; /* TODO: Add a GError argument to be able to signal out of memory conditions */
 	
-	gtk_widget_show_all (GTK_WIDGET (gpw->palette));
+	*page = palette->nb_sections++;
+	widget = glade_palette_button_group_create (palette, catalog->title, page);
+	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), widget, FALSE, TRUE, 3);
+
+	/* Add the section */
+	widget = glade_palette_widget_table_create (palette, catalog);
+	gtk_notebook_append_page (GTK_NOTEBOOK (palette->notebook), widget, NULL);
+
+	gtk_widget_show (palette->notebook);
 }
 
 void
 glade_palette_create (GladeProjectWindow *gpw)
 {
-	GtkWidget *widget;
-	GList *catalogs;
-	gint i;
+	g_return_if_fail (gpw != NULL);
 	
-	if (gpw->palette == NULL) {
-		GladePalette *palette;
-
-		palette = GLADE_PALETTE (glade_palette_new ());
-		gpw->palette = palette;
-		palette->project_window = gpw;
-
-		/* Tables of widgets 
-		 * we need to call this function after creating the palette
-		 * cause we don't have a pointer to palette->project_window when
-		 * we are in glade_palette_init ()
-		 */
-
-		/* FIXME: I think that I should not tell you why. This code
-		 * do what it should do, but it sucks a lot.
-		 */
-		catalogs = gpw->catalogs;
-
-		/* Groups */
-		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){
-			gint *page = g_malloc (sizeof (int));
-			*page = i;
-			widget = glade_palette_button_group_create (palette,
-								    ((GladeCatalog *)catalogs->data)->title,
-								    page);
-			gtk_box_pack_start (GTK_BOX (palette->vbox), widget,
-					    FALSE, TRUE, 3);
-		}
-
-		/* Separator */
-		widget = gtk_hseparator_new ();
-		gtk_box_pack_start (GTK_BOX (palette->vbox), widget,
-				    FALSE, TRUE, 3);
-
-		catalogs = gpw->catalogs;
-
-		/* Sections */
-		for (i = 0; catalogs != NULL; catalogs = g_list_next (catalogs), i++){
-			widget = glade_palette_widget_table_create (gpw->palette,
-								    catalogs->data);
-			gtk_notebook_append_page (GTK_NOTEBOOK (palette->notebook),
-						  widget, NULL);
-		}
-
-		gtk_box_pack_end (GTK_BOX (palette->vbox), palette->notebook,
-				  FALSE, TRUE, 3);
-		gtk_widget_show (palette->notebook);
-	}
-
+	gpw->palette = glade_palette_new (gpw->catalogs);
+	gpw->palette->project_window = gpw;
 }
 
 void
-glade_palette_clear  (GladeProjectWindow *gpw)
+glade_palette_unselect_widget (GladePalette *palette)
 {
-	GladePalette *palette;
+	g_return_if_fail (palette != NULL);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button), TRUE);
+}
 
-	palette = gpw->palette;
-	
-	if (!GLADE_IS_PALETTE (palette))
-		return;
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->dummy_button),
-				      TRUE);
+void
+glade_palette_clear (GladeProjectWindow *gpw)
+{
+	glade_palette_unselect_widget(gpw->palette);
 }
