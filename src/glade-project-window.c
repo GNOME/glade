@@ -107,7 +107,10 @@ gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
 
 	project = glade_project_open (path);
 	if (!project) {
-		glade_util_ui_warn (_("Could not open project."));
+		GladeProjectWindow *gpw;
+
+		gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("Could not open project."));
 		return;
 	}
 
@@ -149,13 +152,17 @@ gpw_on_save_filesel_ok (GtkWidget *widget, GladeProject *project)
 	gpw = glade_project_window_get ();
 
 	if (!glade_project_save (project, path)) {
-		glade_util_ui_warn (_("Invalid file name"));
+		GladeProjectWindow *gpw;
+
+		gpw = glade_project_window_get ();
+		glade_util_ui_warn (gpw->window, _("Invalid file name"));
 		return;
 	}
 
 	gpw_refresh_project_entry (project);
 	gpw_refresh_title (gpw);
-	glade_util_flash_message (gpw->statusbar_actions_context_id,
+	glade_util_flash_message (gpw->statusbar,
+				  gpw->statusbar_actions_context_id,
 				  _("Project '%s' saved"), project->name);
 }
 
@@ -171,6 +178,9 @@ gpw_save_cb (void)
 
 	if (project->path != NULL) {
 		glade_project_save (project, project->path);
+		glade_util_flash_message (gpw->statusbar,
+					  gpw->statusbar_actions_context_id,
+					  _("Project '%s' saved"), project->name);
 		return;
 	}
 
@@ -401,15 +411,24 @@ gpw_paste_cb (void)
 
 	selection = glade_project_selection_get (gpw->project);
 	if (selection != NULL && selection->next == NULL && GLADE_IS_PLACEHOLDER (selection->data))
-		glade_command_paste ((GladePlaceholder*) selection->data);
+		glade_command_paste (GLADE_PLACEHOLDER (selection->data));
 }
 
 static void
 gpw_delete_cb (void)
 {
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	if (!gpw->project) {
+		g_warning ("Why is delete sensitive ? it shouldn't not be because "
+			   "we don't have a project");
+		return;
+	}
+
 	/* glade_util_delete_selection performs a glade_command_delete
 	 * on each of the selected widgets */
-	glade_util_delete_selection ();
+	glade_util_delete_selection (gpw->project);
 }
 
 static void

@@ -2,8 +2,10 @@
 #ifndef __GLADE_PLACEHOLDER_H__
 #define __GLADE_PLACEHOLDER_H__
 
+
 G_BEGIN_DECLS
 
+#define GLADE_PLACEHOLDER(p) ((GladePlaceholder *) p)
 
 GladePlaceholder * glade_placeholder_new ();
 

@@ -26,7 +26,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gmodule.h>
 #include "glade.h"
-#include "glade-project-window.h"
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-debug.h"
@@ -84,13 +83,11 @@ glade_util_get_type_from_name (const gchar *name)
 }
 
 void
-glade_util_ui_warn (const gchar *warning)
+glade_util_ui_warn (GtkWidget *parent, const gchar *warning)
 {
-	GladeProjectWindow *gpw;
 	GtkWidget *dialog;
 
-	gpw = glade_project_window_get ();
-	dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->window),
+	dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
 					 GTK_DIALOG_DESTROY_WITH_PARENT,
 					 GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_OK,
@@ -120,29 +117,28 @@ remove_message_timeout (FlashInfo * fi)
 
 /**
  * glade_utils_flash_message:
+ * @statusbar: The statusbar
  * @context_id: The message context_id
  * @format: The message to flash on the statusbar
  *
  * Flash a temporary message on the statusbar.
- **/
+ */
 void
-glade_util_flash_message (guint context_id, gchar *format, ...)
+glade_util_flash_message (GtkWidget *statusbar, guint context_id, gchar *format, ...)
 {
 	va_list args;
-	GladeProjectWindow *gpw;
 	FlashInfo *fi;
 	gchar *message;
-	
-	g_return_if_fail (format != NULL);
 
-	gpw = glade_project_window_get ();
+	g_return_if_fail (GTK_IS_STATUSBAR (statusbar));
+	g_return_if_fail (format != NULL);
 
 	va_start (args, format);
 	message = g_strdup_vprintf (format, args);
 	va_end (args);
 
 	fi = g_new (FlashInfo, 1);
-	fi->statusbar = GTK_STATUSBAR (gpw->statusbar);
+	fi->statusbar = GTK_STATUSBAR (statusbar);
 	fi->context_id = context_id;	
 	fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
 
@@ -397,9 +393,6 @@ glade_util_duplicate_underscores (const char *name)
 	return underscored_name;
 }
 
-static GtkWidget *selected = NULL;
-static gint id_expose = 0;
-
 static gboolean
 glade_util_draw_nodes (GtkWidget *widget, GdkEventExpose *expose, gpointer unused)
 {
@@ -470,33 +463,31 @@ glade_util_has_nodes (GtkWidget *widget)
 }
 
 void
-glade_util_delete_selection (void)
+glade_util_delete_selection (GladeProject *project)
 {
-	GladeProject *project;
-	GladeWidget *glade_widget;
 	GList *selection;
 	GList *free_me;
 	GList *list;
 
-	project = glade_project_window_get_project ();
-	if (!project) {
-		g_warning ("Why is delete sensitive ? it shouldn't not be because "
-			   "we don't have a project");
-		return;
-	}
-	
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
 	selection = glade_project_selection_get (project);
+	if (!selection)
+		return;
 
 	/* We have to be careful when deleting widgets from the selection
 	 * because when we delete each widget, the selection pointer changes
 	 * due to the g_list_remove performed by glade_command_delete.
 	 * Copy the list and free it after we are done
 	 */
-	list = g_list_copy (selection);
-	free_me = list;
-	for (; list; list = list->next)
-		if ((glade_widget = glade_widget_get_from_gtk_widget (list->data)) != NULL)
+	free_me = g_list_copy (selection);
+	for (list = free_me; list; list = list->next) {
+		GladeWidget *glade_widget;
+
+		glade_widget = glade_widget_get_from_gtk_widget (list->data);
+		if (glade_widget)
 			glade_command_delete (glade_widget);
+	}
 
 	g_list_free (free_me);
 }

@@ -4,6 +4,7 @@
 
 G_BEGIN_DECLS
 
+
 /* Function is a GNU extension */
 #ifndef __GNUC__
 #define __FUNCTION__   ""
@@ -19,8 +20,10 @@ typedef enum
 
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 GType		glade_util_get_type_from_name	(const gchar *name);
-void		glade_util_ui_warn		(const gchar *warning);
-void		glade_util_flash_message	(guint context_id, gchar *format, ...);
+void		glade_util_ui_warn		(GtkWidget *parent, const gchar *warning);
+void		glade_util_flash_message	(GtkWidget *statusbar, 
+						 guint context_id,
+						 gchar *format, ...);
 
 /* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
    any '_' characters. It isn't particularly efficient. */
@@ -35,11 +38,12 @@ GtkWidget	*glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
 void		glade_util_replace (char *str, char a, char b);
 char		*glade_util_duplicate_underscores (const char *name);
 
-void		glade_util_delete_selection (void);
+void		glade_util_delete_selection (GladeProject *project);
 
 void		glade_util_add_nodes (GtkWidget *widget);
 void		glade_util_remove_nodes (GtkWidget *widget);
 gboolean	glade_util_has_nodes (GtkWidget *widget);
+
 
 G_END_DECLS
 

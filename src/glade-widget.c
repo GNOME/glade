@@ -379,9 +379,9 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 }
 
 static gboolean
-glade_widget_key_press(GtkWidget *event_widget,
-		       GdkEventKey *event,
-		       gpointer user_data)
+glade_widget_key_press (GtkWidget *event_widget,
+			GdkEventKey *event,
+			gpointer user_data)
 {
 	GladeWidget *glade_widget = GLADE_WIDGET (user_data);
 	
@@ -390,7 +390,7 @@ glade_widget_key_press(GtkWidget *event_widget,
 
 	/* We will delete all the selected items */
 	if (event->keyval == GDK_Delete)
-		glade_util_delete_selection ();
+		glade_util_delete_selection (glade_widget->project);
 
 	g_debug(("glade_widget_key_press\n"));
 	return TRUE;

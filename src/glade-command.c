@@ -902,14 +902,15 @@ glade_command_paste (GladePlaceholder *placeholder)
 	GladeWidget *widget;
 	GladeWidget *parent;
 
-	if (placeholder == NULL) {
-		glade_util_ui_warn (_("Placeholder not selected!"));
+	gpw = glade_project_window_get ();
+
+	if (!placeholder) {
+		glade_util_ui_warn (gpw->window, _("Placeholder not selected!"));
 		return;
 	}
 
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
 	
-	gpw = glade_project_window_get ();
 	widget = gpw->clipboard->curr;
 
 	if (widget == NULL)
@@ -923,8 +924,12 @@ glade_command_paste (GladePlaceholder *placeholder)
 void
 glade_command_cut (GladeWidget *widget)
 {
-	if (widget == NULL) {
-		glade_util_ui_warn (_("No widget selected!"));
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+
+	if (!widget) {
+		glade_util_ui_warn (gpw->window, _("No widget selected!"));
 		return;
 	}
 
@@ -932,3 +937,4 @@ glade_command_cut (GladeWidget *widget)
 
 	glade_command_cut_paste_common (widget, NULL, widget->project, TRUE);
 }
+
