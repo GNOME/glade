@@ -1,5 +1,17 @@
 2005-01-06  Mikael Hallendal  <micke@imendio.com>
 
+	* src/glade-catalog.c: (catalog_load), (catalog_load_classes),
+	(catalog_load_group):
+	* src/glade.h:
+	* widgets/gtk+.xml:
+	- More work on the catalog format. 
+	- Replaced glade-widgets with glade-widget-classes 
+	- Replaced glade-widget-class in groups to glade-widget-class-ref to
+	  be more DTD friendly. Also makes more sense since it's a reference
+	  to a widget class rather than another widget class definition.
+
+2005-01-06  Mikael Hallendal  <micke@imendio.com>
+
 	* src/glade-catalog.c: (catalog_load), (catalog_load_group):
 	* src/glade-widget-class.c: (glade_widget_class_new):
 	- Make sure to use the GLADE_TAG defines instead of hardcoding strings.

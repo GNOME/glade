@@ -93,9 +93,10 @@
 
 /* Used for catalog tags and attributes */
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
-#define GLADE_TAG_GLADE_WIDGETS                   "glade-widgets"
-#define GLADE_TAG_GLADE_WIDGET_GROUP              "glade-widget-group"
+#define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
 #define GLADE_TAG_GLADE_WIDGET_CLASS              "glade-widget-class"
+#define GLADE_TAG_GLADE_WIDGET_GROUP              "glade-widget-group"
+#define GLADE_TAG_GLADE_WIDGET_CLASS_REF          "glade-widget-class-ref"
 
 #define GLADE_TAG_SIGNAL_NAME                     "signal-name"
 #define GLADE_TAG_DEFAULT                         "default"

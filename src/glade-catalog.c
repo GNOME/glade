@@ -53,7 +53,7 @@ struct _GladeWidgetGroup {
 };
 
 static GladeCatalog *  catalog_load         (const char       *filename);
-static gboolean        catalog_load_widgets (GladeCatalog     *catalog,
+static gboolean        catalog_load_classes (GladeCatalog     *catalog,
 					     GladeXmlNode     *widgets_node);
 static gboolean        catalog_load_group   (GladeCatalog     *catalog,
 					     GladeXmlNode     *group_node);
@@ -112,9 +112,9 @@ catalog_load (const char *filename)
 		const gchar *node_name;
 
 		node_name = glade_xml_node_get_name (node);
-		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGETS) == 0) 
+		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASSES) == 0) 
 		{
-			catalog_load_widgets (catalog, node);
+			catalog_load_classes (catalog, node);
 		}
 		else if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_GROUP) == 0)
 		{
@@ -134,7 +134,7 @@ catalog_load (const char *filename)
 }
 
 static gboolean
-catalog_load_widgets (GladeCatalog *catalog, GladeXmlNode *widgets_node)
+catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 {
 	GladeXmlNode *node;
 
@@ -199,7 +199,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 
 		node_name = glade_xml_node_get_name (node);
 		
-		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
+		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS_REF) != 0) 
 			continue;
 
 		name = glade_xml_get_property_string (node, GLADE_TAG_NAME);
