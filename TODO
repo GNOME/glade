@@ -38,7 +38,19 @@ that specifies a file.
 - Fix multiple lines GladeEditor text entries. See glade-editor.c,
 function : glade_editor_create_input_text.
 - Implement tooltips for the "Widget" page of the widget editor.
-
+- The tree view does not remember if the "leafs" are opened or closed
+  when switching between projects, or when reconstructing it. The tree view
+  should remember the states of the leafs. Some of this functionality might
+  have to go into gtk. Also if we have something like :
+  A
+   \
+    B__ C
+    | 
+    \__ D
+  When hiding the childs of "A" and showingt htem again, the state of B and its
+  childs is lost, this should go into gtk+.
+    
+    	
 NOT-SO-EASY TO IMPLEMENT ITEMS
 ------------------------------
 This items may prove tricky to implement if they are "done right"

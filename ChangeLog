@@ -1,3 +1,17 @@
+2001-07-02  Chema Celorio  <chema@celorio.com>
+
+	* src/glade-project-window.c (gpw_copy_cb): add function names buts still with no content
+
+	* src/glade-placeholder.c (glade_placeholder_replace_widget): when adding a widget
+	set the selection to that widget.
+
+2001-07-01  Shane Butler  <shane_b@users.sourceforge.net>
+ 
+ 	* src/glade-widget-class.c (glade_widget_class_list_signals): use 
+ 	class->type to avoid duplication etc
+ 	* src/glade-signals-editor.[ch]: moved lots of functionality into smaller
+ 	functions, fixed bugs etc.
+ 
 2001-06-28  Ravi Pratap  <ravi@che.iitm.ac.in>
 
 	* src/glade-project.c : Include string.h

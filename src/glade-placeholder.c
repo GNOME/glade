@@ -29,6 +29,7 @@
 #include "glade-widget-class.h"
 #include "glade-widget.h"
 #include "glade-property.h"
+#include "glade-project.h"
 #include "glade-project-window.h"
 
 #define GLADE_PLACEHOLDER_ROW_STRING "GladePlaceholderRow"
@@ -123,7 +124,7 @@ glade_placeholder_replace_container (GladePlaceholder *placeholder,
 }
 
 static void
-glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClass *class)
+glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClass *class, GladeProject *project)
 {
 	GladeWidget *parent;
 	GladeWidget *widget;
@@ -137,17 +138,19 @@ glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClas
 
 	if (parent->class->placeholder_replace != NULL)
 		parent->class->placeholder_replace (placeholder, widget, parent);
+
+	glade_project_selection_set (widget, TRUE);
 }
 
 static void
-glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEventButton *event, gpointer not_used)
+glade_placeholder_on_button_press_event (GladePlaceholder *placeholder, GdkEventButton *event, GladeProject *project)
 {
 	GladeProjectWindow *gpw;
 
 	gpw = glade_project_window_get ();
 	
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS && gpw->add_class != NULL) {
-		glade_placeholder_replace_widget (placeholder, gpw->add_class);
+		glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
 		gpw->add_class = NULL;
 	}
 			
@@ -212,12 +215,13 @@ glade_placeholder_on_realize (GladePlaceholder *placeholder, gpointer not_used)
 }
 
 static void
-glade_placeholder_connect_mouse_signals (GladePlaceholder *placeholder)
+glade_placeholder_connect_mouse_signals (GladePlaceholder *placeholder,
+					 GladeProject *project)
 {
 	gtk_signal_connect (GTK_OBJECT (placeholder), "motion_notify_event",
 			    GTK_SIGNAL_FUNC (glade_placeholder_on_motion_notify_event), NULL);
 	gtk_signal_connect (GTK_OBJECT (placeholder), "button_press_event",
-			    GTK_SIGNAL_FUNC (glade_placeholder_on_button_press_event), NULL);
+			    GTK_SIGNAL_FUNC (glade_placeholder_on_button_press_event), project);
 }
 static void
 glade_placeholder_connect_draw_signals (GladePlaceholder *placeholder)
@@ -250,7 +254,7 @@ glade_placeholder_new (GladeWidget *glade_widget)
 	gtk_widget_show (GTK_WIDGET (placeholder));
 	
 	glade_placeholder_connect_draw_signals  (placeholder);
-	glade_placeholder_connect_mouse_signals (placeholder);
+	glade_placeholder_connect_mouse_signals (placeholder, glade_widget->project);
 	
 	gtk_signal_connect (GTK_OBJECT (placeholder), "destroy",
 			    GTK_SIGNAL_FUNC (glade_placeholder_on_destroy), NULL);

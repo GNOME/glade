@@ -46,9 +46,6 @@ static void gpw_show_clipboard_cb (void) {};
 
 static void gpw_undo_cb (void) {};
 static void gpw_redo_cb (void) {};
-static void gpw_cut_cb (void) {};
-static void gpw_copy_cb (void) {};
-static void gpw_paste_cb (void) {};
 static void gpw_delete_cb (void) {};
 static void gpw_about_cb (void) {};
 
@@ -88,10 +85,29 @@ gpw_quit_cb (void)
 }
 
 static void
+gpw_copy_cb (void)
+{
+	g_print ("Copy !\n");
+}
+
+static void
+gpw_cut_cb (void)
+{
+	g_print ("Cut !\n");
+}
+
+static void
+gpw_paste_cb (void)
+{
+	g_print ("Paste !\n");
+}
+
+static void
 gpw_delete_event (GtkWindow *w, gpointer not_used)
 {
 	gpw_quit_cb ();
 }
+
 
 static GtkItemFactoryEntry menu_items[] =
 {

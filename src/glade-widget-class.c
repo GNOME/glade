@@ -113,15 +113,10 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	guint num_signals;
 	GladeWidgetClassSignal *cur;
 
+	g_return_val_if_fail (class->type != 0, NULL);
+
 	signals = NULL;
-	/* FIXME: This should work. Apparently this is because you need to have an 
-	 * instance of an object before you can get its type?!? need to fix this 
-	 * to use class->type when bighead applys his patch. - shane
-	 */
-	type = g_type_from_name (class->name);
-
-	g_return_val_if_fail (type != 0, NULL);
-
+	type = class->type;
 	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
 		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
 			sig_ids = g_signal_list_ids (type, &num_signals);

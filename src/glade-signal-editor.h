@@ -7,9 +7,8 @@ G_BEGIN_DECLS
 #define GLADE_SIGNAL_EDITOR(e) ((GladeSignalEditor *)e)
 #define GLADE_IS_SIGNAL_EDITOR(e) (e != NULL)
 
-/* The GladeSignalEditor is used to 
- * 
- * 
+/* The GladeSignalEditor is used to house the signal editor interface and
+ * associated functionality.
  */
 struct _GladeSignalEditor {
 	
@@ -22,7 +21,7 @@ struct _GladeSignalEditor {
 	
 	GtkWidget *signal_name_entry;
 	GtkWidget *signal_handler_entry;
-	GtkWidget *signal_after_button; /* A GtkToggleButton */
+	GtkWidget *signal_after_button;
 
 	/* Buttons */
 	GtkWidget *add_button;
