@@ -43,7 +43,7 @@
 #include <stdlib.h> /* __argc & __argv on the windows build */
 #endif
 
-gchar *widget_name = NULL;
+static gchar *widget_name = NULL;
 
 #ifdef G_OS_UNIX
 static struct poptOption options[] = {

@@ -133,14 +133,14 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter)
 	GtkTreeIter iter_next;
 	GtkTreeIter iter_class;
 	GtkTreeIter iter_signal;
-	gboolean removing_top_signal_handler = FALSE;
+	gboolean removing_top_signal_handler = TRUE;
 	char *signal_name;
 
 	gtk_tree_model_get (model, iter, COLUMN_SIGNAL, &signal_name, -1);
 	if (signal_name == NULL)
 	{
 		gtk_tree_model_iter_parent (model, &iter_signal, iter);
-		removing_top_signal_handler = TRUE;
+		removing_top_signal_handler = FALSE;
 	}
 	else
 		iter_signal = *iter;
@@ -165,9 +165,8 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter)
 		gboolean slot;
 		gboolean visible;
 
-		gtk_tree_model_get (model, &iter_next, COLUMN_SIGNAL, &signal_name, COLUMN_HANDLER, &handler, COLUMN_AFTER, &after, COLUMN_SLOT, &slot, COLUMN_AFTER_VISIBLE, &visible, -1);
-		gtk_tree_store_set (GTK_TREE_STORE (model), iter, COLUMN_SIGNAL, &signal_name, COLUMN_HANDLER, &handler, COLUMN_AFTER, &after, COLUMN_SLOT, &slot, COLUMN_AFTER_VISIBLE, &visible, -1);
-		g_free (signal_name);
+		gtk_tree_model_get (model, &iter_next, COLUMN_HANDLER, &handler, COLUMN_AFTER, &after, COLUMN_SLOT, &slot, COLUMN_AFTER_VISIBLE, &visible, -1);
+		gtk_tree_store_set (GTK_TREE_STORE (model), iter, COLUMN_HANDLER, handler, COLUMN_AFTER, after, COLUMN_SLOT, slot, COLUMN_AFTER_VISIBLE, visible, -1);
 		g_free (handler);
 
 		*iter = iter_next;
@@ -187,10 +186,9 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter)
 static gboolean
 is_void_signal_handler (const char *signal_handler)
 {
-	return (signal_handler == NULL || *signal_handler == 0);
+	return (signal_handler == NULL || *signal_handler == 0 || strcmp (signal_handler, _("<Type the signal's handler here>")) == 0);
 }
 
-/* TODO: this signal handler has grown well beyond what I was expecting.  We should chop it */
 static void
 glade_signal_editor_cell_edited (GtkCellRendererText *cell,
 				 const gchar         *path_str,
