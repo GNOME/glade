@@ -30,7 +30,6 @@
 #include <string.h>
 
 #include "glade.h"
-
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-choice.h"
@@ -871,13 +870,12 @@ glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
 #define GLADE_PROPERY_TABLE_ROW_SPACING 2
 
 static GladeEditorTable *
-glade_editor_table_new (GladeWidgetClass *class)
+glade_editor_table_new (void)
 {
 	GladeEditorTable *table;
 
 	table = g_new0 (GladeEditorTable, 1);
 
-	table->glade_widget_class = class;
 	table->table_widget = gtk_table_new (0, 0, FALSE);
 	table->properties = NULL;
 	table->rows = 0;
@@ -898,8 +896,9 @@ glade_editor_table_create (GladeEditor *editor,
 	g_return_val_if_fail (GLADE_IS_EDITOR (editor), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	table = glade_editor_table_new (class);
+	table = glade_editor_table_new ();
 	table->editor = editor;
+	table->glade_widget_class = class;
 	table->common = common;
 	if (!common)
 		glade_editor_table_append_standard_fields (table);
@@ -1366,11 +1365,11 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 		return;
 
 	/* Now add the new properties */
-	table = glade_editor_table_new (widget->class);
+	table = glade_editor_table_new ();
 	table->editor = editor;
 	table->common = FALSE;
 	table->packing = TRUE;
-	
+
 	list = widget->properties;
 	for (; list; list = list->next) {
 		property = list->data; 
