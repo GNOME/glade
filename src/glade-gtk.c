@@ -245,6 +245,159 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 }
 
 static void
+glade_gtk_table_get_n_rows (GObject *object, GValue *value)
+{
+	GtkTable *table;
+
+	g_value_reset (value);
+
+	table = GTK_TABLE (object);
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	g_value_set_int (value, table->nrows);
+}
+
+static void
+glade_gtk_table_get_n_columns (GObject *object, GValue *value)
+{
+	GtkTable *table;
+
+	g_value_reset (value);
+
+	table = GTK_TABLE (object);
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	g_value_set_int (value, table->ncols);
+}
+
+static void
+glade_gtk_table_set_n_rows (GObject *object, GValue *value)
+{
+	GladeWidget *widget;
+	GtkTable *table;
+	gint new_size;
+	gint old_size;
+
+	table = GTK_TABLE (object);
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	new_size = g_value_get_int (value);
+	old_size = table->nrows;
+
+	if (new_size == old_size)
+		return;
+	
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
+	g_return_if_fail (widget != NULL);
+
+	if (new_size > old_size) {
+		gint cols = table->ncols;
+		int j = 0;
+		int i = new_size - old_size;
+		for (; i > 0; i--) {
+			for (; j < cols; j++) {
+				GladePlaceholder *placeholder;
+				placeholder = glade_placeholder_new (widget);
+				gtk_table_attach_defaults (
+					table,
+					GTK_WIDGET (placeholder),
+					j, j + 1,
+					old_size + i - 1, old_size + i);
+			}
+		}
+		
+	} else {
+		/* Remove from the bottom up */
+		GList *list = g_list_reverse (g_list_copy (table->children));
+		GList *freeme = list;
+		for (; list; list = list->next) {
+			GtkTableChild *child = list->data;
+			/* We need to completely remove it */
+			if (child->top_attach >= new_size) {
+				gtk_container_remove (GTK_CONTAINER (table),
+						      child->widget);
+				continue;
+			}
+			/* We need to change the span */
+			/* For we to code this, span has to be working */
+			if (child->bottom_attach > new_size)
+				g_print ("IMPLEMENTME: Partially remove it\n");
+		}
+		g_list_free (freeme);
+		gtk_table_resize (table,
+				  new_size,
+				  table->ncols);
+	}
+
+	/* see glade-widget.c#ugly_hack for an explanation */
+	gtk_timeout_add ( 100, glade_widget_ugly_hack, table);
+}
+
+static void
+glade_gtk_table_set_n_columns (GObject *object, GValue *value)
+{
+	GladeWidget *widget;
+	GtkTable *table;
+	gint new_size;
+	gint old_size;
+
+	table = GTK_TABLE (object);
+	g_return_if_fail (GTK_IS_TABLE (table));
+
+	new_size = g_value_get_int (value);
+	old_size = table->ncols;
+
+	if (new_size == old_size)
+		return;
+	
+	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
+	g_return_if_fail (widget != NULL);
+
+	if (new_size > old_size) {
+		gint rows = table->nrows;
+		int j = 0;
+		int i = new_size - old_size;
+		for (; i > 0; i--) {
+			for (; j < rows; j++) {
+				GladePlaceholder *placeholder;
+				placeholder = glade_placeholder_new (widget);
+				gtk_table_attach_defaults (
+					table,
+					GTK_WIDGET (placeholder),
+					old_size + i - 1, old_size + i,
+					j, j + 1);
+			}
+		}
+		
+	} else {
+		/* Remove from the bottom up */
+		GList *list = g_list_reverse (g_list_copy (table->children));
+		GList *freeme = list;
+		for (; list; list = list->next) {
+			GtkTableChild *child = list->data;
+			/* We need to completely remove it */
+			if (child->left_attach >= new_size) {
+				gtk_container_remove (GTK_CONTAINER (table),
+						      child->widget);
+				continue;
+			}
+			/* We need to change the span */
+			/* For we to code this, span has to be working */
+			if (child->right_attach > new_size)
+				g_print ("IMPLEMENTME : Partially remove it\n");
+		}
+		g_list_free (freeme);
+		gtk_table_resize (table,
+				  table->nrows,
+				  new_size);
+	}
+
+	/* see glade-widget.c#ugly_hack for an explanation */
+	gtk_timeout_add ( 100, glade_widget_ugly_hack, table);
+}
+
+
+static void
 empty (GObject *object, GValue *value)
 {
 }
@@ -294,6 +447,13 @@ GladeGtkFunction functions [] = {
 	{"glade_gtk_entry_get_text",          glade_gtk_entry_get_text},
 	{"glade_gtk_box_get_size",            glade_gtk_box_get_size},
 	{"glade_gtk_widget_get_tooltip",      empty},
+
+#if 1
+	{"glade_gtk_table_get_n_rows",        glade_gtk_table_get_n_rows},
+	{"glade_gtk_table_get_n_columns",     glade_gtk_table_get_n_columns},
+#endif	
+	{"glade_gtk_table_set_n_rows",        glade_gtk_table_set_n_rows},
+	{"glade_gtk_table_set_n_columns",     glade_gtk_table_set_n_columns},
 
 	{"glade_gtk_entry_set_text",          glade_gtk_entry_set_text},
 	{"glade_gtk_option_menu_set_items",   glade_gtk_option_menu_set_items},
