@@ -1170,8 +1170,10 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		if (property->class->packing)
 			continue;
 		child = glade_property_write (context, property);
-		if (child == NULL)
+		if (!child) {
+			g_warning ("Failed to write property");
 			continue;
+		}
 		glade_xml_node_append_child (node, child);
 	}
 
@@ -1180,8 +1182,10 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	for (; list; list = list->next) {
 		signal = list->data;
 		child = glade_signal_write (context, signal);
-		if (child == NULL)
-			return NULL;
+		if (!child) {
+			g_warning ("Failed to write signal");
+			continue;
+		}
 		glade_xml_node_append_child (node, child);
 	}
 
@@ -1203,8 +1207,10 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 		if (child_widget) {
 			/* write the widget */
 			child = glade_widget_write (context, child_widget);
-			if (child == NULL)
-				return NULL;
+			if (!child) {
+				g_warning ("Failed to write child widget");
+				continue;
+			}
 
 			glade_xml_node_append_child (child_tag, child);
 
@@ -1221,8 +1227,7 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 				glade_xml_node_append_child (packing, packing_property);
 				glade_xml_node_append_child (child_tag, packing);
 			}
-		}
-		else {
+		} else {
 			/* a placeholder */
 			child = glade_xml_node_new (context, GLADE_XML_TAG_PLACEHOLDER);
 			glade_xml_node_append_child (child_tag, child);
@@ -1289,15 +1294,17 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	class_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_CLASS, NULL);
 	widget_name = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
-
 	if (!class_name || !widget_name)
 		return NULL;
-	class = glade_widget_class_get_from_name (class_name);
+
+	class = glade_widget_class_get_by_name (class_name);
 	if (!class)
 		return NULL;
+
 	widget = glade_widget_new_full (class, project, parent);
 	if (!widget)
 		return NULL;
+
 	glade_widget_set_name (widget, widget_name);
 
 	/* Signals */
@@ -1307,9 +1314,11 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 
 		signal = glade_signal_new_from_node (child);
-		if (signal) {
-			glade_widget_add_signal (widget, signal);
+		if (!signal) {
+			g_warning ("Failed to read signal");
+			continue;
 		}
+		glade_widget_add_signal (widget, signal);
 	}
 
 	/* Children */
@@ -1319,7 +1328,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 
 		if (!glade_widget_new_child_from_node (child, project, widget)) {
-			return NULL;
+			g_warning ("Failed to read child");
+			continue;
 		}
 	}
 
@@ -1330,7 +1340,8 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 
 		if (!glade_widget_apply_property_from_node (child, widget)) {
-			return NULL;
+			g_warning ("Failed to apply property");
+			continue;
 		}
 	}
 
@@ -1338,75 +1349,6 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	return widget;
 }
-
-#if 0 /* do we still need these 3 functions ? */
-
-static GHashTable *
-glade_widget_properties_hash_from_node (GladeXmlNode *node)
-{
-	GladeXmlNode *child;
-	GHashTable *hash;
-	gchar *id;
-	gchar *value;
-
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_PACKING))
-		return NULL;
-
-	hash = g_hash_table_new_full (g_str_hash,
-				      g_str_equal,
-				      g_free,
-				      g_free);
-	
-	child = glade_xml_node_get_children (node);
-	for (; child != NULL; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify (child, GLADE_XML_TAG_PROPERTY)) {
-			g_hash_table_destroy (hash);
-			return NULL;
-		}
-
-		id    = glade_xml_get_property_string_required (child, GLADE_XML_TAG_NAME, NULL);
-		value = glade_xml_get_content (child);
-
-		if (!value || !id) {
-			g_warning ("Invalid property %s:%s\n", value, id);
-			g_hash_table_destroy (hash);
-			g_free (value);
-			g_free (id);
-			return NULL;
-		}
-
-		glade_util_replace (id, '_', '-');
-		g_hash_table_insert (hash, id, value);
-	}
-	
-	return hash;
-}
-
-static void
-glade_widget_apply_property_from_hash_item (gpointer key, gpointer val, gpointer data)
-{
-	GladeProperty *property;
-	GladeWidget *widget = data;
-	GValue *gvalue;
-	const gchar *id = key;
-	const gchar *value = val;
-
-	property = glade_property_get_from_id (widget->properties, id);
-	g_assert (property);
-
-	gvalue = glade_property_class_make_gvalue_from_string (property->class,
-							       value);
-
-	glade_property_set (property, gvalue);
-}
-	
-static void
-glade_widget_apply_properties_from_hash (GladeWidget *widget, GHashTable *properties)
-{
-	g_hash_table_foreach (properties, glade_widget_apply_property_from_hash_item, widget);
-}
-
-#endif
 
 static gboolean
 glade_widget_new_child_from_node (GladeXmlNode *node,

@@ -485,11 +485,20 @@ glade_project_new_from_node (GladeXmlNode *node)
 
 	child = glade_xml_node_get_children (node);
 	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify (child, GLADE_XML_TAG_WIDGET))
-			return NULL;
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_REQUIRES))
+			continue;
+		g_warning ("We currently do not support projects requiring additional libs");
+	}
+
+	child = glade_xml_node_get_children (node);
+	for (; child; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_WIDGET))
+			continue;
 		widget = glade_widget_new_from_node (child, project);
-		if (!widget)
-			return NULL;
+		if (!widget) {
+			g_warning ("Failed to read a <wideget> tag");
+			continue;
+		}
 		project->widgets = g_list_append (project->widgets, widget->widget);
 	}
 	project->widgets = g_list_reverse (project->widgets);

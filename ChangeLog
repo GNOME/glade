@@ -1,3 +1,14 @@
+2003-09-01  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade.h: add the <requires> tag.
+	* src/glade-widget.c (glade_widget_write),
+	(glade_widget_new_from_node_real): don't abort on error, warn and 
+	continue.
+	* src/glade-project.c (glade_project_new_from_node): handle the 
+	<requires> tag more gracefully, even if it's not supported yet.
+	* src/glade-widget-class.c: rename get_from_name to get_by_name and
+	comment out the old get_by_name.
+
 2003-08-31  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/Makefile.am: define GLADE_ICONDIR

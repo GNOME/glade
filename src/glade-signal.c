@@ -93,10 +93,8 @@ glade_signal_new_from_node (GladeXmlNode *node)
 	signal->handler = glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER, NULL);
 	signal->after   = glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
 
-	if (!signal->name) {
-		g_warning ("Could not create Signal from node");
+	if (!signal->name)
 		return NULL;
-	}
 
 	return signal;
 }

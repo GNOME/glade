@@ -103,6 +103,7 @@
 #define GLADE_MODIFY_PROPERTY_DATA "GladeModifyPropertyData"
 
 #define GLADE_XML_TAG_PROJECT  "glade-interface"
+#define GLADE_XML_TAG_REQUIRES "requires"
 #define GLADE_XML_TAG_WIDGET   "widget"
 #define GLADE_XML_TAG_PROPERTY "property"
 #define GLADE_XML_TAG_CLASS    "class"

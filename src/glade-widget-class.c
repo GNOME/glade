@@ -475,7 +475,7 @@ glade_widget_class_store_with_name (GladeWidgetClass *widget_class)
  * or %NULL if such a class doesn't exist.
  **/
 GladeWidgetClass *
-glade_widget_class_get_from_name (const char *name)
+glade_widget_class_get_by_name (const char *name)
 {
 	if (widget_classes != NULL)
 		return g_hash_table_lookup (widget_classes, name);
@@ -613,7 +613,7 @@ glade_widget_class_new_from_name2 (const char *name,
 
 	g_return_val_if_fail (name != NULL, NULL);
 
-	if (glade_widget_class_get_from_name (name) != NULL) {
+	if (glade_widget_class_get_by_name (name) != NULL) {
 		g_warning ("The widget class [%s] has at least two different definitions.\n", name);
 		goto lblError;
 	}
@@ -677,7 +677,7 @@ glade_widget_class_new_from_name2 (const char *name,
 	     parent_type != 0;
 	     parent_type = g_type_parent (parent_type))
 	{
-		GladeWidgetClass *parent_class = glade_widget_class_get_from_name (g_type_name (parent_type));
+		GladeWidgetClass *parent_class = glade_widget_class_get_by_name (g_type_name (parent_type));
 
 		if (parent_class != NULL)
 			glade_widget_class_merge (widget_class, parent_class);
@@ -886,6 +886,7 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	g_free (specs);
 }
 
+#if 0 //we have another _get_by_name func... can this go away?
 /**
  * glade_widget_class_get_by_name:
  * @name: 
@@ -916,6 +917,7 @@ glade_widget_class_get_by_name (const gchar *name)
 	
 	return NULL;
 }
+#endif
 
 gboolean
 glade_widget_class_is (GladeWidgetClass *class, const gchar *name)
