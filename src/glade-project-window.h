@@ -15,8 +15,10 @@ struct _GladeProjectWindow
 {
 	GtkWidget *window; /* Main window */
 	GtkWidget *main_vbox;
+
 	GtkWidget *statusbar; /* A pointer to the status bar. */
 	guint statusbar_menu_context_id; /* The context id of the menu bar */
+	guint statusbar_actions_context_id; /* The context id of actions messages */
 	
 	GtkItemFactory *item_factory; /* A pointer to the Item factory.
 				       * We need it to be able to later add

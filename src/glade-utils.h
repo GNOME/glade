@@ -20,6 +20,7 @@ typedef enum
 void     glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 GType    glade_util_get_type_from_name	(const gchar *name);
 void     glade_util_ui_warn		(const gchar *warning);
+void     glade_util_flash_message	(guint context_id, gchar *format, ...);
 
 /* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
    any '_' characters. It isn't particularly efficient. */

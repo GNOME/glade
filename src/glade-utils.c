@@ -95,6 +95,57 @@ glade_util_ui_warn (const gchar *warning)
 	gtk_widget_destroy (dialog);
 }
 
+typedef struct {
+	GtkStatusbar *statusbar;
+	guint context_id;
+	guint message_id;
+} FlashInfo;
+
+static const guint32 flash_length = 3000;
+
+static gboolean
+remove_message_timeout (FlashInfo * fi) 
+{
+	gtk_statusbar_remove (fi->statusbar, fi->context_id, fi->message_id);
+	g_free (fi);
+
+	/* remove the timeout */
+  	return FALSE;
+}
+
+/**
+ * glade_utils_flash_message:
+ * @context_id: The message context_id
+ * @format: The message to flash on the statusbar
+ *
+ * Flash a temporary message on the statusbar.
+ **/
+void
+glade_util_flash_message (guint context_id, gchar *format, ...)
+{
+	va_list args;
+	GladeProjectWindow *gpw;
+	FlashInfo *fi;
+	gchar *message;
+	
+	g_return_if_fail (format != NULL);
+
+	gpw = glade_project_window_get ();
+
+	va_start (args, format);
+	message = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	fi = g_new (FlashInfo, 1);
+	fi->statusbar = GTK_STATUSBAR (gpw->statusbar);
+	fi->context_id = context_id;	
+	fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
+
+	gtk_timeout_add (flash_length, (GtkFunction) remove_message_timeout, fi);
+
+	g_free (message);
+}
+
 static gint
 glade_util_compare_uline_labels (const gchar *labela, const gchar *labelb)
 {

@@ -1,3 +1,18 @@
+2003-04-02  Paolo Borelli <pborelli@katamail.com>
+
+	* src/glade-utils.[ch]: implement glade_util_flash_message()
+	* src/glade-project.[ch]: use the above to display "Project Saved"
+	in the statusbar.
+	
+2003-04-02  Paolo Borelli <pborelli@katamail.com>
+ 
+ 	* src/glade-utils.[ch]: iplement glade_util_file_selection_new()
+ 	* src/glade-project-window.[ch]: use the above Open, Save, Save as.
+ 	* src/glade-project.[ch]: file selection moved to glade-project-window,
+ 	clean-ups and fixes.
+ 	* src/glade-project-ui.[ch]: is no more.
+ 	* src/glade-menu-editor.[ch]: adapt the icon file selector.
+	
 2003-04-02  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-menu-editor.c: Several changes to the menu editor.  Now it

@@ -431,6 +431,7 @@ gpw_construct_statusbar (GladeProjectWindow *gpw)
 	statusbar = gtk_statusbar_new ();
 	gpw->statusbar = statusbar;
 	gpw->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "menu");
+	gpw->statusbar_actions_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "actions");
 		
 	gtk_box_pack_end_defaults (GTK_BOX (gpw->main_vbox), statusbar);	
 }
@@ -1028,7 +1029,7 @@ void
 glade_project_window_refresh_title (GladeProjectWindow *gpw)
 {
 	gchar *title;
-	title = g_strdup_printf ("glade3 : %s", gpw->project->name);
+	title = g_strdup_printf ("glade3 - %s", gpw->project->name);
 	gtk_window_set_title (GTK_WINDOW (gpw->window), title);
 	g_free (title);
 }

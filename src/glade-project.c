@@ -693,5 +693,7 @@ glade_project_save (GladeProject *project, const gchar *path)
 
 	glade_project_refresh_menu_item (project);
 	glade_project_window_refresh_title (gpw);	
+	glade_util_flash_message (gpw->statusbar_actions_context_id,
+				  _("Project '%s' saved"), project->name);
 }
 
