@@ -29,7 +29,7 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-
+#include <string.h>
 
 GladePropertyType
 glade_property_type_str_to_enum (const gchar *str)
@@ -145,9 +145,7 @@ glade_property_class_get_specs (GladeWidgetClass *class, GParamSpec ***specs, gi
 		return;
 	}
 
-	/* Use private interface for now, fix later */
-	*specs = object_class->property_specs;
-	*n_specs = object_class->n_property_specs;
+	*specs = g_object_class_list_properties (object_class, n_specs);
 }
 
 static GParamSpec *
@@ -241,7 +239,7 @@ glade_property_get_parameter_default_choice (GParamSpec *spec,
 					     GladePropertyClass *class)
 {
 	GladeParameter *parameter;
-	GladeChoice *choice;
+	GladeChoice *choice = NULL;
 	GList *list;
 	gint def;
 	

@@ -155,30 +155,22 @@ glade_widget_class_create_glade_widget (GladeProject *project,
 					GladeWidget *parent)
 {
 	GladeWidget *glade_widget;
+	GType type;
 	GtkWidget *widget;
 	gchar *name;
 
 	/* There has to be a better way of doing this with gtk */
 	name = glade_widget_new_name (project, class);
 
-#warning HACK HACK !!! ;-/
-	if (strcmp (class->name, "GtkWindow") == 0) {
-		widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	} else if (strcmp (class->name, "GtkLabel") == 0) {
-		widget = gtk_label_new (name);
-	} else if (strcmp (class->name, "GtkVBox") == 0) {
-		widget = gtk_vbox_new (FALSE, 0);
-	} else if (strcmp (class->name, "GtkHBox") == 0) {
-		widget = gtk_hbox_new (FALSE, 0);
-	} else if (strcmp (class->name, "GtkButton") == 0) {
-		widget = gtk_button_new_with_label (name);
-	} else if (strcmp (class->name, "GtkTable") == 0) {
-		widget = gtk_table_new (0, 0, FALSE);
-	} else {
+	type = g_type_from_name (class->name);
+	if (! g_type_is_a (type, GTK_TYPE_WIDGET)) {
 		gchar *text;
-		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
+		g_warning ("Unknown type %s read from glade file.", class->name);
+ 		text = g_strdup_printf ("Error, class_new_widget not implemented [%s]\n", class->name);
 		widget = gtk_label_new (text);
 		g_free (text);
+	} else {
+		widget = gtk_widget_new (type, NULL);
 	}
 
 	glade_widget = glade_widget_register (project, class, widget, name, parent);
@@ -194,7 +186,6 @@ glade_widget_class_create_glade_widget (GladeProject *project,
 		else
 			g_warning ("Could not set the label to the widget name\n");
 	}
-#warning End of hack 
 	
 	glade_project_add_widget (project, glade_widget);
 	
