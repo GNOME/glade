@@ -1141,19 +1141,16 @@ glade_widget_remove_signal (GladeWidget *widget, GladeSignal *signal)
 	}
 }
 
+static GladeXmlNode *
+glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget);
+
 GladeXmlNode *
 glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 {
-	GladeProperty *property;
+
 	GladeXmlNode *node;
-	GladeXmlNode *child;     /* This is the <widget name="foo" ..> tag */
-	GladeXmlNode *child_tag; /* This is the <child> tag */
-	GladeXmlNode *packing;
-	GladeWidget *child_widget;
-	GladeSignal *signal;
-	GtkWidget *gtk_widget;
+	GladeXmlNode *child;
 	GList *list;
-	GList *list2;
 
 	g_return_val_if_fail (GLADE_XML_IS_CONTEXT (context), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -1166,12 +1163,11 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	/* Write the properties */
 	list = widget->properties;
 	for (; list; list = list->next) {
-		property = list->data;
+		GladeProperty *property = list->data;
 		if (property->class->packing)
 			continue;
 		child = glade_property_write (context, property);
 		if (!child) {
-			g_warning ("Failed to write property");
 			continue;
 		}
 		glade_xml_node_append_child (node, child);
@@ -1180,61 +1176,77 @@ glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
 	/* Signals */
 	list = widget->signals;
 	for (; list; list = list->next) {
-		signal = list->data;
+		GladeSignal *signal = list->data;
 		child = glade_signal_write (context, signal);
 		if (!child) {
-			g_warning ("Failed to write signal");
 			continue;
 		}
 		glade_xml_node_append_child (node, child);
 	}
 
 	/* Children */
-	if (GTK_IS_CONTAINER (widget->widget))
+	if (GTK_IS_CONTAINER (widget->widget)) {
 		list = gtk_container_get_children (GTK_CONTAINER (widget->widget));
-	else
-		list = NULL;
-
-	for (; list; list = list->next) {
-		gtk_widget = GTK_WIDGET (list->data);
-		child_widget = glade_widget_get_from_gtk_widget (gtk_widget);
-		if (!child_widget && !GLADE_IS_PLACEHOLDER (gtk_widget))
-			continue;
-
-		child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
-		glade_xml_node_append_child (node, child_tag);
-
-		if (child_widget) {
-			/* write the widget */
-			child = glade_widget_write (context, child_widget);
+		for (; list; list = list->next) {
+			GtkWidget *child_widget;
+			child_widget = GTK_WIDGET (list->data);
+			child = glade_widget_write_child (context, child_widget);
 			if (!child) {
-				g_warning ("Failed to write child widget");
 				continue;
-			}
-
-			glade_xml_node_append_child (child_tag, child);
-
-			/* Append the packing properties */
-			packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
-			list2 = child_widget->packing_properties;
-			for (; list2; list2 = list2->next) {
-				GladeXmlNode *packing_property;
-				property = list2->data;
-				g_assert (property->class->packing == TRUE);
-				packing_property = glade_property_write (context, property);
-				if (packing_property == NULL)
-					continue;
-				glade_xml_node_append_child (packing, packing_property);
-				glade_xml_node_append_child (child_tag, packing);
-			}
-		} else {
-			/* a placeholder */
-			child = glade_xml_node_new (context, GLADE_XML_TAG_PLACEHOLDER);
-			glade_xml_node_append_child (child_tag, child);
-		}
+	 		}
+			glade_xml_node_append_child (node, child);
+	 	}
 	}
 
 	return node;
+}
+
+static GladeXmlNode *
+glade_widget_write_child (GladeXmlContext *context, GtkWidget *gtk_widget)
+{
+	GladeWidget *child_widget;
+	GladeXmlNode *child_tag; /* this is the <child> tag */
+	GladeXmlNode *child;     /* this is the <widget> under <child> */
+	GladeXmlNode *packing;
+	GList *list;
+
+	child_tag = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+
+	if (GLADE_IS_PLACEHOLDER (gtk_widget)) {
+		child = glade_xml_node_new (context, GLADE_XML_TAG_PLACEHOLDER);
+		glade_xml_node_append_child (child_tag, child);
+
+		return child_tag;
+	}
+
+	child_widget = glade_widget_get_from_gtk_widget (gtk_widget);
+	if (!child_widget)
+		/* internal child... */
+		return NULL;
+
+	child = glade_widget_write (context, child_widget);
+		if (!child) {
+			g_warning ("Failed to write child widget");
+			return NULL;
+		}
+	glade_xml_node_append_child (child_tag, child);
+
+	/* Append the packing properties */
+	packing = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
+	glade_xml_node_append_child (child_tag, packing);
+	list = child_widget->packing_properties;
+	for (; list; list = list->next) {
+		GladeProperty *property;
+		GladeXmlNode *packing_property;
+		property = list->data;
+		g_assert (property->class->packing == TRUE);
+		packing_property = glade_property_write (context, property);
+		if (!packing_property)
+			continue;
+		glade_xml_node_append_child (packing, packing_property);
+	}
+
+	return child_tag;
 }
 
 static gboolean
@@ -1307,6 +1319,18 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 
 	glade_widget_set_name (widget, widget_name);
 
+	/* Children */
+	child =	glade_xml_node_get_children (node);
+	for (; child; child = glade_xml_node_next (child)) {
+		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
+			continue;
+
+		if (!glade_widget_new_child_from_node (child, project, widget)) {
+			g_warning ("Failed to read child");
+			continue;
+		}
+	}
+
 	/* Signals */
 	child =	glade_xml_node_get_children (node);
 	for (; child; child = glade_xml_node_next (child)) {
@@ -1319,18 +1343,6 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 			continue;
 		}
 		glade_widget_add_signal (widget, signal);
-	}
-
-	/* Children */
-	child =	glade_xml_node_get_children (node);
-	for (; child; child = glade_xml_node_next (child)) {
-		if (!glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
-			continue;
-
-		if (!glade_widget_new_child_from_node (child, project, widget)) {
-			g_warning ("Failed to read child");
-			continue;
-		}
 	}
 
 	/* Properties */
@@ -1355,6 +1367,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 				  GladeProject *project,
 				  GladeWidget *parent)
 {
+	gchar *internalchild;
 	GladeXmlNode *child_node;
 	GladeXmlNode *child_properties;
 	GladeWidget *child;
@@ -1362,6 +1375,14 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return FALSE;
+
+	/* we don't support internal children yet... */
+	internalchild = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
+	if (internalchild) {
+		g_warning ("Internal Child not supported yet");
+		g_free (internalchild);
+		return FALSE;
+	}
 
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);

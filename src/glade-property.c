@@ -385,12 +385,11 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 		return NULL;
 
 	/* we should change each '-' by '_' on the name of the property (<property name="...">) */
-	tmp = g_strdup(property->class->id);
-	if (tmp == NULL) {
+	tmp = g_strdup (property->class->id);
+	if (!tmp) {
 		glade_xml_node_delete (node);
 		return NULL;
 	}
-	
 	glade_util_replace (tmp, '-', '_');
 
 	/* put the name="..." part on the <property ...> tag */
@@ -403,14 +402,14 @@ glade_property_write (GladeXmlContext *context, GladeProperty *property)
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
 
-	if (tmp == NULL) {
+	if (!tmp) {
 		glade_xml_node_delete (node);
 		return NULL;
 	}
 
 	glade_xml_set_content (node, tmp);
 	g_free (tmp);
-	
+
 	/* return the created node */
 	return node;
 }

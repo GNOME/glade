@@ -1,3 +1,13 @@
+2003-09-02  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade.h: add the internal child tag.
+	* src/glade-widget.c (glade_widget): remove some g_warning I added
+	yesterday since they were bogus and split glade_widget_write_child
+	to improve readability.
+	(glade_widget_new_child_from_node): warn about the use of the yet not
+	 supported InternalChild tag.
+	* src/glade-project-window.c: fix a segfault.
+
 2003-09-01  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade.h: add the <requires> tag.

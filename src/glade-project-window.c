@@ -1190,9 +1190,11 @@ glade_project_window_add_project (GladeProject *project)
 	for (list = gpw->projects; list; list = list->next) {
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
 
-		if (cur_project->path != NULL && !strcmp (cur_project->path, project->path)) {
-			glade_project_window_set_project (cur_project);
-			return;
+		if (cur_project->path && project->path){
+			if (!strcmp (cur_project->path, project->path)) {
+				glade_project_window_set_project (cur_project);
+				return;
+			}
 		}
 	}
 

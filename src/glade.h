@@ -116,4 +116,6 @@
 #define GLADE_XML_TAG_AFTER    "after"
 #define GLADE_XML_TAG_PACKING  "packing"
 #define GLADE_XML_TAG_PLACEHOLDER "placeholder"
+#define GLADE_XML_TAG_INTERNAL_CHILD "internal-child"
+
 #endif /* __GLADE_H__ */
