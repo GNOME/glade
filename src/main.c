@@ -140,13 +140,11 @@ main (int argc, char *argv[])
 
 	g_set_application_name (_("Glade-3 GUI Builder"));
 
-/*
 #ifdef G_OS_UNIX
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
 #endif
-*/
 
 	gtk_init (&argc, &argv);
 
