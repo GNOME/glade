@@ -1,0 +1,161 @@
+<GladeWidgetClass>
+  <Name>GtkWindow</Name>
+  <GenericName>window</GenericName>
+  <Toplevel>True</Toplevel>
+  <Icon>window</Icon>
+  <Placeholder>True</Placeholder>
+
+  <Properties>
+  
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Border Width</Name>
+	 <Tooltip>The width of the border arround the container</Tooltip>
+	 <GtkArg>border</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="31"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+    </Property>
+
+    <Property>
+      <Type>Text</Type>
+	 <Name>Title</Name>
+	 <Tooltip>The title of the window</Tooltip>
+	 <GtkArg>title</GtkArg>
+	 <Parameters>
+	   <Parameter Key="VisibleLines" Value="1"/>
+	   <Parameter Key="Default" Value=""/>
+	 </Parameters>
+    </Property>
+    
+    <Property>
+      <Type>Choice</Type>
+	 <Name>Type</Name>
+	 <Tooltip>The type of the window</Tooltip>
+	 <GtkArg>type</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Default" Value="GTK_WINDOW_TOPLEVEL"/>
+	 </Parameters>
+	 <Choices>
+	   <Choice>
+	     <Name>Top Level</Name>
+		<Symbol>GTK_WINDOW_TOPLEVEL</Symbol>
+	   </Choice>
+	   <Choice>
+	     <Name>Popup</Name>
+		<Symbol>GTK_WINDOW_POPUP</Symbol>
+	   </Choice>
+	 </Choices>
+    </Property>
+    
+    <Property>
+      <Type>Choice</Type>
+	 <Name>Position</Name>
+	 <Tooltip>The initial position of the window</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Default" Value="GTK_WIN_POS_NONE"/>
+	 </Parameters>
+	 <Choices>
+	   <Choice>
+	     <Name>None</Name>
+		<Symbol>GTK_WIN_POS_NONE</Symbol>
+	   </Choice>
+	   <Choice>
+	     <Name>Center</Name>
+		<Symbol>GTK_WIN_POS_CENTER</Symbol>
+	   </Choice>
+	   <Choice>
+	     <Name>Mouse</Name>
+		<Symbol>GTK_WIN_POS_MOUSE</Symbol>
+	   </Choice>
+	 </Choices>
+    </Property>
+    <Property>
+      <Type>Boolean</Type>
+	 <Name>Modal</Name>
+	 <Tooltip>The window is modal</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+    </Property>
+    
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Default Width</Name>
+	 <Tooltip>The default width of the window</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="0"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClimbRate" Value="1"/>
+	   <Parameter Key="Optional" Value="True"/>
+	   <Parameter Key="OptionalDefault" Value="False"/>
+	 </Parameters>
+    </Property>
+    
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Default Height</Name>
+	 <Tooltip>The default height of the window</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="0"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClimbRate" Value="1"/>
+	   <Parameter Key="Optional" Value="False"/>
+	 </Parameters>
+    </Property>
+    
+    <Property>
+      <Type>Boolean</Type>
+	 <Name>Shrink</Name>
+	 <Tooltip>If the window can be shrunk</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+    </Property>
+    
+    <Property>
+      <Type>Boolean</Type>
+	 <Name>Grow</Name>
+	 <Tooltip>If the window can be enlarged</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Default" Value="True"/>
+	 </Parameters>
+    </Property>
+    
+    <Property>
+      <Type>Boolean</Type>
+	 <Name>Auto Shrink</Name>
+	 <Tooltip>If the window shrinks automatically</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+    </Property>
+    
+    <Property>
+      <Type>Text</Type>
+	 <Name>WM Name</Name>
+	 <Tooltip>The name to pass to the window manager</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+    </Property>
+    
+    <Property>
+      <Type>Text</Type>
+	 <Name>WM Class</Name>
+	 <Tooltip>The class name to pass to the window manager</Tooltip>
+	 <GtkArg>fixme</GtkArg>
+    </Property>
+    
+  </Properties>
+</GladeWidgetClass>
+	 
+	 
+	     

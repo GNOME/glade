@@ -1,0 +1,100 @@
+<GladeWidgetClass>
+  <Name>GtkTable</Name>
+  <GenericName>table</GenericName>
+  <Toplevel>False</Toplevel>
+  <Icon>table</Icon>
+  <Placeholder>True</Placeholder>
+
+  <Properties>
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Border Width</Name>
+	 <Tooltip>The width of the border arround the container</Tooltip>
+	 <GtkArg>border</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="0"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+    </Property>
+
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Rows</Name>
+	 <Tooltip>The number of rows in the table</Tooltip>
+	 <GtkArg>rows</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+      <Query>
+        <WindowTitle>New vertical box</WindowTitle>
+        <Question>Number of rows</Question>
+      </Query>
+    </Property>
+
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Columns</Name>
+	 <Tooltip>The number of columnd in the table</Tooltip>
+	 <GtkArg>columns</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+      <Query>
+        <WindowTitle>New vertical box</WindowTitle>
+        <Question>Number of Columns</Question>
+      </Query>
+    </Property>
+
+    <Property>
+      <Type>Boolean</Type>
+	 <Name>Homogeneous</Name>
+	 <Tooltip>If the children should be the same size</Tooltip>
+	 <GtkArg>homogeneous</GtkArg>
+    </Property>
+
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Row Spacing</Name>
+	 <Tooltip>The space between each row</Tooltip>
+	 <GtkArg>row-spacing</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+    </Property>
+
+    <Property>
+      <Type>Integer</Type>
+	 <Name>Col Spacing</Name>
+	 <Tooltip>The space between each column</Tooltip>
+	 <GtkArg>col-spacing</GtkArg>
+	 <Parameters>
+	   <Parameter Key="Min" Value="0"/>
+	   <Parameter Key="Max" Value="10000"/>
+	   <Parameter Key="Default" Value="3"/>
+	   <Parameter Key="StepIncrement" Value="1"/>
+	   <Parameter Key="PageIncrement" Value="10"/>
+	   <Parameter Key="ClibmRate" Value="1"/>
+	 </Parameters>
+    </Property>
+
+  </Properties>
+</GladeWidgetClass>

@@ -1,0 +1,48 @@
+#if 0
+#include <gnome.h>
+#else
+#include <gtk/gtk.h>
+gchar * _ (gchar * name);
+#endif
+
+#include "glade-types.h"
+#include "glade-xml-utils.h"
+
+#define GLADE_PATH_SEP_STR "/"
+#define GLADE_TAG_GLADE_WIDGET_CLASS "GladeWidgetClass"
+#define GLADE_TAG_GENERIC_NAME "GenericName"
+#define GLADE_TAG_NAME         "Name"
+#define GLADE_TAG_KEY          "Key"
+#define GLADE_TAG_VALUE        "Value"
+#define GLADE_TAG_TOPLEVEL     "Toplevel"
+#define GLADE_TAG_PLACEHOLDER  "Placeholder"
+#define GLADE_TAG_ICON         "Icon"
+#define GLADE_TAG_PROPERTIES   "Properties"
+#define GLADE_TAG_PROPERTY     "Property"
+#define GLADE_TAG_TYPE         "Type"
+#define GLADE_TAG_TOOLTIP      "Tooltip"
+#define GLADE_TAG_GTKARG       "GtkArg"
+#define GLADE_TAG_PARAMETERS   "Parameters"
+#define GLADE_TAG_PARAMETER    "Parameter"
+#define GLADE_TAG_SYMBOL       "Symbol"
+#define GLADE_TAG_CHOICES      "Choices"
+#define GLADE_TAG_CHOICE       "Choice"
+#define GLADE_TAG_FALSE        "False"
+#define GLADE_TAG_TRUE         "True"
+#define GLADE_TAG_YES          "Yes"
+#define GLADE_TAG_NO           "No"
+#define GLADE_TAG_TEXT         "Text"
+#define GLADE_TAG_BOOLEAN      "Boolean"
+#define GLADE_TAG_FLOAT        "Float"
+#define GLADE_TAG_INTEGER      "Integer"
+#define GLADE_TAG_CHOICE       "Choice"
+#define GLADE_TAG_OTHER_WIDGETS "OtherWidgets"
+#define GLADE_TAG_QUERY        "Query"
+#define GLADE_TAG_WINDOW_TITLE "WindowTitle"
+#define GLADE_TAG_QUESTION     "Question"
+
+#define GLADE_CHOICE_DATA_TAG    "GladeChoiceDataTag"
+
+#define GLADE_TAG_CATALOG      "GladeCatalog"
+#define GLADE_TAG_GLADE_WIDGET "GladeWidget"
+
