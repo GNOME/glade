@@ -1,3 +1,16 @@
+2004-12-22  Gustavo Noronha Silva <kov@debian.org>
+
+	* src/glade-palette.c, src/glade-project-window.c
+	  Allow palette to get smaller.
+
+2004-12-22  Archit Baweja  <bighead@users.sourceforge.net>
+	
+	* src/glade-palette.c (glade_palette_widget_table_create): cleanup
+	  and use glade_palette_create_widget_class_button.
+	  (glade_palette_create_widget_class_button): new function
+	  (glade_palette_init): use a GtkComboBox for catalog names instead of
+	  individual radio buttons. All callbacks and callers changed.
+
 2004-12-18  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-editor.c (glade_editor_table_append_item): Added

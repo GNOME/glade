@@ -33,51 +33,17 @@
 #include "glade-widget-class.h"
 
 
-static void glade_palette_class_init (GladePaletteClass *class);
-static void glade_palette_init (GladePalette *glade_palette);
-
 enum
 {
 	TOGGLED,
 	LAST_SIGNAL
 };
 
+const  gchar *GLADE_PALETTE_BUTTON_CLASS_DATA = "user";
+
 static guint glade_palette_signals[LAST_SIGNAL] = {0};
 
 static GtkWindowClass *parent_class = NULL;
-
-/**
- * glade_palette_get_type:
- *
- * Creates the typecode for the #GladePalette object type.
- *
- * Returns: the typecode for the #GladePalette object type
- */
-GType
-glade_palette_get_type (void)
-{
-	static GType type = 0;
-
-	if (!type)
-	{
-		static const GTypeInfo info =
-		{
-			sizeof (GladePaletteClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_palette_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladePalette),
-			0,
-			(GInstanceInitFunc) glade_palette_init
-		};
-
-		type = g_type_register_static (GTK_TYPE_VBOX, "GladePalette", &info, 0);
-	}
-
-	return type;
-}
 
 static void
 glade_palette_class_init (GladePaletteClass *class)
@@ -102,6 +68,7 @@ glade_palette_class_init (GladePaletteClass *class)
 static void
 glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 {
+
 	GladeWidgetClass *class;
 
 	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (button));
@@ -120,7 +87,8 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	}
 	else
 	{
-		class = g_object_get_data (G_OBJECT (button), "user");
+		class = g_object_get_data (G_OBJECT (button),
+					   GLADE_PALETTE_BUTTON_CLASS_DATA);
 		g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
 
 		palette->current = class;
@@ -129,6 +97,17 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	}
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
+}
+
+static void
+glade_palette_on_catalog_selector_changed (GtkWidget *combo_box,
+					   GladePalette *palette)
+{
+	/* find out which catalog was selected. */
+	gint page = gtk_combo_box_get_active (GTK_COMBO_BOX (palette->catalog_selector));
+
+	/* Select that catalog in the notebook. */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (palette->notebook), page);
 }
 
 static GtkWidget *
@@ -166,109 +145,84 @@ glade_palette_selector_new (GladePalette *palette)
 	return hbox;	
 }
 
-static gboolean
-glade_palette_attach_icon (GladePalette *palette,
-			   GtkWidget *table,
-			   GList *list,
-			   gint i,
-			   gint visual_pos,
-			   gint cols)
+
+/**
+ * glade_palette_create_widget_class_button:
+ * @palette:		the palette to add to.
+ * @widget_class:       the widget class who's button we're adding.
+ * 
+ * Creates a GtkHBox with an icon for the corresponding @widget_class and
+ * the name.
+ * 
+ * Return Value: the GtkHBox
+ **/
+static GtkWidget *
+glade_palette_create_widget_class_button (GladePalette *palette, 
+					  GladeWidgetClass *widget_class)
 {
-	GladeWidgetClass *class;
-	GtkWidget *button;
-	gint x, y;
+	GtkWidget *label;
+	GtkWidget *radio;
+	GtkWidget *hbox;
 
-	class = g_list_nth_data (list, i);
-	g_return_val_if_fail (class != NULL, FALSE);
+	label = gtk_label_new (widget_class->palette_name);
+	radio = gtk_radio_button_new (palette->widgets_button_group);
 
-	if (!class->in_palette)
-		return FALSE;
+	g_object_set_data (G_OBJECT (radio), GLADE_PALETTE_BUTTON_CLASS_DATA,
+			   widget_class);
+	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
+	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (radio), FALSE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 
-	button = gtk_radio_button_new (palette->widgets_button_group);
-	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
-	palette->widgets_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-	gtk_container_add (GTK_CONTAINER (button), class->icon);
-	glade_util_widget_set_tooltip (button, class->generic_name);
+	hbox = gtk_hbox_new (FALSE, 2);
+	gtk_box_pack_start (GTK_BOX (hbox), widget_class->icon,
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 1);
 
-	/* store the widget class in the button */
-	g_object_set_data (G_OBJECT (button), "user", class);
-	g_signal_connect (G_OBJECT (button), "toggled",
+	gtk_button_set_relief (GTK_BUTTON (radio), GTK_RELIEF_NONE);
+	gtk_container_add (GTK_CONTAINER (radio), hbox);
+
+	g_signal_connect (G_OBJECT (radio), "toggled",
 			  G_CALLBACK (glade_palette_on_button_toggled), palette);
-
-	x = (visual_pos % cols);
-	y = (gint) (visual_pos / cols);
-	gtk_table_attach (GTK_TABLE (table),
-			  button,
-			  x, x + 1,
-			  y, y + 1,
-			  0, 0,
-			  0, 0);
-	return TRUE;
+	return radio;
 }
 
 static GtkWidget *
 glade_palette_widget_table_create (GladePalette *palette, GladeCatalog *catalog)
 {
 	GList *list;
-	GtkVBox *vbox;
-	GtkHBox *hbox;
-	GtkLabel *label;
-	GtkRadioButton *radio;
-	GtkScrolledWindow *scrolled_window;
-	int nb_rows = 0;
-	int row = 0;
+	GtkWidget *sw;
+	GtkWidget *vbox;
+
+	vbox = gtk_vbox_new (FALSE, 0);
 
 	list = glade_catalog_get_widget_classes (catalog);
-	while (list)
+
+	/* Go through all the widget classes in this catalog. */
+	for (; list; list = list->next)
 	{
-		GladeWidgetClass *widget_class = (GladeWidgetClass*) list->data;
-		if (widget_class->in_palette)
-			nb_rows++;
+		GladeWidgetClass *gwidget_class = GLADE_WIDGET_CLASS (list->data);
 
-		list = list->next;
-	}
-
-	vbox = GTK_VBOX (gtk_vbox_new (FALSE, 0));
-
-	list = glade_catalog_get_widget_classes (catalog);
-	while (list)
-	{
-		GladeWidgetClass *widget_class = (GladeWidgetClass*) list->data;
-		if (widget_class->in_palette)
+		/*
+		 * If the widget class wants to be in the palette (I don't
+		 * know why a widget class wouldn't want to be, but whatever..
+		 */
+		if (gwidget_class->in_palette)
 		{
-			label = GTK_LABEL (gtk_label_new (widget_class->palette_name));
-			radio = GTK_RADIO_BUTTON (gtk_radio_button_new (palette->widgets_button_group));
-
-			g_object_set_data (G_OBJECT (radio), "user", list->data);
-			palette->widgets_button_group = gtk_radio_button_get_group (radio);
-			gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (radio), FALSE);
-			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-
-			hbox = GTK_HBOX (gtk_hbox_new (FALSE, 2));
-			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (widget_class->icon), FALSE, FALSE, 0);
-			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), TRUE, TRUE, 1);
-
-			gtk_button_set_relief (GTK_BUTTON (radio), GTK_RELIEF_NONE);
-			gtk_container_add (GTK_CONTAINER (radio), GTK_WIDGET (hbox));
-
-			g_signal_connect (G_OBJECT (radio), "toggled",
-					  G_CALLBACK (glade_palette_on_button_toggled), palette);
-
-			gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (radio), FALSE, FALSE, 0);
-			row++;
+			GtkWidget *button = glade_palette_create_widget_class_button (palette, gwidget_class);
+			gtk_box_pack_start (GTK_BOX (vbox), button,
+					    FALSE, FALSE, 0);
 		}
-
-		list = list->next;
 	}
 
-	scrolled_window = GTK_SCROLLED_WINDOW (gtk_scrolled_window_new (NULL, NULL));
-	gtk_scrolled_window_set_policy (scrolled_window, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_add_with_viewport (scrolled_window, GTK_WIDGET (vbox));
-	gtk_scrolled_window_set_shadow_type (scrolled_window, GTK_SHADOW_NONE);
-	gtk_widget_set_size_request (GTK_WIDGET (scrolled_window), -1, 400);
+	/* Add it in a scrolled window. */
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), vbox);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), 
+					     GTK_SHADOW_NONE);
 
-	return GTK_WIDGET (scrolled_window);
+	return sw;
 }
 
 static void
@@ -276,10 +230,11 @@ glade_palette_init (GladePalette *palette)
 {
 	GtkWidget *selector_hbox;
 	GtkWidget *widget;
+	GtkWidget *combo_box;
 
 	palette->current = NULL;
 	palette->widgets_button_group = NULL;
-	palette->sections_button_group = NULL;
+	palette->catalog_selector = NULL;
 
 	/* Selector */
 	selector_hbox = glade_palette_selector_new (palette);
@@ -289,10 +244,16 @@ glade_palette_init (GladePalette *palette)
 	widget = gtk_hseparator_new ();
 	gtk_box_pack_start (GTK_BOX (palette), widget, FALSE, TRUE, 3);
 
-	/* Groups */
-	palette->groups_vbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (palette), palette->groups_vbox, FALSE, TRUE, 0);
-	
+	/* The catalog selector menu. */
+	combo_box = gtk_combo_box_new_text ();
+	gtk_box_pack_start (GTK_BOX (palette), combo_box, FALSE, FALSE, 0);
+	g_signal_connect (G_OBJECT (combo_box), "changed", 
+			  G_CALLBACK (glade_palette_on_catalog_selector_changed),
+			  palette);
+
+	gtk_widget_show (combo_box);
+	palette->catalog_selector = combo_box;
+
 	/* Separator */
 	widget = gtk_hseparator_new ();
 	gtk_box_pack_start (GTK_BOX (palette), widget, FALSE, TRUE, 3);
@@ -306,30 +267,17 @@ glade_palette_init (GladePalette *palette)
 	palette->nb_sections = 0;
 }
 
-static gint
-glade_palette_on_catalog_button_toggled (GtkWidget *button,
-					 GladePalette *palette)
-{
-	gint page;
-
-	page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "page"));
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (palette->notebook), page);
-
-	return TRUE;
-}
-
 /**
  * glade_palette_append_catalog:
  * @palette: a #GladePalette
  * @catalog: a #GladeCatalog
  * 
- * TODO: write me
+ * Append @catalog to the @palette.
  */
 void
 glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 {
 	gint page;
-	GtkWidget *button;
 	GtkWidget *widget;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
@@ -337,15 +285,9 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 
 	page = palette->nb_sections++;
 
-	/* Add the button */ 
-	button = gtk_radio_button_new_with_label (palette->sections_button_group, catalog->title);
-	palette->sections_button_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
-	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (button), FALSE);
-	g_object_set_data (G_OBJECT (button), "page", GINT_TO_POINTER (page));
-	g_signal_connect (G_OBJECT (button), "toggled",
-			  G_CALLBACK (glade_palette_on_catalog_button_toggled),
-			  palette);
-	gtk_box_pack_start (GTK_BOX (palette->groups_vbox), button, FALSE, TRUE, 0);
+	/* Add the catalog's title to the GtkComboBox */
+	gtk_combo_box_append_text (GTK_COMBO_BOX (palette->catalog_selector),
+				   catalog->title);
 
 	/* Add the section */
 	widget = glade_palette_widget_table_create (palette, catalog);
@@ -355,12 +297,45 @@ glade_palette_append_catalog (GladePalette *palette, GladeCatalog *catalog)
 }
 
 /**
+ * glade_palette_get_type:
+ *
+ * Creates the typecode for the #GladePalette object type.
+ *
+ * Returns: the typecode for the #GladePalette object type
+ */
+GType
+glade_palette_get_type (void)
+{
+	static GType type = 0;
+
+	if (!type)
+	{
+		static const GTypeInfo info =
+		{
+			sizeof (GladePaletteClass),
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_palette_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladePalette),
+			0,
+			(GInstanceInitFunc) glade_palette_init
+		};
+
+		type = g_type_register_static (GTK_TYPE_VBOX, "GladePalette", &info, 0);
+	}
+
+	return type;
+}
+
+/**
  * glade_palette_new:
  * @catalogs:
  * 
- * TODO: write me
+ * Create a new palette
  *
- * Returns:
+ * Returns: the new GladePalette
  */
 GladePalette *
 glade_palette_new (GList *catalogs)
@@ -374,6 +349,7 @@ glade_palette_new (GList *catalogs)
 	for (list = catalogs; list; list = list->next)
 		glade_palette_append_catalog (palette, GLADE_CATALOG (list->data));
 
+	gtk_combo_box_set_active (GTK_COMBO_BOX (palette->catalog_selector), 0);
 	return palette;
 }
 
