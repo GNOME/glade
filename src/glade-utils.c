@@ -29,6 +29,8 @@
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-debug.h"
+#include "glade-placeholder.h"
+#include "glade-widget-class.h"
 
 #define GLADE_UTIL_ID_EXPOSE "glade_util_id_expose"
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
@@ -50,10 +52,10 @@ glade_util_get_type_from_name (const gchar *name)
 	static GModule *allsymbols;
 	guint (*get_type) ();
 	GType type;
-	
+
 	if (!allsymbols)
 		allsymbols = g_module_open (NULL, 0);
-	
+
 	if (!g_module_symbol (allsymbols, name,
 			      (gpointer) &get_type)) {
 		g_warning (_("We could not find the symbol \"%s\""),
@@ -466,6 +468,46 @@ glade_util_delete_selection (GladeProject *project)
 	g_list_free (free_me);
 }
 
+GladeWidget *
+glade_util_get_parent (GtkWidget *w)
+{
+	GtkWidget *widget = w;
+	GladeWidget *parent = NULL;
+
+	do
+	{
+		widget = gtk_widget_get_parent (widget);
+		parent = glade_widget_get_from_gtk_widget (widget);
+
+		if (parent != NULL)
+			return parent;
+	}
+	while (widget != NULL);
+
+	return NULL;
+}
+
+void
+glade_util_replace_placeholder (GladePlaceholder *placeholder,
+		   	        GladeWidget *widget)
+{
+	GladeWidget *parent;
+
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+
+	if (parent->class->replace_child)
+		parent->class->replace_child (GTK_WIDGET (placeholder),
+					      widget->widget,
+					      parent->widget);
+	else
+		g_warning ("Could not replace a placeholder because a replace "
+			   " function has not been implemented for \"%s\"\n",
+			   parent->class->name);
+}
+
 /*
  * taken from gtk... maybe someday we can convince them to
  * expose gtk_container_get_all_children
@@ -493,4 +535,3 @@ glade_util_container_get_all_children (GtkContainer *container)
 
 	return g_list_reverse (children);
 }
-

@@ -23,18 +23,16 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "glade.h"
-#include "glade-widget.h"
-#include "glade-widget-class.h"
-#include "glade-placeholder.h"
-#include "glade-project.h"
-#include "glade-property.h"
-#include "glade-property-class.h"
-#include "glade-choice.h"
-#include "glade-command.h"
+#include <gtk/gtk.h>
+#include "glade-plugin.h"
 
+#ifdef G_OS_WIN32
+#define GLADEGTK_API __declspec(dllexport)
+#else
+#define GLADEGTK_API
+#endif
 
-void
+void GLADEGTK_API
 glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 {
 	GtkOptionMenu *option_menu; 
@@ -72,7 +70,7 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 	gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 {
 	GtkProgressBar *bar;
@@ -84,7 +82,7 @@ glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 	gtk_progress_set_format_string (GTK_PROGRESS (bar), format);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_spin_button_set_max (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -96,7 +94,7 @@ glade_gtk_spin_button_set_max (GObject *object, GValue *value)
 }
 
 
-void
+void GLADEGTK_API
 glade_gtk_spin_button_set_min (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -107,7 +105,7 @@ glade_gtk_spin_button_set_min (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -118,7 +116,7 @@ glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -129,7 +127,7 @@ glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
 	gtk_adjustment_changed (adjustment);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 {
 	GtkAdjustment *adjustment;
@@ -141,7 +139,7 @@ glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 }
 
 
-void
+void GLADEGTK_API
 glade_gtk_box_get_size (GObject *object, GValue *value)
 {
 	GtkBox *box;
@@ -154,7 +152,7 @@ glade_gtk_box_get_size (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (box->children));
 }
 
-void
+void GLADEGTK_API
 glade_gtk_box_set_size (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
@@ -177,7 +175,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	if (new_size > old_size) {
 		/* The box has grown. Add placeholders */
 		while (new_size > old_size) {
-			GladePlaceholder *placeholder = glade_placeholder_new ();
+			GladePlaceholder *placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
 			gtk_container_add (GTK_CONTAINER (box), GTK_WIDGET (placeholder));
 			old_size++;
 		}
@@ -203,7 +201,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size));
 }
 
-void
+void GLADEGTK_API
 glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 {
 	GtkNotebook *notebook;
@@ -216,7 +214,7 @@ glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 	g_value_set_int (value, g_list_length (notebook->children));
 }
 
-void
+void GLADEGTK_API
 glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
@@ -239,7 +237,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	if (new_size > old_size) {
 		/* The notebook has grown. Add a page. */
 		while (new_size > old_size) {
-			GladePlaceholder *placeholder = glade_placeholder_new ();
+			GladePlaceholder *placeholder = GLADE_PLACEHOLDER (glade_placeholder_new ());
 			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
 						  GTK_WIDGET (placeholder),
 						  NULL);
@@ -302,7 +300,7 @@ glade_gtk_table_get_n_columns (GObject *object, GValue *value)
 }
 #endif
 
-void
+void GLADEGTK_API
 glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
@@ -331,14 +329,14 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 
 			for (i = 0; i < table->ncols; i++)
 				for (j = old_size; j < table->nrows; j++)
-					gtk_table_attach_defaults (table, glade_placeholder_new (widget),
+					gtk_table_attach_defaults (table, glade_placeholder_new (),
 								   i, i + 1, j, j + 1);
 		} else {
 			gtk_table_resize (table, table->nrows, new_size);
 
 			for (i = old_size; i < table->ncols; i++)
 				for (j = 0; j < table->nrows; j++)
-					gtk_table_attach_defaults (table, glade_placeholder_new (widget),
+					gtk_table_attach_defaults (table, glade_placeholder_new (),
 								   i, i + 1, j, j + 1);
 		}
 	} else {
@@ -373,19 +371,19 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size * (for_rows ? table->ncols : table->nrows)));
 }
 
-void
+void GLADEGTK_API
 glade_gtk_table_set_n_rows (GObject *object, GValue *value)
 {
 	glade_gtk_table_set_n_common (object, value, TRUE);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_table_set_n_columns (GObject *object, GValue *value)
 {
 	glade_gtk_table_set_n_common (object, value, FALSE);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_button_set_stock (GObject *object, GValue *value)
 {
 	GladeWidget *glade_widget;
@@ -448,7 +446,7 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	}
 }
 
-void
+void GLADEGTK_API
 glade_gtk_statusbar_get_has_resize_grip (GObject *object, GValue *value)
 {
 	GtkStatusbar *statusbar;
@@ -461,7 +459,7 @@ glade_gtk_statusbar_get_has_resize_grip (GObject *object, GValue *value)
 	g_value_set_boolean (value, gtk_statusbar_get_has_resize_grip (statusbar));
 }
 
-void
+void GLADEGTK_API
 glade_gtk_statusbar_set_has_resize_grip (GObject *object, GValue *value)
 {
 	GtkStatusbar *statusbar;
@@ -474,19 +472,19 @@ glade_gtk_statusbar_set_has_resize_grip (GObject *object, GValue *value)
 	gtk_statusbar_set_has_resize_grip (statusbar, has_resize_grip);
 }
 
-void
+void GLADEGTK_API
 empty (GObject *object, GValue *value)
 {
 }
 
-void
+void GLADEGTK_API
 ignore (GObject *object, GValue *value)
 {
 }
 
 
 /* ------------------------------------ Post Create functions ------------------------------ */
-void
+void GLADEGTK_API
 glade_gtk_window_post_create (GObject *object)
 {
 	GtkWindow *window = GTK_WINDOW (object);
@@ -496,7 +494,7 @@ glade_gtk_window_post_create (GObject *object)
 	gtk_window_set_default_size (window, 440, 250);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_dialog_post_create (GObject *object)
 {
 	GtkDialog *dialog = GTK_DIALOG (object);
@@ -534,7 +532,7 @@ glade_gtk_dialog_post_create (GObject *object)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_message_dialog_post_create (GObject *object)
 {
 	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
@@ -544,7 +542,7 @@ glade_gtk_message_dialog_post_create (GObject *object)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
 }
 
-void
+void GLADEGTK_API
 glade_gtk_table_post_create (GObject *object)
 {
 	GtkTable *table = GTK_TABLE (object);
@@ -561,14 +559,13 @@ glade_gtk_table_post_create (GObject *object)
 	 * and that we don't have a children.
 	 */
 	if (g_list_length (list) == 0) {
-		GladeWidget *parent = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
 		gtk_container_add (GTK_CONTAINER (table),
-				   glade_placeholder_new (parent));
+				   glade_placeholder_new ());
 	}
 }
 
 /* --------------------------------- Replace child functions ------------------------------- */
-void
+void GLADEGTK_API
 glade_gtk_container_replace_child (GtkWidget *current,
 				   GtkWidget *new,
 				   GtkWidget *container)
@@ -622,7 +619,7 @@ glade_gtk_container_replace_child (GtkWidget *current,
 #endif
 }
 
-void
+void GLADEGTK_API
 glade_gtk_notebook_replace_child (GtkWidget *current,
 				  GtkWidget *new,
 				  GtkWidget *container)
@@ -663,7 +660,7 @@ glade_gtk_notebook_replace_child (GtkWidget *current,
 }
 
 /* ------------------------------------ Fill Empty functions ------------------------------- */
-void
+void GLADEGTK_API
 glade_gtk_container_fill_empty (GObject *container)
 {
 	g_return_if_fail (GTK_IS_CONTAINER (container));
@@ -671,7 +668,7 @@ glade_gtk_container_fill_empty (GObject *container)
 	gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
 }
 
-void
+void GLADEGTK_API
 glade_gtk_dialog_fill_empty (GObject *dialog)
 {
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
@@ -681,7 +678,7 @@ glade_gtk_dialog_fill_empty (GObject *dialog)
 				     glade_placeholder_new ());
 }
 
-void
+void GLADEGTK_API
 glade_gtk_paned_fill_empty (GObject *paned)
 {
 	g_return_if_fail (GTK_IS_PANED (paned));
@@ -691,7 +688,7 @@ glade_gtk_paned_fill_empty (GObject *paned)
 }
 
 /* -------------------------------- Get Internal Child functions --------------------------- */
-void
+void GLADEGTK_API
 glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
 				     const gchar *name,
 				     GtkWidget **child)

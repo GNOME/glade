@@ -1,3 +1,23 @@
+2003-11-02  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-placeholder.[ch]: rewrite it as a GtkWidget.  Moved some
+	of its functions to glade-utils.c.
+	* src/glade-command.c: Adapt the source to the new placeholder.
+	* src/glade-packing.c: ditto.
+	* src/glade-popup.c: ditto.
+	* src/glade-types.h: ditto.
+	* src/glade-utils.c: ditto.
+	* src/glade-widget.c: Put a variable declaration before any statement.
+	* src/glade-widget.h: Add some forward declarations.
+	* src/glade-gtk.c: export the functions using __declspec(dllexport) in
+	windows and adapt to new placeholder.
+	* src/glade-editor.c: Use G_GNUC_FUNCTION instead of the non portable
+	__FUNCTION__.
+	* src/glade_plugin.def: def file with the exported functions from the
+	core of glade.  These functions may be used in glade-gtk.c, or in
+	* src/glade-plugin.h: include files need by glade-gtk.c.
+	any external module.  Only need in windows.
+
 2003-11-02  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-property-class.[ch]: move choice* stuff to glade-choice.c

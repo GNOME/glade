@@ -134,7 +134,7 @@ glade_packing_table_set_integer (GObject *object, const GValue *value, const gch
 
 /* #warning This is broken, a placeholder should be a subclass of a GladeWidget */
 	if (GLADE_IS_PLACEHOLDER (widget)) {
-		table = GTK_TABLE (glade_placeholder_get_parent (widget)->widget);
+		table = GTK_TABLE (glade_util_get_parent (widget)->widget);
 	} else {
 		glade_widget = glade_widget_get_from_gtk_widget (widget);
 		g_return_if_fail (GLADE_IS_WIDGET (glade_widget));

@@ -6,6 +6,9 @@
 
 G_BEGIN_DECLS
 
+/* fwd. decl. */
+struct _GladeXmlNode;
+typedef struct _GladeXmlNode GladeXmlNode;
 
 typedef enum {
 	GLADE_TOPLEVEL        = 1 << 2,

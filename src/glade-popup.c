@@ -173,7 +173,7 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
 				 glade_popup_placeholder_paste_cb, placeholder);
 
-	if ((parent = glade_placeholder_get_parent(placeholder)) != NULL)
+	if ((parent = glade_util_get_parent(GTK_WIDGET (placeholder))) != NULL)
 		glade_popup_populate_childs(popup_menu, parent);
 
 	return popup_menu;

@@ -91,9 +91,9 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
 static GladeWidget *
 glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 {
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
-
 	GladeWidget *widget;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
 	widget = g_new0 (GladeWidget, 1);
 	widget->project = project;

@@ -28,6 +28,6 @@ typedef struct _GladeProjectWindow   GladeProjectWindow;
 typedef struct _GladeCatalog       GladeCatalog;
 typedef struct _GladeCursor        GladeCursor;
 
-typedef struct _GtkWidget GladePlaceholder;
+typedef struct _GladePlaceholder   GladePlaceholder;
 
 #endif /* __GLADE_TYPES_H__ */

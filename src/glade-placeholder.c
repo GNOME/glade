@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2003 Joaquin Cuenca Abela
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -17,89 +17,211 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  * Authors:
- *   Chema Celorio <chema@celorio.com>
+ *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
 
-#include <string.h>
-#include <stdlib.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-#define PIXMAP_DIR		"C:/Program Files/glade/pixmap"
-#include "glade.h"
+#include <gtk/gtk.h>
 #include "glade-placeholder.h"
-#include "glade-cursor.h"
-#include "glade-widget-class.h"
-#include "glade-widget.h"
-#include "glade-property.h"
-#include "glade-property-class.h"
-#include "glade-project.h"
+#include "glade-xml-utils.h"
 #include "glade-project-window.h"
-#include "glade-popup.h"
+#include "glade-project.h"
 #include "glade-command.h"
+#include "glade-popup.h"
+#include "glade-utils.h"
 
-#define GLADE_PLACEHOLDER_ROW_STRING  "GladePlaceholderRow"
-#define GLADE_PLACEHOLDER_COL_STRING  "GladePlaceholderColumn"
-#define GLADE_PLACEHOLDER_PARENT_DATA "GladePlaceholderParentData"
-#define GLADE_PLACEHOLDER_IS_DATA     "GladeIsPlaceholderData"
+static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
+static void glade_placeholder_init           (GladePlaceholder        *placeholder);
+static void glade_placeholder_destroy        (GtkObject               *object);
+static void glade_placeholder_realize        (GtkWidget               *widget);
+static void glade_placeholder_size_allocate  (GtkWidget               *widget,
+					      GtkAllocation           *allocation);
+static void glade_placeholder_send_configure (GladePlaceholder        *placeholder);
+static gboolean glade_placeholder_expose     (GtkWidget               *widget,
+					      GdkEventExpose          *event);
+static gboolean glade_placeholder_button_press (GtkWidget             *widget,
+					      GdkEventButton          *event);
+
+static GtkWidgetClass *parent_class = NULL;
+
+static char *placeholder_xpm[] = {
+	/* columns rows colors chars-per-pixel */
+	"8 8 2 1",
+	"  c #bbbbbb",
+	". c #d6d6d6",
+	/* pixels */
+	" .  .   ",
+	".    .  ",
+	"      ..",
+	"      ..",
+	".    .  ",
+	" .  .   ",
+	"  ..    ",
+	"  ..    "
+};
 
 
-static gboolean
-glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
-					 GdkEventButton *event,
-					 gpointer not_used)
+GType
+glade_placeholder_get_type (void)
 {
-	GladeProjectWindow *gpw = glade_project_window_get ();
+	static GType placeholder_type = 0;
 
-	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
-		if (gpw->add_class != NULL) {
-			/* A widget type is selected in the palette.
-			 * Add a new widget of that type.
-			 */
-			glade_command_create (gpw->add_class, placeholder, NULL);
-			glade_project_window_set_add_class (gpw, NULL);
-		} else {
-			GladeWidget *parent = glade_placeholder_get_parent (placeholder);
-			glade_project_selection_set (parent->project, placeholder, TRUE);
-		}
-	} else if (event->button == 3)
-		glade_popup_placeholder_pop (placeholder, event);
+	if (!placeholder_type)
+	{
+		static const GTypeInfo placeholder_info =
+		{
+			sizeof (GladePlaceholderClass),
+			NULL,		/* base_init */
+			NULL,		/* base_finalize */
+			(GClassInitFunc) glade_placeholder_class_init,
+			NULL,		/* class_finalize */
+			NULL,		/* class_data */
+			sizeof (GladePlaceholder),
+			0,		/* n_preallocs */
+			(GInstanceInitFunc) glade_placeholder_init,
+		};
 
-	return TRUE;
+		placeholder_type = g_type_register_static (GTK_TYPE_WIDGET, "GladePlaceholder",
+							   &placeholder_info, 0);
+	}
+
+	return placeholder_type;
 }
 
-static gboolean
-glade_placeholder_on_motion_notify_event (GladePlaceholder *placeholder,
-					  GdkEventMotion *event,
-					  gpointer not_used)
+static void
+glade_placeholder_class_init (GladePlaceholderClass *klass)
 {
-	GladeProjectWindow *gpw;
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
 
-	gpw = glade_project_window_get ();
+	object_class->destroy = glade_placeholder_destroy;
 
-	if (gpw->add_class == NULL)
-		glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-	else
-		glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
-
-	return FALSE;
+	widget_class->realize = glade_placeholder_realize;
+	widget_class->size_allocate = glade_placeholder_size_allocate;
+	widget_class->expose_event = glade_placeholder_expose;
+	widget_class->button_press_event = glade_placeholder_button_press;
 }
 
-static gboolean
-glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
-				   GdkEventExpose *event,
-				   gpointer not_used)
+static void
+glade_placeholder_init (GladePlaceholder *placeholder)
+{
+	placeholder->placeholder_pixmap = NULL;
+
+	gtk_widget_show (GTK_WIDGET (placeholder));
+}
+
+GtkWidget*
+glade_placeholder_new (void)
+{
+  return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
+}
+
+static void
+glade_placeholder_destroy (GtkObject *object)
+{
+	GladePlaceholder *placeholder;
+
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
+
+	placeholder = GLADE_PLACEHOLDER (object);
+	
+	g_object_unref (placeholder->placeholder_pixmap);
+}
+
+static void
+glade_placeholder_realize (GtkWidget *widget)
+{
+	GladePlaceholder *placeholder;
+	GladePlaceholderClass *placeholder_class;
+	GdkWindowAttr attributes;
+	gint attributes_mask;
+
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (widget));
+
+	placeholder = GLADE_PLACEHOLDER (widget);
+	placeholder_class = GLADE_PLACEHOLDER_GET_CLASS (placeholder);
+
+	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+
+	attributes.window_type = GDK_WINDOW_CHILD;
+	attributes.x = widget->allocation.x;
+	attributes.y = widget->allocation.y;
+	attributes.width = widget->allocation.width;
+	attributes.height = widget->allocation.height;
+	attributes.wclass = GDK_INPUT_OUTPUT;
+	attributes.visual = gtk_widget_get_visual (widget);
+	attributes.colormap = gtk_widget_get_colormap (widget);
+	attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK;
+
+	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+
+	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
+	gdk_window_set_user_data (widget->window, placeholder);
+
+	widget->style = gtk_style_attach (widget->style, widget->window);
+
+	glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
+
+	if (!placeholder->placeholder_pixmap)
+		placeholder->placeholder_pixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL,
+									    gtk_widget_get_colormap (GTK_WIDGET (placeholder)),
+									    NULL, NULL, placeholder_xpm);
+
+	if (placeholder->placeholder_pixmap == NULL) {
+		g_warning ("Could not create pixmap for the glade-placeholder");
+		return;
+	}
+
+	gdk_window_set_back_pixmap (GTK_WIDGET (placeholder)->window, placeholder->placeholder_pixmap, FALSE);
+}
+
+static void
+glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+{
+	g_return_if_fail (GLADE_IS_PLACEHOLDER (widget));
+	g_return_if_fail (allocation != NULL);
+
+	widget->allocation = *allocation;
+
+	if (GTK_WIDGET_REALIZED (widget))
+	{
+		gdk_window_move_resize (widget->window,
+					allocation->x, allocation->y,
+					allocation->width, allocation->height);
+
+		glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
+	}
+}
+
+static void
+glade_placeholder_send_configure (GladePlaceholder *placeholder)
 {
 	GtkWidget *widget;
+	GdkEvent *event = gdk_event_new (GDK_CONFIGURE);
+
+	widget = GTK_WIDGET (placeholder);
+
+	event->configure.window = g_object_ref (widget->window);
+	event->configure.send_event = TRUE;
+	event->configure.x = widget->allocation.x;
+	event->configure.y = widget->allocation.y;
+	event->configure.width = widget->allocation.width;
+	event->configure.height = widget->allocation.height;
+
+	gtk_widget_event (widget, event);
+	gdk_event_free (event);
+}
+
+static gboolean
+glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
+{
 	GdkGC *light_gc;
 	GdkGC *dark_gc;
 	gint w, h;
 
-	widget = GTK_WIDGET (placeholder);
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 	
-	light_gc = widget->style->light_gc [GTK_STATE_NORMAL];
-	dark_gc  = widget->style->dark_gc  [GTK_STATE_NORMAL];
+	light_gc = widget->style->light_gc[GTK_STATE_NORMAL];
+	dark_gc  = widget->style->dark_gc[GTK_STATE_NORMAL];
 	gdk_drawable_get_size (event->window, &w, &h);
 
 	gdk_draw_line (event->window, light_gc, 0, 0, w - 1, 0);
@@ -111,119 +233,36 @@ glade_placeholder_on_expose_event (GladePlaceholder *placeholder,
 }
 
 static gboolean
-glade_placeholder_on_realize (GladePlaceholder *placeholder, gpointer not_used)
+glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-	static GdkPixmap *pixmap = NULL;
-
-	if (pixmap == NULL) {
-		gchar *file;
-		file = g_strdup (PIXMAPS_DIR "/placeholder.xpm");
-		pixmap = gdk_pixmap_colormap_create_from_xpm (NULL,
-							      gtk_widget_get_colormap (GTK_WIDGET (placeholder)),
-							      NULL, NULL, file);
-		g_free (file);
-	}
-		
-	if (pixmap == NULL) {
-		g_warning ("Could not create pixmap for the glade-placeholder");
-		return FALSE;
-	}
-	
-	gdk_window_set_back_pixmap (GTK_WIDGET (placeholder)->window, pixmap, FALSE);
-
-	return FALSE;
-}
-
-#define GLADE_PLACEHOLDER_SIZE 16
-
-GladePlaceholder *
-glade_placeholder_new ()
-{
+	GladeProjectWindow *gpw = glade_project_window_get ();
 	GladePlaceholder *placeholder;
 
-	placeholder = gtk_drawing_area_new ();
-	g_object_set_data (G_OBJECT (placeholder),
-			   GLADE_PLACEHOLDER_IS_DATA,
-			   GINT_TO_POINTER (TRUE));
+	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	gtk_widget_set_events (GTK_WIDGET (placeholder),
-			       gtk_widget_get_events (GTK_WIDGET (placeholder))
-			       | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK
-			       | GDK_BUTTON_RELEASE_MASK
-			       | GDK_POINTER_MOTION_MASK | GDK_BUTTON1_MOTION_MASK);
+	placeholder = GLADE_PLACEHOLDER (widget);
 
-	gtk_widget_set_size_request (GTK_WIDGET (placeholder),
-				     GLADE_PLACEHOLDER_SIZE,
-				     GLADE_PLACEHOLDER_SIZE);			      
-	/* mouse signals */
-	g_signal_connect (G_OBJECT (placeholder), "motion_notify_event",
-			  G_CALLBACK (glade_placeholder_on_motion_notify_event), NULL);
-	g_signal_connect (G_OBJECT (placeholder), "button_press_event",
-			  G_CALLBACK (glade_placeholder_on_button_press_event), NULL);
+	if (event->button == 1 && event->type == GDK_BUTTON_PRESS) {
+		if (gpw->add_class != NULL) {
+			/* A widget type is selected in the palette.
+			 * Add a new widget of that type.
+			 */
+			glade_command_create (gpw->add_class, placeholder, NULL);
+			glade_project_window_set_add_class (gpw, NULL);
+		}
+		else {
+			GladeWidget *parent = glade_util_get_parent (GTK_WIDGET (placeholder));
+			glade_project_selection_set (parent->project, GTK_WIDGET (placeholder), TRUE);
+		}
+	}
+	else if (event->button == 3)
+		glade_popup_placeholder_pop (placeholder, event);
 
-	/* draw signals */
-	g_signal_connect_after (G_OBJECT (placeholder), "realize",
-				G_CALLBACK (glade_placeholder_on_realize), NULL);
-	g_signal_connect_after (G_OBJECT (placeholder), "expose_event",
-				G_CALLBACK (glade_placeholder_on_expose_event), NULL);
-
-	gtk_widget_show (GTK_WIDGET (placeholder));
-
-	return placeholder;
+	return TRUE;
 }
 
-#undef GLADE_PLACEHOLDER_SIZE
-
-GladeWidget *
-glade_placeholder_get_parent (GladePlaceholder *placeholder)
+/* TODO: Remove me.  Put me on a glade_utils... or glade_widget_class... */
+void glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 {
-	GladeWidget *parent = NULL;
-	GtkWidget *widget;
-
-	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
-
-	widget = gtk_widget_get_parent (placeholder);
-	g_return_val_if_fail (widget != NULL, NULL);
-
-	parent = glade_widget_get_from_gtk_widget (widget);
-	g_return_val_if_fail (parent != NULL, NULL);
-
-	return parent;
-}
-
-void
-glade_placeholder_replace_with_widget (GladePlaceholder *placeholder,
-			   	       GladeWidget *widget)
-{
-	GladeWidget *parent;
-
-	g_return_if_fail (GLADE_IS_PLACEHOLDER (placeholder));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	parent = glade_placeholder_get_parent (placeholder);
-
-	if (parent->class->replace_child)
-		parent->class->replace_child (GTK_WIDGET (placeholder),
-					      widget->widget,
-					      parent->widget);
-	else
-		g_warning ("Could not replace a placeholder because a replace "
-			   " function has not been implemented for \"%s\"\n",
-			   parent->class->name);
-}
-
-gboolean
-GLADE_IS_PLACEHOLDER (GtkWidget *widget)
-{
-	gpointer data;
-	gboolean is;
-
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-	data = g_object_get_data (G_OBJECT (widget),
-				  GLADE_PLACEHOLDER_IS_DATA);
-
-	is = GPOINTER_TO_INT (data);
-
-	return is;
 }
 

@@ -39,15 +39,18 @@ glade_log_handler (const char *domain,
              gpointer data)
 {
 	g_log_default_handler (domain, level, message, data);
-	if ((level & (G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)) != 0) {
+	if ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */)) != 0) {
+		G_BREAKPOINT ();
+#if 0
 #ifdef G_OS_WIN32
 		__asm { int 3 }
 #else
 		RETSIGTYPE (* saved_handler) (int);
-        
+
 		saved_handler = signal (SIGINT, SIG_IGN);
 		raise (SIGINT);
 		signal (SIGINT, saved_handler);
+#endif
 #endif
 	}
 }

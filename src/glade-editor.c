@@ -1187,7 +1187,7 @@ glade_editor_property_load_other_widgets (GladeEditorProperty *property)
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
 
-	g_warning ("Implement me ! (%s)\n", __FUNCTION__);
+	g_warning ("Implement me (%s)!\n", G_GNUC_FUNCTION);
 }
 
 static void
@@ -1344,7 +1344,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_other_widgets (property);
 		break;
 	case GLADE_PROPERTY_TYPE_ERROR:
-		g_warning ("%s : type %i not implemented\n", __FUNCTION__,
+		g_warning ("%s : type %i not implemented\n", G_GNUC_FUNCTION,
 			   class->type);
 		break;
 	default:
