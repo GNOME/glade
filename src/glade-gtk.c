@@ -27,6 +27,7 @@
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-placeholder.h"
+#include "glade-project.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-choice.h"
@@ -195,7 +196,7 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	GtkBox *box;
 	gint new_size;
 	gint old_size;
-	
+
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
 
@@ -209,34 +210,30 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 		return;
 
 	if (new_size > old_size) {
-		/* The box has grown */
-		/* We don't need to do anything here because the box's property "size"
-		 * is already updated :-? */
-
-	} else if (new_size < old_size) {
-		/* The box has shrunk. Remove the widgets that are on those slots */
-		GList *child;
-		int i = old_size;
-		int position;
-		child = g_list_last (box->children);
-		while (child && i > new_size) {
-			GtkBoxChild *box_child;
-			GladeWidget *child_widget;
-			GladeProperty *child_property;
-			
-			box_child = (GtkBoxChild *) child->data;
-			child_widget = glade_widget_get_from_gtk_widget (box_child->widget);
-			child_property = glade_property_get_from_id (child_widget->properties, "position");
-			position = glade_property_get_integer (child_property);
-			if (position >= new_size) {
-				glade_command_delete (child_widget);
-				gtk_container_remove (GTK_CONTAINER (box),
-						      box_child->widget);
-			}
-			i = position;
-			child = g_list_last (box->children);
+		/* The box has grown. Add placeholders */
+		while (new_size > old_size) {
+			GladePlaceholder *placeholder = glade_placeholder_new ();
+			gtk_container_add (GTK_CONTAINER (box), GTK_WIDGET (placeholder));
+			old_size++;
 		}
-	} /* else the size is == */
+	} else {/* new_size < old_size */
+		/* The box has shrunk. Remove the widgets that are on those slots */
+		GList *child = g_list_last (box->children);
+
+		while (child && old_size > new_size) {
+			GtkWidget *child_widget = ((GtkBoxChild *) (child->data))->widget;
+			GladeWidget *glade_widget;
+
+			glade_widget = glade_widget_get_from_gtk_widget (child_widget);
+			if (glade_widget) /* it may be NULL, e.g a placeholder */
+				glade_project_remove_widget (glade_widget);
+
+			gtk_container_remove (GTK_CONTAINER (box), child_widget);
+
+			child = g_list_last (box->children);
+			old_size--;
+		}
+	}
 
 	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size));
 }
