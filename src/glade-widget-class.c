@@ -101,7 +101,11 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_list_foreach (widget_class->children, (GFunc) glade_widget_class_free_child, NULL);
 	g_list_free (widget_class->children);
 
-     
+	g_list_foreach (widget_class->child_packings,
+			(GFunc) glade_widget_class_child_packing_free,
+			NULL);
+
+	g_list_free (widget_class->child_packings);
 
 	g_list_foreach (widget_class->signals, (GFunc) glade_signal_free, NULL);
 	g_list_free (widget_class->signals);
@@ -425,6 +429,8 @@ glade_widget_class_set_packing_defaults_from_node (GladeXmlNode     *node,
 		packing->parent_name = name;
 		packing->packing_defaults = NULL;
 
+		widget_class->child_packings = g_list_prepend (widget_class->child_packings, packing);
+
 		prop_node = glade_xml_node_get_children (child);
                 for (; prop_node; prop_node = glade_xml_node_next (prop_node))
                 {
@@ -446,7 +452,7 @@ glade_widget_class_set_packing_defaults_from_node (GladeXmlNode     *node,
 				g_free (id);
 				continue;
 			}
-		
+
 			def = g_new0 (GladePackingDefault, 1);
 			def->id = id;
 			def->value = value;
@@ -1182,7 +1188,7 @@ glade_widget_class_container_add (GladeWidgetClass *class,
 	if ((support =
 	     glade_widget_class_get_child_support (class, G_OBJECT_TYPE (child))) != NULL)
 	{
-		if (support->add)
+		if (support->add) 
 			support->add (container, child);
 		else
 			g_warning ("No add support for type %s in %s",
@@ -1350,23 +1356,79 @@ glade_widget_class_contains_non_widgets (GladeWidgetClass *class)
 	return FALSE;
 }
 
-/* Returned list should be freed with g_list_free */
-GList *
-glade_widget_class_get_packing_defaults (GladeWidgetClass *class,
-                                         GladeWidgetClass *parent)
+static GladeChildPacking *
+glade_widget_class_get_child_packing (GladeWidgetClass *child_class,
+				      GladeWidgetClass *parent_class)
 {
-        GList *l; 
-
-        for (l = class->packing_defaults; l; l = l->next)
-        {
+	GList *l;
+	
+	for (l = child_class->child_packings; l; l = l->next) 
+	{
 		GladeChildPacking *packing;
 
 		packing = (GladeChildPacking *) l->data;
-		/* FIXME: Chain up */
-		if (strcmp (packing->parent_name, parent->name) == 0)
-			return g_list_copy (packing->packing_defaults);
+
+		if (strcmp (packing->parent_name, parent_class->name) == 0)
+			return packing;
 	}
 
-        return NULL;
+	return NULL;
+}
+
+static GladePackingDefault *
+glade_widget_class_get_packing_default_internal (GladeChildPacking *packing,
+						 const gchar       *id)
+{
+	GList *l;
+
+	for (l = packing->packing_defaults; l; l = l->next)
+	{
+		GladePackingDefault *def;
+
+		def = (GladePackingDefault *) l->data;
+
+		if (strcmp (def->id, id) == 0) 
+			return def;
+	}
+
+	return NULL;
+}
+
+GladePackingDefault *
+glade_widget_class_get_packing_default (GladeWidgetClass *child_class,
+					GladeWidgetClass *container_class,
+					const gchar      *id)
+{
+	GladeChildPacking *packing = NULL;
+	GladeWidgetClass  *p_class;
+	GType              p_type;
+
+	p_type = container_class->type;
+	p_class = container_class;
+	while (p_class)
+	{
+		GType old_p_type;
+
+		packing = glade_widget_class_get_child_packing (child_class,
+								p_class);
+		if (packing)
+		{
+			GladePackingDefault *def;
+
+			def = glade_widget_class_get_packing_default_internal (packing, id);
+			if (def)
+				return def;
+		}
+
+		old_p_type = p_type;
+		p_type = g_type_parent (p_type);
+
+		if (!p_type)
+			break;
+		
+		p_class = glade_widget_class_get_by_type (p_type);
+	}
+
+	return NULL;
 }
 

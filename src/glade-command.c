@@ -803,7 +803,6 @@ glade_command_create (GladeWidgetClass *class,
 	
 	me->widgets = g_list_append (me->widgets, cdata);
 
-
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if ((widget = glade_widget_new (parent, class, project)) == NULL)
 	{

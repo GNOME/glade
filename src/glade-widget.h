@@ -138,7 +138,6 @@ GladeWidget            *glade_widget_get_parent             (GladeWidget      *w
 void                    glade_widget_set_parent             (GladeWidget      *widget,
 							     GladeWidget      *parent);
 
-
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

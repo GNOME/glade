@@ -1,3 +1,27 @@
+2005-01-16  Mikael Hallendal  <micke@imendio.com>
+
+	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):
+	- Removed temporary hack
+	* src/glade-widget-class.[ch]:
+	(glade_widget_class_free):
+	- Free default packing list
+	(glade_widget_class_set_packing_defaults_from_node):
+	- Read default child packings from catalog file.
+	(glade_widget_class_get_child_packing):
+	(glade_widget_class_get_packing_default_internal):
+	- Added
+	(glade_widget_class_get_packing_default):
+	- Added, used to get the default child packing when packing a widget
+	  into a specific container.
+	* src/glade-widget.c: (glade_widget_copy_packing_props),
+	(glade_widget_set_default_packing_properties):
+	- Added, sets the default packing properties.
+	(glade_widget_set_packing_properties):
+	- Call set_default_packing_properties.
+	* widgets/gtk+.xml:
+	- Added default packings for some widgets. Should be added to a lot
+	  more of them.
+
 2005-01-13  Mikael Hallendal  <micke@imendio.com>
 
 	* src/glade-gtk.c: (glade_gtk_menu_bar_post_create):

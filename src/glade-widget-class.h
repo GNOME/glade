@@ -64,7 +64,7 @@ struct _GladeWidgetClass
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
 	GList *children;    /* List of GladeSupportedChild objects */
-        GList *packing_defaults; /* List of GladeChildProperty objects */
+        GList *child_packings; /* Private */ 
 
 	GModule *module;	/* Module with the (optional) special functions
 				 * needed for placeholder_replace, post_create_function
@@ -190,8 +190,10 @@ void                 glade_widget_class_container_replace_child    (GladeWidgetC
 								    GObject      *new);
 gboolean             glade_widget_class_contains_non_widgets       (GladeWidgetClass *class);
 
-GList *              glade_widget_class_get_packing_defaults       (GladeWidgetClass *class,
-                                                                    GladeWidgetClass *parent);
+GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
+								    GladeWidgetClass *container_class,
+								    const gchar *propert_id);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_CLASS_H__ */
