@@ -128,8 +128,8 @@ glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 	tooltip = g_value_get_string (value);
 	if (tooltip && *tooltip)
 		gtk_tooltips_set_tip (tooltips, GTK_WIDGET (object), tooltip, NULL);
-/*	else
-		gtk_tooltips_remove ? */
+	else
+		gtk_tooltips_set_tip (tooltips, GTK_WIDGET (object), NULL, NULL);
 }
 
 void GLADEGTK_API

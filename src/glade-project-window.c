@@ -1360,7 +1360,7 @@ glade_project_window_new_project (void)
 		GladeProjectWindow *gpw;
 
 		gpw = glade_project_window_get ();
-		glade_util_ui_warn (gpw->window, _("Could create new project."));
+		glade_util_ui_warn (gpw->window, _("Could not create a new project."));
 
 		return;
 	}
