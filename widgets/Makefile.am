@@ -4,7 +4,7 @@ catalogs_DATA = \
 	gtk-additional.xml \
 	gtk-dialogs.xml \
 	gtk-obsolete.xml
-	
+
 widgets_DATA = \
 	gtkaccellabel.xml \
 	gtkbox.xml \
@@ -15,6 +15,7 @@ widgets_DATA = \
 	gtkdialog.xml \
 	gtkframe.xml \
 	gtkhandlebox.xml \
+	gtklabel.xml \
 	gtkmenubar.xml \
 	gtkmessagedialog.xml \
 	gtknotebook.xml \
@@ -22,6 +23,7 @@ widgets_DATA = \
 	gtkpaned.xml \
 	gtkprogressbar.xml \
 	gtkradiobutton.xml \
+	gtkruler.xml \
 	gtkspinbutton.xml \
 	gtkstatusbar.xml \
 	gtktable.xml \
