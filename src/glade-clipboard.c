@@ -34,6 +34,7 @@
 #include "glade-placeholder.h"
 #include "glade-project.h"
 #include "glade-packing.h"
+#include "glade-editor.h"
 
 static void
 glade_clipboard_class_init (GladeClipboardClass * klass)
@@ -153,7 +154,15 @@ glade_clipboard_cut (GladeClipboard * clipboard, GladeWidget * widget)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	glade_project_remove_widget (widget);
-	glade_widget_replace_with_placeholder (widget);
+
+	/*
+	 * We ref so that the widget and its children are not destroyed.
+	 */
+	gtk_widget_ref (GTK_WIDGET (widget->widget));
+	if (widget->parent)
+		glade_widget_replace_with_placeholder (widget);
+	else
+		gtk_widget_hide (widget->widget);
 
 	glade_clipboard_add (clipboard, widget);
 }
@@ -173,12 +182,7 @@ glade_clipboard_copy (GladeClipboard * clipboard, GladeWidget * widget)
 	g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	/*
-	 * FIXME: not sure if this is the right way to copy a struct in C.
-	 * should work though.
-	 */
-	copy = g_new0 (GladeWidget, 1);
-	*copy = *widget;
+	copy = glade_widget_clone (widget);
 
 	glade_clipboard_add (clipboard, copy);
 }
@@ -216,24 +220,23 @@ glade_clipboard_paste (GladeClipboard * clipboard,
 	glade_project_add_widget (project, widget);
 
 	if (parent)
-		parent->children =
-		    g_list_prepend (parent->children, widget);
+		parent->children = g_list_prepend (parent->children, widget);
 
 	glade_widget_set_contents (widget);
 	glade_widget_connect_signals (widget);
 	glade_placeholder_replace (placeholder, parent, widget);
+	glade_widget_set_default_packing_options (widget);
 	glade_widget_select (widget);
+	glade_editor_select_widget (gpw->editor, widget);
 
 	/*
 	 * This damned 'if' statement caused a 1 month delay.
 	 */
 	if (GTK_IS_WIDGET (widget->widget))
-		gtk_widget_show (GTK_WIDGET (widget->widget));
+		gtk_widget_show_all (GTK_WIDGET (widget->widget));
 
 	/*
 	 * Finally remove widget from clipboard.
-	 * FIXME: should this be done? I mean should we leave a copy on the 
-	 * clipboard anyway?
 	 */
 	glade_clipboard_remove (clipboard, widget);
 }

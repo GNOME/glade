@@ -44,18 +44,8 @@ glade_clipboard_view_selection_changed_cb (GtkTreeSelection * sel,
 		return;
 	gtk_tree_model_get (model, &iter, 0, &widget, -1);
 
-	/*
-	 * FIXME: I think this is a bit hack-ish. If so, I'm not proud of it.
-	 */
-	if (widget) {
-		GladeWidget *real_widget;
-		GList *list = view->clipboard->widgets;
-		for (; list; list = list->next) {
-			real_widget = (GladeWidget *) list->data;
-			if (!strcmp (real_widget->name, widget->name))
-				view->clipboard->curr = real_widget;
-		}
-	}
+	if (widget)
+		view->clipboard->curr = widget;
 }
 
 static void
@@ -70,7 +60,7 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn * tree_column,
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (widget->name != NULL);
-
+	
 	g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
 }
 
@@ -106,12 +96,12 @@ glade_clipboard_view_populate_model (GladeClipboardView * view)
 {
 	GList *list;
 
-	view->model = gtk_tree_store_new (1, G_TYPE_STRING);
+	view->model = gtk_tree_store_new (1, G_TYPE_POINTER);
 	list = GLADE_CLIPBOARD (view->clipboard)->widgets;
 
 	/* add the widgets and recurse */
 	glade_clipboard_view_populate_model_real (view->model, list,
-						  NULL, TRUE);
+						  NULL, FALSE);
 }
 
 static void

@@ -522,20 +522,9 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 	parent = widget->parent;
 
 	if (parent) {
-		GladePlaceholder *placeholder;
-
-		/* Replace the slot it was occuping with a placeholder */
 		gtk_widget_ref (widget->widget);
-		placeholder = glade_placeholder_new (widget->parent);
-
-		if (widget->parent->class->placeholder_replace)
-			widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
-
-		/* Remove it from the parent's child list */
-		parent->children = g_list_remove (parent->children, widget);
-		me->placeholder = placeholder;
-	}
-	else {
+		me->placeholder = glade_widget_replace_with_placeholder (widget);
+	} else {
 		me->placeholder = NULL;
 	}
 

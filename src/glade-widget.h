@@ -95,7 +95,8 @@ void glade_widget_cut    (GladeWidget *widget);
 void glade_widget_copy   (GladeWidget *widget);
 void glade_widget_paste  (GladeWidget *widget);
 
-void glade_widget_replace_with_placeholder (GladeWidget *widget);
+GladeWidget *glade_widget_clone (GladeWidget *widget);
+GladePlaceholder * glade_widget_replace_with_placeholder (GladeWidget *widget);
 GladeWidget * glade_widget_get_from_gtk_widget (GtkWidget *widget);
 
 /* Xml saving & reading */

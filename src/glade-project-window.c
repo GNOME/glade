@@ -54,7 +54,7 @@ static void gpw_show_clipboard_cb (void);
 
 static void gpw_undo_cb (void);
 static void gpw_redo_cb (void);
-static void gpw_about_cb (void) {};
+static void gpw_about_cb (void) {}
 
 static void
 gpw_open_cb (void)

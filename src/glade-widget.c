@@ -1061,27 +1061,48 @@ glade_widget_free (GladeWidget *widget)
 	g_free (widget);
 }
 
-void
+/**
+ * glade_widget_clone:
+ * @widget: 
+ * 
+ * Make a copy of a #GladeWidget.
+ * 
+ * Return Value: the cloned GladeWidget, NULL on error.
+ **/
+GladeWidget *
+glade_widget_clone (GladeWidget *widget)
+{
+	GladeWidget *clone;
+
+	g_return_val_if_fail (widget != NULL, NULL);
+
+	/*
+	 * This should be enough to clone.
+	 */
+	clone = glade_widget_new (widget->class, NULL);
+	clone->name = glade_widget_new_name (widget->project, widget->class);
+	clone->project = widget->project;
+	glade_widget_create_gtk_widget (clone);
+
+	return clone;
+}
+
+GladePlaceholder *
 glade_widget_replace_with_placeholder (GladeWidget *widget)
 {
-	GladeWidget *parent;
+	GladePlaceholder *placeholder;
+	GladeWidget *parent = widget->parent;
 
-	parent = widget->parent;
+	/* Replace the slot it was occuping with a placeholder */
+	placeholder = glade_placeholder_new (widget->parent);
+	if (widget->parent->class->placeholder_replace)
+		widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
 
-	if (parent) {
-		GladePlaceholder *placeholder;
-		/* Replace the slot it was occuping with a placeholder */
-		placeholder = glade_placeholder_new (widget->parent);
-		if (widget->parent->class->placeholder_replace)
-			widget->parent->class->placeholder_replace (widget->widget, GTK_WIDGET (placeholder), widget->parent->widget);
+	/* Remove it from the parent's child list */
+	parent->children = g_list_remove (parent->children, widget);
 
-		/* Remove it from the parent's child list */
-		parent->children = g_list_remove (parent->children,
-						  widget);
-		
-	} else {
-		gtk_widget_destroy (widget->widget);
-	}
+	/* Return the placeholder, if some one needs it, he can use it. */
+	return placeholder;
 }
 
 void

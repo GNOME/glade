@@ -170,6 +170,31 @@ glade_project_selection_changed (GladeProject *project)
 			 glade_project_signals [SELECTION_CHANGED]);
 }
 
+static void
+glade_project_add_widget_real (GladeProject *project,
+			       GladeWidget *widget)
+{
+	GladeWidget *child;
+	GList *list;
+
+	widget->project = project;
+
+	/*
+	 * Add all the children as well.
+	 */
+	list = widget->children;
+	for (; list; list = list->next) {
+		child = list->data;
+		glade_project_add_widget_real (project, child);
+		child->project = project;
+	}
+	
+	project->selection = g_list_prepend (project->selection, widget);
+	project->widgets   = g_list_prepend (project->widgets, widget);
+
+	gtk_signal_emit (GTK_OBJECT (project),
+			 glade_project_signals [ADD_WIDGET], widget);
+}
 
 void
 glade_project_add_widget (GladeProject *project,
@@ -178,11 +203,7 @@ glade_project_add_widget (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GTK_IS_OBJECT (project));
 
-	project->widgets = g_list_prepend (project->widgets, widget);
-
-	gtk_signal_emit (GTK_OBJECT (project),
-			 glade_project_signals [ADD_WIDGET], widget);
-	
+	glade_project_add_widget_real (project, widget);
 	glade_project_set_changed (project, TRUE);
 }
 
@@ -193,11 +214,13 @@ glade_project_remove_widget_real (GladeProject *project,
 	GladeWidget *child;
 	GList *list;
 
+	widget->project = NULL;
+
 	list = widget->children;
 	for (; list; list = list->next) {
 		child = list->data;
-		glade_project_remove_widget_real (project,
-						  child);
+		glade_project_remove_widget_real (project, child);
+		child->project = NULL;
 	}
 	
 	project->selection = g_list_remove (project->selection, widget);

@@ -1,9 +1,39 @@
+2002-04-11  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model): 
+	don't add children.
+
 2002-04-11  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* src/glade-widget.c: hack to hide the "nodes not drawing at the
 	right time" problem.  The bug is still visible sometimes, but much
 	less now.
 
+2002-04-08  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model): 
+	changed GtkTreeStore to hold pointers, not strings, as earlier.
+	
+2002-04-06  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-widget.c (glade_widget_clone): new function.
+
+2002-04-03  Archit Baweja  <bighead@users.sourceforge.net>
+
+	* src/glade-widget.c (glade_widget_replace_with_placeholder): return
+	the created Placeholder, for callers to use. Toned it down a bit too.
+	Changed all callers.
+
+	* src/glade-clipboard.c (glade_clipboard_paste): changed call to 
+	gtk_widget_show to gtk_widget_show_all to show all the children too.
+	Also load the "Paste"d widget in the editor.
+	
+	* src/glade-project.c (glade_project_remove_widget_real): unset pointer
+	to project in the GladeWidget.
+	(glade_project_add_widget_real): new function.
+	(glade_project_add_widget): call above.
+
+	
 2002-04-01  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* src/glade-editor.c, glade-command.[ch],
@@ -43,17 +73,6 @@
  	* src/glade-types.h: prevent multiple includes of this file.
  	* src/glade-debug.h: little macro g_debug to print debug messages
  	only if DEBUG is defined.
- 	
-2002-03-27  Archit Baweja  <bighead@users.sourceforge.net>
-
-	* src/glade-clipboard.c (glade_clipboard_paste): removed call to 
-	glade_widget_set_default_packing_options (). Fixed "clipboard copy"
-	bug.
-
-2002-03-23  Archit Baweja  <bighead@users.sourceforge.net>
-
-	* src/glade-clipboard-view.c
-	(glade_clipboard_view_selection_changed_cb): fixed bug.
 	
 2002-03-25  Joaquín Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
  
