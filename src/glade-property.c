@@ -163,6 +163,7 @@ glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 
 		if (def)
 			g_free (def);
+
 		new_list = g_list_prepend (new_list, property);
 	}
 
@@ -207,11 +208,24 @@ void
 glade_property_changed_text (GladeProperty *property,
 			     const gchar *text)
 {
+	gchar *temp;
+	
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
-
-	g_free (property->value);
+	g_return_if_fail (property->widget != NULL);
+	g_return_if_fail (property->widget->widget != NULL);
+	
+	temp = property->value;
 	property->value = g_strdup (text);
+	g_free (temp);
+
+	if (property->class->gtk_arg == NULL) {
+		g_print ("I don't have a gtk arg for %s\n", property->class->name);
+		return;
+	}
+	
+	gtk_object_set (GTK_OBJECT (property->widget->widget),
+			property->class->gtk_arg, property->value, NULL);
 }
 
 void
@@ -242,6 +256,9 @@ glade_property_changed_boolean (GladeProperty *property, gboolean val)
 
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", val ? GLADE_TAG_TRUE : GLADE_TAG_FALSE);
+
+	gtk_object_set (GTK_OBJECT (property->widget->widget),
+			property->class->gtk_arg, val, NULL);
 }
 
 void
@@ -249,12 +266,71 @@ glade_property_changed_choice (GladeProperty *property, GladeChoice *choice)
 {
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (property->value != NULL);
+	g_return_if_fail (choice != NULL);
 
 	g_free (property->value);
 	property->value = g_strdup_printf ("%s", choice->symbol);
 }
 	
+
+
+const gchar *
+glade_property_get_text (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail (property->value != NULL, NULL);
+
+	return property->value;
+}
 	
+gint
+glade_property_get_integer (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, 0);
+	g_return_val_if_fail (property->value != NULL, 0);
+	
+	return atoi (property->value);	
+}
+
+gfloat
+glade_property_get_float (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, 0.0);
+	g_return_val_if_fail (property->value != NULL, 0.0);
+	
+	return atof (property->value);
+}
+	
+
+gboolean
+glade_property_get_boolean (GladeProperty *property)
+{
+	g_return_val_if_fail (property != NULL, FALSE);
+	g_return_val_if_fail (property->value != NULL, FALSE);
+
+	return (strcmp (property->value, GLADE_TAG_TRUE) == 0);
+}	
+	
+GladeChoice *
+glade_property_get_choice (GladeProperty *property)
+{
+	GladeChoice *choice = NULL;
+	GList *list;
+	
+	g_return_val_if_fail (property != NULL, NULL);
+	g_return_val_if_fail (property->value != NULL, NULL);
+
+	list = property->class->choices;
+	for (; list != NULL; list = list->next) {
+		choice = list->data;
+		if (strcmp (choice->symbol, property->value) == 0)
+			break;
+	}
+	if (list == NULL)
+		g_warning ("Cant find the GladePropertyChoice selected\n");
+
+	return choice;
+}
 
 GladeProperty *
 glade_property_get_from_class (GladeWidget *widget,

@@ -51,6 +51,13 @@ void glade_property_changed_float   (GladeProperty *property, gfloat val);
 void glade_property_changed_boolean (GladeProperty *property, gboolean val);
 void glade_property_changed_choice  (GladeProperty *property, GladeChoice *choice);
 
+const gchar * glade_property_get_text    (GladeProperty *property);
+gint          glade_property_get_integer (GladeProperty *property);
+gfloat        glade_property_get_float   (GladeProperty *property);
+gboolean      glade_property_get_boolean (GladeProperty *property);
+GladeChoice * glade_property_get_choice  (GladeProperty *property);
+
+
 GList * glade_property_list_new_from_widget_class (GladeWidgetClass *class,
 						   GladeWidget *widget);
 

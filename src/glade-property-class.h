@@ -115,7 +115,8 @@ struct _GladePropertyClass {
 			    * pairs to specify aspects of this property.
 			    * Like the number of "VisibleLines" of a text
 			    * property. Or the range and default values of
-			    * a spin button entry
+			    * a spin button entry. Also the default choice
+			    * for a type == CHOICE
 			    */
 	GList *choices;    /* list of GladeChoice items. This is only used
 			    * for propeties of type GLADE_PROPERYT_TYPE_CHOICE

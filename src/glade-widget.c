@@ -86,6 +86,50 @@ glade_widget_new (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk
 }
 
 
+/**
+ * glade_widget_set_default_options:
+ * @widget: 
+ * 
+ * Takes care of applying the default values to a newly created widget
+ **/
+static void
+glade_widget_set_default_options (GladeWidget *widget)
+{
+	GladeProperty *property;
+	GList *list;
+
+	list = widget->properties;
+	for (; list != NULL; list = list->next) {
+		property = list->data;
+		switch (property->class->type) {
+		case GLADE_PROPERTY_TYPE_BOOLEAN:
+			glade_property_changed_boolean (property,
+							glade_property_get_boolean (property));
+			break;
+		case GLADE_PROPERTY_TYPE_FLOAT:
+			glade_property_changed_float (property,
+						      glade_property_get_float (property));
+			break;
+		case GLADE_PROPERTY_TYPE_INTEGER:
+			glade_property_changed_integer (property,
+							glade_property_get_integer (property));
+			break;
+		case GLADE_PROPERTY_TYPE_TEXT:
+			glade_property_changed_text (property,
+						     glade_property_get_text (property));
+			break;
+		case GLADE_PROPERTY_TYPE_CHOICE:
+			glade_property_changed_choice (property,
+						       glade_property_get_choice (property));
+			break;
+		default:
+			g_warning ("Implement set default for this type\n");
+			break;
+		}
+	}
+	       
+}
+
 static GladeWidget *
 glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget *gtk_widget, const gchar *name, GladeWidget *parent)
 {
@@ -100,7 +144,8 @@ glade_widget_register (GladeProject *project, GladeWidgetClass *class, GtkWidget
 	if (parent)
 		parent->children = g_list_prepend (parent->children, glade_widget);
 
-	
+	glade_widget_set_default_options (glade_widget);
+
 	return glade_widget;
 }
 

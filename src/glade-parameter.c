@@ -98,8 +98,7 @@ glade_parameter_get_string (GList *parameters, const gchar *key, gchar **value)
 		}
 	}
 }
-
-static GladeParameter *
+GladeParameter *
 glade_parameter_new (void)
 {
 	GladeParameter *parameter;

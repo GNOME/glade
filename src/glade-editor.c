@@ -231,13 +231,6 @@ glade_editor_property_changed_text (GtkWidget *entry,
 
 	glade_property_changed_text (property->property, text);
 
-	g_return_if_fail (property->property->widget != NULL);
-	g_return_if_fail (property->property->widget->widget != NULL);
-	g_return_if_fail (property->property->class->gtk_arg != NULL);
-	
-	gtk_object_set (GTK_OBJECT (property->property->widget->widget),
-			property->property->class->gtk_arg, text, NULL);
-
 	g_free (text);
 }
 
