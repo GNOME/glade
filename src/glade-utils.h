@@ -33,6 +33,7 @@ gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 
 GtkWidget	*glade_util_file_selection_new (const gchar *title, GtkWindow *parent);
 void		glade_util_replace (char *str, char a, char b);
+char		*glade_util_duplicate_underscores (const char *name);
 
 G_END_DECLS
 

@@ -271,9 +271,9 @@ gpw_close_cb (void)
 	GladeProjectWindow *gpw;
 	GladeProject *project;
 	gboolean close;
-	gchar *item_path;
+	char *item_path;
 	GList *list;
-
+	
 	gpw = glade_project_window_get ();
 	project = gpw->project;
 
@@ -287,6 +287,12 @@ gpw_close_cb (void)
 	}
 
 	item_path = g_strdup_printf ("/Project/%s", project->name);
+	if (!item_path)
+	{
+		g_critical ("Not enough memory!");
+		return;
+	}
+
 	gtk_item_factory_delete_item (gpw->item_factory, item_path);
 
 	for (list = project->widgets; list; list = list->next) {
@@ -1135,6 +1141,7 @@ glade_project_window_add_project (GladeProject *project)
  {
 	GladeProjectWindow *gpw;
 	GList *list;
+	char *underscored_name;
 
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -1151,9 +1158,16 @@ glade_project_window_add_project (GladeProject *project)
 	}
 
  	gpw->projects = g_list_prepend (gpw->projects, project);
- 
+
+	/* double the underscores in the project name
+	 * (or they will just underscore the next character) */
+	underscored_name = glade_util_duplicate_underscores (project->name);
+	if (!underscored_name)
+		return;
+
  	/* Add the project in the /Project menu. */
-	project->entry.path = g_strdup_printf ("/Project/%s", project->name);
+	project->entry.path = g_strdup_printf ("/Project/%s", underscored_name);
+	g_free (underscored_name);
 	project->entry.accelerator = NULL;
 	project->entry.callback = glade_project_window_set_project;
 	project->entry.callback_action = 0;

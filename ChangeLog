@@ -1,3 +1,12 @@
+2003-06-05  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-project-window.c: escape the underscores on the project
+	name, to prevent gtk+ from using them as accelerators in the menu.
+	(Bug signaled by Bas Driessen.)
+	
+	* src/glade-util.[ch]: create a function to duplicate the underscores
+	on a string.
+
 2003-05-31  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-widget.c: free the resources allocated by a GladeWidget

@@ -354,3 +354,38 @@ glade_util_replace (char *str, char a, char b)
 		str = g_utf8_next_char (str);
 	}
 }
+
+
+/**
+ * duplicates the string passed as argument, but changing each underscore
+ * in the original string by two underscores.  Returns a newly allocated
+ * string, or NULL if there is not enough memory.
+ */
+char *glade_util_duplicate_underscores (const char *name)
+{
+	const char *tmp;
+	const char *last_tmp = name;
+	char *underscored_name = g_malloc (strlen (name) * 2 + 1);
+	char *tmp_underscored = underscored_name;
+
+	if (!underscored_name)
+	{
+		g_critical ("Not enough memory!");
+		return NULL;
+	}
+
+	for (tmp = last_tmp; *tmp; tmp = g_utf8_next_char (tmp))
+	{
+		if (*tmp == '_')
+		{
+			memcpy (tmp_underscored, last_tmp, tmp - last_tmp + 1);
+			tmp_underscored += tmp - last_tmp + 1;
+			last_tmp = tmp + 1;
+			*tmp_underscored++ = '_';
+		}
+	}
+
+	memcpy (tmp_underscored, last_tmp, tmp - last_tmp + 1);
+
+	return underscored_name;
+}
