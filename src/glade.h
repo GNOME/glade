@@ -30,6 +30,25 @@
 #endif
 
 
+#ifndef __GNUC__
+# define __DLL_IMPORT__	__declspec(dllimport)
+# define __DLL_EXPORT__	__declspec(dllexport)
+#else
+# define __DLL_IMPORT__	__attribute__((dllimport)) extern
+# define __DLL_EXPORT__	__attribute__((dllexport)) extern
+#endif 
+
+#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
+# ifdef INSIDE_LIBGLADEUI
+#  define LIBGLADEUI_API	__DLL_EXPORT__
+# else
+#  define LIBGLADEUI_API	__DLL_IMPORT__
+# endif
+#else
+# define LIBGLADEUI_API		extern
+#endif
+
+
 #define g_ok_print g_print
 /* I always grep for g_print to find left over debuging print's
  * so for now, use g_ok_print on the code that is ment to do a g_print
@@ -141,14 +160,12 @@
 #define GLADE_TAG_PARENT_CLASS                    "parent-class"
 #define GLADE_TAG_CHILD_PROPERTY                  "child-property"
 
-extern gboolean verbose;
+LIBGLADEUI_API gboolean glade_verbose;
 
-extern gchar* glade_data_dir;
-extern gchar* glade_pixmaps_dir;
-extern gchar* glade_widgets_dir;
-extern gchar* glade_catalogs_dir;
-extern gchar* glade_modules_dir;
-extern gchar* glade_locale_dir;
-extern gchar* glade_icon_dir;
+LIBGLADEUI_API gchar* glade_pixmaps_dir;
+LIBGLADEUI_API gchar* glade_catalogs_dir;
+LIBGLADEUI_API gchar* glade_modules_dir;
+LIBGLADEUI_API gchar* glade_locale_dir;
+LIBGLADEUI_API gchar* glade_icon_dir;
 
 #endif /* __GLADE_H__ */

@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
+#include "glade.h"
 #include "glade-plugin.h"
 
 #include "fixed_bg.xpm"

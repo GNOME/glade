@@ -2319,7 +2319,7 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 	if ((widget = glade_widget_new_from_widget_info
 	     (info, project, NULL)) != NULL)
 	{
-		if (verbose)
+		if (glade_verbose)
 			glade_widget_debug (widget);
 	}	
 	return widget;

@@ -1,3 +1,20 @@
+2005-04-02  Ivan, Wong Yat Cheung  <email@ivanwong.info>
+
+	* configure.in:
+	  pixmaps/Makefile.am, src/Makefile.am, widgets/Makefile.am,
+	  src/glade-app.c, src/glade-widget.c, src/glade-paths.sh.in:
+	  Use a more proper way to detect paths.
+
+	* src/glade-app.h, src/glade-command.c, src/glade-command.h,
+	  src/glade-debug.h, src/glade-editor.h, src/glade-gtk.c,
+	  src/glade-palette.h, src/glade-placeholder.c, src/glade-placeholder.h,
+	  src/glade-project-view.h, src/glade-project.h, src/glade-property.h,
+	  src/glade-utils.h, src/glade-widget-class.h, src/glade-widget.h,
+	  src/glade.h:
+	  Introduce LIBGLADEUI_API, remove *.def.
+
+	* src/main.c: some global variables should be freed by libgladeui.
+
 2005-04-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.[ch]: Added global selection API which takes multiple

@@ -42,14 +42,13 @@
 #endif
 
 static gchar *widget_name = NULL;
-gboolean verbose = FALSE;
 
 #ifdef HAVE_LIBPOPT
 static struct poptOption options[] = {
 	{ "dump", '\0', POPT_ARG_STRING, &widget_name, 0,
 	  N_("dump the properties of a widget. --dump [gtk type] "
 	     "where type can be GtkWindow, GtkLabel etc."), NULL },
-	{ "verbose", 'v', POPT_ARG_NONE, &verbose, 0,
+	{ "verbose", 'v', POPT_ARG_NONE, NULL, 0,
 	  N_("be verbose."), NULL },
 #ifndef USE_POPT_DLL
 	POPT_AUTOHELP
@@ -118,9 +117,10 @@ main (int argc, char *argv[])
 	g_set_application_name (_("Glade-3 GUI Builder"));
 
 #ifdef HAVE_LIBPOPT
-#  ifdef USE_POPT_DLL
+# ifdef USE_POPT_DLL
 	options[sizeof (options) / sizeof (options[0]) - 2].arg = poptHelpOptions;
-#  endif
+# endif
+	options[1].arg = &glade_verbose;
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
 	files = parse_command_line (popt_context);
 	poptFreeContext (popt_context);
@@ -163,17 +163,6 @@ main (int argc, char *argv[])
 		glade_project_window_new_project (project_window);
 
 	gtk_main ();
-
-/* FIXME: Move this to glade-app.c */
-#ifdef G_OS_WIN32 
-	g_free (glade_data_dir);
-	g_free (glade_pixmaps_dir);
-	g_free (glade_widgets_dir);
-	g_free (glade_catalogs_dir);
-	g_free (glade_modules_dir);
-	g_free (glade_locale_dir);
-	g_free (glade_icon_dir);
-#endif
 
 	return 0;
 }

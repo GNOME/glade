@@ -68,11 +68,11 @@ struct _GladePaletteClass
 	void (*catalog_change) (GladePalette *palette);
 };
 
-GType glade_palette_get_type (void);
+LIBGLADEUI_API GType glade_palette_get_type (void);
 
-GladePalette *glade_palette_new (GList *catalogs);
+LIBGLADEUI_API GladePalette *glade_palette_new (GList *catalogs);
 
-void glade_palette_unselect_widget (GladePalette *palette);
+LIBGLADEUI_API void glade_palette_unselect_widget (GladePalette *palette);
 
 
 G_END_DECLS

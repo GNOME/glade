@@ -2,9 +2,10 @@
 SUBDIRS=
 
 bin_PROGRAMS = glade-3
+lib_LTLIBRARIES = libgladeui-1.la
 
-gladegtk_LTLIBRARIES = libgladegtk.la libgladeui.la
-gladegtkdir = $(modulesdir)
+gladegtk_LTLIBRARIES = libgladegtk.la
+gladegtkdir = $(glade_modulesdir)
 
 CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
@@ -12,40 +13,30 @@ EXTRA_DIST = \
 
 libgladegtk_la_SOURCES = glade-gtk.c
 libgladegtk_la_LDFLAGS = -module -avoid-version
+libgladegtk_la_LIBADD = libgladeui-1.la $(GLADE_LIBS)
 
-if WITH_WIN32
-  glade_3_LDFLAGS = glade_plugin.def
-  libgladegtk_la_LDFLAGS += -no-undefined -L./ -Wl,$(bin_PROGRAMS).a $(GLADE_LIBS)
-libgladegtk_la_DEPENDENCIES = $(bin_PROGRAMS).a
-  CLEANFILES += $(bin_PROGRAMS).a
-endif
-
-INCLUDES = \
+AM_CFLAGS = -g -Wall \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
-	$(GLADE_CFLAGS) \
-	-DMODULES_DIR=\""@modulesdir@"\"
-
-AM_CFLAGS = -g -Wall 
+	$(GLADE_CFLAGS)
 
 BUILT_SOURCES = \
         glade-marshallers.c \
-        glade-marshallers.h
+        glade-marshallers.h \
+	glade-paths.h
 
-glade_3_LDADD = \
-	libgladeui.la
+glade_3_LDADD = libgladeui-1.la
 
 glade_3_SOURCES = \
-	glade-project-window.c \
+	glade-project-window.c glade-project-window.h \
 	main.c
 
-libgladeui_la_SOURCES = \
+libgladeui_1_la_SOURCES = \
 	glade-debug.c \
 	glade-project.c \
 	glade-parameter.c \
 	glade-placeholder.c \
 	glade-project-view.c \
-	glade-project-window.c \
 	glade-widget-class.c \
 	glade-xml-utils.c \
 	glade-palette.c \
@@ -70,8 +61,9 @@ libgladeui_la_SOURCES = \
 	glade-parser.c \
 	glade-app.c
 
-libgladeui_la_LIBADD = \
-	$(GLADE_LIBS)
+libgladeui_1_la_CFLAGS = -DINSIDE_LIBGLADEUI $(AM_CFLAGS)
+libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE)
+libgladeui_1_la_LIBADD = $(GLADE_LIBS)
 
 libgladeuiincludedir=$(includedir)/libgladeui-1.0/libgladeui
 libgladeuiinclude_HEADERS = \
@@ -85,7 +77,6 @@ libgladeuiinclude_HEADERS = \
 	glade-signal-editor.h \
 	glade-palette.h \
 	glade-cursor.h \
-	glade-project-window.h \
 	glade-types.h \
 	glade-widget.h \
 	glade-widget-class.h \
@@ -112,16 +103,27 @@ libgladeuiinclude_HEADERS = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libgladeui-1.0.pc
 
-$(bin_PROGRAMS).a: $(bin_PROGRAMS)
-	$(DLLTOOL) -D $(bin_PROGRAMS) -d glade_plugin.def -l $(bin_PROGRAMS).a
+if WITH_WIN32
+  libgladegtk_la_LDFLAGS += -no-undefined
+  libgladeui_1_la_LDFLAGS += -no-undefined
+endif
+
 #
 # Marshaller generation
 #
-glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL) Makefile.am
+glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --header > glade-marshallers-h.tmp \
 	&& mv glade-marshallers-h.tmp glade-marshallers.h \
 	|| ( rm -f glade-marshallers-h.tmp && exit 1)
-glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL) Makefile.am
+glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --body > glade-marshallers-c.tmp     \
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
+
+glade-paths.h: glade-paths.sh
+	@sh $< > $@.tmp ;					\
+	if cmp -s $@.tmp $@; then				\
+	    rm $@.tmp;						\
+	else							\
+	    mv $@.tmp $@ ; echo updated glade-paths.h ;	\
+	fi

@@ -45,6 +45,7 @@
 #include "glade-catalog.h"
 #include "glade-transform.h"
 #include "glade-app.h"
+#include "glade-paths.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
@@ -81,17 +82,12 @@ enum
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
-gchar *glade_data_dir = GLADE_DATA_DIR;
-gchar *glade_pixmaps_dir = PIXMAPS_DIR;
-gchar *glade_widgets_dir = WIDGETS_DIR;
-gchar *glade_catalogs_dir = CATALOGS_DIR;
-#ifdef MODULES_DIR
-gchar *glade_modules_dir = MODULES_DIR;
-#else
-gchar *glade_modules_dir = NULL;
-#endif
-gchar *glade_locale_dir = LOCALE_DIR;
-gchar *glade_icon_dir = ICONS_DIR;
+gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
+gchar *glade_catalogs_dir = GLADE_CATALOGSDIR;
+gchar *glade_modules_dir = GLADE_MODULESDIR;
+gchar *glade_locale_dir = GLADE_LOCALEDIR;
+gchar *glade_icon_dir = GLADE_ICONDIR;
+gboolean glade_verbose = FALSE;
 
 static GObjectClass* parent_class = NULL;
 
@@ -121,6 +117,14 @@ glade_app_dispose (GObject *app)
 static void
 glade_app_finalize (GObject *app)
 {
+#ifdef G_OS_WIN32 
+	g_free (glade_pixmaps_dir);
+	g_free (glade_catalogs_dir);
+	g_free (glade_modules_dir);
+	g_free (glade_locale_dir);
+	g_free (glade_icon_dir);
+#endif
+
 	g_free (GLADE_APP (app)->priv);
 	if (parent_class->finalize)
 		parent_class->finalize (app);
@@ -195,12 +199,10 @@ glade_app_init (GladeApp *app)
 		gchar *prefix;
 	
 		prefix = g_win32_get_package_installation_directory (NULL, NULL);
-		glade_data_dir = g_build_filename (prefix, "share", "glade", NULL);
-		glade_pixmaps_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "pixmaps", NULL);
-		glade_widgets_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "widgets", NULL);
-		glade_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE "-" VERSION, "catalogs", NULL);
-		glade_modules_dir = g_build_filename (prefix, "lib", "glade", NULL);
-		glade_locale_dir = g_build_filename (prefix, "lib", "locale", NULL);
+		glade_pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+		glade_catalogs_dir = g_build_filename (prefix, "lib", PACKAGE, "catalogs", NULL);
+		glade_modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
+		glade_locale_dir = g_build_filename (prefix, "share", "locale", NULL);
 		glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
 		g_free (prefix);
 #endif

@@ -21,6 +21,7 @@
  */
 
 #include <gtk/gtk.h>
+#include "glade.h"
 #include "glade-placeholder.h"
 #include "glade-xml-utils.h"
 #include "glade-project.h"
@@ -29,7 +30,6 @@
 #include "glade-popup.h"
 #include "glade-cursor.h"
 #include "glade-widget.h"
-#include "glade-utils.h"
 #include "glade-app.h"
 
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);

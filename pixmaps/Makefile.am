@@ -1,3 +1,5 @@
+pixmapsdir = $(glade_pixmapsdir)
+
 pixmaps_DATA = \
 	accellabel.png \
 	arrow.png \

@@ -183,17 +183,17 @@ struct _GladeEditorProperty
 				     */
 };
 
-GType glade_editor_get_type (void);
+LIBGLADEUI_API GType glade_editor_get_type (void);
 
-GladeEditor *glade_editor_new (void);
+LIBGLADEUI_API GladeEditor *glade_editor_new (void);
 
-void         glade_editor_load_widget        (GladeEditor *editor,
-					      GladeWidget *widget);
-void         glade_editor_refresh            (GladeEditor *editor);
-void         glade_editor_update_widget_name (GladeEditor *editor);
-gboolean     glade_editor_query_dialog       (GladeEditor *editor,
-					      GladeWidget *widget);
-gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
+LIBGLADEUI_API void         glade_editor_load_widget        (GladeEditor *editor,
+							     GladeWidget *widget);
+LIBGLADEUI_API void         glade_editor_refresh            (GladeEditor *editor);
+LIBGLADEUI_API void         glade_editor_update_widget_name (GladeEditor *editor);
+LIBGLADEUI_API gboolean     glade_editor_query_dialog       (GladeEditor *editor,
+							     GladeWidget *widget);
+LIBGLADEUI_API gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
 
 G_END_DECLS
 

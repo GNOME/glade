@@ -1,10 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
-AC_INIT(src/glade-widget.c)
+AC_INIT(glade-3, 3.0.0,
+	http://bugzilla.gnome.org/enter_bug.cgi?product=glade3)
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(glade, 2.90.0)
+AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
@@ -19,13 +20,25 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 AC_LIBTOOL_DLOPEN
-AC_PROG_LIBTOOL
+AC_LIBTOOL_WIN32_DLL
+AM_PROG_LIBTOOL
+
+# If the source code has changed at all, increment GLADE_REVISION
+# If any interfaces have been added, removed, or changed, increment GLADE_CURRENT, and set GLADE_REVISION to 0.
+# If any interfaces have been added since the last public release, then increment GLADE_AGE.
+# If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
+GLADE_REVISION=0
+GLADE_CURRENT=1
+GLADE_AGE=1
+AC_SUBST(GLADE_REVISION)
+AC_SUBST(GLADE_CURRENT)
+AC_SUBST(GLADE_AGE)
 
 
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
-GETTEXT_PACKAGE=glade-3.0
+GETTEXT_PACKAGE=glade-3
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Name of the gettext package.])
 ALL_LINGUAS="az es ms nn no pl pt ru sv ta tr uk"
@@ -43,52 +56,24 @@ AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is require
 glade 3.0. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
 
 
-dnl ================================================================
-dnl GLADE_DATA_DIR - Sets the location of the data directory, where we install
-dnl source files added to projects (such as all the Gnome m4 macros).
-dnl This will substitute GLADE_DATA_DIR in config.h (from acconfig.h).
-dnl ================================================================
-if test "x${datadir}" = 'x${prefix}/share'; then
-  if test "x${prefix}" = "xNONE"; then
-    glade_data_dir="${ac_default_prefix}/share"
-  else
-    glade_data_dir="${prefix}/share"
-  fi
-else
-  glade_data_dir="${datadir}"
-fi
-AC_DEFINE_UNQUOTED(GLADE_DATA_DIR, "${glade_data_dir}", [Data directory of Glade-3.])
-AC_DEFINE_UNQUOTED(ICONS_DIR, "${glade_data_dir}/pixmaps", [Icons directory of Glade-3.])
-AC_DEFINE_UNQUOTED(LOCALE_DIR, "${glade_data_dir}/locale", [Locale directory of Glade-3.])
+glade_version="${VERSION}"
+glade_datadir='${datadir}/${PACKAGE}'
+glade_libdir='${libdir}/${PACKAGE}'
+glade_catalogsdir='${glade_libdir}/catalogs'
+glade_modulesdir='${glade_libdir}/modules'
+glade_pixmapsdir='${glade_datadir}/pixmaps'
+glade_icondir='${datadir}/pixmaps'
+glade_localedir='${prefix}/${DATADIRNAME}/locale'
 
-dnl ================================================================
-dnl PIXMAPS, WIDGETS, CATALOGS
-dnl ================================================================
-if test "x${prefix}" = "xNONE"; then
-  tmp="${ac_default_prefix}"
-else
-  tmp="${prefix}"
-fi
-pixmapsdir="${tmp}/${DATADIRNAME}/${PACKAGE}-${VERSION}/pixmaps"
-widgetsdir="${tmp}/${DATADIRNAME}/${PACKAGE}-${VERSION}/widgets"
-catalogsdir="${tmp}/${DATADIRNAME}/${PACKAGE}-${VERSION}/catalogs"
-AC_DEFINE_UNQUOTED(PIXMAPS_DIR, "$pixmapsdir", [Pixmaps directory of Glade-3.])
-AC_DEFINE_UNQUOTED(WIDGETS_DIR, "$widgetsdir", [Widgets directory of Glade-3.])
-AC_DEFINE_UNQUOTED(CATALOGS_DIR, "$catalogsdir", [Catalogs directory of Glade-3.])
+AC_SUBST(glade_version)
+AC_SUBST(glade_datadir)
+AC_SUBST(glade_libdir)
+AC_SUBST(glade_catalogsdir)
+AC_SUBST(glade_modulesdir)
+AC_SUBST(glade_pixmapsdir)
+AC_SUBST(glade_icondir)
+AC_SUBST(glade_localedir)
 
-dnl ================================================================
-dnl MODULES
-dnl ================================================================
-if test "x${libdir}" = "xNONE"; then
-  modulesdir="${ac_default_libdir}/${PACKAGE}"
-else
-  modulesdir="${libdir}/${PACKAGE}"
-fi
-
-AC_SUBST(pixmapsdir)
-AC_SUBST(widgetsdir)
-AC_SUBST(catalogsdir)
-AC_SUBST(modulesdir)
 
 case $host_os in
 *mingw* | pw32* | cygwin*)
@@ -112,6 +97,7 @@ widgets/Makefile
 po/Makefile.in
 src/Makefile
 src/libgladeui-1.0.pc
+src/glade-paths.sh
 ])
 
 echo "

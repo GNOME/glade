@@ -46,32 +46,32 @@ struct _GladeProperty
 };
 
 
-GladeProperty *glade_property_new (GladePropertyClass *class,
-				   GladeWidget        *widget,
-				   GValue             *value);
+LIBGLADEUI_API GladeProperty *glade_property_new (GladePropertyClass *class,
+						  GladeWidget        *widget,
+						  GValue             *value);
 
-void glade_property_free (GladeProperty *property);
+LIBGLADEUI_API void glade_property_free (GladeProperty *property);
 
-void glade_property_set (GladeProperty *property, const GValue *value);
+LIBGLADEUI_API void glade_property_set (GladeProperty *property, const GValue *value);
 
-void glade_property_sync (GladeProperty *property);
+LIBGLADEUI_API void glade_property_sync (GladeProperty *property);
 
-gboolean glade_property_write (GArray *props, GladeProperty *property,
-			       GladeInterface *interface);
+LIBGLADEUI_API gboolean glade_property_write (GArray *props, GladeProperty *property,
+					      GladeInterface *interface);
 
-GladeProperty *glade_property_dup (GladeProperty *template, GladeWidget *widget);
+LIBGLADEUI_API GladeProperty *glade_property_dup (GladeProperty *template, GladeWidget *widget);
 
-void glade_property_i18n_set_comment (GladeProperty *property, const gchar *str);
+LIBGLADEUI_API void glade_property_i18n_set_comment (GladeProperty *property, const gchar *str);
 
-const gchar *glade_property_i18n_get_comment (GladeProperty *property);
+LIBGLADEUI_API const gchar *glade_property_i18n_get_comment (GladeProperty *property);
 
-void glade_property_i18n_set_translatable (GladeProperty *property, gboolean translatable);
+LIBGLADEUI_API void glade_property_i18n_set_translatable (GladeProperty *property, gboolean translatable);
 
-gboolean glade_property_i18n_get_translatable (GladeProperty *property);
+LIBGLADEUI_API gboolean glade_property_i18n_get_translatable (GladeProperty *property);
 
-void glade_property_i18n_set_has_context (GladeProperty *property, gboolean has_context);
+LIBGLADEUI_API void glade_property_i18n_set_has_context (GladeProperty *property, gboolean has_context);
 
-gboolean glade_property_i18n_get_has_context (GladeProperty *property);
+LIBGLADEUI_API gboolean glade_property_i18n_get_has_context (GladeProperty *property);
 
 G_END_DECLS
 

@@ -80,63 +80,63 @@ struct _GladeWidgetKlass
 					 GladeSignal *new_signal_handler);
 };
 
-GType			glade_widget_get_type		    (void);
-GladeWidget *		glade_widget_new		    (GladeWidget      *widget,
-							     GladeWidgetClass *klass,
-							     GladeProject     *project);
-GladeWidget *		glade_widget_new_for_internal_child (GladeWidgetClass *klass,
-							     GladeWidget      *parent,
-							     GObject          *internal_object,
-							     const char       *internal_name);
+LIBGLADEUI_API GType                   glade_widget_get_type		    (void);
+LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *widget,
+									     GladeWidgetClass *klass,
+									     GladeProject     *project);
+LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
+									     GladeWidget      *parent,
+									     GObject          *internal_object,
+									     const char       *internal_name);
 
-void			glade_widget_set_name		    (GladeWidget      *widget,
-							     const char       *name);
-void			glade_widget_set_internal	    (GladeWidget      *widget,
-							     const char       *internal);
-void			glade_widget_set_object		    (GladeWidget      *widget,
-							     GObject          *new_object);
-void			glade_widget_set_project            (GladeWidget      *widget,
-							     GladeProject     *project);
+LIBGLADEUI_API void                    glade_widget_set_name		    (GladeWidget      *widget,
+									     const char       *name);
+LIBGLADEUI_API void                    glade_widget_set_internal	    (GladeWidget      *widget,
+									     const char       *internal);
+LIBGLADEUI_API void                    glade_widget_set_object		    (GladeWidget      *widget,
+									     GObject          *new_object);
+LIBGLADEUI_API void                    glade_widget_set_project		    (GladeWidget      *widget,
+									     GladeProject     *project);
 
-const gchar            *glade_widget_get_name               (GladeWidget      *widget);
-const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
-GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
-GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
-GObject                *glade_widget_get_object             (GladeWidget      *widget);
-GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
-							     const char       *id_property);
+LIBGLADEUI_API const gchar            *glade_widget_get_name               (GladeWidget      *widget);
+LIBGLADEUI_API const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
+LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
+LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
+LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
+LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
+									    const char       *id_property);
 
-void                    glade_widget_replace                (GladeWidget      *parent,
-							     GObject          *old_object,
-							     GObject          *new_object);
+LIBGLADEUI_API void                    glade_widget_replace                (GladeWidget      *parent,
+									    GObject          *old_object,
+									    GObject          *new_object);
 
-void                    glade_widget_rebuild                (GladeWidget      *widget);
-GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
+LIBGLADEUI_API void                    glade_widget_rebuild                (GladeWidget      *widget);
+LIBGLADEUI_API GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
 
 /* widget signals */
-void			glade_widget_add_signal_handler     (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
-void			glade_widget_remove_signal_handler  (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
-void			glade_widget_change_signal_handler  (GladeWidget    *widget,
-							     GladeSignal    *old_signal_handler,
-							     GladeSignal    *new_signal_handler);
+LIBGLADEUI_API void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
+									    GladeSignal      *signal_handler);
+LIBGLADEUI_API void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
+									    GladeSignal      *signal_handler);
+LIBGLADEUI_API void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
+									    GladeSignal      *old_signal_handler,
+									    GladeSignal      *new_signal_handler);
 /* array of GladeSignal* */
-GPtrArray *		glade_widget_list_signal_handlers   (GladeWidget      *widget,
-							     const char       *signal_name);
+LIBGLADEUI_API GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
+									    const char       *signal_name);
 /* serialization */
-GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
-							     GladeInterface   *interface);
-GladeWidget            *glade_widget_read                   (GladeProject     *project,
-							     GladeWidgetInfo  *info);
+LIBGLADEUI_API GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
+									    GladeInterface   *interface);
+LIBGLADEUI_API GladeWidget            *glade_widget_read                   (GladeProject     *project,
+									    GladeWidgetInfo  *info);
 
 /* helper functions */
 #define			glade_widget_get_from_gobject(w)  \
     g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
 
-GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
-void                    glade_widget_set_parent             (GladeWidget      *widget,
-							     GladeWidget      *parent);
+LIBGLADEUI_API GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
+LIBGLADEUI_API void                    glade_widget_set_parent             (GladeWidget      *widget,
+									    GladeWidget      *parent);
 
 G_END_DECLS
 

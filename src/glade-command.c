@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <string.h>
-#include "glade-types.h"
+#include "glade.h"
 #include "glade-project.h"
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
@@ -36,7 +36,6 @@
 #include "glade-placeholder.h"
 #include "glade-clipboard.h"
 #include "glade-signal.h"
-#include "glade.h"
 #include "glade-app.h"
 
 typedef struct {

@@ -1,3 +1,5 @@
+catalogsdir = $(glade_catalogsdir)
+
 catalogs_DATA = \
 	gtk+.xml
 
