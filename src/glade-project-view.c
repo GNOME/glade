@@ -117,7 +117,7 @@ glade_project_view_find_iter_by_widget (GtkTreeModel *model,
 
 	if (!gtk_tree_model_get_iter_root (model, &iter))
 	{
-		g_warning ("Cound not find first widget.");
+		g_warning ("Could not find first widget.");
 		return NULL;
 	}
 

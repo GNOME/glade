@@ -267,29 +267,33 @@ glade_widget_get_from_event_widget (GtkWidget *event_widget, GdkEventButton *eve
 		data.found_child = NULL;
 		gtk_container_forall (GTK_CONTAINER (temp),
 				      (GtkCallback) glade_widget_find_inside_container, &data);
-		if (data.found_child) {
+		if (data.found_child)
+		{
+			GladeWidget *temp_glade_widget;
 			temp = data.found_child;
-			if (glade_widget_get_from_gtk_widget (temp)) {
-				found = glade_widget_get_from_gtk_widget (temp);
+			if ((temp_glade_widget = glade_widget_get_from_gtk_widget (temp)) != NULL)
+			{
+				found = temp_glade_widget;
 				g_assert (found->widget == data.found_child);
-			} else {
+			}
+			else
+			{
 				g_debug(("Temp was not a GladeWidget, it was a %s\n",
 					 gtk_widget_get_name (temp)));
 			}
-		} else {
-			/* The user clicked on the container itself */
-			found = glade_widget_get_from_gtk_widget (temp);
-			break;
+
+			data.found_child = NULL;
 		}
+		else
+			/* there are no more children.  found contains the deepest GladeWidget */
+			break;
 
 	}
 #ifdef DEBUG	
-	if (!found) {
-		GladeWidget *gw;
-		gw = glade_widget_get_from_gtk_widget (event_widget);
-		g_warning ("We could not find the widget %s:%s\n",
-			   gtk_widget_get_name (event_widget),
-			   gw ? gw->name : "[null]");
+	if (!found)
+	{
+		g_warning ("We could not find the widget %s\n",
+			   gtk_widget_get_name (event_widget));
 		return NULL;
 	}
 #else
@@ -316,6 +320,7 @@ glade_widget_button_press (GtkWidget *widget,
 		return FALSE;
 	}
 
+	widget = glade_widget->widget;
 	/* make sure to grab focus, since we may stop default handlers */
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
@@ -604,7 +609,7 @@ glade_widget_new_full (GladeWidgetClass *class,
  * @internal
  * 
  * Creates, fills and associate a GladeWidget to the GtkWidget of
- * internal childern.
+ * internal children.
  **/
 GladeWidget *
 glade_widget_new_for_internal_child (GladeWidgetClass *class,
