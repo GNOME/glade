@@ -2231,7 +2231,7 @@ show_item_properties (GladeMenuEditor * menued)
    item as a child of the selected item, else it adds it as a sibling.
 */
 static void
-add_item (GladeMenuEditor * menued,
+add_item (GladeMenuEditor *menued,
 	  gboolean as_child,
 	  gboolean separator)
 {
@@ -2247,7 +2247,7 @@ add_item (GladeMenuEditor * menued,
 							    _("separator")); ***/
 	}
 	else {
-		item->label = /*** glade_project_new_widget_name (menued->project, "item"); ***/
+		item->label = g_strdup ("item"); /*** glade_project_new_widget_name (menued->project, "item"); ***/
 		item->name = g_strdup (item->label);
 	}
 	item->handler = generate_handler (menued, -1, item->label, item->name);
@@ -2751,7 +2751,7 @@ get_stock_id_from_icon_name (GladeMenuEditor    *menued,
    Note that it has to reload all the xpm files for pixmaps, so its not
    very efficient, but they're small so it shouldn't be too bad. */
 static void
-glade_menu_editor_update_menu (GladeMenuEditor    *menued)
+glade_menu_editor_update_menu (GladeMenuEditor *menued)
 {
 	GbMenuItemData *item;
 	GtkWidget *menuitem, *label, *prev_item = NULL, *child_menu;

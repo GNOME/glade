@@ -30,8 +30,6 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-choice.h"
-#include "glade-menu-editor.h"
-#include "glade-project.h"
 
 
 static void
@@ -571,28 +569,5 @@ glade_gtk_get_get_function_hack (GladePropertyClass *class, const gchar *name)
 	class->get_function = glade_gtk_get_function (name);
 
 	return TRUE;
-}
-
-
-static void
-glade_gtk_on_edit_menu (GtkButton *button, gpointer data)
-{
-	GtkMenuBar *menubar = GTK_MENU_BAR (data);
-	GtkWidget *menu_editor;
-
-	menu_editor = glade_menu_editor_new (glade_project_get_active (), GTK_MENU_SHELL (menubar));
-	gtk_widget_show (GTK_WIDGET (menu_editor));
-}
-
-/* big ugly hack... bad bad Joaquin... */
-GtkWidget *glade_gtk_create_menu_editor_button (GladeWidget *item)
-{
-	GtkWidget *edit_menu_button;
-	
-	edit_menu_button = gtk_button_new_with_label (_("Edit Menus..."));
-	gtk_widget_show (edit_menu_button);
-	g_signal_connect (G_OBJECT (edit_menu_button), "clicked", G_CALLBACK (glade_gtk_on_edit_menu), item->widget);
-
-	return edit_menu_button;
 }
 

@@ -1,4 +1,11 @@
-2003-03-27  Paolo Borelli
+2003-03-29  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-editor.c: Now we don't create a new "Edit Menus..." button
+	each time we try to edit a menu bar.
+	* src/glade-gtk.[ch]: idem
+	* src/glade-menu-editor.[ch]: idem
+
+2003-03-27  Paolo Borelli <pborelli@katamail.com>
 
 	* src/glade-project.[ch]: make glade_project_open_from_file() static
 	and fix the callers. This fixes the (unlikely) case of passing the 

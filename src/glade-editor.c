@@ -44,7 +44,8 @@
 #include "glade-property-class.h"
 #include "glade-command.h"
 #include "glade-debug.h"
-#include "glade-gtk.h"
+#include "glade-menu-editor.h"
+#include "glade-project.h"
 
 static void glade_editor_class_init (GladeEditorClass * klass);
 static void glade_editor_init (GladeEditor * editor);
@@ -873,6 +874,35 @@ glade_editor_table_append_items (GladeEditorTable *table,
 	return TRUE;
 }
 
+static void
+glade_editor_on_edit_menu_click (GtkButton *button, gpointer data)
+{
+	GtkMenuBar *menubar = NULL;
+	GladeWidget *widget;
+	GtkWidget *menu_editor;
+	GladeProject *project;
+	GList *list;
+	
+	project = glade_project_get_active ();
+	g_assert (project != NULL);
+	
+	list = glade_project_selection_get (project);
+	for (; list != NULL; list = list->next) {
+		widget = GLADE_WIDGET (list->data);
+		if (GTK_IS_MENU_BAR (widget->widget)) {
+			menubar = GTK_MENU_BAR (widget->widget);
+			break;
+		}
+	}
+
+	/* if the user was able to click on the "Edit Menus...", that's because the menu bar was selected */
+	g_assert (GTK_IS_MENU_BAR (menubar));
+	
+	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
+	gtk_widget_show (GTK_WIDGET (menu_editor));
+}
+
+
 static GladeEditorTable *
 glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolean common)
 {
@@ -888,6 +918,19 @@ glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolea
 		glade_editor_table_append_standard_fields (table);
 	if (!glade_editor_table_append_items (table, class, &table->properties, common))
 		return NULL;
+
+	/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
+	 * xml files. */
+	if (!common && !strcmp (class->name, "GtkMenuBar")) {
+		GtkWidget *edit_menu_button = gtk_button_new_with_label (_("Edit Menus..."));
+
+		g_signal_connect (G_OBJECT (edit_menu_button), "clicked",
+				  G_CALLBACK (glade_editor_on_edit_menu_click), NULL);
+		gtk_table_attach (GTK_TABLE (table->table_widget), edit_menu_button,
+				  0, 2, table->rows, table->rows + 1,
+				  GTK_EXPAND, 0, 0, 0);
+		table->rows++;
+	}
 
 	gtk_widget_show_all (table->table_widget);
 	editor->widget_tables = g_list_prepend (editor->widget_tables,
@@ -1427,19 +1470,7 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 	if (editor->loaded_class != class)
 		glade_editor_load_class (editor, class);
 	
-	/* gross bad hack. Add a "Edit Menu..." button if the class is GtkMenuBar.  I should expand
-	 * the gtkmenubar.xml file to allow something like this */
 	if (strcmp (class->name, "GtkMenuBar") == 0) {
-		GtkWidget *edit_menu_button;
-		GladeEditorTable *table = glade_editor_get_table_from_class (editor, class, FALSE);
-
-		g_assert (GLADE_IS_EDITOR_TABLE (table));
-
-		edit_menu_button = glade_gtk_create_menu_editor_button (item);
-		gtk_table_attach (GTK_TABLE (table->table_widget), edit_menu_button,
-				  0, 2, table->rows, table->rows + 1,
-				  GTK_EXPAND, 0, 0, 0);
-		table->rows++;
 	}
 		
 	glade_editor_load_packing_page (editor, item);
