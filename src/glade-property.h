@@ -4,9 +4,9 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_PROPERTY(obj)          GTK_CHECK_CAST (obj, glade_property_get_type (), GladeProperty)
-#define GLADE_PROPERTY_OBJECT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_property_get_type (), GladePropertyClass)
-#define GLADE_IS_PROPERTY(obj)       GTK_CHECK_TYPE (obj, glade_property_get_type ())
+#define GLADE_PROPERTY(obj)                 GTK_CHECK_CAST (obj, glade_property_get_type (), GladeProperty)
+#define GLADE_PROPERTY_OBJECT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, glade_property_get_type (), GladePropertyObjectClass)
+#define GLADE_IS_PROPERTY(obj)              GTK_CHECK_TYPE (obj, glade_property_get_type ())
 
 typedef struct _GladePropertyObjectClass GladePropertyObjectClass;
 

@@ -22,6 +22,7 @@
 
 
 #include <string.h>
+#include <config.h>
 
 #include "glade.h"
 #include "glade-catalog.h"
