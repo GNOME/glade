@@ -536,13 +536,28 @@ glade_placeholder_get_from_properties (GladeWidget *parent,
 		
 		list = gtk_container_children (GTK_CONTAINER (parent->widget));
 		val = g_hash_table_lookup (properties, "position");
+		if (!val)
+			return NULL;
+
 		box_child = (GtkBoxChild *) g_list_nth (list, atoi (val));
 		placeholder = box_child->widget;
 		g_assert (placeholder);
 	} else if (glade_widget_class_is (parent->class, "GtkTable")) {
 		GtkTableChild *child;
-		gint col = atoi (g_hash_table_lookup (properties, "cell_x"));
-		gint row = atoi (g_hash_table_lookup (properties, "cell_y"));
+		const char *val;
+		int col;
+		int row;
+
+		val = g_hash_table_lookup (properties, "cell_x");
+		if (!val)
+			return NULL;
+
+		col = atoi (val);
+		val = g_hash_table_lookup (properties, "cell_y");
+		if (!val)
+			return NULL;
+
+		row = atoi (val);
 
 		list = GTK_TABLE (parent->widget)->children;
 		for (; list; list = list->next) {

@@ -599,6 +599,12 @@ glade_xml_node_new (GladeXmlContext *context, const gchar *name)
 	return (GladeXmlNode *) xmlNewDocNode ((xmlDocPtr) context->doc, context->ns, name, NULL);
 }
 					   
+void
+glade_xml_node_delete (GladeXmlNode *node)
+{
+	xmlFreeNode ((xmlDocPtr) node);
+}
+
 GladeXmlDoc *
 glade_xml_context_get_doc (GladeXmlContext *context)
 {

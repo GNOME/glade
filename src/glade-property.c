@@ -622,18 +622,44 @@ GladeXmlNode *
 glade_property_write (GladeXmlContext *context, GladeProperty *property)
 {
 	GladeXmlNode *node;
-	gchar *temp;
+	gchar *tmp;
 
 	if (!property->enabled)
 		return NULL;
 
+	/* create a new node <property ...> */
 	node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
-	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, property->class->id);
-	temp = glade_property_class_make_string_from_gvalue (property->class,
-							     property->value);
-	glade_xml_set_content (node, temp);
-	g_free (temp);
+	if (!node)
+		return NULL;
+
+	/* we should change each '-' by '_' on the name of the property (<property name="...">) */
+	tmp = g_strdup(property->class->id);
+	if (tmp == NULL) {
+		glade_xml_node_delete (node);
+		return NULL;
+	}
 	
+	glade_util_replace (tmp, '-', '_');
+
+	/* put the name="..." part on the <property ...> tag */
+	glade_xml_node_set_property_string (node, GLADE_XML_TAG_NAME, tmp);
+
+	g_free (tmp);
+
+	/* convert the value of this property to a string, and put it between
+	 * the openning and the closing of the property tag */
+	tmp = glade_property_class_make_string_from_gvalue (property->class,
+							     property->value);
+	if (tmp == NULL)
+	{
+		glade_xml_node_delete (node);
+		return NULL;
+	}
+
+	glade_xml_set_content (node, tmp);
+	g_free (tmp);
+	
+	/* return the created node */
 	return node;
 }
 	

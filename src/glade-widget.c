@@ -1381,7 +1381,8 @@ glade_widget_apply_property_from_node (GladeXmlNode *node, GladeWidget *widget)
 	gchar *value;
 	gchar *id;
 
-	id    = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
+	id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL);
+	glade_util_replace (id, '_', '-');
 	value = glade_xml_get_content (node);
 
 	if (!value || !id)
@@ -1478,6 +1479,7 @@ glade_widget_properties_hash_from_node (GladeXmlNode *node)
 	child = glade_xml_node_get_children (node);
 	for (; child != NULL; child = glade_xml_node_next (child)) {
 		if (!glade_xml_node_verify (child, GLADE_XML_TAG_PROPERTY)) {
+			g_hash_table_destroy (hash);
 			return NULL;
 		}
 
@@ -1486,9 +1488,13 @@ glade_widget_properties_hash_from_node (GladeXmlNode *node)
 
 		if (!value || !id) {
 			g_warning ("Invalid property %s:%s\n", value, id);
+			g_hash_table_destroy (hash);
+			g_free (value);
+			g_free (id);
 			return NULL;
 		}
 
+		glade_util_replace (id, '_', '-');
 		g_hash_table_insert (hash, id, value);
 	}
 	
@@ -1531,19 +1537,31 @@ glade_widget_new_child_from_node (GladeXmlNode *node, GladeProject *project, Gla
 		return FALSE;
 
 	/* Get the packing properties */
-	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_PACKING);
-	if (!child_node)
-		return FALSE;
-	packing_properties = glade_widget_properties_hash_from_node (child_node);
+	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
+	if (child_node)
+		packing_properties = glade_widget_properties_hash_from_node (child_node);
+	else
+		packing_properties = g_hash_table_new (NULL, NULL);
+
 	if (packing_properties == NULL)
 		return FALSE;
 
 	/* Get and create the widget */
 	child_node = glade_xml_search_child_required (node, GLADE_XML_TAG_WIDGET);
 	if (!child_node)
+	{
+		g_hash_table_destroy (packing_properties);
 		return FALSE;
+	}
+
 	child = glade_widget_new_from_node_real (child_node, project, parent);
-	g_assert (child);
+	if (!child)
+	{
+		/* not enough memory... and now, how can I signal it and not make the caller believe that
+		 * it was a parsing problem? */
+		g_hash_table_destroy (packing_properties);
+		return FALSE;
+	}
 
 	/* Get the placeholder and replace it with the widget */
 	placeholder = glade_placeholder_get_from_properties (parent, packing_properties);

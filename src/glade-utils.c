@@ -338,4 +338,19 @@ glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
 	return filesel;
 }
  
- 
+
+/**
+ * changes each occurence of the character a on the string str by the character b.
+ */
+void
+glade_util_replace (char *str, char a, char b)
+{
+	g_return_if_fail (str != NULL);
+
+	while (*str != 0) {
+		if (*str == a)
+			*str = b;
+
+		str = g_utf8_next_char (str);
+	}
+}

@@ -1,33 +1,33 @@
+2003-05-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-placeholder.c, src/glade-property.c,
+	src/glade-utils.[ch], src/glade-widget.c, src/glade-xml-utils.[ch]:
+	fix a bunch of memleaks on error conditions, change the name
+	of the properties from '_' to '-' when read from the xml file
+	(and when we write it to a xml file), remove the need of a packing
+	property on each child node.
+
 2003-05-04  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-editor.[ch]: gtk_object -> g_object conversion
-
 	* src/glade-project.[ch]: remove glade_project_get_active
-
 	* src/glade-editor.c: ditto
-
 	* src/glade-palette.c: update for the above & remove deprecated function
-
 	* src/glade-project-window.c: update for the above
-
 	* src/glade-menu-editor.c: on delete event hide the keys dialog
 	instad of destroying it
 
 2003-05-01  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-keys-dialog.[ch]: init of the keys dialog.
-
 	* src/glade-menu-editor.c: idem.
 
 2003-05-01  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-editor.[ch]: changes to undo & redo on changes to the widget
 	name.
-
 	* src/glade-command.[ch]: Idem.
-
 	* src/glade-project-window.c: Idem.
-
 	* src/glade-property.c: Idem.
 
 2003-05-01  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
@@ -39,9 +39,7 @@
 2003-05-01  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-palette.[ch]: fix GLADE_PALETTE macro and misc cleanups.
-
 	* src/glade-project-window.c: cleanups.
-
 	* src/glade-placeholder.c: add missing include and some cleanups.
 
 2003-04-25  Archit Baweja  <bighead@users.sourceforge.net>
@@ -132,9 +130,7 @@
 
 	* src/glade-project-window.c (gpw_cut_cb): use glade_command_cut().
 	(gpw_paste_cb): use glade_command_paste().
-
 	* src/glade-placeholder.c (glade_placeholder_paste_cb): likewise.
-
 	* src/glade-widget.c (glade_widget_cut): likewise.
 
 2002-05-26  Archit Baweja  <bighead@users.sourceforge.net>

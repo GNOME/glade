@@ -50,6 +50,7 @@ GladeXmlNode * glade_xml_utils_hash_write (GladeXmlContext *context,
 
 /* Node operations */
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
+void           glade_xml_node_delete (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
 gboolean       glade_xml_node_verify (GladeXmlNode * node, const gchar *name);

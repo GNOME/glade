@@ -17,21 +17,22 @@ typedef enum
 	GladeEscDestroys
 } GladeEscAction;
 
-void     glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
-GType    glade_util_get_type_from_name	(const gchar *name);
-void     glade_util_ui_warn		(const gchar *warning);
-void     glade_util_flash_message	(guint context_id, gchar *format, ...);
+void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
+GType		glade_util_get_type_from_name	(const gchar *name);
+void		glade_util_ui_warn		(const gchar *warning);
+void		glade_util_flash_message	(guint context_id, gchar *format, ...);
 
 /* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
    any '_' characters. It isn't particularly efficient. */
-gint     glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
+gint		glade_util_compare_stock_labels (gconstpointer a, gconstpointer b);
 
-void	 glade_util_hide_window		(GtkWindow *window);
-gint	 glade_util_check_key_is_esc	(GtkWidget *widget, GdkEventKey *event, gpointer data);
-gchar	*glade_util_gtk_combo_func	(gpointer data);
-gpointer glade_util_gtk_combo_find	(GtkCombo *combo);
+void		glade_util_hide_window		(GtkWindow *window);
+gint		glade_util_check_key_is_esc	(GtkWidget *widget, GdkEventKey *event, gpointer data);
+gchar		*glade_util_gtk_combo_func	(gpointer data);
+gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 
-GtkWidget *glade_util_file_selection_new (const gchar *title, GtkWindow *parent);
+GtkWidget	*glade_util_file_selection_new (const gchar *title, GtkWindow *parent);
+void		glade_util_replace (char *str, char a, char b);
 
 G_END_DECLS
 
