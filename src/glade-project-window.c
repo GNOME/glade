@@ -268,7 +268,6 @@ gpw_confirm_close_project (GladeProject *project)
 				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				GTK_STOCK_SAVE, GTK_RESPONSE_YES, NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response	(GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 
 	ret = gtk_dialog_run (GTK_DIALOG (dialog));

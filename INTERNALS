@@ -61,6 +61,11 @@ Here are some of the goals which were considered when designing glade3
    so that it would be possible without too much work to embed them in 
    another program (e.g. an IDE).
 
+ * get rid of code generation. Code generation is considered a bad idea,
+   the way to go is to use libglade to dinamically load the GUI from the
+   xml file. If someone really wants to have code generation, it really
+   belongs in an external program which generates code from the xml file.
+
  * FIXME: ADD OTHERS
 
 
