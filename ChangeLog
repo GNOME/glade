@@ -1,3 +1,13 @@
+2003-05-23  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-placeholder.c: Make the placeholder work better on any
+	container.  Still some issues remain with undo/redo.
+
+2003-05-23  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-clipboard: get the project from the placeholder parent,
+	this way we don't need to include glade-project-window.h.
+
 2003-05-18  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-placeholder.c: Made glade_holder_replace independent of

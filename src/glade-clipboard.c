@@ -25,7 +25,6 @@
 #include "glade.h"
 #include "glade-clipboard-view.h"
 #include "glade-clipboard.h"
-#include "glade-project-window.h"
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include "glade-placeholder.h"
@@ -191,7 +190,7 @@ glade_clipboard_copy (GladeClipboard *clipboard, GladeWidget *widget)
 /**
  * glade_clipboard_paste:
  * @clipboard: 
- * @parent: 
+ * @placeholder: 
  * 
  * Paste a GladeWidget from the Clipboard.
  **/
@@ -207,19 +206,13 @@ glade_clipboard_paste (GladeClipboard *clipboard,
 
 	widget = clipboard->curr;
 
-	/*
-	 * FIXME: I think that GladePlaceholder should have a pointer
-	 * to the project it belongs to, as GladeWidget does. This way
-	 * the clipboard can be independent from glade-project-window.
-	 * 	Paolo.
-	 */
-	project = glade_project_window_get_project ();
+	if (!widget)
+		return;
 
 	parent = glade_placeholder_get_parent (placeholder);
 
-	if (!widget)
-		return;
-	
+	project = parent->project;
+
 	widget->name = glade_widget_new_name (project, widget->class);
 	widget->parent = parent;
 	glade_packing_add_properties (widget);
@@ -253,9 +246,6 @@ glade_clipboard_paste (GladeClipboard *clipboard,
 	if (GTK_IS_WIDGET (widget->widget))
 		gtk_widget_show_all (GTK_WIDGET (widget->widget));
 
-	/*
-	 * Finally remove widget from clipboard.
-	 */
 	glade_clipboard_remove (clipboard, widget);
 }
 

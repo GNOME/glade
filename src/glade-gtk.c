@@ -237,6 +237,8 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 			child = g_list_last (box->children);
 		}
 	} /* else the size is == */
+
+	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size));
 }
 
 #if 0
@@ -273,8 +275,9 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
 	GtkTable *table;
-	gint new_size;
-	gint old_size;
+	int new_size;
+	int old_size;
+	int i, j;
 
 	table = GTK_TABLE (object);
 	g_return_if_fail (GTK_IS_TABLE (table));
@@ -287,35 +290,46 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 	if (new_size < 1)
 		return;
 
-	glade_placeholder_remove_all (GTK_WIDGET (table));
-	
 	widget = glade_widget_get_from_gtk_widget (GTK_WIDGET (table));
 	g_return_if_fail (widget != NULL);
 
 	if (new_size > old_size) {
-		gtk_table_resize (table,
-				  for_rows ? new_size : table->nrows,
-				  for_rows ? table->ncols : new_size);
+		if (for_rows) {
+			gtk_table_resize (table, new_size, table->ncols);
+
+			for (i = 0; i < table->ncols; i++)
+				for (j = old_size; j < table->nrows; j++)
+					gtk_table_attach_defaults (table, glade_placeholder_new (widget),
+								   i, i + 1, j, j + 1);
+		} else {
+			gtk_table_resize (table, table->nrows, new_size);
+
+			for (i = old_size; i < table->ncols; i++)
+				for (j = 0; j < table->nrows; j++)
+					gtk_table_attach_defaults (table, glade_placeholder_new (widget),
+								   i, i + 1, j, j + 1);
+		}
 	} else {
 		/* Remove from the bottom up */
-		GList *list = g_list_reverse (g_list_copy (table->children));
+		GList *list = g_list_reverse (g_list_copy (gtk_container_get_children (GTK_CONTAINER (table))));
 		GList *freeme = list;
 		for (; list; list = list->next) {
 			GtkTableChild *child = list->data;
-			gint start = for_rows ?
-				child->top_attach : child->left_attach;
-			gint end = for_rows ?
-				child->bottom_attach : child->right_attach;
+			gint start = for_rows ? child->top_attach : child->left_attach;
+			gint end = for_rows ? child->bottom_attach : child->right_attach;
+
 			/* We need to completely remove it */
 			if (start >= new_size) {
 				gtk_container_remove (GTK_CONTAINER (table),
 						      child->widget);
 				continue;
 			}
-			/* We need to change the span */
-			/* For we to code this, span has to be working */
+
+			/* If the widget spans beyond the new border, we should resize it to fit on the new table */
 			if (end > new_size)
-				g_print ("Change the span <---------\n");
+				gtk_container_child_set (GTK_CONTAINER (table), GTK_WIDGET (child),
+							 for_rows ? "bottom_attach" : "right_attach",
+							 new_size, NULL);
 			
 		}
 		g_list_free (freeme);
@@ -324,7 +338,7 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 				  for_rows ? table->ncols : new_size);
 	}
 
-	glade_placeholder_fill_empty (GTK_WIDGET (table));
+	g_object_set_data (object, "glade_nb_placeholders", GINT_TO_POINTER (new_size * (for_rows ? table->ncols : table->nrows)));
 }
 
 static void

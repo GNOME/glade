@@ -11,7 +11,7 @@ void          glade_placeholder_add_with_result (GladeWidgetClass *class,
 						 GladeWidget *widget,
 						 GladePropertyQueryResult *result);
 
-GladePlaceholder * glade_placeholder_new (GladeWidget *parent);
+GladePlaceholder * glade_placeholder_new ();
 
 GladeWidget * glade_placeholder_get_parent (GladePlaceholder *placeholder);
 

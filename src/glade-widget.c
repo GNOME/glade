@@ -897,7 +897,11 @@ glade_widget_query_properties (GladeWidgetClass *class,
 		}
 	}
 	if (spin == NULL)
+	{
+		g_hash_table_destroy (hash);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
 		return TRUE;
+	}
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
 	switch (response) {
@@ -917,6 +921,30 @@ glade_widget_query_properties (GladeWidgetClass *class,
 	gtk_widget_destroy (dialog);
 	
 	return FALSE;
+}
+
+/**
+ * glade_widget_apply_queried_properties:
+ * @widget: widget that will receive the set of queried properties
+ * @result: values of the queried properties
+ * 
+ **/
+static void
+glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryResult *result)
+{
+	GList *list;
+
+	list = widget->class->properties;
+	for (; list; list = list->next) {
+		GladePropertyClass *pclass = list->data;
+		if (pclass->query) {
+			GladeProperty *property;
+			gint temp;
+			glade_property_query_result_get_int (result, pclass->id, &temp);
+			property = glade_property_get_from_id (widget->properties, pclass->id);
+			glade_property_set_integer (property, temp);
+		}
+	}
 }
 
 /**
@@ -950,9 +978,11 @@ glade_widget_new_from_class_full (GladeWidgetClass *class,
 
 	widget = glade_widget_new_full (project, class, parent);
 
+	glade_widget_apply_queried_properties (widget, result);
+
 	/* If we are a container, add the placeholders */
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER (class))
-		glade_placeholder_add_with_result (class, widget, result);
+	if (g_type_is_a (class->type,  GTK_TYPE_CONTAINER))
+		glade_placeholder_fill_empty (widget->widget);
 	
 	if (result) 
 		glade_property_query_result_destroy (result);
