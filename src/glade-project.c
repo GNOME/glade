@@ -631,6 +631,13 @@ glade_project_save (GladeProject *project)
 	if (project->path == NULL) {
 		g_free (project->name);
 		project->path = glade_project_ui_get_path (_("Save ..."));
+
+		/* If the user hit cancel, restore its previous name and return */
+		if (project->path == NULL) {
+			project->path = backup;
+			return FALSE;
+		}
+
 		project->name = g_path_get_basename (project->path);
 		g_free (backup);
 	}
@@ -665,7 +672,13 @@ glade_project_save_as (GladeProject *project)
 
 	/* Keep the previous path */
 	backup = project->path;
-	project->path = glade_project_ui_get_path (_("Save ..."));
+	project->path = glade_project_ui_get_path (_("Save as ..."));
+
+	/* If the user hit cancel, restore its previous name and return */
+	if (project->path == NULL) {
+		project->path = backup;
+		return FALSE;
+	}
 
 	/* On error, warn and restore its previous name and return */
 	if (!glade_project_save_to_file (project, project->path)) {
