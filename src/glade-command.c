@@ -573,6 +573,8 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	GladeWidget *widget = me->widget;
 	GladePlaceholder *placeholder = me->placeholder;
 
+	glade_widget_set_contents (widget);
+
 	if (!GLADE_WIDGET_IS_TOPLEVEL (widget)) {
 		glade_placeholder_replace_with_widget (placeholder, widget);
 	}

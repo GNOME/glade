@@ -86,18 +86,21 @@ glade_widget_properties_from_list (GList *list, GladeWidget *widget)
  * @class: The GladeWidgeClass of the GladeWidget
  * 
  * Allocates a new GladeWidget structure and fills in the required memebers.
+ * Note that the GtkWidget member is _not_ set.
  * 
  * Return Value: 
  **/
 static GladeWidget *
-glade_widget_new (GladeWidgetClass *class)
+glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 {
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
 	GladeWidget *widget;
 
 	widget = g_new0 (GladeWidget, 1);
-	widget->name     = NULL;
+	widget->project = project;
+	widget->name    = glade_widget_new_name (project, class);
 	widget->widget   = NULL;
-	widget->project  = NULL;
 	widget->class    = class;
 	widget->properties = glade_widget_properties_from_list (class->properties, widget);
 	/* we don't have packing properties until we container add the widget */
@@ -418,18 +421,15 @@ glade_widget_connect_mouse_signals (GladeWidget *glade_widget)
 static gboolean
 glade_widget_key_press (GtkWidget *event_widget,
 			GdkEventKey *event,
-			gpointer user_data)
+			GladeWidget *glade_widget)
 {
-	GladeWidget *glade_widget = GLADE_WIDGET (user_data);
-	
 	g_return_val_if_fail (GTK_IS_WIDGET (event_widget), FALSE);
-	g_return_val_if_fail (glade_widget->widget == event_widget, FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (glade_widget), FALSE);
 
 	/* We will delete all the selected items */
 	if (event->keyval == GDK_Delete)
 		glade_util_delete_selection (glade_widget->project);
 
-	g_debug(("glade_widget_key_press\n"));
 	return TRUE;
 }
 
@@ -534,7 +534,7 @@ glade_widget_connect_edit_signals (GladeWidget *widget)
 static void
 glade_widget_connect_other_signals (GladeWidget *widget)
 {
-	if (GLADE_WIDGET_IS_TOPLEVEL (widget)) {
+	if (GTK_WIDGET_TOPLEVEL (widget->widget)) {
 		g_signal_connect (G_OBJECT (widget->widget), "delete_event",
 				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 	}
@@ -649,32 +649,42 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 	widget->packing_properties = glade_widget_properties_from_list (container_class->child_properties, widget);
 }
 
+static void
+glade_widget_associate_with_gtk_widget (GladeWidget *glade_widget,
+				        GtkWidget *gtk_widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+	g_return_if_fail (GTK_IS_WIDGET (gtk_widget));
+
+	if (glade_widget->widget) {
+		g_warning ("Failed to associate GladeWidget, "
+			   "it is already associated with another GtkWidget");
+		return;
+	}
+
+	glade_widget->widget = gtk_widget;
+	g_object_set_data (G_OBJECT (gtk_widget), GLADE_WIDGET_DATA_TAG, glade_widget);
+
+	/* make sure that when the GtkWidget is destroyed the GladeWidget is freed */
+	g_signal_connect_swapped (G_OBJECT (gtk_widget), "destroy",
+				  G_CALLBACK (glade_widget_free), G_OBJECT (glade_widget));
+
+	glade_widget_connect_signals (glade_widget);
+}
+
 static GladeWidget *
 glade_widget_new_full (GladeWidgetClass *class,
-		       GladeProject *project,
-		       GladeWidget *parent)
+		       GladeProject *project)
 {
 	GladeWidget *widget;
+	GtkWidget *gtk_widget;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	widget = glade_widget_new (class, project);
+	gtk_widget = glade_widget_create_gtk_widget (class);
+	if (!widget || !gtk_widget)
+		return NULL;
 
-	widget = glade_widget_new (class);
-	widget->name    = glade_widget_new_name (project, class);
-	widget->project = project;
-
-	widget->widget = glade_widget_create_gtk_widget (class);
-
-	/* associate the GladeWidget to the GtkWidget */
-	g_signal_connect_swapped (G_OBJECT (widget->widget), "destroy",
-				  G_CALLBACK (glade_widget_free), G_OBJECT (widget));
-	g_object_set_data (G_OBJECT (widget->widget), GLADE_WIDGET_DATA_TAG, widget);
-
-	/* We know the parent (if we have one), we can add the packing properties */
-	if (parent)
-		glade_widget_set_packing_properties (widget, parent->class);
-
-	glade_widget_set_contents (widget);
-	glade_widget_connect_signals (widget);
+	glade_widget_associate_with_gtk_widget (widget, gtk_widget);
 
 	return widget;
 }
@@ -911,7 +921,11 @@ glade_widget_new_from_class (GladeWidgetClass *class,
 			return NULL;
 	}
 
-	widget = glade_widget_new_full (class, project, parent);
+	widget = glade_widget_new_full (class, project);
+
+	/* We know the parent (if we have one), we can add the packing properties */
+	if (parent)
+		glade_widget_set_packing_properties (widget, parent->class);
 
 	/* If we are a container, add the placeholders */
 	if (widget->class->fill_empty)
@@ -1051,7 +1065,7 @@ glade_widget_clone (GladeWidget *widget)
 	g_return_val_if_fail (widget != NULL, NULL);
 
 	/* This should be enough to clone. */
-	clone = glade_widget_new_full (widget->class, widget->project, NULL);
+	clone = glade_widget_new_full (widget->class, widget->project);
 
 	return clone;
 }
@@ -1324,11 +1338,13 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	if (!class)
 		return NULL;
 
-	widget = glade_widget_new_full (class, project, parent);
+	widget = glade_widget_new_full (class, project);
 	if (!widget)
 		return NULL;
 
 	glade_widget_set_name (widget, widget_name);
+	if (parent)
+		glade_widget_set_packing_properties (widget, parent->class);
 
 	/* Children */
 	child =	glade_xml_node_get_children (node);
@@ -1382,7 +1398,6 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	GladeXmlNode *child_node;
 	GladeXmlNode *child_properties;
 	GladeWidget *child;
-	GtkWidget *child_widget;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return FALSE;
@@ -1398,8 +1413,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 	/* is it a placeholder? */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PLACEHOLDER);
 	if (child_node) {
-		child_widget = glade_placeholder_new ();
-		gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
+		gtk_container_add (GTK_CONTAINER (parent->widget), glade_placeholder_new ());
 		return TRUE;
 	}
 
@@ -1417,9 +1431,7 @@ glade_widget_new_child_from_node (GladeXmlNode *node,
 		 */
 		return FALSE;
 
-	child_widget = child->widget;
-
-	gtk_container_add (GTK_CONTAINER (parent->widget), child_widget);
+	gtk_container_add (GTK_CONTAINER (parent->widget), child->widget);
 
 	/* Get the packing properties */
 	child_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);

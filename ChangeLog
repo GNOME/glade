@@ -1,3 +1,12 @@
+2003-10-21  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-widget.c: refactor GladeWidget creation so that
+	glade_widget_new_full is the same of glade_widget_new with the only
+	difference that it takes care of creating the GtkWidget. Other
+	minor cleanups along the way.
+	* src/glade-command.c: call glade_widget_set_contents during the
+	create command as we do in the paste command.
+
 2003-10-20  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-editor.c (glade_editor_create_input_numeric): restore
