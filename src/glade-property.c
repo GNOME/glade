@@ -431,10 +431,8 @@ glade_property_set (GladeProperty *property, const GValue *value)
 					    g_value_get_boolean (value));
 		break;
 	case GLADE_PROPERTY_TYPE_FLOAT:
-		g_print ("1 %s \n", property->class->name);
 		glade_property_set_float (property,
 					  g_value_get_float (value));
-		g_print ("End:1\n");
 		break;
 	case GLADE_PROPERTY_TYPE_INTEGER:
 		glade_property_set_integer (property,

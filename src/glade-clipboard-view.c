@@ -235,7 +235,6 @@ void
 glade_clipboard_view_remove (GladeClipboardView * view,
 			     GladeWidget * widget)
 {
-	GtkTreeSelection *sel;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 	GladeWidget *clip_widget;

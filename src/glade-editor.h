@@ -186,6 +186,7 @@ GladeEditor *glade_editor_new (void);
 
 void glade_editor_select_widget (GladeEditor *editor, GladeWidget *widget);
 void glade_editor_add_signal (GladeEditor *editor, guint id_signal, const char *callback_name);
+void glade_editor_update_widget_name (GladeEditor *editor);
 
 G_END_DECLS
 

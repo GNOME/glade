@@ -300,7 +300,11 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 }
 
 /**************************************************/
+/*******     GLADE_COMMAND_SET_PROPERTY     *******/
+/**************************************************/
 
+/* create a new GladeCommandSetProperty class.  Objects of this class will
+ * encapsulate a "set property" operation */
 typedef struct {
 	GladeCommand parent;
 
@@ -309,6 +313,7 @@ typedef struct {
 	GValue *arg_value;
 } GladeCommandSetProperty;
 
+/* standard macros */
 GLADE_MAKE_COMMAND (GladeCommandSetProperty, glade_command_set_property);
 #define GLADE_COMMAND_SET_PROPERTY_TYPE		(glade_command_set_property_get_type ())
 #define GLADE_COMMAND_SET_PROPERTY(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_PROPERTY_TYPE, GladeCommandSetProperty))
@@ -316,6 +321,7 @@ GLADE_MAKE_COMMAND (GladeCommandSetProperty, glade_command_set_property);
 #define IS_GLADE_COMMAND_SET_PROPERTY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_PROPERTY_TYPE))
 #define IS_GLADE_COMMAND_SET_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_PROPERTY_TYPE))
 
+/* Undo the last "set property command" */
 static gboolean
 glade_command_set_property_undo (GladeCommand *cmd)
 {
@@ -323,7 +329,7 @@ glade_command_set_property_undo (GladeCommand *cmd)
 }
 
 /**
- * Execute the cmd and revert it.  Ie, after the execution of this
+ * Execute the set property command and revert it.  Ie, after the execution of this
  * function cmd will point to the undo action
  */
 static gboolean
@@ -347,16 +353,14 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	g_value_copy (property->value, me->arg_value);
 	glade_property_set (property, new_value);
 	
-	/* yes, this call is obsolete.  Somebody please document the new g_signal_emit_by_name... */
-	gtk_signal_emit_by_name (GTK_OBJECT (property), "changed");
-	
 	return FALSE;
 }
 
+/* finalize the set property object.  This object doesn't allocates */
 static void
 glade_command_set_property_finalize (GObject *obj)
 {
-        glade_command_finalize (obj);
+	glade_command_finalize (obj);
 }
 
 static gboolean
@@ -453,6 +457,130 @@ glade_command_set_property (GObject *obj, const gchar* name, const GValue* pvalu
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	glade_command_set_property_execute (GLADE_COMMAND (me));
+	glade_command_push_undo(project, GLADE_COMMAND (me));
+}
+
+
+/**************************************************/
+/*******       GLADE_COMMAND_SET_NAME       *******/
+/**************************************************/
+
+/* create a new GladeCommandSetName class.  Objects of this class will
+ * encapsulate a "set name" operation */
+typedef struct {
+	GladeCommand parent;
+
+	GladeWidget *widget;
+	gchar *old_name;
+	gchar *name;
+} GladeCommandSetName;
+
+/* standard macros */
+GLADE_MAKE_COMMAND (GladeCommandSetName, glade_command_set_name);
+#define GLADE_COMMAND_SET_NAME_TYPE		(glade_command_set_name_get_type ())
+#define GLADE_COMMAND_SET_NAME(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_NAME_TYPE, GladeCommandSetName))
+#define GLADE_COMMAND_SET_NAME_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_SET_NAME_TYPE, GladeCommandSetNameClass))
+#define IS_GLADE_COMMAND_SET_NAME(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_NAME_TYPE))
+#define IS_GLADE_COMMAND_SET_NAME_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_NAME_TYPE))
+
+/* Undo the last "set name command" */
+static gboolean
+glade_command_set_name_undo (GladeCommand *cmd)
+{
+	return glade_command_set_name_execute (cmd);
+}
+
+/**
+ * Execute the set name command and revert it.  Ie, after the execution of this
+ * function cmd will point to the undo action
+ */
+static gboolean
+glade_command_set_name_execute (GladeCommand *cmd)
+{
+	GladeCommandSetName* me = (GladeCommandSetName*) cmd;
+	char* tmp;
+
+	g_return_val_if_fail (me != NULL, TRUE);
+	g_return_val_if_fail (me->widget != NULL, TRUE);
+	g_return_val_if_fail (me->name != NULL, TRUE);
+
+	glade_widget_set_name (me->widget, me->name);
+	tmp = me->old_name;
+	me->old_name = me->name;
+	me->name = tmp;
+
+	return FALSE;
+}
+
+/* finalize the set property object. */
+static void
+glade_command_set_name_finalize (GObject *obj)
+{
+	GladeCommandSetName* me = GLADE_COMMAND_SET_NAME (obj);
+	g_return_if_fail (me != NULL);
+	g_free (me->old_name);
+	g_free (me->name);
+	glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_set_name_unifies (GladeCommand *this, GladeCommand *other)
+{
+	GladeCommandSetName *cmd1;
+	GladeCommandSetName *cmd2;
+
+	if (IS_GLADE_COMMAND_SET_NAME (this) && IS_GLADE_COMMAND_SET_NAME (other)) {
+		cmd1 = (GladeCommandSetName*) this;
+		cmd2 = (GladeCommandSetName*) other;
+
+		return (cmd1->widget == cmd2->widget);
+	}
+
+	return FALSE;
+}
+
+static void
+glade_command_set_name_collapse (GladeCommand *this, GladeCommand *other)
+{
+	GladeCommandSetName *nthis = GLADE_COMMAND_SET_NAME (this);
+	GladeCommandSetName *nother = GLADE_COMMAND_SET_NAME (other);
+
+	g_return_if_fail (IS_GLADE_COMMAND_SET_NAME (this) && IS_GLADE_COMMAND_SET_NAME (other));
+
+	g_free (nthis->old_name);
+	nthis->old_name = nother->old_name;
+	nother->old_name = NULL;
+
+	g_free ((gchar *) this->description);
+	this->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
+
+	update_gui ();
+}
+
+/* this function takes the ownership of name */
+void
+glade_command_set_name (GladeWidget *widget, const gchar* name)
+{
+	GladeCommandSetName *me;
+	GladeCommand *cmd;
+	GladeProject *project;
+	
+	me = (GladeCommandSetName*) g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
+	cmd = (GladeCommand*) me;
+	
+	project = glade_project_window_get_project ();
+	
+	me->widget = widget;
+	me->name = g_strdup (name);
+	me->old_name = g_strdup (widget->name);
+
+	cmd->description = g_strdup_printf (_("Renaming %s to %s"), me->old_name, me->name);
+	if (!cmd->description)
+		return;
+
+	g_debug(("Pushing: %s\n", cmd->description));
+
+	glade_command_set_name_execute (GLADE_COMMAND (me));
 	glade_command_push_undo(project, GLADE_COMMAND (me));
 }
 

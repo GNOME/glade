@@ -1019,6 +1019,12 @@ glade_project_window_set_project_cb (GladeProject *project)
 	glade_project_window_set_project (gpw, project);
 }
 		
+static void
+gpw_widget_name_changed_cb (GladeProject *project, GladeWidget *widget, GladeEditor *editor)
+{
+	glade_editor_update_widget_name (editor);
+}
+
 void
 glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project)
 {
@@ -1030,6 +1036,12 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 	/* Add the project in the /Project menu. */
 	gtk_item_factory_create_item (gpw->item_factory, &(project->entry),
 				      project, 1);
+
+	/* connect the widget_changed_name signal to the editor, so that changes to the widget
+	 * name external to the properties editor (as when the user undo a widget name change)
+	 * are reflected on the widget name entry */
+	g_signal_connect (G_OBJECT (project), "widget_name_changed",
+			  G_CALLBACK (gpw_widget_name_changed_cb), gpw->editor);
 
 	glade_project_window_set_project (gpw, project);
 }

@@ -199,14 +199,6 @@ static void add_item (GladeMenuEditor * menued,
 static void on_delete_button_clicked (GtkWidget * widget,
 				      gpointer user_data);
 
-static void on_keys_dialog_clist_select (GtkWidget * widget,
-					 gint row,
-					 gint column,
-					 GdkEventButton * bevent,
-					 GladeMenuEditor * menued);
-static void on_keys_dialog_response (GtkWidget * widget, gint response_id,
-				     GladeMenuEditor * menued);
-
 static gint get_selected_row (GladeMenuEditor * menued);
 static GbMenuItemData* get_selected_item (GladeMenuEditor * menued);
 static void set_interface_state (GladeMenuEditor * menued);
@@ -1552,54 +1544,26 @@ on_state_button_toggled (GtkToggleButton * togglebutton,
  * Accelerator Keys Dialog.
  **************************************************************************/
 static void
-on_accel_key_button_clicked (GtkButton * button,
-			     gpointer user_data)
+on_accel_key_button_clicked (GtkButton * button, gpointer user_data)
 {
 	GladeMenuEditor *menued;
+	gint response;
 
 	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (button)));
 
 	if (menued->keys_dialog == NULL) {
 		menued->keys_dialog = glade_keys_dialog_new ();
-		gtk_window_set_position (GTK_WINDOW (menued->keys_dialog),
-					 GTK_WIN_POS_MOUSE);
-		gtk_window_set_transient_for (GTK_WINDOW (menued->keys_dialog),
-					      GTK_WINDOW (menued));
-		gtk_signal_connect (GTK_OBJECT (GLADE_KEYS_DIALOG (menued->keys_dialog)->clist),
-				    "select_row",
-				    GTK_SIGNAL_FUNC (on_keys_dialog_clist_select),
-				    menued);
-		gtk_signal_connect (GTK_OBJECT (GLADE_KEYS_DIALOG (menued->keys_dialog)),
-				    "response",
-				    GTK_SIGNAL_FUNC (on_keys_dialog_response),
-				    menued);
 	}
 
-	gtk_widget_show (GTK_WIDGET (menued->keys_dialog));
-}
+	response = gtk_dialog_run (GTK_DIALOG (menued->keys_dialog));
+	if (response == GTK_RESPONSE_OK) {
+		gchar *key_sym;
 
-static void
-on_keys_dialog_clist_select (GtkWidget * widget, gint row, gint column,
-			     GdkEventButton * bevent, GladeMenuEditor * menued)
-{
-	if (bevent && bevent->type == GDK_2BUTTON_PRESS)
-		on_keys_dialog_response (widget, GTK_RESPONSE_OK, menued);
-}
-
-static void
-on_keys_dialog_response (GtkWidget * widget, gint response_id,
-			 GladeMenuEditor * menued)
-{
-	gchar *key_symbol;
-
-	if (response_id == GTK_RESPONSE_OK) {
-		key_symbol = glade_keys_dialog_get_key_symbol (GLADE_KEYS_DIALOG (menued->keys_dialog));
-		if (key_symbol) {
-			set_entry_text (GTK_ENTRY (menued->accel_key_entry), key_symbol);
-		}
+		key_sym = glade_keys_dialog_get_selected_key_symbol (GLADE_KEYS_DIALOG (menued->keys_dialog));
+		if (key_sym)
+			set_entry_text (GTK_ENTRY (menued->accel_key_entry), key_sym);
 	}
-
-	glade_util_hide_window (GTK_WINDOW (menued->keys_dialog));
+	gtk_widget_hide (menued->keys_dialog);
 }
 
 

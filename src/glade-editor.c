@@ -218,6 +218,11 @@ glade_editor_new ()
 	return editor;
 }
 
+/**
+ * We call this function when the user changes the widget name using the
+ * entry on the properties editor.
+ */
+
 static void
 glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 {
@@ -227,13 +232,15 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	g_return_if_fail (GTK_IS_EDITABLE (editable));
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 	
-	if (editor->loading) return;
+	if (editor->loading)
+		return;
 
 	g_return_if_fail (GTK_IS_WIDGET (editor->loaded_widget->widget));
 
 	widget = editor->loaded_widget;
 	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
-	glade_widget_set_name (widget, new_name);
+	glade_command_set_name (widget, new_name);
+	g_free (new_name);
 }
 
 static void
@@ -932,8 +939,7 @@ glade_editor_table_create (GladeEditor *editor, GladeWidgetClass *class, gboolea
 	}
 
 	gtk_widget_show_all (table->table_widget);
-	editor->widget_tables = g_list_prepend (editor->widget_tables,
-						table);
+	editor->widget_tables = g_list_prepend (editor->widget_tables, table);
 
 	return table;
 }
@@ -1017,6 +1023,17 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
 			    TRUE, TRUE, 0);
 }
+
+void
+glade_editor_update_widget_name (GladeEditor *editor)
+{
+	GladeEditorTable *table = glade_editor_get_table_from_class (editor, editor->loaded_class, FALSE);
+
+	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
+	gtk_entry_set_text (GTK_ENTRY (table->name_entry), editor->loaded_widget->name);
+	g_signal_handlers_unblock_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
+}
+
 
 static void
 glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
@@ -1489,7 +1506,7 @@ glade_editor_load_item (GladeEditor *editor, GladeWidget *item)
 		glade_editor_property_connect_signals (property, item);
 	}
 	
-	/* Load each GladeEditorProperty for the common tab*/
+	/* Load each GladeEditorProperty for the common tab */
 	table = glade_editor_get_table_from_class (editor, class, TRUE);
 	list = table->properties;
 	for (; list != NULL; list = list->next) {
@@ -1519,7 +1536,7 @@ glade_editor_select_item_real (GladeEditor *editor, GladeWidget *widget)
 
 	if (!widget)
 		return;
-			
+
 	editor->loading = TRUE;
 	table = glade_editor_get_table_from_class (editor, widget->class, FALSE);
 	g_return_if_fail (table != NULL);
@@ -1543,7 +1560,7 @@ glade_editor_add_signal (GladeEditor *editor, guint signal_id,
 	const char *widget_name;
 	const char *signal_name;
 	GType widget_type;
-	
+
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 	g_return_if_fail (callback_name != NULL);
 	g_return_if_fail (*callback_name != 0);
@@ -1551,7 +1568,7 @@ glade_editor_add_signal (GladeEditor *editor, guint signal_id,
 	signal_name = g_signal_name (signal_id);
 	widget_name = glade_widget_get_name (editor->loaded_widget);
 	widget_type = glade_widget_class_get_type (glade_widget_get_class (editor->loaded_widget));
-	
+
 	gtk_signal_emit (GTK_OBJECT (editor),
 			 glade_editor_signals [ADD_SIGNAL], widget_name, widget_type,
 			 signal_id, callback_name);
