@@ -42,6 +42,10 @@
 #include <popt.h>
 #include <signal.h>
 
+#ifndef RETSIGTYPE
+#define RETSIGTYPE void
+#endif
+
 static GList * parse_command_line (poptContext);
 #endif
 
@@ -81,34 +85,34 @@ log_handler (const char *domain,
              const char *message,
              gpointer data)
 {
-    g_log_default_handler (domain, level, message, data);
-    if ((level & (G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)) != 0) {
+	g_log_default_handler (domain, level, message, data);
+	if ((level & (G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)) != 0) {
 #ifdef G_OS_WIN32
 		__asm { int 3 }
 #else
-        RETSIGTYPE (* saved_handler) (int);
+		RETSIGTYPE (* saved_handler) (int);
         
-        saved_handler = signal (SIGINT, SIG_IGN);
-        raise (SIGINT);
-        signal (SIGINT, saved_handler);
+		saved_handler = signal (SIGINT, SIG_IGN);
+		raise (SIGINT);
+		signal (SIGINT, saved_handler);
 #endif
-    }
+	}
 }
 
 static void
 set_log_handler (const char *domain)
 {
-    g_log_set_handler (domain, G_LOG_LEVEL_MASK, log_handler, NULL);
+	g_log_set_handler (domain, G_LOG_LEVEL_MASK, log_handler, NULL);
 }
 
 static void
 setup_handlers ()
 {
-    set_log_handler ("");
-    set_log_handler ("GLib");
-    set_log_handler ("GLib-GObject");
-    set_log_handler ("Gtk");
-    set_log_handler ("Gdk");
+	set_log_handler ("");
+	set_log_handler ("GLib");
+	set_log_handler ("GLib-GObject");
+	set_log_handler ("Gtk");
+	set_log_handler ("Gdk");
 }
 
 static gint
