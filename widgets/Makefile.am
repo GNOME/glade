@@ -9,6 +9,7 @@ widgets_DATA = \
 	gtkaccellabel.xml \
 	gtkbox.xml \
 	gtkbutton.xml \
+	gtkbuttonbox.xml \
 	gtkcheckbutton.xml \
 	gtkcontainer.xml \
 	gtkdialog.xml \
@@ -25,6 +26,7 @@ widgets_DATA = \
 	gtkstatusbar.xml \
 	gtktable.xml \
 	gtktogglebutton.xml \
+	gtktreeview.xml \
 	gtktoolbar.xml \
 	gtkwidget.xml \
 	gtkwindow.xml

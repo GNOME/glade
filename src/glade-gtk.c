@@ -167,13 +167,9 @@ glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_box_get_size (GObject *object, GValue *value)
 {
-	GtkBox *box;
+	GtkBox *box = GTK_BOX (object);
 
 	g_value_reset (value);
-
-	box = GTK_BOX (object);
-	g_return_if_fail (GTK_IS_BOX (box));
-	
 	g_value_set_int (value, g_list_length (box->children));
 }
 
@@ -359,35 +355,6 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 		}
 	}
 }
-
-#if 0
-/* This code is working but i don't think we need it. Chema */
-void
-glade_gtk_table_get_n_rows (GObject *object, GValue *value)
-{
-	GtkTable *table;
-
-	g_value_reset (value);
-
-	table = GTK_TABLE (object);
-	g_return_if_fail (GTK_IS_TABLE (table));
-
-	g_value_set_int (value, table->nrows);
-}
-
-void
-glade_gtk_table_get_n_columns (GObject *object, GValue *value)
-{
-	GtkTable *table;
-
-	g_value_reset (value);
-
-	table = GTK_TABLE (object);
-	g_return_if_fail (GTK_IS_TABLE (table));
-
-	g_value_set_int (value, table->ncols);
-}
-#endif
 
 void GLADEGTK_API
 glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
@@ -577,8 +544,16 @@ ignore (GObject *object, GValue *value)
 
 
 /* ------------------------------------ Pre Create functions ------------------------------ */
+/* a GtkTable starts with a default size of 1x1, and setter/getter of rows/columns expect 
+ * the GtkTable to hold this number of placeholders, so we should add it */
 void GLADEGTK_API
-glade_gtk_tree_view_pre_create_function (GObject *object)
+glade_gtk_table_pre_create (GObject *object)
+{
+	gtk_table_attach_defaults (GTK_TABLE (object), glade_placeholder_new (), 0, 1, 0, 1);
+}
+
+void GLADEGTK_API
+glade_gtk_tree_view_pre_create (GObject *object)
 {
 	GtkWidget *tree_view = GTK_WIDGET (object);
 	GtkTreeStore *store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);

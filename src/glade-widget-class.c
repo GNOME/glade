@@ -515,6 +515,9 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 	if (widget_class->replace_child == NULL)
 		widget_class->replace_child = parent_class->replace_child;
 
+	if (widget_class->pre_create_function == NULL)
+		widget_class->pre_create_function = parent_class->pre_create_function;
+
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
 

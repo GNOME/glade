@@ -196,13 +196,24 @@ GladeWidget *
 glade_widget_new (GladeWidgetClass *klass, GladeProject *project)
 {
 	GObject *widget = g_object_new (klass->type, NULL);
+	GObject *glade_widget;
 
-	return (GladeWidget *) g_object_new (GLADE_TYPE_WIDGET,
-					     "class", klass,
-					     "project", project,
-					     "name", glade_project_new_widget_name (project, klass->generic_name),
-					     "widget", widget,
-					     NULL);
+	if (klass->pre_create_function)
+		klass->pre_create_function (G_OBJECT (widget));
+
+	glade_widget = g_object_new (GLADE_TYPE_WIDGET,
+				     "class", klass,
+				     "project", project,
+				     "name", glade_project_new_widget_name (project, klass->generic_name),
+				     "widget", widget,
+				     NULL);
+
+	if (klass->post_create_function)
+		klass->post_create_function (G_OBJECT (widget));
+	if (klass->fill_empty)
+		klass->fill_empty (GTK_WIDGET (widget));
+
+	return (GladeWidget *) glade_widget;
 }
 
 GladeWidget *
@@ -702,8 +713,6 @@ glade_widget_connect_to_expose_event (GtkWidget *widget_gtk, gpointer data)
 void
 glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 {
-	GladeWidgetClass *klass;
-
 	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
 	g_return_if_fail (GTK_IS_WIDGET (widget_gtk));
 	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (widget_gtk), glade_widget->widget_class->type));
@@ -737,20 +746,9 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 
 	if (glade_widget->internal == NULL)
 	{
-		klass = glade_widget->widget_class;
-		if (klass->pre_create_function)
-			klass->pre_create_function (G_OBJECT (widget_gtk));
-
 		/* we should set the values of the properties of this widget from the
-		 * default values that we gather from the class of this widget, and
-		 * apply the post_create_function and fill_empty functions */
+		 * default values that we gather from the class of this widget */
 		glade_widget_apply_properties (glade_widget);
-
-		g_assert (klass != NULL);
-		if (klass->post_create_function)
-			klass->post_create_function (G_OBJECT (widget_gtk));
-		if (klass->fill_empty)
-			klass->fill_empty (GTK_WIDGET (widget_gtk));
 	}
 	else
 	{
@@ -758,7 +756,6 @@ glade_widget_set_widget (GladeWidget *glade_widget, GtkWidget *widget_gtk)
 
 		/* set packing properties */
 		glade_widget_set_packing_properties (glade_widget, parent);
-		
 	}
 
 	g_object_notify (G_OBJECT (glade_widget), "widget");
@@ -1230,9 +1227,10 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 				 GladeProject *project,
 				 GladeWidget *parent)
 {
-	GladeWidgetClass *class;
+	GladeWidgetClass *klass;
 	GladeWidget *widget;
 	const gchar *class_name;
+	GObject *widget_gtk;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return NULL;
@@ -1241,13 +1239,18 @@ glade_widget_new_from_node_real (GladeXmlNode *node,
 	if (!class_name)
 		return NULL;
 
-	class = glade_widget_class_get_by_name (class_name);
-	if (!class)
+	klass = glade_widget_class_get_by_name (class_name);
+	if (!klass)
 		return NULL;
 
-	widget = glade_widget_new (class, project);
-	if (!widget)
-		return NULL;
+	widget_gtk = g_object_new (klass->type, NULL);
+
+	if (klass->pre_create_function)
+		klass->pre_create_function (widget_gtk);
+
+	widget = g_object_new (GLADE_TYPE_WIDGET, "class", klass, "project", project,
+			       "name", glade_project_new_widget_name (project, klass->generic_name),
+			       "widget", widget_gtk, NULL);
 
 	/* create the packing_properties list, without setting them */
 	if (parent)

@@ -1,3 +1,28 @@
+2004-05-01  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-catalog.c: fix a double free if a palette name is lacking in
+	a xml file.
+
+	* src/glade-gtk.c: Remove unused code, add a PreCreateFunction for GtkGlade
+
+	* src/glade-widget.c: Don't execute PostCreateFunction and
+	FillEmptyFunction on widgets that are being read.
+
+	* src/glade-widget-class.c: Inherit PreCreateFunctions.
+
+	* widgets/gtkbox.xml: Remove the fill_empty inherited from gtkcontainer.xml
+
+	* widgets/gtktable.xml: Add a PreCreateFunction, and remove the fill_empty
+	function inherited from gtkcontainer.xml
+
+	* widgets/gtkbuttonbox.xml: Remove the fill_empty inherited from
+	gtkcontainer.xml
+
+	* widgets/gtktreeview.xml: Add gtktreeview.xml (I forget to add it in my
+	latest post).
+
+	* widgets/Makefile.am: Update it.
+
 2004-04-30  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-widget-class.c: Add support for a PreCreateFunction,
