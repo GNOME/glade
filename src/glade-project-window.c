@@ -124,16 +124,21 @@ gpw_new_cb (void)
 }
 
 static void
-gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
+gpw_open_cb (void)
 {
-	GtkWidget *filesel;
-	const gchar *path;
+	GladeProjectWindow *gpw;
+	GtkWidget *filechooser;
+	const gchar *path = NULL;
 
-	filesel = gtk_widget_get_toplevel (widget);
+	gpw = glade_project_window_get ();
 
-	/* Get the filename and destroy the dialog */
-	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
-	gtk_widget_destroy (filesel);
+	filechooser = glade_util_file_chooser_new (_("Open..."), GTK_WINDOW (gpw->window),
+						   GTK_FILE_CHOOSER_ACTION_OPEN);
+
+	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
+		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+	
+	gtk_widget_destroy (filechooser);
 
 	if (!path)
 		return;
@@ -142,39 +147,12 @@ gpw_on_open_filesel_ok (GtkWidget *widget, gpointer not_used)
 }
 
 static void
-gpw_open_cb (void)
+gpw_save (GladeProject *project, const gchar *path)
 {
 	GladeProjectWindow *gpw;
-	GtkWidget *filesel;
 
 	gpw = glade_project_window_get ();
-
-	filesel = glade_util_file_selection_new (_("Open ..."), GTK_WINDOW (gpw->window));
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			  "clicked", G_CALLBACK (gpw_on_open_filesel_ok),
-			  NULL);
-
-	gtk_widget_show (filesel);
-}
-
-static void
-gpw_on_save_filesel_ok (GtkWidget *widget, GladeProject *project)
-{
-	GtkWidget *filesel;
-	const gchar *path;
-	GladeProjectWindow *gpw;
-
-	filesel = gtk_widget_get_toplevel (widget);
-
-	/* Get the filename and hide the dialog */
-	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
-	gtk_widget_destroy (filesel);
-
-	if (!path)
-		return;
-
-	gpw = glade_project_window_get ();
-
+	
 	if (!glade_project_save (project, path))
 	{
 		GladeProjectWindow *gpw;
@@ -196,7 +174,8 @@ gpw_save_cb (void)
 {
 	GladeProjectWindow *gpw;
 	GladeProject *project;
-	GtkWidget *filesel;
+	GtkWidget *filechooser;
+	const gchar *path = NULL;
 
 	gpw = glade_project_window_get ();
 	project = gpw->project;
@@ -219,28 +198,44 @@ gpw_save_cb (void)
 	}
 
 	/* If instead we dont have a path yet, fire up a file selector */
-	filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
-			  project);
+	filechooser = glade_util_file_chooser_new (_("Save..."), GTK_WINDOW (gpw->window),
+						   GTK_FILE_CHOOSER_ACTION_SAVE);
 
-	gtk_widget_show (filesel);
+	
+	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
+		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+
+	gtk_widget_destroy (filechooser);
+
+	if (!path)
+		return;
+
+	gpw_save (project, path);
 }
 
 static void
 gpw_save_as_cb (void)
 {
 	GladeProjectWindow *gpw;
-	GtkWidget *filesel;
+	GladeProject *project;
+	GtkWidget *filechooser;
+	const gchar *path = NULL;
 
 	gpw = glade_project_window_get ();
+	project = gpw->project;
 
-	filesel = glade_util_file_selection_new (_("Save as ..."), GTK_WINDOW (gpw->window));
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
-			  gpw->project);
+	filechooser = glade_util_file_chooser_new (_("Save as ..."), GTK_WINDOW (gpw->window),
+						   GTK_FILE_CHOOSER_ACTION_SAVE);
 
-	gtk_widget_show (filesel);
+	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
+		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+
+	gtk_widget_destroy (filechooser);
+
+	if (!path)
+		return;
+
+	gpw_save (project, path);
 }
 
 static gboolean
@@ -248,7 +243,7 @@ gpw_confirm_close_project (GladeProject *project)
 {
 	GladeProjectWindow *gpw;
 	GtkWidget *dialog;
-	gboolean close;
+	gboolean close = FALSE;
 	char *msg;
 	gint ret;
 
@@ -289,17 +284,25 @@ gpw_confirm_close_project (GladeProject *project)
 		}
 		else
 		{
-			GtkWidget *filesel;
+			GtkWidget *filechooser;
+			const gchar *path = NULL;
 
-			filesel = glade_util_file_selection_new (_("Save ..."), GTK_WINDOW (gpw->window));
-			g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-					  "clicked", G_CALLBACK (gpw_on_save_filesel_ok),
-					  project);
+			filechooser = glade_util_file_chooser_new (_("Save ..."), GTK_WINDOW (gpw->window),
+								   GTK_FILE_CHOOSER_ACTION_SAVE);
 
-			gtk_widget_show (filesel);
+			if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
+				path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+
+			gtk_widget_destroy (filechooser);
+
+			if (!path)
+				break;
+
+			gpw_save (project, path);
+
 			close = FALSE;
 		}
-	break;
+		break;
 	case GTK_RESPONSE_NO:
 		close = TRUE;
 		break;

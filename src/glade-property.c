@@ -156,7 +156,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 
 	property->loading = TRUE;
 
-	/* if there is a custom set_property use it*/
+	/* if there is a custom set_property use it */
 	if (property->class->set_function)
 		(*property->class->set_function) (G_OBJECT (property->widget->widget), value);
 	else

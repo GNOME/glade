@@ -1,3 +1,15 @@
+2004-05-16  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-menu-editor.c, glade-project-window.c, glade-utils.[ch]:
+	Use the new save/open dialog box in gtk+-2.4. Patch by kov at
+	debian dot org, slightly modified by me.
+
+	* src/glade-widget-class.c: prevent a crash when loading a widget
+	without a generic_name. The crash only happens with gtk+-2.4
+
+	* src/gtkwindow.xml: ignore the setting and getting of the "type"
+	property on GtkWindows, as it's construct only.
+
 2004-05-10  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-widget-class.c, glade-widget-class.c: fix the build

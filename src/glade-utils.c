@@ -294,32 +294,24 @@ glade_util_hide_window (GtkWindow *window)
 }
 
 /**
- * glade_util_file_selection_new:
+ * glade_util_file_chooser_new:
  * @title: dialog title
  * @parent: the window the dialog is set transient for
+ * @action: a #GtkFileChooserAction to say if the dialog will open or save
  *
- * Returns a file selection dialog. It's up to the caller to set up a
- * callback for the OK button and then to show the dialog
+ * Returns a file chooser dialog. It's up to the caller 
+ * to show the dialog
  **/
 GtkWidget *
-glade_util_file_selection_new (const gchar *title, GtkWindow *parent)
+glade_util_file_chooser_new (const gchar *title, GtkWindow *parent, 
+			     GtkFileChooserAction action)
 {
-	GtkWidget *filesel;
-
-	filesel = gtk_file_selection_new (title);
-	g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION(filesel)->cancel_button),
-				  "clicked", G_CALLBACK (gtk_widget_destroy),
-				  filesel);
-	g_signal_connect_swapped (G_OBJECT (filesel), "delete_event",
-				  G_CALLBACK (gtk_widget_destroy),
-				  filesel);
-
-	if (GTK_IS_WINDOW (parent))
-		gtk_window_set_transient_for (GTK_WINDOW (filesel), GTK_WINDOW (parent));
-
-	return filesel;
+	g_assert (action == GTK_FILE_CHOOSER_ACTION_OPEN || action == GTK_FILE_CHOOSER_ACTION_SAVE);
+	return gtk_file_chooser_dialog_new (title, parent, action,
+					    action == GTK_FILE_CHOOSER_ACTION_OPEN ? GTK_STOCK_OPEN : GTK_STOCK_SAVE, GTK_RESPONSE_OK,
+					    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					    NULL);
 }
- 
 
 /**
  * changes each occurence of the character a on the string str by the character b.
@@ -340,7 +332,7 @@ glade_util_replace (char *str, char a, char b)
 /**
  * duplicates the string passed as argument, but changing each underscore
  * in the original string by two underscores.  Returns a newly allocated
- * string, or NULL if there is not enough memory.
+ * string.
  */
 char *
 glade_util_duplicate_underscores (const char *name)
@@ -349,12 +341,6 @@ glade_util_duplicate_underscores (const char *name)
 	const char *last_tmp = name;
 	char *underscored_name = g_malloc (strlen (name) * 2 + 1);
 	char *tmp_underscored = underscored_name;
-
-	if (!underscored_name)
-	{
-		g_critical ("Not enough memory!");
-		return NULL;
-	}
 
 	for (tmp = last_tmp; *tmp; tmp = g_utf8_next_char (tmp))
 	{

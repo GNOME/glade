@@ -23,7 +23,7 @@ void		glade_util_hide_window		(GtkWindow *window);
 gchar		*glade_util_gtk_combo_func	(gpointer data);
 gpointer	glade_util_gtk_combo_find	(GtkCombo *combo);
 
-GtkWidget	*glade_util_file_selection_new (const gchar *title, GtkWindow *parent);
+GtkWidget       *glade_util_file_chooser_new (const gchar *title, GtkWindow *parent, GtkFileChooserAction action);
 void		glade_util_replace (char *str, char a, char b);
 char		*glade_util_duplicate_underscores (const char *name);
 

@@ -1749,14 +1749,29 @@ on_key_press (GtkWidget * widget,
  * File Selection for selecting icon xpm files.
  **************************************************************************/
 static void
-on_icon_filesel_ok (GtkWidget *widget, GladeMenuEditor *menued)
+on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
 {
-	GtkWidget *filesel;
-	const gchar *filename;
+	GladeMenuEditor *menued;
+	GtkWidget *filechooser;
+	const gchar *filename = NULL;
 	gint filename_len;
+	const gchar *icon;
 
-	filesel = gtk_widget_get_toplevel (widget);
-	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (filesel));
+	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
+
+	filechooser = glade_util_file_chooser_new (_("Select icon"), GTK_WINDOW (menued),
+						   GTK_FILE_CHOOSER_ACTION_OPEN);
+
+	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
+	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), icon);
+
+	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+
+	gtk_widget_destroy (filechooser);
+
+	if (!filename)
+		return;
 
 	/* If the filename ends in '/' it means the user wants to reset the
 	   pixmap to NULL. */
@@ -1766,28 +1781,6 @@ on_icon_filesel_ok (GtkWidget *widget, GladeMenuEditor *menued)
 
 	set_entry_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry),
 			filename);
-
-	gtk_widget_destroy (filesel);
-}
-
-static void
-on_icon_button_clicked (GtkWidget *widget, gpointer user_data)
-{
-	GladeMenuEditor *menued;
-	GtkWidget *filesel;
-	const gchar *icon;
-
-	menued = GLADE_MENU_EDITOR (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
-
-	filesel = glade_util_file_selection_new (_("Select icon"), GTK_WINDOW (menued));
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			  "clicked", G_CALLBACK (on_icon_filesel_ok),
-			  menued);
-
-	icon = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (menued->icon_widget)->entry));
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), icon);
-
-	gtk_widget_show (filesel);
 }
 
 /* This checks if the given icon string is a stock icon name, and if it is
