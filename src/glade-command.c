@@ -45,7 +45,7 @@
 typedef struct {
 	GObject parent;
 	
-	const gchar *description;
+	gchar *description;
 } GladeCommand;
 
 typedef gboolean (* UndoCmd)(GladeCommand *this);
@@ -100,8 +100,7 @@ glade_command_finalize (GObject *obj)
         GladeCommand *cmd = (GladeCommand *) obj;
         g_return_if_fail (cmd != NULL);
 
-        /* The const was to avoid accidental changes elsewhere */
-        g_free ((gchar *) cmd->description);
+        g_free (cmd->description);
 
         /* Call the base class dtor */
 	(* G_OBJECT_CLASS (parent_class)->finalize) (obj);
@@ -168,12 +167,6 @@ static MAKE_TYPE(func, type, GLADE_COMMAND_TYPE)
 
 /**************************************************/
 
-static void
-update_gui (void)
-{
-	glade_project_window_refresh_undo_redo (glade_project_window_get ());
-}
-
 void
 glade_command_undo (void)
 {
@@ -199,7 +192,7 @@ glade_command_undo (void)
 	class->undo_cmd (cmd);
 
 	project->prev_redo_item = prev_redo_item->prev;
-	update_gui ();
+	glade_project_window_refresh_undo_redo ();
 }
 
 void
@@ -232,7 +225,7 @@ glade_command_redo (void)
 	class->execute_cmd (cmd);
 
 	project->prev_redo_item = prev_redo_item ? prev_redo_item->next : project->undo_stack;
-	update_gui ();
+	glade_project_window_refresh_undo_redo ();
 }
 
 const gchar*
@@ -296,7 +289,7 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 	else
 		project->prev_redo_item = g_list_next (project->prev_redo_item);
 
-	update_gui ();
+	glade_project_window_refresh_undo_redo ();
 }
 
 /**************************************************/
@@ -383,11 +376,11 @@ static void
 glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 {
 	g_return_if_fail (IS_GLADE_COMMAND_SET_PROPERTY (this) && IS_GLADE_COMMAND_SET_PROPERTY (other));
-	g_free ((gchar*) this->description);
+	g_free (this->description);
 	this->description = other->description;
 	other->description = NULL;
 
-	update_gui ();
+	glade_project_window_refresh_undo_redo ();
 }
 
 static gchar*
@@ -551,10 +544,10 @@ glade_command_set_name_collapse (GladeCommand *this, GladeCommand *other)
 	nthis->old_name = nother->old_name;
 	nother->old_name = NULL;
 
-	g_free ((gchar *) this->description);
+	g_free (this->description);
 	this->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
 
-	update_gui ();
+	glade_project_window_refresh_undo_redo ();
 }
 
 /* this function takes the ownership of name */
@@ -586,9 +579,6 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 
 /***************************************************
  * CREATE / DELETE
- * Don't be confused by the names:
- *   * "create" adds a GladeWidget to the project
- *   * "delete" removes a GladeWidget from the project
  **************************************************/
 
 typedef struct {
@@ -616,20 +606,20 @@ static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
 	GladeWidget *widget = me->widget;
-	GladeWidget *parent = widget->parent;
-	
-	if (me->placeholder) {
-		parent = glade_placeholder_get_parent (me->placeholder);
+	GladePlaceholder *placeholder = me->placeholder;
 
-		if (me->widget->parent->class->placeholder_replace)
-			me->widget->parent->class->placeholder_replace (GTK_WIDGET (me->placeholder), widget->widget, widget->parent->widget);
-
+	if (placeholder) {
+		if (widget->parent->class->placeholder_replace)
+			widget->parent->class->placeholder_replace (GTK_WIDGET (placeholder),
+								    widget->widget,
+								    widget->parent->widget);
+		glade_widget_set_default_packing_options (widget);
 		me->placeholder = NULL;
 	}
 
-	if (parent)
-		parent->children = g_list_prepend (parent->children, widget);
-	
+	if (widget->parent)
+		widget->parent->children = g_list_prepend (widget->parent->children, widget);
+
 	glade_project_selection_clear (widget->project, FALSE);
 	glade_project_add_widget (widget->project, widget);
 
@@ -645,16 +635,13 @@ static gboolean
 glade_command_delete_execute (GladeCommandCreateDelete *me)
 {
 	GladeWidget *widget = me->widget;
-	GladeWidget *parent;
 
 	g_return_val_if_fail (widget != NULL, TRUE);
 
 	glade_project_selection_remove (widget, TRUE);
 	glade_project_remove_widget (widget);
 
-	parent = widget->parent;
-
-	if (parent) {
+	if (widget->parent != NULL) {
 		gtk_widget_ref (widget->widget);
 		me->placeholder = glade_widget_replace_with_placeholder (widget);
 	} else {
@@ -675,7 +662,7 @@ glade_command_create_delete_execute (GladeCommand *cmd)
 {
 	GladeCommandCreateDelete* me = (GladeCommandCreateDelete*) cmd;
 	gboolean retval;
-	
+
 	if (me->create)
 		retval = glade_command_create_execute (me);
 	else
@@ -705,39 +692,66 @@ glade_command_create_delete_collapse (GladeCommand *this, GladeCommand *other)
 	g_return_if_reached ();
 }
 
+/**
+ * Placeholder arg may be NULL for toplevel widgets
+ */
 static void
-glade_command_create_delete_common (GladeWidget *widget, gboolean create)
+glade_command_create_delete_common (GladeWidget *widget,
+				    GladePlaceholder *placeholder,
+				    gboolean create)
 {
 	GladeCommandCreateDelete *me;
 	GladeCommand *cmd;
-	GladeProject *project;
-	
-	me = (GladeCommandCreateDelete*) g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
-	cmd = (GladeCommand*) me;
-	
-	project = glade_project_window_get_project ();
-	
-	me->widget = widget;
-	me->create = create;
-	me->placeholder = NULL;
+
+ 	me = (GladeCommandCreateDelete*) g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
+ 	cmd = (GladeCommand*) me;
+
+ 	me->widget = widget;
+ 	me->create = create;
+	me->placeholder = placeholder;
 	cmd->description = g_strdup_printf (_("%s %s"), create ? "Create" : "Delete", widget->name);
-	
+
 	g_debug(("Pushing: %s\n", cmd->description));
 
 	glade_command_create_delete_execute (GLADE_COMMAND (me));
-	glade_command_push_undo(project, GLADE_COMMAND (me));
+	glade_command_push_undo(widget->project, GLADE_COMMAND (me));
 }
 
 void
 glade_command_delete (GladeWidget *widget)
 {
-	glade_command_create_delete_common (widget, FALSE);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	glade_command_create_delete_common (widget, NULL, FALSE);
 }
 
+/**
+ * Creates a new widget.  In placeholder we expect the placeholder that will
+ * be substituted by the new widget (if any), and in project the project that
+ * the new widget will be assigned to (if NULL, the project will be extracted
+ * from the placeholder).
+ */
 void
-glade_command_create (GladeWidget *widget)
+glade_command_create (GladeWidgetClass *class, GladePlaceholder *placeholder, GladeProject *project)
 {
-	glade_command_create_delete_common (widget, TRUE);
+	GladeWidget *widget;
+	GladeWidget *parent = NULL;
+
+	g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
+	g_return_if_fail (placeholder != NULL || GLADE_IS_PROJECT (project));
+
+	if (placeholder)
+	{
+		parent = glade_placeholder_get_parent (placeholder);
+		g_return_if_fail (parent != NULL);
+	}
+
+	if (!project)
+		project = parent->project;
+
+	widget = glade_widget_new_from_class (class, project, parent);
+
+	glade_command_create_delete_common (widget, placeholder, TRUE);
 }
 
 /**

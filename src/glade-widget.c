@@ -60,24 +60,21 @@ glade_widget_new_name (GladeProject *project, GladeWidgetClass *class)
 
 /**
  * glade_widget_new:
- * @project: The GladeProject this widget belongs to
  * @class: The GladeWidgeClass of the GladeWidget
- * @gtk_widget: The "view" of the GladeWidget
- * @name: The unique name, this is visible name to the user
  * 
  * Allocates a new GladeWidget structure and fills in the required memebers.
  * 
  * Return Value: 
  **/
 static GladeWidget *
-glade_widget_new (GladeWidgetClass *class, GladeProject *project)
+glade_widget_new (GladeWidgetClass *class)
 {
 	GladeWidget *widget;
 
 	widget = g_new0 (GladeWidget, 1);
 	widget->name     = NULL;
 	widget->widget   = NULL;
-	widget->project  = project;
+	widget->project  = NULL;
 	widget->class    = class;
 	widget->properties = glade_property_list_new_from_widget_class (class, widget);
 	widget->parent   = NULL;
@@ -85,6 +82,35 @@ glade_widget_new (GladeWidgetClass *class, GladeProject *project)
 	widget->selected = FALSE;
 
 	return widget;
+}
+
+static void
+glade_widget_free (GladeWidget *widget)
+{
+	GList *list;
+	
+	widget->class = NULL;
+	widget->project = NULL;
+	widget->name = NULL;
+	widget->widget = NULL;
+	widget->parent = NULL;
+
+	list = widget->properties;
+	for (; list; list = list->next)
+		glade_property_free (list->data);
+	widget->properties = NULL;
+
+	list = widget->signals;
+	for (; list; list = list->next)
+		glade_signal_free (list->data);
+	widget->signals = NULL;
+	
+	list = widget->children;
+	for (; list; list = list->next)
+		glade_widget_free (list->data);
+	widget->children = NULL;
+
+	g_free (widget);
 }
 
 /**
@@ -717,8 +743,8 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	}
 	
 	glade_widget->widget = widget;
-
-	gtk_object_set_data (GTK_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
+	g_signal_connect_swapped (G_OBJECT (widget), "destroy", G_CALLBACK (glade_widget_free), G_OBJECT (glade_widget));
+	g_object_set_data (G_OBJECT (glade_widget->widget), GLADE_WIDGET_DATA_TAG, glade_widget);
 
 	/* Ugly ugly hack. Don't even remind me about it. SEND ME PATCH !! and you'll
 	 * gain 100 love points. 
@@ -753,10 +779,6 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 void
 glade_widget_connect_signals (GladeWidget *widget)
 {
-	/* We can be a GtkObject. For example an adjustment. */
-	if (!GTK_IS_WIDGET (widget->widget))
-		return;
-	
 	glade_widget_connect_mouse_signals (widget);
 	glade_widget_connect_keyboard_signals (widget);
 	glade_widget_connect_draw_signals  (widget);
@@ -765,18 +787,18 @@ glade_widget_connect_signals (GladeWidget *widget)
 }
 
 static GladeWidget *
-glade_widget_new_full (GladeProject *project,
-		       GladeWidgetClass *class,
+glade_widget_new_full (GladeWidgetClass *class,
+		       GladeProject *project,
 		       GladeWidget *parent)
 {
 	GladeWidget *widget;
 
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	widget = glade_widget_new (class, project);
+	widget = glade_widget_new (class);
 	widget->name    = glade_widget_new_name (project, class);
 	widget->parent  = parent;
+	widget->project = project;
 
 	glade_packing_add_properties (widget);
 	glade_widget_create_gtk_widget (widget);
@@ -948,9 +970,9 @@ glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryRe
 }
 
 /**
- * glade_widget_new_from_class_full:
- * @project: 
+ * glade_widget_new_from_class:
  * @class:
+ * @project:
  * @parent: the parent of the new widget, should be NULL for toplevel widgets
  * 
  * Creates a new GladeWidget from a given class. Takes care of registering
@@ -959,10 +981,10 @@ glade_widget_apply_queried_properties (GladeWidget *widget, GladePropertyQueryRe
  * 
  * Return Value: A newly creatred GladeWidget, NULL on user cancel or error	
  **/
-static GladeWidget *
-glade_widget_new_from_class_full (GladeWidgetClass *class,
-				  GladeProject *project,
-				  GladeWidget *parent)
+GladeWidget *
+glade_widget_new_from_class (GladeWidgetClass *class,
+			     GladeProject *project,
+			     GladeWidget *parent)
 {
 	GladePropertyQueryResult *result = NULL;
 	GladeWidget *widget;
@@ -976,7 +998,7 @@ glade_widget_new_from_class_full (GladeWidgetClass *class,
 			return NULL;
 	}
 
-	widget = glade_widget_new_full (project, class, parent);
+	widget = glade_widget_new_full (class, project, parent);
 
 	glade_widget_apply_queried_properties (widget, result);
 
@@ -987,39 +1009,8 @@ glade_widget_new_from_class_full (GladeWidgetClass *class,
 	if (result) 
 		glade_property_query_result_destroy (result);
 
-	/* glade_command_create does a gtk_widget_show, so we should do it
-	 * after we've set the options, as sometimes these can't be set
-	 * if the widget is visible (for instance, on a GtkWindow) */
 	glade_widget_set_default_options (widget);
-	glade_command_create (widget);
-	
-	return widget;
-}
 
-GladeWidget *
-glade_widget_new_from_class (GladeWidgetClass *class, GladeWidget *parent)
-{
-	GladeProject *project;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
-	g_return_val_if_fail (GLADE_IS_PROJECT (parent->project), NULL);
-
-	project = parent->project;
-
-	return glade_widget_new_from_class_full (class, project, parent);
-}
-	
-GladeWidget *
-glade_widget_new_toplevel (GladeProject *project, GladeWidgetClass *class)
-{
-	GladeWidget *widget;
-	
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
-
-	widget = glade_widget_new_from_class_full (class, project, NULL);
-	
 	return widget;
 }
 
@@ -1035,8 +1026,6 @@ glade_widget_get_class (GladeWidget *widget)
 {
 	return widget->class;
 }
-
-
 
 /**
  * glade_widget_get_property_from_list:
@@ -1079,7 +1068,6 @@ glade_widget_get_property_from_list (GList *list, GladePropertyClass *class, gbo
 
 	return property;
 }
-
 
 /**
  * glade_widget_get_property_from_class:
@@ -1183,35 +1171,6 @@ glade_widget_flag_selected (GladeWidget *widget)
 	gtk_widget_queue_draw (widget->widget);
 }
 
-static void
-glade_widget_free (GladeWidget *widget)
-{
-	GList *list;
-	
-	widget->class = NULL;
-	widget->project = NULL;
-	widget->name = NULL;
-	widget->widget = NULL;
-	widget->parent = NULL;
-
-	list = widget->properties;
-	for (; list; list = list->next)
-		glade_property_free (list->data);
-	widget->properties = NULL;
-
-	list = widget->signals;
-	for (; list; list = list->next)
-		glade_signal_free (list->data);
-	widget->signals = NULL;
-	
-	list = widget->children;
-	for (; list; list = list->next)
-		glade_widget_free (list->data);
-	widget->children = NULL;
-
-	g_free (widget);
-}
-
 /**
  * glade_widget_clone:
  * @widget: 
@@ -1230,7 +1189,7 @@ glade_widget_clone (GladeWidget *widget)
 	/*
 	 * This should be enough to clone.
 	 */
-	clone = glade_widget_new (widget->class, NULL);
+	clone = glade_widget_new (widget->class);
 	clone->name = glade_widget_new_name (widget->project, widget->class);
 	clone->project = widget->project;
 	glade_widget_create_gtk_widget (clone);
@@ -1255,36 +1214,6 @@ glade_widget_replace_with_placeholder (GladeWidget *widget)
 	/* Return the placeholder, if some one needs it, he can use it. */
 	return placeholder;
 }
-
-/**
- * glade_widget_new_from_class_name:
- * @class_name: 
- * @parent: 
- * 
- * Given a class name, it creates a GladeWidget
- * 
- * Return Value: the newly created GladeWidget, NULL on error
- **/
-GladeWidget *
-glade_widget_new_from_class_name (const gchar *name,
-				  GladeWidget *parent)
-{
-	GladeWidgetClass *class;
-	GladeWidget *widget;
-
-	g_return_val_if_fail (name != NULL, NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
-
-	class = glade_widget_class_get_by_name (name);
-	if (class == NULL)
-		return NULL;
-
-	widget = glade_widget_new_from_class (class, parent);
-
-	return widget;
-}
-	
-
 
 GladeXmlNode *
 glade_widget_write (GladeXmlContext *context, GladeWidget *widget)
@@ -1418,7 +1347,7 @@ glade_widget_new_from_node_real (GladeXmlNode *node, GladeProject *project, Glad
 	if (!class)
 		return NULL;
 	
-	widget = glade_widget_new_full (project, class,	parent);
+	widget = glade_widget_new_full (class, project, parent);
 
 	child =	glade_xml_node_get_children (node);
 	for (; child != NULL; child = glade_xml_node_next (child)) {

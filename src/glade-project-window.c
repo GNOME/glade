@@ -441,14 +441,11 @@ static void
 gpw_palette_button_clicked (GladePalette *palette, GladeWidgetClass *class)
 {
 	GladeProjectWindow *gpw;
-	GladeProject *project;
 
 	gpw = glade_project_window_get ();
 
 	if (GLADE_WIDGET_CLASS_TOPLEVEL (class)) {
-		project = gpw->project;
-		g_return_if_fail (project != NULL);
-		glade_widget_new_toplevel (project, class);
+		glade_command_create (class, NULL, gpw->project);
 		glade_project_window_set_add_class (gpw, NULL);
 	} else {
 		glade_project_window_set_add_class (gpw, class);
@@ -899,7 +896,7 @@ gpw_pop_statusbar_hint (GtkWidget* menuitem, gpointer not_used)
 	gtk_statusbar_pop (GTK_STATUSBAR (gpw->statusbar), gpw->statusbar_menu_context_id);
 }
 
-static void
+static GtkWidget *
 gpw_construct_menu (GladeProjectWindow *gpw)
 {
 	GtkItemFactory *item_factory;
@@ -923,8 +920,6 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 	/* create menu items */
 	gtk_item_factory_create_items (item_factory, G_N_ELEMENTS (menu_items),
 				       menu_items, gpw->window);
-	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
-				     gtk_item_factory_get_widget (item_factory, "<main>"));
 
 	/* set the tooltips */
 	for (i = 1; i < G_N_ELEMENTS (menu_tips); i++) {
@@ -938,9 +933,11 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 				  G_CALLBACK (gpw_pop_statusbar_hint),
 				  NULL);
 	}
+
+	return gtk_item_factory_get_widget (item_factory, "<main>");
 }
 
-static void
+static GtkWidget *
 gpw_construct_toolbar (GladeProjectWindow *gpw)
 {
 	GtkWidget *toolbar;
@@ -980,13 +977,10 @@ gpw_construct_toolbar (GladeProjectWindow *gpw)
 				  G_CALLBACK (gpw_quit_cb),
 				  gpw, -1);
 
-	gtk_widget_show (toolbar);
-	
-	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
-				     toolbar);
+	return toolbar;	
 }
 
-static void
+static GtkWidget *
 gpw_construct_statusbar (GladeProjectWindow *gpw)
 {
 	GtkWidget *statusbar;
@@ -995,8 +989,8 @@ gpw_construct_statusbar (GladeProjectWindow *gpw)
 	gpw->statusbar = statusbar;
 	gpw->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "menu");
 	gpw->statusbar_actions_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "actions");
-		
-	gtk_box_pack_end_defaults (GTK_BOX (gpw->main_vbox), statusbar);	
+
+	return statusbar;
 }
 
 static gboolean
@@ -1008,30 +1002,40 @@ gpw_delete_event (GtkWindow *w, gpointer not_used)
 	return TRUE;	
 }
 
-static GtkWidget *
-glade_project_window_create (GladeProjectWindow *gpw, GladeProjectView *view)
+static void
+glade_project_window_create (GladeProjectWindow *gpw)
 {
 	GtkWidget *app;
 	GtkWidget *vbox;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT_VIEW (view), NULL);
+	GtkWidget *menubar;
+	GtkWidget *toolbar;
+	GtkWidget *statusbar;
+	GladeProjectView *view;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gpw->window = app;
+
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (app), vbox);
 	gpw->main_vbox = vbox;
 
-	gpw_construct_menu (gpw);
-	gpw_construct_toolbar (gpw);
-	gpw_construct_statusbar (gpw);
+	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
+	gpw->views = g_list_prepend (NULL, view);
+	gpw->active_view = view;
 
-	glade_project_window_refresh_undo_redo (gpw);
-	
+	menubar = gpw_construct_menu (gpw);
+	toolbar = gpw_construct_toolbar (gpw);
+	statusbar = gpw_construct_statusbar (gpw);
+
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), menubar);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), toolbar);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), glade_project_view_get_widget (view));
+	gtk_box_pack_end_defaults (GTK_BOX (vbox), statusbar);
+
+	glade_project_window_refresh_undo_redo ();
+
 	g_signal_connect (G_OBJECT (app), "delete_event",
 			  G_CALLBACK (gpw_delete_event), NULL);
-
-	return app;
 }
 
 GladeProjectWindow * glade_project_window = NULL;
@@ -1042,41 +1046,24 @@ glade_project_window_get ()
 	return glade_project_window;
 }
 
-static void
-glade_project_window_set_view (GladeProjectWindow *gpw, GladeProjectView *view)
-{
-	if (gpw->active_view == view)
-		return;
-	
-	gpw->active_view = view;
-
-	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
-				     glade_project_view_get_widget (view));
-
-}
-
 GladeProjectWindow *
 glade_project_window_new (GList *catalogs)
 {
 	GladeProjectWindow *gpw;
-	GladeProjectView *view;
-
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
 	
 	gpw = g_new0 (GladeProjectWindow, 1);
-	glade_project_window_create (gpw, view);
 	gpw->catalogs = catalogs;
-	gpw->views = g_list_prepend (NULL, view);
 	gpw->add_class = NULL;
 	gpw->active_widget = NULL;
 	gpw->active_placeholder = NULL;
-	glade_project_window_set_view (gpw, view);
 
 	glade_project_window = gpw;
+
+	glade_project_window_create (gpw);
 	gpw_create_palette (gpw);
 	gpw_create_editor  (gpw);
 	gpw_create_clipboard (gpw);
-	
+
 	return gpw;
 }
 
@@ -1216,16 +1203,17 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 }
 
 void
-glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
+glade_project_window_refresh_undo_redo (void)
 {
+	GladeProjectWindow *gpw;
 	GList *prev_redo_item;
 	GList *undo_item;
 	GList *redo_item;
 	const gchar *undo_description = NULL;
 	const gchar *redo_description = NULL;
 	GladeProject *project;
-	
-	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
+
+	gpw = glade_project_window_get ();
 
 	project = gpw->project;
 	if (project == NULL) {

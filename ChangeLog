@@ -1,3 +1,21 @@
+2003-05-31  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
+
+	* src/glade-widget.c: free the resources allocated by a GladeWidget
+	when the associated GtkWidget is destroyed.
+
+2003-05-31  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/glade-project-window.[ch]: make refresh_undo_redo function
+	take void arg. Reorder some code.
+	* src/glade-command.c: update for the above
+ 	* src/glade-command.[ch]: rework the create/delete command; now it
+ 	calls glade_widget_new_from_class instead of being called by it.
+ 	* src/glade-widget.[ch]: cleanup widget creation.
+ 	* src/glade-project-window.c: update for the above.
+ 	* src/glade-property.c: ditto.
+ 	* src/glade-placeholder: remove glade_placeholder_replace_widget,
+ 	use glade_command_create_widget instead.
+
 2003-05-23  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-placeholder.c: Make the placeholder work better on any

@@ -66,8 +66,7 @@ void glade_project_window_set_project         (GladeProject *project);
 
 void glade_project_window_add_project         (GladeProject *project);
 
-void glade_project_window_refresh_undo_redo   (GladeProjectWindow *gpw);
-void glade_project_window_refresh_title       (GladeProjectWindow *gpw);
+void glade_project_window_refresh_undo_redo   (void);
 
 G_END_DECLS
 

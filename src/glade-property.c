@@ -136,6 +136,7 @@ glade_property_new_from_class (GladePropertyClass *class, GladeWidget *widget)
 
 	if (class->type == GLADE_PROPERTY_TYPE_OBJECT) {
 		property->child = glade_widget_new_from_class (class->child,
+							       widget->project,
 							       widget);
 		return property;
 	}

@@ -147,26 +147,6 @@ glade_placeholder_replace_notebook (GtkWidget *current,
 	gtk_notebook_set_current_page (notebook, page_num);
 }
 
-static void
-glade_placeholder_replace_widget (GladePlaceholder *placeholder, GladeWidgetClass *class, GladeProject *project)
-{
-	GladeWidget *parent;
-	GladeWidget *widget;
-
-	parent = glade_placeholder_get_parent (placeholder);
-	g_return_if_fail (parent != NULL);
-
-	widget = glade_widget_new_from_class (class, parent);
-	if (widget == NULL)
-		return;
-
-	glade_placeholder_replace (placeholder, parent, widget);
-
-	glade_widget_set_default_packing_options (widget);
-	
-	glade_project_selection_set (widget, TRUE);
-}
-
 void
 glade_placeholder_add_methods_to_class (GladeWidgetClass *class)
 {
@@ -274,7 +254,7 @@ glade_placeholder_on_button_press_event (GladePlaceholder *placeholder,
 			 * A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
-			glade_placeholder_replace_widget (placeholder, gpw->add_class, project);
+			glade_command_create (gpw->add_class, placeholder, NULL);
 			glade_project_window_set_add_class (gpw, NULL);
 			gpw->active_placeholder = NULL;
 		} else {
@@ -425,7 +405,7 @@ glade_placeholder_get_parent (GladePlaceholder *placeholder)
 		widget = gtk_widget_get_parent (widget);
 	}
 
-	return parent;
+	return NULL;
 }
 
 void
