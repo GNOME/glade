@@ -15,9 +15,9 @@ struct _GladeProjectWindow
 {
 	GtkWidget *window; /* Main window */
 	GtkWidget *main_vbox;
-	GtkWidget *statusbar; /* A pointer to the status bar. We might have to come
-			       * up with a glade-statusbar object if it makes sense
-			       */
+	GtkWidget *statusbar; /* A pointer to the status bar. */
+	guint statusbar_menu_context_id; /* The context id of the menu bar */
+	
 	GtkItemFactory *item_factory; /* A pointer to the Item factory.
 				       * We need it to be able to later add
 				       * items to the Project submenu

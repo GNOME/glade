@@ -188,51 +188,95 @@ gpw_redo_cb (void)
 	glade_command_redo ();
 }
 
-
 static GtkItemFactoryEntry menu_items[] =
 {
-  /* ============ FILE ===================== */
-  { "/_File",            NULL,         0,              0, "<Branch>" },
-  { "/File/_New",        "<control>N",        gpw_new_cb,     0, "<StockItem>", GTK_STOCK_NEW },
-  { "/File/_Open",       "<control>O",        gpw_open_cb,    0, "<StockItem>", GTK_STOCK_OPEN },
+  /* ============ FILE ============ */
+  { "/_File", NULL, 0, 0, "<Branch>" },
+  { "/File/_New",        "<control>N",        gpw_new_cb,     1, "<StockItem>", GTK_STOCK_NEW },
+  { "/File/_Open",       "<control>O",        gpw_open_cb,    2, "<StockItem>", GTK_STOCK_OPEN },
   { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
-  { "/File/_Save",       "<control>S",        gpw_save_cb,    0, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 0, "<StockItem>", GTK_STOCK_SAVE_AS },
+  { "/File/_Save",       "<control>S",        gpw_save_cb,    3, "<StockItem>", GTK_STOCK_SAVE },
+  { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 4, "<StockItem>", GTK_STOCK_SAVE_AS },
   { "/File/sep2",        NULL,                NULL,           0, "<Separator>" },
-  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    0, "<StockItem>", GTK_STOCK_QUIT },
+  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    5, "<StockItem>", GTK_STOCK_QUIT },
 
+  /* ============ EDIT ============ */
+  { "/Edit", NULL, 0, 0, "<Branch>" },
+  { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,    6, "<StockItem>", GTK_STOCK_UNDO },
+  { "/Edit/_Redo",   "<control>R", gpw_redo_cb,    7, "<StockItem>", GTK_STOCK_REDO },
+  { "/Edit/sep1",    NULL,         NULL,           0, "<Separator>" },
+  { "/Edit/C_ut",    NULL,         gpw_cut_cb,     8, "<StockItem>", GTK_STOCK_CUT },
+  { "/Edit/_Copy",   NULL,         gpw_copy_cb,    9, "<StockItem>", GTK_STOCK_COPY },
+  { "/Edit/_Paste",  NULL,         gpw_paste_cb,  10, "<StockItem>", GTK_STOCK_PASTE },
+  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 11, "<StockItem>", GTK_STOCK_DELETE },
 
-  /* ============ EDIT ===================== */
-  { "/Edit",        NULL, 0, 0, "<Branch>" },
-  { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,   0, "<StockItem>", GTK_STOCK_UNDO },
-  { "/Edit/_Redo",   "<control>R", gpw_redo_cb,   0, "<StockItem>", GTK_STOCK_REDO },
-  { "/Edit/sep1",    NULL,         NULL,          0, "<Separator>" },
-  { "/Edit/C_ut",    NULL,         gpw_cut_cb,    0, "<StockItem>", GTK_STOCK_CUT },
-  { "/Edit/_Copy",   NULL,         gpw_copy_cb,   0, "<StockItem>", GTK_STOCK_COPY },
-  { "/Edit/_Paste",  NULL,         gpw_paste_cb,  0, "<StockItem>", GTK_STOCK_PASTE },
-  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 0, "<StockItem>", GTK_STOCK_DELETE },
-
-  /* ============ VIEW ===================== */
+  /* ============ VIEW ============ */
   { "/View", NULL, 0, 0, "<Branch>" },
-  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     0, "<ToggleItem>" },
-  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      0, "<ToggleItem>" },
-  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 0, "<ToggleItem>" },
-  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   0, "<ToggleItem>" },
+  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     12, "<ToggleItem>" },
+  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      13, "<ToggleItem>" },
+  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 14, "<ToggleItem>" },
+  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   15, "<ToggleItem>" },
 
-  /* ============ PROJECT=================== */
+  /* =========== PROJECT ========== */
   { "/Project", NULL, 0, 0, "<Branch>" },
 
-  /* ============ HELP ===================== */
+  /* ============ HELP ============ */
   { "/_Help",       NULL, NULL, 0, "<Branch>" },
-  { "/Help/_About", NULL, gpw_about_cb, 0 },
+  { "/Help/_About", NULL, gpw_about_cb, 16 },
 };
 
+/*
+ * Note! The action number in menu_items MUST match the position in this array
+ */
+static const gchar *menu_tips[] =
+{
+	NULL,					/* action 0 (branches and separators) */
+	N_("Create a new project file"),	/* action 1 (New)  */
+	N_("Open a project file"),		/* action 2 (Open) */
+	N_("Save the current project file"),	/* action 3 (Save) */
+	N_("Save the current project file with a different name"),	/* action 4 (Save as) */ 
+	N_("Quit the program"),			/* action 5 (Quit) */
+
+	N_("Undo the last action"),		/* action 6  (Undo) */ 
+	N_("Redo the last action"),		/* action 7  (Redo) */
+	N_("Cut the selection"),		/* action 8  (Cut)  */
+	N_("Copy the selection"),		/* action 9  (Copy) */
+	N_("Paste the clipboard"),		/* action 10 (Paste) */
+	N_("Delete the selection"),		/* action 11 (Delete) */
+
+	N_("Change the visibility of the palette of widgets"),	/* action 12 (Palette) */
+	N_("Change the visibility of the property editor"),	/* action 13 (Editor) */
+	N_("Change the visibility of the project widget tree"),	/* action 14 (Tree) */
+	N_("Change the visibility of the clipboard"),		/* action 15 (Clipboard) */
+
+	N_("About this application"),		/* action 16 (About) */
+};
+
+
+static void
+gpw_push_statusbar_hint (GtkWidget* menuitem, const char *tip)
+{
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	gtk_statusbar_push (GTK_STATUSBAR (gpw->statusbar), gpw->statusbar_menu_context_id, tip);
+}
+
+static void
+gpw_pop_statusbar_hint (GtkWidget* menuitem, gpointer not_used)
+{
+	GladeProjectWindow *gpw;
+
+	gpw = glade_project_window_get ();
+	gtk_statusbar_pop (GTK_STATUSBAR (gpw->statusbar), gpw->statusbar_menu_context_id);
+}
 
 static void
 gpw_construct_menu (GladeProjectWindow *gpw)
 {
 	GtkItemFactory *item_factory;
 	GtkAccelGroup *accel_group;
+	unsigned int i;
 
 	/* Accelerators */
 	accel_group = gtk_accel_group_new ();
@@ -253,6 +297,19 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 				       menu_items, gpw->window);
 	gtk_box_pack_start_defaults (GTK_BOX (gpw->main_vbox),
 				     gtk_item_factory_get_widget (item_factory, "<main>"));
+
+	/* set the tooltips */
+	for (i = 1; i < G_N_ELEMENTS (menu_tips); i++) {
+		GtkWidget *item;
+
+		item = gtk_item_factory_get_widget_by_action (item_factory, i);
+		g_signal_connect (G_OBJECT (item), "select",
+				  G_CALLBACK (gpw_push_statusbar_hint),
+				  (void*) menu_tips[i]);
+		g_signal_connect (G_OBJECT (item), "deselect",
+				  G_CALLBACK (gpw_pop_statusbar_hint),
+				  NULL);
+	}
 }
 
 static void
@@ -276,6 +333,19 @@ gpw_construct_toolbar (GladeProjectWindow *gpw)
 				  gpw, -1);
 	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
 	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
+				  GTK_STOCK_UNDO,
+				  "Undo the last action",
+				  NULL,
+				  G_CALLBACK (gpw_undo_cb),
+				  gpw, -1);
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
+				  GTK_STOCK_REDO,
+				  "Redo the last action",
+				  NULL,
+				  G_CALLBACK (gpw_redo_cb),
+				  gpw, -1);
+	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
 				  GTK_STOCK_QUIT,
 				  "Quit glade",
 				  NULL,
@@ -295,14 +365,8 @@ gpw_construct_statusbar (GladeProjectWindow *gpw)
 
 	statusbar = gtk_statusbar_new ();
 	gpw->statusbar = statusbar;
-
-	g_object_ref (G_OBJECT (statusbar));
-	gtk_object_sink (GTK_OBJECT (statusbar));
-	g_object_set_data_full (G_OBJECT (gpw->window),
-				"<main>",
-				statusbar,
-				(GDestroyNotify) g_object_unref);
-
+	gpw->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "menu");
+		
 	gtk_box_pack_end_defaults (GTK_BOX (gpw->main_vbox), statusbar);	
 }
 
