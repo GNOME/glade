@@ -4,6 +4,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include "glade-types.h"
 
 G_BEGIN_DECLS
  
@@ -14,7 +15,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
-typedef struct _GladeWidget		GladeWidget;
 typedef struct _GladeWidgetKlass	GladeWidgetKlass;
 
 struct _GladeWidget
@@ -110,4 +110,4 @@ GladeWidget *		glade_widget_get_parent			(GladeWidget *widget);
 
 G_END_DECLS
 
-#endif __GLADE_WIDGET_H__
+#endif /* __GLADE_WIDGET_H__ */
