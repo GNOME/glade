@@ -71,7 +71,7 @@ struct _GladeWidgetClass
 				     GtkWidget *new,
 				     GtkWidget *container);
 
-	gchar *post_create_function;
+	void (*post_create_function) (GObject *gobject);
 
 	gboolean in_palette;
 };
@@ -96,8 +96,8 @@ gboolean     glade_widget_class_has_queries (GladeWidgetClass *class);
 
 gboolean     glade_widget_class_is (GladeWidgetClass *class, const gchar *name);
 
-/* ParamSpec stuff */
-GParamSpec *glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name);
+gboolean     glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name);
+
 void        glade_widget_class_dump_param_specs (GladeWidgetClass *class);
 
 

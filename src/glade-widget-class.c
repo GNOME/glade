@@ -37,6 +37,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "glade.h"
+#include "glade-widget-class.h"
 #include "glade-xml-utils.h"
 #include "glade-placeholder.h"
 #include "glade-property.h"
@@ -45,7 +46,7 @@
 #include "glade-catalog.h"
 #include "glade-choice.h"
 #include "glade-parameter.h"
-#include "glade-widget-class.h"
+#include "glade-gtk.h"
 
 
 static gchar *
@@ -96,76 +97,11 @@ glade_widget_class_new (void)
 	return class;
 }
 
-static void
-glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
-{
-	g_return_if_fail (class->name != NULL);
-
-	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class))
-		glade_placeholder_add_methods_to_class (class);
-}
-
-static GList * 
-glade_widget_class_list_signals (GladeWidgetClass *class) 
-{
-	GList *signals = NULL;
-	GType type;
-	guint count;
-	guint *sig_ids;
-	guint num_signals;
-	GladeWidgetClassSignal *cur;
-
-	g_return_val_if_fail (class->type != 0, NULL);
-
-	type = class->type;
-	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
-		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
-			sig_ids = g_signal_list_ids (type, &num_signals);
-
-			for (count = 0; count < num_signals; count++) {
-				cur = g_new0 (GladeWidgetClassSignal, 1);
-				cur->name = (gchar *) g_signal_name (sig_ids[count]);
-				cur->type = (gchar *) g_type_name (type);
-
-				signals = g_list_append (signals, (GladeWidgetClassSignal *) cur);
-			}
-			g_free (sig_ids);
-		}
-
-		type = g_type_parent (type);
-	}
-
-	return signals;
-}
-
-static void
-glade_widget_class_get_specs (GladeWidgetClass *class,
-			      GParamSpec ***specs,
-			      gint *n_specs)
-{
-	GObjectClass *object_class;
-	GType type;
-
-	type = glade_widget_class_get_type (class);
-	g_type_class_ref (type); /* hmm */
-	 /* We count on the fact we have an instance, or else we'd have
-	  * touse g_type_class_ref ();
-	  */
-	object_class = g_type_class_peek (type);
-	if (object_class == NULL) {
-		g_warning ("Class peek failed\n");
-		*specs = NULL;
-		*n_specs = 0;
-		return;
-	}
-
-	*specs = g_object_class_list_properties (object_class, n_specs);
-}
-
 static GList *
 glade_widget_class_list_properties (GladeWidgetClass *class)
 {
 	GladePropertyClass *property_class;
+	GObjectClass *object_class;
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
 	GType last;
@@ -175,7 +111,18 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	glade_widget_class_get_specs (class, &specs, &n_specs);
+	g_type_class_ref (class->type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+
+	object_class = g_type_class_peek (class->type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		return NULL;
+	}
+
+	specs = g_object_class_list_properties (object_class, &n_specs);
 
 	last = 0;
 	for (i = 0; i < n_specs; i++) {
@@ -274,6 +221,39 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	return list;
 }
 
+static GList * 
+glade_widget_class_list_signals (GladeWidgetClass *class) 
+{
+	GList *signals = NULL;
+	GType type;
+	guint count;
+	guint *sig_ids;
+	guint num_signals;
+	GladeWidgetClassSignal *cur;
+
+	g_return_val_if_fail (class->type != 0, NULL);
+
+	type = class->type;
+	while (g_type_is_a (type, GTK_TYPE_OBJECT)) { 
+		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)) {
+			sig_ids = g_signal_list_ids (type, &num_signals);
+
+			for (count = 0; count < num_signals; count++) {
+				cur = g_new0 (GladeWidgetClassSignal, 1);
+				cur->name = (gchar *) g_signal_name (sig_ids[count]);
+				cur->type = (gchar *) g_type_name (type);
+
+				signals = g_list_append (signals, (GladeWidgetClassSignal *) cur);
+			}
+			g_free (sig_ids);
+		}
+
+		type = g_type_parent (type);
+	}
+
+	return signals;
+}
+
 static gboolean
 glade_widget_class_set_type (GladeWidgetClass *class,
 			     const gchar *init_function_name)
@@ -297,12 +277,22 @@ glade_widget_class_set_type (GladeWidgetClass *class,
 	return TRUE;
 }
 
+static void
+glade_widget_class_add_virtual_methods (GladeWidgetClass *class)
+{
+	g_return_if_fail (class->name != NULL);
+
+	if (GLADE_WIDGET_CLASS_ADD_PLACEHOLDER(class))
+		glade_placeholder_add_methods_to_class (class);
+}
+
 GladeWidgetClass *
 glade_widget_class_new_from_node (GladeXmlNode *node)
 {
 	GladeWidgetClass *class;
 	GladeXmlNode *child;
 	gchar *init_function_name;
+	gchar *post_create_function_name;
 
 	if (!glade_xml_node_verify (node, GLADE_TAG_GLADE_WIDGET_CLASS))
 		return NULL;
@@ -328,13 +318,13 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 		return NULL;
 	g_free (init_function_name);
 
-	/* Properties */
-	child = glade_xml_search_child_required (node, GLADE_TAG_PROPERTIES);
-	if (child == NULL)
-		return FALSE;
-
+	/* Properties.
+	 * if needed add/override properties listed in the xml file.
+	 */
 	class->properties = glade_widget_class_list_properties (class);
-	glade_property_class_list_add_from_node (child, class, &class->properties);
+	child = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
+	if (child)
+		glade_property_class_list_add_from_node (child, class, &class->properties);
 
 	/* Child properties */
 	/* TODO: we probably want to override/add some packing properties from
@@ -356,11 +346,19 @@ glade_widget_class_new_from_node (GladeXmlNode *node)
 	else
 		GLADE_WIDGET_CLASS_UNSET_FLAGS (class, GLADE_ADD_PLACEHOLDER);
 
-	/* <PostCreateFunction> */
-	class->post_create_function = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
-	class->in_palette = glade_xml_get_boolean (node, GLADE_TAG_IN_PALETTE, TRUE);
-
+	/* placeholder_replace */
 	glade_widget_class_add_virtual_methods (class);
+
+	/* PostCreateFunction */
+	post_create_function_name = glade_xml_get_value_string (node, GLADE_TAG_POST_CREATE_FUNCTION);
+	if (post_create_function_name) {
+		class->post_create_function = glade_gtk_get_function (post_create_function_name);
+		if (!class->post_create_function)
+			g_warning ("Could not find %s\n", post_create_function_name);
+	}
+	g_free (post_create_function_name);
+
+	class->in_palette = glade_xml_get_boolean (node, GLADE_TAG_IN_PALETTE, TRUE);
 
 	return class;
 }
@@ -470,36 +468,19 @@ glade_widget_class_has_queries (GladeWidgetClass *class)
 	return FALSE;
 }
 
-GParamSpec *
-glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
+gboolean
+glade_widget_class_has_property (GladeWidgetClass *class, const gchar *name)
 {
-	GParamSpec **specs = NULL;
-	GParamSpec *spec;
-	gint n_specs = 0;
-	gint i;
+	GList *list;
+	GladePropertyClass *pclass;
 
-	glade_widget_class_get_specs (class, &specs, &n_specs);
-
-	for (i = 0; i < n_specs; i++) {
-		spec = specs[i];
-
-		if (!spec || !spec->name) {
-			g_warning ("Spec does not have a valid name, or invalid spec");
-			g_free (specs);
-			return NULL;
-		}
-
-		if (strcmp (spec->name, name) == 0) {
-			GParamSpec *return_me;
-			return_me = g_param_spec_ref (spec);
-			g_free (specs);
-			return return_me;
-		}
+	for (list = class->properties; list; list = list->next) {
+		pclass = list->data;
+		if (strcmp (pclass->id, name) == 0)
+			return TRUE;
 	}
 
-	g_free (specs);
-
-	return NULL;
+	return FALSE;
 }
 
 /**
@@ -515,13 +496,27 @@ glade_widget_class_find_spec (GladeWidgetClass *class, const gchar *name)
 void
 glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 {
+	GObjectClass *object_class;
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
 	GType last;
 	gint n_specs = 0;
 	gint i;
 
-	glade_widget_class_get_specs (class, &specs, &n_specs);
+	g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
+
+	g_type_class_ref (class->type); /* hmm */
+	 /* We count on the fact we have an instance, or else we'd have
+	  * touse g_type_class_ref ();
+	  */
+
+	object_class = g_type_class_peek (class->type);
+	if (object_class == NULL) {
+		g_warning ("Class peek failed\n");
+		return;
+	}
+
+	specs = g_object_class_list_properties (object_class, &n_specs);
 
 	g_ok_print ("\nDumping ParamSpec for %s\n", class->name);
 

@@ -427,10 +427,10 @@ glade_widget_set_contents (GladeWidget *widget)
 
 	class = widget->class;
 
-	if (glade_widget_class_find_spec (class, "label") != NULL)
+	if (glade_widget_class_has_property (class, "label"))
 		property = glade_property_get_from_id (widget->properties,
 						       "label");
-	if (glade_widget_class_find_spec (class, "title") != NULL)
+	if (glade_widget_class_has_property (class, "title"))
 		property = glade_property_get_from_id (widget->properties,
 						       "title");
 
@@ -606,16 +606,12 @@ glade_widget_create_gtk_widget (GladeWidget *glade_widget)
 	 * seems to be ok without the timeouts, so I will remove it by now.
 	 * Cuenca
 	 */
-	
+
 	/* We need to call the post_create_function after the embed of the widget in
-	   its parent.  Otherwise, calls to gtk_widget_grab_focus et al. will fail */
+	 * its parent.  Otherwise, calls to gtk_widget_grab_focus et al. will fail
+	 */
 	if (class->post_create_function) {
-		void (*pcf) (GObject *object);
-		pcf = glade_gtk_get_function (class->post_create_function);
-		if (!pcf)
-			g_warning ("Could not find %s\n", class->post_create_function);
-		else
-			pcf (G_OBJECT (glade_widget->widget));
+		class->post_create_function (G_OBJECT (glade_widget->widget));
 	}
 
 	return TRUE;
