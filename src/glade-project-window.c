@@ -43,6 +43,7 @@
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-utils.h"
+#include "glade-about.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
@@ -915,7 +916,39 @@ gpw_toggle_clipboard_cb (void)
 
 static void gpw_about_cb (void)
 {
-/* write me... */
+	GladeProjectWindow *gpw;
+	GtkWidget *about_dialog;
+	GtkWidget *vbox;
+	GtkWidget *glade_image;
+	GtkWidget *version;
+	GtkWidget *description;
+	
+	gpw = glade_project_window_get ();
+	about_dialog = gtk_dialog_new_with_buttons (_("About Glade"), GTK_WINDOW (gpw->window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						    GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+	gtk_window_set_title (GTK_WINDOW (about_dialog), _("About Glade"));
+	gtk_dialog_set_has_separator (GTK_DIALOG (about_dialog), FALSE);
+
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (about_dialog)->vbox), vbox, TRUE, TRUE, 0);
+
+	glade_image = gtk_image_new_from_file (GLADE_ICONDIR "/glade-3.png");
+	gtk_box_pack_start (GTK_BOX (vbox), glade_image, TRUE, TRUE, 0);
+
+	version = gtk_label_new (_("<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"));
+	gtk_box_pack_start (GTK_BOX (vbox), version, FALSE, FALSE, 0);
+	gtk_label_set_use_markup (GTK_LABEL (version), TRUE);
+	gtk_label_set_justify (GTK_LABEL (version), GTK_JUSTIFY_LEFT);
+
+	description = gtk_label_new (_("Glade is a User Interface Builder for GTK+ and GNOME. \nThis version is a rewrite of the Glade 2.0.0 version, original from Damon Chaplin\n\n<small>(C) 2001-2004 Ximian, Inc.\n(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"));
+	gtk_box_pack_start (GTK_BOX (vbox), description, FALSE, FALSE, 4);
+	gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
+	gtk_label_set_justify (GTK_LABEL (description), GTK_JUSTIFY_FILL);
+	gtk_label_set_line_wrap (GTK_LABEL (description), TRUE);
+
+	gtk_widget_show_all (about_dialog);
+	gtk_dialog_run (GTK_DIALOG (about_dialog));
+	gtk_widget_destroy (about_dialog);
 }
 
 
