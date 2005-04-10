@@ -118,7 +118,7 @@ main (int argc, char *argv[])
 
 #ifdef HAVE_LIBPOPT
 # ifdef USE_POPT_DLL
-	options[sizeof (options) / sizeof (options[0]) - 2].arg = poptHelpOptions;
+	options[G_N_ELEMENTS (options) - 2].arg = poptHelpOptions;
 # endif
 	options[1].arg = &glade_verbose;
 	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);

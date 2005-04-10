@@ -249,15 +249,18 @@ glade_widget_class_list_children (GladeWidgetClass *class)
 		child->type             = GTK_TYPE_WIDGET;
 		child->properties       = glade_widget_class_list_child_properties (class);
 
-		child->add              = (GladeAddChildFunc)    gtk_container_add;
-		child->remove           = (GladeRemoveChildFunc) gtk_container_remove;
-		child->get_children     = (GladeGetChildrenFunc) gtk_container_get_children;
-		child->get_all_children =
-			(GladeGetChildrenFunc) glade_util_container_get_all_children;
-		child->set_property     =
-			(GladeChildSetPropertyFunc) gtk_container_child_set_property;
-		child->get_property     =
-			(GladeChildGetPropertyFunc) gtk_container_child_get_property;
+		if (class->type == GTK_TYPE_CONTAINER)
+		{
+			child->add              = (GladeAddChildFunc)    gtk_container_add;
+			child->remove           = (GladeRemoveChildFunc) gtk_container_remove;
+			child->get_children     = (GladeGetChildrenFunc) gtk_container_get_children;
+			child->get_all_children =
+				(GladeGetChildrenFunc) glade_util_container_get_all_children;
+			child->set_property     =
+				(GladeChildSetPropertyFunc) gtk_container_child_set_property;
+			child->get_property     =
+				(GladeChildGetPropertyFunc) gtk_container_child_get_property;
+		}
 
 		children = g_list_append (children, child);
 	}
@@ -686,14 +689,13 @@ accum_class_by_type (gchar                *name,
 }
 
 GList *
-glade_widget_class_get_derived_types  (GType type)
+glade_widget_class_get_derived_types (GType type)
 {
 	GladeClassAccumPair pair = { type, NULL };
 
-		if (widget_classes != NULL)
-	{
-		g_hash_table_foreach (widget_classes, (GHFunc)accum_class_by_type, &pair);
-	}
+	if (widget_classes)
+		g_hash_table_foreach (widget_classes, (GHFunc) accum_class_by_type, &pair);
+
 	return pair.list;
 }
 
@@ -747,30 +749,26 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
 }
 
 static GladeSupportedChild *
-glade_widget_class_clone_child (GladeSupportedChild *child)
+glade_widget_class_clone_child (GladeSupportedChild *child,
+				GladeWidgetClass *parent_class)
 {
 	GladeSupportedChild *clone;
-	GList               *props;
 	
 	clone = g_new0 (GladeSupportedChild, 1);
 
 	clone->type          = child->type;
 	clone->add           = child->add;
+	clone->remove	     = child->remove;
 	clone->get_children  = child->get_children;
+	clone->get_all_children  = child->get_all_children;
 	clone->set_property  = child->set_property;
 	clone->get_property  = child->get_property;
 	clone->fill_empty    = child->fill_empty;
 	clone->replace_child = child->replace_child;
 
-	for (props = child->properties;
-	     props && props->data;
-	     props = props->next)
-	{
-		clone->properties =
-			g_list_prepend (clone->properties, 
-					glade_property_class_clone (props->data));
-	}
-	clone->properties = g_list_reverse (clone->properties);
+	clone->properties = glade_widget_class_list_child_properties (parent_class);
+	glade_widget_class_merge_properties
+		(&clone->properties, child->properties);
 
 	return clone;
 }
@@ -802,7 +800,8 @@ glade_widget_class_merge_child (GladeSupportedChild *widgets_child,
 
 static void
 glade_widget_class_merge_children (GList **widget_children,
-				   GList  *parent_children)
+				   GList  *parent_children,
+				   GladeWidgetClass *widget_class)
 {
 	GList *list;
 	GList *list2;
@@ -827,7 +826,8 @@ glade_widget_class_merge_children (GList **widget_children,
 		{
 			*widget_children =
 				g_list_prepend (*widget_children,
-						glade_widget_class_clone_child (parents_child));
+						glade_widget_class_clone_child (parents_child,
+										widget_class));
 		}
 		else
 		{
@@ -868,7 +868,7 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 
 	/* merge the parent's supported children */
 	glade_widget_class_merge_children
-		(&widget_class->children, parent_class->children);
+		(&widget_class->children, parent_class->children, widget_class);
 }
 
 /**

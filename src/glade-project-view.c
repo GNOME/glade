@@ -143,9 +143,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 	GList *children, *list;
 	GtkTreeIter       iter;
 
-	list = g_list_copy (widgets);
-	list = g_list_reverse (list);
-	for (; list; list = list->next)
+	for (list = widgets; list; list = list->next)
 	{
 		GladeWidget *widget;
 
@@ -169,7 +167,6 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 			}
 		}
 	}
-	g_list_free (list);
 }
 
 static void
@@ -483,7 +480,7 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 	gboolean          handled   = FALSE;
 
 	if (event->window == gtk_tree_view_get_bin_window (tree_view) &&
-	    gtk_tree_view_get_path_at_pos (tree_view, event->x, event->y,
+	    gtk_tree_view_get_path_at_pos (tree_view, (gint) event->x, (gint) event->y,
 					   &path, NULL, 
 					   NULL, NULL) && path != NULL)
 	{
@@ -600,12 +597,14 @@ glade_project_view_init (GladeProjectView *view)
 	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
 	glade_project_view_populate_model (view);
 
+#if 0
 	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (view->model),
 					      0, GTK_SORT_ASCENDING);
 
 	gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (view->model), 0,
 					 glade_project_view_sort_func,
 					 NULL, NULL);
+#endif
  
 	view->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (view->model));
 

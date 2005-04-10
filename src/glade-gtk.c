@@ -383,7 +383,7 @@ glade_gtk_box_get_first_blank (GtkBox *box)
 				glade_widget_get_property (gwidget, "position");
 			gwidget_position = g_value_get_int (property->value);
 
-			if ((gwidget_position - position) > 0)
+			if (gwidget_position > position)
 				return position;
 		}
 	}
@@ -409,6 +409,9 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 
 	old_size = g_list_length (box->children);
 	new_size = g_value_get_int (value);
+	
+	if (old_size == new_size)
+		return;
 
 	/* Ensure placeholders first...
 	 */
@@ -907,6 +910,8 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	gint val;
 
 	val = g_value_get_enum (value);	
+	if (val == GPOINTER_TO_INT (g_object_get_data (object, "stock")))
+		return;
 
 	button = GTK_WIDGET (object);
 	g_return_if_fail (GTK_IS_BUTTON (button));
@@ -928,9 +933,8 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 
 	g_return_if_fail (i < eclass->n_values);
 
-	if (GTK_BIN (button)->child)
-		gtk_container_remove (GTK_CONTAINER (button),
-				      GTK_BIN (button)->child);
+	gtk_container_remove (GTK_CONTAINER (button),
+			      GTK_BIN (button)->child);
 	
 	if (!gtk_stock_lookup (eclass->values[i].value_nick, &item))
 	{
@@ -967,6 +971,7 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	}
 
 	g_type_class_unref (eclass);
+	g_object_set_data (object, "stock", GINT_TO_POINTER (val));
 }
 
 /**
@@ -1069,12 +1074,12 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 			
 			property = glade_widget_get_property (gwidget, "x");
 			property->enabled = TRUE;
-			g_value_set_int (&value, event->x);
+			g_value_set_int (&value, (gint) event->x);
 			glade_property_set (property, &value);
 			
 			property = glade_widget_get_property (gwidget, "y");
 			property->enabled = TRUE;
-			g_value_set_int (&value, event->y);
+			g_value_set_int (&value, (gint) event->y);
 			glade_property_set (property, &value);
 			
 			property = glade_widget_get_property
@@ -1360,16 +1365,33 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 	GtkWidget *page;
 	GtkWidget *label;
 	gint page_num;
+	gchar *special_child_type;
 
 	notebook = GTK_NOTEBOOK (container);
-	page_num = gtk_notebook_page_num (notebook, current);
-	if (page_num == -1) {
-		g_warning ("GtkNotebookPage not found\n");
+
+	/* FIXME: until placeholder has GladeWidget
+	special_child_type =
+		g_object_get_data (G_OBJECT (current), "special-child-type"); */
+	special_child_type = NULL;
+	if (special_child_type && !strcmp (special_child_type, "tab"))
+	{
+		page_num = (gint) g_object_get_data (G_OBJECT (current),
+						     "page-num");
+		g_object_set_data (G_OBJECT (new), "page-num",
+				   GINT_TO_POINTER (page_num));
+		g_object_set_data (G_OBJECT (new), "special-child-type",
+				   "tab");
+		page = gtk_notebook_get_nth_page (notebook, page_num);
+		gtk_notebook_set_tab_label (notebook, page, new);
 		return;
 	}
 
-	page = gtk_notebook_get_nth_page (notebook, page_num);
-	gtk_widget_ref (page);
+	page_num = gtk_notebook_page_num (notebook, current);
+	if (page_num == -1)
+	{
+		g_warning ("GtkNotebookPage not found\n");
+		return;
+	}
 
 	label = gtk_notebook_get_tab_label (notebook, current);
 
@@ -1383,7 +1405,6 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 	gtk_notebook_remove_page (notebook, page_num);
 	gtk_notebook_insert_page (notebook, new, label, page_num);
 
-	gtk_widget_unref (page);
 	if (label)
 		gtk_widget_unref (label);
 
@@ -1540,4 +1561,135 @@ glade_gtk_radio_button_set_group (GObject *object, GValue *value)
 	const char *name = g_value_get_string (value);
 
 	/* FIXME: now what?  */
+}
+
+GLADEGTK_API void
+glade_gtk_box_add_child (GObject *object, GObject *child)
+{
+	gint		 num_children;
+	GladeProperty	*prop;
+	
+	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+	num_children = g_list_length (GTK_BOX (object)->children);
+
+	prop = glade_widget_get_property (glade_widget_get_from_gobject (object),
+					  "size");
+	g_value_set_int (prop->value, num_children);
+
+	if (GLADE_IS_PLACEHOLDER (child))
+		return;
+
+	prop = glade_widget_get_pack_property (glade_widget_get_from_gobject (child),
+					       "position");
+	g_value_set_int (prop->value, num_children - 1);
+}
+
+GLADEGTK_API void
+glade_gtk_notebook_add_child (GObject *object, GObject *child)
+{
+	GtkNotebook 	*notebook;
+	guint		num_page;
+	GtkWidget	*last_page;
+	GladeWidget	*gwidget;
+	gchar		*special_child_type;
+	
+	notebook = GTK_NOTEBOOK (object);
+
+	num_page = gtk_notebook_get_n_pages (notebook);
+
+	/* last_page = gtk_notebook_get_nth_page (notebook, -1);
+	   in glade-2 we never use tab-label, we generate a GtkLabel
+	   and set it as the label widget (and in fact the tab-label internal
+	   is doing more or less the same thing). If the last page has a NULL
+	   label, _child_ is a label widget
+	if (last_page && !gtk_notebook_get_tab_label (notebook, last_page)) */
+	/* FIXME: until placeholder has GladeWidget
+	special_child_type = g_object_get_data (child, "special-child-type"); */
+	special_child_type = NULL;
+	if (special_child_type &&
+	    !strcmp (special_child_type, "tab"))
+	{
+		last_page = gtk_notebook_get_nth_page (notebook, num_page - 1);
+		g_object_set_data (child, "page-num",
+				   GINT_TO_POINTER (num_page - 1));
+		gtk_notebook_set_tab_label (notebook, last_page,
+					    GTK_WIDGET (child));
+	}
+	else
+	{
+		GladeProperty	*prop;
+
+		gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+		prop = glade_widget_get_property (
+			glade_widget_get_from_gobject (object), "pages");
+		g_value_set_int (prop->value, num_page + 1);
+		
+		gwidget = glade_widget_get_from_gobject (child);
+		if (gwidget)
+		{
+			prop = glade_widget_get_pack_property (gwidget,
+							       "position");
+			g_value_set_int (prop->value, num_page);
+		}
+	}
+}
+
+GLADEGTK_API void
+glade_gtk_button_add_child (GObject *object, GObject *child)
+{
+	GtkWidget *old;
+
+	old = GTK_BIN (object)->child;
+	if (old)
+		gtk_container_remove (GTK_CONTAINER (object), old);
+	
+	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+}
+
+GLADEGTK_API void
+glade_gtk_image_set_pixbuf (GObject *object, GValue *value)
+{
+	gchar *filename;
+	GdkPixbuf *pixbuf;
+	GError *error = NULL;
+	
+	filename = (gchar*) g_value_get_string (value);
+	if (filename && strlen (filename))
+	{
+		gchar *pathname;
+
+		GladeProject *project =
+			glade_widget_get_project (
+				glade_widget_get_from_gobject (object));
+
+		pathname = g_path_get_dirname (project->path);
+		filename = g_build_filename (pathname, filename, NULL);
+		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+		g_free (filename);
+		if (pixbuf)
+			gtk_image_set_from_pixbuf (GTK_IMAGE (object), pixbuf);
+	}
+}
+
+GLADEGTK_API void
+glade_gtk_frame_add_child (GObject *object, GObject *child)
+{
+	gchar *special_child_type;
+
+	/* FIXME: until placeholder has GladeWidget
+	special_child_type = g_object_get_data (child, "special-child-type"); */
+	special_child_type = NULL;
+	if (special_child_type &&
+	    !strcmp (special_child_type, "label_item"))
+	{
+		gtk_frame_set_label_widget (GTK_FRAME (object),
+					    GTK_WIDGET (child));
+	}
+	else
+	{
+		gtk_container_add (GTK_CONTAINER (object),
+				   GTK_WIDGET (child));
+	}
 }

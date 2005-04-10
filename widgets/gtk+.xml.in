@@ -58,6 +58,7 @@
 	<child>
 	  <type>GtkWidget</type>
 	  <fill-empty-function>empty</fill-empty-function>
+	  <add-child-function>glade_gtk_box_add_child</add-child-function>
 	</child>
       </children>
     </glade-widget-class>
@@ -176,6 +177,7 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <add-child-function>glade_gtk_button_add_child</add-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
 	</child>
       </children>
@@ -223,6 +225,10 @@
 	<property id="icon-name" translatable="False"/>
 	<property id="file" translatable="False"/>
 	<property id="stock" translatable="False"/>
+	<property id="pixbuf" name="Image file" translatable="False" default="">
+	  <spec>glade_gtk_standard_string_spec</spec>
+	  <set-function>glade_gtk_image_set_pixbuf</set-function>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -323,6 +329,7 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <add-child-function>glade_gtk_notebook_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
@@ -341,6 +348,12 @@
       <properties>
 	<property id="label" default="Frame"/>
       </properties>
+      <children>
+	<child>
+	  <type>GtkWidget</type>
+	  <add-child-function>glade_gtk_frame_add_child</add-child-function>
+	</child>
+      </children>
     </glade-widget-class>
 
     <!-- Gtk+ Additional -->

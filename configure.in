@@ -27,9 +27,10 @@ AM_PROG_LIBTOOL
 # If any interfaces have been added, removed, or changed, increment GLADE_CURRENT, and set GLADE_REVISION to 0.
 # If any interfaces have been added since the last public release, then increment GLADE_AGE.
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
+# Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
 GLADE_REVISION=0
-GLADE_CURRENT=1
-GLADE_AGE=1
+GLADE_CURRENT=0
+GLADE_AGE=0
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)
 AC_SUBST(GLADE_AGE)
@@ -38,7 +39,7 @@ AC_SUBST(GLADE_AGE)
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
-GETTEXT_PACKAGE=glade-3
+GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Name of the gettext package.])
 ALL_LINGUAS="az es ms nn no pl pt ru sv ta tr uk"

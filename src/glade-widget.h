@@ -105,6 +105,8 @@ LIBGLADEUI_API GladeProject           *glade_widget_get_project            (Glad
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
 LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
 									    const char       *id_property);
+LIBGLADEUI_API GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
+									    const char       *id_property);
 
 LIBGLADEUI_API void                    glade_widget_replace                (GladeWidget      *parent,
 									    GObject          *old_object,

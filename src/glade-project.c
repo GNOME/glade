@@ -298,7 +298,7 @@ glade_project_add_object (GladeProject *project, GObject *object)
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
 
-	if ((children = glade_widget_class_container_get_children
+	if ((children = glade_widget_class_container_get_all_children
 	     (gwidget->widget_class, gwidget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
@@ -726,14 +726,16 @@ glade_project_write (const GladeProject *project)
 }
 
 static GladeProject *
-glade_project_new_from_interface (GladeInterface *interface)
+glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 {
 	GladeProject *project;
 	GladeWidget *widget;
 	guint i;
 
 	project = glade_project_new (FALSE);
-	project->changed = FALSE;
+	project->path = g_strdup (path);
+	g_free (project->name);
+	project->name = g_path_get_basename (path);
 	project->selection = NULL;
 	project->objects = NULL;
 
@@ -750,10 +752,14 @@ glade_project_new_from_interface (GladeInterface *interface)
 		}
 		glade_project_add_object (project, widget->object);
 
-/* 		project->objects = g_list_prepend (project->objects, */
-/* 						   glade_widget_get_object(widget)); */
-/* 		g_object_ref (glade_widget_get_object(widget)); */
+#if 0
+ 		project->objects = g_list_prepend (project->objects,
+ 						   glade_widget_get_object(widget));
+ 		g_object_ref (glade_widget_get_object(widget));
+#endif
 	}
+
+	project->changed = FALSE;
 
 	return project;	
 }
@@ -777,17 +783,9 @@ glade_project_open (const gchar *path)
 	if (!interface)
 		return NULL;
 
-	project = glade_project_new_from_interface (interface);
+	project = glade_project_new_from_interface (interface, path);
 	
 	glade_interface_destroy (interface);
-
-	if (project)
-        {
-		project->path = g_strdup_printf ("%s", path);
-		g_free (project->name);
-		project->name = g_path_get_basename (project->path);
-		project->changed = FALSE;
-	}
 
 	return project;
 }

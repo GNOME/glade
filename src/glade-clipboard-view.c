@@ -162,7 +162,8 @@ glade_clipboard_view_button_press_cb (GtkWidget          *widget,
 	gboolean          handled   = FALSE;
 
 	if (event->window == gtk_tree_view_get_bin_window (tree_view) &&
-	    gtk_tree_view_get_path_at_pos (tree_view, event->x, event->y,
+	    gtk_tree_view_get_path_at_pos (tree_view,
+					   (gint) event->x, (gint) event->y,
 					   &path, NULL, 
 					   NULL, NULL) && path != NULL)
 	{

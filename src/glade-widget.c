@@ -414,22 +414,25 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 
 	/* As a slight optimization, we never unref the class
 	 */
-	oclass = g_type_class_ref(klass->type);
+	oclass = g_type_class_ref (klass->type);
 	pspec  = g_object_class_list_properties (oclass, &n_props);
-	params = g_array_new(FALSE, FALSE, sizeof(GParameter));
+	params = g_array_new (FALSE, FALSE, sizeof (GParameter));
 
 	for (i = 0; i < n_props; i++)
 	{
 		GParameter parameter = { 0, };
 
-		if (glade_widget_class_get_property_class (klass, pspec[i]->name) == NULL)
+		glade_property_class =
+			glade_widget_class_get_property_class (klass,
+							       pspec[i]->name);
+		if (!glade_property_class)
 			/* Ignore properties that are not accounted for
 			 * by the GladeWidgetClass
 			 */
 			continue;
 		
-		parameter.name       = pspec[i]->name; /* No need to dup this */
-		g_value_init(&parameter.value, pspec[i]->value_type);
+		parameter.name = pspec[i]->name; /* No need to dup this */
+		g_value_init (&parameter.value, pspec[i]->value_type);
 
 		/* If a widget is specified and has a value set for that
 		 * property, then that value will be used (otherwise, we
@@ -437,55 +440,53 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 		 */
 		if (widget &&
 		    (glade_property =
-		     glade_widget_get_property(widget, parameter.name)) != NULL)
+		     glade_widget_get_property (widget, parameter.name)) != NULL)
 		{
-			if (g_value_type_compatible(G_VALUE_TYPE(glade_property->value),
-						    G_VALUE_TYPE(&parameter.value)))
-				g_value_copy(glade_property->value, &parameter.value);
+			if (g_value_type_compatible (G_VALUE_TYPE (glade_property->value),
+						     G_VALUE_TYPE (&parameter.value)))
+				g_value_copy (glade_property->value, &parameter.value);
 			else
 			{
-				g_critical("Type mismatch on %s property of %s",
-					   parameter.name, klass->name);
+				g_critical ("Type mismatch on %s property of %s",
+					    parameter.name, klass->name);
 				continue;
 			}
 		}
 		/* If the class has a default, use it.
 		 */
-		else if ((glade_property_class =
-			  glade_widget_class_get_property_class(klass, pspec[i]->name)) &&
-			 glade_property_class->def != NULL)
+		else if (glade_property_class->def != NULL)
 		{
-			if (g_value_type_compatible(G_VALUE_TYPE(glade_property_class->def),
-						    G_VALUE_TYPE(&parameter.value)))
-				g_value_copy(glade_property_class->def, &parameter.value);
+			if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->def),
+						     G_VALUE_TYPE (&parameter.value)))
+				g_value_copy (glade_property_class->def, &parameter.value);
 			else
 			{
-				g_critical("Type mismatch on %s property of %s",
-					   parameter.name, klass->name);
+				g_critical ("Type mismatch on %s property of %s",
+					    parameter.name, klass->name);
 				continue;
 			}
 		}
 		else
 			g_param_value_set_default (pspec[i], &parameter.value);
 
-		g_array_append_val(params, parameter);
+		g_array_append_val (params, parameter);
 	}
-	g_free(pspec);
+	g_free (pspec);
 
 
 	/* Create the new object with the correct parameters.
 	 */
-	object = g_object_newv(klass->type, params->len,
-			       (GParameter *)params->data);
+	object = g_object_newv (klass->type, params->len,
+				(GParameter *)params->data);
 
 	/* Cleanup parameters
 	 */
 	for (i = 0; i < params->len; i++)
 	{
-		GParameter parameter = g_array_index(params, GParameter, i);
-		g_value_unset(&parameter.value);
+		GParameter parameter = g_array_index (params, GParameter, i);
+		g_value_unset (&parameter.value);
 	}
-	g_array_free(params, TRUE);
+	g_array_free (params, TRUE);
 
 	return object;
 }
@@ -1131,6 +1132,26 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 			return property;
 	}
 
+	return glade_widget_get_pack_property (widget, id_property);
+}
+
+/**
+ * glade_widget_get_pack_property:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a packing property
+ *
+ * Returns: the #GladeProperty in @widget named @id_property
+ */
+GladeProperty *
+glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
+{
+	GList *list;
+	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (id_property != NULL, NULL);
+
+
 	for (list = widget->packing_properties; list; list = list->next) {
 		property = list->data;
 		if (strcmp (property->class->id, id_property) == 0)
@@ -1512,7 +1533,7 @@ glade_widget_real_remove_signal_handler (GladeWidget *widget, GladeSignal *signa
 {
 	GPtrArray   *signals;
 	GladeSignal *tmp_signal_handler;
-	gint         i;
+	guint        i;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (signal_handler));
@@ -1541,7 +1562,7 @@ glade_widget_real_change_signal_handler (GladeWidget *widget,
 {
 	GPtrArray   *signals;
 	GladeSignal *tmp_signal_handler;
-	gint         i;
+	guint        i;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_SIGNAL (old_signal_handler));
@@ -1731,7 +1752,7 @@ glade_widget_write_signals (gpointer key, gpointer value, gpointer user_data)
 {
 	WriteSignalsContext *write_signals_context;
         GPtrArray *signals;
-	gint i;
+	guint i;
 
 	write_signals_context = (WriteSignalsContext *) user_data;
 	signals = (GPtrArray *) value;
@@ -1898,7 +1919,8 @@ glade_widget_value_from_prop_info (GladePropInfo    *info,
 
 static gboolean
 glade_widget_apply_property_from_prop_info (GladePropInfo *info,
-					    GladeWidget   *widget)
+					    GladeWidget   *widget,
+					    gboolean	   is_packing)
 {
 	GladeProperty    *property;
 	GladeWidgetClass *wclass;
@@ -1911,7 +1933,8 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 	id = g_strdup (info->name);
 
 	glade_util_replace (id, '_', '-');
-	property = glade_widget_get_property (widget, id);
+	property = !is_packing ? glade_widget_get_property (widget, id):
+				 glade_widget_get_pack_property (widget, id);
 	g_free (id);
 
 	if (!property)
@@ -1982,11 +2005,8 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 		for (i = 0; i < info->n_properties; ++i)
 		{
 			if (!glade_widget_apply_property_from_prop_info (info->properties + i,
-									 widget))
-			{
+									 widget, FALSE))
 				g_warning ("Failed to apply property");
-				continue;
-			}
 		}
 	}
 }
@@ -2000,8 +2020,8 @@ glade_widget_get_property_from_widget_info (GladeWidgetClass  *class,
 					    gchar            **comment)
 {
 	GValue *value = NULL;
-	gint   i;
-	gchar *id;
+	guint   i;
+	gchar  *id;
 
 	for (i = 0; i < info->n_properties; ++i)
 	{
@@ -2035,7 +2055,7 @@ glade_widget_get_property_from_widget_info (GladeWidgetClass  *class,
 static void
 glade_widget_params_free (GArray *params)
 {
-	gint i;
+	guint i;
 	for (i = 0; i < params->len; i++)
 	{
 		GParameter parameter = g_array_index (params, GParameter, i);
@@ -2099,15 +2119,16 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 	pspec  = g_object_class_list_properties (oclass, &n_props);
 	params = g_array_new (FALSE, FALSE, sizeof (GParameter));
 
-	/* preprae parameters that have glade_property_class->def */
+	/* prepare parameters that have glade_property_class->def */
 	for (i = 0; i < n_props; i++)
 	{
 		GParameter  parameter = { 0, };
 		GValue     *value;
 		
-		if ((glade_property_class =
+		glade_property_class =
 		     glade_widget_class_get_property_class (widget_class,
-							    pspec[i]->name)) == NULL)
+							    pspec[i]->name);
+		if (!glade_property_class || glade_property_class->set_function)
 			continue;
 		
 		parameter.name = pspec[i]->name;
@@ -2250,8 +2271,11 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	/* is it a placeholder? */
 	if (!info->child)
 	{
-		/* gtk_container_add (GTK_CONTAINER (parent->widget),
-		   glade_placeholder_new ()); */
+		GObject *palaceholder = G_OBJECT (glade_placeholder_new ());
+		glade_widget_class_container_add (parent->widget_class,
+				   		  parent->object,
+						  palaceholder);
+		
 		return TRUE;
 	}
 
@@ -2293,11 +2317,9 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	/* Get the packing properties */
 	for (i = 0; i < info->n_properties; ++i)
 	{
-		if (!glade_widget_apply_property_from_prop_info (info->properties + i, child))
-		{
+		if (!glade_widget_apply_property_from_prop_info (info->properties + i,
+								 child, TRUE))
 			g_warning ("Failed to apply packing property");
-			continue;
-		}
 	}
 
 	return TRUE;

@@ -1,3 +1,34 @@
+2005-04-10  Ivan, Wong Yat Cheung  <email@ivanwong.info
+
+	* configure.in: Version number should start from 0:0:0 before
+	a public release.
+
+	* src/glade-clipboard-view.c (glade_clipboard_view_button_press_cb):
+	* src/glade-editor.c (glade_editor_table_append_items):
+	* src/glade-signal-editor.c (glade_signal_editor_load_widget):
+	* src/glade-project-view.c:
+	* src/glade-widget.c:
+	* src/main.c: Get rid of some compilation warnings, correct some
+	inconsistent coding style, plus some silly things.
+
+	* src/glade-project.c: Correct some project loading behaviours. Use
+	glade_widget_class_container_get_all_children instead of
+	glade_widget_class_container_get_children.
+
+	* src/glade-utils.c (glade_util_container_get_all_children):
+	glade_widget_class_container_get_all_children should use
+	gtk_container_forall instead of gtk_container_foreach.
+
+	* src/glade-widget-class.c: Fix some class inhertance bugs.
+
+	* src/glade-widget.[ch] (glade_widget_get_pack_property): New.
+
+	* widgets/gtk+.xml:
+	* src/glade-gtk.c: Add some custom add-functons that know how to
+	handle placeholder. Handlers for "special child type" are there,
+	we just need to wait and re-enable them once placeholder has
+	GladeWidget.
+
 2005-04-03  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: Fixed radio project menu

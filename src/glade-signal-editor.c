@@ -716,7 +716,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 		}
 		else
 		{
-			gint i;
+			guint i;
 			GtkTreePath *path_parent_class;
 			GladeSignal *widget_signal =
 				(GladeSignal*) g_ptr_array_index (signals, 0);

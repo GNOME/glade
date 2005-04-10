@@ -1208,17 +1208,14 @@ glade_editor_table_append_items (GladeEditorTable *table,
 
 		if (!glade_property_class_is_visible (property_class, class))
 			continue;
-		if (type == TABLE_TYPE_QUERY && property_class->query == FALSE)
+		if (type == TABLE_TYPE_QUERY && !property_class->query)
 			continue;
-		else if (type == TABLE_TYPE_COMMON && property_class->common == FALSE)
+		else if (type == TABLE_TYPE_COMMON && !property_class->common)
 			continue;
-		else if (type == TABLE_TYPE_GENERAL && property_class->common == TRUE)
+		else if (type == TABLE_TYPE_GENERAL && property_class->common)
 			continue;
 
-		if (type == TABLE_TYPE_QUERY)
-			property = glade_editor_table_append_item (table, property_class, TRUE);
-		else
-			property = glade_editor_table_append_item (table, property_class, FALSE);
+		property = glade_editor_table_append_item (table, property_class, type == TABLE_TYPE_QUERY);
 			
 		if (property != NULL)
 			new_list = g_list_prepend (new_list, property);
