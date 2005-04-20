@@ -40,20 +40,11 @@
 #  include <io.h>
 #endif
 
-#ifdef ENABLE_NLS
-#  include <libintl.h>
-#else
-#  define textdomain(String) (String)
-#  define dgettext(Domain, String) (String)
-#endif
-
+#include <glib/gi18n-lib.h>
 #include <libxml/parser.h>
 
 #include "glade-parser.h"
-// #include "glade-private.h"
 
-// #define GETTEXT_PACKAGE "libglade"
-#include <glib/gi18n-lib.h>
 
 #ifdef _MSC_VER
 #  define open     _open

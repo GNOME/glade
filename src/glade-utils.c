@@ -19,12 +19,15 @@
  * Authors:
  *   Chema Celorio <chema@celorio.com>
  */
-
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <string.h>
 #include <gtk/gtktooltips.h>
 #include <gdk/gdkkeysyms.h>
 #include <gmodule.h>
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-project-window.h"

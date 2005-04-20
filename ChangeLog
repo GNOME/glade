@@ -1,4 +1,14 @@
-2005-04-10  Ivan, Wong Yat Cheung  <email@ivanwong.info
+2005-04-20  Tristan Van Berkom <tvb@gnome.org>
+
+	* Cleaned up i18n/gettext stuff, Now glade-3 uses <glib/gi18n.h> and
+	  <glib/gi18n-lib.h> for gettext (using the GETTEXT_PACKAGE in config.h)
+
+	* removed g_ok_print (this should be g_debug in glib >= 2.6 but we dont
+	  have very much of that ATM)
+
+	* lots of ".po" files consiquently updated.
+
+2005-04-10  Ivan, Wong Yat Cheung  <email@ivanwong.info>
 
 	* configure.in: Version number should start from 0:0:0 before
 	a public release.

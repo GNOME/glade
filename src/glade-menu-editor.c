@@ -22,7 +22,11 @@
  * The Menu Editor window, based on initial work by Javier Arriero País
  * and John Looney.  Adapted to glade-3 by Joaquin Cuenca Abela
  */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
+#include <glib/gi18n-lib.h>
 #include <string.h>
 #include <time.h>
 

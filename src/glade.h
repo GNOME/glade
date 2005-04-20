@@ -4,32 +4,6 @@
 
 #include <gtk/gtk.h>
 
-/* Borrow from libgnome/libgnome.h */
-#ifdef ENABLE_NLS
-#    include <libintl.h>
-#    ifdef GNOME_EXPLICIT_TRANSLATION_DOMAIN
-#        undef _
-#        define _(String) dgettext (GNOME_EXPLICIT_TRANSLATION_DOMAIN, String)
-#    else 
-#        define _(String) gettext (String)
-#    endif
-#    ifdef gettext_noop
-#        define N_(String) gettext_noop (String)
-#    else
-#        define N_(String) (String)
-#    endif
-#else
-/* Stubs that do something close enough.  */
-#    define textdomain(String) (String)
-#    define gettext(String) (String)
-#    define dgettext(Domain,Message) (Message)
-#    define dcgettext(Domain,Message,Type) (Message)
-#    define bindtextdomain(Domain,Directory) (Domain)
-#    define _(String) (String)
-#    define N_(String) (String)
-#endif
-
-
 #ifndef __GNUC__
 # define __DLL_IMPORT__	__declspec(dllimport)
 # define __DLL_EXPORT__	__declspec(dllexport)
@@ -48,12 +22,6 @@
 # define LIBGLADEUI_API		extern
 #endif
 
-
-#define g_ok_print g_print
-/* I always grep for g_print to find left over debuging print's
- * so for now, use g_ok_print on the code that is ment to do a g_print
- * (like --dump GtkWindow). Later rename to g_print. Chema
- */
 #include "glade-types.h"
 #include "glade-utils.h"
 #include "glade-xml-utils.h"

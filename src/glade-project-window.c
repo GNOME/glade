@@ -26,6 +26,7 @@
 #endif
 
 #include <string.h>
+#include <glib/gi18n.h>
 
 #include "glade.h"
 #include "glade-palette.h"

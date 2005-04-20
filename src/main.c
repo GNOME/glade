@@ -24,6 +24,8 @@
 #include <config.h>
 #endif
 
+#include <glib/gi18n.h>
+
 #include "glade.h"
 #include "glade-widget-class.h"
 #include "glade-debug.h"
@@ -143,6 +145,7 @@ main (int argc, char *argv[])
 	project_window = glade_project_window_new ();
 	glade_default_app_set (GLADE_APP (project_window));
 	
+#if I_HAD_A_DEBUG_MACRO
 	if (widget_name != NULL)
 	{
 		GladeWidgetClass *class;
@@ -151,7 +154,8 @@ main (int argc, char *argv[])
 			glade_widget_class_dump_param_specs (class);
 		return 0;
 	}
-
+#endif
+	
 	glade_project_window_show_all (project_window);
 
 	if (files)

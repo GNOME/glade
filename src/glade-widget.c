@@ -22,8 +22,14 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <string.h>
 #include <glib-object.h>
+#include <gdk/gdkkeysyms.h>
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-widget-class.h"
@@ -36,8 +42,6 @@
 #include "glade-popup.h"
 #include "glade-editor.h"
 #include "glade-app.h"
-#include <glib.h>
-#include <gdk/gdkkeysyms.h>
 
 static void glade_widget_class_init			(GladeWidgetKlass *klass);
 static void glade_widget_init				(GladeWidget *widget);

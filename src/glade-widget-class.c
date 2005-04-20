@@ -33,6 +33,7 @@
 #include <gmodule.h>
 #include <ctype.h>
 
+#include <glib/gi18n-lib.h>
 #include <gtk/gtkenums.h> /* This should go away. Chema */
 
 #include "glade.h"
@@ -1124,23 +1125,23 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 
 	specs = g_object_class_list_properties (object_class, &n_specs);
 
-	g_ok_print ("\nDumping ParamSpec for %s\n", class->name);
+	g_print ("\nDumping ParamSpec for %s\n", class->name);
 
 	last = 0;
 	for (i = 0; i < n_specs; i++)
 	{
 		spec = specs[i];
 		if (last != spec->owner_type)
-			g_ok_print ("\n                    --  %s -- \n",
+			g_print ("\n                    --  %s -- \n",
 				 g_type_name (spec->owner_type));
-		g_ok_print ("%02d - %-25s %-25s (%s)\n",
+		g_print ("%02d - %-25s %-25s (%s)\n",
 			 i,
 			 spec->name,
 			 g_type_name (spec->value_type),
 			 (spec->flags & G_PARAM_WRITABLE) ? "Writable" : "ReadOnly");
 		last = spec->owner_type;
 	}
-	g_ok_print ("\n");
+	g_print ("\n");
 
 	g_free (specs);
 }

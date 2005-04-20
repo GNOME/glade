@@ -20,9 +20,13 @@
  *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
  *   Archit Baweja <bighead@users.sourceforge.net>
  */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <gtk/gtk.h>
 #include <string.h>
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-xml-utils.h"

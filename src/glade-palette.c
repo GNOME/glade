@@ -25,6 +25,7 @@
 #include <config.h>
 #endif
 
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-palette.h"
 #include "glade-catalog.h"

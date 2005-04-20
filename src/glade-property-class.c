@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gmodule.h>
+#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-widget.h"

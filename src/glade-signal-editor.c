@@ -20,9 +20,12 @@
  *   Shane Butler <shane_b@users.sourceforge.net>
  *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
-
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <string.h>
+#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-widget.h"

@@ -20,7 +20,12 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <string.h>
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-project.h"
