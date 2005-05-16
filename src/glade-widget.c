@@ -1287,7 +1287,8 @@ glade_widget_button_press (GtkWidget *widget,
 					(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
-		else
+		else if (glade_project_is_selected (glade_widget->project,
+						    glade_widget->object) == FALSE)
 		{
 			glade_util_clear_selection ();
 			glade_default_app_selection_set 
