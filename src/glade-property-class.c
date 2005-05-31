@@ -56,6 +56,7 @@ glade_property_class_new (void)
 	property_class->def = NULL;
 	property_class->orig_def = NULL;
 	property_class->parameters = NULL;
+	property_class->displayable_values = NULL;
 	property_class->query = FALSE;
 	property_class->optional = FALSE;
 	property_class->optional_default = TRUE;
@@ -120,7 +121,28 @@ glade_property_class_clone (GladePropertyClass *property_class)
 			parameter->data =
 				glade_parameter_clone ((GladeParameter*) parameter->data);
 	}
-
+	
+	if (property_class->displayable_values)
+	{
+		gint i, len;
+		GEnumValue val;
+		GArray *disp_val;
+		
+		disp_val = property_class->displayable_values;
+		len = disp_val->len;
+		
+		clone->displayable_values = g_array_new(FALSE, TRUE, sizeof(GEnumValue));
+		
+		for (i = 0; i < len; i++)
+		{
+			val.value = g_array_index(disp_val, GEnumValue, i).value;
+			val.value_name = g_strdup (g_array_index(disp_val, GEnumValue, i).value_name);
+			val.value_nick = g_strdup (g_array_index(disp_val, GEnumValue, i).value_nick);
+			
+			g_array_append_val(clone->displayable_values, val);
+		}
+	}
+	
 	return clone;
 }
 
@@ -155,6 +177,29 @@ glade_property_class_free (GladePropertyClass *class)
 	}
 	g_list_foreach (class->parameters, (GFunc) glade_parameter_free, NULL);
 	g_list_free (class->parameters);
+	
+	if (class->displayable_values)
+	{
+		gint i, len;
+		GArray *disp_val;
+		
+		disp_val = class->displayable_values;
+		len = disp_val->len;
+		
+		for (i = 0; i < len; i++)
+		{
+			gchar *name, *nick;
+			
+			name = g_array_index(disp_val, GEnumValue, i).value_name;
+			if (name) g_free(name);
+			
+			nick = g_array_index(disp_val, GEnumValue, i).value_nick;
+			if (nick) g_free(nick);
+		}
+		
+		g_array_free(disp_val, TRUE);
+	}	
+	
 	g_free (class);
 }
 
@@ -191,32 +236,49 @@ glade_property_class_make_string_from_enum (GType etype, gint eval)
 	return string;
 }
 
-static gchar *
-glade_property_class_make_string_from_flags (GType ftype, guint fval)
+/**
+ * glade_property_class_make_string_from_flags:
+ * @class: A GFlagsClass property class.
+ * @fvals: The flags to include in the string.
+ * @displayables: if TRUE it will try to use diplayable values.
+ *
+ * Create a string with the flags wich are set in @fvals.
+ *
+ * Returns: a newly allocated string.
+*/
+gchar *
+glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fvals, gboolean displayables)
 {
 	GFlagsClass *fclass;
-	gchar       *string = NULL;
-	guint        i;
-	g_return_val_if_fail ((fclass = g_type_class_ref (ftype)) != NULL, NULL);
-
-	for (i = 0; i < fclass->n_values; i++)
+	GFlagsValue *fvalue;
+	GString *string;
+	gchar *retval;
+	
+	g_return_val_if_fail ((fclass = g_type_class_ref (class->pspec->value_type)) != NULL, NULL);
+	
+	string = g_string_new("");
+	
+	while ((fvalue = g_flags_get_first_value(fclass, fvals)) != NULL)
 	{
-		if (fval & fclass->values[i].value)
-		{
-			if (!string)
-				string = g_strdup (fclass->values[i].value_name);
-			else
-			{
-				gchar *newstr =
-					g_strconcat (string, "|",
-						     fclass->values[i].value_name,
-						     NULL);
-				string = (g_free (string), newstr);
-			}
-		}
+		gchar *val_str = NULL;
+		
+		fvals &= ~fvalue->value;
+		
+		if (displayables)
+			val_str = glade_property_class_get_displayable_value(class, fvalue->value);
+		
+		if (string->str[0])
+			g_string_append(string, " | ");
+		
+		g_string_append(string, (val_str) ? val_str : fvalue->value_name);
 	}
+	
+	retval = string->str;
+	
 	g_type_class_unref (fclass);
-	return string;
+	g_string_free(string, FALSE);
+	
+	return retval;
 }
 
 /**
@@ -244,7 +306,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	{
 		guint flags = g_value_get_flags (value);
 		string = glade_property_class_make_string_from_flags
-			(property_class->pspec->value_type, flags);
+			(property_class, flags, FALSE);
 	}
 	else if (G_IS_PARAM_SPEC_INT(property_class->pspec))
 		string = g_strdup_printf ("%d", g_value_get_int (value));
@@ -525,6 +587,83 @@ glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidget
 	return TRUE;
 }
 
+/**
+ * glade_property_class_get_displayable_value:
+ * @class: the property class to search in
+ * @value: the value to search
+ *
+ * Search a displayable values for @value in this property class.
+ *
+ * Returns: a (gchar *) if a diplayable value was found, otherwise NULL.
+ */
+gchar *
+glade_property_class_get_displayable_value(GladePropertyClass *class, gint value)
+{
+	gint i, len;
+	GArray *disp_val=class->displayable_values;
+
+	if (disp_val == NULL) return NULL;
+	
+	len=disp_val->len;
+	
+	for (i = 0; i < len; i++)
+		if (g_array_index(disp_val, GEnumValue, i).value == value)
+			return g_array_index(disp_val, GEnumValue, i).value_name;
+
+	return NULL;
+}
+
+/**
+ * gpc_get_displayable_values_from_node:
+ * @node: a GLADE_TAG_DISPLAYABLE_VALUES node
+ * @values: an array of the values wich node overrides.
+ * @n_values: the size of @values
+ *
+ * Returns: a (GArray *) of GEnumValue of the overridden fields.
+ */
+static GArray *
+gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gint n_values)
+{
+	GArray *array;
+	GladeXmlNode *child;
+	
+	child = glade_xml_search_child (node, GLADE_TAG_VALUE);
+	if (child == NULL) return NULL;
+	
+	array = g_array_new (FALSE, TRUE, sizeof(GEnumValue));
+
+	child = glade_xml_node_get_children (node);
+	while (child != NULL)
+	{
+		gint i;
+		gchar *id, *name, *nick;
+		GEnumValue val;
+		
+		id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
+		name = glade_xml_get_property_string (child, GLADE_TAG_NAME);
+		nick = glade_xml_get_property_string (child, GLADE_TAG_NICK);
+		
+		for(i=0; i < n_values; i++)
+		{
+			if(strcmp (id, values[i].value_name) == 0)
+			{
+				val=values[i];
+				
+				if(name) val.value_name = name;
+				if(nick) val.value_nick = nick;
+				
+				g_array_append_val(array, val);
+				break;
+			}
+		}
+		g_free(id);
+		
+		child = glade_xml_node_next (child);
+	}
+	
+	return array;
+}
+
 
 /**
  * glade_property_class_update_from_node:
@@ -621,6 +760,30 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		class->tooltip = buff;
 	}
 
+	/* If this property's value is an enumeration then we try to get the displayable values */
+	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
+	{
+		GEnumClass  *eclass = g_type_class_ref(class->pspec->value_type);
+		
+		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
+		if (child)
+			class->displayable_values = gpc_get_displayable_values_from_node(child, eclass->values, eclass->n_values);
+		
+		g_type_class_unref(eclass);
+	}
+	
+	/* the same way if it is a Flags property */
+	if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
+	{
+		GFlagsClass  *fclass = g_type_class_ref(class->pspec->value_type);
+		
+		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
+		if (child)
+			class->displayable_values = gpc_get_displayable_values_from_node(child, (GEnumValue*)fclass->values, fclass->n_values);
+		
+		g_type_class_unref(fclass);
+	}
+	
 	/* Get the Parameters */
 	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
 	if (child)

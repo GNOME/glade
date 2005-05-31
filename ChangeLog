@@ -1,3 +1,18 @@
+2005-05-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-editor.c: Fixed. So we can show the displayable values where
+	  correspond. (enumerations & flags)
+
+	* src/glade-property-class.c: added the ability to parse the new 
+	  property tag in the catalog. ("displayable_values")
+	  Added a new function glade_property_class_get_displayable_value().
+	  rewrite of glade_property_class_make_string_from_flags()
+	  
+	* src/glade-property-class.h: new GladePropertyClass member, 
+	  displayable_values.
+	
+	* src/glade.h: new tags, GLADE_TAG_DISPLAYABLE_VALUES & GLADE_TAG_NICK.
+
 2005-05-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* glade-app.c: Code no longer assumes that GLADE_WIDGET (gwidget)->object

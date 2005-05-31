@@ -101,6 +101,8 @@
 #define GLADE_TAG_PACKING_DEFAULTS                "packing-defaults"
 #define GLADE_TAG_PARENT_CLASS                    "parent-class"
 #define GLADE_TAG_CHILD_PROPERTY                  "child-property"
+#define GLADE_TAG_DISPLAYABLE_VALUES              "displayable_values"
+#define GLADE_TAG_NICK                            "nick"
 
 LIBGLADEUI_API gboolean glade_verbose;
 

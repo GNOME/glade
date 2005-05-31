@@ -116,6 +116,12 @@ struct _GladePropertyClass
 			    * for a type == CHOICE
 			    */
 
+	GArray *displayable_values; /* If this property's value is an enumeration/flags and 
+				     * there is some value name overridden in a catalog
+				     * then it will point to a GEnumValue array with the
+				     * modified names, otherwise NULL.
+				     */
+
 	gboolean query; /* Whether we should explicitly ask the user about this property
 			 * when instantiating a widget with this property (through a popup
 			 * dialog).
@@ -181,6 +187,11 @@ gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *prope
 gboolean glade_property_class_update_from_node (GladeXmlNode *node,
 						GladeWidgetClass *widget_class,
 						GladePropertyClass **property_class);
+gchar *
+glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fvals, gboolean displayables);
+
+gchar *
+glade_property_class_get_displayable_value(GladePropertyClass *class, gint value);
 
 G_END_DECLS
 

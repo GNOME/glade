@@ -150,8 +150,6 @@ glade_editor_new (void)
 	GladeEditor *editor;
 
 	editor = g_object_new (GLADE_TYPE_EDITOR, NULL);
-
-	/* gtk_widget_set_size_request (GTK_WIDGET (editor), 350, 450); */
 	
 	return editor;
 }
@@ -582,17 +580,23 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 		GtkTreeIter iter;
 		guint mask;
 		gboolean setting;
-
+		gchar *value_name;
+		
 		mask = class->values[flag_num].value;
 		setting = ((value & mask) == mask) ? TRUE : FALSE;
+		
+		value_name = glade_property_class_get_displayable_value (property->class, 
+									 class->values[flag_num].value);
 
+		if (value_name == NULL) value_name = class->values[flag_num].value_name;
+		
 		/* Add a row to represent the flag. */
 		gtk_list_store_append (model, &iter);
 		gtk_list_store_set (model, &iter,
 				    FLAGS_COLUMN_SETTING,
 				    setting,
 				    FLAGS_COLUMN_SYMBOL,
-				    class->values[flag_num].value_name,
+				    value_name,
 				    -1);
 	}
 
@@ -845,8 +849,12 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 
 	for (i = 0; i < eclass->n_values; i++)
 	{
+		gchar *value_name = glade_property_class_get_displayable_value (property->class,
+										eclass->values[i].value);
+		if (value_name == NULL) value_name = eclass->values[i].value_name;
+		
 		menu_item = glade_editor_create_input_enum_item (property,
-								 eclass->values[i].value_name,
+								 value_name,
 								 eclass->values[i].value);
 		gtk_widget_show (menu_item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
@@ -1551,7 +1559,6 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 {
 	GtkBoxChild *child;
 	GtkWidget *entry;
-	GValue tmp_value = { 0, };
 	gchar *text;
 
 	g_return_if_fail (property != NULL);
@@ -1565,12 +1572,10 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 	entry = child->widget;
 	g_return_if_fail (GTK_IS_ENTRY (entry));
 
-	/* Transform the GValue from flags to a string. */
-	g_value_init (&tmp_value, G_TYPE_STRING);
-	g_value_transform (property->property->value, &tmp_value);
-	text = g_strescape (g_value_get_string (&tmp_value), NULL);
-	g_value_unset (&tmp_value);
-
+	text = glade_property_class_make_string_from_flags(property->class,
+					g_value_get_flags(property->property->value),
+					TRUE);
+	
 	gtk_entry_set_text (GTK_ENTRY (entry), text);
 	g_free (text);
 }
