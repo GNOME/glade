@@ -385,7 +385,7 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
 			glade_editor_load_widget (app->priv->editor,
 						  glade_widget_get_from_gobject
-						  (GTK_WIDGET (list->data)));
+						  (G_OBJECT (list->data)));
 		else
 			glade_editor_load_widget (app->priv->editor, NULL);
 	}
@@ -695,7 +695,8 @@ glade_default_app_selection_set (GObject      *object,
 	/* Instead of calling selection_set after all
 	 * the selection_clear calls (lazy).
 	 */
-	glade_util_add_selection (GTK_WIDGET (object));
+	if (GTK_IS_WIDGET (object))
+		glade_util_add_selection (GTK_WIDGET (object));
 }
 
 void
