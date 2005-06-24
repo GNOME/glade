@@ -1,3 +1,15 @@
+2005-06-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-app.[ch]: Added GKeyfile handleing
+
+	* src/glade-parser.c: glade_interface_dump_full modified to use
+	  GIOChannel, this helps to keep portability issues in the glib domain.
+
+	* src/glade-utils.[ch], src/glade-project.[ch], src/glade-project-window.c: 
+	  Now uses GtkUIManager instead of GtkItemFactory, Also added recent projects submenu.
+
+	* widgets/gtk+.xml: Fixed a few cosmetic strings in regards to displayable values.
+	
 2005-06-08  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade.h, widgets/gtk+.xml: Changed tag "displayable_values" to 

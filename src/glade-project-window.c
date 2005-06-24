@@ -49,6 +49,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
+#define RECENT_PROJECTS_MAX_ENTRIES 4
+#define RECENT_PROJECTS_GROUPNAME "Recent Projects"
+
 struct _GladeProjectWindowPriv {
 	/* Application widgets */
 	GtkWidget *window; /* Main window */
@@ -58,10 +61,12 @@ struct _GladeProjectWindowPriv {
 	guint statusbar_menu_context_id; /* The context id of the menu bar */
 	guint statusbar_actions_context_id; /* The context id of actions messages */
 	
-	GtkItemFactory *item_factory; /* A pointer to the Item factory.
-				       * We need it to be able to later add
-				       * items to the Project submenu
-				       */
+	GtkUIManager *ui;		/* The UIManager */
+	GtkActionGroup *actions;	/* All the static actions */
+	GtkActionGroup *p_actions;	/* Projects actions */
+	GtkActionGroup *rp_actions;	/* Recent projects actions */
+	GQueue *recent_projects;	/* A GtkAction queue */
+	
 	GtkWidget *widget_tree;        /* The widget tree window*/
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */
@@ -77,6 +82,8 @@ const gint   GLADE_PALETTE_DEFAULT_HEIGHT = 450;
 static gpointer parent_class = NULL;
 
 static void glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw);
+
+static void gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project);
 
 static void
 gpw_refresh_title (GladeProjectWindow *gpw)
@@ -95,30 +102,182 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_refresh_project_entry (GladeProjectWindow *gpw, GladeProject *project)
+gpw_select_project_menu (GladeProjectWindow *gpw)
 {
-	GtkWidget *item;
-	GtkWidget *label;
+	GladeProject *project;
+	GList        *projects;
+	GtkWidget    *palette_item;
 
-	item = gtk_item_factory_get_item (gpw->priv->item_factory, project->entry.path);
-	label = gtk_bin_get_child (GTK_BIN (item));
-
-	/* Change the menu item's label */
-	gtk_label_set_text (GTK_LABEL (label), project->name);
-
-	/* Update the path entry, for future changes. */
-	g_free (project->entry.path);
-	project->entry.path = g_strdup_printf ("/Project/%s", project->name);
+	for (projects = glade_app_get_projects (GLADE_APP (gpw));
+	     projects && projects->data; projects = projects->next)
+	{
+		project      = projects->data;
+		palette_item = glade_project_get_menuitem (project);
+		
+		gtk_check_menu_item_set_draw_as_radio
+			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
+		gtk_check_menu_item_set_active 
+			(GTK_CHECK_MENU_ITEM (palette_item), 
+			 (glade_app_get_active_project 
+			  (GLADE_APP (gpw)) == project));
+	}
 }
 
 static void
-gpw_new_cb (GladeProjectWindow *gpw)
+gpw_refresh_project_entry (GladeProjectWindow *gpw, GladeProject *project)
+{
+	/* Remove menuitem and action */
+	gtk_ui_manager_remove_ui(gpw->priv->ui,
+				 glade_project_get_menuitem_merge_id(project));
+
+	gtk_action_group_remove_action (gpw->priv->p_actions,
+					GTK_ACTION (project->action));
+	
+	g_object_unref (G_OBJECT (project->action));
+
+	/* Create project menuiten and action */
+	gpw_project_menuitem_add (gpw, project);
+	
+	gpw_select_project_menu (gpw);
+}
+
+static void
+gpw_new_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	glade_project_window_new_project (gpw);
 }
 
 static void
-gpw_open_cb (GladeProjectWindow *gpw)
+gpw_recent_project_delete (GtkAction *action, GladeProjectWindow *gpw)
+{
+	guint merge_id = GPOINTER_TO_UINT(g_object_get_data (G_OBJECT (action), "merge_id"));
+	
+	gtk_ui_manager_remove_ui(gpw->priv->ui,	merge_id);
+
+	gtk_action_group_remove_action (gpw->priv->rp_actions, action);
+	
+	g_queue_remove (gpw->priv->recent_projects, action);
+	
+	gtk_ui_manager_ensure_update (gpw->priv->ui);
+}
+
+static void
+gpw_recent_project_open_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	gchar *path = (gchar *) g_object_get_data (G_OBJECT (action), "project_path");
+
+	if (path == NULL) return;
+	
+	if (!glade_app_is_project_loaded (GLADE_APP (gpw), path))
+		gpw_recent_project_delete (action, gpw);
+	
+	glade_project_window_open_project (gpw, path);
+}
+
+static gint gpw_rp_cmp (gconstpointer a, gconstpointer b)
+{
+	/* a is a GtkAction from the queue and b is a gchar* */
+	return strcmp (g_object_get_data (G_OBJECT (a), "project_path"), b);
+}
+
+static void
+gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
+{
+	GtkAction *action;
+	gchar *label, *action_name;
+	guint merge_id;
+
+	/* Need to check if it's already loaded */
+	if (g_queue_find_custom(gpw->priv->recent_projects, project_path, gpw_rp_cmp))
+		return;
+	
+	label = glade_util_duplicate_underscores (project_path);
+	if (!label) return;
+	
+	action_name = g_strdup_printf ("open[%s]", project_path);
+	/* We don't want '/'s in the menu path */
+	glade_util_str_replace_char (action_name, '/', ' ');
+	
+	/* Add action */
+	action = gtk_action_new (action_name, label, NULL, NULL);
+	gtk_action_group_add_action_with_accel (gpw->priv->rp_actions, action, "");
+	g_signal_connect (G_OBJECT (action), "activate", (GCallback)gpw_recent_project_open_cb, gpw);
+	
+	/* Add menuitem */
+	merge_id = gtk_ui_manager_new_merge_id (gpw->priv->ui);
+	gtk_ui_manager_add_ui (gpw->priv->ui, merge_id,
+			      "/MenuBar/FileMenu/Recents", label, action_name,
+			      GTK_UI_MANAGER_MENUITEM, TRUE);
+
+	/* Set extra data to action */
+	g_object_set_data(G_OBJECT (action), "merge_id", GUINT_TO_POINTER(merge_id));
+	g_object_set_data_full (G_OBJECT (action), "project_path", g_strdup (project_path), g_free);
+
+	/* Push action into recent project queue */
+	g_queue_push_head (gpw->priv->recent_projects, action);
+	
+	/* If there is more entries than RECENT_PROJECTS_MAX_ENTRIES 
+	   delete the last one.*/
+	if (g_queue_get_length(gpw->priv->recent_projects) > RECENT_PROJECTS_MAX_ENTRIES)
+	{
+		GtkAction *last_action = (GtkAction *)g_queue_pop_tail(gpw->priv->recent_projects);
+		gpw_recent_project_delete (last_action, gpw);
+	}
+	
+	/* Set submenu sensitive */
+	gtk_widget_set_sensitive (gtk_ui_manager_get_widget 
+				  (gpw->priv->ui, "/MenuBar/FileMenu/Recents"),
+				  TRUE);
+	g_free (label);
+	g_free (action_name);
+}
+
+static void
+gpw_recent_project_config_load (GladeProjectWindow *gpw)
+{
+	gchar *filename, key[8];
+	gint i;
+	
+	for (i = 0; i < RECENT_PROJECTS_MAX_ENTRIES; i++)
+	{
+		g_snprintf(key, 8, "%d", i);
+		
+		filename = g_key_file_get_string (glade_app_get_config (GLADE_APP (gpw)),
+						  RECENT_PROJECTS_GROUPNAME, key, NULL);
+		if (filename)
+		{
+			if (g_file_test (filename, G_FILE_TEST_EXISTS))
+				gpw_recent_project_add (gpw, filename);
+		}
+		else break;
+	}
+}
+
+static void
+gpw_recent_project_config_save (GladeProjectWindow *gpw)
+{
+	GKeyFile *config = glade_app_get_config (GLADE_APP (gpw));
+	GList *list;
+	gchar key[8];
+	gint i = 0;
+	
+	g_key_file_remove_group (config, RECENT_PROJECTS_GROUPNAME, NULL);
+	
+	for (list = gpw->priv->recent_projects->tail; list; list = list->prev, i++)
+	{
+		gchar *path = g_object_get_data (G_OBJECT (list->data), "project_path");
+		
+		if( path )
+		{
+			g_snprintf (key, 8, "%d", i);
+			g_key_file_set_string (config, RECENT_PROJECTS_GROUPNAME,
+					       key, path);
+		}
+	}
+}
+
+static void
+gpw_open_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GtkWidget           *filechooser;
 	gchar               *path = NULL;
@@ -140,9 +299,34 @@ gpw_open_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_toolbar_open_cb (GtkWidget *toolitem, GladeProjectWindow *gpw)
+gpw_recent_project_clear_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	gpw_open_cb (gpw);
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW (gpw->priv->window),
+					 GTK_DIALOG_DESTROY_WITH_PARENT,
+					 GTK_MESSAGE_QUESTION,
+					 GTK_BUTTONS_NONE,
+					 "<big><b>%s</b></big>\n\n%s",
+					 _("Are you sure you want to clear the\nlist of recent projects?"),
+					 _("If you clear the list of recent projects, they will be\npermanently deleted."));
+	
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				GTK_STOCK_CLEAR, GTK_RESPONSE_OK,
+				NULL);
+
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
+	{
+		/* Remove all Recent Projects items */
+		g_queue_foreach (gpw->priv->recent_projects, (GFunc)gpw_recent_project_delete, gpw);
+		/* Set submenu insensitive */
+		gtk_widget_set_sensitive (gtk_ui_manager_get_widget 
+					  (gpw->priv->ui, "/MenuBar/FileMenu/Recents"),
+					  FALSE);
+	}
+    
+	gtk_widget_destroy (dialog);
 }
 
 static void
@@ -156,6 +340,8 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 		g_error_free (error);
 		return;
 	}
+	
+	gpw_recent_project_add (gpw, path);
 	gpw_refresh_project_entry (gpw, project);
 	gpw_refresh_title (gpw);
 	glade_util_flash_message (gpw->priv->statusbar,
@@ -200,7 +386,7 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 }
 
 static void
-gpw_save_cb (GladeProjectWindow *gpw)
+gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GladeProject       *project;
 	GError             *error = NULL;
@@ -230,13 +416,7 @@ gpw_save_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_toolbar_save_cb (GtkWidget *toolitem, GladeProjectWindow *gpw)
-{
-	gpw_save_cb (gpw);
-}
-
-static void
-gpw_save_as_cb (GladeProjectWindow *gpw)
+gpw_save_as_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gpw_save_as (gpw, _("Save as ..."));
 }
@@ -327,42 +507,17 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 }
 
 static void
-gpw_select_project_menu (GladeProjectWindow *gpw)
-{
-	GladeProject *project;
-	GList        *projects;
-	GtkWidget    *palette_item;
-
-	for (projects = glade_app_get_projects (GLADE_APP (gpw));
-	     projects && projects->data; projects = projects->next)
-	{
-		project      = projects->data;
-		palette_item = gtk_item_factory_get_item 
-			(gpw->priv->item_factory, project->entry.path);
-		gtk_check_menu_item_set_draw_as_radio
-			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
-		gtk_check_menu_item_set_active 
-			(GTK_CHECK_MENU_ITEM (palette_item), 
-			 (glade_app_get_active_project 
-			  (GLADE_APP (gpw)) == project));
-	}
-}
-
-static void
 do_close (GladeProjectWindow *gpw, GladeProject *project)
 {
-	gchar        *item_path;
-
-	item_path = g_strdup_printf ("/Project/%s", project->name);
-	gtk_item_factory_delete_item (gpw->priv->item_factory, item_path);
-	g_free (item_path);
-
+	gtk_ui_manager_remove_ui (gpw->priv->ui,
+				  glade_project_get_menuitem_merge_id (project));
+	
 	glade_app_remove_project (GLADE_APP (gpw), project);
 	gpw_select_project_menu (gpw);
 }
 
 static void
-gpw_close_cb (GladeProjectWindow *gpw)
+gpw_close_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GladeProject *project;
 	gboolean close;
@@ -382,7 +537,7 @@ gpw_close_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_quit_cb (GladeProjectWindow *gpw)
+gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GList *list;
 
@@ -403,29 +558,34 @@ gpw_quit_cb (GladeProjectWindow *gpw)
 		do_close (gpw, project);
 	}
 
+	gpw_recent_project_config_save (gpw);
+	
+	/* Save the configuration file */
+	glade_app_config_save (GLADE_APP (gpw));
+	
 	gtk_main_quit ();
 }
 
 static void
-gpw_copy_cb (GladeProjectWindow *gpw)
+gpw_copy_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	glade_app_command_copy (GLADE_APP (gpw));
 }
 
 static void
-gpw_cut_cb (GladeProjectWindow *gpw)
+gpw_cut_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	glade_app_command_cut (GLADE_APP (gpw));
 }
 
 static void
-gpw_paste_cb (GladeProjectWindow *gpw)
+gpw_paste_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	glade_app_command_paste (GLADE_APP (gpw));
 }
 
 static void
-gpw_delete_cb (GladeProjectWindow *gpw)
+gpw_delete_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	if (!glade_app_get_active_project (GLADE_APP (gpw)))
 	{
@@ -436,7 +596,7 @@ gpw_delete_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_undo_cb (GladeProjectWindow *gpw)
+gpw_undo_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	if (!glade_app_get_active_project (GLADE_APP (gpw)))
 	{
@@ -447,13 +607,7 @@ gpw_undo_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_toolbar_undo_cb (GtkWidget *toolitem, GladeProjectWindow *gpw)
-{
-	gpw_undo_cb (gpw);
-}
-
-static void
-gpw_redo_cb (GladeProjectWindow *gpw)
+gpw_redo_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	if (!glade_app_get_active_project (GLADE_APP (gpw)))
 	{
@@ -463,21 +617,14 @@ gpw_redo_cb (GladeProjectWindow *gpw)
 	glade_app_command_redo (GLADE_APP (gpw));
 }
 
-static void
-gpw_toolbar_redo_cb (GtkWidget *toolitem, GladeProjectWindow *gpw)
-{
-	gpw_redo_cb (gpw);
-}
-
 static gboolean
-gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used,
-		GtkItemFactory *item_factory)
+gpw_hide_palette_on_delete (GtkWidget *palette, gpointer not_used, GtkUIManager *ui)
 {
 	GtkWidget *palette_item;
 
 	glade_util_hide_window (GTK_WINDOW (palette));
 
-	palette_item = gtk_item_factory_get_item (item_factory, "<main>/View/Palette");
+	palette_item = gtk_ui_manager_get_widget (ui, "/MenuBar/ViewMenu/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
 
 	/* Return true so that the palette is not destroyed */
@@ -504,9 +651,8 @@ gpw_create_palette (GladeProjectWindow *gpw)
 
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->palette_window), "delete_event",
-			  G_CALLBACK (gpw_hide_palette_on_delete), gpw->priv->item_factory);
-	palette_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						  "<main>/View/Palette");
+			  G_CALLBACK (gpw_hide_palette_on_delete), gpw->priv->ui);
+	palette_item = gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar/ViewMenu/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
 }
 
@@ -522,8 +668,8 @@ gpw_show_palette (GladeProjectWindow *gpw)
 
 	gtk_widget_show (GTK_WIDGET (gpw->priv->palette_window));
 
-	palette_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						  "<main>/View/Palette");
+	palette_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						  "/MenuBar/ViewMenu/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), TRUE);
 }
 
@@ -536,20 +682,20 @@ gpw_hide_palette (GladeProjectWindow *gpw)
 
 	glade_util_hide_window (gpw->priv->palette_window);
 
-	palette_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						  "<main>/View/Palette");
+	palette_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						  "/MenuBar/ViewMenu/Palette");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (palette_item), FALSE);
 }
 
 static gboolean
 gpw_hide_editor_on_delete (GtkWidget *editor, gpointer not_used,
-		GtkItemFactory *item_factory)
+		GtkUIManager *ui)
 {
 	GtkWidget *editor_item;
 
 	glade_util_hide_window (GTK_WINDOW (editor));
 
-	editor_item = gtk_item_factory_get_item (item_factory, "<main>/View/Property Editor");
+	editor_item = gtk_ui_manager_get_widget (ui, "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 
 	/* Return true so that the editor is not destroyed */
@@ -576,10 +722,10 @@ gpw_create_editor (GladeProjectWindow *gpw)
 
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->editor_window), "delete_event",
-			  G_CALLBACK (gpw_hide_editor_on_delete), gpw->priv->item_factory);
+			  G_CALLBACK (gpw_hide_editor_on_delete), gpw->priv->ui);
 
-	editor_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						 "<main>/View/Property Editor");
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
 }
 
@@ -592,8 +738,8 @@ gpw_show_editor (GladeProjectWindow *gpw)
 
 	gtk_widget_show (GTK_WIDGET (gpw->priv->editor_window));
 
-	editor_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						 "<main>/View/Property Editor");
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
 }
 
@@ -606,21 +752,20 @@ gpw_hide_editor (GladeProjectWindow *gpw)
 
 	glade_util_hide_window (gpw->priv->editor_window);
 
-	editor_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						 "<main>/View/Property Editor");
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 }
 
 static gboolean
 gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
-		GtkItemFactory *item_factory)
+		GtkUIManager *ui)
 {
 	GtkWidget *widget_tree_item;
 
 	glade_util_hide_window (GTK_WINDOW (widget_tree));
 
-	widget_tree_item = gtk_item_factory_get_item (item_factory,
-						      "<main>/View/Widget Tree");
+	widget_tree_item = gtk_ui_manager_get_widget (ui,"/MenuBar/ViewMenu/WidgetTree");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
 
 	/* return true so that the widget tree is not destroyed */
@@ -656,7 +801,6 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
 					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-
 	/* Add control buttons to the treeview. */
 	hbox     = gtk_hbox_new (TRUE, 0);
 	vbox     = gtk_vbox_new (FALSE, 0);
@@ -670,7 +814,7 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	gtk_container_add (GTK_CONTAINER (widget_tree), vbox);
 
 	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
-			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->item_factory);
+			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->ui);
 
 	g_signal_connect (G_OBJECT (expand), "clicked",
 			  G_CALLBACK (gpw_expand_treeview), 
@@ -680,9 +824,8 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 				  G_CALLBACK (gtk_tree_view_collapse_all), 
 				  view->tree_view);
 
-
-	widget_tree_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						      "<main>/View/Widget Tree");
+	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						      "/MenuBar/ViewMenu/WidgetTree");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
 
 	return widget_tree;
@@ -700,8 +843,8 @@ gpw_show_widget_tree (GladeProjectWindow *gpw)
 
 	gtk_widget_show_all (gpw->priv->widget_tree);
 
-	widget_tree_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						     "<main>/View/Widget Tree");
+	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						      "/MenuBar/ViewMenu/WidgetTree");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
 }
 
@@ -714,22 +857,21 @@ gpw_hide_widget_tree (GladeProjectWindow *gpw)
 
 	glade_util_hide_window (GTK_WINDOW (gpw->priv->widget_tree));
 
-	widget_tree_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						      "<main>/View/Widget Tree");
+	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						      "/MenuBar/ViewMenu/WidgetTree");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
 
 }
 
 static gboolean
 gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
-		GtkItemFactory *item_factory)
+				   GtkUIManager *ui)
 {
 	GtkWidget *clipboard_item;
 
 	glade_util_hide_window (GTK_WINDOW (clipboard_view));
 
-	clipboard_item = gtk_item_factory_get_item (item_factory,
-						    "<main>/View/Clipboard");
+	clipboard_item = gtk_ui_manager_get_widget (ui, "/MenuBar/ViewMenu/Clipboard");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), FALSE);
 
 	/* return true so that the clipboard view is not destroyed */
@@ -745,9 +887,9 @@ gpw_create_clipboard_view (GladeProjectWindow *gpw)
 	view = glade_app_get_clipboard_view (GLADE_APP (gpw));
 	g_signal_connect (G_OBJECT (view), "delete_event",
 			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
-			  gpw->priv->item_factory);
-	clipboard_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						    "<main>/View/Clipboard");
+			  gpw->priv->ui);
+	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						    "/MenuBar/ViewMenu/Clipboard");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), TRUE);
 }
 
@@ -767,8 +909,8 @@ gpw_show_clipboard_view (GladeProjectWindow *gpw)
 	
 	gtk_widget_show_all (GTK_WIDGET (glade_app_get_clipboard_view (GLADE_APP(gpw))));
 
-	clipboard_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						    "<main>/View/Clipboard");
+	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						    "/MenuBar/ViewMenu/Clipboard");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), TRUE);
 }
 
@@ -781,19 +923,19 @@ gpw_hide_clipboard_view (GladeProjectWindow *gpw)
 
 	glade_util_hide_window (GTK_WINDOW (glade_app_get_clipboard_view (GLADE_APP(gpw))));
 
-	clipboard_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						    "<main>/View/Clipboard");
+	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						    "/MenuBar/ViewMenu/Clipboard");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (clipboard_item), FALSE);
 
 }
 
 static void
-gpw_toggle_palette_cb (GladeProjectWindow *gpw)
+gpw_toggle_palette_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GtkWidget *palette_item;
  
-	palette_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						  "<main>/View/Palette");
+	palette_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						  "/MenuBar/ViewMenu/Palette");
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (palette_item)))
 		gpw_show_palette (gpw);
@@ -802,12 +944,12 @@ gpw_toggle_palette_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_toggle_editor_cb (GladeProjectWindow *gpw)
+gpw_toggle_editor_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GtkWidget *editor_item;
 
-	editor_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						 "<main>/View/Property Editor");
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditor");
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (editor_item)))
 		gpw_show_editor (gpw);
@@ -816,12 +958,12 @@ gpw_toggle_editor_cb (GladeProjectWindow *gpw)
 }
 
 static void 
-gpw_toggle_widget_tree_cb (GladeProjectWindow *gpw) 
+gpw_toggle_widget_tree_cb (GtkAction *action, GladeProjectWindow *gpw) 
 {
 	GtkWidget *widget_tree_item;
 
-	widget_tree_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						      "<main>/View/Widget Tree");
+	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						      "/MenuBar/ViewMenu/WidgetTree");
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget_tree_item)))
 		gpw_show_widget_tree (gpw);
@@ -830,12 +972,12 @@ gpw_toggle_widget_tree_cb (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_toggle_clipboard_cb (GladeProjectWindow *gpw)
+gpw_toggle_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GtkWidget *clipboard_item;
 
-	clipboard_item = gtk_item_factory_get_item (gpw->priv->item_factory,
-						    "<main>/View/Clipboard");
+	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						    "/MenuBar/ViewMenu/Clipboard");
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (clipboard_item)))
 		gpw_show_clipboard_view (gpw);
@@ -843,7 +985,7 @@ gpw_toggle_clipboard_cb (GladeProjectWindow *gpw)
 		gpw_hide_clipboard_view (gpw);
 }
 
-static void gpw_about_cb (GladeProjectWindow *gpw)
+static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GtkWidget *about_dialog;
 	GtkWidget *vbox;
@@ -881,163 +1023,220 @@ static void gpw_about_cb (GladeProjectWindow *gpw)
 	gtk_widget_destroy (about_dialog);
 }
 
-
-static GtkItemFactoryEntry menu_items[] =
+static void
+glade_project_window_set_project (GtkAction *action, GladeProject *project)
 {
-  /* ============ FILE ============ */
-  { "/_File", NULL, NULL, 0, "<Branch>" },
-  { "/File/_New",        "<control>N",        gpw_new_cb,     1, "<StockItem>", GTK_STOCK_NEW },
-  { "/File/_Open",       "<control>O",        gpw_open_cb,    2, "<StockItem>", GTK_STOCK_OPEN },
-  { "/File/sep1",        NULL,                NULL,           0, "<Separator>" },
-  { "/File/_Save",       "<control>S",        gpw_save_cb,    3, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/Save _As...", "<control><shift>S", gpw_save_as_cb, 4, "<StockItem>", GTK_STOCK_SAVE_AS },
-  { "/File/sep2",        NULL,                NULL,           0, "<Separator>" },
-  { "/File/_Close",      "<control>W",        gpw_close_cb,   5, "<StockItem>", GTK_STOCK_CLOSE },
-  { "/File/_Quit",       "<control>Q",        gpw_quit_cb,    6, "<StockItem>", GTK_STOCK_QUIT },
+	GladeProjectWindow *gpw = g_object_get_data (G_OBJECT (project), "gpw");
+	GtkWidget *item = glade_project_get_menuitem (project);
+	
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
+	{
+		glade_app_set_project (GLADE_APP (gpw), project);
 
-  /* ============ EDIT ============ */
-  { "/Edit", NULL, NULL, 0, "<Branch>" },
-  { "/Edit/_Undo",   "<control>Z", gpw_undo_cb,    7, "<StockItem>", GTK_STOCK_UNDO },
-  { "/Edit/_Redo",   "<control>R", gpw_redo_cb,    8, "<StockItem>", GTK_STOCK_REDO },
-  { "/Edit/sep1",    NULL,         NULL,           0, "<Separator>" },
-  { "/Edit/C_ut",    NULL,         gpw_cut_cb,     9, "<StockItem>", GTK_STOCK_CUT },
-  { "/Edit/_Copy",   NULL,         gpw_copy_cb,   10, "<StockItem>", GTK_STOCK_COPY },
-  { "/Edit/_Paste",  NULL,         gpw_paste_cb,  11, "<StockItem>", GTK_STOCK_PASTE },
-  { "/Edit/_Delete", "Delete",     gpw_delete_cb, 12, "<StockItem>", GTK_STOCK_DELETE },
+		/* Ensure correct selection
+		 */
+		gpw_select_project_menu (gpw);
+	}
+}
 
-  /* ============ VIEW ============ */
-  { "/View", NULL, NULL, 0, "<Branch>" },
-  { "/View/_Palette",         NULL, gpw_toggle_palette_cb,     13, "<ToggleItem>" },
-  { "/View/Property _Editor", NULL, gpw_toggle_editor_cb,      14, "<ToggleItem>" },
-  { "/View/_Widget Tree",     NULL, gpw_toggle_widget_tree_cb, 15, "<ToggleItem>" },
-  { "/View/_Clipboard",       NULL, gpw_toggle_clipboard_cb,   16, "<ToggleItem>" },
+static const gchar *ui_info =
+"<ui>\n"
+"  <menubar name='MenuBar'>\n"
+"    <menu action='FileMenu'>\n"
+"      <menuitem action='New'/>\n"
+"      <menuitem action='Open'/>\n"
+"      <menu action='Recents'>\n"
+"        <separator/>\n"
+"        <menuitem action='ClearRecents'/>\n"
+"      </menu>\n"
+"      <separator/>\n"
+"      <menuitem action='Save'/>\n"
+"      <menuitem action='SaveAs'/>\n"
+"      <separator/>\n"
+"      <menuitem action='Close'/>\n"
+"      <menuitem action='Quit'/>\n"
+"    </menu>\n"
+"    <menu action='EditMenu'>\n"
+"      <menuitem action='Undo'/>\n"
+"      <menuitem action='Redo'/>\n"
+"      <separator/>\n"
+"      <menuitem action='Cut'/>\n"
+"      <menuitem action='Copy'/>\n"
+"      <menuitem action='Paste'/>\n"
+"      <menuitem action='Delete'/>\n"
+"    </menu>\n"
+"    <menu action='ViewMenu'>\n"
+"      <menuitem action='Palette'/>\n"
+"      <menuitem action='PropertyEditor'/>\n"
+"      <menuitem action='WidgetTree'/>\n"
+"      <menuitem action='Clipboard'/>\n"
+"    </menu>\n"
+"    <menu action='ProjectMenu'>\n"
+"    </menu>\n"
+"    <menu action='HelpMenu'>\n"
+"      <menuitem action='About'/>\n"
+"    </menu>\n"
+"  </menubar>\n"
+"  <toolbar  name='ToolBar'>"
+"    <toolitem action='Open'/>"
+"    <toolitem action='Save'/>"
+"    <separator/>\n"
+"    <toolitem action='Undo'/>"
+"    <toolitem action='Redo'/>"
+"  </toolbar>"
+"</ui>\n";
 
-  /* =========== PROJECT ========== */
-  { "/Project", NULL, NULL, 0, "<Branch>" },
+static GtkActionEntry entries[] = {
+	{ "FileMenu", NULL, "_File" },
+	{ "EditMenu", NULL, "Edit" },
+	{ "ViewMenu", NULL, "View" },
+	{ "ProjectMenu", NULL, "Project" },
+	{ "HelpMenu", NULL, "_Help" },
+	
+	/* FileMenu */
+	{ "New", GTK_STOCK_NEW, "_New", "<control>N",
+	"Create a new project file", G_CALLBACK (gpw_new_cb) },
+	
+	{ "Open", GTK_STOCK_OPEN, "_Open","<control>O",
+	"Open a project file", G_CALLBACK (gpw_open_cb) },
+	
+	{ "Recents", NULL, "Recents Projects", NULL, NULL },
+	
+	{ "ClearRecents", GTK_STOCK_CLEAR, "Clear Recents Projects", NULL,
+	NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
+	
+	{ "Save", GTK_STOCK_SAVE, "_Save","<control>S",
+	"Save the current project file", G_CALLBACK (gpw_save_cb) },
+	
+	{ "SaveAs", GTK_STOCK_SAVE_AS, "Save _As...", NULL,
+	"Save the current project file with a different name", G_CALLBACK (gpw_save_as_cb) },
+	
+	{ "Close", GTK_STOCK_CLOSE, "_Close", "<control>W",
+	"Close the current project file", G_CALLBACK (gpw_close_cb) },
+	
+	{ "Quit", GTK_STOCK_QUIT, "_Quit", "<control>Q",
+	"Quit the program", G_CALLBACK (gpw_quit_cb) },
 
-  /* ============ HELP ============ */
-  { "/_Help",       NULL, NULL, 0, "<Branch>" },
-  { "/Help/_About", NULL, gpw_about_cb, 17 },
+	/* EditMenu */	
+	{ "Undo", GTK_STOCK_UNDO, "_Undo", "<control>Z",
+	"Undo the last action",	G_CALLBACK (gpw_undo_cb) },
+	
+	{ "Redo", GTK_STOCK_REDO, "_Redo", "<control>R",
+	"Redo the last action",	G_CALLBACK (gpw_redo_cb) },
+	
+	{ "Cut", GTK_STOCK_CUT, "C_ut", NULL,
+	"Cut the selection", G_CALLBACK (gpw_cut_cb) },
+	
+	{ "Copy", GTK_STOCK_COPY, "_Copy", NULL,
+	"Copy the selection", G_CALLBACK (gpw_copy_cb) },
+	
+	{ "Paste", GTK_STOCK_PASTE, "_Paste", NULL,
+	"Paste the clipboard", G_CALLBACK (gpw_paste_cb) },
+	
+	{ "Delete", GTK_STOCK_DELETE, "_Delete", "Delete",
+	"Delete the selection", G_CALLBACK (gpw_delete_cb) },
+	
+	/* HelpMenu */
+	{ "About", NULL, "_About", NULL,
+	"Shows the About Dialog", G_CALLBACK (gpw_about_cb) }
 };
+static guint n_entries = G_N_ELEMENTS (entries);
 
-/*
- * Note! The action number in menu_items MUST match the position in this array
- */
-static const gchar *menu_tips[] =
-{
-	NULL,					/* action 0 (branches and separators) */
-	N_("Create a new project file"),	/* action 1 (New)  */
-	N_("Open a project file"),		/* action 2 (Open) */
-	N_("Save the current project file"),	/* action 3 (Save) */
-	N_("Save the current project file with a different name"),	/* action 4 (Save as) */
-	N_("Close the current project file"),	/* action 5 (Close) */
-	N_("Quit the program"),			/* action 6 (Quit) */
+static GtkToggleActionEntry view_entries[] = {
+	/* ViewMenu */
+	{ "Palette", NULL, "_Palette", NULL,
+	"Change the visibility of the palette of widgets",
+	G_CALLBACK (gpw_toggle_palette_cb), TRUE },
 
-	N_("Undo the last action"),		/* action 7  (Undo) */ 
-	N_("Redo the last action"),		/* action 8  (Redo) */
-	N_("Cut the selection"),		/* action 9  (Cut)  */
-	N_("Copy the selection"),		/* action 10 (Copy) */
-	N_("Paste the clipboard"),		/* action 11 (Paste) */
-	N_("Delete the selection"),		/* action 12 (Delete) */
+	{ "PropertyEditor", NULL, "Property _Editor", NULL,
+	"Change the visibility of the property editor",
+	G_CALLBACK (gpw_toggle_editor_cb), TRUE },
 
-	N_("Change the visibility of the palette of widgets"),	/* action 13 (Palette) */
-	N_("Change the visibility of the property editor"),	/* action 14 (Editor) */
-	N_("Change the visibility of the project widget tree"),	/* action 15 (Tree) */
-	N_("Change the visibility of the clipboard"),		/* action 16 (Clipboard) */
+	{ "WidgetTree", NULL, "_Widget Tree", NULL,
+	"Change the visibility of the project widget tree",
+	G_CALLBACK (gpw_toggle_widget_tree_cb), FALSE },
 
-	N_("About this application"),		/* action 17 (About) */
+	{ "Clipboard", NULL, "_Clipboard", NULL,
+	"Change the visibility of the clipboard",
+	G_CALLBACK (gpw_toggle_clipboard_cb), FALSE }
 };
+static guint n_view_entries = G_N_ELEMENTS (view_entries);
 
 static void
-gpw_push_statusbar_hint (GtkWidget* menuitem, GladeProjectWindow *gpw)
+gpw_item_selected_cb (GtkItem *item, GladeProjectWindow *gpw)
 {
-	const char *tip = g_object_get_data (G_OBJECT (menuitem), "menutip");
-	gtk_statusbar_push (GTK_STATUSBAR (gpw->priv->statusbar), gpw->priv->statusbar_menu_context_id, tip);
+	gchar *tip = g_object_get_data(G_OBJECT(item), "tooltip");
+	
+	if (tip != NULL)
+		gtk_statusbar_push (GTK_STATUSBAR (gpw->priv->statusbar),
+				    gpw->priv->statusbar_menu_context_id, tip);
 }
 
 static void
-gpw_pop_statusbar_hint (GtkWidget* menuitem, GladeProjectWindow *gpw)
+gpw_item_deselected_cb (GtkItem *item, GladeProjectWindow *gpw)
 {
-	gtk_statusbar_pop (GTK_STATUSBAR (gpw->priv->statusbar), gpw->priv->statusbar_menu_context_id);
+	gchar *tip = g_object_get_data(G_OBJECT(item), "tooltip");
+	
+	if (tip != NULL)
+		gtk_statusbar_pop (GTK_STATUSBAR (gpw->priv->statusbar),
+				   gpw->priv->statusbar_menu_context_id);
+}
+
+static void
+gpw_ui_connect_proxy_cb (GtkUIManager *ui,
+		     GtkAction *action,
+		     GtkWidget *widget,
+		     GladeProjectWindow *gpw)
+{
+	gchar *tip;
+	
+	if (!GTK_IS_MENU_ITEM(widget)) return;
+
+	g_object_get(G_OBJECT(action), "tooltip", &tip, NULL);
+	if (tip == NULL) return;
+	
+	g_object_set_data(G_OBJECT(widget), "tooltip", tip);
+	
+	g_signal_connect(G_OBJECT(widget), "select", (GCallback)gpw_item_selected_cb, gpw);
+	g_signal_connect(G_OBJECT(widget), "deselect", (GCallback)gpw_item_deselected_cb, gpw);
 }
 
 static GtkWidget *
 gpw_construct_menu (GladeProjectWindow *gpw)
 {
-	GtkItemFactory *item_factory;
-	GtkAccelGroup *accel_group;
-	unsigned int i;
-
-	/* Accelerators */
-	accel_group = gtk_accel_group_new ();
-	gtk_window_add_accel_group (GTK_WINDOW (gpw->priv->window), accel_group);
-      
-	/* Item factory */
-	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel_group);
-	gpw->priv->item_factory = item_factory;
-	g_object_ref (G_OBJECT (item_factory));
-	gtk_object_sink (GTK_OBJECT (item_factory));
-	g_object_set_data_full (G_OBJECT (gpw->priv->window),
-				"<main>",
-				item_factory,
-				(GDestroyNotify) g_object_unref);
+	GError *error = NULL;
 	
-	/* create menu items */
-	gtk_item_factory_create_items (item_factory, G_N_ELEMENTS (menu_items),
-				       menu_items, gpw);
+	gpw->priv->actions = gtk_action_group_new ("actions");
+	gtk_action_group_add_actions (gpw->priv->actions, entries, n_entries, gpw);
+	gtk_action_group_add_toggle_actions (gpw->priv->actions, view_entries,
+						n_view_entries, gpw);
 
-	/* set the tooltips */
-	for (i = 1; i < G_N_ELEMENTS (menu_tips); i++)
+	gpw->priv->p_actions = gtk_action_group_new ("p_actions");
+
+	gpw->priv->rp_actions = gtk_action_group_new ("rp_actions");
+	
+	gpw->priv->ui = gtk_ui_manager_new ();
+	g_signal_connect(G_OBJECT(gpw->priv->ui), "connect-proxy",
+			 (GCallback)gpw_ui_connect_proxy_cb, gpw);
+
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->actions, 0);
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->p_actions, 1);
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->rp_actions, 2);
+	
+	gtk_window_add_accel_group (GTK_WINDOW (gpw->priv->window), 
+				  gtk_ui_manager_get_accel_group (gpw->priv->ui));
+
+	if (!gtk_ui_manager_add_ui_from_string (gpw->priv->ui, ui_info, -1, &error))
 	{
-		GtkWidget *item;
-
-		item = gtk_item_factory_get_widget_by_action (item_factory, i);
-		g_object_set_data (G_OBJECT (item), "menutip", (gpointer) menu_tips[i]);
-		g_signal_connect (G_OBJECT (item), "select",
-				  G_CALLBACK (gpw_push_statusbar_hint),
-				  gpw);
-		g_signal_connect (G_OBJECT (item), "deselect",
-				  G_CALLBACK (gpw_pop_statusbar_hint),
-				  gpw);
+		g_message ("Building menus failed: %s", error->message);
+		g_error_free (error);
 	}
-
-	return gtk_item_factory_get_widget (item_factory, "<main>");
-}
-
-static GtkWidget *
-gpw_construct_toolbar (GladeProjectWindow *gpw)
-{
-	GtkWidget *toolbar;
-
-	toolbar = gtk_toolbar_new ();
 	
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-				  GTK_STOCK_OPEN,
-				  "Open project",
-				  NULL,
-				  G_CALLBACK (gpw_toolbar_open_cb),
-				  gpw, -1);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-				  GTK_STOCK_SAVE,
-				  "Save the current project",
-				  NULL,
-				  G_CALLBACK (gpw_toolbar_save_cb),
-				  gpw, -1);
-	gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
-	gpw->priv->toolbar_undo = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-						      GTK_STOCK_UNDO,
-						      "Undo the last action",
-						      NULL,
-						      G_CALLBACK (gpw_toolbar_undo_cb),
-						      gpw, -1);
-	gpw->priv->toolbar_redo = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-						      GTK_STOCK_REDO,
-						      "Redo the last action",
-						      NULL,
-						      G_CALLBACK (gpw_toolbar_redo_cb),
-						      gpw, -1);
-
-	return toolbar;	
+	gtk_widget_set_sensitive (gtk_ui_manager_get_widget 
+				  (gpw->priv->ui, "/MenuBar/FileMenu/Recents"),
+				  FALSE);
+	
+	return gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar");
 }
 
 static GtkWidget *
@@ -1116,7 +1315,7 @@ gpw_drag_data_received (GtkWidget *widget,
 static gboolean
 gpw_delete_event (GtkWindow *w, GdkEvent *event, GladeProjectWindow *gpw)
 {
-	gpw_quit_cb (gpw);
+	gpw_quit_cb (NULL, gpw);
 	
 	/* return TRUE to stop other handlers */
 	return TRUE;	
@@ -1146,9 +1345,12 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gpw->priv->main_vbox = vbox;
 
 	menubar = gpw_construct_menu (gpw);
-	toolbar = gpw_construct_toolbar (gpw);
+	toolbar = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar");
 	project_view = gpw_construct_project_view (gpw);
 	statusbar = gpw_construct_statusbar (gpw);
+
+	gpw->priv->toolbar_undo = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar/Undo");
+	gpw->priv->toolbar_redo = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar/Redo");
 
 	gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
@@ -1157,6 +1359,8 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	glade_project_window_refresh_undo_redo (gpw);
 
+	gpw_recent_project_config_load (gpw);
+	
 	/* support for opening a file by dragging onto the project window */
 	gtk_drag_dest_set (app,
 			   GTK_DEST_DEFAULT_ALL,
@@ -1171,31 +1375,10 @@ glade_project_window_create (GladeProjectWindow *gpw)
 }
 
 static void
-glade_project_window_set_project (GladeProject *project,
-				  guint         action,
-				  GtkWidget    *item)
+gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 {
-	GladeProjectWindow *gpw = g_object_get_data (G_OBJECT (project), "gpw");
-
-	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
-	{
-		glade_app_set_project (GLADE_APP (gpw), project);
-
-		/* Ensure correct selection
-		 */
-		gpw_select_project_menu (gpw);
-	}
-}
-
-
-static void
-glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project)
-{
-	gchar *underscored_name;
-
- 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	
-	glade_app_add_project (GLADE_APP (gpw), project);
+	gchar *underscored_name, *action_name;
+	guint merge_id;
 	
 	/* double the underscores in the project name
 	 * (or they will just underscore the next character) */
@@ -1203,17 +1386,48 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 	if (!underscored_name)
 		return;
 
- 	/* Add the project in the /Project menu. */
-	project->entry.path = g_strdup_printf ("/Project/%s", underscored_name);
-	project->entry.accelerator = NULL;
-	project->entry.callback = (GtkItemFactoryCallback)glade_project_window_set_project;
-	project->entry.callback_action = 0;
-	project->entry.item_type = g_strdup ("<CheckItem>");
+	action_name = g_strdup_printf ("select[%s]", project->name);
+	
+	/* What happen if there is two project with the same name in differents
+	 * directories?
+	 */
+	project->action = gtk_toggle_action_new (action_name, underscored_name,
+					"Selects this Project",	NULL);
+	gtk_toggle_action_set_active (project->action, TRUE);
+	g_signal_connect (G_OBJECT (project->action), "activate",
+			  (GCallback) glade_project_window_set_project, project);
+	
+	gtk_action_group_add_action_with_accel (gpw->priv->p_actions,
+						GTK_ACTION (project->action), "");
+	
+	/* Add menuitem to menu */
+	merge_id = gtk_ui_manager_new_merge_id(gpw->priv->ui);
+	
+	gtk_ui_manager_add_ui(gpw->priv->ui, merge_id,
+			      "/MenuBar/ProjectMenu", action_name, action_name,
+			      GTK_UI_MANAGER_MENUITEM, FALSE);
 
+	/* Set extra data to action */
+	g_object_set_data (G_OBJECT (project->action), "ui", gpw->priv->ui);
+	g_object_set_data_full (G_OBJECT (project->action), "menuitem_path",
+				g_strdup_printf ("/MenuBar/ProjectMenu/%s", action_name),
+				g_free);
+	g_object_set_data (G_OBJECT (project->action), "merge_id", GINT_TO_POINTER (merge_id));
+
+	g_free (action_name);
 	g_free (underscored_name);
+}
 
+static void
+glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project)
+{
+ 	g_return_if_fail (GLADE_IS_PROJECT (project));
+	
 	g_object_set_data (G_OBJECT (project), "gpw", gpw);
-	gtk_item_factory_create_item (gpw->priv->item_factory, &(project->entry), project, 1);
+	
+	glade_app_add_project (GLADE_APP (gpw), project);
+
+	gpw_project_menuitem_add (gpw, project);
 
 	/* Ensure correct selection
 	 */
@@ -1252,12 +1466,18 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 
 	g_return_if_fail (path != NULL);
 
+	if (glade_app_is_project_loaded (GLADE_APP (gpw), (gchar*)path))
+		return;
+
 	project = glade_project_open (path);
 	if (!project)
 	{
 		glade_util_ui_warn (gpw->priv->window, _("Could not open project."));
 		return;
 	}
+
+	gpw_recent_project_add (gpw, path);
+
 	glade_project_window_add_project (gpw, project);
 }
 
@@ -1281,7 +1501,7 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 	GtkLabel *label;
 	gchar *text;
 	
-	bin = GTK_BIN (gtk_item_factory_get_item (gpw->priv->item_factory, path));
+	bin = GTK_BIN (gtk_ui_manager_get_widget (gpw->priv->ui, path));
 	label = GTK_LABEL (gtk_bin_get_child (bin));
 	
 	if (prefix == NULL)
@@ -1336,8 +1556,8 @@ glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 			redo_description = GLADE_COMMAND (redo_item->data)->description;
 	}
 
-	glade_project_window_change_menu_label (gpw, "/Edit/Undo", _("_Undo: "), undo_description);
-	glade_project_window_change_menu_label (gpw, "/Edit/Redo", _("_Redo: "), redo_description);
+	glade_project_window_change_menu_label (gpw, "/MenuBar/EditMenu/Undo", _("_Undo: "), undo_description);
+	glade_project_window_change_menu_label (gpw, "/MenuBar/EditMenu/Redo", _("_Redo: "), redo_description);
 
 	gtk_widget_set_sensitive (gpw->priv->toolbar_undo, undo_description != NULL);
 	gtk_widget_set_sensitive (gpw->priv->toolbar_redo, redo_description != NULL);
@@ -1357,6 +1577,17 @@ glade_project_window_show_all (GladeProjectWindow *gpw)
 }
 
 static void
+glade_project_window_finalize (GObject *object)
+{
+	GladeProjectWindow *gpw = GLADE_PROJECT_WINDOW (object);
+
+	g_queue_foreach (gpw->priv->recent_projects, (GFunc)g_object_unref, NULL);
+	g_queue_free (gpw->priv->recent_projects);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
 glade_project_window_class_init (GladeProjectWindowClass * klass)
 {
 	GObjectClass *object_class;
@@ -1364,10 +1595,7 @@ glade_project_window_class_init (GladeProjectWindowClass * klass)
 	
 	parent_class = g_type_class_peek_parent (klass);
 	object_class = (GObjectClass *) klass;
-	/*
-	object_class->dispose = glade_project_window_dispose;
 	object_class->finalize = glade_project_window_finalize;
-	*/
 }
 
 static void
@@ -1378,11 +1606,13 @@ update_ui_cb (GladeProjectWindow *gpw)
 }
 
 static void
-glade_project_window_init (GladeProjectWindow *obj)
+glade_project_window_init (GladeProjectWindow *gpw)
 {
-	obj->priv = g_new0 (GladeProjectWindowPriv, 1);
-	g_signal_connect (G_OBJECT (obj), "update-ui", G_CALLBACK (update_ui_cb), obj);
+	gpw->priv = g_new0 (GladeProjectWindowPriv, 1);
+	g_signal_connect (G_OBJECT (gpw), "update-ui", G_CALLBACK (update_ui_cb), gpw);
 	/* initialize widgets */
+
+	gpw->priv->recent_projects = g_queue_new ();
 }
 
 GType

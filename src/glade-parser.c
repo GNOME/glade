@@ -25,51 +25,12 @@
 #endif
 
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-
-#ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-#endif
-
-#ifdef G_OS_WIN32
-#  include <io.h>
-#endif
-
+#include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <libxml/parser.h>
 
 #include "glade-parser.h"
-
-
-#ifdef _MSC_VER
-#  define open     _open
-#  define fdopen   _fdopen
-#  define O_CREAT  _O_CREAT
-#  define O_TRUNC  _O_TRUNC
-#  define O_WRONLY _O_WRONLY
-#  define O_BINARY _O_BINARY
-#  define S_IRUSR  _S_IREAD
-#  define S_IWUSR  _S_IWRITE
-#endif
-
-#ifndef G_OS_WIN32
-#  define GLADE_CREATE_PERMS    (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
-#else
-#  define GLADE_CREATE_PERMS    (S_IRUSR|S_IWUSR)
-#endif
-
-
-/* O_BINARY useful on Cygwin */
-#ifndef O_BINARY
-#  define O_BINARY 0
-#endif
-extern FILE *fdopen (int, const char *);
-
 
 #define GLADE_NOTE(a,b)
 
@@ -1475,82 +1436,6 @@ glade_interface_buffer (GladeInterface  *interface,
     xmlFreeDoc(doc);
 }
 
-static gboolean
-write_buffer_contents_stdio (const gchar *display_filename, FILE *f, 
-			     gchar *buffer, gint size, GError **error)
-{
-    gint bytes_written = 0, rv;
-
-    /* write buffer */
-    do {
-	if ((rv = fwrite
-	     (buffer + bytes_written, sizeof (gchar),
-	      (size - bytes_written), f)) != (size - bytes_written) && 
-	    errno != EINTR)
-	    break;
-	if (rv >= 0)
-	    bytes_written += rv;
-    } while (bytes_written < size);
-
-    /* handle error */
-    if (rv == 0 && error) {
-	g_set_error (error,
-		     G_FILE_ERROR,
-		     g_file_error_from_errno (errno),
-		     _("Failed to write to file '%s': %s"),
-		     display_filename, 
-		     g_strerror (errno));
-    }
-    return (rv > 0) ? TRUE : FALSE;
-}
-
-static gboolean
-write_buffer_contents (const gchar  *filename,
-		       gchar        *buffer,
-		       gsize         size,
-		       GError      **error)
-{
-    FILE     *f;
-    gint      fd;
-    gchar    *display_filename;
-    gchar    *disk_filename;
-    gboolean  retval = FALSE;
-
-    display_filename = g_strdup (filename); // g_filename_display_name (filename);
-    disk_filename    = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
-
-    /* O_BINARY useful on Cygwin */
-    if ((fd = open (disk_filename, O_CREAT|O_TRUNC|O_WRONLY|O_BINARY,
-		    GLADE_CREATE_PERMS)) >= 0) {
-
-	if ((f = fdopen (fd, "w")) != NULL) {
-	    retval = 
-		write_buffer_contents_stdio (display_filename, f, 
-					     buffer, size, error);
-	    fclose (f);
-	} else if (error) {
-	    g_set_error (error,
-			 G_FILE_ERROR,
-			 g_file_error_from_errno (errno),
-			 _("Failed to open file '%s': fdopen() failed: %s"),
-			 display_filename, 
-			 g_strerror (errno));
-	}
-	close (fd);
-    } else if (error) {
-	g_set_error (error,
-		     G_FILE_ERROR,
-		     g_file_error_from_errno (errno),
-		     _("Failed to create file '%s': %s"),
-		     display_filename, 
-		     g_strerror (errno));
-    }
-    g_free (display_filename);
-    g_free (disk_filename);
-
-    return retval;
-}
-
 /**
  * glade_interface_dump_full
  * @interface: the GladeInterface
@@ -1565,21 +1450,29 @@ write_buffer_contents (const gchar  *filename,
 gboolean
 glade_interface_dump_full(GladeInterface *interface, const gchar *filename, GError **error)
 {
-    gpointer buffer;
-    gint     size;
+	GIOChannel *fd;
+	gpointer buffer;
+	gint     size, retval = G_IO_STATUS_ERROR;
 
-    glade_interface_buffer (interface, &buffer, &size);
-
-    if (buffer) {
-	return write_buffer_contents (filename, buffer, size, error);
+	glade_interface_buffer (interface, &buffer, &size);
+	
+	if (buffer == NULL)
+	{
+		g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_NOMEM,
+			     _("Could not allocate memory for interface"));
+		return FALSE;
+	}
+	
+	if ((fd = g_io_channel_new_file (filename, "w", error)))
+	{
+		retval = g_io_channel_write_chars (fd, buffer, size, NULL, error);
+		g_io_channel_shutdown(fd, TRUE, NULL);
+		g_io_channel_unref (fd);
+	}
+	
 	xmlFree (buffer);
-    } else if (error) {
-	g_set_error (error,
-		     G_FILE_ERROR,
-		     G_FILE_ERROR_NOMEM,
-		     _("Could not allocate memory for interface"));
-    }
-    return FALSE;
+	
+	return (retval == G_IO_STATUS_NORMAL) ? TRUE : FALSE;
 }
 
 /**

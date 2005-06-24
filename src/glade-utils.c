@@ -1268,3 +1268,21 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 	}
 	return NULL;
 }
+
+/**
+ * glade_util_str_replace_char
+ * @str the string to replace
+ * @dest the character to replace
+ * @src the character to replace with
+*/
+void
+glade_util_str_replace_char (gchar *str, gchar dest, gchar src)
+{
+	gchar *tmp = str;
+	
+	while (*tmp != '\0')
+	{
+		if (*tmp == src) *tmp = dest;
+		tmp++;
+	}
+}

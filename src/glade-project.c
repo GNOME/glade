@@ -841,3 +841,23 @@ glade_project_get_tooltips (GladeProject *project)
 	return project->tooltips;
 }
 
+/**
+ * glade_project_get_menuitem
+ */
+GtkWidget *
+glade_project_get_menuitem (GladeProject *project)
+{
+	GtkUIManager *ui = g_object_get_data (G_OBJECT (project->action), "ui");
+	gchar *path = g_object_get_data (G_OBJECT (project->action), "menuitem_path");
+	
+	return gtk_ui_manager_get_widget (ui, path);
+}
+
+/**
+ * glade_project_get_menuitem_merge_id
+ */
+guint
+glade_project_get_menuitem_merge_id (GladeProject *project)
+{
+	return GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (project->action), "merge_id"));
+}

@@ -1,5 +1,4 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
  *
@@ -24,6 +23,8 @@
 #define __GLADE_APP_H__
 
 G_BEGIN_DECLS
+
+#define GLADE_CONFIG_FILENAME "glade-3.conf"
 
 #define GLADE_TYPE_APP            (glade_app_get_type())
 #define GLADE_APP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_APP, GladeApp))
@@ -71,6 +72,9 @@ LIBGLADEUI_API void               glade_app_set_project (GladeApp *app, GladePro
 LIBGLADEUI_API void               glade_app_add_project (GladeApp *app, GladeProject *project);
 LIBGLADEUI_API void               glade_app_remove_project (GladeApp *app, GladeProject *project);
 LIBGLADEUI_API GList*             glade_app_get_projects (GladeApp *app);
+LIBGLADEUI_API GKeyFile*          glade_app_get_config (GladeApp *app);
+LIBGLADEUI_API gboolean           glade_app_is_project_loaded (GladeApp *app, const gchar *project_path);
+
 
 LIBGLADEUI_API void               glade_app_add_project_view (GladeApp *app, GladeProjectView *view);
 
@@ -107,6 +111,7 @@ LIBGLADEUI_API void               glade_default_app_selection_remove (GObject   
 LIBGLADEUI_API void               glade_default_app_selection_clear  (gboolean      emit_signal);
 LIBGLADEUI_API void               glade_default_app_selection_changed(void);
 
+LIBGLADEUI_API gint               glade_app_config_save (GladeApp *app);
 
 G_END_DECLS
 

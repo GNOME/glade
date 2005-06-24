@@ -25,6 +25,8 @@
 #endif
 
 #include <string.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <glib/gi18n-lib.h>
 
 #include "glade.h"
@@ -73,6 +75,8 @@ struct _GladeAppPriv {
 	
 	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
+	
+	GKeyFile *config;/* The configuration file */
 };
 
 enum
@@ -97,19 +101,28 @@ glade_app_dispose (GObject *app)
 {
 	GladeAppPriv *priv = GLADE_APP (app)->priv;
 	
-	if (priv->editor) {
+	if (priv->editor)
+	{
 		g_object_unref (priv->editor);
 		priv->editor = NULL;
 	}
-	if (priv->palette) {
+	if (priv->palette)
+	{
 		g_object_unref (priv->palette);
 		priv->palette = NULL;
 	}
-	if (priv->clipboard) {
+	if (priv->clipboard)
+	{
 		gtk_widget_destroy (GTK_WIDGET (priv->clipboard->view));
 		priv->clipboard = NULL;
 	}
 	/* FIXME: Remove views and projects */
+	
+	if (priv->config)
+	{
+		g_key_file_free (priv->config);
+		priv->config = NULL;
+	}
 	
 	if (parent_class->dispose)
 		parent_class->dispose (app);
@@ -189,6 +202,76 @@ clipboard_view_on_delete_cb (GtkWidget *clipboard_view, GdkEvent *e, GladeApp *a
 	return TRUE;
 }
 
+/**
+ * glade_app_config_load
+ * @app:
+ * Returns: a new GKeyFile
+ */
+static GKeyFile *
+glade_app_config_load (GladeApp *app)
+{
+	GKeyFile *config = g_key_file_new ();
+	gchar *filename;
+
+	filename = g_build_filename (g_get_user_config_dir (), GLADE_CONFIG_FILENAME, NULL);
+
+	g_key_file_load_from_file (config, filename, G_KEY_FILE_NONE, NULL);
+	
+	g_free (filename);
+	
+	return config;
+}
+
+/**
+ * glade_app_config_save
+ * @app:
+ *
+ * Saves the GKeyFile to "g_get_user_config_dir()/GLADE3_CONFIG_FILENAME"
+ *
+ * Return 0 on success.
+ */
+gint
+glade_app_config_save (GladeApp *app)
+{
+	GIOChannel *fd;
+	gchar *data, *filename;
+	const gchar *config_dir = g_get_user_config_dir ();
+	GError *error = NULL;
+	gsize size;
+	
+	/* Just in case... try to create the config directory */
+	g_mkdir (config_dir, S_IRWXU);
+	
+	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
+
+	fd = g_io_channel_new_file (filename, "w", &error);
+
+	if (error == NULL)
+		data = g_key_file_to_data (app->priv->config, &size, &error);
+	
+	if (error == NULL)
+		g_io_channel_write_chars (fd, data, size, NULL, &error);
+
+	/* Free resources */	
+	if (error)
+	{
+		g_warning (error->message);
+		g_error_free (error);
+	}
+	
+	if (fd)
+	{
+		g_io_channel_shutdown(fd, TRUE, NULL);
+		g_io_channel_unref (fd);
+	}
+	
+	if (data) g_free (data);
+
+	g_free (filename);
+	
+	return (error) ? 1 : 0;
+}
+
 static void
 glade_app_init (GladeApp *app)
 {
@@ -249,6 +332,9 @@ glade_app_init (GladeApp *app)
 	g_signal_connect_after (G_OBJECT (app->priv->clipboard->view), "delete_event",
 			  G_CALLBACK (clipboard_view_on_delete_cb),
 			  app);
+
+	/* Load the configuration file */
+	app->priv->config = glade_app_config_load (app);
 }
 
 GType
@@ -352,6 +438,12 @@ glade_app_get_projects (GladeApp *app)
 	return app->priv->projects;
 }
 
+GKeyFile*
+glade_app_get_config (GladeApp *app)
+{
+	return app->priv->config;
+}
+
 void
 glade_app_add_project_view (GladeApp *app, GladeProjectView *view)
 {
@@ -391,26 +483,36 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	}
 }
 
-void
-glade_app_add_project (GladeApp *app, GladeProject *project)
+gboolean glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 {
 	GList *list;
 
- 	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	/* If the project was previously loaded, don't re-load */
+	if (project_path == NULL) return FALSE;
+	
 	for (list = app->priv->projects; list; list = list->next)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
-		if (cur_project->path && project->path)
-		{
-			if (!strcmp (cur_project->path, project->path))
-			{
-				glade_app_set_project (app, cur_project);
-				return;
-			}
-		}
+
+		if (cur_project->path)
+			if (!strcmp (cur_project->path, project_path))
+				return TRUE;
 	}
+
+	return FALSE;
+}
+
+void
+glade_app_add_project (GladeApp *app, GladeProject *project)
+{
+ 	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	/* If the project was previously loaded, don't re-load */
+	if (glade_app_is_project_loaded (app, project->path))
+	{
+		glade_app_set_project (app, project);
+		return;
+	}
+	
  	app->priv->projects = g_list_prepend (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */

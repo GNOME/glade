@@ -71,6 +71,8 @@ LIBGLADEUI_API GtkTreeIter    *glade_util_find_iter_by_widget   (GtkTreeModel *m
 								 GladeWidget  *findme,
 								 gint          column);
 
+LIBGLADEUI_API void            glade_util_str_replace_char (gchar *str, gchar dest, gchar src);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

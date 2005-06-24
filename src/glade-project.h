@@ -25,7 +25,7 @@ struct _GladeProject
 
 	gchar *path;    /* The full path of the xml file for this project*/
 
-	GtkItemFactoryEntry entry; /* The menu entry in the /Project menu */
+	GtkToggleAction *action; /* The menu item action */
 
 	gboolean changed;    /* A flag that is set when a project has changes
 			      * if this flag is not set we don't have to query
@@ -97,6 +97,8 @@ LIBGLADEUI_API void          glade_project_selection_clear     (GladeProject *pr
 LIBGLADEUI_API void          glade_project_selection_changed   (GladeProject *project);
 LIBGLADEUI_API GList        *glade_project_selection_get       (GladeProject *project);
 
+LIBGLADEUI_API GtkWidget    *glade_project_get_menuitem          (GladeProject *project);
+LIBGLADEUI_API guint         glade_project_get_menuitem_merge_id (GladeProject *project);
 
 G_END_DECLS
 
