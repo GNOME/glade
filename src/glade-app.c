@@ -483,22 +483,39 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	}
 }
 
-gboolean glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
+gboolean
+glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 {
-	GList *list;
+	GList    *list;
+	gchar    *project_base;
+	gboolean  loaded = FALSE;
 
 	if (project_path == NULL) return FALSE;
+
+	/* Only one project with the same basename can be loaded simultainiously */
+	project_base = g_path_get_basename (project_path);
 	
 	for (list = app->priv->projects; list; list = list->next)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
+		gchar        *this_base;
 
-		if (cur_project->path)
-			if (!strcmp (cur_project->path, project_path))
-				return TRUE;
+		if (cur_project->path) 
+		{
+			this_base = g_path_get_basename (cur_project->path);
+
+			if (!strcmp (this_base, project_base))
+				loaded = TRUE;
+
+			g_free (this_base);
+
+			if (loaded) 
+				break;
+		}
 	}
 
-	return FALSE;
+	g_free (project_base);
+	return loaded;
 }
 
 void

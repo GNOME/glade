@@ -1,3 +1,17 @@
+2005-06-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-utils.[ch]: removed glade_util_str_replace_char(), 
+	  glade_util_replace() already exists.
+
+	* src/glade-project-window.c: Added clause to save recent files after opening and
+	  saving projects and when clearing recent queue (i.e. save it when it changes, not
+	  at quit time).
+	  also fixed cosmetic bug: changed "Recents" to "Recent" in "Recent projects".
+
+	* src/glade-app.c, src/glade-project-window.c: Dont allow more than one project
+	  with the same name to be opened simultainiously (where the project name is
+	  the basename of the project_path).
+
 2005-06-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-app.[ch]: Added GKeyfile handleing

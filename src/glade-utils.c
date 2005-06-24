@@ -457,13 +457,13 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 /**
  * glade_util_replace:
  * @str: a string
- * @a: a #char
- * @b: a #char
+ * @a: a #gchar
+ * @b: a #gchar
  *
  * Replaces each occurance of the character @a in @str to @b.
  */
 void
-glade_util_replace (char *str, char a, char b)
+glade_util_replace (gchar *str, gchar a, gchar b)
 {
 	g_return_if_fail (str != NULL);
 
@@ -1269,20 +1269,4 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 	return NULL;
 }
 
-/**
- * glade_util_str_replace_char
- * @str the string to replace
- * @dest the character to replace
- * @src the character to replace with
-*/
-void
-glade_util_str_replace_char (gchar *str, gchar dest, gchar src)
-{
-	gchar *tmp = str;
-	
-	while (*tmp != '\0')
-	{
-		if (*tmp == src) *tmp = dest;
-		tmp++;
-	}
-}
+

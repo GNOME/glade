@@ -196,7 +196,7 @@ gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
 	
 	action_name = g_strdup_printf ("open[%s]", project_path);
 	/* We don't want '/'s in the menu path */
-	glade_util_str_replace_char (action_name, '/', ' ');
+	glade_util_replace (action_name, '/', ' ');
 	
 	/* Add action */
 	action = gtk_action_new (action_name, label, NULL, NULL);
@@ -324,8 +324,11 @@ gpw_recent_project_clear_cb (GtkAction *action, GladeProjectWindow *gpw)
 		gtk_widget_set_sensitive (gtk_ui_manager_get_widget 
 					  (gpw->priv->ui, "/MenuBar/FileMenu/Recents"),
 					  FALSE);
+		
+		/* Save it */
+		gpw_recent_project_config_save (gpw);
+		glade_app_config_save (GLADE_APP (gpw));
 	}
-    
 	gtk_widget_destroy (dialog);
 }
 
@@ -342,6 +345,9 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	}
 	
 	gpw_recent_project_add (gpw, path);
+	gpw_recent_project_config_save (gpw);
+	glade_app_config_save (GLADE_APP (gpw));
+
 	gpw_refresh_project_entry (gpw, project);
 	gpw_refresh_title (gpw);
 	glade_util_flash_message (gpw->priv->statusbar,
@@ -558,11 +564,6 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 		do_close (gpw, project);
 	}
 
-	gpw_recent_project_config_save (gpw);
-	
-	/* Save the configuration file */
-	glade_app_config_save (GLADE_APP (gpw));
-	
 	gtk_main_quit ();
 }
 
@@ -1100,9 +1101,9 @@ static GtkActionEntry entries[] = {
 	{ "Open", GTK_STOCK_OPEN, "_Open","<control>O",
 	"Open a project file", G_CALLBACK (gpw_open_cb) },
 	
-	{ "Recents", NULL, "Recents Projects", NULL, NULL },
+	{ "Recents", NULL, "Recent Projects", NULL, NULL },
 	
-	{ "ClearRecents", GTK_STOCK_CLEAR, "Clear Recents Projects", NULL,
+	{ "ClearRecents", GTK_STOCK_CLEAR, "Clear Recent Projects", NULL,
 	NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
 	
 	{ "Save", GTK_STOCK_SAVE, "_Save","<control>S",
@@ -1466,8 +1467,20 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 
 	g_return_if_fail (path != NULL);
 
+	/* dont allow more than one project with the same name to be
+	 * opened simultainiously.
+	 */
 	if (glade_app_is_project_loaded (GLADE_APP (gpw), (gchar*)path))
+	{
+		gchar *base_path = g_path_get_basename (path);
+		gchar *message = g_strdup_printf (_("A project named %s is already open"), base_path);
+
+		glade_util_ui_warn (gpw->priv->window, message);
+
+		g_free (message);
+		g_free (base_path);
 		return;
+	}
 
 	project = glade_project_open (path);
 	if (!project)
@@ -1477,6 +1490,8 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	}
 
 	gpw_recent_project_add (gpw, path);
+	gpw_recent_project_config_save (gpw);
+	glade_app_config_save (GLADE_APP (gpw));
 
 	glade_project_window_add_project (gpw, project);
 }
