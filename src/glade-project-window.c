@@ -49,8 +49,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
-#define RECENT_PROJECTS_MAX_ENTRIES 4
-#define RECENT_PROJECTS_GROUPNAME "Recent Projects"
+
+#define CONFIG_RECENT_PROJECTS "Recent Projects"
+#define CONFIG_RECENT_PROJECTS_MAX "max_recent_projects"
 
 struct _GladeProjectWindowPriv {
 	/* Application widgets */
@@ -61,12 +62,15 @@ struct _GladeProjectWindowPriv {
 	guint statusbar_menu_context_id; /* The context id of the menu bar */
 	guint statusbar_actions_context_id; /* The context id of actions messages */
 	
+
 	GtkUIManager *ui;		/* The UIManager */
 	GtkActionGroup *actions;	/* All the static actions */
 	GtkActionGroup *p_actions;	/* Projects actions */
 	GtkActionGroup *rp_actions;	/* Recent projects actions */
+
 	GQueue *recent_projects;	/* A GtkAction queue */
-	
+	gint rp_max;			/* Maximun Recent Projects entries */
+
 	GtkWidget *widget_tree;        /* The widget tree window*/
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */
@@ -216,9 +220,8 @@ gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
 	/* Push action into recent project queue */
 	g_queue_push_head (gpw->priv->recent_projects, action);
 	
-	/* If there is more entries than RECENT_PROJECTS_MAX_ENTRIES 
-	   delete the last one.*/
-	if (g_queue_get_length(gpw->priv->recent_projects) > RECENT_PROJECTS_MAX_ENTRIES)
+	/* If there is more entries than rp_max, delete the last one.*/
+	if (g_queue_get_length(gpw->priv->recent_projects) > gpw->priv->rp_max)
 	{
 		GtkAction *last_action = (GtkAction *)g_queue_pop_tail(gpw->priv->recent_projects);
 		gpw_recent_project_delete (last_action, gpw);
@@ -238,12 +241,20 @@ gpw_recent_project_config_load (GladeProjectWindow *gpw)
 	gchar *filename, key[8];
 	gint i;
 	
-	for (i = 0; i < RECENT_PROJECTS_MAX_ENTRIES; i++)
+	gpw->priv->rp_max = g_key_file_get_integer (
+					glade_app_get_config (GLADE_APP (gpw)),
+					CONFIG_RECENT_PROJECTS,
+					CONFIG_RECENT_PROJECTS_MAX, NULL);
+	
+	/* Some default value for recent projects maximum */
+	if (gpw->priv->rp_max == 0) gpw->priv->rp_max = 5;
+	
+	for (i = 0; i < gpw->priv->rp_max; i++)
 	{
 		g_snprintf(key, 8, "%d", i);
 		
 		filename = g_key_file_get_string (glade_app_get_config (GLADE_APP (gpw)),
-						  RECENT_PROJECTS_GROUPNAME, key, NULL);
+						  CONFIG_RECENT_PROJECTS, key, NULL);
 		if (filename)
 		{
 			if (g_file_test (filename, G_FILE_TEST_EXISTS))
@@ -261,7 +272,12 @@ gpw_recent_project_config_save (GladeProjectWindow *gpw)
 	gchar key[8];
 	gint i = 0;
 	
-	g_key_file_remove_group (config, RECENT_PROJECTS_GROUPNAME, NULL);
+	g_key_file_remove_group (config, CONFIG_RECENT_PROJECTS, NULL);
+	
+	g_key_file_set_integer (config,
+				CONFIG_RECENT_PROJECTS,
+				CONFIG_RECENT_PROJECTS_MAX,
+				gpw->priv->rp_max);
 	
 	for (list = gpw->priv->recent_projects->tail; list; list = list->prev, i++)
 	{
@@ -270,7 +286,7 @@ gpw_recent_project_config_save (GladeProjectWindow *gpw)
 		if( path )
 		{
 			g_snprintf (key, 8, "%d", i);
-			g_key_file_set_string (config, RECENT_PROJECTS_GROUPNAME,
+			g_key_file_set_string (config, CONFIG_RECENT_PROJECTS,
 					       key, path);
 		}
 	}

@@ -226,7 +226,7 @@ glade_app_config_load (GladeApp *app)
  * glade_app_config_save
  * @app:
  *
- * Saves the GKeyFile to "g_get_user_config_dir()/GLADE3_CONFIG_FILENAME"
+ * Saves the GKeyFile to "g_get_user_config_dir()/GLADE_CONFIG_FILENAME"
  *
  * Return 0 on success.
  */
@@ -243,7 +243,7 @@ glade_app_config_save (GladeApp *app)
 	g_mkdir (config_dir, S_IRWXU);
 	
 	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
-
+	
 	fd = g_io_channel_new_file (filename, "w", &error);
 
 	if (error == NULL)
