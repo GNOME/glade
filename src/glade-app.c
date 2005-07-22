@@ -240,8 +240,20 @@ glade_app_config_save (GladeApp *app)
 	gsize size;
 	
 	/* Just in case... try to create the config directory */
-	g_mkdir (config_dir, S_IRWXU);
-	
+	if (g_file_test (config_dir, G_FILE_TEST_IS_DIR) == FALSE)
+	{
+		if (g_file_test (config_dir, G_FILE_TEST_EXISTS))
+		{
+			/* Config dir exists but is not a directory */
+			return -1;
+		}
+		else if (g_mkdir (config_dir, S_IRWXU) != 0)
+		{
+			/* Doesnt exist; failed to create */
+			return -1;
+		}
+	} 
+
 	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
 	
 	fd = g_io_channel_new_file (filename, "w", &error);
@@ -269,7 +281,7 @@ glade_app_config_save (GladeApp *app)
 
 	g_free (filename);
 	
-	return (error) ? 1 : 0;
+	return (error) ? -1 : 0;
 }
 
 static void
@@ -487,34 +499,19 @@ gboolean
 glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 {
 	GList    *list;
-	gchar    *project_base;
 	gboolean  loaded = FALSE;
 
 	if (project_path == NULL) return FALSE;
 
-	/* Only one project with the same basename can be loaded simultainiously */
-	project_base = g_path_get_basename (project_path);
-	
 	for (list = app->priv->projects; list; list = list->next)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
-		gchar        *this_base;
 
-		if (cur_project->path) 
-		{
-			this_base = g_path_get_basename (cur_project->path);
-
-			if (!strcmp (this_base, project_base))
-				loaded = TRUE;
-
-			g_free (this_base);
-
-			if (loaded) 
-				break;
-		}
+		if (loaded = glade_util_basenames_match (cur_project->path, 
+							 project_path))
+			break;
 	}
 
-	g_free (project_base);
 	return loaded;
 }
 

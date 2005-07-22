@@ -1269,4 +1269,23 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 	return NULL;
 }
 
+LIBGLADEUI_API gboolean
+glade_util_basenames_match  (const gchar  *path1,
+			     const gchar  *path2)
+{
+	gboolean match = FALSE;
+	gchar *bname1;
+	gchar *bname2;
+	
+	if (path1 && path2)
+	{
+		bname1 = g_path_get_basename (path1);
+		bname2 = g_path_get_basename (path2);
 
+		match = !strcmp (bname1, bname2);
+		
+		g_free (bname1);
+		g_free (bname2);
+	}
+	return match;
+}
