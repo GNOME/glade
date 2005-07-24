@@ -535,6 +535,14 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 			widget_class->children = g_list_append (widget_class->children, child);
 		}
 
+		if ((buff = 
+		     glade_xml_get_value_string (child_node,
+						 GLADE_TAG_SPECIAL_CHILD_TYPE)) != NULL)
+		{
+			g_free (child->special_child_type);
+			child->special_child_type = buff;
+		}
+
 		if (widget_class->module)
 		{
 			glade_widget_class_load_function (child_node, widget_class->module,
@@ -757,15 +765,15 @@ glade_widget_class_clone_child (GladeSupportedChild *child,
 	
 	clone = g_new0 (GladeSupportedChild, 1);
 
-	clone->type          = child->type;
-	clone->add           = child->add;
-	clone->remove	     = child->remove;
-	clone->get_children  = child->get_children;
+	clone->type              = child->type;
+	clone->add               = child->add;
+	clone->remove            = child->remove;
+	clone->get_children      = child->get_children;
 	clone->get_all_children  = child->get_all_children;
-	clone->set_property  = child->set_property;
-	clone->get_property  = child->get_property;
-	clone->fill_empty    = child->fill_empty;
-	clone->replace_child = child->replace_child;
+	clone->set_property      = child->set_property;
+	clone->get_property      = child->get_property;
+	clone->fill_empty        = child->fill_empty;
+	clone->replace_child     = child->replace_child;
 
 	clone->properties = glade_widget_class_list_child_properties (parent_class);
 	glade_widget_class_merge_properties

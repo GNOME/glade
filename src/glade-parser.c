@@ -759,8 +759,9 @@ glade_parser_start_element(GladeParseState *state,
 
 	    state->state = PARSER_WIDGET;
 	} else if (!strcmp(name, "placeholder")) {
-	    /* this isn't a real child, so knock off  the last ChildInfo */
-	    state->widget->n_children--;
+	    /* this isn't a real child, so load a NULL ChildInfo to 
+	     * symbolize a placeholder
+	     */
 	    state->state = PARSER_WIDGET_CHILD_PLACEHOLDER;
 	} else {
 	    g_warning("Unexpected element <%s> inside <child>.", name);
@@ -836,10 +837,15 @@ glade_parser_start_element(GladeParseState *state,
 	state->unknown_depth++;
 	break;
     case PARSER_WIDGET_CHILD_AFTER_PLACEHOLDER:
-	/* this is a placeholder <child> element -- ignore extra elements */
-	state->prev_state = state->state;
-	state->state = PARSER_UNKNOWN;
-	state->unknown_depth++;
+	/* Get packing info on placeholders, for special cases */
+	if (!strcmp(name, "packing")) {
+	    state->state = PARSER_WIDGET_CHILD_PACKING;
+	} else {
+	    g_warning("Unexpected element <%s> inside <child>.", name);
+	    state->prev_state = state->state;
+	    state->state = PARSER_UNKNOWN;
+	    state->unknown_depth++;
+	}
 	break;
     case PARSER_FINISH:
 	g_warning("There should be no elements here.  Found <%s>.", name);
@@ -1121,7 +1127,7 @@ widget_info_free(GladeWidgetInfo *info)
 {
     gint i;
 
-    g_return_if_fail(info != NULL);
+    if (!info) return;
 
     g_free(info->properties);
     g_free(info->atk_props);
@@ -1254,8 +1260,16 @@ glade_parser_parse_buffer(const gchar *buffer, gint len, const gchar *domain)
 static void
 dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 {
-    xmlNode *widget = xmlNewNode(NULL, "widget");
+    xmlNode *widget;
     gint i, j;
+
+    if (info == NULL) {
+	widget = xmlNewNode(NULL, "placeholder");
+	xmlAddChild(parent, widget);
+	return;
+    }
+
+    widget = xmlNewNode(NULL, "widget");    
 
     xmlSetProp(widget, "class", info->classname);
     xmlSetProp(widget, "id", info->name);

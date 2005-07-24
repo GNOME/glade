@@ -507,8 +507,8 @@ glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
 
-		if (loaded = glade_util_basenames_match (cur_project->path, 
-							 project_path))
+		if ((loaded = glade_util_basenames_match (cur_project->path, 
+							  project_path)))
 			break;
 	}
 

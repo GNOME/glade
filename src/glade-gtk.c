@@ -633,8 +633,17 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	for (i = gtk_notebook_get_n_pages (notebook); i < new_size; i++)
 	{
 		gint position = glade_gtk_notebook_get_first_blank_page (notebook);
-		gtk_notebook_insert_page (notebook, glade_placeholder_new (),
+		GtkWidget *placeholder     = glade_placeholder_new ();
+		GtkWidget *tab_placeholder = glade_placeholder_new ();
+
+		gtk_notebook_insert_page (notebook, placeholder,
 					  NULL, position);
+
+		gtk_notebook_set_tab_label (notebook, placeholder, tab_placeholder);
+
+		g_object_set_data (G_OBJECT (tab_placeholder), "page-num",
+				   GINT_TO_POINTER (position));
+		g_object_set_data (G_OBJECT (tab_placeholder), "special-child-type", "tab");
 	}
 
 	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
@@ -1346,10 +1355,9 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 
 	notebook = GTK_NOTEBOOK (container);
 
-	/* FIXME: until placeholder has GladeWidget
 	special_child_type =
-		g_object_get_data (G_OBJECT (current), "special-child-type"); */
-	special_child_type = NULL;
+		g_object_get_data (G_OBJECT (current), "special-child-type");
+
 	if (special_child_type && !strcmp (special_child_type, "tab"))
 	{
 		page_num = (gint) g_object_get_data (G_OBJECT (current),
@@ -1389,6 +1397,27 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 	 * not shown first it will not set the current page */
 	gtk_widget_show (new);
 	gtk_notebook_set_current_page (notebook, page_num);
+}
+
+
+void GLADEGTK_API
+glade_gtk_frame_replace_child (GtkWidget *container,
+			       GtkWidget *current,
+			       GtkWidget *new)
+{
+	gchar *special_child_type;
+
+	special_child_type =
+		g_object_get_data (G_OBJECT (current), "special-child-type");
+
+	if (special_child_type && !strcmp (special_child_type, "label_item"))
+	{
+		g_object_set_data (G_OBJECT (new), "special-child-type", "label_item");
+		gtk_frame_set_label_widget (GTK_FRAME (container), new);
+		return;
+	}
+
+	glade_gtk_container_replace_child (container, current, new);
 }
 
 /* -------------------------- Fill Empty functions -------------------------- */
@@ -1439,6 +1468,29 @@ glade_gtk_paned_fill_empty (GObject *paned)
 
 	gtk_paned_add1 (GTK_PANED (paned), glade_placeholder_new ());
 	gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
+}
+
+void GLADEGTK_API
+glade_gtk_frame_fill_empty (GObject *frame)
+{
+	GtkWidget *widget;
+
+	g_return_if_fail (GTK_IS_FRAME (frame));
+
+	if ((gtk_bin_get_child (GTK_BIN (frame))) == NULL)
+		gtk_container_add (GTK_CONTAINER (frame), glade_placeholder_new ());
+
+
+	widget = gtk_frame_get_label_widget (GTK_FRAME (frame));
+
+	if (widget == NULL ||
+	    (GLADE_IS_PLACEHOLDER (widget) == FALSE && 
+	     glade_widget_get_from_gobject (widget) == NULL))
+	{
+		GtkWidget *placeholder = glade_placeholder_new ();
+		g_object_set_data (G_OBJECT (placeholder), "special-child-type", "label_item");
+		gtk_frame_set_label_widget (GTK_FRAME (frame), placeholder);
+	}
 }
 
 /* ---------------------- Get Internal Child functions ---------------------- */
@@ -1581,9 +1633,8 @@ glade_gtk_notebook_add_child (GObject *object, GObject *child)
 	   is doing more or less the same thing). If the last page has a NULL
 	   label, _child_ is a label widget
 	if (last_page && !gtk_notebook_get_tab_label (notebook, last_page)) */
-	/* FIXME: until placeholder has GladeWidget
-	special_child_type = g_object_get_data (child, "special-child-type"); */
-	special_child_type = NULL;
+
+	special_child_type = g_object_get_data (child, "special-child-type");
 	if (special_child_type &&
 	    !strcmp (special_child_type, "tab"))
 	{
@@ -1655,9 +1706,7 @@ glade_gtk_frame_add_child (GObject *object, GObject *child)
 {
 	gchar *special_child_type;
 
-	/* FIXME: until placeholder has GladeWidget
-	special_child_type = g_object_get_data (child, "special-child-type"); */
-	special_child_type = NULL;
+	special_child_type = g_object_get_data (child, "special-child-type");
 	if (special_child_type &&
 	    !strcmp (special_child_type, "label_item"))
 	{

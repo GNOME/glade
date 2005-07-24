@@ -124,6 +124,10 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 
 	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (placeholder), GTK_CAN_FOCUS);
 
+	gtk_widget_set_size_request (GTK_WIDGET (placeholder),
+				     GLADE_PLACEHOLDER_WIDTH_REQ,
+				     GLADE_PLACEHOLDER_HEIGHT_REQ);
+
 	gtk_widget_show (GTK_WIDGET (placeholder));
 }
 

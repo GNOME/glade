@@ -62,6 +62,7 @@ struct _GladeWidgetClass
 
 	GList *signals;     /* List of GladeWidgetClassSignal objects */
 
+
 	GList *children;    /* List of GladeSupportedChild objects */
         GList *child_packings; /* Private */ 
 
@@ -126,6 +127,11 @@ struct _GladeSupportedChild
 								 * replace a placeholder with
 								 * a widget and viceversa.
 								 */
+
+	gchar                        *special_child_type; /* Special case code for children that
+							   * are special children (like notebook tab 
+							   * widgets for example).
+							   */
 };
 
 

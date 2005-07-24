@@ -1,3 +1,26 @@
+2005-07-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.c: Fixed compiler warning
+
+	* src/glade-editor.c: removed useless include
+
+	* src/glade-gtk.c, widgets/gtk+.xml: Implemented special-child-type for 
+	  GtkFrame & GtkNotebook
+
+	* src/glade-parser.c: Implemented support for "placeholder" tags and allow
+	  placeholders to have packing properties.
+
+	* src/glade-placeholder.[ch]: Added minimum placeholder size
+
+	* src/glade-project.c: Removed #if 0 code
+
+	* src/glade-widget-class.[ch], src/glade.h: Added support for special_child_type
+
+	* src/glade-widget.c: Added support for special_child_type and placeholders in
+	  glade files.
+
+	All the "special-child-type" related work is based on an old patch by Ivan Wong.
+
 2005-07-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: Disallow multiple projects with the same name.

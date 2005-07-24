@@ -1744,7 +1744,7 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 
 /* XML Serialization */
 static gboolean
-glade_widget_write_child (GArray *children, GObject *object, GladeInterface *interface);
+glade_widget_write_child (GArray *children, GladeWidget *parent, GObject *object, GladeInterface *interface);
 
 typedef struct _WriteSignalsContext
 {
@@ -1835,7 +1835,7 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 		while (list && list->data)
 		{
 			GObject *child = list->data;
-			glade_widget_write_child (children, child, interface);
+			glade_widget_write_child (children, widget, child, interface);
 			list = list->next;
 		}
 		info->children   = (GladeChildInfo *) children->data;
@@ -1849,20 +1849,57 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 	return info;
 }
 
+
+static gboolean
+glade_widget_write_special_child_prop (GArray *props, 
+				       GladeWidget *parent, 
+				       GObject *object, 
+				       GladeInterface *interface)
+{
+	GladePropInfo         info = { 0 };
+	gchar                *buff;
+	GladeSupportedChild  *support;
+
+	support = glade_widget_class_get_child_support (parent->widget_class, G_OBJECT_TYPE (object));
+	buff    = g_object_get_data (object, "special-child-type");
+
+	if (support && support->special_child_type && buff)
+	{
+		info.name  = alloc_propname (interface, support->special_child_type);
+		info.value = alloc_string (interface, buff);
+		g_array_append_val (props, info);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 gboolean
-glade_widget_write_child (GArray *children, GObject *object, GladeInterface *interface)
+glade_widget_write_child (GArray      *children, 
+			  GladeWidget *parent, 
+			  GObject     *object,
+			  GladeInterface *interface)
 {
 	GladeChildInfo info = { 0 };
 	GladeWidget *child_widget;
 	GList *list;
 	GArray *props;
 
-	/* if (GLADE_IS_PLACEHOLDER (gtk_widget))
+	if (GLADE_IS_PLACEHOLDER (object))
 	{
+		props = g_array_new (FALSE, FALSE,
+				     sizeof (GladePropInfo));
+		/* Here we have to add the "special-child-type" packing property */
+		glade_widget_write_special_child_prop (props, parent, 
+						       object, interface);
+
+		info.properties = (GladePropInfo *) props->data;
+		info.n_properties = props->len;
+		g_array_free(props, FALSE);
+
 		g_array_append_val (children, info);
 
 		return TRUE;
-	} */
+	}
 
 	child_widget = glade_widget_get_from_gobject (object);
 	if (!child_widget)
@@ -1879,21 +1916,30 @@ glade_widget_write_child (GArray *children, GObject *object, GladeInterface *int
 	}
 
 	/* Append the packing properties */
-	if (child_widget->packing_properties != NULL) {
-		list = child_widget->packing_properties;
-		props = g_array_new (FALSE, FALSE,
-				     sizeof (GladePropInfo));
-		for (; list; list = list->next) {
+	props = g_array_new (FALSE, FALSE, sizeof (GladePropInfo));
+	
+	/* Here we have to add the "special-child-type" packing property */
+	glade_widget_write_special_child_prop (props, parent, 
+					       child_widget->object,
+					       interface);
+
+	if (child_widget->packing_properties != NULL) 
+	{
+		for (list = child_widget->packing_properties;
+		     list; list = list->next) 
+		{
 			GladeProperty *property;
 
 			property = list->data;
 			g_assert (property->class->packing == TRUE);
 			glade_property_write (props, property, interface);
 		}
-		info.properties = (GladePropInfo *) props->data;
-		info.n_properties = props->len;
-		g_array_free(props, FALSE);
 	}
+
+	info.properties = (GladePropInfo *) props->data;
+	info.n_properties = props->len;
+	g_array_free(props, FALSE);
+	
 	g_array_append_val (children, info);
 
 	return TRUE;
@@ -1960,6 +2006,8 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 	}
 	return TRUE;
 }
+
+
 
 static gboolean
 glade_widget_new_child_from_child_info (GladeChildInfo *info,
@@ -2262,13 +2310,42 @@ glade_widget_get_internal_child (GladeWidget *parent,
 	return NULL;
 }
 
+static gint
+glade_widget_set_child_type_from_child_info (GladeChildInfo *child_info,
+					     GladeWidgetClass *parent_class,
+					     GObject *child)
+{
+	guint                i;
+	GladePropInfo        *prop_info;
+	GladeSupportedChild  *support;
+
+	support = glade_widget_class_get_child_support (parent_class,
+							G_OBJECT_TYPE (child));
+	if (!support || !support->special_child_type)
+		return -1;
+
+	for (i = 0; i < child_info->n_properties; ++i)
+	{
+		prop_info = child_info->properties + i;
+		if (!strcmp (prop_info->name, support->special_child_type))
+		{
+			g_object_set_data_full (child,
+						"special-child-type",
+						g_strdup (prop_info->value),
+						g_free);
+			return i;
+		}
+	}
+	return -1;
+}
+
 static gboolean
 glade_widget_new_child_from_child_info (GladeChildInfo *info,
 					GladeProject *project,
 					GladeWidget *parent)
 {
-	GladeWidget          *child;
-        guint                 i;
+	GladeWidget    *child;
+        gint            i, special_child_type_index = -1;
 
 	g_return_val_if_fail (info != NULL, FALSE);
 	g_return_val_if_fail (project != NULL, FALSE);
@@ -2277,10 +2354,11 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	if (!info->child)
 	{
 		GObject *palaceholder = G_OBJECT (glade_placeholder_new ());
+		glade_widget_set_child_type_from_child_info 
+			(info, parent->widget_class, palaceholder);
 		glade_widget_class_container_add (parent->widget_class,
 				   		  parent->object,
 						  palaceholder);
-		
 		return TRUE;
 	}
 
@@ -2313,6 +2391,12 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 			return FALSE;
 
 		child->parent = parent;
+
+		special_child_type_index =
+			glade_widget_set_child_type_from_child_info (info,
+								     parent->widget_class,
+								     child->object);
+		
 		glade_widget_class_container_add (parent->widget_class,
 						  parent->object, child->object);
 
@@ -2322,6 +2406,8 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	/* Get the packing properties */
 	for (i = 0; i < info->n_properties; ++i)
 	{
+		if (special_child_type_index == i)
+			continue;
 		if (!glade_widget_apply_property_from_prop_info (info->properties + i,
 								 child, TRUE))
 			g_warning ("Failed to apply packing property");

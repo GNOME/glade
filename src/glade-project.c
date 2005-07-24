@@ -751,12 +751,6 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 			continue;
 		}
 		glade_project_add_object (project, widget->object);
-
-#if 0
- 		project->objects = g_list_prepend (project->objects,
- 						   glade_widget_get_object(widget));
- 		g_object_ref (glade_widget_get_object(widget));
-#endif
 	}
 
 	project->changed = FALSE;

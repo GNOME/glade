@@ -564,6 +564,7 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_notebook_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
@@ -587,8 +588,9 @@
 
     <glade-widget-class name="GtkFrame" generic-name="frame" title="Frame">
       <properties>
-	<property id="label" default="Frame"/>
+	<property id="label" disabled="TRUE"/>
 	<property id="shadow" disabled="True"/>
+	<property id="label-xalign" default="0.0"/>
       	<property id="shadow-type">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" name="None"/>
@@ -603,7 +605,10 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_frame_add_child</add-child-function>
+	  <replace-child-function>glade_gtk_frame_replace_child</replace-child-function>
+	  <fill-empty-function>glade_gtk_frame_fill_empty</fill-empty-function>
 	</child>
       </children>
     </glade-widget-class>

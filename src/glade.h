@@ -103,6 +103,7 @@
 #define GLADE_TAG_CHILD_PROPERTY                  "child-property"
 #define GLADE_TAG_DISPLAYABLE_VALUES              "displayable-values"
 #define GLADE_TAG_NICK                            "nick"
+#define GLADE_TAG_SPECIAL_CHILD_TYPE              "special-child-type"
 
 LIBGLADEUI_API gboolean glade_verbose;
 
