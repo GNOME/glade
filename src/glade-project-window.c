@@ -758,9 +758,6 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gpw->priv->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 350, 450);
 
-	/* FIXME: */
-	glade_app_get_editor (GLADE_APP (gpw))->project_window = gpw;
-
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
 	gtk_window_move (gpw->priv->editor_window, 350, 0);
 
@@ -776,13 +773,17 @@ gpw_create_editor (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_show_editor (GladeProjectWindow *gpw)
+gpw_show_editor (GladeApp *app, gboolean raise)
 {
+	GladeProjectWindow *gpw = GLADE_PROJECT_WINDOW (app);
 	GtkWidget *editor_item;
 
-	g_return_if_fail (gpw != NULL);
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
 
 	gtk_widget_show (GTK_WIDGET (gpw->priv->editor_window));
+
+	if (raise)
+		gtk_window_present (gpw->priv->editor_window);
 
 	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						 "/MenuBar/ViewMenu/PropertyEditor");
@@ -790,11 +791,12 @@ gpw_show_editor (GladeProjectWindow *gpw)
 }
 
 static void
-gpw_hide_editor (GladeProjectWindow *gpw)
+gpw_hide_editor (GladeApp *app)
 {
+	GladeProjectWindow *gpw = GLADE_PROJECT_WINDOW (app);
 	GtkWidget *editor_item;
 
-	g_return_if_fail (gpw != NULL);
+	g_return_if_fail (GLADE_IS_PROJECT_WINDOW (gpw));
 
 	glade_util_hide_window (gpw->priv->editor_window);
 
@@ -1006,9 +1008,9 @@ gpw_toggle_editor_cb (GtkAction *action, GladeProjectWindow *gpw)
 						 "/MenuBar/ViewMenu/PropertyEditor");
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (editor_item)))
-		gpw_show_editor (gpw);
+		gpw_show_editor (GLADE_APP (gpw), FALSE);
 	else
-		gpw_hide_editor (gpw);
+		gpw_hide_editor (GLADE_APP (gpw));
 }
 
 static void 
@@ -1609,6 +1611,14 @@ glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 	gtk_widget_set_sensitive (gpw->priv->toolbar_redo, redo_description != NULL);
 }
 
+static void
+glade_project_window_update_ui (GladeApp *app)
+{
+	GladeProjectWindow *gpw = GLADE_PROJECT_WINDOW (app);
+	gpw_refresh_title (gpw);
+	glade_project_window_refresh_undo_redo (gpw);
+}
+
 /**
  * glade_project_window_show_all:
  *
@@ -1619,7 +1629,7 @@ glade_project_window_show_all (GladeProjectWindow *gpw)
 {
 	gtk_widget_show_all (gpw->priv->window);
 	gpw_show_palette (gpw);
-	gpw_show_editor (gpw);
+	gpw_show_editor (GLADE_APP (gpw), FALSE);
 }
 
 static void
@@ -1637,27 +1647,28 @@ static void
 glade_project_window_class_init (GladeProjectWindowClass * klass)
 {
 	GObjectClass *object_class;
+	GladeAppClass *app_class;
 	g_return_if_fail (klass != NULL);
+
+
 	
 	parent_class = g_type_class_peek_parent (klass);
-	object_class = (GObjectClass *) klass;
-	object_class->finalize = glade_project_window_finalize;
-}
+	object_class = G_OBJECT_CLASS  (klass);
+	app_class    = GLADE_APP_CLASS (klass);
 
-static void
-update_ui_cb (GladeProjectWindow *gpw)
-{
-	gpw_refresh_title (gpw);
-	glade_project_window_refresh_undo_redo (gpw);
+	object_class->finalize = glade_project_window_finalize;
+
+	app_class->update_ui_signal = glade_project_window_update_ui;
+	app_class->show_properties  = gpw_show_editor;
+	app_class->hide_properties  = gpw_hide_editor;
 }
 
 static void
 glade_project_window_init (GladeProjectWindow *gpw)
 {
 	gpw->priv = g_new0 (GladeProjectWindowPriv, 1);
-	g_signal_connect (G_OBJECT (gpw), "update-ui", G_CALLBACK (update_ui_cb), gpw);
-	/* initialize widgets */
 
+	/* initialize widgets */
 	gpw->priv->recent_projects = g_queue_new ();
 }
 

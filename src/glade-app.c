@@ -153,18 +153,22 @@ glade_app_class_init (GladeAppClass * klass)
 	parent_class = g_type_class_peek_parent (klass);
 	object_class = (GObjectClass *) klass;
 	
+	object_class->dispose   = glade_app_dispose;
+	object_class->finalize  = glade_app_finalize;
+
+	klass->update_ui_signal = NULL;
+	klass->show_properties  = NULL;
+	klass->hide_properties  = NULL;
+
 	glade_app_signals[UPDATE_UI_SIGNAL] =
 		g_signal_new ("update-ui",
-					G_TYPE_FROM_CLASS (object_class),
-					G_SIGNAL_RUN_FIRST,
-					G_STRUCT_OFFSET (GladeAppClass,
-									 update_ui_signal),
-					NULL, NULL,
-					g_cclosure_marshal_VOID__VOID,
-					G_TYPE_NONE, 0);
-
-	object_class->dispose = glade_app_dispose;
-	object_class->finalize = glade_app_finalize;
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeAppClass,
+					       update_ui_signal),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 }
 
 static void
@@ -515,6 +519,30 @@ glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 	return loaded;
 }
 
+
+void
+glade_app_show_properties (GladeApp* app, gboolean raise)
+{
+	g_return_if_fail (GLADE_IS_APP (app));
+
+	if (GLADE_APP_GET_CLASS (app)->show_properties)
+		GLADE_APP_GET_CLASS (app)->show_properties (app, raise);
+	else 
+		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
+}
+
+void
+glade_app_hide_properties (GladeApp* app)
+{
+	g_return_if_fail (GLADE_IS_APP (app));
+
+	if (GLADE_APP_GET_CLASS (app)->hide_properties)
+		GLADE_APP_GET_CLASS (app)->hide_properties (app);
+	else 
+		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
+}
+
+
 void
 glade_app_add_project (GladeApp *app, GladeProject *project)
 {
@@ -744,6 +772,20 @@ glade_default_app_get_projects (void)
 {
 	g_return_val_if_fail (glade_default_app != NULL, NULL);
 	return glade_app_get_projects (glade_default_app);
+}
+
+void
+glade_default_app_show_properties (gboolean raise)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_show_properties (glade_default_app, raise);
+}
+
+void
+glade_default_app_hide_properties (void)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_hide_properties (glade_default_app);
 }
 
 GladeProject*

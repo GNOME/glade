@@ -47,8 +47,12 @@ struct _GladeAppClass
 {
 	GObjectClass parent_class;
 	
+	/* class methods */
+	void   (*  show_properties) (GladeApp* app, gboolean raise);
+	void   (*  hide_properties) (GladeApp* app);
+
 	/* signals */
-	void (*update_ui_signal) (GladeApp *app);
+	void   (* update_ui_signal) (GladeApp *app);
 };
 
 LIBGLADEUI_API GType glade_app_get_type (void);
@@ -74,7 +78,8 @@ LIBGLADEUI_API void               glade_app_remove_project (GladeApp *app, Glade
 LIBGLADEUI_API GList*             glade_app_get_projects (GladeApp *app);
 LIBGLADEUI_API GKeyFile*          glade_app_get_config (GladeApp *app);
 LIBGLADEUI_API gboolean           glade_app_is_project_loaded (GladeApp *app, const gchar *project_path);
-
+LIBGLADEUI_API void               glade_app_show_properties (GladeApp* app, gboolean raise);
+LIBGLADEUI_API void               glade_app_hide_properties (GladeApp* app);
 
 LIBGLADEUI_API void               glade_app_add_project_view (GladeApp *app, GladeProjectView *view);
 
@@ -97,6 +102,8 @@ LIBGLADEUI_API GladeProject*      glade_default_app_get_active_project (void);
 LIBGLADEUI_API void               glade_default_app_update_ui (void);
 LIBGLADEUI_API GList*             glade_default_app_get_selection (void);
 LIBGLADEUI_API GList*             glade_default_app_get_projects (void);
+LIBGLADEUI_API void               glade_default_app_show_properties (gboolean raise);
+LIBGLADEUI_API void               glade_default_app_hide_properties (void);
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.

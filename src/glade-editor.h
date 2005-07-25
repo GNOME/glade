@@ -38,10 +38,6 @@ struct _GladeEditor
 {
 	GtkNotebook notebook;  /* The editor is a notebook */
 	
-	GladeProjectWindow *project_window; /* This editor belongs to this
-					     * project_window
-					     */
-					       
 	GladeWidget *loaded_widget;        /* A handy pointer to the GladeWidget
 					    * that is loaded in the editor. NULL
 					    * if no widgets are selected

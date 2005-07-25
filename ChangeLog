@@ -1,5 +1,20 @@
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-app.[ch]: Added show_properties method to app_class, this way
+	  the implementing application can provide an implementation for show_properties.
+
+	* src/glade-project-window.c: 
+	    - Implemented show_properties method 
+	    - Linked the update_ui_cb directly to app_class->update_ui_signal
+	    - Removed ugly reference to editor->project_window
+	
+	* src/glade-popup.c: Call show_properties upon "properties" popup click.
+
+	* src/glade-editor.h: Removed project_window from instance struct (useless and a PITA
+	  to set).
+	
+2005-07-24  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-project-window.c: Applied (and slightly adapted) Andy Somerville's
 	  patch for bug 303681 (Dock widget tree in project window).
 	
