@@ -826,20 +826,11 @@ gpw_expand_treeview (GtkButton *button, GtkTreeView *tree)
 }
 
 
-
 static GtkWidget* 
-gpw_create_widget_tree (GladeProjectWindow *gpw)
+gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 {
-	GtkWidget *widget_tree, *hbox, *vbox, *expand, *collapse;
+	GtkWidget *hbox, *vbox, *expand, *collapse;
 	GladeProjectView *view;
-	GtkWidget *widget_tree_item;
-
-	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size (GTK_WINDOW (widget_tree),
-				     GLADE_WIDGET_TREE_WIDTH,
-				     GLADE_WIDGET_TREE_HEIGHT);
-
-	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
 	glade_app_add_project_view (GLADE_APP (gpw), view);
@@ -857,11 +848,6 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (view), TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-	gtk_container_add (GTK_CONTAINER (widget_tree), vbox);
-
-	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
-			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->ui);
-
 	g_signal_connect (G_OBJECT (expand), "clicked",
 			  G_CALLBACK (gpw_expand_treeview), 
 			  view->tree_view);
@@ -869,6 +855,28 @@ gpw_create_widget_tree (GladeProjectWindow *gpw)
 	g_signal_connect_swapped (G_OBJECT (collapse), "clicked",
 				  G_CALLBACK (gtk_tree_view_collapse_all), 
 				  view->tree_view);
+
+	return vbox;
+}
+
+static GtkWidget* 
+gpw_create_widget_tree (GladeProjectWindow *gpw)
+{
+	GtkWidget *widget_tree;
+	GtkWidget *widget_tree_item;
+ 
+	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size (GTK_WINDOW (widget_tree),
+				     GLADE_WIDGET_TREE_WIDTH,
+				     GLADE_WIDGET_TREE_HEIGHT);
+ 
+	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
+
+	gtk_container_add (GTK_CONTAINER (widget_tree), 
+			   gpw_create_widget_tree_contents (gpw));
+
+	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
+			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->ui);
 
 	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						      "/MenuBar/ViewMenu/WidgetTree");
@@ -1285,19 +1293,6 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 	return gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar");
 }
 
-static GtkWidget *
-gpw_construct_project_view (GladeProjectWindow *gpw)
-{
-	GladeProjectView *view;
-
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_LIST);
-	glade_app_add_project_view (GLADE_APP (gpw), view);
-
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
-					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-	return GTK_WIDGET (view);
-}
 
 static GtkWidget *
 gpw_construct_statusbar (GladeProjectWindow *gpw)
@@ -1392,7 +1387,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	menubar = gpw_construct_menu (gpw);
 	toolbar = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar");
-	project_view = gpw_construct_project_view (gpw);
+	project_view = gpw_create_widget_tree_contents (gpw);
 	statusbar = gpw_construct_statusbar (gpw);
 
 	gpw->priv->toolbar_undo = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar/Undo");
