@@ -129,10 +129,8 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	g_type_class_ref (class->type); /* hmm */
-	 /* We count on the fact we have an instance, or else we'd have
-	  * to use g_type_class_ref ();
-	  */
+	/* Let it leek */
+	g_type_class_ref (class->type);
 
 	object_class = g_type_class_peek (class->type);
 	if (!object_class)
@@ -155,13 +153,6 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 			property_class = glade_property_class_new_from_spec (spec);
 			if (!property_class)
 				continue;
-
-			/* should this if go into property_class_new_from_spec ? */
-			if (!g_ascii_strcasecmp (g_type_name (spec->owner_type), "GtkWidget") &&
-			    g_ascii_strcasecmp (spec->name, "name"))
-				property_class->common = TRUE;
-			else
-				property_class->common = FALSE;
 
 			property_class->optional = FALSE;
 
@@ -720,10 +711,16 @@ glade_widget_class_get_derived_types (GType type)
  * @widget_properties.
  **/
 static void
-glade_widget_class_merge_properties (GList **widget_properties, GList *parent_properties)
+glade_widget_class_merge_properties (GType   parent_type, 
+				     GList **widget_properties, 
+				     GList  *parent_properties)
 {
-	GList *list;
-	GList *list2;
+	GladePropertyClass  *property_class;
+	GObjectClass        *object_class;
+	GParamSpec         **specs = NULL, *spec;
+	GList               *list, *list2, *remove;
+	gint                 i, n_specs;
+	gboolean             found;
 
 	for (list = parent_properties; list; list = list->next)
 	{
@@ -744,8 +741,6 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
 		 */
 		if (!list2)
 		{
-			GladePropertyClass *property_class;
-
 			property_class = glade_property_class_clone (parent_p_class);
 			*widget_properties = g_list_prepend (*widget_properties, property_class);
 		}
@@ -755,6 +750,57 @@ glade_widget_class_merge_properties (GList **widget_properties, GList *parent_pr
 			list2->data = glade_property_class_clone (parent_p_class);
 		}
 	}
+
+
+	/* Remove any properties found in widget_properties not found in parent_properties
+	 * if parent_properties should have it through introspection
+	 */
+	object_class = g_type_class_peek (parent_type);
+	specs        = g_object_class_list_properties (object_class, &n_specs);
+
+	for (i = 0; i < n_specs; i++)
+	{
+		spec = specs[i];
+		found = FALSE;
+		
+		for (list = parent_properties; list; list = list->next)
+		{
+			property_class = list->data;
+
+			/* We only use the writable properties */
+			if ((spec->flags & G_PARAM_WRITABLE) &&
+			    !strcmp (property_class->id, spec->name)) 
+			{
+				found = TRUE;
+				break;
+			}
+		}
+
+		/* If we didnt find a property in the parents properties thats
+		 * listed in its real properties, remove those properties from
+		 * the child properties.
+		 */
+		if (!found)
+		{
+			remove = NULL;
+			for (list = *widget_properties; list; list = list->next)
+			{
+				property_class = list->data;
+
+				if (!strcmp (property_class->id, spec->name))
+				{
+					remove = g_list_prepend (remove, list);
+					break;
+				}
+			}
+			for (list = remove; list; list = list->next)
+			{
+				g_list_delete_link (*widget_properties, (GList *)list->data);
+			}
+			g_list_free (remove);
+		}
+	} // for i in specs
+	g_free (specs);
 }
 
 static GladeSupportedChild *
@@ -777,7 +823,7 @@ glade_widget_class_clone_child (GladeSupportedChild *child,
 
 	clone->properties = glade_widget_class_list_child_properties (parent_class);
 	glade_widget_class_merge_properties
-		(&clone->properties, child->properties);
+		(parent_class->type, &clone->properties, child->properties);
 
 	return clone;
 }
@@ -804,7 +850,8 @@ glade_widget_class_merge_child (GladeSupportedChild *widgets_child,
 		widgets_child->replace_child    = parents_child->replace_child;
 
 	glade_widget_class_merge_properties
-		(&widgets_child->properties, parents_child->properties);
+		(parents_child->type, 
+		 &widgets_child->properties, parents_child->properties);
 }
 
 static void
@@ -873,7 +920,8 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 
 	/* merge the parent's properties */
 	glade_widget_class_merge_properties
-		(&widget_class->properties, parent_class->properties);
+		(parent_class->type,
+		 &widget_class->properties, parent_class->properties);
 
 	/* merge the parent's supported children */
 	glade_widget_class_merge_children

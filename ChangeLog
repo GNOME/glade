@@ -1,5 +1,14 @@
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-widget-class.c: Fixed bug in glade_widget_class_merge_properties(),
+	  Now if a property in a parent class is disabled, it will be disabled in the
+	  children (also removed useless special case code for "name" property).
+
+	* widgets/gtk+.xml: Disabled widget name property (since glade-3 handles this 
+	  implicitly for all objects).
+	
+2005-07-24  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-app.c: Fixed compiler warning
 
 	* src/glade-editor.c: removed useless include
