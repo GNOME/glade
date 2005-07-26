@@ -36,25 +36,32 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
-#define d(x)
 
 struct _GladeCatalog
 {
-	gchar *library;
+	gchar *library;          /* Library name for backend support  */
 
-	gchar *name;
+	gchar *name;             /* Symbolic catalog name             */
+	gchar *dep_catalog;      /* Symbolic name of the catalog that
+				  * this catalog depends on           */
+	
+	GList *widget_groups;    /* List of widget groups (palette)   */
+	GList *widget_classes;   /* List of widget classes (all)      */
 
-	GList *widget_groups;
-	GList *widget_classes;
+	GladeXmlContext *context;/* Xml context is stored after open
+				  * before classes are loaded         */
 };
 
-struct _GladeWidgetGroup {
-	gchar *name;
-	gchar *title;
-	GList *widget_classes;
+struct _GladeWidgetGroup
+{
+	gchar *name;             /* Group name                        */
+	gchar *title;            /* Group name on palette             */
+	GList *widget_classes;   /* List of classes in the palette    */
 };
 
-static GladeCatalog *  catalog_load         (const char       *filename);
+static void            catalog_load         (GladeCatalog     *catalog);
+static GladeCatalog   *catalog_open         (const gchar      *filename);
+static GList          *catalog_sort         (GList            *catalogs);
 static gboolean        catalog_load_classes (GladeCatalog     *catalog,
 					     GladeXmlNode     *widgets_node);
 static gboolean        catalog_load_group   (GladeCatalog     *catalog,
@@ -63,23 +70,24 @@ static gboolean        catalog_load_group   (GladeCatalog     *catalog,
 void                   widget_group_free    (GladeWidgetGroup *group);
 
 
+
 static GladeCatalog *
-catalog_load (const char *filename)
+catalog_open (const gchar *filename)
 {
 	GladeCatalog    *catalog;
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
 	GladeXmlNode    *root;
-	GladeXmlNode    *node;
 
-	d(g_print ("Loading catalog: %s\n", filename));
+	g_debug ("Loading catalog: %s\n", filename);
+
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
 						   NULL, 
 						   GLADE_TAG_GLADE_CATALOG);
 	if (!context) 
 	{
-		g_warning ("Couldn't load catalog [%s].", filename);
+		g_warning ("Couldn't open catalog [%s].", filename);
 		return NULL;
 	}
 
@@ -95,8 +103,9 @@ catalog_load (const char *filename)
 	}
 
 	catalog = g_new0 (GladeCatalog, 1);
+	catalog->context = context;
+	catalog->name    = glade_xml_get_property_string (root, GLADE_TAG_NAME);
 
-	catalog->name = glade_xml_get_property_string (root, GLADE_TAG_NAME);
 	if (!catalog->name) 
 	{
 		g_warning ("Couldn't find required property 'name' in catalog root node");
@@ -105,10 +114,30 @@ catalog_load (const char *filename)
 		return NULL;
 	}
 	
-	catalog->library = glade_xml_get_property_string (root, 
-							  GLADE_TAG_LIBRARY);
+	catalog->library =
+		glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
+	catalog->dep_catalog =
+		glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
 
+	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
+
+	return catalog;
+}
+
+
+static void
+catalog_load (GladeCatalog *catalog)
+{
+	GladeXmlDoc     *doc;
+	GladeXmlNode    *root;
+	GladeXmlNode    *node;
+
+	g_return_if_fail (catalog->context != NULL);
+	
+	doc  = glade_xml_context_get_doc (catalog->context);
+	root = glade_xml_doc_get_root (doc);
 	node = glade_xml_node_get_children (root);
+
 	for (; node; node = glade_xml_node_next (node))
 	{
 		const gchar *node_name;
@@ -127,13 +156,66 @@ catalog_load (const char *filename)
 	}
 
 	catalog->widget_groups = g_list_reverse (catalog->widget_groups);
+	catalog->context =
+		(glade_xml_context_free (catalog->context), NULL);
+	
+	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
 
-	glade_xml_context_free (context);
-
-	d(g_print ("Successfully parsed catalog: %s\n", catalog->name));
-
-	return catalog;
+	return;
 }
+
+static gint
+catalog_find_by_name (GladeCatalog *catalog, const gchar *name)
+{
+	return !strcmp (catalog->name, name);
+}
+
+static GList *
+catalog_sort (GList *catalogs)
+{
+	GList        *l, *node, *sorted = NULL, *sort;
+	GladeCatalog *catalog, *cat;
+
+	/* Add all dependant catalogs to the sorted list first */
+	for (l = catalogs; l; l = l->next)
+	{
+		catalog = l->data;
+		sort    = NULL;
+
+		/* itterate ascending through dependancy heirarchy */
+		while (catalog->dep_catalog) {
+			node = g_list_find_custom
+				(catalogs, catalog->dep_catalog,
+				 (GCompareFunc)catalog_find_by_name);
+
+			if (node)
+				cat = node->data;
+			else
+			{
+				g_critical ("Catalog %s depends on catalog %s, not found",
+					    catalog->name, catalog->dep_catalog);
+				break;
+			}			
+
+			/* Prepend to sort list */
+			if (g_list_find (sort, node->data) == NULL &&
+			    g_list_find (sorted, node->data) == NULL)
+				sort = g_list_prepend (sort, cat);
+
+			catalog = cat;
+		}
+		sorted = g_list_concat (sorted, sort);
+	}
+	
+	/* Append all independant catalogs after */
+	for (l = catalogs; l; l = l->next)
+		if (g_list_find (sorted, l->data) == NULL)
+			sorted = g_list_append (sorted, l->data);
+
+	g_list_free (catalogs);
+	return sorted;
+}
+
 
 static gboolean
 catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
@@ -188,7 +270,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		return FALSE;	
 	}
 
-	d(g_print ("Loading widget group: %s\n", group->title));
+	g_debug ("Loading widget group: %s\n", group->title);
 
 	group->widget_classes = NULL;
 
@@ -251,7 +333,7 @@ glade_catalog_load_all (void)
 	GDir         *dir;
 	GError       *error;
 	const gchar  *filename;
-	GList        *catalogs;
+	GList        *catalogs, *l;
 	GladeCatalog *catalog;
 	
 	/* Read all files in catalog dir */
@@ -263,6 +345,10 @@ glade_catalog_load_all (void)
 		return NULL;
 	}
 
+	/* Catalogs need dependancies, most catalogs depend on
+	 * the gtk+ catalog, but some custom toolkits may depend
+	 * on the gnome catalog for instance.
+	 */
 	catalogs = NULL;
 	while ((filename = g_dir_read_name (dir)))
 	{
@@ -273,18 +359,25 @@ glade_catalog_load_all (void)
 
 		catalog_filename = g_build_filename (glade_catalogs_dir,
 						     filename, NULL);
-		catalog = catalog_load (catalog_filename);
+		catalog = catalog_open (catalog_filename);
 		g_free (catalog_filename);
 
 		if (catalog) 
-			catalogs = g_list_append (catalogs, catalog);
+			catalogs = g_list_prepend (catalogs, catalog);
 		else
 			g_warning ("Unable to open the catalog file %s.\n", 
 				   filename);
 	}
 
-	g_dir_close (dir);
+	/* After sorting, load */
+	catalogs = catalog_sort (catalogs);
+	for (l = catalogs; l; l = l->next)
+	{
+		catalog = l->data;
+		catalog_load (catalog);
+	}
 	
+	g_dir_close (dir);
 	return catalogs;
 }
 
