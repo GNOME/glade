@@ -55,7 +55,6 @@ libgladeui_1_la_SOURCES = \
 	glade-command.c \
 	glade-menu-editor.c \
 	glade-keys-dialog.c \
-	glade-transform.c \
 	glade-id-allocator.c \
 	glade-marshallers.c \
 	glade-parser.c \
@@ -92,7 +91,6 @@ libgladeuiinclude_HEADERS = \
 	glade-command.h \
 	glade-menu-editor.h \
 	glade-keys-dialog.h \
-	glade-transform.h \
 	glade-id-allocator.h \
 	glade-marshallers.h \
 	glade-parser.h \

@@ -46,7 +46,6 @@
 #include "glade-utils.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-transform.h"
 #include "glade-app.h"
 #include "glade-paths.h"
 
@@ -306,8 +305,6 @@ glade_app_init (GladeApp *app)
 		glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
 		g_free (prefix);
 #endif
-		/* register transformation functions */
-		glade_register_transformations ();
 	
 		/*
 		 * 1. Init the cursors

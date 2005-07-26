@@ -1,5 +1,12 @@
 2005-07-26  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-transform.[ch], src/Makefile.am, src/glade_plugin.def:
+	  Removed glade-transform as its not used, this is taken care of by 
+	  glade_property_class_make_gvalue_from_string &
+	  glade_property_class_make_string_from_gvalue.
+
+2005-07-26  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-catalog.c, src/glade.h:
 	  Implemented catalog dependancies, i.e. if a catalog declares a widget
 	  that derives from a widget in another catalog; they need to be loaded
