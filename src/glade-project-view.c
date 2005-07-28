@@ -217,9 +217,8 @@ gpv_find_preceeding_sibling (GtkTreeModel *model,
 	}
 	else
 	{
-		g_return_val_if_fail
-			(gtk_tree_model_iter_has_child (model,
-							parent_iter), NULL);
+		if (!gtk_tree_model_iter_has_child (model, parent_iter))
+			return NULL;
 		gtk_tree_model_iter_children (model, &next, parent_iter);
 	}
 
@@ -309,10 +308,6 @@ glade_project_view_add_item (GladeProjectView *view,
 		g_list_free (children);
 	}
 	
-	view->updating_selection = TRUE;
-	glade_default_app_selection_set 
-		(glade_widget_get_object (widget), TRUE);
-	view->updating_selection = FALSE;
 }      
 
 static void

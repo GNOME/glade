@@ -191,8 +191,9 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 
 	g_object_class_install_property
 		(object_class, 	PROP_PARENT,
-		 g_param_spec_pointer ("parent", _("Parent"),
+		 g_param_spec_object ("parent", _("Parent"),
 				       _("A pointer to the parenting GladeWidget"),
+				       GLADE_TYPE_WIDGET,
 				       G_PARAM_READWRITE |
 				       G_PARAM_CONSTRUCT_ONLY));
 	
@@ -900,7 +901,7 @@ glade_widget_set_real_property (GObject         *object,
 		glade_widget_set_properties (widget, (GList *)g_value_get_pointer (value));
 		break;
 	case PROP_PARENT:
-		glade_widget_set_parent (widget, GLADE_WIDGET (g_value_get_pointer (value)));
+		glade_widget_set_parent (widget, GLADE_WIDGET (g_value_get_object (value)));
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -939,7 +940,7 @@ glade_widget_get_real_property (GObject         *object,
 		g_value_set_pointer (value, widget->properties);
 		break;
 	case PROP_PARENT:
-		g_value_set_pointer (value, widget->parent);
+		g_value_set_object (value, widget->parent);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);

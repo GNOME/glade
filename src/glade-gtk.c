@@ -535,52 +535,7 @@ glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 	notebook = GTK_NOTEBOOK (object);
 	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
 
-	g_value_set_int (value, g_list_length (notebook->children));
-}
-
-/**
- * glade_gtk_notebook_get_tab_label_text:
- * @object: A GtkWidget which is a page on the notebook.
- * @value: The label text is returned as a GValue.
- *
- * Gets the tab label text of a GtkNotebook child widget.
- */
-void GLADEGTK_API
-glade_gtk_notebook_get_tab_label_text (GObject *object, GValue *value)
-{
-	GtkNotebook *notebook;
-	GtkWidget *child;
-
-	g_value_reset (value);
-	child = GTK_WIDGET (object);
-	g_return_if_fail (GTK_IS_WIDGET (child));
-	notebook = GTK_NOTEBOOK (gtk_widget_get_parent (child));
-	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
-
-	g_value_set_string (value, 
-		gtk_notebook_get_tab_label_text (notebook, child));
-}
-
-/**
- * glade_gtk_notebook_set_tab_label_text:
- * @object: A GtkWidget which is a page on the notebook.
- * @value: The new label text to be set.
- *
- * Sets the tab label text of a GtkNotebook child widget.
- */
-void GLADEGTK_API
-glade_gtk_notebook_set_tab_label_text (GObject *object, GValue *value)
-{
-	GtkNotebook *notebook;
-	GtkWidget *child;
-
-	child = GTK_WIDGET (object);
-	g_return_if_fail (GTK_IS_WIDGET (child));
-	notebook = GTK_NOTEBOOK (gtk_widget_get_parent (child));
-	g_return_if_fail (GTK_IS_NOTEBOOK (notebook));
-
-	gtk_notebook_set_tab_label_text (notebook, child, 
-					 g_value_get_string (value));
+	g_value_set_int (value, gtk_notebook_get_n_pages (notebook));
 }
 
 static gint
@@ -1000,6 +955,31 @@ glade_gtk_statusbar_set_has_resize_grip (GObject *object, GValue *value)
 	gtk_statusbar_set_has_resize_grip (statusbar, has_resize_grip);
 }
 
+GLADEGTK_API void
+glade_gtk_image_set_pixbuf (GObject *object, GValue *value)
+{
+	gchar *filename;
+	GdkPixbuf *pixbuf;
+	GError *error = NULL;
+	
+	filename = (gchar*) g_value_get_string (value);
+	if (filename && strlen (filename))
+	{
+		gchar *pathname;
+
+		GladeProject *project =
+			glade_widget_get_project (
+				glade_widget_get_from_gobject (object));
+
+		pathname = g_path_get_dirname (project->path);
+		filename = g_build_filename (pathname, filename, NULL);
+		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+		g_free (filename);
+		if (pixbuf)
+			gtk_image_set_from_pixbuf (GTK_IMAGE (object), pixbuf);
+	}
+}
+
 /**
  * empty:
  * @object: a #GObject
@@ -1212,7 +1192,6 @@ glade_gtk_dialog_post_create (GObject *object)
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
-
 /**
  * glade_gtk_message_dialog_post_create:
  * @object:
@@ -1285,6 +1264,124 @@ glade_gtk_tree_view_post_create (GObject *object)
 	column = gtk_tree_view_column_new_with_attributes
 		("Column 2", renderer, "text", 1, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+}
+
+
+static gboolean
+glade_gtk_frame_create_idle (gpointer data)
+{
+	GladeWidget       *gframe, *glabel;
+	GtkWidget         *label, *frame;
+	GladeWidgetClass  *wclass;
+	GladeProperty     *property;
+	GValue             value = { 0, };
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
+	g_return_val_if_fail (GTK_IS_FRAME (GLADE_WIDGET (data)->object), FALSE);
+	gframe = GLADE_WIDGET (data);
+	frame  = GTK_WIDGET (gframe->object);
+
+	/* If we didnt put this object here... */
+	if ((label = gtk_frame_get_label_widget (GTK_FRAME (frame))) == NULL ||
+	    (glade_widget_get_from_gobject (label) == NULL))
+	{
+		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+		glabel = glade_widget_new (gframe, wclass,
+					   glade_widget_get_project (gframe));
+		
+		if ((property = 
+		     glade_widget_get_property (glabel, "label")) != NULL)
+		{
+			g_value_init (&value, G_TYPE_STRING);
+			g_value_set_static_string (&value, "Frame");
+			glade_property_set (property, &value);
+			g_value_unset (&value);
+		}
+		else g_critical ("Unable to get \"label\" property\n");
+
+		g_object_set_data (glabel->object, "special-child-type", "label_item");
+		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
+
+		glade_project_add_object (gframe->project, glabel->object);
+		gtk_widget_show (GTK_WIDGET (glabel->object));
+	}
+	return FALSE;
+}
+
+/**
+ * glade_gtk_frame_post_create:
+ * @object:
+ *
+ * TODO: write me
+ */
+void GLADEGTK_API
+glade_gtk_frame_post_create (GObject *frame)
+{
+	GladeWidget *gframe;
+
+	g_return_if_fail (GTK_IS_FRAME (frame));
+	if ((gframe = glade_widget_get_from_gobject (frame)) != NULL)
+		g_idle_add (glade_gtk_frame_create_idle, gframe);
+
+}
+
+static gboolean
+glade_gtk_button_create_idle (gpointer data)
+{
+	GladeWidget       *gbutton, *glabel;
+	GtkWidget         *widget, *button;
+	GladeWidgetClass  *wclass;
+	GladeProperty     *property;
+	GValue             value = { 0, };
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
+	g_return_val_if_fail (GTK_IS_BUTTON (GLADE_WIDGET (data)->object), FALSE);
+	gbutton = GLADE_WIDGET (data);
+	button  = GTK_WIDGET (gbutton->object);
+
+	/* If we didnt put this object here... */
+	if ((widget = gtk_bin_get_child (GTK_BIN (button))) == NULL ||
+	    (glade_widget_get_from_gobject (widget) == NULL))
+	{
+		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+		glabel = glade_widget_new (gbutton, wclass,
+					   glade_widget_get_project (gbutton));
+		
+		if ((property = 
+		     glade_widget_get_property (glabel, "label")) != NULL)
+		{
+			g_value_init (&value, G_TYPE_STRING);
+			g_value_set_string (&value, gbutton->widget_class->generic_name);
+			glade_property_set (property, &value);
+			g_value_unset (&value);
+		}
+		else g_critical ("Unable to get \"label\" property\n");
+
+		if (widget)
+			gtk_container_remove (GTK_CONTAINER (button), widget);
+		gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (glabel->object));
+
+		glade_project_add_object (gbutton->project, glabel->object);
+		gtk_widget_show (GTK_WIDGET (glabel->object));
+	}
+	return FALSE;
+}
+
+/**
+ * glade_gtk_button_post_create:
+ * @object:
+ *
+ * TODO: write me
+ */
+void GLADEGTK_API
+glade_gtk_button_post_create (GObject *button)
+{
+	GladeWidget *gbutton;
+
+	g_return_if_fail (GTK_IS_BUTTON (button));
+	if ((gbutton = glade_widget_get_from_gobject (button)) != NULL)
+		g_idle_add (glade_gtk_button_create_idle, gbutton);
+
 }
 
 /* ------------------------ Replace child functions ------------------------ */
@@ -1473,24 +1570,11 @@ glade_gtk_paned_fill_empty (GObject *paned)
 void GLADEGTK_API
 glade_gtk_frame_fill_empty (GObject *frame)
 {
-	GtkWidget *widget;
-
 	g_return_if_fail (GTK_IS_FRAME (frame));
 
 	if ((gtk_bin_get_child (GTK_BIN (frame))) == NULL)
 		gtk_container_add (GTK_CONTAINER (frame), glade_placeholder_new ());
 
-
-	widget = gtk_frame_get_label_widget (GTK_FRAME (frame));
-
-	if (widget == NULL ||
-	    (GLADE_IS_PLACEHOLDER (widget) == FALSE && 
-	     glade_widget_get_from_gobject (widget) == NULL))
-	{
-		GtkWidget *placeholder = glade_placeholder_new ();
-		g_object_set_data (G_OBJECT (placeholder), "special-child-type", "label_item");
-		gtk_frame_set_label_widget (GTK_FRAME (frame), placeholder);
-	}
 }
 
 /* ---------------------- Get Internal Child functions ---------------------- */
@@ -1674,31 +1758,6 @@ glade_gtk_button_add_child (GObject *object, GObject *child)
 		gtk_container_remove (GTK_CONTAINER (object), old);
 	
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-}
-
-GLADEGTK_API void
-glade_gtk_image_set_pixbuf (GObject *object, GValue *value)
-{
-	gchar *filename;
-	GdkPixbuf *pixbuf;
-	GError *error = NULL;
-	
-	filename = (gchar*) g_value_get_string (value);
-	if (filename && strlen (filename))
-	{
-		gchar *pathname;
-
-		GladeProject *project =
-			glade_widget_get_project (
-				glade_widget_get_from_gobject (object));
-
-		pathname = g_path_get_dirname (project->path);
-		filename = g_build_filename (pathname, filename, NULL);
-		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
-		g_free (filename);
-		if (pixbuf)
-			gtk_image_set_from_pixbuf (GTK_IMAGE (object), pixbuf);
-	}
 }
 
 GLADEGTK_API void

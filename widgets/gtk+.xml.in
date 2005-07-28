@@ -326,6 +326,7 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkButton" generic-name="button" title="Button">
+      <post-create-function>glade_gtk_button_post_create</post-create-function>
       <properties>
 
 	<property id="stock" name="Stock Button" default="glade-none">
@@ -340,7 +341,6 @@
 	  <get-function>ignore</get-function>
 	</property>
 
-	<property id="label" default="button"/>
       	<property id="relief">
   	  <displayable-values>
 	    <value id="GTK_RELIEF_NORMAL" name="Normal"/>
@@ -359,15 +359,9 @@
       </children>
     </glade-widget-class>
   
-    <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" title="Toggle Button">
-      <properties>
-	<property id="label" default="toggle button"/>
-      </properties>
-    </glade-widget-class>
-
+    <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" title="Toggle Button"/>
     <glade-widget-class name="GtkCheckButton" generic-name="checkbutton" title="Check Button">
       <properties>
-	<property id="label" default="check button"/>
 	<property id="draw-indicator" default="True"/>
       </properties>
     </glade-widget-class>
@@ -385,7 +379,6 @@
 
     <glade-widget-class name="GtkRadioButton" generic-name="radiobutton" title="Radio Button">
       <properties>
-	<property id="label" default="radio button"/>
 	<property id="draw-indicator" default="True"/>
 	<property id="group" name="Group" default="True">
 	  <spec>glade_gtk_standard_string_spec</spec>
@@ -569,12 +562,7 @@
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
-	    <property id="tab-label" name="Tab Label Text" >
-	      <spec>glade_gtk_standard_string_spec</spec>
-	      <tooltip>The tab label text of this page widget</tooltip>
-	      <set-function>glade_gtk_notebook_set_tab_label_text</set-function>
-	      <get-function>glade_gtk_notebook_get_tab_label_text</get-function>
-	    </property>
+	    <property id="tab-label" disabled="TRUE"/>
 	    <property id="tab-pack">
 	      <displayable-values>
 		<value id="GTK_PACK_START" name="Start"/>
@@ -587,6 +575,7 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkFrame" generic-name="frame" title="Frame">
+      <post-create-function>glade_gtk_frame_post_create</post-create-function>
       <properties>
 	<property id="label" disabled="TRUE"/>
 	<property id="shadow" disabled="True"/>

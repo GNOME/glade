@@ -81,7 +81,7 @@ struct _GladeWidgetKlass
 };
 
 LIBGLADEUI_API GType                   glade_widget_get_type		    (void);
-LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *widget,
+LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *parent,
 									     GladeWidgetClass *klass,
 									     GladeProject     *project);
 LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
