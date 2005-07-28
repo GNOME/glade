@@ -787,13 +787,13 @@ glade_widget_finalize (GObject *object)
 
 	if (widget->properties)
 	{
-		g_list_foreach (widget->properties, (GFunc)glade_property_free, NULL);
+		g_list_foreach (widget->properties, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->properties);
 	}
 	
 	if (widget->packing_properties)
 	{
-		g_list_foreach (widget->packing_properties, (GFunc)glade_property_free, NULL);
+		g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->packing_properties);
 	}
 	
@@ -1688,7 +1688,7 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_WIDGET (container));
 
-	g_list_foreach (widget->packing_properties, (GFunc) glade_property_free, NULL);
+	g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 	g_list_free (widget->packing_properties);
 
 	glade_widget_set_default_packing_properties (container, widget);
@@ -1809,7 +1809,7 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 		if (property->class->packing)
 			continue;
 
-		glade_property_write (props, property, interface);
+		glade_property_write (property, interface, props);
 	}
 	info->properties = (GladePropInfo *) props->data;
 	info->n_properties = props->len;
@@ -1933,7 +1933,7 @@ glade_widget_write_child (GArray      *children,
 
 			property = list->data;
 			g_assert (property->class->packing == TRUE);
-			glade_property_write (props, property, interface);
+			glade_property_write (property, interface, props);
 		}
 	}
 

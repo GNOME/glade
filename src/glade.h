@@ -1,3 +1,4 @@
+
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_H__
 #define __GLADE_H__
@@ -105,6 +106,8 @@
 #define GLADE_TAG_DISPLAYABLE_VALUES              "displayable-values"
 #define GLADE_TAG_NICK                            "nick"
 #define GLADE_TAG_SPECIAL_CHILD_TYPE              "special-child-type"
+#define GLADE_TAG_SAVE                            "save"
+#define GLADE_TAG_EDITABLE                        "editable"
 
 LIBGLADEUI_API gboolean glade_verbose;
 

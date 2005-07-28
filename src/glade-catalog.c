@@ -167,7 +167,7 @@ catalog_load (GladeCatalog *catalog)
 static gint
 catalog_find_by_name (GladeCatalog *catalog, const gchar *name)
 {
-	return !strcmp (catalog->name, name);
+	return strcmp (catalog->name, name);
 }
 
 static GList *
@@ -188,9 +188,7 @@ catalog_sort (GList *catalogs)
 				(catalogs, catalog->dep_catalog,
 				 (GCompareFunc)catalog_find_by_name);
 
-			if (node)
-				cat = node->data;
-			else
+			if ((cat = node->data) == NULL)
 			{
 				g_critical ("Catalog %s depends on catalog %s, not found",
 					    catalog->name, catalog->dep_catalog);
@@ -198,8 +196,8 @@ catalog_sort (GList *catalogs)
 			}			
 
 			/* Prepend to sort list */
-			if (g_list_find (sort, node->data) == NULL &&
-			    g_list_find (sorted, node->data) == NULL)
+			if (g_list_find (sort, cat) == NULL &&
+			    g_list_find (sorted, cat) == NULL)
 				sort = g_list_prepend (sort, cat);
 
 			catalog = cat;

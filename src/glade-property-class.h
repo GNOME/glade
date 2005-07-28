@@ -143,7 +143,13 @@ struct _GladePropertyClass
 				* means that it needs extra parameters in the
 				* UI.
 				*/
-	
+
+	gboolean save;      /* Whether we should save to the glade file or not
+			     * (mostly just for custom glade properties)
+			     */
+	gboolean editable;  /* Whether or not to show this property in the editor
+			     */
+
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 

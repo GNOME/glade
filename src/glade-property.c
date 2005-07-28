@@ -32,59 +32,22 @@
 #include "glade-project.h"
 #include "glade-widget-class.h"
 #include "glade-debug.h"
+#include "glade-app.h"
+#include "glade-editor.h"
+#include "glade-marshallers.h"
 
-/**
- * glade_property_new:
- * @class:
- * @widget:
- *
- * TODO: write me
- *
- * Returns:
- */
-GladeProperty *
-glade_property_new (GladePropertyClass *class, GladeWidget *widget, GValue *value)
+enum
 {
-	GladeProperty *property;
+	VALUE_CHANGED,
+	LAST_SIGNAL
+};
 
-	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
+static guint         glade_property_signals[LAST_SIGNAL] = { 0 };
+static GObjectClass* parent_class = NULL;
 
-	property          = g_new0 (GladeProperty, 1);
-	property->class   = class;
-	property->widget  = widget;
-	property->value   = value;
-	property->enabled = TRUE;
-
-	property->i18n_translatable = FALSE;
-	property->i18n_has_context = FALSE;
-	property->i18n_comment = NULL;
-	
-	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
-	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
-	    G_IS_PARAM_SPEC_LONG (class->pspec)    ||
-	    G_IS_PARAM_SPEC_ULONG (class->pspec)   ||
-	    G_IS_PARAM_SPEC_INT64 (class->pspec)   ||
-	    G_IS_PARAM_SPEC_UINT64 (class->pspec)  ||
-	    G_IS_PARAM_SPEC_INT (class->pspec)     ||
-	    G_IS_PARAM_SPEC_UINT (class->pspec))
-		property->enabled = class->optional_default;
-	
-	/* Create an empty default if the class does not specify a default value */
-	if (property->value == NULL)
-	{
-		if (!class->def)
-			property->value =
-				glade_property_class_make_gvalue_from_string (class, "");
-		else
-		{
-			property->value = g_new0 (GValue, 1);
-			g_value_init (property->value, class->def->g_type);
-			g_value_copy (class->def, property->value);
-		}
-	}
-	return property;
-}
-
+/*******************************************************************************
+                           GladeProperty class methods
+ *******************************************************************************/
 /**
  * glade_property_dup:
  * @template:
@@ -94,12 +57,12 @@ glade_property_new (GladePropertyClass *class, GladeWidget *widget, GValue *valu
  *
  * Returns:
  */
-GladeProperty *
-glade_property_dup (GladeProperty *template, GladeWidget *widget)
+static GladeProperty *
+glade_property_dup_impl (GladeProperty *template, GladeWidget *widget)
 {
 	GladeProperty *property;
 
-	property = g_new0 (GladeProperty, 1);
+	property          = g_object_new (GLADE_TYPE_PROPERTY, NULL);
 	property->class   = template->class;
 	property->widget  = widget;
 	property->value   = g_new0 (GValue, 1);
@@ -109,33 +72,10 @@ glade_property_dup (GladeProperty *template, GladeWidget *widget)
 	g_value_copy (template->value, property->value);
 
 	property->i18n_translatable = template->i18n_translatable;
-	property->i18n_has_context = template->i18n_has_context;
-	property->i18n_comment = g_strdup (template->i18n_comment);
+	property->i18n_has_context  = template->i18n_has_context;
+	property->i18n_comment      = g_strdup (template->i18n_comment);
 	
 	return property;
-}
-
-/**
- * glade_property_free:
- * @property: a #GladeProperty
- *
- * Frees @property and its associated memory.
- */
-void
-glade_property_free (GladeProperty *property)
-{
-	property->class = NULL;
-	property->widget = NULL;
-	if (property->value)
-	{
-		g_value_unset (property->value);
-		g_free (property->value);
-		property->value = NULL;
-	}
-
-	g_free (property->i18n_comment);
-	
-	g_free (property);
 }
 
 /**
@@ -167,12 +107,9 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
  *
  * TODO: write me
  */
-void
-glade_property_set (GladeProperty *property, const GValue *value)
+static void
+glade_property_set_impl (GladeProperty *property, const GValue *value)
 {
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (value != NULL);
-	
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
 		g_warning ("Trying to assign an incompatible value to property %s\n",
@@ -193,7 +130,7 @@ glade_property_set (GladeProperty *property, const GValue *value)
 	g_value_reset (property->value);
 	g_value_copy (value, property->value);
 
-	glade_property_sync(property);
+	GLADE_PROPERTY_GET_CINFO (property)->sync (property);
 }
 
 /**
@@ -202,15 +139,10 @@ glade_property_set (GladeProperty *property, const GValue *value)
  *
  * TODO: write me
  */
-void
-glade_property_sync (GladeProperty *property)
+static void
+glade_property_sync_impl (GladeProperty *property)
 {
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-	if (!property->enabled)
-		return;
-
-	if (property->loading)
+	if (!property->enabled || property->loading)
 		return;
 
 	property->loading = TRUE;
@@ -278,15 +210,17 @@ glade_property_sync (GladeProperty *property)
  *
  * Returns:
  */
-gboolean
-glade_property_write (GArray *props, GladeProperty *property, GladeInterface *interface)
+static gboolean
+glade_property_write_impl (GladeProperty  *property, 
+			   GladeInterface *interface,
+			   GArray         *props)
 {
 	GladePropInfo info = { 0 };
 	gchar *tmp;
 	gchar *default_str = NULL;
 	gboolean skip;
 
-	if (!property->enabled)
+	if (!property->class->save || !property->enabled)
 		return FALSE;
 
 	if (!glade_property_class_is_visible (property->class,
@@ -360,9 +294,9 @@ glade_property_write (GArray *props, GladeProperty *property, GladeInterface *in
 
 /* Parameters for translatable properties. */
 
-void
-glade_property_i18n_set_comment (GladeProperty *property,
-				 const gchar    *str)
+static void
+glade_property_i18n_set_comment_impl (GladeProperty *property,
+				      const gchar    *str)
 {
 	if (property->i18n_comment)
 		g_free (property->i18n_comment);
@@ -370,35 +304,319 @@ glade_property_i18n_set_comment (GladeProperty *property,
 	property->i18n_comment = g_strdup (str);
 }
 
+static const gchar *
+glade_property_i18n_get_comment_impl (GladeProperty *property)
+{
+	return property->i18n_comment;
+}
+
+static void
+glade_property_i18n_set_translatable_impl (GladeProperty *property,
+					   gboolean       translatable)
+{
+	property->i18n_translatable = translatable;
+}
+
+static gboolean
+glade_property_i18n_get_translatable_impl (GladeProperty *property)
+{
+	return property->i18n_translatable;
+}
+
+static void
+glade_property_i18n_set_has_context_impl (GladeProperty *property,
+					  gboolean       has_context)
+{
+	property->i18n_has_context = has_context;
+}
+
+static gboolean
+glade_property_i18n_get_has_context_impl (GladeProperty *property)
+{
+	return property->i18n_has_context;
+}
+
+static void
+glade_property_set_sensitive_impl (GladeProperty *property, 
+				   gboolean       sensitive)
+{
+	if (property->sensitive != sensitive)
+	{
+		GladeEditor *editor = glade_default_app_get_editor ();
+
+		property->sensitive = sensitive;
+
+		/* Reload editor if this widget is selected */
+		if (editor->loaded_widget == property->widget)
+			glade_editor_refresh (editor);
+	}
+}
+
+
+
+/*******************************************************************************
+                      GObjectClass & Object Construction
+ *******************************************************************************/
+static void
+glade_property_finalize (GObject *object)
+{
+	GladeProperty *property = GLADE_PROPERTY (object);
+
+	if (property->value)
+	{
+		g_value_unset (property->value);
+		g_free (property->value);
+		property->value = NULL;
+	}
+	g_free (property->i18n_comment);
+	g_free (property);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+glade_property_init (GladeProperty *property)
+{
+	property->enabled   = TRUE;
+	property->sensitive = TRUE;
+	property->i18n_translatable = FALSE;
+	property->i18n_has_context = FALSE;
+	property->i18n_comment = NULL;
+}
+
+static void
+glade_property_cinfo_init (GladePropertyCinfo *prop_class)
+{
+	GObjectClass       *object_class;
+	g_return_if_fail (prop_class != NULL);
+	
+	parent_class = g_type_class_peek_parent (prop_class);
+	object_class = G_OBJECT_CLASS (prop_class);
+	
+	object_class->finalize  = glade_property_finalize;
+
+	/* Class methods */
+	prop_class->set                   = glade_property_set_impl;
+	prop_class->sync                  = glade_property_sync_impl;
+	prop_class->write                 = glade_property_write_impl;
+	prop_class->dup                   = glade_property_dup_impl;
+	prop_class->set_sensitive         = glade_property_set_sensitive_impl;
+	prop_class->i18n_set_comment      = glade_property_i18n_set_comment_impl;
+	prop_class->i18n_get_comment      = glade_property_i18n_get_comment_impl;
+	prop_class->i18n_set_translatable = glade_property_i18n_set_translatable_impl;
+	prop_class->i18n_get_translatable = glade_property_i18n_get_translatable_impl;
+	prop_class->i18n_set_has_context  = glade_property_i18n_set_has_context_impl;
+	prop_class->i18n_get_has_context  = glade_property_i18n_get_has_context_impl;
+
+	/* Signals */
+	prop_class->value_changed         = NULL;
+
+	glade_property_signals[VALUE_CHANGED] =
+		g_signal_new ("value-changed",
+			      G_TYPE_FROM_CLASS (parent_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladePropertyCinfo,
+					       value_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+}
+
+
+GType
+glade_property_get_type (void)
+{
+	static GType property_type = 0;
+	
+	if (!property_type)
+	{
+		static const GTypeInfo property_info = 
+		{
+			sizeof (GladePropertyCinfo), // Cinfo is our class
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_property_cinfo_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,           /* class_data */
+			sizeof (GladeProperty),
+			0,              /* n_preallocs */
+			(GInstanceInitFunc) glade_property_init,
+			NULL            /* value_table */
+		};
+		property_type = 
+			g_type_register_static (G_TYPE_OBJECT,
+						"GladeProperty",
+						&property_info, 0);
+	}
+	return property_type;
+}
+
+/*******************************************************************************
+                                     API
+ *******************************************************************************/
+/**
+ * glade_property_new:
+ * @class:
+ * @widget:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+GladeProperty *
+glade_property_new (GladePropertyClass *class, 
+		    GladeWidget        *widget, 
+		    GValue             *value)
+{
+	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
+
+	property            = 
+		(GladeProperty *)g_object_new (GLADE_TYPE_PROPERTY, NULL);
+	property->class     = class;
+	property->widget    = widget;
+	property->value     = value;
+	
+	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
+	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
+	    G_IS_PARAM_SPEC_LONG (class->pspec)    ||
+	    G_IS_PARAM_SPEC_ULONG (class->pspec)   ||
+	    G_IS_PARAM_SPEC_INT64 (class->pspec)   ||
+	    G_IS_PARAM_SPEC_UINT64 (class->pspec)  ||
+	    G_IS_PARAM_SPEC_INT (class->pspec)     ||
+	    G_IS_PARAM_SPEC_UINT (class->pspec))
+		property->enabled = class->optional_default;
+	
+	/* Create an empty default if the class does not specify a default value */
+	if (property->value == NULL)
+	{
+		if (!class->def)
+			property->value =
+				glade_property_class_make_gvalue_from_string (class, "");
+		else
+		{
+			property->value = g_new0 (GValue, 1);
+			g_value_init (property->value, class->def->g_type);
+			g_value_copy (class->def, property->value);
+		}
+	}
+	return property;
+}
+
+/**
+ * glade_property_dup:
+ * @template:
+ * @widget:
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+GladeProperty *
+glade_property_dup (GladeProperty *template, GladeWidget *widget)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (template), NULL);
+	return GLADE_PROPERTY_GET_CINFO (template)->dup (template, widget);
+}
+
+/**
+ * glade_property_set:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_set (GladeProperty *property, const GValue *value)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
+	GLADE_PROPERTY_GET_CINFO (property)->set (property, value);
+}
+
+/**
+ * glade_property_sync:
+ * @property: a #GladeProperty
+ *
+ * TODO: write me
+ */
+void
+glade_property_sync (GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->sync (property);
+}
+
+/**
+ * glade_property_write:
+ * @property: a #GladeProperty
+ * @interface: a #GladeInterface
+ * @props: a GArray of #GladePropInfo
+ *
+ * TODO: write me
+ *
+ * Returns:
+ */
+gboolean
+glade_property_write (GladeProperty *property, GladeInterface *interface, GArray *props)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	g_return_val_if_fail (interface != NULL, FALSE);
+	g_return_val_if_fail (props != NULL, FALSE);
+	return GLADE_PROPERTY_GET_CINFO (property)->write (property, interface, props);
+}
+
+/* Parameters for translatable properties. */
+void
+glade_property_i18n_set_comment (GladeProperty *property,
+				 const gchar    *str)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_comment (property, str);
+}
+
 const gchar *
 glade_property_i18n_get_comment (GladeProperty *property)
 {
-	return property->i18n_comment;
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_comment (property);
 }
 
 void
 glade_property_i18n_set_translatable (GladeProperty *property,
 				      gboolean       translatable)
 {
-	property->i18n_translatable = translatable;
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_translatable (property, translatable);
 }
 
 gboolean
 glade_property_i18n_get_translatable (GladeProperty *property)
 {
-	return property->i18n_translatable;
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_translatable (property);
 }
 
 void
 glade_property_i18n_set_has_context (GladeProperty *property,
 				     gboolean       has_context)
 {
-	property->i18n_has_context = has_context;
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_has_context (property, has_context);
 }
 
 gboolean
 glade_property_i18n_get_has_context (GladeProperty *property)
 {
-	return property->i18n_has_context;
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_has_context (property);
 }
 
+void
+glade_property_set_sensitive (GladeProperty *property, 
+			      gboolean       sensitive)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->set_sensitive (property, sensitive);
+}

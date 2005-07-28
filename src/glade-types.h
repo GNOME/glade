@@ -15,6 +15,7 @@ typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
 typedef struct _GladePackagingDefault  GladePackingDefault;
 
 typedef struct _GladeProperty      GladeProperty;
+typedef struct _GladePropertyCinfo GladePropertyCinfo;
 typedef struct _GladePropertyClass GladePropertyClass;
 typedef struct _GladePropertyQuery GladePropertyQuery;
 
