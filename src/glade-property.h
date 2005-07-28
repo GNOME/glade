@@ -62,7 +62,7 @@ struct _GladePropertyCinfo
 
 	/* Class methods */
 	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
-	void                    (* set)                   (GladeProperty *, const GValue *);
+	void                    (* set_value)             (GladeProperty *, const GValue *);
 	void                    (* sync)                  (GladeProperty *);
 	gboolean                (* write)                 (GladeProperty *, GladeInterface *, GArray *);
 	void                    (* set_sensitive)         (GladeProperty *, gboolean);
@@ -83,8 +83,10 @@ LIBGLADEUI_API GladeProperty      *glade_property_new                   (GladePr
 									 GValue             *value);
 LIBGLADEUI_API GladeProperty      *glade_property_dup                   (GladeProperty      *template,
 									 GladeWidget        *widget);
-LIBGLADEUI_API void                glade_property_set                   (GladeProperty      *property, 
+LIBGLADEUI_API void                glade_property_set_value             (GladeProperty      *property, 
 									 const GValue       *value);
+LIBGLADEUI_API void                glade_property_set                   (GladeProperty      *property, 
+									 ...);
 LIBGLADEUI_API void                glade_property_sync                  (GladeProperty      *property);
 LIBGLADEUI_API gboolean            glade_property_write                 (GladeProperty      *property, 
 									 GladeInterface     *interface, 

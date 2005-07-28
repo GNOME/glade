@@ -1,5 +1,17 @@
 2005-07-28  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-app.c: Fixed a few compile warnings and fixed signal emmission to
+	  use g_signal_emit().
+	
+	* src/glade-property.[ch]: glade_property_set to use a va_list for convenience,
+	  added glade_property_set_value for setting properties with GValues.
+	  Also added emission of value-changed signal.
+	
+	* src/glade-command.c, src/glade-editor.c, src/glade-gtk.c, src/glade-widget.c:
+	  Changed callers.
+	
+2005-07-28  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-catalog.c: Fixed bug in catalog_find_by_name (Luc Simard)
 
 	* src/glade-editor.c: Played around with how properties are dealt with.

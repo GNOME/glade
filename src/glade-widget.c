@@ -322,7 +322,7 @@ glade_widget_copy_packing_props (GladeWidget *parent,
 		GladeProperty *dup_prop  = GLADE_PROPERTY(l->data);
 		GladeProperty *orig_prop =
 			glade_widget_get_property (template, dup_prop->class->id);
-		glade_property_set (dup_prop, orig_prop->value);
+		glade_property_set_value (dup_prop, orig_prop->value);
 	}
 }
 
@@ -358,7 +358,7 @@ glade_widget_copy_props (GladeWidget *widget,
 		GladeProperty *dup_prop  = GLADE_PROPERTY(l->data);
 		GladeProperty *orig_prop =
 			glade_widget_get_property (template, dup_prop->class->id);
-		glade_property_set (dup_prop, orig_prop->value);
+		glade_property_set_value (dup_prop, orig_prop->value);
 	}
 }
 
@@ -2000,7 +2000,7 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 	
 	if ((gvalue = glade_widget_value_from_prop_info (info, wclass)) != NULL)
 	{
-		glade_property_set (property, gvalue);
+		glade_property_set_value (property, gvalue);
 
 		g_value_unset (gvalue);
 		g_free (gvalue);

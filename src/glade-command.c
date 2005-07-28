@@ -322,7 +322,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	/* store the current value for undo */
 	g_value_copy (me->property->value, me->arg_value);
 
-	glade_property_set (me->property, &new_value);
+	glade_property_set_value (me->property, &new_value);
 
 	g_value_unset (&new_value);
 

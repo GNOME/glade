@@ -188,7 +188,7 @@ glade_editor_property_changed_text_common (GladeProperty *property,
 	g_value_set_string (&val, text);
 
 	if (from_query_dialog == TRUE)
-		glade_property_set (property, &val);
+		glade_property_set_value (property, &val);
 	else 
 		glade_command_set_property (property, &val);
 
@@ -278,7 +278,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 	g_value_set_enum (&val, ival);
 
 	if (property->from_query_dialog)
-		glade_property_set (gproperty, &val);
+		glade_property_set_value (gproperty, &val);
 	else
 		glade_command_set_property (gproperty, &val);
 
@@ -368,7 +368,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 			   g_type_name(property->property->class->pspec->value_type));
 
 	if (property->from_query_dialog)
-		glade_property_set (property->property, &val);
+		glade_property_set_value (property->property, &val);
 	else
 		glade_command_set_property (property->property, &val);
 
@@ -399,7 +399,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 	g_value_set_boolean (&val, state);
 
 	if (property->from_query_dialog)
-		glade_property_set (property->property, &val);
+		glade_property_set_value (property->property, &val);
 	else
 		glade_command_set_property (property->property, &val);
 
@@ -433,7 +433,7 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 	g_value_set_uint (&val, unich);
 
 	if (property->from_query_dialog)
-		glade_property_set (property->property, &val);
+		glade_property_set_value (property->property, &val);
 	else
 		glade_command_set_property (property->property, &val);
 
@@ -635,7 +635,7 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 			g_value_set_flags (&val, new_value);
 
 			if (property->from_query_dialog)
-				glade_property_set (property->property, &val);
+				glade_property_set_value (property->property, &val);
 			else
 				glade_command_set_property (property->property, &val);
 

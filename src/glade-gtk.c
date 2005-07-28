@@ -1015,7 +1015,6 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 	GladeWidget   *gwidget;
 	GladeWidget   *fixed_gwidget;
 	GladeProperty *property;
-	GValue         value = { 0, };
 	
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
@@ -1035,30 +1034,24 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 		{
 			/* reset the palette */
 			glade_palette_unselect_widget (glade_default_app_get_palette());
-
-			g_value_init (&value, G_TYPE_INT);
 			
 			property = glade_widget_get_property (gwidget, "x");
 			property->enabled = TRUE;
-			g_value_set_int (&value, (gint) event->x);
-			glade_property_set (property, &value);
+			glade_property_set (property, event->x);
 			
 			property = glade_widget_get_property (gwidget, "y");
 			property->enabled = TRUE;
-			g_value_set_int (&value, (gint) event->y);
-			glade_property_set (property, &value);
+			glade_property_set (property, event->y);
 			
 			property = glade_widget_get_property
 				(gwidget, "width-request");
 			property->enabled = TRUE;
-			g_value_set_int (&value, FIXED_DEFAULT_CHILD_WIDTH);
-			glade_property_set (property, &value);
+			glade_property_set (property, FIXED_DEFAULT_CHILD_WIDTH);
 			
 			property = glade_widget_get_property
 				(gwidget, "height-request");
 			property->enabled = TRUE;
-			g_value_set_int (&value, FIXED_DEFAULT_CHILD_HEIGHT);
-			glade_property_set (property, &value);
+			glade_property_set (property, FIXED_DEFAULT_CHILD_HEIGHT);
 			
 			/* We need to resync the editor so that width-request/height-request
 			 * are actualy enabled in the editor
@@ -1274,7 +1267,6 @@ glade_gtk_frame_create_idle (gpointer data)
 	GtkWidget         *label, *frame;
 	GladeWidgetClass  *wclass;
 	GladeProperty     *property;
-	GValue             value = { 0, };
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
 	g_return_val_if_fail (GTK_IS_FRAME (GLADE_WIDGET (data)->object), FALSE);
@@ -1291,13 +1283,9 @@ glade_gtk_frame_create_idle (gpointer data)
 		
 		if ((property = 
 		     glade_widget_get_property (glabel, "label")) != NULL)
-		{
-			g_value_init (&value, G_TYPE_STRING);
-			g_value_set_static_string (&value, "Frame");
-			glade_property_set (property, &value);
-			g_value_unset (&value);
-		}
-		else g_critical ("Unable to get \"label\" property\n");
+			glade_property_set (property, "Frame");
+		else 
+			g_critical ("Unable to get \"label\" property\n");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
@@ -1332,7 +1320,6 @@ glade_gtk_button_create_idle (gpointer data)
 	GtkWidget         *widget, *button;
 	GladeWidgetClass  *wclass;
 	GladeProperty     *property;
-	GValue             value = { 0, };
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
 	g_return_val_if_fail (GTK_IS_BUTTON (GLADE_WIDGET (data)->object), FALSE);
@@ -1349,13 +1336,9 @@ glade_gtk_button_create_idle (gpointer data)
 		
 		if ((property = 
 		     glade_widget_get_property (glabel, "label")) != NULL)
-		{
-			g_value_init (&value, G_TYPE_STRING);
-			g_value_set_string (&value, gbutton->widget_class->generic_name);
-			glade_property_set (property, &value);
-			g_value_unset (&value);
-		}
-		else g_critical ("Unable to get \"label\" property\n");
+			glade_property_set (property, gbutton->widget_class->generic_name);
+		else
+			g_critical ("Unable to get \"label\" property\n");
 
 		if (widget)
 			gtk_container_remove (GTK_CONTAINER (button), widget);
@@ -1594,7 +1577,7 @@ glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
 	GtkWidget *child_widget;
 
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
-
+	
 	if (strcmp ("vbox", name) == 0)
 		child_widget = GTK_DIALOG (dialog)->vbox;
 	else if (strcmp ("action_area", name) == 0)

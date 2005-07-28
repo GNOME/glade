@@ -388,7 +388,8 @@ glade_app_new (void)
 void
 glade_app_update_ui (GladeApp* app)
 {
-	g_signal_emit_by_name (app, "update-ui");
+	g_signal_emit (G_OBJECT (app),
+		       glade_app_signals[UPDATE_UI_SIGNAL], 0);
 }
 
 void
@@ -774,14 +775,14 @@ glade_default_app_get_projects (void)
 void
 glade_default_app_show_properties (gboolean raise)
 {
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	g_return_if_fail (glade_default_app != NULL);
 	return glade_app_show_properties (glade_default_app, raise);
 }
 
 void
 glade_default_app_hide_properties (void)
 {
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	g_return_if_fail (glade_default_app != NULL);
 	return glade_app_hide_properties (glade_default_app);
 }
 
