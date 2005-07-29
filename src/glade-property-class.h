@@ -98,10 +98,8 @@ struct _GladePropertyClass
 	gchar *name;     /* The name of the property. Like "Label" or "X Pad"
 			  * this is a translatable string
 			  */
-	gchar *tooltip; /* The tooltip. Currently unimplemented. Not sure if
-			 * it should go here
+	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
-
 	GValue *def; /* The default value for this property */
 
 	GValue *orig_def; /* If def is overridden by a xml file,

@@ -177,6 +177,14 @@ struct _GladeEditorProperty
 	gboolean from_query_dialog; /* If this input is part of a query dialog
 				     * this is TRUE.
 				     */
+
+	gulong         tooltip_id;   /* signal connection id for tooltip changes */
+	GladeProperty *tooltip_prop; /* the last object this was connected to    */
+
+	gulong         sensitive_id;   /* signal connection id for sensitivity changes */
+	GladeProperty *sensitive_prop; /* the last object this was connected to    */
+
+	GtkWidget *item_label; /* Keep a hold of this for tooltips */
 };
 
 LIBGLADEUI_API GType glade_editor_get_type (void);

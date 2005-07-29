@@ -49,6 +49,7 @@ glade_gtk_stock_get_type (void)
 {
 	static GType etype = 0;
 	if (etype == 0) {
+
 		static const GEnumValue values[] = {
 			{ 0,   "None",   "glade-none" },
 			{ 1,   "Ok",     "gtk-ok"     },
@@ -841,75 +842,40 @@ glade_gtk_table_verify_n_columns (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_button_set_stock (GObject *object, GValue *value)
 {
-	GladeWidget *glade_widget;
-	GtkWidget *button;
-	GtkStockItem item;
+	GladeWidget   *glade_widget;
 	GladeProperty *property;
-	GladeProperty *text;
 	GEnumClass    *eclass;
 	guint i;
 	gint val;
+
+	glade_widget = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GTK_IS_BUTTON (object));
+	g_return_if_fail (glade_widget != NULL);
 
 	val = g_value_get_enum (value);	
 	if (val == GPOINTER_TO_INT (g_object_get_data (object, "stock")))
 		return;
 
-	button = GTK_WIDGET (object);
-	g_return_if_fail (GTK_IS_BUTTON (button));
-	glade_widget = glade_widget_get_from_gobject (button);
 	g_return_if_fail (glade_widget != NULL);
 
 	property = glade_widget_get_property (glade_widget, "stock");
-	text = glade_widget_get_property (glade_widget, "label");
-
-	eclass = g_type_class_ref (property->class->pspec->value_type);
-	g_return_if_fail (property != NULL);
-	g_return_if_fail (text != NULL);
+	eclass   = g_type_class_ref (property->class->pspec->value_type);
 
 	for (i = 0; i < eclass->n_values; i++)
-	{
 		if (val == eclass->values[i].value)
 			break;
+	if (i >= eclass->n_values) {
+		g_type_class_unref (eclass);
+		return;
 	}
 
-	g_return_if_fail (i < eclass->n_values);
+	property = glade_widget_get_property (glade_widget, "use-stock");
+	glade_property_set (property, TRUE);
 
-	gtk_container_remove (GTK_CONTAINER (button),
-			      GTK_BIN (button)->child);
-	
-	if (!gtk_stock_lookup (eclass->values[i].value_nick, &item))
-	{
-		GtkWidget *label;
-		
-		if (g_value_get_boolean (
-			glade_widget_get_property (
-				glade_widget, "use-underline")->value))
-			label = gtk_label_new_with_mnemonic (g_value_get_string (text->value));
-		else
-			label = gtk_label_new (g_value_get_string (text->value));
-		gtk_container_add (GTK_CONTAINER (button), label);
-		gtk_widget_show_all (button);
-	}
-	else
-	{
-		GtkWidget *label;
-		GtkWidget *image;
-		GtkWidget *hbox;
+	property = glade_widget_get_property (glade_widget, "label");
+	glade_property_set (property, eclass->values[i].value_nick);
 
-		hbox = gtk_hbox_new (FALSE, 1);
-		label = gtk_label_new_with_mnemonic (item.label);
-		image = gtk_image_new_from_stock (eclass->values[i].value_nick,
-						  GTK_ICON_SIZE_BUTTON);
-
-		gtk_label_set_mnemonic_widget (GTK_LABEL (label),
-					       button);
-
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-		gtk_box_pack_end (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-		gtk_container_add (GTK_CONTAINER (button), hbox);
-		
-		gtk_widget_show_all (button);
-	}
+	glade_property_set_sensitive (property, FALSE, "Jolly rancher");
 
 	g_type_class_unref (eclass);
 	g_object_set_data (object, "stock", GINT_TO_POINTER (val));

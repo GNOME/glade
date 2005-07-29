@@ -539,9 +539,11 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 GladePropertyClass *
 glade_property_class_new_from_spec (GParamSpec *spec)
 {
+	GObjectClass       *gtk_widget_class;
 	GladePropertyClass *property_class;
 
 	g_return_val_if_fail (spec != NULL, NULL);
+	gtk_widget_class = g_type_class_ref (GTK_TYPE_WIDGET);
 	
 	property_class = glade_property_class_new ();
 
@@ -554,6 +556,15 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	
 	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
+
+
+	/* If its on the GtkWidgetClass, it goes in "common" 
+	 * (unless stipulated otherwise in the xml file)
+	 */
+	if (g_object_class_find_property (gtk_widget_class, 
+					  g_param_spec_get_name (spec)) != NULL)
+		property_class->common = TRUE;
+
 	if (!property_class->id || !property_class->name)
 	{
 		g_warning ("Failed to create property class from spec");
@@ -567,6 +578,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
   lblError:
 	glade_property_class_free (property_class);
+	g_type_class_unref (gtk_widget_class);
 	return NULL;
 }
 

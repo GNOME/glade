@@ -20,9 +20,15 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
+
+#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-widget.h"
@@ -39,7 +45,18 @@
 enum
 {
 	VALUE_CHANGED,
+	TOOLTIP_CHANGED,
 	LAST_SIGNAL
+};
+
+enum
+{
+	PROP_0,
+	PROP_ENABLED,
+	PROP_SENSITIVE,
+	PROP_I18N_TRANSLATABLE,
+	PROP_I18N_HAS_CONTEXT,
+	PROP_I18N_COMMENT
 };
 
 static guint         glade_property_signals[LAST_SIGNAL] = { 0 };
@@ -128,6 +145,14 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 			       glade_property_signals[VALUE_CHANGED],
 			       0, property->value);
 
+}
+
+static void
+glade_property_get_value_impl (GladeProperty *property, GValue *value)
+{
+
+	g_value_init (value, property->class->pspec->value_type);
+	g_value_copy (property->value, value);
 }
 
 static void
@@ -273,70 +298,81 @@ glade_property_write_impl (GladeProperty  *property,
 	return TRUE;
 }
 
-/* Parameters for translatable properties. */
-static void
-glade_property_i18n_set_comment_impl (GladeProperty *property,
-				      const gchar    *str)
+
+static G_CONST_RETURN gchar *
+glade_property_get_tooltip_impl (GladeProperty *property)
 {
-	if (property->i18n_comment)
-		g_free (property->i18n_comment);
-
-	property->i18n_comment = g_strdup (str);
+	gchar *tooltip = NULL;
+	if (property->sensitive == FALSE)
+		tooltip = property->insensitive_tooltip;
+	else
+		tooltip = property->class->tooltip;
+	return tooltip;
 }
-
-static const gchar *
-glade_property_i18n_get_comment_impl (GladeProperty *property)
-{
-	return property->i18n_comment;
-}
-
-static void
-glade_property_i18n_set_translatable_impl (GladeProperty *property,
-					   gboolean       translatable)
-{
-	property->i18n_translatable = translatable;
-}
-
-static gboolean
-glade_property_i18n_get_translatable_impl (GladeProperty *property)
-{
-	return property->i18n_translatable;
-}
-
-static void
-glade_property_i18n_set_has_context_impl (GladeProperty *property,
-					  gboolean       has_context)
-{
-	property->i18n_has_context = has_context;
-}
-
-static gboolean
-glade_property_i18n_get_has_context_impl (GladeProperty *property)
-{
-	return property->i18n_has_context;
-}
-
-static void
-glade_property_set_sensitive_impl (GladeProperty *property, 
-				   gboolean       sensitive)
-{
-	if (property->sensitive != sensitive)
-	{
-		GladeEditor *editor = glade_default_app_get_editor ();
-
-		property->sensitive = sensitive;
-
-		/* Reload editor if this widget is selected */
-		if (editor->loaded_widget == property->widget)
-			glade_editor_refresh (editor);
-	}
-}
-
-
 
 /*******************************************************************************
                       GObjectClass & Object Construction
  *******************************************************************************/
+static void
+glade_property_set_real_property (GObject      *object,
+				  guint         prop_id,
+				  const GValue *value,
+				  GParamSpec   *pspec)
+{
+	GladeProperty *property = GLADE_PROPERTY (object);
+
+	switch (prop_id)
+	{
+	case PROP_ENABLED:
+		glade_property_set_enabled (property, g_value_get_boolean (value));
+		break;
+	case PROP_I18N_TRANSLATABLE:
+		glade_property_i18n_set_translatable (property, g_value_get_boolean (value));
+		break;
+	case PROP_I18N_HAS_CONTEXT:
+		glade_property_i18n_set_has_context (property, g_value_get_boolean (value));
+		break;
+	case PROP_I18N_COMMENT:
+		glade_property_i18n_set_comment (property, g_value_get_string (value));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
+glade_property_get_real_property (GObject    *object,
+				  guint       prop_id,
+				  GValue     *value,
+				  GParamSpec *pspec)
+{
+	GladeProperty *property = GLADE_PROPERTY (object);
+
+	switch (prop_id)
+	{
+	case PROP_ENABLED:
+		g_value_set_boolean (value, glade_property_get_enabled (property));
+		break;
+	case PROP_SENSITIVE:
+		g_value_set_boolean (value, glade_property_get_sensitive (property));
+		break;
+	case PROP_I18N_TRANSLATABLE:
+		g_value_set_boolean (value, glade_property_i18n_get_translatable (property));
+		break;
+	case PROP_I18N_HAS_CONTEXT:
+		g_value_set_boolean (value, glade_property_i18n_get_has_context (property));
+		break;
+	case PROP_I18N_COMMENT:
+		g_value_set_string (value, glade_property_i18n_get_comment (property));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+
 static void
 glade_property_finalize (GObject *object)
 {
@@ -372,25 +408,59 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 	
 	parent_class = g_type_class_peek_parent (prop_class);
 	object_class = G_OBJECT_CLASS (prop_class);
-	
+
+	/* GObjectClass */
+	object_class->set_property = glade_property_set_real_property;
+	object_class->get_property = glade_property_get_real_property;
 	object_class->finalize  = glade_property_finalize;
 
 	/* Class methods */
+	prop_class->dup                   = glade_property_dup_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
+	prop_class->get_value             = glade_property_get_value_impl;
 	prop_class->sync                  = glade_property_sync_impl;
 	prop_class->write                 = glade_property_write_impl;
-	prop_class->dup                   = glade_property_dup_impl;
-	prop_class->set_sensitive         = glade_property_set_sensitive_impl;
-	prop_class->i18n_set_comment      = glade_property_i18n_set_comment_impl;
-	prop_class->i18n_get_comment      = glade_property_i18n_get_comment_impl;
-	prop_class->i18n_set_translatable = glade_property_i18n_set_translatable_impl;
-	prop_class->i18n_get_translatable = glade_property_i18n_get_translatable_impl;
-	prop_class->i18n_set_has_context  = glade_property_i18n_set_has_context_impl;
-	prop_class->i18n_get_has_context  = glade_property_i18n_get_has_context_impl;
+	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
+	prop_class->value_changed         = NULL;
+	prop_class->tooltip_changed         = NULL;
+
+	/* Properties */
+	g_object_class_install_property 
+		(object_class, PROP_ENABLED,
+		 g_param_spec_boolean 
+		 ("enabled", _("Enabled"), 
+		  _("If the property is optional, this is its enabled state"),
+		  TRUE, G_PARAM_READWRITE));
+
+	g_object_class_install_property 
+		(object_class, PROP_SENSITIVE,
+		 g_param_spec_boolean 
+		 ("sensitive", _("Sensitive"), 
+		  _("This gives backends control to set property sensitivity"),
+		  TRUE, G_PARAM_READABLE));
+
+	g_object_class_install_property 
+		(object_class, PROP_I18N_COMMENT,
+		 g_param_spec_string 
+		 ("i18n-comment", _("Comment"), 
+		  _("XXX FIXME: The translators comment ?"),
+		  NULL, G_PARAM_READWRITE));
+
+	g_object_class_install_property 
+		(object_class, PROP_I18N_TRANSLATABLE,
+		 g_param_spec_boolean 
+		 ("i18n-translatable", _("Translatable"), 
+		  _("Whether this property is translatable or not"),
+		  TRUE, G_PARAM_READWRITE));
+
+	g_object_class_install_property 
+		(object_class, PROP_I18N_HAS_CONTEXT,
+		 g_param_spec_boolean 
+		 ("i18n-has-context", _("Has Context"), 
+		  _("Whether this property is translatable or not"),
+		  TRUE, G_PARAM_READWRITE));
 
 	/* Signals */
-	prop_class->value_changed         = NULL;
-
 	glade_property_signals[VALUE_CHANGED] =
 		g_signal_new ("value-changed",
 			      G_TYPE_FROM_CLASS (parent_class),
@@ -400,6 +470,18 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__POINTER,
 			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+
+	glade_property_signals[TOOLTIP_CHANGED] =
+		g_signal_new ("tooltip-changed",
+			      G_TYPE_FROM_CLASS (parent_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladePropertyCinfo,
+					       tooltip_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+
+
 }
 
 
@@ -516,6 +598,21 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
 	GLADE_PROPERTY_GET_CINFO (property)->set_value (property, value);
 }
 
+/**
+ * glade_property_set_value:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_get_value (GladeProperty *property, GValue *value)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
+	GLADE_PROPERTY_GET_CINFO (property)->get_value (property, value);
+}
+
 
 /**
  * glade_property_set:
@@ -580,6 +677,70 @@ glade_property_set (GladeProperty *property, ...)
 }
 
 /**
+ * glade_property_set:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_get (GladeProperty *property, ...)
+{
+	va_list  vl;
+	GValue  *value;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
+
+	value = g_new0 (GValue, 1);
+	GLADE_PROPERTY_GET_CINFO (property)->get_value (property, value);
+
+	va_start (vl, property);
+
+	/* The argument is a pointer of the specified type, cast the pointer and assign
+	 * the value using the proper g_value_get_ variation.
+	 */
+	if (G_IS_PARAM_SPEC_ENUM(property->class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_enum (property->value);
+	else if (G_IS_PARAM_SPEC_FLAGS(property->class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_flags (property->value);
+	else if (G_IS_PARAM_SPEC_INT(property->class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_int (property->value);
+	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
+		*(guint *)(va_arg (vl, guint *)) = g_value_get_uint (property->value);
+	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
+		*(glong *)(va_arg (vl, glong *)) = g_value_get_long (property->value);
+	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
+		*(gulong *)(va_arg (vl, gulong *)) = g_value_get_ulong (property->value);
+	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
+		*(gint64 *)(va_arg (vl, gint64 *)) = g_value_get_int64 (property->value);
+	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
+		*(guint64 *)(va_arg (vl, guint64 *)) = g_value_get_uint64 (property->value);
+	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
+		*(gfloat *)(va_arg (vl, gdouble *)) = g_value_get_float (property->value);
+	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
+		*(gdouble *)(va_arg (vl, gdouble *)) = g_value_get_double (property->value);
+	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
+		*(gchar **)(va_arg (vl, gchar *)) = (gchar *)g_value_get_string (property->value);
+	else if (G_IS_PARAM_SPEC_CHAR(property->class->pspec))
+		*(gchar *)(va_arg (vl, gint *)) = g_value_get_char (property->value);
+	else if (G_IS_PARAM_SPEC_UCHAR(property->class->pspec))
+		*(guchar *)(va_arg (vl, guint *)) = g_value_get_uchar (property->value);
+	else if (G_IS_PARAM_SPEC_UNICHAR(property->class->pspec))
+		*(guint *)(va_arg (vl, gunichar *)) = g_value_get_uint (property->value);
+	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
+		*(gboolean *)(va_arg (vl, gboolean *)) = g_value_get_boolean (property->value);
+	else
+		g_critical ("Unsupported pspec type %s",
+			    g_type_name(property->class->pspec->value_type));
+	va_end (vl);
+
+
+	g_value_unset (value);
+	g_free (value);
+}
+
+/**
  * glade_property_sync:
  * @property: a #GladeProperty
  *
@@ -611,20 +772,38 @@ glade_property_write (GladeProperty *property, GladeInterface *interface, GArray
 	return GLADE_PROPERTY_GET_CINFO (property)->write (property, interface, props);
 }
 
+
+/**
+ * glade_property_get_tooltip:
+ * @property: a #GladeProperty
+ *
+ * Returns: The appropriate tooltip for the editor
+ */
+G_CONST_RETURN gchar *
+glade_property_get_tooltip (GladeProperty *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+	return GLADE_PROPERTY_GET_CINFO (property)->get_tooltip (property);
+}
+
 /* Parameters for translatable properties. */
 void
 glade_property_i18n_set_comment (GladeProperty *property,
-				 const gchar    *str)
+				 const gchar   *str)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_comment (property, str);
+	if (property->i18n_comment)
+		g_free (property->i18n_comment);
+
+	property->i18n_comment = g_strdup (str);
+	g_object_notify (G_OBJECT (property), "i18n-comment");
 }
 
 const gchar *
 glade_property_i18n_get_comment (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
-	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_comment (property);
+	return property->i18n_comment;
 }
 
 void
@@ -632,14 +811,15 @@ glade_property_i18n_set_translatable (GladeProperty *property,
 				      gboolean       translatable)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_translatable (property, translatable);
+	property->i18n_translatable = translatable;
+	g_object_notify (G_OBJECT (property), "i18n-translatable");
 }
 
 gboolean
 glade_property_i18n_get_translatable (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
-	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_translatable (property);
+	return property->i18n_translatable;
 }
 
 void
@@ -647,20 +827,68 @@ glade_property_i18n_set_has_context (GladeProperty *property,
 				     gboolean       has_context)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	GLADE_PROPERTY_GET_CINFO (property)->i18n_set_has_context (property, has_context);
+	property->i18n_has_context = has_context;
+	g_object_notify (G_OBJECT (property), "i18n-has-context");
 }
 
 gboolean
 glade_property_i18n_get_has_context (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
-	return 	GLADE_PROPERTY_GET_CINFO (property)->i18n_get_has_context (property);
+	return property->i18n_has_context;
 }
 
 void
 glade_property_set_sensitive (GladeProperty *property, 
-			      gboolean       sensitive)
+			      gboolean       sensitive,
+			      const gchar   *reason)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	GLADE_PROPERTY_GET_CINFO (property)->set_sensitive (property, sensitive);
+
+	/* reason is only why we're disableing it */
+	if (sensitive == FALSE)
+	{
+		if (property->insensitive_tooltip)
+			g_free (property->insensitive_tooltip);
+		property->insensitive_tooltip =
+			g_strdup (reason);
+	}
+
+	if (property->sensitive != sensitive)
+	{
+		gchar *tooltip;
+		property->sensitive = sensitive;
+
+		tooltip = (gchar *)GLADE_PROPERTY_GET_CINFO
+			(property)->get_tooltip (property);
+
+		g_signal_emit (G_OBJECT (property),
+			       glade_property_signals[TOOLTIP_CHANGED],
+			       0, tooltip);
+		
+	}
+	g_object_notify (G_OBJECT (property), "sensitive");
+}
+
+gboolean
+glade_property_get_sensitive (GladeProperty *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return property->sensitive;
+}
+
+void
+glade_property_set_enabled (GladeProperty *property, 
+			    gboolean       enabled)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	property->enabled = enabled;
+	g_object_notify (G_OBJECT (property), "enabled");
+}
+
+gboolean
+glade_property_get_enabled (GladeProperty *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return property->enabled;
 }

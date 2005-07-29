@@ -1,3 +1,20 @@
+2005-07-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.[ch]:
+	  - made some members properties
+	  - added glade_property_set (property, ...) convenience function
+	  - Added set_tooltip & tooltip changed signal
+	  - Added insensitive property.
+
+	* src/glade-property-class.h: Clarified comment
+
+	* src/glade-property-class.c: Properties that are native to GtkWidget go in
+	  the "common" tab by default (unless overridden by the xml file).
+
+	* src/glade-editor.[ch]: Now we watch property sensitivity and tooltip status
+
+	* src/glade-gtk.c: The beginnings of stock buttons.
+
 2005-07-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.c: Fixed a few compile warnings and fixed signal emmission to

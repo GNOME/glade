@@ -47,6 +47,9 @@
 
 static GtkNotebookClass *parent_class = NULL;
 
+static GdkColor *insensitive_colour = NULL;
+static GdkColor *normal_colour      = NULL;
+
 static void glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget);
 
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
@@ -322,7 +325,7 @@ glade_editor_property_changed_enabled (GtkWidget *button,
 	state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 	gtk_widget_set_sensitive (spin, state);
 	property = g_object_get_data (G_OBJECT (button), "user_data");
-	property->property->enabled = state;
+	glade_property_set_enabled (property->property, state);
 }
 
 static void
@@ -1059,22 +1062,34 @@ glade_editor_create_input_unichar (GladeEditorProperty *property)
  * Returns:
  */
 GtkWidget *
-glade_editor_create_item_label (GladePropertyClass *class)
+glade_editor_create_item_label (GladeEditorProperty *property)
 {
 	GtkWidget *eventbox;
 	GtkWidget *label;
-	gchar *text;
+	gchar     *text;
 
-	text = g_strdup_printf ("%s :", class->name);
+	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
+	g_return_val_if_fail (property->class != NULL, NULL);
+
+	text = g_strdup_printf ("%s :", property->class->name);
 	label = gtk_label_new (text);
 	g_free (text);
+
+	if (insensitive_colour == NULL)
+		insensitive_colour = 
+			&(GTK_WIDGET
+			  (label)->style->text[GTK_STATE_INSENSITIVE]);
+	if (normal_colour == NULL)
+		normal_colour = 
+			&(GTK_WIDGET
+			  (label)->style->text[GTK_STATE_NORMAL]);
+
 
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 
 	/* we need to wrap the label in an event box to add tooltips */
 	eventbox = gtk_event_box_new ();
 	gtk_container_add (GTK_CONTAINER (eventbox), label);
-	glade_util_widget_set_tooltip (eventbox, class->tooltip);
 
 	return eventbox;
 }
@@ -1082,8 +1097,6 @@ glade_editor_create_item_label (GladePropertyClass *class)
 static void
 glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
-/* 	gtk_table_attach_defaults (GTK_TABLE (table), child, */
-/* 				   pos, pos+1, row, row +1); */
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
 			  pos ? GTK_EXPAND | GTK_FILL : GTK_FILL,
@@ -1097,7 +1110,6 @@ glade_editor_append_item_real (GladeEditorTable    *table,
 			       GladeEditorProperty *property)
 {
 	GladePropertyClass  *class;
-	GtkWidget           *label;
 	GtkWidget           *input = NULL;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR_TABLE (table), NULL);
@@ -1134,9 +1146,9 @@ glade_editor_append_item_real (GladeEditorTable    *table,
 		return gtk_label_new ("Implement me !");
 	}
 
-	label = glade_editor_create_item_label (class);
+	property->item_label = glade_editor_create_item_label (property);
 
-	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
+	glade_editor_table_attach (table->table_widget, property->item_label, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, input, 1, table->rows);
 	table->rows++;
 
@@ -1191,21 +1203,17 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 static void
 glade_editor_table_append_class_field (GladeEditorTable *table)
 {
-	GtkWidget *gtk_table;
 	GtkWidget *label;
-	GtkWidget *entry;
+	GtkWidget *class_label;
 
-	gtk_table = table->table_widget;
-	
 	/* Class */
-	label = gtk_label_new (_("Class :"));
+	label       = gtk_label_new (_("Class :"));
+	class_label = gtk_label_new (table->glade_widget_class->name);
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
-	entry = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry), table->glade_widget_class->name);
-	gtk_editable_set_editable (GTK_EDITABLE (entry), FALSE);
+	gtk_misc_set_alignment (GTK_MISC (class_label), 0.0, 0.0);
 
-	glade_editor_table_attach (gtk_table, label, 0, table->rows);
-	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
+	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
+	glade_editor_table_attach (table->table_widget, class_label, 1, table->rows);
 	table->rows++;
 }
 
@@ -1451,15 +1459,37 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 
 /* ============================ Load properties ============================ */
 static void
+glade_editor_tooltip_cb (GladeProperty       *property,
+			 const gchar         *tooltip,
+			 GladeEditorProperty *editor_prop)
+{
+	glade_util_widget_set_tooltip (editor_prop->input, tooltip);
+	glade_util_widget_set_tooltip (editor_prop->item_label, tooltip);
+}
+
+static void
 glade_editor_property_set_tooltips (GladeEditorProperty *property)
 {
+	gchar *tooltip;
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
 	g_return_if_fail (property->input != NULL);
 
-	glade_util_widget_set_tooltip (property->input, property->property->class->tooltip);
+	if (property->tooltip_id > 0)
+		g_signal_handler_disconnect (G_OBJECT (property->tooltip_prop),
+					     property->tooltip_id);
 
-	return;
+	property->tooltip_prop = property->property;
+	property->tooltip_id   = 
+		g_signal_connect (G_OBJECT (property->property),
+				  "tooltip-changed", 
+				  G_CALLBACK (glade_editor_tooltip_cb),
+				  property);
+
+	tooltip = (gchar *)glade_property_get_tooltip (property->property);
+	glade_util_widget_set_tooltip (property->input, tooltip);
+	glade_util_widget_set_tooltip (property->item_label, tooltip);
+ 	return;
 }
 
 static void
@@ -1498,9 +1528,10 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		g_return_if_fail (GTK_IS_SPIN_BUTTON (spin));
 		g_return_if_fail (GTK_IS_CHECK_BUTTON (button));
 
-		gtk_widget_set_sensitive (GTK_WIDGET (spin), property->property->enabled);
+		gtk_widget_set_sensitive (GTK_WIDGET (spin), 
+					  glade_property_get_enabled (property->property));
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-					      property->property->enabled);
+					      glade_property_get_enabled (property->property));
 		g_object_set_data (G_OBJECT (button), "user_data", property);
 	} else {
 		spin = property->input;
@@ -1527,7 +1558,6 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 			   g_type_name(class->pspec->value_type));
 
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
-
 	g_object_set_data (G_OBJECT (spin), "user_data", property);
 }
 
@@ -1690,9 +1720,23 @@ glade_editor_property_load_unichar (GladeEditorProperty *property)
 }
 
 static void
+glade_editor_sensitivity_cb (GladeProperty       *property,
+			     GParamSpec          *pspec,
+			     GladeEditorProperty *editor_prop)
+{
+	gboolean sensitive = glade_property_get_sensitive (editor_prop->property);
+	gtk_widget_modify_fg 
+		(GTK_WIDGET (editor_prop->item_label), 
+		 GTK_STATE_NORMAL, 
+		 sensitive ? normal_colour : insensitive_colour);
+	gtk_widget_set_sensitive (editor_prop->input, sensitive);
+}
+
+static void
 glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 {
 	GladePropertyClass *class;
+	gboolean            sensitive;
 
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (property));
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property->class));
@@ -1700,7 +1744,8 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	class = property->class;
 
 	/* Load the property */
- 	if ((property->property = glade_widget_get_property (widget, class->id)) == NULL)
+ 	if ((property->property = 
+	     glade_widget_get_property (widget, class->id)) == NULL)
  	{
  		g_critical ("Couldnt find property of class %s on widget of class %s\n",
  			    class->id, widget->widget_class->name);
@@ -1731,6 +1776,26 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	else
 		g_warning ("%s : type %s not implemented (%s)\n", G_GNUC_FUNCTION,
 			   class->name, g_type_name (class->pspec->value_type));
+
+
+
+	/* Set insensitive and hook cb here XXX */
+	if (property->sensitive_id > 0)
+		g_signal_handler_disconnect (property->sensitive_prop, 
+					     property->sensitive_id);
+	property->sensitive_prop = property->property;
+	property->sensitive_id =
+		g_signal_connect (G_OBJECT (property->property),
+				  "notify::sensitive", 
+				  G_CALLBACK (glade_editor_sensitivity_cb),
+				  property);
+
+	sensitive = glade_property_get_sensitive (property->property);
+	gtk_widget_modify_fg 
+		(GTK_WIDGET (property->item_label), 
+		 GTK_STATE_NORMAL, 
+		 sensitive ? normal_colour : insensitive_colour);
+	gtk_widget_set_sensitive (property->input, sensitive);
 
 	glade_editor_property_set_tooltips (property);
 
