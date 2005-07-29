@@ -184,7 +184,9 @@ struct _GladeEditorProperty
 	gulong         sensitive_id;   /* signal connection id for sensitivity changes */
 	GladeProperty *sensitive_prop; /* the last object this was connected to    */
 
-	GtkWidget *item_label; /* Keep a hold of this for tooltips */
+
+	GtkWidget *eventbox;   /* Keep a hold of this for tooltips */
+	GtkWidget *item_label; /* control visual label state manually */
 };
 
 LIBGLADEUI_API GType glade_editor_get_type (void);

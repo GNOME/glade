@@ -842,23 +842,23 @@ glade_gtk_table_verify_n_columns (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_button_set_stock (GObject *object, GValue *value)
 {
-	GladeWidget   *glade_widget;
+	GladeWidget   *gwidget;
 	GladeProperty *property;
 	GEnumClass    *eclass;
 	guint i;
 	gint val;
 
-	glade_widget = glade_widget_get_from_gobject (object);
+	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GTK_IS_BUTTON (object));
-	g_return_if_fail (glade_widget != NULL);
+	g_return_if_fail (gwidget != NULL);
 
 	val = g_value_get_enum (value);	
 	if (val == GPOINTER_TO_INT (g_object_get_data (object, "stock")))
 		return;
 
-	g_return_if_fail (glade_widget != NULL);
+	g_return_if_fail (gwidget != NULL);
 
-	property = glade_widget_get_property (glade_widget, "stock");
+	property = glade_widget_get_property (gwidget, "stock");
 	eclass   = g_type_class_ref (property->class->pspec->value_type);
 
 	for (i = 0; i < eclass->n_values; i++)
@@ -869,13 +869,10 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 		return;
 	}
 
-	property = glade_widget_get_property (glade_widget, "use-stock");
-	glade_property_set (property, TRUE);
-
-	property = glade_widget_get_property (glade_widget, "label");
-	glade_property_set (property, eclass->values[i].value_nick);
-
-	glade_property_set_sensitive (property, FALSE, "Jolly rancher");
+	glade_widget_property_set (gwidget, "use-stock", TRUE);
+	glade_widget_property_set (gwidget, "label", eclass->values[i].value_nick);
+	glade_widget_property_set_sensitive 
+		(gwidget, "label", FALSE, _("Jolly rancher"));
 
 	g_type_class_unref (eclass);
 	g_object_set_data (object, "stock", GINT_TO_POINTER (val));
@@ -1232,7 +1229,6 @@ glade_gtk_frame_create_idle (gpointer data)
 	GladeWidget       *gframe, *glabel;
 	GtkWidget         *label, *frame;
 	GladeWidgetClass  *wclass;
-	GladeProperty     *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
 	g_return_val_if_fail (GTK_IS_FRAME (GLADE_WIDGET (data)->object), FALSE);
@@ -1247,11 +1243,7 @@ glade_gtk_frame_create_idle (gpointer data)
 		glabel = glade_widget_new (gframe, wclass,
 					   glade_widget_get_project (gframe));
 		
-		if ((property = 
-		     glade_widget_get_property (glabel, "label")) != NULL)
-			glade_property_set (property, "Frame");
-		else 
-			g_critical ("Unable to get \"label\" property\n");
+		glade_widget_property_set (glabel, "label", "Frame");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
@@ -1285,7 +1277,6 @@ glade_gtk_button_create_idle (gpointer data)
 	GladeWidget       *gbutton, *glabel;
 	GtkWidget         *widget, *button;
 	GladeWidgetClass  *wclass;
-	GladeProperty     *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
 	g_return_val_if_fail (GTK_IS_BUTTON (GLADE_WIDGET (data)->object), FALSE);
@@ -1299,12 +1290,9 @@ glade_gtk_button_create_idle (gpointer data)
 		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
 		glabel = glade_widget_new (gbutton, wclass,
 					   glade_widget_get_project (gbutton));
-		
-		if ((property = 
-		     glade_widget_get_property (glabel, "label")) != NULL)
-			glade_property_set (property, gbutton->widget_class->generic_name);
-		else
-			g_critical ("Unable to get \"label\" property\n");
+
+		glade_widget_property_set
+			(glabel, "label", gbutton->widget_class->generic_name);
 
 		if (widget)
 			gtk_container_remove (GTK_CONTAINER (button), widget);

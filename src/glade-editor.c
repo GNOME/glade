@@ -1065,31 +1065,32 @@ GtkWidget *
 glade_editor_create_item_label (GladeEditorProperty *property)
 {
 	GtkWidget *eventbox;
-	GtkWidget *label;
 	gchar     *text;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
 	g_return_val_if_fail (property->class != NULL, NULL);
 
 	text = g_strdup_printf ("%s :", property->class->name);
-	label = gtk_label_new (text);
+	property->item_label = gtk_label_new (text);
 	g_free (text);
 
-	if (insensitive_colour == NULL)
-		insensitive_colour = 
-			&(GTK_WIDGET
-			  (label)->style->text[GTK_STATE_INSENSITIVE]);
-	if (normal_colour == NULL)
-		normal_colour = 
-			&(GTK_WIDGET
-			  (label)->style->text[GTK_STATE_NORMAL]);
-
-
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
+	gtk_misc_set_alignment (GTK_MISC (property->item_label), 1.0, 0.0);
 
 	/* we need to wrap the label in an event box to add tooltips */
 	eventbox = gtk_event_box_new ();
-	gtk_container_add (GTK_CONTAINER (eventbox), label);
+	gtk_container_add (GTK_CONTAINER (eventbox), property->item_label);
+
+	if (insensitive_colour == NULL)
+		insensitive_colour = 
+			gdk_color_copy
+			(&(GTK_WIDGET (property->item_label)->
+			   style->fg[GTK_STATE_INSENSITIVE]));
+
+	if (normal_colour == NULL)
+		normal_colour = 
+			gdk_color_copy
+			(&(GTK_WIDGET (property->item_label)->
+			   style->fg[GTK_STATE_NORMAL]));
 
 	return eventbox;
 }
@@ -1146,9 +1147,9 @@ glade_editor_append_item_real (GladeEditorTable    *table,
 		return gtk_label_new ("Implement me !");
 	}
 
-	property->item_label = glade_editor_create_item_label (property);
+	property->eventbox = glade_editor_create_item_label (property);
 
-	glade_editor_table_attach (table->table_widget, property->item_label, 0, table->rows);
+	glade_editor_table_attach (table->table_widget, property->eventbox, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, input, 1, table->rows);
 	table->rows++;
 
@@ -1464,7 +1465,7 @@ glade_editor_tooltip_cb (GladeProperty       *property,
 			 GladeEditorProperty *editor_prop)
 {
 	glade_util_widget_set_tooltip (editor_prop->input, tooltip);
-	glade_util_widget_set_tooltip (editor_prop->item_label, tooltip);
+	glade_util_widget_set_tooltip (editor_prop->eventbox, tooltip);
 }
 
 static void
@@ -1488,7 +1489,7 @@ glade_editor_property_set_tooltips (GladeEditorProperty *property)
 
 	tooltip = (gchar *)glade_property_get_tooltip (property->property);
 	glade_util_widget_set_tooltip (property->input, tooltip);
-	glade_util_widget_set_tooltip (property->item_label, tooltip);
+	glade_util_widget_set_tooltip (property->eventbox, tooltip);
  	return;
 }
 
@@ -1725,6 +1726,7 @@ glade_editor_sensitivity_cb (GladeProperty       *property,
 			     GladeEditorProperty *editor_prop)
 {
 	gboolean sensitive = glade_property_get_sensitive (editor_prop->property);
+
 	gtk_widget_modify_fg 
 		(GTK_WIDGET (editor_prop->item_label), 
 		 GTK_STATE_NORMAL, 
@@ -1791,10 +1793,11 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 				  property);
 
 	sensitive = glade_property_get_sensitive (property->property);
-	gtk_widget_modify_fg 
+	gtk_widget_modify_fg
 		(GTK_WIDGET (property->item_label), 
 		 GTK_STATE_NORMAL, 
 		 sensitive ? normal_colour : insensitive_colour);
+	
 	gtk_widget_set_sensitive (property->input, sensitive);
 
 	glade_editor_property_set_tooltips (property);

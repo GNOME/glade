@@ -599,40 +599,21 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
 }
 
 /**
- * glade_property_set_value:
+ * glade_property_set_va_list:
  * @property: a #GladeProperty
- * @value: a #GValue
+ * @va_list: a va_list with value to set
  *
  * TODO: write me
  */
 void
-glade_property_get_value (GladeProperty *property, GValue *value)
+glade_property_set_va_list (GladeProperty *property, va_list vl)
 {
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (value != NULL);
-	GLADE_PROPERTY_GET_CINFO (property)->get_value (property, value);
-}
-
-
-/**
- * glade_property_set:
- * @property: a #GladeProperty
- * @value: a #GValue
- *
- * TODO: write me
- */
-void
-glade_property_set (GladeProperty *property, ...)
-{
-	va_list  vl;
 	GValue  *value;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (value != NULL);
 
 	value = g_new0 (GValue, 1);
 	g_value_init (value, property->class->pspec->value_type);
-	va_start (vl, property);
 	
 	if (G_IS_PARAM_SPEC_ENUM(property->class->pspec))
 		g_value_set_enum (value, va_arg (vl, gint));
@@ -668,8 +649,6 @@ glade_property_set (GladeProperty *property, ...)
 		g_critical ("Unsupported pspec type %s",
 			    g_type_name(property->class->pspec->value_type));
 
-	va_end (vl);
-
 	GLADE_PROPERTY_GET_CINFO (property)->set_value (property, value);
 	
 	g_value_unset (value);
@@ -679,23 +658,53 @@ glade_property_set (GladeProperty *property, ...)
 /**
  * glade_property_set:
  * @property: a #GladeProperty
+ * @...: the value to set
+ *
+ * TODO: write me
+ */
+void
+glade_property_set (GladeProperty *property, ...)
+{
+	va_list  vl;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	va_start (vl, property);
+	glade_property_set_va_list (property, vl);
+	va_end (vl);
+}
+
+/**
+ * glade_property_get_value:
+ * @property: a #GladeProperty
  * @value: a #GValue
  *
  * TODO: write me
  */
 void
-glade_property_get (GladeProperty *property, ...)
+glade_property_get_value (GladeProperty *property, GValue *value)
 {
-	va_list  vl;
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
+	GLADE_PROPERTY_GET_CINFO (property)->get_value (property, value);
+}
+
+/**
+ * glade_property_get_va_list:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_get_va_list (GladeProperty *property, va_list vl)
+{
 	GValue  *value;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (value != NULL);
 
 	value = g_new0 (GValue, 1);
 	GLADE_PROPERTY_GET_CINFO (property)->get_value (property, value);
-
-	va_start (vl, property);
 
 	/* The argument is a pointer of the specified type, cast the pointer and assign
 	 * the value using the proper g_value_get_ variation.
@@ -733,11 +742,28 @@ glade_property_get (GladeProperty *property, ...)
 	else
 		g_critical ("Unsupported pspec type %s",
 			    g_type_name(property->class->pspec->value_type));
-	va_end (vl);
-
 
 	g_value_unset (value);
 	g_free (value);
+}
+
+/**
+ * glade_property_get:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_get (GladeProperty *property, ...)
+{
+	va_list  vl;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	va_start (vl, property);
+	glade_property_get_va_list (property, vl);
+	va_end (vl);
 }
 
 /**

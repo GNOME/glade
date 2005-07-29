@@ -1118,7 +1118,7 @@ glade_widget_get_project (GladeWidget *widget)
 /**
  * glade_widget_get_property:
  * @widget: a #GladeWidget
- * @id_property: a string naming a property
+ * @id_property: a string naming a #GladeProperty
  *
  * Returns: the #GladeProperty in @widget named @id_property
  */
@@ -1143,7 +1143,7 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 /**
  * glade_widget_get_pack_property:
  * @widget: a #GladeWidget
- * @id_property: a string naming a packing property
+ * @id_property: a string naming a #GladeProperty
  *
  * Returns: the #GladeProperty in @widget named @id_property
  */
@@ -1167,6 +1167,186 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 		   id_property, widget->name);
 
 	return NULL;
+}
+
+
+/**
+ * glade_widget_property_get:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: The return location for the value of the said #GladeProperty
+ *
+ * Gets the value of @id_property in @widget
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_property_get (GladeWidget      *widget,
+			   const char       *id_property,
+			   ...)
+{
+	GladeProperty *property;
+	va_list        vl;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		va_start (vl, id_property);
+		glade_property_get_va_list (property, vl);
+		va_end (vl);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_property_set:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: A value of the correct type for the said #GladeProperty
+ *
+ * Sets the value of @id_property in @widget
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_property_set (GladeWidget      *widget,
+			   const char       *id_property,
+			   ...)
+{
+	GladeProperty *property;
+	va_list        vl;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		va_start (vl, id_property);
+		glade_property_set_va_list (property, vl);
+		va_end (vl);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_pack_property_get:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: The return location for the value of the said #GladeProperty
+ *
+ * Gets the value of @id_property in @widget packing properties
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_pack_property_get (GladeWidget      *widget,
+				const char       *id_property,
+				...)
+{
+	GladeProperty *property;
+	va_list        vl;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		va_start (vl, id_property);
+		glade_property_get_va_list (property, vl);
+		va_end (vl);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_pack_property_set:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: The return location for the value of the said #GladeProperty
+ *
+ * Sets the value of @id_property in @widget packing properties
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_pack_property_set (GladeWidget      *widget,
+				const char       *id_property,
+				...)
+{
+	GladeProperty *property;
+	va_list        vl;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		va_start (vl, id_property);
+		glade_property_set_va_list (property, vl);
+		va_end (vl);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_property_set_sensitive:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: The return location for the value of the said #GladeProperty
+ *
+ * Sets the value of @id_property in @widget
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_property_set_sensitive (GladeWidget      *widget,
+				     const char       *id_property,
+				     gboolean          sensitive,
+				     const gchar      *reason)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_sensitive (property, sensitive, reason);
+		return TRUE;
+	}
+	return FALSE;
+
+}
+
+
+/**
+ * glade_widget_pack_property_set_sensitive:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @...: The return location for the value of the said #GladeProperty
+ *
+ * Sets the value if @id_property in @widget packing properties
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
+					  const char       *id_property,
+					  gboolean          sensitive,
+					  const gchar      *reason)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_sensitive (property, sensitive, reason);
+		return TRUE;
+	}
+	return FALSE;
+
 }
 
 static gboolean

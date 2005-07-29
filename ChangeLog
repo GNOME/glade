@@ -1,5 +1,20 @@
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c: Simplified code with convenience functions
+
+	* src/glade-editor.[ch]: Fixed visual state of labels in insensitive state.
+
+	* src/glade-property.[ch]: Added glade_property_get/set_va_list
+
+	* src/glade-widget.[ch]: 
+	   Added convenienve functions:
+	    - glade_widget_property_get/set
+	    - glade_widget_pack_property_get/set
+	    - glade_widget_property_set_sensitive
+	    - glade_widget_pack_property_set_sensitive
+	
+2005-07-29  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-property.[ch]:
 	  - made some members properties
 	  - added glade_property_set (property, ...) convenience function

@@ -103,15 +103,39 @@ LIBGLADEUI_API const gchar            *glade_widget_get_internal           (Glad
 LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
 LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
+
+
 LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
 									    const char       *id_property);
 LIBGLADEUI_API GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
 									    const char       *id_property);
 
+
+/* Convenience functions for plugin & application use */
+LIBGLADEUI_API gboolean                glade_widget_property_get           (GladeWidget      *widget,
+									    const char       *id_property,
+									    ...);
+LIBGLADEUI_API gboolean                glade_widget_property_set           (GladeWidget      *widget,
+									    const char       *id_property,
+									    ...);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_get      (GladeWidget      *widget,
+									    const char       *id_property,
+									    ...);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_set      (GladeWidget      *widget,
+									    const char       *id_property,
+									    ...);
+LIBGLADEUI_API gboolean                glade_widget_property_set_sensitive (GladeWidget      *widget,
+									    const char       *id_property,
+									    gboolean          sensitive,
+									    const gchar      *reason);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
+										 const char       *id_property,
+										 gboolean          sensitive,
+										 const gchar      *reason);
+
 LIBGLADEUI_API void                    glade_widget_replace                (GladeWidget      *parent,
 									    GObject          *old_object,
 									    GObject          *new_object);
-
 LIBGLADEUI_API void                    glade_widget_rebuild                (GladeWidget      *widget);
 LIBGLADEUI_API GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
 

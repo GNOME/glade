@@ -84,10 +84,14 @@ LIBGLADEUI_API GladeProperty          *glade_property_dup                   (Gla
 									     GladeWidget        *widget);
 LIBGLADEUI_API void                    glade_property_set_value             (GladeProperty      *property, 
 									     const GValue       *value);
+LIBGLADEUI_API void                    glade_property_set_va_list           (GladeProperty      *property,
+									     va_list             vl);
+LIBGLADEUI_API void                    glade_property_set                   (GladeProperty      *property,
+									     ...);
 LIBGLADEUI_API void                    glade_property_get_value             (GladeProperty      *property, 
 									     GValue             *value);
-LIBGLADEUI_API void                    glade_property_set                   (GladeProperty      *property, 
-									     ...);
+LIBGLADEUI_API void                    glade_property_get_va_list           (GladeProperty      *property,
+									     va_list             vl);
 LIBGLADEUI_API void                    glade_property_get                   (GladeProperty      *property, 
 									     ...);
 LIBGLADEUI_API void                    glade_property_sync                  (GladeProperty      *property);
