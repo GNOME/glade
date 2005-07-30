@@ -3,14 +3,9 @@
     <!-- Gtk+ Base -->
     <glade-widget-class name="GtkWidget">
       <properties>
-	<property id="visible" common="True">
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
-	</property>
-
-	<property common="True" optional="True" optional-default="False" default="0" id="width-request"/>
-
-	<property common="True" optional="True" optional-default="False" default="0" id="height-request"/>
+	<property id="visible" common="True" ignore="True"/>
+	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
+	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 
 	<property common="True" id="tooltip" name="Tooltip" default="">
 	  <spec>glade_standard_string_spec</spec>
@@ -26,9 +21,7 @@
 	  </displayable-values>
 	</property>
 
-	<property common="True" id="events">
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
+	<property common="True" id="events" ignore="True">
   	  <displayable-values>
 	    <value id="GDK_EXPOSURE_MASK" name="Exposure"/>
 	    <value id="GDK_POINTER_MOTION_MASK" name="Pointer Motion"/>
@@ -145,15 +138,10 @@
 	    <value id="GDK_GRAVITY_STATIC" name="Static"/>
 	  </displayable-values>
 	</property>
-	<property id="modal">
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
-	</property>
+	<property id="modal" ignore="True"/>
 	<property id="default-width" default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>
-	<property id="type-hint">
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
+	<property id="type-hint" ignore="True">
   	  <displayable-values>
 	    <value id="GDK_WINDOW_TYPE_HINT_NORMAL" name="Normal"/>
 	    <value id="GDK_WINDOW_TYPE_HINT_DIALOG" name="Dialog"/>
@@ -165,9 +153,7 @@
 	    <value id="GDK_WINDOW_TYPE_HINT_DESKTOP" name="Desktop"/>
 	  </displayable-values>
 	</property>
-	<property id="type">
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
+	<property id="type" ignore="True">
 	  <displayable-values>
 	    <value id="GTK_WINDOW_TOPLEVEL" name="Top Level"/>
 	    <value id="GTK_WINDOW_POPUP" name="Popup"/>
@@ -281,7 +267,8 @@
 
     <glade-widget-class name="GtkLabel" generic-name="label" title="Label">
       <properties>
-	<property id="label" default="label"/>
+        <property id="selectable" ignore="True"/>
+      	<property id="label" default="label"/>
 	<property id="pattern" default=""/>
 	<property id="max-width-chars" name="Maximun Width"/>
       	<property id="justify">
@@ -336,11 +323,9 @@
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
 
-	<property id="response-id" name="Response ID" default="0" common="False">
+	<property id="response-id" name="Response ID" default="0" common="False" ignore="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)</tooltip>
-	  <set-function>ignore</set-function>
-	  <get-function>ignore</get-function>
 	</property>
 
       	<property id="relief">
@@ -444,9 +429,6 @@
       <child-property-applies-function>glade_gtk_dialog_child_property_applies</child-property-applies-function>
 
       <properties>
-	<property id="modal">
-	  <set-function>ignore</set-function>
-	</property>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>
       </properties>
@@ -793,8 +775,8 @@
     <glade-widget-class name="GtkSocket" generic-name="socket" title="Socket"/>
     -->
     
-    <!-- Gtk+ Dialogs -->
-    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" title="Color Selection Dialog"/>
+    <!-- Gtk+ Dialogs --> 
+   <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" title="Color Selection Dialog"/>
     
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" title="File Chooser Dialog">
       <properties>
@@ -817,10 +799,6 @@
       <post-create-function>glade_gtk_message_dialog_post_create</post-create-function>
 
       <properties>
-
-	<property id="modal">
-	  <set-function>ignore</set-function>
-	</property>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>
 

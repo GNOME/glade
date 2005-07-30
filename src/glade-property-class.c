@@ -62,12 +62,13 @@ glade_property_class_new (void)
 	property_class->optional_default = TRUE;
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
-	property_class->save = TRUE;
 	property_class->is_modified = FALSE;
 	property_class->verify_function = NULL;
 	property_class->set_function = NULL;
 	property_class->get_function = NULL;
 	property_class->visible = TRUE;
+	property_class->save = TRUE;
+	property_class->ignore = FALSE;
 	property_class->translatable = TRUE;
 
 	return property_class;
@@ -812,12 +813,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
 
 	/* common, optional, etc */
-	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON, class->common);
-	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
-	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, FALSE);
-	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE, TRUE);
-	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE, TRUE);
-
+	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,   class->common);
+	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, class->optional);
+	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,    class->query);
+	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,     class->save);
+	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  class->visible);
+	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
 	
 	if (class->optional)
 		class->optional_default =

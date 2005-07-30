@@ -70,7 +70,7 @@ glade_standard_stock_get_type (void)
 			values = g_array_append_val (values, value);
 		}
 
-		etype = g_enum_register_static ("GladeGtkStockType", (GEnumValue *)values->data);
+		etype = g_enum_register_static ("GladeStock", (GEnumValue *)values->data);
 
 		g_slist_free (stock_list);
 	}
@@ -83,7 +83,7 @@ glade_standard_stock_spec (void)
 	return g_param_spec_enum ("stock", _("Stock"), 
 				  _("A builtin stock item"),
 				  glade_standard_stock_get_type (),
-				  0, G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+				  0, G_PARAM_READWRITE);
 }
 
 GParamSpec *

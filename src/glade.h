@@ -108,6 +108,7 @@
 #define GLADE_TAG_SPECIAL_CHILD_TYPE              "special-child-type"
 #define GLADE_TAG_SAVE                            "save"
 #define GLADE_TAG_EDITABLE                        "editable"
+#define GLADE_TAG_IGNORE                          "ignore"
 
 LIBGLADEUI_API gboolean glade_verbose;
 

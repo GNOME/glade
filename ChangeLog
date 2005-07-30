@@ -1,3 +1,18 @@
+2005-07-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-builtins.c: stock spec name fixed and removed construct only.
+
+	* src/glade-property.c: 
+	  - Fixed glade_property_dup () to use properties.
+	  - Fixed double free in glade_property_finalize (thankyou valgrind)
+
+	* src/main.c: Removed workaround for an old fixed bug in gtk+, no reason to have
+	  obscure code like that when we are targeting a recent version of gtk+.
+
+	* widgets/gtk+.xml: Ignore selectable changes & implement ignore property
+
+	* src/glade-property-class.c, src/glade-property.[ch]: implement ignore
+	
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/Makefile.am, src/glade-plugin.h, src/glade-buildtins.[ch], widgets/gtk+.xml: 

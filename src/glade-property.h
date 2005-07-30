@@ -45,7 +45,7 @@ struct _GladeProperty
 					* of the property->input state for the loaded
 					* widget.
 					*/
-	
+
 	/* Used only for translatable strings. */
 	gboolean  i18n_translatable;
 	gboolean  i18n_has_context;

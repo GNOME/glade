@@ -921,19 +921,6 @@ empty (GObject *container)
 {
 }
 
-/**
- * ignore:
- * @object: a #GObject
- * @value: a #GValue
- *
- * This function does absolutely nothing
- */
-void GLADEGTK_API
-ignore (GObject *object, GValue *value)
-{
-}
-
-
 /* ------------------------- Post Create functions ------------------------- */
 static gboolean
 glade_gtk_fixed_button_press (GtkWidget       *widget,

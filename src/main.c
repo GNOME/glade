@@ -130,13 +130,6 @@ main (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
-	/* XXX This is a hack to make up for a bug in GTK+;
-	 * gtk_icon_theme_get_default() wont return anything
-	 * untill an `ensure_default_icons ();' is provoked
-	 * (gtk_icon_factory_lookup_default does this).
-	 */
-	gtk_icon_factory_lookup_default ("");
-
 	glade_setup_log_handlers ();
 
 	if (!glade_init ())

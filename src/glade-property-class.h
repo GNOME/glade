@@ -142,11 +142,18 @@ struct _GladePropertyClass
 				* UI.
 				*/
 
+	/* These three are the master switches for the glade-file output,
+	 * property editor availability & live object updates in the glade environment.
+	 */
 	gboolean save;      /* Whether we should save to the glade file or not
 			     * (mostly just for custom glade properties)
 			     */
 	gboolean visible;   /* Whether or not to show this property in the editor
 			     */
+	gboolean ignore;    /* When true, we will not sync the object when the property
+			     * changes.
+			     */
+
 
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */

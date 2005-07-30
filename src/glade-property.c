@@ -70,18 +70,26 @@ glade_property_dup_impl (GladeProperty *template, GladeWidget *widget)
 {
 	GladeProperty *property;
 
-	property          = g_object_new (GLADE_TYPE_PROPERTY, NULL);
+	property          = g_object_new (GLADE_TYPE_PROPERTY, 
+					  "enabled", template->enabled,
+					  "sensitive", template->sensitive,
+					  "i18n-translatable", template->i18n_translatable,
+					  "i18n-has-context", template->i18n_has_context,
+					  "i18n-comment", template->i18n_comment,
+					  NULL);
 	property->class   = template->class;
 	property->widget  = widget;
 	property->value   = g_new0 (GValue, 1);
-	property->enabled = template->enabled;
+
+	property->insensitive_tooltip =
+		template->insensitive_tooltip ?
+		g_strdup (template->insensitive_tooltip) : NULL;
+
 
 	g_value_init (property->value, template->value->g_type);
 	g_value_copy (template->value, property->value);
 
 	property->i18n_translatable = template->i18n_translatable;
-	property->i18n_has_context  = template->i18n_has_context;
-	property->i18n_comment      = g_strdup (template->i18n_comment);
 	
 	return property;
 }
@@ -158,7 +166,9 @@ glade_property_get_value_impl (GladeProperty *property, GValue *value)
 static void
 glade_property_sync_impl (GladeProperty *property)
 {
-	if (!property->enabled || property->loading)
+	if (property->enabled == FALSE || 
+	    property->class->ignore    ||
+	    property->loading)
 		return;
 
 	property->loading = TRUE;
@@ -368,7 +378,6 @@ glade_property_get_real_property (GObject    *object,
 	}
 }
 
-
 static void
 glade_property_finalize (GObject *object)
 {
@@ -378,10 +387,9 @@ glade_property_finalize (GObject *object)
 	{
 		g_value_unset (property->value);
 		g_free (property->value);
-		property->value = NULL;
 	}
-	g_free (property->i18n_comment);
-	g_free (property);
+	if (property->i18n_comment)
+		g_free (property->i18n_comment);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -459,7 +467,7 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 	/* Signals */
 	glade_property_signals[VALUE_CHANGED] =
 		g_signal_new ("value-changed",
-			      G_TYPE_FROM_CLASS (parent_class),
+			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (GladePropertyCinfo,
 					       value_changed),
@@ -469,7 +477,7 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 
 	glade_property_signals[TOOLTIP_CHANGED] =
 		g_signal_new ("tooltip-changed",
-			      G_TYPE_FROM_CLASS (parent_class),
+			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (GladePropertyCinfo,
 					       tooltip_changed),
@@ -499,7 +507,6 @@ glade_property_get_type (void)
 			sizeof (GladeProperty),
 			0,              /* n_preallocs */
 			(GInstanceInitFunc) glade_property_init,
-			NULL            /* value_table */
 		};
 		property_type = 
 			g_type_register_static (G_TYPE_OBJECT,
