@@ -71,22 +71,8 @@
     </glade-widget-class>
     
     <glade-widget-class name="GtkBox">
-      <children>
-        <child>
-	  <type>GtkWidget</type>
-	  <properties>
-	    <property id="pack-type">
-	      <displayable-values>
-		<value id="GTK_PACK_START" name="Start"/>
-		<value id="GTK_PACK_END" name="End"/>
-	      </displayable-values>
-	    </property>
-	  </properties>
-	</child>
-      </children>
-
       <properties>
-	<property id="size" name="Number of items" query="TRUE" default="3">
+	<property id="size" name="Number of items" query="TRUE" default="3" save="False">
 	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of items in the box</tooltip>
 	  <parameters>
@@ -103,10 +89,18 @@
       </properties>
 
       <children>
-	<child>
+        <child>
 	  <type>GtkWidget</type>
 	  <fill-empty-function>empty</fill-empty-function>
 	  <add-child-function>glade_gtk_box_add_child</add-child-function>
+	  <properties>
+	    <property id="pack-type">
+	      <displayable-values>
+		<value id="GTK_PACK_START" name="Start"/>
+		<value id="GTK_PACK_END" name="End"/>
+	      </displayable-values>
+	    </property>
+	  </properties>
 	</child>
       </children>
     </glade-widget-class>
@@ -520,7 +514,7 @@
 	  <tooltip>The number of pages in the notebook</tooltip>
 	  <parameters>
 	    <parameter key="Min" value="1"/>
-	    <parameter key="Max" value="100"/>
+	    <parameter key="Max" value="1000"/>
 	    <parameter key="StepIncrement" value="1"/>
 	    <parameter key="PageIncrement" value="1"/>
 	    <parameter key="ClimbRate" value="1"/>

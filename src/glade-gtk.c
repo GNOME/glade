@@ -828,11 +828,17 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	}
 	else
 	{
-		/* GtkButton doesn't seem to take care of this automaticly.
-		 */
 		if (GTK_BIN (object)->child)
+		{
+			/* Here we would delete the coresponding GladeWidget from
+			 * the project (like we created it and added it), but this
+			 * screws up the undo stack, so instead we keep the stock
+			 * button insensitive while ther are usefull children in the
+			 * button.
+			 */
 			gtk_container_remove (GTK_CONTAINER (object), 
 					      GTK_BIN (object)->child);
+		}
 
 		/* Here we should remove any previously added GladeWidgets manualy
 		 * and from the project, not to leak them.
@@ -1579,22 +1585,17 @@ GLADEGTK_API void
 glade_gtk_box_add_child (GObject *object, GObject *child)
 {
 	gint		 num_children;
-	GladeProperty	*prop;
-	
+	GladeWidget     *gbox   = glade_widget_get_from_gobject (object);
+	GladeWidget     *gchild = glade_widget_get_from_gobject (child);
+
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
 	num_children = g_list_length (GTK_BOX (object)->children);
 
-	prop = glade_widget_get_property (glade_widget_get_from_gobject (object),
-					  "size");
-	g_value_set_int (prop->value, num_children);
-
-	if (GLADE_IS_PLACEHOLDER (child))
-		return;
-
-	prop = glade_widget_get_pack_property (glade_widget_get_from_gobject (child),
-					       "position");
-	g_value_set_int (prop->value, num_children - 1);
+	glade_widget_property_set (gbox, "size", num_children);
+	if (gchild)
+		glade_widget_pack_property_set (gchild, "position", 
+						num_children - 1);
 }
 
 GLADEGTK_API void

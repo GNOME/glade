@@ -1,5 +1,13 @@
 2005-07-30  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c, widgets/gtk+.xml:
+	  - Added comment about why we dont automaticly remove a widget from a button
+	    when making it stock (tried to fixed that, and realized the complexity).
+	  - Fixed GtkBox loading mechinism, now we dont save "size" property to the
+	    glade file are are backwards compatible with glade-2.
+	
+2005-07-30  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-builtins.c: stock spec name fixed and removed construct only.
 
 	* src/glade-property.c: 
