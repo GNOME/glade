@@ -145,34 +145,36 @@ struct _GladePropertyClass
 	gboolean save;      /* Whether we should save to the glade file or not
 			     * (mostly just for custom glade properties)
 			     */
-	gboolean editable;  /* Whether or not to show this property in the editor
+	gboolean visible;   /* Whether or not to show this property in the editor
 			     */
 
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 
+	/* Delagate to verify if this is a valid value for this property,
+	 * if this function exists and returns FALSE, then glade_property_set
+	 * will abort before making any changes
+	 */
 	gboolean (*verify_function) (GObject *object,
 				     const GValue *value);
-                       /* Delagate to verify if this is a valid value for this property,
-		       * if this function exists and returns FALSE, then glade_property_set
-		       * will abort before making any changes
-		       */
 	
+	/* If this property can't be set with g_object_set then
+	 * we need to implement it inside glade. This is a pointer
+	 * to the function that can set this property. The functions
+	 * to work arround these problems are inside glade-gtk.c
+	 */
 	void (*set_function) (GObject *object,
 			      const GValue *value);
-	               /* If this property can't be set with g_object_set then
-		       * we need to implement it inside glade. This is a pointer
-		       * to the function that can set this property. The functions
-		       * to work arround these problems are inside glade-gtk.c
-		       */
+
+	/* If this property can't be get with g_object_get then
+	 * we need to implement it inside glade. This is a pointer
+	 * to the function that can get this property. The functions
+	 * to work arround these problems are inside glade-gtk.c
+	 */
 	void (*get_function) (GObject *object,
 			      GValue *value);
-		       /* If this property can't be get with g_object_get then
-		       * we need to implement it inside glade. This is a pointer
-		       * to the function that can get this property. The functions
-		       * to work arround these problems are inside glade-gtk.c
-		       */
-	gboolean (*visible) (GladeWidgetClass *widget_class);
+
+
 };
 
 GladePropertyClass * glade_property_class_new (void);

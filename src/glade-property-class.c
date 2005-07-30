@@ -63,12 +63,11 @@ glade_property_class_new (void)
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->save = TRUE;
-	property_class->editable = TRUE;
 	property_class->is_modified = FALSE;
 	property_class->verify_function = NULL;
 	property_class->set_function = NULL;
 	property_class->get_function = NULL;
-	property_class->visible = FALSE;
+	property_class->visible = TRUE;
 	property_class->translatable = TRUE;
 
 	return property_class;
@@ -594,10 +593,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 gboolean
 glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class)
 {
-	if (property_class->visible)
-		return property_class->visible (widget_class);
-
-	return TRUE;
+	return property_class->visible;
 }
 
 /**
@@ -697,7 +693,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 {
 	GladePropertyClass *class;
 	gchar *buff;
-	char *visible;
 	GladeXmlNode *child;
 
 	g_return_val_if_fail (property_class != NULL, FALSE);
@@ -724,15 +719,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		return TRUE;
 	}
 
-	visible = glade_xml_get_property_string (node, GLADE_TAG_VISIBLE);
-	if (visible)
-	{
-		if (!g_module_symbol (widget_class->module, visible, (void **) &class->visible))
-			g_warning ("Could not find %s\n", visible);
-
-		g_free (visible);
-	}
-
 	/* If needed, update the name... */
 	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
 	if (buff)
@@ -750,7 +736,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 
 		/* ... get the tooltip from the pspec ... */
 		if (class->pspec)
+		{
 			class->tooltip = g_strdup (g_param_spec_get_blurb (class->pspec));
+			
+			if (class->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+				class->construct_only = TRUE;
+		}
 	} else {
 		if (!class->pspec) 
 		{
@@ -821,11 +812,12 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
 
 	/* common, optional, etc */
-	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,  FALSE);
+	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON, class->common);
 	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, FALSE);
 	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY, FALSE);
-	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE, FALSE);
-	class->editable = glade_xml_get_property_boolean (node, GLADE_TAG_EDITABLE, FALSE);
+	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE, TRUE);
+	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE, TRUE);
+
 	
 	if (class->optional)
 		class->optional_default =

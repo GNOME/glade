@@ -43,6 +43,7 @@
 #include "glade-menu-editor.h"
 #include "glade-project.h"
 #include "glade-utils.h"
+#include "glade-builtins.h"
 
 
 static GtkNotebookClass *parent_class = NULL;
@@ -835,7 +836,26 @@ glade_editor_create_input_enum_item (GladeEditorProperty *property,
 }
 
 static GtkWidget *
-glade_editor_create_input_enum (GladeEditorProperty *property)
+glade_editor_create_input_stock_item (GladeEditorProperty *property,
+				      const gchar         *id,
+				      gint                 value)
+{
+	GtkWidget *menu_item;
+	
+	menu_item = gtk_image_menu_item_new_from_stock (id, NULL);
+
+	g_signal_connect (G_OBJECT (menu_item), "activate",
+			  G_CALLBACK (glade_editor_property_changed_enum),
+			  property);
+
+	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, GINT_TO_POINTER(value));
+
+	return menu_item;
+}
+
+static GtkWidget *
+glade_editor_create_input_enum (GladeEditorProperty *property,
+				gboolean             stock)
 {
 	GladePropertyClass  *class;
 	GtkWidget   *menu_item;
@@ -861,9 +881,15 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 			(class, eclass->values[i].value);
 		if (value_name == NULL) value_name = eclass->values[i].value_name;
 		
-		menu_item = glade_editor_create_input_enum_item (property,
-								 value_name,
-								 eclass->values[i].value);
+		if (stock && strcmp (eclass->values[i].value_nick, "glade-none"))
+			menu_item = glade_editor_create_input_stock_item
+				(property, 
+				 eclass->values[i].value_nick, 
+				 eclass->values[i].value);
+		else
+			menu_item = glade_editor_create_input_enum_item
+				(property, value_name, eclass->values[i].value);
+
 		gtk_widget_show (menu_item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 	}
@@ -875,6 +901,7 @@ glade_editor_create_input_enum (GladeEditorProperty *property)
 
 	return option_menu;
 }
+
 
 static GtkWidget *
 glade_editor_create_input_flags (GladeEditorProperty *property)
@@ -1119,8 +1146,10 @@ glade_editor_append_item_real (GladeEditorTable    *table,
 
 	class = property->class;
 
-	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
-		input = glade_editor_create_input_enum (property);
+	if (class->pspec->value_type == GLADE_TYPE_STOCK)
+		input = glade_editor_create_input_enum (property, TRUE);
+	else if (G_IS_PARAM_SPEC_ENUM(class->pspec))
+		input = glade_editor_create_input_enum (property, FALSE);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		input = glade_editor_create_input_flags (property);
 	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
@@ -1756,7 +1785,8 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 
 	property->property->loading = TRUE;
 
-	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
+	if (class->pspec->value_type == GLADE_TYPE_STOCK ||
+	    G_IS_PARAM_SPEC_ENUM(class->pspec))
 		glade_editor_property_load_enum (property);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		glade_editor_property_load_flags (property);
@@ -1781,7 +1811,7 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 
 
 
-	/* Set insensitive and hook cb here XXX */
+	/* Set insensitive and hook cb here */
 	if (property->sensitive_id > 0)
 		g_signal_handler_disconnect (property->sensitive_prop, 
 					     property->sensitive_id);

@@ -1,5 +1,21 @@
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/Makefile.am, src/glade-plugin.h, src/glade-buildtins.[ch], widgets/gtk+.xml: 
+	  Added glade builtin pspec types for general purpose use in the plugin.
+	  This also features a "stock" enum type which is generated with gtk_stock_list_ids.
+
+	* src/glade-editor.[ch]: Implemented "stock item" menus (works with GLADE_TYPE_STOCK)
+
+	* src/glade-gtk.c: Removed all the custom pspec (in favor of the builtins) and implemented
+	  stock buttons properly (they rock by the way :-p )
+
+	* src/glade-property-class.[ch]: "visible" xml tag is simply a boolean describing
+	  if it is visible or not in the editor (visible properties now will also be written
+	  in the editor if they are not default, custom or disable with the "save" xml tag).
+
+	
+2005-07-29  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-gtk.c: Simplified code with convenience functions
 
 	* src/glade-editor.[ch]: Fixed visual state of labels in insensitive state.

@@ -13,5 +13,6 @@
 #include "glade-property-class.h"
 #include "glade-types.h"
 #include "glade-palette.h"
+#include "glade-builtins.h"
 
 #endif

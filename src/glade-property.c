@@ -229,10 +229,6 @@ glade_property_write_impl (GladeProperty  *property,
 	if (!property->class->save || !property->enabled)
 		return FALSE;
 
-	if (!glade_property_class_is_visible (property->class,
-					      glade_widget_get_class (property->widget)))
-		return FALSE;
-
 	/* we should change each '-' by '_' on the name of the property 
          * (<property name="...">) */
 	tmp = g_strdup (property->class->id);
@@ -422,7 +418,7 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 	prop_class->write                 = glade_property_write_impl;
 	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
 	prop_class->value_changed         = NULL;
-	prop_class->tooltip_changed         = NULL;
+	prop_class->tooltip_changed       = NULL;
 
 	/* Properties */
 	g_object_class_install_property 

@@ -3,7 +3,7 @@
     <!-- Gtk+ Base -->
     <glade-widget-class name="GtkWidget">
       <properties>
-	<property common="True" id="visible">
+	<property id="visible" common="True">
 	  <set-function>ignore</set-function>
 	  <get-function>ignore</get-function>
 	</property>
@@ -12,8 +12,8 @@
 
 	<property common="True" optional="True" optional-default="False" default="0" id="height-request"/>
 
-	<property common="True" id="tooltip" name="Tooltip" visible="glade_gtk_widget_condition" default="">
-	  <spec>glade_gtk_standard_string_spec</spec>
+	<property common="True" id="tooltip" name="Tooltip" default="">
+	  <spec>glade_standard_string_spec</spec>
 	  <set-function>glade_gtk_widget_set_tooltip</set-function>
 	  <get-function>glade_gtk_widget_get_tooltip</get-function>
 	</property>
@@ -94,7 +94,7 @@
 
       <properties>
 	<property id="size" name="Number of items" query="TRUE" default="3">
-	  <spec>glade_gtk_standard_int_spec</spec>
+	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of items in the box</tooltip>
 	  <parameters>
 	    <parameter key="Min" value="1"/>
@@ -211,7 +211,7 @@
       <properties>
 
 	<property id="size" name="Size" default="3" query="TRUE">
-	  <spec>glade_gtk_standard_int_spec</spec>
+	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of items in the toolbar</tooltip>
 	  <parameters>
 	    <parameter key="Min" value="0"/>
@@ -328,14 +328,16 @@
     <glade-widget-class name="GtkButton" generic-name="button" title="Button">
       <post-create-function>glade_gtk_button_post_create</post-create-function>
       <properties>
-
-	<property id="stock" name="Stock Button" default="glade-none">
-	  <spec>glade_gtk_stock_spec</spec>
+	<property id="use-underline" disabled="TRUE"/>
+	<property id="label" visible="FALSE"/>
+	<property id="use-stock" visible="FALSE"/>
+	<property id="stock" name="Stock Button" save="FALSE">
+	  <spec>glade_standard_stock_spec</spec>
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
 
 	<property id="response-id" name="Response ID" default="0" common="False">
-	  <spec>glade_gtk_standard_int_spec</spec>
+	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)</tooltip>
 	  <set-function>ignore</set-function>
 	  <get-function>ignore</get-function>
@@ -354,6 +356,7 @@
 	<child>
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_button_add_child</add-child-function>
+	  <replace-child-function>glade_gtk_button_replace_child</replace-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
 	</child>
       </children>
@@ -381,7 +384,7 @@
       <properties>
 	<property id="draw-indicator" default="True"/>
 	<property id="group" name="Group" default="True">
-	  <spec>glade_gtk_standard_string_spec</spec>
+	  <spec>glade_standard_string_spec</spec>
 	  <set-function>glade_gtk_radio_button_set_group</set-function>
 	  <get-function>glade_gtk_radio_button_get_group</get-function>
 	</property>
@@ -429,7 +432,7 @@
 	<property id="file" translatable="False"/>
 	<property id="stock" translatable="False"/>
 	<property id="pixbuf" name="Image file" translatable="False" default="">
-	  <spec>glade_gtk_standard_string_spec</spec>
+	  <spec>glade_standard_string_spec</spec>
 	  <set-function>glade_gtk_image_set_pixbuf</set-function>
 	</property>
       </properties>
@@ -460,7 +463,7 @@
 	  <!--
 	  <properties>
 	    <property id="response-id" name="Response ID" default="0" common="False">
-	      <spec>glade_gtk_standard_int_spec</spec>
+	      <spec>glade_standard_int_spec</spec>
 	      <tooltip>The response ID of this button in the dialog</tooltip>
 	      <set-function>ignore</set-function>
 	      <get-function>ignore</get-function>
@@ -531,7 +534,7 @@
     <glade-widget-class name="GtkNotebook" generic-name="notebook" title="Notebook">
       <properties>
 	<property id="pages" name="Number of pages" default="3" query="TRUE">
-	  <spec>glade_gtk_standard_int_spec</spec>
+	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of pages in the notebook</tooltip>
 	  <parameters>
 	    <parameter key="Min" value="1"/>
