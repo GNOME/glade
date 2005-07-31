@@ -47,7 +47,7 @@
 	    <value id="GDK_ALL_EVENTS_MASK" name="All Events"/>
 	  </displayable-values>
 	</property>
-	<property id="name" disabled="TRUE"/>
+	<property id="name" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -72,7 +72,7 @@
     
     <glade-widget-class name="GtkBox">
       <properties>
-	<property id="size" name="Number of items" query="TRUE" default="3" save="False">
+	<property id="size" name="Number of items" query="True" default="3" save="False">
 	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of items in the box</tooltip>
 	  <parameters>
@@ -153,9 +153,9 @@
 	    <value id="GTK_WINDOW_POPUP" name="Popup"/>
 	  </displayable-values>
 	</property>
-	<property id="allow-shrink" disabled="TRUE" />
-	<property id="allow-grow" disabled="TRUE" />
-	<property id="resize-mode" disabled="TRUE" />
+	<property id="allow-shrink" disabled="True" />
+	<property id="allow-grow" disabled="True" />
+	<property id="resize-mode" disabled="True" />
 	<property id="role" translatable="False"/>
 	<property id="icon-name" translatable="False"/>
       	<property id="window-position">
@@ -190,7 +190,7 @@
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" title="Tool Bar">
       <properties>
 
-	<property id="size" name="Size" default="3" query="TRUE">
+	<property id="size" name="Size" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of items in the toolbar</tooltip>
 	  <parameters>
@@ -238,7 +238,7 @@
 	    <value id="GTK_POS_BOTTOM" name="Bottom"/>
 	  </displayable-values>
 	</property>
-	<property id="shadow" disabled="TRUE"/>
+	<property id="shadow" disabled="True"/>
       	<property id="shadow-type">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" name="None"/>
@@ -309,10 +309,10 @@
     <glade-widget-class name="GtkButton" generic-name="button" title="Button">
       <post-create-function>glade_gtk_button_post_create</post-create-function>
       <properties>
-	<property id="use-underline" disabled="TRUE"/>
-	<property id="label" visible="FALSE"/>
-	<property id="use-stock" visible="FALSE"/>
-	<property id="stock" name="Stock Button" save="FALSE">
+	<property id="use-underline" disabled="True"/>
+	<property id="label" visible="False"/>
+	<property id="use-stock" visible="False"/>
+	<property id="stock" name="Stock Button" save="False">
 	  <spec>glade_standard_stock_spec</spec>
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
@@ -406,13 +406,21 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkImage" generic-name="image" title="Image">
+      <post-create-function>glade_gtk_image_post_create</post-create-function>
       <properties>
 	<property id="icon-name" translatable="False"/>
 	<property id="file" translatable="False"/>
-	<property id="stock" translatable="False"/>
-	<property id="pixbuf" name="Image file" translatable="False" default="">
-	  <spec>glade_standard_string_spec</spec>
-	  <set-function>glade_gtk_image_set_pixbuf</set-function>
+	<property id="stock" translatable="False" visible="False">
+	  <set-function>glade_gtk_image_set_real_stock</set-function>
+	</property>
+
+	<property id="glade-type" name="Image Type" save="False">
+	  <spec>glade_gtk_image_type_spec</spec>
+	  <set-function>glade_gtk_image_set_type</set-function>
+	</property>
+	<property id="glade-stock" name="Stock Image" save="False">
+	  <spec>glade_standard_stock_spec</spec>
+	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
       </properties>
     </glade-widget-class>
@@ -455,7 +463,7 @@
 
     <glade-widget-class name="GtkTable" generic-name="table" title="Table">
       <properties>
-	<property id="n-rows" default="3" query="TRUE">
+	<property id="n-rows" default="3" query="True">
 	  <parameters>
 	    <parameter key="Min" value="1"/>
 	    <parameter key="Max" value="10000"/>
@@ -466,7 +474,7 @@
 	  <set-function>glade_gtk_table_set_n_rows</set-function>
 	  <verify-function>glade_gtk_table_verify_n_rows</verify-function>
 	</property>
-	<property id="n-columns" default="3" query="TRUE">
+	<property id="n-columns" default="3" query="True">
 	  <parameters>
 	    <parameter key="Min" value="1"/>
 	    <parameter key="Max" value="10000"/>
@@ -509,7 +517,7 @@
   
     <glade-widget-class name="GtkNotebook" generic-name="notebook" title="Notebook">
       <properties>
-	<property id="pages" name="Number of pages" default="3" query="TRUE">
+	<property id="pages" name="Number of pages" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <tooltip>The number of pages in the notebook</tooltip>
 	  <parameters>
@@ -541,7 +549,7 @@
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
 	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
-	    <property id="tab-label" disabled="TRUE"/>
+	    <property id="tab-label" disabled="True"/>
 	    <property id="tab-pack">
 	      <displayable-values>
 		<value id="GTK_PACK_START" name="Start"/>
@@ -556,7 +564,7 @@
     <glade-widget-class name="GtkFrame" generic-name="frame" title="Frame">
       <post-create-function>glade_gtk_frame_post_create</post-create-function>
       <properties>
-	<property id="label" disabled="TRUE"/>
+	<property id="label" disabled="True"/>
 	<property id="shadow" disabled="True"/>
 	<property id="label-xalign" default="0.0"/>
       	<property id="shadow-type">
@@ -655,8 +663,8 @@
     </glade-widget-class>
     <glade-widget-class name="GtkStatusbar" generic-name="statusbar" title="Status Bar">
       <properties>
-	<property id="size" disabled="TRUE" />
-	<property id="has-resize-grip" name="Has Resize Grip" default="TRUE">
+	<property id="size" disabled="True" />
+	<property id="has-resize-grip" name="Has Resize Grip" default="True">
 	  <type>Boolean</type>
 	  <tooltip>Set if the statusbar has a resize grip or not</tooltip>
 	  <set-function>glade_gtk_statusbar_set_has_resize_grip</set-function>

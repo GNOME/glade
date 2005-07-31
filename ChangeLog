@@ -1,3 +1,44 @@
+2005-07-31  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor.c: Cleared up property->class references, Added comments,
+	  Made spin button adjustments from the class, not from Glade Parameters.
+
+	* src/glade-parameter.[ch]: Removed convenience create_adjustement function,
+	  Certain data found in the xml file is parsed directly onto the class data and
+	  others are dynamicly added through glade params, for this reason I'm 
+	  depricating use of glade-parameters in the core code, glade-parameters can
+	  be kept around as a usefull configuration mechanism for plugin writers.
+
+	* src/glade-gtk.c:
+	    - Added special enum type & pspec for GtkImage
+	    - Now GtkImage uses one of three methods to save
+	        o Filename
+	        o Stock
+	        o Icon Theme
+	      the appropriate controls are disabled & enabled
+	      accordingly and survive a save/load with no custom
+	      property help.
+	    - Icon Size is disabled if a Pixel Size is specified
+	      (as pixel size takes precedence on this object).
+	    - Removed pointless unfinished API doc headers, the core
+	      (i.e. libgladeui) could well be documented for use by
+	      plugin writers and application writers (like anjuta for
+	      instance) but in the plugin its pretty pointless.
+
+	* src/glade-property-class.[ch]:
+	    - Fiddled with g_critical outputs
+	    - Added glade_property_class_make_adjustment
+	    - Added LIBGLADEUI_API to func headers.
+	
+	* src/glade-property.[ch]: Added glade_property_reset()/glade_property_default()
+	* src/glade-widget.[ch]: Added glade_widget_property_reset(),
+	  glade_widget_pack_property_reset(), glade_widget_property_default(),
+	  glade_widget_pack_property_default().
+
+	* src/glade.h: Added definitions for defaults in editor adjustments.
+
+	* widgets/gtk+.xml: Added information for GtkImage properties.
+	
 2005-07-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml:

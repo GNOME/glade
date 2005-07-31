@@ -87,12 +87,12 @@ LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *pa
 LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
 									     GladeWidget      *parent,
 									     GObject          *internal_object,
-									     const char       *internal_name);
+									     const gchar      *internal_name);
 
 LIBGLADEUI_API void                    glade_widget_set_name		    (GladeWidget      *widget,
-									     const char       *name);
+									     const gchar      *name);
 LIBGLADEUI_API void                    glade_widget_set_internal	    (GladeWidget      *widget,
-									     const char       *internal);
+									     const gchar      *internal);
 LIBGLADEUI_API void                    glade_widget_set_object		    (GladeWidget      *widget,
 									     GObject          *new_object);
 LIBGLADEUI_API void                    glade_widget_set_project		    (GladeWidget      *widget,
@@ -106,30 +106,38 @@ LIBGLADEUI_API GObject                *glade_widget_get_object             (Glad
 
 
 LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
-									    const char       *id_property);
+									    const gchar      *id_property);
 LIBGLADEUI_API GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
-									    const char       *id_property);
+									    const gchar      *id_property);
 
 
 /* Convenience functions for plugin & application use */
 LIBGLADEUI_API gboolean                glade_widget_property_get           (GladeWidget      *widget,
-									    const char       *id_property,
+									    const gchar      *id_property,
 									    ...);
 LIBGLADEUI_API gboolean                glade_widget_property_set           (GladeWidget      *widget,
-									    const char       *id_property,
+									    const gchar      *id_property,
 									    ...);
 LIBGLADEUI_API gboolean                glade_widget_pack_property_get      (GladeWidget      *widget,
-									    const char       *id_property,
+									    const gchar      *id_property,
 									    ...);
 LIBGLADEUI_API gboolean                glade_widget_pack_property_set      (GladeWidget      *widget,
-									    const char       *id_property,
+									    const gchar      *id_property,
 									    ...);
+LIBGLADEUI_API gboolean                glade_widget_property_reset         (GladeWidget      *widget,
+									    const gchar      *id_property);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_reset    (GladeWidget      *widget,
+									    const gchar      *id_property);
+LIBGLADEUI_API gboolean                glade_widget_property_default       (GladeWidget      *widget,
+									    const gchar      *id_property);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_default  (GladeWidget      *widget,
+									    const gchar      *id_property);
 LIBGLADEUI_API gboolean                glade_widget_property_set_sensitive (GladeWidget      *widget,
-									    const char       *id_property,
+									    const gchar      *id_property,
 									    gboolean          sensitive,
 									    const gchar      *reason);
 LIBGLADEUI_API gboolean                glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
-										 const char       *id_property,
+										 const gchar      *id_property,
 										 gboolean          sensitive,
 										 const gchar      *reason);
 
@@ -149,7 +157,7 @@ LIBGLADEUI_API void                    glade_widget_change_signal_handler  (Glad
 									    GladeSignal      *new_signal_handler);
 /* array of GladeSignal* */
 LIBGLADEUI_API GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
-									    const char       *signal_name);
+									    const gchar      *signal_name);
 /* serialization */
 LIBGLADEUI_API GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
 									    GladeInterface   *interface);

@@ -184,27 +184,25 @@ struct _GladePropertyClass
 
 };
 
-GladePropertyClass * glade_property_class_new (void);
-GladePropertyClass * glade_property_class_new_from_spec (GParamSpec *spec);
-GladePropertyClass *glade_property_class_clone (GladePropertyClass *property_class);
-
-void glade_property_class_free (GladePropertyClass *property_class);
-
-gboolean glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class);
-
-GValue * glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
-						       const gchar *string);
-gchar *  glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
-						       const GValue *value);
-
-gboolean glade_property_class_update_from_node (GladeXmlNode *node,
-						GladeWidgetClass *widget_class,
-						GladePropertyClass **property_class);
-gchar *
-glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fvals, gboolean displayables);
-
-gchar *
-glade_property_class_get_displayable_value(GladePropertyClass *class, gint value);
+LIBGLADEUI_API GladePropertyClass *glade_property_class_new                     (void);
+LIBGLADEUI_API GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec);
+LIBGLADEUI_API GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
+LIBGLADEUI_API void                glade_property_class_free                    (GladePropertyClass  *property_class);
+LIBGLADEUI_API gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class, 
+										 GladeWidgetClass    *widget_class);
+LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
+										 const gchar         *string);
+LIBGLADEUI_API gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
+										 const GValue        *value);
+LIBGLADEUI_API gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
+										 GladeWidgetClass    *widget_class,
+										 GladePropertyClass **property_class);
+LIBGLADEUI_API gchar              *glade_property_class_make_string_from_flags  (GladePropertyClass *class, 
+										 guint               fvals, 
+										 gboolean            displayables);
+LIBGLADEUI_API gchar              *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
+										 gint                value);
+LIBGLADEUI_API GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *class);
 
 G_END_DECLS
 

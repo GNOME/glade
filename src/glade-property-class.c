@@ -206,8 +206,7 @@ glade_property_class_free (GladePropertyClass *class)
 
 
 static GValue *
-glade_property_class_get_default_from_spec (GParamSpec *spec,
-					    GladePropertyClass *class)
+glade_property_class_get_default_from_spec (GParamSpec *spec)
 {
 	GValue *value;
 	value = g_new0 (GValue, 1);
@@ -342,7 +341,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 					  GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 	else
 		g_critical ("Unsupported pspec type %s",
-			    g_type_name(property_class->pspec->value_type));
+			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return string;
 }
@@ -524,7 +523,8 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	}
 	else
 		g_critical ("Unsupported pspec type %s",
-			    g_type_name(property_class->pspec->value_type));
+			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
+
 	return value;
 }
 
@@ -572,7 +572,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	}
 
 	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
-	property_class->def = glade_property_class_get_default_from_spec (spec, property_class);
+	property_class->def = glade_property_class_get_default_from_spec (spec);
 
 	return property_class;
 
@@ -674,6 +674,79 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gi
 	return array;
 }
 
+/**
+ * glade_property_class_make_adjustment:
+ *
+ * @property_class: a pointer to the property class
+ *
+ * Creates and appropriate GtkAdjustment for use in the editor
+ *
+ * Returns: An appropriate #GtkAdjustment for use in the Property editor
+ */
+GtkAdjustment *
+glade_property_class_make_adjustment (GladePropertyClass *property_class)
+{
+	gdouble        min, max, def;
+	gboolean       float_range = FALSE;
+
+	g_return_val_if_fail (property_class        != NULL, NULL);
+	g_return_val_if_fail (property_class->pspec != NULL, NULL);
+
+	if (G_IS_PARAM_SPEC_INT(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecInt *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecInt *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecInt *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_UINT(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecUInt *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecUInt *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecUInt *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_LONG(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecLong *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecLong *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecLong *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_ULONG(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecULong *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecULong *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecULong *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_INT64(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecInt64 *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecInt64 *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecInt64 *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
+	{
+		min = (gdouble)((GParamSpecUInt64 *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecUInt64 *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecUInt64 *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
+	{
+		float_range = TRUE;
+		min = (gdouble)((GParamSpecFloat *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecFloat *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecFloat *) property_class->pspec)->default_value;
+	} else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
+	{
+		float_range = TRUE;
+		min = (gdouble)((GParamSpecFloat *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecFloat *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecFloat *) property_class->pspec)->default_value;
+	} else
+	{
+		g_critical ("Can't make adjustment for pspec type %s",
+			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
+	}
+
+	return (GtkAdjustment *)gtk_adjustment_new (def, min, max,
+						    float_range ?
+						    GLADE_FLOATING_STEP_INCREMENT :
+						    GLADE_NUMERICAL_STEP_INCREMENT,
+						    GLADE_NUMERICAL_PAGE_INCREMENT,
+						    GLADE_NUMERICAL_PAGE_SIZE);
+}
 
 /**
  * glade_property_class_update_from_node:
@@ -742,8 +815,23 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 			
 			if (class->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
 				class->construct_only = TRUE;
+
+			else if (class->def)
+				class->orig_def = class->def;
+			class->def = glade_property_class_get_default_from_spec (class->pspec);
 		}
-	} else {
+	} else  {
+
+		/* Get the default */
+		buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+		if (buff)
+		{
+			if (class->def)
+				class->orig_def = class->def;
+			class->def = glade_property_class_make_gvalue_from_string (class, buff);
+			g_free (buff);
+		}
+
 		if (!class->pspec) 
 		{
 			/* If catalog file didn't specify a pspec function
@@ -795,18 +883,6 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 		class->parameters = glade_parameter_list_new_from_node (class->parameters, child);
 	glade_parameter_get_boolean (class->parameters, GLADE_TAG_OPTIONAL, &class->optional);
 		
-	/* Get the default */
-	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-	if (buff)
-	{
-		if (class->def)
-			class->orig_def = class->def;
-		class->def = glade_property_class_make_gvalue_from_string (class, buff);
-		g_free (buff);
-		if (!class->def)
-			return FALSE;
-	}
-
 	/* Whether or not the property is translatable. This is only used for
 	 * string properties.
 	 */

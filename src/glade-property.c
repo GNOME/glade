@@ -94,6 +94,21 @@ glade_property_dup_impl (GladeProperty *template, GladeWidget *widget)
 	return property;
 }
 
+void
+glade_property_reset_impl (GladeProperty *property)
+{
+	GLADE_PROPERTY_GET_CINFO (property)->set_value
+		(property, property->class->def);
+}
+
+gboolean
+glade_property_default_impl (GladeProperty *property)
+{
+	return !g_param_values_cmp (property->class->pspec,
+				    property->value,
+				    property->class->def);
+}
+
 /**
  * Generic set function for properties that do not have a
  * custom set_property method. This includes packing properties.
@@ -103,11 +118,11 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 {
 	if (property->class->packing)
 	{
-		GladeWidget          *parent = glade_widget_get_parent (property->widget);
-		GladeWidget          *child  = property->widget;
-		glade_widget_class_container_set_property (parent->widget_class,
-							   parent->object, child->object,
-							   property->class->id, value);
+		GladeWidget  *parent = glade_widget_get_parent (property->widget);
+		GladeWidget  *child  = property->widget;
+		glade_widget_class_container_set_property 
+			(parent->widget_class, parent->object, child->object,
+			 property->class->id, value);
 	}
 	else
 	{
@@ -420,6 +435,8 @@ glade_property_cinfo_init (GladePropertyCinfo *prop_class)
 
 	/* Class methods */
 	prop_class->dup                   = glade_property_dup_impl;
+	prop_class->reset                 = glade_property_reset_impl;
+	prop_class->def                   = glade_property_default_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
 	prop_class->get_value             = glade_property_get_value_impl;
 	prop_class->sync                  = glade_property_sync_impl;
@@ -585,6 +602,31 @@ glade_property_dup (GladeProperty *template, GladeWidget *widget)
 	return GLADE_PROPERTY_GET_CINFO (template)->dup (template, widget);
 }
 
+/**
+ * glade_property_reset:
+ * @property:
+ *
+ * TODO: write me
+ */
+void
+glade_property_reset (GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_CINFO (property)->reset (property);
+}
+
+/**
+ * glade_property_reset:
+ * @property:
+ *
+ * TODO: write me
+ */
+gboolean
+glade_property_default (GladeProperty *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return GLADE_PROPERTY_GET_CINFO (property)->def (property);
+}
 
 /**
  * glade_property_set_value:

@@ -144,7 +144,6 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	last = 0;
 	for (i = 0; i < n_specs; i++)
 	{
-
 		spec = specs[i];
 
 		/* We only use the writable properties */

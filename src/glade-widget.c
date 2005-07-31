@@ -1136,7 +1136,6 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 		if (strcmp (property->class->id, id_property) == 0)
 			return property;
 	}
-
 	return glade_widget_get_pack_property (widget, id_property);
 }
 
@@ -1162,10 +1161,8 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 		if (strcmp (property->class->id, id_property) == 0)
 			return property;
 	}
-
-	g_warning ("Could not get property \"%s\" for widget %s",
-		   id_property, widget->name);
-
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return NULL;
 }
 
@@ -1182,7 +1179,7 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
  */
 gboolean
 glade_widget_property_get (GladeWidget      *widget,
-			   const char       *id_property,
+			   const gchar      *id_property,
 			   ...)
 {
 	GladeProperty *property;
@@ -1212,7 +1209,7 @@ glade_widget_property_get (GladeWidget      *widget,
  */
 gboolean
 glade_widget_property_set (GladeWidget      *widget,
-			   const char       *id_property,
+			   const gchar      *id_property,
 			   ...)
 {
 	GladeProperty *property;
@@ -1242,7 +1239,7 @@ glade_widget_property_set (GladeWidget      *widget,
  */
 gboolean
 glade_widget_pack_property_get (GladeWidget      *widget,
-				const char       *id_property,
+				const gchar      *id_property,
 				...)
 {
 	GladeProperty *property;
@@ -1272,7 +1269,7 @@ glade_widget_pack_property_get (GladeWidget      *widget,
  */
 gboolean
 glade_widget_pack_property_set (GladeWidget      *widget,
-				const char       *id_property,
+				const gchar      *id_property,
 				...)
 {
 	GladeProperty *property;
@@ -1302,7 +1299,7 @@ glade_widget_pack_property_set (GladeWidget      *widget,
  */
 gboolean
 glade_widget_property_set_sensitive (GladeWidget      *widget,
-				     const char       *id_property,
+				     const gchar      *id_property,
 				     gboolean          sensitive,
 				     const gchar      *reason)
 {
@@ -1332,7 +1329,7 @@ glade_widget_property_set_sensitive (GladeWidget      *widget,
  */
 gboolean
 glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
-					  const char       *id_property,
+					  const gchar      *id_property,
 					  gboolean          sensitive,
 					  const gchar      *reason)
 {
@@ -1346,8 +1343,66 @@ glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
 		return TRUE;
 	}
 	return FALSE;
-
 }
+
+gboolean
+glade_widget_property_reset (GladeWidget   *widget,
+			     const gchar   *id_property)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		glade_property_reset (property);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+gboolean      
+glade_widget_pack_property_reset (GladeWidget   *widget,
+				  const gchar   *id_property)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		glade_property_reset (property);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+gboolean
+glade_widget_property_default (GladeWidget *widget,
+			       const gchar *id_property)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+		return glade_property_default (property);
+	return FALSE;
+}
+
+gboolean 
+glade_widget_pack_property_default (GladeWidget *widget,
+				    const gchar *id_property)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+		return glade_property_default (property);
+	return FALSE;
+}
+
 
 static gboolean
 glade_widget_popup_menu (GtkWidget *widget, gpointer unused_data)

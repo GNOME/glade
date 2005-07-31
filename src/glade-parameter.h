@@ -28,10 +28,9 @@ struct _GladeParameter {
 
 	gchar *key;   /* The name of the parameter */
 	gchar *value; /* The textual representation of the parameter */
-	
 };
 
-GladeParameter * glade_parameter_new (void);
+GladeParameter *glade_parameter_new (void);
 GladeParameter *glade_parameter_clone (GladeParameter *parameter);
 void glade_parameter_free (GladeParameter *parameter);
 
@@ -42,9 +41,6 @@ void glade_parameter_get_string  (GList *parameters, const gchar *key, gchar **v
 
 
 GList * glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node);
-
-/* Convenience functions */
-GtkAdjustment * glade_parameter_adjustment_new (GladePropertyClass *property_class);
 
 G_END_DECLS
 

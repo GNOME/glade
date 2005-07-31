@@ -341,35 +341,35 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 	if (property->property->loading)
 		return;
 
-	g_value_init (&val, property->property->class->pspec->value_type);
+	g_value_init (&val, property->class->pspec->value_type);
 	
-	if (G_IS_PARAM_SPEC_INT(property->property->class->pspec))
+	if (G_IS_PARAM_SPEC_INT(property->class->pspec))
 		g_value_set_int (&val, gtk_spin_button_get_value_as_int
 				 (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_UINT(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
 		g_value_set_uint (&val, gtk_spin_button_get_value_as_int
 				  (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_LONG(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
 		g_value_set_long (&val, (glong)gtk_spin_button_get_value_as_int
 				  (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_ULONG(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
 		g_value_set_ulong (&val, (gulong)gtk_spin_button_get_value_as_int
 				   (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_INT64(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
 		g_value_set_int64 (&val, (gint64)gtk_spin_button_get_value_as_int
 				  (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_UINT64(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
 		g_value_set_uint64 (&val, (guint64)gtk_spin_button_get_value_as_int
 				   (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_FLOAT(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
 		g_value_set_float (&val, (gfloat) gtk_spin_button_get_value
 				   (GTK_SPIN_BUTTON (spin)));
-	else if (G_IS_PARAM_SPEC_DOUBLE(property->property->class->pspec))
+	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
 		g_value_set_double (&val, gtk_spin_button_get_value
 				    (GTK_SPIN_BUTTON (spin)));
 	else
 		g_warning ("Unsupported type %s\n",
-			   g_type_name(property->property->class->pspec->value_type));
+			   g_type_name(G_PARAM_SPEC_TYPE (property->class->pspec)));
 
 	if (property->from_query_dialog)
 		glade_property_set_value (property->property, &val);
@@ -588,7 +588,7 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 		mask = class->values[flag_num].value;
 		setting = ((value & mask) == mask) ? TRUE : FALSE;
 		
-		value_name = glade_property_class_get_displayable_value (property->property->class, 
+		value_name = glade_property_class_get_displayable_value (property->class, 
 									 class->values[flag_num].value);
 
 		if (value_name == NULL) value_name = class->values[flag_num].value_name;
@@ -941,6 +941,9 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	class = property->class;
 
+	/* XXX Make this class data GladeParamater can be used just for the plugin, if the
+	 * data gets treated in the core, we dont need to special case this like this.
+	 */
 	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
 
 	if (lines < 2) {
@@ -1004,19 +1007,16 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 static GtkWidget *
 glade_editor_create_input_numeric (GladeEditorProperty *property)
 {
-	GladePropertyClass *class;
 	GtkAdjustment *adjustment;
 	GtkWidget *spin;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property->class), NULL);
 	
-	class = property->class;
-
-	adjustment = glade_parameter_adjustment_new (class);
+	adjustment = glade_property_class_make_adjustment (property->class);
 	spin       = gtk_spin_button_new (adjustment, 4,
-					  G_IS_PARAM_SPEC_FLOAT (class->pspec) ||
-					  G_IS_PARAM_SPEC_DOUBLE (class->pspec)
+					  G_IS_PARAM_SPEC_FLOAT (property->class->pspec) ||
+					  G_IS_PARAM_SPEC_DOUBLE (property->class->pspec)
 					  ? 2 : 0);
 
 	g_signal_connect (G_OBJECT (spin), "value_changed",
@@ -1026,7 +1026,7 @@ glade_editor_create_input_numeric (GladeEditorProperty *property)
 	/* Some numeric types are optional, for example the default window size, so
 	 * they have a toggle button right next to the spin button. 
 	 */
-	if (class->optional) {
+	if (property->class->optional) {
 		GtkWidget *check;
 		GtkWidget *hbox;
 		check = gtk_check_button_new ();
@@ -1534,7 +1534,7 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
 
-	class = property->property->class;
+	class = property->class;
 
 	if (class->optional) {
 		GtkBoxChild *child;
@@ -1585,7 +1585,7 @@ glade_editor_property_load_integer (GladeEditorProperty *property)
 		val = g_value_get_float (property->property->value);
 	else
 		g_warning ("Unsupported type %s\n",
-			   g_type_name(class->pspec->value_type));
+			   g_type_name(G_PARAM_SPEC_TYPE (class->pspec)));
 
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin), val);
 	g_object_set_data (G_OBJECT (spin), "user_data", property);
@@ -1606,9 +1606,9 @@ glade_editor_property_load_enum (GladeEditorProperty *property)
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
 	g_return_if_fail ((eclass = g_type_class_ref
-			   (property->property->class->pspec->value_type)) != NULL);
+			   (property->class->pspec->value_type)) != NULL);
 	
-	pclass = property->property->class;
+	pclass = property->class;
 
 	value = g_value_get_enum (property->property->value);
 
@@ -1648,7 +1648,7 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 	entry = child->widget;
 	g_return_if_fail (GTK_IS_ENTRY (entry));
 
-	text = glade_property_class_make_string_from_flags(property->property->class,
+	text = glade_property_class_make_string_from_flags(property->class,
 					g_value_get_flags(property->property->value),
 					TRUE);
 	
@@ -1957,7 +1957,7 @@ glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
-
+	
 	if (editor->loaded_widget == widget)
 		return;
 
