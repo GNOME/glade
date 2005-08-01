@@ -11,6 +11,9 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROPERTY_CINFO(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
 #define GLADE_PROPERTY_GET_CINFO(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyCinfo))
 
+typedef struct _GladeProperty      GladeProperty;
+typedef struct _GladePropertyCinfo GladePropertyCinfo;
+
 
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
@@ -23,7 +26,7 @@ struct _GladeProperty
 	GladePropertyClass *class;     /* A pointer to the GladeProperty that this
 					* setting specifies
 					*/
-	GladeWidget        *widget;    /* A pointer to the GladeWidget that this
+	gpointer           *widget;    /* A pointer to the GladeWidget that this
 					* GladeProperty is modifying
 					*/
 	
@@ -53,7 +56,7 @@ struct _GladeProperty
 		
 #if 0
 	/* A GladeProperty of type object has a child */
-	GladeWidget *child;
+	gpointer *child;
 #endif
 	gboolean loading;
 };
@@ -64,7 +67,7 @@ struct _GladePropertyCinfo
 	GObjectClass  parent_class;
 
 	/* Class methods */
-	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
+	GladeProperty *         (* dup)                   (GladeProperty *, gpointer *);
 	void                    (* reset)                 (GladeProperty *);
 	gboolean                (* def)                   (GladeProperty *);
 	void                    (* set_value)             (GladeProperty *, const GValue *);
@@ -80,10 +83,10 @@ struct _GladePropertyCinfo
 
 LIBGLADEUI_API GType                   glade_property_get_type              (void);
 LIBGLADEUI_API GladeProperty          *glade_property_new                   (GladePropertyClass *class,
-									     GladeWidget        *widget,
+									     gpointer           *widget,
 									     GValue             *value);
 LIBGLADEUI_API GladeProperty          *glade_property_dup                   (GladeProperty      *template,
-									     GladeWidget        *widget);
+									     gpointer           *widget);
 LIBGLADEUI_API void                    glade_property_reset                 (GladeProperty      *property);
 LIBGLADEUI_API gboolean                glade_property_default               (GladeProperty      *property);
 LIBGLADEUI_API void                    glade_property_set_value             (GladeProperty      *property, 

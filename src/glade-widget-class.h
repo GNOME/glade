@@ -4,8 +4,9 @@
 
 #include <glib-object.h>
 #include <gmodule.h>
-#include <gtk/gtkwidget.h>
-#include "glade-types.h"
+#include <gtk/gtk.h>
+#include "glade-xml-utils.h"
+#include "glade-property-class.h"
 
 G_BEGIN_DECLS
 
@@ -13,7 +14,9 @@ G_BEGIN_DECLS
 #define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
 #define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
 
-typedef struct _GladeSupportedChild  GladeSupportedChild;
+typedef struct _GladeWidgetClass       GladeWidgetClass;
+typedef struct _GladeSupportedChild    GladeSupportedChild;
+typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
 
 
 typedef void (* GladeChildSetPropertyFunc) (GObject      *container,
@@ -145,15 +148,6 @@ struct _GladeWidgetClassSignal
 			      * eg GtkButton */
 };
  
-/* Need to go through all properties in catalog file and compare 
- * against parent class.
- */
-struct _GladePackagingDefault
-{
-        gchar *id;
-	gchar *value;
-};
-
 LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
 									   const gchar      *library);
 LIBGLADEUI_API void                 glade_widget_class_free               (GladeWidgetClass *widget_class);

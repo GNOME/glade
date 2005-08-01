@@ -1,4 +1,3 @@
-
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_H__
 #define __GLADE_H__
@@ -23,7 +22,17 @@
 # define LIBGLADEUI_API		extern
 #endif
 
-#include "glade-types.h"
+#include "glade-placeholder.h"
+#include "glade-widget-class.h"
+#include "glade-widget.h"
+#include "glade-project.h"
+#include "glade-app.h"
+#include "glade-command.h"
+#include "glade-editor.h"
+#include "glade-property.h"
+#include "glade-property-class.h"
+#include "glade-palette.h"
+#include "glade-builtins.h"
 #include "glade-utils.h"
 #include "glade-xml-utils.h"
 

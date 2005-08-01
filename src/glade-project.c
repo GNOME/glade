@@ -306,7 +306,7 @@ glade_project_add_object (GladeProject *project, GObject *object)
 		g_list_free (children);
 	}
 
-	glade_widget_set_project (gwidget, project);
+	glade_widget_set_project (gwidget, (gpointer)project);
 	g_hash_table_insert (project->widget_old_names,
 			     gwidget, g_strdup (glade_widget_get_name (gwidget)));
 
@@ -744,7 +744,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 
 	for (i = 0; i < interface->n_toplevels; ++i)
 	{
-		widget = glade_widget_read (project, interface->toplevels[i]);
+		widget = glade_widget_read ((gpointer)project, interface->toplevels[i]);
 		if (!widget)
 		{
 			g_warning ("Failed to read a <widget> tag");

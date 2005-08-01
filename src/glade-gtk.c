@@ -24,7 +24,7 @@
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
-#include "glade-plugin.h"
+#include "glade.h"
 
 #include "fixed_bg.xpm"
 
@@ -117,8 +117,8 @@ glade_gtk_option_menu_set_items (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 {
-	GladeWidget *glade_widget = glade_widget_get_from_gobject (GTK_WIDGET (object));
-	GladeProject *project = glade_widget_get_project (glade_widget);
+	GladeWidget   *glade_widget = glade_widget_get_from_gobject (GTK_WIDGET (object));
+	GladeProject       *project = (GladeProject *)glade_widget_get_project (glade_widget);
 	GtkTooltips *tooltips = glade_project_get_tooltips (project);
 	const char *tooltip;
 
@@ -674,7 +674,7 @@ glade_gtk_button_ensure_glabel (GtkWidget *button)
 		if (child) gtk_container_remove (GTK_CONTAINER (button), child);
 		gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (gbutton->project, glabel->object);
+		glade_project_add_object (GLADE_PROJECT (gbutton->project), glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 
@@ -694,7 +694,8 @@ glade_gtk_button_ensure_glabel_idle (gpointer data)
 	button  = GTK_WIDGET (gbutton->object);
 
 	glade_gtk_button_ensure_glabel (button);
-	glade_project_selection_set (gbutton->project, G_OBJECT (button), TRUE);
+	glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
+				     G_OBJECT (button), TRUE);
 	return FALSE;
 }
 
@@ -1014,9 +1015,10 @@ glade_gtk_fixed_button_press (GtkWidget       *widget,
 		      glade_default_app_get_alt_class() != NULL))        &&
 		    ((gwidget = glade_command_create
 		      (glade_default_app_get_add_class() ?
-			   	glade_default_app_get_add_class() :
-			   	 glade_default_app_get_alt_class(),
-		       fixed_gwidget, NULL, fixed_gwidget->project)) != NULL))
+		       glade_default_app_get_add_class() :
+		       glade_default_app_get_alt_class(),
+		       fixed_gwidget, NULL, 
+		       GLADE_PROJECT (fixed_gwidget->project))) != NULL))
 		{
 			/* reset the palette */
 			glade_palette_unselect_widget (glade_default_app_get_palette());
@@ -1246,11 +1248,11 @@ glade_gtk_frame_create_idle (gpointer data)
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (gframe->project, glabel->object);
+		glade_project_add_object (GLADE_PROJECT (gframe->project), glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 
-	glade_project_selection_set (gframe->project, G_OBJECT (label), TRUE);
+	glade_project_selection_set (GLADE_PROJECT (gframe->project), G_OBJECT (label), TRUE);
 	return FALSE;
 }
 

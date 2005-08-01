@@ -5,6 +5,8 @@
 #include <glib-object.h>
 #include "glade.h"
 
+G_BEGIN_DECLS
+
 #define GLADE_TYPE_STOCK  (glade_standard_stock_get_type())
 
 LIBGLADEUI_API GType       glade_standard_stock_get_type (void);
@@ -14,5 +16,7 @@ LIBGLADEUI_API GParamSpec *glade_standard_stock_spec     (void);
 LIBGLADEUI_API GParamSpec *glade_standard_int_spec       (void);
 LIBGLADEUI_API GParamSpec *glade_standard_string_spec    (void);
 LIBGLADEUI_API GParamSpec *glade_standard_float_spec     (void);
+
+G_END_DECLS
 
 #endif   /* __GLADE_BUILTINS_H__ */

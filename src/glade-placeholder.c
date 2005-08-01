@@ -253,7 +253,7 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;
 	parent = glade_placeholder_get_parent (placeholder);
-	return parent ? parent->project : NULL;
+	return parent ? GLADE_PROJECT (parent->project) : NULL;
 }
 
 static gboolean

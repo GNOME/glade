@@ -10,13 +10,14 @@ G_BEGIN_DECLS
  * with it's enumed value to set the window cursor.
  */
 
+
 /* Has a pointer to the loaded GdkCursors. It is loaded when _init
  * is called
  */
-struct _GladeCursor {
+typedef struct _GladeCursor {
 	GdkCursor *selector;
 	GdkCursor *add_widget;
-};
+} GladeCursor;
 
 /* Enumed values for each of the cursors for GladeCursor. For every
  * GdkCursor above there should be a enum here

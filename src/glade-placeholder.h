@@ -2,13 +2,10 @@
 #ifndef __GLADE_PLACEHOLDER_H__
 #define __GLADE_PLACEHOLDER_H__
 
-#include <gdk/gdk.h>
-#include <gdk/gdkpixmap.h>
-#include <gtk/gtkwidget.h>
-#include "glade-types.h"
+#include <gtk/gtk.h>
+#include "glade-widget.h"
 
 G_BEGIN_DECLS
-
 
 #define GLADE_TYPE_PLACEHOLDER            (glade_placeholder_get_type ())
 #define GLADE_PLACEHOLDER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PLACEHOLDER, GladePlaceholder))
@@ -19,6 +16,10 @@ G_BEGIN_DECLS
 
 #define GLADE_PLACEHOLDER_WIDTH_REQ    20
 #define GLADE_PLACEHOLDER_HEIGHT_REQ   20
+
+typedef struct _GladePlaceholder   GladePlaceholder;
+typedef struct _GladePlaceholderClass GladePlaceholderClass;
+
 
 struct _GladePlaceholder
 {

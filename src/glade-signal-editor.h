@@ -8,6 +8,9 @@ G_BEGIN_DECLS
 #define GLADE_SIGNAL_EDITOR(e) ((GladeSignalEditor *)e)
 #define GLADE_IS_SIGNAL_EDITOR(e) (e != NULL)
 
+typedef struct _GladeSignalEditor  GladeSignalEditor;
+
+
 /* The GladeSignalEditor is used to house the signal editor interface and
  * associated functionality.
  */
@@ -18,7 +21,7 @@ struct _GladeSignalEditor
 	GladeWidget *widget;
 	GladeWidgetClass *class;
 
-	GladeEditor *editor;
+	gpointer  *editor;
 
 	GtkWidget *signals_list;
 	GtkTreeStore *model;
@@ -28,7 +31,7 @@ struct _GladeSignalEditor
 
 GtkWidget *glade_signal_editor_get_widget (GladeSignalEditor *editor);
 
-GladeSignalEditor *glade_signal_editor_new (GladeEditor *editor);
+GladeSignalEditor *glade_signal_editor_new (gpointer *editor);
 
 void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 

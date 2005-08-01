@@ -13,9 +13,9 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT_WINDOW))
 #define GLADE_PROJECT_WINDOW_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROJECT_WINDOW, GladeProjectWindowClass))
 
-/* typedef struct _GladeProjectWindow GladeProjectWindow; */
+typedef struct _GladeProjectWindow      GladeProjectWindow;
 typedef struct _GladeProjectWindowClass GladeProjectWindowClass;
-typedef struct _GladeProjectWindowPriv GladeProjectWindowPriv;
+typedef struct _GladeProjectWindowPriv  GladeProjectWindowPriv;
 
 /* A GladeProjectWindow specifies a loaded glade application.
  * it contains pointers to all the components that make up

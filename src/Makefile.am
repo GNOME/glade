@@ -77,7 +77,6 @@ libgladeuiinclude_HEADERS = \
 	glade-signal-editor.h \
 	glade-palette.h \
 	glade-cursor.h \
-	glade-types.h \
 	glade-widget.h \
 	glade-widget-class.h \
 	glade-property.h \
@@ -96,7 +95,6 @@ libgladeuiinclude_HEADERS = \
 	glade-marshallers.h \
 	glade-parser.h \
 	glade-app.h \
-	glade-plugin.h \
 	glade-builtins.c \
 	fixed_bg.xpm
 

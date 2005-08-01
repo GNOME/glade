@@ -2,6 +2,8 @@
 #ifndef __GLADE_EDITOR_H__
 #define __GLADE_EDITOR_H__
 
+#include "glade-signal-editor.h"
+
 G_BEGIN_DECLS
 
 
@@ -17,6 +19,7 @@ G_BEGIN_DECLS
 #define GLADE_EDITOR_PROPERTY(p)    ((GladeEditorProperty *)p)
 #define GLADE_IS_EDITOR_PROPERTY(p) (p != NULL)
 
+typedef struct _GladeEditor          GladeEditor;
 typedef struct _GladeEditorClass     GladeEditorClass;
 typedef struct _GladeEditorTable     GladeEditorTable;
 typedef struct _GladeEditorProperty  GladeEditorProperty;

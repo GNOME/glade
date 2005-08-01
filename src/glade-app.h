@@ -22,6 +22,11 @@
 #ifndef __GLADE_APP_H__
 #define __GLADE_APP_H__
 
+#include "glade-editor.h"
+#include "glade-palette.h"
+#include "glade-clipboard.h"
+#include "glade-project-view.h"
+
 G_BEGIN_DECLS
 
 #define GLADE_CONFIG_FILENAME "glade-3.conf"

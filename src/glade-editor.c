@@ -217,7 +217,7 @@ glade_editor_property_changed_text (GtkWidget           *entry,
 
 	g_free (text);
 
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static gboolean
@@ -256,7 +256,7 @@ glade_editor_text_view_focus_out (GtkTextView         *view,
 
 	g_free (text);
 	
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 	return FALSE;
 }
 
@@ -288,7 +288,7 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 
 	g_value_unset (&val);
 
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -378,7 +378,7 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 
 	g_value_unset (&val);
 
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -409,7 +409,7 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 
 	g_value_unset (&val);
 
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -442,7 +442,7 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
-	glade_editor_property_load (property, property->property->widget);
+	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -798,7 +798,8 @@ glade_editor_property_show_i18n_dialog (GtkWidget           *entry,
 		
 		g_free (str);
 		
-		glade_editor_property_load (property, property->property->widget);
+		glade_editor_property_load (property, 
+					    GLADE_WIDGET (property->property->widget));
 
 		/* Comment */
 		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
@@ -1266,7 +1267,7 @@ glade_editor_table_append_items (GladeEditorTable *table,
 	{
 		property_class = (GladePropertyClass *) list->data;
 
-		if (!glade_property_class_is_visible (property_class, class))
+		if (!glade_property_class_is_visible (property_class))
 			continue;
 		if (type == TABLE_TYPE_QUERY && !property_class->query)
 			continue;
@@ -1298,7 +1299,7 @@ glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
 	menubar = GTK_WIDGET(editor->loaded_widget->object);
 	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
 
-	project = editor->loaded_widget->project;
+	project = GLADE_PROJECT (editor->loaded_widget->project);
 	g_return_if_fail (project != NULL);
 
 	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
@@ -1470,7 +1471,7 @@ static void
 glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
 {
 	if (editor->signal_editor == NULL) {
-		editor->signal_editor = glade_signal_editor_new (editor);
+		editor->signal_editor = glade_signal_editor_new ((gpointer) editor);
 		gtk_box_pack_start (GTK_BOX (editor->vbox_signals),
 				    glade_signal_editor_get_widget (editor->signal_editor),
 				    TRUE, TRUE, 0);

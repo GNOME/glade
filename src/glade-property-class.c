@@ -585,14 +585,13 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 /**
  * glade_property_class_is_visible:
  * @property_class:
- * @widget_class:
  *
  * TODO: write me
  *
  * Returns:
  */
 gboolean
-glade_property_class_is_visible (GladePropertyClass *property_class, GladeWidgetClass *widget_class)
+glade_property_class_is_visible (GladePropertyClass *property_class)
 {
 	return property_class->visible;
 }
@@ -761,8 +760,9 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
  *          has Disabled="TRUE".
  */
 gboolean
-glade_property_class_update_from_node (GladeXmlNode *node,
-				       GladeWidgetClass *widget_class,
+glade_property_class_update_from_node (GladeXmlNode        *node,
+				       GModule             *module,
+				       GType                widget_type,
 				       GladePropertyClass **property_class)
 {
 	GladePropertyClass *class;
@@ -914,19 +914,19 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	{
 		gchar *symbol_name = glade_xml_get_content (child);
 
-		if (!widget_class->module)
+		if (!module)
 			g_warning (_("The property [%s] of the widget's class [%s] "
 				     "needs a special \"set\" function, but there is "
 				     "no library associated to this widget's class."),
-				   class->name, widget_class->name);
+				   class->name, g_type_name (widget_type));
 
-		if (!g_module_symbol (widget_class->module, symbol_name, (gpointer *)
+		if (!g_module_symbol (module, symbol_name, (gpointer *)
 				      &class->set_function))
 			g_warning (_("Unable to get the \"set\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from "
 				     "the module [%s]: %s"),
-				   symbol_name, class->name, widget_class->name,
-				   g_module_name (widget_class->module), g_module_error ());
+				   symbol_name, class->name, g_type_name (widget_type),
+				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
 
@@ -938,19 +938,19 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	{
 		gchar *symbol_name = glade_xml_get_content (child);
 
-		if (!widget_class->module)
+		if (!module)
 			g_warning (_("The property [%s] of the widget's class [%s] needs a "
 				     "special \"get\" function, but there is no library "
 				     "associated to this widget's class."),
-				   class->name, widget_class->name);
+				   class->name, g_type_name (widget_type));
 
-		if (!g_module_symbol(widget_class->module, symbol_name,
+		if (!g_module_symbol(module, symbol_name,
 				     (gpointer *) &class->get_function))
 			g_warning (_("Unable to get the \"get\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from the "
 				     "module [%s]: %s"),
-				   symbol_name, class->name, widget_class->name,
-				   g_module_name (widget_class->module), g_module_error ());
+				   symbol_name, class->name, g_type_name (widget_type),
+				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
 
@@ -959,19 +959,19 @@ glade_property_class_update_from_node (GladeXmlNode *node,
 	{
 		gchar *symbol_name = glade_xml_get_content (child);
 
-		if (!widget_class->module)
+		if (!module)
 			g_warning (_("The property [%s] of the widget's class [%s] needs a "
 				     "special \"get\" function, but there is no library "
 				     "associated to this widget's class."),
-				   class->name, widget_class->name);
+				   class->name, g_type_name (widget_type));
 
-		if (!g_module_symbol(widget_class->module, symbol_name,
+		if (!g_module_symbol(module, symbol_name,
 				     (gpointer *) &class->verify_function))
 			g_warning (_("Unable to get the \"verify\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from the "
 				     "module [%s]: %s"),
-				   symbol_name, class->name, widget_class->name,
-				   g_module_name (widget_class->module), g_module_error ());
+				   symbol_name, class->name, g_type_name (widget_type),
+				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
 

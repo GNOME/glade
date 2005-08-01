@@ -634,7 +634,7 @@ glade_signal_editor_get_widget (GladeSignalEditor *editor)
  * Returns: a new #GladeSignalEditor associated with @editor
  */
 GladeSignalEditor *
-glade_signal_editor_new (GladeEditor *editor)
+glade_signal_editor_new (gpointer *editor)
 {
 	GladeSignalEditor *signal_editor;
 

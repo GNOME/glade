@@ -66,7 +66,7 @@ static GObjectClass* parent_class = NULL;
                            GladeProperty class methods
  *******************************************************************************/
 static GladeProperty *
-glade_property_dup_impl (GladeProperty *template, GladeWidget *widget)
+glade_property_dup_impl (GladeProperty *template, gpointer *widget)
 {
 	GladeProperty *property;
 
@@ -118,15 +118,15 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 {
 	if (property->class->packing)
 	{
-		GladeWidget  *parent = glade_widget_get_parent (property->widget);
-		GladeWidget  *child  = property->widget;
+		GladeWidget  *parent = glade_widget_get_parent (GLADE_WIDGET (property->widget));
+		GladeWidget  *child  = GLADE_WIDGET (property->widget);
 		glade_widget_class_container_set_property 
 			(parent->widget_class, parent->object, child->object,
 			 property->class->id, value);
 	}
 	else
 	{
-		GObject *gobject = G_OBJECT (glade_widget_get_object (property->widget));
+		GObject *gobject = G_OBJECT (glade_widget_get_object (GLADE_WIDGET (property->widget)));
 		g_object_set_property (gobject, property->class->id, value);
 	}
 }
@@ -145,7 +145,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 	if (property->class->verify_function)
 	{
-		GObject *object = glade_widget_get_object (property->widget);
+		GObject *object = glade_widget_get_object (GLADE_WIDGET (property->widget));
 		if (property->class->verify_function (object, value) == FALSE)
 			return;
 	}
@@ -191,7 +191,7 @@ glade_property_sync_impl (GladeProperty *property)
 	if (property->class->set_function)
 		/* if there is a custom set_property, use it */
 		(*property->class->set_function)
-			(glade_widget_get_object (property->widget), property->value);
+			(glade_widget_get_object (GLADE_WIDGET (property->widget)), property->value);
 	else if (property->class->construct_only)
 	{
 		/* In the case of construct_only, the widget must be rebuilt, here we
@@ -201,38 +201,39 @@ glade_property_sync_impl (GladeProperty *property)
 		GList    *selection;
 		gboolean  reselect  = FALSE;
 		gboolean  inproject =
-			property->widget->project ?
+			GLADE_WIDGET (property->widget)->project ?
 			(glade_project_get_widget_by_name
-			 (property->widget->project,
-			  property->widget->name) ? TRUE : FALSE) : FALSE;
+			 (GLADE_PROJECT (GLADE_WIDGET (property->widget)->project),
+			  GLADE_WIDGET (property->widget)->name) ? TRUE : FALSE) : FALSE;
 
 		
 		if (inproject)
 		{
 			if ((selection =
-			     glade_project_selection_get (property->widget->project)) != NULL &&
+			     glade_project_selection_get
+			     (GLADE_PROJECT (GLADE_WIDGET (property->widget)->project))) != NULL &&
 			    g_list_find(selection,
-					glade_widget_get_object (property->widget)) != NULL)
+					glade_widget_get_object (GLADE_WIDGET (property->widget))) != NULL)
 			{
 				reselect = TRUE;
 				glade_project_selection_remove
-					(property->widget->project,
-					 glade_widget_get_object (property->widget), FALSE);
+					(GLADE_PROJECT (GLADE_WIDGET (property->widget)->project),
+					 glade_widget_get_object (GLADE_WIDGET (property->widget)), FALSE);
 			}
-			glade_project_remove_object (property->widget->project,
-						     glade_widget_get_object (property->widget));
+			glade_project_remove_object (GLADE_PROJECT (GLADE_WIDGET (property->widget)->project),
+						     glade_widget_get_object (GLADE_WIDGET (property->widget)));
 		}
 
-		glade_widget_rebuild (property->widget);
+		glade_widget_rebuild (GLADE_WIDGET (property->widget));
 
 		if (inproject)
 		{
-			glade_project_add_object (property->widget->project,
-						  glade_widget_get_object (property->widget));
+			glade_project_add_object (GLADE_PROJECT (GLADE_WIDGET (property->widget)->project),
+						  glade_widget_get_object (GLADE_WIDGET (property->widget)));
 			if (reselect)
 				glade_project_selection_add
-					(property->widget->project,
-					 glade_widget_get_object (property->widget), TRUE);
+					(GLADE_PROJECT (GLADE_WIDGET (property->widget)->project),
+					 glade_widget_get_object (GLADE_WIDGET (property->widget)), TRUE);
 		}
 	}
 	else
@@ -547,7 +548,7 @@ glade_property_get_type (void)
  */
 GladeProperty *
 glade_property_new (GladePropertyClass *class, 
-		    GladeWidget        *widget, 
+		    gpointer           *widget, 
 		    GValue             *value)
 {
 	GladeProperty *property;
@@ -596,7 +597,7 @@ glade_property_new (GladePropertyClass *class,
  * Returns:
  */
 GladeProperty *
-glade_property_dup (GladeProperty *template, GladeWidget *widget)
+glade_property_dup (GladeProperty *template, gpointer *widget)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (template), NULL);
 	return GLADE_PROPERTY_GET_CINFO (template)->dup (template, widget);

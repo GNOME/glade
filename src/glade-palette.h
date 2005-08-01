@@ -2,8 +2,6 @@
 #ifndef __GLADE_PALETTE_H__
 #define __GLADE_PALETTE_H__
 
-#include "glade-types.h"
-
 G_BEGIN_DECLS
 
 
@@ -14,7 +12,8 @@ G_BEGIN_DECLS
 #define GLADE_IS_PALETTE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PALETTE))
 #define GLADE_PALETTE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PALETTE, GladePaletteClass))
 
-typedef struct _GladePaletteClass	GladePaletteClass;
+typedef struct _GladePalette       GladePalette;
+typedef struct _GladePaletteClass  GladePaletteClass;
 
 
 /* The GladePalette is used so that the user can choose a widget to be

@@ -2,8 +2,9 @@
 #ifndef __GLADE_PROJECT_H__
 #define __GLADE_PROJECT_H__
 
-G_BEGIN_DECLS
+#include "glade-widget.h"
 
+G_BEGIN_DECLS
 
 #define GLADE_TYPE_PROJECT            (glade_project_get_type ())
 #define GLADE_PROJECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROJECT, GladeProject))
@@ -12,6 +13,7 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
 #define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
 
+typedef struct _GladeProject       GladeProject;
 typedef struct _GladeProjectClass  GladeProjectClass;
 
 /* A GladeProject is well... a project nothing more nothing less. It is the

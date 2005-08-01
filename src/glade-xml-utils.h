@@ -3,13 +3,17 @@
 #ifndef __GLADE_XML_UTILS_H__
 #define __GLADE_XML_UTILS_H__
 
-#include "glade-types.h"
+#include "glade-parser.h"
 
 G_BEGIN_DECLS
 
 
 #define GLADE_XML_CONTEXT(c)    ((GladeXmlContext *)c)
 #define GLADE_XML_IS_CONTEXT(c) (c != NULL)
+
+typedef struct _GladeXmlContext GladeXmlContext;
+typedef struct _GladeXmlNode    GladeXmlNode;
+typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 
 /* search child */
@@ -67,8 +71,8 @@ GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
 						   const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 
-gchar *		alloc_string(GladeInterface *interface, const gchar *string);
-gchar *		alloc_propname(GladeInterface *interface, const gchar *string);
+gchar *		alloc_string   (GladeInterface *interface, const gchar *string);
+gchar *		alloc_propname (GladeInterface *interface, const gchar *string);
 
 
 G_END_DECLS

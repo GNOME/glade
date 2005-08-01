@@ -379,7 +379,9 @@ glade_widget_class_update_properties_from_node (GladeXmlNode *node,
 		}
 
 		updated = glade_property_class_update_from_node
-			(child, widget_class, &property_class);
+			(child, widget_class->module, 
+			 widget_class->type,
+			 &property_class);
 		if (!updated)
 		{
 			g_warning ("failed to update %s property of %s from xml",

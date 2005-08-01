@@ -28,6 +28,10 @@ G_BEGIN_DECLS
 
 #define GLADE_WIDGET_GROUP(x) ((GladeWidgetGroup *) x)
 
+typedef struct _GladeCatalog       GladeCatalog;
+typedef struct _GladeWidgetGroup   GladeWidgetGroup;
+
+
 GList *       glade_catalog_load_all                (void);
 
 const gchar * glade_catalog_get_name                (GladeCatalog     *catalog);

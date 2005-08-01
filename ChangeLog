@@ -1,5 +1,27 @@
 2005-07-31  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-types.h, src/glade-plugin.h: Removed
+
+	* src/Makefile.am src/glade-app.h src/glade-builtins.h 
+	  src/glade-catalog.h src/glade-clipboard.h src/glade-command.c 
+	  src/glade-command.h src/glade-cursor.h src/glade-editor.c 
+	  src/glade-editor.h src/glade-gtk.c src/glade-palette.h 
+	  src/glade-parameter.h src/glade-parser.h 
+          src/glade-placeholder.c src/glade-placeholder.h 
+          src/glade-project-view.h src/glade-project-window.h 
+          src/glade-project.c src/glade-project.h 
+          src/glade-property-class.c src/glade-property-class.h 
+          src/glade-property.c src/glade-property.h 
+          src/glade-signal-editor.c src/glade-signal-editor.h 
+          src/glade-signal.h src/glade-utils.h src/glade-widget-class.c 
+          src/glade-widget-class.h src/glade-widget.c src/glade-widget.h 
+          src/glade-xml-utils.h src/glade.h:
+	  Now "glade.h" is the libgladeui API include for both the plugin and
+	  the application side (Fixed sources in consequence to a few broken types).
+
+
+2005-07-31  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor.c: Cleared up property->class references, Added comments,
 	  Made spin button adjustments from the class, not from Glade Parameters.
 

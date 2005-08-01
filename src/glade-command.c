@@ -390,7 +390,7 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 	me = (GladeCommandSetProperty*) g_object_new (GLADE_COMMAND_SET_PROPERTY_TYPE, NULL);
 	cmd = (GladeCommand*) me;
 
-	gwidget = property->widget;
+	gwidget = GLADE_WIDGET (property->widget);
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
 	me->property = property;
@@ -416,7 +416,7 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 
 	/* Push onto undo stack only if it executes successfully. */
 	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (gwidget->project, GLADE_COMMAND (me));
+		glade_command_push_undo (GLADE_PROJECT (gwidget->project), GLADE_COMMAND (me));
 	else
 		/* No leaks on my shift! */
 		g_object_unref (G_OBJECT (me));
@@ -546,7 +546,7 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 		return;
 
 	if (glade_command_set_name_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
+		glade_command_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 }
@@ -615,7 +615,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 		else
 		{
 			glade_project_add_object 
-				(cdata->widget->project,
+				(GLADE_PROJECT (cdata->widget->project),
 				 cdata->widget->object);
 			glade_default_app_selection_add 
 				(cdata->widget->object, TRUE);
@@ -665,8 +665,8 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 		}
 		else
 		{
-			glade_project_remove_object (cdata->widget->project,
-						     cdata->widget->object);
+			glade_project_remove_object 
+				(GLADE_PROJECT (cdata->widget->project), cdata->widget->object);
 		}
 
 		if (GTK_IS_WIDGET (cdata->widget->object))
@@ -805,7 +805,8 @@ glade_command_delete (GList *widgets)
 			g_strdup_printf (_("Delete multiple"));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (widget->project, GLADE_COMMAND (me));
+		glade_command_push_undo (GLADE_PROJECT (widget->project), 
+					 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 }
@@ -847,7 +848,7 @@ glade_command_create (GladeWidgetClass *class,
 	me->widgets = g_list_append (me->widgets, cdata);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
-	if ((widget = glade_widget_new (parent, class, project)) == NULL)
+	if ((widget = glade_widget_new (parent, class, (gpointer)project)) == NULL)
 	{
 		g_object_unref (G_OBJECT (me));
 		return NULL;
@@ -939,7 +940,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					(project, cdata->widget->object);
 			else
 				glade_project_add_object
-					(me->project, 
+					(GLADE_PROJECT (me->project), 
 					 cdata->widget->object);
 			
 			glade_default_app_selection_add
@@ -988,7 +989,8 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 		if (GTK_IS_WIDGET (cdata->widget->object))
 			gtk_widget_hide (GTK_WIDGET (cdata->widget->object));
 		
-		glade_project_remove_object (cdata->widget->project, cdata->widget->object);
+		glade_project_remove_object (GLADE_PROJECT (cdata->widget->project),
+					     cdata->widget->object);
 		
 	}
 
@@ -1428,7 +1430,7 @@ glade_command_add_remove_change_signal (GladeWidget       *glade_widget,
 				 signal->handler);
 	
 	if (glade_command_add_signal_execute (cmd))
-		glade_command_push_undo (glade_widget->project, cmd);
+		glade_command_push_undo (GLADE_PROJECT (glade_widget->project), cmd);
 	else
 		g_object_unref (G_OBJECT (me));
 }

@@ -8,6 +8,7 @@ G_BEGIN_DECLS
 #define GLADE_CLIPBOARD(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CLIPBOARD, GladeClipboard))
 #define GLADE_IS_CLIPBOARD(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_CLIPBOARD))
 
+typedef struct _GladeClipboard      GladeClipboard;
 typedef struct _GladeClipboardClass GladeClipboardClass;
 
 struct _GladeClipboard {

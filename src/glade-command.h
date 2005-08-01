@@ -3,7 +3,6 @@
 #define __GLADE_COMMAND_H__
 
 #include <glib-object.h>
-#include "glade-types.h"
 
 G_BEGIN_DECLS
 

@@ -4,7 +4,10 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include "glade-types.h"
+
+#include "glade-widget-class.h"
+#include "glade-signal.h"
+#include "glade-property.h"
 
 G_BEGIN_DECLS
  
@@ -15,14 +18,15 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
-typedef struct _GladeWidgetKlass	GladeWidgetKlass;
+typedef struct _GladeWidget       GladeWidget;
+typedef struct _GladeWidgetKlass  GladeWidgetKlass;
 
 struct _GladeWidget
 {
 	GObject parent_instance;
 
 	GladeWidgetClass *widget_class;
-	GladeProject *project; /* A pointer to the project that this widget belongs to. */
+	gpointer         *project; /* A pointer to the project that this widget belongs to. */
 
 	GladeWidget  *parent;  /* A pointer to the parent widget in the heirarchy */
 	
@@ -83,7 +87,7 @@ struct _GladeWidgetKlass
 LIBGLADEUI_API GType                   glade_widget_get_type		    (void);
 LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *parent,
 									     GladeWidgetClass *klass,
-									     GladeProject     *project);
+									     gpointer         *project);
 LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
 									     GladeWidget      *parent,
 									     GObject          *internal_object,
@@ -96,12 +100,12 @@ LIBGLADEUI_API void                    glade_widget_set_internal	    (GladeWidge
 LIBGLADEUI_API void                    glade_widget_set_object		    (GladeWidget      *widget,
 									     GObject          *new_object);
 LIBGLADEUI_API void                    glade_widget_set_project		    (GladeWidget      *widget,
-									     GladeProject     *project);
+									     gpointer         *project);
 
 LIBGLADEUI_API const gchar            *glade_widget_get_name               (GladeWidget      *widget);
 LIBGLADEUI_API const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
 LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
-LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
+LIBGLADEUI_API gpointer                glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
 
@@ -161,7 +165,7 @@ LIBGLADEUI_API GPtrArray *             glade_widget_list_signal_handlers   (Glad
 /* serialization */
 LIBGLADEUI_API GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
 									    GladeInterface   *interface);
-LIBGLADEUI_API GladeWidget            *glade_widget_read                   (GladeProject     *project,
+LIBGLADEUI_API GladeWidget            *glade_widget_read                   (gpointer         *project,
 									    GladeWidgetInfo  *info);
 
 /* helper functions */

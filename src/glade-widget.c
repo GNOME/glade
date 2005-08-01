@@ -543,7 +543,7 @@ static GladeWidget *
 glade_widget_internal_new (const gchar      *name,
 			   GladeWidget      *parent,
 			   GladeWidgetClass *klass,
-			   GladeProject     *project,
+			   gpointer         *project,
 			   GladeWidget      *template)
 {
 	GObject *object;
@@ -576,12 +576,12 @@ glade_widget_internal_new (const gchar      *name,
  * Returns:
  */
 GladeWidget *
-glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *project)
+glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, gpointer *project)
 {
 	GladeWidget *widget;
 	gchar       *widget_name =
 		glade_project_new_widget_name
-		(project, klass->generic_name);
+		(GLADE_PROJECT (project), klass->generic_name);
 
 	if ((widget = glade_widget_internal_new
 	     (widget_name, parent, klass, project, NULL)) != NULL)
@@ -761,15 +761,15 @@ glade_widget_new_for_internal_child (GladeWidgetClass *klass,
 				     GObject          *internal_object,
 				     const gchar      *internal_name)
 {
-	GladeProject *project = glade_widget_get_project (parent);
-	gchar *widget_name    = glade_project_new_widget_name (project, klass->generic_name);
-	GladeWidget *widget   = g_object_new (GLADE_TYPE_WIDGET,
-					      "parent", parent,
-					      "class", klass,
-					      "project", project,
-					      "name", widget_name,
-					      "internal", internal_name,
-					      "object", internal_object, NULL);
+	GladeProject *project      = GLADE_PROJECT (glade_widget_get_project (parent));
+	gchar        *widget_name  = glade_project_new_widget_name (project, klass->generic_name);
+	GladeWidget  *widget       = g_object_new (GLADE_TYPE_WIDGET,
+						   "parent", parent,
+						   "class", klass,
+						   "project", project,
+						   "name", widget_name,
+						   "internal", internal_name,
+						   "object", internal_object, NULL);
 	g_free (widget_name);
 	return widget;
 }
@@ -809,7 +809,7 @@ glade_widget_dispose (GObject *object)
 
 	if (widget->project)
 		widget->project =
-			(g_object_unref (widget->project), NULL);
+			(g_object_unref (G_OBJECT (widget->project)), NULL);
 
 	if (widget->object)
 		widget->object =
@@ -890,8 +890,7 @@ glade_widget_set_real_property (GObject         *object,
 		glade_widget_set_object (widget, g_value_get_object (value));
 		break;
 	case PROP_PROJECT:
-		glade_widget_set_project (widget, GLADE_PROJECT
-					  (g_value_get_object (value)));
+		glade_widget_set_project (widget, (gpointer)g_value_get_object (value));
 		break;
 	case PROP_CLASS:
 		glade_widget_set_class (widget, GLADE_WIDGET_CLASS
@@ -931,7 +930,7 @@ glade_widget_get_real_property (GObject         *object,
 		g_value_set_pointer (value, widget->widget_class);
 		break;
 	case PROP_PROJECT:
-		g_value_set_object (value, widget->project);
+		g_value_set_object (value, G_OBJECT (widget->project));
 		break;
 	case PROP_OBJECT:
 		g_value_set_object (value, widget->object);
@@ -1026,7 +1025,7 @@ glade_widget_set_properties (GladeWidget *widget, GList *properties)
 		for (list = properties; list; list = list->next)
 		{
 			GladeProperty *property = list->data;
-			property->widget        = widget;
+			property->widget        = (gpointer)widget;
 			if (property->class->query)
 			{
 				widget->query_user = TRUE;
@@ -1054,7 +1053,8 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
 		for (list = klass->properties; list; list = list->next)
 		{
 			property_class = GLADE_PROPERTY_CLASS(list->data);
-			property = glade_property_new (property_class, widget, NULL);
+			property = glade_property_new (property_class, 
+						       (gpointer)widget, NULL);
 			if (!property) {
 				g_warning ("Failed to create [%s] property",
 					   property_class->id);
@@ -1090,7 +1090,7 @@ glade_widget_get_class (GladeWidget *widget)
  * Makes @widget belong to @project.
  */
 void
-glade_widget_set_project (GladeWidget *widget, GladeProject *project)
+glade_widget_set_project (GladeWidget *widget, gpointer *project)
 {
 	if (widget->project != project) {
 		if (project)
@@ -1108,7 +1108,7 @@ glade_widget_set_project (GladeWidget *widget, GladeProject *project)
  * 
  * Returns: the #GladeProject that @widget belongs to
  */
-GladeProject *
+gpointer
 glade_widget_get_project (GladeWidget *widget)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -1514,7 +1514,7 @@ glade_widget_button_press (GtkWidget *widget,
 	{
 		if (event->state & GDK_CONTROL_MASK)
 		{
-			if (glade_project_is_selected (glade_widget->project,
+			if (glade_project_is_selected (GLADE_PROJECT (glade_widget->project),
 						       glade_widget->object))
 				glade_default_app_selection_remove 
 					(glade_widget->object, TRUE);
@@ -1523,7 +1523,7 @@ glade_widget_button_press (GtkWidget *widget,
 					(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
-		else if (glade_project_is_selected (glade_widget->project,
+		else if (glade_project_is_selected (GLADE_PROJECT (glade_widget->project),
 						    glade_widget->object) == FALSE)
 		{
 			glade_util_clear_selection ();
@@ -1897,7 +1897,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		for (list = support->properties; list && list->data; list = list->next)
 		{
 			property_class = list->data;
-			property       = glade_property_new (property_class, widget, NULL);
+			property       = glade_property_new (property_class, (gpointer)widget, NULL);
 			packing_props  = g_list_prepend (packing_props, property);
 		}
 	}
@@ -2266,7 +2266,7 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 	for (i = 0; i < info->n_children; ++i)
 	{
 		if (!glade_widget_new_child_from_child_info (info->children + i,
-							     widget->project, widget))
+							     GLADE_PROJECT (widget->project), widget))
 		{
 			g_warning ("Failed to read child of %s",
 				   glade_widget_get_name (widget));
@@ -2661,12 +2661,12 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
  * Returns: a new #GladeWidget in @project, based off the contents of @node
  */
 GladeWidget *
-glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
+glade_widget_read (gpointer *project, GladeWidgetInfo *info)
 {
 	GladeWidget *widget;
 		
 	if ((widget = glade_widget_new_from_widget_info
-	     (info, project, NULL)) != NULL)
+	     (info, GLADE_PROJECT (project), NULL)) != NULL)
 	{
 		if (glade_verbose)
 			glade_widget_debug (widget);

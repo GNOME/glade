@@ -28,13 +28,21 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GladePropInfo GladePropInfo;
+typedef struct _GladePropInfo        GladePropInfo;
+typedef struct _GladeSignalInfo      GladeSignalInfo;
+typedef struct _GladeAtkActionInfo   GladeAtkActionInfo;
+typedef struct _GladeAccelInfo       GladeAccelInfo;
+typedef struct _GladeWidgetInfo      GladeWidgetInfo;
+typedef struct _GladeChildInfo       GladeChildInfo;
+typedef struct _GladeInterface       GladeInterface;
+typedef struct _GladeAtkRelationInfo GladeAtkRelationInfo;
+typedef struct _GladePackingDefault  GladePackingDefault;
+
 struct _GladePropInfo {
     gchar *name;
     gchar *value;
 };
 
-typedef struct _GladeSignalInfo GladeSignalInfo;
 struct _GladeSignalInfo {
     gchar *name;
     gchar *handler;
@@ -44,27 +52,26 @@ struct _GladeSignalInfo {
     guint lookup : 1;
 };
 
-typedef struct _GladeAtkActionInfo GladeAtkActionInfo;
+struct _GladePackingDefault {
+    gchar  *id;
+    gchar  *value;
+};
+
 struct _GladeAtkActionInfo {
     gchar *action_name;
     gchar *description;
 };
 
-typedef struct _GladeAtkRelationInfo GladeAtkRelationInfo;
 struct _GladeAtkRelationInfo {
     gchar *target;
     gchar *type;
 };
 
-typedef struct _GladeAccelInfo GladeAccelInfo;
 struct _GladeAccelInfo {
     guint key;
     GdkModifierType modifiers;
     gchar *signal;
 };
-
-typedef struct _GladeWidgetInfo GladeWidgetInfo;
-typedef struct _GladeChildInfo GladeChildInfo;
 
 struct _GladeWidgetInfo {
     GladeWidgetInfo *parent;
@@ -102,7 +109,6 @@ struct _GladeChildInfo {
     gchar *internal_child;
 };
 
-typedef struct _GladeInterface GladeInterface;
 struct _GladeInterface {
     gchar **requires;
     guint n_requires;

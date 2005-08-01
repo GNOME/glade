@@ -24,6 +24,8 @@ G_BEGIN_DECLS
     </Property>
 
  */
+typedef struct _GladeParameter   GladeParameter;
+
 struct _GladeParameter {
 
 	gchar *key;   /* The name of the parameter */

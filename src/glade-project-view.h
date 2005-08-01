@@ -14,7 +14,7 @@ G_BEGIN_DECLS
 
 
 /* A view of a GladeProject. */
-
+typedef struct _GladeProjectView       GladeProjectView;
 typedef struct _GladeProjectViewClass  GladeProjectViewClass;
 
 struct _GladeProjectView

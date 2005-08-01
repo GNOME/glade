@@ -8,6 +8,8 @@ G_BEGIN_DECLS
 #define GLADE_SIGNAL(s) ((GladeSignal *)s)
 #define GLADE_IS_SIGNAL(s) (s != NULL)
 
+typedef struct _GladeSignal  GladeSignal;
+
 struct _GladeSignal
 {
 	gchar    *name;         /* Signal name eg "clicked"            */

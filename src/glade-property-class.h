@@ -87,6 +87,8 @@ G_BEGIN_DECLS
 #define GLADE_PROPERTY_CLASS(gpc) ((GladePropertyClass *) gpc)
 #define GLADE_IS_PROPERTY_CLASS(gpc) (gpc != NULL)
 
+typedef struct _GladePropertyClass GladePropertyClass;
+
 struct _GladePropertyClass
 {
 	GParamSpec *pspec; /* The Parameter Specification for this property.
@@ -188,14 +190,14 @@ LIBGLADEUI_API GladePropertyClass *glade_property_class_new                     
 LIBGLADEUI_API GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec);
 LIBGLADEUI_API GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 LIBGLADEUI_API void                glade_property_class_free                    (GladePropertyClass  *property_class);
-LIBGLADEUI_API gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class, 
-										 GladeWidgetClass    *widget_class);
+LIBGLADEUI_API gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
 LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 										 const gchar         *string);
 LIBGLADEUI_API gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 										 const GValue        *value);
 LIBGLADEUI_API gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
-										 GladeWidgetClass    *widget_class,
+										 GModule             *module,
+										 GType                widget_type,
 										 GladePropertyClass **property_class);
 LIBGLADEUI_API gchar              *glade_property_class_make_string_from_flags  (GladePropertyClass *class, 
 										 guint               fvals, 
