@@ -95,7 +95,7 @@ libgladeuiinclude_HEADERS = \
 	glade-marshallers.h \
 	glade-parser.h \
 	glade-app.h \
-	glade-builtins.c \
+	glade-builtins.h \
 	fixed_bg.xpm
 
 pkgconfigdir = $(libdir)/pkgconfig
