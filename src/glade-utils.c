@@ -1080,7 +1080,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 	}
 
 	/* Ensure enough placeholders are available */
-	if (parent && parent->manager) != NULL &&
+	if (parent && parent->manager != NULL &&
 	    gtkcontainer_relations != 1) 
 	{
 		glade_util_ui_warn (glade_default_app_get_window (), 
