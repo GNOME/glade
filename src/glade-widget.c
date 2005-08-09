@@ -2617,7 +2617,7 @@ glade_widget_new_from_widget_info (GladeWidgetInfo *info,
 
 	glade_widget_class_container_fill_empty (klass, object);
 
-	if (GTK_IS_WIDGET (object))
+	if (GTK_IS_WIDGET (object) && !GTK_WIDGET_TOPLEVEL (object))
 		gtk_widget_show_all (GTK_WIDGET (object));
 
 	return widget;
