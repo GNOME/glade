@@ -1080,7 +1080,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 	}
 
 	/* Ensure enough placeholders are available */
-	if (parent && (g_object_get_data (G_OBJECT (parent), "manager")) != NULL &&
+	if (parent && parent->manager) != NULL &&
 	    gtkcontainer_relations != 1) 
 	{
 		glade_util_ui_warn (glade_default_app_get_window (), 
@@ -1089,7 +1089,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 		return;
 	}
 
-	if (parent && (g_object_get_data (G_OBJECT (parent), "manager")) == NULL &&
+	if (parent && parent->manager == NULL &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
 	{
 		glade_util_ui_warn (glade_default_app_get_window (), 

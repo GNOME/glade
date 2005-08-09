@@ -1,5 +1,10 @@
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-utils.c: Fixed a forgotten piece of code that had to change for
+	  fixed-manager to work properly with paste.
+	
+2005-08-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/Makefile.am, src/glade-accumulators.[ch], glade-fixed-manager.[ch]:
 	  Added new GladeFixedManager code to handle GtkFixed and GtkLayout in a
 	  sexier fashion (and in a way that allows any GtkContainer to subscribe
