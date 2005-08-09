@@ -8,6 +8,7 @@
 #include "glade-widget-class.h"
 #include "glade-signal.h"
 #include "glade-property.h"
+#include "glade-fixed-manager.h"
 
 G_BEGIN_DECLS
  
@@ -18,7 +19,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
-typedef struct _GladeWidget       GladeWidget;
 typedef struct _GladeWidgetKlass  GladeWidgetKlass;
 
 struct _GladeWidget
@@ -26,7 +26,7 @@ struct _GladeWidget
 	GObject parent_instance;
 
 	GladeWidgetClass *widget_class;
-	gpointer         *project; /* A pointer to the project that this widget belongs to. */
+	GladeProject     *project; /* A pointer to the project that this widget belongs to. */
 
 	GladeWidget  *parent;  /* A pointer to the parent widget in the heirarchy */
 	
@@ -69,6 +69,10 @@ struct _GladeWidget
 	
 	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
 			      * indexed by its name */
+
+	GladeFixedManager *manager; /* If this is a GtkContainer with a fixed coordinate system,
+				     * this is the add/remove/create management code.
+				     */
 };
 
 struct _GladeWidgetKlass
@@ -87,7 +91,7 @@ struct _GladeWidgetKlass
 LIBGLADEUI_API GType                   glade_widget_get_type		    (void);
 LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *parent,
 									     GladeWidgetClass *klass,
-									     gpointer         *project);
+									     GladeProject     *project);
 LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
 									     GladeWidget      *parent,
 									     GObject          *internal_object,
@@ -100,12 +104,12 @@ LIBGLADEUI_API void                    glade_widget_set_internal	    (GladeWidge
 LIBGLADEUI_API void                    glade_widget_set_object		    (GladeWidget      *widget,
 									     GObject          *new_object);
 LIBGLADEUI_API void                    glade_widget_set_project		    (GladeWidget      *widget,
-									     gpointer         *project);
+									     GladeProject     *project);
 
 LIBGLADEUI_API const gchar            *glade_widget_get_name               (GladeWidget      *widget);
 LIBGLADEUI_API const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
 LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
-LIBGLADEUI_API gpointer                glade_widget_get_project            (GladeWidget      *widget);
+LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
 
@@ -144,6 +148,15 @@ LIBGLADEUI_API gboolean                glade_widget_pack_property_set_sensitive 
 										 const gchar      *id_property,
 										 gboolean          sensitive,
 										 const gchar      *reason);
+LIBGLADEUI_API gboolean                glade_widget_property_set_enabled   (GladeWidget      *widget,
+									    const gchar      *id_property,
+									    gboolean          enabled);
+LIBGLADEUI_API gboolean                glade_widget_pack_property_set_enabled (GladeWidget      *widget,
+									       const gchar      *id_property,
+									       gboolean          enabled);
+
+
+LIBGLADEUI_API GladeWidget            *glade_widget_retrieve_from_position (GtkWidget *base, int x, int y);
 
 LIBGLADEUI_API void                    glade_widget_replace                (GladeWidget      *parent,
 									    GObject          *old_object,
@@ -165,7 +178,7 @@ LIBGLADEUI_API GPtrArray *             glade_widget_list_signal_handlers   (Glad
 /* serialization */
 LIBGLADEUI_API GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
 									    GladeInterface   *interface);
-LIBGLADEUI_API GladeWidget            *glade_widget_read                   (gpointer         *project,
+LIBGLADEUI_API GladeWidget            *glade_widget_read                   (GladeProject     *project,
 									    GladeWidgetInfo  *info);
 
 /* helper functions */

@@ -26,12 +26,6 @@
 
 #include <glib/gi18n.h>
 
-#include "glade.h"
-#include "glade-widget-class.h"
-#include "glade-debug.h"
-#include "glade-project-window.h"
-#include "glade-app.h"
-
 #include <locale.h>
 #include <gmodule.h>
 
@@ -42,6 +36,11 @@
 #ifdef G_OS_WIN32
 #include <stdlib.h> /* __argc & __argv on the windows build */
 #endif
+
+#include "glade.h"
+
+#include "glade-project-window.h"
+
 
 static gchar *widget_name = NULL;
 

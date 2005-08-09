@@ -57,8 +57,10 @@ libgladeui_1_la_SOURCES = \
 	glade-keys-dialog.c \
 	glade-id-allocator.c \
 	glade-marshallers.c \
+	glade-accumulators.c \
 	glade-parser.c \
 	glade-builtins.c \
+	glade-fixed-manager.c \
 	glade-app.c
 
 libgladeui_1_la_CFLAGS = -DINSIDE_LIBGLADEUI $(AM_CFLAGS)
@@ -93,9 +95,11 @@ libgladeuiinclude_HEADERS = \
 	glade-keys-dialog.h \
 	glade-id-allocator.h \
 	glade-marshallers.h \
+	glade-accumulators.h \
 	glade-parser.h \
 	glade-app.h \
 	glade-builtins.h \
+	glade-fixed-manager.h \
 	fixed_bg.xpm
 
 pkgconfigdir = $(libdir)/pkgconfig

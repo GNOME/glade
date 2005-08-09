@@ -3,6 +3,11 @@
 #define __GLADE_COMMAND_H__
 
 #include <glib-object.h>
+#include "glade-placeholder.h"
+#include "glade-widget.h"
+#include "glade-signal.h"
+#include "glade-property.h"
+#include "glade-project.h"
 
 G_BEGIN_DECLS
 
@@ -44,6 +49,10 @@ LIBGLADEUI_API void         glade_command_undo          (GladeProject      *proj
 LIBGLADEUI_API void         glade_command_redo          (GladeProject      *project);
 
 LIBGLADEUI_API void         glade_command_set_property  (GladeProperty     *property,     const GValue *value);
+LIBGLADEUI_API void         glade_command_set_properties(GladeProperty     *property, 
+							 const GValue      *old_value, 
+							 const GValue      *new_value, ...);
+
 LIBGLADEUI_API void         glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 
 LIBGLADEUI_API void         glade_command_delete        (GList             *widgets);

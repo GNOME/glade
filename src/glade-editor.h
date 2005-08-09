@@ -166,6 +166,7 @@ struct _GladeEditorProperty
 			   * [see glade-property.h and glade-property-class.h]
 			   */
 #if 0
+	/* Hmmm, should this be removed from GladeProperty and used here ? */
 	gboolean loading; /* We set this flag when we are loading a new GladeProperty
 			   * into this GladeEditorProperty. This flag is used so that
 			   * when we receive a "changed" signal we know that nothing has
@@ -184,8 +185,11 @@ struct _GladeEditorProperty
 	gulong         tooltip_id;   /* signal connection id for tooltip changes */
 	GladeProperty *tooltip_prop; /* the last object this was connected to    */
 
+
+	GladeProperty *signal_prop;    /* the last object these signals were connected to    */
 	gulong         sensitive_id;   /* signal connection id for sensitivity changes */
-	GladeProperty *sensitive_prop; /* the last object this was connected to    */
+	gulong         changed_id;     /* signal connection id for value changes */
+	gulong         enabled_id;     /* signal connection id for enable/disable changes */
 
 
 	GtkWidget *eventbox;   /* Keep a hold of this for tooltips */

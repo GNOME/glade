@@ -994,97 +994,50 @@ empty (GObject *container)
 }
 
 /* ------------------------- Post Create functions ------------------------- */
-static gboolean
-glade_gtk_fixed_button_press (GtkWidget       *widget,
-			      GdkEventButton  *event,
-			      gpointer         user_data)
-{
-	GladeWidget   *gwidget;
-	GladeWidget   *fixed_gwidget;
-	GladeProperty *property;
-	
-	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
-	{
-		fixed_gwidget = glade_widget_get_from_gobject (widget);
-
-		/* If there is a class to add and we successfully
-		 * create a widget.
-		 */
-		if (((glade_default_app_get_add_class() != NULL)         ||
-		     ((event->state & GDK_SHIFT_MASK) &&
-		      glade_default_app_get_alt_class() != NULL))        &&
-		    ((gwidget = glade_command_create
-		      (glade_default_app_get_add_class() ?
-		       glade_default_app_get_add_class() :
-		       glade_default_app_get_alt_class(),
-		       fixed_gwidget, NULL, 
-		       GLADE_PROJECT (fixed_gwidget->project))) != NULL))
-		{
-			/* reset the palette */
-			glade_palette_unselect_widget (glade_default_app_get_palette());
-			
-			property = glade_widget_get_property (gwidget, "x");
-			property->enabled = TRUE;
-			glade_property_set (property, event->x);
-			
-			property = glade_widget_get_property (gwidget, "y");
-			property->enabled = TRUE;
-			glade_property_set (property, event->y);
-			
-			property = glade_widget_get_property
-				(gwidget, "width-request");
-			property->enabled = TRUE;
-			glade_property_set (property, FIXED_DEFAULT_CHILD_WIDTH);
-			
-			property = glade_widget_get_property
-				(gwidget, "height-request");
-			property->enabled = TRUE;
-			glade_property_set (property, FIXED_DEFAULT_CHILD_HEIGHT);
-			
-			/* We need to resync the editor so that width-request/height-request
-			 * are actualy enabled in the editor
-			 */
-			glade_editor_refresh (glade_default_app_get_editor());
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
 void
-glade_gtk_fixed_finalize(GdkPixmap *backing)
+glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
 {
 	g_object_unref(backing);
 }
 
 void
-glade_gtk_fixed_realize (GtkWidget *widget)
+glade_gtk_fixed_layout_realize (GtkWidget *widget)
 {
 	GdkPixmap *backing =
 		gdk_pixmap_colormap_create_from_xpm_d (NULL, gtk_widget_get_colormap (widget),
 						       NULL, NULL, fixed_bg_xpm);
-	gdk_window_set_back_pixmap (widget->window, backing, FALSE);
+
+	if (GTK_IS_LAYOUT (widget))
+		gdk_window_set_back_pixmap (GTK_LAYOUT (widget)->bin_window, backing, FALSE);
+	else
+		gdk_window_set_back_pixmap (widget->window, backing, FALSE);
+
 	/* For cleanup later
 	 */
-	g_object_weak_ref(G_OBJECT(widget), (GWeakNotify)glade_gtk_fixed_finalize, backing);
+	g_object_weak_ref(G_OBJECT(widget), (GWeakNotify)glade_gtk_fixed_layout_finalize, backing);
 }
 
 void GLADEGTK_API
-glade_gtk_fixed_post_create (GObject *object)
+glade_gtk_fixed_layout_post_create (GObject *object)
 {
+	GladeWidget *fixed_layout = 
+		glade_widget_get_from_gobject (object);
+
 	/* Only widgets with windows can recieve
-	 * mouse events
+	 * mouse events (I'm not sure if this is nescisary).
 	 */
 	GTK_WIDGET_UNSET_FLAGS(object, GTK_NO_WINDOW);
+
 	/* For backing pixmap
 	 */
 	g_signal_connect_after(object, "realize",
-			       G_CALLBACK(glade_gtk_fixed_realize), NULL);
-	
-	/* Menu will be activated on mouse clicks
+			       G_CALLBACK(glade_gtk_fixed_layout_realize), NULL);
+
+	/* Create fixed manager (handles resizes, drags, add/remove etc.).
 	 */
-	g_signal_connect(object, "button-press-event",
-			 G_CALLBACK(glade_gtk_fixed_button_press), NULL);
+	glade_fixed_manager_new
+		(fixed_layout, "x", "y", "width-request", "height-request");
+
 }
 
 void GLADEGTK_API

@@ -1,3 +1,61 @@
+2005-08-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am, src/glade-accumulators.[ch], glade-fixed-manager.[ch]:
+	  Added new GladeFixedManager code to handle GtkFixed and GtkLayout in a
+	  sexier fashion (and in a way that allows any GtkContainer to subscribe
+	  to this service through the plugin).
+
+	* src/glade-builtins.c: Fixed date typo
+
+	* src/glade-command.[ch]: 
+	    - glade_command_set_properties () added to set multiple properties at
+	      the same time plus allowing to specify the old value that it changed
+	      from (this is usefull for drag & resize undo events).
+
+	    - Added a g_object_ref to the properties in set property commands
+
+	    - Create/Delete/Cut/Paste code to now use GladeFixedManager where appropriate
+
+	    - Now when we "Cut" a widget, we save a copy of its packing properties for
+	      future undo's (if it was pasted in another container and "undo" a couple
+	      times, this becomes nescisary).
+
+	* src/glade-cursor.[ch]: Added all the new cursor types needed 
+	  for drag/resize events.
+
+	* src/glade-editor.[ch]: Handle property signals better, added
+	  signal handler for "value-changed" & "notify::enabled" signals to reload 
+	  & update property values, removed alot of redundant property reloading code.
+
+	* src/glade-gtk.c: Remove the old clunky GtkFixed handling code and replaced
+	  it with a call to glade_fixed_manager_new () (also implemented fixed manager
+	  for GtkLayout).
+
+	* src/glade-marshallers.list: Added new marshallers
+
+	* src/glade-project-window.c, main.c: Removed all those includes and 
+	  replaced with #include "glade.h".
+
+	* src/glade-property.[ch]: Fixed broken types from when I played with headers,
+	  now the forward declarations are back. (also changed CINFO for the more popular
+	  alternative; KLASS).
+
+	* src/glade-utils.c: glade_util_paste_clipboard () now is GladeFixedManager aware.
+
+	* src/glade-widget.[ch]: 
+	    - use glade-fixed-manager to add children when loading glade files 
+	    - notify manager of handled mouse events (this is a hack that should
+	      go, once we handle the streamlining of button-press-events on GladeWidget's
+	      properly).
+	    - fixed broken types.
+	    - Added glade_widget[_pack]_property_set_enabled()
+	    - Added some doc.
+	    - Made glade_widget_retrieve_from_position() public.
+	
+	* src/glade.h: Added headers.
+
+	* widgets/gtk+.xml: GladeFixedManager on GtkFixed & GtkLayout.
+	
 2005-08-01  Naba Kumar  <naba@gnome.org>
 
 	* src/Makefile.am: Fixed a typo where it should be glade-builtins.h instead

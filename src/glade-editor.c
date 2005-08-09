@@ -216,8 +216,6 @@ glade_editor_property_changed_text (GtkWidget           *entry,
 						   property->from_query_dialog);
 
 	g_free (text);
-
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static gboolean
@@ -255,8 +253,6 @@ glade_editor_text_view_focus_out (GtkTextView         *view,
 						   property->from_query_dialog);
 
 	g_free (text);
-	
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 	return FALSE;
 }
 
@@ -287,8 +283,6 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 		glade_command_set_property (gproperty, &val);
 
 	g_value_unset (&val);
-
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -377,8 +371,6 @@ glade_editor_property_changed_numeric (GtkWidget *spin,
 		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
-
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -408,8 +400,6 @@ glade_editor_property_changed_boolean (GtkWidget *button,
 		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
-
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -442,7 +432,6 @@ glade_editor_property_changed_unichar (GtkWidget *entry,
 		glade_command_set_property (property->property, &val);
 
 	g_value_unset (&val);
-	glade_editor_property_load (property, GLADE_WIDGET (property->property->widget));
 }
 
 static void
@@ -644,9 +633,6 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 				glade_command_set_property (property->property, &val);
 
 			g_value_unset (&val);
-
-			/* Update the entry in the property editor. */
-			glade_editor_property_load_flags (property);
 		}
 
 	}
@@ -798,9 +784,6 @@ glade_editor_property_show_i18n_dialog (GtkWidget           *entry,
 		
 		g_free (str);
 		
-		glade_editor_property_load (property, 
-					    GLADE_WIDGET (property->property->widget));
-
 		/* Comment */
 		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
 		str = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
@@ -1506,17 +1489,6 @@ glade_editor_property_set_tooltips (GladeEditorProperty *property)
 	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
 	g_return_if_fail (property->input != NULL);
 
-	if (property->tooltip_id > 0)
-		g_signal_handler_disconnect (G_OBJECT (property->tooltip_prop),
-					     property->tooltip_id);
-
-	property->tooltip_prop = property->property;
-	property->tooltip_id   = 
-		g_signal_connect (G_OBJECT (property->property),
-				  "tooltip-changed", 
-				  G_CALLBACK (glade_editor_tooltip_cb),
-				  property);
-
 	tooltip = (gchar *)glade_property_get_tooltip (property->property);
 	glade_util_widget_set_tooltip (property->input, tooltip);
 	glade_util_widget_set_tooltip (property->eventbox, tooltip);
@@ -1765,6 +1737,41 @@ glade_editor_sensitivity_cb (GladeProperty       *property,
 }
 
 static void
+glade_editor_prop_value_changed_cb (GladeProperty       *property,
+				    GValue              *value,
+				    GladeEditorProperty *eprop)
+{
+	if (eprop->property == property)
+		glade_editor_property_load (eprop, eprop->property->widget);
+}
+
+static void
+glade_editor_prop_enabled_cb (GladeProperty       *property,
+			      GParamSpec          *pspec,
+			      GladeEditorProperty *eprop)
+{
+	if (eprop->property == property)
+		glade_editor_property_load (eprop, eprop->property->widget);
+}
+
+static void
+glade_editor_property_disconnect (GladeEditorProperty *property)
+{
+	if (property->tooltip_id > 0)
+		g_signal_handler_disconnect (G_OBJECT (property->signal_prop),
+					     property->tooltip_id);
+	if (property->sensitive_id > 0)
+		g_signal_handler_disconnect (property->signal_prop, 
+					     property->sensitive_id);
+	if (property->changed_id > 0)
+		g_signal_handler_disconnect (property->signal_prop, 
+					     property->changed_id);
+	if (property->enabled_id > 0)
+		g_signal_handler_disconnect (property->signal_prop, 
+					     property->enabled_id);
+}
+
+static void
 glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 {
 	GladePropertyClass *class;
@@ -1813,25 +1820,44 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 
 
 	/* Set insensitive and hook cb here */
-	if (property->sensitive_id > 0)
-		g_signal_handler_disconnect (property->sensitive_prop, 
-					     property->sensitive_id);
-	property->sensitive_prop = property->property;
-	property->sensitive_id =
-		g_signal_connect (G_OBJECT (property->property),
-				  "notify::sensitive", 
-				  G_CALLBACK (glade_editor_sensitivity_cb),
-				  property);
+	if (property->signal_prop != property->property) {
 
-	sensitive = glade_property_get_sensitive (property->property);
-	gtk_widget_modify_fg
-		(GTK_WIDGET (property->item_label), 
-		 GTK_STATE_NORMAL, 
-		 sensitive ? normal_colour : insensitive_colour);
-	
-	gtk_widget_set_sensitive (property->input, sensitive);
+		glade_editor_property_disconnect (property);
 
-	glade_editor_property_set_tooltips (property);
+		property->tooltip_id   = 
+			g_signal_connect (G_OBJECT (property->property),
+					  "tooltip-changed", 
+					  G_CALLBACK (glade_editor_tooltip_cb),
+					  property);
+		property->sensitive_id =
+			g_signal_connect (G_OBJECT (property->property),
+					  "notify::sensitive", 
+					  G_CALLBACK (glade_editor_sensitivity_cb),
+					  property);
+		property->changed_id =
+			g_signal_connect (G_OBJECT (property->property),
+					  "value-changed", 
+					  G_CALLBACK (glade_editor_prop_value_changed_cb),
+					  property);
+		property->enabled_id =
+			g_signal_connect (G_OBJECT (property->property),
+					  "notify::enabled", 
+					  G_CALLBACK (glade_editor_prop_enabled_cb),
+					  property);
+
+
+		sensitive = glade_property_get_sensitive (property->property);
+		gtk_widget_modify_fg
+			(GTK_WIDGET (property->item_label), 
+			 GTK_STATE_NORMAL, 
+			 sensitive ? normal_colour : insensitive_colour);
+		
+		gtk_widget_set_sensitive (property->input, sensitive);
+		
+		glade_editor_property_set_tooltips (property);
+		
+		property->signal_prop = property->property;
+	}
 
 	property->property->loading = FALSE;
 }
@@ -1866,7 +1892,10 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 		g_free (old);
 	}
 	for (list = old_props; list; list = list->next)
+	{
+		glade_editor_property_disconnect ((GladeEditorProperty *)list->data);
 		g_free (list->data);
+	}
 	old_props = NULL;
 	old = NULL;
 

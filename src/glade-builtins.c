@@ -2,7 +2,7 @@
 /*
  * glade-clipboard.c - An object for handling Cut/Copy/Paste.
  *
- * Copyright (C) 2001 The GNOME Foundation.
+ * Copyright (C) 2005 The GNOME Foundation.
  *
  * Author(s):
  *      Tristan Van Berkom <tvb@gnome.org>

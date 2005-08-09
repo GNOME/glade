@@ -13,7 +13,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
 #define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
 
-typedef struct _GladeProject       GladeProject;
 typedef struct _GladeProjectClass  GladeProjectClass;
 
 /* A GladeProject is well... a project nothing more nothing less. It is the

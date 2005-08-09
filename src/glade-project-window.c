@@ -27,28 +27,12 @@
 
 #include <string.h>
 #include <glib/gi18n.h>
-
-#include "glade.h"
-#include "glade-palette.h"
-#include "glade-editor.h"
-#include "glade-clipboard.h"
-#include "glade-clipboard-view.h"
-#include "glade-widget.h"
-#include "glade-widget-class.h"
-#include "glade-property.h"
-#include "glade-property-class.h"
-#include "glade-project.h"
-#include "glade-project-view.h"
-#include "glade-project-window.h"
-#include "glade-placeholder.h"
-#include "glade-command.h"
-#include "glade-debug.h"
-#include "glade-utils.h"
-#include "glade-app.h"
-
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
+#include "glade.h"
+
+#include "glade-project-window.h"
 
 #define CONFIG_RECENT_PROJECTS "Recent Projects"
 #define CONFIG_RECENT_PROJECTS_MAX "max_recent_projects"

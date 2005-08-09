@@ -363,7 +363,6 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add
 		button = 0;
 		event_time = gtk_get_current_event_time ();
 	}
-
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
 			NULL, NULL, button, event_time);
 }

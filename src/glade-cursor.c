@@ -42,6 +42,33 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 	case GLADE_CURSOR_ADD_WIDGET:
 		gdk_window_set_cursor (window, cursor->add_widget);
 		break;
+	case GLADE_CURSOR_RESIZE_TOP_LEFT:
+		gdk_window_set_cursor (window, cursor->resize_top_left);
+		break;
+	case GLADE_CURSOR_RESIZE_TOP_RIGHT:
+		gdk_window_set_cursor (window, cursor->resize_top_right);
+		break;
+	case GLADE_CURSOR_RESIZE_BOTTOM_LEFT:
+		gdk_window_set_cursor (window, cursor->resize_bottom_left);
+		break;
+	case GLADE_CURSOR_RESIZE_BOTTOM_RIGHT:
+		gdk_window_set_cursor (window, cursor->resize_bottom_right);
+		break;
+	case GLADE_CURSOR_RESIZE_LEFT:
+		gdk_window_set_cursor (window, cursor->resize_left);
+		break;
+	case GLADE_CURSOR_RESIZE_RIGHT:
+		gdk_window_set_cursor (window, cursor->resize_right);
+		break;
+	case GLADE_CURSOR_RESIZE_TOP:
+		gdk_window_set_cursor (window, cursor->resize_top);
+		break;
+	case GLADE_CURSOR_RESIZE_BOTTOM:
+		gdk_window_set_cursor (window, cursor->resize_bottom);
+		break;
+	case GLADE_CURSOR_DRAG:
+		gdk_window_set_cursor (window, cursor->drag);
+		break;
 	default:
 		break;
 	}
@@ -58,6 +85,16 @@ glade_cursor_init (void)
 {
 	cursor = g_new0 (GladeCursor, 1);
 
-	cursor->selector   = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
-	cursor->add_widget = gdk_cursor_new (GDK_PLUS);
+	cursor->selector           = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
+	cursor->add_widget         = gdk_cursor_new (GDK_PLUS);
+
+	cursor->resize_top_left     = gdk_cursor_new (GDK_TOP_LEFT_CORNER);
+	cursor->resize_top_right    = gdk_cursor_new (GDK_TOP_RIGHT_CORNER);
+	cursor->resize_bottom_left  = gdk_cursor_new (GDK_BOTTOM_LEFT_CORNER);
+	cursor->resize_bottom_right = gdk_cursor_new (GDK_BOTTOM_RIGHT_CORNER);
+	cursor->resize_left         = gdk_cursor_new (GDK_LEFT_SIDE);
+	cursor->resize_right        = gdk_cursor_new (GDK_RIGHT_SIDE);
+	cursor->resize_top          = gdk_cursor_new (GDK_TOP_SIDE);
+	cursor->resize_bottom       = gdk_cursor_new (GDK_BOTTOM_SIDE);
+	cursor->drag                = gdk_cursor_new (GDK_FLEUR);
 }

@@ -543,7 +543,7 @@ static GladeWidget *
 glade_widget_internal_new (const gchar      *name,
 			   GladeWidget      *parent,
 			   GladeWidgetClass *klass,
-			   gpointer         *project,
+			   GladeProject     *project,
 			   GladeWidget      *template)
 {
 	GObject *object;
@@ -576,7 +576,7 @@ glade_widget_internal_new (const gchar      *name,
  * Returns:
  */
 GladeWidget *
-glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, gpointer *project)
+glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *project)
 {
 	GladeWidget *widget;
 	gchar       *widget_name =
@@ -761,7 +761,7 @@ glade_widget_new_for_internal_child (GladeWidgetClass *klass,
 				     GObject          *internal_object,
 				     const gchar      *internal_name)
 {
-	GladeProject *project      = GLADE_PROJECT (glade_widget_get_project (parent));
+	GladeProject *project      = glade_widget_get_project (parent);
 	gchar        *widget_name  = glade_project_new_widget_name (project, klass->generic_name);
 	GladeWidget  *widget       = g_object_new (GLADE_TYPE_WIDGET,
 						   "parent", parent,
@@ -890,7 +890,7 @@ glade_widget_set_real_property (GObject         *object,
 		glade_widget_set_object (widget, g_value_get_object (value));
 		break;
 	case PROP_PROJECT:
-		glade_widget_set_project (widget, (gpointer)g_value_get_object (value));
+		glade_widget_set_project (widget, GLADE_PROJECT (g_value_get_object (value)));
 		break;
 	case PROP_CLASS:
 		glade_widget_set_class (widget, GLADE_WIDGET_CLASS
@@ -1090,7 +1090,7 @@ glade_widget_get_class (GladeWidget *widget)
  * Makes @widget belong to @project.
  */
 void
-glade_widget_set_project (GladeWidget *widget, gpointer *project)
+glade_widget_set_project (GladeWidget *widget, GladeProject *project)
 {
 	if (widget->project != project) {
 		if (project)
@@ -1108,7 +1108,7 @@ glade_widget_set_project (GladeWidget *widget, gpointer *project)
  * 
  * Returns: the #GladeProject that @widget belongs to
  */
-gpointer
+GladeProject *
 glade_widget_get_project (GladeWidget *widget)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -1291,9 +1291,11 @@ glade_widget_pack_property_set (GladeWidget      *widget,
  * glade_widget_property_set_sensitive:
  * @widget: a #GladeWidget
  * @id_property: a string naming a #GladeProperty
- * @...: The return location for the value of the said #GladeProperty
+ * @sensitive: setting sensitive or insensitive
+ * @reason: a description of why the user cant edit this property
+ *          which will be used as a tooltip
  *
- * Sets the value of @id_property in @widget
+ * Sets the sensitivity of @id_property in @widget
  *
  * Returns: whether @id_property was found or not.
  */
@@ -1316,14 +1318,15 @@ glade_widget_property_set_sensitive (GladeWidget      *widget,
 
 }
 
-
 /**
  * glade_widget_pack_property_set_sensitive:
  * @widget: a #GladeWidget
  * @id_property: a string naming a #GladeProperty
- * @...: The return location for the value of the said #GladeProperty
+ * @sensitive: setting sensitive or insensitive
+ * @reason: a description of why the user cant edit this property
+ *          which will be used as a tooltip
  *
- * Sets the value if @id_property in @widget packing properties
+ * Sets the sensitivity of @id_property in @widget's packing properties.
  *
  * Returns: whether @id_property was found or not.
  */
@@ -1345,6 +1348,75 @@ glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
 	return FALSE;
 }
 
+
+/**
+ * glade_widget_property_set_enabled:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @enabled: setting enabled or disabled
+ *
+ * Sets the enabled state of @id_property in @widget; this is
+ * used for optional properties.
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_property_set_enabled (GladeWidget      *widget,
+				   const gchar      *id_property,
+				   gboolean          enabled)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_enabled (property, enabled);
+		return TRUE;
+	}
+	return FALSE;
+
+}
+
+
+/**
+ * glade_widget_pack_property_set_enabled:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @enabled: setting enabled or disabled
+ *
+ * Sets the enabled state of @id_property in @widget's packing 
+ * properties; this is used for optional properties.
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_pack_property_set_enabled (GladeWidget      *widget,
+					const gchar      *id_property,
+					gboolean          enabled)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_enabled (property, enabled);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+/**
+ * glade_widget_property_reset:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ *
+ * Resets @id_property in @widget to it's default value
+ *
+ * Returns: whether @id_property was found or not.
+ */
 gboolean
 glade_widget_property_reset (GladeWidget   *widget,
 			     const gchar   *id_property)
@@ -1361,6 +1433,15 @@ glade_widget_property_reset (GladeWidget   *widget,
 	return FALSE;
 }
 
+/**
+ * glade_widget_pack_property_reset:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ *
+ * Resets @id_property in @widget's packing properties to it's default value
+ *
+ * Returns: whether @id_property was found or not.
+ */
 gboolean      
 glade_widget_pack_property_reset (GladeWidget   *widget,
 				  const gchar   *id_property)
@@ -1377,6 +1458,14 @@ glade_widget_pack_property_reset (GladeWidget   *widget,
 	return FALSE;
 }
 
+/**
+ * glade_widget_property_default:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ *
+ * Returns: whether whether @id_property was found and is 
+ * currently set to it's default value.
+ */
 gboolean
 glade_widget_property_default (GladeWidget *widget,
 			       const gchar *id_property)
@@ -1390,6 +1479,14 @@ glade_widget_property_default (GladeWidget *widget,
 	return FALSE;
 }
 
+/**
+ * glade_widget_pack_property_default:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ *
+ * Returns: whether whether @id_property was found and is 
+ * currently set to it's default value.
+ */
 gboolean 
 glade_widget_pack_property_default (GladeWidget *widget,
 				    const gchar *id_property)
@@ -1474,7 +1571,7 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
  * for its parent, this function takes the event and the widget that got the 
  * event and returns the real #GladeWidget that was clicked
  */
-static GladeWidget *
+GladeWidget *
 glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 {
 	GtkWidget *toplevel_widget;
@@ -1496,25 +1593,28 @@ glade_widget_button_press (GtkWidget *widget,
 			   GdkEventButton *event,
 			   gpointer unused_data)
 {
-	double       x = event->x;
-	double       y = event->y;
-	GladeWidget *glade_widget;
-	gboolean     handled = FALSE;
+	GladeWidget       *glade_widget;
+	gint               x = (gint) (event->x + 0.5);
+	gint               y = (gint) (event->y + 0.5);
+	gboolean           handled = FALSE;
 
-	glade_widget = glade_widget_retrieve_from_position
-		(widget, (int) (x + 0.5), (int) (y + 0.5));
+	glade_widget = glade_widget_retrieve_from_position (widget, x, y);
 	widget = GTK_WIDGET (glade_widget_get_object (glade_widget));
 
 	/* make sure to grab focus, since we may stop default handlers */
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
+	/* notify manager */
+	if (glade_widget->manager != NULL) 
+		glade_fixed_manager_post_mouse (glade_widget->manager, x, y);
+
 	/* if it's already selected don't stop default handlers, e.g. toggle button */
 	if (event->button == 1)
 	{
 		if (event->state & GDK_CONTROL_MASK)
 		{
-			if (glade_project_is_selected (GLADE_PROJECT (glade_widget->project),
+			if (glade_project_is_selected (glade_widget->project,
 						       glade_widget->object))
 				glade_default_app_selection_remove 
 					(glade_widget->object, TRUE);
@@ -1523,7 +1623,7 @@ glade_widget_button_press (GtkWidget *widget,
 					(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
-		else if (glade_project_is_selected (GLADE_PROJECT (glade_widget->project),
+		else if (glade_project_is_selected (glade_widget->project,
 						    glade_widget->object) == FALSE)
 		{
 			glade_util_clear_selection ();
@@ -1595,7 +1695,7 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 	/* Don't connect handlers for placeholders. */
 	if (GLADE_IS_PLACEHOLDER (widget_gtk))
 		return;
-
+	
 	/* Check if we've already connected an event handler. */
 	if (!g_object_get_data (G_OBJECT (widget_gtk),
 				GLADE_TAG_EVENT_HANDLER_CONNECTED)) {
@@ -1692,7 +1792,6 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 
 		if (g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
 		{
-		
 			/* Take care of events and toolkit signals.
 			 */
 			gtk_widget_add_events (GTK_WIDGET(new_object),
@@ -2247,8 +2346,8 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 
 static gboolean
 glade_widget_new_child_from_child_info (GladeChildInfo *info,
-					GladeProject *project,
-					GladeWidget *parent);
+					GladeProject   *project,
+					GladeWidget    *parent);
 
 static void
 glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
@@ -2266,7 +2365,7 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 	for (i = 0; i < info->n_children; ++i)
 	{
 		if (!glade_widget_new_child_from_child_info (info->children + i,
-							     GLADE_PROJECT (widget->project), widget))
+							     widget->project, widget))
 		{
 			g_warning ("Failed to read child of %s",
 				   glade_widget_get_name (widget));
@@ -2468,8 +2567,8 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 
 static GladeWidget *
 glade_widget_new_from_widget_info (GladeWidgetInfo *info,
-                                   GladeProject *project,
-                                   GladeWidget *parent)
+                                   GladeProject    *project,
+                                   GladeWidget     *parent)
 {
 	GladeWidgetClass *klass;
 	GladeWidget *widget;
@@ -2633,8 +2732,11 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 								     parent->widget_class,
 								     child->object);
 		
-		glade_widget_class_container_add (parent->widget_class,
-						  parent->object, child->object);
+		if (parent->manager != NULL) 
+			glade_fixed_manager_add_child (parent->manager, child, FALSE);
+		else
+			glade_widget_class_container_add (parent->widget_class,
+							  parent->object, child->object);
 
 		glade_widget_sync_packing_props (child);
 	}
@@ -2661,12 +2763,12 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
  * Returns: a new #GladeWidget in @project, based off the contents of @node
  */
 GladeWidget *
-glade_widget_read (gpointer *project, GladeWidgetInfo *info)
+glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 {
 	GladeWidget *widget;
 		
 	if ((widget = glade_widget_new_from_widget_info
-	     (info, GLADE_PROJECT (project), NULL)) != NULL)
+	     (info, project, NULL)) != NULL)
 	{
 		if (glade_verbose)
 			glade_widget_debug (widget);

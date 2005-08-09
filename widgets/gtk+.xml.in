@@ -707,10 +707,19 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkLayout" generic-name="layout" title="Layout"/>
+    <glade-widget-class name="GtkLayout" generic-name="layout" title="Layout">
+      <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
+
+      <children>
+	<child>
+	  <type>GtkWidget</type>
+	  <fill-empty-function>empty</fill-empty-function>
+	</child>
+      </children>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkFixed" generic-name="fixed" title="Fixed">
-      <post-create-function>glade_gtk_fixed_post_create</post-create-function>
+      <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
 
       <children>
 	<child>

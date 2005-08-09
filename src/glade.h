@@ -22,19 +22,31 @@
 # define LIBGLADEUI_API		extern
 #endif
 
-#include "glade-placeholder.h"
+/* Circular header dependancie are fixed here with forward 
+ * declarations.
+ */
+typedef struct _GladeWidget       GladeWidget;
+typedef struct _GladeProperty     GladeProperty;
+typedef struct _GladeProject      GladeProject;
+
+
 #include "glade-widget-class.h"
 #include "glade-widget.h"
+#include "glade-property-class.h"
+#include "glade-property.h"
 #include "glade-project.h"
 #include "glade-app.h"
 #include "glade-command.h"
 #include "glade-editor.h"
-#include "glade-property.h"
-#include "glade-property-class.h"
 #include "glade-palette.h"
-#include "glade-builtins.h"
+#include "glade-clipboard.h"
+#include "glade-project-view.h"
+#include "glade-placeholder.h"
+#include "glade-fixed-manager.h"
 #include "glade-utils.h"
+#include "glade-builtins.h"
 #include "glade-xml-utils.h"
+
 
 #define GLADE_TAG_FALSE        "False"
 #define GLADE_TAG_TRUE         "True"
@@ -119,12 +131,10 @@
 #define GLADE_TAG_EDITABLE                        "editable"
 #define GLADE_TAG_IGNORE                          "ignore"
 
-
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F
 #define GLADE_NUMERICAL_PAGE_INCREMENT             10
 #define GLADE_NUMERICAL_PAGE_SIZE                  1
-
 
 LIBGLADEUI_API gboolean glade_verbose;
 

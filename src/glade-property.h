@@ -6,13 +6,12 @@ G_BEGIN_DECLS
 
 #define GLADE_TYPE_PROPERTY            (glade_property_get_type())
 #define GLADE_PROPERTY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROPERTY, GladeProperty))
-#define GLADE_PROPERTY_CINFO(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyCinfo))
+#define GLADE_PROPERTY_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROPERTY, GladePropertyKlass))
 #define GLADE_IS_PROPERTY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROPERTY))
-#define GLADE_IS_PROPERTY_CINFO(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
-#define GLADE_PROPERTY_GET_CINFO(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyCinfo))
+#define GLADE_IS_PROPERTY_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
+#define GLADE_PROPERTY_GET_KLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyKlass))
 
-typedef struct _GladeProperty      GladeProperty;
-typedef struct _GladePropertyCinfo GladePropertyCinfo;
+typedef struct _GladePropertyKlass GladePropertyKlass;
 
 
 /* A GladeProperty is an instance of a GladePropertyClass.
@@ -26,7 +25,7 @@ struct _GladeProperty
 	GladePropertyClass *class;     /* A pointer to the GladeProperty that this
 					* setting specifies
 					*/
-	gpointer           *widget;    /* A pointer to the GladeWidget that this
+	GladeWidget        *widget;    /* A pointer to the GladeWidget that this
 					* GladeProperty is modifying
 					*/
 	
@@ -56,18 +55,18 @@ struct _GladeProperty
 		
 #if 0
 	/* A GladeProperty of type object has a child */
-	gpointer *child;
+	GladeWidget *child;
 #endif
 	gboolean loading;
 };
 
 
-struct _GladePropertyCinfo
+struct _GladePropertyKlass
 {
 	GObjectClass  parent_class;
 
 	/* Class methods */
-	GladeProperty *         (* dup)                   (GladeProperty *, gpointer *);
+	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
 	void                    (* reset)                 (GladeProperty *);
 	gboolean                (* def)                   (GladeProperty *);
 	void                    (* set_value)             (GladeProperty *, const GValue *);
@@ -83,10 +82,10 @@ struct _GladePropertyCinfo
 
 LIBGLADEUI_API GType                   glade_property_get_type              (void);
 LIBGLADEUI_API GladeProperty          *glade_property_new                   (GladePropertyClass *class,
-									     gpointer           *widget,
+									     GladeWidget        *widget,
 									     GValue             *value);
 LIBGLADEUI_API GladeProperty          *glade_property_dup                   (GladeProperty      *template,
-									     gpointer           *widget);
+									     GladeWidget        *widget);
 LIBGLADEUI_API void                    glade_property_reset                 (GladeProperty      *property);
 LIBGLADEUI_API gboolean                glade_property_default               (GladeProperty      *property);
 LIBGLADEUI_API void                    glade_property_set_value             (GladeProperty      *property, 
