@@ -1034,7 +1034,6 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					/* Paste at mouse position only once */
 					glade_fixed_manager_add_child (cdata->parent->manager, cdata->widget,
 								       me->initial_paste == FALSE);
-					me->initial_paste = TRUE;
 				}
 				else
 				{
@@ -1059,6 +1058,22 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					glade_property_set_value (widget_prop, &value);
 					g_value_unset (&value);
 				}
+
+				
+				if (me->initial_paste == FALSE) 
+				{
+					// Save the packing properties after the initial paste.
+					g_assert (cdata->pack_props == NULL);
+					for (l = cdata->widget->packing_properties; l; l = l->next)
+						cdata->pack_props = 
+							g_list_prepend (cdata->pack_props,
+									glade_property_dup (GLADE_PROPERTY (l->data),
+											    cdata->widget));
+
+				}
+
+				me->initial_paste = TRUE; // Mark it initialy pasted
+				
 			}
 
 			/* Toplevels get pasted to the active project */

@@ -1,5 +1,11 @@
 2005-08-11  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-command.c: Now when pasting widgets into a container, after the 
+	  actual paste, the newly initialized packing properties are saved on the command
+	  (I had already done this for CUT, but now realized the need in PASTE).
+	
+2005-08-11  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-app.[ch]: added glade_app_set/get_transient_parent &
 	  glade_default_app_set/get_transient_parent.
 
