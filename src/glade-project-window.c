@@ -34,7 +34,7 @@
 
 #include "glade-project-window.h"
 
-#define CONFIG_RECENT_PROJECTS "Recent Projects"
+#define CONFIG_RECENT_PROJECTS     "Recent Projects"
 #define CONFIG_RECENT_PROJECTS_MAX "max_recent_projects"
 
 struct _GladeProjectWindowPriv {
@@ -55,7 +55,6 @@ struct _GladeProjectWindowPriv {
 	GQueue *recent_projects;	/* A GtkAction queue */
 	gint rp_max;			/* Maximun Recent Projects entries */
 
-	GtkWidget *widget_tree;        /* The widget tree window*/
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */
 	GtkWidget *toolbar_undo;       /* undo item on the toolbar */
@@ -672,6 +671,8 @@ gpw_create_palette (GladeProjectWindow *gpw)
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->palette_window), -1,
 				     GLADE_PALETTE_DEFAULT_HEIGHT);
 
+	gtk_window_set_transient_for (gpw->priv->palette_window, GTK_WINDOW (gpw->priv->window));
+
 	gtk_window_set_title (gpw->priv->palette_window, _("Palette"));
 	gtk_window_set_type_hint (gpw->priv->palette_window, GDK_WINDOW_TYPE_HINT_UTILITY);
 	gtk_window_set_resizable (gpw->priv->palette_window, TRUE);
@@ -742,6 +743,8 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gpw->priv->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 350, 450);
 
+	gtk_window_set_transient_for (gpw->priv->editor_window, GTK_WINDOW (gpw->priv->window));
+
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
 	gtk_window_move (gpw->priv->editor_window, 350, 0);
 
@@ -789,21 +792,6 @@ gpw_hide_editor (GladeApp *app)
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 }
 
-static gboolean
-gpw_hide_widget_tree_on_delete (GtkWidget *widget_tree, gpointer not_used,
-		GtkUIManager *ui)
-{
-	GtkWidget *widget_tree_item;
-
-	glade_util_hide_window (GTK_WINDOW (widget_tree));
-
-	widget_tree_item = gtk_ui_manager_get_widget (ui,"/MenuBar/ViewMenu/WidgetTree");
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
-
-	/* return true so that the widget tree is not destroyed */
-	return TRUE;
-}
-
 static void 
 gpw_expand_treeview (GtkButton *button, GtkTreeView *tree)
 {
@@ -845,64 +833,6 @@ gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 	return vbox;
 }
 
-static GtkWidget* 
-gpw_create_widget_tree (GladeProjectWindow *gpw)
-{
-	GtkWidget *widget_tree;
-	GtkWidget *widget_tree_item;
- 
-	widget_tree = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size (GTK_WINDOW (widget_tree),
-				     GLADE_WIDGET_TREE_WIDTH,
-				     GLADE_WIDGET_TREE_HEIGHT);
- 
-	gtk_window_set_title (GTK_WINDOW (widget_tree), _("Widget Tree"));
-
-	gtk_container_add (GTK_CONTAINER (widget_tree), 
-			   gpw_create_widget_tree_contents (gpw));
-
-	g_signal_connect (G_OBJECT (widget_tree), "delete_event",
-			  G_CALLBACK (gpw_hide_widget_tree_on_delete), gpw->priv->ui);
-
-	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						      "/MenuBar/ViewMenu/WidgetTree");
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
-
-	return widget_tree;
-}
-
-static void 
-gpw_show_widget_tree (GladeProjectWindow *gpw) 
-{
-	GtkWidget *widget_tree_item;
-
-	g_return_if_fail (gpw != NULL);
-
-	if (gpw->priv->widget_tree == NULL)
-		gpw->priv->widget_tree = gpw_create_widget_tree (gpw);
-
-	gtk_widget_show_all (gpw->priv->widget_tree);
-
-	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						      "/MenuBar/ViewMenu/WidgetTree");
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), TRUE);
-}
-
-static void
-gpw_hide_widget_tree (GladeProjectWindow *gpw)
-{
-	GtkWidget *widget_tree_item;
-
-	g_return_if_fail (gpw != NULL);
-
-	glade_util_hide_window (GTK_WINDOW (gpw->priv->widget_tree));
-
-	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						      "/MenuBar/ViewMenu/WidgetTree");
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (widget_tree_item), FALSE);
-
-}
-
 static gboolean
 gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
 				   GtkUIManager *ui)
@@ -925,6 +855,9 @@ gpw_create_clipboard_view (GladeProjectWindow *gpw)
 	GtkWidget *clipboard_item;
 	
 	view = glade_app_get_clipboard_view (GLADE_APP (gpw));
+
+	gtk_window_set_transient_for (GTK_WINDOW (view), GTK_WINDOW (gpw->priv->window));
+
 	g_signal_connect (G_OBJECT (view), "delete_event",
 			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
 			  gpw->priv->ui);
@@ -995,20 +928,6 @@ gpw_toggle_editor_cb (GtkAction *action, GladeProjectWindow *gpw)
 		gpw_show_editor (GLADE_APP (gpw), FALSE);
 	else
 		gpw_hide_editor (GLADE_APP (gpw));
-}
-
-static void 
-gpw_toggle_widget_tree_cb (GtkAction *action, GladeProjectWindow *gpw) 
-{
-	GtkWidget *widget_tree_item;
-
-	widget_tree_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						      "/MenuBar/ViewMenu/WidgetTree");
-
-	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget_tree_item)))
-		gpw_show_widget_tree (gpw);
-	else
-		gpw_hide_widget_tree (gpw);
 }
 
 static void
@@ -1108,7 +1027,6 @@ static const gchar *ui_info =
 "    <menu action='ViewMenu'>\n"
 "      <menuitem action='Palette'/>\n"
 "      <menuitem action='PropertyEditor'/>\n"
-"      <menuitem action='WidgetTree'/>\n"
 "      <menuitem action='Clipboard'/>\n"
 "    </menu>\n"
 "    <menu action='ProjectMenu'>\n"
@@ -1191,10 +1109,6 @@ static GtkToggleActionEntry view_entries[] = {
 	{ "PropertyEditor", NULL, "Property _Editor", NULL,
 	"Change the visibility of the property editor",
 	G_CALLBACK (gpw_toggle_editor_cb), TRUE },
-
-	{ "WidgetTree", NULL, "_Widget Tree", NULL,
-	"Change the visibility of the project widget tree",
-	G_CALLBACK (gpw_toggle_widget_tree_cb), FALSE },
 
 	{ "Clipboard", NULL, "_Clipboard", NULL,
 	"Change the visibility of the clipboard",
@@ -1366,6 +1280,8 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_window_set_default_icon_from_file (filename, NULL);
 	g_free (filename);
 	gpw->priv->window = app;
+
+	glade_app_set_transient_parent (GLADE_APP (gpw), GTK_WINDOW (app));
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (app), vbox);

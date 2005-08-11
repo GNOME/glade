@@ -283,7 +283,8 @@ glade_project_add_object (GladeProject *project, GObject *object)
 {
 	GladeWidget          *gwidget;
 	GList                *list, *children;
-	
+	GtkWindow            *transient_parent;
+
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
@@ -319,6 +320,10 @@ glade_project_add_object (GladeProject *project, GObject *object)
 		       glade_project_signals [ADD_WIDGET],
 		       0,
 		       gwidget);
+
+	if (GTK_IS_WINDOW (object) &&
+	    (transient_parent = glade_default_app_get_transient_parent ()) != NULL)
+		gtk_window_set_transient_for (GTK_WINDOW (object), transient_parent);
 }
 
 /**

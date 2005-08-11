@@ -95,6 +95,10 @@ LIBGLADEUI_API void               glade_app_command_delete (GladeApp *app);
 LIBGLADEUI_API void               glade_app_command_undo (GladeApp *app);
 LIBGLADEUI_API void               glade_app_command_redo (GladeApp *app);
 
+LIBGLADEUI_API gint               glade_app_config_save (GladeApp *app);
+LIBGLADEUI_API void               glade_app_set_transient_parent (GladeApp *app, GtkWindow *parent);
+LIBGLADEUI_API GtkWindow         *glade_app_get_transient_parent (GladeApp *app);
+
 /* Default glade application */
 LIBGLADEUI_API void               glade_default_app_set (GladeApp *app);
 LIBGLADEUI_API GtkWidget*         glade_default_app_get_window (void);
@@ -109,6 +113,9 @@ LIBGLADEUI_API GList*             glade_default_app_get_selection (void);
 LIBGLADEUI_API GList*             glade_default_app_get_projects (void);
 LIBGLADEUI_API void               glade_default_app_show_properties (gboolean raise);
 LIBGLADEUI_API void               glade_default_app_hide_properties (void);
+LIBGLADEUI_API void               glade_default_app_set_transient_parent (GtkWindow *parent);
+LIBGLADEUI_API GtkWindow         *glade_default_app_get_transient_parent (void);
+
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.
@@ -123,7 +130,6 @@ LIBGLADEUI_API void               glade_default_app_selection_remove (GObject   
 LIBGLADEUI_API void               glade_default_app_selection_clear  (gboolean      emit_signal);
 LIBGLADEUI_API void               glade_default_app_selection_changed(void);
 
-LIBGLADEUI_API gint               glade_app_config_save (GladeApp *app);
 
 G_END_DECLS
 

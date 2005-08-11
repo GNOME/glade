@@ -76,6 +76,11 @@ struct _GladeAppPriv {
 	GList *projects; /* The list of Projects */
 	
 	GKeyFile *config;/* The configuration file */
+
+	GtkWindow *transient_parent; /* If set by glade_app_set_transient_parent(); this
+				      * will be used as the transient parent of all toplevel
+				      * GladeWidgets.
+				      */
 };
 
 enum
@@ -285,6 +290,34 @@ glade_app_config_save (GladeApp *app)
 	g_free (filename);
 	
 	return (error) ? -1 : 0;
+}
+
+void
+glade_app_set_transient_parent (GladeApp  *app, 
+				GtkWindow *parent)
+{
+	GList        *projects, *objects;
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	g_return_if_fail (GTK_IS_WINDOW (parent));
+
+	app->priv->transient_parent = parent;
+
+	/* Loop over all projects/widgets and set_transient_for the toplevels.
+	 */
+	for (projects = glade_app_get_projects(app); // projects
+	     projects; projects = projects->next) 
+		for (objects = GLADE_PROJECT (projects->data)->objects;  // widgets
+		     objects; objects = objects->next)
+			if (GTK_IS_WINDOW (objects->data))
+				gtk_window_set_transient_for (GTK_WINDOW (objects->data), parent);
+}
+
+GtkWindow *
+glade_app_get_transient_parent (GladeApp  *app)
+{
+	g_return_val_if_fail (GLADE_IS_APP (app), NULL);
+	return app->priv->transient_parent;
 }
 
 static void
@@ -580,7 +613,7 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 	app->priv->projects = g_list_remove (app->priv->projects, project);
 	
 	/* this is needed to prevent clearing the selection of a closed project 
-     */
+	 */
 	app->priv->active_project = NULL;
 	
 	/* If no more projects */
@@ -800,6 +833,20 @@ glade_default_app_update_ui (void)
 	glade_app_update_ui (glade_default_app);
 }
 
+void
+glade_default_app_set_transient_parent (GtkWindow *parent)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	glade_app_set_transient_parent (glade_default_app, parent);
+}
+
+GtkWindow *
+glade_default_app_get_transient_parent (void)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_get_transient_parent (glade_default_app);
+}
+
 GList*
 glade_default_app_get_selection (void)
 {
@@ -913,6 +960,8 @@ glade_default_app_selection_changed (void)
 		glade_project_selection_changed (project);
 	}
 }
+
+
 
 
 G_END_DECLS

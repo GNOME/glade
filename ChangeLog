@@ -1,3 +1,17 @@
+2005-08-11  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.[ch]: added glade_app_set/get_transient_parent &
+	  glade_default_app_set/get_transient_parent.
+
+	* src/glade-project-window.c: 
+	    - set the project-window as transient parent of all glade dialogs 
+	      (includeing the editor, clipboard & palette).
+	    - removed widget tree popup as all the functionality is present embedded
+	      in the project window.
+
+	* src/glade-project.c: Set newly added toplevels transient for the transient
+	  parent window of the glade-app.
+	
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
         * src/glade-widget.c: Dont present top-levels upon load.
