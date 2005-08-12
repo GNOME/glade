@@ -1674,23 +1674,24 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 		text = g_value_get_string (property->property->value);
 		pos = gtk_editable_get_position (editable);
  		gtk_editable_delete_text (editable, 0, -1);
-		if (text)
-			gtk_editable_insert_text (editable,
-						  text,
-						  g_utf8_strlen (text, -1),
-						  &insert_pos);
+
+		gtk_editable_insert_text (editable,
+					  text ? text : "",
+					  text ? g_utf8_strlen (text, -1) : 0,
+					  &insert_pos);
+
 		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (widget)) {
 		GtkTextBuffer *buffer;
 		const gchar *text;
 
-		if ((text = g_value_get_string (property->property->value)) != NULL)
-		{
-			buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
-			gtk_text_buffer_set_text (buffer,
-						  text,
-						  g_utf8_strlen (text, -1));
-		}
+		text = g_value_get_string (property->property->value);
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
+
+		gtk_text_buffer_set_text (buffer,
+					  text ? text : "",
+					  text ? g_utf8_strlen (text, -1) : 0);
+
 	} else {
 		g_warning ("Invalid Text Widget type.");
 	}
@@ -1816,7 +1817,6 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 	else
 		g_warning ("%s : type %s not implemented (%s)\n", G_GNUC_FUNCTION,
 			   class->name, g_type_name (class->pspec->value_type));
-
 
 
 	/* Set insensitive and hook cb here */

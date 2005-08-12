@@ -573,18 +573,12 @@ glade_property_new (GladePropertyClass *class,
 	    G_IS_PARAM_SPEC_UINT (class->pspec))
 		property->enabled = class->optional_default;
 	
-	/* Create an empty default if the class does not specify a default value */
 	if (property->value == NULL)
 	{
-		if (!class->def)
-			property->value =
-				glade_property_class_make_gvalue_from_string (class, "");
-		else
-		{
-			property->value = g_new0 (GValue, 1);
-			g_value_init (property->value, class->def->g_type);
-			g_value_copy (class->def, property->value);
-		}
+		g_assert (class->def);
+		property->value = g_new0 (GValue, 1);
+		g_value_init (property->value, class->def->g_type);
+		g_value_copy (class->def, property->value);
 	}
 	return property;
 }

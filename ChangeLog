@@ -1,3 +1,13 @@
+2005-08-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor.c: Fixed text properties, when text properties were NULL
+	  by default, the property editor wasn't flushing the previous value
+	  (bug 313201).
+
+	* src/glade-property.c: As properties can only be created with a pspec (regardless
+	  if they are custom or not) they *always* have a default (change code accordingly
+	  to avoid confusion).
+	
 2005-08-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: Now when pasting widgets into a container, after the 
