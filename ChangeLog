@@ -1,3 +1,13 @@
+2005-08-17  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor.c: Fixed use of uninitialized variable
+	  (resulting in all text entries being multiple line type).
+
+	* src/glade-gtk.c: Fixed glade_gtk_image_post_create_idle
+	  (was not returning anything, now returns FALSE, somehow
+	  I had `0' sitting magicly on the stack so I didnt get the 
+	  bug untill recently)
+
 2005-08-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: Fixed text properties, when text properties were NULL

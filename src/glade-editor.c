@@ -917,7 +917,7 @@ glade_editor_create_input_flags (GladeEditorProperty *property)
 static GtkWidget *
 glade_editor_create_input_text (GladeEditorProperty *property)
 {
-	gint                 lines;
+	gint                 lines = 1;
 	GladePropertyClass  *class;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);

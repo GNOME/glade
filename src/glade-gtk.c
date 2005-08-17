@@ -1266,7 +1266,7 @@ glade_gtk_image_pixel_size_changed (GladeProperty *property,
 		   "if you want to use Icon Size, set Pixel size to -1"));
 }
 
-void GLADEGTK_API
+static gboolean
 glade_gtk_image_post_create_idle (GObject *image)
 {
 	GladeWidget    *gimage = glade_widget_get_from_gobject (image);
@@ -1306,7 +1306,7 @@ glade_gtk_image_post_create_idle (GObject *image)
 				  gimage);
 	}
 	g_type_class_unref (eclass);
-
+	return FALSE;
 }
 
 
@@ -1315,7 +1315,6 @@ glade_gtk_image_post_create (GObject *object)
 {
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	g_idle_add ((GSourceFunc)glade_gtk_image_post_create_idle, object);
-
 }
 
 
