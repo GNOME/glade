@@ -244,6 +244,7 @@ glade_project_finalize (GObject *object)
 void
 glade_project_selection_changed (GladeProject *project)
 {
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [SELECTION_CHANGED],
 		       0);
@@ -336,8 +337,8 @@ glade_project_add_object (GladeProject *project, GObject *object)
 gboolean
 glade_project_has_object (GladeProject *project, GObject *object)
 {
-	g_return_val_if_fail (project != NULL, FALSE);
-	g_return_val_if_fail (object  != NULL, FALSE);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
 	return (g_list_find (project->objects, object)) != NULL;
 }
 
@@ -358,6 +359,9 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 	GladeIDAllocator *id_allocator;
 	gunichar ch;
 	int id;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
 
 	do
 	{
@@ -513,6 +517,8 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 	GladeIDAllocator *id_allocator;
 	guint i = 1;
 	
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
 	while (TRUE)
 	{
 		id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
@@ -737,6 +743,8 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	GladeWidget *widget;
 	guint i;
 
+	g_return_val_if_fail (interface != NULL, NULL);
+
 	project = glade_project_new (FALSE);
 	project->path = g_strdup (path);
 	g_free (project->name);
@@ -778,6 +786,8 @@ glade_project_open (const gchar *path)
 	GladeProject *project;
 	GladeInterface *interface;
 	
+	g_return_val_if_fail (path != NULL, NULL);
+
 	interface = glade_parser_parse_file (path, NULL);
 	if (!interface)
 		return NULL;
@@ -805,6 +815,8 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	GladeInterface *interface;
 	gboolean        ret;
 
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
 	interface = glade_project_write (project);
 	if (!interface)
 	{
@@ -828,6 +840,14 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	return ret;
 }
 
+void
+glade_project_changed (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	project->changed = TRUE;
+}
+
+
 /**
  * glade_project_get_tooltips:
  * @project: a #GladeProject
@@ -837,6 +857,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 GtkTooltips *
 glade_project_get_tooltips (GladeProject *project)
 {
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	return project->tooltips;
 }
 
@@ -846,9 +867,13 @@ glade_project_get_tooltips (GladeProject *project)
 GtkWidget *
 glade_project_get_menuitem (GladeProject *project)
 {
-	GtkUIManager *ui = g_object_get_data (G_OBJECT (project->action), "ui");
-	gchar *path = g_object_get_data (G_OBJECT (project->action), "menuitem_path");
-	
+	GtkUIManager *ui;
+	gchar        *path;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	ui   = g_object_get_data (G_OBJECT (project->action), "ui");
+	path = g_object_get_data (G_OBJECT (project->action), "menuitem_path");
 	return gtk_ui_manager_get_widget (ui, path);
 }
 
@@ -858,5 +883,6 @@ glade_project_get_menuitem (GladeProject *project)
 guint
 glade_project_get_menuitem_merge_id (GladeProject *project)
 {
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
 	return GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (project->action), "merge_id"));
 }

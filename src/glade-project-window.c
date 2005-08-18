@@ -474,6 +474,7 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 					 GTK_MESSAGE_QUESTION,
 					 GTK_BUTTONS_NONE,
 					 msg);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 	g_free(msg);
 
 	gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);

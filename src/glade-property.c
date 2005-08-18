@@ -133,7 +133,8 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
-	gboolean changed = FALSE;
+	GladeProject *project;
+	gboolean      changed = FALSE;
 
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
@@ -163,10 +164,14 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	GLADE_PROPERTY_GET_KLASS (property)->sync (property);
 
 	if (changed)
+	{
+		if ((project = glade_widget_get_project (property->widget)) != NULL)
+			glade_project_changed (project);
+
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[VALUE_CHANGED],
 			       0, property->value);
-
+	}
 }
 
 static void
@@ -488,7 +493,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	glade_property_signals[VALUE_CHANGED] =
 		g_signal_new ("value-changed",
 			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
+			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladePropertyKlass,
 					       value_changed),
 			      NULL, NULL,
@@ -498,7 +503,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	glade_property_signals[TOOLTIP_CHANGED] =
 		g_signal_new ("tooltip-changed",
 			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
+			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladePropertyKlass,
 					       tooltip_changed),
 			      NULL, NULL,

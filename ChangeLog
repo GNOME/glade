@@ -1,5 +1,19 @@
 2005-08-18  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-project-view.c: Use glade_widget_show/hide for toplevels.
+	
+	* src/glade-project-window.c: Place the "Close without saving" dialog in the center of 
+	  the screen.
+
+	* src/glade-project.[ch]: Added assertions, glade_project_changed().
+
+	* src/glade-property.c: Call glade_project_changed() when properties change.
+
+	* src/glade-widget.[ch]: Added glade_widget_show/hide, shows & hides toplevels
+	  and saves there position.
+	
+2005-08-18  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-gtk.c: Fixed dumb G_IS_OBJECT() assertion failure.
 
 	* src/glade-command.c: Fixed glade_command_create() to use glade_default_app_selection_clear()

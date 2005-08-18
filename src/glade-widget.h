@@ -73,6 +73,12 @@ struct _GladeWidget
 	GladeFixedManager *manager; /* If this is a GtkContainer with a fixed coordinate system,
 				     * this is the add/remove/create management code.
 				     */
+
+
+	/* Save toplevel positions */
+	gint      save_x;
+	gint      save_y;
+	gboolean  pos_saved;
 };
 
 struct _GladeWidgetKlass
@@ -112,6 +118,8 @@ LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (Glad
 LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
+LIBGLADEUI_API void                    glade_widget_show                   (GladeWidget      *widget);
+LIBGLADEUI_API void                    glade_widget_hide                   (GladeWidget      *widget);
 
 LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
 									    const gchar      *id_property);

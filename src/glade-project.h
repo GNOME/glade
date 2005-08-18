@@ -81,6 +81,8 @@ LIBGLADEUI_API void          glade_project_widget_name_changed (GladeProject *pr
 								const char   *old_name);
 LIBGLADEUI_API GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
 
+LIBGLADEUI_API void          glade_project_changed             (GladeProject *project);
+
 /* Selection */
 LIBGLADEUI_API gboolean      glade_project_is_selected         (GladeProject *project,
 								GObject      *object);

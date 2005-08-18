@@ -819,6 +819,41 @@ glade_widget_dispose (GObject *object)
 		G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
+void
+glade_widget_show (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/* Position window at saved coordinates or in the center */
+	if (GTK_IS_WINDOW (widget->object))
+	{
+		if (widget->pos_saved)
+			gtk_window_move (GTK_WINDOW (widget->object), 
+					 widget->save_x, widget->save_y);
+		else
+			gtk_window_set_position (GTK_WINDOW (widget->object), 
+						 GTK_WIN_POS_CENTER);
+		gtk_window_present (GTK_WINDOW (widget->object));
+	} else {
+		gtk_widget_show (GTK_WIDGET (widget->object));
+	}
+}
+
+void
+glade_widget_hide (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	if (GTK_IS_WINDOW (widget->object))
+	{
+		/* Save coordinates */
+		gtk_window_get_position (GTK_WINDOW (widget->object),
+					 &(widget->save_x), &(widget->save_y));
+		widget->pos_saved = TRUE;
+		gtk_widget_hide (GTK_WIDGET (widget->object));
+	}
+}
+
+
 /**
  * glade_widget_add_signal_handler:
  * @widget:
@@ -1054,7 +1089,7 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
 		{
 			property_class = GLADE_PROPERTY_CLASS(list->data);
 			property = glade_property_new (property_class, 
-						       (gpointer)widget, NULL);
+						       widget, NULL);
 			if (!property) {
 				g_warning ("Failed to create [%s] property",
 					   property_class->id);
@@ -1686,6 +1721,20 @@ glade_widget_event (GtkWidget *widget,
 	return FALSE;
 }
 
+
+static gboolean    
+glade_widget_hide_on_delete (GtkWidget *widget,
+			     GdkEvent *event,
+			     gpointer user_data)
+{
+	GladeWidget *gwidget =
+		glade_widget_get_from_gobject (widget);
+	glade_widget_hide (gwidget);
+	return TRUE;
+}
+
+
+
 /* Connects a signal handler to the 'event' signal for a widget and
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
@@ -1801,8 +1850,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 
 			if (GTK_WIDGET_TOPLEVEL (new_object))
 				g_signal_connect (G_OBJECT (new_object), "delete_event",
-						  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
+						  G_CALLBACK (glade_widget_hide_on_delete), NULL);
 			g_signal_connect (G_OBJECT (new_object), "popup_menu",
 					  G_CALLBACK (glade_widget_popup_menu), NULL);
 			g_signal_connect (G_OBJECT (new_object), "key_press_event",
@@ -1996,7 +2044,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		for (list = support->properties; list && list->data; list = list->next)
 		{
 			property_class = list->data;
-			property       = glade_property_new (property_class, (gpointer)widget, NULL);
+			property       = glade_property_new (property_class, widget, NULL);
 			packing_props  = g_list_prepend (packing_props, property);
 		}
 	}
