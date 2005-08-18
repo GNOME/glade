@@ -1,3 +1,10 @@
+2005-08-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c: Fixed dumb G_IS_OBJECT() assertion failure.
+
+	* src/glade-command.c: Fixed glade_command_create() to use glade_default_app_selection_clear()
+	  instead of glade_util_selection_clear() (Fixing bug 312634).
+	
 2005-08-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: Fixed use of uninitialized variable

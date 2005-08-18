@@ -674,7 +674,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 	CommandData      *cdata = NULL;
 	GList            *list, *wlist = NULL;
 
-	glade_util_clear_selection ();
+	glade_default_app_selection_clear (FALSE);
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{

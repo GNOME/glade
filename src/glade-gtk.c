@@ -1204,8 +1204,6 @@ glade_gtk_frame_create_idle (gpointer data)
 		glade_project_add_object (GLADE_PROJECT (gframe->project), glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
-
-	glade_project_selection_set (GLADE_PROJECT (gframe->project), G_OBJECT (label), TRUE);
 	return FALSE;
 }
 
