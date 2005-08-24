@@ -1,5 +1,10 @@
 2005-08-24  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c: Fixed g_return_if_fail which should be
+	  g_return_val_if_fail in idle function.
+
+2005-08-24  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-app.c: glade_default_app_selection_clear() Add call
 	  to glade_util_clear_selection () so that placeholders selection
 	  also gets cleared.

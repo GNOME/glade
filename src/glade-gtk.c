@@ -1272,8 +1272,8 @@ glade_gtk_image_post_create_idle (GObject *image)
 	GEnumClass     *eclass;
 	gint            size;
 
-	g_return_if_fail (GTK_IS_IMAGE (image));
-	g_return_if_fail (GLADE_IS_WIDGET (gimage));
+	g_return_val_if_fail (GTK_IS_IMAGE (image), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (gimage), FALSE);
 
 	eclass   = g_type_class_ref (GLADE_TYPE_STOCK);
 
