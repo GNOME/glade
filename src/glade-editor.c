@@ -1758,6 +1758,9 @@ glade_editor_prop_enabled_cb (GladeProperty       *property,
 static void
 glade_editor_property_disconnect (GladeEditorProperty *property)
 {
+	/* This is a weak pointer */
+	if (property->signal_prop == NULL) return;
+
 	if (property->tooltip_id > 0)
 		g_signal_handler_disconnect (G_OBJECT (property->signal_prop),
 					     property->tooltip_id);
@@ -1856,7 +1859,17 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		
 		glade_editor_property_set_tooltips (property);
 		
+
+		/* This is a weak pointer because sometimes we want to
+		 * disconnect signals from a widget type that's creation
+		 * was canceled in the query dialog.
+		 */
+		if (property->signal_prop)
+			g_object_remove_weak_pointer (property->signal_prop,
+						      &property->signal_prop);
 		property->signal_prop = property->property;
+		g_object_add_weak_pointer (property->signal_prop,
+					      &property->signal_prop);
 	}
 
 	property->property->loading = FALSE;

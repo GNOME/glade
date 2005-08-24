@@ -834,7 +834,7 @@ glade_widget_show (GladeWidget *widget)
 			gtk_window_set_position (GTK_WINDOW (widget->object), 
 						 GTK_WIN_POS_CENTER);
 		gtk_window_present (GTK_WINDOW (widget->object));
-	} else {
+	} else if (GTK_IS_WIDGET (widget->object)) {
 		gtk_widget_show (GTK_WIDGET (widget->object));
 	}
 }

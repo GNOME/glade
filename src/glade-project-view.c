@@ -431,7 +431,8 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 		view->updating_selection = TRUE;
 
 		glade_default_app_selection_clear (FALSE);
-		gtk_tree_selection_selected_foreach (selection, gpw_foreach_add_selection, view);
+		gtk_tree_selection_selected_foreach
+			(selection, gpw_foreach_add_selection, view);
 		glade_default_app_selection_changed ();
 		
 		view->updating_selection = FALSE;
@@ -454,7 +455,8 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
-	if ((object = glade_widget_get_object (widget)) != NULL)
+	if ((object = glade_widget_get_object (widget)) != NULL &&
+	    GTK_IS_WIDGET (object))
 	{
 		if (GTK_WIDGET_VISIBLE (object))
 			glade_widget_hide (widget);

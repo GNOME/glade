@@ -939,6 +939,7 @@ glade_default_app_selection_clear (gboolean      emit_signal)
 	GList        *list;
 	GladeProject *project;
 
+	glade_util_clear_selection ();
 	for (list = glade_default_app_get_projects ();
 	     list && list->data; list = list->next)
 	{

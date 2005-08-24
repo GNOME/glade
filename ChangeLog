@@ -1,3 +1,30 @@
+2005-08-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.c: glade_default_app_selection_clear() Add call
+	  to glade_util_clear_selection () so that placeholders selection
+	  also gets cleared.
+
+	* src/glade-editor.c: Make ((GladeEditorProperty *)prop)->signal_prop a
+	  weak pointer to the said property, this way we avoid crashed when
+	  leaving dangleing pointers from canceled query dialogs.
+
+	* src/glade-project-view.c: Added GTK_IS_WIDGET() clause avoiding
+	  dumb warnings.
+
+	* src/glade-property-class.c: Fixed "name" on custom properties to
+	  be retrieved from there pspecs, also gave "default" and "name"
+	  tags precedence to those found on the pspec.
+
+	* src/glade-widget-class.c: Fixed a hidden segfault waiting to happen.
+	  fixed order of derived custom properties (used g_list_append, not
+	  prepend for this special case where the order matters and we cant
+	  just g_list_reverse).
+
+	* src/glade-widget.c: Added GTK_IS_WIDGET() clause avoiding
+	  dumb warnings.
+
+	* widgets/gtk+.xml: Removed unused glade-parameter stuff.
+
 2005-08-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-view.c: Use glade_widget_show/hide for toplevels.

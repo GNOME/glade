@@ -728,6 +728,7 @@ glade_widget_class_merge_properties (GType   parent_type,
 		GladePropertyClass *parent_p_class = list->data;
 		GladePropertyClass *child_p_class;
 
+		
 		/* search the child's properties for one with the same id */
 		for (list2 = *widget_properties; list2; list2 = list2->next)
 		{
@@ -736,14 +737,16 @@ glade_widget_class_merge_properties (GType   parent_type,
 				break;
 		}
 
-		/* if not found, prepend a clone of the parent's one; if found
+		/* if not found, append a clone of the parent's one; if found
 		 * but the parent one was modified (and not the child one)
-		 * substitute it.
+		 * substitute it (note it is importand to *append* and not prepend
+		 * since this would screw up the order of custom properties in
+		 * derived objects).
 		 */
 		if (!list2)
 		{
 			property_class = glade_property_class_clone (parent_p_class);
-			*widget_properties = g_list_prepend (*widget_properties, property_class);
+			*widget_properties = g_list_append (*widget_properties, property_class);
 		}
 		else if (parent_p_class->is_modified && !child_p_class->is_modified)
 		{
@@ -796,7 +799,9 @@ glade_widget_class_merge_properties (GType   parent_type,
 			}
 			for (list = remove; list; list = list->next)
 			{
-				g_list_delete_link (*widget_properties, (GList *)list->data);
+				*widget_properties =
+					g_list_delete_link (*widget_properties,
+							    (GList *)list->data);
 			}
 			g_list_free (remove);
 		}

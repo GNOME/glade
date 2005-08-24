@@ -793,25 +793,18 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		return TRUE;
 	}
 
-	/* If needed, update the name... */
-	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
-	if (buff)
-	{
-		g_free (class->name);
-		class->name = buff;
-	}
-
 	/* ...the spec... */
 	buff = glade_xml_get_value_string (node, GLADE_TAG_SPEC);
 	if (buff)
 	{
-		class->pspec = glade_utils_get_pspec_from_funcname (buff);
- 		g_free (buff);
-
 		/* ... get the tooltip from the pspec ... */
-		if (class->pspec)
+		if ((class->pspec = glade_utils_get_pspec_from_funcname (buff)) != NULL)
 		{
+			if (class->tooltip) g_free (class->tooltip);
+			if (class->name)    g_free (class->name);
+			
 			class->tooltip = g_strdup (g_param_spec_get_blurb (class->pspec));
+			class->name    = g_strdup (g_param_spec_get_nick (class->pspec));
 			
 			if (class->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
 				class->construct_only = TRUE;
@@ -820,31 +813,39 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 				class->orig_def = class->def;
 			class->def = glade_property_class_get_default_from_spec (class->pspec);
 		}
-	} else  {
 
-		/* Get the default */
-		buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-		if (buff)
-		{
-			if (class->def)
-				class->orig_def = class->def;
-			class->def = glade_property_class_make_gvalue_from_string (class, buff);
-			g_free (buff);
-		}
-
-		if (!class->pspec) 
-		{
-			/* If catalog file didn't specify a pspec function
-			 * and this property isn't fund by introspection
-			 * we simply handle it as a property that has been
-			 * disabled.
-			 */
-			glade_property_class_free (class);
-			*property_class = NULL;
-			return TRUE;
-		}
+ 		g_free (buff);
+	}
+	else if (!class->pspec) 
+	{
+		/* If catalog file didn't specify a pspec function
+		 * and this property isn't found by introspection
+		 * we simply handle it as a property that has been
+		 * disabled.
+		 */
+		glade_property_class_free (class);
+		*property_class = NULL;
+		return TRUE;
 	}
 
+	/* Get the default */
+	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
+	if (buff)
+	{
+		if (class->def)
+			class->orig_def = class->def;
+		class->def = glade_property_class_make_gvalue_from_string (class, buff);
+		g_free (buff);
+	}
+
+	/* If needed, update the name... */
+	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
+	if (buff)
+	{
+		g_free (class->name);
+		class->name = buff;
+	}
+	
 	/* ...and the tooltip */
 	buff = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
 	if (buff)
