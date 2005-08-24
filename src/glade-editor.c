@@ -1865,11 +1865,11 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		 * was canceled in the query dialog.
 		 */
 		if (property->signal_prop)
-			g_object_remove_weak_pointer (property->signal_prop,
-						      &property->signal_prop);
+			g_object_remove_weak_pointer (G_OBJECT (property->signal_prop),
+						      (gpointer *)&property->signal_prop);
 		property->signal_prop = property->property;
-		g_object_add_weak_pointer (property->signal_prop,
-					      &property->signal_prop);
+		g_object_add_weak_pointer (G_OBJECT (property->signal_prop),
+					   (gpointer *)&property->signal_prop);
 	}
 
 	property->property->loading = FALSE;
