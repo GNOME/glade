@@ -571,8 +571,9 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 		goto lblError;
 	}
 
-	property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
-	property_class->def = glade_property_class_get_default_from_spec (spec);
+	property_class->tooltip  = g_strdup (g_param_spec_get_blurb (spec));
+	property_class->orig_def = glade_property_class_get_default_from_spec (spec);
+	property_class->def      = glade_property_class_get_default_from_spec (spec);
 
 	return property_class;
 
@@ -809,8 +810,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			if (class->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
 				class->construct_only = TRUE;
 
-			else if (class->def)
-				class->orig_def = class->def;
+			if (class->def) {
+				g_value_unset (class->def);
+				g_free (class->def);
+			}
 			class->def = glade_property_class_get_default_from_spec (class->pspec);
 		}
 
@@ -832,8 +835,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
 	if (buff)
 	{
-		if (class->def)
-			class->orig_def = class->def;
+		if (class->def) {
+			g_value_unset (class->def);
+			g_free (class->def);
+		}
 		class->def = glade_property_class_make_gvalue_from_string (class, buff);
 		g_free (buff);
 	}

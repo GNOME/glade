@@ -1,3 +1,12 @@
+2005-08-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property-class.[ch]: Now all native properties (obtained through
+	  g_object_class_list_properties) have "orig_def" fields (which can still
+	  be overridden by the "default" tag in the catalog), custom properties have
+	  no original defaults.
+
+	* src/glade-property.c: Adjusted glade_property_write accordingly.
+
 2005-08-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: Fixed g_return_if_fail which should be

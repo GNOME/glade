@@ -285,33 +285,30 @@ glade_property_write_impl (GladeProperty  *property,
 	 * the opening and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
-	if (!tmp)
+	if (!tmp || !tmp[0])
 		return FALSE;
 
-	if (property->class->def)
+	if (property->class->orig_def == NULL)
 	{
-		if (property->class->orig_def == NULL)
-		{
-			default_str =
-				glade_property_class_make_string_from_gvalue (property->class,
-									      property->class->def);
-			skip = default_str && !strcmp (tmp, default_str);
-			g_free (default_str);
-		}
-		else
-		{
-			skip = G_IS_PARAM_SPEC_STRING (property->class->pspec) &&
-			       tmp[0] == '\0' &&
-			       !g_value_get_string (property->class->orig_def);
-		}
-
-		if (skip)
-		{
-			g_free (tmp);
-			return FALSE;
-		}
+		/* Skip custom properties that are NULL string types. */
+		skip = G_IS_PARAM_SPEC_STRING (property->class->pspec) &&
+			!g_value_get_string (property->class->orig_def);
 	}
-
+	else
+	{
+		default_str =
+			glade_property_class_make_string_from_gvalue
+			(property->class, property->class->orig_def);
+		skip = default_str && !strcmp (tmp, default_str);
+		g_free (default_str);
+	}
+	
+	if (skip)
+	{
+		g_free (tmp);
+		return FALSE;
+	}
+	
 	if (property->class->translatable)
 	{
 		/* FIXME: implement writing the i18n metadata. */

@@ -102,10 +102,12 @@ struct _GladePropertyClass
 			  */
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
-	GValue *def; /* The default value for this property */
+	GValue *def;      /* The default value for this property */
 
-	GValue *orig_def; /* If def is overridden by a xml file,
-			     it is the original value, otherwise NULL. */
+	GValue *orig_def; /* The real default value obtained through introspection.
+			   * (used to decide whether we should write to the
+			   * glade file or not).
+			   */
 
 	GList *parameters; /* list of GladeParameter objects. This list
 			    * provides with an extra set of key-value
