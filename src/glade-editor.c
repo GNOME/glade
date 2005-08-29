@@ -161,7 +161,6 @@ glade_editor_new (void)
  * We call this function when the user changes the widget name using the
  * entry on the properties editor.
  */
-
 static void
 glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 {
@@ -178,6 +177,16 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
 	glade_command_set_name (widget, new_name);
 	g_free (new_name);
+}
+
+
+static gboolean
+glade_editor_widget_name_focus_out (GtkWidget           *entry,
+				    GdkEventFocus       *event,
+				    GladeEditor         *editor)
+{
+	glade_editor_widget_name_changed (entry, editor);
+	return FALSE;
 }
 
 /* ============================ Property Changed ============================ */
@@ -1205,10 +1214,15 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 	entry = gtk_entry_new ();
 	table->name_entry = entry;
-	g_signal_connect (G_OBJECT (entry), "changed",
+
+	g_signal_connect (G_OBJECT (entry), "activate",
 			  G_CALLBACK (glade_editor_widget_name_changed),
 			  table->editor);
-
+	
+	g_signal_connect (G_OBJECT (entry), "focus-out-event",
+			  G_CALLBACK (glade_editor_widget_name_focus_out),
+			  table->editor);
+	
 	glade_editor_table_attach (gtk_table, label, 0, table->rows);
 	glade_editor_table_attach (gtk_table, entry, 1, table->rows);
 	table->rows++;
