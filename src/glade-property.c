@@ -292,7 +292,7 @@ glade_property_write_impl (GladeProperty  *property,
 	{
 		/* Skip custom properties that are NULL string types. */
 		skip = G_IS_PARAM_SPEC_STRING (property->class->pspec) &&
-			!g_value_get_string (property->class->orig_def);
+			!g_value_get_string (property->value);
 	}
 	else
 	{

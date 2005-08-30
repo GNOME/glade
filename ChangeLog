@@ -1,3 +1,9 @@
+2005-08-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.c: Fixed bug in glade_property_write_impl()
+	  Custom string properties were being dropped, now only NULL custom
+	  string properties are ommited from the glade file.
+
 2005-08-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: Made widget name property work like other properties
