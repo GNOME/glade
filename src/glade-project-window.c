@@ -947,40 +947,43 @@ gpw_toggle_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 
 static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	GtkWidget *about_dialog;
-	GtkWidget *vbox;
-	GtkWidget *glade_image;
-	GtkWidget *version;
-	GtkWidget *description;
-	gchar *filename;
+	gchar *authors[] =
+		{ "Joaquin Cuenca Abela",
+		  "Chema Celorio <chema@ximian.com>",
+		  "Paolo Borelli <pborelli@katamail.com>",
+		  "Tristan Van Berkom <tvb@gnome.org>",
+		  NULL };
 
-	about_dialog = gtk_dialog_new_with_buttons (_("About Glade"), GTK_WINDOW (gpw->priv->window), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-						    GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-	gtk_window_set_title (GTK_WINDOW (about_dialog), _("About Glade"));
-	gtk_dialog_set_has_separator (GTK_DIALOG (about_dialog), FALSE);
+	gchar *comments =
+		_("Glade is a User Interface Builder for GTK+ and GNOME.\n"
+		  "This version is a rewrite of the Glade 2.0.0 version, "
+		  "original from Damon Chaplin\n");
 
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (about_dialog)->vbox), vbox, TRUE, TRUE, 0);
+	gchar *license =
+		_("This program is free software; you can redistribute it and/or modify\n"
+		  "it under the terms of the GNU General Public License as\n"
+		  "published by the Free Software Foundation; either version 2 of the\n"
+		  "License, or (at your option) any later version.\n\n"
+		  "This program is distributed in the hope that it will be useful,\n"
+		  "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+		  "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+		  "GNU General Public License for more details.\n\n"
+		  "You should have received a copy of the GNU General Public License\n"
+		  "along with this program; if not, write to the Free Software\n"
+		  "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.");
 
-	filename = g_build_filename (glade_icon_dir, "glade-3.png", NULL);
-	glade_image = gtk_image_new_from_file (filename);
-	g_free (filename);
-	gtk_box_pack_start (GTK_BOX (vbox), glade_image, TRUE, TRUE, 0);
-
-	version = gtk_label_new (_("<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"));
-	gtk_box_pack_start (GTK_BOX (vbox), version, FALSE, FALSE, 0);
-	gtk_label_set_use_markup (GTK_LABEL (version), TRUE);
-	gtk_label_set_justify (GTK_LABEL (version), GTK_JUSTIFY_LEFT);
-
-	description = gtk_label_new (_("Glade is a User Interface Builder for GTK+ and GNOME. \nThis version is a rewrite of the Glade 2.0.0 version, original from Damon Chaplin\n\n<small>(C) 2001-2004 Ximian, Inc.\n(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"));
-	gtk_box_pack_start (GTK_BOX (vbox), description, FALSE, FALSE, 4);
-	gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
-	gtk_label_set_justify (GTK_LABEL (description), GTK_JUSTIFY_FILL);
-	gtk_label_set_line_wrap (GTK_LABEL (description), TRUE);
-
-	gtk_widget_show_all (about_dialog);
-	gtk_dialog_run (GTK_DIALOG (about_dialog));
-	gtk_widget_destroy (about_dialog);
+	gchar *copyright =
+		"(C) 2001-2005 Ximian, Inc.\n"
+		"(C) 2001-2005 Joaquin Cuenca Abela, Paolo Borelli, et al.";
+	
+	gtk_show_about_dialog (GTK_WINDOW (gpw->priv->window),
+			       "name",  PACKAGE_NAME,
+			       "authors", authors,
+			       "comments", comments,
+			       "license", license,
+			       "copyright", copyright,
+			       "version", PACKAGE_VERSION,
+			       NULL);
 }
 
 static void
