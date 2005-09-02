@@ -39,8 +39,10 @@ enum _GladeEditorTableType
  */
 struct _GladeEditor
 {
-	GtkNotebook notebook;  /* The editor is a notebook */
+	GtkVBox vbox;  /* The editor is a vbox */
 	
+	GtkWidget *notebook; /* The notebook widget */
+
 	GladeWidget *loaded_widget;        /* A handy pointer to the GladeWidget
 					    * that is loaded in the editor. NULL
 					    * if no widgets are selected
@@ -95,7 +97,7 @@ struct _GladeEditor
 
 struct _GladeEditorClass
 {
-	GtkNotebookClass parent_class;
+	GtkVBoxClass parent_class;
 
 	void   (*add_signal) (GladeEditor *editor, const char *id_widget,
 			      GType type_widget, guint id_signal,

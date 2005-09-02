@@ -46,7 +46,7 @@
 #include "glade-builtins.h"
 
 
-static GtkNotebookClass *parent_class = NULL;
+static GtkVBoxClass *parent_class = NULL;
 
 static GdkColor *insensitive_colour = NULL;
 static GdkColor *normal_colour      = NULL;
@@ -90,28 +90,48 @@ glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window),
 					       GTK_WIDGET (vbox));
-	gtk_viewport_set_shadow_type (GTK_VIEWPORT (GTK_BIN (scrolled_window)->child),
-				      GTK_SHADOW_NONE);
-
-	label = gtk_label_new (name);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
+					GLADE_GENERIC_BORDER_WIDTH);
+	label = gtk_label_new_with_mnemonic (name);
 	gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), scrolled_window, label, page++);
 
 	return vbox;
+}
+
+static void
+glade_editor_on_reset_click (GtkButton *button,
+			     GladeEditor *editor)
+{
+	glade_editor_reset_dialog (editor);
 }
 	
 static void
 glade_editor_init (GladeEditor *editor)
 {
-	editor->vbox_widget  = glade_editor_notebook_page (_("General"), GTK_WIDGET (editor));
-	editor->vbox_packing = glade_editor_notebook_page (_("Packing"), GTK_WIDGET (editor));
-	editor->vbox_common  = glade_editor_notebook_page (_("Common"), GTK_WIDGET (editor));
-	editor->vbox_signals = glade_editor_notebook_page (_("Signals"), GTK_WIDGET (editor));
+	GtkWidget *hbox, *button;
+
+	editor->notebook     = gtk_notebook_new ();
+	editor->vbox_widget  = glade_editor_notebook_page (_("_General"), GTK_WIDGET (editor->notebook));
+	editor->vbox_packing = glade_editor_notebook_page (_("_Packing"), GTK_WIDGET (editor->notebook));
+	editor->vbox_common  = glade_editor_notebook_page (_("_Common"), GTK_WIDGET (editor->notebook));
+	editor->vbox_signals = glade_editor_notebook_page (_("_Signals"), GTK_WIDGET (editor->notebook));
 	editor->widget_tables = NULL;
 	editor->loading = FALSE;
 
-	/* Common page is removed for non-widgets.
-	 */
-	g_object_ref (G_OBJECT (editor->vbox_common));
+	gtk_box_pack_start (GTK_BOX (editor), editor->notebook, TRUE, TRUE, 0);
+
+	hbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
+		
+	gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
+		
+	button = gtk_button_new_with_mnemonic (_("Set _Defaults..."));
+	gtk_container_set_border_width (GTK_CONTAINER (button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+		
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (glade_editor_on_reset_click), editor);
 }
 
 /**
@@ -139,7 +159,7 @@ glade_editor_get_type (void)
 			(GInstanceInitFunc) glade_editor_init
 		};
 
-		type = g_type_register_static (GTK_TYPE_NOTEBOOK, "GladeEditor", &info, 0);
+		type = g_type_register_static (GTK_TYPE_VBOX, "GladeEditor", &info, 0);
 	}
 
 	return type;
@@ -544,6 +564,10 @@ glade_editor_property_show_flags_dialog (GtkWidget *entry,
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window), GTK_SHADOW_IN);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
 	gtk_widget_show (scrolled_window);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    scrolled_window, TRUE, TRUE, 0);
@@ -1336,14 +1360,6 @@ glade_editor_table_new (void)
 	return table;
 }
 
-static void
-glade_editor_on_reset_click (GtkButton *button,
-			     GladeEditor *editor)
-{
-	glade_editor_reset_dialog (editor);
-}
-
-
 static GladeEditorTable *
 glade_editor_table_create (GladeEditor *editor,
 			   GladeWidgetClass *class,
@@ -1372,20 +1388,6 @@ glade_editor_table_create (GladeEditor *editor,
 
 	if (type == TABLE_TYPE_GENERAL)
 	{
-		hbox = gtk_hbutton_box_new ();
-		gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
-		
-		gtk_table_attach (GTK_TABLE (table->table_widget), hbox,
-				  0, 2, table->rows, table->rows + 1,
-				  GTK_EXPAND, 0, 0, 0);
-		
-		button = gtk_button_new_with_label (_("Set Defaults..."));
-		gtk_container_set_border_width (GTK_CONTAINER (button), 
-						GLADE_GENERIC_BORDER_WIDTH);
-		
-		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
-		g_signal_connect (G_OBJECT (button), "clicked",
-				  G_CALLBACK (glade_editor_on_reset_click), editor);
 		
 		/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
 		 * xml files. */
@@ -2500,7 +2502,8 @@ glade_editor_reset_dialog (GladeEditor *editor)
 
 
 	tree_view = glade_editor_reset_view (editor);
-	glade_editor_populate_reset_view (editor, GTK_TREE_VIEW (tree_view));
+	if (editor->loaded_widget)
+		glade_editor_populate_reset_view (editor, GTK_TREE_VIEW (tree_view));
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
 
 	gtk_widget_show (tree_view);

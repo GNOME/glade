@@ -1,5 +1,13 @@
 2005-08-01  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-editor.[ch]: Now the glade editor is a GtkVBox, allowing it
+	  greater configurability, now added a hbutton box to it with the "defaults..."
+	  button.
+
+	* src/glade-project-window.c: Made property editor a little bigger by default.
+	
+2005-08-01  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-command.[ch]: Added glade_command_set_properties_list().
 
 	* src/glade-editor.[ch]: Added reset dialog, used property_class->visible_lines

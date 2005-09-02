@@ -742,7 +742,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	g_return_if_fail (gpw != NULL);
 
 	gpw->priv->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
-	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 350, 450);
+	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 400, 450);
 
 	gtk_window_set_transient_for (gpw->priv->editor_window, GTK_WINDOW (gpw->priv->window));
 
