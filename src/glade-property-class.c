@@ -882,7 +882,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		
 		g_type_class_unref(fclass);
 	}
-	
+
+	/* Visible lines */
+	glade_xml_get_value_int (node, GLADE_TAG_VISIBLE_LINES,  &class->visible_lines);
+
 	/* Get the Parameters */
 	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
 	if (child)
@@ -895,12 +898,12 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
 
 	/* common, optional, etc */
-	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,   class->common);
-	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, class->optional);
-	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,    class->query);
-	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,     class->save);
-	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  class->visible);
-	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
+	class->common        = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,         class->common);
+	class->optional      = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,       class->optional);
+	class->query         = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,          class->query);
+	class->save          = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,           class->save);
+	class->visible       = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,        class->visible);
+	class->ignore        = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,         class->ignore);
 	
 	if (class->optional)
 		class->optional_default =

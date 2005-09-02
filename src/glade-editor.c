@@ -56,6 +56,9 @@ static void glade_editor_property_load (GladeEditorProperty *property, GladeWidg
 static void glade_editor_property_load_flags (GladeEditorProperty *property);
 static void glade_editor_property_load_text (GladeEditorProperty *property);
 
+static void glade_editor_reset_dialog (GladeEditor *editor);
+
+
 static void
 glade_editor_class_init (GladeEditorClass *class)
 {
@@ -682,7 +685,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget           *entry,
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
@@ -926,7 +929,6 @@ glade_editor_create_input_flags (GladeEditorProperty *property)
 static GtkWidget *
 glade_editor_create_input_text (GladeEditorProperty *property)
 {
-	gint                 lines = 1;
 	GladePropertyClass  *class;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
@@ -934,12 +936,7 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	class = property->class;
 
-	/* XXX Make this class data GladeParamater can be used just for the plugin, if the
-	 * data gets treated in the core, we dont need to special case this like this.
-	 */
-	glade_parameter_get_integer (class->parameters, GLADE_TAG_VISIBLE_LINES, &lines);
-
-	if (lines < 2) {
+	if (class->visible_lines < 2) {
 		GtkWidget *hbox;
 		GtkWidget *entry;
 		GtkWidget *button;
@@ -965,18 +962,31 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
 					  property);
 		}
+
+		property->text_entry = entry;
 		
 		return hbox;
 	} else {
-		GtkWidget   *hbox;
-		GtkTextView *view;
-		GtkWidget   *button;
+		GtkWidget  *hbox;
+		GtkWidget  *view;
+		GtkWidget  *viewport;
+		GtkWidget  *swindow;
+		GtkWidget  *button;
 		
 		hbox = gtk_hbox_new (FALSE, 0);
+		swindow = gtk_scrolled_window_new (NULL, NULL);
+		viewport = gtk_viewport_new (NULL, NULL);
+		view = gtk_text_view_new ();
 
-		view = GTK_TEXT_VIEW (gtk_text_view_new ());
-		gtk_text_view_set_editable (view, TRUE);
-		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (view), TRUE, TRUE, 0); 
+		gtk_text_view_set_editable (GTK_TEXT_VIEW (view), TRUE);
+
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swindow),
+						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+		gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swindow), GTK_SHADOW_IN);
+		
+		gtk_container_add (GTK_CONTAINER (viewport), view);
+		gtk_container_add (GTK_CONTAINER (swindow), viewport);
+		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (swindow), TRUE, TRUE, 0); 
 
 		g_signal_connect (G_OBJECT (view), "focus-out-event",
 				  G_CALLBACK (glade_editor_text_view_focus_out),
@@ -990,6 +1000,8 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
 					  property);
 		}
+
+		property->text_entry = view;
 
 		return hbox;
 	}
@@ -1296,7 +1308,7 @@ glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
 	menubar = GTK_WIDGET(editor->loaded_widget->object);
 	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
 
-	project = GLADE_PROJECT (editor->loaded_widget->project);
+	project = GLADE_PROJECT (glade_widget_get_project (editor->loaded_widget));
 	g_return_if_fail (project != NULL);
 
 	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
@@ -1324,12 +1336,21 @@ glade_editor_table_new (void)
 	return table;
 }
 
+static void
+glade_editor_on_reset_click (GtkButton *button,
+			     GladeEditor *editor)
+{
+	glade_editor_reset_dialog (editor);
+}
+
+
 static GladeEditorTable *
 glade_editor_table_create (GladeEditor *editor,
 			   GladeWidgetClass *class,
 			   GladeEditorTableType type)
 {
 	GladeEditorTable *table;
+	GtkWidget        *hbox, *button;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR (editor), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
@@ -1349,17 +1370,37 @@ glade_editor_table_create (GladeEditor *editor,
 					      &table->properties, type))
 		return NULL;
 
-	/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
-	 * xml files. */
-	if (type == TABLE_TYPE_GENERAL && !strcmp (class->name, "GtkMenuBar")) {
-		GtkWidget *edit_menu_button = gtk_button_new_with_label (_("Edit Menus..."));
-
-		g_signal_connect (G_OBJECT (edit_menu_button), "clicked",
-				  G_CALLBACK (glade_editor_on_edit_menu_click), editor);
-		gtk_table_attach (GTK_TABLE (table->table_widget), edit_menu_button,
+	if (type == TABLE_TYPE_GENERAL)
+	{
+		hbox = gtk_hbutton_box_new ();
+		gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
+		
+		gtk_table_attach (GTK_TABLE (table->table_widget), hbox,
 				  0, 2, table->rows, table->rows + 1,
 				  GTK_EXPAND, 0, 0, 0);
-		table->rows++;
+		
+		button = gtk_button_new_with_label (_("Set Defaults..."));
+		gtk_container_set_border_width (GTK_CONTAINER (button), 
+						GLADE_GENERIC_BORDER_WIDTH);
+		
+		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
+		g_signal_connect (G_OBJECT (button), "clicked",
+				  G_CALLBACK (glade_editor_on_reset_click), editor);
+		
+		/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
+		 * xml files. */
+		if (!strcmp (class->name, "GtkMenuBar")) {
+			
+			button = gtk_button_new_with_label (_("Edit Menus..."));
+			gtk_container_set_border_width (GTK_CONTAINER (button), 
+							GLADE_GENERIC_BORDER_WIDTH);
+			
+			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
+			
+			g_signal_connect (G_OBJECT (button), "clicked",
+					  G_CALLBACK (glade_editor_on_edit_menu_click), editor);
+			table->rows++;
+		}
 	}
 
 	gtk_widget_show_all (table->table_widget);
@@ -1669,20 +1710,14 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 static void
 glade_editor_property_load_text (GladeEditorProperty *property)
 {
-	GtkBoxChild *child;
-	GtkWidget   *widget;
-	
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
 	g_return_if_fail (property->property->value != NULL);
 	g_return_if_fail (property->input != NULL);
 
-	/* The entry/textview is the first child. */
-	child = GTK_BOX (property->input)->children->data;
-	widget = child->widget;
 	
-	if (GTK_IS_EDITABLE (widget)) {
-		GtkEditable *editable = GTK_EDITABLE (widget);
+	if (GTK_IS_EDITABLE (property->text_entry)) {
+		GtkEditable *editable = GTK_EDITABLE (property->text_entry);
 		gint pos, insert_pos = 0;
 		const gchar *text;
 		text = g_value_get_string (property->property->value);
@@ -1695,19 +1730,19 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 					  &insert_pos);
 
 		gtk_editable_set_position (editable, pos);
-	} else if (GTK_IS_TEXT_VIEW (widget)) {
+	} else if (GTK_IS_TEXT_VIEW (property->text_entry)) {
 		GtkTextBuffer *buffer;
 		const gchar *text;
 
 		text = g_value_get_string (property->property->value);
-		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->text_entry));
 
 		gtk_text_buffer_set_text (buffer,
 					  text ? text : "",
 					  text ? g_utf8_strlen (text, -1) : 0);
 
 	} else {
-		g_warning ("Invalid Text Widget type.");
+		g_warning ("BUG! Invalid Text Widget type.");
 	}
 
 	g_object_set_data (G_OBJECT (property->input), "user_data", property);
@@ -2106,4 +2141,434 @@ glade_editor_editable_property (GParamSpec  *pspec)
 		 G_IS_PARAM_SPEC_INT64(pspec)   ||
 		 G_IS_PARAM_SPEC_UINT64(pspec)  ||
 		 G_IS_PARAM_SPEC_UNICHAR(pspec)) ? TRUE : FALSE;
+}
+
+
+enum {
+	COLUMN_ENABLED = 0,
+	COLUMN_PROP_NAME,
+	COLUMN_PROPERTY,
+	COLUMN_PARENT,
+	COLUMN_DEFAULT,
+	COLUMN_NDEFAULT,
+	COLUMN_DEFSTRING,
+	NUM_COLUMNS
+};
+
+
+static void
+glade_editor_reset_toggled (GtkCellRendererToggle *cell,
+			    gchar                 *path_str,
+			    GtkTreeModel          *model)
+{
+	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+	GtkTreeIter  iter;
+	gboolean     enabled;
+
+	/* get toggled iter */
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_tree_model_get (model, &iter,
+			    COLUMN_ENABLED,  &enabled, -1);
+	gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+			    COLUMN_ENABLED,  !enabled, -1);
+	gtk_tree_path_free (path);
+}
+
+static GtkWidget *
+glade_editor_reset_view (GladeEditor *editor)
+{
+	GtkWidget         *view_widget;
+	GtkTreeModel      *model;
+ 	GtkCellRenderer   *renderer;
+	GtkTreeViewColumn *column;
+
+	model = (GtkTreeModel *)gtk_tree_store_new (NUM_COLUMNS,
+						    G_TYPE_BOOLEAN,       /* Enabled  value      */
+						    G_TYPE_STRING,        /* Property name       */
+						    GLADE_TYPE_PROPERTY,  /* The property        */
+						    G_TYPE_BOOLEAN,       /* Parent node ?       */
+						    G_TYPE_BOOLEAN,       /* Has default value   */
+						    G_TYPE_BOOLEAN,       /* Doesn't have defaut */
+						    G_TYPE_STRING);       /* Default string      */
+
+	view_widget = gtk_tree_view_new_with_model (model);
+	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
+	
+	/********************* fake invisible column *********************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), "editable", FALSE, "visible", FALSE, NULL);
+
+	column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	gtk_tree_view_column_set_visible (column, FALSE);
+	gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
+	
+	/************************ enabled column ************************/
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "mode",        GTK_CELL_RENDERER_MODE_ACTIVATABLE, 
+		      "activatable", TRUE,
+		      NULL);
+	g_signal_connect (renderer, "toggled",
+			  G_CALLBACK (glade_editor_reset_toggled), model);
+	gtk_tree_view_insert_column_with_attributes 
+		(GTK_TREE_VIEW (view_widget), COLUMN_ENABLED,
+		 _("Reset"), renderer, 
+		 "visible", COLUMN_NDEFAULT,
+		 "active", COLUMN_ENABLED,
+		 NULL);
+
+	/********************* property name column *********************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "editable", FALSE, 
+		      "weight", PANGO_WEIGHT_BOLD, NULL);
+	gtk_tree_view_insert_column_with_attributes
+		(GTK_TREE_VIEW (view_widget), COLUMN_PROP_NAME,
+		 _("Property"), renderer, 
+		 "text",       COLUMN_PROP_NAME, 
+		 "weight-set", COLUMN_PARENT,
+		 NULL);
+
+	/******************* default indicator column *******************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "editable", FALSE, 
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+	gtk_tree_view_insert_column_with_attributes
+		(GTK_TREE_VIEW (view_widget), COLUMN_DEFSTRING,
+		 NULL, renderer, 
+		 "text",       COLUMN_DEFSTRING, 
+		 NULL);
+
+	return view_widget;
+}
+
+static void
+glade_editor_populate_reset_view (GladeEditor *editor,
+				  GtkTreeView *tree_view)
+{
+	GtkTreeStore  *model = (GtkTreeStore *)gtk_tree_view_get_model (tree_view);
+	GtkTreeIter    property_iter, general_iter, packing_iter, common_iter, *iter;
+	GList         *list;
+	GladeProperty *property;
+	gboolean       def;
+	
+	g_return_if_fail (editor->loaded_widget != NULL);
+
+	gtk_tree_store_append (model, &general_iter, NULL);
+	gtk_tree_store_set    (model, &general_iter,
+			       COLUMN_PROP_NAME, _("General"),
+			       COLUMN_PROPERTY,  NULL,
+			       COLUMN_PARENT,    TRUE,
+			       COLUMN_DEFAULT,   FALSE,
+			       COLUMN_NDEFAULT,  FALSE,
+			       -1);
+
+	gtk_tree_store_append (model, &common_iter,  NULL);
+	gtk_tree_store_set    (model, &common_iter,
+			       COLUMN_PROP_NAME, _("Common"),
+			       COLUMN_PROPERTY,  NULL,
+			       COLUMN_PARENT,    TRUE,
+			       COLUMN_DEFAULT,   FALSE,
+			       COLUMN_NDEFAULT,  FALSE,
+			       -1);
+
+	/* General & Common */
+	for (list = editor->loaded_widget->properties; list; list = list->next)
+	{
+		property = list->data;
+		
+		if (property->class->common)
+			iter = &common_iter;
+		else
+			iter = &general_iter;
+
+	        def = glade_property_default (property);
+
+		gtk_tree_store_append (model, &property_iter, iter);
+		gtk_tree_store_set    (model, &property_iter,
+				       COLUMN_ENABLED,   !def,
+				       COLUMN_PROP_NAME, property->class->name,
+				       COLUMN_PROPERTY,  property,
+				       COLUMN_PARENT,    FALSE,
+				       COLUMN_DEFAULT,   def,
+				       COLUMN_NDEFAULT,  !def,
+				       COLUMN_DEFSTRING, _("(default)"),
+				       -1);
+	}
+
+	/* Packing */
+	if (editor->loaded_widget->packing_properties)
+	{
+		gtk_tree_store_append (model, &packing_iter, NULL);
+		gtk_tree_store_set    (model, &packing_iter,
+				       COLUMN_PROP_NAME, _("Packing"),
+				       COLUMN_PROPERTY,  NULL,
+				       COLUMN_PARENT,    TRUE,
+				       COLUMN_DEFAULT,   FALSE,
+				       COLUMN_NDEFAULT,  FALSE,
+				       -1);
+		
+		for (list = editor->loaded_widget->packing_properties; list; list = list->next)
+		{
+			property = list->data;
+			
+			def = glade_property_default (property);
+
+			gtk_tree_store_append (model, &property_iter, &packing_iter);
+			gtk_tree_store_set    (model, &property_iter,
+					       COLUMN_ENABLED,   FALSE,
+					       COLUMN_PROP_NAME, property->class->name,
+					       COLUMN_PROPERTY,  property,
+					       COLUMN_PARENT,    FALSE,
+					       COLUMN_DEFAULT,   def,
+					       COLUMN_NDEFAULT,  !def,
+					       COLUMN_DEFSTRING, _("(default)"),
+					       -1);
+		}
+	}
+}
+
+static gboolean
+glade_editor_reset_selection_changed_cb (GtkTreeSelection *selection,
+					 GtkTextView      *desc_view)
+{
+	GtkTreeIter iter;
+	GladeProperty *property = NULL;
+	GtkTreeModel  *model = NULL;
+	GtkTextBuffer *text_buffer;
+
+	const gchar *message = 
+		_("Select the properties that you want to reset to their default values");
+
+	/* Find selected data and show property blurb here */
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+	{
+		text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (desc_view));
+		gtk_tree_model_get (model, &iter, COLUMN_PROPERTY, &property, -1);
+		gtk_text_buffer_set_text (text_buffer,
+					  property ? glade_property_get_tooltip (property) : message,
+					  -1);
+		if (property)
+			g_object_unref (G_OBJECT (property));
+	}
+	return TRUE;
+}
+
+static gboolean
+glade_editor_reset_foreach_selection (GtkTreeModel *model,
+				      GtkTreePath  *path,
+				      GtkTreeIter  *iter,
+				      gboolean      select)
+{
+	gtk_tree_store_set (GTK_TREE_STORE (model), iter, COLUMN_ENABLED, select, -1);
+	return FALSE;
+}
+
+
+static void
+glade_editor_reset_select_all_clicked (GtkButton   *button,
+				       GtkTreeView *tree_view)
+{
+	GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+	gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
+				glade_editor_reset_foreach_selection, 
+				GINT_TO_POINTER (TRUE));
+}
+
+static void
+glade_editor_reset_unselect_all_clicked (GtkButton   *button,
+				       GtkTreeView *tree_view)
+{
+	GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+	gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
+				glade_editor_reset_foreach_selection, 
+				GINT_TO_POINTER (FALSE));
+}
+
+static gboolean
+glade_editor_reset_accumulate_selected_props  (GtkTreeModel  *model,
+					       GtkTreePath   *path,
+					       GtkTreeIter   *iter,
+					       GList        **accum)
+{
+	GladeProperty *property;
+	gboolean       enabled, def;
+
+	gtk_tree_model_get (model, iter, 
+			    COLUMN_PROPERTY, &property, 
+			    COLUMN_ENABLED, &enabled,
+			    COLUMN_DEFAULT, &def,
+			    -1);
+
+	if (property && enabled && !def)
+		*accum = g_list_prepend (*accum, property);
+
+
+	if (property)
+		g_object_unref (G_OBJECT (property));
+
+	return FALSE;
+}
+
+static GList *
+glade_editor_reset_get_selected_props (GtkTreeModel *model)
+{
+	GList *ret = NULL;
+
+	gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
+				glade_editor_reset_accumulate_selected_props, &ret);
+
+	return ret;
+}
+
+static void
+glade_editor_reset_properties (GList *props)
+{
+	GList         *list, *sdata_list = NULL;
+	GCSetPropData *sdata;
+	GladeProperty *prop;
+	GladeProject  *project = NULL;
+
+	for (list = props; list; list = list->next)
+	{
+		prop = list->data;
+
+		project = glade_widget_get_project (prop->widget);
+
+		sdata = g_new (GCSetPropData, 1);
+		sdata->property = prop;
+
+		sdata->old_value = g_new0 (GValue, 1);
+		sdata->new_value = g_new0 (GValue, 1);
+
+		glade_property_get_value   (prop, sdata->old_value);
+		glade_property_get_default (prop, sdata->new_value);
+
+		sdata_list = g_list_prepend (sdata_list, sdata);
+	}
+
+	if (project)
+		/* GladeCommand takes ownership of allocated list, ugly but practicle */
+		glade_command_set_properties_list (project, sdata_list);
+
+}
+
+static void
+glade_editor_reset_dialog (GladeEditor *editor)
+{
+	GtkTreeSelection *selection;
+	GtkWidget     *dialog, *parent;
+	GtkWidget     *vbox, *hbox, *label, *sw, *button;
+	GtkWidget     *tree_view, *description_view;
+	gint           res;
+	GList         *list;
+
+	parent = gtk_widget_get_toplevel (GTK_WIDGET (editor));
+	dialog = gtk_dialog_new_with_buttons (_("Reset Widget Properties"),
+					      GTK_WINDOW (parent),
+					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OK, GTK_RESPONSE_OK,
+					      NULL);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+	vbox = gtk_vbox_new (FALSE, 6);
+	gtk_widget_show (vbox);
+
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+
+	/* Checklist */
+	label = gtk_label_new_with_mnemonic (_("_Properties:"));
+	gtk_widget_show (label);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_widget_set_size_request (sw, 400, 200);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+
+
+	tree_view = glade_editor_reset_view (editor);
+	glade_editor_populate_reset_view (editor, GTK_TREE_VIEW (tree_view));
+	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
+
+	gtk_widget_show (tree_view);
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), tree_view);
+	gtk_container_add (GTK_CONTAINER (sw), tree_view);
+
+	/* Select all / Unselect all */
+	hbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
+	
+	button = gtk_button_new_with_mnemonic (_("_Select All"));
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (button), GLADE_GENERIC_BORDER_WIDTH);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (glade_editor_reset_select_all_clicked), tree_view);
+
+	button = gtk_button_new_with_mnemonic (_("_Unselect All"));
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (button), GLADE_GENERIC_BORDER_WIDTH);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (glade_editor_reset_unselect_all_clicked), tree_view);
+
+	
+	/* Description */
+	label = gtk_label_new_with_mnemonic (_("Property _Description:"));
+	gtk_widget_show (label);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_widget_set_size_request (sw, 400, 80);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+
+	description_view = gtk_text_view_new ();
+	gtk_text_view_set_editable (GTK_TEXT_VIEW (description_view), FALSE);
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (description_view), GTK_WRAP_WORD);
+
+	gtk_widget_show (description_view);
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), description_view);
+	gtk_container_add (GTK_CONTAINER (sw), description_view);
+
+	/* Update description */
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+	g_signal_connect (G_OBJECT (selection), "changed",
+			  G_CALLBACK (glade_editor_reset_selection_changed_cb),
+			  description_view);
+
+	
+
+	/* Run the dialog */
+	res = gtk_dialog_run (GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_OK) {
+
+		/* get all selected properties and reset properties through glade_command */
+		if ((list = glade_editor_reset_get_selected_props 
+		     (gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)))) != NULL)
+		{
+			glade_editor_reset_properties (list);
+			g_list_free (list);
+		}
+	}
+	gtk_widget_destroy (dialog);
 }

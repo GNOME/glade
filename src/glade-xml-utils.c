@@ -47,6 +47,16 @@ struct _GladeXmlContext {
 			           (strcmp ( ((xmlNodePtr)node)->name, "comment") == 0)) { \
                                        node = ((xmlNodePtr)node)->next; continue ; };
 
+
+static gchar *
+claim_string (xmlChar *string)
+{
+	gchar *ret;
+	ret = g_strdup (string);
+	xmlFree (string);
+	return ret;
+}
+
 /**
  * glade_xml_set_value:
  * @node_in: a #GladeXmlNode
@@ -81,15 +91,10 @@ glade_xml_set_value (GladeXmlNode *node_in, const char *name, const char *val)
 gchar *
 glade_xml_get_content (GladeXmlNode *node_in)
 {
-	xmlNodePtr node = (xmlNodePtr) node_in;
-	gchar *ret;
-	char *val;
+	xmlNodePtr  node = (xmlNodePtr) node_in;
+	xmlChar    *val  = xmlNodeGetContent(node);
 
-	val = xmlNodeGetContent(node);
-	ret = g_strdup (val);
-	xmlFree (val);
-	
-	return ret;
+	return claim_string (val);
 }
 
 /**
@@ -115,27 +120,14 @@ glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
  * (taken from gnumeric )
  *
  */
-static char *
+static gchar *
 glade_xml_get_value (xmlNodePtr node, const char *name)
 {
-	char *ret, *val;
 	xmlNodePtr child;
 
 	for (child = node->children; child; child = child->next)
-	{
 		if (!strcmp (child->name, name))
-		{
-		        /*
-			 * !!! Inefficient, but ...
-			 */
-			val = xmlNodeGetContent(child);
-			if (val != NULL) {
-				ret = g_strdup (val);
-				xmlFree (val);
-				return ret;
-			}
-		}
-	}
+			return claim_string (xmlNodeGetContent(child));
 
 	return NULL;
 }
@@ -251,21 +243,18 @@ gchar *
 glade_xml_get_value_string (GladeXmlNode *node_in, const char *name)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
-	return glade_xml_get_value (node, name);
+	return claim_string (glade_xml_get_value (node, name));
 }
 
 static char *
 glade_xml_get_property (xmlNodePtr node, const char *name)
 {
-	char *ret, *val;
+	xmlChar *val;
 
-	val = (char *) xmlGetProp (node, name);
+	val = xmlGetProp (node, name);
+
 	if (val)
-	{
-		ret = g_strdup (val);
-		xmlFree (val);
-		return ret;
-	}
+		return claim_string (val);
 
 	return NULL;
 }

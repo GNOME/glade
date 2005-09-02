@@ -183,6 +183,14 @@ glade_property_get_value_impl (GladeProperty *property, GValue *value)
 }
 
 static void
+glade_property_get_default_impl (GladeProperty *property, GValue *value)
+{
+
+	g_value_init (value, property->class->pspec->value_type);
+	g_value_copy (property->class->def, value);
+}
+
+static void
 glade_property_sync_impl (GladeProperty *property)
 {
 	if (property->enabled == FALSE || 
@@ -444,6 +452,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->def                   = glade_property_default_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
 	prop_class->get_value             = glade_property_get_value_impl;
+	prop_class->get_default           = glade_property_get_default_impl;
 	prop_class->sync                  = glade_property_sync_impl;
 	prop_class->write                 = glade_property_write_impl;
 	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
@@ -731,6 +740,21 @@ glade_property_get_value (GladeProperty *property, GValue *value)
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (value != NULL);
 	GLADE_PROPERTY_GET_KLASS (property)->get_value (property, value);
+}
+
+/**
+ * glade_property_get_default:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * TODO: write me
+ */
+void
+glade_property_get_default (GladeProperty *property, GValue *value)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (value != NULL);
+	GLADE_PROPERTY_GET_KLASS (property)->get_default (property, value);
 }
 
 /**

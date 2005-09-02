@@ -284,11 +284,6 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 
 /* create a new GladeCommandSetProperty class.  Objects of this class will
  * encapsulate a "set property" operation */
-typedef struct {
-	GladeProperty *property;
-	GValue        *new_value;
-	GValue        *old_value;
-} SetPropData;
 
 typedef struct {
 	GladeCommand parent;
@@ -325,7 +320,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	for (l = me->sdata; l; l = l->next)
 	{
 		GValue new_value = { 0, };
-		SetPropData *sdata = l->data;
+		GCSetPropData *sdata = l->data;
 
 		g_value_init (&new_value, G_VALUE_TYPE (sdata->new_value));
 		g_value_copy (sdata->new_value, &new_value);
@@ -358,7 +353,7 @@ glade_command_set_property_finalize (GObject *obj)
 
 	for (l = me->sdata; l; l = l->next)
 	{
-		SetPropData *sdata = l->data;
+		GCSetPropData *sdata = l->data;
 		
 		if (sdata->property)
 			g_object_unref (G_OBJECT (sdata->property));
@@ -390,8 +385,8 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 
 		return (g_list_length (cmd1->sdata) == 1 &&
 			g_list_length (cmd2->sdata) == 1 &&
-			((SetPropData *)cmd1->sdata->data)->property == 
-			((SetPropData *)cmd2->sdata->data)->property);
+			((GCSetPropData *)cmd1->sdata->data)->property == 
+			((GCSetPropData *)cmd2->sdata->data)->property);
 	}
 	return FALSE;
 }
@@ -414,7 +409,7 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 static gchar *
 glade_command_set_property_description (GladeCommandSetProperty *me)
 {
-	SetPropData   *sdata;
+	GCSetPropData   *sdata;
 	gchar *description = NULL;
 	gchar *value_name;
 
@@ -445,33 +440,61 @@ glade_command_set_property_description (GladeCommandSetProperty *me)
 
 
 void
-glade_command_set_properties (GladeProperty *property, const GValue *old_value, const GValue *new_value, ...)
+glade_command_set_properties_list (GladeProject *project, GList *props)
 {
 	GladeCommandSetProperty *me;
 	GladeCommand  *cmd;
-	SetPropData   *sdata;
-	GladeProperty *prop;
-	GValue        *ovalue, *nvalue;
-	va_list        vl;
+	GCSetPropData *sdata;
+	GList         *list;
 
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (G_IS_VALUE (old_value));
-	g_return_if_fail (G_IS_VALUE (new_value));
-	g_return_if_fail (G_VALUE_TYPE (new_value) == G_VALUE_TYPE (old_value));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (props);
 
 	me = (GladeCommandSetProperty*) g_object_new (GLADE_COMMAND_SET_PROPERTY_TYPE, NULL);
 	cmd = GLADE_COMMAND (me);
 
+	/* Ref all props */
+	for (list = props; list; list = list->next)
+	{
+		sdata = list->data;
+		g_object_ref (G_OBJECT (sdata->property));
+	}
+
+	me->sdata        = props;
+	cmd->description = glade_command_set_property_description (me);
+	g_assert (cmd->description);
+
+	/* Push onto undo stack only if it executes successfully. */
+	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
+		glade_command_push_undo (GLADE_PROJECT (project),
+					 GLADE_COMMAND (me));
+	else
+		/* No leaks on my shift! */
+		g_object_unref (G_OBJECT (me));
+}
+
+
+void
+glade_command_set_properties (GladeProperty *property, const GValue *old_value, const GValue *new_value, ...)
+{
+	GCSetPropData *sdata;
+	GladeProperty *prop;
+	GValue        *ovalue, *nvalue;
+	GList         *list = NULL;
+	va_list        vl;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
 	/* Add first set */
-	sdata = g_new (SetPropData, 1);
-	sdata->property = g_object_ref (G_OBJECT (property));
+	sdata = g_new (GCSetPropData, 1);
+	sdata->property = property;
 	sdata->old_value = g_new0 (GValue, 1);
 	sdata->new_value = g_new0 (GValue, 1);
 	g_value_init (sdata->old_value, G_VALUE_TYPE (old_value));
 	g_value_init (sdata->new_value, G_VALUE_TYPE (new_value));
 	g_value_copy (old_value, sdata->old_value);
 	g_value_copy (new_value, sdata->new_value);
-	me->sdata = g_list_prepend (me->sdata, sdata);
+	list = g_list_prepend (list, sdata);
 
 	va_start (vl, new_value);
 	while ((prop = va_arg (vl, GladeProperty *)) != NULL)
@@ -483,7 +506,7 @@ glade_command_set_properties (GladeProperty *property, const GValue *old_value, 
 		g_assert (G_IS_VALUE (ovalue));
 		g_assert (G_IS_VALUE (nvalue));
 
-		sdata = g_new (SetPropData, 1);
+		sdata = g_new (GCSetPropData, 1);
 		sdata->property = g_object_ref (G_OBJECT (prop));
 		sdata->old_value = g_new0 (GValue, 1);
 		sdata->new_value = g_new0 (GValue, 1);
@@ -491,20 +514,11 @@ glade_command_set_properties (GladeProperty *property, const GValue *old_value, 
 		g_value_init (sdata->new_value, G_VALUE_TYPE (nvalue));
 		g_value_copy (ovalue, sdata->old_value);
 		g_value_copy (nvalue, sdata->new_value);
-		me->sdata = g_list_prepend (me->sdata, sdata);
+		list = g_list_prepend (list, sdata);
 	}	
 	va_end (vl);
 
-	cmd->description = glade_command_set_property_description (me);
-	g_assert (cmd->description);
-
-	/* Push onto undo stack only if it executes successfully. */
-	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (GLADE_PROJECT (property->widget->project), 
-					 GLADE_COMMAND (me));
-	else
-		/* No leaks on my shift! */
-		g_object_unref (G_OBJECT (me));
+	glade_command_set_properties_list (property->widget->project, list);
 }
 
 void

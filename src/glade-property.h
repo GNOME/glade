@@ -13,7 +13,6 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyKlass GladePropertyKlass;
 
-
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.
@@ -71,6 +70,7 @@ struct _GladePropertyKlass
 	gboolean                (* def)                   (GladeProperty *);
 	void                    (* set_value)             (GladeProperty *, const GValue *);
 	void                    (* get_value)             (GladeProperty *, GValue *);
+	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
 	gboolean                (* write)                 (GladeProperty *, GladeInterface *, GArray *);
 	G_CONST_RETURN gchar *  (* get_tooltip)           (GladeProperty *);
@@ -95,6 +95,8 @@ LIBGLADEUI_API void                    glade_property_set_va_list           (Gla
 LIBGLADEUI_API void                    glade_property_set                   (GladeProperty      *property,
 									     ...);
 LIBGLADEUI_API void                    glade_property_get_value             (GladeProperty      *property, 
+									     GValue             *value);
+LIBGLADEUI_API void                    glade_property_get_default           (GladeProperty      *property, 
 									     GValue             *value);
 LIBGLADEUI_API void                    glade_property_get_va_list           (GladeProperty      *property,
 									     va_list             vl);

@@ -1,3 +1,23 @@
+2005-08-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.[ch]: Added glade_command_set_properties_list().
+
+	* src/glade-editor.[ch]: Added reset dialog, used property_class->visible_lines
+	  instead of GladeParams
+
+	* src/glade-project-window.c: Minor GUI touchups.
+
+	* src/glade-property-class.[ch], src/glade.h: Implemented visible_lines tag loading,
+	  touched up comments.
+
+	* src/glade-property.[ch]: Added glade_property_get_default()
+
+	* src/glade-signal-editor.c: Removed the search box from the non-searchable treeview.
+
+	* src/glade-xml-utils.c: fixed up allocator confusions a bit.
+
+	* widgets/gtk+.xml: Made GtkLabel's label property multi-lined.
+
 2005-08-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Added note about TODO list not being maintained, please

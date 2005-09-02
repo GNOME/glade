@@ -19,9 +19,15 @@ G_BEGIN_DECLS
 #define GLADE_IS_COMMAND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMMAND))
 #define GLADE_COMMAND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMMAND, GladeCommandClass))
 
-typedef struct _GladeCommand GladeCommand;
+typedef struct _GladeCommand      GladeCommand;
 typedef struct _GladeCommandClass GladeCommandClass;
+typedef struct _GCSetPropData     GCSetPropData;
 
+struct _GCSetPropData {
+	GladeProperty *property;
+	GValue        *new_value;
+	GValue        *old_value;
+};
 
 struct _GladeCommand
 {
@@ -52,6 +58,9 @@ LIBGLADEUI_API void         glade_command_set_property  (GladeProperty     *prop
 LIBGLADEUI_API void         glade_command_set_properties(GladeProperty     *property, 
 							 const GValue      *old_value, 
 							 const GValue      *new_value, ...);
+
+LIBGLADEUI_API void         glade_command_set_properties_list (GladeProject *project, 
+							       GList        *props); // list of GCSetPropData
 
 LIBGLADEUI_API void         glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 

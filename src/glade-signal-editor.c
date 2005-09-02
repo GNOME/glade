@@ -514,6 +514,8 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	model = GTK_TREE_MODEL (editor->model);
 
 	view_widget = gtk_tree_view_new_with_model (model);
+	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
+
 	view = GTK_TREE_VIEW (view_widget);
 
 	/* the view now holds a reference, we can get rid of our own */

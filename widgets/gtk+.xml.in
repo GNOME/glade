@@ -248,9 +248,11 @@
     <glade-widget-class name="GtkLabel" generic-name="label" title="Label">
       <properties>
         <property id="selectable" ignore="True"/>
-      	<property id="label" default="label"/>
 	<property id="pattern" default=""/>
 	<property id="max-width-chars" name="Maximun Width"/>
+      	<property id="label" default="label">
+            <visible-lines>2</visible-lines>
+        </property>
       	<property id="justify">
   	  <displayable-values>
 	    <value id="GTK_JUSTIFY_LEFT" name="Left"/>

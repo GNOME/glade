@@ -194,6 +194,8 @@ struct _GladeEditorProperty
 
 	GtkWidget *eventbox;   /* Keep a hold of this for tooltips */
 	GtkWidget *item_label; /* control visual label state manually */
+
+	GtkWidget *text_entry; /* Keep a hold of either the entry or textview. */
 };
 
 LIBGLADEUI_API GType glade_editor_get_type (void);

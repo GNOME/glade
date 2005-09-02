@@ -749,7 +749,8 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
 	gtk_window_move (gpw->priv->editor_window, 350, 0);
 
-	gtk_container_add (GTK_CONTAINER (gpw->priv->editor_window), GTK_WIDGET (glade_app_get_editor (GLADE_APP(gpw))));
+	gtk_container_add (GTK_CONTAINER (gpw->priv->editor_window), 
+			   GTK_WIDGET (glade_app_get_editor (GLADE_APP(gpw))));
 
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->editor_window), "delete_event",
@@ -812,12 +813,26 @@ gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
 					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (view), GTK_SHADOW_IN);
+
+
+	gtk_container_set_border_width (GTK_CONTAINER (view), GLADE_GENERIC_BORDER_WIDTH);
 
 	/* Add control buttons to the treeview. */
-	hbox     = gtk_hbox_new (TRUE, 0);
+	hbox     = gtk_hbutton_box_new ();
 	vbox     = gtk_vbox_new (FALSE, 0);
-	expand   = gtk_button_new_with_label (_("Expand all"));
-	collapse = gtk_button_new_with_label (_("Collapse all"));
+
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
+
+
+	expand = gtk_button_new_with_mnemonic (_("E_xpand all"));
+	gtk_container_set_border_width (GTK_CONTAINER (expand), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
+	collapse = gtk_button_new_with_mnemonic (_("_Collapse all"));
+	gtk_container_set_border_width (GTK_CONTAINER (collapse), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
 	gtk_box_pack_start (GTK_BOX (hbox), expand, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), collapse, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (view), TRUE, TRUE, 0);
@@ -948,9 +963,11 @@ gpw_toggle_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gchar *authors[] =
-		{ "Joaquin Cuenca Abela",
+		{ "Joaquin Cuenca Abela <e98cuenc@yahoo.com>",
 		  "Chema Celorio <chema@ximian.com>",
 		  "Paolo Borelli <pborelli@katamail.com>",
+		  "Archit Baweja <bighead@users.sourceforge.net>",
+		  "Shane Butler <shane_b@operamail.com>",
 		  "Tristan Van Berkom <tvb@gnome.org>",
 		  NULL };
 
@@ -1050,9 +1067,9 @@ static const gchar *ui_info =
 
 static GtkActionEntry entries[] = {
 	{ "FileMenu", NULL, "_File" },
-	{ "EditMenu", NULL, "Edit" },
-	{ "ViewMenu", NULL, "View" },
-	{ "ProjectMenu", NULL, "Project" },
+	{ "EditMenu", NULL, "_Edit" },
+	{ "ViewMenu", NULL, "_View" },
+	{ "ProjectMenu", NULL, "_Project" },
 	{ "HelpMenu", NULL, "_Help" },
 	
 	/* FileMenu */
@@ -1279,7 +1296,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_move (GTK_WINDOW (app), 0, 0);
-	gtk_window_set_default_size (GTK_WINDOW (app), 280, 220);
+	gtk_window_set_default_size (GTK_WINDOW (app), 300, 450);
 	filename = g_build_filename (glade_icon_dir, "glade-3.png", NULL);
 	gtk_window_set_default_icon_from_file (filename, NULL);
 	g_free (filename);

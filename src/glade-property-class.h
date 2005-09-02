@@ -4,84 +4,9 @@
 
 G_BEGIN_DECLS
 
-/* The GladeProperty object describes a settable parameter of a widget.
- * All entries that the user can change in the first page of the GladeEditor
- * make are a GladeProperty (except for the widget name)
- * GladeProperties can be of any type of GladePropertyType
-
- Sample xml
- 
- Integer Type : (float is very similar)
-
-     <Property>
-      <Type>Integer</Type>
-	 <Name>Border Width</Name>
-	 <Tooltip>The width of the border arround the container</Tooltip>
-	 <GtkArg>border</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Min" Value="0"/>
-	   <Parameter Key="Max" Value="10000"/>
-	   <Parameter Key="Default" Value="0"/>
-	   <Parameter Key="StepIncrement" Value="1"/>
-	   <Parameter Key="PageIncrement" Value="10"/>
-	   <Parameter Key="ClibmRate" Value="1"/>
-	 </Parameters>
-    </Property>
-
- Text Type :
-
-     <Property>
-      <Type>Text</Type>
-	 <Name>Title</Name>
-	 <Tooltip>The title of the window</Tooltip>
-	 <GtkArg>title</GtkArg>
-	 <Parameters>
-	   <Parameter Key="VisibleLines" Value="1"/>
-	   <Parameter Key="Default" Value=""/>
-	 </Parameters>
-    </Property>
-
- Boolean Type :
-
-    <Property>
-      <Type>Boolean</Type>
-	 <Name>Grow</Name>
-	 <Tooltip>If the window can be enlarged</Tooltip>
-	 <GtkArg>fixme</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Default" Value="True"/>
-	 </Parameters>
-    </Property>
-
-
- Enum Type :
-
-        <Property>
-      <Type>Choice</Type>
-	 <Name>Position</Name>
-	 <Tooltip>The initial position of the window</Tooltip>
-	 <GtkArg>fixme</GtkArg>
-	 <Parameters>
-	   <Parameter Key="Default" Value="GTK_WIN_POS_NONE"/>
-	 </Parameters>
-	 <Enums>
-	   <Enum>String Equiv</Enum>
-	 <Choices>
-	   <Choice>
-	     <Name>None</Name>
-		<Symbol>GTK_WIN_POS_NONE</Symbol>
-	   </Choice>
-	   <Choice>
-	     <Name>Center</Name>
-		<Symbol>GTK_WIN_POS_CENTER</Symbol>
-	   </Choice>
-	   <Choice>
-	     <Name>Mouse</Name>
-		<Symbol>GTK_WIN_POS_MOUSE</Symbol>
-	   </Choice>
-	 </Choices>
-    </Property>
-
+/* The GladePropertyClass structure parameters of a GladeProperty.
+ * All entries in the GladeEditor are GladeProperties (except signals)
+ * All GladeProperties are associated with a GParamSpec.
  */
 
 #define GLADE_PROPERTY_CLASS(gpc) ((GladePropertyClass *) gpc)
@@ -146,6 +71,10 @@ struct _GladePropertyClass
 				* UI.
 				*/
 
+	gint  visible_lines; /* When this pspec calls for a text editor, how many
+			      * lines should be visible in the editor.
+			      */
+
 	/* These three are the master switches for the glade-file output,
 	 * property editor availability & live object updates in the glade environment.
 	 */
@@ -181,6 +110,11 @@ struct _GladePropertyClass
 	 * we need to implement it inside glade. This is a pointer
 	 * to the function that can get this property. The functions
 	 * to work arround these problems are inside glade-gtk.c
+	 *
+	 * Note that since glade knows what the property values are 
+	 * at all times regardless of the objects copy, this is currently
+	 * only used to obtain the values of packing properties that are
+	 * set by the said object's parent at "container_add" time.
 	 */
 	void (*get_function) (GObject *object,
 			      GValue *value);
