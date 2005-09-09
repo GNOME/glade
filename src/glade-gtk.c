@@ -985,6 +985,18 @@ glade_gtk_image_set_stock (GObject *object, GValue *value)
 	g_type_class_unref (eclass);
 }
 
+
+
+static gboolean setting_font_button = FALSE;
+
+void GLADEGTK_API
+glade_gtk_font_button_set_font_name (GObject *object, GValue *value)
+{
+	/* Dont set during notify signal */
+	if (!setting_font_button)
+		g_object_set_property (object, "font-name", value);
+}
+
 /* This function does absolutely nothing
  * (and is for use in overriding fill_empty functions).
  */
@@ -1196,12 +1208,43 @@ glade_gtk_frame_create_idle (gpointer data)
 		glabel = glade_widget_new (gframe, wclass,
 					   glade_widget_get_project (gframe));
 		
-		glade_widget_property_set (glabel, "label", "Frame");
+		glade_widget_property_set (glabel, "label", "frame");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
 
 		glade_project_add_object (GLADE_PROJECT (gframe->project), glabel->object);
+		gtk_widget_show (GTK_WIDGET (glabel->object));
+	}
+	return FALSE;
+}
+
+static gboolean
+glade_gtk_expander_create_idle (gpointer data)
+{
+	GladeWidget       *gexpander, *glabel;
+	GtkWidget         *label, *expander;
+	GladeWidgetClass  *wclass;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
+	g_return_val_if_fail (GTK_IS_EXPANDER (GLADE_WIDGET (data)->object), FALSE);
+	gexpander = GLADE_WIDGET (data);
+	expander  = GTK_WIDGET (gexpander->object);
+
+	/* If we didnt put this object here... */
+	if ((label = gtk_expander_get_label_widget (GTK_EXPANDER (expander))) == NULL ||
+	    (glade_widget_get_from_gobject (label) == NULL))
+	{
+		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+		glabel = glade_widget_new (gexpander, wclass,
+					   glade_widget_get_project (gexpander));
+		
+		glade_widget_property_set (glabel, "label", "expander");
+
+		g_object_set_data (glabel->object, "special-child-type", "label_item");
+		gtk_expander_set_label_widget (GTK_EXPANDER (expander), GTK_WIDGET (glabel->object));
+
+		glade_project_add_object (GLADE_PROJECT (gexpander->project), glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 	return FALSE;
@@ -1215,8 +1258,35 @@ glade_gtk_frame_post_create (GObject *frame)
 	g_return_if_fail (GTK_IS_FRAME (frame));
 	if ((gframe = glade_widget_get_from_gobject (frame)) != NULL)
 		g_idle_add (glade_gtk_frame_create_idle, gframe);
+}
+
+void GLADEGTK_API
+glade_gtk_expander_post_create (GObject *expander)
+{
+	GladeWidget *gexpander;
+
+	g_return_if_fail (GTK_IS_EXPANDER (expander));
+	if ((gexpander = glade_widget_get_from_gobject (expander)) != NULL)
+		g_idle_add (glade_gtk_expander_create_idle, gexpander);
 
 }
+
+/* Auto set Font Name when fontbutton's dialog returns.
+ */
+static void
+glade_gtk_font_button_refresh_font_name (GtkFontButton  *button,
+					 GParamSpec     *pspec,
+					 GladeWidget    *gbutton)
+{
+	setting_font_button = TRUE;
+
+	/* XXX TODO: Go through the glade_command API */
+	glade_widget_property_set (gbutton, "font-name", 
+				   gtk_font_button_get_font_name (button));
+	
+	setting_font_button = FALSE;
+}
+
 
 void GLADEGTK_API
 glade_gtk_button_post_create (GObject *button)
@@ -1230,6 +1300,16 @@ glade_gtk_button_post_create (GObject *button)
 
 	g_return_if_fail (GTK_IS_BUTTON (button));
 	g_return_if_fail (GLADE_IS_WIDGET (gbutton));
+
+
+	if (GTK_IS_FONT_BUTTON (button))
+		g_signal_connect
+			(button, "notify::font-name", 
+			 G_CALLBACK (glade_gtk_font_button_refresh_font_name), gbutton);
+
+	if (GTK_IS_COLOR_BUTTON (button) ||
+	    GTK_IS_FONT_BUTTON (button))
+		return;
 
 	eclass   = g_type_class_ref (GLADE_TYPE_STOCK);
 
@@ -1434,6 +1514,26 @@ glade_gtk_frame_replace_child (GtkWidget *container,
 }
 
 void GLADEGTK_API
+glade_gtk_expander_replace_child (GtkWidget *container,
+				  GtkWidget *current,
+				  GtkWidget *new)
+{
+	gchar *special_child_type;
+
+	special_child_type =
+		g_object_get_data (G_OBJECT (current), "special-child-type");
+
+	if (special_child_type && !strcmp (special_child_type, "label_item"))
+	{
+		g_object_set_data (G_OBJECT (new), "special-child-type", "label_item");
+		gtk_expander_set_label_widget (GTK_EXPANDER (container), new);
+		return;
+	}
+
+	glade_gtk_container_replace_child (container, current, new);
+}
+
+void GLADEGTK_API
 glade_gtk_button_replace_child (GtkWidget *container,
 				GtkWidget *current,
 				GtkWidget *new)
@@ -1492,6 +1592,16 @@ glade_gtk_frame_fill_empty (GObject *frame)
 
 	if ((gtk_bin_get_child (GTK_BIN (frame))) == NULL)
 		gtk_container_add (GTK_CONTAINER (frame), glade_placeholder_new ());
+
+}
+
+void GLADEGTK_API
+glade_gtk_expander_fill_empty (GObject *expander)
+{
+	g_return_if_fail (GTK_IS_EXPANDER (expander));
+
+	if ((gtk_bin_get_child (GTK_BIN (expander))) == NULL)
+		gtk_container_add (GTK_CONTAINER (expander), glade_placeholder_new ());
 
 }
 
@@ -1572,7 +1682,9 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	num_children = g_list_length (GTK_BOX (object)->children);
 
 	glade_widget_property_set (gbox, "size", num_children);
-	if (gchild)
+
+	/* Packing props arent around when parenting during a glade_widget_dup() */
+	if (gchild && gchild->packing_properties)
 		glade_widget_pack_property_set (gchild, "position", 
 						num_children - 1);
 }
@@ -1618,10 +1730,9 @@ glade_gtk_notebook_add_child (GObject *object, GObject *child)
 		g_value_set_int (prop->value, num_page + 1);
 		
 		gwidget = glade_widget_get_from_gobject (child);
-		if (gwidget)
+		if (gwidget && gwidget->packing_properties)
 		{
-			prop = glade_widget_get_pack_property (gwidget,
-							       "position");
+			prop = glade_widget_get_pack_property (gwidget, "position");
 			g_value_set_int (prop->value, num_page);
 		}
 	}
@@ -1650,6 +1761,25 @@ glade_gtk_frame_add_child (GObject *object, GObject *child)
 	{
 		gtk_frame_set_label_widget (GTK_FRAME (object),
 					    GTK_WIDGET (child));
+	}
+	else
+	{
+		gtk_container_add (GTK_CONTAINER (object),
+				   GTK_WIDGET (child));
+	}
+}
+
+GLADEGTK_API void
+glade_gtk_expander_add_child (GObject *object, GObject *child)
+{
+	gchar *special_child_type;
+
+	special_child_type = g_object_get_data (child, "special-child-type");
+	if (special_child_type &&
+	    !strcmp (special_child_type, "label_item"))
+	{
+		gtk_expander_set_label_widget (GTK_EXPANDER (object),
+					       GTK_WIDGET (child));
 	}
 	else
 	{

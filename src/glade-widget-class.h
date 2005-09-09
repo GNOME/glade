@@ -167,6 +167,9 @@ LIBGLADEUI_API void                 glade_widget_class_container_add            
 LIBGLADEUI_API void                 glade_widget_class_container_remove           (GladeWidgetClass *class,
 										   GObject          *container,
 										   GObject          *child);
+LIBGLADEUI_API gboolean             glade_widget_class_container_has_child        (GladeWidgetClass *class,
+										   GObject          *container,
+										   GObject          *child);
 LIBGLADEUI_API GList               *glade_widget_class_container_get_children     (GladeWidgetClass *class,
 										   GObject          *container);
 LIBGLADEUI_API GList               *glade_widget_class_container_get_all_children (GladeWidgetClass *class,

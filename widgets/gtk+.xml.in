@@ -152,6 +152,7 @@
 	<property id="role" translatable="False"/>
 	<property id="icon-name" translatable="False"/>
 	<property id="resizable" ignore="True" />
+	<property id="decorated" ignore="True" />
       	<property id="window-position">
   	  <displayable-values>
 	    <value id="GTK_WIN_POS_NONE" name="None"/>
@@ -359,6 +360,35 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" title="File Chooser Button">
+      <properties>
+	<property id="size" disabled="True"/>
+        <property id="action">
+  	  <displayable-values>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" name="Save"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" name="Open"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" name="Select Folder"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" name="Create Folder"/>
+	  </displayable-values>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkColorButton" generic-name="colorbutton" title="Color Button">
+      <properties>
+	<property id="stock" visible="False"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkFontButton" generic-name="fontbutton" title="Font Button">
+      <properties>
+	<property id="stock" visible="False"/>
+	<property id="font-name">
+	  <set-function>glade_gtk_font_button_set_font_name</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTreeView" generic-name="treeview" title="Tree View">
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
     </glade-widget-class>
@@ -529,6 +559,9 @@
       </children>
     </glade-widget-class>
 
+
+    <glade-widget-class name="GtkAlignment" generic-name="alignment" title="Alignment"/>
+
     <glade-widget-class name="GtkFrame" generic-name="frame" title="Frame">
       <post-create-function>glade_gtk_frame_post_create</post-create-function>
       <properties>
@@ -556,6 +589,7 @@
 	</child>
       </children>
     </glade-widget-class>
+    <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" title="Aspect Frame"/>
 
     <!-- Gtk+ Additional -->
     <glade-widget-class name="GtkRange">
@@ -698,6 +732,25 @@
     </glade-widget-class>
     
     <glade-widget-class name="GtkDrawingArea" generic-name="drawingarea" title="Drawing Area"/>
+
+    <glade-widget-class name="GtkEventBox" generic-name="eventbox" title="Event Box"/>
+
+    <glade-widget-class name="GtkExpander" generic-name="expander" title="Expander">
+      <post-create-function>glade_gtk_expander_post_create</post-create-function>
+      <properties>
+	<property id="label" visible="False"/>
+      </properties>
+      <children>
+	<child>
+	  <type>GtkWidget</type>
+	  <special-child-type>type</special-child-type>
+	  <add-child-function>glade_gtk_expander_add_child</add-child-function>
+	  <replace-child-function>glade_gtk_expander_replace_child</replace-child-function>
+	  <fill-empty-function>glade_gtk_expander_fill_empty</fill-empty-function>
+	</child>
+      </children>
+    </glade-widget-class>
+
     
     <glade-widget-class name="GtkViewport" generic-name="viewport" title="Viewport">
       <properties>
@@ -748,13 +801,14 @@
 	</property>
       </properties> 
     </glade-widget-class>
-  
+
     <!-- NOT AVAILABLES ON WIN32
     <glade-widget-class name="GtkPlug" generic-name="plug" title="Plug"/>
     <glade-widget-class name="GtkSocket" generic-name="socket" title="Socket"/>
     -->
     
     <!-- Gtk+ Dialogs --> 
+   <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" title="About Dialog"/>
    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" title="Color Selection Dialog"/>
     
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" title="File Chooser Dialog">
@@ -771,7 +825,7 @@
     </glade-widget-class>
     
     <glade-widget-class name="GtkFontSelectionDialog" generic-name="fontselectiondialog" title="Font Selection Dialog"/>
-    
+   
     <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" title="Input Dialog"/>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" title="Message Dialog">
@@ -856,6 +910,7 @@
     <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
+    <glade-widget-class-ref name="GtkAspectFrame"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-additional" title="Gtk+ Additional">
@@ -871,14 +926,21 @@
     <glade-widget-class-ref name="GtkVSeparator"/>
     <glade-widget-class-ref name="GtkStatusbar"/>
     <glade-widget-class-ref name="GtkArrow"/>
+    <glade-widget-class-ref name="GtkFileChooserButton"/>
+    <glade-widget-class-ref name="GtkColorButton"/>
+    <glade-widget-class-ref name="GtkFontButton"/>
     <glade-widget-class-ref name="GtkLayout"/>
     <glade-widget-class-ref name="GtkFixed"/>
     <glade-widget-class-ref name="GtkDrawingArea"/>
+    <glade-widget-class-ref name="GtkEventBox"/>
+    <glade-widget-class-ref name="GtkExpander"/>
     <glade-widget-class-ref name="GtkViewport"/>
     <glade-widget-class-ref name="GtkScrolledWindow"/>
+    <glade-widget-class-ref name="GtkAlignment"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-dialogs" title="Gtk+ Standard Dialogs">
+    <glade-widget-class-ref name="GtkAboutDialog"/>
     <glade-widget-class-ref name="GtkColorSelectionDialog"/>
     <glade-widget-class-ref name="GtkFileChooserDialog"/>
     <glade-widget-class-ref name="GtkFontSelectionDialog"/>

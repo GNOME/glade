@@ -375,20 +375,26 @@ glade_command_set_property_finalize (GObject *obj)
 static gboolean
 glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 {
-	GladeCommandSetProperty *cmd1;
-	GladeCommandSetProperty *cmd2;
 
-	if (GLADE_IS_COMMAND_SET_PROPERTY (this) && GLADE_IS_COMMAND_SET_PROPERTY (other))
-	{
-		cmd1 = (GladeCommandSetProperty*) this;
-		cmd2 = (GladeCommandSetProperty*) other;
+       /* XXX FIXME: This doesn't make sence with the reset dialog, when resetting properties
+	* they should not unify, also; setting multiple properties should unify as well as long
+	* as the same group is changing (this will help with drag/resize widget control).
+	*
+	*/
+       GladeCommandSetProperty *cmd1;
+       GladeCommandSetProperty *cmd2;
 
-		return (g_list_length (cmd1->sdata) == 1 &&
-			g_list_length (cmd2->sdata) == 1 &&
-			((GCSetPropData *)cmd1->sdata->data)->property == 
-			((GCSetPropData *)cmd2->sdata->data)->property);
-	}
-	return FALSE;
+       if (GLADE_IS_COMMAND_SET_PROPERTY (this) && GLADE_IS_COMMAND_SET_PROPERTY (other))
+       {
+               cmd1 = (GladeCommandSetProperty*) this;
+               cmd2 = (GladeCommandSetProperty*) other;
+	       
+               return (g_list_length (cmd1->sdata) == 1 &&
+                      g_list_length (cmd2->sdata) == 1 &&
+                       ((GCSetPropData *)cmd1->sdata->data)->property == 
+                       ((GCSetPropData *)cmd2->sdata->data)->property);
+       }
+       return FALSE;
 }
 
 static void
@@ -738,8 +744,8 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 		g_list_free (wlist);
 	}
 
-	if (cdata && GTK_IS_WIDGET (cdata->widget->object))
-		gtk_widget_show_all (GTK_WIDGET (cdata->widget->object));
+	if (cdata)
+		glade_widget_show (cdata->widget);
 	
 	return TRUE;
 }
@@ -782,9 +788,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 				(GLADE_PROJECT (cdata->widget->project), cdata->widget->object);
 		}
 
-		if (GTK_IS_WIDGET (cdata->widget->object))
-			gtk_widget_hide (GTK_WIDGET (cdata->widget->object));
-		
+		glade_widget_hide (cdata->widget);
 	}
 
 	if (wlist) 
@@ -1103,9 +1107,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 			glade_default_app_selection_add
 				(cdata->widget->object, FALSE);
 
-			if (GTK_IS_WIDGET (cdata->widget->object))
-				gtk_widget_show_all
-					(GTK_WIDGET (cdata->widget->object));
+			glade_widget_show (cdata->widget);
 		}
 		glade_default_app_selection_changed ();
 
@@ -1146,9 +1148,7 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 					 cdata->widget->object);
 		}
 		
-		if (GTK_IS_WIDGET (cdata->widget->object))
-			gtk_widget_hide (GTK_WIDGET (cdata->widget->object));
-		
+		glade_widget_hide (cdata->widget);
 		glade_project_remove_object (GLADE_PROJECT (cdata->widget->project),
 					     cdata->widget->object);
 		

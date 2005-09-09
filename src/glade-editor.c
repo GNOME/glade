@@ -2098,6 +2098,9 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 						   widget->widget_class,
 						   TABLE_TYPE_QUERY);
 
+
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    table->table_widget,
 			    TRUE, TRUE, 4);
@@ -2217,7 +2220,8 @@ glade_editor_reset_view (GladeEditor *editor)
 	gtk_tree_view_insert_column_with_attributes 
 		(GTK_TREE_VIEW (view_widget), COLUMN_ENABLED,
 		 _("Reset"), renderer, 
-		 "visible", COLUMN_NDEFAULT,
+		 "sensitive", COLUMN_NDEFAULT,
+		 "activatable", COLUMN_NDEFAULT,
 		 "active", COLUMN_ENABLED,
 		 NULL);
 
@@ -2242,7 +2246,8 @@ glade_editor_reset_view (GladeEditor *editor)
 	gtk_tree_view_insert_column_with_attributes
 		(GTK_TREE_VIEW (view_widget), COLUMN_DEFSTRING,
 		 NULL, renderer, 
-		 "text",       COLUMN_DEFSTRING, 
+		 "text",    COLUMN_DEFSTRING, 
+		 "visible", COLUMN_DEFAULT, 
 		 NULL);
 
 	return view_widget;

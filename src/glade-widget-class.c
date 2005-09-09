@@ -1287,6 +1287,34 @@ glade_widget_class_container_remove (GladeWidgetClass *class,
 			   class->name);
 }
 
+gboolean
+glade_widget_class_container_has_child (GladeWidgetClass *class,
+					GObject          *container,
+					GObject          *child)
+{
+	GList *list, *children = NULL;
+	gboolean found = FALSE;
+
+	for (list = class->children; list && list->data; list = list->next)
+	{
+		GladeSupportedChild *support = list->data;
+		if (support->get_children)
+			children = g_list_concat (children, support->get_children (container));
+	}
+
+	for (list = children; list && list->data; list = list->next)
+	{
+		if (list->data == child)
+		{
+			found = TRUE;
+			break;
+		}
+	}
+	g_list_free (children);
+	return found;
+}
+
+
 GList *
 glade_widget_class_container_get_children (GladeWidgetClass *class,
 					   GObject          *container)

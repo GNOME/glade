@@ -194,9 +194,9 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 		 g_param_spec_object ("parent", _("Parent"),
 				       _("A pointer to the parenting GladeWidget"),
 				       GLADE_TYPE_WIDGET,
-				       G_PARAM_READWRITE |
-				       G_PARAM_CONSTRUCT_ONLY));
-	
+				       G_PARAM_READWRITE));
+
+
 	glade_widget_signals[ADD_SIGNAL_HANDLER] =
 		g_signal_new ("add_signal_handler",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -622,6 +622,8 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 {
 	GladeWidget *gwidget;
 	GList       *list, *children;
+	GtkWidget   *placeholder;
+	gchar       *child_type;
 	
 	g_return_val_if_fail (template != NULL && GLADE_IS_WIDGET(template), NULL);
 	gwidget = glade_widget_internal_new (glade_widget_get_name(template),
@@ -640,11 +642,30 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 			GladeWidget *child_gwidget, *child_dup;
 
 			if ((child_gwidget = glade_widget_get_from_gobject (child)) == NULL)
-				continue;
+			{
+				if (GLADE_IS_PLACEHOLDER (child))
+				{
 
-			if (child_gwidget->internal == NULL)
+					placeholder = glade_placeholder_new ();
+					child_type  = g_object_get_data (child, "special-child-type");
+					g_object_set_data (G_OBJECT (placeholder), 
+							   "special-child-type", child_type);
+					
+					glade_widget_class_container_add
+						(gwidget->widget_class,
+						 gwidget->object,
+						 G_OBJECT (placeholder));
+				}
+			}
+			else if (child_gwidget->internal == NULL)
 			{
 				child_dup = glade_widget_dup_internal (gwidget, child_gwidget);
+
+				child_type = 
+					g_object_get_data (child_gwidget->object, 
+							   "special-child-type");
+				g_object_set_data (child_dup->object, 
+						   "special-child-type", child_type);
 
 				glade_widget_class_container_add (gwidget->widget_class,
 								  gwidget->object,
@@ -833,9 +854,10 @@ glade_widget_show (GladeWidget *widget)
 		else
 			gtk_window_set_position (GTK_WINDOW (widget->object), 
 						 GTK_WIN_POS_CENTER);
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
 		gtk_window_present (GTK_WINDOW (widget->object));
 	} else if (GTK_IS_WIDGET (widget->object)) {
-		gtk_widget_show (GTK_WIDGET (widget->object));
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
 	}
 }
 
@@ -2012,10 +2034,19 @@ void
 glade_widget_set_parent (GladeWidget *widget,
 			 GladeWidget *parent)
 {
-	GladeWidget *old_parent = widget->parent;
+	GladeWidget *old_parent;
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	old_parent     = widget->parent;
 	widget->parent = parent;
 
-	if (widget->object &&
+	/* Set packing props only if the object actually parented by 'parent'
+	 * (a subsequent call should come from glade_command after parenting).
+	 */
+	if (widget->object && parent != NULL &&
+	    glade_widget_class_container_has_child 
+	    (parent->widget_class, parent->object, widget->object) &&
 	    (old_parent == NULL || widget->packing_properties == NULL ||
 	     old_parent->widget_class->type != parent->widget_class->type))
 		glade_widget_set_packing_properties (widget, parent);
