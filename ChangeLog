@@ -1,5 +1,11 @@
 2005-09-12  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c, widgets/gtk+.xml: Fixed GtkFontButton implementation;
+	  Now the font-name property is properly updated in the glade editor
+	  through the glade-command API (undoable/redoable).
+
+2005-09-12  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor.c: Renamed "Defaults..." to "Reset..."
 	  Fixed up reset dialog a little.
 	

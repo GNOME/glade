@@ -985,18 +985,6 @@ glade_gtk_image_set_stock (GObject *object, GValue *value)
 	g_type_class_unref (eclass);
 }
 
-
-
-static gboolean setting_font_button = FALSE;
-
-void GLADEGTK_API
-glade_gtk_font_button_set_font_name (GObject *object, GValue *value)
-{
-	/* Dont set during notify signal */
-	if (!setting_font_button)
-		g_object_set_property (object, "font-name", value);
-}
-
 /* This function does absolutely nothing
  * (and is for use in overriding fill_empty functions).
  */
@@ -1274,22 +1262,27 @@ glade_gtk_expander_post_create (GObject *expander)
 
 }
 
-/* Auto set Font Name when fontbutton's dialog returns.
+/* Use the font-buttons launch dialog to actually set the font-name
+ * glade property through the glade-command api.
  */
 static void
 glade_gtk_font_button_refresh_font_name (GtkFontButton  *button,
-					 GParamSpec     *pspec,
 					 GladeWidget    *gbutton)
 {
-	setting_font_button = TRUE;
-
-	/* XXX TODO: Go through the glade_command API */
-	glade_widget_property_set (gbutton, "font-name", 
-				   gtk_font_button_get_font_name (button));
+	GladeProperty *property;
+	GValue         value = { 0, };
 	
-	setting_font_button = FALSE;
+	if ((property =
+	     glade_widget_get_property (gbutton, "font-name")) != NULL)
+	{
+		g_value_init (&value, G_TYPE_STRING);
+		g_value_set_string (&value, 
+				    gtk_font_button_get_font_name (button));
+		
+		glade_command_set_property  (property, &value);
+		g_value_unset (&value);
+	}
 }
-
 
 void GLADEGTK_API
 glade_gtk_button_post_create (GObject *button)
@@ -1304,10 +1297,9 @@ glade_gtk_button_post_create (GObject *button)
 	g_return_if_fail (GTK_IS_BUTTON (button));
 	g_return_if_fail (GLADE_IS_WIDGET (gbutton));
 
-
 	if (GTK_IS_FONT_BUTTON (button))
 		g_signal_connect
-			(button, "notify::font-name", 
+			(button, "font-set", 
 			 G_CALLBACK (glade_gtk_font_button_refresh_font_name), gbutton);
 
 	if (GTK_IS_COLOR_BUTTON (button) ||
