@@ -125,7 +125,7 @@ glade_editor_init (GladeEditor *editor)
 		
 	gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
 		
-	button = gtk_button_new_with_mnemonic (_("Set _Defaults..."));
+	button = gtk_button_new_with_mnemonic (_("Reset..."));
 	gtk_container_set_border_width (GTK_CONTAINER (button), 
 					GLADE_GENERIC_BORDER_WIDTH);
 		
@@ -2154,6 +2154,7 @@ enum {
 	COLUMN_PROP_NAME,
 	COLUMN_PROPERTY,
 	COLUMN_PARENT,
+	COLUMN_CHILD,
 	COLUMN_DEFAULT,
 	COLUMN_NDEFAULT,
 	COLUMN_DEFSTRING,
@@ -2187,14 +2188,16 @@ glade_editor_reset_view (GladeEditor *editor)
  	GtkCellRenderer   *renderer;
 	GtkTreeViewColumn *column;
 
-	model = (GtkTreeModel *)gtk_tree_store_new (NUM_COLUMNS,
-						    G_TYPE_BOOLEAN,       /* Enabled  value      */
-						    G_TYPE_STRING,        /* Property name       */
-						    GLADE_TYPE_PROPERTY,  /* The property        */
-						    G_TYPE_BOOLEAN,       /* Parent node ?       */
-						    G_TYPE_BOOLEAN,       /* Has default value   */
-						    G_TYPE_BOOLEAN,       /* Doesn't have defaut */
-						    G_TYPE_STRING);       /* Default string      */
+	model = (GtkTreeModel *)gtk_tree_store_new
+		(NUM_COLUMNS,
+		 G_TYPE_BOOLEAN,       /* Enabled  value      */
+		 G_TYPE_STRING,        /* Property name       */
+		 GLADE_TYPE_PROPERTY,  /* The property        */
+		 G_TYPE_BOOLEAN,       /* Parent node ?       */
+		 G_TYPE_BOOLEAN,       /* Child node ?        */
+		 G_TYPE_BOOLEAN,       /* Has default value   */
+		 G_TYPE_BOOLEAN,       /* Doesn't have defaut */
+		 G_TYPE_STRING);       /* Default string      */
 
 	view_widget = gtk_tree_view_new_with_model (model);
 	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
@@ -2223,6 +2226,7 @@ glade_editor_reset_view (GladeEditor *editor)
 		 "sensitive", COLUMN_NDEFAULT,
 		 "activatable", COLUMN_NDEFAULT,
 		 "active", COLUMN_ENABLED,
+		 "visible", COLUMN_CHILD,
 		 NULL);
 
 	/********************* property name column *********************/
@@ -2270,6 +2274,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 			       COLUMN_PROP_NAME, _("General"),
 			       COLUMN_PROPERTY,  NULL,
 			       COLUMN_PARENT,    TRUE,
+			       COLUMN_CHILD,     FALSE,
 			       COLUMN_DEFAULT,   FALSE,
 			       COLUMN_NDEFAULT,  FALSE,
 			       -1);
@@ -2279,6 +2284,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 			       COLUMN_PROP_NAME, _("Common"),
 			       COLUMN_PROPERTY,  NULL,
 			       COLUMN_PARENT,    TRUE,
+			       COLUMN_CHILD,     FALSE,
 			       COLUMN_DEFAULT,   FALSE,
 			       COLUMN_NDEFAULT,  FALSE,
 			       -1);
@@ -2301,6 +2307,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 				       COLUMN_PROP_NAME, property->class->name,
 				       COLUMN_PROPERTY,  property,
 				       COLUMN_PARENT,    FALSE,
+				       COLUMN_CHILD,     TRUE,
 				       COLUMN_DEFAULT,   def,
 				       COLUMN_NDEFAULT,  !def,
 				       COLUMN_DEFSTRING, _("(default)"),
@@ -2315,6 +2322,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 				       COLUMN_PROP_NAME, _("Packing"),
 				       COLUMN_PROPERTY,  NULL,
 				       COLUMN_PARENT,    TRUE,
+				       COLUMN_CHILD,     FALSE,
 				       COLUMN_DEFAULT,   FALSE,
 				       COLUMN_NDEFAULT,  FALSE,
 				       -1);
@@ -2331,6 +2339,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 					       COLUMN_PROP_NAME, property->class->name,
 					       COLUMN_PROPERTY,  property,
 					       COLUMN_PARENT,    FALSE,
+					       COLUMN_CHILD,     TRUE,
 					       COLUMN_DEFAULT,   def,
 					       COLUMN_NDEFAULT,  !def,
 					       COLUMN_DEFSTRING, _("(default)"),
@@ -2371,7 +2380,13 @@ glade_editor_reset_foreach_selection (GtkTreeModel *model,
 				      GtkTreeIter  *iter,
 				      gboolean      select)
 {
-	gtk_tree_store_set (GTK_TREE_STORE (model), iter, COLUMN_ENABLED, select, -1);
+	gboolean def;
+
+	gtk_tree_model_get (model, iter, COLUMN_DEFAULT, &def, -1);
+	/* Dont modify rows that are already default */
+	if (def == FALSE)
+		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
+				    COLUMN_ENABLED, select, -1);
 	return FALSE;
 }
 
