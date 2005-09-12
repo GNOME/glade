@@ -37,6 +37,10 @@
 #define CONFIG_RECENT_PROJECTS     "Recent Projects"
 #define CONFIG_RECENT_PROJECTS_MAX "max_recent_projects"
 
+#define GLADE_ACTION_GROUP_MENU "GladeMenu"
+#define GLADE_ACTION_GROUP_PROJECT "GladeProject"
+#define GLADE_ACTION_GROUP_RECENT "GladeRecent"
+
 struct _GladeProjectWindowPriv {
 	/* Application widgets */
 	GtkWidget *window; /* Main window */
@@ -48,9 +52,9 @@ struct _GladeProjectWindowPriv {
 	
 
 	GtkUIManager *ui;		/* The UIManager */
-	GtkActionGroup *actions;	/* All the static actions */
-	GtkActionGroup *p_actions;	/* Projects actions */
-	GtkActionGroup *rp_actions;	/* Recent projects actions */
+	GtkActionGroup *menu_actions;	/* All the static actions */
+	GtkActionGroup *project_actions;/* Projects actions */
+	GtkActionGroup *recent_actions;	/* Recent projects actions */
 
 	GQueue *recent_projects;	/* A GtkAction queue */
 	gint rp_max;			/* Maximun Recent Projects entries */
@@ -117,7 +121,7 @@ gpw_refresh_project_entry (GladeProjectWindow *gpw, GladeProject *project)
 	gtk_ui_manager_remove_ui(gpw->priv->ui,
 				 glade_project_get_menuitem_merge_id(project));
 
-	gtk_action_group_remove_action (gpw->priv->p_actions,
+	gtk_action_group_remove_action (gpw->priv->project_actions,
 					GTK_ACTION (project->action));
 	
 	g_object_unref (G_OBJECT (project->action));
@@ -141,7 +145,7 @@ gpw_recent_project_delete (GtkAction *action, GladeProjectWindow *gpw)
 	
 	gtk_ui_manager_remove_ui(gpw->priv->ui,	merge_id);
 
-	gtk_action_group_remove_action (gpw->priv->rp_actions, action);
+	gtk_action_group_remove_action (gpw->priv->recent_actions, action);
 	
 	g_queue_remove (gpw->priv->recent_projects, action);
 	
@@ -187,7 +191,7 @@ gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
 	
 	/* Add action */
 	action = gtk_action_new (action_name, label, NULL, NULL);
-	gtk_action_group_add_action_with_accel (gpw->priv->rp_actions, action, "");
+	gtk_action_group_add_action_with_accel (gpw->priv->recent_actions, action, "");
 	g_signal_connect (G_OBJECT (action), "activate", (GCallback)gpw_recent_project_open_cb, gpw);
 	
 	/* Add menuitem */
@@ -1181,22 +1185,22 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 {
 	GError *error = NULL;
 	
-	gpw->priv->actions = gtk_action_group_new ("actions");
-	gtk_action_group_add_actions (gpw->priv->actions, entries, n_entries, gpw);
-	gtk_action_group_add_toggle_actions (gpw->priv->actions, view_entries,
+	gpw->priv->menu_actions = gtk_action_group_new (GLADE_ACTION_GROUP_MENU);
+	gtk_action_group_add_actions (gpw->priv->menu_actions, entries, n_entries, gpw);
+	gtk_action_group_add_toggle_actions (gpw->priv->menu_actions, view_entries,
 						n_view_entries, gpw);
 
-	gpw->priv->p_actions = gtk_action_group_new ("p_actions");
+	gpw->priv->project_actions = gtk_action_group_new (GLADE_ACTION_GROUP_PROJECT);
 
-	gpw->priv->rp_actions = gtk_action_group_new ("rp_actions");
+	gpw->priv->recent_actions = gtk_action_group_new (GLADE_ACTION_GROUP_RECENT);
 	
 	gpw->priv->ui = gtk_ui_manager_new ();
 	g_signal_connect(G_OBJECT(gpw->priv->ui), "connect-proxy",
 			 (GCallback)gpw_ui_connect_proxy_cb, gpw);
 
-	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->actions, 0);
-	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->p_actions, 1);
-	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->rp_actions, 2);
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->menu_actions, 0);
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->project_actions, 1);
+	gtk_ui_manager_insert_action_group (gpw->priv->ui, gpw->priv->recent_actions, 2);
 	
 	gtk_window_add_accel_group (GTK_WINDOW (gpw->priv->window), 
 				  gtk_ui_manager_get_accel_group (gpw->priv->ui));
@@ -1361,7 +1365,7 @@ gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 	g_signal_connect (G_OBJECT (project->action), "activate",
 			  (GCallback) glade_project_window_set_project, project);
 	
-	gtk_action_group_add_action_with_accel (gpw->priv->p_actions,
+	gtk_action_group_add_action_with_accel (gpw->priv->project_actions,
 						GTK_ACTION (project->action), "");
 	
 	/* Add menuitem to menu */
@@ -1631,6 +1635,7 @@ GladeProjectWindow *
 glade_project_window_new (void)
 {
 	GladeProjectWindow *gpw;
+	GtkAccelGroup *accel_group;
 	
 	gpw = g_object_new (GLADE_TYPE_PROJECT_WINDOW, NULL);
 
@@ -1639,5 +1644,13 @@ glade_project_window_new (void)
 	gpw_create_editor  (gpw);
 
 	glade_app_set_window (GLADE_APP (gpw), gpw->priv->window);
+
+	accel_group = gtk_ui_manager_get_accel_group(gpw->priv->ui);
+	glade_app_set_accel_group (GLADE_APP (gpw), accel_group);
+
+	gtk_window_add_accel_group(gpw->priv->palette_window, accel_group);
+	gtk_window_add_accel_group(gpw->priv->editor_window, accel_group);
+	gtk_window_add_accel_group(GTK_WINDOW (glade_app_get_clipboard_view (GLADE_APP (gpw))), accel_group);
+
 	return gpw;
 }

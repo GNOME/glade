@@ -886,3 +886,25 @@ glade_project_get_menuitem_merge_id (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
 	return GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (project->action), "merge_id"));
 }
+
+/*
+ * glade_project_set_accel_group:
+ *
+ * Set @accel_group to every top level widget in @project.
+ */
+void
+glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group)
+{
+	GList *objects;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project) && GTK_IS_ACCEL_GROUP (accel_group));
+                
+	objects = project->objects;
+	while (objects)
+	{
+		if(GTK_IS_WINDOW (objects->data))
+			gtk_window_add_accel_group (GTK_WINDOW (objects->data), accel_group);
+
+		objects = objects->next;
+	}
+}

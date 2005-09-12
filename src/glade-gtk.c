@@ -1208,7 +1208,10 @@ glade_gtk_frame_create_idle (gpointer data)
 		glabel = glade_widget_new (gframe, wclass,
 					   glade_widget_get_project (gframe));
 		
-		glade_widget_property_set (glabel, "label", "frame");
+		if (GTK_IS_ASPECT_FRAME (frame))
+			glade_widget_property_set (glabel, "label", "aspect frame");
+		else
+			glade_widget_property_set (glabel, "label", "frame");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));

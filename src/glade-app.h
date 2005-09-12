@@ -98,6 +98,7 @@ LIBGLADEUI_API void               glade_app_command_redo (GladeApp *app);
 LIBGLADEUI_API gint               glade_app_config_save (GladeApp *app);
 LIBGLADEUI_API void               glade_app_set_transient_parent (GladeApp *app, GtkWindow *parent);
 LIBGLADEUI_API GtkWindow         *glade_app_get_transient_parent (GladeApp *app);
+LIBGLADEUI_API void               glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group);
 
 /* Default glade application */
 LIBGLADEUI_API void               glade_default_app_set (GladeApp *app);

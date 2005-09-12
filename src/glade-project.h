@@ -102,8 +102,8 @@ LIBGLADEUI_API GList        *glade_project_selection_get       (GladeProject *pr
 
 LIBGLADEUI_API GtkWidget    *glade_project_get_menuitem          (GladeProject *project);
 LIBGLADEUI_API guint         glade_project_get_menuitem_merge_id (GladeProject *project);
+LIBGLADEUI_API void          glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group);
 
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */
-

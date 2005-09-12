@@ -81,6 +81,7 @@ struct _GladeAppPriv {
 				      * will be used as the transient parent of all toplevel
 				      * GladeWidgets.
 				      */
+	GtkAccelGroup *accel_group;	/* Default acceleration group for this app */
 };
 
 enum
@@ -179,6 +180,7 @@ static void
 on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 {
 	GladeWidgetClass *class;
+	GladeWidget *widget;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
 	class = palette->current;
@@ -186,7 +188,15 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 	/* class may be NULL if the selector was pressed */
 	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
 	{
-		glade_command_create (class, NULL, NULL, app->priv->active_project);
+		widget = glade_command_create (class, NULL, NULL, app->priv->active_project);
+		
+		/* if this is a top level widget set the accel group */
+		if (app->priv->accel_group && GTK_IS_WINDOW (widget->object))
+		{
+			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
+						    app->priv->accel_group);
+		}
+
 		glade_palette_unselect_widget (palette);
 		app->priv->add_class = NULL;
 	}
@@ -242,7 +252,7 @@ gint
 glade_app_config_save (GladeApp *app)
 {
 	GIOChannel *fd;
-	gchar *data, *filename;
+	gchar *data=NULL, *filename;
 	const gchar *config_dir = g_get_user_config_dir ();
 	GError *error = NULL;
 	gsize size;
@@ -266,12 +276,13 @@ glade_app_config_save (GladeApp *app)
 	
 	fd = g_io_channel_new_file (filename, "w", &error);
 
-	if (error == NULL)
+	if (error == NULL){
 		data = g_key_file_to_data (app->priv->config, &size, &error);
+		
+		if (data && error == NULL)
+			g_io_channel_write_chars (fd, data, size, NULL, &error);
+	}
 	
-	if (error == NULL)
-		g_io_channel_write_chars (fd, data, size, NULL, &error);
-
 	/* Free resources */	
 	if (error)
 	{
@@ -351,6 +362,7 @@ glade_app_init (GladeApp *app)
 	
 	app->priv->add_class = NULL;
 	app->priv->alt_class = NULL;
+	app->priv->accel_group = NULL;
 	
 	/* Initialize app objects */
 	app->priv->catalogs = glade_catalog_load_all ();
@@ -593,6 +605,10 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 			  G_CALLBACK (on_widget_name_changed_cb), app->priv->editor);
 	g_signal_connect (G_OBJECT (project), "selection_changed",
 			  G_CALLBACK (on_project_selection_changed_cb), app);
+
+	/* add acceleration groups to every top level widget */
+	if (app->priv->accel_group)
+		glade_project_set_accel_group (project, app->priv->accel_group);
 	
 	glade_app_set_project (app, project);
 	/* make sure the palette is sensitive */
@@ -739,6 +755,30 @@ glade_app_command_redo (GladeApp *app)
 		glade_editor_refresh (app->priv->editor);
 		/* Update UI. */
 		glade_app_update_ui (app);
+	}
+}
+
+/*
+ * glade_app_set_accel_group:
+ *
+ * Sets @accel_group to @app.
+ * The acceleration group will be atached to every toplevel widget in this application.
+ */
+void
+glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group)
+{
+	GList *l;
+	GladeProject *project;
+	g_return_if_fail(GLADE_IS_APP(app) &&
+			 GTK_IS_ACCEL_GROUP (accel_group));
+	
+	app->priv->accel_group = accel_group;
+
+	for (l = app->priv->projects; l; l = l->next)
+	{
+		project = l->data;
+		glade_project_set_accel_group
+			(project, app->priv->accel_group);
 	}
 }
 

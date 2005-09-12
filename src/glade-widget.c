@@ -1699,27 +1699,6 @@ glade_widget_button_press (GtkWidget *widget,
 }
 
 static gboolean
-glade_widget_key_press (GtkWidget *event_widget,
-			GdkEventKey *event,
-			gpointer unused_data)
-{
-	GladeWidget *glade_widget;
-
-	g_return_val_if_fail (GTK_IS_WIDGET (event_widget), FALSE);
-
-	glade_widget = glade_widget_get_from_gobject (event_widget);
-
-	/* We will delete all the selected items */
-	if (event->keyval == GDK_Delete)
-	{
-		glade_util_delete_selection ();
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-static gboolean
 glade_widget_event (GtkWidget *widget,
 		    GdkEvent *event,
 		    gpointer unused_data)
@@ -1867,16 +1846,13 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 			 */
 			gtk_widget_add_events (GTK_WIDGET(new_object),
 					       GDK_BUTTON_PRESS_MASK   |
-					       GDK_BUTTON_RELEASE_MASK |
-					       GDK_KEY_PRESS_MASK);
+					       GDK_BUTTON_RELEASE_MASK);
 
 			if (GTK_WIDGET_TOPLEVEL (new_object))
 				g_signal_connect (G_OBJECT (new_object), "delete_event",
 						  G_CALLBACK (glade_widget_hide_on_delete), NULL);
 			g_signal_connect (G_OBJECT (new_object), "popup_menu",
 					  G_CALLBACK (glade_widget_popup_menu), NULL);
-			g_signal_connect (G_OBJECT (new_object), "key_press_event",
-					  G_CALLBACK (glade_widget_key_press), NULL);
 
 			glade_widget_connect_signal_handlers (GTK_WIDGET(new_object), NULL);
 		}
@@ -2103,11 +2079,11 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 
 	g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 	g_list_free (widget->packing_properties);
-
-	glade_widget_set_default_packing_properties (container, widget);
 	
 	widget->packing_properties = glade_widget_create_packing_properties (container, widget);
 
+	glade_widget_set_default_packing_properties (container, widget);
+	
 	/* update the values of the properties to the ones we get from gtk */
 	for (list = widget->packing_properties;
 	     list && list->data;

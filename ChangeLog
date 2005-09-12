@@ -1,3 +1,34 @@
+2005-09-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c: Added clause to create correct label value
+	  for aspect frame.
+
+	* src/glade-editor.c: Fixed segfault in regards to packing-properties
+	  (which are rebuilt dynamicly for each class) & the weak pointer
+	  used for property object signals.
+
+	* src/glade-widget.c: Call glade_widget_set_default_packing_properties
+	  at the right time.
+	
+	* src/glade-project-window.c: Dont call glade_project_set_accel_group()
+	  if there is no accel group set.
+
+	* src/glade-app.c: Loop over open projects when calling 
+	  glade_app_set_accel_group() incase this is done after any projects
+	  are open.
+	
+2005-09-12  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-app.[ch]: Added accel_group member in GladeAppPriv.
+	  glade_app_set_accel_group() to handle shortcuts in every window.
+
+	* src/glade-project.[ch]: glade_project_set_accel_group().
+
+	* src/glade-project-window.c: Added UIManager's acceleration group to every
+	  window.
+
+	* src/glade-widget.c: Removed manual "key-press-event" handling.
+
 2005-09-08  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: Added comment & use glade_widget_show/hide api.
