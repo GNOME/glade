@@ -1284,6 +1284,27 @@ glade_gtk_font_button_refresh_font_name (GtkFontButton  *button,
 	}
 }
 
+static void
+glade_gtk_color_button_refresh_color (GtkColorButton  *button,
+				      GladeWidget     *gbutton)
+{
+	GladeProperty *property;
+	GdkColor       color = { 0, };
+	GValue         value = { 0, };
+	
+	if ((property =
+	     glade_widget_get_property (gbutton, "color")) != NULL)
+	{
+		g_value_init (&value, GDK_TYPE_COLOR);
+
+		gtk_color_button_get_color (button, &color);
+		g_value_set_boxed (&value, &color);
+		
+		glade_command_set_property  (property, &value);
+		g_value_unset (&value);
+	}
+}
+
 void GLADEGTK_API
 glade_gtk_button_post_create (GObject *button)
 {
@@ -1301,6 +1322,11 @@ glade_gtk_button_post_create (GObject *button)
 		g_signal_connect
 			(button, "font-set", 
 			 G_CALLBACK (glade_gtk_font_button_refresh_font_name), gbutton);
+	else if (GTK_IS_COLOR_BUTTON (button))
+		g_signal_connect
+			(button, "color-set", 
+			 G_CALLBACK (glade_gtk_color_button_refresh_color), gbutton);
+
 
 	if (GTK_IS_COLOR_BUTTON (button) ||
 	    GTK_IS_FONT_BUTTON (button))

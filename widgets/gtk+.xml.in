@@ -153,6 +153,7 @@
 	<property id="icon-name" translatable="False"/>
 	<property id="resizable" ignore="True" />
 	<property id="decorated" ignore="True" />
+	<property id="title" ignore="True" />
       	<property id="window-position">
   	  <displayable-values>
 	    <value id="GTK_WIN_POS_NONE" name="None"/>
@@ -377,6 +378,7 @@
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" title="Color Button">
       <properties>
 	<property id="stock" visible="False"/>
+	<property id="color" default="Black"/>
       </properties>
     </glade-widget-class>
 

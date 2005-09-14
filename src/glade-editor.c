@@ -220,8 +220,16 @@ glade_editor_property_changed_text_common (GladeProperty *property,
 {
 	GValue val = { 0, };
 
-	g_value_init (&val, G_TYPE_STRING);
-	g_value_set_string (&val, text);
+	if (property->class->pspec->value_type == G_TYPE_STRV)
+	{
+		g_value_init (&val, G_TYPE_STRV);
+		g_value_take_boxed (&val, g_strsplit (text, "\n", 0));
+	} 
+	else
+	{
+		g_value_init (&val, G_TYPE_STRING);
+		g_value_set_string (&val, text);
+	}
 
 	if (from_query_dialog == TRUE)
 		glade_property_set_value (property, &val);
@@ -315,6 +323,26 @@ glade_editor_property_changed_enum (GtkWidget *menu_item,
 		glade_command_set_property (gproperty, &val);
 
 	g_value_unset (&val);
+}
+
+static void
+glade_editor_property_changed_color (GtkWidget *button,
+				     GladeEditorProperty *property)
+{
+	GdkColor color = { 0, };
+	GValue   value = { 0, };
+
+	gtk_color_button_get_color (GTK_COLOR_BUTTON (button), &color);
+
+	g_value_init (&value, GDK_TYPE_COLOR);
+	g_value_set_boxed (&value, &color);
+
+	if (property->from_query_dialog)
+		glade_property_set_value (property->property, &value);
+	else
+		glade_command_set_property (property->property, &value);
+
+	g_value_unset (&value);
 }
 
 static void
@@ -951,6 +979,33 @@ glade_editor_create_input_flags (GladeEditorProperty *property)
 }
 
 static GtkWidget *
+glade_editor_create_input_color (GladeEditorProperty *property)
+{
+	GtkWidget *hbox;
+	GtkWidget *entry;
+	GtkWidget *cbutton;
+
+	g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (property), NULL);
+
+	hbox = gtk_hbox_new (FALSE, 0);
+
+	entry = gtk_entry_new ();
+	gtk_entry_set_editable (GTK_ENTRY (entry), FALSE);
+	gtk_widget_show (entry);
+	gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+
+	cbutton = gtk_color_button_new ();
+	gtk_widget_show (cbutton);
+	gtk_box_pack_start (GTK_BOX (hbox), cbutton,  FALSE, FALSE, 0);
+
+	g_signal_connect (G_OBJECT (cbutton), "color-set",
+			  G_CALLBACK (glade_editor_property_changed_color), 
+			  property);
+
+	return hbox;
+}
+
+static GtkWidget *
 glade_editor_create_input_text (GladeEditorProperty *property)
 {
 	GladePropertyClass  *class;
@@ -960,37 +1015,8 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 	class = property->class;
 
-	if (class->visible_lines < 2) {
-		GtkWidget *hbox;
-		GtkWidget *entry;
-		GtkWidget *button;
-
-		hbox = gtk_hbox_new (FALSE, 0);
-
-		entry = gtk_entry_new ();
-		gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0); 
-
-		g_signal_connect (G_OBJECT (entry), "activate",
-				  G_CALLBACK (glade_editor_property_changed_text),
-				  property);
-		
-		g_signal_connect (G_OBJECT (entry), "focus-out-event",
-				  G_CALLBACK (glade_editor_entry_focus_out),
-				  property);
-
-		if (class->translatable) {
-			button = gtk_button_new_with_label ("...");
-			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
-
-			g_signal_connect (button, "clicked",
-					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
-					  property);
-		}
-
-		property->text_entry = entry;
-		
-		return hbox;
-	} else {
+	if (class->visible_lines > 1 ||
+	    class->pspec->value_type == G_TYPE_STRV) {
 		GtkWidget  *hbox;
 		GtkWidget  *view;
 		GtkWidget  *viewport;
@@ -1027,6 +1053,37 @@ glade_editor_create_input_text (GladeEditorProperty *property)
 
 		property->text_entry = view;
 
+		return hbox;
+
+	} else {
+		GtkWidget *hbox;
+		GtkWidget *entry;
+		GtkWidget *button;
+
+		hbox = gtk_hbox_new (FALSE, 0);
+
+		entry = gtk_entry_new ();
+		gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0); 
+
+		g_signal_connect (G_OBJECT (entry), "activate",
+				  G_CALLBACK (glade_editor_property_changed_text),
+				  property);
+		
+		g_signal_connect (G_OBJECT (entry), "focus-out-event",
+				  G_CALLBACK (glade_editor_entry_focus_out),
+				  property);
+
+		if (class->translatable) {
+			button = gtk_button_new_with_label ("...");
+			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+
+			g_signal_connect (button, "clicked",
+					  G_CALLBACK (glade_editor_property_show_i18n_dialog),
+					  property);
+		}
+
+		property->text_entry = entry;
+		
 		return hbox;
 	}
 
@@ -1181,6 +1238,13 @@ glade_editor_append_item_real (GladeEditorTable    *table,
 		input = glade_editor_create_input_enum (property, FALSE);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		input = glade_editor_create_input_flags (property);
+	else if (G_IS_PARAM_SPEC_BOXED(class->pspec))
+	{
+		if (class->pspec->value_type == GDK_TYPE_COLOR)
+			input = glade_editor_create_input_color (property);
+		else if (class->pspec->value_type == G_TYPE_STRV)
+			input = glade_editor_create_input_text (property);
+	}
 	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
 		input = glade_editor_create_input_boolean (property);
 	else if (G_IS_PARAM_SPEC_INT(class->pspec)    ||
@@ -1670,7 +1734,6 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
 	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
 	g_return_if_fail (GTK_IS_HBOX (property->input));
 
 	/* The entry should be the first child. */
@@ -1687,6 +1750,42 @@ glade_editor_property_load_flags (GladeEditorProperty *property)
 }
 
 static void
+glade_editor_property_load_color (GladeEditorProperty *property)
+{
+	GtkBoxChild *child;
+	GtkWidget   *widget;
+	GdkColor    *color;
+	gchar       *text;
+
+	g_return_if_fail (property != NULL);
+	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
+	g_return_if_fail (property->property->value != NULL);
+
+	/* The entry should be the first child. */
+	child = GTK_BOX (property->input)->children->data;
+	widget = child->widget;
+	g_return_if_fail (GTK_IS_ENTRY (widget));
+
+
+	color = g_value_get_boxed (property->property->value);
+	text  = glade_property_class_make_string_from_gvalue
+		(property->property->class, property->property->value);
+
+	gtk_entry_set_text (GTK_ENTRY (widget), text);
+
+	g_free (text);
+
+	/* The color button should be the second child. */
+	g_return_if_fail (GTK_BOX (property->input)->children->next);
+	child = GTK_BOX (property->input)->children->next->data;
+	widget = child->widget;
+	g_return_if_fail (GTK_IS_COLOR_BUTTON (widget));
+
+	gtk_color_button_set_color (GTK_COLOR_BUTTON (widget), color);
+}
+
+
+static void
 glade_editor_property_load_boolean (GladeEditorProperty *property)
 {
 	GtkWidget *label;
@@ -1696,7 +1795,6 @@ glade_editor_property_load_boolean (GladeEditorProperty *property)
 	g_return_if_fail (property != NULL);
 	g_return_if_fail (GLADE_IS_PROPERTY (property->property));
 	g_return_if_fail (property->property->value != NULL);
-	g_return_if_fail (property->input != NULL);
 	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (property->input));
 
 	state = g_value_get_boolean (property->property->value);
@@ -1733,16 +1831,29 @@ glade_editor_property_load_text (GladeEditorProperty *property)
 
 		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (property->text_entry)) {
-		GtkTextBuffer *buffer;
-		const gchar *text;
-
-		text = g_value_get_string (property->property->value);
+		GtkTextBuffer  *buffer;
+		gchar **split;
+			
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (property->text_entry));
 
-		gtk_text_buffer_set_text (buffer,
-					  text ? text : "",
-					  text ? g_utf8_strlen (text, -1) : 0);
+		if (G_VALUE_HOLDS (property->property->value, G_TYPE_STRV))
+		{
+			gchar *text = NULL;
+			split = g_value_get_boxed (property->property->value);
 
+			if (split) text = g_strjoinv ("\n", split);
+
+			gtk_text_buffer_set_text (buffer,
+						  text ? text : "",
+						  text ? g_utf8_strlen (text, -1) : 0);
+			g_free (text);
+		} else {
+			const gchar *text = g_value_get_string (property->property->value);
+			
+			gtk_text_buffer_set_text (buffer,
+						  text ? text : "",
+						  text ? g_utf8_strlen (text, -1) : 0);
+		}
 	} else {
 		g_warning ("BUG! Invalid Text Widget type.");
 	}
@@ -1856,6 +1967,13 @@ glade_editor_property_load (GladeEditorProperty *property, GladeWidget *widget)
 		glade_editor_property_load_enum (property);
 	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
 		glade_editor_property_load_flags (property);
+	else if (G_IS_PARAM_SPEC_BOXED(class->pspec))
+	{
+		if (class->pspec->value_type == GDK_TYPE_COLOR)
+			glade_editor_property_load_color (property);
+		else if (class->pspec->value_type == G_TYPE_STRV)
+			glade_editor_property_load_text (property);
+	}
 	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
 		glade_editor_property_load_text (property);
 	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
@@ -2132,6 +2250,12 @@ gboolean
 glade_editor_editable_property (GParamSpec  *pspec)
 {
 	g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+
+	if (G_IS_PARAM_SPEC_BOXED (pspec) &&
+	    (pspec->value_type == GDK_TYPE_COLOR ||
+	     pspec->value_type == G_TYPE_STRV))
+		return TRUE;
+
 	return 
 		(G_IS_PARAM_SPEC_ENUM(pspec)    ||
 		 G_IS_PARAM_SPEC_FLAGS(pspec)   ||

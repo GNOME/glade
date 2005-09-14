@@ -294,7 +294,8 @@ gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
 {
-	gchar *string = NULL;
+	gchar    *string = NULL, **strv;
+	GdkColor *color;
 
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
@@ -307,6 +308,23 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		guint flags = g_value_get_flags (value);
 		string = glade_property_class_make_string_from_flags
 			(property_class, flags, FALSE);
+	}
+	else if (G_IS_PARAM_SPEC_BOXED(property_class->pspec))
+	{
+		if (property_class->pspec->value_type == GDK_TYPE_COLOR)
+		{
+			color  = g_value_get_boxed (value);
+			if (color)
+				string = g_strdup_printf ("#%04x%04x%04x", 
+							  color->red, 
+							  color->green,
+							  color->blue);
+		}
+		else if (property_class->pspec->value_type == G_TYPE_STRV)
+		{
+			strv = g_value_get_boxed (value);
+			if (strv) string = g_strjoinv ("\n", strv);
+		}
 	}
 	else if (G_IS_PARAM_SPEC_INT(property_class->pspec))
 		string = g_strdup_printf ("%d", g_value_get_int (value));
@@ -470,7 +488,9 @@ GValue *
 glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 					      const gchar *string)
 {
-	GValue *value = g_new0 (GValue, 1);
+	GValue    *value = g_new0 (GValue, 1);
+	gchar    **strv;
+	GdkColor   color = { 0, };
 
 	g_value_init (value, property_class->pspec->value_type);
 	
@@ -485,6 +505,23 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		guint flags = glade_property_class_make_flags_from_string
 			(property_class->pspec->value_type, string);
 		g_value_set_flags (value, flags);
+	}
+	else if (G_IS_PARAM_SPEC_BOXED(property_class->pspec))
+	{
+		if (property_class->pspec->value_type == GDK_TYPE_COLOR)
+		{
+			if (gdk_color_parse(string, &color) &&
+			    gdk_colormap_alloc_color(gtk_widget_get_default_colormap(),
+						     &color, FALSE, TRUE))
+				g_value_set_boxed(value, &color);
+			else
+				g_warning ("could not parse colour name `%s'", string);
+		}
+		else if (property_class->pspec->value_type == G_TYPE_STRV)
+		{
+			strv   = g_strsplit (string, "\n", 0);
+			g_value_take_boxed (value, strv);
+		}
 	}
 	else if (G_IS_PARAM_SPEC_INT(property_class->pspec))
 		g_value_set_int (value, atoi (string));

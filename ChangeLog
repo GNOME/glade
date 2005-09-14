@@ -1,3 +1,15 @@
+2005-09-14  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor.c, src/glade-property-class.c: Implemented 
+	  GParamSpecBoxed types G_TYPE_STRV & GDK_TYPE_COLOR.
+
+	* src/glade-gtk.c: Made the color selection dialog from GtkColorButton
+	  set the current color through glade-command api (like GtkFontButton).
+
+	* widgets/gtk+.xml: ignore "title" property on GtkWindow & set "Black"
+	  default for "color" prop on GtkColorButton (avoid segfault from setting
+	  the property to the default NULL).
+
 2005-09-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml: Fixed GtkFontButton implementation;
