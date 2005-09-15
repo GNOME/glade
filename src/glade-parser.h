@@ -28,6 +28,8 @@
 
 G_BEGIN_DECLS
 
+#define CAST_BAD (gchar *)
+
 typedef struct _GladePropInfo        GladePropInfo;
 typedef struct _GladeSignalInfo      GladeSignalInfo;
 typedef struct _GladeAtkActionInfo   GladeAtkActionInfo;

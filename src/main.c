@@ -38,8 +38,8 @@
 #endif
 
 #include "glade.h"
-
 #include "glade-project-window.h"
+#include "glade-debug.h"
 
 
 static gchar *widget_name = NULL;
@@ -179,4 +179,3 @@ WinMain (struct HINSTANCE__ *hInstance,
 	return main (__argc, __argv);
 }
 #endif
-

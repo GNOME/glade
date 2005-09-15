@@ -2556,7 +2556,7 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 	GObjectClass         *oclass;
 	GParamSpec          **pspec;
 	GArray               *params;
-	gint                  i, n_props;
+	guint                  i, n_props;
 	
 	oclass = g_type_class_ref (widget_class->type);
 	pspec  = g_object_class_list_properties (oclass, &n_props);

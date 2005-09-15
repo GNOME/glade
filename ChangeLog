@@ -1,3 +1,16 @@
+2005-09-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-parse.h: Added CAST_BAD macro (BAD_CAST opposite).
+
+	* src/glade-parse.c: Changed strcmp() to xmlStrcmp() and use of macros
+	  to avoid signedness warnings.
+
+	* src/glade-xml-utils.[ch]: Removed signedness warnings.
+
+	* src/glade-widget.c: Removed signedness warning.
+
+	* src/glade-widget-class.c: Removed signedness warnings.
+
 2005-09-14  Tristan Van Berkom <tvb@gnome.org>
 
 	* widgets/gtk+.xml: Added GtkAccelLabel.

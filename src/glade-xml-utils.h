@@ -7,7 +7,6 @@
 
 G_BEGIN_DECLS
 
-
 #define GLADE_XML_CONTEXT(c)    ((GladeXmlContext *)c)
 #define GLADE_XML_IS_CONTEXT(c) (c != NULL)
 
@@ -17,30 +16,30 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 
 /* search child */
-GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const char *name);
-GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const char* name);
+GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const gchar *name);
+GladeXmlNode *   glade_xml_search_child_required (GladeXmlNode * tree, const gchar* name);
 
 /* content */
 
 gchar *      glade_xml_get_content (GladeXmlNode * node); /* Get the content of the node */
 void         glade_xml_set_content (GladeXmlNode *node_in, const gchar *content);
 
-gboolean     glade_xml_get_value_int          (GladeXmlNode * node, const char *name, int *val);
-gboolean     glade_xml_get_value_int_required (GladeXmlNode * node, const char *name, int *val);
+gboolean     glade_xml_get_value_int          (GladeXmlNode * node, const gchar *name, int *val);
+gboolean     glade_xml_get_value_int_required (GladeXmlNode * node, const gchar *name, int *val);
 
-gchar *      glade_xml_get_value_string          (GladeXmlNode * node, const char *name);
+gchar *      glade_xml_get_value_string          (GladeXmlNode * node, const gchar *name);
 gchar *      glade_xml_get_value_string_required (GladeXmlNode * node,
-					    const char *name,
-					    const char *xtra_info);
+					    const gchar *name,
+					    const gchar *xtra_info);
 
-gboolean glade_xml_get_boolean (GladeXmlNode * node, const char *name, gboolean _default);
+gboolean glade_xml_get_boolean (GladeXmlNode * node, const gchar *name, gboolean _default);
 
-void         glade_xml_set_value (GladeXmlNode * node, const char *name, const char *val);
+void         glade_xml_set_value (GladeXmlNode * node, const gchar *name, const gchar *val);
 
 /* Properties */ 
-gchar *  glade_xml_get_property_string_required (GladeXmlNode *node_in, const char *name, const char *xtra);
+gchar *  glade_xml_get_property_string_required (GladeXmlNode *node_in, const gchar *name, const gchar *xtra);
 gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
-gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const char *name, gboolean _default);
+gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
 
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);

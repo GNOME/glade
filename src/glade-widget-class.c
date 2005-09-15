@@ -123,7 +123,7 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
 	GType last;
-	gint n_specs = 0;
+	guint n_specs = 0;
 	gint i;
 	GList *list = NULL;
 
@@ -177,7 +177,7 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	GObjectClass *object_class;
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
-	gint n_specs = 0;
+	guint n_specs = 0;
 	gint i;
 	GList *list = NULL;
 
@@ -720,7 +720,7 @@ glade_widget_class_merge_properties (GType   parent_type,
 	GObjectClass        *object_class;
 	GParamSpec         **specs = NULL, *spec;
 	GList               *list, *list2, *remove;
-	gint                 i, n_specs;
+	guint                 i, n_specs;
 	gboolean             found;
 
 	for (list = parent_properties; list; list = list->next)
@@ -1168,7 +1168,7 @@ glade_widget_class_dump_param_specs (GladeWidgetClass *class)
 	GParamSpec **specs = NULL;
 	GParamSpec *spec;
 	GType last;
-	gint n_specs = 0;
+	guint n_specs = 0;
 	gint i;
 
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (class));
@@ -1522,4 +1522,3 @@ glade_widget_class_get_packing_default (GladeWidgetClass *child_class,
 
 	return NULL;
 }
-
