@@ -1010,9 +1010,12 @@ static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 glade_project_window_set_project (GtkAction *action, GladeProject *project)
 {
-	GladeProjectWindow *gpw = g_object_get_data (G_OBJECT (project), "gpw");
-	GtkWidget *item = glade_project_get_menuitem (project);
-	
+	GladeProjectWindow *gpw;
+	GtkWidget *item;
+
+	gpw  = g_object_get_data (G_OBJECT (project), "gpw");	
+	item = glade_project_get_menuitem (project);
+
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
 	{
 		glade_app_set_project (GLADE_APP (gpw), project);

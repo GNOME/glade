@@ -52,11 +52,11 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkContainer">
+      <post-create-function>glade_gtk_container_post_create</post-create-function>
       <children>
 	<child>
 	  <type>GtkWidget</type>
 	  <replace-child-function>glade_gtk_container_replace_child</replace-child-function>
-	  <fill-empty-function>glade_gtk_container_fill_empty</fill-empty-function>
 	</child>
       </children>
       <properties>
@@ -71,6 +71,7 @@
     </glade-widget-class>
     
     <glade-widget-class name="GtkBox">
+      <post-create-function>empty</post-create-function>
       <properties>
 	<property id="size" name="Number of items" query="True" default="3" save="False">
 	  <spec>glade_standard_int_spec</spec>
@@ -84,7 +85,6 @@
       <children>
         <child>
 	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
 	  <add-child-function>glade_gtk_box_add_child</add-child-function>
 	  <properties>
 	    <property id="pack-type">
@@ -99,12 +99,7 @@
     </glade-widget-class>
     
     <glade-widget-class name="GtkPaned">
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>glade_gtk_paned_fill_empty</fill-empty-function>
-	</child>
-      </children>
+      <post-create-function>glade_gtk_paned_post_create</post-create-function>
     </glade-widget-class>
 
     <glade-widget-class name="GtkWindow" generic-name="window" title="Window">
@@ -154,7 +149,7 @@
 	<property id="resizable" ignore="True" />
 	<property id="decorated" ignore="True" />
 	<property id="title" ignore="True" />
-      	<property id="window-position">
+      	<property id="window-position" ignore="True">
   	  <displayable-values>
 	    <value id="GTK_WIN_POS_NONE" name="None"/>
 	    <value id="GTK_WIN_POS_CENTER" name="Center"/>
@@ -169,12 +164,6 @@
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" title="Menu Bar">
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
       <!-- menubar is a container you can't add placeholders to it -->
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
-	</child>
-      </children>
       <packing-defaults>
 	<parent-class name="GtkVBox">
 	  <child-property id="expand" default="false"/>
@@ -208,13 +197,6 @@
 	  </displayable-values>
 	</property>
       </properties>
-
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
-	</child>
-      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkHandleBox" generic-name="handlebox" title="Handle Box">
@@ -327,7 +309,6 @@
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_button_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_button_replace_child</replace-child-function>
-	  <fill-empty-function>empty</fill-empty-function>
 	</child>
       </children>
     </glade-widget-class>
@@ -456,7 +437,6 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
-	  <fill-empty-function>glade_gtk_dialog_fill_empty</fill-empty-function>
 
 	  <!-- That's supported, and IMO is the right way to handle          -->
 	  <!-- response-id (and it works), but it's not backwards compatible -->
@@ -480,6 +460,7 @@
     <glade-widget-class name="GtkVBox" generic-name="vbox" title="Vertical Box"/>
 
     <glade-widget-class name="GtkTable" generic-name="table" title="Table">
+      <post-create-function>empty</post-create-function>
       <properties>
 	<property id="n-rows" default="3" query="True">
 	  <set-function>glade_gtk_table_set_n_rows</set-function>
@@ -494,7 +475,6 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
 	    <property id="x-options">
 	      <displayable-values>
@@ -520,6 +500,7 @@
     <glade-widget-class name="GtkVPaned" generic-name="vpaned" title="Vertical Panes"/>
   
     <glade-widget-class name="GtkNotebook" generic-name="notebook" title="Notebook">
+      <post-create-function>empty</post-create-function>
       <properties>
 	<property id="pages" name="Number of pages" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
@@ -544,7 +525,6 @@
 	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_notebook_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
-	  <fill-empty-function>empty</fill-empty-function>
 	  <properties>
 	    <property id="tab-label" disabled="True"/>
 	    <property id="tab-pack">
@@ -584,7 +564,6 @@
 	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_frame_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_frame_replace_child</replace-child-function>
-	  <fill-empty-function>glade_gtk_frame_fill_empty</fill-empty-function>
 	</child>
       </children>
     </glade-widget-class>
@@ -672,13 +651,6 @@
 	  <get-function>glade_gtk_statusbar_get_has_resize_grip</get-function>
 	</property>
       </properties>
-
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
-	</child>
-      </children>
       <packing-defaults>
 	<parent-class name="GtkVBox">
 	  <child-property id="expand" default="false"/>
@@ -712,24 +684,10 @@
     
     <glade-widget-class name="GtkLayout" generic-name="layout" title="Layout">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
-
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
-	</child>
-      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkFixed" generic-name="fixed" title="Fixed">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
-
-      <children>
-	<child>
-	  <type>GtkWidget</type>
-	  <fill-empty-function>empty</fill-empty-function>
-	</child>
-      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkDrawingArea" generic-name="drawingarea" title="Drawing Area"/>
@@ -747,7 +705,6 @@
 	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_expander_add_child</add-child-function>
 	  <replace-child-function>glade_gtk_expander_replace_child</replace-child-function>
-	  <fill-empty-function>glade_gtk_expander_fill_empty</fill-empty-function>
 	</child>
       </children>
     </glade-widget-class>
@@ -830,7 +787,7 @@
     <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" title="Input Dialog"/>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" title="Message Dialog">
-      <post-create-function>glade_gtk_message_dialog_post_create</post-create-function>
+      <post-create-function>glade_gtk_dialog_post_create</post-create-function>
 
       <properties>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>

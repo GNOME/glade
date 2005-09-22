@@ -11,14 +11,24 @@
 G_BEGIN_DECLS
 
 
-#define GLADE_WIDGET_CLASS(gwc) ((GladeWidgetClass *) gwc)
-#define GLADE_IS_WIDGET_CLASS(gwc) (gwc != NULL)
+#define GLADE_WIDGET_CLASS(gwc)           ((GladeWidgetClass *) gwc)
+#define GLADE_IS_WIDGET_CLASS(gwc)        (gwc != NULL)
+#define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
 
 typedef struct _GladeWidgetClass       GladeWidgetClass;
 typedef struct _GladeSupportedChild    GladeSupportedChild;
 typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
+typedef enum   _GladeCreateReason      GladeCreateReason;
 
+enum   _GladeCreateReason 
+{
+	GLADE_CREATE_USER = 0,
+	GLADE_CREATE_COPY,
+	GLADE_CREATE_LOAD,
+	GLADE_CREATE_REASONS
+};
 
+/* Child support prototypes */
 typedef void (* GladeChildSetPropertyFunc) (GObject      *container,
 					    GObject      *child,
 					    const gchar  *property_name,
@@ -35,6 +45,16 @@ typedef void   (* GladeAddChildFunc)       (GObject      *parent,
 					    GObject      *child);
 typedef void   (* GladeRemoveChildFunc)    (GObject      *parent,
 					    GObject      *child);
+
+
+/* Class wide user prototypes */
+typedef void   (* GladePostCreateFunc)     (GObject           *gobject,
+					    GladeCreateReason  reason);
+
+typedef void   (* GladeGetInternalFunc)    (GObject      *parent,
+					    const gchar  *name,
+					    GObject     **child);
+
 
 /* GladeWidgetClass contains all the information we need regarding an widget
  * type. It is also used to store information that has been loaded to memory
@@ -81,16 +101,16 @@ struct _GladeWidgetClass
 	 * GladeWidgets associated with internal children. It's also the place
 	 * to set sane defaults, e.g. set the size of a window.
 	 */
-	void (*post_create_function) (GObject      *gobject);
+	GladePostCreateFunc    post_create_function;
 
 	/* Retrieves the the internal child of the given name.
 	 */
-	void (*get_internal_child)   (GObject      *parent,
-				      const gchar  *name,
-				      GObject     **child);
+	GladeGetInternalFunc   get_internal_child;
 
 	/* Is property_class of ancestor applicable to the widget? Usually property_class only
-	 * applies to direct children of a given ancestor */
+	 * applies to direct children of a given ancestor
+	 *  XXX Does this really get used ? -Tristan
+	 */
 	gboolean (*child_property_applies) (GtkWidget *ancestor,
 					    GtkWidget *widget,
 					    const gchar *property_id);
@@ -121,9 +141,6 @@ struct _GladeSupportedChild
 	GladeChildSetPropertyFunc     set_property; /* Sets/Gets a packing property */
 	GladeChildGetPropertyFunc     get_property; /* for this child */
 	
-	void      (* fill_empty)     (GObject      *container); /* Used for placeholders in
-								 * GtkContainers */
-
 	void      (* replace_child)  (GObject      *container,  /* This method replaces a  */
 				      GObject      *old,        /* child widget with */
 				      GObject      *new);       /* another one: it's used to
@@ -184,8 +201,6 @@ LIBGLADEUI_API void                 glade_widget_class_container_get_property   
 										   GObject      *child,
 										   const gchar  *property_name,
 										   GValue       *value);
-LIBGLADEUI_API void                 glade_widget_class_container_fill_empty       (GladeWidgetClass *class,
-										   GObject      *container);
 LIBGLADEUI_API void                 glade_widget_class_container_replace_child    (GladeWidgetClass *class,
 										   GObject      *container,
 										   GObject      *old,

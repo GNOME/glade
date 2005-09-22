@@ -979,6 +979,12 @@ glade_command_create (GladeWidgetClass *class,
 		return NULL;
 	}
 
+	/*  `widget' is created with an initial reference that belongs to "glade-3"
+	 *  (and is unreffed by GladeProject at close time); so add our own explicit
+	 *  reference here.
+	 */
+	g_object_ref (G_OBJECT (widget));
+	
 	GLADE_COMMAND (me)->description  =
 		g_strdup_printf (_("Create %s"), 
 				 cdata->widget->name);
@@ -1291,6 +1297,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	gchar                    *fmt = NULL;
 
 	g_return_if_fail (widgets && widgets->data);
+	g_return_if_fail (parent == NULL || GLADE_IS_WIDGET (parent));
+
 
 	/* Some prelimenary error checking here */
 	switch (type) {
@@ -1363,16 +1371,21 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 
 		/* Widget */
 		if (type == GLADE_COPY)
+		{
 			cdata->widget = glade_widget_dup (widget);
-		else
+			/* Copy or not, we need a reference for GladeCommand, and
+			 * a global reference for Glade.
+			 */
+			cdata->widget = g_object_ref (G_OBJECT (cdata->widget));
+		} else
 			cdata->widget = g_object_ref (G_OBJECT (widget));
-
+		
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
 		else if (type == GLADE_PASTE && placeholder)
 			cdata->parent = glade_placeholder_get_parent (placeholder);
-		else 
+		else if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
 			cdata->parent = parent;
 
 		/* Placeholder */

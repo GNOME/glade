@@ -189,33 +189,37 @@ glade_project_new (gboolean untitled)
 static void
 glade_project_list_unref (GList *original_list)
 {
-	GList *l = original_list;
-	while (l != NULL)
-	{
+	GList *l;
+	for (l = original_list; l; l = l->next)
 		g_object_unref (G_OBJECT (l->data));
-		l = l->next;
-	}
 
-	l = original_list;
-	if (l != NULL)
-		g_list_free (l);
+	if (original_list != NULL)
+		g_list_free (original_list);
 }
 
 static void
 glade_project_dispose (GObject *object)
 {
 	GladeProject *project = GLADE_PROJECT (object);
+	GList        *list;
+	GladeWidget  *gwidget;
+
+	glade_project_selection_clear (project, TRUE);
 
 	glade_project_list_unref (project->undo_stack);
 	project->undo_stack = NULL;
 
-	glade_project_list_unref (project->prev_redo_item);
-	project->prev_redo_item = NULL;
+	/* Remove objects from the project */
+	for (list = project->objects; list; list = list->next)
+	{
+		gwidget = glade_widget_get_from_gobject (list->data);
 
-	glade_project_list_unref (project->objects);
+		g_object_unref (G_OBJECT (list->data));
+		g_object_unref (G_OBJECT (gwidget));
+	}
 	project->objects = NULL;
 
-	g_object_unref (project->tooltips);
+	gtk_object_destroy (GTK_OBJECT (project->tooltips));
 	project->tooltips = NULL;
 
 	G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -228,7 +232,7 @@ glade_project_finalize (GObject *object)
 
 	g_free (project->name);
 	g_free (project->path);
-	
+
 	g_hash_table_destroy (project->widget_names_allocator);
 	g_hash_table_destroy (project->widget_old_names);
 
@@ -659,7 +663,9 @@ glade_project_selection_set (GladeProject *project,
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
-	g_return_if_fail (g_list_find (project->objects, object) != NULL);
+
+	if (g_list_find (project->objects, object) == NULL)
+		return;
 
 	if (glade_project_is_selected (project, object) == FALSE ||
 	    g_list_length (project->selection) != 1)

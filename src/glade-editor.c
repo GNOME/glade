@@ -2386,7 +2386,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 				  GtkTreeView *tree_view)
 {
 	GtkTreeStore  *model = (GtkTreeStore *)gtk_tree_view_get_model (tree_view);
-	GtkTreeIter    property_iter, general_iter, packing_iter, common_iter, *iter;
+	GtkTreeIter    property_iter, general_iter, common_iter, *iter;
 	GList         *list;
 	GladeProperty *property;
 	gboolean       def;
@@ -2417,6 +2417,9 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 	for (list = editor->loaded_widget->properties; list; list = list->next)
 	{
 		property = list->data;
+
+		if (glade_property_class_is_visible (property->class) == FALSE)
+			continue;
 		
 		if (property->class->common)
 			iter = &common_iter;
@@ -2436,39 +2439,6 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 				       COLUMN_NDEFAULT,  !def,
 				       COLUMN_DEFSTRING, _("(default)"),
 				       -1);
-	}
-
-	/* Packing */
-	if (editor->loaded_widget->packing_properties)
-	{
-		gtk_tree_store_append (model, &packing_iter, NULL);
-		gtk_tree_store_set    (model, &packing_iter,
-				       COLUMN_PROP_NAME, _("Packing"),
-				       COLUMN_PROPERTY,  NULL,
-				       COLUMN_PARENT,    TRUE,
-				       COLUMN_CHILD,     FALSE,
-				       COLUMN_DEFAULT,   FALSE,
-				       COLUMN_NDEFAULT,  FALSE,
-				       -1);
-		
-		for (list = editor->loaded_widget->packing_properties; list; list = list->next)
-		{
-			property = list->data;
-			
-			def = glade_property_default (property);
-
-			gtk_tree_store_append (model, &property_iter, &packing_iter);
-			gtk_tree_store_set    (model, &property_iter,
-					       COLUMN_ENABLED,   FALSE,
-					       COLUMN_PROP_NAME, property->class->name,
-					       COLUMN_PROPERTY,  property,
-					       COLUMN_PARENT,    FALSE,
-					       COLUMN_CHILD,     TRUE,
-					       COLUMN_DEFAULT,   def,
-					       COLUMN_NDEFAULT,  !def,
-					       COLUMN_DEFSTRING, _("(default)"),
-					       -1);
-		}
 	}
 }
 

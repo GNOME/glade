@@ -98,8 +98,7 @@ LIBGLADEUI_API GType                   glade_widget_get_type		    (void);
 LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *parent,
 									     GladeWidgetClass *klass,
 									     GladeProject     *project);
-LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidgetClass *klass,
-									     GladeWidget      *parent,
+LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *parent,
 									     GObject          *internal_object,
 									     const gchar      *internal_name);
 

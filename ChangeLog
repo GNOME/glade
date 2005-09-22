@@ -1,3 +1,24 @@
+2005-09-21  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.c, src/glade-project.c, src/glade-command.c, 
+	  src/glade-widget.c:
+	  Balanced out reference counts on GladeWidgets and their objects
+	  so that closing a project doesnt leek objects.
+
+	* src/glade-utils.c: Fixed pasting of toplevel widgets.
+	
+	* src/glade-gtk.c, src/glade-widget.[ch], src/glade-widget-class.[ch],
+	  widgets/gtk+.xml:
+	  - Removed concept of fill_empty functions, everything is done through
+	    post_create.
+	  - post_create now has a context specific arg `reason' (whether we are
+	    creating from USER/COPY/LOAD); when reason is USER (i.e. the first
+	    time it was created); then its time to do fill-empty work.
+
+	* src/glade-editor.c: Reset dialog now doesnt use packing props (cause
+	  it just doesn't make sence to), and now they dont show editor invisible
+	  properties (that was a bug).
+	
 2005-09-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-parse.h: Added CAST_BAD macro (BAD_CAST opposite).

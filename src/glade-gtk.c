@@ -529,7 +529,8 @@ static void
 glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 {
 	GladeWidget *widget;
-	GtkTable *table;
+	GtkTable    *table;
+	GList       *children, *placeholders, *l;
 	guint new_size;
 	guint old_size;
 	gint i, j;
@@ -557,6 +558,19 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 		gtk_table_resize (table, new_size, table->ncols);
 	else
 		gtk_table_resize (table, table->nrows, new_size);
+
+	/* Empty the old placeholders first */
+	children = gtk_container_get_children (GTK_CONTAINER (table));
+	for (placeholders = NULL, l = children; l; l = l->next)
+		if (GLADE_IS_PLACEHOLDER (l->data))
+			placeholders = g_list_prepend (placeholders, l->data);
+	for (l = placeholders; l; l = l->next)
+		gtk_container_remove (GTK_CONTAINER (table), GTK_WIDGET (l->data));
+
+	if (children)
+		g_list_free (children);
+	if (placeholders)
+		g_list_free (placeholders);
 
 	for (i = 0; i < table->ncols; i++)
 		for (j = 0; j < table->nrows; j++)
@@ -651,7 +665,7 @@ glade_gtk_table_verify_n_columns (GObject *object, GValue *value)
 	return glade_gtk_table_verify_n_common (object, value, FALSE);
 }
 
-static void
+static gboolean
 glade_gtk_button_ensure_glabel (GtkWidget *button)
 {
 	GladeWidgetClass *wclass;
@@ -681,23 +695,9 @@ glade_gtk_button_ensure_glabel (GtkWidget *button)
 	glade_widget_property_set_sensitive 
 		(gbutton, "stock", FALSE, 
 		 _("There must be no children in the button"));
-}
-
-static gboolean
-glade_gtk_button_ensure_glabel_idle (gpointer data)
-{
-	GladeWidget  *gbutton;
-	GtkWidget    *button;
-	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
-
-	gbutton = GLADE_WIDGET (data);
-	button  = GTK_WIDGET (gbutton->object);
-
-	glade_gtk_button_ensure_glabel (button);
-	glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
-				     G_OBJECT (button), TRUE);
 	return FALSE;
 }
+
 
 void GLADEGTK_API
 glade_gtk_button_set_stock (GObject *object, GValue *value)
@@ -724,7 +724,10 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 		{
 			glade_widget_property_set (gwidget, "use-stock", FALSE);
 			glade_widget_property_set (gwidget, "label", NULL);
-			g_idle_add (glade_gtk_button_ensure_glabel_idle, gwidget);
+
+			glade_gtk_button_ensure_glabel (GTK_WIDGET (gwidget->object));
+			glade_project_selection_set (GLADE_PROJECT (gwidget->project), 
+						     G_OBJECT (gwidget->object), TRUE);
 		}
 		else
 		{
@@ -986,7 +989,7 @@ glade_gtk_image_set_stock (GObject *object, GValue *value)
 }
 
 /* This function does absolutely nothing
- * (and is for use in overriding fill_empty functions).
+ * (and is for use in overriding post_create functions).
  */
 void GLADEGTK_API
 empty (GObject *container)
@@ -994,6 +997,33 @@ empty (GObject *container)
 }
 
 /* ------------------------- Post Create functions ------------------------- */
+void GLADEGTK_API
+glade_gtk_container_post_create (GObject *container, GladeCreateReason reason)
+{
+	GList *children;
+	g_return_if_fail (GTK_IS_CONTAINER (container));
+
+	if (reason == GLADE_CREATE_USER)
+	{
+		if ((children = gtk_container_get_children (GTK_CONTAINER (container))) == NULL)
+			gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
+		else
+			g_list_free (children);
+	}
+}
+
+void GLADEGTK_API
+glade_gtk_paned_post_create (GObject *paned, GladeCreateReason reason)
+{
+	g_return_if_fail (GTK_IS_PANED (paned));
+
+	if (reason == GLADE_CREATE_USER && gtk_paned_get_child1 (GTK_PANED (paned)) == NULL)
+		gtk_paned_add1 (GTK_PANED (paned), glade_placeholder_new ());
+	
+	if (reason == GLADE_CREATE_USER && gtk_paned_get_child2 (GTK_PANED (paned)) == NULL)
+		gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
+}
+
 void
 glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
 {
@@ -1018,10 +1048,13 @@ glade_gtk_fixed_layout_realize (GtkWidget *widget)
 }
 
 void GLADEGTK_API
-glade_gtk_fixed_layout_post_create (GObject *object)
+glade_gtk_fixed_layout_post_create (GObject *object, GladeCreateReason reason)
 {
 	GladeWidget *fixed_layout = 
 		glade_widget_get_from_gobject (object);
+
+	/* Only once please */
+	if (fixed_layout->manager != NULL) return;
 
 	/* Only widgets with windows can recieve
 	 * mouse events (I'm not sure if this is nescisary).
@@ -1041,17 +1074,23 @@ glade_gtk_fixed_layout_post_create (GObject *object)
 }
 
 void GLADEGTK_API
-glade_gtk_window_post_create (GObject *object)
+glade_gtk_window_post_create (GObject *object, GladeCreateReason reason)
 {
 	GtkWindow *window = GTK_WINDOW (object);
 
 	g_return_if_fail (GTK_IS_WINDOW (window));
 
+	/* Chain her up first */
+	glade_gtk_container_post_create (object, reason);
+
 	gtk_window_set_default_size (window, 440, 250);
 }
 
+/*
+ * XXX TODO: Support GtkMenu !
+ */
 void GLADEGTK_API
-glade_gtk_menu_bar_post_create (GObject *object)
+glade_gtk_menu_bar_post_create (GObject *object, GladeCreateReason reason)
 {
 	GtkMenuBar *menu_bar;
 	GtkWidget  *item;
@@ -1071,13 +1110,12 @@ glade_gtk_menu_bar_post_create (GObject *object)
 }
 
 void GLADEGTK_API
-glade_gtk_dialog_post_create (GObject *object)
+glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
 	GtkDialog *dialog = GTK_DIALOG (object);
 	GladeWidget *widget;
 	GladeWidget *vbox_widget;
 	GladeWidget *actionarea_widget;
-	GladeWidgetClass *child_class;
 
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
@@ -1086,81 +1124,54 @@ glade_gtk_dialog_post_create (GObject *object)
 		return;
 
 	/* create the GladeWidgets for internal children */
-	child_class = glade_widget_class_get_by_name ("GtkVBox");
-	if (!child_class)
-		return;
+	vbox_widget = glade_widget_new_for_internal_child
+		(widget, G_OBJECT(dialog->vbox), "vbox");
+	g_assert (vbox_widget);
 
-	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
-							   G_OBJECT(dialog->vbox), "vbox");
-	if (!vbox_widget)
-		return;
 
-	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
-	if (!child_class)
-		return;
+	actionarea_widget = glade_widget_new_for_internal_child
+		(vbox_widget, G_OBJECT(dialog->action_area), "action_area");
+	g_assert (actionarea_widget);
 
-	gtk_box_pack_start (GTK_BOX (dialog->action_area),
-			    GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (dialog->action_area),
-			    GTK_WIDGET (glade_placeholder_new ()), TRUE, TRUE, 0);
+	/*
+	if (GTK_IS_MESSAGE_DIALOG (dialog))
+	{
+		GList *children = 
+			gtk_container_get_children (GTK_CONTAINER (actionarea_widget->object));
 
-	actionarea_widget =
-		glade_widget_new_for_internal_child
-		(child_class, vbox_widget, G_OBJECT(dialog->action_area), "action_area");
-	if (!actionarea_widget)
-		return;
+		if (children)
+		{
+			glade_widget_property_set (actionarea_widget, "size", g_list_length (children));
+			g_list_free (children);
+		}
+	}
+	else
+	*/
+
+	/* Only set these on the original create. */
+	if (reason == GLADE_CREATE_USER)
+	{
+		glade_widget_property_set (vbox_widget, "size", 3);
+		glade_widget_property_set (actionarea_widget, "size", 2);
+		glade_widget_property_set (actionarea_widget, "layout-style", GTK_BUTTONBOX_END);
+	}
 
 	/* set a reasonable default size for a dialog */
-	gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
+	if (GTK_IS_MESSAGE_DIALOG (dialog))
+		gtk_window_set_default_size (GTK_WINDOW (object), 400, 115);
+	else
+		gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
 void GLADEGTK_API
-glade_gtk_message_dialog_post_create (GObject *object)
-{
-	GtkDialog   *dialog = GTK_DIALOG (object);
-	GladeWidget *widget;
-	GladeWidget *vbox_widget;
-	GladeWidget *actionarea_widget;
-	GladeWidgetClass *child_class;
-	
-	g_return_if_fail (GTK_IS_MESSAGE_DIALOG (dialog));
-
-	widget = glade_widget_get_from_gobject (GTK_WIDGET (dialog));
-	if (!widget)
-		return;
-
-	
-	/* create the GladeWidgets for internal children */
-	child_class = glade_widget_class_get_by_name ("GtkVBox");
-	if (!child_class)
-		return;
-
-	vbox_widget = glade_widget_new_for_internal_child (child_class, widget,
-							   G_OBJECT(dialog->vbox), "vbox");
-	if (!vbox_widget)
-		return;
-
-	child_class = glade_widget_class_get_by_name ("GtkHButtonBox");
-	if (!child_class)
-		return;
-
-	actionarea_widget =
-		glade_widget_new_for_internal_child
-		(child_class, vbox_widget, G_OBJECT(dialog->action_area), "action_area");
-	if (!actionarea_widget)
-		return;
-
-	
-	gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 115);
-}
-
-void GLADEGTK_API
-glade_gtk_tree_view_post_create (GObject *object)
+glade_gtk_tree_view_post_create (GObject *object, GladeCreateReason reason)
 {
 	GtkWidget *tree_view = GTK_WIDGET (object);
-	GtkTreeStore *store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+	GtkTreeStore *store;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
+
+	store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
 
 	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
 	g_object_unref (G_OBJECT (store));
@@ -1242,24 +1253,35 @@ glade_gtk_expander_create_idle (gpointer data)
 }
 
 void GLADEGTK_API
-glade_gtk_frame_post_create (GObject *frame)
+glade_gtk_frame_post_create (GObject *frame, GladeCreateReason reason)
 {
 	GladeWidget *gframe;
 
 	g_return_if_fail (GTK_IS_FRAME (frame));
-	if ((gframe = glade_widget_get_from_gobject (frame)) != NULL)
-		g_idle_add (glade_gtk_frame_create_idle, gframe);
+
+	/* Wait to be filled */
+	if (reason == GLADE_CREATE_USER)
+	{
+		glade_gtk_container_post_create (frame, reason);
+		if ((gframe = glade_widget_get_from_gobject (frame)) != NULL)
+			g_idle_add (glade_gtk_frame_create_idle, gframe);
+	}
 }
 
 void GLADEGTK_API
-glade_gtk_expander_post_create (GObject *expander)
+glade_gtk_expander_post_create (GObject *expander, GladeCreateReason reason)
 {
 	GladeWidget *gexpander;
 
 	g_return_if_fail (GTK_IS_EXPANDER (expander));
-	if ((gexpander = glade_widget_get_from_gobject (expander)) != NULL)
-		g_idle_add (glade_gtk_expander_create_idle, gexpander);
 
+	/* Wait to be filled */
+	if (reason == GLADE_CREATE_USER)
+	{
+		glade_gtk_container_post_create (expander, reason);
+		if ((gexpander = glade_widget_get_from_gobject (expander)) != NULL)
+			g_idle_add (glade_gtk_expander_create_idle, gexpander);
+	}
 }
 
 /* Use the font-buttons launch dialog to actually set the font-name
@@ -1306,7 +1328,7 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 }
 
 void GLADEGTK_API
-glade_gtk_button_post_create (GObject *button)
+glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 {
 	gboolean     use_stock = FALSE;
 	gchar       *label = NULL;
@@ -1345,9 +1367,15 @@ glade_gtk_button_post_create (GObject *button)
 		if (label != NULL && strcmp (label, "glade-none") != 0)
 			glade_widget_property_set (gbutton, "stock", eval->value);
 	} 
-	else
+	else if (reason == GLADE_CREATE_USER)
 	{
-		g_idle_add (glade_gtk_button_ensure_glabel_idle, gbutton);
+		/* We need to use an idle function so as not to screw up
+		 * the widget tree (i.e. the hierarchic order of widget creation
+		 * needs to be parent first child last).
+		 */
+		g_idle_add (glade_gtk_button_ensure_glabel, button);
+		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
+					     G_OBJECT (button), TRUE);
 	}
 	g_type_class_unref (eclass);
 }
@@ -1410,9 +1438,10 @@ glade_gtk_image_post_create_idle (GObject *image)
 
 
 void GLADEGTK_API
-glade_gtk_image_post_create (GObject *object)
+glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 {
 	g_return_if_fail (GTK_IS_IMAGE (object));
+
 	g_idle_add ((GSourceFunc)glade_gtk_image_post_create_idle, object);
 }
 
@@ -1574,58 +1603,6 @@ glade_gtk_button_replace_child (GtkWidget *container,
 			 _("There must be no children in the button"));
 }
 
-/* -------------------------- Fill Empty functions -------------------------- */
-void GLADEGTK_API
-glade_gtk_container_fill_empty (GObject *container)
-{
-	GList *children;
-	g_return_if_fail (GTK_IS_CONTAINER (container));
-
-	if ((children = gtk_container_get_children (GTK_CONTAINER (container))) == NULL)
-		gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
-	else
-		g_list_free (children);
-}
-
-void GLADEGTK_API
-glade_gtk_dialog_fill_empty (GObject *dialog)
-{
-	g_return_if_fail (GTK_IS_DIALOG (dialog));
-
-	/* add a placeholder in the vbox */
-	gtk_box_pack_start_defaults (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-				     glade_placeholder_new ());
-}
-
-void GLADEGTK_API
-glade_gtk_paned_fill_empty (GObject *paned)
-{
-	g_return_if_fail (GTK_IS_PANED (paned));
-
-	gtk_paned_add1 (GTK_PANED (paned), glade_placeholder_new ());
-	gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
-}
-
-void GLADEGTK_API
-glade_gtk_frame_fill_empty (GObject *frame)
-{
-	g_return_if_fail (GTK_IS_FRAME (frame));
-
-	if ((gtk_bin_get_child (GTK_BIN (frame))) == NULL)
-		gtk_container_add (GTK_CONTAINER (frame), glade_placeholder_new ());
-
-}
-
-void GLADEGTK_API
-glade_gtk_expander_fill_empty (GObject *expander)
-{
-	g_return_if_fail (GTK_IS_EXPANDER (expander));
-
-	if ((gtk_bin_get_child (GTK_BIN (expander))) == NULL)
-		gtk_container_add (GTK_CONTAINER (expander), glade_placeholder_new ());
-
-}
-
 /* ---------------------- Get Internal Child functions ---------------------- */
 void GLADEGTK_API
 glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
@@ -1742,20 +1719,14 @@ glade_gtk_notebook_add_child (GObject *object, GObject *child)
 	}
 	else
 	{
-		GladeProperty	*prop;
-
 		gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-		prop = glade_widget_get_property (
-			glade_widget_get_from_gobject (object), "pages");
-		g_value_set_int (prop->value, num_page + 1);
+		gwidget = glade_widget_get_from_gobject (object);
+		glade_widget_property_set (gwidget, "pages", num_page + 1);
 		
 		gwidget = glade_widget_get_from_gobject (child);
 		if (gwidget && gwidget->packing_properties)
-		{
-			prop = glade_widget_get_pack_property (gwidget, "position");
-			g_value_set_int (prop->value, num_page);
-		}
+			glade_widget_pack_property_set (gwidget, "position", num_page);
 	}
 }
 
@@ -1777,6 +1748,7 @@ glade_gtk_frame_add_child (GObject *object, GObject *child)
 	gchar *special_child_type;
 
 	special_child_type = g_object_get_data (child, "special-child-type");
+
 	if (special_child_type &&
 	    !strcmp (special_child_type, "label_item"))
 	{

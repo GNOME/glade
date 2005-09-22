@@ -556,9 +556,6 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 							  GLADE_TAG_CHILD_GET_PROP_FUNCTION,
 							  (void **)&child->get_property);
 			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_FILL_EMPTY_FUNCTION,
-							  (void **)&child->fill_empty);
-			glade_widget_class_load_function (child_node, widget_class->module,
 							  GLADE_TAG_REPLACE_CHILD_FUNCTION,
 							  (void **)&child->replace_child);
 		}
@@ -824,7 +821,6 @@ glade_widget_class_clone_child (GladeSupportedChild *child,
 	clone->get_all_children  = child->get_all_children;
 	clone->set_property      = child->set_property;
 	clone->get_property      = child->get_property;
-	clone->fill_empty        = child->fill_empty;
 	clone->replace_child     = child->replace_child;
 
 	clone->properties = glade_widget_class_list_child_properties (parent_class);
@@ -850,8 +846,6 @@ glade_widget_class_merge_child (GladeSupportedChild *widgets_child,
 		widgets_child->set_property     = parents_child->set_property;
 	if (!widgets_child->get_property)
 		widgets_child->get_property     = parents_child->get_property;
-	if (!widgets_child->fill_empty)
-		widgets_child->fill_empty       = parents_child->fill_empty;
 	if (!widgets_child->replace_child)
 		widgets_child->replace_child    = parents_child->replace_child;
 
@@ -1395,21 +1389,6 @@ glade_widget_class_container_get_property (GladeWidgetClass *class,
 		g_warning ("No support for type %s in %s",
 			   g_type_name (G_OBJECT_TYPE (child)),
 			   class->name);
-}
-
-void
-glade_widget_class_container_fill_empty (GladeWidgetClass *class,
-					 GObject          *container)
-{
-	GladeSupportedChild *support;
-	GList               *list;
-
-	for (list = class->children; list && list->data; list = list->next)
-	{
-		support = list->data;
-		if (support->fill_empty)
-			support->fill_empty (container);
-	}
 }
 
 void

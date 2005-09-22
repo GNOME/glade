@@ -619,12 +619,9 @@ void
 glade_app_remove_project (GladeApp *app, GladeProject *project)
 {
 	GList *list;
-	for (list = project->objects; list; list = list->next)
-	{
-		GObject *object = list->data;
-		if (GTK_IS_WIDGET (object) && GTK_WIDGET_TOPLEVEL (object))
-			gtk_widget_destroy (GTK_WIDGET(object));
-	}
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	app->priv->projects = g_list_remove (app->priv->projects, project);
 	
@@ -635,7 +632,6 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 	/* If no more projects */
 	if (app->priv->projects == NULL)
 	{
-		GList *list;
 		for (list = app->priv->views; list; list = list->next)
 		{
 			GladeProjectView *view;
@@ -645,9 +641,15 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 		}
 		glade_editor_load_widget (app->priv->editor, NULL);
 		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
-		return;
-	}
-	glade_app_set_project (app, app->priv->projects->data);
+	} 
+	else
+		glade_app_set_project (app, app->priv->projects->data);
+
+	/* Release project after disconnecting from view, so that
+	 * the glade-project-view has a project to g_signal_handler_disconnect()
+	 * from (without bothering with the trickyness of weak pointers and such).
+	 */
+	g_object_unref (project);
 }
 
 void
@@ -713,9 +715,10 @@ glade_app_command_paste (GladeApp *app)
 {
 	if (app->priv->active_project)
 	{
-		GList *list = glade_project_selection_get (app->priv->active_project);
+		GList       *list   = glade_project_selection_get (app->priv->active_project);
+		GladeWidget *parent = list ? glade_widget_get_from_gobject (list->data) : NULL;
 
-		glade_util_paste_clipboard (NULL, list ? list->data : NULL);
+		glade_util_paste_clipboard (NULL, parent);
 		/* Update UI. */
 		glade_app_update_ui (app);
 	}
