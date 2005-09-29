@@ -975,6 +975,15 @@ static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Tristan Van Berkom <tvb@gnome.org>",
 		  NULL };
 
+	gchar *translators =
+		_("Fatih Demir <kabalak@gtranslator.org>\n"
+		  "Christian Rose <menthos@menthos.com>\n"
+		  "Pablo Saratxaga <pablo@mandrakesoft.com>\n"
+		  "Duarte Loreto <happyguy_pt@hotmail.com>\n"
+		  "Zbigniew Chyla <cyba@gnome.pl>\n"
+		  "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+		  "Takeshi AIHANA <aihana@gnome.gr.jp>\n");
+
 	gchar *comments =
 		_("Glade is a User Interface Builder for GTK+ and GNOME.\n"
 		  "This version is a rewrite of the Glade 2.0.0 version, "
@@ -1000,6 +1009,7 @@ static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 	gtk_show_about_dialog (GTK_WINDOW (gpw->priv->window),
 			       "name",  PACKAGE_NAME,
 			       "authors", authors,
+			       "translator-credits", translators,
 			       "comments", comments,
 			       "license", license,
 			       "copyright", copyright,

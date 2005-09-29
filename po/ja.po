@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 HEAD\n"
-"POT-Creation-Date: 2005-08-29 17:21-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-09-29 12:54-0400\n"
 "PO-Revision-Date: 2005-05-22 10:51+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glade-3.desktop.in.h:1
 msgid "Design user interfaces"
@@ -52,70 +52,129 @@ msgstr ""
 msgid "Glade-3 GUI Builder"
 msgstr "Glade-3 GUI ビルダ"
 
-#: src/glade-editor.c:102
-msgid "General"
+#: src/glade-editor.c:114
+#, fuzzy
+msgid "_General"
 msgstr "全般"
 
-#: src/glade-editor.c:103
-msgid "Packing"
+#: src/glade-editor.c:115
+#, fuzzy
+msgid "_Packing"
 msgstr "パッキング"
 
-#: src/glade-editor.c:104
-msgid "Common"
+#: src/glade-editor.c:116
+#, fuzzy
+msgid "_Common"
 msgstr "共通"
 
-#: src/glade-editor.c:105
-msgid "Signals"
+#: src/glade-editor.c:117
+#, fuzzy
+msgid "_Signals"
 msgstr "シグナル"
 
-#: src/glade-editor.c:530
+#: src/glade-editor.c:128
+msgid "Reset..."
+msgstr ""
+
+#: src/glade-editor.c:581
 msgid "Set Flags"
 msgstr "フラグのセット"
 
-#: src/glade-editor.c:673
+#: src/glade-editor.c:728
 msgid "Edit Text Property"
 msgstr "テキスト・プロパティの編集"
 
 #. Text
-#: src/glade-editor.c:690
+#: src/glade-editor.c:745
 msgid "_Text:"
 msgstr "テキスト(_T):"
 
-#: src/glade-editor.c:726
+#: src/glade-editor.c:781
 msgid "T_ranslatable"
 msgstr "翻訳可能な文字列である(_R)"
 
-#: src/glade-editor.c:733
+#: src/glade-editor.c:788
 msgid "Has context _prefix"
 msgstr "コンテキストの接頭子を持つ(_P)"
 
 #. Comments.
-#: src/glade-editor.c:741
+#: src/glade-editor.c:796
 msgid "Co_mments for translators:"
 msgstr "<b>翻訳者へのコメント(_M):</b>"
 
-#: src/glade-editor.c:1046
+#: src/glade-editor.c:1139
 msgid "No"
 msgstr "いいえ"
 
 #. Name
-#: src/glade-editor.c:1213
+#: src/glade-editor.c:1313
 msgid "Name :"
 msgstr "名前 :"
 
 #. Class
-#: src/glade-editor.c:1238
+#: src/glade-editor.c:1338
 msgid "Class :"
 msgstr "クラス :"
 
-#: src/glade-editor.c:1355
+#: src/glade-editor.c:1460
 msgid "Edit Menus..."
 msgstr "メニューの編集..."
 
-#: src/glade-editor.c:2049
+#: src/glade-editor.c:2204
 #, c-format
 msgid "Create a %s"
 msgstr "%s を生成します"
+
+#: src/glade-editor.c:2349
+msgid "Reset"
+msgstr ""
+
+#: src/glade-editor.c:2363
+#, fuzzy
+msgid "Property"
+msgstr "プロパティ"
+
+#: src/glade-editor.c:2398
+msgid "General"
+msgstr "全般"
+
+#: src/glade-editor.c:2408
+msgid "Common"
+msgstr "共通"
+
+#: src/glade-editor.c:2440
+msgid "(default)"
+msgstr ""
+
+#: src/glade-editor.c:2455
+msgid "Select the properties that you want to reset to their default values"
+msgstr ""
+
+#: src/glade-editor.c:2587
+#, fuzzy
+msgid "Reset Widget Properties"
+msgstr "Glade プロパティの一覧"
+
+#. Checklist
+#: src/glade-editor.c:2604
+#, fuzzy
+msgid "_Properties:"
+msgstr "プロパティ"
+
+#: src/glade-editor.c:2633
+#, fuzzy
+msgid "_Select All"
+msgstr "選択(_S)"
+
+#: src/glade-editor.c:2640
+#, fuzzy
+msgid "_Unselect All"
+msgstr "選択(_S)"
+
+#. Description
+#: src/glade-editor.c:2649
+msgid "Property _Description:"
+msgstr ""
 
 #. the label defaults to "Selector"
 #: src/glade-palette.c:107 src/glade-palette.c:155 src/glade-palette.c:161
@@ -130,42 +189,42 @@ msgstr "選択(_S)"
 msgid "Widget"
 msgstr "ウィジット"
 
-#: src/glade-project-window.c:284
+#: src/glade-project-window.c:288
 msgid "Open..."
 msgstr "開く..."
 
-#: src/glade-project-window.c:301 src/glade-project-window.c:408
+#: src/glade-project-window.c:305 src/glade-project-window.c:412
 #, c-format
 msgid "A project named %s is already open"
 msgstr ""
 
-#: src/glade-project-window.c:323
+#: src/glade-project-window.c:327
 msgid ""
 "Are you sure you want to clear the\n"
 "list of recent projects?"
 msgstr ""
 
-#: src/glade-project-window.c:324
+#: src/glade-project-window.c:328
 msgid ""
 "If you clear the list of recent projects, they will be\n"
 "permanently deleted."
 msgstr ""
 
-#: src/glade-project-window.c:367 src/glade-project-window.c:437
+#: src/glade-project-window.c:371 src/glade-project-window.c:441
 #, c-format
 msgid "Project '%s' saved"
 msgstr "プロジェクト '%s' を保存しました"
 
 #. If instead we dont have a path yet, fire up a file selector
-#: src/glade-project-window.c:449
+#: src/glade-project-window.c:453
 msgid "Save..."
 msgstr "保存..."
 
-#: src/glade-project-window.c:455
+#: src/glade-project-window.c:459
 msgid "Save as ..."
 msgstr "別名で保存..."
 
-#: src/glade-project-window.c:469
+#: src/glade-project-window.c:473
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -178,46 +237,38 @@ msgstr ""
 "\n"
 "保存しない場合は、変更した内容を全て失うことになります。\n"
 
-#: src/glade-project-window.c:483
+#: src/glade-project-window.c:487
 msgid "_Close without Saving"
 msgstr "保存せずに閉じる(_C)"
 
-#: src/glade-project-window.c:510
+#: src/glade-project-window.c:514
 msgid "Save ..."
 msgstr "保存する..."
 
-#: src/glade-project-window.c:677
+#: src/glade-project-window.c:681
 msgid "Palette"
 msgstr "パレット"
 
-#: src/glade-project-window.c:749 src/glade-widget.c:187
+#: src/glade-project-window.c:753 src/glade-widget.c:187
 msgid "Properties"
 msgstr "プロパティ"
 
-#: src/glade-project-window.c:819
-msgid "Expand all"
+#: src/glade-project-window.c:832
+#, fuzzy
+msgid "E_xpand all"
 msgstr "全て広げる"
 
-#: src/glade-project-window.c:820
-msgid "Collapse all"
+#: src/glade-project-window.c:836
+#, fuzzy
+msgid "_Collapse all"
 msgstr "全てたたむ"
 
-#: src/glade-project-window.c:957 src/glade-project-window.c:959
-msgid "About Glade"
-msgstr "Glade について"
-
-#: src/glade-project-window.c:970
-msgid "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
-msgstr "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
-
-#: src/glade-project-window.c:975
+#: src/glade-project-window.c:979
+#, fuzzy
 msgid ""
-"Glade is a User Interface Builder for GTK+ and GNOME. \n"
+"Glade is a User Interface Builder for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2.0.0 version, original from Damon "
 "Chaplin\n"
-"\n"
-"<small>(C) 2001-2004 Ximian, Inc.\n"
-"(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
 msgstr ""
 "Glade は GTK+/GNOME 向けのユーザ・インタフェース・ビルダです。\n"
 "このバージョンは Glade 2.0系 (オリジナルの作者: Damon Chaplin氏) を作り直した"
@@ -226,66 +277,83 @@ msgstr ""
 "<small>(C) 2001-2004 Ximian, Inc.\n"
 "(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
 
-#: src/glade-project-window.c:1394
+#: src/glade-project-window.c:984
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as\n"
+"published by the Free Software Foundation; either version 2 of the\n"
+"License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA."
+msgstr ""
+
+#: src/glade-project-window.c:1421
 msgid "Could not create a new project."
 msgstr "新しいプロジェクトを生成できませんでした"
 
-#: src/glade-project-window.c:1422
+#: src/glade-project-window.c:1449
 msgid "Could not open project."
 msgstr "プロジェクトを開けませんでした"
 
-#: src/glade-project-window.c:1464
+#: src/glade-project-window.c:1491
 msgid "Nothing"
 msgstr "なし"
 
-#: src/glade-project-window.c:1508
+#: src/glade-project-window.c:1535
 msgid "_Undo: "
 msgstr "戻す(_U): "
 
-#: src/glade-project-window.c:1509
+#: src/glade-project-window.c:1536
 msgid "_Redo: "
 msgstr "やり直す(_R): "
 
-#: src/glade-property.c:457
+#: src/glade-property.c:466
 msgid "Enabled"
 msgstr ""
 
-#: src/glade-property.c:458
+#: src/glade-property.c:467
 msgid "If the property is optional, this is its enabled state"
 msgstr ""
 
-#: src/glade-property.c:464
+#: src/glade-property.c:473
 msgid "Sensitive"
 msgstr ""
 
-#: src/glade-property.c:465
+#: src/glade-property.c:474
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: src/glade-property.c:471
+#: src/glade-property.c:480
 #, fuzzy
 msgid "Comment"
 msgstr "共通"
 
-#: src/glade-property.c:472
+#: src/glade-property.c:481
 msgid "XXX FIXME: The translators comment ?"
 msgstr ""
 
-#: src/glade-property.c:478
+#: src/glade-property.c:487
 #, fuzzy
 msgid "Translatable"
 msgstr "翻訳可能な文字列である(_R)"
 
-#: src/glade-property.c:479 src/glade-property.c:486
+#: src/glade-property.c:488 src/glade-property.c:495
 msgid "Whether this property is translatable or not"
 msgstr ""
 
-#: src/glade-property.c:485
+#: src/glade-property.c:494
 #, fuzzy
 msgid "Has Context"
 msgstr "コンテキストの接頭子を持つ(_P)"
 
-#: src/glade-property-class.c:924
+#: src/glade-property-class.c:964
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"set\" "
@@ -294,7 +362,7 @@ msgstr ""
 "ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な set() 関数が必要です"
 "が、このクラスに関連するライブラリの中には存在しません。"
 
-#: src/glade-property-class.c:931
+#: src/glade-property-class.c:971
 #, c-format
 msgid ""
 "Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
@@ -303,7 +371,7 @@ msgstr ""
 "モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
 "る set() 関数 [%1$s] を取得できません: %5$s"
 
-#: src/glade-property-class.c:948 src/glade-property-class.c:969
+#: src/glade-property-class.c:988 src/glade-property-class.c:1009
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"get\" "
@@ -312,7 +380,7 @@ msgstr ""
 "ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な get() 関数が必要です"
 "が、このクラスに関連するライブラリの中には存在しません。"
 
-#: src/glade-property-class.c:955
+#: src/glade-property-class.c:995
 #, c-format
 msgid ""
 "Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
@@ -321,7 +389,7 @@ msgstr ""
 "モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
 "る get() 関数 [%1$s] を取得できません: %5$s"
 
-#: src/glade-property-class.c:976
+#: src/glade-property-class.c:1016
 #, c-format
 msgid ""
 "Unable to get the \"verify\" function [%s] of the property [%s] of the "
@@ -330,23 +398,23 @@ msgstr ""
 "モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
 "る verify() 関数 [%1$s] を取得できません: %5$s"
 
-#: src/glade-signal-editor.c:528
+#: src/glade-signal-editor.c:530
 msgid "Signal"
 msgstr "シグナル"
 
-#: src/glade-signal-editor.c:541
+#: src/glade-signal-editor.c:543
 msgid "Handler"
 msgstr "ハンドラ"
 
-#: src/glade-signal-editor.c:558
+#: src/glade-signal-editor.c:560
 msgid "User data"
 msgstr "ユーザ・データ"
 
-#: src/glade-signal-editor.c:571
+#: src/glade-signal-editor.c:573
 msgid "Lookup"
 msgstr "検索"
 
-#: src/glade-signal-editor.c:582
+#: src/glade-signal-editor.c:584
 msgid "After"
 msgstr "後で呼び出す"
 
@@ -360,28 +428,28 @@ msgstr "シンボル \"%s\" が見つかりませんでした"
 msgid "Could not get the type from \"%s"
 msgstr "\"%s\" から型を取得できませんでした"
 
-#: src/glade-utils.c:1045
+#: src/glade-utils.c:1047
 msgid "Unable to paste to multiple widgets"
 msgstr "複数のウィジットへ貼り付けできません"
 
-#: src/glade-utils.c:1053
+#: src/glade-utils.c:1055
 msgid "No widget selected on the clipboard"
 msgstr "クリップボード・ウィンドウでウィジットが選択されていません"
 
-#: src/glade-utils.c:1068
+#: src/glade-utils.c:1071
 #, c-format
 msgid "Unable to paste widget %s to parent %s"
 msgstr "ウィジット %s を親ウィジット %s へ貼り付けできません"
 
-#: src/glade-utils.c:1087
+#: src/glade-utils.c:1093
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 
-#: src/glade-utils.c:1096
+#: src/glade-utils.c:1102
 msgid "Insufficient amount of placeholders in target container"
 msgstr "ターゲットのコンテナのプレイスフォルダの大きさが十分ではありません"
 
-#: src/glade-utils.c:1144 src/glade-utils.c:1175 src/glade-utils.c:1205
+#: src/glade-utils.c:1150 src/glade-utils.c:1181 src/glade-utils.c:1211
 msgid "No widget selected!"
 msgstr "ウィジットを選択して下さい！"
 
@@ -437,14 +505,20 @@ msgstr "親クラス"
 msgid "A pointer to the parenting GladeWidget"
 msgstr "親ウィジットの GladeWideget へのポインタです"
 
-#: src/glade-widget-class.c:958 src/glade-widget-class.c:970
+#: src/glade-widget-class.c:952 src/glade-widget-class.c:964
 msgid "Not enough memory."
 msgstr "メモリが足りません"
 
-#: src/glade-widget-class.c:980
+#: src/glade-widget-class.c:974
 #, c-format
 msgid "Unable to open the module %s."
 msgstr "モジュール %s を開けません"
+
+#~ msgid "About Glade"
+#~ msgstr "Glade について"
+
+#~ msgid "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
+#~ msgstr "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
 
 #~ msgid "Widget Tree"
 #~ msgstr "ウィジット・ツリー"
