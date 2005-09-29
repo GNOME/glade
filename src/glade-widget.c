@@ -308,6 +308,53 @@ glade_widget_debug (GladeWidget *widget)
 	glade_widget_debug_real (widget, 0);
 }
 
+
+static void
+glade_widget_save_coords (GladeWidget *widget)
+{
+	if (GTK_IS_WINDOW (widget->object))
+	{
+		gtk_window_get_position (GTK_WINDOW (widget->object),
+					 &(widget->save_x), &(widget->save_y));
+		widget->pos_saved = TRUE;
+	}
+}
+
+void
+glade_widget_show (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/* Position window at saved coordinates or in the center */
+	if (GTK_IS_WINDOW (widget->object))
+	{
+		if (widget->pos_saved)
+			gtk_window_move (GTK_WINDOW (widget->object), 
+					 widget->save_x, widget->save_y);
+		else
+			gtk_window_set_position (GTK_WINDOW (widget->object), 
+						 GTK_WIN_POS_CENTER);
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
+		gtk_window_present (GTK_WINDOW (widget->object));
+	} else if (GTK_IS_WIDGET (widget->object)) {
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
+	}
+	widget->visible = TRUE;
+}
+
+void
+glade_widget_hide (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	if (GTK_IS_WINDOW (widget->object))
+	{
+		/* Save coordinates */
+		glade_widget_save_coords (widget);
+		gtk_widget_hide (GTK_WIDGET (widget->object));
+	}
+	widget->visible = FALSE;
+}
+
 static void
 glade_widget_copy_packing_props (GladeWidget *parent,
 				 GladeWidget *child,
@@ -637,19 +684,15 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 		    (get_internal = 
 		     glade_widget_get_internal_func (parent, &internal_parent)) != NULL)
 		{
-
 			/* We cant use "parent" here, we have to recurse up the hierarchy to find
 			 * the "parent" that has `get_internal_child' support (i.e. internal children
 			 * may have depth).
 			 */
 			get_internal (internal_parent->object, template->internal, &internal_object);
-
 			g_assert (internal_object);
 			
 			gwidget = glade_widget_get_from_gobject (internal_object);
-
 			g_assert (gwidget);
-
 		}
 		else g_error ("Internal widget found without get_internal() support.");
 	}
@@ -734,6 +777,84 @@ glade_widget_dup (GladeWidget *template)
 }
 
 
+/* recursive functions need to be prototyped */
+static void glade_widget_transport_children (GladeWidget  *gwidget,
+					     GObject      *from_container,
+					     GObject      *to_container);
+
+/*
+ * Transports all children from from_container to to_container
+ */
+static void
+glade_widget_transport_children (GladeWidget  *gwidget,
+				 GObject      *from_container,
+				 GObject      *to_container)
+{
+	GladeWidget           *gparent = glade_widget_get_from_gobject (to_container);
+	GladeGetInternalFunc   get_internal;
+	GList                 *list, *children;
+
+	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
+								   from_container)) != NULL)
+	{
+		for (list = children; list && list->data; list = list->next)
+		{
+			GObject     *child   = G_OBJECT(list->data), *internal_object = NULL;
+			GladeWidget *gchild  = glade_widget_get_from_gobject (child);
+			GladeWidget *gchild_new, *internal_parent;
+
+			if (gchild && gchild->internal)
+			{
+				/*
+				 * Recurse for internal children
+				 */
+				if ((get_internal = glade_widget_get_internal_func (gwidget, &internal_parent)) == NULL)
+					g_error ("No internal child search function provided for internal child %s "
+						 "of widget class %s", gchild->internal, gwidget->widget_class->name);
+				
+				get_internal (internal_parent->object, gchild->internal, &internal_object);
+				g_assert (internal_object);
+				
+				gchild_new = glade_widget_get_from_gobject (internal_object);
+				g_assert (gchild_new);
+
+
+				glade_widget_transport_children (gchild_new,       // New internal GladeWidget
+								 child,            // Old internal object (from container)
+								 internal_object); // New internal object (to container)
+
+			}
+			else if (gchild || GLADE_IS_PLACEHOLDER (child))
+			{
+				/* If this widget is a container, all children get a temporary
+				 * reference and are moved from the old container, to the new
+				 * container and thier child properties are applied.
+				 */
+				g_object_ref(child);
+
+				glade_widget_class_container_remove (gwidget->widget_class,
+								     from_container, child);
+
+				/* The GladeWidget hierarchy must be maintained at this point...
+				 * add_child functions may grok packing properties for example.
+				 */
+				if (gchild) glade_widget_set_parent (gchild, gparent);
+
+				glade_widget_class_container_add    (gwidget->widget_class,
+								     to_container, child);
+				
+				g_object_unref(child);
+			}
+
+			if (gchild)
+				glade_widget_sync_packing_props (gchild);
+
+		}
+		g_list_free (children);
+	}
+}
+
+
 /**
  * glade_widget_rebuild:
  * @glade_widget: a #GladeWidget
@@ -747,7 +868,14 @@ void
 glade_widget_rebuild (GladeWidget *glade_widget)
 {
 	GObject          *new_object, *old_object;
-	GladeWidgetClass *klass = glade_widget->widget_class;
+	GladeWidgetClass *klass;
+
+	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+
+	klass = glade_widget->widget_class;
+
+	/* Save coordinates incase its a toplevel */
+	glade_widget_save_coords (glade_widget);
 
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
@@ -757,6 +885,21 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 
 	glade_widget_set_object(glade_widget, new_object);
 	
+	/* Only call this once the object has a proper GladeWidget */
+	if (klass->post_create_function) 
+		klass->post_create_function (G_OBJECT(new_object), GLADE_CREATE_REBUILD);
+
+	/* Replace old object with new object in parent
+	 */
+	if (glade_widget->parent)
+		glade_widget_class_container_replace_child
+			(glade_widget->parent->widget_class,
+			 glade_widget->parent->object,
+			 old_object, new_object);
+
+	/* Reparent any children of the old object to the new object */
+	glade_widget_transport_children (glade_widget, old_object, new_object);
+
 	/* Custom properties aren't transfered in build_object, since build_object
 	 * is only concerned with object creation.
 	 */
@@ -772,10 +915,13 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 		 * (otherwise I'd prefer g_object_unref() )
 		 */
 		gtk_widget_destroy  (GTK_WIDGET(old_object));
-		gtk_widget_show_all (GTK_WIDGET(new_object));
 	}
 	else
 		g_object_unref (old_object);
+
+	/* We shouldnt show if its not already visible */
+	if (glade_widget->visible)
+		glade_widget_show (glade_widget);
 }
 
 
@@ -866,42 +1012,6 @@ glade_widget_dispose (GObject *object)
  	if (G_OBJECT_CLASS(parent_class)->dispose)
 		G_OBJECT_CLASS(parent_class)->dispose(object);
 }
-
-void
-glade_widget_show (GladeWidget *widget)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	/* Position window at saved coordinates or in the center */
-	if (GTK_IS_WINDOW (widget->object))
-	{
-		if (widget->pos_saved)
-			gtk_window_move (GTK_WINDOW (widget->object), 
-					 widget->save_x, widget->save_y);
-		else
-			gtk_window_set_position (GTK_WINDOW (widget->object), 
-						 GTK_WIN_POS_CENTER);
-		gtk_widget_show_all (GTK_WIDGET (widget->object));
-		gtk_window_present (GTK_WINDOW (widget->object));
-	} else if (GTK_IS_WIDGET (widget->object)) {
-		gtk_widget_show_all (GTK_WIDGET (widget->object));
-	}
-}
-
-void
-glade_widget_hide (GladeWidget *widget)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	if (GTK_IS_WINDOW (widget->object))
-	{
-		/* Save coordinates */
-		gtk_window_get_position (GTK_WINDOW (widget->object),
-					 &(widget->save_x), &(widget->save_y));
-		widget->pos_saved = TRUE;
-		gtk_widget_hide (GTK_WIDGET (widget->object));
-	}
-}
-
 
 /**
  * glade_widget_add_signal_handler:
@@ -1790,40 +1900,6 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 	}
 }
 
-/*
- * Transports all children from from_container to to_container
- */
-static void
-glade_widget_transport_children (GladeWidget  *gwidget,
-				 GObject      *from_container,
-				 GObject      *to_container)
-{
-	GList *list, *children;
-
-	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
-								   from_container)) != NULL)
-	{
-		for (list = children; list && list->data; list = list->next)
-		{
-			GObject     *child  = G_OBJECT(list->data);
-			GladeWidget *gchild = glade_widget_get_from_gobject (child);
-			/* If this widget is a container, all children get a temporary
-			 * reference and are moved from the old container, to the new
-			 * container and thier child properties are applied.
-			 */
-			g_object_ref(child);
-			glade_widget_class_container_remove (gwidget->widget_class,
-							     from_container, child);
-			glade_widget_class_container_add    (gwidget->widget_class,
-							     to_container, child);
-			glade_widget_sync_packing_props     (gchild);
-
-			g_object_unref(child);
-		}
-		g_list_free (children);
-	}
-}
-
 /**
  * glade_widget_set_object:
  * @gwidget:
@@ -1866,20 +1942,6 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 					  G_CALLBACK (glade_widget_popup_menu), NULL);
 
 			glade_widget_connect_signal_handlers (GTK_WIDGET(new_object), NULL);
-		}
-		
-		/* Take care of hierarchy here
-		 */
-		if (old_object)
-		{
-			if (gwidget->parent)
-			{
-				glade_widget_class_container_replace_child
-					(gwidget->parent->widget_class,
-					 gwidget->parent->object,
-					 old_object, new_object);
-			}
-			glade_widget_transport_children (gwidget, old_object, new_object);
 		}
 	}
 
@@ -2033,13 +2095,15 @@ glade_widget_set_parent (GladeWidget *widget,
 	 */
 	if (widget->object && parent != NULL &&
 	    glade_widget_class_container_has_child 
-	    (parent->widget_class, parent->object, widget->object) &&
-	    (old_parent == NULL || widget->packing_properties == NULL ||
-	     old_parent->widget_class->type != parent->widget_class->type))
-		glade_widget_set_packing_properties (widget, parent);
-	else
-		glade_widget_sync_packing_props (widget);
-	
+	    (parent->widget_class, parent->object, widget->object))
+	{
+		if (old_parent == NULL || widget->packing_properties == NULL ||
+		    old_parent->widget_class->type != parent->widget_class->type)
+			glade_widget_set_packing_properties (widget, parent);
+		else
+			glade_widget_sync_packing_props (widget);
+	}
+	    
 	g_object_notify (G_OBJECT (widget), "parent");
 }
 

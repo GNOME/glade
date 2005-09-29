@@ -1,3 +1,16 @@
+2005-09-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c:
+	  - Fixed glade_gtk_box_set_size in regards to internal children.
+	  - Enhanced dialog post_creation (fixed GtkBox sizes etc, handle message dialog
+	    differently).
+
+	* src/glade-widget-class.h: Added create reasong GLADE_CREATE_REBUILD.
+
+	* src/glade-widget.c: Fixed glade_widget_rebuild() to work with composite 
+	    widgets and internal children, now glade_widget_transport_children will 
+	    recurse and transport and children of internal child containers.
+
 2005-09-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.c, src/glade-project.c, src/glade-command.c, 

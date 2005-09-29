@@ -280,8 +280,12 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	{
 		GtkWidget *child_widget = ((GtkBoxChild *) (child->data))->widget;
 
-		if (glade_widget_get_from_gobject (child_widget))
-			/* In this case, refuse to shrink */
+		/* Refuse to remove any widgets that are either GladeWidget objects
+		 * or internal to the hierarchic entity (may be a composite widget,
+		 * not all internal widgets have GladeWidgets).
+		 */
+		if (glade_widget_get_from_gobject (child_widget) ||
+		    GLADE_IS_PLACEHOLDER (child_widget) == FALSE)
 			break;
 
 		gtk_container_remove (GTK_CONTAINER (box), child_widget);
@@ -1112,7 +1116,7 @@ glade_gtk_menu_bar_post_create (GObject *object, GladeCreateReason reason)
 void GLADEGTK_API
 glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
-	GtkDialog *dialog = GTK_DIALOG (object);
+	GtkDialog   *dialog = GTK_DIALOG (object);
 	GladeWidget *widget;
 	GladeWidget *vbox_widget;
 	GladeWidget *actionarea_widget;
@@ -1151,7 +1155,11 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	/* Only set these on the original create. */
 	if (reason == GLADE_CREATE_USER)
 	{
-		glade_widget_property_set (vbox_widget, "size", 3);
+		if (GTK_IS_MESSAGE_DIALOG (dialog))
+			glade_widget_property_set (vbox_widget, "size", 2);
+		else
+			glade_widget_property_set (vbox_widget, "size", 3);
+
 		glade_widget_property_set (actionarea_widget, "size", 2);
 		glade_widget_property_set (actionarea_widget, "layout-style", GTK_BUTTONBOX_END);
 	}
@@ -1373,7 +1381,7 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 		 * the widget tree (i.e. the hierarchic order of widget creation
 		 * needs to be parent first child last).
 		 */
-		g_idle_add (glade_gtk_button_ensure_glabel, button);
+		g_idle_add ((GSourceFunc)glade_gtk_button_ensure_glabel, button);
 		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
 					     G_OBJECT (button), TRUE);
 	}

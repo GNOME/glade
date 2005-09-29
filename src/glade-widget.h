@@ -74,6 +74,10 @@ struct _GladeWidget
 				     * this is the add/remove/create management code.
 				     */
 
+	gboolean   visible; /* Local copy of widget visibility, we need to keep track of this
+			     * since the objects copy may be invalid due to a rebuild.
+			     */
+
 
 	/* Save toplevel positions */
 	gint      save_x;
