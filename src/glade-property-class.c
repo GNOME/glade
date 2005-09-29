@@ -723,7 +723,7 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gi
 GtkAdjustment *
 glade_property_class_make_adjustment (GladePropertyClass *property_class)
 {
-	gdouble        min, max, def;
+	gdouble        min = 0, max = 0, def = 0;
 	gboolean       float_range = FALSE;
 
 	g_return_val_if_fail (property_class        != NULL, NULL);
