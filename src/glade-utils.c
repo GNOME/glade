@@ -1031,7 +1031,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 {
 	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
 	GList              *list;
-	GladeWidget        *widget;
+	GladeWidget        *widget = NULL;
 	gint                gtkcontainer_relations = 0;
 
 	g_return_if_fail (placeholder == NULL || GLADE_IS_PLACEHOLDER (placeholder));
