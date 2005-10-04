@@ -1566,7 +1566,7 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 	glade_editor_load_common_page  (editor, class);
 	glade_editor_load_signal_page  (editor, class);
 	
-	if (class->launch_editor)
+	if (class && class->launch_editor)
 		gtk_widget_show (editor->launch_button);
 	else
 		gtk_widget_hide (editor->launch_button);

@@ -1,5 +1,10 @@
 2005-10-04  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-editor.c: Follow up commit, was segfaulting when
+	  setting editor empty.
+
+2005-10-04  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-widget-class.[ch], src/glade-gtk.c, src/glade.h,
 	  widgets/gtk+:
 	  - Removed child_property_applies concept, as I feel that
