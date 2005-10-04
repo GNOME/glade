@@ -93,6 +93,10 @@ struct _GladeEditor
 			   * the name has not really changed, just a new name
 			   * was loaded.
 			   */
+
+	GtkWidget *launch_button; /* Button used to launch custom editors implemented
+				   * through the plugin backend.
+				   */
 };
 
 struct _GladeEditorClass

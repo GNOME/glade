@@ -49,12 +49,14 @@ typedef void   (* GladeRemoveChildFunc)    (GObject      *parent,
 
 
 /* Class wide user prototypes */
-typedef void   (* GladePostCreateFunc)     (GObject           *gobject,
+typedef void   (* GladePostCreateFunc)     (GObject           *object,
 					    GladeCreateReason  reason);
 
 typedef void   (* GladeGetInternalFunc)    (GObject      *parent,
 					    const gchar  *name,
 					    GObject     **child);
+
+typedef void   (* GladeEditorLaunchFunc)   (GObject      *object);
 
 
 /* GladeWidgetClass contains all the information we need regarding an widget
@@ -108,13 +110,9 @@ struct _GladeWidgetClass
 	 */
 	GladeGetInternalFunc   get_internal_child;
 
-	/* Is property_class of ancestor applicable to the widget? Usually property_class only
-	 * applies to direct children of a given ancestor
-	 *  XXX Does this really get used ? -Tristan
+	/* Entry point for custom editors.
 	 */
-	gboolean (*child_property_applies) (GtkWidget *ancestor,
-					    GtkWidget *widget,
-					    const gchar *property_id);
+	GladeEditorLaunchFunc  launch_editor;
 };
 
 struct _GladeSupportedChild

@@ -163,6 +163,7 @@
 
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" title="Menu Bar">
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
+      <launch-editor-function>glade_gtk_menu_bar_launch_editor</launch-editor-function>
       <!-- menubar is a container you can't add placeholders to it -->
       <packing-defaults>
 	<parent-class name="GtkVBox">

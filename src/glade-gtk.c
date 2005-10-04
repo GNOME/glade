@@ -1113,6 +1113,23 @@ glade_gtk_menu_bar_post_create (GObject *object, GladeCreateReason reason)
 	gtk_menu_bar_append (menu_bar, item);
 }
 
+void
+glade_gtk_menu_bar_launch_editor (GObject *menubar)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_dialog_new_with_buttons
+		("Custom editor entry point", NULL,
+		 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
+		 GTK_DIALOG_NO_SEPARATOR,
+		 GTK_STOCK_OK, GTK_RESPONSE_OK,
+		 NULL);
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (dialog);
+}
+
 void GLADEGTK_API
 glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
@@ -1629,26 +1646,6 @@ glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
 		child_widget = NULL;
 
 	*child = child_widget;
-}
-
-int GLADEGTK_API
-glade_gtk_dialog_child_property_applies (GtkWidget *ancestor,
-					 GtkWidget *widget,
-					 const char *property_id)
-{
-	g_return_val_if_fail (GTK_IS_DIALOG (ancestor), FALSE);
-
-	if (strcmp(property_id, "response-id") == 0)
-	{
-		if (GTK_IS_HBUTTON_BOX (widget->parent) &&
-		    GTK_IS_VBOX (widget->parent->parent) &&
-		    widget->parent->parent->parent == ancestor)
-			return TRUE;
-	}
-	else if (widget->parent == ancestor)
-		return TRUE;
-
-	return FALSE;
 }
 
 void GLADEGTK_API

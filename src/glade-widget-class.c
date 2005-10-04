@@ -595,9 +595,9 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 						  (void **)&widget_class->get_internal_child);
 
 		glade_widget_class_load_function (node, widget_class->module,
-						  GLADE_TAG_CHILD_PROPERTY_APPLIES_FUNCTION,
+						  GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
 						  (void **)
-						  &widget_class->child_property_applies);
+						  &widget_class->launch_editor);
 	}
 
 	/* if we found a <properties> tag on the xml file, we add the properties
@@ -915,8 +915,8 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 	if (widget_class->get_internal_child == NULL)
 		widget_class->get_internal_child = parent_class->get_internal_child;
 
-	if (widget_class->child_property_applies == NULL)
-		widget_class->child_property_applies = parent_class->child_property_applies;
+	if (widget_class->launch_editor == NULL)
+		widget_class->launch_editor = parent_class->launch_editor;
 
 	/* merge the parent's properties */
 	glade_widget_class_merge_properties
@@ -1056,7 +1056,6 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 	widget_class->signals    = glade_widget_class_list_signals (widget_class);
 	widget_class->children   = glade_widget_class_list_children (widget_class);
 	widget_class->icon       = glade_widget_class_create_icon (widget_class);
-	widget_class->child_property_applies = glade_widget_class_direct_children;
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;

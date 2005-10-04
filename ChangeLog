@@ -1,5 +1,18 @@
 2005-10-04  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-widget-class.[ch], src/glade-gtk.c, src/glade.h,
+	  widgets/gtk+:
+	  - Removed child_property_applies concept, as I feel that
+	    the approach for response-id is a hack and very specific
+	    (also unused), we'll fix it properly and think it out...
+	    for now its cleanup.
+	  - Added custom editor entry point and added dialog in plugin
+	    just as an example editor entry point.
+
+	* src/glade-editor.c: Added button/logic for custom editor entrypoints.
+
+2005-10-04  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-utils.c: Fixed use of uninitialized variable.
 
 2005-09-29  Tristan Van Berkom <tvb@gnome.org>

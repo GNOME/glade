@@ -104,7 +104,15 @@ glade_editor_on_reset_click (GtkButton *button,
 {
 	glade_editor_reset_dialog (editor);
 }
-	
+
+static void
+glade_editor_on_launch_click (GtkButton *button,
+			     GladeEditor *editor)
+{
+	g_assert (editor->loaded_class->launch_editor);
+	editor->loaded_class->launch_editor (editor->loaded_widget->object);
+}
+
 static void
 glade_editor_init (GladeEditor *editor)
 {
@@ -122,13 +130,22 @@ glade_editor_init (GladeEditor *editor)
 
 	hbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
-		
 	gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
-		
-	button = gtk_button_new_with_mnemonic (_("Reset..."));
+
+	/* Custom editor button
+	 */
+	editor->launch_button = gtk_button_new_with_mnemonic (_("_Edit..."));
+	gtk_container_set_border_width (GTK_CONTAINER (editor->launch_button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+	gtk_box_pack_start (GTK_BOX (hbox), editor->launch_button, FALSE, TRUE, 0);
+	g_signal_connect (G_OBJECT (editor->launch_button), "clicked",
+			  G_CALLBACK (glade_editor_on_launch_click), editor);
+
+	/* Reset button
+	 */
+	button = gtk_button_new_with_mnemonic (_("_Reset..."));
 	gtk_container_set_border_width (GTK_CONTAINER (button), 
 					GLADE_GENERIC_BORDER_WIDTH);
-		
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
@@ -1383,26 +1400,6 @@ glade_editor_table_append_items (GladeEditorTable *table,
 	return TRUE;
 }
 
-static void
-glade_editor_on_edit_menu_click (GtkButton *button, GladeEditor *editor)
-{
-	GtkWidget *menubar;
-	GtkWidget *menu_editor;
-	GladeProject *project;
-
-	g_return_if_fail (GLADE_IS_EDITOR (editor));
-	g_return_if_fail (editor->loaded_widget != NULL);
-
-	menubar = GTK_WIDGET(editor->loaded_widget->object);
-	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
-
-	project = GLADE_PROJECT (glade_widget_get_project (editor->loaded_widget));
-	g_return_if_fail (project != NULL);
-
-	menu_editor = glade_menu_editor_new (project, GTK_MENU_SHELL (menubar));
-	gtk_widget_show (GTK_WIDGET (menu_editor));
-}
-
 #define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 
 static GladeEditorTable *
@@ -1430,7 +1427,6 @@ glade_editor_table_create (GladeEditor *editor,
 			   GladeEditorTableType type)
 {
 	GladeEditorTable *table;
-	GtkWidget        *hbox, *button;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR (editor), NULL);
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
@@ -1449,25 +1445,6 @@ glade_editor_table_create (GladeEditor *editor,
 	if (!glade_editor_table_append_items (table, class,
 					      &table->properties, type))
 		return NULL;
-
-	if (type == TABLE_TYPE_GENERAL)
-	{
-		
-		/* Hack: We don't have currently a way to put a "Edit Menus..." button through the
-		 * xml files. */
-		if (!strcmp (class->name, "GtkMenuBar")) {
-			
-			button = gtk_button_new_with_label (_("Edit Menus..."));
-			gtk_container_set_border_width (GTK_CONTAINER (button), 
-							GLADE_GENERIC_BORDER_WIDTH);
-			
-			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
-			
-			g_signal_connect (G_OBJECT (button), "clicked",
-					  G_CALLBACK (glade_editor_on_edit_menu_click), editor);
-			table->rows++;
-		}
-	}
 
 	gtk_widget_show_all (table->table_widget);
 
@@ -1588,7 +1565,12 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 	glade_editor_load_widget_page  (editor, class);
 	glade_editor_load_common_page  (editor, class);
 	glade_editor_load_signal_page  (editor, class);
-
+	
+	if (class->launch_editor)
+		gtk_widget_show (editor->launch_button);
+	else
+		gtk_widget_hide (editor->launch_button);
+	
 	editor->loaded_class = class;
 }
 
