@@ -382,6 +382,7 @@ glade_app_init (GladeApp *app)
 	g_object_ref (app->priv->editor);
 	gtk_object_sink (GTK_OBJECT (app->priv->editor));
 	gtk_widget_show_all (GTK_WIDGET (app->priv->editor));
+	glade_editor_refresh (app->priv->editor);
 	
 	/* Create clipboard */
 	app->priv->clipboard = glade_clipboard_new ();

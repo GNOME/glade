@@ -2101,7 +2101,7 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
 	/* Load the GladeWidgetClass */
 	class = widget ? widget->widget_class : NULL;
-	if (editor->loaded_class != class)
+	if (editor->loaded_class != class || class == NULL)
 		glade_editor_load_widget_class (editor, class);
 
 	glade_editor_load_packing_page (editor, widget);
@@ -2168,8 +2168,7 @@ void
 glade_editor_refresh (GladeEditor *editor)
 {
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
-	if (editor->loaded_widget)
-		glade_editor_load_widget_real (editor, editor->loaded_widget);
+	glade_editor_load_widget_real (editor, editor->loaded_widget);
 }
 
 gboolean
