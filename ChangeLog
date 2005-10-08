@@ -1,3 +1,17 @@
+2005-10-08  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor.[ch], src/glade-editor-property.[ch], src/Makefile.am:
+	  Revamping of the glade-editor, wrenched out the GladeEditorProperty code
+	  from glade-editor.[ch] and created glade-editor-property.[ch], lots of
+	  code cleanup all around and now GladeEditorProperty is a GtkWidget with
+	  a smooth encapsulation, transperent derivitives for different pspec types
+	  and can now be used standalone inside custom editors.
+
+	* src/glade-property.[ch]: clarified recursion protection with "syncing" var.
+
+	* src/glade-property-class.c: Now consults glade_editor_property_supported instead
+	  of the old glade_editor_editable_property.
+	
 2005-10-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.c, src/glade-editor.c:

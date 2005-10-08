@@ -16,13 +16,10 @@ G_BEGIN_DECLS
 
 #define GLADE_EDITOR_TABLE(t)       ((GladeEditorTable *)t)
 #define GLADE_IS_EDITOR_TABLE(t)    (t != NULL)
-#define GLADE_EDITOR_PROPERTY(p)    ((GladeEditorProperty *)p)
-#define GLADE_IS_EDITOR_PROPERTY(p) (p != NULL)
 
 typedef struct _GladeEditor          GladeEditor;
 typedef struct _GladeEditorClass     GladeEditorClass;
 typedef struct _GladeEditorTable     GladeEditorTable;
-typedef struct _GladeEditorProperty  GladeEditorProperty;
 typedef enum   _GladeEditorTableType GladeEditorTableType;
 
 enum _GladeEditorTableType
@@ -43,10 +40,11 @@ struct _GladeEditor
 	
 	GtkWidget *notebook; /* The notebook widget */
 
-	GladeWidget *loaded_widget;        /* A handy pointer to the GladeWidget
-					    * that is loaded in the editor. NULL
-					    * if no widgets are selected
-					    */
+	GladeWidget *loaded_widget; /* A handy pointer to the GladeWidget
+				     * that is loaded in the editor. NULL
+				     * if no widgets are selected
+				     */
+
 	GladeWidgetClass *loaded_class; /* A pointer to the loaded
 					 * GladeWidgetClass. Note that we can
 					 * have a class loaded without a
@@ -61,31 +59,37 @@ struct _GladeEditor
 					 * when we switch from widgets of the
 					 * same class
 					 */
-	GtkWidget *vbox_widget;  /* The editor has (at this moment) four tabs
-				  * this are pointers to the vboxes inside
-				  * each tab. The vboxes are wrapped into a
-				  * scrolled window.
-				  * The vbox_widget is deparented and parented
-				  * with GladeWidgetClass->table_widget
-				  * when a widget is selecteed.
-				  */
-	GtkWidget *vbox_packing;  /* We might not need this pointer. Not yet
-				   * implemeted
-				   */
-	GtkWidget *vbox_common;   /* We might not need this pointer. Not yet
-				   * implemented
-				   */
-	GtkWidget *vbox_signals;  /* Widget from the GladeSignalEditor is placed
-				   * here
-				   */
-	GladeSignalEditor *signal_editor;
 
-	GList * widget_tables; /* A list of GladeEditorTable. We have a table
+
+	/* The editor has (at this moment) four tabs; these are pointers to the 
+	 * vboxes inside each tab. The vboxes are wrapped into a scrolled window.
+	 * The vbox_* widgets are deparented and parented with
+	 * ((GladeEditorTable *)etable)->table_widget when a widget is selected and
+	 * the correct editor table is found. The exception is `vbox_signals' which
+	 * always contains the same signal editor widget which simply reloads when
+	 * loading a widget.
+	 */
+	GtkWidget *vbox_widget;
+	GtkWidget *vbox_packing;
+	GtkWidget *vbox_common;
+	GtkWidget *vbox_signals;
+
+
+	GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
+					   */
+
+	GList *widget_tables; /* A list of GladeEditorTable. We have a table
 				* (gtktable) for each GladeWidgetClass, if
 				* we don't have one yet, we create it when
 				* we are asked to load a widget of a particular
 				* GladeWidgetClass
 				*/
+
+	GladeEditorTable *packing_etable; /* The currently loaded editor table in
+					   * the packing page.
+					   */
+	GList            *packing_eprops; /* Current list of packing GladeEditorProperties
+					   */
 
 	gboolean loading; /* Use when loading a GladeWidget into the editor
 			   * we set this flag so that we can ignore the
@@ -97,6 +101,8 @@ struct _GladeEditor
 	GtkWidget *launch_button; /* Button used to launch custom editors implemented
 				   * through the plugin backend.
 				   */
+
+	
 };
 
 struct _GladeEditorClass
@@ -150,71 +156,18 @@ struct _GladeEditorTable
 	GladeEditorTableType type; /* Is this table to be used in the common tab, ?
 				    * the general tab, a packing tab or the query popup ?
 				    */
-	
-	gint rows;
+
+	gint  rows;
 };
 
-/* For every GladePropertyClass we have a GladeEditorProperty that is
- * basically an input (GtkWidget) for that GladePropertyClass.
- */
-struct _GladeEditorProperty
-{
-	GladePropertyClass *class; /* The class this property
-				    * corresponds to.
-				    */
-
-	GladeProperty *property; /* The loaded GladeProperty
-				  */
-
-	GtkWidget *input; /* The widget that modifies this property, the widget
-			   * can be a GtkSpinButton, a GtkEntry, GtkMenu, etc.
-			   * depending on the property type.
-			   * [see glade-property.h and glade-property-class.h]
-			   */
-#if 0
-	/* Hmmm, should this be removed from GladeProperty and used here ? */
-	gboolean loading; /* We set this flag when we are loading a new GladeProperty
-			   * into this GladeEditorProperty. This flag is used so that
-			   * when we receive a "changed" signal we know that nothing has
-			   * really changed, we just loaded a new glade widget
-			   */
-#endif	
-
-	GList *children; /* Used for class->type = OBJECT. Where a sigle entry corresponds
-			  * to a number of inputs
-			  */
-
-	gboolean from_query_dialog; /* If this input is part of a query dialog
-				     * this is TRUE.
-				     */
-
-	gulong         tooltip_id;   /* signal connection id for tooltip changes */
-	GladeProperty *tooltip_prop; /* the last object this was connected to    */
-
-
-	GladeProperty *signal_prop;    /* the last object these signals were connected to    */
-	gulong         sensitive_id;   /* signal connection id for sensitivity changes */
-	gulong         changed_id;     /* signal connection id for value changes */
-	gulong         enabled_id;     /* signal connection id for enable/disable changes */
-
-
-	GtkWidget *eventbox;   /* Keep a hold of this for tooltips */
-	GtkWidget *item_label; /* control visual label state manually */
-
-	GtkWidget *text_entry; /* Keep a hold of either the entry or textview. */
-};
-
-LIBGLADEUI_API GType glade_editor_get_type (void);
-
-LIBGLADEUI_API GladeEditor *glade_editor_new (void);
-
+LIBGLADEUI_API GType        glade_editor_get_type           (void);
+LIBGLADEUI_API GladeEditor *glade_editor_new                (void);
 LIBGLADEUI_API void         glade_editor_load_widget        (GladeEditor *editor,
 							     GladeWidget *widget);
 LIBGLADEUI_API void         glade_editor_refresh            (GladeEditor *editor);
 LIBGLADEUI_API void         glade_editor_update_widget_name (GladeEditor *editor);
 LIBGLADEUI_API gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 							     GladeWidget *widget);
-LIBGLADEUI_API gboolean     glade_editor_editable_property  (GParamSpec  *pspec);
 
 G_END_DECLS
 

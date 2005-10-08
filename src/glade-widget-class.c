@@ -335,9 +335,9 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 }
 
 static void
-glade_widget_class_update_properties_from_node (GladeXmlNode *node,
-						GladeWidgetClass *widget_class,
-						GList **properties)
+glade_widget_class_update_properties_from_node (GladeXmlNode      *node,
+						GladeWidgetClass  *widget_class,
+						GList            **properties)
 {
 	GladeXmlNode *child;
 
@@ -977,15 +977,6 @@ glade_widget_class_load_library (const gchar *library_name)
 	return module;
 }
 
-static gboolean
-glade_widget_class_direct_children (GtkWidget *ancestor, GtkWidget *widget, const char *property_id)
-{
-	if (ancestor != NULL && widget->parent == ancestor)
-		return TRUE;
-
-	return FALSE;
-}
-
 GladeWidgetClass *
 glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 {
@@ -1119,7 +1110,8 @@ glade_widget_class_get_type (GladeWidgetClass *widget)
  *          class.
  */
 GladePropertyClass *
-glade_widget_class_get_property_class (GladeWidgetClass *class, const gchar *name)
+glade_widget_class_get_property_class (GladeWidgetClass *class, 
+				       const gchar      *name)
 {
 	GList *list, *l;
 	GladePropertyClass *pclass;

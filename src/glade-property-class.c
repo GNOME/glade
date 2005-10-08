@@ -35,7 +35,7 @@
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-editor.h"
+#include "glade-editor-property.h"
 #include "glade-debug.h"
 
 /**
@@ -588,7 +588,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
 	/* Register only editable properties.
 	 */
-	if (!glade_editor_editable_property (property_class->pspec))
+	if (!glade_editor_property_supported (property_class->pspec))
 		goto lblError;
 	
 	property_class->id   = g_strdup (spec->name);
@@ -647,15 +647,15 @@ gchar *
 glade_property_class_get_displayable_value(GladePropertyClass *class, gint value)
 {
 	gint i, len;
-	GArray *disp_val=class->displayable_values;
+	GArray *disp_val = class->displayable_values;
 
 	if (disp_val == NULL) return NULL;
 	
-	len=disp_val->len;
+	len = disp_val->len;
 	
 	for (i = 0; i < len; i++)
-		if (g_array_index(disp_val, GEnumValue, i).value == value)
-			return g_array_index(disp_val, GEnumValue, i).value_name;
+		if (g_array_index (disp_val, GEnumValue, i).value == value)
+			return g_array_index (disp_val, GEnumValue, i).value_name;
 
 	return NULL;
 }
@@ -674,8 +674,8 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gi
 	GArray *array;
 	GladeXmlNode *child;
 	
-	child = glade_xml_search_child (node, GLADE_TAG_VALUE);
-	if (child == NULL) return NULL;
+	if ((child = glade_xml_search_child (node, GLADE_TAG_VALUE)) == NULL)
+		return NULL;
 	
 	array = g_array_new (FALSE, TRUE, sizeof(GEnumValue));
 

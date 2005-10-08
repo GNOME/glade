@@ -195,10 +195,10 @@ glade_property_sync_impl (GladeProperty *property)
 {
 	if (property->enabled == FALSE || 
 	    property->class->ignore    ||
-	    property->loading)
+	    property->syncing)
 		return;
 
-	property->loading = TRUE;
+	property->syncing = TRUE;
 
 	if (property->class->set_function)
 		/* if there is a custom set_property, use it */
@@ -251,7 +251,7 @@ glade_property_sync_impl (GladeProperty *property)
 	else
 		glade_property_set_property (property, property->value);
 
-	property->loading = FALSE;
+	property->syncing = FALSE;
 }
 
 static gboolean
@@ -472,7 +472,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		 g_param_spec_boolean 
 		 ("sensitive", _("Sensitive"), 
 		  _("This gives backends control to set property sensitivity"),
-		  TRUE, G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+		  TRUE, G_PARAM_READWRITE));
 
 	g_object_class_install_property 
 		(object_class, PROP_I18N_COMMENT,

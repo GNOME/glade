@@ -56,7 +56,9 @@ struct _GladeProperty
 	/* A GladeProperty of type object has a child */
 	GladeWidget *child;
 #endif
-	gboolean loading;
+
+	gboolean     syncing;    /* Avoid recursion while synchronizing object with value.
+				  */
 };
 
 

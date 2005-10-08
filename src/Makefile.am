@@ -46,6 +46,7 @@ libgladeui_1_la_SOURCES = \
 	glade-popup.c \
 	glade-widget.c \
 	glade-catalog.c \
+	glade-editor-property.c \
 	glade-editor.c \
 	glade-utils.c \
 	glade-signal.c \
@@ -76,6 +77,7 @@ libgladeuiinclude_HEADERS = \
 	glade-parameter.h \
 	glade-placeholder.h \
 	glade-editor.h \
+	glade-editor-property.h \
 	glade-signal-editor.h \
 	glade-palette.h \
 	glade-cursor.h \
