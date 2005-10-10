@@ -31,20 +31,11 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
 #include "glade-editor-property.h"
-#include "glade-signal-editor.h"
-#include "glade-parameter.h"
 #include "glade-property.h"
-#include "glade-property-class.h"
 #include "glade-command.h"
-#include "glade-debug.h"
-#include "glade-marshallers.h"
-#include "glade-menu-editor.h"
 #include "glade-project.h"
-#include "glade-utils.h"
 #include "glade-builtins.h"
-
 
 enum {
 	PROP_0,

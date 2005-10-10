@@ -39,6 +39,12 @@ enum
 	LAST_SIGNAL
 };
 
+typedef enum {
+	CELL_ICON,
+	CELL_NAME,
+	CELL_MISC
+} GPVCellType;
+
 static GtkScrolledWindow *parent_class = NULL;
 
 static void glade_project_view_class_init (GladeProjectViewClass *class);
@@ -517,29 +523,43 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  GtkTreeIter *iter,
 				  gpointer data)
 {
-	gboolean     is_icon = GPOINTER_TO_INT (data);
+	GPVCellType  type = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
+	gchar       *text = NULL, *child_type;
 
 	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
 
 	/* The cell exists, but not widget has been asociated with it */
-	if (!widget)
-		return;
+	if (!widget) return;
 
 	g_return_if_fail (widget->name != NULL);
 	g_return_if_fail (widget->widget_class != NULL);
 	g_return_if_fail (widget->widget_class->name != NULL);
 	g_return_if_fail (widget->widget_class->icon != NULL);
 
-	if (is_icon)
+	switch (type) 
 	{
-		g_object_set (G_OBJECT (cell), 
-			      "pixbuf", widget->widget_class->icon, 
-			      NULL);
-	}
-	else
-	{
+	case CELL_ICON:
+		g_object_set (G_OBJECT (cell), "pixbuf", 
+			      widget->widget_class->icon, NULL);
+		break;
+	case CELL_NAME:
 		g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
+		break;
+	case CELL_MISC:
+		/* special child type / internal child */
+		if (glade_widget_get_internal (widget) != NULL)
+			text = g_strdup_printf (_("(internal %s)"),  
+						glade_widget_get_internal (widget));
+		else if ((child_type = g_object_get_data (glade_widget_get_object (widget),
+							  "special-child-type")) != NULL)
+			text = g_strdup_printf (_("(%s child)"), child_type);
+
+		g_object_set (G_OBJECT (cell), "text", text ? text : " ", NULL);
+		if (text) g_free (text);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -556,14 +576,22 @@ glade_project_view_add_columns (GtkTreeView *view)
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_project_view_cell_function,
-						 GINT_TO_POINTER (1), NULL);
-	
+						 GINT_TO_POINTER (CELL_ICON), NULL);
+
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_project_view_cell_function,
-						 GINT_TO_POINTER (0), NULL);
+						 GINT_TO_POINTER (CELL_NAME), NULL);
 
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 glade_project_view_cell_function,
+						 GINT_TO_POINTER (CELL_MISC), NULL);
 	gtk_tree_view_append_column (view, column);
 }
 
