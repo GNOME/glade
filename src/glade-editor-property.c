@@ -117,18 +117,6 @@ static MAKE_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
 /*******************************************************************************
                                GladeEditorPropertyClass
  *******************************************************************************/
-
-static void
-glade_editor_property_set_tooltips (GladeEditorProperty *eprop)
-{
-	gchar *tooltip;
-
-	tooltip = (gchar *)glade_property_get_tooltip (eprop->property);
-	glade_util_widget_set_tooltip (eprop->input, tooltip);
-	glade_util_widget_set_tooltip (eprop->eventbox, tooltip);
-}
-
-
 static void
 glade_editor_property_tooltip_cb (GladeProperty       *property,
 				  const gchar         *tooltip,
@@ -336,15 +324,18 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 					  G_CALLBACK (glade_editor_property_enabled_cb),
 					  eprop);
 
-		glade_editor_property_set_tooltips (eprop);
+		/* Load initial tooltips
+		 */
+		glade_editor_property_tooltip_cb
+			(property, glade_property_get_tooltip (property), eprop);
 		
-		/* Deal with enabled state */
-		if (eprop->class->optional)
-		{
-			gboolean enabled = glade_property_get_enabled (eprop->property);
-			gtk_widget_set_sensitive (eprop->input, enabled);
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop->check), enabled);
-		}
+		/* Load initial enabled state
+		 */
+		glade_editor_property_enabled_cb (property, NULL, eprop);
+		
+		/* Load initial sensitive state.
+		 */
+		glade_editor_property_sensitivity_cb (property, NULL, eprop);
 	}
 }
 
