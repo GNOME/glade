@@ -1,3 +1,7 @@
+2005-11-26  Funda Wang  <fundawang@linux.net.cn>
+
+	* configure.in: Added Simplified Chinese translation.
+
 2005-10-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor-property.c: Fixed property sensitivity at load time.
@@ -1875,7 +1879,7 @@
 2004-06-16  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/glade-utils.c (glade_util_file_chooser_new): center the
-	dialog. Patch by MichaÅ≈Ç Byrecki <byrek@elektronika.org>.
+	dialog. Patch by Micha≈Ç Byrecki <byrek@elektronika.org>.
 
 2004-06-16  Paolo Borelli  <pborelli@katamail.com>
 
@@ -3635,7 +3639,7 @@
 	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model): 
 	don't add children.
 
-2002-04-11  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-04-11  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* src/glade-widget.c: hack to hide the "nodes not drawing at the
 	right time" problem.  The bug is still visible sometimes, but much
@@ -3666,7 +3670,7 @@
 	(glade_project_add_widget): call above.
 
 	
-2002-04-01  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-04-01  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* src/glade-editor.c, glade-command.[ch],
 	glade-property-class.[ch], glade-property.[ch],
@@ -3674,7 +3678,7 @@
 	values + fixes loading and saving + unicode bugfixes + random
 	bugfixes.
 
-2002-03-28  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-28  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
  
  	* src/glade-command.[ch]: Now the undo/redo system also takes in
  	account creation and destruction of widgets.  Also undo of
@@ -3683,7 +3687,7 @@
  	* src/glade-project-window.c: The undo/redo menu items are
  	inactive and showing the text "Undo: Nothing" at startup.
  
-2002-03-27  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-27  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
  
  	* src/glade-command.[ch]: if you push several undo items, and they
  	can "unify", they will "unify" (or "collapse").  For instance, if
@@ -3695,7 +3699,7 @@
  	enabled only if there is something to undo/redo, and the menu
 	items will show a description about the action.
  
-2002-03-27  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-27  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
  
  	* src/glade-command.[ch]: infinite undo-redo system.
  	* src/glade-editor.c: ditto.
@@ -3706,7 +3710,7 @@
  	* src/glade-debug.h: little macro g_debug to print debug messages
  	only if DEBUG is defined.
 	
-2002-03-25  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-25  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
  
  	* src/glade-xml-utils.c: use xmlDocGetRootElement(doc) instead of
  	just doc->children to get the root of the document.  This way, the
@@ -3723,7 +3727,7 @@
 	Changed all callers.
 	(glade_widget_delete): call above.
 
-2002-03-20  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2002-03-20  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-widget.c: fixed a small bug. Thanks Justin Zaun.
 
@@ -3732,7 +3736,7 @@
 	* src/glade-clipboard-view.c (glade_clipboard_view_remove): check for
 	return value of gtk_tree_selection_get_selected. Fixed nasty bug.
 
-2002-03-04  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-04  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* glade-placeholder.c: includes to fix warnings, and implementation
 	of the popup menu of the placeholder.
@@ -3745,7 +3749,7 @@
 	bug when I did this change, and now I'm not able to reproduce anymore
 	the bug.  Dunno what's going on...
 	
-2002-03-02  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-03-02  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* glade-choice.c (glade_choice_list_new_from_node): Now you don't need
 	to tweak glade_enum_from_string just to be able to use a new item
@@ -3758,12 +3762,12 @@
 	stock property.
 	* gtkbutton.xml: Added access to two other stock buttons (apply & close).
 
-2002-02-28  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-02-28  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* glade-widget.c (glade_widget_key_press): Fixed segfault when
 	deleting two or more object in a row.
 
-2002-02-28  JoaquÅ√Å≠n Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
+2002-02-28  Joaqu√Ån Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* glade-widget.c: Delete key deletes selected widgets.  I've also
 	fixed the selection in Selectors (File/Font/Color/...).
@@ -3777,7 +3781,7 @@
 	Fixed segfault when deleting a window that was also selected in
 	the glade-project-view.
 	
-2002-01-29  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2002-01-29  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* Makefile.am: Install .desktop file into the proper location for
 	GNOME2 (PREFIX/share/applications).	
@@ -3816,19 +3820,19 @@
 	* src/glade-project-view.c (glade_project_view_widget_name_changed):
 	The project view tree is updated correctly now.
 
-2001-12-06  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-06  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-widget-class.c (glade_widget_class_dump_param_specs): Added
 	an option to display if a property is writable or readonly.
 	* widgets/gtkaccellabel.xml: properties sort && small fixes.
 
-2001-12-03  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-03  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade.h: Added GLADE_TAG_DISABLED.
 	* src/glade-property-class.c (glade_property_class_update_from_node):
 	Added a check for properties that are disabled at .xml files.
 	
-2001-12-03  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-03  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* configure.in: Reverted my change about GETTEXT_PACKAGE. We should
 	use the "standar" name (glade-2.0 instead of glade-2).
@@ -3851,7 +3855,7 @@
 	* src/glade-catalog.c (glade_catalog_load): constify
 	(glade_catalog_load_all): check if we where able to open the directory
 
-2001-12-02  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-02  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* acconfig.h, configure.in: Added CATALOG_DIR to store catalogs
 	* src/glade-catalog.* (glade_catalog_load_all): Added to load
@@ -3877,7 +3881,7 @@
 	additional.
 	* widgets/catalog.xml: Removed, now we have several catalogs.
 
-2001-12-02  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-02  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* widgets/gtkinputdialog.xml: It does not need placeholder.
 
@@ -3888,7 +3892,7 @@
  	* src/glade-signal-editor.c (glade_signal_editor_dialog_list_select_cb):
  	Updated to reflect GTK+ api changes.
  
-2001-12-01  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-12-01  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-gtk.c (glade_gtk_message_dialog_post_create): Added to
 	resize the gtkmessagedialog widget.
@@ -3897,14 +3901,14 @@
 	* widgets/gtkfileselection.xml: Fixed. It's a top level widget.
 	* widgets/gtkmessagedialog.xml: Updated with defaults.
 
-2001-11-28  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-28  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-gtk.c (glade_gtk_dialog_post_create): Added to resize
 	the gtkdialog widget.
 	* src/glade-placeholder.c: Added full support for GtkDialog.
 	* widgets/gtkdialog.xml: Default preferences.
 
-2001-11-28  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-28  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-placeholder.c (glade_placeholder_add): Implemented.
 	* src/glade-placeholder.c (glade_placeholder_add_with_result): Now
@@ -3913,7 +3917,7 @@
 	that didn't add a placeholder when we load a top level widget from a
 	.glade file without a child inside it.
 
-2001-11-28  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-28  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.c
 	(glade_property_class_make_gvalue_from_string): Implemented the
@@ -3921,20 +3925,20 @@
 	* src/glade-property.c (glade_property_set): ditto.
 	* Now it seems that loads/saves all data ;-)
 
-2001-11-26  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-26  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-widget-class.c (glade_widget_class_create_pixmap): Fixed
 	the warning about floating references. We free the GtkButton with 
 	gtk_object_sink and not with gtk_widget_unref because this widget
 	is never inserted into a container widget.
 
-2001-11-24  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-24  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.c: The answer is... My patch sucks!!!
 	I think that now it's solved. I get a new warning, but I hope I will
 	fix it tomorrow.
 
-2001-11-23  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-23  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
 	Fixed the API change, G_PARAM_SPEC_TYPE (spec) can not be used in
@@ -3943,22 +3947,22 @@
 	other change that mades glade2 unuseful :-( (or that this patch is
 	not a good patch...).
 
-2001-11-21  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-21  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* configure.in: We need now latest gtk2 version.
 
-2001-11-21  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-21  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
         * configure.in: Changed GETTEXT_PACKAGE from glade-2.0 to glade-2
 	
-2001-11-21  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-21  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
 	Ignored the ParamSpec "name". We should solve this problem with a
 	better solution. The problem is that at .xml file we don't have
 	a property "name" we have it outside the Property section.
 
-2001-11-20  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-20  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.*
 	(glade_property_class_make_string_from_gvalue): Implemented the ENUM
@@ -3966,7 +3970,7 @@
 	a GladePropertyType to do it.
 	(glade_property_class_make_gvalue_from_string): ditto.
 	
-2001-11-16  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-16  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-project-view.c (glade_project_view_button_press_cb): Fixed
 	the gtk_tree_view_get_path_at_pos API change.
@@ -3976,7 +3980,7 @@
 	* src/glade-gtk.c, src/glade-placeholder.c: Started the GtkDialog
 	support.
 
-2001-11-11  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-11  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-property-class.* (glade_property_class_list_properties):
 	Added this function, it returns a GList of properties from GParamSpec.
@@ -3987,7 +3991,7 @@
 	* src/glade-widget-clas.* (glade_widget_class_get_specs): Changed as a
 	public function, we need it at glade-property-class.c
 
-2001-11-07  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-07  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* pixmaps/custom.xpm: Added the custom pixmap to put it as the default
 	one if a widget has not a pixmap.
@@ -3996,24 +4000,24 @@
 	* widgets/*.xml: Added all the remain gtk widgets but the deprecated
 	ones, we should start adding support for all those widgets.
 	
-2001-11-04  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-04  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/main.c: Added a call to bind_textdomain_codeset to
 	fix the encoding always as UTF-8. This fix all UTF-8 warnings
 
-2001-11-04  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-04  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* configure.in:
 	* Makefile.am: Migrated to intltool
 
-2001-11-01  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-11-01  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* configure.in: drop the 2 from the package name, and set
 	GETTEXT_PACKAGE
 	* acconfig.h: add GETTEXT_PACKAGE
 	* src/main.c: modified the gettext args to use GETTEXT_PACKAGE
 	
-2001-10-31  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-10-31  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* src/glade-placeholder.[ch] (glade_placeholder_remove_all):
 	* src/glade-placeholder.[ch] (glade_placeholder_fill_empty): Added
@@ -4103,7 +4107,7 @@
 	add a tooltip for the editor labels, not working yet.
 
 
-2001-08-29  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-08-29  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* autogen.sh:
 	* configure.in:
@@ -4777,7 +4781,7 @@
 
 	* src/glade-property-class.c (glade_property_class_get_specs): 
 
-2001-06-27  Carlos PerellÅ√Å≥ MarÅ√Å≠n <carlos@gnome-db.org>
+2001-06-27  Carlos Perell√Å Mar√Ån <carlos@gnome-db.org>
 
 	* missing, mkinstalldirs: Removed, are generated files.
 	* ChangeLog: Changed the previous date entry to the Gnome's standar one.
