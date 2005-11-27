@@ -1,240 +1,207 @@
+# Spanish translation of es
 # Spanish Translation for Glade.
-# Copyright (C) 1999-2001 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2005 Free Software Foundation, Inc.
 # Raúl Alexis Betancort Santana <a2363@correo.dis.ulpgc.es>, 1999.
-# Carlos Perelló Marín <carlos@gnome-db.org>, 2000-2001
+# Carlos Perelló Marín <carlos@gnome-db.org>, 2000-2001.
+# Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade2 0.0.22\n"
+"Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-29 14:17-0400\n"
-"PO-Revision-Date: 2001-11-01 02:10+0100\n"
-"Last-Translator: Carlos Perelló Marín <carlos@gnome-db.org>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"POT-Creation-Date: 2005-11-27 14:28+0100\n"
+"PO-Revision-Date: 2005-11-27 14:47+0100\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
+"Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: glade-3.desktop.in.h:1
+#: ../glade-3.desktop.in.h:1
 msgid "Design user interfaces"
-msgstr ""
+msgstr "Diseñe interfaces de usuario"
 
-#: glade-3.desktop.in.h:2
-#, fuzzy
+#: ../glade-3.desktop.in.h:2
 msgid "Glade 3.0 GUI builder"
-msgstr "Modelador de interfaces gráficas en GTK+"
+msgstr "Constructor de IGU Glade 3.0"
 
-#: src/main.c:50
+#: ../src/main.c:50
 msgid ""
 "dump the properties of a widget. --dump [gtk type] where type can be "
 "GtkWindow, GtkLabel etc."
-msgstr ""
+msgstr "volcar las propiedades de un widget. --dump [tipo gtk] donde tipo puede ser GtkWindow, GtkLabel, etc."
 
-#: src/main.c:53
-#, fuzzy
+#: ../src/main.c:53
 msgid "be verbose."
-msgstr "Inversa:"
+msgstr "ser prolijo."
 
-#: src/main.c:60
-#, fuzzy
+#: ../src/main.c:60
 msgid "Help options:"
-msgstr "Opciones generales:"
+msgstr "Opciones de ayuda:"
 
-#: src/main.c:94
-#, fuzzy
-msgid ""
-"gmodule support not found. gmodule support is required for glade to work"
-msgstr ""
-"No se ha encontrado soporte para gmodule. Se necesita gmodule para que glade "
-"funcione"
+#: ../src/main.c:94
+msgid "gmodule support not found. gmodule support is required for glade to work"
+msgstr "No se ha encontrado soporte para gmodule. Se necesita gmodule para que glade funcione"
 
-#: src/main.c:118
-#, fuzzy
+#: ../src/main.c:118
 msgid "Glade-3 GUI Builder"
-msgstr "Modelador de interfaces gráficas en GTK+"
+msgstr "Constructor de IGUs Glade-3"
 
-#: src/glade-editor.c:114
-#, fuzzy
+#: ../src/glade-editor.c:103
 msgid "_General"
-msgstr "General"
+msgstr "_General"
 
-#: src/glade-editor.c:115
-#, fuzzy
+#: ../src/glade-editor.c:104
 msgid "_Packing"
-msgstr "Empaquetado"
+msgstr "_Empaquetado"
 
-#: src/glade-editor.c:116
-#, fuzzy
+#: ../src/glade-editor.c:105
 msgid "_Common"
-msgstr "Comunes"
+msgstr "_Comunes"
 
-#: src/glade-editor.c:117
-#, fuzzy
+#: ../src/glade-editor.c:106
 msgid "_Signals"
-msgstr "Señales"
+msgstr "_Señales"
 
-#: src/glade-editor.c:128
-msgid "Reset..."
-msgstr ""
+#. Custom editor button
+#.
+#: ../src/glade-editor.c:118
+msgid "_Edit..."
+msgstr "_Editar..."
 
-#: src/glade-editor.c:581
-msgid "Set Flags"
-msgstr ""
-
-#: src/glade-editor.c:728
-msgid "Edit Text Property"
-msgstr ""
-
-#. Text
-#: src/glade-editor.c:745
-#, fuzzy
-msgid "_Text:"
-msgstr "Texto:"
-
-#: src/glade-editor.c:781
-#, fuzzy
-msgid "T_ranslatable"
-msgstr "Cadenas de texto traducibles:"
-
-#: src/glade-editor.c:788
-msgid "Has context _prefix"
-msgstr ""
-
-#. Comments.
-#: src/glade-editor.c:796
-msgid "Co_mments for translators:"
-msgstr ""
-
-#: src/glade-editor.c:1139
-msgid "No"
-msgstr "No"
+#. Reset button
+#.
+#: ../src/glade-editor.c:127
+msgid "_Reset..."
+msgstr "_Restablecer..."
 
 #. Name
-#: src/glade-editor.c:1313
+#: ../src/glade-editor.c:246
 msgid "Name :"
 msgstr "Nombre :"
 
 #. Class
-#: src/glade-editor.c:1338
+#: ../src/glade-editor.c:272
 msgid "Class :"
 msgstr "Clase :"
 
-#: src/glade-editor.c:1460
-msgid "Edit Menus..."
-msgstr "Editar Menús..."
-
-#: src/glade-editor.c:2204
-#, fuzzy, c-format
+#: ../src/glade-editor.c:631
+#, c-format
 msgid "Create a %s"
-msgstr "Crear un nuevo archivo"
+msgstr "Crear un %s"
 
-#: src/glade-editor.c:2349
-#, fuzzy
+#: ../src/glade-editor.c:748
 msgid "Reset"
-msgstr "Recargar original"
+msgstr "Restablecer"
 
-#: src/glade-editor.c:2363
-#, fuzzy
+#: ../src/glade-editor.c:762
 msgid "Property"
-msgstr "Propiedades"
+msgstr "Propiedad"
 
-#: src/glade-editor.c:2398
+#: ../src/glade-editor.c:797
 msgid "General"
 msgstr "General"
 
-#: src/glade-editor.c:2408
+#: ../src/glade-editor.c:807
 msgid "Common"
 msgstr "Comunes"
 
-#: src/glade-editor.c:2440
+#: ../src/glade-editor.c:839
 msgid "(default)"
-msgstr ""
+msgstr "(predet.)"
 
-#: src/glade-editor.c:2455
+#: ../src/glade-editor.c:854
 msgid "Select the properties that you want to reset to their default values"
-msgstr ""
+msgstr "Seleccione las propiedades que quiere restablecer a sus valores predeterminados"
 
-#: src/glade-editor.c:2587
-#, fuzzy
+#: ../src/glade-editor.c:986
 msgid "Reset Widget Properties"
-msgstr "Fijar el nombre de los componentes"
+msgstr "Restablecer propiedades del widget"
 
 #. Checklist
-#: src/glade-editor.c:2604
-#, fuzzy
+#: ../src/glade-editor.c:1003
 msgid "_Properties:"
-msgstr "Propiedades:"
+msgstr "_Propiedades:"
 
-#: src/glade-editor.c:2633
-#, fuzzy
+#: ../src/glade-editor.c:1032
 msgid "_Select All"
-msgstr "Seleccionar"
+msgstr "_Seleccionar todo"
 
-#: src/glade-editor.c:2640
-#, fuzzy
+#: ../src/glade-editor.c:1039
 msgid "_Unselect All"
-msgstr "Seleccionar"
+msgstr "_Deseleccionar todo"
 
 #. Description
-#: src/glade-editor.c:2649
-#, fuzzy
+#: ../src/glade-editor.c:1048
 msgid "Property _Description:"
-msgstr "Descripción"
+msgstr "_Descripción de propiedad:"
 
 #. the label defaults to "Selector"
-#: src/glade-palette.c:107 src/glade-palette.c:155 src/glade-palette.c:161
+#: ../src/glade-palette.c:107 ../src/glade-palette.c:155
+#: ../src/glade-palette.c:161
 msgid "Selector"
 msgstr "Selector"
 
-#: src/glade-popup.c:273
-#, fuzzy
+#: ../src/glade-popup.c:273
 msgid "_Select"
-msgstr "Seleccionar"
+msgstr "_Seleccionar"
 
-#: src/glade-project-view.c:553
+#: ../src/glade-project-view.c:552
+#, c-format
+msgid "(internal %s)"
+msgstr "(interno %s)"
+
+#: ../src/glade-project-view.c:556
+#, c-format
+msgid "(%s child)"
+msgstr "(hijo de %s)"
+
+#: ../src/glade-project-view.c:573
 msgid "Widget"
 msgstr "Widget"
 
-#: src/glade-project-window.c:288
-#, fuzzy
+#: ../src/glade-project-window.c:288
 msgid "Open..."
-msgstr "Abrir ..."
+msgstr "Abrir..."
 
-#: src/glade-project-window.c:305 src/glade-project-window.c:412
+#: ../src/glade-project-window.c:305 ../src/glade-project-window.c:412
 #, c-format
 msgid "A project named %s is already open"
-msgstr ""
+msgstr "Ya hay abierto un proyecto llamado %s"
 
-#: src/glade-project-window.c:327
-#, fuzzy
+#: ../src/glade-project-window.c:327
 msgid ""
 "Are you sure you want to clear the\n"
 "list of recent projects?"
-msgstr "¿Está seguro que quiere crear un proyecto nuevo?"
+msgstr ""
+"¿Está seguro que quiere limpiar la\n"
+"lista de proyectos recientes?"
 
-#: src/glade-project-window.c:328
+#: ../src/glade-project-window.c:328
 msgid ""
 "If you clear the list of recent projects, they will be\n"
 "permanently deleted."
 msgstr ""
+"Si limpia la lista de proyectos reciente, se borrarán\n"
+"permanentemente."
 
-#: src/glade-project-window.c:371 src/glade-project-window.c:441
-#, fuzzy, c-format
+#: ../src/glade-project-window.c:371 ../src/glade-project-window.c:441
+#, c-format
 msgid "Project '%s' saved"
-msgstr "Proyecto guardado."
+msgstr "Proyecto «%s» guardado"
 
 #. If instead we dont have a path yet, fire up a file selector
-#: src/glade-project-window.c:453
-#, fuzzy
+#: ../src/glade-project-window.c:453
 msgid "Save..."
-msgstr "Guardar ..."
+msgstr "Guardar..."
 
-#: src/glade-project-window.c:459
-#, fuzzy
+#: ../src/glade-project-window.c:459
 msgid "Save as ..."
-msgstr "Guardar ..."
+msgstr "Guardar como..."
 
-#: src/glade-project-window.c:473
+#: ../src/glade-project-window.c:473
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -242,33 +209,35 @@ msgid ""
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">¿Quiere guardar los cambios al proyecto «%s» antes de cerrar?</span>\n"
+"\n"
+"Sus cambios de perderán si no los guarda.\n"
 
-#: src/glade-project-window.c:487
+#: ../src/glade-project-window.c:487
 msgid "_Close without Saving"
-msgstr ""
+msgstr "_Cerrar sin guardar"
 
-#: src/glade-project-window.c:514
+#: ../src/glade-project-window.c:514
 msgid "Save ..."
-msgstr "Guardar ..."
+msgstr "Guardar..."
 
-#: src/glade-project-window.c:681
+#: ../src/glade-project-window.c:681
 msgid "Palette"
 msgstr "Paleta"
 
-#: src/glade-project-window.c:753 src/glade-widget.c:187
+#: ../src/glade-project-window.c:753 ../src/glade-widget.c:187
 msgid "Properties"
 msgstr "Propiedades"
 
-#: src/glade-project-window.c:832
-#, fuzzy
+#: ../src/glade-project-window.c:832
 msgid "E_xpand all"
-msgstr "Expandir:"
+msgstr "E_xpandir todo"
 
-#: src/glade-project-window.c:836
+#: ../src/glade-project-window.c:836
 msgid "_Collapse all"
-msgstr ""
+msgstr "_Contraer todo"
 
-#: src/glade-project-window.c:979
+#: ../src/glade-project-window.c:979
 msgid ""
 "Fatih Demir <kabalak@gtranslator.org>\n"
 "Christian Rose <menthos@menthos.com>\n"
@@ -278,15 +247,24 @@ msgid ""
 "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 msgstr ""
+"Fatih Demir <kabalak@gtranslator.org>\n"
+"Christian Rose <menthos@menthos.com>\n"
+"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
+"Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Zbigniew Chyla <cyba@gnome.pl>\n"
+"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 
-#: src/glade-project-window.c:988
+#: ../src/glade-project-window.c:988
 msgid ""
 "Glade is a User Interface Builder for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2.0.0 version, original from Damon "
 "Chaplin\n"
 msgstr ""
+"Glade es un constructor de interfaces de usuario para GTK+ y Gnome.\n"
+"Esta versión es una reescritura de la versión 2.0.0, original de Damon Chaplin\n"
 
-#: src/glade-project-window.c:993
+#: ../src/glade-project-window.c:993
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -303,233 +281,229 @@ msgid ""
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA."
 msgstr ""
 
-#: src/glade-project-window.c:1431
-#, fuzzy
+#: ../src/glade-project-window.c:1431
 msgid "Could not create a new project."
-msgstr "Crea un nuevo proyecto"
+msgstr "No se pudo crear un proyecto nueva."
 
-#: src/glade-project-window.c:1459
+#: ../src/glade-project-window.c:1459
 msgid "Could not open project."
-msgstr "No ha sido posible abrir el proyecto."
+msgstr "No se pudo abrir el proyecto."
 
-#: src/glade-project-window.c:1501
-#, fuzzy
+#: ../src/glade-project-window.c:1501
 msgid "Nothing"
-msgstr "NoMostrado"
+msgstr "Nada"
 
-#: src/glade-project-window.c:1545
-#, fuzzy
+#: ../src/glade-project-window.c:1545
 msgid "_Undo: "
-msgstr "Deshacer"
+msgstr "_Deshacer:"
 
-#: src/glade-project-window.c:1546
-#, fuzzy
+#: ../src/glade-project-window.c:1546
 msgid "_Redo: "
-msgstr "Rehacer"
+msgstr "_Rehacer:"
 
-#: src/glade-property.c:466
-#, fuzzy
+#: ../src/glade-property.c:466
 msgid "Enabled"
-msgstr "Tabla"
+msgstr "Activado"
 
-#: src/glade-property.c:467
+#: ../src/glade-property.c:467
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "Si la propiedad es opcional, esto está en su estado activado"
 
-#: src/glade-property.c:473
-#, fuzzy
+#: ../src/glade-property.c:473
 msgid "Sensitive"
-msgstr "Sensible:"
+msgstr "Sensible"
 
-#: src/glade-property.c:474
+#: ../src/glade-property.c:474
 msgid "This gives backends control to set property sensitivity"
-msgstr ""
+msgstr "Esto proporciona a los backends el control para establecer la propiedad de sensibilidad"
 
-#: src/glade-property.c:480
-#, fuzzy
+#: ../src/glade-property.c:480
 msgid "Comment"
-msgstr "Comentarios:"
+msgstr "Comentario"
 
-#: src/glade-property.c:481
+#: ../src/glade-property.c:481
 msgid "XXX FIXME: The translators comment ?"
 msgstr ""
 
-#: src/glade-property.c:487
-#, fuzzy
+#: ../src/glade-property.c:487
 msgid "Translatable"
-msgstr "Cadenas de texto traducibles:"
+msgstr "Traducible"
 
-#: src/glade-property.c:488 src/glade-property.c:495
+#: ../src/glade-property.c:488 ../src/glade-property.c:495
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "Indica si esta propiedad es traducible o no"
 
-#: src/glade-property.c:494
+#: ../src/glade-property.c:494
 msgid "Has Context"
-msgstr ""
+msgstr "Tiene contexto"
 
-#: src/glade-property-class.c:964
+#: ../src/glade-property-class.c:964
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"set\" "
 "function, but there is no library associated to this widget's class."
-msgstr ""
+msgstr "La propiedad [%s] de la clase del widget [%s] necesita una función «set» especial, pero no hay ninguna biblioteca asociada a esta clase del widget."
 
-#: src/glade-property-class.c:971
+#: ../src/glade-property-class.c:971
 #, c-format
 msgid ""
 "Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
 "class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: src/glade-property-class.c:988 src/glade-property-class.c:1009
+#: ../src/glade-property-class.c:988 ../src/glade-property-class.c:1009
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"get\" "
 "function, but there is no library associated to this widget's class."
 msgstr ""
 
-#: src/glade-property-class.c:995
+#: ../src/glade-property-class.c:995
 #, c-format
 msgid ""
 "Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
 "class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: src/glade-property-class.c:1016
+#: ../src/glade-property-class.c:1016
 #, c-format
 msgid ""
 "Unable to get the \"verify\" function [%s] of the property [%s] of the "
 "widget's class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: src/glade-signal-editor.c:530
+#: ../src/glade-signal-editor.c:530
 msgid "Signal"
 msgstr "Señal"
 
-#: src/glade-signal-editor.c:543
+#: ../src/glade-signal-editor.c:543
 msgid "Handler"
-msgstr "Manejador"
+msgstr "Manipulador"
 
-#: src/glade-signal-editor.c:560
+#: ../src/glade-signal-editor.c:560
 msgid "User data"
-msgstr ""
+msgstr "Datos de usuario"
 
-#: src/glade-signal-editor.c:573
+#: ../src/glade-signal-editor.c:573
 msgid "Lookup"
-msgstr ""
+msgstr "Buscar"
 
-#: src/glade-signal-editor.c:584
+#: ../src/glade-signal-editor.c:584
 msgid "After"
 msgstr "Después"
 
-#: src/glade-utils.c:141 src/glade-utils.c:175
+#: ../src/glade-utils.c:141 ../src/glade-utils.c:175
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "No se ha podido encontrar el símbolo «%s»"
 
-#: src/glade-utils.c:148
+#: ../src/glade-utils.c:148
 #, c-format
 msgid "Could not get the type from \"%s"
 msgstr "No se ha podido obtener el tipo de «%s»"
 
-#: src/glade-utils.c:1047
-#, fuzzy
+#: ../src/glade-utils.c:1047
 msgid "Unable to paste to multiple widgets"
-msgstr "El nombre a pasar al gestor de ventanas"
+msgstr "Imposible pegar múltiples widgets"
 
-#: src/glade-utils.c:1055
-#, fuzzy
+#: ../src/glade-utils.c:1055
 msgid "No widget selected on the clipboard"
-msgstr "Muestra el contenido del portapapeles"
+msgstr "No hay ningún widget seleccionado en el portapapeles"
 
-#: src/glade-utils.c:1071
-#, fuzzy, c-format
+#: ../src/glade-utils.c:1071
+#, c-format
 msgid "Unable to paste widget %s to parent %s"
-msgstr "Necesita seleccionar un widget sobre el cual pegar"
+msgstr "Imposible pegar el widget %s al padre %s"
 
-#: src/glade-utils.c:1093
+#: ../src/glade-utils.c:1093
 #, fuzzy
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
-"Solo se pueden pegar elementos de menú en un menú o en una barra de menús."
+msgstr "Solo se pueden pegar elementos de menú en un menú o en una barra de menús."
 
-#: src/glade-utils.c:1102
+#: ../src/glade-utils.c:1102
 msgid "Insufficient amount of placeholders in target container"
-msgstr ""
+msgstr "Cantidad insuficiente de lugares de colocación en el contenedor destino"
 
-#: src/glade-utils.c:1150 src/glade-utils.c:1181 src/glade-utils.c:1211
-#, fuzzy
+#: ../src/glade-utils.c:1150 ../src/glade-utils.c:1181
+#: ../src/glade-utils.c:1211
 msgid "No widget selected!"
-msgstr "El widget no puede ser borrado"
+msgstr "Ningún widget seleccionado"
 
-#: src/glade-widget.c:148
+#: ../src/glade-widget.c:148
 msgid "Name"
 msgstr "Nombre"
 
-#: src/glade-widget.c:149
+#: ../src/glade-widget.c:149
 msgid "The name of the widget"
 msgstr "El nombre del widget"
 
-#: src/glade-widget.c:155
-#, fuzzy
+#: ../src/glade-widget.c:155
 msgid "Internal name"
-msgstr "Intervalo"
+msgstr "Nombre interno"
 
-#: src/glade-widget.c:156
-#, fuzzy
+#: ../src/glade-widget.c:156
 msgid "The internal name of the widget"
-msgstr "El nombre del widget"
+msgstr "El nombre interno del widget"
 
-#: src/glade-widget.c:162
+#: ../src/glade-widget.c:162
 msgid "Object"
 msgstr "Objeto"
 
-#: src/glade-widget.c:163
+#: ../src/glade-widget.c:163
 #, fuzzy
 msgid "The object associated"
 msgstr "El archivo del proyecto"
 
-#: src/glade-widget.c:170
-#, fuzzy
+#: ../src/glade-widget.c:170
 msgid "Class"
-msgstr "Clase :"
+msgstr "Clase"
 
-#: src/glade-widget.c:171
-#, fuzzy
+#: ../src/glade-widget.c:171
 msgid "The class of the associated gtk+ widget"
-msgstr "La clase del widget"
+msgstr "La clase del widget gtk+ asociado"
 
-#: src/glade-widget.c:178
-#, fuzzy
+#: ../src/glade-widget.c:178
 msgid "Project"
-msgstr "Proyectos"
+msgstr "Proyecto"
 
-#: src/glade-widget.c:179
-#, fuzzy
+#: ../src/glade-widget.c:179
 msgid "The glade project that this widget belongs to"
-msgstr "Los eventos X que el widget recibe"
+msgstr "El proyecto glade al que pertenece este widget"
 
-#: src/glade-widget.c:188
+#: ../src/glade-widget.c:188
 msgid "A list of GladeProperties"
-msgstr ""
+msgstr "Una lista de GladeProperties"
 
-#: src/glade-widget.c:194
-#, fuzzy
+#: ../src/glade-widget.c:194
 msgid "Parent"
-msgstr "Imprimir"
+msgstr "Padre"
 
-#: src/glade-widget.c:195
+#: ../src/glade-widget.c:195
 msgid "A pointer to the parenting GladeWidget"
-msgstr ""
+msgstr "Un puntero al GladeWidget padre"
 
-#: src/glade-widget-class.c:952 src/glade-widget-class.c:964
+#: ../src/glade-widget-class.c:952 ../src/glade-widget-class.c:964
 msgid "Not enough memory."
-msgstr ""
+msgstr "No hay suficiente memoria"
 
-#: src/glade-widget-class.c:974
+#: ../src/glade-widget-class.c:974
 #, c-format
 msgid "Unable to open the module %s."
-msgstr ""
+msgstr "Imposible abrir el módulo %s."
+
+#, fuzzy
+#~ msgid "_Text:"
+#~ msgstr "Texto:"
+
+#, fuzzy
+#~ msgid "T_ranslatable"
+#~ msgstr "Cadenas de texto traducibles:"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid "Edit Menus..."
+#~ msgstr "Editar Menús..."
 
 #, fuzzy
 #~ msgid "About Glade"
@@ -1938,9 +1912,6 @@ msgstr ""
 
 #~ msgid "Defines the signals to emit when keys are pressed"
 #~ msgstr "Define las señales a emitir cuando se pulsan teclas"
-
-#~ msgid "Edit..."
-#~ msgstr "Editar..."
 
 #~ msgid "Propagate:"
 #~ msgstr "Propagar:"
@@ -4336,3 +4307,4 @@ msgstr ""
 
 #~ msgid "Database report"
 #~ msgstr "Informe de la base de datos"
+
