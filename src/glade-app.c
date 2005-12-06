@@ -555,8 +555,8 @@ glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
 
-		if ((loaded = glade_util_basenames_match (cur_project->path, 
-							  project_path)))
+		if ((loaded = cur_project->path && 
+		     (strcmp (cur_project->path, project_path) == 0)))
 			break;
 	}
 
@@ -586,6 +586,27 @@ glade_app_hide_properties (GladeApp* app)
 		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
 }
 
+void
+glade_app_update_instance_count (GladeApp *app, GladeProject *project)
+{
+	GladeProject *prj;
+	GList *l;
+	gint temp, max = 0, i = 0;
+		
+	for (l = app->priv->projects; l; l = l->next)
+	{
+		prj = l->data;
+
+		if (prj != project &&
+		    prj->name && !strcmp (prj->name, project->name))
+		{
+			i++;
+			temp = MAX (prj->instance + 1, i);
+			max  = MAX (temp, max);
+		}
+	}
+	project->instance = MAX (max, i);
+}
 
 void
 glade_app_add_project (GladeApp *app, GladeProject *project)
@@ -598,8 +619,10 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 		glade_app_set_project (app, project);
 		return;
 	}
-	
- 	app->priv->projects = g_list_prepend (app->priv->projects, project);
+
+	glade_app_update_instance_count (app, project);
+
+	app->priv->projects = g_list_prepend (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */
 	g_signal_connect (G_OBJECT (project), "widget_name_changed",

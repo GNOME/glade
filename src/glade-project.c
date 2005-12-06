@@ -152,7 +152,9 @@ glade_project_class_init (GladeProjectClass *class)
 static void
 glade_project_init (GladeProject *project)
 {
+	project->path = NULL;
 	project->name = NULL;
+	project->instance = 0;
 	project->objects = NULL;
 	project->selection = NULL;
 	project->undo_stack = NULL;
@@ -752,8 +754,15 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	g_return_val_if_fail (interface != NULL, NULL);
 
 	project = glade_project_new (FALSE);
-	project->path = g_strdup (path);
-	g_free (project->name);
+
+	if (g_path_is_absolute (path))
+		project->path = g_strdup (path);
+	else
+		project->path =
+			g_build_filename (g_get_current_dir (), path, NULL);
+	
+	if (project->name) g_free (project->name);
+
 	project->name = g_path_get_basename (path);
 	project->selection = NULL;
 	project->objects = NULL;

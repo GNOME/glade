@@ -1,5 +1,16 @@
 2005-12-06  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-app.[ch], src/glade-project-window.c: 
+	  Added glade_app_update_instance_count to keep track of
+	  (and differentiate between) multiple projects with the same name.
+
+	* src/glade-project.[ch]: Added instance count member to project
+	  object, also ensured that project->path is always a full path.
+	
+	* src/main.c: fix leak of list of initial projects to load.
+
+2005-12-06  Tristan Van Berkom <tvb@gnome.org>
+
 	* po/az.po po/en_CA.po po/es.po po/ja.po po/ms.po po/nn.po
 	  po/no.po po/pl.po po/pt.po po/ru.po po/sv.po po/ta.po po/tr.po
 	  po/uk.po po/zh_CN.po src/glade-app.c src/glade-app.h

@@ -295,22 +295,8 @@ gpw_open_cb (GtkAction *action, GladeProjectWindow *gpw)
 
 	if (!path)
 		return;
-
-	/* dont allow more than one project with the same name to be
-	 * opened simultainiously.
-	 */
-	if (glade_app_is_project_loaded (GLADE_APP (gpw), path))
-	{
-		gchar *base_path = g_path_get_basename (path);
-		gchar *message = g_strdup_printf (_("A project named %s is already open"), base_path);
-
-		glade_util_ui_warn (gpw->priv->window, message);
-
-		g_free (message);
-		g_free (base_path);
-	} else {
-		glade_project_window_open_project (gpw, path);
-	}
+	
+	glade_project_window_open_project (gpw, path);
 	g_free (path);
 }
 
@@ -352,7 +338,7 @@ static void
 gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 {
 	GError              *error = NULL;
-	
+
 	if (!glade_project_save (project, path, &error))
 	{
 		glade_util_ui_warn (gpw->priv->window, error->message);
@@ -360,6 +346,8 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 		return;
 	}
 	
+	glade_app_update_instance_count (GLADE_APP (gpw), project);
+
 	gpw_recent_project_add (gpw, path);
 	gpw_recent_project_config_save (gpw);
 	glade_app_config_save (GLADE_APP (gpw));
@@ -405,19 +393,15 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	/* dont allow more than one project with the same name to be
 	 * opened simultainiously (but allow the same project to change paths).
 	 */
-	if (glade_app_is_project_loaded (GLADE_APP (gpw), real_path) &&
-	    glade_util_basenames_match  (project->path, real_path) == FALSE)
+	if (glade_app_is_project_loaded (GLADE_APP (gpw), real_path))
 	{
-		gchar *base_path = g_path_get_basename (path);
-		gchar *message = g_strdup_printf (_("A project named %s is already open"), base_path);
+		gchar *message = g_strdup_printf (_("%s is already open"), real_path);
 
 		glade_util_ui_warn (gpw->priv->window, message);
 
 		g_free (message);
-		g_free (base_path);
 		return;
 	}
-
 	gpw_save (gpw, project, real_path);
 
 	g_free (real_path);
@@ -1359,7 +1343,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 static void
 gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 {
-	gchar *underscored_name, *action_name;
+	gchar *underscored_name, *action_name, *final_name;
 	guint merge_id;
 	
 	/* double the underscores in the project name
@@ -1368,13 +1352,18 @@ gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 	if (!underscored_name)
 		return;
 
-	action_name = g_strdup_printf ("select[%s]", project->name);
+	if (project->instance > 0)
+		final_name = g_strdup_printf ("%s <%d>", underscored_name, project->instance);
+	else
+		final_name = g_strdup (underscored_name);
+	
+	action_name = g_strdup_printf ("select[%s]", final_name);
 	
 	/* What happen if there is two project with the same name in differents
 	 * directories?
 	 */
-	project->action = gtk_toggle_action_new (action_name, underscored_name,
-					"Selects this Project",	NULL);
+	project->action = gtk_toggle_action_new (action_name, final_name,
+						 project->path, NULL);
 	gtk_toggle_action_set_active (project->action, TRUE);
 	g_signal_connect (G_OBJECT (project->action), "activate",
 			  (GCallback) glade_project_window_set_project, project);
@@ -1398,6 +1387,7 @@ gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 
 	g_free (action_name);
 	g_free (underscored_name);
+	g_free (final_name);
 }
 
 static void
@@ -1452,8 +1442,13 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	 * opened simultainiously.
 	 */
 	if (glade_app_is_project_loaded (GLADE_APP (gpw), (gchar*)path))
+	{
+		gchar *message = g_strdup_printf (_("%s is already open"), path);
+		glade_util_ui_warn (gpw->priv->window, message);
+		g_free (message);
 		return;
-
+	}
+	
 	project = glade_project_open (path);
 	if (!project)
 	{

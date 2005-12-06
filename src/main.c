@@ -103,7 +103,7 @@ int
 main (int argc, char *argv[])
 {
 	GladeProjectWindow *project_window;
-	GList *files = NULL;
+	GList *files = NULL, *l;
 #ifdef HAVE_LIBPOPT
 	poptContext popt_context;
 #endif
@@ -151,10 +151,11 @@ main (int argc, char *argv[])
 	glade_project_window_show_all (project_window);
 
 	if (files)
-		for (; files; files = files->next)
-		{
-			glade_project_window_open_project (project_window, files->data);
-		}
+	{
+		for (l = files; l; l = l->next)
+			glade_project_window_open_project (project_window, l->data);
+		g_list_free (files);
+	}
 	else
 		glade_project_window_new_project (project_window);
 

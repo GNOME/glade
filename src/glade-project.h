@@ -20,12 +20,14 @@ typedef struct _GladeProjectClass  GladeProjectClass;
  */
 struct _GladeProject
 {
-	GObject object; /* We emit signals */
+	GObject object;  /* We emit signals */
 
-	gchar *name;    /* The name of the project like network-conf */
+	gchar *name;     /* The name of the project like network-conf */
 
-	gchar *path;    /* The full path of the xml file for this project*/
+	gchar *path;     /* The full path of the xml file for this project */
 
+	gint   instance; /* How many projects with this name */
+	
 	GtkToggleAction *action; /* The menu item action */
 
 	gboolean changed;    /* A flag that is set when a project has changes
