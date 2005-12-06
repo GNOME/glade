@@ -5,196 +5,673 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-26 17:21+0800\n"
+"POT-Creation-Date: 2005-12-06 12:47-0500\n"
 "PO-Revision-Date: 2005-11-26 17:31+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
-#: ../glade-3.desktop.in.h:1
+#: glade-3.desktop.in.h:1
 msgid "Design user interfaces"
 msgstr ""
 
-#: ../glade-3.desktop.in.h:2
+#: glade-3.desktop.in.h:2
 msgid "Glade 3.0 GUI builder"
 msgstr ""
 
-#: ../src/main.c:50
+#: src/main.c:50
 msgid ""
 "dump the properties of a widget. --dump [gtk type] where type can be "
 "GtkWindow, GtkLabel etc."
 msgstr ""
 
-#: ../src/main.c:53
+#: src/main.c:53
 msgid "be verbose."
 msgstr ""
 
-#: ../src/main.c:60
+#: src/main.c:60
 msgid "Help options:"
 msgstr "帮助选项："
 
-#: ../src/main.c:94
+#: src/main.c:94
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 
-#: ../src/main.c:118
+#: src/main.c:118
 msgid "Glade-3 GUI Builder"
 msgstr "Glade-3 GUI 创建器"
 
-#: ../src/glade-editor.c:103
+#: src/glade-app.c:390
+msgid "Clipboard"
+msgstr ""
+
+#: src/glade-builtins.c:83
+msgid "Stock"
+msgstr ""
+
+#: src/glade-builtins.c:84
+msgid "A builtin stock item"
+msgstr ""
+
+#: src/glade-builtins.c:94
+msgid "Integer"
+msgstr ""
+
+#: src/glade-builtins.c:95
+msgid "An integer value"
+msgstr ""
+
+#: src/glade-builtins.c:106
+#, fuzzy
+msgid "String"
+msgstr "无"
+
+#: src/glade-builtins.c:107
+msgid "An entry"
+msgstr ""
+
+#: src/glade-builtins.c:117
+msgid "Float"
+msgstr ""
+
+#: src/glade-builtins.c:118
+msgid "A floating point entry"
+msgstr ""
+
+#: src/glade-clipboard-view.c:208 src/glade-project-view.c:573
+msgid "Widget"
+msgstr "部件"
+
+#: src/glade-command.c:425
+msgid "Setting multiple properties"
+msgstr ""
+
+#: src/glade-command.c:433
+#, c-format
+msgid "Setting %s of %s"
+msgstr ""
+
+#: src/glade-command.c:437
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr ""
+
+#: src/glade-command.c:633 src/glade-command.c:655
+#, c-format
+msgid "Renaming %s to %s"
+msgstr ""
+
+#: src/glade-command.c:891
+msgid "You cannot delete a widget internal to a composite widget."
+msgstr ""
+
+#: src/glade-command.c:920
+#, c-format
+msgid "Delete %s"
+msgstr ""
+
+#: src/glade-command.c:924
+msgid "Delete multiple"
+msgstr ""
+
+#: src/glade-command.c:989
+#, fuzzy, c-format
+msgid "Create %s"
+msgstr "创建 %s"
+
+#: src/glade-command.c:1314
+msgid "You cannot copy/cut a widget internal to a composite widget."
+msgstr ""
+
+#: src/glade-command.c:1319
+#, c-format
+msgid "Cut %s"
+msgstr ""
+
+#: src/glade-command.c:1319
+#, c-format
+msgid "Copy %s"
+msgstr ""
+
+#: src/glade-command.c:1333
+#, fuzzy
+msgid "Only top-level widgets can be pasted without a parent."
+msgstr "只有菜单项能够被粘贴到菜单或菜单栏中。"
+
+#: src/glade-command.c:1343
+msgid "You cannot paste a top-level to a placeholder."
+msgstr ""
+
+#: src/glade-command.c:1349
+#, fuzzy, c-format
+msgid "Paste %s"
+msgstr "创建 %s"
+
+#: src/glade-command.c:1364
+msgid "multiple"
+msgstr ""
+
+#: src/glade-command.c:1623
+#, c-format
+msgid "Add signal handler %s"
+msgstr ""
+
+#: src/glade-command.c:1624
+#, c-format
+msgid "Remove signal handler %s"
+msgstr ""
+
+#: src/glade-command.c:1625
+#, c-format
+msgid "Change signal handler %s"
+msgstr ""
+
+#: src/glade-editor.c:103
 msgid "_General"
 msgstr "常规(_G)"
 
-#: ../src/glade-editor.c:104
+#: src/glade-editor.c:104
 msgid "_Packing"
 msgstr "打包(_P)"
 
-#: ../src/glade-editor.c:105
+#: src/glade-editor.c:105
 msgid "_Common"
 msgstr "公共(_C)"
 
-#: ../src/glade-editor.c:106
+#: src/glade-editor.c:106
 msgid "_Signals"
 msgstr "信号(_S)"
 
 #. Custom editor button
 #.
-#: ../src/glade-editor.c:118
+#: src/glade-editor.c:118
 msgid "_Edit..."
 msgstr "编辑(_E)..."
 
 #. Reset button
 #.
-#: ../src/glade-editor.c:127
+#: src/glade-editor.c:127
 msgid "_Reset..."
 msgstr "重置(_R)..."
 
 #. Name
-#: ../src/glade-editor.c:246
+#: src/glade-editor.c:246
 msgid "Name :"
 msgstr "名称："
 
 #. Class
-#: ../src/glade-editor.c:272
+#: src/glade-editor.c:272
 msgid "Class :"
 msgstr "类："
 
-#: ../src/glade-editor.c:631
+#: src/glade-editor.c:631
 #, c-format
 msgid "Create a %s"
 msgstr "创建 %s"
 
-#: ../src/glade-editor.c:748
+#: src/glade-editor.c:748
 msgid "Reset"
 msgstr "重置"
 
-#: ../src/glade-editor.c:762
+#: src/glade-editor.c:762
 msgid "Property"
 msgstr "属性"
 
-#: ../src/glade-editor.c:797
+#: src/glade-editor.c:797
 msgid "General"
 msgstr "常规"
 
-#: ../src/glade-editor.c:807
+#: src/glade-editor.c:807
 msgid "Common"
 msgstr "通用"
 
-#: ../src/glade-editor.c:839
+#: src/glade-editor.c:839
 msgid "(default)"
 msgstr "(默认)"
 
-#: ../src/glade-editor.c:854
+#: src/glade-editor.c:854
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 
-#: ../src/glade-editor.c:986
+#: src/glade-editor.c:986
 msgid "Reset Widget Properties"
 msgstr "重置部件属性"
 
 #. Checklist
-#: ../src/glade-editor.c:1003
+#: src/glade-editor.c:1003
 msgid "_Properties:"
 msgstr "属性(_P)："
 
-#: ../src/glade-editor.c:1032
+#: src/glade-editor.c:1032
 msgid "_Select All"
 msgstr "全部选择(_S)"
 
-#: ../src/glade-editor.c:1039
+#: src/glade-editor.c:1039
 msgid "_Unselect All"
 msgstr "全部不选(_U)"
 
 #. Description
-#: ../src/glade-editor.c:1048
+#: src/glade-editor.c:1048
 msgid "Property _Description:"
 msgstr "属性描述(_D)："
 
+#: src/glade-editor-property.c:376
+#, fuzzy
+msgid "Property Class"
+msgstr "属性"
+
+#: src/glade-editor-property.c:377
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr ""
+
+#: src/glade-editor-property.c:383
+msgid "Use Command"
+msgstr ""
+
+#: src/glade-editor-property.c:384
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr ""
+
+#: src/glade-editor-property.c:782
+msgid "Set Flags"
+msgstr ""
+
+#: src/glade-editor-property.c:1197
+#, fuzzy
+msgid "Edit Text Property"
+msgstr "属性"
+
+#. Text
+#: src/glade-editor-property.c:1214
+msgid "_Text:"
+msgstr ""
+
+#: src/glade-editor-property.c:1250
+#, fuzzy
+msgid "T_ranslatable"
+msgstr "可翻译"
+
+#: src/glade-editor-property.c:1257
+msgid "Has context _prefix"
+msgstr ""
+
+#. Comments.
+#: src/glade-editor-property.c:1265
+msgid "Co_mments for translators:"
+msgstr ""
+
+#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
+#: src/glade-menu-editor.c:914 src/glade-menu-editor.c:985
+#: src/glade-menu-editor.c:1472
+msgid "Yes"
+msgstr ""
+
+#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
+#: src/glade-editor-property.c:1467 src/glade-menu-editor.c:1472
+#: src/glade-menu-editor.c:2813
+msgid "No"
+msgstr ""
+
+#: src/glade-fixed-manager.c:762
+msgid "X position property"
+msgstr ""
+
+#: src/glade-fixed-manager.c:763
+msgid "The property used to set the X position of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:769
+msgid "Y position property"
+msgstr ""
+
+#: src/glade-fixed-manager.c:770
+msgid "The property used to set the Y position of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:776
+#, fuzzy
+msgid "Width property"
+msgstr "属性"
+
+#: src/glade-fixed-manager.c:777
+msgid "The property used to set the width of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:783
+#, fuzzy
+msgid "Height property"
+msgstr "属性"
+
+#: src/glade-fixed-manager.c:784
+msgid "The property used to set the height of a child object"
+msgstr ""
+
+#: src/glade-gtk.c:71 src/glade-menu-editor.c:2253
+msgid "Type"
+msgstr ""
+
+#: src/glade-gtk.c:72
+msgid "Chose the image type"
+msgstr ""
+
+#: src/glade-gtk.c:701 src/glade-gtk.c:1628
+msgid "There must be no children in the button"
+msgstr ""
+
+#: src/glade-gtk.c:808
+msgid "This only applies with file type images"
+msgstr ""
+
+#: src/glade-gtk.c:841
+msgid "This only applies to Icon Theme type images"
+msgstr ""
+
+#: src/glade-gtk.c:873
+msgid "This only applies with stock type images"
+msgstr ""
+
+#: src/glade-gtk.c:1106
+msgid "_File"
+msgstr ""
+
+#: src/glade-gtk.c:1109
+#, fuzzy
+msgid "_Edit"
+msgstr "编辑(_E)..."
+
+#: src/glade-gtk.c:1112
+msgid "_Help"
+msgstr ""
+
+#: src/glade-gtk.c:1417
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+
+#: src/glade-gtk.c:1455
+msgid "Pixel Size takes precedence over Icon size"
+msgstr ""
+
+#. Add the special 'New' item to create a new group.
+#: src/glade-menu-editor.c:480
+msgid "New"
+msgstr ""
+
+#. If the user selects the 'None' item from the combo, we reset the
+#. text to "" and return. This callback will be called again.
+#: src/glade-menu-editor.c:583 src/glade-menu-editor.c:1201
+#: src/glade-menu-editor.c:2383 src/glade-menu-editor.c:2642
+msgid "None"
+msgstr ""
+
+#: src/glade-menu-editor.c:906 src/glade-menu-editor.c:978
+#: src/glade-menu-editor.c:2851
+msgid "Check"
+msgstr ""
+
+#: src/glade-menu-editor.c:908 src/glade-menu-editor.c:980
+#: src/glade-menu-editor.c:2844
+msgid "Radio"
+msgstr ""
+
+#: src/glade-menu-editor.c:1777
+#, fuzzy
+msgid "Select icon"
+msgstr "选择器"
+
+#: src/glade-menu-editor.c:2236
+msgid "Menu Editor"
+msgstr ""
+
+#: src/glade-menu-editor.c:2252
+msgid "Label"
+msgstr ""
+
+#: src/glade-menu-editor.c:2254
+#, fuzzy
+msgid "Accelerator"
+msgstr "选择器"
+
+#: src/glade-menu-editor.c:2255 src/glade-widget.c:148
+msgid "Name"
+msgstr "名字"
+
+#: src/glade-menu-editor.c:2256 src/glade-signal-editor.c:543
+msgid "Handler"
+msgstr "处理"
+
+#: src/glade-menu-editor.c:2257
+msgid "Active"
+msgstr ""
+
+#: src/glade-menu-editor.c:2258
+msgid "Group"
+msgstr ""
+
+#: src/glade-menu-editor.c:2259
+msgid "Icon"
+msgstr ""
+
+#: src/glade-menu-editor.c:2300
+msgid "Move the item and its children up one place in the list"
+msgstr ""
+
+#: src/glade-menu-editor.c:2312
+msgid "Move the item and its children down one place in the list"
+msgstr ""
+
+#: src/glade-menu-editor.c:2324
+msgid "Move the item and its children up one level"
+msgstr ""
+
+#: src/glade-menu-editor.c:2336
+msgid "Move the item and its children down one level"
+msgstr ""
+
+#: src/glade-menu-editor.c:2365
+msgid "The stock item to use."
+msgstr ""
+
+#: src/glade-menu-editor.c:2368 src/glade-menu-editor.c:2459
+msgid "Stock Item:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2457
+msgid "The stock Gnome item to use."
+msgstr ""
+
+#: src/glade-menu-editor.c:2558
+msgid ""
+"The text of the menu item, or empty for separators. Hit return to add a new "
+"item below this one. Ctl-Return adds a child item beneath this one."
+msgstr ""
+
+#: src/glade-menu-editor.c:2560
+msgid "Label:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2582 src/glade-widget.c:149
+msgid "The name of the widget"
+msgstr "部件名"
+
+#: src/glade-menu-editor.c:2585
+#, fuzzy
+msgid "Name:"
+msgstr "名称："
+
+#: src/glade-menu-editor.c:2603
+msgid "The function to be called when the item is selected"
+msgstr ""
+
+#: src/glade-menu-editor.c:2605
+#, fuzzy
+msgid "Handler:"
+msgstr "处理"
+
+#: src/glade-menu-editor.c:2624
+msgid "An optional icon to show on the left of the menu item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2626
+msgid "Icon:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2725
+msgid "The tip to show when the mouse is over the item"
+msgstr ""
+
+#: src/glade-menu-editor.c:2727
+msgid "Tooltip:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2748
+msgid "_Add"
+msgstr ""
+
+#: src/glade-menu-editor.c:2753
+msgid "Add a new item below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2758
+msgid "Add _Child"
+msgstr ""
+
+#: src/glade-menu-editor.c:2763
+msgid "Add a new child item below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2769
+msgid "Add _Separator"
+msgstr ""
+
+#: src/glade-menu-editor.c:2774
+msgid "Add a separator below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2779
+#, fuzzy
+msgid "_Delete"
+msgstr "选择(_S)"
+
+#: src/glade-menu-editor.c:2784
+msgid "Delete the current item"
+msgstr ""
+
+#. Type radio options and toggle options.
+#: src/glade-menu-editor.c:2790
+msgid "Item Type:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2806
+msgid "If the item is initially on."
+msgstr ""
+
+#: src/glade-menu-editor.c:2808
+msgid "Active:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2827
+msgid "The radio menu item's group"
+msgstr ""
+
+#: src/glade-menu-editor.c:2829
+msgid "Group:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2858
+msgid "Normal"
+msgstr ""
+
+#. Accelerator key options.
+#: src/glade-menu-editor.c:2867
+msgid "Accelerator:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2904
+msgid "Ctrl"
+msgstr ""
+
+#: src/glade-menu-editor.c:2909
+msgid "Shift"
+msgstr ""
+
+#: src/glade-menu-editor.c:2914
+msgid "Alt"
+msgstr ""
+
+#: src/glade-menu-editor.c:2919
+msgid "Key:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2925
+msgid "Modifiers:"
+msgstr ""
+
 #. the label defaults to "Selector"
-#: ../src/glade-palette.c:107 ../src/glade-palette.c:155
-#: ../src/glade-palette.c:161
+#: src/glade-palette.c:107 src/glade-palette.c:155 src/glade-palette.c:161
 msgid "Selector"
 msgstr "选择器"
 
-#: ../src/glade-popup.c:273
+#: src/glade-parser.c:1476
+msgid "Could not allocate memory for interface"
+msgstr ""
+
+#: src/glade-popup.c:273
 msgid "_Select"
 msgstr "选择(_S)"
 
-#: ../src/glade-project-view.c:552
+#: src/glade-project-view.c:552
 #, c-format
 msgid "(internal %s)"
 msgstr ""
 
-#: ../src/glade-project-view.c:556
+#: src/glade-project-view.c:556
 #, c-format
 msgid "(%s child)"
 msgstr ""
 
-#: ../src/glade-project-view.c:573
-msgid "Widget"
-msgstr "部件"
-
-#: ../src/glade-project-window.c:288
+#: src/glade-project-window.c:288
 msgid "Open..."
 msgstr "打开..."
 
-#: ../src/glade-project-window.c:305 ../src/glade-project-window.c:412
+#: src/glade-project-window.c:305 src/glade-project-window.c:412
 #, c-format
 msgid "A project named %s is already open"
 msgstr "名为 %s 的工程已经打开"
 
-#: ../src/glade-project-window.c:327
+#: src/glade-project-window.c:327
 #, fuzzy
 msgid ""
 "Are you sure you want to clear the\n"
 "list of recent projects?"
 msgstr "您确定要创建新项目？"
 
-#: ../src/glade-project-window.c:328
+#: src/glade-project-window.c:328
 msgid ""
 "If you clear the list of recent projects, they will be\n"
 "permanently deleted."
 msgstr ""
 
-#: ../src/glade-project-window.c:371 ../src/glade-project-window.c:441
+#: src/glade-project-window.c:371 src/glade-project-window.c:441
 #, c-format
 msgid "Project '%s' saved"
 msgstr "工程“%s”已保存"
 
 #. If instead we dont have a path yet, fire up a file selector
-#: ../src/glade-project-window.c:453
+#: src/glade-project-window.c:453
 msgid "Save..."
 msgstr "保存..."
 
-#: ../src/glade-project-window.c:459
+#: src/glade-project-window.c:459
 msgid "Save as ..."
 msgstr "另存为..."
 
-#: ../src/glade-project-window.c:473
+#: src/glade-project-window.c:473
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -203,31 +680,31 @@ msgid ""
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
 
-#: ../src/glade-project-window.c:487
+#: src/glade-project-window.c:487
 msgid "_Close without Saving"
 msgstr "关闭而不保存(_C)"
 
-#: ../src/glade-project-window.c:514
+#: src/glade-project-window.c:514
 msgid "Save ..."
 msgstr "保存..."
 
-#: ../src/glade-project-window.c:681
+#: src/glade-project-window.c:681
 msgid "Palette"
 msgstr "调色板"
 
-#: ../src/glade-project-window.c:753 ../src/glade-widget.c:187
+#: src/glade-project-window.c:753 src/glade-widget.c:187
 msgid "Properties"
 msgstr "属性"
 
-#: ../src/glade-project-window.c:832
+#: src/glade-project-window.c:832
 msgid "E_xpand all"
 msgstr "全部展开(_X)"
 
-#: ../src/glade-project-window.c:836
+#: src/glade-project-window.c:836
 msgid "_Collapse all"
 msgstr "全部折叠(_C)"
 
-#: ../src/glade-project-window.c:979
+#: src/glade-project-window.c:979
 msgid ""
 "Fatih Demir <kabalak@gtranslator.org>\n"
 "Christian Rose <menthos@menthos.com>\n"
@@ -238,14 +715,14 @@ msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 msgstr ""
 
-#: ../src/glade-project-window.c:988
+#: src/glade-project-window.c:988
 msgid ""
 "Glade is a User Interface Builder for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2.0.0 version, original from Damon "
 "Chaplin\n"
 msgstr ""
 
-#: ../src/glade-project-window.c:993
+#: src/glade-project-window.c:993
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -259,220 +736,207 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 msgstr ""
 
-#: ../src/glade-project-window.c:1431
+#: src/glade-project-window.c:1432
 msgid "Could not create a new project."
 msgstr "无法创建新工程。"
 
-#: ../src/glade-project-window.c:1459
+#: src/glade-project-window.c:1460
 msgid "Could not open project."
 msgstr "无法打开工程。"
 
-#: ../src/glade-project-window.c:1501
+#: src/glade-project-window.c:1502
 msgid "Nothing"
 msgstr "无"
 
-#: ../src/glade-project-window.c:1545
+#: src/glade-project-window.c:1546
 msgid "_Undo: "
 msgstr "撤消(_U)："
 
-#: ../src/glade-project-window.c:1546
+#: src/glade-project-window.c:1547
 msgid "_Redo: "
 msgstr "重做(_R)："
 
-#: ../src/glade-property.c:466
+#: src/glade-property.c:466
 msgid "Enabled"
 msgstr "已启用"
 
-#: ../src/glade-property.c:467
+#: src/glade-property.c:467
 msgid "If the property is optional, this is its enabled state"
 msgstr ""
 
-#: ../src/glade-property.c:473
+#: src/glade-property.c:473
 msgid "Sensitive"
 msgstr "敏感"
 
-#: ../src/glade-property.c:474
+#: src/glade-property.c:474
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: ../src/glade-property.c:480
+#: src/glade-property.c:480
 msgid "Comment"
 msgstr "注释"
 
-#: ../src/glade-property.c:481
+#: src/glade-property.c:481
 msgid "XXX FIXME: The translators comment ?"
 msgstr ""
 
-#: ../src/glade-property.c:487
+#: src/glade-property.c:487
 msgid "Translatable"
 msgstr "可翻译"
 
-#: ../src/glade-property.c:488 ../src/glade-property.c:495
+#: src/glade-property.c:488 src/glade-property.c:495
 msgid "Whether this property is translatable or not"
 msgstr ""
 
-#: ../src/glade-property.c:494
+#: src/glade-property.c:494
 msgid "Has Context"
 msgstr ""
 
-#: ../src/glade-property-class.c:964
+#: src/glade-property-class.c:964
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"set\" "
 "function, but there is no library associated to this widget's class."
 msgstr ""
 
-#: ../src/glade-property-class.c:971
+#: src/glade-property-class.c:971
 #, c-format
 msgid ""
 "Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
 "class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: ../src/glade-property-class.c:988 ../src/glade-property-class.c:1009
+#: src/glade-property-class.c:988 src/glade-property-class.c:1009
 #, c-format
 msgid ""
 "The property [%s] of the widget's class [%s] needs a special \"get\" "
 "function, but there is no library associated to this widget's class."
 msgstr ""
 
-#: ../src/glade-property-class.c:995
+#: src/glade-property-class.c:995
 #, c-format
 msgid ""
 "Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
 "class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: ../src/glade-property-class.c:1016
+#: src/glade-property-class.c:1016
 #, c-format
 msgid ""
 "Unable to get the \"verify\" function [%s] of the property [%s] of the "
 "widget's class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: ../src/glade-signal-editor.c:530
+#: src/glade-signal-editor.c:530
 msgid "Signal"
 msgstr "信号"
 
-#: ../src/glade-signal-editor.c:543
-msgid "Handler"
-msgstr "处理"
-
-#: ../src/glade-signal-editor.c:560
+#: src/glade-signal-editor.c:560
 msgid "User data"
 msgstr "用户数据"
 
-#: ../src/glade-signal-editor.c:573
+#: src/glade-signal-editor.c:573
 msgid "Lookup"
 msgstr ""
 
-#: ../src/glade-signal-editor.c:584
+#: src/glade-signal-editor.c:584
 msgid "After"
 msgstr "之后"
 
-#: ../src/glade-utils.c:141 ../src/glade-utils.c:175
+#: src/glade-utils.c:141 src/glade-utils.c:175
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr ""
 
-#: ../src/glade-utils.c:148
+#: src/glade-utils.c:148
 #, c-format
 msgid "Could not get the type from \"%s"
 msgstr ""
 
-#: ../src/glade-utils.c:1047
+#: src/glade-utils.c:1047
 #, fuzzy
 msgid "Unable to paste to multiple widgets"
 msgstr "子部件的水平比例尺"
 
-#: ../src/glade-utils.c:1055
+#: src/glade-utils.c:1055
 #, fuzzy
 msgid "No widget selected on the clipboard"
 msgstr "您需要选择一个部件将数据粘贴入"
 
-#: ../src/glade-utils.c:1071
+#: src/glade-utils.c:1071
 #, fuzzy, c-format
 msgid "Unable to paste widget %s to parent %s"
 msgstr "您需要选择一个部件将数据粘贴入"
 
-#: ../src/glade-utils.c:1093
+#: src/glade-utils.c:1093
 #, fuzzy
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "只有菜单项能够被粘贴到菜单或菜单栏中。"
 
-#: ../src/glade-utils.c:1102
+#: src/glade-utils.c:1102
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
-#: ../src/glade-utils.c:1150 ../src/glade-utils.c:1181
-#: ../src/glade-utils.c:1211
+#: src/glade-utils.c:1150 src/glade-utils.c:1181 src/glade-utils.c:1211
 msgid "No widget selected!"
 msgstr "未选择部件！"
 
-#: ../src/glade-widget.c:148
-msgid "Name"
-msgstr "名字"
-
-#: ../src/glade-widget.c:149
-msgid "The name of the widget"
-msgstr "部件名"
-
-#: ../src/glade-widget.c:155
+#: src/glade-widget.c:155
 msgid "Internal name"
 msgstr "内部名称"
 
-#: ../src/glade-widget.c:156
+#: src/glade-widget.c:156
 msgid "The internal name of the widget"
 msgstr "部件的内部名称"
 
-#: ../src/glade-widget.c:162
+#: src/glade-widget.c:162
 msgid "Object"
 msgstr "对象"
 
-#: ../src/glade-widget.c:163
+#: src/glade-widget.c:163
 msgid "The object associated"
 msgstr "关联的对象"
 
-#: ../src/glade-widget.c:170
+#: src/glade-widget.c:170
 msgid "Class"
 msgstr "类"
 
-#: ../src/glade-widget.c:171
+#: src/glade-widget.c:171
 #, fuzzy
 msgid "The class of the associated gtk+ widget"
 msgstr "部件类"
 
-#: ../src/glade-widget.c:178
+#: src/glade-widget.c:178
 msgid "Project"
 msgstr "工程"
 
-#: ../src/glade-widget.c:179
+#: src/glade-widget.c:179
 #, fuzzy
 msgid "The glade project that this widget belongs to"
 msgstr "该部件接收的 X 事件"
 
-#: ../src/glade-widget.c:188
+#: src/glade-widget.c:188
 msgid "A list of GladeProperties"
 msgstr "GladeProperties 列表"
 
-#: ../src/glade-widget.c:194
+#: src/glade-widget.c:194
 #, fuzzy
 msgid "Parent"
 msgstr "调色板"
 
-#: ../src/glade-widget.c:195
+#: src/glade-widget.c:195
 msgid "A pointer to the parenting GladeWidget"
 msgstr ""
 
-#: ../src/glade-widget-class.c:952 ../src/glade-widget-class.c:964
+#: src/glade-widget-class.c:952 src/glade-widget-class.c:964
 msgid "Not enough memory."
 msgstr "内存不足。"
 
-#: ../src/glade-widget-class.c:974
+#: src/glade-widget-class.c:974
 #, c-format
 msgid "Unable to open the module %s."
 msgstr "无法打开模块 %s。"
-

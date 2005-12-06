@@ -4,14 +4,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-29 14:17-0400\n"
+"POT-Creation-Date: 2005-12-06 12:47-0500\n"
 "PO-Revision-Date: 2001-10-13 15:39+0400\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glade-3.desktop.in.h:1
 msgid "Design user interfaces"
@@ -47,128 +47,578 @@ msgstr "Нет поддержка gmodule. Для работы glade требуется поддержка gmodule"
 msgid "Glade-3 GUI Builder"
 msgstr "Средство создания интерфейсов пользователя для GTK+"
 
-#: src/glade-editor.c:114
+#: src/glade-app.c:390
+msgid "Clipboard"
+msgstr ""
+
+#: src/glade-builtins.c:83
+msgid "Stock"
+msgstr ""
+
+#: src/glade-builtins.c:84
+msgid "A builtin stock item"
+msgstr ""
+
+#: src/glade-builtins.c:94
+msgid "Integer"
+msgstr ""
+
+#: src/glade-builtins.c:95
+msgid "An integer value"
+msgstr ""
+
+#: src/glade-builtins.c:106
+msgid "String"
+msgstr ""
+
+#: src/glade-builtins.c:107
+msgid "An entry"
+msgstr ""
+
+#: src/glade-builtins.c:117
+msgid "Float"
+msgstr ""
+
+#: src/glade-builtins.c:118
+msgid "A floating point entry"
+msgstr ""
+
+#: src/glade-clipboard-view.c:208 src/glade-project-view.c:573
+msgid "Widget"
+msgstr "Эл.управления"
+
+#: src/glade-command.c:425
+msgid "Setting multiple properties"
+msgstr ""
+
+#: src/glade-command.c:433
+#, c-format
+msgid "Setting %s of %s"
+msgstr ""
+
+#: src/glade-command.c:437
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr ""
+
+#: src/glade-command.c:633 src/glade-command.c:655
+#, c-format
+msgid "Renaming %s to %s"
+msgstr ""
+
+#: src/glade-command.c:891
+msgid "You cannot delete a widget internal to a composite widget."
+msgstr ""
+
+#: src/glade-command.c:920
+#, fuzzy, c-format
+msgid "Delete %s"
+msgstr "Удалить"
+
+#: src/glade-command.c:924
+msgid "Delete multiple"
+msgstr ""
+
+#: src/glade-command.c:989
+#, c-format
+msgid "Create %s"
+msgstr ""
+
+#: src/glade-command.c:1314
+msgid "You cannot copy/cut a widget internal to a composite widget."
+msgstr ""
+
+#: src/glade-command.c:1319
+#, fuzzy, c-format
+msgid "Cut %s"
+msgstr "Вырезать"
+
+#: src/glade-command.c:1319
+#, fuzzy, c-format
+msgid "Copy %s"
+msgstr "Скопировать"
+
+#: src/glade-command.c:1333
+msgid "Only top-level widgets can be pasted without a parent."
+msgstr ""
+
+#: src/glade-command.c:1343
+msgid "You cannot paste a top-level to a placeholder."
+msgstr ""
+
+#: src/glade-command.c:1349
+#, fuzzy, c-format
+msgid "Paste %s"
+msgstr "Вставить"
+
+#: src/glade-command.c:1364
+msgid "multiple"
+msgstr ""
+
+#: src/glade-command.c:1623
+#, c-format
+msgid "Add signal handler %s"
+msgstr ""
+
+#: src/glade-command.c:1624
+#, fuzzy, c-format
+msgid "Remove signal handler %s"
+msgstr "Введите обработчик сигнала"
+
+#: src/glade-command.c:1625
+#, fuzzy, c-format
+msgid "Change signal handler %s"
+msgstr "Введите обработчик сигнала"
+
+#: src/glade-editor.c:103
 msgid "_General"
 msgstr ""
 
-#: src/glade-editor.c:115
+#: src/glade-editor.c:104
 #, fuzzy
 msgid "_Packing"
 msgstr "Упаковка"
 
-#: src/glade-editor.c:116
+#: src/glade-editor.c:105
 #, fuzzy
 msgid "_Common"
 msgstr "Общие"
 
-#: src/glade-editor.c:117
+#: src/glade-editor.c:106
 #, fuzzy
 msgid "_Signals"
 msgstr "Сигналы"
 
-#: src/glade-editor.c:128
-msgid "Reset..."
+#. Custom editor button
+#.
+#: src/glade-editor.c:118
+msgid "_Edit..."
 msgstr ""
 
-#: src/glade-editor.c:581
-msgid "Set Flags"
+#. Reset button
+#.
+#: src/glade-editor.c:127
+msgid "_Reset..."
 msgstr ""
-
-#: src/glade-editor.c:728
-msgid "Edit Text Property"
-msgstr ""
-
-#. Text
-#: src/glade-editor.c:745
-msgid "_Text:"
-msgstr ""
-
-#: src/glade-editor.c:781
-#, fuzzy
-msgid "T_ranslatable"
-msgstr "Переведи меня\n"
-
-#: src/glade-editor.c:788
-msgid "Has context _prefix"
-msgstr ""
-
-#. Comments.
-#: src/glade-editor.c:796
-msgid "Co_mments for translators:"
-msgstr ""
-
-#: src/glade-editor.c:1139
-msgid "No"
-msgstr "Нет"
 
 #. Name
-#: src/glade-editor.c:1313
+#: src/glade-editor.c:246
 msgid "Name :"
 msgstr "Название:"
 
 #. Class
-#: src/glade-editor.c:1338
+#: src/glade-editor.c:272
 msgid "Class :"
 msgstr "Класс:"
 
-#: src/glade-editor.c:1460
-msgid "Edit Menus..."
-msgstr ""
-
-#: src/glade-editor.c:2204
+#: src/glade-editor.c:631
 #, c-format
 msgid "Create a %s"
 msgstr ""
 
-#: src/glade-editor.c:2349
+#: src/glade-editor.c:748
 msgid "Reset"
 msgstr ""
 
-#: src/glade-editor.c:2363
+#: src/glade-editor.c:762
 #, fuzzy
 msgid "Property"
 msgstr "Свойства"
 
-#: src/glade-editor.c:2398
+#: src/glade-editor.c:797
 msgid "General"
 msgstr ""
 
-#: src/glade-editor.c:2408
+#: src/glade-editor.c:807
 msgid "Common"
 msgstr "Общие"
 
-#: src/glade-editor.c:2440
+#: src/glade-editor.c:839
 msgid "(default)"
 msgstr ""
 
-#: src/glade-editor.c:2455
+#: src/glade-editor.c:854
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 
-#: src/glade-editor.c:2587
+#: src/glade-editor.c:986
 #, fuzzy
 msgid "Reset Widget Properties"
 msgstr "Свойства"
 
 #. Checklist
-#: src/glade-editor.c:2604
+#: src/glade-editor.c:1003
 #, fuzzy
 msgid "_Properties:"
 msgstr "Свойства"
 
-#: src/glade-editor.c:2633
+#: src/glade-editor.c:1032
 #, fuzzy
 msgid "_Select All"
 msgstr "Выбрать"
 
-#: src/glade-editor.c:2640
+#: src/glade-editor.c:1039
 #, fuzzy
 msgid "_Unselect All"
 msgstr "Выбрать"
 
 #. Description
-#: src/glade-editor.c:2649
+#: src/glade-editor.c:1048
 msgid "Property _Description:"
+msgstr ""
+
+#: src/glade-editor-property.c:376
+#, fuzzy
+msgid "Property Class"
+msgstr "Свойства"
+
+#: src/glade-editor-property.c:377
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr ""
+
+#: src/glade-editor-property.c:383
+msgid "Use Command"
+msgstr ""
+
+#: src/glade-editor-property.c:384
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr ""
+
+#: src/glade-editor-property.c:782
+msgid "Set Flags"
+msgstr ""
+
+#: src/glade-editor-property.c:1197
+msgid "Edit Text Property"
+msgstr ""
+
+#. Text
+#: src/glade-editor-property.c:1214
+msgid "_Text:"
+msgstr ""
+
+#: src/glade-editor-property.c:1250
+#, fuzzy
+msgid "T_ranslatable"
+msgstr "Переведи меня\n"
+
+#: src/glade-editor-property.c:1257
+msgid "Has context _prefix"
+msgstr ""
+
+#. Comments.
+#: src/glade-editor-property.c:1265
+msgid "Co_mments for translators:"
+msgstr ""
+
+#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
+#: src/glade-menu-editor.c:914 src/glade-menu-editor.c:985
+#: src/glade-menu-editor.c:1472
+msgid "Yes"
+msgstr "Да"
+
+#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
+#: src/glade-editor-property.c:1467 src/glade-menu-editor.c:1472
+#: src/glade-menu-editor.c:2813
+msgid "No"
+msgstr "Нет"
+
+#: src/glade-fixed-manager.c:762
+msgid "X position property"
+msgstr ""
+
+#: src/glade-fixed-manager.c:763
+msgid "The property used to set the X position of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:769
+msgid "Y position property"
+msgstr ""
+
+#: src/glade-fixed-manager.c:770
+msgid "The property used to set the Y position of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:776
+#, fuzzy
+msgid "Width property"
+msgstr "Свойства"
+
+#: src/glade-fixed-manager.c:777
+msgid "The property used to set the width of a child object"
+msgstr ""
+
+#: src/glade-fixed-manager.c:783
+#, fuzzy
+msgid "Height property"
+msgstr "Свойства"
+
+#: src/glade-fixed-manager.c:784
+msgid "The property used to set the height of a child object"
+msgstr ""
+
+#: src/glade-gtk.c:71 src/glade-menu-editor.c:2253
+msgid "Type"
+msgstr ""
+
+#: src/glade-gtk.c:72
+msgid "Chose the image type"
+msgstr ""
+
+#: src/glade-gtk.c:701 src/glade-gtk.c:1628
+msgid "There must be no children in the button"
+msgstr ""
+
+#: src/glade-gtk.c:808
+msgid "This only applies with file type images"
+msgstr ""
+
+#: src/glade-gtk.c:841
+msgid "This only applies to Icon Theme type images"
+msgstr ""
+
+#: src/glade-gtk.c:873
+msgid "This only applies with stock type images"
+msgstr ""
+
+#: src/glade-gtk.c:1106
+msgid "_File"
+msgstr ""
+
+#: src/glade-gtk.c:1109
+msgid "_Edit"
+msgstr ""
+
+#: src/glade-gtk.c:1112
+msgid "_Help"
+msgstr ""
+
+#: src/glade-gtk.c:1417
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+
+#: src/glade-gtk.c:1455
+msgid "Pixel Size takes precedence over Icon size"
+msgstr ""
+
+#. Add the special 'New' item to create a new group.
+#: src/glade-menu-editor.c:480
+msgid "New"
+msgstr ""
+
+#. If the user selects the 'None' item from the combo, we reset the
+#. text to "" and return. This callback will be called again.
+#: src/glade-menu-editor.c:583 src/glade-menu-editor.c:1201
+#: src/glade-menu-editor.c:2383 src/glade-menu-editor.c:2642
+#, fuzzy
+msgid "None"
+msgstr "Нет"
+
+#: src/glade-menu-editor.c:906 src/glade-menu-editor.c:978
+#: src/glade-menu-editor.c:2851
+msgid "Check"
+msgstr ""
+
+#: src/glade-menu-editor.c:908 src/glade-menu-editor.c:980
+#: src/glade-menu-editor.c:2844
+msgid "Radio"
+msgstr ""
+
+#: src/glade-menu-editor.c:1777
+#, fuzzy
+msgid "Select icon"
+msgstr "Выбор сигнала"
+
+#: src/glade-menu-editor.c:2236
+msgid "Menu Editor"
+msgstr ""
+
+#: src/glade-menu-editor.c:2252
+msgid "Label"
+msgstr ""
+
+#: src/glade-menu-editor.c:2254
+#, fuzzy
+msgid "Accelerator"
+msgstr "Выбрать"
+
+#: src/glade-menu-editor.c:2255 src/glade-widget.c:148
+#, fuzzy
+msgid "Name"
+msgstr "Название:"
+
+#: src/glade-menu-editor.c:2256 src/glade-signal-editor.c:543
+msgid "Handler"
+msgstr "Обработчик"
+
+#: src/glade-menu-editor.c:2257
+msgid "Active"
+msgstr ""
+
+#: src/glade-menu-editor.c:2258
+msgid "Group"
+msgstr ""
+
+#: src/glade-menu-editor.c:2259
+msgid "Icon"
+msgstr ""
+
+#: src/glade-menu-editor.c:2300
+msgid "Move the item and its children up one place in the list"
+msgstr ""
+
+#: src/glade-menu-editor.c:2312
+msgid "Move the item and its children down one place in the list"
+msgstr ""
+
+#: src/glade-menu-editor.c:2324
+msgid "Move the item and its children up one level"
+msgstr ""
+
+#: src/glade-menu-editor.c:2336
+msgid "Move the item and its children down one level"
+msgstr ""
+
+#: src/glade-menu-editor.c:2365
+msgid "The stock item to use."
+msgstr ""
+
+#: src/glade-menu-editor.c:2368 src/glade-menu-editor.c:2459
+msgid "Stock Item:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2457
+msgid "The stock Gnome item to use."
+msgstr ""
+
+#: src/glade-menu-editor.c:2558
+msgid ""
+"The text of the menu item, or empty for separators. Hit return to add a new "
+"item below this one. Ctl-Return adds a child item beneath this one."
+msgstr ""
+
+#: src/glade-menu-editor.c:2560
+msgid "Label:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2582 src/glade-widget.c:149
+msgid "The name of the widget"
+msgstr ""
+
+#: src/glade-menu-editor.c:2585
+#, fuzzy
+msgid "Name:"
+msgstr "Название:"
+
+#: src/glade-menu-editor.c:2603
+msgid "The function to be called when the item is selected"
+msgstr ""
+
+#: src/glade-menu-editor.c:2605
+#, fuzzy
+msgid "Handler:"
+msgstr "Обработчик:"
+
+#: src/glade-menu-editor.c:2624
+msgid "An optional icon to show on the left of the menu item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2626
+msgid "Icon:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2725
+msgid "The tip to show when the mouse is over the item"
+msgstr ""
+
+#: src/glade-menu-editor.c:2727
+msgid "Tooltip:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2748
+#, fuzzy
+msgid "_Add"
+msgstr "Добавить"
+
+#: src/glade-menu-editor.c:2753
+msgid "Add a new item below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2758
+msgid "Add _Child"
+msgstr ""
+
+#: src/glade-menu-editor.c:2763
+msgid "Add a new child item below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2769
+msgid "Add _Separator"
+msgstr ""
+
+#: src/glade-menu-editor.c:2774
+msgid "Add a separator below the selected item."
+msgstr ""
+
+#: src/glade-menu-editor.c:2779
+#, fuzzy
+msgid "_Delete"
+msgstr "Удалить"
+
+#: src/glade-menu-editor.c:2784
+msgid "Delete the current item"
+msgstr ""
+
+#. Type radio options and toggle options.
+#: src/glade-menu-editor.c:2790
+msgid "Item Type:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2806
+msgid "If the item is initially on."
+msgstr ""
+
+#: src/glade-menu-editor.c:2808
+msgid "Active:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2827
+msgid "The radio menu item's group"
+msgstr ""
+
+#: src/glade-menu-editor.c:2829
+msgid "Group:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2858
+msgid "Normal"
+msgstr ""
+
+#. Accelerator key options.
+#: src/glade-menu-editor.c:2867
+msgid "Accelerator:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2904
+msgid "Ctrl"
+msgstr ""
+
+#: src/glade-menu-editor.c:2909
+msgid "Shift"
+msgstr ""
+
+#: src/glade-menu-editor.c:2914
+msgid "Alt"
+msgstr ""
+
+#: src/glade-menu-editor.c:2919
+msgid "Key:"
+msgstr ""
+
+#: src/glade-menu-editor.c:2925
+msgid "Modifiers:"
 msgstr ""
 
 #. the label defaults to "Selector"
@@ -177,14 +627,24 @@ msgstr ""
 msgid "Selector"
 msgstr "Выбрать"
 
+#: src/glade-parser.c:1476
+msgid "Could not allocate memory for interface"
+msgstr ""
+
 #: src/glade-popup.c:273
 #, fuzzy
 msgid "_Select"
 msgstr "Выбрать"
 
-#: src/glade-project-view.c:553
-msgid "Widget"
-msgstr "Эл.управления"
+#: src/glade-project-view.c:552
+#, c-format
+msgid "(internal %s)"
+msgstr ""
+
+#: src/glade-project-view.c:556
+#, c-format
+msgid "(%s child)"
+msgstr ""
 
 #: src/glade-project-window.c:288
 #, fuzzy
@@ -289,27 +749,28 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 msgstr ""
 
-#: src/glade-project-window.c:1431
+#: src/glade-project-window.c:1432
 #, fuzzy
 msgid "Could not create a new project."
 msgstr "Не возможно открыть проект."
 
-#: src/glade-project-window.c:1459
+#: src/glade-project-window.c:1460
 msgid "Could not open project."
 msgstr "Не возможно открыть проект."
 
-#: src/glade-project-window.c:1501
+#: src/glade-project-window.c:1502
 msgid "Nothing"
 msgstr ""
 
-#: src/glade-project-window.c:1545
+#: src/glade-project-window.c:1546
 msgid "_Undo: "
 msgstr ""
 
-#: src/glade-project-window.c:1546
+#: src/glade-project-window.c:1547
 msgid "_Redo: "
 msgstr ""
 
@@ -390,10 +851,6 @@ msgstr ""
 msgid "Signal"
 msgstr "Сигнал"
 
-#: src/glade-signal-editor.c:543
-msgid "Handler"
-msgstr "Обработчик"
-
 #: src/glade-signal-editor.c:560
 msgid "User data"
 msgstr ""
@@ -439,15 +896,6 @@ msgstr ""
 
 #: src/glade-utils.c:1150 src/glade-utils.c:1181 src/glade-utils.c:1211
 msgid "No widget selected!"
-msgstr ""
-
-#: src/glade-widget.c:148
-#, fuzzy
-msgid "Name"
-msgstr "Название:"
-
-#: src/glade-widget.c:149
-msgid "The name of the widget"
 msgstr ""
 
 #: src/glade-widget.c:155
@@ -512,47 +960,20 @@ msgstr ""
 #~ msgid "Widget Tree"
 #~ msgstr "Дерево эл.управления"
 
-#~ msgid "Cut"
-#~ msgstr "Вырезать"
-
-#~ msgid "Copy"
-#~ msgstr "Скопировать"
-
-#~ msgid "Paste"
-#~ msgstr "Вставить"
-
-#~ msgid "Delete"
-#~ msgstr "Удалить"
-
 #~ msgid "Invalid file name"
 #~ msgstr "Недопустимое название файла"
 
 #~ msgid "We could not find the symbol \"%s\" while trying to load \"%s\""
 #~ msgstr "Не удалось найти символ \"%s\" при попытке загрузить \"%s\""
 
-#~ msgid "Select signal"
-#~ msgstr "Выбор сигнала"
-
-#~ msgid "Yes"
-#~ msgstr "Да"
-
 #~ msgid "Please enter a valid signal name"
 #~ msgstr "Введите допустимое название сигнала"
-
-#~ msgid "Please enter a signal handler"
-#~ msgstr "Введите обработчик сигнала"
 
 #~ msgid "Signal :"
 #~ msgstr "Сигнал:"
 
-#~ msgid "Handler :"
-#~ msgstr "Обработчик:"
-
 #~ msgid "After :"
 #~ msgstr "После:"
-
-#~ msgid "Add"
-#~ msgstr "Добавить"
 
 #~ msgid "Update"
 #~ msgstr "Обновить"
