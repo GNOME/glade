@@ -1,5 +1,13 @@
 2005-12-07  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-project-window.c: Now project menu item glitch is
+	  visually gone (you dont get "no selected projects" anymore).
+	  Note that this is still a hack using toggle items to portray
+	  a radio menu since we've been unable to get radio items to
+	  work at this time.
+
+2005-12-07  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-project.[ch]: added glade_project_reset_path()
 
 	* src/glade-project-window.c: Now we reset the path of a project if we

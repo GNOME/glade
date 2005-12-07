@@ -416,7 +416,6 @@ static void
 gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GladeProject       *project;
-	GError             *error = NULL;
 	
 	project = glade_app_get_active_project (GLADE_APP (gpw));
 
@@ -1008,10 +1007,11 @@ glade_project_window_set_project (GtkAction *action, GladeProject *project)
 	{
 		glade_app_set_project (GLADE_APP (gpw), project);
 
-		/* Ensure correct selection
-		 */
-		gpw_select_project_menu (gpw);
 	}
+
+	/* Ensure correct selection
+	 */
+	gpw_select_project_menu (gpw);
 }
 
 static const gchar *ui_info =
