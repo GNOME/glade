@@ -1,5 +1,13 @@
 2005-12-07  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-utils.[ch]: Added glade_util_selected_placeholder ()
+
+	* src/glade-app.c: in glade_app_command_paste (), check for
+	  the currently selected placeholder to paste into
+	  (this enables pasting to a placeholder via keyboard shortcuts).
+
+2005-12-07  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-project-window.c: Now project menu item glitch is
 	  visually gone (you dont get "no selected projects" anymore).
 	  Note that this is still a hack using toggle items to portray

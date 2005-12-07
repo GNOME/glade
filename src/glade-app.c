@@ -739,10 +739,14 @@ glade_app_command_paste (GladeApp *app)
 {
 	if (app->priv->active_project)
 	{
-		GList       *list   = glade_project_selection_get (app->priv->active_project);
-		GladeWidget *parent = list ? glade_widget_get_from_gobject (list->data) : NULL;
+		GList         *list   = glade_project_selection_get (app->priv->active_project);
+		GladePlaceholder *placeholder = list ? NULL : glade_util_selected_placeholder ();
+		GladeWidget   *parent =
+			list ? glade_widget_get_from_gobject (list->data) :
+			glade_placeholder_get_parent (placeholder);
+		
+		glade_util_paste_clipboard (placeholder, parent);
 
-		glade_util_paste_clipboard (NULL, parent);
 		/* Update UI. */
 		glade_app_update_ui (app);
 	}

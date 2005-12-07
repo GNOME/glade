@@ -806,7 +806,7 @@ glade_util_clear_selection (void)
 }
 
 /**
- * glade_util_has_selectoin:
+ * glade_util_has_selection:
  * @widget: a #GtkWidget
  *
  * Returns: %TRUE if @widget has visual selection, %FALSE otherwise
@@ -827,6 +827,22 @@ GList *
 glade_util_get_selection ()
 {
 	return glade_util_selection;
+}
+
+/**
+ * glade_util_selected_placeholder:
+ *
+ * Returns: The selected placeholder, if there
+ * is only one selected item and that item is a placeholder.
+ */
+GladePlaceholder *
+glade_util_selected_placeholder ()
+{
+	if (g_list_length (glade_util_selection) == 1 &&
+	    GLADE_IS_PLACEHOLDER (glade_util_selection->data))
+		return glade_util_selection->data;
+
+	return NULL;
 }
 
 /*
