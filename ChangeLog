@@ -1,3 +1,12 @@
+2005-12-07  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project.[ch]: added glade_project_reset_path()
+
+	* src/glade-project-window.c: Now we reset the path of a project if we
+	  fail to save it for some reason, this way we prompt a filechooser
+	  the next time we try to save. (This makes most sence when initially
+	  chosing an unsavable file path).
+
 2005-12-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.[ch], src/glade-project-window.c: 

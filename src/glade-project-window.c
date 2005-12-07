@@ -341,10 +341,18 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 
 	if (!glade_project_save (project, path, &error))
 	{
+		/* Reset path so future saves will prompt the file chooser */
+		glade_project_reset_path (project);
 		glade_util_ui_warn (gpw->priv->window, error->message);
 		g_error_free (error);
 		return;
 	}
+	
+	glade_util_flash_message 
+		(gpw->priv->statusbar,
+		 gpw->priv->statusbar_actions_context_id,
+		 _("Project '%s' saved"),
+		 project->name);
 	
 	glade_app_update_instance_count (GLADE_APP (gpw), project);
 
@@ -390,9 +398,6 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	
 	g_free (path);
 
-	/* dont allow more than one project with the same name to be
-	 * opened simultainiously (but allow the same project to change paths).
-	 */
 	if (glade_app_is_project_loaded (GLADE_APP (gpw), real_path))
 	{
 		gchar *message = g_strdup_printf (_("%s is already open"), real_path);
@@ -417,19 +422,7 @@ gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 
 	if (project->path != NULL) 
 	{
-		if (glade_project_save (project, project->path, &error)) 
-		{
-			glade_util_flash_message 
-				(gpw->priv->statusbar,
-				 gpw->priv->statusbar_actions_context_id,
-				 _("Project '%s' saved"),
-				 project->name);
-		} 
-		else 
-		{
-			glade_util_ui_warn (gpw->priv->window, error->message);
-			g_error_free (error);
-		}
+		gpw_save (gpw, project, project->path);
  		return;
 	}
 

@@ -74,6 +74,7 @@ LIBGLADEUI_API GladeProject *glade_project_open                (const gchar  *pa
 LIBGLADEUI_API gboolean      glade_project_save                (GladeProject *project, 
 								const gchar  *path, 
 								GError      **error);
+LIBGLADEUI_API void          glade_project_reset_path          (GladeProject *project);
 LIBGLADEUI_API void          glade_project_add_object          (GladeProject *project, GObject     *object);
 LIBGLADEUI_API void          glade_project_remove_object       (GladeProject *project, GObject     *object);
 LIBGLADEUI_API gboolean      glade_project_has_object          (GladeProject *project, GObject     *object);

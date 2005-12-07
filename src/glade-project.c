@@ -856,6 +856,13 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 }
 
 void
+glade_project_reset_path (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	project->path = (g_free (project->path), NULL);
+}
+
+void
 glade_project_changed (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
