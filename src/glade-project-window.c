@@ -376,8 +376,12 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	gchar *real_path;
 	gchar *ch;
 	
-	project = glade_app_get_active_project (GLADE_APP (gpw));
-	
+	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
+	{
+		glade_util_ui_warn (gpw->priv->window, _("No open projects to save"));
+		return;
+	}
+
 	filechooser = glade_util_file_dialog_new (dialog_title,
 						  GTK_WINDOW (gpw->priv->window),
 						  GLADE_FILE_DIALOG_ACTION_SAVE);
@@ -412,12 +416,17 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	g_free (real_path);
 }
 
+
 static void
 gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GladeProject       *project;
-	
-	project = glade_app_get_active_project (GLADE_APP (gpw));
+
+	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
+	{
+		glade_util_ui_warn (gpw->priv->window, _("No open projects to save"));
+		return;
+	}
 
 	if (project->path != NULL) 
 	{
