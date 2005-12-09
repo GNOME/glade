@@ -86,6 +86,7 @@ typedef struct _GladeProject      GladeProject;
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
 #define GLADE_TAG_POST_CREATE_FUNCTION            "post-create-function"
 #define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION     "get-internal-child-function"
+#define GLADE_TAG_GET_INTERNAL_CHILDREN_FUNCTION  "get-internal-children-function"
 #define GLADE_TAG_LAUNCH_EDITOR_FUNCTION          "launch-editor-function"
 #define GLADE_TAG_ADD_CHILD_FUNCTION              "add-child-function"
 #define GLADE_TAG_REMOVE_CHILD_FUNCTION           "remove-child-function"

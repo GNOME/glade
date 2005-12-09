@@ -77,6 +77,8 @@ LIBGLADEUI_API GtkTreeIter      *glade_util_find_iter_by_widget   (GtkTreeModel 
 LIBGLADEUI_API gboolean          glade_util_basenames_match       (const gchar  *path1,
 								   const gchar  *path2);
 
+LIBGLADEUI_API GList            *glade_util_purify_list           (GList        *list);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

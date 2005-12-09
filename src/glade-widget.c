@@ -362,6 +362,8 @@ glade_widget_copy_packing_props (GladeWidget *parent,
 {
 	GList *l;
 
+	g_return_if_fail (child->parent == parent);
+
 	glade_widget_set_packing_properties (child, parent);
 
 	for (l = child->packing_properties; l && l->data; l = l->next)
@@ -745,11 +747,17 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 									  child_dup->object);
 					
 				}
-				
-				/* Copy packing props of internal children as well ? XXX */
-				glade_widget_copy_packing_props (gwidget,
-								 child_dup,
-								 child_gwidget);
+
+				/* Internal children that are not heirarchic children
+				 * need to avoid copying these packing props (like popup windows
+				 * created on behalf of composite widgets).
+				 */
+				if (glade_widget_class_container_has_child (gwidget->widget_class,
+									    gwidget->object,
+									    child_dup->object))
+					glade_widget_copy_packing_props (gwidget,
+									 child_dup,
+									 child_gwidget);
 			}
 		}
 		g_list_free (children);
@@ -2841,8 +2849,10 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 				   info->internal_child, glade_widget_get_name (parent));
 			return FALSE;
 		}
-		child = glade_widget_new_for_internal_child 
-			(parent, child_object, info->internal_child);
+
+		if ((child = glade_widget_get_from_gobject (child_object)) == NULL)
+			g_error ("Unable to get GladeWidget for internal child %s\n",
+				 info->internal_child);
 
 		glade_widget_fill_from_widget_info (info->child, child, TRUE);
 		glade_widget_sync_custom_props (child);

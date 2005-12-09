@@ -241,7 +241,7 @@ glade_popup_add_children (GtkWidget* popup_menu, GladeWidget *widget)
 	{
 		GladeSupportedChild *support = list->data;
 		
-		if (g_type_is_a (support->type, GTK_TYPE_WIDGET))
+		if (support->type == GTK_TYPE_WIDGET)
 			continue;
 
 		if ((types =
@@ -282,8 +282,8 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 				 glade_popup_delete_cb, widget);
 	glade_popup_append_item (popup_menu, GTK_STOCK_PROPERTIES, NULL, TRUE,
 			         glade_popup_properties_cb, widget);
- 
-	if (glade_widget_class_contains_non_widgets (widget->widget_class))
+
+	if (glade_widget_class_contains_extra (widget->widget_class))
 		glade_popup_add_children (popup_menu, widget);
 
 	if (add_childs &&

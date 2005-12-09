@@ -1299,7 +1299,7 @@ glade_util_find_iter_by_widget (GtkTreeModel *model,
 	return NULL;
 }
 
-LIBGLADEUI_API gboolean
+gboolean
 glade_util_basenames_match  (const gchar  *path1,
 			     const gchar  *path2)
 {
@@ -1318,4 +1318,25 @@ glade_util_basenames_match  (const gchar  *path1,
 		g_free (bname2);
 	}
 	return match;
+}
+
+/**
+ * glade_util_purify_list:
+ *
+ * @list: A #GList
+ *
+ * Returns: A list with no duplicate data entries
+ */
+GList *
+glade_util_purify_list (GList *list)
+{
+	GList *l, *newlist = NULL;
+
+	for (l = list; l; l = l->next)
+		if (!g_list_find (newlist, l->data))
+			newlist = g_list_prepend (newlist, l->data);
+
+	g_list_free (list);
+
+	return g_list_reverse (newlist);
 }

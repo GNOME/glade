@@ -374,7 +374,14 @@
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkCombo" generic-name="combo" title="Combo Box"/>
+    <glade-widget-class name="GtkCombo" generic-name="combo" title="Combo Box">
+      <post-create-function>glade_gtk_combo_post_create</post-create-function>
+      <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
+      <get-internal-children-function>glade_gtk_combo_get_internal_children</get-internal-children-function>
+      <properties>
+	<property id="size" disabled="True"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" title="Option Menu"/>
     
@@ -428,7 +435,7 @@
     <glade-widget-class name="GtkDialog" generic-name="dialog" title="Dialog Box">
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_dialog_get_internal_child</get-internal-child-function>
-      <child-property-applies-function>glade_gtk_dialog_child_property_applies</child-property-applies-function>
+      <get-internal-children-function>glade_gtk_dialog_get_internal_children</get-internal-children-function>
 
       <properties>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
@@ -831,6 +838,29 @@
     <glade-widget-class name="GtkHRuler" generic-name="hruler" title="Horizontal Ruler"/>
     
     <glade-widget-class name="GtkVRuler" generic-name="vruler" title="Vertical Ruler"/>
+
+    <glade-widget-class name="GtkList" generic-name="list" title="List">
+      <children>
+	<child>
+	  <type>GtkListItem</type>
+	  <add-child-function>gtk_container_add</add-child-function>
+	</child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkListItem" generic-name="listitem" title="List Item">
+      <post-create-function>glade_gtk_list_item_post_create</post-create-function>
+      <properties>
+	<property id="label" name="Label" translatable="True">
+	  <spec>glade_standard_string_spec</spec>
+	  <tooltip>The text to display</tooltip>
+	  <set-function>glade_gtk_list_item_set_label</set-function>
+	  <get-function>glade_gtk_list_item_get_label</get-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkCList" generic-name="clist" title="Columned List"/>
   
     <glade-widget-class name="GtkColorSelection" generic-name="colorselection" title="Color Selection"/>
     
@@ -911,6 +941,8 @@
   <glade-widget-group name="gtk-obsolete" title="Gtk+ Obsolete">
     <glade-widget-class-ref name="GtkHRuler"/>
     <glade-widget-class-ref name="GtkVRuler"/>
+    <glade-widget-class-ref name="GtkList"/>
+    <glade-widget-class-ref name="GtkCList"/>
     <glade-widget-class-ref name="GtkColorSelection"/>
     <glade-widget-class-ref name="GtkFontSelection"/>
     <glade-widget-class-ref name="GtkCurve"/>

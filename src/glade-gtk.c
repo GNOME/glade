@@ -1471,6 +1471,38 @@ glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 }
 
 
+void GLADEGTK_API
+glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
+{
+	GladeWidget *gcombo, *gentry, *glist;
+
+	g_return_if_fail (GTK_IS_COMBO (object));
+
+	if ((gcombo = glade_widget_get_from_gobject (object)) == NULL)
+		return;
+	
+	gentry = glade_widget_new_for_internal_child
+		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry");
+	glist  = glade_widget_new_for_internal_child
+		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list");
+
+}
+
+void GLADEGTK_API
+glade_gtk_list_item_post_create (GObject *object, GladeCreateReason reason)
+{
+	GtkWidget *label;
+
+	g_return_if_fail (GTK_IS_LIST_ITEM (object));
+
+	label = gtk_label_new ("");
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_misc_set_padding (GTK_MISC (label), 0, 1);
+
+	gtk_container_add (GTK_CONTAINER (object), label);
+	gtk_widget_show (label);
+}
+
 /* ------------------------ Replace child functions ------------------------ */
 void GLADEGTK_API
 glade_gtk_container_replace_child (GtkWidget *container,
@@ -1630,23 +1662,87 @@ glade_gtk_button_replace_child (GtkWidget *container,
 
 /* ---------------------- Get Internal Child functions ---------------------- */
 void GLADEGTK_API
-glade_gtk_dialog_get_internal_child (GtkWidget *dialog,
+glade_gtk_dialog_get_internal_child (GtkDialog   *dialog,
 				     const gchar *name,
 				     GtkWidget **child)
 {
-	GtkWidget *child_widget;
-
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 	
 	if (strcmp ("vbox", name) == 0)
-		child_widget = GTK_DIALOG (dialog)->vbox;
+		*child = dialog->vbox;
 	else if (strcmp ("action_area", name) == 0)
-		child_widget = GTK_DIALOG (dialog)->action_area;
+		*child = dialog->action_area;
 	else
-		child_widget = NULL;
-
-	*child = child_widget;
+		*child = NULL;
 }
+
+GList * GLADEGTK_API
+glade_gtk_dialog_get_internal_children (GtkDialog  *dialog)
+{
+	GList *list = NULL;
+
+	g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+
+	list = g_list_prepend (list, dialog->vbox);
+	list = g_list_prepend (list, dialog->action_area);
+
+	return list;
+}
+
+
+void GLADEGTK_API
+glade_gtk_combo_get_internal_child (GtkCombo    *combo,
+				    const gchar *name,
+				    GtkWidget **child)
+{
+	g_return_if_fail (GTK_IS_COMBO (combo));
+	
+	if (strcmp ("list", name) == 0)
+		*child = combo->list;
+	else if (strcmp ("entry", name) == 0)
+		*child = combo->entry;
+	else
+		*child = NULL;
+}
+
+GList * GLADEGTK_API
+glade_gtk_combo_get_internal_children (GtkCombo *combo)
+{
+	GList *list = NULL;
+
+	g_return_val_if_fail (GTK_IS_COMBO (combo), NULL);
+
+	list = g_list_prepend (list, combo->list);
+	list = g_list_prepend (list, combo->entry);
+
+	return list;
+}
+
+
+void GLADEGTK_API
+glade_gtk_list_item_set_label (GObject *object, GValue *value)
+{
+	GtkWidget *label;
+
+	g_return_if_fail (GTK_IS_LIST_ITEM (object));
+
+	label = GTK_BIN (object)->child;
+
+	gtk_label_set_text (GTK_LABEL (label), g_value_get_string (value));
+}
+
+void GLADEGTK_API
+glade_gtk_list_item_get_label (GObject *object, GValue *value)
+{
+	GtkWidget *label;
+
+	g_return_if_fail (GTK_IS_LIST_ITEM (object));
+
+	label = GTK_BIN (object)->child;
+
+	g_value_set_string (value, gtk_label_get_text (GTK_LABEL (label)));
+}
+
 
 void GLADEGTK_API
 glade_gtk_radio_button_get_group (GObject *object, GValue *value)
@@ -1673,7 +1769,7 @@ glade_gtk_radio_button_set_group (GObject *object, GValue *value)
 	/* FIXME: now what?  */
 }
 
-GLADEGTK_API void
+void GLADEGTK_API
 glade_gtk_box_add_child (GObject *object, GObject *child)
 {
 	gint		 num_children;

@@ -595,6 +595,10 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 						  (void **)&widget_class->get_internal_child);
 
 		glade_widget_class_load_function (node, widget_class->module,
+						  GLADE_TAG_GET_INTERNAL_CHILDREN_FUNCTION,
+						  (void **)&widget_class->get_internal_children);
+
+		glade_widget_class_load_function (node, widget_class->module,
 						  GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
 						  (void **)
 						  &widget_class->launch_editor);
@@ -1315,11 +1319,16 @@ glade_widget_class_container_get_children (GladeWidgetClass *class,
 	return children;
 }
 
+
 GList *
 glade_widget_class_container_get_all_children (GladeWidgetClass *class,
 					       GObject          *container)
 {
 	GList *list, *children = NULL;
+
+
+	if (class->get_internal_children)
+		children = class->get_internal_children (container);
 
 	for (list = class->children; list && list->data; list = list->next)
 	{
@@ -1328,7 +1337,9 @@ glade_widget_class_container_get_all_children (GladeWidgetClass *class,
 			children = g_list_concat (children,
 						  support->get_all_children (container));
 	}
-	return children;
+
+	/* Remove duplicates */
+	return glade_util_purify_list (children);
 }
 
 void
@@ -1405,13 +1416,13 @@ glade_widget_class_container_replace_child (GladeWidgetClass *class,
 }
 
 gboolean
-glade_widget_class_contains_non_widgets (GladeWidgetClass *class)
+glade_widget_class_contains_extra (GladeWidgetClass *class)
 {
 	GList *list;
 	for (list = class->children; list && list->data; list = list->next)
 	{
 		GladeSupportedChild *support = list->data;
-		if (!g_type_is_a (support->type, GTK_TYPE_WIDGET))
+		if (support->type != GTK_TYPE_WIDGET)
 			return TRUE;
 	}
 	return FALSE;

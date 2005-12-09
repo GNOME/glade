@@ -1,3 +1,16 @@
+2005-12-08  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c, widgets/gtk+.xml: Added support for GtkCombo, GtkList, GtkCList
+	  Also added support for the new "get_internal_children" backend function
+	
+	* src/glade-popup.c: Adjusted to make the "Add" submenu available
+	  for any special container relationships (not just non-widgets).
+
+	* src/glade-utils.[ch]: Added glade_util_purify_list()
+
+	* src/glade-widget-class.[ch], src/glade.h: Added GladeGetInternalChildrenFunc and changed
+	  glade_widget_class_contains_non_widgets for glade_widget_class_contains_extra
+	
 2005-12-07  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.[ch]: Added glade_util_selected_placeholder ()

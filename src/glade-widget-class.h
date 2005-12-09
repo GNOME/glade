@@ -30,33 +30,35 @@ enum   _GladeCreateReason
 };
 
 /* Child support prototypes */
-typedef void (* GladeChildSetPropertyFunc) (GObject      *container,
-					    GObject      *child,
-					    const gchar  *property_name,
-					    const GValue *value);
+typedef void (* GladeChildSetPropertyFunc)      (GObject            *container,
+						 GObject            *child,
+						 const gchar        *property_name,
+						 const GValue       *value);
 
-typedef void (* GladeChildGetPropertyFunc) (GObject      *container,
-					    GObject      *child,
-					    const gchar  *property_name,
-					    GValue       *value);
+typedef void (* GladeChildGetPropertyFunc)      (GObject            *container,
+						 GObject            *child,
+						 const gchar        *property_name,
+						 GValue             *value);
 
-typedef GList *(* GladeGetChildrenFunc)    (GObject      *container);
+typedef GList *(* GladeGetChildrenFunc)         (GObject            *container);
 
-typedef void   (* GladeAddChildFunc)       (GObject      *parent,
-					    GObject      *child);
-typedef void   (* GladeRemoveChildFunc)    (GObject      *parent,
-					    GObject      *child);
+typedef void   (* GladeAddChildFunc)            (GObject            *parent,
+						 GObject            *child);
+typedef void   (* GladeRemoveChildFunc)         (GObject            *parent,
+						 GObject            *child);
 
 
 /* Class wide user prototypes */
-typedef void   (* GladePostCreateFunc)     (GObject           *object,
-					    GladeCreateReason  reason);
+typedef void   (* GladePostCreateFunc)          (GObject            *object,
+						 GladeCreateReason   reason);
 
-typedef void   (* GladeGetInternalFunc)    (GObject      *parent,
-					    const gchar  *name,
-					    GObject     **child);
+typedef void   (* GladeGetInternalFunc)         (GObject            *parent,
+						 const gchar        *name,
+						 GObject           **child);
 
-typedef void   (* GladeEditorLaunchFunc)   (GObject      *object);
+typedef GList *(* GladeGetInternalChildrenFunc) (GObject            *parent);
+
+typedef void   (* GladeEditorLaunchFunc)        (GObject            *object);
 
 
 /* GladeWidgetClass contains all the information we need regarding an widget
@@ -104,15 +106,19 @@ struct _GladeWidgetClass
 	 * GladeWidgets associated with internal children. It's also the place
 	 * to set sane defaults, e.g. set the size of a window.
 	 */
-	GladePostCreateFunc    post_create_function;
+	GladePostCreateFunc           post_create_function;
 
 	/* Retrieves the the internal child of the given name.
 	 */
-	GladeGetInternalFunc   get_internal_child;
+	GladeGetInternalFunc          get_internal_child;
+
+	/* Retrieves a list of all handled internal children.
+	 */
+	GladeGetInternalChildrenFunc  get_internal_children;
 
 	/* Entry point for custom editors.
 	 */
-	GladeEditorLaunchFunc  launch_editor;
+	GladeEditorLaunchFunc         launch_editor;
 };
 
 struct _GladeSupportedChild
@@ -204,7 +210,7 @@ LIBGLADEUI_API void                 glade_widget_class_container_replace_child  
 										   GObject      *container,
 										   GObject      *old,
 										   GObject      *new);
-LIBGLADEUI_API gboolean             glade_widget_class_contains_non_widgets       (GladeWidgetClass *class);
+LIBGLADEUI_API gboolean             glade_widget_class_contains_extra             (GladeWidgetClass *class);
 
 LIBGLADEUI_API GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
 										   GladeWidgetClass *container_class,
