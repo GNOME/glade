@@ -723,6 +723,21 @@ gpw_hide_editor_on_delete (GtkWidget *editor, gpointer not_used,
 	return TRUE;
 }
 
+static gint
+gpw_hijack_editor_key_press (GtkWidget          *editor_win, 
+			     GdkEventKey        *event, 
+			     GladeProjectWindow *gpw)
+{
+	/* If we recieve GDK_Delete, send it to the focus widget
+	 * and return TRUE so that the accel_group doesn't kick in.
+	 */
+	if (event->keyval == GDK_Delete)
+	{
+		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, event);
+	}
+	return FALSE;
+}
+
 static void
 gpw_create_editor (GladeProjectWindow *gpw)
 {
@@ -744,6 +759,11 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->editor_window), "delete_event",
 			  G_CALLBACK (gpw_hide_editor_on_delete), gpw->priv->ui);
+
+
+	g_signal_connect (G_OBJECT (gpw->priv->editor_window), "key-press-event",
+			  G_CALLBACK (gpw_hijack_editor_key_press), gpw);
+
 
 	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						 "/MenuBar/ViewMenu/PropertyEditor");

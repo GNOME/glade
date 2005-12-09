@@ -1,5 +1,11 @@
 2005-12-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-project-window.c: Implemented a hack to hijack key-press-event on
+	  the editor window in order to avoid deleting widgets when deleting charachters
+	  in the property editor.
+
+2005-12-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-project-window.c: Fixed crashes when pressing Save with
 	  no open projects.
 
