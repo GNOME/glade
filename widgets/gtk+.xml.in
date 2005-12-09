@@ -288,6 +288,7 @@
 	<property id="use-stock" visible="False"/>
 	<property id="stock" name="Stock Button" save="False">
 	  <spec>glade_standard_stock_spec</spec>
+	  <tooltip>The stock item for this button</tooltip>
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
 
@@ -337,6 +338,7 @@
 	<property id="draw-indicator" default="True"/>
 	<property id="group" name="Group" default="True">
 	  <spec>glade_standard_string_spec</spec>
+	  <tooltip>The radio group name for this radio button</tooltip>
 	  <set-function>glade_gtk_radio_button_set_group</set-function>
 	  <get-function>glade_gtk_radio_button_get_group</get-function>
 	</property>
@@ -370,21 +372,23 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkComboBox" generic-name="combobox" title="Combo Box">
+      <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
+      <properties>
+	<property id="items" name="Items" translatable="True">
+	  <spec>glade_standard_strv_spec</spec>
+	  <tooltip>The items in this combo box</tooltip>
+	  <set-function>glade_gtk_combo_box_set_items</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" title="Combo Box Entry"/>
+
     <glade-widget-class name="GtkTreeView" generic-name="treeview" title="Tree View">
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkCombo" generic-name="combo" title="Combo Box">
-      <post-create-function>glade_gtk_combo_post_create</post-create-function>
-      <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
-      <get-internal-children-function>glade_gtk_combo_get_internal_children</get-internal-children-function>
-      <properties>
-	<property id="size" disabled="True"/>
-      </properties>
-    </glade-widget-class>
-    
-    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" title="Option Menu"/>
-    
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" title="Progress Bar">
       <properties>
        	<property id="orientation">
@@ -427,6 +431,7 @@
 	</property>
 	<property id="glade-stock" name="Stock Image" save="False">
 	  <spec>glade_standard_stock_spec</spec>
+	  <tooltip>The stock item for this image</tooltip>
 	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
       </properties>
@@ -839,6 +844,17 @@
     
     <glade-widget-class name="GtkVRuler" generic-name="vruler" title="Vertical Ruler"/>
 
+    <glade-widget-class name="GtkCombo" generic-name="combo" title="Combo">
+      <post-create-function>glade_gtk_combo_post_create</post-create-function>
+      <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
+      <get-internal-children-function>glade_gtk_combo_get_internal_children</get-internal-children-function>
+      <properties>
+	<property id="size" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" title="Option Menu"/>
+
     <glade-widget-class name="GtkList" generic-name="list" title="List">
       <children>
 	<child>
@@ -886,9 +902,9 @@
     <glade-widget-class-ref name="GtkCheckButton"/>
     <glade-widget-class-ref name="GtkSpinButton"/>
     <glade-widget-class-ref name="GtkRadioButton"/>
+    <glade-widget-class-ref name="GtkComboBox"/>
+    <glade-widget-class-ref name="GtkComboBoxEntry"/>
     <glade-widget-class-ref name="GtkTreeView"/>
-    <glade-widget-class-ref name="GtkCombo"/>
-    <glade-widget-class-ref name="GtkOptionMenu"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
     <glade-widget-class-ref name="GtkImage"/>
     <glade-widget-class-ref name="GtkDialog"/>
@@ -939,6 +955,8 @@
   </glade-widget-group>
 
   <glade-widget-group name="gtk-obsolete" title="Gtk+ Obsolete">
+    <glade-widget-class-ref name="GtkCombo"/>
+    <glade-widget-class-ref name="GtkOptionMenu"/>
     <glade-widget-class-ref name="GtkHRuler"/>
     <glade-widget-class-ref name="GtkVRuler"/>
     <glade-widget-class-ref name="GtkList"/>

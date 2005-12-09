@@ -992,11 +992,34 @@ glade_gtk_image_set_stock (GObject *object, GValue *value)
 	g_type_class_unref (eclass);
 }
 
+void GLADEGTK_API
+glade_gtk_combo_box_set_items (GObject *object, GValue *value)
+{
+	GtkComboBox *combo;
+	gchar **split;
+	gint    i;
+
+	g_return_if_fail (GTK_IS_COMBO_BOX (object));
+
+	combo = GTK_COMBO_BOX (object);
+
+	/* Empty the combo box */
+	gtk_list_store_clear (GTK_LIST_STORE (gtk_combo_box_get_model (combo)));
+
+	/* Refill the combo box */
+	split = g_value_get_boxed (value);
+
+	if (split)
+		for (i = 0; split[i] != NULL; i++)
+			if (split[i][0] != '\0')
+				gtk_combo_box_append_text (combo, split[i]);
+}
+
 /* This function does absolutely nothing
  * (and is for use in overriding post_create functions).
  */
 void GLADEGTK_API
-empty (GObject *container)
+empty (GObject *container, GladeCreateReason reason)
 {
 }
 
@@ -1501,6 +1524,27 @@ glade_gtk_list_item_post_create (GObject *object, GladeCreateReason reason)
 
 	gtk_container_add (GTK_CONTAINER (object), label);
 	gtk_widget_show (label);
+}
+
+void GLADEGTK_API
+glade_gtk_combo_box_post_create (GObject *object, GladeCreateReason reason)
+{
+	GtkWidget *combo_box;
+	GtkCellRenderer *cell;
+	GtkListStore *store;
+
+	g_return_if_fail (GTK_IS_COMBO_BOX (object));
+
+	/* Add store */
+	store = gtk_list_store_new (1, G_TYPE_STRING);
+	gtk_combo_box_set_model (GTK_COMBO_BOX (object), GTK_TREE_MODEL (store));
+	g_object_unref (store);
+	
+	/* Add cell renderer */
+	cell = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (object), cell, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
+					"text", 0, NULL);
 }
 
 /* ------------------------ Replace child functions ------------------------ */

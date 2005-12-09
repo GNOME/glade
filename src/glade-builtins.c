@@ -110,6 +110,18 @@ glade_standard_string_spec (void)
 }
 
 GParamSpec *
+glade_standard_strv_spec (void)
+{
+	static GParamSpec *strv_spec = NULL;
+
+	if (!strv_spec)
+		strv_spec = g_param_spec_boxed ("strv", _("Strv"),
+						_("String array"),
+						G_TYPE_STRV,
+						G_PARAM_READWRITE);
+}
+
+GParamSpec *
 glade_standard_float_spec (void)
 {
 	static GParamSpec *float_spec = NULL;
