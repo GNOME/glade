@@ -882,7 +882,11 @@
     
     <glade-widget-class name="GtkFontSelection" generic-name="fontselection" title="Font Selection"/>
     
-    <glade-widget-class name="GtkCurve" generic-name="curve" title="Curve"/>
+    <glade-widget-class name="GtkCurve" generic-name="curve" title="Curve">
+      <properties>
+	<property id="curve-type" default="GTK_CURVE_TYPE_SPLINE"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkGammaCurve" generic-name="gammacurve" title="Gamma Curve"/>
 

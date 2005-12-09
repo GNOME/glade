@@ -1,5 +1,11 @@
 2005-12-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* widgets/gtk+.xml: Defaulting GtkCurve curve-type to type spline, due
+	  to a GTK+ bug where setting the property before realization causes
+	  a crash.
+	
+2005-12-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-builtins.[ch]: Added glade_standard_strv_spec
 
 	* src/glade-gtk.c: Added Combo Box support
