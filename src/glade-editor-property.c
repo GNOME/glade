@@ -1346,21 +1346,19 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 
 	if (class->visible_lines > 1 ||
 	    class->pspec->value_type == G_TYPE_STRV) {
-		GtkWidget  *viewport;
 		GtkWidget  *swindow;
-		
-		swindow           = gtk_scrolled_window_new (NULL, NULL);
-		viewport          = gtk_viewport_new (NULL, NULL);
-		eprop_text->text_entry = gtk_text_view_new ();
 
-		gtk_text_view_set_editable (GTK_TEXT_VIEW (eprop_text->text_entry), TRUE);
+		swindow = gtk_scrolled_window_new (NULL, NULL);
 
 		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swindow),
 						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 		gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swindow), GTK_SHADOW_IN);
+
+		eprop_text->text_entry = gtk_text_view_new ();
+		gtk_widget_show (eprop_text->text_entry);
 		
-		gtk_container_add (GTK_CONTAINER (viewport), eprop_text->text_entry);
-		gtk_container_add (GTK_CONTAINER (swindow), viewport);
+		gtk_container_add (GTK_CONTAINER (swindow), eprop_text->text_entry);
+
 		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (swindow), TRUE, TRUE, 0); 
 
 		g_signal_connect (G_OBJECT (eprop_text->text_entry), "focus-out-event",
