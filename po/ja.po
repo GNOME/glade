@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 HEAD\n"
-"POT-Creation-Date: 2005-12-06 12:47-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-12-11 19:33-0500\n"
 "PO-Revision-Date: 2005-05-22 10:51+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glade-3.desktop.in.h:1
 msgid "Design user interfaces"
@@ -52,6 +52,148 @@ msgstr ""
 msgid "Glade-3 GUI Builder"
 msgstr "Glade-3 GUI ビルダ"
 
+#: src/glade-project-window.c:288
+msgid "Open..."
+msgstr "開く..."
+
+#: src/glade-project-window.c:313
+msgid ""
+"Are you sure you want to clear the\n"
+"list of recent projects?"
+msgstr ""
+
+#: src/glade-project-window.c:314
+msgid ""
+"If you clear the list of recent projects, they will be\n"
+"permanently deleted."
+msgstr ""
+
+#: src/glade-project-window.c:354 src/glade-project-window.c:367
+#, c-format
+msgid "Project '%s' saved"
+msgstr "プロジェクト '%s' を保存しました"
+
+#: src/glade-project-window.c:381 src/glade-project-window.c:427
+#, fuzzy
+msgid "No open projects to save"
+msgstr "既存のプロジェクトを開きます"
+
+#: src/glade-project-window.c:407 src/glade-project-window.c:1468
+#, c-format
+msgid "%s is already open"
+msgstr ""
+
+#. If instead we dont have a path yet, fire up a file selector
+#: src/glade-project-window.c:438
+msgid "Save..."
+msgstr "保存..."
+
+#: src/glade-project-window.c:444
+msgid "Save as ..."
+msgstr "別名で保存..."
+
+#: src/glade-project-window.c:458
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">閉じる前に変更したプロジェクト \"%s\" "
+"を保存しますか？</span>\n"
+"\n"
+"保存しない場合は、変更した内容を全て失うことになります。\n"
+
+#: src/glade-project-window.c:472
+msgid "_Close without Saving"
+msgstr "保存せずに閉じる(_C)"
+
+#: src/glade-project-window.c:499
+msgid "Save ..."
+msgstr "保存する..."
+
+#: src/glade-project-window.c:666
+msgid "Palette"
+msgstr "パレット"
+
+#: src/glade-project-window.c:753 src/glade-widget.c:187
+msgid "Properties"
+msgstr "プロパティ"
+
+#: src/glade-project-window.c:837
+#, fuzzy
+msgid "E_xpand all"
+msgstr "全て広げる"
+
+#: src/glade-project-window.c:841
+#, fuzzy
+msgid "_Collapse all"
+msgstr "全てたたむ"
+
+#: src/glade-project-window.c:984
+msgid ""
+"Fatih Demir <kabalak@gtranslator.org>\n"
+"Christian Rose <menthos@menthos.com>\n"
+"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
+"Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Zbigniew Chyla <cyba@gnome.pl>\n"
+"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+msgstr ""
+
+#: src/glade-project-window.c:993
+#, fuzzy
+msgid ""
+"Glade is a User Interface Builder for GTK+ and GNOME.\n"
+"This version is a rewrite of the Glade 2.0.0 version, original from Damon "
+"Chaplin\n"
+msgstr ""
+"Glade は GTK+/GNOME 向けのユーザ・インタフェース・ビルダです。\n"
+"このバージョンは Glade 2.0系 (オリジナルの作者: Damon Chaplin氏) を作り直した"
+"ものです。\n"
+"\n"
+"<small>(C) 2001-2004 Ximian, Inc.\n"
+"(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
+
+#: src/glade-project-window.c:998
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as\n"
+"published by the Free Software Foundation; either version 2 of the\n"
+"License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
+msgstr ""
+
+#: src/glade-project-window.c:1444
+msgid "Could not create a new project."
+msgstr "新しいプロジェクトを生成できませんでした"
+
+#: src/glade-project-window.c:1477
+msgid "Could not open project."
+msgstr "プロジェクトを開けませんでした"
+
+#: src/glade-project-window.c:1519
+msgid "Nothing"
+msgstr "なし"
+
+#: src/glade-project-window.c:1563
+msgid "_Undo: "
+msgstr "戻す(_U): "
+
+#: src/glade-project-window.c:1564
+msgid "_Redo: "
+msgstr "やり直す(_R): "
+
 #: src/glade-app.c:390
 msgid "Clipboard"
 msgstr ""
@@ -81,11 +223,21 @@ msgstr "なし"
 msgid "An entry"
 msgstr ""
 
-#: src/glade-builtins.c:117
+#: src/glade-builtins.c:118
+#, fuzzy
+msgid "Strv"
+msgstr "なし"
+
+#: src/glade-builtins.c:119
+#, fuzzy
+msgid "String array"
+msgstr "なし"
+
+#: src/glade-builtins.c:131
 msgid "Float"
 msgstr ""
 
-#: src/glade-builtins.c:118
+#: src/glade-builtins.c:132
 msgid "A floating point entry"
 msgstr ""
 
@@ -175,6 +327,61 @@ msgstr ""
 #, c-format
 msgid "Change signal handler %s"
 msgstr ""
+
+#: src/glade-editor-property.c:376
+#, fuzzy
+msgid "Property Class"
+msgstr "プロパティ"
+
+#: src/glade-editor-property.c:377
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr ""
+
+#: src/glade-editor-property.c:383
+msgid "Use Command"
+msgstr ""
+
+#: src/glade-editor-property.c:384
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr ""
+
+#: src/glade-editor-property.c:782
+msgid "Set Flags"
+msgstr "フラグのセット"
+
+#: src/glade-editor-property.c:1197
+msgid "Edit Text Property"
+msgstr "テキスト・プロパティの編集"
+
+#. Text
+#: src/glade-editor-property.c:1214
+msgid "_Text:"
+msgstr "テキスト(_T):"
+
+#: src/glade-editor-property.c:1250
+msgid "T_ranslatable"
+msgstr "翻訳可能な文字列である(_R)"
+
+#: src/glade-editor-property.c:1257
+msgid "Has context _prefix"
+msgstr "コンテキストの接頭子を持つ(_P)"
+
+#. Comments.
+#: src/glade-editor-property.c:1265
+msgid "Co_mments for translators:"
+msgstr "<b>翻訳者へのコメント(_M):</b>"
+
+#: src/glade-editor-property.c:1431 src/glade-editor-property.c:1447
+#: src/glade-menu-editor.c:914 src/glade-menu-editor.c:985
+#: src/glade-menu-editor.c:1472
+msgid "Yes"
+msgstr ""
+
+#: src/glade-editor-property.c:1431 src/glade-editor-property.c:1447
+#: src/glade-editor-property.c:1465 src/glade-menu-editor.c:1472
+#: src/glade-menu-editor.c:2813
+msgid "No"
+msgstr "いいえ"
 
 #: src/glade-editor.c:103
 #, fuzzy
@@ -275,61 +482,6 @@ msgstr "選択(_S)"
 msgid "Property _Description:"
 msgstr ""
 
-#: src/glade-editor-property.c:376
-#, fuzzy
-msgid "Property Class"
-msgstr "プロパティ"
-
-#: src/glade-editor-property.c:377
-msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
-
-#: src/glade-editor-property.c:383
-msgid "Use Command"
-msgstr ""
-
-#: src/glade-editor-property.c:384
-msgid "Whether we should use the command API for the undo/redo stack"
-msgstr ""
-
-#: src/glade-editor-property.c:782
-msgid "Set Flags"
-msgstr "フラグのセット"
-
-#: src/glade-editor-property.c:1197
-msgid "Edit Text Property"
-msgstr "テキスト・プロパティの編集"
-
-#. Text
-#: src/glade-editor-property.c:1214
-msgid "_Text:"
-msgstr "テキスト(_T):"
-
-#: src/glade-editor-property.c:1250
-msgid "T_ranslatable"
-msgstr "翻訳可能な文字列である(_R)"
-
-#: src/glade-editor-property.c:1257
-msgid "Has context _prefix"
-msgstr "コンテキストの接頭子を持つ(_P)"
-
-#. Comments.
-#: src/glade-editor-property.c:1265
-msgid "Co_mments for translators:"
-msgstr "<b>翻訳者へのコメント(_M):</b>"
-
-#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
-#: src/glade-menu-editor.c:914 src/glade-menu-editor.c:985
-#: src/glade-menu-editor.c:1472
-msgid "Yes"
-msgstr ""
-
-#: src/glade-editor-property.c:1433 src/glade-editor-property.c:1449
-#: src/glade-editor-property.c:1467 src/glade-menu-editor.c:1472
-#: src/glade-menu-editor.c:2813
-msgid "No"
-msgstr "いいえ"
-
 #: src/glade-fixed-manager.c:762
 msgid "X position property"
 msgstr ""
@@ -364,52 +516,6 @@ msgstr "プロパティ"
 msgid "The property used to set the height of a child object"
 msgstr ""
 
-#: src/glade-gtk.c:71 src/glade-menu-editor.c:2253
-msgid "Type"
-msgstr ""
-
-#: src/glade-gtk.c:72
-msgid "Chose the image type"
-msgstr ""
-
-#: src/glade-gtk.c:701 src/glade-gtk.c:1628
-msgid "There must be no children in the button"
-msgstr ""
-
-#: src/glade-gtk.c:808
-msgid "This only applies with file type images"
-msgstr ""
-
-#: src/glade-gtk.c:841
-msgid "This only applies to Icon Theme type images"
-msgstr ""
-
-#: src/glade-gtk.c:873
-msgid "This only applies with stock type images"
-msgstr ""
-
-#: src/glade-gtk.c:1106
-msgid "_File"
-msgstr ""
-
-#: src/glade-gtk.c:1109
-msgid "_Edit"
-msgstr ""
-
-#: src/glade-gtk.c:1112
-msgid "_Help"
-msgstr ""
-
-#: src/glade-gtk.c:1417
-msgid ""
-"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
-"set Pixel size to -1"
-msgstr ""
-
-#: src/glade-gtk.c:1455
-msgid "Pixel Size takes precedence over Icon size"
-msgstr ""
-
 #. Add the special 'New' item to create a new group.
 #: src/glade-menu-editor.c:480
 msgid "New"
@@ -417,8 +523,10 @@ msgstr ""
 
 #. If the user selects the 'None' item from the combo, we reset the
 #. text to "" and return. This callback will be called again.
+#. Add a "None" item first, so it is easy to reset the pixmap.
 #: src/glade-menu-editor.c:583 src/glade-menu-editor.c:1201
 #: src/glade-menu-editor.c:2383 src/glade-menu-editor.c:2642
+#: widgets/gtk+.xml.in.h:118
 #, fuzzy
 msgid "None"
 msgstr "いいえ"
@@ -442,8 +550,12 @@ msgstr "セレクタ"
 msgid "Menu Editor"
 msgstr ""
 
-#: src/glade-menu-editor.c:2252
+#: src/glade-menu-editor.c:2252 widgets/gtk+.xml.in.h:103
 msgid "Label"
+msgstr ""
+
+#: src/glade-menu-editor.c:2253 src/glade-gtk.c:71
+msgid "Type"
 msgstr ""
 
 #: src/glade-menu-editor.c:2254
@@ -463,7 +575,7 @@ msgstr "ハンドラ"
 msgid "Active"
 msgstr ""
 
-#: src/glade-menu-editor.c:2258
+#: src/glade-menu-editor.c:2258 widgets/gtk+.xml.in.h:77
 msgid "Group"
 msgstr ""
 
@@ -598,7 +710,7 @@ msgstr ""
 msgid "Group:"
 msgstr ""
 
-#: src/glade-menu-editor.c:2858
+#: src/glade-menu-editor.c:2858 widgets/gtk+.xml.in.h:119
 msgid "Normal"
 msgstr ""
 
@@ -640,152 +752,50 @@ msgstr ""
 msgid "_Select"
 msgstr "選択(_S)"
 
-#: src/glade-project-view.c:552
-#, fuzzy, c-format
-msgid "(internal %s)"
-msgstr "内部の名前"
-
-#: src/glade-project-view.c:556
-#, c-format
-msgid "(%s child)"
-msgstr ""
-
-#: src/glade-project-window.c:288
-msgid "Open..."
-msgstr "開く..."
-
-#: src/glade-project-window.c:305 src/glade-project-window.c:412
-#, c-format
-msgid "A project named %s is already open"
-msgstr ""
-
-#: src/glade-project-window.c:327
-msgid ""
-"Are you sure you want to clear the\n"
-"list of recent projects?"
-msgstr ""
-
-#: src/glade-project-window.c:328
-msgid ""
-"If you clear the list of recent projects, they will be\n"
-"permanently deleted."
-msgstr ""
-
-#: src/glade-project-window.c:371 src/glade-project-window.c:441
-#, c-format
-msgid "Project '%s' saved"
-msgstr "プロジェクト '%s' を保存しました"
-
-#. If instead we dont have a path yet, fire up a file selector
-#: src/glade-project-window.c:453
-msgid "Save..."
-msgstr "保存..."
-
-#: src/glade-project-window.c:459
-msgid "Save as ..."
-msgstr "別名で保存..."
-
-#: src/glade-project-window.c:473
+#: src/glade-property-class.c:993
 #, c-format
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
-"closing?</span>\n"
-"\n"
-"Your changes will be lost if you don't save them.\n"
+"The property [%s] of the widget's class [%s] needs a special \"set\" "
+"function, but there is no library associated to this widget's class."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">閉じる前に変更したプロジェクト \"%s\" "
-"を保存しますか？</span>\n"
-"\n"
-"保存しない場合は、変更した内容を全て失うことになります。\n"
+"ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な set() 関数が必要です"
+"が、このクラスに関連するライブラリの中には存在しません。"
 
-#: src/glade-project-window.c:487
-msgid "_Close without Saving"
-msgstr "保存せずに閉じる(_C)"
-
-#: src/glade-project-window.c:514
-msgid "Save ..."
-msgstr "保存する..."
-
-#: src/glade-project-window.c:681
-msgid "Palette"
-msgstr "パレット"
-
-#: src/glade-project-window.c:753 src/glade-widget.c:187
-msgid "Properties"
-msgstr "プロパティ"
-
-#: src/glade-project-window.c:832
-#, fuzzy
-msgid "E_xpand all"
-msgstr "全て広げる"
-
-#: src/glade-project-window.c:836
-#, fuzzy
-msgid "_Collapse all"
-msgstr "全てたたむ"
-
-#: src/glade-project-window.c:979
+#: src/glade-property-class.c:1000
+#, c-format
 msgid ""
-"Fatih Demir <kabalak@gtranslator.org>\n"
-"Christian Rose <menthos@menthos.com>\n"
-"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
-"Duarte Loreto <happyguy_pt@hotmail.com>\n"
-"Zbigniew Chyla <cyba@gnome.pl>\n"
-"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
-"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+"Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
 msgstr ""
+"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
+"る set() 関数 [%1$s] を取得できません: %5$s"
 
-#: src/glade-project-window.c:988
-#, fuzzy
+#: src/glade-property-class.c:1017 src/glade-property-class.c:1038
+#, c-format
 msgid ""
-"Glade is a User Interface Builder for GTK+ and GNOME.\n"
-"This version is a rewrite of the Glade 2.0.0 version, original from Damon "
-"Chaplin\n"
+"The property [%s] of the widget's class [%s] needs a special \"get\" "
+"function, but there is no library associated to this widget's class."
 msgstr ""
-"Glade は GTK+/GNOME 向けのユーザ・インタフェース・ビルダです。\n"
-"このバージョンは Glade 2.0系 (オリジナルの作者: Damon Chaplin氏) を作り直した"
-"ものです。\n"
-"\n"
-"<small>(C) 2001-2004 Ximian, Inc.\n"
-"(C) 2003-2004 Joaquin Cuenca Abela, Paolo Borelli, et al.</small>"
+"ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な get() 関数が必要です"
+"が、このクラスに関連するライブラリの中には存在しません。"
 
-#: src/glade-project-window.c:993
+#: src/glade-property-class.c:1024
+#, c-format
 msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as\n"
-"published by the Free Software Foundation; either version 2 of the\n"
-"License, or (at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-"USA."
+"Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
+"class [%s] from the module [%s]: %s"
 msgstr ""
+"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
+"る get() 関数 [%1$s] を取得できません: %5$s"
 
-#: src/glade-project-window.c:1432
-msgid "Could not create a new project."
-msgstr "新しいプロジェクトを生成できませんでした"
-
-#: src/glade-project-window.c:1460
-msgid "Could not open project."
-msgstr "プロジェクトを開けませんでした"
-
-#: src/glade-project-window.c:1502
-msgid "Nothing"
-msgstr "なし"
-
-#: src/glade-project-window.c:1546
-msgid "_Undo: "
-msgstr "戻す(_U): "
-
-#: src/glade-project-window.c:1547
-msgid "_Redo: "
-msgstr "やり直す(_R): "
+#: src/glade-property-class.c:1045
+#, c-format
+msgid ""
+"Unable to get the \"verify\" function [%s] of the property [%s] of the "
+"widget's class [%s] from the module [%s]: %s"
+msgstr ""
+"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
+"る verify() 関数 [%1$s] を取得できません: %5$s"
 
 #: src/glade-property.c:466
 msgid "Enabled"
@@ -826,51 +836,6 @@ msgstr ""
 msgid "Has Context"
 msgstr "コンテキストの接頭子を持つ(_P)"
 
-#: src/glade-property-class.c:964
-#, c-format
-msgid ""
-"The property [%s] of the widget's class [%s] needs a special \"set\" "
-"function, but there is no library associated to this widget's class."
-msgstr ""
-"ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な set() 関数が必要です"
-"が、このクラスに関連するライブラリの中には存在しません。"
-
-#: src/glade-property-class.c:971
-#, c-format
-msgid ""
-"Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
-"class [%s] from the module [%s]: %s"
-msgstr ""
-"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
-"る set() 関数 [%1$s] を取得できません: %5$s"
-
-#: src/glade-property-class.c:988 src/glade-property-class.c:1009
-#, c-format
-msgid ""
-"The property [%s] of the widget's class [%s] needs a special \"get\" "
-"function, but there is no library associated to this widget's class."
-msgstr ""
-"ウィジット・クラス [%2$s] のプロパティ [%1$s] には特別な get() 関数が必要です"
-"が、このクラスに関連するライブラリの中には存在しません。"
-
-#: src/glade-property-class.c:995
-#, c-format
-msgid ""
-"Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
-"class [%s] from the module [%s]: %s"
-msgstr ""
-"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
-"る get() 関数 [%1$s] を取得できません: %5$s"
-
-#: src/glade-property-class.c:1016
-#, c-format
-msgid ""
-"Unable to get the \"verify\" function [%s] of the property [%s] of the "
-"widget's class [%s] from the module [%s]: %s"
-msgstr ""
-"モジュール [%4$s] から、ウィジット・クラス [%3$s] のプロパティ [%2$s] に対す"
-"る verify() 関数 [%1$s] を取得できません: %5$s"
-
 #: src/glade-signal-editor.c:530
 msgid "Signal"
 msgstr "シグナル"
@@ -897,30 +862,39 @@ msgstr "シンボル \"%s\" が見つかりませんでした"
 msgid "Could not get the type from \"%s"
 msgstr "\"%s\" から型を取得できませんでした"
 
-#: src/glade-utils.c:1047
+#: src/glade-utils.c:1063
 msgid "Unable to paste to multiple widgets"
 msgstr "複数のウィジットへ貼り付けできません"
 
-#: src/glade-utils.c:1055
+#: src/glade-utils.c:1071
 msgid "No widget selected on the clipboard"
 msgstr "クリップボード・ウィンドウでウィジットが選択されていません"
 
-#: src/glade-utils.c:1071
+#: src/glade-utils.c:1087
 #, c-format
 msgid "Unable to paste widget %s to parent %s"
 msgstr "ウィジット %s を親ウィジット %s へ貼り付けできません"
 
-#: src/glade-utils.c:1093
+#: src/glade-utils.c:1109
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 
-#: src/glade-utils.c:1102
+#: src/glade-utils.c:1118
 msgid "Insufficient amount of placeholders in target container"
 msgstr "ターゲットのコンテナのプレイスフォルダの大きさが十分ではありません"
 
-#: src/glade-utils.c:1150 src/glade-utils.c:1181 src/glade-utils.c:1211
+#: src/glade-utils.c:1166 src/glade-utils.c:1197 src/glade-utils.c:1227
 msgid "No widget selected!"
 msgstr "ウィジットを選択して下さい！"
+
+#: src/glade-widget-class.c:957 src/glade-widget-class.c:969
+msgid "Not enough memory."
+msgstr "メモリが足りません"
+
+#: src/glade-widget-class.c:979
+#, c-format
+msgid "Unable to open the module %s."
+msgstr "モジュール %s を開けません"
 
 #: src/glade-widget.c:155
 msgid "Internal name"
@@ -958,7 +932,7 @@ msgstr "ウィジットが所属する Glade プロジェクトです"
 msgid "A list of GladeProperties"
 msgstr "Glade プロパティの一覧"
 
-#: src/glade-widget.c:194
+#: src/glade-widget.c:194 widgets/gtk+.xml.in.h:131
 msgid "Parent"
 msgstr "親クラス"
 
@@ -966,17 +940,900 @@ msgstr "親クラス"
 msgid "A pointer to the parenting GladeWidget"
 msgstr "親ウィジットの GladeWideget へのポインタです"
 
-#: src/glade-widget-class.c:952 src/glade-widget-class.c:964
-msgid "Not enough memory."
-msgstr "メモリが足りません"
+#: src/glade-project-view.c:552
+#, fuzzy, c-format
+msgid "(internal %s)"
+msgstr "内部の名前"
 
-#: src/glade-widget-class.c:974
+#: src/glade-project-view.c:556
 #, c-format
-msgid "Unable to open the module %s."
-msgstr "モジュール %s を開けません"
+msgid "(%s child)"
+msgstr ""
 
-#~ msgid "About Glade"
-#~ msgstr "Glade について"
+#: src/glade-gtk.c:72
+msgid "Chose the image type"
+msgstr ""
+
+#: src/glade-gtk.c:701 src/glade-gtk.c:1677
+msgid "There must be no children in the button"
+msgstr ""
+
+#: src/glade-gtk.c:781
+msgid "This only applies with file type images"
+msgstr ""
+
+#: src/glade-gtk.c:814
+msgid "This only applies to Icon Theme type images"
+msgstr ""
+
+#: src/glade-gtk.c:846
+msgid "This only applies with stock type images"
+msgstr ""
+
+#: src/glade-gtk.c:1102
+msgid "_File"
+msgstr ""
+
+#: src/glade-gtk.c:1105
+msgid "_Edit"
+msgstr ""
+
+#: src/glade-gtk.c:1108
+msgid "_Help"
+msgstr ""
+
+#: src/glade-gtk.c:1413
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+
+#: src/glade-gtk.c:1451
+msgid "Pixel Size takes precedence over Icon size"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:1
+msgid "A tooltip text for this widget"
+msgstr ""
+
+#. Gtk+ Dialogs
+#: widgets/gtk+.xml.in.h:3
+#, fuzzy
+msgid "About Dialog"
+msgstr "Glade について"
+
+#: widgets/gtk+.xml.in.h:4
+msgid "Accel Label"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:5
+msgid "Alignment"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:6
+msgid "All"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:7
+msgid "All Events"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:8
+msgid "Always"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:9
+msgid "Always Center"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:10
+msgid "Arrow"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:11
+msgid "Aspect Frame"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:12
+msgid "Automatic"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:13
+msgid "Both"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:14
+msgid "Both Horizontal"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:15
+msgid "Bottom"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:16
+msgid "Bottom Left"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:17
+msgid "Bottom Right"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:18
+msgid "Bottom to Top"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:19
+msgid "Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:20
+msgid "Button 1 Motion"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:21
+msgid "Button 2 Motion"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:22
+msgid "Button 3 Motion"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:23
+msgid "Button Motion"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:24
+msgid "Button Press"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:25
+msgid "Button Release"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:26
+msgid "Calendar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:27
+msgid "Cancel"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:28
+#, fuzzy
+msgid "Center"
+msgstr "全般"
+
+#: widgets/gtk+.xml.in.h:29
+msgid "Center on Parent"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:30
+msgid "Character"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:31
+msgid "Check Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:32
+#, fuzzy
+msgid "Close"
+msgstr "クラス"
+
+#: widgets/gtk+.xml.in.h:33
+msgid "Color Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:34
+#, fuzzy
+msgid "Color Selection"
+msgstr "セレクタ"
+
+#: widgets/gtk+.xml.in.h:35
+msgid "Color Selection Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:36
+msgid "Columned List"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:37
+#, fuzzy
+msgid "Combo"
+msgstr "共通"
+
+#: widgets/gtk+.xml.in.h:38
+msgid "Combo Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:39
+msgid "Combo Box Entry"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:40
+msgid "Continuous"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:41
+#, fuzzy
+msgid "Create Folder"
+msgstr "%s を生成します"
+
+#: widgets/gtk+.xml.in.h:42
+msgid "Cursor"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:43
+msgid "Curve"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:44
+msgid "Default"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:45
+msgid "Delayed"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:46
+msgid "Desktop"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:47
+msgid "Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:48
+msgid "Dialog Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:49
+msgid "Discontinuous"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:50
+msgid "Discrete"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:51
+msgid "Dock"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:52
+msgid "Down"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:53
+msgid "Drawing Area"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:54
+msgid "East"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:55
+#, fuzzy
+msgid "Edge"
+msgstr "ウィジット"
+
+#: widgets/gtk+.xml.in.h:56
+msgid "End"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:57
+msgid "Enter Notify"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:58
+msgid "Error"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:59
+msgid "Etched In"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:60
+msgid "Etched Out"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:61
+msgid "Event Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:62
+#, fuzzy
+msgid "Expand"
+msgstr "全て広げる"
+
+#: widgets/gtk+.xml.in.h:63
+#, fuzzy
+msgid "Expander"
+msgstr "全て広げる"
+
+#: widgets/gtk+.xml.in.h:64
+msgid "Exposure"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:65
+msgid "File Chooser Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:66
+msgid "File Chooser Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:67
+#, fuzzy
+msgid "File Selection"
+msgstr "セレクタ"
+
+#: widgets/gtk+.xml.in.h:68
+msgid "Fill"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:69
+msgid "Fixed"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:70
+msgid "Focus Change"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:71
+msgid "Font Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:72
+#, fuzzy
+msgid "Font Selection"
+msgstr "セレクタ"
+
+#: widgets/gtk+.xml.in.h:73
+msgid "Font Selection Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:74
+#, fuzzy
+msgid "Frame"
+msgstr "名前"
+
+#: widgets/gtk+.xml.in.h:75
+msgid "Free"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:76
+msgid "Gamma Curve"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:78
+msgid "Gtk+ Additional"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:79
+msgid "Gtk+ Base"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:80
+msgid "Gtk+ Obsolete"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:81
+msgid "Gtk+ Standard Dialogs"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:82
+msgid "Half"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:83
+#, fuzzy
+msgid "Handle Box"
+msgstr "ハンドラ"
+
+#: widgets/gtk+.xml.in.h:84
+msgid "Horizontal"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:85
+msgid "Horizontal Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:86
+msgid "Horizontal Button Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:87
+msgid "Horizontal Panes"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:88
+msgid "Horizontal Ruler"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:89
+msgid "Horizontal Scale"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:90
+msgid "Horizontal Scrollbar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:91
+msgid "Horizontal Separator"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:92
+msgid "Icons"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:93
+msgid "If Valid"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:94
+msgid "Image"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:95
+msgid "Image Type"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:96
+msgid "Immediate"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:97
+msgid "In"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:98
+msgid "Info"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:99
+msgid "Input Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:100
+msgid "Items"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:101
+msgid "Key Press"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:102
+msgid "Key Release"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:104
+msgid "Layout"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:105
+msgid "Leave Notify"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:106
+msgid "Left"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:107
+msgid "Left to Right"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:108
+msgid "Linear"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:109
+msgid "List"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:110
+msgid "List Item"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:111
+msgid "Maximun Width"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:112
+msgid "Menu"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:113
+msgid "Menu Bar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:114
+msgid "Message Dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:115
+msgid "Middle"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:116
+msgid "Mouse"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:117
+msgid "Never"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:120
+#, fuzzy
+msgid "North"
+msgstr "なし"
+
+#: widgets/gtk+.xml.in.h:121
+msgid "North East"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:122
+msgid "North West"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:123
+msgid "Notebook"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:124
+#, fuzzy
+msgid "Number of items"
+msgstr "ウィジットの名前です"
+
+#: widgets/gtk+.xml.in.h:125
+#, fuzzy
+msgid "Number of pages"
+msgstr "ウィジットの名前です"
+
+#: widgets/gtk+.xml.in.h:126
+msgid "Ok"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:127
+msgid "Ok, Cancel"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:128
+#, fuzzy
+msgid "Open"
+msgstr "開く..."
+
+#: widgets/gtk+.xml.in.h:129
+msgid "Option Menu"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:130
+msgid "Out"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:132
+msgid "Plug"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:133
+msgid "Pointer Motion"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:134
+msgid "Pointer Motion Hint"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:135
+msgid "Popup"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:136
+msgid "Popup Menu"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:137
+msgid "Progress Bar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:138
+#, fuzzy
+msgid "Property Change"
+msgstr "プロパティ"
+
+#: widgets/gtk+.xml.in.h:139
+msgid "Proximity  Out"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:140
+msgid "Proximity In"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:141
+msgid "Question"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:142
+msgid "Queue"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:143
+msgid "Radio Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:144
+msgid "Response ID"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:145
+msgid "Right"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:146
+msgid "Right to Left"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:147
+#, fuzzy
+msgid "Save"
+msgstr "保存..."
+
+#: widgets/gtk+.xml.in.h:148
+msgid "Scroll"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:149
+msgid "Scrolled Window"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:150
+#, fuzzy
+msgid "Select Folder"
+msgstr "セレクタ"
+
+#: widgets/gtk+.xml.in.h:151
+#, fuzzy
+msgid "Shrink"
+msgstr "なし"
+
+#: widgets/gtk+.xml.in.h:152
+msgid "Size"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:153
+msgid "Socket"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:154
+msgid "South"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:155
+msgid "South East"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:156
+msgid "South West"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:157
+msgid "Spin Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:158
+msgid "Splash Screen"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:159
+msgid "Spline"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:160
+msgid "Spread"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:161
+#, fuzzy
+msgid "Start"
+msgstr "なし"
+
+#: widgets/gtk+.xml.in.h:162
+msgid "Static"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:163
+msgid "Status Bar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:164
+msgid "Stock Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:165
+msgid "Stock Image"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:166
+msgid "Structure"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:167
+msgid "Substructure"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:168
+msgid "Table"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:169
+#, fuzzy
+msgid "Text"
+msgstr "テキスト(_T):"
+
+#: widgets/gtk+.xml.in.h:170
+msgid "Text Entry"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:171
+#, fuzzy
+msgid "Text View"
+msgstr "テキスト(_T):"
+
+#: widgets/gtk+.xml.in.h:172
+msgid "The items in this combo box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:173
+#, fuzzy
+msgid "The number of items in the box"
+msgstr "ウィジットの名前です"
+
+#: widgets/gtk+.xml.in.h:174
+#, fuzzy
+msgid "The number of items in the toolbar"
+msgstr "ウィジットの名前です"
+
+#: widgets/gtk+.xml.in.h:175
+msgid "The number of pages in the notebook"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:176
+msgid "The radio group name for this radio button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:177
+msgid ""
+"The response ID of this button in a dialog (it's NOT useful if this button "
+"is not in a GtkDialog)"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:178
+msgid "The response ID of this button in the dialog"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:179
+msgid "The stock item for this button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:180
+msgid "The stock item for this image"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:181
+msgid "The text to display"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:182
+msgid "Toggle Button"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:183
+msgid "Tool Bar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:184
+msgid "Toolbar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:185
+msgid "Tooltip"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:186
+msgid "Top"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:187
+msgid "Top Left"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:188
+msgid "Top Level"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:189
+msgid "Top Right"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:190
+msgid "Top to Bottom"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:191
+msgid "Tree View"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:192
+msgid "Up"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:193
+msgid "Utility"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:194
+msgid "Vertical"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:195
+msgid "Vertical Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:196
+msgid "Vertical Button Box"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:197
+msgid "Vertical Panes"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:198
+msgid "Vertical Ruler"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:199
+msgid "Vertical Scale"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:200
+msgid "Vertical Scrollbar"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:201
+msgid "Vertical Separator"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:202
+msgid "Viewport"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:203
+msgid "Visibility Notify"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:204
+#, fuzzy
+msgid "Warning"
+msgstr "なし"
+
+#: widgets/gtk+.xml.in.h:205
+#, fuzzy
+msgid "West"
+msgstr "ウィジット"
+
+#: widgets/gtk+.xml.in.h:206
+msgid "Window"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:207
+msgid "Word"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:208
+msgid "Word Character"
+msgstr ""
+
+#: widgets/gtk+.xml.in.h:209
+msgid "Yes, No"
+msgstr ""
 
 #~ msgid "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
 #~ msgstr "<span size=\"xx-large\"><b>Glade 3.0.0</b></span>"
@@ -986,9 +1843,6 @@ msgstr "モジュール %s を開けません"
 
 #~ msgid "Create a new project file"
 #~ msgstr "新しいプロジェクトを生成します"
-
-#~ msgid "Open a project file"
-#~ msgstr "既存のプロジェクトを開きます"
 
 #~ msgid "Save the current project file"
 #~ msgstr "このプロジェクトを保存します"

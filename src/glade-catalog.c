@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <glib.h>
+#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-catalog.h"
@@ -42,8 +43,14 @@ struct _GladeCatalog
 	gchar *library;          /* Library name for backend support  */
 
 	gchar *name;             /* Symbolic catalog name             */
+
 	gchar *dep_catalog;      /* Symbolic name of the catalog that
 				  * this catalog depends on           */
+
+	gchar *domain;           /* The domain to be used to translate
+				  * strings from this catalog (otherwise this 
+				  * defaults to the library name)
+				  */
 	
 	GList *widget_groups;    /* List of widget groups (palette)   */
 	GList *widget_classes;   /* List of widget classes (all)      */
@@ -118,6 +125,8 @@ catalog_open (const gchar *filename)
 		glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
 	catalog->dep_catalog =
 		glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
+	catalog->domain =
+		glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
 
 	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
 
@@ -230,8 +239,9 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
 			continue;
 	
-		widget_class = glade_widget_class_new (node, 
-						       catalog->library);
+		widget_class = glade_widget_class_new 
+			(node, catalog->library, 
+			 catalog->domain ? catalog->domain : catalog->library);
 
 		catalog->widget_classes = g_list_prepend (catalog->widget_classes,
 							  widget_class);
@@ -267,6 +277,9 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		widget_group_free (group);
 		return FALSE;	
 	}
+
+	/* Translate it */
+	group->title = dgettext (catalog->domain ? catalog->domain : catalog->library, group->title);
 
 	g_debug ("Loading widget group: %s\n", group->title);
 

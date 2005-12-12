@@ -114,6 +114,7 @@ typedef struct _GladeProject      GladeProject;
 #define GLADE_TAG_TITLE                           "title"
 #define GLADE_TAG_LIBRARY                         "library"
 #define GLADE_TAG_DEPENDS                         "depends"
+#define GLADE_TAG_DOMAIN                          "domain"
 #define GLADE_TAG_ID                              "id"
 #define GLADE_TAG_KEY                             "key"
 #define GLADE_TAG_VALUE                           "value"

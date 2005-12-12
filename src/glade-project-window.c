@@ -733,7 +733,7 @@ gpw_hijack_editor_key_press (GtkWidget          *editor_win,
 	 */
 	if (event->keyval == GDK_Delete)
 	{
-		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, event);
+		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, (GdkEvent *)event);
 	}
 	return FALSE;
 }

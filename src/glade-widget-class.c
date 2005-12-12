@@ -41,7 +41,6 @@
 #include "glade-xml-utils.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-catalog.h"
 #include "glade-signal.h"
 #include "glade-parameter.h"
 #include "glade-debug.h"
@@ -337,7 +336,8 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 static void
 glade_widget_class_update_properties_from_node (GladeXmlNode      *node,
 						GladeWidgetClass  *widget_class,
-						GList            **properties)
+						GList            **properties,
+						const gchar       *domain)
 {
 	GladeXmlNode *child;
 
@@ -381,7 +381,7 @@ glade_widget_class_update_properties_from_node (GladeXmlNode      *node,
 		updated = glade_property_class_update_from_node
 			(child, widget_class->module, 
 			 widget_class->type,
-			 &property_class);
+			 &property_class, domain);
 		if (!updated)
 		{
 			g_warning ("failed to update %s property of %s from xml",
@@ -483,7 +483,8 @@ glade_widget_class_load_function (GladeXmlNode     *node,
 
 static void
 glade_widget_class_update_children_from_node (GladeXmlNode     *node,
-					      GladeWidgetClass *widget_class)
+					      GladeWidgetClass *widget_class,
+					      const gchar      *domain)
 {
 	GladeSupportedChild *child;
 	GladeXmlNode        *child_node, *properties;
@@ -567,7 +568,7 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 		     glade_xml_search_child (child_node, GLADE_TAG_PROPERTIES)) != NULL)
 		{
 			glade_widget_class_update_properties_from_node
-				(properties, widget_class, &child->properties);
+				(properties, widget_class, &child->properties, domain);
 
 			for (list = child->properties; list != NULL; list = list->next)
 				((GladePropertyClass *)list->data)->packing = TRUE;
@@ -577,7 +578,8 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 
 static gboolean
 glade_widget_class_extend_with_node (GladeWidgetClass *widget_class, 
-				     GladeXmlNode     *node)
+				     GladeXmlNode     *node,
+				     const gchar      *domain)
 {
 	GladeXmlNode *child;
 
@@ -610,16 +612,15 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 	child = glade_xml_search_child (node, GLADE_TAG_PROPERTIES);
 	if (child)
 	{
-		glade_widget_class_update_properties_from_node (child,
-								widget_class,
-								&widget_class->properties);
+		glade_widget_class_update_properties_from_node
+			(child, widget_class, &widget_class->properties, domain);
 	}
 
 	child = glade_xml_search_child (node, GLADE_TAG_CHILDREN);
 	if (child)
 	{
-		glade_widget_class_update_children_from_node (child,
-							      widget_class);
+		glade_widget_class_update_children_from_node
+			(child, widget_class, domain);
 	}
 
 	child = glade_xml_search_child (node, GLADE_TAG_PACKING_DEFAULTS);
@@ -982,11 +983,10 @@ glade_widget_class_load_library (const gchar *library_name)
 }
 
 GladeWidgetClass *
-glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
+glade_widget_class_new (GladeXmlNode *class_node, const gchar *library, const gchar *domain)
 {
 	GladeWidgetClass *widget_class;
-	gchar            *name;
-	gchar            *generic_name;
+	gchar            *name, *generic_name, *ptr;
 	gchar            *title;
 	GModule          *module;
 	GType             parent_type;
@@ -1017,6 +1017,14 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 	generic_name = glade_xml_get_property_string (class_node, 
 						      GLADE_TAG_GENERIC_NAME);
 	title = glade_xml_get_property_string (class_node, GLADE_TAG_TITLE);
+
+	/* Translate title */
+	if (title != dgettext (domain, title))
+	{
+		ptr   = dgettext (domain, title);
+		g_free (title);
+		title = ptr;
+	}
 
 	module = NULL;
 	if (library) 
@@ -1068,7 +1076,7 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library)
 	}
 	
 	if (glade_xml_node_get_children (class_node))
-		glade_widget_class_extend_with_node (widget_class, class_node);
+		glade_widget_class_extend_with_node (widget_class, class_node, domain);
 	
 	/* store the GladeWidgetClass on the cache,
 	 * if it's the first time we store a widget class, then

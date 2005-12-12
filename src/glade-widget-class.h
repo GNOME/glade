@@ -171,7 +171,8 @@ struct _GladeWidgetClassSignal
 };
  
 LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
-									   const gchar      *library);
+									   const gchar      *library,
+									   const gchar      *domain);
 LIBGLADEUI_API void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
 LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
 LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_get_by_type        (GType             type);

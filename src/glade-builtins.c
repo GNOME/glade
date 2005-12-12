@@ -119,6 +119,8 @@ glade_standard_strv_spec (void)
 						_("String array"),
 						G_TYPE_STRV,
 						G_PARAM_READWRITE);
+
+	return strv_spec;
 }
 
 GParamSpec *

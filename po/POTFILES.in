@@ -1,25 +1,40 @@
 # List of source files containing translatable strings.
+
+
+# Main application
 glade-3.desktop.in
 src/main.c
+src/glade-project-window.c
+
+# libgladeui shared core library
 src/glade-app.c
 src/glade-builtins.c
 src/glade-catalog.c
 src/glade-clipboard-view.c
+src/glade-clipboard.c
 src/glade-command.c
-src/glade-editor.c
+src/glade-cursor.c
+src/glade-debug.c
 src/glade-editor-property.c
+src/glade-editor.c
 src/glade-fixed-manager.c
-src/glade-gtk.c
 src/glade-menu-editor.c
 src/glade-palette.c
+src/glade-parameter.c
 src/glade-parser.c
+src/glade-placeholder.c
 src/glade-popup.c
-src/glade-project-view.c
-src/glade-project-window.c
 src/glade-project.c
-src/glade-property.c
 src/glade-property-class.c
+src/glade-property.c
 src/glade-signal-editor.c
+src/glade-signal.c
 src/glade-utils.c
-src/glade-widget.c
 src/glade-widget-class.c
+src/glade-widget.c
+src/glade-xml-utils.c
+src/glade-project-view.c
+
+# gladegtk plugin backend
+src/glade-gtk.c
+widgets/gtk+.xml.in

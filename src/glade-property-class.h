@@ -134,7 +134,8 @@ LIBGLADEUI_API gchar              *glade_property_class_make_string_from_gvalue 
 LIBGLADEUI_API gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
 										 GModule             *module,
 										 GType                widget_type,
-										 GladePropertyClass **property_class);
+										 GladePropertyClass **property_class,
+										 const gchar         *domain);
 LIBGLADEUI_API gchar              *glade_property_class_make_string_from_flags  (GladePropertyClass *class, 
 										 guint               fvals, 
 										 gboolean            displayables);

@@ -669,7 +669,10 @@ glade_property_class_get_displayable_value(GladePropertyClass *class, gint value
  * Returns: a (GArray *) of GEnumValue of the overridden fields.
  */
 static GArray *
-gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gint n_values)
+gpc_get_displayable_values_from_node (GladeXmlNode *node, 
+				      GEnumValue   *values, 
+				      gint          n_values,
+				      const gchar  *domain)
 {
 	GArray *array;
 	GladeXmlNode *child;
@@ -689,16 +692,29 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node, GEnumValue *values, gi
 		id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
 		name = glade_xml_get_property_string (child, GLADE_TAG_NAME);
 		nick = glade_xml_get_property_string (child, GLADE_TAG_NICK);
-		
+
 		for(i=0; i < n_values; i++)
 		{
 			if(strcmp (id, values[i].value_name) == 0)
 			{
 				val=values[i];
 				
-				if(name) val.value_name = name;
-				if(nick) val.value_nick = nick;
-				
+				/* Tedious memory handleing; if gettext doesn't return
+				 * a translation, dont free the untranslated string.
+				 */
+				if(name) 
+				{
+					val.value_name = dgettext (domain, name);
+					if (name != val.value_name)
+						g_free (name);
+				}
+				if(nick)
+				{
+					val.value_nick = dgettext (domain, nick);
+					if (nick != val.value_nick)
+						g_free (nick);
+				}
+
 				g_array_append_val(array, val);
 				break;
 			}
@@ -801,7 +817,8 @@ gboolean
 glade_property_class_update_from_node (GladeXmlNode        *node,
 				       GModule             *module,
 				       GType                widget_type,
-				       GladePropertyClass **property_class)
+				       GladePropertyClass **property_class,
+				       const gchar         *domain)
 {
 	GladePropertyClass *class;
 	gchar *buff;
@@ -885,7 +902,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	if (buff)
 	{
 		g_free (class->name);
-		class->name = buff;
+		class->name = g_strdup (dgettext (domain, buff));
 	}
 	
 	/* ...and the tooltip */
@@ -893,8 +910,18 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	if (buff)
 	{
 		g_free (class->tooltip);
-		class->tooltip = buff;
+		class->tooltip = g_strdup (dgettext (domain, buff));
 	}
+
+	/* Why arent _ stripped ??? */
+	buff = glade_xml_get_value_string (node, "_" GLADE_TAG_TOOLTIP);
+	if (buff)
+	{
+		g_free (class->tooltip);
+		class->tooltip = g_strdup (dgettext (domain, buff));
+	}
+
+
 
 	/* If this property's value is an enumeration then we try to get the displayable values */
 	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
@@ -903,7 +930,8 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		
 		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
 		if (child)
-			class->displayable_values = gpc_get_displayable_values_from_node(child, eclass->values, eclass->n_values);
+			class->displayable_values = gpc_get_displayable_values_from_node
+				(child, eclass->values, eclass->n_values, domain);
 		
 		g_type_class_unref(eclass);
 	}
@@ -915,7 +943,8 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		
 		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
 		if (child)
-			class->displayable_values = gpc_get_displayable_values_from_node(child, (GEnumValue*)fclass->values, fclass->n_values);
+			class->displayable_values = gpc_get_displayable_values_from_node
+				(child, (GEnumValue*)fclass->values, fclass->n_values, domain);
 		
 		g_type_class_unref(fclass);
 	}

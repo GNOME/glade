@@ -1,3 +1,31 @@
+2005-12-11  Tristan Van Berkom <tvb@gnome.org>
+
+	* po/POTFILES.in: Added missing sources & added gtk+.xml
+
+	* src/glade-builtins.c: Fixed a stooopid bug.
+
+	* src/glade-catalog.c: Translated widget groups
+
+	* src/glade-gtk.c: Removed useless property support.
+
+	* src/glade-project-window.c: Fixed compiler warning (miscast)
+
+	* src/glade-property-class.c: Translated disaplayable-values 
+	  and property class names 
+
+	* src/glade-widget-class.c: Translated widget class names
+
+	* widgets/.cvsignore: Added generated file gtk+.xml
+
+	* widgets/Makefile.am: Added @INTLTOOL_XML_NOMERGE_RULE@ and
+	  CLEANFILES = gtk+.xml
+
+	* widgets/gtk+.xml (to be renamed to gtk+.xml after surgery):
+	  marked tooltips, displayable values, property names, widget titles
+	  and widget group titles for translations.
+
+	* po/*.po: Updated po files with new strings to translate.
+	
 2005-12-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor-property.c: Now multi-line text inputs scroll automaticly
