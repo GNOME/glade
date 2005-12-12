@@ -1,3 +1,14 @@
+2005-12-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-xml-utils.c: glade_xml_get_value() now checks for 
+	  underscore varients of tag names since they are not stripped
+	  from widget catalogs.
+	  glade_xml_get_value_string() Now fixed to not call claim_string()
+	  since this is already done by glade_xml_get_value().
+	
+	* src/glade-property-class.c: Removed special case code that
+	  is now handled for all tag names in glade-xml-utils
+
 2005-12-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* po/POTFILES.in: Added missing sources & added gtk+.xml

@@ -913,16 +913,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		class->tooltip = g_strdup (dgettext (domain, buff));
 	}
 
-	/* Why arent _ stripped ??? */
-	buff = glade_xml_get_value_string (node, "_" GLADE_TAG_TOOLTIP);
-	if (buff)
-	{
-		g_free (class->tooltip);
-		class->tooltip = g_strdup (dgettext (domain, buff));
-	}
-
-
-
 	/* If this property's value is an enumeration then we try to get the displayable values */
 	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
 	{

@@ -123,13 +123,22 @@ glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
 static gchar *
 glade_xml_get_value (xmlNodePtr node, const gchar *name)
 {
-	xmlNodePtr child;
-
+	xmlNodePtr  child;
+	gchar      *translatable = g_strdup_printf ("_%s", name);
+	gchar      *ret = NULL;
+	
+	/* For some reason, the leading underscores on translatable
+	 * xml content are not stripped from widget catalogs
+	 * (but the leading underscores on properties are),
+	 * so we must check for the leading underscore varients.
+	 */
 	for (child = node->children; child; child = child->next)
-		if (!xmlStrcmp (child->name, BAD_CAST(name)))
-			return claim_string (xmlNodeGetContent(child));
+		if (!xmlStrcmp (child->name, BAD_CAST(name)) ||
+		    !xmlStrcmp (child->name, BAD_CAST(translatable)))
+			ret = claim_string (xmlNodeGetContent(child));
 
-	return NULL;
+	g_free (translatable);
+	return ret;
 }
 
 /**
@@ -243,7 +252,7 @@ gchar *
 glade_xml_get_value_string (GladeXmlNode *node_in, const gchar *name)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
-	return claim_string (BAD_CAST(glade_xml_get_value (node, name)));
+	return glade_xml_get_value (node, name);
 }
 
 static gchar *
