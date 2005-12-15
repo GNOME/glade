@@ -115,32 +115,13 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 }
 
 static GList *
-glade_widget_class_list_properties (GladeWidgetClass *class)
+gwc_props_from_pspecs (GParamSpec **specs, gint n_specs)
 {
 	GladePropertyClass *property_class;
-	GObjectClass *object_class;
-	GParamSpec **specs = NULL;
-	GParamSpec *spec;
-	GType last;
-	guint n_specs = 0;
-	gint i;
-	GList *list = NULL;
+	GParamSpec         *spec;
+	gint                i;
+	GList              *list = NULL;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
-
-	/* Let it leek */
-	g_type_class_ref (class->type);
-
-	object_class = g_type_class_peek (class->type);
-	if (!object_class)
-	{
-		g_warning ("Class peek failed\n");
-		return NULL;
-	}
-
-	specs = g_object_class_list_properties (object_class, &n_specs);
-
-	last = 0;
 	for (i = 0; i < n_specs; i++)
 	{
 		spec = specs[i];
@@ -152,8 +133,6 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 			if (!property_class)
 				continue;
 
-			property_class->optional = FALSE;
-
 			/* Flag the construct only properties */
 			if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
 				property_class->construct_only = TRUE;
@@ -161,9 +140,29 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 			list = g_list_prepend (list, property_class);
 		}
 	}
+	return g_list_reverse (list);
+}
 
-	list = g_list_reverse (list);
+static GList *
+glade_widget_class_list_properties (GladeWidgetClass *class)
+{
+	GObjectClass  *object_class;
+	GParamSpec   **specs = NULL;
+	guint          n_specs = 0;
+	GList         *list;
 
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+
+	/* Let it leek */
+	if ((object_class = g_type_class_ref (class->type)) == NULL)
+	{
+		g_warning ("Failed to get class for type %s\n", 
+			   g_type_name (class->type));
+		return NULL;
+	}
+
+	specs = g_object_class_list_properties (object_class, &n_specs);
+	list = gwc_props_from_pspecs (specs, n_specs);
 	g_free (specs);
 
 	return list;
@@ -172,56 +171,36 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 static GList * 
 glade_widget_class_list_child_properties (GladeWidgetClass *class) 
 {
-	GladePropertyClass *property_class;
-	GObjectClass *object_class;
-	GParamSpec **specs = NULL;
-	GParamSpec *spec;
-	guint n_specs = 0;
-	gint i;
-	GList *list = NULL;
+	GladePropertyClass  *property_class;
+	GObjectClass        *object_class;
+	GParamSpec         **specs = NULL;
+	guint                n_specs = 0;
+	GList               *list = NULL, *l;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
-	/* only containers have child propeties */
+	/* only GtkContainer child propeties can be introspected */
 	if (!g_type_is_a (class->type, GTK_TYPE_CONTAINER))
 		return NULL;
 
-	object_class = g_type_class_peek (class->type);
-	if (!object_class)
+	/* Let it leek */
+	if ((object_class = g_type_class_ref (class->type)) == NULL)
 	{
-		g_warning ("Class peek failed\n");
+		g_warning ("Failed to get class for type %s\n", 
+			   g_type_name (class->type));
 		return NULL;
 	}
 
 	specs = gtk_container_class_list_child_properties (object_class, &n_specs);
-
-	for (i = 0; i < n_specs; i++)
-	{
-		spec = specs[i];
-
-		/* We only use the writable properties */
-		if (spec->flags & G_PARAM_WRITABLE)
-		{
-			property_class = glade_property_class_new_from_spec (spec);
-			if (!property_class)
-				continue;
-
-			property_class->optional = FALSE;
-			property_class->packing = TRUE;
-
-			/* Flag the construct only properties */
-			if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
-				property_class->construct_only = TRUE;
-
-			
-			list = g_list_prepend (list, property_class);
-		}
-	}
-
-	list = g_list_reverse (list);
-
+	list  = gwc_props_from_pspecs (specs, n_specs);
 	g_free (specs);
 
+	/* Mark packing props */
+	for (l = list; l; l = l->next)
+	{
+		property_class = l->data;
+		property_class->packing = TRUE;
+	}
 	return list;
 }
 
@@ -761,7 +740,7 @@ glade_widget_class_merge_properties (GType   parent_type,
 	/* Remove any properties found in widget_properties not found in parent_properties
 	 * if parent_properties should have it through introspection
 	 */
-	object_class = g_type_class_peek (parent_type);
+	object_class = g_type_class_ref (parent_type); /* Let it leek please */
 	specs        = g_object_class_list_properties (object_class, &n_specs);
 
 	for (i = 0; i < n_specs; i++)
