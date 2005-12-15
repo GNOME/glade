@@ -1140,7 +1140,7 @@ static GtkActionEntry entries[] = {
 	"Delete the selection", G_CALLBACK (gpw_delete_cb) },
 	
 	/* HelpMenu */
-	{ "About", NULL, "_About", NULL,
+	{ "About", GTK_STOCK_ABOUT, "_About", NULL,
 	"Shows the About Dialog", G_CALLBACK (gpw_about_cb) }
 };
 static guint n_entries = G_N_ELEMENTS (entries);

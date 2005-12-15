@@ -54,8 +54,6 @@ libgladeui_1_la_SOURCES = \
 	glade-clipboard.c \
 	glade-clipboard-view.c \
 	glade-command.c \
-	glade-menu-editor.c \
-	glade-keys-dialog.c \
 	glade-id-allocator.c \
 	glade-marshallers.c \
 	glade-accumulators.c \
@@ -93,8 +91,6 @@ libgladeuiinclude_HEADERS = \
 	glade-clipboard.h \
 	glade-clipboard-view.h \
 	glade-command.h \
-	glade-menu-editor.h \
-	glade-keys-dialog.h \
 	glade-id-allocator.h \
 	glade-marshallers.h \
 	glade-accumulators.h \

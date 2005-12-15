@@ -1607,6 +1607,140 @@ glade_eprop_unichar_create_input (GladeEditorProperty *eprop)
 }
 
 /*******************************************************************************
+                        GladeEditorPropertyPixbufClass
+ *******************************************************************************/
+typedef struct {
+	GladeEditorProperty parent_instance;
+	
+	GtkWidget *entry, *button;
+} GladeEPropPixbuf;
+
+GLADE_MAKE_EPROP (GladeEPropPixbuf, glade_eprop_pixbuf)
+#define GLADE_TYPE_EPROP_PIXBUF            (glade_eprop_pixbuf_get_type())
+#define GLADE_EPROP_PIXBUF(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_PIXBUF, GladeEPropPixbuf))
+#define GLADE_EPROP_PIXBUF_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_PIXBUF, GladeEPropPixbufClass))
+#define GLADE_IS_EPROP_PIXBUF(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_PIXBUF))
+#define GLADE_IS_EPROP_PIXBUF_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_PIXBUF))
+#define GLADE_EPROP_PIXBUF_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_PIXBUF, GladeEPropPixbufClass))
+
+static void
+glade_eprop_pixbuf_finalize (GObject *object)
+{
+	/* Chain up */
+	G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static void
+glade_eprop_pixbuf_entry_activate (GtkEntry *entry, GladeEditorProperty *eprop)
+{
+	GValue *value = glade_property_class_make_gvalue_from_string (eprop->class,
+							gtk_entry_get_text(entry));
+	
+	glade_property_set (eprop->property, NULL);
+	
+	if (eprop->use_command == FALSE)
+		glade_property_set_value (eprop->property, value);
+	else
+		glade_command_set_property (eprop->property, value);
+
+	g_value_unset (value);
+	g_free (value);
+}
+
+static void
+glade_eprop_pixbuf_select_file (GtkButton *button, GladeEditorProperty *eprop)
+{
+	GladeEPropPixbuf *eprop_pixbuf = GLADE_EPROP_PIXBUF (eprop);
+	GtkWidget *dialog;
+	GtkFileFilter *filter;
+	gchar *file, *basename;
+	
+	if (eprop->loading) return;
+
+	dialog = gtk_file_chooser_dialog_new ("Select a File",
+					NULL,
+					GTK_FILE_CHOOSER_ACTION_OPEN,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+					NULL);
+	
+	gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (dialog), TRUE);
+	filter = gtk_file_filter_new ();
+	gtk_file_filter_add_pixbuf_formats (filter);
+	gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filter);
+	
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+	{
+		file = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		
+		/*
+		  TODO: instead of "basename" we need a relative path to the 
+		  project's directory.
+		*/
+		basename = g_path_get_basename (file);
+	
+		gtk_entry_set_text (GTK_ENTRY(eprop_pixbuf->entry), basename);
+		gtk_widget_activate (eprop_pixbuf->entry);
+		
+		g_free (file);
+		g_free (basename);
+	}
+	
+	gtk_widget_destroy (dialog);
+}
+
+static void
+glade_eprop_pixbuf_load (GladeEditorProperty *eprop, GladeProperty *property)
+{
+	GladeEPropPixbuf *eprop_pixbuf = GLADE_EPROP_PIXBUF (eprop);
+	gchar *file;
+
+	/* Chain up first */
+	editor_property_class->load (eprop, property);
+
+	if (property == NULL) return;
+
+	file  = glade_property_class_make_string_from_gvalue
+						(eprop->class, property->value);
+	if (file)
+	{
+		gtk_entry_set_text (GTK_ENTRY (eprop_pixbuf->entry), file);
+		g_free (file);
+	}
+	else
+	{
+		gtk_entry_set_text (GTK_ENTRY (eprop_pixbuf->entry), "");
+	}
+}
+
+static GtkWidget *
+glade_eprop_pixbuf_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropPixbuf *eprop_pixbuf = GLADE_EPROP_PIXBUF (eprop);
+	GtkWidget *hbox;
+
+	hbox = gtk_hbox_new (FALSE, 0);
+
+	eprop_pixbuf->entry = gtk_entry_new ();
+	gtk_widget_show (eprop_pixbuf->entry);
+	
+	eprop_pixbuf->button = gtk_button_new_with_label ("...");
+	gtk_widget_show (eprop_pixbuf->button);
+	
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_pixbuf->entry, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_pixbuf->button, FALSE, FALSE, 0);
+
+	g_signal_connect (G_OBJECT (eprop_pixbuf->entry), "activate",
+			  G_CALLBACK (glade_eprop_pixbuf_entry_activate), 
+			  eprop);
+	g_signal_connect (G_OBJECT (eprop_pixbuf->button), "clicked",
+			  G_CALLBACK (glade_eprop_pixbuf_select_file), 
+			  eprop);
+
+	return hbox;
+}
+
+/*******************************************************************************
                               Misc static stuff
  *******************************************************************************/
 static GType 
@@ -1641,7 +1775,12 @@ glade_editor_property_type (GParamSpec *pspec)
 		type = GLADE_TYPE_EPROP_NUMERIC;
 	else if (G_IS_PARAM_SPEC_UNICHAR(pspec))
 		type = GLADE_TYPE_EPROP_UNICHAR;
-
+	else if (G_IS_PARAM_SPEC_OBJECT(pspec))
+	{
+		if(pspec->value_type == GDK_TYPE_PIXBUF)
+			type = GLADE_TYPE_EPROP_PIXBUF;
+	}
+	
 	return type;
 }
 
@@ -1683,7 +1822,33 @@ glade_editor_property_new (GladePropertyClass  *class,
 }
 
 /**
- * glade_editor_property_load:
+ * glade_editor_property_new_from_widget:
+ * @widget: A #GladeWidget
+ * @property: The widget's property
+ * @use_command: Whether the undo/redo stack applies here.
+ *
+ * This is a convenience function to create a GladeEditorProperty corresponding
+ * to @property
+ *
+ * Returns: A newly created and connected GladeEditorProperty
+ */
+GladeEditorProperty *
+glade_editor_property_new_from_widget (GladeWidget *widget,
+				       const gchar *property,
+				       gboolean use_command)
+{
+	GladeEditorProperty *eprop;
+	GladeProperty *p;
+	
+	p = glade_widget_get_property (widget, property);
+	eprop = glade_editor_property_new (p->class, use_command);
+	glade_editor_property_load (eprop, p);
+	
+	return eprop;
+}
+
+/**
+ * glade_editor_property_supported:
  * @pspec: A #GParamSpec
  *
  * Returns: whether this pspec is supported by GladeEditorProperties.

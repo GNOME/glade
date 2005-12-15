@@ -162,6 +162,54 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
+      <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
+	<properties>
+          <property id="label" _name="Label">
+	    <_tooltip>The text of the menu item</_tooltip>
+            <spec>glade_standard_string_spec</spec>
+            <set-function>glade_gtk_menu_item_set_label</set-function>
+          </property>
+          <property id="use-underline" _name="Use Underline">
+            <spec>glade_standard_boolean_spec</spec>
+            <set-function>glade_gtk_menu_item_set_use_underline</set-function>
+          </property>
+        </properties>
+      <children>
+	<child>
+	  <type>GtkMenu</type>
+	  <get-all-children-function>glade_gtk_menu_item_get_submenu</get-all-children-function>
+	  <get-children-function>glade_gtk_menu_item_get_submenu</get-children-function>
+	  <add-child-function>glade_gtk_menu_item_add_submenu</add-child-function>
+	  <remove-child-function>glade_gtk_menu_item_remove_submenu</remove-child-function>
+	</child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkCheckMenuItem" generic-name="checkmenuitem" _title="Check Menu Item"/>
+
+    <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
+      <get-internal-child-function>glade_gtk_image_menu_item_get_internal_child</get-internal-child-function>
+      <properties>
+        <property id="use-stock" visible="False">
+	  <spec>glade_standard_boolean_spec</spec>
+	  <set-function>glade_gtk_image_menu_item_set_use_stock</set-function>
+        </property>
+	<property id="stock" _name="Stock Item" save="False">
+	  <_tooltip>A stock item, select None to choose a custom image and label</_tooltip>
+	  <spec>glade_standard_stock_spec</spec>
+	  <set-function>glade_gtk_image_menu_item_set_stock</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkSeparatorMenuItem" generic-name="separatormenuitem" _title="Separator Menu Item">
+      <properties>
+        <property id="label" visible="False"/>
+        <property id="use-underline" visible="False"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" _title="Menu Bar">
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
       <launch-editor-function>glade_gtk_menu_bar_launch_editor</launch-editor-function>
@@ -171,7 +219,13 @@
 	  <child-property id="expand" default="false"/>
 	</parent-class>
       </packing-defaults>
-
+      <children>
+	<child>
+	  <type>GtkMenuItem</type>
+	  <add-child-function>glade_gtk_menu_bar_add_item</add-child-function>
+	  <remove-child-function>glade_gtk_menu_bar_remove_item</remove-child-function>
+	</child>
+      </children>
     </glade-widget-class>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar">
@@ -239,6 +293,7 @@
 	<property id="max-width-chars" _name="Maximun Width"/>
       	<property id="label" default="label">
             <visible-lines>2</visible-lines>
+	    <set-function>glade_gtk_label_set_label</set-function>
         </property>
       	<property id="justify">
   	  <displayable-values>
@@ -420,20 +475,23 @@
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
       <post-create-function>glade_gtk_image_post_create</post-create-function>
       <properties>
-	<property id="icon-name" translatable="False"/>
-	<property id="file" translatable="False"/>
-	<property id="stock" translatable="False" visible="False">
+	<property id="stock" visible="False" translatable="False">
 	  <set-function>glade_gtk_image_set_real_stock</set-function>
 	</property>
-
 	<property id="glade-type" _name="Image Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
 	  <set-function>glade_gtk_image_set_type</set-function>
 	</property>
+	<property id="file" disabled="True"/>
+	<property id="pixbuf" _name="File Name" translatable="False"/>
 	<property id="glade-stock" _name="Stock Image" save="False">
+	  <tooltip>A builtin stock image</tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
 	  <set-function>glade_gtk_image_set_stock</set-function>
+	</property>
+	<property id="icon-name" translatable="False">
+	  <set-function>glade_gtk_image_set_icon_name</set-function>
 	</property>
       </properties>
     </glade-widget-class>
@@ -614,8 +672,17 @@
 
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
-    <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu"/>
-
+    <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu">
+      <post-create-function>empty</post-create-function>
+      <children>
+	<child>
+	  <type>GtkMenuItem</type>
+	  <add-child-function>glade_gtk_menu_add_item</add-child-function>
+	  <remove-child-function>glade_gtk_menu_remove_item</remove-child-function>
+	</child>
+      </children>
+    </glade-widget-class>
+     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>
 
     <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar"/>

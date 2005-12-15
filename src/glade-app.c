@@ -693,6 +693,17 @@ glade_app_set_project (GladeApp *app, GladeProject *project)
 		return;
 	}
 
+	/* Set current/working directory to project's directory */
+	if (project->path)
+	{
+		gchar *cwd = g_path_get_dirname (project->path);
+		if (cwd)
+		{
+			g_chdir (cwd);
+			g_free (cwd);
+		}
+	}
+
 	/* clear the selection in the previous project */
 	if (app->priv->active_project)
 		glade_project_selection_clear (app->priv->active_project, FALSE);

@@ -26,6 +26,8 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 
 #include "glade.h"
 #include "glade-project.h"
@@ -749,6 +751,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 {
 	GladeProject *project;
 	GladeWidget *widget;
+	gchar *cwd;
 	guint i;
 
 	g_return_val_if_fail (interface != NULL, NULL);
@@ -767,6 +770,14 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	project->selection = NULL;
 	project->objects = NULL;
 
+	/* Set current/working directory to project's directory */
+	cwd = g_path_get_dirname (project->path);
+	if (cwd)
+	{
+		g_chdir (cwd);
+		g_free (cwd);
+	}
+	
 	if (interface->n_requires)
 		g_warning ("We currently do not support projects requiring additional libs");
 

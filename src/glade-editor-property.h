@@ -68,4 +68,8 @@ LIBGLADEUI_API void                 glade_editor_property_load_by_widget (GladeE
 									  GladeWidget         *widget);
 LIBGLADEUI_API gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
 
+LIBGLADEUI_API GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
+									   const gchar        *property,
+									   gboolean            use_command);
+
 #endif // __GLADE_EDITOR_PROPERTY_H__

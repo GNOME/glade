@@ -40,7 +40,6 @@
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-marshallers.h"
-#include "glade-menu-editor.h"
 #include "glade-project.h"
 #include "glade-utils.h"
 #include "glade-editor-property.h"

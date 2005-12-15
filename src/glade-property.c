@@ -698,6 +698,8 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
 		g_value_set_uint (value, va_arg (vl, gunichar));
 	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
 		g_value_set_boolean (value, va_arg (vl, gboolean));
+	else if (G_IS_PARAM_SPEC_OBJECT(property->class->pspec))
+		g_value_set_object (value, va_arg (vl, gpointer));
 	else
 		g_critical ("Unsupported pspec type %s",
 			    g_type_name(property->class->pspec->value_type));
@@ -807,6 +809,8 @@ glade_property_get_va_list (GladeProperty *property, va_list vl)
 		*(guint *)(va_arg (vl, gunichar *)) = g_value_get_uint (property->value);
 	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
 		*(gboolean *)(va_arg (vl, gboolean *)) = g_value_get_boolean (property->value);
+	else if (G_IS_PARAM_SPEC_OBJECT(property->class->pspec))
+		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_object (property->value);
 	else
 		g_critical ("Unsupported pspec type %s",
 			    g_type_name(property->class->pspec->value_type));

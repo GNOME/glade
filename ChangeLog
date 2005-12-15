@@ -1,3 +1,37 @@
+2005-12-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-app.c: glade_app_set_project() Sets the
+	  current/working directory to the project's directory.
+
+	* src/glade-builtins.c: Added glade_standard_boolean_spec().
+
+	* src/glade-editor-property.c: New Glade Editor Property Class
+	  GladeEPropPixbuf. (GdkPixbuf properties)
+
+	* src/glade-gtk.c: GtkMenuBar Load/Save Support + editor.
+	  GtkImage loading fixes. glade_gtk_image_set_icon_name().
+	  GtkLabel added glade_gtk_label_set_label().
+
+	* src/glade-project-window.c: Added About icon.
+
+	* src/glade-project.c: glade_project_new_from_interface() make
+	  project's path always absolute.
+
+	* src/glade-property-class.c: Added pixbuf property support in
+	  glade_property_class_make_string_from_gvalue() and
+	  glade_property_class_make_gvalue_from_string().
+
+	* src/glade-property.c: Added pixbuf property support in
+	  glade_property_set_va_list() and glade_property_get_va_list().
+
+	* widgets/gtk+.xml: New classes. GtkMenuItem GtkCheckMenuItem
+	  GtkImageMenuItem and GtkSeparatorMenuItem.
+
+2005-12-14  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-keys-dialog.[ch], src/glade-menu-editor.[ch], src/Makefile.am: 
+	  obsolete old menu-editing attempt removed.
+
 2005-12-14  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in: Added da, fr, nb and sk to ALL_LINGUAS

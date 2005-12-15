@@ -1797,6 +1797,9 @@ glade_widget_button_press (GtkWidget *widget,
 	gboolean           handled = FALSE;
 
 	glade_widget = glade_widget_retrieve_from_position (widget, x, y);
+
+	if (glade_widget == NULL) return FALSE;
+
 	widget = GTK_WIDGET (glade_widget_get_object (glade_widget));
 
 	/* make sure to grab focus, since we may stop default handlers */

@@ -134,3 +134,14 @@ glade_standard_float_spec (void)
 						 G_PARAM_READWRITE);
 	return float_spec;
 }
+
+GParamSpec *
+glade_standard_boolean_spec (void)
+{
+	static GParamSpec *boolean_spec = NULL;
+	if (!boolean_spec)
+		boolean_spec = g_param_spec_boolean ("boolean", _("Boolean"),
+						    _("A boolean value"), FALSE,
+						    G_PARAM_READWRITE);
+	return boolean_spec;
+}

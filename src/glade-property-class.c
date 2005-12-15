@@ -357,6 +357,20 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_BOOLEAN(property_class->pspec))
 		string = g_strdup_printf ("%s", g_value_get_boolean (value) ?
 					  GLADE_TAG_TRUE : GLADE_TAG_FALSE);
+	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
+	{
+		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
+		{
+			GObject *pixbuf = g_value_get_object (value);
+			gchar *filename;
+
+			if (pixbuf)
+			{
+				filename = g_object_get_data (pixbuf, "GladeFileName");
+				if (filename) string = g_strdup (filename);
+			}
+		}
+	}
 	else
 		g_critical ("Unsupported pspec type %s",
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
@@ -557,6 +571,21 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 			g_value_set_boolean (value, TRUE);
 		else
 			g_value_set_boolean (value, FALSE);
+	}
+	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
+	{
+		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && string)
+		{
+			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (string, NULL);
+			if (pixbuf)
+			{
+				g_object_set_data_full (G_OBJECT(pixbuf), 
+							"GladeFileName",
+							g_strdup (string),
+							g_free);
+				g_value_take_object (value, G_OBJECT(pixbuf));
+			}
+		}
 	}
 	else
 		g_critical ("Unsupported pspec type %s",
