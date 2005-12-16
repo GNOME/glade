@@ -1536,35 +1536,40 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 void
 glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 {
-	GList *prev_redo_item;
-	GList *undo_item;
-	GList *redo_item;
-	const gchar *undo_description = NULL;
-	const gchar *redo_description = NULL;
+	GladeCommand *undo = NULL, *redo = NULL;
 	GladeProject *project;
+	GtkAction    *action;
+	gchar        *desc;
 
-	project = glade_app_get_active_project (GLADE_APP (gpw));
-	if (!project)
+	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) != NULL)
 	{
-		undo_item = NULL;
-		redo_item = NULL;
-	}
-	else
-	{
-		undo_item = prev_redo_item = project->prev_redo_item;
-		redo_item = (prev_redo_item == NULL) ? project->undo_stack : prev_redo_item->next;
-
-		if (undo_item && undo_item->data)
-			undo_description = GLADE_COMMAND (undo_item->data)->description;
-		if (redo_item && redo_item->data)
-			redo_description = GLADE_COMMAND (redo_item->data)->description;
+		undo = glade_command_next_undo_item (project);
+		redo = glade_command_next_redo_item (project);
 	}
 
-	glade_project_window_change_menu_label (gpw, "/MenuBar/EditMenu/Undo", _("_Undo: "), undo_description);
-	glade_project_window_change_menu_label (gpw, "/MenuBar/EditMenu/Redo", _("_Redo: "), redo_description);
+	/* Change label in menu */
+	glade_project_window_change_menu_label
+		(gpw, "/MenuBar/EditMenu/Undo", _("_Undo: "), undo ? undo->description : " ");
 
-	gtk_widget_set_sensitive (gpw->priv->toolbar_undo, undo_description != NULL);
-	gtk_widget_set_sensitive (gpw->priv->toolbar_redo, redo_description != NULL);
+	glade_project_window_change_menu_label
+		(gpw, "/MenuBar/EditMenu/Redo", _("_Redo: "), redo ? redo->description : " ");
+
+	
+	/* Change tooltips on the toolbar */
+	desc = g_strdup_printf (_("Undo: %s"), undo ? undo->description : _("the last action"));
+	action = gtk_ui_manager_get_action (gpw->priv->ui, "/ToolBar/Undo");
+	g_object_set (G_OBJECT (action), "tooltip", desc, NULL);
+	g_free (desc);
+
+	desc = g_strdup_printf (_("Redo: %s"), redo ? redo->description : _("the last action"));
+	action = gtk_ui_manager_get_action (gpw->priv->ui, "/ToolBar/Redo");
+	g_object_set (G_OBJECT (action), "tooltip", desc, NULL);
+	g_free (desc);
+
+	/* Set sensitivity on the toolbar */
+	gtk_widget_set_sensitive (gpw->priv->toolbar_undo, undo != NULL);
+	gtk_widget_set_sensitive (gpw->priv->toolbar_redo, redo != NULL);
+
 }
 
 static void
