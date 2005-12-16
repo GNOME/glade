@@ -1,3 +1,10 @@
+2005-12-16  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.[ch]: Implemented command grouping and
+	  nested command grouping.
+	  Added glade_command_next_undo_item, glade_command_next_redo_item,
+	  glade_command_push_group and glade_command_pop_group.
+
 2005-12-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget-class.c: Made some code simplifications and

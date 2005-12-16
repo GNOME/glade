@@ -50,7 +50,20 @@ typedef struct {
 	GList            *pack_props;
 } CommandData;
 
-static GObjectClass* parent_class = NULL;
+static GObjectClass *parent_class = NULL;
+
+/* Group description used for the current group
+ */
+static gchar        *gc_group_description = NULL;
+
+/* Use an id to avoid grouping together consecutive groups
+ */
+static gint          gc_group_id          = 1;
+
+/* Groups can be grouped together, push/pop must balance (duh!)
+ */
+static gint          gc_group_depth       = 0;
+
 
 #define MAKE_TYPE(func, type, parent)			\
 GType							\
@@ -154,6 +167,51 @@ static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 
 /**************************************************/
 
+
+GladeCommand *
+glade_command_next_undo_item (GladeProject *project)
+{
+	GList *l;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	if ((l = project->prev_redo_item) == NULL)
+		return NULL;
+
+	return GLADE_COMMAND (l->data);
+}
+
+GladeCommand *
+glade_command_next_redo_item (GladeProject *project)
+{
+	GList *l;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	if ((l = project->prev_redo_item) == NULL)
+		return project->undo_stack ? 
+			GLADE_COMMAND (project->undo_stack->data) : NULL;
+	else
+		return l->next ? GLADE_COMMAND (l->next->data) : NULL;
+}
+
+static void
+glade_command_walk_back (GladeProject *project)
+{
+	if (project->prev_redo_item)
+		project->prev_redo_item = project->prev_redo_item->prev;
+}
+
+static void
+glade_command_walk_forward (GladeProject *project)
+{
+	if (project->prev_redo_item)
+		project->prev_redo_item = project->prev_redo_item->next;
+	else
+		project->prev_redo_item = project->undo_stack;
+}
+
+
 /**
  * glade_command_undo:
  * @project: a #GladeProject
@@ -163,26 +221,21 @@ static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 void
 glade_command_undo (GladeProject *project)
 {
-	GList* undo_stack;
-	GList* prev_redo_item;
-	GladeCommand* cmd;
-	GladeCommandClass* class;
+	GladeCommand *cmd, *next_cmd;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
-	undo_stack = project->undo_stack;
-	if (undo_stack == NULL)
-		return;
 
-	prev_redo_item = project->prev_redo_item;
-	if (prev_redo_item == NULL)
-		return;
+	while ((cmd = glade_command_next_undo_item (project)) != NULL)
+	{
+		GLADE_COMMAND_GET_CLASS (cmd)->undo_cmd (cmd);
 
-	cmd = GLADE_COMMAND (prev_redo_item->data);
-	class = GLADE_COMMAND_GET_CLASS (cmd);
-	class->undo_cmd (cmd);
+		glade_command_walk_back (project);
 
-	project->prev_redo_item = prev_redo_item->prev;
+		if ((next_cmd = glade_command_next_undo_item (project)) != NULL &&
+		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+			break;
+	}
 }
 
 /**
@@ -194,34 +247,72 @@ glade_command_undo (GladeProject *project)
 void
 glade_command_redo (GladeProject *project)
 {
-	GList* prev_redo_item;
-	GladeCommand* cmd;
-	GladeCommandClass* class;
+	GladeCommand *cmd, *next_cmd;
 	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
-	if (project->undo_stack == NULL)
-		return;
 
-	prev_redo_item = project->prev_redo_item;
-	if (prev_redo_item == NULL)
+	while ((cmd = glade_command_next_redo_item (project)) != NULL)
 	{
-		cmd = GLADE_COMMAND (project->undo_stack->data);
+		GLADE_COMMAND_GET_CLASS (cmd)->execute_cmd (cmd);
+
+		glade_command_walk_forward (project);
+
+		if ((next_cmd = glade_command_next_redo_item (project)) != NULL &&
+		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+			break;
 	}
-	else
+}
+
+/**
+ * glade_command_push_group:
+ * @description: The collective desctiption of the command group.
+ *               only the description of the first group on the 
+ *               stack is used when embedding groups.
+ *
+ * Marks the begining of a group.
+ *
+ */
+void
+glade_command_push_group (const gchar *description)
+{
+	g_return_if_fail (description);
+
+	/* Only use the description for the first group.
+	 */
+	if (gc_group_depth++ == 0)
+		gc_group_description = g_strdup (description);
+}
+
+/**
+ * glade_command_pop_group:
+ *
+ * Mark the end of a command group.
+ */
+void
+glade_command_pop_group (void)
+{
+	if (gc_group_depth-- == 1)
 	{
-		if (prev_redo_item->next == NULL)
-			return;
-		
-		cmd = GLADE_COMMAND (g_list_next (prev_redo_item)->data);
+		gc_group_description = (g_free (gc_group_description), NULL);
+		gc_group_id++;
 	}
 
-	g_assert (cmd != NULL);
+	if (gc_group_depth < 0)
+		g_critical ("Unbalanced group stack detected in %s\n",
+			    G_GNUC_PRETTY_FUNCTION);
+}
 
-	class = GLADE_COMMAND_GET_CLASS (cmd);
-	class->execute_cmd (cmd);
-
-	project->prev_redo_item = prev_redo_item ? prev_redo_item->next : project->undo_stack;
+static void
+glade_command_check_group (GladeCommand *cmd)
+{
+	g_return_if_fail (GLADE_IS_COMMAND (cmd));
+	if (gc_group_description)
+	{
+		cmd->description = 
+			(g_free (cmd->description), g_strdup (gc_group_description));
+		cmd->group_id = gc_group_id;
+	}
 }
 
 static void
@@ -468,7 +559,8 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 
 	me->sdata        = props;
 	cmd->description = glade_command_set_property_description (me);
-	g_assert (cmd->description);
+
+	glade_command_check_group (GLADE_COMMAND (me));
 
 	/* Push onto undo stack only if it executes successfully. */
 	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
@@ -653,8 +745,8 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	me->old_name = g_strdup (widget->name);
 
 	cmd->description = g_strdup_printf (_("Renaming %s to %s"), me->old_name, me->name);
-	if (!cmd->description)
-		return;
+
+	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_set_name_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
@@ -924,6 +1016,9 @@ glade_command_delete (GList *widgets)
 			g_strdup_printf (_("Delete multiple"));
 
 	g_assert (widget);
+
+	glade_command_check_group (GLADE_COMMAND (me));
+
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo (GLADE_PROJECT (widget->project), 
 					 GLADE_COMMAND (me));
@@ -988,6 +1083,8 @@ glade_command_create (GladeWidgetClass *class,
 	GLADE_COMMAND (me)->description  =
 		g_strdup_printf (_("Create %s"), 
 				 cdata->widget->name);
+
+	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo (project, GLADE_COMMAND (me));
@@ -1452,6 +1549,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	else
 		me->initial_paste = FALSE;
 
+	glade_command_check_group (GLADE_COMMAND (me));
+
 	/*
 	 * Push it onto the undo stack only on success
 	 */
@@ -1625,6 +1724,8 @@ glade_command_add_remove_change_signal (GladeWidget       *glade_widget,
 				 _("Change signal handler %s"), 
 				 signal->handler);
 	
+	glade_command_check_group (GLADE_COMMAND (me));
+
 	if (glade_command_add_signal_execute (cmd))
 		glade_command_push_undo (GLADE_PROJECT (glade_widget->project), cmd);
 	else

@@ -36,6 +36,11 @@ struct _GladeCommand
 	gchar *description; /* a string describing the command.
 			     * It's used in the undo/redo menu entry.
 			     */
+
+	gint   group_id;    /* If this is part of a command group, this is
+			     * the group id (id is needed only to ensure that
+			     * consecutive groups dont get merged).
+			     */
 };
 
 struct _GladeCommandClass
@@ -49,38 +54,44 @@ struct _GladeCommandClass
 };
 
 
-LIBGLADEUI_API GType        glade_command_get_type      (void);
+LIBGLADEUI_API GType          glade_command_get_type      (void);
 
-LIBGLADEUI_API void         glade_command_undo          (GladeProject      *project);
-LIBGLADEUI_API void         glade_command_redo          (GladeProject      *project);
+LIBGLADEUI_API void           glade_command_undo          (GladeProject      *project);
+LIBGLADEUI_API void           glade_command_redo          (GladeProject      *project);
 
-LIBGLADEUI_API void         glade_command_set_property  (GladeProperty     *property,     const GValue *value);
-LIBGLADEUI_API void         glade_command_set_properties(GladeProperty     *property, 
-							 const GValue      *old_value, 
-							 const GValue      *new_value, ...);
+LIBGLADEUI_API GladeCommand  *glade_command_next_undo_item (GladeProject *project);
+LIBGLADEUI_API GladeCommand  *glade_command_next_redo_item (GladeProject *project);
 
-LIBGLADEUI_API void         glade_command_set_properties_list (GladeProject *project, 
-							       GList        *props); // list of GCSetPropData
+LIBGLADEUI_API void           glade_command_push_group    (const gchar       *description);
+LIBGLADEUI_API void           glade_command_pop_group     (void);
 
-LIBGLADEUI_API void         glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
+LIBGLADEUI_API void           glade_command_set_property  (GladeProperty     *property,     const GValue *value);
+LIBGLADEUI_API void           glade_command_set_properties(GladeProperty     *property, 
+							   const GValue      *old_value, 
+							   const GValue      *new_value, ...);
 
-LIBGLADEUI_API void         glade_command_delete        (GList             *widgets);
-LIBGLADEUI_API GladeWidget *glade_command_create        (GladeWidgetClass  *widget_class,
-							 GladeWidget       *parent,
-							 GladePlaceholder  *placeholder,
-							 GladeProject      *project);
+LIBGLADEUI_API void           glade_command_set_properties_list (GladeProject *project, 
+								 GList        *props); // list of GCSetPropData
 
-LIBGLADEUI_API void         glade_command_cut           (GList             *widgets);
-LIBGLADEUI_API void         glade_command_copy          (GList             *widgets);
-LIBGLADEUI_API void         glade_command_paste         (GList             *widgets,
-							 GladeWidget       *parent,
-							 GladePlaceholder  *placeholder);
+LIBGLADEUI_API void           glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 
-LIBGLADEUI_API void         glade_command_add_signal    (GladeWidget       *glade_widget, const GladeSignal *signal);
-LIBGLADEUI_API void         glade_command_remove_signal (GladeWidget       *glade_widget, const GladeSignal *signal);
-LIBGLADEUI_API void         glade_command_change_signal (GladeWidget       *glade_widget, 
-							 const GladeSignal *old, 
-							 const GladeSignal *new);
+LIBGLADEUI_API void           glade_command_delete        (GList             *widgets);
+LIBGLADEUI_API GladeWidget   *glade_command_create        (GladeWidgetClass  *widget_class,
+							   GladeWidget       *parent,
+							   GladePlaceholder  *placeholder,
+							   GladeProject      *project);
+
+LIBGLADEUI_API void           glade_command_cut           (GList             *widgets);
+LIBGLADEUI_API void           glade_command_copy          (GList             *widgets);
+LIBGLADEUI_API void           glade_command_paste         (GList             *widgets,
+							   GladeWidget       *parent,
+							   GladePlaceholder  *placeholder);
+
+LIBGLADEUI_API void           glade_command_add_signal    (GladeWidget       *glade_widget, const GladeSignal *signal);
+LIBGLADEUI_API void           glade_command_remove_signal (GladeWidget       *glade_widget, const GladeSignal *signal);
+LIBGLADEUI_API void           glade_command_change_signal (GladeWidget       *glade_widget, 
+							   const GladeSignal *old, 
+							   const GladeSignal *new);
 
 
 G_END_DECLS
