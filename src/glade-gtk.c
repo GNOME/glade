@@ -1763,34 +1763,6 @@ glade_gtk_list_item_get_label (GObject *object, GValue *value)
 	g_value_set_string (value, gtk_label_get_text (GTK_LABEL (label)));
 }
 
-
-void GLADEGTK_API
-glade_gtk_radio_button_get_group (GObject *object, GValue *value)
-{
-	GtkRadioButton *button = GTK_RADIO_BUTTON (object);
-	GSList *group;
-	const char *name;
-
-	group = gtk_radio_button_get_group (button);
-	name = group
-		? gtk_widget_get_name (group->data)
-		: NULL;
-
-	g_value_reset (value);
-	g_value_set_string (value, name);
-}
-
-void GLADEGTK_API
-glade_gtk_radio_button_set_group (GObject *object, GValue *value)
-{
-	/*
-	GtkRadioButton *button = GTK_RADIO_BUTTON (object);
-	const char *name = g_value_get_string (value);
-
-	FIXME: now what?
-	*/
-}
-
 void GLADEGTK_API
 glade_gtk_box_add_child (GObject *object, GObject *child)
 {

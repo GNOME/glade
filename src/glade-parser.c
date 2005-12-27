@@ -31,6 +31,7 @@
 #include <libxml/parser.h>
 
 #include "glade-parser.h"
+#include "glade.h"
 
 #define GLADE_NOTE(a,b)
 
@@ -114,38 +115,6 @@ struct _GladeParseState {
     GArray *relations;
     GArray *accels;
 };
-
-static gchar *
-alloc_string(GladeInterface *interface, const gchar *string)
-{
-    gchar *s;
-
-    s = g_hash_table_lookup(interface->strings, string);
-    if (!s) {
-	s = g_strdup(string);
-	g_hash_table_insert(interface->strings, s, s);
-    }
-    return s;
-}
-
-static gchar *
-alloc_propname(GladeInterface *interface, const gchar *string)
-{
-    static GString *norm_str;
-    gint i;
-
-    if (!norm_str)
-	norm_str = g_string_new_len(NULL, 64);
-
-    /* assign the string to norm_str */
-    g_string_assign(norm_str, string);
-    /* convert all dashes to underscores */
-    for (i = 0; i < norm_str->len; i++)
-	if (norm_str->str[i] == '-')
-	    norm_str->str[i] = '_';
-
-    return alloc_string(interface, norm_str->str);
-}
 
 static GladeWidgetInfo *
 create_widget_info(GladeInterface *interface, const xmlChar **attrs)
@@ -1500,8 +1469,29 @@ glade_interface_dump_full(GladeInterface *interface, const gchar *filename, GErr
 void
 glade_interface_dump(GladeInterface *interface, const gchar *filename)
 {
-    glade_interface_dump_full(interface, filename, NULL);
+	glade_interface_dump_full(interface, filename, NULL);
 }
+
+
+G_CONST_RETURN gchar *
+glade_parser_pvalue_from_winfo (GladeWidgetInfo *winfo,
+				const gchar     *pname)
+{
+	gchar *dup_name = g_strdup (pname);
+	gint i;
+
+	/* Make '_' & '-' synonymous here for convenience.
+	 */
+	glade_util_replace (dup_name, '-', '_');
+	for (i = 0; i < winfo->n_properties; i++)
+	{
+		if (!strcmp (pname, winfo->properties[i].name) ||
+		    !strcmp (dup_name, winfo->properties[i].name))
+			return winfo->properties[i].value;
+	}
+	return NULL;
+}
+
 
 #if 0
 int

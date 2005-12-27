@@ -108,6 +108,14 @@ glade_property_default_impl (GladeProperty *property)
 				    property->class->def);
 }
 
+gboolean
+glade_property_equals_value_impl (GladeProperty *property,
+				  const GValue  *value)
+{
+	return !g_param_values_cmp (property->class->pspec,
+				    property->value, value);
+}
+
 /**
  * Generic set function for properties that do not have a
  * custom set_property method. This includes packing properties.
@@ -450,6 +458,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->dup                   = glade_property_dup_impl;
 	prop_class->reset                 = glade_property_reset_impl;
 	prop_class->def                   = glade_property_default_impl;
+	prop_class->equals_value          = glade_property_equals_value_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
 	prop_class->get_value             = glade_property_get_value_impl;
 	prop_class->get_default           = glade_property_get_default_impl;
@@ -552,12 +561,13 @@ glade_property_get_type (void)
  *******************************************************************************/
 /**
  * glade_property_new:
- * @class:
- * @widget:
+ * @class: A #GladeWidgetClass
+ * @widget: A #GladeWidget
+ * @value: A #GValue
  *
- * TODO: write me
  *
- * Returns:
+ * Returns: A newly created #GladeProperty based on the
+ *          given criteria
  */
 GladeProperty *
 glade_property_new (GladePropertyClass *class, 
@@ -596,12 +606,10 @@ glade_property_new (GladePropertyClass *class,
 
 /**
  * glade_property_dup:
- * @template:
- * @widget:
+ * @template: A #GladeProperty
+ * @widget: A #GladeWidget
  *
- * TODO: write me
- *
- * Returns:
+ * Returns: A newly duplicated property based on the new widget
  */
 GladeProperty *
 glade_property_dup (GladeProperty *template, GladeWidget *widget)
@@ -612,9 +620,9 @@ glade_property_dup (GladeProperty *template, GladeWidget *widget)
 
 /**
  * glade_property_reset:
- * @property:
+ * @property: A #GladeProperty
  *
- * TODO: write me
+ * Resets this property to its default value
  */
 void
 glade_property_reset (GladeProperty *property)
@@ -624,10 +632,10 @@ glade_property_reset (GladeProperty *property)
 }
 
 /**
- * glade_property_reset:
- * @property:
+ * glade_property_default:
+ * @property: A #GladeProperty
  *
- * TODO: write me
+ * Returns: Whether this property is at its default value
  */
 gboolean
 glade_property_default (GladeProperty *property)
@@ -637,11 +645,72 @@ glade_property_default (GladeProperty *property)
 }
 
 /**
+ * glade_property_equals_value:
+ * @property: a #GladeProperty
+ * @value: a #GValue
+ *
+ * Returns: Whether this property is equal to the value provided
+ */
+gboolean
+glade_property_equals_value (GladeProperty      *property, 
+			     GValue             *value)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
+}
+
+/**
+ * glade_property_equals_va_list:
+ * @property: a #GladeProperty
+ * @vl: a va_list
+ *
+ * Returns: Whether this property is equal to the value provided
+ */
+gboolean
+glade_property_equals_va_list (GladeProperty *property, va_list vl)
+{
+	GValue   *value;
+	gboolean  ret;
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+
+	value = glade_property_class_make_gvalue_from_vl (property->class, vl);
+
+	ret = GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);
+	
+	g_value_unset (value);
+	g_free (value);
+	return ret;
+}
+
+/**
+ * glade_property_equals:
+ * @property: a #GladeProperty
+ * @...: a provided property value
+ *
+ * Returns: Whether this property is equal to the value provided
+ */
+gboolean
+glade_property_equals (GladeProperty *property, ...)
+{
+	va_list  vl;
+	gboolean ret;
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+
+	va_start (vl, property);
+	ret = glade_property_equals_va_list (property, vl);
+	va_end (vl);
+
+	return ret;
+}
+
+/**
  * glade_property_set_value:
  * @property: a #GladeProperty
  * @value: a #GValue
  *
- * TODO: write me
+ * Sets the property's value
  */
 void
 glade_property_set_value (GladeProperty *property, const GValue *value)
@@ -656,7 +725,7 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
  * @property: a #GladeProperty
  * @va_list: a va_list with value to set
  *
- * TODO: write me
+ * Sets the property's value
  */
 void
 glade_property_set_va_list (GladeProperty *property, va_list vl)
@@ -665,44 +734,7 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
-	value = g_new0 (GValue, 1);
-	g_value_init (value, property->class->pspec->value_type);
-	
-	if (G_IS_PARAM_SPEC_ENUM(property->class->pspec))
-		g_value_set_enum (value, va_arg (vl, gint));
-	else if (G_IS_PARAM_SPEC_FLAGS(property->class->pspec))
-		g_value_set_flags (value, va_arg (vl, gint));
-	else if (G_IS_PARAM_SPEC_INT(property->class->pspec))
-		g_value_set_int (value, va_arg (vl, gint));
-	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
-		g_value_set_uint (value, va_arg (vl, guint));
-	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
-		g_value_set_long (value, va_arg (vl, glong));
-	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
-		g_value_set_ulong (value, va_arg (vl, gulong));
-	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
-		g_value_set_int64 (value, va_arg (vl, gint64));
-	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
-		g_value_set_uint64 (value, va_arg (vl, guint64));
-	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
-		g_value_set_float (value, (gfloat)va_arg (vl, gdouble));
-	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
-		g_value_set_double (value, va_arg (vl, gdouble));
-	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
-		g_value_set_string (value, va_arg (vl, gchar *));
-	else if (G_IS_PARAM_SPEC_CHAR(property->class->pspec))
-		g_value_set_char (value, (gchar)va_arg (vl, gint));
-	else if (G_IS_PARAM_SPEC_UCHAR(property->class->pspec))
-		g_value_set_uchar (value, (guchar)va_arg (vl, guint));
-	else if (G_IS_PARAM_SPEC_UNICHAR(property->class->pspec))
-		g_value_set_uint (value, va_arg (vl, gunichar));
-	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
-		g_value_set_boolean (value, va_arg (vl, gboolean));
-	else if (G_IS_PARAM_SPEC_OBJECT(property->class->pspec))
-		g_value_set_object (value, va_arg (vl, gpointer));
-	else
-		g_critical ("Unsupported pspec type %s",
-			    g_type_name(property->class->pspec->value_type));
+	value = glade_property_class_make_gvalue_from_vl (property->class, vl);
 
 	GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
 	
@@ -715,7 +747,7 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
  * @property: a #GladeProperty
  * @...: the value to set
  *
- * TODO: write me
+ * Sets the property's value (in a convenient way)
  */
 void
 glade_property_set (GladeProperty *property, ...)
@@ -734,7 +766,7 @@ glade_property_set (GladeProperty *property, ...)
  * @property: a #GladeProperty
  * @value: a #GValue
  *
- * TODO: write me
+ * Retrieve the property value
  */
 void
 glade_property_get_value (GladeProperty *property, GValue *value)
@@ -749,7 +781,7 @@ glade_property_get_value (GladeProperty *property, GValue *value)
  * @property: a #GladeProperty
  * @value: a #GValue
  *
- * TODO: write me
+ * Retrieve the default property value
  */
 void
 glade_property_get_default (GladeProperty *property, GValue *value)
@@ -762,69 +794,23 @@ glade_property_get_default (GladeProperty *property, GValue *value)
 /**
  * glade_property_get_va_list:
  * @property: a #GladeProperty
- * @value: a #GValue
+ * @vl: a va_list
  *
- * TODO: write me
+ * Retrieve the property value
  */
 void
 glade_property_get_va_list (GladeProperty *property, va_list vl)
 {
-	GValue  *value;
-
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-	value = g_new0 (GValue, 1);
-	GLADE_PROPERTY_GET_KLASS (property)->get_value (property, value);
-
-	/* The argument is a pointer of the specified type, cast the pointer and assign
-	 * the value using the proper g_value_get_ variation.
-	 */
-	if (G_IS_PARAM_SPEC_ENUM(property->class->pspec))
-		*(gint *)(va_arg (vl, gint *)) = g_value_get_enum (property->value);
-	else if (G_IS_PARAM_SPEC_FLAGS(property->class->pspec))
-		*(gint *)(va_arg (vl, gint *)) = g_value_get_flags (property->value);
-	else if (G_IS_PARAM_SPEC_INT(property->class->pspec))
-		*(gint *)(va_arg (vl, gint *)) = g_value_get_int (property->value);
-	else if (G_IS_PARAM_SPEC_UINT(property->class->pspec))
-		*(guint *)(va_arg (vl, guint *)) = g_value_get_uint (property->value);
-	else if (G_IS_PARAM_SPEC_LONG(property->class->pspec))
-		*(glong *)(va_arg (vl, glong *)) = g_value_get_long (property->value);
-	else if (G_IS_PARAM_SPEC_ULONG(property->class->pspec))
-		*(gulong *)(va_arg (vl, gulong *)) = g_value_get_ulong (property->value);
-	else if (G_IS_PARAM_SPEC_INT64(property->class->pspec))
-		*(gint64 *)(va_arg (vl, gint64 *)) = g_value_get_int64 (property->value);
-	else if (G_IS_PARAM_SPEC_UINT64(property->class->pspec))
-		*(guint64 *)(va_arg (vl, guint64 *)) = g_value_get_uint64 (property->value);
-	else if (G_IS_PARAM_SPEC_FLOAT(property->class->pspec))
-		*(gfloat *)(va_arg (vl, gdouble *)) = g_value_get_float (property->value);
-	else if (G_IS_PARAM_SPEC_DOUBLE(property->class->pspec))
-		*(gdouble *)(va_arg (vl, gdouble *)) = g_value_get_double (property->value);
-	else if (G_IS_PARAM_SPEC_STRING(property->class->pspec))
-		*(gchar **)(va_arg (vl, gchar *)) = (gchar *)g_value_get_string (property->value);
-	else if (G_IS_PARAM_SPEC_CHAR(property->class->pspec))
-		*(gchar *)(va_arg (vl, gint *)) = g_value_get_char (property->value);
-	else if (G_IS_PARAM_SPEC_UCHAR(property->class->pspec))
-		*(guchar *)(va_arg (vl, guint *)) = g_value_get_uchar (property->value);
-	else if (G_IS_PARAM_SPEC_UNICHAR(property->class->pspec))
-		*(guint *)(va_arg (vl, gunichar *)) = g_value_get_uint (property->value);
-	else if (G_IS_PARAM_SPEC_BOOLEAN(property->class->pspec))
-		*(gboolean *)(va_arg (vl, gboolean *)) = g_value_get_boolean (property->value);
-	else if (G_IS_PARAM_SPEC_OBJECT(property->class->pspec))
-		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_object (property->value);
-	else
-		g_critical ("Unsupported pspec type %s",
-			    g_type_name(property->class->pspec->value_type));
-
-	g_value_unset (value);
-	g_free (value);
+	glade_property_class_set_vl_from_gvalue (property->class, property->value, vl);
 }
 
 /**
  * glade_property_get:
  * @property: a #GladeProperty
- * @value: a #GValue
+ * @...: An address to store the value
  *
- * TODO: write me
+ * Retrieve the property value
  */
 void
 glade_property_get (GladeProperty *property, ...)
@@ -842,7 +828,7 @@ glade_property_get (GladeProperty *property, ...)
  * glade_property_sync:
  * @property: a #GladeProperty
  *
- * TODO: write me
+ * Synchronize the object with this property
  */
 void
 glade_property_sync (GladeProperty *property)
@@ -857,9 +843,7 @@ glade_property_sync (GladeProperty *property)
  * @interface: a #GladeInterface
  * @props: a GArray of #GladePropInfo
  *
- * TODO: write me
- *
- * Returns:
+ * Write this property to the GladeInterface metadata
  */
 gboolean
 glade_property_write (GladeProperty *property, GladeInterface *interface, GArray *props)

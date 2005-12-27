@@ -359,15 +359,25 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 					  GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
+		GObject *object = g_value_get_object (value);
+
 		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
 		{
-			GObject *pixbuf = g_value_get_object (value);
 			gchar *filename;
 
-			if (pixbuf)
+			if (object && (filename = g_object_get_data
+				       (object, "GladeFileName")) != NULL)
+				string = g_strdup (filename);
+		}
+		else
+		{
+			GladeWidget *gwidget;
+			if (object)
 			{
-				filename = g_object_get_data (pixbuf, "GladeFileName");
-				if (filename) string = g_strdup (filename);
+				if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
+					string = g_strdup (gwidget->name);
+				else
+					g_critical ("Object type property refers to an object outside the project");
 			}
 		}
 	}
@@ -462,9 +472,6 @@ glade_property_class_make_flags_from_string (GType type, const char *string)
 }
 
 /* This is copied exactly from libglade. I've just renamed the function.
- *
- * TODO: Expose function from libglade and use the one in libglade (once
- * Ivan Wongs libglade patch gets in...).
  */
 static gint
 glade_property_class_make_enum_from_string (GType type, const char *string)
@@ -574,10 +581,12 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	}
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
-		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && string)
+		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
 		{
-			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (string, NULL);
-			if (pixbuf)
+			GdkPixbuf *pixbuf;
+
+			if (string != NULL && 
+			    (pixbuf = gdk_pixbuf_new_from_file (string, NULL)) != NULL)
 			{
 				g_object_set_data_full (G_OBJECT(pixbuf), 
 							"GladeFileName",
@@ -586,6 +595,16 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 				g_value_take_object (value, G_OBJECT(pixbuf));
 			}
 		}
+		else
+		{
+			GladeWidget *gwidget;
+			if (glade_default_app_get_active_project () && string &&
+			    (gwidget = glade_project_get_widget_by_name 
+			     (glade_default_app_get_active_project (), string)) != NULL)
+				g_value_set_object (value, gwidget->object);
+			else
+				g_value_set_object (value, NULL);
+		}
 	}
 	else
 		g_critical ("Unsupported pspec type %s",
@@ -593,6 +612,111 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 
 	return value;
 }
+
+GValue *
+glade_property_class_make_gvalue_from_vl (GladePropertyClass  *class,
+					  va_list              vl)
+{
+	GValue   *value;
+	gpointer  ptr;
+
+	g_return_val_if_fail (class != NULL, NULL);
+
+	value = g_new0 (GValue, 1);
+	g_value_init (value, class->pspec->value_type);
+	
+	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
+		g_value_set_enum (value, va_arg (vl, gint));
+	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
+		g_value_set_flags (value, va_arg (vl, gint));
+	else if (G_IS_PARAM_SPEC_INT(class->pspec))
+		g_value_set_int (value, va_arg (vl, gint));
+	else if (G_IS_PARAM_SPEC_UINT(class->pspec))
+		g_value_set_uint (value, va_arg (vl, guint));
+	else if (G_IS_PARAM_SPEC_LONG(class->pspec))
+		g_value_set_long (value, va_arg (vl, glong));
+	else if (G_IS_PARAM_SPEC_ULONG(class->pspec))
+		g_value_set_ulong (value, va_arg (vl, gulong));
+	else if (G_IS_PARAM_SPEC_INT64(class->pspec))
+		g_value_set_int64 (value, va_arg (vl, gint64));
+	else if (G_IS_PARAM_SPEC_UINT64(class->pspec))
+		g_value_set_uint64 (value, va_arg (vl, guint64));
+	else if (G_IS_PARAM_SPEC_FLOAT(class->pspec))
+		g_value_set_float (value, (gfloat)va_arg (vl, gdouble));
+	else if (G_IS_PARAM_SPEC_DOUBLE(class->pspec))
+		g_value_set_double (value, va_arg (vl, gdouble));
+	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
+		g_value_set_string (value, va_arg (vl, gchar *));
+	else if (G_IS_PARAM_SPEC_CHAR(class->pspec))
+		g_value_set_char (value, (gchar)va_arg (vl, gint));
+	else if (G_IS_PARAM_SPEC_UCHAR(class->pspec))
+		g_value_set_uchar (value, (guchar)va_arg (vl, guint));
+	else if (G_IS_PARAM_SPEC_UNICHAR(class->pspec))
+		g_value_set_uint (value, va_arg (vl, gunichar));
+	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
+		g_value_set_boolean (value, va_arg (vl, gboolean));
+	else if (G_IS_PARAM_SPEC_OBJECT(class->pspec))
+		g_value_set_object (value, va_arg (vl, gpointer));
+	else if (G_IS_PARAM_SPEC_BOXED(class->pspec))
+		g_value_set_boxed (value, va_arg (vl, gpointer));
+	else
+		g_critical ("Unsupported pspec type %s",
+			    g_type_name(class->pspec->value_type));
+	
+	return value;
+}
+
+
+void
+glade_property_class_set_vl_from_gvalue (GladePropertyClass  *class,
+					 GValue              *value,
+					 va_list              vl)
+{
+	g_return_if_fail (class != NULL);
+	g_return_if_fail (value != NULL);
+
+	/* The argument is a pointer of the specified type, cast the pointer and assign
+	 * the value using the proper g_value_get_ variation.
+	 */
+	if (G_IS_PARAM_SPEC_ENUM(class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_enum (value);
+	else if (G_IS_PARAM_SPEC_FLAGS(class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_flags (value);
+	else if (G_IS_PARAM_SPEC_INT(class->pspec))
+		*(gint *)(va_arg (vl, gint *)) = g_value_get_int (value);
+	else if (G_IS_PARAM_SPEC_UINT(class->pspec))
+		*(guint *)(va_arg (vl, guint *)) = g_value_get_uint (value);
+	else if (G_IS_PARAM_SPEC_LONG(class->pspec))
+		*(glong *)(va_arg (vl, glong *)) = g_value_get_long (value);
+	else if (G_IS_PARAM_SPEC_ULONG(class->pspec))
+		*(gulong *)(va_arg (vl, gulong *)) = g_value_get_ulong (value);
+	else if (G_IS_PARAM_SPEC_INT64(class->pspec))
+		*(gint64 *)(va_arg (vl, gint64 *)) = g_value_get_int64 (value);
+	else if (G_IS_PARAM_SPEC_UINT64(class->pspec))
+		*(guint64 *)(va_arg (vl, guint64 *)) = g_value_get_uint64 (value);
+	else if (G_IS_PARAM_SPEC_FLOAT(class->pspec))
+		*(gfloat *)(va_arg (vl, gdouble *)) = g_value_get_float (value);
+	else if (G_IS_PARAM_SPEC_DOUBLE(class->pspec))
+		*(gdouble *)(va_arg (vl, gdouble *)) = g_value_get_double (value);
+	else if (G_IS_PARAM_SPEC_STRING(class->pspec))
+		*(gchar **)(va_arg (vl, gchar *)) = (gchar *)g_value_get_string (value);
+	else if (G_IS_PARAM_SPEC_CHAR(class->pspec))
+		*(gchar *)(va_arg (vl, gint *)) = g_value_get_char (value);
+	else if (G_IS_PARAM_SPEC_UCHAR(class->pspec))
+		*(guchar *)(va_arg (vl, guint *)) = g_value_get_uchar (value);
+	else if (G_IS_PARAM_SPEC_UNICHAR(class->pspec))
+		*(guint *)(va_arg (vl, gunichar *)) = g_value_get_uint (value);
+	else if (G_IS_PARAM_SPEC_BOOLEAN(class->pspec))
+		*(gboolean *)(va_arg (vl, gboolean *)) = g_value_get_boolean (value);
+	else if (G_IS_PARAM_SPEC_OBJECT(class->pspec))
+		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_object (value);
+	else if (G_IS_PARAM_SPEC_BOXED(class->pspec))
+		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
+	else
+		g_critical ("Unsupported pspec type %s",
+			    g_type_name(class->pspec->value_type));
+}
+
 
 /**
  * glade_property_class_new_from_spec:
@@ -651,17 +775,35 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 
 /**
  * glade_property_class_is_visible:
- * @property_class:
+ * @property_class: A #GladePropertyClass
  *
- * TODO: write me
  *
- * Returns:
+ * Returns: whether or not to show this property in the editor
  */
 gboolean
-glade_property_class_is_visible (GladePropertyClass *property_class)
+glade_property_class_is_visible (GladePropertyClass *class)
 {
-	return property_class->visible;
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
+	return class->visible;
 }
+
+
+/**
+ * glade_property_class_is_object:
+ * @property_class: A #GladePropertyClass
+ *
+ *
+ * Returns: whether or not this is an object property 
+ * that refers to another object in this project.
+ */
+gboolean
+glade_property_class_is_object (GladePropertyClass  *class)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
+	return (G_IS_PARAM_SPEC_OBJECT(class->pspec) &&
+		class->pspec->value_type != GDK_TYPE_PIXBUF);
+}
+
 
 /**
  * glade_property_class_get_displayable_value:

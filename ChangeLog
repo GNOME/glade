@@ -1,3 +1,36 @@
+2005-12-27  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor-property.c: Added GLADE_TYPE_EPROP_OBJECT (object properties)
+
+	* src/glade-parser.[ch]:
+	  o Exported new function: glade_parser_pvalue_from_winfo()
+	  o Removed duplicate implementation of alloc_string & alloc_propname
+
+	* src/glade-project-view.c: Will display toplevel widgets which are not
+	  nescisarily GtkWidgets.
+
+	* src/glade-project.c, src/glade-widget.c: Implemented a kick-start so
+	  that object properties are loaded/looked up after the whole project
+	  is finished loading.
+	  (glade-widget.c: Added glade_widget_has_decendant)
+	
+	* src/glade-property-class.[ch]: 
+	  o Added object support to glade_property_class_make_gvalue_from_string &
+	    glade_property_class_make_string_from_gvalue
+	  o Added glade_property_class_is_object, glade_property_class_make_gvalue_from_vl &
+	    glade_property_class_set_vl_from_gvalue.
+
+	* src/glade-property.[ch]: 
+	  o Added documentation
+	  o Added glade_property_equals_value, glade_property_equals_va_list & glade_property_equals
+
+
+	* src/glade-gtk.c: Removed unneeded radio button "group" property support
+	  (handled genericly as an object property)
+
+	* widgets/gtk+.xml.in: Disabled alot of irrelevent object type properties,
+	  removed the custom "group" property on radio buttons.
+	
 2005-12-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.[ch]: Implemented command grouping and

@@ -127,10 +127,16 @@ LIBGLADEUI_API GladePropertyClass *glade_property_class_new_from_spec           
 LIBGLADEUI_API GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 LIBGLADEUI_API void                glade_property_class_free                    (GladePropertyClass  *property_class);
 LIBGLADEUI_API gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
+LIBGLADEUI_API gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class);
 LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 										 const gchar         *string);
 LIBGLADEUI_API gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 										 const GValue        *value);
+LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,
+										 va_list              vl);
+LIBGLADEUI_API void                glade_property_class_set_vl_from_gvalue      (GladePropertyClass  *class,
+										 GValue              *value,
+										 va_list              vl);
 LIBGLADEUI_API gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
 										 GModule             *module,
 										 GType                widget_type,

@@ -797,6 +797,36 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	return project;	
 }
 
+static void 
+glade_project_fix_object_props (GladeProject *project)
+{
+	GList *props, *l, *ll;
+	GladeWidget   *gwidget, *value_widget;
+	GladeProperty *property;
+	gchar         *txt;
+
+	for (l = project->objects; l; l = l->next)
+	{
+		gwidget = glade_widget_get_from_gobject (l->data);
+
+		for (ll = gwidget->properties; ll; ll = ll->next)
+		{
+			property = GLADE_PROPERTY (ll->data);
+
+			if (glade_property_class_is_object (property->class) &&
+			    (txt = g_object_get_data (G_OBJECT (property), 
+						      "glade-loaded-object")) != NULL)
+			{
+				if ((value_widget = 
+				     glade_project_get_widget_by_name (project, txt)) != NULL)
+					glade_property_set (property, value_widget->object);
+
+				g_object_set_data (G_OBJECT (property), "glade-loaded-object", NULL);
+			}
+		}
+	}
+}
+
 /**
  * glade_project_open:
  * @path:
@@ -821,6 +851,11 @@ glade_project_open (const gchar *path)
 	project = glade_project_new_from_interface (interface, path);
 	
 	glade_interface_destroy (interface);
+
+	/* Now we have to loop over all the object properties
+	 * and fix'em all ('cause they probably weren't found) XXX
+	 */
+	glade_project_fix_object_props (project);
 
 	return project;
 }

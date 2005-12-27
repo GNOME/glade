@@ -105,7 +105,6 @@ LIBGLADEUI_API GladeWidget *	       glade_widget_new			    (GladeWidget      *pa
 LIBGLADEUI_API GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *parent,
 									     GObject          *internal_object,
 									     const gchar      *internal_name);
-
 LIBGLADEUI_API void                    glade_widget_set_name		    (GladeWidget      *widget,
 									     const gchar      *name);
 LIBGLADEUI_API void                    glade_widget_set_internal	    (GladeWidget      *widget,
@@ -168,6 +167,9 @@ LIBGLADEUI_API gboolean                glade_widget_pack_property_set_enabled (G
 
 
 LIBGLADEUI_API GladeWidget            *glade_widget_retrieve_from_position (GtkWidget *base, int x, int y);
+
+LIBGLADEUI_API gboolean                glade_widget_has_decendant           (GladeWidget      *widget,
+									     GType             type);
 
 LIBGLADEUI_API void                    glade_widget_replace                (GladeWidget      *parent,
 									    GObject          *old_object,

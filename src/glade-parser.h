@@ -134,6 +134,8 @@ void            glade_interface_dump      (GladeInterface  *interface,
 gboolean        glade_interface_dump_full (GladeInterface  *interface, 
 					   const gchar     *filename,
 					   GError         **error);
+G_CONST_RETURN gchar    *glade_parser_pvalue_from_winfo (GladeWidgetInfo *winfo,
+							 const gchar     *pname);
 
 G_END_DECLS
 

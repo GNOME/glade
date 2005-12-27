@@ -2186,6 +2186,36 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 }
 
 /**
+ * glade_widget_has_decendant:
+ * @widget: a #GladeWidget
+ * @type: a  #GType
+ * 
+ * Returns: whether this GladeWidget has any decendants of type `type'
+ */
+gboolean
+glade_widget_has_decendant (GladeWidget *widget, GType type)
+{
+	GladeWidget   *child;
+	GList         *children, *l;
+	gboolean       found = FALSE;
+
+	if (g_type_is_a (widget->widget_class->type, type))
+		return TRUE;
+
+	if ((children = glade_widget_class_container_get_all_children
+	     (widget->widget_class, widget->object)) != NULL)
+	{
+		for (l = children; l; l = l->next)
+			if ((child = glade_widget_get_from_gobject (l->data)) != NULL &&
+			    (found = glade_widget_has_decendant (child, type)))
+				break;
+		g_list_free (children);
+	}	
+	return found;
+}
+
+
+/**
  * glade_widget_replace:
  * @old_object: a #GObject
  * @new_object: a #GObject
@@ -2473,6 +2503,15 @@ glade_widget_apply_property_from_prop_info (GladePropInfo *info,
 		widget->parent->widget_class :
 		widget->widget_class;
 	
+
+	if (glade_property_class_is_object (property->class))
+	{
+		/* we must synchronize this directly after loading this project.
+		 */
+		g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
+					g_strdup (info->value), g_free);
+	}
+
 	if ((gvalue = glade_widget_value_from_prop_info (info, wclass)) != NULL)
 	{
 		glade_property_set_value (property, gvalue);
@@ -2607,19 +2646,26 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 		gboolean            translatable;
 		gboolean            has_context;
 		gchar              *comment = NULL;
+		const gchar        *obj_name;
 
 		/* If there is a value in the XML, initialize property with it,
 		 * otherwise initialize property to default.
 		 */
-		value = glade_widget_get_property_from_widget_info (class,
-								    info,
-								    pclass->id,
-								    &translatable,
-								    &has_context,
-								    &comment);
+		value = glade_widget_get_property_from_widget_info 
+			(class, info, pclass->id,
+			 &translatable, &has_context, &comment);
 		
 		property          = glade_property_new (pclass, NULL, value);
 		property->enabled = value ? TRUE : property->enabled;
+
+		if (glade_property_class_is_object (pclass))
+		{
+			/* we must synchronize this directly after loading this project.
+			 */
+			obj_name = glade_parser_pvalue_from_winfo (info, pclass->id);
+			g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
+						g_strdup (obj_name), g_free);
+		}
 
 		if (value) {
 			glade_property_i18n_set_translatable (property, translatable);

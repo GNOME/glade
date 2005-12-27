@@ -70,6 +70,7 @@ struct _GladePropertyKlass
 	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
 	void                    (* reset)                 (GladeProperty *);
 	gboolean                (* def)                   (GladeProperty *);
+	gboolean                (* equals_value)          (GladeProperty *, const GValue *);
 	void                    (* set_value)             (GladeProperty *, const GValue *);
 	void                    (* get_value)             (GladeProperty *, GValue *);
 	void                    (* get_default)           (GladeProperty *, GValue *);
@@ -90,6 +91,10 @@ LIBGLADEUI_API GladeProperty          *glade_property_dup                   (Gla
 									     GladeWidget        *widget);
 LIBGLADEUI_API void                    glade_property_reset                 (GladeProperty      *property);
 LIBGLADEUI_API gboolean                glade_property_default               (GladeProperty      *property);
+LIBGLADEUI_API gboolean                glade_property_equals_value          (GladeProperty      *property, 
+									     GValue             *value);
+LIBGLADEUI_API gboolean                glade_property_equals                (GladeProperty      *property, 
+									     ...);
 LIBGLADEUI_API void                    glade_property_set_value             (GladeProperty      *property, 
 									     const GValue       *value);
 LIBGLADEUI_API void                    glade_property_set_va_list           (GladeProperty      *property,

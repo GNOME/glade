@@ -49,6 +49,8 @@
 	  </displayable-values>
 	</property>
 	<property id="name" disabled="True"/>
+	<property id="parent" disabled="True"/>
+	<property id="style" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -68,6 +70,7 @@
 	    <value id="GTK_RESIZE_IMMEDIATE" _name="Immediate"/>
 	  </displayable-values>
 	</property>
+	<property id="child" disabled="True"/>
       </properties>
     </glade-widget-class>
     
@@ -145,6 +148,7 @@
 	<property id="allow-shrink" disabled="True" />
 	<property id="allow-grow" disabled="True" />
 	<property id="resize-mode" disabled="True" />
+	<property id="screen" disabled="True" />
 	<property id="role" translatable="False"/>
 	<property id="icon-name" translatable="False"/>
 	<property id="resizable" ignore="True" />
@@ -200,6 +204,7 @@
 	  <spec>glade_standard_stock_spec</spec>
 	  <set-function>glade_gtk_image_menu_item_set_stock</set-function>
 	</property>
+	<property id="image" disabled="True" />
       </properties>
     </glade-widget-class>
 
@@ -333,12 +338,14 @@
 	    <value id="GTK_WRAP_WORD_CHAR" _name="Word Character"/>
 	  </displayable-values>
 	</property>
+	<property id="buffer" disabled="True"/>
       </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkButton" generic-name="button" _title="Button">
       <post-create-function>glade_gtk_button_post_create</post-create-function>
       <properties>
+	<property id="image" disabled="True"/>
 	<property id="use-underline" disabled="True"/>
 	<property id="label" visible="False"/>
 	<property id="use-stock" visible="False"/>
@@ -392,18 +399,13 @@
     <glade-widget-class name="GtkRadioButton" generic-name="radiobutton" _title="Radio Button">
       <properties>
 	<property id="draw-indicator" default="True"/>
-	<property id="group" _name="Group" default="True">
-	  <spec>glade_standard_string_spec</spec>
-	  <_tooltip>The radio group name for this radio button</_tooltip>
-	  <set-function>glade_gtk_radio_button_set_group</set-function>
-	  <get-function>glade_gtk_radio_button_get_group</get-function>
-	</property>
       </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">
       <properties>
 	<property id="size" disabled="True"/>
+	<property id="dialog" disabled="True"/>
         <property id="action">
   	  <displayable-values>
 	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
@@ -412,6 +414,9 @@
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
         </property>
+	<property id="extra-widget" disabled="True" />
+	<property id="preview-widget" disabled="True" />
+	<property id="filter" disabled="True" />
       </properties>
     </glade-widget-class>
 
@@ -482,7 +487,11 @@
 	  <spec>glade_gtk_image_type_spec</spec>
 	  <set-function>glade_gtk_image_set_type</set-function>
 	</property>
+	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
+	<property id="pixmap" disabled="True"/>
+	<property id="image" disabled="True"/>
+	<property id="mask" disabled="True"/>
 	<property id="pixbuf" _name="File Name" translatable="False"/>
 	<property id="glade-stock" _name="Stock Image" save="False">
 	  <tooltip>A builtin stock image</tooltip>
@@ -618,6 +627,7 @@
       <properties>
 	<property id="label" disabled="True"/>
 	<property id="shadow" disabled="True"/>
+	<property id="label-widget" disabled="True"/>
 	<property id="label-xalign" default="0.0"/>
       	<property id="shadow-type">
   	  <displayable-values>
@@ -628,7 +638,6 @@
 	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
 	  </displayable-values>
 	</property>
-
       </properties>
       <children>
 	<child>
@@ -773,6 +782,7 @@
       <post-create-function>glade_gtk_expander_post_create</post-create-function>
       <properties>
 	<property id="label" visible="False"/>
+	<property id="label-widget" disabled="True"/>
       </properties>
       <children>
 	<child>
@@ -854,6 +864,9 @@
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
 	</property>
+	<property id="extra-widget" disabled="True" />
+	<property id="preview-widget" disabled="True" />
+	<property id="filter" disabled="True" />
       </properties>
     </glade-widget-class>
     

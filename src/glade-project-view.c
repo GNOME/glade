@@ -195,7 +195,10 @@ glade_project_view_populate_model (GladeProjectView *view)
 	for (list = project->objects; list; list = list->next)
 	{
 		GObject *object = G_OBJECT (list->data);
-		if (GTK_IS_WIDGET (object) && GTK_WIDGET_TOPLEVEL (object))
+		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+		g_assert (gwidget);
+
+		if (gwidget->parent == NULL)
 			toplevels = g_list_append (toplevels, object);
 	}
 
