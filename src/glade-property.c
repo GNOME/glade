@@ -163,6 +163,27 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	changed = g_param_values_cmp (property->class->pspec, 
 				      property->value, value) != 0;
 
+
+	/* Add/Remove references from widget ref stacks here
+	 */
+	if (changed && glade_property_class_is_object (property->class))
+	{
+		GladeWidget *gold, *gnew;
+		GObject     *old_object, *new_object;
+
+		if ((old_object = g_value_get_object (property->value)) != NULL)
+		{
+			gold = glade_widget_get_from_gobject (old_object);
+			glade_widget_remove_prop_ref (gold, property);
+		}
+
+		if ((new_object = g_value_get_object (value)) != NULL)
+		{
+			gnew = glade_widget_get_from_gobject (new_object);
+			glade_widget_add_prop_ref (gnew, property);
+		}
+	}
+
 	/* Assign property first so that; if the object need be
 	 * rebuilt, it will reflect the new value
 	 */

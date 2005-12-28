@@ -2015,9 +2015,8 @@ static void
 glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 				GladeEditorProperty *eprop)
 {
-	GtkTreeSelection *selection;
 	GtkWidget     *dialog, *parent;
-	GtkWidget     *vbox, *hbox, *label, *sw, *button;
+	GtkWidget     *vbox, *label, *sw;
 	GtkWidget     *tree_view;
 	gint           res;
 
@@ -2040,7 +2039,7 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
 	/* Checklist */
-	label = gtk_label_new_with_mnemonic (_("_Objects:"));
+	label = gtk_label_new (_("Objects:"));
 	gtk_widget_show (label);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -2061,7 +2060,6 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
 
 	gtk_widget_show (tree_view);
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label), tree_view);
 	gtk_container_add (GTK_CONTAINER (sw), tree_view);
 	
 	/* Run the dialog */
@@ -2070,8 +2068,9 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	{
 		GladeWidget *selected = NULL;
 
-		gtk_tree_model_foreach (gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), 
-					glade_eprop_object_selected_widget, &selected);
+		gtk_tree_model_foreach
+			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), 
+			 (GtkTreeModelForeachFunc) glade_eprop_object_selected_widget, &selected);
 
 		if (selected)
 		{

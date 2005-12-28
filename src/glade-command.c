@@ -1451,9 +1451,19 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	widget = GLADE_WIDGET (widgets->data);
 
 	/* And now we feel safe enough to go on and create */
-	me                 = (GladeCommandCutCopyPaste *) 
+	me = (GladeCommandCutCopyPaste *) 
 		g_object_new (GLADE_COMMAND_CUT_COPY_PASTE_TYPE, NULL);
-	me->project        = glade_widget_get_project (widget);
+
+	if (type == GLADE_PASTE && placeholder)
+	{
+		GladeWidget *some_widget = glade_placeholder_get_parent (placeholder);
+		me->project = some_widget->project;
+	}
+	else if (type == GLADE_PASTE)
+		me->project = glade_default_app_get_active_project();
+	else
+		me->project = glade_widget_get_project (widget);
+
 	me->type           = type;
 	me->from_clipboard = (type == GLADE_PASTE);
 	GLADE_COMMAND (me)->description = 

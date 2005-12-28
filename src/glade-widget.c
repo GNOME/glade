@@ -258,6 +258,8 @@ glade_widget_init (GladeWidget *widget)
 	widget->object = NULL;
 	widget->properties = NULL;
 	widget->packing_properties = NULL;
+	widget->prop_refs = NULL;
+	widget->prop_refs_readonly = FALSE;
 	widget->signals = g_hash_table_new_full
 		(g_str_hash, g_str_equal,
 		 (GDestroyNotify) g_free,
@@ -308,7 +310,6 @@ glade_widget_debug (GladeWidget *widget)
 	glade_widget_debug_real (widget, 0);
 }
 
-
 static void
 glade_widget_save_coords (GladeWidget *widget)
 {
@@ -353,6 +354,48 @@ glade_widget_hide (GladeWidget *widget)
 		gtk_widget_hide (GTK_WIDGET (widget->object));
 	}
 	widget->visible = FALSE;
+}
+
+
+void
+glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	if (property && !widget->prop_refs_readonly &&
+	    !g_list_find (widget->prop_refs, property))
+		widget->prop_refs = g_list_prepend (widget->prop_refs, property);
+}
+
+void
+glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	if (!widget->prop_refs_readonly)
+		widget->prop_refs = g_list_remove (widget->prop_refs, property);
+}
+
+void
+glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
+{
+	GList         *l;
+	GladeProperty *property;
+
+	widget->prop_refs_readonly = TRUE;
+	for (l = widget->prop_refs; l && l->data; l = l->next)
+	{
+		property = GLADE_PROPERTY (l->data);
+
+		if (project != NULL && 
+		    project == property->widget->project)
+			glade_property_set (property, widget->object);
+		else
+			glade_property_set (property, NULL);
+	}
+	widget->prop_refs_readonly = FALSE;
 }
 
 static void

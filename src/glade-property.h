@@ -52,11 +52,6 @@ struct _GladeProperty
 	gboolean  i18n_has_context;
 	gchar    *i18n_comment;
 		
-#if 0
-	/* A GladeProperty of type object has a child */
-	GladeWidget *child;
-#endif
-
 	gboolean     syncing;    /* Avoid recursion while synchronizing object with value.
 				  */
 };

@@ -333,6 +333,9 @@ glade_project_add_object (GladeProject *project, GObject *object)
 	if (GTK_IS_WINDOW (object) &&
 	    (transient_parent = glade_default_app_get_transient_parent ()) != NULL)
 		gtk_window_set_transient_for (GTK_WINDOW (object), transient_parent);
+
+	/* Notify widget it was added to the project */
+	glade_widget_project_notify (gwidget, project);
 }
 
 /**
@@ -428,6 +431,9 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
+
+	/* Notify widget is being removed from the project */
+	glade_widget_project_notify (gwidget, NULL);
 	
 	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
 								   gwidget->object)) != NULL)

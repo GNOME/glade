@@ -26,7 +26,7 @@ struct _GladeWidget
 	GObject parent_instance;
 
 	GladeWidgetClass *widget_class;
-	GladeProject     *project; /* A pointer to the project that this widget belongs to. */
+	GladeProject     *project;     /* A pointer to the project that this widget belongs to. */
 
 	GladeWidget  *parent;  /* A pointer to the parent widget in the heirarchy */
 	
@@ -79,6 +79,12 @@ struct _GladeWidget
 			     */
 
 
+	gboolean   prop_refs_readonly; /* Whether this list is currently readonly */
+	GList     *prop_refs; /* List of properties in the project who's value are `this object'
+			       * (this is used to set/unset those properties when the object is
+			       * added/removed from the project).
+			       */
+
 	/* Save toplevel positions */
 	gint      save_x;
 	gint      save_y;
@@ -113,21 +119,27 @@ LIBGLADEUI_API void                    glade_widget_set_object		    (GladeWidget
 									     GObject          *new_object);
 LIBGLADEUI_API void                    glade_widget_set_project		    (GladeWidget      *widget,
 									     GladeProject     *project);
-
 LIBGLADEUI_API const gchar            *glade_widget_get_name               (GladeWidget      *widget);
 LIBGLADEUI_API const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
 LIBGLADEUI_API GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
 LIBGLADEUI_API GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
+LIBGLADEUI_API void                    glade_widget_project_notify         (GladeWidget      *widget,
+									    GladeProject     *project);
+
 LIBGLADEUI_API void                    glade_widget_show                   (GladeWidget      *widget);
 LIBGLADEUI_API void                    glade_widget_hide                   (GladeWidget      *widget);
+
+LIBGLADEUI_API void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
+									    GladeProperty    *property);
+LIBGLADEUI_API void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
+									    GladeProperty    *property);
 
 LIBGLADEUI_API GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
 									    const gchar      *id_property);
 LIBGLADEUI_API GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
 									    const gchar      *id_property);
-
 
 /* Convenience functions for plugin & application use */
 LIBGLADEUI_API gboolean                glade_widget_property_get           (GladeWidget      *widget,

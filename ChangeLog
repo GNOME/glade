@@ -1,5 +1,19 @@
 2005-12-27  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-command.c: glade_command_cut_copy_paste_common(); fixed
+	  "project" source in case of `type == GLADE_PASTE'
+
+	* src/glade-editor-property.c: Clean up compiler warnings, removed useless
+	  mnemonic label.
+
+	* src/glade-project.[ch], src/glade-property.c, src/glade-widget.[ch]:
+	  Implemented references on widgets from object properties, object properties
+	  are automaticly set to NULL when the target object is removed from its
+	  project, an undo will result in the object being re-added to the project;
+	  and its reffered properties to be reset to thier previous value.
+
+2005-12-27  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor-property.c: Added GLADE_TYPE_EPROP_OBJECT (object properties)
 
 	* src/glade-parser.[ch]:
