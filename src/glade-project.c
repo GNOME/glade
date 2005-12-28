@@ -806,7 +806,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 static void 
 glade_project_fix_object_props (GladeProject *project)
 {
-	GList *props, *l, *ll;
+	GList         *l, *ll;
 	GladeWidget   *gwidget, *value_widget;
 	GladeProperty *property;
 	gchar         *txt;

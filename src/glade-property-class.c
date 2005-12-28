@@ -618,7 +618,6 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass  *class,
 					  va_list              vl)
 {
 	GValue   *value;
-	gpointer  ptr;
 
 	g_return_val_if_fail (class != NULL, NULL);
 
