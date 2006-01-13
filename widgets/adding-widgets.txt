@@ -9,7 +9,8 @@ A widget plugin consists of a catalog file and a shared library and
 icons for the widgets to use in the widget palette & widget tree.
 
 The catalog file is written in an XML format that will be described
-below. There is also a DTD for the format which can be found in XXX.
+below. There is also a DTD for the format which can be found in the widgets
+directory of the glade-3 package.
 
 Many properties of widgets can be handled automatically by the GObject
 introspection features. Not all of them can though, and advanced widgets
@@ -98,13 +99,13 @@ To delve further into details; the complex layout looks like this:
       </children>
     </glade-widget-class>
 
-The name is the class name of the widget; this will essentially be used to instantiate
-the actual class by deriving "gtk_label_get_type" from "GtkLabel" and searching for 
-"gtk_label_get_type" in the support library.
+The name is the class name of the widget; this will essentially be used to 
+instantiate the actual class by deriving "gtk_label_get_type" from "GtkLabel" 
+and searching for  "gtk_label_get_type" in the support library.
 
 Generic name is used to get the icon name for the widget palette, and is a regular 
-icon theme icon. The generic name is also used to generate a default name for instances
-of the widget in the UI editor.
+icon theme icon. The generic name is also used to generate a default name for 
+instances of the widget in the UI editor.
 
 Title is used to display the name of the class in the palette and widget tree and
 will be translated before use in the interface.
@@ -121,18 +122,20 @@ glade_gtk_label_post_create (GObject *label, GladeCreateReason reason)
 	  *
 	  *	GLADE_CREATE_USER:    Was created at the user's request
 	  *                           (this is a good time to set any properties
-	  *                           or add children to the project; like GtkFrame's label
-	  *                           for example).
+	  *                           or add children to the project; like GtkFrame's 
+	  *                           label for example).
 	  *
-	  *	GLADE_CREATE_COPY:    Was created as a result of the copy/paste mechanism,
-	  *                           at this point you can count on glade to follow up with
-	  *                           properties and children on its own.
+	  *	GLADE_CREATE_COPY:    Was created as a result of the copy/paste 
+	  *                           mechanism, at this point you can count on glade
+	  *                           to follow up with properties and children on 
+	  *                           its own.
 	  *
 	  *	GLADE_CREATE_LOAD:    Was created during the load process.
 	  *
-	  *     GLADE_CREATE_REBUILD: Was created as a replacement for another project object;
-	  *                           this only happens when the user is changing a property that
-	  *                           is marked by the type system as G_PARAM_SPEC_CONSTRUCT_ONLY.
+	  *     GLADE_CREATE_REBUILD: Was created as a replacement for another project 
+	  *                           object; this only happens when the user is 
+	  *                           changing a property that is marked by the type 
+	  *                           system as G_PARAM_SPEC_CONSTRUCT_ONLY.
 	  */
 }
 
@@ -141,6 +144,19 @@ for this class; a good example for this is the GtkMenuBar which needs a special 
 in order to be easier to use; the prototype is as follows:
 
     void glade_gtk_label_launch_editor (GObject *label);
+
+The <get-internal-child-function> tag is a support function used to retrieve an internal
+child of a composite object (like a button in a filechooser or something); support for
+internal children must also be added to your application via libglade. The prototype is:
+
+    void get_internal_child (GObject *object, const gchar *name, GObject **child);
+
+where ofcourse `child' is the return pointer for the internal child of `object' called `name'.
+
+The <get-internal-children-function> tag is a support function used to retrieve a list of
+all internal children of a composite object; the prototype is as follows:
+
+    GList *get_internal_children (GObject *object);
 
 
 
@@ -154,23 +170,34 @@ things you can do with properties.
 `property' tag xml properties:
 
     - id:               This is manditory and specifies the property that we are modifying (or adding)
+
     - disabled:         Remove this property from this widget class and derived classes
+
     - default:          A default value to be used for this property
+
     - name:             The name to be used in the interface, this string is translated.
                         (if name is not specified; it defaults to the nickname of the GParamSpec)
+
     - translatable:     For text properties, whether the property value is translatable in glade
                         interfaces (this will enable the i18n dialog on text properties).
                         Defaults to False.
+
     - common:           If set to "True", the property will end up on the common tab even if
                         its not a property of GtkWidgetClass.
+
     - optional:         Whether this property is an optional property, this will make the property
                         insensitive and add a check box to enable it (like width/height-request for
                         example).
+
     - optional-default: If this is in fact an optional property; whether it is enabled by default.
+
     - query:            If query is set; the property will be queried from the user in a dialog
                         when adding the owning widget class instance to the project.
+
     - save:             Whether to save this property to the glade file (default "True")
+
     - visible:          Whether to show the property in the editor (default "True")
+
     - ignore:           Whether to set the property on the object instance (via g_object_set_property or
                         plugin override functions) when it changes in the editor (the value in the
                         editor is the value saved).
@@ -206,9 +233,6 @@ things you can do with properties.
                         this is used to add virtual properties to an object (like the "size" property
                         on GtkBox).
 
-
-
-
 Displayable values
 ------------------
 
@@ -225,6 +249,18 @@ child tag; the form looks like this:
 
 Note that the "name" (which will be the resulting name for each `id') is a translated
 string.
+
+Packing Defaults
+----------------
+
+A widget class may have default packing properties for each type of container that
+it can be added to; a short example should suffice as a description of how this works:
+
+  <packing-defaults>
+    <parent-class name="GtkVBox">
+      <child-property id="expand" default="false"/>
+    </parent-class>
+  </packing-defaults>
 
 Property parameters
 -------------------
@@ -243,8 +279,84 @@ api to find parameters on property classes; the form looks like this:
 Container widgets
 -----------------
 
-*** FIXME: child properties, packing, functions, ...
+GtkContainer objects which parent GtkWidget objects have built-in detection in the
+glade core; but other container relationships may be constructed; if for example you
+wished to treat a GtkMenuBar --> GtkMenuItem relationship specially in the plugin;
+Any GObject can parent any GObject. The default GtkContainer --> GtkWidget relationship
+can also be modified for a GtkContainer derived object.
 
+Child support definitions are identified by the GType of supported child class and
+are embedded into a glade-widget-class block like so:
+
+    <glade-widget-class name="Foo">
+
+      <children>
+	<child>
+	  <type>Bar</type>
+
+          ... "Foo --> Bar" "parent --> child" relationship special-casing goes here
+
+          <properties>
+
+            ... packing property definition for this container relationship
+
+          </properties>
+	</child>
+      </children>
+
+    </glade-widget-class>
+
+Note that you can access and modify and even add virtual packing properties in
+exactly the same way as previously described with normal object properties.
+
+Child support definition parameters (all tag values and no xml tag properties):
+
+    - add-child-function & remove-child-function:    
+
+      Used to add and remove child objects from parent objects.
+
+      void add_child (GObject *object, GObject *child);
+      void remove_child (GObject *object, GObject *child);
+
+    - replace-child-function:
+
+      Used primarily for placholder swapping.
+
+      void replace_child (GtkWidget *container, GtkWidget *current, GtkWidget *new);
+
+    - get-children-function/get-all-children-function:
+
+      Return a list of children for this container (all-children should include internal
+      children).
+
+      GList *get_[all_]children (GObject *container);
+
+    - child-set-property-function/child-get-property-function:
+
+      Set/Get packing properties for this child
+
+      void child_set_property (GObject            *container,
+                               GObject            *child,
+                               const gchar        *property_name,
+                               const GValue       *value);
+
+      void child_get_property (GObject            *container,
+                               GObject            *child,
+                               const gchar        *property_name,
+                               GValue             *value);
+
+    - special-child-type:
+
+      A special type identifier that will indicate whether this is an alternate
+      child type; such as a notebook tab label or a frame label.
+
+      The value of special-child-type is the name of the added packing property for this
+      child type; you must then use the type to add children to the "correct port" at load
+      time.
+
+      Currently this isnt very neatly done; you must g_object_set_data (child, "special-child-type", type);
+      when creating special child types and handle it on replace-child; look at glade-gtk.c for 
+      examples.
 
 Grouping
 --------
@@ -260,7 +372,7 @@ are defined in the catalog file as follows:
  </glade-widget-group>
 
 
-The file should contain one or more widgets groups.
+The file should contain one or more widget groups.
 
 
 Validating the catalog file
@@ -270,7 +382,7 @@ The DTD that is shipped with Glade can be used to validate your catalog
 file. Note that properties must be entered in the same order as they are
 specified in the DTD for the validation to pass.
 
-To validate a fil, do this:
+To validate a file, do this:
 
  xmllint --dtdvalid glade-catalog.dtd --noout my-catalog.xml
 
@@ -284,12 +396,10 @@ the catalog directory:
 
   $(datadir)/glade-3/catalogs
 
-*** FIXME: Fix the version to be like this.
+The icons for palette etc go into:
+
+  $(datadir)/glade-3/pixmaps
 
 The plugin library should be installed into the modules directory:
 
- $(libdir)/glade/
-
-*** FIXME: Shouldn't this be glade-3 for consistency?
-
-
+  $(libdir)/glade-3/modules
