@@ -535,7 +535,13 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 		{
 			if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->def),
 						     G_VALUE_TYPE (&parameter.value)))
+			{
+				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->def), G_TYPE_OBJECT))
+					if (g_value_get_object (glade_property_class->def) == NULL)
+						continue;
+				
 				g_value_copy (glade_property_class->def, &parameter.value);
+			}
 			else
 			{
 				g_critical ("Type mismatch on %s property of %s",
@@ -2746,7 +2752,9 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 		glade_property_class =
 		     glade_widget_class_get_property_class (widget_class,
 							    pspec[i]->name);
-		if (!glade_property_class || glade_property_class->set_function)
+		if (glade_property_class == NULL ||
+		    glade_property_class->set_function ||
+		    glade_property_class->ignore)
 			continue;
 		
 		parameter.name = pspec[i]->name;

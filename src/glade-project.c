@@ -52,6 +52,7 @@ enum
 	REMOVE_WIDGET,
 	WIDGET_NAME_CHANGED,
 	SELECTION_CHANGED,
+	CLOSE,
 	LAST_SIGNAL
 };
 
@@ -142,6 +143,16 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      0);
 
+	glade_project_signals[CLOSE] =
+		g_signal_new ("close",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectClass, close),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
 	object_class->finalize = glade_project_finalize;
 	object_class->dispose = glade_project_dispose;
 	
@@ -149,6 +160,7 @@ glade_project_class_init (GladeProjectClass *class)
 	class->remove_object = NULL;
 	class->widget_name_changed = NULL;
 	class->selection_changed = NULL;
+	class->close = NULL;
 }
 
 static void
@@ -164,6 +176,7 @@ glade_project_init (GladeProject *project)
 	project->widget_names_allocator = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) glade_id_allocator_free);
 	project->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
 	project->tooltips = gtk_tooltips_new ();
+	project->accel_group = NULL;
 }
 
 /**
@@ -207,7 +220,10 @@ glade_project_dispose (GObject *object)
 	GladeProject *project = GLADE_PROJECT (object);
 	GList        *list;
 	GladeWidget  *gwidget;
-
+	
+	/* Emit close signal */
+	g_signal_emit (object, glade_project_signals [CLOSE], 0);
+	
 	glade_project_selection_clear (project, TRUE);
 
 	glade_project_list_unref (project->undo_stack);
@@ -752,6 +768,13 @@ glade_project_write (const GladeProject *project)
 	return interface;
 }
 
+static gboolean
+glade_project_set_changed_to_false_idle (gpointer data)
+{
+	((GladeProject *)data)->changed = FALSE;
+	return FALSE;
+}
+
 static GladeProject *
 glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 {
@@ -798,7 +821,11 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 		glade_project_add_object (project, widget->object);
 	}
 
-	project->changed = FALSE;
+	/* Set project status after every idle functions */
+	g_idle_add_full (G_PRIORITY_LOW,
+			 glade_project_set_changed_to_false_idle,
+			 project, 
+			 NULL);
 
 	return project;	
 }
@@ -977,8 +1004,15 @@ glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group
 	while (objects)
 	{
 		if(GTK_IS_WINDOW (objects->data))
+		{
+			if (project->accel_group)
+				gtk_window_remove_accel_group (GTK_WINDOW (objects->data), project->accel_group);
+			
 			gtk_window_add_accel_group (GTK_WINDOW (objects->data), accel_group);
+		}
 
 		objects = objects->next;
 	}
+	
+	project->accel_group = accel_group;
 }

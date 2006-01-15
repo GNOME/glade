@@ -736,6 +736,8 @@ glade_widget_class_merge_properties (GType   parent_type,
 		}
 	}
 
+	/* Let it leak (as in glade_widget_class_list_properties) */
+	g_type_class_ref (parent_type);
 
 	/* Remove any properties found in widget_properties not found in parent_properties
 	 * if parent_properties should have it through introspection

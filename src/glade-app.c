@@ -669,9 +669,9 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 	else
 		glade_app_set_project (app, app->priv->projects->data);
 
-	/* Release project after disconnecting from view, so that
-	 * the glade-project-view has a project to g_signal_handler_disconnect()
-	 * from (without bothering with the trickyness of weak pointers and such).
+	/* Its safe to just release the project as the project emits a
+	 * "close" signal and everyone is responsable for cleaning up at
+	 * that point.
 	 */
 	g_object_unref (project);
 }
@@ -813,15 +813,14 @@ glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group)
 	GladeProject *project;
 	g_return_if_fail(GLADE_IS_APP(app) &&
 			 GTK_IS_ACCEL_GROUP (accel_group));
-	
-	app->priv->accel_group = accel_group;
 
 	for (l = app->priv->projects; l; l = l->next)
 	{
 		project = l->data;
-		glade_project_set_accel_group
-			(project, app->priv->accel_group);
+		glade_project_set_accel_group (project, accel_group);
 	}
+	
+	app->priv->accel_group = accel_group;
 }
 
 /* Default application convinience functions */

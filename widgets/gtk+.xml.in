@@ -51,6 +51,7 @@
 	<property id="name" disabled="True"/>
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
+	<property id="sensitive" ignore="True"/>
       </properties>
     </glade-widget-class>
 
@@ -166,6 +167,25 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkMenuShell">
+      <post-create-function>empty</post-create-function>
+      <children>
+	<child>
+	  <type>GtkMenuItem</type>
+  	  <add-child-function>glade_gtk_menu_shell_add_item</add-child-function>
+	  <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>
+	  <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>	  
+	  <child-get-property-function>glade_gtk_menu_shell_get_child_property</child-get-property-function>
+          <properties>
+            <property id="position" _name="Position" default="-1" save="False">
+              <spec>glade_standard_int_spec</spec>
+              <_tooltip>The position of the menu item in the menu shell</_tooltip>
+            </property>
+          </properties>
+	</child>
+      </children>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
 	<properties>
@@ -191,6 +211,16 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkCheckMenuItem" generic-name="checkmenuitem" _title="Check Menu Item"/>
+
+    <glade-widget-class name="GtkRadioMenuItem" generic-name="radiomenuitem" _title="Radio Menu Item">
+      <properties>
+        <property id="draw-as-radio" default="True"/>
+	<property id="inconsistent" visible="False" save="False" default="False"/>
+	<property id="group" _name="Group">
+          <set-function>glade_gtk_radio_menu_item_set_group</set-function>
+        </property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
       <get-internal-child-function>glade_gtk_image_menu_item_get_internal_child</get-internal-child-function>
@@ -224,13 +254,6 @@
 	  <child-property id="expand" default="false"/>
 	</parent-class>
       </packing-defaults>
-      <children>
-	<child>
-	  <type>GtkMenuItem</type>
-	  <add-child-function>glade_gtk_menu_bar_add_item</add-child-function>
-	  <remove-child-function>glade_gtk_menu_bar_remove_item</remove-child-function>
-	</child>
-      </children>
     </glade-widget-class>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar">
@@ -494,12 +517,12 @@
 	<property id="mask" disabled="True"/>
 	<property id="pixbuf" _name="File Name" translatable="False"/>
 	<property id="glade-stock" _name="Stock Image" save="False">
-	  <tooltip>A builtin stock image</tooltip>
+	  <_tooltip>A builtin stock image</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
 	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
-	<property id="icon-name" translatable="False">
+	<property id="icon-name" _name="Icon Name" translatable="False">
 	  <set-function>glade_gtk_image_set_icon_name</set-function>
 	</property>
       </properties>
@@ -682,16 +705,10 @@
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu">
+      <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>empty</post-create-function>
-      <children>
-	<child>
-	  <type>GtkMenuItem</type>
-	  <add-child-function>glade_gtk_menu_add_item</add-child-function>
-	  <remove-child-function>glade_gtk_menu_remove_item</remove-child-function>
-	</child>
-      </children>
     </glade-widget-class>
-     
+    
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>
 
     <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar"/>

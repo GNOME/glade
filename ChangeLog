@@ -1,3 +1,37 @@
+2006-01-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+       * src/glade-project.[ch]: New project signal "close".
+
+       * src/glade-app.c: glade_app_remove_project() unrefs project
+	 resulting in "close" signal being fired for cleanup purposes.
+         glade_project_new_from_interface() now set the project status
+         (changed flag) in a low priority idle function, this makes
+         safe to use idle functions (normal priority) in plugins.
+         glade_project_set_accel_group() removes old accel group.
+         (bug 316104)
+
+       * src/glade-widget.c: glade_widget_build_object() skip object
+         properties with NULL values.
+         glade_widget_params_from_widget_info() skip properties
+         that should be ignored.
+
+       * src/glade-editor.[ch]: free all GladeEditorTable (widget,
+         packing and common) when loading page.
+         (ie in glade_editor_load_widget_page)
+
+       * src/glade-gtk.c: RadioMenuItem support.
+         GtkMenuEditor reorder bug fixed.
+         MenuEditor is not modal anymore. (to access to undo/redo)
+         glade_gtk_table_has_child() fix, widgets in a table can occupy
+         more than one row/column. (bug 325791)
+         Fixed label "use-underline" property at load time. (bug 325801)
+
+       * src/glade-widget-class.c: segfault fixed when merging
+         RadioMenuItem class in glade_widget_class_merge_properties()
+
+       * widgets/gtk+.xml: new GtkMenuShell packing property "position".
+	 Set GtkWidgetClass's "sensitive" property to be ignored.
+
 2006-01-13 Tristan Van Berkom <tvb@gnome.org>
 
 	* widgets/adding-widgets.txt: Updating document phase two.

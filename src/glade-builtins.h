@@ -17,6 +17,7 @@ LIBGLADEUI_API GParamSpec *glade_standard_int_spec       (void);
 LIBGLADEUI_API GParamSpec *glade_standard_string_spec    (void);
 LIBGLADEUI_API GParamSpec *glade_standard_strv_spec      (void);
 LIBGLADEUI_API GParamSpec *glade_standard_float_spec     (void);
+LIBGLADEUI_API GParamSpec *glade_standard_boolean_spec   (void);
 
 G_END_DECLS
 

@@ -84,10 +84,11 @@ struct _GladeEditor
 				* we are asked to load a widget of a particular
 				* GladeWidgetClass
 				*/
-
-	GladeEditorTable *packing_etable; /* The currently loaded editor table in
-					   * the packing page.
-					   */
+				
+	GladeEditorTable *widget_etable;  /* The currently loaded editor tables */
+	GladeEditorTable *packing_etable;
+	GladeEditorTable *common_etable;
+	 
 	GList            *packing_eprops; /* Current list of packing GladeEditorProperties
 					   */
 

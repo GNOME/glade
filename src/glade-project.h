@@ -52,6 +52,8 @@ struct _GladeProject
 	GHashTable *widget_names_allocator; /* hash table with the used widget names */
 	GHashTable *widget_old_names; /* widget -> old name of the widget */
 	GtkTooltips *tooltips;
+	
+	GtkAccelGroup *accel_group;
 };
 
 struct _GladeProjectClass
@@ -65,6 +67,7 @@ struct _GladeProjectClass
 	void   (*widget_name_changed) (GladeProject *project,
 				       GladeWidget  *widget);
 	void   (*selection_changed)   (GladeProject *project); 
+	void   (*close)               (GladeProject *project);
 };
 
 LIBGLADEUI_API GType         glade_project_get_type (void);
@@ -105,7 +108,7 @@ LIBGLADEUI_API GList        *glade_project_selection_get       (GladeProject *pr
 
 LIBGLADEUI_API GtkWidget    *glade_project_get_menuitem          (GladeProject *project);
 LIBGLADEUI_API guint         glade_project_get_menuitem_merge_id (GladeProject *project);
-LIBGLADEUI_API void          glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group);
+LIBGLADEUI_API void          glade_project_set_accel_group       (GladeProject *project, GtkAccelGroup *new_group);
 
 G_END_DECLS
 
