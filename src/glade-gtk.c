@@ -508,6 +508,11 @@ glade_gtk_table_has_child (GtkTable *table,
 	{
 		GtkTableChild *child = list->data;
 		
+		if (child->left_attach   == left_attach &&
+		    child->right_attach  == right_attach &&
+		    child->top_attach    == top_attach &&
+		    child->bottom_attach == bottom_attach)
+
 		if (left_attach >= child->left_attach && left_attach <= child->right_attach &&
 		    top_attach >= child->top_attach && top_attach <= child->bottom_attach)
 			return TRUE;
