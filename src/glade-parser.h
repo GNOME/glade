@@ -124,6 +124,7 @@ struct _GladeInterface {
 };
 
 /* the actual functions ... */
+GladeInterface *glade_interface_new       (void);
 GladeInterface *glade_parser_parse_file   (const gchar *file,
 					   const gchar *domain);
 GladeInterface *glade_parser_parse_buffer (const gchar *buffer, gint len,

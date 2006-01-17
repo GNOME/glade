@@ -432,12 +432,7 @@ glade_parser_start_document(GladeParseState *state)
     state->widget_depth = 0;
     state->content = g_string_sized_new(128);
 
-    state->interface = g_new0(GladeInterface, 1);
-    state->interface->names = g_hash_table_new(g_str_hash, g_str_equal);
-    state->interface->strings = g_hash_table_new_full(g_str_hash,
-						      g_str_equal,
-						      (GDestroyNotify)g_free,
-						      NULL);
+    state->interface = glade_interface_new ();
     state->widget = NULL;
 
     state->prop_type = PROP_NONE;
@@ -1109,6 +1104,24 @@ widget_info_free(GladeWidgetInfo *info)
     }
     g_free(info->children);
     g_free(info);
+}
+
+/**
+ * glade_interface_new
+ *
+ * Returns a newly allocated GladeInterface.
+ */
+GladeInterface *
+glade_interface_new ()
+{
+	GladeInterface *interface;
+	interface = g_new0 (GladeInterface, 1);
+	interface->names = g_hash_table_new (g_str_hash, g_str_equal);
+	interface->strings = g_hash_table_new_full (g_str_hash,
+						    g_str_equal,
+						    (GDestroyNotify)g_free,
+						    NULL);
+	return interface;
 }
 
 /**

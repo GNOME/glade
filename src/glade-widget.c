@@ -1963,9 +1963,11 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 /**
  * glade_widget_set_object:
  * @gwidget:
- * @new_widget:
+ * @new_object:
  *
- * TODO: write me
+ * Set the runtime object for this GladeWidget wrapper
+ * (this is used deep in the core and is probably unsafe
+ * to use elsewhere).
  */
 void
 glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)

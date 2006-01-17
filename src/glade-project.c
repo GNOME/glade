@@ -730,14 +730,9 @@ glade_project_write (const GladeProject *project)
 	GList *list, *tops = NULL;
 	guint i;
 
-	interface = g_new0 (GladeInterface, 1);
-	interface->names = g_hash_table_new (g_str_hash, g_str_equal);
-	interface->strings = g_hash_table_new_full (g_str_hash,
-						    g_str_equal,
-						    (GDestroyNotify)g_free,
-						    NULL);
+	interface = glade_interface_new ();
 
-        for (i = 0, list = project->objects; list; list = list->next)
+	for (i = 0, list = project->objects; list; list = list->next)
 	{
 		GladeWidget *widget;
 		GladeWidgetInfo *info;
