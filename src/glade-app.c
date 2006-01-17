@@ -530,7 +530,11 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_APP (app));
 
-	if (app->priv->editor)
+	/* Only update the editor if the selection has changed on
+	 * the currently active project.
+	 */
+	if (app->priv->editor &&
+	    (project == glade_app_get_active_project (app)))
 	{
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
@@ -1036,7 +1040,3 @@ glade_default_app_selection_changed (void)
 	}
 }
 
-
-
-
-G_END_DECLS

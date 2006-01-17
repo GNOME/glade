@@ -1,5 +1,11 @@
 2006-01-17  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-app.c: Fixed bug where widgets weren't selectable
+	  if multiple projects were loaded (also removed G_END_DECLS from
+	  the end of this C file).
+
+2006-01-17  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor.[ch]: 
 	  o Revert changes "free all GladeEditorTable"
 	    from Juans last patch; editor tables are *not to be freed*,
