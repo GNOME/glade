@@ -1,5 +1,27 @@
 2006-01-17  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-editor.[ch]: 
+	  o Revert changes "free all GladeEditorTable"
+	    from Juans last patch; editor tables are *not to be freed*,
+	    instead they are instantiated once per class and juggled 
+	    throughout the application (my bad for not noticing this in
+	    advance).
+	  o Catch GladeProjects "close" signal and clear the editor.
+
+	* src/glade-gtk.c: Shut up a compiler warning
+
+	* src/glade-project-view.[ch]: Catch GladeProjects "close" signal and 
+	  detatch the GladeProjectView.
+
+	* src/glade-editor-property.[ch]: Catch GladeProjects "close" 
+	  signal and drop the loaded GladeProperty.
+
+	* src/glade-app.c: in glade_app_remove_project(), now simply
+	  g_object_unref() the removed project and let the universe
+	  adjust itself.
+
+2006-01-17  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-parser.[ch], src/glade-project.c:
 	  Integrated patch from Lluis Sanchez to simplify GladeInterface
 	  creation.

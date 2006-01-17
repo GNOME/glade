@@ -618,7 +618,6 @@ glade_project_view_init (GladeProjectView *view)
 	
 	view->selected_widget = NULL;
 	view->project = NULL;
-	view->add_widget_signal_id = 0;
 
 	view->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
 	glade_project_view_populate_model (view);
@@ -701,6 +700,16 @@ glade_project_view_selection_update_cb (GladeProject *project,
 	GLADE_PROJECT_VIEW_GET_CLASS (view)->selection_update (view, project);
 }
 
+static void
+glade_project_view_close_cb (GladeProject *project,
+			     GladeProjectView *view)
+{
+	/* Detected project we are viewing was closed,
+	 * detatch from view.
+	 */
+	glade_project_view_set_project (view, NULL);
+}
+
 /**
  * glade_project_view_new:
  * @type: a #GladeProjectViewType
@@ -760,6 +769,8 @@ glade_project_view_set_project (GladeProjectView *view,
 					     view->widget_name_changed_signal_id);
 		g_signal_handler_disconnect (G_OBJECT (view->project),
 					     view->selection_changed_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (view->project),
+					     view->project_closed_signal_id);
 	}
 
 	model = GTK_TREE_MODEL (view->model);
@@ -800,6 +811,10 @@ glade_project_view_set_project (GladeProjectView *view,
 	view->selection_changed_signal_id =
 		g_signal_connect (G_OBJECT (project), "selection_changed",
 				  G_CALLBACK (glade_project_view_selection_update_cb),
+				  view);
+	view->project_closed_signal_id =
+		g_signal_connect (G_OBJECT (project), "close",
+				  G_CALLBACK (glade_project_view_close_cb),
 				  view);
 }
 

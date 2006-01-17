@@ -166,6 +166,16 @@ glade_editor_property_enabled_cb (GladeProperty       *property,
 }
 
 static void
+glade_editor_property_closed_cb (GladeProject        *project,
+				 GladeEditorProperty *eprop)
+{
+	/* Detected project this property belongs to was closed.
+	 * detatch from eprop.
+	 */
+	glade_editor_property_load (eprop, NULL);
+}
+
+static void
 glade_editor_property_enabled_toggled_cb (GtkWidget           *check,
 					  GladeEditorProperty *eprop)
 {
@@ -275,9 +285,13 @@ static void
 glade_editor_property_load_common (GladeEditorProperty *eprop, 
 				   GladeProperty       *property)
 {
+	GladeProject *project;
+	
 	/* disconnect anything from previously loaded property */
 	if (eprop->property != property && eprop->property != NULL) 
 	{
+		project = glade_widget_get_project (eprop->property->widget);
+
 		if (eprop->tooltip_id > 0)
 			g_signal_handler_disconnect (G_OBJECT (eprop->property),
 						     eprop->tooltip_id);
@@ -290,18 +304,24 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		if (eprop->enabled_id > 0)
 			g_signal_handler_disconnect (eprop->property, 
 						     eprop->enabled_id);
+		if (eprop->closed_id > 0)
+			g_signal_handler_disconnect (project, eprop->closed_id);
 
 		eprop->tooltip_id   = 0;
 		eprop->sensitive_id = 0;
 		eprop->changed_id   = 0;
 		eprop->enabled_id   = 0;
+		eprop->closed_id   = 0;
 	}
 
+	eprop->property = NULL;
+	
 	/* Connect new stuff, deal with tooltip
 	 */
 	if (eprop->property != property && property != NULL)
 	{
 		eprop->property = property;
+		project = glade_widget_get_project (eprop->property->widget);
 
 		eprop->tooltip_id = 
 			g_signal_connect (G_OBJECT (eprop->property),
@@ -322,6 +342,10 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 			g_signal_connect (G_OBJECT (eprop->property),
 					  "notify::enabled", 
 					  G_CALLBACK (glade_editor_property_enabled_cb),
+					  eprop);
+		eprop->closed_id =
+			g_signal_connect (G_OBJECT (project), "close", 
+					  G_CALLBACK (glade_editor_property_closed_cb),
 					  eprop);
 
 		/* Load initial tooltips

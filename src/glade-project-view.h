@@ -42,14 +42,16 @@ struct _GladeProjectView
 				       * multiple selections.
 				       */
 
-	gulong add_widget_signal_id; /* We need to know the signal id which we are
-				      * connected to so that when the project changes
-				      * we stop listening to the old project
-				      */
+	/* We need to know the signal id which we are
+	 * connected to so that when the project changes
+	 * we stop listening to the old project
+	 */
+	gulong add_widget_signal_id;
 	gulong remove_widget_signal_id;
 	gulong widget_name_changed_signal_id;
 	gulong selection_changed_signal_id;
-
+	gulong project_closed_signal_id;
+	
 	gboolean updating_selection; /* True when we are going to set the
 				      * project selection. So that we don't
 				      * recurse cause we are also listening

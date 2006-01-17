@@ -104,9 +104,7 @@ glade_editor_init (GladeEditor *editor)
 	editor->vbox_common  = glade_editor_notebook_page (_("_Common"), GTK_WIDGET (editor->notebook));
 	editor->vbox_signals = glade_editor_notebook_page (_("_Signals"), GTK_WIDGET (editor->notebook));
 	editor->widget_tables = NULL;
-	editor->widget_etable = NULL;
 	editor->packing_etable = NULL;
-	editor->common_etable = NULL;
 	editor->loading = FALSE;
 
 	gtk_box_pack_start (GTK_BOX (editor), editor->notebook, TRUE, TRUE, 0);
@@ -405,12 +403,6 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	}
 	g_list_free (children);
 
-	if (editor->widget_etable)
-	{
-		glade_editor_table_free (editor->widget_etable);
-		editor->widget_etable = NULL;
-	}
-	
 	if (!class)
 		return;
 
@@ -419,8 +411,6 @@ glade_editor_load_widget_page (GladeEditor *editor, GladeWidgetClass *class)
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_widget), table->table_widget,
 			    FALSE, TRUE, 0);
-	
-	editor->widget_etable = table;
 }
 
 static void
@@ -441,12 +431,6 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 	}
 	g_list_free (children);
 
-	if (editor->common_etable)
-	{
-		glade_editor_table_free (editor->common_etable);
-		editor->common_etable = NULL;
-	}
-	
 	if (!class)
 		return;
 	
@@ -455,8 +439,6 @@ glade_editor_load_common_page (GladeEditor *editor, GladeWidgetClass *class)
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (editor->vbox_common), table->table_widget,
 			    FALSE, TRUE, 0);
-	
-	editor->common_etable = table;
 }
 
 /**
@@ -556,13 +538,31 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 }
 
 static void
+glade_editor_close_cb (GladeProject *project,
+		       GladeEditor  *editor)
+{
+	/* Detected project we are viewing was closed,
+	 * detatch from editor.
+	 */
+	glade_editor_load_widget (editor, NULL);
+}
+
+static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
 	GladeWidgetClass *class;
 	GladeEditorTable *table;
 	GladeEditorProperty *property;
+	GladeProject *project;
 	GList *list;
 
+	/* Disconnect from last widget */
+	if (editor->loaded_widget != NULL)
+	{
+		project = glade_widget_get_project (editor->loaded_widget);
+		g_signal_handler_disconnect (G_OBJECT (project),
+					     editor->project_closed_signal_id);
+	}	
 	/* Load the GladeWidgetClass */
 	class = widget ? widget->widget_class : NULL;
 	if (editor->loaded_class != class || class == NULL)
@@ -601,6 +601,12 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
 	editor->loaded_widget = widget;
 	editor->loading = FALSE;
+
+	/* Connect to new widget */
+	project = glade_widget_get_project (editor->loaded_widget);
+	editor->project_closed_signal_id =
+		g_signal_connect (G_OBJECT (project), "close",
+				  G_CALLBACK (glade_editor_close_cb), editor);
 }
 
 /**

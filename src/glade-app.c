@@ -656,14 +656,7 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 	/* If no more projects */
 	if (app->priv->projects == NULL)
 	{
-		for (list = app->priv->views; list; list = list->next)
-		{
-			GladeProjectView *view;
-
-			view = GLADE_PROJECT_VIEW (list->data);
-			glade_project_view_set_project (view, NULL);
-		}
-		glade_editor_load_widget (app->priv->editor, NULL);
+		/* XXX I think the palette should detect this. */
 		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
 	} 
 	else

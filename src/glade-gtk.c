@@ -3255,8 +3255,7 @@ glade_gtk_menu_editor_help (GtkButton *button, GtkWidget *window)
 	dialog = gtk_message_dialog_new (GTK_WINDOW (window),
 					 GTK_DIALOG_DESTROY_WITH_PARENT,
 					 GTK_MESSAGE_INFO,
-					 GTK_BUTTONS_CLOSE,
-					 NULL);
+					 GTK_BUTTONS_CLOSE, " ");
 	
 	gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog), 
 		_("<big><b>Tips:</b></big>\n"

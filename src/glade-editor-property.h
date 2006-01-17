@@ -38,7 +38,8 @@ struct _GladeEditorProperty {
 	gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
 	gulong              changed_id;     /* signal connection id for value changes          */
 	gulong              enabled_id;     /* signal connection id for enable/disable changes */
-
+	gulong              closed_id;      /* signal connection id for closing projects       */
+	
 	gboolean            loading;        /* True during glade_editor_property_load calls, this
 					     * is used to avoid feedback from input widgets.
 					     */

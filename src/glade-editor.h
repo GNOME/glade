@@ -85,9 +85,10 @@ struct _GladeEditor
 				* GladeWidgetClass
 				*/
 				
-	GladeEditorTable *widget_etable;  /* The currently loaded editor tables */
-	GladeEditorTable *packing_etable;
-	GladeEditorTable *common_etable;
+	GladeEditorTable *packing_etable; /* Packing pages are dynamicly created each
+					   * selection, this pointer is only to free
+					   * the last packing page.
+					   */
 	 
 	GList            *packing_eprops; /* Current list of packing GladeEditorProperties
 					   */
@@ -103,6 +104,8 @@ struct _GladeEditor
 				   * through the plugin backend.
 				   */
 
+	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
+					  */
 	
 };
 
