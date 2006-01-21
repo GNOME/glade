@@ -79,6 +79,8 @@ LIBGLADEUI_API gboolean          glade_util_basenames_match       (const gchar  
 
 LIBGLADEUI_API GList            *glade_util_purify_list           (GList        *list);
 
+LIBGLADEUI_API gchar            *glade_util_direct_path           (const gchar  *path);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

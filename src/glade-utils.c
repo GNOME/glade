@@ -28,6 +28,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <gmodule.h>
 #include <glib/gi18n-lib.h>
+#include <glib/gstdio.h>
+#include <errno.h>
+
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-project-window.h"
@@ -1339,4 +1342,54 @@ glade_util_purify_list (GList *list)
 	g_list_free (list);
 
 	return g_list_reverse (newlist);
+}
+
+/**
+ * glade_util_canonical_path:
+ *
+ * @path: any path that may contain ".." or "." components
+ *
+ * Returns: an absolute path to the specified file or directory
+ *          that contains no ".." or "." components (this does
+ *          not call readlink like realpath() does).
+ *
+ * Note: on some systems; I think its possible that we dont have
+ *       permission to execute in the directory in which the glade
+ *       file resides; I decided finally to do it this way anyway
+ *       since libc's realpath() does exactly the same.
+ */
+gchar *
+glade_util_canonical_path (const gchar *path)
+{
+	gchar *orig_dir, *dirname, *basename, *direct_dir, *direct_name = NULL;
+
+	basename = g_path_get_basename (path);
+
+	if ((orig_dir = g_get_current_dir ()) != NULL)
+	{
+		if ((dirname = g_path_get_dirname (path)) != NULL)
+		{
+			if (g_chdir (dirname) == 0)
+			{
+				if ((direct_dir = g_get_current_dir ()) != NULL)
+					direct_name = 
+						g_build_filename (direct_dir, basename, NULL);
+				else
+					g_warning ("g_path");
+
+				if (g_chdir (orig_dir) != 0)
+					g_warning ("Unable to chdir back to %s directory (%s)",
+						   orig_dir, g_strerror (errno));
+
+			} else g_warning ("Unable to chdir to %s directory (%s)", 
+					  dirname, g_strerror (errno));
+
+			g_free (dirname);
+		} else g_warning ("Unable to get directory component of %s\n", path);
+		g_free (orig_dir);
+	}
+
+	if (basename) g_free (basename);
+
+	return direct_name;
 }

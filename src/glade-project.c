@@ -782,11 +782,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 
 	project = glade_project_new (FALSE);
 
-	if (g_path_is_absolute (path))
-		project->path = g_strdup (path);
-	else
-		project->path =
-			g_build_filename (g_get_current_dir (), path, NULL);
+	project->path = glade_util_canonical_path (path);
 	
 	if (project->name) g_free (project->name);
 

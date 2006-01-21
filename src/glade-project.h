@@ -24,7 +24,7 @@ struct _GladeProject
 
 	gchar *name;     /* The name of the project like network-conf */
 
-	gchar *path;     /* The full path of the xml file for this project */
+	gchar *path;     /* The full path of the glade file for this project */
 
 	gint   instance; /* How many projects with this name */
 	

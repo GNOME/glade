@@ -1,3 +1,13 @@
+2006-01-20  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-utils.c: Added glade_util_canonical_path ()
+
+	* src/glade-project-window.c: Use project->path instead of user
+	  provided path in recent files.
+
+	* src/glade-project.[ch]: Use glade_util_canonical_path () for 
+	  a clean project full path.
+
 2006-01-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.c: Fixed bug where widgets weren't selectable

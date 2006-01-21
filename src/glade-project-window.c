@@ -144,11 +144,8 @@ gpw_recent_project_delete (GtkAction *action, GladeProjectWindow *gpw)
 	guint merge_id = GPOINTER_TO_UINT(g_object_get_data (G_OBJECT (action), "merge_id"));
 	
 	gtk_ui_manager_remove_ui(gpw->priv->ui,	merge_id);
-
 	gtk_action_group_remove_action (gpw->priv->recent_actions, action);
-	
 	g_queue_remove (gpw->priv->recent_projects, action);
-	
 	gtk_ui_manager_ensure_update (gpw->priv->ui);
 }
 
@@ -356,7 +353,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	
 	glade_app_update_instance_count (GLADE_APP (gpw), project);
 
-	gpw_recent_project_add (gpw, path);
+	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);
 	glade_app_config_save (GLADE_APP (gpw));
 
@@ -1478,7 +1475,7 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 		return;
 	}
 
-	gpw_recent_project_add (gpw, path);
+	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);
 	glade_app_config_save (GLADE_APP (gpw));
 
