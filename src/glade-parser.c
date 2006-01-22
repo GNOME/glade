@@ -106,6 +106,7 @@ struct _GladeParseState {
 
     enum {PROP_NONE, PROP_WIDGET, PROP_ATK, PROP_CHILD } prop_type;
     gchar *prop_name;
+    gchar *comment;
     gboolean translate_prop;
     gboolean context_prop;
     GArray *props;
@@ -437,6 +438,7 @@ glade_parser_start_document(GladeParseState *state)
 
     state->prop_type = PROP_NONE;
     state->prop_name = NULL;
+    state->comment = NULL;
     state->translate_prop = FALSE;
     state->props = NULL;
 
@@ -515,6 +517,7 @@ glade_parser_start_element(GladeParseState *state,
 	    state->widget_depth++;
 	    state->prop_type = PROP_NONE;
 	    state->prop_name = NULL;
+	    state->comment = NULL;
 	    state->props = NULL;
 	    state->signals = NULL;
 	    state->accels = NULL;
@@ -550,6 +553,9 @@ glade_parser_start_element(GladeParseState *state,
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
+		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
+		    state->comment = alloc_propname(state->interface, 
+						     CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
 		else
@@ -608,6 +614,9 @@ glade_parser_start_element(GladeParseState *state,
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
+		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
+		    state->comment = alloc_propname(state->interface, 
+						     CAST_BAD(attrs[i+1]));
 		else
 		    g_warning("unknown attribute `%s' for <atkproperty>.",
 			      attrs[i]);
@@ -717,6 +726,7 @@ glade_parser_start_element(GladeParseState *state,
 	    state->widget_depth++;
 	    state->prop_type = PROP_NONE;
 	    state->prop_name = NULL;
+	    state->comment = NULL;
 	    state->props = NULL;
 	    state->signals = NULL;
 	    state->accels = NULL;
@@ -760,6 +770,9 @@ glade_parser_start_element(GladeParseState *state,
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
+		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
+		    state->comment = alloc_propname(state->interface, 
+						     CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
 		else
@@ -872,20 +885,16 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	    g_warning("should find </property> here.  Found </%s>", name);
 	if (!state->props)
 	    state->props = g_array_new(FALSE, FALSE, sizeof(GladePropInfo));
-	prop.name = state->prop_name;
- 	if (state->translate_prop && state->content->str[0] != '\0') {
-	    if (state->context_prop) 
-		prop.value = alloc_string(state->interface,
-					  g_strip_context(state->content->str,
-							   dgettext(state->domain, state->content->str)));
-	    else
-		prop.value = alloc_string(state->interface,
-					  dgettext(state->domain, state->content->str));
- 	} else {
- 	    prop.value = alloc_string(state->interface, state->content->str);
-  	}
+
+	prop.name         = state->prop_name;
+	prop.has_context  = state->context_prop;
+	prop.translatable = state->translate_prop;
+	prop.comment      = state->comment;
+	prop.value        = alloc_string(state->interface, state->content->str);
+
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;
+	state->comment   = NULL;
 	state->state = PARSER_WIDGET;
 	break;
     case PARSER_WIDGET_ATK:
@@ -899,20 +908,16 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	    g_warning("should find </atkproperty> here.  Found </%s>", name);
 	if (!state->props)
 	    state->props = g_array_new(FALSE, FALSE, sizeof(GladePropInfo));
-	prop.name = state->prop_name;
- 	if (state->translate_prop && state->content->str[0] != '\0') {
-	    if (state->context_prop) 
-		prop.value = alloc_string(state->interface,
-					  g_strip_context(state->content->str,
-							   dgettext(state->domain, state->content->str)));
-	    else
-		prop.value = alloc_string(state->interface,
-					  dgettext(state->domain, state->content->str));
- 	} else {
- 	    prop.value = alloc_string(state->interface, state->content->str);
-  	}
+	prop.name         = state->prop_name;
+	prop.has_context  = state->context_prop;
+	prop.translatable = state->translate_prop;
+	prop.comment      = state->comment;
+	prop.value        = alloc_string(state->interface, state->content->str);
+
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;
+	state->comment   = NULL;
+
 	state->state = PARSER_WIDGET_ATK;
 	break;
     case PARSER_WIDGET_ATK_ACTION:
@@ -966,20 +971,17 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	    g_warning("should find </property> here.  Found </%s>", name);
 	if (!state->props)
 	    state->props = g_array_new(FALSE, FALSE, sizeof(GladePropInfo));
-	prop.name = state->prop_name;
- 	if (state->translate_prop && state->content->str[0] != '\0') {
-	    if (state->context_prop) 
-		prop.value = alloc_string(state->interface,
-					  g_strip_context(state->content->str,
-							   dgettext(state->domain, state->content->str)));
-	    else
-		prop.value = alloc_string(state->interface,
-					  dgettext(state->domain, state->content->str));
- 	} else {
- 	    prop.value = alloc_string(state->interface, state->content->str);
-  	}
+
+	prop.name         = state->prop_name;
+	prop.has_context  = state->context_prop;
+	prop.translatable = state->translate_prop;
+	prop.comment      = state->comment;
+	prop.value        = alloc_string(state->interface, state->content->str);
+
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;
+	state->comment   = NULL;
+
 	state->state = PARSER_WIDGET_CHILD_PACKING;
 	break;
     case PARSER_WIDGET_CHILD_AFTER_PACKING:
@@ -1265,6 +1267,13 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 	    xmlNodeAddContent(widget, BAD_CAST("  "));
 	node = xmlNewNode(NULL, BAD_CAST("property"));
 	xmlSetProp(node, BAD_CAST("name"), BAD_CAST(info->properties[i].name));
+	if (info->properties[i].translatable)
+	    xmlSetProp(node, BAD_CAST("translatable"), BAD_CAST("yes"));
+	if (info->properties[i].has_context)
+	    xmlSetProp(node, BAD_CAST("context"), BAD_CAST("yes"));
+	if (info->properties[i].comment)
+	    xmlSetProp(node, BAD_CAST("comments"), 
+		       BAD_CAST(info->properties[i].comment));
 	xmlNodeSetContent(node, BAD_CAST(info->properties[i].value));
 	xmlAddChild(widget, node);
 	xmlNodeAddContent(widget, BAD_CAST("\n"));
@@ -1287,6 +1296,13 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 		xmlNodeAddContent(atk, BAD_CAST("  "));
 	    node = xmlNewNode(NULL, BAD_CAST("property"));
 	    xmlSetProp(node, BAD_CAST("name"), BAD_CAST(info->atk_props[i].name));
+	    if (info->atk_props[i].translatable)
+		xmlSetProp(node, BAD_CAST("translatable"), BAD_CAST("yes"));
+	    if (info->atk_props[i].has_context)
+		xmlSetProp(node, BAD_CAST("context"), BAD_CAST("yes"));
+	    if (info->atk_props[i].comment)
+		xmlSetProp(node, BAD_CAST("comments"), 
+			   BAD_CAST(info->atk_props[i].comment));
 	    xmlNodeSetContent(node, BAD_CAST(info->atk_props[i].value));
 	    xmlAddChild(atk, node);
 	    xmlNodeAddContent(atk, BAD_CAST("\n"));
@@ -1362,6 +1378,13 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 		    xmlNodeAddContent(packing, BAD_CAST("  "));
 		node = xmlNewNode(NULL, BAD_CAST("property"));
 		xmlSetProp(node, BAD_CAST("name"), BAD_CAST(childinfo->properties[k].name));
+		if (childinfo->properties[i].translatable)
+		    xmlSetProp(node, BAD_CAST("translatable"), BAD_CAST("yes"));
+		if (childinfo->properties[i].has_context)
+		    xmlSetProp(node, BAD_CAST("context"), BAD_CAST("yes"));
+		if (childinfo->properties[i].comment)
+		    xmlSetProp(node, BAD_CAST("comments"), 
+			       BAD_CAST(childinfo->properties[i].comment));
 		xmlNodeSetContent(node, BAD_CAST(childinfo->properties[k].value));
 		xmlAddChild(packing, node);
 		xmlNodeAddContent(packing, BAD_CAST("\n"));

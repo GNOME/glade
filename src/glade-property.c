@@ -305,17 +305,6 @@ glade_property_write_impl (GladeProperty  *property,
 
 	/* put the name="..." part on the <property ...> tag */
 	info.name = alloc_propname(interface, tmp);
- 	/*if (state->translate_prop && state->content->str[0] != '\0') {
-	    if (state->context_prop) 
-		info.value = alloc_string(state->interface,
-					  g_strip_context(state->content->str,
-							   dgettext(state->domain, state->content->str)));
-	    else
-		info.value = alloc_string(state->interface,
-					  dgettext(state->domain, state->content->str));
- 	} else {
- 	    info.value = alloc_string(state->interface, state->content->str);
-  	}*/
 	g_free (tmp);
 
 	/* convert the value of this property to a string, and put it between
@@ -333,6 +322,9 @@ glade_property_write_impl (GladeProperty  *property,
 	}
 	else
 	{
+		/* Skip properties that are default
+		 * (by original pspec default) 
+		 */
 		default_str =
 			glade_property_class_make_string_from_gvalue
 			(property->class, property->class->orig_def);
@@ -345,10 +337,14 @@ glade_property_write_impl (GladeProperty  *property,
 		g_free (tmp);
 		return FALSE;
 	}
-	
+
 	if (property->class->translatable)
 	{
-		/* FIXME: implement writing the i18n metadata. */
+		info.translatable = property->i18n_translatable;
+		info.has_context  = property->i18n_has_context;
+		if (property->i18n_comment)
+			info.comment = alloc_string
+				(interface, property->i18n_comment);
 	}
 	
 	info.value = alloc_string(interface, tmp);
@@ -456,7 +452,7 @@ glade_property_init (GladeProperty *property)
 {
 	property->enabled   = TRUE;
 	property->sensitive = TRUE;
-	property->i18n_translatable = FALSE;
+	property->i18n_translatable = TRUE;
 	property->i18n_has_context = FALSE;
 	property->i18n_comment = NULL;
 }

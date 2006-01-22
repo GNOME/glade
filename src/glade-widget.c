@@ -2662,16 +2662,12 @@ glade_widget_get_property_from_widget_info (GladeWidgetClass  *class,
 		{
 			g_free (id);
 
-			/* FIXME: Waiting for a solution in libglade for i18n
-			 * metadata.
-			 */
-			
 			if (translatable)
-				*translatable = FALSE; /*pinfo->translatable;*/
+				*translatable = pinfo->translatable;
 			if (has_context)
-				*has_context = FALSE; /*pinfo->has_context;*/
+				*has_context = pinfo->has_context;
 			if (comment)
-				*comment = NULL; /*g_strdup (pinfo->comment);*/
+				*comment = g_strdup (pinfo->comment);
 			
 			return glade_widget_value_from_prop_info (pinfo, class);
 		}
@@ -2705,7 +2701,7 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 		GladeProperty      *property;
 		gboolean            translatable;
 		gboolean            has_context;
-		gchar              *comment = NULL, *string;
+		gchar              *comment = NULL;
 		const gchar        *obj_name;
 
 		/* If there is a value in the XML, initialize property with it,

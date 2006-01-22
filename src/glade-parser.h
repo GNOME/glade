@@ -43,6 +43,9 @@ typedef struct _GladePackingDefault  GladePackingDefault;
 struct _GladePropInfo {
     gchar *name;
     gchar *value;
+    gchar *comment;
+    guint  translatable : 1;
+    guint  has_context : 1;
 };
 
 struct _GladeSignalInfo {

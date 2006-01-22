@@ -1,5 +1,13 @@
 2006-01-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-parser.[ch]: Implemented load/save of "translatable",
+	  "context" and "comments" attributes on properties (atk or not)
+
+	* src/glade-property.c, src/glade-widget.c: Doing our part to load
+	  and save i18n information (fixing bug 325628)
+	
+2006-01-22  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-signal.c: Load userdata/object field from parser
 	  info onto the GladeSignal object properly (fixed bug 326715).
 
