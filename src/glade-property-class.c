@@ -69,8 +69,8 @@ glade_property_class_new (void)
 	property_class->visible = TRUE;
 	property_class->save = TRUE;
 	property_class->ignore = FALSE;
+	property_class->resource = FALSE;
 	property_class->translatable = TRUE;
-
 	return property_class;
 }
 
@@ -343,7 +343,13 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 		string = g_strdup_printf ("%g", g_value_get_double (value));
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
-		string = g_value_dup_string (value);
+	{
+		if (property_class->resource && g_value_get_string (value) != NULL)
+			string = g_path_get_basename 
+				(g_value_get_string (value));
+		else
+			string = g_value_dup_string (value);
+	}
 	else if (G_IS_PARAM_SPEC_CHAR(property_class->pspec))
 		string = g_strdup_printf ("%c", g_value_get_char (value));
 	else if (G_IS_PARAM_SPEC_UCHAR(property_class->pspec))
@@ -367,7 +373,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 
 			if (object && (filename = g_object_get_data
 				       (object, "GladeFileName")) != NULL)
-				string = g_strdup (filename);
+				string = g_path_get_basename (filename);
 		}
 		else
 		{
@@ -498,19 +504,21 @@ glade_property_class_make_enum_from_string (GType type, const char *string)
 
 /**
  * glade_property_class_make_gvalue_from_string:
- * @property_class:
- * @string:
+ * @property_class: A #GladePropertyClass
+ * @string: a string representation of this property
+ * @project: the glade project that the associated property
+ *           belongs to.
  *
- * TODO: write me
- *
- * Returns:
+ * Returns: A #GValue created based on the @property_class
+ *          and @string criteria.
  */
 GValue *
 glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
-					      const gchar *string)
+					      const gchar        *string,
+					      GladeProject       *project)
 {
 	GValue    *value = g_new0 (GValue, 1);
-	gchar    **strv;
+	gchar    **strv, *fullpath;
 	GdkColor   color = { 0, };
 
 	g_value_init (value, property_class->pspec->value_type);
@@ -565,7 +573,20 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 		g_value_set_double (value, (float) atof (string));
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
-		g_value_set_string (value, string);
+	{
+		/* This can be called when loading defaults from
+		 * catalog files... it wont happen and we cant do
+		 * anything for it.
+		 */
+		if (property_class->resource && project)
+		{
+			fullpath = g_build_filename
+				(project->path, string, NULL);
+			g_value_set_string (value, fullpath);
+			g_free (fullpath);
+		}
+		else g_value_set_string (value, string);
+	}
 	else if (G_IS_PARAM_SPEC_CHAR(property_class->pspec))
 		g_value_set_char (value, string[0]);
 	else if (G_IS_PARAM_SPEC_UCHAR(property_class->pspec))
@@ -581,26 +602,35 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	}
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
-		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
+		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
 		{
 			GdkPixbuf *pixbuf;
 
-			if (string != NULL && 
-			    (pixbuf = gdk_pixbuf_new_from_file (string, NULL)) != NULL)
+			if (string)
 			{
-				g_object_set_data_full (G_OBJECT(pixbuf), 
-							"GladeFileName",
-							g_strdup (string),
-							g_free);
-				g_value_take_object (value, G_OBJECT(pixbuf));
+				fullpath = g_build_filename
+					(project->path, string, NULL);
+				
+				if ((pixbuf = gdk_pixbuf_new_from_file
+				     (string, NULL)) != NULL)
+				{
+					g_object_set_data_full (G_OBJECT(pixbuf), 
+								"GladeFileName",
+								g_strdup (string),
+								g_free);
+					g_value_take_object (value, G_OBJECT(pixbuf));
+				}
+				
+				g_free (fullpath);
 			}
+			else
+				g_value_set_object (value, NULL);
 		}
 		else
 		{
 			GladeWidget *gwidget;
-			if (glade_default_app_get_active_project () && string &&
-			    (gwidget = glade_project_get_widget_by_name 
-			     (glade_default_app_get_active_project (), string)) != NULL)
+			if (string && (gwidget = glade_project_get_widget_by_name 
+				       (project, string)) != NULL)
 				g_value_set_object (value, gwidget->object);
 			else
 				g_value_set_object (value, NULL);
@@ -1063,7 +1093,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_value_unset (class->def);
 			g_free (class->def);
 		}
-		class->def = glade_property_class_make_gvalue_from_string (class, buff);
+		class->def = glade_property_class_make_gvalue_from_string (class, buff, NULL);
 		g_free (buff);
 	}
 
@@ -1124,12 +1154,18 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
 
 	/* common, optional, etc */
-	class->common        = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,         class->common);
-	class->optional      = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,       class->optional);
-	class->query         = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,          class->query);
-	class->save          = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,           class->save);
-	class->visible       = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,        class->visible);
-	class->ignore        = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,         class->ignore);
+	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,   class->common);
+	class->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, class->optional);
+	class->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,    class->query);
+	class->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,     class->save);
+	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  class->visible);
+	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
+	class->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, class->resource);
+
+	/* Special case pixbuf here.
+	 */
+	if (class->pspec->value_type == GDK_TYPE_PIXBUF)
+		class->resource = TRUE;
 	
 	if (class->optional)
 		class->optional_default =

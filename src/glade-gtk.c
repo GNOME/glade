@@ -699,7 +699,8 @@ glade_gtk_button_ensure_glabel (GtkWidget *button)
 		if (child) gtk_container_remove (GTK_CONTAINER (button), child);
 		gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (GLADE_PROJECT (gbutton->project), glabel->object);
+		glade_project_add_object (GLADE_PROJECT (gbutton->project), 
+					  NULL, glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 
@@ -802,7 +803,8 @@ glade_gtk_image_restore_filename (GladeWidget *gwidget)
 	
 	file = g_object_get_data (G_OBJECT (gwidget), "glade-file");
 	p = glade_widget_get_property (gwidget, "pixbuf");
-	value = glade_property_class_make_gvalue_from_string (p->class, file);
+	value = glade_property_class_make_gvalue_from_string
+		(p->class, file, gwidget->project);
 	
 	glade_property_set_value (p, value);
 	
@@ -1231,7 +1233,8 @@ glade_gtk_frame_create_idle (gpointer data)
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (GLADE_PROJECT (gframe->project), glabel->object);
+		glade_project_add_object (GLADE_PROJECT (gframe->project), 
+					  NULL, glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 	return FALSE;
@@ -1260,9 +1263,11 @@ glade_gtk_expander_create_idle (gpointer data)
 		glade_widget_property_set (glabel, "label", "expander");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
-		gtk_expander_set_label_widget (GTK_EXPANDER (expander), GTK_WIDGET (glabel->object));
+		gtk_expander_set_label_widget (GTK_EXPANDER (expander), 
+					       GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (GLADE_PROJECT (gexpander->project), glabel->object);
+		glade_project_add_object (GLADE_PROJECT (gexpander->project), 
+					  NULL, glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
 	return FALSE;
@@ -2179,7 +2184,8 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, GValue *value)
 		image = gtk_image_new ();
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 		gimage = glade_widget_new_for_internal_child (gitem, G_OBJECT (image), "image");
-		glade_project_add_object (glade_widget_get_project (gitem), G_OBJECT (image));
+		glade_project_add_object (glade_widget_get_project (gitem), 
+					  NULL, G_OBJECT (image));
 		glade_gtk_image_post_create_idle (G_OBJECT (image));
 		glade_widget_property_set_sensitive (gitem, "label", TRUE, NULL);
 	}

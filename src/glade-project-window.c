@@ -92,6 +92,26 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	g_free (title);
 }
 
+static GtkWidget *
+gpw_menuitem_from_project (GladeProject *project)
+{
+	GtkUIManager *ui;
+	gchar        *path;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	ui   = g_object_get_data (G_OBJECT (project), "ui");
+	path = g_object_get_data (G_OBJECT (project), "menuitem_path");
+	return gtk_ui_manager_get_widget (ui, path);
+}
+
+static guint
+gpw_menuitem_merge_id_from_project (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
+	return GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (project), "merge_id"));
+}
+
 static void
 gpw_select_project_menu (GladeProjectWindow *gpw)
 {
@@ -103,7 +123,7 @@ gpw_select_project_menu (GladeProjectWindow *gpw)
 	     projects && projects->data; projects = projects->next)
 	{
 		project      = projects->data;
-		palette_item = glade_project_get_menuitem (project);
+		palette_item = gpw_menuitem_from_project (project);
 		
 		gtk_check_menu_item_set_draw_as_radio
 			(GTK_CHECK_MENU_ITEM (palette_item), TRUE);
@@ -117,16 +137,16 @@ gpw_select_project_menu (GladeProjectWindow *gpw)
 static void
 gpw_refresh_project_entry (GladeProjectWindow *gpw, GladeProject *project)
 {
+	GtkAction *action = g_object_get_data (G_OBJECT (project), "action");
+
 	/* Remove menuitem and action */
 	gtk_ui_manager_remove_ui(gpw->priv->ui,
-				 glade_project_get_menuitem_merge_id(project));
+				 gpw_menuitem_merge_id_from_project (project));
 
-	gtk_action_group_remove_action (gpw->priv->project_actions,
-					GTK_ACTION (project->action));
-	
-	g_object_unref (G_OBJECT (project->action));
+	gtk_action_group_remove_action (gpw->priv->project_actions, action);
+	g_object_unref (G_OBJECT (action));
 
-	/* Create project menuiten and action */
+	/* Create project menuitem and action */
 	gpw_project_menuitem_add (gpw, project);
 	
 	gpw_select_project_menu (gpw);
@@ -335,21 +355,21 @@ static void
 gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 {
 	GError              *error = NULL;
+	gchar               *display_path = g_strdup (path);
 
+	/* Interestingly; we cannot use `path' after glade_project_reset_path
+	 * because we are getting called with project->path as an argument.
+	 */
 	if (!glade_project_save (project, path, &error))
 	{
 		/* Reset path so future saves will prompt the file chooser */
 		glade_project_reset_path (project);
-		glade_util_ui_warn (gpw->priv->window, error->message);
+		glade_util_ui_message (gpw->priv->window, GLADE_UI_ERROR, 
+				       _("Failed to save %s to %s: %s"),
+				       project->name, display_path, error->message);
 		g_error_free (error);
 		return;
 	}
-	
-	glade_util_flash_message 
-		(gpw->priv->statusbar,
-		 gpw->priv->statusbar_actions_context_id,
-		 _("Project '%s' saved"),
-		 project->name);
 	
 	glade_app_update_instance_count (GLADE_APP (gpw), project);
 
@@ -375,7 +395,8 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	
 	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
 	{
-		glade_util_ui_warn (gpw->priv->window, _("No open projects to save"));
+		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
+				       _("No open projects to save"));
 		return;
 	}
 
@@ -401,11 +422,8 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 
 	if (glade_app_is_project_loaded (GLADE_APP (gpw), real_path))
 	{
-		gchar *message = g_strdup_printf (_("%s is already open"), real_path);
-
-		glade_util_ui_warn (gpw->priv->window, message);
-
-		g_free (message);
+		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN,
+				       _("%s is already open"), real_path);
 		return;
 	}
 	gpw_save (gpw, project, real_path);
@@ -421,7 +439,9 @@ gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 
 	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
 	{
-		glade_util_ui_warn (gpw->priv->window, _("No open projects to save"));
+		glade_util_ui_message (gpw->priv->window, 
+				       GLADE_UI_WARN,
+				       _("No open projects to save"));
 		return;
 	}
 
@@ -484,7 +504,11 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 			if ((close = glade_project_save
 			     (project, project->path, &error)) == FALSE)
 			{
-				glade_util_ui_warn (gpw->priv->window, error->message);
+
+				glade_util_ui_message
+					(gpw->priv->window, GLADE_UI_ERROR, 
+					 _("Failed to save %s to %s: %s"),
+					 project->name, project->path, error->message);
 				g_error_free (error);
 			}
 		}
@@ -531,7 +555,7 @@ static void
 do_close (GladeProjectWindow *gpw, GladeProject *project)
 {
 	gtk_ui_manager_remove_ui (gpw->priv->ui,
-				  glade_project_get_menuitem_merge_id (project));
+				  gpw_menuitem_merge_id_from_project (project));
 	
 	glade_app_remove_project (GLADE_APP (gpw), project);
 	gpw_select_project_menu (gpw);
@@ -1027,7 +1051,7 @@ glade_project_window_set_project (GtkAction *action, GladeProject *project)
 	GtkWidget *item;
 
 	gpw  = g_object_get_data (G_OBJECT (project), "gpw");	
-	item = glade_project_get_menuitem (project);
+	item = gpw_menuitem_from_project (project);
 
 	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
 	{
@@ -1363,6 +1387,7 @@ static void
 gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 {
 	gchar *underscored_name, *action_name, *final_name;
+	GtkWidget *action;
 	guint merge_id;
 	
 	/* double the underscores in the project name
@@ -1378,31 +1403,30 @@ gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 	
 	action_name = g_strdup_printf ("select[%s]", final_name);
 	
-	/* What happen if there is two project with the same name in differents
-	 * directories?
-	 */
-	project->action = gtk_toggle_action_new (action_name, final_name,
-						 project->path, NULL);
-	gtk_toggle_action_set_active (project->action, TRUE);
-	g_signal_connect (G_OBJECT (project->action), "activate",
+	action = (GtkWidget *)gtk_toggle_action_new (action_name, final_name,
+						     project->path, NULL);
+	g_object_set_data (G_OBJECT (project), "action", action);
+
+	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
+	g_signal_connect (G_OBJECT (action), "activate",
 			  (GCallback) glade_project_window_set_project, project);
 	
 	gtk_action_group_add_action_with_accel (gpw->priv->project_actions,
-						GTK_ACTION (project->action), "");
+						GTK_ACTION (action), "");
 	
 	/* Add menuitem to menu */
-	merge_id = gtk_ui_manager_new_merge_id(gpw->priv->ui);
+	merge_id = gtk_ui_manager_new_merge_id (gpw->priv->ui);
 	
 	gtk_ui_manager_add_ui(gpw->priv->ui, merge_id,
 			      "/MenuBar/ProjectMenu", action_name, action_name,
 			      GTK_UI_MANAGER_MENUITEM, FALSE);
 
 	/* Set extra data to action */
-	g_object_set_data (G_OBJECT (project->action), "ui", gpw->priv->ui);
-	g_object_set_data_full (G_OBJECT (project->action), "menuitem_path",
+	g_object_set_data (G_OBJECT (project), "ui", gpw->priv->ui);
+	g_object_set_data_full (G_OBJECT (project), "menuitem_path",
 				g_strdup_printf ("/MenuBar/ProjectMenu/%s", action_name),
 				g_free);
-	g_object_set_data (G_OBJECT (project->action), "merge_id", GINT_TO_POINTER (merge_id));
+	g_object_set_data (G_OBJECT (project), "merge_id", GINT_TO_POINTER (merge_id));
 
 	g_free (action_name);
 	g_free (underscored_name);
@@ -1438,7 +1462,9 @@ glade_project_window_new_project (GladeProjectWindow *gpw)
 	project = glade_project_new (TRUE);
 	if (!project)
 	{
-		glade_util_ui_warn (gpw->priv->window, _("Could not create a new project."));
+		glade_util_ui_message (gpw->priv->window, 
+				       GLADE_UI_ERROR,
+				       _("Could not create a new project."));
 		return;
 	}
 	glade_project_window_add_project (gpw, project);
@@ -1462,16 +1488,16 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	 */
 	if (glade_app_is_project_loaded (GLADE_APP (gpw), (gchar*)path))
 	{
-		gchar *message = g_strdup_printf (_("%s is already open"), path);
-		glade_util_ui_warn (gpw->priv->window, message);
-		g_free (message);
+		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
+				       _("%s is already open"), path);
 		return;
 	}
 	
 	project = glade_project_open (path);
 	if (!project)
 	{
-		glade_util_ui_warn (gpw->priv->window, _("Could not open project."));
+		glade_util_ui_message (gpw->priv->window, GLADE_UI_ERROR,
+				       _("Could not open project."));
 		return;
 	}
 

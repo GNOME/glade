@@ -92,6 +92,13 @@ enum
 static guint glade_widget_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
 
+/* Sometimes we need to use the project deep in the loading code,
+ * this is just a shortcut way to get the project.
+ */
+static GladeProject *loading_project = NULL;
+
+
+
 /**
  * glade_widget_get_type:
  *
@@ -603,7 +610,8 @@ glade_widget_set_default_packing_properties (GladeWidget *container,
 
 			/* Check value type */
 			value = glade_property_class_make_gvalue_from_string (property_class,
-									      def->value);
+									      def->value,
+									      child->project);
 
 			glade_widget_class_container_set_property (container->widget_class,
 								   container->object,
@@ -2518,7 +2526,8 @@ glade_widget_value_from_prop_info (GladePropInfo    *info,
 	if (info->name && info->value &&
 	    (pclass = glade_widget_class_get_property_class (class, id)) != NULL)
 		gvalue = glade_property_class_make_gvalue_from_string (pclass,
-								       info->value);
+								       info->value,
+								       loading_project);
 		
 	g_free (id);
 
@@ -2696,7 +2705,7 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 		GladeProperty      *property;
 		gboolean            translatable;
 		gboolean            has_context;
-		gchar              *comment = NULL;
+		gchar              *comment = NULL, *string;
 		const gchar        *obj_name;
 
 		/* If there is a value in the XML, initialize property with it,
@@ -3006,6 +3015,8 @@ GladeWidget *
 glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 {
 	GladeWidget *widget;
+
+	loading_project = project;
 		
 	if ((widget = glade_widget_new_from_widget_info
 	     (info, project, NULL)) != NULL)
@@ -3013,5 +3024,8 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 		if (glade_verbose)
 			glade_widget_debug (widget);
 	}	
+
+	loading_project = NULL;
+
 	return widget;
 }

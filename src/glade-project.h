@@ -27,8 +27,6 @@ struct _GladeProject
 	gchar *path;     /* The full path of the glade file for this project */
 
 	gint   instance; /* How many projects with this name */
-	
-	GtkToggleAction *action; /* The menu item action */
 
 	gboolean changed;    /* A flag that is set when a project has changes
 			      * if this flag is not set we don't have to query
@@ -54,6 +52,8 @@ struct _GladeProject
 	GtkTooltips *tooltips;
 	
 	GtkAccelGroup *accel_group;
+
+	GHashTable *resources; /* resource filenames & thier associated properties */
 };
 
 struct _GladeProjectClass
@@ -68,6 +68,11 @@ struct _GladeProjectClass
 				       GladeWidget  *widget);
 	void   (*selection_changed)   (GladeProject *project); 
 	void   (*close)               (GladeProject *project);
+
+	void   (*resource_updated)    (GladeProject *project,
+				       const gchar  *resource);
+	void   (*resource_removed)    (GladeProject *project,
+				       const gchar  *resource);
 };
 
 LIBGLADEUI_API GType         glade_project_get_type (void);
@@ -78,7 +83,9 @@ LIBGLADEUI_API gboolean      glade_project_save                (GladeProject *pr
 								const gchar  *path, 
 								GError      **error);
 LIBGLADEUI_API void          glade_project_reset_path          (GladeProject *project);
-LIBGLADEUI_API void          glade_project_add_object          (GladeProject *project, GObject     *object);
+LIBGLADEUI_API void          glade_project_add_object          (GladeProject *project, 
+								GladeProject *old_project,
+								GObject      *object);
 LIBGLADEUI_API void          glade_project_remove_object       (GladeProject *project, GObject     *object);
 LIBGLADEUI_API gboolean      glade_project_has_object          (GladeProject *project, GObject     *object);
 LIBGLADEUI_API GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
@@ -106,9 +113,17 @@ LIBGLADEUI_API void          glade_project_selection_clear     (GladeProject *pr
 LIBGLADEUI_API void          glade_project_selection_changed   (GladeProject *project);
 LIBGLADEUI_API GList        *glade_project_selection_get       (GladeProject *project);
 
-LIBGLADEUI_API GtkWidget    *glade_project_get_menuitem          (GladeProject *project);
-LIBGLADEUI_API guint         glade_project_get_menuitem_merge_id (GladeProject *project);
 LIBGLADEUI_API void          glade_project_set_accel_group       (GladeProject *project, GtkAccelGroup *new_group);
+
+LIBGLADEUI_API void          glade_project_set_resource          (GladeProject  *project, 
+								  GladeProperty *property,
+								  const gchar   *resource);
+
+LIBGLADEUI_API GList        *glade_project_list_resources        (GladeProject  *project);
+
+LIBGLADEUI_API gchar        *glade_project_resource_fullpath     (GladeProject  *project,
+								  const gchar  *resource);
+
 
 G_END_DECLS
 

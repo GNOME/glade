@@ -7,6 +7,7 @@ G_BEGIN_DECLS
 
 
 typedef enum   _GladeUtilFileDialogType GladeUtilFileDialogType;
+typedef enum   _GladeUIMessageType      GladeUIMessageType;
 
 enum _GladeUtilFileDialogType
 {
@@ -14,13 +15,24 @@ enum _GladeUtilFileDialogType
         GLADE_FILE_DIALOG_ACTION_SAVE
 };
 
+enum _GladeUIMessageType {
+	GLADE_UI_INFO,
+	GLADE_UI_WARN,
+	GLADE_UI_ERROR,
+	GLADE_UI_ARE_YOU_SURE,
+	GLADE_UI_YES_OR_NO
+};
+
+
 #define glade_implement_me() g_print ("Implement me : %s %d %s\n", __FILE__, __LINE__, G_GNUC_FUNCTION);
 
 
 LIBGLADEUI_API void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 LIBGLADEUI_API GType		glade_util_get_type_from_name	(const gchar *name);
 LIBGLADEUI_API GParamSpec      *glade_utils_get_pspec_from_funcname (const gchar *funcname);
-LIBGLADEUI_API void		glade_util_ui_warn		(GtkWidget *parent, const gchar *warning);
+LIBGLADEUI_API gboolean         glade_util_ui_message           (GtkWidget *parent, 
+								 GladeUIMessageType type,
+								 const gchar *format, ...);
 LIBGLADEUI_API void		glade_util_flash_message	(GtkWidget *statusbar, 
 								 guint context_id,
 								 gchar *format, ...);
@@ -78,8 +90,12 @@ LIBGLADEUI_API gboolean          glade_util_basenames_match       (const gchar  
 								   const gchar  *path2);
 
 LIBGLADEUI_API GList            *glade_util_purify_list           (GList        *list);
+LIBGLADEUI_API gchar            *glade_util_canonical_path        (const gchar  *path);
 
-LIBGLADEUI_API gchar            *glade_util_direct_path           (const gchar  *path);
+LIBGLADEUI_API gboolean          glade_util_copy_file             (const gchar  *src,
+								   const gchar  *dest);
+
+
 
 G_END_DECLS
 

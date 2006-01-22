@@ -269,7 +269,7 @@ glade_property_sync_impl (GladeProperty *property)
 
 		if (inproject)
 		{
-			glade_project_add_object (property->widget->project,
+			glade_project_add_object (property->widget->project, NULL,
 						  glade_widget_get_object (property->widget));
 			if (reselect)
 				glade_project_selection_add

@@ -202,8 +202,16 @@ things you can do with properties.
                         plugin override functions) when it changes in the editor (the value in the
                         editor is the value saved).
 
+    - resource:         This is for string properties that represent filenames that are packaged with
+                        the glade file (like pixbufs); you can set this to true and the string
+                        property will be treated like a resource.
+
 `property' tag values:
 
+
+    - spec:             Specifies a function to be used to return a GParamSpec for this property;
+                        this is used to add virtual properties to an object (like the "size" property
+                        on GtkBox).
 
     - tooltip:          The tooltip to be displayed in the property editor for this property, this
                         is also translated. The tooltip defaults to the blurb of the associated
@@ -229,9 +237,6 @@ things you can do with properties.
 
                             gboolean verify_function (GObject *object, GValue *value);
 
-    - spec:             Specifies a function to be used to return a GParamSpec for this property;
-                        this is used to add virtual properties to an object (like the "size" property
-                        on GtkBox).
 
 Displayable values
 ------------------

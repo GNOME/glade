@@ -44,6 +44,7 @@
 #include "glade-clipboard.h"
 
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
+#define GLADE_UTIL_COPY_BUFFSIZE       1024
 
 /* List of widgets that have selection
  */
@@ -187,27 +188,87 @@ glade_utils_get_pspec_from_funcname (const gchar *funcname)
 }
 
 /**
- * glade_util_ui_warn:
+ * glade_util_ui_message:
  * @parent: a #GtkWindow cast as a #GtkWidget
- * @warning: a string
+ * @format: a printf style format string
+ * @type:   a #GladeUIMessageType
+ * @...:    args for the format.
  *
  * Creates a new warning dialog window as a child of @parent containing
- * the text of @warning, runs it, then destroys it on close.
+ * the text of @format, runs it, then destroys it on close. Depending
+ * on @type, a cancel button may apear or the icon may change.
+ *
+ * Returns: True if the @type was GLADE_UI_ARE_YOU_SURE and the user
+ *          selected "OK", True if the @type was GLADE_UI_YES_OR_NO and
+ *          the user selected "YES"; False otherwise.
  */
-void
-glade_util_ui_warn (GtkWidget *parent, const gchar *warning)
+gboolean
+glade_util_ui_message (GtkWidget           *parent, 
+		       GladeUIMessageType   type,
+		       const gchar         *format,
+		       ...)
 {
-	GtkWidget *dialog;
+	GtkWidget      *dialog;
+	GtkMessageType  message_type = GTK_MESSAGE_INFO;
+	GtkButtonsType  buttons_type = GTK_BUTTONS_OK;
+	va_list         args;
+	gchar          *string;
+	gint            response;
+
+	va_start (args, format);
+	string = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	/* Get message_type */
+	switch (type)
+	{
+	case GLADE_UI_INFO: message_type = GTK_MESSAGE_INFO; break;
+	case GLADE_UI_WARN:
+	case GLADE_UI_ARE_YOU_SURE:
+		message_type = GTK_MESSAGE_WARNING;
+		break;
+	case GLADE_UI_ERROR:      message_type = GTK_MESSAGE_ERROR;    break;
+	case GLADE_UI_YES_OR_NO:  message_type = GTK_MESSAGE_QUESTION; break;
+		break;
+	default: 
+		g_critical ("Bad arg for glade_util_ui_message");
+		break;
+	}
+
+
+	/* Get buttons_type */
+	switch (type)
+	{
+	case GLADE_UI_INFO:
+	case GLADE_UI_WARN:
+	case GLADE_UI_ERROR:
+		buttons_type = GTK_BUTTONS_OK;
+		break;
+	case GLADE_UI_ARE_YOU_SURE: buttons_type = GTK_BUTTONS_OK_CANCEL; break;
+	case GLADE_UI_YES_OR_NO:    buttons_type = GTK_BUTTONS_YES_NO; break;
+		break;
+	default: 
+		g_critical ("Bad arg for glade_util_ui_message");
+		break;
+	}
 
 	dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
 					 GTK_DIALOG_DESTROY_WITH_PARENT,
-					 GTK_MESSAGE_WARNING,
-					 GTK_BUTTONS_OK,
-					 warning);
+					 message_type,
+					 buttons_type,
+					 string);
 
-	gtk_dialog_run (GTK_DIALOG (dialog));
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+
 	gtk_widget_destroy (dialog);
+	g_free (string);
+
+	return (response == GTK_RESPONSE_OK || response == GTK_RESPONSE_YES);
 }
+
+
+
+
 
 typedef struct {
 	GtkStatusbar *statusbar;
@@ -1061,16 +1122,16 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 		if (placeholder == NULL &&
 		    g_list_length (list) != 1)
 		{
-			glade_util_ui_warn 
-				(glade_default_app_get_window(),
-				 _("Unable to paste to multiple widgets"));
+			glade_util_ui_message (glade_default_app_get_window(),
+					       GLADE_UI_WARN,
+					       _("Unable to paste to multiple widgets"));
 			return;
 		}
 	}
 	
 	if (g_list_length (clipboard->selection) == 0)
 	{
-		glade_util_ui_warn (glade_default_app_get_window (),
+		glade_util_ui_message (glade_default_app_get_window (), GLADE_UI_WARN,
 				    _("No widget selected on the clipboard"));
 		return;
 	}
@@ -1086,11 +1147,10 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 			 */
 			if (glade_util_widget_pastable (widget, parent) == FALSE)
 			{
-				gchar *message = g_strdup_printf
-					(_("Unable to paste widget %s to parent %s"),
-					 widget->name, parent->name);
-				glade_util_ui_warn (glade_default_app_get_window (), message);
-				g_free (message);
+				glade_util_ui_message (glade_default_app_get_window (),
+						       GLADE_UI_ERROR, 
+						       _("Unable to paste widget %s to parent %s"),
+						       widget->name, parent->name);
 				return;
 			}
 
@@ -1108,18 +1168,20 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 	    parent && parent->manager != NULL &&
 	    gtkcontainer_relations != 1) 
 	{
-		glade_util_ui_warn (glade_default_app_get_window (), 
-				    _("Only one widget can be pasted at a "
-				      "time to this container"));
+		glade_util_ui_message (glade_default_app_get_window (), 
+				       GLADE_UI_WARN,
+				       _("Only one widget can be pasted at a "
+					 "time to this container"));
 		return;
 	}
 
 	if (parent && parent->manager == NULL &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
 	{
-		glade_util_ui_warn (glade_default_app_get_window (), 
-				    _("Insufficient amount of placeholders in "
-				      "target container"));
+		glade_util_ui_message (glade_default_app_get_window (), 
+				       GLADE_UI_WARN,
+				       _("Insufficient amount of placeholders in "
+					 "target container"));
 		return;
 	}
 
@@ -1165,8 +1227,8 @@ glade_util_cut_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (glade_default_app_get_window (),
-							_("No widget selected!"));
+		glade_util_ui_message (glade_default_app_get_window (),
+				       GLADE_UI_WARN, _("No widget selected!"));
 	}
 }
 
@@ -1196,8 +1258,9 @@ glade_util_copy_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (glade_default_app_get_window(),
-							_("No widget selected!"));
+		glade_util_ui_message (glade_default_app_get_window(),
+				       GLADE_UI_WARN,
+				       _("No widget selected!"));
 	}
 }
 
@@ -1226,8 +1289,9 @@ glade_util_delete_selection (void)
 	}
 	else
 	{
-		glade_util_ui_warn (glade_default_app_get_window(),
-							_("No widget selected!"));
+		glade_util_ui_message (glade_default_app_get_window(),
+				       GLADE_UI_WARN,
+				       _("No widget selected!"));
 	}
 }
 
@@ -1363,6 +1427,8 @@ glade_util_canonical_path (const gchar *path)
 {
 	gchar *orig_dir, *dirname, *basename, *direct_dir, *direct_name = NULL;
 
+	g_return_val_if_fail (path != NULL, NULL);
+
 	basename = g_path_get_basename (path);
 
 	if ((orig_dir = g_get_current_dir ()) != NULL)
@@ -1392,4 +1458,147 @@ glade_util_canonical_path (const gchar *path)
 	if (basename) g_free (basename);
 
 	return direct_name;
+}
+
+static gboolean
+glade_util_canonical_match (const gchar  *src_path,
+			    const gchar  *dest_path)
+{
+	gchar      *canonical_src, *canonical_dest;
+	gboolean    match;
+	canonical_src  = glade_util_canonical_path (src_path);
+	canonical_dest = glade_util_canonical_path (dest_path);
+
+	match = (strcmp (canonical_src, canonical_dest) == 0);
+
+	g_free (canonical_src);
+	g_free (canonical_dest);
+	
+	return match;
+}
+
+/**
+ * glade_util_copy_file:
+ * @src_path:  the path to the source file
+ * @dest_path: the path to the destination file to create or overwrite.
+ *
+ * Copies a file from @src to @dest, queries the user
+ * if it involves overwriting the target and displays an
+ * error message upon failure.
+ *
+ * Returns: True if the copy was successfull.
+ */
+gboolean
+glade_util_copy_file (const gchar  *src_path,
+		      const gchar  *dest_path)
+{
+	GIOChannel *src, *dest;
+	GError     *error = NULL;
+	GIOStatus   read_status, write_status;
+	gchar       buffer[GLADE_UTIL_COPY_BUFFSIZE];
+	gsize       bytes_read, bytes_written, written;
+	gboolean    success = FALSE;
+
+	/* FIXME: This may break if src_path & dest_path are actually 
+	 * the same file, right now the canonical comparison is the
+	 * best check I have.
+	 */
+	if (glade_util_canonical_match (src_path, dest_path))
+		return FALSE;
+
+	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) == TRUE)
+		if (glade_util_ui_message
+		    (glade_default_app_get_window(), GLADE_UI_YES_OR_NO,
+		     _("%s exists. Do you want to replace it ?"), dest_path) == FALSE)
+		    return FALSE;
+
+
+	if ((src = g_io_channel_new_file (src_path, "r", &error)) != NULL)
+	{
+		g_io_channel_set_encoding (src, NULL, NULL);
+
+		if ((dest = g_io_channel_new_file (dest_path, "w", &error)) != NULL)
+		{
+			g_io_channel_set_encoding (dest, NULL, NULL);
+
+			while ((read_status = g_io_channel_read_chars 
+				(src, buffer, GLADE_UTIL_COPY_BUFFSIZE,
+				 &bytes_read, &error)) != G_IO_STATUS_ERROR)
+			{
+				bytes_written = 0;
+				while ((write_status = g_io_channel_write_chars 
+					(dest, buffer + bytes_written, 
+					 bytes_read - bytes_written, 
+					 &written, &error)) != G_IO_STATUS_ERROR &&
+				       (bytes_written < bytes_read))
+					bytes_written += written;
+				
+				if (write_status == G_IO_STATUS_ERROR)
+				{
+					glade_util_ui_message (glade_default_app_get_window(),
+							       GLADE_UI_ERROR,
+							       _("Error writing to %s: %s"),
+							       dest_path, error->message);
+					error = (g_error_free (error), NULL);
+					break;
+				}
+
+				/* Break on EOF & ERROR but not AGAIN and not NORMAL */
+				if (read_status == G_IO_STATUS_EOF) break;
+			}
+			
+			if (read_status == G_IO_STATUS_ERROR)
+			{
+				glade_util_ui_message (glade_default_app_get_window(),
+						       GLADE_UI_ERROR,
+						       _("Error reading %s: %s"),
+						       src_path, error->message);
+				error = (g_error_free (error), NULL);
+			}
+
+
+			/* From here on, unless we have problems shutting down, succuss ! */
+			success = (read_status == G_IO_STATUS_EOF && 
+				   write_status == G_IO_STATUS_NORMAL);
+
+			if (g_io_channel_shutdown (dest, TRUE, &error) != G_IO_STATUS_NORMAL)
+			{
+				glade_util_ui_message
+					(glade_default_app_get_window(),
+					 GLADE_UI_ERROR,
+					 _("Error shutting down io channel %s: %s"),
+						       dest_path, error->message);
+				error = (g_error_free (error), NULL);
+				success = FALSE;
+			}
+		}
+		else
+		{
+			glade_util_ui_message (glade_default_app_get_window(),
+					       GLADE_UI_ERROR,
+					       _("Failed to open %s for writing: %s"), 
+					       dest_path, error->message);
+			error = (g_error_free (error), NULL);
+
+		}
+
+
+		if (g_io_channel_shutdown (src, TRUE, &error) != G_IO_STATUS_NORMAL)
+		{
+			glade_util_ui_message (glade_default_app_get_window(),
+					       GLADE_UI_ERROR,
+					       _("Error shutting down io channel %s: %s"),
+					       src_path, error->message);
+			success = FALSE;
+		}
+	}
+	else 
+	{
+		glade_util_ui_message (glade_default_app_get_window(),
+				       GLADE_UI_ERROR,
+				       _("Failed to open %s for reading: %s"), 
+				       src_path, error->message);
+		error = (g_error_free (error), NULL);
+	}
+	return success;
 }

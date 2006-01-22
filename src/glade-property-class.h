@@ -37,10 +37,9 @@ struct _GladePropertyClass
 	GList *parameters; /* list of GladeParameter objects. This list
 			    * provides with an extra set of key-value
 			    * pairs to specify aspects of this property.
-			    * Like the number of "VisibleLines" of a text
-			    * property. Or the range and default values of
-			    * a spin button entry. Also the default choice
-			    * for a type == CHOICE
+			    *
+			    * This is unused by glade and only maintained
+			    * to be of possible use in plugin code.
 			    */
 
 	GArray *displayable_values; /* If this property's value is an enumeration/flags and 
@@ -61,6 +60,7 @@ struct _GladePropertyClass
 			    */
 
 	gboolean optional_default; /* For optional values, what the default is */
+
 	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
 	
 	gboolean common; /* Common properties go in the common tab */
@@ -91,6 +91,13 @@ struct _GladePropertyClass
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 
+	gboolean resource;  /* Some property types; such as some file specifying
+			     * string properties or GDK_TYPE_PIXBUF properties; are
+			     * resource files and are treated specialy (a filechooser
+			     * popup is used and the resource is copied to the project
+			     * directory).
+			     */
+	
 	/* Delagate to verify if this is a valid value for this property,
 	 * if this function exists and returns FALSE, then glade_property_set
 	 * will abort before making any changes
@@ -129,7 +136,8 @@ LIBGLADEUI_API void                glade_property_class_free                    
 LIBGLADEUI_API gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
 LIBGLADEUI_API gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class);
 LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
-										 const gchar         *string);
+										 const gchar         *string,
+										 GladeProject        *project);
 LIBGLADEUI_API gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 										 const GValue        *value);
 LIBGLADEUI_API GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,

@@ -646,8 +646,6 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 void
 glade_app_remove_project (GladeApp *app, GladeProject *project)
 {
-	GList *list;
-
 	g_return_if_fail (GLADE_IS_APP (app));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -688,17 +686,6 @@ glade_app_set_project (GladeApp *app, GladeProject *project)
 		g_warning ("Could not set project because it could not "
 			   " be found in the app->priv->project list\n");
 		return;
-	}
-
-	/* Set current/working directory to project's directory */
-	if (project->path)
-	{
-		gchar *cwd = g_path_get_dirname (project->path);
-		if (cwd)
-		{
-			g_chdir (cwd);
-			g_free (cwd);
-		}
 	}
 
 	/* clear the selection in the previous project */

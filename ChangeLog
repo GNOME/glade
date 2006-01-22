@@ -1,3 +1,43 @@
+2006-01-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-app.c: Removed chdir code
+
+	* src/glade-command.c: Remember original project in paste commands
+
+	* src/glade-editor-property.c: GladeEPropPixbuf becomes GladeEPropResource, now
+	  it interfaces with the glade-project resource control stuff.
+
+	* src/glade-gtk.c, src/glade-property.c: 
+	  fixed for new syntax of glade_project_add_object()
+
+	* src/glade-project-window.c: 
+	  o Manage project menuitems and "merge-id" outside of glade-project.
+	  o New api glade_util_ui_message
+
+	* src/glade-project.[ch]:
+	  Added "resource-update"/"resource-removed" signals and functions:
+	    o glade_project_set_resource ()
+	    o glade_project_list_resources ()
+	    o glade_project_resource_fullpath ()
+	  Removed:
+	    o glade_project_get_menuitem ()
+	    o glade_project_get_menuitem_merge_id ()
+	  Now a new "old_project" parameter to glade_project_add_object ()
+
+	* src/glade-property-class.[ch], src/glade.h: 
+	  o Added support for "resource" tag  in catalogs 
+	  o Resource file path substituting when generating gvalues
+	    (modified glade_property_class_make_gvalue_from_string API).
+
+	* src/glade-utils.[ch]:
+	  o Enhanced version of glade_util_ui_message
+	  o glade_util_copy_file () added
+
+	* src/glade-widget.c: Adjusted for new version of 
+	  glade_property_class_make_gvalue_from_string
+
+	* widgets/adding-widgets.txt: Updated manual for resource tag.
+
 2006-01-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.c: Added glade_util_canonical_path ()

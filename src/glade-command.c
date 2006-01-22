@@ -46,6 +46,7 @@
 typedef struct {
 	GladeWidget      *widget;
 	GladeWidget      *parent;
+	GladeProject     *project;
 	GladePlaceholder *placeholder;
 	GList            *pack_props;
 } CommandData;
@@ -824,7 +825,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 		{
 			glade_project_add_object 
 				(GLADE_PROJECT (cdata->widget->project),
-				 cdata->widget->object);
+				 NULL, cdata->widget->object);
 			glade_default_app_selection_add 
 				(cdata->widget->object, TRUE);
 		}
@@ -979,8 +980,9 @@ glade_command_delete (GList *widgets)
 		widget = list->data;
 		if (widget->internal)
 		{
-			glade_util_ui_warn (glade_default_app_get_window(),
-					    _("You cannot delete a widget internal to a composite widget."));
+			glade_util_ui_message (glade_default_app_get_window(),
+					       GLADE_UI_WARN,
+					       _("You cannot delete a widget internal to a composite widget."));
 			return;
 		}
 	}
@@ -1126,11 +1128,12 @@ GLADE_MAKE_COMMAND (GladeCommandCutCopyPaste, glade_command_cut_copy_paste);
 static gboolean
 glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProject       *project = glade_default_app_get_active_project ();
+	GladeProject       *active_project = 
+		glade_default_app_get_active_project ();
 	CommandData        *cdata;
 	GList              *list, *remove = NULL, *l;
 
-	if (project && me->widgets)
+	if (me->widgets)
 	{
 		glade_default_app_selection_clear (FALSE);
 
@@ -1201,10 +1204,11 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 			if (me->from_clipboard && 
 			    GTK_WIDGET_TOPLEVEL (cdata->widget->object))
 				glade_project_add_object 
-					(project, cdata->widget->object);
+					(active_project, cdata->project,
+					 cdata->widget->object);
 			else
 				glade_project_add_object
-					(GLADE_PROJECT (me->project), 
+					(me->project, cdata->project, 
 					 cdata->widget->object);
 			
 			glade_default_app_selection_add
@@ -1406,8 +1410,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			widget = list->data;
 			if (widget->internal)
 			{
-				glade_util_ui_warn 
+				glade_util_ui_message 
 					(glade_default_app_get_window(), 
+					 GLADE_UI_WARN,
 					 _("You cannot copy/cut a widget "
 					   "internal to a composite widget."));
 				return;
@@ -1425,8 +1430,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			if (parent == NULL &&
 			    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
 			{
-				glade_util_ui_warn 
+				glade_util_ui_message 
 					(glade_default_app_get_window(), 
+					 GLADE_UI_WARN,
 					 _("Only top-level widgets can be "
 					   "pasted without a parent."));
 				return;
@@ -1435,8 +1441,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			if (placeholder &&
 			    GTK_WIDGET_TOPLEVEL (widget->object))
 			{
-				glade_util_ui_warn 
+				glade_util_ui_message 
 					(glade_default_app_get_window(), 
+					 GLADE_UI_WARN,
 					 _("You cannot paste a top-level "
 					   "to a placeholder."));
 				return;
@@ -1550,6 +1557,14 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 							glade_property_dup (GLADE_PROPERTY (l->data),
 									    cdata->widget));
 		}
+
+		/* Save a copy of the original project so we can 
+		 * forward that to glade-project, who'll copy in
+		 * any resource files needed by any properties that
+		 * are getting cross-project pasted.
+		 */
+		if (type == GLADE_PASTE)
+			cdata->project = cdata->widget->project;
 
 		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
