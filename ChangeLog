@@ -1,5 +1,10 @@
 2006-01-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-signal.c: Load userdata/object field from parser
+	  info onto the GladeSignal object properly (fixed bug 326715).
+
+2006-01-22  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-app.c: Removed chdir code
 
 	* src/glade-command.c: Remember original project in paste commands

@@ -151,9 +151,10 @@ GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 	g_return_val_if_fail (info != NULL, NULL);
 
 	signal = g_new0 (GladeSignal, 1);
-	signal->name = g_strdup (info->name);
-	signal->handler = g_strdup (info->handler);
-	signal->after = info->after;
+	signal->name     = g_strdup (info->name);
+	signal->handler  = g_strdup (info->handler);
+	signal->after    = info->after;
+	signal->userdata = g_strdup (info->object);
 
 	if (!signal->name)
 		return NULL;
