@@ -608,11 +608,11 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 
 			if (string)
 			{
-				fullpath = g_build_filename
-					(project->path, string, NULL);
-				
+				fullpath = 
+					glade_project_resource_fullpath (project,
+									 string);
 				if ((pixbuf = gdk_pixbuf_new_from_file
-				     (string, NULL)) != NULL)
+				     (fullpath, NULL)) != NULL)
 				{
 					g_object_set_data_full (G_OBJECT(pixbuf), 
 								"GladeFileName",
@@ -620,7 +620,6 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 								g_free);
 					g_value_take_object (value, G_OBJECT(pixbuf));
 				}
-				
 				g_free (fullpath);
 			}
 			else

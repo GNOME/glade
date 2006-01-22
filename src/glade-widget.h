@@ -206,6 +206,9 @@ LIBGLADEUI_API GladeWidgetInfo        *glade_widget_write                  (Glad
 LIBGLADEUI_API GladeWidget            *glade_widget_read                   (GladeProject     *project,
 									    GladeWidgetInfo  *info);
 
+LIBGLADEUI_API gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
+LIBGLADEUI_API void                    glade_widget_launch_editor          (GladeWidget      *widget);
+
 /* helper functions */
 #define			glade_widget_get_from_gobject(w)  \
     g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")

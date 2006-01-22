@@ -3025,3 +3025,48 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 
 	return widget;
 }
+
+/**
+ * glade_widget_get_launcher:
+ * @widget: a #GladeWidget
+ *
+ * Returns: whether there is a #GladeEditorLaunchFunc provided by
+ *          the backend for @widget (or any of its parents)
+ */
+gboolean
+glade_widget_has_launcher (GladeWidget *widget)
+{
+	GladeWidget *parent;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	parent = widget;
+	do
+	{
+		if (parent->widget_class->launch_editor != NULL)
+			return TRUE;
+	} while ((parent = parent->parent) != NULL);
+	return FALSE;
+}
+
+/**
+ * glade_widget_launch_editor:
+ * @widget: a #GladeWidget
+ *
+ * Launches a custom editor from the backend for thie widget.
+ */
+void
+glade_widget_launch_editor (GladeWidget *widget)
+{
+	GladeWidget *parent;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	parent = widget;
+	do
+	{
+		if (parent->widget_class->launch_editor != NULL)
+		{
+			parent->widget_class->launch_editor (parent->object);
+			break;
+		}
+	} while ((parent = parent->parent) != NULL);
+}

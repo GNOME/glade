@@ -1378,13 +1378,13 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 		    xmlNodeAddContent(packing, BAD_CAST("  "));
 		node = xmlNewNode(NULL, BAD_CAST("property"));
 		xmlSetProp(node, BAD_CAST("name"), BAD_CAST(childinfo->properties[k].name));
-		if (childinfo->properties[i].translatable)
+		if (childinfo->properties[k].translatable)
 		    xmlSetProp(node, BAD_CAST("translatable"), BAD_CAST("yes"));
-		if (childinfo->properties[i].has_context)
+		if (childinfo->properties[k].has_context)
 		    xmlSetProp(node, BAD_CAST("context"), BAD_CAST("yes"));
-		if (childinfo->properties[i].comment)
+		if (childinfo->properties[k].comment)
 		    xmlSetProp(node, BAD_CAST("comments"), 
-			       BAD_CAST(childinfo->properties[i].comment));
+			       BAD_CAST(childinfo->properties[k].comment));
 		xmlNodeSetContent(node, BAD_CAST(childinfo->properties[k].value));
 		xmlAddChild(packing, node);
 		xmlNodeAddContent(packing, BAD_CAST("\n"));

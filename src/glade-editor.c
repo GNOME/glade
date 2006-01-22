@@ -89,8 +89,7 @@ static void
 glade_editor_on_launch_click (GtkButton *button,
 			     GladeEditor *editor)
 {
-	g_assert (editor->loaded_class->launch_editor);
-	editor->loaded_class->launch_editor (editor->loaded_widget->object);
+	glade_widget_launch_editor (editor->loaded_widget);
 }
 
 static void
@@ -475,11 +474,6 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 	glade_editor_load_common_page  (editor, class);
 	glade_editor_load_signal_page  (editor, class);
 	
-	if (class && class->launch_editor)
-		gtk_widget_show (editor->launch_button);
-	else
-		gtk_widget_hide (editor->launch_button);
-	
 	editor->loaded_class = class;
 }
 
@@ -570,6 +564,13 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
 	glade_editor_load_packing_page (editor, widget);
 	glade_signal_editor_load_widget (editor->signal_editor, widget);
+
+
+	if (widget && glade_widget_has_launcher (widget))
+		gtk_widget_show (editor->launch_button);
+	else
+		gtk_widget_hide (editor->launch_button);
+
 
 	/* we are just clearing, we are done */
 	if (widget == NULL)

@@ -1,5 +1,18 @@
 2006-01-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-property-class.c: Fixed broken pixbuf properties :)
+
+	* src/glade-widget.[ch]: Added glade_widget_has_launcher &
+	  glade_widget_launch_editor.
+
+	* src/glade-parser.c: Fixed segfault (oops).
+
+	* src/glade-editor.c: Use glade_widget_has_launcher &
+	  glade_widget_launch_editor (now "Edit..." button comes up
+	  for custom editors in the ancestry).
+
+2006-01-22  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-parser.[ch]: Implemented load/save of "translatable",
 	  "context" and "comments" attributes on properties (atk or not)
 
