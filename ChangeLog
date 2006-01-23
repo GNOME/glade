@@ -1,5 +1,12 @@
 2006-01-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-editor-property.c: Fixed nasty segfault when
+	  property signal connections get leeked (no more leeks).
+
+	* src/glade-gtk.c: Added comments
+
+2006-01-22  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-property-class.c: Fixed broken pixbuf properties :)
 
 	* src/glade-widget.[ch]: Added glade_widget_has_launcher &

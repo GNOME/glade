@@ -2651,6 +2651,7 @@ glade_gtk_menu_editor_use_stock_changed (GladeProperty *property,
 static void
 glade_gtk_menu_editor_eprop_destroyed (GtkWidget *object, gpointer data)
 {
+	/* This will disconnect signals attatched to the property by the menu-editor */
 	g_signal_handlers_disconnect_matched (GLADE_EDITOR_PROPERTY (object)->property,
 					      G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, data);
 }
@@ -2812,7 +2813,8 @@ glade_gtk_menu_editor_reorder_children (GtkWidget *menushell,
 					GtkTreeModel *model,
 					GtkTreeIter *child)
 {
-	GladeWidget *gitem;
+	GladeWidget   *gitem;
+	GladeProperty *property;
 	GtkTreeIter parent, iter;
         GValue val = {0, };
 	gint position = 0;
@@ -2828,7 +2830,9 @@ glade_gtk_menu_editor_reorder_children (GtkWidget *menushell,
 	{
 		gtk_tree_model_get (model, &iter, GLADEGTK_MENU_GWIDGET, &gitem, -1);
                 g_value_set_int (&val, position++);
-                glade_command_set_property (glade_widget_get_property (gitem, "position"), &val);
+
+		if ((property = glade_widget_get_property (gitem, "position")) != NULL)
+			glade_command_set_property (property, &val);
 	} while (gtk_tree_model_iter_next (model, &iter));
 }
 
@@ -2938,6 +2942,11 @@ glade_gtk_menu_editor_item_change_type (GladeGtkMenuEditor *e,
 	}
 	else
 	{
+		/* FIXME: Scrap this, write generic code that will 
+		 * loop over common GladeProperties and set them accordingly
+		 * (other widget properties can be set through the normal
+		 * editor/project-view selection, no need to loose these values).
+		 */
 		glade_widget_property_set (gitem_new, "label", label);
 		glade_widget_property_set (gitem_new, "use-underline", TRUE);
 		glade_widget_property_set (gitem_new, "tooltip", tooltip);

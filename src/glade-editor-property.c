@@ -140,7 +140,7 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 	gtk_widget_set_sensitive (eprop->input, sensitive);
 }
 
-static void
+void
 glade_editor_property_value_changed_cb (GladeProperty       *property,
 					GValue              *value,
 					GladeEditorProperty *eprop)
@@ -286,6 +286,7 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 				   GladeProperty       *property)
 {
 	GladeProject *project;
+
 	
 	/* disconnect anything from previously loaded property */
 	if (eprop->property != property && eprop->property != NULL) 
@@ -293,13 +294,13 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		project = glade_widget_get_project (eprop->property->widget);
 
 		if (eprop->tooltip_id > 0)
-			g_signal_handler_disconnect (G_OBJECT (eprop->property),
+			g_signal_handler_disconnect (eprop->property,
 						     eprop->tooltip_id);
 		if (eprop->sensitive_id > 0)
 			g_signal_handler_disconnect (eprop->property, 
 						     eprop->sensitive_id);
 		if (eprop->changed_id > 0)
-			g_signal_handler_disconnect (eprop->property, 
+			g_signal_handler_disconnect (eprop->property,
 						     eprop->changed_id);
 		if (eprop->enabled_id > 0)
 			g_signal_handler_disconnect (eprop->property, 
@@ -312,10 +313,15 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		eprop->changed_id   = 0;
 		eprop->enabled_id   = 0;
 		eprop->closed_id   = 0;
+
+		/* For a reason I cant quite tell yet, this is the only
+		 * safe way to nullify the property member of the eprop
+		 * without leeking signal connections to properties :-/
+		 */
+		if (property == NULL) 
+			eprop->property = NULL;
 	}
 
-	eprop->property = NULL;
-	
 	/* Connect new stuff, deal with tooltip
 	 */
 	if (eprop->property != property && property != NULL)
@@ -380,7 +386,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 	 */
 	editor_property_class = eprop_class;
 	table_class           = g_type_class_peek_parent (eprop_class);
-
 	object_class          = G_OBJECT_CLASS (eprop_class);
 
 	/* GObjectClass */
@@ -409,7 +414,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 		  FALSE, G_PARAM_READWRITE));
 
 	/* Resolve label colors once class wide.
-	 * (is this called more than once ??? XXX)
 	 */
 	label = gtk_label_new ("");
 	insensitive_colour = gdk_color_copy (&(GTK_WIDGET (label)->style->fg[GTK_STATE_INSENSITIVE]));
