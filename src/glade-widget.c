@@ -3059,7 +3059,7 @@ glade_widget_launch_editor (GladeWidget *widget)
 {
 	GladeWidget *parent;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	parent = widget;
 	do
 	{
