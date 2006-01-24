@@ -1494,7 +1494,7 @@ glade_util_copy_file (const gchar  *src_path,
 {
 	GIOChannel *src, *dest;
 	GError     *error = NULL;
-	GIOStatus   read_status, write_status;
+	GIOStatus   read_status, write_status = G_IO_STATUS_ERROR;
 	gchar       buffer[GLADE_UTIL_COPY_BUFFSIZE];
 	gsize       bytes_read, bytes_written, written;
 	gboolean    success = FALSE;
