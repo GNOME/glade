@@ -97,6 +97,8 @@ LIBGLADEUI_API gboolean          glade_util_copy_file             (const gchar  
 
 
 
+LIBGLADEUI_API gboolean          glade_util_is_toplevel           (GladeWidget *widget);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

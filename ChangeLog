@@ -1,3 +1,11 @@
+2006-01-24  Lluis Sanchez Gual <lluis@novell.com>
+
+	* glade-utils.c: Created glade_util_is_toplevel, which replaces
+	  calls to GTK_WIDGET_TOPLEVEL and works for embedded windows.
+ 
+	* src/glade-command.c, src/glade-popup.c, src/glade-widget.c:
+	  Use glade_util_is_toplevel instead of GTK_WIDGET_TOPLEVEL.
+	
 2006-01-24  Raphael Higino  <raphaelh@cvs.gnome.org>
 
 	* configure.in: Added pt_BR to ALL_LINGUAS.

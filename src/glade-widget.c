@@ -828,7 +828,7 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	 */
 	glade_widget_sync_custom_props (gwidget);
 
-	if (GTK_IS_WIDGET (gwidget->object) && !GTK_WIDGET_TOPLEVEL(gwidget->object))
+	if (GTK_IS_WIDGET (gwidget->object) && !glade_util_is_toplevel(gwidget))
 		gtk_widget_show_all (GTK_WIDGET (gwidget->object));
 	
 	return gwidget;
@@ -1830,12 +1830,17 @@ GladeWidget *
 glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 {
 	GtkWidget *toplevel_widget;
+	GladeWidget *glade_widget;
 	gint top_x;
 	gint top_y;
 	
-	toplevel_widget = gtk_widget_get_toplevel (base);
-	if (!GTK_WIDGET_TOPLEVEL (toplevel_widget))
-		return NULL;
+	toplevel_widget = base;
+	glade_widget = glade_widget_get_from_gobject (base);
+	
+	while (!glade_util_is_toplevel (glade_widget)) {
+		toplevel_widget = gtk_widget_get_parent (glade_widget->object);
+		glade_widget = glade_widget_get_from_gobject (toplevel_widget);
+	}
 
 	gtk_widget_translate_coordinates (base, toplevel_widget, x, y, &top_x, &top_y);
 	return glade_widget_find_deepest_child_at_position
