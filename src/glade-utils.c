@@ -1141,7 +1141,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 	{
 		widget = list->data;
 
-		if (glade_util_is_toplevel (widget) == FALSE && parent)
+		if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE && parent)
 		{
 			/* Ensure a paste is supported
 			 */
@@ -1164,7 +1164,7 @@ glade_util_paste_clipboard (GladePlaceholder *placeholder,
 	g_assert (widget);
 
 	/* Ensure enough placeholders are available */
-	if (glade_util_is_toplevel (widget) == FALSE &&
+	if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
 	    parent && parent->manager != NULL &&
 	    gtkcontainer_relations != 1) 
 	{
@@ -1602,34 +1602,3 @@ glade_util_copy_file (const gchar  *src_path,
 	}
 	return success;
 }
-
-/**
- * glade_util_is_toplevel:
- * @widget: a #GladeWidget
- *
- * Checks if a Glade widget is a top level widget, taking into
- * account that windows can be embedded in other windows.
- *
- * Returns: TRUE if @widget is a top level widget.
- * 
- */
-gboolean
-glade_util_is_toplevel (GladeWidget *widget)
-{
-	GtkWidget *parent_widget;
-	
-	/* FIXME: We need to handle non GtkWidget objects here too,
-	 * we'll have to make a "toplevel" tag on the GladeWidgetClass
-	 * to identify widgets that are created as toplevels, such
-	 * as GtkWindow & GtkAdjustments...
-	 *
-	 * Is it possible to have objects like GtkAdjustment that
-	 * "can be toplevel" but also "can be a child" ???
-	 */
-	if (!GTK_IS_WIDGET (widget->object))
-		return FALSE;
-
-	parent_widget = gtk_widget_get_parent (widget->object);
-	return parent_widget == NULL || glade_widget_get_from_gobject (parent_widget) == NULL; 
-}
-

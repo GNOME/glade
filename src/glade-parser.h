@@ -132,7 +132,6 @@ GladeInterface *glade_parser_parse_file   (const gchar *file,
 					   const gchar *domain);
 GladeInterface *glade_parser_parse_buffer (const gchar *buffer, gint len,
 					   const gchar *domain);
-GladeInterface *glade_interface_new ();
 void            glade_interface_destroy   (GladeInterface  *interface);
 void            glade_interface_dump      (GladeInterface  *interface,
 					   const gchar     *filename);

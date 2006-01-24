@@ -1202,7 +1202,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 
 			/* Toplevels get pasted to the active project */
 			if (me->from_clipboard && 
-			    glade_util_is_toplevel (cdata->widget))
+			    GTK_WIDGET_TOPLEVEL (cdata->widget->object))
 				glade_project_add_object 
 					(active_project, cdata->project,
 					 cdata->widget->object);
@@ -1428,7 +1428,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		{
 			widget = list->data;
 			if (parent == NULL &&
-			    glade_util_is_toplevel (widget) == FALSE)
+			    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
 			{
 				glade_util_ui_message 
 					(glade_default_app_get_window(), 
@@ -1439,7 +1439,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			}
 
 			if (placeholder &&
-			    glade_util_is_toplevel (widget))
+			    GTK_WIDGET_TOPLEVEL (widget->object))
 			{
 				glade_util_ui_message 
 					(glade_default_app_get_window(), 
@@ -1499,7 +1499,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			cdata->parent = glade_widget_get_parent (widget);
 		else if (type == GLADE_PASTE && placeholder)
 			cdata->parent = glade_placeholder_get_parent (placeholder);
-		else if (glade_util_is_toplevel (widget) == FALSE)
+		else if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
 			cdata->parent = parent;
 
 		/* Placeholder */
