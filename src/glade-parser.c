@@ -1175,7 +1175,9 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
     GladeParseState state = { 0 };
 
     if (!g_file_test(file, G_FILE_TEST_IS_REGULAR)) {
-	g_warning("could not find glade file '%s'", file);
+	glade_util_ui_message (glade_default_app_get_window (), 
+			       GLADE_UI_ERROR,
+			       _("Couldnt find glade file %s"), file);
 	return NULL;
     }
 
@@ -1186,13 +1188,17 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
 	state.domain = textdomain(NULL);
 
     if (xmlSAXUserParseFile(&glade_parser, &state, file) < 0) {
-	g_warning("document not well formed");
+	glade_util_ui_message (glade_default_app_get_window (), 
+			       GLADE_UI_ERROR,
+			       _("Errors parsing glade file %s"), file);
 	if (state.interface)
 	    glade_interface_destroy (state.interface);
 	return NULL;
     }
     if (state.state != PARSER_FINISH) {
-	g_warning("did not finish in PARSER_FINISH state");
+	glade_util_ui_message (glade_default_app_get_window (), 
+			       GLADE_UI_ERROR,
+			       _("Errors parsing glade file %s"), file);
 	if (state.interface)
 	    glade_interface_destroy(state.interface);
 	return NULL;

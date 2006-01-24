@@ -2,6 +2,23 @@
 
 	* configure.in: Added pt_BR to ALL_LINGUAS.
 
+2006-01-23  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project.c: Fixed broken resource pool & wrote some doc.
+	  Now save the "<required lib="..."/> catalog requirements to the 
+	  glade file and complain when loading glade files that demand
+	  unavailable catalogs.
+
+	* src/glade-widget-class.[ch]: Added widget_class->catalog
+	
+	* src/glade-catalog.[ch]: Added glade_catalog_is_loaded (), call
+	  gwc_new with catname arg.
+
+	* src/glade-parser.c: Added glade_util_ui_message error messaging
+	  when having errors loading glade files.
+
+	* src/glade-project-window.c: Removed redundant error message.
+	
 2006-01-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor-property.c: Fixed nasty segfault when

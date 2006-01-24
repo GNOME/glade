@@ -76,7 +76,9 @@ static gboolean        catalog_load_group   (GladeCatalog     *catalog,
 
 void                   widget_group_free    (GladeWidgetGroup *group);
 
-
+/* List of catalog names successfully loaded.
+ */
+static GList *loaded_catalogs = NULL;
 
 static GladeCatalog *
 catalog_open (const gchar *filename)
@@ -112,6 +114,7 @@ catalog_open (const gchar *filename)
 	catalog = g_new0 (GladeCatalog, 1);
 	catalog->context = context;
 	catalog->name    = glade_xml_get_property_string (root, GLADE_TAG_NAME);
+	loaded_catalogs = g_list_prepend (loaded_catalogs, g_strdup (catalog->name));
 
 	if (!catalog->name) 
 	{
@@ -240,7 +243,7 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 			continue;
 	
 		widget_class = glade_widget_class_new 
-			(node, catalog->library, 
+			(node, catalog->name, catalog->library, 
 			 catalog->domain ? catalog->domain : catalog->library);
 
 		catalog->widget_classes = g_list_prepend (catalog->widget_classes,
@@ -463,4 +466,13 @@ glade_widget_group_get_widget_classes (GladeWidgetGroup *group)
 	return group->widget_classes;
 }
 
-
+gboolean
+glade_catalog_is_loaded (const gchar *name)
+{
+	GList *l;
+	g_return_val_if_fail (name != NULL, FALSE);
+	for (l = loaded_catalogs; l; l = l->next)
+		if (!strcmp (name, (gchar *)l->data))
+			return TRUE;
+	return FALSE;
+}

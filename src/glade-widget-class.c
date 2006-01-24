@@ -94,6 +94,7 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 
 	g_free (widget_class->generic_name);
 	g_free (widget_class->name);
+	g_free (widget_class->catalog);
 
 	g_list_foreach (widget_class->properties, (GFunc) glade_property_class_free, NULL);
 	g_list_free (widget_class->properties);
@@ -961,7 +962,10 @@ glade_widget_class_load_library (const gchar *library_name)
 }
 
 GladeWidgetClass *
-glade_widget_class_new (GladeXmlNode *class_node, const gchar *library, const gchar *domain)
+glade_widget_class_new (GladeXmlNode *class_node,
+			const gchar  *catname, 
+			const gchar  *library, 
+			const gchar  *domain)
 {
 	GladeWidgetClass *widget_class;
 	gchar            *name, *generic_name, *ptr;
@@ -1025,8 +1029,12 @@ glade_widget_class_new (GladeXmlNode *class_node, const gchar *library, const gc
 	widget_class->generic_name = generic_name;
 	widget_class->palette_name = title;
 	widget_class->in_palette   = title ? TRUE : FALSE;
+	widget_class->type         = glade_util_get_type_from_name (name);
 
-	widget_class->type = glade_util_get_type_from_name (name);
+	/* Dont mention gtk+ as a required lib in the generated glade file */
+	if (strcmp (catname, "gtk+"))
+		widget_class->catalog = g_strdup (catname);
+
 	if (widget_class->type == 0)
 	{
 		glade_widget_class_free (widget_class);

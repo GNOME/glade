@@ -71,6 +71,10 @@ struct _GladeWidgetClass
 
 	gchar *name;         /* Name of the widget, for example GtkButton */
 
+	gchar *catalog;      /* The name of the widget catalog this class
+			      * was declared by.
+			      */
+
 	GdkPixbuf *icon;     /* The GdkPixbuf icon for the widget */
 
 	gchar *generic_name; /* Use to generate names of new widgets, for
@@ -171,6 +175,7 @@ struct _GladeWidgetClassSignal
 };
  
 LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
+									   const gchar      *catname,
 									   const gchar      *library,
 									   const gchar      *domain);
 LIBGLADEUI_API void                 glade_widget_class_free               (GladeWidgetClass *widget_class);

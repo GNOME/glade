@@ -1493,13 +1493,8 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 		return;
 	}
 	
-	project = glade_project_open (path);
-	if (!project)
-	{
-		glade_util_ui_message (gpw->priv->window, GLADE_UI_ERROR,
-				       _("Could not open project."));
+	if ((project = glade_project_open (path)) == NULL)
 		return;
-	}
 
 	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);

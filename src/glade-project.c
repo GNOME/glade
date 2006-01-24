@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <glib/gi18n-lib.h>
 #include <glib/gstdio.h>
 
 #include "glade.h"
@@ -40,6 +41,7 @@
 #include "glade-utils.h"
 #include "glade-id-allocator.h"
 #include "glade-app.h"
+#include "glade-catalog.h"
 
 static void glade_project_class_init (GladeProjectClass *class);
 static void glade_project_init (GladeProject *project);
@@ -335,7 +337,8 @@ glade_project_on_widget_notify (GladeWidget *widget, GParamSpec *arg, GladeProje
 static void
 gp_sync_resources (GladeProject *project, 
 		   GladeProject *prev_project,
-		   GladeWidget  *gwidget)
+		   GladeWidget  *gwidget,
+		   gboolean      remove)
 {
 	GList          *prop_list, *l;
 	GladeProperty  *property;
@@ -351,22 +354,31 @@ gp_sync_resources (GladeProject *project,
 		if (property->class->resource)
 		{
 			GValue value = { 0, };
+
+			if (remove)
+			{
+				glade_project_set_resource (project, property, NULL);
+				continue;
+			}
+
 			glade_property_get_value (property, &value);
 			
-			resource = glade_property_class_make_string_from_gvalue
-				(property->class, &value);
-			full_resource = glade_project_resource_fullpath
-				(prev_project ? prev_project : project, resource);
+			if ((resource = glade_property_class_make_string_from_gvalue
+			     (property->class, &value)) != NULL)
+			{
+				full_resource = glade_project_resource_fullpath
+					(prev_project ? prev_project : project, resource);
 			
-			/* Use a full path here so that the current
-			 * working directory isnt used.
-			 */
-			glade_project_set_resource (project, 
-						    property,
-						    full_resource);
-
-			g_free (resource);
-			g_free (full_resource);
+				/* Use a full path here so that the current
+				 * working directory isnt used.
+				 */
+				glade_project_set_resource (project, 
+							    property,
+							    full_resource);
+				
+				g_free (full_resource);
+				g_free (resource);
+			}
 			g_value_unset (&value);
 		}
 	}
@@ -376,7 +388,8 @@ gp_sync_resources (GladeProject *project,
 static void
 glade_project_sync_resources_for_widget (GladeProject *project, 
 					 GladeProject *prev_project,
-					 GladeWidget  *gwidget)
+					 GladeWidget  *gwidget,
+					 gboolean      remove)
 {
 	GList *children, *l;
 	GladeWidget *gchild;
@@ -388,34 +401,12 @@ glade_project_sync_resources_for_widget (GladeProject *project,
 		if ((gchild = 
 		     glade_widget_get_from_gobject (l->data)) != NULL)
 			glade_project_sync_resources_for_widget 
-				(project, prev_project, gchild);
+				(project, prev_project, gchild, remove);
 	if (children)
 		g_list_free (children);
 
-	gp_sync_resources (project, prev_project, gwidget);
+	gp_sync_resources (project, prev_project, gwidget, remove);
 }
-
-static void
-glade_project_sync_resources (GladeProject *project,
-			      GladeProject *old_project)
-{
-	GList          *list;
-	GladeWidget    *gwidget;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	for (list = project->objects; list; list = list->next)
-	{
-		if ((gwidget = glade_widget_get_from_gobject (list->data)) != NULL)
-		{
-			gp_sync_resources (project, 
-					   old_project ? old_project : project, 
-					   gwidget);
-		}
-		else g_critical ("Project object found without glade widget wrapper");
-	}
-}
-
 
 /**
  * glade_project_add_object:
@@ -484,7 +475,7 @@ glade_project_add_object (GladeProject *project,
 	/* Call this once at the end for every recursive call */
 	if (--reentrancy_count == 0)
 		glade_project_sync_resources_for_widget
-			(project, old_project, gwidget);
+			(project, old_project, gwidget, FALSE);
 }
 
 /**
@@ -614,7 +605,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	/* Call this once at the end for every recursive call */
 	if (--reentrancy_count == 0)
-		glade_project_sync_resources (project, NULL);
+		glade_project_sync_resources_for_widget (project, NULL, gwidget, TRUE);
 }
 
 /**
@@ -736,7 +727,7 @@ glade_project_is_selected (GladeProject *project,
  * @project: a #GladeProject
  * @emit_signal: whether or not to emit a signal indication a selection change
  *
- * TODO: write me
+ * Clears @project's selection chain
  *
  * If @emit_signal is %TRUE, calls glade_project_selection_changed().
  */
@@ -759,10 +750,11 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 /**
  * glade_project_selection_remove:
  * @project: a #GladeProject
- * @widget:
- * @emit_signal: whether or not to emit a signal indication a selection change
+ * @object:  a #GObject in @project
+ * @emit_signal: whether or not to emit a signal 
+ *               indicating a selection change
  *
- * TODO: write me
+ * Removes @object from the selection chain of @project
  *
  * If @emit_signal is %TRUE, calls glade_project_selection_changed().
  */
@@ -787,10 +779,11 @@ glade_project_selection_remove (GladeProject *project,
 /**
  * glade_project_selection_add:
  * @project: a #GladeProject
- * @widget:
- * @emit_signal: whether or not to emit a signal indication a selection change
+ * @object:  a #GObject in @project
+ * @emit_signal: whether or not to emit a signal indicating 
+ *               a selection change
  *
- * TODO: write me
+ * Adds @object to the selection chain of @project
  *
  * If @emit_signal is %TRUE, calls glade_project_selection_changed().
  */
@@ -816,10 +809,11 @@ glade_project_selection_add (GladeProject *project,
 /**
  * glade_project_selection_set:
  * @project: a #GladeProject
- * @widget:
- * @emit_signal: whether or not to emit a signal indication a selection change
+ * @object:  a #GObject in @project
+ * @emit_signal: whether or not to emit a signal 
+ *               indicating a selection change
  *
- * TODO: write me
+ * Set the selection in @project to @object
  *
  * If @emit_signal is %TRUE, calls glade_project_selection_changed().
  */
@@ -857,6 +851,37 @@ glade_project_selection_get (GladeProject *project)
 	return project->selection;
 }
 
+static GList *
+glade_project_required_libs (GladeProject *project)
+{
+	GList       *required = NULL, *l, *ll;
+	GladeWidget *gwidget;
+	gboolean     listed;
+
+	for (l = project->objects; l; l = l->next)
+	{
+		gwidget = glade_widget_get_from_gobject (l->data);
+		g_assert (gwidget);
+
+		if (gwidget->widget_class->catalog)
+		{
+			listed = FALSE;
+			for (ll = required; ll; ll = ll->next)
+				if (!strcmp ((gchar *)ll->data, 
+					     gwidget->widget_class->catalog))
+				{
+					listed = TRUE;
+					break;
+				}
+
+			if (!listed)
+				required = g_list_prepend 
+					(required, gwidget->widget_class->catalog);
+		}
+	}
+	return required;
+}
+
 /**
  * glade_project_write:
  * @project: a #GladeProject
@@ -865,13 +890,26 @@ glade_project_selection_get (GladeProject *project)
  *          project and its contents
  */
 static GladeInterface *
-glade_project_write (const GladeProject *project)
+glade_project_write (GladeProject *project)
 {
-	GladeInterface *interface;
-	GList *list, *tops = NULL;
-	guint i;
+	GladeInterface  *interface;
+	GList           *required, *list, *tops = NULL;
+	gchar          **strv = NULL;
+	guint            i;
 
 	interface = glade_interface_new ();
+
+	if ((required = glade_project_required_libs (project)) != NULL)
+	{
+		strv = g_malloc0 (g_list_length (required) * sizeof (char *));
+		for (i = 0, list = required; list; i++, list = list->next)
+			strv[i] = g_strdup (list->data);
+
+		g_list_free (required);
+
+		interface->n_requires = g_list_length (required);
+		interface->requires   = strv;
+	}
 
 	for (i = 0, list = project->objects; list; list = list->next)
 	{
@@ -911,14 +949,44 @@ glade_project_set_changed_to_false_idle (gpointer data)
 	return FALSE;
 }
 
+static gboolean
+loadable_interface (GladeInterface *interface, const gchar *path)
+{
+	GString *string = g_string_new (NULL);
+	gboolean loadable = TRUE;
+	guint i;
+
+	/* Check for required plugins here
+	 */
+	for (i = 0; i < interface->n_requires; i++)
+		if (!glade_catalog_is_loaded (interface->requires[i]))
+		{
+			g_string_append (string, interface->requires[i]);
+			loadable = FALSE;
+		}
+
+	if (loadable == FALSE)
+		glade_util_ui_message (glade_default_app_get_window(),
+				       GLADE_UI_ERROR,
+				       _("Failed to load %s, the following required "
+					 "catalogs are unavailable: %s"),
+				       path, string->str);
+	g_string_free (string, TRUE);
+	return loadable;
+}
+
 static GladeProject *
 glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 {
 	GladeProject *project;
-	GladeWidget *widget;
+	GladeWidget  *widget;
 	guint i;
 
 	g_return_val_if_fail (interface != NULL, NULL);
+	g_return_val_if_fail (path != NULL, NULL);
+
+	if (loadable_interface (interface, path) == FALSE)
+		return NULL;
 
 	project = glade_project_new (FALSE);
 
@@ -929,9 +997,6 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	project->name = g_path_get_basename (path);
 	project->selection = NULL;
 	project->objects = NULL;
-
-	if (interface->n_requires)
-		g_warning ("We currently do not support projects requiring additional libs");
 
 	for (i = 0; i < interface->n_toplevels; ++i)
 	{
@@ -995,28 +1060,26 @@ glade_project_fix_object_props (GladeProject *project)
 GladeProject *
 glade_project_open (const gchar *path)
 {
-	GladeProject *project;
+	GladeProject *project = NULL;
 	GladeInterface *interface;
 	
 	g_return_val_if_fail (path != NULL, NULL);
 
-	interface = glade_parser_parse_file (path, NULL);
-	if (!interface)
-		return NULL;
-
-	project = glade_project_new_from_interface (interface, path);
-	
-	glade_interface_destroy (interface);
-
-	/* Now we have to loop over all the object properties
-	 * and fix'em all ('cause they probably weren't found)
-	 */
-	glade_project_fix_object_props (project);
-
-	/* Resources have to be bookkept after the load.
-	 */
-	glade_project_sync_resources (project, NULL);
-
+	if ((interface = 
+	     glade_parser_parse_file (path, NULL)) != NULL)
+	{
+		if ((project = 
+		     glade_project_new_from_interface (interface, 
+						       path)) != NULL)
+		{
+			/* Now we have to loop over all the object properties
+			 * and fix'em all ('cause they probably weren't found)
+			 */
+			glade_project_fix_object_props (project);
+		}
+		
+		glade_interface_destroy (interface);
+	}
 	return project;
 }
 
@@ -1077,7 +1140,6 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 	ret = glade_interface_dump_full (interface, path, error);
 	glade_interface_destroy (interface);
-
 
 	canonical_path = glade_util_canonical_path (path);
 
