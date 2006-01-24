@@ -1,3 +1,15 @@
+2006-01-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* glade-app.[ch]: glade_app_[undo/redo]_button_new()
+	  new functions to create undo/redo buttons which are updated
+	  automatically.
+
+	* glade-gtk.c: glade_gtk_table_has_child() improved 
+	  (bug 325791 still open, now the glade file loads right
+	  but editing packing properties of GtkTable children still
+	  does not remove/add placeholders accordingly)
+	  undo/redo buttons added to MenuBarEditor
+
 2006-01-24  Tristan Van Berkom <tvb@gnome.org>
 
 	Reverted last change by Lluis since it introduced a bug in

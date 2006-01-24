@@ -101,6 +101,9 @@ LIBGLADEUI_API GtkWindow         *glade_app_get_transient_parent (GladeApp *app)
 LIBGLADEUI_API void               glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group);
 LIBGLADEUI_API void               glade_app_update_instance_count  (GladeApp *app, GladeProject *project);
 
+LIBGLADEUI_API GtkWidget 	 *glade_app_undo_button_new (GladeApp *app);
+LIBGLADEUI_API GtkWidget 	 *glade_app_redo_button_new (GladeApp *app);
+
 /* Default glade application */
 LIBGLADEUI_API void               glade_default_app_set (GladeApp *app);
 LIBGLADEUI_API GtkWidget*         glade_default_app_get_window (void);
@@ -131,7 +134,8 @@ LIBGLADEUI_API void               glade_default_app_selection_remove (GObject   
 								      gboolean      emit_signal);
 LIBGLADEUI_API void               glade_default_app_selection_clear  (gboolean      emit_signal);
 LIBGLADEUI_API void               glade_default_app_selection_changed(void);
-
+LIBGLADEUI_API GtkWidget	         *glade_default_app_undo_button_new  (void);
+LIBGLADEUI_API GtkWidget	         *glade_default_app_redo_button_new  (void);
 
 G_END_DECLS
 

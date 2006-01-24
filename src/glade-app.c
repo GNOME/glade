@@ -82,6 +82,7 @@ struct _GladeAppPriv {
 				      * GladeWidgets.
 				      */
 	GtkAccelGroup *accel_group;	/* Default acceleration group for this app */
+	GList *undo_list, *redo_list;	/* Lists of buttons to refresh in update-ui signal */
 };
 
 enum
@@ -332,6 +333,64 @@ glade_app_get_transient_parent (GladeApp  *app)
 }
 
 static void
+glade_app_refresh_undo_redo_button (GladeApp *app,
+				    GtkWidget *button,
+				    gboolean undo)
+{
+	GladeCommand *command = NULL;
+	static GtkTooltips *button_tips = NULL;
+	GladeProject *project;
+	gchar *desc;
+
+	if (button_tips == NULL)
+		button_tips = gtk_tooltips_new ();
+	
+	if ((project = glade_app_get_active_project (app)) != NULL)
+	{
+		if (undo)
+			command = glade_command_next_undo_item (project);
+		else
+			command = glade_command_next_redo_item (project);
+	}
+
+	/* Change tooltips */
+	desc = g_strdup_printf ((undo) ? _("Undo: %s") : _("Redo: %s"),
+			command ? command->description : _("the last action"));
+	gtk_tooltips_set_tip (GTK_TOOLTIPS (button_tips), button, desc, NULL);
+	g_free (desc);
+
+	/* Set sensitivity on the button */
+	gtk_widget_set_sensitive (button, command != NULL);
+}
+
+void
+glade_app_undo_redo_button_update_ui (GladeApp *app)
+{
+	GList *list;
+	gboolean clean_undo_list = FALSE, clean_redo_list = FALSE;
+	
+	for (list = app->priv->undo_list; list; list = list->next)
+	{
+		if (list->data)
+			glade_app_refresh_undo_redo_button (app, list->data, TRUE);
+		else
+			clean_undo_list = TRUE;
+	}
+	if (clean_undo_list)
+		app->priv->undo_list = g_list_remove_all (app->priv->undo_list, NULL);
+		
+	for (list = app->priv->redo_list; list; list = list->next)
+	{
+		if (list->data)
+			glade_app_refresh_undo_redo_button (app, list->data, FALSE);
+		else
+			clean_redo_list = TRUE;
+	}
+	if (clean_redo_list)
+		app->priv->redo_list = g_list_remove_all (app->priv->redo_list, NULL);
+}
+
+static void
 glade_app_init (GladeApp *app)
 {
 	static gboolean initialized = FALSE;
@@ -394,6 +453,12 @@ glade_app_init (GladeApp *app)
 
 	/* Load the configuration file */
 	app->priv->config = glade_app_config_load (app);
+	
+	/* Undo/Redo button list */
+	app->priv->undo_list = app->priv->redo_list = NULL;
+	g_signal_connect (app, "update-ui", 
+			  G_CALLBACK (glade_app_undo_redo_button_update_ui),
+			  NULL);	
 }
 
 GType
@@ -807,6 +872,48 @@ glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group)
 	app->priv->accel_group = accel_group;
 }
 
+static GtkWidget *
+glade_app_undo_redo_button_new (GladeApp *app, gboolean undo)
+{
+	GtkWidget *button;
+	
+	button = gtk_button_new_from_stock ((undo) ? 
+					    GTK_STOCK_UNDO : 
+					    GTK_STOCK_REDO);
+	
+	g_signal_connect_swapped (button, "clicked",
+				  (undo) ? G_CALLBACK (glade_app_command_undo) : 
+					   G_CALLBACK (glade_app_command_redo),
+				  app);
+	
+	if (undo)
+	{
+		app->priv->undo_list = g_list_prepend (app->priv->undo_list, button);
+		g_object_add_weak_pointer (G_OBJECT (button), &app->priv->undo_list->data);
+	}
+	else
+	{
+		app->priv->redo_list = g_list_prepend (app->priv->redo_list, button);
+		g_object_add_weak_pointer (G_OBJECT (button), &app->priv->redo_list->data);
+	}
+	
+	glade_app_refresh_undo_redo_button (app, button, undo);
+	
+	return button;
+}
+
+GtkWidget *
+glade_app_undo_button_new (GladeApp *app)
+{
+	return glade_app_undo_redo_button_new (app, TRUE);
+}
+
+GtkWidget *
+glade_app_redo_button_new (GladeApp *app)
+{
+	return glade_app_undo_redo_button_new (app, FALSE);
+}
+
 /* Default application convinience functions */
 
 static GladeApp *glade_default_app = NULL;
@@ -1027,3 +1134,16 @@ glade_default_app_selection_changed (void)
 	}
 }
 
+GtkWidget *
+glade_default_app_undo_button_new (void)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_undo_redo_button_new (glade_default_app, TRUE);
+}
+
+GtkWidget *
+glade_default_app_redo_button_new (void)
+{
+	g_return_val_if_fail (glade_default_app != NULL, NULL);
+	return glade_app_undo_redo_button_new (glade_default_app, FALSE);
+}

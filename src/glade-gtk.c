@@ -496,25 +496,15 @@ glade_gtk_notebook_verify_n_pages (GObject *object, GValue *value)
 
 /* GtkTable */
 static gboolean
-glade_gtk_table_has_child (GtkTable *table,
-			   guint left_attach,
-			   guint right_attach,
-			   guint top_attach,
-			   guint bottom_attach)
+glade_gtk_table_has_child (GtkTable *table, guint left_attach, guint top_attach)
 {
 	GList *list;
 
 	for (list = table->children; list && list->data; list = list->next)
 	{
 		GtkTableChild *child = list->data;
-		
-		if (child->left_attach   == left_attach &&
-		    child->right_attach  == right_attach &&
-		    child->top_attach    == top_attach &&
-		    child->bottom_attach == bottom_attach)
-
-		if (left_attach >= child->left_attach && left_attach <= child->right_attach &&
-		    top_attach >= child->top_attach && top_attach <= child->bottom_attach)
+		if (left_attach >= child->left_attach && left_attach < child->right_attach &&
+		    top_attach >= child->top_attach && top_attach < child->bottom_attach)
 			return TRUE;
 
 	}
@@ -585,8 +575,7 @@ glade_gtk_table_set_n_common (GObject *object, GValue *value, gboolean for_rows)
 
 	for (i = 0; i < table->ncols; i++)
 		for (j = 0; j < table->nrows; j++)
-			if (glade_gtk_table_has_child
-			    (table, i, i + 1, j, j + 1) == FALSE)
+			if (glade_gtk_table_has_child (table, i, j) == FALSE)
 				gtk_table_attach_defaults
 					(table, glade_placeholder_new (),
 					 i, i + 1, j, j + 1);
@@ -1950,8 +1939,7 @@ glade_gtk_menu_shell_set_child_property (GObject *container,
 	if (position < 0)
 	{
 		position = glade_gtk_menu_shell_get_item_position (container, child);
-		glade_widget_property_set (gitem, "position", position);
-		return;
+		g_value_set_int (value, position);
 	}
 	
 	g_object_ref (child);
@@ -3332,7 +3320,7 @@ glade_gtk_menu_editor_project_remove_widget (GladeProject *project,
 	}
 	
 	if (glade_gtk_menu_editor_is_child (e, widget))
-		g_idle_add (glade_gtk_menu_editor_update_treeview_idle, e);
+		glade_gtk_menu_editor_update_treeview_idle (e);
 
 }
 
@@ -3411,10 +3399,12 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	GladeGtkMenuEditor *e;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
-	GtkWidget *vbox, *signal_editor_w, *paned, *hbox, *prop_vbox;
-	GtkWidget *label, *scroll, *item, *button, *buttonbox;
+	GtkWidget *vbox, *signal_editor_w, *paned, *hbox, *prop_vbox, *tree_vbox;
+	GtkWidget *label, *scroll, *item, *button, *buttonbox, *button_table;
 	gchar *title;
 
+	if (menubar == NULL) return NULL;
+		
 	if (g_object_get_data (menubar, "GladeGtkMenuEditor")) return NULL;
 	
 	/* Editor's struct */
@@ -3474,11 +3464,15 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	hbox = gtk_hbox_new (FALSE, 8);
 	gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, FALSE);
 	
+	/* TreeView Vbox */
+	tree_vbox = gtk_vbox_new (FALSE, 8);
+	gtk_box_pack_start (GTK_BOX (hbox), tree_vbox, FALSE, TRUE, 0);
+	
 	/* ScrolledWindow */
 	scroll = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-	gtk_box_pack_start (GTK_BOX (hbox), scroll, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (tree_vbox), scroll, TRUE, TRUE, 0);
 
 	/* TreeView */
 	e->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (e->store));
@@ -3511,6 +3505,19 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	gtk_tree_view_append_column (GTK_TREE_VIEW (e->treeview), column);
 
 	gtk_container_add (GTK_CONTAINER (scroll), e->treeview);
+	
+	/* Add/Remove buttons */
+	button_table = gtk_table_new (1, 2, TRUE);
+	gtk_table_set_col_spacings (GTK_TABLE (button_table), 8);
+	gtk_box_pack_start (GTK_BOX (tree_vbox), button_table, FALSE, TRUE, 0);
+	
+	button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
+	gtk_table_attach_defaults (GTK_TABLE (button_table), button, 0, 1, 0, 1);
+
+	e->remove_button = button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
+	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_delete_item_activate), e);
+	gtk_table_attach_defaults (GTK_TABLE (button_table), button, 1, 2, 0, 1);
 	
 	/* PopUp */
 	e->popup = gtk_menu_new ();
@@ -3561,12 +3568,10 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
 	gtk_box_pack_start (GTK_BOX (vbox), buttonbox, FALSE, TRUE, 0);
 
-	button = gtk_button_new_from_stock (GTK_STOCK_ADD);
-	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
+	button = glade_default_app_undo_button_new ();
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
-	e->remove_button = button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
-	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_delete_item_activate), e);
+	button = glade_default_app_redo_button_new ();
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
@@ -3592,24 +3597,17 @@ glade_gtk_menu_bar_launch_editor (GObject *menubar)
 	{
 		gtk_window_set_default_size (GTK_WINDOW (editor->window), 600, 440);
 		gtk_widget_show (editor->window);
+		return;
 	}
 	else
 	{
-		GtkWidget *dialog;
 		GladeWidget *gmenubar = glade_widget_get_from_gobject (menubar);
 		
-		dialog = gtk_message_dialog_new (NULL,
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_INFO,
-				GTK_BUTTONS_OK,
-				_("An MenuBar editor is already runing for \"%s\""),
-				glade_widget_get_name (gmenubar));
-		
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), 
-			_("It is not posible to launch more than one editor per menubar."));
-		
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+		glade_util_ui_message (GTK_WIDGET (glade_default_app_get_transient_parent ()),
+					GLADE_UI_INFO,
+					_("An MenuBar editor is already runing for \"%s\"\n"
+					  "It is not posible to launch more than one editor per menubar."),
+					(gmenubar) ? glade_widget_get_name (gmenubar) : _("unknown"));
 	}
 }
 
