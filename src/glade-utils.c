@@ -725,7 +725,7 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 		goto out;
 
 	/* Find the corresponding GtkWidget */
-	gdk_window_get_user_data (expose_win, (gpointer *)&expose_widget);
+	gdk_window_get_user_data (expose_win, (gpointer)&expose_widget);
 
 	gc = expose_widget->style->black_gc;
 

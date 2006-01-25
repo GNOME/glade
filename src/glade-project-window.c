@@ -1592,6 +1592,10 @@ static void
 glade_project_window_update_ui (GladeApp *app)
 {
 	GladeProjectWindow *gpw = GLADE_PROJECT_WINDOW (app);
+	
+	/* Chain Up */
+	GLADE_APP_CLASS (parent_class)->update_ui_signal (app);
+	
 	gpw_refresh_title (gpw);
 	glade_project_window_refresh_undo_redo (gpw);
 }

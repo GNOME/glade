@@ -1,3 +1,16 @@
+2006-01-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* glade-app.c: undo/redo buttons cleanup.
+	  Use of "destroy" signal instead of week pointers and
+	  use update-ui default handler to update buttons.
+
+	* glade-project-window.c: glade_project_window_update_ui() chain up
+	  with GLADE_APP_CLASS update-ui handler.
+
+2006-01-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.in: Bumping required gtk version to 2.8
+
 2006-01-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: use glade_project_display_name (),

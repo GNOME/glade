@@ -49,7 +49,7 @@ AM_GLIB_GNU_GETTEXT
 dnl ================================================================
 dnl Start of pkg-config checks
 dnl ================================================================
-PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.4.0  libxml-2.0 >= 2.4.0)
+PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.6.0  libxml-2.0 >= 2.4.0)
 AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
 
