@@ -447,17 +447,34 @@ glade_widget_sync_packing_props (GladeWidget *widget)
 	}
 }
 
-static void
-glade_widget_copy_props (GladeWidget *widget,
-			 GladeWidget *template)
+/**
+ * glade_widget_copy_properties:
+ * @widget:   a 'dest' #GladeWidget
+ * @template: a 'src' #GladeWidget
+ *
+ * Sets properties in @widget based on the values of
+ * matching properties in @template
+ */
+void
+glade_widget_copy_properties (GladeWidget *widget,
+			      GladeWidget *template)
 {
 	GList *l;
 	for (l = widget->properties; l && l->data; l = l->next)
 	{
-		GladeProperty *dup_prop  = GLADE_PROPERTY(l->data);
-		GladeProperty *orig_prop =
-			glade_widget_get_property (template, dup_prop->class->id);
-		glade_property_set_value (dup_prop, orig_prop->value);
+		GladeProperty *widget_prop  = GLADE_PROPERTY(l->data);
+		GladeProperty *template_prop;
+	
+		/* Check if they share the same class definition, different
+		 * properties may have the same name (support for
+		 * copying properties across "not-quite" compatible widget
+		 * classes, like GtkImageMenuItem --> GtkCheckMenuItem).
+		 */
+		if ((template_prop =
+		     glade_widget_get_property (template, 
+						widget_prop->class->id)) != NULL &&
+		    glade_property_class_match (template_prop->class, widget_prop->class))
+			glade_property_set_value (widget_prop, template_prop->value);
 	}
 }
 
@@ -821,7 +838,7 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	}
 
 	if (gwidget->internal)
-		glade_widget_copy_props (gwidget, template);
+		glade_widget_copy_properties (gwidget, template);
 	
 	/* If custom properties are still at thier
 	 * default value, they need to be synced.
@@ -1410,14 +1427,11 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 	g_return_val_if_fail (id_property != NULL, NULL);
 
-
 	for (list = widget->packing_properties; list; list = list->next) {
 		property = list->data;
 		if (strcmp (property->class->id, id_property) == 0)
 			return property;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return NULL;
 }
 
@@ -1449,6 +1463,8 @@ glade_widget_property_get (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1479,6 +1495,8 @@ glade_widget_property_set (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1509,6 +1527,8 @@ glade_widget_pack_property_get (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1539,6 +1559,8 @@ glade_widget_pack_property_set (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1569,6 +1591,8 @@ glade_widget_property_set_sensitive (GladeWidget      *widget,
 		glade_property_set_sensitive (property, sensitive, reason);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 
 }
@@ -1600,6 +1624,8 @@ glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
 		glade_property_set_sensitive (property, sensitive, reason);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1629,6 +1655,8 @@ glade_widget_property_set_enabled (GladeWidget      *widget,
 		glade_property_set_enabled (property, enabled);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 
 }
@@ -1659,6 +1687,8 @@ glade_widget_pack_property_set_enabled (GladeWidget      *widget,
 		glade_property_set_enabled (property, enabled);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1685,6 +1715,8 @@ glade_widget_property_reset (GladeWidget   *widget,
 		glade_property_reset (property);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1710,6 +1742,8 @@ glade_widget_pack_property_reset (GladeWidget   *widget,
 		glade_property_reset (property);
 		return TRUE;
 	}
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1731,6 +1765,9 @@ glade_widget_property_default (GladeWidget *widget,
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 		return glade_property_default (property);
+
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -1752,6 +1789,9 @@ glade_widget_pack_property_default (GladeWidget *widget,
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 		return glade_property_default (property);
+
+	g_critical ("Unable to find property %s on widget %s of class %s",
+		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 

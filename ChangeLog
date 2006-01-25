@@ -1,3 +1,26 @@
+2006-01-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project-window.c: use glade_project_display_name (),
+	  reverted transientness for glade-3 application
+
+	* src/glade-command.c: Dont spam the stack with fake name
+	  changes.
+
+	* src/glade-editor-property.c: Added return check
+
+	* src/glade-gtk.c: Use glade_widget_copy_properties to
+	  transfer prop values on type-changing menu items,
+	  menu-editor --> modal window.
+
+	* src/glade-project.[ch]: Added glade_project_display_name ()
+
+	* src/glade-property-class.[ch]: Assign pspec->owner_type when
+	  parsing pspecs, added glade_property_class_match ()
+
+	* src/glade-widget.[ch]: Made glade_widget_copy_props exposed to
+	  glade_widget_copy_properties and rewrote it (also redistributed
+	  some g_critical()s ).
+
 2006-01-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* glade-app.[ch]: glade_app_[undo/redo]_button_new()

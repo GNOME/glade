@@ -1347,3 +1347,27 @@ glade_project_list_resources (GladeProject  *project)
 			      (GHFunc)list_resources_accum, &list);
 	return list;
 }
+
+
+
+/**
+ * glade_project_display_name:
+ * @project: A #GladeProject
+ *
+ * Returns: A newly allocated string to uniquely 
+ *          describe this open project.
+ *       
+ */
+gchar *
+glade_project_display_name (GladeProject *project)
+{
+	gchar *final_name = NULL;
+	if (project->instance > 0)
+		final_name = g_strdup_printf ("%s <%d>", 
+					      project->name, 
+					      project->instance);
+	else
+		final_name = g_strdup (project->name);
+
+	return final_name;
+}

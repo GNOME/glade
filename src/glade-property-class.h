@@ -157,6 +157,10 @@ LIBGLADEUI_API gchar              *glade_property_class_get_displayable_value   
 										 gint                value);
 LIBGLADEUI_API GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *class);
 
+LIBGLADEUI_API gboolean            glade_property_class_match                   (GladePropertyClass *class,
+										 GladePropertyClass *comp);
+
+
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */

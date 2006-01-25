@@ -738,6 +738,11 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (name != NULL);
 
+	/* Dont spam the queue with false name changes.
+	 */
+	if (!strcmp (widget->name, name))
+		return;
+
 	me = g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
 	cmd = GLADE_COMMAND (me);
 

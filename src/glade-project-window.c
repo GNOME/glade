@@ -80,11 +80,15 @@ static void
 gpw_refresh_title (GladeProjectWindow *gpw)
 {
 	GladeProject *active_project;
-	gchar *title;
+	gchar *title, *disp;
 
 	active_project = glade_app_get_active_project (GLADE_APP (gpw));
 	if (active_project)
-		title = g_strdup_printf ("%s - %s", WINDOW_TITLE, active_project->name);
+	{
+		disp = glade_project_display_name (active_project);
+		title = g_strdup_printf ("%s - %s", WINDOW_TITLE, disp);
+		g_free (disp);
+	}
 	else
 		title = g_strdup_printf ("%s", WINDOW_TITLE);
 
@@ -354,8 +358,9 @@ gpw_recent_project_clear_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 {
-	GError              *error = NULL;
-	gchar               *display_path = g_strdup (path);
+	GError  *error = NULL;
+	gchar   *display_name = glade_project_display_name (project),
+		*display_path = g_strdup (path);
 
 	/* Interestingly; we cannot use `path' after glade_project_reset_path
 	 * because we are getting called with project->path as an argument.
@@ -365,9 +370,10 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 		/* Reset path so future saves will prompt the file chooser */
 		glade_project_reset_path (project);
 		glade_util_ui_message (gpw->priv->window, GLADE_UI_ERROR, 
-				       _("Failed to save %s to %s: %s"),
-				       project->name, display_path, error->message);
+				       _("Failed to save %s: %s"),
+				       display_path, error->message);
 		g_error_free (error);
+		g_free (display_path);
 		return;
 	}
 	
@@ -381,7 +387,10 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	gpw_refresh_title (gpw);
 	glade_util_flash_message (gpw->priv->statusbar,
 				  gpw->priv->statusbar_actions_context_id,
-				  _("Project '%s' saved"), project->name);
+				  _("Project '%s' saved"), display_name);
+
+	g_free (display_path);
+	g_free (display_name);
 }
 
 static void
@@ -682,7 +691,6 @@ gpw_create_palette (GladeProjectWindow *gpw)
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->palette_window), -1,
 				     GLADE_PALETTE_DEFAULT_HEIGHT);
 
-	gtk_window_set_transient_for (gpw->priv->palette_window, GTK_WINDOW (gpw->priv->window));
 
 	gtk_window_set_title (gpw->priv->palette_window, _("Palette"));
 	gtk_window_set_type_hint (gpw->priv->palette_window, GDK_WINDOW_TYPE_HINT_UTILITY);
@@ -768,8 +776,6 @@ gpw_create_editor (GladeProjectWindow *gpw)
 
 	gpw->priv->editor_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 400, 450);
-
-	gtk_window_set_transient_for (gpw->priv->editor_window, GTK_WINDOW (gpw->priv->window));
 
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
 	gtk_window_move (gpw->priv->editor_window, 350, 0);
@@ -901,8 +907,6 @@ gpw_create_clipboard_view (GladeProjectWindow *gpw)
 	GtkWidget *clipboard_item;
 	
 	view = glade_app_get_clipboard_view (GLADE_APP (gpw));
-
-	gtk_window_set_transient_for (GTK_WINDOW (view), GTK_WINDOW (gpw->priv->window));
 
 	g_signal_connect (G_OBJECT (view), "delete_event",
 			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
@@ -1347,8 +1351,6 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	g_free (filename);
 	gpw->priv->window = app;
 
-	glade_app_set_transient_parent (GLADE_APP (gpw), GTK_WINDOW (app));
-
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (app), vbox);
 	gpw->priv->main_vbox = vbox;
@@ -1386,21 +1388,17 @@ glade_project_window_create (GladeProjectWindow *gpw)
 static void
 gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 {
-	gchar *underscored_name, *action_name, *final_name;
+	gchar *final_name, *action_name, *display_name;
 	GtkWidget *action;
 	guint merge_id;
 	
 	/* double the underscores in the project name
 	 * (or they will just underscore the next character) */
-	underscored_name = glade_util_duplicate_underscores (project->name);
-	if (!underscored_name)
+	display_name = glade_project_display_name (project);
+	if ((final_name = 
+	     glade_util_duplicate_underscores (display_name)) == NULL)
 		return;
 
-	if (project->instance > 0)
-		final_name = g_strdup_printf ("%s <%d>", underscored_name, project->instance);
-	else
-		final_name = g_strdup (underscored_name);
-	
 	action_name = g_strdup_printf ("select[%s]", final_name);
 	
 	action = (GtkWidget *)gtk_toggle_action_new (action_name, final_name,
@@ -1429,7 +1427,7 @@ gpw_project_menuitem_add (GladeProjectWindow *gpw, GladeProject *project)
 	g_object_set_data (G_OBJECT (project), "merge_id", GINT_TO_POINTER (merge_id));
 
 	g_free (action_name);
-	g_free (underscored_name);
+	g_free (display_name);
 	g_free (final_name);
 }
 

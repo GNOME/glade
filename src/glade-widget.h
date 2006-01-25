@@ -131,6 +131,10 @@ LIBGLADEUI_API void                    glade_widget_project_notify         (Glad
 LIBGLADEUI_API void                    glade_widget_show                   (GladeWidget      *widget);
 LIBGLADEUI_API void                    glade_widget_hide                   (GladeWidget      *widget);
 
+LIBGLADEUI_API void                    glade_widget_copy_properties        (GladeWidget      *widget,
+									    GladeWidget      *template);
+
+
 LIBGLADEUI_API void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
 									    GladeProperty    *property);
 LIBGLADEUI_API void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,

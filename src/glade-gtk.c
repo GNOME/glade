@@ -2935,9 +2935,8 @@ glade_gtk_menu_editor_item_change_type (GladeGtkMenuEditor *e,
 		 * (other widget properties can be set through the normal
 		 * editor/project-view selection, no need to loose these values).
 		 */
-		glade_widget_property_set (gitem_new, "label", label);
-		glade_widget_property_set (gitem_new, "use-underline", TRUE);
-		glade_widget_property_set (gitem_new, "tooltip", tooltip);
+
+		glade_widget_copy_properties (gitem_new, gitem);
 
 		if (submenu)
 		{
@@ -3444,6 +3443,7 @@ glade_gtk_menu_editor_new (GObject *menubar)
 		
 	/* Window */
 	e->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_modal (GTK_WINDOW (e->window), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (e->window), GDK_WINDOW_TYPE_HINT_DIALOG);
 	g_signal_connect (e->window, "destroy", G_CALLBACK (glade_gtk_menu_editor_destroyed), e);
 

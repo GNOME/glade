@@ -2298,6 +2298,8 @@ glade_editor_property_new_from_widget (GladeWidget *widget,
 	GladeProperty *p;
 	
 	p = glade_widget_get_property (widget, property);
+	g_return_val_if_fail (GLADE_IS_PROPERTY (p), NULL);
+
 	eprop = glade_editor_property_new (p->class, use_command);
 	glade_editor_property_load (eprop, p);
 	

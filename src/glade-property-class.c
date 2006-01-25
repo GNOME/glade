@@ -1003,8 +1003,10 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 /**
  * glade_property_class_update_from_node:
  * @node: the <property> node
- * @widget_class: the widget class
+ * @module: a #GModule to lookup symbols from the plugin
+ * @object_type: the #GType of the owning object
  * @property_class: a pointer to the property class
+ * @domain: the domain to translate catalog strings from.
  *
  * Updates the @property_class with the contents of the node in the xml
  * file. Only the values found in the xml file are overridden.
@@ -1015,7 +1017,7 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 gboolean
 glade_property_class_update_from_node (GladeXmlNode        *node,
 				       GModule             *module,
-				       GType                widget_type,
+				       GType                object_type,
 				       GladePropertyClass **property_class,
 				       const gchar         *domain)
 {
@@ -1054,6 +1056,11 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		/* ... get the tooltip from the pspec ... */
 		if ((class->pspec = glade_utils_get_pspec_from_funcname (buff)) != NULL)
 		{
+			/* Make sure we can tell properties apart by there 
+			 * owning class.
+			 */
+			class->pspec->owner_type = object_type;
+
 			if (class->tooltip) g_free (class->tooltip);
 			if (class->name)    g_free (class->name);
 			
@@ -1188,14 +1195,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_warning (_("The property [%s] of the widget's class [%s] "
 				     "needs a special \"set\" function, but there is "
 				     "no library associated to this widget's class."),
-				   class->name, g_type_name (widget_type));
+				   class->name, g_type_name (object_type));
 
 		if (!g_module_symbol (module, symbol_name, (gpointer *)
 				      &class->set_function))
 			g_warning (_("Unable to get the \"set\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from "
 				     "the module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (widget_type),
+				   symbol_name, class->name, g_type_name (object_type),
 				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
@@ -1212,14 +1219,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_warning (_("The property [%s] of the widget's class [%s] needs a "
 				     "special \"get\" function, but there is no library "
 				     "associated to this widget's class."),
-				   class->name, g_type_name (widget_type));
+				   class->name, g_type_name (object_type));
 
 		if (!g_module_symbol(module, symbol_name,
 				     (gpointer *) &class->get_function))
 			g_warning (_("Unable to get the \"get\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from the "
 				     "module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (widget_type),
+				   symbol_name, class->name, g_type_name (object_type),
 				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
@@ -1233,14 +1240,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_warning (_("The property [%s] of the widget's class [%s] needs a "
 				     "special \"get\" function, but there is no library "
 				     "associated to this widget's class."),
-				   class->name, g_type_name (widget_type));
+				   class->name, g_type_name (object_type));
 
 		if (!g_module_symbol(module, symbol_name,
 				     (gpointer *) &class->verify_function))
 			g_warning (_("Unable to get the \"verify\" function [%s] of the "
 				     "property [%s] of the widget's class [%s] from the "
 				     "module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (widget_type),
+				   symbol_name, class->name, g_type_name (object_type),
 				   g_module_name (module), g_module_error ());
 		g_free (symbol_name);
 	}
@@ -1249,4 +1256,27 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->is_modified = TRUE;
 
 	return TRUE;
+}
+
+
+
+/**
+ * glade_property_class_match:
+ *
+ * @class: a #GladePropertyClass
+ * @comp: a #GladePropertyClass
+ *
+ * Returns: whether @class and @comp are a match or not
+ *          (properties in seperate decendant heirarchies that
+ *           have the same name are not matches).
+ */
+gboolean
+glade_property_class_match (GladePropertyClass *class,
+			    GladePropertyClass *comp)
+{
+	g_return_val_if_fail (class != NULL, FALSE);
+	g_return_val_if_fail (comp != NULL, FALSE);
+
+	return (strcmp (class->id, comp->id) == 0 &&
+		class->pspec->owner_type == comp->pspec->owner_type);
 }

@@ -124,6 +124,8 @@ LIBGLADEUI_API GList        *glade_project_list_resources        (GladeProject  
 LIBGLADEUI_API gchar        *glade_project_resource_fullpath     (GladeProject  *project,
 								  const gchar  *resource);
 
+LIBGLADEUI_API gchar        *glade_project_display_name          (GladeProject  *project);
+
 
 G_END_DECLS
 
