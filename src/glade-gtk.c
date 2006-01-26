@@ -3602,11 +3602,10 @@ glade_gtk_menu_bar_launch_editor (GObject *menubar)
 	else
 	{
 		GladeWidget *gmenubar = glade_widget_get_from_gobject (menubar);
-		
 		glade_util_ui_message (GTK_WIDGET (glade_default_app_get_transient_parent ()),
-					GLADE_UI_INFO,
-					_("An MenuBar editor is already runing for \"%s\"\n"
-					  "It is not posible to launch more than one editor per menubar."),
+				       GLADE_UI_INFO,
+				       _("A MenuBar editor is already runing for \"%s\"\n"
+					 "Cannot launch more than one editor per menubar."),
 					(gmenubar) ? glade_widget_get_name (gmenubar) : _("unknown"));
 	}
 }

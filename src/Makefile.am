@@ -7,9 +7,13 @@ lib_LTLIBRARIES = libgladeui-1.la
 gladegtk_LTLIBRARIES = libgladegtk.la
 gladegtkdir = $(glade_modulesdir)
 
+BUILT_SOURCES = \
+        glade-marshallers.c \
+        glade-marshallers.h \
+	glade-paths.h
+
 CLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = \
-             glade-marshallers.list
+EXTRA_DIST = glade-marshallers.list
 
 libgladegtk_la_SOURCES = glade-gtk.c
 libgladegtk_la_LDFLAGS = -module -avoid-version
@@ -19,11 +23,6 @@ AM_CFLAGS = -g -Wall \
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
 	$(GLADE_CFLAGS)
-
-BUILT_SOURCES = \
-        glade-marshallers.c \
-        glade-marshallers.h \
-	glade-paths.h
 
 glade_3_LDADD = libgladeui-1.la
 

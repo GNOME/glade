@@ -1177,7 +1177,7 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
     if (!g_file_test(file, G_FILE_TEST_IS_REGULAR)) {
 	glade_util_ui_message (glade_default_app_get_window (), 
 			       GLADE_UI_ERROR,
-			       _("Couldnt find glade file %s"), file);
+			       _("Could not find glade file %s"), file);
 	return NULL;
     }
 

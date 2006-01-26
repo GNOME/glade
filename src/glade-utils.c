@@ -1509,7 +1509,7 @@ glade_util_copy_file (const gchar  *src_path,
 	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) == TRUE)
 		if (glade_util_ui_message
 		    (glade_default_app_get_window(), GLADE_UI_YES_OR_NO,
-		     _("%s exists. Do you want to replace it ?"), dest_path) == FALSE)
+		     _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)
 		    return FALSE;
 
 
@@ -1566,7 +1566,7 @@ glade_util_copy_file (const gchar  *src_path,
 				glade_util_ui_message
 					(glade_default_app_get_window(),
 					 GLADE_UI_ERROR,
-					 _("Error shutting down io channel %s: %s"),
+					 _("Error shutting down I/O channel %s: %s"),
 						       dest_path, error->message);
 				error = (g_error_free (error), NULL);
 				success = FALSE;

@@ -968,8 +968,8 @@ loadable_interface (GladeInterface *interface, const gchar *path)
 	if (loadable == FALSE)
 		glade_util_ui_message (glade_default_app_get_window(),
 				       GLADE_UI_ERROR,
-				       _("Failed to load %s, the following required "
-					 "catalogs are unavailable: %s"),
+				       _("Failed to load %s.\n"
+					 "The following required catalogs are unavailable: %s"),
 				       path, string->str);
 	g_string_free (string, TRUE);
 	return loadable;
