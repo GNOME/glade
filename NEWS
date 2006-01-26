@@ -1,3 +1,55 @@
+==============
+glade-3 2.91.0
+==============
+
+New features and fixes
+======================
+   - The amazing new menu editor is here ! (Juan Pablo Ugarte)
+   - Added GladeEditorProperty objects, a GtkWidget descendant
+     capable of editing properties (one subclass available for
+     every method of editing properties).
+   - GladeProjectView displays internal widget descriptors and
+     special-child-type descriptors
+   - Project menu item glitch fixed.
+   - Fixed "paste" using keyboard shortcuts
+   - Show "save as" dialog on save when previous save failed
+   - Added widgets GtkCombo, GtkList, GtkCList, ComboBox & ComboBoxEntry
+   - Delete in property editor not to delete project widgets (only text
+     in entries).
+   - Text properties now scroll (bugzilla 316232)
+   - Translate strings from catalog files (this includes translating
+     the gtk+.xml.in using intltool & using dgettext on strings parsed
+     from the catalog).
+   - Implemented command groups (for undo/redo actions on a complex
+     series of glade commands), used by the new editor.
+   - Undo/Redo buttons now display action content in tooltips.
+   - Added GladeEPropObject, generic support for object type properties.
+   - Updated plugin writer documentation (widgets/adding-widgets.txt)
+   - All project paths are now absolute canonical paths
+   - Added GladeEPropResource for resource file type properties,
+     glade will try to always keep a copy of all project resources
+     in the same directory as the glade file.
+   - Fixed signal loading (bug 326715)
+   - Fixed persisting i18n metadata (bug 325628)
+   - Implemented <requires> functionality in glade files
+     (save required plugins and gracefully display errors if
+     the requested catalog isnt available).
+   - Multiple projects with the same name now supported.
+   - Misc bugfixes and code improvements from myself Juan Pablo Ugarte and
+     Lluis Sanchez Gual
+
+
+New and updated translations
+============================
+
+   - Funda Wang (zh_CN)
+   - Francisco Javier F. Serrador (es)
+   - Adam Weinberger (en_CA)
+   - Kjartan Maraas (nb, no)
+   - Raphael Higino (pt_BR)
+
+
+
 What is new in glade-3 2.90.0
 =============================
 
