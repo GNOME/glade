@@ -69,7 +69,7 @@ struct _GladeProjectClass
 	void   (*selection_changed)   (GladeProject *project); 
 	void   (*close)               (GladeProject *project);
 
-	void   (*resource_updated)    (GladeProject *project,
+	void   (*resource_added)      (GladeProject *project,
 				       const gchar  *resource);
 	void   (*resource_removed)    (GladeProject *project,
 				       const gchar  *resource);

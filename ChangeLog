@@ -1,3 +1,13 @@
+2006-01-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-editor-property.c: GladeEPropFlags now shows
+	  treeview directly in editor - Mikael Hermansson
+
+	* src/glade-project.[ch]: Removed "resource-updated" signal,
+	  added "resource-added" signal, now resource signals seem to
+	  be working more logicly (but there will be no signal fired when
+	  a resource's contents is overwritten from a different source).
+
 2006-01-26  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in: Relesed 2.91.0, now we are working on 2.91.1

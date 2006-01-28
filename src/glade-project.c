@@ -55,7 +55,7 @@ enum
 	WIDGET_NAME_CHANGED,
 	SELECTION_CHANGED,
 	CLOSE,
-	RESOURCE_UPDATED,
+	RESOURCE_ADDED,
 	RESOURCE_REMOVED,
 	LAST_SIGNAL
 };
@@ -157,11 +157,11 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      0);
 
-	glade_project_signals[RESOURCE_UPDATED] =
-		g_signal_new ("resource-updated",
+	glade_project_signals[RESOURCE_ADDED] =
+		g_signal_new ("resource-added",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeProjectClass, resource_updated),
+			      G_STRUCT_OFFSET (GladeProjectClass, resource_added),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__STRING,
 			      G_TYPE_NONE,
@@ -188,7 +188,7 @@ glade_project_class_init (GladeProjectClass *class)
 	class->widget_name_changed = NULL;
 	class->selection_changed = NULL;
 	class->close = NULL;
-	class->resource_updated = NULL;
+	class->resource_added = NULL;
 	class->resource_removed = NULL;
 }
 
@@ -1252,6 +1252,18 @@ glade_project_resource_fullpath (GladeProject *project,
 }
 
 
+static gboolean
+find_resource_by_resource (GladeProperty *key,
+			   const gchar   *resource,
+			   const gchar   *resource_cmp)
+{
+	g_assert (resource);
+	g_assert (resource_cmp);
+	return (!strcmp (resource, resource_cmp));
+}
+
+
+
 /**
  * glade_project_set_resource:
  * @project: A #GladeProject
@@ -1274,24 +1286,32 @@ glade_project_set_resource (GladeProject  *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
-	last_resource = g_hash_table_lookup (project->resources, property);
-	if (resource) base_resource = g_path_get_basename (resource);
-
-	if (last_resource)
+	if ((last_resource = 
+	     g_hash_table_lookup (project->resources, property)) != NULL)
 		last_resource_dup = g_strdup (last_resource);
+
+	/* Get dependable input */
+	if (resource && resource[0] != '\0' && strcmp (resource, "."))
+		base_resource = g_path_get_basename (resource);
 	
+	/* If the resource has been removed or the base name has changed
+	 * then remove from hash and emit removed.
+	 */
 	if (last_resource_dup && 
 	    (base_resource == NULL || strcmp (last_resource_dup, base_resource)))
 	{
 		g_hash_table_remove (project->resources, property);
 
-		/* Emit remove signal
-		 */
-		g_signal_emit (G_OBJECT (project),
-			       glade_project_signals [RESOURCE_REMOVED],
-			       0, last_resource_dup);
+		if (g_hash_table_find (project->resources,
+				       (GHRFunc)find_resource_by_resource,
+				       last_resource_dup) == NULL)
+			g_signal_emit (G_OBJECT (project),
+				       glade_project_signals [RESOURCE_REMOVED],
+				       0, last_resource_dup);
 	}
 	
+	/* Copy files when importing widgets with resources.
+	 */
 	if (project->path)
 	{
 		dirname = g_path_get_dirname (project->path);
@@ -1301,20 +1321,35 @@ glade_project_set_resource (GladeProject  *project,
 		    g_file_test (resource, G_FILE_TEST_IS_REGULAR) &&
 		    strcmp (fullpath, resource))
 		{
+			/* FIXME: In the case of copy/pasting widgets
+			 * across projects we should ask the user about
+			 * copying any resources.
+			 */
 			glade_util_copy_file (resource, fullpath);
 		}
 		g_free (fullpath);
 		g_free (dirname);
 	}
 
-	g_hash_table_insert (project->resources, property, base_resource);
-
-	/* Emit update signal
-	 */
 	if (base_resource)
-		g_signal_emit (G_OBJECT (project),
-			       glade_project_signals [RESOURCE_UPDATED],
-			       0, base_resource);
+	{
+
+		/* If the resource has been added or the base name has 
+		 * changed then emit added.
+		 */
+		if ((last_resource_dup == NULL || 
+		     strcmp (last_resource_dup, base_resource)) &&
+		    g_hash_table_find (project->resources,
+				       (GHRFunc)find_resource_by_resource,
+				       base_resource) == NULL)
+			g_signal_emit (G_OBJECT (project),
+				       glade_project_signals [RESOURCE_ADDED],
+				       0, base_resource);
+
+		g_hash_table_insert (project->resources, property, base_resource);
+
+	}
+	g_free (last_resource_dup);
 }
 
 static void

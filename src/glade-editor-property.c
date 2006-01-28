@@ -733,7 +733,7 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 typedef struct {
 	GladeEditorProperty  parent_instance;
 
-	GtkWidget           *entry;
+	GtkTreeModel	*model;
 } GladeEPropFlags;
 
 GLADE_MAKE_EPROP (GladeEPropFlags, glade_eprop_flags)
@@ -755,84 +755,151 @@ static void
 glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
 	GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
-	gchar           *text;
+	GFlagsClass *class;
+	guint flag_num, value;
+	
 
 	/* Chain up first */
 	editor_property_class->load (eprop, property);
 	
 	if (property)
 	{
-		text = glade_property_class_make_string_from_flags
-			(eprop->class, g_value_get_flags(property->value),
-			 TRUE);
-		gtk_entry_set_text (GTK_ENTRY (eprop_flags->entry), text);
-		g_free (text);
+
+		/* Populate the model with the flags. */
+
+		class = g_type_class_ref (G_VALUE_TYPE (property->value));
+		value = g_value_get_flags (property->value);
+			
+		gtk_list_store_clear(GTK_LIST_STORE(eprop_flags->model));
+		/* Step through each of the flags in the class. */
+		for (flag_num = 0; flag_num < class->n_values; flag_num++) {
+			GtkTreeIter iter;
+			guint mask;
+			gboolean setting;
+			gchar *value_name;
+			
+			mask = class->values[flag_num].value;
+			setting = ((value & mask) == mask) ? TRUE : FALSE;
+			
+			value_name = glade_property_class_get_displayable_value
+				(eprop->class, class->values[flag_num].value);
+
+			if (value_name == NULL) value_name = class->values[flag_num].value_name;
+			
+			/* Add a row to represent the flag. */
+			gtk_list_store_append (GTK_LIST_STORE(eprop_flags->model), &iter);
+			gtk_list_store_set (GTK_LIST_STORE(eprop_flags->model), &iter,
+					    FLAGS_COLUMN_SETTING,
+					    setting,
+					    FLAGS_COLUMN_SYMBOL,
+					    value_name,
+					    -1);
+		}
+		g_type_class_unref(class);	
 	}
 }
 
+
 static void
-flag_toggled (GtkCellRendererToggle *cell,
-	      gchar                 *path_string,
-	      GtkTreeModel          *model)
+flag_toggled_direct (GtkCellRendererToggle *cell,
+		     gchar                 *path_string,
+		     GladeEditorProperty   *eprop)
 {
 	GtkTreeIter iter;
-	gboolean setting;
+	guint new_value;
+	gboolean selected;
+	guint value;
+	value = new_value =0;
+	gint flag_num=0;
+	GFlagsClass *class;
 
-	gtk_tree_model_get_iter_from_string (model, &iter, path_string);
+	GladeEPropFlags *eprop_flags= GLADE_EPROP_FLAGS(eprop);
 
-	gtk_tree_model_get (model, &iter,
-			    FLAGS_COLUMN_SETTING, &setting,
+	if (!eprop->property)
+		return ;
+
+	class = g_type_class_ref (G_VALUE_TYPE (eprop->property->value));
+	value = g_value_get_flags (eprop->property->value);
+
+	gtk_tree_model_get_iter_from_string (eprop_flags->model, &iter, path_string);
+
+	gtk_tree_model_get (eprop_flags->model, &iter,
+			    FLAGS_COLUMN_SETTING, &selected,
 			    -1);
 
-	setting = setting ? FALSE : TRUE;
+	selected = selected ? FALSE : TRUE;
 
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    FLAGS_COLUMN_SETTING, setting,
+	gtk_list_store_set (GTK_LIST_STORE (eprop_flags->model), &iter,
+			    FLAGS_COLUMN_SETTING, selected,
 			    -1);
+
+
+	gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_flags->model), &iter);
+
+	/* Step through each of the flags in the class, checking if
+	   the corresponding toggle in the dialog is selected, If it
+	   is, OR the flags' mask with the new value. */
+	for (flag_num = 0; flag_num < class->n_values; flag_num++) {
+		gboolean setting;
+
+		gtk_tree_model_get (GTK_TREE_MODEL (eprop_flags->model), &iter,
+				    FLAGS_COLUMN_SETTING, &setting,
+				    -1);
+
+		if (setting)
+			new_value |= class->values[flag_num].value;
+
+		gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_flags->model),
+					  &iter);
+	}
+
+	/* If the new_value is different from the old value, we need
+	   to update the property. */
+	if (new_value != value) {
+		GValue val = { 0, };
+
+		g_value_init (&val, G_VALUE_TYPE (eprop->property->value));
+		g_value_set_flags (&val, new_value);
+
+		if (eprop->use_command == FALSE)
+			glade_property_set_value (eprop->property, &val);
+		else
+			glade_command_set_property (eprop->property, &val);
+
+		g_value_unset (&val);
+	}
+
+
+
 }
 
-static void
-glade_eprop_flags_show_dialog (GtkWidget           *button,
-			       GladeEditorProperty *eprop)
+static GtkWidget*
+glade_eprop_flags_create_treeview(GladeEditorProperty *eprop)
 {
-	GtkWidget *editor;
-	GtkWidget *dialog;
 	GtkWidget *scrolled_window;
-	GtkListStore *model;
 	GtkWidget *tree_view;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
-	GFlagsClass *class;
-	gint response_id;
-	guint flag_num, value;
+	GladeEPropFlags *eprop_flags=GLADE_EPROP_FLAGS(eprop);
+	if (!eprop_flags->model)
+		eprop_flags->model = GTK_TREE_MODEL(gtk_list_store_new (2, G_TYPE_BOOLEAN, 
+									G_TYPE_STRING));
 
-	editor = gtk_widget_get_toplevel (button);
-	dialog = gtk_dialog_new_with_buttons (_("Set Flags"),
-					      GTK_WINDOW (editor),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-					      GTK_STOCK_CANCEL,
-					      GTK_RESPONSE_CANCEL,
-					      GTK_STOCK_OK,
-					      GTK_RESPONSE_OK,
-					      NULL);
-	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
 
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window), 
+					     GTK_SHADOW_IN);
 	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
 					GLADE_GENERIC_BORDER_WIDTH);
 
 	gtk_widget_show (scrolled_window);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    scrolled_window, TRUE, TRUE, 0);
 
-	/* Create the treeview using a simple list model with 2 columns. */
-	model = gtk_list_store_new (2, G_TYPE_BOOLEAN, G_TYPE_STRING);
+	
 
-	tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
+	tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (eprop_flags->model));
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
 	gtk_widget_show (tree_view);
 	gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
@@ -846,7 +913,8 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 					     NULL);
 
 	g_signal_connect (renderer, "toggled",
-			  G_CALLBACK (flag_toggled), model);
+			  G_CALLBACK (flag_toggled_direct), eprop);
+
 
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
@@ -857,81 +925,34 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
 
-	/* Populate the model with the flags. */
-	class = g_type_class_ref (G_VALUE_TYPE (eprop->property->value));
-	value = g_value_get_flags (eprop->property->value);
 
-	/* Step through each of the flags in the class. */
-	for (flag_num = 0; flag_num < class->n_values; flag_num++) {
-		GtkTreeIter iter;
-		guint mask;
-		gboolean setting;
-		gchar *value_name;
-		
-		mask = class->values[flag_num].value;
-		setting = ((value & mask) == mask) ? TRUE : FALSE;
-		
-		value_name = glade_property_class_get_displayable_value
-			(eprop->class, class->values[flag_num].value);
+	return scrolled_window;
+}
 
-		if (value_name == NULL) value_name = class->values[flag_num].value_name;
-		
-		/* Add a row to represent the flag. */
-		gtk_list_store_append (model, &iter);
-		gtk_list_store_set (model, &iter,
-				    FLAGS_COLUMN_SETTING,
-				    setting,
-				    FLAGS_COLUMN_SYMBOL,
-				    value_name,
-				    -1);
-	}
+static void
+glade_eprop_flags_show_dialog (GtkWidget           *button,
+			       GladeEditorProperty *eprop)
+{
+	GtkWidget *editor;
+	GtkWidget *dialog;
+	GtkWidget *scrolled_window;
+	guint      response_id ;
 
-	/* Run the dialog. */
+	editor = gtk_widget_get_toplevel (button);
+	dialog = gtk_dialog_new_with_buttons (_("Set Flags"),
+					      GTK_WINDOW (editor),
+					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_CANCEL,
+					      GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OK,
+					      GTK_RESPONSE_OK,
+					      NULL);
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
+
+	scrolled_window = glade_eprop_flags_create_treeview(eprop);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    scrolled_window, TRUE, TRUE, 0);
 	response_id = gtk_dialog_run (GTK_DIALOG (dialog));
-
-	/* If the user selects OK, update the flags property. */
-	if (response_id == GTK_RESPONSE_OK) {
-		GtkTreeIter iter;
-		guint new_value = 0;
-
-		gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
-
-		/* Step through each of the flags in the class, checking if
-		   the corresponding toggle in the dialog is selected, If it
-		   is, OR the flags' mask with the new value. */
-		for (flag_num = 0; flag_num < class->n_values; flag_num++) {
-			gboolean setting;
-
-			gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-					    FLAGS_COLUMN_SETTING, &setting,
-					    -1);
-
-			if (setting)
-				new_value |= class->values[flag_num].value;
-
-			gtk_tree_model_iter_next (GTK_TREE_MODEL (model),
-						  &iter);
-		}
-
-		/* If the new_value is different from the old value, we need
-		   to update the property. */
-		if (new_value != value) {
-			GValue val = { 0, };
-
-			g_value_init (&val, G_VALUE_TYPE (eprop->property->value));
-			g_value_set_flags (&val, new_value);
-
-			if (eprop->use_command == FALSE)
-				glade_property_set_value (eprop->property, &val);
-			else
-				glade_command_set_property (eprop->property, &val);
-
-			g_value_unset (&val);
-		}
-
-	}
-
-	g_type_class_unref (class);
 
 	gtk_widget_destroy (dialog);
 }
@@ -940,15 +961,13 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 static GtkWidget *
 glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 {
-	GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 	GtkWidget       *hbox;
 	GtkWidget       *button;
+	GtkWidget *widget;
 
 	hbox               = gtk_hbox_new (FALSE, 0);
-	eprop_flags->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_flags->entry), FALSE);
-	gtk_widget_show (eprop_flags->entry);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_flags->entry, TRUE, TRUE, 0);
+	widget = glade_eprop_flags_create_treeview(eprop);
+	gtk_box_pack_start (GTK_BOX (hbox), widget, TRUE, TRUE, 0);
 
 	button = gtk_button_new_with_label ("...");
 	gtk_widget_show (button);
@@ -957,6 +976,7 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_eprop_flags_show_dialog),
 			  eprop);
+
 	return hbox;
 }
 
