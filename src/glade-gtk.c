@@ -1584,7 +1584,7 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 	label = gtk_notebook_get_tab_label (notebook, current);
 
 	/* label may be NULL if the label was not set explicitely;
-	 * we probably sholud always craete our GladeWidget label
+	 * we probably should always craete our GladeWidget label
 	 * and add set it as tab label, but at the moment we don't.
 	 */
 	if (label)
@@ -2261,18 +2261,29 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 		image_item_class = glade_widget_class_get_by_type (GTK_TYPE_IMAGE_MENU_ITEM);
 	}
 	
+	gitem = glade_widget_new (parent,
+				  (use_stock) ? image_item_class : item_class,
+				  project);
+	glade_widget_property_set (gitem, "use-underline", TRUE);
+	
 	if (use_stock)
 	{
-		gitem = glade_widget_new (parent, image_item_class, project);
-		glade_widget_property_set (gitem, "use-stock", TRUE);
+		GEnumClass *eclass;
+		GEnumValue *eval;
+		
+		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
+		eval = g_enum_get_value_by_nick (eclass, label);
+		
+		if (eval)
+			glade_widget_property_set (gitem, "stock", eval->value);
+		
+		g_type_class_unref (eclass);
 	}
 	else
 	{
-		gitem = glade_widget_new (parent, item_class, project);
+		glade_widget_property_set (gitem, "label", label);
 	}
-
-	glade_widget_property_set (gitem, "use-underline", TRUE);
-	glade_widget_property_set (gitem, "label", label);
+	
 	item = glade_widget_get_object (gitem);
 	
 	glade_widget_class_container_add (glade_widget_get_class (parent),
@@ -2836,11 +2847,10 @@ glade_gtk_menu_editor_set_cursor (GladeGtkMenuEditor *e, GtkTreeIter *iter)
 	}
 }
 
-static void
+static gboolean
 glade_gtk_menu_editor_find_child_real (GladeGtkMenuEditor *e,
 				       GladeWidget *child,
-				       GtkTreeIter *iter,
-				       gboolean select)
+				       GtkTreeIter *iter)
 {
 	GtkTreeModel *model = GTK_TREE_MODEL (e->store);
 	GtkTreeIter child_iter;
@@ -2850,30 +2860,39 @@ glade_gtk_menu_editor_find_child_real (GladeGtkMenuEditor *e,
 	{
 		gtk_tree_model_get (model, iter, GLADEGTK_MENU_GWIDGET, &item, -1);
 	
-		if (item == child)
-		{
-			if (select) glade_gtk_menu_editor_set_cursor (e, iter);
-			return;
-		}
+		if (item == child) return TRUE;
 
 		if (gtk_tree_model_iter_children (model, &child_iter, iter))
-			glade_gtk_menu_editor_find_child_real (e, child, &child_iter, select);
+			if (glade_gtk_menu_editor_find_child_real (e, child, &child_iter))
+			{
+				*iter = child_iter;
+				return TRUE;
+			}
 	}
 	while (gtk_tree_model_iter_next (model, iter));
 	
-	return;
+	return FALSE;
+}
+
+static gboolean
+glade_gtk_menu_editor_find_child (GladeGtkMenuEditor *e,
+				  GladeWidget *child,
+				  GtkTreeIter *iter)
+{
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (e->store), iter))
+		return glade_gtk_menu_editor_find_child_real (e, child, iter);
+	
+	return FALSE;
 }
 
 static void
 glade_gtk_menu_editor_select_child (GladeGtkMenuEditor *e,
 				    GladeWidget *child)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL (e->store);
 	GtkTreeIter iter;
 	
-	gtk_tree_model_get_iter_first (model, &iter);
-	
-	glade_gtk_menu_editor_find_child_real (e, child, &iter, TRUE);
+	if (glade_gtk_menu_editor_find_child (e, child, &iter))
+		glade_gtk_menu_editor_set_cursor (e, &iter);
 }
 
 static void
@@ -3066,7 +3085,7 @@ glade_gtk_menu_editor_reorder (GladeGtkMenuEditor *e, GtkTreeIter *iter)
 							gparent, NULL, e->project);
 	}
 	else
-		gparent = glade_widget_get_parent (gitem);
+		gparent = e->gmenubar;
 
 	list.data = gitem;
 	glade_command_cut (&list);
@@ -3273,6 +3292,9 @@ glade_gtk_menu_editor_help (GtkButton *button, GtkWidget *window)
 static gboolean
 glade_gtk_menu_editor_is_child (GladeGtkMenuEditor *e, GladeWidget *item)
 {
+	if (!GTK_IS_MENU_ITEM (glade_widget_get_object (item)))
+		return FALSE;
+	
 	while ((item = glade_widget_get_parent (item)))
 		if (item == e->gmenubar) return TRUE;
 
@@ -3319,8 +3341,14 @@ glade_gtk_menu_editor_project_remove_widget (GladeProject *project,
 	}
 	
 	if (glade_gtk_menu_editor_is_child (e, widget))
-		glade_gtk_menu_editor_update_treeview_idle (e);
-
+	{
+		GtkTreeIter iter;
+		if (glade_gtk_menu_editor_find_child (e, widget, &iter))
+		{
+			gtk_tree_store_remove (e->store, &iter);
+			glade_gtk_menu_editor_clear (e);
+		}
+	}
 }
 
 static void

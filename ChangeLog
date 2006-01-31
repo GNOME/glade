@@ -1,3 +1,17 @@
+2006-01-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c:
+	  o glade_gtk_menu_editor_reorder () fixed, so you can move a
+	    submenu item into the menubar.
+	  o glade_gtk_menu_bar_append_new_item () now sets "stock"
+            property.
+	  o glade_gtk_menu_editor_is_child () item has to be a
+	    GtkMenuItem. (this prevents treeview to be refresh when adding
+	    an image to an item :)
+
+	* widgets/gtk+.xml.in: added new GtkMenuBar displayable values
+	  for properties child-pack-direction and pack-direction.
+
 2006-01-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project.c: Fixed a stupid segfault typicly

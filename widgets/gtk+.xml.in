@@ -249,6 +249,24 @@
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
       <launch-editor-function>glade_gtk_menu_bar_launch_editor</launch-editor-function>
       <!-- menubar is a container you can't add placeholders to it -->
+      <properties>
+        <property id="child-pack-direction">
+          <displayable-values>
+	    <value id="GTK_PACK_DIRECTION_LTR" _name="Left to Right"/>
+	    <value id="GTK_PACK_DIRECTION_RTL" _name="Right to Left"/>
+	    <value id="GTK_PACK_DIRECTION_TTB" _name="Top to Bottom"/>
+	    <value id="GTK_PACK_DIRECTION_BTT" _name="Bottom to Top"/>
+	  </displayable-values>
+	</property>
+        <property id="pack-direction">
+          <displayable-values>
+	    <value id="GTK_PACK_DIRECTION_LTR" _name="Left to Right"/>
+	    <value id="GTK_PACK_DIRECTION_RTL" _name="Right to Left"/>
+	    <value id="GTK_PACK_DIRECTION_TTB" _name="Top to Bottom"/>
+	    <value id="GTK_PACK_DIRECTION_BTT" _name="Bottom to Top"/>
+	  </displayable-values>
+	</property>
+      </properties>
       <packing-defaults>
 	<parent-class name="GtkVBox">
 	  <child-property id="expand" default="false"/>
