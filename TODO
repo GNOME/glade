@@ -1,0 +1,25 @@
+
+
+Blockers for glade-3 2.92.0 beta
+================================
+
+Tasks:
+======
+ o Implement atk properties (parser already works)
+ o Toolbar editor / Popup menu editor ?
+ o Add / Implement gnome widget catalog (bug 315601)
+ o Custom widgets/backwards compatibility (bug 317949)
+
+Complex bugs:
+=============
+ o Unify multiple property changes & dont unify default settings (bug 315600)
+ o GtkTable packing props should adjust placeholders (bug 325791)
+ o Selection bug with some widgets (properly streamlining events
+   on widgets in the glade runtime environment) (bug 327379)
+
+Trivial bugs:
+=============
+ o Cutting a text field in the properties dialog cut the widget (bug 324398)
+ o glade_app_config_save() should report errors in a smart fashion (bug 310141)
+ o upgrade build scripts to work with modern automake (bug 304766)
+ o Dimensions of window changing after a simple cut and paste (bug 320077)

@@ -1130,6 +1130,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	gchar          *canonical_path;
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	g_return_val_if_fail (path != NULL, FALSE);
 
 	interface = glade_project_write (project);
 	if (!interface)
@@ -1142,8 +1143,10 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	glade_interface_destroy (interface);
 
 	canonical_path = glade_util_canonical_path (path);
+	g_assert (canonical_path);
 
-	if (strcmp (canonical_path, project->path))
+	if (project->path == NULL ||
+	    strcmp (canonical_path, project->path))
         {
 		gchar *old_dir, *new_dir;
 
