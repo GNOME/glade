@@ -231,12 +231,25 @@ things you can do with properties.
 
                             void get_function (GObject *object, GValue *value);
 
+                        Technical note: that the get-function is hardly ever used, the only 
+                        time glade-3 will actually ask the object what a property's value should be; 
+                        is when adding a widget to a container and introspecting the values that 
+                        the container assigned the child as packing properties.
+
     - verify-function:  A function to verify whether the requested value is valid. If specified; 
                         the editor will not allow the user to commit a value that this function returns
                         False for.
 
                             gboolean verify_function (GObject *object, GValue *value);
 
+                        Technical note: verify functions are nescisary in glade-3 because of
+                        the abstraction between the value maintained in the glade-3 core and
+                        the value that is actually on the said GObject's property. In other words,
+                        if verify-function returns false; glade's value won't change and set-function
+                        won't be called, if set-function decides not commit the said value, thats
+                        its own rotten business (hehe) and if the property is set to ignore="True",
+                        verify functions will still function properly even if set-functions are not
+                        called for that property.
 
 Displayable values
 ------------------
