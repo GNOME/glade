@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-26 12:26-0500\n"
+"POT-Creation-Date: 2006-01-31 21:05-0500\n"
 "PO-Revision-Date: 2005-12-03 20:09-0500\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -388,59 +388,59 @@ msgstr "Use Command"
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Whether we should use the command API for the undo/redo stack"
 
-#: ../src/glade-editor-property.c:810
+#: ../src/glade-editor-property.c:942
 msgid "Set Flags"
 msgstr "Set Flags"
 
-#: ../src/glade-editor-property.c:1225
+#: ../src/glade-editor-property.c:1245
 msgid "Edit Text Property"
 msgstr "Edit Text Property"
 
 #. Text
-#: ../src/glade-editor-property.c:1242
+#: ../src/glade-editor-property.c:1262
 msgid "_Text:"
 msgstr "_Text:"
 
-#: ../src/glade-editor-property.c:1278
+#: ../src/glade-editor-property.c:1298
 msgid "T_ranslatable"
 msgstr "T_ranslatable"
 
-#: ../src/glade-editor-property.c:1285
+#: ../src/glade-editor-property.c:1305
 msgid "Has context _prefix"
 msgstr "Has context _prefix"
 
 #. Comments.
-#: ../src/glade-editor-property.c:1293
+#: ../src/glade-editor-property.c:1313
 msgid "Co_mments for translators:"
 msgstr "Co_mments for translators:"
 
-#: ../src/glade-editor-property.c:1459 ../src/glade-editor-property.c:1475
+#: ../src/glade-editor-property.c:1479 ../src/glade-editor-property.c:1495
 msgid "Yes"
 msgstr "Yes"
 
-#: ../src/glade-editor-property.c:1459 ../src/glade-editor-property.c:1475
-#: ../src/glade-editor-property.c:1493
+#: ../src/glade-editor-property.c:1479 ../src/glade-editor-property.c:1495
+#: ../src/glade-editor-property.c:1513
 msgid "No"
 msgstr "No"
 
-#: ../src/glade-editor-property.c:2039 ../src/glade-widget.c:155
+#: ../src/glade-editor-property.c:2059 ../src/glade-widget.c:155
 msgid "Name"
 msgstr "Name"
 
-#: ../src/glade-editor-property.c:2051 ../src/glade-widget.c:177
+#: ../src/glade-editor-property.c:2071 ../src/glade-widget.c:177
 msgid "Class"
 msgstr "Class"
 
-#: ../src/glade-editor-property.c:2071
+#: ../src/glade-editor-property.c:2091
 msgid "Choose an object in this project"
 msgstr "Choose an object in this project"
 
-#: ../src/glade-editor-property.c:2074
+#: ../src/glade-editor-property.c:2094
 msgid "Clear"
 msgstr "Clear"
 
 #. Checklist
-#: ../src/glade-editor-property.c:2089
+#: ../src/glade-editor-property.c:2109
 msgid "Objects:"
 msgstr "Objects:"
 
@@ -473,7 +473,7 @@ msgid "_Reset..."
 msgstr "_Reset..."
 
 #. Name
-#: ../src/glade-editor.c:245 ../src/glade-gtk.c:2684
+#: ../src/glade-editor.c:245 ../src/glade-gtk.c:2695
 msgid "Name :"
 msgstr "Name :"
 
@@ -573,8 +573,8 @@ msgstr "Selector"
 
 #: ../src/glade-parser.c:1180
 #, c-format
-msgid "Couldnt find glade file %s"
-msgstr "Could no find glade file %s"
+msgid "Could not find glade file %s"
+msgstr "Could not find glade file %s"
 
 #: ../src/glade-parser.c:1193 ../src/glade-parser.c:1201
 #, c-format
@@ -591,8 +591,12 @@ msgstr "_Select"
 
 #: ../src/glade-project.c:971
 #, c-format
-msgid "Failed to load %s, the following required catalogs are unavailable: %s"
-msgstr "Failed to load %s. The following required catalogues are unavailable: %s"
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr ""
+"Failed to load %s.\n"
+"The following required catalogues are unavailable: %s"
 
 #: ../src/glade-property-class.c:1195
 #, c-format
@@ -733,8 +737,12 @@ msgstr "No widget selected!"
 
 #: ../src/glade-utils.c:1512
 #, c-format
-msgid "%s exists. Do you want to replace it ?"
-msgstr "%s exists. Do you want to replace it?"
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%s exists.\n"
+"Do you want to replace it?"
 
 #: ../src/glade-utils.c:1540
 #, c-format
@@ -746,15 +754,20 @@ msgstr "Error writing to %s: %s"
 msgid "Error reading %s: %s"
 msgstr "Error reading %s: %s"
 
-#: ../src/glade-utils.c:1569 ../src/glade-utils.c:1590
+#: ../src/glade-utils.c:1569
 #, c-format
-msgid "Error shutting down io channel %s: %s"
+msgid "Error shutting down I/O channel %s: %s"
 msgstr "Error shutting down I/O channel %s: %s"
 
 #: ../src/glade-utils.c:1579
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "Failed to open %s for writing: %s"
+
+#: ../src/glade-utils.c:1590
+#, c-format
+msgid "Error shutting down io channel %s: %s"
+msgstr "Error shutting down I/O channel %s: %s"
 
 #: ../src/glade-utils.c:1599
 #, c-format
@@ -824,7 +837,7 @@ msgstr "(internal %s)"
 msgid "(%s child)"
 msgstr "(%s child)"
 
-#: ../src/glade-gtk.c:73 ../src/glade-gtk.c:3503
+#: ../src/glade-gtk.c:73 ../src/glade-gtk.c:3531
 msgid "Type"
 msgstr "Type"
 
@@ -865,61 +878,61 @@ msgid "This does not apply with stock items"
 msgstr "This does not apply with stock items"
 
 #. File
-#: ../src/glade-gtk.c:2302
+#: ../src/glade-gtk.c:2313
 msgid "_File"
 msgstr "_File"
 
 #. Help
-#: ../src/glade-gtk.c:2307
+#: ../src/glade-gtk.c:2318
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/glade-gtk.c:2346 ../widgets/gtk+.xml.in.h:126
+#: ../src/glade-gtk.c:2357 ../widgets/gtk+.xml.in.h:126
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/glade-gtk.c:2349 ../widgets/gtk+.xml.in.h:99
+#: ../src/glade-gtk.c:2360 ../widgets/gtk+.xml.in.h:99
 msgid "Image"
 msgstr "Image"
 
-#: ../src/glade-gtk.c:2352
+#: ../src/glade-gtk.c:2363
 msgid "Check"
 msgstr "Check"
 
-#: ../src/glade-gtk.c:2355
+#: ../src/glade-gtk.c:2366
 msgid "Radio"
 msgstr "Radio"
 
-#: ../src/glade-gtk.c:2358
+#: ../src/glade-gtk.c:2369
 msgid "Separator"
 msgstr "Separator"
 
-#: ../src/glade-gtk.c:2588
+#: ../src/glade-gtk.c:2599
 msgid "<span rise=\"-20000\"><b>Internal Image Properties</b></span>"
 msgstr "<span rise=\"-20000\"><b>Internal Image Properties</b></span>"
 
 #. Type
-#: ../src/glade-gtk.c:2694
+#: ../src/glade-gtk.c:2705
 msgid "Type :"
 msgstr "Type:"
 
 #. Start of glade-command
-#: ../src/glade-gtk.c:2908
+#: ../src/glade-gtk.c:2927
 #, c-format
 msgid "Setting menu item type on %s to %s"
 msgstr "Setting menu item type on %s to %s"
 
-#: ../src/glade-gtk.c:3048
+#: ../src/glade-gtk.c:3067
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Reorder %s's children"
 
-#: ../src/glade-gtk.c:3119
+#: ../src/glade-gtk.c:3138
 #, c-format
 msgid "Create a %s item"
 msgstr "Create a %s item"
 
-#: ../src/glade-gtk.c:3263
+#: ../src/glade-gtk.c:3282
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -933,40 +946,40 @@ msgstr ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 
-#: ../src/glade-gtk.c:3450
+#: ../src/glade-gtk.c:3478
 msgid "Menu Bar Editor"
 msgstr "Menu Bar Editor"
 
-#: ../src/glade-gtk.c:3491 ../widgets/gtk+.xml.in.h:109
+#: ../src/glade-gtk.c:3519 ../widgets/gtk+.xml.in.h:109
 msgid "Label"
 msgstr "Label"
 
-#: ../src/glade-gtk.c:3525
+#: ../src/glade-gtk.c:3553
 msgid "Add Item"
 msgstr "Add Item"
 
-#: ../src/glade-gtk.c:3529
+#: ../src/glade-gtk.c:3557
 msgid "Add Child Item"
 msgstr "Add Child Item"
 
-#: ../src/glade-gtk.c:3533
+#: ../src/glade-gtk.c:3561
 msgid "Add Separator"
 msgstr "Add Separator"
 
-#: ../src/glade-gtk.c:3546
+#: ../src/glade-gtk.c:3574
 msgid "<big><b>Properties</b></big>"
 msgstr "<big><b>Properties</b></big>"
 
-#: ../src/glade-gtk.c:3608
+#: ../src/glade-gtk.c:3635
 #, c-format
 msgid ""
-"An MenuBar editor is already runing for \"%s\"\n"
-"It is not posible to launch more than one editor per menubar."
+"A MenuBar editor is already runing for \"%s\"\n"
+"Cannot launch more than one editor per menubar."
 msgstr ""
-"A MenuBar editor is already runing for \"%s\".\n"
+"A MenuBar editor is already runing for \"%s\"\n"
 "Cannot launch more than one editor per menubar."
 
-#: ../src/glade-gtk.c:3610
+#: ../src/glade-gtk.c:3637
 msgid "unknown"
 msgstr "unknown"
 
