@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 #ifdef HAVE_CONFIG_H

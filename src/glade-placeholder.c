@@ -162,14 +162,12 @@ static void
 glade_placeholder_realize (GtkWidget *widget)
 {
 	GladePlaceholder *placeholder;
-	GladePlaceholderClass *placeholder_class;
 	GdkWindowAttr attributes;
 	gint attributes_mask;
 
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (widget));
 
 	placeholder = GLADE_PLACEHOLDER (widget);
-	placeholder_class = GLADE_PLACEHOLDER_GET_CLASS (placeholder);
 
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
@@ -201,11 +199,6 @@ glade_placeholder_realize (GtkWidget *widget)
 									    gtk_widget_get_colormap (GTK_WIDGET (placeholder)),
 									    NULL, NULL, placeholder_xpm);
 		g_assert(G_IS_OBJECT(placeholder->placeholder_pixmap));
-	}
-
-	if (placeholder->placeholder_pixmap == NULL) {
-		g_warning ("Could not create pixmap for the glade-placeholder");
-		return;
 	}
 
 	gdk_window_set_back_pixmap (GTK_WIDGET (placeholder)->window, placeholder->placeholder_pixmap, FALSE);

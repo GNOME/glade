@@ -1,3 +1,21 @@
+2006-02-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* TODO: Updated (removed bug 317949 from list).
+
+	* src/Makefile.am: Added glade-custom.[ch] to the libgladeui library.
+
+	* src/glade-fixed-manager.c: Fixed comment
+
+	* src/glade-placeholder.c: Removed redundant code
+
+	* src/glade-property.c: Added myself as an author since I rewrote this
+	  file as an object.
+
+	* src/glade-custom.[ch]: New files, custom widget derivatives to emulate
+	  custom widgets as provided by glade 2 (fixes bug 317949)
+
+	* widgets/gtk+.xml.in: added Custom widgets to the obsolete group.
+
 2006-02-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Added bug 329514 to blockers.

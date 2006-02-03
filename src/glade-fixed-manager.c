@@ -1,6 +1,8 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * glade-clipboard.c - An object for handling Cut/Copy/Paste.
+ * glade-fixed-manager.c - A proxy object used as an interface to
+ *                         handle child placement in fixed type GtkContainer 
+ *                         such as GtkFixed and GtkLayout.
  *
  * Copyright (C) 2005 The GNOME Foundation.
  *

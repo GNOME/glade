@@ -1007,6 +1007,14 @@
     <glade-widget-class name="GtkGammaCurve" generic-name="gammacurve" _title="Gamma Curve"/>
 
     <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection"/>
+    <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget">
+      <properties>
+	<property id="creation-function" translatable="False"/>
+	<property id="string1" translatable="False"/>
+	<property id="string2" translatable="False"/>
+      </properties>
+    </glade-widget-class>
+
   </glade-widget-classes>
 
   <glade-widget-group name="gtk-base" _title="Gtk+ Base">
@@ -1086,5 +1094,6 @@
     <glade-widget-class-ref name="GtkCurve"/>
     <glade-widget-class-ref name="GtkGammaCurve"/>
     <glade-widget-class-ref name="GtkFileSelection"/>
+    <glade-widget-class-ref name="Custom"/>
   </glade-widget-group>
 </glade-catalog>

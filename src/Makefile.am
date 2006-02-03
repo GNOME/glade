@@ -35,6 +35,7 @@ libgladeui_1_la_SOURCES = \
 	glade-project.c \
 	glade-parameter.c \
 	glade-placeholder.c \
+	glade-custom.c \
 	glade-project-view.c \
 	glade-widget-class.c \
 	glade-xml-utils.c \
@@ -73,6 +74,7 @@ libgladeuiinclude_HEADERS = \
 	glade-project-view.h \
 	glade-parameter.h \
 	glade-placeholder.h \
+	glade-custom.h \
 	glade-editor.h \
 	glade-editor-property.h \
 	glade-signal-editor.h \
