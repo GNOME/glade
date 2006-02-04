@@ -117,6 +117,30 @@ static MAKE_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
 /*******************************************************************************
                                GladeEditorPropertyClass
  *******************************************************************************/
+
+/* For use in editor implementations
+ */
+static void
+glade_editor_property_commit (GladeEditorProperty *eprop,
+			      GValue              *value)
+{
+	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
+
+	if (eprop->use_command == FALSE)
+		glade_property_set_value (eprop->property, value);
+	else
+		glade_command_set_property (eprop->property, value);
+
+	/* If the value was denied by a verify function, we'll have to
+	 * reload the real value.
+	 */
+	if (g_param_values_cmp (eprop->property->class->pspec,
+				eprop->property->value, value) != 0)
+		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
+}
+
+
+
 static void
 glade_editor_property_tooltip_cb (GladeProperty       *property,
 				  const gchar         *tooltip,
@@ -546,11 +570,7 @@ glade_eprop_numeric_changed (GtkWidget *spin,
 		g_warning ("Unsupported type %s\n",
 			   g_type_name(G_PARAM_SPEC_TYPE (eprop->class->pspec)));
 
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (eprop->property, &val);
-	else
-		glade_command_set_property (eprop->property, &val);
-
+	glade_editor_property_commit (eprop, &val);
 	g_value_unset (&val);
 }
 
@@ -641,11 +661,7 @@ glade_eprop_enum_changed (GtkWidget           *menu_item,
 	g_value_init (&val, eprop->class->pspec->value_type);
 	g_value_set_enum (&val, ival);
 
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (property, &val);
-	else
-		glade_command_set_property (property, &val);
-
+	glade_editor_property_commit (eprop, &val);
 	g_value_unset (&val);
 }
 
@@ -861,11 +877,7 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
 		g_value_init (&val, G_VALUE_TYPE (eprop->property->value));
 		g_value_set_flags (&val, new_value);
 
-		if (eprop->use_command == FALSE)
-			glade_property_set_value (eprop->property, &val);
-		else
-			glade_command_set_property (eprop->property, &val);
-
+		glade_editor_property_commit (eprop, &val);
 		g_value_unset (&val);
 	}
 
@@ -1042,11 +1054,7 @@ glade_eprop_color_changed (GtkWidget *button,
 	g_value_init (&value, GDK_TYPE_COLOR);
 	g_value_set_boxed (&value, &color);
 
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (eprop->property, &value);
-	else
-		glade_command_set_property (eprop->property, &value);
-
+	glade_editor_property_commit (eprop, &value);
 	g_value_unset (&value);
 }
 
@@ -1151,13 +1159,13 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 }
 
 static void
-glade_eprop_text_changed_common (GladeProperty *property,
+glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 				 const gchar *text,
 				 gboolean use_command)
 {
 	GValue val = { 0, };
 
-	if (property->class->pspec->value_type == G_TYPE_STRV)
+	if (eprop->property->class->pspec->value_type == G_TYPE_STRV)
 	{
 		g_value_init (&val, G_TYPE_STRV);
 		g_value_take_boxed (&val, g_strsplit (text, "\n", 0));
@@ -1168,11 +1176,7 @@ glade_eprop_text_changed_common (GladeProperty *property,
 		g_value_set_string (&val, text);
 	}
 
-	if (use_command == FALSE)
-		glade_property_set_value (property, &val);
-	else 
-		glade_command_set_property (property, &val);
-
+	glade_editor_property_commit (eprop, &val);
 	g_value_unset (&val);
 }
 
@@ -1185,7 +1189,7 @@ glade_eprop_text_changed (GtkWidget           *entry,
 	if (eprop->loading) return;
 	
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
-	glade_eprop_text_changed_common (eprop->property, text,
+	glade_eprop_text_changed_common (eprop, text,
 					 eprop->use_command);
 	g_free (text);
 }
@@ -1218,7 +1222,7 @@ glade_eprop_text_text_view_focus_out (GtkTextView         *view,
 
 	text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
 
-	glade_eprop_text_changed_common (eprop->property, text,
+	glade_eprop_text_changed_common (eprop, text,
 					 eprop->use_command);
 
 	g_free (text);
@@ -1360,9 +1364,7 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 			str = NULL;
 		}
 		
-		glade_eprop_text_changed_common (eprop->property, str,
-						 eprop->use_command);
-		
+		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
 		g_free (str);
 		
 		/* Comment */
@@ -1497,10 +1499,7 @@ glade_eprop_bool_changed (GtkWidget           *button,
 	g_value_init (&val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (&val, state);
 
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (eprop->property, &val);
-	else
-		glade_command_set_property (eprop->property, &val);
+	glade_editor_property_commit (eprop, &val);
 
 	g_value_unset (&val);
 }
@@ -1588,10 +1587,7 @@ glade_eprop_unichar_changed (GtkWidget           *entry,
 	g_value_init (&val, G_TYPE_UINT);
 	g_value_set_uint (&val, unich);
 
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (eprop->property, &val);
-	else
-		glade_command_set_property (eprop->property, &val);
+	glade_editor_property_commit (eprop, &val);
 
 	g_value_unset (&val);
 }
@@ -1690,10 +1686,7 @@ glade_eprop_resource_entry_activate (GtkEntry *entry, GladeEditorProperty *eprop
 	glade_project_set_resource (project, eprop->property, 
 				    gtk_entry_get_text(entry));
 	
-	if (eprop->use_command == FALSE)
-		glade_property_set_value (eprop->property, value);
-	else
-		glade_command_set_property (eprop->property, value);
+	glade_editor_property_commit (eprop, value);
 
 	g_value_unset (value);
 	g_free (value);
@@ -1738,10 +1731,7 @@ glade_eprop_resource_select_file (GtkButton *button, GladeEditorProperty *eprop)
 		value = glade_property_class_make_gvalue_from_string 
 			(eprop->class, basename, project);
 		
-		if (eprop->use_command == FALSE)
-			glade_property_set_value (eprop->property, value);
-		else
-			glade_command_set_property (eprop->property, value);
+		glade_editor_property_commit (eprop, value);
 		
 		g_value_unset (value);
 		g_free (value);
@@ -2137,32 +2127,30 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 
 		gtk_tree_model_foreach
 			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), 
-			 (GtkTreeModelForeachFunc) glade_eprop_object_selected_widget, &selected);
+			 (GtkTreeModelForeachFunc) 
+			 glade_eprop_object_selected_widget, &selected);
 
 		if (selected)
 		{
 			GValue *value = glade_property_class_make_gvalue_from_string
 				(eprop->class, selected->name, project);
 
-			if (eprop->use_command == FALSE)
-				glade_property_set_value (eprop->property, value);
-			else
-				glade_command_set_property (eprop->property, value);
+			glade_editor_property_commit (eprop, value);
+
+			g_value_unset (value);
+			g_free (value);
 		}
 	} 
 	else if (res == GLADE_RESPONSE_CLEAR)
 	{
-		GValue *value = glade_property_class_make_gvalue_from_string (eprop->class, NULL, project);
+		GValue *value = glade_property_class_make_gvalue_from_string
+			(eprop->class, NULL, project);
 		
-		if (eprop->use_command == FALSE)
-			glade_property_set_value (eprop->property, value);
-		else
-			glade_command_set_property (eprop->property, value);
+		glade_editor_property_commit (eprop, value);
 
 		g_value_unset (value);
 		g_free (value);
 	}
-
 	gtk_widget_destroy (dialog);
 }
 

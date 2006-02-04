@@ -1,6 +1,6 @@
 2006-02-03  Tristan Van Berkom <tvb@gnome.org>
 
-	* TODO: Updated (removed bug 317949 from list).
+	* TODO: Updated (removed bugs 317949 and 329514 from list).
 
 	* src/Makefile.am: Added glade-custom.[ch] to the libgladeui library.
 
@@ -15,6 +15,9 @@
 	  custom widgets as provided by glade 2 (fixes bug 317949)
 
 	* widgets/gtk+.xml.in: added Custom widgets to the obsolete group.
+
+	* src/glade-editor-property.c: Added glade_editor_property_commit which
+	  fixes bug 329514.
 
 2006-02-01  Tristan Van Berkom <tvb@gnome.org>
 
