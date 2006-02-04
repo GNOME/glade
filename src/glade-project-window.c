@@ -757,12 +757,14 @@ gpw_hijack_editor_key_press (GtkWidget          *editor_win,
 			     GdkEventKey        *event, 
 			     GladeProjectWindow *gpw)
 {
-	/* If we recieve GDK_Delete, send it to the focus widget
-	 * and return TRUE so that the accel_group doesn't kick in.
-	 */
-	if (event->keyval == GDK_Delete)
+	if (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	    ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
+	     (event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	     (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	     (event->keyval == GDK_v || event->keyval == GDK_V)))  /* CNTL-V (paste) */
 	{
-		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, (GdkEvent *)event);
+		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, 
+					 (GdkEvent *)event);
 	}
 	return FALSE;
 }

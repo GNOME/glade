@@ -161,7 +161,14 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 		(GTK_WIDGET (eprop->item_label), 
 		 GTK_STATE_NORMAL, 
 		 sensitive ? normal_colour : insensitive_colour);
-	gtk_widget_set_sensitive (eprop->input, sensitive);
+
+	if (sensitive == FALSE)
+		gtk_widget_set_sensitive (eprop->input, FALSE);
+	else if (glade_property_get_enabled (property) == TRUE)
+		gtk_widget_set_sensitive (eprop->input, TRUE);
+
+	if (eprop->check)
+		gtk_widget_set_sensitive (eprop->check, sensitive);
 }
 
 void
@@ -184,7 +191,13 @@ glade_editor_property_enabled_cb (GladeProperty       *property,
 	if (eprop->class->optional)
 	{
 		enabled = glade_property_get_enabled (property);
-		gtk_widget_set_sensitive (eprop->input, enabled);
+
+		/* sensitive = enabled &&   */
+		if (enabled == FALSE)
+			gtk_widget_set_sensitive (eprop->input, FALSE);
+		else if (glade_property_get_sensitive (property))
+			gtk_widget_set_sensitive (eprop->input, TRUE);
+
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop->check), enabled);
 	}
 }

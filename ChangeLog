@@ -1,6 +1,6 @@
 2006-02-03  Tristan Van Berkom <tvb@gnome.org>
 
-	* TODO: Updated (removed bugs 317949 and 329514 from list).
+	* TODO: Updated (removed bugs 317949, 329514 and 324389 from list).
 
 	* src/Makefile.am: Added glade-custom.[ch] to the libgladeui library.
 
@@ -16,9 +16,15 @@
 
 	* widgets/gtk+.xml.in: added Custom widgets to the obsolete group.
 
-	* src/glade-editor-property.c: Added glade_editor_property_commit which
-	  fixes bug 329514.
-
+	* src/glade-editor-property.c: 
+	    - Added glade_editor_property_commit which fixes bug 329514.
+	    - Fixed conflict in sensitivity and enabled for optional properties
+	      (noticably, now optionaly defaulted to disabled properties show
+	       up insensitive untill you check them).
+	
+	* src/glade-project-window.c: Filtered out cut/copy/paste accelerators
+	  from the editor window (fixing bug 324389).
+	
 2006-02-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Added bug 329514 to blockers.
