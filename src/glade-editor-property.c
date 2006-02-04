@@ -2078,6 +2078,25 @@ glade_eprop_object_view (GladeEditorProperty *eprop)
 	return view_widget;
 }
 
+
+static gchar *
+glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
+{
+	GladeWidgetClass *klass;
+	const gchar      *format = _("Choose a %s in this project");
+
+	if ((klass =
+	     glade_widget_class_get_by_type
+	     (eprop->class->pspec->value_type)) != NULL)
+		return g_strdup_printf (format, klass->palette_name);
+
+	/* Fallback on type name (which would look like "GtkButton"
+	 * instead of "Button" and maybe not translated).
+	 */
+	return g_strdup_printf (format, g_type_name 
+				(eprop->class->pspec->value_type));
+}
+
 static void
 glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 				GladeEditorProperty *eprop)
@@ -2086,19 +2105,22 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	GtkWidget     *vbox, *label, *sw;
 	GtkWidget     *tree_view;
 	GladeProject  *project;
+	gchar         *title = glade_eprop_object_dialog_title (eprop);
 	gint           res;
 
 	
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
-	dialog = gtk_dialog_new_with_buttons (_("Choose an object in this project"),
+
+
+	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (parent),
 					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 					      _("Clear"), GLADE_RESPONSE_CLEAR,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
-
+	g_free (title);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);
