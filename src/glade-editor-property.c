@@ -1257,7 +1257,9 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	const gchar   *text;
 	gint           res;
 	gchar         *str;
+	GParamSpec    *pspec;
 
+	
 	editor = gtk_widget_get_toplevel (entry);
 	dialog = gtk_dialog_new_with_buttons (_("Edit Text Property"),
 					      GTK_WINDOW (editor),
@@ -1315,17 +1317,29 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	translatable_button = gtk_check_button_new_with_mnemonic (_("T_ranslatable"));
 	gtk_widget_show (translatable_button);
 	gtk_box_pack_start (GTK_BOX (hbox), translatable_button, FALSE, FALSE, 0);
-
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (translatable_button),
 				      glade_property_i18n_get_translatable (eprop->property));
+
+	/* Add a cute tooltip */
+	if ((pspec =
+	     g_object_class_find_property (G_OBJECT_GET_CLASS (eprop->property),
+					   "i18n-translatable")) != NULL)
+		glade_util_widget_set_tooltip (translatable_button,
+					       g_param_spec_get_blurb (pspec));
 
 	context_button = gtk_check_button_new_with_mnemonic (_("Has context _prefix"));
 	gtk_widget_show (context_button);
 	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
-
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button),
 				      glade_property_i18n_get_has_context (eprop->property));
-	
+
+	/* Add a cute tooltip */
+	if ((pspec =
+	     g_object_class_find_property (G_OBJECT_GET_CLASS (eprop->property),
+					   "i18n-has-context")) != NULL)
+		glade_util_widget_set_tooltip (context_button,
+					       g_param_spec_get_blurb (pspec));
+
 	/* Comments. */
 	label = gtk_label_new_with_mnemonic (_("Co_mments for translators:"));
 	gtk_widget_show (label);

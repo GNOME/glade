@@ -88,8 +88,6 @@ glade_property_dup_impl (GladeProperty *template, GladeWidget *widget)
 
 	g_value_init (property->value, template->value->g_type);
 	g_value_copy (template->value, property->value);
-
-	property->i18n_translatable = template->i18n_translatable;
 	
 	return property;
 }
@@ -505,7 +503,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		(object_class, PROP_I18N_COMMENT,
 		 g_param_spec_string 
 		 ("i18n-comment", _("Comment"), 
-		  _("XXX FIXME: The translators comment ?"),
+		  _("Comment for translators"),
 		  NULL, G_PARAM_READWRITE));
 
 	g_object_class_install_property 
@@ -519,8 +517,8 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		(object_class, PROP_I18N_HAS_CONTEXT,
 		 g_param_spec_boolean 
 		 ("i18n-has-context", _("Has Context"), 
-		  _("Whether this property is translatable or not"),
-		  TRUE, G_PARAM_READWRITE));
+		  _("Whether or not the translatable string has a context prefix"),
+		  FALSE, G_PARAM_READWRITE));
 
 	/* Signals */
 	glade_property_signals[VALUE_CHANGED] =
