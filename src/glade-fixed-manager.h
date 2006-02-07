@@ -68,22 +68,28 @@ struct _GladeFixedManagerClass {
 
 };
 
-LIBGLADEUI_API GType              glade_fixed_manager_get_type     (void);
-LIBGLADEUI_API GladeFixedManager *glade_fixed_manager_new          (GladeWidget       *gtkcontainer,
-								    const gchar       *x_prop,
-								    const gchar       *y_prop,
-								    const gchar       *width_prop,
-								    const gchar       *height_prop);
-LIBGLADEUI_API GladeWidget       *glade_fixed_manager_create_child (GladeFixedManager *manager,
-								    GladeWidgetClass  *wclass);
-LIBGLADEUI_API void               glade_fixed_manager_add_child    (GladeFixedManager *manager,
-								    GladeWidget       *child,
-								    gboolean           at_mouse);
-LIBGLADEUI_API void               glade_fixed_manager_remove_child (GladeFixedManager *manager,
-								    GladeWidget       *child);
-LIBGLADEUI_API void               glade_fixed_manager_post_mouse   (GladeFixedManager *manager,
-								    gint               x,
-								    gint               y);
+LIBGLADEUI_API
+GType              glade_fixed_manager_get_type     (void);
+LIBGLADEUI_API
+GladeFixedManager *glade_fixed_manager_new          (GladeWidget       *gtkcontainer,
+						     const gchar       *x_prop,
+						     const gchar       *y_prop,
+						     const gchar       *width_prop,
+						     const gchar       *height_prop);
+LIBGLADEUI_API
+GladeWidget       *glade_fixed_manager_create_child (GladeFixedManager *manager,
+						     GladeWidgetClass  *wclass);
+LIBGLADEUI_API
+void               glade_fixed_manager_add_child    (GladeFixedManager *manager,
+						     GladeWidget       *child,
+						     gboolean           at_mouse);
+LIBGLADEUI_API
+void               glade_fixed_manager_remove_child (GladeFixedManager *manager,
+						     GladeWidget       *child);
+LIBGLADEUI_API
+void               glade_fixed_manager_post_mouse   (GladeFixedManager *manager,
+						     gint               x,
+						     gint               y);
 
 G_END_DECLS
 

@@ -117,7 +117,7 @@ glade_property_equals_value_impl (GladeProperty *property,
 				    property->value, value);
 }
 
-/**
+/*
  * Generic set function for properties that do not have a
  * custom set_property method. This includes packing properties.
  */
@@ -741,7 +741,7 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
 /**
  * glade_property_set_va_list:
  * @property: a #GladeProperty
- * @va_list: a va_list with value to set
+ * @vl: a va_list with value to set
  *
  * Sets the property's value
  */

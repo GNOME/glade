@@ -137,12 +137,8 @@ glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
 	return TRUE;
 }
 
-/**
- * glade_signal_new_from_signal_info:
- * @node: a #GladeSignalInfo
- *
- * Returns: a new #GladeSignal with the attributes defined in @node, %NULL if
- *          there is an error
+/*
+ * Returns a new GladeSignal with the attributes defined in node
  */
 GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 {

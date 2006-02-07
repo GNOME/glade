@@ -60,17 +60,23 @@ struct _GladeEditorPropertyClass {
 };
 
 
-LIBGLADEUI_API GType                glade_editor_property_get_type       (void);
-LIBGLADEUI_API GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *class,
-									  gboolean             use_command);
-LIBGLADEUI_API void                 glade_editor_property_load           (GladeEditorProperty *eprop,
-									  GladeProperty       *property);
-LIBGLADEUI_API void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
-									  GladeWidget         *widget);
-LIBGLADEUI_API gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
+LIBGLADEUI_API
+GType                glade_editor_property_get_type       (void);
+LIBGLADEUI_API
+GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *class,
+							   gboolean             use_command);
+LIBGLADEUI_API
+void                 glade_editor_property_load           (GladeEditorProperty *eprop,
+							   GladeProperty       *property);
+LIBGLADEUI_API
+void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
+							   GladeWidget         *widget);
+LIBGLADEUI_API
+gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
 
-LIBGLADEUI_API GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
-									   const gchar        *property,
-									   gboolean            use_command);
+LIBGLADEUI_API
+GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
+							    const gchar        *property,
+							    gboolean            use_command);
 
 #endif // __GLADE_EDITOR_PROPERTY_H__

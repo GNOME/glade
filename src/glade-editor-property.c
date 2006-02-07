@@ -1864,7 +1864,7 @@ glade_eprop_object_name (const gchar      *name,
 }
 
 
-/**
+/*
  * Note that widgets is a list of GtkWidgets, while what we store
  * in the model are the associated GladeWidgets.
  */

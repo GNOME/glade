@@ -334,14 +334,6 @@ glade_popup_create_clipboard_menu (GladeWidget *widget)
 	return popup_menu;
 }
 
-/**
- * glade_popup_widget_pop:
- * @widget:
- * @event:
- * @add_children:
- *
- * TODO: write me
- */
 void
 glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add_children)
 {
@@ -367,13 +359,6 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add
 			NULL, NULL, button, event_time);
 }
 
-/**
- * glade_popup_placeholder_pop:
- * @placeholder:
- * @event:
- *
- * TODO: write me
- */
 void
 glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 			     GdkEventButton *event)
@@ -401,13 +386,6 @@ glade_popup_placeholder_pop (GladePlaceholder *placeholder,
 			NULL, NULL, button, event_time);
 }
 
-/**
- * glade_popup_clipboard_pop:
- * @placeholder:
- * @event:
- *
- * TODO: write me
- */
 void
 glade_popup_clipboard_pop (GladeWidget    *widget,
 			   GdkEventButton *event)

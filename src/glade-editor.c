@@ -177,7 +177,7 @@ glade_editor_new (void)
 	return editor;
 }
 
-/**
+/*
  * We call this function when the user changes the widget name using the
  * entry on the properties editor.
  */

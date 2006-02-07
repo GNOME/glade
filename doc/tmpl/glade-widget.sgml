@@ -1,0 +1,497 @@
+<!-- ##### SECTION Title ##### -->
+GladeWidget
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GladeWidget ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+@widget_class: 
+@project: 
+@parent: 
+@name: 
+@internal: 
+@object: 
+@properties: 
+@packing_properties: 
+@query_user: 
+@signals: 
+@manager: 
+@visible: 
+@prop_refs_readonly: 
+@prop_refs: 
+@save_x: 
+@save_y: 
+@pos_saved: 
+
+<!-- ##### FUNCTION glade_widget_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@klass: 
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_new_for_internal_child ##### -->
+<para>
+
+</para>
+
+@parent: 
+@internal_object: 
+@internal_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_name ##### -->
+<para>
+
+</para>
+
+@widget: 
+@name: 
+
+
+<!-- ##### FUNCTION glade_widget_set_internal ##### -->
+<para>
+
+</para>
+
+@widget: 
+@internal: 
+
+
+<!-- ##### FUNCTION glade_widget_set_object ##### -->
+<para>
+
+</para>
+
+@gwidget: 
+@new_object: 
+
+
+<!-- ##### FUNCTION glade_widget_set_project ##### -->
+<para>
+
+</para>
+
+@widget: 
+@project: 
+
+
+<!-- ##### FUNCTION glade_widget_get_name ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_internal ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_class ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_project ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_object ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_project_notify ##### -->
+<para>
+
+</para>
+
+@widget: 
+@project: 
+
+
+<!-- ##### FUNCTION glade_widget_show ##### -->
+<para>
+
+</para>
+
+@widget: 
+
+
+<!-- ##### FUNCTION glade_widget_hide ##### -->
+<para>
+
+</para>
+
+@widget: 
+
+
+<!-- ##### FUNCTION glade_widget_copy_properties ##### -->
+<para>
+
+</para>
+
+@widget: 
+@template: 
+
+
+<!-- ##### FUNCTION glade_widget_add_prop_ref ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_prop_ref ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+
+
+<!-- ##### FUNCTION glade_widget_get_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_pack_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_get ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_set ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_get ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_set ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_reset ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_reset ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_default ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_default ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_set_sensitive ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@sensitive: 
+@reason: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_set_sensitive ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@sensitive: 
+@reason: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_property_set_enabled ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@enabled: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_set_enabled ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@enabled: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_retrieve_from_position ##### -->
+<para>
+
+</para>
+
+@base: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_has_decendant ##### -->
+<para>
+
+</para>
+
+@widget: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_replace ##### -->
+<para>
+
+</para>
+
+@parent: 
+@old_object: 
+@new_object: 
+
+
+<!-- ##### FUNCTION glade_widget_rebuild ##### -->
+<para>
+
+</para>
+
+@glade_widget: 
+
+
+<!-- ##### FUNCTION glade_widget_dup ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_add_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_change_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@old_signal_handler: 
+@new_signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_list_signal_handlers ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_write ##### -->
+<para>
+
+</para>
+
+@widget: 
+@interface: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_read ##### -->
+<para>
+
+</para>
+
+@project: 
+@info: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_has_launcher ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_launch_editor ##### -->
+<para>
+
+</para>
+
+@widget: 
+
+
+<!-- ##### MACRO glade_widget_get_from_gobject ##### -->
+<para>
+
+</para>
+
+@w: 
+
+
+<!-- ##### FUNCTION glade_widget_get_parent ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_parent ##### -->
+<para>
+
+</para>
+
+@widget: 
+@parent: 
+
+

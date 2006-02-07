@@ -549,11 +549,11 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 /**
  * glade_project_remove_object:
  * @project: a #GladeProject
- * @widget: the #GtkWidget to remove
+ * @object: the #GObject to remove
  *
- * Removes @widget from @project.
+ * Removes @object from @project.
  *
- * Note that when removing the #GtkWidget from the project we
+ * Note that when removing the #GObject from the project we
  * don't change ->project in the associated #GladeWidget; this
  * way UNDO can work.
  */

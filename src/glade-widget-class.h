@@ -174,53 +174,72 @@ struct _GladeWidgetClassSignal
 			      * eg GtkButton */
 };
  
-LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
-									   const gchar      *catname,
-									   const gchar      *library,
-									   const gchar      *domain);
-LIBGLADEUI_API void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
-LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
-LIBGLADEUI_API GladeWidgetClass    *glade_widget_class_get_by_type        (GType             type);
-LIBGLADEUI_API GList               *glade_widget_class_get_derived_types  (GType             type);
-LIBGLADEUI_API GType 	            glade_widget_class_get_type           (GladeWidgetClass *class);
-LIBGLADEUI_API void                 glade_widget_class_dump_param_specs   (GladeWidgetClass *class);
-LIBGLADEUI_API GladePropertyClass  *glade_widget_class_get_property_class (GladeWidgetClass *class,
-									   const gchar      *name);
-LIBGLADEUI_API GladeSupportedChild *glade_widget_class_get_child_support  (GladeWidgetClass *class,
-									   GType             child_type);
+LIBGLADEUI_API
+GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
+							    const gchar      *catname,
+							    const gchar      *library,
+							    const gchar      *domain);
+LIBGLADEUI_API
+void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
+LIBGLADEUI_API
+GladeWidgetClass    *glade_widget_class_get_by_name        (const char       *name);
+LIBGLADEUI_API
+GladeWidgetClass    *glade_widget_class_get_by_type        (GType             type);
+LIBGLADEUI_API
+GList               *glade_widget_class_get_derived_types  (GType             type);
+LIBGLADEUI_API
+GType 	            glade_widget_class_get_type           (GladeWidgetClass *class);
+LIBGLADEUI_API
+void                 glade_widget_class_dump_param_specs   (GladeWidgetClass *class);
+LIBGLADEUI_API
+GladePropertyClass  *glade_widget_class_get_property_class (GladeWidgetClass *class,
+							    const gchar      *name);
+LIBGLADEUI_API
+GladeSupportedChild *glade_widget_class_get_child_support  (GladeWidgetClass *class,
+							    GType             child_type);
 
-LIBGLADEUI_API void                 glade_widget_class_container_add              (GladeWidgetClass *class,
-										   GObject          *container,
-										   GObject          *child);
-LIBGLADEUI_API void                 glade_widget_class_container_remove           (GladeWidgetClass *class,
-										   GObject          *container,
-										   GObject          *child);
-LIBGLADEUI_API gboolean             glade_widget_class_container_has_child        (GladeWidgetClass *class,
-										   GObject          *container,
-										   GObject          *child);
-LIBGLADEUI_API GList               *glade_widget_class_container_get_children     (GladeWidgetClass *class,
-										   GObject          *container);
-LIBGLADEUI_API GList               *glade_widget_class_container_get_all_children (GladeWidgetClass *class,
-										   GObject          *container);
-LIBGLADEUI_API void                 glade_widget_class_container_set_property     (GladeWidgetClass *class,
-										   GObject      *container,
-										   GObject      *child,
-										   const gchar  *property_name,
-										   const GValue *value);
-LIBGLADEUI_API void                 glade_widget_class_container_get_property     (GladeWidgetClass *class,
-										   GObject      *container,
-										   GObject      *child,
-										   const gchar  *property_name,
-										   GValue       *value);
-LIBGLADEUI_API void                 glade_widget_class_container_replace_child    (GladeWidgetClass *class,
-										   GObject      *container,
-										   GObject      *old,
-										   GObject      *new);
-LIBGLADEUI_API gboolean             glade_widget_class_contains_extra             (GladeWidgetClass *class);
+LIBGLADEUI_API
+void                 glade_widget_class_container_add              (GladeWidgetClass *class,
+								    GObject          *container,
+								    GObject          *child);
+LIBGLADEUI_API
+void                 glade_widget_class_container_remove           (GladeWidgetClass *class,
+								    GObject          *container,
+								    GObject          *child);
+LIBGLADEUI_API
+gboolean             glade_widget_class_container_has_child        (GladeWidgetClass *class,
+								    GObject          *container,
+								    GObject          *child);
+LIBGLADEUI_API
+GList               *glade_widget_class_container_get_children     (GladeWidgetClass *class,
+								    GObject          *container);
+LIBGLADEUI_API
+GList               *glade_widget_class_container_get_all_children (GladeWidgetClass *class,
+								    GObject          *container);
+LIBGLADEUI_API
+void                 glade_widget_class_container_set_property     (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *child,
+								    const gchar  *property_name,
+								    const GValue *value);
+LIBGLADEUI_API
+void                 glade_widget_class_container_get_property     (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *child,
+								    const gchar  *property_name,
+								    GValue       *value);
+LIBGLADEUI_API
+void                 glade_widget_class_container_replace_child    (GladeWidgetClass *class,
+								    GObject      *container,
+								    GObject      *old,
+								    GObject      *new);
+LIBGLADEUI_API
+gboolean             glade_widget_class_contains_extra             (GladeWidgetClass *class);
 
-LIBGLADEUI_API GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
-										   GladeWidgetClass *container_class,
-										   const gchar *propert_id);
+LIBGLADEUI_API
+GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
+								    GladeWidgetClass *container_class,
+								    const gchar *propert_id);
 
 G_END_DECLS
 

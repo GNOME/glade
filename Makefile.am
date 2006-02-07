@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = src po pixmaps widgets
+SUBDIRS = src po pixmaps widgets doc
 
 @INTLTOOL_DESKTOP_RULE@
 

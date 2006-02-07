@@ -158,11 +158,10 @@ glade_util_get_type_from_name (const gchar *name)
 
 /**
  * glade_utils_get_pspec_from_funcname:
- * @name:
+ * @funcname: the symbol name of a function to generate a #GParamSpec
  *
- * TODO: write me
- *
- * Returns:
+ * Returns: A #GParamSpec created by the delagate function
+ *          specified by @funcname
  */
 GParamSpec *
 glade_utils_get_pspec_from_funcname (const gchar *funcname)
@@ -1035,11 +1034,10 @@ glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 
 /**
  * glade_util_any_gtkcontainer_relation:
- * @widget: a GladeWidget
- * @parent: a GladeWidget
+ * @widgets: a #GList of #GladeWidgets
+ * @parent:  the parent #GladeWidget
  *
- *
- * Returns whether any of these widgets are parented by a GtkContainer
+ * Returns: whether any of these widgets are parented by a GtkContainer
  * through the GtkContainer interface.
  */
 gboolean

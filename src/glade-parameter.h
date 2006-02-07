@@ -32,17 +32,23 @@ struct _GladeParameter {
 	gchar *value; /* The textual representation of the parameter */
 };
 
+LIBGLADEUI_API 
 GladeParameter *glade_parameter_new (void);
+LIBGLADEUI_API
 GladeParameter *glade_parameter_clone (GladeParameter *parameter);
-void glade_parameter_free (GladeParameter *parameter);
+LIBGLADEUI_API
+void            glade_parameter_free (GladeParameter *parameter);
 
-void glade_parameter_get_float   (GList *parameters, const gchar *key, gfloat *value);
-void glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value);
-void glade_parameter_get_boolean (GList *parameters, const gchar *key, gboolean *value);
-void glade_parameter_get_string  (GList *parameters, const gchar *key, gchar **value);
-
-
-GList * glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node);
+LIBGLADEUI_API
+void            glade_parameter_get_float   (GList *parameters, const gchar *key, gfloat *value);
+LIBGLADEUI_API
+void            glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value);
+LIBGLADEUI_API
+void            glade_parameter_get_boolean (GList *parameters, const gchar *key, gboolean *value);
+LIBGLADEUI_API
+void            glade_parameter_get_string  (GList *parameters, const gchar *key, gchar **value);
+LIBGLADEUI_API
+GList *         glade_parameter_list_new_from_node (GList *list, GladeXmlNode *node);
 
 G_END_DECLS
 

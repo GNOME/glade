@@ -78,54 +78,81 @@ struct _GladePropertyKlass
 	void             (* tooltip_changed)       (GladeProperty *, const gchar *);
 };
 
-LIBGLADEUI_API GType                   glade_property_get_type              (void);
-LIBGLADEUI_API GladeProperty          *glade_property_new                   (GladePropertyClass *class,
-									     GladeWidget        *widget,
-									     GValue             *value);
-LIBGLADEUI_API GladeProperty          *glade_property_dup                   (GladeProperty      *template,
-									     GladeWidget        *widget);
-LIBGLADEUI_API void                    glade_property_reset                 (GladeProperty      *property);
-LIBGLADEUI_API gboolean                glade_property_default               (GladeProperty      *property);
-LIBGLADEUI_API gboolean                glade_property_equals_value          (GladeProperty      *property, 
-									     GValue             *value);
-LIBGLADEUI_API gboolean                glade_property_equals                (GladeProperty      *property, 
-									     ...);
-LIBGLADEUI_API void                    glade_property_set_value             (GladeProperty      *property, 
-									     const GValue       *value);
-LIBGLADEUI_API void                    glade_property_set_va_list           (GladeProperty      *property,
-									     va_list             vl);
-LIBGLADEUI_API void                    glade_property_set                   (GladeProperty      *property,
-									     ...);
-LIBGLADEUI_API void                    glade_property_get_value             (GladeProperty      *property, 
-									     GValue             *value);
-LIBGLADEUI_API void                    glade_property_get_default           (GladeProperty      *property, 
-									     GValue             *value);
-LIBGLADEUI_API void                    glade_property_get_va_list           (GladeProperty      *property,
-									     va_list             vl);
-LIBGLADEUI_API void                    glade_property_get                   (GladeProperty      *property, 
-									     ...);
-LIBGLADEUI_API void                    glade_property_sync                  (GladeProperty      *property);
-LIBGLADEUI_API gboolean                glade_property_write                 (GladeProperty      *property, 
-									     GladeInterface     *interface, 
-									     GArray             *props);
-LIBGLADEUI_API G_CONST_RETURN gchar   *glade_property_get_tooltip           (GladeProperty      *property);
-LIBGLADEUI_API void                    glade_property_set_sensitive         (GladeProperty      *property,
-									     gboolean            sensitive,
-									     const gchar        *reason);
-LIBGLADEUI_API gboolean                glade_property_get_sensitive         (GladeProperty      *property);
-LIBGLADEUI_API void                    glade_property_set_enabled           (GladeProperty      *property,
-									     gboolean            enabled);
-LIBGLADEUI_API gboolean                glade_property_get_enabled           (GladeProperty      *property);
+LIBGLADEUI_API
+GType                   glade_property_get_type              (void);
+LIBGLADEUI_API
+GladeProperty          *glade_property_new                   (GladePropertyClass *class,
+							      GladeWidget        *widget,
+							      GValue             *value);
+LIBGLADEUI_API
+GladeProperty          *glade_property_dup                   (GladeProperty      *template,
+							      GladeWidget        *widget);
+LIBGLADEUI_API
+void                    glade_property_reset                 (GladeProperty      *property);
+LIBGLADEUI_API
+gboolean                glade_property_default               (GladeProperty      *property);
+LIBGLADEUI_API
+gboolean                glade_property_equals_value          (GladeProperty      *property, 
+							      GValue             *value);
+LIBGLADEUI_API
+gboolean                glade_property_equals                (GladeProperty      *property, 
+							      ...);
+LIBGLADEUI_API
+void                    glade_property_set_value             (GladeProperty      *property, 
+							      const GValue       *value);
+LIBGLADEUI_API
+void                    glade_property_set_va_list           (GladeProperty      *property,
+							      va_list             vl);
+LIBGLADEUI_API
+void                    glade_property_set                   (GladeProperty      *property,
+							      ...);
+LIBGLADEUI_API
+void                    glade_property_get_value             (GladeProperty      *property, 
+							      GValue             *value);
+LIBGLADEUI_API
+void                    glade_property_get_default           (GladeProperty      *property, 
+							      GValue             *value);
+LIBGLADEUI_API
+void                    glade_property_get_va_list           (GladeProperty      *property,
+							      va_list             vl);
+LIBGLADEUI_API
+void                    glade_property_get                   (GladeProperty      *property, 
+							      ...);
+LIBGLADEUI_API
+void                    glade_property_sync                  (GladeProperty      *property);
+LIBGLADEUI_API
+gboolean                glade_property_write                 (GladeProperty      *property, 
+							      GladeInterface     *interface, 
+							      GArray             *props);
+LIBGLADEUI_API
+G_CONST_RETURN gchar   *glade_property_get_tooltip           (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_set_sensitive         (GladeProperty      *property,
+							      gboolean            sensitive,
+							      const gchar        *reason);
+LIBGLADEUI_API
+gboolean                glade_property_get_sensitive         (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_set_enabled           (GladeProperty      *property,
+							      gboolean            enabled);
+LIBGLADEUI_API
+gboolean                glade_property_get_enabled           (GladeProperty      *property);
 
-LIBGLADEUI_API void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
-									     const gchar        *str);
-LIBGLADEUI_API G_CONST_RETURN gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
-LIBGLADEUI_API void                    glade_property_i18n_set_translatable (GladeProperty      *property,
-									     gboolean            translatable);
-LIBGLADEUI_API gboolean                glade_property_i18n_get_translatable (GladeProperty      *property);
-LIBGLADEUI_API void                    glade_property_i18n_set_has_context  (GladeProperty      *property,
-									     gboolean            has_context);
-LIBGLADEUI_API gboolean                glade_property_i18n_get_has_context  (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
+							      const gchar        *str);
+LIBGLADEUI_API
+G_CONST_RETURN gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_i18n_set_translatable (GladeProperty      *property,
+							      gboolean            translatable);
+LIBGLADEUI_API
+gboolean                glade_property_i18n_get_translatable (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_i18n_set_has_context  (GladeProperty      *property,
+							      gboolean            has_context);
+LIBGLADEUI_API
+gboolean                glade_property_i18n_get_has_context  (GladeProperty      *property);
 
 G_END_DECLS
 

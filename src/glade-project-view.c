@@ -141,7 +141,7 @@ glade_project_view_widget_name_changed (GladeProjectView *view,
 	}
 }
 
-/**
+/*
  * Note that widgets is a list of GtkWidgets, while what we store
  * in the model are the associated GladeWidgets.
  */

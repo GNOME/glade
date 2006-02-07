@@ -1009,14 +1009,13 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 
 /**
  * glade_widget_new_for_internal_child:
- * @klass:
- * @parent:
- * @internal_widget:
- * @internal_name:
+ * @parent:            The parent #GladeWidget
+ * @internal_object:   the #GObject
+ * @internal_name:     a string identifier for this internal widget.
  *
- * TODO: write me
  *
- * Returns:
+ * Returns: a freshly created #GladeWidget wrapper object for the
+ *          @internal_object of name @internal_name
  */
 GladeWidget *
 glade_widget_new_for_internal_child (GladeWidget      *parent,
@@ -2010,8 +2009,8 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 
 /**
  * glade_widget_set_object:
- * @gwidget:
- * @new_object:
+ * @gwidget:    A #GladeWidget
+ * @new_object: the new #GObject for @gwidget
  *
  * Set the runtime object for this GladeWidget wrapper
  * (this is used deep in the core and is probably unsafe
@@ -2217,7 +2216,7 @@ glade_widget_set_parent (GladeWidget *widget,
 	g_object_notify (G_OBJECT (widget), "parent");
 }
 
-/**
+/*
  * Returns a list of GladeProperties from a list for the correct
  * child type for this widget of this container.
  */

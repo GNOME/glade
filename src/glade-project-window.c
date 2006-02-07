@@ -1449,11 +1449,6 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 	gpw_select_project_menu (gpw);
 }
 
-/**
- * glade_project_window_new_project:
- *
- * Creates a new #GladeProject and adds it to the #GladeProjectWindow.
- */
 void
 glade_project_window_new_project (GladeProjectWindow *gpw)
 {
@@ -1470,11 +1465,8 @@ glade_project_window_new_project (GladeProjectWindow *gpw)
 	glade_project_window_add_project (gpw, project);
 }
 
-/**
- * glade_project_window_open_project:
- * @path: a string containing a filename
- *
- * Opens the project specified by @path and adds it to the #GladeProjectWindow.
+/*
+ * Opens the project specified by path and adds it to the GladeProjectWindow.
  */
 void
 glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
@@ -1503,15 +1495,6 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	glade_project_window_add_project (gpw, project);
 }
 
-/**
- * glade_project_window_change_menu_label:
- * @gpw:
- * @path:
- * @prefix:
- * @suffix:
- *
- * TODO: write me
- */
 void
 glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 					const gchar *path,
@@ -1546,11 +1529,6 @@ glade_project_window_change_menu_label (GladeProjectWindow *gpw,
 	g_free (text);
 }
 
-/**
- * glade_project_window_refresh_undo_redo:
- *
- * TODO: write me
- */
 void
 glade_project_window_refresh_undo_redo (GladeProjectWindow *gpw)
 {
@@ -1602,11 +1580,6 @@ glade_project_window_update_ui (GladeApp *app)
 	glade_project_window_refresh_undo_redo (gpw);
 }
 
-/**
- * glade_project_window_show_all:
- *
- * TODO: write me
- */
 void
 glade_project_window_show_all (GladeProjectWindow *gpw)
 {
@@ -1681,14 +1654,6 @@ glade_project_window_get_type ()
 	return obj_type;
 }
 
-/**
- * glade_project_window_new:
- * @catalogs:
- *
- * TODO: write me
- *
- * Returns:
- */
 GladeProjectWindow *
 glade_project_window_new (void)
 {

@@ -149,42 +149,42 @@ glade_property_class_clone (GladePropertyClass *property_class)
 
 /**
  * glade_property_class_free:
- * @class: a #GladePropertyClass
+ * @property_class: a #GladePropertyClass
  *
  * Frees @class and its associated memory.
  */
 void
-glade_property_class_free (GladePropertyClass *class)
+glade_property_class_free (GladePropertyClass *property_class)
 {
 	if (class == NULL)
 		return;
 
-	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (class));
+	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
 
-	g_free (class->id);
-	g_free (class->tooltip);
-	g_free (class->name);
-	if (class->orig_def)
+	g_free (property_class->id);
+	g_free (property_class->tooltip);
+	g_free (property_class->name);
+	if (property_class->orig_def)
 	{
-		if (G_VALUE_TYPE (class->orig_def) != 0)
-			g_value_unset (class->orig_def);
-		g_free (class->orig_def);
+		if (G_VALUE_TYPE (property_class->orig_def) != 0)
+			g_value_unset (property_class->orig_def);
+		g_free (property_class->orig_def);
 	}
-	if (class->def)
+	if (property_class->def)
 	{
-		if (G_VALUE_TYPE (class->def) != 0)
-			g_value_unset (class->def);
-		g_free (class->def);
+		if (G_VALUE_TYPE (property_class->def) != 0)
+			g_value_unset (property_class->def);
+		g_free (property_class->def);
 	}
-	g_list_foreach (class->parameters, (GFunc) glade_parameter_free, NULL);
-	g_list_free (class->parameters);
+	g_list_foreach (property_class->parameters, (GFunc) glade_parameter_free, NULL);
+	g_list_free (property_class->parameters);
 	
-	if (class->displayable_values)
+	if (property_class->displayable_values)
 	{
 		gint i, len;
 		GArray *disp_val;
 		
-		disp_val = class->displayable_values;
+		disp_val = property_class->displayable_values;
 		len = disp_val->len;
 		
 		for (i = 0; i < len; i++)
@@ -201,7 +201,7 @@ glade_property_class_free (GladePropertyClass *class)
 		g_array_free(disp_val, TRUE);
 	}	
 	
-	g_free (class);
+	g_free (property_class);
 }
 
 
@@ -748,11 +748,10 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass  *class,
 
 /**
  * glade_property_class_new_from_spec:
- * @spec:
+ * @spec: A #GParamSpec
  *
- * TODO: write me
- *
- * Returns:
+ * Returns: a newly created #GladePropertyClass based on @spec
+ *          or %NULL if its unsupported.
  */
 GladePropertyClass *
 glade_property_class_new_from_spec (GParamSpec *spec)
@@ -1002,11 +1001,11 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 
 /**
  * glade_property_class_update_from_node:
- * @node: the <property> node
+ * @node: the property node
  * @module: a #GModule to lookup symbols from the plugin
  * @object_type: the #GType of the owning object
  * @property_class: a pointer to the property class
- * @domain: the domain to translate catalog strings from.
+ * @domain: the domain to translate catalog strings from
  *
  * Updates the @property_class with the contents of the node in the xml
  * file. Only the values found in the xml file are overridden.

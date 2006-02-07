@@ -1488,7 +1488,6 @@ glade_gtk_list_item_post_create (GObject *object, GladeCreateReason reason)
 void GLADEGTK_API
 glade_gtk_combo_box_post_create (GObject *object, GladeCreateReason reason)
 {
-//	GtkWidget *combo_box;
 	GtkCellRenderer *cell;
 	GtkListStore *store;
 

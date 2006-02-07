@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+
+<!ENTITY GladeCommand SYSTEM "xml/glade-command.xml">
+<!ENTITY GladeApp SYSTEM "xml/glade-app.xml">
+<!ENTITY GladeCatalog SYSTEM "xml/glade-catalog.xml">
+<!ENTITY GladeClipboardView SYSTEM "xml/glade-clipboard-view.xml">
+<!ENTITY GladeClipboard SYSTEM "xml/glade-clipboard.xml">
+<!ENTITY GladeEditorProperty SYSTEM "xml/glade-editor-property.xml">
+<!ENTITY GladeEditor SYSTEM "xml/glade-editor.xml">
+<!ENTITY GladeFixedManager SYSTEM "xml/glade-fixed-manager.xml">
+<!ENTITY GladePalette SYSTEM "xml/glade-palette.xml">
+<!ENTITY GladeParameter SYSTEM "xml/glade-parameter.xml">
+<!ENTITY GladePlaceholder SYSTEM "xml/glade-placeholder.xml">
+<!ENTITY GladeProjectView SYSTEM "xml/glade-project-view.xml">
+<!ENTITY GladeProject SYSTEM "xml/glade-project.xml">
+<!ENTITY GladePropertyClass SYSTEM "xml/glade-property-class.xml">
+<!ENTITY GladeProperty SYSTEM "xml/glade-property.xml">
+<!ENTITY GladeSignalEditor SYSTEM "xml/glade-signal-editor.xml">
+<!ENTITY GladeUtils SYSTEM "xml/glade-utils.xml">
+<!ENTITY GladeWidgetClass SYSTEM "xml/glade-widget-class.xml">
+<!ENTITY GladeWidget SYSTEM "xml/glade-widget.xml">
+
+<!ENTITY version SYSTEM "version.xml">
+]>
+<book id="index">
+  <bookinfo>
+    <title>Glade UI Builder API Reference Manual</title>
+    <releaseinfo>&version;</releaseinfo>
+  </bookinfo>
+
+  <part id="intro">
+    <title>Introduction</title>
+    <partintro>
+    <para>
+Glade is a RAD tool to enable quick and easy development of user interfaces
+for the Gtk+ toolkit and the GNOME desktop environment.
+The user interfaces designed in Glade are stored in XML format,
+enabling easy integration with external tools.
+In particular libglade can load the XML files and create the interfaces
+at runtime. The DTD for the XML files is included with libglade, and is
+also at http://glade.gnome.org/glade-2.0.dtd.
+Other tools are available which can turn the XML files into source code
+in languages such as C++, Perl and Python.
+    </para>
+
+    <para>
+This version of Glade (Glade-3) is a complete rewrite of the original Glade codebase.
+    </para>
+
+    <para>
+    One of the main differnces from glade-2 is that C code generation has been removed from 
+glade-3: this has been done on purpose, since using generated code is deprecated; the preferred 
+way to use glade files is with libglade (if code generation is needed, this can be provided 
+as another tool or plugin, code generation is simply not a part of the glade-3 project).
+Another main difference is that glade-3 was designed to make maximal use of GObject
+introspection, thus easing the integration of external toolkits and handling widgets,
+signals and properties genericly; thus making it easier to write fancy features in the 
+future (toolkits such as gtk+ itself, gnome, gnome-db and any others are implemented 
+externaly as widget catalogs with optional support libraries, thus catalogs may be 
+distributed seperatly; possibly along with their libglade support modules).
+
+It has a few useful new features such as stacked Undo/Redo and Multiple Project support
+and respects the same XML format as glade-2.
+    </para>
+    </partintro>
+  </part>
+
+  <part id="core">
+    <title>Glade Core</title>
+    &GladeApp;
+    &GladeProject;
+  </part>
+
+  <part id="dockables">
+    <title>Dockable Glade UI Widgets</title>
+    &GladeEditor;
+    &GladePalette;
+    &GladeClipboardView;
+    &GladeProjectView;
+  </part>
+
+  <part id="metadata">
+    <title>Widget and Property Definitions</title>
+    &GladeWidgetClass;
+    &GladePropertyClass;
+  </part>
+
+  <part id="wrappers">
+    <title>Widget and Property Runtime Wrappers</title>
+    &GladeWidget;
+    &GladeProperty;
+  </part>
+
+  <part id="misc">
+    <title>The rest</title>
+    &GladeClipboard;
+    &GladeSignalEditor;
+    &GladeEditorProperty;
+    &GladeFixedManager;
+    &GladeParameter;
+    &GladePlaceholder;
+    &GladeUtils;
+    &GladeCommand;
+  </part>
+
+</book>

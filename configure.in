@@ -91,6 +91,8 @@ case $host_os in
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
+GTK_DOC_CHECK(1.0)
+
 AC_OUTPUT([
 Makefile
 pixmaps/Makefile
@@ -99,6 +101,8 @@ po/Makefile.in
 src/Makefile
 src/libgladeui-1.0.pc
 src/glade-paths.sh
+doc/Makefile
+doc/version.xml
 ])
 
 echo "

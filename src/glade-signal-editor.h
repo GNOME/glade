@@ -2,6 +2,8 @@
 #ifndef __GLADE_SIGNAL_EDITOR_H__
 #define __GLADE_SIGNAL_EDITOR_H__
 
+#include "glade.h"
+
 G_BEGIN_DECLS
 
 
@@ -29,10 +31,13 @@ struct _GladeSignalEditor
 };
 
 
+LIBGLADEUI_API
 GtkWidget *glade_signal_editor_get_widget (GladeSignalEditor *editor);
 
+LIBGLADEUI_API
 GladeSignalEditor *glade_signal_editor_new (gpointer *editor);
 
+LIBGLADEUI_API
 void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 
 

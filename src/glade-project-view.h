@@ -96,16 +96,21 @@ typedef enum {
 } GladeProjectViewType;
 
 
-LIBGLADEUI_API GType glade_project_view_get_type (void);
+LIBGLADEUI_API
+GType glade_project_view_get_type (void);
 
-LIBGLADEUI_API GladeProjectView *glade_project_view_new (GladeProjectViewType type);
+LIBGLADEUI_API
+GladeProjectView *glade_project_view_new (GladeProjectViewType type);
 
-LIBGLADEUI_API GladeProject *glade_project_view_get_project (GladeProjectView *project_view);
+LIBGLADEUI_API
+GladeProject *glade_project_view_get_project (GladeProjectView *view);
 
-LIBGLADEUI_API void glade_project_view_set_project (GladeProjectView *project_view,
-						    GladeProject *project);
+LIBGLADEUI_API
+void glade_project_view_set_project (GladeProjectView *view,
+				     GladeProject *project);
 
-LIBGLADEUI_API void glade_project_view_select_item (GladeProjectView *view, GladeWidget *item);
+LIBGLADEUI_API
+void glade_project_view_select_item (GladeProjectView *view, GladeWidget *item);
 
 
 G_END_DECLS

@@ -164,14 +164,20 @@ struct _GladeEditorTable
 	gint  rows;
 };
 
-LIBGLADEUI_API GType        glade_editor_get_type           (void);
-LIBGLADEUI_API GladeEditor *glade_editor_new                (void);
-LIBGLADEUI_API void         glade_editor_load_widget        (GladeEditor *editor,
-							     GladeWidget *widget);
-LIBGLADEUI_API void         glade_editor_refresh            (GladeEditor *editor);
-LIBGLADEUI_API void         glade_editor_update_widget_name (GladeEditor *editor);
-LIBGLADEUI_API gboolean     glade_editor_query_dialog       (GladeEditor *editor,
-							     GladeWidget *widget);
+LIBGLADEUI_API
+GType        glade_editor_get_type           (void);
+LIBGLADEUI_API
+GladeEditor *glade_editor_new                (void);
+LIBGLADEUI_API
+void         glade_editor_load_widget        (GladeEditor *editor,
+					      GladeWidget *widget);
+LIBGLADEUI_API
+void         glade_editor_refresh            (GladeEditor *editor);
+LIBGLADEUI_API
+void         glade_editor_update_widget_name (GladeEditor *editor);
+LIBGLADEUI_API
+gboolean     glade_editor_query_dialog       (GladeEditor *editor,
+					      GladeWidget *widget);
 
 G_END_DECLS
 

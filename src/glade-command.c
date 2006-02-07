@@ -397,7 +397,7 @@ glade_command_set_property_undo (GladeCommand *cmd)
 	return glade_command_set_property_execute (cmd);
 }
 
-/**
+/*
  * Execute the set property command and revert it. IE, after the execution of 
  * this function cmd will point to the undo action
  */
@@ -655,7 +655,7 @@ glade_command_set_name_undo (GladeCommand *cmd)
 	return glade_command_set_name_execute (cmd);
 }
 
-/**
+/*
  * Execute the set name command and revert it.  Ie, after the execution of this
  * function cmd will point to the undo action
  */
@@ -898,7 +898,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 	return TRUE;
 }
 
-/**
+/*
  * Execute the cmd and revert it.  Ie, after the execution of this
  * function cmd will point to the undo action
  */
@@ -958,9 +958,9 @@ glade_command_create_delete_collapse (GladeCommand *this, GladeCommand *other)
 
 /**
  * glade_command_delete:
- * @widget: a #GladeWidget
+ * @widgets: a #GList of #GladeWidgets
  *
- * TODO: write me
+ * Performs a delete command on the list of widgets
  */
 void
 glade_command_delete (GList *widgets)
@@ -1306,7 +1306,7 @@ glade_command_copy_undo (GladeCommandCutCopyPaste *me)
 	return TRUE;
 }
 
-/**
+/*
  * Execute the cmd and revert it.  Ie, after the execution of this
  * function cmd will point to the undo action
  */
@@ -1601,7 +1601,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
  * @parent: a #GladeWidget
  * @placeholder: a #GladePlaceholder
  *
- * TODO: write me
+ * Performs a paste command on all widgets in @widgets to @parent, possibly
+ * replacing @placeholder (note toplevels dont need a parent; the active project
+ * will be used when pasting toplevel objects).
  */
 void
 glade_command_paste (GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)

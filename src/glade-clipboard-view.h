@@ -2,8 +2,9 @@
 #ifndef __GLADE_CLIPBOARD_VIEW_H__
 #define __GLADE_CLIPBOARD_VIEW_H__
 
-G_BEGIN_DECLS
+#include "glade.h"
 
+G_BEGIN_DECLS
 
 #define GLADE_TYPE_CLIPBOARD_VIEW            (glade_clipboard_view_get_type ())
 #define GLADE_CLIPBOARD_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_CLIPBOARD_VIEW, GladeClipboardView))
@@ -29,16 +30,19 @@ struct _GladeClipboardViewClass {
 	GtkWindowClass __parent__;
 };
 
-GType glade_clipboard_view_get_type ();
 
+LIBGLADEUI_API
+GType        glade_clipboard_view_get_type   (void) G_GNUC_CONST;
+
+LIBGLADEUI_API
 GtkWidget *glade_clipboard_view_new (GladeClipboard *clipboard);
-
+LIBGLADEUI_API
 void glade_clipboard_view_add (GladeClipboardView *view,
 			       GladeWidget *widget);
-
+LIBGLADEUI_API
 void glade_clipboard_view_remove (GladeClipboardView *view,
 				  GladeWidget *widget);
-
+LIBGLADEUI_API
 void glade_clipboard_view_refresh_sel (GladeClipboardView *view);
 
 G_END_DECLS
