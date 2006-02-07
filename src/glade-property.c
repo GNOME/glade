@@ -579,10 +579,10 @@ glade_property_get_type (void)
  *******************************************************************************/
 /**
  * glade_property_new:
- * @class: A #GladeWidgetClass
- * @widget: A #GladeWidget
- * @value: A #GValue
- *
+ * @class: A #GladePropertyClass defining this property
+ * @widget: The #GladeWidget this property is created for
+ * @value: The initial #GValue of the property or %NULL
+ *         (the #GladeProperty will assume ownership of @value)
  *
  * Returns: A newly created #GladeProperty based on the
  *          given criteria

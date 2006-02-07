@@ -156,7 +156,7 @@ glade_property_class_clone (GladePropertyClass *property_class)
 void
 glade_property_class_free (GladePropertyClass *property_class)
 {
-	if (class == NULL)
+	if (property_class == NULL)
 		return;
 
 	g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
