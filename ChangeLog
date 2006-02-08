@@ -1,3 +1,15 @@
+2006-02-08  Tristan Van Berkom <tvb@gnome.org>
+
+	* doc/Makefile.am,
+	  Added Files: doc/gladeui-docs.sgml, doc/gladeui-overrides.txt,
+	  doc/gladeui-sections.txt, doc/gladeui.types,
+	  Removed Files: doc/glade-docs.sgml, doc/glade-sections.txt, doc/glade.types:
+	  Making doc module called "gladeui" instead of "glade" to represent the
+	  libgladeui library, mostly just to make sure we have namespace wherever
+	  we install (since "glade" docs could concievably come from libglade, glade-2
+	  or whatever), these are the initial revisions of these files anyway, so
+	  no need to surgically move the cvs history.
+
 2006-02-07  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-property.c: Fixed up blurbs on installed properties
