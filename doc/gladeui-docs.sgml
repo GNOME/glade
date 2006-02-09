@@ -2,6 +2,11 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 
+<!ENTITY CatalogIntro SYSTEM "catalogintro.sgml">
+<!ENTITY WidgetClasses SYSTEM "widgetclasses.sgml">
+<!ENTITY Properties SYSTEM "properties.sgml">
+<!ENTITY Children SYSTEM "children.sgml">
+
 <!ENTITY GladeCommand SYSTEM "xml/glade-command.xml">
 <!ENTITY GladeApp SYSTEM "xml/glade-app.xml">
 <!ENTITY GladeCatalog SYSTEM "xml/glade-catalog.xml">
@@ -26,7 +31,7 @@
 ]>
 <book id="index">
   <bookinfo>
-    <title>Glade UI Builder API Reference Manual</title>
+    <title>Glade UI Builder Reference Manual</title>
     <releaseinfo>&version;</releaseinfo>
   </bookinfo>
 
@@ -34,37 +39,23 @@
     <title>Introduction</title>
     <partintro>
     <para>
-Glade is a RAD tool to enable quick and easy development of user interfaces
-for the Gtk+ toolkit and the GNOME desktop environment.
-The user interfaces designed in Glade are stored in XML format,
-enabling easy integration with external tools.
-In particular libglade can load the XML files and create the interfaces
-at runtime. The DTD for the XML files is included with libglade, and is
-also at http://glade.gnome.org/glade-2.0.dtd.
-Other tools are available which can turn the XML files into source code
-in languages such as C++, Perl and Python.
+This document attempts to describe how to use the Glade UI Builder core
+library to integrate Glade into your application and how to integrate your
+custom (GTK+ based) widget toolkit into the Glade UI Builder.
     </para>
-
     <para>
-This version of Glade (Glade-3) is a complete rewrite of the original Glade codebase.
-    </para>
-
-    <para>
-    One of the main differnces from glade-2 is that C code generation has been removed from 
-glade-3: this has been done on purpose, since using generated code is deprecated; the preferred 
-way to use glade files is with libglade (if code generation is needed, this can be provided 
-as another tool or plugin, code generation is simply not a part of the glade-3 project).
-Another main difference is that glade-3 was designed to make maximal use of GObject
-introspection, thus easing the integration of external toolkits and handling widgets,
-signals and properties genericly; thus making it easier to write fancy features in the 
-future (toolkits such as gtk+ itself, gnome, gnome-db and any others are implemented 
-externaly as widget catalogs with optional support libraries, thus catalogs may be 
-distributed seperatly; possibly along with their libglade support modules).
-
-It has a few useful new features such as stacked Undo/Redo and Multiple Project support
-and respects the same XML format as glade-2.
+You can always get the latest version of this document here (XXX linkme) 
+and you should have recieved a copy with the glade-3 tarball.
     </para>
     </partintro>
+  </part>
+
+  <part id="catalog">
+    <title>Adding your custom widgets</title>
+    &CatalogIntro;
+    &WidgetClasses;
+    &Properties;
+    &Children;
   </part>
 
   <part id="core">
@@ -105,4 +96,7 @@ and respects the same XML format as glade-2.
     &GladeCommand;
   </part>
 
+  <index>
+    <title>Index</title>
+  </index>
 </book>
