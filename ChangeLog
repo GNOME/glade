@@ -1,5 +1,20 @@
 2006-02-08  Tristan Van Berkom <tvb@gnome.org>
 
+	* configure.in: Require gtkdocize 1.4
+
+	* doc/Makefile.am: Ignore glade-popup.h
+
+	* doc/children.sgml, doc/gladeui-docs.sgml, doc/tmpl/glade-app.sgml,
+	  doc/tmpl/glade-project.sgml: Doc updates.
+
+	* src/glade-project.c: Made project signals have object type args for
+	  GladeWidgets (of type GLADE_TYPE_WIDGET).
+
+	* src/glade-widget.c: GladeWidget GType is now registered as "GladeWidget"
+	  and not "Gladewidget".
+		
+2006-02-08  Tristan Van Berkom <tvb@gnome.org>
+
 	* doc/Makefile.am,
 	  Added Files: doc/gladeui-docs.sgml, doc/gladeui-overrides.txt,
 	  doc/gladeui-sections.txt, doc/gladeui.types,

@@ -126,7 +126,7 @@ glade_widget_get_type (void)
 			(GInstanceInitFunc) glade_widget_init,
 		};
 
-		widget_type = g_type_register_static (G_TYPE_OBJECT, "Gladewidget",
+		widget_type = g_type_register_static (G_TYPE_OBJECT, "GladeWidget",
 						      &widget_info, 0);
 	}
 

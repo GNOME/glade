@@ -59,7 +59,8 @@ IGNORE_HFILES=\
 	glade-id-allocator.h \
 	glade-catalog.h \
 	glade.h \
-	glade-xml-utils.h
+	glade-xml-utils.h \
+	glade-popup.h
 
 
 # Images to copy into HTML directory.

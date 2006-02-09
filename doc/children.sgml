@@ -29,7 +29,7 @@ are embedded into a glade-widget-class block like so:
     <child>
     <type>Bar</type>
 
-      ... 'Foo --> Bar' relationship parameters go here
+      ... 'Foo --> Bar' container relationship parameters go here
 
       <properties>
 
@@ -47,9 +47,10 @@ are embedded into a glade-widget-class block like so:
 Note that you can access and modify and even add virtual packing properties in
 exactly the same way as previously described with normal object properties.
     </para>
+  </refsect1>
+  <refsect2>
+    <title>Container Relationship Parameter Tag Definitions</title>
     <para>
-Child support definition parameters (all tag values and no xml tag properties):
-
       <variablelist>
         <varlistentry>
           <term>add-child-function</term>
@@ -142,5 +143,5 @@ examples.
         </varlistentry>
       </variablelist>
     </para>
-  </refsect1>
+  </refsect2>
 </refentry>

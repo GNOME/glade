@@ -2,11 +2,14 @@
 GladeApp
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The central control point of the Glade core.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+This main control object is where we try to draw the line between
+what is the Glade core and what is the main application. The main
+application must derive from the GladeApp object and create an instance
+to initialize the Glade core.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -25,10 +28,14 @@ GladeApp
 
 <!-- ##### SIGNAL GladeApp::update-ui ##### -->
 <para>
-
+Emitted when a project name changes or a cut/copy/paste/delete occurred.
+</para>
+<para>
+You should derive the app->update_ui_signal vfunc instead if you are
+deriving the #GladeApp
 </para>
 
-@gladeapp: the object which received the signal.
+@app: the #GladeApp which received the signal.
 
 <!-- ##### FUNCTION glade_app_new ##### -->
 <para>

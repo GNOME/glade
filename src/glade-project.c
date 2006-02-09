@@ -110,10 +110,10 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeProjectClass, add_object),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__POINTER,
+			      g_cclosure_marshal_VOID__OBJECT,
 			      G_TYPE_NONE,
 			      1,
-			      G_TYPE_POINTER);
+			      GLADE_TYPE_WIDGET);
 
 	glade_project_signals[REMOVE_WIDGET] =
 		g_signal_new ("remove_widget",
@@ -121,10 +121,10 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeProjectClass, remove_object),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__POINTER,
+			      g_cclosure_marshal_VOID__OBJECT,
 			      G_TYPE_NONE,
 			      1,
-			      G_TYPE_POINTER);
+			      GLADE_TYPE_WIDGET);
 
 	glade_project_signals[WIDGET_NAME_CHANGED] =
 		g_signal_new ("widget_name_changed",
