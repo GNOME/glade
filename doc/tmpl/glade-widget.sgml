@@ -2,11 +2,13 @@
 GladeWidget
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An object wrapper for the Glade runtime environment.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+#GladeWidget is the proxy between the instantiated runtime object and
+the Glade core metadata. This api will be mostly usefull for its
+convenience api for getting and setting properties (mostly from the plugin).
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -22,24 +24,66 @@ GladeWidget
 
 </para>
 
-@parent_instance: 
-@widget_class: 
-@project: 
-@parent: 
-@name: 
-@internal: 
-@object: 
-@properties: 
-@packing_properties: 
-@query_user: 
-@signals: 
-@manager: 
-@visible: 
-@prop_refs_readonly: 
-@prop_refs: 
-@save_x: 
-@save_y: 
-@pos_saved: 
+
+<!-- ##### SIGNAL GladeWidget::add-signal-handler ##### -->
+<para>
+
+</para>
+
+@gladewidget: the #GladeWidget which received the signal.
+@arg1: the #GladeSignal that was added to @gladewidget.
+
+<!-- ##### SIGNAL GladeWidget::change-signal-handler ##### -->
+<para>
+
+</para>
+
+@gladewidget: the #GladeWidget which received the signal.
+@arg1: the old #GladeSignal
+@arg2: the new #GladeSignal
+
+<!-- ##### SIGNAL GladeWidget::remove-signal-handler ##### -->
+<para>
+
+</para>
+
+@gladewidget: the #GladeWidget which received the signal.
+@arg1: the #GladeSignal that was removed from @gladewidget.
+
+<!-- ##### ARG GladeWidget:class ##### -->
+<para>
+Private
+</para>
+
+<!-- ##### ARG GladeWidget:internal ##### -->
+<para>
+Private
+</para>
+
+<!-- ##### ARG GladeWidget:name ##### -->
+<para>
+Can be used when implementing custom editors.
+</para>
+
+<!-- ##### ARG GladeWidget:object ##### -->
+<para>
+Private
+</para>
+
+<!-- ##### ARG GladeWidget:parent ##### -->
+<para>
+Private
+</para>
+
+<!-- ##### ARG GladeWidget:project ##### -->
+<para>
+Private
+</para>
+
+<!-- ##### ARG GladeWidget:properties ##### -->
+<para>
+Private
+</para>
 
 <!-- ##### FUNCTION glade_widget_new ##### -->
 <para>

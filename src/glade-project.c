@@ -132,10 +132,10 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeProjectClass, widget_name_changed),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__POINTER,
+			      g_cclosure_marshal_VOID__OBJECT,
 			      G_TYPE_NONE,
 			      1,
-			      G_TYPE_POINTER);
+			      GLADE_TYPE_WIDGET);
 
 	glade_project_signals[SELECTION_CHANGED] =
 		g_signal_new ("selection_changed",

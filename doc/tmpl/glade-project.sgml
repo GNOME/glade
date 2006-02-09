@@ -27,57 +27,59 @@ object and its signals.
 
 <!-- ##### SIGNAL GladeProject::add-widget ##### -->
 <para>
-
+Emitted when a widget is added to a project.
 </para>
 
-@gladeproject: the object which received the signal.
-@arg1: 
+@gladeproject: the #GladeProject which received the signal.
+@arg1: the #GladeWidget that was added to @gladeproject.
 
 <!-- ##### SIGNAL GladeProject::close ##### -->
 <para>
-
+Emitted when a project is closing (a good time to clean up
+any associated resources).
 </para>
 
-@gladeproject: the object which received the signal.
+@gladeproject: the #GladeProject which received the signal.
 
 <!-- ##### SIGNAL GladeProject::remove-widget ##### -->
 <para>
-
+Emitted when a widget is removed from a project.
 </para>
 
-@gladeproject: the object which received the signal.
-@arg1: 
+@gladeproject: the #GladeProject which received the signal.
+@arg1: the #GladeWidget that was removed from @gladeproject.
 
 <!-- ##### SIGNAL GladeProject::resource-added ##### -->
 <para>
-
+Emitted when a resource file required by a #GladeProperty is
+added to @gladeproject
 </para>
 
-@gladeproject: the object which received the signal.
-@arg1: 
+@gladeproject: the #GladeProject which received the signal.
+@arg1: the file's basename (in the project path).
 
 <!-- ##### SIGNAL GladeProject::resource-removed ##### -->
 <para>
-
+Emitted when a resource file is removed from @gladeproject
 </para>
 
-@gladeproject: the object which received the signal.
-@arg1: 
+@gladeproject: the #GladeProject which received the signal.
+@arg1: the file's basename
 
 <!-- ##### SIGNAL GladeProject::selection-changed ##### -->
 <para>
-
+Emitted when @gladeproject selection list changes.
 </para>
 
-@gladeproject: the object which received the signal.
+@gladeproject: the #GladeProject which received the signal.
 
 <!-- ##### SIGNAL GladeProject::widget-name-changed ##### -->
 <para>
-
+Emitted when @gwidget's name changes.
 </para>
 
-@gladeproject: the object which received the signal.
-@arg1: 
+@gladeproject: the #GladeProject which received the signal.
+@arg1: the #GladeWidget who's name changed.
 
 <!-- ##### FUNCTION glade_project_new ##### -->
 <para>
