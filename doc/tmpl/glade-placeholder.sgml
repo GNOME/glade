@@ -2,11 +2,15 @@
 GladePlaceholder
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A #GtkWidget to fill empty places
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Generally in Glade, container widgets are implemented with #GladePlaceholder 
+children to allow users to 'click' and add thier widgets to a container. 
+It is the responsability of the plugin writer to create placeholders for 
+container widgets where appropriate; usually in #GladePostCreateFunc 
+when the #GladeCreateReason is %GLADE_CREATE_USER.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

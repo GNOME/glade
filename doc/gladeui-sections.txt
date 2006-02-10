@@ -68,6 +68,7 @@ glade_app_get_type
 GLADE_APP_CLASS
 GLADE_IS_APP_CLASS
 GLADE_APP_GET_CLASS
+GladeAppClass
 <SUBSECTION Private>
 GLADE_CONFIG_FILENAME
 GladeAppPriv
@@ -89,6 +90,7 @@ glade_clipboard_view_get_type
 GLADE_CLIPBOARD_VIEW_CLASS
 GLADE_IS_CLIPBOARD_VIEW_CLASS
 GLADE_CLIPBOARD_VIEW_GET_CLASS
+GladeClipboardViewClass
 </SECTION>
 
 <SECTION>
@@ -106,24 +108,25 @@ GLADE_CLIPBOARD
 GLADE_IS_CLIPBOARD
 GLADE_TYPE_CLIPBOARD
 glade_clipboard_get_type
+GladeClipboardClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-command</FILE>
 <TITLE>GladeCommand</TITLE>
-GCSetPropData
 glade_command_undo
 glade_command_redo
 glade_command_next_undo_item
 glade_command_next_redo_item
 glade_command_push_group
 glade_command_pop_group
+glade_command_set_name
+glade_command_create
+glade_command_delete
+GCSetPropData
 glade_command_set_property
 glade_command_set_properties
 glade_command_set_properties_list
-glade_command_set_name
-glade_command_delete
-glade_command_create
 glade_command_cut
 glade_command_copy
 glade_command_paste
@@ -138,6 +141,8 @@ glade_command_get_type
 GLADE_COMMAND_CLASS
 GLADE_IS_COMMAND_CLASS
 GLADE_COMMAND_GET_CLASS
+GladeCommandClass
+GladeCommand
 </SECTION>
 
 <SECTION>
@@ -157,6 +162,7 @@ glade_editor_property_get_type
 GLADE_EDITOR_PROPERTY_CLASS
 GLADE_IS_EDITOR_PROPERTY_CLASS
 GLADE_EDITOR_PROPERTY_GET_CLASS
+GladeEditorPropertyClass
 </SECTION>
 
 <SECTION>
@@ -199,6 +205,7 @@ glade_fixed_manager_get_type
 GLADE_FIXED_MANAGER_CLASS
 GLADE_IS_FIXED_MANAGER_CLASS
 GLADE_FIXED_MANAGER_GET_CLASS
+GladeFixedManagerClass
 </SECTION>
 
 <SECTION>
@@ -215,6 +222,7 @@ glade_palette_get_type
 GLADE_PALETTE_CLASS
 GLADE_IS_PALETTE_CLASS
 GLADE_PALETTE_GET_CLASS
+GladePaletteClass
 </SECTION>
 
 <SECTION>
@@ -231,6 +239,7 @@ glade_placeholder_get_type
 GLADE_PLACEHOLDER_CLASS
 GLADE_IS_PLACEHOLDER_CLASS
 GLADE_PLACEHOLDER_GET_CLASS
+GladePlaceholderClass
 <SUBSECTION Private>
 GLADE_PLACEHOLDER_WIDTH_REQ
 GLADE_PLACEHOLDER_HEIGHT_REQ
@@ -253,6 +262,7 @@ glade_project_view_get_type
 GLADE_PROJECT_VIEW_CLASS
 GLADE_IS_PROJECT_VIEW_CLASS
 GLADE_PROJECT_VIEW_GET_CLASS
+GladeProjectViewClass
 </SECTION>
 
 <SECTION>
@@ -291,6 +301,7 @@ glade_project_get_type
 GLADE_PROJECT_CLASS
 GLADE_IS_PROJECT_CLASS
 GLADE_PROJECT_GET_CLASS
+GladeProjectClass
 </SECTION>
 
 <SECTION>
@@ -358,6 +369,7 @@ GLADE_PROPERTY
 GLADE_IS_PROPERTY
 GLADE_TYPE_PROPERTY
 glade_property_get_type
+GladePropertyKlass
 </SECTION>
 
 <SECTION>
@@ -369,6 +381,7 @@ glade_signal_editor_load_widget
 <SUBSECTION Standard>
 GLADE_SIGNAL_EDITOR
 GLADE_IS_SIGNAL_EDITOR
+GladeEditorClass
 </SECTION>
 
 <SECTION>
@@ -486,6 +499,7 @@ glade_widget_get_type
 GLADE_WIDGET_KLASS
 GLADE_IS_WIDGET_KLASS
 GLADE_WIDGET_GET_KLASS
+GladeWidgetKlass
 </SECTION>
 
 <SECTION>

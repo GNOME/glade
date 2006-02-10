@@ -20,7 +20,7 @@ typedef struct _GladeProjectClass  GladeProjectClass;
  */
 struct _GladeProject
 {
-	GObject object;  /* We emit signals */
+	GObject object;
 
 	gchar *name;     /* The name of the project like network-conf */
 

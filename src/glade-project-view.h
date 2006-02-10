@@ -90,6 +90,11 @@ struct _GladeProjectViewClass
 				    GladeProject *project);
 };
 
+/**
+ * GladeProjectViewType:
+ * @GLADE_PROJECT_VIEW_LIST: View only toplevels as a flat list
+ * @GLADE_PROJECT_VIEW_TREE: View as the entire project tree
+ */
 typedef enum {
 	GLADE_PROJECT_VIEW_LIST,
 	GLADE_PROJECT_VIEW_TREE,

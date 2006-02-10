@@ -61,7 +61,7 @@ struct _GladeAppClass
 };
 
 LIBGLADEUI_API 
-GType glade_app_get_type (void);
+GType              glade_app_get_type (void) G_GNUC_CONST;
 
 LIBGLADEUI_API 
 GladeApp*          glade_app_new (void);
