@@ -50,13 +50,6 @@ static GtkScrolledWindow *parent_class = NULL;
 static void glade_project_view_class_init (GladeProjectViewClass *class);
 static void glade_project_view_init (GladeProjectView *view);
 
-/**
- * glade_project_view_get_type:
- *
- * Creates the typecode for the #GladeProjectView object type.
- *
- * Returns: the typecode for the #GladeProjectView object type
- */
 GType
 glade_project_view_get_type (void)
 {

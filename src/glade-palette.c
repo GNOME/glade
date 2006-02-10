@@ -319,13 +319,6 @@ glade_palette_append_widget_group (GladePalette     *palette,
 	gtk_widget_show (palette->notebook);
 }
 
-/**
- * glade_palette_get_type:
- *
- * Creates the typecode for the #GladePalette object type.
- *
- * Returns: the typecode for the #GladePalette object type
- */
 GType
 glade_palette_get_type (void)
 {

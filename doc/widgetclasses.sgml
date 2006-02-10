@@ -6,18 +6,18 @@
   <refnamediv>
     <refname>Widget Classes</refname>
     <refpurpose>
-How to augment or define a widget class definition
+How to augment or define a #GladeWidgetClass
     </refpurpose>
   </refnamediv>
 
   <refsect1>
-    <title>Widget Class Parameters</title>
+    <title>Forward</title>
 
     <para>
-Widget classes are added using the `glade-widget-class' tag and then later
-added to the palette through the `glade-widget-group' section; class-wide
-parameters can be set on non-instantiatable classes; for example, parameters
-for GtkBox are valid for GtkHBox and GtkVBox.
+#GladeWidgetClass stuctures are added to a global pool using the `glade-widget-class' tag
+and then later added to the palette through the `glade-widget-group' section; class-wide
+parameters can be set on non-instantiatable classes; for example, parameters for
+#GtkBox are valid for #GtkHBox and #GtkVBox.
     </para>
     <para>
 Note that there are alot of features to support alot of special-cases from
@@ -48,69 +48,79 @@ To delve further into details; the complex layout looks like this:
   </children>
 </glade-widget-class>]]></programlisting>
     </para>
-    <para>
-The name is the class name of the widget; this will essentially be used to 
-instantiate the actual class by deriving 'gtk_label_get_type' from 'GtkLabel' 
-and searching for 'gtk_label_get_type' in the support library.
-    </para>
-    <para>
-Generic name is used to get the icon name for the widget palette, and is a regular 
-icon theme icon. The generic name is also used to generate a default name for 
-instances of the widget in the UI editor.
-    </para>
 
-    <para>
-Title is used to display the name of the class in the palette and widget tree and
-will be translated before use in the interface.
-    </para>
-    <para>
-The 'post-create-function' tag is a support function that gets called whenever
-a widget of 'this class' (or a widget derived from 'this class' that didn't provide
-its own post-create-function) is instantiated and is of the following form:
-      <programlisting>
-void 
-glade_gtk_label_post_create (GObject *label, GladeCreateReason reason)
-{
-	 /* This function is called exactly once for any project object
-	  * and can be for any of the following GladeCreateReason's
-	  *
-	  *	GLADE_CREATE_USER:    Was created at the user's request
-	  *                           (this is a good time to set any properties
-	  *                           or add children to the project; like GtkFrame's 
-	  *                           label for example).
-	  *
-	  *	GLADE_CREATE_COPY:    Was created as a result of the copy/paste 
-	  *                           mechanism, at this point you can count on glade
-	  *                           to follow up with properties and children on 
-	  *                           its own.
-	  *
-	  *	GLADE_CREATE_LOAD:    Was created during the load process.
-	  *
-	  *     GLADE_CREATE_REBUILD: Was created as a replacement for another project 
-	  *                           object; this only happens when the user is 
-	  *                           changing a property that is marked by the type 
-	  *                           system as G_PARAM_SPEC_CONSTRUCT_ONLY.
-	  */
-}</programlisting>
-    </para>
-The 'launch-editor-function' tag is a support function used to launch a custom editor
-for this class; a good example for this is the GtkMenuBar which needs a special editor
-in order to be easier to use; the prototype is as follows:
-    <para>
-      <programlisting>void plugin_my_object_launch_editor (GObject *object);</programlisting>
-    </para>
-The 'get-internal-child-function' tag is a support function used to retrieve an internal
-child of a composite object (like a button in a filechooser or something); support for
-internal children must also be added to your application via libglade. The prototype is:
-      <programlisting>void get_internal_child (GObject *object, const gchar *name, GObject **child);</programlisting>
-where ofcourse 'child' is the return pointer for the internal child of 'object' called 'name'.
-    <para>
-The 'get-internal-children-function' tag is a support function used to retrieve a list of
-all internal children of a composite object; the prototype is as follows:
-      <programlisting>GList *get_internal_children (GObject *object);</programlisting>
-    </para>
   </refsect1>
   <refsect2>
+    <title>Widget Class Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>name</term>
+        <listitem>
+          <para>
+The 'name' property is the class name of the widget; this will essentially be 
+used to instantiate the actual class by deriving 'gtk_label_get_type' from 'GtkLabel' 
+and searching for 'gtk_label_get_type' in the support library.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>generic-name</term>
+        <listitem>
+          <para>
+The 'generic-name' property is used to get the icon name for the widget palette
+and is a regular icon theme icon. The generic name is also used to generate 
+a default name for instances of the widget in the UI editor.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>title</term>
+        <listitem>
+          <para>
+The'title' property is used to display the name of the class in the palette and widget 
+tree and will be translated before use in the interface.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>post-create-function</term>
+        <listitem>
+          <para>
+The 'post-create-function' tag is a #GladePostCreateFunc support function that
+gets called whenever a widget of 'this class' (or a widget derived from 'this class' 
+that didn't provide its own post-create-function) is instantiated.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>launch-editor-function</term>
+        <listitem>
+          <para>
+The 'launch-editor-function' tag is a #GladeEditorLaunchFunc support function used to 
+launch a custom editor for this class; a good example for this is the #GtkMenuBar 
+which needs a special editor in order to be easier to use.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-internal-child-function</term>
+        <listitem>
+          <para>
+The 'get-internal-child-function' tag is a #GladeGetInternalFunc support function 
+used to retrieve an internal child of a composite object (like a button in a 
+filechooser or something); support for internal children must also be added to
+your application via libglade.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect2>
+  <refsect3>
     <title>Grouping widget classes in the catalog</title>
     <para>
 The widgets are groups in different groups in the Glade UI. Those groups
@@ -126,5 +136,5 @@ are defined in the catalog file as follows:
 </glade-widget-group>]]></programlisting>
 The file should contain one or more widget groups.
     </para>
-  </refsect2>
+  </refsect3>
 </refentry>

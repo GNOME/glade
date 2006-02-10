@@ -927,7 +927,6 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node,
 
 /**
  * glade_property_class_make_adjustment:
- *
  * @property_class: a pointer to the property class
  *
  * Creates and appropriate GtkAdjustment for use in the editor
@@ -1261,7 +1260,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 
 /**
  * glade_property_class_match:
- *
  * @class: a #GladePropertyClass
  * @comp: a #GladePropertyClass
  *

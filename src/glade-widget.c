@@ -204,6 +204,11 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 				       G_PARAM_READWRITE));
 
 
+	/**
+	 * GladeWidget::add-signal-handler:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GladeSignal that was added to @gladewidget.
+	 */
 	glade_widget_signals[ADD_SIGNAL_HANDLER] =
 		g_signal_new ("add_signal_handler",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -214,6 +219,12 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 			      G_TYPE_NONE,
 			      1,
 			      G_TYPE_POINTER);
+
+	/**
+	 * GladeWidget::remove-signal-handler:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GladeSignal that was removed from @gladewidget.
+	 */
 	glade_widget_signals[REMOVE_SIGNAL_HANDLER] =
 		g_signal_new ("remove_signal_handler",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -224,6 +235,14 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 			      G_TYPE_NONE,
 			      1,
 			      G_TYPE_POINTER);
+
+
+	/**
+	 * GladeWidget::change-signal-handler:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the old #GladeSignal
+	 * @arg2: the new #GladeSignal
+	 */
 	glade_widget_signals[CHANGE_SIGNAL_HANDLER] =
 		g_signal_new ("change_signal_handler",
 			      G_TYPE_FROM_CLASS (object_class),

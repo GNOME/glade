@@ -45,13 +45,6 @@ glade_clipboard_init (GladeClipboard *clipboard)
 	clipboard->selection = NULL;
 }
 
-/**
- * glade_clipboard_get_type:
- *
- * Creates the typecode for the #GladeClipboard object type.
- *
- * Returns: the typecode for the #GladeClipboard object type
- */
 GType
 glade_clipboard_get_type (void)
 {

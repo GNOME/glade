@@ -6,7 +6,7 @@
   <refnamediv>
     <refname>Property Classes</refname>
     <refpurpose>
-How to augment or define a property class definition
+How to augment or define a #GladePropertyClass
     </refpurpose>
   </refnamediv>
 
@@ -25,7 +25,7 @@ Properties of the 'property' tag:
           <listitem>
             <para>
 The name to be used in the interface, this string is translated.
-(if name is not specified; it defaults to the nickname of the GParamSpec)
+(if name is not specified; it defaults to the nickname of the #GParamSpec)
             </para>
           </listitem>
         </varlistentry>
@@ -157,9 +157,9 @@ Child tags of the 'property' tag:
           <term>spec</term>
           <listitem>
             <para>
-Specifies a function to be used to return a GParamSpec for this property;
+Specifies a function to be used to return a #GParamSpec for this property;
 this is used to add virtual properties to an object (like the "size" property
-on GtkBox).
+on #GtkBox).
             </para>
           </listitem>
         </varlistentry>
@@ -170,7 +170,7 @@ on GtkBox).
             <para>
 The tooltip to be displayed in the property editor for this property, this
 is also translated. The tooltip defaults to the blurb of the associated
-GParamSpec.
+#GParamSpec.
             </para>
           </listitem>
         </varlistentry>
@@ -191,8 +191,7 @@ to be edited in a textview with a scrolled window as opposed to a simple text en
           <term>set-function</term>
           <listitem>
             <para>
-A function used to set the property instead of g_object_set()
-<programlisting>void set_function (GObject *object, GValue *value);</programlisting>
+A #GladeSetPropertyFunc used to set the property instead of g_object_set()
             </para>
           </listitem>
         </varlistentry>
@@ -201,8 +200,9 @@ A function used to set the property instead of g_object_set()
           <term>get-function</term>
           <listitem>
             <para>
-A function used to set the property instead of g_object_get()
-<programlisting>void get_function (GObject *object, GValue *value);</programlisting>
+A #GladeSetPropertyFunc function used to set the property instead of g_object_get()
+            </para>
+            <para>
 Technical note: that the get-function is hardly ever used, the only 
 time glade-3 will actually ask the object what a property's value should be; 
 is when adding a widget to a container and introspecting the values that 
@@ -215,10 +215,11 @@ the container assigned the child as packing properties.
           <term>verify-function</term>
           <listitem>
             <para>
-A function to verify whether the requested value is valid. If specified; 
-the editor will not allow the user to commit a value that this function returns
-False for.
-<programlisting>gboolean verify_function (GObject *object, GValue *value);</programlisting>
+A #GladeVerifyPropertyFunc function to verify whether the requested value is valid. 
+If specified; the editor will not allow the user to commit a value that this 
+function returns False for.
+            </para>
+            <para>
 Technical note: verify functions are nescisary in glade-3 because of
 the abstraction between the value maintained in the glade-3 core and
 the value that is actually on the said GObject's property. In other words,

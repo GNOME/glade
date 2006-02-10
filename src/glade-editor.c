@@ -131,13 +131,6 @@ glade_editor_init (GladeEditor *editor)
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
 }
 
-/**
- * glade_editor_get_type:
- *
- * Creates the typecode for the #GladeEditor object type.
- *
- * Returns: the typecode for the #GladeEditor object type
- */
 GType
 glade_editor_get_type (void)
 {

@@ -211,6 +211,13 @@ glade_app_class_init (GladeAppClass * klass)
 	klass->show_properties  = NULL;
 	klass->hide_properties  = NULL;
 
+
+	/**
+	 * GladeApp::update-ui:
+	 * @gladeapp: the #GladeApp which received the signal.
+	 *
+	 * Emitted when a project name changes or a cut/copy/paste/delete occurred.
+	 */
 	glade_app_signals[UPDATE_UI_SIGNAL] =
 		g_signal_new ("update-ui",
 			      G_TYPE_FROM_CLASS (object_class),

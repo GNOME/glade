@@ -297,6 +297,9 @@ GLADE_PROJECT_GET_CLASS
 <FILE>glade-property-class</FILE>
 <TITLE>GladePropertyClass</TITLE>
 GladePropertyClass
+GladeVerifyPropertyFunc
+GladeGetPropertyFunc
+GladeSetPropertyFunc
 glade_property_class_new
 glade_property_class_new_from_spec
 glade_property_class_clone
@@ -386,14 +389,15 @@ GLADE_IS_SIGNAL
 <FILE>glade-widget-class</FILE>
 <TITLE>GladeWidgetClass</TITLE>
 GladeWidgetClass
+GladeCreateReason
+GladePostCreateFunc
 GladeChildSetPropertyFunc
 GladeChildGetPropertyFunc
 GladeGetChildrenFunc
 GladeAddChildFunc
 GladeRemoveChildFunc
-GladePostCreateFunc
+GladeReplaceChildFunc
 GladeGetInternalFunc
-GladeGetInternalChildrenFunc
 GladeEditorLaunchFunc
 glade_widget_class_new
 glade_widget_class_free

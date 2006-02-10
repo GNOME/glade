@@ -14,6 +14,37 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyClass GladePropertyClass;
 
+
+/**
+ * GladeVerifyPropertyFunc:
+ * @object: A #GObject
+ * @value: The #GValue
+ *
+ * Returns: whether or not its OK to set @value on @object
+ */
+typedef gboolean (* GladeVerifyPropertyFunc) (GObject      *object,
+					      const GValue *value);
+
+/**
+ * GladeSetPropertyFunc:
+ * @object: A #GObject
+ * @value: The #GValue
+ *
+ * Sets @value on @object for a given #GladePropertyClass
+ */
+typedef void     (* GladeSetPropertyFunc)    (GObject      *object,
+					      const GValue *value);
+
+/**
+ * GladeGetPropertyFunc:
+ * @object: A #GObject
+ * @value: The #GValue
+ *
+ * Gets @value on @object for a given #GladePropertyClass
+ */
+typedef void     (* GladeGetPropertyFunc)    (GObject      *object,
+					      GValue       *value);
+
 struct _GladePropertyClass
 {
 	GParamSpec *pspec; /* The Parameter Specification for this property.
@@ -102,16 +133,14 @@ struct _GladePropertyClass
 	 * if this function exists and returns FALSE, then glade_property_set
 	 * will abort before making any changes
 	 */
-	gboolean (*verify_function) (GObject *object,
-				     const GValue *value);
+	GladeVerifyPropertyFunc verify_function;
 	
 	/* If this property can't be set with g_object_set then
 	 * we need to implement it inside glade. This is a pointer
 	 * to the function that can set this property. The functions
 	 * to work arround these problems are inside glade-gtk.c
 	 */
-	void (*set_function) (GObject *object,
-			      const GValue *value);
+	GladeSetPropertyFunc set_function;
 
 	/* If this property can't be get with g_object_get then
 	 * we need to implement it inside glade. This is a pointer
@@ -123,10 +152,7 @@ struct _GladePropertyClass
 	 * only used to obtain the values of packing properties that are
 	 * set by the said object's parent at "container_add" time.
 	 */
-	void (*get_function) (GObject *object,
-			      GValue *value);
-
-
+	GladeGetPropertyFunc get_function;
 };
 
 LIBGLADEUI_API
@@ -169,7 +195,7 @@ LIBGLADEUI_API
 gchar              *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
 								  gint                value);
 LIBGLADEUI_API
-GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *class);
+GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
 
 LIBGLADEUI_API
 gboolean            glade_property_class_match                   (GladePropertyClass *class,

@@ -1107,12 +1107,12 @@ typedef enum {
 	GLADE_PASTE
 } GladeCutCopyPasteType;
 
-/**
+/*
  * Cut/Copy/Paste
  *
  * Following is the code to extend the GladeCommand Undo/Redo system to 
  * Clipboard functions.
- **/
+ */
 typedef struct {
 	GladeCommand           parent;
 	GladeProject          *project;

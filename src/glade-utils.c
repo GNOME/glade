@@ -1387,7 +1387,6 @@ glade_util_basenames_match  (const gchar  *path1,
 
 /**
  * glade_util_purify_list:
- *
  * @list: A #GList
  *
  * Returns: A list with no duplicate data entries
@@ -1408,7 +1407,6 @@ glade_util_purify_list (GList *list)
 
 /**
  * glade_util_canonical_path:
- *
  * @path: any path that may contain ".." or "." components
  *
  * Returns: an absolute path to the specified file or directory

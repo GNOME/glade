@@ -28,14 +28,10 @@ to initialize the Glade core.
 
 <!-- ##### SIGNAL GladeApp::update-ui ##### -->
 <para>
-Emitted when a project name changes or a cut/copy/paste/delete occurred.
-</para>
-<para>
-You should derive the app->update_ui_signal vfunc instead if you are
-deriving the #GladeApp
+
 </para>
 
-@gladeapp: the #GladeApp which received the signal.
+@gladeapp: the object which received the signal.
 
 <!-- ##### FUNCTION glade_app_new ##### -->
 <para>

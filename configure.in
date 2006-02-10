@@ -54,7 +54,7 @@ AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
 
 AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is required to build
-glade 3.0. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
+glade-3. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
 
 
 glade_version="${VERSION}"
@@ -74,7 +74,6 @@ AC_SUBST(glade_modulesdir)
 AC_SUBST(glade_pixmapsdir)
 AC_SUBST(glade_icondir)
 AC_SUBST(glade_localedir)
-
 
 case $host_os in
 *mingw* | pw32* | cygwin*)

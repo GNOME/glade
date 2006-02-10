@@ -18,46 +18,138 @@ G_BEGIN_DECLS
 typedef struct _GladeWidgetClass       GladeWidgetClass;
 typedef struct _GladeSupportedChild    GladeSupportedChild;
 typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
-typedef enum   _GladeCreateReason      GladeCreateReason;
 
-enum   _GladeCreateReason 
+
+/**
+ * GladeCreateReason:
+ * @GLADE_CREATE_USER: Was created at the user's request
+ *                     (this is a good time to set any properties
+ *                     or add children to the project; like GtkFrame's 
+ *                     label for example).
+ * @GLADE_CREATE_COPY: Was created as a result of the copy/paste 
+ *                     mechanism, at this point you can count on glade
+ *                     to follow up with properties and children on 
+ *                     its own.
+ * @GLADE_CREATE_LOAD: Was created during the load process.
+ * @GLADE_CREATE_REBUILD: Was created as a replacement for another project 
+ *                        object; this only happens when the user is 
+ *                        changing a property that is marked by the type 
+ *                        system as G_PARAM_SPEC_CONSTRUCT_ONLY.
+ * @GLADE_CREATE_REASONS: Never used.
+ *
+ * These are the reasons your #GladePostCreateFunc can be called.
+ */
+typedef enum _GladeCreateReason 
 {
 	GLADE_CREATE_USER = 0,
 	GLADE_CREATE_COPY,
 	GLADE_CREATE_LOAD,
 	GLADE_CREATE_REBUILD,
 	GLADE_CREATE_REASONS
-};
+} GladeCreateReason;
 
-/* Child support prototypes */
+/**
+ * GladeChildSetPropertyFunc:
+ * @container: A #GObject container
+ * @child: The #GObject child
+ * @property_name: The property name
+ * @value: The #GValue
+ *
+ * Called to set the packing property @property_name to @value
+ * on the @child object of @container.
+ */
 typedef void (* GladeChildSetPropertyFunc)      (GObject            *container,
 						 GObject            *child,
 						 const gchar        *property_name,
 						 const GValue       *value);
 
+/**
+ * GladeChildGetPropertyFunc:
+ * @container: A #GObject container
+ * @child: The #GObject child
+ * @property_name: The property name
+ * @value: The #GValue
+ *
+ * Called to get the packing property @property_name
+ * on the @child object of @container into @value.
+ */
 typedef void (* GladeChildGetPropertyFunc)      (GObject            *container,
 						 GObject            *child,
 						 const gchar        *property_name,
 						 GValue             *value);
 
+
+/**
+ * GladeGetChildrenFunc:
+ * @container: A #GObject container
+ * @Returns: A #GList of #GObject children.
+ *
+ * A function called to get @containers children.
+ */
 typedef GList *(* GladeGetChildrenFunc)         (GObject            *container);
 
+/**
+ * GladeAddChildFunc:
+ * @parent: A #GObject container
+ * @child: A #GObject child
+ *
+ * Called to add @child to @parent.
+ */
 typedef void   (* GladeAddChildFunc)            (GObject            *parent,
 						 GObject            *child);
+/**
+ * GladeRemoveChildFunc:
+ * @parent: A #GObject container
+ * @child: A #GObject child
+ *
+ * Called to remove @child from @parent.
+ */
 typedef void   (* GladeRemoveChildFunc)         (GObject            *parent,
 						 GObject            *child);
 
+/**
+ * GladeReplaceChildFunc:
+ * @container: A #GObject container
+ * @old: The old #GObject child
+ * @new: The new #GObject child to take its place
+ * 
+ * Called to swap placeholders with project objects
+ * in containers.
+ */
+typedef void   (* GladeReplaceChildFunc)        (GObject            *container,  
+						 GObject            *old,
+						 GObject            *new);
 
-/* Class wide user prototypes */
+/**
+ * GladePostCreateFunc:
+ * @object: a #GObject
+ * @reason: a #GladeCreateReason
+ *
+ * This function is called exactly once for any project object
+ * instance and can be for any #GladeCreateReason.
+ */
 typedef void   (* GladePostCreateFunc)          (GObject            *object,
 						 GladeCreateReason   reason);
 
+/**
+ * GladeGetInternalFunc:
+ * @parent: A #GObject composite object
+ * @name: A string identifier
+ * @child: A return location for a #GObject
+ *
+ * Called to lookup @child in composite object @parent by @name.
+ */
 typedef void   (* GladeGetInternalFunc)         (GObject            *parent,
 						 const gchar        *name,
 						 GObject           **child);
 
-typedef GList *(* GladeGetInternalChildrenFunc) (GObject            *parent);
 
+/**
+ * GladeEditorLaunchFunc:
+ * @object: A #GObject
+ *
+ * Called to launch a custom editor for @object
+ */
 typedef void   (* GladeEditorLaunchFunc)        (GObject            *object);
 
 
@@ -118,7 +210,7 @@ struct _GladeWidgetClass
 
 	/* Retrieves a list of all handled internal children.
 	 */
-	GladeGetInternalChildrenFunc  get_internal_children;
+	GladeGetChildrenFunc          get_internal_children;
 
 	/* Entry point for custom editors.
 	 */
@@ -150,12 +242,12 @@ struct _GladeSupportedChild
 	GladeChildSetPropertyFunc     set_property; /* Sets/Gets a packing property */
 	GladeChildGetPropertyFunc     get_property; /* for this child */
 	
-	void      (* replace_child)  (GObject      *container,  /* This method replaces a  */
-				      GObject      *old,        /* child widget with */
-				      GObject      *new);       /* another one: it's used to
-								 * replace a placeholder with
-								 * a widget and viceversa.
-								 */
+	GladeReplaceChildFunc         replace_child;  /* This method replaces a 
+						       * child widget with
+						       * another one: it's used to
+						       * replace a placeholder with
+						       * a widget and viceversa.
+						       */
 
 	gchar                        *special_child_type; /* Special case code for children that
 							   * are special children (like notebook tab 

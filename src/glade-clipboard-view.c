@@ -53,13 +53,6 @@ glade_clipboard_view_init (GladeClipboardView *view)
 	view->model = NULL;
 }
 
-/**
- * glade_clipboard_view_get_type:
- *
- * Creates the typecode for the #GladeClipboardView object type.
- *
- * Returns: the typecode for the #GladeClipboardView object type
- */
 GType
 glade_clipboard_view_get_type ()
 {

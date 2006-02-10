@@ -90,8 +90,8 @@ expand_content_files=\
 # signals and properties.
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
-INCLUDES=`pkg-config --cflags libgladeui-1.0`
-GTKDOC_LIBS=`pkg-config --libs libgladeui-1.0`
+INCLUDES=-I$(top_builddir)/src `pkg-config --cflags gtk+-2.0`
+GTKDOC_LIBS=${top_builddir}/src/libgladeui-1.la
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

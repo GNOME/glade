@@ -39,6 +39,26 @@ GladeWidgetClass
 @get_internal_children: 
 @launch_editor: 
 
+<!-- ##### ENUM GladeCreateReason ##### -->
+<para>
+
+</para>
+
+@GLADE_CREATE_USER: 
+@GLADE_CREATE_COPY: 
+@GLADE_CREATE_LOAD: 
+@GLADE_CREATE_REBUILD: 
+@GLADE_CREATE_REASONS: 
+
+<!-- ##### USER_FUNCTION GladePostCreateFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@reason: 
+
+
 <!-- ##### USER_FUNCTION GladeChildSetPropertyFunc ##### -->
 <para>
 
@@ -88,13 +108,14 @@ GladeWidgetClass
 @child: 
 
 
-<!-- ##### USER_FUNCTION GladePostCreateFunc ##### -->
+<!-- ##### USER_FUNCTION GladeReplaceChildFunc ##### -->
 <para>
 
 </para>
 
-@object: 
-@reason: 
+@container: 
+@old: 
+@new: 
 
 
 <!-- ##### USER_FUNCTION GladeGetInternalFunc ##### -->
@@ -105,15 +126,6 @@ GladeWidgetClass
 @parent: 
 @name: 
 @child: 
-
-
-<!-- ##### USER_FUNCTION GladeGetInternalChildrenFunc ##### -->
-<para>
-
-</para>
-
-@parent: 
-@Returns: 
 
 
 <!-- ##### USER_FUNCTION GladeEditorLaunchFunc ##### -->

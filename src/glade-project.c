@@ -63,13 +63,6 @@ enum
 static guint glade_project_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
 
-/**
- * glade_project_get_type:
- *
- * Creates the typecode for the #GladeProject object type.
- *
- * Returns: the typecode for the #GladeProject object type
- */
 GType
 glade_project_get_type (void)
 {
@@ -104,6 +97,13 @@ glade_project_class_init (GladeProjectClass *class)
 
 	parent_class = g_type_class_peek_parent (class);
 
+	/**
+	 * GladeProject::add-widget:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the #GladeWidget that was added to @gladeproject.
+	 *
+	 * Emitted when a widget is added to a project.
+	 */
 	glade_project_signals[ADD_WIDGET] =
 		g_signal_new ("add_widget",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -115,6 +115,13 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      GLADE_TYPE_WIDGET);
 
+	/**
+	 * GladeProject::remove-widget:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the #GladeWidget that was removed from @gladeproject.
+	 * 
+	 * Emitted when a widget is removed from a project.
+	 */
 	glade_project_signals[REMOVE_WIDGET] =
 		g_signal_new ("remove_widget",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -126,6 +133,14 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      GLADE_TYPE_WIDGET);
 
+
+	/**
+	 * GladeProject::widget-name-changed:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the #GladeWidget who's name changed.
+	 *
+	 * Emitted when @gwidget's name changes.
+	 */
 	glade_project_signals[WIDGET_NAME_CHANGED] =
 		g_signal_new ("widget_name_changed",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -137,6 +152,13 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      GLADE_TYPE_WIDGET);
 
+
+	/** 
+	 * GladeProject::selection-changed:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject selection list changes.
+	 */
 	glade_project_signals[SELECTION_CHANGED] =
 		g_signal_new ("selection_changed",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -147,6 +169,14 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      0);
 
+
+	/**
+	 * GladeProject::close:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when a project is closing (a good time to clean up
+	 * any associated resources).
+	 */
 	glade_project_signals[CLOSE] =
 		g_signal_new ("close",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -157,6 +187,15 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      0);
 
+
+	/** 
+	 * GladeProject::resource-added:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the file's basename (in the project path).
+	 *
+	 * Emitted when a resource file required by a #GladeProperty is
+	 * added to @gladeproject
+	 */
 	glade_project_signals[RESOURCE_ADDED] =
 		g_signal_new ("resource-added",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -168,6 +207,13 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      G_TYPE_STRING);
 
+	/**
+	 * GladeProject::resource-removed:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the file's basename
+	 *
+	 * Emitted when a resource file is removed from @gladeproject
+	 */
 	glade_project_signals[RESOURCE_REMOVED] =
 		g_signal_new ("resource-removed",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -1204,6 +1250,8 @@ glade_project_get_tooltips (GladeProject *project)
 
 /**
  * glade_project_set_accel_group:
+ * @project: A #GladeProject
+ * @accel_group: The @GtkAccelGroup
  *
  * Set @accel_group to every top level widget in @project.
  */

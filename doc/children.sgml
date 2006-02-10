@@ -56,8 +56,7 @@ exactly the same way as previously described with normal object properties.
           <term>add-child-function</term>
           <listitem>
             <para>
-Used to add child objects from parent objects.
-<programlisting>void add_child (GObject *object, GObject *child);</programlisting>
+A #GladeAddChildFunc used to add child objects from parent objects.
             </para>
           </listitem>
         </varlistentry>
@@ -65,8 +64,7 @@ Used to add child objects from parent objects.
           <term>remove-child-function</term>
           <listitem>
             <para>
-Used to remove child objects from parent objects.
-<programlisting>void remove_child (GObject *object, GObject *child);</programlisting>
+A #GladeRemoveChildFunc used to remove child objects from parent objects.
             </para>
           </listitem>
         </varlistentry>
@@ -74,8 +72,7 @@ Used to remove child objects from parent objects.
           <term>replace-child-function</term>
           <listitem>
             <para>
-Used to swap placholders with project widgets.
-<programlisting>void replace_child (GtkWidget *container, GtkWidget *current, GtkWidget *new);</programlisting>
+A #GladeReplaceChildFunc Used to swap placholders with project widgets.
             </para>
           </listitem>
         </varlistentry>
@@ -83,8 +80,7 @@ Used to swap placholders with project widgets.
           <term>get-children-function</term>
           <listitem>
             <para>
-Return a list of children for this container.
-<programlisting>GList *get_children (GObject *container);</programlisting>
+A #GladeGetChildrenFunc to return a list of children for this container.
             </para>
           </listitem>
         </varlistentry>
@@ -92,9 +88,8 @@ Return a list of children for this container.
           <term>get-all-children-function</term>
           <listitem>
             <para>
-Same as 'get-children-function' except it should include internal children of
-composite widget classes too.
-<programlisting>GList *get_all_children (GObject *container);</programlisting>
+A #GladeGetChildrenFunc like 'get-children-function' except it should include internal 
+children ofcomposite widget classes too.
             </para>
           </listitem>
         </varlistentry>
@@ -102,12 +97,7 @@ composite widget classes too.
           <term>child-set-property-function</term>
           <listitem>
             <para>
-Sets a packing property on this child.
-<programlisting>
-void child_set_property (GObject            *container,
-                         GObject            *child,
-                         const gchar        *property_name,
-                         const GValue       *value);</programlisting>
+A #GladeChildSetPropertyFunc to set a packing property on this child.
             </para>
           </listitem>
         </varlistentry>
@@ -115,12 +105,7 @@ void child_set_property (GObject            *container,
           <term>child-get-property-function</term>
           <listitem>
             <para>
-Gets a packing property on this child.
-<programlisting>
-void child_get_property (GObject            *container,
-                         GObject            *child,
-                         const gchar        *property_name,
-                         const GValue       *value);</programlisting>
+A #GladeChildGetPropertyFunc to get a packing property on this child.
             </para>
           </listitem>
         </varlistentry>

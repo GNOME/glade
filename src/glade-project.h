@@ -135,7 +135,7 @@ GList        *glade_project_selection_get       (GladeProject *project);
 
 LIBGLADEUI_API
 void          glade_project_set_accel_group     (GladeProject  *project, 
-						 GtkAccelGroup *new_group);
+						 GtkAccelGroup *accel_group);
 
 LIBGLADEUI_API
 void          glade_project_set_resource          (GladeProject  *project, 
