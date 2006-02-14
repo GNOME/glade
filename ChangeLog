@@ -1,3 +1,19 @@
+2006-02-13  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.c: No more glade_util_ui_message(), deffer that
+	  to callers, g_critical() messages added where inapropriate states
+	  are detected.
+
+	* src/glade-utils.c: Take some responsability when calling glade_command
+	  for Cut/Copy/Paste/Delete.
+
+	* src/glade-widget.c: Documented some functions, special-cased GtkWindow
+	  in glade_widget_dup_internal(), replicating copied GtkWindow "run-time"
+	  sizes (bug 320077).
+	  Removed useless special-cased call to gtk_widget_show_all() also in
+	  glade_widget_dup_internal(); showing widgets is taken care of in 
+	  glade_widget_show().
+
 2006-02-10  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/*.sgml, doc/tmpl/*.sgml: Finished writing up short and long

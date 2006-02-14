@@ -1000,6 +1000,9 @@ glade_command_delete (GList *widgets)
 		cdata->widget  = g_object_ref (G_OBJECT (widget));
 		cdata->parent  = glade_widget_get_parent (widget);
 
+		if (widget->internal)
+			g_critical ("Internal widget in Delete");
+
 		/* !manager here */
 		if (cdata->parent != NULL &&
 		    cdata->parent->manager == NULL &&
@@ -1405,71 +1408,22 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	g_return_if_fail (widgets && widgets->data);
 	g_return_if_fail (parent == NULL || GLADE_IS_WIDGET (parent));
 
-
-	/* Some prelimenary error checking here */
-	switch (type) {
-	case GLADE_CUT:
-	case GLADE_COPY:
-		for (list = widgets; list && list->data; list = list->next)
-		{
-			widget = list->data;
-			if (widget->internal)
-			{
-				glade_util_ui_message 
-					(glade_default_app_get_window(), 
-					 GLADE_UI_WARN,
-					 _("You cannot copy/cut a widget "
-					   "internal to a composite widget."));
-				return;
-			}
-		}
-		fmt = (type == GLADE_CUT) ? _("Cut %s") : _("Copy %s");
-		break;
-	case GLADE_PASTE:
-
-		for (list = widgets; 
-		     list && list->data; 
-		     list = list->next)
-		{
-			widget = list->data;
-			if (parent == NULL &&
-			    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
-			{
-				glade_util_ui_message 
-					(glade_default_app_get_window(), 
-					 GLADE_UI_WARN,
-					 _("Only top-level widgets can be "
-					   "pasted without a parent."));
-				return;
-			}
-
-			if (placeholder &&
-			    GTK_WIDGET_TOPLEVEL (widget->object))
-			{
-				glade_util_ui_message 
-					(glade_default_app_get_window(), 
-					 GLADE_UI_WARN,
-					 _("You cannot paste a top-level "
-					   "to a placeholder."));
-				return;
-			}
-		}
-		
-		fmt = _("Paste %s");
-		break;
-	}
-	g_assert (fmt);
-	
+	/* Things can go wrong in this function if the dataset is inacurate,
+	 * we make no real attempt here to recover, just g_critical() and
+	 * fix the bugs as they pop up.
+	 */
+	fmt = 
+		(type == GLADE_CUT) ? _("Cut %s") : 
+		(type == GLADE_COPY) ? _("Copy %s") : _("Paste %s");
 	widget = GLADE_WIDGET (widgets->data);
-
-	/* And now we feel safe enough to go on and create */
 	me = (GladeCommandCutCopyPaste *) 
 		g_object_new (GLADE_COMMAND_CUT_COPY_PASTE_TYPE, NULL);
 
-	if (type == GLADE_PASTE && placeholder)
+	if (type == GLADE_PASTE && placeholder && 
+	    GTK_IS_WINDOW (widget->object) == FALSE)
 	{
 		GladeWidget *some_widget = glade_placeholder_get_parent (placeholder);
-		me->project = some_widget->project;
+		me->project = glade_widget_get_project (some_widget);
 	}
 	else if (type == GLADE_PASTE)
 		me->project = glade_default_app_get_active_project();
@@ -1488,6 +1442,9 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 
 		cdata              = g_new0 (CommandData, 1);
 
+		if (widget->internal)
+			g_critical ("Internal widget in Cut/Copy/Paste");
+
 		/* Widget */
 		if (type == GLADE_COPY)
 		{
@@ -1502,10 +1459,15 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
-		else if (type == GLADE_PASTE && placeholder)
+		else if (type == GLADE_PASTE && placeholder && 
+			 GTK_IS_WINDOW (widget->object) == FALSE)
 			cdata->parent = glade_placeholder_get_parent (placeholder);
-		else if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE)
+		else if (GTK_IS_WINDOW (widget->object) == FALSE)
 			cdata->parent = parent;
+
+		if (cdata->parent == NULL && type == GLADE_PASTE &&
+		    GTK_IS_WINDOW (widget->object) == FALSE)
+			g_critical ("Parentless non GtkWindow widget in Paste");
 
 		/* Placeholder */
 		if (type == GLADE_CUT)

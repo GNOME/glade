@@ -97,15 +97,6 @@ static GObjectClass *parent_class = NULL;
  */
 static GladeProject *loading_project = NULL;
 
-
-
-/**
- * glade_widget_get_type:
- *
- * Creates the typecode for the #GladeWidget object type.
- *
- * Returns: the typecode for the #GladeWidget object type
- */
 GType
 glade_widget_get_type (void)
 {
@@ -330,6 +321,14 @@ glade_widget_debug_real (GladeWidget *widget, int indent)
 	g_print ("\n");
 }
 
+
+/**
+ * glade_widget_debug:
+ * @widget: a #GladeWidget
+ *
+ * Prints some information about a #GladeWidget, currently
+ * this is unmaintained.
+ */
 void
 glade_widget_debug (GladeWidget *widget)
 {
@@ -347,6 +346,13 @@ glade_widget_save_coords (GladeWidget *widget)
 	}
 }
 
+
+/**
+ * glade_widget_show:
+ * @widget: A #GladeWidget
+ *
+ * Display @widget
+ */
 void
 glade_widget_show (GladeWidget *widget)
 {
@@ -358,9 +364,10 @@ glade_widget_show (GladeWidget *widget)
 		if (widget->pos_saved)
 			gtk_window_move (GTK_WINDOW (widget->object), 
 					 widget->save_x, widget->save_y);
-		else
+		else 
 			gtk_window_set_position (GTK_WINDOW (widget->object), 
 						 GTK_WIN_POS_CENTER);
+
 		gtk_widget_show_all (GTK_WIDGET (widget->object));
 		gtk_window_present (GTK_WINDOW (widget->object));
 	} else if (GTK_IS_WIDGET (widget->object)) {
@@ -369,6 +376,12 @@ glade_widget_show (GladeWidget *widget)
 	widget->visible = TRUE;
 }
 
+/**
+ * glade_widget_hide:
+ * @widget: A #GladeWidget
+ *
+ * Hide @widget
+ */
 void
 glade_widget_hide (GladeWidget *widget)
 {
@@ -864,10 +877,19 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	 */
 	glade_widget_sync_custom_props (gwidget);
 
-	if (GTK_IS_WIDGET (gwidget->object) && !GTK_WIDGET_TOPLEVEL(gwidget->object))
-		gtk_widget_show_all (GTK_WIDGET (gwidget->object));
-	
-	return gwidget;
+	/* Special case GtkWindow here and ensure the pasted window
+	 * has the same size as the 'Cut' one.
+	 */
+	if (GTK_IS_WINDOW (gwidget->object))
+	{
+		gint width, height;
+		g_assert (GTK_IS_WINDOW (template->object));
+
+		gtk_window_get_size (GTK_WINDOW (template->object), 
+				     &width, &height);
+		gtk_window_resize (GTK_WINDOW (gwidget->object),
+				   width, height);
+	}
 }
 
 GladeWidget *

@@ -1195,7 +1195,22 @@ void
 glade_util_delete_clipboard (void)
 {
 	GladeClipboard     *clipboard = glade_default_app_get_clipboard ();
+	GladeWidget        *gwidget;
+	GList              *list;
 
+	for (list = clipboard->selection; list; list = list->next)
+	{
+		gwidget = list->data;
+		if (gwidget->internal)
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_INFO,
+				 _("You cannot delete a widget "
+				   "internal to a composite widget."));
+			return;
+		}
+	}
 	glade_command_delete (clipboard->selection);
 }
 
@@ -1210,12 +1225,30 @@ glade_util_cut_selection (void)
 {
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
+	gboolean            failed = FALSE;
 	
 	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 		widgets = g_list_prepend (widgets, widget);
+
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_INFO,
+				 _("You cannot cut a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed)
+	{
+		g_list_free (widgets);
+		return;
 	}
 
 	if (widgets)
@@ -1240,13 +1273,30 @@ glade_util_copy_selection (void)
 {
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
-	
+	gboolean            failed = FALSE;
+
 	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
-		if ((widget = 
-		     glade_widget_get_from_gobject (list->data)) != NULL)
-			widgets = g_list_prepend (widgets, widget);
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_INFO,
+				 _("You cannot copy a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed)
+	{
+		g_list_free (widgets);
+		return;
 	}
 
 	if (widgets)
@@ -1272,12 +1322,30 @@ glade_util_delete_selection (void)
 {
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
+	gboolean            failed = FALSE;
 
 	for (list = glade_default_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 		widgets = g_list_prepend (widgets, widget);
+
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_INFO,
+				 _("You cannot delete a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed)
+	{
+		g_list_free (widgets);
+		return;
 	}
 
 	if (widgets)
