@@ -359,8 +359,7 @@ static void
 gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 {
 	GError  *error = NULL;
-	gchar   *display_name = glade_project_display_name (project),
-		*display_path = g_strdup (path);
+	gchar   *display_name, *display_path = g_strdup (path);
 
 	/* Interestingly; we cannot use `path' after glade_project_reset_path
 	 * because we are getting called with project->path as an argument.
@@ -378,6 +377,9 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	}
 	
 	glade_app_update_instance_count (GLADE_APP (gpw), project);
+
+	/* Get display_name here, it could have changed with "Save As..." */
+	display_name = glade_project_display_name (project),
 
 	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);

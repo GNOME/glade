@@ -1328,7 +1328,7 @@ glade_util_copy_file (const gchar  *src_path,
 					(dest, buffer + bytes_written, 
 					 bytes_read - bytes_written, 
 					 &written, &error)) != G_IO_STATUS_ERROR &&
-				       (bytes_written < bytes_read))
+				       ((bytes_written + written) < bytes_read))
 					bytes_written += written;
 				
 				if (write_status == G_IO_STATUS_ERROR)

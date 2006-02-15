@@ -8,13 +8,19 @@
 	* src/glade-utils.[ch]: Removed all the Cut/Copy/Paste/Delete
 	  stuff, now all in GladeApp.
 
-	* src/glade-app.c: Moved the bulk of code from glade-utils to
-	  glade-app (cut/copy/paste/delete) since it was confusing to
-	  see the chain of events, it should be simpler overall now.
-
+	* src/glade-app.c: 
+	  - Moved the bulk of code from glade-utils to
+	    glade-app (cut/copy/paste/delete) since it was confusing to
+	    see the chain of events, it should be simpler overall now.
+	  - Revamped glade_app_config_save() to report errors smoothly
+	    (fixes bug 310141)
+	
 	* doc/glade-sections.txt, doc/tmpl/*: Adjusted doc structure
 	  for new apis and removed old apis.
-	
+
+	* src/glade-project-window.c: Now the statusbar message shows the
+	  correct project name after "Save As...".
+
 2006-02-13  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: No more glade_util_ui_message(), deffer that

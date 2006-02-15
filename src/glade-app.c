@@ -304,11 +304,17 @@ glade_app_config_load (GladeApp *app)
 gint
 glade_app_config_save (GladeApp *app)
 {
-	GIOChannel *fd;
+	GIOChannel *channel;
+	GIOStatus   status;
 	gchar *data=NULL, *filename;
 	const gchar *config_dir = g_get_user_config_dir ();
 	GError *error = NULL;
-	gsize size;
+	gsize size, written, bytes_written = 0;
+	static gboolean error_shown = FALSE;
+
+	/* If we had any errors; wait untill next session to retry.
+	 */
+	if (error_shown) return -1;
 	
 	/* Just in case... try to create the config directory */
 	if (g_file_test (config_dir, G_FILE_TEST_IS_DIR) == FALSE)
@@ -316,44 +322,88 @@ glade_app_config_save (GladeApp *app)
 		if (g_file_test (config_dir, G_FILE_TEST_EXISTS))
 		{
 			/* Config dir exists but is not a directory */
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Trying to save private data to %s directory "
+				   "but it is a regular file.\n"
+				   "No private data will be saved in this session"), 
+				 config_dir);
+				 error_shown = TRUE;
 			return -1;
 		}
 		else if (g_mkdir (config_dir, S_IRWXU) != 0)
 		{
 			/* Doesnt exist; failed to create */
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Failed to create directory %s to save private data.\n"
+				   "No private data will be saved in this session"), config_dir);
+				 error_shown = TRUE;
 			return -1;
 		}
 	} 
 
 	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
 	
-	fd = g_io_channel_new_file (filename, "w", &error);
-
-	if (error == NULL){
-		data = g_key_file_to_data (app->priv->config, &size, &error);
-		
-		if (data && error == NULL)
-			g_io_channel_write_chars (fd, data, size, NULL, &error);
-	}
-	
-	/* Free resources */	
-	if (error)
+	if ((channel = g_io_channel_new_file (filename, "w", &error)) != NULL)
 	{
-		g_warning (error->message);
-		g_error_free (error);
-	}
-	
-	if (fd)
-	{
-		g_io_channel_shutdown(fd, TRUE, NULL);
-		g_io_channel_unref (fd);
-	}
-	
-	if (data) g_free (data);
+		if ((data = g_key_file_to_data (app->priv->config, &size, &error)) != NULL)
+		{
+			
+			/* Implement loop here */
+			while ((status = g_io_channel_write_chars
+				(channel, 
+				 data + bytes_written, /* Offset of write */
+				 size - bytes_written, /* Size left to write */
+				 &written, &error)) != G_IO_STATUS_ERROR &&
+			       (bytes_written + written) < size)
+				bytes_written += written;
 
+			if (status == G_IO_STATUS_ERROR)
+			{
+				glade_util_ui_message
+					(glade_default_app_get_window(),
+					 GLADE_UI_ERROR,
+					 _("Error writing private data to %s (%s).\n"
+					   "No private data will be saved in this session"), 
+					 filename, error->message);
+				 error_shown = TRUE;
+			}
+			g_free (data);
+		} 
+		else
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Error serializing configuration data to save (%s).\n"
+				   "No private data will be saved in this session"), 
+				 error->message);
+			error_shown = TRUE;
+		}
+		g_io_channel_shutdown(channel, TRUE, NULL);
+		g_io_channel_unref (channel);
+	}
+	else
+	{
+		glade_util_ui_message
+			(glade_default_app_get_window(),
+			 GLADE_UI_ERROR,
+			 _("Error opening %s to write private data (%s).\n"
+			   "No private data will be saved in this session"), 
+			 filename, error->message);
+		error_shown = TRUE;
+	}
 	g_free (filename);
 	
-	return (error) ? -1 : 0;
+	if (error)
+	{
+		g_error_free (error);
+		return -1;
+	}
+	return 0;
 }
 
 void
