@@ -890,6 +890,8 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 		gtk_window_resize (GTK_WINDOW (gwidget->object),
 				   width, height);
 	}
+
+	return gwidget;
 }
 
 GladeWidget *

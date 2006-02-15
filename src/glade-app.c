@@ -763,58 +763,304 @@ glade_app_set_project (GladeApp *app, GladeProject *project)
 	glade_app_update_ui (app);
 }
 
+/**
+ * glade_app_command_copy:
+ * @app: A #GladeApp
+ *
+ * Copy the active project's selection (the new copies
+ * will end up on the clipboard and will be set as
+ * the clipboards selection).
+ */
 void
 glade_app_command_copy (GladeApp *app)
 {
-	if (app->priv->active_project)
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+	gboolean            failed = FALSE;
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	if (app->priv->active_project == NULL) return;
+
+	for (list = glade_default_app_get_selection ();
+	     list && list->data; list = list->next)
 	{
-		glade_util_copy_selection ();
-		/* update UI. */
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+		
+		g_assert (widget);
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_app_get_window(app),
+				 GLADE_UI_INFO,
+				 _("You cannot copy a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed == FALSE && widgets != NULL)
+	{
+		glade_command_copy (widgets);
 		glade_app_update_ui (app);
 	}
+	else if (widgets == NULL)
+		glade_util_ui_message (glade_app_get_window(app),
+				       GLADE_UI_INFO,
+				       _("No widget selected."));
+
+	if (widgets) g_list_free (widgets);
 }
 
+/**
+ * glade_app_command_cut:
+ * @app: A #GladeApp
+ *
+ * Cut the active project's selection (the cut objects
+ * will end up on the clipboard and will be set as
+ * the clipboards selection).
+ */
 void
 glade_app_command_cut (GladeApp *app)
 {
-	if (app->priv->active_project)
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+	gboolean            failed = FALSE;
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	if (app->priv->active_project == NULL) return;
+
+	for (list = glade_default_app_get_selection ();
+	     list && list->data; list = list->next)
 	{
-		glade_util_cut_selection ();
-		/* Update UI. */
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+		
+		g_assert (widget);
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_app_get_window(app),
+				 GLADE_UI_INFO,
+				 _("You cannot cut a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed == FALSE && widgets != NULL)
+	{
+		glade_command_cut (widgets);
 		glade_app_update_ui (app);
 	}
+	else if (widgets == NULL)
+		glade_util_ui_message (glade_app_get_window(app),
+				       GLADE_UI_INFO,
+				       _("No widget selected."));
+
+	if (widgets) g_list_free (widgets);
 }
 
+/**
+ * glade_app_command_paste:
+ * @app: A #GladeApp
+ *
+ * Paste the clipboard selection to the active project's 
+ * selection (the project must have only one object selected).
+ */
 void
 glade_app_command_paste (GladeApp *app)
 {
-	if (app->priv->active_project)
-	{
-		GList         *list   = glade_project_selection_get (app->priv->active_project);
-		GladePlaceholder *placeholder = list ? NULL : glade_util_selected_placeholder ();
-		GladeWidget   *parent =
-			list ? glade_widget_get_from_gobject (list->data) :
-			glade_placeholder_get_parent (placeholder);
-		
-		glade_util_paste_clipboard (placeholder, parent);
+	GladeClipboard     *clipboard;
+	GList              *list;
+	GladeWidget        *widget = NULL;
+	gint                gtkcontainer_relations = 0;
+	GladePlaceholder   *placeholder;
+	GladeWidget        *parent;
 
-		/* Update UI. */
-		glade_app_update_ui (app);
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	if (app->priv->active_project == NULL) return;
+
+	list      = glade_project_selection_get (app->priv->active_project);
+	clipboard = glade_app_get_clipboard (app);
+
+	/* If there is a selection, dont use a placeholder to paste into */
+	placeholder = list ? NULL : glade_util_selected_placeholder ();
+
+	/* If there is a selection, paste in to the selected widget, otherwise
+	 * paste into the placeholder's parent.
+	 */
+	parent      = list ? glade_widget_get_from_gobject (list->data) :
+		(placeholder ? glade_placeholder_get_parent (placeholder) : NULL);
+
+
+	/* Check if selection is good */
+	if ((list = glade_default_app_get_selection ()) != NULL)
+	{
+		if (placeholder == NULL &&
+		    g_list_length (list) != 1)
+		{
+			glade_util_ui_message (glade_app_get_window(app),
+					       GLADE_UI_INFO,
+					       _("Unable to paste to multiple widgets"));
+			return;
+		}
 	}
+	
+	/* Check if we have anything to paste */
+	if (g_list_length (clipboard->selection) == 0)
+	{
+		glade_util_ui_message (glade_app_get_window (app), GLADE_UI_INFO,
+				    _("No widget selected on the clipboard"));
+		return;
+	}
+	
+	/* Check that we have compatible heirarchies */
+	for (list = clipboard->selection; 
+	     list && list->data; list = list->next)
+	{
+		widget = list->data;
+
+		if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE && parent)
+		{
+			/* Ensure a paste is supported
+			 */
+			if (glade_util_widget_pastable (widget, parent) == FALSE)
+			{
+				glade_util_ui_message (glade_default_app_get_window (),
+						       GLADE_UI_ERROR, 
+						       _("Unable to paste widget %s to parent %s"),
+						       widget->name, parent->name);
+				return;
+			}
+
+			/* Count gtk container relations
+			 */
+			if (glade_util_gtkcontainer_relation (parent, widget))
+				gtkcontainer_relations++;
+		}
+	}
+
+	g_assert (widget);
+
+	/* Check that GladeFixedManager will cope */
+	if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
+	    parent && parent->manager != NULL &&
+	    gtkcontainer_relations != 1) 
+	{
+		glade_util_ui_message (glade_default_app_get_window (), 
+				       GLADE_UI_INFO,
+				       _("Only one widget can be pasted at a "
+					 "time to this container"));
+		return;
+	}
+
+	/* Check that enough placeholders are available */
+	if (parent && parent->manager == NULL &&
+	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
+	{
+		glade_util_ui_message (glade_default_app_get_window (), 
+				       GLADE_UI_INFO,
+				       _("Insufficient amount of placeholders in "
+					 "target container"));
+		return;
+	}
+
+	glade_command_paste (clipboard->selection, parent, placeholder);
+	glade_app_update_ui (app);
 }
 
+
+/**
+ * glade_app_command_delete:
+ * @app: A #GladeApp
+ *
+ * Delete the active project's selection.
+ */
 void
 glade_app_command_delete (GladeApp *app)
 {
-	/* glade_util_delete_selection performs a glade_command_delete
-	 * on each of the selected widgets */
-	if (app->priv->active_project)
+	GList              *widgets = NULL, *list;
+	GladeWidget        *widget;
+	gboolean            failed = FALSE;
+
+	g_return_if_fail (GLADE_IS_APP (app));
+	if (app->priv->active_project == NULL) return;
+
+	for (list = glade_default_app_get_selection ();
+	     list && list->data; list = list->next)
 	{
-		glade_util_delete_selection ();
-		/* Update UI. */
+		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widgets = g_list_prepend (widgets, widget);
+		
+		g_assert (widget);
+		if (widget->internal)
+		{
+			glade_util_ui_message
+				(glade_app_get_window(app),
+				 GLADE_UI_INFO,
+				 _("You cannot delete a widget "
+				   "internal to a composite widget."));
+			failed = TRUE;
+			break;
+		}
+	}
+
+	if (failed == FALSE && widgets != NULL)
+	{
+		glade_command_delete (widgets);
 		glade_app_update_ui (app);
 	}
+	else if (widgets == NULL)
+		glade_util_ui_message (glade_app_get_window(app),
+				       GLADE_UI_INFO,
+				       _("No widget selected."));
+
+	if (widgets) g_list_free (widgets);
 }
+
+/**
+ * glade_app_command_delete_clipboard:
+ * @app: A #GladeApp
+ *
+ * Delete the clipboard's selection.
+ */
+void
+glade_app_command_delete_clipboard (GladeApp *app)
+{
+	GladeClipboard     *clipboard;
+	GladeWidget        *gwidget;
+	GList              *list;
+
+	g_return_if_fail (GLADE_IS_APP (app));
+
+	clipboard = glade_app_get_clipboard (app);
+
+	if (clipboard->selection == NULL)
+		glade_util_ui_message (glade_app_get_window (app), GLADE_UI_INFO,
+				    _("No widget selected on the clipboard"));
+
+	for (list = clipboard->selection; list; list = list->next)
+	{
+		gwidget = list->data;
+		if (gwidget->internal)
+		{
+			glade_util_ui_message
+				(glade_default_app_get_window(),
+				 GLADE_UI_INFO,
+				 _("You cannot delete a widget "
+				   "internal to a composite widget."));
+			return;
+		}
+	}
+
+	glade_command_delete (clipboard->selection);
+	glade_app_update_ui (app);
+}
+
 
 void
 glade_app_command_undo (GladeApp *app)
@@ -1167,4 +1413,39 @@ glade_default_app_redo_button_new (void)
 {
 	g_return_val_if_fail (glade_default_app != NULL, NULL);
 	return glade_app_undo_redo_button_new (glade_default_app, FALSE);
+}
+
+void
+glade_default_app_command_cut (void)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	return glade_app_command_cut (glade_default_app);
+}
+
+void
+glade_default_app_command_copy (void)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	return glade_app_command_copy (glade_default_app);
+}
+
+void
+glade_default_app_command_paste (void)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	return glade_app_command_paste (glade_default_app);
+}
+
+void
+glade_default_app_command_delete (void)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	return glade_app_command_delete (glade_default_app);
+}
+
+void
+glade_default_app_command_delete_clipboard (void)
+{
+	g_return_if_fail (glade_default_app != NULL);
+	return glade_app_command_delete_clipboard (glade_default_app);
 }

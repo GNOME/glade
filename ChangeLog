@@ -2,6 +2,19 @@
 
 	* TODO: Updated the list.
 
+	* src/glade-widget.c: Fixed bug in glade_widget_dup_internal ()
+	  (stupid typo of mine when fixing 320077)
+
+	* src/glade-utils.[ch]: Removed all the Cut/Copy/Paste/Delete
+	  stuff, now all in GladeApp.
+
+	* src/glade-app.c: Moved the bulk of code from glade-utils to
+	  glade-app (cut/copy/paste/delete) since it was confusing to
+	  see the chain of events, it should be simpler overall now.
+
+	* doc/glade-sections.txt, doc/tmpl/*: Adjusted doc structure
+	  for new apis and removed old apis.
+	
 2006-02-13  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: No more glade_util_ui_message(), deffer that

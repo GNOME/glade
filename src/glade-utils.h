@@ -94,19 +94,6 @@ gboolean          glade_util_any_gtkcontainer_relation (GladeWidget *parent,
 LIBGLADEUI_API
 gboolean          glade_util_widget_pastable       (GladeWidget *child,  
 						    GladeWidget *parent);
-
-LIBGLADEUI_API
-void              glade_util_paste_clipboard       (GladePlaceholder *placeholder,
-						    GladeWidget      *parent);
-LIBGLADEUI_API
-void              glade_util_cut_selection         (void);
-LIBGLADEUI_API
-void              glade_util_copy_selection        (void);
-LIBGLADEUI_API
-void              glade_util_delete_selection      (void);
-LIBGLADEUI_API
-void              glade_util_delete_clipboard      (void);
-
 LIBGLADEUI_API
 gint              glade_util_count_placeholders    (GladeWidget *parent);
 

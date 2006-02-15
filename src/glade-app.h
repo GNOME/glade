@@ -170,6 +170,25 @@ void               glade_default_app_set_transient_parent (GtkWindow *parent);
 LIBGLADEUI_API 
 GtkWindow         *glade_default_app_get_transient_parent (void);
 
+LIBGLADEUI_API 
+GtkWidget         *glade_default_app_undo_button_new  (void);
+LIBGLADEUI_API 
+GtkWidget         *glade_default_app_redo_button_new  (void);
+
+
+/* GladeCommand interface stuff
+ */
+LIBGLADEUI_API
+void               glade_default_app_command_cut (void);
+LIBGLADEUI_API
+void               glade_default_app_command_copy (void);
+LIBGLADEUI_API
+void               glade_default_app_command_paste (void);
+LIBGLADEUI_API
+void               glade_default_app_command_delete (void);
+LIBGLADEUI_API
+void               glade_default_app_command_delete_clipboard (void);
+
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.
@@ -189,10 +208,7 @@ LIBGLADEUI_API
 void               glade_default_app_selection_clear  (gboolean      emit_signal);
 LIBGLADEUI_API 
 void               glade_default_app_selection_changed(void);
-LIBGLADEUI_API 
-GtkWidget	         *glade_default_app_undo_button_new  (void);
-LIBGLADEUI_API 
-GtkWidget	         *glade_default_app_redo_button_new  (void);
+
 
 G_END_DECLS
 

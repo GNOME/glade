@@ -1559,7 +1559,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 
 /**
  * glade_command_paste:
- * @widgets: a #GList
+ * @widgets: a #GList of #GladeWidget
  * @parent: a #GladeWidget
  * @placeholder: a #GladePlaceholder
  *
