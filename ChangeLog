@@ -1,3 +1,20 @@
+2006-02-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+	
+	* src/glade-gtk.c: fixed bug 325791.
+	  Various GtkTable and GtkBox support fixes.
+	  (added glade_gtk_table_verify_*_attach, glade_gtk_box_set_child_property
+	  and glade_gtk_box_remove_child functions)
+
+	* src/glade-command.c: fixed bug 330305.
+	  Added glade_command_placeholder_destroyed() destroy handler.
+
+	* src/glade-project.[ch]: added loading state to projects, 
+	  glade_project_is_loading()
+
+	* widgets/gtk+.xml.in: added GtkTable child-set-property-function,
+	  replace-child-function and attach child properties.
+	  Added GtkBox remove-child-function and child-set-property-function.
+
 2006-02-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.c: Emergency commit for broken cvs.

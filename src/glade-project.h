@@ -28,6 +28,8 @@ struct _GladeProject
 
 	gint   instance; /* How many projects with this name */
 
+	gboolean loading;/* A flags that is set when the project is loading */
+	
 	gboolean changed;    /* A flag that is set when a project has changes
 			      * if this flag is not set we don't have to query
 			      * for confirmation after a close or exit is
@@ -152,6 +154,7 @@ gchar        *glade_project_resource_fullpath     (GladeProject  *project,
 LIBGLADEUI_API
 gchar        *glade_project_display_name          (GladeProject  *project);
 
+LIBGLADEUI_API gboolean      glade_project_is_loading            (GladeProject *project);
 
 G_END_DECLS
 

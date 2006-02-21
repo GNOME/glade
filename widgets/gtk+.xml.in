@@ -91,6 +91,8 @@
         <child>
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_box_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
+	  <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
 	  <properties>
 	    <property id="pack-type">
 	      <displayable-values>
@@ -174,7 +176,7 @@
 	  <type>GtkMenuItem</type>
   	  <add-child-function>glade_gtk_menu_shell_add_item</add-child-function>
 	  <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>
-	  <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>	  
+	  <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>
 	  <child-get-property-function>glade_gtk_menu_shell_get_child_property</child-get-property-function>
           <properties>
             <property id="position" _name="Position" default="-1" save="False">
@@ -597,6 +599,10 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
+  	  <add-child-function>glade_gtk_table_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_table_remove_child</remove-child-function>
+	  <replace-child-function>glade_gtk_table_replace_child</replace-child-function>
 	  <properties>
 	    <property id="x-options">
 	      <displayable-values>
@@ -611,6 +617,18 @@
 		<value id="GTK_SHRINK" _name="Shrink"/>
 		<value id="GTK_FILL" _name="Fill"/>
 	      </displayable-values>
+	    </property>
+    	    <property id="right-attach">
+	      <verify-function>glade_gtk_table_verify_right_attach</verify-function>
+	    </property>
+	    <property id="left-attach">
+	      <verify-function>glade_gtk_table_verify_left_attach</verify-function>
+	    </property>
+	    <property id="bottom-attach">
+	      <verify-function>glade_gtk_table_verify_bottom_attach</verify-function>
+	    </property>
+    	    <property id="top-attach">
+	      <verify-function>glade_gtk_table_verify_top_attach</verify-function>
 	    </property>
 	  </properties>
 	</child>

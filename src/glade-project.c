@@ -989,9 +989,11 @@ glade_project_write (GladeProject *project)
 }
 
 static gboolean
-glade_project_set_changed_to_false_idle (gpointer data)
+glade_project_loading_done_idle (gpointer data)
 {
-	((GladeProject *)data)->changed = FALSE;
+	GladeProject *project = (GladeProject *) data;
+	
+	project->loading = project->changed = FALSE;
 	return FALSE;
 }
 
@@ -1043,6 +1045,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	project->name = g_path_get_basename (path);
 	project->selection = NULL;
 	project->objects = NULL;
+	project->loading = TRUE;
 
 	for (i = 0; i < interface->n_toplevels; ++i)
 	{
@@ -1057,7 +1060,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 
 	/* Set project status after every idle functions */
 	g_idle_add_full (G_PRIORITY_LOW,
-			 glade_project_set_changed_to_false_idle,
+			 glade_project_loading_done_idle,
 			 project, 
 			 NULL);
 
@@ -1456,4 +1459,19 @@ glade_project_display_name (GladeProject *project)
 		final_name = g_strdup (project->name);
 
 	return final_name;
+}
+
+/**
+ * glade_project_is_loading:
+ * @project: A #GladeProject
+ *
+ * Returns: Whether the project is being loaded or not.
+ *       
+ */
+gboolean
+glade_project_is_loading (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	
+	return project->loading;
 }

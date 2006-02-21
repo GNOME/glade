@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2002 Joaquín Cuenca Abela
+ * Copyright (C) 2002 JoaquÃ­n Cuenca Abela
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * Authors:
- *   Joaquín Cuenca Abela <e98cuenc@yahoo.com>
+ *   JoaquÃ­n Cuenca Abela <e98cuenc@yahoo.com>
  *   Archit Baweja <bighead@users.sourceforge.net>
  */
 #ifdef HAVE_CONFIG_H
@@ -49,6 +49,7 @@ typedef struct {
 	GladeProject     *project;
 	GladePlaceholder *placeholder;
 	GList            *pack_props;
+	gulong		 handler_id;
 } CommandData;
 
 static GObjectClass *parent_class = NULL;
@@ -785,6 +786,16 @@ glade_command_create_delete_undo (GladeCommand *cmd)
 	return glade_command_create_delete_execute (cmd);
 }
 
+static void 
+glade_command_placeholder_destroyed (GtkObject *object, CommandData *cdata)
+{
+	if (GTK_OBJECT (cdata->placeholder) == object)
+	{
+		cdata->placeholder = NULL;
+		cdata->handler_id = 0;
+	}
+}
+
 static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
@@ -814,11 +825,11 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 			}
 			else
 			{
+				glade_widget_set_parent (cdata->widget, cdata->parent);
 				glade_widget_class_container_add 
 					(cdata->parent->widget_class,
 					 cdata->parent->object,
 					 cdata->widget->object);
-				glade_widget_set_parent (cdata->widget, cdata->parent);
 			}
 		}
 		
@@ -866,6 +877,12 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 				glade_widget_replace
 					(cdata->parent, cdata->widget->object, 
 					 G_OBJECT (cdata->placeholder));
+
+				if (cdata->handler_id == 0)
+					cdata->handler_id = g_signal_connect (
+								cdata->placeholder, "destroy",
+			  				  	G_CALLBACK (glade_command_placeholder_destroyed),
+		  	  			  		cdata);
 			}
 			else if (cdata->parent->manager != NULL)
 				glade_fixed_manager_remove_child
@@ -934,7 +951,12 @@ glade_command_create_delete_finalize (GObject *obj)
 		cdata = list->data;
 		
 		if (cdata->placeholder)
-			g_object_unref (G_OBJECT (cdata->placeholder));
+		{
+			if (cdata->handler_id)
+				g_signal_handler_disconnect (cdata->placeholder,
+							     cdata->handler_id);
+			g_object_unref (cdata->placeholder);
+		}
 
 		if (cdata->widget)
 			g_object_unref (G_OBJECT (cdata->widget));
@@ -1169,12 +1191,12 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 				}
 				else
 				{
+					glade_widget_set_parent (cdata->widget, 
+								 cdata->parent);
 					glade_widget_class_container_add
 						(cdata->parent->widget_class,
 						 cdata->parent->object,
 						 cdata->widget->object);
-					glade_widget_set_parent (cdata->widget, 
-								 cdata->parent);
 				}
 
 				/* Now that we've added, apply any packing props if nescisary. */
@@ -1249,10 +1271,18 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 		if (cdata->parent)
 		{
 			if (cdata->placeholder)
+			{
 				glade_widget_replace
 					(cdata->parent,
 					 cdata->widget->object,
 					 G_OBJECT (cdata->placeholder));
+				
+				if (cdata->handler_id == 0)
+					cdata->handler_id = g_signal_connect (
+								cdata->placeholder, "destroy",
+				  			  	G_CALLBACK (glade_command_placeholder_destroyed),
+		  		  			  	cdata);
+			}
 			else if (cdata->parent->manager != NULL) 
 				glade_fixed_manager_remove_child
 					(cdata->parent->manager, cdata->widget);
@@ -1369,7 +1399,12 @@ glade_command_cut_copy_paste_finalize (GObject *obj)
 		if (cdata->widget)
 			g_object_unref (cdata->widget);
 		if (cdata->placeholder)
+		{
+			if (cdata->handler_id)
+				g_signal_handler_disconnect (cdata->placeholder,
+							     cdata->handler_id);
 			g_object_unref (cdata->placeholder);
+		}
 		if (cdata->pack_props)
 		{
 			g_list_foreach (cdata->pack_props, (GFunc)g_object_unref, NULL);
