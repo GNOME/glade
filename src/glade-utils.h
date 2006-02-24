@@ -116,7 +116,6 @@ gboolean          glade_util_copy_file             (const gchar  *src_path,
 						    const gchar  *dest_path);
 
 
-
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

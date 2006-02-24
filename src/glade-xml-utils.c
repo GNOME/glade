@@ -124,20 +124,12 @@ static gchar *
 glade_xml_get_value (xmlNodePtr node, const gchar *name)
 {
 	xmlNodePtr  child;
-	gchar      *translatable = g_strdup_printf ("_%s", name);
 	gchar      *ret = NULL;
 	
-	/* For some reason, the leading underscores on translatable
-	 * xml content are not stripped from widget catalogs
-	 * (but the leading underscores on properties are),
-	 * so we must check for the leading underscore varients.
-	 */
 	for (child = node->children; child; child = child->next)
-		if (!xmlStrcmp (child->name, BAD_CAST(name)) ||
-		    !xmlStrcmp (child->name, BAD_CAST(translatable)))
+		if (!xmlStrcmp (child->name, BAD_CAST(name)))
 			ret = claim_string (xmlNodeGetContent(child));
 
-	g_free (translatable);
 	return ret;
 }
 
@@ -242,7 +234,6 @@ glade_xml_get_value_int_required (GladeXmlNode *node, const gchar *name, gint  *
 			
 	return ret;
 }
-
 
 /*
  * Get a String value for a node either carried as an attibute or as
@@ -734,4 +725,42 @@ alloc_propname(GladeInterface *interface, const gchar *string)
 	    norm_str->str[i] = '_';
 
     return alloc_string(interface, norm_str->str);
+}
+
+
+void
+glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
+			      GModule          *module,
+			      gchar            *tagname,
+			      gpointer         *sym_location)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gchar *buff;
+
+	if ((buff = glade_xml_get_value_string (node_in, tagname)) != NULL)
+	{
+		if (!module)
+		{
+			g_warning ("Catalog specified symbol '%s' for tag '%s', "
+				   "no module available to load it from !", 
+				   buff, tagname);
+			g_free (buff);
+			return;
+		}
+
+		/* I use here a g_warning to signal these errors instead of a dialog 
+		 * box, as if there is one of this kind of errors, there will probably 
+		 * a lot of them, and we don't want to inflict the user the pain of 
+		 * plenty of dialog boxes.  Ideally, we should collect these errors, 
+		 * and show all of them at the end of the load process.
+		 *
+		 * I dont know who wrote the above in glade-property-class.c, but
+		 * its a good point... makeing a bugzilla entry.
+		 *  -Tristan
+		 */
+		if (!g_module_symbol (module, buff, sym_location))
+			g_warning ("Could not find %s in %s\n",
+				   buff, g_module_name (module));
+		g_free (buff);
+	}
 }

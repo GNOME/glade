@@ -1,3 +1,49 @@
+2006-02-23  Tristan Van Berkom <tvb@gnome.org>
+
+	* TODO: Updated list
+
+	* doc/glade-sections.txt: Updated list
+
+	* doc/tmpl/*: updated templates from source
+
+	* src/glade-builtins.[ch]: Implemented GladeParamSpecObjects and 
+	  GLADE_TYPE_GLIST boxed type (intended use for AtkRelation properties).
+
+	* src/glade-command.c, src/glade-gtk.c: Fixed refcounting for placeholders.
+	  (updated code for glade_widget_new () also)
+	
+	* src/glade-project-window.c: Fixed parenthesis in complex statement.
+
+	* src/glade-property-class.[ch]: 
+	  o Added support for atk property detection & GladeParamSpecObjects. 
+	  o Added some more logic that belonged here and was in glade-widget-class.c
+	  o Fixed "make gvalue from object" logic to not leak a reference to a pixbuf
+	    (it doesnt crash with pixbuf manipulation... not sure if we dont leak pixbufs
+	    though).
+
+	* src/glade-property.c: Simplified code (and fixed limitation of optional properties
+	  to integer inputs... now any property can be optional).
+	  Added implicit case to ignore atk_properties
+
+	* src/glade-widget-class.c: Deffered some logic to glade-property-class and simplified
+	  code; also added support for atk properties.
+	  ATK: Disabled for now, not completely implemented... needs save support in glade-property
+	  and edit support in GladeEditorProperty... just needed to sync CVS for all the other
+	  relevent work.
+	
+	* src/glade-widget.[ch]: glade_widget_new () takes a boolean query arg now
+
+	* src/glade-xml-utils.[ch]: now has glade_xml_load_sym_from_node()
+	  (it makes sence here because we have access to the xml node structs; so we
+	  can debug around here a little easier).
+
+	* src/glade-editor-property.c: Added prelimenary support for GladeParamSpecObjects
+	  (readonly view of glade_widget_class_make_string_from_gvalue() ).
+
+	* src/glade-fixed-manager.c: Adjusted caller to glade_widget_new().
+	
+	* src/glade.h: added "atk-relation" tag definition.
+
 2006-02-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: Packing GladeEditorProperties were being loaded

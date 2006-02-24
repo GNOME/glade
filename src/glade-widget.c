@@ -711,15 +711,25 @@ glade_widget_internal_new (const gchar       *name,
 
 /**
  * glade_widget_new:
+ * @parent: a #GladeWidget
  * @klass: a #GladeWidgetClass
  * @project: a #GladeProject
+ * @query: whether or not to query the user for properties that demanded it.
  *
- * TODO: write me
+ * Creates a #GladeWidget wrapper and the appropriate type of #GObject inside
+ * and add it to @project and @parent if specified.
  *
- * Returns:
+ * The resulting object will have all default properties applied to it
+ * including the overrides specified in the catalog, unless the catalog
+ * has specified 'ignore' for that property.
+ *
+ * Returns: The newly created #GladeWidget
  */
 GladeWidget *
-glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *project)
+glade_widget_new (GladeWidget      *parent, 
+		  GladeWidgetClass *klass, 
+		  GladeProject     *project,
+		  gboolean          query)
 {
 	GladeWidget *widget;
 	gchar       *widget_name =
@@ -729,7 +739,7 @@ glade_widget_new (GladeWidget *parent, GladeWidgetClass *klass, GladeProject *pr
 	if ((widget = glade_widget_internal_new
 	     (widget_name, parent, klass, project, NULL, GLADE_CREATE_USER)) != NULL)
 	{
-		if (widget->query_user)
+		if (query && widget->query_user)
 		{
 			GladeEditor *editor = glade_default_app_get_editor ();
 

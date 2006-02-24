@@ -59,7 +59,7 @@ glade_property_class_new (void)
 	property_class->displayable_values = NULL;
 	property_class->query = FALSE;
 	property_class->optional = FALSE;
-	property_class->optional_default = TRUE;
+	property_class->optional_default = FALSE;
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->is_modified = FALSE;
@@ -70,7 +70,9 @@ glade_property_class_new (void)
 	property_class->save = TRUE;
 	property_class->ignore = FALSE;
 	property_class->resource = FALSE;
-	property_class->translatable = TRUE;
+	property_class->translatable = FALSE;
+	property_class->atk_property = FALSE;
+	property_class->atk_relation = FALSE;
 	return property_class;
 }
 
@@ -236,17 +238,7 @@ glade_property_class_make_string_from_enum (GType etype, gint eval)
 	return string;
 }
 
-/**
- * glade_property_class_make_string_from_flags:
- * @class: A GFlagsClass property class.
- * @fvals: The flags to include in the string.
- * @displayables: if TRUE it will try to use diplayable values.
- *
- * Create a string with the flags wich are set in @fvals.
- *
- * Returns: a newly allocated string.
-*/
-gchar *
+static gchar *
 glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fvals, gboolean displayables)
 {
 	GFlagsClass *fclass;
@@ -281,21 +273,73 @@ glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fv
 	return retval;
 }
 
+static gchar *
+glade_property_class_make_string_from_object (GladePropertyClass *property_class,
+					      GObject            *object)
+{
+	GladeWidget *gwidget;
+	gchar       *string = NULL, *filename;
+
+	if (!object) return NULL;
+
+	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
+	{
+		if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
+			string = g_path_get_basename (filename);
+	}
+	else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
+		string = g_strdup (gwidget->name);
+	else
+		g_critical ("Object type property refers to an object "
+			    "outside the project");
+	
+	return string;
+}
+
+static gchar *
+glade_property_class_make_string_from_objects (GladePropertyClass *property_class,
+					       GList              *objects)
+{
+	GObject *object;
+	GList   *list;
+	gchar   *string = NULL, *obj_str, *tmp;
+
+#define GPC_OBJECT_DELIMITER ", "
+
+	for (list = objects; list; list = list->next)
+	{
+		object = list->data;
+
+		obj_str = glade_property_class_make_string_from_object 
+			(property_class, object);
+
+		if (string == NULL)
+			string = obj_str;
+		else if (obj_str != NULL)
+		{
+			tmp = g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER, obj_str);
+			string = (g_free (string), tmp);
+			g_free (obj_str);
+		}
+	}
+	return string;
+}
+
 /**
  * glade_property_class_make_string_from_gvalue:
- * @property_class:
- * @value:
+ * @property_class: A #GladePropertyClass
+ * @value: A #GValue
  *
- * TODO: write me
- *
- * Returns:
+ * Returns: A newly allocated string representation of @value
  */
 gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
 {
 	gchar    *string = NULL, **strv;
+	GObject  *object;
 	GdkColor *color;
+	GList    *objects;
 
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
@@ -365,27 +409,15 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 					  GLADE_TAG_TRUE : GLADE_TAG_FALSE);
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
-		GObject *object = g_value_get_object (value);
-
-		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
-		{
-			gchar *filename;
-
-			if (object && (filename = g_object_get_data
-				       (object, "GladeFileName")) != NULL)
-				string = g_path_get_basename (filename);
-		}
-		else
-		{
-			GladeWidget *gwidget;
-			if (object)
-			{
-				if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
-					string = g_strdup (gwidget->name);
-				else
-					g_critical ("Object type property refers to an object outside the project");
-			}
-		}
+		object = g_value_get_object (value);
+		string = glade_property_class_make_string_from_object
+			(property_class, object);
+	}
+	else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
+	{
+		objects = g_value_get_boxed (value);
+		string = glade_property_class_make_string_from_objects
+			(property_class, objects);
 	}
 	else
 		g_critical ("Unsupported pspec type %s",
@@ -395,9 +427,6 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 }
 
 /* This is copied exactly from libglade. I've just renamed the function.
- *
- * TODO: Expose function from libglade and use the one in libglade (once
- * Ivan Wongs libglade patch gets in...).
  */
 static guint
 glade_property_class_make_flags_from_string (GType type, const char *string)
@@ -501,6 +530,67 @@ glade_property_class_make_enum_from_string (GType type, const char *string)
     return ret;
 }
 
+static GObject *
+glade_property_class_make_object_from_string (GladePropertyClass *property_class,
+					      const gchar        *string,
+					      GladeProject       *project)
+{
+	GObject *object = NULL;
+	gchar   *fullpath;
+
+	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
+	{
+		GdkPixbuf *pixbuf;
+
+		if (string)
+		{
+			fullpath = glade_project_resource_fullpath (project, string);
+
+			if ((pixbuf = gdk_pixbuf_new_from_file
+				     (fullpath, NULL)) != NULL)
+			{
+				g_object_set_data_full (G_OBJECT(pixbuf), 
+							"GladeFileName",
+							g_strdup (string),
+							g_free);
+
+				object = G_OBJECT(pixbuf);
+			}
+			g_free (fullpath);
+		}
+	}
+	else
+	{
+		GladeWidget *gwidget;
+		if (string && (gwidget = glade_project_get_widget_by_name 
+			       (project, string)) != NULL)
+			object = gwidget->object;
+	}
+	return object;
+}
+
+static GList *
+glade_property_class_make_objects_from_string (GladePropertyClass *property_class,
+					       const gchar        *string,
+					       GladeProject       *project)
+{
+	GList    *objects = NULL;
+	GObject  *object;
+	gchar   **split;
+	guint     i;
+	
+	if ((split = g_strsplit (string, GPC_OBJECT_DELIMITER, 0)) != NULL)
+	{
+		for (i = 0; split[i]; i++)
+		{
+			if ((object = glade_property_class_make_object_from_string
+			     (property_class, split[i], project)) != NULL)
+				objects = g_list_prepend (objects, object);
+		}
+		g_strfreev (split);
+	}
+	return objects;
+}
 
 /**
  * glade_property_class_make_gvalue_from_string:
@@ -602,38 +692,15 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	}
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
-		if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
-		{
-			GdkPixbuf *pixbuf;
-
-			if (string)
-			{
-				fullpath = 
-					glade_project_resource_fullpath (project,
-									 string);
-				if ((pixbuf = gdk_pixbuf_new_from_file
-				     (fullpath, NULL)) != NULL)
-				{
-					g_object_set_data_full (G_OBJECT(pixbuf), 
-								"GladeFileName",
-								g_strdup (string),
-								g_free);
-					g_value_take_object (value, G_OBJECT(pixbuf));
-				}
-				g_free (fullpath);
-			}
-			else
-				g_value_set_object (value, NULL);
-		}
-		else
-		{
-			GladeWidget *gwidget;
-			if (string && (gwidget = glade_project_get_widget_by_name 
-				       (project, string)) != NULL)
-				g_value_set_object (value, gwidget->object);
-			else
-				g_value_set_object (value, NULL);
-		}
+		GObject *object = glade_property_class_make_object_from_string
+			(property_class, string, project);
+		g_value_set_object (value, object);
+	}
+	else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
+	{
+		GList *objects = glade_property_class_make_objects_from_string
+			(property_class, string, project);
+		g_value_set_boxed (value, objects);
 	}
 	else
 		g_critical ("Unsupported pspec type %s",
@@ -642,6 +709,15 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	return value;
 }
 
+/**
+ * glade_property_class_make_gvalue_from_vl:
+ * @property_class: A #GladePropertyClass
+ * @vl: a #va_list holding one argument of the correct type
+ *      specified by @property_class
+ *
+ * Returns: A #GValue created based on the @property_class
+ *          and a @vl arg of the correct type.
+ */
 GValue *
 glade_property_class_make_gvalue_from_vl (GladePropertyClass  *class,
 					  va_list              vl)
@@ -695,6 +771,16 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass  *class,
 }
 
 
+/**
+ * glade_property_class_set_vl_from_gvalue:
+ * @class: A #GladePropertyClass
+ * @value: A #GValue to set
+ * @vl: a #va_list holding one argument of the correct type
+ *      specified by @class
+ * 
+ *
+ * Sets @value from @vl based on @class criteria.
+ */
 void
 glade_property_class_set_vl_from_gvalue (GladePropertyClass  *class,
 					 GValue              *value,
@@ -765,6 +851,10 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	property_class = glade_property_class_new ();
 
 	property_class->pspec = spec;
+	
+	/* We only use the writable properties */
+	if ((spec->flags & G_PARAM_WRITABLE) == 0)
+		goto lblError;
 
 	/* Register only editable properties.
 	 */
@@ -782,9 +872,22 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 					  g_param_spec_get_name (spec)) != NULL)
 		property_class->common = TRUE;
 
+	/* If its a child property of a GtkContainerClass derivative, 
+	 * it goes in "packing"
+	 */
+	if (g_object_class_find_property (gtk_widget_class, 
+					  g_param_spec_get_name (spec)) != NULL)
+		property_class->packing = TRUE;
+	
+	/* Flag the construct only properties */
+	if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
+		property_class->construct_only = TRUE;
+	
+
 	if (!property_class->id || !property_class->name)
 	{
-		g_warning ("Failed to create property class from spec");
+		g_critical ("No name or id for "
+			    "glade_property_class_new_from_spec, failed.");
 		goto lblError;
 	}
 
@@ -792,6 +895,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	property_class->orig_def = glade_property_class_get_default_from_spec (spec);
 	property_class->def      = glade_property_class_get_default_from_spec (spec);
 
+	g_type_class_unref (gtk_widget_class);
 	return property_class;
 
   lblError:
@@ -998,6 +1102,33 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 						    GLADE_NUMERICAL_PAGE_SIZE);
 }
 
+static void 
+gpc_load_function (GladeXmlNode *node, 
+		   GModule      *module,
+		   const gchar  *tagname,
+		   gpointer     *location)
+{
+	GladeXmlNode *child = glade_xml_search_child (node, tagname);
+	if (child)
+	{
+		gchar *symbol_name = glade_xml_get_content (child);
+
+		if (!module)
+		{
+			g_warning ("Catalog specified symbol '%s' for tag '%s', "
+				   "no module available to load it from !", 
+				   symbol_name, tagname);
+			g_free (symbol_name);
+			return;
+		}
+		if (!g_module_symbol(module, symbol_name, location))
+			g_warning ("Could not find %s in %s\n",
+				   symbol_name, g_module_name (module));
+		g_free (symbol_name);
+	}
+}
+
+
 /**
  * glade_property_class_update_from_node:
  * @node: the property node
@@ -1090,8 +1221,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	}
 
 	/* Get the default */
-	buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT);
-	if (buff)
+	if ((buff = glade_xml_get_property_string (node, GLADE_TAG_DEFAULT)) != NULL)
 	{
 		if (class->def) {
 			g_value_unset (class->def);
@@ -1102,16 +1232,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	}
 
 	/* If needed, update the name... */
-	buff = glade_xml_get_property_string (node, GLADE_TAG_NAME);
-	if (buff)
+	if ((buff = glade_xml_get_property_string (node, GLADE_TAG_NAME)) != NULL)
 	{
 		g_free (class->name);
 		class->name = g_strdup (dgettext (domain, buff));
 	}
 	
 	/* ...and the tooltip */
-	buff = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP);
-	if (buff)
+	if ((buff = glade_xml_get_value_string (node, GLADE_TAG_TOOLTIP)) != NULL)
 	{
 		g_free (class->tooltip);
 		class->tooltip = g_strdup (dgettext (domain, buff));
@@ -1147,15 +1275,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	glade_xml_get_value_int (node, GLADE_TAG_VISIBLE_LINES,  &class->visible_lines);
 
 	/* Get the Parameters */
-	child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS);
-	if (child)
+	if ((child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS)) != NULL)
 		class->parameters = glade_parameter_list_new_from_node (class->parameters, child);
-	glade_parameter_get_boolean (class->parameters, GLADE_TAG_OPTIONAL, &class->optional);
 		
 	/* Whether or not the property is translatable. This is only used for
 	 * string properties.
 	 */
-	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, TRUE);
+	class->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, 
+							      class->translatable);
 
 	/* common, optional, etc */
 	class->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,   class->common);
@@ -1166,6 +1293,12 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
 	class->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, class->resource);
 
+	/* Atk relations are 'atk properties' */
+	if ((class->atk_relation = 
+	     glade_xml_get_property_boolean (node, GLADE_TAG_ATK_RELATION, 
+					     class->atk_relation)) == TRUE)
+		class->atk_property = TRUE;
+
 	/* Special case pixbuf here.
 	 */
 	if (class->pspec->value_type == GDK_TYPE_PIXBUF)
@@ -1173,82 +1306,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	
 	if (class->optional)
 		class->optional_default =
-			glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, FALSE);
+			glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, 
+							class->optional_default);
 
-	/* If this property can't be set with g_object_set, get the work around
-	 * function
+	/* Get any delagate functions for accessing this property
 	 */
-	/* I use here a g_warning to signal these errors instead of a dialog 
-         * box, as if there is one of this kind of errors, there will probably 
-         * a lot of them, and we don't want to inflict the user the pain of 
-         * plenty of dialog boxes.  Ideally, we should collect these errors, 
-         * and show all of them at the end of the load process.
-         */
-	child = glade_xml_search_child (node, GLADE_TAG_SET_FUNCTION);
-	if (child)
-	{
-		gchar *symbol_name = glade_xml_get_content (child);
-
-		if (!module)
-			g_warning (_("The property [%s] of the widget's class [%s] "
-				     "needs a special \"set\" function, but there is "
-				     "no library associated to this widget's class."),
-				   class->name, g_type_name (object_type));
-
-		if (!g_module_symbol (module, symbol_name, (gpointer *)
-				      &class->set_function))
-			g_warning (_("Unable to get the \"set\" function [%s] of the "
-				     "property [%s] of the widget's class [%s] from "
-				     "the module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (object_type),
-				   g_module_name (module), g_module_error ());
-		g_free (symbol_name);
-	}
-
-	/* If this property can't be get with g_object_get, get the work around
-	 * function
-	 */
-	child = glade_xml_search_child (node, GLADE_TAG_GET_FUNCTION);
-	if (child)
-	{
-		gchar *symbol_name = glade_xml_get_content (child);
-
-		if (!module)
-			g_warning (_("The property [%s] of the widget's class [%s] needs a "
-				     "special \"get\" function, but there is no library "
-				     "associated to this widget's class."),
-				   class->name, g_type_name (object_type));
-
-		if (!g_module_symbol(module, symbol_name,
-				     (gpointer *) &class->get_function))
-			g_warning (_("Unable to get the \"get\" function [%s] of the "
-				     "property [%s] of the widget's class [%s] from the "
-				     "module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (object_type),
-				   g_module_name (module), g_module_error ());
-		g_free (symbol_name);
-	}
-
-	child = glade_xml_search_child (node, GLADE_TAG_VERIFY_FUNCTION);
-	if (child)
-	{
-		gchar *symbol_name = glade_xml_get_content (child);
-
-		if (!module)
-			g_warning (_("The property [%s] of the widget's class [%s] needs a "
-				     "special \"get\" function, but there is no library "
-				     "associated to this widget's class."),
-				   class->name, g_type_name (object_type));
-
-		if (!g_module_symbol(module, symbol_name,
-				     (gpointer *) &class->verify_function))
-			g_warning (_("Unable to get the \"verify\" function [%s] of the "
-				     "property [%s] of the widget's class [%s] from the "
-				     "module [%s]: %s"),
-				   symbol_name, class->name, g_type_name (object_type),
-				   g_module_name (module), g_module_error ());
-		g_free (symbol_name);
-	}
+	glade_xml_load_sym_from_node (node, module, GLADE_TAG_SET_FUNCTION,    (gpointer *)&class->set_function);
+	glade_xml_load_sym_from_node (node, module, GLADE_TAG_GET_FUNCTION,    (gpointer *)&class->get_function);
+	glade_xml_load_sym_from_node (node, module, GLADE_TAG_VERIFY_FUNCTION, (gpointer *)&class->verify_function);
 
 	/* notify that we changed the property class */
 	class->is_modified = TRUE;

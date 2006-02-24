@@ -761,9 +761,9 @@ gpw_hijack_editor_key_press (GtkWidget          *editor_win,
 {
 	if (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
 	    ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
-	     (event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
-	     (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	     (event->keyval == GDK_v || event->keyval == GDK_V)))  /* CNTL-V (paste) */
+	     ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	      (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	      (event->keyval == GDK_v || event->keyval == GDK_V)))) /* CNTL-V (paste) */
 	{
 		return gtk_widget_event (GTK_WINDOW (editor_win)->focus_widget, 
 					 (GdkEvent *)event);

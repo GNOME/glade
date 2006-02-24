@@ -221,9 +221,14 @@ glade_property_get_default_impl (GladeProperty *property, GValue *value)
 static void
 glade_property_sync_impl (GladeProperty *property)
 {
-	if (property->enabled == FALSE || 
-	    property->class->ignore    ||
-	    property->syncing)
+
+	/* Heh, here are the many reasons not to
+	 * sync a property ;-)
+	 */
+	if (property->enabled == FALSE    || /* optional properties that are disabled */
+	    property->class->ignore       || /* catalog says "never sync" */
+	    property->class->atk_property || /* dont bother with atk related properties */
+	    property->syncing)               /* avoid recursion */
 		return;
 
 	property->syncing = TRUE;
@@ -600,14 +605,7 @@ glade_property_new (GladePropertyClass *class,
 	property->widget    = widget;
 	property->value     = value;
 	
-	if (G_IS_PARAM_SPEC_DOUBLE  (class->pspec) ||
-	    G_IS_PARAM_SPEC_FLOAT (class->pspec)   ||
-	    G_IS_PARAM_SPEC_LONG (class->pspec)    ||
-	    G_IS_PARAM_SPEC_ULONG (class->pspec)   ||
-	    G_IS_PARAM_SPEC_INT64 (class->pspec)   ||
-	    G_IS_PARAM_SPEC_UINT64 (class->pspec)  ||
-	    G_IS_PARAM_SPEC_INT (class->pspec)     ||
-	    G_IS_PARAM_SPEC_UINT (class->pspec))
+	if (class->optional)
 		property->enabled = class->optional_default;
 	
 	if (property->value == NULL)

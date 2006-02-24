@@ -119,29 +119,37 @@ static GList *
 gwc_props_from_pspecs (GParamSpec **specs, gint n_specs)
 {
 	GladePropertyClass *property_class;
-	GParamSpec         *spec;
 	gint                i;
 	GList              *list = NULL;
 
 	for (i = 0; i < n_specs; i++)
 	{
-		spec = specs[i];
-
-		/* We only use the writable properties */
-		if (spec->flags & G_PARAM_WRITABLE)
-		{
-			property_class = glade_property_class_new_from_spec (spec);
-			if (!property_class)
-				continue;
-
-			/* Flag the construct only properties */
-			if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
-				property_class->construct_only = TRUE;
-			
+		if ((property_class = 
+		     glade_property_class_new_from_spec (specs[i])) != NULL)
 			list = g_list_prepend (list, property_class);
-		}
 	}
 	return g_list_reverse (list);
+}
+
+static gboolean
+gwc_class_implements_interface (GType class_type, 
+				GType iface_type)
+{
+	GType    *ifaces;
+	guint     n_ifaces, i;
+	gboolean  implemented = FALSE;
+
+	if ((ifaces = g_type_interfaces (class_type, &n_ifaces)) != NULL)
+	{
+		for (i = 0; i < n_ifaces; i++)
+			if (ifaces[i] == iface_type)
+			{
+				implemented = TRUE;
+				break;
+			}
+		g_free (ifaces);
+	}
+	return implemented;
 }
 
 static GList *
@@ -150,23 +158,49 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	GObjectClass  *object_class;
 	GParamSpec   **specs = NULL;
 	guint          n_specs = 0;
-	GList         *list;
+	GList         *list, *atk_list = NULL;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
 
 	/* Let it leek */
 	if ((object_class = g_type_class_ref (class->type)) == NULL)
 	{
-		g_warning ("Failed to get class for type %s\n", 
-			   g_type_name (class->type));
+		g_critical ("Failed to get class for type %s\n", 
+			    g_type_name (class->type));
 		return NULL;
 	}
 
+	/* list class properties */
 	specs = g_object_class_list_properties (object_class, &n_specs);
 	list = gwc_props_from_pspecs (specs, n_specs);
 	g_free (specs);
 
-	return list;
+
+#if 0
+	/* XXX ATK compiled out for now, just for cvs sake.
+	 */
+
+	/* XXX FIXME: We shouldnt just do ATK_TYPE_OBJECT, we need
+	 * to instanciate an object of the right type and use
+	 * atk_implementor_ref_accessible()... so as to get the correct
+	 * ATK_TYPE_OBJECT derivative (this might be overkill for the
+	 * task at hand...)
+	 */
+
+	/* list atk properties if applicable */
+	if (gwc_class_implements_interface (class->type, ATK_TYPE_IMPLEMENTOR))
+	{
+		if ((object_class = g_type_class_ref (ATK_TYPE_OBJECT)) == NULL)
+			g_critical ("Failed to get class for type %s\n", 
+				    g_type_name (ATK_TYPE_OBJECT));
+
+		/* list atk properties */
+		specs = g_object_class_list_properties (object_class, &n_specs);
+		atk_list = gwc_props_from_pspecs (specs, n_specs);
+		g_free (specs);
+	}
+#endif
+	return g_list_concat (list, atk_list);
 }
 
 static GList * 
@@ -196,7 +230,13 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	list  = gwc_props_from_pspecs (specs, n_specs);
 	g_free (specs);
 
-	/* Mark packing props */
+	/* We have to mark packing properties from GladeWidgetClass
+	 * because GladePropertyClass doesnt have a valid parent GType
+	 * to introspect it.
+	 *
+	 * (which could be used to call gtk_container_class_find_child_property()
+	 * and properly introspect whether or not its a packing property).
+	 */
 	for (l = list; l; l = l->next)
 	{
 		property_class = l->data;
@@ -446,22 +486,6 @@ glade_widget_class_find_child_by_type (GladeSupportedChild *child, GType type)
 }
 
 static void
-glade_widget_class_load_function (GladeXmlNode     *node,
-				  GModule          *module,
-				  gchar            *tagname,
-				  void            **func_location)
-{
-	gchar *buff;
-	if ((buff = glade_xml_get_value_string (node, tagname)) != NULL)
-	{
-		if (!g_module_symbol (module, buff, func_location))
-			g_warning ("Could not find %s in %s\n",
-				   buff, g_module_name (module));
-		g_free (buff);
-	}
-}
-
-static void
 glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 					      GladeWidgetClass *widget_class,
 					      const gchar      *domain)
@@ -518,27 +542,27 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 
 		if (widget_class->module)
 		{
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_ADD_CHILD_FUNCTION,
-							  (void **)&child->add);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_REMOVE_CHILD_FUNCTION,
-							  (void **)&child->remove);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_GET_CHILDREN_FUNCTION,
-							  (void **)&child->get_children);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_GET_ALL_CHILDREN_FUNCTION,
-							  (void **)&child->get_all_children);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_CHILD_SET_PROP_FUNCTION,
-							  (void **)&child->set_property);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_CHILD_GET_PROP_FUNCTION,
-							  (void **)&child->get_property);
-			glade_widget_class_load_function (child_node, widget_class->module,
-							  GLADE_TAG_REPLACE_CHILD_FUNCTION,
-							  (void **)&child->replace_child);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_ADD_CHILD_FUNCTION,
+						      (gpointer *)&child->add);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_REMOVE_CHILD_FUNCTION,
+						      (gpointer *)&child->remove);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_GET_CHILDREN_FUNCTION,
+						      (gpointer *)&child->get_children);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_GET_ALL_CHILDREN_FUNCTION,
+						      (gpointer *)&child->get_all_children);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_CHILD_SET_PROP_FUNCTION,
+						      (gpointer *)&child->set_property);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_CHILD_GET_PROP_FUNCTION,
+						      (gpointer *)&child->get_property);
+			glade_xml_load_sym_from_node (child_node, widget_class->module,
+						      GLADE_TAG_REPLACE_CHILD_FUNCTION,
+						      (gpointer *)&child->replace_child);
 		}
 
 		/* if we found a <Properties> tag on the xml file, we add the 
@@ -568,22 +592,22 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 
 	if (widget_class->module)
 	{
-		glade_widget_class_load_function (node, widget_class->module,
-						  GLADE_TAG_POST_CREATE_FUNCTION,
-						  (void **)&widget_class->post_create_function);
+		glade_xml_load_sym_from_node (node, widget_class->module,
+					      GLADE_TAG_POST_CREATE_FUNCTION,
+					      (void **)&widget_class->post_create_function);
 
-		glade_widget_class_load_function (node, widget_class->module,
-						  GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
-						  (void **)&widget_class->get_internal_child);
+		glade_xml_load_sym_from_node (node, widget_class->module,
+					      GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
+					      (void **)&widget_class->get_internal_child);
 
-		glade_widget_class_load_function (node, widget_class->module,
-						  GLADE_TAG_GET_INTERNAL_CHILDREN_FUNCTION,
-						  (void **)&widget_class->get_internal_children);
+		glade_xml_load_sym_from_node (node, widget_class->module,
+					      GLADE_TAG_GET_INTERNAL_CHILDREN_FUNCTION,
+					      (void **)&widget_class->get_internal_children);
 
-		glade_widget_class_load_function (node, widget_class->module,
-						  GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
-						  (void **)
-						  &widget_class->launch_editor);
+		glade_xml_load_sym_from_node (node, widget_class->module,
+					      GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
+					      (void **)
+					      &widget_class->launch_editor);
 	}
 
 	/* if we found a <properties> tag on the xml file, we add the properties

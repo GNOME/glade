@@ -43,6 +43,13 @@
 #include "glade-app.h"
 #include "glade-fixed-manager.h"
 
+
+/* Concerning placeholders: we do not hold any reference to placeholders,
+ * placeholders that are supplied by the backend are not reffed, placeholders
+ * that are created by glade-command are temporarily owned by glade-command
+ * untill they are added to a container; in which case it belongs to GTK+
+ * and the backend (but I prefer to think of it as the backend).
+ */
 typedef struct {
 	GladeWidget      *widget;
 	GladeWidget      *parent;
@@ -796,6 +803,18 @@ glade_command_placeholder_destroyed (GtkObject *object, CommandData *cdata)
 	}
 }
 
+static void
+glade_command_placeholder_connect (CommandData *cdata,
+				   GladePlaceholder *placeholder)
+{
+	g_assert (cdata && cdata->placeholder == NULL);
+
+	cdata->placeholder = placeholder;
+	cdata->handler_id = g_signal_connect 
+		(placeholder, "destroy",
+		 G_CALLBACK (glade_command_placeholder_destroyed), cdata);
+}
+
 static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
@@ -873,17 +892,9 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 		if (cdata->parent)
 		{
 			if (cdata->placeholder)
-			{
 				glade_widget_replace
 					(cdata->parent, cdata->widget->object, 
 					 G_OBJECT (cdata->placeholder));
-
-				if (cdata->handler_id == 0)
-					cdata->handler_id = g_signal_connect (
-								cdata->placeholder, "destroy",
-			  				  	G_CALLBACK (glade_command_placeholder_destroyed),
-		  	  			  		cdata);
-			}
 			else if (cdata->parent->manager != NULL)
 				glade_fixed_manager_remove_child
 					(cdata->parent->manager, cdata->widget);
@@ -955,7 +966,8 @@ glade_command_create_delete_finalize (GObject *obj)
 			if (cdata->handler_id)
 				g_signal_handler_disconnect (cdata->placeholder,
 							     cdata->handler_id);
-			g_object_unref (cdata->placeholder);
+			if (GTK_OBJECT_FLOATING (cdata->placeholder))
+				gtk_widget_destroy (GTK_WIDGET (cdata->placeholder));
 		}
 
 		if (cdata->widget)
@@ -1031,10 +1043,8 @@ glade_command_delete (GList *widgets)
 		    glade_util_gtkcontainer_relation 
 		    (cdata->parent, cdata->widget))
 		{
-			cdata->placeholder = 
-				GLADE_PLACEHOLDER (glade_placeholder_new ());
-			g_object_ref (G_OBJECT (cdata->placeholder));
-			gtk_object_sink (GTK_OBJECT (cdata->placeholder));
+			glade_command_placeholder_connect 
+				(cdata, GLADE_PLACEHOLDER (glade_placeholder_new ()));
 		}
 		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
@@ -1089,15 +1099,15 @@ glade_command_create (GladeWidgetClass *class,
 
 	cdata         = g_new0 (CommandData, 1);
 	cdata->parent = parent;
-	if ((cdata->placeholder = placeholder) != NULL)
-		g_object_ref (G_OBJECT (placeholder));
+
+	glade_command_placeholder_connect (cdata, placeholder);
 	
 	me->widgets = g_list_append (me->widgets, cdata);
 
 	if (parent && parent->manager != NULL)
 		widget = glade_fixed_manager_create_child (parent->manager, class);
 	else
-		widget = glade_widget_new (parent, class, project);
+		widget = glade_widget_new (parent, class, project, TRUE);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if ((cdata->widget = widget) == NULL)
@@ -1144,7 +1154,7 @@ typedef struct {
 	GList                 *widgets;
 	GladeCutCopyPasteType  type;
 	gboolean               from_clipboard;
-	gboolean               initial_paste;
+	gboolean               props_recorded;
 } GladeCommandCutCopyPaste;
 
 
@@ -1184,11 +1194,9 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 						 G_OBJECT (cdata->placeholder),
 						 cdata->widget->object);
 				else if (cdata->parent->manager != NULL) 
-				{
 					/* Paste at mouse position only once */
 					glade_fixed_manager_add_child (cdata->parent->manager, cdata->widget,
-								       me->initial_paste == FALSE);
-				}
+								       me->props_recorded == FALSE);
 				else
 				{
 					glade_widget_set_parent (cdata->widget, 
@@ -1214,9 +1222,12 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 				}
 
 				
-				if (me->initial_paste == FALSE) 
+				if (me->props_recorded == FALSE) 
 				{
-					// Save the packing properties after the initial paste.
+					/* Save the packing properties after the initial paste.
+					 * (this will be the defaults returned by the container
+					 * implementation after initially adding them).
+					 */
 					g_assert (cdata->pack_props == NULL);
 					for (l = cdata->widget->packing_properties; l; l = l->next)
 						cdata->pack_props = 
@@ -1225,8 +1236,10 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 											    cdata->widget));
 
 				}
-
-				me->initial_paste = TRUE; // Mark it initialy pasted
+				
+				/* Mark the properties as recorded
+				 */
+				me->props_recorded = TRUE;
 				
 			}
 
@@ -1271,18 +1284,10 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 		if (cdata->parent)
 		{
 			if (cdata->placeholder)
-			{
 				glade_widget_replace
 					(cdata->parent,
 					 cdata->widget->object,
 					 G_OBJECT (cdata->placeholder));
-				
-				if (cdata->handler_id == 0)
-					cdata->handler_id = g_signal_connect (
-								cdata->placeholder, "destroy",
-				  			  	G_CALLBACK (glade_command_placeholder_destroyed),
-		  		  			  	cdata);
-			}
 			else if (cdata->parent->manager != NULL) 
 				glade_fixed_manager_remove_child
 					(cdata->parent->manager, cdata->widget);
@@ -1403,7 +1408,9 @@ glade_command_cut_copy_paste_finalize (GObject *obj)
 			if (cdata->handler_id)
 				g_signal_handler_disconnect (cdata->placeholder,
 							     cdata->handler_id);
-			g_object_unref (cdata->placeholder);
+
+			if (GTK_OBJECT_FLOATING (cdata->placeholder))
+				gtk_widget_destroy (GTK_WIDGET (cdata->placeholder));
 		}
 		if (cdata->pack_props)
 		{
@@ -1505,24 +1512,23 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			g_critical ("Parentless non GtkWindow widget in Paste");
 
 		/* Placeholder */
+
 		if (type == GLADE_CUT)
 		{
 			if (cdata->parent && cdata->parent->manager == NULL &&
 			    glade_util_gtkcontainer_relation
 			    (cdata->parent, cdata->widget))
 			{
-				cdata->placeholder = GLADE_PLACEHOLDER 
-					(glade_placeholder_new ());
-				g_object_ref (G_OBJECT (cdata->placeholder));
-				gtk_object_sink (GTK_OBJECT (cdata->placeholder));
+				glade_command_placeholder_connect
+					(cdata, GLADE_PLACEHOLDER (glade_placeholder_new ()));
 			}
 			else if (placeholder != NULL)
-				cdata->placeholder = g_object_ref (placeholder);
+				glade_command_placeholder_connect (cdata, placeholder);
 		}
 		else if (type == GLADE_PASTE && placeholder != NULL &&
 			 g_list_length (widgets) == 1)
 		{
-			cdata->placeholder = g_object_ref (placeholder);
+			glade_command_placeholder_connect (cdata, placeholder);
 		}
 		else if (type == GLADE_PASTE && cdata->parent &&
 			 cdata->parent->manager == NULL &&
@@ -1540,7 +1546,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 					    g_list_find (placeholders, child) == NULL)
 					{
 						placeholders = g_list_append (placeholders, child);
-						cdata->placeholder = g_object_ref (child);
+						glade_command_placeholder_connect
+							(cdata, GLADE_PLACEHOLDER (child));
 						break;
 					}
 				}
@@ -1553,6 +1560,10 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		 */
 		if (type == GLADE_CUT)
 		{
+			/* We dont want the paste mechanism to overwrite our 
+			 * packing props so we have to mark them "recorded"
+			 */
+			me->props_recorded = TRUE;
 			for (l = cdata->widget->packing_properties; l; l = l->next)
 				cdata->pack_props = 
 					g_list_prepend (cdata->pack_props,
@@ -1570,11 +1581,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 
 		me->widgets = g_list_prepend (me->widgets, cdata);
 	}
-
-	if (type == GLADE_CUT)
-		me->initial_paste = TRUE;
-	else
-		me->initial_paste = FALSE;
 
 	glade_command_check_group (GLADE_COMMAND (me));
 

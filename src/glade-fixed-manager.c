@@ -367,7 +367,7 @@ glade_fixed_manager_create_child_impl (GladeFixedManager *manager,
 	GladeWidget *gwidget =
 		glade_widget_new (manager->container,
 				  wclass, 
-				  manager->container->project);
+				  manager->container->project, TRUE);
 
 	return gwidget;
 }

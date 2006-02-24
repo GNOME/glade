@@ -611,7 +611,7 @@ glade_gtk_button_ensure_glabel (GtkWidget *button)
 	{
 		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
 		glabel = glade_widget_new (gbutton, wclass,
-					   glade_widget_get_project (gbutton));
+					   glade_widget_get_project (gbutton), FALSE);
 
 		glade_widget_property_set
 			(glabel, "label", gbutton->widget_class->generic_name);
@@ -1143,7 +1143,7 @@ glade_gtk_frame_create_idle (gpointer data)
 	{
 		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
 		glabel = glade_widget_new (gframe, wclass,
-					   glade_widget_get_project (gframe));
+					   glade_widget_get_project (gframe), FALSE);
 		
 		if (GTK_IS_ASPECT_FRAME (frame))
 			glade_widget_property_set (glabel, "label", "aspect frame");
@@ -1178,7 +1178,7 @@ glade_gtk_expander_create_idle (gpointer data)
 	{
 		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
 		glabel = glade_widget_new (gexpander, wclass,
-					   glade_widget_get_project (gexpander));
+					   glade_widget_get_project (gexpander), FALSE);
 		
 		glade_widget_property_set (glabel, "label", "expander");
 
@@ -1474,6 +1474,32 @@ glade_gtk_container_replace_child (GtkWidget *container,
 	g_free (param_spec);
 	g_free (value);
 }
+
+void GLADEGTK_API
+glade_gtk_container_add_child (GtkWidget *container,
+			       GtkWidget *child)
+{
+	/* Get a placeholder out of the way before adding the child if its a GtkBin
+	 */
+	if (GTK_IS_BIN (container) && GTK_BIN (container)->child != NULL && 
+	    GLADE_IS_PLACEHOLDER (GTK_BIN (container)->child))
+		gtk_container_remove (GTK_CONTAINER (container), GTK_BIN (container)->child);
+
+	gtk_container_add (GTK_CONTAINER (container), child);
+}
+
+void GLADEGTK_API
+glade_gtk_container_remove_child (GtkWidget *container,
+				  GtkWidget *child)
+{
+	gtk_container_remove (GTK_CONTAINER (container), child);
+
+	/* If this is the last one, add a placeholder by default.
+	 */
+	if (gtk_container_get_children (GTK_CONTAINER (container)) == NULL)
+		gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
+}
+
 
 void GLADEGTK_API
 glade_gtk_notebook_replace_child (GtkWidget *container,
@@ -1813,7 +1839,7 @@ glade_gtk_table_widget_exceeds_bounds (GtkTable *table, gint n_rows, gint n_cols
 static void
 glade_gtk_table_refresh_placeholders (GtkTable *table)
 {
-	GList *list;
+	GList *list, *toremove = NULL;
 	gint i, j;
 	
 	for (list = table->children; list && list->data; list = list->next)
@@ -1834,10 +1860,16 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 			
 			if (glade_gtk_table_has_child (table, TRUE,
 						       left_attach, top_attach))
-				gtk_widget_hide (child->widget);
-			else
-				gtk_widget_show (child->widget);
+				toremove = g_list_prepend (toremove, child->widget);
 		}
+	}
+
+	if (toremove)
+	{
+		for (list = toremove; list; list = list->next)
+			gtk_container_remove (GTK_CONTAINER (table),
+					      GTK_WIDGET (list->data));
+		g_list_free (toremove);
 	}
 
 	for (i = 0; i < table->ncols; i++)
@@ -2540,7 +2572,7 @@ glade_gtk_menu_bar_append_new_submenu (GladeWidget *parent, GladeProject *projec
 	if (submenu_class == NULL)
 		submenu_class = glade_widget_class_get_by_type (GTK_TYPE_MENU);
 
-	gsubmenu = glade_widget_new (parent, submenu_class, project);
+	gsubmenu = glade_widget_new (parent, submenu_class, project, FALSE);
 
 	glade_widget_class_container_add (glade_widget_get_class (parent),
 					  glade_widget_get_object (parent),
@@ -2569,7 +2601,7 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 	
 	gitem = glade_widget_new (parent,
 				  (use_stock) ? image_item_class : item_class,
-				  project);
+				  project, FALSE);
 	glade_widget_property_set (gitem, "use-underline", TRUE);
 	
 	if (use_stock)

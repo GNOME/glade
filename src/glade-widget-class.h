@@ -188,7 +188,8 @@ struct _GladeWidgetClass
 
 
 	GList *children;    /* List of GladeSupportedChild objects */
-        GList *child_packings; /* Private */ 
+
+        GList *child_packings; /* Default packing property values */
 
 	GModule *module;	/* Module with the (optional) special functions
 				 * needed for placeholder_replace, post_create_function

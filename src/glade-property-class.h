@@ -8,12 +8,10 @@ G_BEGIN_DECLS
  * All entries in the GladeEditor are GladeProperties (except signals)
  * All GladeProperties are associated with a GParamSpec.
  */
-
-#define GLADE_PROPERTY_CLASS(gpc) ((GladePropertyClass *) gpc)
-#define GLADE_IS_PROPERTY_CLASS(gpc) (gpc != NULL)
+#define GLADE_PROPERTY_CLASS(gpc)     ((GladePropertyClass *) gpc)
+#define GLADE_IS_PROPERTY_CLASS(gpc)  (gpc != NULL)
 
 typedef struct _GladePropertyClass GladePropertyClass;
-
 
 /**
  * GladeVerifyPropertyFunc:
@@ -44,6 +42,7 @@ typedef void     (* GladeSetPropertyFunc)    (GObject      *object,
  */
 typedef void     (* GladeGetPropertyFunc)    (GObject      *object,
 					      GValue       *value);
+
 
 struct _GladePropertyClass
 {
@@ -96,6 +95,11 @@ struct _GladePropertyClass
 	
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
+
+	gboolean atk_property; /* atk props go in the a11y tab */
+	gboolean atk_relation; /* whether this is an atk relation property
+				* (they are saved/loaded differently)
+				*/
 
 	gboolean translatable; /* The property should be translatable, which
 				* means that it needs extra parameters in the
@@ -187,10 +191,6 @@ gboolean            glade_property_class_update_from_node        (GladeXmlNode  
 								  GType                object_type,
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);
-LIBGLADEUI_API
-gchar              *glade_property_class_make_string_from_flags  (GladePropertyClass *class, 
-								  guint               fvals, 
-								  gboolean            displayables);
 LIBGLADEUI_API
 gchar              *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
 								  gint                value);

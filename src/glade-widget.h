@@ -110,7 +110,8 @@ GType                   glade_widget_get_type		    (void);
 LIBGLADEUI_API
 GladeWidget *	        glade_widget_new			    (GladeWidget      *parent,
 								     GladeWidgetClass *klass,
-								     GladeProject     *project);
+								     GladeProject     *project,
+								     gboolean          query);
 LIBGLADEUI_API 
 GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *parent,
 							      GObject          *internal_object,

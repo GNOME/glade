@@ -132,6 +132,7 @@ typedef struct _GladeProject      GladeProject;
 #define GLADE_TAG_IGNORE                          "ignore"
 #define GLADE_TAG_VISIBLE_LINES                   "visible-lines"
 #define GLADE_TAG_RESOURCE                        "resource"
+#define GLADE_TAG_ATK_RELATION                    "atk-relation"
 
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F

@@ -2251,6 +2251,77 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
 
 
 /*******************************************************************************
+                        GladeEditorPropertyObjectsClass
+ *******************************************************************************/
+
+typedef struct {
+	GladeEditorProperty parent_instance;
+	
+	GtkWidget *entry;
+} GladeEPropObjects;
+
+GLADE_MAKE_EPROP (GladeEPropObjects, glade_eprop_objects)
+#define GLADE_TYPE_EPROP_OBJECTS            (glade_eprop_objects_get_type())
+#define GLADE_EPROP_OBJECTS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_OBJECTS, GladeEPropObjects))
+#define GLADE_EPROP_OBJECTS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_OBJECTS, GladeEPropObjectsClass))
+#define GLADE_IS_EPROP_OBJECTS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_OBJECTS))
+#define GLADE_IS_EPROP_OBJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_OBJECTS))
+#define GLADE_EPROP_OBJECTS_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_OBJECTS, GladeEPropObjectsClass))
+
+static void
+glade_eprop_objects_finalize (GObject *object)
+{
+	/* Chain up */
+	G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static void
+glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
+{
+	GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
+	gchar *obj_name;
+
+	/* Chain up first */
+	editor_property_class->load (eprop, property);
+
+	if (property == NULL) return;
+
+	if ((obj_name  = glade_property_class_make_string_from_gvalue
+	     (eprop->class, property->value)) != NULL)
+	{
+		gtk_entry_set_text (GTK_ENTRY (eprop_objects->entry), obj_name);
+		g_free (obj_name);
+	}
+	else
+		gtk_entry_set_text (GTK_ENTRY (eprop_objects->entry), "");
+
+}
+
+static GtkWidget *
+glade_eprop_objects_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
+	GtkWidget        *hbox;
+	GtkWidget        *button;
+
+	hbox                = gtk_hbox_new (FALSE, 0);
+	eprop_objects->entry = gtk_entry_new ();
+	gtk_entry_set_editable (GTK_ENTRY (eprop_objects->entry), FALSE);
+	gtk_widget_show (eprop_objects->entry);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_objects->entry, TRUE, TRUE, 0);
+
+	button = gtk_button_new_with_label ("...");
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
+
+/* 	g_signal_connect (G_OBJECTS (button), "clicked", */
+/* 			  G_CALLBACK (glade_eprop_objects_show_dialog), */
+/* 			  eprop); */
+	return hbox;
+}
+
+
+/*******************************************************************************
                               Misc static stuff
  *******************************************************************************/
 static GType 
@@ -2292,6 +2363,8 @@ glade_editor_property_type (GParamSpec *pspec)
 		else 
 			type = GLADE_TYPE_EPROP_OBJECT;
 	}
+	else if (GLADE_IS_PARAM_SPEC_OBJECTS(pspec))
+		type = GLADE_TYPE_EPROP_OBJECTS;
 	return type;
 }
 
@@ -2320,8 +2393,11 @@ glade_editor_property_new (GladePropertyClass  *class,
 	 * GladePropertyClass.
 	 */
 	if ((type = glade_editor_property_type (class->pspec)) == 0)
-		g_error ("%s : type %s not implemented (%s)\n", G_GNUC_FUNCTION,
-			 class->name, g_type_name (class->pspec->value_type));
+		g_error ("%s : pspec '%s' type '%s' not implemented (%s)\n", 
+			 G_GNUC_PRETTY_FUNCTION, 
+			 class->name, 
+			 g_type_name (G_PARAM_SPEC_TYPE (class->pspec)),
+			 g_type_name (class->pspec->value_type));
 
 	/* special case for resource specs which are hand specified in the catalog. */
 	if (class->resource) type = GLADE_TYPE_EPROP_RESOURCE;
