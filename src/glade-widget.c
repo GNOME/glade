@@ -66,8 +66,6 @@ static void glade_widget_real_remove_signal_handler	(GladeWidget *widget,
 static void glade_widget_real_change_signal_handler	(GladeWidget *widget,
 							 GladeSignal *old_signal_handler,
 							 GladeSignal *new_signal_handler);
-static void glade_widget_set_packing_properties		(GladeWidget *widget,
-							 GladeWidget *container);
 
 enum
 {
@@ -2297,15 +2295,15 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 
 /**
  * glade_widget_set_packing_properties:
- * @widget:
- * @container_class:
+ * @widget:     A #GladeWidget
+ * @container:  The parent #GladeWidget
  *
  * Generates the packing_properties list of the widget, given
  * the class of the container we are adding the widget to.
  * If the widget already has packing_properties, but the container
  * has changed, the current list is freed and replaced.
  */
-static void
+void
 glade_widget_set_packing_properties (GladeWidget *widget,
 				     GladeWidget *container)
 {

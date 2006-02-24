@@ -778,6 +778,7 @@ typedef struct {
 	GList            *widgets;
 	gboolean          create;
 	gboolean          from_clipboard;
+	gboolean          props_recorded;
 } GladeCommandCreateDelete;
 
 GLADE_MAKE_COMMAND (GladeCommandCreateDelete, glade_command_create_delete);
@@ -809,7 +810,10 @@ glade_command_placeholder_connect (CommandData *cdata,
 {
 	g_assert (cdata && cdata->placeholder == NULL);
 
-	cdata->placeholder = placeholder;
+	/* Something like a no-op with no placeholder */
+	if ((cdata->placeholder = placeholder) == NULL)
+		return;
+
 	cdata->handler_id = g_signal_connect 
 		(placeholder, "destroy",
 		 G_CALLBACK (glade_command_placeholder_destroyed), cdata);
@@ -820,7 +824,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 {
 	GladeClipboard   *clipboard = glade_default_app_get_clipboard();
 	CommandData      *cdata = NULL;
-	GList            *list, *wlist = NULL;
+	GList            *list, *wlist = NULL, *l;
 
 	glade_default_app_selection_clear (FALSE);
 
@@ -845,11 +849,50 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 			else
 			{
 				glade_widget_set_parent (cdata->widget, cdata->parent);
+
 				glade_widget_class_container_add 
 					(cdata->parent->widget_class,
 					 cdata->parent->object,
 					 cdata->widget->object);
+
+				glade_widget_set_packing_properties (cdata->widget, cdata->parent);
 			}
+
+			/* Now that we've added, apply any packing props if nescisary. */
+			for (l = cdata->pack_props; l; l = l->next)
+			{
+				GValue         value = { 0, };
+				GladeProperty *saved_prop = l->data;
+				GladeProperty *widget_prop = 
+					glade_widget_get_pack_property (cdata->widget,
+									saved_prop->class->id);
+				
+				glade_property_get_value (saved_prop, &value);
+				glade_property_set_value (widget_prop, &value);
+				g_value_unset (&value);
+			}
+				
+			if (me->props_recorded == FALSE) 
+			{
+				/* Save the packing properties after the initial creation.
+				 * (this will be the defaults returned by the container
+				 * implementation after initially adding them).
+				 *
+				 * Otherwise this recorded marker was set when deleting
+				 */
+				g_assert (cdata->pack_props == NULL);
+				for (l = cdata->widget->packing_properties; l; l = l->next)
+					cdata->pack_props = 
+						g_list_prepend (cdata->pack_props,
+								glade_property_dup (GLADE_PROPERTY (l->data),
+										    cdata->widget));
+
+
+				/* Mark the properties as recorded
+				 */
+				me->props_recorded = TRUE;
+			}
+
 		}
 		
 		if (me->from_clipboard)
@@ -905,14 +948,10 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 		}
 
 		if (me->from_clipboard == TRUE) 
-		{
 			wlist = g_list_prepend (wlist, cdata->widget);
-		}
 		else
-		{
 			glade_project_remove_object 
 				(GLADE_PROJECT (cdata->widget->project), cdata->widget->object);
-		}
 
 		glade_widget_hide (cdata->widget);
 	}
@@ -1003,7 +1042,7 @@ glade_command_delete (GList *widgets)
 	GladeCommandCreateDelete *me;
 	GladeWidget              *widget = NULL;
 	CommandData              *cdata;
-	GList                    *list;
+	GList                    *list, *l;
 
 	g_return_if_fail (widgets != NULL);
 
@@ -1011,6 +1050,7 @@ glade_command_delete (GList *widgets)
 	me->create         = FALSE;
 	me->from_clipboard = 
 		(g_list_find (clipboard->selection, widgets->data) != NULL);
+	me->props_recorded = TRUE; // Dont record props in create_execute
 
 
 	/* internal children cannot be deleted. Notify the user. */
@@ -1047,6 +1087,17 @@ glade_command_delete (GList *widgets)
 				(cdata, GLADE_PLACEHOLDER (glade_placeholder_new ()));
 		}
 		me->widgets = g_list_prepend (me->widgets, cdata);
+
+
+		/* Record packing props if not deleted from the clipboard */
+		if (me->from_clipboard == FALSE)
+		{
+			for (l = widget->packing_properties; l; l = l->next)
+				cdata->pack_props = 
+					g_list_prepend (cdata->pack_props,
+							glade_property_dup (GLADE_PROPERTY (l->data),
+									    cdata->widget));
+		}
 	}
 
 	if (g_list_length (widgets) == 1)
@@ -1201,10 +1252,13 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 				{
 					glade_widget_set_parent (cdata->widget, 
 								 cdata->parent);
+
 					glade_widget_class_container_add
 						(cdata->parent->widget_class,
 						 cdata->parent->object,
 						 cdata->widget->object);
+
+					glade_widget_set_packing_properties (cdata->widget, cdata->parent);
 				}
 
 				/* Now that we've added, apply any packing props if nescisary. */
@@ -1220,13 +1274,14 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					glade_property_set_value (widget_prop, &value);
 					g_value_unset (&value);
 				}
-
 				
 				if (me->props_recorded == FALSE) 
 				{
 					/* Save the packing properties after the initial paste.
 					 * (this will be the defaults returned by the container
 					 * implementation after initially adding them).
+					 *
+					 * Otherwise this recorded marker was set when cutting
 					 */
 					g_assert (cdata->pack_props == NULL);
 					for (l = cdata->widget->packing_properties; l; l = l->next)
@@ -1235,11 +1290,12 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 									glade_property_dup (GLADE_PROPERTY (l->data),
 											    cdata->widget));
 
+
+					/* Mark the properties as recorded
+					 */
+					me->props_recorded = TRUE;
 				}
 				
-				/* Mark the properties as recorded
-				 */
-				me->props_recorded = TRUE;
 				
 			}
 
@@ -1512,7 +1568,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			g_critical ("Parentless non GtkWindow widget in Paste");
 
 		/* Placeholder */
-
 		if (type == GLADE_CUT)
 		{
 			if (cdata->parent && cdata->parent->manager == NULL &&
@@ -1561,7 +1616,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		if (type == GLADE_CUT)
 		{
 			/* We dont want the paste mechanism to overwrite our 
-			 * packing props so we have to mark them "recorded"
+			 * packing props when we undo a CUT command; so we have to 
+			 * mark them "recorded" too.
 			 */
 			me->props_recorded = TRUE;
 			for (l = cdata->widget->packing_properties; l; l = l->next)

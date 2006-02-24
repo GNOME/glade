@@ -1849,14 +1849,14 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 		if (GLADE_IS_PLACEHOLDER (child->widget))
 		{
 			guint left_attach, top_attach;
-				
+
 			gtk_container_child_get (GTK_CONTAINER (table), child->widget,
-					"left-attach", &left_attach, 
-					"top-attach", &top_attach, NULL);
+						 "left-attach", &left_attach, 
+						 "top-attach", &top_attach, NULL);
 
 			gtk_container_child_set (GTK_CONTAINER (table), child->widget,
-					"right-attach", left_attach + 1, 
-					"bottom-attach", top_attach + 1, NULL);
+						 "right-attach", left_attach + 1,
+						 "bottom-attach", top_attach + 1, NULL);
 			
 			if (glade_gtk_table_has_child (table, TRUE,
 						       left_attach, top_attach))
@@ -1883,33 +1883,10 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 void GLADEGTK_API
 glade_gtk_table_add_child (GObject *object, GObject *child)
 {
-	GladeWidget *gchild;
-	
 	g_return_if_fail (GTK_IS_TABLE (object));
 	g_return_if_fail (GTK_IS_WIDGET (child));
-	gchild = glade_widget_get_from_gobject (child);
-	
-	if (gchild == NULL)
-	{
-		/* Probably a placeholder */
-		gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-		return;
-	}
 
-	if (gchild->packing_properties)
-	{
-		guint left, right, top, bottom;
-		
-		glade_widget_pack_property_get (gchild, "left-attach", &left);
-		glade_widget_pack_property_get (gchild, "right-attach", &right);
-		glade_widget_pack_property_get (gchild, "top-attach", &top);
-		glade_widget_pack_property_get (gchild, "bottom-attach", &bottom);
-		
-		gtk_table_attach_defaults (GTK_TABLE (object), GTK_WIDGET (child),
-					   left, right, top, bottom);
-	}
-	else
-		gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 	
 	glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }

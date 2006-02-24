@@ -60,6 +60,8 @@
       <children>
 	<child>
 	  <type>GtkWidget</type>
+	  <add-child-function>glade_gtk_container_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_container_remove_child</remove-child-function> 
 	  <replace-child-function>glade_gtk_container_replace_child</replace-child-function>
 	</child>
       </children>
@@ -743,7 +745,7 @@
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu">
       <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>empty</post-create-function>
-    </glade-widget-class>
+   </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>
 

@@ -1,3 +1,21 @@
+2006-02-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-command.c: 
+	  o Added packing property recording mechianism to create/delete 
+	    commands (was only there for Cut/Paste).
+	  o Call glade_widget_create_packing_properties after calling
+	    glade_widget_class_container_add()
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: 
+	  o Removed unused code from glade_gtk_table_add_child()
+	  o Added support funcs glade_gtk_container_add/remove_child()
+	
+	* src/glade-property-class.c: Removed unused function: gpc_load_function
+	  (now uses glade-xml-utils implementation)
+
+	* src/glade-widget.[ch]: exposed glade_widget_create_packing_properties()
+
+
 2006-02-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Updated list

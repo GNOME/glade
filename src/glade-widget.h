@@ -270,6 +270,11 @@ LIBGLADEUI_API
 void                    glade_widget_set_parent             (GladeWidget      *widget,
 							     GladeWidget      *parent);
 
+LIBGLADEUI_API
+void                    glade_widget_set_packing_properties (GladeWidget      *widget,
+							     GladeWidget      *container);
+
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

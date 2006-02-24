@@ -1102,33 +1102,6 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 						    GLADE_NUMERICAL_PAGE_SIZE);
 }
 
-static void 
-gpc_load_function (GladeXmlNode *node, 
-		   GModule      *module,
-		   const gchar  *tagname,
-		   gpointer     *location)
-{
-	GladeXmlNode *child = glade_xml_search_child (node, tagname);
-	if (child)
-	{
-		gchar *symbol_name = glade_xml_get_content (child);
-
-		if (!module)
-		{
-			g_warning ("Catalog specified symbol '%s' for tag '%s', "
-				   "no module available to load it from !", 
-				   symbol_name, tagname);
-			g_free (symbol_name);
-			return;
-		}
-		if (!g_module_symbol(module, symbol_name, location))
-			g_warning ("Could not find %s in %s\n",
-				   symbol_name, g_module_name (module));
-		g_free (symbol_name);
-	}
-}
-
-
 /**
  * glade_property_class_update_from_node:
  * @node: the property node
