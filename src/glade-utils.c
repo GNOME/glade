@@ -493,7 +493,7 @@ glade_util_hide_window (GtkWindow *window)
  * @parent: the parent #GtkWindow for the dialog
  * @action: a #GladeUtilFileDialogType to say if the dialog will open or save
  *
- * Returns: a file chooser dialog. The caller is responsible 
+ * Returns: a "glade file" file chooser dialog. The caller is responsible 
  *          for showing the dialog
  */
 GtkWidget *
@@ -501,17 +501,31 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 			     GladeUtilFileDialogType action)
 {
 	GtkWidget *file_dialog;
+	GtkFileFilter *file_filter;
 
 	g_return_val_if_fail ((action == GLADE_FILE_DIALOG_ACTION_OPEN ||
 			       action == GLADE_FILE_DIALOG_ACTION_SAVE), NULL);
-
+	
 	file_dialog = gtk_file_chooser_dialog_new (title, parent, action,
-						    GTK_STOCK_CANCEL,
-						    GTK_RESPONSE_CANCEL,
-						    action == GLADE_FILE_DIALOG_ACTION_OPEN ?
-						    GTK_STOCK_OPEN : GTK_STOCK_SAVE,
-						    GTK_RESPONSE_OK,
-						    NULL);
+						   GTK_STOCK_CANCEL,
+						   GTK_RESPONSE_CANCEL,
+						   action == GLADE_FILE_DIALOG_ACTION_OPEN ?
+						   GTK_STOCK_OPEN : GTK_STOCK_SAVE,
+						   GTK_RESPONSE_OK,
+						   NULL);
+	
+	file_filter = gtk_file_filter_new ();
+	gtk_file_filter_add_pattern (file_filter, "*");
+	gtk_file_filter_set_name (file_filter, _("All Files"));
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (file_dialog), file_filter);
+
+	file_filter = gtk_file_filter_new ();
+	gtk_file_filter_add_pattern (file_filter, "*.glade");
+	gtk_file_filter_set_name (file_filter, _("Glade Files"));
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (file_dialog), file_filter);
+
+	gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (file_dialog), file_filter);
+
 	gtk_window_set_position (GTK_WINDOW (file_dialog), GTK_WIN_POS_CENTER);
 
 	return file_dialog;

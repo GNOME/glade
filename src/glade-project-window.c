@@ -414,6 +414,11 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	filechooser = glade_util_file_dialog_new (dialog_title,
 						  GTK_WINDOW (gpw->priv->window),
 						  GLADE_FILE_DIALOG_ACTION_SAVE);
+
+	if (project->path)
+		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), project->path);
+	else
+		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (filechooser), project->name);
 	
  	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
 		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
