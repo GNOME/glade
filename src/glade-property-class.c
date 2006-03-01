@@ -1177,6 +1177,11 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 				g_free (class->def);
 			}
 			class->def = glade_property_class_get_default_from_spec (class->pspec);
+			
+			if (class->orig_def == NULL)
+				class->orig_def =
+					glade_property_class_get_default_from_spec (class->pspec);
+
 		}
 
  		g_free (buff);

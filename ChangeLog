@@ -1,3 +1,29 @@
+2006-03-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.[ch], src/glade-widget.[ch]: Added
+	  "catalog_default" arg to glade_property_new() and adjusted callers.
+
+	* src/glade-property-class.[ch]: Ensure that there are always
+	  ->def and ->orig_def members resolved.
+
+2006-03-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c:
+	  o GtkBox loading issues fixed.
+	  o Removed unused code from: glade_gtk_table_has_child and
+	    glade_gtk_table_refresh_placeholders.
+
+	* src/glade-widget.c:
+	  o Ignore properties properly when creating the object.
+	    (glade_widget_params_from_widget_info and 
+	    glade_widget_build_object functions)
+	  o Use the introspected default value for properties when
+	    loading a project. glade_widget_properties_from_widget_info
+
+	* widgets/gtk+.xml.in: Avoid warnings.
+	  o Ignore GtkWidget has-default property.
+	  o Ignore GtkComboBox active, column-span-column and row-span-column properties.
+
 2006-02-27  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade-utils.c: Added file filters "All Files" and "Glade Files" 

@@ -57,11 +57,14 @@ struct _GladePropertyClass
 			  */
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
-	GValue *def;      /* The default value for this property */
+	GValue *def;      /* The default value for this property (this will exist
+			   * as a copy of orig_def if not specified by the catalog)
+			   */
 
 	GValue *orig_def; /* The real default value obtained through introspection.
 			   * (used to decide whether we should write to the
-			   * glade file or not).
+			   * glade file or not, or to restore the loaded property
+			   * correctly); all property classes have and orig_def.
 			   */
 
 	GList *parameters; /* list of GladeParameter objects. This list

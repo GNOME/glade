@@ -556,7 +556,9 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 		glade_property_class =
 			glade_widget_class_get_property_class (klass,
 							       pspec[i]->name);
-		if (!glade_property_class)
+		if (glade_property_class == NULL ||
+		    glade_property_class->set_function ||
+		    glade_property_class->ignore)
 			/* Ignore properties that are not accounted for
 			 * by the GladeWidgetClass
 			 */
@@ -1374,22 +1376,25 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
 	
 	widget->widget_class = klass;
 
+	/* If we have no properties; we are not in the process of loading
+	 */
 	if (!widget->properties)
 	{
 		for (list = klass->properties; list; list = list->next)
 		{
 			property_class = GLADE_PROPERTY_CLASS(list->data);
-			property = glade_property_new (property_class, 
-						       widget, NULL);
-			if (!property) {
+			if ((property = glade_property_new (property_class, 
+							    widget, NULL, TRUE)) == NULL)
+			{
 				g_warning ("Failed to create [%s] property",
 					   property_class->id);
 				continue;
 			}
 
 			widget->properties = g_list_prepend (widget->properties, property);
-			if (property_class->query) widget->query_user = TRUE;
 
+			/* Mark the widget for query dialogs */
+			if (property_class->query) widget->query_user = TRUE;
 		}
 		widget->properties = g_list_reverse (widget->properties);
 	}
@@ -2286,7 +2291,8 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 		for (list = support->properties; list && list->data; list = list->next)
 		{
 			property_class = list->data;
-			property       = glade_property_new (property_class, widget, NULL);
+			property       = glade_property_new
+				(property_class, widget, NULL, TRUE);
 			packing_props  = g_list_prepend (packing_props, property);
 		}
 	}
@@ -2559,7 +2565,7 @@ glade_widget_write_child (GArray      *children,
 	child_widget = glade_widget_get_from_gobject (object);
 	if (!child_widget)
 		return FALSE;
-
+	
 	if (child_widget->internal)
 		info.internal_child = alloc_string(interface, child_widget->internal);
 
@@ -2801,7 +2807,7 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 			(class, info, pclass->id,
 			 &translatable, &has_context, &comment);
 		
-		property          = glade_property_new (pclass, NULL, value);
+		property          = glade_property_new (pclass, NULL, value, FALSE);
 		property->enabled = value ? TRUE : property->enabled;
 
 		if (glade_property_class_is_object (pclass))
@@ -2881,9 +2887,14 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 		}
 		/* Now try filling the parameter with the default on the GladeWidgetClass.
 		 */
-		else if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->def),
+		else if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->orig_def),
 						  G_VALUE_TYPE (&parameter.value)))
-			g_value_copy (glade_property_class->def, &parameter.value);
+			{
+				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->orig_def), G_TYPE_OBJECT))
+						if (g_value_get_object (glade_property_class->orig_def) == NULL)
+							continue;
+				g_value_copy (glade_property_class->orig_def, &parameter.value);
+			}
 		else
 		{
 			g_critical ("Type mismatch on %s property of %s",

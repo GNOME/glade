@@ -586,17 +586,31 @@ glade_property_get_type (void)
  * @widget: The #GladeWidget this property is created for
  * @value: The initial #GValue of the property or %NULL
  *         (the #GladeProperty will assume ownership of @value)
+ * @catalog_default: if specified; use any default value supplied
+ *                   by the catalog; otherwise use the introspected default.
  *
- * Returns: A newly created #GladeProperty based on the
- *          given criteria
+ *
+ * Creates a #GladeProperty of type @class for @widget with @value; if
+ * @value is %NULL, then the introspected default value for that property
+ * will be used; unless otherwise specified by @catalog_default.
+ *
+ * Note that we want to use catalog defaults when creating properties for
+ * any newly created #GladeWidget; but we want to stay with the introspected
+ * defaults at load time (since the absence of the property who's default
+ * has been overridden; is interpreted as explicitly set to the default
+ * by the user).
+ *
+ * Returns: The newly created #GladeProperty
  */
 GladeProperty *
 glade_property_new (GladePropertyClass *class, 
 		    GladeWidget        *widget, 
-		    GValue             *value)
+		    GValue             *value,
+		    gboolean            catalog_default)
 {
 	GladeProperty *property;
-
+	GValue        *def;
+	
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), NULL);
 
 	property            = 
@@ -610,10 +624,12 @@ glade_property_new (GladePropertyClass *class,
 	
 	if (property->value == NULL)
 	{
-		g_assert (class->def);
+		def = catalog_default ? class->def : class->orig_def;
+		g_assert (def);
+		
 		property->value = g_new0 (GValue, 1);
-		g_value_init (property->value, class->def->g_type);
-		g_value_copy (class->def, property->value);
+		g_value_init (property->value, def->g_type);
+		g_value_copy (def, property->value);
 	}
 	return property;
 }

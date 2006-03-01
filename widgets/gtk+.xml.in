@@ -52,6 +52,7 @@
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
 	<property id="sensitive" ignore="True"/>
+	<property id="has-default" ignore="True" common="True"/>
       </properties>
     </glade-widget-class>
 
@@ -481,6 +482,9 @@
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <properties>
+        <property id="active" ignore="True"/>
+        <property id="column-span-column" ignore="True"/>
+        <property id="row-span-column" ignore="True"/>
 	<property id="items" _name="Items" translatable="True">
 	  <spec>glade_standard_strv_spec</spec>
 	  <_tooltip>The items in this combo box</_tooltip>

@@ -353,14 +353,14 @@ glade_gtk_box_verify_size (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_box_add_child (GObject *object, GObject *child)
 {
-	gint num_children, position;
-	GladeWidget *gbox, *gchild;
+	GladeWidget *gbox;
+	GladeProject *project;
 	
 	g_return_if_fail (GTK_IS_BOX (object));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	
 	gbox = glade_widget_get_from_gobject (object);
-	gchild = glade_widget_get_from_gobject (child);
+	project = glade_widget_get_project (gbox);
 
 	/*
 	  Try to remove the last placeholder if any, this way GtkBox`s size 
@@ -383,17 +383,20 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	}
 	
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-
-	num_children = g_list_length (GTK_BOX (object)->children);
-
-	glade_widget_property_set (gbox, "size", num_children);
-
-	/* Packing props arent around when parenting during a glade_widget_dup() */
-	if (gchild && gchild->packing_properties)
+	
+	if (glade_project_is_loading (project))
 	{
-		if (!glade_widget_pack_property_get (gchild, "position", &position))
-			position = num_children - 1;
-		glade_widget_pack_property_set (gchild, "position", position);
+		GladeWidget *gchild;
+		gint num_children;
+		
+		num_children = g_list_length (GTK_BOX (object)->children);
+		glade_widget_property_set (gbox, "size", num_children);
+		
+		gchild = glade_widget_get_from_gobject (child);
+		
+		/* Packing props arent around when parenting during a glade_widget_dup() */
+		if (gchild && gchild->packing_properties)
+			glade_widget_pack_property_set (gchild, "position", num_children - 1);
 	}
 }
 
@@ -1800,10 +1803,7 @@ glade_gtk_expander_add_child (GObject *object, GObject *child)
 /* GtkTable */
 
 static gboolean
-glade_gtk_table_has_child (GtkTable *table, 
-			   gboolean skip_placeholders, 
-			   guint left_attach,
-			   guint top_attach)
+glade_gtk_table_has_child (GtkTable *table, guint left_attach, guint top_attach)
 {
 	GList *list;
 
@@ -1811,9 +1811,6 @@ glade_gtk_table_has_child (GtkTable *table,
 	{
 		GtkTableChild *child = list->data;
 		
-		if (skip_placeholders && GLADE_IS_PLACEHOLDER (child->widget))
-			continue;
-			
 		if (left_attach >= child->left_attach && left_attach < child->right_attach &&
 		    top_attach >= child->top_attach && top_attach < child->bottom_attach)
 			return TRUE;
@@ -1847,21 +1844,7 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 		GtkTableChild *child = list->data;
 		
 		if (GLADE_IS_PLACEHOLDER (child->widget))
-		{
-			guint left_attach, top_attach;
-
-			gtk_container_child_get (GTK_CONTAINER (table), child->widget,
-						 "left-attach", &left_attach, 
-						 "top-attach", &top_attach, NULL);
-
-			gtk_container_child_set (GTK_CONTAINER (table), child->widget,
-						 "right-attach", left_attach + 1,
-						 "bottom-attach", top_attach + 1, NULL);
-			
-			if (glade_gtk_table_has_child (table, TRUE,
-						       left_attach, top_attach))
-				toremove = g_list_prepend (toremove, child->widget);
-		}
+			toremove = g_list_prepend (toremove, child->widget);
 	}
 
 	if (toremove)
@@ -1874,7 +1857,7 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 
 	for (i = 0; i < table->ncols; i++)
 		for (j = 0; j < table->nrows; j++)
-			if (glade_gtk_table_has_child (table, FALSE, i, j) == FALSE)
+			if (glade_gtk_table_has_child (table, i, j) == FALSE)
 				gtk_table_attach_defaults (table,
 							   glade_placeholder_new (),
 					 		   i, i + 1, j, j + 1);
@@ -2543,7 +2526,7 @@ glade_gtk_radio_menu_item_set_group (GObject *object, GValue *value)
 static GladeWidget * 
 glade_gtk_menu_bar_append_new_submenu (GladeWidget *parent, GladeProject *project)
 {
-	GladeWidgetClass *submenu_class = NULL;
+	static GladeWidgetClass *submenu_class = NULL;
 	GladeWidget *gsubmenu;
 	
 	if (submenu_class == NULL)
