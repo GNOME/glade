@@ -872,13 +872,6 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 					  g_param_spec_get_name (spec)) != NULL)
 		property_class->common = TRUE;
 
-	/* If its a child property of a GtkContainerClass derivative, 
-	 * it goes in "packing"
-	 */
-	if (g_object_class_find_property (gtk_widget_class, 
-					  g_param_spec_get_name (spec)) != NULL)
-		property_class->packing = TRUE;
-	
 	/* Flag the construct only properties */
 	if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
 		property_class->construct_only = TRUE;
