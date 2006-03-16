@@ -298,6 +298,7 @@ glade_project_set_resource
 glade_project_list_resources
 glade_project_resource_fullpath
 glade_project_display_name
+glade_project_is_loading
 <SUBSECTION Standard>
 GLADE_PROJECT
 GLADE_IS_PROJECT
@@ -428,7 +429,6 @@ glade_widget_class_container_add
 glade_widget_class_container_remove
 glade_widget_class_container_has_child
 glade_widget_class_container_get_children
-glade_widget_class_container_get_all_children
 glade_widget_class_container_set_property
 glade_widget_class_container_get_property
 glade_widget_class_container_replace_child
@@ -463,6 +463,7 @@ glade_widget_project_notify
 glade_widget_show
 glade_widget_hide
 glade_widget_copy_properties
+glade_widget_set_packing_properties
 glade_widget_add_prop_ref
 glade_widget_remove_prop_ref
 glade_widget_get_property

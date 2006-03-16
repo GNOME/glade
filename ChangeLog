@@ -11,6 +11,22 @@
 	  (using tab charachters); also reverted to print the project path
 	  in the status bar as a tooltip (as this is the only indication as
 	  to which project is which).
+
+	* src/glade-widget-class.[ch], src/glade.h: Removed glade_widget_class_get_all_children,
+	  now glade_widget_class_get_children returns all desired children, including
+	  orphan ararchist internal children.
+
+	* src/glade-editor-property.c, src/glade-project-view.c, src/glade-project.c,
+	  src/glade-widget.c, src/glade-utils.c: Adjusted callers for 
+	  glade_widget_class_get_children.
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: Adjusted backend, removed obsolete
+	  get_internal_children funcs and added the appropriate get_anarchist_children.
+	
+	* doc/tmpl/*, doc/gladeui-sections.txt: Added new symbols... removed old ones.
+
+	* doc/widgetclasses.sgml: added a bit about 
+	  get-anarchist-children-function
 	
 2006-03-15  Vincent Geddes <vgeddes@metroweb.co.za>
 

@@ -88,7 +88,7 @@ glade_project_view_list_child_iters (GtkTreeStore *model,
 {
 	GList *children, *l, *child_iters = NULL;
 
-	if ((children = glade_widget_class_container_get_all_children
+	if ((children = glade_widget_class_container_get_children
 	     (parent->widget_class, parent->object)) != NULL)
 	{
 		for (l = children; l && l->data; l = l->next)
@@ -157,7 +157,7 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 			gtk_tree_store_set    (model, &iter, WIDGET_COLUMN, widget, -1);
 
 			if (add_childs &&
-			    (children = glade_widget_class_container_get_all_children
+			    (children = glade_widget_class_container_get_children
 			     (widget->widget_class, widget->object)) != NULL)
 			{
 				GtkTreeIter *copy = NULL;
@@ -302,7 +302,7 @@ glade_project_view_add_item (GladeProjectView *view,
 	/* Repopulate these children properly.
 	 */
 	if (!view->is_list &&
-	    (children = glade_widget_class_container_get_all_children
+	    (children = glade_widget_class_container_get_children
 	     (widget->widget_class, widget->object)) != NULL)
 	{
 		glade_project_view_populate_model_real

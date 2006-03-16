@@ -1638,20 +1638,6 @@ glade_gtk_dialog_get_internal_child (GtkDialog   *dialog,
 		*child = NULL;
 }
 
-GList * GLADEGTK_API
-glade_gtk_dialog_get_internal_children (GtkDialog  *dialog)
-{
-	GList *list = NULL;
-
-	g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
-
-	list = g_list_prepend (list, dialog->vbox);
-	list = g_list_prepend (list, dialog->action_area);
-
-	return list;
-}
-
-
 void GLADEGTK_API
 glade_gtk_combo_get_internal_child (GtkCombo    *combo,
 				    const gchar *name,
@@ -1668,16 +1654,9 @@ glade_gtk_combo_get_internal_child (GtkCombo    *combo,
 }
 
 GList * GLADEGTK_API
-glade_gtk_combo_get_internal_children (GtkCombo *combo)
+glade_gtk_combo_get_anarchist_children (GtkCombo *combo)
 {
-	GList *list = NULL;
-
-	g_return_val_if_fail (GTK_IS_COMBO (combo), NULL);
-
-	list = g_list_prepend (list, combo->list);
-	list = g_list_prepend (list, combo->entry);
-
-	return list;
+	return g_list_prepend (NULL, combo->list);
 }
 
 

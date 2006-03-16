@@ -1924,7 +1924,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 			}
 
 			if (has_decendant &&
-			    (children = glade_widget_class_container_get_all_children
+			    (children = glade_widget_class_container_get_children
 			     (widget->widget_class, widget->object)) != NULL)
 			{
 				GtkTreeIter *copy = NULL;

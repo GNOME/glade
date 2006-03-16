@@ -118,6 +118,18 @@ your application via libglade.
           </para>
         </listitem>
       </varlistentry>
+
+      <varlistentry>
+        <term>get-anarchist-children-function</term>
+        <listitem>
+          <para>
+The 'get-anarchist-children-function' tag is a #GladeGetChildrenFunc support function 
+used to retrieve any internal children of a composite object that apear outside the
+widget heirarchy, like in a seperate window that pops up on the composite widget's
+behalf.
+          </para>
+        </listitem>
+      </varlistentry>
     </variablelist>
   </refsect2>
   <refsect3>

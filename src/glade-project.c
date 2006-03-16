@@ -516,7 +516,7 @@ glade_project_sync_resources_for_widget (GladeProject *project,
 	GList *children, *l;
 	GladeWidget *gchild;
 
-	children = glade_widget_class_container_get_all_children
+	children = glade_widget_class_container_get_children
 		(gwidget->widget_class, gwidget->object);
 
 	for (l = children; l; l = l->next)
@@ -564,7 +564,7 @@ glade_project_add_object (GladeProject *project,
 	/* Code body starts here */
 	reentrancy_count++;
 
-	if ((children = glade_widget_class_container_get_all_children
+	if ((children = glade_widget_class_container_get_children
 	     (gwidget->widget_class, gwidget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)

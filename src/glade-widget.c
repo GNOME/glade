@@ -822,8 +822,8 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 						     template, GLADE_CREATE_COPY);
 
 	if ((children =
-	     glade_widget_class_container_get_all_children (template->widget_class,
-							    template->object)) != NULL)
+	     glade_widget_class_container_get_children (template->widget_class,
+							template->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 		{
@@ -2065,7 +2065,7 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, gpointer data)
 
 /**
  * glade_widget_set_object:
- * @gwidget:    A #GladeWidget
+ * @gwidget: A #GladeWidget
  * @new_object: the new #GObject for @gwidget
  *
  * Set the runtime object for this GladeWidget wrapper
@@ -2357,7 +2357,7 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 	if (g_type_is_a (widget->widget_class->type, type))
 		return TRUE;
 
-	if ((children = glade_widget_class_container_get_all_children
+	if ((children = glade_widget_class_container_get_children
 	     (widget->widget_class, widget->object)) != NULL)
 	{
 		for (l = children; l; l = l->next)
@@ -2489,8 +2489,8 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 
 	/* Children */
 	if ((list =
-	     glade_widget_class_container_get_all_children (widget->widget_class,
-							    widget->object)) != NULL)
+	     glade_widget_class_container_get_children (widget->widget_class,
+							widget->object)) != NULL)
 	{
 		children = g_array_new (FALSE, FALSE, sizeof (GladeChildInfo));
 		while (list && list->data)

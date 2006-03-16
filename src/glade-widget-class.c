@@ -263,8 +263,7 @@ glade_widget_class_list_children (GladeWidgetClass *class)
 		{
 			child->add              = (GladeAddChildFunc)    gtk_container_add;
 			child->remove           = (GladeRemoveChildFunc) gtk_container_remove;
-			child->get_children     = (GladeGetChildrenFunc) gtk_container_get_children;
-			child->get_all_children =
+			child->get_children     =
 				(GladeGetChildrenFunc) glade_util_container_get_all_children;
 			child->set_property     =
 				(GladeChildSetPropertyFunc) gtk_container_child_set_property;
@@ -552,9 +551,6 @@ glade_widget_class_update_children_from_node (GladeXmlNode     *node,
 						      GLADE_TAG_GET_CHILDREN_FUNCTION,
 						      (gpointer *)&child->get_children);
 			glade_xml_load_sym_from_node (child_node, widget_class->module,
-						      GLADE_TAG_GET_ALL_CHILDREN_FUNCTION,
-						      (gpointer *)&child->get_all_children);
-			glade_xml_load_sym_from_node (child_node, widget_class->module,
 						      GLADE_TAG_CHILD_SET_PROP_FUNCTION,
 						      (gpointer *)&child->set_property);
 			glade_xml_load_sym_from_node (child_node, widget_class->module,
@@ -601,8 +597,8 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 					      (void **)&widget_class->get_internal_child);
 
 		glade_xml_load_sym_from_node (node, widget_class->module,
-					      GLADE_TAG_GET_INTERNAL_CHILDREN_FUNCTION,
-					      (void **)&widget_class->get_internal_children);
+					      GLADE_TAG_GET_ANARCHIST_CHILDREN_FUNCTION,
+					      (void **)&widget_class->get_anarchist_children);
 
 		glade_xml_load_sym_from_node (node, widget_class->module,
 					      GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
@@ -826,7 +822,6 @@ glade_widget_class_clone_child (GladeSupportedChild *child,
 	clone->add               = child->add;
 	clone->remove            = child->remove;
 	clone->get_children      = child->get_children;
-	clone->get_all_children  = child->get_all_children;
 	clone->set_property      = child->set_property;
 	clone->get_property      = child->get_property;
 	clone->replace_child     = child->replace_child;
@@ -848,8 +843,6 @@ glade_widget_class_merge_child (GladeSupportedChild *widgets_child,
 		widgets_child->remove           = parents_child->remove;
 	if (!widgets_child->get_children)
 		widgets_child->get_children     = parents_child->get_children;
-	if (!widgets_child->get_all_children)
-		widgets_child->get_all_children = parents_child->get_all_children;
 	if (!widgets_child->set_property)
 		widgets_child->set_property     = parents_child->set_property;
 	if (!widgets_child->get_property)
@@ -1321,39 +1314,22 @@ glade_widget_class_container_has_child (GladeWidgetClass *class,
 	return found;
 }
 
-
 GList *
 glade_widget_class_container_get_children (GladeWidgetClass *class,
 					   GObject          *container)
 {
 	GList *list, *children = NULL;
 
+
+	if (class->get_anarchist_children)
+		children = class->get_anarchist_children (container);
+
 	for (list = class->children; list && list->data; list = list->next)
 	{
 		GladeSupportedChild *support = list->data;
 		if (support->get_children)
-			children = g_list_concat (children, support->get_children (container));
-	}
-	return children;
-}
-
-
-GList *
-glade_widget_class_container_get_all_children (GladeWidgetClass *class,
-					       GObject          *container)
-{
-	GList *list, *children = NULL;
-
-
-	if (class->get_internal_children)
-		children = class->get_internal_children (container);
-
-	for (list = class->children; list && list->data; list = list->next)
-	{
-		GladeSupportedChild *support = list->data;
-		if (support->get_all_children)
-			children = g_list_concat (children,
-						  support->get_all_children (container));
+			children = g_list_concat
+				(children, support->get_children (container));
 	}
 
 	/* Remove duplicates */

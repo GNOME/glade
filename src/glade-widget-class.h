@@ -209,9 +209,10 @@ struct _GladeWidgetClass
 	 */
 	GladeGetInternalFunc          get_internal_child;
 
-	/* Retrieves a list of all handled internal children.
+	/* Retrieves a list of any children of composite widgets that
+	 * float outside the heirarchy (like popup windows).
 	 */
-	GladeGetChildrenFunc          get_internal_children;
+	GladeGetChildrenFunc          get_anarchist_children;
 
 	/* Entry point for custom editors.
 	 */
@@ -233,11 +234,8 @@ struct _GladeSupportedChild
 
 	GladeAddChildFunc             add;              /* Adds a new child of this type */
 	GladeRemoveChildFunc          remove;           /* Removes a child from the container */
-	GladeGetChildrenFunc          get_children;     /* Returns a list of children for this
-							 * type, not including internals
-							 */
-	GladeGetChildrenFunc          get_all_children; /* Returns a list of children of this
-							 * type, including internals
+	GladeGetChildrenFunc          get_children;     /* Returns a list of direct children for
+							 * this support type.
 							 */
 	
 	GladeChildSetPropertyFunc     set_property; /* Sets/Gets a packing property */
@@ -305,9 +303,6 @@ gboolean             glade_widget_class_container_has_child        (GladeWidgetC
 								    GObject          *child);
 LIBGLADEUI_API
 GList               *glade_widget_class_container_get_children     (GladeWidgetClass *class,
-								    GObject          *container);
-LIBGLADEUI_API
-GList               *glade_widget_class_container_get_all_children (GladeWidgetClass *class,
 								    GObject          *container);
 LIBGLADEUI_API
 void                 glade_widget_class_container_set_property     (GladeWidgetClass *class,
