@@ -35,6 +35,7 @@ struct _GladeProject
 			      * for confirmation after a close or exit is
 			      * requested
 			      */
+	gint untitled_number;
 
 	GList *objects; /* A list of #GObjects that make up this project.
 			 * The objects are stored in no particular order.
@@ -149,12 +150,15 @@ GList        *glade_project_list_resources        (GladeProject  *project);
 
 LIBGLADEUI_API
 gchar        *glade_project_resource_fullpath     (GladeProject  *project,
-						   const gchar  *resource);
+						   const gchar   *resource);
 
 LIBGLADEUI_API
-gchar        *glade_project_display_name          (GladeProject  *project);
+gchar        *glade_project_display_name          (GladeProject  *project, 
+						   gboolean       unsaved_changes,
+						   gboolean       tab_aligned);
 
-LIBGLADEUI_API gboolean      glade_project_is_loading            (GladeProject *project);
+LIBGLADEUI_API 
+gboolean      glade_project_is_loading            (GladeProject *project);
 
 G_END_DECLS
 

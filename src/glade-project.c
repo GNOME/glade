@@ -60,8 +60,33 @@ enum
 	LAST_SIGNAL
 };
 
+enum
+{
+	PROP_0,
+	PROP_HAS_UNSAVED_CHANGES
+};
+
 static guint glade_project_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
+
+static void
+glade_project_get_property (GObject    *object,
+			    guint       prop_id,
+			    GValue     *value,
+			    GParamSpec *pspec)
+{
+	GladeProject *project = GLADE_PROJECT (object);
+
+	switch (prop_id)
+	{
+		case PROP_HAS_UNSAVED_CHANGES:
+			g_value_set_boolean (value, project->changed);
+			break;			
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+			break;			
+	}
+}
 
 GType
 glade_project_get_type (void)
@@ -224,6 +249,17 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_TYPE_NONE,
 			      1,
 			      G_TYPE_STRING);
+
+	object_class->get_property = glade_project_get_property;
+
+	g_object_class_install_property (object_class,
+					 PROP_HAS_UNSAVED_CHANGES,
+					 g_param_spec_boolean ("has-unsaved-changes",
+							       "Has Unsaved Changes",
+							       "Whether project has unsaved changes",
+							       FALSE,
+							       G_PARAM_READABLE));
+
 
 
 	object_class->finalize = glade_project_finalize;
@@ -505,7 +541,9 @@ glade_project_add_object (GladeProject *project,
 			  (GCallback) glade_project_on_widget_notify, project);
 
 	project->objects = g_list_prepend (project->objects, g_object_ref (object));
-	project->changed = TRUE;
+
+	glade_project_changed (project);	
+
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
 		       0,
@@ -643,7 +681,8 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		project->objects = g_list_delete_link (project->objects, link);
 	}
 
-	project->changed = TRUE;
+	glade_project_changed (project);
+
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [REMOVE_WIDGET],
 		       0,
@@ -675,7 +714,7 @@ glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, c
 		       0,
 		       widget);
 
-	project->changed = TRUE;
+	glade_project_changed (project);
 }
 
 /**
@@ -992,7 +1031,7 @@ static gboolean
 glade_project_loading_done_idle (gpointer data)
 {
 	GladeProject *project = (GladeProject *) data;
-	
+
 	project->loading = project->changed = FALSE;
 	return FALSE;
 }
@@ -1128,7 +1167,11 @@ glade_project_open (const gchar *path)
 		}
 		
 		glade_interface_destroy (interface);
+	
 	}
+
+	project->changed = FALSE;
+
 	return project;
 }
 
@@ -1215,10 +1258,16 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 		project->name = (g_free (project->name),
 				 g_path_get_basename (project->path));
+
+	}
+
+	if (project->changed)
+	{
+		project->changed = FALSE;
+		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
 	}
 
 	g_free (canonical_path);
-	project->changed = FALSE;
 
 	return ret;
 }
@@ -1234,7 +1283,12 @@ void
 glade_project_changed (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	project->changed = TRUE;
+	
+	if (!project->changed)
+	{
+		project->changed = TRUE;
+		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
+	}
 }
 
 
@@ -1442,21 +1496,41 @@ glade_project_list_resources (GladeProject  *project)
 /**
  * glade_project_display_name:
  * @project: A #GladeProject
+ * @unsaved_changes: whether to prepend a '*' to names 
+ *                   of projects with unsaved changes
+ * @tab_aligned: whether to prepend a tab and align unsaved
+ *               names using the tab (for the project menu)
  *
  * Returns: A newly allocated string to uniquely 
  *          describe this open project.
  *       
  */
 gchar *
-glade_project_display_name (GladeProject *project)
+glade_project_display_name (GladeProject *project, 
+			    gboolean      unsaved_changes,
+			    gboolean      tab_aligned)
 {
-	gchar *final_name = NULL;
+	const gchar *prefix         = tab_aligned ? "\t"     : "";
+	const gchar *unsaved_prefix = unsaved_changes ? 
+		(tab_aligned ? "     *\t" : "*") : prefix;
+
+	gchar       *prefixed_name  = NULL;
+	gchar       *final_name     = NULL;
+
+	prefixed_name = 
+		g_strdup_printf ("%s%s", 
+				 project->changed ? unsaved_prefix : prefix,
+				 project->name);
+
 	if (project->instance > 0)
-		final_name = g_strdup_printf ("%s <%d>", 
-					      project->name, 
-					      project->instance);
+	{
+		final_name = 
+			g_strdup_printf ("%s <%d>", 
+					 prefixed_name, project->instance);
+		g_free (prefixed_name);
+	}
 	else
-		final_name = g_strdup (project->name);
+		final_name = prefixed_name;
 
 	return final_name;
 }

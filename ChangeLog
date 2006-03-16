@@ -1,3 +1,24 @@
+2006-03-15  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project-window.c, src/glade-project.[ch]: Tweaked the
+	  project list to look more aligned with unsaved changes indicated
+	  (using tab charachters); also reverted to print the project path
+	  in the status bar as a tooltip (as this is the only indication as
+	  to which project is which).
+	
+2006-03-15  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/glade-project-window.c:
+	  o Reimplemented code for management of projects list menu.
+	  o Projects with unsaved changes have a '*' prepended to their names.
+	  o Refresh window title when all projects have been closed.
+
+	* src/glade-project.c: New GObject property 'has-unsaved-changes'.
+	  glade_project_changed() will now emit notify signal for this property.
+
+	* src/glade-app.c: change order in which projects are added to list of
+	  open projects in glade_app_add_project().
+
 2006-03-14  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-property-class.c: Removed a ridiculous line of

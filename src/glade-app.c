@@ -701,8 +701,10 @@ glade_app_update_instance_count (GladeApp *app, GladeProject *project)
 {
 	GladeProject *prj;
 	GList *l;
-	gint temp, max = 0, i = 0;
+	gint temp, max = 0, i = 0, uncounted_projects = 0;
 		
+	if (project->instance > 0) return;
+
 	for (l = app->priv->projects; l; l = l->next)
 	{
 		prj = l->data;
@@ -713,9 +715,16 @@ glade_app_update_instance_count (GladeApp *app, GladeProject *project)
 			i++;
 			temp = MAX (prj->instance + 1, i);
 			max  = MAX (temp, max);
+
+			if (prj->instance < 1)
+				uncounted_projects++;
 		}
 	}
-	project->instance = MAX (max, i);
+
+	/* Dont reset the initially opened project */
+	if (uncounted_projects > 1 || 
+	    g_list_find (app->priv->projects, project) == NULL)
+		project->instance = MAX (max, i);
 }
 
 void
@@ -732,7 +741,7 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 
 	glade_app_update_instance_count (app, project);
 
-	app->priv->projects = g_list_prepend (app->priv->projects, project);
+	app->priv->projects = g_list_append (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */
 	g_signal_connect (G_OBJECT (project), "widget_name_changed",
@@ -745,7 +754,8 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 		glade_project_set_accel_group (project, app->priv->accel_group);
 	
 	glade_app_set_project (app, project);
-	/* make sure the palette is sensitive */
+
+	/* XXX I think the palette should detect this by itself */
 	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
 }
 
@@ -768,7 +778,7 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
 	} 
 	else
-		glade_app_set_project (app, app->priv->projects->data);
+		glade_app_set_project (app, g_list_last (app->priv->projects)->data);
 
 	/* Its safe to just release the project as the project emits a
 	 * "close" signal and everyone is responsable for cleaning up at
