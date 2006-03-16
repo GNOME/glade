@@ -28,6 +28,8 @@ struct _GladeProject
 
 	gint   instance; /* How many projects with this name */
 
+	gint   untitled_number; /* A unique number for this project if it is untitled */
+
 	gboolean loading;/* A flags that is set when the project is loading */
 	
 	gboolean changed;    /* A flag that is set when a project has changes
@@ -35,7 +37,6 @@ struct _GladeProject
 			      * for confirmation after a close or exit is
 			      * requested
 			      */
-	gint untitled_number;
 
 	GList *objects; /* A list of #GObjects that make up this project.
 			 * The objects are stored in no particular order.

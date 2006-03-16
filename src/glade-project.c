@@ -68,6 +68,7 @@ enum
 
 static guint glade_project_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
+static GHashTable *allocated_untitled_numbers = NULL;
 
 static void
 glade_project_get_property (GObject    *object,
@@ -280,6 +281,7 @@ glade_project_init (GladeProject *project)
 	project->path = NULL;
 	project->name = NULL;
 	project->instance = 0;
+	project->untitled_number = 0;
 	project->objects = NULL;
 	project->selection = NULL;
 	project->undo_stack = NULL;
@@ -297,6 +299,39 @@ glade_project_init (GladeProject *project)
 						    NULL, g_free);
 }
 
+static gint
+glade_project_get_untitled_number (void)
+{
+	gint i = 1;
+
+	if (allocated_untitled_numbers == NULL)
+		allocated_untitled_numbers = g_hash_table_new (NULL, NULL);
+
+	g_return_val_if_fail (allocated_untitled_numbers != NULL, -1);
+
+	while (TRUE)
+	{
+		if (g_hash_table_lookup (allocated_untitled_numbers, GINT_TO_POINTER (i)) == NULL)
+		{
+			g_hash_table_insert (allocated_untitled_numbers, 
+					     GINT_TO_POINTER (i),
+					     GINT_TO_POINTER (i));
+
+			return i;
+		}
+
+		++i;
+	}
+}
+
+static void
+glade_project_release_untitled_number (gint n)
+{
+	g_return_if_fail (allocated_untitled_numbers != NULL);
+
+	g_hash_table_remove (allocated_untitled_numbers, GINT_TO_POINTER (n));
+}
+
 /**
  * glade_project_new:
  * @untitled: Whether or not this project is untitled
@@ -311,12 +346,14 @@ GladeProject *
 glade_project_new (gboolean untitled)
 {
 	GladeProject *project;
-	static gint i = 1;
 
 	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
 
 	if (untitled)
-		project->name = g_strdup_printf ("Untitled %i", i++);
+	{
+		project->untitled_number = glade_project_get_untitled_number ();
+		project->name = g_strdup_printf ("Untitled %d", project->untitled_number);
+	}
 
 	return project;
 }
@@ -370,6 +407,9 @@ glade_project_finalize (GObject *object)
 
 	g_free (project->name);
 	g_free (project->path);
+
+	if (project->untitled_number > 0)
+		glade_project_release_untitled_number (project->untitled_number);
 
 	g_hash_table_destroy (project->widget_names_allocator);
 	g_hash_table_destroy (project->widget_old_names);
@@ -1266,6 +1306,12 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 		project->changed = FALSE;
 		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
 	}
+
+	if (project->untitled_number > 0)
+	{
+		glade_project_release_untitled_number (project->untitled_number);
+		project->untitled_number = 0;
+        }
 
 	g_free (canonical_path);
 

@@ -526,6 +526,8 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 
 	gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (file_dialog), file_filter);
 
+	gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (file_dialog), TRUE);
+
 	gtk_window_set_position (GTK_WINDOW (file_dialog), GTK_WIN_POS_CENTER);
 
 	return file_dialog;
