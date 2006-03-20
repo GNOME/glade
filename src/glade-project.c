@@ -1137,7 +1137,15 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 		glade_project_add_object (project, NULL, widget->object);
 	}
 
-	/* Set project status after every idle functions */
+
+	/* Reset project status after a low priority idle, 
+	 * which should happen after any backend idle functions
+	 * in the load cycle which may modify the project state.
+	 *
+	 * Reset project status here too so that you get a clean
+	 * slate after calling glade_project_open().
+	 */
+	project->changed = FALSE;
 	g_idle_add_full (G_PRIORITY_LOW,
 			 glade_project_loading_done_idle,
 			 project, 

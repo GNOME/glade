@@ -597,10 +597,6 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 					      (void **)&widget_class->get_internal_child);
 
 		glade_xml_load_sym_from_node (node, widget_class->module,
-					      GLADE_TAG_GET_ANARCHIST_CHILDREN_FUNCTION,
-					      (void **)&widget_class->get_anarchist_children);
-
-		glade_xml_load_sym_from_node (node, widget_class->module,
 					      GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
 					      (void **)
 					      &widget_class->launch_editor);
@@ -1319,10 +1315,6 @@ glade_widget_class_container_get_children (GladeWidgetClass *class,
 					   GObject          *container)
 {
 	GList *list, *children = NULL;
-
-
-	if (class->get_anarchist_children)
-		children = class->get_anarchist_children (container);
 
 	for (list = class->children; list && list->data; list = list->next)
 	{

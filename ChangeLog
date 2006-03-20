@@ -1,3 +1,41 @@
+2006-03-20  Tristan Van Berkom <tvb@gnome.org>
+
+	* doc/children.sgml: Added a bit about anarchist children
+
+	* doc/widgetclasses.sgml: Removed the notion of get_anarchist_children()
+
+	* doc/gladeui-sections.txt: removed undefined symbols
+
+	* doc/tmpl/*: auto-updates templates.
+
+	* src/glade-gtk.c: Updated to use the new glade_widget_new_for_internal_child
+	  API
+
+	* src/glade-widget-class.[ch], src/glade.h: Removed notion of anarchist children
+
+	* src/glade-widget.[ch]: Added "anarchist" property and "anarchist" argument
+	  to glade_widget_new_for_internal_child() (only internal children can be
+	  anarchists).
+
+	* src/glade-project-view.[ch]: Dramaticly reworked, now each project has its
+	  own metadata struct where signal ids and project view state is stored,
+	  project signals now are only disconnected at project close time.
+	  The open treeview leafs and scrollbar positions are now saved/restored
+	  when switching active projects.
+
+	* src/glade-project-window.c: 
+	   o Translated window title
+	   o Fixed a bug where the loaded project title apears as
+	     unsaved.
+
+	* src/glade-utils.c: Added comments.
+
+	* widgets/gtk+.xml.in: Removed mention of the get_anarchist_children func,
+	  override the get_children func for GtkCombo to additionally return the
+	  combo->list member (which is an anarchist child).
+	  Also added a gtk_container_remove remove-function for GtkListItem since
+	  it seemed to be empty and causing errors.
+
 2006-03-15  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade-project.c: Improved name generation for new empty projects.

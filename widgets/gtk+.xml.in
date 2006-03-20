@@ -978,19 +978,27 @@
     <glade-widget-class name="GtkCombo" generic-name="combo" _title="Combo">
       <post-create-function>glade_gtk_combo_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
-      <get-anarchist-children-function>glade_gtk_combo_get_anarchist_children</get-anarchist-children-function>
       <properties>
 	<property id="size" disabled="True"/>
       </properties>
+
+      <children>
+	<child>
+	  <type>GtkWidget</type>
+	  <get-children-function>glade_gtk_combo_get_children</get-children-function>
+	</child>
+      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu"/>
 
     <glade-widget-class name="GtkList" generic-name="list" _title="List">
       <children>
+        <!-- This will unset any custom handler defined in the plugin for _add() -->
 	<child>
 	  <type>GtkListItem</type>
 	  <add-child-function>gtk_container_add</add-child-function>
+	  <remove-child-function>gtk_container_remove</remove-child-function>
 	</child>
       </children>
     </glade-widget-class>

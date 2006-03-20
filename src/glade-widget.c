@@ -80,6 +80,7 @@ enum
 	PROP_0,
 	PROP_NAME,
 	PROP_INTERNAL,
+	PROP_ANARCHIST,
 	PROP_OBJECT,
 	PROP_CLASS,
 	PROP_PROJECT,
@@ -146,6 +147,7 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 				      NULL,
 				      G_PARAM_READWRITE |
 				      G_PARAM_CONSTRUCT));
+
 	g_object_class_install_property
 		(object_class, PROP_INTERNAL,
 		 g_param_spec_string ("internal", _("Internal name"),
@@ -153,6 +155,14 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 				      NULL, G_PARAM_READWRITE |
 				      G_PARAM_CONSTRUCT));
 	
+	g_object_class_install_property
+		(object_class, PROP_ANARCHIST,
+		 g_param_spec_boolean ("anarchist", _("Anarchist"),
+				       _("Whether this composite child is "
+					 "an ancestral child or an anarchist child"),
+				       FALSE, G_PARAM_READWRITE |
+				       G_PARAM_CONSTRUCT_ONLY));
+
 	g_object_class_install_property
 		(object_class, PROP_OBJECT,
 		 g_param_spec_object ("object", _("Object"),
@@ -1062,10 +1072,12 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 
 /**
  * glade_widget_new_for_internal_child:
- * @parent:            The parent #GladeWidget
+ * @parent:            The parent #GladeWidget, or %NULL for children
+ *                     outside of the heirarchy.
  * @internal_object:   the #GObject
  * @internal_name:     a string identifier for this internal widget.
- *
+ * @anarchist:         Whether or not this widget is a widget outside
+ *                     of the parent's heirarchy (like a popup window)
  *
  * Returns: a freshly created #GladeWidget wrapper object for the
  *          @internal_object of name @internal_name
@@ -1073,7 +1085,8 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 GladeWidget *
 glade_widget_new_for_internal_child (GladeWidget      *parent,
 				     GObject          *internal_object,
-				     const gchar      *internal_name)
+				     const gchar      *internal_name,
+				     gboolean          anarchist)
 {
 	GladeProject     *project;
 	gchar            *widget_name;
@@ -1081,8 +1094,6 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 	GladeWidget      *widget;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
-	g_return_val_if_fail (G_IS_OBJECT (parent), NULL);
-	
 	project = glade_widget_get_project (parent);
 
         if ((klass = glade_widget_class_get_by_name 
@@ -1095,12 +1106,13 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 
 	widget_name = glade_project_new_widget_name (project, klass->generic_name);
 	widget      = g_object_new (GLADE_TYPE_WIDGET,
-			       "parent", parent,
-			       "class", klass,
-			       "project", project,
-			       "name", widget_name,
-			       "internal", internal_name,
-			       "object", internal_object, NULL);
+				    "anarchist", anarchist,
+				    "parent", parent,
+				    "class", klass,
+				    "project", project,
+				    "name", widget_name,
+				    "internal", internal_name,
+				    "object", internal_object, NULL);
 	g_free (widget_name);
 	return widget;
 }
@@ -1214,6 +1226,9 @@ glade_widget_set_real_property (GObject         *object,
 	case PROP_INTERNAL:
 		glade_widget_set_internal (widget, g_value_get_string (value));
 		break;
+	case PROP_ANARCHIST:
+		widget->anarchist = g_value_get_boolean (value);
+		break;
 	case PROP_OBJECT:
 		glade_widget_set_object (widget, g_value_get_object (value));
 		break;
@@ -1253,6 +1268,9 @@ glade_widget_get_real_property (GObject         *object,
 		break;
 	case PROP_INTERNAL:
 		g_value_set_string (value, widget->internal);
+		break;
+	case PROP_ANARCHIST:
+		g_value_set_boolean (value, widget->anarchist);
 		break;
 	case PROP_CLASS:
 		g_value_set_pointer (value, widget->widget_class);
@@ -2321,6 +2339,13 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 	g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 	g_list_free (widget->packing_properties);
 	
+
+	/* XXX We have to detect whether this is an anarchist child of a composite
+	 * widget or not, in otherwords; whether its really a direct child or
+	 * a child of a popup window created on the composite widget's behalf.
+	 */
+	if (widget->anarchist) return;
+
 	widget->packing_properties = glade_widget_create_packing_properties (container, widget);
 
 	glade_widget_set_default_packing_properties (container, widget);

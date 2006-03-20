@@ -30,16 +30,22 @@ struct _GladeWidget
 
 	GladeWidget  *parent;  /* A pointer to the parent widget in the heirarchy */
 	
-	char *name; /* The name of the widget. For example window1 or
-		     * button2. This is a unique name and is the one
-		     * used when loading widget with libglade
-		     */
-
-	char *internal; /* If the widget is an internal child of 
-			 * another widget this is the name of the 
-			 * internal child, otherwise is NULL.
-			 * Internal children cannot be deleted.
-			 */
+	gchar *name; /* The name of the widget. For example window1 or
+		      * button2. This is a unique name and is the one
+		      * used when loading widget with libglade
+		      */
+	
+	gchar *internal; /* If the widget is an internal child of 
+			  * another widget this is the name of the 
+			  * internal child, otherwise is NULL.
+			  * Internal children cannot be deleted.
+			  */
+	
+	gboolean anarchist; /* Some composite widgets have internal children
+			     * that are not part of the same heirarchy; hence 'anarchists',
+			     * typicly a popup window or its child (we need to mark
+			     * them so we can avoid bookkeeping packing props on them etc.).
+			     */
 
 	GObject *object; /* A pointer to the object that was created.
 			  * if it is a GtkWidget; it is shown as a "view"
@@ -115,7 +121,8 @@ GladeWidget *	        glade_widget_new			    (GladeWidget      *parent,
 LIBGLADEUI_API 
 GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *parent,
 							      GObject          *internal_object,
-							      const gchar      *internal_name);
+							      const gchar      *internal_name,
+							      gboolean          anarchist);
 LIBGLADEUI_API
 void                    glade_widget_set_name		    (GladeWidget      *widget,
 							     const gchar      *name);

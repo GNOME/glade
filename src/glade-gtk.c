@@ -1049,10 +1049,10 @@ glade_gtk_window_post_create (GObject *object, GladeCreateReason reason)
 void GLADEGTK_API
 glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
-	GtkDialog   *dialog = GTK_DIALOG (object);
-	GladeWidget *widget;
-	GladeWidget *vbox_widget;
-	GladeWidget *actionarea_widget;
+	GtkDialog    *dialog = GTK_DIALOG (object);
+	GladeWidget  *widget;
+	GladeWidget  *vbox_widget;
+	GladeWidget  *actionarea_widget;
 
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
@@ -1061,13 +1061,13 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 		return;
 
 	/* create the GladeWidgets for internal children */
-	vbox_widget = glade_widget_new_for_internal_child
-		(widget, G_OBJECT(dialog->vbox), "vbox");
+	vbox_widget = glade_widget_new_for_internal_child 
+		(widget, G_OBJECT(dialog->vbox), "vbox", FALSE);
 	g_assert (vbox_widget);
 
 
 	actionarea_widget = glade_widget_new_for_internal_child
-		(vbox_widget, G_OBJECT(dialog->action_area), "action_area");
+		(vbox_widget, G_OBJECT(dialog->action_area), "action_area", FALSE);
 	g_assert (actionarea_widget);
 
 	/*
@@ -1390,7 +1390,7 @@ glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 void GLADEGTK_API
 glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
 {
-	GladeWidget *gcombo, *gentry, *glist;
+	GladeWidget  *gcombo, *gentry, *glist;
 
 	g_return_if_fail (GTK_IS_COMBO (object));
 
@@ -1398,9 +1398,11 @@ glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
 		return;
 	
 	gentry = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry");
+		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry", FALSE);
+
+	/* We mark this 'anarchist' since its outside of the heirarchy */
 	glist  = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list");
+		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list", TRUE);
 
 }
 
@@ -1654,11 +1656,20 @@ glade_gtk_combo_get_internal_child (GtkCombo    *combo,
 }
 
 GList * GLADEGTK_API
-glade_gtk_combo_get_anarchist_children (GtkCombo *combo)
+glade_gtk_combo_get_children (GtkCombo *combo)
 {
-	return g_list_prepend (NULL, combo->list);
-}
+	GList *list = NULL;
 
+	g_return_val_if_fail (GTK_IS_COMBO (combo), NULL);
+
+	list = glade_util_container_get_all_children (GTK_CONTAINER (combo));
+
+	/* Ensure that we only return one 'combo->list' */
+	if (g_list_find (list, combo->list) == NULL)
+		list = g_list_append (list, combo->list);
+
+	return list;
+}
 
 void GLADEGTK_API
 glade_gtk_list_item_set_label (GObject *object, GValue *value)
@@ -2270,7 +2281,7 @@ glade_gtk_menu_item_remove_submenu (GObject *object, GObject *child)
 void GLADEGTK_API
 glade_gtk_menu_item_post_create (GObject *object, GladeCreateReason reason)
 {
-	GladeWidget *gitem, *gimage;
+	GladeWidget  *gitem, *gimage;
 
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	gitem = glade_widget_get_from_gobject (object);
@@ -2310,8 +2321,10 @@ glade_gtk_menu_item_post_create (GObject *object, GladeCreateReason reason)
 			if (reason == GLADE_CREATE_USER)
 			{
 				GtkWidget *image = gtk_image_new ();
-				gimage = glade_widget_new_for_internal_child (gitem, G_OBJECT (image), "image");
-				gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
+				gimage = glade_widget_new_for_internal_child
+					(gitem, G_OBJECT (image), "image", FALSE);
+				gtk_image_menu_item_set_image
+					(GTK_IMAGE_MENU_ITEM (object), image);
 				glade_gtk_image_post_create_idle (G_OBJECT (image));
 			}
 		}
@@ -2400,14 +2413,15 @@ glade_gtk_image_menu_item_get_internal_child (GObject *parent,
 		image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (parent));
 		if (image == NULL)
 		{
-			GladeWidget *gitem, *gimage;
+			GladeWidget  *gitem, *gimage;
 			
 			gitem = glade_widget_get_from_gobject (parent);
-			
 			image = gtk_image_new ();
+
 			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent), image);
 			
-			gimage = glade_widget_new_for_internal_child (gitem, G_OBJECT (image), "image");
+			gimage = glade_widget_new_for_internal_child
+				(gitem, G_OBJECT (image), "image", FALSE);
 		}
 		*child = G_OBJECT (image);
 		glade_gtk_image_post_create (G_OBJECT (image), GLADE_CREATE_LOAD);
@@ -2420,14 +2434,14 @@ glade_gtk_image_menu_item_get_internal_child (GObject *parent,
 void GLADEGTK_API
 glade_gtk_image_menu_item_set_use_stock (GObject *object, GValue *value)
 {
-	GladeWidget *gitem, *gimage;
-	gboolean use_stock;
-	GtkWidget *image;
+	GladeWidget  *gitem, *gimage;
+	gboolean      use_stock;
+	GtkWidget    *image;
 	
 	g_return_if_fail (GTK_IS_IMAGE_MENU_ITEM (object));
 	gitem = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gitem));
-	
+
 	use_stock = g_value_get_boolean (value);
 	
 	glade_return_if_re_entrancy (gitem, "use-stock", use_stock);
@@ -2448,7 +2462,8 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, GValue *value)
 	{
 		image = gtk_image_new ();
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
-		gimage = glade_widget_new_for_internal_child (gitem, G_OBJECT (image), "image");
+		gimage = glade_widget_new_for_internal_child
+			(gitem, G_OBJECT (image), "image", FALSE);
 		glade_project_add_object (glade_widget_get_project (gitem), 
 					  NULL, G_OBJECT (image));
 		glade_gtk_image_post_create_idle (G_OBJECT (image));

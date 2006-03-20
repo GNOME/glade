@@ -80,16 +80,9 @@ A #GladeReplaceChildFunc Used to swap placholders with project widgets.
           <term>get-children-function</term>
           <listitem>
             <para>
-A #GladeGetChildrenFunc to return a list of children for this container.
-            </para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>get-all-children-function</term>
-          <listitem>
-            <para>
-A #GladeGetChildrenFunc like 'get-children-function' except it should include internal 
-children ofcomposite widget classes too.
+A #GladeGetChildrenFunc to return a list of children for this container. If you
+have any anarchist internal children; they should be listed here along with
+normal children.
             </para>
           </listitem>
         </varlistentry>

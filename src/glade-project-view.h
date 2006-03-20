@@ -36,21 +36,9 @@ struct _GladeProjectView
 				* project that we are a view for
 				*/
 
-	GladeWidget *selected_widget; /* The selected GladeWidget for this view
-				       * Selection should really be a GList not
-				       * a GladeWidget since we should support
-				       * multiple selections.
-				       */
-
-	/* We need to know the signal id which we are
-	 * connected to so that when the project changes
-	 * we stop listening to the old project
-	 */
-	gulong add_widget_signal_id;
-	gulong remove_widget_signal_id;
-	gulong widget_name_changed_signal_id;
-	gulong selection_changed_signal_id;
-	gulong project_closed_signal_id;
+	GList *project_data; /* A list of private data structures of 
+			      * project specific data.
+			      */
 	
 	gboolean updating_selection; /* True when we are going to set the
 				      * project selection. So that we don't
@@ -67,20 +55,13 @@ struct _GladeProjectViewClass
 {
 	GtkScrolledWindowClass parent_class;
 
-	/* We use this signal so that projects can be advised that
-	 * a widget has been selected
-	 */
-	void   (*item_selected) (GladeProjectView *view,
-				 GladeWidget *component);
-
 	void   (*add_item)      (GladeProjectView *view,
 				 GladeWidget *widget);
 	void   (*remove_item)   (GladeProjectView *view,
 				 GladeWidget *widget);
 	void   (*widget_name_changed) (GladeProjectView *view,
 				       GladeWidget *widget);
-	void   (*set_project)   (GladeProjectView *view,
-				 GladeProject *project);
+
 	/* Selection update is when the project changes the selection
 	 * and we need to update our state, selection changed functions
 	 * are the other way arround, the selection in the view changed
@@ -113,10 +94,6 @@ GladeProject *glade_project_view_get_project (GladeProjectView *view);
 LIBGLADEUI_API
 void glade_project_view_set_project (GladeProjectView *view,
 				     GladeProject *project);
-
-LIBGLADEUI_API
-void glade_project_view_select_item (GladeProjectView *view, GladeWidget *item);
-
 
 G_END_DECLS
 

@@ -942,6 +942,13 @@ gtk_container_children_callback (GtkWidget *widget,
  * glade_util_container_get_all_children:
  * @container: a #GtkContainer
  *
+ * Use this to itterate over all children in a GtkContainer,
+ * as it used _forall() instead of _foreach() (and the GTK+ version
+ * of this function is simply not exposed).
+ *
+ * Note that glade_widget_class_get_children() is the high-level
+ * abstraction and will usually end up calling this function.
+ *
  * Returns: a #GList giving the contents of @container
  */
 GList *
@@ -955,6 +962,7 @@ glade_util_container_get_all_children (GtkContainer *container)
 			      gtk_container_children_callback,
 			      &children);
 
+	/* Preserve the natural order by reversing the list */
 	return g_list_reverse (children);
 }
 

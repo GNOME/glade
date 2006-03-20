@@ -209,11 +209,6 @@ struct _GladeWidgetClass
 	 */
 	GladeGetInternalFunc          get_internal_child;
 
-	/* Retrieves a list of any children of composite widgets that
-	 * float outside the heirarchy (like popup windows).
-	 */
-	GladeGetChildrenFunc          get_anarchist_children;
-
 	/* Entry point for custom editors.
 	 */
 	GladeEditorLaunchFunc         launch_editor;
