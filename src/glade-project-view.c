@@ -335,7 +335,9 @@ glade_project_view_close_cb (GladeProject   *project,
 	pdata->view->project_data = 
 		g_list_remove (pdata->view->project_data, pdata);
 
-	glade_project_view_set_project (pdata->view, NULL);
+	/* Clear project view if the closing project is current */
+	if (pdata->project == pdata->view->project)
+		glade_project_view_set_project (pdata->view, NULL);
 
 	gpv_project_data_free (pdata);
 }

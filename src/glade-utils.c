@@ -564,13 +564,13 @@ glade_util_replace (gchar *str, gchar a, gchar b)
  *
  * Returns: a newly allocated string
  */
-char *
-glade_util_duplicate_underscores (const char *name)
+gchar *
+glade_util_duplicate_underscores (const gchar *name)
 {
-	const char *tmp;
-	const char *last_tmp = name;
-	char *underscored_name = g_malloc (strlen (name) * 2 + 1);
-	char *tmp_underscored = underscored_name;
+	const gchar *tmp;
+	const gchar *last_tmp = name;
+	gchar *underscored_name = g_malloc (strlen (name) * 2 + 1);
+	gchar *tmp_underscored = underscored_name;
 
 	for (tmp = last_tmp; *tmp; tmp = g_utf8_next_char (tmp))
 	{

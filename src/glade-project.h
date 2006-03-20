@@ -156,7 +156,8 @@ gchar        *glade_project_resource_fullpath     (GladeProject  *project,
 LIBGLADEUI_API
 gchar        *glade_project_display_name          (GladeProject  *project, 
 						   gboolean       unsaved_changes,
-						   gboolean       tab_aligned);
+						   gboolean       tab_aligned,
+						   gboolean       mnemonic);
 
 LIBGLADEUI_API 
 gboolean      glade_project_is_loading            (GladeProject *project);

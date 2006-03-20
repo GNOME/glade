@@ -84,7 +84,7 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	active_project = glade_app_get_active_project (GLADE_APP (gpw));
 	if (active_project)
 	{
-		disp = glade_project_display_name (active_project, TRUE, FALSE);
+		disp = glade_project_display_name (active_project, TRUE, FALSE, FALSE);
 		title = g_strdup_printf ("%s - %s", WINDOW_TITLE, disp);
 		g_free (disp);
 	}
@@ -243,21 +243,19 @@ static void
 gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkAction *action;
-	gchar *project_name, *final_project_name;
+	gchar *project_name;
 	
 	/* Get associated action */
 	action = GTK_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
 
 	/* Set action label */
-	project_name = glade_project_display_name (project, TRUE, TRUE);
-	final_project_name = glade_util_duplicate_underscores (project_name);
-	g_object_set (action, "label", final_project_name, NULL);
+	project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
+	g_object_set (action, "label", project_name, NULL);
 
 	/* Set action tooltip */
 	g_object_set (action, "tooltip", project->path, NULL);
 	
 	g_free (project_name);
-	g_free (final_project_name);
 }
 
 
@@ -338,7 +336,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		project = GLADE_PROJECT (l->data);
 
 		action_name = g_strdup_printf ("Project_%d", i);
-		project_name = glade_project_display_name (project, TRUE, TRUE);
+		project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
 		action = gtk_radio_action_new (action_name, project_name, project->path, NULL, i);
 
 		/* Link action and project */
@@ -451,7 +449,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	glade_app_update_instance_count (GLADE_APP (gpw), project);
 
 	/* Get display_name here, it could have changed with "Save As..." */
-	display_name = glade_project_display_name (project, FALSE, FALSE),
+	display_name = glade_project_display_name (project, FALSE, FALSE, FALSE),
 
 	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);

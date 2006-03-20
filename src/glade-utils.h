@@ -58,7 +58,7 @@ GtkWidget        *glade_util_file_dialog_new (const gchar *title,
 LIBGLADEUI_API
 void              glade_util_replace (char *str, char a, char b);
 LIBGLADEUI_API
-gchar            *glade_util_duplicate_underscores (const char *name);
+gchar            *glade_util_duplicate_underscores (const gchar *name);
 
 LIBGLADEUI_API
 void              glade_util_add_selection    (GtkWidget *widget);

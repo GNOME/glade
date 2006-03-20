@@ -28,13 +28,22 @@
 	   o Fixed a bug where the loaded project title apears as
 	     unsaved.
 
-	* src/glade-utils.c: Added comments.
+	* src/glade-utils.c: Added comments, changed 'char' --> 'gchar'
 
 	* widgets/gtk+.xml.in: Removed mention of the get_anarchist_children func,
 	  override the get_children func for GtkCombo to additionally return the
 	  combo->list member (which is an anarchist child).
 	  Also added a gtk_container_remove remove-function for GtkListItem since
 	  it seemed to be empty and causing errors.
+
+	* src/glade-project.c: 
+	  o Fixed glade_project_write() to count the required libs in the GList 
+	    before freeing the GList (was SEGFAULT on save of any projects useing 
+	    extra libs).
+	  o Made glade_project_display_name() take a "mnemonic" arg... to escape
+	    any underscores when setting the display name in a mnemonic label.
+	  o Fixed a bug where projects with required added libs where segfaulting
+	    at save time.
 
 2006-03-15  Vincent Geddes <vgeddes@metroweb.co.za>
 

@@ -1030,10 +1030,10 @@ glade_project_write (GladeProject *project)
 		for (i = 0, list = required; list; i++, list = list->next)
 			strv[i] = g_strdup (list->data);
 
-		g_list_free (required);
-
 		interface->n_requires = g_list_length (required);
 		interface->requires   = strv;
+
+		g_list_free (required);
 	}
 
 	for (i = 0, list = project->objects; list; list = list->next)
@@ -1554,6 +1554,8 @@ glade_project_list_resources (GladeProject  *project)
  *                   of projects with unsaved changes
  * @tab_aligned: whether to prepend a tab and align unsaved
  *               names using the tab (for the project menu)
+ * @mnemonic: Pass %TRUE here if you are going to use this in
+ *            a mnemonic label... this will escape the underscores nicely.
  *
  * Returns: A newly allocated string to uniquely 
  *          describe this open project.
@@ -1562,7 +1564,8 @@ glade_project_list_resources (GladeProject  *project)
 gchar *
 glade_project_display_name (GladeProject *project, 
 			    gboolean      unsaved_changes,
-			    gboolean      tab_aligned)
+			    gboolean      tab_aligned,
+			    gboolean      mnemonic)
 {
 	const gchar *prefix         = tab_aligned ? "\t"     : "";
 	const gchar *unsaved_prefix = unsaved_changes ? 
@@ -1586,6 +1589,13 @@ glade_project_display_name (GladeProject *project,
 	else
 		final_name = prefixed_name;
 
+	if (mnemonic)
+	{
+		prefixed_name = glade_util_duplicate_underscores (final_name);
+		g_free (final_name);
+		return prefixed_name;
+	}
+	
 	return final_name;
 }
 
