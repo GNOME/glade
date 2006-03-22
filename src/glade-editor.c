@@ -57,9 +57,10 @@ glade_editor_class_init (GladeEditorClass *class)
 static GtkWidget *
 glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 {
-	GtkWidget *vbox;
-	GtkWidget *scrolled_window;
-	GtkWidget *label;
+	GtkWidget     *vbox;
+	GtkWidget     *scrolled_window;
+	GtkWidget     *label;
+	GtkAdjustment *adj;
 	static gint page = 0;
 
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -72,9 +73,17 @@ glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 					       GTK_WIDGET (vbox));
 	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
 					GLADE_GENERIC_BORDER_WIDTH);
+
+	/* Enable tabbed keynav in the editor */
+	adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
+	gtk_container_set_focus_vadjustment (GTK_CONTAINER (scrolled_window), adj);
+	
+	adj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
+	gtk_container_set_focus_hadjustment (GTK_CONTAINER (scrolled_window), adj);
+
 	label = gtk_label_new_with_mnemonic (name);
 	gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), scrolled_window, label, page++);
-
+	
 	return vbox;
 }
 
