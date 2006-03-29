@@ -1218,7 +1218,7 @@ glade_project_open (const gchar *path)
 	
 	}
 
-	project->changed = FALSE;
+	if (project) project->changed = FALSE;
 
 	return project;
 }
@@ -1567,7 +1567,8 @@ glade_project_display_name (GladeProject *project,
 			    gboolean      tab_aligned,
 			    gboolean      mnemonic)
 {
-	const gchar *prefix         = tab_aligned ? "\t"     : "";
+	const gchar *prefix         =
+		tab_aligned ? "\t" : "";
 	const gchar *unsaved_prefix = unsaved_changes ? 
 		(tab_aligned ? "     *\t" : "*") : prefix;
 

@@ -645,7 +645,7 @@
     <glade-widget-class name="GtkNotebook" generic-name="notebook" _title="Notebook">
       <post-create-function>empty</post-create-function>
       <properties>
-	<property id="pages" _name="Number of pages" default="3" query="True">
+	<property id="pages" _name="Number of pages" save="False" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
 	  <set-function>glade_gtk_notebook_set_n_pages</set-function>

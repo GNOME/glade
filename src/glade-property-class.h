@@ -204,6 +204,9 @@ LIBGLADEUI_API
 gboolean            glade_property_class_match                   (GladePropertyClass *class,
 								  GladePropertyClass *comp);
 
+LIBGLADEUI_API
+gboolean            glade_property_class_void_value              (GladePropertyClass *class,
+								  GValue             *value);
 
 G_END_DECLS
 

@@ -1,9 +1,24 @@
-2006-03-22  Tristan Van Berkom <tvb@gnome.org>
+2006-03-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: Removed idle handler hack that has
 	  been obsoleted by Vincent's smarter one-line patch.
 
-2006-03-19  Vincent Geddes <vgeddes@metroweb.co.za>
+	* src/glade_project.c: glade_project_open() fixed segfault
+	  on open faiure.
+
+	* src/glade-property-class.[ch]: Added glade_property_class_void_value()
+
+	* src/glade-widget.c: when creating new objects; ignore voided defaults
+	  using glade_property_class_void_value() (and finally added myself as
+	  an author).
+
+	* src/glade-editor-property.c: Fixed segfaults & assertions when dealing
+	  with NULL colors in GladeEPropColor.
+
+	* widgets/gtk+.xml.in: Dont save virtual "pages" property on notebook,
+	  if we dont need it in glade-2 files we dont need it period.
+	
+2006-03-29  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade_project.c: glade_project_changed() should not set
 	  project->changed if project is still in process of being loaded.

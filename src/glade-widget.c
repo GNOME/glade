@@ -20,6 +20,7 @@
  * Authors:
  *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -602,9 +603,15 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 			if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->def),
 						     G_VALUE_TYPE (&parameter.value)))
 			{
+				if (glade_property_class_void_value
+				    (glade_property_class,
+				     glade_property_class->def))
+					continue;
+#if 0
 				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->def), G_TYPE_OBJECT))
 					if (g_value_get_object (glade_property_class->def) == NULL)
 						continue;
+#endif
 				
 				g_value_copy (glade_property_class->def, &parameter.value);
 			}
@@ -2915,9 +2922,18 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 		else if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->orig_def),
 						  G_VALUE_TYPE (&parameter.value)))
 			{
-				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->orig_def), G_TYPE_OBJECT))
-						if (g_value_get_object (glade_property_class->orig_def) == NULL)
+				if (glade_property_class_void_value
+				    (glade_property_class,
+				     glade_property_class->orig_def))
+					continue;
+#if 0
+				/* If its a NULL object property; disregard it.
+				 */
+				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->orig_def),
+						 G_TYPE_OBJECT))
+					if (g_value_get_object (glade_property_class->orig_def) == NULL)
 							continue;
+#endif
 				g_value_copy (glade_property_class->orig_def, &parameter.value);
 			}
 		else

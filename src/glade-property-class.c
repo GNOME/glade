@@ -1313,3 +1313,26 @@ glade_property_class_match (GladePropertyClass *class,
 	return (strcmp (class->id, comp->id) == 0 &&
 		class->pspec->owner_type == comp->pspec->owner_type);
 }
+
+
+/**
+ * glade_property_class_match:
+ * @class: a #GladePropertyClass
+ *
+ * Returns: Whether @value for this @class is voided; a voided value
+ *          can be a %NULL value for boxed or object type param specs.
+ */
+gboolean
+glade_property_class_void_value (GladePropertyClass *class,
+				 GValue             *value)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
+	
+	if (G_IS_PARAM_SPEC_OBJECT (class->pspec) &&
+	    g_value_get_object (value) == NULL)
+		return TRUE;
+	else if (G_IS_PARAM_SPEC_BOXED (class->pspec) &&
+		 g_value_get_boxed (value) == NULL)
+		return TRUE;
+	return FALSE;
+}

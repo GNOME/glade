@@ -1043,13 +1043,31 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 	
 	if (property)
 	{
-		text  = glade_property_class_make_string_from_gvalue
-			(eprop->class, property->value);
-		gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), text);
-		g_free (text);
-		
-		color = g_value_get_boxed (property->value);
-		gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), color);
+		if ((text = glade_property_class_make_string_from_gvalue
+		     (eprop->class, property->value)) != NULL)
+		{
+			gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), text);
+			g_free (text);
+		}
+		else
+			gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), "");
+			
+		if ((color = g_value_get_boxed (property->value)) != NULL)
+			gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton),
+						    color);
+		else
+		{
+			GdkColor black = { 0, };
+
+			/* Manually fill it with black for an NULL value.
+			 */
+			if (gdk_color_parse("Black", &black) &&
+			    gdk_colormap_alloc_color(gtk_widget_get_default_colormap(),
+						     &black, FALSE, TRUE))
+				gtk_color_button_set_color
+					(GTK_COLOR_BUTTON (eprop_color->cbutton),
+					 &black);
+		}
 	}
 }
 
