@@ -258,28 +258,9 @@ gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 	g_free (project_name);
 }
 
-
-static gboolean
-gpw_refresh_titles_idle (GladeProjectWindow *gpw)
-{
-	GList *list;
-	gpw_refresh_title (gpw);
-
-	for (list = glade_app_get_projects (GLADE_APP (gpw));
-	     list != NULL; list = list->next)
-		gpw_refresh_projects_list_item
-			(gpw, GLADE_PROJECT (list->data));
-	return FALSE;
-}
-
 static void
 gpw_project_notify_handler_cb (GladeProject *project, GParamSpec *spec, GladeProjectWindow *gpw)
 {
-	if (project->loading)
-		g_idle_add_full (G_PRIORITY_LOW,
-				 (GSourceFunc)gpw_refresh_titles_idle, 
-				 gpw, NULL);
-
 	gpw_refresh_title (gpw);
 	gpw_refresh_projects_list_item (gpw, project);
 }

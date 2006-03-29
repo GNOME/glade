@@ -1338,7 +1338,7 @@ glade_project_changed (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	
-	if (!project->changed)
+	if (!project->changed && !project->loading)
 	{
 		project->changed = TRUE;
 		g_object_notify (G_OBJECT (project), "has-unsaved-changes");

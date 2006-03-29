@@ -1,5 +1,15 @@
 2006-03-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-project-window.c: Removed idle handler hack that has
+	  been obsoleted by Vincent's smarter one-line patch.
+
+2006-03-19  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/glade_project.c: glade_project_changed() should not set
+	  project->changed if project is still in process of being loaded.
+
+2006-03-22  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor.c: Call gtk_container_set_focus_[vh]adjustment()
 	  to fix keynav in the editor.
 
