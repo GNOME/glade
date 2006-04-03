@@ -925,55 +925,6 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 		(&widget_class->children, parent_class->children, widget_class);
 }
 
-/**
- * glade_widget_class_load_library:
- * @library_name: name of the library
- *
- * Loads the named library from the Glade modules directory, or failing that
- * from the standard platform specific directories.
- *
- * The @library_name should not include any platform specifix prefix or suffix,
- * those are automatically added, if needed, by g_module_build_path()
- *
- * Returns: a #GModule on success, or %NULL on failure.
- */
-static GModule *
-glade_widget_class_load_library (const gchar *library_name)
-{
-	gchar   *path;
-	GModule *module;
-
-	path = g_module_build_path (glade_modules_dir, library_name);
-	if (!path)
-	{
-		g_warning (_("Not enough memory."));
-		return NULL;
-	}
-
-	module = g_module_open (path, G_MODULE_BIND_LAZY);
-	g_free (path);
-
-	if (!module)
-	{
-		path = g_module_build_path (NULL, library_name);
-		if (!path)
-		{
-			g_warning (_("Not enough memory."));
-			return NULL;
-		}
-
-		module = g_module_open (path, G_MODULE_BIND_LAZY);
-		g_free (path);
-	}
-
-	if (!module)
-	{
-		g_warning (_("Unable to open the module %s."), library_name);
-	}
-
-	return module;
-}
-
 GladeWidgetClass *
 glade_widget_class_new (GladeXmlNode *class_node,
 			const gchar  *catname, 
@@ -1024,7 +975,7 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	module = NULL;
 	if (library) 
 	{
-		module = glade_widget_class_load_library (library);
+		module = glade_util_load_library (library);
 		if (!module)
 		{
 			g_warning ("Failed to load external library '%s'",

@@ -1,3 +1,22 @@
+2006-04-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-catalog.c: Added GladeCatalogInitFunc so you could define a function
+	  to be executed before instantiating any catalog's object.
+
+	* src/glade-project-view.c: glade_project_view_populate_model now shows toplevels
+	  in the right order.
+
+	* src/glade-property.c: fixed a bug in glade_property_write_impl which prevented
+	  properties with an empty string as value being saved.
+
+	* src/glade-utils.[c/h]: new function glade_util_load_library() moved from
+	  glade_widget_class_load_library()
+
+	* src/glade-widget-class.c: glade_widget_class_load_library() replaced with
+	  glade_util_load_library()
+
+	* src/glade.h: added tag GLADE_TAG_INIT_FUNCTION.
+
 2006-03-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: Removed idle handler hack that has

@@ -37,6 +37,7 @@
 #include "glade-catalog.h"
 #include "glade-widget-class.h"
 
+typedef void   (*GladeCatalogInitFunc) (void);
 
 struct _GladeCatalog
 {
@@ -57,6 +58,11 @@ struct _GladeCatalog
 
 	GladeXmlContext *context;/* Xml context is stored after open
 				  * before classes are loaded         */
+	
+	GModule *module;
+	
+	gchar *init_function_name;/* Catalog's init function name */
+	GladeCatalogInitFunc init_function;
 };
 
 struct _GladeWidgetGroup
@@ -80,6 +86,20 @@ void                   widget_group_free    (GladeWidgetGroup *group);
  */
 static GList *loaded_catalogs = NULL;
 
+static gboolean
+catalog_get_function (GladeCatalog *catalog, 
+		      const gchar *symbol_name,
+		      gpointer *symbol_ptr)
+{
+	if (catalog->module == NULL)
+		catalog->module = glade_util_load_library (catalog->library);
+	
+	if (catalog->module)
+		return g_module_symbol (catalog->module, symbol_name, symbol_ptr);
+
+	return FALSE;
+}
+
 static GladeCatalog *
 catalog_open (const gchar *filename)
 {
@@ -88,7 +108,7 @@ catalog_open (const gchar *filename)
 	GladeXmlDoc     *doc;
 	GladeXmlNode    *root;
 
-	g_debug ("Loading catalog: %s\n", filename);
+	g_debug ("Opening catalog: %s\n", filename);
 
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
@@ -130,7 +150,13 @@ catalog_open (const gchar *filename)
 		glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
 	catalog->domain =
 		glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
-
+	catalog->init_function_name =
+		glade_xml_get_value_string (root, GLADE_TAG_INIT_FUNCTION);
+	
+	if (catalog->init_function_name)
+		catalog_get_function (catalog, catalog->init_function_name,
+				      (gpointer) &catalog->init_function);
+	
 	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
 
 	return catalog;
@@ -145,6 +171,15 @@ catalog_load (GladeCatalog *catalog)
 	GladeXmlNode    *node;
 
 	g_return_if_fail (catalog->context != NULL);
+	
+	g_debug ("Loading catalog: %s\n", catalog->name);
+	
+	if (catalog->init_function)
+	{
+		g_debug ("Executing catalog's init function. (%s)\n", 
+			 catalog->init_function_name);
+		catalog->init_function ();
+	}
 	
 	doc  = glade_xml_context_get_doc (catalog->context);
 	root = glade_xml_doc_get_root (doc);
@@ -171,7 +206,7 @@ catalog_load (GladeCatalog *catalog)
 	catalog->context =
 		(glade_xml_context_free (catalog->context), NULL);
 	
-	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
+	g_debug ("Successfully loaded catalog: %s\n", catalog->name);
 
 	return;
 }

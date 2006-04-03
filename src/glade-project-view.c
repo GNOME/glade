@@ -145,7 +145,7 @@ glade_project_view_populate_model (GladeProjectView *view)
 		g_assert (gwidget);
 
 		if (gwidget->parent == NULL)
-			toplevels = g_list_append (toplevels, object);
+			toplevels = g_list_prepend (toplevels, object);
 	}
 
 	/* add the widgets and recurse */

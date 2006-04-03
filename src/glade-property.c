@@ -315,8 +315,9 @@ glade_property_write_impl (GladeProperty  *property,
 	 * the opening and the closing of the property tag */
 	tmp = glade_property_class_make_string_from_gvalue (property->class,
 							    property->value);
-	if (!tmp || !tmp[0])
-		return FALSE;
+	
+	/* an empty string is a valid value (a flag set to 0) */
+	if (tmp == NULL) return FALSE;
 
 	if (property->class->orig_def == NULL)
 	{

@@ -1425,3 +1425,53 @@ glade_util_copy_file (const gchar  *src_path,
 	}
 	return success;
 }
+
+
+/**
+ * glade_util_load_library:
+ * @library_name: name of the library
+ *
+ * Loads the named library from the Glade modules directory, or failing that
+ * from the standard platform specific directories.
+ *
+ * The @library_name should not include any platform specifix prefix or suffix,
+ * those are automatically added, if needed, by g_module_build_path()
+ *
+ * Returns: a #GModule on success, or %NULL on failure.
+ */
+GModule *
+glade_util_load_library (const gchar *library_name)
+{
+	gchar   *path;
+	GModule *module;
+
+	path = g_module_build_path (glade_modules_dir, library_name);
+	if (!path)
+	{
+		g_warning (_("Not enough memory."));
+		return NULL;
+	}
+
+	module = g_module_open (path, G_MODULE_BIND_LAZY);
+	g_free (path);
+
+	if (!module)
+	{
+		path = g_module_build_path (NULL, library_name);
+		if (!path)
+		{
+			g_warning (_("Not enough memory."));
+			return NULL;
+		}
+
+		module = g_module_open (path, G_MODULE_BIND_LAZY);
+		g_free (path);
+	}
+
+	if (!module)
+	{
+		g_warning (_("Unable to open the module %s."), library_name);
+	}
+
+	return module;
+}

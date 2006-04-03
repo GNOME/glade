@@ -115,6 +115,8 @@ LIBGLADEUI_API
 gboolean          glade_util_copy_file             (const gchar  *src_path,
 						    const gchar  *dest_path);
 
+LIBGLADEUI_API
+GModule          *glade_util_load_library          (const gchar  *library_name);
 
 G_END_DECLS
 
