@@ -1093,10 +1093,11 @@ GladeWidget *
 glade_widget_new_for_internal_child (GladeWidget      *parent,
 				     GObject          *internal_object,
 				     const gchar      *internal_name,
+				     const gchar      *parent_name,
 				     gboolean          anarchist)
 {
 	GladeProject     *project;
-	gchar            *widget_name;
+	gchar            *widget_name, *name_base;
 	GladeWidgetClass *klass;
 	GladeWidget      *widget;
 
@@ -1111,7 +1112,10 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 		return NULL;
 	}
 
-	widget_name = glade_project_new_widget_name (project, klass->generic_name);
+	name_base = g_strdup_printf ("%s-%s", parent_name, internal_name);
+	widget_name = glade_project_new_widget_name (project, name_base);
+	g_free (name_base);
+
 	widget      = g_object_new (GLADE_TYPE_WIDGET,
 				    "anarchist", anarchist,
 				    "parent", parent,

@@ -1,3 +1,11 @@
+2006-04-03  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* src/glade-widget.[ch]: Added a "parent_name" argument to 
+	  glade_widget_new_for_internal_child(), create internal widget names
+	  accordingly.
+
+	* src/glade-gtk.c: Adjusted callers to glade_widget_new_for_internal_child().
+
 2006-04-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-catalog.c: Added GladeCatalogInitFunc so you could define a function

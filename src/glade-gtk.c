@@ -1062,12 +1062,12 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 
 	/* create the GladeWidgets for internal children */
 	vbox_widget = glade_widget_new_for_internal_child 
-		(widget, G_OBJECT(dialog->vbox), "vbox", FALSE);
+		(widget, G_OBJECT(dialog->vbox), "vbox", "dialog", FALSE);
 	g_assert (vbox_widget);
 
 
 	actionarea_widget = glade_widget_new_for_internal_child
-		(vbox_widget, G_OBJECT(dialog->action_area), "action_area", FALSE);
+		(vbox_widget, G_OBJECT(dialog->action_area), "action_area", "dialog", FALSE);
 	g_assert (actionarea_widget);
 
 	/*
@@ -1398,11 +1398,11 @@ glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
 		return;
 	
 	gentry = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry", FALSE);
+		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry", "combo", FALSE);
 
 	/* We mark this 'anarchist' since its outside of the heirarchy */
 	glist  = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list", TRUE);
+		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list", "combo", TRUE);
 
 }
 
@@ -2322,7 +2322,7 @@ glade_gtk_menu_item_post_create (GObject *object, GladeCreateReason reason)
 			{
 				GtkWidget *image = gtk_image_new ();
 				gimage = glade_widget_new_for_internal_child
-					(gitem, G_OBJECT (image), "image", FALSE);
+					(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
 				gtk_image_menu_item_set_image
 					(GTK_IMAGE_MENU_ITEM (object), image);
 				glade_gtk_image_post_create_idle (G_OBJECT (image));
@@ -2421,7 +2421,7 @@ glade_gtk_image_menu_item_get_internal_child (GObject *parent,
 			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent), image);
 			
 			gimage = glade_widget_new_for_internal_child
-				(gitem, G_OBJECT (image), "image", FALSE);
+				(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
 		}
 		*child = G_OBJECT (image);
 		glade_gtk_image_post_create (G_OBJECT (image), GLADE_CREATE_LOAD);
@@ -2463,7 +2463,7 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, GValue *value)
 		image = gtk_image_new ();
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 		gimage = glade_widget_new_for_internal_child
-			(gitem, G_OBJECT (image), "image", FALSE);
+			(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
 		glade_project_add_object (glade_widget_get_project (gitem), 
 					  NULL, G_OBJECT (image));
 		glade_gtk_image_post_create_idle (G_OBJECT (image));
