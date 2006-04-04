@@ -282,6 +282,8 @@ LIBGLADEUI_API
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
 							     GladeWidget      *container);
 
+LIBGLADEUI_API 
+gboolean                glade_widget_is_dupping             (void);
 
 G_END_DECLS
 

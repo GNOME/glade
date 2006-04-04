@@ -6,6 +6,16 @@
 	* src/glade-project-window.c: Refitted Yevgen Muntyan's patch on bug 336579
 	  to apply for "Save" as well and applied (also enhanced saving untitled projects
 	  when prompted at close time).
+
+	* src/glade-widget.[ch]: Added glade_widget_is_dupping()
+
+	* src/glade-property.c: Dont call verify functions if the project is
+	  loading or there is a widget recursive dup happening.
+
+	* src/glade-property-class.h: Clarified docs
+
+	* src/glade-gtk.c: Removed obsolete call to glade_project_is_loading() in
+	  a verify function.
 	
 2006-04-04  Yevgen Muntyan <muntyan@tamu.edu>
 

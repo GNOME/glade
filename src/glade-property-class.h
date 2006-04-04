@@ -18,6 +18,11 @@ typedef struct _GladePropertyClass GladePropertyClass;
  * @object: A #GObject
  * @value: The #GValue
  *
+ * This delagate function is always called whenever setting any
+ * properties with the exception of load time, and copy/paste time
+ * (basicly the two places where we recreate a heirarchy that we
+ * already know "works"
+ *
  * Returns: whether or not its OK to set @value on @object
  */
 typedef gboolean (* GladeVerifyPropertyFunc) (GObject      *object,
@@ -27,6 +32,9 @@ typedef gboolean (* GladeVerifyPropertyFunc) (GObject      *object,
  * GladeSetPropertyFunc:
  * @object: A #GObject
  * @value: The #GValue
+ *
+ * This delagate function is used to apply the property value on
+ * the runtime object.
  *
  * Sets @value on @object for a given #GladePropertyClass
  */

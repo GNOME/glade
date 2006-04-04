@@ -97,6 +97,9 @@ static GObjectClass *parent_class = NULL;
  */
 static GladeProject *loading_project = NULL;
 
+static gboolean glade_widget_dupping = FALSE;
+
+
 GType
 glade_widget_get_type (void)
 {
@@ -924,7 +927,10 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 GladeWidget *
 glade_widget_dup (GladeWidget *template)
 {
-	GladeWidget *widget = glade_widget_dup_internal (NULL, template);
+	GladeWidget *widget;
+	glade_widget_dupping = TRUE;
+	widget = glade_widget_dup_internal (NULL, template);
+	glade_widget_dupping = FALSE;
 	return widget;
 }
 
@@ -2350,8 +2356,7 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 	g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 	g_list_free (widget->packing_properties);
 	
-
-	/* XXX We have to detect whether this is an anarchist child of a composite
+	/* We have to detect whether this is an anarchist child of a composite
 	 * widget or not, in otherwords; whether its really a direct child or
 	 * a child of a popup window created on the composite widget's behalf.
 	 */
@@ -3215,4 +3220,18 @@ glade_widget_launch_editor (GladeWidget *widget)
 			break;
 		}
 	} while ((parent = parent->parent) != NULL);
+}
+
+/**
+ * glade_widget_is_dupping:
+ *
+ * This is used internally by #GladeProperty to avoid calling
+ * backend "verify-function"s at dup time.
+ *
+ * Returns: whether we are currently duplicating a widget or not
+ */
+gboolean
+glade_widget_is_dupping (void)
+{
+	return glade_widget_dupping;
 }

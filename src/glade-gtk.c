@@ -2066,18 +2066,11 @@ glade_gtk_table_verify_left_top_attach (GObject *object,
 					const gchar *parent_prop)
 {
 	guint val, prop_val, parent_val;
-	GladeWidget *widget;
 	
 	if (glade_gtk_table_verify_attach_common (object, value, &val,
 						  prop, &prop_val,
 						  parent_prop, &parent_val))
 		return FALSE;
-	
-	if ((widget = glade_widget_get_from_gobject (object)))
-	{
-		GladeProject *project = glade_widget_get_project (widget);	
-		if (project && glade_project_is_loading (project)) return TRUE;
-	}
 	
 	if (val >= parent_val || val >= prop_val) return FALSE;
 		

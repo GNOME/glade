@@ -137,10 +137,12 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 	}
 }
 
+extern gboolean glade_widget_dupping;
+
 static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
-	GladeProject *project;
+	GladeProject *project = glade_widget_get_project (property->widget);
 	gboolean      changed = FALSE;
 
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
@@ -150,7 +152,8 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 		return;
 	}
 
-	if (property->class->verify_function)
+	if (property->class->verify_function && glade_widget_is_dupping() == FALSE &&
+	    project && glade_project_is_loading (project) == FALSE)
 	{
 		GObject *object = glade_widget_get_object (property->widget);
 		if (property->class->verify_function (object, value) == FALSE)
@@ -193,8 +196,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 	if (changed)
 	{
-		if ((project = glade_widget_get_project (property->widget)) != NULL)
-			glade_project_changed (project);
+		if (project) glade_project_changed (project);
 
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[VALUE_CHANGED],
