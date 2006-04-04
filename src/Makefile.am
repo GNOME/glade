@@ -102,7 +102,7 @@ libgladeuiinclude_HEADERS = \
 	fixed_bg.xpm
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libgladeui-1.0.pc
+pkgconfig_DATA = libgladeui-1.0.pc glade-3.pc
 
 if WITH_WIN32
   libgladegtk_la_LDFLAGS += -no-undefined
