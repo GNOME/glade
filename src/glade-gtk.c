@@ -154,59 +154,24 @@ glade_gtk_progress_bar_set_format (GObject *object, GValue *value)
 	gtk_progress_set_format_string (GTK_PROGRESS (bar), format);
 }
 
-void GLADEGTK_API
-glade_gtk_spin_button_set_max (GObject *object, GValue *value)
-{
-	GtkAdjustment *adjustment;
-
-	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
-
-	adjustment->upper = g_value_get_float (value);
-	gtk_adjustment_changed (adjustment);
-}
+/* GtkSpinButton */
 
 void GLADEGTK_API
-glade_gtk_spin_button_set_min (GObject *object, GValue *value)
+glade_gtk_spin_button_set_adjustment (GObject *object, GValue *value)
 {
-	GtkAdjustment *adjustment;
-
-	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
-
-	adjustment->lower = g_value_get_float (value);
-	gtk_adjustment_changed (adjustment);
-}
-
-void GLADEGTK_API
-glade_gtk_spin_button_set_step_increment (GObject *object, GValue *value)
-{
-	GtkAdjustment *adjustment;
-
-	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
-
-	adjustment->step_increment = g_value_get_float (value);
-	gtk_adjustment_changed (adjustment);
-}
-
-void GLADEGTK_API
-glade_gtk_spin_button_set_page_increment (GObject *object, GValue *value)
-{
-	GtkAdjustment *adjustment;
-
-	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
-
-	adjustment->page_increment = g_value_get_float (value);
-	gtk_adjustment_changed (adjustment);
-}
-
-void GLADEGTK_API
-glade_gtk_spin_button_set_page_size (GObject *object, GValue *value)
-{
-	GtkAdjustment *adjustment;
-
-	adjustment = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (object)));
-
-	adjustment->page_size = g_value_get_float (value);
-	gtk_adjustment_changed (adjustment);
+	GObject *adjustment;
+	GtkAdjustment *adj;
+	
+	g_return_if_fail (GTK_IS_SPIN_BUTTON (object));
+		
+	adjustment = g_value_get_object (value);
+	
+	if (adjustment && GTK_IS_ADJUSTMENT (adjustment))
+	{
+		adj = GTK_ADJUSTMENT (adjustment);
+		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (object), adj);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (object), adj->value);
+	}
 }
 
 /* GtkBox */

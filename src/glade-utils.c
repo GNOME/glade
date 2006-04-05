@@ -63,6 +63,8 @@ glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 {
 	GtkTooltips *tooltips;
 
+	if (GTK_WIDGET_NO_WINDOW (widget)) return;
+	
 	tooltips = gtk_tooltips_new ();
 	g_object_ref (G_OBJECT (tooltips));
 	gtk_object_sink (GTK_OBJECT (tooltips));

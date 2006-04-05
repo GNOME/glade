@@ -432,6 +432,12 @@
 
     <glade-widget-class name="GtkSpinButton" generic-name="spinbutton" _title="Spin Button">
       <properties>
+        <property id="text" disabled="True"/>
+        <property id="value" disabled="True"/>
+	<property id="can-focus" default="True"/>
+        <property id="adjustment" default="0 0 100 1 10 10">
+	  <set-function>glade_gtk_spin_button_set_adjustment</set-function>
+	</property>
         <property id="update-policy">
   	  <displayable-values>
 	    <value id="GTK_UPDATE_ALWAYS" _name="Always"/>
@@ -715,6 +721,7 @@
     <!-- Gtk+ Additional -->
     <glade-widget-class name="GtkRange">
       <properties>
+        <property id="adjustment" default="0 0 100 1 10 10"/>
       	<property id="update-policy">
   	  <displayable-values>
 	    <value id="GTK_UPDATE_CONTINUOUS" _name="Continuous"/>
@@ -853,6 +860,8 @@
     
     <glade-widget-class name="GtkViewport" generic-name="viewport" _title="Viewport">
       <properties>
+        <property id="hadjustment" disabled="True"/>
+	<property id="vadjustment" disabled="True"/>
       	<property id="shadow-type">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" _name="None"/>
@@ -867,6 +876,8 @@
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
+        <property id="hadjustment" disabled="True"/>
+	<property id="vadjustment" disabled="True"/>
       	<property id="shadow-type">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" _name="None"/>

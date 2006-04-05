@@ -287,6 +287,15 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 		if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
 			string = g_path_get_basename (filename);
 	}
+	else if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
+	{
+		GtkAdjustment *adj = GTK_ADJUSTMENT (object);
+		string = g_strdup_printf ("%lf %lf %lf %lf %lf %lf", 
+					  adj->value, adj->lower, adj->upper, 
+					  adj->step_increment, 
+					  adj->page_increment,
+					  adj->page_size);
+	}
 	else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
 		string = g_strdup (gwidget->name);
 	else
@@ -538,34 +547,40 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 	GObject *object = NULL;
 	gchar   *fullpath;
 
+	if (string == NULL) return NULL;
+	
 	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
 	{
 		GdkPixbuf *pixbuf;
 
-		if (string)
+		fullpath = glade_project_resource_fullpath (project, string);
+
+		if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) != NULL)
 		{
-			fullpath = glade_project_resource_fullpath (project, string);
+			g_object_set_data_full (G_OBJECT(pixbuf), 
+						"GladeFileName",
+						g_strdup (string),
+						g_free);
 
-			if ((pixbuf = gdk_pixbuf_new_from_file
-				     (fullpath, NULL)) != NULL)
-			{
-				g_object_set_data_full (G_OBJECT(pixbuf), 
-							"GladeFileName",
-							g_strdup (string),
-							g_free);
-
-				object = G_OBJECT(pixbuf);
-			}
-			g_free (fullpath);
+			object = G_OBJECT(pixbuf);
 		}
+		g_free (fullpath);
+	}
+	if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
+	{
+		gdouble value, lower, upper, step_increment, page_increment, page_size;
+		
+		sscanf (string, "%lf %lf %lf %lf %lf %lf", &value, &lower, &upper, &step_increment, &page_increment, &page_size);
+		object = G_OBJECT (gtk_adjustment_new (value, lower, upper, step_increment, page_increment, page_size));
 	}
 	else
 	{
 		GladeWidget *gwidget;
-		if (string && (gwidget = glade_project_get_widget_by_name 
+		if ((gwidget = glade_project_get_widget_by_name 
 			       (project, string)) != NULL)
 			object = gwidget->object;
 	}
+	
 	return object;
 }
 
@@ -925,7 +940,8 @@ glade_property_class_is_object (GladePropertyClass  *class)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (class), FALSE);
 	return (G_IS_PARAM_SPEC_OBJECT(class->pspec) &&
-		class->pspec->value_type != GDK_TYPE_PIXBUF);
+		class->pspec->value_type != GDK_TYPE_PIXBUF &&
+		class->pspec->value_type != GTK_TYPE_ADJUSTMENT);
 }
 
 
@@ -1078,9 +1094,9 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 	} else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 	{
 		float_range = TRUE;
-		min = (gdouble)((GParamSpecFloat *) property_class->pspec)->minimum;
-		max = (gdouble)((GParamSpecFloat *) property_class->pspec)->maximum;
-		def = (gdouble)((GParamSpecFloat *) property_class->pspec)->default_value;
+		min = (gdouble)((GParamSpecDouble *) property_class->pspec)->minimum;
+		max = (gdouble)((GParamSpecDouble *) property_class->pspec)->maximum;
+		def = (gdouble)((GParamSpecDouble *) property_class->pspec)->default_value;
 	} else
 	{
 		g_critical ("Can't make adjustment for pspec type %s",

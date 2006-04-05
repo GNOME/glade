@@ -2340,6 +2340,262 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
 
 
 /*******************************************************************************
+                        GladeEditorPropertyAdjustmentClass
+ *******************************************************************************/
+typedef struct {
+	GladeEditorProperty parent_instance;
+
+	GtkWidget *value, *lower, *upper, *step_increment, *page_increment, *page_size;
+	GtkAdjustment *value_adj;
+	struct
+	{
+		gulong value, lower, upper, step_increment, page_increment, page_size;
+	}ids;
+} GladeEPropAdjustment;
+
+GLADE_MAKE_EPROP (GladeEPropAdjustment, glade_eprop_adjustment)
+#define GLADE_TYPE_EPROP_ADJUSTMENT            (glade_eprop_adjustment_get_type())
+#define GLADE_EPROP_ADJUSTMENT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustment))
+#define GLADE_EPROP_ADJUSTMENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustmentClass))
+#define GLADE_IS_EPROP_ADJUSTMENT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ADJUSTMENT))
+#define GLADE_IS_EPROP_ADJUSTMENT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ADJUSTMENT))
+#define GLADE_EPROP_ADJUSTMENT_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ADJUSTMENT, GladeEPropAdjustmentClass))
+
+static void
+glade_eprop_adjustment_finalize (GObject *object)
+{
+	/* Chain up */
+	G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+typedef struct _EPropAdjIdle EPropAdjIdleData;
+
+struct _EPropAdjIdle
+{
+	GtkSpinButton *spin;
+	gdouble value;
+};
+
+static gboolean
+glade_eprop_adj_set_value_idle (gpointer p)
+{
+	EPropAdjIdleData *data = (EPropAdjIdleData *) p;
+	
+	gtk_spin_button_set_value (data->spin, data->value);
+	g_free (p);
+	
+	return FALSE;
+}
+
+static void
+glade_eprop_adj_value_changed (GtkAdjustment *adj, GtkSpinButton *spin)
+{
+	GtkAdjustment *spin_adj = gtk_spin_button_get_adjustment (spin);
+	gdouble old_value = spin_adj->value;
+	EPropAdjIdleData *data = g_new (EPropAdjIdleData, 1);
+	
+	g_signal_handlers_disconnect_by_func (adj, glade_eprop_adj_value_changed, spin);	
+
+	data->spin = spin;
+	data->value = adj->value;
+	g_idle_add (glade_eprop_adj_set_value_idle, data);
+	
+	adj->value = old_value;
+}
+
+static void
+glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property)
+{
+	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
+	GObject *object;
+	GtkAdjustment *adj;
+	
+	/* Chain up first */
+	editor_property_class->load (eprop, property);
+
+	if (property == NULL) return;
+	
+	object = g_value_get_object (property->value);
+	if (object == NULL) return;
+
+	adj = GTK_ADJUSTMENT (object);
+
+	g_signal_connect (object, "value-changed",
+			  G_CALLBACK (glade_eprop_adj_value_changed),
+			  GTK_SPIN_BUTTON (eprop_adj->value));
+	
+	/* Update adjustment's values */
+	eprop_adj->value_adj->lower = adj->lower;
+	eprop_adj->value_adj->upper = adj->upper;
+	eprop_adj->value_adj->step_increment = adj->step_increment;
+	eprop_adj->value_adj->page_increment = adj->page_increment;
+	eprop_adj->value_adj->page_size = adj->page_size;
+	
+	/* Block Handlers */
+	g_signal_handler_block (eprop_adj->value, eprop_adj->ids.value);
+	g_signal_handler_block (eprop_adj->lower, eprop_adj->ids.lower);
+	g_signal_handler_block (eprop_adj->upper, eprop_adj->ids.upper);
+	g_signal_handler_block (eprop_adj->step_increment, eprop_adj->ids.step_increment);
+	g_signal_handler_block (eprop_adj->page_increment, eprop_adj->ids.page_increment);
+	g_signal_handler_block (eprop_adj->page_size, eprop_adj->ids.page_size);
+	
+	/* Update spinbuttons values */
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value), adj->value);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->lower), adj->lower);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->upper), adj->upper);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->step_increment), adj->step_increment);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_increment), adj->page_increment);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_size), adj->page_size);
+	
+	/* Unblock Handlers */
+	g_signal_handler_unblock (eprop_adj->value, eprop_adj->ids.value);
+	g_signal_handler_unblock (eprop_adj->lower, eprop_adj->ids.lower);
+	g_signal_handler_unblock (eprop_adj->upper, eprop_adj->ids.upper);
+	g_signal_handler_unblock (eprop_adj->step_increment, eprop_adj->ids.step_increment);
+	g_signal_handler_unblock (eprop_adj->page_increment, eprop_adj->ids.page_increment);
+	g_signal_handler_unblock (eprop_adj->page_size, eprop_adj->ids.page_size);
+}
+
+static GtkAdjustment *
+glade_eprop_adjustment_dup_adj (GladeEditorProperty *eprop)
+{
+	GtkAdjustment *adj;
+	GObject *object;
+	
+	object = g_value_get_object (eprop->property->value);
+	if (object == NULL) return NULL;
+	
+	adj = GTK_ADJUSTMENT (object);
+
+	return GTK_ADJUSTMENT (gtk_adjustment_new (adj->value,
+						   adj->lower,
+						   adj->upper,
+						   adj->step_increment,
+						   adj->page_increment,
+						   adj->page_size));
+}
+
+static void
+glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop, 
+					    GtkAdjustment *adjustment)
+{
+	GValue value = {0, };
+	
+	g_value_init (&value, GTK_TYPE_ADJUSTMENT);
+	g_value_set_object (&value, G_OBJECT (adjustment));
+
+	glade_editor_property_commit (eprop, &value);
+
+	g_value_unset (&value);
+}
+
+#define GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC(p)		\
+static void								\
+glade_eprop_adjustment_ ## p ## _changed (GtkSpinButton *spin,		\
+					  GladeEditorProperty *eprop)	\
+{									\
+	GtkAdjustment *adj = glade_eprop_adjustment_dup_adj (eprop);	\
+	if (adj == NULL) return;					\
+	adj->p = gtk_spin_button_get_value (spin);			\
+	glade_eprop_adjustment_prop_changed_common (eprop, adj);	\
+}
+
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (value)
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (lower)
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (upper)
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (step_increment)
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (page_increment)
+GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (page_size)
+
+#define GLADE_EPROP_ADJUSTMENT_CONNECT(object, prop) \
+g_signal_connect (object, "value_changed", \
+G_CALLBACK (glade_eprop_adjustment_ ## prop ## _changed), eprop);
+
+static void
+glade_eprop_adjustment_table_add_label (GtkTable *table,
+					gint pos,
+					gchar *label,
+					gchar *tip)
+{
+	GtkWidget *widget, *eventbox = gtk_event_box_new ();
+	
+	widget = gtk_label_new (label);
+	gtk_misc_set_alignment (GTK_MISC (widget), 1, 0);
+
+	gtk_container_add (GTK_CONTAINER (eventbox), widget);
+	
+	glade_util_widget_set_tooltip (eventbox, tip);
+	
+	gtk_table_attach_defaults (table, eventbox, 0, 1, pos, pos + 1);
+}
+
+static GtkWidget *
+glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
+	GtkWidget *widget;
+	GtkTable *table;
+	
+	eprop_adj->value = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->value), 2);
+	eprop_adj->ids.value = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->value, value);
+	eprop_adj->value_adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (eprop_adj->value));
+	
+	eprop_adj->lower = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->lower), 2);
+	eprop_adj->ids.lower = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->lower, lower);
+	
+	eprop_adj->upper = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->upper), 2);
+	eprop_adj->ids.upper = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->upper, upper);
+	
+	eprop_adj->step_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->step_increment), 2);
+	eprop_adj->ids.step_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->step_increment, step_increment);
+	
+	eprop_adj->page_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_increment), 2);
+	eprop_adj->ids.page_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_increment, page_increment);
+
+	eprop_adj->page_size = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_size), 2);
+	eprop_adj->ids.page_size = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_size, page_size);
+
+	/* Eprop */
+	widget = gtk_table_new (6, 2, FALSE);
+	table = GTK_TABLE (widget);
+	gtk_table_set_col_spacings (table, 4);
+	
+	glade_eprop_adjustment_table_add_label (table, 0, _("Value :"),
+						_("The current value"));
+
+	glade_eprop_adjustment_table_add_label (table, 1, _("Lower :"),
+						_("The minimum value"));
+	
+	glade_eprop_adjustment_table_add_label (table, 2, _("Upper :"),
+						_("The maximum value"));
+			
+	glade_eprop_adjustment_table_add_label (table, 3, _("Step inc :"),
+		_("The increment to use to make minor changes to the value"));
+	
+	glade_eprop_adjustment_table_add_label (table, 4, _("Page inc :"),
+		_("The increment to use to make major changes to the value"));
+	
+	glade_eprop_adjustment_table_add_label (table, 5, _("Page size :"),
+		_("The page size (in a GtkScrollbar this is the size of the area which is currently visible)"));
+
+	gtk_table_attach_defaults (table, eprop_adj->value, 1, 2, 0, 1);
+	gtk_table_attach_defaults (table, eprop_adj->lower, 1, 2, 1, 2);
+	gtk_table_attach_defaults (table, eprop_adj->upper, 1, 2, 2, 3);
+	gtk_table_attach_defaults (table, eprop_adj->step_increment, 1, 2, 3, 4);
+	gtk_table_attach_defaults (table, eprop_adj->page_increment, 1, 2, 4, 5);
+	gtk_table_attach_defaults (table, eprop_adj->page_size, 1, 2, 5, 6);
+
+	return widget;
+}
+
+
+/*******************************************************************************
                               Misc static stuff
  *******************************************************************************/
 static GType 
@@ -2378,7 +2634,9 @@ glade_editor_property_type (GParamSpec *pspec)
 	{
 		if (pspec->value_type == GDK_TYPE_PIXBUF)
 			type = GLADE_TYPE_EPROP_RESOURCE;
-		else 
+		else if (pspec->value_type == GTK_TYPE_ADJUSTMENT)
+			type = GLADE_TYPE_EPROP_ADJUSTMENT;
+		else
 			type = GLADE_TYPE_EPROP_OBJECT;
 	}
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(pspec))

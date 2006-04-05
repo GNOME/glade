@@ -1,3 +1,18 @@
+2006-04-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-editor-property.c: new GladeEditorProperty class
+	  GladeEPropAdjustment.
+
+	* src/glade-gtk.c: removed old GtkSpinButton adjustment support.
+	  added glade_gtk_spin_button_set_adjustment ().
+
+	* src/glade-property-class.c: added support for GtkAdjustment
+	  properties.
+
+	* widgets/gtk+.xml.in: added default adjustment values for
+	  GtkSpinButton and GtkRange. Disabled GtkViewport and
+	  GtkScrolledWindow adjustment properties.
+
 2006-04-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/catalogintro.sgml: Updated docs to reflect the recently implemented
