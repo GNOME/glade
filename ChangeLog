@@ -1,3 +1,11 @@
+2006-04-04  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* src/glade-project-window.c: Removed GDK_WINDOW_TYPE_HINT_UTILITY hint from
+	  palette, as this does weird things like remove it from the tab list on
+	  some window managers.
+
+	* src/glade-catalog.c: Fixed possible segfault by assigning GError * to NULL.
+	
 2006-04-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-editor-property.c: new GladeEditorProperty class

@@ -380,7 +380,7 @@ GList *
 glade_catalog_load_all (void)
 {
 	GDir         *dir;
-	GError       *error;
+	GError       *error = NULL;
 	const gchar  *filename;
 	GList        *catalogs, *l;
 	GladeCatalog *catalog;

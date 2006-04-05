@@ -810,7 +810,6 @@ gpw_create_palette (GladeProjectWindow *gpw)
 
 
 	gtk_window_set_title (gpw->priv->palette_window, _("Palette"));
-	gtk_window_set_type_hint (gpw->priv->palette_window, GDK_WINDOW_TYPE_HINT_UTILITY);
 	gtk_window_set_resizable (gpw->priv->palette_window, TRUE);
 	gtk_window_move (gpw->priv->palette_window, 0, 250);
 
