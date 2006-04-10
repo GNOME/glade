@@ -30,6 +30,8 @@ struct _GladeProject
 
 	gint   untitled_number; /* A unique number for this project if it is untitled */
 
+	gboolean readonly; /* A flag that is set if the project is readonly */
+
 	gboolean loading;/* A flags that is set when the project is loading */
 	
 	gboolean changed;    /* A flag that is set when a project has changes
@@ -48,6 +50,8 @@ struct _GladeProject
 			   * not want to loose the selection. This is a list
 			   * of #GtkWidget items.
 			   */
+
+	gboolean has_selection; /* Whether the project has a selection */
 
 	GList *undo_stack; /* A stack with the last executed commands */
 	GList *prev_redo_item; /* Points to the item previous to the redo items */
@@ -93,6 +97,8 @@ gboolean      glade_project_save                (GladeProject *project,
 LIBGLADEUI_API
 void          glade_project_reset_path          (GladeProject *project);
 LIBGLADEUI_API
+gboolean      glade_project_get_readonly        (GladeProject *project);
+LIBGLADEUI_API
 void          glade_project_add_object          (GladeProject *project, 
 						 GladeProject *old_project,
 						 GObject      *object);
@@ -136,7 +142,8 @@ LIBGLADEUI_API
 void          glade_project_selection_changed   (GladeProject *project);
 LIBGLADEUI_API
 GList        *glade_project_selection_get       (GladeProject *project);
-
+LIBGLADEUI_API
+gboolean      glade_project_get_has_selection   (GladeProject *project);
 LIBGLADEUI_API
 void          glade_project_set_accel_group     (GladeProject  *project, 
 						 GtkAccelGroup *accel_group);

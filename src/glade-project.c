@@ -63,7 +63,9 @@ enum
 enum
 {
 	PROP_0,
-	PROP_HAS_UNSAVED_CHANGES
+	PROP_HAS_UNSAVED_CHANGES,
+	PROP_HAS_SELECTION,
+	PROP_READ_ONLY
 };
 
 static guint glade_project_signals[LAST_SIGNAL] = {0};
@@ -82,7 +84,13 @@ glade_project_get_property (GObject    *object,
 	{
 		case PROP_HAS_UNSAVED_CHANGES:
 			g_value_set_boolean (value, project->changed);
+			break;
+		case PROP_HAS_SELECTION:
+			g_value_set_boolean (value, project->has_selection);
 			break;			
+		case PROP_READ_ONLY:
+			g_value_set_boolean (value, project->readonly);
+			break;		
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;			
@@ -123,6 +131,19 @@ glade_project_class_init (GladeProjectClass *class)
 
 	parent_class = g_type_class_peek_parent (class);
 
+	object_class->get_property = glade_project_get_property;
+	object_class->finalize = glade_project_finalize;
+	object_class->dispose = glade_project_dispose;
+	
+	class->add_object = NULL;
+	class->remove_object = NULL;
+	class->widget_name_changed = NULL;
+	class->selection_changed = NULL;
+	class->close = NULL;
+	class->resource_added = NULL;
+	class->resource_removed = NULL;
+
+	
 	/**
 	 * GladeProject::add-widget:
 	 * @gladeproject: the #GladeProject which received the signal.
@@ -251,8 +272,6 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      G_TYPE_STRING);
 
-	object_class->get_property = glade_project_get_property;
-
 	g_object_class_install_property (object_class,
 					 PROP_HAS_UNSAVED_CHANGES,
 					 g_param_spec_boolean ("has-unsaved-changes",
@@ -261,18 +280,22 @@ glade_project_class_init (GladeProjectClass *class)
 							       FALSE,
 							       G_PARAM_READABLE));
 
+	g_object_class_install_property (object_class,
+					 PROP_HAS_SELECTION,
+					 g_param_spec_boolean ("has-selection",
+							       "Has Selection",
+							       "Whether project has a selection",
+							       FALSE,
+							       G_PARAM_READABLE));
 
+	g_object_class_install_property (object_class,
+					 PROP_READ_ONLY,
+					 g_param_spec_boolean ("read-only",
+							       "Read Only",
+							       "Whether project is read only or not",
+							       FALSE,
+							       G_PARAM_READABLE));
 
-	object_class->finalize = glade_project_finalize;
-	object_class->dispose = glade_project_dispose;
-	
-	class->add_object = NULL;
-	class->remove_object = NULL;
-	class->widget_name_changed = NULL;
-	class->selection_changed = NULL;
-	class->close = NULL;
-	class->resource_added = NULL;
-	class->resource_removed = NULL;
 }
 
 static void
@@ -282,8 +305,10 @@ glade_project_init (GladeProject *project)
 	project->name = NULL;
 	project->instance = 0;
 	project->untitled_number = 0;
+	project->readonly = FALSE;
 	project->objects = NULL;
 	project->selection = NULL;
+	project->has_selection = FALSE;
 	project->undo_stack = NULL;
 	project->prev_redo_item = NULL;
 	project->widget_names_allocator = 
@@ -330,6 +355,34 @@ glade_project_release_untitled_number (gint n)
 	g_return_if_fail (allocated_untitled_numbers != NULL);
 
 	g_hash_table_remove (allocated_untitled_numbers, GINT_TO_POINTER (n));
+}
+
+static void
+glade_project_set_readonly (GladeProject *project, gboolean readonly)
+{
+	g_assert (GLADE_IS_PROJECT (project));
+	
+	if (project->readonly != readonly)
+	{
+		project->readonly = readonly;
+		g_object_notify (G_OBJECT (project), "read-only");
+	}
+}                                                                                               
+
+/**
+ * glade_project_get_readonly:
+ * @project: a #GladeProject
+ *
+ * Gets whether the project is read only or not
+ *
+ * Returns: TRUE if project is read only
+ */
+gboolean
+glade_project_get_readonly (GladeProject *project)
+{
+	g_assert (project != NULL);
+
+	return project->readonly;
 }
 
 /**
@@ -832,6 +885,32 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 	return NULL;
 }
 
+void
+glade_project_set_has_selection (GladeProject *project, gboolean has_selection)
+{
+	g_assert (GLADE_IS_PROJECT (project));
+
+	if (project->has_selection != has_selection)
+	{
+		project->has_selection = has_selection;
+		g_object_notify (G_OBJECT (project), "has-selection");
+	}
+}
+
+/**
+ * glade_project_get_has_selection:
+ * @project: a #GladeProject
+ *
+ * Returns: whether @project currently has a selection
+ */
+gboolean
+glade_project_get_has_selection (GladeProject *project)
+{
+	g_assert (GLADE_IS_PROJECT (project));
+
+	return project->has_selection;
+}
+
 /**
  * glade_project_is_selected:
  * @project: a #GladeProject
@@ -867,6 +946,7 @@ glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 
 	g_list_free (project->selection);
 	project->selection = NULL;
+	glade_project_set_has_selection (project, FALSE);
 
 	if (emit_signal)
 		glade_project_selection_changed (project);
@@ -896,6 +976,8 @@ glade_project_selection_remove (GladeProject *project,
 		if (GTK_IS_WIDGET (object))
 			glade_util_remove_selection (GTK_WIDGET (object));
 		project->selection = g_list_remove (project->selection, object);
+		if (project->selection == NULL)
+			glade_project_set_has_selection (project, FALSE);
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -925,6 +1007,8 @@ glade_project_selection_add (GladeProject *project,
 	{
 		if (GTK_IS_WIDGET (object))
 			glade_util_add_selection (GTK_WIDGET (object));
+		if (project->selection == NULL)
+			glade_project_set_has_selection (project, TRUE);
 		project->selection = g_list_prepend (project->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -952,6 +1036,9 @@ glade_project_selection_set (GladeProject *project,
 
 	if (g_list_find (project->objects, object) == NULL)
 		return;
+
+	if (project->selection == NULL)
+		glade_project_set_has_selection (project, TRUE);
 
 	if (glade_project_is_selected (project, object) == FALSE ||
 	    g_list_length (project->selection) != 1)
@@ -1218,6 +1305,9 @@ glade_project_open (const gchar *path)
 	
 	}
 
+	if (glade_util_file_is_writeable (project->path) == FALSE)
+		glade_project_set_readonly (project, TRUE);
+
 	if (project) project->changed = FALSE;
 
 	return project;
@@ -1308,6 +1398,9 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 				 g_path_get_basename (project->path));
 
 	}
+
+	glade_project_set_readonly (project, 
+				    !glade_util_file_is_writeable (project->path));
 
 	if (project->changed)
 	{

@@ -18,6 +18,7 @@ struct _GladeClipboard {
 
 	GList     *widgets;     /* A list of GladeWidget's on the clipboard */
 	GList     *selection;   /* Selection list of GladeWidget's */
+	gboolean   has_selection; /* TRUE if clipboard has selection */
 	GtkWidget *view;        /* see glade-clipboard-view.c */
 };
 
@@ -46,6 +47,8 @@ void            glade_clipboard_selection_remove (GladeClipboard *clipboard,
 						  GladeWidget    *widget);
 LIBGLADEUI_API
 void            glade_clipboard_selection_clear  (GladeClipboard *clipboard);
+LIBGLADEUI_API
+gboolean        glade_clipboard_get_has_selection  (GladeClipboard *clipboard);
 
 
 G_END_DECLS

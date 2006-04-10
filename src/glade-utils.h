@@ -118,6 +118,9 @@ gboolean          glade_util_copy_file             (const gchar  *src_path,
 LIBGLADEUI_API
 GModule          *glade_util_load_library          (const gchar  *library_name);
 
+LIBGLADEUI_API
+gboolean          glade_util_file_is_writeable     (const gchar *path);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

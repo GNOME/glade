@@ -1,4 +1,18 @@
-2006-04-08  Vincent Geddes <vgeddes@metroweb.co.za>
+2006-04-10  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/glade-project-window.c: 
+	  o Manage the sensitivities of all the ui actions.
+	  o Fix some issues with the Undo & Redo actions.
+
+	* src/glade-project.[ch]: 
+	  o Detect if project file is read-only. New property "read-only"
+	  o Detect if project has a selection. New property "has-selection"
+
+	* src/glade-clipboard.[ch]: 
+	  o Detect if clipboard has selected items to paste. 
+	    New property "has-selection"
+
+	* src/glade-utils.h: New function: glade_util_file_is_writeable ().
 
 	* src/main.c: 
 	  o Use glib instead of libpopt for command-line parsing.

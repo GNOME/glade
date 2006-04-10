@@ -1477,3 +1477,20 @@ glade_util_load_library (const gchar *library_name)
 
 	return module;
 }
+
+/**
+ * glade_util_file_is_writeable:
+ * @path:  the path to the file
+ *
+ * Checks whether the file at @path is writeable
+ *
+ * Returns: TRUE if file is writeable
+ */
+gboolean
+glade_util_file_is_writeable (const gchar *path)
+{
+	g_assert (path != NULL);
+
+	/* g_access is supposed to test read-only on windows. */
+	return g_access (path, W_OK) == 0;
+}
