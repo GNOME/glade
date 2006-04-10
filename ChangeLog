@@ -1,3 +1,13 @@
+2006-04-08  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/main.c: 
+	  o Use glib instead of libpopt for command-line parsing.
+	  o Added '--version' option.
+	  o Do not try to open non-existent files supplied
+	    on command-line.  
+
+	* configure.in: Remove libpopt dependency.
+
 2006-04-04  Yevgen Muntyan <muntyan@tamu.edu>
 
 	* src/glade-project-window.c: Removed GDK_WINDOW_TYPE_HINT_UTILITY hint from

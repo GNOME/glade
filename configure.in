@@ -53,10 +53,6 @@ PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
 AC_SUBST(GLADE_LIBS)
 AC_SUBST(GLADE_CFLAGS)
 
-AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is required to build
-glade-3. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
-
-
 glade_version="${VERSION}"
 glade_datadir='${datadir}/${PACKAGE}'
 glade_libdir='${libdir}/${PACKAGE}'
@@ -78,14 +74,6 @@ AC_SUBST(glade_localedir)
 case $host_os in
 *mingw* | pw32* | cygwin*)
   win32=yes
-  AC_ARG_ENABLE(popt_dll,
-                [  --disable-popt-dll         disable use of libpopt.dll (use static version instead)],
-                popt_dll=$enableval, popt_dll=yes)
-  if test "x$popt_dll" = "xyes"; then
-    AC_DEFINE(USE_POPT_DLL, 1, [Define to 1 if libpopt.dll is to be used.])
-  else
-    AC_DEFINE(POPT_STATIC, 1, [Define to 1 if static version of libpopt is to be used.])
-  fi
   ;;
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")

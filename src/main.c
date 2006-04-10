@@ -18,20 +18,18 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Vincent Geddes <vgeddes@metroweb.co.za>
  */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include <glib.h>
 #include <glib/gi18n.h>
 
 #include <locale.h>
 #include <gmodule.h>
-
-#ifdef HAVE_LIBPOPT
-#include <popt.h>
-#endif
 
 #ifdef G_OS_WIN32
 #include <stdlib.h> /* __argc & __argv on the windows build */
@@ -42,72 +40,36 @@
 #include "glade-debug.h"
 
 
-static gchar *widget_name = NULL;
+/* Application arguments */
+static gboolean version = FALSE;
+static gchar **files = NULL;
 
-#ifdef HAVE_LIBPOPT
-static struct poptOption options[] = {
-	{ "dump", '\0', POPT_ARG_STRING, &widget_name, 0,
-	  N_("dump the properties of a widget. --dump [gtk type] "
-	     "where type can be GtkWindow, GtkLabel etc."), NULL },
-	{ "verbose", 'v', POPT_ARG_NONE, NULL, 0,
-	  N_("be verbose."), NULL },
-#ifndef USE_POPT_DLL
-	POPT_AUTOHELP
-#else
-	/* poptHelpOptions can not be resolved during linking on Win32,
-	   get it at runtime. */
-	{ NULL, '\0', POPT_ARG_INCLUDE_TABLE, 0, 0,
-	  N_("Help options:"), NULL },
-#endif
-	POPT_TABLEEND
+static GOptionEntry option_entries[] = 
+{
+  { "version", '\0', 0, G_OPTION_ARG_NONE, &version, "output version information and exit", NULL },
+  { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files, "", "" },
+  { NULL }
 };
 
-static GList *
-parse_command_line (poptContext pctx)
+/* Debugging arguments */
+static gchar *widget_name = NULL;
+static gboolean verbose = FALSE;
+
+static GOptionEntry debug_option_entries[] = 
 {
-	gint opt;
-	const gchar **args;
-	GList *files = NULL;
-	gint i;
-
-	/* parse options */
-	while ((opt = poptGetNextOpt (pctx)) > 0 || opt == POPT_ERROR_BADOPT)
-		/* do nothing */ ;
-
-	/* load the args that aren't options as files */
-	args = poptGetArgs (pctx);
-
-	for (i = 0; args && args[i]; i++)
-		files = g_list_prepend (files, g_strdup (args[i]));
-
-	files = g_list_reverse (files);
-
-	return files;
-}
-#endif
-
-static gint
-glade_init (void)
-{
-	if (!g_module_supported ())
-	{
-		g_warning (_("gmodule support not found. gmodule support is required "
-			     "for glade to work"));
-		return FALSE;
-	}
-
-	return TRUE;
-}
+  { "dump", 'd', 0, G_OPTION_ARG_STRING, &widget_name, "dump the properties of a widget", "GTKWIDGET" },
+  { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "be verbose", NULL },
+  { NULL }
+};
 
 int
 main (int argc, char *argv[])
 {
 	GladeProjectWindow *project_window;
-	GList *files = NULL, *l;
-#ifdef HAVE_LIBPOPT
-	poptContext popt_context;
-#endif
-
+	GOptionContext *option_context;
+	GOptionGroup *option_group;
+	GError *error = NULL;
+	
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
@@ -115,29 +77,60 @@ main (int argc, char *argv[])
 	textdomain (GETTEXT_PACKAGE);
 #endif
 
+	/* Set up option groups */
+	option_context = g_option_context_new ("[FILE...]");
+
+	option_group = g_option_group_new ("glade",
+					   N_("Glade GUI Builder"),
+					   N_("Glade GUI Builder options"),
+					   NULL, NULL);
+	g_option_group_add_entries (option_group, option_entries);
+	g_option_context_set_main_group (option_context, option_group);
+
+	option_group = g_option_group_new ("debug",
+					   "Glade debug options",
+					   "Show debug options",
+					   NULL, NULL);
+	g_option_group_add_entries (option_group, debug_option_entries);
+	g_option_context_add_group (option_context, option_group);
+
+	/* Add Gtk option group */
+	g_option_context_add_group (option_context, gtk_get_option_group (TRUE));
+
+	/* Parse command line */
+	if (!g_option_context_parse (option_context, &argc, &argv, &error))
+	{
+		g_option_context_free (option_context);
+	
+		g_print ("%s\n", error->message);
+		g_error_free (error);
+		exit (1);
+	}
+	
+
+	if (version == TRUE)
+	{
+		/* Print version information and exit */
+		g_print ("%s\n", PACKAGE_STRING);
+		return 0;
+	}
+	
+
 	g_set_application_name (_("Glade-3 GUI Builder"));
-
-#ifdef HAVE_LIBPOPT
-# ifdef USE_POPT_DLL
-	options[G_N_ELEMENTS (options) - 2].arg = poptHelpOptions;
-# endif
-	options[1].arg = &glade_verbose;
-	popt_context = poptGetContext ("Glade3", argc, (const char **) argv, options, 0);
-	files = parse_command_line (popt_context);
-	poptFreeContext (popt_context);
-#endif
-
-	gtk_init (&argc, &argv);
-
+	
 	glade_setup_log_handlers ();
-
-	if (!glade_init ())
+	
+	/* Check for gmodule support */
+	if (!g_module_supported ())
+	{
+		g_warning (_("gmodule support not found. gmodule support is required "
+			     "for glade to work"));
 		return -1;
-
+	}
+	
 	project_window = glade_project_window_new ();
 	glade_default_app_set (GLADE_APP (project_window));
 	
-#if I_HAD_A_DEBUG_MACRO
 	if (widget_name != NULL)
 	{
 		GladeWidgetClass *class;
@@ -146,18 +139,25 @@ main (int argc, char *argv[])
 			glade_widget_class_dump_param_specs (class);
 		return 0;
 	}
-#endif
 	
-	glade_project_window_show_all (project_window);
-
-	if (files)
+	/* load files specified on commandline */
+	if (files != NULL)
 	{
-		for (l = files; l; l = l->next)
-			glade_project_window_open_project (project_window, l->data);
-		g_list_free (files);
+		guint i;
+		
+		for (i=0; files[i] ; ++i)
+		{
+			if (g_file_test (files[i], G_FILE_TEST_EXISTS) == TRUE)
+				glade_project_window_open_project (project_window, files[i]);
+			else
+				g_warning (_("Unable to open '%s', the file does not exist.\n"), files[i]);
+		}
+		g_strfreev (files);
 	}
-	else
+	else 
 		glade_project_window_new_project (project_window);
+
+	glade_project_window_show_all (project_window);
 
 	gtk_main ();
 
