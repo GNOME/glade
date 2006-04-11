@@ -6,8 +6,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: glade3 HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-10 11:27+0200\n"
-"PO-Revision-Date: 2006-04-10 22:13+0930\n"
+"POT-Creation-Date: 2006-04-11 03:27+0200\n"
+"PO-Revision-Date: 2006-04-11 18:24+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,79 +22,77 @@ msgstr "Thiết kế giao diện người dùng"
 
 #:../glade-3.desktop.in.h:2
 msgid "Glade 3.0 GUI builder"
-msgstr "Bộ xây dụng GUI Glade 3.0"
+msgstr "Bộ xây dựng GUI Glade 3.0"
 
-#:../src/main.c:50
-msgid ""
-"dump the properties of a widget. --dump [gtk type] where type can be "
-"GtkWindow, GtkLabel etc."
-msgstr "đổ các thuộc tính của ô điều khiển: « --dump [gtk kiểu] », mà kiểu có thể là "
-"GtkWindow (cửa sổ), GtkLabel (nhãn) v.v."
+#:../src/main.c:84
+msgid "Glade GUI Builder"
+msgstr "Bộ xây dựng GUI Glade"
 
-#:../src/main.c:53
-msgid "be verbose."
-msgstr "xuất chi tiết."
+#:../src/main.c:85
+msgid "Glade GUI Builder options"
+msgstr "Tùy chọn của bộ xây dựng GUI Glade"
 
-#:../src/main.c:60
-msgid "Help options:"
-msgstr "Tùy chọn trợ giúp:"
+#:../src/main.c:119 ../src/glade-project-window.c:69
+msgid "Glade-3 GUI Builder"
+msgstr "Bộ xây dựng GUI Glade-3"
 
-#:../src/main.c:94
+#:../src/main.c:126
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr "không tìm thấy cách hỗ trợ gmodule, mà cần thiết cho trình glade hoạt động"
 
-#:../src/main.c:118 ../src/glade-project-window.c:69
-msgid "Glade-3 GUI Builder"
-msgstr "Bộ xây dụng GUI Glade-3"
+#:../src/main.c:153
+#,c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "Không thể mở « %s » vì tập tin đó không tồn tại.\n"
 
-#:../src/glade-project-window.c:384
+#:../src/glade-project-window.c:451
 msgid "Open..."
 msgstr "Mở..."
 
-#:../src/glade-project-window.c:415
+#:../src/glade-project-window.c:482
 msgid ""
 "Are you sure you want to clear the\n"
 "list of recent projects?"
 msgstr "Bạn có chắc muốn xoá danh sách\n"
 "các dự án gần đây không?"
 
-#:../src/glade-project-window.c:416
+#:../src/glade-project-window.c:483
 msgid ""
 "If you clear the list of recent projects, they will be\n"
 "permanently deleted."
 msgstr "Nếu bạn xoá danh sách các dự án gần đây,\n"
 "chúng sẽ bị xoá bỏ hoàn toàn."
 
-#:../src/glade-project-window.c:453
+#:../src/glade-project-window.c:520
 #,c-format
 msgid "Failed to save %s: %s"
 msgstr "Lỗi lưu %s: %s"
 
-#:../src/glade-project-window.c:475
+#:../src/glade-project-window.c:542
 #,c-format
 msgid "Project '%s' saved"
 msgstr "Mới lưu dự án « %s »."
 
-#:../src/glade-project-window.c:492 ../src/glade-project-window.c:553
+#:../src/glade-project-window.c:559 ../src/glade-project-window.c:620
 msgid "No open projects to save"
 msgstr "Không có dự án đang mở cần lưu."
 
-#:../src/glade-project-window.c:535 ../src/glade-project-window.c:1560
+#:../src/glade-project-window.c:602 ../src/glade-project-window.c:1652
 #,c-format
 msgid "%s is already open"
 msgstr "%s đã được mở"
 
 #.If instead we dont have a path yet, fire up a file selector
-#:../src/glade-project-window.c:564
+#:../src/glade-project-window.c:631
 msgid "Save..."
 msgstr "Lưu..."
 
-#:../src/glade-project-window.c:570
+#:../src/glade-project-window.c:637
 msgid "Save as ..."
 msgstr "Lưu dạng..."
 
-#:../src/glade-project-window.c:584
+#:../src/glade-project-window.c:651
 #,c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -106,37 +104,37 @@ msgstr "<span weight=\"bold\" size=\"larger\">Lưu các thay đổi trong dự �
 "\n"
 "Nếu bạn không lưu các thay đổi này, chúng sẽ bị mất hoàn toàn.\n"
 
-#:../src/glade-project-window.c:598
+#:../src/glade-project-window.c:665
 msgid "_Close without Saving"
 msgstr "_Đóng mà không lưu"
 
-#:../src/glade-project-window.c:619
+#:../src/glade-project-window.c:686
 #,c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Lỗi lưu %s vào « %s »: %s"
 
-#:../src/glade-project-window.c:631
+#:../src/glade-project-window.c:698
 msgid "Save ..."
 msgstr "Lưu ..."
 
-#:../src/glade-project-window.c:812
+#:../src/glade-project-window.c:887
 msgid "Palette"
 msgstr "Bảng chọn"
 
-#:../src/glade-project-window.c:898 ../src/glade-widget.c:197
+#:../src/glade-project-window.c:973 ../src/glade-widget.c:197
 msgid "Properties"
 msgstr "Thuộc tính"
 
-#:../src/glade-project-window.c:982
+#:../src/glade-project-window.c:1057
 msgid "E_xpand all"
 msgstr "_Bung hết"
 
-#:../src/glade-project-window.c:986
+#:../src/glade-project-window.c:1061
 msgid "_Collapse all"
 msgstr "Th_u gọn hết"
 
 # Names and email addresses: don't translate / Các tên và địa chỉ thư điện tử : đừng dịch
-#:../src/glade-project-window.c:1127
+#:../src/glade-project-window.c:1202
 msgid ""
 "Fatih Demir <kabalak@gtranslator.org>\n"
 "Christian Rose <menthos@menthos.com>\n"
@@ -153,16 +151,16 @@ msgstr "Fatih Demir <kabalak@gtranslator.org>\n"
 "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 
-#:../src/glade-project-window.c:1136
+#:../src/glade-project-window.c:1211
 msgid ""
 "Glade is a User Interface Builder for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2.0.0 version, original from Damon "
 "Chaplin\n"
-msgstr "Trình Glade là một Bộ Xây dụng Giao diện Người dùng cho GTK+ và Gnome.\n"
+msgstr "Trình Glade là một Bộ Xây dựng Giao diện Người dùng cho GTK+ và Gnome.\n"
 "Phiên bản này là bản tạo lại của phiên bản Glade 2.0.0, tác giả gốc là Damon "
 "Chaplin.\n"
 
-#:../src/glade-project-window.c:1141
+#:../src/glade-project-window.c:1216
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -195,35 +193,30 @@ msgstr "Chương trình này là phần mềm tự do;\n"
 "51 Franklin Street, Fifth Floor,\n"
 "MA 02110-1301, USA (Mỹ)."
 
-#:../src/glade-project-window.c:1538
+#:../src/glade-project-window.c:1630
 msgid "Could not create a new project."
 msgstr "Không thể tạo một dự án mới."
 
-#:../src/glade-project-window.c:1596
-msgid "Nothing"
-msgstr "Không có"
+#:../src/glade-project-window.c:1714
+msgid "_Undo"
+msgstr "_Hồi lại"
 
-#:../src/glade-project-window.c:1624
-msgid "_Undo: "
-msgstr "_Hồi lại: "
-
-#:../src/glade-project-window.c:1627
-msgid "_Redo: "
-msgstr "_Làm lại: "
-
-#.Change tooltips on the toolbar
 #.Change tooltips
-#:../src/glade-project-window.c:1631 ../src/glade-app.c:175
+#:../src/glade-project-window.c:1716 ../src/glade-app.c:175
 #,c-format
 msgid "Undo: %s"
 msgstr "Hồi lại: %s"
 
-#:../src/glade-project-window.c:1631 ../src/glade-project-window.c:1636
+#:../src/glade-project-window.c:1716 ../src/glade-project-window.c:1727
 #:../src/glade-app.c:176
 msgid "the last action"
 msgstr "hành động cuối cùng"
 
-#:../src/glade-project-window.c:1636 ../src/glade-app.c:175
+#:../src/glade-project-window.c:1725
+msgid "_Redo"
+msgstr "_Làm lại"
+
+#:../src/glade-project-window.c:1727 ../src/glade-app.c:175
 #,c-format
 msgid "Redo: %s"
 msgstr "Làm lại: %s"
@@ -705,7 +698,7 @@ msgstr "Không thể cấp phát bộ nhớ cho giao diện"
 msgid "_Select"
 msgstr "_Chọn"
 
-#:../src/glade-project.c:1098
+#:../src/glade-project.c:1185
 #,c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1948,3 +1941,18 @@ msgstr "Ký tự từ"
 #:../widgets/gtk+.xml.in.h:220
 msgid "Yes, No"
 msgstr "Có, Không"
+
+#~ msgid ""
+#~ "dump the properties of a widget. --dump [gtk type] where type can be "
+#~ "GtkWindow, GtkLabel etc."
+#~ msgstr "đổ các thuộc tính của ô điều khiển: « --dump [gtk kiểu] », mà kiểu có thể "
+#~ "là GtkWindow (cửa sổ), GtkLabel (nhãn) v.v."
+
+#~ msgid "be verbose."
+#~ msgstr "xuất chi tiết."
+
+#~ msgid "Help options:"
+#~ msgstr "Tùy chọn trợ giúp:"
+
+#~ msgid "Nothing"
+#~ msgstr "Không có"
