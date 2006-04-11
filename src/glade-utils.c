@@ -1489,8 +1489,14 @@ glade_util_load_library (const gchar *library_name)
 gboolean
 glade_util_file_is_writeable (const gchar *path)
 {
-	g_assert (path != NULL);
+	GIOChannel *channel;
+	g_return_val_if_fail (path != NULL, FALSE);
 
-	/* g_access is supposed to test read-only on windows. */
-	return g_access (path, W_OK) == 0;
+	/* The only way to really know if the file is writable */
+	if ((channel = g_io_channel_new_file (path, "w", NULL)) != NULL)
+	{
+		g_io_channel_unref (channel);
+		return TRUE;
+	}
+	return FALSE;
 }

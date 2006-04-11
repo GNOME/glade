@@ -1,3 +1,11 @@
+2006-04-11  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-utils.c: Fixed broken build (I commited with an error
+	  of undefined W_OK for g_access), now we actually try to open the
+	  file for writing to see if its writable.
+
+	* doc/catalogintro.sgml: Added a bit about the new init-function by Juan.
+
 2006-04-10  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade-project-window.c: 

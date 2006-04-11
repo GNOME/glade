@@ -48,6 +48,9 @@ catalog file starts by specifying the name of the catalog and the plugin
 library to use:
       <programlisting>
 <![CDATA[<glade-catalog name="gtk+" library="gladegtk">
+
+  <init-function>my_catalog_init</init-function>
+
   <glade-widget-classes>
 
     ... widget classes go here
@@ -61,33 +64,69 @@ library to use:
 
   </refsect1>
   <refsect2>
-    <title>Toplevel catalog properties</title>
+    <title>Toplevel catalog properties and tags</title>
     <para>
 When defining the catalog, the 'name' and 'library' 
 are both manditory properties of the 'glade-catalog' tag; optionally
 you can also use 'depends' and 'domain'.
     </para>
+
+    <variablelist>
+      <varlistentry>
+        <term>name</term>
+        <listitem>
+          <para>
 The 'name' property is simply a string identifier for the catalog in 
 question, it will be used to identify your catalog so that the glade file can explicitly
 require it and to manage inter catalog dependancies.
-    <para>
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>library</term>
+        <listitem>
+          <para>
 The 'library' property is a shorthand name for the plugin library which shall 
 be dlopen'd from <literal>$prefix/lib/glade-3/modules/</literal>
-    </para>
-    <para>
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>depends</term>
+        <listitem>
+          <para>
 The 'depends' property is used for inheritance of support code to work 
 properly  (i.e. if your object derives from an object in gtk+, you'll want the default 
 support code in the gladegtk plugin to be enabled for your widget too). This property's 
 value is the `name' property of another installed glade plugin; usually you'll want to
 declare: 'depends="gtk+"' for your plugin.
-    </para>
-    <para>
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>domain</term>
+        <listitem>
+          <para>
 The 'domain' property is the domain in which to search for translatable 
 strings from the catalog file (such as glade-widget-group `title's and such; translatable
 values will be marked in this document as we go along and should be any strings
 that are displayed in the glade UI). If the 'domain' property is not specified,
 the library property will be used in it's stead.
-    </para>
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>init-function</term>
+        <listitem>
+          <para>
+The 'init-function' tag is used to retrieve an optional global entry point to your plugin; 
+if you need to initialize any backends or whatnot this is a good place. 
+Your catalog's init-function will be called before any widget classes are instanciated.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
   </refsect2>
   <refsect3>
     <title>Validating and installing</title>
