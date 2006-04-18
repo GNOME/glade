@@ -30,7 +30,10 @@
 
 #include "fixed_bg.xpm"
 
-#define GETTEXT_PACKAGE "glade-gtk"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <glib/gi18n-lib.h>
 
 #ifdef G_OS_WIN32

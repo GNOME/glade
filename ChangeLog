@@ -8,9 +8,11 @@
 	    now internal children get post create functions called for them.
 	  o Fixed bug 336581 (apply internal widget names at load time).
 	
-	* src/glade-gtk.c: Added per dialog support for dialog buttons
-	  (get_children(), get_internal_child() && create internals in post_create())
-	  (Fixing bug 337196)
+	* src/glade-gtk.c: 
+	  o Added per dialog support for dialog buttons (get_children(), 
+	    get_internal_child() && create internals in post_create()) (Fixing bug 337196)
+	  o Added #include "config.h" for GETTEXT_PACKAGE, now glade-gtk shares the same
+	    domain as libgladeui-1.
 
 	* widgets/gtk+.xml.in: Removed redundant declaration of glade_gtk_dialog_post_create()
 	  in the GtkMessageDialog, added "get-children-function" support to GtkDialog.
