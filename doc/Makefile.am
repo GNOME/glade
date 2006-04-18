@@ -100,3 +100,33 @@ include $(top_srcdir)/gtk-doc.make
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += version.xml.in
 
+GTK_HOME = http://developer.gnome.org/doc/API/2.0/gtk
+GDK_HOME = http://developer.gnome.org/doc/API/2.0/gdk
+GOBJECT_HOME = http://developer.gnome.org/doc/API/2.0/gobject
+GLIB_HOME = http://developer.gnome.org/doc/API/2.0/glib
+
+webdocs: all
+	rm -rf html-web
+	mkdir -p html-web
+	for file in `find html`; do \
+	  ROOT_PATH=`echo $${file} | sed 's/^html//'`; \
+	  if test "" != "$${ROOT_PATH}"; then \
+	    if test -d $$file; then \
+	      echo "Creating directory html-web$${ROOT_PATH}..."; \
+	      mkdir -p html-web$${ROOT_PATH}; \
+	    else \
+	      if echo $$file | grep -q '\.html$$'; then \
+	        echo "Creating file html-web$${ROOT_PATH}..."; \
+	        cat $$file | sed \
+	          -e 's!href="../gtk!href="$(GTK_HOME)!g' \
+	          -e 's!href="../gdk!href="$(GDK_HOME)!g' \
+	          -e 's!href="../gobject!href="$(GOBJECT_HOME)!g' \
+	          -e 's!href="../glib!href="$(GLIB_HOME)!g' \
+	          > html-web$${ROOT_PATH}; \
+	      else \
+	        echo "Copying file html-web$${ROOT_PATH}..."; \
+	        cp $$file html-web$${ROOT_PATH}; \
+	      fi \
+	    fi; \
+	  fi; \
+	done

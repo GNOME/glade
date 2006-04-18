@@ -16,7 +16,12 @@
 
 	* widgets/gtk+.xml.in: Removed redundant declaration of glade_gtk_dialog_post_create()
 	  in the GtkMessageDialog, added "get-children-function" support to GtkDialog.
-	
+
+	* doc/Makefile.am: Added webdocs target to tailor docs for the web (to cross-link
+	  to the developer.g.o api docs properly).
+
+	* doc/gladeui-sections.txt, doc/tmpl/*: Updated sections for new apis
+
 2006-04-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO.

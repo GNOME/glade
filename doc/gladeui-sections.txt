@@ -108,6 +108,7 @@ glade_clipboard_remove
 glade_clipboard_selection_add
 glade_clipboard_selection_remove
 glade_clipboard_selection_clear
+glade_clipboard_get_has_selection
 <SUBSECTION Standard>
 GLADE_CLIPBOARD
 GLADE_IS_CLIPBOARD
@@ -298,6 +299,8 @@ glade_project_list_resources
 glade_project_resource_fullpath
 glade_project_display_name
 glade_project_is_loading
+glade_project_get_has_selection
+glade_project_get_readonly
 <SUBSECTION Standard>
 GLADE_PROJECT
 GLADE_IS_PROJECT
@@ -322,6 +325,7 @@ glade_property_class_clone
 glade_property_class_free
 glade_property_class_is_visible
 glade_property_class_is_object
+glade_property_class_void_value
 glade_property_class_make_gvalue_from_string
 glade_property_class_make_string_from_gvalue
 glade_property_class_make_gvalue_from_vl
@@ -495,6 +499,7 @@ glade_widget_launch_editor
 glade_widget_get_from_gobject
 glade_widget_get_parent
 glade_widget_set_parent
+glade_widget_is_dupping
 <SUBSECTION Standard>
 GLADE_WIDGET
 GLADE_IS_WIDGET
@@ -575,6 +580,8 @@ glade_util_basenames_match
 glade_util_purify_list
 glade_util_canonical_path
 glade_util_copy_file
+glade_util_file_is_writeable
+glade_util_load_library
 </SECTION>
 
 
