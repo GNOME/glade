@@ -1016,50 +1016,111 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
 	GtkDialog    *dialog = GTK_DIALOG (object);
 	GladeWidget  *widget;
-	GladeWidget  *vbox_widget;
-	GladeWidget  *actionarea_widget;
+	GladeWidget  *vbox_widget, *actionarea_widget, *colorsel, *fontsel;
+	GladeWidget  *save_button = NULL, *close_button = NULL, *ok_button = NULL,
+		*cancel_button = NULL, *help_button = NULL, *apply_button = NULL;
 
+	
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
 	widget = glade_widget_get_from_gobject (GTK_WIDGET (dialog));
 	if (!widget)
 		return;
 
-	/* create the GladeWidgets for internal children */
-	vbox_widget = glade_widget_new_for_internal_child 
-		(widget, G_OBJECT(dialog->vbox), "vbox", "dialog", FALSE);
-	g_assert (vbox_widget);
-
-
-	actionarea_widget = glade_widget_new_for_internal_child
-		(vbox_widget, G_OBJECT(dialog->action_area), "action_area", "dialog", FALSE);
-	g_assert (actionarea_widget);
-
-	/*
-	if (GTK_IS_MESSAGE_DIALOG (dialog))
+	if (GTK_IS_INPUT_DIALOG (object))
 	{
-		GList *children = 
-			gtk_container_get_children (GTK_CONTAINER (actionarea_widget->object));
+		save_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->save_button),
+			 "save_button", "inputdialog", FALSE, GLADE_CREATE_LOAD);
 
-		if (children)
-		{
-			glade_widget_property_set (actionarea_widget, "size", g_list_length (children));
-			g_list_free (children);
-		}
+		close_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->close_button),
+			 "close_button", "intputdialog", FALSE, GLADE_CREATE_LOAD);
+
+	}
+	else if (GTK_IS_FILE_SELECTION (object))
+	{
+		ok_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->ok_button),
+			 "ok_button", "filesel", FALSE, GLADE_CREATE_LOAD);
+
+		cancel_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->cancel_button),
+			 "cancel_button", "filesel", FALSE, GLADE_CREATE_LOAD);
+	}
+	else if (GTK_IS_COLOR_SELECTION_DIALOG (object))
+	{
+		ok_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->ok_button),
+			 "ok_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+
+		cancel_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->cancel_button),
+			 "cancel_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+
+		help_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->help_button),
+			 "help_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+
+		colorsel = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->colorsel),
+			 "color_selection", "colorsel", FALSE, GLADE_CREATE_LOAD);
+
+		/* Set this to 1 at load time, if there are any children then
+		 * size will adjust appropriately (otherwise the default "3" gets
+		 * set and we end up with extra placeholders).
+		 */
+		if (reason == GLADE_CREATE_LOAD)
+			glade_widget_property_set (colorsel, "size", 1);
+
+	}
+	else if (GTK_IS_FONT_SELECTION_DIALOG (object))
+	{
+		ok_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->ok_button),
+			 "ok_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+
+		apply_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->apply_button),
+			 "apply_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+		
+		cancel_button = glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->cancel_button),
+			 "cancel_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+
+		fontsel =  glade_widget_new_for_internal_child
+			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->fontsel),
+			 "font_selection", "fontsel", FALSE, GLADE_CREATE_LOAD);
+
+		/* Set this to 1 at load time, if there are any children then
+		 * size will adjust appropriately (otherwise the default "3" gets
+		 * set and we end up with extra placeholders).
+		 */
+		if (reason == GLADE_CREATE_LOAD)
+			glade_widget_property_set (fontsel, "size", 2);
 	}
 	else
-	*/
-
-	/* Only set these on the original create. */
-	if (reason == GLADE_CREATE_USER)
 	{
-		if (GTK_IS_MESSAGE_DIALOG (dialog))
-			glade_widget_property_set (vbox_widget, "size", 2);
-		else
-			glade_widget_property_set (vbox_widget, "size", 3);
+		vbox_widget = glade_widget_new_for_internal_child 
+			(widget, G_OBJECT(dialog->vbox),
+			 "vbox", "dialog", FALSE, GLADE_CREATE_LOAD);
 
-		glade_widget_property_set (actionarea_widget, "size", 2);
-		glade_widget_property_set (actionarea_widget, "layout-style", GTK_BUTTONBOX_END);
+		actionarea_widget = glade_widget_new_for_internal_child
+			(vbox_widget, G_OBJECT(dialog->action_area),
+			 "action_area", "dialog", FALSE, GLADE_CREATE_LOAD);
+
+		/* Only set these on the original create. */
+		if (reason == GLADE_CREATE_USER)
+		{
+			if (GTK_IS_MESSAGE_DIALOG (dialog))
+				glade_widget_property_set (vbox_widget, "size", 2);
+			else
+				glade_widget_property_set (vbox_widget, "size", 3);
+			
+			glade_widget_property_set (actionarea_widget, "size", 2);
+			glade_widget_property_set (actionarea_widget,
+						   "layout-style", GTK_BUTTONBOX_END);
+		}
 	}
 
 	/* set a reasonable default size for a dialog */
@@ -1265,16 +1326,33 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 
 	eclass   = g_type_class_ref (GLADE_TYPE_STOCK);
 
-	glade_widget_property_get (gbutton, "use-stock", &use_stock);
+
+	/* Internal buttons get created with stock stuff, handle that here. */
+	if (gbutton->internal)
+		g_object_get (gbutton->object, "use-stock", &use_stock, NULL);
+	else
+		glade_widget_property_get (gbutton, "use-stock", &use_stock);
+	
 	if (use_stock)
 	{
-		glade_widget_property_get (gbutton, "label", &label);
+		gboolean free_label = FALSE;
+		if (gbutton->internal)
+		{
+			/* Free strings returned from g_object_get() */
+			free_label = TRUE;
+			g_object_get (gbutton->object, "label", &label, NULL);
+		}
+		else
+			glade_widget_property_get (gbutton, "label", &label);
 		
 		eval = g_enum_get_value_by_nick (eclass, label);
 		g_object_set_data (G_OBJECT (gbutton), "stock", GINT_TO_POINTER (eval->value));
 
 		if (label != NULL && strcmp (label, "glade-none") != 0)
 			glade_widget_property_set (gbutton, "stock", eval->value);
+
+		if (free_label && label)
+			g_free (label);
 	} 
 	else if (reason == GLADE_CREATE_USER)
 	{
@@ -1363,11 +1441,13 @@ glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
 		return;
 	
 	gentry = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->entry), "entry", "combo", FALSE);
+		(gcombo, G_OBJECT (GTK_COMBO (object)->entry),
+		 "entry", "combo", FALSE, reason);
 
 	/* We mark this 'anarchist' since its outside of the heirarchy */
 	glist  = glade_widget_new_for_internal_child
-		(gcombo, G_OBJECT (GTK_COMBO (object)->list), "list", "combo", TRUE);
+		(gcombo, G_OBJECT (GTK_COMBO (object)->list),
+		 "list", "combo", TRUE, reason);
 
 }
 
@@ -1597,12 +1677,98 @@ glade_gtk_dialog_get_internal_child (GtkDialog   *dialog,
 {
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 	
-	if (strcmp ("vbox", name) == 0)
-		*child = dialog->vbox;
-	else if (strcmp ("action_area", name) == 0)
-		*child = dialog->action_area;
+
+	if (GTK_IS_INPUT_DIALOG (dialog))
+	{
+		if (strcmp ("close_button", name) == 0)
+			*child = GTK_INPUT_DIALOG (dialog)->close_button;
+		else if (strcmp ("save_button", name) == 0)
+			*child = GTK_INPUT_DIALOG (dialog)->save_button;
+		else
+			*child = NULL;
+	}
+	else if (GTK_IS_FILE_SELECTION (dialog))
+	{
+		if (strcmp ("ok_button", name) == 0)
+			*child = GTK_FILE_SELECTION (dialog)->ok_button;
+		else if (strcmp ("cancel_button", name) == 0)
+			*child = GTK_FILE_SELECTION (dialog)->cancel_button;
+		else
+			*child = NULL;
+	}
+	else if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
+	{
+		if (strcmp ("ok_button", name) == 0)
+			*child = GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button;
+		else if (strcmp ("cancel_button", name) == 0)
+			*child = GTK_COLOR_SELECTION_DIALOG (dialog)->cancel_button;
+		else if (strcmp ("help_button", name) == 0)
+			*child = GTK_COLOR_SELECTION_DIALOG (dialog)->help_button;
+		else if (strcmp ("color_selection", name) == 0)
+			*child = GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel;
+		else
+			*child = NULL;
+	}
+	else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
+	{
+		if (strcmp ("ok_button", name) == 0)
+			*child = GTK_FONT_SELECTION_DIALOG (dialog)->ok_button;
+		else if (strcmp ("apply_button", name) == 0)
+			*child = GTK_FONT_SELECTION_DIALOG (dialog)->apply_button;
+		else if (strcmp ("cancel_button", name) == 0)
+			*child = GTK_FONT_SELECTION_DIALOG (dialog)->cancel_button;
+		else if (strcmp ("font_selection", name) == 0)
+			*child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
+		else
+			*child = NULL;
+	}
 	else
-		*child = NULL;
+	{
+		/* Default generic dialog handling
+		 */
+		if (strcmp ("vbox", name) == 0)
+			*child = dialog->vbox;
+		else if (strcmp ("action_area", name) == 0)
+			*child = dialog->action_area;
+		else
+			*child = NULL;
+	}
+}
+
+GList * GLADEGTK_API
+glade_gtk_dialog_get_children (GtkDialog *dialog)
+{
+	GList *list = NULL;
+
+	g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+
+	list = glade_util_container_get_all_children (GTK_CONTAINER (dialog));
+
+	if (GTK_IS_INPUT_DIALOG (dialog))
+	{
+		list = g_list_prepend (list, GTK_INPUT_DIALOG (dialog)->close_button);
+		list = g_list_prepend (list, GTK_INPUT_DIALOG (dialog)->save_button);
+	}
+	else if (GTK_IS_FILE_SELECTION (dialog))
+	{
+		list = g_list_prepend (list, GTK_FILE_SELECTION (dialog)->ok_button);
+		list = g_list_prepend (list, GTK_FILE_SELECTION (dialog)->cancel_button);
+	}
+	else if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
+	{
+		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button);
+		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->cancel_button);
+		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->help_button);
+		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel);
+	}
+	else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
+	{
+		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->ok_button);
+		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->apply_button);
+		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->cancel_button);
+		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->fontsel);
+	}
+	return list;
 }
 
 void GLADEGTK_API
@@ -2280,10 +2446,10 @@ glade_gtk_menu_item_post_create (GObject *object, GladeCreateReason reason)
 			{
 				GtkWidget *image = gtk_image_new ();
 				gimage = glade_widget_new_for_internal_child
-					(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
+					(gitem, G_OBJECT (image),
+					 "image", "menu-item", FALSE, reason);
 				gtk_image_menu_item_set_image
 					(GTK_IMAGE_MENU_ITEM (object), image);
-				glade_gtk_image_post_create_idle (G_OBJECT (image));
 			}
 		}
 	}
@@ -2379,10 +2545,10 @@ glade_gtk_image_menu_item_get_internal_child (GObject *parent,
 			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent), image);
 			
 			gimage = glade_widget_new_for_internal_child
-				(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
+				(gitem, G_OBJECT (image), "image", "menu-item",
+				 FALSE, GLADE_CREATE_LOAD);
 		}
 		*child = G_OBJECT (image);
-		glade_gtk_image_post_create (G_OBJECT (image), GLADE_CREATE_LOAD);
 	}
 	else *child = NULL;
 
@@ -2421,10 +2587,11 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, GValue *value)
 		image = gtk_image_new ();
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 		gimage = glade_widget_new_for_internal_child
-			(gitem, G_OBJECT (image), "image", "menu-item", FALSE);
+			(gitem, G_OBJECT (image), "image", "menu-item", FALSE,
+			 GLADE_CREATE_LOAD);
 		glade_project_add_object (glade_widget_get_project (gitem), 
 					  NULL, G_OBJECT (image));
-		glade_gtk_image_post_create_idle (G_OBJECT (image));
+
 		glade_widget_property_set_sensitive (gitem, "label", TRUE, NULL);
 	}
 }

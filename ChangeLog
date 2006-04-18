@@ -1,3 +1,20 @@
+2006-04-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-utils.c: Open file in "a+" mode and not "w", which was
+	  truncating the file only to check if it was writable ( ! doh ! )
+
+	* src/glade-widget.[ch]: 
+	  o Added GladeCreateReason argument to glade_widget_new_for_internal_child(), 
+	    now internal children get post create functions called for them.
+	  o Fixed bug 336581 (apply internal widget names at load time).
+	
+	* src/glade-gtk.c: Added per dialog support for dialog buttons
+	  (get_children(), get_internal_child() && create internals in post_create())
+	  (Fixing bug 337196)
+
+	* widgets/gtk+.xml.in: Removed redundant declaration of glade_gtk_dialog_post_create()
+	  in the GtkMessageDialog, added "get-children-function" support to GtkDialog.
+	
 2006-04-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO.

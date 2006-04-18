@@ -123,7 +123,8 @@ GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *
 							      GObject          *internal_object,
 							      const gchar      *internal_name,
 							      const gchar      *parent_name,
-							      gboolean          anarchist);
+							      gboolean          anarchist,
+							      GladeCreateReason reason);
 LIBGLADEUI_API
 void                    glade_widget_set_name		    (GladeWidget      *widget,
 							     const gchar      *name);

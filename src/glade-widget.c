@@ -1091,6 +1091,10 @@ glade_widget_rebuild (GladeWidget *glade_widget)
  * @internal_name:     a string identifier for this internal widget.
  * @anarchist:         Whether or not this widget is a widget outside
  *                     of the parent's heirarchy (like a popup window)
+ * @reason:            The #GladeCreateReason for which this internal widget
+ *                     was created (usually just pass the reason from the post_create
+ *                     function; note also this is used only by the plugin code so
+ *                     pass something usefull here).
  *
  * Returns: a freshly created #GladeWidget wrapper object for the
  *          @internal_object of name @internal_name
@@ -1100,7 +1104,8 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 				     GObject          *internal_object,
 				     const gchar      *internal_name,
 				     const gchar      *parent_name,
-				     gboolean          anarchist)
+				     gboolean          anarchist,
+				     GladeCreateReason reason)
 {
 	GladeProject     *project;
 	gchar            *widget_name, *name_base;
@@ -1131,6 +1136,11 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 				    "internal", internal_name,
 				    "object", internal_object, NULL);
 	g_free (widget_name);
+
+	/* Only call this once the GladeWidget is completely built */
+	if (klass->post_create_function)
+		klass->post_create_function (internal_object, reason);
+
 	return widget;
 }
 
@@ -3112,6 +3122,8 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 			g_error ("Unable to get GladeWidget for internal child %s\n",
 				 info->internal_child);
 
+		/* Apply internal widget name from here */
+		glade_widget_set_name (child, info->child->name);
 		glade_widget_fill_from_widget_info (info->child, child, TRUE);
 		glade_widget_sync_custom_props (child);
 	}
@@ -3156,7 +3168,7 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
  * @project: a #GladeProject
  * @info: a #GladeWidgetInfo
  *
- * Returns: a new #GladeWidget in @project, based off the contents of @node
+ * Returns: a new #GladeWidget for @project, based on @info
  */
 GladeWidget *
 glade_widget_read (GladeProject *project, GladeWidgetInfo *info)

@@ -571,6 +571,9 @@
 	<child>
 	  <type>GtkWidget</type>
 
+	  <!-- Return dialog buttons through here -->
+	  <get-children-function>glade_gtk_dialog_get_children</get-children-function>
+
 	  <!-- That's supported, and IMO is the right way to handle          -->
 	  <!-- response-id (and it works), but it's not backwards compatible -->
 	  <!-- with response-id being a property as in glade-2. So by now we -->
@@ -942,8 +945,6 @@
     <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" _title="Input Dialog"/>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog">
-      <post-create-function>glade_gtk_dialog_post_create</post-create-function>
-
       <properties>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>

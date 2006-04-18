@@ -1493,7 +1493,7 @@ glade_util_file_is_writeable (const gchar *path)
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	/* The only way to really know if the file is writable */
-	if ((channel = g_io_channel_new_file (path, "w", NULL)) != NULL)
+	if ((channel = g_io_channel_new_file (path, "a+", NULL)) != NULL)
 	{
 		g_io_channel_unref (channel);
 		return TRUE;
