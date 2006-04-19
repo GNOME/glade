@@ -1,3 +1,14 @@
+2006-04-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-editor-property.c: Simplified code and added comments
+
+	* src/glade-property-class.c: Fixed possible deadlock in 
+	  glade_property_class_make_string_from_flags
+
+	* src/glade-widget.c: Enhanced trace output
+
+	* widgets/gtk+.xml.in: Disabled some pointless/obsolete properties.
+
 2006-04-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.c: Open file in "a+" mode and not "w", which was

@@ -2372,7 +2372,7 @@ typedef struct _EPropAdjIdle EPropAdjIdleData;
 
 struct _EPropAdjIdle
 {
-	GtkSpinButton *spin;
+	GladeEditorProperty *eprop;
 	gdouble value;
 };
 
@@ -2380,27 +2380,36 @@ static gboolean
 glade_eprop_adj_set_value_idle (gpointer p)
 {
 	EPropAdjIdleData *data = (EPropAdjIdleData *) p;
+	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (data->eprop);
 	
-	gtk_spin_button_set_value (data->spin, data->value);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value), data->value);
+	
 	g_free (p);
 	
 	return FALSE;
 }
 
 static void
-glade_eprop_adj_value_changed (GtkAdjustment *adj, GtkSpinButton *spin)
+glade_eprop_adj_value_changed (GtkAdjustment *adj, GladeEditorProperty *eprop)
 {
-	GtkAdjustment *spin_adj = gtk_spin_button_get_adjustment (spin);
-	gdouble old_value = spin_adj->value;
-	EPropAdjIdleData *data = g_new (EPropAdjIdleData, 1);
+	EPropAdjIdleData *data;
 	
-	g_signal_handlers_disconnect_by_func (adj, glade_eprop_adj_value_changed, spin);	
+	g_signal_handlers_disconnect_by_func (adj, glade_eprop_adj_value_changed, eprop);	
 
-	data->spin = spin;
-	data->value = adj->value;
-	g_idle_add (glade_eprop_adj_set_value_idle, data);
+	/* Don`t do anything if the loaded property is not the same */
+	if (adj != g_value_get_object (eprop->property->value)) return;
 	
-	adj->value = old_value;
+	data = g_new (EPropAdjIdleData, 1);
+	
+	data->eprop = eprop;
+	data->value = adj->value;
+	
+	/* Update GladeEPropAdjustment value spinbutton in an idle funtion */
+	g_idle_add (glade_eprop_adj_set_value_idle, data);
+		
+	/* Set adjustment to the old value */
+	adj->value = gtk_spin_button_get_value (GTK_SPIN_BUTTON (
+					GLADE_EPROP_ADJUSTMENT (eprop)->value));
 }
 
 static void
@@ -2419,10 +2428,11 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 	if (object == NULL) return;
 
 	adj = GTK_ADJUSTMENT (object);
-
+	
+	/* Keep track of external adjustment changes */
 	g_signal_connect (object, "value-changed",
 			  G_CALLBACK (glade_eprop_adj_value_changed),
-			  GTK_SPIN_BUTTON (eprop_adj->value));
+			  eprop);
 	
 	/* Update adjustment's values */
 	eprop_adj->value_adj->lower = adj->lower;

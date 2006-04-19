@@ -263,6 +263,9 @@ glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fv
 			g_string_append(string, " | ");
 		
 		g_string_append(string, (val_str) ? val_str : fvalue->value_name);
+		
+		/* If one of the flags value is 0 this loop become infinite :) */
+		if (fvalue->value == 0) break;
 	}
 	
 	retval = string->str;

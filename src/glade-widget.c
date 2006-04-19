@@ -2779,9 +2779,12 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 	{
 		for (i = 0; i < info->n_properties; ++i)
 		{
-			if (!glade_widget_apply_property_from_prop_info (info->properties + i,
+			GladePropInfo *prop_info = info->properties + i;
+			if (!glade_widget_apply_property_from_prop_info (prop_info,
 									 widget, FALSE))
-				g_warning ("Failed to apply property");
+				g_warning ("Failed to apply property %s in %s",
+					   prop_info->name,
+					   glade_widget_get_name (widget));
 		}
 	}
 }
