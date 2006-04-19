@@ -502,10 +502,18 @@
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
+      <properties>
+        <property id="hadjustment" disabled="True"/>
+	<property id="vadjustment" disabled="True"/>
+      </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
+        <property id="activity-blocks" disabled="True"/>
+	<property id="activity-step" disabled="True"/>
+	<property id="adjustment" disabled="True"/>
+	<property id="bar-style" disabled="True"/>
        	<property id="orientation">
   	  <displayable-values>
 	    <value id="GTK_PROGRESS_LEFT_TO_RIGHT" _name="Left to Right"/>
