@@ -279,7 +279,7 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	add_class = glade_default_app_get_add_class ();
+	add_class = glade_app_get_add_class ();
 	if (add_class == NULL)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
 	else
@@ -298,9 +298,9 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	add_class = glade_default_app_get_add_class ();
-	alt_class = glade_default_app_get_alt_class ();
-	palette = glade_default_app_get_palette ();
+	add_class = glade_app_get_add_class ();
+	alt_class = glade_app_get_alt_class ();
+	palette = glade_app_get_palette ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 	project = glade_placeholder_get_project (placeholder);
 
@@ -335,7 +335,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			 g_list_length (glade_util_get_selection ()) != 1)
 		{
 			glade_project_selection_clear 
-				(glade_default_app_get_active_project (),
+				(glade_app_get_project (),
 				 TRUE);
 			glade_util_clear_selection ();
 			glade_util_add_selection (widget);

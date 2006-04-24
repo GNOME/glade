@@ -69,7 +69,19 @@ main (int argc, char *argv[])
 	GOptionContext *option_context;
 	GOptionGroup *option_group;
 	GError *error = NULL;
+	gchar *modules, *new_modules;
 	
+	/* We need to ensure that gail is loaded, so that we can query accessibility
+	   info. I can't see a GTK+ function to do that. For now we just add the
+	   modules we need to the GTK_MODULES environment variable. It doesn't
+	   matter if modules appear twice. */
+	modules = (char*) g_getenv ("GTK_MODULES");
+	new_modules = g_strdup_printf ("%s%s%s",
+				       modules ? modules : "",
+				       modules ? G_SEARCHPATH_SEPARATOR_S : "",
+				       "gail");
+	g_setenv ("GTK_MODULES", new_modules, TRUE);
+
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
@@ -129,7 +141,6 @@ main (int argc, char *argv[])
 	}
 	
 	project_window = glade_project_window_new ();
-	glade_default_app_set (GLADE_APP (project_window));
 	
 	if (widget_name != NULL)
 	{

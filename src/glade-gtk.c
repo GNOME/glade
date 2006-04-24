@@ -54,18 +54,49 @@ typedef enum {
 	GLADEGTK_IMAGE_ICONTHEME
 } GladeGtkImageType;
 
+typedef enum {
+	GLADEGTK_BUTTON_LABEL = 0,
+	GLADEGTK_BUTTON_STOCK,
+	GLADEGTK_BUTTON_CONTAINER
+} GladeGtkButtonType;
+
+
 static GType
 glade_gtk_image_type_get_type (void)
 {
 	static GType etype = 0;
 	if (etype == 0) {
-		static const GEnumValue values[] = {
-			{ GLADEGTK_IMAGE_FILENAME,  "Filename",   "glade-gtk-image-filename" },
-			{ GLADEGTK_IMAGE_STOCK,     "Stock",      "glade-gtk-image-stock" },
-			{ GLADEGTK_IMAGE_ICONTHEME, "Icon Theme", "glade-gtk-image-icontheme" },
+		static GEnumValue values[] = {
+			{ GLADEGTK_IMAGE_FILENAME,  "a",   "glade-gtk-image-filename" },
+			{ GLADEGTK_IMAGE_STOCK,     "b",      "glade-gtk-image-stock" },
+			{ GLADEGTK_IMAGE_ICONTHEME, "c", "glade-gtk-image-icontheme" },
 			{ 0, NULL, NULL }
 		};
+		values[GLADEGTK_IMAGE_FILENAME].value_name  = _("Filename");
+		values[GLADEGTK_IMAGE_STOCK].value_name     = _("Stock");
+		values[GLADEGTK_IMAGE_ICONTHEME].value_name = _("Icon Theme");
+
 		etype = g_enum_register_static ("GladeGtkImageType", values);
+	}
+	return etype;
+}
+
+static GType
+glade_gtk_button_type_get_type (void)
+{
+	static GType etype = 0;
+	if (etype == 0) {
+		static GEnumValue values[] = {
+			{ GLADEGTK_BUTTON_LABEL,     "a", "glade-gtk-button-label" },
+			{ GLADEGTK_BUTTON_STOCK,     "b", "glade-gtk-button-stock" },
+			{ GLADEGTK_BUTTON_CONTAINER, "c", "glade-gtk-button-container" },
+			{ 0, NULL, NULL }
+		};
+		values[GLADEGTK_BUTTON_LABEL].value_name      = _("Label");
+		values[GLADEGTK_BUTTON_STOCK].value_name      = _("Stock");
+		values[GLADEGTK_BUTTON_CONTAINER].value_name  = _("Container");
+
+		etype = g_enum_register_static ("GladeGtkButtonType", values);
 	}
 	return etype;
 }
@@ -73,9 +104,18 @@ glade_gtk_image_type_get_type (void)
 GParamSpec * GLADEGTK_API
 glade_gtk_image_type_spec (void)
 {
-	return g_param_spec_enum ("type", _("Type"), 
-				  _("Chose the image type"),
+	return g_param_spec_enum ("type", _("Method"), 
+				  _("The method to use to edit this image"),
 				  glade_gtk_image_type_get_type (),
+				  0, G_PARAM_READWRITE);
+}
+
+GParamSpec * GLADEGTK_API
+glade_gtk_button_type_spec (void)
+{
+	return g_param_spec_enum ("type", _("Method"), 
+				  _("The method to use to edit this button"),
+				  glade_gtk_button_type_get_type (),
 				  0, G_PARAM_READWRITE);
 }
 
@@ -565,42 +605,164 @@ glade_gtk_notebook_verify_n_pages (GObject *object, GValue *value)
 	return TRUE;
 }
 
-/* GtkButton */
-
-static gboolean
-glade_gtk_button_ensure_glabel (GtkWidget *button)
+static void
+glade_gtk_button_backup_label (GladeWidget *gwidget)
 {
-	GladeWidgetClass *wclass;
-	GladeWidget      *gbutton, *glabel;
-	GtkWidget        *child;
+	gchar *text;
+	gboolean use_underline;
 
-	gbutton = glade_widget_get_from_gobject (button);
+	glade_widget_property_get (gwidget, "label", &text);
+	g_object_set_data_full (G_OBJECT (gwidget), "glade-label", 
+				g_strdup (text), g_free);
 
-	/* If we didnt put this object here... (or its a placeholder) */
-	if ((child = gtk_bin_get_child (GTK_BIN (button))) == NULL ||
-	    (glade_widget_get_from_gobject (child) == NULL))
-	{
-		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
-		glabel = glade_widget_new (gbutton, wclass,
-					   glade_widget_get_project (gbutton), FALSE);
-
-		glade_widget_property_set
-			(glabel, "label", gbutton->widget_class->generic_name);
-
-		if (child) gtk_container_remove (GTK_CONTAINER (button), child);
-		gtk_container_add (GTK_CONTAINER (button), GTK_WIDGET (glabel->object));
-
-		glade_project_add_object (GLADE_PROJECT (gbutton->project), 
-					  NULL, glabel->object);
-		gtk_widget_show (GTK_WIDGET (glabel->object));
-	}
-
-	glade_widget_property_set_sensitive 
-		(gbutton, "stock", FALSE, 
-		 _("There must be no children in the button"));
-	return FALSE;
+	glade_widget_property_get (gwidget, "use-underline", &use_underline);
+	g_object_set_data (G_OBJECT (gwidget), "glade-use-underline", 
+			   GINT_TO_POINTER (use_underline));
 }
 
+static void
+glade_gtk_button_disable_label (GladeWidget *gwidget)
+{
+	glade_gtk_button_backup_label (gwidget);
+	glade_widget_property_set (gwidget, "label", NULL);
+	glade_widget_property_set (gwidget, "use-underline", NULL);
+
+	glade_widget_property_set_sensitive
+		(gwidget, "label", FALSE,
+		 _("This only applies with label type buttons"));
+
+	glade_widget_property_set_sensitive
+		(gwidget, "use-underline", FALSE,
+		 _("This only applies with label type buttons"));
+}
+
+static void
+glade_gtk_button_restore_label (GladeWidget *gwidget)
+{
+	gchar *label = g_object_get_data (G_OBJECT (gwidget), "glade-label");
+	gboolean use_underline = GPOINTER_TO_INT
+		(g_object_get_data (G_OBJECT (gwidget), "glade-use-underline"));
+
+	glade_widget_property_set_sensitive (gwidget, "label", TRUE, NULL);
+	glade_widget_property_set (gwidget, "label", label);
+
+	glade_widget_property_set_sensitive (gwidget, "use-underline", TRUE, NULL);
+	glade_widget_property_set (gwidget, "use-underline", use_underline);
+
+}
+
+
+static void
+glade_gtk_button_backup_stock (GladeWidget *gwidget)
+{
+	gint stock_num;
+	if (glade_widget_property_default (gwidget, "stock") == FALSE)
+	{
+		glade_widget_property_get (gwidget, "stock", &stock_num);
+		g_object_set_data (G_OBJECT (gwidget), "glade-stock", 
+				   GINT_TO_POINTER (stock_num));
+	}
+}
+
+static void
+glade_gtk_button_disable_stock (GladeWidget *gwidget)
+{
+	glade_gtk_button_backup_stock (gwidget);
+	glade_widget_property_set (gwidget, "use-stock", FALSE);
+	glade_widget_property_set (gwidget, "stock", 0);
+	glade_widget_property_set_sensitive
+		(gwidget, "stock", FALSE,
+		 _("This only applies with stock type buttons"));
+}
+
+static void
+glade_gtk_button_restore_stock (GladeWidget *gwidget)
+{
+	gint stock_num = GPOINTER_TO_INT
+		(g_object_get_data (G_OBJECT (gwidget), "glade-stock"));
+	glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
+	glade_widget_property_set (gwidget, "stock", stock_num);
+	glade_widget_property_set (gwidget, "use-stock", TRUE);
+}
+
+static void
+glade_gtk_button_disable_contianer (GladeWidget *gwidget)
+{
+	if (glade_widget_get_from_gobject (GTK_BIN (gwidget->object)->child) == NULL)
+		gtk_container_remove (GTK_CONTAINER (gwidget->object),
+				      GTK_BIN (gwidget->object)->child);
+	else
+		g_critical ("Trying to leave container button mode when "
+			    "GTK_BIN (button)->child is a project widget");
+}
+
+static void
+glade_gtk_button_restore_container (GladeWidget *gwidget)
+{
+	GtkWidget *child = GTK_BIN (gwidget->object)->child;
+	if (child && glade_widget_get_from_gobject (child) == NULL)
+		gtk_container_remove (GTK_CONTAINER (gwidget->object), child);
+
+	if (GTK_BIN (gwidget->object)->child == NULL)
+		gtk_container_add (GTK_CONTAINER (gwidget->object), 
+				   glade_placeholder_new ());
+}
+
+void GLADEGTK_API
+glade_gtk_button_set_type (GObject *object, GValue *value)
+{
+	static gboolean     first = TRUE;
+	GladeWidget        *gwidget;
+	GladeGtkButtonType  type;
+	
+	gwidget = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GTK_IS_BUTTON (object));
+	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+
+
+	type = GPOINTER_TO_INT (g_object_get_data (object, "glade-last-type"));
+
+	/* Exit if we're still loading project objects
+	 */
+	if (GPOINTER_TO_INT (g_object_get_data
+			     (object, "glade-button-post-ran")) == 0)
+		return;
+
+	if (!first)
+	{
+		switch (type)
+		{
+		case GLADEGTK_BUTTON_LABEL:
+			glade_gtk_button_disable_label (gwidget);
+			break;
+		case GLADEGTK_BUTTON_STOCK:
+			glade_gtk_button_disable_stock (gwidget);	
+			break;
+		case GLADEGTK_BUTTON_CONTAINER:
+			glade_gtk_button_disable_contianer (gwidget);
+			break;
+		}
+	}
+
+	type = g_value_get_enum (value);
+	g_object_set_data (object, "glade-last-type", GINT_TO_POINTER (type));
+
+
+	switch (type)
+	{
+	case GLADEGTK_BUTTON_LABEL:
+		glade_gtk_button_restore_label (gwidget);
+		if (first) glade_gtk_button_disable_stock (gwidget);
+		break;
+	case GLADEGTK_BUTTON_STOCK:
+		glade_gtk_button_restore_stock (gwidget);
+		if (first) glade_gtk_button_disable_label (gwidget);
+		break;
+	case GLADEGTK_BUTTON_CONTAINER:
+		glade_gtk_button_restore_container (gwidget);
+		break;
+	}		
+}
 
 void GLADEGTK_API
 glade_gtk_button_set_stock (GObject *object, GValue *value)
@@ -614,6 +776,12 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	g_return_if_fail (GTK_IS_BUTTON (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
+	/* Exit if we're still loading project objects
+	 */
+	if (GPOINTER_TO_INT (g_object_get_data
+			     (object, "glade-button-post-ran")) == 0)
+		return;
+
 	val = g_value_get_enum (value);	
 	if (val == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gwidget), "stock")))
 		return;
@@ -624,14 +792,7 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 	{
 		/* setting to "none", ensure an appropriate label */
 		if (val == 0)
-		{
-			glade_widget_property_set (gwidget, "use-stock", FALSE);
 			glade_widget_property_set (gwidget, "label", NULL);
-
-			glade_gtk_button_ensure_glabel (GTK_WIDGET (gwidget->object));
-			glade_project_selection_set (GLADE_PROJECT (gwidget->project), 
-						     G_OBJECT (gwidget->object), TRUE);
-		}
 		else
 		{
 			if (GTK_BIN (object)->child)
@@ -649,7 +810,6 @@ glade_gtk_button_set_stock (GObject *object, GValue *value)
 			/* Here we should remove any previously added GladeWidgets manualy
 			 * and from the project, not to leak them.
 			 */
-			glade_widget_property_set (gwidget, "use-stock", TRUE);
 			glade_widget_property_set (gwidget, "label", eval->value_nick);
 		}
 	}
@@ -794,11 +954,7 @@ glade_gtk_image_set_type (GObject *object, GValue *value)
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
-	/* Since this gets called at object construction
-	 * (during the sync_custom_props phase), we need to make
-	 * sure this isn't called before the post_create_idle
-	 * function, otherwise file loading breaks due to the
-	 * cascade of dependant properties in GtkImage.
+	/* Exit if we're still loading project objects
 	 */
 	if (GPOINTER_TO_INT (g_object_get_data
 			     (object, "glade-image-post-ran")) == 0)
@@ -1300,15 +1456,71 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 	}
 }
 
-void GLADEGTK_API
-glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
+static gboolean
+glade_gtk_button_post_create_idle (GObject *button)
 {
 	gboolean     use_stock = FALSE;
 	gchar       *label = NULL;
-	GladeWidget *gbutton = 
-		gbutton = glade_widget_get_from_gobject (button);
 	GEnumValue  *eval;
 	GEnumClass  *eclass;
+	GladeWidget *gbutton = glade_widget_get_from_gobject (button);
+	GladeCreateReason reason;
+
+	eclass   = g_type_class_ref (GLADE_TYPE_STOCK);
+
+	g_object_set_data (button, "glade-button-post-ran", GINT_TO_POINTER (1));
+	reason = GPOINTER_TO_INT (g_object_get_data (button, "glade-reason"));
+
+	/* Just incase */
+	glade_gtk_button_backup_stock (gbutton);
+	glade_gtk_button_backup_label (gbutton);
+
+	if (reason == GLADE_CREATE_USER)
+	{
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
+		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
+					     G_OBJECT (button), TRUE);
+		return FALSE;
+	}
+
+	glade_widget_property_get (gbutton, "use-stock", &use_stock);
+	if (use_stock)
+	{
+		glade_widget_property_get (gbutton, "label", &label);
+		
+		if (label != NULL && strcmp (label, "glade-none") != 0 &&
+		    (eval = g_enum_get_value_by_nick (eclass, label)) != NULL)
+		{
+			g_object_set_data (G_OBJECT (gbutton), "stock", 
+					   GINT_TO_POINTER (eval->value));
+
+			glade_widget_property_set (gbutton, "stock", eval->value);
+		}
+
+		/* Backup stock prop fisrt since setting the type
+		 * will restore it.
+		 */
+		glade_gtk_button_backup_stock (gbutton);
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_STOCK);
+	}
+	else if (GTK_BIN (button)->child != NULL && 
+		 glade_widget_get_from_gobject (GTK_BIN (button)->child) != NULL)
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_CONTAINER);
+	else if (glade_widget_property_default (gbutton, "label") == FALSE)
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
+	else
+		glade_widget_property_reset (gbutton, "glade-type");
+
+	g_type_class_unref (eclass);
+
+	return FALSE;
+}
+
+void GLADEGTK_API
+glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
+{
+	GladeWidget *gbutton = glade_widget_get_from_gobject (button);
+	gchar       *string;
 
 	g_return_if_fail (GTK_IS_BUTTON (button));
 	g_return_if_fail (GLADE_IS_WIDGET (gbutton));
@@ -1325,49 +1537,17 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 
 	if (GTK_IS_COLOR_BUTTON (button) ||
 	    GTK_IS_FONT_BUTTON (button))
+	{
+ 		string = g_strdup_printf (_("This property does not apply to a %s"),
+					  gbutton->widget_class->palette_name);
+		glade_widget_property_set_sensitive (gbutton, "glade-type",
+						     FALSE, string);
+		g_free (string);
 		return;
+  	}
 
-	eclass   = g_type_class_ref (GLADE_TYPE_STOCK);
-
-
-	/* Internal buttons get created with stock stuff, handle that here. */
-	if (gbutton->internal)
-		g_object_get (gbutton->object, "use-stock", &use_stock, NULL);
-	else
-		glade_widget_property_get (gbutton, "use-stock", &use_stock);
-	
-	if (use_stock)
-	{
-		gboolean free_label = FALSE;
-		if (gbutton->internal)
-		{
-			/* Free strings returned from g_object_get() */
-			free_label = TRUE;
-			g_object_get (gbutton->object, "label", &label, NULL);
-		}
-		else
-			glade_widget_property_get (gbutton, "label", &label);
-		
-		eval = g_enum_get_value_by_nick (eclass, label);
-		g_object_set_data (G_OBJECT (gbutton), "stock", GINT_TO_POINTER (eval->value));
-
-		if (label != NULL && strcmp (label, "glade-none") != 0)
-			glade_widget_property_set (gbutton, "stock", eval->value);
-
-		if (free_label && label)
-			g_free (label);
-	} 
-	else if (reason == GLADE_CREATE_USER)
-	{
-		/* We need to use an idle function so as not to screw up
-		 * the widget tree (i.e. the hierarchic order of widget creation
-		 * needs to be parent first child last).
-		 */
-		g_idle_add ((GSourceFunc)glade_gtk_button_ensure_glabel, button);
-		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
-					     G_OBJECT (button), TRUE);
-	}
-	g_type_class_unref (eclass);
+	g_object_set_data (button, "glade-reason", GINT_TO_POINTER (reason));
+	g_idle_add ((GSourceFunc)glade_gtk_button_post_create_idle, button);
 }
 
 
@@ -1661,15 +1841,14 @@ glade_gtk_button_replace_child (GtkWidget *container,
 
 	g_return_if_fail (GLADE_IS_WIDGET (gbutton));
 	glade_gtk_container_replace_child (container, current, new);
-
+	
 	if (GLADE_IS_PLACEHOLDER (new))
-		glade_widget_property_set_sensitive (gbutton, 
-						     "stock", 
-						     TRUE, NULL);
+		glade_widget_property_set_sensitive (gbutton, "glade-type", TRUE, NULL);
 	else
-		glade_widget_property_set_sensitive 
-			(gbutton, "stock", FALSE, 
-			 _("There must be no children in the button"));
+		glade_widget_property_set_sensitive (gbutton, "glade-type", FALSE,
+						     _("You must remove any children before "
+						       "you can set the type"));
+
 }
 
 /* ---------------------- Get Internal Child functions ---------------------- */
@@ -1876,14 +2055,34 @@ glade_gtk_notebook_add_child (GObject *object, GObject *child)
 GLADEGTK_API void
 glade_gtk_button_add_child (GObject *object, GObject *child)
 {
-	GtkWidget *old;
+	GladeWidget *gwidget;
 
-	old = GTK_BIN (object)->child;
-	if (old)
-		gtk_container_remove (GTK_CONTAINER (object), old);
+	if (GTK_BIN (object)->child)
+		gtk_container_remove (GTK_CONTAINER (object), 
+				      GTK_BIN (object)->child);
 	
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+	if (GLADE_IS_PLACEHOLDER (child) == FALSE)
+	{
+		gwidget = glade_widget_get_from_gobject (object);
+		glade_widget_property_set_sensitive (gwidget, "glade-type", FALSE,
+						     _("You must remove any children before "
+						       "you can set the type"));
+	}
 }
+
+GLADEGTK_API void
+glade_gtk_button_remove_child (GObject *object, GObject *child)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
+	gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new());
+
+	glade_widget_property_set_sensitive (gwidget, "glade-type", TRUE, NULL);
+}
+
 
 GLADEGTK_API void
 glade_gtk_frame_add_child (GObject *object, GObject *child)
@@ -4022,10 +4221,10 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
 	gtk_box_pack_start (GTK_BOX (vbox), buttonbox, FALSE, TRUE, 0);
 
-	button = glade_default_app_undo_button_new ();
+	button = glade_app_undo_button_new ();
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
-	button = glade_default_app_redo_button_new ();
+	button = glade_app_redo_button_new ();
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
@@ -4056,7 +4255,7 @@ glade_gtk_menu_bar_launch_editor (GObject *menubar)
 	else
 	{
 		GladeWidget *gmenubar = glade_widget_get_from_gobject (menubar);
-		glade_util_ui_message (GTK_WIDGET (glade_default_app_get_transient_parent ()),
+		glade_util_ui_message (GTK_WIDGET (glade_app_get_transient_parent ()),
 				       GLADE_UI_INFO,
 				       _("A MenuBar editor is already runing for \"%s\"\n"
 					 "Cannot launch more than one editor per menubar."),

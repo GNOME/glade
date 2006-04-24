@@ -37,7 +37,6 @@ struct _GladeParamSpecObjects {
 	GParamSpec    parent_instance;
 	
 	GType         type;
-	GPtrArray    *objects;
 };
 
 
@@ -97,23 +96,143 @@ glade_standard_stock_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
+
 /****************************************************************
- *  Built-in GladeParamSpecObjects for object array properties  *
+ *  A GList boxed type used by GladeParamSpecObjects and        *
+ *  GladeParamSpecAccel                                         *
  ****************************************************************/
 GType
 glade_glist_get_type (void)
 {
-  static GType type_id = 0;
+	static GType type_id = 0;
 
-  if (!type_id)
-    type_id = g_boxed_type_register_static ("GladeGList",
-					    (GBoxedCopyFunc) g_list_copy,
-					    (GBoxedFreeFunc) g_list_free);
-  return type_id;
+	if (!type_id)
+		type_id = g_boxed_type_register_static
+			("GladeGList", 
+			 (GBoxedCopyFunc) g_list_copy,
+			 (GBoxedFreeFunc) g_list_free);
+	return type_id;
 }
 
 
 
+/****************************************************************
+ *  Built-in GladeParamSpecAccel for accelerator properties     *
+ ****************************************************************/
+#if 0
+static void
+param_accel_init (GParamSpec *pspec)
+{
+	GladeParamSpecAccel *ospec = GLADE_PARAM_SPEC_ACCEL (pspec);
+	ospec->type = G_TYPE_OBJECT;
+}
+
+static void
+param_accel_set_default (GParamSpec *pspec,
+			   GValue     *value)
+{
+	if (value->data[0].v_pointer != NULL)
+	{
+		g_free (value->data[0].v_pointer);
+	}
+	value->data[0].v_pointer = NULL;
+}
+
+static gboolean
+param_accel_validate (GParamSpec *pspec,
+		      GValue     *value)
+{
+	GladeParamSpecAccel *ospec = GLADE_PARAM_SPEC_ACCEL (pspec);
+	GList               *accels, *list, *toremove = NULL;
+	GladeAccelInfo      *info;
+
+	accel = value->data[0].v_pointer;
+
+	for (list = accels; list; list = list->next)
+	{
+		info = list->data;
+		
+		/* Is it a valid key ? */
+		if (info->key /* XXX */ ||
+		    /* Does the modifier contain any unwanted bits ? */
+		    info->modifier & GLADE_MODIFIER_MASK ||
+		    /* Do we have a signal ? */
+		    info->signal == NULL)
+			toremove = g_list_prepend (toremove, info);
+	}
+
+	for (list = toremove; list; list = list->next)
+	{
+		object = list->data;
+		accels = g_list_remove (accels, object);
+	}
+	if (toremove) g_list_free (toremove);
+ 
+	value->data[0].v_pointer = accels;
+
+	return toremove != NULL;
+}
+
+static gint
+param_accel_values_cmp (GParamSpec   *pspec,
+			  const GValue *value1,
+			  const GValue *value2)
+{
+  guint8 *p1 = value1->data[0].v_pointer;
+  guint8 *p2 = value2->data[0].v_pointer;
+
+  /* not much to compare here, try to at least provide stable lesser/greater result */
+
+  return p1 < p2 ? -1 : p1 > p2;
+}
+
+GType
+glade_param_accel_get_type (void)
+{
+	static GType accel_type = 0;
+
+	if (accel_type == 0)
+	{
+		static /* const */ GParamSpecTypeInfo pspec_info = {
+			sizeof (GladeParamSpecAccel),  /* instance_size */
+			16,                         /* n_preallocs */
+			param_accel_init,         /* instance_init */
+			0xdeadbeef,                 /* value_type, assigned further down */
+			NULL,                       /* finalize */
+			param_accel_set_default,  /* value_set_default */
+			param_accel_validate,     /* value_validate */
+			param_accel_values_cmp,   /* values_cmp */
+		};
+		pspec_info.value_type = GLADE_TYPE_GLIST;
+
+		accel_type = g_param_type_register_static
+			("GladeParamAccel", &pspec_info);
+	}
+	return accel_type;
+}
+
+GParamSpec *
+glade_param_spec_accel (const gchar   *name,
+			const gchar   *nick,
+			const gchar   *blurb,
+			GType          accepted_type,
+			GParamFlags    flags)
+{
+  GladeParamSpecAccel *pspec;
+
+  pspec = g_param_spec_internal (GLADE_TYPE_PARAM_ACCEL,
+				 name, nick, blurb, flags);
+  
+  pspec->type = accepted_type;
+  return G_PARAM_SPEC (pspec);
+}
+#endif
+
+/****************************************************************
+ *  Built-in GladeParamSpecObjects for object list properties   *
+ *  (Used as a pspec to desctibe an AtkRelationSet, but can     *
+ *  for any object list property)                               *
+ ****************************************************************/
 static void
 param_objects_init (GParamSpec *pspec)
 {
@@ -145,10 +264,15 @@ param_objects_validate (GParamSpec *pspec,
 	for (list = objects; list; list = list->next)
 	{
 		object = list->data;
-		if (!g_value_type_compatible (G_OBJECT_TYPE (object), ospec->type))
-		{
+
+		if (G_TYPE_IS_INTERFACE (ospec->type) &&
+		    glade_util_class_implements_interface
+		    (G_OBJECT_TYPE (object), ospec->type) == FALSE)
 			toremove = g_list_prepend (toremove, object);
-		}
+		else if (G_TYPE_IS_INTERFACE (ospec->type) == FALSE &&
+			 g_type_is_a (G_OBJECT_TYPE (object), 
+				      ospec->type) == FALSE)
+			toremove = g_list_prepend (toremove, object);
 	}
 
 	for (list = toremove; list; list = list->next)
@@ -184,7 +308,7 @@ glade_param_objects_get_type (void)
 	if (objects_type == 0)
 	{
 		static /* const */ GParamSpecTypeInfo pspec_info = {
-			sizeof (GParamSpecObject),  /* instance_size */
+			sizeof (GladeParamSpecObjects),  /* instance_size */
 			16,                         /* n_preallocs */
 			param_objects_init,         /* instance_init */
 			0xdeadbeef,                 /* value_type, assigned further down */
@@ -224,6 +348,11 @@ glade_param_spec_objects_set_type (GladeParamSpecObjects *pspec,
 	pspec->type = type;
 }
 
+GType
+glade_param_spec_objects_get_type  (GladeParamSpecObjects *pspec)
+{
+	return pspec->type;
+}
 
 /* This was developed for the purpose of holding a list
  * of 'targets' in an AtkRelation (we are setting it up

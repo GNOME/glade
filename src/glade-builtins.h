@@ -41,6 +41,7 @@ LIBGLADEUI_API GParamSpec  *glade_param_spec_objects      (const gchar   *name,
 
 LIBGLADEUI_API void         glade_param_spec_objects_set_type (GladeParamSpecObjects *pspec,
 							       GType                  type);
+LIBGLADEUI_API GType        glade_param_spec_objects_get_type (GladeParamSpecObjects *pspec);
 
 LIBGLADEUI_API GParamSpec **glade_list_atk_relations      (GType  owner_type, 
 							   guint *n_specs);

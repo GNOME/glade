@@ -11,7 +11,23 @@ G_BEGIN_DECLS
 #define GLADE_PROPERTY_CLASS(gpc)     ((GladePropertyClass *) gpc)
 #define GLADE_IS_PROPERTY_CLASS(gpc)  (gpc != NULL)
 
+#define GPC_OBJECT_DELIMITER ", "
+
 typedef struct _GladePropertyClass GladePropertyClass;
+
+/**
+ * GPCAtkType:
+ * @GPC_ATK_NONE: is not an atk property
+ * @GPC_ATK_PROPERTY: is a property of an #AtkImplementor object
+ * @GPC_ATK_RELATION: is an atk relation set property
+ * @GPC_ATK_ACTION: is an atk action property
+ */
+typedef enum {
+	GPC_ATK_NONE,
+	GPC_ATK_PROPERTY,
+	GPC_ATK_RELATION,
+	GPC_ATK_ACTION
+} GPCAtkType;
 
 /**
  * GladeVerifyPropertyFunc:
@@ -107,10 +123,11 @@ struct _GladePropertyClass
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
-	gboolean atk_property; /* atk props go in the a11y tab */
-	gboolean atk_relation; /* whether this is an atk relation property
-				* (they are saved/loaded differently)
-				*/
+
+	GPCAtkType atk_type; /* Whether this is an atk property and if so;
+			      * whether its a relation, action or atkobject 
+			      * property
+			      */
 
 	gboolean translatable; /* The property should be translatable, which
 				* means that it needs extra parameters in the
@@ -175,6 +192,12 @@ GladePropertyClass *glade_property_class_new                     (void);
 LIBGLADEUI_API
 GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec);
 LIBGLADEUI_API
+GladePropertyClass *glade_property_class_new_atk_action          (const gchar         *name,
+								  const gchar         *def,
+								  GType                owner_type);
+LIBGLADEUI_API 
+GList              *glade_property_class_list_atk_relations      (GType                owner_type);
+LIBGLADEUI_API
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 LIBGLADEUI_API
 void                glade_property_class_free                    (GladePropertyClass  *property_class);
@@ -197,6 +220,13 @@ void                glade_property_class_set_vl_from_gvalue      (GladePropertyC
 								  GValue              *value,
 								  va_list              vl);
 LIBGLADEUI_API
+GValue             *glade_property_class_make_gvalue             (GladePropertyClass  *class,
+								  ...);
+LIBGLADEUI_API
+void                glade_property_class_get_from_gvalue         (GladePropertyClass  *class,
+								  GValue              *value,
+								  ...);
+LIBGLADEUI_API
 gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
 								  GModule             *module,
 								  GType                object_type,
@@ -207,14 +237,14 @@ gchar              *glade_property_class_get_displayable_value   (GladePropertyC
 								  gint                value);
 LIBGLADEUI_API
 GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
-
 LIBGLADEUI_API
 gboolean            glade_property_class_match                   (GladePropertyClass *class,
 								  GladePropertyClass *comp);
-
 LIBGLADEUI_API
 gboolean            glade_property_class_void_value              (GladePropertyClass *class,
 								  GValue             *value);
+LIBGLADEUI_API
+G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);
 
 G_END_DECLS
 

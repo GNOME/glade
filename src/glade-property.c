@@ -140,6 +140,62 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 extern gboolean glade_widget_dupping;
 
 static void
+glade_property_update_prop_refs (GladeProperty *property, 
+				 const GValue  *old_value,
+				 const GValue  *new_value)
+{
+	GladeWidget *gold, *gnew;
+	GObject     *old_object, *new_object;
+	GList       *old_list, *new_list, *list, *removed, *added;
+
+	if (GLADE_IS_PARAM_SPEC_OBJECTS (property->class->pspec))
+	{
+		/* Make our own copies incase we're walking an
+		 * unstable list
+		 */
+		old_list = g_value_dup_boxed (old_value);
+		new_list = g_value_dup_boxed (new_value);
+
+		/* Diff up the GList */
+		removed = glade_util_removed_from_list (old_list, new_list);
+		added   = glade_util_added_in_list     (old_list, new_list);
+
+		/* Adjust the appropriate prop refs */
+		for (list = removed; list; list = list->next)
+		{
+			old_object = list->data;
+			gold = glade_widget_get_from_gobject (old_object);
+			glade_widget_remove_prop_ref (gold, property);
+		}
+		for (list = added; list; list = list->next)
+		{
+			new_object = list->data;
+			gnew = glade_widget_get_from_gobject (new_object);
+			glade_widget_add_prop_ref (gnew, property);
+		}
+
+		g_list_free (removed);
+		g_list_free (added);
+		g_list_free (old_list);
+		g_list_free (new_list);
+	}
+	else
+	{
+		if ((old_object = g_value_get_object (old_value)) != NULL)
+		{
+			gold = glade_widget_get_from_gobject (old_object);
+			glade_widget_remove_prop_ref (gold, property);
+		}
+		
+		if ((new_object = g_value_get_object (new_value)) != NULL)
+		{
+			gnew = glade_widget_get_from_gobject (new_object);
+			glade_widget_add_prop_ref (gnew, property);
+		}
+	}
+}
+
+static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
 	GladeProject *project = glade_widget_get_project (property->widget);
@@ -152,7 +208,9 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 		return;
 	}
 
-	if (property->class->verify_function && glade_widget_is_dupping() == FALSE &&
+	if (property->widget &&
+	    property->class->verify_function &&
+	    glade_widget_is_dupping() == FALSE &&
 	    project && glade_project_is_loading (project) == FALSE)
 	{
 		GObject *object = glade_widget_get_object (property->widget);
@@ -167,24 +225,11 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 
 	/* Add/Remove references from widget ref stacks here
+	 * (before assigning the value)
 	 */
-	if (changed && glade_property_class_is_object (property->class))
-	{
-		GladeWidget *gold, *gnew;
-		GObject     *old_object, *new_object;
+	if (property->widget && changed && glade_property_class_is_object (property->class))
+		glade_property_update_prop_refs (property, property->value, value);
 
-		if ((old_object = g_value_get_object (property->value)) != NULL)
-		{
-			gold = glade_widget_get_from_gobject (old_object);
-			glade_widget_remove_prop_ref (gold, property);
-		}
-
-		if ((new_object = g_value_get_object (value)) != NULL)
-		{
-			gnew = glade_widget_get_from_gobject (new_object);
-			glade_widget_add_prop_ref (gnew, property);
-		}
-	}
 
 	/* Assign property first so that; if the object need be
 	 * rebuilt, it will reflect the new value
@@ -194,7 +239,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 	GLADE_PROPERTY_GET_KLASS (property)->sync (property);
 
-	if (changed)
+	if (changed && property->widget)
 	{
 		if (project) glade_project_changed (project);
 
@@ -227,10 +272,14 @@ glade_property_sync_impl (GladeProperty *property)
 	/* Heh, here are the many reasons not to
 	 * sync a property ;-)
 	 */
-	if (property->enabled == FALSE    || /* optional properties that are disabled */
-	    property->class->ignore       || /* catalog says "never sync" */
-	    property->class->atk_property || /* dont bother with atk related properties */
-	    property->syncing)               /* avoid recursion */
+	if (/* optional properties that are disabled */
+	    property->enabled == FALSE    || 
+	    /* explicit "never sync" flag */
+	    property->class->ignore       || 
+	    /* avoid recursion */
+	    property->syncing             ||
+	    /* No widget owns this property yet */
+	    property->widget == NULL)
 		return;
 
 	property->syncing = TRUE;
@@ -294,73 +343,93 @@ glade_property_write_impl (GladeProperty  *property,
 			   GladeInterface *interface,
 			   GArray         *props)
 {
-	GladePropInfo info = { 0 };
-	gchar *tmp;
-	gchar *default_str = NULL;
-	gboolean skip;
+	GladePropInfo         info  = { 0, };
+	GladeAtkActionInfo    ainfo = { 0, };
+	gchar                *name, *value, **split, *tmp;
+	gint                  i;
 
 	if (!property->class->save || !property->enabled)
 		return FALSE;
 
+	g_assert (property->class->orig_def);
+	g_assert (property->class->def);
+
+	/* Skip properties that are default
+	 * (by original pspec default) 
+	 */
+	if (glade_property_equals_value (property, property->class->orig_def))
+		return FALSE;
+
 	/* we should change each '-' by '_' on the name of the property 
          * (<property name="...">) */
-	tmp = g_strdup (property->class->id);
-	if (!tmp)
-		return FALSE;
-	glade_util_replace (tmp, '-', '_');
-
-	/* put the name="..." part on the <property ...> tag */
-	info.name = alloc_propname(interface, tmp);
-	g_free (tmp);
-
-	/* convert the value of this property to a string, and put it between
-	 * the opening and the closing of the property tag */
-	tmp = glade_property_class_make_string_from_gvalue (property->class,
-							    property->value);
-	
-	/* an empty string is a valid value (a flag set to 0) */
-	if (tmp == NULL) return FALSE;
-
-	if (property->class->orig_def == NULL)
+	if (property->class->atk_type != GPC_ATK_NONE)
 	{
-		/* Skip custom properties that are NULL string types. */
-		skip = G_IS_PARAM_SPEC_STRING (property->class->pspec) &&
-			!g_value_get_string (property->value);
+
+		tmp = (gchar *)glade_property_class_atk_realname (property->class->id);
+		name = g_strdup (tmp);
 	}
 	else
 	{
-		/* Skip properties that are default
-		 * (by original pspec default) 
-		 */
-		default_str =
-			glade_property_class_make_string_from_gvalue
-			(property->class, property->class->orig_def);
-		skip = default_str && !strcmp (tmp, default_str);
-		g_free (default_str);
+		name = g_strdup (property->class->id);
 	}
-	
-	if (skip)
+
+	/* convert the value of this property to a string */
+	/* XXX Is this right to return here ??? */
+	if ((value = glade_property_class_make_string_from_gvalue 
+	     (property->class, property->value)) == NULL)
 	{
-		g_free (tmp);
+		g_free (name);
 		return FALSE;
 	}
 
-	if (property->class->translatable)
+	switch (property->class->atk_type)
 	{
-		info.translatable = property->i18n_translatable;
-		info.has_context  = property->i18n_has_context;
-		if (property->i18n_comment)
-			info.comment = alloc_string
-				(interface, property->i18n_comment);
+	case GPC_ATK_PROPERTY:
+		tmp = g_strdup_printf ("AtkObject::%s", name);
+		g_free (name);
+		name = tmp;
+		/* Dont break here ... */
+	case GPC_ATK_NONE:
+		info.name = alloc_propname(interface, name);
+		info.value = alloc_string(interface,  value);
+		
+		if (property->class->translatable)
+		{
+			info.translatable = property->i18n_translatable;
+			info.has_context  = property->i18n_has_context;
+			if (property->i18n_comment)
+				info.comment = alloc_string
+					(interface, property->i18n_comment);
+		}
+		g_array_append_val (props, info);
+		break;
+	case GPC_ATK_RELATION:
+		if ((split = g_strsplit (value, GPC_OBJECT_DELIMITER, 0)) != NULL)
+		{
+			for (i = 0; split[i] != NULL; i++)
+			{
+				GladeAtkRelationInfo  rinfo = { 0, };
+				rinfo.type   = alloc_string(interface, name);
+				rinfo.target = alloc_string(interface, split[i]);
+				g_array_append_val (props, rinfo);
+			}
+			g_strfreev (split);
+		}
+		break;
+	case GPC_ATK_ACTION:
+		ainfo.action_name = alloc_string(interface, name);
+		ainfo.description = alloc_string(interface, value);
+		g_array_append_val (props, ainfo);
+		break;
+	default:
+		break;
 	}
 	
-	info.value = alloc_string(interface, tmp);
-	g_array_append_val (props, info);
-	g_free (tmp);
+	g_free (name);
+	g_free (value);
 
 	return TRUE;
 }
-
 
 static G_CONST_RETURN gchar *
 glade_property_get_tooltip_impl (GladeProperty *property)
@@ -578,6 +647,259 @@ glade_property_get_type (void)
 						&property_info, 0);
 	}
 	return property_type;
+}
+
+/*******************************************************************************
+                        GladeInterface Parsing code
+ *******************************************************************************/
+static GValue *
+glade_property_read_packing (GladeProperty      *property, 
+			     GladePropertyClass *pclass,
+			     GladeProject       *project,
+			     GladeChildInfo     *info,
+			     gboolean            free_value)
+{
+	GValue    *gvalue = NULL;
+	gint       i;
+	gchar     *id;
+
+	for (i = 0; i < info->n_properties; ++i)
+	{
+		GladePropInfo *pinfo = info->properties + i;
+		
+		id = glade_util_read_prop_name (pinfo->name);
+		
+		if (!strcmp (id, pclass->id))
+		{
+			gvalue = glade_property_class_make_gvalue_from_string
+				(pclass, pinfo->value, project);
+			
+			if (property)
+			{
+				glade_property_i18n_set_translatable
+					(property, pinfo->translatable);
+				glade_property_i18n_set_has_context
+					(property, pinfo->has_context);
+				glade_property_i18n_set_comment
+					(property, pinfo->comment);
+				property->enabled = TRUE;
+				
+				GLADE_PROPERTY_GET_KLASS (property)->set_value
+					(property, gvalue);
+			}
+
+			if (free_value)
+			{
+				g_value_unset (gvalue);
+				g_free (gvalue);
+			}
+
+			g_free (id);
+			break;
+		}
+		g_free (id);
+	}
+	return gvalue;
+}
+
+static GValue *
+glade_property_read_normal (GladeProperty      *property, 
+			    GladePropertyClass *pclass,
+			    GladeProject       *project,
+			    GladeWidgetInfo    *info,
+			    gboolean            free_value)
+{
+	GValue    *gvalue = NULL;
+	gint       i;
+	gchar     *id;
+
+	for (i = 0; i < info->n_properties; ++i)
+	{
+		GladePropInfo *pinfo = info->properties + i;
+		
+		id = glade_util_read_prop_name (pinfo->name);
+		
+		if (!strcmp (id, pclass->id))
+		{
+			if (property && glade_property_class_is_object (pclass))
+			{
+				/* we must synchronize this directly after loading this project
+				 * (i.e. lookup the actual objects after they've been parsed and
+				 * are present).
+				 */
+				g_object_set_data_full (G_OBJECT (property), 
+							"glade-loaded-object", 
+							g_strdup (pinfo->value), g_free);
+			}
+			else
+			{
+				gvalue = glade_property_class_make_gvalue_from_string
+					(pclass, pinfo->value, project);
+
+				if (property)
+					GLADE_PROPERTY_GET_KLASS
+						(property)->set_value (property, gvalue);
+
+				if (free_value)
+				{
+					g_value_unset (gvalue);
+					g_free (gvalue);
+				}
+			}
+			
+			if (property)
+			{
+				glade_property_i18n_set_translatable
+					(property, pinfo->translatable);
+				glade_property_i18n_set_has_context
+					(property, pinfo->has_context);
+				glade_property_i18n_set_comment
+					(property, pinfo->comment);
+
+				property->enabled = TRUE;
+			}
+
+			g_free (id);
+			break;
+		}
+		g_free (id);
+	}
+	return gvalue;
+}
+
+static GValue *
+glade_property_read_atk_prop (GladeProperty      *property, 
+			      GladePropertyClass *pclass,
+			      GladeProject       *project,
+			      GladeWidgetInfo    *info,
+			      gboolean            free_value)
+{
+	GValue    *gvalue = NULL;
+	gint       i;
+	gchar     *id;
+
+	for (i = 0; i < info->n_atk_props; ++i)
+	{
+		GladePropInfo *pinfo = info->atk_props + i;
+		
+		id = glade_util_read_prop_name (pinfo->name);
+		
+		if (!strcmp (id, pclass->id))
+		{
+			gvalue = glade_property_class_make_gvalue_from_string
+				(pclass, pinfo->value, project);
+
+			if (property)
+			{
+				glade_property_i18n_set_translatable
+					(property, pinfo->translatable);
+				glade_property_i18n_set_has_context
+					(property, pinfo->has_context);
+				glade_property_i18n_set_comment
+					(property, pinfo->comment);
+				GLADE_PROPERTY_GET_KLASS (property)->set_value
+					(property, gvalue);
+
+				property->enabled = TRUE;
+			}
+
+			if (free_value)
+			{
+				g_value_unset (gvalue);
+				g_free (gvalue);
+			}
+			
+			g_free (id);
+			break;
+		}
+		g_free (id);
+	}
+	return gvalue;
+}
+
+static GValue *
+glade_property_read_atk_relation (GladeProperty      *property, 
+				  GladePropertyClass *pclass,
+				  GladeProject       *project,
+				  GladeWidgetInfo    *info)
+{
+	const gchar *class_id;
+	gchar       *id, *string = NULL, *tmp;
+	gint         i;
+
+	for (i = 0; i < info->n_relations; ++i)
+	{
+		GladeAtkRelationInfo *rinfo = info->relations + i;
+			
+		id       = glade_util_read_prop_name (rinfo->type);
+		class_id = glade_property_class_atk_realname (pclass->id);
+
+		if (!strcmp (id, class_id))
+		{
+			if (string == NULL)
+				string = g_strdup (rinfo->target);
+			else
+			{
+				tmp = g_strdup_printf ("%s%s%s", string, 
+						       GPC_OBJECT_DELIMITER, rinfo->target);
+				string = (g_free (string), tmp);
+			}
+		}
+		g_free (id);
+	}
+
+	/* we must synchronize this directly after loading this project
+	 * (i.e. lookup the actual objects after they've been parsed and
+	 * are present).
+	 */
+	if (property)
+	{
+		g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
+					g_strdup (string), g_free);
+	}
+
+	return NULL;
+}
+
+static GValue *
+glade_property_read_atk_action (GladeProperty      *property, 
+				GladePropertyClass *pclass,
+				GladeProject       *project,
+				GladeWidgetInfo    *info,
+				gboolean            free_value)
+{
+	GValue      *gvalue = NULL;
+	const gchar *class_id;
+	gchar       *id;
+	gint         i;
+
+	for (i = 0; i < info->n_atk_actions; ++i)
+	{
+		GladeAtkActionInfo *ainfo = info->atk_actions + i;
+			
+		id       = glade_util_read_prop_name (ainfo->action_name);
+		class_id = glade_property_class_atk_realname (pclass->id);
+
+		if (!strcmp (id, class_id))
+		{
+			gvalue = glade_property_class_make_gvalue_from_string 
+				(pclass, ainfo->description, project);
+				
+			if (property)
+				GLADE_PROPERTY_GET_KLASS
+					(property)->set_value (property, gvalue);
+
+			if (free_value)
+			{
+				g_value_unset (gvalue);
+				g_free (gvalue);
+			}
+			g_free (id);
+			break;
+		}
+		g_free (id);
+	}
+	return gvalue;
 }
 
 /*******************************************************************************
@@ -871,6 +1193,67 @@ glade_property_sync (GladeProperty *property)
 }
 
 /**
+ * glade_property_read:
+ * @property: a #GladeProperty or #NULL
+ * @pclass: the #GladePropertyClass
+ * @project: the #GladeProject
+ * @info: a #GladeWidgetInfo struct or a #GladeChildInfo struct if
+ *        a packing property is passed.
+ * @free_value: Whether the return value should be freed after applying
+ *              it to the property or if it should be returned in tact.
+ *
+ * Read the value and any attributes for @property from @info, assumes
+ * @property is being loaded for @project
+ *
+ * Returns: The newly created #GValue if successfull (and if @free_value == FALSE)
+ *
+ * Note that object values will only be resolved after the project is
+ * completely loaded
+ */
+GValue *
+glade_property_read (GladeProperty      *property, 
+		     GladePropertyClass *pclass,
+		     GladeProject       *project,
+		     gpointer            info,
+		     gboolean            free_value)
+{
+	GValue *ret = NULL;
+
+	g_return_val_if_fail (pclass != NULL, FALSE);
+	g_return_val_if_fail (info != NULL, FALSE);
+
+	if (pclass->packing)
+	{
+		ret = glade_property_read_packing 
+			(property, pclass, project, (GladeChildInfo *)info, free_value);
+	}
+	else switch (pclass->atk_type)
+	{
+	case GPC_ATK_NONE:
+		ret = glade_property_read_normal
+			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
+		break;
+	case GPC_ATK_PROPERTY:
+		ret = glade_property_read_atk_prop
+			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
+		break;
+	case GPC_ATK_RELATION:
+		ret = glade_property_read_atk_relation
+			(property, pclass, project, (GladeWidgetInfo *)info);
+		break;
+	case GPC_ATK_ACTION:
+		ret = glade_property_read_atk_action
+			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
+		break;
+	default:
+		break;
+	}
+
+	return ret;
+}
+
+
+/**
  * glade_property_write:
  * @property: a #GladeProperty
  * @interface: a #GladeInterface
@@ -885,6 +1268,95 @@ glade_property_write (GladeProperty *property, GladeInterface *interface, GArray
 	g_return_val_if_fail (interface != NULL, FALSE);
 	g_return_val_if_fail (props != NULL, FALSE);
 	return GLADE_PROPERTY_GET_KLASS (property)->write (property, interface, props);
+}
+
+/**
+ * glade_property_add_object:
+ * @property: a #GladeProperty
+ * @object: The #GObject to add
+ *
+ * Adds @object to the object list in @property.
+ *
+ * Note: This function expects @property to be a #GladeParamSpecObjects
+ * or #GParamSpecObject type property.
+ */
+void
+glade_property_add_object (GladeProperty  *property,
+			   GObject        *object)
+{
+	GList *list = NULL, *new_list = NULL;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (GLADE_IS_PARAM_SPEC_OBJECTS (property->class->pspec) ||
+			  G_IS_PARAM_SPEC_OBJECT (property->class->pspec));
+
+	if (GLADE_IS_PARAM_SPEC_OBJECTS (property->class->pspec))
+	{
+		glade_property_get (property, &list);
+		new_list = g_list_copy (list);
+
+		new_list = g_list_append (new_list, object);
+		glade_property_set (property, new_list);
+
+		/* ownership of the list is not passed 
+		 * through glade_property_set() 
+		 */
+		g_list_free (new_list);
+	}
+	else
+	{
+		glade_property_set (property, object);
+	}
+}
+
+/**
+ * glade_property_remove_object:
+ * @property: a #GladeProperty
+ * @object: The #GObject to add
+ *
+ * Removes @object from the object list in @property.
+ *
+ * Note: This function expects @property to be a #GladeParamSpecObjects
+ * or #GParamSpecObject type property.
+ */
+void
+glade_property_remove_object (GladeProperty  *property,
+			      GObject        *object)
+{
+	GList *list = NULL, *new_list = NULL;
+
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (GLADE_IS_PARAM_SPEC_OBJECTS (property->class->pspec) ||
+			  G_IS_PARAM_SPEC_OBJECT (property->class->pspec));
+
+	if (GLADE_IS_PARAM_SPEC_OBJECTS (property->class->pspec))
+	{
+		/* If object isnt in list; list should stay in tact.
+		 * not bothering to check for now.
+		 */
+		glade_property_get (property, &list);
+		new_list = g_list_copy (list);
+
+		new_list = g_list_remove (new_list, object);
+		glade_property_set (property, new_list);
+
+		/* ownership of the list is not passed 
+		 * through glade_property_set() 
+		 */
+		g_list_free (new_list);
+	}
+	else
+	{
+		glade_property_set (property, object);
+	}
+
+	glade_property_class_get_from_gvalue (property->class,
+					      property->value,
+					      &list);
+
+	glade_property_set (property, list);
 }
 
 

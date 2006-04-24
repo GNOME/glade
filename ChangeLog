@@ -1,3 +1,75 @@
+2006-04-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* TODO: Updated
+
+	* doc/gladeui-sections.txt updated
+
+	* src/glade-app.[ch]: Majorly reduced the api, now GladeApp is a
+	  singleton. Added "active-project" signal.
+
+	* src/glade-builtins.[ch]: Removed unused variable. Enhanced objects 
+	  pspec type to recognize interfaces. Added glade_param_spec_objects_get_type()
+
+	* src/glade-clipboard-view.c: Trying a cute border.
+
+	* src/glade-command.c, src/glade-fixed-manager.c,
+	  src/glade-placehodler.c, src/glade-popup.c, src/glade-project-view.c,
+	  src/glade-project-window.c:
+	  Updated for glade-app changes
+
+	* src/glade-editor-property.c: Implemented objects pspec
+
+	* src/glade-editor.[ch]: Added atk tab, added cuteness.
+
+	* src/glade-gtk.c: 
+	  o Translated image type names
+	  o Added button types (translated)
+	  o Support for button label & use-underline properties
+
+	* src/glade-parser.c:
+	  o Updated for glade-app changes
+	  o Added save support for atk actions and relations.
+		
+	* src/glade-project.c:
+	  o Updated for glade-app changes
+	  o Fixed glade_project_fix_object_props for object lists
+
+	* src/glade-property-class.[ch]: 
+	  o Hardcoded atk relations and action names
+	  o Added glade_property_class_make_gvalue(),
+	    glade_property_class_get_from_gvalue(), 
+	    glade_property_class_new_atk_action(),
+	    glade_property_class_list_atk_relations(),
+	    glade_property_class_atk_realname()
+	  o Fixed glade_property_class_is_object()
+	    (object lists qualify)
+
+	* src/glade-property.[ch]: 
+	  o Integrated property load proceedure into glade-property, 
+	    loading code much cleaner and less redundant.
+	    (Added glade_property_read())
+	  o Implemented atk properties (save/load)
+
+	* src/glade-utils.[ch]: Added glade_util_read_prop_name(),
+	  glade_util_added_in_list(), glade_util_removed_from_list(),
+	  glade_util_class_implements_interface()
+
+	* src/glade-widget-class.c: Introspect atk properties
+
+	* src/glade-widget.c: Simplified load code, moved property load
+	  code to glade-property, save atk props properly.
+
+	* src/glade.h: Removed the unused atk-relation tag.
+
+	* src/main.c: Load gail (for atk action introspection)
+
+	* src/atk.xpm: New atk icon
+	
+	* widgets/gtk+.xml.in: 
+	  o GtkLabel label property --> translatable
+	  o GtkButton label property --> translatable, multi-line
+	  o Added GtkButton "type" property and GtkButton remove-child-function
+	
 2006-04-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-editor-property.c: Simplified code and added comments

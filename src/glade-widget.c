@@ -435,6 +435,11 @@ glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
 	GList         *l;
 	GladeProperty *property;
 
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	/* Since glade_property_set() will try to modify list,
+	 * we protect it with the 'prop_refs_readonly' flag.
+	 */
 	widget->prop_refs_readonly = TRUE;
 	for (l = widget->prop_refs; l && l->data; l = l->next)
 	{
@@ -442,9 +447,9 @@ glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
 
 		if (project != NULL && 
 		    project == property->widget->project)
-			glade_property_set (property, widget->object);
+			glade_property_add_object (property, widget->object);
 		else
-			glade_property_set (property, NULL);
+			glade_property_remove_object (property, widget->object);
 	}
 	widget->prop_refs_readonly = FALSE;
 }
@@ -752,16 +757,21 @@ glade_widget_new (GladeWidget      *parent,
 		  gboolean          query)
 {
 	GladeWidget *widget;
-	gchar       *widget_name =
-		glade_project_new_widget_name
-		(GLADE_PROJECT (project), klass->generic_name);
+	gchar       *widget_name;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (klass), NULL);
+
+	if (project)
+		widget_name = glade_project_new_widget_name
+			(GLADE_PROJECT (project), klass->generic_name);
+	else widget_name = g_strdup (klass->generic_name);
 
 	if ((widget = glade_widget_internal_new
 	     (widget_name, parent, klass, project, NULL, GLADE_CREATE_USER)) != NULL)
 	{
 		if (query && widget->query_user)
 		{
-			GladeEditor *editor = glade_default_app_get_editor ();
+			GladeEditor *editor = glade_app_get_editor ();
 
 			/* If user pressed cancel on query popup. */
 			if (!glade_editor_query_dialog (editor, widget))
@@ -2014,10 +2024,10 @@ glade_widget_button_press (GtkWidget *widget,
 		{
 			if (glade_project_is_selected (glade_widget->project,
 						       glade_widget->object))
-				glade_default_app_selection_remove 
+				glade_app_selection_remove 
 					(glade_widget->object, TRUE);
 			else
-				glade_default_app_selection_add
+				glade_app_selection_add
 					(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
@@ -2025,7 +2035,7 @@ glade_widget_button_press (GtkWidget *widget,
 						    glade_widget->object) == FALSE)
 		{
 			glade_util_clear_selection ();
-			glade_default_app_selection_set 
+			glade_app_selection_set 
 				(glade_widget->object, TRUE);
 			handled = TRUE;
 		}
@@ -2396,7 +2406,8 @@ glade_widget_set_packing_properties (GladeWidget *widget,
  * @widget: a #GladeWidget
  * @type: a  #GType
  * 
- * Returns: whether this GladeWidget has any decendants of type `type'
+ * Returns: whether this GladeWidget has any decendants of type @type
+ *          or any decendants that implement the @type interface
  */
 gboolean
 glade_widget_has_decendant (GladeWidget *widget, GType type)
@@ -2405,7 +2416,12 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 	GList         *children, *l;
 	gboolean       found = FALSE;
 
-	if (g_type_is_a (widget->widget_class->type, type))
+	if (G_TYPE_IS_INTERFACE (type) &&
+	    glade_util_class_implements_interface
+	    (widget->widget_class->type, type))
+		return TRUE;
+	else if (G_TYPE_IS_INTERFACE (type) == FALSE &&
+		 g_type_is_a (widget->widget_class->type, type))
 		return TRUE;
 
 	if ((children = glade_widget_class_container_get_children
@@ -2499,7 +2515,7 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 {
 	WriteSignalsContext write_signals_context;
 	GladeWidgetInfo *info;
-	GArray *props, *children;
+	GArray *props, *atk_props, *atk_actions, *atk_relations, *children;
 	GList *list;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -2510,21 +2526,58 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 	info->name = alloc_string (interface, widget->name);
 
 	/* Write the properties */
-	list = widget->properties;
-	props = g_array_new (FALSE, FALSE,
-			     sizeof (GladePropInfo));
-	for (; list; list = list->next)
+	props         = g_array_new (FALSE, FALSE, sizeof (GladePropInfo));
+	atk_props     = g_array_new (FALSE, FALSE, sizeof (GladePropInfo));
+	atk_relations = g_array_new (FALSE, FALSE, sizeof (GladeAtkRelationInfo));
+	atk_actions   = g_array_new (FALSE, FALSE, sizeof (GladeAtkActionInfo));
+
+	for (list = widget->properties; list; list = list->next)
 	{
 		GladeProperty *property = list->data;
 
+		/* This should never happen */
 		if (property->class->packing)
 			continue;
 
-		glade_property_write (property, interface, props);
+		switch (property->class->atk_type)
+		{
+		case GPC_ATK_NONE:
+			glade_property_write (property, interface, props);
+			break;
+		case GPC_ATK_PROPERTY:
+			glade_property_write (property, interface, atk_props);
+			break;
+		case GPC_ATK_RELATION:
+			glade_property_write (property, interface, atk_relations);
+			break;
+		case GPC_ATK_ACTION:
+			glade_property_write (property, interface, atk_actions);
+			break;
+		default:
+			break;
+		}
 	}
+
+	/* Properties */
 	info->properties = (GladePropInfo *) props->data;
 	info->n_properties = props->len;
 	g_array_free(props, FALSE);
+
+	/* Atk Properties */
+	info->atk_props = (GladePropInfo *) atk_props->data;
+	info->n_atk_props = atk_props->len;
+	g_array_free(atk_props, FALSE);
+
+	/* Atk Relations */
+	info->relations = (GladeAtkRelationInfo *) atk_relations->data;
+	info->n_relations = atk_relations->len;
+	g_array_free(atk_relations, FALSE);
+
+	/* Atk Actions */
+	info->atk_actions = (GladeAtkActionInfo *) atk_actions->data;
+	info->n_atk_actions = atk_actions->len;
+	g_array_free(atk_actions, FALSE);
+
 
 	/* Signals */
 	write_signals_context.interface = interface;
@@ -2586,9 +2639,9 @@ glade_widget_write_special_child_prop (GArray *props,
 }
 
 gboolean
-glade_widget_write_child (GArray      *children, 
-			  GladeWidget *parent, 
-			  GObject     *object,
+glade_widget_write_child (GArray         *children, 
+			  GladeWidget    *parent, 
+			  GObject        *object,
 			  GladeInterface *interface)
 {
 	GladeChildInfo info = { 0 };
@@ -2657,80 +2710,6 @@ glade_widget_write_child (GArray      *children,
 	return TRUE;
 }
 
-static GValue *
-glade_widget_value_from_prop_info (GladePropInfo    *info,
-				   GladeWidgetClass *class)
-{
-	GladePropertyClass  *pclass;
-	GValue              *gvalue = NULL;
-	gchar               *id;
-
-	g_return_val_if_fail (info   != NULL, NULL);
-
-	id = g_strdup (info->name);
-	glade_util_replace (id, '_', '-');
-
-	if (info->name && info->value &&
-	    (pclass = glade_widget_class_get_property_class (class, id)) != NULL)
-		gvalue = glade_property_class_make_gvalue_from_string (pclass,
-								       info->value,
-								       loading_project);
-		
-	g_free (id);
-
-	return gvalue;
-}
-
-static gboolean
-glade_widget_apply_property_from_prop_info (GladePropInfo *info,
-					    GladeWidget   *widget,
-					    gboolean	   is_packing)
-{
-	GladeProperty    *property;
-	GladeWidgetClass *wclass;
-	GValue           *gvalue;
-	gchar            *id;
-
-	g_return_val_if_fail (info != NULL, FALSE);
-	g_return_val_if_fail (widget != NULL, FALSE);
-
-	id = g_strdup (info->name);
-
-	glade_util_replace (id, '_', '-');
-	property = !is_packing ? glade_widget_get_property (widget, id):
-				 glade_widget_get_pack_property (widget, id);
-	g_free (id);
-
-	if (!property)
-	{
-		return FALSE;
-	}
-
-	wclass = property->class->packing ?
-		widget->parent->widget_class :
-		widget->widget_class;
-	
-
-	if (glade_property_class_is_object (property->class))
-	{
-		/* we must synchronize this directly after loading this project.
-		 */
-		g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
-					g_strdup (info->value), g_free);
-	}
-
-	if ((gvalue = glade_widget_value_from_prop_info (info, wclass)) != NULL)
-	{
-		glade_property_set_value (property, gvalue);
-
-		g_value_unset (gvalue);
-		g_free (gvalue);
-	}
-	return TRUE;
-}
-
-
-
 static gboolean
 glade_widget_new_child_from_child_info (GladeChildInfo *info,
 					GladeProject   *project,
@@ -2741,11 +2720,13 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 				    GladeWidget     *widget,
 				    gboolean         apply_props)
 {
-	guint i;
+	GladeProperty *property;
+	GList         *list;
+	guint          i;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (info != NULL);
-
+	
 	g_assert (strcmp (info->classname, widget->widget_class->name) == 0);
 
 	/* Children */
@@ -2777,53 +2758,13 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 	/* Properties */
 	if (apply_props)
 	{
-		for (i = 0; i < info->n_properties; ++i)
-		{
-			GladePropInfo *prop_info = info->properties + i;
-			if (!glade_widget_apply_property_from_prop_info (prop_info,
-									 widget, FALSE))
-				g_warning ("Failed to apply property %s in %s",
-					   prop_info->name,
-					   glade_widget_get_name (widget));
+ 		for (list = widget->properties; list; list = list->next)
+  		{
+			property = list->data;
+			glade_property_read (property, property->class, 
+					     loading_project, info, TRUE);
 		}
 	}
-}
-
-static GValue *
-glade_widget_get_property_from_widget_info (GladeWidgetClass  *class,
-					    GladeWidgetInfo   *info,
-					    const gchar       *name,
-					    gboolean          *translatable,
-					    gboolean          *has_context,
-					    gchar            **comment)
-{
-	GValue *value = NULL;
-	guint   i;
-	gchar  *id;
-
-	for (i = 0; i < info->n_properties; ++i)
-	{
-		GladePropInfo *pinfo = info->properties + i;
-
-		id = g_strdup (pinfo->name);
-		glade_util_replace (id, '_', '-');
-
-		if (!strcmp (id, name))
-		{
-			g_free (id);
-
-			if (translatable)
-				*translatable = pinfo->translatable;
-			if (has_context)
-				*has_context = pinfo->has_context;
-			if (comment)
-				*comment = g_strdup (pinfo->comment);
-			
-			return glade_widget_value_from_prop_info (pinfo, class);
-		}
-		g_free (id);
-	}
-	return value;
 }
 
 static void
@@ -2847,42 +2788,19 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 	for (list = class->properties; list && list->data; list = list->next)
 	{
 		GladePropertyClass *pclass = list->data;
-		GValue             *value;
 		GladeProperty      *property;
-		gboolean            translatable;
-		gboolean            has_context;
-		gchar              *comment = NULL;
-		const gchar        *obj_name;
 
 		/* If there is a value in the XML, initialize property with it,
 		 * otherwise initialize property to default.
 		 */
-		value = glade_widget_get_property_from_widget_info 
-			(class, info, pclass->id,
-			 &translatable, &has_context, &comment);
-		
-		property          = glade_property_new (pclass, NULL, value, FALSE);
-		property->enabled = value ? TRUE : property->enabled;
+		property = glade_property_new (pclass, NULL, NULL, FALSE);
 
-		if (glade_property_class_is_object (pclass))
-		{
-			/* we must synchronize this directly after loading this project.
-			 */
-			obj_name = glade_parser_pvalue_from_winfo (info, pclass->id);
-			g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
-						g_strdup (obj_name), g_free);
-		}
-
-		if (value) {
-			glade_property_i18n_set_translatable (property, translatable);
-			glade_property_i18n_set_has_context (property, has_context);
-			glade_property_i18n_set_comment (property, comment);
-		}
-
-		g_free (comment);
+		glade_property_read (property, property->class, 
+				     loading_project, info, TRUE);
 
 		properties = g_list_prepend (properties, property);
 	}
+
 	return g_list_reverse (properties);
 }
 
@@ -2894,7 +2812,7 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 	GObjectClass         *oclass;
 	GParamSpec          **pspec;
 	GArray               *params;
-	guint                  i, n_props;
+	guint                 i, n_props;
 	
 	oclass = g_type_class_ref (widget_class->type);
 	pspec  = g_object_class_list_properties (oclass, &n_props);
@@ -2919,9 +2837,8 @@ glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
 
 		/* Try filling parameter with value from widget info.
 		 */
-		if ((value = glade_widget_get_property_from_widget_info
-		     (widget_class, info, parameter.name,
-		      NULL, NULL, NULL)) != NULL)
+		if ((value = glade_property_read (NULL, glade_property_class,
+						  loading_project, info, FALSE)) != NULL)
 		{
 			if (g_value_type_compatible (G_VALUE_TYPE (value),
 						     G_VALUE_TYPE (&parameter.value)))
@@ -3087,11 +3004,11 @@ glade_widget_set_child_type_from_child_info (GladeChildInfo *child_info,
 
 static gboolean
 glade_widget_new_child_from_child_info (GladeChildInfo *info,
-					GladeProject *project,
-					GladeWidget *parent)
+					GladeProject   *project,
+					GladeWidget    *parent)
 {
 	GladeWidget    *child;
-        gint            i, special_child_type_index = -1;
+	GList          *list;
 
 	g_return_val_if_fail (info != NULL, FALSE);
 	g_return_val_if_fail (project != NULL, FALSE);
@@ -3138,10 +3055,8 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 
 		child->parent = parent;
 
-		special_child_type_index =
-			glade_widget_set_child_type_from_child_info (info,
-								     parent->widget_class,
-								     child->object);
+		glade_widget_set_child_type_from_child_info 
+			(info, parent->widget_class, child->object);
 		
 		if (parent->manager != NULL) 
 			glade_fixed_manager_add_child (parent->manager, child, FALSE);
@@ -3153,15 +3068,12 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	}
 
 	/* Get the packing properties */
-	for (i = 0; i < info->n_properties; ++i)
+	for (list = child->packing_properties; list; list = list->next)
 	{
-		if (special_child_type_index == i)
-			continue;
-		if (!glade_widget_apply_property_from_prop_info (info->properties + i,
-								 child, TRUE))
-			g_warning ("Failed to apply packing property");
+		GladeProperty *property = list->data;
+		glade_property_read (property, property->class, 
+				     loading_project, info, TRUE);
 	}
-
 	return TRUE;
 }
 

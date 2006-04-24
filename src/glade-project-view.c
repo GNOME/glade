@@ -163,7 +163,7 @@ gpw_foreach_add_selection (GtkTreeModel *model,
 {
 	GladeWidget      *widget;
 	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
-	glade_default_app_selection_add
+	glade_app_selection_add
 		(glade_widget_get_object (widget), FALSE);
 }
 
@@ -515,10 +515,10 @@ glade_project_view_selection_changed_cb (GtkTreeSelection *selection,
 	{
 		view->updating_selection = TRUE;
 
-		glade_default_app_selection_clear (FALSE);
+		glade_app_selection_clear (FALSE);
 		gtk_tree_selection_selected_foreach
 			(selection, gpw_foreach_add_selection, view);
-		glade_default_app_selection_changed ();
+		glade_app_selection_changed ();
 		
 		view->updating_selection = FALSE;
 	}

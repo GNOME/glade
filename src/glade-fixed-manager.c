@@ -598,8 +598,8 @@ glade_fixed_manager_event (GtkWidget         *widget,
 	{
 	case GDK_BUTTON_PRESS: // add widget
 		
-		add_class = glade_default_app_get_add_class ();
-		alt_class = glade_default_app_get_alt_class ();
+		add_class = glade_app_get_add_class ();
+		alt_class = glade_app_get_alt_class ();
 
 		if (((GdkEventButton *)event)->button == 1)
 		{
@@ -623,14 +623,14 @@ glade_fixed_manager_event (GtkWidget         *widget,
 				
 				/* reset the palette */
 				glade_palette_unselect_widget 
-					(glade_default_app_get_palette ());
+					(glade_app_get_palette ());
 				handled = TRUE;
 			}
 		}
 		break;
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
-		if (glade_default_app_get_add_class ())
+		if (glade_app_get_add_class ())
 			glade_cursor_set (((GdkEventCrossing *)event)->window, GLADE_CURSOR_ADD_WIDGET);
 		else
 			glade_cursor_set (((GdkEventCrossing *)event)->window, GLADE_CURSOR_SELECTOR);

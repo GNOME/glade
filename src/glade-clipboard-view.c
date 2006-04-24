@@ -230,7 +230,7 @@ glade_clipboard_view_create_tree_view (GladeClipboardView *view)
 static void
 glade_clipboard_view_construct (GladeClipboardView *view)
 {
-	GtkWidget *scrolled_window;
+	GtkWidget *scrolled_window, *viewport;
 
 	view->model = gtk_list_store_new (1, G_TYPE_POINTER);
 
@@ -238,12 +238,20 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 	glade_clipboard_view_create_tree_view (view);
 	glade_clipboard_view_refresh_sel (view);
 
+	viewport = gtk_viewport_new (NULL, NULL);
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_OUT);
+
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_shadow_type
+		(GTK_SCROLLED_WINDOW (scrolled_window), GTK_SHADOW_IN);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
+					GLADE_GENERIC_BORDER_WIDTH);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
 	gtk_container_add (GTK_CONTAINER (scrolled_window), view->widget);
-	gtk_container_add (GTK_CONTAINER (view), scrolled_window);
+	gtk_container_add (GTK_CONTAINER (viewport), scrolled_window);
+	gtk_container_add (GTK_CONTAINER (view), viewport);
 
 	gtk_window_set_default_size (GTK_WINDOW (view),
 				     GLADE_CLIPBOARD_VIEW_WIDTH,

@@ -643,7 +643,7 @@ glade_project_add_object (GladeProject *project,
 		       gwidget);
 
 	if (GTK_IS_WINDOW (object) &&
-	    (transient_parent = glade_default_app_get_transient_parent ()) != NULL)
+	    (transient_parent = glade_app_get_transient_parent ()) != NULL)
 		gtk_window_set_transient_for (GTK_WINDOW (object), transient_parent);
 
 	/* Notify widget it was added to the project */
@@ -1180,7 +1180,7 @@ loadable_interface (GladeInterface *interface, const gchar *path)
 		}
 
 	if (loadable == FALSE)
-		glade_util_ui_message (glade_default_app_get_window(),
+		glade_util_ui_message (glade_app_get_window(),
 				       GLADE_UI_ERROR,
 				       _("Failed to load %s.\n"
 					 "The following required catalogs are unavailable: %s"),
@@ -1245,7 +1245,8 @@ static void
 glade_project_fix_object_props (GladeProject *project)
 {
 	GList         *l, *ll;
-	GladeWidget   *gwidget, *value_widget;
+	GValue        *value;
+	GladeWidget   *gwidget;
 	GladeProperty *property;
 	gchar         *txt;
 
@@ -1261,11 +1262,19 @@ glade_project_fix_object_props (GladeProject *project)
 			    (txt = g_object_get_data (G_OBJECT (property), 
 						      "glade-loaded-object")) != NULL)
 			{
-				if ((value_widget = 
-				     glade_project_get_widget_by_name (project, txt)) != NULL)
-					glade_property_set (property, value_widget->object);
-
-				g_object_set_data (G_OBJECT (property), "glade-loaded-object", NULL);
+				/* Parse the object list and set the property to it
+				 * (this magicly works for both objects & object lists)
+				 */
+				value = glade_property_class_make_gvalue_from_string
+					(property->class, txt, project);
+				
+				glade_property_set_value (property, value);
+				
+				g_value_unset (value);
+				g_free (value);
+				
+				g_object_set_data (G_OBJECT (property), 
+						   "glade-loaded-object", NULL);
 			}
 		}
 	}

@@ -559,6 +559,33 @@ glade_util_replace (gchar *str, gchar a, gchar b)
 }
 
 /**
+ * glade_util_read_prop_name:
+ * @str: a string
+ *
+ * Return a usable version of a property identifier as found
+ * in a freshly parserd #GladeInterface
+ */
+gchar *
+glade_util_read_prop_name (const gchar *str)
+{
+	gchar *id = g_strdup (str);
+
+	glade_util_replace (id, '_', '-');
+
+	if (strstr (id, "::"))
+	{
+		/* Extract the second half of "AtkObject::accessible_name"
+		 */
+		gchar **split = g_strsplit (id, "::", 0);
+		g_free (id);
+		id = g_strdup (split[1]);
+		g_strfreev (split);
+	}
+	return id;
+}
+
+
+/**
  * glade_util_duplicate_underscores:
  * @name: a string
  *
@@ -1218,7 +1245,8 @@ glade_util_basenames_match  (const gchar  *path1,
  * glade_util_purify_list:
  * @list: A #GList
  *
- * Returns: A list with no duplicate data entries
+ * Returns: A newly allocated version of @list with no 
+ *          duplicate data entries
  */
 GList *
 glade_util_purify_list (GList *list)
@@ -1233,6 +1261,55 @@ glade_util_purify_list (GList *list)
 
 	return g_list_reverse (newlist);
 }
+
+/**
+ * glade_util_added_in_list:
+ * @old: the old #GList
+ * @new: the new #GList
+ *
+ * Returns: A newly allocated #GList of elements that
+ *          are in @new but not in @old
+ *
+ */
+GList *
+glade_util_added_in_list (GList *old,
+			  GList *new)
+{
+	GList *added = NULL, *list;
+
+	for (list = new; list; list = list->next)
+	{
+		if (!g_list_find (old, list->data))
+			added = g_list_prepend (added, list->data);
+	} 
+
+	return g_list_reverse (added);
+}
+
+/**
+ * glade_util_removed_from_list:
+ * @old: the old #GList
+ * @new: the new #GList
+ *
+ * Returns: A newly allocated #GList of elements that
+ *          are in @old no longer in @new
+ *
+ */
+GList *
+glade_util_removed_from_list (GList *old,
+			      GList *new)
+{
+	GList *added = NULL, *list;
+
+	for (list = old; list; list = list->next)
+	{
+		if (!g_list_find (new, list->data))
+			added = g_list_prepend (added, list->data);
+	} 
+
+	return g_list_reverse (added);
+}
+
 
 /**
  * glade_util_canonical_path:
@@ -1333,7 +1410,7 @@ glade_util_copy_file (const gchar  *src_path,
 
 	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) == TRUE)
 		if (glade_util_ui_message
-		    (glade_default_app_get_window(), GLADE_UI_YES_OR_NO,
+		    (glade_app_get_window(), GLADE_UI_YES_OR_NO,
 		     _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)
 		    return FALSE;
 
@@ -1360,7 +1437,7 @@ glade_util_copy_file (const gchar  *src_path,
 				
 				if (write_status == G_IO_STATUS_ERROR)
 				{
-					glade_util_ui_message (glade_default_app_get_window(),
+					glade_util_ui_message (glade_app_get_window(),
 							       GLADE_UI_ERROR,
 							       _("Error writing to %s: %s"),
 							       dest_path, error->message);
@@ -1374,7 +1451,7 @@ glade_util_copy_file (const gchar  *src_path,
 			
 			if (read_status == G_IO_STATUS_ERROR)
 			{
-				glade_util_ui_message (glade_default_app_get_window(),
+				glade_util_ui_message (glade_app_get_window(),
 						       GLADE_UI_ERROR,
 						       _("Error reading %s: %s"),
 						       src_path, error->message);
@@ -1389,7 +1466,7 @@ glade_util_copy_file (const gchar  *src_path,
 			if (g_io_channel_shutdown (dest, TRUE, &error) != G_IO_STATUS_NORMAL)
 			{
 				glade_util_ui_message
-					(glade_default_app_get_window(),
+					(glade_app_get_window(),
 					 GLADE_UI_ERROR,
 					 _("Error shutting down I/O channel %s: %s"),
 						       dest_path, error->message);
@@ -1399,7 +1476,7 @@ glade_util_copy_file (const gchar  *src_path,
 		}
 		else
 		{
-			glade_util_ui_message (glade_default_app_get_window(),
+			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_ERROR,
 					       _("Failed to open %s for writing: %s"), 
 					       dest_path, error->message);
@@ -1410,7 +1487,7 @@ glade_util_copy_file (const gchar  *src_path,
 
 		if (g_io_channel_shutdown (src, TRUE, &error) != G_IO_STATUS_NORMAL)
 		{
-			glade_util_ui_message (glade_default_app_get_window(),
+			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_ERROR,
 					       _("Error shutting down io channel %s: %s"),
 					       src_path, error->message);
@@ -1419,13 +1496,41 @@ glade_util_copy_file (const gchar  *src_path,
 	}
 	else 
 	{
-		glade_util_ui_message (glade_default_app_get_window(),
+		glade_util_ui_message (glade_app_get_window(),
 				       GLADE_UI_ERROR,
 				       _("Failed to open %s for reading: %s"), 
 				       src_path, error->message);
 		error = (g_error_free (error), NULL);
 	}
 	return success;
+}
+
+/**
+ * glade_util_class_implements_interface:
+ * @class_type: A #GType
+ * @iface_type: A #GType
+ *
+ * Returns: whether @class_type implements the @iface_type interface
+ */
+gboolean
+glade_util_class_implements_interface (GType class_type, 
+				       GType iface_type)
+{
+	GType    *ifaces;
+	guint     n_ifaces, i;
+	gboolean  implemented = FALSE;
+
+	if ((ifaces = g_type_interfaces (class_type, &n_ifaces)) != NULL)
+	{
+		for (i = 0; i < n_ifaces; i++)
+			if (ifaces[i] == iface_type)
+			{
+				implemented = TRUE;
+				break;
+			}
+		g_free (ifaces);
+	}
+	return implemented;
 }
 
 

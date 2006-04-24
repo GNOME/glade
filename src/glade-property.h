@@ -120,7 +120,19 @@ LIBGLADEUI_API
 void                    glade_property_get                   (GladeProperty      *property, 
 							      ...);
 LIBGLADEUI_API
+void                    glade_property_add_object            (GladeProperty      *property,
+							      GObject            *object);
+LIBGLADEUI_API
+void                    glade_property_remove_object         (GladeProperty      *property,
+							      GObject            *object);
+LIBGLADEUI_API
 void                    glade_property_sync                  (GladeProperty      *property);
+LIBGLADEUI_API
+GValue                 *glade_property_read                  (GladeProperty      *property,
+							      GladePropertyClass *pclass,
+							      GladeProject       *project,
+							      gpointer            info,
+							      gboolean            free_value);
 LIBGLADEUI_API
 gboolean                glade_property_write                 (GladeProperty      *property, 
 							      GladeInterface     *interface, 

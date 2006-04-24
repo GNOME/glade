@@ -62,7 +62,6 @@ struct _GladeAppPriv {
 				        * project; then this is always valid) */
 	GladeEditor *editor;           /* See glade-editor */
 	GladeClipboard *clipboard;     /* See glade-clipboard */
-	GladeProjectView *active_view; /* See glade-project-view */
 	GList *catalogs;               /* See glade-catalog */
 	GladeWidgetClass *add_class;   /* The GladeWidgetClass that we are about
 					* to add to a container. NULL if no
@@ -91,6 +90,13 @@ enum
 	LAST_SIGNAL
 };
 
+
+enum
+{
+	PROP_0,
+	PROP_ACTIVE_PROJECT
+};
+
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
 gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
@@ -100,7 +106,30 @@ gchar *glade_locale_dir = GLADE_LOCALEDIR;
 gchar *glade_icon_dir = GLADE_ICONDIR;
 gboolean glade_verbose = FALSE;
 
-static GObjectClass* parent_class = NULL;
+static GObjectClass   * parent_class = NULL;
+static GladeApp       * the_app = NULL;
+
+
+/*****************************************************************
+ *                    GObjectClass                               *
+ *****************************************************************/
+static GObject *
+glade_app_constructor (GType                  type,
+                       guint                  n_construct_properties,
+                       GObjectConstructParam *construct_properties)
+{
+
+	/* Singleton */
+	if (!the_app)
+		the_app = (GladeApp *)parent_class->constructor 
+			(type, n_construct_properties, construct_properties);
+	else
+		g_object_ref (the_app);
+  
+	return G_OBJECT (the_app);
+}
+
+
 
 static void
 glade_app_dispose (GObject *app)
@@ -151,6 +180,47 @@ glade_app_finalize (GObject *app)
 }
 
 static void
+glade_app_set_property (GObject      *object,
+                        guint         property_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+	switch (property_id) 
+	{
+	case PROP_ACTIVE_PROJECT:
+		glade_app_set_project (g_value_get_object (value));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID
+			(object, property_id, pspec);
+		break;
+	}
+}
+
+static void
+glade_app_get_property (GObject      *object,
+                        guint         property_id,
+                        GValue       *value,
+                        GParamSpec   *pspec)
+{
+	GladeApp *app = GLADE_APP (object);
+
+
+	switch (property_id) 
+	{
+	case PROP_ACTIVE_PROJECT:
+		g_value_set_object (value, app->priv->active_project);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID(object,property_id,pspec);
+		break;
+	}
+}
+
+/*****************************************************************
+ *                    GladeAppClass                              *
+ *****************************************************************/
+static void
 glade_app_refresh_undo_redo_button (GladeApp *app,
 				    GtkWidget *button,
 				    gboolean undo)
@@ -163,7 +233,7 @@ glade_app_refresh_undo_redo_button (GladeApp *app,
 	if (button_tips == NULL)
 		button_tips = gtk_tooltips_new ();
 	
-	if ((project = glade_app_get_active_project (app)) != NULL)
+	if ((project = glade_app_get_project ()) != NULL)
 	{
 		if (undo)
 			command = glade_command_next_undo_item (project);
@@ -193,40 +263,6 @@ glade_app_update_ui_default (GladeApp *app)
 	for (list = app->priv->redo_list; list; list = list->next)
 		if (list->data)
 			glade_app_refresh_undo_redo_button (app, list->data, FALSE);
-}
-
-static void
-glade_app_class_init (GladeAppClass * klass)
-{
-	GObjectClass *object_class;
-	g_return_if_fail (klass != NULL);
-	
-	parent_class = g_type_class_peek_parent (klass);
-	object_class = (GObjectClass *) klass;
-	
-	object_class->dispose   = glade_app_dispose;
-	object_class->finalize  = glade_app_finalize;
-
-	klass->update_ui_signal = glade_app_update_ui_default;
-	klass->show_properties  = NULL;
-	klass->hide_properties  = NULL;
-
-
-	/**
-	 * GladeApp::update-ui:
-	 * @gladeapp: the #GladeApp which received the signal.
-	 *
-	 * Emitted when a project name changes or a cut/copy/paste/delete occurred.
-	 */
-	glade_app_signals[UPDATE_UI_SIGNAL] =
-		g_signal_new ("update-ui",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
-			      G_STRUCT_OFFSET (GladeAppClass,
-					       update_ui_signal),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE, 0);
 }
 
 static void
@@ -273,11 +309,6 @@ clipboard_view_on_delete_cb (GtkWidget *clipboard_view, GdkEvent *e, GladeApp *a
 	return TRUE;
 }
 
-/**
- * glade_app_config_load
- * @app:
- * Returns: a new GKeyFile
- */
 static GKeyFile *
 glade_app_config_load (GladeApp *app)
 {
@@ -291,147 +322,6 @@ glade_app_config_load (GladeApp *app)
 	g_free (filename);
 	
 	return config;
-}
-
-/**
- * glade_app_config_save
- * @app:
- *
- * Saves the GKeyFile to "g_get_user_config_dir()/GLADE_CONFIG_FILENAME"
- *
- * Return 0 on success.
- */
-gint
-glade_app_config_save (GladeApp *app)
-{
-	GIOChannel *channel;
-	GIOStatus   status;
-	gchar *data=NULL, *filename;
-	const gchar *config_dir = g_get_user_config_dir ();
-	GError *error = NULL;
-	gsize size, written, bytes_written = 0;
-	static gboolean error_shown = FALSE;
-
-	/* If we had any errors; wait untill next session to retry.
-	 */
-	if (error_shown) return -1;
-	
-	/* Just in case... try to create the config directory */
-	if (g_file_test (config_dir, G_FILE_TEST_IS_DIR) == FALSE)
-	{
-		if (g_file_test (config_dir, G_FILE_TEST_EXISTS))
-		{
-			/* Config dir exists but is not a directory */
-			glade_util_ui_message
-				(glade_default_app_get_window(),
-				 GLADE_UI_ERROR,
-				 _("Trying to save private data to %s directory "
-				   "but it is a regular file.\n"
-				   "No private data will be saved in this session"), 
-				 config_dir);
-				 error_shown = TRUE;
-			return -1;
-		}
-		else if (g_mkdir (config_dir, S_IRWXU) != 0)
-		{
-			/* Doesnt exist; failed to create */
-			glade_util_ui_message
-				(glade_default_app_get_window(),
-				 GLADE_UI_ERROR,
-				 _("Failed to create directory %s to save private data.\n"
-				   "No private data will be saved in this session"), config_dir);
-				 error_shown = TRUE;
-			return -1;
-		}
-	} 
-
-	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
-	
-	if ((channel = g_io_channel_new_file (filename, "w", &error)) != NULL)
-	{
-		if ((data = g_key_file_to_data (app->priv->config, &size, &error)) != NULL)
-		{
-			
-			/* Implement loop here */
-			while ((status = g_io_channel_write_chars
-				(channel, 
-				 data + bytes_written, /* Offset of write */
-				 size - bytes_written, /* Size left to write */
-				 &written, &error)) != G_IO_STATUS_ERROR &&
-			       (bytes_written + written) < size)
-				bytes_written += written;
-
-			if (status == G_IO_STATUS_ERROR)
-			{
-				glade_util_ui_message
-					(glade_default_app_get_window(),
-					 GLADE_UI_ERROR,
-					 _("Error writing private data to %s (%s).\n"
-					   "No private data will be saved in this session"), 
-					 filename, error->message);
-				 error_shown = TRUE;
-			}
-			g_free (data);
-		} 
-		else
-		{
-			glade_util_ui_message
-				(glade_default_app_get_window(),
-				 GLADE_UI_ERROR,
-				 _("Error serializing configuration data to save (%s).\n"
-				   "No private data will be saved in this session"), 
-				 error->message);
-			error_shown = TRUE;
-		}
-		g_io_channel_shutdown(channel, TRUE, NULL);
-		g_io_channel_unref (channel);
-	}
-	else
-	{
-		glade_util_ui_message
-			(glade_default_app_get_window(),
-			 GLADE_UI_ERROR,
-			 _("Error opening %s to write private data (%s).\n"
-			   "No private data will be saved in this session"), 
-			 filename, error->message);
-		error_shown = TRUE;
-	}
-	g_free (filename);
-	
-	if (error)
-	{
-		g_error_free (error);
-		return -1;
-	}
-	return 0;
-}
-
-void
-glade_app_set_transient_parent (GladeApp  *app, 
-				GtkWindow *parent)
-{
-	GList        *projects, *objects;
-
-	g_return_if_fail (GLADE_IS_APP (app));
-	g_return_if_fail (GTK_IS_WINDOW (parent));
-
-	app->priv->transient_parent = parent;
-
-	/* Loop over all projects/widgets and set_transient_for the toplevels.
-	 */
-	for (projects = glade_app_get_projects(app); // projects
-	     projects; projects = projects->next) 
-		for (objects = GLADE_PROJECT (projects->data)->objects;  // widgets
-		     objects; objects = objects->next)
-			if (GTK_IS_WINDOW (objects->data))
-				gtk_window_set_transient_for (GTK_WINDOW (objects->data), parent);
-}
-
-GtkWindow *
-glade_app_get_transient_parent (GladeApp  *app)
-{
-	g_return_val_if_fail (GLADE_IS_APP (app), NULL);
-	return app->priv->transient_parent;
 }
 
 static void
@@ -453,11 +343,6 @@ glade_app_init (GladeApp *app)
 		g_free (prefix);
 #endif
 	
-		/*
-		 * 1. Init the cursors
-		 * 2. Create the catalog
-		 * 3. Create the project window
-		 */
 		glade_cursor_init ();
 		initialized = TRUE;
 	}
@@ -502,6 +387,51 @@ glade_app_init (GladeApp *app)
 	app->priv->undo_list = app->priv->redo_list = NULL;
 }
 
+static void
+glade_app_class_init (GladeAppClass * klass)
+{
+	GObjectClass *object_class;
+	g_return_if_fail (klass != NULL);
+	
+	parent_class = g_type_class_peek_parent (klass);
+	object_class = (GObjectClass *) klass;
+	
+	object_class->constructor  = glade_app_constructor;
+	object_class->dispose      = glade_app_dispose;
+	object_class->finalize     = glade_app_finalize;
+	object_class->get_property = glade_app_get_property;
+	object_class->set_property = glade_app_set_property;
+
+	klass->update_ui_signal = glade_app_update_ui_default;
+	klass->show_properties  = NULL;
+	klass->hide_properties  = NULL;
+
+	/**
+	 * GladeApp::update-ui:
+	 * @gladeapp: the #GladeApp which received the signal.
+	 *
+	 * Emitted when a project name changes or a cut/copy/paste/delete occurred.
+	 */
+	glade_app_signals[UPDATE_UI_SIGNAL] =
+		g_signal_new ("update-ui",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeAppClass,
+					       update_ui_signal),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
+
+
+	g_object_class_install_property 
+		(object_class, PROP_ACTIVE_PROJECT,
+		 g_param_spec_object 
+		 ("active-project", _("Active Project"), 
+		  _("The active project"),
+		  GLADE_TYPE_PROJECT, G_PARAM_READWRITE));
+
+}
+
 GType
 glade_app_get_type ()
 {
@@ -528,101 +458,13 @@ glade_app_get_type ()
 	return obj_type;
 }
 
-GladeApp *
-glade_app_new (void)
-{
-	GladeApp *app;
-	
-	app = g_object_new (GLADE_TYPE_APP, NULL);
-	return app;
-}
-
-void
-glade_app_update_ui (GladeApp* app)
-{
-	g_signal_emit (G_OBJECT (app),
-		       glade_app_signals[UPDATE_UI_SIGNAL], 0);
-}
-
-void
-glade_app_set_window (GladeApp* app, GtkWidget *window)
-{
-	app->priv->window = window;
-}
-
-GtkWidget*
-glade_app_get_window (GladeApp* app)
-{
-	return app->priv->window;
-}
-
-GladeEditor*
-glade_app_get_editor (GladeApp* app)
-{
-	return app->priv->editor;
-}
-
-GladeWidgetClass*
-glade_app_get_add_class (GladeApp* app)
-{
-	return app->priv->add_class;
-}
-
-GladeWidgetClass*
-glade_app_get_alt_class (GladeApp* app)
-{
-	return app->priv->alt_class;
-}
-
-GladePalette*
-glade_app_get_palette (GladeApp* app)
-{
-	return app->priv->palette;
-}
-
-GladeClipboard*
-glade_app_get_clipboard (GladeApp* app)
-{
-	return app->priv->clipboard;
-}
-
-GtkWidget*
-glade_app_get_clipboard_view (GladeApp* app)
-{
-	return app->priv->clipboard->view;
-}
-
-GladeProject*
-glade_app_get_active_project (GladeApp* app)
-{
-	return app->priv->active_project;
-}
-
-GList*
-glade_app_get_projects (GladeApp *app)
-{
-	return app->priv->projects;
-}
-
-GKeyFile*
-glade_app_get_config (GladeApp *app)
-{
-	return app->priv->config;
-}
-
-void
-glade_app_add_project_view (GladeApp *app, GladeProjectView *view)
-{
-	app->priv->views = g_list_prepend (app->priv->views, view);
-	app->priv->active_view = view;
-	if (app->priv->active_project)
-		glade_project_view_set_project (view, app->priv->active_project);
-}
-
+/*****************************************************************
+ *                       Public API                              *
+ *****************************************************************/
 static void
 on_widget_name_changed_cb (GladeProject *project,
-			    GladeWidget *widget,
-			    GladeEditor *editor)
+			   GladeWidget *widget,
+			   GladeEditor *editor)
 {
 	glade_editor_update_widget_name (editor);
 }
@@ -640,7 +482,7 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	 * the currently active project.
 	 */
 	if (app->priv->editor &&
-	    (project == glade_app_get_active_project (app)))
+	    (project == glade_app_get_project ()))
 	{
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
@@ -653,13 +495,273 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 	}
 }
 
-gboolean
-glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
+/**
+ * glade_app_config_save
+ *
+ * Saves the GKeyFile to "g_get_user_config_dir()/GLADE_CONFIG_FILENAME"
+ *
+ * Return 0 on success.
+ */
+gint
+glade_app_config_save ()
 {
+	GIOChannel *channel;
+	GIOStatus   status;
+	gchar *data=NULL, *filename;
+	const gchar *config_dir = g_get_user_config_dir ();
+	GError *error = NULL;
+	gsize size, written, bytes_written = 0;
+	static gboolean error_shown = FALSE;
+	GladeApp *app;
+
+	/* If we had any errors; wait untill next session to retry.
+	 */
+	if (error_shown) return -1;
+
+	app = glade_app_get ();
+	
+	/* Just in case... try to create the config directory */
+	if (g_file_test (config_dir, G_FILE_TEST_IS_DIR) == FALSE)
+	{
+		if (g_file_test (config_dir, G_FILE_TEST_EXISTS))
+		{
+			/* Config dir exists but is not a directory */
+			glade_util_ui_message
+				(glade_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Trying to save private data to %s directory "
+				   "but it is a regular file.\n"
+				   "No private data will be saved in this session"), 
+				 config_dir);
+			error_shown = TRUE;
+			return -1;
+		}
+		else if (g_mkdir (config_dir, S_IRWXU) != 0)
+		{
+			/* Doesnt exist; failed to create */
+			glade_util_ui_message
+				(glade_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Failed to create directory %s to save private data.\n"
+				   "No private data will be saved in this session"), config_dir);
+			error_shown = TRUE;
+			return -1;
+		}
+	} 
+
+	filename = g_build_filename (config_dir, GLADE_CONFIG_FILENAME, NULL);
+	
+	if ((channel = g_io_channel_new_file (filename, "w", &error)) != NULL)
+	{
+		if ((data = g_key_file_to_data (app->priv->config, &size, &error)) != NULL)
+		{
+			
+			/* Implement loop here */
+			while ((status = g_io_channel_write_chars
+				(channel, 
+				 data + bytes_written, /* Offset of write */
+				 size - bytes_written, /* Size left to write */
+				 &written, &error)) != G_IO_STATUS_ERROR &&
+			       (bytes_written + written) < size)
+				bytes_written += written;
+
+			if (status == G_IO_STATUS_ERROR)
+			{
+				glade_util_ui_message
+					(glade_app_get_window(),
+					 GLADE_UI_ERROR,
+					 _("Error writing private data to %s (%s).\n"
+					   "No private data will be saved in this session"), 
+					 filename, error->message);
+				 error_shown = TRUE;
+			}
+			g_free (data);
+		} 
+		else
+		{
+			glade_util_ui_message
+				(glade_app_get_window(),
+				 GLADE_UI_ERROR,
+				 _("Error serializing configuration data to save (%s).\n"
+				   "No private data will be saved in this session"), 
+				 error->message);
+			error_shown = TRUE;
+		}
+		g_io_channel_shutdown(channel, TRUE, NULL);
+		g_io_channel_unref (channel);
+	}
+	else
+	{
+		glade_util_ui_message
+			(glade_app_get_window(),
+			 GLADE_UI_ERROR,
+			 _("Error opening %s to write private data (%s).\n"
+			   "No private data will be saved in this session"), 
+			 filename, error->message);
+		error_shown = TRUE;
+	}
+	g_free (filename);
+	
+	if (error)
+	{
+		g_error_free (error);
+		return -1;
+	}
+	return 0;
+}
+
+void
+glade_app_set_transient_parent (GtkWindow *parent)
+{
+	GList     *projects, *objects;
+	GladeApp  *app;
+	
+	g_return_if_fail (GTK_IS_WINDOW (parent));
+
+	app = glade_app_get ();
+	app->priv->transient_parent = parent;
+
+	/* Loop over all projects/widgets and set_transient_for the toplevels.
+	 */
+	for (projects = glade_app_get_projects (); // projects
+	     projects; projects = projects->next) 
+		for (objects = GLADE_PROJECT (projects->data)->objects;  // widgets
+		     objects; objects = objects->next)
+			if (GTK_IS_WINDOW (objects->data))
+				gtk_window_set_transient_for
+					(GTK_WINDOW (objects->data), parent);
+}
+
+GtkWindow *
+glade_app_get_transient_parent (void)
+{
+	GtkWindow *parent;
+	GladeApp  *app = glade_app_get ();
+
+	parent = app->priv->transient_parent;
+	
+	return parent;
+}
+
+GladeApp *
+glade_app_get (void)
+{
+	if (!the_app)
+		g_critical ("No available GladeApp");
+	return the_app;
+}
+
+void
+glade_app_update_ui (void)
+{
+	GladeApp *app = glade_app_get ();
+
+	g_signal_emit (G_OBJECT (app),
+		       glade_app_signals[UPDATE_UI_SIGNAL], 0);
+
+}
+
+void
+glade_app_set_window (GtkWidget *window)
+{
+	GladeApp *app = glade_app_get ();
+
+	app->priv->window = window;
+}
+
+GtkWidget *
+glade_app_get_window (void)
+{
+	GladeApp  *app = glade_app_get ();
+	return app->priv->window;
+}
+
+GladeEditor *
+glade_app_get_editor (void)
+{
+	GladeApp *app    = glade_app_get ();
+	return app->priv->editor;
+}
+
+GladeWidgetClass *
+glade_app_get_add_class (void)
+{
+	GladeApp *app   = glade_app_get ();
+	return app->priv->add_class;
+}
+
+GladeWidgetClass *
+glade_app_get_alt_class (void)
+{
+	GladeApp         *app   = glade_app_get ();
+	return app->priv->alt_class;
+}
+
+GladePalette *
+glade_app_get_palette (void)
+{
+	GladeApp *app = glade_app_get ();
+	return app->priv->palette;
+}
+
+GladeClipboard *
+glade_app_get_clipboard (void)
+{
+	GladeApp       *app       = glade_app_get ();
+	return app->priv->clipboard;
+}
+
+GtkWidget *
+glade_app_get_clipboard_view (void)
+{
+	GladeApp *app = glade_app_get ();
+	return app->priv->clipboard->view;
+}
+
+GladeProject *
+glade_app_get_project (void)
+{
+	GladeApp *app = glade_app_get ();
+	return app->priv->active_project;
+}
+
+GList *
+glade_app_get_projects (void)
+{
+	GladeApp *app = glade_app_get ();
+	return app->priv->projects;
+}
+
+GKeyFile *
+glade_app_get_config (void)
+{
+	GladeApp *app = glade_app_get ();
+	return app->priv->config;
+}
+
+void
+glade_app_add_project_view (GladeProjectView *view)
+{
+	GladeApp *app;
+	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
+
+	app = glade_app_get ();
+
+	app->priv->views = g_list_prepend (app->priv->views, view);
+	if (app->priv->active_project)
+		glade_project_view_set_project (view, app->priv->active_project);
+}
+
+gboolean
+glade_app_is_project_loaded (const gchar *project_path)
+{
+	GladeApp *app;
 	GList    *list;
 	gboolean  loaded = FALSE;
 
 	if (project_path == NULL) return FALSE;
+
+	app = glade_app_get ();
 
 	for (list = app->priv->projects; list; list = list->next)
 	{
@@ -675,9 +777,9 @@ glade_app_is_project_loaded (GladeApp *app, const gchar *project_path)
 
 
 void
-glade_app_show_properties (GladeApp* app, gboolean raise)
+glade_app_show_properties (gboolean raise)
 {
-	g_return_if_fail (GLADE_IS_APP (app));
+	GladeApp  *app  = glade_app_get ();
 
 	if (GLADE_APP_GET_CLASS (app)->show_properties)
 		GLADE_APP_GET_CLASS (app)->show_properties (app, raise);
@@ -686,24 +788,30 @@ glade_app_show_properties (GladeApp* app, gboolean raise)
 }
 
 void
-glade_app_hide_properties (GladeApp* app)
+glade_app_hide_properties (void)
 {
-	g_return_if_fail (GLADE_IS_APP (app));
+	GladeApp  *app  = glade_app_get ();
 
 	if (GLADE_APP_GET_CLASS (app)->hide_properties)
 		GLADE_APP_GET_CLASS (app)->hide_properties (app);
 	else 
 		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
+
 }
 
 void
-glade_app_update_instance_count (GladeApp *app, GladeProject *project)
+glade_app_update_instance_count (GladeProject *project)
 {
+	GladeApp  *app;
 	GladeProject *prj;
 	GList *l;
 	gint temp, max = 0, i = 0, uncounted_projects = 0;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
 		
 	if (project->instance > 0) return;
+
+	app = glade_app_get ();
 
 	for (l = app->priv->projects; l; l = l->next)
 	{
@@ -725,22 +833,25 @@ glade_app_update_instance_count (GladeApp *app, GladeProject *project)
 	if (uncounted_projects > 1 || 
 	    g_list_find (app->priv->projects, project) == NULL)
 		project->instance = MAX (max, i);
+
 }
 
 void
-glade_app_add_project (GladeApp *app, GladeProject *project)
+glade_app_add_project (GladeProject *project)
 {
+	GladeApp  *app;
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	/* If the project was previously loaded, don't re-load */
-	if (glade_app_is_project_loaded (app, project->path))
+	if (glade_app_is_project_loaded (project->path))
 	{
-		glade_app_set_project (app, project);
+		glade_app_set_project (project);
 		return;
 	}
+	glade_app_update_instance_count (project);
 
-	glade_app_update_instance_count (app, project);
-
+	app = glade_app_get ();
+	
 	app->priv->projects = g_list_append (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */
@@ -753,20 +864,23 @@ glade_app_add_project (GladeApp *app, GladeProject *project)
 	if (app->priv->accel_group)
 		glade_project_set_accel_group (project, app->priv->accel_group);
 	
-	glade_app_set_project (app, project);
+	glade_app_set_project (project);
 
 	/* XXX I think the palette should detect this by itself */
 	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
+
 }
 
 void
-glade_app_remove_project (GladeApp *app, GladeProject *project)
+glade_app_remove_project (GladeProject *project)
 {
-	g_return_if_fail (GLADE_IS_APP (app));
+	GladeApp *app;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
+	app = glade_app_get ();
+
 	app->priv->projects = g_list_remove (app->priv->projects, project);
-	
+
 	/* this is needed to prevent clearing the selection of a closed project 
 	 */
 	app->priv->active_project = NULL;
@@ -778,18 +892,27 @@ glade_app_remove_project (GladeApp *app, GladeProject *project)
 		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
 	} 
 	else
-		glade_app_set_project (app, g_list_last (app->priv->projects)->data);
+		glade_app_set_project (g_list_last (app->priv->projects)->data);
 
 	/* Its safe to just release the project as the project emits a
 	 * "close" signal and everyone is responsable for cleaning up at
 	 * that point.
 	 */
 	g_object_unref (project);
+
 }
 
+
+/**
+ * glade_app_set_project:
+ * @project: A #GladeProject
+ *
+ * Sets the active project in the #GladeApp to @project.
+ */
 void
-glade_app_set_project (GladeApp *app, GladeProject *project)
+glade_app_set_project (GladeProject *project)
 {
+	GladeApp *app = glade_app_get();
 	GList *list;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -816,11 +939,13 @@ glade_app_set_project (GladeApp *app, GladeProject *project)
 		glade_project_view_set_project (view, project);
 	}
 
-	/* trigger the selection changed signal to update the editor */
+	/* (XXX really ?) trigger the selection changed signal to update the editor */
 	glade_project_selection_changed (project);
 	
 	/* Update UI */
-	glade_app_update_ui (app);
+	glade_app_update_ui ();
+
+	g_object_notify (G_OBJECT (app), "active-project");
 }
 
 /**
@@ -832,16 +957,20 @@ glade_app_set_project (GladeApp *app, GladeProject *project)
  * the clipboards selection).
  */
 void
-glade_app_command_copy (GladeApp *app)
+glade_app_command_copy (void)
 {
+	GladeApp           *app;
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	gboolean            failed = FALSE;
 
-	g_return_if_fail (GLADE_IS_APP (app));
-	if (app->priv->active_project == NULL) return;
+	app = glade_app_get();
+	if (app->priv->active_project == NULL)
+	{
+		return;
+	}
 
-	for (list = glade_default_app_get_selection ();
+	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -851,7 +980,7 @@ glade_app_command_copy (GladeApp *app)
 		if (widget->internal)
 		{
 			glade_util_ui_message
-				(glade_app_get_window(app),
+				(glade_app_get_window(),
 				 GLADE_UI_INFO,
 				 _("You cannot copy a widget "
 				   "internal to a composite widget."));
@@ -863,14 +992,15 @@ glade_app_command_copy (GladeApp *app)
 	if (failed == FALSE && widgets != NULL)
 	{
 		glade_command_copy (widgets);
-		glade_app_update_ui (app);
+		glade_app_update_ui ();
 	}
 	else if (widgets == NULL)
-		glade_util_ui_message (glade_app_get_window(app),
+		glade_util_ui_message (glade_app_get_window(),
 				       GLADE_UI_INFO,
 				       _("No widget selected."));
 
 	if (widgets) g_list_free (widgets);
+
 }
 
 /**
@@ -882,16 +1012,18 @@ glade_app_command_copy (GladeApp *app)
  * the clipboards selection).
  */
 void
-glade_app_command_cut (GladeApp *app)
+glade_app_command_cut (void)
 {
+	GladeApp           *app;
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	gboolean            failed = FALSE;
 
-	g_return_if_fail (GLADE_IS_APP (app));
-	if (app->priv->active_project == NULL) return;
-
-	for (list = glade_default_app_get_selection ();
+	app = glade_app_get();
+	if (app->priv->active_project == NULL)
+		return;
+	
+	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -901,7 +1033,7 @@ glade_app_command_cut (GladeApp *app)
 		if (widget->internal)
 		{
 			glade_util_ui_message
-				(glade_app_get_window(app),
+				(glade_app_get_window(),
 				 GLADE_UI_INFO,
 				 _("You cannot cut a widget "
 				   "internal to a composite widget."));
@@ -913,14 +1045,15 @@ glade_app_command_cut (GladeApp *app)
 	if (failed == FALSE && widgets != NULL)
 	{
 		glade_command_cut (widgets);
-		glade_app_update_ui (app);
+		glade_app_update_ui ();
 	}
 	else if (widgets == NULL)
-		glade_util_ui_message (glade_app_get_window(app),
+		glade_util_ui_message (glade_app_get_window(),
 				       GLADE_UI_INFO,
 				       _("No widget selected."));
 
 	if (widgets) g_list_free (widgets);
+
 }
 
 /**
@@ -931,8 +1064,9 @@ glade_app_command_cut (GladeApp *app)
  * selection (the project must have only one object selected).
  */
 void
-glade_app_command_paste (GladeApp *app)
+glade_app_command_paste (void)
 {
+	GladeApp           *app;
 	GladeClipboard     *clipboard;
 	GList              *list;
 	GladeWidget        *widget = NULL;
@@ -940,12 +1074,12 @@ glade_app_command_paste (GladeApp *app)
 	GladePlaceholder   *placeholder;
 	GladeWidget        *parent;
 
-
-	g_return_if_fail (GLADE_IS_APP (app));
-	if (app->priv->active_project == NULL) return;
+	app = glade_app_get();
+	if (app->priv->active_project == NULL)
+		return;
 
 	list      = glade_project_selection_get (app->priv->active_project);
-	clipboard = glade_app_get_clipboard (app);
+	clipboard = glade_app_get_clipboard ();
 
 	/* If there is a selection, dont use a placeholder to paste into */
 	placeholder = list ? NULL : glade_util_selected_placeholder ();
@@ -953,19 +1087,20 @@ glade_app_command_paste (GladeApp *app)
 	/* If there is a selection, paste in to the selected widget, otherwise
 	 * paste into the placeholder's parent.
 	 */
-	parent      = list ? glade_widget_get_from_gobject (list->data) :
+	parent = list ? glade_widget_get_from_gobject (list->data) :
 		(placeholder ? glade_placeholder_get_parent (placeholder) : NULL);
 
 
 	/* Check if selection is good */
-	if ((list = glade_default_app_get_selection ()) != NULL)
+	if ((list = glade_app_get_selection ()) != NULL)
 	{
 		if (placeholder == NULL &&
 		    g_list_length (list) != 1)
 		{
-			glade_util_ui_message (glade_app_get_window(app),
+			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_INFO,
 					       _("Unable to paste to multiple widgets"));
+
 			return;
 		}
 	}
@@ -973,8 +1108,9 @@ glade_app_command_paste (GladeApp *app)
 	/* Check if we have anything to paste */
 	if (g_list_length (clipboard->selection) == 0)
 	{
-		glade_util_ui_message (glade_app_get_window (app), GLADE_UI_INFO,
+		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO,
 				    _("No widget selected on the clipboard"));
+
 		return;
 	}
 	
@@ -990,7 +1126,7 @@ glade_app_command_paste (GladeApp *app)
 			 */
 			if (glade_util_widget_pastable (widget, parent) == FALSE)
 			{
-				glade_util_ui_message (glade_default_app_get_window (),
+				glade_util_ui_message (glade_app_get_window (),
 						       GLADE_UI_ERROR, 
 						       _("Unable to paste widget %s to parent %s"),
 						       widget->name, parent->name);
@@ -1011,7 +1147,7 @@ glade_app_command_paste (GladeApp *app)
 	    parent && parent->manager != NULL &&
 	    gtkcontainer_relations != 1) 
 	{
-		glade_util_ui_message (glade_default_app_get_window (), 
+		glade_util_ui_message (glade_app_get_window (), 
 				       GLADE_UI_INFO,
 				       _("Only one widget can be pasted at a "
 					 "time to this container"));
@@ -1022,7 +1158,7 @@ glade_app_command_paste (GladeApp *app)
 	if (parent && parent->manager == NULL &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
 	{
-		glade_util_ui_message (glade_default_app_get_window (), 
+		glade_util_ui_message (glade_app_get_window (), 
 				       GLADE_UI_INFO,
 				       _("Insufficient amount of placeholders in "
 					 "target container"));
@@ -1030,7 +1166,7 @@ glade_app_command_paste (GladeApp *app)
 	}
 
 	glade_command_paste (clipboard->selection, parent, placeholder);
-	glade_app_update_ui (app);
+	glade_app_update_ui ();
 }
 
 
@@ -1041,16 +1177,18 @@ glade_app_command_paste (GladeApp *app)
  * Delete the active project's selection.
  */
 void
-glade_app_command_delete (GladeApp *app)
+glade_app_command_delete (void)
 {
+	GladeApp           *app;
 	GList              *widgets = NULL, *list;
 	GladeWidget        *widget;
 	gboolean            failed = FALSE;
 
-	g_return_if_fail (GLADE_IS_APP (app));
-	if (app->priv->active_project == NULL) return;
+	app = glade_app_get();
+	if (app->priv->active_project == NULL)
+		return;
 
-	for (list = glade_default_app_get_selection ();
+	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
@@ -1060,7 +1198,7 @@ glade_app_command_delete (GladeApp *app)
 		if (widget->internal)
 		{
 			glade_util_ui_message
-				(glade_app_get_window(app),
+				(glade_app_get_window(),
 				 GLADE_UI_INFO,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
@@ -1072,10 +1210,10 @@ glade_app_command_delete (GladeApp *app)
 	if (failed == FALSE && widgets != NULL)
 	{
 		glade_command_delete (widgets);
-		glade_app_update_ui (app);
+		glade_app_update_ui ();
 	}
 	else if (widgets == NULL)
-		glade_util_ui_message (glade_app_get_window(app),
+		glade_util_ui_message (glade_app_get_window(),
 				       GLADE_UI_INFO,
 				       _("No widget selected."));
 
@@ -1089,18 +1227,16 @@ glade_app_command_delete (GladeApp *app)
  * Delete the clipboard's selection.
  */
 void
-glade_app_command_delete_clipboard (GladeApp *app)
+glade_app_command_delete_clipboard (void)
 {
-	GladeClipboard     *clipboard;
-	GladeWidget        *gwidget;
-	GList              *list;
+	GladeClipboard  *clipboard;
+	GladeWidget     *gwidget;
+	GList           *list;
 
-	g_return_if_fail (GLADE_IS_APP (app));
-
-	clipboard = glade_app_get_clipboard (app);
+	clipboard = glade_app_get_clipboard ();
 
 	if (clipboard->selection == NULL)
-		glade_util_ui_message (glade_app_get_window (app), GLADE_UI_INFO,
+		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO,
 				    _("No widget selected on the clipboard"));
 
 	for (list = clipboard->selection; list; list = list->next)
@@ -1109,7 +1245,7 @@ glade_app_command_delete_clipboard (GladeApp *app)
 		if (gwidget->internal)
 		{
 			glade_util_ui_message
-				(glade_default_app_get_window(),
+				(glade_app_get_window(),
 				 GLADE_UI_INFO,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
@@ -1118,31 +1254,33 @@ glade_app_command_delete_clipboard (GladeApp *app)
 	}
 
 	glade_command_delete (clipboard->selection);
-	glade_app_update_ui (app);
+	glade_app_update_ui ();
 }
 
 
 void
-glade_app_command_undo (GladeApp *app)
+glade_app_command_undo (void)
 {
+	GladeApp *app = glade_app_get();
 	if (app->priv->active_project)
 	{
 		glade_command_undo (app->priv->active_project);
 		glade_editor_refresh (app->priv->editor);
 		/* Update UI. */
-		glade_app_update_ui (app);
+		glade_app_update_ui ();
 	}
 }
 
 void
-glade_app_command_redo (GladeApp *app)
+glade_app_command_redo (void)
 {
+	GladeApp *app = glade_app_get();
 	if (app->priv->active_project)
 	{
 		glade_command_redo (app->priv->active_project);
 		glade_editor_refresh (app->priv->editor);
 		/* Update UI. */
-		glade_app_update_ui (app);
+		glade_app_update_ui ();
 	}
 }
 
@@ -1153,12 +1291,14 @@ glade_app_command_redo (GladeApp *app)
  * The acceleration group will be atached to every toplevel widget in this application.
  */
 void
-glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group)
+glade_app_set_accel_group (GtkAccelGroup *accel_group)
 {
+	GladeApp *app;
 	GList *l;
 	GladeProject *project;
-	g_return_if_fail(GLADE_IS_APP(app) &&
-			 GTK_IS_ACCEL_GROUP (accel_group));
+	g_return_if_fail(GTK_IS_ACCEL_GROUP (accel_group));
+
+	app = glade_app_get ();
 
 	for (l = app->priv->projects; l; l = l->next)
 	{
@@ -1224,8 +1364,9 @@ glade_app_undo_redo_button_new (GladeApp *app, gboolean undo)
  * The button will be automatically updated with @app's undo stack.
  */
 GtkWidget *
-glade_app_undo_button_new (GladeApp *app)
+glade_app_undo_button_new (void)
 {
+	GladeApp  *app    = glade_app_get();
 	return glade_app_undo_redo_button_new (app, TRUE);
 }
 
@@ -1236,123 +1377,20 @@ glade_app_undo_button_new (GladeApp *app)
  * The button will be automatically updated with @app's redo stack.
  */
 GtkWidget *
-glade_app_redo_button_new (GladeApp *app)
+glade_app_redo_button_new (void)
 {
+	GladeApp  *app    = glade_app_get();
 	return glade_app_undo_redo_button_new (app, FALSE);
 }
 
-/* Default application convinience functions */
-
-static GladeApp *glade_default_app = NULL;
-
-void
-glade_default_app_set (GladeApp *app)
-{
-	if (app)
-		g_object_ref (G_OBJECT (app));
-	if (glade_default_app)
-		g_object_unref (glade_default_app);
-	glade_default_app = app;
-}
-
-GtkWidget*
-glade_default_app_get_window (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_window (glade_default_app);
-}
-
-GladeEditor*
-glade_default_app_get_editor (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_editor (glade_default_app);
-}
-
-GladeWidgetClass*
-glade_default_app_get_add_class (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_add_class (glade_default_app);
-}
-
-GladeWidgetClass*
-glade_default_app_get_alt_class (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_alt_class (glade_default_app);
-}
-
-GladePalette*
-glade_default_app_get_palette (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_palette (glade_default_app);
-}
-
-GladeClipboard*
-glade_default_app_get_clipboard (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_clipboard (glade_default_app);
-}
 
 GList*
-glade_default_app_get_projects (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_projects (glade_default_app);
-}
-
-void
-glade_default_app_show_properties (gboolean raise)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_show_properties (glade_default_app, raise);
-}
-
-void
-glade_default_app_hide_properties (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_hide_properties (glade_default_app);
-}
-
-GladeProject*
-glade_default_app_get_active_project (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_active_project (glade_default_app);
-}
-
-void
-glade_default_app_update_ui (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	glade_app_update_ui (glade_default_app);
-}
-
-void
-glade_default_app_set_transient_parent (GtkWindow *parent)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	glade_app_set_transient_parent (glade_default_app, parent);
-}
-
-GtkWindow *
-glade_default_app_get_transient_parent (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_get_transient_parent (glade_default_app);
-}
-
-GList*
-glade_default_app_get_selection (void)
+glade_app_get_selection (void)
 {
 	GList *selection = NULL, *list;
 	GladeProject *project;
 
-	for (list = glade_default_app_get_projects (); 
+	for (list = glade_app_get_projects (); 
 	     list && list->data; list = list->next)
 	{
 		/* Only one project may have selection at a time
@@ -1369,20 +1407,19 @@ glade_default_app_get_selection (void)
 
 
 gboolean
-glade_default_app_is_selected (GObject      *object)
+glade_app_is_selected (GObject *object)
 {
-	return (g_list_find (glade_default_app_get_selection (), 
-			     object) != NULL);
+	return (g_list_find (glade_app_get_selection (), object) != NULL);
 }
 
 void
-glade_default_app_selection_set (GObject      *object,
-				 gboolean      emit_signal)
+glade_app_selection_set (GObject  *object,
+			 gboolean  emit_signal)
 {
 	GList        *list;
 	GladeProject *project;
 
-	for (list = glade_default_app_get_projects ();
+	for (list = glade_app_get_projects ();
 	     list && list->data; list = list->next)
 	{
 		project = list->data;
@@ -1402,8 +1439,8 @@ glade_default_app_selection_set (GObject      *object,
 }
 
 void
-glade_default_app_selection_add (GObject      *object,
-				 gboolean      emit_signal)
+glade_app_selection_add (GObject      *object,
+			 gboolean      emit_signal)
 {
 	GList        *list;
 	GladeWidget  *widget   = glade_widget_get_from_gobject (object),  
@@ -1413,7 +1450,7 @@ glade_default_app_selection_add (GObject      *object,
 	/* Ignore request if the there is a selection 
 	 * from another project.
 	 */
-	if ((list = glade_default_app_get_selection ()) != NULL)
+	if ((list = glade_app_get_selection ()) != NULL)
 	{
 		selected = glade_widget_get_from_gobject (list->data);
 		if (glade_widget_get_project (selected) != project)
@@ -1423,8 +1460,8 @@ glade_default_app_selection_add (GObject      *object,
 }
 
 void
-glade_default_app_selection_remove (GObject      *object,
-				    gboolean      emit_signal)
+glade_app_selection_remove (GObject      *object,
+			    gboolean      emit_signal)
 {
 	GladeWidget  *widget   = glade_widget_get_from_gobject (object);
 	GladeProject *project  = glade_widget_get_project (widget);;
@@ -1433,13 +1470,13 @@ glade_default_app_selection_remove (GObject      *object,
 }
 
 void
-glade_default_app_selection_clear (gboolean      emit_signal)
+glade_app_selection_clear (gboolean      emit_signal)
 {
 	GList        *list;
 	GladeProject *project;
 
 	glade_util_clear_selection ();
-	for (list = glade_default_app_get_projects ();
+	for (list = glade_app_get_projects ();
 	     list && list->data; list = list->next)
 	{
 		project = list->data;
@@ -1448,64 +1485,15 @@ glade_default_app_selection_clear (gboolean      emit_signal)
 }
 
 void
-glade_default_app_selection_changed (void)
+glade_app_selection_changed (void)
 {
 	GList        *list;
 	GladeProject *project;
 
-	for (list = glade_default_app_get_projects ();
+	for (list = glade_app_get_projects ();
 	     list && list->data; list = list->next)
 	{
 		project = list->data;
 		glade_project_selection_changed (project);
 	}
-}
-
-GtkWidget *
-glade_default_app_undo_button_new (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_undo_redo_button_new (glade_default_app, TRUE);
-}
-
-GtkWidget *
-glade_default_app_redo_button_new (void)
-{
-	g_return_val_if_fail (glade_default_app != NULL, NULL);
-	return glade_app_undo_redo_button_new (glade_default_app, FALSE);
-}
-
-void
-glade_default_app_command_cut (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_command_cut (glade_default_app);
-}
-
-void
-glade_default_app_command_copy (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_command_copy (glade_default_app);
-}
-
-void
-glade_default_app_command_paste (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_command_paste (glade_default_app);
-}
-
-void
-glade_default_app_command_delete (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_command_delete (glade_default_app);
-}
-
-void
-glade_default_app_command_delete_clipboard (void)
-{
-	g_return_if_fail (glade_default_app != NULL);
-	return glade_app_command_delete_clipboard (glade_default_app);
 }

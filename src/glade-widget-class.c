@@ -131,25 +131,82 @@ gwc_props_from_pspecs (GParamSpec **specs, gint n_specs)
 	return g_list_reverse (list);
 }
 
-static gboolean
-gwc_class_implements_interface (GType class_type, 
-				GType iface_type)
+static GList *
+gwc_list_atk_actions (GladeWidgetClass *class, AtkAction *action)
 {
-	GType    *ifaces;
-	guint     n_ifaces, i;
-	gboolean  implemented = FALSE;
+	GladePropertyClass *pclass;
+	GList              *actions = NULL;
+	gint                n_actions, i;
+	const gchar        *name, *def;
 
-	if ((ifaces = g_type_interfaces (class_type, &n_ifaces)) != NULL)
+	n_actions = atk_action_get_n_actions (action);
+
+	for (i = 0; i < n_actions; i++) 
 	{
-		for (i = 0; i < n_ifaces; i++)
-			if (ifaces[i] == iface_type)
-			{
-				implemented = TRUE;
-				break;
-			}
-		g_free (ifaces);
+		name = atk_action_get_name (action, i);
+		def  = atk_action_get_description (action, i);
+
+		pclass  = glade_property_class_new_atk_action
+			(name, def, class->type);
+
+		actions = g_list_prepend (actions, pclass);
 	}
-	return implemented;
+
+	return g_list_reverse (actions);
+}
+
+static GList *
+gwc_list_atk_properties (GladeWidgetClass *class)
+{
+	GladePropertyClass *pclass;
+	GObjectClass  *object_class;
+	GObject       *object;
+	GParamSpec    *spec;
+	AtkObject     *accessible;
+	GList         *list, *atk_list = NULL;
+
+	/* Atk props are only applied on instantiatable classes */
+	if (G_TYPE_IS_INSTANTIATABLE (class->type) == FALSE ||
+	    G_TYPE_IS_ABSTRACT (class->type))
+		return NULL;
+
+	object = g_object_new (class->type, NULL);
+
+	if ((accessible = 
+	     atk_implementor_ref_accessible(ATK_IMPLEMENTOR (object))) != NULL)
+	{
+		object_class   = G_OBJECT_GET_CLASS (accessible);
+
+		/* Get the desctiption pspec and add it (also touch up visible-lines) */
+		spec           = g_object_class_find_property
+			(object_class, "accessible_description");
+		pclass         = glade_property_class_new_from_spec (spec);
+
+		/* multiple lines on the desctription */
+		pclass->visible_lines = 2;
+		atk_list = g_list_prepend (atk_list, pclass);
+
+		/* Get the name pspec and add it  */
+		spec     = g_object_class_find_property (object_class,
+							 "accessible_name");
+		pclass   = glade_property_class_new_from_spec (spec);
+		atk_list = g_list_prepend (atk_list, pclass);
+
+		if (ATK_IS_ACTION (accessible))
+		{
+			list = gwc_list_atk_actions (class, ATK_ACTION (accessible));
+			atk_list = g_list_concat (atk_list, list);
+		}
+
+		list = glade_property_class_list_atk_relations (class->type);
+		atk_list = g_list_concat (atk_list, list);
+
+		g_object_unref (G_OBJECT (accessible));
+	}
+
+	// XXX FIXME: Leek :( g_object_unref (object);
+	// g_object_unref causes segfaults here... why ?
+	return atk_list;
 }
 
 static GList *
@@ -175,31 +232,11 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	list = gwc_props_from_pspecs (specs, n_specs);
 	g_free (specs);
 
-
-#if 0
-	/* XXX ATK compiled out for now, just for cvs sake.
-	 */
-
-	/* XXX FIXME: We shouldnt just do ATK_TYPE_OBJECT, we need
-	 * to instanciate an object of the right type and use
-	 * atk_implementor_ref_accessible()... so as to get the correct
-	 * ATK_TYPE_OBJECT derivative (this might be overkill for the
-	 * task at hand...)
-	 */
-
 	/* list atk properties if applicable */
-	if (gwc_class_implements_interface (class->type, ATK_TYPE_IMPLEMENTOR))
-	{
-		if ((object_class = g_type_class_ref (ATK_TYPE_OBJECT)) == NULL)
-			g_critical ("Failed to get class for type %s\n", 
-				    g_type_name (ATK_TYPE_OBJECT));
+	if (glade_util_class_implements_interface (class->type, 
+						   ATK_TYPE_IMPLEMENTOR))
+		atk_list = gwc_list_atk_properties (class);
 
-		/* list atk properties */
-		specs = g_object_class_list_properties (object_class, &n_specs);
-		atk_list = gwc_props_from_pspecs (specs, n_specs);
-		g_free (specs);
-	}
-#endif
 	return g_list_concat (list, atk_list);
 }
 

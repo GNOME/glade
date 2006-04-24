@@ -27,6 +27,7 @@ enum _GladeEditorTableType
 	TABLE_TYPE_GENERAL,
 	TABLE_TYPE_COMMON,
 	TABLE_TYPE_PACKING,
+	TABLE_TYPE_ATK,
 	TABLE_TYPE_QUERY
 };
 
@@ -73,7 +74,7 @@ struct _GladeEditor
 	GtkWidget *vbox_packing;
 	GtkWidget *vbox_common;
 	GtkWidget *vbox_signals;
-
+	GtkWidget *vbox_atk;
 
 	GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
 					   */

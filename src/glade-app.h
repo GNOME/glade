@@ -64,150 +64,104 @@ LIBGLADEUI_API
 GType              glade_app_get_type (void) G_GNUC_CONST;
 
 LIBGLADEUI_API 
-GladeApp*          glade_app_new (void);
+GladeApp*          glade_app_get (void);
 
 LIBGLADEUI_API 
-void               glade_app_update_ui (GladeApp* app);
+void               glade_app_update_ui (void);
 
 LIBGLADEUI_API 
-void               glade_app_set_window (GladeApp* app, GtkWidget *window);
+void               glade_app_set_window (GtkWidget *window);
 LIBGLADEUI_API 
-GtkWidget*         glade_app_get_window (GladeApp* app);
+GtkWidget*         glade_app_get_window (void);
 
 LIBGLADEUI_API 
-GladeEditor*       glade_app_get_editor (GladeApp* app);
+GladeEditor*       glade_app_get_editor (void);
 LIBGLADEUI_API 
-GladeWidgetClass*  glade_app_get_add_class (GladeApp* app);
+GladeWidgetClass*  glade_app_get_add_class (void);
 LIBGLADEUI_API 
-GladeWidgetClass*  glade_app_get_alt_class (GladeApp* app);
+GladeWidgetClass*  glade_app_get_alt_class (void);
 LIBGLADEUI_API 
-GladePalette*      glade_app_get_palette (GladeApp* app);
+GladePalette*      glade_app_get_palette (void);
 LIBGLADEUI_API 
-GladeClipboard*    glade_app_get_clipboard (GladeApp* app);
+GladeClipboard*    glade_app_get_clipboard (void);
 LIBGLADEUI_API 
-GtkWidget*         glade_app_get_clipboard_view (GladeApp* app);
+GtkWidget*         glade_app_get_clipboard_view (void);
 
 LIBGLADEUI_API 
-GladeProject*      glade_app_get_active_project (GladeApp* app);
+GladeProject*      glade_app_get_project (void);
 LIBGLADEUI_API 
-void               glade_app_set_project (GladeApp *app, GladeProject *project);
+void               glade_app_set_project (GladeProject *project);
 LIBGLADEUI_API 
-void               glade_app_add_project (GladeApp *app, GladeProject *project);
+void               glade_app_add_project (GladeProject *project);
 LIBGLADEUI_API 
-void               glade_app_remove_project (GladeApp *app, GladeProject *project);
+void               glade_app_remove_project (GladeProject *project);
 LIBGLADEUI_API 
-GList*             glade_app_get_projects (GladeApp *app);
+GList*             glade_app_get_projects (void);
 LIBGLADEUI_API 
-GKeyFile*          glade_app_get_config (GladeApp *app);
+GKeyFile*          glade_app_get_config (void);
 LIBGLADEUI_API 
-gboolean           glade_app_is_project_loaded (GladeApp *app, const gchar *project_path);
+gboolean           glade_app_is_project_loaded (const gchar *project_path);
 LIBGLADEUI_API 
-void               glade_app_show_properties (GladeApp* app, gboolean raise);
+void               glade_app_show_properties (gboolean raise);
 LIBGLADEUI_API 
-void               glade_app_hide_properties (GladeApp* app);
+void               glade_app_hide_properties (void);
 
 LIBGLADEUI_API 
-void               glade_app_add_project_view (GladeApp *app, GladeProjectView *view);
+void               glade_app_add_project_view (GladeProjectView *view);
 
 LIBGLADEUI_API 
-void               glade_app_command_copy (GladeApp *app);
+void               glade_app_command_copy (void);
 LIBGLADEUI_API 
-void               glade_app_command_cut (GladeApp *app);
+void               glade_app_command_cut (void);
 LIBGLADEUI_API 
-void               glade_app_command_paste (GladeApp *app);
+void               glade_app_command_paste (void);
 LIBGLADEUI_API 
-void               glade_app_command_delete (GladeApp *app);
-LIBGLADEUI_API 
-void               glade_app_command_undo (GladeApp *app);
-LIBGLADEUI_API 
-void               glade_app_command_redo (GladeApp *app);
-
-LIBGLADEUI_API 
-gint               glade_app_config_save (GladeApp *app);
-LIBGLADEUI_API 
-void               glade_app_set_transient_parent (GladeApp *app, GtkWindow *parent);
-LIBGLADEUI_API 
-GtkWindow         *glade_app_get_transient_parent (GladeApp *app);
-LIBGLADEUI_API 
-void               glade_app_set_accel_group (GladeApp *app, GtkAccelGroup *accel_group);
-LIBGLADEUI_API 
-void               glade_app_update_instance_count  (GladeApp *app, GladeProject *project);
-
-LIBGLADEUI_API 
-GtkWidget 	 *glade_app_undo_button_new (GladeApp *app);
-LIBGLADEUI_API 
-GtkWidget 	 *glade_app_redo_button_new (GladeApp *app);
-
-/* Default glade application */
-LIBGLADEUI_API 
-void               glade_default_app_set (GladeApp *app);
-LIBGLADEUI_API 
-GtkWidget*         glade_default_app_get_window (void);
-LIBGLADEUI_API 
-GladeEditor*       glade_default_app_get_editor (void);
-LIBGLADEUI_API 
-GladeWidgetClass*  glade_default_app_get_add_class (void);
-LIBGLADEUI_API 
-GladeWidgetClass*  glade_default_app_get_alt_class (void);
-LIBGLADEUI_API 
-GladePalette*      glade_default_app_get_palette (void);
-LIBGLADEUI_API 
-GladeClipboard*    glade_default_app_get_clipboard (void);
-LIBGLADEUI_API 
-GladeProject*      glade_default_app_get_active_project (void);
-LIBGLADEUI_API 
-void               glade_default_app_update_ui (void);
-LIBGLADEUI_API 
-GList*             glade_default_app_get_selection (void);
-LIBGLADEUI_API 
-GList*             glade_default_app_get_projects (void);
-LIBGLADEUI_API 
-void               glade_default_app_show_properties (gboolean raise);
-LIBGLADEUI_API 
-void               glade_default_app_hide_properties (void);
-LIBGLADEUI_API 
-void               glade_default_app_set_transient_parent (GtkWindow *parent);
-LIBGLADEUI_API 
-GtkWindow         *glade_default_app_get_transient_parent (void);
-
-LIBGLADEUI_API 
-GtkWidget         *glade_default_app_undo_button_new  (void);
-LIBGLADEUI_API 
-GtkWidget         *glade_default_app_redo_button_new  (void);
-
-
-/* GladeCommand interface stuff
- */
+void               glade_app_command_delete (void);
 LIBGLADEUI_API
-void               glade_default_app_command_cut (void);
-LIBGLADEUI_API
-void               glade_default_app_command_copy (void);
-LIBGLADEUI_API
-void               glade_default_app_command_paste (void);
-LIBGLADEUI_API
-void               glade_default_app_command_delete (void);
-LIBGLADEUI_API
-void               glade_default_app_command_delete_clipboard (void);
+void               glade_app_command_delete_clipboard (void);
+LIBGLADEUI_API 
+void               glade_app_command_undo (void);
+LIBGLADEUI_API 
+void               glade_app_command_redo (void);
+
+LIBGLADEUI_API 
+gint               glade_app_config_save (void);
+LIBGLADEUI_API 
+void               glade_app_set_transient_parent (GtkWindow *parent);
+LIBGLADEUI_API 
+GtkWindow         *glade_app_get_transient_parent (void);
+LIBGLADEUI_API 
+void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
+LIBGLADEUI_API 
+void               glade_app_update_instance_count  (GladeProject *project);
+
+LIBGLADEUI_API 
+GtkWidget 	 *glade_app_undo_button_new (void);
+LIBGLADEUI_API 
+GtkWidget 	 *glade_app_redo_button_new (void);
+
+LIBGLADEUI_API 
+GList            *glade_app_get_selection (void);
 
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.
  */
 LIBGLADEUI_API 
-gboolean           glade_default_app_is_selected      (GObject      *object);
+gboolean           glade_app_is_selected      (GObject      *object);
 LIBGLADEUI_API 
-void               glade_default_app_selection_set    (GObject      *object,
-						       gboolean      emit_signal);
+void               glade_app_selection_set    (GObject      *object,
+					       gboolean      emit_signal);
 LIBGLADEUI_API 
-void               glade_default_app_selection_add    (GObject      *object,
-						       gboolean      emit_signal);
+void               glade_app_selection_add    (GObject      *object,
+					       gboolean      emit_signal);
 LIBGLADEUI_API 
-void               glade_default_app_selection_remove (GObject      *object,
-						       gboolean      emit_signal);
+void               glade_app_selection_remove (GObject      *object,
+					       gboolean      emit_signal);
 LIBGLADEUI_API 
-void               glade_default_app_selection_clear  (gboolean      emit_signal);
+void               glade_app_selection_clear  (gboolean      emit_signal);
 LIBGLADEUI_API 
-void               glade_default_app_selection_changed(void);
+void               glade_app_selection_changed(void);
 
 
 G_END_DECLS

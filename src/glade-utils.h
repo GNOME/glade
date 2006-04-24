@@ -56,7 +56,9 @@ GtkWidget        *glade_util_file_dialog_new (const gchar *title,
 					      GtkWindow *parent,
 					      GladeUtilFileDialogType action);
 LIBGLADEUI_API
-void              glade_util_replace (char *str, char a, char b);
+void              glade_util_replace (gchar *str, gchar a, gchar b);
+LIBGLADEUI_API
+gchar            *glade_util_read_prop_name (const gchar *str);
 LIBGLADEUI_API
 gchar            *glade_util_duplicate_underscores (const gchar *name);
 
@@ -109,11 +111,20 @@ gboolean          glade_util_basenames_match       (const gchar  *path1,
 LIBGLADEUI_API
 GList            *glade_util_purify_list           (GList        *list);
 LIBGLADEUI_API
+GList            *glade_util_added_in_list         (GList        *old,
+						    GList        *new);
+LIBGLADEUI_API
+GList            *glade_util_removed_from_list     (GList        *old,
+						    GList        *new);
+LIBGLADEUI_API
 gchar            *glade_util_canonical_path        (const gchar  *path);
 
 LIBGLADEUI_API
 gboolean          glade_util_copy_file             (const gchar  *src_path,
 						    const gchar  *dest_path);
+LIBGLADEUI_API
+gboolean          glade_util_class_implements_interface (GType class_type, 
+							 GType iface_type);
 
 LIBGLADEUI_API
 GModule          *glade_util_load_library          (const gchar  *library_name);

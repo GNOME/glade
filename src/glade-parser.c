@@ -1175,7 +1175,7 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
     GladeParseState state = { 0 };
 
     if (!g_file_test(file, G_FILE_TEST_IS_REGULAR)) {
-	glade_util_ui_message (glade_default_app_get_window (), 
+	glade_util_ui_message (glade_app_get_window (), 
 			       GLADE_UI_ERROR,
 			       _("Could not find glade file %s"), file);
 	return NULL;
@@ -1188,7 +1188,7 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
 	state.domain = textdomain(NULL);
 
     if (xmlSAXUserParseFile(&glade_parser, &state, file) < 0) {
-	glade_util_ui_message (glade_default_app_get_window (), 
+	glade_util_ui_message (glade_app_get_window (), 
 			       GLADE_UI_ERROR,
 			       _("Errors parsing glade file %s"), file);
 	if (state.interface)
@@ -1196,7 +1196,7 @@ glade_parser_parse_file(const gchar *file, const gchar *domain)
 	return NULL;
     }
     if (state.state != PARSER_FINISH) {
-	glade_util_ui_message (glade_default_app_get_window (), 
+	glade_util_ui_message (glade_app_get_window (), 
 			       GLADE_UI_ERROR,
 			       _("Errors parsing glade file %s"), file);
 	if (state.interface)
@@ -1285,7 +1285,9 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 	xmlNodeAddContent(widget, BAD_CAST("\n"));
     }
 
-    if (info->n_atk_props != 0) {
+    if (info->n_atk_props   != 0 ||
+	info->n_atk_actions != 0 ||
+	info->n_relations   != 0) {
 	xmlNode *atk;
 
 	for (j = 0; j < indent + 1; j++)
@@ -1300,7 +1302,7 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 
 	    for (j = 0; j < indent + 2; j++)
 		xmlNodeAddContent(atk, BAD_CAST("  "));
-	    node = xmlNewNode(NULL, BAD_CAST("property"));
+	    node = xmlNewNode(NULL, BAD_CAST("atkproperty"));
 	    xmlSetProp(node, BAD_CAST("name"), BAD_CAST(info->atk_props[i].name));
 	    if (info->atk_props[i].translatable)
 		xmlSetProp(node, BAD_CAST("translatable"), BAD_CAST("yes"));
@@ -1313,6 +1315,35 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 	    xmlAddChild(atk, node);
 	    xmlNodeAddContent(atk, BAD_CAST("\n"));
 	}
+
+	for (i = 0; i < info->n_atk_actions; i++) {
+	    xmlNode *node;
+
+	    for (j = 0; j < indent + 2; j++)
+		xmlNodeAddContent(atk, BAD_CAST("  "));
+	    node = xmlNewNode(NULL, BAD_CAST("atkaction"));
+	    xmlSetProp(node, BAD_CAST("action_name"), 
+		       BAD_CAST(info->atk_actions[i].action_name));
+	    xmlSetProp(node, BAD_CAST("description"), 
+		       BAD_CAST(info->atk_actions[i].description));
+	    xmlAddChild(atk, node);
+	    xmlNodeAddContent(atk, BAD_CAST("\n"));
+	}
+
+	for (i = 0; i < info->n_relations; i++) {
+	    xmlNode *node;
+
+	    for (j = 0; j < indent + 2; j++)
+		xmlNodeAddContent(atk, BAD_CAST("  "));
+	    node = xmlNewNode(NULL, BAD_CAST("atkrelation"));
+	    xmlSetProp(node, BAD_CAST("target"), 
+		       BAD_CAST(info->relations[i].target));
+	    xmlSetProp(node, BAD_CAST("type"), 
+		       BAD_CAST(info->relations[i].type));
+	    xmlAddChild(atk, node);
+	    xmlNodeAddContent(atk, BAD_CAST("\n"));
+	}
+
 	for (j = 0; j < indent + 1; j++)
 	    xmlNodeAddContent(atk, BAD_CAST("  "));
     }

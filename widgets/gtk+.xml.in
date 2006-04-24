@@ -48,6 +48,7 @@
 	    <value id="GDK_ALL_EVENTS_MASK" _name="All Events"/>
 	  </displayable-values>
 	</property>
+
 	<property id="name" disabled="True"/>
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
@@ -341,7 +342,7 @@
         <property id="selectable" ignore="True"/>
 	<property id="pattern" default=""/>
 	<property id="max-width-chars" _name="Maximun Width"/>
-      	<property id="label" default="label">
+      	<property id="label" default="label" translatable="True">
             <visible-lines>2</visible-lines>
 	    <set-function>glade_gtk_label_set_label</set-function>
         </property>
@@ -391,13 +392,21 @@
       <post-create-function>glade_gtk_button_post_create</post-create-function>
       <properties>
 	<property id="image" disabled="True"/>
-	<property id="use-underline" disabled="True"/>
-	<property id="label" visible="False"/>
 	<property id="use-stock" visible="False"/>
+
+      	<property id="label" default="button" translatable="True">
+            <visible-lines>2</visible-lines>
+	</property>
+
 	<property id="stock" _name="Stock Button" save="False">
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	  <set-function>glade_gtk_button_set_stock</set-function>
+	</property>
+
+	<property id="glade-type" _name="Edit Type" save="False">
+	  <spec>glade_gtk_button_type_spec</spec>
+	  <set-function>glade_gtk_button_set_type</set-function>
 	</property>
 
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True">
@@ -418,6 +427,7 @@
 	<child>
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_button_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_button_remove_child</remove-child-function>
 	  <replace-child-function>glade_gtk_button_replace_child</replace-child-function>
 	</child>
       </children>
@@ -545,7 +555,7 @@
 	<property id="stock" visible="False" translatable="False">
 	  <set-function>glade_gtk_image_set_real_stock</set-function>
 	</property>
-	<property id="glade-type" _name="Image Type" save="False">
+	<property id="glade-type" _name="Edit Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
 	  <set-function>glade_gtk_image_set_type</set-function>
 	</property>

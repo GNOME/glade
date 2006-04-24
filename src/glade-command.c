@@ -375,7 +375,7 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
 	else
 		project->prev_redo_item = g_list_next (project->prev_redo_item);
 
-	glade_default_app_update_ui ();
+	glade_app_update_ui ();
 }
 
 /**************************************************/
@@ -507,7 +507,7 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 	this->description = other->description;
 	other->description = NULL;
 
-	glade_default_app_update_ui ();
+	glade_app_update_ui ();
 }
 
 
@@ -733,7 +733,7 @@ glade_command_set_name_collapse (GladeCommand *this, GladeCommand *other)
 	g_free (this->description);
 	this->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
 
-	glade_default_app_update_ui ();
+	glade_app_update_ui ();
 }
 
 /* this function takes the ownership of name */
@@ -822,11 +822,11 @@ glade_command_placeholder_connect (CommandData *cdata,
 static gboolean
 glade_command_create_execute (GladeCommandCreateDelete *me)
 {
-	GladeClipboard   *clipboard = glade_default_app_get_clipboard();
+	GladeClipboard   *clipboard = glade_app_get_clipboard();
 	CommandData      *cdata = NULL;
 	GList            *list, *wlist = NULL, *l;
 
-	glade_default_app_selection_clear (FALSE);
+	glade_app_selection_clear (FALSE);
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
@@ -904,7 +904,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 			glade_project_add_object 
 				(GLADE_PROJECT (cdata->widget->project),
 				 NULL, cdata->widget->object);
-			glade_default_app_selection_add 
+			glade_app_selection_add 
 				(cdata->widget->object, TRUE);
 		}
 	}
@@ -924,7 +924,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 static gboolean
 glade_command_delete_execute (GladeCommandCreateDelete *me)
 {
-	GladeClipboard   *clipboard = glade_default_app_get_clipboard();
+	GladeClipboard   *clipboard = glade_app_get_clipboard();
 	CommandData      *cdata;
 	GList            *list, *wlist = NULL;
 
@@ -1038,7 +1038,7 @@ glade_command_create_delete_collapse (GladeCommand *this, GladeCommand *other)
 void
 glade_command_delete (GList *widgets)
 {
-	GladeClipboard           *clipboard = glade_default_app_get_clipboard();
+	GladeClipboard           *clipboard = glade_app_get_clipboard();
 	GladeCommandCreateDelete *me;
 	GladeWidget              *widget = NULL;
 	CommandData              *cdata;
@@ -1059,7 +1059,7 @@ glade_command_delete (GList *widgets)
 		widget = list->data;
 		if (widget->internal)
 		{
-			glade_util_ui_message (glade_default_app_get_window(),
+			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_WARN,
 					       _("You cannot delete a widget internal to a composite widget."));
 			return;
@@ -1219,14 +1219,13 @@ GLADE_MAKE_COMMAND (GladeCommandCutCopyPaste, glade_command_cut_copy_paste);
 static gboolean
 glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 {
-	GladeProject       *active_project = 
-		glade_default_app_get_active_project ();
+	GladeProject       *active_project = glade_app_get_project ();
 	CommandData        *cdata;
 	GList              *list, *remove = NULL, *l;
 
 	if (me->widgets)
 	{
-		glade_default_app_selection_clear (FALSE);
+		glade_app_selection_clear (FALSE);
 
 		for (list = me->widgets; list && list->data; list = list->next)
 		{
@@ -1310,16 +1309,16 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					(me->project, cdata->project, 
 					 cdata->widget->object);
 			
-			glade_default_app_selection_add
+			glade_app_selection_add
 				(cdata->widget->object, FALSE);
 
 			glade_widget_show (cdata->widget);
 		}
-		glade_default_app_selection_changed ();
+		glade_app_selection_changed ();
 
 		if (remove)
 		{
-			glade_clipboard_remove (glade_default_app_get_clipboard(), remove);
+			glade_clipboard_remove (glade_app_get_clipboard(), remove);
 			g_list_free (remove);
 		}
 	}
@@ -1362,7 +1361,7 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 
 	if (add)
 	{
-		glade_clipboard_add (glade_default_app_get_clipboard(), add);
+		glade_clipboard_add (glade_app_get_clipboard(), add);
 		g_list_free (add);
 	}
 	return TRUE;
@@ -1378,7 +1377,7 @@ glade_command_copy_execute (GladeCommandCutCopyPaste *me)
 
 	if (add)
 	{
-		glade_clipboard_add (glade_default_app_get_clipboard(), add);
+		glade_clipboard_add (glade_app_get_clipboard(), add);
 		g_list_free (add);
 	}
 	return TRUE;
@@ -1394,7 +1393,7 @@ glade_command_copy_undo (GladeCommandCutCopyPaste *me)
 
 	if (remove)
 	{
-		glade_clipboard_remove (glade_default_app_get_clipboard(), remove);
+		glade_clipboard_remove (glade_app_get_clipboard(), remove);
 		g_list_free (remove);
 	}
 	return TRUE;
@@ -1524,7 +1523,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		me->project = glade_widget_get_project (some_widget);
 	}
 	else if (type == GLADE_PASTE)
-		me->project = glade_default_app_get_active_project();
+		me->project = glade_app_get_project();
 	else
 		me->project = glade_widget_get_project (widget);
 
@@ -1645,7 +1644,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	 */
 	if (glade_command_cut_copy_paste_execute (GLADE_COMMAND (me)))
 		glade_command_push_undo 
-			(glade_default_app_get_active_project(),
+			(glade_app_get_project(),
 			 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));

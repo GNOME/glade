@@ -81,7 +81,7 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	GladeProject *active_project;
 	gchar *title, *disp;
 
-	active_project = glade_app_get_active_project (GLADE_APP (gpw));
+	active_project = glade_app_get_project ();
 	if (active_project)
 	{
 		disp = glade_project_display_name (active_project, TRUE, FALSE, FALSE);
@@ -119,7 +119,7 @@ gpw_recent_project_open_cb (GtkAction *action, GladeProjectWindow *gpw)
 
 	if (path == NULL) return;
 	
-	if (!glade_app_is_project_loaded (GLADE_APP (gpw), path))
+	if (!glade_app_is_project_loaded (path))
 		gpw_recent_project_delete (action, gpw);
 	
 	glade_project_window_open_project (gpw, path);
@@ -189,7 +189,7 @@ gpw_recent_project_config_load (GladeProjectWindow *gpw)
 	gint i;
 	
 	gpw->priv->rp_max = g_key_file_get_integer (
-					glade_app_get_config (GLADE_APP (gpw)),
+					glade_app_get_config (),
 					CONFIG_RECENT_PROJECTS,
 					CONFIG_RECENT_PROJECTS_MAX, NULL);
 	
@@ -200,7 +200,7 @@ gpw_recent_project_config_load (GladeProjectWindow *gpw)
 	{
 		g_snprintf(key, 8, "%d", i);
 		
-		filename = g_key_file_get_string (glade_app_get_config (GLADE_APP (gpw)),
+		filename = g_key_file_get_string (glade_app_get_config (),
 						  CONFIG_RECENT_PROJECTS, key, NULL);
 		if (filename)
 		{
@@ -214,7 +214,7 @@ gpw_recent_project_config_load (GladeProjectWindow *gpw)
 static void
 gpw_recent_project_config_save (GladeProjectWindow *gpw)
 {
-	GKeyFile *config = glade_app_get_config (GLADE_APP (gpw));
+	GKeyFile *config = glade_app_get_config ();
 	GList *list;
 	gchar key[8];
 	gint i = 0;
@@ -323,7 +323,7 @@ gpw_set_sensitivity_according_to_project (GladeProjectWindow *gpw, GladeProject 
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Paste");
 	gtk_action_set_sensitive (action,
 				  glade_clipboard_get_has_selection
-					(glade_app_get_clipboard (GLADE_APP (gpw))));
+					(glade_app_get_clipboard ()));
 
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Delete");
 	gtk_action_set_sensitive (action,
@@ -338,7 +338,7 @@ gpw_projects_list_menu_activate_cb (GtkAction *action, GladeProjectWindow *gpw)
 	project = GLADE_PROJECT (g_object_get_data (G_OBJECT (action), "project"));
 	g_assert (GLADE_IS_PROJECT (project));
 
-	glade_app_set_project (GLADE_APP (gpw), project);
+	glade_app_set_project (project);
 
 	gpw_set_sensitivity_according_to_project (gpw, project);
 
@@ -368,7 +368,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 	}
 	g_list_free (actions);
 
-	projects = glade_app_get_projects (GLADE_APP (gpw));
+	projects = glade_app_get_projects ();
 
 	id = (projects != NULL) ? gtk_ui_manager_new_merge_id (p->ui) : 0;
 	p->projects_list_menu_ui_id = id;
@@ -398,7 +398,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 
 		gtk_action_group_add_action (p->projects_list_menu_actions, GTK_ACTION (action));
 
-		if (project == glade_app_get_active_project (GLADE_APP (gpw)))
+		if (project == glade_app_get_project ())
 			gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
 		g_signal_connect (action, "activate",
@@ -498,7 +498,7 @@ gpw_recent_project_clear_cb (GtkAction *action, GladeProjectWindow *gpw)
 		
 		/* Save it */
 		gpw_recent_project_config_save (gpw);
-		glade_app_config_save (GLADE_APP (gpw));
+		glade_app_config_save ();
 	}
 	gtk_widget_destroy (dialog);
 }
@@ -524,14 +524,14 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 		return;
 	}
 	
-	glade_app_update_instance_count (GLADE_APP (gpw), project);
+	glade_app_update_instance_count (project);
 
 	/* Get display_name here, it could have changed with "Save As..." */
 	display_name = glade_project_display_name (project, FALSE, FALSE, FALSE),
 
 	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);
-	glade_app_config_save (GLADE_APP (gpw));
+	glade_app_config_save ();
 
 	/* refresh names */
 	gpw_refresh_title (gpw);
@@ -553,8 +553,9 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	gchar *path = NULL;
 	gchar *real_path, *ch;
 	
-	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
+	if ((project = glade_app_get_project ()) == NULL)
 	{
+		/* Just incase the menu-item is not insensitive */
 		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
 				       _("No open projects to save"));
 		return;
@@ -596,7 +597,7 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	
 	g_free (path);
 
-	if (glade_app_is_project_loaded (GLADE_APP (gpw), real_path))
+	if (glade_app_is_project_loaded (real_path))
 	{
 		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN,
 				       _("%s is already open"), real_path);
@@ -613,8 +614,9 @@ gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GladeProject       *project;
 
-	if ((project = glade_app_get_active_project (GLADE_APP (gpw))) == NULL)
+	if ((project = glade_app_get_project ()) == NULL)
 	{
+		/* Just incase the menu-item or button is not insensitive */
 		glade_util_ui_message (gpw->priv->window, 
 				       GLADE_UI_WARN,
 				       _("No open projects to save"));
@@ -749,13 +751,13 @@ do_close (GladeProjectWindow *gpw, GladeProject *project)
 					      G_CALLBACK (gpw_project_notify_handler_cb),
 					      gpw);	
 
-	glade_app_remove_project (GLADE_APP (gpw), project);
+	glade_app_remove_project (project);
 
 	gpw_refresh_projects_list_menu (gpw);
 
 	gpw_refresh_title (gpw);
 
-	active_project = glade_app_get_active_project (GLADE_APP (gpw));
+	active_project = glade_app_get_project ();
 	if (active_project != NULL)
 		gpw_set_sensitivity_according_to_project (gpw, active_project);
 	else
@@ -768,7 +770,7 @@ gpw_close_cb (GtkAction *action, GladeProjectWindow *gpw)
 	GladeProject *project;
 	gboolean close;
 	
-	project = glade_app_get_active_project (GLADE_APP (gpw));
+	project = glade_app_get_project ();
 
 	if (!project)
 		return;
@@ -787,7 +789,7 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	GList *list;
 
-	for (list = glade_app_get_projects (GLADE_APP (gpw)); list; list = list->next)
+	for (list = glade_app_get_projects (); list; list = list->next)
 	{
 		GladeProject *project = GLADE_PROJECT (list->data);
 
@@ -799,8 +801,9 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 		}
 	}
 
-	while (glade_app_get_projects (GLADE_APP (gpw))) {
-		GladeProject *project = GLADE_PROJECT (glade_app_get_projects (GLADE_APP (gpw))->data);
+	while (glade_app_get_projects ())
+	{
+		GladeProject *project = GLADE_PROJECT (glade_app_get_projects ()->data);
 		do_close (gpw, project);
 	}
 
@@ -810,52 +813,52 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 gpw_copy_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	glade_app_command_copy (GLADE_APP (gpw));
+	glade_app_command_copy ();
 }
 
 static void
 gpw_cut_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	glade_app_command_cut (GLADE_APP (gpw));
+	glade_app_command_cut ();
 }
 
 static void
 gpw_paste_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	glade_app_command_paste (GLADE_APP (gpw));
+	glade_app_command_paste ();
 }
 
 static void
 gpw_delete_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	if (!glade_app_get_active_project (GLADE_APP (gpw)))
+	if (!glade_app_get_project ())
 	{
 		g_warning ("delete should not be sensitive: we don't have a project");
 		return;
 	}
-	glade_app_command_delete (GLADE_APP (gpw));
+	glade_app_command_delete ();
 }
 
 static void
 gpw_undo_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	if (!glade_app_get_active_project (GLADE_APP (gpw)))
+	if (!glade_app_get_project ())
 	{
 		g_warning ("undo should not be sensitive: we don't have a project");
 		return;
 	}
-	glade_app_command_undo (GLADE_APP (gpw));
+	glade_app_command_undo ();
 }
 
 static void
 gpw_redo_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	if (!glade_app_get_active_project (GLADE_APP (gpw)))
+	if (!glade_app_get_project ())
 	{
 		g_warning ("redo should not be sensitive: we don't have a project");
 		return;
 	}
-	glade_app_command_redo (GLADE_APP (gpw));
+	glade_app_command_redo ();
 }
 
 static gboolean
@@ -888,7 +891,8 @@ gpw_create_palette (GladeProjectWindow *gpw)
 	gtk_window_set_resizable (gpw->priv->palette_window, TRUE);
 	gtk_window_move (gpw->priv->palette_window, 0, 250);
 
-	gtk_container_add (GTK_CONTAINER (gpw->priv->palette_window), GTK_WIDGET (glade_app_get_palette(GLADE_APP (gpw))));
+	gtk_container_add (GTK_CONTAINER (gpw->priv->palette_window), 
+			   GTK_WIDGET (glade_app_get_palette()));
 
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->palette_window), "delete_event",
@@ -974,7 +978,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gtk_window_move (gpw->priv->editor_window, 350, 0);
 
 	gtk_container_add (GTK_CONTAINER (gpw->priv->editor_window), 
-			   GTK_WIDGET (glade_app_get_editor (GLADE_APP(gpw))));
+			   GTK_WIDGET (glade_app_get_editor ()));
 
 	/* Delete event, don't destroy it */
 	g_signal_connect (G_OBJECT (gpw->priv->editor_window), "delete_event",
@@ -1038,7 +1042,7 @@ gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 	GladeProjectView *view;
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
-	glade_app_add_project_view (GLADE_APP (gpw), view);
+	glade_app_add_project_view (view);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
 					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -1099,7 +1103,7 @@ gpw_create_clipboard_view (GladeProjectWindow *gpw)
 	GtkWidget *view;
 	GtkWidget *clipboard_item;
 	
-	view = glade_app_get_clipboard_view (GLADE_APP (gpw));
+	view = glade_app_get_clipboard_view ();
 
 	g_signal_connect (G_OBJECT (view), "delete_event",
 			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
@@ -1123,7 +1127,7 @@ gpw_show_clipboard_view (GladeProjectWindow *gpw)
 		created = TRUE;
 	}
 	
-	gtk_widget_show_all (GTK_WIDGET (glade_app_get_clipboard_view (GLADE_APP(gpw))));
+	gtk_widget_show_all (GTK_WIDGET (glade_app_get_clipboard_view ()));
 
 	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						    "/MenuBar/ViewMenu/Clipboard");
@@ -1137,7 +1141,7 @@ gpw_hide_clipboard_view (GladeProjectWindow *gpw)
 
 	g_return_if_fail (gpw != NULL);
 
-	glade_util_hide_window (GTK_WINDOW (glade_app_get_clipboard_view (GLADE_APP(gpw))));
+	glade_util_hide_window (GTK_WINDOW (glade_app_get_clipboard_view ()));
 
 	clipboard_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						    "/MenuBar/ViewMenu/Clipboard");
@@ -1594,7 +1598,7 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 {
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 	
-	glade_app_add_project (GLADE_APP (gpw), project);
+	glade_app_add_project (project);
 
 	/* Connect callback handler for notify signals emitted by projects */
 	g_signal_connect (G_OBJECT (project), "notify::has-unsaved-changes",
@@ -1646,7 +1650,7 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	/* dont allow more than one project with the same name to be
 	 * opened simultainiously.
 	 */
-	if (glade_app_is_project_loaded (GLADE_APP (gpw), (gchar*)path))
+	if (glade_app_is_project_loaded ((gchar*)path))
 	{
 		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
 				       _("%s is already open"), path);
@@ -1658,7 +1662,7 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 
 	gpw_recent_project_add (gpw, project->path);
 	gpw_recent_project_config_save (gpw);
-	glade_app_config_save (GLADE_APP (gpw));
+	glade_app_config_save ();
 
 	glade_project_window_add_project (gpw, project);
 }
@@ -1698,7 +1702,7 @@ gpw_refresh_undo_redo (GladeProjectWindow *gpw)
 	GtkAction    *action;
 	gchar        *tooltip;
 
-	project = glade_app_get_active_project (GLADE_APP (gpw));
+	project = glade_app_get_project ();
 
 	if (project != NULL)
 	{
@@ -1826,17 +1830,17 @@ glade_project_window_new (void)
 	gpw_create_palette (gpw);
 	gpw_create_editor  (gpw);
 
-	glade_app_set_window (GLADE_APP (gpw), gpw->priv->window);
+	glade_app_set_window (gpw->priv->window);
 
 	accel_group = gtk_ui_manager_get_accel_group(gpw->priv->ui);
-	glade_app_set_accel_group (GLADE_APP (gpw), accel_group);
+	glade_app_set_accel_group (accel_group);
 
 	gtk_window_add_accel_group(gpw->priv->palette_window, accel_group);
 	gtk_window_add_accel_group(gpw->priv->editor_window, accel_group);
-	gtk_window_add_accel_group(GTK_WINDOW (glade_app_get_clipboard_view (GLADE_APP (gpw))), accel_group);
+	gtk_window_add_accel_group(GTK_WINDOW (glade_app_get_clipboard_view ()), accel_group);
 
 	/* Connect callback handler for notify signals emitted by clipboard */
-	g_signal_connect (G_OBJECT (glade_app_get_clipboard (GLADE_APP (gpw))), "notify::has-selection",
+	g_signal_connect (G_OBJECT (glade_app_get_clipboard ()), "notify::has-selection",
 			  G_CALLBACK (gpw_clipboard_notify_handler_cb),
 			  gpw);
 
