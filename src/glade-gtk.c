@@ -624,7 +624,6 @@ static void
 glade_gtk_button_disable_label (GladeWidget *gwidget)
 {
 	glade_gtk_button_backup_label (gwidget);
-	glade_widget_property_set (gwidget, "label", NULL);
 	glade_widget_property_set (gwidget, "use-underline", NULL);
 
 	glade_widget_property_set_sensitive
@@ -711,7 +710,6 @@ glade_gtk_button_restore_container (GladeWidget *gwidget)
 void GLADEGTK_API
 glade_gtk_button_set_type (GObject *object, GValue *value)
 {
-	static gboolean     first = TRUE;
 	GladeWidget        *gwidget;
 	GladeGtkButtonType  type;
 	
@@ -719,44 +717,23 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 	g_return_if_fail (GTK_IS_BUTTON (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
-
-	type = GPOINTER_TO_INT (g_object_get_data (object, "glade-last-type"));
-
 	/* Exit if we're still loading project objects
 	 */
 	if (GPOINTER_TO_INT (g_object_get_data
 			     (object, "glade-button-post-ran")) == 0)
 		return;
 
-	if (!first)
-	{
-		switch (type)
-		{
-		case GLADEGTK_BUTTON_LABEL:
-			glade_gtk_button_disable_label (gwidget);
-			break;
-		case GLADEGTK_BUTTON_STOCK:
-			glade_gtk_button_disable_stock (gwidget);	
-			break;
-		case GLADEGTK_BUTTON_CONTAINER:
-			glade_gtk_button_disable_contianer (gwidget);
-			break;
-		}
-	}
-
 	type = g_value_get_enum (value);
-	g_object_set_data (object, "glade-last-type", GINT_TO_POINTER (type));
-
 
 	switch (type)
 	{
 	case GLADEGTK_BUTTON_LABEL:
 		glade_gtk_button_restore_label (gwidget);
-		if (first) glade_gtk_button_disable_stock (gwidget);
+		glade_gtk_button_disable_stock (gwidget);
 		break;
 	case GLADEGTK_BUTTON_STOCK:
 		glade_gtk_button_restore_stock (gwidget);
-		if (first) glade_gtk_button_disable_label (gwidget);
+		glade_gtk_button_disable_label (gwidget);
 		break;
 	case GLADEGTK_BUTTON_CONTAINER:
 		glade_gtk_button_restore_container (gwidget);

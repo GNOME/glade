@@ -198,7 +198,8 @@ glade_property_update_prop_refs (GladeProperty *property,
 static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
-	GladeProject *project = glade_widget_get_project (property->widget);
+	GladeProject *project = property->widget ?
+		glade_widget_get_project (property->widget) : NULL;
 	gboolean      changed = FALSE;
 
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
