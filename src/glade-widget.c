@@ -1121,7 +1121,8 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 	gchar            *widget_name, *name_base;
 	GladeWidgetClass *klass;
 	GladeWidget      *widget;
-
+	GList            *list;
+	
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 	project = glade_widget_get_project (parent);
 
@@ -1147,6 +1148,14 @@ glade_widget_new_for_internal_child (GladeWidget      *parent,
 				    "object", internal_object, NULL);
 	g_free (widget_name);
 
+	/* Introspect object properties before passing it to post_create,
+	 * but only when its freshly created (depend on glade file at
+	 * load time and copying properties at dup time).
+	 */
+	if (reason == GLADE_CREATE_USER)
+		for (list = widget->properties; list; list = list->next)
+			glade_property_load (GLADE_PROPERTY (list->data));
+	
 	/* Only call this once the GladeWidget is completely built */
 	if (klass->post_create_function)
 		klass->post_create_function (internal_object, reason);

@@ -685,17 +685,6 @@ glade_gtk_button_restore_stock (GladeWidget *gwidget)
 }
 
 static void
-glade_gtk_button_disable_contianer (GladeWidget *gwidget)
-{
-	if (glade_widget_get_from_gobject (GTK_BIN (gwidget->object)->child) == NULL)
-		gtk_container_remove (GTK_CONTAINER (gwidget->object),
-				      GTK_BIN (gwidget->object)->child);
-	else
-		g_critical ("Trying to leave container button mode when "
-			    "GTK_BIN (button)->child is a project widget");
-}
-
-static void
 glade_gtk_button_restore_container (GladeWidget *gwidget)
 {
 	GtkWidget *child = GTK_BIN (gwidget->object)->child;
@@ -736,9 +725,38 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 		glade_gtk_button_disable_label (gwidget);
 		break;
 	case GLADEGTK_BUTTON_CONTAINER:
+
+		if (GPOINTER_TO_INT (g_object_get_data
+				     (object, "button-type-initially-set")) != 0)
+		{
+			/* Skip this on the initial setting */
+			glade_gtk_button_disable_label (gwidget);
+			glade_gtk_button_disable_stock (gwidget);
+		}
+		else
+		{
+			/* Initially setting container mode after a load is
+			 * a delicate dance.
+			 */
+			glade_widget_property_set (gwidget, "label", NULL);
+			
+			glade_widget_property_set_sensitive
+				(gwidget, "stock", FALSE,
+				 _("This only applies with stock type buttons"));
+			
+			glade_widget_property_set_sensitive
+				(gwidget, "label", FALSE,
+				 _("This only applies with label type buttons"));
+			
+			glade_widget_property_set_sensitive
+				(gwidget, "use-underline", FALSE,
+				 _("This only applies with label type buttons"));
+		}
+
 		glade_gtk_button_restore_container (gwidget);
 		break;
 	}		
+	g_object_set_data (object, "button-type-initially-set", GINT_TO_POINTER (1));
 }
 
 void GLADEGTK_API
@@ -1155,7 +1173,6 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	GladeWidget  *vbox_widget, *actionarea_widget, *colorsel, *fontsel;
 	GladeWidget  *save_button = NULL, *close_button = NULL, *ok_button = NULL,
 		*cancel_button = NULL, *help_button = NULL, *apply_button = NULL;
-
 	
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
@@ -1167,40 +1184,40 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	{
 		save_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->save_button),
-			 "save_button", "inputdialog", FALSE, GLADE_CREATE_LOAD);
+			 "save_button", "inputdialog", FALSE, reason);
 
 		close_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->close_button),
-			 "close_button", "intputdialog", FALSE, GLADE_CREATE_LOAD);
+			 "close_button", "intputdialog", FALSE, reason);
 
 	}
 	else if (GTK_IS_FILE_SELECTION (object))
 	{
 		ok_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->ok_button),
-			 "ok_button", "filesel", FALSE, GLADE_CREATE_LOAD);
+			 "ok_button", "filesel", FALSE, reason);
 
 		cancel_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->cancel_button),
-			 "cancel_button", "filesel", FALSE, GLADE_CREATE_LOAD);
+			 "cancel_button", "filesel", FALSE, reason);
 	}
 	else if (GTK_IS_COLOR_SELECTION_DIALOG (object))
 	{
 		ok_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->ok_button),
-			 "ok_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+			 "ok_button", "colorsel", FALSE, reason);
 
 		cancel_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->cancel_button),
-			 "cancel_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+			 "cancel_button", "colorsel", FALSE, reason);
 
 		help_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->help_button),
-			 "help_button", "colorsel", FALSE, GLADE_CREATE_LOAD);
+			 "help_button", "colorsel", FALSE, reason);
 
 		colorsel = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->colorsel),
-			 "color_selection", "colorsel", FALSE, GLADE_CREATE_LOAD);
+			 "color_selection", "colorsel", FALSE, reason);
 
 		/* Set this to 1 at load time, if there are any children then
 		 * size will adjust appropriately (otherwise the default "3" gets
@@ -1214,19 +1231,19 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	{
 		ok_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->ok_button),
-			 "ok_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+			 "ok_button", "fontsel", FALSE, reason);
 
 		apply_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->apply_button),
-			 "apply_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+			 "apply_button", "fontsel", FALSE, reason);
 		
 		cancel_button = glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->cancel_button),
-			 "cancel_button", "fontsel", FALSE, GLADE_CREATE_LOAD);
+			 "cancel_button", "fontsel", FALSE, reason);
 
 		fontsel =  glade_widget_new_for_internal_child
 			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->fontsel),
-			 "font_selection", "fontsel", FALSE, GLADE_CREATE_LOAD);
+			 "font_selection", "fontsel", FALSE, reason);
 
 		/* Set this to 1 at load time, if there are any children then
 		 * size will adjust appropriately (otherwise the default "3" gets
@@ -1239,11 +1256,11 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	{
 		vbox_widget = glade_widget_new_for_internal_child 
 			(widget, G_OBJECT(dialog->vbox),
-			 "vbox", "dialog", FALSE, GLADE_CREATE_LOAD);
+			 "vbox", "dialog", FALSE, reason);
 
 		actionarea_widget = glade_widget_new_for_internal_child
 			(vbox_widget, G_OBJECT(dialog->action_area),
-			 "action_area", "dialog", FALSE, GLADE_CREATE_LOAD);
+			 "action_area", "dialog", FALSE, reason);
 
 		/* Only set these on the original create. */
 		if (reason == GLADE_CREATE_USER)
@@ -1452,7 +1469,9 @@ glade_gtk_button_post_create_idle (GObject *button)
 	glade_gtk_button_backup_stock (gbutton);
 	glade_gtk_button_backup_label (gbutton);
 
-	if (reason == GLADE_CREATE_USER)
+	/* Internal buttons get there stock stuff introspected.
+	 */
+	if (reason == GLADE_CREATE_USER && gbutton->internal == NULL)
 	{
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
@@ -1461,10 +1480,15 @@ glade_gtk_button_post_create_idle (GObject *button)
 	}
 
 	glade_widget_property_get (gbutton, "use-stock", &use_stock);
-	if (use_stock)
+	glade_widget_property_get (gbutton, "label", &label);
+
+	if (GTK_BIN (button)->child != NULL && 
+	    glade_widget_get_from_gobject (GTK_BIN (button)->child) != NULL)
 	{
-		glade_widget_property_get (gbutton, "label", &label);
-		
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_CONTAINER);
+	}
+	else if (use_stock)
+	{
 		if (label != NULL && strcmp (label, "glade-none") != 0 &&
 		    (eval = g_enum_get_value_by_nick (eclass, label)) != NULL)
 		{
@@ -1480,13 +1504,9 @@ glade_gtk_button_post_create_idle (GObject *button)
 		glade_gtk_button_backup_stock (gbutton);
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_STOCK);
 	}
-	else if (GTK_BIN (button)->child != NULL && 
-		 glade_widget_get_from_gobject (GTK_BIN (button)->child) != NULL)
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_CONTAINER);
-	else if (glade_widget_property_default (gbutton, "label") == FALSE)
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 	else
-		glade_widget_property_reset (gbutton, "glade-type");
+		/* Fallback to label type */
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 
 	g_type_class_unref (eclass);
 

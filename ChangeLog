@@ -1,5 +1,16 @@
 2006-04-24  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c: Fixed load & save of internal buttons
+
+	* src/glade-property.[ch]: Added glade_property_load()
+	  (to introspect property values on internal children of composite
+	  widgets at creation time).
+
+	* src/glade-widget.c: introspect property values on internal children of composite
+	  widgets at creation time
+	
+2006-04-24  Tristan Van Berkom <tvb@gnome.org>
+
 	* TODO: Updated
 
 	* doc/gladeui-sections.txt updated

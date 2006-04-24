@@ -70,6 +70,7 @@ struct _GladePropertyKlass
 	void                    (* get_value)             (GladeProperty *, GValue *);
 	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
+	void                    (* load)                  (GladeProperty *);
 	gboolean                (* write)                 (GladeProperty *, GladeInterface *, GArray *);
 	G_CONST_RETURN gchar *  (* get_tooltip)           (GladeProperty *);
 
@@ -127,6 +128,8 @@ void                    glade_property_remove_object         (GladeProperty     
 							      GObject            *object);
 LIBGLADEUI_API
 void                    glade_property_sync                  (GladeProperty      *property);
+LIBGLADEUI_API
+void                    glade_property_load                  (GladeProperty      *property);
 LIBGLADEUI_API
 GValue                 *glade_property_read                  (GladeProperty      *property,
 							      GladePropertyClass *pclass,

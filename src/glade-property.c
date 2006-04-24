@@ -339,6 +339,23 @@ glade_property_sync_impl (GladeProperty *property)
 	property->syncing = FALSE;
 }
 
+static void
+glade_property_load_impl (GladeProperty *property)
+{
+	GObject      *object;
+	GObjectClass *oclass;
+	
+	if (property->widget == NULL ||
+	    property->class->packing ||
+	    property->class->atk_type != GPC_ATK_NONE)
+		return;
+	object = glade_widget_get_object (property->widget);
+	oclass = G_OBJECT_GET_CLASS (object);
+	
+	if (g_object_class_find_property (oclass, property->class->id))
+		g_object_get_property (object, property->class->id, property->value);
+}
+
 static gboolean
 glade_property_write_impl (GladeProperty  *property, 
 			   GladeInterface *interface,
@@ -557,6 +574,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->get_value             = glade_property_get_value_impl;
 	prop_class->get_default           = glade_property_get_default_impl;
 	prop_class->sync                  = glade_property_sync_impl;
+	prop_class->load                  = glade_property_load_impl;
 	prop_class->write                 = glade_property_write_impl;
 	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
 	prop_class->value_changed         = NULL;
@@ -1191,6 +1209,19 @@ glade_property_sync (GladeProperty *property)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	GLADE_PROPERTY_GET_KLASS (property)->sync (property);
+}
+
+/**
+ * glade_property_load:
+ * @property: a #GladeProperty
+ *
+ * Loads the value of @property from the coresponding object instance
+ */
+void
+glade_property_load (GladeProperty *property)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	GLADE_PROPERTY_GET_KLASS (property)->load (property);
 }
 
 /**
