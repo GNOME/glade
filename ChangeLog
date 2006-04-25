@@ -1,3 +1,8 @@
+2006-04-25  Johannes Schmid <jhs@cvs.gnome.org>
+
+	* src/glade-project.c: Fixed crasher because of read-only check where 
+	  project could be NULL.
+
 2006-04-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: Fixed load & save of internal buttons

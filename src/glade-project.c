@@ -1314,10 +1314,13 @@ glade_project_open (const gchar *path)
 	
 	}
 
-	if (glade_util_file_is_writeable (project->path) == FALSE)
-		glade_project_set_readonly (project, TRUE);
+	if (project)
+	{
+		if (glade_util_file_is_writeable (project->path) == FALSE)
+			glade_project_set_readonly (project, TRUE);
 
-	if (project) project->changed = FALSE;
+		project->changed = FALSE;
+	}
 
 	return project;
 }
