@@ -197,8 +197,6 @@ struct _GladeWidgetClass
 				 * of this class.
 				 */
 
-	gboolean in_palette;
-
 	/* Executed after widget creation: it takes care of creating the
 	 * GladeWidgets associated with internal children. It's also the place
 	 * to set sane defaults, e.g. set the size of a window.

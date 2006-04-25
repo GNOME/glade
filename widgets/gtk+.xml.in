@@ -1,7 +1,7 @@
 <glade-catalog name="gtk+" library="gladegtk" domain="glade-3">
   <glade-widget-classes>
     <!-- Gtk+ Base -->
-    <glade-widget-class name="GtkWidget">
+    <glade-widget-class name="GtkWidget" _title="Widget">
       <properties>
 	<property id="visible" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
@@ -57,7 +57,7 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkContainer">
+    <glade-widget-class name="GtkContainer" _title="Container">
       <post-create-function>glade_gtk_container_post_create</post-create-function>
       <children>
 	<child>
@@ -79,7 +79,7 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkBox">
+    <glade-widget-class name="GtkBox" _title="Box">
       <post-create-function>empty</post-create-function>
       <properties>
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
@@ -109,7 +109,7 @@
       </children>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkPaned">
+    <glade-widget-class name="GtkPaned" _title="Paned">
       <post-create-function>glade_gtk_paned_post_create</post-create-function>
     </glade-widget-class>
 
@@ -173,7 +173,7 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuShell">
+    <glade-widget-class name="GtkMenuShell" _title="Menu Shell">
       <post-create-function>empty</post-create-function>
       <children>
 	<child>
@@ -740,7 +740,7 @@
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
     <!-- Gtk+ Additional -->
-    <glade-widget-class name="GtkRange">
+    <glade-widget-class name="GtkRange" _title="Range">
       <properties>
         <property id="adjustment" default="0 0 100 1 10 10"/>
       	<property id="update-policy">
@@ -753,7 +753,7 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkScale">
+    <glade-widget-class name="GtkScale" _title="Scale">
       <properties>
       	<property id="value-pos">
   	  <displayable-values>
@@ -780,7 +780,7 @@
 
     <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar"/>
 
-    <glade-widget-class name="GtkButtonBox">
+    <glade-widget-class name="GtkButtonBox" _title="Button Box">
       <properties>
       	<property id="layout-style">
   	  <displayable-values>
@@ -993,7 +993,7 @@
     </glade-widget-class>
 
     <!-- Gtk+ Obsolete -->
-    <glade-widget-class name="GtkRuler">
+    <glade-widget-class name="GtkRuler" _title="Ruler">
       <properties>
 	<property default="10.0" id="upper"/>
 	<property default="5.0" id="position"/>

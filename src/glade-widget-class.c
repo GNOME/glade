@@ -981,13 +981,9 @@ glade_widget_class_new (GladeXmlNode *class_node,
 		return NULL;
 	}
 	
-	name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
-	if (!name)
-	{
-		g_warning ("Required property 'name' not found in '%s'",
-			   GLADE_TAG_GLADE_WIDGET_CLASS);
+	if ((name = glade_xml_get_property_string_required
+	     (class_node, GLADE_TAG_NAME, NULL)) == NULL)
 		return NULL;
-	}
 
 	if (glade_widget_class_get_by_name (name)) 
 	{
@@ -997,10 +993,20 @@ glade_widget_class_new (GladeXmlNode *class_node,
 		return NULL;
 	}
 
-	generic_name = glade_xml_get_property_string (class_node, 
-						      GLADE_TAG_GENERIC_NAME);
-	title = glade_xml_get_property_string (class_node, GLADE_TAG_TITLE);
+	/* Perform a stupid fallback as generic_name is not required
+	 * for uninstantiatable classes
+	 */
+	generic_name = glade_xml_get_property_string
+		(class_node, GLADE_TAG_GENERIC_NAME);
 
+	if ((title = glade_xml_get_property_string_required
+	     (class_node, GLADE_TAG_TITLE,
+	      "This value is needed to display object class names in the UI")) == NULL)
+	{
+		g_warning ("Class '%s' built without a '%s'", name, GLADE_TAG_TITLE);
+		title = g_strdup (name);
+	}
+	
 	/* Translate title */
 	if (title != dgettext (domain, title))
 	{
@@ -1029,9 +1035,21 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->module       = module;
 	widget_class->generic_name = generic_name;
 	widget_class->palette_name = title;
-	widget_class->in_palette   = title ? TRUE : FALSE;
 	widget_class->type         = glade_util_get_type_from_name (name);
 
+	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type)    &&
+	    G_TYPE_IS_ABSTRACT (widget_class->type) == FALSE &&
+	    widget_class->generic_name == NULL)
+	{
+		g_warning ("Instantiatable class '%s' built without a '%s'",
+			   name, GLADE_TAG_GENERIC_NAME);
+	}
+
+	/* Perform a stoopid fallback just incase */
+	if (widget_class->generic_name == NULL)
+		widget_class->generic_name = g_strdup ("widget");
+
+	
 	/* Dont mention gtk+ as a required lib in the generated glade file */
 	if (strcmp (catname, "gtk+"))
 		widget_class->catalog = g_strdup (catname);

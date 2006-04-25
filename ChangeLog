@@ -1,3 +1,13 @@
+2006-04-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-builtins.c: Allowed negative custom integer specs.
+
+	* src/glade-palette.c: Removed notion of class->in_palette
+
+	* src/glade-widget-class.[ch]: Removed notion of class->in_palette and
+	  cleaned up the parsing of generic_name and widget titles.
+	  (modifies muntyan's patch on bug 336594).
+
 2006-04-25  Johannes Schmid <jhs@cvs.gnome.org>
 
 	* src/glade-project.c: Fixed crasher because of read-only check where 

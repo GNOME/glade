@@ -376,7 +376,7 @@ glade_standard_int_spec (void)
 {
 	return g_param_spec_int ("int", _("Integer"), 
 				 _("An integer value"),
-				 0, G_MAXINT,
+				 G_MININT, G_MAXINT,
 				 0, G_PARAM_READWRITE);
 }
 

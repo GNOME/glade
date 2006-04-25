@@ -229,18 +229,11 @@ glade_palette_widget_table_create (GladePalette     *palette,
 		GladeWidgetClass *gwidget_class = 
 			GLADE_WIDGET_CLASS (list->data);
 
-		/*
-		 * If the widget class wants to be in the palette (I don't
-		 * know why a widget class wouldn't want to be, but whatever..
-		 */
-		if (gwidget_class->in_palette)
-		{
-			GtkWidget *button = 
-				glade_palette_create_widget_class_button
-				(palette, gwidget_class);
-			gtk_box_pack_start (GTK_BOX (vbox), button,
-					    FALSE, FALSE, 0);
-		}
+		GtkWidget *button =
+			glade_palette_create_widget_class_button
+			(palette, gwidget_class);
+		gtk_box_pack_start (GTK_BOX (vbox), button,
+				    FALSE, FALSE, 0);
 	}
 
 	/* Add it in a scrolled window. */
