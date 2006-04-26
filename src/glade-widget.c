@@ -1516,15 +1516,20 @@ glade_widget_get_project (GladeWidget *widget)
 GladeProperty *
 glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 {
-	GList *list;
+	static gchar   id_buffer[GPC_PROPERTY_NAMELEN] = { 0, };
+	GList         *list;
 	GladeProperty *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 	g_return_val_if_fail (id_property != NULL, NULL);
 
+	/* "-1" to always leave a trailing '\0' charachter */
+	strncpy (id_buffer, id_property, GPC_PROPERTY_NAMELEN - 1);
+	glade_util_replace (id_buffer, '_', '-');
+		
 	for (list = widget->properties; list; list = list->next) {
 		property = list->data;
-		if (strcmp (property->class->id, id_property) == 0)
+		if (strcmp (property->class->id, id_buffer) == 0)
 			return property;
 	}
 	return glade_widget_get_pack_property (widget, id_property);
@@ -1540,15 +1545,20 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 GladeProperty *
 glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 {
-	GList *list;
+	static gchar   id_buffer[GPC_PROPERTY_NAMELEN] = { 0, };
+	GList         *list;
 	GladeProperty *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 	g_return_val_if_fail (id_property != NULL, NULL);
 
+	/* "-1" to always leave a trailing '\0' charachter */
+	strncpy (id_buffer, id_property, GPC_PROPERTY_NAMELEN - 1);
+	glade_util_replace (id_buffer, '_', '-');
+
 	for (list = widget->packing_properties; list; list = list->next) {
 		property = list->data;
-		if (strcmp (property->class->id, id_property) == 0)
+		if (strcmp (property->class->id, id_buffer) == 0)
 			return property;
 	}
 	return NULL;

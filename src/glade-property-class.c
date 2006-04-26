@@ -106,6 +106,16 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 	  N_("Indicates that an object is a parent window of another object") }
 };
 
+
+/**
+ * glade_property_class_atk_realname:
+ * @atk_name: The id of the atk property
+ *
+ * Translates a GladePropertyClass->id to the name that should be
+ * saved into the glade file.
+ *
+ * Returns: a pointer to a constant string.
+ */
 G_CONST_RETURN gchar *
 glade_property_class_atk_realname (const gchar *atk_name)
 {
@@ -983,65 +993,8 @@ glade_property_class_get_from_gvalue (GladePropertyClass  *class,
 	va_end (vl);
 }
 
-
 /**
- * glade_property_class_new_atk_action:
- * @name: The atk action name
- * @def: The default desctription
- * @owner_type: The #GType of the owning widget class.
- *
- * Returns: a newly created atk action #GladePropertyClass 
- *          for the said criteria.
- */
-GladePropertyClass *
-glade_property_class_new_atk_action (const gchar  *name,
-				     const gchar  *def,
-				     GType         owner_type)
-{
-	const GPCAtkPropertyTab *action_tab = NULL;
-	GladePropertyClass      *property_class;
-	gint                     i;
-
-	g_return_val_if_fail (name != NULL, NULL);
-	
-	/* Find our hard-coded table entry */
-	for (i = 0; i < G_N_ELEMENTS (action_names_table); i++)
-	{
-		if (!strcmp (name, action_names_table[i].prop_name))
-			action_tab = &action_names_table[i];
-	}
-	if (action_tab == NULL)
-	{
-		g_warning ("Unrecognized atk action '%s' on class %s",
-			   name, g_type_name (owner_type));
-		return NULL;
-	}
-
-	property_class                    = glade_property_class_new ();
-	property_class->pspec             = glade_standard_string_spec();
-	property_class->pspec->owner_type = owner_type;
-
-	property_class->id                = g_strdup (action_tab->id);
-	property_class->name              = g_strdup (_(action_tab->name));
-	property_class->tooltip           = g_strdup (_(action_tab->tooltip));
-	property_class->atk_type          = GPC_ATK_ACTION;
-	property_class->ignore            = TRUE;
-	property_class->visible_lines     = 2;
-
-	property_class->def = 
-		glade_property_class_make_gvalue_from_string
-		(property_class, def, NULL);
-
-	property_class->orig_def = 
-		glade_property_class_make_gvalue_from_string
-		(property_class, def, NULL);
-
-	return property_class;
-}
-
-
-/**
- * glade_property_class_new_atk_relation:
+ * glade_property_class_list_atk_relations:
  * @owner_type: The #GType of the owning widget class.
  *
  * Returns: a #GList of newly created atk relation #GladePropertyClass.
@@ -1404,6 +1357,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		return FALSE;
 	g_free (buff);
 
+	
 	/* If Disabled="TRUE" we set *property_class to NULL, but we return TRUE.
 	 * The caller may want to remove this property from its list.
 	 */
@@ -1534,6 +1488,13 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
 	class->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, class->resource);
 
+	/* No atk introspection here.
+	 */
+	if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_ACTION, FALSE))
+		class->atk_type = GPC_ATK_ACTION;
+	else if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, FALSE))
+		class->atk_type = GPC_ATK_PROPERTY;
+
 	/* Special case pixbuf here.
 	 */
 	if (class->pspec->value_type == GDK_TYPE_PIXBUF)
@@ -1580,7 +1541,7 @@ glade_property_class_match (GladePropertyClass *class,
 
 
 /**
- * glade_property_class_match:
+ * glade_property_class_void_value:
  * @class: a #GladePropertyClass
  *
  * Returns: Whether @value for this @class is voided; a voided value

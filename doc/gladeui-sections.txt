@@ -302,12 +302,10 @@ GladeGetPropertyFunc
 GladeSetPropertyFunc
 glade_property_class_new
 glade_property_class_new_from_spec
-glade_property_class_new_atk_action
 glade_property_class_clone
 glade_property_class_free
 glade_property_class_is_visible
 glade_property_class_is_object
-glade_property_class_void_value
 glade_property_class_make_gvalue_from_string
 glade_property_class_make_string_from_gvalue
 glade_property_class_make_gvalue_from_vl
@@ -319,6 +317,7 @@ glade_property_class_get_displayable_value
 glade_property_class_make_adjustment
 glade_property_class_match
 glade_property_class_void_value
+glade_property_class_atk_realname
 glade_property_class_list_atk_relations
 <SUBSECTION Standard>
 GLADE_PROPERTY_CLASS
@@ -345,6 +344,7 @@ glade_property_get
 glade_property_add_object
 glade_property_remove_object
 glade_property_sync
+glade_property_load
 glade_property_read
 glade_property_write
 glade_property_get_tooltip
@@ -569,10 +569,13 @@ glade_util_count_placeholders
 glade_util_find_iter_by_widget
 glade_util_basenames_match
 glade_util_purify_list
+glade_util_removed_from_list
+glade_util_added_in_list
 glade_util_canonical_path
 glade_util_copy_file
 glade_util_file_is_writeable
 glade_util_load_library
+glade_util_class_implements_interface
 </SECTION>
 
 

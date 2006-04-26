@@ -99,7 +99,8 @@ libgladeuiinclude_HEADERS = \
 	glade-app.h \
 	glade-builtins.h \
 	glade-fixed-manager.h \
-	fixed_bg.xpm
+	fixed_bg.xpm \
+	atk.xpm
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libgladeui-1.0.pc glade-3.pc

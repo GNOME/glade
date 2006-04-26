@@ -12,6 +12,7 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROPERTY_CLASS(gpc)  (gpc != NULL)
 
 #define GPC_OBJECT_DELIMITER ", "
+#define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
 
 typedef struct _GladePropertyClass GladePropertyClass;
 
@@ -191,10 +192,6 @@ LIBGLADEUI_API
 GladePropertyClass *glade_property_class_new                     (void);
 LIBGLADEUI_API
 GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec);
-LIBGLADEUI_API
-GladePropertyClass *glade_property_class_new_atk_action          (const gchar         *name,
-								  const gchar         *def,
-								  GType                owner_type);
 LIBGLADEUI_API 
 GList              *glade_property_class_list_atk_relations      (GType                owner_type);
 LIBGLADEUI_API

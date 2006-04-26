@@ -39,8 +39,7 @@ va_lists etc (back and forth).
 @construct_only: 
 @common: 
 @packing: 
-@atk_property: 
-@atk_relation: 
+@atk_type: 
 @translatable: 
 @visible_lines: 
 @save: 
@@ -51,6 +50,16 @@ va_lists etc (back and forth).
 @verify_function: 
 @set_function: 
 @get_function: 
+
+<!-- ##### ENUM GPCAtkType ##### -->
+<para>
+
+</para>
+
+@GPC_ATK_NONE: 
+@GPC_ATK_PROPERTY: 
+@GPC_ATK_RELATION: 
+@GPC_ATK_ACTION: 
 
 <!-- ##### USER_FUNCTION GladeVerifyPropertyFunc ##### -->
 <para>
@@ -132,16 +141,6 @@ va_lists etc (back and forth).
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_property_class_void_value ##### -->
-<para>
-
-</para>
-
-@class: 
-@value: 
-@Returns: 
-
-
 <!-- ##### FUNCTION glade_property_class_make_gvalue_from_string ##### -->
 <para>
 
@@ -181,6 +180,26 @@ va_lists etc (back and forth).
 @class: 
 @value: 
 @vl: 
+
+
+<!-- ##### FUNCTION glade_property_class_get_from_gvalue ##### -->
+<para>
+
+</para>
+
+@class: 
+@value: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION glade_property_class_make_gvalue ##### -->
+<para>
+
+</para>
+
+@class: 
+@Varargs: 
+@Returns: 
 
 
 <!-- ##### FUNCTION glade_property_class_update_from_node ##### -->
@@ -224,6 +243,34 @@ va_lists etc (back and forth).
 
 @class: 
 @comp: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_void_value ##### -->
+<para>
+
+</para>
+
+@class: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_atk_realname ##### -->
+<para>
+
+</para>
+
+@atk_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_list_atk_relations ##### -->
+<para>
+
+</para>
+
+@owner_type: 
 @Returns: 
 
 

@@ -54,6 +54,21 @@
 	<property id="style" disabled="True"/>
 	<property id="sensitive" ignore="True"/>
 	<property id="has-default" ignore="True" common="True"/>
+
+
+	<!-- Atk name and description properties -->
+	<property id="accessible-name" _name="Accessible Name" ignore="True" atk-property="True" translatable="True">
+	  <_tooltip>Object instance's name formatted for assistive technology access</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+
+	<property id="accessible-description" _name="Accessible Description" ignore="True" atk-property="True" translatable="True">
+	  <_tooltip>Description of an object, formatted for assistive technology access</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+
       </properties>
     </glade-widget-class>
 
@@ -156,8 +171,8 @@
 	<property id="allow-grow" disabled="True" />
 	<property id="resize-mode" disabled="True" />
 	<property id="screen" disabled="True" />
-	<property id="role" translatable="False"/>
-	<property id="icon-name" translatable="False"/>
+	<property id="role"/>
+	<property id="icon-name"/>
 	<property id="resizable" ignore="True" />
 	<property id="decorated" ignore="True" />
 	<property id="title" ignore="True" />
@@ -194,17 +209,23 @@
 
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
-	<properties>
-          <property id="label" _name="Label">
-	    <_tooltip>The text of the menu item</_tooltip>
-            <spec>glade_standard_string_spec</spec>
-            <set-function>glade_gtk_menu_item_set_label</set-function>
-          </property>
-          <property id="use-underline" _name="Use Underline">
-            <spec>glade_standard_boolean_spec</spec>
-            <set-function>glade_gtk_menu_item_set_use_underline</set-function>
-          </property>
-        </properties>
+      <properties>
+        <property id="label" _name="Label">
+	  <_tooltip>The text of the menu item</_tooltip>
+          <spec>glade_standard_string_spec</spec>
+          <set-function>glade_gtk_menu_item_set_label</set-function>
+        </property>
+        <property id="use-underline" _name="Use Underline">
+          <spec>glade_standard_boolean_spec</spec>
+          <set-function>glade_gtk_menu_item_set_use_underline</set-function>
+        </property>
+	<!-- Atk click property -->
+	<property id="atk-click" _name="Click" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Click atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+      </properties>
       <children>
 	<child>
 	  <type>GtkMenu</type>
@@ -365,7 +386,17 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkEntry" generic-name="entry" _title="Text Entry"/>
+    <glade-widget-class name="GtkEntry" generic-name="entry" _title="Text Entry">
+      <properties>
+	<!-- Atk activate property -->
+	<property id="atk-activate" _name="Activate" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Activate atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
       <properties>
       	<property id="justification">
@@ -420,6 +451,27 @@
 	    <value id="GTK_RELIEF_HALF" _name="Half"/>
 	    <value id="GTK_RELIEF_NONE" _name="None"/>
 	  </displayable-values>
+	</property>
+
+	<!-- Atk click property -->
+	<property id="atk-click" _name="Click" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Click atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+
+	<!-- Atk press property -->
+	<property id="atk-press" _name="Press" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Press atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+
+	<!-- Atk release property -->
+	<property id="atk-release" _name="Release" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Release atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
 
@@ -505,6 +557,13 @@
 	  <_tooltip>The items in this combo box</_tooltip>
 	  <set-function>glade_gtk_combo_box_set_items</set-function>
 	</property>
+
+	<!-- Atk press property -->
+	<property id="atk-press" _name="Press" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Press atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -552,7 +611,7 @@
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
       <post-create-function>glade_gtk_image_post_create</post-create-function>
       <properties>
-	<property id="stock" visible="False" translatable="False">
+	<property id="stock" visible="False">
 	  <set-function>glade_gtk_image_set_real_stock</set-function>
 	</property>
 	<property id="glade-type" _name="Edit Type" save="False">
@@ -564,14 +623,14 @@
 	<property id="pixmap" disabled="True"/>
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>
-	<property id="pixbuf" _name="File Name" translatable="False"/>
+	<property id="pixbuf" _name="File Name"/>
 	<property id="glade-stock" _name="Stock Image" save="False">
 	  <_tooltip>A builtin stock image</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
 	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
-	<property id="icon-name" _name="Icon Name" translatable="False">
+	<property id="icon-name" _name="Icon Name">
 	  <set-function>glade_gtk_image_set_icon_name</set-function>
 	</property>
       </properties>
@@ -867,6 +926,13 @@
       <properties>
 	<property id="label" visible="False"/>
 	<property id="label-widget" disabled="True"/>
+
+	<!-- Atk activate property -->
+	<property id="atk-activate" _name="Activate" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Activate atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
       </properties>
       <children>
 	<child>
@@ -993,7 +1059,7 @@
     </glade-widget-class>
 
     <!-- Gtk+ Obsolete -->
-    <glade-widget-class name="GtkRuler" _title="Ruler">
+    <glade-widget-class name="GtkRuler" generic-name="ruler" _title="Ruler">
       <properties>
 	<property default="10.0" id="upper"/>
 	<property default="5.0" id="position"/>
@@ -1010,6 +1076,13 @@
       <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
       <properties>
 	<property id="size" disabled="True"/>
+
+	<!-- Atk press property -->
+	<property id="atk-press" _name="Press" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Press atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
       </properties>
 
       <children>
@@ -1020,7 +1093,16 @@
       </children>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu"/>
+    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu">
+      <properties>
+	<!-- Atk press property -->
+	<property id="atk-press" _name="Press" ignore="True" atk-action="True">
+	  <_tooltip>Set the desctription of the Press atk action</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	</property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkList" generic-name="list" _title="List">
       <children>
@@ -1068,9 +1150,9 @@
     <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection"/>
     <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget">
       <properties>
-	<property id="creation-function" translatable="False"/>
-	<property id="string1" translatable="False"/>
-	<property id="string2" translatable="False"/>
+	<property id="creation-function"/>
+	<property id="string1"/>
+	<property id="string2"/>
       </properties>
     </glade-widget-class>
 

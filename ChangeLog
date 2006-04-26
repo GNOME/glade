@@ -1,5 +1,23 @@
 2006-04-25  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/Makefile.am: added atk.xpm to $(libgladeuiinclude_HEADERS)
+
+	* doc/gladeui-sections.txt: Updated with new apis.
+
+	* widgets/gtk+.xml.in: Listed all atk action properties needed for the gtk
+	  catalog.
+
+	* src/glade-property-class.c, src/glade.h: 
+	  o Added GLADE_TAG_ATK_ACTION & GLADE_TAG_ATK_PROPERTY tag support and 
+	    stripped out introspection on atk properties.
+	  o Synonymous '-' and '_' in property names at catalog load time.
+
+	* src/main.c: backed out the "GTK_MODULES=$GTK_MODULES:gail" module loading thing.
+
+	* src/glade-widget.c: Synonymous '-' and '_' in glade_widget_get_[packing_]property().
+
+2006-04-25  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-builtins.c: Allowed negative custom integer specs.
 
 	* src/glade-palette.c: Removed notion of class->in_palette
