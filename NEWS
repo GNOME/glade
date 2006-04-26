@@ -1,4 +1,50 @@
 ==============
+glade-3 2.91.1
+==============
+
+New features and fixes
+======================
+    - Full atk property support.
+    - Added full documentation with gtk-doc, imported adding-widgets.txt to sgml files.
+    - GtkTable packing properties now work seemlessly (Juan Pablo Ugarte)
+    - Misc fixes on menu editor (Juan Pablo Ugarte)
+    - Filtered out cut/copy/paste accelerators from the editor window (fixing bug 324389)
+    - Implemented "Custom widgets" (glade-2 file support)
+    - GladeEPropFlags now shows treeview directly in editor (Mikael Hermansson)
+    - Added generic object list type to the glade builtin types (currenty used for
+      atk relation properties)
+    - Added packing property recording mechianism to Create/Delete commands
+      (was only there for Cut/Paste)
+    - Added file filters "All Files" and "Glade Files" to FileChooser Dialog (Vincent Geddes)
+    - Initialize FileChooser to use project->name as loaded filename (Vincent Geddes)
+    - Lots of irrelevent properties disabled (Juan Pablo Ugarte)
+    - Rewrite of project list menu in glade-project-window (Vincent Geddes)
+    - Indicate whether projects have unsaved changes  (Vincent Geddes)
+    - Open leafs & scrolled-window position restored on the project view
+      when switching projects
+    - Added glade-3.pc for module packages to find out where to install
+      their modules/catalogs/pixmaps (Yevgen Muntyan)
+    - Implemented Adjustments glade-2 style for now (Juan Pablo Ugarte)
+    - Manage the sensitivities of all the ui actions in the project window (Vincent Geddes)
+    - Removed popt dependancy in favor of glib mechanism (Vincent Geddes)
+    - Detect read-only state of projects (Vincent Geddes)
+    - Implemented GtkDialog button children layout to match what glade-2 / libglade supports
+    - Changed GtkButton editing to support button "label" and "use-underline" properties.
+    - Many many misc bug fixes by Juan Pablo Ugarte, Yevgen Muntyan, Vincent Geddes,
+      Johannes Schmid and myself.
+
+New and updated translations
+============================
+    - Adam Weinberger (en_CA)
+    - Francisco Javier F. Serrador (es)
+    - Clytie Siddall (vi)
+    - Jordi Mas (ca)
+    - Raphael Higino (pt_BR)
+    - Vincent van Adrighem (nl)
+    - Daniel Nylander (sv)
+
+
+==============
 glade-3 2.91.0
 ==============
 
