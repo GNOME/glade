@@ -1003,12 +1003,24 @@ gpw_create_editor (GladeProjectWindow *gpw)
 						 "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
 
+
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditorHelp");
 	if (glade_util_have_devhelp())
 	{
 		glade_editor_show_info (glade_app_get_editor ());
-		glade_editor_show_context_info (glade_app_get_editor ());
+		glade_editor_hide_context_info (glade_app_get_editor ());
 		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
 				  G_CALLBACK (gpw_doc_search_cb), gpw);
+
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+	}
+	else 
+	{
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+		gtk_widget_set_sensitive (editor_item, FALSE);
+
+		g_message ("No devhelp detected, informational buttons disabled");
 	}
 }
 
@@ -1209,6 +1221,23 @@ gpw_toggle_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 		gpw_hide_clipboard_view (gpw);
 }
 
+static void
+gpw_toggle_editor_help_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item;
+
+	if (glade_util_have_devhelp() == FALSE)
+		return;
+
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditorHelp");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (editor_item)))
+		glade_editor_show_context_info (glade_app_get_editor ());
+	else
+		glade_editor_hide_context_info (glade_app_get_editor ());
+}
+
 static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gchar *authors[] =
@@ -1293,6 +1322,8 @@ static const gchar *ui_info =
 "      <menuitem action='Palette'/>\n"
 "      <menuitem action='PropertyEditor'/>\n"
 "      <menuitem action='Clipboard'/>\n"
+"      <separator/>\n"
+"      <menuitem action='PropertyEditorHelp'/>\n"
 "    </menu>\n"
 "    <menu action='ProjectMenu'>\n"
 "      <placeholder name='ProjectsListPlaceholder'/>\n"
@@ -1374,16 +1405,20 @@ static guint n_project_entries = G_N_ELEMENTS (project_entries);
 static GtkToggleActionEntry view_entries[] = {
 	/* ViewMenu */
 	{ "Palette", NULL, "_Palette", NULL,
-	"Change the visibility of the palette of widgets",
-	G_CALLBACK (gpw_toggle_palette_cb), TRUE },
+	  "Change the visibility of the palette of widgets",
+	  G_CALLBACK (gpw_toggle_palette_cb), TRUE },
 
 	{ "PropertyEditor", NULL, "Property _Editor", NULL,
-	"Change the visibility of the property editor",
-	G_CALLBACK (gpw_toggle_editor_cb), TRUE },
-
+	  "Change the visibility of the property editor",
+	  G_CALLBACK (gpw_toggle_editor_cb), TRUE },
+	
 	{ "Clipboard", NULL, "_Clipboard", NULL,
-	"Change the visibility of the clipboard",
-	G_CALLBACK (gpw_toggle_clipboard_cb), FALSE }
+	  "Change the visibility of the clipboard",
+	  G_CALLBACK (gpw_toggle_clipboard_cb), FALSE },
+
+	{ "PropertyEditorHelp", NULL, "Context _Help", NULL,
+	  "Show or hide contextual help buttons in the editor",
+	  G_CALLBACK (gpw_toggle_editor_help_cb), FALSE }
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
 

@@ -1393,7 +1393,7 @@ glade_editor_show_context_info (GladeEditor *editor)
 			etable = list->data;
 			for (props = etable->properties; props; props = props->next)
 				glade_editor_property_show_info
-					(GLADE_EDITOR_PROPERTY (list->data));
+					(GLADE_EDITOR_PROPERTY (props->data));
 		}	
 
 		if (editor->packing_etable)
@@ -1401,7 +1401,7 @@ glade_editor_show_context_info (GladeEditor *editor)
 			etable = editor->packing_etable;
 			for (props = etable->properties; props; props = props->next)
 				glade_editor_property_show_info
-					(GLADE_EDITOR_PROPERTY (list->data));
+					(GLADE_EDITOR_PROPERTY (props->data));
 		
 		}
 		g_object_notify (G_OBJECT (editor), "show-context-info");
@@ -1416,16 +1416,16 @@ glade_editor_hide_context_info (GladeEditor *editor)
 
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 
-	if (editor->show_context_info != TRUE)
+	if (editor->show_context_info == TRUE)
 	{
-		editor->show_context_info = TRUE;
+		editor->show_context_info = FALSE;
 		
 		for (list = editor->widget_tables; list; list = list->next)
 		{
 			etable = list->data;
 			for (props = etable->properties; props; props = props->next)
 				glade_editor_property_hide_info
-					(GLADE_EDITOR_PROPERTY (list->data));
+					(GLADE_EDITOR_PROPERTY (props->data));
 		}	
 
 		if (editor->packing_etable)
@@ -1433,7 +1433,7 @@ glade_editor_hide_context_info (GladeEditor *editor)
 			etable = editor->packing_etable;
 			for (props = etable->properties; props; props = props->next)
 				glade_editor_property_hide_info
-					(GLADE_EDITOR_PROPERTY (list->data));
+					(GLADE_EDITOR_PROPERTY (props->data));
 		
 		}
 		g_object_notify (G_OBJECT (editor), "show-context-info");

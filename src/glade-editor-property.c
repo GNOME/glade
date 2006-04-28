@@ -3095,7 +3095,7 @@ void
 glade_editor_property_hide_info (GladeEditorProperty *eprop)
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
-	
+
 	gtk_widget_hide (eprop->info);
 	
 	eprop->show_info = FALSE;
