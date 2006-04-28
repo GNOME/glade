@@ -33,6 +33,8 @@ struct _GladeEditorProperty {
 	GtkWidget          *check;          /* Check button for optional properties.
 					     */
 
+	GtkWidget          *info;           /* Informational button
+					     */
 
 	gulong              tooltip_id;     /* signal connection id for tooltip changes        */
 	gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
@@ -48,6 +50,10 @@ struct _GladeEditorProperty {
 					     * or skip directly to GladeProperty interface.
 					     * (used for query dialogs).
 					     */
+
+	gboolean            show_info;      /* Whether we should show an informational button for this
+					     * property
+					     */
 };
 
 struct _GladeEditorPropertyClass {
@@ -57,6 +63,12 @@ struct _GladeEditorPropertyClass {
 
 	/* private */
 	GtkWidget  *(* create_input)  (GladeEditorProperty *);
+
+	void        (* gtk_doc_search)(GladeEditorProperty *, 
+				       const gchar *,
+				       const gchar *,
+				       const gchar *);
+
 };
 
 
@@ -66,6 +78,10 @@ LIBGLADEUI_API
 GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *class,
 							   gboolean             use_command);
 LIBGLADEUI_API
+GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
+							    const gchar        *property,
+							    gboolean            use_command);
+LIBGLADEUI_API
 void                 glade_editor_property_load           (GladeEditorProperty *eprop,
 							   GladeProperty       *property);
 LIBGLADEUI_API
@@ -73,10 +89,9 @@ void                 glade_editor_property_load_by_widget (GladeEditorProperty *
 							   GladeWidget         *widget);
 LIBGLADEUI_API
 gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
-
 LIBGLADEUI_API
-GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
-							    const gchar        *property,
-							    gboolean            use_command);
+void                 glade_editor_property_show_info      (GladeEditorProperty *eprop);
+LIBGLADEUI_API
+void                 glade_editor_property_hide_info      (GladeEditorProperty *eprop);
 
 #endif // __GLADE_EDITOR_PROPERTY_H__

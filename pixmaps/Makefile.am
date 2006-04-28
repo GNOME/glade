@@ -56,6 +56,7 @@ pixmaps_DATA = \
 	vscale.png \
 	vscrollbar.png \
 	vseparator.png \
-	window.png
+	window.png \
+	devhelp.png
 
 EXTRA_DIST = $(pixmaps_DATA)

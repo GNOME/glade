@@ -45,14 +45,128 @@
 #include "glade-editor-property.h"
 #include "atk.xpm"
 
+enum
+{
+	PROP_0,
+	PROP_SHOW_INFO,
+	PROP_SHOW_CONTEXT_INFO
+};
+
+enum {
+	GTK_DOC_SEARCH,
+	LAST_SIGNAL
+};
+
 static GtkVBoxClass *parent_class = NULL;
+static guint         glade_editor_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_editor_reset_dialog (GladeEditor *editor);
 
 static void
+glade_editor_gtk_doc_search_cb (GladeEditorProperty *eprop,
+				const gchar         *book,
+				const gchar         *page,
+				const gchar         *search,
+				GladeEditor         *editor)
+{
+	/* Just act as a hub for search signals here */
+	g_signal_emit (G_OBJECT (editor),
+		       glade_editor_signals[GTK_DOC_SEARCH],
+		       0, book, page, search);
+}
+
+static void
+glade_editor_set_property (GObject      *object,
+			   guint         prop_id,
+			   const GValue *value,
+			   GParamSpec   *pspec)
+{
+	GladeEditor *editor = GLADE_EDITOR (object);
+
+	switch (prop_id)
+	{
+	case PROP_SHOW_INFO:
+		if (g_value_get_boolean (value))
+			glade_editor_show_info (editor);
+		else
+			glade_editor_hide_info (editor);
+		break;
+	case PROP_SHOW_CONTEXT_INFO:
+		if (g_value_get_boolean (value))
+			glade_editor_show_context_info (editor);
+		else
+			glade_editor_hide_context_info (editor);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
+glade_editor_get_property (GObject    *object,
+			   guint       prop_id,
+			   GValue     *value,
+			   GParamSpec *pspec)
+{
+	GladeEditor *editor = GLADE_EDITOR (object);
+
+	switch (prop_id)
+	{
+	case PROP_SHOW_INFO:
+		g_value_set_boolean (value, editor->show_info);
+		break;
+	case PROP_SHOW_CONTEXT_INFO:
+		g_value_set_boolean (value, editor->show_context_info);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+
+static void
 glade_editor_class_init (GladeEditorClass *class)
 {
+	GObjectClass       *object_class;
+
 	parent_class = g_type_class_peek_parent (class);
+	object_class = G_OBJECT_CLASS (class);
+
+	object_class->set_property = glade_editor_set_property;
+	object_class->get_property = glade_editor_get_property;
+
+	class->gtk_doc_search = NULL;
+
+	/* Properties */
+	g_object_class_install_property
+		(object_class, PROP_SHOW_INFO,
+		 g_param_spec_boolean ("show-info",
+				       _("Show info"),
+				       _("Whether to show an informational "
+					 "button for the loaded widget"),
+				       FALSE, G_PARAM_READABLE));
+
+	g_object_class_install_property
+		(object_class, PROP_SHOW_CONTEXT_INFO,
+		 g_param_spec_boolean ("show-context-info",
+				       _("Show context info"),
+				       _("Whether to show an informational button for "
+					 "each property and signal in the editor"),
+				       FALSE, G_PARAM_READABLE));
+
+	/* Signals */
+	glade_editor_signals[GTK_DOC_SEARCH] =
+		g_signal_new ("gtk-doc-search",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeEditorClass,
+					       gtk_doc_search),
+			      NULL, NULL,
+			      glade_marshal_VOID__STRING_STRING_STRING,
+			      G_TYPE_NONE, 3, 
+			      G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 }
 
 static GtkWidget *
@@ -115,6 +229,58 @@ glade_editor_on_launch_click (GtkButton *button,
 	glade_widget_launch_editor (editor->loaded_widget);
 }
 
+static const gchar *
+glade_editor_guess_bookname (GladeEditor *editor)
+{
+	gchar *guess = NULL;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (editor->loaded_widget), NULL);
+
+	if (GTK_IS_WIDGET (editor->loaded_widget->object))
+		guess = "gtk";
+	
+	return guess;
+}
+
+
+static void
+glade_editor_on_docs_click (GtkButton *button,
+			    GladeEditor *editor)
+{
+	if (editor->loaded_widget)
+		g_signal_emit (G_OBJECT (editor),
+			       glade_editor_signals[GTK_DOC_SEARCH],
+			       0, glade_editor_guess_bookname (editor),
+			       editor->loaded_widget->widget_class->name, 
+			       editor->loaded_widget->widget_class->name);
+}
+
+
+static GtkWidget *
+glade_editor_create_info_button (void)
+{
+	GtkWidget *image, *button;
+	GtkWidget *hbox, *label;
+	gchar     *path;
+	
+	path = g_build_filename (glade_pixmaps_dir, "devhelp.png", NULL);
+
+	button = gtk_button_new ();
+	hbox   = gtk_hbox_new (FALSE, 0);
+	label  = gtk_label_new_with_mnemonic ("_Documentation");
+	image  = gtk_image_new_from_file (path);
+
+	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+	gtk_widget_show_all (hbox);
+
+	gtk_container_add (GTK_CONTAINER (button), hbox);
+
+	g_free (path);
+
+	return button;
+}
+
 static void
 glade_editor_init (GladeEditor *editor)
 {
@@ -162,6 +328,24 @@ glade_editor_init (GladeEditor *editor)
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
+
+	
+	/* Documentation button
+	 */
+	editor->info_button = glade_editor_create_info_button ();
+	gtk_container_set_border_width (GTK_CONTAINER (editor->info_button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+	gtk_box_pack_start (GTK_BOX (hbox), editor->info_button, FALSE, TRUE, 0);
+	g_signal_connect (G_OBJECT (editor->info_button), "clicked",
+			  G_CALLBACK (glade_editor_on_docs_click), editor);
+
+	gtk_widget_show_all (GTK_WIDGET (editor));
+	if (editor->show_info)
+		gtk_widget_show (editor->info_button);
+	else
+		gtk_widget_hide (editor->info_button);
+
+	gtk_widget_hide (editor);
 }
 
 GType
@@ -253,6 +437,17 @@ glade_editor_table_append_item (GladeEditorTable *table,
 	GladeEditorProperty *property;
 
 	property = glade_editor_property_new (class, from_query_dialog == FALSE);
+	gtk_widget_show (GTK_WIDGET (property));
+	gtk_widget_show_all (property->eventbox);
+
+	if (table->editor->show_context_info)
+		glade_editor_property_show_info (property);
+	else
+		glade_editor_property_hide_info (property);
+
+	g_signal_connect (G_OBJECT (property), "gtk-doc-search",
+			  G_CALLBACK (glade_editor_gtk_doc_search_cb), 
+			  table->editor);
 
 	glade_editor_table_attach (table->table_widget, property->eventbox, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, GTK_WIDGET (property), 1, table->rows);
@@ -385,7 +580,7 @@ glade_editor_table_create (GladeEditor *editor,
 	if (!glade_editor_table_append_items (table, class, type))
 		return NULL;
 
-	gtk_widget_show_all (table->table_widget);
+	gtk_widget_show (table->table_widget);
 
 	return table;
 }
@@ -548,7 +743,7 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 		glade_editor_property_load (editor_property, property);
 	}
 
-	gtk_widget_show_all (editor->packing_etable->table_widget);
+	gtk_widget_show (editor->packing_etable->table_widget);
 
 	gtk_box_pack_start (GTK_BOX (editor->vbox_packing), 
 			    editor->packing_etable->table_widget,
@@ -1152,4 +1347,96 @@ glade_editor_reset_dialog (GladeEditor *editor)
 		}
 	}
 	gtk_widget_destroy (dialog);
+}
+
+void
+glade_editor_show_info (GladeEditor *editor)
+{
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+	if (editor->show_info != TRUE)
+	{
+		editor->show_info = TRUE;
+		gtk_widget_show (editor->info_button);
+
+		g_object_notify (G_OBJECT (editor), "show-info");
+	}
+}
+
+void
+glade_editor_hide_info (GladeEditor *editor)
+{
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+	if (editor->show_info == TRUE)
+	{
+		editor->show_info = FALSE;
+		gtk_widget_hide (editor->info_button);
+
+		g_object_notify (G_OBJECT (editor), "show-info");
+	}
+}
+
+void
+glade_editor_show_context_info (GladeEditor *editor)
+{
+	GList               *list, *props;
+	GladeEditorTable    *etable;
+
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+	if (editor->show_context_info != TRUE)
+	{
+		editor->show_context_info = TRUE;
+		
+		for (list = editor->widget_tables; list; list = list->next)
+		{
+			etable = list->data;
+			for (props = etable->properties; props; props = props->next)
+				glade_editor_property_show_info
+					(GLADE_EDITOR_PROPERTY (list->data));
+		}	
+
+		if (editor->packing_etable)
+		{
+			etable = editor->packing_etable;
+			for (props = etable->properties; props; props = props->next)
+				glade_editor_property_show_info
+					(GLADE_EDITOR_PROPERTY (list->data));
+		
+		}
+		g_object_notify (G_OBJECT (editor), "show-context-info");
+	}
+}
+
+void
+glade_editor_hide_context_info (GladeEditor *editor)
+{
+	GList               *list, *props;
+	GladeEditorTable    *etable;
+
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+	if (editor->show_context_info != TRUE)
+	{
+		editor->show_context_info = TRUE;
+		
+		for (list = editor->widget_tables; list; list = list->next)
+		{
+			etable = list->data;
+			for (props = etable->properties; props; props = props->next)
+				glade_editor_property_hide_info
+					(GLADE_EDITOR_PROPERTY (list->data));
+		}	
+
+		if (editor->packing_etable)
+		{
+			etable = editor->packing_etable;
+			for (props = etable->properties; props; props = props->next)
+				glade_editor_property_hide_info
+					(GLADE_EDITOR_PROPERTY (list->data));
+		
+		}
+		g_object_notify (G_OBJECT (editor), "show-context-info");
+	}
 }

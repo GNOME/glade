@@ -108,6 +108,15 @@ struct _GladeEditor
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
 	
+	GtkWidget *info_button; /* The actual informational button
+				 */
+
+	gboolean show_info; /* Whether or not to show an informational button
+			     */
+	gboolean show_context_info; /* Whether or not to show an informational
+				     * button for each property and signal.
+				     */
+
 };
 
 struct _GladeEditorClass
@@ -117,6 +126,12 @@ struct _GladeEditorClass
 	void   (*add_signal) (GladeEditor *editor, const char *id_widget,
 			      GType type_widget, guint id_signal,
 			      const char *callback_name);
+
+	void   (*gtk_doc_search) (GladeEditor *,
+				  const gchar *,
+				  const gchar *,
+				  const gchar *);
+
 };
 
 /* For each glade widget class that we have modified, we create a
@@ -179,6 +194,16 @@ void         glade_editor_update_widget_name (GladeEditor *editor);
 LIBGLADEUI_API
 gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 					      GladeWidget *widget);
+LIBGLADEUI_API
+void         glade_editor_show_info          (GladeEditor *editor);
+LIBGLADEUI_API
+void         glade_editor_show_context_info  (GladeEditor *editor);
+LIBGLADEUI_API
+void         glade_editor_hide_info          (GladeEditor *editor);
+LIBGLADEUI_API
+void         glade_editor_hide_context_info  (GladeEditor *editor);
+
+
 
 G_END_DECLS
 

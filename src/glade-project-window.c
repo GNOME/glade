@@ -965,6 +965,16 @@ gpw_hijack_editor_key_press (GtkWidget          *editor_win,
 }
 
 static void
+gpw_doc_search_cb (GladeEditor        *editor,
+		   const gchar        *book,
+		   const gchar        *page,
+		   const gchar        *search,
+		   GladeProjectWindow *gpw)
+{
+	glade_util_search_devhelp (book, page, search);
+}
+
+static void
 gpw_create_editor (GladeProjectWindow *gpw)
 {
 	GtkWidget *editor_item;
@@ -992,6 +1002,14 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						 "/MenuBar/ViewMenu/PropertyEditor");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
+
+	if (glade_util_have_devhelp())
+	{
+		glade_editor_show_info (glade_app_get_editor ());
+		glade_editor_show_context_info (glade_app_get_editor ());
+		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
+				  G_CALLBACK (gpw_doc_search_cb), gpw);
+	}
 }
 
 static void

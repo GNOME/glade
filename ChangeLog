@@ -1,5 +1,31 @@
 2006-04-26  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-editor-property.[ch]: Added info buttons and
+	  apis to enable/disable them + signals emitted to say what
+	  doc book, page and searchstring should be used
+
+	* src/glade-editor.[ch]: Same as glade-editor-property
+
+	* src/glade-utils.c: Added functions for detecting and launching devhelp
+
+	* src/glade-project-window.c: Check if we have devhelp installed; if we do
+	  then show help buttons and launch devhelp upon "gtk-doc-search" signals
+
+	* pixmaps/devhelp.png, pixmaps/Makefile.am: Added devhelp book icon
+
+	* src/glade-app.c: Replace a gtk_widget_show_all with a gtk_widget_show
+	  on the editor (to avoid needlessly showing hidden buttons).
+
+	* src/glade-project.c: translated property nicks and blurbs.
+
+	* src/glade-property-class.[ch]: Added 'virtual' member and resolve
+	  it at initialization.
+	
+	* src/glade-widget-class.c: use g_build_filename instead of 
+	  g_strdup_printf for icon loading.
+	
+2006-04-26  Tristan Van Berkom <tvb@gnome.org>
+
 	* configure.in: Relesed 2.91.1, now we are working on 2.91.2
 
 2006-04-26  Tristan Van Berkom <tvb@gnome.org>
@@ -24,6 +50,21 @@
 
 	* src/glade-widget.c: Synonymous '-' and '_' in glade_widget_get_[packing_]property().
 
+2006-04-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am: added atk.xpm to $(libgladeuiinclude_HEADERS)
+
+	* doc/gladeui-sections.txt: Updated with new apis.
+
+	* widgets/gtk+.xml.in: Listed all atk action properties needed for the gtk
+	  catalog.
+
+	* src/glade-property-class.c, src/glade.h: Added GLADE_TAG_ATK_ACTION &
+	  GLADE_TAG_ATK_PROPERTY tag support and stripped out introspection on atk
+	  properties.
+
+	* src/main.c: backed out the "GTK_MODULES=$GTK_MODULES:gail" module loading thing.
+	
 2006-04-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-builtins.c: Allowed negative custom integer specs.

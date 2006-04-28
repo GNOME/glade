@@ -82,6 +82,12 @@ struct _GladePropertyClass
 			  */
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
+
+	gboolean virtual; /* Whether this is a virtual property with its pspec supplied
+			   * via the catalog (or hard code-paths); or FALSE if its a real
+			   * GObject introspected property
+			   */
+
 	GValue *def;      /* The default value for this property (this will exist
 			   * as a copy of orig_def if not specified by the catalog)
 			   */

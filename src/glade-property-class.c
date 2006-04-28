@@ -168,6 +168,8 @@ glade_property_class_new (void)
 	property_class->resource = FALSE;
 	property_class->translatable = FALSE;
 	property_class->atk_type = GPC_ATK_NONE;
+	property_class->virtual = TRUE;
+
 	return property_class;
 }
 
@@ -1059,10 +1061,13 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	g_return_val_if_fail (spec != NULL, NULL);
 	gtk_widget_class = g_type_class_ref (GTK_TYPE_WIDGET);
 	
-	property_class = glade_property_class_new ();
+	/* Only properties that are _new_from_spec() are 
+	 * not virtual properties
+	 */
+	property_class          = glade_property_class_new ();
+	property_class->virtual = FALSE;
+	property_class->pspec   = spec;
 
-	property_class->pspec = spec;
-	
 	/* We only use the writable properties */
 	if ((spec->flags & G_PARAM_WRITABLE) == 0)
 		goto failed;

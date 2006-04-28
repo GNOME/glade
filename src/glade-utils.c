@@ -1605,3 +1605,64 @@ glade_util_file_is_writeable (const gchar *path)
 	}
 	return FALSE;
 }
+
+/**
+ * glade_util_have_devhelp:
+ *
+ * FIXME: This should also parse the output of devhelp --version
+ * and check if it supports the search features we need.
+ *
+ * Returns: whether we can use devhelp
+ */
+gboolean
+glade_util_have_devhelp (void)
+{
+	gboolean have_devhelp = FALSE;
+	gchar *path;
+
+	if ((path = g_find_program_in_path ("devhelp")) != NULL)
+	{
+		have_devhelp = TRUE;
+		g_free (path);
+	}
+
+	return have_devhelp;
+}
+
+/**
+ * glade_util_search_devhep:
+ * @book: the devhelp book (or %NULL)
+ * @page: the page in the book (or %NULL)
+ * @search: the search string (or %NULL)
+ *
+ * Launches the devhelp program with a search string
+ *
+ */
+void
+glade_util_search_devhelp (const gchar *book,
+			   const gchar *page,
+			   const gchar *search)
+{
+	GError *error = NULL;
+	gchar *book_comm = NULL, *page_comm = NULL;
+	gchar *command;
+
+	if (book) book_comm = g_strdup_printf ("book:%s ", book);
+	if (page) page_comm = g_strdup_printf ("page:%s ", page);
+
+	command = g_strdup_printf ("devhelp -s \"%s%s %s\"", 
+				   book_comm ? book_comm : "",
+				   page_comm ? page_comm : "",
+				   search ? search : "");
+
+	if (g_spawn_command_line_async (command, &error) == FALSE)
+	{
+		g_critical ("Unable to spawn devhelp (%s)",
+			    error->message);
+		g_error_free (error);
+	}	
+
+	g_free (command);
+	if (book_comm) g_free (book_comm);
+	if (page_comm) g_free (page_comm);
+}

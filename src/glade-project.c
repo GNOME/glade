@@ -275,24 +275,24 @@ glade_project_class_init (GladeProjectClass *class)
 	g_object_class_install_property (object_class,
 					 PROP_HAS_UNSAVED_CHANGES,
 					 g_param_spec_boolean ("has-unsaved-changes",
-							       "Has Unsaved Changes",
-							       "Whether project has unsaved changes",
+							       _("Has Unsaved Changes"),
+							       _("Whether project has unsaved changes"),
 							       FALSE,
 							       G_PARAM_READABLE));
 
 	g_object_class_install_property (object_class,
 					 PROP_HAS_SELECTION,
 					 g_param_spec_boolean ("has-selection",
-							       "Has Selection",
-							       "Whether project has a selection",
+							       _("Has Selection"),
+							       _("Whether project has a selection"),
 							       FALSE,
 							       G_PARAM_READABLE));
 
 	g_object_class_install_property (object_class,
 					 PROP_READ_ONLY,
 					 g_param_spec_boolean ("read-only",
-							       "Read Only",
-							       "Whether project is read only or not",
+							       _("Read Only"),
+							       _("Whether project is read only or not"),
 							       FALSE,
 							       G_PARAM_READABLE));
 

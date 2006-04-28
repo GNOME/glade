@@ -276,14 +276,13 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 {
 	GdkPixbuf *icon  = NULL;
 	GError    *error = NULL;
-	gchar     *icon_path;
+	gchar     *icon_path, *icon_name;
 
 	if (class->generic_name)
 	{
-		icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.png", 
-					     glade_pixmaps_dir, 
+		icon_name = g_strdup_printf ("%s.png", class->generic_name);
+		icon_path = g_build_filename (glade_pixmaps_dir, icon_name, NULL);
 
-					     class->generic_name);
 		if ((icon = 
 		     gdk_pixbuf_new_from_file (icon_path, &error)) == NULL)
 		{
@@ -306,6 +305,7 @@ glade_widget_class_create_icon (GladeWidgetClass *class)
 				error = (g_error_free (error), NULL);
 			}
 		}
+		g_free (icon_name);
 		g_free (icon_path);
 	}
 	return icon;

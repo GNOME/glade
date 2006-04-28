@@ -131,6 +131,12 @@ GModule          *glade_util_load_library          (const gchar  *library_name);
 
 LIBGLADEUI_API
 gboolean          glade_util_file_is_writeable     (const gchar *path);
+LIBGLADEUI_API
+gboolean          glade_util_have_devhelp          (void);
+LIBGLADEUI_API
+void              glade_util_search_devhelp        (const gchar *book,
+						    const gchar *page,
+						    const gchar *search);
 
 G_END_DECLS
 

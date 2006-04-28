@@ -616,7 +616,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		  _("Whether or not the translatable string has a context prefix"),
 		  FALSE, G_PARAM_READWRITE));
 
-	/* Signals */
+	/* Signal */
 	glade_property_signals[VALUE_CHANGED] =
 		g_signal_new ("value-changed",
 			      G_TYPE_FROM_CLASS (object_class),
