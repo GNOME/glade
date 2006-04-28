@@ -251,8 +251,7 @@ glade_editor_on_docs_click (GtkButton *button,
 		g_signal_emit (G_OBJECT (editor),
 			       glade_editor_signals[GTK_DOC_SEARCH],
 			       0, glade_editor_guess_bookname (editor),
-			       editor->loaded_widget->widget_class->name, 
-			       editor->loaded_widget->widget_class->name);
+			       editor->loaded_widget->widget_class->name, NULL);
 }
 
 
@@ -335,7 +334,7 @@ glade_editor_init (GladeEditor *editor)
 	editor->info_button = glade_editor_create_info_button ();
 	gtk_container_set_border_width (GTK_CONTAINER (editor->info_button), 
 					GLADE_GENERIC_BORDER_WIDTH);
-	gtk_box_pack_start (GTK_BOX (hbox), editor->info_button, FALSE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX (hbox), editor->info_button, FALSE, TRUE, 0);
 	g_signal_connect (G_OBJECT (editor->info_button), "clicked",
 			  G_CALLBACK (glade_editor_on_docs_click), editor);
 
@@ -345,7 +344,7 @@ glade_editor_init (GladeEditor *editor)
 	else
 		gtk_widget_hide (editor->info_button);
 
-	gtk_widget_hide (editor);
+	gtk_widget_hide (GTK_WIDGET (editor));
 }
 
 GType
