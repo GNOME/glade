@@ -973,6 +973,13 @@ gpw_doc_search_cb (GladeEditor        *editor,
 		   const gchar        *search,
 		   GladeProjectWindow *gpw)
 {
+	GtkWidget *item = 
+		gtk_ui_manager_get_widget (gpw->priv->ui,
+					   "/MenuBar/ViewMenu/HelpWindow");
+
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+	gtk_widget_show (gpw->priv->devhelp);
 	gtk_paned_set_position (GTK_PANED (gpw->priv->devhelp_paned), 0);
 	glade_util_search_devhelp (gpw->priv->devhelp, book, page, search);
 }
@@ -980,7 +987,7 @@ gpw_doc_search_cb (GladeEditor        *editor,
 static void
 gpw_create_editor (GladeProjectWindow *gpw)
 {
-	GtkWidget *editor_item;
+	GtkWidget *editor_item, *editor_item2;
 
 	g_return_if_fail (gpw != NULL);
 
@@ -1009,6 +1016,8 @@ gpw_create_editor (GladeProjectWindow *gpw)
 
 	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						 "/MenuBar/ViewMenu/PropertyEditorHelp");
+	editor_item2 = gtk_ui_manager_get_widget (gpw->priv->ui,
+						  "/MenuBar/ViewMenu/HelpWindow");
 	if (glade_util_have_devhelp())
 	{
 
@@ -1018,11 +1027,14 @@ gpw_create_editor (GladeProjectWindow *gpw)
 				  G_CALLBACK (gpw_doc_search_cb), gpw);
 
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item2), TRUE);
 	}
 	else 
 	{
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item2), FALSE);
 		gtk_widget_set_sensitive (editor_item, FALSE);
+		gtk_widget_set_sensitive (editor_item2, FALSE);
 	}
 }
 
@@ -1240,6 +1252,25 @@ gpw_toggle_editor_help_cb (GtkAction *action, GladeProjectWindow *gpw)
 		glade_editor_hide_context_info (glade_app_get_editor ());
 }
 
+
+static void
+gpw_toggle_help_window_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item;
+
+	if (glade_util_have_devhelp() == FALSE)
+		return;
+
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/HelpWindow");
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (editor_item)))
+		gtk_widget_show (gpw->priv->devhelp);
+	else
+		gtk_widget_hide (gpw->priv->devhelp);
+}
+
+
 static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gchar *authors[] =
@@ -1326,6 +1357,7 @@ static const gchar *ui_info =
 "      <menuitem action='Clipboard'/>\n"
 "      <separator/>\n"
 "      <menuitem action='PropertyEditorHelp'/>\n"
+"      <menuitem action='HelpWindow'/>\n"
 "    </menu>\n"
 "    <menu action='ProjectMenu'>\n"
 "      <placeholder name='ProjectsListPlaceholder'/>\n"
@@ -1420,7 +1452,12 @@ static GtkToggleActionEntry view_entries[] = {
 
 	{ "PropertyEditorHelp", NULL, "Context _Help", NULL,
 	  "Show or hide contextual help buttons in the editor",
-	  G_CALLBACK (gpw_toggle_editor_help_cb), FALSE }
+	  G_CALLBACK (gpw_toggle_editor_help_cb), FALSE },
+	
+	{ "HelpWindow", NULL, "Help _Window", NULL,
+	  "Show or hide the help window",
+	  G_CALLBACK (gpw_toggle_help_window_cb), FALSE }
+
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
 

@@ -10,9 +10,12 @@
 
 	* src/glade-app.c, src/glade.h: Added a global for glade_plugins_dir.
 
-	* src/glade-project-window.c, src/glade-utils.[ch]: Detect if there
-	  is a devhelp plugin installed and load the devhelp window into
-	  the project window in a paned window with the project view.
+	* src/glade-project-window.c, src/glade-utils.[ch]: 
+	  o Detect if there is a devhelp plugin installed and load the 
+	    devhelp window into the project window in a paned window 
+	    with the project view
+	  o Added an option to completely hide the devhelp window (but it comes
+	    back in full window if a devhelp button is pressed.
 	
 2006-04-28  Tristan Van Berkom <tvb@gnome.org>
 
