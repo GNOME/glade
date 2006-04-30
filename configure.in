@@ -49,24 +49,35 @@ AM_GLIB_GNU_GETTEXT
 dnl ================================================================
 dnl Start of pkg-config checks
 dnl ================================================================
-PKG_CHECK_MODULES(GLADE, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
-AC_SUBST(GLADE_LIBS)
-AC_SUBST(GLADE_CFLAGS)
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
+
+PKG_CHECK_MODULES(DEVHELP, libdevhelp-1.0 >= 0.11,
+  [have_devhelp=yes],[have_devhelp=no])
+
+AM_CONDITIONAL(WITH_DEVHELP, test x"$have_devhelp" = "xyes")
 
 glade_version="${VERSION}"
 glade_datadir='${datadir}/${PACKAGE}'
 glade_libdir='${libdir}/${PACKAGE}'
 glade_catalogsdir='${glade_datadir}/catalogs'
-glade_modulesdir='${glade_libdir}/modules'
 glade_pixmapsdir='${glade_datadir}/pixmaps'
+glade_modulesdir='${glade_libdir}/modules'
+glade_pluginsdir='${glade_libdir}/plugins'
 glade_icondir='${datadir}/pixmaps'
 glade_localedir='${prefix}/${DATADIRNAME}/locale'
+
+AC_SUBST(GTK_LIBS)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(DEVHELP_LIBS)
+AC_SUBST(DEVHELP_CFLAGS)
+AC_SUBST(HAVE_DEVHELP)
 
 AC_SUBST(glade_version)
 AC_SUBST(glade_datadir)
 AC_SUBST(glade_libdir)
 AC_SUBST(glade_catalogsdir)
 AC_SUBST(glade_modulesdir)
+AC_SUBST(glade_pluginsdir)
 AC_SUBST(glade_pixmapsdir)
 AC_SUBST(glade_icondir)
 AC_SUBST(glade_localedir)
@@ -99,5 +110,7 @@ Configuration:
 
 	Source code location:	${srcdir}
 	Compiler:		${CC} 
+	Devhelp module:         ${have_devhelp}
 
 "
+

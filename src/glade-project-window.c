@@ -64,6 +64,8 @@ struct _GladeProjectWindowPriv {
 
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */
+	GtkWidget *devhelp;            /* The embedded devhelp widget */
+	GtkWidget *devhelp_paned;      /* A handle to control the devhelp paned window. */
 };
 
 #define      WINDOW_TITLE                   (_("Glade-3 GUI Builder"))
@@ -971,7 +973,8 @@ gpw_doc_search_cb (GladeEditor        *editor,
 		   const gchar        *search,
 		   GladeProjectWindow *gpw)
 {
-	glade_util_search_devhelp (book, page, search);
+	gtk_paned_set_position (GTK_PANED (gpw->priv->devhelp_paned), 0);
+	glade_util_search_devhelp (gpw->priv->devhelp, book, page, search);
 }
 
 static void
@@ -985,7 +988,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gtk_window_set_default_size (GTK_WINDOW (gpw->priv->editor_window), 400, 450);
 
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
-	gtk_window_move (gpw->priv->editor_window, 350, 0);
+	gtk_window_move (gpw->priv->editor_window, 550, 0);
 
 	gtk_container_add (GTK_CONTAINER (gpw->priv->editor_window), 
 			   GTK_WIDGET (glade_app_get_editor ()));
@@ -1008,6 +1011,7 @@ gpw_create_editor (GladeProjectWindow *gpw)
 						 "/MenuBar/ViewMenu/PropertyEditorHelp");
 	if (glade_util_have_devhelp())
 	{
+
 		glade_editor_show_info (glade_app_get_editor ());
 		glade_editor_hide_context_info (glade_app_get_editor ());
 		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
@@ -1019,8 +1023,6 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	{
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 		gtk_widget_set_sensitive (editor_item, FALSE);
-
-		g_message ("No devhelp detected, informational buttons disabled");
 	}
 }
 
@@ -1598,6 +1600,15 @@ gpw_delete_event (GtkWindow *w, GdkEvent *event, GladeProjectWindow *gpw)
 	return TRUE;	
 }
 
+gboolean
+initiate_devhelp_search (GladeProjectWindow *gpw)
+{
+	/* Search after adding to heirarchy */
+	glade_util_search_devhelp (gpw->priv->devhelp, 
+				   "gladeui", NULL, NULL);
+	return FALSE;
+}
+
 static void
 glade_project_window_create (GladeProjectWindow *gpw)
 {
@@ -1628,8 +1639,26 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), project_view, TRUE, TRUE, 0);
+
+	if ((gpw->priv->devhelp = glade_util_load_devhelp ()) != NULL)
+	{
+		gpw->priv->devhelp_paned = gtk_hpaned_new();
+		gtk_paned_add1 (GTK_PANED (gpw->priv->devhelp_paned), 
+				project_view);
+		gtk_paned_add2 (GTK_PANED (gpw->priv->devhelp_paned), 
+				gpw->priv->devhelp);
+		
+		gtk_box_pack_start (GTK_BOX (vbox), gpw->priv->devhelp_paned, 
+				    TRUE, TRUE, 0);
+
+		g_idle_add ((GSourceFunc)initiate_devhelp_search, gpw);
+	}
+	else
+		gtk_box_pack_start (GTK_BOX (vbox), project_view, TRUE, TRUE, 0);
+
 	gtk_box_pack_end (GTK_BOX (vbox), statusbar, FALSE, TRUE, 0);
+		
+	gtk_widget_show (vbox);
 
 	gpw_recent_project_config_load (gpw);
 	

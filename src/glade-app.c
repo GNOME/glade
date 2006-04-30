@@ -102,6 +102,7 @@ static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
 gchar *glade_catalogs_dir = GLADE_CATALOGSDIR;
 gchar *glade_modules_dir = GLADE_MODULESDIR;
+gchar *glade_plugins_dir = GLADE_PLUGINSDIR;
 gchar *glade_locale_dir = GLADE_LOCALEDIR;
 gchar *glade_icon_dir = GLADE_ICONDIR;
 gboolean glade_verbose = FALSE;

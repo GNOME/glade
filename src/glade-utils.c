@@ -1606,63 +1606,115 @@ glade_util_file_is_writeable (const gchar *path)
 	return FALSE;
 }
 
+
+
+
+/* The devhelp module api here
+ */
+static GModule *devhelp_mod = NULL;
+static GtkWidget *(* glade_dh_widget_new)    (void) = NULL;
+static void       (* glade_dh_widget_search) (GtkWidget   *, const gchar *) = NULL;
+
+/**
+ * glade_util_load_devhelp:
+ *
+ * Attempts to load the devhelp module
+ *
+ * Returns: the devhelp widget if successfull (%NULL otherwise)
+ *
+ */
+GtkWidget *
+glade_util_load_devhelp (void)
+{
+	static GtkWidget *widget = NULL;
+	gchar            *path;
+
+	if (devhelp_mod == NULL && 
+	    (path = g_module_build_path (glade_plugins_dir, 
+					 "gladedevhelp")) != NULL)
+	{
+		if ((devhelp_mod = 
+		     g_module_open (path, G_MODULE_BIND_LOCAL)) != NULL)
+		{
+			if (!g_module_symbol (devhelp_mod,
+					      "glade_dh_widget_new",
+					      (gpointer)&glade_dh_widget_new))
+			{
+				g_critical ("Failed to load 'glade_dh_widget_new' "
+					    "symbol from the devhelp module (%s)",
+					    g_module_error ());
+
+				g_module_close (devhelp_mod);
+				devhelp_mod = NULL;
+				return NULL;
+			}
+
+			if (!g_module_symbol (devhelp_mod,
+					      "glade_dh_widget_search",
+					      (gpointer)&glade_dh_widget_search))
+			{
+				g_critical ("Failed to load 'glade_dh_widget_search' "
+					    "symbol from the devhelp module (%s)",
+					    g_module_error ());
+
+				g_module_close (devhelp_mod);
+				devhelp_mod = NULL;
+				return NULL;
+			}
+		
+			/* Load the widget */
+			widget = glade_dh_widget_new ();
+		}
+		g_free (path);
+	}
+
+	return widget;
+}
+
 /**
  * glade_util_have_devhelp:
  *
- * FIXME: This should also parse the output of devhelp --version
- * and check if it supports the search features we need.
- *
- * Returns: whether we can use devhelp
+ * Returns: whether the devhelp module is loaded
  */
 gboolean
 glade_util_have_devhelp (void)
 {
-	gboolean have_devhelp = FALSE;
-	gchar *path;
-
-	if ((path = g_find_program_in_path ("devhelp")) != NULL)
-	{
-		have_devhelp = TRUE;
-		g_free (path);
-	}
-
-	return have_devhelp;
+	return (devhelp_mod != NULL);
 }
 
 /**
  * glade_util_search_devhep:
+ * @devhelp: the devhelp widget created by the devhelp module.
  * @book: the devhelp book (or %NULL)
  * @page: the page in the book (or %NULL)
  * @search: the search string (or %NULL)
  *
- * Launches the devhelp program with a search string
+ * Sets the current notebook page to the devhelp
+ * page and sets the search string.
  *
  */
 void
-glade_util_search_devhelp (const gchar *book,
+glade_util_search_devhelp (GtkWidget   *devhelp,
+			   const gchar *book,
 			   const gchar *page,
 			   const gchar *search)
 {
-	GError *error = NULL;
 	gchar *book_comm = NULL, *page_comm = NULL;
-	gchar *command;
+	gchar *string;
+
+	g_return_if_fail (glade_util_have_devhelp ());
 
 	if (book) book_comm = g_strdup_printf ("book:%s ", book);
 	if (page) page_comm = g_strdup_printf ("page:%s ", page);
 
-	command = g_strdup_printf ("devhelp -s \"%s%s %s\"", 
+	string = g_strdup_printf ("%s%s%s", 
 				   book_comm ? book_comm : "",
 				   page_comm ? page_comm : "",
 				   search ? search : "");
 
-	if (g_spawn_command_line_async (command, &error) == FALSE)
-	{
-		g_critical ("Unable to spawn devhelp (%s)",
-			    error->message);
-		g_error_free (error);
-	}	
+	glade_dh_widget_search (devhelp, string);
 
-	g_free (command);
+	g_free (string);
 	if (book_comm) g_free (book_comm);
 	if (page_comm) g_free (page_comm);
 }

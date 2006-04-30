@@ -145,6 +145,7 @@ LIBGLADEUI_API gboolean glade_verbose;
 LIBGLADEUI_API gchar* glade_pixmaps_dir;
 LIBGLADEUI_API gchar* glade_catalogs_dir;
 LIBGLADEUI_API gchar* glade_modules_dir;
+LIBGLADEUI_API gchar* glade_plugins_dir;
 LIBGLADEUI_API gchar* glade_locale_dir;
 LIBGLADEUI_API gchar* glade_icon_dir;
 

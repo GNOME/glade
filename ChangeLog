@@ -1,3 +1,19 @@
+2006-04-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.in, src/Makefile.am, src/glade-paths.sh.in: 
+	  o Cleanup build in src/Makefile.am
+	  o Now build and install a devhelp module if a usable version
+	    of libdevhelp is available
+
+	* src/glade-devhelp.[ch]: A loadable devhelp dockable widgets 
+	  built into a plugin module.
+
+	* src/glade-app.c, src/glade.h: Added a global for glade_plugins_dir.
+
+	* src/glade-project-window.c, src/glade-utils.[ch]: Detect if there
+	  is a devhelp plugin installed and load the devhelp window into
+	  the project window in a paned window with the project view.
+	
 2006-04-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: 

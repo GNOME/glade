@@ -1,11 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 SUBDIRS=
 
+
 bin_PROGRAMS = glade-3
 lib_LTLIBRARIES = libgladeui-1.la
-
-gladegtk_LTLIBRARIES = libgladegtk.la
-gladegtkdir = $(glade_modulesdir)
 
 BUILT_SOURCES = \
         glade-marshallers.c \
@@ -15,21 +13,55 @@ BUILT_SOURCES = \
 CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = glade-marshallers.list
 
-libgladegtk_la_SOURCES = glade-gtk.c
-libgladegtk_la_LDFLAGS = -module -avoid-version
-libgladegtk_la_LIBADD = libgladeui-1.la $(GLADE_LIBS)
 
-AM_CFLAGS = -g -Wall \
-	-I$(top_srcdir) \
-	-I$(top_builddir) \
-	$(GLADE_CFLAGS)
+# The main application code
+#
+glade_3_CFLAGS =           \
+	-g -Wall           \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	$(GTK_CFLAGS)
 
 glade_3_LDADD = libgladeui-1.la
-
 glade_3_SOURCES = \
 	glade-project-window.c glade-project-window.h \
 	main.c
 
+# The GTK catalog backend
+gladegtk_LTLIBRARIES = libgladegtk.la
+gladegtkdir = $(glade_modulesdir)
+
+
+libgladegtk_la_CFLAGS =    \
+	-g -Wall           \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	$(GTK_CFLAGS)
+
+libgladegtk_la_SOURCES = glade-gtk.c
+libgladegtk_la_LDFLAGS = -module -avoid-version
+libgladegtk_la_LIBADD = libgladeui-1.la $(GTK_LIBS)
+
+
+# The Devhelp plugin
+if WITH_DEVHELP
+
+gladedevhelp_LTLIBRARIES = libgladedevhelp.la
+gladedevhelpdir = $(glade_pluginsdir)
+
+libgladedevhelp_la_CFLAGS =    \
+	-g -Wall               \
+	-I$(top_srcdir)        \
+	-I$(top_builddir)      \
+	$(DEVHELP_CFLAGS)
+
+libgladedevhelp_la_SOURCES = glade-devhelp.c
+libgladedevhelp_la_LDFLAGS = -module -avoid-version
+libgladedevhelp_la_LIBADD = $(DEVHELP_LIBS)
+
+endif
+
+# The glade-3 core library
 libgladeui_1_la_SOURCES = \
 	glade-debug.c \
 	glade-project.c \
@@ -62,9 +94,15 @@ libgladeui_1_la_SOURCES = \
 	glade-fixed-manager.c \
 	glade-app.c
 
-libgladeui_1_la_CFLAGS = -DINSIDE_LIBGLADEUI $(AM_CFLAGS)
+libgladeui_1_la_CFLAGS =    \
+	-DINSIDE_LIBGLADEUI \
+	-g -Wall            \
+	-I$(top_srcdir)     \
+	-I$(top_builddir)   \
+	$(GTK_CFLAGS)
+
 libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE)
-libgladeui_1_la_LIBADD = $(GLADE_LIBS)
+libgladeui_1_la_LIBADD = $(GTK_LIBS)
 
 libgladeuiincludedir=$(includedir)/libgladeui-1.0/libgladeui
 libgladeuiinclude_HEADERS = \
@@ -108,6 +146,11 @@ pkgconfig_DATA = libgladeui-1.0.pc glade-3.pc
 if WITH_WIN32
   libgladegtk_la_LDFLAGS += -no-undefined
   libgladeui_1_la_LDFLAGS += -no-undefined
+
+if WITH_DEVHELP
+  libgladedevhelp_la_LDFLAGS += -no-undefined
+endif
+
 endif
 
 #
