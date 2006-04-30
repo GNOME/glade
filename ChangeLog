@@ -1,3 +1,12 @@
+2006-04-28  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* Glade now installs theme friendly icons (GNOME Goal #2)
+
+2006-04-30  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* src/glade-project-window.c: fixed bug 339855
+	  (recent project ordering) and bug 339249.
+
 2006-04-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in, src/Makefile.am, src/glade-paths.sh.in: 
@@ -16,7 +25,10 @@
 	    with the project view
 	  o Added an option to completely hide the devhelp window (but it comes
 	    back in full window if a devhelp button is pressed.
-	
+
+	* src/glade-editor.c: Beautified the editor (added alignments and
+	  a gtk-clear icon for the reset button
+
 2006-04-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: 

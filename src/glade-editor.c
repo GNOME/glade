@@ -258,7 +258,7 @@ glade_editor_on_docs_click (GtkButton *button,
 static GtkWidget *
 glade_editor_create_info_button (void)
 {
-	GtkWidget *image, *button;
+	GtkWidget *image, *button, *align;
 	GtkWidget *hbox, *label;
 	gchar     *path;
 	
@@ -268,14 +268,45 @@ glade_editor_create_info_button (void)
 	hbox   = gtk_hbox_new (FALSE, 0);
 	label  = gtk_label_new_with_mnemonic ("_Documentation");
 	image  = gtk_image_new_from_file (path);
+	align  = gtk_alignment_new (0.5, 0.5, 0, 0);
 
 	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-	gtk_widget_show_all (hbox);
+	gtk_container_add (GTK_CONTAINER (align), hbox);
 
-	gtk_container_add (GTK_CONTAINER (button), hbox);
+	gtk_widget_show_all (align);
+
+	gtk_container_add (GTK_CONTAINER (button), align);
 
 	g_free (path);
+
+	return button;
+}
+
+
+static GtkWidget *
+glade_editor_create_reset_button (void)
+{
+	GtkWidget *image, *button, *align;
+	GtkWidget *hbox, *label;
+
+	button = gtk_button_new ();
+	hbox   = gtk_hbox_new (FALSE, 0);
+	align  = gtk_alignment_new (0.5, 0.5, 0, 0);
+
+	label  = gtk_label_new_with_mnemonic (_("_Reset..."));
+	image  = gtk_image_new_from_stock ("gtk-clear", GTK_ICON_SIZE_BUTTON);
+
+	gtk_container_set_border_width (GTK_CONTAINER (button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
+	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (align), hbox);
+
+	gtk_widget_show_all (align);
+
+	gtk_container_add (GTK_CONTAINER (button), align);
 
 	return button;
 }
@@ -319,16 +350,6 @@ glade_editor_init (GladeEditor *editor)
 	g_signal_connect (G_OBJECT (editor->launch_button), "clicked",
 			  G_CALLBACK (glade_editor_on_launch_click), editor);
 
-	/* Reset button
-	 */
-	button = gtk_button_new_with_mnemonic (_("_Reset..."));
-	gtk_container_set_border_width (GTK_CONTAINER (button), 
-					GLADE_GENERIC_BORDER_WIDTH);
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
-	g_signal_connect (G_OBJECT (button), "clicked",
-			  G_CALLBACK (glade_editor_on_reset_click), editor);
-
-	
 	/* Documentation button
 	 */
 	editor->info_button = glade_editor_create_info_button ();
@@ -338,6 +359,14 @@ glade_editor_init (GladeEditor *editor)
 	g_signal_connect (G_OBJECT (editor->info_button), "clicked",
 			  G_CALLBACK (glade_editor_on_docs_click), editor);
 
+	/* Reset button
+	 */
+	button = glade_editor_create_reset_button ();
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (glade_editor_on_reset_click), editor);
+
+	
 	gtk_widget_show_all (GTK_WIDGET (editor));
 	if (editor->show_info)
 		gtk_widget_show (editor->info_button);

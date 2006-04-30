@@ -141,8 +141,9 @@ gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
 	guint merge_id;
 
 	/* Need to check if it's already loaded */
-	if (g_queue_find_custom(gpw->priv->recent_projects, project_path, gpw_rp_cmp))
-		return;
+	if ((action = g_queue_find_custom (gpw->priv->recent_projects,
+					   project_path, gpw_rp_cmp)))
+		gpw_recent_project_delete (action, gpw);
 	
 	label = glade_util_duplicate_underscores (project_path);
 	if (!label) return;
@@ -590,9 +591,9 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
  
  	if (!path)
  		return;
-	
-	ch = strrchr (path, '/');
-	if (!strchr (ch, '.')) 
+
+	ch = strrchr (path, '.');
+	if (!ch || strchr (ch, G_DIR_SEPARATOR))
 		real_path = g_strconcat (path, ".glade", NULL);
 	else 
 		real_path = g_strdup (path);
@@ -1316,6 +1317,7 @@ static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 	
 	gtk_show_about_dialog (GTK_WINDOW (gpw->priv->window),
 			       "name",  PACKAGE_NAME,
+			       "logo-icon-name", "glade-3",
 			       "authors", authors,
 			       "translator-credits", translators,
 			       "comments", comments,
@@ -1655,14 +1657,11 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *toolbar;
 	GtkWidget *project_view;
 	GtkWidget *statusbar;
-	gchar *filename;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_move (GTK_WINDOW (app), 0, 0);
 	gtk_window_set_default_size (GTK_WINDOW (app), 300, 450);
-	filename = g_build_filename (glade_icon_dir, "glade-3.png", NULL);
-	gtk_window_set_default_icon_from_file (filename, NULL);
-	g_free (filename);
+
 	gpw->priv->window = app;
 
 	vbox = gtk_vbox_new (FALSE, 0);

@@ -10,8 +10,20 @@ DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 desktopdir = $(datadir)/applications
 desktop_DATA = $(DESKTOP_FILES)
 
-appicondir = $(datadir)/pixmaps
+appicondir = $(datadir)/icons/hicolor/48x48/apps
 appicon_DATA = glade-3.png
+
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
+
+install-data-hook:
+	@-if test -z "$(DESTDIR)"; then \
+		echo "Updating Gtk icon cache."; \
+                $(gtk_update_icon_cache); \
+	else \
+		echo "*** Icon cache not updated.  After install, run this:"; \
+                echo "***   $(gtk_update_icon_cache)"; \
+	fi
+
 
 EXTRA_DIST = \
 	glade-3.desktop.in \
