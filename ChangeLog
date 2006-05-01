@@ -5,14 +5,18 @@
 
 	* src/glade-editor.c: Fixed a visibility bug on the class & name entries.
 
-	* src/glade-devhelp.[ch], src/glade-utils.c, src/glade-project-window.c: 
+	* src/glade-devhelp.[ch], src/glade-utils.c: 
 	  o Added navigational buttons (forward, back) 
 	  o Gained realestate by hiding the notebook tabs and putting search &
 	    document buttons along side the navigational buttons.
 	  o Added api to return a list of buttons in the hbox
+
+	* src/glade-project-window.c:
 	  o Get the buttons and put them in a size group with the expand/collapse
 	    buttons (to align the plugin buttons in the project window).
-
+	  o Now default on the gtk+ reference manual and put a "documentation" 
+	    help menu item pointing to the glade builder documentaiton.
+	
 2006-04-30  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* Glade now installs theme friendly icons (GNOME Goal #2)

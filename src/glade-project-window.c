@@ -991,7 +991,7 @@ gpw_doc_search_cb (GladeEditor        *editor,
 static void
 gpw_create_editor (GladeProjectWindow *gpw)
 {
-	GtkWidget *editor_item, *editor_item2;
+	GtkWidget *editor_item, *help_item, *docs_item;
 
 	g_return_if_fail (gpw != NULL);
 
@@ -1020,8 +1020,12 @@ gpw_create_editor (GladeProjectWindow *gpw)
 
 	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
 						 "/MenuBar/ViewMenu/PropertyEditorHelp");
-	editor_item2 = gtk_ui_manager_get_widget (gpw->priv->ui,
-						  "/MenuBar/ViewMenu/HelpWindow");
+	help_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/HelpWindow");
+
+	docs_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+					       "/MenuBar/HelpMenu/Manual");
+
 	if (glade_util_have_devhelp())
 	{
 
@@ -1031,14 +1035,15 @@ gpw_create_editor (GladeProjectWindow *gpw)
 				  G_CALLBACK (gpw_doc_search_cb), gpw);
 
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item2), TRUE);
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (help_item), TRUE);
 	}
 	else 
 	{
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item2), FALSE);
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (help_item), FALSE);
 		gtk_widget_set_sensitive (editor_item, FALSE);
-		gtk_widget_set_sensitive (editor_item2, FALSE);
+		gtk_widget_set_sensitive (help_item, FALSE);
+		gtk_widget_set_sensitive (docs_item, FALSE);
 	}
 }
 
@@ -1273,8 +1278,23 @@ gpw_toggle_help_window_cb (GtkAction *action, GladeProjectWindow *gpw)
 		gtk_widget_hide (gpw->priv->devhelp);
 }
 
+static void 
+gpw_documentation_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	GtkWidget *item = 
+		gtk_ui_manager_get_widget (gpw->priv->ui,
+					   "/MenuBar/ViewMenu/HelpWindow");
 
-static void gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+	gtk_widget_show (gpw->priv->devhelp);
+	gtk_paned_set_position (GTK_PANED (gpw->priv->devhelp_paned), 0);
+
+	glade_util_search_devhelp (gpw->priv->devhelp, "gladeui", NULL, NULL);
+}
+
+static void 
+gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gchar *authors[] =
 		{ "Joaquin Cuenca Abela <e98cuenc@yahoo.com>",
@@ -1367,6 +1387,8 @@ static const gchar *ui_info =
 "      <placeholder name='ProjectsListPlaceholder'/>\n"
 "    </menu>\n"
 "    <menu action='HelpMenu'>\n"
+"      <menuitem action='Manual'/>\n"
+"      <separator/>\n"
 "      <menuitem action='About'/>\n"
 "    </menu>\n"
 "  </menubar>\n"
@@ -1388,22 +1410,25 @@ static GtkActionEntry static_entries[] = {
 	
 	/* FileMenu */
 	{ "New", GTK_STOCK_NEW, "_New", "<control>N",
-	"Create a new project file", G_CALLBACK (gpw_new_cb) },
+	  "Create a new project file", G_CALLBACK (gpw_new_cb) },
 	
 	{ "Open", GTK_STOCK_OPEN, "_Open","<control>O",
-	"Open a project file", G_CALLBACK (gpw_open_cb) },
+	  "Open a project file", G_CALLBACK (gpw_open_cb) },
 	
 	{ "Recents", NULL, "Recent Projects", NULL, NULL },
 	
 	{ "ClearRecents", GTK_STOCK_CLEAR, "Clear Recent Projects", NULL,
-	NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
-
+	  NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
+	
 	{ "Quit", GTK_STOCK_QUIT, "_Quit", "<control>Q",
-	"Quit the program", G_CALLBACK (gpw_quit_cb) },
-
+	  "Quit the program", G_CALLBACK (gpw_quit_cb) },
+	
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, "_About", NULL,
-	"Shows the About Dialog", G_CALLBACK (gpw_about_cb) }
+	  "Shows the About Dialog", G_CALLBACK (gpw_about_cb) },
+
+	{ "Manual", NULL, "_Documentation", NULL,
+	  "Documentation about Glade", G_CALLBACK (gpw_documentation_cb) }
 };
 static guint n_static_entries = G_N_ELEMENTS (static_entries);
 
@@ -1411,32 +1436,32 @@ static GtkActionEntry project_entries[] = {
 
 	/* FileMenu */
 	{ "Save", GTK_STOCK_SAVE, "_Save","<control>S",
-	"Save the current project file", G_CALLBACK (gpw_save_cb) },
+	  "Save the current project file", G_CALLBACK (gpw_save_cb) },
 	
 	{ "SaveAs", GTK_STOCK_SAVE_AS, "Save _As...", NULL,
-	"Save the current project file with a different name", G_CALLBACK (gpw_save_as_cb) },
+	  "Save the current project file with a different name", G_CALLBACK (gpw_save_as_cb) },
 	
 	{ "Close", GTK_STOCK_CLOSE, "_Close", "<control>W",
-	"Close the current project file", G_CALLBACK (gpw_close_cb) },
+	  "Close the current project file", G_CALLBACK (gpw_close_cb) },
 
 	/* EditMenu */	
 	{ "Undo", GTK_STOCK_UNDO, "_Undo", "<control>Z",
-	"Undo the last action",	G_CALLBACK (gpw_undo_cb) },
+	  "Undo the last action",	G_CALLBACK (gpw_undo_cb) },
 	
 	{ "Redo", GTK_STOCK_REDO, "_Redo", "<control>R",
-	"Redo the last action",	G_CALLBACK (gpw_redo_cb) },
+	  "Redo the last action",	G_CALLBACK (gpw_redo_cb) },
 	
 	{ "Cut", GTK_STOCK_CUT, "C_ut", NULL,
-	"Cut the selection", G_CALLBACK (gpw_cut_cb) },
+	  "Cut the selection", G_CALLBACK (gpw_cut_cb) },
 	
 	{ "Copy", GTK_STOCK_COPY, "_Copy", NULL,
-	"Copy the selection", G_CALLBACK (gpw_copy_cb) },
+	  "Copy the selection", G_CALLBACK (gpw_copy_cb) },
 	
 	{ "Paste", GTK_STOCK_PASTE, "_Paste", NULL,
-	"Paste the clipboard", G_CALLBACK (gpw_paste_cb) },
+	  "Paste the clipboard", G_CALLBACK (gpw_paste_cb) },
 	
 	{ "Delete", GTK_STOCK_DELETE, "_Delete", "Delete",
-	"Delete the selection", G_CALLBACK (gpw_delete_cb) }
+	  "Delete the selection", G_CALLBACK (gpw_delete_cb) }
 };
 static guint n_project_entries = G_N_ELEMENTS (project_entries);
 
@@ -1646,7 +1671,7 @@ initiate_devhelp_search (GladeProjectWindow *gpw)
 {
 	/* Search after adding to heirarchy */
 	glade_util_search_devhelp (gpw->priv->devhelp, 
-				   "gladeui", NULL, NULL);
+				   "gtk", NULL, NULL);
 	return FALSE;
 }
 
