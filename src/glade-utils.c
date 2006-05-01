@@ -1613,7 +1613,8 @@ glade_util_file_is_writeable (const gchar *path)
  */
 static GModule *devhelp_mod = NULL;
 static GtkWidget *(* glade_dh_widget_new)    (void) = NULL;
-static void       (* glade_dh_widget_search) (GtkWidget   *, const gchar *) = NULL;
+static GList     *(* glade_dh_get_hbuttons)  (GtkWidget *) = NULL;
+static void       (* glade_dh_widget_search) (GtkWidget *, const gchar *) = NULL;
 
 /**
  * glade_util_load_devhelp:
@@ -1661,6 +1662,19 @@ glade_util_load_devhelp (void)
 				devhelp_mod = NULL;
 				return NULL;
 			}
+
+			if (!g_module_symbol (devhelp_mod,
+					      "glade_dh_get_hbuttons",
+					      (gpointer)&glade_dh_get_hbuttons))
+			{
+				g_critical ("Failed to load 'glade_dh_get_hbuttons' "
+					    "symbol from the devhelp module (%s)",
+					    g_module_error ());
+
+				g_module_close (devhelp_mod);
+				devhelp_mod = NULL;
+				return NULL;
+			}
 		
 			/* Load the widget */
 			widget = glade_dh_widget_new ();
@@ -1670,6 +1684,25 @@ glade_util_load_devhelp (void)
 
 	return widget;
 }
+
+/**
+ * glade_util_have_devhelp:
+ * @widget: The devhelp widget
+ *
+ * Used to align the buttons with the expand/colapse buttons
+ *
+ * Returns: a list of buttons in the hbox
+ */
+GList *
+glade_util_get_hbuttons (GtkWidget *devhelp)
+{
+
+	g_return_if_fail (glade_util_have_devhelp ());
+
+
+	return glade_dh_get_hbuttons (devhelp);
+}
+
 
 /**
  * glade_util_have_devhelp:

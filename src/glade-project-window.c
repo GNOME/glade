@@ -66,6 +66,9 @@ struct _GladeProjectWindowPriv {
 	GtkWindow *editor_window;      /* The window that will contain the editor */
 	GtkWidget *devhelp;            /* The embedded devhelp widget */
 	GtkWidget *devhelp_paned;      /* A handle to control the devhelp paned window. */
+	GtkWidget *expand;             /* Expand/Collapse the treeview */
+	GtkWidget *collapse;
+
 };
 
 #define      WINDOW_TITLE                   (_("Glade-3 GUI Builder"))
@@ -141,10 +144,10 @@ gpw_recent_project_add (GladeProjectWindow *gpw, const gchar *project_path)
 	guint merge_id;
 
 	/* Need to check if it's already loaded */
-	if ((action = g_queue_find_custom (gpw->priv->recent_projects,
-					   project_path, gpw_rp_cmp)))
-		gpw_recent_project_delete (action, gpw);
-	
+	if (g_queue_find_custom (gpw->priv->recent_projects,
+				 project_path, gpw_rp_cmp))
+		return;
+
 	label = glade_util_duplicate_underscores (project_path);
 	if (!label) return;
 	
@@ -1083,7 +1086,7 @@ gpw_expand_treeview (GtkButton *button, GtkTreeView *tree)
 static GtkWidget* 
 gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 {
-	GtkWidget *hbox, *vbox, *expand, *collapse;
+	GtkWidget *hbox, *vbox;
 	GladeProjectView *view;
 
 	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
@@ -1102,25 +1105,24 @@ gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
 
-
-	expand = gtk_button_new_with_mnemonic (_("E_xpand all"));
-	gtk_container_set_border_width (GTK_CONTAINER (expand), 
+	gpw->priv->expand = gtk_button_new_with_mnemonic (_("E_xpand all"));
+	gtk_container_set_border_width (GTK_CONTAINER (gpw->priv->expand), 
 					GLADE_GENERIC_BORDER_WIDTH);
 
-	collapse = gtk_button_new_with_mnemonic (_("_Collapse all"));
-	gtk_container_set_border_width (GTK_CONTAINER (collapse), 
+	gpw->priv->collapse = gtk_button_new_with_mnemonic (_("_Collapse all"));
+	gtk_container_set_border_width (GTK_CONTAINER (gpw->priv->collapse), 
 					GLADE_GENERIC_BORDER_WIDTH);
 
-	gtk_box_pack_start (GTK_BOX (hbox), expand, FALSE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), collapse, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), gpw->priv->expand, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), gpw->priv->collapse, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (view), TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-	g_signal_connect (G_OBJECT (expand), "clicked",
+	g_signal_connect (G_OBJECT (gpw->priv->expand), "clicked",
 			  G_CALLBACK (gpw_expand_treeview), 
 			  view->tree_view);
 
-	g_signal_connect_swapped (G_OBJECT (collapse), "clicked",
+	g_signal_connect_swapped (G_OBJECT (gpw->priv->collapse), "clicked",
 				  G_CALLBACK (gtk_tree_view_collapse_all), 
 				  view->tree_view);
 
@@ -1678,6 +1680,10 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	if ((gpw->priv->devhelp = glade_util_load_devhelp ()) != NULL)
 	{
+		GtkSizeGroup *group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
+		GList        *devhelp_buttons, *list;
+
+
 		gpw->priv->devhelp_paned = gtk_hpaned_new();
 		gtk_paned_add1 (GTK_PANED (gpw->priv->devhelp_paned), 
 				project_view);
@@ -1686,6 +1692,14 @@ glade_project_window_create (GladeProjectWindow *gpw)
 		
 		gtk_box_pack_start (GTK_BOX (vbox), gpw->priv->devhelp_paned, 
 				    TRUE, TRUE, 0);
+
+		devhelp_buttons = glade_util_get_hbuttons (gpw->priv->devhelp);
+		for (list = devhelp_buttons; list; list = list->next)
+			gtk_size_group_add_widget (group, GTK_WIDGET (list->data));
+		
+		gtk_size_group_add_widget (group, gpw->priv->expand);
+		gtk_size_group_add_widget (group, gpw->priv->collapse);
+		g_list_free (devhelp_buttons);
 
 		g_idle_add ((GSourceFunc)initiate_devhelp_search, gpw);
 	}

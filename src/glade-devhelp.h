@@ -28,6 +28,7 @@ struct _GladeDhWidgetClass {
 GType            glade_dh_widget_get_type     (void) G_GNUC_CONST;
 
 GtkWidget *      glade_dh_widget_new          (void);
+GList     *      glade_dh_get_hbuttons        (GladeDhWidget *widget);
 void             glade_dh_widget_search       (GladeDhWidget *widget,
 					       const gchar   *str);
 

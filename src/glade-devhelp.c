@@ -30,6 +30,7 @@
 #include <devhelp/dh-search.h>
 #include <devhelp/dh-base.h>
 #include "glade-devhelp.h"
+#include "glade.h"
 
 struct _GladeDhWidgetPriv {
 	DhBase         *base;
@@ -43,6 +44,13 @@ struct _GladeDhWidgetPriv {
         GtkWidget      *book_tree;
 	GtkWidget      *search;
 
+	/* Notebook buttons in hbuttonbox */
+	GtkWidget      *html_button;
+	GtkWidget      *search_button;
+
+	/* Navigator buttons */
+	GtkWidget      *forward;
+	GtkWidget      *back;
 };
 
 static void       widget_class_init               (GladeDhWidgetClass   *klass);
@@ -69,7 +77,14 @@ static void       widget_html_open_new_tab_cb     (DhHtml               *html,
 static void       widget_open_new_tab             (GladeDhWidget        *widget,
 						   const gchar          *location);
 static DhHtml *   widget_get_active_html          (GladeDhWidget        *widget);
-
+static void       widget_go_forward               (GtkButton            *button,
+						   GladeDhWidget        *widget);
+static void       widget_go_back                  (GtkButton            *button,
+						   GladeDhWidget        *widget);
+static void       widget_document_page            (GtkButton            *button,
+						   GladeDhWidget        *widget);
+static void       widget_search_page              (GtkButton            *button,
+						   GladeDhWidget        *widget);
 
 static GtkVBoxClass *parent_class = NULL;
 
@@ -180,6 +195,47 @@ widget_html_switch_page_cb (GtkNotebook     *notebook,
 
 }
 
+typedef enum {
+	NAV_FORWARD,
+	NAV_BACK,
+	NAV_SEARCH,
+	NAV_DOCUMENT
+} NavButtonType;
+
+static GtkWidget *
+widget_create_nav_button (NavButtonType type)
+{
+	GtkWidget *image, *button, *align, *hbox;
+	gchar     *path;
+	
+
+	button = gtk_button_new ();
+
+	hbox   = gtk_hbox_new (FALSE, 0);
+
+	if (type == NAV_DOCUMENT) 
+	{
+		path = g_build_filename (glade_pixmaps_dir, "devhelp.png", NULL);
+		image  = gtk_image_new_from_file (path);
+	}
+	else
+		image  = gtk_image_new_from_stock 
+			(type == NAV_FORWARD ? GTK_STOCK_GO_FORWARD : 
+			 type == NAV_BACK ? GTK_STOCK_GO_BACK : GTK_STOCK_FIND, 
+			 GTK_ICON_SIZE_SMALL_TOOLBAR);
+	align  = gtk_alignment_new (0.5, 0.5, 0, 0);
+
+	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (align), hbox);
+
+	gtk_widget_show_all (align);
+
+	gtk_container_add (GTK_CONTAINER (button), align);
+	gtk_container_set_border_width (GTK_CONTAINER (button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+	return button;
+}
+
 static void
 widget_populate (GladeDhWidget *widget)
 {
@@ -187,32 +243,33 @@ widget_populate (GladeDhWidget *widget)
 	GtkWidget    *book_tree_sw, *book_and_search;
 	GNode        *contents_tree;
 	GList        *keywords;
+	GtkWidget    *hbox;
 
         priv = widget->priv;
 
 	/* Master notebook
 	 */
-
 	priv->control_notebook = gtk_notebook_new();
-
-	gtk_box_pack_start (GTK_BOX (widget), priv->control_notebook, TRUE, TRUE, 0);
+	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->control_notebook), FALSE);
+	gtk_container_set_border_width (GTK_CONTAINER (priv->control_notebook), 
+					GLADE_GENERIC_BORDER_WIDTH);
 
 	/* HTML tabs notebook. */
  	priv->html_notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->html_notebook), FALSE);
 
- 	g_signal_connect (priv->html_notebook,
-			  "switch-page",
+ 	g_signal_connect (priv->html_notebook, "switch-page",
 			  G_CALLBACK (widget_html_switch_page_cb),
 			  widget);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (priv->control_notebook),
-				  priv->html_notebook,
-				  gtk_label_new (_("Content")));
+				  priv->html_notebook, NULL);
 
 	
 	/* Book and search page */
 	book_and_search = gtk_hbox_new(FALSE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (book_and_search), 
+					GLADE_GENERIC_BORDER_WIDTH);
 
 	book_tree_sw = gtk_scrolled_window_new (NULL, NULL);
 
@@ -221,7 +278,6 @@ widget_populate (GladeDhWidget *widget)
 					GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (book_tree_sw),
 					     GTK_SHADOW_IN);
-	gtk_container_set_border_width (GTK_CONTAINER (book_tree_sw), 2);
 
 	contents_tree = dh_base_get_book_tree (priv->base);
 	keywords = dh_base_get_keywords (priv->base);
@@ -231,8 +287,7 @@ widget_populate (GladeDhWidget *widget)
 	gtk_container_add (GTK_CONTAINER (book_tree_sw),
 			   priv->book_tree);
 
-	g_signal_connect (priv->book_tree,
-			  "link-selected",
+	g_signal_connect (priv->book_tree, "link-selected",
 			  G_CALLBACK (widget_tree_link_selected_cb),
 			  widget);
 
@@ -241,8 +296,7 @@ widget_populate (GladeDhWidget *widget)
 
 
 	priv->search = dh_search_new (keywords);
-	g_signal_connect (priv->search,
-			  "link-selected",
+	g_signal_connect (priv->search, "link-selected",
 			  G_CALLBACK (widget_search_link_selected_cb),
 			  widget);
 
@@ -250,34 +304,61 @@ widget_populate (GladeDhWidget *widget)
 			    FALSE, FALSE, 0);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (priv->control_notebook),
-				  book_and_search,
-				  gtk_label_new (_("Contents and Search")));
+				  book_and_search, NULL);
 
 	/* Connect after we're all built
 	 */
-	g_signal_connect (priv->control_notebook,
-			  "switch-page",
+	g_signal_connect (priv->control_notebook, "switch-page",
 			  G_CALLBACK (widget_control_switch_page_cb),
 			  widget);
 
-	g_signal_connect_after (priv->control_notebook,
-				"switch-page",
+	g_signal_connect_after (priv->control_notebook,	"switch-page",
 				G_CALLBACK (widget_control_after_switch_page_cb),
 				widget);
+
+
+	/* Build navigator buttons
+	 */
+	hbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
+
+	priv->forward = widget_create_nav_button (NAV_FORWARD);
+	g_signal_connect (G_OBJECT (priv->forward), "clicked",
+			  G_CALLBACK (widget_go_forward), widget);
+			  
+	priv->back = widget_create_nav_button (NAV_BACK);
+	g_signal_connect (G_OBJECT (priv->back), "clicked",
+			  G_CALLBACK (widget_go_back), widget);
+
+	priv->html_button = widget_create_nav_button (NAV_DOCUMENT);	
+	g_signal_connect (G_OBJECT (priv->html_button), "clicked",
+			  G_CALLBACK (widget_document_page), widget);
+
+	priv->search_button = widget_create_nav_button (NAV_SEARCH);
+	g_signal_connect (G_OBJECT (priv->search_button), "clicked",
+			  G_CALLBACK (widget_search_page), widget);
+
+
+	gtk_box_pack_start (GTK_BOX (hbox), priv->back, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->forward, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->html_button, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->search_button, FALSE, TRUE, 0);
+
+	gtk_box_pack_start (GTK_BOX (widget), priv->control_notebook, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (widget), hbox, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (GTK_WIDGET (widget));
 }
 
-#if FORWARD_BACK_CODE_HERE
-
 static void
-window_activate_back (GtkAction *action, GladeDhWidget *window)
+widget_go_back (GtkButton     *button,
+		GladeDhWidget *widget)
 {
 	GladeDhWidgetPriv *priv;
-	DhHtml       *html;
-	GtkWidget    *frame;
+	DhHtml            *html;
+	GtkWidget         *frame;
 
-	priv = window->priv;
+	priv = widget->priv;
 
 	frame = gtk_notebook_get_nth_page (
 		GTK_NOTEBOOK (priv->html_notebook),
@@ -288,24 +369,39 @@ window_activate_back (GtkAction *action, GladeDhWidget *window)
 }
 
 static void
-window_activate_forward (GtkAction *action,
-			 GladeDhWidget  *window)
+widget_go_forward (GtkButton     *button,
+		   GladeDhWidget *widget)
 {
 	GladeDhWidgetPriv *priv;
-	DhHtml       *html;
-	GtkWidget    *frame;
+	DhHtml            *html;
+	GtkWidget         *frame;
 
-	priv = window->priv;
+	priv = widget->priv;
 
 	frame = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->html_notebook),
-	                                   gtk_notebook_get_current_page (GTK_NOTEBOOK (priv->html_notebook))
-	                                  );
+					   gtk_notebook_get_current_page
+					   (GTK_NOTEBOOK (priv->html_notebook)));
 	html = g_object_get_data (G_OBJECT (frame), "html");
 
 	dh_html_go_forward (html);
 }
 
-#endif
+static void
+widget_search_page (GtkButton     *button,
+		    GladeDhWidget *widget)
+{
+	gtk_notebook_set_current_page
+		(GTK_NOTEBOOK (widget->priv->control_notebook), 1);
+}
+
+static void
+widget_document_page (GtkButton     *button,
+		      GladeDhWidget *widget)
+{
+	gtk_notebook_set_current_page
+		(GTK_NOTEBOOK (widget->priv->control_notebook), 0);
+}
+
 
 static void
 widget_tree_link_selected_cb (GObject       *ignored,
@@ -359,10 +455,10 @@ widget_check_history (GladeDhWidget *widget, DhHtml *html)
 
 	priv = widget->priv;
 
-	/* XXX Set sensitivity of "Back" button to the following: */
-	/* html ? dh_html_can_go_back (html) : FALSE (same for forward) */
-	
-	
+	gtk_widget_set_sensitive (priv->forward,
+				  html ? dh_html_can_go_forward (html) : FALSE);
+	gtk_widget_set_sensitive (priv->back,
+				  html ? dh_html_can_go_back (html) : FALSE);
 }
 
 static void
@@ -514,6 +610,24 @@ glade_dh_widget_search (GladeDhWidget *widget, const gchar *str)
 	dh_search_set_search_string (DH_SEARCH (priv->search), str);
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->control_notebook), 0);
+}
+
+GList *
+glade_dh_get_hbuttons (GladeDhWidget *widget)
+{
+	GList             *hbuttons = NULL;
+	GladeDhWidgetPriv *priv;
+
+	g_return_val_if_fail (GLADE_IS_DHWIDGET (widget), NULL);
+
+	priv = widget->priv;
+
+	hbuttons = g_list_prepend (hbuttons, priv->html_button);
+	hbuttons = g_list_prepend (hbuttons, priv->search_button);
+	hbuttons = g_list_prepend (hbuttons, priv->forward);
+	hbuttons = g_list_prepend (hbuttons, priv->back);
+
+	return hbuttons;
 }
 
 

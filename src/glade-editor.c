@@ -266,7 +266,7 @@ glade_editor_create_info_button (void)
 
 	button = gtk_button_new ();
 	hbox   = gtk_hbox_new (FALSE, 0);
-	label  = gtk_label_new_with_mnemonic ("_Documentation");
+	label  = gtk_label_new_with_mnemonic (_("_Documentation"));
 	image  = gtk_image_new_from_file (path);
 	align  = gtk_alignment_new (0.5, 0.5, 0, 0);
 
@@ -493,8 +493,10 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 	/* Name */
 	label = gtk_label_new (_("Name :"));
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
+	gtk_widget_show (label);
 
 	table->name_entry = gtk_entry_new ();
+	gtk_widget_show (table->name_entry);
 
 	g_signal_connect (G_OBJECT (table->name_entry), "activate",
 			  G_CALLBACK (glade_editor_widget_name_changed),
@@ -521,6 +523,9 @@ glade_editor_table_append_class_field (GladeEditorTable *table)
 	class_label = gtk_label_new (table->glade_widget_class->name);
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 	gtk_misc_set_alignment (GTK_MISC (class_label), 0.0, 0.0);
+
+	gtk_widget_show (label);
+	gtk_widget_show (class_label);
 
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, class_label, 1, table->rows);
@@ -694,7 +699,8 @@ glade_editor_load_page (GladeEditor          *editor,
 void
 glade_editor_update_widget_name (GladeEditor *editor)
 {
-	GladeEditorTable *table = glade_editor_get_table_from_class (editor, editor->loaded_class, FALSE);
+	GladeEditorTable *table = glade_editor_get_table_from_class
+		(editor, editor->loaded_class, TABLE_TYPE_GENERAL);
 
 	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
 	gtk_entry_set_text (GTK_ENTRY (table->name_entry), editor->loaded_widget->name);

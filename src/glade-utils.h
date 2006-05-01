@@ -142,6 +142,8 @@ void              glade_util_search_devhelp        (GtkWidget   *devhelp,
 						    const gchar *book,
 						    const gchar *page,
 						    const gchar *search);
+LIBGLADEUI_API
+GList            *glade_util_get_hbuttons          (GtkWidget *devhelp);
 
 G_END_DECLS
 
