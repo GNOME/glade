@@ -51,6 +51,9 @@ struct _GladeDhWidgetPriv {
 	/* Navigator buttons */
 	GtkWidget      *forward;
 	GtkWidget      *back;
+
+	/* Separator (for alignment purposes) */
+	GtkWidget      *separator;
 };
 
 static void       widget_class_init               (GladeDhWidgetClass   *klass);
@@ -205,11 +208,21 @@ typedef enum {
 static GtkWidget *
 widget_create_nav_button (NavButtonType type)
 {
-	GtkWidget *image, *button, *align, *hbox;
-	gchar     *path;
+	static GSList *group = NULL;
+	GtkWidget     *image, *button, *align, *hbox;
+	gchar         *path;
 	
+	if (type == NAV_DOCUMENT ||
+	    type == NAV_SEARCH)
+	{ 
+		button = gtk_radio_button_new (group);
+		group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
+	}
+	else
+	{
+		button = gtk_button_new ();
 
-	button = gtk_button_new ();
+	}
 
 	hbox   = gtk_hbox_new (FALSE, 0);
 
@@ -228,11 +241,13 @@ widget_create_nav_button (NavButtonType type)
 	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (align), hbox);
 
+	gtk_container_set_border_width (GTK_CONTAINER (button), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
 	gtk_widget_show_all (align);
 
 	gtk_container_add (GTK_CONTAINER (button), align);
-	gtk_container_set_border_width (GTK_CONTAINER (button), 
-					GLADE_GENERIC_BORDER_WIDTH);
+
 	return button;
 }
 
@@ -243,7 +258,7 @@ widget_populate (GladeDhWidget *widget)
 	GtkWidget    *book_tree_sw, *book_and_search;
 	GNode        *contents_tree;
 	GList        *keywords;
-	GtkWidget    *hbox;
+	GtkWidget    *hbox, *align, *w;
 
         priv = widget->priv;
 
@@ -319,8 +334,9 @@ widget_populate (GladeDhWidget *widget)
 
 	/* Build navigator buttons
 	 */
-	hbox = gtk_hbutton_box_new ();
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_START);
+	hbox = gtk_hbox_new (FALSE, 0);
+	align = gtk_alignment_new  (0, 0.5, 0, 0);
+	gtk_container_add (GTK_CONTAINER (align), hbox);
 
 	priv->forward = widget_create_nav_button (NAV_FORWARD);
 	g_signal_connect (G_OBJECT (priv->forward), "clicked",
@@ -339,13 +355,21 @@ widget_populate (GladeDhWidget *widget)
 			  G_CALLBACK (widget_search_page), widget);
 
 
+	/* Put it in a container for border width */
+	w = gtk_vseparator_new ();
+	priv->separator = gtk_alignment_new  (0.5, 0.5, 1.0, 1.0);
+	gtk_container_add (GTK_CONTAINER (priv->separator), w);
+	gtk_container_set_border_width (GTK_CONTAINER (priv->separator), 
+					GLADE_GENERIC_BORDER_WIDTH);
+
 	gtk_box_pack_start (GTK_BOX (hbox), priv->back, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), priv->forward, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->separator, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), priv->html_button, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), priv->search_button, FALSE, TRUE, 0);
 
+	gtk_box_pack_start (GTK_BOX (widget), align, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (widget), priv->control_notebook, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (widget), hbox, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (GTK_WIDGET (widget));
 }
@@ -624,6 +648,7 @@ glade_dh_get_hbuttons (GladeDhWidget *widget)
 
 	hbuttons = g_list_prepend (hbuttons, priv->html_button);
 	hbuttons = g_list_prepend (hbuttons, priv->search_button);
+	hbuttons = g_list_prepend (hbuttons, priv->separator);
 	hbuttons = g_list_prepend (hbuttons, priv->forward);
 	hbuttons = g_list_prepend (hbuttons, priv->back);
 

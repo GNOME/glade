@@ -1678,6 +1678,9 @@ glade_util_load_devhelp (void)
 		
 			/* Load the widget */
 			widget = glade_dh_widget_new ();
+		} else {
+			g_critical ("Failed to load module %s (%s)",
+				    path, g_module_error ());
 		}
 		g_free (path);
 	}
@@ -1697,7 +1700,7 @@ GList *
 glade_util_get_hbuttons (GtkWidget *devhelp)
 {
 
-	g_return_if_fail (glade_util_have_devhelp ());
+	g_return_val_if_fail (glade_util_have_devhelp (), NULL);
 
 
 	return glade_dh_get_hbuttons (devhelp);
