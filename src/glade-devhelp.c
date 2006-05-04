@@ -371,6 +371,8 @@ widget_populate (GladeDhWidget *widget)
 	gtk_box_pack_start (GTK_BOX (widget), align, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (widget), priv->control_notebook, TRUE, TRUE, 0);
 
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->html_button), TRUE);
+
 	gtk_widget_show_all (GTK_WIDGET (widget));
 }
 
@@ -634,6 +636,7 @@ glade_dh_widget_search (GladeDhWidget *widget, const gchar *str)
 	dh_search_set_search_string (DH_SEARCH (priv->search), str);
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->control_notebook), 0);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->html_button), TRUE);
 }
 
 GList *

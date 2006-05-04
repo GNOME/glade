@@ -140,6 +140,8 @@ glade_editor_property_load
 glade_editor_property_load_by_widget
 glade_editor_property_supported
 glade_editor_property_new_from_widget
+glade_editor_property_hide_info
+glade_editor_property_show_info
 <SUBSECTION Standard>
 GLADE_EDITOR_PROPERTY
 GLADE_IS_EDITOR_PROPERTY
@@ -160,6 +162,10 @@ glade_editor_load_widget
 glade_editor_refresh
 glade_editor_update_widget_name
 glade_editor_query_dialog
+glade_editor_show_info
+glade_editor_hide_info
+glade_editor_show_context_info
+glade_editor_hide_context_info
 <SUBSECTION Standard>
 GLADE_EDITOR
 GLADE_IS_EDITOR
@@ -319,6 +325,8 @@ glade_property_class_match
 glade_property_class_void_value
 glade_property_class_atk_realname
 glade_property_class_list_atk_relations
+<SUBSECTION Private>
+GPC_PROPERTY_NAMELEN
 <SUBSECTION Standard>
 GLADE_PROPERTY_CLASS
 GLADE_IS_PROPERTY_CLASS
@@ -576,6 +584,10 @@ glade_util_copy_file
 glade_util_file_is_writeable
 glade_util_load_library
 glade_util_class_implements_interface
+glade_util_load_devhelp
+glade_util_have_devhelp
+glade_util_search_devhelp
+glade_util_get_devhelp_hbuttons
 </SECTION>
 
 

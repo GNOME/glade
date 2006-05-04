@@ -991,7 +991,7 @@ gpw_doc_search_cb (GladeEditor        *editor,
 static void
 gpw_create_editor (GladeProjectWindow *gpw)
 {
-	GtkWidget *editor_item, *help_item, *docs_item;
+	GtkWidget *editor_item;
 
 	g_return_if_fail (gpw != NULL);
 
@@ -1018,33 +1018,6 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), TRUE);
 
 
-	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						 "/MenuBar/ViewMenu/PropertyEditorHelp");
-	help_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-						 "/MenuBar/ViewMenu/HelpWindow");
-
-	docs_item = gtk_ui_manager_get_widget (gpw->priv->ui,
-					       "/MenuBar/HelpMenu/Manual");
-
-	if (glade_util_have_devhelp())
-	{
-
-		glade_editor_show_info (glade_app_get_editor ());
-		glade_editor_hide_context_info (glade_app_get_editor ());
-		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
-				  G_CALLBACK (gpw_doc_search_cb), gpw);
-
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (help_item), TRUE);
-	}
-	else 
-	{
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (help_item), FALSE);
-		gtk_widget_set_sensitive (editor_item, FALSE);
-		gtk_widget_set_sensitive (help_item, FALSE);
-		gtk_widget_set_sensitive (docs_item, FALSE);
-	}
 }
 
 static void
@@ -1666,15 +1639,6 @@ gpw_delete_event (GtkWindow *w, GdkEvent *event, GladeProjectWindow *gpw)
 	return TRUE;	
 }
 
-gboolean
-initiate_devhelp_search (GladeProjectWindow *gpw)
-{
-	/* Search after adding to heirarchy */
-	glade_util_search_devhelp (gpw->priv->devhelp, 
-				   "gtk", NULL, NULL);
-	return FALSE;
-}
-
 static void
 glade_project_window_create (GladeProjectWindow *gpw)
 {
@@ -1684,6 +1648,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *toolbar;
 	GtkWidget *project_view;
 	GtkWidget *statusbar;
+	GtkWidget *editor_item, *help_item, *docs_item;
 
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_move (GTK_WINDOW (app), 0, 0);
@@ -1700,16 +1665,31 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	project_view = gpw_create_widget_tree_contents (gpw);
 	statusbar = gpw_construct_statusbar (gpw);
 
+	gtk_widget_show (menubar);
+	gtk_widget_show (toolbar);
+	gtk_widget_show_all (project_view);
+	gtk_widget_show (statusbar);
+
 	gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
+
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditorHelp");
+	help_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+					       "/MenuBar/ViewMenu/HelpWindow");
+	docs_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+					       "/MenuBar/HelpMenu/Manual");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (help_item), FALSE);
 
 	if ((gpw->priv->devhelp = glade_util_load_devhelp ()) != NULL)
 	{
 		GtkSizeGroup *group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 		GList        *devhelp_buttons, *list;
 
-
 		gpw->priv->devhelp_paned = gtk_hpaned_new();
+		gtk_widget_show (gpw->priv->devhelp_paned);
+
 		gtk_paned_add1 (GTK_PANED (gpw->priv->devhelp_paned), 
 				project_view);
 		gtk_paned_add2 (GTK_PANED (gpw->priv->devhelp_paned), 
@@ -1718,18 +1698,33 @@ glade_project_window_create (GladeProjectWindow *gpw)
 		gtk_box_pack_start (GTK_BOX (vbox), gpw->priv->devhelp_paned, 
 				    TRUE, TRUE, 0);
 
-		devhelp_buttons = glade_util_get_hbuttons (gpw->priv->devhelp);
+		devhelp_buttons = glade_util_get_devhelp_hbuttons (gpw->priv->devhelp);
 		for (list = devhelp_buttons; list; list = list->next)
 			gtk_size_group_add_widget (group, GTK_WIDGET (list->data));
 		
 		gtk_size_group_add_widget (group, gpw->priv->expand);
 		gtk_size_group_add_widget (group, gpw->priv->collapse);
+		g_object_unref (G_OBJECT (group));
 		g_list_free (devhelp_buttons);
 
-		g_idle_add ((GSourceFunc)initiate_devhelp_search, gpw);
+		glade_editor_show_info (glade_app_get_editor ());
+		glade_editor_hide_context_info (glade_app_get_editor ());
+		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
+				  G_CALLBACK (gpw_doc_search_cb), gpw);
+
+		/* Put a decent default page */
+		glade_util_search_devhelp (gpw->priv->devhelp, "gtk", NULL, NULL);
+		gtk_widget_hide (gpw->priv->devhelp);
 	}
 	else
+	{
+
+		gtk_widget_set_sensitive (editor_item, FALSE);
+		gtk_widget_set_sensitive (help_item, FALSE);
+		gtk_widget_set_sensitive (docs_item, FALSE);
+
 		gtk_box_pack_start (GTK_BOX (vbox), project_view, TRUE, TRUE, 0);
+	}
 
 	gtk_box_pack_end (GTK_BOX (vbox), statusbar, FALSE, TRUE, 0);
 		
@@ -1904,7 +1899,7 @@ glade_project_window_update_ui (GladeApp *app)
 void
 glade_project_window_show_all (GladeProjectWindow *gpw)
 {
-	gtk_widget_show_all (gpw->priv->window);
+	gtk_widget_show (gpw->priv->window);
 	gpw_show_palette (gpw);
 	gpw_show_editor (GLADE_APP (gpw), FALSE);
 }
@@ -2000,6 +1995,5 @@ glade_project_window_new (void)
 	g_signal_connect (G_OBJECT (glade_app_get_clipboard ()), "notify::has-selection",
 			  G_CALLBACK (gpw_clipboard_notify_handler_cb),
 			  gpw);
-
 	return gpw;
 }

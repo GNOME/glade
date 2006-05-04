@@ -1,3 +1,22 @@
+2006-05-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* doc/gladeui-sections.txt: updated.
+
+	* doc/Makefile.am: Ignome glade-devhelp.h
+
+	* src/glade-devhelp.c: Fixed glitch with radio button notebook
+	  tab emulator.
+
+	* src/glade-editor-property.c: Fixed invisible check buttons for 
+	  optional properties
+
+	* src/glade-project-window.c: Moved the devhelp creating code into
+	  glade_project_window_create() where it belongs, now devhelp is
+	  invisible by default.
+
+	* src/glade-utils.c: 
+	  glade_util_get_hbuttons --> glade_util_get_devhelp_hbuttons.
+
 2006-05-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/gladeui-docs.sgml: actually add the "abstract" section.

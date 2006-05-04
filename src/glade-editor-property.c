@@ -317,6 +317,7 @@ glade_editor_property_constructor (GType                  type,
 	if (eprop->class->optional)
 	{
 		eprop->check = gtk_check_button_new ();
+		gtk_widget_show (eprop->check);
 		gtk_box_pack_start (GTK_BOX (eprop), eprop->check, FALSE, FALSE, 0);
 		g_signal_connect (G_OBJECT (eprop->check), "toggled", 
 				  G_CALLBACK (glade_editor_property_enabled_toggled_cb), eprop);

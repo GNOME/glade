@@ -1689,7 +1689,7 @@ glade_util_load_devhelp (void)
 }
 
 /**
- * glade_util_have_devhelp:
+ * glade_util_get_devhelp_hbuttons:
  * @widget: The devhelp widget
  *
  * Used to align the buttons with the expand/colapse buttons
@@ -1697,7 +1697,7 @@ glade_util_load_devhelp (void)
  * Returns: a list of buttons in the hbox
  */
 GList *
-glade_util_get_hbuttons (GtkWidget *devhelp)
+glade_util_get_devhelp_hbuttons (GtkWidget *devhelp)
 {
 
 	g_return_val_if_fail (glade_util_have_devhelp (), NULL);
