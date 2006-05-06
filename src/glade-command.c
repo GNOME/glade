@@ -55,8 +55,9 @@ typedef struct {
 	GladeWidget      *parent;
 	GladeProject     *project;
 	GladePlaceholder *placeholder;
+	gboolean         *props_recorded;
 	GList            *pack_props;
-	gulong		 handler_id;
+	gulong            handler_id;
 } CommandData;
 
 static GObjectClass *parent_class = NULL;
@@ -778,7 +779,6 @@ typedef struct {
 	GList            *widgets;
 	gboolean          create;
 	gboolean          from_clipboard;
-	gboolean          props_recorded;
 } GladeCommandCreateDelete;
 
 GLADE_MAKE_COMMAND (GladeCommandCreateDelete, glade_command_create_delete);
@@ -872,7 +872,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 				g_value_unset (&value);
 			}
 				
-			if (me->props_recorded == FALSE) 
+			if (cdata->props_recorded == FALSE) 
 			{
 				/* Save the packing properties after the initial creation.
 				 * (this will be the defaults returned by the container
@@ -890,7 +890,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 
 				/* Mark the properties as recorded
 				 */
-				me->props_recorded = TRUE;
+				cdata->props_recorded = TRUE;
 			}
 
 		}
@@ -1050,8 +1050,6 @@ glade_command_delete (GList *widgets)
 	me->create         = FALSE;
 	me->from_clipboard = 
 		(g_list_find (clipboard->selection, widgets->data) != NULL);
-	me->props_recorded = TRUE; // Dont record props in create_execute
-
 
 	/* internal children cannot be deleted. Notify the user. */
 	for (list = widgets; list && list->data; list = list->next)
@@ -1088,6 +1086,10 @@ glade_command_delete (GList *widgets)
 		}
 		me->widgets = g_list_prepend (me->widgets, cdata);
 
+		/* Dont record props in create_execute (whether or not we actually
+		 * record any props here
+		 */
+		cdata->props_recorded = TRUE; 
 
 		/* Record packing props if not deleted from the clipboard */
 		if (me->from_clipboard == FALSE)
@@ -1205,7 +1207,6 @@ typedef struct {
 	GList                 *widgets;
 	GladeCutCopyPasteType  type;
 	gboolean               from_clipboard;
-	gboolean               props_recorded;
 } GladeCommandCutCopyPaste;
 
 
@@ -1239,14 +1240,20 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 				 * there is only one widget.
 				 */
 				if (cdata->placeholder)
+				{
 					glade_widget_replace
 						(cdata->parent,
 						 G_OBJECT (cdata->placeholder),
 						 cdata->widget->object);
+
+					/* Hmmm XXX should we record initial paste
+					 * packing props here ?
+					 */
+				}
 				else if (cdata->parent->manager != NULL) 
 					/* Paste at mouse position only once */
 					glade_fixed_manager_add_child (cdata->parent->manager, cdata->widget,
-								       me->props_recorded == FALSE);
+								       cdata->props_recorded == FALSE);
 				else
 				{
 					glade_widget_set_parent (cdata->widget, 
@@ -1274,7 +1281,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					g_value_unset (&value);
 				}
 				
-				if (me->props_recorded == FALSE) 
+				if (cdata->props_recorded == FALSE) 
 				{
 					/* Save the packing properties after the initial paste.
 					 * (this will be the defaults returned by the container
@@ -1283,16 +1290,18 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					 * Otherwise this recorded marker was set when cutting
 					 */
 					g_assert (cdata->pack_props == NULL);
-					for (l = cdata->widget->packing_properties; l; l = l->next)
+					for (l = cdata->widget->packing_properties; 
+					     l; l = l->next)
 						cdata->pack_props = 
-							g_list_prepend (cdata->pack_props,
-									glade_property_dup (GLADE_PROPERTY (l->data),
-											    cdata->widget));
-
+							g_list_prepend
+							(cdata->pack_props,
+							 glade_property_dup
+							 (GLADE_PROPERTY (l->data),
+							  cdata->widget));
 
 					/* Mark the properties as recorded
 					 */
-					me->props_recorded = TRUE;
+					cdata->props_recorded = TRUE;
 				}
 				
 				
@@ -1618,7 +1627,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			 * packing props when we undo a CUT command; so we have to 
 			 * mark them "recorded" too.
 			 */
-			me->props_recorded = TRUE;
+			cdata->props_recorded = TRUE;
 			for (l = cdata->widget->packing_properties; l; l = l->next)
 				cdata->pack_props = 
 					g_list_prepend (cdata->pack_props,

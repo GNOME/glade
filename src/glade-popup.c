@@ -268,6 +268,7 @@ static GtkWidget *
 glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 {
 	GtkWidget *popup_menu;
+	gboolean   sensitive;
 
 	popup_menu = gtk_menu_new ();
 
@@ -277,8 +278,11 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 				 glade_popup_cut_cb, widget);
 	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, TRUE,
 				 glade_popup_copy_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
+
+	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
+	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
 				 glade_popup_paste_cb, widget);
+
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 	glade_popup_append_item (popup_menu, GTK_STOCK_PROPERTIES, NULL, TRUE,
@@ -300,12 +304,14 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 static GtkWidget *
 glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 {
-	GtkWidget *popup_menu;
+	GtkWidget   *popup_menu;
 	GladeWidget *parent;
+	gboolean     sensitive;
 	
 	popup_menu = gtk_menu_new ();
 
-	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, TRUE,
+	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
+	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
 				 glade_popup_placeholder_paste_cb, placeholder);
 
 	if ((parent = glade_placeholder_get_parent(placeholder)) != NULL)

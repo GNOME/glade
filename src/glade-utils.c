@@ -1146,6 +1146,7 @@ glade_util_count_placeholders (GladeWidget *parent)
 		}
 		g_list_free (children);
 	}
+
 	return placeholders;
 }
 

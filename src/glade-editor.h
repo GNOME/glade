@@ -108,6 +108,9 @@ struct _GladeEditor
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
 	
+	GtkWidget *reset_button; /* The reset button
+				  */
+	
 	GtkWidget *info_button; /* The actual informational button
 				 */
 

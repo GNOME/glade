@@ -314,7 +314,7 @@ glade_editor_create_reset_button (void)
 static void
 glade_editor_init (GladeEditor *editor)
 {
-	GtkWidget *hbox, *button, *viewport;
+	GtkWidget *hbox, *viewport;
 
 	editor->notebook     = gtk_notebook_new ();
 	editor->vbox_widget  = glade_editor_notebook_page 
@@ -361,9 +361,9 @@ glade_editor_init (GladeEditor *editor)
 
 	/* Reset button
 	 */
-	button = glade_editor_create_reset_button ();
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 0);
-	g_signal_connect (G_OBJECT (button), "clicked",
+	editor->reset_button = glade_editor_create_reset_button ();
+	gtk_box_pack_start (GTK_BOX (hbox), editor->reset_button, FALSE, TRUE, 0);
+	g_signal_connect (G_OBJECT (editor->reset_button), "clicked",
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
 
 	
@@ -846,9 +846,14 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	/* we are just clearing, we are done */
 	if (widget == NULL)
 	{
+		gtk_widget_set_sensitive (editor->reset_button, FALSE);
+		gtk_widget_set_sensitive (editor->info_button, FALSE);
+
 		editor->loaded_widget = NULL;
 		return;
 	}
+	gtk_widget_set_sensitive (editor->reset_button, TRUE);
+	gtk_widget_set_sensitive (editor->info_button, TRUE);
 
 	editor->loading = TRUE;
 

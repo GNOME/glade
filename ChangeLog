@@ -1,3 +1,22 @@
+2006-05-05  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c: Fixed up GtkTable to not refresh placehlolders when 
+	  doing a glade_gtk_table_replace_child() replacing a placeholder with
+	  a GladeWidget (only the other way around), this way placeholders are
+	  preserved during the operation of pasting multiple widgets to a GtkTable
+	  (and each pasted widget has its own seperate place in the table).
+
+	* src/glade-command.c: Fixed "props recorded" marker to be marked on a per
+	  widget basis, this was causing only one widget in a list of pasted widgets
+	  to have its newly introspected packing props recorded (now they are all
+	  recorded)
+
+	* src/glade-popup.c: Create insensitive 'paste' items when the clipboard
+	  has no selection.
+
+	* src/glade-editor.[ch]: Insensitive "Documentation" and "Reset" buttons when
+	  no widget is loaded.
+	
 2006-05-03  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/gladeui-sections.txt: updated.
@@ -21,7 +40,7 @@
 
 	* doc/gladeui-docs.sgml: actually add the "abstract" section.
 
-	* src/glade-devhelp.c: Improved ui, but navigational buttons on top since
+	* src/glade-devhelp.c: Improved ui, put navigational buttons on top since
 	  I seem to intuitively always look there for them.
 
 	* src/glade-utils.c: 

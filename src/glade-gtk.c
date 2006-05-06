@@ -2186,11 +2186,13 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 void GLADEGTK_API
 glade_gtk_table_add_child (GObject *object, GObject *child)
 {
+	GList     *children, *list;
+	GtkWidget *placeholder = NULL;
+
 	g_return_if_fail (GTK_IS_TABLE (object));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-	
 	glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
@@ -2211,11 +2213,22 @@ glade_gtk_table_replace_child (GtkWidget *container,
 			       GtkWidget *new)
 {
 	g_return_if_fail (GTK_IS_TABLE (container));
+	g_return_if_fail (GTK_IS_WIDGET (current));
+	g_return_if_fail (GTK_IS_WIDGET (new));
 	
 	/* Chain Up */
 	glade_gtk_container_replace_child (container, current, new);
 
-	glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
+	/* If we are replacing a GladeWidget, we must refresh placeholders
+	 * because the widget may have spanned multiple rows/columns, we must
+	 * not do so in the case we are pasting multiple widgets into a table,
+	 * where destroying placeholders results in default packing properties
+	 * (since the remaining placeholder templates no longer exist, only the
+	 * first pasted widget would have proper packing properties).
+	 */
+	if (glade_widget_get_from_gobject (new) == FALSE)
+		glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
+
 }
 
 static void
