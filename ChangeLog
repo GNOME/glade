@@ -1,5 +1,20 @@
 2006-05-05  Tristan Van Berkom <tvb@gnome.org>
 
+	* doc/Makefile.am: Applied patch for bug 340692
+
+	* src/glade-command.c: glade_command_set_property (), return if
+	  the command doesnt change the property.
+
+	* src/glade-editor-property.c: GladeEPropText, if string property is NULL
+	  and we recieve "" from the entry, set the property to NULL, if we get
+	  NULL from the entry and the property is "", then set the property to
+	  "", otherwise set the property to the entry text. (this fixes 339832)
+
+	* src/glade-property.[ch]: constified GValue argument to 
+	  glade_property_equals_value ().
+
+2006-05-05  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-gtk.c: Fixed up GtkTable to not refresh placehlolders when 
 	  doing a glade_gtk_table_replace_child() replacing a placeholder with
 	  a GladeWidget (only the other way around), this way placeholders are

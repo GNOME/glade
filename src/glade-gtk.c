@@ -2186,9 +2186,6 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 void GLADEGTK_API
 glade_gtk_table_add_child (GObject *object, GObject *child)
 {
-	GList     *children, *list;
-	GtkWidget *placeholder = NULL;
-
 	g_return_if_fail (GTK_IS_TABLE (object));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 

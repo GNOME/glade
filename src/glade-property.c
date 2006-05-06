@@ -1027,7 +1027,7 @@ glade_property_default (GladeProperty *property)
  */
 gboolean
 glade_property_equals_value (GladeProperty      *property, 
-			     GValue             *value)
+			     const GValue       *value)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 	return GLADE_PROPERTY_GET_KLASS (property)->equals_value (property, value);

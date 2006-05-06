@@ -55,7 +55,7 @@ typedef struct {
 	GladeWidget      *parent;
 	GladeProject     *project;
 	GladePlaceholder *placeholder;
-	gboolean         *props_recorded;
+	gboolean          props_recorded;
 	GList            *pack_props;
 	gulong            handler_id;
 } CommandData;
@@ -632,6 +632,12 @@ glade_command_set_properties (GladeProperty *property, const GValue *old_value, 
 void
 glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 {
+
+	/* Dont generate undo/redo items for unchanging property values.
+	 */
+	if (glade_property_equals_value (property, pvalue))
+		return;
+
 	glade_command_set_properties (property, property->value, pvalue, NULL);
 }
 

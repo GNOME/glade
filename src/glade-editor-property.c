@@ -1322,7 +1322,8 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 				 const gchar *text,
 				 gboolean use_command)
 {
-	GValue val = { 0, };
+	GValue  val = { 0, };
+	gchar  *prop_text;
 
 	if (eprop->property->class->pspec->value_type == G_TYPE_STRV)
 	{
@@ -1332,7 +1333,21 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 	else
 	{
 		g_value_init (&val, G_TYPE_STRING);
-		g_value_set_string (&val, text);
+
+
+		glade_property_get (eprop->property, &prop_text);
+
+		/* Here we try not to modify the project state by not 
+		 * modifying a null value for an unchanged property.
+		 */
+		if (prop_text == NULL &&
+		    text && text[0] == '\0')
+			g_value_set_string (&val, NULL);
+		else if (text == NULL &&
+			 prop_text && prop_text == '\0')
+			g_value_set_string (&val, "");
+		else
+			g_value_set_string (&val, text);
 	}
 
 	glade_editor_property_commit (eprop, &val);

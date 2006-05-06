@@ -95,7 +95,7 @@ LIBGLADEUI_API
 gboolean                glade_property_default               (GladeProperty      *property);
 LIBGLADEUI_API
 gboolean                glade_property_equals_value          (GladeProperty      *property, 
-							      GValue             *value);
+							      const GValue       *value);
 LIBGLADEUI_API
 gboolean                glade_property_equals                (GladeProperty      *property, 
 							      ...);
