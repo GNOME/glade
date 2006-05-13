@@ -568,7 +568,11 @@ glade_util_replace (gchar *str, gchar a, gchar b)
 gchar *
 glade_util_read_prop_name (const gchar *str)
 {
-	gchar *id = g_strdup (str);
+	gchar *id;
+
+	g_return_val_if_fail (str != NULL, NULL);
+
+	id = g_strdup (str);
 
 	glade_util_replace (id, '_', '-');
 
