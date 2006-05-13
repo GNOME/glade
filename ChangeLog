@@ -2,6 +2,12 @@
 
 	* src/glade-utils.c: bullet-proofed glade_util_read_prop_name().
 
+	* src/glade-editor-property.c: Make label inside eventbox visible
+	  by default, and dont show the info button by default.
+
+	* src/glade-gtk.c: Root out the evil calls to gtk_widget_show_all ()
+	  (for contextual devhelpish bugs). and plugged a leaked GladeEditorProperty.
+	
 2006-05-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/Makefile.am: Applied patch for bug 340692

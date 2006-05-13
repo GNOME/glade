@@ -3209,6 +3209,9 @@ glade_gtk_menu_editor_table_attach (GtkWidget *table,
 	gtk_table_attach (GTK_TABLE (table), child2, 1, 2, row, row + 1,
 			  GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
 
+
+	gtk_widget_show (child1);
+	gtk_widget_show (child2);
 	(*row_ptr)++;
 }
 
@@ -3216,7 +3219,7 @@ static void
 glade_gtk_menu_editor_treeview_fill_child_table (GladeGtkMenuEditor *e, GladeWidget *internal)
 {
 	GtkWidget *label, *table;
-	GladeEditorProperty *eprop;
+	GtkWidget *eprop;
 	gint row = 1;
 	
 	table = e->child_table;
@@ -3224,26 +3227,26 @@ glade_gtk_menu_editor_treeview_fill_child_table (GladeGtkMenuEditor *e, GladeWid
 	label = gtk_label_new (NULL);
 	gtk_label_set_markup (GTK_LABEL (label), _("<span rise=\"-20000\"><b>Internal Image Properties</b></span>"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_widget_show (label);
 	gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
 			  GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
 			
-	eprop = glade_editor_property_new_from_widget (internal, "glade-type", TRUE);
+	eprop = (GtkWidget *)glade_editor_property_new_from_widget
+		(internal, "glade-type", TRUE);
 	if (eprop)
-		glade_gtk_menu_editor_table_attach (table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+		glade_gtk_menu_editor_table_attach (table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 	
-	eprop = glade_editor_property_new_from_widget (internal, "pixbuf", TRUE);
+	eprop = (GtkWidget *)glade_editor_property_new_from_widget (internal, "pixbuf", TRUE);
 	if (eprop)
-		glade_gtk_menu_editor_table_attach (table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+		glade_gtk_menu_editor_table_attach (table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 
-	eprop = glade_editor_property_new_from_widget (internal, "glade-stock", TRUE);
+	eprop = (GtkWidget *)glade_editor_property_new_from_widget (internal, "glade-stock", TRUE);
 	if (eprop)
-		glade_gtk_menu_editor_table_attach (table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+		glade_gtk_menu_editor_table_attach (table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 
-	eprop = glade_editor_property_new_from_widget (internal, "icon-name", TRUE);
+	eprop = (GtkWidget *)glade_editor_property_new_from_widget (internal, "icon-name", TRUE);
 	if (eprop)
-		glade_gtk_menu_editor_table_attach (table, eprop->eventbox, GTK_WIDGET (eprop), &row);
-	
-	gtk_widget_show_all (table);
+		glade_gtk_menu_editor_table_attach (table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 }
 
 static void
@@ -3303,9 +3306,10 @@ glade_gtk_menu_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	GtkCellRenderer *renderer;
 	GObject *item;
 	GladeWidgetClass *item_klass, *klass;
-	GladeEditorProperty *eprop;
+	GtkWidget *eprop;
 	GladeWidget *gitem;
 	gint row = 0;
+	GladeProperty *property;
 
 	if (! glade_gtk_menu_editor_get_item_selected (e, &iter))
 		return;
@@ -3361,22 +3365,24 @@ glade_gtk_menu_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	if (! GTK_IS_SEPARATOR_MENU_ITEM (item))
 	{
 		/* Label */
-		eprop = glade_editor_property_new_from_widget (gitem, "label", TRUE);
+		eprop = (GtkWidget *)glade_editor_property_new_from_widget (gitem, "label", TRUE);
 		if (eprop)
 		{
-			glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
-			g_signal_connect (eprop->property, "value-changed", 
+			glade_gtk_menu_editor_table_attach 
+				(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
+			g_signal_connect (GLADE_EDITOR_PROPERTY (eprop)->property, "value-changed", 
 					  G_CALLBACK (glade_gtk_menu_editor_label_changed), e);
 			g_signal_connect (eprop, "destroy",
 					  G_CALLBACK (glade_gtk_menu_editor_eprop_destroyed), e);
 		}
 	
 		/* Tooltip */
-		eprop = glade_editor_property_new_from_widget (gitem, "tooltip", TRUE);
+		eprop = (GtkWidget *)glade_editor_property_new_from_widget (gitem, "tooltip", TRUE);
 		if (eprop)
 		{
-			glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
-			g_signal_connect (eprop->property, "value-changed",
+			glade_gtk_menu_editor_table_attach
+				(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
+			g_signal_connect (GLADE_EDITOR_PROPERTY (eprop)->property, "value-changed",
 					  G_CALLBACK (glade_gtk_menu_editor_tooltip_changed), e);
 			g_signal_connect (eprop, "destroy",
 					  G_CALLBACK (glade_gtk_menu_editor_eprop_destroyed), e);
@@ -3385,18 +3391,14 @@ glade_gtk_menu_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	
 	if (GTK_IS_IMAGE_MENU_ITEM (item))
 	{		
-		eprop = glade_editor_property_new_from_widget (gitem, "stock", TRUE);
+		eprop = (GtkWidget *)glade_editor_property_new_from_widget (gitem, "stock", TRUE);
 		if (eprop)
-			glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+			glade_gtk_menu_editor_table_attach
+				(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 
-		eprop = glade_editor_property_new_from_widget (gitem, "use-stock", FALSE);
-		if (eprop)
-		{
-			g_signal_connect (eprop->property, "value-changed",
-					  G_CALLBACK (glade_gtk_menu_editor_use_stock_changed), e);
-			g_signal_connect (eprop, "destroy",
-					  G_CALLBACK (glade_gtk_menu_editor_eprop_destroyed), e);
-		}
+		property = glade_widget_get_property (gitem, "use-stock");
+		g_signal_connect (property, "value-changed",
+				  G_CALLBACK (glade_gtk_menu_editor_use_stock_changed), e);
 
 		/* Internal child properties */
 		glade_gtk_menu_editor_use_stock_changed (NULL, NULL, e);
@@ -3404,32 +3406,36 @@ glade_gtk_menu_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	
 	if (GTK_IS_CHECK_MENU_ITEM (item))
 	{
-		eprop = glade_editor_property_new_from_widget (gitem, "active", TRUE);
+		eprop = (GtkWidget *)glade_editor_property_new_from_widget (gitem, "active", TRUE);
 		if (eprop)
-			glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
-	
+			glade_gtk_menu_editor_table_attach
+				(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
+
 		if (GTK_IS_RADIO_MENU_ITEM (item))
 		{
-			eprop = glade_editor_property_new_from_widget (gitem, "group", TRUE);
+			eprop = (GtkWidget *)glade_editor_property_new_from_widget (gitem, "group", TRUE);
 			if (eprop)
-				glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+				glade_gtk_menu_editor_table_attach
+					(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 		}
 		else
 		{
-			eprop = glade_editor_property_new_from_widget (gitem, "draw-as-radio", TRUE);
+			eprop = (GtkWidget *)glade_editor_property_new_from_widget
+				(gitem, "draw-as-radio", TRUE);
 			if (eprop)
-				glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+				glade_gtk_menu_editor_table_attach
+					(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 	
-			eprop = glade_editor_property_new_from_widget (gitem, "inconsistent", TRUE);
+			eprop = (GtkWidget *)glade_editor_property_new_from_widget
+				(gitem, "inconsistent", TRUE);
 			if (eprop)
-				glade_gtk_menu_editor_table_attach (e->table, eprop->eventbox, GTK_WIDGET (eprop), &row);
+				glade_gtk_menu_editor_table_attach
+					(e->table, GLADE_EDITOR_PROPERTY (eprop)->eventbox, eprop, &row);
 		}
 	}
 	
 	/* Update Signal Editor*/
 	glade_signal_editor_load_widget (e->signal_editor, gitem);
-	
-	gtk_widget_show_all (e->table);
 }
 
 
@@ -4113,29 +4119,35 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	
 	/* Vbox */
 	vbox = gtk_vbox_new (FALSE, 8);
+	gtk_widget_show (vbox);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
 	gtk_container_add (GTK_CONTAINER (e->window), vbox);
 
 	/* Paned */
 	paned = gtk_vpaned_new ();
+	gtk_widget_show (paned);
 	gtk_box_pack_start (GTK_BOX (vbox), paned, TRUE, TRUE, 0);
 	
 	/* Hbox */
 	hbox = gtk_hbox_new (FALSE, 8);
+	gtk_widget_show (hbox);
 	gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, FALSE);
-	
+		
 	/* TreeView Vbox */
 	tree_vbox = gtk_vbox_new (FALSE, 8);
+	gtk_widget_show (tree_vbox);
 	gtk_box_pack_start (GTK_BOX (hbox), tree_vbox, FALSE, TRUE, 0);
 	
 	/* ScrolledWindow */
 	scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scroll);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 	gtk_box_pack_start (GTK_BOX (tree_vbox), scroll, TRUE, TRUE, 0);
 
 	/* TreeView */
 	e->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (e->store));
+	gtk_widget_show (e->treeview);
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (e->treeview));
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (e->treeview), TRUE);
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (e->treeview), TRUE);
@@ -4159,7 +4171,8 @@ glade_gtk_menu_editor_new (GObject *menubar)
 			"has-entry", FALSE,
 			"editable", TRUE,
 			NULL);
-	g_signal_connect (renderer, "edited", G_CALLBACK (glade_gtk_menu_editor_item_type_edited), e);
+	g_signal_connect (renderer, "edited", 
+			  G_CALLBACK (glade_gtk_menu_editor_item_type_edited), e);
 	column = gtk_tree_view_column_new_with_attributes (_("Type"), renderer,
 						"text", GLADEGTK_MENU_TYPE_NAME, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (e->treeview), column);
@@ -4168,22 +4181,28 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	
 	/* Add/Remove buttons */
 	button_table = gtk_table_new (1, 2, TRUE);
+	gtk_widget_show (button_table);
 	gtk_table_set_col_spacings (GTK_TABLE (button_table), 8);
 	gtk_box_pack_start (GTK_BOX (tree_vbox), button_table, FALSE, TRUE, 0);
 	
 	button = gtk_button_new_from_stock (GTK_STOCK_ADD);
-	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
+	gtk_widget_show (button);
+	g_signal_connect (button, "clicked", 
+			  G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
 	gtk_table_attach_defaults (GTK_TABLE (button_table), button, 0, 1, 0, 1);
 
 	e->remove_button = button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
-	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_delete_item_activate), e);
+	gtk_widget_show (button);
+	g_signal_connect (button, "clicked", 
+			  G_CALLBACK (glade_gtk_menu_editor_delete_item_activate), e);
 	gtk_table_attach_defaults (GTK_TABLE (button_table), button, 1, 2, 0, 1);
 	
 	/* PopUp */
 	e->popup = gtk_menu_new ();
 	
 	item = gtk_menu_item_new_with_label (_("Add Item"));
-	g_signal_connect (item, "activate", G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
+	g_signal_connect (item, "activate", 
+			  G_CALLBACK (glade_gtk_menu_editor_add_item_activate), e);
 	gtk_menu_shell_append (GTK_MENU_SHELL (e->popup), item);
 	
 	item = gtk_menu_item_new_with_label (_("Add Child Item"));
@@ -4199,51 +4218,59 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	
 	/* Properties Vbox */
 	prop_vbox = gtk_vbox_new (FALSE, 8);
+	gtk_widget_show (prop_vbox);
 	gtk_box_pack_start (GTK_BOX (hbox), prop_vbox, TRUE, TRUE, 0);
 	
 	/* Properties label */
 	label = gtk_label_new (NULL);
+	gtk_widget_show (label);
 	gtk_label_set_markup (GTK_LABEL (label), _("<big><b>Properties</b></big>"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 	gtk_box_pack_start (GTK_BOX (prop_vbox), label, FALSE, TRUE, 0);
 
 	/* Tables */
 	e->table = gtk_table_new (1, 2, FALSE);
+	gtk_widget_show (e->table);
 	gtk_table_set_row_spacings (GTK_TABLE (e->table), 4);
 	gtk_box_pack_start (GTK_BOX (prop_vbox), e->table, FALSE, TRUE, 0);
 
 	e->child_table = gtk_table_new (1, 2, FALSE);
+	gtk_widget_show (e->child_table);
 	gtk_table_set_row_spacings (GTK_TABLE (e->child_table), 4);
 	gtk_box_pack_start (GTK_BOX (prop_vbox), e->child_table, FALSE, TRUE, 0);
 
 	/* Signal Editor */
 	e->signal_editor = glade_signal_editor_new (NULL);
 	signal_editor_w = glade_signal_editor_get_widget (e->signal_editor);
+	gtk_widget_show (signal_editor_w);
 	gtk_widget_set_size_request (signal_editor_w, -1, 96);
 	gtk_paned_pack2 (GTK_PANED (paned), signal_editor_w, FALSE, FALSE);
 	
 	/* Button Box */
 	buttonbox = gtk_hbutton_box_new ();
+	gtk_widget_show (buttonbox);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (buttonbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
 	gtk_box_pack_start (GTK_BOX (vbox), buttonbox, FALSE, TRUE, 0);
 
 	button = glade_app_undo_button_new ();
+	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = glade_app_redo_button_new ();
+	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+	gtk_widget_show (button);
 	g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), e->window);
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_HELP);
+	gtk_widget_show (button);
 	g_signal_connect (button, "clicked", G_CALLBACK (glade_gtk_menu_editor_help), e->window);
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 	gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (buttonbox), button, TRUE);
-	
-	gtk_widget_show_all (vbox);
 	
 	return e;
 }

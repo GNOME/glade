@@ -300,11 +300,12 @@ glade_editor_property_constructor (GType                  type,
 	
 	eprop = GLADE_EDITOR_PROPERTY (obj);
 
-	/* Create label */
+	/* Create label (make label visible but not the eventbox) */
 	text = g_strdup_printf ("%s :", eprop->class->name);
 	eprop->item_label = gtk_label_new (text);
 	eprop->eventbox   = gtk_event_box_new ();
 	g_free (text);
+	gtk_widget_show (eprop->item_label);
 
 	/* keep our own reference */
 	g_object_ref (G_OBJECT (eprop->eventbox));
@@ -331,8 +332,6 @@ glade_editor_property_constructor (GType                  type,
 
 	/* Create the informational button and add it */
 	eprop->info = glade_editor_property_create_info_button (eprop);
-	gtk_widget_show (eprop->info);
-
 	g_signal_connect (G_OBJECT (eprop->info), "clicked", 
 			  G_CALLBACK (glade_editor_property_info_clicked_cb), eprop);
 
