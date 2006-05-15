@@ -51,7 +51,7 @@ dnl Start of pkg-config checks
 dnl ================================================================
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
 
-PKG_CHECK_MODULES(DEVHELP, libdevhelp-1.0 >= 0.11,
+PKG_CHECK_MODULES(DEVHELP, libdevhelp-1.0 >= 0.12,
   [have_devhelp=yes],[have_devhelp=no])
 
 AM_CONDITIONAL(WITH_DEVHELP, test x"$have_devhelp" = "xyes")
