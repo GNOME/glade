@@ -45,10 +45,12 @@ LIBGLADEUI_API GType        glade_param_spec_objects_get_type (GladeParamSpecObj
 
 LIBGLADEUI_API GParamSpec **glade_list_atk_relations      (GType  owner_type, 
 							   guint *n_specs);
-
+LIBGLADEUI_API GParamSpec  *glade_standard_pixbuf_spec    (void);
+LIBGLADEUI_API GParamSpec  *glade_standard_gdkcolor_spec  (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_objects_spec   (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_stock_spec     (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_int_spec       (void);
+LIBGLADEUI_API GParamSpec  *glade_standard_uint_spec       (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_string_spec    (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_strv_spec      (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_float_spec     (void);

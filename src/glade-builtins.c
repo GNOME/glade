@@ -52,7 +52,7 @@ glade_standard_stock_get_type (void)
 		GtkStockItem  item;
 		GSList       *l, *stock_list;
 		gchar        *stock_id;
-		gint          stock_enum = 0;
+		gint          stock_enum = 1;
 		GEnumValue    value;
 		GArray       *values = 
 			g_array_new (TRUE, TRUE, sizeof (GEnumValue));
@@ -61,12 +61,6 @@ glade_standard_stock_get_type (void)
 		 * strings within
 		 */
 		stock_list = gtk_stock_list_ids ();
-
-		/* Add first "no stock" element */
-		value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
-		value.value_name = g_strdup ("None");
-		value.value      = stock_enum++;
-		values = g_array_append_val (values, value);
 
 		for (l = stock_list; l; l = l->next)
 		{
@@ -77,9 +71,15 @@ glade_standard_stock_get_type (void)
 			value.value      = stock_enum++;
 			value.value_name = g_strdup (item.label);
 			value.value_nick = stock_id; // Passing ownership here.
-			values = g_array_append_val (values, value);
+			values = g_array_prepend_val (values, value);
 		}
 
+		/* Add first "no stock" element */
+		value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
+		value.value_name = g_strdup ("None");
+		value.value      = 0;
+		values = g_array_prepend_val (values, value);
+		
 		etype = g_enum_register_static ("GladeStock", (GEnumValue *)values->data);
 
 		g_slist_free (stock_list);
@@ -367,6 +367,23 @@ glade_standard_objects_spec (void)
 					 G_PARAM_READWRITE);
 }
 
+/* Pixbuf Type */
+GParamSpec *
+glade_standard_pixbuf_spec (void)
+{
+	return g_param_spec_object ("pixbuf", _("Pixbuf"),
+				     _("A pixbuf value"), GDK_TYPE_PIXBUF,
+				     G_PARAM_READWRITE);
+}
+
+/* GdkColor */
+GParamSpec *
+glade_standard_gdkcolor_spec (void)
+{
+	return g_param_spec_boxed ("gdkcolor", _("GdkColor"),
+				     _("A gdk color value"), GDK_TYPE_COLOR,
+				     G_PARAM_READWRITE);
+}
 
 /****************************************************************
  *                    Basic types follow                        *
@@ -378,6 +395,14 @@ glade_standard_int_spec (void)
 				 _("An integer value"),
 				 G_MININT, G_MAXINT,
 				 0, G_PARAM_READWRITE);
+}
+
+GParamSpec *
+glade_standard_uint_spec (void)
+{
+	return g_param_spec_uint ("uint", _("Unsigned Integer"), 
+				  _("An unsigned integer value"),
+				  0, G_MAXUINT, 0, G_PARAM_READWRITE);
 }
 
 GParamSpec *

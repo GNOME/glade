@@ -59,4 +59,31 @@ pixmaps_DATA = \
 	window.png \
 	devhelp.png
 
+if BUILD_GNOME
+pixmaps_DATA += bonobodockitem.png \
+	gnomecanvas.png \
+	gnomedruidpageedge.png \
+	gnomefontpicker.png \
+	gnomepixmap.png \
+	bonobodock.png \
+	gnomecolorpicker.png \
+	gnomedruidpagestandard.png \
+	gnomehref.png \
+	gnomepixmapentry.png \
+	gnomeabout.png \
+	gnomecontrol.png \
+	gnomedruid.png \
+	gnomeiconentry.png \
+	gnomeapp.png \
+	gnomedateedit.png \
+	gnomeentry.png \
+	gnomeiconlist.png \
+	gnomeappbar.png \
+	gnomedialog.png \
+	gnomefileentry.png \
+	gnomeiconselection.png \
+	gnomemessagebox.png \
+	gnomepropertybox.png
+endif
+
 EXTRA_DIST = $(pixmaps_DATA)

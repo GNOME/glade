@@ -1511,6 +1511,8 @@ glade_project_resource_fullpath (GladeProject *project,
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
+	if (project->path == NULL) return g_strdup (resource);
+	
 	project_dir = g_path_get_dirname (project->path);
 	fullpath    = g_build_filename (project_dir, resource, NULL);
 	g_free (project_dir);

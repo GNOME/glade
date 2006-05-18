@@ -1,0 +1,443 @@
+<glade-catalog name="gnome" library="gladegnome" depends="gtk+" domain="glade-3">
+  <init-function>glade_gnomeui_init</init-function>
+  <glade-widget-classes>
+    <glade-widget-class name="GnomeApp" generic-name="gnomeapp" title="Gnome App">
+      <post-create-function>glade_gnome_app_post_create</post-create-function>
+      <get-internal-child-function>glade_gnome_app_get_internal_child</get-internal-child-function>
+      <properties>
+         <property id="has-statusbar" _name="StatusBar" save="False">
+	   <tooltip>If the window has a statusbar</tooltip>
+	   <spec>glade_standard_boolean_spec</spec>
+	   <set-function>glade_gnome_app_set_has_statusbar</set-function>
+	 </property>
+         <property id="enable-layout-config" _name="Store Config">
+	   <tooltip>If the layout is saved and restored automatically</tooltip>
+	   <spec>glade_standard_boolean_spec</spec>
+	 </property>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_app_get_children</get-children-function>
+	  <child-set-property-function>glade_gnome_app_set_child_property</child-set-property-function>
+	  <child-get-property-function>glade_gnome_app_get_child_property</child-get-property-function>
+	  <properties>
+            <property id="position" _name="Position">
+	      <spec>glade_standard_int_spec</spec>
+	    </property>
+            <property id="padding" _name="Padding">
+	      <spec>glade_standard_int_spec</spec>
+	    </property>
+            <property id="expand" _name="Expand">
+	      <spec>glade_standard_boolean_spec</spec>
+	    </property>
+            <property id="fill" _name="Fill">
+	      <spec>glade_standard_boolean_spec</spec>
+	    </property>
+            <property id="pack-type">
+	      <spec>glade_gnome_gtk_pack_type_spec</spec>
+              <displayable-values>
+                <value id="GTK_PACK_START" _name="Start"/>
+                <value id="GTK_PACK_END" _name="End"/>
+              </displayable-values>
+	    </property>
+          </properties>
+        </child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeDruid" generic-name="gnomedruid" title="Gnome Druid">
+      <post-create-function>glade_gnome_druid_post_create</post-create-function>
+      <children>
+        <child>
+	  <type>GnomeDruidPage</type>
+	  <add-child-function>glade_gnome_druid_add_child</add-child-function>
+	  <remove-child-function>glade_gnome_druid_remove_child</remove-child-function>
+	  <child-set-property-function>glade_gnome_druid_set_child_property</child-set-property-function>
+	  <child-get-property-function>glade_gnome_druid_get_child_property</child-get-property-function>
+	  <properties>
+            <property id="position" _name="Position" default="-1" save="False">
+	      <spec>glade_standard_int_spec</spec>
+	    </property>
+	  </properties>
+	</child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeDruidPageEdge" generic-name="gnomedruidpageedge" title="Gnome Druid Page Edge">
+      <properties>
+	<property id="position" _name="Position">
+	  <spec>glade_gnome_dpe_position_spec</spec>
+	  <_tooltip>Used to pass around information about the position of a GnomeDruidPage within the overall GnomeDruid. This enables the correct "surrounding" content for the page to be drawn</_tooltip>
+	  <set-function>glade_gnome_dpe_set_position</set-function>
+          <displayable-values>
+            <value id="GNOME_EDGE_START" _name="Start"/>
+            <value id="GNOME_EDGE_FINISH" _name="End"/>
+            <value id="GNOME_EDGE_OTHER" _name="Other"/>
+          </displayable-values>
+	</property>
+	<property id="title" _name="Title">
+	  <spec>glade_standard_string_spec</spec>
+	  <set-function>glade_gnome_dpe_set_title</set-function>
+	</property>
+	<property id="text" _name="Text">
+	  <spec>glade_standard_string_spec</spec>
+	  <set-function>glade_gnome_dpe_set_text</set-function>
+	</property>
+	<property id="title-foreground" _name="Title Foreground Color" default="#FFFFFF">
+	  <spec>glade_standard_gdkcolor_spec</spec>
+	  <set-function>glade_gnome_dpe_set_title_foreground</set-function>
+	</property>
+	<property id="text-foreground" _name="Text Foreground Color" default="#000000">
+	  <spec>glade_standard_gdkcolor_spec</spec>
+	  <set-function>glade_gnome_dpe_set_text_foreground</set-function>
+	</property>
+	<property id="background" _name="Background Color" default="#4B6983">
+	  <spec>glade_standard_gdkcolor_spec</spec>
+	  <set-function>glade_gnome_dpe_set_background</set-function>
+	</property>
+	<property id="contents-background" _name="Contents Background Color" default="#DCDAD5">
+	  <spec>glade_standard_gdkcolor_spec</spec>
+	  <set-function>glade_gnome_dpe_set_contents_background</set-function>
+	</property>	
+	<property id="logo-background" _name="Logo Background Color" default="#4B6983">
+	  <spec>glade_standard_gdkcolor_spec</spec>
+	  <set-function>glade_gnome_dpe_set_logo_background</set-function>
+	</property>
+	<property id="logo" _name="Logo">
+	  <spec>glade_standard_pixbuf_spec</spec>
+	  <set-function>glade_gnome_dpe_set_logo</set-function>
+	</property>
+	<property id="watermark" _name="Watermark">
+	  <spec>glade_standard_pixbuf_spec</spec>
+	  <set-function>glade_gnome_dpe_set_watermark</set-function>
+	</property>
+	<property id="top-watermark" _name="Top Watermark">
+	  <spec>glade_standard_pixbuf_spec</spec>
+	  <set-function>glade_gnome_dpe_set_top_watermark</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GnomeDruidPageStandard" generic-name="gnomedruidpagestandard" title="Gnome Druid Page Standard">
+      <post-create-function>glade_gnome_dps_post_create</post-create-function>
+      <get-internal-child-function>glade_gnome_dps_get_internal_child</get-internal-child-function>
+      <properties>
+        <property id="background-set" disabled="True"/>
+	<property id="background" visible="False" save="False" default="#4B6983">
+	  <set-function>glade_gnome_dps_set_background</set-function>
+	</property>
+	<property id="contents-background-set" disabled="True"/>
+	<property id="contents-background" visible="False" save="False" default="#DCDAD5">
+	  <set-function>glade_gnome_dps_set_contents_background</set-function>
+	</property>	
+	<property id="logo-background-set" disabled="True"/>
+	<property id="logo-background" visible="False" save="False" default="#4B6983">
+	  <set-function>glade_gnome_dps_set_logo_background</set-function>
+	</property>	
+	<property id="title-foreground-set" disabled="True"/>
+	<property id="title-foreground" visible="False" save="False" default="#FFFFFF">
+	  <set-function>glade_gnome_dps_set_title_foreground</set-function>
+	</property>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_dps_get_children</get-children-function>
+        </child>
+      </children>
+    </glade-widget-class>
+
+
+    <glade-widget-class name="GnomeIconSelection" generic-name="gnomeiconselection" title="Gnome Icon Selection">
+      <properties>
+        <property id="size" visible="False" query="False" ignore="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GnomeIconEntry" generic-name="gnomeiconentry" title="Gnome Icon Entry">
+      <properties>
+        <property id="max-saved" _name="Max Saved">
+	  <spec>glade_standard_uint_spec</spec>
+	  <tooltip>The maximum number of history entries saved.</tooltip>
+	  <set-function>glade_gnome_icon_entry_set_max</set-function>
+	</property>
+        <property id="size" visible="False" query="False" ignore="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeHRef" generic-name="gnomehref" title="Gnome HRef"/>
+
+    <glade-widget-class name="GnomeDateEdit" generic-name="gnomedateedit" title="Gnome Date Edit">
+      <properties>
+        <property id="time" disabled="True"/>
+        <property id="size" visible="False" query="False" ignore="True"/>
+        <property id="dateedit-flags">
+          <displayable-values>
+            <value id="GNOME_DATE_EDIT_SHOW_TIME" _name="Show Time"/>
+            <value id="GNOME_DATE_EDIT_24_HR" _name="24 Hours Format"/>
+	    <value id="GNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY" _name="Monday First"/>
+          </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeAppBar" generic-name="gnomeappbar" title="Gnome App Bar">
+      <post-create-function>glade_gnome_app_bar_post_create</post-create-function>
+      <properties>
+        <property id="has-progress" default="True" ignore="True"/>
+	<property id="has-status" default="True" ignore="True"/>
+        <property id="size" visible="False" query="False" ignore="True"/>
+	<property id="interactivity">
+          <displayable-values>
+            <value id="GNOME_PREFERENCES_NEVER" _name="Never"/>
+            <value id="GNOME_PREFERENCES_USER" _name="User"/>
+	    <value id="GNOME_PREFERENCES_ALWAYS" _name="Always"/>
+          </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+    
+    <!-- Deprecated Widget Classes :) -->
+    <glade-widget-class name="GnomeDialog" generic-name="gnomedialog" title="Gnome Dialog">
+      <post-create-function>glade_gnome_dialog_post_create</post-create-function>
+      <get-internal-child-function>glade_gnome_dialog_get_internal_child</get-internal-child-function>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_dialog_get_children</get-children-function>
+        </child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeAbout" generic-name="gnomeabout" title="Gnome About">
+      <post-create-function>glade_gnome_about_dialog_post_create</post-create-function>
+      <properties>
+        <property id="name" _name="Program Name">
+          <set-function>glade_gnome_about_set_name</set-function>
+        </property>
+        <property id="version" _name="Program Version">
+          <set-function>glade_gnome_about_set_version</set-function>
+        </property>
+        <property id="comments" translatable="True">
+          <visible-lines>4</visible-lines>
+        </property>
+        <property id="copyright" translatable="True">
+          <visible-lines>4</visible-lines>
+        </property>
+        <property id="translator-credits" translatable="True">
+          <visible-lines>4</visible-lines>
+        </property>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type> <!-- Skip GtkDialog internal widgets -->
+          <get-children-function>glade_gnome_about_dialog_get_children</get-children-function>
+        </child>
+      </children>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GnomeMessageBox" generic-name="gnomemessagebox" title="Gnome Message Box">
+      <properties>
+        <property id="message-box-type">
+	  <spec>glade_gnome_message_box_type_spec</spec>
+	  <set-function>glade_gnome_message_box_set_type</set-function>
+          <displayable-values>
+            <value id="GNOME_MESSAGE_BOX_INFO" _name="Information"/>
+	    <value id="GNOME_MESSAGE_BOX_WARNING" _name="Warning"/>
+	    <value id="GNOME_MESSAGE_BOX_ERROR" _name="Error"/>
+	    <value id="GNOME_MESSAGE_BOX_QUESTION" _name="Question"/>
+	    <value id="GNOME_MESSAGE_BOX_GENERIC" _name="Generic"/>
+          </displayable-values>
+	</property>
+        <property id="message" _name="Message">
+	  <spec>glade_standard_string_spec</spec>
+	  <tooltip>The message to display</tooltip>
+	  <set-function>glade_gnome_message_box_set_message</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GnomePropertyBox" generic-name="gnomepropertybox" title="Gnome Property Box"/>
+
+    <glade-widget-class name="GnomeEntry" generic-name="gnomeentry" title="Gnome Entry">
+      <post-create-function>glade_gnome_entry_post_create</post-create-function>
+      <get-internal-child-function>glade_gnome_entry_get_internal_child</get-internal-child-function>
+      <properties>
+        <property id="gtk-entry" disabled="True"/>
+	<property id="max-saved" _name="Max Saved">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The maximum number of history entries saved</_tooltip>
+	  <set-function>glade_gnome_entry_set_max_saved</set-function>
+	</property>
+        <property id="size" visible="False" query="False" ignore="True"/>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_entry_get_children</get-children-function>
+          <properties>
+            <property id="expand" disabled="True"/>
+            <property id="fill" disabled="True"/>
+            <property id="pack-type" disabled="True"/>
+            <property id="padding" disabled="True"/>
+            <property id="position" disabled="True"/>
+	  </properties>
+        </child>
+      </children>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GnomeFileEntry" generic-name="gnomefileentry" title="Gnome File Entry">
+      <post-create-function>glade_gnome_entry_post_create</post-create-function>
+      <get-internal-child-function>glade_gnome_entry_get_internal_child</get-internal-child-function>
+      <properties>
+	<property id="max-saved" _name="Max Saved">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The maximum number of history entries saved</_tooltip>
+	  <set-function>glade_gnome_entry_set_max_saved</set-function>
+	</property>
+        <property id="size" visible="False" query="False" ignore="True"/>
+	<property id="filechooser-action">
+	  <displayable-values>
+	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" _name="Open"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" _name="Select Folder"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
+	  </displayable-values>
+	</property>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_entry_get_children</get-children-function>
+          <properties>
+            <property id="expand" disabled="True"/>
+            <property id="fill" disabled="True"/>
+            <property id="pack-type" disabled="True"/>
+            <property id="padding" disabled="True"/>
+            <property id="position" disabled="True"/>
+	  </properties>
+        </child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomePixmapEntry" generic-name="gnomepixmapentry" title="Gnome Pixmap Entry">
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <properties>
+            <property id="expand" disabled="True"/>
+            <property id="fill" disabled="True"/>
+            <property id="pack-type" disabled="True"/>
+            <property id="padding" disabled="True"/>
+            <property id="position" disabled="True"/>
+	  </properties>
+        </child>
+      </children>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GnomeColorPicker" generic-name="gnomecolorpicker" title="Gnome Color Picker">
+      <post-create-function>empty</post-create-function>
+        <properties>
+	  <property id="use-underline" disabled="True"/>
+	  <property id="label" disabled="True"/>
+	  <property id="glade-type" disabled="True"/>
+          <property id="stock" disabled="True"/>
+	  <property id="red" disabled="True"/>
+	  <property id="green" disabled="True"/>
+	  <property id="blue" disabled="True"/>
+	  <property id="alpha" disabled="True"/>
+	  <property id="dither" _name="Dither"/>
+	  <property id="use-alpha" _name="Use Alpha"/>
+	  <property id="title" _name="Title"/>
+        </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomeFontPicker" generic-name="gnomefontpicker" title="Gnome Font Picker">
+      <post-create-function>empty</post-create-function>
+      <properties>
+        <property id="use-underline" disabled="True"/>
+        <property id="label" disabled="True"/>
+        <property id="glade-type" disabled="True"/>
+	<property id="stock" disabled="True"/>
+        <property id="font-name" disabled="True"/>
+        <property id="mode">
+          <set-function>glade_gnome_font_picker_set_mode</set-function>
+	  <displayable-values>
+	    <value id="GNOME_FONT_PICKER_MODE_PIXMAP" _name="Pixmap"/>
+	    <value id="GNOME_FONT_PICKER_MODE_FONT_INFO" _name="Font Information"/>
+	    <value id="GNOME_FONT_PICKER_MODE_USER_WIDGET" _name="User Widget"/>
+	    <value id="GNOME_FONT_PICKER_MODE_UNKNOWN" _name="Unknown"/>
+	  </displayable-values>
+        </property>
+      </properties>
+      <children>
+        <child>
+          <type>GtkWidget</type>
+          <get-children-function>glade_gnome_font_picker_get_children</get-children-function>
+          <add-child-function>glade_gnome_font_picker_add_child</add-child-function>
+          <remove-child-function>glade_gnome_font_picker_remove_child</remove-child-function>
+          <replace-child-function>glade_gnome_font_picker_replace_child</replace-child-function>
+	</child>
+      </children>
+    </glade-widget-class>
+
+    <glade-widget-class name="GnomePixmap" generic-name="gnomepixmap" title="Gnome Pixmap">
+    <post-create-function>empty</post-create-function>
+      <properties>
+        <property id="stock" disabled="True"/>
+        <property id="icon-name" disabled="True"/>
+        <property id="glade-stock" disabled="True"/>
+        <property id="glade-type" disabled="True"/>
+        <property id="pixbuf" disabled="True"/>
+        <property id="icon-size" disabled="True"/>
+        <property id="pixel-size" disabled="True"/>
+	<property id="filename" _name="File">
+	  <spec>glade_standard_pixbuf_spec</spec>
+	  <_tooltip>The pixmap file</_tooltip>
+	  <set-function>glade_gnome_pixmap_set_filename</set-function>
+	</property>
+	<property id="scaled-width" _name="Scaled Width">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The width to scale the pixmap to</_tooltip>
+	  <set-function>glade_gnome_pixmap_set_scaled_width</set-function>
+	</property>
+	<property id="scaled-height" _name="Scaled Height">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The height to scale the pixmap to</_tooltip>
+	  <set-function>glade_gnome_pixmap_set_scaled_height</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+
+    <!-- Unsupported Classes
+    Deprecated and not suported by libglade:
+      * GnomeScores
+    
+    These are not widget classes:
+      * GnomeClient
+      * GnomeMdi, GnomeMdiChild, GnomeMdiGenericChild
+      * GnomeCanvasItem, GnomeIconTextItem -->
+  </glade-widget-classes>
+
+  <glade-widget-group name="gnomeui-base" _title="GNOME User Interface">
+    <glade-widget-class-ref name="GnomeApp"/>
+    <glade-widget-class-ref name="GnomeDruid"/>
+    <glade-widget-class-ref name="GnomeIconSelection"/>    
+    <glade-widget-class-ref name="GnomeHRef"/>
+    <glade-widget-class-ref name="GnomeDateEdit"/>
+    <glade-widget-class-ref name="GnomeIconEntry"/>
+    <glade-widget-class-ref name="GnomeAppBar"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gnomeui-obsolete" _title="GNOME UI Obsolete">
+    <glade-widget-class-ref name="GnomeDialog"/>
+    <glade-widget-class-ref name="GnomeAbout"/>
+    <glade-widget-class-ref name="GnomeMessageBox"/>
+    <glade-widget-class-ref name="GnomePropertyBox"/>
+    <glade-widget-class-ref name="GnomeEntry"/>
+    <glade-widget-class-ref name="GnomeFileEntry"/>
+    <glade-widget-class-ref name="GnomePixmapEntry"/>
+    <glade-widget-class-ref name="GnomeColorPicker"/>
+    <glade-widget-class-ref name="GnomeFontPicker"/>
+    <glade-widget-class-ref name="GnomePixmap"/>
+  </glade-widget-group>
+</glade-catalog>

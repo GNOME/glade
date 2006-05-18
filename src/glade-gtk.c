@@ -23,9 +23,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <gtk/gtk.h>
-#include "glade.h"
-#include "glade-widget.h"
+#include "glade-gtk.h"
 #include "glade-editor-property.h"
 
 #include "fixed_bg.xpm"
@@ -36,32 +34,13 @@
 
 #include <glib/gi18n-lib.h>
 
-#ifdef G_OS_WIN32
-#define GLADEGTK_API __declspec(dllexport)
-#else
-#define GLADEGTK_API
-#endif
-
-/* ------------------------------------ Constants ------------------------------ */
+/* --------------------------------- Constants ------------------------------ */
 #define FIXED_DEFAULT_CHILD_WIDTH  100
 #define FIXED_DEFAULT_CHILD_HEIGHT 60
 
 
-/* ------------------------------ Types & ParamSpecs --------------------------- */
-typedef enum {
-	GLADEGTK_IMAGE_FILENAME = 0,
-	GLADEGTK_IMAGE_STOCK,
-	GLADEGTK_IMAGE_ICONTHEME
-} GladeGtkImageType;
-
-typedef enum {
-	GLADEGTK_BUTTON_LABEL = 0,
-	GLADEGTK_BUTTON_STOCK,
-	GLADEGTK_BUTTON_CONTAINER
-} GladeGtkButtonType;
-
-
-static GType
+/* -------------------------------- ParamSpecs ------------------------------ */
+GType GLADEGTK_API
 glade_gtk_image_type_get_type (void)
 {
 	static GType etype = 0;
@@ -81,7 +60,7 @@ glade_gtk_image_type_get_type (void)
 	return etype;
 }
 
-static GType
+GType GLADEGTK_API
 glade_gtk_button_type_get_type (void)
 {
 	static GType etype = 0;
@@ -408,6 +387,30 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	}
 }
 
+void GLADEGTK_API
+glade_gtk_box_get_internal_child (GObject *object, 
+				  const gchar *name,
+				  GObject **child)
+{
+	GList *children, *l;
+	
+	g_return_if_fail (GTK_IS_BOX (object));
+	
+	children = l = gtk_container_get_children (GTK_CONTAINER (object));
+	*child = NULL;
+	
+	while (l)
+	{
+		GladeWidget *gw = glade_widget_get_from_gobject (l->data);
+		
+		if (gw && gw->internal && strcmp (gw->internal, name) == 0)
+			*child = G_OBJECT (l->data);
+		
+		l= l->next;
+	}
+	
+	g_list_free (children);
+}
 void GLADEGTK_API
 glade_gtk_box_remove_child (GObject *object, GObject *child)
 {
@@ -1469,16 +1472,6 @@ glade_gtk_button_post_create_idle (GObject *button)
 	glade_gtk_button_backup_stock (gbutton);
 	glade_gtk_button_backup_label (gbutton);
 
-	/* Internal buttons get there stock stuff introspected.
-	 */
-	if (reason == GLADE_CREATE_USER && gbutton->internal == NULL)
-	{
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
-		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
-					     G_OBJECT (button), TRUE);
-		return FALSE;
-	}
-
 	glade_widget_property_get (gbutton, "use-stock", &use_stock);
 	glade_widget_property_get (gbutton, "label", &label);
 
@@ -1543,10 +1536,20 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 		return;
   	}
 
-	g_object_set_data (button, "glade-reason", GINT_TO_POINTER (reason));
-	g_idle_add ((GSourceFunc)glade_gtk_button_post_create_idle, button);
+	/* Internal buttons get there stock stuff introspected. */
+	if (reason == GLADE_CREATE_USER && gbutton->internal == NULL)
+	{
+		g_object_set_data (button, "glade-button-post-ran", GINT_TO_POINTER (1));
+		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
+		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
+					     G_OBJECT (button), TRUE);
+	}
+	else
+	{
+		g_object_set_data (button, "glade-reason", GINT_TO_POINTER (reason));
+		g_idle_add ((GSourceFunc)glade_gtk_button_post_create_idle, button);
+	}
 }
-
 
 static void 
 glade_gtk_image_pixel_size_changed (GladeProperty *property,
@@ -4318,4 +4321,264 @@ glade_gtk_label_set_label (GObject *object, GValue *value)
 	glade_widget_property_get (glabel, "use-underline", &use_underline);
 	if (use_underline)
 		gtk_label_set_use_underline (GTK_LABEL (object), use_underline);
+}
+/*
+GtkImageMenuItem GnomeUI "stock_item" property special case:
+	
+"stock_item" property is added by glade2 gnome support and makes reference to
+GNOMEUIINFO_MENU_* macros. This set-function maps these properties to 
+existing non deprecated gtk ones.
+*/
+
+typedef enum {
+	GNOMEUIINFO_MENU_NONE,
+	/* The 'File' menu */
+	GNOMEUIINFO_MENU_NEW_ITEM,
+	GNOMEUIINFO_MENU_NEW_SUBTREE,
+	GNOMEUIINFO_MENU_OPEN_ITEM,
+	GNOMEUIINFO_MENU_SAVE_ITEM,
+	GNOMEUIINFO_MENU_SAVE_AS_ITEM,
+	GNOMEUIINFO_MENU_REVERT_ITEM,
+	GNOMEUIINFO_MENU_PRINT_ITEM,
+	GNOMEUIINFO_MENU_PRINT_SETUP_ITEM,
+	GNOMEUIINFO_MENU_CLOSE_ITEM,
+	GNOMEUIINFO_MENU_EXIT_ITEM,
+	GNOMEUIINFO_MENU_QUIT_ITEM,
+	/* The "Edit" menu */
+	GNOMEUIINFO_MENU_CUT_ITEM,
+	GNOMEUIINFO_MENU_COPY_ITEM,
+	GNOMEUIINFO_MENU_PASTE_ITEM,
+	GNOMEUIINFO_MENU_SELECT_ALL_ITEM,
+	GNOMEUIINFO_MENU_CLEAR_ITEM,
+	GNOMEUIINFO_MENU_UNDO_ITEM,
+	GNOMEUIINFO_MENU_REDO_ITEM,
+	GNOMEUIINFO_MENU_FIND_ITEM,
+	GNOMEUIINFO_MENU_FIND_AGAIN_ITEM,
+	GNOMEUIINFO_MENU_REPLACE_ITEM,
+	GNOMEUIINFO_MENU_PROPERTIES_ITEM,
+	/* The Settings menu */
+	GNOMEUIINFO_MENU_PREFERENCES_ITEM,
+	/* The Windows menu */
+	GNOMEUIINFO_MENU_NEW_WINDOW_ITEM,
+	GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM,
+	/* And the "Help" menu */
+	GNOMEUIINFO_MENU_ABOUT_ITEM,
+	/* The "Game" menu */
+	GNOMEUIINFO_MENU_NEW_GAME_ITEM,
+	GNOMEUIINFO_MENU_PAUSE_GAME_ITEM,
+	GNOMEUIINFO_MENU_RESTART_GAME_ITEM,
+	GNOMEUIINFO_MENU_UNDO_MOVE_ITEM,
+	GNOMEUIINFO_MENU_REDO_MOVE_ITEM,
+	GNOMEUIINFO_MENU_HINT_ITEM,
+	GNOMEUIINFO_MENU_SCORES_ITEM,
+	GNOMEUIINFO_MENU_END_GAME_ITEM,
+	/* Some standard menus */
+	GNOMEUIINFO_MENU_FILE_TREE,
+	GNOMEUIINFO_MENU_EDIT_TREE,
+	GNOMEUIINFO_MENU_VIEW_TREE,
+	GNOMEUIINFO_MENU_SETTINGS_TREE,
+	GNOMEUIINFO_MENU_FILES_TREE,
+	GNOMEUIINFO_MENU_WINDOWS_TREE,
+	GNOMEUIINFO_MENU_HELP_TREE,
+	GNOMEUIINFO_MENU_GAME_TREE
+} GladeGtkGnomeUIInfoEnum;
+
+static GType
+glade_gtk_gnome_ui_info_get_type (void)
+{
+	static GType etype = 0;
+	if (etype == 0) {
+		static const GEnumValue values[] = {
+			{ GNOMEUIINFO_MENU_NONE, "GNOMEUIINFO_MENU_NONE", NULL},
+			/* The 'File' menu */
+			{ GNOMEUIINFO_MENU_NEW_ITEM, "GNOMEUIINFO_MENU_NEW_ITEM", "gtk-new"},
+			{ GNOMEUIINFO_MENU_OPEN_ITEM, "GNOMEUIINFO_MENU_OPEN_ITEM", "gtk-open"},
+			{ GNOMEUIINFO_MENU_SAVE_ITEM, "GNOMEUIINFO_MENU_SAVE_ITEM", "gtk-save"},
+			{ GNOMEUIINFO_MENU_SAVE_AS_ITEM, "GNOMEUIINFO_MENU_SAVE_AS_ITEM", "gtk-save-as"},
+			{ GNOMEUIINFO_MENU_REVERT_ITEM, "GNOMEUIINFO_MENU_REVERT_ITEM", "gtk-revert-to-saved"},
+			{ GNOMEUIINFO_MENU_PRINT_ITEM, "GNOMEUIINFO_MENU_PRINT_ITEM", "gtk-print"},
+			{ GNOMEUIINFO_MENU_PRINT_SETUP_ITEM, "GNOMEUIINFO_MENU_PRINT_SETUP_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_CLOSE_ITEM, "GNOMEUIINFO_MENU_CLOSE_ITEM", "gtk-close"},
+			{ GNOMEUIINFO_MENU_EXIT_ITEM, "GNOMEUIINFO_MENU_EXIT_ITEM", "gtk-quit"},
+			{ GNOMEUIINFO_MENU_QUIT_ITEM, "GNOMEUIINFO_MENU_QUIT_ITEM", "gtk-quit"},
+			/* The "Edit" menu */
+			{ GNOMEUIINFO_MENU_CUT_ITEM, "GNOMEUIINFO_MENU_CUT_ITEM", "gtk-cut"},
+			{ GNOMEUIINFO_MENU_COPY_ITEM, "GNOMEUIINFO_MENU_COPY_ITEM", "gtk-copy"},
+			{ GNOMEUIINFO_MENU_PASTE_ITEM, "GNOMEUIINFO_MENU_PASTE_ITEM", "gtk-paste"},
+			{ GNOMEUIINFO_MENU_SELECT_ALL_ITEM, "GNOMEUIINFO_MENU_SELECT_ALL_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_CLEAR_ITEM, "GNOMEUIINFO_MENU_CLEAR_ITEM", "gtk-clear"},
+			{ GNOMEUIINFO_MENU_UNDO_ITEM, "GNOMEUIINFO_MENU_UNDO_ITEM", "gtk-undo"},
+			{ GNOMEUIINFO_MENU_REDO_ITEM, "GNOMEUIINFO_MENU_REDO_ITEM", "gtk-redo"},
+			{ GNOMEUIINFO_MENU_FIND_ITEM, "GNOMEUIINFO_MENU_FIND_ITEM", "gtk-find"},
+			{ GNOMEUIINFO_MENU_FIND_AGAIN_ITEM, "GNOMEUIINFO_MENU_FIND_AGAIN_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_REPLACE_ITEM, "GNOMEUIINFO_MENU_REPLACE_ITEM", "gtk-find-and-replace"},
+			{ GNOMEUIINFO_MENU_PROPERTIES_ITEM, "GNOMEUIINFO_MENU_PROPERTIES_ITEM", "gtk-properties"},
+			/* The Settings menu */
+			{ GNOMEUIINFO_MENU_PREFERENCES_ITEM, "GNOMEUIINFO_MENU_PREFERENCES_ITEM", "gtk-preferences"},
+			/* The Windows menu */
+			{ GNOMEUIINFO_MENU_NEW_WINDOW_ITEM, "GNOMEUIINFO_MENU_NEW_WINDOW_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM, "GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM", NULL},
+			/* And the "Help" menu */
+			{ GNOMEUIINFO_MENU_ABOUT_ITEM, "GNOMEUIINFO_MENU_ABOUT_ITEM", "gtk-about"},
+			/* The "Game" menu */
+			{ GNOMEUIINFO_MENU_NEW_GAME_ITEM, "GNOMEUIINFO_MENU_NEW_GAME_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_PAUSE_GAME_ITEM, "GNOMEUIINFO_MENU_PAUSE_GAME_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_RESTART_GAME_ITEM, "GNOMEUIINFO_MENU_RESTART_GAME_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_UNDO_MOVE_ITEM, "GNOMEUIINFO_MENU_UNDO_MOVE_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_REDO_MOVE_ITEM, "GNOMEUIINFO_MENU_REDO_MOVE_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_HINT_ITEM, "GNOMEUIINFO_MENU_HINT_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_SCORES_ITEM, "GNOMEUIINFO_MENU_SCORES_ITEM", NULL},
+			{ GNOMEUIINFO_MENU_END_GAME_ITEM, "GNOMEUIINFO_MENU_END_GAME_ITEM", NULL},
+			/* Some standard menus */
+			{ GNOMEUIINFO_MENU_FILE_TREE, "GNOMEUIINFO_MENU_FILE_TREE", NULL},
+			{ GNOMEUIINFO_MENU_EDIT_TREE, "GNOMEUIINFO_MENU_EDIT_TREE", NULL},
+			{ GNOMEUIINFO_MENU_VIEW_TREE, "GNOMEUIINFO_MENU_VIEW_TREE", NULL},
+			{ GNOMEUIINFO_MENU_SETTINGS_TREE, "GNOMEUIINFO_MENU_SETTINGS_TREE", NULL},
+			{ GNOMEUIINFO_MENU_FILES_TREE, "GNOMEUIINFO_MENU_FILES_TREE", NULL},
+			{ GNOMEUIINFO_MENU_WINDOWS_TREE, "GNOMEUIINFO_MENU_WINDOWS_TREE", NULL},
+			{ GNOMEUIINFO_MENU_HELP_TREE, "GNOMEUIINFO_MENU_HELP_TREE", NULL},
+			{ GNOMEUIINFO_MENU_GAME_TREE, "GNOMEUIINFO_MENU_GAME_TREE", NULL},
+			{ 0, NULL, NULL }
+		};
+		etype = g_enum_register_static ("GladeGtkGnomeUIInfo", values);
+	}
+	return etype;
+}
+
+GParamSpec * GLADEGTK_API
+glade_gtk_gnome_ui_info_spec (void)
+{
+	return g_param_spec_enum ("gnomeuiinfo", _("GnomeUIInfo"), 
+				  _("Chose the GnomeUIInfo stock item"),
+				  glade_gtk_gnome_ui_info_get_type (),
+				  0, G_PARAM_READWRITE);
+}
+
+void GLADEGTK_API
+glade_gtk_menu_item_set_stock_item (GObject *object, GValue *value)
+{
+	GladeWidget *gitem, *gimage;
+	GEnumClass *eclass;
+	GEnumValue *eval;
+	gint val;
+	gchar *label, *icon;
+	GObject *image;
+	gboolean is_image_item;
+	
+	g_return_if_fail (GTK_IS_MENU_ITEM (object));
+
+	if ((val = g_value_get_enum (value)) == GNOMEUIINFO_MENU_NONE)
+		return;
+	
+	eclass = g_type_class_ref (G_VALUE_TYPE (value));
+	if ((eval = g_enum_get_value (eclass, val)) == NULL)
+	{
+		g_type_class_unref (eclass);
+		return;
+	}
+
+	g_type_class_unref (eclass);
+	
+	/* set use-underline */
+	gitem = glade_widget_get_from_gobject (object);
+	glade_widget_property_set (gitem, "use-underline", TRUE);
+	
+	is_image_item = GTK_IS_IMAGE_MENU_ITEM (object);
+	
+	/* If tts a GtkImageMenuItem */
+	if (is_image_item && eval->value_nick)
+	{
+		glade_widget_property_set (gitem, "use-stock", TRUE);
+		glade_widget_property_set (gitem, "label", eval->value_nick);		
+		return;
+	}
+	
+	icon = NULL;
+	switch (val)
+	{
+		case GNOMEUIINFO_MENU_PRINT_SETUP_ITEM:
+			icon = "gtk-print";
+			label = _("Print S_etup");
+		break;
+		case GNOMEUIINFO_MENU_FIND_AGAIN_ITEM:
+			icon = "gtk-find";
+			label = _("Find Ne_xt");
+		break;
+		case GNOMEUIINFO_MENU_UNDO_MOVE_ITEM:
+			icon = "gtk-undo";
+			label = _("_Undo Move");
+		break;
+		case GNOMEUIINFO_MENU_REDO_MOVE_ITEM:
+			icon = "gtk-redo";
+			label = _("_Redo Move");
+		break;
+		case GNOMEUIINFO_MENU_SELECT_ALL_ITEM:
+			label =  _("Select _All");
+		break;			
+		case GNOMEUIINFO_MENU_NEW_GAME_ITEM:
+			label =  _("_New Game");
+		break;
+		case GNOMEUIINFO_MENU_PAUSE_GAME_ITEM:
+			label =  _("_Pause game");
+		break;
+		case GNOMEUIINFO_MENU_RESTART_GAME_ITEM:
+			label =  _("_Restart Game");
+		break;
+		case GNOMEUIINFO_MENU_HINT_ITEM:
+			label =  _("_Hint"); 
+		break;
+		case GNOMEUIINFO_MENU_SCORES_ITEM:
+			label =  _("_Scores...");
+		break;
+		case GNOMEUIINFO_MENU_END_GAME_ITEM:
+			label =  _("_End Game");
+		break;
+		case GNOMEUIINFO_MENU_NEW_WINDOW_ITEM:
+			label =  _("Create New _Window");
+		break;
+		case GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM:
+			label =  _("_Close This Window");
+		break;
+		case GNOMEUIINFO_MENU_FILE_TREE:
+			label =  _("_File");
+		break;
+		case GNOMEUIINFO_MENU_EDIT_TREE:
+			label =  _("_Edit");
+		break;
+		case GNOMEUIINFO_MENU_VIEW_TREE:
+			label =  _("_View");
+		break;
+		case GNOMEUIINFO_MENU_SETTINGS_TREE:
+			label =  _("_Settings");
+		break;
+		case GNOMEUIINFO_MENU_FILES_TREE:
+			label =  _("Fi_les");
+		break;
+		case GNOMEUIINFO_MENU_WINDOWS_TREE:
+			label =  _("_Windows");
+		break;
+		case GNOMEUIINFO_MENU_HELP_TREE:
+			label =  _("_Help");
+		break;
+		case GNOMEUIINFO_MENU_GAME_TREE:
+			label =  _("_Game");
+		break;
+		default:
+			return;
+		break;
+	}
+
+	if (is_image_item && icon)
+	{
+		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
+		eval = g_enum_get_value_by_nick (eclass, icon);
+		g_type_class_unref (eclass);
+	
+		glade_gtk_image_menu_item_get_internal_child (object, "image", &image);
+		gimage = glade_widget_get_from_gobject (image);
+		glade_widget_property_set (gimage, "icon-size", GTK_ICON_SIZE_MENU);
+		glade_widget_property_set (gimage, "glade-stock", eval->value);
+	}
+	
+	glade_widget_property_set (gitem, "label", label);
 }

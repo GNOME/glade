@@ -1,3 +1,46 @@
+2006-05-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.in: added check for GnomeUI libs (PKG_CHECK_MODULES)
+
+	* widgets/Makefile.am: New catalogs added (bonobo.xml gnome.xml)
+
+	* widgets/bonobo.xml.in: Created new catalog for libbonoboui.
+
+	* widgets/gnome.xml.in: Created new catalog for libgnomeui.
+
+	* widgets/canvas.xml.in: empty file just to declare the module.
+	  GnomeCanvas is declared in gnome catalog.
+
+	* widgets/gtk+.xml.in: added GtkMenuItem "stock-item" property.
+	  o added glade_gtk_box_get_internal_child()
+	  o disabled GtkLayout's hadjustment and vadjustment properties.
+
+	* src/Makefile.am: added gladegnome conditional build.
+
+	* src/glade-builtins.[ch]: added glade_standard_pixbuf_spec(),
+	  glade_standard_gdkcolor_spec() and glade_standard_uint_spec().
+	  Fixed stock order in glade_standard_stock_get_type()
+
+	* src/glade-editor-property.c: added G_PARAM_SPEC_VALUE_ARRAY
+	  support to GladeEPropText.
+	  
+	* src/glade-gnome.c: New support file for gnome/bonobo catalogs.
+
+	* src/glade-gtk.h: Created to include it in others plugings.
+
+	* src/glade-gtk.c: 
+	  o added GtkMenuItem stock-item property.
+	  o Moved GladeGtkImageType and GladeGtkButtonType to glade-gtk.h
+	  o Moved GLADE_CREATE_USER block from idle function to
+	    glade_gtk_button_post_create()
+
+	* src/glade-project.c: fixed bug in glade_project_resource_fullpath()
+	  project->path could be NULL.
+
+	* src/glade-property-class.c: added G_PARAM_SPEC_VALUE_ARRAY
+	  support in glade_property_class_make_string_from_gvalue() and
+	  glade_property_class_make_gvalue_from_string()
+
 2006-05-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in: 

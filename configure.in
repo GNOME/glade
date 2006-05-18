@@ -88,6 +88,12 @@ case $host_os in
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
+PKG_CHECK_MODULES(GNOME, libbonoboui-2.0 libgnomeui-2.0,
+  [have_gnome=yes],[have_gnome=no])
+AC_SUBST(GNOME_LIBS)
+AC_SUBST(GNOME_CFLAGS)
+AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
+
 GTK_DOC_CHECK(1.4)
 
 AC_OUTPUT([
@@ -108,8 +114,9 @@ echo "
 Configuration:
 
 	Source code location:	${srcdir}
+
 	Compiler:		${CC} 
-	Devhelp module:         ${have_devhelp}
+	Devhelp module:		${have_devhelp}
+	GnomeUI Catalog:	${have_gnome}
 
 "
-

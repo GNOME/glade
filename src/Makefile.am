@@ -143,12 +143,25 @@ libgladeuiinclude_HEADERS = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libgladeui-1.0.pc glade-3.pc
 
+if BUILD_GNOME
+gladegnome_LTLIBRARIES = libgladegnome.la
+gladegnomedir = $(glade_modulesdir)
+libgladegnome_la_SOURCES = glade-gnome.c
+libgladegnome_la_CFLAGS = -g -Wall $(GNOME_CFLAGS)
+libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS)
+libgladegnome_la_LIBADD = libgladeui-1.la $(GLADE_LIBS)
+endif
+
 if WITH_WIN32
   libgladegtk_la_LDFLAGS += -no-undefined
   libgladeui_1_la_LDFLAGS += -no-undefined
 
 if WITH_DEVHELP
   libgladedevhelp_la_LDFLAGS += -no-undefined
+endif
+
+if BUILD_GNOME
+  libgladegnome_la_LDFLAGS += -no-undefined
 endif
 
 endif

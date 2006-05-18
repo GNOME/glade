@@ -460,6 +460,25 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		string = glade_property_class_make_string_from_flags
 			(property_class, flags, FALSE);
 	}
+	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
+	{
+		GValueArray *value_array = g_value_get_boxed (value);
+		
+		if (value_array && value_array->n_values &&
+		   G_VALUE_HOLDS (&value_array->values [0], G_TYPE_STRING))
+		{
+			gint i, n_values = value_array->n_values;
+			GString *gstring = g_string_new (NULL);
+			
+			for (i = 0; i < n_values; i++)
+			{
+				g_string_append (gstring, g_value_get_string (&value_array->values [i]));
+				g_string_append_c (gstring, '\n');
+			}
+			string = gstring->str;
+			g_string_free (gstring, FALSE);
+		}
+	}
 	else if (G_IS_PARAM_SPEC_BOXED(property_class->pspec))
 	{
 		if (property_class->pspec->value_type == GDK_TYPE_COLOR)
@@ -737,6 +756,23 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		guint flags = glade_property_class_make_flags_from_string
 			(property_class->pspec->value_type, string);
 		g_value_set_flags (value, flags);
+	}
+	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
+	{
+		GValueArray *value_array = g_value_array_new (0);;
+		GValue str_value = {0, };
+		gint i;
+			
+		g_value_init (&str_value, G_TYPE_STRING);
+		strv   = g_strsplit (string, "\n", 0);
+						
+		for (i = 0; strv[i]; i++)
+		{
+			g_value_set_static_string (&str_value, strv[i]);
+			value_array = g_value_array_append (value_array, &str_value);
+		}
+		g_value_set_boxed (value, value_array);
+		g_strfreev (strv);
 	}
 	else if (G_IS_PARAM_SPEC_BOXED(property_class->pspec))
 	{

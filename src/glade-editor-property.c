@@ -921,15 +921,15 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 			value_name = glade_property_class_get_displayable_value
 				(eprop->class, class->values[flag_num].value);
 
+			if (value_name == NULL) value_name = class->values[flag_num].value_name;
+			
 			/* Setup string for property label */
 			if (setting)
 			{
 				if (string->len > 0)
-					g_string_append (string, "|");
+					g_string_append (string, " | ");
 				g_string_append (string, value_name);
 			}
-
-			if (value_name == NULL) value_name = class->values[flag_num].value_name;
 			
 			/* Add a row to represent the flag. */
 			gtk_list_store_append (GTK_LIST_STORE(eprop_flags->model), &iter);
@@ -1290,17 +1290,14 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 		gtk_editable_set_position (editable, pos);
 	} else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry)) {
 		GtkTextBuffer  *buffer;
-		gchar **split;
 			
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
 
-		if (G_VALUE_HOLDS (property->value, G_TYPE_STRV))
+		if (G_VALUE_HOLDS (property->value, G_TYPE_STRV) ||
+		    G_VALUE_HOLDS (property->value, G_TYPE_VALUE_ARRAY))
 		{
-			gchar *text = NULL;
-			split = g_value_get_boxed (property->value);
-
-			if (split) text = g_strjoinv ("\n", split);
-
+			gchar *text = glade_property_class_make_string_from_gvalue (
+						property->class, property->value);
 			gtk_text_buffer_set_text (buffer,
 						  text ? text : "",
 						  text ? g_utf8_strlen (text, -1) : 0);
@@ -1321,18 +1318,20 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 				 const gchar *text,
 				 gboolean use_command)
 {
-	GValue  val = { 0, };
+	GValue  *val;
 	gchar  *prop_text;
 
-	if (eprop->property->class->pspec->value_type == G_TYPE_STRV)
+	if (eprop->property->class->pspec->value_type == G_TYPE_STRV ||
+	    eprop->property->class->pspec->value_type == G_TYPE_VALUE_ARRAY)
 	{
-		g_value_init (&val, G_TYPE_STRV);
-		g_value_take_boxed (&val, g_strsplit (text, "\n", 0));
+		val = glade_property_class_make_gvalue_from_string 
+			(eprop->property->class, text, NULL);
 	} 
 	else
 	{
-		g_value_init (&val, G_TYPE_STRING);
-
+		val = g_new0 (GValue, 1);
+		
+		g_value_init (val, G_TYPE_STRING);
 
 		glade_property_get (eprop->property, &prop_text);
 
@@ -1341,16 +1340,17 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 		 */
 		if (prop_text == NULL &&
 		    text && text[0] == '\0')
-			g_value_set_string (&val, NULL);
+			g_value_set_string (val, NULL);
 		else if (text == NULL &&
 			 prop_text && prop_text == '\0')
-			g_value_set_string (&val, "");
+			g_value_set_string (val, "");
 		else
-			g_value_set_string (&val, text);
+			g_value_set_string (val, text);
 	}
 
-	glade_editor_property_commit (eprop, &val);
-	g_value_unset (&val);
+	glade_editor_property_commit (eprop, val);
+	g_value_unset (val);
+	g_free (val);
 }
 
 static void
@@ -1582,7 +1582,9 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 	hbox = gtk_hbox_new (FALSE, 0);
 
 	if (class->visible_lines > 1 ||
-	    class->pspec->value_type == G_TYPE_STRV) {
+	    class->pspec->value_type == G_TYPE_STRV ||
+	    class->pspec->value_type == G_TYPE_VALUE_ARRAY) 
+	{
 		GtkWidget  *swindow;
 
 		swindow = gtk_scrolled_window_new (NULL, NULL);
@@ -2918,6 +2920,11 @@ glade_editor_property_type (GParamSpec *pspec)
 		type = GLADE_TYPE_EPROP_ENUM;
 	else if (G_IS_PARAM_SPEC_FLAGS(pspec))
 		type = GLADE_TYPE_EPROP_FLAGS;
+	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
+	{
+		if (pspec->value_type == G_TYPE_VALUE_ARRAY)
+			type = GLADE_TYPE_EPROP_TEXT;
+	}
 	else if (G_IS_PARAM_SPEC_BOXED(pspec))
 	{
 		if (pspec->value_type == GDK_TYPE_COLOR)
