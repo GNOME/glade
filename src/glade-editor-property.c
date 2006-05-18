@@ -231,36 +231,24 @@ glade_editor_property_enabled_toggled_cb (GtkWidget           *check,
 				    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)));
 }
 
-static const gchar *
-glade_editor_property_guess_bookname (GladeEditorProperty *eprop)
-{
-	gchar       *guess = NULL;
-	GladeWidget *gwidget;
-
-
-	g_return_val_if_fail (GLADE_IS_PROPERTY (eprop->property), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET (eprop->property->widget), NULL);
-
-	gwidget = eprop->property->widget;
-
-	if (GTK_IS_WIDGET (gwidget->object))
-		guess = "gtk";
-	
-	return guess;
-}
-
 static void
 glade_editor_property_info_clicked_cb (GtkWidget           *info,
 				       GladeEditorProperty *eprop)
 {
-	gchar *search;
+	GladeWidgetClass *widget_class;
+	gchar            *search;
+
+	/* XXX Would be nice if we didnt have to beat around the bush here...
+	 * something like eporp->class->widget_class.
+	 */
+	widget_class = glade_widget_class_get_by_type (eprop->class->pspec->owner_type);
 
 	search = g_strdup_printf ("The %s property", eprop->property->class->id);
 
 	g_signal_emit (G_OBJECT (eprop),
 		       glade_editor_property_signals[GTK_DOC_SEARCH],
 		       0, 
-		       glade_editor_property_guess_bookname (eprop),
+		       widget_class ? widget_class->book : NULL,
 		       g_type_name (eprop->class->pspec->owner_type), search);
 
 	g_free (search);

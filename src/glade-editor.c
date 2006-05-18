@@ -229,20 +229,6 @@ glade_editor_on_launch_click (GtkButton *button,
 	glade_widget_launch_editor (editor->loaded_widget);
 }
 
-static const gchar *
-glade_editor_guess_bookname (GladeEditor *editor)
-{
-	gchar *guess = NULL;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET (editor->loaded_widget), NULL);
-
-	if (GTK_IS_WIDGET (editor->loaded_widget->object))
-		guess = "gtk";
-	
-	return guess;
-}
-
-
 static void
 glade_editor_on_docs_click (GtkButton *button,
 			    GladeEditor *editor)
@@ -250,7 +236,7 @@ glade_editor_on_docs_click (GtkButton *button,
 	if (editor->loaded_widget)
 		g_signal_emit (G_OBJECT (editor),
 			       glade_editor_signals[GTK_DOC_SEARCH],
-			       0, glade_editor_guess_bookname (editor),
+			       0, editor->loaded_widget->widget_class->book,
 			       editor->loaded_widget->widget_class->name, NULL);
 }
 

@@ -95,6 +95,8 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_free (widget_class->generic_name);
 	g_free (widget_class->name);
 	g_free (widget_class->catalog);
+	if (widget_class->book)
+		g_free (widget_class->book);
 
 	g_list_foreach (widget_class->properties, (GFunc) glade_property_class_free, NULL);
 	g_list_free (widget_class->properties);
@@ -887,11 +889,24 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 		(&widget_class->children, parent_class->children, widget_class);
 }
 
+/**
+ * glade_widget_class_new:
+ * @class_node: A #GladeXmlNode
+ * @catname: the name of the owning catalog
+ * @library: the name of the library used to load class methods from
+ * @domain: the domain to translate strings from this plugin from
+ * @book: the devhelp search domain for the owning catalog.
+ *
+ * Merges the contents of the @parent_class on the @widget_class.
+ * The properties of the @parent_class will be prepended to
+ * those of @widget_class.
+ */
 GladeWidgetClass *
 glade_widget_class_new (GladeXmlNode *class_node,
 			const gchar  *catname, 
 			const gchar  *library, 
-			const gchar  *domain)
+			const gchar  *domain,
+			const gchar  *book)
 {
 	GladeWidgetClass *widget_class;
 	gchar            *name, *generic_name, *ptr;
@@ -978,6 +993,9 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	/* Dont mention gtk+ as a required lib in the generated glade file */
 	if (strcmp (catname, "gtk+"))
 		widget_class->catalog = g_strdup (catname);
+
+	if (book)
+		widget_class->book = g_strdup (book);
 
 	if (widget_class->type == 0)
 	{

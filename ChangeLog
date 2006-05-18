@@ -1,3 +1,17 @@
+2006-05-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade.h, src/glade-catalog.c, src/glade-widget-class.[ch]:
+	  catalog book specifications now on widget classes
+
+	* src/glade-editor.c, src/glade-editor-property.c: Now get the
+	  book name directly from the widget class.
+	
+	* doc/catalogintro.sgml: documented added "book" property.
+
+	* widgets/bonobo.xml.in: added gnome catalog dependancy
+
+	* widgets/gnome.xml.in, widgets/gtk+.xml.in: Added book specifications.
+
 2006-05-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.in: added check for GnomeUI libs (PKG_CHECK_MODULES)

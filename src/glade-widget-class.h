@@ -167,6 +167,9 @@ struct _GladeWidgetClass
 			      * was declared by.
 			      */
 
+	gchar *book;         /* Devhelp search namespace
+			      */
+
 	GdkPixbuf *icon;     /* The GdkPixbuf icon for the widget */
 
 	gchar *generic_name; /* Use to generate names of new widgets, for
@@ -262,7 +265,8 @@ LIBGLADEUI_API
 GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
 							    const gchar      *catname,
 							    const gchar      *library,
-							    const gchar      *domain);
+							    const gchar      *domain,
+							    const gchar      *book);
 LIBGLADEUI_API
 void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
 LIBGLADEUI_API

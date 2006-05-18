@@ -53,6 +53,9 @@ struct _GladeCatalog
 				  * defaults to the library name)
 				  */
 	
+	gchar *book;             /* Devhelp search domain
+				  */
+
 	GList *widget_groups;    /* List of widget groups (palette)   */
 	GList *widget_classes;   /* List of widget classes (all)      */
 
@@ -150,6 +153,8 @@ catalog_open (const gchar *filename)
 		glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
 	catalog->domain =
 		glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
+	catalog->book =
+		glade_xml_get_property_string (root, GLADE_TAG_BOOK);
 	catalog->init_function_name =
 		glade_xml_get_value_string (root, GLADE_TAG_INIT_FUNCTION);
 	
@@ -279,7 +284,8 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 	
 		widget_class = glade_widget_class_new 
 			(node, catalog->name, catalog->library, 
-			 catalog->domain ? catalog->domain : catalog->library);
+			 catalog->domain ? catalog->domain : catalog->library,
+			 catalog->book);
 
 		catalog->widget_classes = g_list_prepend (catalog->widget_classes,
 							  widget_class);
@@ -463,6 +469,8 @@ glade_catalog_free (GladeCatalog *catalog)
 		return;
 
 	g_free (catalog->name);
+	if (catalog->book)
+		g_free (catalog->book);
 	
 	for (list = catalog->widget_classes; list; list = list->next)
 		glade_widget_class_free (GLADE_WIDGET_CLASS (list->data));
