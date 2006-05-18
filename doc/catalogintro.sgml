@@ -117,22 +117,22 @@ the library property will be used in it's stead.
       </varlistentry>
 
       <varlistentry>
+        <term>book</term>
+        <listitem>
+          <para>
+The 'book' property is used to specify a namespace to search devhelp docs library with
+(specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term>init-function</term>
         <listitem>
           <para>
 The 'init-function' tag is used to retrieve an optional global entry point to your plugin; 
 if you need to initialize any backends or whatnot this is a good place. 
 Your catalog's init-function will be called before any widget classes are instanciated.
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>book</term>
-        <listitem>
-          <para>
-The 'book' tag is used to specify a namespace to search devhelp docs library with (specificly,
-it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
           </para>
         </listitem>
       </varlistentry>
