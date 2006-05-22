@@ -695,7 +695,7 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 }
 
 gchar *
-alloc_string(GladeInterface *interface, const gchar *string)
+glade_xml_alloc_string(GladeInterface *interface, const gchar *string)
 {
     gchar *s;
 
@@ -709,7 +709,7 @@ alloc_string(GladeInterface *interface, const gchar *string)
 }
 
 gchar *
-alloc_propname(GladeInterface *interface, const gchar *string)
+glade_xml_alloc_propname(GladeInterface *interface, const gchar *string)
 {
     static GString *norm_str;
     guint i;
@@ -724,7 +724,7 @@ alloc_propname(GladeInterface *interface, const gchar *string)
 	if (norm_str->str[i] == '-')
 	    norm_str->str[i] = '_';
 
-    return alloc_string(interface, norm_str->str);
+    return glade_xml_alloc_string(interface, norm_str->str);
 }
 
 
@@ -734,7 +734,6 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 			      gchar            *tagname,
 			      gpointer         *sym_location)
 {
-	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar *buff;
 
 	if ((buff = glade_xml_get_value_string (node_in, tagname)) != NULL)

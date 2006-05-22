@@ -1,3 +1,24 @@
+2006-05-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am, widgets/Makefile.am: Installed unwanted garbage
+	  to pass distcheck.
+
+	* src/glade-devhelp.c: Navigational buttons insensitive at startup.
+
+	* src/glade-catalog.c: Unexposed a private function.
+
+	* src/glade-xml-utils.c: made alloc_string glade_xml_alloc_string,
+	  alloc_propname: ditto.
+
+	* src/glade-property.c, src/glade-signal.c:
+	  Adjustemtnts made for glade-xml api above
+
+	* src/glade-widget.c: 
+	  o Adjustemtnts made for glade-xml api above
+	  o Properties applied to new objects in two steps now,
+	    code around build_object cleaned up... now build_object
+	    used also in load code.
+
 2006-05-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade.h, src/glade-catalog.c, src/glade-widget-class.[ch]:
@@ -5,7 +26,7 @@
 
 	* src/glade-editor.c, src/glade-editor-property.c: Now get the
 	  book name directly from the widget class.
-	
+
 	* doc/catalogintro.sgml: documented added "book" property.
 
 	* widgets/bonobo.xml.in: added gnome catalog dependancy

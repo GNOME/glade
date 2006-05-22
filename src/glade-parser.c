@@ -125,9 +125,9 @@ create_widget_info(GladeInterface *interface, const xmlChar **attrs)
 
     for (i = 0; attrs && attrs[i] != NULL; i += 2) {
         if (!xmlStrcmp(attrs[i], BAD_CAST("class")))
-            info->classname = alloc_string (interface, CAST_BAD(attrs[i+1]));
+            info->classname = glade_xml_alloc_string (interface, CAST_BAD(attrs[i+1]));
             else if (!xmlStrcmp(attrs[i], BAD_CAST("id")))
-                info->name = alloc_string (interface, CAST_BAD(attrs[i+1]));
+                info->name = glade_xml_alloc_string (interface, CAST_BAD(attrs[i+1]));
             else
                 g_warning("unknown attribute `%s' for <widget>.", attrs[i]);
     }
@@ -233,9 +233,9 @@ handle_atk_action(GladeParseState *state, const xmlChar **attrs)
 
     for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 	if (!xmlStrcmp(attrs[i], BAD_CAST("action_name")))
-	    info.action_name = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.action_name = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("description")))
-	    info.description = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.description = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else
 	    g_warning("unknown attribute `%s' for <action>.", attrs[i]);
     }
@@ -259,9 +259,9 @@ handle_atk_relation(GladeParseState *state, const xmlChar **attrs)
 
     for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 	if (!xmlStrcmp(attrs[i], BAD_CAST("target")))
-	    info.target = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.target = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("type")))
-	    info.type = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.type = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else
 	    g_warning("unknown attribute `%s' for <signal>.", attrs[i]);
     }
@@ -286,15 +286,15 @@ handle_signal(GladeParseState *state, const xmlChar **attrs)
     info.after = FALSE;
     for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 	if (!xmlStrcmp(attrs[i], BAD_CAST("name")))
-	    info.name = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.name = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("handler")))
-	    info.handler = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.handler = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("after")))
 	    info.after = attrs[i+1][0] == 'y';
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("lookup")))
 	    info.lookup = attrs[i+1][0] == 'y';
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("object")))
-	    info.object = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.object = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else if (!xmlStrcmp(attrs[i], BAD_CAST("last_modification_time")))
 	    /* Do nothing. */;
 	else
@@ -378,7 +378,7 @@ handle_accel(GladeParseState *state, const xmlChar **attrs)
                } else
                    pos++;
 	} else if (!xmlStrcmp(attrs[i], BAD_CAST("signal")))
-	    info.signal = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info.signal = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else
 	    g_warning("unknown attribute `%s' for <accelerator>.", attrs[i]);
     }
@@ -416,7 +416,7 @@ handle_child(GladeParseState *state, const xmlChar **attrs)
 
     for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 	if (!xmlStrcmp(attrs[i], BAD_CAST("internal-child")))
-	    info->internal_child = alloc_string(state->interface, CAST_BAD(attrs[i+1]));
+	    info->internal_child = glade_xml_alloc_string(state->interface, CAST_BAD(attrs[i+1]));
 	else
 	    g_warning("unknown attribute `%s' for <child>.", attrs[i]);
     }
@@ -499,7 +499,7 @@ glade_parser_start_element(GladeParseState *state,
 		    iface->requires = g_renew(gchar *, iface->requires,
 					      iface->n_requires);
 		    iface->requires[iface->n_requires-1] =
-			alloc_string(iface, CAST_BAD(attrs[i+1]));
+			glade_xml_alloc_string(iface, CAST_BAD(attrs[i+1]));
 		} else
 		    g_warning("unknown attribute `%s' for <requires>.",
 			      attrs[i]);
@@ -547,14 +547,14 @@ glade_parser_start_element(GladeParseState *state,
 	    state->translate_prop = FALSE;
 	    for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 		if (!xmlStrcmp(attrs[i], BAD_CAST("name")))
-		    state->prop_name = alloc_propname(state->interface,
+		    state->prop_name = glade_xml_alloc_propname(state->interface,
 						      CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("translatable")))
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = alloc_propname(state->interface, 
+		    state->comment = glade_xml_alloc_propname(state->interface, 
 						     CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
@@ -608,14 +608,14 @@ glade_parser_start_element(GladeParseState *state,
 	    state->translate_prop = FALSE;
 	    for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 		if (!xmlStrcmp(attrs[i], BAD_CAST("name")))
-		    state->prop_name = alloc_propname(state->interface,
+		    state->prop_name = glade_xml_alloc_propname(state->interface,
 						      CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("translatable")))
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = alloc_propname(state->interface, 
+		    state->comment = glade_xml_alloc_propname(state->interface, 
 						     CAST_BAD(attrs[i+1]));
 		else
 		    g_warning("unknown attribute `%s' for <atkproperty>.",
@@ -764,14 +764,14 @@ glade_parser_start_element(GladeParseState *state,
 	    state->translate_prop = FALSE;
 	    for (i = 0; attrs && attrs[i] != NULL; i += 2) {
 		if (!xmlStrcmp(attrs[i], BAD_CAST("name")))
-		    state->prop_name = alloc_propname(state->interface,
+		    state->prop_name = glade_xml_alloc_propname(state->interface,
 						      CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("translatable")))
 		    state->translate_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = alloc_propname(state->interface, 
+		    state->comment = glade_xml_alloc_propname(state->interface, 
 						     CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
@@ -890,7 +890,7 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	prop.has_context  = state->context_prop;
 	prop.translatable = state->translate_prop;
 	prop.comment      = state->comment;
-	prop.value        = alloc_string(state->interface, state->content->str);
+	prop.value        = glade_xml_alloc_string(state->interface, state->content->str);
 
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;
@@ -912,7 +912,7 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	prop.has_context  = state->context_prop;
 	prop.translatable = state->translate_prop;
 	prop.comment      = state->comment;
-	prop.value        = alloc_string(state->interface, state->content->str);
+	prop.value        = glade_xml_alloc_string(state->interface, state->content->str);
 
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;
@@ -976,7 +976,7 @@ glade_parser_end_element(GladeParseState *state, const xmlChar *name)
 	prop.has_context  = state->context_prop;
 	prop.translatable = state->translate_prop;
 	prop.comment      = state->comment;
-	prop.value        = alloc_string(state->interface, state->content->str);
+	prop.value        = glade_xml_alloc_string(state->interface, state->content->str);
 
 	g_array_append_val(state->props, prop);
 	state->prop_name = NULL;

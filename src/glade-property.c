@@ -102,15 +102,30 @@ glade_property_reset_impl (GladeProperty *property)
 gboolean
 glade_property_default_impl (GladeProperty *property)
 {
-	return !g_param_values_cmp (property->class->pspec,
-				    property->value,
-				    property->class->def);
+	return GLADE_PROPERTY_GET_KLASS (property)->equals_value
+		(property, property->class->def);
 }
 
 gboolean
 glade_property_equals_value_impl (GladeProperty *property,
 				  const GValue  *value)
 {
+	if (G_IS_PARAM_SPEC_STRING (property->class->pspec))
+	{
+		gchar *prop_str, *value_str;
+
+		/* in string specs; NULL and '\0' are 
+		 * treated as equivalent.
+		 */
+		prop_str = g_value_get_string (property->value);
+		value_str = g_value_get_string (value);
+
+		if (prop_str == NULL && value_str && value_str[0] == '\0')
+			return TRUE;
+		else if (value_str == NULL && prop_str && prop_str[0] == '\0')
+			return TRUE;
+	}
+
 	return !g_param_values_cmp (property->class->pspec,
 				    property->value, value);
 }
@@ -392,13 +407,12 @@ glade_property_write_impl (GladeProperty  *property,
 	}
 
 	/* convert the value of this property to a string */
-	/* XXX Is this right to return here ??? */
 	if ((value = glade_property_class_make_string_from_gvalue 
 	     (property->class, property->value)) == NULL)
-	{
-		g_free (name);
-		return FALSE;
-	}
+		/* make sure we keep the empty string, also... upcomming
+		 * funcs that may not like NULL.
+		 */
+		value = g_strdup ("");
 
 	switch (property->class->atk_type)
 	{
@@ -408,15 +422,15 @@ glade_property_write_impl (GladeProperty  *property,
 		name = tmp;
 		/* Dont break here ... */
 	case GPC_ATK_NONE:
-		info.name = alloc_propname(interface, name);
-		info.value = alloc_string(interface,  value);
+		info.name = glade_xml_alloc_propname(interface, name);
+		info.value = glade_xml_alloc_string(interface,  value);
 		
 		if (property->class->translatable)
 		{
 			info.translatable = property->i18n_translatable;
 			info.has_context  = property->i18n_has_context;
 			if (property->i18n_comment)
-				info.comment = alloc_string
+				info.comment = glade_xml_alloc_string
 					(interface, property->i18n_comment);
 		}
 		g_array_append_val (props, info);
@@ -427,16 +441,16 @@ glade_property_write_impl (GladeProperty  *property,
 			for (i = 0; split[i] != NULL; i++)
 			{
 				GladeAtkRelationInfo  rinfo = { 0, };
-				rinfo.type   = alloc_string(interface, name);
-				rinfo.target = alloc_string(interface, split[i]);
+				rinfo.type   = glade_xml_alloc_string(interface, name);
+				rinfo.target = glade_xml_alloc_string(interface, split[i]);
 				g_array_append_val (props, rinfo);
 			}
 			g_strfreev (split);
 		}
 		break;
 	case GPC_ATK_ACTION:
-		ainfo.action_name = alloc_string(interface, name);
-		ainfo.description = alloc_string(interface, value);
+		ainfo.action_name = glade_xml_alloc_string(interface, name);
+		ainfo.description = glade_xml_alloc_string(interface, value);
 		g_array_append_val (props, ainfo);
 		break;
 	default:
@@ -901,6 +915,8 @@ glade_property_read_atk_action (GladeProperty      *property,
 
 		if (!strcmp (id, class_id))
 		{
+			/* Need special case for NULL values here ??? */
+			
 			gvalue = glade_property_class_make_gvalue_from_string 
 				(pclass, ainfo->description, project);
 				

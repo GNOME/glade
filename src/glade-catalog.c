@@ -83,7 +83,7 @@ static gboolean        catalog_load_classes (GladeCatalog     *catalog,
 static gboolean        catalog_load_group   (GladeCatalog     *catalog,
 					     GladeXmlNode     *group_node);
 
-void                   widget_group_free    (GladeWidgetGroup *group);
+static void            widget_group_free    (GladeWidgetGroup *group);
 
 /* List of catalog names successfully loaded.
  */
@@ -370,7 +370,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 	return TRUE;
 }
 
-void
+static void
 widget_group_free (GladeWidgetGroup *group)
 {
 	g_return_if_fail (group != NULL);

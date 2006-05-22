@@ -127,11 +127,11 @@ gboolean
 glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
 		     GladeInterface *interface)
 {
-	info->name    = alloc_string(interface, signal->name);
-	info->handler = alloc_string(interface, signal->handler);
+	info->name    = glade_xml_alloc_string(interface, signal->name);
+	info->handler = glade_xml_alloc_string(interface, signal->handler);
 	info->object  =
 		signal->userdata ?
-		alloc_string(interface, signal->userdata) : NULL;
+		glade_xml_alloc_string(interface, signal->userdata) : NULL;
 	info->after   = signal->after;
 	info->lookup  = signal->lookup;
 	return TRUE;

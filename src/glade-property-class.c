@@ -1600,5 +1600,6 @@ glade_property_class_void_value (GladePropertyClass *class,
 	else if (G_IS_PARAM_SPEC_BOXED (class->pspec) &&
 		 g_value_get_boxed (value) == NULL)
 		return TRUE;
+
 	return FALSE;
 }

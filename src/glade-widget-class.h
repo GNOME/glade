@@ -285,7 +285,10 @@ GladePropertyClass  *glade_widget_class_get_property_class (GladeWidgetClass *cl
 LIBGLADEUI_API
 GladeSupportedChild *glade_widget_class_get_child_support  (GladeWidgetClass *class,
 							    GType             child_type);
-
+LIBGLADEUI_API
+GParameter          *glade_widget_class_default_params             (GladeWidgetClass *class,
+								    gboolean          construct,
+								    guint            *n_params);
 LIBGLADEUI_API
 void                 glade_widget_class_container_add              (GladeWidgetClass *class,
 								    GObject          *container,

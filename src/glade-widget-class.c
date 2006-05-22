@@ -1186,6 +1186,90 @@ glade_widget_class_get_child_support  (GladeWidgetClass *class,
 }
 
 
+/**
+ * glade_widget_class_default_params:
+ * @class: a #GladeWidgetClass
+ * @construct: whether to return construct params or not construct params
+ * @n_params: return location if any defaults are specified for this class.
+ * 
+ * Returns: A list of params for use in g_object_newv ()
+ */
+GParameter *
+glade_widget_class_default_params (GladeWidgetClass *class,
+				   gboolean          construct,
+				   guint            *n_params)
+{
+	GArray              *params;
+	GObjectClass        *oclass;
+	GParamSpec         **pspec;
+	GladePropertyClass  *pclass;
+	guint                n_props, i;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	g_return_val_if_fail (n_params != NULL, NULL);
+
+	/* As a slight optimization, we never unref the class
+	 */
+	oclass = g_type_class_ref (class->type);
+	pspec  = g_object_class_list_properties (oclass, &n_props);
+	params = g_array_new (FALSE, FALSE, sizeof (GParameter));
+
+	for (i = 0; i < n_props; i++)
+	{
+		GParameter parameter = { 0, };
+
+		pclass = glade_widget_class_get_property_class
+			(class, pspec[i]->name);
+		
+		/* Ignore properties based on some criteria
+		 */
+		if (pclass == NULL       || /* Unaccounted for in the builder */
+		    pclass->set_function || /* should not be set before 
+					       GladeWidget wrapper exists */
+		    pclass->ignore)         /* Catalog explicitly ignores the object */
+			continue;
+
+		if (construct &&
+		    (pspec[i]->flags & 
+		     (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) == 0)
+			continue;
+		else if (!construct &&
+			 (pspec[i]->flags & 
+			  (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) != 0)
+			continue;
+
+
+		if (g_value_type_compatible (G_VALUE_TYPE (pclass->def),
+					     pspec[i]->value_type) == FALSE)
+		{
+			g_critical ("Type mismatch on %s property of %s",
+				    parameter.name, class->name);
+			continue;
+		}
+
+		if (g_param_values_cmp (pspec[i], 
+					pclass->def, 
+					pclass->orig_def) == 0)
+			continue;
+
+#if 0
+		if (glade_property_class_void_value (pclass, pclass->def))
+			continue;
+	
+#endif 	
+
+		parameter.name = pspec[i]->name; /* These are not copied/freed */
+		g_value_init (&parameter.value, pspec[i]->value_type);
+		g_value_copy (pclass->def, &parameter.value);
+
+		g_array_append_val (params, parameter);
+	}
+	g_free (pspec);
+
+	*n_params = params->len;
+	return (GParameter *)g_array_free (params, FALSE);
+}
+
 void
 glade_widget_class_container_add (GladeWidgetClass *class,
 				  GObject          *container,

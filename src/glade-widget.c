@@ -540,28 +540,41 @@ glade_widget_dup_properties (GList *template_props)
 	return g_list_reverse (properties);
 }
 
-/**
- * glade_widget_build_object:
- * @klass: a #GladeWidgetClass
- * @widget: a #GladeWidget
- * 
- * This function creates a new GObject who's parameters are based
- * on the GType of the GladeWidgetClass and its default values, if a
- * GladeWidget is specified, it will be used to apply the values currently in use.
- *
- * Returns: A newly created GObject
- */
-static GObject *
-glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
+static void
+glade_widget_params_free (GParameter *params, guint n_params)
 {
+	gint i;
+	for (i = 0; i < n_params; i++)
+		g_value_unset (&(params[i].value));
+	g_free (params);
+
+}
+
+/*
+ * This function creates new GObject parameters based on the GType of the 
+ * GladeWidgetClass and its default values.
+ *
+ * If a GladeWidget is specified, it will be used to apply the
+ * values currently in use.
+ */
+static GParameter *
+glade_widget_template_params (GladeWidget      *widget,
+			      gboolean          construct,
+			      guint            *n_params)
+{
+	GladeWidgetClass    *klass;
 	GArray              *params;
 	GObjectClass        *oclass;
 	GParamSpec         **pspec;
 	GladeProperty       *glade_property;
-	GladePropertyClass  *glade_property_class;
-	GObject             *object;
+	GladePropertyClass  *pclass;
 	guint                n_props, i;
 
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (n_params != NULL, NULL);
+
+	klass = widget->widget_class;
+	
 	/* As a slight optimization, we never unref the class
 	 */
 	oclass = g_type_class_ref (klass->type);
@@ -572,85 +585,149 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget)
 	{
 		GParameter parameter = { 0, };
 
-		glade_property_class =
-			glade_widget_class_get_property_class (klass,
-							       pspec[i]->name);
-		if (glade_property_class == NULL ||
-		    glade_property_class->set_function ||
-		    glade_property_class->ignore)
-			/* Ignore properties that are not accounted for
-			 * by the GladeWidgetClass
-			 */
+		glade_property = glade_widget_get_property (widget, pspec[i]->name);
+		pclass = glade_property->class;
+
+		/* Ignore properties based on some criteria
+		 */
+		if (pclass == NULL       || /* Unaccounted for in the builder */
+		    pclass->set_function || /* should not be set before 
+					       GladeWidget wrapper exists */
+		    pclass->ignore)         /* Catalog explicitly ignores the object */
 			continue;
-		
-		parameter.name = pspec[i]->name; /* No need to dup this */
+
+		if (construct &&
+		    (pspec[i]->flags & 
+		     (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) == 0)
+			continue;
+		else if (!construct &&
+			 (pspec[i]->flags & 
+			  (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) != 0)
+			continue;
+
+		if (g_value_type_compatible (G_VALUE_TYPE (pclass->def),
+					     pspec[i]->value_type) == FALSE)
+		{
+			g_critical ("Type mismatch on %s property of %s",
+				    parameter.name, klass->name);
+			continue;
+		}
+
+		if (g_param_values_cmp (pspec[i], 
+					glade_property->value, 
+					pclass->orig_def) == 0)
+			continue;
+
+
+		parameter.name = pspec[i]->name; /* These are not copied/freed */
 		g_value_init (&parameter.value, pspec[i]->value_type);
-
-		/* If a widget is specified and has a value set for that
-		 * property, then that value will be used (otherwise, we
-		 * use the default value)
-		 */
-		if (widget &&
-		    (glade_property =
-		     glade_widget_get_property (widget, parameter.name)) != NULL)
-		{
-			if (g_value_type_compatible (G_VALUE_TYPE (glade_property->value),
-						     G_VALUE_TYPE (&parameter.value)))
-				g_value_copy (glade_property->value, &parameter.value);
-			else
-			{
-				g_critical ("Type mismatch on %s property of %s",
-					    parameter.name, klass->name);
-				continue;
-			}
-		}
-		/* If the class has a default, use it.
-		 */
-		else if (glade_property_class->def != NULL)
-		{
-			if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->def),
-						     G_VALUE_TYPE (&parameter.value)))
-			{
-				if (glade_property_class_void_value
-				    (glade_property_class,
-				     glade_property_class->def))
-					continue;
-#if 0
-				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->def), G_TYPE_OBJECT))
-					if (g_value_get_object (glade_property_class->def) == NULL)
-						continue;
-#endif
-				
-				g_value_copy (glade_property_class->def, &parameter.value);
-			}
-			else
-			{
-				g_critical ("Type mismatch on %s property of %s",
-					    parameter.name, klass->name);
-				continue;
-			}
-		}
-		else
-			g_param_value_set_default (pspec[i], &parameter.value);
-
+		g_value_copy (glade_property->value, &parameter.value);
+		
 		g_array_append_val (params, parameter);
 	}
 	g_free (pspec);
 
+	*n_params = params->len;
+	return (GParameter *)g_array_free (params, FALSE);
+}
+
+static GParameter *
+glade_widget_info_params (GladeWidgetClass *widget_class,
+			  GladeWidgetInfo  *info,
+			  gboolean          construct,
+			  guint            *n_params)
+{
+	GladePropertyClass   *glade_property_class;
+	GObjectClass         *oclass;
+	GParamSpec          **pspec;
+	GArray               *params;
+	guint                 i, n_props;
+	
+	oclass = g_type_class_ref (widget_class->type);
+	pspec  = g_object_class_list_properties (oclass, &n_props);
+	params = g_array_new (FALSE, FALSE, sizeof (GParameter));
+
+	/* prepare parameters that have glade_property_class->def */
+	for (i = 0; i < n_props; i++)
+	{
+		GParameter  parameter = { 0, };
+		GValue     *value;
+		
+		glade_property_class =
+		     glade_widget_class_get_property_class (widget_class,
+							    pspec[i]->name);
+		if (glade_property_class == NULL ||
+		    glade_property_class->set_function ||
+		    glade_property_class->ignore)
+			continue;
+
+		if (construct &&
+		    (pspec[i]->flags & 
+		     (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) == 0)
+			continue;
+		else if (!construct &&
+			 (pspec[i]->flags & 
+			  (G_PARAM_CONSTRUCT|G_PARAM_CONSTRUCT_ONLY)) != 0)
+			continue;
+
+
+		/* Try filling parameter with value from widget info.
+		 */
+		if ((value = glade_property_read (NULL, glade_property_class,
+						  loading_project, info, FALSE)) != NULL)
+		{
+			parameter.name = pspec[i]->name;
+			g_value_init (&parameter.value, pspec[i]->value_type);
+			
+			g_value_copy (value, &parameter.value);
+			g_value_unset (value);
+			g_free (value);
+
+			g_array_append_val (params, parameter);
+		}
+	}
+	g_free(pspec);
+
+	g_type_class_unref (oclass);
+
+	*n_params = params->len;
+	return (GParameter *)g_array_free (params, FALSE);
+}
+
+
+static GObject *
+glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget, GladeWidgetInfo *info)
+{
+	GParameter          *params;
+	GObject             *object;
+	guint                n_params, i;
+
+	if (widget)
+		params = glade_widget_template_params (widget, TRUE, &n_params);
+	else if (info)
+		params = glade_widget_info_params (klass, info, TRUE, &n_params);
+	else
+		params = glade_widget_class_default_params (klass, TRUE, &n_params);
 
 	/* Create the new object with the correct parameters.
 	 */
-	object = g_object_newv (klass->type, params->len,
-				(GParameter *)params->data);
+	object = g_object_newv (klass->type, n_params, params);
 
-	/* Cleanup parameters
-	 */
-	for (i = 0; i < params->len; i++)
+	glade_widget_params_free (params, n_params);
+
+	if (widget)
+		params = glade_widget_template_params (widget, FALSE, &n_params);
+	else if (info)
+		params = glade_widget_info_params (klass, info, FALSE, &n_params);
+	else
+		params = glade_widget_class_default_params (klass, FALSE, &n_params);
+
+	for (i = 0; i < n_params; i++)
 	{
-		GParameter parameter = g_array_index (params, GParameter, i);
-		g_value_unset (&parameter.value);
+		g_object_set_property (object, params[i].name, &(params[i].value));
 	}
-	g_array_free (params, TRUE);
+
+	glade_widget_params_free (params, n_params);
 
 	return object;
 }
@@ -711,7 +788,7 @@ glade_widget_internal_new (const gchar       *name,
 	GObject *glade_widget;
 	GList   *properties = NULL;
 
-	object = glade_widget_build_object(klass, template);
+	object = glade_widget_build_object(klass, template, NULL);
 	if (template)
 		properties = glade_widget_dup_properties (template->properties);
 
@@ -1048,7 +1125,7 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
-	new_object = glade_widget_build_object(klass, glade_widget);
+	new_object = glade_widget_build_object(klass, glade_widget, NULL);
 	old_object = g_object_ref(glade_widget_get_object(glade_widget));
 
 	glade_widget_set_object(glade_widget, new_object);
@@ -2541,8 +2618,8 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 
 	info = g_new0 (GladeWidgetInfo, 1);
 
-	info->classname = alloc_string (interface, widget->widget_class->name);
-	info->name = alloc_string (interface, widget->name);
+	info->classname = glade_xml_alloc_string (interface, widget->widget_class->name);
+	info->name = glade_xml_alloc_string (interface, widget->name);
 
 	/* Write the properties */
 	props         = g_array_new (FALSE, FALSE, sizeof (GladePropInfo));
@@ -2649,8 +2726,8 @@ glade_widget_write_special_child_prop (GArray *props,
 
 	if (support && support->special_child_type && buff)
 	{
-		info.name  = alloc_propname (interface, support->special_child_type);
-		info.value = alloc_string (interface, buff);
+		info.name  = glade_xml_alloc_propname (interface, support->special_child_type);
+		info.value = glade_xml_alloc_string (interface, buff);
 		g_array_append_val (props, info);
 		return TRUE;
 	}
@@ -2690,7 +2767,7 @@ glade_widget_write_child (GArray         *children,
 		return FALSE;
 	
 	if (child_widget->internal)
-		info.internal_child = alloc_string(interface, child_widget->internal);
+		info.internal_child = glade_xml_alloc_string(interface, child_widget->internal);
 
 	info.child = glade_widget_write (child_widget, interface);
 	if (!info.child)
@@ -2786,18 +2863,6 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 	}
 }
 
-static void
-glade_widget_params_free (GArray *params)
-{
-	guint i;
-	for (i = 0; i < params->len; i++)
-	{
-		GParameter parameter = g_array_index (params, GParameter, i);
-		g_value_unset (&parameter.value);
-	}
-	g_array_free (params, TRUE);
-}
-
 static GList *
 glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 					  GladeWidgetInfo  *info)
@@ -2823,93 +2888,6 @@ glade_widget_properties_from_widget_info (GladeWidgetClass *class,
 	return g_list_reverse (properties);
 }
 
-static GArray *
-glade_widget_params_from_widget_info (GladeWidgetClass *widget_class,
-				      GladeWidgetInfo  *info)
-{
-	GladePropertyClass   *glade_property_class;
-	GObjectClass         *oclass;
-	GParamSpec          **pspec;
-	GArray               *params;
-	guint                 i, n_props;
-	
-	oclass = g_type_class_ref (widget_class->type);
-	pspec  = g_object_class_list_properties (oclass, &n_props);
-	params = g_array_new (FALSE, FALSE, sizeof (GParameter));
-
-	/* prepare parameters that have glade_property_class->def */
-	for (i = 0; i < n_props; i++)
-	{
-		GParameter  parameter = { 0, };
-		GValue     *value;
-		
-		glade_property_class =
-		     glade_widget_class_get_property_class (widget_class,
-							    pspec[i]->name);
-		if (glade_property_class == NULL ||
-		    glade_property_class->set_function ||
-		    glade_property_class->ignore)
-			continue;
-		
-		parameter.name = pspec[i]->name;
-		g_value_init (&parameter.value, pspec[i]->value_type);
-
-		/* Try filling parameter with value from widget info.
-		 */
-		if ((value = glade_property_read (NULL, glade_property_class,
-						  loading_project, info, FALSE)) != NULL)
-		{
-			if (g_value_type_compatible (G_VALUE_TYPE (value),
-						     G_VALUE_TYPE (&parameter.value)))
-			{
-				g_value_copy (value, &parameter.value);
-				g_value_unset (value);
-				g_free (value);
-			}
-			else
-			{
-				g_critical ("Type mismatch on %s property of %s",
-					    parameter.name, widget_class->name);
-				g_value_unset (value);
-				g_free (value);
-				continue;
-			}
-		}
-		/* Now try filling the parameter with the default on the GladeWidgetClass.
-		 */
-		else if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class->orig_def),
-						  G_VALUE_TYPE (&parameter.value)))
-			{
-				if (glade_property_class_void_value
-				    (glade_property_class,
-				     glade_property_class->orig_def))
-					continue;
-#if 0
-				/* If its a NULL object property; disregard it.
-				 */
-				if (g_type_is_a (G_VALUE_TYPE (glade_property_class->orig_def),
-						 G_TYPE_OBJECT))
-					if (g_value_get_object (glade_property_class->orig_def) == NULL)
-							continue;
-#endif
-				g_value_copy (glade_property_class->orig_def, &parameter.value);
-			}
-		else
-		{
-			g_critical ("Type mismatch on %s property of %s",
-				    parameter.name, widget_class->name);
-			continue;
-		}
-
-		g_array_append_val (params, parameter);
-	}
-	g_free(pspec);
-
-	g_type_class_unref (oclass);
-
-	return params;
-}
-
 static GladeWidget *
 glade_widget_new_from_widget_info (GladeWidgetInfo *info,
                                    GladeProject    *project,
@@ -2918,7 +2896,6 @@ glade_widget_new_from_widget_info (GladeWidgetInfo *info,
 	GladeWidgetClass *klass;
 	GladeWidget *widget;
 	GObject     *object;
-	GArray      *params;
 	GList       *properties;
 	
 	g_return_val_if_fail (info != NULL, NULL);
@@ -2931,21 +2908,15 @@ glade_widget_new_from_widget_info (GladeWidgetInfo *info,
 		return NULL;
 	}
 	
-	params     = glade_widget_params_from_widget_info (klass, info);
+	object     = glade_widget_build_object (klass, NULL, info);
 	properties = glade_widget_properties_from_widget_info (klass, info);
-	
-	object = g_object_newv (klass->type, params->len,
-				(GParameter *)params->data);
-
-	glade_widget_params_free (params);
-
-	widget = g_object_new (GLADE_TYPE_WIDGET,
-			       "parent",     parent,
-			       "properties", properties,
-			       "class",      klass,
-			       "project",    project,
-			       "name",       info->name,
-			       "object",     object, NULL);
+	widget     = g_object_new (GLADE_TYPE_WIDGET,
+				   "parent",     parent,
+				   "properties", properties,
+				   "class",      klass,
+				   "project",    project,
+				   "name",       info->name,
+				   "object",     object, NULL);
 
 	/* Only call this once the GladeWidget is completely built */
 	if (klass->post_create_function)

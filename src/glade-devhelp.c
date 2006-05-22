@@ -246,6 +246,9 @@ widget_create_nav_button (NavButtonType type)
 
 	gtk_widget_show_all (align);
 
+	if (type == NAV_FORWARD || type == NAV_BACK)
+		gtk_widget_set_sensitive (button, FALSE);
+
 	gtk_container_add (GTK_CONTAINER (button), align);
 
 	return button;

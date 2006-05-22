@@ -38,9 +38,11 @@ libgladegtk_la_CFLAGS =    \
 	-I$(top_builddir)  \
 	$(GTK_CFLAGS)
 
-libgladegtk_la_SOURCES = glade-gtk.c
-libgladegtk_la_LDFLAGS = -module -avoid-version
-libgladegtk_la_LIBADD = libgladeui-1.la $(GTK_LIBS)
+libgladegtk_la_SOURCES     = glade-gtk.c
+libgladegtk_la_LDFLAGS     = -module -avoid-version
+libgladegtk_la_LIBADD      = libgladeui-1.la $(GTK_LIBS)
+libgladegtkincludedir      = $(includedir)/libgladeui-1.0/libgladeui
+libgladegtkinclude_HEADERS = glade-gtk.h
 
 
 # The Devhelp plugin
@@ -55,9 +57,11 @@ libgladedevhelp_la_CFLAGS =    \
 	-I$(top_builddir)      \
 	$(DEVHELP_CFLAGS)
 
-libgladedevhelp_la_SOURCES = glade-devhelp.c
-libgladedevhelp_la_LDFLAGS = -module -avoid-version
-libgladedevhelp_la_LIBADD = $(DEVHELP_LIBS)
+libgladedevhelp_la_SOURCES     = glade-devhelp.c
+libgladedevhelp_la_LDFLAGS     = -module -avoid-version
+libgladedevhelp_la_LIBADD      = $(DEVHELP_LIBS)
+libgladedevhelpincludedir      = $(includedir)/libgladeui-1.0/libgladeui
+libgladedevhelpinclude_HEADERS = glade-devhelp.h
 
 endif
 
