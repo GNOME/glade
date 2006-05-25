@@ -112,7 +112,7 @@ glade_property_equals_value_impl (GladeProperty *property,
 {
 	if (G_IS_PARAM_SPEC_STRING (property->class->pspec))
 	{
-		gchar *prop_str, *value_str;
+		const gchar *prop_str, *value_str;
 
 		/* in string specs; NULL and '\0' are 
 		 * treated as equivalent.
