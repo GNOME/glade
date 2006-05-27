@@ -1611,107 +1611,6 @@ glade_util_file_is_writeable (const gchar *path)
 	return FALSE;
 }
 
-
-
-
-/* The devhelp module api here
- */
-static GModule *devhelp_mod = NULL;
-static GtkWidget *(* glade_dh_widget_new)    (void) = NULL;
-static GList     *(* glade_dh_get_hbuttons)  (GtkWidget *) = NULL;
-static void       (* glade_dh_widget_search) (GtkWidget *, const gchar *) = NULL;
-
-/**
- * glade_util_load_devhelp:
- *
- * Attempts to load the devhelp module
- *
- * Returns: the devhelp widget if successfull (%NULL otherwise)
- *
- */
-GtkWidget *
-glade_util_load_devhelp (void)
-{
-	static GtkWidget *widget = NULL;
-	gchar            *path;
-
-	if (devhelp_mod == NULL && 
-	    (path = g_module_build_path (glade_plugins_dir, 
-					 "gladedevhelp")) != NULL)
-	{
-		if ((devhelp_mod = 
-		     g_module_open (path, G_MODULE_BIND_LOCAL)) != NULL)
-		{
-			if (!g_module_symbol (devhelp_mod,
-					      "glade_dh_widget_new",
-					      (gpointer)&glade_dh_widget_new))
-			{
-				g_critical ("Failed to load 'glade_dh_widget_new' "
-					    "symbol from the devhelp module (%s)",
-					    g_module_error ());
-
-				g_module_close (devhelp_mod);
-				devhelp_mod = NULL;
-				return NULL;
-			}
-
-			if (!g_module_symbol (devhelp_mod,
-					      "glade_dh_widget_search",
-					      (gpointer)&glade_dh_widget_search))
-			{
-				g_critical ("Failed to load 'glade_dh_widget_search' "
-					    "symbol from the devhelp module (%s)",
-					    g_module_error ());
-
-				g_module_close (devhelp_mod);
-				devhelp_mod = NULL;
-				return NULL;
-			}
-
-			if (!g_module_symbol (devhelp_mod,
-					      "glade_dh_get_hbuttons",
-					      (gpointer)&glade_dh_get_hbuttons))
-			{
-				g_critical ("Failed to load 'glade_dh_get_hbuttons' "
-					    "symbol from the devhelp module (%s)",
-					    g_module_error ());
-
-				g_module_close (devhelp_mod);
-				devhelp_mod = NULL;
-				return NULL;
-			}
-		
-			/* Load the widget */
-			widget = glade_dh_widget_new ();
-		} else {
-			g_critical ("Failed to load module %s (%s)",
-				    path, g_module_error ());
-		}
-		g_free (path);
-	}
-
-	return widget;
-}
-
-/**
- * glade_util_get_devhelp_hbuttons:
- * @widget: The devhelp widget
- *
- * Used to align the buttons with the expand/colapse buttons
- *
- * Returns: a list of buttons in the hbox
- */
-GList *
-glade_util_get_devhelp_hbuttons (GtkWidget *devhelp)
-{
-
-	g_return_val_if_fail (glade_util_have_devhelp (), NULL);
-
-
-	return glade_dh_get_hbuttons (devhelp);
-}
-
-
 /**
  * glade_util_have_devhelp:
  *
@@ -1720,7 +1619,50 @@ glade_util_get_devhelp_hbuttons (GtkWidget *devhelp)
 gboolean
 glade_util_have_devhelp (void)
 {
-	return (devhelp_mod != NULL);
+	static gint  have_devhelp = -1;
+	gchar       *ptr;
+	gint         cnt, ret, major, minor;
+	GError      *error = NULL;
+
+	if (have_devhelp < 0 && 
+	    (ptr = g_find_program_in_path ("devhelp")) != NULL)
+	{
+		g_free (ptr);
+
+		have_devhelp = 0;
+
+		if (g_spawn_command_line_sync ("devhelp --version", 
+					       &ptr, NULL, &ret, &error))
+		{
+			/* If we have a successfull return code.. parse the output.
+			 */
+			if (ret == 0)
+			{
+				
+				if ((cnt = sscanf (ptr, "DevHelp %d.%d\n", 
+						   &major, &minor)) == 2)
+				{
+					/* Devhelp 0.12 required.
+					 */
+					if (major >= 0 &&
+					    minor >= 12)
+						have_devhelp = 1;
+				} else {
+					g_warning ("devhelp had unparsable output: "
+						   "'%s' (parsed %d)", ptr, cnt);
+				}
+			} else {
+				g_warning ("devhelp had bad return code: '%d'",
+					   ret);
+			}
+		} else {
+			g_warning ("Error trying to launch devhelp: %s",
+				   error->message);
+			g_error_free (error);
+		}
+	}
+
+	return have_devhelp;
 }
 
 /**
@@ -1730,30 +1672,37 @@ glade_util_have_devhelp (void)
  * @page: the page in the book (or %NULL)
  * @search: the search string (or %NULL)
  *
- * Sets the current notebook page to the devhelp
- * page and sets the search string.
+ * Envokes devhelp with the appropriate search string
  *
  */
 void
-glade_util_search_devhelp (GtkWidget   *devhelp,
-			   const gchar *book,
+glade_util_search_devhelp (const gchar *book,
 			   const gchar *page,
 			   const gchar *search)
 {
-	gchar *book_comm = NULL, *page_comm = NULL;
-	gchar *string;
+	/* XXX
+	 * g_spawn_command_line_somethingorother.
+	 */
+
+	GError *error = NULL;
+	gchar  *book_comm = NULL, *page_comm = NULL;
+	gchar  *string;
 
 	g_return_if_fail (glade_util_have_devhelp ());
 
 	if (book) book_comm = g_strdup_printf ("book:%s ", book);
 	if (page) page_comm = g_strdup_printf ("page:%s ", page);
 
-	string = g_strdup_printf ("%s%s%s", 
+	string = g_strdup_printf ("devhelp -s \"%s%s%s\"", 
 				   book_comm ? book_comm : "",
 				   page_comm ? page_comm : "",
 				   search ? search : "");
 
-	glade_dh_widget_search (devhelp, string);
+	if (g_spawn_command_line_async (string, &error) == FALSE)
+	{
+		g_warning ("Error envoking devhelp: %s", error->message);
+		g_error_free (error);
+	}
 
 	g_free (string);
 	if (book_comm) g_free (book_comm);

@@ -133,18 +133,11 @@ LIBGLADEUI_API
 gboolean          glade_util_file_is_writeable     (const gchar *path);
 
 LIBGLADEUI_API
-GtkWidget        *glade_util_load_devhelp          (void);
-
-LIBGLADEUI_API
 gboolean          glade_util_have_devhelp          (void);
 LIBGLADEUI_API
-void              glade_util_search_devhelp        (GtkWidget   *devhelp,
-						    const gchar *book,
+void              glade_util_search_devhelp        (const gchar *book,
 						    const gchar *page,
 						    const gchar *search);
-LIBGLADEUI_API
-GList            *glade_util_get_devhelp_hbuttons  (GtkWidget *devhelp);
-
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

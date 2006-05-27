@@ -46,17 +46,43 @@ ALL_LINGUAS="az da en_CA es fr ja ms nb nn pl pt pt_BR ru sk sv ta tr uk vi zh_C
 AM_GLIB_GNU_GETTEXT
 
 
+
 dnl ================================================================
-dnl Start of pkg-config checks
+dnl Check for gtk-doc
+dnl ================================================================
+GTK_DOC_CHECK(1.4)
+
+dnl ================================================================
+dnl Check for gtk+
 dnl ================================================================
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
+AC_SUBST(GTK_LIBS)
+AC_SUBST(GTK_CFLAGS)
 
-PKG_CHECK_MODULES(DEVHELP, libdevhelp-1.0 >= 0.12,
-  [have_devhelp=yes],[have_devhelp=no])
+dnl ================================================================
+dnl Check for optional gnome libs
+dnl ================================================================
+PKG_CHECK_MODULES(GNOME, libbonoboui-2.0 libgnomeui-2.0,
+  [have_gnome=yes],[have_gnome=no])
+AC_SUBST(GNOME_LIBS)
+AC_SUBST(GNOME_CFLAGS)
+AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
 
-AM_CONDITIONAL(WITH_DEVHELP, test x"$have_devhelp" = "xyes")
+dnl ================================================================
+dnl Check for windows
+dnl ================================================================
+case $host_os in
+*mingw* | pw32* | cygwin*)
+  win32=yes
+  ;;
+esac
+AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
-glade_version="${VERSION}"
+
+dnl ================================================================
+dnl Misc substitutions
+dnl ================================================================
+de_version="${VERSION}"
 glade_datadir='${datadir}/${PACKAGE}'
 glade_libdir='${libdir}/${PACKAGE}'
 glade_catalogsdir='${glade_datadir}/catalogs'
@@ -65,12 +91,6 @@ glade_modulesdir='${glade_libdir}/modules'
 glade_pluginsdir='${glade_libdir}/plugins'
 glade_icondir='${datadir}/pixmaps'
 glade_localedir='${prefix}/${DATADIRNAME}/locale'
-
-AC_SUBST(GTK_LIBS)
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(DEVHELP_LIBS)
-AC_SUBST(DEVHELP_CFLAGS)
-
 AC_SUBST(glade_version)
 AC_SUBST(glade_datadir)
 AC_SUBST(glade_libdir)
@@ -80,21 +100,6 @@ AC_SUBST(glade_pluginsdir)
 AC_SUBST(glade_pixmapsdir)
 AC_SUBST(glade_icondir)
 AC_SUBST(glade_localedir)
-
-case $host_os in
-*mingw* | pw32* | cygwin*)
-  win32=yes
-  ;;
-esac
-AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
-
-PKG_CHECK_MODULES(GNOME, libbonoboui-2.0 libgnomeui-2.0,
-  [have_gnome=yes],[have_gnome=no])
-AC_SUBST(GNOME_LIBS)
-AC_SUBST(GNOME_CFLAGS)
-AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
-
-GTK_DOC_CHECK(1.4)
 
 AC_OUTPUT([
 Makefile
@@ -114,9 +119,7 @@ echo "
 Configuration:
 
 	Source code location:	${srcdir}
-
 	Compiler:		${CC} 
-	Devhelp module:		${have_devhelp}
 	GnomeUI Catalog:	${have_gnome}
 
 "

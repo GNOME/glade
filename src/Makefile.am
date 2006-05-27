@@ -44,27 +44,6 @@ libgladegtk_la_LIBADD      = libgladeui-1.la $(GTK_LIBS)
 libgladegtkincludedir      = $(includedir)/libgladeui-1.0/libgladeui
 libgladegtkinclude_HEADERS = glade-gtk.h
 
-
-# The Devhelp plugin
-if WITH_DEVHELP
-
-gladedevhelp_LTLIBRARIES = libgladedevhelp.la
-gladedevhelpdir = $(glade_pluginsdir)
-
-libgladedevhelp_la_CFLAGS =    \
-	-g -Wall               \
-	-I$(top_srcdir)        \
-	-I$(top_builddir)      \
-	$(DEVHELP_CFLAGS)
-
-libgladedevhelp_la_SOURCES     = glade-devhelp.c
-libgladedevhelp_la_LDFLAGS     = -module -avoid-version
-libgladedevhelp_la_LIBADD      = $(DEVHELP_LIBS)
-libgladedevhelpincludedir      = $(includedir)/libgladeui-1.0/libgladeui
-libgladedevhelpinclude_HEADERS = glade-devhelp.h
-
-endif
-
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
 	glade-debug.c \
@@ -159,10 +138,6 @@ endif
 if WITH_WIN32
   libgladegtk_la_LDFLAGS += -no-undefined
   libgladeui_1_la_LDFLAGS += -no-undefined
-
-if WITH_DEVHELP
-  libgladedevhelp_la_LDFLAGS += -no-undefined
-endif
 
 if BUILD_GNOME
   libgladegnome_la_LDFLAGS += -no-undefined
