@@ -734,7 +734,11 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 			      gchar            *tagname,
 			      gpointer         *sym_location)
 {
+	static GModule *self = NULL;
 	gchar *buff;
+
+	if (!self) 
+		self = g_module_open (NULL, 0);
 
 	if ((buff = glade_xml_get_value_string (node_in, tagname)) != NULL)
 	{
@@ -756,10 +760,12 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 		 * I dont know who wrote the above in glade-property-class.c, but
 		 * its a good point... makeing a bugzilla entry.
 		 *  -Tristan
+		 *
 		 */
 		if (!g_module_symbol (module, buff, sym_location))
-			g_warning ("Could not find %s in %s\n",
-				   buff, g_module_name (module));
+			if (!g_module_symbol (self, buff, sym_location))
+				g_warning ("Could not find %s in %s or in global namespace\n",
+					   buff, g_module_name (module));
 		g_free (buff);
 	}
 }

@@ -27,6 +27,12 @@ glade_3_SOURCES = \
 	glade-project-window.c glade-project-window.h \
 	main.c
 
+glade_3_LDFLAGS =
+
+if WITH_WIN32
+glade_3_LDFLAGS += -mwindows
+endif
+
 # The GTK catalog backend
 gladegtk_LTLIBRARIES = libgladegtk.la
 gladegtkdir = $(glade_modulesdir)

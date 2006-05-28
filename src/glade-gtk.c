@@ -4278,7 +4278,7 @@ glade_gtk_menu_editor_new (GObject *menubar)
 	return e;
 }
 
-void
+void GLADEGTK_API
 glade_gtk_menu_bar_launch_editor (GObject *menubar)
 {
 	GladeGtkMenuEditor *editor;

@@ -1624,44 +1624,59 @@ glade_util_have_devhelp (void)
 	gint         cnt, ret, major, minor;
 	GError      *error = NULL;
 
-	if (have_devhelp < 0 && 
-	    (ptr = g_find_program_in_path ("devhelp")) != NULL)
-	{
-		g_free (ptr);
+#define DEVHELP_OLD_MESSAGE  \
+    "The DevHelp installed on your system is too old, " \
+    "devhelp feature will be disabled."
 
+#define DEVHELP_MISSING_MESSAGE  \
+    "No DevHelp installed on your system, " \
+    "devhelp feature will be disabled."
+
+	if (have_devhelp < 0)
+	{
 		have_devhelp = 0;
 
-		if (g_spawn_command_line_sync ("devhelp --version", 
-					       &ptr, NULL, &ret, &error))
+		if ((ptr = g_find_program_in_path ("devhelp")) != NULL)
 		{
-			/* If we have a successfull return code.. parse the output.
-			 */
-			if (ret == 0)
+			g_free (ptr);
+
+
+			if (g_spawn_command_line_sync ("devhelp --version", 
+						       &ptr, NULL, &ret, &error))
 			{
-				
-				if ((cnt = sscanf (ptr, "DevHelp %d.%d\n", 
-						   &major, &minor)) == 2)
+				/* If we have a successfull return code.. parse the output.
+				 */
+				if (ret == 0)
 				{
-					/* Devhelp 0.12 required.
-					 */
-					if (major >= 0 &&
-					    minor >= 12)
-						have_devhelp = 1;
+					
+					if ((cnt = sscanf (ptr, "DevHelp %d.%d\n", 
+							   &major, &minor)) == 2)
+					{
+						/* Devhelp 0.12 required.
+						 */
+						if (major >= 0 &&
+						    minor >= 12)
+							have_devhelp = 1;
+						else	
+							g_message (DEVHELP_OLD_MESSAGE);
+				} else if (ptr != NULL || 
+						   strlen (ptr) > 0) 
+						g_warning ("devhelp had unparsable output: "
+							   "'%s' (parsed %d elements)", ptr, cnt);
+					else
+						g_message (DEVHELP_OLD_MESSAGE);
 				} else {
-					g_warning ("devhelp had unparsable output: "
-						   "'%s' (parsed %d)", ptr, cnt);
+					g_warning ("devhelp had bad return code: '%d'", ret);
 				}
 			} else {
-				g_warning ("devhelp had bad return code: '%d'",
-					   ret);
+				g_warning ("Error trying to launch devhelp: %s",
+					   error->message);
+				g_error_free (error);
 			}
-		} else {
-			g_warning ("Error trying to launch devhelp: %s",
-				   error->message);
-			g_error_free (error);
-		}
+		} else
+			g_message (DEVHELP_MISSING_MESSAGE);
+		
 	}
-
 	return have_devhelp;
 }
 

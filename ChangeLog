@@ -1,3 +1,14 @@
+2006-05-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am: Added -mwindows to glade3_LDFLAGS in win32 compile mode
+
+	* src/glade-xml-utils.c: Fallback on default namespace when searching
+	  funcs from the catalog (this seems to only be needed in windows builds)
+
+	* src/glade-utils.c: glade_util_have_devhelp() fixed with better warning messages
+	  and the function was returning -1 (TRUE) when there was no devhelp in the
+	  program path (*doh*).
+	
 2006-05-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* po/POTFILES.in: Added gnome catalog relevent files for translation.
