@@ -585,7 +585,10 @@ glade_widget_template_params (GladeWidget      *widget,
 	{
 		GParameter parameter = { 0, };
 
-		glade_property = glade_widget_get_property (widget, pspec[i]->name);
+		if ((glade_property = 
+		     glade_widget_get_property (widget, pspec[i]->name)) == NULL)
+			continue;
+
 		pclass = glade_property->class;
 
 		/* Ignore properties based on some criteria
