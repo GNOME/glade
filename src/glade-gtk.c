@@ -1627,7 +1627,7 @@ glade_gtk_combo_post_create (GObject *object, GladeCreateReason reason)
 		(gcombo, G_OBJECT (GTK_COMBO (object)->entry),
 		 "entry", "combo", FALSE, reason);
 
-	/* We mark this 'anarchist' since its outside of the heirarchy */
+	/* We mark this 'anarchist' since its outside of the hierarchy */
 	glist  = glade_widget_new_for_internal_child
 		(gcombo, G_OBJECT (GTK_COMBO (object)->list),
 		 "list", "combo", TRUE, reason);
@@ -4449,7 +4449,7 @@ GParamSpec * GLADEGTK_API
 glade_gtk_gnome_ui_info_spec (void)
 {
 	return g_param_spec_enum ("gnomeuiinfo", _("GnomeUIInfo"), 
-				  _("Chose the GnomeUIInfo stock item"),
+				  _("Choose the GnomeUIInfo stock item"),
 				  glade_gtk_gnome_ui_info_get_type (),
 				  0, G_PARAM_READWRITE);
 }

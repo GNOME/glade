@@ -28,7 +28,7 @@ struct _GladeWidget
 	GladeWidgetClass *widget_class;
 	GladeProject     *project;     /* A pointer to the project that this widget belongs to. */
 
-	GladeWidget  *parent;  /* A pointer to the parent widget in the heirarchy */
+	GladeWidget  *parent;  /* A pointer to the parent widget in the hierarchy */
 	
 	gchar *name; /* The name of the widget. For example window1 or
 		      * button2. This is a unique name and is the one
@@ -42,7 +42,7 @@ struct _GladeWidget
 			  */
 	
 	gboolean anarchist; /* Some composite widgets have internal children
-			     * that are not part of the same heirarchy; hence 'anarchists',
+			     * that are not part of the same hierarchy; hence 'anarchists',
 			     * typicly a popup window or its child (we need to mark
 			     * them so we can avoid bookkeeping packing props on them etc.).
 			     */

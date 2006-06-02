@@ -63,8 +63,8 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 	{ "controlled-by", "atk-controlled-by", N_("Controlled By"),
 	  N_("Indicates an object controlled by one or more target objects") },
 
-	{ "controlled-for", "atk-controlled-for", N_("Controlled For"),
-	  N_("Indicates an object is an controller for one or more target objects") },
+	{ "controlled-for", "atk-controlled-for", N_("Controller For"),
+	  N_("Indicates an object is a controller for one or more target objects") },
 
 	{ "labelled-by", "atk-labelled-by", N_("Labelled By"),
 	  N_("Indicates an object is labelled by one or more target objects") },
@@ -89,7 +89,7 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 
 	{ "subwindow-of", "atk-subwindow-of", N_("Subwindow Of"),
 	  N_("Indicates a subwindow attached to a component but otherwise has no "
-	     "connection in  the UI heirarchy to that component") },
+	     "connection in  the UI hierarchy to that component") },
 
 	{ "embeds", "atk-embeds", N_("Embeds"),
 	  N_("Indicates that the object visually embeds another object's content, "

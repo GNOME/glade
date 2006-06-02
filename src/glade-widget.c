@@ -1173,11 +1173,11 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 /**
  * glade_widget_new_for_internal_child:
  * @parent:            The parent #GladeWidget, or %NULL for children
- *                     outside of the heirarchy.
+ *                     outside of the hierarchy.
  * @internal_object:   the #GObject
  * @internal_name:     a string identifier for this internal widget.
  * @anarchist:         Whether or not this widget is a widget outside
- *                     of the parent's heirarchy (like a popup window)
+ *                     of the parent's hierarchy (like a popup window)
  * @reason:            The #GladeCreateReason for which this internal widget
  *                     was created (usually just pass the reason from the post_create
  *                     function; note also this is used only by the plugin code so

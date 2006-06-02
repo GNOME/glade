@@ -624,7 +624,7 @@ glade_dh_widget_search (GladeDhWidget *widget, const gchar *str)
 	g_return_if_fail (GLADE_IS_DHWIDGET (widget));
 
 	/* We cant use a mozembed window untill
-	 * its parented into a real heirarchy (with a toplevel)
+	 * its parented into a real hierarchy (with a toplevel)
 	 */
 	g_return_if_fail (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 

@@ -37,7 +37,7 @@ typedef enum {
  *
  * This delagate function is always called whenever setting any
  * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a heirarchy that we
+ * (basicly the two places where we recreate a hierarchy that we
  * already know "works"
  *
  * Returns: whether or not its OK to set @value on @object

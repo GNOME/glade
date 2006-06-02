@@ -234,7 +234,7 @@ catalog_sort (GList *catalogs)
 		catalog = l->data;
 		sort    = NULL;
 
-		/* itterate ascending through dependancy heirarchy */
+		/* itterate ascending through dependancy hierarchy */
 		while (catalog->dep_catalog) {
 			node = g_list_find_custom
 				(catalogs, catalog->dep_catalog,

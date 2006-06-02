@@ -1252,7 +1252,7 @@ GParamSpec * GLADEGNOME_API
 glade_gnome_icon_list_selection_mode_spec (void)
 {
 	return g_param_spec_enum ("selection_mode", _("Selection Mode"), 
-				  _("Chose the Selection Mode"),
+				  _("Choose the Selection Mode"),
 				  glade_gnome_icon_list_selection_mode_get_type (),
 				  GTK_SELECTION_SINGLE, G_PARAM_READWRITE);
 }
@@ -1410,7 +1410,7 @@ GParamSpec * GLADEGNOME_API
 glade_gnome_bonobo_dock_placement_spec (void)
 {
 	return g_param_spec_enum ("placement", _("Placement"), 
-				  _("Chose the BonoboDockPlacement type"),
+				  _("Choose the BonoboDockPlacement type"),
 				  glade_gnome_bonobo_dock_placement_get_type (),
 				  0, G_PARAM_READWRITE);
 }
@@ -1439,7 +1439,7 @@ GParamSpec * GLADEGNOME_API
 glade_gnome_bonobo_dock_item_behavior_spec (void)
 {
 	return g_param_spec_flags ("behavior", _("Behavior"), 
-				  _("Chose the BonoboDockItemBehavior type"),
+				  _("Choose the BonoboDockItemBehavior type"),
 				  glade_gnome_bonobo_dock_item_behavior_get_type (),
 				  0, G_PARAM_READWRITE);
 }
@@ -1449,7 +1449,7 @@ GParamSpec * GLADEGNOME_API
 glade_gnome_gtk_pack_type_spec (void)
 {
 	return g_param_spec_enum ("pack_type", _("Pack Type"), 
-				  _("Chose the Pack Type"),
+				  _("Choose the Pack Type"),
 				  g_type_from_name ("GtkPackType"),
 				  0, G_PARAM_READWRITE);
 }
