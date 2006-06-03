@@ -1,7 +1,9 @@
 2006-06-03  Vincent Geddes <vgeddes@metroweb.co.za>
 
         * src/glade-project-window.c, src/glade-app.[ch],
-          src/glade-utils.[ch]: Fix for bug 337959.
+          src/glade-utils.[ch]: 
+	  o Fix for bug 337959.
+	  o Application menus now marked for translation
 
         * src/main.c, glade-editor-property.c: 
 	  o Fixed memory leaks.
@@ -14,7 +16,10 @@
 	  o No info buttons on query dialogs.
 
 	* Many files: changed "== TRUE" to be "!= FALSE"
-	
+
+	* src/glade-project-window.c: Action groups now assigned a
+	  translation domain for application menus.
+
 2006-06-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget.c: Fixed segfault on widget copying.

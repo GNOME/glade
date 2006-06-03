@@ -1357,85 +1357,85 @@ static const gchar *ui_info =
 "</ui>\n";
 
 static GtkActionEntry static_entries[] = {
-	{ "FileMenu", NULL, "_File" },
-	{ "EditMenu", NULL, "_Edit" },
-	{ "ViewMenu", NULL, "_View" },
-	{ "ProjectMenu", NULL, "_Project" },
-	{ "HelpMenu", NULL, "_Help" },
+	{ "FileMenu", NULL, N_("_File") },
+	{ "EditMenu", NULL, N_("_Edit") },
+	{ "ViewMenu", NULL, N_("_View") },
+	{ "ProjectMenu", NULL, N_("_Project") },
+	{ "HelpMenu", NULL, N_("_Help") },
 	
 	/* FileMenu */
-	{ "New", GTK_STOCK_NEW, "_New", "<control>N",
-	  "Create a new project file", G_CALLBACK (gpw_new_cb) },
+	{ "New", GTK_STOCK_NEW, N_("_New"), "<control>N",
+	  N_("Create a new project file"), G_CALLBACK (gpw_new_cb) },
 	
-	{ "Open", GTK_STOCK_OPEN, "_Open","<control>O",
-	  "Open a project file", G_CALLBACK (gpw_open_cb) },
+	{ "Open", GTK_STOCK_OPEN, N_("_Open"),"<control>O",
+	  N_("Open a project file"), G_CALLBACK (gpw_open_cb) },
 	
-	{ "Recents", NULL, "Recent Projects", NULL, NULL },
+	{ "Recents", NULL, N_("Recent Projects"), NULL, NULL },
 	
-	{ "ClearRecents", GTK_STOCK_CLEAR, "Clear Recent Projects", NULL,
+	{ "ClearRecents", GTK_STOCK_CLEAR, N_("Clear Recent Projects"), NULL,
 	  NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
 	
-	{ "Quit", GTK_STOCK_QUIT, "_Quit", "<control>Q",
-	  "Quit the program", G_CALLBACK (gpw_quit_cb) },
+	{ "Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
+	  N_("Quit the program"), G_CALLBACK (gpw_quit_cb) },
 	
 	/* HelpMenu */
-	{ "About", GTK_STOCK_ABOUT, "_About", NULL,
-	  "Shows the About Dialog", G_CALLBACK (gpw_about_cb) },
+	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL,
+	  N_("Shows the About Dialog"), G_CALLBACK (gpw_about_cb) },
 
-	{ "Manual", NULL, "_Documentation", NULL,
-	  "Documentation about Glade", G_CALLBACK (gpw_documentation_cb) }
+	{ "Manual", NULL, N_("_Documentation"), NULL,
+	  N_("Documentation about Glade"), G_CALLBACK (gpw_documentation_cb) }
 };
 static guint n_static_entries = G_N_ELEMENTS (static_entries);
 
 static GtkActionEntry project_entries[] = {
 
 	/* FileMenu */
-	{ "Save", GTK_STOCK_SAVE, "_Save","<control>S",
-	  "Save the current project file", G_CALLBACK (gpw_save_cb) },
+	{ "Save", GTK_STOCK_SAVE, N_("_Save"),"<control>S",
+	  N_("Save the current project file"), G_CALLBACK (gpw_save_cb) },
 	
-	{ "SaveAs", GTK_STOCK_SAVE_AS, "Save _As...", NULL,
-	  "Save the current project file with a different name", G_CALLBACK (gpw_save_as_cb) },
+	{ "SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As..."), NULL,
+	  N_("Save the current project file with a different name"), G_CALLBACK (gpw_save_as_cb) },
 	
-	{ "Close", GTK_STOCK_CLOSE, "_Close", "<control>W",
-	  "Close the current project file", G_CALLBACK (gpw_close_cb) },
+	{ "Close", GTK_STOCK_CLOSE, N_("_Close"), "<control>W",
+	  N_("Close the current project file"), G_CALLBACK (gpw_close_cb) },
 
 	/* EditMenu */	
-	{ "Undo", GTK_STOCK_UNDO, "_Undo", "<control>Z",
-	  "Undo the last action",	G_CALLBACK (gpw_undo_cb) },
+	{ "Undo", GTK_STOCK_UNDO, N_("_Undo"), "<control>Z",
+	  N_("Undo the last action"),	G_CALLBACK (gpw_undo_cb) },
 	
-	{ "Redo", GTK_STOCK_REDO, "_Redo", "<control>R",
-	  "Redo the last action",	G_CALLBACK (gpw_redo_cb) },
+	{ "Redo", GTK_STOCK_REDO, N_("_Redo"), "<control>R",
+	  N_("Redo the last action"),	G_CALLBACK (gpw_redo_cb) },
 	
-	{ "Cut", GTK_STOCK_CUT, "C_ut", NULL,
-	  "Cut the selection", G_CALLBACK (gpw_cut_cb) },
+	{ "Cut", GTK_STOCK_CUT, N_("C_ut"), NULL,
+	  N_("Cut the selection"), G_CALLBACK (gpw_cut_cb) },
 	
-	{ "Copy", GTK_STOCK_COPY, "_Copy", NULL,
-	  "Copy the selection", G_CALLBACK (gpw_copy_cb) },
+	{ "Copy", GTK_STOCK_COPY, N_("_Copy"), NULL,
+	  N_("Copy the selection"), G_CALLBACK (gpw_copy_cb) },
 	
-	{ "Paste", GTK_STOCK_PASTE, "_Paste", NULL,
-	  "Paste the clipboard", G_CALLBACK (gpw_paste_cb) },
+	{ "Paste", GTK_STOCK_PASTE, N_("_Paste"), NULL,
+	  N_("Paste the clipboard"), G_CALLBACK (gpw_paste_cb) },
 	
-	{ "Delete", GTK_STOCK_DELETE, "_Delete", "Delete",
-	  "Delete the selection", G_CALLBACK (gpw_delete_cb) }
+	{ "Delete", GTK_STOCK_DELETE, N_("_Delete"), "Delete",
+	  N_("Delete the selection"), G_CALLBACK (gpw_delete_cb) }
 };
 static guint n_project_entries = G_N_ELEMENTS (project_entries);
 
 static GtkToggleActionEntry view_entries[] = {
 	/* ViewMenu */
-	{ "Palette", NULL, "_Palette", NULL,
-	  "Change the visibility of the palette of widgets",
+	{ "Palette", NULL, N_("_Palette"), NULL,
+	  N_("Change the visibility of the palette of widgets"),
 	  G_CALLBACK (gpw_toggle_palette_cb), TRUE },
 
-	{ "PropertyEditor", NULL, "Property _Editor", NULL,
-	  "Change the visibility of the property editor",
+	{ "PropertyEditor", NULL, N_("Property _Editor"), NULL,
+	  N_("Change the visibility of the property editor"),
 	  G_CALLBACK (gpw_toggle_editor_cb), TRUE },
 	
-	{ "Clipboard", NULL, "_Clipboard", NULL,
-	  "Change the visibility of the clipboard",
+	{ "Clipboard", NULL, N_("_Clipboard"), NULL,
+	  N_("Change the visibility of the clipboard"),
 	  G_CALLBACK (gpw_toggle_clipboard_cb), FALSE },
 
-	{ "PropertyEditorHelp", NULL, "Context _Help", NULL,
-	  "Show or hide contextual help buttons in the editor",
+	{ "PropertyEditorHelp", NULL, N_("Context _Help"), NULL,
+	  N_("Show or hide contextual help buttons in the editor"),
 	  G_CALLBACK (gpw_toggle_editor_help_cb), FALSE },
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
@@ -1502,6 +1502,8 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 	GError *error = NULL;
 	
 	gpw->priv->static_actions = gtk_action_group_new (GLADE_ACTION_GROUP_STATIC);
+	gtk_action_group_set_translation_domain (gpw->priv->static_actions, GETTEXT_PACKAGE);
+
 	gtk_action_group_add_actions (gpw->priv->static_actions,
 				      static_entries,
 				      n_static_entries,
@@ -1512,13 +1514,21 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 					     gpw);
 
 	gpw->priv->project_actions = gtk_action_group_new (GLADE_ACTION_GROUP_PROJECT);
+	gtk_action_group_set_translation_domain (gpw->priv->project_actions, GETTEXT_PACKAGE);
+
 	gtk_action_group_add_actions (gpw->priv->project_actions,
 				      project_entries,
 				      n_project_entries,
 				      gpw);
 
-	gpw->priv->projects_list_menu_actions = gtk_action_group_new (GLADE_ACTION_GROUP_PROJECTS_LIST_MENU);
+	gpw->priv->projects_list_menu_actions = 
+		gtk_action_group_new (GLADE_ACTION_GROUP_PROJECTS_LIST_MENU);
+	gtk_action_group_set_translation_domain (gpw->priv->projects_list_menu_actions, 
+						 GETTEXT_PACKAGE);
+
 	gpw->priv->recent_actions = gtk_action_group_new (GLADE_ACTION_GROUP_RECENT);
+	gtk_action_group_set_translation_domain (gpw->priv->recent_actions, 
+						 GETTEXT_PACKAGE);
 	
 	gpw->priv->ui = gtk_ui_manager_new ();
 
