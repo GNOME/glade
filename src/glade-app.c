@@ -776,6 +776,41 @@ glade_app_is_project_loaded (const gchar *project_path)
 	return loaded;
 }
 
+/**
+ * glade_app_get_project_by_path:
+ * @project_path: The path of an open project
+ *
+ * Finds an open project with @path
+ *
+ * Returns: A #GladeProject, or NULL if no such open project was found
+ */
+GladeProject*
+glade_app_get_project_by_path (const gchar *project_path)
+{
+	GladeApp *app;
+	GList    *l;
+	gchar *canonical_path;
+
+	if (project_path == NULL) return FALSE;
+
+	app = glade_app_get ();
+
+	canonical_path = glade_util_canonical_path (project_path);
+
+	for (l = app->priv->projects; l; l = l->next)
+	{
+		GladeProject *project = (GladeProject *) l->data;
+
+		if (project->path && strcmp (canonical_path, project->path) == 0) {
+			g_free (canonical_path);
+			return project;
+		}
+	}
+
+	g_free (canonical_path);
+
+	return NULL;
+}
 
 void
 glade_app_show_properties (gboolean raise)

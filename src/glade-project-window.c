@@ -552,7 +552,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 static void
 gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 {
- 	GladeProject *project;
+ 	GladeProject *project, *another_project;
  	GtkWidget *filechooser;
 	gchar *path = NULL;
 	gchar *real_path, *ch;
@@ -601,17 +601,37 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 	
 	g_free (path);
 
-	if (glade_app_is_project_loaded (real_path))
+	/* checks if selected path is actually writable */
+	if (glade_util_file_is_writeable (real_path) == FALSE)
 	{
-		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN,
-				       _("%s is already open"), real_path);
+
+		glade_util_ui_message (gpw->priv->window, 
+				       GLADE_UI_ERROR,
+			     	       _("Could not save the file %s. You do not have the permissions necessary to save the file."), 
+				       real_path);
+
 		return;
 	}
+
+	/* checks if another open project is using selected path */
+	if ((another_project = glade_app_get_project_by_path (real_path)) != NULL)
+	{
+		if (project != another_project) {
+
+			glade_util_ui_message (gpw->priv->window, 
+					       GLADE_UI_ERROR,
+				     	       _("Could not save file %s. Another project with that path is open."), 
+					       real_path);
+
+			return;
+		}
+
+	}
+
 	gpw_save (gpw, project, real_path);
 
 	g_free (real_path);
 }
-
 
 static void
 gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)

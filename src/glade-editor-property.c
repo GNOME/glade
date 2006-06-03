@@ -925,8 +925,9 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 		g_type_class_unref(class);	
 	}
 
-	gtk_entry_set_text (GTK_ENTRY (eprop_flags->entry), 
-			    g_string_free (string, FALSE));
+	gtk_entry_set_text (GTK_ENTRY (eprop_flags->entry), string->str);
+
+	g_string_free (string, TRUE);
 }
 
 

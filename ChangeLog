@@ -1,7 +1,14 @@
+2006-06-03  Vincent Geddes <vgeddes@metroweb.co.za>
+
+        * src/glade-project-window.c, src/glade-app.[ch],
+          src/glade-utils.[ch]: Fix for bug 337959.
+
+        * src/main.c, glade-editor-property.c: Fixed memory leaks.
+	
 2006-06-03  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor-property.c, src/glade-editor.c: 
-	  o Now bookless classes' info buttons are show insensitive.
+	  o Now bookless classes' info buttons are shown insensitive.
 	  o No info buttons on query dialogs.
 
 	* Many files: changed "== TRUE" to be "!= FALSE"

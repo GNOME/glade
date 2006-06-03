@@ -102,6 +102,8 @@ GKeyFile*          glade_app_get_config (void);
 LIBGLADEUI_API 
 gboolean           glade_app_is_project_loaded (const gchar *project_path);
 LIBGLADEUI_API 
+GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
+LIBGLADEUI_API 
 void               glade_app_show_properties (gboolean raise);
 LIBGLADEUI_API 
 void               glade_app_hide_properties (void);
