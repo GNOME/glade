@@ -140,7 +140,7 @@ glade_property_class_atk_realname (const gchar *atk_name)
  * Returns: a new #GladePropertyClass
  */
 GladePropertyClass *
-glade_property_class_new (void)
+glade_property_class_new (const gchar *book)
 {
 	GladePropertyClass *property_class;
 
@@ -149,6 +149,7 @@ glade_property_class_new (void)
 	property_class->id = NULL;
 	property_class->name = NULL;
 	property_class->tooltip = NULL;
+	property_class->book = book; /* <-- dont free */
 	property_class->def = NULL;
 	property_class->orig_def = NULL;
 	property_class->parameters = NULL;
@@ -1050,7 +1051,7 @@ glade_property_class_list_atk_relations (GType owner_type)
 	{
 		relation_tab = &relation_names_table[i];
 
-		property_class                    = glade_property_class_new ();
+		property_class                    = glade_property_class_new (NULL);
 		property_class->pspec             = 
 			glade_param_spec_objects (relation_tab->id,
 						  _(relation_tab->name),
@@ -1089,7 +1090,8 @@ glade_property_class_list_atk_relations (GType owner_type)
  *          or %NULL if its unsupported.
  */
 GladePropertyClass *
-glade_property_class_new_from_spec (GParamSpec *spec)
+glade_property_class_new_from_spec (GParamSpec  *spec,
+				    const gchar *book)
 {
 	GObjectClass       *gtk_widget_class;
 	GladePropertyClass *property_class;
@@ -1100,7 +1102,7 @@ glade_property_class_new_from_spec (GParamSpec *spec)
 	/* Only properties that are _new_from_spec() are 
 	 * not virtual properties
 	 */
-	property_class          = glade_property_class_new ();
+	property_class          = glade_property_class_new (book);
 	property_class->virtual = FALSE;
 	property_class->pspec   = spec;
 

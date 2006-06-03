@@ -1413,7 +1413,7 @@ glade_util_copy_file (const gchar  *src_path,
 	if (glade_util_canonical_match (src_path, dest_path))
 		return FALSE;
 
-	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) == TRUE)
+	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) != FALSE)
 		if (glade_util_ui_message
 		    (glade_app_get_window(), GLADE_UI_YES_OR_NO,
 		     _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)

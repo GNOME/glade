@@ -118,7 +118,9 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 }
 
 static GList *
-gwc_props_from_pspecs (GParamSpec **specs, gint n_specs)
+gwc_props_from_pspecs (GladeWidgetClass  *class,
+		       GParamSpec       **specs,
+		       gint               n_specs)
 {
 	GladePropertyClass *property_class;
 	gint                i;
@@ -127,7 +129,8 @@ gwc_props_from_pspecs (GParamSpec **specs, gint n_specs)
 	for (i = 0; i < n_specs; i++)
 	{
 		if ((property_class = 
-		     glade_property_class_new_from_spec (specs[i])) != NULL)
+		     glade_property_class_new_from_spec (specs[i], 
+							 class->book)) != NULL)
 			list = g_list_prepend (list, property_class);
 	}
 	return g_list_reverse (list);
@@ -153,7 +156,7 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 
 	/* list class properties */
 	specs = g_object_class_list_properties (object_class, &n_specs);
-	list = gwc_props_from_pspecs (specs, n_specs);
+	list = gwc_props_from_pspecs (class, specs, n_specs);
 	g_free (specs);
 
 	/* list the (hard-coded) atk relation properties if applicable */
@@ -188,7 +191,7 @@ glade_widget_class_list_child_properties (GladeWidgetClass *class)
 	}
 
 	specs = gtk_container_class_list_child_properties (object_class, &n_specs);
-	list  = gwc_props_from_pspecs (specs, n_specs);
+	list  = gwc_props_from_pspecs (class, specs, n_specs);
 	g_free (specs);
 
 	/* We have to mark packing properties from GladeWidgetClass
@@ -355,7 +358,7 @@ glade_widget_class_update_properties_from_node (GladeXmlNode      *node,
 		}
 		else
 		{
-			property_class = glade_property_class_new ();
+			property_class = glade_property_class_new (widget_class->book);
 			property_class->id = g_strdup (id);
 			*properties = g_list_append (*properties, property_class);
 			list = g_list_last (*properties);

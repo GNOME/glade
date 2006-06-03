@@ -175,7 +175,7 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 
 	if (sensitive == FALSE)
 		gtk_widget_set_sensitive (eprop->input, FALSE);
-	else if (glade_property_get_enabled (property) == TRUE)
+	else if (glade_property_get_enabled (property) != FALSE)
 		gtk_widget_set_sensitive (eprop->input, TRUE);
 
 	if (eprop->check)
@@ -235,20 +235,13 @@ static void
 glade_editor_property_info_clicked_cb (GtkWidget           *info,
 				       GladeEditorProperty *eprop)
 {
-	GladeWidgetClass *widget_class;
 	gchar            *search;
-
-	/* XXX Would be nice if we didnt have to beat around the bush here...
-	 * something like eporp->class->widget_class.
-	 */
-	widget_class = glade_widget_class_get_by_type (eprop->class->pspec->owner_type);
 
 	search = g_strdup_printf ("The %s property", eprop->property->class->id);
 
 	g_signal_emit (G_OBJECT (eprop),
 		       glade_editor_property_signals[GTK_DOC_SEARCH],
-		       0, 
-		       widget_class ? widget_class->book : NULL,
+		       0, eprop->class->book,
 		       g_type_name (eprop->class->pspec->owner_type), search);
 
 	g_free (search);
@@ -3082,17 +3075,26 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	glade_editor_property_load (eprop, property);
 }
 
+
+/**
+ * glade_editor_property_show_info:
+ * @eprop: A #GladeEditorProperty
+ *
+ * Show the control widget to access help for @eprop
+ */
 void
 glade_editor_property_show_info (GladeEditorProperty *eprop)
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
-	/* Just pretend to show these properties.
-	 */
-	if (eprop->class->virtual == FALSE)
+	if (eprop->class->virtual == FALSE &&
+	    eprop->class->book    != NULL)
 		gtk_widget_show (eprop->info);
 	else
 	{
+		/* Put insensitive controls to balance the UI with
+		 * other eprops.
+		 */
 		gtk_widget_show (eprop->info);
 		gtk_widget_set_sensitive (eprop->info, FALSE);
 	}
@@ -3101,6 +3103,12 @@ glade_editor_property_show_info (GladeEditorProperty *eprop)
 	g_object_notify (G_OBJECT (eprop), "show-info");
 }
 
+/**
+ * glade_editor_property_hide_info:
+ * @eprop: A #GladeEditorProperty
+ *
+ * Hide the control widget to access help for @eprop
+ */
 void
 glade_editor_property_hide_info (GladeEditorProperty *eprop)
 {

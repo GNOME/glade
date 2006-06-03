@@ -2795,7 +2795,7 @@ glade_widget_write_child (GArray         *children,
 			GladeProperty *property;
 
 			property = list->data;
-			g_assert (property->class->packing == TRUE);
+			g_assert (property->class->packing != FALSE);
 			glade_property_write (property, interface, props);
 		}
 	}

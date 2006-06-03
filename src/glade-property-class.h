@@ -77,11 +77,17 @@ struct _GladePropertyClass
 	gchar *id;       /* The id of the property. Like "label" or "xpad"
 			  * this is a non-translatable string
 			  */
+
 	gchar *name;     /* The name of the property. Like "Label" or "X Pad"
 			  * this is a translatable string
 			  */
+
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
+
+	const gchar *book; /* A property class level pointer to the GladeWidgetClass
+			    * book member.
+			    */
 
 	gboolean virtual; /* Whether this is a virtual property with its pspec supplied
 			   * via the catalog (or hard code-paths); or FALSE if its a real
@@ -195,9 +201,10 @@ struct _GladePropertyClass
 };
 
 LIBGLADEUI_API
-GladePropertyClass *glade_property_class_new                     (void);
+GladePropertyClass *glade_property_class_new                     (const gchar         *book);
 LIBGLADEUI_API
-GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec);
+GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec,
+								  const gchar         *book);
 LIBGLADEUI_API 
 GList              *glade_property_class_list_atk_relations      (GType                owner_type);
 LIBGLADEUI_API

@@ -953,7 +953,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 								     cdata->widget->object);
 		}
 
-		if (me->from_clipboard == TRUE) 
+		if (me->from_clipboard != FALSE) 
 			wlist = g_list_prepend (wlist, cdata->widget);
 		else
 			glade_project_remove_object 

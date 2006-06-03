@@ -108,7 +108,7 @@ main (int argc, char *argv[])
 	}
 	
 
-	if (version == TRUE)
+	if (version != FALSE)
 	{
 		/* Print version information and exit */
 		g_print ("%s\n", PACKAGE_STRING);
@@ -147,7 +147,7 @@ main (int argc, char *argv[])
 		
 		for (i=0; files[i] ; ++i)
 		{
-			if (g_file_test (files[i], G_FILE_TEST_EXISTS) == TRUE)
+			if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
 				glade_project_window_open_project (project_window, files[i]);
 			else
 				g_warning (_("Unable to open '%s', the file does not exist.\n"), files[i]);

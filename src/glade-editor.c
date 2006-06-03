@@ -454,7 +454,7 @@ glade_editor_table_append_item (GladeEditorTable *table,
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->eventbox);
 
-	if (table->editor->show_context_info)
+	if (table->editor->show_context_info && from_query_dialog == FALSE)
 		glade_editor_property_show_info (property);
 	else
 		glade_editor_property_hide_info (property);
@@ -839,7 +839,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		return;
 	}
 	gtk_widget_set_sensitive (editor->reset_button, TRUE);
-	gtk_widget_set_sensitive (editor->info_button, TRUE);
+
+	gtk_widget_set_sensitive (editor->info_button, 
+				  editor->loaded_class->book != NULL);
 
 	editor->loading = TRUE;
 
@@ -1393,7 +1395,7 @@ glade_editor_hide_info (GladeEditor *editor)
 {
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 
-	if (editor->show_info == TRUE)
+	if (editor->show_info != FALSE)
 	{
 		editor->show_info = FALSE;
 		gtk_widget_hide (editor->info_button);
@@ -1442,7 +1444,7 @@ glade_editor_hide_context_info (GladeEditor *editor)
 
 	g_return_if_fail (GLADE_IS_EDITOR (editor));
 
-	if (editor->show_context_info == TRUE)
+	if (editor->show_context_info != FALSE)
 	{
 		editor->show_context_info = FALSE;
 		
