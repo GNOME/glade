@@ -31,9 +31,7 @@
 #include <locale.h>
 #include <gmodule.h>
 
-#ifdef G_OS_WIN32
-#include <stdlib.h> /* __argc & __argv on the windows build */
-#endif
+#include <stdlib.h> /* defines __argc & __argv on the windows build */
 
 #include "glade.h"
 #include "glade-project-window.h"

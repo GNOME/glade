@@ -3,7 +3,9 @@
         * src/glade-project-window.c, src/glade-app.[ch],
           src/glade-utils.[ch]: Fix for bug 337959.
 
-        * src/main.c, glade-editor-property.c: Fixed memory leaks.
+        * src/main.c, glade-editor-property.c: 
+	  o Fixed memory leaks.
+	  o stdlib.h now included on all platforms
 	
 2006-06-03  Tristan Van Berkom <tvb@gnome.org>
 
