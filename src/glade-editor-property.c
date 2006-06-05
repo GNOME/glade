@@ -3152,8 +3152,8 @@ key_edited (GtkCellRendererText *cell,
 	/* If user selects "none"; remove old entry or ignore new one.
 	 */
 	if (!new_text || new_text[0] == '\0' ||
-	    strcmp (new_text, _("None")) == 0 ||
-	    strcmp (new_text, _("<choose a key>")) == 0)
+	    g_utf8_collate (new_text, _("None")) == 0 ||
+	    g_utf8_collate (new_text, _("<choose a key>")) == 0)
 	{
 		if (key_was_set)
 			gtk_tree_store_remove

@@ -1,7 +1,10 @@
 2006-06-06  Tristan Van Berkom <tvb@gnome.org>
 
-	* src/glade-editor-property.c: accel dialog: Make combo have an entry and
-	  avoided segfaults... also now a little easier to remove accelerators.
+	* src/glade-editor-property.c: 
+	  o Make accel dialog cell-renderer-combo have an entry
+	  o avoided segfaults in strcmp 
+	  o a little easier to remove accelerators.
+	  o use g_utf8_collate() to compare translated strings.
 
 2006-06-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 	
