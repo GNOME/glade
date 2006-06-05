@@ -20,8 +20,8 @@
  * Boston, MA  02111-1307, USA.
  */
 
-#ifndef GLADE_PARSER_H
-#define GLADE_PARSER_H
+#ifndef __GLADE_PARSER_H__
+#define __GLADE_PARSER_H__
 
 #include <glib.h>
 #include <gdk/gdk.h>

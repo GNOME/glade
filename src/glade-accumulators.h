@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef __GLADE_ACCUM_H__
-#define __GLADE_ACCUM_H__
+#ifndef __GLADE_ACCUMULATORS_H__
+#define __GLADE_ACCUMULATORS_H__
 
 #include <glib-object.h>
 

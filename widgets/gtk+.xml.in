@@ -309,15 +309,8 @@
     </glade-widget-class>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar">
+      <post-create-function>empty</post-create-function>
       <properties>
-
-	<property id="size" _name="Size" default="3" query="True">
-	  <spec>glade_standard_int_spec</spec>
-	  <_tooltip>The number of items in the toolbar</_tooltip>
-	  <set-function>glade_gtk_toolbar_set_size</set-function>
-	  <get-function>glade_gtk_toolbar_get_size</get-function>
-	  <verify-function>glade_gtk_toolbar_verify_size</verify-function>
-	</property>
 	<property id="orientation">
   	  <displayable-values>
 	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
@@ -333,7 +326,62 @@
 	  </displayable-values>
 	</property>
       </properties>
+      <children>
+	<child>
+	  <type>GtkToolItem</type>
+	  <add-child-function>glade_gtk_toolbar_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_toolbar_remove_child</remove-child-function>
+	  <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
+	  <child-get-property-function>glade_gtk_toolbar_get_child_property</child-get-property-function>
+          <properties>
+            <property id="position" _name="Position" default="-1" save="False">
+              <spec>glade_standard_int_spec</spec>
+              <_tooltip>The position of the tool item in the toolbar</_tooltip>
+            </property>
+          </properties>
+	</child>
+      </children>
     </glade-widget-class>
+    
+    <glade-widget-class name="GtkToolItem" generic-name="toolitem" title="GtkToolItem">
+      <post-create-function>glade_gtk_tool_item_post_create</post-create-function>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolbutton" _title="Separator Tool Item"/>
+	
+    <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
+      <properties>
+        <property id="icon-widget" disabled="True"/>
+	<property id="label-widget" disabled="True"/>
+        <property id="label">
+	  <set-function>glade_gtk_tool_button_set_label</set-function>
+	</property>
+        <property id="icon-name" translatable="False">
+	  <set-function>glade_gtk_tool_button_set_icon_name</set-function>
+	</property>
+	<property id="stock-id" visible="False" translatable="False">
+	  <set-function>glade_gtk_tool_button_set_stock_id</set-function>
+	</property>
+        <property id="glade-type" _name="Image Type" save="False">
+	  <spec>glade_gtk_image_type_spec</spec>
+	  <set-function>glade_gtk_tool_button_set_type</set-function>
+	</property>
+	<property id="glade-stock" _name="Stock Item" save="False">
+	  <spec>glade_standard_stock_spec</spec>
+	  <set-function>glade_gtk_tool_button_set_glade_stock</set-function>
+	</property>
+	<property id="icon" _name="File Name" translatable="False">
+	  <spec>glade_standard_pixbuf_spec</spec>
+	  <set-function>glade_gtk_tool_button_set_icon</set-function>
+	</property>
+      </properties>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GtkToggleToolButton" generic-name="toggletoolbutton" _title="Toggle Tool Button"/>
+    
+    <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button"/>
+    
+    <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" _title="Menu Tool Button"/>
     
     <glade-widget-class name="GtkHandleBox" generic-name="handlebox" _title="Handle Box">
       <properties>

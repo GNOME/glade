@@ -1,5 +1,5 @@
-#ifndef GLADE_ALLOCATOR_H
-#define GLADE_ALLOCATOR_H
+#ifndef __GLADE_ID_ALLOCATOR_H__
+#define __GLADE_ID_ALLOCATOR_H__
 
 typedef struct _GladeIDAllocator GladeIDAllocator;
 
