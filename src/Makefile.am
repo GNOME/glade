@@ -81,7 +81,8 @@ libgladeui_1_la_SOURCES = \
 	glade-parser.c \
 	glade-builtins.c \
 	glade-fixed-manager.c \
-	glade-app.c
+	glade-app.c \
+	glade-keysyms.c
 
 libgladeui_1_la_CFLAGS =    \
 	-DINSIDE_LIBGLADEUI \

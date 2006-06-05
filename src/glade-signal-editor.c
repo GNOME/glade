@@ -682,7 +682,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	 */
 	for (list = editor->class->signals; list; list = list->next)
 	{
-		GladeWidgetClassSignal *signal = (GladeWidgetClassSignal *) list->data;
+		GladeSignalClass *signal = (GladeSignalClass *) list->data;
   
 		/* Add class name that this signal belongs to.
 		 */

@@ -590,7 +590,7 @@ glade_widget_template_params (GladeWidget      *widget,
 			continue;
 
 		pclass = glade_property->class;
-
+		
 		/* Ignore properties based on some criteria
 		 */
 		if (pclass == NULL       || /* Unaccounted for in the builder */
@@ -2614,7 +2614,7 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 {
 	WriteSignalsContext write_signals_context;
 	GladeWidgetInfo *info;
-	GArray *props, *atk_props, *atk_actions, *atk_relations, *children;
+	GArray *props, *atk_props, *atk_actions, *atk_relations, *accels, *children;
 	GList *list;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -2629,6 +2629,7 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 	atk_props     = g_array_new (FALSE, FALSE, sizeof (GladePropInfo));
 	atk_relations = g_array_new (FALSE, FALSE, sizeof (GladeAtkRelationInfo));
 	atk_actions   = g_array_new (FALSE, FALSE, sizeof (GladeAtkActionInfo));
+	accels        = g_array_new (FALSE, FALSE, sizeof (GladeAccelInfo));
 
 	for (list = widget->properties; list; list = list->next)
 	{
@@ -2638,9 +2639,9 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 		if (property->class->packing)
 			continue;
 
-		switch (property->class->atk_type)
+		switch (property->class->type)
 		{
-		case GPC_ATK_NONE:
+		case GPC_NORMAL:
 			glade_property_write (property, interface, props);
 			break;
 		case GPC_ATK_PROPERTY:
@@ -2651,6 +2652,9 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 			break;
 		case GPC_ATK_ACTION:
 			glade_property_write (property, interface, atk_actions);
+			break;
+		case GPC_ACCEL_PROPERTY:
+			glade_property_write (property, interface, accels);
 			break;
 		default:
 			break;
@@ -2677,6 +2681,10 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 	info->n_atk_actions = atk_actions->len;
 	g_array_free(atk_actions, FALSE);
 
+	/* Accels */
+	info->accels = (GladeAccelInfo *) accels->data;
+	info->n_accels = accels->len;
+	g_array_free(accels, FALSE);
 
 	/* Signals */
 	write_signals_context.interface = interface;

@@ -29,7 +29,6 @@ typedef struct _GladeWidget       GladeWidget;
 typedef struct _GladeProperty     GladeProperty;
 typedef struct _GladeProject      GladeProject;
 
-
 #include "glade-widget-class.h"
 #include "glade-widget.h"
 #include "glade-property-class.h"

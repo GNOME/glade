@@ -10,14 +10,13 @@
 
 G_BEGIN_DECLS
 
-
 #define GLADE_WIDGET_CLASS(gwc)           ((GladeWidgetClass *) gwc)
 #define GLADE_IS_WIDGET_CLASS(gwc)        (gwc != NULL)
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
 
 typedef struct _GladeWidgetClass       GladeWidgetClass;
 typedef struct _GladeSupportedChild    GladeSupportedChild;
-typedef struct _GladeWidgetClassSignal GladeWidgetClassSignal;
+typedef struct _GladeSignalClass       GladeSignalClass;
 
 
 /**
@@ -187,7 +186,7 @@ struct _GladeWidgetClass
 			      * editor.
 			      */
 
-	GList *signals;     /* List of GladeWidgetClassSignal objects */
+	GList *signals;     /* List of GladeSignalClass objects */
 
 
 	GList *children;    /* List of GladeSupportedChild objects */
@@ -251,14 +250,17 @@ struct _GladeSupportedChild
 };
 
 
-/* GladeWidgetClassSignal contains all the info we need for a given signal, such as
+/* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
  */
-struct _GladeWidgetClassSignal
+struct _GladeSignalClass
 {
+	GSignalQuery query;
+
 	gchar *name;         /* Name of the signal, eg clicked */
 	gchar *type;         /* Name of the object class that this signal belongs to
 			      * eg GtkButton */
+
 };
  
 LIBGLADEUI_API
@@ -328,6 +330,9 @@ LIBGLADEUI_API
 GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
 								    GladeWidgetClass *container_class,
 								    const gchar *propert_id);
+
+#define glade_widget_class_from_pclass(pclass) \
+    ((pclass) ? (GladeWidgetClass *)((GladePropertyClass *)(pclass))->handle : NULL)
 
 G_END_DECLS
 

@@ -761,6 +761,7 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 		 * its a good point... makeing a bugzilla entry.
 		 *  -Tristan
 		 *
+		 * XXX http://bugzilla.gnome.org/show_bug.cgi?id=331797
 		 */
 		if (!g_module_symbol (module, buff, sym_location))
 			if (!g_module_symbol (self, buff, sym_location))

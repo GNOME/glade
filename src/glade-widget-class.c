@@ -129,8 +129,7 @@ gwc_props_from_pspecs (GladeWidgetClass  *class,
 	for (i = 0; i < n_specs; i++)
 	{
 		if ((property_class = 
-		     glade_property_class_new_from_spec (specs[i], 
-							 class->book)) != NULL)
+		     glade_property_class_new_from_spec (class, specs[i])) != NULL)
 			list = g_list_prepend (list, property_class);
 	}
 	return g_list_reverse (list);
@@ -159,10 +158,12 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	list = gwc_props_from_pspecs (class, specs, n_specs);
 	g_free (specs);
 
+	list = g_list_append (list, glade_property_class_accel_property (class, class->type));
+
 	/* list the (hard-coded) atk relation properties if applicable */
 	if (glade_util_class_implements_interface (class->type, 
 						   ATK_TYPE_IMPLEMENTOR))
-		atk_list = glade_property_class_list_atk_relations (class->type);
+		atk_list = glade_property_class_list_atk_relations (class, class->type);
 
 	return g_list_concat (list, atk_list);
 }
@@ -248,7 +249,7 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	guint count;
 	guint *sig_ids;
 	guint num_signals;
-	GladeWidgetClassSignal *cur;
+	GladeSignalClass *cur;
 
 	g_return_val_if_fail (class->type != 0, NULL);
 
@@ -261,11 +262,19 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 
 			for (count = 0; count < num_signals; count++)
 			{
-				cur = g_new0 (GladeWidgetClassSignal, 1);
-				cur->name = (gchar *) g_signal_name (sig_ids[count]);
+				cur = g_new0 (GladeSignalClass, 1);
+				
+				g_signal_query (sig_ids[count], &(cur->query));
+
+				/* Since glib gave us this signal id... it should
+				 * exist no matter what.
+				 */
+				g_assert (cur->query.signal_id != 0);
+
+				cur->name = (cur->query.signal_name);
 				cur->type = (gchar *) g_type_name (type);
 
-				signals = g_list_append (signals, (GladeWidgetClassSignal *) cur);
+				signals = g_list_prepend (signals, cur);
 			}
 			g_free (sig_ids);
 		}
@@ -273,7 +282,7 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 		type = g_type_parent (type);
 	}
 
-	return signals;
+	return g_list_reverse (signals);
 }
 
 static GdkPixbuf *
@@ -358,7 +367,7 @@ glade_widget_class_update_properties_from_node (GladeXmlNode      *node,
 		}
 		else
 		{
-			property_class = glade_property_class_new (widget_class->book);
+			property_class = glade_property_class_new (widget_class);
 			property_class->id = g_strdup (id);
 			*properties = g_list_append (*properties, property_class);
 			list = g_list_last (*properties);

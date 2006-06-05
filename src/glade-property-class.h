@@ -17,18 +17,19 @@ G_BEGIN_DECLS
 typedef struct _GladePropertyClass GladePropertyClass;
 
 /**
- * GPCAtkType:
+ * GPCType:
  * @GPC_ATK_NONE: is not an atk property
  * @GPC_ATK_PROPERTY: is a property of an #AtkImplementor object
  * @GPC_ATK_RELATION: is an atk relation set property
  * @GPC_ATK_ACTION: is an atk action property
  */
 typedef enum {
-	GPC_ATK_NONE,
+	GPC_NORMAL,
 	GPC_ATK_PROPERTY,
 	GPC_ATK_RELATION,
-	GPC_ATK_ACTION
-} GPCAtkType;
+	GPC_ATK_ACTION,
+	GPC_ACCEL_PROPERTY
+} GPCType;
 
 /**
  * GladeVerifyPropertyFunc:
@@ -71,6 +72,13 @@ typedef void     (* GladeGetPropertyFunc)    (GObject      *object,
 
 struct _GladePropertyClass
 {
+	GPCType type; /* A symbolic type used to load/save properties differently
+		       */
+
+	gpointer    handle; /* The GladeWidgetClass that this property class
+			     * was created for.
+			     */
+
 	GParamSpec *pspec; /* The Parameter Specification for this property.
 			    */
 
@@ -84,10 +92,6 @@ struct _GladePropertyClass
 
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
-
-	const gchar *book; /* A property class level pointer to the GladeWidgetClass
-			    * book member.
-			    */
 
 	gboolean virtual; /* Whether this is a virtual property with its pspec supplied
 			   * via the catalog (or hard code-paths); or FALSE if its a real
@@ -136,12 +140,7 @@ struct _GladePropertyClass
 	gboolean common; /* Common properties go in the common tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
-
-	GPCAtkType atk_type; /* Whether this is an atk property and if so;
-			      * whether its a relation, action or atkobject 
-			      * property
-			      */
-
+	
 	gboolean translatable; /* The property should be translatable, which
 				* means that it needs extra parameters in the
 				* UI.
@@ -201,12 +200,17 @@ struct _GladePropertyClass
 };
 
 LIBGLADEUI_API
-GladePropertyClass *glade_property_class_new                     (const gchar         *book);
+GladePropertyClass *glade_property_class_new                     (gpointer             handle);
 LIBGLADEUI_API
-GladePropertyClass *glade_property_class_new_from_spec           (GParamSpec          *spec,
-								  const gchar         *book);
+GladePropertyClass *glade_property_class_new_from_spec           (gpointer             handle,
+								  GParamSpec          *spec);
 LIBGLADEUI_API 
-GList              *glade_property_class_list_atk_relations      (GType                owner_type);
+GList              *glade_property_class_list_atk_relations      (gpointer             handle,
+								  GType                owner_type);
+LIBGLADEUI_API
+GladePropertyClass *glade_property_class_accel_property          (gpointer             handle,
+								  GType                owner_type);
+
 LIBGLADEUI_API
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 LIBGLADEUI_API

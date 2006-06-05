@@ -1247,6 +1247,102 @@ glade_parser_parse_buffer(const gchar *buffer, gint len, const gchar *domain)
     return state.interface;
 }
 
+static gchar *
+modifier_string_from_bits (GdkModifierType modifiers)
+{
+    GString *string = g_string_new ("");
+
+    if (modifiers & GDK_SHIFT_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_SHIFT_MASK");
+    }
+
+    if (modifiers & GDK_LOCK_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_LOCK_MASK");
+    }
+
+    if (modifiers & GDK_CONTROL_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_CONTROL_MASK");
+    }
+
+    if (modifiers & GDK_MOD1_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_MOD1_MASK");
+    }
+
+    if (modifiers & GDK_MOD2_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_MOD2_MASK");
+    }
+
+    if (modifiers & GDK_MOD3_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_MOD3_MASK");
+    }
+
+    if (modifiers & GDK_MOD4_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_MOD4_MASK");
+    }
+
+    if (modifiers & GDK_MOD5_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_MOD5_MASK");
+    }
+
+    if (modifiers & GDK_BUTTON1_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_BUTTON1_MASK");
+    }
+
+    if (modifiers & GDK_BUTTON2_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_BUTTON2_MASK");
+    }
+
+    if (modifiers & GDK_BUTTON3_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_BUTTON3_MASK");
+    }
+
+    if (modifiers & GDK_BUTTON4_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_BUTTON4_MASK");
+    }
+
+    if (modifiers & GDK_BUTTON5_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_BUTTON5_MASK");
+    }
+
+    if (modifiers & GDK_RELEASE_MASK) {
+	if (string->len > 0)
+	    g_string_append (string, " | ");
+	g_string_append (string, "GDK_RELEASE_MASK");
+    }
+
+    if (string->len > 0)
+	return g_string_free (string, FALSE);
+
+    g_string_free (string, TRUE);
+    return NULL;
+}
+
 static void
 dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 {
@@ -1369,16 +1465,22 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 
     for (i = 0; i < info->n_accels; i++) {
 	xmlNode *node;
+	gchar   *modifiers;
+
+	modifiers = modifier_string_from_bits (info->accels[i].modifiers);
 
 	for (j = 0; j < indent + 1; j++)
 	    xmlNodeAddContent(widget, BAD_CAST("  "));
 
 	node = xmlNewNode(NULL, BAD_CAST("accelerator"));
 	xmlSetProp(node, BAD_CAST("key"), BAD_CAST(gdk_keyval_name(info->accels[i].key)));
-	xmlSetProp(node, BAD_CAST("modifier"), BAD_CAST("something")/*info->accels[i].modifiers*/);
+	xmlSetProp(node, BAD_CAST("modifiers"), BAD_CAST(modifiers));
 	xmlSetProp(node, BAD_CAST("signal"), BAD_CAST(info->accels[i].signal));
 	xmlAddChild(widget, node);
 	xmlNodeAddContent(widget, BAD_CAST("\n"));
+
+	if (modifiers)
+	    g_free (modifiers);
     }
 
     for (i = 0; i < info->n_children; i++) {

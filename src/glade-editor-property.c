@@ -235,13 +235,15 @@ static void
 glade_editor_property_info_clicked_cb (GtkWidget           *info,
 				       GladeEditorProperty *eprop)
 {
+	GladeWidgetClass *wclass;
 	gchar            *search;
 
-	search = g_strdup_printf ("The %s property", eprop->property->class->id);
+	wclass = glade_widget_class_from_pclass (eprop->class);
+	search = g_strdup_printf ("The %s property", eprop->class->id);
 
 	g_signal_emit (G_OBJECT (eprop),
 		       glade_editor_property_signals[GTK_DOC_SEARCH],
-		       0, eprop->class->book,
+		       0, wclass->book,
 		       g_type_name (eprop->class->pspec->owner_type), search);
 
 	g_free (search);
@@ -866,6 +868,10 @@ GLADE_MAKE_EPROP (GladeEPropFlags, glade_eprop_flags)
 static void
 glade_eprop_flags_finalize (GObject *object)
 {
+	GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS(object);
+
+	g_object_unref (G_OBJECT (eprop_flags->model));
+
 	/* Chain up */
 	G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
@@ -2224,6 +2230,9 @@ glade_eprop_object_view (GladeEditorProperty *eprop,
 	g_object_set_data (G_OBJECT (model), "radio-list", GINT_TO_POINTER (radio));
 
 	view_widget = gtk_tree_view_new_with_model (model);
+
+	/* Pass ownership to the view */
+	g_object_unref (G_OBJECT (model));
 	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
 	
 	/********************* fake invisible column *********************/
@@ -2490,9 +2499,9 @@ glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 gboolean
 glade_eprop_objects_selected_widget (GtkTreeModel  *model,
-				    GtkTreePath    *path,
-				    GtkTreeIter    *iter,
-				    GList         **ret)
+				     GtkTreePath    *path,
+				     GtkTreeIter    *iter,
+				     GList         **ret)
 {
 	gboolean     selected;
 	GladeWidget *widget;
@@ -2573,8 +2582,6 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), 
 			 (GtkTreeModelForeachFunc) 
 			 glade_eprop_objects_selected_widget, &selected);
-
-
 
 		value = glade_property_class_make_gvalue 
 			(eprop->class, selected);
@@ -2890,6 +2897,615 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
 
 
 /*******************************************************************************
+                        GladeEditorPropertyAccelClass
+ *******************************************************************************/
+enum {
+	ACCEL_COLUMN_SIGNAL = 0,
+	ACCEL_COLUMN_REAL_SIGNAL,
+	ACCEL_COLUMN_KEY,
+	ACCEL_COLUMN_MOD_SHIFT,
+	ACCEL_COLUMN_MOD_CNTL,
+	ACCEL_COLUMN_MOD_ALT,
+	ACCEL_COLUMN_IS_CLASS,
+	ACCEL_COLUMN_IS_SIGNAL,
+	ACCEL_COLUMN_KEY_ENTERED,
+	ACCEL_COLUMN_KEY_SLOT,
+	ACCEL_NUM_COLUMNS
+};
+
+enum {
+	ACCEL_COMBO_COLUMN_TEXT = 0,
+	ACCEL_COMBO_NUM_COLUMNS,
+};
+
+typedef struct {
+	GladeEditorProperty parent_instance;
+	
+	GtkWidget    *entry;
+	GList        *parent_iters;
+	GtkTreeModel *model;
+} GladeEPropAccel;
+
+typedef struct {
+	GtkTreeIter *iter;
+	gchar       *name; /* <-- dont free */
+} GladeEpropIterTab;
+
+
+static GtkTreeModel *keysyms_model   = NULL;
+
+GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel)
+#define GLADE_TYPE_EPROP_ACCEL            (glade_eprop_accel_get_type())
+#define GLADE_EPROP_ACCEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccel))
+#define GLADE_EPROP_ACCEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccelClass))
+#define GLADE_IS_EPROP_ACCEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ACCEL))
+#define GLADE_IS_EPROP_ACCEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ACCEL))
+#define GLADE_EPROP_ACCEL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ACCEL, GladeEPropAccelClass))
+
+
+GtkTreeModel *
+create_keysyms_model (void)
+{
+	GtkTreeModel *model;
+	GtkTreeIter   iter;
+	gint i;
+
+	model = (GtkTreeModel *)gtk_list_store_new
+		(ACCEL_COMBO_NUM_COLUMNS,
+		 G_TYPE_STRING);       /* The Key charachter name */
+
+	gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+	gtk_list_store_set    
+		(GTK_LIST_STORE (model), &iter, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("None"), -1);
+
+	for (i = 0; GladeKeys[i].name != NULL; i++)
+	{	
+		gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+		gtk_list_store_set    
+			(GTK_LIST_STORE (model), &iter, 
+			 ACCEL_COMBO_COLUMN_TEXT, GladeKeys[i].name, -1);
+	}
+
+	return model;
+}
+
+static void
+glade_eprop_accel_finalize (GObject *object)
+{
+	/* Chain up */
+	G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static void
+glade_eprop_accel_load (GladeEditorProperty *eprop, 
+			GladeProperty       *property)
+{
+	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	gchar           *accels;
+
+	/* Chain up first */
+	editor_property_class->load (eprop, property);
+
+	if (property == NULL) return;
+
+	if ((accels  = glade_property_class_make_string_from_gvalue
+	     (eprop->class, property->value)) != NULL)
+	{
+		gtk_entry_set_text (GTK_ENTRY (eprop_accel->entry), accels);
+		g_free (accels);
+	}
+	else
+		gtk_entry_set_text (GTK_ENTRY (eprop_accel->entry), "");
+
+}
+
+static gint
+eprop_find_iter (GladeEpropIterTab *iter_tab,
+		 gchar             *name)
+{
+	return strcmp (iter_tab->name, name);
+}
+
+static void
+iter_tab_free (GladeEpropIterTab *iter_tab)
+{
+	gtk_tree_iter_free (iter_tab->iter);
+	g_free (iter_tab);
+}
+
+static void
+glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
+				 GtkTreeView         *view)
+{
+	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GladeSignalClass  *sclass;
+	GladeWidgetClass  *wclass = glade_widget_class_from_pclass (eprop->class);
+	GtkTreeStore      *model = (GtkTreeStore *)gtk_tree_view_get_model (view);
+	GtkTreeIter        iter;
+	GladeEpropIterTab *parent_tab;
+	GladeAccelInfo    *info;
+	GList             *list, *l, *found, *accelerators;
+	gchar             *name;
+
+	accelerators = g_value_get_boxed (eprop->property->value);
+
+	/* First make parent iters...
+	 */
+	for (list = wclass->signals; list; list = list->next)
+	{
+		sclass = list->data;
+
+		/* Only action signals have accelerators. */
+		if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
+			continue;
+
+		if (g_list_find_custom (eprop_accel->parent_iters, 
+					sclass->type,
+					(GCompareFunc)eprop_find_iter) == NULL)
+		{
+			gtk_tree_store_append (model, &iter, NULL);
+			gtk_tree_store_set (model, &iter,
+					    ACCEL_COLUMN_SIGNAL, sclass->type,
+					    ACCEL_COLUMN_IS_CLASS, TRUE,
+					    ACCEL_COLUMN_IS_SIGNAL, FALSE,
+					    -1);
+			
+			parent_tab = g_new0 (GladeEpropIterTab, 1);
+			parent_tab->name = sclass->type;
+			parent_tab->iter = gtk_tree_iter_copy (&iter);
+
+			eprop_accel->parent_iters = 
+				g_list_prepend (eprop_accel->parent_iters,
+						parent_tab);
+		}
+	}
+
+	/* Now we populate...
+	 */
+	for (list = wclass->signals; list; list = list->next)
+	{
+		sclass = list->data;
+
+		/* Only action signals have accelerators. */
+		if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
+			continue;
+
+		if ((found = g_list_find_custom (eprop_accel->parent_iters, 
+						 sclass->type,
+						 (GCompareFunc)eprop_find_iter)) != NULL)
+		{
+			parent_tab = found->data;
+			name       = g_strdup_printf ("    %s", sclass->name);
+
+			/* Populate from accelerator list
+			 */
+			for (l = accelerators; l; l = l->next)
+			{
+				info = l->data;
+
+				if (strcmp (info->signal, sclass->name))
+					continue;
+
+				gtk_tree_store_append (model, &iter, parent_tab->iter);
+				gtk_tree_store_set    
+					(model, &iter,
+					 ACCEL_COLUMN_SIGNAL, name,
+					 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
+					 ACCEL_COLUMN_IS_CLASS, FALSE,
+					 ACCEL_COLUMN_IS_SIGNAL, TRUE,
+					 ACCEL_COLUMN_MOD_SHIFT, 
+					 (info->modifiers & GDK_SHIFT_MASK) != 0,
+					 ACCEL_COLUMN_MOD_CNTL, 
+					 (info->modifiers & GDK_CONTROL_MASK) != 0,
+					 ACCEL_COLUMN_MOD_ALT,
+					 (info->modifiers & GDK_MOD1_MASK) != 0,
+					 ACCEL_COLUMN_KEY, 
+					 glade_builtin_string_from_key (info->key),
+					 ACCEL_COLUMN_KEY_ENTERED, TRUE,
+					 ACCEL_COLUMN_KEY_SLOT, FALSE,
+					 -1);
+			}
+
+			/* Append a new empty slot at the end */
+			gtk_tree_store_append (model, &iter, parent_tab->iter);
+			gtk_tree_store_set    
+				(model, &iter,
+				 ACCEL_COLUMN_SIGNAL, name,
+				 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
+				 ACCEL_COLUMN_IS_CLASS, FALSE,
+				 ACCEL_COLUMN_IS_SIGNAL, TRUE,
+				 ACCEL_COLUMN_MOD_SHIFT, FALSE,
+				 ACCEL_COLUMN_MOD_CNTL, FALSE,
+				 ACCEL_COLUMN_MOD_ALT, FALSE,
+				 ACCEL_COLUMN_KEY, _("<choose a key>"),
+				 ACCEL_COLUMN_KEY_ENTERED, FALSE,
+				 ACCEL_COLUMN_KEY_SLOT, TRUE,
+				 -1);
+
+			g_free (name);
+		}
+	}
+}
+
+static void
+key_edited (GtkCellRendererText *cell,
+	    const gchar         *path_string,
+	    const gchar         *new_text,
+	    GladeEditorProperty *eprop)
+{
+	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	gboolean         key_was_set;
+	gchar           *signal;
+	GtkTreeIter      iter, parent_iter, new_iter;
+
+	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
+						  &iter, path_string))
+		return;
+
+	gtk_tree_model_get
+		(eprop_accel->model, &iter,
+		 ACCEL_COLUMN_KEY_ENTERED, &key_was_set,
+		 ACCEL_COLUMN_SIGNAL, &signal,
+		 -1);
+
+	/* If user selects "none"; remove old entry or ignore new one.
+	 */
+	if (strcmp (new_text, _("None")) == 0)
+	{
+		if (key_was_set)
+			gtk_tree_store_remove
+				(GTK_TREE_STORE (eprop_accel->model), &iter);
+
+		return;
+	}
+
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (eprop_accel->model), &iter,
+		 ACCEL_COLUMN_KEY, new_text,
+		 ACCEL_COLUMN_KEY_ENTERED, TRUE,
+		 ACCEL_COLUMN_KEY_SLOT, FALSE,
+		 -1);
+
+	/* Append a new one if needed
+	 */
+	if (key_was_set == FALSE &&
+	    gtk_tree_model_iter_parent (eprop_accel->model,
+					&parent_iter, &iter))
+	{
+		/* Append a new empty slot at the end */
+		gtk_tree_store_insert_after (GTK_TREE_STORE (eprop_accel->model), 
+					     &new_iter, &parent_iter, &iter);
+		gtk_tree_store_set    
+			(GTK_TREE_STORE (eprop_accel->model), &new_iter,
+			 ACCEL_COLUMN_SIGNAL, signal,
+			 ACCEL_COLUMN_IS_CLASS, FALSE,
+			 ACCEL_COLUMN_IS_SIGNAL, TRUE,
+			 ACCEL_COLUMN_MOD_SHIFT, FALSE,
+			 ACCEL_COLUMN_MOD_CNTL, FALSE,
+			 ACCEL_COLUMN_MOD_ALT, FALSE,
+			 ACCEL_COLUMN_KEY, _("<choose a key>"),
+			 ACCEL_COLUMN_KEY_ENTERED, FALSE,
+			 ACCEL_COLUMN_KEY_SLOT, TRUE,
+			 -1);
+	}
+}
+
+static void
+modifier_toggled (GtkCellRendererToggle *cell,
+		  gchar                 *path_string,
+		  GladeEditorProperty   *eprop)
+{
+	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GtkTreeIter        iter;
+	gint               column;
+	gboolean           active, key_entered;
+
+	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
+						  &iter, path_string))
+		return;
+
+	column = GPOINTER_TO_INT (g_object_get_data
+				  (G_OBJECT (cell), "model-column"));
+
+	gtk_tree_model_get
+		(eprop_accel->model, &iter,
+		 ACCEL_COLUMN_KEY_ENTERED, &key_entered,
+		 column, &active, -1);
+
+	if (key_entered)
+		gtk_tree_store_set
+			(GTK_TREE_STORE (eprop_accel->model), &iter,
+			 column, !active, -1);
+}
+
+
+static GtkWidget *
+glade_eprop_accel_view (GladeEditorProperty *eprop)
+{
+	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GtkWidget         *view_widget;
+ 	GtkCellRenderer   *renderer;
+	GtkTreeViewColumn *column;
+
+	eprop_accel->model = (GtkTreeModel *)gtk_tree_store_new
+		(ACCEL_NUM_COLUMNS,
+		 G_TYPE_STRING,        /* The GSignal name formatted for display */
+		 G_TYPE_STRING,        /* The GSignal name */
+		 G_TYPE_STRING,        /* The Gdk keycode */
+		 G_TYPE_BOOLEAN,       /* The shift modifier */
+		 G_TYPE_BOOLEAN,       /* The cntl modifier */
+		 G_TYPE_BOOLEAN,       /* The alt modifier */
+		 G_TYPE_BOOLEAN,       /* Whether this is a class entry */
+		 G_TYPE_BOOLEAN,       /* Whether this is a signal entry (oposite of above) */
+		 G_TYPE_BOOLEAN,       /* Whether the key has been entered for this row */
+		 G_TYPE_BOOLEAN);      /* Oposite of above */
+
+	view_widget = gtk_tree_view_new_with_model (eprop_accel->model);
+	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
+	
+	/********************* fake invisible column *********************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), "editable", FALSE, "visible", FALSE, NULL);
+
+	column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	gtk_tree_view_column_set_visible (column, FALSE);
+	gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
+
+	/********************* signal name column *********************/
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "editable", FALSE, 
+		      "weight", PANGO_WEIGHT_BOLD,
+		      NULL);
+
+	column = gtk_tree_view_column_new_with_attributes
+		(_("Signal"),  renderer, 
+		 "text", ACCEL_COLUMN_SIGNAL, 
+		 "weight-set", ACCEL_COLUMN_IS_CLASS,
+		 NULL);
+
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	/********************* key name column *********************/
+	if (keysyms_model == NULL)
+		keysyms_model = create_keysyms_model ();
+
+ 	renderer = gtk_cell_renderer_combo_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "editable",    TRUE,
+		      "model",       keysyms_model,
+		      "text-column", ACCEL_COMBO_COLUMN_TEXT,
+		      "has-entry",   FALSE,
+		      "style",       PANGO_STYLE_ITALIC,
+		      "foreground",  "Gray", 
+		      NULL);
+
+	g_signal_connect (renderer, "edited",
+			  G_CALLBACK (key_edited), eprop);
+
+	column = gtk_tree_view_column_new_with_attributes
+		(_("Key"),         renderer, 
+		 "text",           ACCEL_COLUMN_KEY,
+		 "style-set",      ACCEL_COLUMN_KEY_SLOT,
+		 "foreground-set", ACCEL_COLUMN_KEY_SLOT,
+ 		 "visible",        ACCEL_COLUMN_IS_SIGNAL,
+		 NULL);
+
+	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
+
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	/********************* shift modifier column *********************/
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	column   = gtk_tree_view_column_new_with_attributes
+		(_("Shift"),  renderer, 
+		 "visible", ACCEL_COLUMN_IS_SIGNAL,
+		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
+		 "active", ACCEL_COLUMN_MOD_SHIFT,
+		 NULL);
+
+	g_object_set_data (G_OBJECT (renderer), "model-column",
+			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_SHIFT));
+	g_signal_connect (G_OBJECT (renderer), "toggled",
+			  G_CALLBACK (modifier_toggled), eprop);
+
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	/********************* control modifier column *********************/
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	column   = gtk_tree_view_column_new_with_attributes
+		(_("Control"),  renderer, 
+		 "visible", ACCEL_COLUMN_IS_SIGNAL,
+		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
+		 "active", ACCEL_COLUMN_MOD_CNTL,
+		 NULL);
+
+	g_object_set_data (G_OBJECT (renderer), "model-column",
+			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_CNTL));
+	g_signal_connect (G_OBJECT (renderer), "toggled",
+			  G_CALLBACK (modifier_toggled), eprop);
+
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	/********************* alt modifier column *********************/
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	column   = gtk_tree_view_column_new_with_attributes
+		(_("Alt"),  renderer, 
+		 "visible", ACCEL_COLUMN_IS_SIGNAL,
+		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
+		 "active", ACCEL_COLUMN_MOD_ALT,
+		 NULL);
+
+	g_object_set_data (G_OBJECT (renderer), "model-column",
+			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_ALT));
+	g_signal_connect (G_OBJECT (renderer), "toggled",
+			  G_CALLBACK (modifier_toggled), eprop);
+
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+
+	return view_widget;
+}
+
+gboolean
+glade_eprop_accel_accum_accelerators (GtkTreeModel  *model,
+				      GtkTreePath    *path,
+				      GtkTreeIter    *iter,
+				      GList         **ret)
+{
+	GladeAccelInfo *info;
+	gchar          *signal;
+	gchar          *key_str;
+	gboolean        shift, cntl, alt, entered;
+
+	gtk_tree_model_get (model, iter,
+			    ACCEL_COLUMN_REAL_SIGNAL, &signal,
+			    ACCEL_COLUMN_KEY,         &key_str,
+			    ACCEL_COLUMN_MOD_SHIFT,   &shift,
+			    ACCEL_COLUMN_MOD_CNTL,    &cntl,
+			    ACCEL_COLUMN_MOD_ALT,     &alt,
+			    ACCEL_COLUMN_KEY_ENTERED, &entered,
+			    -1);
+	
+	if (entered)
+	{
+		info            = g_new0 (GladeAccelInfo, 1);
+		info->signal    = g_strdup (signal);
+		info->key       = glade_builtin_key_from_string (key_str);
+		info->modifiers = 
+			(shift ? GDK_SHIFT_MASK   : 0) |
+			(cntl  ? GDK_CONTROL_MASK : 0) |
+			(alt   ? GDK_MOD1_MASK    : 0);
+
+		*ret = g_list_prepend (*ret, info);
+	}
+
+	return FALSE;
+}
+
+
+static void
+glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
+			       GladeEditorProperty *eprop)
+{
+	GladeEPropAccel  *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GtkWidget        *dialog, *parent, *vbox, *sw, *tree_view;
+	GladeProject     *project;
+	GValue           *value;
+	GList            *accelerators = NULL;
+	gint              res;
+	
+	project = glade_widget_get_project (eprop->property->widget);
+	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
+
+	dialog = gtk_dialog_new_with_buttons (_("Choose accelerator keys..."),
+					      GTK_WINDOW (parent),
+					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OK, GTK_RESPONSE_OK,
+					      NULL);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+	vbox = gtk_vbox_new (FALSE, 6);
+	gtk_widget_show (vbox);
+
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_widget_set_size_request (sw, 400, 200);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+
+	tree_view = glade_eprop_accel_view (eprop);
+	glade_eprop_accel_populate_view (eprop, GTK_TREE_VIEW (tree_view));
+
+	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
+
+	gtk_widget_show (tree_view);
+	gtk_container_add (GTK_CONTAINER (sw), tree_view);
+	
+	/* Run the dialog */
+	res = gtk_dialog_run (GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_OK) 
+	{
+		gtk_tree_model_foreach
+			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)),
+			 (GtkTreeModelForeachFunc)
+			 glade_eprop_accel_accum_accelerators, &accelerators);
+		
+		value = g_new0 (GValue, 1);
+		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
+		g_value_take_boxed (value, accelerators);
+
+		glade_editor_property_commit (eprop, value);
+
+		g_value_unset (value);
+		g_free (value);
+	} 
+	else if (res == GLADE_RESPONSE_CLEAR)
+	{
+		value = g_new0 (GValue, 1);
+		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
+		g_value_set_boxed (value, NULL);
+
+		glade_editor_property_commit (eprop, value);
+
+		g_value_unset (value);
+		g_free (value);
+	}
+
+	/* Clean up ...
+	 */
+	gtk_widget_destroy (dialog);
+
+	g_object_unref (G_OBJECT (eprop_accel->model));
+	eprop_accel->model = NULL;
+
+	if (eprop_accel->parent_iters)
+	{
+		g_list_foreach (eprop_accel->parent_iters, (GFunc)iter_tab_free, NULL);
+		g_list_free (eprop_accel->parent_iters);
+		eprop_accel->parent_iters = NULL;
+	}
+
+}
+
+static GtkWidget *
+glade_eprop_accel_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GtkWidget        *hbox;
+	GtkWidget        *button;
+
+	hbox               = gtk_hbox_new (FALSE, 0);
+	eprop_accel->entry = gtk_entry_new ();
+	gtk_entry_set_editable (GTK_ENTRY (eprop_accel->entry), FALSE);
+	gtk_widget_show (eprop_accel->entry);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_accel->entry, TRUE, TRUE, 0);
+
+	button = gtk_button_new_with_label ("...");
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
+
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (glade_eprop_accel_show_dialog), 
+			  eprop);
+
+	return hbox;
+}
+
+
+
+/*******************************************************************************
                               Misc static stuff
  *******************************************************************************/
 static GType 
@@ -2940,6 +3556,9 @@ glade_editor_property_type (GParamSpec *pspec)
 	}
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(pspec))
 		type = GLADE_TYPE_EPROP_OBJECTS;
+	else if (GLADE_IS_PARAM_SPEC_ACCEL(pspec))
+		type = GLADE_TYPE_EPROP_ACCEL;
+
 	return type;
 }
 
@@ -3076,7 +3695,6 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	glade_editor_property_load (eprop, property);
 }
 
-
 /**
  * glade_editor_property_show_info:
  * @eprop: A #GladeEditorProperty
@@ -3086,10 +3704,14 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 void
 glade_editor_property_show_info (GladeEditorProperty *eprop)
 {
+	GladeWidgetClass *wclass;
+
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
+	wclass = glade_widget_class_from_pclass (eprop->class);
+
 	if (eprop->class->virtual == FALSE &&
-	    eprop->class->book    != NULL)
+	    wclass->book          != NULL)
 		gtk_widget_show (eprop->info);
 	else
 	{

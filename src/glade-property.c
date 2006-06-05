@@ -362,7 +362,7 @@ glade_property_load_impl (GladeProperty *property)
 	
 	if (property->widget == NULL ||
 	    property->class->packing ||
-	    property->class->atk_type != GPC_ATK_NONE)
+	    property->class->type != GPC_NORMAL)
 		return;
 	object = glade_widget_get_object (property->widget);
 	oclass = G_OBJECT_GET_CLASS (object);
@@ -378,6 +378,7 @@ glade_property_write_impl (GladeProperty  *property,
 {
 	GladePropInfo         info  = { 0, };
 	GladeAtkActionInfo    ainfo = { 0, };
+	GList                *list;
 	gchar                *name, *value, **split, *tmp;
 	gint                  i;
 
@@ -395,7 +396,7 @@ glade_property_write_impl (GladeProperty  *property,
 
 	/* we should change each '-' by '_' on the name of the property 
          * (<property name="...">) */
-	if (property->class->atk_type != GPC_ATK_NONE)
+	if (property->class->type != GPC_NORMAL)
 	{
 
 		tmp = (gchar *)glade_property_class_atk_realname (property->class->id);
@@ -407,21 +408,22 @@ glade_property_write_impl (GladeProperty  *property,
 	}
 
 	/* convert the value of this property to a string */
-	if ((value = glade_property_class_make_string_from_gvalue 
+	if (property->class->type == GPC_ACCEL_PROPERTY ||
+	    (value = glade_property_class_make_string_from_gvalue 
 	     (property->class, property->value)) == NULL)
 		/* make sure we keep the empty string, also... upcomming
 		 * funcs that may not like NULL.
 		 */
 		value = g_strdup ("");
 
-	switch (property->class->atk_type)
+	switch (property->class->type)
 	{
 	case GPC_ATK_PROPERTY:
 		tmp = g_strdup_printf ("AtkObject::%s", name);
 		g_free (name);
 		name = tmp;
 		/* Dont break here ... */
-	case GPC_ATK_NONE:
+	case GPC_NORMAL:
 		info.name = glade_xml_alloc_propname(interface, name);
 		info.value = glade_xml_alloc_string(interface,  value);
 		
@@ -440,7 +442,7 @@ glade_property_write_impl (GladeProperty  *property,
 		{
 			for (i = 0; split[i] != NULL; i++)
 			{
-				GladeAtkRelationInfo  rinfo = { 0, };
+				GladeAtkRelationInfo rinfo = { 0, };
 				rinfo.type   = glade_xml_alloc_string(interface, name);
 				rinfo.target = glade_xml_alloc_string(interface, split[i]);
 				g_array_append_val (props, rinfo);
@@ -452,6 +454,20 @@ glade_property_write_impl (GladeProperty  *property,
 		ainfo.action_name = glade_xml_alloc_string(interface, name);
 		ainfo.description = glade_xml_alloc_string(interface, value);
 		g_array_append_val (props, ainfo);
+		break;
+	case GPC_ACCEL_PROPERTY:
+		for (list = g_value_get_boxed (property->value); 
+		     list; list = list->next)
+		{
+			GladeAccelInfo *accel = list->data;
+			GladeAccelInfo  accel_info = { 0, };
+
+			accel_info.signal    = glade_xml_alloc_string(interface, accel->signal);
+			accel_info.key       = accel->key;
+			accel_info.modifiers = accel->modifiers;
+
+			g_array_append_val (props, accel_info);
+		}
 		break;
 	default:
 		break;
@@ -937,6 +953,49 @@ glade_property_read_atk_action (GladeProperty      *property,
 	return gvalue;
 }
 
+static GValue *
+glade_property_read_accel_prop (GladeProperty      *property, 
+				GladePropertyClass *pclass,
+				GladeProject       *project,
+				GladeWidgetInfo    *info,
+				gboolean            free_value)
+{
+	GValue      *gvalue = NULL;
+	GList       *accels = NULL;
+	gint         i;
+
+	for (i = 0; i < info->n_accels; ++i)
+	{
+		GladeAccelInfo *ainfo = info->accels + i;
+		
+		GladeAccelInfo *ainfo_dup = g_new0 (GladeAccelInfo, 1);
+		
+		ainfo_dup            = g_new0 (GladeAccelInfo, 1);
+		ainfo_dup->signal    = g_strdup (ainfo->signal);
+		ainfo_dup->key       = ainfo->key;
+		ainfo_dup->modifiers = ainfo->modifiers;
+
+		accels = g_list_prepend (accels, ainfo_dup);
+	}
+
+	gvalue = g_new0 (GValue, 1);
+	g_value_init (gvalue, GLADE_TYPE_ACCEL_GLIST);
+	g_value_take_boxed (gvalue, accels);
+
+	if (property)
+		GLADE_PROPERTY_GET_KLASS
+			(property)->set_value (property, gvalue);
+	
+	if (free_value)
+	{
+		g_value_unset (gvalue);
+		g_free (gvalue);
+	}
+
+	return gvalue;
+}
+
+
 /*******************************************************************************
                                      API
  *******************************************************************************/
@@ -1275,9 +1334,9 @@ glade_property_read (GladeProperty      *property,
 		ret = glade_property_read_packing 
 			(property, pclass, project, (GladeChildInfo *)info, free_value);
 	}
-	else switch (pclass->atk_type)
+	else switch (pclass->type)
 	{
-	case GPC_ATK_NONE:
+	case GPC_NORMAL:
 		ret = glade_property_read_normal
 			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
 		break;
@@ -1291,6 +1350,10 @@ glade_property_read (GladeProperty      *property,
 		break;
 	case GPC_ATK_ACTION:
 		ret = glade_property_read_atk_action
+			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
+		break;
+	case GPC_ACCEL_PROPERTY:
+		ret = glade_property_read_accel_prop
 			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
 		break;
 	default:
