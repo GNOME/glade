@@ -3176,8 +3176,9 @@ key_edited (GtkCellRendererText *cell,
 	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
 	gboolean         key_was_set;
 	gchar           *signal;
+	const gchar     *text;
 	GtkTreeIter      iter, parent_iter, new_iter;
-	
+
 	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
 						  &iter, path_string))
 		return;
@@ -3202,9 +3203,14 @@ key_edited (GtkCellRendererText *cell,
 		return;
 	}
 
+	if (glade_builtin_key_from_string (new_text) != 0)
+		text = new_text;
+	else
+		text = glade_builtin_string_from_key ((guint)new_text[0]);
+
 	gtk_tree_store_set    
 		(GTK_TREE_STORE (eprop_accel->model), &iter,
-		 ACCEL_COLUMN_KEY, glade_builtin_string_from_key ((guint)new_text[0]),
+		 ACCEL_COLUMN_KEY, text,
 		 ACCEL_COLUMN_KEY_ENTERED, TRUE,
 		 ACCEL_COLUMN_KEY_SLOT, FALSE,
 		 -1);

@@ -22,7 +22,7 @@ LIBGLADEUI_API const GladeKey GladeKeys[];
 #define  GLADE_KEYS_LAST_FKEY        "F35"
 #define  GLADE_KEYS_LAST_NAV         "End"
 #define  GLADE_KEYS_LAST_KP          "KP_9"
-#define  GLADE_KEYS_LAST_SPECIAL     "GDK_questiondown"
+#define  GLADE_KEYS_LAST_SPECIAL     "questiondown"
 
 #define GLADE_TYPE_STOCK               (glade_standard_stock_get_type())
 #define	GLADE_TYPE_GLIST               (glade_glist_get_type())
