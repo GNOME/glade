@@ -16,7 +16,7 @@ struct _GladeKey {
 	gchar *name;
 };
 
-extern const GladeKey GladeKeys[];
+LIBGLADEUI_API const GladeKey GladeKeys[];
 
 #define GLADE_TYPE_STOCK               (glade_standard_stock_get_type())
 #define	GLADE_TYPE_GLIST               (glade_glist_get_type())
