@@ -28,6 +28,7 @@
 #include <string.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "glade.h"
 #include "glade-widget.h"
@@ -2947,26 +2948,64 @@ GtkTreeModel *
 create_keysyms_model (void)
 {
 	GtkTreeModel *model;
-	GtkTreeIter   iter;
-	gint i;
+	GtkTreeIter   iter, alphanum, fkey, nav, keypad, other, special;
+	GtkTreeIter  *parent;
+	gint          i;
 
-	model = (GtkTreeModel *)gtk_list_store_new
+	model = (GtkTreeModel *)gtk_tree_store_new
 		(ACCEL_COMBO_NUM_COLUMNS,
 		 G_TYPE_STRING);       /* The Key charachter name */
 
-	gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-	gtk_list_store_set    
-		(GTK_LIST_STORE (model), &iter, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("None"), -1);
+	gtk_tree_store_append (GTK_TREE_STORE (model), &alphanum, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &alphanum, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Alphanumerical"), -1);
+
+	gtk_tree_store_append (GTK_TREE_STORE (model), &nav, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &nav, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Navigational"), -1);
+
+	gtk_tree_store_append (GTK_TREE_STORE (model), &special, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &special, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Special"), -1);
+
+	gtk_tree_store_append (GTK_TREE_STORE (model), &keypad, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &keypad, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Keypad"), -1);
+
+	gtk_tree_store_append (GTK_TREE_STORE (model), &fkey, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &fkey, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Functions"), -1);
+	
+	gtk_tree_store_append (GTK_TREE_STORE (model), &other, NULL);
+	gtk_tree_store_set    
+		(GTK_TREE_STORE (model), &other, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Other"), -1);
+
+	parent = &alphanum;
 
 	for (i = 0; GladeKeys[i].name != NULL; i++)
-	{	
-		gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-		gtk_list_store_set    
-			(GTK_LIST_STORE (model), &iter, 
+	{
+		gtk_tree_store_append (GTK_TREE_STORE (model), &iter, parent);
+		gtk_tree_store_set    
+			(GTK_TREE_STORE (model), &iter, 
 			 ACCEL_COMBO_COLUMN_TEXT, GladeKeys[i].name, -1);
-	}
 
+		if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_ALPHA))
+			parent = &fkey;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_FKEY))
+			parent = &nav;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_NAV))
+			parent = &keypad;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_KP))
+			parent = &special;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_SPECIAL))
+			parent = &other;
+	}
 	return model;
 }
 
@@ -3152,6 +3191,7 @@ key_edited (GtkCellRendererText *cell,
 	/* If user selects "none"; remove old entry or ignore new one.
 	 */
 	if (!new_text || new_text[0] == '\0' ||
+	    glade_builtin_string_from_key ((guint)new_text[0]) == NULL ||
 	    g_utf8_collate (new_text, _("None")) == 0 ||
 	    g_utf8_collate (new_text, _("<choose a key>")) == 0)
 	{
@@ -3164,7 +3204,7 @@ key_edited (GtkCellRendererText *cell,
 
 	gtk_tree_store_set    
 		(GTK_TREE_STORE (eprop_accel->model), &iter,
-		 ACCEL_COLUMN_KEY, new_text,
+		 ACCEL_COLUMN_KEY, glade_builtin_string_from_key ((guint)new_text[0]),
 		 ACCEL_COLUMN_KEY_ENTERED, TRUE,
 		 ACCEL_COLUMN_KEY_SLOT, FALSE,
 		 -1);
@@ -3268,6 +3308,8 @@ glade_eprop_accel_view (GladeEditorProperty *eprop)
 		 "text", ACCEL_COLUMN_SIGNAL, 
 		 "weight-set", ACCEL_COLUMN_IS_CLASS,
 		 NULL);
+
+	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
 
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
 
