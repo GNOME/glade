@@ -3138,7 +3138,7 @@ key_edited (GtkCellRendererText *cell,
 	gboolean         key_was_set;
 	gchar           *signal;
 	GtkTreeIter      iter, parent_iter, new_iter;
-
+	
 	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
 						  &iter, path_string))
 		return;
@@ -3151,7 +3151,9 @@ key_edited (GtkCellRendererText *cell,
 
 	/* If user selects "none"; remove old entry or ignore new one.
 	 */
-	if (strcmp (new_text, _("None")) == 0)
+	if (!new_text || new_text[0] == '\0' ||
+	    strcmp (new_text, _("None")) == 0 ||
+	    strcmp (new_text, _("<choose a key>")) == 0)
 	{
 		if (key_was_set)
 			gtk_tree_store_remove
@@ -3278,7 +3280,7 @@ glade_eprop_accel_view (GladeEditorProperty *eprop)
 		      "editable",    TRUE,
 		      "model",       keysyms_model,
 		      "text-column", ACCEL_COMBO_COLUMN_TEXT,
-		      "has-entry",   FALSE,
+		      "has-entry",   TRUE,
 		      "style",       PANGO_STYLE_ITALIC,
 		      "foreground",  "Gray", 
 		      NULL);
