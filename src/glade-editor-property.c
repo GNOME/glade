@@ -2948,7 +2948,7 @@ GtkTreeModel *
 create_keysyms_model (void)
 {
 	GtkTreeModel *model;
-	GtkTreeIter   iter, alphanum, fkey, nav, keypad, other, special;
+	GtkTreeIter   iter, alphanum, fkey, keypad, other, extra;
 	GtkTreeIter  *parent;
 	gint          i;
 
@@ -2961,15 +2961,10 @@ create_keysyms_model (void)
 		(GTK_TREE_STORE (model), &alphanum, 
 		 ACCEL_COMBO_COLUMN_TEXT, _("Alphanumerical"), -1);
 
-	gtk_tree_store_append (GTK_TREE_STORE (model), &nav, NULL);
+	gtk_tree_store_append (GTK_TREE_STORE (model), &extra, NULL);
 	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &nav, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Navigational"), -1);
-
-	gtk_tree_store_append (GTK_TREE_STORE (model), &special, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &special, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Special"), -1);
+		(GTK_TREE_STORE (model), &extra, 
+		 ACCEL_COMBO_COLUMN_TEXT, _("Extra"), -1);
 
 	gtk_tree_store_append (GTK_TREE_STORE (model), &keypad, NULL);
 	gtk_tree_store_set    
@@ -2995,15 +2990,13 @@ create_keysyms_model (void)
 			(GTK_TREE_STORE (model), &iter, 
 			 ACCEL_COMBO_COLUMN_TEXT, GladeKeys[i].name, -1);
 
-		if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_ALPHA))
-			parent = &fkey;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_FKEY))
-			parent = &nav;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_NAV))
+		if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_ALPHANUM))
+			parent = &extra;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_EXTRA))
 			parent = &keypad;
 		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_KP))
-			parent = &special;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_SPECIAL))
+			parent = &fkey;
+		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_FKEY))
 			parent = &other;
 	}
 	return model;
