@@ -1,17 +1,13 @@
 
 
-Blockers for glade-3 2.92.0 beta
+Tasks/Bugs Blocking glade-3 3.0:
 ================================
-
-Tasks:
-======
- o Toolbar editor / Popup menu editor ?
- o Add / Implement gnome widget catalogs (bug 315601)
- o Handle startup errors correctly (bug 331797)
-
-Complex bugs:
-=============
+ o Toolbar editor / Popup menu editor (toolbar support now in... needs editor)
  o Unify multiple property changes & dont unify default settings (bug 315600)
  o Properties/undo stack glitches (bug 316900)
  o Selection bug with some widgets (properly streamlining events
    on widgets in the glade runtime environment) (bug 327379)
+   - Internal widget selection bug (bug 338894)
+ o View menu should be removed and deleted (bug 336576)
+ o Gnome stock items not recognized by glade-3 (bug 343712)
+ o Should indicate read-only projects (bug 337957)
