@@ -1645,19 +1645,15 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 
 	if (GTK_IS_COLOR_BUTTON (button) ||
 	    GTK_IS_FONT_BUTTON (button))
-	{
- 		string = g_strdup_printf (_("This property does not apply to a %s"),
-					  gbutton->widget_class->palette_name);
-		glade_widget_property_set_sensitive (gbutton, "glade-type",
-						     FALSE, string);
-		g_free (string);
 		return;
-  	}
 
 	/* Internal buttons get there stock stuff introspected. */
 	if (reason == GLADE_CREATE_USER && gbutton->internal == NULL)
 	{
 		g_object_set_data (button, "glade-button-post-ran", GINT_TO_POINTER (1));
+
+		glade_gtk_button_backup_label (gbutton);
+
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
 					     G_OBJECT (button), TRUE);

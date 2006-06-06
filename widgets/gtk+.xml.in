@@ -541,9 +541,15 @@
       </children>
     </glade-widget-class>
   
-    <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" _title="Toggle Button"/>
+    <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" _title="Toggle Button">
+      <properties>
+      	<property id="label" default="togglebutton"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkCheckButton" generic-name="checkbutton" _title="Check Button">
       <properties>
+      	<property id="label" default="checkbutton"/>
 	<property id="draw-indicator" default="True"/>
       </properties>
     </glade-widget-class>
@@ -567,6 +573,7 @@
 
     <glade-widget-class name="GtkRadioButton" generic-name="radiobutton" _title="Radio Button">
       <properties>
+      	<property id="label" default="radiobutton"/>
 	<property id="draw-indicator" default="True"/>
       </properties>
     </glade-widget-class>
@@ -591,14 +598,23 @@
 
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <properties>
-	<property id="stock" visible="False"/>
 	<property id="color" default="Black"/>
+
+	<!-- These props dont apply to color buttons -->
+	<property id="glade-type" disabled="True"/>
+	<property id="label" disabled="True"/>
+	<property id="use-underline" disabled="True"/>
+	<property id="stock" disabled="True"/>
       </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFontButton" generic-name="fontbutton" _title="Font Button">
       <properties>
-	<property id="stock" visible="False"/>
+	<!-- These props dont apply to font buttons -->
+	<property id="glade-type" disabled="True"/>
+	<property id="label" disabled="True"/>
+	<property id="use-underline" disabled="True"/>
+	<property id="stock" disabled="True"/>
       </properties>
     </glade-widget-class>
 

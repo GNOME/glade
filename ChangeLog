@@ -1,5 +1,12 @@
 2006-06-06  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-gtk.c, widgets/gtk+.xml.in: 
+	  o Fixed segfaults on color-button
+	  o Fixed color-button & font-button (dropped unused properties)
+	  o Fixed initial label text on buttons (and subclass defaults)
+
+2006-06-05  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-editor-property.c, src/glade-builtins.h, src/glade-keysyms.c: 
 	  o Added submenues to the accel key combo.
 	  o Make accel dialog cell-renderer-combo have an entry
