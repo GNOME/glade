@@ -158,7 +158,10 @@ glade_widget_class_list_properties (GladeWidgetClass *class)
 	list = gwc_props_from_pspecs (class, specs, n_specs);
 	g_free (specs);
 
-	list = g_list_append (list, glade_property_class_accel_property (class, class->type));
+	/* GtkWidgetClass & descendants have accelerators */
+	if (g_type_is_a (class->type, GTK_TYPE_WIDGET))
+		list = g_list_append (list, glade_property_class_accel_property
+				      (class, class->type));
 
 	/* list the (hard-coded) atk relation properties if applicable */
 	if (glade_util_class_implements_interface (class->type, 
