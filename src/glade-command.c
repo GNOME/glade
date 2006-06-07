@@ -1743,7 +1743,6 @@ static void
 glade_command_add_signal_finalize (GObject *obj)
 {
 	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (obj);
-	glade_signal_free (cmd->signal);
 
 	g_object_unref (cmd->widget);
 

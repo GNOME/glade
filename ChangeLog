@@ -1,5 +1,12 @@
 2006-06-06  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-command.c: fixed double free in glade_command_add_signal_finalize()
+
+	* src/glade-signal-editor: Fixed signal editor to truely delete handler/userdata
+	  when it previously only appeared to.
+
+2006-06-06  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/glade-gtk.c, widgets/gtk+.xml.in: 
 	  o Fixed segfaults on color-button
 	  o Fixed color-button & font-button (dropped unused properties)

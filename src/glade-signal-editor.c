@@ -274,7 +274,7 @@ is_void_signal_handler (const gchar *signal_handler)
 {
 	return ( signal_handler == NULL ||
 		*signal_handler == 0    ||
-		 strcmp (signal_handler, _(HANDLER_DEFAULT)) == 0);
+		 g_utf8_collate (signal_handler, _(HANDLER_DEFAULT)) == 0);
 }
 
 static gboolean
@@ -282,7 +282,7 @@ is_void_user_data (const gchar *user_data)
 {
 	return ( user_data == NULL ||
 		*user_data == 0    ||
-		 strcmp (user_data, _(USERDATA_DEFAULT)) == 0);
+		 g_utf8_collate (user_data, _(USERDATA_DEFAULT)) == 0);
 }
 
 static void
@@ -347,17 +347,27 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 	/* we're removing a signal handler */
 	if (!slot && is_void_signal_handler(new_handler))
 	{
-		GladeSignal *old_signal = glade_signal_new (signal_name, old_handler,
-							    userdata, lookup, after);
+		GladeSignal *old_signal = 
+			glade_signal_new (signal_name, 
+					  old_handler,
+					  is_void_user_data (userdata) ? NULL : userdata, 
+					  lookup, after);
 		glade_command_remove_signal (glade_widget, old_signal);
 		glade_signal_free (old_signal);
 
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-				    COLUMN_LOOKUP_VISIBLE,   FALSE,
-				    COLUMN_LOOKUP,           FALSE,
-				    COLUMN_USERDATA,         _(USERDATA_DEFAULT),
-				    COLUMN_USERDATA_SLOT,    TRUE,
-				    COLUMN_USERDATA_EDITABLE,FALSE, -1);
+		gtk_tree_store_set
+			(GTK_TREE_STORE (model),          &iter,
+				 COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 COLUMN_AFTER,            FALSE,
+				 COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 COLUMN_LOOKUP,           FALSE,
+				 COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 COLUMN_HANDLER_EDITABLE, TRUE,
+				 COLUMN_USERDATA_EDITABLE,FALSE,
+				 COLUMN_AFTER_VISIBLE,    FALSE,
+				 COLUMN_SLOT,             TRUE,
+				 COLUMN_USERDATA_SLOT,    TRUE,
+				 -1);
 
 		remove_slot (model, &iter);
 	}
@@ -411,6 +421,7 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 	GtkTreePath  *path = gtk_tree_path_new_from_string (path_str);
 	GtkTreeIter iter;
 	GtkTreeIter iter_signal;
+	GladeSignal *old_signal, *new_signal;
 	gchar *signal_name;
 	gchar *old_userdata;
 	gchar *handler;
@@ -436,7 +447,6 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 	else
 		iter_signal = iter;
 
-
 	/* We are removing userdata */
 	if (is_void_user_data(new_userdata))
 	{
@@ -446,33 +456,33 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 				    COLUMN_LOOKUP,         FALSE,
 				    COLUMN_LOOKUP_VISIBLE, FALSE, -1);
 	}
-	else /* we're changing a signal handler's userdata */
-
+	else
 	{
-		GladeSignal *old_signal =
-			glade_signal_new
-			(signal_name,
-			 handler,
-			 is_void_user_data(old_userdata) ? NULL : old_userdata,
-			 lookup,
-			 after);
-		GladeSignal *new_signal = glade_signal_new (signal_name,
-							    handler,
-							    new_userdata,
-							    lookup,
-							    after);
-
-		glade_command_change_signal (glade_widget, old_signal, new_signal);
-
-		glade_signal_free (old_signal);
-		glade_signal_free (new_signal);
-
 		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-				    COLUMN_USERDATA_SLOT,  FALSE,
-				    COLUMN_USERDATA,       new_userdata,
-				    COLUMN_LOOKUP_VISIBLE, TRUE,
-				    -1);
+			    COLUMN_USERDATA_SLOT,  FALSE,
+			    COLUMN_USERDATA,       new_userdata,
+			    COLUMN_LOOKUP_VISIBLE, TRUE,
+			    -1);
 	}
+
+	old_signal =
+		glade_signal_new
+		(signal_name, handler,
+		 is_void_user_data(old_userdata) ? NULL : old_userdata,
+		 lookup, after);
+
+	new_signal = 
+		glade_signal_new 
+		(signal_name, handler,
+		 is_void_user_data(new_userdata) ? NULL : new_userdata,
+		 lookup, after);
+
+	if (glade_signal_equal (old_signal, new_signal) == FALSE)
+		glade_command_change_signal (glade_widget, old_signal, new_signal);
+	
+	glade_signal_free (old_signal);
+	glade_signal_free (new_signal);
+
 	gtk_tree_path_free (path);
 	g_free (signal_name);
 	g_free (handler);

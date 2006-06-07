@@ -96,6 +96,7 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 		     !strcmp (sig1->userdata, sig2->userdata)))
 			ret = TRUE;
 	}
+
 	return ret;
 }
 
