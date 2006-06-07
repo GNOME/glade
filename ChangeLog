@@ -1,3 +1,14 @@
+2006-06-07  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: 
+	  o Reverting the simplification of gtkbox, the regression was that the box 
+	    placeholders were not adjusting properly on undo/redo of create/delete/cut/paste
+	    commands.
+	  o Fixing GtkFixed/GtkLayout to not call glade_gtk_container_add/remove_child for
+	    its children.
+
+	* src/glade-command.c: Slight simplifications made.
+
 2006-06-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: fixed double free in glade_command_add_signal_finalize()

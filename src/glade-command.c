@@ -854,14 +854,12 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 			}
 			else
 			{
-				glade_widget_set_parent (cdata->widget, cdata->parent);
-
 				glade_widget_class_container_add 
 					(cdata->parent->widget_class,
 					 cdata->parent->object,
 					 cdata->widget->object);
 
-				glade_widget_set_packing_properties (cdata->widget, cdata->parent);
+				glade_widget_set_parent (cdata->widget, cdata->parent);
 			}
 
 			/* Now that we've added, apply any packing props if nescisary. */
@@ -1251,10 +1249,6 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 						(cdata->parent,
 						 G_OBJECT (cdata->placeholder),
 						 cdata->widget->object);
-
-					/* Hmmm XXX should we record initial paste
-					 * packing props here ?
-					 */
 				}
 				else if (cdata->parent->manager != NULL) 
 					/* Paste at mouse position only once */
@@ -1262,15 +1256,18 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 								       cdata->props_recorded == FALSE);
 				else
 				{
-					glade_widget_set_parent (cdata->widget, 
-								 cdata->parent);
+/* 					glade_widget_set_parent (cdata->widget,  */
+/* 								 cdata->parent); */
 
 					glade_widget_class_container_add
 						(cdata->parent->widget_class,
 						 cdata->parent->object,
 						 cdata->widget->object);
 
-					glade_widget_set_packing_properties (cdata->widget, cdata->parent);
+					glade_widget_set_parent (cdata->widget, 
+								 cdata->parent);
+
+/* 					glade_widget_set_packing_properties (cdata->widget, cdata->parent); */
 				}
 
 				/* Now that we've added, apply any packing props if nescisary. */
@@ -1358,7 +1355,7 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 					(cdata->parent,
 					 cdata->widget->object,
 					 G_OBJECT (cdata->placeholder));
-			else if (cdata->parent->manager != NULL) 
+			else if (cdata->parent->manager != NULL)
 				glade_fixed_manager_remove_child
 					(cdata->parent->manager, cdata->widget);
 			else

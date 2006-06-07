@@ -199,6 +199,38 @@ glade_gtk_spin_button_set_adjustment (GObject *object, GValue *value)
 /* GtkBox */
 
 void GLADEGTK_API
+glade_gtk_box_set_child_property (GObject *container,
+				  GObject *child,
+				  const gchar *property_name,
+				  GValue *value)
+{
+	GladeWidget *gbox;
+	
+	g_return_if_fail (GTK_IS_BOX (container));
+	g_return_if_fail (GTK_IS_WIDGET (child));
+	gbox = glade_widget_get_from_gobject (container);
+	g_return_if_fail (GLADE_IS_WIDGET (gbox));
+	g_return_if_fail (property_name != NULL || value != NULL);
+	
+	/* Chain Up */
+	gtk_container_child_set_property (GTK_CONTAINER (container),
+					  GTK_WIDGET (child),
+					  property_name,
+					  value);
+
+	if (strcmp (property_name, "position") == 0)
+	{
+		gint position, size;
+		
+		position = g_value_get_int (value) + 1;
+		glade_widget_property_get (gbox, "size", &size);
+
+		if (size < position)
+			glade_widget_property_set (gbox, "size", position);
+	}
+}
+
+void GLADEGTK_API
 glade_gtk_box_get_size (GObject *object, GValue *value)
 {
 	GtkBox *box = GTK_BOX (object);
@@ -317,6 +349,25 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	gbox = glade_widget_get_from_gobject (object);
 	project = glade_widget_get_project (gbox);
 
+	/*
+	  Try to remove the last placeholder if any, this way GtkBox`s size 
+	  will not be changed.
+	*/
+	if (!GLADE_IS_PLACEHOLDER (child))
+	{
+		GList *l;
+		GtkBox *box = GTK_BOX (object);
+		
+		for (l = g_list_last (box->children); l; l = g_list_previous (l))
+		{
+			GtkWidget *child_widget = ((GtkBoxChild *) (l->data))->widget;			
+			if (GLADE_IS_PLACEHOLDER (child_widget))
+			{
+				gtk_container_remove (GTK_CONTAINER (box), child_widget);
+				break;
+			}
+		}
+	}
 	
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 	
@@ -359,6 +410,22 @@ glade_gtk_box_get_internal_child (GObject *object,
 	}
 	
 	g_list_free (children);
+}
+void GLADEGTK_API
+glade_gtk_box_remove_child (GObject *object, GObject *child)
+{
+	GladeWidget *gbox;
+	gint size;
+	
+	g_return_if_fail (GTK_IS_BOX (object));
+	g_return_if_fail (GTK_IS_WIDGET (child));
+	
+	gbox = glade_widget_get_from_gobject (object);
+	
+	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+	glade_widget_property_get (gbox, "size", &size);
+	glade_widget_property_set (gbox, "size", size);
 }
 
 /* GtkToolBar */

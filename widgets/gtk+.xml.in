@@ -111,6 +111,8 @@
         <child>
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_box_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
+	  <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
 	  <properties>
 	    <property id="pack-type">
 	      <displayable-values>
@@ -987,10 +989,26 @@
         <property id="hadjustment" disabled="True"/>
 	<property id="vadjustment" disabled="True"/>
       </properties>
+      <children>
+        <!-- This will unset any custom handler defined in the plugin for _add() -->
+	<child>
+	  <type>GtkWidget</type>
+	  <add-child-function>gtk_container_add</add-child-function>
+	  <remove-child-function>gtk_container_remove</remove-child-function> 
+	</child>
+      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
+      <children>
+        <!-- This will unset any custom handler defined in the plugin for _add() -->
+	<child>
+	  <type>GtkWidget</type>
+	  <add-child-function>gtk_container_add</add-child-function>
+	  <remove-child-function>gtk_container_remove</remove-child-function> 
+	</child>
+      </children>
     </glade-widget-class>
     
     <glade-widget-class name="GtkDrawingArea" generic-name="drawingarea" _title="Drawing Area"/>
