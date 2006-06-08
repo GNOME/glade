@@ -19,6 +19,8 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
+#define glade_widget_get_from_gobject(w) g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
+
 typedef struct _GladeWidgetKlass  GladeWidgetKlass;
 
 struct _GladeWidget
@@ -101,67 +103,106 @@ struct _GladeWidgetKlass
 {
 	GObjectClass parent_class;
 
-	void   (*add_signal_handler)	(GladeWidget *widget,
-					 GladeSignal *signal_handler);
-	void   (*remove_signal_handler)	(GladeWidget *widget,
-					 GladeSignal *signal_handler);
-	void   (*change_signal_handler)	(GladeWidget *widget,
-					 GladeSignal *old_signal_handler,
-					 GladeSignal *new_signal_handler);
+	gboolean     (*add_child)               (GladeWidget *, GladeWidget *);
+	gboolean     (*remove_child)            (GladeWidget *, GladeWidget *);
+
+	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
+	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
+	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
+
+	gboolean     (*button_press_event)      (GtkWidget *, GdkEventButton *, GladeWidget *);
+	GladeWidget *(*retrieve_from_position)  (GtkWidget *, int, int);
+
 };
 
+/*******************************************************************************
+                                  General api
+ *******************************************************************************/
 LIBGLADEUI_API
 GType                   glade_widget_get_type		    (void);
 
 LIBGLADEUI_API
-GladeWidget *	        glade_widget_new			    (GladeWidget      *parent,
-								     GladeWidgetClass *klass,
-								     GladeProject     *project,
-								     gboolean          query);
+GladeWidget *	        glade_widget_new		    (GladeWidget      *parent,
+							     GladeWidgetClass *klass,
+							     GladeProject     *project,
+							     gboolean          query);
 LIBGLADEUI_API 
-GladeWidget *           glade_widget_new_for_internal_child  (GladeWidget      *parent,
-							      GObject          *internal_object,
-							      const gchar      *internal_name,
-							      const gchar      *parent_name,
-							      gboolean          anarchist,
-							      GladeCreateReason reason);
+GladeWidget *           glade_widget_new_for_internal_child (GladeWidget      *parent,
+							     GObject          *internal_object,
+							     const gchar      *internal_name,
+							     const gchar      *parent_name,
+							     gboolean          anarchist,
+							     GladeCreateReason reason);
 LIBGLADEUI_API
-void                    glade_widget_set_name		    (GladeWidget      *widget,
-							     const gchar      *name);
+void                    glade_widget_add_child              (GladeWidget      *parent,
+							     GladeWidget      *child);
 LIBGLADEUI_API
-void                    glade_widget_set_internal	    (GladeWidget      *widget,
-							     const gchar      *internal);
-LIBGLADEUI_API
-void                    glade_widget_set_object		    (GladeWidget      *gwidget,
+void                    glade_widget_remove_child           (GladeWidget      *parent,
+							     GladeWidget      *child);
+LIBGLADEUI_API 
+GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
+							     GladeInterface   *interface);
+LIBGLADEUI_API 
+GladeWidget            *glade_widget_read                   (GladeProject     *project,
+							     GladeWidgetInfo  *info);
+LIBGLADEUI_API 
+void                    glade_widget_replace                (GladeWidget      *parent,
+							     GObject          *old_object,
 							     GObject          *new_object);
+LIBGLADEUI_API 
+void                    glade_widget_rebuild                (GladeWidget      *glade_widget);
+LIBGLADEUI_API 
+GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
+LIBGLADEUI_API 
+gboolean                glade_widget_is_dupping             (void);
+LIBGLADEUI_API 
+void                    glade_widget_copy_properties        (GladeWidget      *widget,
+							     GladeWidget      *template);
 LIBGLADEUI_API
-void                    glade_widget_set_project	    (GladeWidget      *widget,
-							     GladeProject     *project);
+void                    glade_widget_set_packing_properties (GladeWidget      *widget,
+							     GladeWidget      *container);
 LIBGLADEUI_API 
-const gchar            *glade_widget_get_name               (GladeWidget      *widget);
+GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
+							     const gchar      *id_property);
 LIBGLADEUI_API 
-const gchar            *glade_widget_get_internal           (GladeWidget      *widget);
-LIBGLADEUI_API 
-GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
-LIBGLADEUI_API 
-GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
-LIBGLADEUI_API 
-GObject                *glade_widget_get_object             (GladeWidget      *widget);
-
-LIBGLADEUI_API 
-void                    glade_widget_project_notify         (GladeWidget      *widget,
-							     GladeProject     *project);
-
+GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
+							     const gchar      *id_property);
 LIBGLADEUI_API 
 void                    glade_widget_show                   (GladeWidget      *widget);
 LIBGLADEUI_API 
 void                    glade_widget_hide                   (GladeWidget      *widget);
+LIBGLADEUI_API 
+void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
+							     GladeSignal      *signal_handler);
+LIBGLADEUI_API 
+void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
+							     GladeSignal      *signal_handler);
+LIBGLADEUI_API 
+void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
+							     GladeSignal      *old_signal_handler,
+							     GladeSignal      *new_signal_handler);
+LIBGLADEUI_API 
+GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
+							     const gchar      *signal_name);
 
 LIBGLADEUI_API 
-void                    glade_widget_copy_properties        (GladeWidget      *widget,
-							     GladeWidget      *template);
+gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
+LIBGLADEUI_API 
+void                    glade_widget_launch_editor          (GladeWidget      *widget);
 
+LIBGLADEUI_API 
+GladeWidget            *glade_widget_retrieve_from_position (GtkWidget *base, int x, int y);
 
+LIBGLADEUI_API 
+gboolean                glade_widget_has_decendant           (GladeWidget      *widget,
+							      GType             type);
+
+/*******************************************************************************
+                      Project, object property references
+ *******************************************************************************/
+LIBGLADEUI_API 
+void                    glade_widget_project_notify         (GladeWidget      *widget,
+							     GladeProject     *project);
 LIBGLADEUI_API 
 void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
 							     GladeProperty    *property);
@@ -169,14 +210,9 @@ LIBGLADEUI_API
 void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
 							     GladeProperty    *property);
 
-LIBGLADEUI_API 
-GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
-							     const gchar      *id_property);
-LIBGLADEUI_API 
-GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
-							     const gchar      *id_property);
-
-/* Convenience functions for plugin & application use */
+/*******************************************************************************
+                   GladeProperty api convenience wrappers
+ *******************************************************************************/
 LIBGLADEUI_API 
 gboolean                glade_widget_property_get           (GladeWidget      *widget,
 							     const gchar      *id_property,
@@ -224,67 +260,36 @@ gboolean                glade_widget_pack_property_set_enabled (GladeWidget     
 								const gchar      *id_property,
 								gboolean          enabled);
 
-
+/*******************************************************************************
+                                  Accessors
+ *******************************************************************************/
+LIBGLADEUI_API
+void                    glade_widget_set_name		    (GladeWidget      *widget,
+							     const gchar      *name);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_retrieve_from_position (GtkWidget *base, int x, int y);
-
+G_CONST_RETURN gchar   *glade_widget_get_name               (GladeWidget      *widget);
+LIBGLADEUI_API
+void                    glade_widget_set_internal	    (GladeWidget      *widget,
+							     const gchar      *internal);
 LIBGLADEUI_API 
-gboolean                glade_widget_has_decendant           (GladeWidget      *widget,
-							      GType             type);
-
-LIBGLADEUI_API 
-void                    glade_widget_replace                (GladeWidget      *parent,
-							     GObject          *old_object,
+G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
+LIBGLADEUI_API
+void                    glade_widget_set_object		    (GladeWidget      *gwidget,
 							     GObject          *new_object);
 LIBGLADEUI_API 
-void                    glade_widget_rebuild                (GladeWidget      *glade_widget);
+GObject                *glade_widget_get_object             (GladeWidget      *widget);
+LIBGLADEUI_API
+void                    glade_widget_set_project	    (GladeWidget      *widget,
+							     GladeProject     *project);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
-
-/* widget signals */
+GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API 
-void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
-LIBGLADEUI_API 
-void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
-LIBGLADEUI_API 
-void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
-							     GladeSignal      *old_signal_handler,
-							     GladeSignal      *new_signal_handler);
-/* array of GladeSignal* */
-LIBGLADEUI_API 
-GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
-							     const gchar      *signal_name);
-/* serialization */
-LIBGLADEUI_API 
-GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
-							     GladeInterface   *interface);
-LIBGLADEUI_API 
-GladeWidget            *glade_widget_read                   (GladeProject     *project,
-							     GladeWidgetInfo  *info);
-
-LIBGLADEUI_API 
-gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
-LIBGLADEUI_API 
-void                    glade_widget_launch_editor          (GladeWidget      *widget);
-
-/* helper functions */
-#define			glade_widget_get_from_gobject(w)  \
-    g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
-
+GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
 LIBGLADEUI_API 
 void                    glade_widget_set_parent             (GladeWidget      *widget,
 							     GladeWidget      *parent);
-
-LIBGLADEUI_API
-void                    glade_widget_set_packing_properties (GladeWidget      *widget,
-							     GladeWidget      *container);
-
-LIBGLADEUI_API 
-gboolean                glade_widget_is_dupping             (void);
 
 G_END_DECLS
 

@@ -9,6 +9,16 @@
 
 	* src/glade-command.c: Slight simplifications made.
 
+	* src/glade-fixed-manager.c: Temporary evil externing untill GladeWidget
+	  migration is complete.
+
+	* src/glade-widget.[ch]: Completely reworked file structure and changed
+	  a few things:
+	  o button_press_event() vfunc now available to be called on mouse clicks
+	    of the said widget.
+	  o added container api abstraction provided by fixed manager and reffitted
+	    for my anticipated integration
+	
 2006-06-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: fixed double free in glade_command_add_signal_finalize()

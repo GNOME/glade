@@ -540,6 +540,11 @@ gfm_handle_child_event (GladeFixedManager  *manager,
 	return handled;
 }
 
+/* XXX soon use GLADE_WIDGET_GET_KLASS (gwidget)->retrieve_from_position */
+extern GladeWidget *
+glade_widget_retrieve_from_position_impl (GtkWidget *base, int x, int y);
+
+
 /* Handle button-press-event, enter/leave-notify-event, 
  * motion-notify-event
  */
@@ -558,7 +563,8 @@ glade_fixed_manager_event (GtkWidget         *widget,
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
 	gfm_widget = glade_widget_get_from_gobject (widget);
 	gdk_event_get_coords (event, &x, &y);
-	gwidget    = glade_widget_retrieve_from_position
+	gwidget    =
+		glade_widget_retrieve_from_position_impl
 		(widget, (int) (x + 0.5), (int) (y + 0.5));
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
