@@ -227,7 +227,6 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 {
 	GladeWidget    *gwidget = GLADE_WIDGET (fixed);
 	GdkRectangle    new_area;
-	GtkSizeRequest  requisition;
 	gboolean        handled, right, left, top, bottom;
 	gint            x, y;
 
