@@ -31,6 +31,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
+#include "glade-fixed.h"
 
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
 static void glade_placeholder_init           (GladePlaceholder        *placeholder);
@@ -182,7 +183,8 @@ glade_placeholder_realize (GtkWidget *widget)
 	attributes.event_mask = gtk_widget_get_events (widget) |
 				GDK_EXPOSURE_MASK              |
 				GDK_BUTTON_PRESS_MASK          |
-				GDK_POINTER_MOTION_MASK;
+		                GDK_BUTTON_RELEASE_MASK        |
+		                GDK_POINTER_MOTION_MASK;
 
 	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
@@ -292,9 +294,10 @@ static gboolean
 glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
 	GladePlaceholder *placeholder;
-	GladeProject *project;
+	GladeProject     *project;
 	GladeWidgetClass *add_class, *alt_class;
-	GladePalette *palette;
+	GladePalette     *palette;
+	gboolean          handled = FALSE;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
@@ -315,6 +318,8 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 				glade_util_remove_selection (widget);
 			else
 				glade_util_add_selection (widget);
+
+			handled = TRUE;
 		} 
 		else if ((add_class != NULL)        ||
 			 ((event->state & GDK_SHIFT_MASK) &&
@@ -330,23 +335,45 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 			/* reset the palette */
 			glade_palette_unselect_widget (palette);
+
+			handled = TRUE;
 		}
 		else if (glade_util_has_selection (widget) == FALSE ||
 			 g_list_length (glade_util_get_selection ()) != 1)
 		{
-			glade_project_selection_clear 
-				(glade_app_get_project (),
-				 TRUE);
-			glade_util_clear_selection ();
-			glade_util_add_selection (widget);
+			GladeWidget *gwidget;
+			GladeWidget *parent;
+
+			if ((gwidget = glade_widget_get_from_gobject (widget)) != NULL)
+				parent = gwidget->parent;
+			else
+				parent = glade_placeholder_get_parent (widget);
+
+			while (parent && GLADE_IS_FIXED (parent) == FALSE)
+				parent = parent->parent;
+				
+			/* Dont select placeholders that are deep children
+			 * of GladeFixed containers.
+			 */
+			if (parent == NULL)
+			{
+				glade_project_selection_clear 
+					(glade_app_get_project (),
+					 TRUE);
+				glade_util_clear_selection ();
+				glade_util_add_selection (widget);
+				
+				handled = TRUE;
+			}
 		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
 	{
 		glade_popup_placeholder_pop (placeholder, event);
+		handled = TRUE;
 	}
 
-	return TRUE;
+	return handled;
 }
 
 static gboolean

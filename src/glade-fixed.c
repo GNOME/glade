@@ -227,6 +227,7 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 {
 	GladeWidget    *gwidget = GLADE_WIDGET (fixed);
 	GdkRectangle    new_area;
+	GtkSizeRequest  requisition;
 	gboolean        handled, right, left, top, bottom;
 	gint            x, y;
 
@@ -456,12 +457,8 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		if (fixed->configuring == NULL)
 		{
 			/* GTK_NO_WINDOW widgets still have a pointer to the parent window */
-			if (glade_project_is_selected (child->project,
-						       child->object))
-			{
-				glade_cursor_set (((GdkEventAny *)event)->window, 
-						  operation);
-			}
+			glade_cursor_set (((GdkEventAny *)event)->window, 
+					  operation);
 		} else if (event->type == GDK_MOTION_NOTIFY) 
 		{
 			glade_fixed_configure_widget (fixed, child);
@@ -573,6 +570,8 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 		rect.x      = fixed->mouse_x;
 		rect.y      = fixed->mouse_y;
 
+		g_print ("Adding at mouse !\n");
+
 		glade_widget_property_get (child, fixed->width_prop, &rect.width);
 		glade_widget_property_get (child, fixed->height_prop, &rect.height);
 
@@ -624,26 +623,31 @@ glade_fixed_event (GtkWidget   *widget,
 {
 	GladeFixed       *fixed = GLADE_FIXED (gwidget_fixed);
 	GladeWidgetClass *add_class, *alt_class;
+	GtkWidget        *event_widget;
 	gboolean          handled = FALSE;
-	GladeWidget      *glade_fixed_widget;
-	GladeWidget      *gwidget, *search;
+	GladeWidget      *glade_fixed_widget, *gwidget, *search;
 	gdouble           x, y;
 
 	add_class = glade_app_get_add_class ();
 	alt_class = glade_app_get_alt_class ();
 
-	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
-	{
-		if (add_class == NULL)
-			return TRUE;
-	}
-
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
+
+	/* Currently ignoring the return value and acting... even if 
+	 * this was a selection click
+	 */
+	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
+		return TRUE;
+
+	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
+
+	g_assert (GTK_IS_WIDGET (event_widget));
+
 	glade_fixed_widget = glade_widget_get_from_gobject (widget);
 	gdk_event_get_coords (event, &x, &y);
 	gwidget    =
 		GLADE_WIDGET_GET_KLASS (fixed)->retrieve_from_position
-		(widget, (int) (x + 0.5), (int) (y + 0.5));
+		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
 	g_return_val_if_fail (GLADE_IS_WIDGET (glade_fixed_widget), FALSE);
@@ -651,7 +655,6 @@ glade_fixed_event (GtkWidget   *widget,
 	/* make sure to grab focus, since we may stop default handlers */
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
-
 
 	switch (event->type)
 	{
@@ -661,28 +664,30 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_MOTION_NOTIFY:
 	case GDK_BUTTON_RELEASE:
 
+		/* Get the gwidget that is a direct child of 'fixed' */
+		for (search = gwidget; 
+		     search && search->parent != GLADE_WIDGET (fixed);
+		     search = search->parent);
+
+		if (glade_fixed_widget == gwidget) 
+		{
+			fixed->mouse_x = ((GdkEventButton *)event)->x;
+			fixed->mouse_y = ((GdkEventButton *)event)->y;
+		}
+	
 		if (fixed->configuring)
 		{
 			return glade_fixed_handle_child_event (fixed, fixed->configuring, event);
 		} 
 		else if (glade_fixed_widget != gwidget)
 		{
-
-			/* Get the gwidget that is a direct child of 'fixed' */
-			for (search = gwidget; 
-			     search && search->parent != GLADE_WIDGET (fixed);
-			     search = search->parent);
-
 			if (search)
-				return glade_fixed_handle_child_event (fixed, gwidget, event);
+				return glade_fixed_handle_child_event (fixed, search, event);
 		}
 		break;
 	default:
 		break;
 	}
-
-	if (glade_fixed_widget != gwidget)
-		return FALSE;
 
 	switch (event->type)
 	{
@@ -864,28 +869,28 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 		 g_param_spec_string 
 		 ("x_prop", _("X position property"),
 		  _("The property used to set the X position of a child object"),
-		  "x", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+		  "x", G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	g_object_class_install_property 
 		(gobject_class, PROP_Y_PROP,
 		 g_param_spec_string 
 		 ("y_prop", _("Y position property"),
 		  _("The property used to set the Y position of a child object"),
-		  "y", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+		  "y", G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	g_object_class_install_property 
 		(gobject_class, PROP_WIDTH_PROP,
 		 g_param_spec_string 
 		 ("width_prop", _("Width property"),
 		  _("The property used to set the width of a child object"),
-		  "width-request", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+		  "width-request", G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	g_object_class_install_property 
 		(gobject_class, PROP_HEIGHT_PROP,
 		 g_param_spec_string 
 		 ("height_prop", _("Height property"),
 		  _("The property used to set the height of a child object"),
-		  "height-request", G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+		  "height-request", G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	/**
 	 * GladeFixed::configure-child:

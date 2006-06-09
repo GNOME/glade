@@ -1,5 +1,16 @@
 2006-06-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-fixed.c: 
+	  o Fixed "paste at mouse position"
+	  o Fixed cursors a bit... event handling a bit too
+
+	* src/glade-placeholder.c: Special case fixed stuff for now,
+	  so that drag/resize works at least from deep placeholders.
+
+	* src/glade-widget.c: Touched the event handling code.
+
+2006-06-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* src/Makefile.am, po/POTFILES.in: Made changes for changed files.
 
 	* src/glade-fixed.[ch]: The new GladeWidget derived free form placement

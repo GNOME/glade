@@ -274,23 +274,25 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
  * for its parent, this function takes the event and the widget that got the 
  * event and returns the real #GladeWidget that was clicked
  *
- * XXX Make this static
  */
-GladeWidget *
+static GladeWidget *
 glade_widget_retrieve_from_position_impl (GtkWidget *base, int x, int y)
 {
-	GtkWidget *toplevel_widget;
-	gint top_x;
-	gint top_y;
+	GladeWidget *lookup;
+	GtkWidget   *widget;
+	gint         top_x;
+	gint         top_y;
 	
-	toplevel_widget = gtk_widget_get_toplevel (base);
-	if (!GTK_WIDGET_TOPLEVEL (toplevel_widget))
+	widget = gtk_widget_get_toplevel (base);
+	if (!GTK_WIDGET_TOPLEVEL (widget))
 		return NULL;
 
-	gtk_widget_translate_coordinates (base, toplevel_widget, x, y, &top_x, &top_y);
-	return glade_widget_find_deepest_child_at_position
-		(GTK_CONTAINER (toplevel_widget),
-		 GTK_CONTAINER (toplevel_widget), top_x, top_y);
+	gtk_widget_translate_coordinates (base, widget, x, y, &top_x, &top_y);
+
+	lookup = glade_widget_find_deepest_child_at_position
+		(GTK_CONTAINER (widget), GTK_CONTAINER (widget), top_x, top_y);
+
+	return lookup;
 }
 
 static gboolean
@@ -1421,10 +1423,6 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk,
 {
 	GList *children, *list;
 
-	/* Don't connect handlers for placeholders. */
-	if (GLADE_IS_PLACEHOLDER (widget_gtk))
-		return;
-	
 	/* Check if we've already connected an event handler. */
 	if (!g_object_get_data (G_OBJECT (widget_gtk),
 				GLADE_TAG_EVENT_HANDLER_CONNECTED)) 
