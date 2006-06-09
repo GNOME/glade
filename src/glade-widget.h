@@ -8,7 +8,6 @@
 #include "glade-widget-class.h"
 #include "glade-signal.h"
 #include "glade-property.h"
-#include "glade-fixed-manager.h"
 
 G_BEGIN_DECLS
  
@@ -70,17 +69,9 @@ struct _GladeWidget
 				    * See also child_properties of 
 				    * GladeWidgetClass.
 				    */
-
-	gboolean   query_user; /* Whether the user should be prompted for some initial
-				* values with a dialog popup upon creation.
-				*/
 	
 	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
 			      * indexed by its name */
-
-	GladeFixedManager *manager; /* If this is a GtkContainer with a fixed coordinate system,
-				     * this is the add/remove/create management code.
-				     */
 
 	gboolean   visible; /* Local copy of widget visibility, we need to keep track of this
 			     * since the objects copy may be invalid due to a rebuild.
@@ -97,20 +88,29 @@ struct _GladeWidget
 	gint      save_x;
 	gint      save_y;
 	gboolean  pos_saved;
+
+
+	/* Construct parameters: */
+	GladeWidget       *construct_template;
+	GladeWidgetInfo   *construct_info;
+	GladeCreateReason  construct_reason;
+	gchar             *construct_internal;
 };
 
 struct _GladeWidgetKlass
 {
 	GObjectClass parent_class;
 
-	gboolean     (*add_child)               (GladeWidget *, GladeWidget *);
-	gboolean     (*remove_child)            (GladeWidget *, GladeWidget *);
+	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
+	void         (*remove_child)            (GladeWidget *, GladeWidget *);
 
 	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
 
-	gboolean     (*button_press_event)      (GtkWidget *, GdkEventButton *, GladeWidget *);
+	void         (*setup_events)            (GladeWidget *, GtkWidget *);
+	gboolean     (*event)                   (GtkWidget *, GdkEvent *, GladeWidget *);
+
 	GladeWidget *(*retrieve_from_position)  (GtkWidget *, int, int);
 
 };
@@ -120,22 +120,10 @@ struct _GladeWidgetKlass
  *******************************************************************************/
 LIBGLADEUI_API
 GType                   glade_widget_get_type		    (void);
-
-LIBGLADEUI_API
-GladeWidget *	        glade_widget_new		    (GladeWidget      *parent,
-							     GladeWidgetClass *klass,
-							     GladeProject     *project,
-							     gboolean          query);
-LIBGLADEUI_API 
-GladeWidget *           glade_widget_new_for_internal_child (GladeWidget      *parent,
-							     GObject          *internal_object,
-							     const gchar      *internal_name,
-							     const gchar      *parent_name,
-							     gboolean          anarchist,
-							     GladeCreateReason reason);
 LIBGLADEUI_API
 void                    glade_widget_add_child              (GladeWidget      *parent,
-							     GladeWidget      *child);
+							     GladeWidget      *child,
+							     gboolean          at_mouse);
 LIBGLADEUI_API
 void                    glade_widget_remove_child           (GladeWidget      *parent,
 							     GladeWidget      *child);
@@ -152,7 +140,7 @@ void                    glade_widget_replace                (GladeWidget      *p
 LIBGLADEUI_API 
 void                    glade_widget_rebuild                (GladeWidget      *glade_widget);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_dup                    (GladeWidget      *widget);
+GladeWidget            *glade_widget_dup                    (GladeWidget      *template);
 LIBGLADEUI_API 
 gboolean                glade_widget_is_dupping             (void);
 LIBGLADEUI_API 
@@ -189,9 +177,6 @@ LIBGLADEUI_API
 gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
 LIBGLADEUI_API 
 void                    glade_widget_launch_editor          (GladeWidget      *widget);
-
-LIBGLADEUI_API 
-GladeWidget            *glade_widget_retrieve_from_position (GtkWidget *base, int x, int y);
 
 LIBGLADEUI_API 
 gboolean                glade_widget_has_decendant           (GladeWidget      *widget,

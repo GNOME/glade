@@ -29,6 +29,7 @@ classes; it also provides an abstraction later to container apis.
 @catalog: 
 @book: 
 @icon: 
+@fixed: 
 @generic_name: 
 @palette_name: 
 @properties: 
@@ -39,6 +40,15 @@ classes; it also provides an abstraction later to container apis.
 @post_create_function: 
 @get_internal_child: 
 @launch_editor: 
+
+<!-- ##### STRUCT GladeSignalClass ##### -->
+<para>
+
+</para>
+
+@query: 
+@name: 
+@type: 
 
 <!-- ##### ENUM GladeCreateReason ##### -->
 <para>
@@ -173,6 +183,58 @@ classes; it also provides an abstraction later to container apis.
 </para>
 
 @type: 
+@Returns: 
+
+
+<!-- ##### MACRO glade_widget_class_from_pclass ##### -->
+<para>
+
+</para>
+
+@pclass: 
+
+
+<!-- ##### MACRO glade_widget_class_create_widget ##### -->
+<para>
+
+</para>
+
+@class: 
+@query: 
+@...: 
+
+
+<!-- ##### FUNCTION glade_widget_class_create_internal ##### -->
+<para>
+
+</para>
+
+@parent: 
+@internal_object: 
+@internal_name: 
+@parent_name: 
+@anarchist: 
+@reason: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_class_default_params ##### -->
+<para>
+
+</para>
+
+@class: 
+@construct: 
+@n_params: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_class_query ##### -->
+<para>
+
+</para>
+
+@class: 
 @Returns: 
 
 

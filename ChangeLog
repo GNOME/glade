@@ -1,3 +1,42 @@
+2006-06-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am, po/POTFILES.in: Made changes for changed files.
+
+	* src/glade-fixed.[ch]: The new GladeWidget derived free form placement
+	  support object.
+
+	* src/glade-fixed-manager.[ch]: Removed.
+
+	* doc/catalogintro.sgml: made mention of new 'fixed' property on
+	  'glade-widget-class' tag
+
+	* doc/gladeui-sections.txt, doc/Makefile.am, 
+	  doc/tmpl/*, doc/gladeui.types: Updated for file changes.
+
+	* src/glade-app.c, src/glade-command.c, src/glade-gnome.c, src/glade.h: 
+	  Changed for new apis in glade-widget and glade-fixed.
+	
+	* src/glade-gtk.c:
+	  o Changed for new apis in glade-widget and glade-fixed.
+	  o Restructured, now *all* class supports are listed class
+	    by class
+
+	* src/glade-property-class.h: Fixed docs.
+
+	* src/glade-widget-class.[ch]:
+	  o Added glade_widget_class_query ()
+	  o Added glade_widget_class_create_widget ()
+	  o Added glade_widget_class_create_internal ()
+
+	* src/glade-widget.[ch]: API is stablizing now... lots of cleanup done, 
+	  added construct properties used in the constructor to create properties and
+	  runtime instances.
+
+	* widgets/gtk+.xml.in: 
+	  o Toolbars expand=False by default in GtkVBoxes
+	  o GtkPaned now works a little stabler
+	  o GtkFixed/GtkLayout marked 'fixed'.
+	
 2006-06-07  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml.in: 

@@ -80,9 +80,9 @@ libgladeui_1_la_SOURCES = \
 	glade-accumulators.c \
 	glade-parser.c \
 	glade-builtins.c \
-	glade-fixed-manager.c \
 	glade-app.c \
-	glade-keysyms.c
+	glade-keysyms.c \
+	glade-fixed.c
 
 libgladeui_1_la_CFLAGS =    \
 	-DINSIDE_LIBGLADEUI \
@@ -126,7 +126,7 @@ libgladeuiinclude_HEADERS = \
 	glade-parser.h \
 	glade-app.h \
 	glade-builtins.h \
-	glade-fixed-manager.h \
+	glade-fixed.h \
 	fixed_bg.xpm \
 	atk.xpm
 

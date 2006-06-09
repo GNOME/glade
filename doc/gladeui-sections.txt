@@ -18,6 +18,7 @@ glade_app_set_project
 glade_app_get_project
 glade_app_add_project
 glade_app_remove_project
+glade_app_get_project_by_path
 glade_app_get_projects
 glade_app_get_config
 glade_app_is_project_loaded
@@ -181,23 +182,18 @@ GladeEditorTable
 </SECTION>
 
 <SECTION>
-<FILE>glade-fixed-manager</FILE>
-<TITLE>GladeFixedManager</TITLE>
-GladeFixedManager
-glade_fixed_manager_new
-glade_fixed_manager_create_child
-glade_fixed_manager_add_child
-glade_fixed_manager_remove_child
-glade_fixed_manager_post_mouse
+<FILE>glade-fixed</FILE>
+<TITLE>GladeFixed</TITLE>
+GladeFixed
 <SUBSECTION Standard>
-GLADE_FIXED_MANAGER
-GLADE_IS_FIXED_MANAGER
-GLADE_TYPE_FIXED_MANAGER
-glade_fixed_manager_get_type
-GLADE_FIXED_MANAGER_CLASS
-GLADE_IS_FIXED_MANAGER_CLASS
-GLADE_FIXED_MANAGER_GET_CLASS
-GladeFixedManagerClass
+glade_fixed_get_type
+GLADE_TYPE_FIXED
+GLADE_FIXED_GET_CLASS
+GLADE_IS_FIXED
+GLADE_IS_FIXED_CLASS
+GLADE_FIXED_CLASS
+GLADE_FIXED
+GladeFixedClass
 </SECTION>
 
 <SECTION>
@@ -302,7 +298,7 @@ GladeProjectClass
 <FILE>glade-property-class</FILE>
 <TITLE>GladePropertyClass</TITLE>
 GladePropertyClass
-GPCAtkType
+GPCType
 GladeVerifyPropertyFunc
 GladeGetPropertyFunc
 GladeSetPropertyFunc
@@ -325,6 +321,7 @@ glade_property_class_match
 glade_property_class_void_value
 glade_property_class_atk_realname
 glade_property_class_list_atk_relations
+glade_property_class_accel_property
 <SUBSECTION Private>
 GPC_PROPERTY_NAMELEN
 <SUBSECTION Standard>
@@ -407,6 +404,7 @@ GLADE_IS_SIGNAL
 <FILE>glade-widget-class</FILE>
 <TITLE>GladeWidgetClass</TITLE>
 GladeWidgetClass
+GladeSignalClass
 GladeCreateReason
 GladePostCreateFunc
 GladeChildSetPropertyFunc
@@ -421,6 +419,11 @@ glade_widget_class_new
 glade_widget_class_free
 glade_widget_class_get_by_name
 glade_widget_class_get_by_type
+glade_widget_class_from_pclass
+glade_widget_class_create_widget
+glade_widget_class_create_internal
+glade_widget_class_default_params
+glade_widget_class_query
 glade_widget_class_get_derived_types
 glade_widget_class_dump_param_specs
 glade_widget_class_get_property_class
@@ -439,18 +442,18 @@ glade_widget_class_get_type
 GLADE_WIDGET_CLASS
 GLADE_IS_WIDGET_CLASS
 <SUBSECTION Private>
+glade_widget_class_create_widget_real
 GPC_OBJECT_DELIMITER
 GLADE_VALID_CREATE_REASON
 GladeSupportedChild
-GladeWidgetClassSignal
 </SECTION>
 
 <SECTION>
 <FILE>glade-widget</FILE>
 <TITLE>GladeWidget</TITLE>
 GladeWidget
-glade_widget_new
-glade_widget_new_for_internal_child
+glade_widget_add_child
+glade_widget_remove_child
 glade_widget_set_name
 glade_widget_set_internal
 glade_widget_set_object
@@ -481,7 +484,6 @@ glade_widget_property_set_sensitive
 glade_widget_pack_property_set_sensitive
 glade_widget_property_set_enabled
 glade_widget_pack_property_set_enabled
-glade_widget_retrieve_from_position
 glade_widget_has_decendant
 glade_widget_replace
 glade_widget_rebuild
@@ -584,10 +586,8 @@ glade_util_copy_file
 glade_util_file_is_writeable
 glade_util_load_library
 glade_util_class_implements_interface
-glade_util_load_devhelp
 glade_util_have_devhelp
 glade_util_search_devhelp
-glade_util_get_devhelp_hbuttons
 </SECTION>
 
 

@@ -125,10 +125,6 @@
       </children>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkPaned" _title="Paned">
-      <post-create-function>glade_gtk_paned_post_create</post-create-function>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkWindow" generic-name="window" _title="Window">
       <post-create-function>glade_gtk_window_post_create</post-create-function>
 
@@ -343,6 +339,12 @@
           </properties>
 	</child>
       </children>
+
+      <packing-defaults>
+	<parent-class name="GtkVBox">
+	  <child-property id="expand" default="false"/>
+	</parent-class>
+      </packing-defaults>
     </glade-widget-class>
     
     <glade-widget-class name="GtkToolItem" generic-name="toolitem" title="GtkToolItem">
@@ -798,6 +800,17 @@
       </children>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkPaned" _title="Paned">
+      <post-create-function>glade_gtk_paned_post_create</post-create-function>
+      <children>
+	<child>
+	  <type>GtkWidget</type>
+	  <add-child-function>glade_gtk_paned_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_paned_remove_child</remove-child-function>
+	</child>
+      </children>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkHPaned" generic-name="hpaned" _title="Horizontal Panes"/>
 
     <glade-widget-class name="GtkVPaned" generic-name="vpaned" _title="Vertical Panes"/>
@@ -983,7 +996,7 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout">
+    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" fixed="True">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <properties>
         <property id="hadjustment" disabled="True"/>
@@ -999,7 +1012,7 @@
       </children>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed">
+    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" fixed="True">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <children>
         <!-- This will unset any custom handler defined in the plugin for _add() -->

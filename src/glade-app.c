@@ -48,6 +48,7 @@
 #include "glade-catalog.h"
 #include "glade-app.h"
 #include "glade-paths.h"
+#include "glade-fixed.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
@@ -1178,9 +1179,10 @@ glade_app_command_paste (void)
 
 	g_assert (widget);
 
-	/* Check that GladeFixedManager will cope */
+	/* Check that GladeFixed will cope...
+ 	 */
 	if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
-	    parent && parent->manager != NULL &&
+	    parent && GLADE_IS_FIXED (parent) &&
 	    gtkcontainer_relations != 1) 
 	{
 		glade_util_ui_message (glade_app_get_window (), 
@@ -1191,7 +1193,7 @@ glade_app_command_paste (void)
 	}
 
 	/* Check that enough placeholders are available */
-	if (parent && parent->manager == NULL &&
+	if (parent && GLADE_IS_FIXED (parent) == FALSE &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
 	{
 		glade_util_ui_message (glade_app_get_window (), 

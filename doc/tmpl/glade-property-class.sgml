@@ -25,6 +25,8 @@ va_lists etc (back and forth).
 
 </para>
 
+@type: 
+@handle: 
 @pspec: 
 @id: 
 @name: 
@@ -40,7 +42,6 @@ va_lists etc (back and forth).
 @construct_only: 
 @common: 
 @packing: 
-@atk_type: 
 @translatable: 
 @visible_lines: 
 @save: 
@@ -52,15 +53,16 @@ va_lists etc (back and forth).
 @set_function: 
 @get_function: 
 
-<!-- ##### ENUM GPCAtkType ##### -->
+<!-- ##### ENUM GPCType ##### -->
 <para>
 
 </para>
 
-@GPC_ATK_NONE: 
+@GPC_NORMAL: 
 @GPC_ATK_PROPERTY: 
 @GPC_ATK_RELATION: 
 @GPC_ATK_ACTION: 
+@GPC_ACCEL_PROPERTY: 
 
 <!-- ##### USER_FUNCTION GladeVerifyPropertyFunc ##### -->
 <para>
@@ -95,6 +97,7 @@ va_lists etc (back and forth).
 
 </para>
 
+@handle: 
 @Returns: 
 
 
@@ -103,6 +106,7 @@ va_lists etc (back and forth).
 
 </para>
 
+@handle: 
 @spec: 
 @Returns: 
 
@@ -271,6 +275,17 @@ va_lists etc (back and forth).
 
 </para>
 
+@handle: 
+@owner_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_accel_property ##### -->
+<para>
+
+</para>
+
+@handle: 
 @owner_type: 
 @Returns: 
 

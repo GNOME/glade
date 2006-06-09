@@ -70,12 +70,12 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	project = glade_widget_get_project (gapp);
 	
 	/* Add BonoboDock */
-	gdock = glade_widget_new_for_internal_child (gapp,
-						     G_OBJECT (app->dock),
-						     "dock",
-						     glade_widget_get_name (gapp),
-						     FALSE,
-						     GLADE_CREATE_LOAD);
+	gdock = glade_widget_class_create_internal
+		(gapp, G_OBJECT (app->dock),
+		 "dock",
+		 glade_widget_get_name (gapp),
+		 FALSE,
+		 GLADE_CREATE_LOAD);
 	
 	if (reason != GLADE_CREATE_USER) return;
 	
@@ -87,7 +87,9 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	}
 
 	/* DockItem */
-	gdock_item = glade_widget_new (gdock, dock_item_class, project, FALSE);
+	gdock_item = glade_widget_class_create_widget (dock_item_class, FALSE,
+						       "parent", gdock, 
+						       "project", project, NULL);
 	glade_widget_class_container_add (glade_widget_get_class (gdock),
 					  glade_widget_get_object (gdock),
 					  glade_widget_get_object (gdock_item));
@@ -97,7 +99,10 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 					BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL |
 					BONOBO_DOCK_ITEM_BEH_LOCKED);
 	/* MenuBar */
-	gmenubar = glade_widget_new (gdock_item, menubar_class, project, FALSE);
+	gmenubar = glade_widget_class_create_widget (menubar_class, FALSE,
+						     "parent", gdock_item, 
+						     "project", project, NULL);
+
 	glade_widget_class_container_add (glade_widget_get_class (gdock_item),
 					  glade_widget_get_object (gdock_item),
 					  glade_widget_get_object (gmenubar));
@@ -214,10 +219,10 @@ glade_gnome_app_set_has_statusbar (GObject *object, GValue *value)
 
 			gnome_app_set_statusbar (app, bar);
 			
-			gbar = glade_widget_new_for_internal_child (gapp,
-						G_OBJECT (bar), "appbar",
-						glade_widget_get_name (gapp),
-						FALSE, GLADE_CREATE_USER);
+			gbar = glade_widget_class_create_internal
+				(gapp, G_OBJECT (bar), "appbar",
+				 glade_widget_get_name (gapp),
+				 FALSE, GLADE_CREATE_USER);
 
 			glade_widget_set_parent (gbar, gapp);
 			glade_widget_pack_property_set (gbar, "expand", FALSE);
@@ -264,10 +269,10 @@ glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
 		dpe_class = glade_widget_class_get_by_type (GNOME_TYPE_DRUID_PAGE_EDGE);
 	}
 	
-	gpage = glade_widget_new (gdruid,
-				  (edge) ? dpe_class : dps_class,
-				  project,
-				  FALSE);
+	gpage = glade_widget_class_create_widget (edge ? dpe_class : dps_class, FALSE,
+						  "parent", gdruid, 
+						  "project", project, NULL);
+
 	glade_widget_class_container_add (glade_widget_get_class (gdruid),
 					  glade_widget_get_object (gdruid),
 					  glade_widget_get_object (gpage));
@@ -477,9 +482,9 @@ glade_gnome_dps_post_create (GObject *object, GladeCreateReason reason)
 	
 	gpage = glade_widget_get_from_gobject (object);
 	vbox = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
-	gvbox = glade_widget_new_for_internal_child (gpage, vbox, "vbox",
-						     glade_widget_get_name (gpage),
-						     FALSE, GLADE_CREATE_LOAD);
+	gvbox = glade_widget_class_create_internal (gpage, vbox, "vbox",
+						    glade_widget_get_name (gpage),
+						    FALSE, GLADE_CREATE_LOAD);
 	
 	if (reason == GLADE_CREATE_USER)
 		glade_widget_property_set (gvbox, "size", 1);
@@ -799,7 +804,9 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 	if (button_class == NULL)
 		button_class = glade_widget_class_get_by_type (GTK_TYPE_BUTTON);
 		
-	gbutton = glade_widget_new (gaction_area, button_class, project, FALSE);
+	gbutton = glade_widget_class_create_widget (button_class, FALSE,
+						    "parent", gaction_area, 
+						    "project", project, FALSE);
 	
 	eclass = g_type_class_ref (glade_standard_stock_get_type ());
 	if ((eval = g_enum_get_value_by_nick (eclass, stock)) != NULL)
@@ -831,20 +838,20 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 	{
 		GnomePropertyBox *pbox = GNOME_PROPERTY_BOX (object);
 		
-		gaction_area = glade_widget_new_for_internal_child (gdialog,
-						G_OBJECT (pbox->notebook), "notebook",
-						glade_widget_get_name (gdialog),
-						FALSE, GLADE_CREATE_LOAD);
+		gaction_area = glade_widget_class_create_internal
+			(gdialog, G_OBJECT (pbox->notebook), "notebook",
+			 glade_widget_get_name (gdialog),
+			 FALSE, GLADE_CREATE_LOAD);
 		if (reason == GLADE_CREATE_USER)
 			glade_widget_property_set (gaction_area, "pages", 3);
 		return;
 	}
 	
 	/* vbox internal child */
-	gvbox = glade_widget_new_for_internal_child (gdialog,
-						G_OBJECT (dialog->vbox), "vbox",
-						glade_widget_get_name (gdialog),
-						FALSE, GLADE_CREATE_LOAD);
+	gvbox = glade_widget_class_create_internal
+		(gdialog, G_OBJECT (dialog->vbox), "vbox",
+		 glade_widget_get_name (gdialog),
+		 FALSE, GLADE_CREATE_LOAD);
 	
 	glade_widget_property_set (gvbox, "size", 0);
 	
@@ -864,11 +871,12 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 	gtk_widget_show (separator);
 			
 	/* action area internal child */
-	gaction_area = glade_widget_new_for_internal_child (gvbox,
-						G_OBJECT (dialog->action_area),
-						"action_area",
-						glade_widget_get_name (gvbox),
-						FALSE, GLADE_CREATE_LOAD);
+	gaction_area = 
+		glade_widget_class_create_internal (gvbox,
+						    G_OBJECT (dialog->action_area),
+						    "action_area",
+						    glade_widget_get_name (gvbox),
+						    FALSE, GLADE_CREATE_LOAD);
 	
 	glade_widget_property_set (gaction_area, "size", 0);
 	
@@ -1111,10 +1119,10 @@ glade_gnome_entry_post_create (GObject *object, GladeCreateReason reason)
 	glade_gnome_entry_get_internal_child (object, "entry", &child);
 	
 	gentry = glade_widget_get_from_gobject (object);
-	glade_widget_new_for_internal_child (gentry,
-					     child, "entry",
-					     glade_widget_get_name (gentry),
-					     FALSE, reason);
+	glade_widget_class_create_internal (gentry,
+					    child, "entry",
+					    glade_widget_get_name (gentry),
+					    FALSE, reason);
 }
 
 GList * GLADEGNOME_API

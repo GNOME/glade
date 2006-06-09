@@ -82,6 +82,7 @@ require it and to manage inter catalog dependancies.
           </para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
         <term>library</term>
         <listitem>
@@ -91,6 +92,7 @@ be dlopen'd from <literal>$prefix/lib/glade-3/modules/</literal>
           </para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
         <term>depends</term>
         <listitem>
@@ -103,6 +105,7 @@ declare: 'depends="gtk+"' for your plugin.
           </para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
         <term>domain</term>
         <listitem>
@@ -122,6 +125,16 @@ the library property will be used in it's stead.
           <para>
 The 'book' property is used to specify a namespace to search devhelp docs library with
 (specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>fixed</term>
+        <listitem>
+          <para>
+The 'fixed' property used to mark a #GladeWidgetClass for free form placement capacitied
+to be handled with a #GladeFixed.
           </para>
         </listitem>
       </varlistentry>

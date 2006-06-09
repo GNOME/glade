@@ -60,7 +60,17 @@ convenience api for getting and setting properties (mostly from the plugin).
 
 </para>
 
+<!-- ##### ARG GladeWidget:info ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG GladeWidget:internal ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GladeWidget:internal-name ##### -->
 <para>
 
 </para>
@@ -90,32 +100,33 @@ convenience api for getting and setting properties (mostly from the plugin).
 
 </para>
 
-<!-- ##### FUNCTION glade_widget_new ##### -->
+<!-- ##### ARG GladeWidget:reason ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GladeWidget:template ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION glade_widget_add_child ##### -->
 <para>
 
 </para>
 
 @parent: 
-@klass: 
-@project: 
-@query: 
-@Returns: 
+@child: 
+@at_mouse: 
 
 
-<!-- ##### FUNCTION glade_widget_new_for_internal_child ##### -->
+<!-- ##### FUNCTION glade_widget_remove_child ##### -->
 <para>
 
 </para>
 
 @parent: 
-@internal_object: 
-@internal_name: 
-@parent_name: 
-@anarchist: 
-@reason: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@project: 
+@child: 
 
 
 <!-- ##### FUNCTION glade_widget_set_name ##### -->
@@ -410,17 +421,6 @@ convenience api for getting and setting properties (mostly from the plugin).
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_retrieve_from_position ##### -->
-<para>
-
-</para>
-
-@base: 
-@x: 
-@y: 
-@Returns: 
-
-
 <!-- ##### FUNCTION glade_widget_has_decendant ##### -->
 <para>
 
@@ -454,8 +454,10 @@ convenience api for getting and setting properties (mostly from the plugin).
 
 </para>
 
-@widget: 
+@template: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@widget: 
 
 
 <!-- ##### FUNCTION glade_widget_add_signal_handler ##### -->

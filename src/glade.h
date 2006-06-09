@@ -41,7 +41,6 @@ typedef struct _GladeProject      GladeProject;
 #include "glade-clipboard.h"
 #include "glade-project-view.h"
 #include "glade-placeholder.h"
-#include "glade-fixed-manager.h"
 #include "glade-utils.h"
 #include "glade-builtins.h"
 #include "glade-xml-utils.h"
@@ -133,6 +132,7 @@ typedef struct _GladeProject      GladeProject;
 #define GLADE_TAG_INIT_FUNCTION                   "init-function"
 #define GLADE_TAG_ATK_ACTION                      "atk-action"
 #define GLADE_TAG_ATK_PROPERTY                    "atk-property"
+#define GLADE_TAG_FIXED                           "fixed"
 
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F

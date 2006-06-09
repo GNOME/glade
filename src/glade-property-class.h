@@ -18,10 +18,11 @@ typedef struct _GladePropertyClass GladePropertyClass;
 
 /**
  * GPCType:
- * @GPC_ATK_NONE: is not an atk property
+ * @GPC_NORMAL: is not an atk property
  * @GPC_ATK_PROPERTY: is a property of an #AtkImplementor object
  * @GPC_ATK_RELATION: is an atk relation set property
  * @GPC_ATK_ACTION: is an atk action property
+ * @GPC_ACCEL_PROPERTY: is an accelerator key property
  */
 typedef enum {
 	GPC_NORMAL,

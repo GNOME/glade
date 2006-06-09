@@ -171,6 +171,10 @@ struct _GladeWidgetClass
 
 	GdkPixbuf *icon;     /* The GdkPixbuf icon for the widget */
 
+	gboolean fixed;      /* If this is a GtkContainer, use free-form
+			      * placement with drag/resize/paste at mouse...
+			      */
+
 	gchar *generic_name; /* Use to generate names of new widgets, for
 			      * example "button" so that we generate button1,
 			      * button2, buttonX ..
@@ -257,11 +261,14 @@ struct _GladeSignalClass
 {
 	GSignalQuery query;
 
-	gchar *name;         /* Name of the signal, eg clicked */
-	gchar *type;         /* Name of the object class that this signal belongs to
-			      * eg GtkButton */
+	const gchar *name;         /* Name of the signal, eg clicked */
+	gchar       *type;         /* Name of the object class that this signal belongs to
+				    * eg GtkButton */
 
 };
+
+#define glade_widget_class_create_widget(class, query, ...) \
+    (glade_widget_class_create_widget_real (query, "class", class, __VA_ARGS__));
  
 LIBGLADEUI_API
 GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *class_node,
@@ -269,6 +276,17 @@ GladeWidgetClass    *glade_widget_class_new                (GladeXmlNode     *cl
 							    const gchar      *library,
 							    const gchar      *domain,
 							    const gchar      *book);
+LIBGLADEUI_API 
+GladeWidget         *glade_widget_class_create_internal    (GladeWidget      *parent,
+							    GObject          *internal_object,
+							    const gchar      *internal_name,
+							    const gchar      *parent_name,
+							    gboolean          anarchist,
+							    GladeCreateReason reason);
+LIBGLADEUI_API
+GladeWidget         *glade_widget_class_create_widget_real (gboolean          query, 
+							    const gchar      *first_property,
+							    ...);
 LIBGLADEUI_API
 void                 glade_widget_class_free               (GladeWidgetClass *widget_class);
 LIBGLADEUI_API
@@ -325,7 +343,8 @@ void                 glade_widget_class_container_replace_child    (GladeWidgetC
 								    GObject      *new);
 LIBGLADEUI_API
 gboolean             glade_widget_class_contains_extra             (GladeWidgetClass *class);
-
+LIBGLADEUI_API
+gboolean             glade_widget_class_query                      (GladeWidgetClass *class);
 LIBGLADEUI_API
 GladePackingDefault *glade_widget_class_get_packing_default        (GladeWidgetClass *child_class,
 								    GladeWidgetClass *container_class,

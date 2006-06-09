@@ -41,8 +41,7 @@
 #include "glade-clipboard.h"
 #include "glade-signal.h"
 #include "glade-app.h"
-#include "glade-fixed-manager.h"
-
+#include "glade-fixed.h"
 
 /* Concerning placeholders: we do not hold any reference to placeholders,
  * placeholders that are supplied by the backend are not reffed, placeholders
@@ -841,26 +840,12 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 		if (cdata->parent)
 		{
 			if (cdata->placeholder)
-			{
 				glade_widget_replace
 					(cdata->parent, 
 					 G_OBJECT (cdata->placeholder), 
 					 cdata->widget->object);
-			}
-			else if (cdata->parent->manager != NULL)
-			{
-				glade_fixed_manager_add_child
-					(cdata->parent->manager, cdata->widget, FALSE);
-			}
 			else
-			{
-				glade_widget_class_container_add 
-					(cdata->parent->widget_class,
-					 cdata->parent->object,
-					 cdata->widget->object);
-
-				glade_widget_set_parent (cdata->widget, cdata->parent);
-			}
+				glade_widget_add_child (cdata->parent, cdata->widget, FALSE);
 
 			/* Now that we've added, apply any packing props if nescisary. */
 			for (l = cdata->pack_props; l; l = l->next)
@@ -942,13 +927,8 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 				glade_widget_replace
 					(cdata->parent, cdata->widget->object, 
 					 G_OBJECT (cdata->placeholder));
-			else if (cdata->parent->manager != NULL)
-				glade_fixed_manager_remove_child
-					(cdata->parent->manager, cdata->widget);
 			else
-				glade_widget_class_container_remove (cdata->parent->widget_class,
-								     cdata->parent->object,
-								     cdata->widget->object);
+				glade_widget_remove_child (cdata->parent, cdata->widget);
 		}
 
 		if (me->from_clipboard != FALSE) 
@@ -1079,9 +1059,9 @@ glade_command_delete (GList *widgets)
 		if (widget->internal)
 			g_critical ("Internal widget in Delete");
 
-		/* !manager here */
+		/* !fixed here */
 		if (cdata->parent != NULL &&
-		    cdata->parent->manager == NULL &&
+		    GLADE_IS_FIXED (cdata->parent) == FALSE &&
 		    glade_util_gtkcontainer_relation 
 		    (cdata->parent, cdata->widget))
 		{
@@ -1161,10 +1141,10 @@ glade_command_create (GladeWidgetClass *class,
 	
 	me->widgets = g_list_append (me->widgets, cdata);
 
-	if (parent && parent->manager != NULL)
-		widget = glade_fixed_manager_create_child (parent->manager, class);
-	else
-		widget = glade_widget_new (parent, class, project, TRUE);
+	widget = glade_widget_class_create_widget (class, TRUE,
+						   "parent", parent, 
+						   "project", project, 
+						   NULL);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if ((cdata->widget = widget) == NULL)
@@ -1250,24 +1230,11 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 						 G_OBJECT (cdata->placeholder),
 						 cdata->widget->object);
 				}
-				else if (cdata->parent->manager != NULL) 
-					/* Paste at mouse position only once */
-					glade_fixed_manager_add_child (cdata->parent->manager, cdata->widget,
-								       cdata->props_recorded == FALSE);
 				else
 				{
-/* 					glade_widget_set_parent (cdata->widget,  */
-/* 								 cdata->parent); */
-
-					glade_widget_class_container_add
-						(cdata->parent->widget_class,
-						 cdata->parent->object,
-						 cdata->widget->object);
-
-					glade_widget_set_parent (cdata->widget, 
-								 cdata->parent);
-
-/* 					glade_widget_set_packing_properties (cdata->widget, cdata->parent); */
+					glade_widget_add_child (cdata->parent,
+								cdata->widget, 
+								cdata->props_recorded == FALSE);
 				}
 
 				/* Now that we've added, apply any packing props if nescisary. */
@@ -1355,14 +1322,8 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 					(cdata->parent,
 					 cdata->widget->object,
 					 G_OBJECT (cdata->placeholder));
-			else if (cdata->parent->manager != NULL)
-				glade_fixed_manager_remove_child
-					(cdata->parent->manager, cdata->widget);
 			else
-				glade_widget_class_container_remove
-					(cdata->parent->widget_class,
-					 cdata->parent->object,
-					 cdata->widget->object);
+				glade_widget_remove_child (cdata->parent, cdata->widget);
 		}
 		
 		glade_widget_hide (cdata->widget);
@@ -1581,7 +1542,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		/* Placeholder */
 		if (type == GLADE_CUT)
 		{
-			if (cdata->parent && cdata->parent->manager == NULL &&
+			if (cdata->parent && GLADE_IS_FIXED (cdata->parent) == FALSE &&
 			    glade_util_gtkcontainer_relation
 			    (cdata->parent, cdata->widget))
 			{
@@ -1597,7 +1558,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			glade_command_placeholder_connect (cdata, placeholder);
 		}
 		else if (type == GLADE_PASTE && cdata->parent &&
-			 cdata->parent->manager == NULL &&
+			 GLADE_IS_FIXED (cdata->parent) == FALSE &&
 			 glade_util_gtkcontainer_relation (cdata->parent, widget))
 		{
 			if ((children = glade_widget_class_container_get_children

@@ -44,6 +44,7 @@
 #include "glade-signal.h"
 #include "glade-parameter.h"
 #include "glade-debug.h"
+#include "glade-fixed.h"
 
 /* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
 static GHashTable *widget_classes = NULL;
@@ -580,6 +581,9 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 					      (void **)
 					      &widget_class->launch_editor);
 	}
+	widget_class->fixed = 
+		glade_xml_get_property_boolean (node, GLADE_TAG_FIXED, widget_class->fixed);
+
 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
@@ -1267,12 +1271,6 @@ glade_widget_class_default_params (GladeWidgetClass *class,
 					pclass->orig_def) == 0)
 			continue;
 
-#if 0
-		if (glade_property_class_void_value (pclass, pclass->def))
-			continue;
-	
-#endif 	
-
 		parameter.name = pspec[i]->name; /* These are not copied/freed */
 		g_value_init (&parameter.value, pspec[i]->value_type);
 		g_value_copy (pclass->def, &parameter.value);
@@ -1536,4 +1534,154 @@ glade_widget_class_get_packing_default (GladeWidgetClass *child_class,
 	}
 
 	return NULL;
+}
+
+/**
+ * glade_widget_class_query:
+ * @class: A #GladeWidgetClass
+ *
+ * Returns: whether the user needs to be queried for
+ * certain properties upon creation of this class.
+ */
+gboolean
+glade_widget_class_query (GladeWidgetClass *class)
+{
+	GladePropertyClass *pclass;
+	GList *l;
+
+	for (l = class->properties; l; l = l->next)
+	{
+		pclass = l->data;
+
+		if (pclass->query)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+/**
+ * glade_widget_class_create_widget:
+ * @class: a #GladeWidgetClass
+ * @query: whether to display query dialogs if
+ *         applicable to the class
+ * @...: a %NULL terminated list of string/value pairs of #GladeWidget 
+ *       properties
+ *
+ *
+ * This factory function returns a new #GladeWidget of the correct type/class
+ * with the properties defined in @... and queries the user if nescisary.
+ *
+ * The resulting object will have all default properties applied to it
+ * including the overrides specified in the catalog, unless the catalog
+ * has specified 'ignore' for that property.
+ *
+ * Note that the widget class must be fed twice; once as the
+ * leading arg... and also as the property for the #GladeWidget
+ *
+ * this macro returns the newly created #GladeWidget
+ */
+GladeWidget *
+glade_widget_class_create_widget_real (gboolean          query, 
+				       const gchar      *first_property,
+				       ...)
+{
+	GladeWidgetClass *widget_class;
+	GType             gwidget_type;
+	GladeWidget      *gwidget;
+	va_list           vl, vl_copy;
+
+	g_return_val_if_fail (strcmp (first_property, "class") == 0, NULL);
+
+	va_start (vl, first_property);
+	va_copy (vl_copy, vl);
+
+	widget_class = va_arg (vl, GladeWidgetClass *);
+
+	va_end (vl);
+
+	if (GLADE_IS_WIDGET_CLASS (widget_class) == FALSE)
+	{
+		g_critical ("No class found in glade_widget_class_create_widget_real args");
+		va_end (vl_copy);
+	}
+
+	if (widget_class->fixed)
+		gwidget_type = GLADE_TYPE_FIXED;
+	else 
+		gwidget_type = GLADE_TYPE_WIDGET;
+
+
+	gwidget = g_object_new_valist (gwidget_type,
+				       first_property, 
+				       (va_list) vl_copy);
+	va_end (vl_copy);
+	
+	if (query && glade_widget_class_query (widget_class))
+	{
+		GladeEditor *editor = glade_app_get_editor ();
+		
+		/* If user pressed cancel on query popup. */
+		if (!glade_editor_query_dialog (editor, gwidget))
+		{
+			g_object_unref (G_OBJECT (gwidget));
+			return NULL;
+		}
+	}
+
+	return gwidget;
+}
+
+
+
+/**
+ * glade_widget_class_create_internal:
+ * @parent:            The parent #GladeWidget, or %NULL for children
+ *                     outside of the hierarchy.
+ * @internal_object:   the #GObject
+ * @internal_name:     a string identifier for this internal widget.
+ * @anarchist:         Whether or not this widget is a widget outside
+ *                     of the parent's hierarchy (like a popup window)
+ * @reason:            The #GladeCreateReason for which this internal widget
+ *                     was created (usually just pass the reason from the post_create
+ *                     function; note also this is used only by the plugin code so
+ *                     pass something usefull here).
+ *
+ * A convenienve function to create a #GladeWidget of the prescribed type
+ * for internal widgets.
+ *
+ * Returns: a freshly created #GladeWidget wrapper object for the
+ *          @internal_object of name @internal_name
+ */
+GladeWidget *
+glade_widget_class_create_internal (GladeWidget      *parent,
+				    GObject          *internal_object,
+				    const gchar      *internal_name,
+				    const gchar      *parent_name,
+				    gboolean          anarchist,
+				    GladeCreateReason reason)
+{
+	GladeWidgetClass *class;
+	GladeProject     *project;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
+	project = glade_widget_get_project (parent);
+
+        if ((class = glade_widget_class_get_by_name 
+	     (G_OBJECT_TYPE_NAME (internal_object))) == NULL)
+	{
+		g_critical ("Unable to find widget class for type %s", 
+			    G_OBJECT_TYPE_NAME (internal_object));
+		return NULL;
+	}
+
+	return glade_widget_class_create_widget (class, FALSE,
+						 "anarchist", anarchist,
+						 "parent", parent,
+						 "project", project,
+						 "internal", internal_name,
+						 "internal-name", parent_name,
+						 "reason", reason,
+						 "object", internal_object,
+						 NULL);
 }
