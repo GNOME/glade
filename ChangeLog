@@ -8,6 +8,8 @@
 	    - Add sign with class selected on the palette
 	    - Only direct children may be used for drag/resize, or thier direct child
 	      placeholders in turn, cursor will display correctly in those cases.
+	  o Changed the way we retrieve the mouse position in child events, so that
+	    we dont rely on the nature of the properties.
 	
 	* src/glade-widget.c: 
 	  o Use event widget and not signal widget to use with

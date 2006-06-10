@@ -141,14 +141,19 @@ static void
 glade_fixed_save_state (GladeFixed  *fixed,
 			GladeWidget *child)
 {
-	gdk_window_get_pointer (GTK_WIDGET 
-				(GLADE_WIDGET (fixed)->object)->window, 
-				&fixed->pointer_x_origin, &fixed->pointer_y_origin, NULL);
 
- 	glade_widget_pack_property_get (child, fixed->x_prop, &(fixed->child_x_origin));
- 	glade_widget_pack_property_get (child, fixed->y_prop, &(fixed->child_y_origin));
- 	glade_widget_property_get (child, fixed->width_prop, &(fixed->child_width_origin));
- 	glade_widget_property_get (child, fixed->height_prop, &(fixed->child_height_origin));
+	gdk_window_get_pointer (GTK_WIDGET (GLADE_WIDGET (fixed)->object)->window, 
+				&(GLADE_FIXED (fixed)->pointer_x_origin), 
+				&(GLADE_FIXED (fixed)->pointer_y_origin), NULL);
+
+	gtk_widget_translate_coordinates (GTK_WIDGET (child->object),
+					  GTK_WIDGET (GLADE_WIDGET (fixed)->object),
+					  0, 0,
+					  &(fixed->child_x_origin), 
+					  &(fixed->child_y_origin));
+
+	fixed->child_width_origin  = GTK_WIDGET (child->object)->allocation.width;
+	fixed->child_height_origin = GTK_WIDGET (child->object)->allocation.height;
 
 	fixed->pointer_x_child_origin = 
 		fixed->pointer_x_origin - fixed->child_x_origin;
@@ -363,6 +368,12 @@ glade_fixed_configure_child_impl (GladeFixed   *fixed,
 				  GladeWidget  *child,
 				  GdkRectangle *rect)
 {
+	/* Make sure we can modify these properties */
+	glade_widget_pack_property_set_enabled (child, fixed->x_prop, TRUE);
+	glade_widget_pack_property_set_enabled (child, fixed->y_prop, TRUE);
+	glade_widget_property_set_enabled (child, fixed->width_prop, TRUE);
+	glade_widget_property_set_enabled (child, fixed->height_prop, TRUE);
+
  	glade_widget_pack_property_set (child, fixed->x_prop, rect->x);
  	glade_widget_pack_property_set (child, fixed->y_prop, rect->y);
  	glade_widget_property_set (child, fixed->width_prop, rect->width);
@@ -431,6 +442,7 @@ glade_fixed_configure_end_impl (GladeFixed  *fixed,
 static gboolean
 glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GladeWidget *child,
+				GtkWidget   *event_widget,
 				GdkEvent    *event)
 {
 	GladeWidget *gwidget = GLADE_WIDGET (fixed);
@@ -438,14 +450,13 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	gint parent_x, parent_y, child_x, child_y, x, y;
 	GladeCursorType operation;
 
-	gdk_window_get_pointer (GTK_WIDGET (gwidget->object)->window, 
+	/* Get relative mouse position
+	 */
+	gdk_window_get_pointer (event_widget->window, 
 				&parent_x, &parent_y, NULL);
-
- 	glade_widget_pack_property_get (child, fixed->x_prop, &child_x);
- 	glade_widget_pack_property_get (child, fixed->y_prop, &child_y);
-
-	x = parent_x - child_x;
-	y = parent_y - child_y;
+	gtk_widget_translate_coordinates (event_widget, 
+					  GTK_WIDGET (child->object), 
+					  parent_x, parent_y, &x, &y);
 
 	operation = glade_fixed_get_operation (GTK_WIDGET (child->object), x, y);
 
@@ -517,17 +528,18 @@ glade_fixed_child_event (GtkWidget   *widget,
 	GladeWidget *search, *event_gwidget, 
 		*gwidget = glade_widget_get_from_gobject (widget);
 
+	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
+
 	/* Skip all this choosyness if we're already in a drag/resize
 	 */
 	if (fixed->configuring)
 		return glade_fixed_handle_child_event
-			(fixed, fixed->configuring, event);
+			(fixed, fixed->configuring, event_widget, event);
 
 	/* carefull to use the event widget and not the signal widget
 	 * to feed to retrieve_from_position
 	 */
 	gdk_event_get_coords (event, &x, &y);
-	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
 	event_gwidget =
 		GLADE_WIDGET_GET_KLASS (fixed)->retrieve_from_position
 		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
@@ -569,7 +581,7 @@ glade_fixed_child_event (GtkWidget   *widget,
 		}
 	}
 
-	return glade_fixed_handle_child_event (fixed, gwidget, event);
+	return glade_fixed_handle_child_event (fixed, gwidget, event_widget, event);
 }
 
 /*******************************************************************************
@@ -606,12 +618,6 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 
 	glade_fixed_connect_child (fixed, child);
 
-	/* Make sure we can modify these properties */
-	glade_widget_pack_property_set_enabled (child, fixed->x_prop, TRUE);
-	glade_widget_pack_property_set_enabled (child, fixed->y_prop, TRUE);
-	glade_widget_property_set_enabled (child, fixed->width_prop, TRUE);
-	glade_widget_property_set_enabled (child, fixed->height_prop, TRUE);
-
 	/* Setup rect and send configure
 	 */
 	if (fixed->creating)
@@ -630,13 +636,13 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 		rect.x      = fixed->mouse_x;
 		rect.y      = fixed->mouse_y;
 
-		glade_widget_property_get (child, fixed->width_prop, &rect.width);
-		glade_widget_property_get (child, fixed->height_prop, &rect.height);
+		rect.width  = GTK_WIDGET (child->object)->allocation.width;
+		rect.height = GTK_WIDGET (child->object)->allocation.height;
 
-		if (rect.width <= 0)
-			rect.width  = CHILD_WIDTH_DEF;
+		if (rect.width < CHILD_WIDTH_DEF)
+			rect.width = CHILD_WIDTH_DEF;
 
-		if (rect.height <= 0)
+		if (rect.height < CHILD_HEIGHT_DEF)
 			rect.height = CHILD_HEIGHT_DEF;
 
 		g_signal_emit (G_OBJECT (fixed),
@@ -778,12 +784,15 @@ glade_fixed_event (GtkWidget   *widget,
 	
 		if (fixed->configuring)
 		{
-			return glade_fixed_handle_child_event (fixed, fixed->configuring, event);
+			return glade_fixed_handle_child_event
+				(fixed, fixed->configuring, 
+				 event_widget, event);
 		} 
 		else if (gwidget_fixed != gwidget)
 		{
 			if (search && search == gwidget)
-				return glade_fixed_handle_child_event (fixed, search, event);
+				return glade_fixed_handle_child_event
+					(fixed, search, event_widget, event);
 		}
 		break;
 	default:
