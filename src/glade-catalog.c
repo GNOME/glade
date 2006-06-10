@@ -111,8 +111,6 @@ catalog_open (const gchar *filename)
 	GladeXmlDoc     *doc;
 	GladeXmlNode    *root;
 
-	g_debug ("Opening catalog: %s\n", filename);
-
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
 						   NULL, 
@@ -161,8 +159,6 @@ catalog_open (const gchar *filename)
 	if (catalog->init_function_name)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
-	
-	g_debug ("Successfully parsed catalog: %s\n", catalog->name);
 
 	return catalog;
 }
@@ -177,14 +173,8 @@ catalog_load (GladeCatalog *catalog)
 
 	g_return_if_fail (catalog->context != NULL);
 	
-	g_debug ("Loading catalog: %s\n", catalog->name);
-	
 	if (catalog->init_function)
-	{
-		g_debug ("Executing catalog's init function. (%s)\n", 
-			 catalog->init_function_name);
 		catalog->init_function ();
-	}
 	
 	doc  = glade_xml_context_get_doc (catalog->context);
 	root = glade_xml_doc_get_root (doc);
@@ -210,8 +200,6 @@ catalog_load (GladeCatalog *catalog)
 	catalog->widget_groups = g_list_reverse (catalog->widget_groups);
 	catalog->context =
 		(glade_xml_context_free (catalog->context), NULL);
-	
-	g_debug ("Successfully loaded catalog: %s\n", catalog->name);
 
 	return;
 }
@@ -323,9 +311,9 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 	}
 
 	/* Translate it */
-	group->title = dgettext (catalog->domain ? catalog->domain : catalog->library, group->title);
-
-	g_debug ("Loading widget group: %s\n", group->title);
+	group->title = dgettext (catalog->domain ? 
+				 catalog->domain : catalog->library, 
+				 group->title);
 
 	group->widget_classes = NULL;
 
