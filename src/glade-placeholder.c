@@ -31,7 +31,6 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
-#include "glade-fixed.h"
 
 static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
 static void glade_placeholder_init           (GladePlaceholder        *placeholder);

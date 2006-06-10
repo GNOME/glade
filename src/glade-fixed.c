@@ -455,12 +455,14 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	case GDK_MOTION_NOTIFY:
 		if (fixed->configuring == NULL)
 		{
-			/* GTK_NO_WINDOW widgets still have a pointer to the parent window */
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  operation);
-		} else if (event->type == GDK_MOTION_NOTIFY) 
+		} 
+		else if (event->type == GDK_MOTION_NOTIFY) 
 		{
 			glade_fixed_configure_widget (fixed, child);
+			glade_cursor_set (((GdkEventAny *)event)->window, 
+					  operation);
 			handled = TRUE;
 		}
 		gdk_window_get_pointer (GTK_WIDGET (child->object)->window, NULL, NULL, NULL);
@@ -510,8 +512,63 @@ glade_fixed_child_event (GtkWidget   *widget,
 			 GdkEvent    *event,
 			 GladeFixed  *fixed)
 {
-	GladeWidget *gwidget =
-		glade_widget_get_from_gobject (widget);
+	gdouble      x, y;
+	GtkWidget   *event_widget;
+	GladeWidget *search, *event_gwidget, 
+		*gwidget = glade_widget_get_from_gobject (widget);
+
+	/* Skip all this choosyness if we're already in a drag/resize
+	 */
+	if (fixed->configuring)
+		return glade_fixed_handle_child_event
+			(fixed, fixed->configuring, event);
+
+	/* carefull to use the event widget and not the signal widget
+	 * to feed to retrieve_from_position
+	 */
+	gdk_event_get_coords (event, &x, &y);
+	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
+	event_gwidget =
+		GLADE_WIDGET_GET_KLASS (fixed)->retrieve_from_position
+		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE);
+
+	/* Get the gwidget that is a direct child of a 'fixed' */
+	for (search = gwidget; 
+	     search && GLADE_IS_FIXED (search->parent) == FALSE;
+	     search = search->parent);
+
+	/* This event handler is for direct children of the fixed
+	 * widget that connected, discard any events from child widgets.
+	 * (except shallow placeholders)
+	 */
+	if (search == NULL || search != gwidget || 
+	    (GLADE_IS_PLACEHOLDER (event_gwidget) == FALSE &&
+	     event_gwidget != search))
+		return FALSE;
+
+	/* Dont do anything for placeholders that are too deep.
+	 * (i.e. they must be parented by the fixed's direct child)
+	 */
+	if (GLADE_IS_PLACEHOLDER (event_widget))
+	{
+		if (search != glade_placeholder_get_parent
+		    (GLADE_PLACEHOLDER (event_widget)))
+			return FALSE;
+
+		/* Early return for placeholders with selection in
+		 * the palette.
+		 */
+		if (glade_app_get_add_class ())
+		{
+			glade_cursor_set (((GdkEventAny *)event)->window, 
+					  GLADE_CURSOR_ADD_WIDGET);
+			return FALSE;
+		}
+	}
+
 	return glade_fixed_handle_child_event (fixed, gwidget, event);
 }
 
@@ -591,8 +648,7 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 
 static void
 glade_fixed_remove_child_impl (GladeWidget *fixed,
-			       GladeWidget *child,
-			       gboolean     at_mouse)
+			       GladeWidget *child)
 {
 	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
@@ -639,7 +695,7 @@ glade_fixed_event (GtkWidget   *widget,
 	GladeWidgetClass *add_class, *alt_class;
 	GtkWidget        *event_widget;
 	gboolean          handled = FALSE;
-	GladeWidget      *glade_fixed_widget, *gwidget, *search;
+	GladeWidget      *gwidget, *search;
 	gdouble           x, y;
 
 	add_class = glade_app_get_add_class ();
@@ -653,7 +709,9 @@ glade_fixed_event (GtkWidget   *widget,
 	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
 		return TRUE;
 
-	glade_fixed_widget = glade_widget_get_from_gobject (widget);
+	/* Paranoid assertion
+	 */
+	g_assert (glade_widget_get_from_gobject (widget) == gwidget_fixed);
 
 	/* carefull to use the event widget and not the signal widget
 	 * to feed to retrieve_from_position
@@ -665,7 +723,41 @@ glade_fixed_event (GtkWidget   *widget,
 		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
-	g_return_val_if_fail (GLADE_IS_WIDGET (glade_fixed_widget), FALSE);
+
+	/* Get the gwidget that is a direct child of 'fixed' */
+	for (search = gwidget; 
+	     search && search->parent != gwidget_fixed;
+	     search = search->parent);
+	
+	/* Igore events that come from other fixed or thier children
+	 * deeper in the hierarchy (it happens when they all return
+	 * FALSE from thier event handlers).
+	 */
+	if (gwidget != gwidget_fixed &&
+	    (search && search->parent != gwidget_fixed))
+		return FALSE;
+
+	/* Dont do anything for placeholders that are too deep.
+	 * (i.e. they must be parented by the fixed's direct child)
+	 */
+	if (GLADE_IS_PLACEHOLDER (event_widget))
+	{
+		if (search == NULL ||
+		    search != glade_placeholder_get_parent
+		    (GLADE_PLACEHOLDER (event_widget)))
+			return FALSE;
+
+		/* Early return for placeholders with selection in
+		 * the palette.
+		 */
+		if (glade_app_get_add_class ())
+		{
+			glade_cursor_set (((GdkEventAny *)event)->window, 
+					  GLADE_CURSOR_ADD_WIDGET);
+			return FALSE;
+		}
+
+	}
 
 	/* make sure to grab focus, since we may stop default handlers */
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
@@ -678,13 +770,7 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
 	case GDK_BUTTON_RELEASE:
-
-		/* Get the gwidget that is a direct child of 'fixed' */
-		for (search = gwidget; 
-		     search && search->parent != GLADE_WIDGET (fixed);
-		     search = search->parent);
-
-		if (glade_fixed_widget == gwidget) 
+		if (gwidget_fixed == gwidget) 
 		{
 			fixed->mouse_x = ((GdkEventButton *)event)->x;
 			fixed->mouse_y = ((GdkEventButton *)event)->y;
@@ -694,9 +780,9 @@ glade_fixed_event (GtkWidget   *widget,
 		{
 			return glade_fixed_handle_child_event (fixed, fixed->configuring, event);
 		} 
-		else if (glade_fixed_widget != gwidget)
+		else if (gwidget_fixed != gwidget)
 		{
-			if (search)
+			if (search && search == gwidget)
 				return glade_fixed_handle_child_event (fixed, search, event);
 		}
 		break;
@@ -737,12 +823,14 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
 		if (glade_app_get_add_class ())
+		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
-		else
+			handled = TRUE;
+		}
+		else if (GLADE_IS_FIXED (gwidget_fixed->parent) == FALSE)
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_SELECTOR);
-		handled = TRUE;
 		break;
 	default:
 		break;

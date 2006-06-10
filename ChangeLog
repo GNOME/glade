@@ -3,7 +3,12 @@
 	* src/glade-fixed.c: 
 	  o Fixed bug that was using uninitialized data to configure children at load time.
 	  o Fixed that we were not disconnecting signals from removed children (doh)
-
+	  o Now you can have a GladeFixed inside a GladeFixed, in any hierarchical order
+	    you wish, the cursor updates properly in regard to the rules:
+	    - Add sign with class selected on the palette
+	    - Only direct children may be used for drag/resize, or thier direct child
+	      placeholders in turn, cursor will display correctly in those cases.
+	
 	* src/glade-widget.c: 
 	  o Use event widget and not signal widget to use with
 	    gtk_widget_translate_coordinates(), this fixes the imfamous bug 327379
