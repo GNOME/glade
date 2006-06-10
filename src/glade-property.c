@@ -731,6 +731,7 @@ glade_property_read_packing (GladeProperty      *property,
 					(property, pinfo->has_context);
 				glade_property_i18n_set_comment
 					(property, pinfo->comment);
+
 				property->enabled = TRUE;
 				
 				GLADE_PROPERTY_GET_KLASS (property)->set_value
@@ -846,10 +847,11 @@ glade_property_read_atk_prop (GladeProperty      *property,
 					(property, pinfo->has_context);
 				glade_property_i18n_set_comment
 					(property, pinfo->comment);
-				GLADE_PROPERTY_GET_KLASS (property)->set_value
-					(property, gvalue);
 
 				property->enabled = TRUE;
+
+				GLADE_PROPERTY_GET_KLASS (property)->set_value
+					(property, gvalue);
 			}
 
 			if (free_value)

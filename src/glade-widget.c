@@ -657,8 +657,6 @@ glade_widget_constructor (GType                  type,
 	/* Properties that have custom set_functions on them need to be
 	 * explicitly synchronized.
 	 */
-
-	/* XXX This cant be called here... must be deffered to after populating */
 	if (gwidget->construct_reason == GLADE_CREATE_USER)
 		glade_widget_sync_custom_props (gwidget);
 
@@ -1044,8 +1042,7 @@ glade_widget_get_type (void)
 /*******************************************************************************
                                 Static stuff....
  *******************************************************************************/
-/* XXX static this... */
-void
+static void
 glade_widget_copy_packing_props (GladeWidget *parent,
 				 GladeWidget *child,
 				 GladeWidget *template)
@@ -1462,7 +1459,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 	GladePropertyClass   *property_class;
 	GladeProperty        *property;
 	GList                *list, *packing_props = NULL;
-	
+
 	if ((support =
 	     glade_widget_class_get_child_support
 	     (container->widget_class, widget->widget_class->type)) != NULL)

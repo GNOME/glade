@@ -563,13 +563,15 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 		rect.y      = fixed->create_y;
 		rect.width  = CHILD_WIDTH_DEF;
 		rect.height = CHILD_HEIGHT_DEF;
-		
-	} else if (at_mouse)
+
+		g_signal_emit (G_OBJECT (fixed),
+			       glade_fixed_signals[CONFIGURE_CHILD],
+			       0, child, &rect, &handled);
+	} 
+	else if (at_mouse)
 	{
 		rect.x      = fixed->mouse_x;
 		rect.y      = fixed->mouse_y;
-
-		g_print ("Adding at mouse !\n");
 
 		glade_widget_property_get (child, fixed->width_prop, &rect.width);
 		glade_widget_property_get (child, fixed->height_prop, &rect.height);
@@ -579,11 +581,11 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 
 		if (rect.height <= 0)
 			rect.height = CHILD_HEIGHT_DEF;
+
+		g_signal_emit (G_OBJECT (fixed),
+			       glade_fixed_signals[CONFIGURE_CHILD],
+			       0, child, &rect, &handled);
 	}
-	g_signal_emit (G_OBJECT (fixed),
-		       glade_fixed_signals[CONFIGURE_CHILD],
-		       0, child, &rect, &handled);
-	
 	return;
 }
 
