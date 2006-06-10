@@ -240,8 +240,28 @@ glade_widget_find_inside_container (GtkWidget *widget, GladeFindInContainerData 
 
 	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
 	if (x >= 0 && x < widget->allocation.width && y >= 0 && y < widget->allocation.height &&
-	    (glade_widget_get_from_gobject (widget)) && GTK_WIDGET_MAPPED(widget))
-		data->found = widget;
+	    GTK_WIDGET_MAPPED(widget))
+	{
+		if (glade_widget_get_from_gobject (widget))
+			data->found = widget;
+		else if (GTK_IS_CONTAINER (widget))
+		{
+			/* Recurse and see if any project objects exist
+			 * under this container that is not in the project
+			 * (mostly for dialog buttons).
+			 */
+			GladeFindInContainerData search;
+			search.x = data->x;
+			search.y = data->y;
+			search.toplevel = data->toplevel;
+			search.found = NULL;
+
+			gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
+					      glade_widget_find_inside_container, &search);
+
+			data->found = search.found;
+		}
+	}
 }
 
 static GladeWidget *
@@ -250,6 +270,7 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
 					     int top_x, int top_y)
 {
 	GladeFindInContainerData data;
+
 	data.x = top_x;
 	data.y = top_y;
 	data.toplevel = GTK_WIDGET (toplevel);
@@ -301,19 +322,22 @@ glade_widget_button_press (GtkWidget      *widget,
 			   GladeWidget    *gwidget)
 {
 	GladeWidget       *glade_widget;
+	GtkWidget         *event_widget;
 	gint               x = (gint) (event->x + 0.5);
 	gint               y = (gint) (event->y + 0.5);
 	gboolean           handled = FALSE;
 
-	glade_widget = 
-		GLADE_WIDGET_GET_KLASS
-		(gwidget)->retrieve_from_position (widget, x, y);
-
-	if (glade_widget == NULL) return FALSE;
-
-	widget = GTK_WIDGET (glade_widget_get_object (glade_widget));
+	/* Carefull to use the event widget and not the signal widget
+	 * to feed to retrieve_from_position
+	 */
+	gdk_window_get_user_data (event->window, (gpointer)&event_widget);
+	if ((glade_widget = 
+	     GLADE_WIDGET_GET_KLASS
+	     (gwidget)->retrieve_from_position (event_widget, x, y)) == NULL)
+		return FALSE;
 
 	/* make sure to grab focus, since we may stop default handlers */
+	widget = GTK_WIDGET (glade_widget_get_object (glade_widget));
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
@@ -2730,21 +2754,19 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	gwidget->object = g_object_ref (G_OBJECT(new_object));
 	g_object_set_data (G_OBJECT (new_object), "GladeWidgetDataTag", gwidget);
 
-	if (gwidget->internal == NULL)
+	if (/* gwidget->internal == NULL && */
+	    g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
 	{
-		if (g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
-		{
-			/* Take care of events and toolkit signals.
-			 */
-			GLADE_WIDGET_GET_KLASS (gwidget)->setup_events
-				(gwidget, GTK_WIDGET (new_object));
-
-			glade_widget_connect_signal_handlers
-				(GTK_WIDGET(new_object), 
-				 G_CALLBACK 
-				 (GLADE_WIDGET_GET_KLASS (gwidget)->event),
-				 gwidget);
-		}
+		/* Take care of events and toolkit signals.
+		 */
+		GLADE_WIDGET_GET_KLASS (gwidget)->setup_events
+			(gwidget, GTK_WIDGET (new_object));
+		
+		glade_widget_connect_signal_handlers
+			(GTK_WIDGET(new_object), 
+			 G_CALLBACK 
+			 (GLADE_WIDGET_GET_KLASS (gwidget)->event),
+			 gwidget);
 	}
 
 

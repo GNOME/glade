@@ -1,7 +1,21 @@
 2006-06-10  Tristan Van Berkom <tvb@gnome.org>
 
-	* src/glade-fixed.c: Fixed bug that was using uninitialized data
-	  to configure children at load time.
+	* src/glade-fixed.c: 
+	  o Fixed bug that was using uninitialized data to configure children at load time.
+	  o Fixed that we were not disconnecting signals from removed children (doh)
+
+	* src/glade-widget.c: 
+	  o Use event widget and not signal widget to use with
+	    gtk_widget_translate_coordinates(), this fixes the imfamous bug 327379
+	  o Recurse through non-project objects when looking for widget at mouse event;
+	    this fixes the internal widget selection bug (bug 338894).
+
+	* src/glade-placeholder.c: Placeholders dont ever get selection anymore, its
+	  only confusing for no reason, adds extra clicks to select relevent widgets
+	  (note that every second click was going to the parent; making the parent
+	  fight with the placeholder for selection... since its pointless, its gone).
+	
+	* TODO: Updated
 
 2006-06-09  Tristan Van Berkom <tvb@gnome.org>
 

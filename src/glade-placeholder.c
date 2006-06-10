@@ -338,34 +338,6 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 			handled = TRUE;
 		}
-		else if (glade_util_has_selection (widget) == FALSE ||
-			 g_list_length (glade_util_get_selection ()) != 1)
-		{
-			GladeWidget *gwidget;
-			GladeWidget *parent;
-
-			if ((gwidget = glade_widget_get_from_gobject (widget)) != NULL)
-				parent = gwidget->parent;
-			else
-				parent = glade_placeholder_get_parent (widget);
-
-			while (parent && GLADE_IS_FIXED (parent) == FALSE)
-				parent = parent->parent;
-				
-			/* Dont select placeholders that are deep children
-			 * of GladeFixed containers.
-			 */
-			if (parent == NULL)
-			{
-				glade_project_selection_clear 
-					(glade_app_get_project (),
-					 TRUE);
-				glade_util_clear_selection ();
-				glade_util_add_selection (widget);
-				
-				handled = TRUE;
-			}
-		}
 	}
 	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
 	{

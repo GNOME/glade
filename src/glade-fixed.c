@@ -589,6 +589,19 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	return;
 }
 
+static void
+glade_fixed_remove_child_impl (GladeWidget *fixed,
+			       GladeWidget *child,
+			       gboolean     at_mouse)
+{
+	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
+
+	/* Chain up for the basic unparenting */
+	GLADE_WIDGET_KLASS (parent_class)->remove_child
+		(GLADE_WIDGET (fixed), child);
+}
+
+
 static gboolean
 glade_fixed_popup_menu (GtkWidget *widget, gpointer unused_data)
 {
@@ -640,12 +653,13 @@ glade_fixed_event (GtkWidget   *widget,
 	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
 		return TRUE;
 
-	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-
-	g_assert (GTK_IS_WIDGET (event_widget));
-
 	glade_fixed_widget = glade_widget_get_from_gobject (widget);
+
+	/* carefull to use the event widget and not the signal widget
+	 * to feed to retrieve_from_position
+	 */
 	gdk_event_get_coords (event, &x, &y);
+	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
 	gwidget    =
 		GLADE_WIDGET_GET_KLASS (fixed)->retrieve_from_position
 		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
@@ -858,6 +872,7 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 	gwidget_class->setup_events     = glade_fixed_setup_events;
 	gwidget_class->event            = glade_fixed_event;
 	gwidget_class->add_child        = glade_fixed_add_child_impl;
+	gwidget_class->remove_child     = glade_fixed_remove_child_impl;
 
 	fixed_class->configure_child  = glade_fixed_configure_child_impl;
 	fixed_class->configure_begin  = NULL;

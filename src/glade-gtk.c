@@ -420,17 +420,12 @@ glade_gtk_box_set_size (GObject *object, GValue *value)
 	GtkBox      *box;
 	GList       *child;
 	guint new_size, old_size, i;
-	GladeWidget *gbox = glade_widget_get_from_gobject (object);
 
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
 
 	old_size = g_list_length (box->children);
 	new_size = g_value_get_int (value);
-
-	if (gbox->internal)
-		g_print ("Setting internal widget %s size to %d\n",
-			 gbox->name, new_size);
 	
 	if (old_size == new_size)
 		return;
@@ -502,11 +497,6 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	
 	gbox = glade_widget_get_from_gobject (object);
 	project = glade_widget_get_project (gbox);
-
-	if (gbox->internal)
-		g_print ("Adding %s to internal widget %s\n",
-			 GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "child",
-			 gbox->name);
 
 	/*
 	  Try to remove the last placeholder if any, this way GtkBox`s size 
