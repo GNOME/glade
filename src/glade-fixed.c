@@ -424,18 +424,24 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GdkEvent    *event)
 {
 	gboolean handled = FALSE, sig_handled;
+	GtkWidget *fixed_widget;
 	gint parent_x, parent_y, x, y;
 	GladeCursorType operation;
 
+	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
+
 	/* Get relative mouse position
 	 */
-	gdk_window_get_pointer (event_widget->window, 
+	gdk_window_get_pointer (fixed_widget->window, 
 				&parent_x, &parent_y, NULL);
-	gtk_widget_translate_coordinates (event_widget, 
+
+	gtk_widget_translate_coordinates (fixed_widget, 
 					  GTK_WIDGET (child->object), 
 					  parent_x, parent_y, &x, &y);
 
-	operation = glade_fixed_get_operation (GTK_WIDGET (child->object), x, y);
+	operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 
+					       x - fixed_widget->allocation.x, 
+					       y - fixed_widget->allocation.y);
 
 	switch (event->type)
 	{
@@ -503,7 +509,6 @@ glade_fixed_child_event (GtkWidget   *widget,
 	GtkWidget   *event_widget;
 	GladeWidget *search, *event_gwidget, 
 		*gwidget = glade_widget_get_from_gobject (widget);
-
 
 	/* Get the basic event info... */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
