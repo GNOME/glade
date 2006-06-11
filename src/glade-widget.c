@@ -86,14 +86,20 @@ enum
 	PROP_REASON
 };
 
-static guint glade_widget_signals[LAST_SIGNAL] = {0};
+static guint         glade_widget_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
 
 /* Sometimes we need to use the project deep in the loading code,
  * this is just a shortcut way to get the project.
  */
 static GladeProject *loading_project = NULL;
-static gboolean glade_widget_dupping = FALSE;
+static gboolean      glade_widget_dupping = FALSE;
+static GQuark        glade_widget_name_quark = 0;
+
+/* An optimization to avoid looking up the deepest
+ * widget more than once in an event.
+ */
+static GladeWidget  *deep_event_widget = NULL;
 
 /*******************************************************************************
                            GladeWidget class methods
@@ -121,6 +127,25 @@ glade_widget_remove_child_impl (GladeWidget  *widget,
 {
 	glade_widget_class_container_remove
 		(widget->widget_class, widget->object, child->object);
+}
+
+static void
+glade_widget_replace_child_impl (GladeWidget *widget,
+				 GObject     *old_object,
+				 GObject     *new_object)
+{
+	GladeWidget *gnew_widget = glade_widget_get_from_gobject (new_object);
+	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
+
+	if (gnew_widget) gnew_widget->parent = widget;
+	if (gold_widget) gold_widget->parent = NULL;
+
+	glade_widget_class_container_replace_child 
+		(widget->widget_class, widget->object,
+		 old_object, new_object);
+
+	if (gnew_widget) 
+		glade_widget_set_packing_properties (gnew_widget, widget);
 }
 
 static void
@@ -296,8 +321,8 @@ glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
  * event and returns the real #GladeWidget that was clicked
  *
  */
-static GladeWidget *
-glade_widget_retrieve_from_position_impl (GtkWidget *base, int x, int y)
+GladeWidget *
+glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 {
 	GladeWidget *lookup;
 	GtkWidget   *widget;
@@ -323,17 +348,12 @@ glade_widget_button_press (GtkWidget      *widget,
 {
 	GladeWidget       *glade_widget;
 	GtkWidget         *event_widget;
-	gint               x = (gint) (event->x + 0.5);
-	gint               y = (gint) (event->y + 0.5);
 	gboolean           handled = FALSE;
 
-	/* Carefull to use the event widget and not the signal widget
-	 * to feed to retrieve_from_position
+	/* Get event widget and event glade_widget
 	 */
 	gdk_window_get_user_data (event->window, (gpointer)&event_widget);
-	if ((glade_widget = 
-	     GLADE_WIDGET_GET_KLASS
-	     (gwidget)->retrieve_from_position (event_widget, x, y)) == NULL)
+	if ((glade_widget = deep_event_widget) == NULL)
 		return FALSE;
 
 	/* make sure to grab focus, since we may stop default handlers */
@@ -402,8 +422,11 @@ glade_widget_setup_events (GladeWidget *gwidget,
 			   GtkWidget   *widget)
 {
 	gtk_widget_add_events (widget,
-			       GDK_BUTTON_PRESS_MASK   |
-			       GDK_BUTTON_RELEASE_MASK);
+			       GDK_POINTER_MOTION_MASK      |
+			       GDK_POINTER_MOTION_HINT_MASK |
+			       GDK_BUTTON_PRESS_MASK        |
+			       GDK_BUTTON_RELEASE_MASK      |
+			       GDK_ENTER_NOTIFY_MASK);
 	
 	if (GTK_WIDGET_TOPLEVEL (widget))
 		g_signal_connect (G_OBJECT (widget), "delete_event",
@@ -425,12 +448,68 @@ glade_widget_event (GtkWidget   *widget,
 	case GDK_BUTTON_PRESS:
 		return glade_widget_button_press (widget, (GdkEventButton*) event, gwidget);
 	case GDK_EXPOSE:
+	case GDK_CONFIGURE:
 		glade_util_queue_draw_nodes (((GdkEventExpose*) event)->window);
 		break;
 	default:
 		break;
 	}
 
+	return FALSE;
+}
+
+static gboolean
+glade_widget_event_private (GtkWidget   *widget,
+			    GdkEvent    *event,
+			    GladeWidget *gwidget)
+{
+	GtkWidget *event_widget;
+	gdouble    x, y;
+
+	/* Get the widget at moust position before anything else
+	 */
+	gdk_event_get_coords (event, &x, &y);
+	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
+	gdk_window_get_pointer (((GdkEventAny *)event)->window, NULL, NULL, NULL);
+
+	deep_event_widget = 
+		glade_widget_retrieve_from_position
+		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
+
+
+	/* Check if there are deep fixed widgets without windows
+	 * that need to be processed first.
+	 */
+	if (glade_util_deep_fixed_event (widget, event, gwidget) == FALSE)
+	{
+		gboolean handled;
+
+		/* Run the real class handler now.
+		 */
+		handled = GLADE_WIDGET_GET_KLASS (gwidget)->event (widget, event, gwidget);
+
+#if 0		
+		g_print ("event widget '%s' handled '%d'\n",
+			 deep_event_widget->name, handled);
+#endif
+		return handled;
+	}
+	else
+	{
+		switch (event->type)
+		{
+		case GDK_BUTTON_PRESS:
+		case GDK_BUTTON_RELEASE:
+#if 0		
+			g_print ("Forwarded the button event to a fixed widget "
+				 "(event widget '%s')\n",
+				 deep_event_widget->name);
+#endif	
+			break;
+		default:
+			break;
+		}
+	}
 	return FALSE;
 }
 
@@ -874,6 +953,10 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 {
 	GObjectClass *object_class;
 
+	if (glade_widget_name_quark == 0)
+		glade_widget_name_quark = 
+			g_quark_from_static_string ("GladeWidgetDataTag");
+
 	object_class = G_OBJECT_CLASS (klass);
 	parent_class = g_type_class_peek_parent (klass);
 
@@ -885,12 +968,11 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 
 	klass->add_child              = glade_widget_add_child_impl;
 	klass->remove_child           = glade_widget_remove_child_impl;
-	
+	klass->replace_child          = glade_widget_replace_child_impl;
 	klass->add_signal_handler     = glade_widget_add_signal_handler_impl;
 	klass->remove_signal_handler  = glade_widget_remove_signal_handler_impl;
 	klass->change_signal_handler  = glade_widget_change_signal_handler_impl;
 
-	klass->retrieve_from_position = glade_widget_retrieve_from_position_impl;
 	klass->setup_events           = glade_widget_setup_events;
 	klass->event                  = glade_widget_event;
 	
@@ -1795,6 +1877,14 @@ glade_widget_info_params (GladeWidgetClass *widget_class,
 /*******************************************************************************
                                      API
  *******************************************************************************/
+GladeWidget *
+glade_widget_get_from_gobject (gpointer object)
+{
+	g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+	
+	return g_object_get_qdata (G_OBJECT (object), glade_widget_name_quark);
+}
+
 static void
 glade_widget_debug_real (GladeWidget *widget, int indent)
 {
@@ -2764,8 +2854,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 		
 		glade_widget_connect_signal_handlers
 			(GTK_WIDGET(new_object), 
-			 G_CALLBACK 
-			 (GLADE_WIDGET_GET_KLASS (gwidget)->event),
+			 G_CALLBACK (glade_widget_event_private),
 			 gwidget);
 	}
 
@@ -2932,6 +3021,25 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 
 
 /**
+ * glade_widget_event_widget:
+ *
+ * During events, this function returns the deepest
+ * project widget at moust position, or %NULL if it is
+ * not a mouse event.
+ *
+ * Handle with care, you must be in an event for 
+ * the return value to be meaningfull
+ *
+ * Returns a #GladeWidget
+ */
+GladeWidget *
+glade_widget_event_widget (void)
+{
+	return deep_event_widget;
+}
+
+
+/**
  * glade_widget_replace:
  * @old_object: a #GObject
  * @new_object: a #GObject
@@ -2944,24 +3052,10 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 void
 glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_object)
 {
-	GladeWidget *gnew_widget = NULL;
-	GladeWidget *gold_widget = NULL;
-
 	g_return_if_fail (G_IS_OBJECT (old_object));
 	g_return_if_fail (G_IS_OBJECT (new_object));
 
-	gnew_widget = glade_widget_get_from_gobject (new_object);
-	gold_widget = glade_widget_get_from_gobject (old_object);
-
-	if (gnew_widget) gnew_widget->parent = parent;
-	if (gold_widget) gold_widget->parent = NULL;
-
-	glade_widget_class_container_replace_child 
-		(parent->widget_class, parent->object,
-		 old_object, new_object);
-
-	if (gnew_widget) 
-		glade_widget_set_packing_properties (gnew_widget, parent);
+	GLADE_WIDGET_GET_KLASS (parent)->replace_child (parent, old_object, new_object);
 }
 
 /* XML Serialization */

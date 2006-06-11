@@ -1604,7 +1604,8 @@ glade_widget_class_create_widget_real (gboolean          query,
 	{
 		g_critical ("No class found in glade_widget_class_create_widget_real args");
 		va_end (vl_copy);
-	}
+		return NULL;
+}
 
 	if (widget_class->fixed)
 		gwidget_type = GLADE_TYPE_FIXED;
@@ -1612,9 +1613,9 @@ glade_widget_class_create_widget_real (gboolean          query,
 		gwidget_type = GLADE_TYPE_WIDGET;
 
 
-	gwidget = g_object_new_valist (gwidget_type,
-				       first_property, 
-				       (va_list) vl_copy);
+	gwidget = (GladeWidget *)g_object_new_valist (gwidget_type,
+						      first_property, 
+						      (va_list) vl_copy);
 	va_end (vl_copy);
 	
 	if (query && glade_widget_class_query (widget_class))

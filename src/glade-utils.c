@@ -42,6 +42,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
+#include "glade-fixed.h"
 
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
@@ -1695,10 +1696,6 @@ glade_util_search_devhelp (const gchar *book,
 			   const gchar *page,
 			   const gchar *search)
 {
-	/* XXX
-	 * g_spawn_command_line_somethingorother.
-	 */
-
 	GError *error = NULL;
 	gchar  *book_comm = NULL, *page_comm = NULL;
 	gchar  *string;
@@ -1722,4 +1719,25 @@ glade_util_search_devhelp (const gchar *book,
 	g_free (string);
 	if (book_comm) g_free (book_comm);
 	if (page_comm) g_free (page_comm);
+}
+
+gboolean
+glade_util_deep_fixed_event (GtkWidget   *widget,
+			     GdkEvent    *event,
+			     GladeWidget *gwidget)
+{
+	GladeWidget *event_widget, *search;
+
+	event_widget = glade_widget_event_widget ();
+
+	/* Look for a child GladeFixed
+	 */
+	for (search = event_widget;
+	     search && search != gwidget && GLADE_IS_FIXED (search) == FALSE;
+	     search = search->parent);
+
+	if (search && GLADE_IS_FIXED (search) && search != gwidget)
+		return GLADE_WIDGET_GET_KLASS (search)->event (widget, event, search);
+
+	return FALSE;
 }

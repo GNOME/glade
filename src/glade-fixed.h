@@ -17,6 +17,27 @@ G_BEGIN_DECLS
 #define GLADE_IS_FIXED_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_FIXED))
 #define GLADE_FIXED_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_FIXED, GladeFixedClass))
 
+/* Convenience macros used in pointer events.
+ */
+#define GLADE_FIXED_CURSOR_TOP(type)                      \
+	((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT ||       \
+	 (type) == GLADE_CURSOR_RESIZE_TOP_LEFT  ||       \
+	 (type) == GLADE_CURSOR_RESIZE_TOP)
+
+#define GLADE_FIXED_CURSOR_BOTTOM(type)                   \
+	((type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
+	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT  ||    \
+	 (type) == GLADE_CURSOR_RESIZE_BOTTOM)
+
+#define GLADE_FIXED_CURSOR_RIGHT(type)                    \
+	((type) == GLADE_CURSOR_RESIZE_TOP_RIGHT    ||    \
+	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_RIGHT ||    \
+	 (type) == GLADE_CURSOR_RESIZE_RIGHT)
+
+#define GLADE_FIXED_CURSOR_LEFT(type)                    \
+	((type) == GLADE_CURSOR_RESIZE_TOP_LEFT    ||    \
+	 (type) == GLADE_CURSOR_RESIZE_BOTTOM_LEFT ||    \
+	 (type) == GLADE_CURSOR_RESIZE_LEFT)
 
 typedef struct _GladeFixed        GladeFixed;
 typedef struct _GladeFixedClass   GladeFixedClass;
@@ -55,8 +76,8 @@ struct _GladeFixedClass {
 	GladeWidgetKlass   parent_class;
 
 	gboolean     (* configure_child) (GladeFixed *, GladeWidget *, GdkRectangle *);
-	void         (* configure_begin) (GladeFixed *, GladeWidget *);
-	void         (* configure_end)   (GladeFixed *, GladeWidget *);
+	gboolean     (* configure_begin) (GladeFixed *, GladeWidget *);
+	gboolean     (* configure_end)   (GladeFixed *, GladeWidget *);
 
 	/* Signal handler for child widgets
 	 */

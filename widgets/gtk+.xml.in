@@ -748,8 +748,8 @@
     <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box"/>
     <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box"/>
 
-    <glade-widget-class name="GtkTable" generic-name="table" _title="Table">
-      <post-create-function>empty</post-create-function>
+    <glade-widget-class name="GtkTable" generic-name="table" _title="Table" fixed="True">
+      <post-create-function>glade_gtk_table_post_create</post-create-function>
       <properties>
 	<property id="n-rows" default="3" query="True">
 	  <set-function>glade_gtk_table_set_n_rows</set-function>

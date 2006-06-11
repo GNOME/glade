@@ -44,7 +44,7 @@ typedef struct _GladeProject      GladeProject;
 #include "glade-utils.h"
 #include "glade-builtins.h"
 #include "glade-xml-utils.h"
-
+#include "glade-fixed.h"
 
 #define GLADE_TAG_FALSE        "False"
 #define GLADE_TAG_TRUE         "True"

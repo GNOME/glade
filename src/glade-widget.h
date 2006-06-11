@@ -18,8 +18,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
 
-#define glade_widget_get_from_gobject(w) g_object_get_data (G_OBJECT (w), "GladeWidgetDataTag")
-
 typedef struct _GladeWidgetKlass  GladeWidgetKlass;
 
 struct _GladeWidget
@@ -103,6 +101,7 @@ struct _GladeWidgetKlass
 
 	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
 	void         (*remove_child)            (GladeWidget *, GladeWidget *);
+	void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
 
 	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
@@ -111,8 +110,6 @@ struct _GladeWidgetKlass
 	void         (*setup_events)            (GladeWidget *, GtkWidget *);
 	gboolean     (*event)                   (GtkWidget *, GdkEvent *, GladeWidget *);
 
-	GladeWidget *(*retrieve_from_position)  (GtkWidget *, int, int);
-
 };
 
 /*******************************************************************************
@@ -120,6 +117,8 @@ struct _GladeWidgetKlass
  *******************************************************************************/
 LIBGLADEUI_API
 GType                   glade_widget_get_type		    (void);
+LIBGLADEUI_API
+GladeWidget            *glade_widget_get_from_gobject       (gpointer          object);
 LIBGLADEUI_API
 void                    glade_widget_add_child              (GladeWidget      *parent,
 							     GladeWidget      *child,
@@ -179,9 +178,10 @@ LIBGLADEUI_API
 void                    glade_widget_launch_editor          (GladeWidget      *widget);
 
 LIBGLADEUI_API 
-gboolean                glade_widget_has_decendant           (GladeWidget      *widget,
-							      GType             type);
-
+gboolean                glade_widget_has_decendant          (GladeWidget      *widget,
+							     GType             type);
+LIBGLADEUI_API 
+GladeWidget            *glade_widget_event_widget           (void);
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

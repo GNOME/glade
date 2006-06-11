@@ -574,6 +574,417 @@ glade_gtk_box_remove_child (GObject *object, GObject *child)
 
 
 /* ----------------------------- GtkTable ------------------------------ */
+typedef struct {
+	/* comparable part: */
+	GladeWidget *widget;
+	gint         left_attach;
+	gint         right_attach;
+	gint         top_attach;
+	gint         bottom_attach;
+
+	gboolean     reset;
+	GdkRectangle rect;
+} GladeGtkTableChild;
+
+typedef enum {
+	DIR_UP,
+	DIR_DOWN,
+	DIR_LEFT,
+	DIR_RIGHT
+} GladeTableDir;
+
+#define TABLE_CHILD_CMP_SIZE (sizeof (GladeWidget *) + (sizeof (gint) * 4))
+
+static GladeGtkTableChild table_edit = { 0, };
+static GladeGtkTableChild table_cur_attach = { 0, };
+
+
+/* Takes a point (x or y depending on 'row') relative to
+ * table, and returns the row or column in which the point
+ * was found.
+ */
+static gint
+glade_gtk_table_get_row_col_from_point (GtkTable *table,
+					gboolean  row,
+					gint      point)
+{
+	GtkTableChild *tchild;
+	GList         *list;
+	gint           span, trans_point, size, base, end;
+
+	for (list = table->children; list; list = list->next)
+	{
+		tchild = list->data;
+
+		if (row)
+			gtk_widget_translate_coordinates 
+				(GTK_WIDGET (table), tchild->widget,
+				 0, point, NULL, &trans_point);
+		else
+			gtk_widget_translate_coordinates
+				(GTK_WIDGET (table), tchild->widget,
+				 point, 0, &trans_point, NULL);
+		
+		/* Find any widget in our row/column
+		 */
+		end = row ? 
+			tchild->widget->allocation.height :
+			tchild->widget->allocation.width;
+
+		if (trans_point >= 0 &&
+		    trans_point <=  end)
+		{
+			base = row ? tchild->top_attach : tchild->left_attach;
+			size = row ? (tchild->widget->allocation.height) :
+				(tchild->widget->allocation.width);
+			span = row ? (tchild->bottom_attach - tchild->top_attach) :
+				(tchild->right_attach - tchild->left_attach);
+
+			return base + (trans_point * span / size);
+		}
+	}
+
+/* 	g_print ("Failed to find a widget (point %d row %d)! (length %d)\n",  */
+/* 		 point, row, g_list_length (table->children)); */
+	return -1;
+}
+
+
+static gboolean
+glade_gtk_table_point_crosses_threshold (GtkTable      *table,
+					 gboolean       row,
+					 gint           num,
+					 GladeTableDir  dir,
+					 gint           point)
+{
+
+	GtkTableChild *tchild;
+	GList         *list;
+	gint           span, trans_point, size;
+
+	for (list = table->children; list; list = list->next)
+	{
+		tchild = list->data;
+
+		
+		/* Find any widget in our row/column
+		 */
+		if ((row && num >= tchild->top_attach && num < tchild->bottom_attach) ||
+		    (!row && num >= tchild->left_attach && num < tchild->right_attach))
+		{
+
+			if (row)
+				gtk_widget_translate_coordinates 
+					(GTK_WIDGET (table), tchild->widget,
+					 0, point, NULL, &trans_point);
+			else
+				gtk_widget_translate_coordinates
+					(GTK_WIDGET (table), tchild->widget,
+					 point, 0, &trans_point, NULL);
+
+			span = row ? (tchild->bottom_attach - tchild->top_attach) :
+				(tchild->right_attach - tchild->left_attach);
+			size = row ? (tchild->widget->allocation.height) :
+				(tchild->widget->allocation.width);
+			size /= span;
+			
+			switch (dir)
+			{
+			case DIR_UP:
+			case DIR_LEFT:
+				return trans_point <= size - ((size / 3) * 2);
+			case DIR_DOWN:
+			case DIR_RIGHT:
+				return trans_point >= ((size / 3) * 2);
+			default:
+				break;
+			}
+		}
+		
+	}
+
+/* 	g_print ("Failed to find a widget (point %d row %d)! (length %d)\n",  */
+/* 		 point, row, g_list_length (table->children)); */
+	return FALSE;
+}
+
+static gboolean
+glade_gtk_table_get_attachments (GladeFixed         *fixed,
+				 GtkTable           *table,
+				 GdkRectangle       *rect,
+				 GladeGtkTableChild *configure)
+{
+	gint  center_x, center_y, row, column;
+	center_x  = rect->x + (rect->width / 2);
+	center_y  = rect->y + (rect->height / 2);
+
+	column = glade_gtk_table_get_row_col_from_point
+		(table, FALSE, center_x);
+
+	row = glade_gtk_table_get_row_col_from_point
+		(table, TRUE, center_y);
+
+	/* its a start, now try to grow when the rect extents
+	 * reach at least half way into the next row/column 
+	 */
+	configure->left_attach      = column;
+	configure->right_attach     = column + 1;
+	configure->top_attach       = row;
+	configure->bottom_attach    = row +1;
+
+
+
+
+	if (column >= 0 && row >= 0)
+	{
+
+		/* Check and expand left
+		 */
+		while (configure->left_attach > 0)
+		{
+			if (rect->x < fixed->child_x_origin &&
+			    GLADE_FIXED_CURSOR_LEFT (fixed->operation) == FALSE)
+				break;
+
+			if (glade_gtk_table_point_crosses_threshold 
+			    (table, FALSE, configure->left_attach -1,
+			     DIR_LEFT, rect->x) == FALSE)
+				break;
+
+			configure->left_attach--;
+		}
+
+		/* Check and expand right
+		 */
+		while (configure->right_attach < (table->ncols))
+		{
+			if (rect->x + rect->width >
+			    fixed->child_x_origin + fixed->child_width_origin &&
+			    GLADE_FIXED_CURSOR_RIGHT (fixed->operation) == FALSE)
+				break;
+
+			if (glade_gtk_table_point_crosses_threshold
+			    (table, FALSE, configure->right_attach,
+			     DIR_RIGHT, rect->x + rect->width) == FALSE)
+				break;
+
+			configure->right_attach++;
+		}
+
+		/* Check and expand top
+		 */
+		while (configure->top_attach > 0)
+		{
+			if (rect->y < fixed->child_y_origin &&
+			    GLADE_FIXED_CURSOR_TOP (fixed->operation) == FALSE)
+				break;
+
+			if (glade_gtk_table_point_crosses_threshold 
+			    (table, TRUE, configure->top_attach -1,
+			     DIR_UP, rect->y) == FALSE)
+				break;
+
+			configure->top_attach--;
+		}
+
+		/* Check and expand bottom
+		 */
+		while (configure->bottom_attach < (table->nrows))
+		{
+			if (rect->y + rect->height >
+			    fixed->child_y_origin + fixed->child_height_origin &&
+			    GLADE_FIXED_CURSOR_BOTTOM (fixed->operation) == FALSE)
+				break;
+
+			if (glade_gtk_table_point_crosses_threshold
+			    (table, TRUE, configure->bottom_attach,
+			     DIR_DOWN, rect->y + rect->height) == FALSE)
+				break;
+
+			configure->bottom_attach++;
+		}
+	}
+
+	return column >= 0 && row >= 0;
+}
+
+static gboolean
+glade_gtk_table_configure_child (GladeFixed   *fixed,
+				 GladeWidget  *child,
+				 GdkRectangle *rect,
+				 gpointer      unused)
+{
+	GtkWidget            *table = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
+	GladeGtkTableChild    configure = { child, };
+
+	if (table_edit.reset)
+	{
+		memcpy (&table_edit.rect, rect, sizeof (GdkRectangle));
+		table_edit.reset = FALSE;
+	}
+	
+	/* Sometimes we are unable to find a widget in the appropriate column,
+	 * usually because a placeholder hasnt had its size allocation yet.
+	 */
+	if (glade_gtk_table_get_attachments (fixed, GTK_TABLE (table), rect, &configure))
+	{
+		if (memcmp (&configure, &table_cur_attach, TABLE_CHILD_CMP_SIZE) != 0)
+		{
+			if (configure.left_attach < table_cur_attach.left_attach)
+			{
+				glade_widget_pack_property_set (child, "left-attach",   
+								configure.left_attach);
+				glade_widget_pack_property_set (child, "right-attach",  
+								configure.right_attach);
+			}
+			else
+			{
+				glade_widget_pack_property_set (child, "right-attach",  
+								configure.right_attach);
+				glade_widget_pack_property_set (child, "left-attach",   
+								configure.left_attach);
+			}
+
+			if (configure.top_attach < table_cur_attach.top_attach)
+			{
+				glade_widget_pack_property_set (child, "top-attach",    
+								configure.top_attach);
+				glade_widget_pack_property_set (child, "bottom-attach", 
+								configure.bottom_attach);
+			}
+			else
+			{
+				glade_widget_pack_property_set (child, "bottom-attach", 
+								configure.bottom_attach);
+				glade_widget_pack_property_set (child, "top-attach",    
+								configure.top_attach);
+			}
+			memcpy (&table_cur_attach, &configure, TABLE_CHILD_CMP_SIZE);
+		}
+	}
+	return TRUE;
+}
+
+
+static gboolean
+glade_gtk_table_configure_begin (GladeFixed  *fixed,
+				 GladeWidget *child,
+				 gpointer     unused)
+{
+
+	table_edit.widget = child;
+	table_edit.reset  = TRUE;
+
+	glade_widget_pack_property_get (child, "left-attach", 
+					&table_edit.left_attach);
+	glade_widget_pack_property_get (child, "right-attach", 
+					&table_edit.right_attach);
+	glade_widget_pack_property_get (child, "top-attach", 
+					&table_edit.top_attach);
+	glade_widget_pack_property_get (child, "bottom-attach", 
+					&table_edit.bottom_attach);
+
+	memcpy (&table_cur_attach, &table_edit, TABLE_CHILD_CMP_SIZE);
+
+	return TRUE;
+}
+
+static gboolean
+glade_gtk_table_configure_end (GladeFixed  *fixed,
+			       GladeWidget *child,
+			       gpointer     unused)
+{
+	GladeGtkTableChild new = { child, };
+
+	glade_widget_pack_property_get (child, "left-attach", 
+					&new.left_attach);
+	glade_widget_pack_property_get (child, "right-attach", 
+					&new.right_attach);
+	glade_widget_pack_property_get (child, "top-attach", 
+					&new.top_attach);
+	glade_widget_pack_property_get (child, "bottom-attach", 
+					&new.bottom_attach);
+
+	/* Compare the meaningfull part of the current edit. */
+	if (memcmp (&new, &table_edit, TABLE_CHILD_CMP_SIZE) != 0)
+	{
+		GValue left_attach_value   = { 0, };
+		GValue right_attach_value = { 0, };
+		GValue top_attach_value    = { 0, };
+		GValue bottom_attach_value = { 0, };
+
+		GValue new_left_attach_value   = { 0, };
+		GValue new_right_attach_value = { 0, };
+		GValue new_top_attach_value    = { 0, };
+		GValue new_bottom_attach_value = { 0, };
+
+		GladeProperty *left_attach_prop, *right_attach_prop, 
+			*top_attach_prop, *bottom_attach_prop;
+
+		left_attach_prop   = glade_widget_get_pack_property (child, "left-attach");
+		right_attach_prop  = glade_widget_get_pack_property (child, "right-attach");
+		top_attach_prop    = glade_widget_get_pack_property (child, "top-attach");
+		bottom_attach_prop = glade_widget_get_pack_property (child, "bottom-attach");
+
+		g_return_val_if_fail (GLADE_IS_PROPERTY (left_attach_prop), FALSE);
+		g_return_val_if_fail (GLADE_IS_PROPERTY (right_attach_prop), FALSE);
+		g_return_val_if_fail (GLADE_IS_PROPERTY (top_attach_prop), FALSE);
+		g_return_val_if_fail (GLADE_IS_PROPERTY (bottom_attach_prop), FALSE);
+
+		glade_property_get_value (left_attach_prop,   &new_left_attach_value);
+		glade_property_get_value (right_attach_prop,  &new_right_attach_value);
+		glade_property_get_value (top_attach_prop,    &new_top_attach_value);
+		glade_property_get_value (bottom_attach_prop, &new_bottom_attach_value);
+
+
+		g_value_init (&left_attach_value, G_TYPE_UINT);
+		g_value_init (&right_attach_value, G_TYPE_UINT);
+		g_value_init (&top_attach_value, G_TYPE_UINT);
+		g_value_init (&bottom_attach_value, G_TYPE_UINT);
+
+		g_value_set_uint (&left_attach_value,   table_edit.left_attach);
+		g_value_set_uint (&right_attach_value,  table_edit.right_attach);
+		g_value_set_uint (&top_attach_value,    table_edit.top_attach);
+		g_value_set_uint (&bottom_attach_value, table_edit.bottom_attach);
+
+		/* whew, all that for this call !
+		 */
+		glade_command_set_properties
+			(left_attach_prop,   &left_attach_value,   &new_left_attach_value,
+			 right_attach_prop,  &right_attach_value,  &new_right_attach_value,
+			 top_attach_prop,    &top_attach_value,    &new_top_attach_value,
+			 bottom_attach_prop, &bottom_attach_value, &new_bottom_attach_value,
+			 NULL);
+
+		g_value_unset (&left_attach_value);
+		g_value_unset (&right_attach_value);
+		g_value_unset (&top_attach_value);
+		g_value_unset (&bottom_attach_value);
+		g_value_unset (&new_left_attach_value);
+		g_value_unset (&new_right_attach_value);
+		g_value_unset (&new_top_attach_value);
+		g_value_unset (&new_bottom_attach_value);
+	}
+
+	return TRUE;
+}
+
+void
+glade_gtk_table_post_create (GObject *container, GladeCreateReason reason)
+{
+	GladeWidget    *gwidget =
+		glade_widget_get_from_gobject (container);
+
+	g_signal_connect (G_OBJECT (gwidget), "configure-child",
+			  G_CALLBACK (glade_gtk_table_configure_child), NULL);
+
+	g_signal_connect (G_OBJECT (gwidget), "configure-begin",
+			  G_CALLBACK (glade_gtk_table_configure_begin), NULL);
+
+	g_signal_connect (G_OBJECT (gwidget), "configure-end",
+			  G_CALLBACK (glade_gtk_table_configure_end), NULL);
+}
+
 static gboolean
 glade_gtk_table_has_child (GtkTable *table, guint left_attach, guint top_attach)
 {
@@ -610,7 +1021,7 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 {
 	GList *list, *toremove = NULL;
 	gint i, j;
-	
+
 	for (list = table->children; list && list->data; list = list->next)
 	{
 		GtkTableChild *child = list->data;
@@ -633,7 +1044,10 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 				gtk_table_attach_defaults (table,
 							   glade_placeholder_new (),
 					 		   i, i + 1, j, j + 1);
+	
+	gtk_container_check_resize (GTK_CONTAINER (table));
 }
+
 
 void GLADEGTK_API
 glade_gtk_table_add_child (GObject *object, GObject *child)
@@ -642,6 +1056,7 @@ glade_gtk_table_add_child (GObject *object, GObject *child)
 	g_return_if_fail (GTK_IS_WIDGET (child));
 
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+
 	glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
@@ -864,7 +1279,8 @@ glade_gtk_table_verify_left_top_attach (GObject *object,
 						  parent_prop, &parent_val))
 		return FALSE;
 	
-	if (val >= parent_val || val >= prop_val) return FALSE;
+	if (val >= parent_val || val >= prop_val) 
+		return FALSE;
 		
 	return TRUE;
 }
@@ -882,7 +1298,8 @@ glade_gtk_table_verify_right_bottom_attach (GObject *object,
 						  parent_prop, &parent_val))
 		return FALSE;
 	
-	if (val <= prop_val || val > parent_val) return FALSE;
+	if (val <= prop_val || val > parent_val) 
+		return FALSE;
 		
 	return TRUE;
 }
