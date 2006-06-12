@@ -9,8 +9,9 @@
 	* src/glade-utils.c: Fixed the module load code to report errors better
 	  (and dont check system paths for the module, only the glade-3 modules dir.
 
-	* widgets/gtk+.xml.in: Reorganized groups to be more usefull and logical
-	  (inspired by gazpacho ordering).
+	* widgets/gtk+.xml.in: 
+	  o Reorganized groups to be more usefull and logical
+	  o Made widgets visible by default and toplevels invisible by default
 
 	* TODO: Updated.
 
@@ -23,8 +24,7 @@
 	  fixed with child widgets with or without thier own windows and events
 	  that come from parent widgets... all of this seems to be working perfectly.
 
-	* src/glade-gtk.c: Fixed drag, now is smoother and allows for growing out
-	  properly
+	* src/glade-gtk.c: Keep the same row/col span when performing a drag
 
 2006-06-11  Yevgen Muntyan <muntyan@tamu.edu>
 

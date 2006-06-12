@@ -3,7 +3,7 @@
 
     <glade-widget-class name="GtkWidget" _title="Widget">
       <properties>
-	<property id="visible" common="True" ignore="True"/>
+	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 
@@ -128,8 +128,9 @@
     <glade-widget-class name="GtkWindow" generic-name="window" _title="Window">
       <post-create-function>glade_gtk_window_post_create</post-create-function>
 
-      <properties>
-      	<property common="True" id="gravity">
+      <properties> 
+	<property id="visible" default="False"/>
+     	<property common="True" id="gravity">
   	  <displayable-values>
 	    <value id="GDK_GRAVITY_NORTH_WEST" _name="North West"/>
 	    <value id="GDK_GRAVITY_NORTH" _name="North"/>
