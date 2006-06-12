@@ -277,13 +277,23 @@ static gboolean
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
 	GladeWidgetClass *add_class;
+	GladeWidget      *gparent;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
+	gparent   = glade_placeholder_get_parent (GLADE_PLACEHOLDER (widget));
 	add_class = glade_app_get_add_class ();
-	if (add_class == NULL)
+
+	if (add_class == NULL && 
+	    /* If we are the child of a widget that is in a GladeFixed, then
+	     * we are the means of drag/resize and we dont want to fight for
+	     * the cursor (ideally; GladeCursor should somehow deal with such
+	     * concurrencies I suppose).
+	     */
+	    (gparent->parent && 
+	     GLADE_IS_FIXED (gparent->parent)) == FALSE)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-	else
+	else if (add_class)
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 
 	return FALSE;

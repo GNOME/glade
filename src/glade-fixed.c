@@ -424,24 +424,39 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GdkEvent    *event)
 {
 	gboolean handled = FALSE, sig_handled;
-	GtkWidget *fixed_widget;
-	gint parent_x, parent_y, x, y;
+	GtkWidget *fixed_widget, *child_widget;
+	gint parent_x, parent_y, child_x, child_y, trim_x, trim_y;
 	GladeCursorType operation;
+	GladeWidget     *debug;
+
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
+	child_widget = GTK_WIDGET (child->object);
 
 	/* Get relative mouse position
 	 */
-	gdk_window_get_pointer (fixed_widget->window, 
+
+	/* when widget->window points to a parent window, these calculations
+	 * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
+	 * so we must always consult the event widget's window
+	 */
+
+	gdk_window_get_pointer (event_widget->window, 
 				&parent_x, &parent_y, NULL);
 
-	gtk_widget_translate_coordinates (fixed_widget, 
-					  GTK_WIDGET (child->object), 
-					  parent_x, parent_y, &x, &y);
+	gtk_widget_translate_coordinates (event_widget, child_widget, 
+					  parent_x, parent_y, &child_x, &child_y);
+
+	trim_x = child_widget == event_widget && 
+		GTK_WIDGET_NO_WINDOW (child_widget) ? child_widget->allocation.x : 0;
+	trim_y = child_widget == event_widget && 
+		GTK_WIDGET_NO_WINDOW (child_widget) ? child_widget->allocation.y : 0;
 
 	operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 
-					       x - fixed_widget->allocation.x, 
-					       y - fixed_widget->allocation.y);
+					       child_x - trim_x, 
+					       child_y - trim_y);
+
+	debug = glade_widget_get_from_gobject (event_widget);
 
 	switch (event->type)
 	{
@@ -517,8 +532,10 @@ glade_fixed_child_event (GtkWidget   *widget,
 	/* Skip all this choosyness if we're already in a drag/resize
 	 */
 	if (fixed->configuring)
+	{
 		return glade_fixed_handle_child_event
 			(fixed, fixed->configuring, event_widget, event);
+	}
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
 	g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE);
