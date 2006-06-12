@@ -532,7 +532,6 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 				      gpointer notused)
 {
 	GladeWidget  *widget;
-	GObject      *object;
 	GtkTreeModel *model;
 	GtkTreeIter   iter;
 	
@@ -540,14 +539,7 @@ glade_project_view_item_activated_cb (GtkTreeView *view,
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, WIDGET_COLUMN, &widget, -1);
 
-	if ((object = glade_widget_get_object (widget)) != NULL &&
-	    GTK_IS_WIDGET (object))
-	{
-		if (GTK_WIDGET_VISIBLE (object))
-			glade_widget_hide (widget);
-		else
-			glade_widget_show (widget);
-	}
+	glade_widget_show (widget);
 }
 
 static gint

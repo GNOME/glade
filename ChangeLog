@@ -1,3 +1,9 @@
+2006-06-11  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* src/glade-project-window.c: Normal menu items for property 
+	  editor, palette, and clipboard (now they only "show" windows, making
+	  them accessable with less clicks.
+
 2006-06-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/tmpl/*: updated
@@ -11,6 +17,9 @@
 
 	* src/glade-utils.c: added glade_util_deep_fixed_event(), used to
 	  propagate events down to fixed containers that dont have windows.
+
+	* src/glade-project-view.c: now double clicks show project widgets,
+	  and never hide them.
 
 2006-06-10  Tristan Van Berkom <tvb@gnome.org>
 
