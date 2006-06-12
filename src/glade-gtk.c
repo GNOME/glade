@@ -802,6 +802,23 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		}
 	}
 
+	/* Keep the same row/col span when performing a drag
+	 */
+	if (fixed->operation == GLADE_CURSOR_DRAG)
+	{
+		gint col_span =	table_edit.right_attach - table_edit.left_attach;
+		gint row_span = table_edit.bottom_attach - table_edit.top_attach;
+
+		if (rect->x < table_edit.rect.x)
+			configure->right_attach = configure->left_attach + col_span;
+		else
+			configure->left_attach = configure->right_attach - col_span;
+
+		if (rect->y < table_edit.rect.y)
+			configure->bottom_attach = configure->top_attach + row_span;
+		else
+			configure->top_attach = configure->bottom_attach - row_span;
+	}
 	return column >= 0 && row >= 0;
 }
 
