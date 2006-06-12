@@ -498,13 +498,17 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		    fixed->configuring)
 		{
 			// cancel drag stuff
-			fixed->operation = operation;
-			glade_cursor_set (((GdkEventAny *)event)->window, fixed->operation);
-
+			glade_cursor_set (((GdkEventAny *)event)->window,
+					  operation);
+			
 			g_signal_emit (G_OBJECT (fixed),
 				       glade_fixed_signals[CONFIGURE_END],
 				       0, child, &sig_handled);
 
+			/* Leave the machine state intact untill after
+			 * the user handled signal. 
+			 */
+			fixed->operation   = operation;
 			fixed->configuring = NULL;
 			handled = TRUE;
 		}
