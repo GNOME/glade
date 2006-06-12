@@ -1615,7 +1615,7 @@ glade_widget_class_create_widget_real (gboolean          query,
 
 	gwidget = (GladeWidget *)g_object_new_valist (gwidget_type,
 						      first_property, 
-						      (va_list) vl_copy);
+						      vl_copy);
 	va_end (vl_copy);
 	
 	if (query && glade_widget_class_query (widget_class))

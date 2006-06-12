@@ -1,3 +1,17 @@
+2006-06-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget-class.c: Vincent pointed out compile errors on gcc 4.x,
+	  fixed.
+
+	* src/glade-gtk.c: Simplified table code a little bit, improved table
+	  rezising when shrinking left/up with full-table widgets.
+
+	* src/glade-utils.c: Fixed the module load code to report errors better
+	  (and dont check system paths for the module, only the glade-3 modules dir.
+
+	* widgets/gtk+.xml.in: Reorganized groups to be more usefull and logical
+	  (inspired by gazpacho ordering).
+
 2006-06-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-placeholder.c: Dont fight with parenting GladeFixed widgets

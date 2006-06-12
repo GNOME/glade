@@ -1559,32 +1559,14 @@ glade_util_load_library (const gchar *library_name)
 	GModule *module;
 
 	path = g_module_build_path (glade_modules_dir, library_name);
-	if (!path)
+
+	if ((module = g_module_open (path, G_MODULE_BIND_LAZY)) == NULL)
 	{
-		g_warning (_("Not enough memory."));
-		return NULL;
+		g_warning (_("Unable to open the module %s (%s)."),
+			   path, g_module_error());
 	}
 
-	module = g_module_open (path, G_MODULE_BIND_LAZY);
 	g_free (path);
-
-	if (!module)
-	{
-		path = g_module_build_path (NULL, library_name);
-		if (!path)
-		{
-			g_warning (_("Not enough memory."));
-			return NULL;
-		}
-
-		module = g_module_open (path, G_MODULE_BIND_LAZY);
-		g_free (path);
-	}
-
-	if (!module)
-	{
-		g_warning (_("Unable to open the module %s."), library_name);
-	}
 
 	return module;
 }

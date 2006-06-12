@@ -581,9 +581,6 @@ typedef struct {
 	gint         right_attach;
 	gint         top_attach;
 	gint         bottom_attach;
-
-	gboolean     reset;
-	GdkRectangle rect;
 } GladeGtkTableChild;
 
 typedef enum {
@@ -658,13 +655,12 @@ glade_gtk_table_point_crosses_threshold (GtkTable      *table,
 
 	GtkTableChild *tchild;
 	GList         *list;
-	gint           span, trans_point, size;
-
+	gint           span, trans_point, size, rowcol_size, base;
+	
 	for (list = table->children; list; list = list->next)
 	{
 		tchild = list->data;
-
-		
+	
 		/* Find any widget in our row/column
 		 */
 		if ((row && num >= tchild->top_attach && num < tchild->bottom_attach) ||
@@ -684,23 +680,37 @@ glade_gtk_table_point_crosses_threshold (GtkTable      *table,
 				(tchild->right_attach - tchild->left_attach);
 			size = row ? (tchild->widget->allocation.height) :
 				(tchild->widget->allocation.width);
-			size /= span;
-			
+
+			base         = row ? tchild->top_attach : tchild->left_attach;
+			rowcol_size  = size / span;
+			trans_point -= (num - base) * rowcol_size;
+
+#if 0
+			g_print ("dir: %s, widget size: %d, rowcol size: %d, "
+				 "requested rowcol: %d, widget base rowcol: %d, trim: %d, "
+				 "widget point: %d, thresh: %d\n",
+				 dir == DIR_UP ? "up" : dir == DIR_DOWN ? "down" :
+				 dir == DIR_LEFT ? "left" : "right",
+				 size, rowcol_size, num, base, (num - base) * rowcol_size,
+				 trans_point,
+				 dir == DIR_UP || dir == DIR_LEFT ?
+				 (rowcol_size / 2) :
+				 (rowcol_size / 2));
+#endif
 			switch (dir)
 			{
 			case DIR_UP:
 			case DIR_LEFT:
-				return trans_point <= size - ((size / 3) * 2);
+				return trans_point <= (rowcol_size / 2);
 			case DIR_DOWN:
 			case DIR_RIGHT:
-				return trans_point >= ((size / 3) * 2);
+				return trans_point >= (rowcol_size / 2);
 			default:
 				break;
 			}
 		}
 		
 	}
-
 	return FALSE;
 }
 
@@ -809,16 +819,33 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		gint col_span =	table_edit.right_attach - table_edit.left_attach;
 		gint row_span = table_edit.bottom_attach - table_edit.top_attach;
 
-		if (rect->x < table_edit.rect.x)
+		if (rect->x < fixed->child_x_origin)
 			configure->right_attach = configure->left_attach + col_span;
 		else
 			configure->left_attach = configure->right_attach - col_span;
 
-		if (rect->y < table_edit.rect.y)
+		if (rect->y < fixed->child_y_origin)
 			configure->bottom_attach = configure->top_attach + row_span;
 		else
 			configure->top_attach = configure->bottom_attach - row_span;
+	} else if (fixed->operation == GLADE_CURSOR_RESIZE_RIGHT) {
+		configure->left_attach   = table_edit.left_attach;
+		configure->top_attach    = table_edit.top_attach;
+		configure->bottom_attach = table_edit.bottom_attach;
+	} else if (fixed->operation == GLADE_CURSOR_RESIZE_LEFT) {
+		configure->right_attach  = table_edit.right_attach;
+		configure->top_attach    = table_edit.top_attach;
+		configure->bottom_attach = table_edit.bottom_attach;
+	} else if (fixed->operation == GLADE_CURSOR_RESIZE_TOP) {
+		configure->left_attach   = table_edit.left_attach;
+		configure->right_attach  = table_edit.right_attach;
+		configure->bottom_attach = table_edit.bottom_attach;
+	} else if (fixed->operation == GLADE_CURSOR_RESIZE_BOTTOM) {
+		configure->left_attach   = table_edit.left_attach;
+		configure->right_attach  = table_edit.right_attach;
+		configure->top_attach    = table_edit.top_attach;
 	}
+
 	return column >= 0 && row >= 0;
 }
 
@@ -831,12 +858,6 @@ glade_gtk_table_configure_child (GladeFixed   *fixed,
 	GtkWidget            *table = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	GladeGtkTableChild    configure = { child, };
 
-	if (table_edit.reset)
-	{
-		memcpy (&table_edit.rect, rect, sizeof (GdkRectangle));
-		table_edit.reset = FALSE;
-	}
-	
 	/* Sometimes we are unable to find a widget in the appropriate column,
 	 * usually because a placeholder hasnt had its size allocation yet.
 	 */
@@ -887,7 +908,6 @@ glade_gtk_table_configure_begin (GladeFixed  *fixed,
 {
 
 	table_edit.widget = child;
-	table_edit.reset  = TRUE;
 
 	glade_widget_pack_property_get (child, "left-attach", 
 					&table_edit.left_attach);

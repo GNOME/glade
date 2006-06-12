@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+" library="gladegtk" domain="glade-3" book="gtk">
   <glade-widget-classes>
-    <!-- Gtk+ Base -->
+
     <glade-widget-class name="GtkWidget" _title="Widget">
       <properties>
 	<property id="visible" common="True" ignore="True"/>
@@ -885,7 +885,6 @@
     </glade-widget-class>
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
-    <!-- Gtk+ Additional -->
     <glade-widget-class name="GtkRange" _title="Range">
       <properties>
         <property id="adjustment" default="0 0 100 1 10 10"/>
@@ -1111,7 +1110,6 @@
     <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
     -->
     
-    <!-- Gtk+ Dialogs --> 
    <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" _title="About Dialog"/>
    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog"/>
     
@@ -1165,7 +1163,6 @@
       </properties>
     </glade-widget-class>
 
-    <!-- Gtk+ Obsolete -->
     <glade-widget-class name="GtkRuler" generic-name="ruler" _title="Ruler">
       <properties>
 	<property default="10.0" id="upper"/>
@@ -1265,55 +1262,32 @@
 
   </glade-widget-classes>
 
-  <glade-widget-group name="gtk-base" _title="Gtk+ Base">
+  <glade-widget-group name="gtk-toplevels" _title="Toplevels">
     <glade-widget-class-ref name="GtkWindow"/>
-    <glade-widget-class-ref name="GtkMenuBar"/>
-    <glade-widget-class-ref name="GtkToolbar"/>
-    <glade-widget-class-ref name="GtkHandleBox"/>
-    <glade-widget-class-ref name="GtkLabel"/>
-    <glade-widget-class-ref name="GtkEntry"/>
-    <glade-widget-class-ref name="GtkTextView"/>
-    <glade-widget-class-ref name="GtkButton"/>
-    <glade-widget-class-ref name="GtkToggleButton"/>
-    <glade-widget-class-ref name="GtkCheckButton"/>
-    <glade-widget-class-ref name="GtkSpinButton"/>
-    <glade-widget-class-ref name="GtkRadioButton"/>
-    <glade-widget-class-ref name="GtkComboBox"/>
-    <glade-widget-class-ref name="GtkComboBoxEntry"/>
-    <glade-widget-class-ref name="GtkTreeView"/>
-    <glade-widget-class-ref name="GtkProgressBar"/>
-    <glade-widget-class-ref name="GtkImage"/>
     <glade-widget-class-ref name="GtkDialog"/>
+    <glade-widget-class-ref name="GtkAboutDialog"/>
+    <glade-widget-class-ref name="GtkColorSelectionDialog"/>
+    <glade-widget-class-ref name="GtkFileChooserDialog"/>
+    <glade-widget-class-ref name="GtkFontSelectionDialog"/>
+    <glade-widget-class-ref name="GtkInputDialog"/>
+    <glade-widget-class-ref name="GtkMessageDialog"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-containers" _title="Containers">
     <glade-widget-class-ref name="GtkHBox"/>
     <glade-widget-class-ref name="GtkVBox"/>
     <glade-widget-class-ref name="GtkTable"/>
-    <glade-widget-class-ref name="GtkHPaned"/>
-    <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
-    <glade-widget-class-ref name="GtkAspectFrame"/>
-  </glade-widget-group>
-
-  <glade-widget-group name="gtk-additional" _title="Gtk+ Additional">
-    <glade-widget-class-ref name="GtkHScale"/>
-    <glade-widget-class-ref name="GtkVScale"/>
-    <glade-widget-class-ref name="GtkCalendar"/>
-    <glade-widget-class-ref name="GtkMenu"/>
-    <glade-widget-class-ref name="GtkHScrollbar"/>
-    <glade-widget-class-ref name="GtkVScrollbar"/>
+    <glade-widget-class-ref name="GtkMenuBar"/>
+    <glade-widget-class-ref name="GtkToolbar"/>
+    <glade-widget-class-ref name="GtkHPaned"/>
+    <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkHButtonBox"/>
     <glade-widget-class-ref name="GtkVButtonBox"/>
-    <glade-widget-class-ref name="GtkHSeparator"/>
-    <glade-widget-class-ref name="GtkVSeparator"/>
-    <glade-widget-class-ref name="GtkStatusbar"/>
-    <glade-widget-class-ref name="GtkAccelLabel"/>
-    <glade-widget-class-ref name="GtkArrow"/>
-    <glade-widget-class-ref name="GtkFileChooserButton"/>
-    <glade-widget-class-ref name="GtkColorButton"/>
-    <glade-widget-class-ref name="GtkFontButton"/>
+    <glade-widget-class-ref name="GtkAspectFrame"/>
     <glade-widget-class-ref name="GtkLayout"/>
     <glade-widget-class-ref name="GtkFixed"/>
-    <glade-widget-class-ref name="GtkDrawingArea"/>
     <glade-widget-class-ref name="GtkEventBox"/>
     <glade-widget-class-ref name="GtkExpander"/>
     <glade-widget-class-ref name="GtkViewport"/>
@@ -1321,13 +1295,42 @@
     <glade-widget-class-ref name="GtkAlignment"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-dialogs" _title="Gtk+ Standard Dialogs">
-    <glade-widget-class-ref name="GtkAboutDialog"/>
-    <glade-widget-class-ref name="GtkColorSelectionDialog"/>
-    <glade-widget-class-ref name="GtkFileChooserDialog"/>
-    <glade-widget-class-ref name="GtkFontSelectionDialog"/>
-    <glade-widget-class-ref name="GtkInputDialog"/>
-    <glade-widget-class-ref name="GtkMessageDialog"/>
+  <glade-widget-group name="gtk-control-display" _title="Control and Display">
+
+    <glade-widget-class-ref name="GtkButton"/>
+    <glade-widget-class-ref name="GtkToggleButton"/>
+    <glade-widget-class-ref name="GtkCheckButton"/>
+    <glade-widget-class-ref name="GtkSpinButton"/>
+    <glade-widget-class-ref name="GtkRadioButton"/>
+    <glade-widget-class-ref name="GtkFileChooserButton"/>
+    <glade-widget-class-ref name="GtkColorButton"/>
+    <glade-widget-class-ref name="GtkFontButton"/>
+
+    <glade-widget-class-ref name="GtkImage"/>
+    <glade-widget-class-ref name="GtkLabel"/>
+    <glade-widget-class-ref name="GtkAccelLabel"/>
+    <glade-widget-class-ref name="GtkEntry"/>
+    <glade-widget-class-ref name="GtkTextView"/>
+
+    <glade-widget-class-ref name="GtkHScale"/>
+    <glade-widget-class-ref name="GtkVScale"/>
+    <glade-widget-class-ref name="GtkHScrollbar"/>
+    <glade-widget-class-ref name="GtkVScrollbar"/>
+
+    <glade-widget-class-ref name="GtkComboBox"/>
+    <glade-widget-class-ref name="GtkComboBoxEntry"/>
+    <glade-widget-class-ref name="GtkProgressBar"/>
+    <glade-widget-class-ref name="GtkTreeView"/>
+
+    <glade-widget-class-ref name="GtkHandleBox"/>
+    <glade-widget-class-ref name="GtkStatusbar"/>
+
+    <glade-widget-class-ref name="GtkCalendar"/>
+    <glade-widget-class-ref name="GtkMenu"/>
+    <glade-widget-class-ref name="GtkHSeparator"/>
+    <glade-widget-class-ref name="GtkVSeparator"/>
+    <glade-widget-class-ref name="GtkArrow"/>
+    <glade-widget-class-ref name="GtkDrawingArea"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
