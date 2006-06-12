@@ -644,8 +644,6 @@ glade_gtk_table_get_row_col_from_point (GtkTable *table,
 		}
 	}
 
-/* 	g_print ("Failed to find a widget (point %d row %d)! (length %d)\n",  */
-/* 		 point, row, g_list_length (table->children)); */
 	return -1;
 }
 
@@ -703,8 +701,6 @@ glade_gtk_table_point_crosses_threshold (GtkTable      *table,
 		
 	}
 
-/* 	g_print ("Failed to find a widget (point %d row %d)! (length %d)\n",  */
-/* 		 point, row, g_list_length (table->children)); */
 	return FALSE;
 }
 
@@ -732,9 +728,6 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 	configure->top_attach       = row;
 	configure->bottom_attach    = row +1;
 
-
-
-
 	if (column >= 0 && row >= 0)
 	{
 
@@ -743,6 +736,7 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		while (configure->left_attach > 0)
 		{
 			if (rect->x < fixed->child_x_origin &&
+			    fixed->operation != GLADE_CURSOR_DRAG &&
 			    GLADE_FIXED_CURSOR_LEFT (fixed->operation) == FALSE)
 				break;
 
@@ -760,6 +754,7 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		{
 			if (rect->x + rect->width >
 			    fixed->child_x_origin + fixed->child_width_origin &&
+			    fixed->operation != GLADE_CURSOR_DRAG &&
 			    GLADE_FIXED_CURSOR_RIGHT (fixed->operation) == FALSE)
 				break;
 
@@ -776,6 +771,7 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		while (configure->top_attach > 0)
 		{
 			if (rect->y < fixed->child_y_origin &&
+			    fixed->operation != GLADE_CURSOR_DRAG &&
 			    GLADE_FIXED_CURSOR_TOP (fixed->operation) == FALSE)
 				break;
 
@@ -793,6 +789,7 @@ glade_gtk_table_get_attachments (GladeFixed         *fixed,
 		{
 			if (rect->y + rect->height >
 			    fixed->child_y_origin + fixed->child_height_origin &&
+			    fixed->operation != GLADE_CURSOR_DRAG &&
 			    GLADE_FIXED_CURSOR_BOTTOM (fixed->operation) == FALSE)
 				break;
 
