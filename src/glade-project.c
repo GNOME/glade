@@ -586,6 +586,8 @@ glade_project_sync_resources_for_widget (GladeProject *project,
 /**
  * glade_project_add_object:
  * @project: the #GladeProject the widget is added to
+ * @old_project: the #GladeProject the widget was previously in
+ *               (or %NULL for the clipboard)
  * @object: the #GObject to add
  *
  * Adds an object to the project.
@@ -636,11 +638,10 @@ glade_project_add_object (GladeProject *project,
 	project->objects = g_list_prepend (project->objects, g_object_ref (object));
 
 	glade_project_changed (project);	
-
+	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
-		       0,
-		       gwidget);
+		       0, gwidget);
 
 	if (GTK_IS_WINDOW (object) &&
 	    (transient_parent = glade_app_get_transient_parent ()) != NULL)

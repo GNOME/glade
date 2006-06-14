@@ -314,10 +314,9 @@ glade_property_sync_impl (GladeProperty *property)
 		gboolean  reselect  = FALSE;
 		gboolean  inproject =
 			property->widget->project ?
-			(glade_project_get_widget_by_name
+			(glade_project_has_object
 			 (property->widget->project,
-			  property->widget->name) ? TRUE : FALSE) : FALSE;
-
+			  glade_widget_get_object (property->widget)) ? TRUE : FALSE) : FALSE;
 		
 		if (inproject)
 		{

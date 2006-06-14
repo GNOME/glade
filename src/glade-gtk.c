@@ -3315,11 +3315,7 @@ glade_gtk_menu_bar_append_new_submenu (GladeWidget *parent, GladeProject *projec
 						     "project", project, 
 						     NULL);
 
-	glade_widget_class_container_add (glade_widget_get_class (parent),
-					  glade_widget_get_object (parent),
-					  glade_widget_get_object (gsubmenu));
-	
-	glade_widget_set_parent (gsubmenu, parent);
+	glade_widget_add_child (parent, gsubmenu, FALSE);
 
 	return gsubmenu;
 }
@@ -3332,7 +3328,6 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 {
 	static GladeWidgetClass *item_class = NULL, *image_item_class;
 	GladeWidget *gitem;
-	GObject *item;
 	
 	if (item_class == NULL)
 	{
@@ -3365,13 +3360,7 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 		glade_widget_property_set (gitem, "label", label);
 	}
 	
-	item = glade_widget_get_object (gitem);
-	
-	glade_widget_class_container_add (glade_widget_get_class (parent),
-					  glade_widget_get_object (parent),
-					  item);
-	
-	glade_widget_set_parent (gitem, parent);
+	glade_widget_add_child (parent, gitem, FALSE);
 	
 	return gitem;
 }

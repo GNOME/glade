@@ -1558,7 +1558,6 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			glade_command_placeholder_connect (cdata, placeholder);
 		}
 		else if (type == GLADE_PASTE && cdata->parent &&
-			 GLADE_IS_FIXED (cdata->parent) == FALSE &&
 			 glade_util_gtkcontainer_relation (cdata->parent, widget))
 		{
 			if ((children = glade_widget_class_container_get_children

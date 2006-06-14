@@ -66,8 +66,6 @@ struct _GladeFixed {
 	GladeWidget      *configuring;
 	GladeCursorType   operation;
 	gboolean          creating;
-	gint              create_x;
-	gint              create_y;
 	gint              mouse_x;
 	gint              mouse_y;
 };

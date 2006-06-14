@@ -109,10 +109,10 @@ glade_widget_add_child_impl (GladeWidget  *widget,
 			     GladeWidget  *child,
 			     gboolean      at_mouse)
 {
-	/* This order is nescisary to not break undo/redo of
-	 * paste commands with thier recorded packing properies.
+	/* Safe to set the parent first... setting it afterwards
+	 * creates packing properties, and that is not always
+	 * desirable.
 	 */
-
 	glade_widget_set_parent (child, widget);
 
 	glade_widget_class_container_add 
@@ -138,7 +138,8 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
 
 	if (gnew_widget) gnew_widget->parent = widget;
-	if (gold_widget) gold_widget->parent = NULL;
+	if (gold_widget && gold_widget != gnew_widget)
+		gold_widget->parent = NULL;
 
 	glade_widget_class_container_replace_child 
 		(widget->widget_class, widget->object,
@@ -464,17 +465,15 @@ glade_widget_event_private (GtkWidget   *widget,
 			    GladeWidget *gwidget)
 {
 	GtkWidget *event_widget;
-	gdouble    x, y;
+	gint       x, y;
 
 	/* Get the widget at moust position before anything else
 	 */
-	gdk_event_get_coords (event, &x, &y);
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-	gdk_window_get_pointer (((GdkEventAny *)event)->window, NULL, NULL, NULL);
+	gdk_window_get_pointer (((GdkEventAny *)event)->window, &x, &y, NULL);
 
 	deep_event_widget = 
-		glade_widget_retrieve_from_position
-		(event_widget, (int) (x + 0.5), (int) (y + 0.5));
+		glade_widget_retrieve_from_position (event_widget, x, y);
 
 
 	/* Check if there are deep fixed widgets without windows
@@ -767,6 +766,14 @@ glade_widget_constructor (GType                  type,
 	if (gwidget->parent && gwidget->packing_properties == NULL)
 		glade_widget_set_packing_properties (gwidget, gwidget->parent);
 
+	if (GTK_IS_WIDGET (gwidget->object) && !GTK_WIDGET_TOPLEVEL (gwidget->object))
+	{
+		gwidget->visible = TRUE;
+		gtk_widget_show_all (GTK_WIDGET (gwidget->object));
+	}
+	else if (GTK_IS_WIDGET (gwidget->object) == FALSE)
+		gwidget->visible = TRUE;
+	
 	return ret_obj;
 }
 
@@ -1251,6 +1258,10 @@ glade_widget_get_internal_func (GladeWidget *parent, GladeWidget **parent_ret)
 		if (parent_ret) *parent_ret = gwidget;
 		return gwidget->widget_class->get_internal_child;
 	}
+	g_error ("No internal child search function "
+		 "provided for widget class %s (or any parents)",
+		 parent->widget_class->name);
+
 	return NULL;
 }
 
@@ -1286,7 +1297,6 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 			gwidget = glade_widget_get_from_gobject (internal_object);
 			g_assert (gwidget);
 		}
-		else g_error ("Internal widget found without get_internal() support.");
 	}
 	else
 		gwidget = glade_widget_class_create_widget
@@ -1310,12 +1320,16 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 
 			if ((child_gwidget = glade_widget_get_from_gobject (child)) == NULL)
 			{
-				/* Bring the placeholders along ... but not unmarked internal children */
+				/* Bring the placeholders along ...
+				 * but not unmarked internal children */
 				if (GLADE_IS_PLACEHOLDER (child))
 				{
 					placeholder = glade_placeholder_new ();
-					g_object_set_data (G_OBJECT (placeholder), 
-							   "special-child-type", child_type);
+
+					g_object_set_data_full (G_OBJECT (placeholder),
+								"special-child-type",
+								g_strdup (child_type),
+								g_free);
 					
 					glade_widget_class_container_add
 						(gwidget->widget_class,
@@ -1330,14 +1344,12 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 
 				if (child_gwidget->internal == NULL)
 				{
-					g_object_set_data (child_dup->object, 
-							   "special-child-type", child_type);
-				
+					g_object_set_data_full (child_dup->object,
+								"special-child-type",
+								g_strdup (child_type),
+								g_free);
 
-					glade_widget_class_container_add (gwidget->widget_class,
-									  gwidget->object,
-									  child_dup->object);
-					
+					glade_widget_add_child (gwidget, child_dup, FALSE);
 				}
 
 				/* Internal children that are not heirarchic children
@@ -1380,81 +1392,154 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	return gwidget;
 }
 
-/* recursive functions need to be prototyped */
-static void glade_widget_transport_children (GladeWidget  *gwidget,
-					     GObject      *from_container,
-					     GObject      *to_container);
 
-/*
- * Transports all children from from_container to to_container
- */
-static void
-glade_widget_transport_children (GladeWidget  *gwidget,
-				 GObject      *from_container,
-				 GObject      *to_container)
+typedef struct {
+	GladeWidget *widget;
+	GtkWidget   *placeholder;
+	GList       *packing;
+	
+	gchar                 *internal_name;
+	GList                 *internal_list;
+} GladeChildExtract;
+
+static GList *
+glade_widget_extract_children (GladeWidget *gwidget)
 {
-	GladeWidget           *gparent = glade_widget_get_from_gobject (to_container);
-	GladeGetInternalFunc   get_internal;
-	GList                 *list, *children;
+	GladeChildExtract *extract;
+	GList             *extract_list = NULL;
+	GList             *children, *list, *l;
+	
+	children = glade_widget_class_container_get_children
+		(gwidget->widget_class, gwidget->object);
 
-	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
-								   from_container)) != NULL)
+	for (list = children; list && list->data; list = list->next)
 	{
-		for (list = children; list && list->data; list = list->next)
+		GObject     *child   = G_OBJECT(list->data);
+		GladeWidget *gchild  = glade_widget_get_from_gobject (child);
+		
+		if (gchild && gchild->internal)
 		{
-			GObject     *child   = G_OBJECT(list->data), *internal_object = NULL;
-			GladeWidget *gchild  = glade_widget_get_from_gobject (child);
-			GladeWidget *gchild_new, *internal_parent;
+			GList *internal_children;
 
-			if (gchild && gchild->internal)
+			/* Recurse and collect any deep child hierarchies
+			 * inside composite widgets.
+			 */
+			if ((internal_children =
+			     glade_widget_extract_children (gchild)) != NULL)
 			{
-				/*
-				 * Recurse for internal children
-				 */
-				if ((get_internal = glade_widget_get_internal_func (gwidget, &internal_parent)) == NULL)
-					g_error ("No internal child search function provided for internal child %s "
-						 "of widget class %s", gchild->internal, gwidget->widget_class->name);
-				
-				get_internal (internal_parent->object, gchild->internal, &internal_object);
-				g_assert (internal_object);
-				
-				gchild_new = glade_widget_get_from_gobject (internal_object);
-				g_assert (gchild_new);
+				extract = g_new0 (GladeChildExtract, 1);
+				extract->internal_name = g_strdup (gchild->internal);
+				extract->internal_list = internal_children;
 
-
-				glade_widget_transport_children (gchild_new,       // New internal GladeWidget
-								 child,            // Old internal object (from container)
-								 internal_object); // New internal object (to container)
-
+				extract_list = g_list_prepend (extract_list, extract);
 			}
-			else if (gchild || GLADE_IS_PLACEHOLDER (child))
-			{
-				/* If this widget is a container, all children get a temporary
-				 * reference and are moved from the old container, to the new
-				 * container and thier child properties are applied.
-				 */
-				g_object_ref(child);
-
-				glade_widget_class_container_remove (gwidget->widget_class,
-								     from_container, child);
-
-				/* The GladeWidget hierarchy must be maintained at this point...
-				 * add_child functions may grok packing properties for example.
-				 */
-				if (gchild) glade_widget_set_parent (gchild, gparent);
-
-				glade_widget_class_container_add    (gwidget->widget_class,
-								     to_container, child);
-				
-				g_object_unref(child);
-			}
+		}
+		else if (gchild || GLADE_IS_PLACEHOLDER (child))
+		{
+			extract = g_new0 (GladeChildExtract, 1);
 
 			if (gchild)
-				glade_widget_sync_packing_props (gchild);
+			{
+				extract->widget = g_object_ref (gchild);
+				
+				/* Make copies of the packing properties
+				 */
+				for (l = gchild->packing_properties; l; l = l->next)
+					extract->packing = g_list_prepend
+						(extract->packing,
+						 glade_property_dup
+						 (GLADE_PROPERTY (l->data), gchild));
 
+				glade_widget_remove_child (gwidget, gchild);
+			}
+			else
+			{
+				/* need to handle placeholders by hand here */
+				extract->placeholder = g_object_ref (child);
+				glade_widget_class_container_remove
+						(gwidget->widget_class,
+						 gwidget->object, child);
+			}
+			extract_list =
+				g_list_prepend (extract_list, extract);
 		}
-		g_list_free (children);
 	}
+
+	if (children)
+		g_list_free (children);
+
+	return g_list_reverse (extract_list);
+}
+
+static void
+glade_widget_insert_children (GladeWidget *gwidget, GList *children)
+{
+	GladeChildExtract *extract;
+	GladeWidget       *gchild;
+	GObject           *internal_object;
+	GList             *list, *l;
+	
+	for (list = children; list; list = list->next)
+	{
+		extract = list->data;
+		
+		if (extract->internal_name)
+		{
+			GladeGetInternalFunc   get_internal;
+			GladeWidget           *internal_parent;
+
+
+			/* Recurse and add deep widget hierarchies to internal
+			 * widgets.
+			 */
+			get_internal = glade_widget_get_internal_func
+				(gwidget, &internal_parent);
+
+			get_internal (internal_parent->object,
+				      extract->internal_name,
+				      &internal_object);
+
+			gchild = glade_widget_get_from_gobject (internal_object);
+			
+			/* This will free the list... */
+			glade_widget_insert_children (gchild, extract->internal_list);
+
+			g_free (extract->internal_name);
+		}
+		else if (extract->widget)
+		{
+			glade_widget_add_child (gwidget, extract->widget, FALSE);
+			g_object_unref (extract->widget);
+			
+			for (l = extract->packing; l; l = l->next)
+			{
+				GValue         value = { 0, };
+				GladeProperty *saved_prop = l->data;
+				GladeProperty *widget_prop = 
+					glade_widget_get_pack_property (extract->widget,
+									saved_prop->class->id);
+				
+				glade_property_get_value (saved_prop, &value);
+				glade_property_set_value (widget_prop, &value);
+				g_value_unset (&value);
+
+				g_object_unref (saved_prop);
+			}
+			if (extract->packing)
+				g_list_free (extract->packing);
+		}
+		else
+		{
+			glade_widget_class_container_add
+				(gwidget->widget_class,
+				 gwidget->object,
+				 G_OBJECT (extract->placeholder));
+			g_object_unref (extract->placeholder);
+		}
+		g_free (extract);
+	}
+	if (children)
+		g_list_free (children);
 }
 
 static void
@@ -1805,9 +1890,6 @@ glade_widget_new_from_widget_info (GladeWidgetInfo *info,
 	 */
 	glade_widget_sync_custom_props (widget);
 
-	if (GTK_IS_WIDGET (widget->object) && !GTK_WIDGET_TOPLEVEL (widget->object))
-		gtk_widget_show_all (GTK_WIDGET (widget->object));
-
 	return widget;
 }
 
@@ -1957,7 +2039,7 @@ void
 glade_widget_show (GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
+		
 	/* Position window at saved coordinates or in the center */
 	if (GTK_IS_WINDOW (widget->object))
 	{
@@ -2176,14 +2258,18 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 {
 	GObject          *new_object, *old_object;
 	GladeWidgetClass *klass;
-
+	GList            *children;
+	
 	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
 
 	klass = glade_widget->widget_class;
-
+		
 	/* Save coordinates incase its a toplevel */
 	glade_widget_save_coords (glade_widget);
 
+	/* Extract and keep the child hierarchies aside... */
+	children = glade_widget_extract_children (glade_widget);
+		
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
@@ -2191,7 +2277,7 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	old_object = g_object_ref(glade_widget_get_object(glade_widget));
 
 	glade_widget_set_object(glade_widget, new_object);
-	
+
 	/* Only call this once the object has a proper GladeWidget */
 	if (klass->post_create_function) 
 		klass->post_create_function (G_OBJECT(new_object), GLADE_CREATE_REBUILD);
@@ -2199,14 +2285,14 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	/* Replace old object with new object in parent
 	 */
 	if (glade_widget->parent)
-		glade_widget_class_container_replace_child
-			(glade_widget->parent->widget_class,
-			 glade_widget->parent->object,
-			 old_object, new_object);
+		glade_widget_replace (glade_widget->parent,
+				      old_object, new_object);
 
-	/* Reparent any children of the old object to the new object */
-	glade_widget_transport_children (glade_widget, old_object, new_object);
-
+	/* Reparent any children of the old object to the new object
+	 * (this function will consume and free the child list).
+	 */
+	glade_widget_insert_children (glade_widget, children);
+		
 	/* Custom properties aren't transfered in build_object, since build_object
 	 * is only concerned with object creation.
 	 */
@@ -2225,8 +2311,8 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	}
 	else
 		g_object_unref (old_object);
-
-	/* We shouldnt show if its not already visible */
+	
+ 	/* We shouldnt show if its not already visible */
 	if (glade_widget->visible)
 		glade_widget_show (glade_widget);
 }
@@ -2842,7 +2928,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	
 	/* Add internal reference to new widget */
 	gwidget->object = g_object_ref (G_OBJECT(new_object));
-	g_object_set_data (G_OBJECT (new_object), "GladeWidgetDataTag", gwidget);
+	g_object_set_qdata (G_OBJECT (new_object), glade_widget_name_quark, gwidget);
 
 	if (/* gwidget->internal == NULL && */
 	    g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
@@ -2858,10 +2944,9 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 			 gwidget);
 	}
 
-
 	/* Remove internal reference to old widget */
 	if (old_object) {
-		g_object_set_data (G_OBJECT (old_object), "GladeWidgetDataTag", NULL);
+		g_object_set_qdata (G_OBJECT (old_object), glade_widget_name_quark, NULL);
 		g_object_unref (G_OBJECT (old_object));
 	}
 	g_object_notify (G_OBJECT (gwidget), "object");
@@ -2911,7 +2996,7 @@ glade_widget_set_parent (GladeWidget *widget,
 	old_parent     = widget->parent;
 	widget->parent = parent;
 
-	/* Set packing props only if the object actually parented by 'parent'
+	/* Set packing props only if the object is actually parented by 'parent'
 	 * (a subsequent call should come from glade_command after parenting).
 	 */
 	if (widget->object && parent != NULL &&

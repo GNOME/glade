@@ -290,16 +290,19 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 
 static void
 glade_fixed_disconnect_child (GladeFixed   *fixed,
-			      GladeWidget  *child)
+			      GObject      *child)
 {
 	GFSigData *data;
 
+	if (GTK_IS_WIDGET (child) == FALSE)
+		return;
+
 	if ((data = g_object_get_data (G_OBJECT (child), "glade-fixed-signal-data")) != NULL)
 	{
-		g_signal_handler_disconnect (child->object, data->press_id);
-		g_signal_handler_disconnect (child->object, data->release_id);
-		g_signal_handler_disconnect (child->object, data->enter_id);
-		g_signal_handler_disconnect (child->object, data->motion_id);
+		g_signal_handler_disconnect (child, data->press_id);
+		g_signal_handler_disconnect (child, data->release_id);
+		g_signal_handler_disconnect (child, data->enter_id);
+		g_signal_handler_disconnect (child, data->motion_id);
 
 		g_object_set_data (G_OBJECT (child), "glade-fixed-signal-data", NULL);
 	}
@@ -307,9 +310,12 @@ glade_fixed_disconnect_child (GladeFixed   *fixed,
 
 static void
 glade_fixed_connect_child (GladeFixed   *fixed,
-			   GladeWidget  *child)
+			   GObject      *child)
 {
 	GFSigData *data;
+
+	if (GTK_IS_WIDGET (child) == FALSE)
+		return;
 
 	if ((data = g_object_get_data (G_OBJECT (child), "glade-fixed-signal-data")) != NULL)
 		glade_fixed_disconnect_child (fixed, child);
@@ -318,19 +324,19 @@ glade_fixed_connect_child (GladeFixed   *fixed,
 
 	data->press_id =
 		g_signal_connect
-		(child->object, "button-press-event", G_CALLBACK
+		(child, "button-press-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 	data->release_id =
 		g_signal_connect
-		(child->object, "button-release-event", G_CALLBACK
+		(child, "button-release-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 	data->enter_id =
 		g_signal_connect
-		(child->object, "enter-notify-event", G_CALLBACK
+		(child, "enter-notify-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 	data->motion_id = 
 		g_signal_connect
-		(child->object, "motion-notify-event", G_CALLBACK
+		(child, "motion-notify-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 
 	g_object_set_data_full (G_OBJECT (child), "glade-fixed-signal-data", 
@@ -615,14 +621,14 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 			       GDK_BUTTON_RELEASE_MASK      |
 			       GDK_ENTER_NOTIFY_MASK);
 
-	glade_fixed_connect_child (fixed, child);
+	glade_fixed_connect_child (fixed, child->object);
 
 	/* Setup rect and send configure
 	 */
 	if (fixed->creating)
 	{
-		rect.x      = fixed->create_x;
-		rect.y      = fixed->create_y;
+		rect.x      = fixed->mouse_x;
+		rect.y      = fixed->mouse_y;
 		rect.width  = CHILD_WIDTH_DEF;
 		rect.height = CHILD_HEIGHT_DEF;
 
@@ -655,7 +661,7 @@ static void
 glade_fixed_remove_child_impl (GladeWidget *fixed,
 			       GladeWidget *child)
 {
-	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
+	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child->object);
 
 	/* Chain up for the basic unparenting */
 	GLADE_WIDGET_KLASS (parent_class)->remove_child
@@ -670,15 +676,14 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 	GladeWidget *gnew_widget = glade_widget_get_from_gobject (new_object);
 	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
 
-	if (gold_widget)
-		glade_fixed_disconnect_child (GLADE_FIXED (fixed), gold_widget);
+	glade_fixed_disconnect_child (GLADE_FIXED (fixed), old_object);
 
 	/* Chain up for the basic reparenting */
 	GLADE_WIDGET_KLASS (parent_class)->replace_child
 		(GLADE_WIDGET (fixed), old_object, new_object);
 
 	if (gnew_widget)
-		glade_fixed_connect_child (GLADE_FIXED (fixed), gnew_widget);
+		glade_fixed_connect_child (GLADE_FIXED (fixed), new_object);
 }
 
 static gboolean
@@ -785,8 +790,9 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_BUTTON_RELEASE:
 		if (gwidget_fixed == event_gwidget) 
 		{
-			fixed->mouse_x = ((GdkEventButton *)event)->x;
-			fixed->mouse_y = ((GdkEventButton *)event)->y;
+			gdk_window_get_pointer (GTK_WIDGET 
+						(GLADE_WIDGET (fixed)->object)->window, 
+						&fixed->mouse_x, &fixed->mouse_y, NULL);
 		}
 	
 		if (fixed->configuring)
@@ -820,9 +826,6 @@ glade_fixed_event (GtkWidget   *widget,
 				 * Add a new widget of that type.
 				 */
 				fixed->creating = TRUE;
-				gdk_window_get_pointer (GTK_WIDGET 
-							(GLADE_WIDGET (fixed)->object)->window, 
-							&fixed->create_x, &fixed->create_y, NULL);
 				glade_command_create
 					(add_class ? add_class : alt_class, 
 					 GLADE_WIDGET (fixed), NULL, 

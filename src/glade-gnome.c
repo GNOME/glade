@@ -90,10 +90,7 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	gdock_item = glade_widget_class_create_widget (dock_item_class, FALSE,
 						       "parent", gdock, 
 						       "project", project, NULL);
-	glade_widget_class_container_add (glade_widget_get_class (gdock),
-					  glade_widget_get_object (gdock),
-					  glade_widget_get_object (gdock_item));
-	glade_widget_set_parent (gdock_item, gdock);
+	glade_widget_add_child (gdock, gdock_item, FALSE);
 	glade_widget_pack_property_set (gdock_item, "behavior", 
 					BONOBO_DOCK_ITEM_BEH_EXCLUSIVE |
 					BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL |
@@ -103,10 +100,7 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 						     "parent", gdock_item, 
 						     "project", project, NULL);
 
-	glade_widget_class_container_add (glade_widget_get_class (gdock_item),
-					  glade_widget_get_object (gdock_item),
-					  glade_widget_get_object (gmenubar));
-	glade_widget_set_parent (gmenubar, gdock_item);
+	glade_widget_add_child (gdock_item, gmenubar, FALSE);
 	
 	/* Add Client Area placeholder */
 	bonobo_dock_set_client_area (BONOBO_DOCK (app->dock),
@@ -272,11 +266,8 @@ glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
 	gpage = glade_widget_class_create_widget (edge ? dpe_class : dps_class, FALSE,
 						  "parent", gdruid, 
 						  "project", project, NULL);
-
-	glade_widget_class_container_add (glade_widget_get_class (gdruid),
-					  glade_widget_get_object (gdruid),
-					  glade_widget_get_object (gpage));
-	glade_widget_set_parent (gpage, gdruid);
+	
+	glade_widget_add_child (gdruid, gpage, FALSE);
 
 	return gpage;
 }

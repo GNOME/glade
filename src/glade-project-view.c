@@ -140,7 +140,7 @@ glade_project_view_populate_model (GladeProjectView *view)
 	/* Make a list of only the toplevel widgets */
 	for (list = project->objects; list; list = list->next)
 	{
-		GObject *object = G_OBJECT (list->data);
+		GObject *object      = G_OBJECT (list->data);
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 		g_assert (gwidget);
 
