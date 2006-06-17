@@ -152,8 +152,6 @@ glade_property_set_property (GladeProperty *property, const GValue *value)
 	}
 }
 
-extern gboolean glade_widget_dupping;
-
 static void
 glade_property_update_prop_refs (GladeProperty *property, 
 				 const GValue  *old_value,
@@ -1590,4 +1588,28 @@ glade_property_get_enabled (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 	return property->enabled;
+}
+
+
+glade_property_su_stack = 0;
+
+void
+glade_property_push_superuser (void)
+{
+	glade_property_su_stack++;
+}
+
+void
+glade_property_pop_superuser (void)
+{
+	if (--glade_property_su_stack < 0)
+	{
+		g_critical ("Bug: property super user stack is corrupt.\n");
+	}
+}
+
+gboolean
+glade_property_superuser (void)
+{
+	return glade_property_su_stack > 0;
 }

@@ -386,8 +386,10 @@ glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
  * encapsulate a "set property" operation */
 
 typedef struct {
-	GladeCommand parent;
-	GList *sdata;
+	GladeCommand  parent;
+	gboolean      set_once;
+	gboolean      undo;
+	GList        *sdata;
 } GladeCommandSetProperty;
 
 /* standard macros */
@@ -417,29 +419,59 @@ glade_command_set_property_execute (GladeCommand *cmd)
 
 	g_return_val_if_fail (me != NULL, FALSE);
 
+	if (me->set_once != FALSE)
+		glade_property_push_superuser ();
+
 	for (l = me->sdata; l; l = l->next)
 	{
 		GValue new_value = { 0, };
 		GCSetPropData *sdata = l->data;
 
 		g_value_init (&new_value, G_VALUE_TYPE (sdata->new_value));
-		g_value_copy (sdata->new_value, &new_value);
 		
-		/* store the current value for undo */
-		if (sdata->old_value)
-		{
-			g_value_copy (sdata->old_value, sdata->new_value);
-			g_value_unset (sdata->old_value);
-			sdata->old_value = (g_free (sdata->old_value), NULL);
-		}
+		if (me->undo)
+			g_value_copy (sdata->old_value, &new_value);
 		else
-			g_value_copy (sdata->property->value, sdata->new_value);
+			g_value_copy (sdata->new_value, &new_value);
+
+
+		{
+			gchar *txt =
+				glade_property_class_make_string_from_gvalue
+				(sdata->property->class, &new_value);
+
+			g_print ("Setting %s of %s to %s (su mode %d)\n",
+				 sdata->property->class->id,
+				 sdata->property->widget->name,
+				 txt, glade_property_superuser ());
+			g_free (txt);
+		
+		}
 
 		glade_property_set_value (sdata->property, &new_value);
+
+		if (!me->set_once)
+		{
+			/* If some verify functions didnt pass on 
+			 * the first go.. we need to record the actual
+			 * properties here.
+			 */
+			g_value_copy (sdata->property->value, 
+				      sdata->new_value);
+		}
+
+
 		g_value_unset (&new_value);
 
 
 	}
+
+	if (me->set_once != FALSE)
+		glade_property_pop_superuser ();
+
+	me->set_once = TRUE;
+	me->undo     = !me->undo;
+
 	return TRUE;
 }
 

@@ -170,6 +170,13 @@ void                    glade_property_i18n_set_has_context  (GladeProperty     
 LIBGLADEUI_API
 gboolean                glade_property_i18n_get_has_context  (GladeProperty      *property);
 
+LIBGLADEUI_API
+void                    glade_property_push_superuser        (void);
+LIBGLADEUI_API
+void                    glade_property_pop_superuser         (void);
+LIBGLADEUI_API
+gboolean                glade_property_superuser             (void);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_H__ */

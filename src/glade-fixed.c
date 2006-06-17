@@ -44,7 +44,8 @@ enum {
 	PROP_X_PROP,
 	PROP_Y_PROP,
 	PROP_WIDTH_PROP,
-	PROP_HEIGHT_PROP
+	PROP_HEIGHT_PROP,
+	PROP_CAN_RESIZE
 };
 
 /* signals */
@@ -67,8 +68,8 @@ typedef struct {
 #define CHILD_WIDTH_DEF    100
 #define CHILD_HEIGHT_DEF   80
 
-#define GRAB_BORDER_WIDTH  10
-#define GRAB_CORNER_WIDTH  10
+#define GRAB_BORDER_WIDTH  7
+#define GRAB_CORNER_WIDTH  7
 
 static GObjectClass *parent_class;
 static guint         glade_fixed_signals[FIXED_SIGNALS];
@@ -433,20 +434,14 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	GtkWidget *fixed_widget, *child_widget;
 	gint parent_x, parent_y, child_x, child_y, trim_x, trim_y;
 	GladeCursorType operation;
-	GladeWidget     *debug;
-
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
-
-	/* Get relative mouse position
-	 */
 
 	/* when widget->window points to a parent window, these calculations
 	 * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
 	 * so we must always consult the event widget's window
 	 */
-
 	gdk_window_get_pointer (event_widget->window, 
 				&parent_x, &parent_y, NULL);
 
@@ -458,11 +453,12 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	trim_y = child_widget == event_widget && 
 		GTK_WIDGET_NO_WINDOW (child_widget) ? child_widget->allocation.y : 0;
 
-	operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 
-					       child_x - trim_x, 
-					       child_y - trim_y);
-
-	debug = glade_widget_get_from_gobject (event_widget);
+	if (fixed->can_resize)
+		operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 
+						       child_x - trim_x, 
+						       child_y - trim_y);
+	else
+		operation = GLADE_CURSOR_DRAG;
 
 	switch (event->type)
 	{
@@ -674,7 +670,6 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 				GObject     *new_object)
 {
 	GladeWidget *gnew_widget = glade_widget_get_from_gobject (new_object);
-	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
 
 	glade_fixed_disconnect_child (GLADE_FIXED (fixed), old_object);
 
@@ -903,6 +898,9 @@ glade_fixed_set_property (GObject      *object,
 		g_free (fixed->height_prop);
 		fixed->height_prop = g_value_dup_string (value);
 		break;
+	case PROP_CAN_RESIZE:
+		fixed->can_resize = g_value_get_boolean (value);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -919,10 +917,11 @@ glade_fixed_get_property (GObject    *object,
 
 	switch (prop_id)
 	{
-	case PROP_X_PROP:       g_value_set_string (value, fixed->x_prop);        break;
-	case PROP_Y_PROP:       g_value_set_string (value, fixed->y_prop);        break;
-	case PROP_WIDTH_PROP:   g_value_set_string (value, fixed->width_prop);    break;
-	case PROP_HEIGHT_PROP:  g_value_set_string (value, fixed->height_prop);   break;
+	case PROP_X_PROP:       g_value_set_string  (value, fixed->x_prop);        break;
+	case PROP_Y_PROP:       g_value_set_string  (value, fixed->y_prop);        break;
+	case PROP_WIDTH_PROP:   g_value_set_string  (value, fixed->width_prop);    break;
+	case PROP_HEIGHT_PROP:  g_value_set_string  (value, fixed->height_prop);   break;
+	case PROP_CAN_RESIZE:   g_value_set_boolean (value, fixed->can_resize);    break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -937,6 +936,7 @@ glade_fixed_init (GladeFixed *fixed)
 	fixed->y_prop      = g_strdup ("y");
 	fixed->width_prop  = g_strdup ("width");
 	fixed->height_prop = g_strdup ("height");
+	fixed->can_resize  = TRUE;
 }
 
 static void
@@ -992,6 +992,14 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 		 ("height_prop", _("Height property"),
 		  _("The property used to set the height of a child object"),
 		  "height-request", G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+	g_object_class_install_property 
+		(gobject_class, PROP_CAN_RESIZE,
+		 g_param_spec_boolean 
+		 ("can_resize", _("Can resize"),
+		  _("Whether this container supports resizes of child widgets"),
+		  TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
 
 	/**
 	 * GladeFixed::configure-child:

@@ -1,3 +1,19 @@
+2006-06-16  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.[ch]: Added glade_property_[push/pop]_superuser()
+
+	* src/glade-command.c: refined set_property_execute() and started using
+	  glade_property_push/pop_superuser().
+
+	* src/glade-project.c: super-user property mode at load time.
+
+	* src/glade-fixed.c: Added "can-resize" property
+
+	* src/glade-widget-class.c: Made sure to parse a "Fixed" if there are no
+	  other child tags.
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: Implemented drag on GtkBox children
+
 2006-06-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget-class.c: Vincent pointed out compile errors on gcc 4.x,

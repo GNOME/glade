@@ -888,7 +888,7 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 {
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
-
+	
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;
 
@@ -1042,8 +1042,7 @@ glade_widget_class_new (GladeXmlNode *class_node,
 		}
 	}
 	
-	if (glade_xml_node_get_children (class_node))
-		glade_widget_class_extend_with_node (widget_class, class_node, domain);
+	glade_widget_class_extend_with_node (widget_class, class_node, domain);
 	
 	/* store the GladeWidgetClass on the cache,
 	 * if it's the first time we store a widget class, then

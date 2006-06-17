@@ -59,8 +59,8 @@ struct _GladeProjectWindowPriv {
 	GtkActionGroup *recent_actions;	/* Recent projects actions */
 	GtkActionGroup *projects_list_menu_actions;/* Projects list menu actions */
 
-	GQueue *recent_projects;	/* A GtkAction queue */
-	gint rp_max;			/* Maximun Recent Projects entries */
+	GQueue *recent_projects;        /* A GtkAction queue */
+	gint    rp_max;                 /* Maximun Recent Projects entries */
 
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */

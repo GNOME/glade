@@ -49,7 +49,10 @@ struct _GladeFixed {
 	gchar            *y_prop;      /* to obtain & configure widget coordinates */
 	gchar            *width_prop;  /* property names (on child widgets) used to obtain */
 	gchar            *height_prop; /* & configure widget dimentions. */
-  
+
+        gboolean          can_resize; /* whether the container supports child resizes or only
+				       * drags.
+				       */
 
 	/* State machine used to commit properties at the end
 	 * of a drag or a resize (i.e. a "configure").
