@@ -434,20 +434,6 @@ glade_command_set_property_execute (GladeCommand *cmd)
 		else
 			g_value_copy (sdata->new_value, &new_value);
 
-
-		{
-			gchar *txt =
-				glade_property_class_make_string_from_gvalue
-				(sdata->property->class, &new_value);
-
-			g_print ("Setting %s of %s to %s (su mode %d)\n",
-				 sdata->property->class->id,
-				 sdata->property->widget->name,
-				 txt, glade_property_superuser ());
-			g_free (txt);
-		
-		}
-
 		glade_property_set_value (sdata->property, &new_value);
 
 		if (!me->set_once)
