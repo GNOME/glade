@@ -129,6 +129,7 @@ glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
 		     GladeInterface *interface)
 {
 	info->name    = glade_xml_alloc_string(interface, signal->name);
+	glade_util_replace (info->name, '-', '_');
 	info->handler = glade_xml_alloc_string(interface, signal->handler);
 	info->object  =
 		signal->userdata ?
@@ -149,6 +150,7 @@ GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 
 	signal = g_new0 (GladeSignal, 1);
 	signal->name     = g_strdup (info->name);
+	glade_util_replace (signal->name, '_', '-');
 	signal->handler  = g_strdup (info->handler);
 	signal->after    = info->after;
 	signal->userdata = g_strdup (info->object);
