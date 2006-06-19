@@ -817,8 +817,12 @@
     <glade-widget-class name="GtkVPaned" generic-name="vpaned" _title="Vertical Panes"/>
   
     <glade-widget-class name="GtkNotebook" generic-name="notebook" _title="Notebook">
-      <post-create-function>empty</post-create-function>
+      <post-create-function>glade_gtk_notebook_post_create</post-create-function>
       <properties>
+	<property id="page" save="False">
+	  <_tooltip>Set the current page (strictly for editing purposes)</_tooltip>
+	</property>
+
 	<property id="pages" _name="Number of pages" save="False" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
@@ -1280,13 +1284,13 @@
     <glade-widget-class-ref name="GtkTable"/>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
+    <glade-widget-class-ref name="GtkAspectFrame"/>
     <glade-widget-class-ref name="GtkMenuBar"/>
     <glade-widget-class-ref name="GtkToolbar"/>
     <glade-widget-class-ref name="GtkHPaned"/>
     <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkHButtonBox"/>
     <glade-widget-class-ref name="GtkVButtonBox"/>
-    <glade-widget-class-ref name="GtkAspectFrame"/>
     <glade-widget-class-ref name="GtkLayout"/>
     <glade-widget-class-ref name="GtkFixed"/>
     <glade-widget-class-ref name="GtkEventBox"/>

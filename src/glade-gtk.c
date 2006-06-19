@@ -1714,6 +1714,26 @@ glade_gtk_frame_add_child (GObject *object, GObject *child)
 }
 
 /* ----------------------------- GtkNotebook ------------------------------ */
+static void
+glade_gtk_notebook_switch_page (GtkNotebook     *notebook,
+				GtkNotebookPage *page,
+				guint            page_num,
+				gpointer         user_data)
+{
+	GladeWidget *gnotebook = glade_widget_get_from_gobject (notebook);
+
+	glade_widget_property_set (gnotebook, "page", page_num);
+
+}
+
+
+void GLADEGTK_API
+glade_gtk_notebook_post_create (GObject *notebook, GladeCreateReason reason)
+{
+	g_signal_connect (G_OBJECT (notebook), "switch-page",
+			  G_CALLBACK (glade_gtk_notebook_switch_page), NULL);
+}
+
 void GLADEGTK_API
 glade_gtk_notebook_get_n_pages (GObject *object, GValue *value)
 {

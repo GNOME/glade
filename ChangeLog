@@ -1,4 +1,11 @@
-2006-06-16  Vincent Geddes <vgeddes@metroweb.co.za>
+2006-06-19  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: Used the gtknotebook page
+	  property to negotiate pages when editing tabless notebooks
+	  (this property is not used correctly by libglade anyway... as it
+	  would be set before any pages are added).
+
+2006-06-19  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* pixmaps/Makefile.am: Rework for new icons.
 
