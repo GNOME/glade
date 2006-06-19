@@ -14,6 +14,26 @@
 
 	* src/glade-gtk.c, widgets/gtk+.xml.in: Implemented drag on GtkBox children
 
+2006-06-14  Tristan Van Berkom <tvb@gnome.org>
+
+	* doc/catalogintro.sgml: fixed typos
+
+	* src/glade-command.c: Removed unneeded "if"
+
+	* src/glade-fixed.[ch]: connect/disconnect child now takes GObject arg
+	  instead of GladeWidget (for cases of widget rebuilds), removed redundant
+	  variables
+
+	* src/glade-gnome.c, src/glade-gtk.c: changed glade_widget_class_container_add
+	  to glade_widget_add_child()
+
+	* src/glade-widget.c:
+	  o Fixed glade_widget_rebuild() in regards to using the
+	    _add_child()/_remove_child() api and visibility.
+	  o Fixed more event related selection bugs (by retrieving the mouse
+	    pointer with window_get_pointer())
+	  o Fixed GladeWidgetDataTag to use the quark everywhere
+
 2006-06-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget-class.c: Vincent pointed out compile errors on gcc 4.x,
