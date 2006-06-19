@@ -49,7 +49,11 @@
 /* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
 static GHashTable *widget_classes = NULL;
 
-#define GLADE_ICON_SIZE 24
+#define GLADE_LARGE_ICON_SUBDIR "22x22"
+#define GLADE_LARGE_ICON_SIZE 22
+
+#define GLADE_SMALL_ICON_SUBDIR "16x16"
+#define GLADE_SMALL_ICON_SIZE 16
 
 typedef struct {
 	gchar *parent_name;
@@ -114,8 +118,11 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_list_foreach (widget_class->signals, (GFunc) glade_signal_free, NULL);
 	g_list_free (widget_class->signals);
 
-	if (widget_class->icon)
-		g_object_unref (G_OBJECT (widget_class->icon));
+	if (widget_class->large_icon != NULL)
+		g_object_unref (G_OBJECT (widget_class->large_icon));
+
+	if (widget_class->small_icon != NULL)
+		g_object_unref (G_OBJECT (widget_class->small_icon));
 }
 
 static GList *
@@ -289,44 +296,88 @@ glade_widget_class_list_signals (GladeWidgetClass *class)
 	return g_list_reverse (signals);
 }
 
-static GdkPixbuf *
-glade_widget_class_create_icon (GladeWidgetClass *class)
+static void
+glade_widget_class_load_icons (GladeWidgetClass *class)
 {
-	GdkPixbuf *icon  = NULL;
 	GError    *error = NULL;
-	gchar     *icon_path, *icon_name;
+	gchar     *icon_path;
 
-	if (class->generic_name)
+
+	/* only certain widget classes need to have icons */
+	if (G_TYPE_IS_INSTANTIATABLE (class->type) == FALSE ||
+            G_TYPE_IS_ABSTRACT (class->type) == TRUE ||
+            class->generic_name == NULL)
 	{
-		icon_name = g_strdup_printf ("%s.png", class->generic_name);
-		icon_path = g_build_filename (glade_pixmaps_dir, icon_name, NULL);
-
-		if ((icon = 
-		     gdk_pixbuf_new_from_file (icon_path, &error)) == NULL)
-		{
-			g_warning ("Unable to load icon %s (%s)",
-				   class->name, error->message);
-			error = (g_error_free (error), NULL);
-
-			/* Load missing image to the stock
-			 */
-			if ((icon = gtk_icon_theme_load_icon 
-			     (gtk_icon_theme_get_default (), 
-			      GTK_STOCK_MISSING_IMAGE, 
-			      GLADE_ICON_SIZE, 
-			      GTK_ICON_LOOKUP_USE_BUILTIN, &error)) == NULL)
-			{
-				g_critical ("Unable to load an icon for "
-					    "%s from stock (%s)", 
-					    class->name, 
-					    error->message);
-				error = (g_error_free (error), NULL);
-			}
-		}
-		g_free (icon_name);
-		g_free (icon_path);
+		return;
 	}
-	return icon;
+
+
+	/* load large 22x22 icon */
+	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S GLADE_LARGE_ICON_SUBDIR G_DIR_SEPARATOR_S "%s.png", 
+				     glade_pixmaps_dir, 
+				     class->generic_name);
+
+	class->large_icon = gdk_pixbuf_new_from_file_at_size (icon_path, 
+							      GLADE_LARGE_ICON_SIZE, 
+							      GLADE_LARGE_ICON_SIZE, 
+							      &error);
+	
+	if (class->large_icon == NULL)
+	{
+		g_warning (_("Unable to load icon for %s (%s)"), class->name, error->message);
+
+		g_error_free (error);
+		error = NULL;
+
+		/* use stock missing icon */
+		class->large_icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
+							      GTK_STOCK_MISSING_IMAGE, 
+						  	      GLADE_LARGE_ICON_SIZE, 
+							      GTK_ICON_LOOKUP_USE_BUILTIN, &error);
+		if (class->large_icon == NULL)
+		{
+			g_critical (_("Unable to load stock icon (%s)"),
+				    error->message);
+
+			g_error_free (error);
+			error = NULL;
+		}
+	}
+	g_free (icon_path);
+
+	/* load small 16x16 icon */
+	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S GLADE_SMALL_ICON_SUBDIR G_DIR_SEPARATOR_S "%s.png", 
+				     glade_pixmaps_dir, 
+				     class->generic_name);
+
+	class->small_icon = gdk_pixbuf_new_from_file_at_size (icon_path, 
+							      GLADE_SMALL_ICON_SIZE, 
+							      GLADE_SMALL_ICON_SIZE, 
+							      &error);
+	
+	if (class->small_icon == NULL)
+	{
+		g_warning (_("Unable to load icon for %s (%s)"), class->name, error->message);
+
+		g_error_free (error);
+		error = NULL;
+
+		/* use stock missing icon */
+		class->small_icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
+							      GTK_STOCK_MISSING_IMAGE, 
+						  	      GLADE_SMALL_ICON_SIZE, 
+							      GTK_ICON_LOOKUP_USE_BUILTIN, &error);
+		if (class->small_icon == NULL)
+		{
+			g_critical (_("Unable to load stock icon (%s)"),
+				    error->message);
+
+			g_error_free (error);
+			error = NULL;
+		}
+	}
+	g_free (icon_path);
+
 }
 
 static void
@@ -995,6 +1046,8 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->generic_name = generic_name;
 	widget_class->palette_name = title;
 	widget_class->type         = glade_util_get_type_from_name (name);
+	widget_class->large_icon   = NULL;
+	widget_class->small_icon   = NULL;
 
 	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type)    &&
 	    G_TYPE_IS_ABSTRACT (widget_class->type) == FALSE &&
@@ -1025,7 +1078,8 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->properties = glade_widget_class_list_properties (widget_class);
 	widget_class->signals    = glade_widget_class_list_signals (widget_class);
 	widget_class->children   = glade_widget_class_list_children (widget_class);
-	widget_class->icon       = glade_widget_class_create_icon (widget_class);
+
+	glade_widget_class_load_icons (widget_class);
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;

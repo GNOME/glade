@@ -609,7 +609,7 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 				       GLADE_UI_ERROR,
 			     	       _("Could not save the file %s. You do not have the permissions necessary to save the file."), 
 				       real_path);
-
+		g_free (real_path);
 		return;
 	}
 
@@ -623,6 +623,7 @@ gpw_save_as (GladeProjectWindow *gpw, const gchar *dialog_title)
 				     	       _("Could not save file %s. Another project with that path is open."), 
 					       real_path);
 
+			g_free (real_path);
 			return;
 		}
 

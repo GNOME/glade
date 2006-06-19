@@ -169,7 +169,10 @@ struct _GladeWidgetClass
 	gchar *book;         /* Devhelp search namespace
 			      */
 
-	GdkPixbuf *icon;     /* The GdkPixbuf icon for the widget */
+	GdkPixbuf *large_icon;     /* The 22x22 icon for the widget */
+
+	GdkPixbuf *small_icon;     /* The 16x16 icon for the widget */
+
 
 	gboolean fixed;      /* If this is a GtkContainer, use free-form
 			      * placement with drag/resize/paste at mouse...

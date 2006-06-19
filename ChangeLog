@@ -1,3 +1,23 @@
+2006-06-16  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* pixmaps/Makefile.am: Rework for new icons.
+
+	* configure.in: Add new Makefiles for output.
+
+	* src/glade-clipboard-view.c, src/glade-project-view.c:
+	  o Treeview widgets now use 16x16 icons.
+	  o More padding between icons and widget labels.
+
+	* src/glade-palette.c: Now uses 22x22 icons.
+
+	* src/glade-widget-class.[ch]:
+	  o Widget classes now have a 16x16 'small' icon and a
+	    22x22 'large' icon.
+	  o Abstract widget classes do not need to have icons.
+
+	* src/glade-project-window.c: fix memory leak in
+	  gpw_save_as ().
+	
 2006-06-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-signal.c: fixed bug 345209
@@ -261,12 +281,12 @@
 	
 2006-06-03  Vincent Geddes <vgeddes@metroweb.co.za>
 
-        * src/glade-project-window.c, src/glade-app.[ch],
-          src/glade-utils.[ch]: 
+	 * src/glade-project-window.c, src/glade-app.[ch],
+	   src/glade-utils.[ch]: 
 	  o Fix for bug 337959.
 	  o Application menus now marked for translation
 
-        * src/main.c, glade-editor-property.c: 
+	 * src/main.c, glade-editor-property.c: 
 	  o Fixed memory leaks.
 	  o stdlib.h now included on all platforms
 	
@@ -1251,7 +1271,7 @@
 	  o glade_gtk_menu_editor_reorder () fixed, so you can move a
 	    submenu item into the menubar.
 	  o glade_gtk_menu_bar_append_new_item () now sets "stock"
-            property.
+	     property.
 	  o glade_gtk_menu_editor_is_child () item has to be a
 	    GtkMenuItem. (this prevents treeview to be refresh when adding
 	    an image to an item :)
@@ -2125,7 +2145,7 @@
 	
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
-        * src/glade-widget.c: Dont present top-levels upon load.
+	 * src/glade-widget.c: Dont present top-levels upon load.
 	
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
@@ -2204,15 +2224,15 @@
 	  src/glade-command.h src/glade-cursor.h src/glade-editor.c 
 	  src/glade-editor.h src/glade-gtk.c src/glade-palette.h 
 	  src/glade-parameter.h src/glade-parser.h 
-          src/glade-placeholder.c src/glade-placeholder.h 
-          src/glade-project-view.h src/glade-project-window.h 
-          src/glade-project.c src/glade-project.h 
-          src/glade-property-class.c src/glade-property-class.h 
-          src/glade-property.c src/glade-property.h 
-          src/glade-signal-editor.c src/glade-signal-editor.h 
-          src/glade-signal.h src/glade-utils.h src/glade-widget-class.c 
-          src/glade-widget-class.h src/glade-widget.c src/glade-widget.h 
-          src/glade-xml-utils.h src/glade.h:
+	  src/glade-placeholder.c src/glade-placeholder.h 
+	  src/glade-project-view.h src/glade-project-window.h 
+	  src/glade-project.c src/glade-project.h 
+	  src/glade-property-class.c src/glade-property-class.h 
+	  src/glade-property.c src/glade-property.h 
+	  src/glade-signal-editor.c src/glade-signal-editor.h 
+	  src/glade-signal.h src/glade-utils.h src/glade-widget-class.c 
+	  src/glade-widget-class.h src/glade-widget.c src/glade-widget.h 
+	  src/glade-xml-utils.h src/glade.h:
 	  Now "glade.h" is the libgladeui API include for both the plugin and
 	  the application side (Fixed sources in consequence to a few broken types).
 

@@ -191,7 +191,7 @@ glade_palette_create_widget_class_button (GladePalette *palette,
 
 	label = gtk_label_new (widget_class->palette_name);
 	radio = gtk_radio_button_new (palette->widgets_button_group);
-	image = gtk_image_new_from_pixbuf (widget_class->icon);
+	image = gtk_image_new_from_pixbuf (widget_class->large_icon);
 
 	g_object_set_data (G_OBJECT (radio), GLADE_PALETTE_BUTTON_CLASS_DATA,
 			   widget_class);

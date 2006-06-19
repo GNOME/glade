@@ -606,13 +606,13 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	g_return_if_fail (widget->name != NULL);
 	g_return_if_fail (widget->widget_class != NULL);
 	g_return_if_fail (widget->widget_class->name != NULL);
-	g_return_if_fail (widget->widget_class->icon != NULL);
+	g_return_if_fail (widget->widget_class->small_icon != NULL);
 
 	switch (type) 
 	{
 	case CELL_ICON:
 		g_object_set (G_OBJECT (cell), "pixbuf", 
-			      widget->widget_class->icon, NULL);
+			      widget->widget_class->small_icon, NULL);
 		break;
 	case CELL_NAME:
 		g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
@@ -665,6 +665,8 @@ glade_project_view_add_columns (GtkTreeView *view)
 						 GINT_TO_POINTER (CELL_ICON), NULL);
 
 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "xpad", 6, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_project_view_cell_function,
