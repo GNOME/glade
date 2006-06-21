@@ -544,3 +544,24 @@ glade_builtin_string_from_key (guint key)
 			return GladeKeys[i].name;
 	return NULL;
 }
+
+GType
+glade_item_appearance_get_type (void)
+{
+	static GType etype = 0;
+
+	if (etype == 0)
+	{
+		static const GEnumValue values[] = {
+			{ GLADE_ITEM_ICON_AND_LABEL, "GLADE_ITEM_ICON_AND_LABEL", "icon-and-label" },
+			{ GLADE_ITEM_ICON_ONLY,      "GLADE_ITEM_ICON_ONLY",      "icon-only" },
+			{ GLADE_ITEM_LABEL_ONLY,     "GLADE_ITEM_LABEL_ONLY",     "label-only" },
+			{ 0, NULL, NULL }
+		};
+
+	etype = g_enum_register_static ("GladeItemAppearance", values);
+
+	}
+
+	return etype;
+}

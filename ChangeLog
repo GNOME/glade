@@ -1,3 +1,20 @@
+2006-06-20  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/Makefile.am: Added glade-palette-item.[ch], 
+	  glade-palette-box.[ch] and glade-palette-expander.[ch] 
+	  to build sources.
+
+	* src/glade.h, src/glade-builtins.[ch]: Declare an enum
+	  GladeItemAppearance and define a GType for it.
+
+	* src/glade-palette.[ch]: Entirely reworked. new API.
+
+	* src/glade-app.c, src/glade-fixed.c, 
+	  src/glade-placeholder.c: Recognize new palette API.
+
+	* src/glade-project-window.c: Added UI functionality
+	  to support features in the new palette.
+
 2006-06-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Added bugs 345438, 303679 and 345470 to the blockers.

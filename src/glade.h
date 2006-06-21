@@ -29,6 +29,15 @@ typedef struct _GladeWidget       GladeWidget;
 typedef struct _GladeProperty     GladeProperty;
 typedef struct _GladeProject      GladeProject;
 
+/* have to put this here to avoid circular header dependencies */
+typedef enum {
+
+	GLADE_ITEM_ICON_AND_LABEL,
+	GLADE_ITEM_ICON_ONLY,
+	GLADE_ITEM_LABEL_ONLY
+
+} GladeItemAppearance;
+
 #include "glade-widget-class.h"
 #include "glade-widget.h"
 #include "glade-property-class.h"

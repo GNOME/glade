@@ -28,6 +28,7 @@ LIBGLADEUI_API const GladeKey GladeKeys[];
 #define	GLADE_TYPE_ACCEL_GLIST         (glade_accel_glist_get_type())
 #define	GLADE_TYPE_PARAM_OBJECTS       (glade_param_objects_get_type())
 #define	GLADE_TYPE_PARAM_ACCEL         (glade_param_accel_get_type())
+#define GLADE_ITEM_APPEARANCE_TYPE     (glade_item_appearance_get_type())
 
 #define GLADE_IS_STOCK(pspec) \
         (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GLADE_TYPE_STOCK))
@@ -51,6 +52,8 @@ LIBGLADEUI_API GType        glade_glist_get_type          (void) G_GNUC_CONST;
 LIBGLADEUI_API GType        glade_accel_glist_get_type    (void) G_GNUC_CONST;
 LIBGLADEUI_API GType        glade_param_objects_get_type  (void) G_GNUC_CONST;
 LIBGLADEUI_API GType        glade_param_accel_get_type    (void) G_GNUC_CONST;
+LIBGLADEUI_API GType        glade_item_appearance_get_type (void) G_GNUC_CONST;
+
 
 LIBGLADEUI_API guint        glade_builtin_key_from_string (const gchar   *string);
 LIBGLADEUI_API const gchar *glade_builtin_string_from_key (guint          key);
@@ -58,6 +61,7 @@ LIBGLADEUI_API const gchar *glade_builtin_string_from_key (guint          key);
 
 LIBGLADEUI_API GList       *glade_accel_list_copy         (GList         *accels);
 LIBGLADEUI_API void         glade_accel_list_free         (GList         *accels);
+
 
 
 LIBGLADEUI_API GParamSpec  *glade_param_spec_objects      (const gchar   *name,

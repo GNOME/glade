@@ -64,13 +64,6 @@ struct _GladeAppPriv {
 	GladeEditor *editor;           /* See glade-editor */
 	GladeClipboard *clipboard;     /* See glade-clipboard */
 	GList *catalogs;               /* See glade-catalog */
-	GladeWidgetClass *add_class;   /* The GladeWidgetClass that we are about
-					* to add to a container. NULL if no
-					* class is to be added. This also has to
-					* be in sync with the depressed button
-					* in the GladePalette
-					*/
-	GladeWidgetClass *alt_class;
 	
 	GList *views;    /* A list of GladeProjectView item */
 	GList *projects; /* The list of Projects */
@@ -274,7 +267,7 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 	GladeWidget *widget;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	class = palette->current;
+	class = glade_palette_get_current_item_class (palette);
 
 	/* class may be NULL if the selector was pressed */
 	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
@@ -288,20 +281,8 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 						    app->priv->accel_group);
 		}
 
-		glade_palette_unselect_widget (palette);
-		app->priv->add_class = NULL;
+		glade_palette_deselect_current_item (palette);
 	}
-	else if ((app->priv->add_class = class) != NULL)
-		app->priv->alt_class = class;
-}
-
-static void
-on_palette_catalog_changed (GladePalette *palette, GladeApp *app)
-{
-	g_return_if_fail (GLADE_IS_PALETTE (palette));
-
-	glade_palette_unselect_widget (palette);
-	app->priv->alt_class = app->priv->add_class = NULL;
 }
 
 static gboolean
@@ -349,23 +330,19 @@ glade_app_init (GladeApp *app)
 		initialized = TRUE;
 	}
 	app->priv = g_new0 (GladeAppPriv, 1);
-	
-	app->priv->add_class = NULL;
-	app->priv->alt_class = NULL;
+
 	app->priv->accel_group = NULL;
 	
 	/* Initialize app objects */
 	app->priv->catalogs = glade_catalog_load_all ();
 	
 	/* Create palette */
-	app->priv->palette = glade_palette_new (app->priv->catalogs);
+	app->priv->palette = glade_palette_new (app->priv->catalogs, GLADE_ITEM_ICON_ONLY);
 	g_object_ref (app->priv->palette);
 	gtk_object_sink (GTK_OBJECT (app->priv->palette));
 	gtk_widget_show_all (GTK_WIDGET (app->priv->palette));
 	g_signal_connect (G_OBJECT (app->priv->palette), "toggled",
 			  G_CALLBACK (on_palette_button_clicked), app);
-	g_signal_connect (G_OBJECT (app->priv->palette), "catalog-changed",
-			  G_CALLBACK (on_palette_catalog_changed), app);
 
 	/* Create Editor */
 	app->priv->editor = GLADE_EDITOR (glade_editor_new ());
@@ -683,20 +660,6 @@ glade_app_get_editor (void)
 {
 	GladeApp *app    = glade_app_get ();
 	return app->priv->editor;
-}
-
-GladeWidgetClass *
-glade_app_get_add_class (void)
-{
-	GladeApp *app   = glade_app_get ();
-	return app->priv->add_class;
-}
-
-GladeWidgetClass *
-glade_app_get_alt_class (void)
-{
-	GladeApp         *app   = glade_app_get ();
-	return app->priv->alt_class;
 }
 
 GladePalette *

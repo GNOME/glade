@@ -572,7 +572,7 @@ glade_fixed_child_event (GtkWidget   *widget,
 		/* Early return for placeholders with selection in
 		 * the palette.
 		 */
-		if (glade_app_get_add_class ())
+		if (glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
@@ -715,15 +715,15 @@ glade_fixed_event (GtkWidget   *widget,
 		   GladeWidget *gwidget_fixed)
 {
 	GladeFixed       *fixed = GLADE_FIXED (gwidget_fixed);
-	GladeWidgetClass *add_class, *alt_class;
+	GladeWidgetClass *item_class;
 	GtkWidget        *event_widget;
 	gboolean          handled = FALSE;
 	GladeWidget      *event_gwidget, *search;
 
-	add_class = glade_app_get_add_class ();
-	alt_class = glade_app_get_alt_class ();
-
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
+
+
+	item_class = glade_palette_get_current_item_class (glade_app_get_palette ());
 
 	/* Get the event widget and the deep widget */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
@@ -763,7 +763,7 @@ glade_fixed_event (GtkWidget   *widget,
 		/* Early return for placeholders with selection in
 		 * the palette.
 		 */
-		if (glade_app_get_add_class ())
+		if (item_class)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
@@ -810,33 +810,29 @@ glade_fixed_event (GtkWidget   *widget,
 	switch (event->type)
 	{
 	case GDK_BUTTON_PRESS: // add widget
-		if (((GdkEventButton *)event)->button == 1)
+		if (((GdkEventButton *) event)->button == 1)
 		{
 
-			if ((add_class != NULL)        ||
-				 ((((GdkEventButton *)event)->state & GDK_SHIFT_MASK) &&
-				  alt_class != NULL))
+			if (item_class != NULL)
 			{
 				/* A widget type is selected in the palette.
 				 * Add a new widget of that type.
 				 */
 				fixed->creating = TRUE;
-				glade_command_create
-					(add_class ? add_class : alt_class, 
-					 GLADE_WIDGET (fixed), NULL, 
-					 GLADE_WIDGET (fixed)->project);
+				glade_command_create (item_class, 
+						      GLADE_WIDGET (fixed), NULL, 
+						      GLADE_WIDGET (fixed)->project);
 				fixed->creating = FALSE;
 				
 				/* reset the palette */
-				glade_palette_unselect_widget 
-					(glade_app_get_palette ());
+				glade_palette_deselect_current_item (glade_app_get_palette ());
 				handled = TRUE;
 			}
 		}
 		break;
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
-		if (glade_app_get_add_class ())
+		if (item_class != NULL)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);

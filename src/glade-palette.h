@@ -1,9 +1,40 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * glade-palette.h
+ *
+ * Copyright (C) 2006 The GNOME Foundation.
+ * Copyright (C) 2001-2005 Ximian, Inc.
+ *
+ * Authors:
+ *   Chema Celorio
+ *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
+ *   Vincent Geddes <vgeddes@metroweb.co.za>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+
 #ifndef __GLADE_PALETTE_H__
 #define __GLADE_PALETTE_H__
 
-G_BEGIN_DECLS
+#include "glade.h"
+#include "glade-palette-item.h"
 
+#include <gtk/gtkvbox.h>
+
+G_BEGIN_DECLS
 
 #define GLADE_TYPE_PALETTE              (glade_palette_get_type ())
 #define GLADE_PALETTE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PALETTE, GladePalette))
@@ -12,70 +43,46 @@ G_BEGIN_DECLS
 #define GLADE_IS_PALETTE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PALETTE))
 #define GLADE_PALETTE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PALETTE, GladePaletteClass))
 
-typedef struct _GladePalette       GladePalette;
-typedef struct _GladePaletteClass  GladePaletteClass;
+typedef struct _GladePalette         GladePalette;
+typedef struct _GladePalettePrivate  GladePalettePrivate;
+typedef struct _GladePaletteClass    GladePaletteClass;
 
-
-/* The GladePalette is used so that the user can choose a widget to be
- * created. It is Composed by a section where you can select the
- * group of widgets to choose from an a table with icons for each
- * widget available.
- */
 struct _GladePalette
 {
 	GtkVBox vbox; /* The parent is a vbox */
 
-	GladeWidgetClass *current; /* The GladeWidgetClass corrisponding
-				    * to the selected button. NULL if the
-				    * selector button is pressed.
-				    */
-
-	GtkWidget *selector; /* The selector is a button that is
-			      * clicked to cancel the add widget action.
-			      * This sets our cursor back to the "select
-			      * widget" mode. This button is part of the
-			      * widgets_button_group, so that when no widget
-			      * is selected, this button is pressed.
-			      */
-
-	GtkWidget *label;  /* A label which contains the name of the class
-			    * currently selected or "Selector" if no widget
-			    * class is selected
-			    */
-
-
-	GtkWidget *notebook; /* Where we store the different catalogs */
-
-	gint nb_sections; /* The number of sections in this palette */
-
-	GtkWidget *catalog_selector; /* The combo_box with the names of the
-				      * various catalogs so the user can select
-				      * it.
-				      */
-
-	GSList *widgets_button_group; /* Each widget in a section has a button
-				       * in the palette. This is the button
-				       * group, since only one may be pressed.
-				       */
 };
 
 struct _GladePaletteClass
 {
 	GtkVBoxClass parent_class;
 
-	void (*toggled)        (GladePalette *palette);
-	void (*catalog_change) (GladePalette *palette);
+	void (*toggled)    (GladePalette *palette);
 };
 
 LIBGLADEUI_API
-GType glade_palette_get_type (void);
+GType                glade_palette_get_type (void) G_GNUC_CONST;
 
 LIBGLADEUI_API
-GladePalette *glade_palette_new (GList *catalogs);
+GtkWidget           *glade_palette_new (const GList *catalogs, GladeItemAppearance appearance);
 
 LIBGLADEUI_API
-void glade_palette_unselect_widget (GladePalette *palette);
+void                 glade_palette_deselect_current_item (GladePalette *palette);
 
+LIBGLADEUI_API
+GladeWidgetClass    *glade_palette_get_current_item_class (GladePalette *palette) G_GNUC_CONST;
+
+LIBGLADEUI_API
+GladeItemAppearance  glade_palette_get_item_appearance (GladePalette *palette) G_GNUC_CONST;
+
+LIBGLADEUI_API
+void                 glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance appearance);
+
+LIBGLADEUI_API
+gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette) G_GNUC_CONST;
+
+LIBGLADEUI_API
+void		     glade_palette_set_use_small_item_icons (GladePalette *palette, gboolean use_small_item_icons);
 
 G_END_DECLS
 

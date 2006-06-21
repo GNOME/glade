@@ -1101,6 +1101,29 @@ gpw_show_clipboard_view (GladeProjectWindow *gpw)
 }
 
 static void
+gpw_palette_appearance_change_cb (GtkRadioAction *action,
+				  GtkRadioAction *current,
+				  GladeProjectWindow *gpw)
+{
+	gint value;
+
+	value = gtk_radio_action_get_current_value (action);
+
+	glade_palette_set_item_appearance (glade_app_get_palette (), value);
+
+}
+
+static void
+gpw_palette_toggle_small_icons_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+		glade_palette_set_use_small_item_icons (glade_app_get_palette(), TRUE);
+	else
+		glade_palette_set_use_small_item_icons (glade_app_get_palette(), FALSE);
+
+}
+
+static void
 gpw_show_palette_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gpw_show_palette (gpw, TRUE);
@@ -1224,10 +1247,17 @@ static const gchar *ui_info =
 "      <menuitem action='Delete'/>\n"
 "    </menu>\n"
 "    <menu action='ViewMenu'>\n"
-"      <menuitem action='Palette'/>\n"
 "      <menuitem action='PropertyEditor'/>\n"
 "      <menuitem action='Clipboard'/>\n"
+"      <menuitem action='Palette'/>\n"
 "      <separator/>\n"
+"      <menu action='PaletteAppearance'>\n"
+"        <menuitem action='IconsAndLabels'/>\n"
+"        <menuitem action='IconsOnly'/>\n"
+"        <menuitem action='LabelsOnly'/>\n"
+"        <separator/>\n"
+"        <menuitem action='UseSmallIcons'/>\n"
+"      </menu>\n"
 "      <menuitem action='PropertyEditorHelp'/>\n"
 "    </menu>\n"
 "    <menu action='ProjectMenu'>\n"
@@ -1269,6 +1299,9 @@ static GtkActionEntry static_entries[] = {
 	
 	{ "Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	  N_("Quit the program"), G_CALLBACK (gpw_quit_cb) },
+
+	/* ViewMenu */
+	{ "PaletteAppearance", NULL, "Palette _Appearance" },
 	
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL,
@@ -1311,26 +1344,47 @@ static GtkActionEntry project_entries[] = {
 	  N_("Delete the selection"), G_CALLBACK (gpw_delete_cb) },
 
 	/* ViewMenu */
-	{ "Palette", NULL, N_("_Palette"), NULL,
-	  N_("Show the palette of widgets"),
-	  G_CALLBACK (gpw_show_palette_cb) },
 
 	{ "PropertyEditor", NULL, N_("Property _Editor"), NULL,
 	  N_("Show the property editor"),
 	  G_CALLBACK (gpw_show_editor_cb) },
+
+	{ "Palette", NULL, N_("_Palette"), NULL,
+	  N_("Show the palette of widgets"),
+	  G_CALLBACK (gpw_show_palette_cb) },
 	
 	{ "Clipboard", NULL, N_("_Clipboard"), NULL,
 	  N_("Show the clipboard"),
 	  G_CALLBACK (gpw_show_clipboard_cb) }
+
+
 };
 static guint n_project_entries = G_N_ELEMENTS (project_entries);
 
 static GtkToggleActionEntry view_entries[] = {
+
+	{ "UseSmallIcons", NULL, N_("_Use Small Icons"), NULL,
+	  N_("Show items using small icons"),
+	  G_CALLBACK (gpw_palette_toggle_small_icons_cb), FALSE },
+
 	{ "PropertyEditorHelp", NULL, N_("Context _Help"), NULL,
 	  N_("Show or hide contextual help buttons in the editor"),
 	  G_CALLBACK (gpw_toggle_editor_help_cb), FALSE }
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
+
+static GtkRadioActionEntry radio_entries[] = {
+
+	{ "IconsAndLabels", NULL, N_("Text beside icons"), NULL, 
+	  N_("Display items as text beside icons"), GLADE_ITEM_ICON_AND_LABEL },
+
+	{ "IconsOnly", NULL, N_("_Icons only"), NULL, 
+	  N_("Display items as icons only"), GLADE_ITEM_ICON_ONLY },
+
+	{ "LabelsOnly", NULL, N_("_Text only"), NULL, 
+	  N_("Display items as text only"), GLADE_ITEM_LABEL_ONLY },
+};
+static guint n_radio_entries = G_N_ELEMENTS (radio_entries);
 
 static void
 gpw_menu_item_selected_cb (GtkItem *item, GladeProjectWindow *gpw)
@@ -1404,6 +1458,9 @@ gpw_construct_menu (GladeProjectWindow *gpw)
 					     view_entries,
 					     n_view_entries, 
 					     gpw);
+	gtk_action_group_add_radio_actions (gpw->priv->static_actions, radio_entries,
+					    n_radio_entries, GLADE_ITEM_ICON_ONLY,
+					    G_CALLBACK (gpw_palette_appearance_change_cb), gpw);
 
 	gpw->priv->project_actions = gtk_action_group_new (GLADE_ACTION_GROUP_PROJECT);
 	gtk_action_group_set_translation_domain (gpw->priv->project_actions, GETTEXT_PACKAGE);

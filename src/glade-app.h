@@ -77,10 +77,6 @@ GtkWidget*         glade_app_get_window (void);
 LIBGLADEUI_API 
 GladeEditor*       glade_app_get_editor (void);
 LIBGLADEUI_API 
-GladeWidgetClass*  glade_app_get_add_class (void);
-LIBGLADEUI_API 
-GladeWidgetClass*  glade_app_get_alt_class (void);
-LIBGLADEUI_API 
 GladePalette*      glade_app_get_palette (void);
 LIBGLADEUI_API 
 GladeClipboard*    glade_app_get_clipboard (void);

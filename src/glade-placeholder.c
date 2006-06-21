@@ -276,15 +276,15 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 static gboolean                                                                 
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
-	GladeWidgetClass *add_class;
+	GladeWidgetClass *item_class;
 	GladeWidget      *gparent;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
 	gparent   = glade_placeholder_get_parent (GLADE_PLACEHOLDER (widget));
-	add_class = glade_app_get_add_class ();
+	item_class = glade_palette_get_current_item_class (glade_app_get_palette ());
 
-	if (add_class == NULL && 
+	if (item_class == NULL && 
 	    /* If we are the child of a widget that is in a GladeFixed, then
 	     * we are the means of drag/resize and we dont want to fight for
 	     * the cursor (ideally; GladeCursor should somehow deal with such
@@ -293,7 +293,7 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 	    (gparent->parent && 
 	     GLADE_IS_FIXED (gparent->parent)) == FALSE)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-	else if (add_class)
+	else if (item_class)
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 
 	return FALSE;
@@ -304,14 +304,14 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
 	GladePlaceholder *placeholder;
 	GladeProject     *project;
-	GladeWidgetClass *add_class, *alt_class;
+	GladeWidgetClass *item_class;
 	GladePalette     *palette;
 	gboolean          handled = FALSE;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-	add_class = glade_app_get_add_class ();
-	alt_class = glade_app_get_alt_class ();
+	item_class = glade_palette_get_current_item_class (glade_app_get_palette ());
+
 	palette = glade_app_get_palette ();
 	placeholder = GLADE_PLACEHOLDER (widget);
 	project = glade_placeholder_get_project (placeholder);
@@ -330,20 +330,18 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 			handled = TRUE;
 		} 
-		else if ((add_class != NULL)        ||
-			 ((event->state & GDK_SHIFT_MASK) &&
-			  alt_class != NULL))
+		else if (item_class != NULL)
 		{
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
 			 */
 			glade_command_create
-				(add_class ? add_class : alt_class, 
+				(item_class, 
 				 glade_placeholder_get_parent (placeholder),
 				 placeholder, project);
 
 			/* reset the palette */
-			glade_palette_unselect_widget (palette);
+			glade_palette_deselect_current_item (palette);
 
 			handled = TRUE;
 		}
