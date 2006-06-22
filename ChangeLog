@@ -1,3 +1,13 @@
+2006-06-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-palette.c: 's/g_return_if_fail/g_return_val_if_fail/'
+
+	* src/glade.h, src/glade-builtins.h: Only the forward declaration
+	  goes in glade.h.
+
+	* src/glade-widget-class.c, widgets/gtk+.xml.in: 
+	  Fixed inheritance of the "->fixed" member in glade_widget_class_merge().
+
 2006-06-20  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/Makefile.am: Added glade-palette-item.[ch], 

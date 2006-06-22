@@ -471,7 +471,6 @@ glade_palette_init (GladePalette *palette)
 
 	/* Create tooltips */
 	priv->tooltips = gtk_tooltips_new ();
-	/*gtk_tooltips_disable (priv->tooltips);*/
 	g_object_ref (priv->tooltips);
 	gtk_object_sink (GTK_OBJECT (priv->tooltips));
 
@@ -628,7 +627,8 @@ GladeItemAppearance
 glade_palette_get_item_appearance (GladePalette *palette)
 {
 	GladePalettePrivate *priv;
-	g_return_if_fail (GLADE_IS_PALETTE (palette));
+	g_return_val_if_fail (GLADE_IS_PALETTE (palette), 
+			      GLADE_ITEM_ICON_ONLY);
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
 	return priv->item_appearance;
@@ -640,7 +640,7 @@ gboolean
 glade_palette_get_use_small_item_icons (GladePalette *palette)
 {
 	GladePalettePrivate *priv;
-	g_return_if_fail (GLADE_IS_PALETTE (palette));
+	g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
 	return priv->use_small_item_icons;

@@ -939,6 +939,9 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 {
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (widget_class));
 	g_return_if_fail (GLADE_IS_WIDGET_CLASS (parent_class));
+
+	if (widget_class->fixed == FALSE)
+		widget_class->fixed = parent_class->fixed;
 	
 	if (widget_class->post_create_function == NULL)
 		widget_class->post_create_function = parent_class->post_create_function;

@@ -25,18 +25,10 @@
 /* Circular header dependancie are fixed here with forward 
  * declarations.
  */
-typedef struct _GladeWidget       GladeWidget;
-typedef struct _GladeProperty     GladeProperty;
-typedef struct _GladeProject      GladeProject;
-
-/* have to put this here to avoid circular header dependencies */
-typedef enum {
-
-	GLADE_ITEM_ICON_AND_LABEL,
-	GLADE_ITEM_ICON_ONLY,
-	GLADE_ITEM_LABEL_ONLY
-
-} GladeItemAppearance;
+typedef struct _GladeWidget         GladeWidget;
+typedef struct _GladeProperty       GladeProperty;
+typedef struct _GladeProject        GladeProject;
+typedef enum   _GladeItemAppearance GladeItemAppearance;
 
 #include "glade-widget-class.h"
 #include "glade-widget.h"

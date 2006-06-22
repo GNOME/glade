@@ -16,6 +16,14 @@ struct _GladeKey {
 	gchar *name;
 };
 
+enum _GladeItemAppearance {
+
+	GLADE_ITEM_ICON_AND_LABEL,
+	GLADE_ITEM_ICON_ONLY,
+	GLADE_ITEM_LABEL_ONLY
+
+};
+
 LIBGLADEUI_API const GladeKey GladeKeys[];
 
 #define  GLADE_KEYS_LAST_ALPHANUM    "9"
