@@ -732,7 +732,6 @@ glade_fixed_event (GtkWidget   *widget,
 	GtkWidget        *event_widget;
 	gboolean          handled = FALSE;
 	GladeWidget      *event_gwidget, *search;
-	gint              event_x, event_y;
 
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
 

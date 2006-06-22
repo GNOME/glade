@@ -49,11 +49,13 @@
 /* hash table that will contain all the GtkWidgetClass'es created, indexed by its name */
 static GHashTable *widget_classes = NULL;
 
+
 #define GLADE_LARGE_ICON_SUBDIR "22x22"
 #define GLADE_LARGE_ICON_SIZE 22
 
 #define GLADE_SMALL_ICON_SUBDIR "16x16"
 #define GLADE_SMALL_ICON_SIZE 16
+
 
 typedef struct {
 	gchar *parent_name;
@@ -118,11 +120,16 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	g_list_foreach (widget_class->signals, (GFunc) glade_signal_free, NULL);
 	g_list_free (widget_class->signals);
 
+	if (widget_class->cursor != NULL)
+		gdk_cursor_unref (widget_class->cursor);
+
+
 	if (widget_class->large_icon != NULL)
 		g_object_unref (G_OBJECT (widget_class->large_icon));
 
 	if (widget_class->small_icon != NULL)
 		g_object_unref (G_OBJECT (widget_class->small_icon));
+
 }
 
 static GList *
@@ -311,7 +318,6 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 		return;
 	}
 
-
 	/* load large 22x22 icon */
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S GLADE_LARGE_ICON_SUBDIR G_DIR_SEPARATOR_S "%s.png", 
 				     glade_pixmaps_dir, 
@@ -345,6 +351,7 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 	}
 	g_free (icon_path);
 
+
 	/* load small 16x16 icon */
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S GLADE_SMALL_ICON_SUBDIR G_DIR_SEPARATOR_S "%s.png", 
 				     glade_pixmaps_dir, 
@@ -376,7 +383,58 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 			error = NULL;
 		}
 	}
+
 	g_free (icon_path);
+
+}
+
+static GdkCursor*
+glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
+{
+	GdkPixbuf *tmp_pixbuf, *plus_pixbuf;
+	gchar *filename;
+	GError *error = NULL;
+	GdkDisplay *display;
+
+	/* only certain widget classes need to have cursors */
+	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type) == FALSE ||
+            G_TYPE_IS_ABSTRACT (widget_class->type) == TRUE ||
+            widget_class->generic_name == NULL)
+	{
+		return;
+	}
+
+
+	display = gdk_display_get_default ();
+
+	/* create a temporary pixbuf clear to transparent black*/
+	tmp_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 32, 32);
+	gdk_pixbuf_fill (tmp_pixbuf, 0x00000000);
+
+	/* load "plus" cursor pixbuf */
+	filename = g_build_filename (glade_pixmaps_dir, "plus.png", NULL);
+	plus_pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+	g_free (filename);
+
+
+	/* composite pixbufs */
+	gdk_pixbuf_composite (widget_class->large_icon, tmp_pixbuf,
+			      8, 8, 22, 22,
+			      8, 8, 1, 1,
+                              GDK_INTERP_NEAREST, 255);
+
+	gdk_pixbuf_composite (plus_pixbuf, tmp_pixbuf,
+			      0, 0, 12, 12,
+			      0, 0, 1, 1,
+                              GDK_INTERP_NEAREST, 255);
+
+
+	widget_class->cursor = gdk_cursor_new_from_pixbuf (display, tmp_pixbuf, 6, 6);
+
+	gdk_cursor_ref (widget_class->cursor);
+
+	g_object_unref(tmp_pixbuf);
+	g_object_unref(plus_pixbuf);
 
 }
 
@@ -1049,6 +1107,7 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->generic_name = generic_name;
 	widget_class->palette_name = title;
 	widget_class->type         = glade_util_get_type_from_name (name);
+	widget_class->cursor       = NULL;
 	widget_class->large_icon   = NULL;
 	widget_class->small_icon   = NULL;
 
@@ -1083,6 +1142,9 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->children   = glade_widget_class_list_children (widget_class);
 
 	glade_widget_class_load_icons (widget_class);
+
+	glade_widget_class_create_cursor (widget_class);
+
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;

@@ -293,6 +293,7 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 	    (gparent->parent && 
 	     GLADE_IS_FIXED (gparent->parent)) == FALSE)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+
 	else if (item_class)
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 
