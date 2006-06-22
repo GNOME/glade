@@ -351,7 +351,6 @@ typedef struct {
 	gint       position;
 } GladeGtkBoxChild;
 
-
 static GList *glade_gtk_box_original_positions = NULL;
 
 static gboolean
@@ -362,61 +361,90 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 {
 	GList       *list;
 	GtkBoxChild *bchild;
-	gint         point, trans_point, span, position;
-	gboolean     found, offset;
+	gint         point, trans_point, span, 
+		iter_span, position, old_position, 
+		offset, orig_offset;
+	gboolean     found = FALSE;
 
-	if (GTK_IS_HBOX (box))
+	if (GTK_IS_HBOX (box) || GTK_IS_HBUTTON_BOX (box))
 	{
-		point = rect->x + (rect->width / 2);
+		point       = fixed->mouse_x;
+		span        = GTK_WIDGET (child->object)->allocation.width;
+		offset      = rect->x;
+		orig_offset = fixed->child_x_origin;
 	}
 	else
 	{
-		point = rect->y + (rect->height / 2);
+		point       = fixed->mouse_y;
+		span        = GTK_WIDGET (child->object)->allocation.height;
+		offset      = rect->y;
+		orig_offset = fixed->child_y_origin;
 	}
+
+	glade_widget_pack_property_get
+		(child, "position", &old_position);
 
 	for (list = GTK_BOX (box)->children; list; list = list->next)
 	{
 		bchild = list->data;
+
+		if (bchild->widget == GTK_WIDGET (child->object))
+			continue;
 
 		/* Find the widget in the box where the center of
 		 * this rectangle fits... and set the position to that
 		 * position.
 		 */
 
-		if (GTK_IS_HBOX (box))
+		if (GTK_IS_HBOX (box) || GTK_IS_HBUTTON_BOX (box))
 		{
 			gtk_widget_translate_coordinates 
 				(GTK_WIDGET (box), bchild->widget,
 				 point, 0, &trans_point, NULL);
 
-			span   = bchild->widget->allocation.width;
-			offset = rect->x;
+			iter_span   = bchild->widget->allocation.width;
 		}
 		else
 		{
 			gtk_widget_translate_coordinates 
 				(GTK_WIDGET (box), bchild->widget,
 				 0, point, NULL, &trans_point);
-			span = bchild->widget->allocation.height;
-			offset = rect->y;
+			iter_span = bchild->widget->allocation.height;
 		}
 
 #if 0
 		gtk_container_child_get (GTK_CONTAINER (box),
 					 bchild->widget,
 					 "position", &position, NULL);
-		g_print ("pos %d, point %d span %d thresh %d upleft %d\n", 
-			 position, trans_point, span, MAX (span, 1) / 2,
-			 offset <= glade_gtk_box_last_offset);
+		g_print ("widget: %p pos %d, point %d, trans_point %d, iter_span %d\n", 
+			 bchild->widget, position, point, trans_point, iter_span);
 #endif
 
-		found = trans_point >= 0 && trans_point < span;
+		if (iter_span <= span)
+		{
+			found = trans_point >= 0 && trans_point < iter_span;
+		}
+		else
+		{
+			if (offset > orig_offset)
+				found = trans_point >= iter_span - span && 
+					trans_point < iter_span;
+			else if (offset < orig_offset)
+				found = trans_point >= 0 &&
+					trans_point < span;
+		}
 
 		if (found)
 		{
 			gtk_container_child_get (GTK_CONTAINER (box),
 						 bchild->widget,
 						 "position", &position, NULL);
+
+#if 0
+			g_print ("setting position of %s from %d to %d, "
+				 "(point %d iter_span %d)\n", 
+				 child->name, old_position, position, trans_point, iter_span);
+#endif
 
 			glade_widget_pack_property_set
 				(child, "position", position);
@@ -573,6 +601,7 @@ glade_gtk_box_set_child_property (GObject *container,
 
 	if (is_position && glade_property_superuser () == FALSE)
 	{
+#if 0
 		children = glade_widget_class_container_get_children
 			(gbox->widget_class, container);
 
@@ -604,6 +633,7 @@ glade_gtk_box_set_child_property (GObject *container,
 
 		if (children)
 			g_list_free (children);
+#endif
 	}
 
 	/* Chain Up */
@@ -620,6 +650,10 @@ glade_gtk_box_set_child_property (GObject *container,
 						  GTK_WIDGET (child),
 						  property_name,
 						  value);
+
+
+	gtk_container_check_resize (GTK_CONTAINER (container));
+
 }
 
 void GLADEGTK_API

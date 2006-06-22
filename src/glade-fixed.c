@@ -471,6 +471,20 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		} 
 		else if (event->type == GDK_MOTION_NOTIFY) 
 		{
+			/* Need to update mouse for configures. */
+			gtk_widget_get_pointer (fixed_widget,
+						&fixed->mouse_x, &fixed->mouse_y);
+
+#if 0
+			g_print ("glade_fixed_handle_child_event (fixed: %s): "
+				 "Setting mouse pointer to %d %d "
+				 "(event widget %p no window %d)\n", 
+				 GLADE_WIDGET (fixed)->name,
+				 fixed->mouse_x, fixed->mouse_y, 
+				 event_widget, GTK_WIDGET_NO_WINDOW (fixed_widget));
+#endif
+
+
 			glade_fixed_configure_widget (fixed, child);
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  fixed->operation);
@@ -636,7 +650,6 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	{
 		rect.x      = fixed->mouse_x;
 		rect.y      = fixed->mouse_y;
-
 		rect.width  = GTK_WIDGET (child->object)->allocation.width;
 		rect.height = GTK_WIDGET (child->object)->allocation.height;
 
@@ -719,6 +732,7 @@ glade_fixed_event (GtkWidget   *widget,
 	GtkWidget        *event_widget;
 	gboolean          handled = FALSE;
 	GladeWidget      *event_gwidget, *search;
+	gint              event_x, event_y;
 
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
 
@@ -785,9 +799,16 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_BUTTON_RELEASE:
 		if (gwidget_fixed == event_gwidget) 
 		{
-			gdk_window_get_pointer (GTK_WIDGET 
-						(GLADE_WIDGET (fixed)->object)->window, 
-						&fixed->mouse_x, &fixed->mouse_y, NULL);
+
+			gtk_widget_get_pointer (GTK_WIDGET (gwidget_fixed->object),
+						&fixed->mouse_x, &fixed->mouse_y);
+
+#if 0
+			g_print ("glade_fixed_event (fixed: %s): Setting mouse pointer to %d %d "
+				 "(event widget %p)\n", 
+				 GLADE_WIDGET (fixed)->name,
+				 fixed->mouse_x, fixed->mouse_y, event_widget);
+#endif
 		}
 	
 		if (fixed->configuring)

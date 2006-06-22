@@ -8,6 +8,11 @@
 	* src/glade-widget-class.c, widgets/gtk+.xml.in: 
 	  Fixed inheritance of the "->fixed" member in glade_widget_class_merge().
 
+	* src/glade-gtk.c: improved drag inside GtkBox... TODO: reorder children
+	  properly so that undo/redo works.
+
+	* src/glade-fixed.c: Fixed updates to fixed->mouse_[x,y] on configures.
+	
 2006-06-20  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/Makefile.am: Added glade-palette-item.[ch], 
