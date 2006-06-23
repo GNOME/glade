@@ -566,6 +566,38 @@ glade_gtk_box_post_create (GObject *container, GladeCreateReason reason)
 
 }
 
+static gint
+sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b)
+{
+	GtkWidget   *box;
+	GladeWidget *gwidget_a, *gwidget_b;
+	gint         position_a, position_b;
+
+	gwidget_a = glade_widget_get_from_gobject (widget_a);
+	gwidget_b = glade_widget_get_from_gobject (widget_b);
+
+	box = gtk_widget_get_parent (widget_a);
+
+	if (gwidget_a)
+		glade_widget_pack_property_get
+			(gwidget_a, "position", &position_a);
+	else
+		gtk_container_child_get (GTK_CONTAINER (box),
+					 widget_a,
+					 "position", &position_a,
+					 NULL);
+
+	if (gwidget_b)
+		glade_widget_pack_property_get
+			(gwidget_b, "position", &position_b);
+	else
+		gtk_container_child_get (GTK_CONTAINER (box),
+					 widget_b,
+					 "position", &position_b,
+					 NULL);
+	return position_a - position_b;
+}
+
 void GLADEGTK_API
 glade_gtk_box_set_child_property (GObject *container,
 				  GObject *child,
@@ -576,6 +608,7 @@ glade_gtk_box_set_child_property (GObject *container,
 	GList       *children, *list;
 	gboolean     is_position;
 	gint         old_position, iter_position, new_position;
+	static       gboolean recursion = FALSE;
 	
 	g_return_if_fail (GTK_IS_BOX (container));
 	g_return_if_fail (GTK_IS_WIDGET (child));
@@ -599,11 +632,14 @@ glade_gtk_box_set_child_property (GObject *container,
 
 	}
 
-	if (is_position && glade_property_superuser () == FALSE)
+	if (is_position && recursion == FALSE)
 	{
-#if 0
 		children = glade_widget_class_container_get_children
 			(gbox->widget_class, container);
+
+		children = g_list_sort (children, (GCompareFunc)sort_box_children);
+
+		//children = g_list_reverse (children);
 
 		for (list = children; list; list = list->next)
 		{
@@ -612,40 +648,59 @@ glade_gtk_box_set_child_property (GObject *container,
 				continue;
 
 			if (gchild_iter == gchild)
+			{
+				gtk_box_reorder_child (GTK_BOX (container),
+						       GTK_WIDGET (child),
+						       new_position);
 				continue;
+			}
 
 			/* Get the old value from glade */
 			glade_widget_property_get
 				(gchild_iter, "position", &iter_position);
 
 			/* Search for the child at the old position and update it */
-			if (iter_position == new_position)
+			if (iter_position == new_position &&
+			    glade_property_superuser () == FALSE)
 			{
-
 				/* Update glade with the real value */
+				recursion = TRUE;
 				glade_widget_property_set
 					(gchild_iter, "position", old_position);
-
-				break;
+				recursion = FALSE;
+				continue;
 			}
+			else
+			{
+				gtk_box_reorder_child (GTK_BOX (container),
+						       GTK_WIDGET (list->data),
+						       iter_position);
+			}
+		}
+
+		for (list = children; list; list = list->next)
+		{
+			if ((gchild_iter = 
+			     glade_widget_get_from_gobject (list->data)) == NULL)
+				continue;
+
+			/* Refresh values yet again */
+			glade_widget_property_get
+				(gchild_iter, "position", &iter_position);
+
+
+			gtk_box_reorder_child (GTK_BOX (container),
+					       GTK_WIDGET (list->data),
+					       iter_position);
 
 		}
 
 		if (children)
 			g_list_free (children);
-#endif
 	}
 
 	/* Chain Up */
-	if (is_position)
-		/* XXX FIXME: reorder child is dependant on the order
-		 * in which we add children... take em all out and repack them.
-		 */
-
-		gtk_box_reorder_child (GTK_BOX (container),
-				       GTK_WIDGET (child),
-				       new_position);
-	else
+	if (is_position == FALSE)
 		gtk_container_child_set_property (GTK_CONTAINER (container),
 						  GTK_WIDGET (child),
 						  property_name,
