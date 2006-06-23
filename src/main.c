@@ -99,9 +99,15 @@ main (int argc, char *argv[])
 	if (!g_option_context_parse (option_context, &argc, &argv, &error))
 	{
 		g_option_context_free (option_context);
-	
-		g_print ("%s\n", error->message);
-		g_error_free (error);
+		
+		if (error)
+		{
+			g_print ("%s\n", error->message);
+			g_error_free (error);
+		}
+		else
+			g_print ("An unknown error occurred\n");
+
 		return -1;
 	}
 	
