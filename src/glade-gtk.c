@@ -4861,7 +4861,10 @@ glade_gtk_menu_editor_project_widget_name_changed (GladeProject *project,
 						   GladeWidget  *widget,
 						   GladeGtkMenuEditor *e)
 {
-	glade_gtk_menu_editor_select_child (e, widget);
+	/* Deffer this to an idle handler, calling _select_child() here
+	 * directly causes crashes deep in the _set_cursor() code.
+	 */
+	g_idle_add (glade_gtk_menu_editor_update_treeview_idle, e);
 }
 
 static void

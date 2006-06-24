@@ -1,3 +1,9 @@
+2006-06-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-gtk.c: Fixed a crasher in the menu-editor
+	  (when a widget name changes and we recieve the project's signal,
+	  deffer the treeview update to an idle func to avoid the crash).
+
 2006-06-23  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/main.c: 
