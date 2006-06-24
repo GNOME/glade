@@ -1198,35 +1198,18 @@ glade_gtk_table_configure_child (GladeFixed   *fixed,
 	{
 		if (memcmp (&configure, &table_cur_attach, TABLE_CHILD_CMP_SIZE) != 0)
 		{
-			if (configure.left_attach < table_cur_attach.left_attach)
-			{
-				glade_widget_pack_property_set (child, "left-attach",   
-								configure.left_attach);
-				glade_widget_pack_property_set (child, "right-attach",  
-								configure.right_attach);
-			}
-			else
-			{
-				glade_widget_pack_property_set (child, "right-attach",  
-								configure.right_attach);
-				glade_widget_pack_property_set (child, "left-attach",   
-								configure.left_attach);
-			}
 
-			if (configure.top_attach < table_cur_attach.top_attach)
-			{
-				glade_widget_pack_property_set (child, "top-attach",    
-								configure.top_attach);
-				glade_widget_pack_property_set (child, "bottom-attach", 
-								configure.bottom_attach);
-			}
-			else
-			{
-				glade_widget_pack_property_set (child, "bottom-attach", 
-								configure.bottom_attach);
-				glade_widget_pack_property_set (child, "top-attach",    
-								configure.top_attach);
-			}
+			glade_property_push_superuser ();
+			glade_widget_pack_property_set (child, "left-attach",   
+							configure.left_attach);
+			glade_widget_pack_property_set (child, "right-attach",  
+							configure.right_attach);
+			glade_widget_pack_property_set (child, "top-attach",    
+							configure.top_attach);
+			glade_widget_pack_property_set (child, "bottom-attach", 
+							configure.bottom_attach);
+			glade_property_pop_superuser ();
+
 			memcpy (&table_cur_attach, &configure, TABLE_CHILD_CMP_SIZE);
 		}
 	}
@@ -1303,7 +1286,6 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 		glade_property_get_value (top_attach_prop,    &new_top_attach_value);
 		glade_property_get_value (bottom_attach_prop, &new_bottom_attach_value);
 
-
 		g_value_init (&left_attach_value, G_TYPE_UINT);
 		g_value_init (&right_attach_value, G_TYPE_UINT);
 		g_value_init (&top_attach_value, G_TYPE_UINT);
@@ -1314,8 +1296,6 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 		g_value_set_uint (&top_attach_value,    table_edit.top_attach);
 		g_value_set_uint (&bottom_attach_value, table_edit.bottom_attach);
 
-		/* whew, all that for this call !
-		 */
 		glade_command_set_properties
 			(left_attach_prop,   &left_attach_value,   &new_left_attach_value,
 			 right_attach_prop,  &right_attach_value,  &new_right_attach_value,
@@ -1590,24 +1570,78 @@ glade_gtk_table_set_child_property (GObject *container,
 				    const gchar *property_name,
 				    GValue *value)
 {
+	GladeWidget *gchild;
+	gint new_left, new_right, new_top, new_bottom, left, right, top, bottom;
+
 	g_return_if_fail (GTK_IS_TABLE (container));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	g_return_if_fail (property_name != NULL && value != NULL);
 
-	/* Chain Up first */
-	gtk_container_child_set_property (GTK_CONTAINER (container),
-					  GTK_WIDGET (child),
-					  property_name,
-					  value);
-	
+	gchild = glade_widget_get_from_gobject (child);
+	g_assert (gchild);
+
 	if (strcmp (property_name, "bottom-attach") == 0 ||
 	    strcmp (property_name, "left-attach") == 0 ||
 	    strcmp (property_name, "right-attach") == 0 ||
 	    strcmp (property_name, "top-attach") == 0)
 	{
+		
+		glade_widget_pack_property_get (gchild, "left-attach",   &new_left);
+		glade_widget_pack_property_get (gchild, "right-attach",  &new_right);
+		glade_widget_pack_property_get (gchild, "top-attach",    &new_top);
+		glade_widget_pack_property_get (gchild, "bottom-attach", &new_bottom);
+
+		gtk_container_child_get (GTK_CONTAINER (container),
+					 GTK_WIDGET (child),
+					 "left-attach", &left,
+					 "right-attach", &right,
+					 "top-attach", &top,
+					 "bottom-attach", &bottom,
+					 NULL);
+
+		if (new_left < left)
+		{
+			gtk_container_child_set (GTK_CONTAINER (container),
+						 GTK_WIDGET (child),
+						 "left-attach", new_left,
+						 "right-attach", new_right,
+						 NULL);
+		}
+		else
+		{
+			gtk_container_child_set (GTK_CONTAINER (container),
+						 GTK_WIDGET (child),
+						 "right-attach", new_right,
+						 "left-attach", new_left,
+						 NULL);
+		}
+
+		if (new_top < top)
+		{	
+			gtk_container_child_set (GTK_CONTAINER (container),
+						 GTK_WIDGET (child),
+						 "top-attach", new_top,
+						 "bottom-attach", new_bottom,
+						 NULL);
+		}
+		else
+		{
+			gtk_container_child_set (GTK_CONTAINER (container),
+						 GTK_WIDGET (child),
+						 "bottom-attach", new_bottom,
+						 "top-attach", new_top,
+						 NULL);
+		}
+
 		/* Refresh placeholders */
 		glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
 	}
+	else
+		gtk_container_child_set_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name,
+						  value);
+
 }
 
 static gboolean

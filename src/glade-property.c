@@ -135,7 +135,7 @@ glade_property_equals_value_impl (GladeProperty *property,
  * custom set_property method. This includes packing properties.
  */
 static void
-glade_property_set_property (GladeProperty *property, const GValue *value)
+glade_property_sync_property (GladeProperty *property, const GValue *value)
 {
 	if (property->class->packing)
 	{
@@ -222,7 +222,8 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 		return;
 	}
 
-	if (property->widget &&
+	if (glade_property_superuser () == FALSE &&
+	    property->widget &&
 	    property->class->verify_function &&
 	    glade_widget_is_dupping() == FALSE &&
 	    project && glade_project_is_loading (project) == FALSE)
@@ -346,7 +347,7 @@ glade_property_sync_impl (GladeProperty *property)
 		}
 	}
 	else
-		glade_property_set_property (property, property->value);
+		glade_property_sync_property (property, property->value);
 
 	property->syncing = FALSE;
 }

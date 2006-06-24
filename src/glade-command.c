@@ -499,18 +499,41 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 	* as the same group is changing (this will help with drag/resize widget control).
 	*
 	*/
-       GladeCommandSetProperty *cmd1;
-       GladeCommandSetProperty *cmd2;
+       GladeCommandSetProperty *cmd1,   *cmd2;
+       GCSetPropData           *pdata1, *pdata2;
+       GList                   *list, *l;
 
-       if (GLADE_IS_COMMAND_SET_PROPERTY (this) && GLADE_IS_COMMAND_SET_PROPERTY (other))
+       if (GLADE_IS_COMMAND_SET_PROPERTY (this) && 
+	   GLADE_IS_COMMAND_SET_PROPERTY (other))
        {
                cmd1 = (GladeCommandSetProperty*) this;
                cmd2 = (GladeCommandSetProperty*) other;
-	       
-               return (g_list_length (cmd1->sdata) == 1 &&
-                      g_list_length (cmd2->sdata) == 1 &&
-                       ((GCSetPropData *)cmd1->sdata->data)->property == 
-                       ((GCSetPropData *)cmd2->sdata->data)->property);
+
+	       if (g_list_length (cmd1->sdata) != 
+		   g_list_length (cmd2->sdata))
+		       return FALSE;
+
+	       for (list = cmd1->sdata; list; list = list->next)
+	       {
+		       pdata1 = list->data;
+		       for (l = cmd2->sdata; l; l = l->next)
+		       {
+			       pdata2 = l->data;
+
+			       if (glade_property_class_match (pdata1->property->class,
+							       pdata2->property->class))
+				       break;
+		       }
+		       
+		       /* If both lists are the same length, and one class type
+			* is not found in the other list, then we cant unify.
+			*/
+		       if (l == NULL)
+			       return FALSE;
+
+	       }
+
+	       return TRUE;
        }
        return FALSE;
 }
@@ -518,9 +541,37 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 static void
 glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 {
+	GladeCommandSetProperty *cmd1,   *cmd2;
+	GCSetPropData           *pdata1, *pdata2;
+	GList                   *list, *l;
+	
 	g_return_if_fail (GLADE_IS_COMMAND_SET_PROPERTY (this) &&
 			  GLADE_IS_COMMAND_SET_PROPERTY (other));
+	
+	cmd1 = (GladeCommandSetProperty*) this;
+	cmd2 = (GladeCommandSetProperty*) other;
 
+
+	for (list = cmd1->sdata; list; list = list->next)
+	{
+		pdata1 = list->data;
+		for (l = cmd2->sdata; l; l = l->next)
+		{
+			pdata2 = l->data;
+			
+			if (glade_property_class_match (pdata1->property->class,
+							pdata2->property->class))
+			{
+				/* Merge the GCSetPropData structs manually here
+				 */
+				g_value_copy (pdata2->new_value, pdata1->new_value);
+				break;
+			}
+		}
+	}
+
+	/* Set the description
+	 */
 	g_free (this->description);
 	this->description = other->description;
 	other->description = NULL;

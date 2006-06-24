@@ -1674,6 +1674,7 @@ glade_property_class_match (GladePropertyClass *class,
 	g_return_val_if_fail (comp != NULL, FALSE);
 
 	return (strcmp (class->id, comp->id) == 0 &&
+		class->packing           == comp->packing &&
 		class->pspec->owner_type == comp->pspec->owner_type);
 }
 

@@ -123,7 +123,6 @@ glade_widget_class_free (GladeWidgetClass *widget_class)
 	if (widget_class->cursor != NULL)
 		gdk_cursor_unref (widget_class->cursor);
 
-
 	if (widget_class->large_icon != NULL)
 		g_object_unref (G_OBJECT (widget_class->large_icon));
 
@@ -388,7 +387,7 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 
 }
 
-static GdkCursor*
+static void
 glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 {
 	GdkPixbuf *tmp_pixbuf, *plus_pixbuf;
@@ -400,10 +399,7 @@ glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type) == FALSE ||
             G_TYPE_IS_ABSTRACT (widget_class->type) == TRUE ||
             widget_class->generic_name == NULL)
-	{
 		return;
-	}
-
 
 	display = gdk_display_get_default ();
 
@@ -1142,9 +1138,7 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->children   = glade_widget_class_list_children (widget_class);
 
 	glade_widget_class_load_icons (widget_class);
-
 	glade_widget_class_create_cursor (widget_class);
-
 
 	for (parent_type = g_type_parent (widget_class->type);
 	     parent_type != 0;

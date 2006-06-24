@@ -156,7 +156,16 @@ glade_editor_class_init (GladeEditorClass *class)
 					 "each property and signal in the editor"),
 				       FALSE, G_PARAM_READABLE));
 
-	/* Signals */
+	
+	/**
+	 * GladeEditor::gtk-doc-search:
+	 * @gladeeditor: the #GladeEditor which received the signal.
+	 * @arg1: the (#gchar *) book to search or %NULL
+	 * @arg2: the (#gchar *) page to search or %NULL
+	 * @arg3: the (#gchar *) search string or %NULL
+	 *
+	 * Emitted when the editor requests that a doc-search be performed.
+	 */
 	glade_editor_signals[GTK_DOC_SEARCH] =
 		g_signal_new ("gtk-doc-search",
 			      G_TYPE_FROM_CLASS (object_class),

@@ -508,7 +508,15 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 	eprop_class->load          = glade_editor_property_load_common;
 	eprop_class->create_input  = NULL;
 
-	/* Signals */
+	/**
+	 * GladeEditorProperty::gtk-doc-search:
+	 * @gladeeditor: the #GladeEditorProperty which received the signal.
+	 * @arg1: the (#gchar *) book to search or %NULL
+	 * @arg2: the (#gchar *) page to search or %NULL
+	 * @arg3: the (#gchar *) search string or %NULL
+	 *
+	 * Emitted when the editor property requests that a doc-search be performed.
+	 */
 	glade_editor_property_signals[GTK_DOC_SEARCH] =
 		g_signal_new ("gtk-doc-search",
 			      G_TYPE_FROM_CLASS (object_class),

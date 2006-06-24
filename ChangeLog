@@ -10,7 +10,18 @@
 	  also ditch the "closed" handler for projects, projects closing will
 	  result in GladeProperty finalizing if all goes well.
 	  (btw, this fixes a crash when the user hits cancel in a query dialog).
+
+	* src/glade-property.c: Dont call verify funcs in superuser mode
 	
+	* src/glade-command.c: Now unification/collapse of multiple properties
+	  works seemlessly
+
+	* src/glade-editor.c, src/glade-editor-property.c: Added docs.
+
+	* src/glade-property-class.c: compare 'packing' in glade_property_class_match().
+
+	* src/glade-widget-class.c: Fix compiler warnings.
+
 2006-06-22  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade-widget-class.[ch] Create cursors for adding widgets
