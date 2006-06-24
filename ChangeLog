@@ -5,6 +5,12 @@
 
 	* src/glade-gtk.c: Fixed undo/redo of GtkBox children drags.
 
+	* src/glade-editor-property.[ch]: Added a weak reference to the
+	  GladeProperty and clear itself when the GladeProperty goes away,
+	  also ditch the "closed" handler for projects, projects closing will
+	  result in GladeProperty finalizing if all goes well.
+	  (btw, this fixes a crash when the user hits cancel in a query dialog).
+	
 2006-06-22  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/glade-widget-class.[ch] Create cursors for adding widgets
