@@ -1,3 +1,25 @@
+2006-06-23  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* src/main.c: 
+	  o Changed application name to "Glade 3"
+	  o Destroy GladeProjectWindow object before exiting.
+
+	* src/glade-app.c:
+	  o Fix compiler warning (invalid pointer assignment)
+
+	* src/glade-project-window.c:
+	  o Remove WINDOW_TITLE macro. The application name
+	    can now be retrieved by calling g_get_application_name()
+	  o Change format of window title text.
+	  o The window title and statusbar messages now inform users
+	    of a project's read-only status.
+
+	* glade-3.desktop.in:
+	  o Changed "Name" field to "Glade 3 Interface Designer".
+	  o Changed "Comment" field (more in line with HIG).
+	  o Changed "Icon" field from "glade-3.png" to "glade-3"
+	  o Added "X-GNOME-Bugzilla" fields.
+
 2006-06-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/main.c: Check for NULL GError return locations from
