@@ -37,6 +37,8 @@
 #include "glade-project-window.h"
 #include "glade-debug.h"
 
+#define APPLICATION_NAME (_("Glade 3"))
+
 
 /* Application arguments */
 static gboolean version = FALSE;
@@ -79,8 +81,8 @@ main (int argc, char *argv[])
 	option_context = g_option_context_new ("[FILE...]");
 
 	option_group = g_option_group_new ("glade",
-					   N_("Glade GUI Builder"),
-					   N_("Glade GUI Builder options"),
+					   N_("Glade"),
+					   N_("Glade options"),
 					   NULL, NULL);
 	g_option_group_add_entries (option_group, option_entries);
 	g_option_context_set_main_group (option_context, option_group);
@@ -121,12 +123,6 @@ main (int argc, char *argv[])
 		return 0;
 	}
 	
-
-	g_set_application_name (_("Glade-3 GUI Builder"));
-	gtk_window_set_default_icon_name ("glade-3");
-	
-	glade_setup_log_handlers ();
-	
 	/* Check for gmodule support */
 	if (!g_module_supported ())
 	{
@@ -134,6 +130,12 @@ main (int argc, char *argv[])
 			     "for glade to work"));
 		return -1;
 	}
+
+	g_set_application_name (APPLICATION_NAME);
+	gtk_window_set_default_icon_name ("glade-3");
+	
+	glade_setup_log_handlers ();
+	
 	
 	project_window = glade_project_window_new ();
 	
@@ -166,6 +168,9 @@ main (int argc, char *argv[])
 	glade_project_window_show_all (project_window);
 
 	gtk_main ();
+
+	/* destroy GladeApp */
+	g_object_unref (project_window);
 
 	return 0;
 }

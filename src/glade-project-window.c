@@ -60,7 +60,7 @@ struct _GladeProjectWindowPriv {
 	GtkActionGroup *projects_list_menu_actions;/* Projects list menu actions */
 
 	GQueue *recent_projects;        /* A GtkAction queue */
-	gint    rp_max;                 /* Maximun Recent Projects entries */
+	gint    rp_max;                 /* Maximum Recent Projects entries */
 
 	GtkWindow *palette_window;     /* The window that will contain the palette */
 	GtkWindow *editor_window;      /* The window that will contain the editor */
@@ -69,7 +69,9 @@ struct _GladeProjectWindowPriv {
 
 };
 
-#define      WINDOW_TITLE                   (_("Glade-3 GUI Builder"))
+
+#define      READONLY_INDICATOR             (_("[read-only]"))
+
 const gint   GLADE_WIDGET_TREE_WIDTH      = 230;
 const gint   GLADE_WIDGET_TREE_HEIGHT     = 300;
 const gint   GLADE_PALETTE_DEFAULT_HEIGHT = 450;
@@ -82,17 +84,22 @@ static void
 gpw_refresh_title (GladeProjectWindow *gpw)
 {
 	GladeProject *active_project;
-	gchar *title, *disp;
+	gchar *title, *project_name;
 
 	active_project = glade_app_get_project ();
 	if (active_project)
 	{
-		disp = glade_project_display_name (active_project, TRUE, FALSE, FALSE);
-		title = g_strdup_printf ("%s - %s", WINDOW_TITLE, disp);
-		g_free (disp);
+		project_name = glade_project_display_name (active_project, TRUE, FALSE, FALSE);
+		
+		if (active_project->readonly == TRUE)
+			title = g_strdup_printf ("%s %s - %s", project_name, READONLY_INDICATOR, g_get_application_name ());
+		else
+			title = g_strdup_printf ("%s - %s", project_name, g_get_application_name ());			
+
+		g_free (project_name);
 	}
 	else
-		title = g_strdup_printf ("%s", WINDOW_TITLE);
+		title = g_strdup_printf ("%s", g_get_application_name ());
 
 	gtk_window_set_title (GTK_WINDOW (gpw->priv->window), title);
 	g_free (title);
@@ -248,6 +255,7 @@ gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkAction *action;
 	gchar *project_name;
+	gchar *tooltip;
 	
 	/* Get associated action */
 	action = GTK_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
@@ -257,8 +265,14 @@ gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 	g_object_set (action, "label", project_name, NULL);
 
 	/* Set action tooltip */
-	g_object_set (action, "tooltip", project->path, NULL);
+	if (project->readonly == TRUE)
+		tooltip = g_strdup_printf ("%s %s", project->path, READONLY_INDICATOR);
+	else
+		tooltip = g_strdup_printf ("%s", project->path);
 	
+	g_object_set (action, "tooltip", tooltip, NULL);
+	
+	g_free (tooltip);
 	g_free (project_name);
 }
 
@@ -384,12 +398,18 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		GtkRadioAction *action;
 		gchar *action_name;
 		gchar *project_name;
+		gchar *tooltip;
 
 		project = GLADE_PROJECT (l->data);
 
 		action_name = g_strdup_printf ("Project_%d", i);
 		project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
-		action = gtk_radio_action_new (action_name, project_name, project->path, NULL, i);
+		if (project->readonly == TRUE)
+			tooltip = g_strdup_printf ("%s %s",project->path, READONLY_INDICATOR);
+		else
+			tooltip = g_strdup_printf (project->path);
+
+		action = gtk_radio_action_new (action_name, project_name, tooltip, NULL, i);
 
 		/* Link action and project */
 		g_object_set_data (G_OBJECT (project), "project-list-action", action);
@@ -419,6 +439,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 
 		g_free (action_name);
 		g_free (project_name);
+		g_free (tooltip);
 	}
 }
 

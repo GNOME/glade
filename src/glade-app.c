@@ -161,6 +161,7 @@ glade_app_dispose (GObject *app)
 static void
 glade_app_finalize (GObject *app)
 {
+
 #ifdef G_OS_WIN32 
 	g_free (glade_pixmaps_dir);
 	g_free (glade_catalogs_dir);
@@ -337,7 +338,7 @@ glade_app_init (GladeApp *app)
 	app->priv->catalogs = glade_catalog_load_all ();
 	
 	/* Create palette */
-	app->priv->palette = glade_palette_new (app->priv->catalogs, GLADE_ITEM_ICON_ONLY);
+	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs, GLADE_ITEM_ICON_ONLY);
 	g_object_ref (app->priv->palette);
 	gtk_object_sink (GTK_OBJECT (app->priv->palette));
 	gtk_widget_show_all (GTK_WIDGET (app->priv->palette));
