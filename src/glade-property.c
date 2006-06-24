@@ -225,7 +225,6 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	if (glade_property_superuser () == FALSE &&
 	    property->widget &&
 	    property->class->verify_function &&
-	    glade_widget_is_dupping() == FALSE &&
 	    project && glade_project_is_loading (project) == FALSE)
 	{
 		GObject *object = glade_widget_get_object (property->widget);
@@ -1592,7 +1591,7 @@ glade_property_get_enabled (GladeProperty *property)
 }
 
 
-glade_property_su_stack = 0;
+static gint glade_property_su_stack = 0;
 
 void
 glade_property_push_superuser (void)

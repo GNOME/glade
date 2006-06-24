@@ -93,7 +93,6 @@ static GObjectClass *parent_class = NULL;
  * this is just a shortcut way to get the project.
  */
 static GladeProject *loading_project = NULL;
-static gboolean      glade_widget_dupping = FALSE;
 static GQuark        glade_widget_name_quark = 0;
 
 /* An optimization to avoid looking up the deepest
@@ -2237,9 +2236,9 @@ glade_widget_dup (GladeWidget *template)
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (template), NULL);
 	
-	glade_widget_dupping = TRUE;
+	glade_property_push_superuser ();
 	widget = glade_widget_dup_internal (NULL, template);
-	glade_widget_dupping = FALSE;
+	glade_property_pop_superuser ();
 
 	return widget;
 }
@@ -3460,18 +3459,4 @@ glade_widget_launch_editor (GladeWidget *widget)
 			break;
 		}
 	} while ((parent = parent->parent) != NULL);
-}
-
-/**
- * glade_widget_is_dupping:
- *
- * This is used internally by #GladeProperty to avoid calling
- * backend "verify-function"s at dup time.
- *
- * Returns: whether we are currently duplicating a widget or not
- */
-gboolean
-glade_widget_is_dupping (void)
-{
-	return glade_widget_dupping;
 }

@@ -7,7 +7,18 @@
 	* src/main.c: Pass FALSE to gtk_get_option_group() and call gtk_init (NULL, NULL)
 	  later on; this way we pass --version without any display (fixes 339265)
 
+	* src/glade-widget.[ch], src/glade-property.c: removed glade_widget_is_dupping(),
+	  use glade_property_[push/pop]_superuser() for that purpose.
+	
 	* TODO: Updated.
+
+	* doc/gladeui-sections.txt: Updated
+
+	* doc/Makefile.am: Ignoring some headers.
+
+	* configure.in: Package name is now glade3-2.91.3 and not glade-3-2.91.3,
+	  this conforms with gnome server scripts and matches the cvs name and
+	  bugzilla name.
 
 2006-06-23  Vincent Geddes <vgeddes@metroweb.co.za>
 

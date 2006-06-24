@@ -9,8 +9,6 @@ glade_app_update_ui
 glade_app_set_window
 glade_app_get_window
 glade_app_get_editor
-glade_app_get_add_class
-glade_app_get_alt_class
 glade_app_get_palette
 glade_app_get_clipboard
 glade_app_get_clipboard_view
@@ -185,6 +183,10 @@ GladeEditorTable
 <FILE>glade-fixed</FILE>
 <TITLE>GladeFixed</TITLE>
 GladeFixed
+GLADE_FIXED_CURSOR_BOTTOM
+GLADE_FIXED_CURSOR_RIGHT
+GLADE_FIXED_CURSOR_TOP
+GLADE_FIXED_CURSOR_LEFT
 <SUBSECTION Standard>
 glade_fixed_get_type
 GLADE_TYPE_FIXED
@@ -201,7 +203,12 @@ GladeFixedClass
 <TITLE>GladePalette</TITLE>
 GladePalette
 glade_palette_new
-glade_palette_unselect_widget
+glade_palette_get_item_appearance
+glade_palette_set_item_appearance
+glade_palette_get_current_item_class
+glade_palette_deselect_current_item
+glade_palette_get_use_small_item_icons
+glade_palette_set_use_small_item_icons
 <SUBSECTION Standard>
 GLADE_PALETTE
 GLADE_IS_PALETTE
@@ -211,6 +218,8 @@ GLADE_PALETTE_CLASS
 GLADE_IS_PALETTE_CLASS
 GLADE_PALETTE_GET_CLASS
 GladePaletteClass
+<SUBSECTION Private>
+GladePalettePrivate
 </SECTION>
 
 <SECTION>
@@ -352,6 +361,9 @@ glade_property_sync
 glade_property_load
 glade_property_read
 glade_property_write
+glade_property_superuser
+glade_property_push_superuser
+glade_property_pop_superuser
 glade_property_get_tooltip
 glade_property_set_sensitive
 glade_property_get_sensitive
@@ -499,7 +511,7 @@ glade_widget_has_launcher
 glade_widget_launch_editor
 glade_widget_get_parent
 glade_widget_set_parent
-glade_widget_is_dupping
+glade_widget_event_widget
 <SUBSECTION Standard>
 GLADE_WIDGET
 GLADE_IS_WIDGET
@@ -588,6 +600,7 @@ glade_util_load_library
 glade_util_class_implements_interface
 glade_util_have_devhelp
 glade_util_search_devhelp
+glade_util_deep_fixed_event
 </SECTION>
 
 

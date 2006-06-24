@@ -141,8 +141,6 @@ void                    glade_widget_rebuild                (GladeWidget      *g
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_dup                    (GladeWidget      *template);
 LIBGLADEUI_API 
-gboolean                glade_widget_is_dupping             (void);
-LIBGLADEUI_API 
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
 							     GladeWidget      *template);
 LIBGLADEUI_API

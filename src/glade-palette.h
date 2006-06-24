@@ -64,7 +64,8 @@ LIBGLADEUI_API
 GType                glade_palette_get_type (void) G_GNUC_CONST;
 
 LIBGLADEUI_API
-GtkWidget           *glade_palette_new (const GList *catalogs, GladeItemAppearance appearance);
+GtkWidget           *glade_palette_new (const GList         *catalogs, 
+					GladeItemAppearance  item_appearance);
 
 LIBGLADEUI_API
 void                 glade_palette_deselect_current_item (GladePalette *palette);

@@ -62,7 +62,10 @@ IGNORE_HFILES=\
 	glade-xml-utils.h \
 	glade-popup.h \
 	glade-devhelp.h \
-	glade-gtk.h
+	glade-gtk.h \
+	glade-palette-expander.h \
+	glade-palette-item.h \
+	glade-palette-box.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
