@@ -7,8 +7,10 @@
 	* src/main.c: Pass FALSE to gtk_get_option_group() and call gtk_init (NULL, NULL)
 	  later on; this way we pass --version without any display (fixes 339265)
 
-	* src/glade-widget.[ch], src/glade-property.c: removed glade_widget_is_dupping(),
-	  use glade_property_[push/pop]_superuser() for that purpose.
+	* src/glade-widget.[ch], src/glade-property.c: 
+	  o removed glade_widget_is_dupping(), use glade_property_[push/pop]_superuser() 
+	    for that purpose.
+	  o Unset drag source / drag dest on GladeWidget objects.
 	
 	* TODO: Updated.
 

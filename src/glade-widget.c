@@ -2929,9 +2929,13 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	gwidget->object = g_object_ref (G_OBJECT(new_object));
 	g_object_set_qdata (G_OBJECT (new_object), glade_widget_name_quark, gwidget);
 
-	if (/* gwidget->internal == NULL && */
-	    g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
+	if (g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
 	{
+		/* Disable any built-in DnD
+		 */
+		gtk_drag_dest_unset (GTK_WIDGET (new_object));
+		gtk_drag_source_unset (GTK_WIDGET (new_object));
+
 		/* Take care of events and toolkit signals.
 		 */
 		GLADE_WIDGET_GET_KLASS (gwidget)->setup_events
