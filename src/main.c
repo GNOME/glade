@@ -95,7 +95,7 @@ main (int argc, char *argv[])
 	g_option_context_add_group (option_context, option_group);
 
 	/* Add Gtk option group */
-	g_option_context_add_group (option_context, gtk_get_option_group (TRUE));
+	g_option_context_add_group (option_context, gtk_get_option_group (FALSE));
 
 	/* Parse command line */
 	if (!g_option_context_parse (option_context, &argc, &argv, &error))
@@ -122,6 +122,11 @@ main (int argc, char *argv[])
 		g_print ("%s\n", PACKAGE_STRING);
 		return 0;
 	}
+
+	/* Pass NULL here since we parsed the gtk+ args already...
+	 * from this point on we need a DISPLAY variable to be set.
+	 */
+	gtk_init (NULL, NULL);
 	
 	/* Check for gmodule support */
 	if (!g_module_supported ())

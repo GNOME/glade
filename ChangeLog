@@ -4,6 +4,9 @@
 	  (when a widget name changes and we recieve the project's signal,
 	  deffer the treeview update to an idle func to avoid the crash).
 
+	* src/main.c: Pass FALSE to gtk_get_option_group() and call gtk_init (NULL, NULL)
+	  later on; this way we pass --version without any display.
+
 2006-06-23  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* src/main.c: 
