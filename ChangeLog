@@ -1,3 +1,19 @@
+2006-06-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget.[ch]: 
+	  o Added proxy signals for events used by parenting GladeFixed objects, 
+	    this way they recieve the event via the "event" signal, and therefore 
+	    earlier on in the food chain.
+	  o Call ->setup_events() recursively in glade_widget_connect_signal_handlers()
+	    (now we get all needed events from internal children of composite widgets)
+
+	* src/glade-fixed.[ch]: 
+	  o Reduced code by using gtk_widget_get_pointer ()
+	  o Adjusted to use the new signals on GladeWidget
+	  o Removed the redundant override of ->setup_events vfunc.
+
+	* src/glade-marshallers.list: Added BOOLEAN:BOXED type for event signals.
+
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: Fixed a crasher in the menu-editor

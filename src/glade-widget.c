@@ -66,6 +66,10 @@ enum
 	ADD_SIGNAL_HANDLER,
 	REMOVE_SIGNAL_HANDLER,
 	CHANGE_SIGNAL_HANDLER,
+	BUTTON_PRESS_EVENT,
+	BUTTON_RELEASE_EVENT,
+	MOTION_NOTIFY_EVENT,
+	ENTER_NOTIFY_EVENT,
 	LAST_SIGNAL
 };
 
@@ -342,12 +346,12 @@ glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
 }
 
 static gboolean
-glade_widget_button_press (GtkWidget      *widget,
-			   GdkEventButton *event,
-			   GladeWidget    *gwidget)
+glade_widget_button_press_event_impl (GladeWidget    *gwidget,
+				      GdkEvent       *base_event)
 {
 	GladeWidget       *glade_widget;
-	GtkWidget         *event_widget;
+	GtkWidget         *event_widget, *widget;
+	GdkEventButton    *event = (GdkEventButton *)base_event;
 	gboolean           handled = FALSE;
 
 	/* Get event widget and event glade_widget
@@ -441,12 +445,32 @@ glade_widget_event (GtkWidget   *widget,
 		    GdkEvent    *event,
 		    GladeWidget *gwidget)
 {
+	gboolean handled = FALSE;
+
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
 
 	switch (event->type) 
 	{
 	case GDK_BUTTON_PRESS:
-		return glade_widget_button_press (widget, (GdkEventButton*) event, gwidget);
+		g_signal_emit (gwidget, 
+			       glade_widget_signals[BUTTON_PRESS_EVENT], 0, 
+			       event, &handled);
+		break;
+	case GDK_BUTTON_RELEASE:
+		g_signal_emit (gwidget, 
+			       glade_widget_signals[BUTTON_RELEASE_EVENT], 0, 
+			       event, &handled);
+		break;
+	case GDK_MOTION_NOTIFY:
+		g_signal_emit (gwidget, 
+			       glade_widget_signals[MOTION_NOTIFY_EVENT], 0, 
+			       event, &handled);
+		break;
+	case GDK_ENTER_NOTIFY:
+		g_signal_emit (gwidget, 
+			       glade_widget_signals[ENTER_NOTIFY_EVENT], 0, 
+			       event, &handled);
+		break;
 	case GDK_EXPOSE:
 	case GDK_CONFIGURE:
 		glade_util_queue_draw_nodes (((GdkEventExpose*) event)->window);
@@ -455,7 +479,7 @@ glade_widget_event (GtkWidget   *widget,
 		break;
 	}
 
-	return FALSE;
+	return handled;
 }
 
 static gboolean
@@ -486,9 +510,10 @@ glade_widget_event_private (GtkWidget   *widget,
 		 */
 		handled = GLADE_WIDGET_GET_KLASS (gwidget)->event (widget, event, gwidget);
 
-#if 0		
-		g_print ("event widget '%s' handled '%d'\n",
-			 deep_event_widget->name, handled);
+#if 0
+		if (event->type != GDK_EXPOSE)
+			g_print ("event widget '%s' handled '%d' event '%d'\n",
+				 deep_event_widget->name, handled, event->type);
 #endif
 		return handled;
 	}
@@ -498,7 +523,7 @@ glade_widget_event_private (GtkWidget   *widget,
 		{
 		case GDK_BUTTON_PRESS:
 		case GDK_BUTTON_RELEASE:
-#if 0		
+#if 0
 			g_print ("Forwarded the button event to a fixed widget "
 				 "(event widget '%s')\n",
 				 deep_event_widget->name);
@@ -975,12 +1000,17 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 	klass->add_child              = glade_widget_add_child_impl;
 	klass->remove_child           = glade_widget_remove_child_impl;
 	klass->replace_child          = glade_widget_replace_child_impl;
+	klass->setup_events           = glade_widget_setup_events;
+	klass->event                  = glade_widget_event;
+
 	klass->add_signal_handler     = glade_widget_add_signal_handler_impl;
 	klass->remove_signal_handler  = glade_widget_remove_signal_handler_impl;
 	klass->change_signal_handler  = glade_widget_change_signal_handler_impl;
 
-	klass->setup_events           = glade_widget_setup_events;
-	klass->event                  = glade_widget_event;
+	klass->button_press_event     = glade_widget_button_press_event_impl;
+	klass->button_release_event   = NULL;
+	klass->motion_notify_event    = NULL;
+	klass->enter_notify_event     = NULL;
 	
 	g_object_class_install_property
 		(object_class, PROP_NAME,
@@ -1079,7 +1109,7 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 	 * @arg1: the #GladeSignal that was added to @gladewidget.
 	 */
 	glade_widget_signals[ADD_SIGNAL_HANDLER] =
-		g_signal_new ("add_signal_handler",
+		g_signal_new ("add-signal-handler",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeWidgetKlass, add_signal_handler),
@@ -1095,7 +1125,7 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 	 * @arg1: the #GladeSignal that was removed from @gladewidget.
 	 */
 	glade_widget_signals[REMOVE_SIGNAL_HANDLER] =
-		g_signal_new ("remove_signal_handler",
+		g_signal_new ("remove-signal-handler",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeWidgetKlass, remove_signal_handler),
@@ -1113,7 +1143,7 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 	 * @arg2: the new #GladeSignal
 	 */
 	glade_widget_signals[CHANGE_SIGNAL_HANDLER] =
-		g_signal_new ("change_signal_handler",
+		g_signal_new ("change-signal-handler",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeWidgetKlass, change_signal_handler),
@@ -1122,6 +1152,69 @@ glade_widget_class_init (GladeWidgetKlass *klass)
 			      G_TYPE_NONE,
 			      2,
 			      G_TYPE_POINTER, G_TYPE_POINTER);
+
+
+	/**
+	 * GladeWidget::button-press-event:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GdkEvent
+	 */
+	glade_widget_signals[BUTTON_PRESS_EVENT] =
+		g_signal_new ("button-press-event",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeWidgetKlass, button_press_event),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__BOXED,
+			      G_TYPE_BOOLEAN, 1,
+			      GDK_TYPE_EVENT);
+
+	/**
+	 * GladeWidget::button-relese-event:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GdkEvent
+	 */
+	glade_widget_signals[BUTTON_RELEASE_EVENT] =
+		g_signal_new ("button-release-event",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeWidgetKlass, button_release_event),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__BOXED,
+			      G_TYPE_BOOLEAN, 1,
+			      GDK_TYPE_EVENT);
+
+
+	/**
+	 * GladeWidget::motion-notify-event:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GdkEvent
+	 */
+	glade_widget_signals[MOTION_NOTIFY_EVENT] =
+		g_signal_new ("motion-notify-event",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeWidgetKlass, motion_notify_event),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__BOXED,
+			      G_TYPE_BOOLEAN, 1,
+			      GDK_TYPE_EVENT);
+
+
+	/**
+	 * GladeWidget::enter-notify-event:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 * @arg1: the #GdkEvent
+	 */
+	glade_widget_signals[ENTER_NOTIFY_EVENT] =
+		g_signal_new ("enter-notify-event",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeWidgetKlass, enter_notify_event),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__BOXED,
+			      G_TYPE_BOOLEAN, 1,
+			      GDK_TYPE_EVENT);
 }
 
 GType
@@ -1604,9 +1697,9 @@ glade_widget_set_class (GladeWidget *widget, GladeWidgetClass *klass)
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
 static void
-glade_widget_connect_signal_handlers (GtkWidget *widget_gtk, 
-				      GCallback  callback, 
-				      gpointer   data)
+glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk, 
+				      GCallback    callback, 
+				      GladeWidget *gwidget)
 {
 	GList *children, *list;
 
@@ -1615,7 +1708,7 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk,
 				GLADE_TAG_EVENT_HANDLER_CONNECTED)) 
 	{
 		g_signal_connect (G_OBJECT (widget_gtk), "event",
-				  callback, data);
+				  callback, gwidget);
 
 		g_object_set_data (G_OBJECT (widget_gtk),
 				   GLADE_TAG_EVENT_HANDLER_CONNECTED,
@@ -1631,8 +1724,13 @@ glade_widget_connect_signal_handlers (GtkWidget *widget_gtk,
 							    (widget_gtk))) != NULL)
 		{
 			for (list = children; list; list = list->next)
+			{
+				GLADE_WIDGET_GET_KLASS (gwidget)->setup_events
+					(gwidget, GTK_WIDGET (list->data));
+
 				glade_widget_connect_signal_handlers 
-					(GTK_WIDGET (list->data), callback, data);
+					(GTK_WIDGET (list->data), callback, gwidget);
+			}
 			g_list_free (children);
 		}
 	}

@@ -82,7 +82,7 @@ struct _GladeFixedClass {
 
 	/* Signal handler for child widgets
 	 */
-	gint         (* child_event)     (GtkWidget *, GdkEvent *, GladeFixed *);
+	gint         (* child_event)     (GladeWidget *, GdkEvent *, GladeFixed *);
 
 };
 

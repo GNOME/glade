@@ -291,7 +291,7 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 
 static void
 glade_fixed_disconnect_child (GladeFixed   *fixed,
-			      GObject      *child)
+			      GladeWidget  *child)
 {
 	GFSigData *data;
 
@@ -311,11 +311,11 @@ glade_fixed_disconnect_child (GladeFixed   *fixed,
 
 static void
 glade_fixed_connect_child (GladeFixed   *fixed,
-			   GObject      *child)
+			   GladeWidget  *child)
 {
 	GFSigData *data;
 
-	if (GTK_IS_WIDGET (child) == FALSE)
+	if (GTK_IS_WIDGET (child->object) == FALSE)
 		return;
 
 	if ((data = g_object_get_data (G_OBJECT (child), "glade-fixed-signal-data")) != NULL)
@@ -430,10 +430,10 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GtkWidget   *event_widget,
 				GdkEvent    *event)
 {
-	gboolean handled = FALSE, sig_handled;
-	GtkWidget *fixed_widget, *child_widget;
-	gint parent_x, parent_y, child_x, child_y, trim_x, trim_y;
-	GladeCursorType operation;
+	GladeCursorType  operation;
+	GtkWidget       *fixed_widget, *child_widget;
+	gboolean         handled = FALSE, sig_handled;
+	gint             child_x, child_y;
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
@@ -442,21 +442,11 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	 * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
 	 * so we must always consult the event widget's window
 	 */
-	gdk_window_get_pointer (event_widget->window, 
-				&parent_x, &parent_y, NULL);
-
-	gtk_widget_translate_coordinates (event_widget, child_widget, 
-					  parent_x, parent_y, &child_x, &child_y);
-
-	trim_x = child_widget == event_widget && 
-		GTK_WIDGET_NO_WINDOW (child_widget) ? child_widget->allocation.x : 0;
-	trim_y = child_widget == event_widget && 
-		GTK_WIDGET_NO_WINDOW (child_widget) ? child_widget->allocation.y : 0;
+	gtk_widget_get_pointer (child_widget, &child_x, &child_y);
 
 	if (fixed->can_resize)
 		operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 
-						       child_x - trim_x, 
-						       child_y - trim_y);
+						       child_x, child_y);
 	else
 		operation = GLADE_CURSOR_DRAG;
 
@@ -537,13 +527,12 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 }
 
 static gint
-glade_fixed_child_event (GtkWidget   *widget, 
+glade_fixed_child_event (GladeWidget *gwidget, 
 			 GdkEvent    *event,
 			 GladeFixed  *fixed)
 {
 	GtkWidget   *event_widget;
-	GladeWidget *search, *event_gwidget, 
-		*gwidget = glade_widget_get_from_gobject (widget);
+	GladeWidget *search, *event_gwidget;
 
 	/* Get the basic event info... */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
@@ -631,7 +620,7 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 			       GDK_BUTTON_RELEASE_MASK      |
 			       GDK_ENTER_NOTIFY_MASK);
 
-	glade_fixed_connect_child (fixed, child->object);
+	glade_fixed_connect_child (fixed, child);
 
 	/* Setup rect and send configure
 	 */
@@ -670,7 +659,7 @@ static void
 glade_fixed_remove_child_impl (GladeWidget *fixed,
 			       GladeWidget *child)
 {
-	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child->object);
+	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
 	/* Chain up for the basic unparenting */
 	GLADE_WIDGET_KLASS (parent_class)->remove_child
@@ -683,15 +672,17 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 				GObject     *new_object)
 {
 	GladeWidget *gnew_widget = glade_widget_get_from_gobject (new_object);
+	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
 
-	glade_fixed_disconnect_child (GLADE_FIXED (fixed), old_object);
+	if (gold_widget)
+		glade_fixed_disconnect_child (GLADE_FIXED (fixed), gold_widget);
 
 	/* Chain up for the basic reparenting */
 	GLADE_WIDGET_KLASS (parent_class)->replace_child
 		(GLADE_WIDGET (fixed), old_object, new_object);
 
 	if (gnew_widget)
-		glade_fixed_connect_child (GLADE_FIXED (fixed), new_object);
+		glade_fixed_connect_child (GLADE_FIXED (fixed), gnew_widget);
 }
 
 static gboolean
@@ -705,21 +696,6 @@ glade_fixed_popup_menu (GtkWidget *widget, gpointer unused_data)
 	glade_popup_widget_pop (glade_widget, NULL, TRUE);
 
 	return TRUE;
-}
-
-static void
-glade_fixed_setup_events (GladeWidget *gwidget,
-			  GtkWidget   *widget)
-{
-	gtk_widget_add_events (widget,
-			       GDK_POINTER_MOTION_MASK      |
-			       GDK_POINTER_MOTION_HINT_MASK |
-			       GDK_BUTTON_PRESS_MASK        |
-			       GDK_BUTTON_RELEASE_MASK      |
-			       GDK_ENTER_NOTIFY_MASK);
-
-	g_signal_connect (G_OBJECT (widget), "popup_menu",
-			  G_CALLBACK (glade_fixed_popup_menu), NULL);
 }
 
 static gint
@@ -742,8 +718,7 @@ glade_fixed_event (GtkWidget   *widget,
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
 	event_gwidget = glade_widget_event_widget ();
 
-	/* Currently ignoring the return value and acting... even if 
-	 * this was a selection click
+	/* If the GladeWidget used this event... let it slide.
 	 */
 	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
 		return TRUE;
@@ -969,7 +944,6 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 	gobject_class->set_property     = glade_fixed_set_property;
 	gobject_class->get_property     = glade_fixed_get_property;
 	
-	gwidget_class->setup_events     = glade_fixed_setup_events;
 	gwidget_class->event            = glade_fixed_event;
 	gwidget_class->add_child        = glade_fixed_add_child_impl;
 	gwidget_class->remove_child     = glade_fixed_remove_child_impl;
