@@ -520,7 +520,8 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 		       {
 			       pdata2 = l->data;
 
-			       if (glade_property_class_match (pdata1->property->class,
+			       if (pdata1->property->widget == pdata2->property->widget &&
+				   glade_property_class_match (pdata1->property->class,
 							       pdata2->property->class))
 				       break;
 		       }

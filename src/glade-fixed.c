@@ -323,8 +323,10 @@ glade_fixed_connect_child (GladeFixed   *fixed,
 	
 	data = g_new (GFSigData, 1);
 
+	/* Connect-after here... leave a chance for selection
+	 */
 	data->press_id =
-		g_signal_connect
+		g_signal_connect_after
 		(child, "button-press-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 	data->release_id =
@@ -683,19 +685,6 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 
 	if (gnew_widget)
 		glade_fixed_connect_child (GLADE_FIXED (fixed), gnew_widget);
-}
-
-static gboolean
-glade_fixed_popup_menu (GtkWidget *widget, gpointer unused_data)
-{
-	GladeWidget *glade_widget;
-
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-
-	glade_widget = glade_widget_get_from_gobject (widget);
-	glade_popup_widget_pop (glade_widget, NULL, TRUE);
-
-	return TRUE;
 }
 
 static gint

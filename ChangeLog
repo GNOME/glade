@@ -1,3 +1,28 @@
+2006-06-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget.[ch]: 
+	  o gtk_window_set_decorated() all GtkWindows (bug 344817)
+	  o Fixed glade_widget_rebuild(), now properties of internal widgets to composite
+	    widgets' properties get transported along.
+	  o Fixed popups to only get spawned by the widget in question
+	    and not an unknown internal child.
+	  o Added widget superuser modes (used by the backend to check when
+	    its responsable for maintaining container sizes).
+	  o glade_widget_rebuild () fixed so that properties on rebuilt internal
+	    children are transfered.
+	
+	* src/glade-project.c: let glade-widget take care of property superuser mode
+	  at load time.
+	
+	* src/glade-fixed.ch: connect_after on button_press to give a chance to
+	  the selection
+
+	* src/glade-command.c: Fixed unifies for properties (check that they
+	  are on the same widgets).
+
+	* src/glade-gtk.c: 
+	  o GtkBox check superuser mode to adjust box size
+	
 2006-06-25  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* widgets/glade-catalog.dtd: Added 'default-palette-state'
@@ -25,7 +50,7 @@
 	    earlier on in the food chain.
 	  o Call ->setup_events() recursively in glade_widget_connect_signal_handlers()
 	    (now we get all needed events from internal children of composite widgets)
-
+	
 	* src/glade-fixed.[ch]: 
 	  o Reduced code by using gtk_widget_get_pointer ()
 	  o Adjusted to use the new signals on GladeWidget

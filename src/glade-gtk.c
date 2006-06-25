@@ -529,15 +529,14 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 	}
 
 	glade_property_push_superuser ();
-	glade_command_set_properties_list (GLADE_WIDGET (fixed)->project,
-					   prop_list);
+	if (prop_list)
+		glade_command_set_properties_list (GLADE_WIDGET (fixed)->project,
+						   prop_list);
 	glade_property_pop_superuser ();
 
-
 	for (l = glade_gtk_box_original_positions; l; l = l->next)
-	{
 		g_free (l->data);
-	}
+
 	glade_gtk_box_original_positions = 
 		(g_list_free (glade_gtk_box_original_positions), NULL);
 
@@ -835,7 +834,8 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 	  Try to remove the last placeholder if any, this way GtkBox`s size 
 	  will not be changed.
 	*/
-	if (!GLADE_IS_PLACEHOLDER (child))
+	if (glade_widget_superuser () == FALSE &&
+	    !GLADE_IS_PLACEHOLDER (child))
 	{
 		GList *l;
 		GtkBox *box = GTK_BOX (object);
@@ -850,7 +850,7 @@ glade_gtk_box_add_child (GObject *object, GObject *child)
 			}
 		}
 	}
-	
+
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 	
 	num_children = g_list_length (GTK_BOX (object)->children);
@@ -901,8 +901,11 @@ glade_gtk_box_remove_child (GObject *object, GObject *child)
 	
 	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-	glade_widget_property_get (gbox, "size", &size);
-	glade_widget_property_set (gbox, "size", size);
+	if (glade_widget_superuser () == FALSE)
+	{
+		glade_widget_property_get (gbox, "size", &size);
+		glade_widget_property_set (gbox, "size", size);
+	}
 }
 
 

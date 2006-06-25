@@ -278,6 +278,12 @@ GladeWidget            *glade_widget_get_parent             (GladeWidget      *w
 LIBGLADEUI_API 
 void                    glade_widget_set_parent             (GladeWidget      *widget,
 							     GladeWidget      *parent);
+LIBGLADEUI_API 
+gboolean                glade_widget_superuser              (void);
+LIBGLADEUI_API 
+void                    glade_widget_push_superuser         (void);
+LIBGLADEUI_API 
+void                    glade_widget_pop_superuser          (void);
 
 G_END_DECLS
 

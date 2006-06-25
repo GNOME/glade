@@ -1162,8 +1162,6 @@ glade_project_loading_done_idle (gpointer data)
 
 	project->loading = project->changed = FALSE;
 
-	glade_property_pop_superuser ();
-
 	return FALSE;
 }
 
@@ -1216,8 +1214,6 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	project->selection = NULL;
 	project->objects = NULL;
 	project->loading = TRUE;
-
-	glade_property_push_superuser ();
 
 	for (i = 0; i < interface->n_toplevels; ++i)
 	{

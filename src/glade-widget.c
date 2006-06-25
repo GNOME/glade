@@ -432,12 +432,6 @@ glade_widget_setup_events (GladeWidget *gwidget,
 			       GDK_BUTTON_RELEASE_MASK      |
 			       GDK_ENTER_NOTIFY_MASK);
 	
-	if (GTK_WIDGET_TOPLEVEL (widget))
-		g_signal_connect (G_OBJECT (widget), "delete_event",
-				  G_CALLBACK (glade_widget_hide_on_delete), NULL);
-
-	g_signal_connect (G_OBJECT (widget), "popup_menu",
-			  G_CALLBACK (glade_widget_popup_menu), NULL);
 }
 
 static gboolean
@@ -672,13 +666,17 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget, GladeWi
 }
 
 static GList *
-glade_widget_dup_properties (GList *template_props)
+glade_widget_dup_properties (GList *template_props, gboolean as_load)
 {
 	GList *list, *properties = NULL;
 
 	for (list = template_props; list && list->data; list = list->next)
 	{
 		GladeProperty *prop = list->data;
+		
+		if (prop->class->save == FALSE && as_load)
+			continue;
+
 		properties = g_list_prepend (properties, glade_property_dup (prop, NULL));
 	}
 	return g_list_reverse (properties);
@@ -705,6 +703,7 @@ glade_widget_sync_packing_props (GladeWidget *widget)
 		glade_property_sync (prop);
 	}
 }
+
 
 static GObject *
 glade_widget_constructor (GType                  type,
@@ -751,7 +750,7 @@ glade_widget_constructor (GType                  type,
 	if (gwidget->construct_template)
 	{
 		properties = glade_widget_dup_properties
-			(gwidget->construct_template->properties);
+			(gwidget->construct_template->properties, FALSE);
 		
 		glade_widget_set_properties (gwidget, properties);
 	}
@@ -785,7 +784,6 @@ glade_widget_constructor (GType                  type,
 	 */
 	if (gwidget->construct_reason == GLADE_CREATE_USER)
 		glade_widget_sync_custom_props (gwidget);
-
 
 	if (gwidget->parent && gwidget->packing_properties == NULL)
 		glade_widget_set_packing_properties (gwidget, gwidget->parent);
@@ -1488,10 +1486,10 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 typedef struct {
 	GladeWidget *widget;
 	GtkWidget   *placeholder;
-	GList       *packing;
+	GList       *properties;
 	
-	gchar                 *internal_name;
-	GList                 *internal_list;
+	gchar       *internal_name;
+	GList       *internal_list;
 } GladeChildExtract;
 
 static GList *
@@ -1499,7 +1497,7 @@ glade_widget_extract_children (GladeWidget *gwidget)
 {
 	GladeChildExtract *extract;
 	GList             *extract_list = NULL;
-	GList             *children, *list, *l;
+	GList             *children, *list;
 	
 	children = glade_widget_class_container_get_children
 		(gwidget->widget_class, gwidget->object);
@@ -1508,23 +1506,25 @@ glade_widget_extract_children (GladeWidget *gwidget)
 	{
 		GObject     *child   = G_OBJECT(list->data);
 		GladeWidget *gchild  = glade_widget_get_from_gobject (child);
-		
+#if 0
+		g_print ("Extracting %s from %s\n",
+			 gchild ? gchild->name : 
+			 GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "unknown widget", 
+			 gwidget->name);
+#endif
 		if (gchild && gchild->internal)
 		{
-			GList *internal_children;
-
 			/* Recurse and collect any deep child hierarchies
 			 * inside composite widgets.
 			 */
-			if ((internal_children =
-			     glade_widget_extract_children (gchild)) != NULL)
-			{
-				extract = g_new0 (GladeChildExtract, 1);
-				extract->internal_name = g_strdup (gchild->internal);
-				extract->internal_list = internal_children;
-
-				extract_list = g_list_prepend (extract_list, extract);
-			}
+			extract = g_new0 (GladeChildExtract, 1);
+			extract->internal_name = g_strdup (gchild->internal);
+			extract->internal_list = glade_widget_extract_children (gchild);
+			extract->properties    = 
+				glade_widget_dup_properties (gchild->properties, TRUE);
+			
+			extract_list = g_list_prepend (extract_list, extract);
+		
 		}
 		else if (gchild || GLADE_IS_PLACEHOLDER (child))
 		{
@@ -1536,11 +1536,9 @@ glade_widget_extract_children (GladeWidget *gwidget)
 				
 				/* Make copies of the packing properties
 				 */
-				for (l = gchild->packing_properties; l; l = l->next)
-					extract->packing = g_list_prepend
-						(extract->packing,
-						 glade_property_dup
-						 (GLADE_PROPERTY (l->data), gchild));
+				extract->properties = 
+					glade_widget_dup_properties 
+					(gchild->packing_properties, TRUE);
 
 				glade_widget_remove_child (gwidget, gchild);
 			}
@@ -1557,6 +1555,9 @@ glade_widget_extract_children (GladeWidget *gwidget)
 		}
 	}
 
+	g_print ("Extracted %d out of %d children from child %s\n",
+		 g_list_length (extract_list), g_list_length (children), gwidget->name);
+
 	if (children)
 		g_list_free (children);
 
@@ -1570,6 +1571,9 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 	GladeWidget       *gchild;
 	GObject           *internal_object;
 	GList             *list, *l;
+
+	g_print ("Inserting %d children into widget %s\n",
+		 g_list_length (children), gwidget->name);
 	
 	for (list = children; list; list = list->next)
 	{
@@ -1596,6 +1600,26 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 			/* This will free the list... */
 			glade_widget_insert_children (gchild, extract->internal_list);
 
+			/* Set the properties after inserting the children */
+			for (l = extract->properties; l; l = l->next)
+			{
+				GValue         value = { 0, };
+				GladeProperty *saved_prop = l->data;
+				GladeProperty *widget_prop = 
+					glade_widget_get_property (gchild,
+								   saved_prop->class->id);
+				
+				glade_property_get_value (saved_prop, &value);
+				glade_property_set_value (widget_prop, &value);
+				g_value_unset (&value);
+
+				/* Free them as we go ... */
+				g_object_unref (saved_prop);
+			}
+
+			if (extract->properties)
+				g_list_free (extract->properties);
+
 			g_free (extract->internal_name);
 		}
 		else if (extract->widget)
@@ -1603,7 +1627,7 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 			glade_widget_add_child (gwidget, extract->widget, FALSE);
 			g_object_unref (extract->widget);
 			
-			for (l = extract->packing; l; l = l->next)
+			for (l = extract->properties; l; l = l->next)
 			{
 				GValue         value = { 0, };
 				GladeProperty *saved_prop = l->data;
@@ -1615,10 +1639,11 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 				glade_property_set_value (widget_prop, &value);
 				g_value_unset (&value);
 
+				/* Free them as we go ... */
 				g_object_unref (saved_prop);
 			}
-			if (extract->packing)
-				g_list_free (extract->packing);
+			if (extract->properties)
+				g_list_free (extract->properties);
 		}
 		else
 		{
@@ -1630,6 +1655,7 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 		}
 		g_free (extract);
 	}
+	
 	if (children)
 		g_list_free (children);
 }
@@ -2334,9 +2360,9 @@ glade_widget_dup (GladeWidget *template)
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (template), NULL);
 	
-	glade_property_push_superuser ();
+	glade_widget_push_superuser ();
 	widget = glade_widget_dup_internal (NULL, template);
-	glade_property_pop_superuser ();
+	glade_widget_pop_superuser ();
 
 	return widget;
 }
@@ -2366,7 +2392,7 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 
 	/* Extract and keep the child hierarchies aside... */
 	children = glade_widget_extract_children (glade_widget);
-		
+
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
@@ -2388,12 +2414,14 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	/* Reparent any children of the old object to the new object
 	 * (this function will consume and free the child list).
 	 */
+	glade_widget_push_superuser ();
 	glade_widget_insert_children (glade_widget, children);
+	glade_widget_pop_superuser ();
 		
 	/* Custom properties aren't transfered in build_object, since build_object
 	 * is only concerned with object creation.
 	 */
-	glade_widget_sync_custom_props  (glade_widget);
+	glade_widget_sync_custom_props (glade_widget);
 
 	/* Sync packing.
 	 */
@@ -3029,6 +3057,12 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 
 	if (g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WIDGET))
 	{
+		
+		/* Make sure dialogs and such have close buttons.
+		 */
+		if (g_type_is_a (gwidget->widget_class->type, GTK_TYPE_WINDOW))
+			gtk_window_set_decorated (GTK_WINDOW (new_object), TRUE);
+
 		/* Disable any built-in DnD
 		 */
 		gtk_drag_dest_unset (GTK_WIDGET (new_object));
@@ -3038,6 +3072,13 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 		 */
 		GLADE_WIDGET_GET_KLASS (gwidget)->setup_events
 			(gwidget, GTK_WIDGET (new_object));
+
+		if (GTK_WIDGET_TOPLEVEL (new_object))
+			g_signal_connect (G_OBJECT (new_object), "delete_event",
+					  G_CALLBACK (glade_widget_hide_on_delete), NULL);
+		
+		g_signal_connect (G_OBJECT (new_object), "popup_menu",
+				  G_CALLBACK (glade_widget_popup_menu), NULL);
 		
 		glade_widget_connect_signal_handlers
 			(GTK_WIDGET(new_object), 
@@ -3504,6 +3545,7 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 {
 	GladeWidget *widget;
 
+	glade_widget_push_superuser ();
 	loading_project = project;
 		
 	if ((widget = glade_widget_new_from_widget_info
@@ -3514,6 +3556,7 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 	}	
 
 	loading_project = NULL;
+	glade_widget_pop_superuser ();
 
 	return widget;
 }
@@ -3561,4 +3604,56 @@ glade_widget_launch_editor (GladeWidget *widget)
 			break;
 		}
 	} while ((parent = parent->parent) != NULL);
+}
+
+
+static gint glade_widget_su_stack = 0;
+
+/**
+ * glade_widget_superuser:
+ *
+ * Checks if we are in superuser mode.
+ *
+ * Superuser mode is when we are
+ *   - Loading a project
+ *   - Dupping a widget recursively
+ *   - Rebuilding an instance for a construct-only property
+ *
+ * In these cases, we must act like a load, this should be checked
+ * from the plugin when implementing containers, when undo/redo comes
+ * around, the plugin is responsable for maintaining the same container
+ * size when widgets are added/removed.
+ */
+gboolean
+glade_widget_superuser (void)
+{
+	return glade_widget_su_stack > 0;
+}
+
+/**
+ * glade_widget_push_superuser:
+ *
+ * Sets superuser mode
+ */
+void
+glade_widget_push_superuser (void)
+{
+	glade_property_push_superuser ();
+	glade_widget_su_stack++;
+}
+
+
+/**
+ * glade_widget_pop_superuser:
+ *
+ * Unsets superuser mode
+ */
+void
+glade_widget_pop_superuser (void)
+{
+	if (--glade_widget_su_stack < 0)
+	{
+		g_critical ("Bug: widget super user stack is corrupt.\n");
+	}
+	glade_property_pop_superuser ();
 }
