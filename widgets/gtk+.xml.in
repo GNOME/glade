@@ -654,6 +654,8 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View" />
+
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
         <property id="activity-blocks" disabled="True"/>
@@ -1325,7 +1327,9 @@
     <glade-widget-class-ref name="GtkComboBox"/>
     <glade-widget-class-ref name="GtkComboBoxEntry"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
+
     <glade-widget-class-ref name="GtkTreeView"/>
+    <glade-widget-class-ref name="GtkIconView"/>
 
     <glade-widget-class-ref name="GtkHandleBox"/>
     <glade-widget-class-ref name="GtkStatusbar"/>
@@ -1339,6 +1343,9 @@
   </glade-widget-group>
 
   <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
+
+    <default-palette-state expanded="False" />
+
     <glade-widget-class-ref name="GtkCombo"/>
     <glade-widget-class-ref name="GtkOptionMenu"/>
     <glade-widget-class-ref name="GtkHRuler"/>

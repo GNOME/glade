@@ -311,7 +311,6 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	GtkWidget *expander;
 	GtkWidget *box; 
 	GtkWidget *item;
-	GtkWidget *vbox;
 	GList *l;
 	gchar *title;
 
@@ -339,10 +338,11 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	expander = glade_palette_expander_new (title);
 	glade_palette_expander_set_spacing (GLADE_PALETTE_EXPANDER (expander), 2);
 	glade_palette_expander_set_use_markup (GLADE_PALETTE_EXPANDER (expander), TRUE);
-	glade_palette_expander_set_expanded (GLADE_PALETTE_EXPANDER (expander), TRUE);
 	gtk_container_set_border_width (GTK_CONTAINER (expander), 1);
 
-	vbox = gtk_vbox_new (FALSE, 0);
+	/* set default expanded state */
+	glade_palette_expander_set_expanded (GLADE_PALETTE_EXPANDER (expander), 
+					     glade_widget_group_get_expanded (group));
 
 	gtk_container_add (GTK_CONTAINER (expander), box);
 

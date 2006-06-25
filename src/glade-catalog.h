@@ -51,6 +51,8 @@ const gchar * glade_widget_group_get_name           (GladeWidgetGroup *group);
 LIBGLADEUI_API 
 const gchar * glade_widget_group_get_title          (GladeWidgetGroup *group);
 LIBGLADEUI_API 
+gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
+LIBGLADEUI_API 
 GList *       glade_widget_group_get_widget_classes (GladeWidgetGroup *group);
 
 LIBGLADEUI_API 

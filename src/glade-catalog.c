@@ -71,7 +71,10 @@ struct _GladeCatalog
 struct _GladeWidgetGroup
 {
 	gchar *name;             /* Group name                        */
-	gchar *title;            /* Group name on palette             */
+	gchar *title;            /* Group name in the palette             */
+
+	gboolean expanded;       /* Whether group is expanded in the palette */
+
 	GList *widget_classes;   /* List of classes in the palette    */
 };
 
@@ -292,6 +295,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 	
 	group->name = glade_xml_get_property_string (group_node, 
 						     GLADE_TAG_NAME);
+
 	if (!group->name) 
 	{ 
 		g_warning ("Required property 'name' not found in group node");
@@ -310,6 +314,9 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		return FALSE;	
 	}
 
+	/* by default, group is expanded in palette  */
+	group->expanded = TRUE;
+
 	/* Translate it */
 	group->title = dgettext (catalog->domain ? 
 				 catalog->domain : catalog->library, 
@@ -326,28 +333,35 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 
 		node_name = glade_xml_node_get_name (node);
 		
-		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS_REF) != 0) 
-			continue;
-
-		name = glade_xml_get_property_string (node, GLADE_TAG_NAME);
-		if (!name) 
+		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS_REF) == 0)
 		{
-			g_warning ("Couldn't find required property on %s",
-				   GLADE_TAG_GLADE_WIDGET_CLASS);
-			continue;
-		}
+			name = glade_xml_get_property_string (node, GLADE_TAG_NAME);
+			if (!name)
+			{
+				g_warning ("Couldn't find required property on %s",
+					   GLADE_TAG_GLADE_WIDGET_CLASS);
+				continue;
+			}
 
-		widget_class = glade_widget_class_get_by_name (name);
-		if (!widget_class) 
-		{
-			g_warning ("Tried to include undefined widget class '%s' in a widget group", name);
+			widget_class = glade_widget_class_get_by_name (name);
+			if (!widget_class) 
+			{
+				g_warning ("Tried to include undefined widget class '%s' in a widget group", name);
+				g_free (name);
+				continue;
+			}
 			g_free (name);
-			continue;
-		}
-		g_free (name);
 
-		group->widget_classes = g_list_prepend (group->widget_classes,
-							widget_class);
+			group->widget_classes = g_list_prepend (group->widget_classes,
+								widget_class);
+
+		}
+		else if (strcmp (node_name, GLADE_TAG_DEFAULT_PALETTE_STATE) == 0)
+		{
+			group->expanded = 
+				glade_xml_get_property_boolean 
+				(node, GLADE_TAG_EXPANDED, group->expanded);
+		}
 	}
 
 	group->widget_classes = g_list_reverse (group->widget_classes);
@@ -487,6 +501,14 @@ glade_widget_group_get_title (GladeWidgetGroup *group)
 	g_return_val_if_fail (group != NULL, NULL);
 
 	return group->title;
+}
+
+gboolean
+glade_widget_group_get_expanded (GladeWidgetGroup *group)
+{
+	g_return_val_if_fail (group != NULL, FALSE);
+
+	return group->expanded;
 }
 
 GList *

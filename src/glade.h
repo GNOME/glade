@@ -52,7 +52,6 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_YES          "Yes"
 #define GLADE_TAG_NO           "No"
 #define GLADE_ENUM_DATA_TAG    "GladeEnumDataTag"
-#define GLADE_TAG_IN_PALETTE   "InPalette"
 
 #define GLADE_TAG_EVENT_HANDLER_CONNECTED "EventHandlerConnected"
 
@@ -86,6 +85,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_SIGNAL_NAME                     "signal-name"
 #define GLADE_TAG_DEFAULT                         "default"
 #define GLADE_TAG_DISABLED                        "disabled"
+#define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
 #define GLADE_TAG_POST_CREATE_FUNCTION            "post-create-function"
 #define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION     "get-internal-child-function"
@@ -110,6 +110,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_OPTIONAL                        "optional"
 #define GLADE_TAG_OPTIONAL_DEFAULT                "optional-default"
 #define GLADE_TAG_VISIBLE                         "visible"
+#define GLADE_TAG_EXPANDED                        "expanded"
 #define GLADE_TAG_GENERIC_NAME                    "generic-name"
 #define GLADE_TAG_NAME                            "name"
 #define GLADE_TAG_TITLE                           "title"

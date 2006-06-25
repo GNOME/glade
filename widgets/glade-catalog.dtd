@@ -81,10 +81,14 @@
 <!ELEMENT get-internal-child-function (#PCDATA)>
 <!ELEMENT child-property-applies-function (#PCDATA)>
 
-<!ELEMENT glade-widget-group (glade-widget-class-ref+)>
+<!ELEMENT glade-widget-group (default-palette-state?, 
+			      glade-widget-class-ref+)>
 
 <!ATTLIST glade-widget-group name  CDATA #REQUIRED
                              title CDATA #REQUIRED>
+
+<!ELEMENT default-palette-state EMPTY>
+<!ATTLIST default-palette-state expanded CDATA #IMPLIED>
 
 <!ELEMENT glade-widget-class-ref EMPTY>
 <!ATTLIST glade-widget-class-ref name CDATA #REQUIRED>

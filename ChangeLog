@@ -1,3 +1,22 @@
+2006-06-25  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* widgets/glade-catalog.dtd: Added 'default-palette-state'
+	  element and attribute declarations.
+
+	* widgets/gtk+.xml.in, widgets/gnome.xml.in:
+	  o Obsolete widget groups are now marked as unexpanded in the 
+	    palette by default.
+	  o Add support for GtkIconView.
+
+	* src/glade-catalog.[ch], src/glade-palette.c:
+	  o Add support for parsing 'default-palette-state' catalog tag.
+	  o GladePalette now sets the expanded state for widget groups
+	    from glade_widget_group_get_expanded().
+
+	* glade-3.desktop.in: Add "GenericName" field, set
+	  to "User Interface Designer".
+
+
 2006-06-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget.[ch]: 
