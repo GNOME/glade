@@ -255,8 +255,6 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 	if (changed && property->widget)
 	{
-		if (project) glade_project_changed (project);
-
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[VALUE_CHANGED],
 			       0, property->value);

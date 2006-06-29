@@ -232,9 +232,9 @@ glade_app_refresh_undo_redo_button (GladeApp *app,
 	if ((project = glade_app_get_project ()) != NULL)
 	{
 		if (undo)
-			command = glade_command_next_undo_item (project);
+			command = glade_project_next_undo_item (project);
 		else
-			command = glade_command_next_redo_item (project);
+			command = glade_project_next_redo_item (project);
 	}
 
 	/* Change tooltips */
@@ -1266,7 +1266,7 @@ glade_app_command_undo (void)
 	GladeApp *app = glade_app_get();
 	if (app->priv->active_project)
 	{
-		glade_command_undo (app->priv->active_project);
+		glade_project_undo (app->priv->active_project);
 		glade_editor_refresh (app->priv->editor);
 		/* Update UI. */
 		glade_app_update_ui ();
@@ -1279,7 +1279,7 @@ glade_app_command_redo (void)
 	GladeApp *app = glade_app_get();
 	if (app->priv->active_project)
 	{
-		glade_command_redo (app->priv->active_project);
+		glade_project_redo (app->priv->active_project);
 		glade_editor_refresh (app->priv->editor);
 		/* Update UI. */
 		glade_app_update_ui ();

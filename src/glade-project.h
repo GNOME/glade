@@ -3,6 +3,7 @@
 #define __GLADE_PROJECT_H__
 
 #include "glade-widget.h"
+#include "glade-command.h"
 
 G_BEGIN_DECLS
 
@@ -68,19 +69,32 @@ struct _GladeProjectClass
 {
 	GObjectClass parent_class;
 
-	void   (*add_object)          (GladeProject *project,
-				       GladeWidget  *widget);
-	void   (*remove_object)       (GladeProject *project,
-				       GladeWidget  *widget);
-	void   (*widget_name_changed) (GladeProject *project,
-				       GladeWidget  *widget);
-	void   (*selection_changed)   (GladeProject *project); 
-	void   (*close)               (GladeProject *project);
+	void          (*add_object)          (GladeProject *project,
+					      GladeWidget  *widget);
+	void          (*remove_object)       (GladeProject *project,
+					      GladeWidget  *widget);
+	
+	void          (*undo)                (GladeProject *project);
+	void          (*redo)                (GladeProject *project);
+	GladeCommand *(*next_undo_item)      (GladeProject *project);
+	GladeCommand *(*next_redo_item)      (GladeProject *project);
+	void          (*push_undo)           (GladeProject *project,
+					      GladeCommand *command);
 
-	void   (*resource_added)      (GladeProject *project,
-				       const gchar  *resource);
-	void   (*resource_removed)    (GladeProject *project,
-				       const gchar  *resource);
+	void          (*changed)             (GladeProject *project,
+					      GladeCommand *command,
+					      gboolean      forward);
+
+	void          (*widget_name_changed) (GladeProject *project,
+					      GladeWidget  *widget);
+	void          (*selection_changed)   (GladeProject *project); 
+	void          (*close)               (GladeProject *project);
+
+	void          (*resource_added)      (GladeProject *project,
+					      const gchar  *resource);
+	void          (*resource_removed)    (GladeProject *project,
+					      const gchar  *resource);
+
 };
 
 LIBGLADEUI_API
@@ -94,6 +108,19 @@ LIBGLADEUI_API
 gboolean      glade_project_save                (GladeProject *project, 
 						 const gchar  *path, 
 						 GError      **error);
+
+LIBGLADEUI_API
+void          glade_project_undo                (GladeProject *project);
+LIBGLADEUI_API
+void          glade_project_redo                (GladeProject *project);
+LIBGLADEUI_API
+GladeCommand *glade_project_next_undo_item      (GladeProject *project);
+LIBGLADEUI_API
+GladeCommand *glade_project_next_redo_item      (GladeProject *project);
+LIBGLADEUI_API
+void          glade_project_push_undo           (GladeProject *project, 
+						 GladeCommand *cmd);
+
 LIBGLADEUI_API
 void          glade_project_reset_path          (GladeProject *project);
 LIBGLADEUI_API
@@ -115,9 +142,6 @@ void          glade_project_widget_name_changed (GladeProject *project, GladeWid
 						 const char   *old_name);
 LIBGLADEUI_API
 GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
-
-LIBGLADEUI_API
-void          glade_project_changed             (GladeProject *project);
 
 /* Selection */
 LIBGLADEUI_API

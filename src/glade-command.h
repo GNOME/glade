@@ -47,8 +47,8 @@ struct _GladeCommandClass
 {
 	GObjectClass parent_class;
 
-	gboolean (* undo_cmd)    (GladeCommand *this);
-	gboolean (* execute_cmd) (GladeCommand *this);
+	gboolean (* execute)     (GladeCommand *this);
+	gboolean (* undo)        (GladeCommand *this);
 	gboolean (* unifies)     (GladeCommand *this, GladeCommand *other);
 	void     (* collapse)    (GladeCommand *this, GladeCommand *other);
 };
@@ -56,22 +56,23 @@ struct _GladeCommandClass
 
 LIBGLADEUI_API
 GType          glade_command_get_type      (void);
-
-LIBGLADEUI_API
-void           glade_command_undo          (GladeProject      *project);
-LIBGLADEUI_API
-void           glade_command_redo          (GladeProject      *project);
-
-LIBGLADEUI_API 
-GladeCommand  *glade_command_next_undo_item (GladeProject *project);
-LIBGLADEUI_API 
-GladeCommand  *glade_command_next_redo_item (GladeProject *project);
-
 LIBGLADEUI_API
 void           glade_command_push_group    (const gchar       *description);
 LIBGLADEUI_API
 void           glade_command_pop_group     (void);
 
+LIBGLADEUI_API
+gboolean       glade_command_execute       (GladeCommand      *command);
+LIBGLADEUI_API
+gboolean       glade_command_undo          (GladeCommand      *command);
+LIBGLADEUI_API
+gboolean       glade_command_unifies       (GladeCommand      *command,
+					    GladeCommand      *other);
+LIBGLADEUI_API
+void           glade_command_collapse      (GladeCommand      *command,
+					    GladeCommand      *other);
+
+/************************** properties *********************************/
 LIBGLADEUI_API
 void           glade_command_set_property  (GladeProperty     *property,     
 					    const GValue      *value);
@@ -84,9 +85,12 @@ LIBGLADEUI_API
 void           glade_command_set_properties_list (GladeProject *project, 
 						  GList        *props); // list of GCSetPropData
 
+/************************** name ******************************/
 LIBGLADEUI_API
 void           glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 
+
+/************************ create/delete ******************************/
 LIBGLADEUI_API
 void           glade_command_delete        (GList             *widgets);
 LIBGLADEUI_API
@@ -95,6 +99,7 @@ GladeWidget   *glade_command_create        (GladeWidgetClass  *class,
 					    GladePlaceholder  *placeholder,
 					    GladeProject      *project);
 
+/************************ cut/copy/paste ******************************/
 LIBGLADEUI_API
 void           glade_command_cut           (GList             *widgets);
 LIBGLADEUI_API
@@ -104,6 +109,7 @@ void           glade_command_paste         (GList             *widgets,
 					    GladeWidget       *parent,
 					    GladePlaceholder  *placeholder);
 
+/************************ signals ******************************/
 LIBGLADEUI_API
 void           glade_command_add_signal    (GladeWidget       *glade_widget, 
 					    const GladeSignal *signal);

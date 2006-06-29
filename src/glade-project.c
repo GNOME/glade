@@ -42,11 +42,7 @@
 #include "glade-id-allocator.h"
 #include "glade-app.h"
 #include "glade-catalog.h"
-
-static void glade_project_class_init (GladeProjectClass *class);
-static void glade_project_init (GladeProject *project);
-static void glade_project_finalize (GObject *object);
-static void glade_project_dispose (GObject *object);
+#include "glade-marshallers.h"
 
 enum
 {
@@ -57,6 +53,7 @@ enum
 	CLOSE,
 	RESOURCE_ADDED,
 	RESOURCE_REMOVED,
+	CHANGED,
 	LAST_SIGNAL
 };
 
@@ -68,9 +65,80 @@ enum
 	PROP_READ_ONLY
 };
 
-static guint glade_project_signals[LAST_SIGNAL] = {0};
+static guint         glade_project_signals[LAST_SIGNAL] = {0};
 static GObjectClass *parent_class = NULL;
-static GHashTable *allocated_untitled_numbers = NULL;
+static GHashTable   *allocated_untitled_numbers = NULL;
+
+/*******************************************************************
+                            GObjectClass
+ *******************************************************************/
+static void
+glade_project_list_unref (GList *original_list)
+{
+	GList *l;
+	for (l = original_list; l; l = l->next)
+		g_object_unref (G_OBJECT (l->data));
+
+	if (original_list != NULL)
+		g_list_free (original_list);
+}
+
+static void
+glade_project_release_untitled_number (gint n)
+{
+	g_return_if_fail (allocated_untitled_numbers != NULL);
+
+	g_hash_table_remove (allocated_untitled_numbers, GINT_TO_POINTER (n));
+}
+
+static void
+glade_project_dispose (GObject *object)
+{
+	GladeProject *project = GLADE_PROJECT (object);
+	GList        *list;
+	GladeWidget  *gwidget;
+	
+	/* Emit close signal */
+	g_signal_emit (object, glade_project_signals [CLOSE], 0);
+	
+	glade_project_selection_clear (project, TRUE);
+
+	glade_project_list_unref (project->undo_stack);
+	project->undo_stack = NULL;
+
+	/* Remove objects from the project */
+	for (list = project->objects; list; list = list->next)
+	{
+		gwidget = glade_widget_get_from_gobject (list->data);
+
+		g_object_unref (G_OBJECT (list->data));
+		g_object_unref (G_OBJECT (gwidget));
+	}
+	project->objects = NULL;
+
+	gtk_object_destroy (GTK_OBJECT (project->tooltips));
+	project->tooltips = NULL;
+
+	G_OBJECT_CLASS (parent_class)->dispose (object);
+}
+
+static void
+glade_project_finalize (GObject *object)
+{
+	GladeProject *project = GLADE_PROJECT (object);
+
+	g_free (project->name);
+	g_free (project->path);
+
+	if (project->untitled_number > 0)
+		glade_project_release_untitled_number (project->untitled_number);
+
+	g_hash_table_destroy (project->widget_names_allocator);
+	g_hash_table_destroy (project->widget_old_names);
+	g_hash_table_destroy (project->resources);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
 
 static void
 glade_project_get_property (GObject    *object,
@@ -97,29 +165,190 @@ glade_project_get_property (GObject    *object,
 	}
 }
 
-GType
-glade_project_get_type (void)
+
+/*******************************************************************
+                          GladeProjectClass
+ *******************************************************************/
+static void
+glade_project_walk_back (GladeProject *project)
 {
-	static GType type = 0;
+	if (project->prev_redo_item)
+		project->prev_redo_item = project->prev_redo_item->prev;
+}
 
-	if (!type)
+static void
+glade_project_walk_forward (GladeProject *project)
+{
+	if (project->prev_redo_item)
+		project->prev_redo_item = project->prev_redo_item->next;
+	else
+		project->prev_redo_item = project->undo_stack;
+}
+
+
+static void
+glade_project_undo_impl (GladeProject *project)
+{
+	GladeCommand *cmd, *next_cmd;
+
+	while ((cmd = glade_project_next_undo_item (project)) != NULL)
 	{
-		static const GTypeInfo info = {
-			sizeof (GladeProjectClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_project_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladeProject),
-			0,
-			(GInstanceInitFunc) glade_project_init
-		};
+		glade_command_undo (cmd);
 
-		type = g_type_register_static (G_TYPE_OBJECT, "GladeProject", &info, 0);
+		glade_project_walk_back (project);
+
+		g_signal_emit (G_OBJECT (project),
+			       glade_project_signals [CHANGED], 
+			       0, cmd, FALSE);
+
+		if ((next_cmd = glade_project_next_undo_item (project)) != NULL &&
+		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+			break;
+	}
+}
+
+static void
+glade_project_redo_impl (GladeProject *project)
+{
+	GladeCommand *cmd, *next_cmd;
+	
+	while ((cmd = glade_project_next_redo_item (project)) != NULL)
+	{
+		glade_command_execute (cmd);
+
+		glade_project_walk_forward (project);
+
+		g_signal_emit (G_OBJECT (project),
+			       glade_project_signals [CHANGED],
+			       0, cmd, TRUE);
+
+		if ((next_cmd = glade_project_next_redo_item (project)) != NULL &&
+		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+			break;
+	}
+}
+
+static GladeCommand *
+glade_project_next_undo_item_impl (GladeProject *project)
+{
+	GList *l;
+
+	if ((l = project->prev_redo_item) == NULL)
+		return NULL;
+
+	return GLADE_COMMAND (l->data);
+}
+
+static GladeCommand *
+glade_project_next_redo_item_impl (GladeProject *project)
+{
+	GList *l;
+
+	if ((l = project->prev_redo_item) == NULL)
+		return project->undo_stack ? 
+			GLADE_COMMAND (project->undo_stack->data) : NULL;
+	else
+		return l->next ? GLADE_COMMAND (l->next->data) : NULL;
+}
+
+static void
+glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
+{
+	GList* tmp_redo_item;
+
+	/* If there are no "redo" items, and the last "undo" item unifies with
+	   us, then we collapse the two items in one and we're done */
+	if (project->prev_redo_item != NULL && project->prev_redo_item->next == NULL)
+	{
+		GladeCommand *cmd1 = project->prev_redo_item->data;
+		
+		if (glade_command_unifies (cmd1, cmd))
+		{
+			glade_command_collapse (cmd1, cmd);
+			g_object_unref (cmd);
+
+			g_signal_emit (G_OBJECT (project),
+				       glade_project_signals [CHANGED],
+				       0, cmd1, TRUE);
+			return;
+		}
 	}
 
-	return type;
+	/* We should now free all the "redo" items */
+	tmp_redo_item = g_list_next (project->prev_redo_item);
+	while (tmp_redo_item)
+	{
+		g_assert (tmp_redo_item->data);
+		g_object_unref (G_OBJECT (tmp_redo_item->data));
+		tmp_redo_item = g_list_next (tmp_redo_item);
+	}
+
+	if (project->prev_redo_item)
+	{
+		g_list_free (g_list_next (project->prev_redo_item));
+		project->prev_redo_item->next = NULL;
+	}
+	else
+	{
+		g_list_free (project->undo_stack);
+		project->undo_stack = NULL;
+	}
+
+	/* and then push the new undo item */
+	project->undo_stack = g_list_append (project->undo_stack, cmd);
+
+	if (project->prev_redo_item == NULL)
+		project->prev_redo_item = project->undo_stack;
+	else
+		project->prev_redo_item = g_list_next (project->prev_redo_item);
+
+
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [CHANGED],
+		       0, cmd, TRUE);
+}
+
+static void
+glade_project_changed_impl (GladeProject *project, 
+			    GladeCommand *command,
+			    gboolean      forward)
+{
+	if (!project->changed && !project->loading)
+	{
+		project->changed = TRUE;
+		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
+	}
+
+	glade_app_update_ui ();
+}
+
+/*******************************************************************
+                            Initializers
+ *******************************************************************/
+static void
+glade_project_init (GladeProject *project)
+{
+	project->path = NULL;
+	project->name = NULL;
+	project->instance = 0;
+	project->untitled_number = 0;
+	project->readonly = FALSE;
+	project->objects = NULL;
+	project->selection = NULL;
+	project->has_selection = FALSE;
+	project->undo_stack = NULL;
+	project->prev_redo_item = NULL;
+	project->widget_names_allocator = 
+		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, 
+				       (GDestroyNotify) glade_id_allocator_free);
+	project->widget_old_names = 
+		g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
+	project->tooltips = gtk_tooltips_new ();
+	project->accel_group = NULL;
+
+	project->resources = g_hash_table_new_full (g_direct_hash, 
+						    g_direct_equal, 
+						    NULL, g_free);
 }
 
 static void
@@ -132,17 +361,23 @@ glade_project_class_init (GladeProjectClass *class)
 	parent_class = g_type_class_peek_parent (class);
 
 	object_class->get_property = glade_project_get_property;
-	object_class->finalize = glade_project_finalize;
-	object_class->dispose = glade_project_dispose;
+	object_class->finalize     = glade_project_finalize;
+	object_class->dispose      = glade_project_dispose;
 	
-	class->add_object = NULL;
-	class->remove_object = NULL;
-	class->widget_name_changed = NULL;
-	class->selection_changed = NULL;
-	class->close = NULL;
-	class->resource_added = NULL;
-	class->resource_removed = NULL;
+	class->add_object          = NULL;
+	class->remove_object       = NULL;
+	class->undo                = glade_project_undo_impl;
+	class->redo                = glade_project_redo_impl;
+	class->next_undo_item      = glade_project_next_undo_item_impl;
+	class->next_redo_item      = glade_project_next_redo_item_impl;
+	class->push_undo           = glade_project_push_undo_impl;
 
+	class->widget_name_changed = NULL;
+	class->selection_changed   = NULL;
+	class->close               = NULL;
+	class->resource_added      = NULL;
+	class->resource_removed    = NULL;
+	class->changed             = glade_project_changed_impl;
 	
 	/**
 	 * GladeProject::add-widget:
@@ -272,6 +507,27 @@ glade_project_class_init (GladeProjectClass *class)
 			      1,
 			      G_TYPE_STRING);
 
+
+	/**
+	 * GladeProject::changed:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @arg1: the #GladeCommand that was executed
+	 * @arg2: whether the command was executed or undone.
+	 *
+	 * Emitted when a @gladeproject's state changes via a #GladeCommand.
+	 */
+	glade_project_signals[CHANGED] =
+		g_signal_new ("changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeProjectClass, changed),
+			      NULL, NULL,
+			      glade_marshal_VOID__OBJECT_BOOLEAN,
+			      G_TYPE_NONE,
+			      2,
+			      GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
+
+
 	g_object_class_install_property (object_class,
 					 PROP_HAS_UNSAVED_CHANGES,
 					 g_param_spec_boolean ("has-unsaved-changes",
@@ -298,31 +554,34 @@ glade_project_class_init (GladeProjectClass *class)
 
 }
 
-static void
-glade_project_init (GladeProject *project)
+/*******************************************************************
+                                  API
+ *******************************************************************/
+GType
+glade_project_get_type (void)
 {
-	project->path = NULL;
-	project->name = NULL;
-	project->instance = 0;
-	project->untitled_number = 0;
-	project->readonly = FALSE;
-	project->objects = NULL;
-	project->selection = NULL;
-	project->has_selection = FALSE;
-	project->undo_stack = NULL;
-	project->prev_redo_item = NULL;
-	project->widget_names_allocator = 
-		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, 
-				       (GDestroyNotify) glade_id_allocator_free);
-	project->widget_old_names = 
-		g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
-	project->tooltips = gtk_tooltips_new ();
-	project->accel_group = NULL;
+	static GType type = 0;
 
-	project->resources = g_hash_table_new_full (g_direct_hash, 
-						    g_direct_equal, 
-						    NULL, g_free);
+	if (!type)
+	{
+		static const GTypeInfo info = {
+			sizeof (GladeProjectClass),
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) glade_project_class_init,
+			(GClassFinalizeFunc) NULL,
+			NULL,
+			sizeof (GladeProject),
+			0,
+			(GInstanceInitFunc) glade_project_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT, "GladeProject", &info, 0);
+	}
+
+	return type;
 }
+
 
 static gint
 glade_project_get_untitled_number (void)
@@ -347,14 +606,6 @@ glade_project_get_untitled_number (void)
 
 		++i;
 	}
-}
-
-static void
-glade_project_release_untitled_number (gint n)
-{
-	g_return_if_fail (allocated_untitled_numbers != NULL);
-
-	g_hash_table_remove (allocated_untitled_numbers, GINT_TO_POINTER (n));
 }
 
 static void
@@ -409,66 +660,6 @@ glade_project_new (gboolean untitled)
 	}
 
 	return project;
-}
-
-static void
-glade_project_list_unref (GList *original_list)
-{
-	GList *l;
-	for (l = original_list; l; l = l->next)
-		g_object_unref (G_OBJECT (l->data));
-
-	if (original_list != NULL)
-		g_list_free (original_list);
-}
-
-static void
-glade_project_dispose (GObject *object)
-{
-	GladeProject *project = GLADE_PROJECT (object);
-	GList        *list;
-	GladeWidget  *gwidget;
-	
-	/* Emit close signal */
-	g_signal_emit (object, glade_project_signals [CLOSE], 0);
-	
-	glade_project_selection_clear (project, TRUE);
-
-	glade_project_list_unref (project->undo_stack);
-	project->undo_stack = NULL;
-
-	/* Remove objects from the project */
-	for (list = project->objects; list; list = list->next)
-	{
-		gwidget = glade_widget_get_from_gobject (list->data);
-
-		g_object_unref (G_OBJECT (list->data));
-		g_object_unref (G_OBJECT (gwidget));
-	}
-	project->objects = NULL;
-
-	gtk_object_destroy (GTK_OBJECT (project->tooltips));
-	project->tooltips = NULL;
-
-	G_OBJECT_CLASS (parent_class)->dispose (object);
-}
-
-static void
-glade_project_finalize (GObject *object)
-{
-	GladeProject *project = GLADE_PROJECT (object);
-
-	g_free (project->name);
-	g_free (project->path);
-
-	if (project->untitled_number > 0)
-		glade_project_release_untitled_number (project->untitled_number);
-
-	g_hash_table_destroy (project->widget_names_allocator);
-	g_hash_table_destroy (project->widget_old_names);
-	g_hash_table_destroy (project->resources);
-
-	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /**
@@ -636,8 +827,6 @@ glade_project_add_object (GladeProject *project,
 			  (GCallback) glade_project_on_widget_notify, project);
 
 	project->objects = g_list_prepend (project->objects, g_object_ref (object));
-
-	glade_project_changed (project);	
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
@@ -775,8 +964,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		project->objects = g_list_delete_link (project->objects, link);
 	}
 
-	glade_project_changed (project);
-
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [REMOVE_WIDGET],
 		       0,
@@ -807,8 +994,6 @@ glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, c
 		       glade_project_signals [WIDGET_NAME_CHANGED],
 		       0,
 		       widget);
-
-	glade_project_changed (project);
 }
 
 /**
@@ -1433,25 +1618,88 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	return ret;
 }
 
+
+/**
+ * glade_project_undo:
+ * @project: a #GladeProject
+ * 
+ * Undoes a #GladeCommand in this project.
+ */
+void
+glade_project_undo (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	GLADE_PROJECT_GET_CLASS (project)->undo (project);
+}
+
+/**
+ * glade_project_undo:
+ * @project: a #GladeProject
+ * 
+ * Redoes a #GladeCommand in this project.
+ */
+void
+glade_project_redo (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	GLADE_PROJECT_GET_CLASS (project)->redo (project);
+}
+
+/**
+ * glade_project_next_undo_item:
+ * @project: a #GladeProject
+ * 
+ * Gets the next undo item on @project's command stack.
+ *
+ * Returns: the #GladeCommand
+ */
+GladeCommand *
+glade_project_next_undo_item (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	return GLADE_PROJECT_GET_CLASS (project)->next_undo_item (project);
+}
+
+
+/**
+ * glade_project_next_redo_item:
+ * @project: a #GladeProject
+ * 
+ * Gets the next redo item on @project's command stack.
+ *
+ * Returns: the #GladeCommand
+ */
+GladeCommand *
+glade_project_next_redo_item (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	return GLADE_PROJECT_GET_CLASS (project)->next_redo_item (project);
+}
+
+
+
+/**
+ * glade_project_push_undo:
+ * @project: a #GladeProject
+ * @cmd: the #GladeCommand
+ * 
+ * Pushes a newly created #GladeCommand onto @projects stack.
+ */
+void
+glade_project_push_undo (GladeProject *project, GladeCommand *cmd)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_COMMAND (cmd));
+
+	GLADE_PROJECT_GET_CLASS (project)->push_undo (project, cmd);
+}
+
 void
 glade_project_reset_path (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	project->path = (g_free (project->path), NULL);
 }
-
-void
-glade_project_changed (GladeProject *project)
-{
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	
-	if (!project->changed && !project->loading)
-	{
-		project->changed = TRUE;
-		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
-	}
-}
-
 
 /**
  * glade_project_get_tooltips:

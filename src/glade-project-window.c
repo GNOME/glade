@@ -1783,8 +1783,8 @@ gpw_refresh_undo_redo (GladeProjectWindow *gpw)
 
 	if (project != NULL)
 	{
-		undo = glade_command_next_undo_item (project);
-		redo = glade_command_next_redo_item (project);
+		undo = glade_project_next_undo_item (project);
+		redo = glade_project_next_redo_item (project);
 	}
 
 	/* Refresh Undo */

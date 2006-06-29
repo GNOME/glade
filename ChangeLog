@@ -1,3 +1,15 @@
+2006-06-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project.[ch], src/glade-command.[ch]: Major rework underway,
+	  phase one complete: Move undo/redo stack logic from glade-command to glade-project
+	  and add a "changed" signal on the project ("update-ui" is fired also anytime
+	  the "changed" signal is fired).
+
+	* src/glade-app.c, src/glade-project-window.c: small changes to accomadated afore
+	  mentioned api changes.
+
+	* src/glade-marshallers.list: Added new signal VOID:OBJECT,BOOLEAN
+
 2006-06-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget.[ch]: 

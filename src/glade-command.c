@@ -115,13 +115,13 @@ glade_command_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_unifies_impl (GladeCommand *this, GladeCommand *other)
 {
 	return FALSE;
 }
 
 static void
-glade_command_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_collapse_impl (GladeCommand *this, GladeCommand *other)
 {
 	g_return_if_reached ();
 }
@@ -136,10 +136,10 @@ glade_command_class_init (GladeCommandClass *klass)
 
 	object_class->finalize = glade_command_finalize;
 
-	klass->undo_cmd = NULL;
-	klass->execute_cmd = NULL;
-	klass->unifies = glade_command_unifies;
-	klass->collapse = glade_command_collapse;
+	klass->undo            = NULL;
+	klass->execute         = NULL;
+	klass->unifies         = glade_command_unifies_impl;
+	klass->collapse        = glade_command_collapse_impl;
 }
 
 /* compose the _get_type function for GladeCommand */
@@ -163,8 +163,8 @@ func ## _class_init (gpointer parent_tmp, gpointer notused)		\
 	GladeCommandClass *parent = parent_tmp;				\
 	GObjectClass* object_class;					\
 	object_class = G_OBJECT_CLASS (parent);				\
-	parent->undo_cmd =  func ## _undo;				\
-	parent->execute_cmd =  func ## _execute;			\
+	parent->undo =  func ## _undo;					\
+	parent->execute =  func ## _execute;				\
 	parent->unifies =  func ## _unifies;				\
 	parent->collapse =  func ## _collapse;				\
 	object_class->finalize = func ## _finalize;			\
@@ -174,103 +174,70 @@ typedef struct {							\
 } type ## Class;							\
 static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 
-/**************************************************/
 
-
-GladeCommand *
-glade_command_next_undo_item (GladeProject *project)
+/**
+ * glade_command_execute:
+ * @command: A #GladeCommand
+ *
+ * Executes @command
+ *
+ * Returns: whether the command was successfully executed
+ */
+gboolean
+glade_command_execute (GladeCommand *command)
 {
-	GList *l;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-	if ((l = project->prev_redo_item) == NULL)
-		return NULL;
-
-	return GLADE_COMMAND (l->data);
-}
-
-GladeCommand *
-glade_command_next_redo_item (GladeProject *project)
-{
-	GList *l;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-	if ((l = project->prev_redo_item) == NULL)
-		return project->undo_stack ? 
-			GLADE_COMMAND (project->undo_stack->data) : NULL;
-	else
-		return l->next ? GLADE_COMMAND (l->next->data) : NULL;
-}
-
-static void
-glade_command_walk_back (GladeProject *project)
-{
-	if (project->prev_redo_item)
-		project->prev_redo_item = project->prev_redo_item->prev;
-}
-
-static void
-glade_command_walk_forward (GladeProject *project)
-{
-	if (project->prev_redo_item)
-		project->prev_redo_item = project->prev_redo_item->next;
-	else
-		project->prev_redo_item = project->undo_stack;
+	g_return_val_if_fail (command, FALSE);
+	return GLADE_COMMAND_GET_CLASS (command)->execute (command);
 }
 
 
 /**
  * glade_command_undo:
- * @project: a #GladeProject
+ * @command: A #GladeCommand
  *
- * Undoes the last command performed in @project.
+ * Undo the effects of @command
+ *
+ * Returns whether the command was successfully reversed
  */
-void
-glade_command_undo (GladeProject *project)
+gboolean
+glade_command_undo (GladeCommand *command)
 {
-	GladeCommand *cmd, *next_cmd;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-
-	while ((cmd = glade_command_next_undo_item (project)) != NULL)
-	{
-		GLADE_COMMAND_GET_CLASS (cmd)->undo_cmd (cmd);
-
-		glade_command_walk_back (project);
-
-		if ((next_cmd = glade_command_next_undo_item (project)) != NULL &&
-		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
-			break;
-	}
+	g_return_val_if_fail (command, FALSE);
+	return GLADE_COMMAND_GET_CLASS (command)->undo (command);
 }
 
 /**
- * glade_command_redo:
- * @project: a #GladeProject
+ * glade_command_unifies:
+ * @command: A #GladeCommand
+ * @other: another #GladeCommand
  *
- * Redoes the last undone command in @project.
+ * Checks whether @command and @other can be unified
+ * to make one single command.
+ *
+ * Returns: whether they can be unified.
+ */
+gboolean
+glade_command_unifies (GladeCommand *command,
+		       GladeCommand *other)
+{
+	g_return_val_if_fail (command, FALSE);
+	return GLADE_COMMAND_GET_CLASS (command)->unifies (command, other);
+}
+
+/**
+ * glade_command_collapse:
+ * @command: A #GladeCommand
+ * @other: another #GladeCommand
+ *
+ * Merges @other into @command, so that @command now
+ * covers both commands and @other can be dispensed with.
  */
 void
-glade_command_redo (GladeProject *project)
+glade_command_collapse (GladeCommand  *command,
+			GladeCommand  *other)
 {
-	GladeCommand *cmd, *next_cmd;
-	
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-
-	while ((cmd = glade_command_next_redo_item (project)) != NULL)
-	{
-		GLADE_COMMAND_GET_CLASS (cmd)->execute_cmd (cmd);
-
-		glade_command_walk_forward (project);
-
-		if ((next_cmd = glade_command_next_redo_item (project)) != NULL &&
-		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
-			break;
-	}
+	g_return_if_fail (command);
+	GLADE_COMMAND_GET_CLASS (command)->collapse (command, other);
 }
 
 /**
@@ -322,60 +289,6 @@ glade_command_check_group (GladeCommand *cmd)
 			(g_free (cmd->description), g_strdup (gc_group_description));
 		cmd->group_id = gc_group_id;
 	}
-}
-
-static void
-glade_command_push_undo (GladeProject *project, GladeCommand *cmd)
-{
-	GList* tmp_redo_item;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_COMMAND (cmd));
-
-	/* If there are no "redo" items, and the last "undo" item unifies with
-	   us, then we collapse the two items in one and we're done */
-	if (project->prev_redo_item != NULL && project->prev_redo_item->next == NULL)
-	{
-		GladeCommand* cmd1 = project->prev_redo_item->data;
-		GladeCommandClass* klass = GLADE_COMMAND_GET_CLASS (cmd1);
-		
-		if (klass->unifies (cmd1, cmd))
-		{
-			klass->collapse (cmd1, cmd);
-			g_object_unref (cmd);
-			return;
-		}
-	}
-
-	/* We should now free all the "redo" items */
-	tmp_redo_item = g_list_next (project->prev_redo_item);
-	while (tmp_redo_item)
-	{
-		g_assert (tmp_redo_item->data);
-		g_object_unref (G_OBJECT (tmp_redo_item->data));
-		tmp_redo_item = g_list_next (tmp_redo_item);
-	}
-
-	if (project->prev_redo_item)
-	{
-		g_list_free (g_list_next (project->prev_redo_item));
-		project->prev_redo_item->next = NULL;
-	}
-	else
-	{
-		g_list_free (project->undo_stack);
-		project->undo_stack = NULL;
-	}
-
-	/* and then push the new undo item */
-	project->undo_stack = g_list_append (project->undo_stack, cmd);
-
-	if (project->prev_redo_item == NULL)
-		project->prev_redo_item = project->undo_stack;
-	else
-		project->prev_redo_item = g_list_next (project->prev_redo_item);
-
-	glade_app_update_ui ();
 }
 
 /**************************************************/
@@ -643,7 +556,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 
 	/* Push onto undo stack only if it executes successfully. */
 	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (GLADE_PROJECT (project),
+		glade_project_push_undo (GLADE_PROJECT (project),
 					 GLADE_COMMAND (me));
 	else
 		/* No leaks on my shift! */
@@ -839,7 +752,7 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_set_name_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
+		glade_project_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 }
@@ -1169,7 +1082,7 @@ glade_command_delete (GList *widgets)
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (GLADE_PROJECT (widget->project), 
+		glade_project_push_undo (GLADE_PROJECT (widget->project), 
 					 GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
@@ -1236,7 +1149,7 @@ glade_command_create (GladeWidgetClass *class,
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_create_delete_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo (project, GLADE_COMMAND (me));
+		glade_project_push_undo (project, GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 
@@ -1685,7 +1598,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 	 * Push it onto the undo stack only on success
 	 */
 	if (glade_command_cut_copy_paste_execute (GLADE_COMMAND (me)))
-		glade_command_push_undo 
+		glade_project_push_undo 
 			(glade_app_get_project(),
 			 GLADE_COMMAND (me));
 	else
@@ -1858,7 +1771,7 @@ glade_command_add_remove_change_signal (GladeWidget       *glade_widget,
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_add_signal_execute (cmd))
-		glade_command_push_undo (GLADE_PROJECT (glade_widget->project), cmd);
+		glade_project_push_undo (GLADE_PROJECT (glade_widget->project), cmd);
 	else
 		g_object_unref (G_OBJECT (me));
 }
