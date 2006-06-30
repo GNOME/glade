@@ -638,8 +638,6 @@ glade_gtk_box_set_child_property (GObject *container,
 
 		children = g_list_sort (children, (GCompareFunc)sort_box_children);
 
-		//children = g_list_reverse (children);
-
 		for (list = children; list; list = list->next)
 		{
 			if ((gchild_iter = 
@@ -655,7 +653,7 @@ glade_gtk_box_set_child_property (GObject *container,
 			}
 
 			/* Get the old value from glade */
-			glade_widget_property_get
+			glade_widget_pack_property_get
 				(gchild_iter, "position", &iter_position);
 
 			/* Search for the child at the old position and update it */
@@ -664,7 +662,7 @@ glade_gtk_box_set_child_property (GObject *container,
 			{
 				/* Update glade with the real value */
 				recursion = TRUE;
-				glade_widget_property_set
+				glade_widget_pack_property_set
 					(gchild_iter, "position", old_position);
 				recursion = FALSE;
 				continue;
@@ -684,9 +682,8 @@ glade_gtk_box_set_child_property (GObject *container,
 				continue;
 
 			/* Refresh values yet again */
-			glade_widget_property_get
+			glade_widget_pack_property_get
 				(gchild_iter, "position", &iter_position);
-
 
 			gtk_box_reorder_child (GTK_BOX (container),
 					       GTK_WIDGET (list->data),
@@ -1573,77 +1570,23 @@ glade_gtk_table_set_child_property (GObject *container,
 				    const gchar *property_name,
 				    GValue *value)
 {
-	GladeWidget *gchild;
-	gint new_left, new_right, new_top, new_bottom, left, right, top, bottom;
-
 	g_return_if_fail (GTK_IS_TABLE (container));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	g_return_if_fail (property_name != NULL && value != NULL);
 
-	gchild = glade_widget_get_from_gobject (child);
-	g_assert (gchild);
+	gtk_container_child_set_property (GTK_CONTAINER (container),
+					  GTK_WIDGET (child),
+					  property_name,
+					  value);
 
 	if (strcmp (property_name, "bottom-attach") == 0 ||
 	    strcmp (property_name, "left-attach") == 0 ||
 	    strcmp (property_name, "right-attach") == 0 ||
 	    strcmp (property_name, "top-attach") == 0)
 	{
-		
-		glade_widget_pack_property_get (gchild, "left-attach",   &new_left);
-		glade_widget_pack_property_get (gchild, "right-attach",  &new_right);
-		glade_widget_pack_property_get (gchild, "top-attach",    &new_top);
-		glade_widget_pack_property_get (gchild, "bottom-attach", &new_bottom);
-
-		gtk_container_child_get (GTK_CONTAINER (container),
-					 GTK_WIDGET (child),
-					 "left-attach", &left,
-					 "right-attach", &right,
-					 "top-attach", &top,
-					 "bottom-attach", &bottom,
-					 NULL);
-
-		if (new_left < left)
-		{
-			gtk_container_child_set (GTK_CONTAINER (container),
-						 GTK_WIDGET (child),
-						 "left-attach", new_left,
-						 "right-attach", new_right,
-						 NULL);
-		}
-		else
-		{
-			gtk_container_child_set (GTK_CONTAINER (container),
-						 GTK_WIDGET (child),
-						 "right-attach", new_right,
-						 "left-attach", new_left,
-						 NULL);
-		}
-
-		if (new_top < top)
-		{	
-			gtk_container_child_set (GTK_CONTAINER (container),
-						 GTK_WIDGET (child),
-						 "top-attach", new_top,
-						 "bottom-attach", new_bottom,
-						 NULL);
-		}
-		else
-		{
-			gtk_container_child_set (GTK_CONTAINER (container),
-						 GTK_WIDGET (child),
-						 "bottom-attach", new_bottom,
-						 "top-attach", new_top,
-						 NULL);
-		}
-
 		/* Refresh placeholders */
 		glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
 	}
-	else
-		gtk_container_child_set_property (GTK_CONTAINER (container),
-						  GTK_WIDGET (child),
-						  property_name,
-						  value);
 
 }
 

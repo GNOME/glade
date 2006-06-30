@@ -10,6 +10,16 @@
 
 	* src/glade-marshallers.list: Added new signal VOID:OBJECT,BOOLEAN
 
+	* src/glade-command.c: 
+	  o Added "#if 0" debugging code and removed an old comment that doesnt make 
+	    sence anymore.
+	  o Now refresh packing properties in set-property commands, as we keep a
+	    reference to the GladeProperty, which may be reset on the GladeWidget in
+	    question when added to a child.
+
+	* src/glade-gtk.c: Removed a large complex code segment in 
+	  glade_gtk_table_set_child_property() that in the end wasnt needed at all.
+	
 2006-06-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget.[ch]: 

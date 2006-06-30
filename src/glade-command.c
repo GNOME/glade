@@ -347,6 +347,39 @@ glade_command_set_property_execute (GladeCommand *cmd)
 		else
 			g_value_copy (sdata->new_value, &new_value);
 
+#if 1
+		{
+			gchar *str =
+				glade_property_class_make_string_from_gvalue 
+				(sdata->property->class, &new_value);
+
+			g_print ("Setting %s property of %s to %s (sumode: %d)\n",
+				 sdata->property->class->id,
+				 sdata->property->widget->name,
+				 str, glade_property_superuser ());
+
+			g_free (str);
+		}
+#endif
+
+		/* Packing properties need to be refreshed here since
+		 * they are reset when they get added to containers.
+		 */
+		if (sdata->property->class->packing)
+		{
+			GladeProperty *tmp_prop;
+
+			tmp_prop = glade_widget_get_pack_property
+				(sdata->property->widget, sdata->property->class->id);
+
+			if (sdata->property != tmp_prop)
+			{
+				g_object_unref (sdata->property);
+				sdata->property = g_object_ref (tmp_prop);
+				
+			}
+		}
+
 		glade_property_set_value (sdata->property, &new_value);
 
 		if (!me->set_once)
@@ -406,12 +439,6 @@ glade_command_set_property_finalize (GObject *obj)
 static gboolean
 glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 {
-
-       /* XXX FIXME: This doesn't make sence with the reset dialog, when resetting properties
-	* they should not unify, also; setting multiple properties should unify as well as long
-	* as the same group is changing (this will help with drag/resize widget control).
-	*
-	*/
        GladeCommandSetProperty *cmd1,   *cmd2;
        GCSetPropData           *pdata1, *pdata2;
        GList                   *list, *l;
