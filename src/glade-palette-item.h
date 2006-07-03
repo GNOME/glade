@@ -27,6 +27,7 @@
 #ifndef __GLADE_PALETTE_ITEM_H__
 #define __GLADE_PALETTE_ITEM_H__
 
+#include "glade-builtins.h"
 #include "glade.h"
 #include "glade-palette.h"
 #include "glade-widget-class.h"
