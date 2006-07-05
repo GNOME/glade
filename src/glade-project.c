@@ -54,6 +54,7 @@ enum
 	RESOURCE_ADDED,
 	RESOURCE_REMOVED,
 	CHANGED,
+	PARSE_FINISHED,
 	LAST_SIGNAL
 };
 
@@ -527,6 +528,21 @@ glade_project_class_init (GladeProjectClass *class)
 			      2,
 			      GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
 
+	/**
+	 * GladeProject::parse-finished:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject parsing has finished.
+	 */
+	glade_project_signals[PARSE_FINISHED] =
+		g_signal_new ("parse-finished",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
+			      NULL, NULL,
+			      glade_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
 
 	g_object_class_install_property (object_class,
 					 PROP_HAS_UNSAVED_CHANGES,
@@ -1341,16 +1357,6 @@ glade_project_write (GladeProject *project)
 }
 
 static gboolean
-glade_project_loading_done_idle (gpointer data)
-{
-	GladeProject *project = (GladeProject *) data;
-
-	project->loading = project->changed = FALSE;
-
-	return FALSE;
-}
-
-static gboolean
 loadable_interface (GladeInterface *interface, const gchar *path)
 {
 	GString *string = g_string_new (NULL);
@@ -1411,19 +1417,13 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 		glade_project_add_object (project, NULL, widget->object);
 	}
 
-
-	/* Reset project status after a low priority idle, 
-	 * which should happen after any backend idle functions
-	 * in the load cycle which may modify the project state.
-	 *
-	 * Reset project status here too so that you get a clean
+	/* Emit "parse-finished" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
+	
+	/* Reset project status here too so that you get a clean
 	 * slate after calling glade_project_open().
 	 */
 	project->changed = FALSE;
-	g_idle_add_full (G_PRIORITY_LOW,
-			 glade_project_loading_done_idle,
-			 project, 
-			 NULL);
 
 	return project;	
 }

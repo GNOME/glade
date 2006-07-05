@@ -10,6 +10,12 @@
 
 	* src/glade-gnome.c: Added GNOME stock items using gtk_stock_add () in
 	  glade_gnomeui_init ()
+
+	* src/glade-project.[ch]: fixed bug 345353 
+	  "Implement "finish" signal on GladeProject"
+
+	* src/glade-gtk.c: removed idle functions, replaced conecting to
+	  GladeProject::parse-finished signal.
 	  
 2006-06-29  Tristan Van Berkom <tvb@gnome.org>
 

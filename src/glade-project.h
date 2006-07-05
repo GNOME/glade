@@ -94,7 +94,7 @@ struct _GladeProjectClass
 					      const gchar  *resource);
 	void          (*resource_removed)    (GladeProject *project,
 					      const gchar  *resource);
-
+	void          (*parse_finished)      (GladeProject *project);
 };
 
 LIBGLADEUI_API

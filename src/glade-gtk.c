@@ -1688,29 +1688,32 @@ glade_gtk_table_verify_bottom_attach (GObject *object, GValue *value)
 }
 
 /* ----------------------------- GtkFrame ------------------------------ */
-static gboolean
-glade_gtk_frame_create_idle (gpointer data)
+void GLADEGTK_API
+glade_gtk_frame_post_create (GObject *frame, GladeCreateReason reason)
 {
-	GladeWidget       *gframe, *glabel;
-	GtkWidget         *label, *frame;
-	GladeWidgetClass  *wclass;
+	static GladeWidgetClass *wclass = NULL;
+	GladeWidget *gframe, *glabel;
+	GtkWidget *label;
+	
+	if (wclass == NULL)
+		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+	
+	if (reason != GLADE_CREATE_USER) return;
+		
+	g_return_if_fail (GTK_IS_FRAME (frame));
+	gframe = glade_widget_get_from_gobject (frame);
+	g_return_if_fail (GLADE_IS_WIDGET (gframe));
 
-	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
-	g_return_val_if_fail (GTK_IS_FRAME (GLADE_WIDGET (data)->object), FALSE);
-	gframe = GLADE_WIDGET (data);
-	frame  = GTK_WIDGET (gframe->object);
-
+	glade_gtk_container_post_create (frame, reason);
+	
 	/* If we didnt put this object here... */
 	if ((label = gtk_frame_get_label_widget (GTK_FRAME (frame))) == NULL ||
 	    (glade_widget_get_from_gobject (label) == NULL))
 	{
-		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
-		glabel = glade_widget_class_create_widget
-			(wclass, FALSE,
-			 "parent", gframe, 
-			 "project", glade_widget_get_project (gframe), 
-			 NULL);
-		
+		glabel = glade_widget_class_create_widget (wclass, FALSE,
+							   "parent", gframe, 
+							   "project", glade_widget_get_project (gframe), 
+							   NULL);
 		if (GTK_IS_ASPECT_FRAME (frame))
 			glade_widget_property_set (glabel, "label", "aspect frame");
 		else
@@ -1719,26 +1722,7 @@ glade_gtk_frame_create_idle (gpointer data)
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (GLADE_PROJECT (gframe->project), 
-					  NULL, glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
-	}
-	return FALSE;
-}
-
-void GLADEGTK_API
-glade_gtk_frame_post_create (GObject *frame, GladeCreateReason reason)
-{
-	GladeWidget *gframe;
-
-	g_return_if_fail (GTK_IS_FRAME (frame));
-
-	/* Wait to be filled */
-	if (reason == GLADE_CREATE_USER)
-	{
-		glade_gtk_container_post_create (frame, reason);
-		if ((gframe = glade_widget_get_from_gobject (frame)) != NULL)
-			g_idle_add (glade_gtk_frame_create_idle, gframe);
 	}
 }
 
@@ -2063,28 +2047,30 @@ glade_gtk_paned_remove_child (GObject *object, GObject *child)
 }
 
 /* ----------------------------- GtkExpander ------------------------------ */
-static gboolean
-glade_gtk_expander_create_idle (gpointer data)
+void GLADEGTK_API
+glade_gtk_expander_post_create (GObject *expander, GladeCreateReason reason)
 {
-	GladeWidget       *gexpander, *glabel;
-	GtkWidget         *label, *expander;
-	GladeWidgetClass  *wclass;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET (data), FALSE);
-	g_return_val_if_fail (GTK_IS_EXPANDER (GLADE_WIDGET (data)->object), FALSE);
-	gexpander = GLADE_WIDGET (data);
-	expander  = GTK_WIDGET (gexpander->object);
-
+	static GladeWidgetClass *wclass = NULL;
+	GladeWidget *gexpander, *glabel;
+	GtkWidget *label;
+	
+	if (wclass == NULL)
+		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+	
+	if (reason != GLADE_CREATE_USER) return;
+	
+	g_return_if_fail (GTK_IS_EXPANDER (expander));
+	gexpander = glade_widget_get_from_gobject (expander);
+	g_return_if_fail (GLADE_IS_WIDGET (gexpander));
+	
 	/* If we didnt put this object here... */
 	if ((label = gtk_expander_get_label_widget (GTK_EXPANDER (expander))) == NULL ||
 	    (glade_widget_get_from_gobject (label) == NULL))
 	{
-		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
-		glabel = glade_widget_class_create_widget
-			(wclass, FALSE,
-			 "parent", gexpander, 
-			 "project", glade_widget_get_project (gexpander), 
-			 NULL);
+		glabel = glade_widget_class_create_widget (wclass, FALSE,
+							   "parent", gexpander, 
+							   "project", glade_widget_get_project (gexpander), 
+							   NULL);
 		
 		glade_widget_property_set (glabel, "label", "expander");
 
@@ -2092,27 +2078,7 @@ glade_gtk_expander_create_idle (gpointer data)
 		gtk_expander_set_label_widget (GTK_EXPANDER (expander), 
 					       GTK_WIDGET (glabel->object));
 
-		glade_project_add_object (GLADE_PROJECT (gexpander->project), 
-					  NULL, glabel->object);
 		gtk_widget_show (GTK_WIDGET (glabel->object));
-	}
-	return FALSE;
-}
-
-
-void GLADEGTK_API
-glade_gtk_expander_post_create (GObject *expander, GladeCreateReason reason)
-{
-	GladeWidget *gexpander;
-
-	g_return_if_fail (GTK_IS_EXPANDER (expander));
-
-	/* Wait to be filled */
-	if (reason == GLADE_CREATE_USER)
-	{
-		glade_gtk_container_post_create (expander, reason);
-		if ((gexpander = glade_widget_get_from_gobject (expander)) != NULL)
-			g_idle_add (glade_gtk_expander_create_idle, gexpander);
 	}
 }
 
@@ -2569,8 +2535,9 @@ glade_gtk_button_restore_container (GladeWidget *gwidget)
 				   glade_placeholder_new ());
 }
 
-static gboolean
-glade_gtk_button_post_create_idle (GObject *button)
+static void
+glade_gtk_button_post_create_parse_finished (GladeProject *project,
+					     GObject *button)
 {
 	gboolean     use_stock = FALSE;
 	gchar       *label = NULL;
@@ -2618,8 +2585,6 @@ glade_gtk_button_post_create_idle (GObject *button)
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 
 	g_type_class_unref (eclass);
-
-	return FALSE;
 }
 
 void GLADEGTK_API
@@ -2658,7 +2623,10 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 	else
 	{
 		g_object_set_data (button, "glade-reason", GINT_TO_POINTER (reason));
-		g_idle_add ((GSourceFunc)glade_gtk_button_post_create_idle, button);
+		g_signal_connect (glade_widget_get_project (gbutton),
+				  "parse-finished",
+				  G_CALLBACK (glade_gtk_button_post_create_parse_finished),
+				  button);
 	}
 }
 
@@ -2952,16 +2920,13 @@ glade_gtk_image_pixel_size_changed (GladeProperty *property,
 		   "if you want to use Icon Size, set Pixel size to -1"));
 }
 
-static gboolean
-glade_gtk_image_post_create_idle (GObject *image)
+static void
+glade_gtk_image_post_create_parse_finished (GladeProject *project,
+					    GladeWidget *gimage)
 {
-	GladeWidget    *gimage;
-	GladeProperty  *property;
-	gint            size;
-
-	g_return_val_if_fail (GTK_IS_IMAGE (image), FALSE);
-	gimage = glade_widget_get_from_gobject (image);
-	g_return_val_if_fail (GLADE_IS_WIDGET (gimage), FALSE);
+	GObject *image = glade_widget_get_object (gimage);
+	GladeProperty *property;
+	gint size;
 
 	glade_gtk_image_backup_stock (gimage);
 	glade_gtk_image_backup_icon_name (gimage);
@@ -2989,16 +2954,23 @@ glade_gtk_image_post_create_idle (GObject *image)
 				  G_CALLBACK (glade_gtk_image_pixel_size_changed),
 				  gimage);
 	}
-
-	return FALSE;
 }
 
 void GLADEGTK_API
 glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 {
+	GladeWidget *gimage;
+	
+	if (reason == GLADE_CREATE_USER) return;
+	
 	g_return_if_fail (GTK_IS_IMAGE (object));
-
-	g_idle_add ((GSourceFunc)glade_gtk_image_post_create_idle, object);
+	gimage = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gimage));
+	
+	g_signal_connect (glade_widget_get_project (gimage),
+			  "parse-finished",
+			  G_CALLBACK (glade_gtk_image_post_create_parse_finished),
+			  gimage);
 }
 
 void GLADEGTK_API
