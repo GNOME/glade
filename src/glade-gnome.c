@@ -20,14 +20,11 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
-#include <gtk/gtk.h>
+#include "glade.h"
+#include "glade-editor-property.h"
 #include <libbonoboui.h>
 #include <libgnome/libgnome.h>
 #include <libgnomeui/libgnomeui.h>
-#include "glade.h"
-#include "glade-widget.h"
-#include "glade-property.h"
-#include "glade-editor-property.h"
 
 #include "glade-gtk.h"
 #define GLADEGNOME_API GLADEGTK_API
@@ -42,13 +39,50 @@ empty (GObject *container, GladeCreateReason reason)
 
 /* Catalog init function */
 void GLADEGNOME_API
-glade_gnomeui_init (void)
+glade_gnomeui_init ()
 {
 	gchar *argv[2] = {"glade-3", NULL};
-	
+	GtkStockItem items [] = {
+		{ GNOME_STOCK_TIMER,              "Gnome Timer",         0, },
+		{ GNOME_STOCK_TIMER_STOP,         "Gnome Timer stop",    0, },
+		{ GNOME_STOCK_TRASH,              "Gnome Trash",         0, },
+		{ GNOME_STOCK_TRASH_FULL,         "Gnome Trash Full",    0, },
+		{ GNOME_STOCK_SCORES,             "Gnome Scores",        0, },
+		{ GNOME_STOCK_ABOUT,              "Gnome About",         0, },
+		{ GNOME_STOCK_BLANK,              "Gnome Blank",         0, },
+		{ GNOME_STOCK_VOLUME,             "Gnome Volume",        0, },
+		{ GNOME_STOCK_MIDI,               "Gnome Midi",          0, },
+		{ GNOME_STOCK_MIC,                "Gnome Mic",           0, },
+		{ GNOME_STOCK_LINE_IN,            "Gnome Line In",       0, },
+		{ GNOME_STOCK_MAIL,               "Gnome Mail",          0, },
+		{ GNOME_STOCK_MAIL_RCV,           "Gnome Mail Recive",   0, },
+		{ GNOME_STOCK_MAIL_SND,           "Gnome Mail Send",     0, },
+		{ GNOME_STOCK_MAIL_RPL,           "Gnome Mail Reply",    0, },
+		{ GNOME_STOCK_MAIL_FWD,           "Gnome Mail Foward",   0, },
+		{ GNOME_STOCK_MAIL_NEW,           "Gnome Mail New",      0, },
+		{ GNOME_STOCK_ATTACH,             "Gnome Attach",        0, },
+		{ GNOME_STOCK_BOOK_RED,           "Gnome Book Red",      0, },
+		{ GNOME_STOCK_BOOK_GREEN,         "Gnome Book Green",    0, },
+		{ GNOME_STOCK_BOOK_BLUE,          "Gnome Book Blue",     0, },
+		{ GNOME_STOCK_BOOK_YELLOW,        "Gnome Book Yellow",   0, },
+		{ GNOME_STOCK_BOOK_OPEN,          "Gnome Book Open",     0, },
+		{ GNOME_STOCK_MULTIPLE_FILE,      "Gnome Multiple File", 0, },
+		{ GNOME_STOCK_NOT,                "Gnome Not",           0, },
+		{ GNOME_STOCK_TABLE_BORDERS,      "Gnome Table Borders", 0, },
+		{ GNOME_STOCK_TABLE_FILL,         "Gnome Table Fill",    0, },
+		{ GNOME_STOCK_TEXT_INDENT,        "Gnome Indent",        0, },
+		{ GNOME_STOCK_TEXT_UNINDENT,      "Gnome Unindent",      0, },
+		{ GNOME_STOCK_TEXT_BULLETED_LIST, "Gnome Bulleted List", 0, },
+		{ GNOME_STOCK_TEXT_NUMBERED_LIST, "Gnome Numbered List", 0, }
+	};
+
 	gnome_program_init ("glade-3", "1.0",
-			   LIBGNOMEUI_MODULE, 1, argv,
-			   GNOME_PARAM_NONE);
+			    LIBGNOMEUI_MODULE, 1, argv,
+			    GNOME_PARAM_NONE);
+	
+	gtk_stock_add (items, sizeof (items) / sizeof (GtkStockItem));
+	
+	glade_standard_stock_append_prefix ("gnome-stock-");
 }
 
 /* GnomeApp */

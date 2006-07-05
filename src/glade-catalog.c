@@ -176,9 +176,6 @@ catalog_load (GladeCatalog *catalog)
 
 	g_return_if_fail (catalog->context != NULL);
 	
-	if (catalog->init_function)
-		catalog->init_function ();
-	
 	doc  = glade_xml_context_get_doc (catalog->context);
 	root = glade_xml_doc_get_root (doc);
 	node = glade_xml_node_get_children (root);
@@ -426,8 +423,15 @@ glade_catalog_load_all (void)
 				   filename);
 	}
 
-	/* After sorting, load */
+	/* After sorting, execute init function and then load */
 	catalogs = catalog_sort (catalogs);
+	
+	for (l = catalogs; l; l = l->next)
+	{
+		catalog = l->data;
+		if (catalog->init_function) catalog->init_function ();
+	}
+	
 	for (l = catalogs; l; l = l->next)
 	{
 		catalog = l->data;

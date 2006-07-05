@@ -1,3 +1,16 @@
+2006-07-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-builtins.[ch]: fixed bug 343712
+	  "Gnome stock items not recognized by glade-3"
+	  Added glade_standard_stock_append_prefix () and reworked/optimized
+	  glade_standard_stock_get_type ()
+
+	* src/glade-catalog.c: make every catalog init function be called before
+	  loading any of them.
+
+	* src/glade-gnome.c: Added GNOME stock items using gtk_stock_add () in
+	  glade_gnomeui_init ()
+	  
 2006-06-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project.[ch], src/glade-command.[ch]: Major rework underway,

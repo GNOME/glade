@@ -54,6 +54,21 @@ struct _GladeParamSpecAccel {
 /************************************************************
  *      Auto-generate the enum type for stock properties    *
  ************************************************************/
+static GSList *stock_prefixs = NULL;
+static gboolean stock_prefixs_done = FALSE;
+
+void
+glade_standard_stock_append_prefix (const gchar *prefix)
+{
+	if (stock_prefixs_done)
+	{
+		g_warning ("glade_standard_stock_append_prefix should be used in catalog init-function");
+		return;
+	}
+	
+	stock_prefixs = g_slist_append (stock_prefixs, g_strdup (prefix));
+}
+
 GType
 glade_standard_stock_get_type (void)
 {
@@ -61,38 +76,53 @@ glade_standard_stock_get_type (void)
 	if (etype == 0) {
 
 		GtkStockItem  item;
-		GSList       *l, *stock_list;
-		gchar        *stock_id;
+		GSList       *l, *stock_list, *p;
+		gchar        *stock_id, *prefix;
 		gint          stock_enum = 1;
 		GEnumValue    value;
-		GArray       *values = 
-			g_array_new (TRUE, TRUE, sizeof (GEnumValue));
-
+		GArray       *values;
+			
 		/* We have ownership of the retuened list & the
 		 * strings within
 		 */
-		stock_list = gtk_stock_list_ids ();
+		stock_list = g_slist_reverse (gtk_stock_list_ids ());
 
-		for (l = stock_list; l; l = l->next)
-		{
-			stock_id = l->data;
-			if (!gtk_stock_lookup (stock_id, &item))
-				continue;
-
-			value.value      = stock_enum++;
-			value.value_name = g_strdup (item.label);
-			value.value_nick = stock_id; // Passing ownership here.
-			values = g_array_prepend_val (values, value);
-		}
+		values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
+					    g_slist_length (stock_list) + 1);
 
 		/* Add first "no stock" element */
 		value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
 		value.value_name = g_strdup ("None");
 		value.value      = 0;
-		values = g_array_prepend_val (values, value);
+		values = g_array_append_val (values, value);
+		
+		/* We want gtk+ stock items to appear first */
+		stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
+		for (p = stock_prefixs; p; p = g_slist_next (p))
+		{
+			prefix = p->data;
+			
+			for (l = stock_list; l; l = g_slist_next (l))
+			{
+				stock_id = l->data;
+				if (g_str_has_prefix (stock_id, prefix) == FALSE ||
+				    gtk_stock_lookup (stock_id, &item) == FALSE )
+					continue;
+				
+				value.value      = stock_enum++;
+				value.value_name = g_strdup (item.label);
+				value.value_nick = stock_id; // Passing ownership here.
+				values = g_array_append_val (values, value);
+			}
+			g_free (prefix);
+		}
 		
 		etype = g_enum_register_static ("GladeStock", (GEnumValue *)values->data);
-
+		
+		stock_prefixs_done = TRUE;
+		g_slist_free (stock_prefixs);
+		stock_prefixs = NULL;
+		
 		g_slist_free (stock_list);
 	}
 	return etype;

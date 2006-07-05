@@ -102,6 +102,8 @@ LIBGLADEUI_API GParamSpec  *glade_standard_strv_spec      (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_float_spec     (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_boolean_spec   (void);
 
+LIBGLADEUI_API void         glade_standard_stock_append_prefix (const gchar *prefix);
+
 LIBGLADEUI_API gboolean     glade_keyval_valid            (guint val);
 
 G_END_DECLS
