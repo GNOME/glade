@@ -15,7 +15,7 @@ G_BEGIN_DECLS
  */
 typedef struct _GladeCursor {
 	GdkCursor *selector;
-	GdkCursor *add_widget;
+	GdkCursor *add_widget;        /* fallback cursor if we cannot use widget_class->cursor */ 
 	GdkCursor *resize_top_left;
 	GdkCursor *resize_top_right;
 	GdkCursor *resize_bottom_left;
@@ -25,6 +25,8 @@ typedef struct _GladeCursor {
 	GdkCursor *resize_top;
 	GdkCursor *resize_bottom;
 	GdkCursor *drag;
+
+	GdkPixbuf *add_widget_pixbuf;   /* a pixbuf of the generic 'add' cursor */
 } GladeCursor;
 
 /* Enumed values for each of the cursors for GladeCursor. For every
@@ -44,8 +46,9 @@ typedef enum {
 	GLADE_CURSOR_DRAG
 } GladeCursorType;
 
-void glade_cursor_init (void);
-void glade_cursor_set (GdkWindow *window, GladeCursorType type);
+void               glade_cursor_init (void);
+void               glade_cursor_set (GdkWindow *window, GladeCursorType type);
+const GdkPixbuf*   glade_cursor_get_add_widget_pixbuf (void);
 
 G_END_DECLS
 

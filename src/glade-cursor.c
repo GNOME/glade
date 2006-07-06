@@ -20,11 +20,16 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
-#include "glade.h"
+
 #include "glade-app.h"
 #include "glade-palette.h"
 #include "glade-cursor.h"
 #include "glade-widget-class.h"
+
+#include <glib.h>
+#include <glib/gi18n.h>
+
+#define ADD_PIXBUF_FILENAME "plus.png"
 
 GladeCursor *cursor = NULL;
 
@@ -39,6 +44,8 @@ void
 glade_cursor_set (GdkWindow *window, GladeCursorType type)
 {
 	GladeWidgetClass *widget_class;
+
+	g_return_if_fail (cursor != NULL);
 
 	switch (type) {
 	case GLADE_CURSOR_SELECTOR:
@@ -102,11 +109,13 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 void
 glade_cursor_init (void)
 {
+	gchar *path;
+	GError *error = NULL;
+
 	cursor = g_new0 (GladeCursor, 1);
 
-	cursor->selector           = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
-	cursor->add_widget         = gdk_cursor_new (GDK_PLUS);
-
+	cursor->selector            = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
+	cursor->add_widget          = gdk_cursor_new (GDK_PLUS);
 	cursor->resize_top_left     = gdk_cursor_new (GDK_TOP_LEFT_CORNER);
 	cursor->resize_top_right    = gdk_cursor_new (GDK_TOP_RIGHT_CORNER);
 	cursor->resize_bottom_left  = gdk_cursor_new (GDK_BOTTOM_LEFT_CORNER);
@@ -116,4 +125,27 @@ glade_cursor_init (void)
 	cursor->resize_top          = gdk_cursor_new (GDK_TOP_SIDE);
 	cursor->resize_bottom       = gdk_cursor_new (GDK_BOTTOM_SIDE);
 	cursor->drag                = gdk_cursor_new (GDK_FLEUR);
+	cursor->add_widget_pixbuf   = NULL;
+
+	/* load "add" cursor pixbuf */
+	path = g_build_filename (glade_pixmaps_dir, ADD_PIXBUF_FILENAME, NULL);
+
+	cursor->add_widget_pixbuf = gdk_pixbuf_new_from_file (path, &error);
+
+	if (cursor->add_widget_pixbuf == NULL)
+	{
+		g_critical (_("Unable to load image (%s)"), error->message);
+
+		g_error_free (error);
+		error = NULL;
+	}
+	g_free (path);
+}
+
+const GdkPixbuf*
+glade_cursor_get_add_widget_pixbuf (void)
+{
+	g_return_val_if_fail (cursor != NULL, NULL);
+
+	return cursor->add_widget_pixbuf;
 }

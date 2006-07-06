@@ -390,9 +390,8 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 static void
 glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 {
-	GdkPixbuf *tmp_pixbuf, *plus_pixbuf;
-	gchar *filename;
-	GError *error = NULL;
+	GdkPixbuf *tmp_pixbuf;
+	const GdkPixbuf *add_pixbuf;
 	GdkDisplay *display;
 
 	/* only certain widget classes need to have cursors */
@@ -401,16 +400,15 @@ glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
             widget_class->generic_name == NULL)
 		return;
 
+	/* cannot continue if 'add widget' cursor pixbuf has not been loaded for any reason */
+	if ((add_pixbuf = glade_cursor_get_add_widget_pixbuf ()) == NULL)
+		return;
+
 	display = gdk_display_get_default ();
 
 	/* create a temporary pixbuf clear to transparent black*/
 	tmp_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 32, 32);
 	gdk_pixbuf_fill (tmp_pixbuf, 0x00000000);
-
-	/* load "plus" cursor pixbuf */
-	filename = g_build_filename (glade_pixmaps_dir, "plus.png", NULL);
-	plus_pixbuf = gdk_pixbuf_new_from_file (filename, &error);
-	g_free (filename);
 
 
 	/* composite pixbufs */
@@ -419,7 +417,7 @@ glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 			      8, 8, 1, 1,
                               GDK_INTERP_NEAREST, 255);
 
-	gdk_pixbuf_composite (plus_pixbuf, tmp_pixbuf,
+	gdk_pixbuf_composite (add_pixbuf, tmp_pixbuf,
 			      0, 0, 12, 12,
 			      0, 0, 1, 1,
                               GDK_INTERP_NEAREST, 255);
@@ -427,11 +425,7 @@ glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 
 	widget_class->cursor = gdk_cursor_new_from_pixbuf (display, tmp_pixbuf, 6, 6);
 
-	gdk_cursor_ref (widget_class->cursor);
-
 	g_object_unref(tmp_pixbuf);
-	g_object_unref(plus_pixbuf);
-
 }
 
 static void

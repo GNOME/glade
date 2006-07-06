@@ -76,15 +76,20 @@ smallicons_DATA = \
 	window.png
 
 if BUILD_GNOME
-smallicons_DATA += gnomehref.png \
+smallicons_DATA += bonobodock.png \
+	bonobodockitem.png \
+	gnomehref.png \
 	gnomeapp.png \
 	gnomeappbar.png \
+	gnomecanvas.png \
 	gnomedateedit.png \
 	gnomeiconentry.png \
+	gnomeiconselection.png \
 	gnomedruid.png \
 	gnomedruidpageedge.png \
 	gnomedruidpagestandard.png \
 	gnomepixmap.png \
+	gnomepropertybox.png \
 	gnomecolorpicker.png \
 	gnomepixmapentry.png \
 	gnomeabout.png \

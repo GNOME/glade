@@ -85,6 +85,7 @@ largeicons_DATA += bonobodockitem.png \
 	gnomeabout.png \
 	gnomedruid.png \
 	gnomeiconentry.png \
+	gnomeiconselection.png \
 	gnomeapp.png \
 	gnomedateedit.png \
 	gnomeentry.png \
