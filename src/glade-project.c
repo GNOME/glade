@@ -540,7 +540,7 @@ glade_project_class_init (GladeProjectClass *class)
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
 			      NULL, NULL,
-			      glade_marshal_VOID__VOID,
+			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
 			      0);
 
