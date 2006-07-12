@@ -3,29 +3,26 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade2\n"
+"Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-12-11 19:33-0500\n"
-"PO-Revision-Date: 2001-10-13 15:39+0400\n"
-"Last-Translator: Valek Filippov <frob@df.ru>\n"
-"Language-Team: Russian <ru@li.org>\n"
+"PO-Revision-Date: 2006-07-11 12:46+0400\n"
+"Last-Translator: Valek Filippov <frob at df dot ru>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glade-3.desktop.in.h:1
 msgid "Design user interfaces"
-msgstr ""
+msgstr "Создание интерфейсов пользователя"
 
 #: glade-3.desktop.in.h:2
-#, fuzzy
 msgid "Glade 3.0 GUI builder"
-msgstr "Средство создания интерфейсов пользователя для GTK+"
+msgstr "Glade 3.0: Создатель интерфейсов пользователя"
 
 #: src/main.c:50
-msgid ""
-"dump the properties of a widget. --dump [gtk type] where type can be "
-"GtkWindow, GtkLabel etc."
+msgid "dump the properties of a widget. --dump [gtk type] where type can be GtkWindow, GtkLabel etc."
 msgstr ""
 
 #: src/main.c:53
@@ -34,21 +31,17 @@ msgstr ""
 
 #: src/main.c:60
 msgid "Help options:"
-msgstr ""
+msgstr "Параметры справки:"
 
 #: src/main.c:94
-#, fuzzy
-msgid ""
-"gmodule support not found. gmodule support is required for glade to work"
-msgstr "Нет поддержка gmodule. Для работы glade требуется поддержка gmodule"
+msgid "gmodule support not found. gmodule support is required for glade to work"
+msgstr "Нет поддержки gmodule. Для работы glade требуется поддержка gmodule"
 
 #: src/main.c:118
-#, fuzzy
 msgid "Glade-3 GUI Builder"
-msgstr "Средство создания интерфейсов пользователя для GTK+"
+msgstr "Glade-3 Создание интерфейсов пользователя"
 
 #: src/glade-project-window.c:288
-#, fuzzy
 msgid "Open..."
 msgstr "Открыть..."
 
@@ -64,43 +57,43 @@ msgid ""
 "permanently deleted."
 msgstr ""
 
-#: src/glade-project-window.c:354 src/glade-project-window.c:367
+#: src/glade-project-window.c:354
+#: src/glade-project-window.c:367
 #, c-format
 msgid "Project '%s' saved"
-msgstr ""
+msgstr "Проект \"%s\" сохранён"
 
-#: src/glade-project-window.c:381 src/glade-project-window.c:427
+#: src/glade-project-window.c:381
+#: src/glade-project-window.c:427
 msgid "No open projects to save"
-msgstr ""
+msgstr "Нет открытых проектов для сохранения"
 
-#: src/glade-project-window.c:407 src/glade-project-window.c:1468
+#: src/glade-project-window.c:407
+#: src/glade-project-window.c:1468
 #, c-format
 msgid "%s is already open"
-msgstr ""
+msgstr "%s уже открыт"
 
 #. If instead we dont have a path yet, fire up a file selector
 #: src/glade-project-window.c:438
-#, fuzzy
 msgid "Save..."
 msgstr "Сохранить..."
 
 #: src/glade-project-window.c:444
-#, fuzzy
 msgid "Save as ..."
-msgstr "Сохранить..."
+msgstr "Сохранить как..."
 
 #: src/glade-project-window.c:458
 #, c-format
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
-"closing?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n"
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
 
 #: src/glade-project-window.c:472
 msgid "_Close without Saving"
-msgstr ""
+msgstr "Закрыть без сохранения"
 
 #: src/glade-project-window.c:499
 msgid "Save ..."
@@ -110,17 +103,18 @@ msgstr "Сохранить..."
 msgid "Palette"
 msgstr "Палитра"
 
-#: src/glade-project-window.c:753 src/glade-widget.c:187
+#: src/glade-project-window.c:753
+#: src/glade-widget.c:187
 msgid "Properties"
 msgstr "Свойства"
 
 #: src/glade-project-window.c:837
 msgid "E_xpand all"
-msgstr ""
+msgstr "Развернуть все"
 
 #: src/glade-project-window.c:841
 msgid "_Collapse all"
-msgstr ""
+msgstr "Свернуть все"
 
 #: src/glade-project-window.c:984
 msgid ""
@@ -132,12 +126,18 @@ msgid ""
 "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 msgstr ""
+"Fatih Demir <kabalak@gtranslator.org>\n"
+"Christian Rose <menthos@menthos.com>\n"
+"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
+"Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Zbigniew Chyla <cyba@gnome.pl>\n"
+"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 
 #: src/glade-project-window.c:993
 msgid ""
 "Glade is a User Interface Builder for GTK+ and GNOME.\n"
-"This version is a rewrite of the Glade 2.0.0 version, original from Damon "
-"Chaplin\n"
+"This version is a rewrite of the Glade 2.0.0 version, original from Damon Chaplin\n"
 msgstr ""
 
 #: src/glade-project-window.c:998
@@ -154,14 +154,12 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-"USA."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/glade-project-window.c:1444
-#, fuzzy
 msgid "Could not create a new project."
-msgstr "Не возможно открыть проект."
+msgstr "Не удалось создать новый проект."
 
 #: src/glade-project-window.c:1477
 msgid "Could not open project."
@@ -169,43 +167,43 @@ msgstr "Не возможно открыть проект."
 
 #: src/glade-project-window.c:1519
 msgid "Nothing"
-msgstr ""
+msgstr "Ничего"
 
 #: src/glade-project-window.c:1563
 msgid "_Undo: "
-msgstr ""
+msgstr "Откат: "
 
 #: src/glade-project-window.c:1564
 msgid "_Redo: "
-msgstr ""
+msgstr "Возврат: "
 
 #: src/glade-app.c:390
 msgid "Clipboard"
-msgstr ""
+msgstr "Буфер обмена"
 
 #: src/glade-builtins.c:83
 msgid "Stock"
-msgstr ""
+msgstr "Склад"
 
 #: src/glade-builtins.c:84
 msgid "A builtin stock item"
-msgstr ""
+msgstr "Встроенный элемент"
 
 #: src/glade-builtins.c:94
 msgid "Integer"
-msgstr ""
+msgstr "Целое"
 
 #: src/glade-builtins.c:95
 msgid "An integer value"
-msgstr ""
+msgstr "Целочисленное значение"
 
 #: src/glade-builtins.c:106
 msgid "String"
-msgstr ""
+msgstr "Строка"
 
 #: src/glade-builtins.c:107
 msgid "An entry"
-msgstr ""
+msgstr "Пункт"
 
 #: src/glade-builtins.c:118
 msgid "Strv"
@@ -213,70 +211,72 @@ msgstr ""
 
 #: src/glade-builtins.c:119
 msgid "String array"
-msgstr ""
+msgstr "Массив строк"
 
 #: src/glade-builtins.c:131
 msgid "Float"
-msgstr ""
+msgstr "Плавающее"
 
 #: src/glade-builtins.c:132
 msgid "A floating point entry"
-msgstr ""
+msgstr "Значение с плавающей запятой"
 
-#: src/glade-clipboard-view.c:208 src/glade-project-view.c:573
+#: src/glade-clipboard-view.c:208
+#: src/glade-project-view.c:573
 msgid "Widget"
 msgstr "Эл.управления"
 
 #: src/glade-command.c:425
 msgid "Setting multiple properties"
-msgstr ""
+msgstr "Устанвка множества свойств"
 
 #: src/glade-command.c:433
 #, c-format
 msgid "Setting %s of %s"
-msgstr ""
+msgstr "Установливается %s из %s"
 
 #: src/glade-command.c:437
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr ""
+msgstr "Устанавливается %s из %s в %s"
 
-#: src/glade-command.c:633 src/glade-command.c:655
+#: src/glade-command.c:633
+#: src/glade-command.c:655
 #, c-format
 msgid "Renaming %s to %s"
-msgstr ""
+msgstr "Переименование %s в %s"
 
 #: src/glade-command.c:891
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr ""
 
 #: src/glade-command.c:920
-#, fuzzy, c-format
+#, c-format
 msgid "Delete %s"
-msgstr "Удалить"
+msgstr "Удалить %s"
 
 #: src/glade-command.c:924
 msgid "Delete multiple"
-msgstr ""
+msgstr "Удалить несколько"
 
 #: src/glade-command.c:989
 #, c-format
 msgid "Create %s"
-msgstr ""
+msgstr "Создать %s"
 
 #: src/glade-command.c:1314
 msgid "You cannot copy/cut a widget internal to a composite widget."
 msgstr ""
 
 #: src/glade-command.c:1319
-#, fuzzy, c-format
+#, c-format
 msgid "Cut %s"
-msgstr "Вырезать"
+msgstr "Вырезать %s"
 
 #: src/glade-command.c:1319
-#, fuzzy, c-format
+#, c-format
 msgid "Copy %s"
-msgstr "Скопировать"
+msgstr "Скопировать %s"
 
 #: src/glade-command.c:1333
 msgid "Only top-level widgets can be pasted without a parent."
@@ -287,33 +287,32 @@ msgid "You cannot paste a top-level to a placeholder."
 msgstr ""
 
 #: src/glade-command.c:1349
-#, fuzzy, c-format
+#, c-format
 msgid "Paste %s"
-msgstr "Вставить"
+msgstr "Вставить %s"
 
 #: src/glade-command.c:1364
 msgid "multiple"
-msgstr ""
+msgstr "несколько"
 
 #: src/glade-command.c:1623
 #, c-format
 msgid "Add signal handler %s"
-msgstr ""
+msgstr "Добавить обработчик сигнала \"%s\""
 
 #: src/glade-command.c:1624
-#, fuzzy, c-format
+#, c-format
 msgid "Remove signal handler %s"
-msgstr "Введите обработчик сигнала"
+msgstr "Удалить обработчик сигнала \"%s\""
 
 #: src/glade-command.c:1625
-#, fuzzy, c-format
+#, c-format
 msgid "Change signal handler %s"
-msgstr "Введите обработчик сигнала"
+msgstr "Изменить обработчик сигнала \"%s\""
 
 #: src/glade-editor-property.c:376
-#, fuzzy
 msgid "Property Class"
-msgstr "Свойства"
+msgstr ""
 
 #: src/glade-editor-property.c:377
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
@@ -321,7 +320,7 @@ msgstr ""
 
 #: src/glade-editor-property.c:383
 msgid "Use Command"
-msgstr ""
+msgstr "Использовать команду"
 
 #: src/glade-editor-property.c:384
 msgid "Whether we should use the command API for the undo/redo stack"
@@ -329,59 +328,59 @@ msgstr ""
 
 #: src/glade-editor-property.c:782
 msgid "Set Flags"
-msgstr ""
+msgstr "Установить флаги"
 
 #: src/glade-editor-property.c:1197
 msgid "Edit Text Property"
-msgstr ""
+msgstr "Правка свойств текста"
 
 #. Text
 #: src/glade-editor-property.c:1214
 msgid "_Text:"
-msgstr ""
+msgstr "Текст:"
 
 #: src/glade-editor-property.c:1250
-#, fuzzy
 msgid "T_ranslatable"
-msgstr "Переведи меня\n"
+msgstr "Переводимый"
 
 #: src/glade-editor-property.c:1257
 msgid "Has context _prefix"
-msgstr ""
+msgstr "Имеет контекстный префикс"
 
 #. Comments.
 #: src/glade-editor-property.c:1265
 msgid "Co_mments for translators:"
-msgstr ""
+msgstr "Комментарий для переводчиков:"
 
-#: src/glade-editor-property.c:1431 src/glade-editor-property.c:1447
-#: src/glade-menu-editor.c:914 src/glade-menu-editor.c:985
+#: src/glade-editor-property.c:1431
+#: src/glade-editor-property.c:1447
+#: src/glade-menu-editor.c:914
+#: src/glade-menu-editor.c:985
 #: src/glade-menu-editor.c:1472
 msgid "Yes"
 msgstr "Да"
 
-#: src/glade-editor-property.c:1431 src/glade-editor-property.c:1447
-#: src/glade-editor-property.c:1465 src/glade-menu-editor.c:1472
+#: src/glade-editor-property.c:1431
+#: src/glade-editor-property.c:1447
+#: src/glade-editor-property.c:1465
+#: src/glade-menu-editor.c:1472
 #: src/glade-menu-editor.c:2813
 msgid "No"
 msgstr "Нет"
 
 #: src/glade-editor.c:103
 msgid "_General"
-msgstr ""
+msgstr "Основное"
 
 #: src/glade-editor.c:104
-#, fuzzy
 msgid "_Packing"
 msgstr "Упаковка"
 
 #: src/glade-editor.c:105
-#, fuzzy
 msgid "_Common"
 msgstr "Общие"
 
 #: src/glade-editor.c:106
-#, fuzzy
 msgid "_Signals"
 msgstr "Сигналы"
 
@@ -389,13 +388,13 @@ msgstr "Сигналы"
 #.
 #: src/glade-editor.c:118
 msgid "_Edit..."
-msgstr ""
+msgstr "Правка..."
 
 #. Reset button
 #.
 #: src/glade-editor.c:127
 msgid "_Reset..."
-msgstr ""
+msgstr "Сброс..."
 
 #. Name
 #: src/glade-editor.c:246
@@ -410,20 +409,19 @@ msgstr "Класс:"
 #: src/glade-editor.c:631
 #, c-format
 msgid "Create a %s"
-msgstr ""
+msgstr "Создать %s"
 
 #: src/glade-editor.c:748
 msgid "Reset"
-msgstr ""
+msgstr "Сбросить"
 
 #: src/glade-editor.c:762
-#, fuzzy
 msgid "Property"
-msgstr "Свойства"
+msgstr "Свойство"
 
 #: src/glade-editor.c:797
 msgid "General"
-msgstr ""
+msgstr "Основные"
 
 #: src/glade-editor.c:807
 msgid "Common"
@@ -431,349 +429,336 @@ msgstr "Общие"
 
 #: src/glade-editor.c:839
 msgid "(default)"
-msgstr ""
+msgstr "(по умолчанию)"
 
 #: src/glade-editor.c:854
 msgid "Select the properties that you want to reset to their default values"
-msgstr ""
+msgstr "Выберите свойства, которые вы хотите сбросить в их исходные значения"
 
 #: src/glade-editor.c:986
-#, fuzzy
 msgid "Reset Widget Properties"
-msgstr "Свойства"
+msgstr "Сбросить свойства виджета"
 
 #. Checklist
 #: src/glade-editor.c:1003
-#, fuzzy
 msgid "_Properties:"
-msgstr "Свойства"
+msgstr "Свойства:"
 
 #: src/glade-editor.c:1032
-#, fuzzy
 msgid "_Select All"
-msgstr "Выбрать"
+msgstr "Выбрать все"
 
 #: src/glade-editor.c:1039
-#, fuzzy
 msgid "_Unselect All"
-msgstr "Выбрать"
+msgstr "Снять выделение"
 
 #. Description
 #: src/glade-editor.c:1048
 msgid "Property _Description:"
-msgstr ""
+msgstr "Описание свойства:"
 
 #: src/glade-fixed-manager.c:762
 msgid "X position property"
-msgstr ""
+msgstr "Координата X"
 
 #: src/glade-fixed-manager.c:763
 msgid "The property used to set the X position of a child object"
-msgstr ""
+msgstr "Это свойство используется для установки координаты Х дочернего объекта"
 
 #: src/glade-fixed-manager.c:769
 msgid "Y position property"
-msgstr ""
+msgstr "Координата Y"
 
 #: src/glade-fixed-manager.c:770
 msgid "The property used to set the Y position of a child object"
-msgstr ""
+msgstr "Это свойство используется для установки координаты Y дочернего объекта"
 
 #: src/glade-fixed-manager.c:776
-#, fuzzy
 msgid "Width property"
-msgstr "Свойства"
+msgstr "Ширина"
 
 #: src/glade-fixed-manager.c:777
 msgid "The property used to set the width of a child object"
-msgstr ""
+msgstr "Это свойство используется для установки ширины дочернего объекта"
 
 #: src/glade-fixed-manager.c:783
-#, fuzzy
 msgid "Height property"
-msgstr "Свойства"
+msgstr "Высота"
 
 #: src/glade-fixed-manager.c:784
 msgid "The property used to set the height of a child object"
-msgstr ""
+msgstr "Это свойство используется для установки высоты дочернего объекта"
 
 #. Add the special 'New' item to create a new group.
 #: src/glade-menu-editor.c:480
 msgid "New"
-msgstr ""
+msgstr "Создать"
 
 #. If the user selects the 'None' item from the combo, we reset the
 #. text to "" and return. This callback will be called again.
 #. Add a "None" item first, so it is easy to reset the pixmap.
-#: src/glade-menu-editor.c:583 src/glade-menu-editor.c:1201
-#: src/glade-menu-editor.c:2383 src/glade-menu-editor.c:2642
+#: src/glade-menu-editor.c:583
+#: src/glade-menu-editor.c:1201
+#: src/glade-menu-editor.c:2383
+#: src/glade-menu-editor.c:2642
 #: widgets/gtk+.xml.in.h:118
-#, fuzzy
 msgid "None"
 msgstr "Нет"
 
-#: src/glade-menu-editor.c:906 src/glade-menu-editor.c:978
+#: src/glade-menu-editor.c:906
+#: src/glade-menu-editor.c:978
 #: src/glade-menu-editor.c:2851
 msgid "Check"
-msgstr ""
+msgstr "Отметка"
 
-#: src/glade-menu-editor.c:908 src/glade-menu-editor.c:980
+#: src/glade-menu-editor.c:908
+#: src/glade-menu-editor.c:980
 #: src/glade-menu-editor.c:2844
 msgid "Radio"
-msgstr ""
+msgstr "Радио"
 
 #: src/glade-menu-editor.c:1777
-#, fuzzy
 msgid "Select icon"
-msgstr "Выбор сигнала"
+msgstr "Выбрать значок"
 
 #: src/glade-menu-editor.c:2236
 msgid "Menu Editor"
-msgstr ""
+msgstr "Редактор меню"
 
-#: src/glade-menu-editor.c:2252 widgets/gtk+.xml.in.h:103
+#: src/glade-menu-editor.c:2252
+#: widgets/gtk+.xml.in.h:103
 msgid "Label"
-msgstr ""
+msgstr "Метка"
 
-#: src/glade-menu-editor.c:2253 src/glade-gtk.c:71
+#: src/glade-menu-editor.c:2253
+#: src/glade-gtk.c:71
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: src/glade-menu-editor.c:2254
-#, fuzzy
 msgid "Accelerator"
-msgstr "Выбрать"
+msgstr "Ускоритель"
 
-#: src/glade-menu-editor.c:2255 src/glade-widget.c:148
-#, fuzzy
+#: src/glade-menu-editor.c:2255
+#: src/glade-widget.c:148
 msgid "Name"
-msgstr "Название:"
+msgstr "Название"
 
-#: src/glade-menu-editor.c:2256 src/glade-signal-editor.c:543
+#: src/glade-menu-editor.c:2256
+#: src/glade-signal-editor.c:543
 msgid "Handler"
 msgstr "Обработчик"
 
 #: src/glade-menu-editor.c:2257
 msgid "Active"
-msgstr ""
+msgstr "Активный"
 
-#: src/glade-menu-editor.c:2258 widgets/gtk+.xml.in.h:77
+#: src/glade-menu-editor.c:2258
+#: widgets/gtk+.xml.in.h:77
 msgid "Group"
-msgstr ""
+msgstr "Группа"
 
 #: src/glade-menu-editor.c:2259
 msgid "Icon"
-msgstr ""
+msgstr "Значок"
 
 #: src/glade-menu-editor.c:2300
 msgid "Move the item and its children up one place in the list"
-msgstr ""
+msgstr "Переместить элемент и его потомков на одну позицию выше по списку"
 
 #: src/glade-menu-editor.c:2312
 msgid "Move the item and its children down one place in the list"
-msgstr ""
+msgstr "Переместить элемент и его потомков на одну позицию ниже по списку"
 
 #: src/glade-menu-editor.c:2324
 msgid "Move the item and its children up one level"
-msgstr ""
+msgstr "Переместить элемент и его потомков на один уровень выше"
 
 #: src/glade-menu-editor.c:2336
 msgid "Move the item and its children down one level"
-msgstr ""
+msgstr "Переместить элемент и его потомков на один уровень ниже"
 
 #: src/glade-menu-editor.c:2365
 msgid "The stock item to use."
-msgstr ""
+msgstr "Используемый встроенный элемент."
 
-#: src/glade-menu-editor.c:2368 src/glade-menu-editor.c:2459
+#: src/glade-menu-editor.c:2368
+#: src/glade-menu-editor.c:2459
 msgid "Stock Item:"
-msgstr ""
+msgstr "Встроенный элемент:"
 
 #: src/glade-menu-editor.c:2457
 msgid "The stock Gnome item to use."
-msgstr ""
+msgstr "Используемый встроенный элемент GNOME."
 
 #: src/glade-menu-editor.c:2558
-msgid ""
-"The text of the menu item, or empty for separators. Hit return to add a new "
-"item below this one. Ctl-Return adds a child item beneath this one."
+msgid "The text of the menu item, or empty for separators. Hit return to add a new item below this one. Ctl-Return adds a child item beneath this one."
 msgstr ""
 
 #: src/glade-menu-editor.c:2560
 msgid "Label:"
-msgstr ""
+msgstr "Метка:"
 
-#: src/glade-menu-editor.c:2582 src/glade-widget.c:149
+#: src/glade-menu-editor.c:2582
+#: src/glade-widget.c:149
 msgid "The name of the widget"
-msgstr ""
+msgstr "Название виджета"
 
 #: src/glade-menu-editor.c:2585
-#, fuzzy
 msgid "Name:"
 msgstr "Название:"
 
 #: src/glade-menu-editor.c:2603
 msgid "The function to be called when the item is selected"
-msgstr ""
+msgstr "Функция, которая будет вызвана при выборе элемента"
 
 #: src/glade-menu-editor.c:2605
-#, fuzzy
 msgid "Handler:"
 msgstr "Обработчик:"
 
 #: src/glade-menu-editor.c:2624
 msgid "An optional icon to show on the left of the menu item."
-msgstr ""
+msgstr "Не обязательный значок, отображаемый слева от элемента меню."
 
 #: src/glade-menu-editor.c:2626
 msgid "Icon:"
-msgstr ""
+msgstr "Значок:"
 
 #: src/glade-menu-editor.c:2725
 msgid "The tip to show when the mouse is over the item"
-msgstr ""
+msgstr "Подсказка, показываемая когда указатель мыши находится на элементе"
 
 #: src/glade-menu-editor.c:2727
 msgid "Tooltip:"
-msgstr ""
+msgstr "Подсказка:"
 
 #: src/glade-menu-editor.c:2748
-#, fuzzy
 msgid "_Add"
 msgstr "Добавить"
 
 #: src/glade-menu-editor.c:2753
 msgid "Add a new item below the selected item."
-msgstr ""
+msgstr "Добавить новый элемент под выбранным."
 
 #: src/glade-menu-editor.c:2758
 msgid "Add _Child"
-msgstr ""
+msgstr "Добавить потомка"
 
 #: src/glade-menu-editor.c:2763
 msgid "Add a new child item below the selected item."
-msgstr ""
+msgstr "Добавить новый дочерний элемент под выбранным."
 
 #: src/glade-menu-editor.c:2769
 msgid "Add _Separator"
-msgstr ""
+msgstr "Добавить разделитель"
 
 #: src/glade-menu-editor.c:2774
 msgid "Add a separator below the selected item."
-msgstr ""
+msgstr "Добавить разделитель под выбранным элементом."
 
 #: src/glade-menu-editor.c:2779
-#, fuzzy
 msgid "_Delete"
 msgstr "Удалить"
 
 #: src/glade-menu-editor.c:2784
 msgid "Delete the current item"
-msgstr ""
+msgstr "Удалить текущий элемент"
 
 #. Type radio options and toggle options.
 #: src/glade-menu-editor.c:2790
 msgid "Item Type:"
-msgstr ""
+msgstr "Тип элемента:"
 
 #: src/glade-menu-editor.c:2806
 msgid "If the item is initially on."
-msgstr ""
+msgstr "Включен ли элемент изначально."
 
 #: src/glade-menu-editor.c:2808
 msgid "Active:"
-msgstr ""
+msgstr "Активный:"
 
 #: src/glade-menu-editor.c:2827
 msgid "The radio menu item's group"
-msgstr ""
+msgstr "Элемент радио-группы"
 
 #: src/glade-menu-editor.c:2829
 msgid "Group:"
-msgstr ""
+msgstr "Группа:"
 
-#: src/glade-menu-editor.c:2858 widgets/gtk+.xml.in.h:119
+#: src/glade-menu-editor.c:2858
+#: widgets/gtk+.xml.in.h:119
 msgid "Normal"
-msgstr ""
+msgstr "Нормальный"
 
 #. Accelerator key options.
 #: src/glade-menu-editor.c:2867
 msgid "Accelerator:"
-msgstr ""
+msgstr "Ускоритель:"
 
 #: src/glade-menu-editor.c:2904
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #: src/glade-menu-editor.c:2909
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: src/glade-menu-editor.c:2914
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: src/glade-menu-editor.c:2919
 msgid "Key:"
-msgstr ""
+msgstr "Клавиша:"
 
 #: src/glade-menu-editor.c:2925
 msgid "Modifiers:"
-msgstr ""
+msgstr "Модификаторы:"
 
 #. the label defaults to "Selector"
-#: src/glade-palette.c:107 src/glade-palette.c:155 src/glade-palette.c:161
-#, fuzzy
+#: src/glade-palette.c:107
+#: src/glade-palette.c:155
+#: src/glade-palette.c:161
 msgid "Selector"
-msgstr "Выбрать"
+msgstr "Переключатель"
 
 #: src/glade-parser.c:1476
 msgid "Could not allocate memory for interface"
-msgstr ""
+msgstr "Не удалось получить память для интерфейса"
 
 #: src/glade-popup.c:273
-#, fuzzy
 msgid "_Select"
 msgstr "Выбрать"
 
 #: src/glade-property-class.c:993
 #, c-format
-msgid ""
-"The property [%s] of the widget's class [%s] needs a special \"set\" "
-"function, but there is no library associated to this widget's class."
+msgid "The property [%s] of the widget's class [%s] needs a special \"set\" function, but there is no library associated to this widget's class."
 msgstr ""
 
 #: src/glade-property-class.c:1000
 #, c-format
-msgid ""
-"Unable to get the \"set\" function [%s] of the property [%s] of the widget's "
-"class [%s] from the module [%s]: %s"
+msgid "Unable to get the \"set\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"
 msgstr ""
 
-#: src/glade-property-class.c:1017 src/glade-property-class.c:1038
+#: src/glade-property-class.c:1017
+#: src/glade-property-class.c:1038
 #, c-format
-msgid ""
-"The property [%s] of the widget's class [%s] needs a special \"get\" "
-"function, but there is no library associated to this widget's class."
+msgid "The property [%s] of the widget's class [%s] needs a special \"get\" function, but there is no library associated to this widget's class."
 msgstr ""
 
 #: src/glade-property-class.c:1024
 #, c-format
-msgid ""
-"Unable to get the \"get\" function [%s] of the property [%s] of the widget's "
-"class [%s] from the module [%s]: %s"
+msgid "Unable to get the \"get\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"
 msgstr ""
 
 #: src/glade-property-class.c:1045
 #, c-format
-msgid ""
-"Unable to get the \"verify\" function [%s] of the property [%s] of the "
-"widget's class [%s] from the module [%s]: %s"
+msgid "Unable to get the \"verify\" function [%s] of the property [%s] of the widget's class [%s] from the module [%s]: %s"
 msgstr ""
 
 #: src/glade-property.c:466
 msgid "Enabled"
-msgstr ""
+msgstr "Разрешён"
 
 #: src/glade-property.c:467
 msgid "If the property is optional, this is its enabled state"
@@ -781,33 +766,32 @@ msgstr ""
 
 #: src/glade-property.c:473
 msgid "Sensitive"
-msgstr ""
+msgstr "Чувствительный"
 
 #: src/glade-property.c:474
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
 #: src/glade-property.c:480
-#, fuzzy
 msgid "Comment"
-msgstr "Общие"
+msgstr "Комментарий"
 
 #: src/glade-property.c:481
 msgid "XXX FIXME: The translators comment ?"
 msgstr ""
 
 #: src/glade-property.c:487
-#, fuzzy
 msgid "Translatable"
-msgstr "Переведи меня\n"
+msgstr "Переводимый"
 
-#: src/glade-property.c:488 src/glade-property.c:495
+#: src/glade-property.c:488
+#: src/glade-property.c:495
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "Переводится данное свойство или нет"
 
 #: src/glade-property.c:494
 msgid "Has Context"
-msgstr ""
+msgstr "Имеет контекст"
 
 #: src/glade-signal-editor.c:530
 msgid "Signal"
@@ -815,17 +799,18 @@ msgstr "Сигнал"
 
 #: src/glade-signal-editor.c:560
 msgid "User data"
-msgstr ""
+msgstr "Данные пользователя"
 
 #: src/glade-signal-editor.c:573
 msgid "Lookup"
-msgstr ""
+msgstr "Найти"
 
 #: src/glade-signal-editor.c:584
 msgid "After"
 msgstr "После"
 
-#: src/glade-utils.c:141 src/glade-utils.c:175
+#: src/glade-utils.c:141
+#: src/glade-utils.c:175
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "Не удалось найти символ \"%s\""
@@ -837,7 +822,7 @@ msgstr "Не удалось получить тип тх \"%s"
 
 #: src/glade-utils.c:1063
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "Невозможно вставить в несколько элементов"
 
 #: src/glade-utils.c:1071
 msgid "No widget selected on the clipboard"
@@ -856,39 +841,41 @@ msgstr ""
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
-#: src/glade-utils.c:1166 src/glade-utils.c:1197 src/glade-utils.c:1227
+#: src/glade-utils.c:1166
+#: src/glade-utils.c:1197
+#: src/glade-utils.c:1227
 msgid "No widget selected!"
-msgstr ""
+msgstr "Не выбран элемент!"
 
-#: src/glade-widget-class.c:957 src/glade-widget-class.c:969
+#: src/glade-widget-class.c:957
+#: src/glade-widget-class.c:969
 msgid "Not enough memory."
-msgstr ""
+msgstr "Недостаточно памяти."
 
 #: src/glade-widget-class.c:979
 #, c-format
 msgid "Unable to open the module %s."
-msgstr ""
+msgstr "Не удалось открыть модуль \"%s\"."
 
 #: src/glade-widget.c:155
 msgid "Internal name"
-msgstr ""
+msgstr "Внутреннее название"
 
 #: src/glade-widget.c:156
 msgid "The internal name of the widget"
-msgstr ""
+msgstr "Внутреннее название элемента"
 
 #: src/glade-widget.c:162
 msgid "Object"
-msgstr ""
+msgstr "Объект"
 
 #: src/glade-widget.c:163
 msgid "The object associated"
 msgstr ""
 
 #: src/glade-widget.c:170
-#, fuzzy
 msgid "Class"
-msgstr "Класс:"
+msgstr "Класс"
 
 #: src/glade-widget.c:171
 msgid "The class of the associated gtk+ widget"
@@ -896,7 +883,7 @@ msgstr ""
 
 #: src/glade-widget.c:178
 msgid "Project"
-msgstr ""
+msgstr "Проект"
 
 #: src/glade-widget.c:179
 msgid "The glade project that this widget belongs to"
@@ -906,10 +893,10 @@ msgstr ""
 msgid "A list of GladeProperties"
 msgstr ""
 
-#: src/glade-widget.c:194 widgets/gtk+.xml.in.h:131
-#, fuzzy
+#: src/glade-widget.c:194
+#: widgets/gtk+.xml.in.h:131
 msgid "Parent"
-msgstr "Палитра"
+msgstr "Родитель"
 
 #: src/glade-widget.c:195
 msgid "A pointer to the parenting GladeWidget"
@@ -918,18 +905,19 @@ msgstr ""
 #: src/glade-project-view.c:552
 #, c-format
 msgid "(internal %s)"
-msgstr ""
+msgstr "(внутренний %s)"
 
 #: src/glade-project-view.c:556
 #, c-format
 msgid "(%s child)"
-msgstr ""
+msgstr "(%s дочерний)"
 
 #: src/glade-gtk.c:72
 msgid "Chose the image type"
-msgstr ""
+msgstr "Выбрать тип изображения"
 
-#: src/glade-gtk.c:701 src/glade-gtk.c:1677
+#: src/glade-gtk.c:701
+#: src/glade-gtk.c:1677
 msgid "There must be no children in the button"
 msgstr ""
 
@@ -947,20 +935,18 @@ msgstr ""
 
 #: src/glade-gtk.c:1102
 msgid "_File"
-msgstr ""
+msgstr "_Файл"
 
 #: src/glade-gtk.c:1105
 msgid "_Edit"
-msgstr ""
+msgstr "_Правка"
 
 #: src/glade-gtk.c:1108
 msgid "_Help"
-msgstr ""
+msgstr "_Справка"
 
 #: src/glade-gtk.c:1413
-msgid ""
-"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
-"set Pixel size to -1"
+msgid "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, set Pixel size to -1"
 msgstr ""
 
 #: src/glade-gtk.c:1451
@@ -969,77 +955,76 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:1
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "Текст подсказки для этого элемента"
 
 #. Gtk+ Dialogs
 #: widgets/gtk+.xml.in.h:3
-#, fuzzy
 msgid "About Dialog"
-msgstr "Glade"
+msgstr "Диалог \"О программе\""
 
 #: widgets/gtk+.xml.in.h:4
 msgid "Accel Label"
-msgstr ""
+msgstr "Метка ускорителя"
 
 #: widgets/gtk+.xml.in.h:5
 msgid "Alignment"
-msgstr ""
+msgstr "Выравнивание"
 
 #: widgets/gtk+.xml.in.h:6
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 #: widgets/gtk+.xml.in.h:7
 msgid "All Events"
-msgstr ""
+msgstr "Все события"
 
 #: widgets/gtk+.xml.in.h:8
 msgid "Always"
-msgstr ""
+msgstr "Всегда"
 
 #: widgets/gtk+.xml.in.h:9
 msgid "Always Center"
-msgstr ""
+msgstr "Всегда по центру"
 
 #: widgets/gtk+.xml.in.h:10
 msgid "Arrow"
-msgstr ""
+msgstr "Стрелка"
 
 #: widgets/gtk+.xml.in.h:11
 msgid "Aspect Frame"
-msgstr ""
+msgstr "Рамка отношения"
 
 #: widgets/gtk+.xml.in.h:12
 msgid "Automatic"
-msgstr ""
+msgstr "Автоматически"
 
 #: widgets/gtk+.xml.in.h:13
 msgid "Both"
-msgstr ""
+msgstr "Оба"
 
 #: widgets/gtk+.xml.in.h:14
 msgid "Both Horizontal"
-msgstr ""
+msgstr "Оба по горизонтали"
 
 #: widgets/gtk+.xml.in.h:15
 msgid "Bottom"
-msgstr ""
+msgstr "Внизу"
 
 #: widgets/gtk+.xml.in.h:16
 msgid "Bottom Left"
-msgstr ""
+msgstr "Внизу слева"
 
 #: widgets/gtk+.xml.in.h:17
 msgid "Bottom Right"
-msgstr ""
+msgstr "Внизу справа"
 
 #: widgets/gtk+.xml.in.h:18
 msgid "Bottom to Top"
-msgstr ""
+msgstr "Снизу вверх"
 
 #: widgets/gtk+.xml.in.h:19
 msgid "Button"
-msgstr ""
+msgstr "Кнопка"
 
 #: widgets/gtk+.xml.in.h:20
 msgid "Button 1 Motion"
@@ -1067,63 +1052,59 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:26
 msgid "Calendar"
-msgstr ""
+msgstr "Календарь"
 
 #: widgets/gtk+.xml.in.h:27
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: widgets/gtk+.xml.in.h:28
-#, fuzzy
 msgid "Center"
-msgstr "Общие"
+msgstr "По центру"
 
 #: widgets/gtk+.xml.in.h:29
 msgid "Center on Parent"
-msgstr ""
+msgstr "По центру родителя"
 
 #: widgets/gtk+.xml.in.h:30
 msgid "Character"
-msgstr ""
+msgstr "Символ"
 
 #: widgets/gtk+.xml.in.h:31
 msgid "Check Button"
-msgstr ""
+msgstr "Поле для отметки"
 
 #: widgets/gtk+.xml.in.h:32
-#, fuzzy
 msgid "Close"
-msgstr "Очистить"
+msgstr "Закрыть"
 
 #: widgets/gtk+.xml.in.h:33
 msgid "Color Button"
-msgstr ""
+msgstr "Кнопка выбора цвета"
 
 #: widgets/gtk+.xml.in.h:34
-#, fuzzy
 msgid "Color Selection"
-msgstr "Выбор сигнала"
+msgstr "Выбор цвета"
 
 #: widgets/gtk+.xml.in.h:35
 msgid "Color Selection Dialog"
-msgstr ""
+msgstr "Окно выбора цвета"
 
 #: widgets/gtk+.xml.in.h:36
 msgid "Columned List"
-msgstr ""
+msgstr "Колоночный список"
 
 #: widgets/gtk+.xml.in.h:37
-#, fuzzy
 msgid "Combo"
-msgstr "Общие"
+msgstr "Выпадающий список"
 
 #: widgets/gtk+.xml.in.h:38
 msgid "Combo Box"
-msgstr ""
+msgstr "Выпадающий список"
 
 #: widgets/gtk+.xml.in.h:39
 msgid "Combo Box Entry"
-msgstr ""
+msgstr "Элемент выпадающего списка"
 
 #: widgets/gtk+.xml.in.h:40
 msgid "Continuous"
@@ -1131,19 +1112,19 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:41
 msgid "Create Folder"
-msgstr ""
+msgstr "Создать каталог"
 
 #: widgets/gtk+.xml.in.h:42
 msgid "Cursor"
-msgstr ""
+msgstr "Курсор"
 
 #: widgets/gtk+.xml.in.h:43
 msgid "Curve"
-msgstr ""
+msgstr "Кривая"
 
 #: widgets/gtk+.xml.in.h:44
 msgid "Default"
-msgstr ""
+msgstr "Исходный"
 
 #: widgets/gtk+.xml.in.h:45
 msgid "Delayed"
@@ -1151,15 +1132,15 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:46
 msgid "Desktop"
-msgstr ""
+msgstr "Рабочий стол"
 
 #: widgets/gtk+.xml.in.h:47
 msgid "Dialog"
-msgstr ""
+msgstr "Диалог"
 
 #: widgets/gtk+.xml.in.h:48
 msgid "Dialog Box"
-msgstr ""
+msgstr "Окно диалога"
 
 #: widgets/gtk+.xml.in.h:49
 msgid "Discontinuous"
@@ -1167,40 +1148,39 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:50
 msgid "Discrete"
-msgstr ""
+msgstr "Дискретное"
 
 #: widgets/gtk+.xml.in.h:51
 msgid "Dock"
-msgstr ""
+msgstr "Причал"
 
 #: widgets/gtk+.xml.in.h:52
 msgid "Down"
-msgstr ""
+msgstr "Вниз"
 
 #: widgets/gtk+.xml.in.h:53
 msgid "Drawing Area"
-msgstr ""
+msgstr "Область для рисования"
 
 #: widgets/gtk+.xml.in.h:54
 msgid "East"
-msgstr ""
+msgstr "Восточный"
 
 #: widgets/gtk+.xml.in.h:55
-#, fuzzy
 msgid "Edge"
-msgstr "Эл.управления"
+msgstr "Край"
 
 #: widgets/gtk+.xml.in.h:56
 msgid "End"
-msgstr ""
+msgstr "Конец"
 
 #: widgets/gtk+.xml.in.h:57
 msgid "Enter Notify"
-msgstr ""
+msgstr "Ввести уведомление"
 
 #: widgets/gtk+.xml.in.h:58
 msgid "Error"
-msgstr ""
+msgstr "Ошибка"
 
 #: widgets/gtk+.xml.in.h:59
 msgid "Etched In"
@@ -1219,93 +1199,88 @@ msgid "Expand"
 msgstr ""
 
 #: widgets/gtk+.xml.in.h:63
-#, fuzzy
 msgid "Expander"
-msgstr "Обработчик"
+msgstr ""
 
 #: widgets/gtk+.xml.in.h:64
 msgid "Exposure"
-msgstr ""
+msgstr "Выдержка"
 
 #: widgets/gtk+.xml.in.h:65
 msgid "File Chooser Button"
-msgstr ""
+msgstr "Кнопка выбора файлов"
 
 #: widgets/gtk+.xml.in.h:66
 msgid "File Chooser Dialog"
-msgstr ""
+msgstr "Диалог выбора файлов"
 
 #: widgets/gtk+.xml.in.h:67
-#, fuzzy
 msgid "File Selection"
-msgstr "Выбор сигнала"
+msgstr "Выбор файлов"
 
 #: widgets/gtk+.xml.in.h:68
 msgid "Fill"
-msgstr ""
+msgstr "Заполнение"
 
 #: widgets/gtk+.xml.in.h:69
 msgid "Fixed"
-msgstr ""
+msgstr "Фикс."
 
 #: widgets/gtk+.xml.in.h:70
 msgid "Focus Change"
-msgstr ""
+msgstr "Изменение фокуса"
 
 #: widgets/gtk+.xml.in.h:71
 msgid "Font Button"
-msgstr ""
+msgstr "Кнопка шрифта"
 
 #: widgets/gtk+.xml.in.h:72
-#, fuzzy
 msgid "Font Selection"
-msgstr "Выбор сигнала"
+msgstr "Выбор шрифта"
 
 #: widgets/gtk+.xml.in.h:73
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "Диалог выбора шрифта"
 
 #: widgets/gtk+.xml.in.h:74
-#, fuzzy
 msgid "Frame"
-msgstr "Название:"
+msgstr "Рамка"
 
 #: widgets/gtk+.xml.in.h:75
 msgid "Free"
-msgstr ""
+msgstr "Свободно"
 
 #: widgets/gtk+.xml.in.h:76
 msgid "Gamma Curve"
-msgstr ""
+msgstr "Гамма-кривая"
 
 #: widgets/gtk+.xml.in.h:78
 msgid "Gtk+ Additional"
-msgstr ""
+msgstr "Дополнительные Gtk+"
 
 #: widgets/gtk+.xml.in.h:79
 msgid "Gtk+ Base"
-msgstr ""
+msgstr "Основные Gtk+"
 
 #: widgets/gtk+.xml.in.h:80
 msgid "Gtk+ Obsolete"
-msgstr ""
+msgstr "Упразднённые Gtk+"
 
 #: widgets/gtk+.xml.in.h:81
 msgid "Gtk+ Standard Dialogs"
-msgstr ""
+msgstr "Стандартные диалоги Gtk+"
 
 #: widgets/gtk+.xml.in.h:82
 msgid "Half"
-msgstr ""
+msgstr "Половина"
 
 #: widgets/gtk+.xml.in.h:83
-#, fuzzy
 msgid "Handle Box"
-msgstr "Обработчик"
+msgstr "Ползунок"
 
 #: widgets/gtk+.xml.in.h:84
 msgid "Horizontal"
-msgstr ""
+msgstr "Горизонтально"
 
 #: widgets/gtk+.xml.in.h:85
 msgid "Horizontal Box"
@@ -1317,27 +1292,27 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:87
 msgid "Horizontal Panes"
-msgstr ""
+msgstr "Горизонтальная панель"
 
 #: widgets/gtk+.xml.in.h:88
 msgid "Horizontal Ruler"
-msgstr ""
+msgstr "Горизонтальная линейка"
 
 #: widgets/gtk+.xml.in.h:89
 msgid "Horizontal Scale"
-msgstr ""
+msgstr "Горизонтальная шкала"
 
 #: widgets/gtk+.xml.in.h:90
 msgid "Horizontal Scrollbar"
-msgstr ""
+msgstr "Горизонтальная полоса прокрутки"
 
 #: widgets/gtk+.xml.in.h:91
 msgid "Horizontal Separator"
-msgstr ""
+msgstr "Горизонтальный разделитель"
 
 #: widgets/gtk+.xml.in.h:92
 msgid "Icons"
-msgstr ""
+msgstr "Значки"
 
 #: widgets/gtk+.xml.in.h:93
 msgid "If Valid"
@@ -1345,11 +1320,11 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:94
 msgid "Image"
-msgstr ""
+msgstr "Изображение"
 
 #: widgets/gtk+.xml.in.h:95
 msgid "Image Type"
-msgstr ""
+msgstr "Тип изображения"
 
 #: widgets/gtk+.xml.in.h:96
 msgid "Immediate"
@@ -1361,120 +1336,119 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:98
 msgid "Info"
-msgstr ""
+msgstr "Инфо"
 
 #: widgets/gtk+.xml.in.h:99
 msgid "Input Dialog"
-msgstr ""
+msgstr "Диалог ввода"
 
 #: widgets/gtk+.xml.in.h:100
 msgid "Items"
-msgstr ""
+msgstr "Элементы"
 
 #: widgets/gtk+.xml.in.h:101
 msgid "Key Press"
-msgstr ""
+msgstr "Нажатие клавиши"
 
 #: widgets/gtk+.xml.in.h:102
 msgid "Key Release"
-msgstr ""
+msgstr "Отпускание клавиши"
 
 #: widgets/gtk+.xml.in.h:104
 msgid "Layout"
-msgstr ""
+msgstr "Расположение"
 
 #: widgets/gtk+.xml.in.h:105
 msgid "Leave Notify"
-msgstr ""
+msgstr "Оставить уведомление"
 
 #: widgets/gtk+.xml.in.h:106
 msgid "Left"
-msgstr ""
+msgstr "Слева"
 
 #: widgets/gtk+.xml.in.h:107
 msgid "Left to Right"
-msgstr ""
+msgstr "Слева направо"
 
 #: widgets/gtk+.xml.in.h:108
 msgid "Linear"
-msgstr ""
+msgstr "Линейное"
 
 #: widgets/gtk+.xml.in.h:109
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 #: widgets/gtk+.xml.in.h:110
 msgid "List Item"
-msgstr ""
+msgstr "Элемент списка"
 
 #: widgets/gtk+.xml.in.h:111
 msgid "Maximun Width"
-msgstr ""
+msgstr "Максимальная ширина"
 
 #: widgets/gtk+.xml.in.h:112
 msgid "Menu"
-msgstr ""
+msgstr "Меню"
 
 #: widgets/gtk+.xml.in.h:113
 msgid "Menu Bar"
-msgstr ""
+msgstr "Строка меню"
 
 #: widgets/gtk+.xml.in.h:114
 msgid "Message Dialog"
-msgstr ""
+msgstr "Диалог сообщения"
 
 #: widgets/gtk+.xml.in.h:115
 msgid "Middle"
-msgstr ""
+msgstr "Середина"
 
 #: widgets/gtk+.xml.in.h:116
 msgid "Mouse"
-msgstr ""
+msgstr "Мышь"
 
 #: widgets/gtk+.xml.in.h:117
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 #: widgets/gtk+.xml.in.h:120
 msgid "North"
-msgstr ""
+msgstr "Север"
 
 #: widgets/gtk+.xml.in.h:121
 msgid "North East"
-msgstr ""
+msgstr "Северо-Восток"
 
 #: widgets/gtk+.xml.in.h:122
 msgid "North West"
-msgstr ""
+msgstr "Северо-Запад"
 
 #: widgets/gtk+.xml.in.h:123
 msgid "Notebook"
-msgstr ""
+msgstr "Записная книжка"
 
 #: widgets/gtk+.xml.in.h:124
 msgid "Number of items"
-msgstr ""
+msgstr "Число элементов"
 
 #: widgets/gtk+.xml.in.h:125
 msgid "Number of pages"
-msgstr ""
+msgstr "Число страниц"
 
 #: widgets/gtk+.xml.in.h:126
 msgid "Ok"
-msgstr ""
+msgstr "Ок"
 
 #: widgets/gtk+.xml.in.h:127
 msgid "Ok, Cancel"
-msgstr ""
+msgstr "Ok, Отмена"
 
 #: widgets/gtk+.xml.in.h:128
-#, fuzzy
 msgid "Open"
-msgstr "Открыть..."
+msgstr "Открыть"
 
 #: widgets/gtk+.xml.in.h:129
 msgid "Option Menu"
-msgstr ""
+msgstr "Меню параметров"
 
 #: widgets/gtk+.xml.in.h:130
 msgid "Out"
@@ -1486,28 +1460,27 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:133
 msgid "Pointer Motion"
-msgstr ""
+msgstr "Движение указателя"
 
 #: widgets/gtk+.xml.in.h:134
 msgid "Pointer Motion Hint"
-msgstr ""
+msgstr "Подсказка на движение указателя"
 
 #: widgets/gtk+.xml.in.h:135
 msgid "Popup"
-msgstr ""
+msgstr "Всплывающее"
 
 #: widgets/gtk+.xml.in.h:136
 msgid "Popup Menu"
-msgstr ""
+msgstr "Всплывающее меню"
 
 #: widgets/gtk+.xml.in.h:137
 msgid "Progress Bar"
-msgstr ""
+msgstr "Индикатор выполнения"
 
 #: widgets/gtk+.xml.in.h:138
-#, fuzzy
 msgid "Property Change"
-msgstr "Свойства"
+msgstr ""
 
 #: widgets/gtk+.xml.in.h:139
 msgid "Proximity  Out"
@@ -1519,89 +1492,87 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:141
 msgid "Question"
-msgstr ""
+msgstr "Вопрос"
 
 #: widgets/gtk+.xml.in.h:142
 msgid "Queue"
-msgstr ""
+msgstr "Очередь"
 
 #: widgets/gtk+.xml.in.h:143
 msgid "Radio Button"
-msgstr ""
+msgstr "Радио-кнопка"
 
 #: widgets/gtk+.xml.in.h:144
 msgid "Response ID"
-msgstr ""
+msgstr "Идентификатор ответа"
 
 #: widgets/gtk+.xml.in.h:145
 msgid "Right"
-msgstr ""
+msgstr "Вправо"
 
 #: widgets/gtk+.xml.in.h:146
 msgid "Right to Left"
-msgstr ""
+msgstr "Справа налево"
 
 #: widgets/gtk+.xml.in.h:147
-#, fuzzy
 msgid "Save"
-msgstr "Сохранить..."
+msgstr "Сохранить"
 
 #: widgets/gtk+.xml.in.h:148
 msgid "Scroll"
-msgstr ""
+msgstr "Прокрутка"
 
 #: widgets/gtk+.xml.in.h:149
 msgid "Scrolled Window"
-msgstr ""
+msgstr "Прокручиваемое окно"
 
 #: widgets/gtk+.xml.in.h:150
-#, fuzzy
 msgid "Select Folder"
-msgstr "Выбрать"
+msgstr "Выбрать каталог"
 
 #: widgets/gtk+.xml.in.h:151
 msgid "Shrink"
-msgstr ""
+msgstr "Сжимаемый"
 
 #: widgets/gtk+.xml.in.h:152
 msgid "Size"
-msgstr ""
+msgstr "Размер"
 
 #: widgets/gtk+.xml.in.h:153
 msgid "Socket"
-msgstr ""
+msgstr "Сокет"
 
 #: widgets/gtk+.xml.in.h:154
 msgid "South"
-msgstr ""
+msgstr "Юг"
 
 #: widgets/gtk+.xml.in.h:155
 msgid "South East"
-msgstr ""
+msgstr "Юго-Восток"
 
 #: widgets/gtk+.xml.in.h:156
 msgid "South West"
-msgstr ""
+msgstr "Юго-Запад"
 
 #: widgets/gtk+.xml.in.h:157
 msgid "Spin Button"
-msgstr ""
+msgstr "Крутящаяся кнопка"
 
 #: widgets/gtk+.xml.in.h:158
 msgid "Splash Screen"
-msgstr ""
+msgstr "Заставка"
 
 #: widgets/gtk+.xml.in.h:159
 msgid "Spline"
-msgstr ""
+msgstr "Сплайн"
 
 #: widgets/gtk+.xml.in.h:160
 msgid "Spread"
-msgstr ""
+msgstr "Рассеивание"
 
 #: widgets/gtk+.xml.in.h:161
 msgid "Start"
-msgstr ""
+msgstr "Начало"
 
 #: widgets/gtk+.xml.in.h:162
 msgid "Static"
@@ -1609,19 +1580,19 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:163
 msgid "Status Bar"
-msgstr ""
+msgstr "Строка состояния"
 
 #: widgets/gtk+.xml.in.h:164
 msgid "Stock Button"
-msgstr ""
+msgstr "Готовая кнопка"
 
 #: widgets/gtk+.xml.in.h:165
 msgid "Stock Image"
-msgstr ""
+msgstr "Готовое изображение"
 
 #: widgets/gtk+.xml.in.h:166
 msgid "Structure"
-msgstr ""
+msgstr "Структура"
 
 #: widgets/gtk+.xml.in.h:167
 msgid "Substructure"
@@ -1629,23 +1600,23 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:168
 msgid "Table"
-msgstr ""
+msgstr "Таблица"
 
 #: widgets/gtk+.xml.in.h:169
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: widgets/gtk+.xml.in.h:170
 msgid "Text Entry"
-msgstr ""
+msgstr "Поле ввода текста"
 
 #: widgets/gtk+.xml.in.h:171
 msgid "Text View"
-msgstr ""
+msgstr "Просмотр текста"
 
 #: widgets/gtk+.xml.in.h:172
 msgid "The items in this combo box"
-msgstr ""
+msgstr "Пункты этого выпадающего меню"
 
 #: widgets/gtk+.xml.in.h:173
 msgid "The number of items in the box"
@@ -1653,20 +1624,18 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:174
 msgid "The number of items in the toolbar"
-msgstr ""
+msgstr "Число элементов на панели инструментов"
 
 #: widgets/gtk+.xml.in.h:175
 msgid "The number of pages in the notebook"
-msgstr ""
+msgstr "Число страниц в записной книжке"
 
 #: widgets/gtk+.xml.in.h:176
 msgid "The radio group name for this radio button"
 msgstr ""
 
 #: widgets/gtk+.xml.in.h:177
-msgid ""
-"The response ID of this button in a dialog (it's NOT useful if this button "
-"is not in a GtkDialog)"
+msgid "The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)"
 msgstr ""
 
 #: widgets/gtk+.xml.in.h:178
@@ -1675,59 +1644,59 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:179
 msgid "The stock item for this button"
-msgstr ""
+msgstr "Готовый элемент для этой кнопки"
 
 #: widgets/gtk+.xml.in.h:180
 msgid "The stock item for this image"
-msgstr ""
+msgstr "Готовый элемент для этого изображения"
 
 #: widgets/gtk+.xml.in.h:181
 msgid "The text to display"
-msgstr ""
+msgstr "Отображаемый тест"
 
 #: widgets/gtk+.xml.in.h:182
 msgid "Toggle Button"
-msgstr ""
+msgstr "Кнопка-переключатель"
 
 #: widgets/gtk+.xml.in.h:183
 msgid "Tool Bar"
-msgstr ""
+msgstr "Панель инструментов"
 
 #: widgets/gtk+.xml.in.h:184
 msgid "Toolbar"
-msgstr ""
+msgstr "Панель инструментов"
 
 #: widgets/gtk+.xml.in.h:185
 msgid "Tooltip"
-msgstr ""
+msgstr "Подсказка"
 
 #: widgets/gtk+.xml.in.h:186
 msgid "Top"
-msgstr ""
+msgstr "Сверху"
 
 #: widgets/gtk+.xml.in.h:187
 msgid "Top Left"
-msgstr ""
+msgstr "Сверху слева"
 
 #: widgets/gtk+.xml.in.h:188
 msgid "Top Level"
-msgstr ""
+msgstr "Верхний уровень"
 
 #: widgets/gtk+.xml.in.h:189
 msgid "Top Right"
-msgstr ""
+msgstr "Сверху справа"
 
 #: widgets/gtk+.xml.in.h:190
 msgid "Top to Bottom"
-msgstr ""
+msgstr "Сверху вниз"
 
 #: widgets/gtk+.xml.in.h:191
 msgid "Tree View"
-msgstr ""
+msgstr "Просмотр дерева"
 
 #: widgets/gtk+.xml.in.h:192
 msgid "Up"
-msgstr ""
+msgstr "Вверх"
 
 #: widgets/gtk+.xml.in.h:193
 msgid "Utility"
@@ -1735,7 +1704,7 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:194
 msgid "Vertical"
-msgstr ""
+msgstr "Вертикальное"
 
 #: widgets/gtk+.xml.in.h:195
 msgid "Vertical Box"
@@ -1747,27 +1716,27 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:197
 msgid "Vertical Panes"
-msgstr ""
+msgstr "Вертикальная панель"
 
 #: widgets/gtk+.xml.in.h:198
 msgid "Vertical Ruler"
-msgstr ""
+msgstr "Вертикальная линейка"
 
 #: widgets/gtk+.xml.in.h:199
 msgid "Vertical Scale"
-msgstr ""
+msgstr "Вертикальная шкала"
 
 #: widgets/gtk+.xml.in.h:200
 msgid "Vertical Scrollbar"
-msgstr ""
+msgstr "Вертикальная полоса прокрутки"
 
 #: widgets/gtk+.xml.in.h:201
 msgid "Vertical Separator"
-msgstr ""
+msgstr "Вертикальный разделитель"
 
 #: widgets/gtk+.xml.in.h:202
 msgid "Viewport"
-msgstr ""
+msgstr "Окно просмотра"
 
 #: widgets/gtk+.xml.in.h:203
 msgid "Visibility Notify"
@@ -1775,50 +1744,25 @@ msgstr ""
 
 #: widgets/gtk+.xml.in.h:204
 msgid "Warning"
-msgstr ""
+msgstr "Предупреждение"
 
 #: widgets/gtk+.xml.in.h:205
-#, fuzzy
 msgid "West"
-msgstr "Эл.управления"
+msgstr "Запад"
 
 #: widgets/gtk+.xml.in.h:206
 msgid "Window"
-msgstr ""
+msgstr "Окно"
 
 #: widgets/gtk+.xml.in.h:207
 msgid "Word"
-msgstr ""
+msgstr "Слово"
 
 #: widgets/gtk+.xml.in.h:208
 msgid "Word Character"
 msgstr ""
 
 #: widgets/gtk+.xml.in.h:209
-#, fuzzy
 msgid "Yes, No"
-msgstr "Да"
+msgstr "Да, Нет"
 
-#~ msgid "Widget Tree"
-#~ msgstr "Дерево эл.управления"
-
-#~ msgid "Invalid file name"
-#~ msgstr "Недопустимое название файла"
-
-#~ msgid "We could not find the symbol \"%s\" while trying to load \"%s\""
-#~ msgstr "Не удалось найти символ \"%s\" при попытке загрузить \"%s\""
-
-#~ msgid "Please enter a valid signal name"
-#~ msgstr "Введите допустимое название сигнала"
-
-#~ msgid "Signal :"
-#~ msgstr "Сигнал:"
-
-#~ msgid "After :"
-#~ msgstr "После:"
-
-#~ msgid "Update"
-#~ msgstr "Обновить"
-
-#~ msgid "The loaded type is not a GtkWidget, while trying to load \"%s\""
-#~ msgstr "Загруженный тип не является GtkWidget, при попытке загрузить \"%s\""
