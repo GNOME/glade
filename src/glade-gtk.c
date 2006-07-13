@@ -3257,7 +3257,7 @@ glade_gtk_menu_shell_build_child (GladeBaseEditor *editor,
 	return gitem_new;
 }
 
-static GladeWidget *  
+static gboolean
 glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
 				   GladeWidget *gparent,
 				   GladeWidget *gchild,
@@ -4548,4 +4548,3 @@ glade_gtk_list_item_get_label (GObject *object, GValue *value)
 
 	g_value_set_string (value, gtk_label_get_text (GTK_LABEL (label)));
 }
-
