@@ -1336,7 +1336,7 @@ glade_project_write (GladeProject *project)
 		 * Append toplevel widgets. Each widget then takes
 		 * care of appending its children.
 		 */
-		if (g_type_is_a (widget->widget_class->type, GTK_TYPE_WINDOW))
+		if (widget->parent == NULL && widget->widget_class->toplevel)
 		{
 			info = glade_widget_write (widget, interface);
 			if (!info)

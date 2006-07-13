@@ -214,6 +214,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	GladeProject *project = property->widget ?
 		glade_widget_get_project (property->widget) : NULL;
 	gboolean      changed = FALSE;
+	GValue old_value = {0,};
 
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
@@ -245,6 +246,10 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 		glade_property_update_prop_refs (property, property->value, value);
 
 
+	/* Make a copy of the old value */
+	g_value_init (&old_value, G_VALUE_TYPE (property->value));
+	g_value_copy (property->value, &old_value);
+	
 	/* Assign property first so that; if the object need be
 	 * rebuilt, it will reflect the new value
 	 */
@@ -257,8 +262,10 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	{
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[VALUE_CHANGED],
-			       0, property->value);
+			       0, &old_value, property->value);
 	}
+	
+	g_value_unset (&old_value);
 }
 
 static void
@@ -649,8 +656,8 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 			      G_STRUCT_OFFSET (GladePropertyKlass,
 					       value_changed),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__POINTER,
-			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+			      glade_marshal_VOID__POINTER_POINTER,
+			      G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_POINTER);
 
 	glade_property_signals[TOOLTIP_CHANGED] =
 		g_signal_new ("tooltip-changed",

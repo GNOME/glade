@@ -683,6 +683,10 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 	widget_class->fixed = 
 		glade_xml_get_property_boolean (node, GLADE_TAG_FIXED, widget_class->fixed);
 
+	/* Check if this class is toplevel */
+	widget_class->toplevel = glade_xml_get_property_boolean (node,
+								 GLADE_XML_TAG_TOPLEVEL,
+								 FALSE);
 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
@@ -1000,6 +1004,9 @@ glade_widget_class_merge (GladeWidgetClass *widget_class,
 	if (widget_class->launch_editor == NULL)
 		widget_class->launch_editor = parent_class->launch_editor;
 
+	if (widget_class->toplevel == FALSE)
+		widget_class->toplevel = parent_class->toplevel;
+	
 	/* merge the parent's properties */
 	glade_widget_class_merge_properties
 		(parent_class->type,
@@ -1100,6 +1107,7 @@ glade_widget_class_new (GladeXmlNode *class_node,
 	widget_class->cursor       = NULL;
 	widget_class->large_icon   = NULL;
 	widget_class->small_icon   = NULL;
+	widget_class->toplevel     = FALSE;
 
 	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type)    &&
 	    G_TYPE_IS_ABSTRACT (widget_class->type) == FALSE &&

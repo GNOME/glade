@@ -70,6 +70,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_XML_TAG_PACKING  "packing"
 #define GLADE_XML_TAG_PLACEHOLDER "placeholder"
 #define GLADE_XML_TAG_INTERNAL_CHILD "internal-child"
+#define GLADE_XML_TAG_TOPLEVEL "toplevel"
 
 /* Used for catalog tags and attributes */
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"

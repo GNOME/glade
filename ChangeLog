@@ -1,3 +1,39 @@
+2006-07-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/Makefile.am: added files glade-base-editor.[ch]
+
+	* src/glade-accumulators.[ch]: new accumulators 
+	  glade_string_accumulator() and glade_stop_emission_accumulator ()
+
+	* src/glade-app.c, src/glade-project.c and src/glade-command.c:
+	  use of GladeWidgetClass toplevel flag.
+	
+	* src/glade-gtk.c: Use of GladeBaseEditor for GtkMenuBar, GtkToolBar
+	  and GtkMenu editors.
+
+	* src/glade-marshallers.list: added OBJECT:OBJECT,UINT
+	  BOOLEAN:OBJECT,UINT BOOLEAN:OBJECT,OBJECT and STRING:OBJECT
+
+	* src/glade-property.[ch]: Added old_value parameter to GladeProject 
+	  "value_changed" signal.
+
+	* src/glade-widget-class.[ch]: added toplevel flag to GladeWidgetClass
+
+	* src/glade.h: added GLADE_XML_TAG_TOPLEVEL
+
+	* src/glade-base-editor.[ch]: Created GladeBaseEditor class from
+	  GtkMenuBarEditor code from glade-gtk.c
+
+	* widgets/gtk+.xml.in:
+	  o added launch-editor-function for GtkToolbar and GtkMenu.
+	  o Set GtkTextView post-create-function to empty (we do not need a 
+	    placeholder in it).
+	  o Set toplevel="True" in GtkWindow and GtkMenu.
+
+	* doc/widgetclasses.sgml: added toplevel property docs
+
+	* po/POTFILES.in: added src/glade-base-editor.c
+
 2006-07-06  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* pixmaps/16x16/Makefile.am, pixmaps/22x22/Makefile.am:

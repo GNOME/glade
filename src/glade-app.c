@@ -271,7 +271,7 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 	class = glade_palette_get_current_item_class (palette);
 
 	/* class may be NULL if the selector was pressed */
-	if (class && g_type_is_a (class->type, GTK_TYPE_WINDOW))
+	if (class && class->toplevel)
 	{
 		widget = glade_command_create (class, NULL, NULL, app->priv->active_project);
 		

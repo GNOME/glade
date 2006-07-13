@@ -208,7 +208,9 @@ struct _GladeWidgetClass
 				 * and the set & get functions of the properties
 				 * of this class.
 				 */
-
+				 
+	gboolean toplevel;	/* If this class is toplevel */
+	
 	/* Executed after widget creation: it takes care of creating the
 	 * GladeWidgets associated with internal children. It's also the place
 	 * to set sane defaults, e.g. set the size of a window.

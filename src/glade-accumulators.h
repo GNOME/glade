@@ -6,17 +6,25 @@
 
 G_BEGIN_DECLS
 
-gboolean glade_single_object_accumulator (GSignalInvocationHint  *ihint,
-					  GValue                 *return_accu,
-					  const GValue           *handler_return,
-					  gpointer                dummy);
-
+gboolean glade_single_object_accumulator   (GSignalInvocationHint *ihint,
+					    GValue                *return_accu,
+					    const GValue          *handler_return,
+					    gpointer               dummy);
+					    
 gboolean glade_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 					    GValue                *return_accu,
 					    const GValue          *handler_return,
 					    gpointer               dummy);
 
+gboolean glade_string_accumulator          (GSignalInvocationHint *ihint,
+					    GValue                *return_accu,
+					    const GValue          *handler_return,
+					    gpointer               dummy);
 
+gboolean glade_stop_emission_accumulator   (GSignalInvocationHint *ihint,
+					    GValue                *return_accu,
+					    const GValue          *handler_return,
+					    gpointer               dummy);
 G_END_DECLS
 
 #endif   /* __GLADE_ACCUM_H__ */

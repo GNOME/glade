@@ -125,7 +125,7 @@
       </children>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkWindow" generic-name="window" _title="Window">
+    <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True">
       <post-create-function>glade_gtk_window_post_create</post-create-function>
 
       <properties> 
@@ -309,6 +309,7 @@
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar">
       <post-create-function>empty</post-create-function>
+      <launch-editor-function>glade_gtk_toolbar_launch_editor</launch-editor-function>
       <properties>
 	<property id="orientation">
   	  <displayable-values>
@@ -352,7 +353,7 @@
       <post-create-function>glade_gtk_tool_item_post_create</post-create-function>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolbutton" _title="Separator Tool Item"/>
+    <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolitem" _title="Separator Tool Item"/>
 	
     <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
       <properties>
@@ -459,6 +460,7 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
+      <post-create-function>empty</post-create-function>
       <properties>
       	<property id="justification">
   	  <displayable-values>
@@ -923,9 +925,10 @@
 
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
-    <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu">
+    <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
       <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>empty</post-create-function>
+      <launch-editor-function>glade_gtk_menu_launch_editor</launch-editor-function>
    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>

@@ -1138,7 +1138,7 @@ glade_command_create (GladeWidgetClass *class,
 
 	g_return_val_if_fail (class != NULL, NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	if (g_type_is_a (class->type, GTK_TYPE_WINDOW) == FALSE)
+	if (class->toplevel == FALSE)
 		g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 
  	me            = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);

@@ -85,7 +85,8 @@ libgladeui_1_la_SOURCES = \
 	glade-builtins.c \
 	glade-app.c \
 	glade-keysyms.c \
-	glade-fixed.c
+	glade-fixed.c \
+	glade-base-editor.c
 
 libgladeui_1_la_CFLAGS =    \
 	-DINSIDE_LIBGLADEUI \
@@ -133,6 +134,7 @@ libgladeuiinclude_HEADERS = \
 	glade-app.h \
 	glade-builtins.h \
 	glade-fixed.h \
+	glade-base-editor.h \
 	fixed_bg.xpm \
 	atk.xpm
 

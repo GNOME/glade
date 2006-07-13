@@ -185,6 +185,7 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 
 void
 glade_editor_property_value_changed_cb (GladeProperty       *property,
+					GValue              *old_value,
 					GValue              *value,
 					GladeEditorProperty *eprop)
 {

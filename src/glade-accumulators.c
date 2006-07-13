@@ -53,3 +53,30 @@ glade_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 	
 	return continue_emission;
 }
+
+gboolean
+glade_string_accumulator (GSignalInvocationHint *ihint,
+			  GValue                *return_accu,
+			  const GValue          *handler_return,
+			  gpointer               dummy)
+{
+	const gchar *handler_str;
+	
+	g_free ((void *)g_value_get_string (return_accu));
+	
+	handler_str = g_value_get_string (handler_return);
+	g_value_set_string (return_accu, handler_str);
+	
+	return (handler_str == NULL);
+}
+
+gboolean
+glade_stop_emission_accumulator (GSignalInvocationHint *ihint,
+				 GValue                *return_accu,
+				 const GValue          *handler_return,
+				 gpointer               dummy)
+{
+	g_value_copy (handler_return, return_accu);
+	
+	return FALSE;
+}

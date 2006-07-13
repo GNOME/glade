@@ -75,7 +75,7 @@ struct _GladePropertyKlass
 	G_CONST_RETURN gchar *  (* get_tooltip)           (GladeProperty *);
 
 	/* Signals */
-	void             (* value_changed)         (GladeProperty *, GValue *);
+	void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
 	void             (* tooltip_changed)       (GladeProperty *, const gchar *);
 };
 
