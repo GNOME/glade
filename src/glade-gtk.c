@@ -2446,25 +2446,9 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 
 /* ----------------------------- GtkButton ------------------------------ */
 static void
-glade_gtk_button_backup_label (GladeWidget *gwidget)
-{
-	gchar *text;
-	gboolean use_underline;
-
-	glade_widget_property_get (gwidget, "label", &text);
-	g_object_set_data_full (G_OBJECT (gwidget), "glade-label", 
-				g_strdup (text), g_free);
-
-	glade_widget_property_get (gwidget, "use-underline", &use_underline);
-	g_object_set_data (G_OBJECT (gwidget), "glade-use-underline", 
-			   GINT_TO_POINTER (use_underline));
-}
-
-static void
 glade_gtk_button_disable_label (GladeWidget *gwidget)
 {
-	glade_gtk_button_backup_label (gwidget);
-	glade_widget_property_set (gwidget, "use-underline", NULL);
+	glade_widget_property_set (gwidget, "use-underline", FALSE);
 
 	glade_widget_property_set_sensitive
 		(gwidget, "label", FALSE,
@@ -2476,52 +2460,14 @@ glade_gtk_button_disable_label (GladeWidget *gwidget)
 }
 
 static void
-glade_gtk_button_restore_label (GladeWidget *gwidget)
-{
-	gchar *label = g_object_get_data (G_OBJECT (gwidget), "glade-label");
-	gboolean use_underline = GPOINTER_TO_INT
-		(g_object_get_data (G_OBJECT (gwidget), "glade-use-underline"));
-
-	glade_widget_property_set_sensitive (gwidget, "label", TRUE, NULL);
-	glade_widget_property_set (gwidget, "label", label);
-
-	glade_widget_property_set_sensitive (gwidget, "use-underline", TRUE, NULL);
-	glade_widget_property_set (gwidget, "use-underline", use_underline);
-
-}
-
-
-static void
-glade_gtk_button_backup_stock (GladeWidget *gwidget)
-{
-	gint stock_num;
-	if (glade_widget_property_default (gwidget, "stock") == FALSE)
-	{
-		glade_widget_property_get (gwidget, "stock", &stock_num);
-		g_object_set_data (G_OBJECT (gwidget), "glade-stock", 
-				   GINT_TO_POINTER (stock_num));
-	}
-}
-
-static void
 glade_gtk_button_disable_stock (GladeWidget *gwidget)
 {
-	glade_gtk_button_backup_stock (gwidget);
 	glade_widget_property_set (gwidget, "use-stock", FALSE);
 	glade_widget_property_set (gwidget, "stock", 0);
+
 	glade_widget_property_set_sensitive
 		(gwidget, "stock", FALSE,
 		 _("This only applies with stock type buttons"));
-}
-
-static void
-glade_gtk_button_restore_stock (GladeWidget *gwidget)
-{
-	gint stock_num = GPOINTER_TO_INT
-		(g_object_get_data (G_OBJECT (gwidget), "glade-stock"));
-	glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
-	glade_widget_property_set (gwidget, "stock", stock_num);
-	glade_widget_property_set (gwidget, "use-stock", TRUE);
 }
 
 static void
@@ -2552,10 +2498,6 @@ glade_gtk_button_post_create_parse_finished (GladeProject *project,
 	g_object_set_data (button, "glade-button-post-ran", GINT_TO_POINTER (1));
 	reason = GPOINTER_TO_INT (g_object_get_data (button, "glade-reason"));
 
-	/* Just incase */
-	glade_gtk_button_backup_stock (gbutton);
-	glade_gtk_button_backup_label (gbutton);
-
 	glade_widget_property_get (gbutton, "use-stock", &use_stock);
 	glade_widget_property_get (gbutton, "label", &label);
 
@@ -2575,10 +2517,6 @@ glade_gtk_button_post_create_parse_finished (GladeProject *project,
 			glade_widget_property_set (gbutton, "stock", eval->value);
 		}
 
-		/* Backup stock prop fisrt since setting the type
-		 * will restore it.
-		 */
-		glade_gtk_button_backup_stock (gbutton);
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_STOCK);
 	}
 	else
@@ -2615,8 +2553,6 @@ glade_gtk_button_post_create (GObject *button, GladeCreateReason reason)
 	{
 		g_object_set_data (button, "glade-button-post-ran", GINT_TO_POINTER (1));
 
-		glade_gtk_button_backup_label (gbutton);
-
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_LABEL);
 		glade_project_selection_set (GLADE_PROJECT (gbutton->project), 
 					     G_OBJECT (button), TRUE);
@@ -2652,11 +2588,13 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 	switch (type)
 	{
 	case GLADEGTK_BUTTON_LABEL:
-		glade_gtk_button_restore_label (gwidget);
+		glade_widget_property_set_sensitive (gwidget, "label", TRUE, NULL);
+		glade_widget_property_set_sensitive (gwidget, "use-underline", TRUE, NULL);
 		glade_gtk_button_disable_stock (gwidget);
 		break;
 	case GLADEGTK_BUTTON_STOCK:
-		glade_gtk_button_restore_stock (gwidget);
+		glade_widget_property_set (gwidget, "use-stock", TRUE);
+		glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
 		glade_gtk_button_disable_label (gwidget);
 		break;
 	case GLADEGTK_BUTTON_CONTAINER:
@@ -2687,7 +2625,7 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 				(gwidget, "use-underline", FALSE,
 				 _("This only applies with label type buttons"));
 		}
-
+		glade_widget_property_set (gwidget, "label", NULL);
 		glade_gtk_button_restore_container (gwidget);
 		break;
 	}		
@@ -2765,7 +2703,6 @@ glade_gtk_button_replace_child (GtkWidget *container,
 
 }
 
-
 void GLADEGTK_API
 glade_gtk_button_add_child (GObject *object, GObject *child)
 {
@@ -2799,26 +2736,8 @@ glade_gtk_button_remove_child (GObject *object, GObject *child)
 
 /* ----------------------------- GtkImage ------------------------------ */
 static void
-glade_gtk_image_backup_filename (GladeWidget *gwidget)
-{
-	GladeProperty *p;
-	gchar *file;
-	
-	if (glade_widget_property_default (gwidget, "pixbuf") == FALSE)
-	{
-		p = glade_widget_get_property (gwidget, "pixbuf");
-		
-		file = glade_property_class_make_string_from_gvalue (p->class,
-								     p->value);
-		
-		g_object_set_data_full (G_OBJECT (gwidget), "glade-file", file, g_free);
-	}
-}
-
-static void
 glade_gtk_image_disable_filename (GladeWidget *gwidget)
 {
-	glade_gtk_image_backup_filename (gwidget);
 	glade_widget_property_set (gwidget, "pixbuf", NULL);
 	glade_widget_property_set_sensitive
 		(gwidget, "pixbuf", FALSE,
@@ -2826,41 +2745,8 @@ glade_gtk_image_disable_filename (GladeWidget *gwidget)
 }
 
 static void
-glade_gtk_image_restore_filename (GladeWidget *gwidget)
-{
-	GladeProperty *p;
-	GValue *value;
-	gchar *file;
-	
-	glade_widget_property_set_sensitive (gwidget, "pixbuf", TRUE, NULL);
-	
-	file = g_object_get_data (G_OBJECT (gwidget), "glade-file");
-	p = glade_widget_get_property (gwidget, "pixbuf");
-	value = glade_property_class_make_gvalue_from_string
-		(p->class, file, gwidget->project);
-	
-	glade_property_set_value (p, value);
-	
-	g_value_unset (value);
-	g_free (value);
-}
-
-static void
-glade_gtk_image_backup_icon_name (GladeWidget *gwidget)
-{
-	gchar *str;
-	if (glade_widget_property_default (gwidget, "icon-name") == FALSE)
-	{
-		glade_widget_property_get (gwidget, "icon-name", &str);
-		g_object_set_data_full (G_OBJECT (gwidget), "glade-icon-name", 
-					g_strdup (str), g_free);
-	}
-}
-
-static void
 glade_gtk_image_disable_icon_name (GladeWidget *gwidget)
 {
-	glade_gtk_image_backup_icon_name (gwidget);
 	glade_widget_property_reset (gwidget, "icon-name");
 	glade_widget_property_set_sensitive
 		(gwidget, "icon-name", FALSE,
@@ -2868,45 +2754,12 @@ glade_gtk_image_disable_icon_name (GladeWidget *gwidget)
 }
 
 static void
-glade_gtk_image_restore_icon_name (GladeWidget *gwidget)
-{
-	gchar *str = g_object_get_data (G_OBJECT (gwidget), "glade-icon-name");
-	glade_widget_property_set_sensitive (gwidget, "icon-name", 
-					     TRUE, NULL);
-	if (str) glade_widget_property_set (gwidget, "icon-name", str);
-}
-
-
-static void
-glade_gtk_image_backup_stock (GladeWidget *gwidget)
-{
-	gint stock_num;
-	if (glade_widget_property_default (gwidget, "glade-stock") == FALSE)
-	{
-		glade_widget_property_get (gwidget, "glade-stock", &stock_num);
-		g_object_set_data (G_OBJECT (gwidget), "glade-stock", 
-				   GINT_TO_POINTER (stock_num));
-	}
-}
-
-static void
 glade_gtk_image_disable_stock (GladeWidget *gwidget)
 {
-	glade_gtk_image_backup_stock (gwidget);
 	glade_widget_property_reset (gwidget, "glade-stock");
 	glade_widget_property_set_sensitive
 		(gwidget, "glade-stock", FALSE,
 		 _("This only applies with stock type images"));
-}
-
-static void
-glade_gtk_image_restore_stock (GladeWidget *gwidget)
-{
-	gint stock_num = GPOINTER_TO_INT
-		(g_object_get_data (G_OBJECT (gwidget), "glade-stock"));
-	glade_widget_property_set_sensitive (gwidget, "glade-stock", 
-					     TRUE, NULL);
-	glade_widget_property_set (gwidget, "glade-stock", stock_num);
 }
 
 static void 
@@ -2929,10 +2782,6 @@ glade_gtk_image_post_create_parse_finished (GladeProject *project,
 	GObject *image = glade_widget_get_object (gimage);
 	GladeProperty *property;
 	gint size;
-
-	glade_gtk_image_backup_stock (gimage);
-	glade_gtk_image_backup_icon_name (gimage);
-	glade_gtk_image_backup_filename (gimage);
 	
 	g_object_set_data (image, "glade-image-post-ran", GINT_TO_POINTER (1));
 
@@ -3013,20 +2862,20 @@ glade_gtk_image_set_type (GObject *object, GValue *value)
 	case GLADEGTK_IMAGE_STOCK:
 		glade_gtk_image_disable_filename (gwidget);
 		glade_gtk_image_disable_icon_name (gwidget);
-		glade_gtk_image_restore_stock (gwidget);
+		glade_widget_property_set_sensitive (gwidget, "glade-stock", TRUE, NULL);
 		break;
 
 	case GLADEGTK_IMAGE_ICONTHEME:
 		glade_gtk_image_disable_filename (gwidget);
 		glade_gtk_image_disable_stock (gwidget);
-		glade_gtk_image_restore_icon_name (gwidget);
+		glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
 		break;
 
 	case GLADEGTK_IMAGE_FILENAME:
 	default:
 		glade_gtk_image_disable_stock (gwidget);
 		glade_gtk_image_disable_icon_name (gwidget);
-		glade_gtk_image_restore_filename (gwidget);
+		glade_widget_property_set_sensitive (gwidget, "pixbuf", TRUE, NULL);
 		break;
 	}		
 }

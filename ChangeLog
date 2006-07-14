@@ -1,3 +1,10 @@
+2006-07-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c: Fixed bug 346139
+	  "GTK warns of multiple widgets contained in a button with an image"
+	  Simplified GtkButton and GtkImage, Glade3 no longer tries to "remember"
+	  properties values (Undo/Redo should be enougth)
+
 2006-07-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/Makefile.am: added files glade-base-editor.[ch]
