@@ -684,9 +684,9 @@ glade_widget_class_extend_with_node (GladeWidgetClass *widget_class,
 		glade_xml_get_property_boolean (node, GLADE_TAG_FIXED, widget_class->fixed);
 
 	/* Check if this class is toplevel */
-	widget_class->toplevel = glade_xml_get_property_boolean (node,
-								 GLADE_XML_TAG_TOPLEVEL,
-								 FALSE);
+	widget_class->toplevel =
+		glade_xml_get_property_boolean (node, GLADE_XML_TAG_TOPLEVEL,
+						widget_class->toplevel);
 
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
