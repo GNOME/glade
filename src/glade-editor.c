@@ -185,7 +185,6 @@ glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 	GtkWidget     *scrolled_window;
 	GtkWidget     *label_widget;
 	GdkPixbuf     *pixbuf;
-	GtkAdjustment *adj;
 	static gint page = 0;
 
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -198,15 +197,6 @@ glade_editor_notebook_page (const gchar *name, GtkWidget *notebook)
 					       GTK_WIDGET (vbox));
 	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
 					GLADE_GENERIC_BORDER_WIDTH);
-
-	/* Enable tabbed keynav in the editor */
-	adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
-	gtk_container_set_focus_vadjustment (GTK_CONTAINER (scrolled_window), adj);
-	gtk_adjustment_set_value (adj, 0);
-
-	adj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
-	gtk_container_set_focus_hadjustment (GTK_CONTAINER (scrolled_window), adj);
-	gtk_adjustment_set_value (adj, 0);
 
 	if (!strcmp (name, "glade-atk"))
 	{
@@ -647,7 +637,9 @@ glade_editor_load_page (GladeEditor          *editor,
 {
 	GladeEditorTable *table;
 	GtkContainer *container = NULL;
+	GtkWidget    *scrolled_window;
 	GList *list, *children;
+	GtkAdjustment *adj;
 
 	/* Remove the old table that was in this container */
 	switch (type)
@@ -685,6 +677,29 @@ glade_editor_load_page (GladeEditor          *editor,
 	/* Attach the new table */
 	gtk_box_pack_start (GTK_BOX (container), table->table_widget,
 			    FALSE, TRUE, 0);
+
+
+	/* Enable tabbed keynav in the editor */
+	if (table)
+	{
+		scrolled_window = gtk_widget_get_parent (GTK_WIDGET (container));
+		scrolled_window = gtk_widget_get_parent (scrolled_window);
+
+		/* FIXME: Save pointer to the scrolled window (or just the
+		   adjustments) before hand. */
+		g_assert (GTK_IS_SCROLLED_WINDOW (scrolled_window));
+				
+		adj = gtk_scrolled_window_get_vadjustment
+			(GTK_SCROLLED_WINDOW (scrolled_window));
+		gtk_container_set_focus_vadjustment
+			(GTK_CONTAINER (table->table_widget), adj);
+		
+		adj = gtk_scrolled_window_get_hadjustment
+			(GTK_SCROLLED_WINDOW (scrolled_window));
+		gtk_container_set_focus_hadjustment
+			(GTK_CONTAINER (table->table_widget), adj);
+	}
+	
 }
 
 /**
