@@ -2,6 +2,10 @@
 
 	* src/glade-editor.c: Fixed jumpy focus widget bug (bug 347851)
 
+	* src/glade-palette-item.c, src/glade-project-window.c, src/glade-widget-class.c:
+	  "s/== TRUE/!= FALSE/g" (musnt be checking for litteral truths, that is error
+	  prone).
+
 2006-07-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-gtk.c: Fixed bug 346139

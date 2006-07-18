@@ -140,10 +140,12 @@ glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_smal
 	{
 		priv->use_small_icon = use_small_icon;		
 
-		if (use_small_icon == TRUE)
-			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), priv->widget_class->small_icon);
+		if (use_small_icon != FALSE)
+			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
+						   priv->widget_class->small_icon);
 		else
-			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), priv->widget_class->large_icon); 
+			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
+						   priv->widget_class->large_icon); 
 
 		g_object_notify (G_OBJECT (item), "use-small-icon");
 	}

@@ -311,7 +311,7 @@ glade_widget_class_load_icons (GladeWidgetClass *class)
 
 	/* only certain widget classes need to have icons */
 	if (G_TYPE_IS_INSTANTIATABLE (class->type) == FALSE ||
-            G_TYPE_IS_ABSTRACT (class->type) == TRUE ||
+            G_TYPE_IS_ABSTRACT (class->type) != FALSE ||
             class->generic_name == NULL)
 	{
 		return;
@@ -396,7 +396,7 @@ glade_widget_class_create_cursor (GladeWidgetClass *widget_class)
 
 	/* only certain widget classes need to have cursors */
 	if (G_TYPE_IS_INSTANTIATABLE (widget_class->type) == FALSE ||
-            G_TYPE_IS_ABSTRACT (widget_class->type) == TRUE ||
+            G_TYPE_IS_ABSTRACT (widget_class->type) != FALSE ||
             widget_class->generic_name == NULL)
 		return;
 

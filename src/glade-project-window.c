@@ -91,11 +91,13 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	{
 		project_name = glade_project_display_name (active_project, TRUE, FALSE, FALSE);
 		
-		if (active_project->readonly == TRUE)
-			title = g_strdup_printf ("%s %s - %s", project_name, READONLY_INDICATOR, g_get_application_name ());
+		if (active_project->readonly != FALSE)
+			title = g_strdup_printf ("%s %s - %s", project_name,
+						 READONLY_INDICATOR, g_get_application_name ());
 		else
-			title = g_strdup_printf ("%s - %s", project_name, g_get_application_name ());			
-
+			title = g_strdup_printf ("%s - %s", project_name,
+						 g_get_application_name ());
+		
 		g_free (project_name);
 	}
 	else
@@ -265,7 +267,7 @@ gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 	g_object_set (action, "label", project_name, NULL);
 
 	/* Set action tooltip */
-	if (project->readonly == TRUE)
+	if (project->readonly != FALSE)
 		tooltip = g_strdup_printf ("%s %s", project->path, READONLY_INDICATOR);
 	else
 		tooltip = g_strdup_printf ("%s", project->path);
@@ -404,7 +406,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 
 		action_name = g_strdup_printf ("Project_%d", i);
 		project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
-		if (project->readonly == TRUE)
+		if (project->readonly != FALSE)
 			tooltip = g_strdup_printf ("%s %s",project->path, READONLY_INDICATOR);
 		else
 			tooltip = g_strdup_printf (project->path);
