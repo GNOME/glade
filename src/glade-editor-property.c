@@ -54,13 +54,7 @@ enum {
 static GtkTableClass             *table_class;
 static GladeEditorPropertyClass  *editor_property_class;
 
-/* For setting insensitive background on labels without setting them
- * insensitive (tooltips dont work on insensitive widgets at this time)
- */
-static GdkColor               *insensitive_colour = NULL;
-static GdkColor               *normal_colour      = NULL;
-
-static guint                   glade_editor_property_signals[LAST_SIGNAL] = { 0 };
+static guint                      glade_editor_property_signals[LAST_SIGNAL] = { 0 };
 
 #define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 #define FLAGS_COLUMN_SETTING             0
@@ -163,16 +157,36 @@ glade_editor_property_tooltip_cb (GladeProperty       *property,
 }
 
 static void
+glade_eprop_label_style_update_cb (GtkWidget           *label,
+				GtkStyle            *prev,
+				GladeEditorProperty *eprop)
+{
+	if (eprop->insensitive_colour)
+		gdk_color_free (eprop->insensitive_colour);
+	if (eprop->normal_colour)
+		gdk_color_free (eprop->normal_colour);
+
+	eprop->insensitive_colour =
+		gdk_color_copy (&(label->style->fg[GTK_STATE_INSENSITIVE]));
+	eprop->normal_colour      =
+		gdk_color_copy (&(label->style->fg[GTK_STATE_NORMAL]));
+}
+
+static void
 glade_editor_property_sensitivity_cb (GladeProperty       *property,
 				      GParamSpec          *pspec,
 				      GladeEditorProperty *eprop)
 {
 	gboolean sensitive = glade_property_get_sensitive (eprop->property);
 
+	g_signal_handlers_block_by_func
+		(eprop->item_label, glade_eprop_label_style_update_cb, eprop);
 	gtk_widget_modify_fg 
 		(GTK_WIDGET (eprop->item_label), 
 		 GTK_STATE_NORMAL, 
-		 sensitive ? normal_colour : insensitive_colour);
+		 sensitive ? eprop->normal_colour : eprop->insensitive_colour);
+	g_signal_handlers_unblock_by_func
+		(eprop->item_label, glade_eprop_label_style_update_cb, eprop);
 
 	if (sensitive == FALSE)
 		gtk_widget_set_sensitive (eprop->input, FALSE);
@@ -282,6 +296,11 @@ glade_editor_property_constructor (GType                  type,
 	g_free (text);
 	gtk_widget_show (eprop->item_label);
 
+	/* Deal with label colours */
+	glade_eprop_label_style_update_cb (eprop->item_label, NULL, eprop);
+	g_signal_connect (G_OBJECT (eprop->item_label), "style-set",
+			  G_CALLBACK (glade_eprop_label_style_update_cb), eprop);
+	
 	/* keep our own reference */
 	g_object_ref (G_OBJECT (eprop->eventbox));
 
@@ -324,6 +343,11 @@ glade_editor_property_finalize (GObject *object)
 	/* detatch from loaded property */
 	glade_editor_property_load_common (eprop, NULL);
 
+	if (eprop->insensitive_colour)
+		gdk_color_free (eprop->insensitive_colour);
+	if (eprop->normal_colour)
+		gdk_color_free (eprop->normal_colour);
+	
 	G_OBJECT_CLASS (table_class)->finalize (object);
 }
 
@@ -490,7 +514,6 @@ static void
 glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 {
 	GObjectClass       *object_class;
-	GtkWidget          *label;
 	g_return_if_fail (eprop_class != NULL);
 
 	/* Both parent classes assigned here.
@@ -550,13 +573,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 		 ("show-info", _("Show Info"), 
 		  _("Whether we should show an informational button"),
 		  FALSE, G_PARAM_READWRITE));
-
-	/* Resolve label colors once class wide.
-	 */
-	label = gtk_label_new ("");
-	insensitive_colour = gdk_color_copy (&(GTK_WIDGET (label)->style->fg[GTK_STATE_INSENSITIVE]));
-	normal_colour      = gdk_color_copy (&(GTK_WIDGET (label)->style->fg[GTK_STATE_NORMAL]));
-	gtk_widget_destroy (label);
 }
 
 

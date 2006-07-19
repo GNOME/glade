@@ -50,9 +50,15 @@ struct _GladeEditorProperty {
 					     * (used for query dialogs).
 					     */
 
-	gboolean            show_info;      /* Whether we should show an informational button for this
-					     * property
+	gboolean            show_info;      /* Whether we should show an informational button
+					     * for this property
 					     */
+
+	GdkColor           *insensitive_colour;	/* For setting insensitive background on   */
+	GdkColor           *normal_colour;      /* labels without setting them insensitive
+						 * (tooltips dont work on insensitive widgets
+						 * at this time)
+						 */
 };
 
 struct _GladeEditorPropertyClass {
