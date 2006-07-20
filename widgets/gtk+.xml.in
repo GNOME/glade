@@ -646,7 +646,9 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry"/>
+    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry">
+      <post-create-function>glade_gtk_combo_box_entry_post_create</post-create-function>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>

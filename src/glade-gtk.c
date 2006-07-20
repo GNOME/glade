@@ -2200,7 +2200,7 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 
 		close_button = glade_widget_class_create_internal
 			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->close_button),
-			 "close_button", "intputdialog", FALSE, reason);
+			 "close_button", "inputdialog", FALSE, reason);
 
 	}
 	else if (GTK_IS_FILE_SELECTION (object))
@@ -4204,6 +4204,20 @@ glade_gtk_combo_box_set_items (GObject *object, GValue *value)
 		for (i = 0; split[i] != NULL; i++)
 			if (split[i][0] != '\0')
 				gtk_combo_box_append_text (combo, split[i]);
+}
+
+/* ----------------------------- GtkComboBoxEntry ------------------------------ */
+void GLADEGTK_API
+glade_gtk_combo_box_entry_post_create (GObject *object, GladeCreateReason reason)
+{
+	GladeWidget *gcombo = glade_widget_get_from_gobject (object);
+
+	/* Chain up */
+	glade_gtk_combo_box_post_create (object, reason);
+
+	glade_widget_class_create_internal
+		(gcombo, G_OBJECT (GTK_BIN (object)->child),
+		 "entry", "comboboxentry", FALSE, reason);
 }
 
 
