@@ -1,3 +1,16 @@
+2006-07-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget.c: Use gtk_widget_get_pointer on the event widget
+	  to retrieve the mouse position, not gdk_window_get_pointer on any
+	  arbitrary event widget of that window.
+
+	* src/glade-fixed.c: Use gtk_widget_get_pointer() where we were using
+	  gdk_window_get_pointer().
+
+	* src/glade-command.c: disabling the debug print.
+
+	* TODO: Updated
+
 2006-07-19  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor-property.[ch]: Bookkeep colours for insensitive tooltips in

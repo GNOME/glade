@@ -347,7 +347,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 		else
 			g_value_copy (sdata->new_value, &new_value);
 
-#if 1
+#if 0
 		{
 			gchar *str =
 				glade_property_class_make_string_from_gvalue 

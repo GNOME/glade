@@ -482,23 +482,22 @@ glade_widget_event_private (GtkWidget   *widget,
 			    GladeWidget *gwidget)
 {
 	GtkWidget *event_widget;
+	gboolean   handled;
 	gint       x, y;
 
-	/* Get the widget at moust position before anything else
+	/* Get the widget at mouse position before anything else
 	 */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-	gdk_window_get_pointer (((GdkEventAny *)event)->window, &x, &y, NULL);
 
+	gtk_widget_get_pointer (event_widget, &x, &y);
 	deep_event_widget = 
 		glade_widget_retrieve_from_position (event_widget, x, y);
-
 
 	/* Check if there are deep fixed widgets without windows
 	 * that need to be processed first.
 	 */
-	if (glade_util_deep_fixed_event (widget, event, gwidget) == FALSE)
+	if ((handled = glade_util_deep_fixed_event (widget, event, gwidget)) == FALSE)
 	{
-		gboolean handled;
 
 		/* Run the real class handler now.
 		 */
@@ -509,25 +508,8 @@ glade_widget_event_private (GtkWidget   *widget,
 			g_print ("event widget '%s' handled '%d' event '%d'\n",
 				 deep_event_widget->name, handled, event->type);
 #endif
-		return handled;
 	}
-	else
-	{
-		switch (event->type)
-		{
-		case GDK_BUTTON_PRESS:
-		case GDK_BUTTON_RELEASE:
-#if 0
-			g_print ("Forwarded the button event to a fixed widget "
-				 "(event widget '%s')\n",
-				 deep_event_widget->name);
-#endif	
-			break;
-		default:
-			break;
-		}
-	}
-	return FALSE;
+	return handled;
 }
 
 /*******************************************************************************

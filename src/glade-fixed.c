@@ -120,10 +120,9 @@ static void
 glade_fixed_save_state (GladeFixed  *fixed,
 			GladeWidget *child)
 {
-
-	gdk_window_get_pointer (GTK_WIDGET (GLADE_WIDGET (fixed)->object)->window, 
+	gtk_widget_get_pointer (GTK_WIDGET (GLADE_WIDGET (fixed)->object), 
 				&(GLADE_FIXED (fixed)->pointer_x_origin), 
-				&(GLADE_FIXED (fixed)->pointer_y_origin), NULL);
+				&(GLADE_FIXED (fixed)->pointer_y_origin));
 
 	gtk_widget_translate_coordinates (GTK_WIDGET (child->object),
 					  GTK_WIDGET (GLADE_WIDGET (fixed)->object),
@@ -214,8 +213,7 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 	gboolean        handled, right, left, top, bottom;
 	gint            x, y;
 
-	gdk_window_get_pointer
-		(GTK_WIDGET (gwidget->object)->window, &x, &y, NULL);
+	gtk_widget_get_pointer (GTK_WIDGET (gwidget->object), &x, &y);
 	
 	right  = GLADE_FIXED_CURSOR_RIGHT  (fixed->operation);
 	left   = GLADE_FIXED_CURSOR_LEFT   (fixed->operation);
@@ -699,7 +697,6 @@ glade_fixed_event (GtkWidget   *widget,
 	GladeWidget      *event_gwidget, *search;
 
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
-
 
 	item_class = glade_palette_get_current_item_class (glade_app_get_palette ());
 
