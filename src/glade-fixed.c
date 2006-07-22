@@ -84,6 +84,13 @@ glade_fixed_get_operation (GtkWidget       *widget,
 {
 	GladeCursorType operation = GLADE_CURSOR_DRAG;
 
+#if 0
+	g_print ("%s called (width %d height %d x %d y %d)\n",
+		 __FUNCTION__,
+		 widget->allocation.width,
+		 widget->allocation.height, x, y);
+#endif
+
 	if (x < GRAB_BORDER_WIDTH) {
 		if (y < GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_TOP_LEFT;
@@ -433,7 +440,7 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	GladeCursorType  operation;
 	GtkWidget       *fixed_widget, *child_widget;
 	gboolean         handled = FALSE, sig_handled;
-	gint             child_x, child_y;
+	gint             fixed_x, fixed_y, child_x, child_y;
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
@@ -442,7 +449,15 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	 * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
 	 * so we must always consult the event widget's window
 	 */
-	gtk_widget_get_pointer (child_widget, &child_x, &child_y);
+	gtk_widget_get_pointer (fixed_widget, &fixed_x, &fixed_y);
+	
+	/* Container widgets are trustable to have widget->window occupying
+	 * the entire widget allocation (gtk_widget_get_pointer broken on GtkEntry).
+	 */
+	gtk_widget_translate_coordinates (fixed_widget,
+					  child_widget,
+					  fixed_x, fixed_y,
+					  &child_x, &child_y);
 
 	if (fixed->can_resize)
 		operation = glade_fixed_get_operation (GTK_WIDGET (child->object), 

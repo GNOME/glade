@@ -1,12 +1,16 @@
 2006-07-22  Tristan Van Berkom <tvb@gnome.org>
 
-	* src/glade-widget.c: Use gtk_widget_get_pointer on the event widget
-	  to retrieve the mouse position, not gdk_window_get_pointer on any
-	  arbitrary event widget of that window.
+	* src/glade-widget.c: 
+	  o Use gtk_widget_get_pointer on the event widget
+	    to retrieve the mouse position, not gdk_window_get_pointer on any
+	    arbitrary event widget of that window.
+	  o Removed some debug prints.
 
-	* src/glade-fixed.c: Use gtk_widget_get_pointer() where we were using
-	  gdk_window_get_pointer().
-
+	* src/glade-fixed.c: 
+	  o Use gtk_widget_get_pointer() where we were using gdk_window_get_pointer().
+	  o Use gtk_widget_translate_coordinates() for child coordinates (some widgets
+	    like GtkEntry dont respect gtk_widget_get_pointer(), we trust containers only).
+	
 	* src/glade-command.c: disabling the debug print.
 
 	* TODO: Updated

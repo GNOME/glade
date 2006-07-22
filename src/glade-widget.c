@@ -1537,9 +1537,6 @@ glade_widget_extract_children (GladeWidget *gwidget)
 		}
 	}
 
-	g_print ("Extracted %d out of %d children from child %s\n",
-		 g_list_length (extract_list), g_list_length (children), gwidget->name);
-
 	if (children)
 		g_list_free (children);
 
@@ -1553,9 +1550,6 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 	GladeWidget       *gchild;
 	GObject           *internal_object;
 	GList             *list, *l;
-
-	g_print ("Inserting %d children into widget %s\n",
-		 g_list_length (children), gwidget->name);
 	
 	for (list = children; list; list = list->next)
 	{
