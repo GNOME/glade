@@ -10,10 +10,15 @@
 	  o Use gtk_widget_get_pointer() where we were using gdk_window_get_pointer().
 	  o Use gtk_widget_translate_coordinates() for child coordinates (some widgets
 	    like GtkEntry dont respect gtk_widget_get_pointer(), we trust containers only).
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: 
+	  Added text-view handling of virtual "text" property (bug 347961)
 	
 	* src/glade-command.c: disabling the debug print.
 
 	* TODO: Updated
+
+	* doc/gladeui-sections.txt, doc/gladeui-docs.sgml: updated.
 
 2006-07-19  Tristan Van Berkom <tvb@gnome.org>
 

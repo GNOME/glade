@@ -46,12 +46,14 @@ typedef struct _GladeBaseEditorClass   GladeBaseEditorClass;
 struct _GladeBaseEditor
 {
 	GtkVBox parent;
+
 	GladeBaseEditorPrivate *priv;
 };
 
 struct _GladeBaseEditorClass
 {
 	GtkVBoxClass parent_class;
+
 	void          (*child_selected)   (GladeBaseEditor *, GladeWidget *);
 	gboolean      (*change_type)      (GladeBaseEditor *, GladeWidget *, GType);
 	gchar *       (*get_display_name) (GladeBaseEditor *, GladeWidget *);

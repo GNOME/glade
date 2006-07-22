@@ -4160,6 +4160,24 @@ glade_gtk_label_set_label (GObject *object, GValue *value)
 		gtk_label_set_use_underline (GTK_LABEL (object), use_underline);
 }
 
+/* ----------------------------- GtkTextView ------------------------------ */
+void GLADEGTK_API
+glade_gtk_text_view_set_text (GObject *object, GValue *value)
+{
+    GtkTextBuffer *buffy;
+    const gchar   *string;
+
+    if ((buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object))) == NULL)
+    {
+	    buffy = gtk_text_buffer_new (NULL);
+	    gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
+	    g_object_unref (G_OBJECT (buffy));
+    }
+    
+    string = g_value_get_string (value);
+    gtk_text_buffer_set_text (buffy, string, strlen (string));
+}
+
 
 /* ----------------------------- GtkComboBox ------------------------------ */
 void GLADEGTK_API

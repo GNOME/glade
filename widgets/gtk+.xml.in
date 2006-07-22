@@ -462,7 +462,14 @@
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
       <post-create-function>empty</post-create-function>
       <properties>
-      	<property id="justification">
+	<!-- Text of the textview -->
+	<property id="text" _name="Text" translatable="True">
+	  <_tooltip>Set the text in the view's text buffer</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	  <visible-lines>2</visible-lines>
+	  <set-function>glade_gtk_text_view_set_text</set-function>
+	</property>
+	<property id="justification">
   	  <displayable-values>
 	    <value id="GTK_JUSTIFY_LEFT" _name="Left"/>
 	    <value id="GTK_JUSTIFY_RIGHT" _name="Right"/>

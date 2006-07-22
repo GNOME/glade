@@ -99,10 +99,10 @@ GladeClipboardClass
 <SECTION>
 <FILE>glade-command</FILE>
 <TITLE>GladeCommand</TITLE>
+glade_command_execute
 glade_command_undo
-glade_command_redo
-glade_command_next_undo_item
-glade_command_next_redo_item
+glade_command_unifies
+glade_command_collapse
 glade_command_push_group
 glade_command_pop_group
 glade_command_set_name
@@ -268,6 +268,11 @@ GladeProject
 glade_project_new
 glade_project_open
 glade_project_save
+glade_project_push_undo
+glade_project_redo
+glade_project_undo
+glade_project_next_redo_item
+glade_project_next_undo_item
 glade_project_reset_path
 glade_project_add_object
 glade_project_remove_object
@@ -276,7 +281,6 @@ glade_project_get_widget_by_name
 glade_project_new_widget_name
 glade_project_widget_name_changed
 glade_project_get_tooltips
-glade_project_changed
 glade_project_is_selected
 glade_project_selection_set
 glade_project_selection_add
@@ -512,6 +516,9 @@ glade_widget_launch_editor
 glade_widget_get_parent
 glade_widget_set_parent
 glade_widget_event_widget
+glade_widget_superuser
+glade_widget_push_superuser
+glade_widget_pop_superuser
 <SUBSECTION Standard>
 GLADE_WIDGET
 GLADE_IS_WIDGET
@@ -556,6 +563,29 @@ glade_interface_dump
 glade_interface_dump_full
 <SUBSECTION Private>
 glade_parser_pvalue_from_winfo
+</SECTION>
+
+<SECTION>
+<FILE>glade-base-editor</FILE>
+GladeBaseEditor
+glade_base_editor_new
+glade_base_editor_add_popup_items
+glade_base_editor_pack_new_window
+glade_base_editor_add_properties
+glade_base_editor_add_label
+glade_base_editor_add_default_properties
+glade_base_editor_set_show_signal_editor
+<SUBSECTION Standard>
+glade_base_editor_get_type
+GladeBaseEditorClass
+GLADE_TYPE_BASE_EDITOR
+GLADE_IS_BASE_EDITOR_CLASS
+GLADE_BASE_EDITOR_GET_CLASS
+GLADE_BASE_EDITOR_CLASS
+GLADE_IS_BASE_EDITOR
+GLADE_BASE_EDITOR
+<SUBSECTION Private>
+GladeBaseEditorPrivate
 </SECTION>
 
 <SECTION>

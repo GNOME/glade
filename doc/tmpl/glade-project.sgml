@@ -33,7 +33,23 @@ object and its signals.
 @gladeproject: the object which received the signal.
 @arg1: 
 
+<!-- ##### SIGNAL GladeProject::changed ##### -->
+<para>
+
+</para>
+
+@gladeproject: the object which received the signal.
+@arg1: 
+@arg2: 
+
 <!-- ##### SIGNAL GladeProject::close ##### -->
+<para>
+
+</para>
+
+@gladeproject: the object which received the signal.
+
+<!-- ##### SIGNAL GladeProject::parse-finished ##### -->
 <para>
 
 </para>
@@ -123,6 +139,49 @@ object and its signals.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_project_push_undo ##### -->
+<para>
+
+</para>
+
+@project: 
+@cmd: 
+
+
+<!-- ##### FUNCTION glade_project_redo ##### -->
+<para>
+
+</para>
+
+@project: 
+
+
+<!-- ##### FUNCTION glade_project_undo ##### -->
+<para>
+
+</para>
+
+@project: 
+
+
+<!-- ##### FUNCTION glade_project_next_redo_item ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_next_undo_item ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_project_reset_path ##### -->
 <para>
 
@@ -197,14 +256,6 @@ object and its signals.
 
 @project: 
 @Returns: 
-
-
-<!-- ##### FUNCTION glade_project_changed ##### -->
-<para>
-
-</para>
-
-@project: 
 
 
 <!-- ##### FUNCTION glade_project_is_selected ##### -->
