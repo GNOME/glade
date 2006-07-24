@@ -2828,12 +2828,15 @@ void GLADEGTK_API
 glade_gtk_image_set_icon_name (GObject *object, GValue *value)
 {
 	GladeWidget *gimage;
-	gint icon_size;
+	gint icon_size, type;
 	
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gimage = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gimage));
 	
+	glade_widget_property_get (gimage, "glade-type", &type);
+	if (type != GLADEGTK_IMAGE_ICONTHEME) return;
+
 	glade_widget_property_get (gimage, "icon-size", &icon_size);
 	
 	gtk_image_set_from_icon_name (GTK_IMAGE (object),
@@ -2891,12 +2894,15 @@ glade_gtk_image_set_real_stock (GObject *object, GValue *value)
 	GEnumValue   *eval;
 	gchar        *str;
 	gboolean      loaded = FALSE;
-	gint          icon_size;
+	gint          icon_size, type;
 
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
+	glade_widget_property_get (gwidget, "glade-type", &type);
+	if (type != GLADEGTK_IMAGE_STOCK) return;
+		
 	loaded = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gwidget), "glade-loaded"));
 	g_object_set_data (G_OBJECT (gwidget), "glade-loaded", GINT_TO_POINTER (TRUE));
 
@@ -2927,12 +2933,15 @@ glade_gtk_image_set_stock (GObject *object, GValue *value)
 	GladeWidget   *gwidget;
 	GEnumClass    *eclass;
 	GEnumValue    *eval;
-	gint           val;
+	gint           val, type;
 
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
+	glade_widget_property_get (gwidget, "glade-type", &type);
+	if (type != GLADEGTK_IMAGE_STOCK) return;
+	
 	val    = g_value_get_enum (value);	
 	eclass = g_type_class_ref (G_VALUE_TYPE (value));
 	if ((eval = g_enum_get_value (eclass, val)) != NULL)
