@@ -1544,6 +1544,25 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 	xmlNodeAddContent(widget, BAD_CAST("  "));
 }
 
+static void
+glade_interface_add_comment (xmlDoc *doc)
+{
+	time_t now = time (NULL);
+	xmlNode *comment;
+	gchar *str;
+	
+	str = g_strdup_printf (_(" This file was generated with %s version %s\n"
+				 "\ton %s\tby %s@%s\n"),
+				PACKAGE_NAME, PACKAGE_VERSION,
+				ctime (&now),
+				g_get_user_name (), g_get_host_name ());
+	
+	comment = xmlNewComment(BAD_CAST (str));
+	xmlDocSetRootElement(doc, comment);
+	
+	g_free (str);
+}
+
 static xmlDoc *
 glade_interface_make_doc (GladeInterface *interface)
 {
@@ -1555,6 +1574,9 @@ glade_interface_make_doc (GladeInterface *interface)
     doc->standalone = FALSE;
     xmlCreateIntSubset(doc, BAD_CAST("glade-interface"),
 		       NULL, BAD_CAST("glade-2.0.dtd"));
+
+    glade_interface_add_comment (doc);
+	
     root = xmlNewNode(NULL, BAD_CAST("glade-interface"));
     xmlDocSetRootElement(doc, root);
 
