@@ -1551,11 +1551,16 @@ glade_interface_add_comment (xmlDoc *doc)
 	xmlNode *comment;
 	gchar *str;
 	
-	str = g_strdup_printf (_(" This file was generated with %s version %s\n"
-				 "\ton %s\tby %s@%s\n"),
-				PACKAGE_NAME, PACKAGE_VERSION,
+	str = g_strdup_printf (_(" Generated with %s\n"
+				 "\tVersion: %s\n"
+				 "\tDate: %s"
+				 "\tUser: %s\n"
+				 "\tHost: %s\n"),
+				PACKAGE_NAME,
+				PACKAGE_VERSION,
 				ctime (&now),
-				g_get_user_name (), g_get_host_name ());
+				g_get_user_name (),
+				g_get_host_name ());
 	
 	comment = xmlNewComment(BAD_CAST (str));
 	xmlDocSetRootElement(doc, comment);
