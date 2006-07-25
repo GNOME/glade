@@ -812,7 +812,7 @@ glade_gtk_box_verify_size (GObject *object, GValue *value)
 			/* In this case, refuse to shrink */
 			return FALSE;
 	}
-	return TRUE;
+	return new_size >= 0;
 }
 
 void GLADEGTK_API
@@ -3124,7 +3124,7 @@ glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
 	GObject *item = glade_widget_get_object (gparent);
 	GtkWidget *submenu;
 	GList list = {0, };
-	gint n_children;
+	gint n_children = 0;
 	
 	if ((submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (item))))
 	{
