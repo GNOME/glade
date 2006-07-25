@@ -449,6 +449,7 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkEntry" generic-name="entry" _title="Text Entry">
+      <post-create-function>glade_gtk_entry_post_create</post-create-function>
       <properties>
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-action="True">
@@ -456,6 +457,7 @@
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
+	<property id="editable" ignore="True"/>
       </properties>
     </glade-widget-class>
 

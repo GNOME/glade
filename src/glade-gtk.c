@@ -2123,6 +2123,12 @@ glade_gtk_expander_add_child (GObject *object, GObject *child)
 	}
 }
 
+/* -------------------------------- GtkEntry -------------------------------- */
+void GLADEGTK_API
+glade_gtk_entry_post_create (GObject *object, GladeCreateReason reason)
+{
+	gtk_entry_set_editable (GTK_ENTRY (object), FALSE);
+}
 
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
 static void

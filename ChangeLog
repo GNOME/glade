@@ -1,3 +1,12 @@
+2006-07-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c: Fixed bug 347850 – "Selection Bug consequence"
+
+	* src/glade_widget.c: check added in glade_widget_event_private ()
+	  Some synthetic events (like focus-change) dont come with a window.
+
+	* widgets/gtk+.xml.in: ignore GtkEntry editable property
+	
 2006-07-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: GtkBox can now have 0 items without freezing/crashing
