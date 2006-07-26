@@ -1336,7 +1336,7 @@ glade_project_write (GladeProject *project)
 		 * Append toplevel widgets. Each widget then takes
 		 * care of appending its children.
 		 */
-		if (widget->parent == NULL && widget->widget_class->toplevel)
+		if (widget->parent == NULL)
 		{
 			info = glade_widget_write (widget, interface);
 			if (!info)

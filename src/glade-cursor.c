@@ -31,7 +31,56 @@
 
 #define ADD_PIXBUF_FILENAME "plus.png"
 
-GladeCursor *cursor = NULL;
+static GladeCursor *cursor = NULL;
+
+
+static void
+set_cursor_recurse (GtkWidget *widget, 
+		    GdkCursor *gdk_cursor)
+{
+	GList *children, *list;
+
+	if (!GTK_WIDGET_VISIBLE (widget))
+		return;
+
+	gdk_window_set_cursor (widget->window, gdk_cursor);
+
+	if (GTK_IS_CONTAINER (widget) &&
+	    (children = 
+	     glade_util_container_get_all_children (GTK_CONTAINER (widget))) != NULL)
+	{
+		for (list = children; list; list = list->next)
+		{
+			set_cursor_recurse (GTK_WIDGET (list->data), gdk_cursor);
+		}
+		g_list_free (children);
+	}
+}
+
+
+static void
+set_cursor (GdkCursor *gdk_cursor)
+{
+	GladeProject *project;
+	GList        *list, *projects;
+
+	for (projects = glade_app_get_projects ();
+	     projects; projects = projects->next)
+	{
+		project = projects->data;
+
+		for (list = project->objects; 
+		     list; list = list->next)
+		{
+			GObject *object = list->data;
+
+			if (GTK_WIDGET_TOPLEVEL (object))
+			{
+				set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
+			}
+		}
+	}
+}
 
 /**
  * glade_cursor_set:
@@ -39,17 +88,19 @@ GladeCursor *cursor = NULL;
  * @type: a #GladeCursorType
  *
  * Sets the cursor for @window to something appropriate based on @type.
+ * (also sets the cursor on all visible project widgets)
  */
 void
 glade_cursor_set (GdkWindow *window, GladeCursorType type)
 {
 	GladeWidgetClass *widget_class;
-
+	GdkCursor        *the_cursor = NULL;
 	g_return_if_fail (cursor != NULL);
 
 	switch (type) {
 	case GLADE_CURSOR_SELECTOR:
-		gdk_window_set_cursor (window, cursor->selector);
+		set_cursor (cursor->selector);
+ 		gdk_window_set_cursor (window, cursor->selector);
 		break;
 	case GLADE_CURSOR_ADD_WIDGET:
 
@@ -58,47 +109,49 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 		if (widget_class != NULL)
 		{
 			if (widget_class->cursor != NULL)
-				gdk_window_set_cursor (window, widget_class->cursor);
+				the_cursor = widget_class->cursor;
 			else
-				gdk_window_set_cursor (window, cursor->add_widget);
+				the_cursor = cursor->add_widget;
 		}
 		else
-		{
-			gdk_window_set_cursor (window, cursor->add_widget);
+		{ 
+			the_cursor = cursor->add_widget;
 		}
-			
 		break;
 	case GLADE_CURSOR_RESIZE_TOP_LEFT:
-		gdk_window_set_cursor (window, cursor->resize_top_left);
+		the_cursor = cursor->resize_top_left;
 		break;
 	case GLADE_CURSOR_RESIZE_TOP_RIGHT:
-		gdk_window_set_cursor (window, cursor->resize_top_right);
+		the_cursor = cursor->resize_top_right;
 		break;
 	case GLADE_CURSOR_RESIZE_BOTTOM_LEFT:
-		gdk_window_set_cursor (window, cursor->resize_bottom_left);
+		the_cursor = cursor->resize_bottom_left;
 		break;
 	case GLADE_CURSOR_RESIZE_BOTTOM_RIGHT:
-		gdk_window_set_cursor (window, cursor->resize_bottom_right);
+		the_cursor = cursor->resize_bottom_right;
 		break;
 	case GLADE_CURSOR_RESIZE_LEFT:
-		gdk_window_set_cursor (window, cursor->resize_left);
+		the_cursor = cursor->resize_left;
 		break;
 	case GLADE_CURSOR_RESIZE_RIGHT:
-		gdk_window_set_cursor (window, cursor->resize_right);
+		the_cursor = cursor->resize_right;
 		break;
 	case GLADE_CURSOR_RESIZE_TOP:
-		gdk_window_set_cursor (window, cursor->resize_top);
+		the_cursor = cursor->resize_top;
 		break;
 	case GLADE_CURSOR_RESIZE_BOTTOM:
-		gdk_window_set_cursor (window, cursor->resize_bottom);
+		the_cursor = cursor->resize_bottom;
 		break;
 	case GLADE_CURSOR_DRAG:
-		gdk_window_set_cursor (window, cursor->drag);
+		the_cursor = cursor->drag;
 		break;
 	default:
 		break;
 	}
 
+	gdk_window_set_cursor (window, the_cursor);
+	set_cursor (the_cursor);
+	
 }
 
 /**

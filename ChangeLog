@@ -1,3 +1,15 @@
+2006-07-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-project.c: Dont require that an object be "toplevel" to be
+	  saved, just that it has no parent (toplevel means that it can _only_
+	  be top-level, and gwidget->parent == NULL means that it _happens_ to
+	  be top-level.
+
+	* src/glade-cursor.c: Hacked the cursor code to violently set cursors
+	  on all visible project widgets, this fixes bug 348657.
+
+	* TODO: Updated.
+
 2006-07-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-gtk.c: Fixed bug 347850 "Selection Bug consequence"
