@@ -29,6 +29,7 @@
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <libxml/parser.h>
+#include <time.h>
 
 #include "glade-parser.h"
 #include "glade.h"
