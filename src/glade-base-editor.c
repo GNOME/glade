@@ -447,7 +447,7 @@ glade_base_editor_child_change_type (GladeBaseEditor *editor,
 {
 	GladeWidget *gchild;
 	GObject *child;
-	gchar *desc, *class_name;
+	gchar *class_name;
 	gboolean retval;
 
 	glade_base_editor_block_callbacks (editor, TRUE);
@@ -466,12 +466,10 @@ glade_base_editor_child_change_type (GladeBaseEditor *editor,
 					     GLADE_BASE_EDITOR_NAME, &class_name,
 					     -1))
 	{
-		desc = g_strdup_printf (_("Setting object type on %s to %s"),
-					glade_widget_get_name (gchild),
-					class_name);
-		glade_command_push_group (desc);
+		glade_command_push_group (_("Setting object type on %s to %s"),
+					  glade_widget_get_name (gchild),
+					  class_name);
 		g_free (class_name);
-		g_free (desc);
 	}
 	else return;
 	
@@ -605,7 +603,7 @@ glade_base_editor_add_child (GladeBaseEditor *editor,
 	GladeBaseEditorPrivate *e = editor->priv;
 	GtkTreeIter iter, new_iter;
 	GladeWidget *gparent, *gchild = NULL, *gchild_new;
-	gchar *desc, *type_name, *name, *class_name;
+	gchar *type_name, *name, *class_name;
 
 	if (glade_base_editor_get_type_info (editor, NULL, type,
 					     GLADE_BASE_EDITOR_NAME, &class_name,
@@ -636,11 +634,9 @@ glade_base_editor_add_child (GladeBaseEditor *editor,
 	else
 		glade_base_editor_store_append (editor, &new_iter, NULL);
 
-	desc = g_strdup_printf (_("Add a %s to %s"), class_name, 
-				glade_widget_get_name (gparent));
-	glade_command_push_group (desc);
+	glade_command_push_group (_("Add a %s to %s"), class_name, 
+				  glade_widget_get_name (gparent));
 	g_free (class_name);
-	g_free (desc);
 	
 	/* Build Child */
 	g_signal_emit (editor, glade_base_editor_signals[SIGNAL_BUILD_CHILD],
@@ -701,7 +697,6 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 {
 	GladeWidget *child, *gparent;
 	GtkTreeIter iter, parent;
-	gchar *desc;
 
 	if (glade_base_editor_get_child_selected (e, &iter) == FALSE) return;
 
@@ -715,11 +710,9 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 	else
 		gparent = e->priv->gcontainer;
 	
-	desc = g_strdup_printf (_("Delete %s child from %s"),
-				glade_widget_get_name (child),
-				glade_widget_get_name (gparent));
-	glade_command_push_group (desc);
-	g_free (desc);
+	glade_command_push_group (_("Delete %s child from %s"),
+				  glade_widget_get_name (child),
+				  glade_widget_get_name (gparent));
 	
 	/* Emit delete-child signal */
 	g_signal_emit (e, glade_base_editor_signals[SIGNAL_DELETE_CHILD],
@@ -838,13 +831,10 @@ glade_base_editor_reorder (GladeBaseEditor *editor, GtkTreeIter *iter)
 	GladeBaseEditorPrivate *e = editor->priv;
 	GladeWidget *gchild, *gparent;
 	GtkTreeIter parent_iter;
-	gchar *desc;
 	gboolean retval;
 	
-	desc = g_strdup_printf (_("Reorder %s's children"),
-				glade_widget_get_name (e->gcontainer));
-	glade_command_push_group (desc);
-	g_free (desc);
+	glade_command_push_group (_("Reorder %s's children"),
+				  glade_widget_get_name (e->gcontainer));
 	
 	gtk_tree_model_get (e->model, iter,
 			    GLADE_BASE_EDITOR_MENU_GWIDGET, &gchild, -1);

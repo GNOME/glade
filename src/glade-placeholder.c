@@ -293,7 +293,6 @@ glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 	    (gparent->parent && 
 	     GLADE_IS_FIXED (gparent->parent)) == FALSE)
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-
 	else if (item_class)
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 
@@ -343,6 +342,9 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 			/* reset the palette */
 			glade_palette_deselect_current_item (palette);
+
+			/* reset the cursor */
+			glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
 
 			handled = TRUE;
 		}

@@ -57,7 +57,8 @@ struct _GladeCommandClass
 LIBGLADEUI_API
 GType          glade_command_get_type      (void);
 LIBGLADEUI_API
-void           glade_command_push_group    (const gchar       *description);
+void           glade_command_push_group    (const gchar       *fmt,
+					    ...);
 LIBGLADEUI_API
 void           glade_command_pop_group     (void);
 

@@ -412,6 +412,10 @@ glade_fixed_configure_end_impl (GladeFixed  *fixed,
 	g_value_set_int (&width_value, fixed->child_width_origin);
 	g_value_set_int (&height_value, fixed->child_height_origin);
 
+	glade_command_push_group (_("Placing %s inside %s"), 
+				  child->name,
+				  GLADE_WIDGET (fixed)->name);
+
 	/* whew, all that for this call !
 	 */
 	glade_command_set_properties (x_prop, &x_value, &new_x_value,
@@ -419,6 +423,9 @@ glade_fixed_configure_end_impl (GladeFixed  *fixed,
 				      width_prop, &width_value, &new_width_value,
 				      height_prop, &height_value, &new_height_value,
 				      NULL);
+
+	glade_command_pop_group ();
+
 	g_value_unset (&x_value);
 	g_value_unset (&y_value);
 	g_value_unset (&width_value);

@@ -8,6 +8,16 @@
 	* src/glade-cursor.c: Hacked the cursor code to violently set cursors
 	  on all visible project widgets, this fixes bug 348657.
 
+	* src/glade-placeholder.c: Reset cursor after creating a widget.
+	
+	* src/glade-command.c: glade_command_push_group () now formats its own string.
+
+	* src/glade-base-editor.c: simplify code by letting glade_command_push_group ()
+	  format its own string.
+
+	* src/glade-fixed.c, src/glade-gtk.c: Added cuter names for undo/redo items
+	  pertaining to drag/resize.
+
 	* TODO: Updated.
 
 2006-07-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>

@@ -529,11 +529,14 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 		}
 	}
 
+	glade_command_push_group (_("Ordering children of %s"), 
+				  GLADE_WIDGET (fixed)->name);
 	glade_property_push_superuser ();
 	if (prop_list)
 		glade_command_set_properties_list (GLADE_WIDGET (fixed)->project,
 						   prop_list);
 	glade_property_pop_superuser ();
+	glade_command_pop_group ();
 
 	for (l = glade_gtk_box_original_positions; l; l = l->next)
 		g_free (l->data);
@@ -1297,12 +1300,16 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 		g_value_set_uint (&top_attach_value,    table_edit.top_attach);
 		g_value_set_uint (&bottom_attach_value, table_edit.bottom_attach);
 
+		glade_command_push_group (_("Placing %s inside %s"), 
+					  child->name,
+					  GLADE_WIDGET (fixed)->name);
 		glade_command_set_properties
 			(left_attach_prop,   &left_attach_value,   &new_left_attach_value,
 			 right_attach_prop,  &right_attach_value,  &new_right_attach_value,
 			 top_attach_prop,    &top_attach_value,    &new_top_attach_value,
 			 bottom_attach_prop, &bottom_attach_value, &new_bottom_attach_value,
 			 NULL);
+		glade_command_pop_group ();
 
 		g_value_unset (&left_attach_value);
 		g_value_unset (&right_attach_value);

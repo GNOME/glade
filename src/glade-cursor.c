@@ -40,7 +40,8 @@ set_cursor_recurse (GtkWidget *widget,
 {
 	GList *children, *list;
 
-	if (!GTK_WIDGET_VISIBLE (widget))
+	if (!GTK_WIDGET_VISIBLE (widget) || 
+	    !GTK_WIDGET_REALIZED (widget))
 		return;
 
 	gdk_window_set_cursor (widget->window, gdk_cursor);

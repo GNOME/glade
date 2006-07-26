@@ -242,22 +242,28 @@ glade_command_collapse (GladeCommand  *command,
 
 /**
  * glade_command_push_group:
- * @description: The collective desctiption of the command group.
+ * @fmt:         The collective desctiption of the command group.
  *               only the description of the first group on the 
  *               stack is used when embedding groups.
+ * @...: args to the format string.
  *
  * Marks the begining of a group.
- *
  */
 void
-glade_command_push_group (const gchar *description)
+glade_command_push_group (const gchar *fmt, ...)
 {
-	g_return_if_fail (description);
+	va_list         args;
+
+	g_return_if_fail (fmt);
 
 	/* Only use the description for the first group.
 	 */
 	if (gc_group_depth++ == 0)
-		gc_group_description = g_strdup (description);
+	{
+		va_start (args, fmt);
+		gc_group_description = g_strdup_vprintf (fmt, args);
+		va_end (args);
+	}
 }
 
 /**
