@@ -135,7 +135,7 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 	if (eprop->use_command == FALSE)
 		glade_property_set_value (eprop->property, value);
 	else
-		glade_command_set_property (eprop->property, value);
+		glade_command_set_property_value (eprop->property, value);
 
 	/* If the value was denied by a verify function, we'll have to
 	 * reload the real value.

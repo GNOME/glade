@@ -1,3 +1,18 @@
+2006-07-26  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-base-editor.c, src/glade-editor-property.c:
+	  adapted to the new glade_command_set_property() prototype.
+
+	* src/glade-command.[ch]: changed prototype of
+	  glade_command_set_property(), added glade_command_set_property_value()
+
+	* src/glade-fixed.c: do not call gtk_widget_grab_focus() in
+	  glade_fixed_event() it makes widgets fight for the focus on some
+	  situations.
+
+	* src/glade-gtk.c: GtkEntry and GtkTextView support improved.
+	  Now text property can be edited from the instance itself.
+
 2006-07-25  Vincent Geddes <vgeddes@metroweb.co.za>
 
 	* po/*.po: converted translations to utf8: da es ms nn pl pt ru sv ta tr

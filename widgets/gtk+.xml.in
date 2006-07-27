@@ -457,12 +457,11 @@
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
-	<property id="editable" ignore="True"/>
       </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
-      <post-create-function>empty</post-create-function>
+      <post-create-function>glade_gtk_text_view_post_create</post-create-function>
       <properties>
 	<!-- Text of the textview -->
 	<property id="text" _name="Text" translatable="True">
@@ -571,6 +570,7 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkSpinButton" generic-name="spinbutton" _title="Spin Button">
+      <post-create-function>empty</post-create-function>
       <properties>
         <property id="text" disabled="True"/>
         <property id="value" disabled="True"/>

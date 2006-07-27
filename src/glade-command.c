@@ -645,7 +645,7 @@ glade_command_set_properties (GladeProperty *property, const GValue *old_value, 
 }
 
 void
-glade_command_set_property (GladeProperty *property, const GValue* pvalue)
+glade_command_set_property_value (GladeProperty *property, const GValue* pvalue)
 {
 
 	/* Dont generate undo/redo items for unchanging property values.
@@ -654,6 +654,21 @@ glade_command_set_property (GladeProperty *property, const GValue* pvalue)
 		return;
 
 	glade_command_set_properties (property, property->value, pvalue, NULL);
+}
+
+void
+glade_command_set_property (GladeProperty *property, ...)
+{
+	GValue *value;
+	va_list args;
+	
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	va_start (args, property);
+	value = glade_property_class_make_gvalue_from_vl (property->class, args);
+	va_end (args);
+	
+	glade_command_set_property_value (property, value);
 }
 
 /**************************************************/

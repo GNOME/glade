@@ -2131,10 +2131,32 @@ glade_gtk_expander_add_child (GObject *object, GObject *child)
 }
 
 /* -------------------------------- GtkEntry -------------------------------- */
+static void
+glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
+{
+	const gchar *text, *text_prop;
+	GladeProperty *prop;
+	
+	text = gtk_entry_get_text (GTK_ENTRY (editable));
+	
+	glade_widget_property_get (gentry, "text", &text_prop);
+	
+	if (strcmp (text, text_prop))
+		if ((prop = glade_widget_get_property (gentry, "text")))
+			glade_command_set_property (prop, text);
+}
+
 void GLADEGTK_API
 glade_gtk_entry_post_create (GObject *object, GladeCreateReason reason)
 {
-	gtk_entry_set_editable (GTK_ENTRY (object), FALSE);
+	GladeWidget *gentry;
+	
+	g_return_if_fail (GTK_IS_ENTRY (object));
+	gentry = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gentry));
+	
+	g_signal_connect (object, "changed",
+			  G_CALLBACK (glade_gtk_entry_changed), gentry);
 }
 
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
@@ -2420,18 +2442,11 @@ glade_gtk_font_button_refresh_font_name (GtkFontButton  *button,
 					 GladeWidget    *gbutton)
 {
 	GladeProperty *property;
-	GValue         value = { 0, };
 	
 	if ((property =
 	     glade_widget_get_property (gbutton, "font-name")) != NULL)
-	{
-		g_value_init (&value, G_TYPE_STRING);
-		g_value_set_string (&value, 
-				    gtk_font_button_get_font_name (button));
-		
-		glade_command_set_property  (property, &value);
-		g_value_unset (&value);
-	}
+		glade_command_set_property  (property,
+					     gtk_font_button_get_font_name (button));
 }
 
 
@@ -2442,19 +2457,9 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 {
 	GladeProperty *property;
 	GdkColor       color = { 0, };
-	GValue         value = { 0, };
 	
-	if ((property =
-	     glade_widget_get_property (gbutton, "color")) != NULL)
-	{
-		g_value_init (&value, GDK_TYPE_COLOR);
-
-		gtk_color_button_get_color (button, &color);
-		g_value_set_boxed (&value, &color);
-		
-		glade_command_set_property  (property, &value);
-		g_value_unset (&value);
-	}
+	if ((property = glade_widget_get_property (gbutton, "color")) != NULL)
+		glade_command_set_property (property, &color);
 }
 
 /* ----------------------------- GtkButton ------------------------------ */
@@ -4183,21 +4188,60 @@ glade_gtk_label_set_label (GObject *object, GValue *value)
 }
 
 /* ----------------------------- GtkTextView ------------------------------ */
+static void
+glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
+{
+	const gchar *text_prop;
+	GladeProperty *prop;
+	gchar *text;
+	
+	g_object_get (buffer, "text", &text, NULL);
+	
+	glade_widget_property_get (gtext, "text", &text_prop);
+	
+	if (strcmp (text, text_prop))
+		if ((prop = glade_widget_get_property (gtext, "text")))
+			glade_command_set_property (prop, text);
+	
+	g_free (text);
+}
+
+void GLADEGTK_API
+glade_gtk_text_view_post_create (GObject *object, GladeCreateReason reason)
+{
+	GtkTextBuffer *buffy = gtk_text_buffer_new (NULL);
+	GladeWidget *gtext;
+	
+	g_return_if_fail (GTK_IS_TEXT_VIEW (object));
+	gtext = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gtext));
+	
+	gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
+	g_signal_connect (buffy, "changed",
+			  G_CALLBACK (glade_gtk_text_view_changed),
+			  gtext);
+	
+	g_object_unref (G_OBJECT (buffy));
+}
+
 void GLADEGTK_API
 glade_gtk_text_view_set_text (GObject *object, GValue *value)
 {
-    GtkTextBuffer *buffy;
-    const gchar   *string;
+	GtkTextBuffer *buffy;
+	GladeWidget *gtext;
+	const gchar *text;
 
-    if ((buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object))) == NULL)
-    {
-	    buffy = gtk_text_buffer_new (NULL);
-	    gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
-	    g_object_unref (G_OBJECT (buffy));
-    }
-    
-    string = g_value_get_string (value);
-    gtk_text_buffer_set_text (buffy, string, strlen (string));
+	g_return_if_fail (GTK_IS_TEXT_VIEW (object));
+	gtext = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gtext));
+	
+	buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
+	
+	if ((text = g_value_get_string (value)) == NULL) return;
+
+	g_signal_handlers_block_by_func (buffy, glade_gtk_text_view_changed, gtext);
+	gtk_text_buffer_set_text (buffy, text, -1);
+	g_signal_handlers_unblock_by_func (buffy, glade_gtk_text_view_changed, gtext);
 }
 
 

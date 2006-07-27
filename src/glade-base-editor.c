@@ -575,23 +575,19 @@ glade_base_editor_reorder_children (GladeBaseEditor *editor, GtkTreeIter *child)
 	GladeWidget   *gchild;
 	GladeProperty *property;
 	GtkTreeIter parent, iter;
-        GValue val = {0, };
 	gint position = 0;
 
 	if (gtk_tree_model_iter_parent (model, &parent, child))
 		gtk_tree_model_iter_children (model, &iter, &parent);
 	else
 		gtk_tree_model_get_iter_first (model, &iter);
-	
-        g_value_init (&val, G_TYPE_INT);
 
 	do
 	{
 		gtk_tree_model_get (model, &iter, GLADE_BASE_EDITOR_MENU_GWIDGET, &gchild, -1);
-                g_value_set_int (&val, position++);
-
+		position++;
 		if ((property = glade_widget_get_property (gchild, "position")) != NULL)
-			glade_command_set_property (property, &val);
+			glade_command_set_property (property, position);
 	} while (gtk_tree_model_iter_next (model, &iter));
 }
 

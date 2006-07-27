@@ -75,16 +75,19 @@ void           glade_command_collapse      (GladeCommand      *command,
 
 /************************** properties *********************************/
 LIBGLADEUI_API
-void           glade_command_set_property  (GladeProperty     *property,     
-					    const GValue      *value);
+void           glade_command_set_property        (GladeProperty *property,     
+					          ...);
 LIBGLADEUI_API
-void           glade_command_set_properties(GladeProperty     *property, 
-					    const GValue      *old_value, 
-					    const GValue      *new_value, ...);
-
+void           glade_command_set_property_value  (GladeProperty *property,     
+						  const GValue  *value);
 LIBGLADEUI_API
-void           glade_command_set_properties_list (GladeProject *project, 
-						  GList        *props); // list of GCSetPropData
+void           glade_command_set_properties      (GladeProperty *property, 
+					          const GValue  *old_value, 
+					          const GValue  *new_value,
+						  ...);
+LIBGLADEUI_API
+void           glade_command_set_properties_list (GladeProject  *project, 
+						  GList         *props); // list of GCSetPropData
 
 /************************** name ******************************/
 LIBGLADEUI_API

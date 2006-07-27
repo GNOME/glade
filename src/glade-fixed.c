@@ -768,10 +768,6 @@ glade_fixed_event (GtkWidget   *widget,
 
 	}
 
-	/* make sure to grab focus, since we may stop default handlers */
-	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
-		gtk_widget_grab_focus (widget);
-
 	switch (event->type)
 	{
 
