@@ -12,6 +12,7 @@ largeicons_DATA = \
 	colorbutton.png \
 	calendar.png \
 	checkbutton.png \
+	checkmenuitem.png \
 	colorselection.png \
 	colorselectiondialog.png \
 	combo.png \
@@ -42,12 +43,14 @@ largeicons_DATA = \
 	hseparator.png \
 	iconview.png \
 	image.png \
+	imagemenuitem.png \
 	inputdialog.png \
 	label.png \
 	layout.png \
 	list.png \
 	listitem.png \
 	menu.png \
+	menuitem.png \
 	menubar.png \
 	messagedialog.png \
 	notebook.png \
@@ -55,14 +58,21 @@ largeicons_DATA = \
 	progressbar.png \
 	radiobutton.png \
 	ruler.png \
+	radiomenuitem.png \
+	radiotoolbutton.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \
+	separatormenuitem.png \
+	separatortoolitem.png \
 	table.png \
 	textview.png \
 	togglebutton.png \
 	toolbar.png \
 	treeview.png \
+	toolitem.png \
+	toolbutton.png \
+	toggletoolbutton.png \
 	vbox.png \
 	vbuttonbox.png \
 	viewport.png \

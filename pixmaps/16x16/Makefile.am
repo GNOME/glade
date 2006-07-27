@@ -51,6 +51,7 @@ smallicons_DATA = \
 	listitem.png \
 	menu.png \
 	menuitem.png \
+	menutoolbutton.png \
 	menubar.png \
 	messagedialog.png \
 	notebook.png \
@@ -58,15 +59,21 @@ smallicons_DATA = \
 	progressbar.png \
 	radiobutton.png \
 	radiomenuitem.png \
+	radiotoolbutton.png \
 	ruler.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \
+	separatormenuitem.png \
+	separatortoolitem.png \
 	table.png \
 	textview.png \
 	togglebutton.png \
 	toolbar.png \
 	treeview.png \
+	toolitem.png \
+	toolbutton.png \
+	toggletoolbutton.png \
 	vbox.png \
 	vbuttonbox.png \
 	viewport.png \
