@@ -351,7 +351,7 @@ glade_fixed_disconnect_child (GladeFixed   *fixed,
 {
 	GFSigData *data;
 
-	if (GTK_IS_WIDGET (child) == FALSE)
+	if (GTK_IS_WIDGET (child->object) == FALSE)
 		return;
 
 	if ((data = g_object_get_data (G_OBJECT (child), "glade-fixed-signal-data")) != NULL)
@@ -360,7 +360,7 @@ glade_fixed_disconnect_child (GladeFixed   *fixed,
 		g_signal_handler_disconnect (child, data->release_id);
 		g_signal_handler_disconnect (child, data->enter_id);
 		g_signal_handler_disconnect (child, data->motion_id);
-
+                    
 		g_object_set_data (G_OBJECT (child), "glade-fixed-signal-data", NULL);
 	}
 }
@@ -676,6 +676,8 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	g_return_if_fail (GLADE_IS_FIXED (fixed));
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
+	g_print ("Adding %s to %s\n", child->name, gwidget_fixed->name);
+
 	/* Chain up for the basic parenting */
 	GLADE_WIDGET_KLASS (parent_class)->add_child
 		(GLADE_WIDGET (fixed), child, at_mouse);
@@ -732,6 +734,8 @@ static void
 glade_fixed_remove_child_impl (GladeWidget *fixed,
 			       GladeWidget *child)
 {
+	g_print ("Removing %s from %s\n", child->name, fixed->name);
+
 	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
 	/* Chain up for the basic unparenting */
