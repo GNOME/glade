@@ -2829,7 +2829,12 @@ glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 {
 	GladeWidget *gimage;
 	
-	if (reason == GLADE_CREATE_USER) return;
+	if (reason == GLADE_CREATE_USER)
+	{
+		g_object_set_data (object, "glade-image-post-ran",
+				   GINT_TO_POINTER (1));
+		return;
+	}
 	
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gimage = glade_widget_get_from_gobject (object);
@@ -2871,10 +2876,9 @@ glade_gtk_image_set_type (GObject *object, GValue *value)
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
-	/* Exit if we're still loading project objects
-	 */
-	if (GPOINTER_TO_INT (g_object_get_data
-			     (object, "glade-image-post-ran")) == 0)
+	/* Exit if we're still loading project objects */
+	if (GPOINTER_TO_INT (g_object_get_data (object,
+						"glade-image-post-ran")) == 0)
 		return;
 
 	switch ((type = g_value_get_enum (value)))
