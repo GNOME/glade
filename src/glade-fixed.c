@@ -676,8 +676,6 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	g_return_if_fail (GLADE_IS_FIXED (fixed));
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
-	g_print ("Adding %s to %s\n", child->name, gwidget_fixed->name);
-
 	/* Chain up for the basic parenting */
 	GLADE_WIDGET_KLASS (parent_class)->add_child
 		(GLADE_WIDGET (fixed), child, at_mouse);
@@ -734,8 +732,6 @@ static void
 glade_fixed_remove_child_impl (GladeWidget *fixed,
 			       GladeWidget *child)
 {
-	g_print ("Removing %s from %s\n", child->name, fixed->name);
-
 	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
 	/* Chain up for the basic unparenting */
