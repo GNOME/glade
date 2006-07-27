@@ -1,3 +1,27 @@
+2006-07-26  Vincent Geddes <vgeddes@metroweb.co.za>
+
+	* pixmaps/16x16/Makefile.am, pixmaps/22x22/Makefile.am: More icons.
+
+	* src/glade-gtk.c: fix compiler warning.
+
+	* src/glade-palette.c: document a function.
+
+	* src/glade-project-window.c:
+	  o Increase border width of property editor window.
+
+	* src/glade-utils.c: Changed implementation of
+	  glade_util_widget_set_tooltip(). All tooltips are now 
+	  stored in only one GtkTooltips object.
+
+	* src/glade-editor.c:
+	  o Removed scrolled window from signal editor page.
+	  o All pages (except signal editor page) are now packed into an
+	    alignment instead of a vbox.
+	  o Class field now displayed using a non-editable entry.
+	  o Modified the utility buttons at the bottom of the editor.
+	    Devhelp button now uses the "devhelp" named icon if available.
+	  o Lots of other minor ui changes.
+
 2006-07-26  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-base-editor.c, src/glade-editor-property.c:

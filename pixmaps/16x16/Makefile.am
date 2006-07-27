@@ -48,6 +48,7 @@ smallicons_DATA = \
 	label.png \
 	layout.png \
 	list.png \
+	listitem.png \
 	menu.png \
 	menuitem.png \
 	menubar.png \
@@ -57,6 +58,7 @@ smallicons_DATA = \
 	progressbar.png \
 	radiobutton.png \
 	radiomenuitem.png \
+	ruler.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \

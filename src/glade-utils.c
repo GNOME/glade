@@ -47,10 +47,14 @@
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
 
+#define GLADE_DEVHELP_ICON_NAME           "devhelp"
+#define GLADE_DEVHELP_FALLBACK_ICON_FILE  "devhelp.png"
+
 /* List of widgets that have selection
  */
 static GList *glade_util_selection = NULL;
 
+static GtkTooltips *glade_tooltips = NULL;
 
 /**
  * glade_util_widget_set_tooltip:
@@ -62,17 +66,19 @@ static GList *glade_util_selection = NULL;
 void
 glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
 {
-	GtkTooltips *tooltips;
+	g_return_if_fail (widget != NULL);
+	if (str == NULL)
+		return;
 
-	if (GTK_WIDGET_NO_WINDOW (widget)) return;
+	if (glade_tooltips == NULL)
+	{
+		glade_tooltips = gtk_tooltips_new ();
 	
-	tooltips = gtk_tooltips_new ();
-	g_object_ref (G_OBJECT (tooltips));
-	gtk_object_sink (GTK_OBJECT (tooltips));
-	g_object_set_data_full (G_OBJECT (widget),
-				"tooltips", tooltips,
-				(GDestroyNotify) g_object_unref);
-	gtk_tooltips_set_tip (tooltips, widget, str, NULL);
+		g_object_ref (G_OBJECT (glade_tooltips));
+		gtk_object_sink (GTK_OBJECT (glade_tooltips));	
+	}
+
+	gtk_tooltips_set_tip (glade_tooltips, widget, str, NULL);
 }
 
 /**
@@ -1661,6 +1667,42 @@ glade_util_have_devhelp (void)
 		
 	}
 	return have_devhelp;
+}
+
+/**
+ * glade_util_get_devhelp_icon:
+ * @size: the preferred icon size
+ *
+ * Creates an image displaying the devhelp icon.
+ *
+ * Returns: a #GtkImage
+ */
+GtkWidget*
+glade_util_get_devhelp_icon (GtkIconSize size)
+{
+	GtkIconTheme *icon_theme;
+	GdkScreen *screen;
+	GtkWidget *image;
+	gchar *path;
+
+	image = gtk_image_new ();
+	screen = gtk_widget_get_screen (GTK_WIDGET (image));
+	icon_theme = gtk_icon_theme_get_for_screen (screen);
+
+	if (gtk_icon_theme_has_icon (icon_theme, GLADE_DEVHELP_ICON_NAME))
+	{
+		gtk_image_set_from_icon_name (GTK_IMAGE (image), GLADE_DEVHELP_ICON_NAME, size);
+	}
+	else
+	{
+		path = g_build_filename (glade_pixmaps_dir, GLADE_DEVHELP_FALLBACK_ICON_FILE, NULL);
+
+		gtk_image_set_from_file (GTK_IMAGE (image), path);
+
+		g_free (path);
+	}
+
+	return image;
 }
 
 /**

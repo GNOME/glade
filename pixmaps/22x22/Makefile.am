@@ -46,6 +46,7 @@ largeicons_DATA = \
 	label.png \
 	layout.png \
 	list.png \
+	listitem.png \
 	menu.png \
 	menubar.png \
 	messagedialog.png \
@@ -53,6 +54,7 @@ largeicons_DATA = \
 	optionmenu.png \
 	progressbar.png \
 	radiobutton.png \
+	ruler.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \

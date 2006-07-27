@@ -616,7 +616,6 @@ glade_palette_deselect_current_item (GladePalette *palette)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->selector), TRUE);
 }
 
-
 /**
  * glade_palette_get_item_appearance:
  * @palette: A #GladePalette
@@ -634,8 +633,12 @@ glade_palette_get_item_appearance (GladePalette *palette)
 	return priv->item_appearance;
 }
 
-
-
+/**
+ * glade_palette_get_item_appearance:
+ * @palette: A #GladePalette
+ *
+ * Returns: Whether small item icons are used
+ */
 gboolean
 glade_palette_get_use_small_item_icons (GladePalette *palette)
 {

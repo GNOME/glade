@@ -998,6 +998,8 @@ gpw_create_editor (GladeProjectWindow *gpw)
 	gtk_window_set_title  (gpw->priv->editor_window, _("Properties"));
 	gtk_window_move (gpw->priv->editor_window, 550, 0);
 
+	gtk_container_set_border_width (GTK_CONTAINER (gpw->priv->editor_window), 6);
+
 	gtk_container_add (GTK_CONTAINER (gpw->priv->editor_window), 
 			   GTK_WIDGET (glade_app_get_editor ()));
 

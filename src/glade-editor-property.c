@@ -258,18 +258,17 @@ glade_editor_property_info_clicked_cb (GtkWidget           *info,
 static GtkWidget *
 glade_editor_property_create_info_button (GladeEditorProperty *eprop)
 {
-	GtkWidget *image, *button;
-	gchar     *path;
-	
-	path = g_build_filename (glade_pixmaps_dir, "devhelp.png", NULL);
+	GtkWidget *image;
+	GtkWidget *button;
 
 	button = gtk_button_new ();
-	image  = gtk_image_new_from_file (path);
-	gtk_widget_show (image);
-	gtk_container_add (GTK_CONTAINER (button), image);
-	gtk_container_set_border_width (GTK_CONTAINER (button), 1);
 
-	g_free (path);
+	image = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
+	gtk_widget_show (image);
+
+	gtk_container_add (GTK_CONTAINER (button), image);
+
+	glade_util_widget_set_tooltip (button, _("View GTK+ documentation for this property"));
 
 	return button;
 }
@@ -290,7 +289,7 @@ glade_editor_property_constructor (GType                  type,
 	eprop = GLADE_EDITOR_PROPERTY (obj);
 
 	/* Create label (make label visible but not the eventbox) */
-	text = g_strdup_printf ("%s :", eprop->class->name);
+	text = g_strdup_printf ("%s:", eprop->class->name);
 	eprop->item_label = gtk_label_new (text);
 	eprop->eventbox   = gtk_event_box_new ();
 	g_free (text);
@@ -304,7 +303,7 @@ glade_editor_property_constructor (GType                  type,
 	/* keep our own reference */
 	g_object_ref (G_OBJECT (eprop->eventbox));
 
-	gtk_misc_set_alignment (GTK_MISC (eprop->item_label), 1.0, 0.0);
+	gtk_misc_set_alignment (GTK_MISC (eprop->item_label), 1.0, 0.5);
 	gtk_container_add (GTK_CONTAINER (eprop->eventbox), eprop->item_label);
 
 	/* Create hbox and possibly check button
@@ -2894,22 +2893,22 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
 	table = GTK_TABLE (widget);
 	gtk_table_set_col_spacings (table, 4);
 	
-	glade_eprop_adjustment_table_add_label (table, 0, _("Value :"),
+	glade_eprop_adjustment_table_add_label (table, 0, _("Value:"),
 						_("The current value"));
 
-	glade_eprop_adjustment_table_add_label (table, 1, _("Lower :"),
+	glade_eprop_adjustment_table_add_label (table, 1, _("Lower:"),
 						_("The minimum value"));
 	
-	glade_eprop_adjustment_table_add_label (table, 2, _("Upper :"),
+	glade_eprop_adjustment_table_add_label (table, 2, _("Upper:"),
 						_("The maximum value"));
 			
-	glade_eprop_adjustment_table_add_label (table, 3, _("Step inc :"),
+	glade_eprop_adjustment_table_add_label (table, 3, _("Step inc:"),
 		_("The increment to use to make minor changes to the value"));
 	
-	glade_eprop_adjustment_table_add_label (table, 4, _("Page inc :"),
+	glade_eprop_adjustment_table_add_label (table, 4, _("Page inc:"),
 		_("The increment to use to make major changes to the value"));
 	
-	glade_eprop_adjustment_table_add_label (table, 5, _("Page size :"),
+	glade_eprop_adjustment_table_add_label (table, 5, _("Page size:"),
 		_("The page size (in a GtkScrollbar this is the size of the area which is currently visible)"));
 
 	gtk_table_attach_defaults (table, eprop_adj->value,          1, 2, 0, 1);

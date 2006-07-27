@@ -63,18 +63,18 @@ struct _GladeEditor
 
 
 	/* The editor has (at this moment) four tabs; these are pointers to the 
-	 * vboxes inside each tab. The vboxes are wrapped into a scrolled window.
-	 * The vbox_* widgets are deparented and parented with
+	 * widget inside each tab. The widgets are wrapped into a scrolled window.
+	 * The page_* widgets are deparented and parented with
 	 * ((GladeEditorTable *)etable)->table_widget when a widget is selected and
-	 * the correct editor table is found. The exception is `vbox_signals' which
+	 * the correct editor table is found. The exception is `page_signals' which
 	 * always contains the same signal editor widget which simply reloads when
 	 * loading a widget.
 	 */
-	GtkWidget *vbox_widget;
-	GtkWidget *vbox_packing;
-	GtkWidget *vbox_common;
-	GtkWidget *vbox_signals;
-	GtkWidget *vbox_atk;
+	GtkWidget *page_widget;
+	GtkWidget *page_packing;
+	GtkWidget *page_common;
+	GtkWidget *page_signals;
+	GtkWidget *page_atk;
 
 	GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
 					   */
@@ -119,7 +119,6 @@ struct _GladeEditor
 	gboolean show_context_info; /* Whether or not to show an informational
 				     * button for each property and signal.
 				     */
-
 };
 
 struct _GladeEditorClass

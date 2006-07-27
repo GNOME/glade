@@ -1929,8 +1929,7 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 
 	if (special_child_type && !strcmp (special_child_type, "tab"))
 	{
-		page_num = (gint) g_object_get_data (G_OBJECT (current),
-						     "page-num");
+		page_num = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (current), "page-num"));
 		g_object_set_data (G_OBJECT (new), "page-num",
 				   GINT_TO_POINTER (page_num));
 		g_object_set_data (G_OBJECT (new), "special-child-type",

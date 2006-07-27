@@ -141,7 +141,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F
 #define GLADE_NUMERICAL_PAGE_INCREMENT             10
 #define GLADE_NUMERICAL_PAGE_SIZE                  1
-#define GLADE_GENERIC_BORDER_WIDTH                 8
+#define GLADE_GENERIC_BORDER_WIDTH                 6
 
 LIBGLADEUI_API gboolean glade_verbose;
 
