@@ -212,6 +212,51 @@ glade_fixed_filter_event (GladeFixed *fixed,
 }
 
 static void
+glade_fixed_handle_swindow (GladeFixed   *fixed,
+			    GdkRectangle *area)
+{
+	GtkWidget     *fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
+	GtkWidget     *swindow = NULL, *swindow_child = NULL;
+	GtkAdjustment *hadj, *vadj;
+	gint           x, y;
+
+	swindow_child = swindow = fixed_widget;
+	while (swindow && !GTK_IS_SCROLLED_WINDOW (swindow))
+	{
+		if (!GTK_IS_VIEWPORT (swindow))
+			swindow_child = swindow;
+
+		swindow = swindow->parent;
+	}
+
+	if (swindow)
+	{
+		/* Set the adjustments to use appropriate pixel units and then
+		 * square in on the target drop area.
+		 */
+		hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (swindow));
+		vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (swindow));
+
+		g_object_set (G_OBJECT (hadj),
+			      "lower", 0.0F,
+			      "upper", (gdouble) swindow_child->allocation.width + 0.0,
+			      NULL);
+
+		g_object_set (G_OBJECT (vadj),
+			      "lower", 0.0F,
+			      "upper", (gdouble) swindow_child->allocation.height + 0.0,
+			      NULL);
+
+		gtk_widget_translate_coordinates (fixed_widget,
+						  swindow_child,
+						  area->x, area->y, &x, &y);
+
+		gtk_adjustment_clamp_page (hadj, x, x + area->width);
+		gtk_adjustment_clamp_page (vadj, y, y + area->height);
+	}
+}
+
+static void
 glade_fixed_configure_widget (GladeFixed   *fixed,
 			      GladeWidget  *child)
 {
@@ -285,11 +330,17 @@ glade_fixed_configure_widget (GladeFixed   *fixed,
 	if (new_area.height < CHILD_WIDTH_MIN)
 		new_area.height = CHILD_HEIGHT_MIN;
 
+	/* before configuring the child widget, make make sure the target child
+	 * widget area is visible if the GladeFixed is placed inside a scrolled 
+	 * window or a viewport inside a scrolled window.
+	 */
+	glade_fixed_handle_swindow (fixed, &new_area);
+
 	/* Apply new rectangle to the object */
 	g_signal_emit (G_OBJECT (fixed), 
 		       glade_fixed_signals[CONFIGURE_CHILD],
 		       0, child, &new_area, &handled);
-	
+
 	/* Correct glitches when some widgets are draged over others */
 	gtk_widget_queue_draw (GTK_WIDGET (GLADE_WIDGET (fixed)->object));
 }
