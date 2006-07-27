@@ -644,16 +644,16 @@ glade_fixed_child_event (GladeWidget *gwidget,
 		if (search != glade_placeholder_get_parent
 		    (GLADE_PLACEHOLDER (event_widget)))
 			return FALSE;
+	}
 
-		/* Early return for placeholders with selection in
-		 * the palette.
-		 */
-		if (glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
-		{
-			glade_cursor_set (((GdkEventAny *)event)->window, 
-					  GLADE_CURSOR_ADD_WIDGET);
-			return FALSE;
-		}
+	/* Early return for placeholders with selection in
+	 * the palette.
+	 */
+	if (glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
+	{
+		glade_cursor_set (((GdkEventAny *)event)->window, 
+				  GLADE_CURSOR_ADD_WIDGET);
+		return FALSE;
 	}
 
 	return glade_fixed_handle_child_event
