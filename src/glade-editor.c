@@ -275,7 +275,7 @@ glade_editor_create_info_button (GladeEditor *editor)
 
 	gtk_container_add (GTK_CONTAINER (button), image);
 
-	glade_util_widget_set_tooltip (button, _("View GTK+ documentation for widget"));
+	glade_util_widget_set_tooltip (button, _("View documentation for the selected widget"));
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_on_docs_click), editor);
 
@@ -295,7 +295,7 @@ glade_editor_create_reset_button (GladeEditor *editor)
 
 	gtk_container_add (GTK_CONTAINER (button), image);
 
-	glade_util_widget_set_tooltip (button, _("Reset widget properties to default"));
+	glade_util_widget_set_tooltip (button, _("Reset widget properties to thier defaults"));
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
 
