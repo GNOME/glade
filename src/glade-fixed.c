@@ -646,10 +646,12 @@ glade_fixed_child_event (GladeWidget *gwidget,
 			return FALSE;
 	}
 
-	/* Early return for placeholders with selection in
+	/* Early return for placeholders or fixed children with selection in
 	 * the palette.
 	 */
-	if (glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
+	if ((GLADE_IS_PLACEHOLDER (event_widget) ||
+	     GLADE_IS_FIXED (event_gwidget))     &&
+	    glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
 	{
 		glade_cursor_set (((GdkEventAny *)event)->window, 
 				  GLADE_CURSOR_ADD_WIDGET);
