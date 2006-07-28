@@ -2756,27 +2756,24 @@ static void
 glade_gtk_image_disable_filename (GladeWidget *gwidget)
 {
 	glade_widget_property_set (gwidget, "pixbuf", NULL);
-	glade_widget_property_set_sensitive
-		(gwidget, "pixbuf", FALSE,
-		 _("This only applies with file type images"));
+	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE,
+		 	_("This only applies with file type images"));
 }
 
 static void
 glade_gtk_image_disable_icon_name (GladeWidget *gwidget)
 {
 	glade_widget_property_reset (gwidget, "icon-name");
-	glade_widget_property_set_sensitive
-		(gwidget, "icon-name", FALSE,
-		 _("This only applies to Icon Theme type images"));
+	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE,
+		 	_("This only applies to Icon Theme type images"));
 }
 
 static void
 glade_gtk_image_disable_stock (GladeWidget *gwidget)
 {
 	glade_widget_property_reset (gwidget, "glade-stock");
-	glade_widget_property_set_sensitive
-		(gwidget, "glade-stock", FALSE,
-		 _("This only applies with stock type images"));
+	glade_widget_property_set_sensitive (gwidget, "glade-stock", FALSE,
+		 	_("This only applies with stock type images"));
 }
 
 static void 
@@ -2793,8 +2790,8 @@ glade_gtk_image_pixel_size_changed (GladeProperty *property,
 }
 
 static void
-glade_gtk_image_post_create_parse_finished (GladeProject *project,
-					    GladeWidget *gimage)
+glade_gtk_image_parse_finished (GladeProject *project,
+				GladeWidget *gimage)
 {
 	GObject *image = glade_widget_get_object (gimage);
 	GladeProperty *property;
@@ -2828,42 +2825,47 @@ void GLADEGTK_API
 glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 {
 	GladeWidget *gimage;
-	
-	if (reason == GLADE_CREATE_USER)
-	{
-		g_object_set_data (object, "glade-image-post-ran",
-				   GINT_TO_POINTER (1));
-		return;
-	}
-	
+
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gimage = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gimage));
 	
-	g_signal_connect (glade_widget_get_project (gimage),
-			  "parse-finished",
-			  G_CALLBACK (glade_gtk_image_post_create_parse_finished),
-			  gimage);
+	if (reason == GLADE_CREATE_USER)
+		g_object_set_data (object, "glade-image-post-ran",
+				   GINT_TO_POINTER (1));
+	
+	if (reason == GLADE_CREATE_LOAD)
+		g_signal_connect (glade_widget_get_project (gimage),
+				  "parse-finished",
+				  G_CALLBACK (glade_gtk_image_parse_finished),
+				  gimage);
 }
 
 void GLADEGTK_API
 glade_gtk_image_set_icon_name (GObject *object, GValue *value)
 {
 	GladeWidget *gimage;
-	gint icon_size, type;
+	gint icon_size;
 	
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gimage = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gimage));
 	
-	glade_widget_property_get (gimage, "glade-type", &type);
-	if (type != GLADEGTK_IMAGE_ICONTHEME) return;
-
 	glade_widget_property_get (gimage, "icon-size", &icon_size);
 	
 	gtk_image_set_from_icon_name (GTK_IMAGE (object),
-					g_value_get_string (value), 
-					icon_size);
+				      g_value_get_string (value), 
+				      icon_size);
+}
+
+static void
+glade_gtk_image_refresh (GladeWidget *gwidget, const gchar *property)
+{
+	gchar *val;
+	
+	glade_widget_property_set_sensitive (gwidget, property, TRUE, NULL);
+	glade_widget_property_get (gwidget, property, &val);
+	glade_widget_property_set (gwidget, property, val);
 }
 
 void GLADEGTK_API
@@ -2883,23 +2885,23 @@ glade_gtk_image_set_type (GObject *object, GValue *value)
 
 	switch ((type = g_value_get_enum (value)))
 	{
-	case GLADEGTK_IMAGE_STOCK:
-		glade_gtk_image_disable_filename (gwidget);
-		glade_gtk_image_disable_icon_name (gwidget);
-		glade_widget_property_set_sensitive (gwidget, "glade-stock", TRUE, NULL);
+		case GLADEGTK_IMAGE_STOCK:
+			glade_gtk_image_disable_filename (gwidget);
+			glade_gtk_image_disable_icon_name (gwidget);
+			glade_gtk_image_refresh (gwidget, "glade-stock");
 		break;
 
-	case GLADEGTK_IMAGE_ICONTHEME:
-		glade_gtk_image_disable_filename (gwidget);
-		glade_gtk_image_disable_stock (gwidget);
-		glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+		case GLADEGTK_IMAGE_ICONTHEME:
+			glade_gtk_image_disable_filename (gwidget);
+			glade_gtk_image_disable_stock (gwidget);
+			glade_gtk_image_refresh (gwidget, "icon-name");
 		break;
 
-	case GLADEGTK_IMAGE_FILENAME:
-	default:
-		glade_gtk_image_disable_stock (gwidget);
-		glade_gtk_image_disable_icon_name (gwidget);
-		glade_widget_property_set_sensitive (gwidget, "pixbuf", TRUE, NULL);
+		case GLADEGTK_IMAGE_FILENAME:
+		default:
+			glade_gtk_image_disable_stock (gwidget);
+			glade_gtk_image_disable_icon_name (gwidget);
+			glade_gtk_image_refresh (gwidget, "pixbuf");
 		break;
 	}		
 }
@@ -2908,61 +2910,50 @@ glade_gtk_image_set_type (GObject *object, GValue *value)
  * based on the image's "stock" property (for glade file loading purposes)
  */
 void GLADEGTK_API
-glade_gtk_image_set_real_stock (GObject *object, GValue *value)
+glade_gtk_image_set_stock (GObject *object, GValue *value)
 {
 	GladeWidget  *gwidget;
 	GEnumClass   *eclass;
 	GEnumValue   *eval;
-	gchar        *str;
+	const gchar  *str;
 	gboolean      loaded = FALSE;
-	gint          icon_size, type;
+	gint          icon_size;
 
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
-	glade_widget_property_get (gwidget, "glade-type", &type);
-	if (type != GLADEGTK_IMAGE_STOCK) return;
-		
 	loaded = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gwidget), "glade-loaded"));
 	g_object_set_data (G_OBJECT (gwidget), "glade-loaded", GINT_TO_POINTER (TRUE));
 
-	if ((str = g_value_dup_string (value)) != NULL)
+	if ((str = g_value_get_string (value)) && loaded == FALSE)
 	{
-		if (loaded == FALSE)
+		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
+		if ((eval = g_enum_get_value_by_nick (eclass, str)) != NULL)
 		{
-			eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-			if ((eval = g_enum_get_value_by_nick (eclass, str)) != NULL)
-			{
-				g_object_set_data (G_OBJECT (gwidget), "glade-stock", GINT_TO_POINTER (eval->value));
-				glade_widget_property_set (gwidget, "glade-stock", eval->value);
-			}
-			g_type_class_unref (eclass);
+			g_object_set_data (G_OBJECT (gwidget), "glade-stock", GINT_TO_POINTER (eval->value));
+			glade_widget_property_set (gwidget, "glade-stock", eval->value);
 		}
+		g_type_class_unref (eclass);
 	}
 	
 	/* Set the real property */
 	glade_widget_property_get (gwidget, "icon-size", &icon_size);
 	gtk_image_set_from_stock (GTK_IMAGE (object), str, icon_size);
-	
-	if (str) g_free (str);
 }
 
 void GLADEGTK_API
-glade_gtk_image_set_stock (GObject *object, GValue *value)
+glade_gtk_image_set_glade_stock (GObject *object, GValue *value)
 {
 	GladeWidget   *gwidget;
 	GEnumClass    *eclass;
 	GEnumValue    *eval;
-	gint           val, type;
+	gint           val;
 
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
-	glade_widget_property_get (gwidget, "glade-type", &type);
-	if (type != GLADEGTK_IMAGE_STOCK) return;
-	
 	val    = g_value_get_enum (value);	
 	eclass = g_type_class_ref (G_VALUE_TYPE (value));
 	if ((eval = g_enum_get_value (eclass, val)) != NULL)

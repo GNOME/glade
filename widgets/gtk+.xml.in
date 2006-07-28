@@ -704,7 +704,7 @@
       <post-create-function>glade_gtk_image_post_create</post-create-function>
       <properties>
 	<property id="stock" visible="False">
-	  <set-function>glade_gtk_image_set_real_stock</set-function>
+	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
 	<property id="glade-type" _name="Edit Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
@@ -720,7 +720,7 @@
 	  <_tooltip>A builtin stock image</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
-	  <set-function>glade_gtk_image_set_stock</set-function>
+	  <set-function>glade_gtk_image_set_glade_stock</set-function>
 	</property>
 	<property id="icon-name" _name="Icon Name">
 	  <set-function>glade_gtk_image_set_icon_name</set-function>
