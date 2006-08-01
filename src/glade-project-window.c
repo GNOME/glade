@@ -409,7 +409,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		if (project->readonly != FALSE)
 			tooltip = g_strdup_printf ("%s %s",project->path, READONLY_INDICATOR);
 		else
-			tooltip = g_strdup_printf (project->path);
+			tooltip = g_strdup (project->path);
 
 		action = gtk_radio_action_new (action_name, project_name, tooltip, NULL, i);
 
