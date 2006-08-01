@@ -1213,7 +1213,7 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 	gchar *comments =
 		_("Glade is a User Interface Builder for GTK+ and GNOME.\n"
 		  "This version is a rewrite of the Glade 2.0.0 version, "
-		  "original from Damon Chaplin\n");
+		  "originally created by Damon Chaplin\n");
 
 	gchar *license =
 		_("This program is free software; you can redistribute it and/or modify\n"
