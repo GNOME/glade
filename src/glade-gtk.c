@@ -1324,7 +1324,7 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 	return TRUE;
 }
 
-void
+void GLADEGTK_API
 glade_gtk_table_post_create (GObject *container, GladeCreateReason reason)
 {
 	GladeWidget    *gwidget =
