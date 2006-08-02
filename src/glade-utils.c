@@ -1745,6 +1745,13 @@ glade_util_search_devhelp (const gchar *book,
 	if (page_comm) g_free (page_comm);
 }
 
+static GladeWidget *grabed_widget = NULL;
+void
+glade_util_set_grabed_widget (GladeWidget *gwidget)
+{
+	grabed_widget = gwidget;
+}
+
 gboolean
 glade_util_deep_fixed_event (GtkWidget   *widget,
 			     GdkEvent    *event,
@@ -1752,7 +1759,10 @@ glade_util_deep_fixed_event (GtkWidget   *widget,
 {
 	GladeWidget *event_widget, *search;
 
-	event_widget = glade_widget_event_widget ();
+	if (grabed_widget)
+		event_widget = grabed_widget;
+	else
+		event_widget = glade_widget_event_widget ();
 
 	/* Look for a child GladeFixed
 	 */

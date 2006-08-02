@@ -140,6 +140,8 @@ LIBGLADEUI_API
 void              glade_util_search_devhelp        (const gchar *book,
 						    const gchar *page,
 						    const gchar *search);
+LIBGLADEUI_API
+void              glade_util_set_grabed_widget     (GladeWidget *gwidget);
 
 LIBGLADEUI_API
 gboolean          glade_util_deep_fixed_event      (GtkWidget   *widget,

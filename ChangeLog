@@ -1,3 +1,12 @@
+2006-08-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-fixed.c, src/glade-utils.[ch]: fixed bug 348570
+	  "GladeFixed drag/resize "sticks"" added glade_util_set_grabed_widget()
+
+	* src/glade-gtk.c: fixed bug 348964
+	  "Double-clicking in a TextView hangs Glade3"  added callback to stop 
+	  GtkTextView's double clicks.
+
 2006-08-01  Clytie Siddall <clytie@riverland.net.au>
 
 	* src/glade-project-window.c: Fixed typo in the about dialog.

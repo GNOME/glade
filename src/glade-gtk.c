@@ -4200,6 +4200,15 @@ glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
 	g_free (text);
 }
 
+static gboolean
+glade_gtk_text_view_stop_double_click (GtkWidget *widget,
+				       GdkEventButton *event,
+				       gpointer user_data)
+{
+	return (event->type == GDK_2BUTTON_PRESS ||
+		event->type == GDK_3BUTTON_PRESS);
+}
+
 void GLADEGTK_API
 glade_gtk_text_view_post_create (GObject *object, GladeCreateReason reason)
 {
@@ -4216,6 +4225,11 @@ glade_gtk_text_view_post_create (GObject *object, GladeCreateReason reason)
 			  gtext);
 	
 	g_object_unref (G_OBJECT (buffy));
+	
+	/* Stop double clicks because it messes up with GladeFixed */
+	g_signal_connect (object, "button-press-event",
+			  G_CALLBACK (glade_gtk_text_view_stop_double_click),
+			  NULL);
 }
 
 void GLADEGTK_API

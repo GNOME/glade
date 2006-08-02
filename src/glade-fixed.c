@@ -558,6 +558,8 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	case GDK_BUTTON_PRESS:
 		if (((GdkEventButton *)event)->button == 1)
 		{
+			glade_util_set_grabed_widget (child);
+			
 			fixed->configuring = child;
 			/* Save widget allocation and pointer pos */
 			glade_fixed_save_state (fixed, child);
@@ -576,6 +578,8 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		if (((GdkEventButton *)event)->button == 1 && 
 		    fixed->configuring)
 		{
+			glade_util_set_grabed_widget (NULL);
+			
 			// cancel drag stuff
 			glade_cursor_set (((GdkEventAny *)event)->window,
 					  operation);
