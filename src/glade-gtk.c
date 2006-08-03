@@ -4205,6 +4205,7 @@ glade_gtk_text_view_stop_double_click (GtkWidget *widget,
 				       GdkEventButton *event,
 				       gpointer user_data)
 {
+	/* Return True if the event is double or triple click */
 	return (event->type == GDK_2BUTTON_PRESS ||
 		event->type == GDK_3BUTTON_PRESS);
 }
@@ -4226,7 +4227,7 @@ glade_gtk_text_view_post_create (GObject *object, GladeCreateReason reason)
 	
 	g_object_unref (G_OBJECT (buffy));
 	
-	/* Stop double clicks because it messes up with GladeFixed */
+	/* Glade3 hangs when a treeview gets a double click. So we stop them */
 	g_signal_connect (object, "button-press-event",
 			  G_CALLBACK (glade_gtk_text_view_stop_double_click),
 			  NULL);
