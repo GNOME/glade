@@ -295,7 +295,7 @@ glade_editor_create_reset_button (GladeEditor *editor)
 
 	gtk_container_add (GTK_CONTAINER (button), image);
 
-	glade_util_widget_set_tooltip (button, _("Reset widget properties to thier defaults"));
+	glade_util_widget_set_tooltip (button, _("Reset widget properties to their defaults"));
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_on_reset_click), editor);
 

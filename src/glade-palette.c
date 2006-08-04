@@ -90,7 +90,13 @@ static void glade_palette_update_appearance (GladePalette *palette);
 
 static GtkVBoxClass *parent_class = NULL;
 
-
+/**
+ * glade_palette_set_item_appearance:
+ * @palette: a #GladePalette
+ * @item_appearance: the item appearance
+ *
+ * Sets the appearance of the palette items.
+ */
 void
 glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance item_appearance)
 {
@@ -108,6 +114,13 @@ glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance it
 	}
 }
 
+/**
+ * glade_palette_set_use_small_item_icons:
+ * @palette: a #GladePalette
+ * @use_small_item_icons: Whether to use small item icons
+ *
+ * Sets whether to use small item icons.
+ */
 void
 glade_palette_set_use_small_item_icons (GladePalette *palette, gboolean use_small_item_icons)
 {
@@ -618,9 +631,9 @@ glade_palette_deselect_current_item (GladePalette *palette)
 
 /**
  * glade_palette_get_item_appearance:
- * @palette: A #GladePalette
+ * @palette: a #GladePalette
  *
- * Returns: The appearance of the palette items.
+ * Returns: The appearance of the palette items
  */
 GladeItemAppearance
 glade_palette_get_item_appearance (GladePalette *palette)
@@ -634,8 +647,8 @@ glade_palette_get_item_appearance (GladePalette *palette)
 }
 
 /**
- * glade_palette_get_item_appearance:
- * @palette: A #GladePalette
+ * glade_palette_get_use_small_item_icons:
+ * @palette: a #GladePalette
  *
  * Returns: Whether small item icons are used
  */

@@ -1,3 +1,29 @@
+2006-08-04  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* doc/catalogintro.sgml, doc/children.sgml, doc/gladeui-docs.sgml,
+	  doc/tmpl/glade-app.sgml, doc/tmpl/glade-fixed.sgml,
+	  doc/tmpl/glade-palette.sgml, doc/tmpl/glade-project.sgml,
+	  src/glade-editor.c: Fixed spelling and formatting typos.
+
+	* src/glade-palette.c: Add documentation.
+
+	* widgets/glade-catalog.dtd: Removed xml document tag 
+	  (DTD expressions are not xml). Add 'toplevel' attribute to 
+	  'glade-widget-class' attribute list.
+
+	* widgets/gtk+.xml.in: Change default widget 
+	  properties (in line with HIG).
+	  o The scrolling policies of GtkScrolledWindow are now 
+	    GTK_POLICY_AUTOMATIC.
+	  o The GtkDialog 'has-separator' property is now set to FALSE.
+	  o The GtkFrame 'shadow-type' property is now GTK_SHADOW_NONE.
+
+	* src/glade-gtk.c: Changed glade_gtk_frame_post_create(). By default,
+	  GtkFrame's are now more HIG compliant.
+
+	* pixmaps/22x22/Makefile.am: Another icon.
+
+
 2006-08-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-fixed.c, src/glade-utils.[ch]: fixed bug 348570

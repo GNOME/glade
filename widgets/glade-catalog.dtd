@@ -1,5 +1,3 @@
-<?xml version ='1.0' encoding='UTF-8'?>
-
 <!ELEMENT glade-catalog (glade-widget-classes?, 
 			 glade-widget-group*)>
 
@@ -16,7 +14,8 @@
 			      children?,
 			      packing-defaults?)>
 
-<!ATTLIST glade-widget-class name         CDATA #REQUIRED
+<!ATTLIST glade-widget-class toplevel     CDATA #IMPLIED
+			     name         CDATA #REQUIRED
                              generic-name CDATA #IMPLIED
 			     title        CDATA #IMPLIED>
 

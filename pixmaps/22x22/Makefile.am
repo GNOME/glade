@@ -52,6 +52,7 @@ largeicons_DATA = \
 	menu.png \
 	menuitem.png \
 	menubar.png \
+	menutoolbutton.png \
 	messagedialog.png \
 	notebook.png \
 	optionmenu.png \

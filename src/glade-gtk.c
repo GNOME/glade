@@ -1699,39 +1699,57 @@ glade_gtk_table_verify_bottom_attach (GObject *object, GValue *value)
 void GLADEGTK_API
 glade_gtk_frame_post_create (GObject *frame, GladeCreateReason reason)
 {
-	static GladeWidgetClass *wclass = NULL;
-	GladeWidget *gframe, *glabel;
+	static GladeWidgetClass *label_class = NULL, *alignment_class = NULL;
+	GladeWidget *gframe, *glabel, *galignment;
 	GtkWidget *label;
+	gchar     *label_text;
 	
-	if (wclass == NULL)
-		wclass = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
-	
-	if (reason != GLADE_CREATE_USER) return;
+	if (reason != GLADE_CREATE_USER)
+		return;
 		
 	g_return_if_fail (GTK_IS_FRAME (frame));
 	gframe = glade_widget_get_from_gobject (frame);
 	g_return_if_fail (GLADE_IS_WIDGET (gframe));
-
-	glade_gtk_container_post_create (frame, reason);
 	
-	/* If we didnt put this object here... */
-	if ((label = gtk_frame_get_label_widget (GTK_FRAME (frame))) == NULL ||
-	    (glade_widget_get_from_gobject (label) == NULL))
+	/* If we didnt put this object here or if frame is an aspect frame... */
+	if (((label = gtk_frame_get_label_widget (GTK_FRAME (frame))) == NULL ||
+	    (glade_widget_get_from_gobject (label) == NULL)) &&
+	    (GTK_IS_ASPECT_FRAME (frame) == FALSE))
 	{
-		glabel = glade_widget_class_create_widget (wclass, FALSE,
+
+		if (label_class == NULL)
+			label_class = glade_widget_class_get_by_type (GTK_TYPE_LABEL);
+		if (alignment_class == NULL)
+			alignment_class = glade_widget_class_get_by_type (GTK_TYPE_ALIGNMENT);
+
+		/* add label (as an internal child) */
+		glabel = glade_widget_class_create_widget (label_class, FALSE,
 							   "parent", gframe, 
 							   "project", glade_widget_get_project (gframe), 
 							   NULL);
-		if (GTK_IS_ASPECT_FRAME (frame))
-			glade_widget_property_set (glabel, "label", "aspect frame");
-		else
-			glade_widget_property_set (glabel, "label", "frame");
+
+		label_text = g_strdup_printf ("<b>%s</b>", glade_widget_get_name (gframe));
+
+		glade_widget_property_set (glabel, "label", label_text);
+		glade_widget_property_set (glabel, "use-markup", "TRUE");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
 		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
-
 		gtk_widget_show (GTK_WIDGET (glabel->object));
+		g_free (label_text);
+
+		/* add alignment */
+		galignment = glade_widget_class_create_widget (alignment_class, FALSE,
+						 	       "parent", gframe, 
+						               "project", glade_widget_get_project (gframe), 
+					                       NULL);
+
+		glade_widget_property_set (galignment, "left-padding", 12);
+		gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (galignment->object));
+		gtk_widget_show (GTK_WIDGET (galignment->object));
 	}
+
+	glade_gtk_container_post_create (frame, reason);
 }
 
 void GLADEGTK_API

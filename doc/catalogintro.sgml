@@ -78,7 +78,7 @@ you can also use 'depends' and 'domain'.
           <para>
 The 'name' property is simply a string identifier for the catalog in 
 question, it will be used to identify your catalog so that the glade file can explicitly
-require it and to manage inter catalog dependancies.
+require it and to manage inter catalog dependencies.
           </para>
         </listitem>
       </varlistentry>
@@ -145,7 +145,7 @@ to be handled with a #GladeFixed.
           <para>
 The 'init-function' tag is used to retrieve an optional global entry point to your plugin; 
 if you need to initialize any backends or whatnot this is a good place. 
-Your catalog's init-function will be called before any widget classes are instanciated.
+Your catalog's init-function will be called before any widget classes are instantiated.
           </para>
         </listitem>
       </varlistentry>

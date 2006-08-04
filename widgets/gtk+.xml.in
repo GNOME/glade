@@ -734,6 +734,7 @@
       <properties>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>
+	<property id="has-separator"  default="False"/>
       </properties>
 
       <children>
@@ -884,7 +885,7 @@
 	<property id="shadow" disabled="True"/>
 	<property id="label-widget" disabled="True"/>
 	<property id="label-xalign" default="0.0"/>
-      	<property id="shadow-type">
+      	<property id="shadow-type" default="GTK_SHADOW_NONE">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" _name="None"/>
 	    <value id="GTK_SHADOW_IN" _name="In"/>
@@ -903,6 +904,7 @@
 	</child>
       </children>
     </glade-widget-class>
+
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
     <glade-widget-class name="GtkRange" _title="Range">
@@ -1101,14 +1103,14 @@
 	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
 	  </displayable-values>
 	</property>
-      	<property id="hscrollbar-policy">
+      	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
 	    <value id="GTK_POLICY_ALWAYS" _name="Always"/>
 	    <value id="GTK_POLICY_AUTOMATIC" _name="Automatic"/>
 	    <value id="GTK_POLICY_NEVER" _name="Never"/>
 	  </displayable-values>
 	</property>
-      	<property id="vscrollbar-policy">
+      	<property id="vscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
 	    <value id="GTK_POLICY_ALWAYS" _name="Always"/>
 	    <value id="GTK_POLICY_AUTOMATIC" _name="Automatic"/>
