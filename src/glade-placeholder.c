@@ -321,16 +321,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS)
 	{
-		if (event->state & GDK_CONTROL_MASK)
-		{
-			if (glade_util_has_selection (widget))
-				glade_util_remove_selection (widget);
-			else
-				glade_util_add_selection (widget);
-
-			handled = TRUE;
-		} 
-		else if (item_class != NULL)
+		if (item_class != NULL)
 		{
 			/* A widget type is selected in the palette.
 			 * Add a new widget of that type.
