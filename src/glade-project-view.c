@@ -649,6 +649,24 @@ glade_project_view_class_init (GladeProjectViewClass *class)
 	class->selection_update     = glade_project_view_selection_update;
 }
 
+static gboolean
+glade_project_view_search_func (GtkTreeModel *model,
+				gint column,
+				const gchar *key,
+				GtkTreeIter *iter,
+				gpointer search_data)
+{
+	GladeWidget *widget;
+
+	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
+	
+	if (!widget) return TRUE;
+	
+	g_return_val_if_fail (widget->name != NULL, TRUE);
+	
+	return !g_str_has_prefix (widget->name, key);
+}
+
 static void
 glade_project_view_add_columns (GtkTreeView *view)
 {
@@ -681,6 +699,11 @@ glade_project_view_add_columns (GtkTreeView *view)
 						 glade_project_view_cell_function,
 						 GINT_TO_POINTER (CELL_MISC), NULL);
 	gtk_tree_view_append_column (view, column);
+	
+	/* Set search column */
+	gtk_tree_view_set_search_equal_func (view, glade_project_view_search_func, NULL, NULL);
+	gtk_tree_view_set_enable_search (view, TRUE);
+	gtk_tree_view_set_search_column (view, WIDGET_COLUMN);
 }
 
 static gint
