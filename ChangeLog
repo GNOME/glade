@@ -5,6 +5,8 @@
 	
 	* src/glade-command.c: in glade_command_cut_copy_paste_common () we try
 	  to use the placeholder which has the pointer over it first.
+	  Fixed bug 349494 "Unable to paste widget into other empty placeholder
+	  than the first one".
 	  
 	* src/glade-fixed.[ch]: add new property "use-placeholders".
 	
