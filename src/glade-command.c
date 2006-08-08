@@ -1502,9 +1502,10 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 {
 	GladeCommandCutCopyPaste *me;
 	CommandData              *cdata;
-	GladeWidget              *widget = NULL, *child;
+	GladeWidget              *widget = NULL;
 	GList                    *l, *list, *children, *placeholders = NULL;
 	gchar                    *fmt = NULL;
+	GtkWidget                *child;
 
 	g_return_if_fail (widgets && widgets->data);
 	g_return_if_fail (parent == NULL || GLADE_IS_WIDGET (parent));
@@ -1591,8 +1592,17 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		else if (type == GLADE_PASTE && cdata->parent &&
 			 glade_util_gtkcontainer_relation (cdata->parent, widget))
 		{
-			if ((children = glade_widget_class_container_get_children
-			     (cdata->parent->widget_class, cdata->parent->object)) != NULL)
+			GtkContainer *cont = GTK_CONTAINER (cdata->parent->object);
+			
+			child = glade_util_get_placeholder_from_pointer (cont);
+			if (child && g_list_find (placeholders, child) == NULL)
+			{
+				placeholders = g_list_append (placeholders, child);
+				glade_command_placeholder_connect
+						(cdata, GLADE_PLACEHOLDER (child));
+			}
+			else if ((children = glade_widget_class_container_get_children
+				 (cdata->parent->widget_class, cdata->parent->object)) != NULL)
 			{
 				for (l = children; l && l->data; l = l->next)
 				{

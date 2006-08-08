@@ -1070,10 +1070,9 @@ glade_app_command_paste (void)
 	GladeApp           *app;
 	GladeClipboard     *clipboard;
 	GList              *list;
-	GladeWidget        *widget = NULL;
+	GladeWidget        *widget = NULL, *parent;
 	gint                gtkcontainer_relations = 0;
-	GladePlaceholder   *placeholder;
-	GladeWidget        *parent;
+	GladeFixed	   *fixed = NULL;
 
 	app = glade_app_get();
 	if (app->priv->active_project == NULL)
@@ -1082,21 +1081,17 @@ glade_app_command_paste (void)
 	list      = glade_project_selection_get (app->priv->active_project);
 	clipboard = glade_app_get_clipboard ();
 
-	/* If there is a selection, dont use a placeholder to paste into */
-	placeholder = list ? NULL : glade_util_selected_placeholder ();
-
 	/* If there is a selection, paste in to the selected widget, otherwise
 	 * paste into the placeholder's parent.
 	 */
-	parent = list ? glade_widget_get_from_gobject (list->data) :
-		(placeholder ? glade_placeholder_get_parent (placeholder) : NULL);
-
-
+	parent = list ? glade_widget_get_from_gobject (list->data) : NULL;
+	
+	if (parent && GLADE_IS_FIXED (parent)) fixed = GLADE_FIXED (parent);
+		
 	/* Check if selection is good */
 	if ((list = glade_app_get_selection ()) != NULL)
 	{
-		if (placeholder == NULL &&
-		    g_list_length (list) != 1)
+		if (g_list_length (list) != 1)
 		{
 			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_INFO,
@@ -1146,7 +1141,7 @@ glade_app_command_paste (void)
 	/* Check that GladeFixed will cope...
  	 */
 	if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
-	    parent && GLADE_IS_FIXED (parent) &&
+	    parent && fixed && fixed->use_placeholders == FALSE &&
 	    gtkcontainer_relations != 1) 
 	{
 		glade_util_ui_message (glade_app_get_window (), 
@@ -1157,7 +1152,7 @@ glade_app_command_paste (void)
 	}
 
 	/* Check that enough placeholders are available */
-	if (parent && GLADE_IS_FIXED (parent) == FALSE &&
+	if (parent && (fixed == NULL || fixed->use_placeholders) &&
 	    glade_util_count_placeholders (parent) < gtkcontainer_relations)
 	{
 		glade_util_ui_message (glade_app_get_window (), 
@@ -1167,7 +1162,7 @@ glade_app_command_paste (void)
 		return;
 	}
 
-	glade_command_paste (clipboard->selection, parent, placeholder);
+	glade_command_paste (clipboard->selection, parent, NULL);
 	glade_app_update_ui ();
 }
 

@@ -556,7 +556,10 @@ glade_gtk_box_post_create (GObject *container, GladeCreateReason reason)
 
 	/* Implement drag in GtkBox but not resize.
 	 */
-	g_object_set (gwidget, "can-resize", FALSE, NULL);
+	g_object_set (gwidget,
+		      "can-resize", FALSE,
+		      "use-placeholders", TRUE,
+		      NULL);
 
 	g_signal_connect (G_OBJECT (gwidget), "configure-child",
 			  G_CALLBACK (glade_gtk_box_configure_child), container);
@@ -1330,6 +1333,8 @@ glade_gtk_table_post_create (GObject *container, GladeCreateReason reason)
 	GladeWidget    *gwidget =
 		glade_widget_get_from_gobject (container);
 
+	g_object_set (gwidget, "use-placeholders", TRUE, NULL);
+	
 	g_signal_connect (G_OBJECT (gwidget), "configure-child",
 			  G_CALLBACK (glade_gtk_table_configure_child), container);
 

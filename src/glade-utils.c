@@ -949,22 +949,6 @@ glade_util_get_selection ()
 	return glade_util_selection;
 }
 
-/**
- * glade_util_selected_placeholder:
- *
- * Returns: The selected placeholder, if there
- * is only one selected item and that item is a placeholder.
- */
-GladePlaceholder *
-glade_util_selected_placeholder ()
-{
-	if (g_list_length (glade_util_selection) == 1 &&
-	    GLADE_IS_PLACEHOLDER (glade_util_selection->data))
-		return glade_util_selection->data;
-
-	return NULL;
-}
-
 /*
  * taken from gtk... maybe someday we can convince them to
  * expose gtk_container_get_all_children
@@ -1774,4 +1758,38 @@ glade_util_deep_fixed_event (GtkWidget   *widget,
 		return GLADE_WIDGET_GET_KLASS (search)->event (widget, event, search);
 
 	return FALSE;
+}
+
+GtkWidget *
+glade_util_get_placeholder_from_pointer (GtkContainer *container)
+{
+	GtkWidget *retval = NULL, *child;
+	GList *c, *l;
+
+	g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
+	
+	for (c = l = glade_util_container_get_all_children (container);
+	     l;
+	     l = g_list_next (l))
+	{
+		child = l->data;
+		
+		if (GLADE_IS_PLACEHOLDER (child))
+		{
+			gint x, y;
+			gtk_widget_get_pointer (child, &x, &y);
+			
+			if (x >= 0 && y >= 0 &&
+			    x <= child->allocation.width &&
+			    y <= child->allocation.height)
+			{
+				retval = child;
+				break;
+			}
+		}
+	}
+	
+	g_list_free (c);
+
+	return retval;
 }

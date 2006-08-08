@@ -1,3 +1,22 @@
+2006-08-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-app.c: reworked glade_app_command_paste () placeholders can
+	  not be selected anymore.
+	
+	* src/glade-command.c: in glade_command_cut_copy_paste_common () we try
+	  to use the placeholder which has the pointer over it first.
+	  
+	* src/glade-fixed.[ch]: add new property "use-placeholders".
+	
+	* src/glade-gtk.c: set "use-placeholders" for GtkBox and GtkTable.
+	
+	* src/glade-popup.c: reworked glade_popup_create_placeholder_menu () and 
+	  glade_popup_placeholder_paste_cb (), placeholders do not get selected
+	  anymore.
+	
+	* src/glade-utils.[ch] glade_util_selected_placeholder () removed,
+	  added glade_util_get_placeholder_from_pointer ().
+
 2006-08-08  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* src/glade-gtk.c: GtkDialog's main vbox now has 2 placeholders

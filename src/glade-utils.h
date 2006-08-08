@@ -72,8 +72,6 @@ LIBGLADEUI_API
 void              glade_util_clear_selection  (void);
 LIBGLADEUI_API
 GList            *glade_util_get_selection    (void);
-LIBGLADEUI_API
-GladePlaceholder *glade_util_selected_placeholder (void);
 
 LIBGLADEUI_API
 void              glade_util_queue_draw_nodes (GdkWindow *window);
@@ -147,6 +145,9 @@ LIBGLADEUI_API
 gboolean          glade_util_deep_fixed_event      (GtkWidget   *widget,
 						    GdkEvent    *event,
 						    GladeWidget *gwidget);
+
+LIBGLADEUI_API
+GtkWidget        *glade_util_get_placeholder_from_pointer (GtkContainer *container);
 
 G_END_DECLS
 

@@ -45,7 +45,8 @@ enum {
 	PROP_Y_PROP,
 	PROP_WIDTH_PROP,
 	PROP_HEIGHT_PROP,
-	PROP_CAN_RESIZE
+	PROP_CAN_RESIZE,
+	PROP_USE_PLACEHOLDERS
 };
 
 /* signals */
@@ -953,6 +954,9 @@ glade_fixed_set_property (GObject      *object,
 	case PROP_CAN_RESIZE:
 		fixed->can_resize = g_value_get_boolean (value);
 		break;
+	case PROP_USE_PLACEHOLDERS:
+		fixed->use_placeholders = g_value_get_boolean (value);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -969,11 +973,12 @@ glade_fixed_get_property (GObject    *object,
 
 	switch (prop_id)
 	{
-	case PROP_X_PROP:       g_value_set_string  (value, fixed->x_prop);        break;
-	case PROP_Y_PROP:       g_value_set_string  (value, fixed->y_prop);        break;
-	case PROP_WIDTH_PROP:   g_value_set_string  (value, fixed->width_prop);    break;
-	case PROP_HEIGHT_PROP:  g_value_set_string  (value, fixed->height_prop);   break;
-	case PROP_CAN_RESIZE:   g_value_set_boolean (value, fixed->can_resize);    break;
+	case PROP_X_PROP:           g_value_set_string  (value, fixed->x_prop);           break;
+	case PROP_Y_PROP:           g_value_set_string  (value, fixed->y_prop);           break;
+	case PROP_WIDTH_PROP:       g_value_set_string  (value, fixed->width_prop);       break;
+	case PROP_HEIGHT_PROP:      g_value_set_string  (value, fixed->height_prop);      break;
+	case PROP_CAN_RESIZE:       g_value_set_boolean (value, fixed->can_resize);       break;
+	case PROP_USE_PLACEHOLDERS: g_value_set_boolean (value, fixed->use_placeholders); break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -1051,6 +1056,12 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 		  _("Whether this container supports resizes of child widgets"),
 		  TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+	g_object_class_install_property 
+		(gobject_class, PROP_USE_PLACEHOLDERS,
+		 g_param_spec_boolean 
+		 ("use_placeholders", _("Use Placeholders"),
+		  _("Whether this container use placeholders, the backend is responsable for setting up this property"),
+		  FALSE, G_PARAM_READWRITE));
 
 	/**
 	 * GladeFixed::configure-child:
