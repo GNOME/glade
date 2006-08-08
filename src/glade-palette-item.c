@@ -24,12 +24,13 @@
  *
  */
 
-#include "glade-palette-item.h"
-
 #include <gtk/gtkalignment.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkimage.h>
+
+#include "glade.h"
+#include "glade-palette-item.h"
 
 #define GLADE_PALETTE_ITEM_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					       GLADE_TYPE_PALETTE_ITEM,              \

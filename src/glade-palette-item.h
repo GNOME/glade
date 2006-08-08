@@ -27,7 +27,6 @@
 #ifndef __GLADE_PALETTE_ITEM_H__
 #define __GLADE_PALETTE_ITEM_H__
 
-#include "glade-builtins.h"
 #include "glade.h"
 #include "glade-palette.h"
 #include "glade-widget-class.h"
@@ -47,6 +46,14 @@ G_BEGIN_DECLS
 typedef struct _GladePaletteItem         GladePaletteItem;
 typedef struct _GladePaletteItemPrivate  GladePaletteItemPrivate;
 typedef struct _GladePaletteItemClass    GladePaletteItemClass;
+
+enum _GladeItemAppearance {
+
+	GLADE_ITEM_ICON_AND_LABEL,
+	GLADE_ITEM_ICON_ONLY,
+	GLADE_ITEM_LABEL_ONLY
+
+};
 
 struct _GladePaletteItem
 {
