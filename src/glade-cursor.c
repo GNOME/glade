@@ -75,7 +75,7 @@ set_cursor (GdkCursor *gdk_cursor)
 		{
 			GObject *object = list->data;
 
-			if (GTK_WIDGET_TOPLEVEL (object))
+			if (GTK_IS_WINDOW (object))
 			{
 				set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
 			}
