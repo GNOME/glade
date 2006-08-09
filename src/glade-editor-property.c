@@ -1290,21 +1290,16 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 	
 	if (property == NULL) return;
 
-	if (GTK_IS_EDITABLE (eprop_text->text_entry)) {
-		GtkEditable *editable = GTK_EDITABLE (eprop_text->text_entry);
-		gint pos, insert_pos = 0;
-		const gchar *text;
-		text = g_value_get_string (property->value);
-		pos  = gtk_editable_get_position (editable);
+	if (GTK_IS_ENTRY (eprop_text->text_entry))
+	{
+		GtkEntry *entry = GTK_ENTRY (eprop_text->text_entry);
+		const gchar *text = g_value_get_string (property->value);
 
- 		gtk_editable_delete_text (editable, 0, -1);
-		gtk_editable_insert_text (editable,
-					  text ? text : "",
-					  text ? g_utf8_strlen (text, -1) : 0,
-					  &insert_pos);
-
-		gtk_editable_set_position (editable, pos);
-	} else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry)) {
+		gtk_entry_set_text (entry, text ? text : "");
+		
+	}
+	else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry))
+	{
 		GtkTextBuffer  *buffer;
 			
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
@@ -1314,17 +1309,17 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 		{
 			gchar *text = glade_property_class_make_string_from_gvalue (
 						property->class, property->value);
-			gtk_text_buffer_set_text (buffer,
-						  text ? text : "",
-						  text ? g_utf8_strlen (text, -1) : 0);
+			gtk_text_buffer_set_text (buffer, text ? text : "", -1);
 			g_free (text);
-		} else {
-			const gchar *text = g_value_get_string (property->value);
-			gtk_text_buffer_set_text (buffer,
-						  text ? text : "",
-						  text ? g_utf8_strlen (text, -1) : 0);
 		}
-	} else {
+		else
+		{
+			const gchar *text = g_value_get_string (property->value);
+			gtk_text_buffer_set_text (buffer, text ? text : "", -1);
+		}
+	}
+	else
+	{
 		g_warning ("BUG! Invalid Text Widget type.");
 	}
 }
@@ -1378,8 +1373,8 @@ glade_eprop_text_changed (GtkWidget           *entry,
 	if (eprop->loading) return;
 	
 	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
-	glade_eprop_text_changed_common (eprop, text,
-					 eprop->use_command);
+	glade_eprop_text_changed_common (eprop, text, eprop->use_command);
+	
 	g_free (text);
 }
 
@@ -1405,14 +1400,12 @@ glade_eprop_text_text_view_focus_out (GtkTextView         *view,
 
 	buffer = gtk_text_view_get_buffer (view);
 
-	gtk_text_buffer_get_iter_at_offset (buffer, &start, 0);
-	gtk_text_buffer_get_iter_at_offset (buffer, &end,
-					    gtk_text_buffer_get_char_count (buffer));
+	gtk_text_buffer_get_start_iter (buffer, &start);
+	gtk_text_buffer_get_end_iter (buffer, &end);
 
 	text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
 
-	glade_eprop_text_changed_common (eprop, text,
-					 eprop->use_command);
+	glade_eprop_text_changed_common (eprop, text, eprop->use_command);
 
 	g_free (text);
 	return FALSE;

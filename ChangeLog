@@ -1,3 +1,9 @@
+2006-08-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-editor-property.c: GladeEPropText simplification.
+	  Fixed a bug were each time a text property was loaded one byte per
+	  multibyte character was lost.
+
 2006-08-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-cursor.c: Use GTK_IS_WINDOW() instead of GTK_IS_TOPLEVEL since
