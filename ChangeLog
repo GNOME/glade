@@ -1,3 +1,11 @@
+2006-08-09  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* src/glade-project.c: glade_project_new_widget_name() strips trailing digits from
+	  base_name argument, so glade_project_new_widget_name("blah1") is "blah2".
+
+	* src/glade-widget.c: Make sure the newly duplicated widget gets a new unique
+	  name.
+
 2006-08-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-app.c: reworked glade_app_command_paste () placeholders can

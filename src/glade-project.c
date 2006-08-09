@@ -1055,22 +1055,34 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 char *
 glade_project_new_widget_name (GladeProject *project, const char *base_name)
 {
-	gchar *name;
+	gchar *name = NULL, *freeme = NULL, *number;
 	GladeIDAllocator *id_allocator;
 	guint i = 1;
 	
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
+	number = base_name + strlen (base_name);
+
+	while (number > base_name && g_ascii_isdigit (number[-1]))
+		--number;
+
+	if (*number)
+        {
+		freeme = g_strndup (base_name, number - base_name);
+		base_name = freeme;
+	}
+	
+	id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
+
+	if (id_allocator == NULL)
+	{
+		id_allocator = glade_id_allocator_new ();
+		g_hash_table_insert (project->widget_names_allocator,
+				     g_strdup (base_name), id_allocator);
+	}
+
 	while (TRUE)
 	{
-		id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
-
-		if (id_allocator == NULL)
-		{
-			id_allocator = glade_id_allocator_new ();
-			g_hash_table_insert (project->widget_names_allocator, g_strdup (base_name), id_allocator);
-		}
-
 		i = glade_id_allocator_alloc (id_allocator);
 		name = g_strdup_printf ("%s%u", base_name, i);
 
@@ -1084,7 +1096,8 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 		i++;
 	}
 
-	return NULL;
+	g_free (freeme);
+	return name;
 }
 
 void

@@ -1374,14 +1374,18 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 		}
 	}
 	else
+	{
+		gchar *name = glade_project_new_widget_name (template->project, template->name);
 		gwidget = glade_widget_class_create_widget
 			(template->widget_class, FALSE,
-			 "name", template->name,
+			 "name", name,
 			 "parent", parent, 
 			 "project", template->project,
 			 "template", template, 
 			 "reason", GLADE_CREATE_COPY, NULL);
-
+		g_free (name);
+	}
+ 	
 	if ((children =
 	     glade_widget_class_container_get_children (template->widget_class,
 							template->object)) != NULL)
