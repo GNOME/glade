@@ -1055,9 +1055,10 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 char *
 glade_project_new_widget_name (GladeProject *project, const char *base_name)
 {
-	gchar *name = NULL, *freeme = NULL, *number;
 	GladeIDAllocator *id_allocator;
-	guint i = 1;
+	const gchar      *number;
+	gchar            *name = NULL, *freeme = NULL;
+	guint             i = 1;
 	
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
