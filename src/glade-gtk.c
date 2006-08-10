@@ -1858,7 +1858,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 {
 	GladeWidget *widget;
 	GtkNotebook *notebook;
-	GtkWidget   *child_widget;
+	GtkWidget   *child_widget, *tab_widget;
 	gint new_size, i;
 	gint old_size;
 
@@ -1871,24 +1871,23 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	new_size = g_value_get_int (value);
 
 	/* Ensure base size of notebook */
-	for (i = gtk_notebook_get_n_pages (notebook); i < new_size; i++)
+	if (glade_widget_superuser () == FALSE)
 	{
-		gint position = glade_gtk_notebook_get_first_blank_page (notebook);
-		GtkWidget *placeholder     = glade_placeholder_new ();
-		GtkWidget *tab_placeholder = glade_placeholder_new ();
-
-		gtk_notebook_insert_page (notebook, placeholder,
-					  NULL, position);
-
-		gtk_notebook_set_tab_label (notebook, placeholder, tab_placeholder);
-
-		g_object_set_data (G_OBJECT (tab_placeholder), "page-num",
-				   GINT_TO_POINTER (position));
-		g_object_set_data (G_OBJECT (tab_placeholder), "special-child-type", "tab");
+		for (i = gtk_notebook_get_n_pages (notebook); i < new_size; i++)
+		{
+			gint position = glade_gtk_notebook_get_first_blank_page (notebook);
+			GtkWidget *placeholder     = glade_placeholder_new ();
+			GtkWidget *tab_placeholder = glade_placeholder_new ();
+			
+			gtk_notebook_insert_page (notebook, placeholder,
+						  NULL, position);
+			
+			gtk_notebook_set_tab_label (notebook, placeholder, tab_placeholder);
+			g_object_set_data (G_OBJECT (tab_placeholder), "special-child-type", "tab");
+		}
 	}
 
 	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
-
 
 	/*
 	 * Thing to remember is that GtkNotebook starts the
@@ -1898,12 +1897,14 @@ glade_gtk_notebook_set_n_pages (GObject *object, GValue *value)
 	while (old_size > new_size) {
 		/* Get the last widget. */
 		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+		tab_widget   = gtk_notebook_get_tab_label (notebook, child_widget);
 
 		/* 
 		 * If we got it, and its not a placeholder, remove it
 		 * from project.
 		 */
-		if (glade_widget_get_from_gobject (child_widget))
+		if (glade_widget_get_from_gobject (child_widget) ||
+		    glade_widget_get_from_gobject (tab_widget))
 			break;
 
 		gtk_notebook_remove_page (notebook, old_size-1);
@@ -1915,30 +1916,324 @@ gboolean GLADEGTK_API
 glade_gtk_notebook_verify_n_pages (GObject *object, GValue *value)
 {
 	GtkNotebook *notebook = GTK_NOTEBOOK(object);
-	GtkWidget *child_widget;
+	GtkWidget *child_widget, *tab_widget;
 	gint old_size, new_size = g_value_get_int (value);
 	
 	for (old_size = gtk_notebook_get_n_pages (notebook);
 	     old_size > new_size; old_size--) {
 		/* Get the last widget. */
 		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+		tab_widget   = gtk_notebook_get_tab_label (notebook, child_widget);
 
 		/* 
 		 * If we got it, and its not a placeholder, remove it
 		 * from project.
 		 */
-		if (glade_widget_get_from_gobject (child_widget))
+		if (glade_widget_get_from_gobject (child_widget) ||
+		    glade_widget_get_from_gobject (tab_widget))
 			return FALSE;
 	}
 	return TRUE;
 }
 
+typedef struct 
+{
+	GList *children;
+	GList *tabs;
+
+	GList *extra_children;
+	GList *extra_tabs;
+} NotebookChildren;
+
+static gboolean glade_gtk_notebook_setting_position = FALSE;
+
+static gint
+notebook_child_compare_func (GtkWidget *widget_a, GtkWidget *widget_b)
+{
+	GladeWidget *gwidget_a, *gwidget_b;
+	gint pos_a = 0, pos_b = 0;
+
+	gwidget_a = glade_widget_get_from_gobject (widget_a);
+	gwidget_b = glade_widget_get_from_gobject (widget_b);
+	
+	g_assert (gwidget_a && gwidget_b);
+	
+	glade_widget_pack_property_get (gwidget_a, "position", &pos_a);
+	glade_widget_pack_property_get (gwidget_b, "position", &pos_b);
+	
+	return pos_a - pos_b;
+}
+
+static gint
+notebook_find_child (GtkWidget *check,
+		     GtkWidget *child)
+{
+	GladeWidget *gwidget, *gcheck;
+	gint position, child_pos;
+		
+	gcheck  = glade_widget_get_from_gobject (check);
+	gwidget = glade_widget_get_from_gobject (child);
+
+	g_assert (gwidget && gcheck);
+	
+	glade_widget_pack_property_get (gcheck, "position", &position);
+	glade_widget_pack_property_get (gwidget, "position", &child_pos);
+	
+	return position - child_pos;
+}
+
+static gint
+notebook_search_tab (GtkNotebook *notebook,
+		     GtkWidget   *tab)
+{
+	GtkWidget *page;
+	gint       i;
+
+	for (i = 0; i < gtk_notebook_get_n_pages (notebook); i++)
+	{
+		page = gtk_notebook_get_nth_page (notebook, i);
+
+		if (tab == gtk_notebook_get_tab_label (notebook, page))
+			return i;
+	}
+	g_critical ("Unable to find tab position in a notebook");
+	return -1;
+}
+
+static GtkWidget *
+notebook_get_filler (NotebookChildren *nchildren, gboolean page)
+{
+	GtkWidget *widget = NULL;
+	
+	if (page && nchildren->extra_children)
+	{
+		widget = nchildren->extra_children->data;
+		nchildren->extra_children =
+			g_list_remove (nchildren->extra_children, widget);
+	}
+	else if (!page && nchildren->extra_tabs)
+	{
+		widget = nchildren->extra_tabs->data;
+		nchildren->extra_tabs =
+			g_list_remove (nchildren->extra_tabs, widget);
+	}
+
+	if (widget == NULL)
+	{
+		/* Need explicit ownership here */
+		widget = glade_placeholder_new ();
+		g_object_ref (G_OBJECT (widget));
+		gtk_object_sink (GTK_OBJECT (widget));
+	}
+	return widget;
+}
+
+
+static NotebookChildren *
+glade_gtk_notebook_extract_children (GtkWidget *notebook)
+{
+	NotebookChildren *nchildren;
+	gchar            *special_child_type;
+	GList            *list, *children =
+		glade_util_container_get_all_children (GTK_CONTAINER (notebook));
+
+	nchildren = g_new0 (NotebookChildren, 1);
+		
+	/* Ref all the project widgets and build returned list first */
+	for (list = children; list; list = list->next)
+	{
+		if (glade_widget_get_from_gobject (list->data) != NULL)
+		{
+			special_child_type =
+				g_object_get_data (G_OBJECT (list->data),
+						   "special-child-type");
+
+			g_object_ref (G_OBJECT (list->data));
+
+			/* Sort it into the proper struct member
+			 */
+			if (special_child_type == NULL)
+			{
+				if (g_list_find_custom (nchildren->children,
+							list->data,
+							(GCompareFunc)notebook_find_child))
+					nchildren->extra_children =
+						g_list_insert_sorted
+						(nchildren->extra_children, list->data,
+						 (GCompareFunc)notebook_child_compare_func);
+				else
+					nchildren->children =
+						g_list_insert_sorted
+						(nchildren->children, list->data,
+						 (GCompareFunc)notebook_child_compare_func);
+			} else {
+				if (g_list_find_custom (nchildren->tabs,
+							list->data,
+							(GCompareFunc)notebook_find_child))
+					nchildren->extra_tabs =
+						g_list_insert_sorted
+						(nchildren->extra_tabs, list->data,
+						 (GCompareFunc)notebook_child_compare_func);
+				else
+					nchildren->tabs =
+						g_list_insert_sorted
+						(nchildren->tabs, list->data,
+						 (GCompareFunc)notebook_child_compare_func);
+			}
+		}
+	}
+
+	/* Remove all pages, resulting in the unparenting of all widgets including tab-labels.
+	 */
+	while (gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)) > 0)
+		gtk_notebook_remove_page (GTK_NOTEBOOK (notebook), 0);
+
+	if (children)
+		g_list_free (children);
+
+	return nchildren;
+}
+
+static void
+glade_gtk_notebook_insert_children (GtkWidget *notebook, NotebookChildren *nchildren)
+{
+	GtkWidget   *child, *filler, *page;
+	GladeWidget *gchild, *gnotebook;
+	GList       *list;
+	gint         position, pages, i;
+
+	gnotebook = glade_widget_get_from_gobject (notebook);
+	glade_widget_property_get (gnotebook, "pages", &pages);
+	
+	/*********************************************************
+                                INSERT PAGES
+	 *********************************************************/
+	for (list = nchildren->children; list; list = list->next)
+	{
+		child  = list->data;
+		
+		gchild = glade_widget_get_from_gobject (child);
+		g_assert (gchild);
+		
+		glade_widget_pack_property_get (gchild, "position", &position);
+
+		/* Add missing pages using extras and placeholders */
+		for (i = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
+		     i < position; i++)
+		{
+			filler = notebook_get_filler (nchildren, TRUE);
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+						  filler, NULL);
+			g_object_unref (G_OBJECT (filler));
+		}
+
+		/* If there's no conflict, add the child, otherwise add to leftover list.
+		 */
+		if (gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook),
+					       position) == NULL)
+		{
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+						  child, NULL);
+		}
+		else
+		{
+			g_critical ("Error populating notebook pages !");
+		}
+	}
+
+	/* Add missing pages using placeholders/extras */
+	for (i = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)) - 1;
+	     i < pages - 1; i++)
+	{
+		filler = notebook_get_filler (nchildren, TRUE);
+		gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+					  filler, NULL);
+		g_object_unref (G_OBJECT (filler));
+	}
+
+	/*********************************************************
+                            INSERT TAB LABELS
+	 *********************************************************/
+	for (list = nchildren->tabs; list; list = list->next)
+	{
+		child  = list->data;
+		
+		gchild = glade_widget_get_from_gobject (child);
+		g_assert (gchild);
+		
+		glade_widget_pack_property_get (gchild, "position", &position);
+
+		/* If there's no conflict, add the child, otherwise add to leftover list.
+		 */
+		if ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook),
+						       position)) != NULL)
+		{
+			if (gtk_notebook_get_tab_label (GTK_NOTEBOOK (notebook),
+							page) == NULL)
+			{
+				gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook),
+							    page, child);
+			}
+			else
+			{
+				g_critical ("Error populating notebook tabs !");
+			}
+		}
+		else
+		{
+			g_critical ("Trying to add notebook tab to inexistant page");
+		}
+	}
+	
+	/* Add missing tabs using placeholders/extras */
+	for (i = 0; i < pages; i++)
+	{
+		page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), i);
+		
+		if (gtk_notebook_get_tab_label (GTK_NOTEBOOK (notebook),
+						page) == NULL)
+		{
+			filler = notebook_get_filler (nchildren, FALSE);
+			gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook),
+						    page, filler);
+
+			/* if its a new placeholder we must set the type here. */
+			g_object_set_data (G_OBJECT (filler), 
+					   "special-child-type", "tab");
+
+			g_object_unref (G_OBJECT (filler));
+		}
+	}
+	
+	/* Free the original lists now */
+	for (list = nchildren->children; list; list = list->next)
+		g_object_unref (G_OBJECT (list->data));
+
+	if (nchildren->children)
+		g_list_free (nchildren->children);
+
+	for (list = nchildren->tabs; list; list = list->next)
+		g_object_unref (G_OBJECT (list->data));
+
+	if (nchildren->tabs)
+		g_list_free (nchildren->tabs);
+
+	if (nchildren->extra_children ||
+	    nchildren->extra_tabs)
+		g_critical ("Unbalanced children when inserting notebook children"
+			    " (extra pages: %d extra tabs %d)",
+			    g_list_length (nchildren->extra_children),
+			    g_list_length (nchildren->extra_tabs));
+	
+	g_free (nchildren);
+}
 
 void GLADEGTK_API
 glade_gtk_notebook_replace_child (GtkWidget *container,
 				  GtkWidget *current,
 				  GtkWidget *new)
 {
+	GladeWidget *gnew;
 	GtkNotebook *notebook;
 	GtkWidget *page;
 	GtkWidget *label;
@@ -1952,13 +2247,21 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 
 	if (special_child_type && !strcmp (special_child_type, "tab"))
 	{
-		page_num = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (current), "page-num"));
-		g_object_set_data (G_OBJECT (new), "page-num",
-				   GINT_TO_POINTER (page_num));
-		g_object_set_data (G_OBJECT (new), "special-child-type",
-				   "tab");
+		page_num = notebook_search_tab (notebook, current);
+		
+		g_object_set_data (G_OBJECT (new), "special-child-type", "tab");
 		page = gtk_notebook_get_nth_page (notebook, page_num);
+
 		gtk_notebook_set_tab_label (notebook, page, new);
+
+		if ((gnew = glade_widget_get_from_gobject (new)) != NULL)
+		{
+			glade_gtk_notebook_setting_position = TRUE;
+			glade_widget_pack_property_set (gnew, "position", page_num);
+			glade_gtk_notebook_setting_position = FALSE;
+		}
+		
+		
 		return;
 	}
 
@@ -2003,35 +2306,179 @@ glade_gtk_notebook_add_child (GObject *object, GObject *child)
 
 	num_page = gtk_notebook_get_n_pages (notebook);
 
-	/* last_page = gtk_notebook_get_nth_page (notebook, -1);
-	   in glade-2 we never use tab-label, we generate a GtkLabel
-	   and set it as the label widget (and in fact the tab-label internal
-	   is doing more or less the same thing). If the last page has a NULL
-	   label, _child_ is a label widget
-	if (last_page && !gtk_notebook_get_tab_label (notebook, last_page)) */
-
-	special_child_type = g_object_get_data (child, "special-child-type");
-	if (special_child_type &&
-	    !strcmp (special_child_type, "tab"))
+	/* Just append pages blindly when loading/dupping
+	 */
+	if (glade_widget_superuser ())
 	{
-		last_page = gtk_notebook_get_nth_page (notebook, num_page - 1);
-		g_object_set_data (child, "page-num",
-				   GINT_TO_POINTER (num_page - 1));
-		gtk_notebook_set_tab_label (notebook, last_page,
-					    GTK_WIDGET (child));
+		special_child_type = g_object_get_data (child, "special-child-type");
+		if (special_child_type &&
+		    !strcmp (special_child_type, "tab"))
+		{
+			last_page = gtk_notebook_get_nth_page (notebook, num_page - 1);
+			gtk_notebook_set_tab_label (notebook, last_page,
+						    GTK_WIDGET (child));
+		}
+		else
+		{
+			gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+			
+			gwidget = glade_widget_get_from_gobject (object);
+			glade_widget_property_set (gwidget, "pages", num_page + 1);
+			
+			gwidget = glade_widget_get_from_gobject (child);
+			if (gwidget && gwidget->packing_properties)
+				glade_widget_pack_property_set (gwidget, "position", num_page);
+		}
 	}
 	else
 	{
-		gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+		NotebookChildren *nchildren;
 
-		gwidget = glade_widget_get_from_gobject (object);
-		glade_widget_property_set (gwidget, "pages", num_page + 1);
-		
-		gwidget = glade_widget_get_from_gobject (child);
-		if (gwidget && gwidget->packing_properties)
-			glade_widget_pack_property_set (gwidget, "position", num_page);
+		/* Just destroy placeholders */
+		if (GLADE_IS_PLACEHOLDER (child))
+		{
+			if (GTK_OBJECT_FLOATING (child))
+				gtk_object_sink (GTK_OBJECT (child));
+			else
+				g_object_unref (G_OBJECT (child));
+		}
+		else
+		{
+			nchildren = glade_gtk_notebook_extract_children (GTK_WIDGET (notebook));
+			
+			if (g_object_get_data (child, "special-child-type") != NULL)
+			{
+				if (g_list_find_custom (nchildren->tabs,
+							child,
+							(GCompareFunc)notebook_find_child))
+					nchildren->extra_tabs =
+						g_list_insert_sorted
+						(nchildren->extra_tabs, child,
+						 (GCompareFunc)notebook_child_compare_func);
+				else
+					nchildren->tabs =
+						g_list_insert_sorted
+						(nchildren->tabs, child,
+						 (GCompareFunc)notebook_child_compare_func);
+			}
+			else
+			{
+				if (g_list_find_custom (nchildren->children,
+							child,
+							(GCompareFunc)notebook_find_child))
+					nchildren->extra_children =
+						g_list_insert_sorted
+						(nchildren->extra_children, child,
+						 (GCompareFunc)notebook_child_compare_func);
+				else
+					nchildren->children =
+						g_list_insert_sorted
+						(nchildren->children, child,
+						 (GCompareFunc)notebook_child_compare_func);
+			}
+
+			/* Takes an explicit reference when sitting on the list */
+			g_object_ref (child);
+			
+			glade_gtk_notebook_insert_children (GTK_WIDGET (notebook), nchildren);
+		}
 	}
 }
+
+void GLADEGTK_API
+glade_gtk_notebook_remove_child (GObject *object, GObject *child)
+{
+	NotebookChildren *nchildren;
+
+	nchildren = glade_gtk_notebook_extract_children (GTK_WIDGET (object));
+			
+	if (g_list_find (nchildren->children, child))
+	{
+		nchildren->children =
+			g_list_remove (nchildren->children, child);
+		g_object_unref (child);
+	}
+	else if (g_list_find (nchildren->extra_children, child))
+	{
+		nchildren->extra_children =
+			g_list_remove (nchildren->extra_children, child);
+		g_object_unref (child);
+	}
+	else if (g_list_find (nchildren->tabs, child))
+	{
+		nchildren->tabs =
+			g_list_remove (nchildren->tabs, child);
+		g_object_unref (child);
+	}
+	else if (g_list_find (nchildren->extra_tabs, child))
+	{
+		nchildren->extra_tabs =
+			g_list_remove (nchildren->extra_tabs, child);
+		g_object_unref (child);
+	}
+	
+	glade_gtk_notebook_insert_children (GTK_WIDGET (object), nchildren);
+	
+}
+
+void GLADEGTK_API
+glade_gtk_notebook_set_child_property (GObject *container,
+				       GObject *child,
+				       const gchar *property_name,
+				       const GValue *value)
+{
+	NotebookChildren *nchildren;
+	
+	if (strcmp (property_name, "position") == 0)
+	{
+		/* If we are setting this internally, avoid feedback. */
+		if (glade_gtk_notebook_setting_position ||
+		    glade_widget_superuser ())
+			return;
+		
+		/* Just rebuild the notebook, property values are already set at this point */
+		nchildren = glade_gtk_notebook_extract_children (GTK_WIDGET (container));
+		glade_gtk_notebook_insert_children (GTK_WIDGET (container), nchildren);
+	}
+	/* packing properties are unsupported on tabs ... except "position" */
+	else if (g_object_get_data (child, "special-child-type") == NULL)
+		gtk_container_child_set_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name,
+						  value);
+}
+
+void GLADEGTK_API
+glade_gtk_notebook_get_child_property (GObject *container,
+				       GObject *child,
+				       const gchar *property_name,
+				       GValue *value)
+{
+	gint position;
+	
+	if (strcmp (property_name, "position") == 0)
+	{
+		if (g_object_get_data (child, "special-child-type") != NULL)
+		{
+			position = notebook_search_tab (GTK_NOTEBOOK (container),
+							GTK_WIDGET (child));
+			g_value_set_int (value, position);
+		}
+		else
+			gtk_container_child_get_property (GTK_CONTAINER (container),
+							  GTK_WIDGET (child),
+							  property_name,
+							  value);
+	}
+	/* packing properties are unsupported on tabs ... except "position" */
+	else if (g_object_get_data (child, "special-child-type") == NULL)
+		gtk_container_child_get_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name,
+						  value);
+}
+
+
 
 /* ----------------------------- GtkPaned ------------------------------ */
 void GLADEGTK_API

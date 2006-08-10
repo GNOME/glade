@@ -861,7 +861,10 @@
 	  <type>GtkWidget</type>
 	  <special-child-type>type</special-child-type>
 	  <add-child-function>glade_gtk_notebook_add_child</add-child-function>
+	  <remove-child-function>glade_gtk_notebook_remove_child</remove-child-function>
 	  <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
+	  <child-set-property-function>glade_gtk_notebook_set_child_property</child-set-property-function>
+	  <child-get-property-function>glade_gtk_notebook_get_child_property</child-get-property-function>
 	  <properties>
 	    <property id="tab-label" disabled="True"/>
 	    <property id="tab-pack">

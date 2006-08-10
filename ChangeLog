@@ -1,3 +1,16 @@
+2006-08-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-utils.c: Now check if placeholders are GTK_WIDGET_MAPPED()
+	  before returning them, since placeholders "overlap" inside notebooks.
+
+	* src/glade-command.c: bookkeeping on "special-child-type" for cut/copy/paste
+	  consistancy.
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in: Tons of code added to manage notebooks.
+
+	* src/glade-widget.c: Change the order of an if statement (avoid
+	  comparing irrelevent memory).
+
 2006-08-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-editor-property.c: GladeEPropText simplification.
@@ -82,7 +95,6 @@
 	  GtkFrame's are now more HIG compliant.
 
 	* pixmaps/22x22/Makefile.am: Another icon.
-
 
 2006-08-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 

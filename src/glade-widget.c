@@ -268,8 +268,8 @@ glade_widget_find_inside_container (GtkWidget *widget, GladeFindInContainerData 
 	int y;
 
 	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
-	if (x >= 0 && x < widget->allocation.width && y >= 0 && y < widget->allocation.height &&
-	    GTK_WIDGET_MAPPED(widget))
+	if (GTK_WIDGET_MAPPED(widget) &&
+	    x >= 0 && x < widget->allocation.width && y >= 0 && y < widget->allocation.height)
 	{
 		if (glade_widget_get_from_gobject (widget))
 			data->found = widget;

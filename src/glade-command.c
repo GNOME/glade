@@ -56,6 +56,7 @@ typedef struct {
 	GladePlaceholder *placeholder;
 	gboolean          props_recorded;
 	GList            *pack_props;
+	gchar            *special_type;
 	gulong            handler_id;
 } CommandData;
 
@@ -186,7 +187,7 @@ static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
 gboolean
 glade_command_execute (GladeCommand *command)
 {
-	g_return_val_if_fail (command, FALSE);
+	g_return_val_if_fail (GLADE_IS_COMMAND (command), FALSE);
 	return GLADE_COMMAND_GET_CLASS (command)->execute (command);
 }
 
@@ -202,7 +203,7 @@ glade_command_execute (GladeCommand *command)
 gboolean
 glade_command_undo (GladeCommand *command)
 {
-	g_return_val_if_fail (command, FALSE);
+	g_return_val_if_fail (GLADE_IS_COMMAND (command), FALSE);
 	return GLADE_COMMAND_GET_CLASS (command)->undo (command);
 }
 
@@ -1221,6 +1222,7 @@ typedef struct {
 	GladeProject          *project;
 	GList                 *widgets;
 	GladeCutCopyPasteType  type;
+	GladeCutCopyPasteType  original_type;
 	gboolean               from_clipboard;
 } GladeCommandCutCopyPaste;
 
@@ -1250,6 +1252,20 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 
 			if (cdata->parent != NULL)
 			{
+				/* Restore special-child-type when undoing a "cut" command */
+				if (me->original_type == GLADE_CUT)
+				{
+					g_object_set_data_full (cdata->widget->object, 
+								"special-child-type",
+								g_strdup (cdata->special_type), 
+								g_free);
+				}
+				else
+				{
+					g_object_set_data (cdata->widget->object,
+							   "special-child-type", NULL);
+				}
+		
 				/* glade_command_paste ganauntees that if 
 				 * there we are pasting to a placeholder, 
 				 * there is only one widget.
@@ -1340,11 +1356,26 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 {
 	CommandData        *cdata;
 	GList              *list, *add = NULL;
+	gchar              *special_child_type;
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
 		cdata = list->data;
 		add   = g_list_prepend (add, cdata->widget);
+
+		if (me->original_type == GLADE_CUT)
+		{
+			if ((special_child_type = 
+			     g_object_get_data (cdata->widget->object, 
+						"special-child-type")) != NULL)
+			{
+				g_free (cdata->special_type);
+				cdata->special_type = g_strdup (special_child_type);
+			}
+		}
+		else
+			g_object_set_data (cdata->widget->object,
+					   "special-child-type", NULL);
 
 		if (cdata->parent)
 		{
@@ -1356,6 +1387,8 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 			else
 				glade_widget_remove_child (cdata->parent, cdata->widget);
 		}
+
+		g_object_set_data (cdata->widget->object, "special-child-type", NULL);
 		
 		glade_widget_hide (cdata->widget);
 		glade_project_remove_object (GLADE_PROJECT (cdata->widget->project),
@@ -1533,6 +1566,7 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 		me->project = glade_widget_get_project (widget);
 
 	me->type           = type;
+	me->original_type  = type;
 	me->from_clipboard = (type == GLADE_PASTE);
 	GLADE_COMMAND (me)->description = 
 		g_strdup_printf (fmt, g_list_length (widgets) == 1 ? 

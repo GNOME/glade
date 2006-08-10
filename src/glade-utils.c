@@ -1774,7 +1774,8 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 	{
 		child = l->data;
 		
-		if (GLADE_IS_PLACEHOLDER (child))
+		if (GLADE_IS_PLACEHOLDER (child) &&
+		    GTK_WIDGET_MAPPED (child))
 		{
 			gint x, y;
 			gtk_widget_get_pointer (child, &x, &y);
