@@ -2421,6 +2421,16 @@ glade_gtk_notebook_remove_child (GObject *object, GObject *child)
 	
 }
 
+gboolean GLADEGTK_API
+glade_gtk_notebook_verify_position (GObject *object, GValue *value)
+{
+	GtkWidget   *child    = GTK_WIDGET (object);
+	GtkNotebook *notebook = GTK_NOTEBOOK (child->parent);
+
+	return g_value_get_int (value) >= 0 &&
+		g_value_get_int (value) < gtk_notebook_get_n_pages (notebook);
+}
+
 void GLADEGTK_API
 glade_gtk_notebook_set_child_property (GObject *container,
 				       GObject *child,
