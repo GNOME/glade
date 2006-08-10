@@ -1763,13 +1763,16 @@ glade_util_deep_fixed_event (GtkWidget   *widget,
 GtkWidget *
 glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
+	GtkWidget *toplevel;
 	GtkWidget *retval = NULL, *child;
 	GList *c, *l;
 	gint x, y, x2, y2;
 
 	g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
 
-	gtk_widget_get_pointer (GTK_WIDGET (container), &x, &y);
+	toplevel = gtk_widget_get_toplevel (GTK_WIDGET (container));
+
+	gtk_widget_get_pointer (toplevel, &x, &y);
 	
 	for (c = l = glade_util_container_get_all_children (container);
 	     l;
@@ -1780,8 +1783,7 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 		if (GLADE_IS_PLACEHOLDER (child) &&
 		    GTK_WIDGET_MAPPED (child))
 		{
-			gtk_widget_translate_coordinates (GTK_WIDGET (container),
-							  child,
+			gtk_widget_translate_coordinates (toplevel, child,
 							  x, y, &x2, &y2);
 
 			
