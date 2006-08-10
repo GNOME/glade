@@ -1765,8 +1765,11 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
 	GtkWidget *retval = NULL, *child;
 	GList *c, *l;
+	gint x, y, x2, y2;
 
 	g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
+
+	gtk_widget_get_pointer (GTK_WIDGET (container), &x, &y);
 	
 	for (c = l = glade_util_container_get_all_children (container);
 	     l;
@@ -1777,12 +1780,14 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 		if (GLADE_IS_PLACEHOLDER (child) &&
 		    GTK_WIDGET_MAPPED (child))
 		{
-			gint x, y;
-			gtk_widget_get_pointer (child, &x, &y);
+			gtk_widget_translate_coordinates (GTK_WIDGET (container),
+							  child,
+							  x, y, &x2, &y2);
+
 			
-			if (x >= 0 && y >= 0 &&
-			    x <= child->allocation.width &&
-			    y <= child->allocation.height)
+			if (x2 >= 0 && y2 >= 0 &&
+			    x2 <= child->allocation.width &&
+			    y2 <= child->allocation.height)
 			{
 				retval = child;
 				break;
