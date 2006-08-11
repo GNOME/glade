@@ -2681,8 +2681,6 @@ glade_widget_property_get (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2713,8 +2711,6 @@ glade_widget_property_set (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2745,8 +2741,6 @@ glade_widget_pack_property_get (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2777,8 +2771,6 @@ glade_widget_pack_property_set (GladeWidget      *widget,
 		va_end (vl);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2809,10 +2801,7 @@ glade_widget_property_set_sensitive (GladeWidget      *widget,
 		glade_property_set_sensitive (property, sensitive, reason);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
-
 }
 
 /**
@@ -2842,8 +2831,6 @@ glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
 		glade_property_set_sensitive (property, sensitive, reason);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2873,10 +2860,7 @@ glade_widget_property_set_enabled (GladeWidget      *widget,
 		glade_property_set_enabled (property, enabled);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
-
 }
 
 /**
@@ -2904,8 +2888,6 @@ glade_widget_pack_property_set_enabled (GladeWidget      *widget,
 		glade_property_set_enabled (property, enabled);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2931,8 +2913,6 @@ glade_widget_property_reset (GladeWidget   *widget,
 		glade_property_reset (property);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2958,8 +2938,6 @@ glade_widget_pack_property_reset (GladeWidget   *widget,
 		glade_property_reset (property);
 		return TRUE;
 	}
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -2982,8 +2960,6 @@ glade_widget_property_default (GladeWidget *widget,
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 		return glade_property_default (property);
 
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
@@ -3006,8 +2982,6 @@ glade_widget_pack_property_default (GladeWidget *widget,
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 		return glade_property_default (property);
 
-	g_critical ("Unable to find property %s on widget %s of class %s",
-		    id_property, widget->name, widget->widget_class->name);
 	return FALSE;
 }
 
