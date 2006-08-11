@@ -1317,7 +1317,7 @@ static GtkActionEntry static_entries[] = {
 	{ "Open", GTK_STOCK_OPEN, N_("_Open"),"<control>O",
 	  N_("Open a project file"), G_CALLBACK (gpw_open_cb) },
 	
-	{ "Recents", NULL, N_("Recent Projects"), NULL, NULL },
+	{ "Recents", NULL, N_("Open _Recent"), NULL, NULL },
 	
 	{ "ClearRecents", GTK_STOCK_CLEAR, N_("Clear Recent Projects"), NULL,
 	  NULL, G_CALLBACK (gpw_recent_project_clear_cb) },
