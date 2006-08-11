@@ -5,6 +5,11 @@
 	* src/glade-widget.c: Removed g_criticals in functions that return
 	  FALSE to signify not-found properties.
 
+	* src/glade-project.c: Unparent all widgets before closing the project,
+	  this stops the recursive "destroy" signal from happening and allows us
+	  to better manage the project widgets (not to mention it avoids a buggy
+	  assertion from the GtkNotebook at destruction time).
+
 2006-08-10  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.c: Fixed glade_util_get_placeholder_from_pointer to

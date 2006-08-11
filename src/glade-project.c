@@ -107,13 +107,28 @@ glade_project_dispose (GObject *object)
 	glade_project_list_unref (project->undo_stack);
 	project->undo_stack = NULL;
 
+	/* Unparent all widgets in the heirarchy first 
+	 * (Since we are bookkeeping exact reference counts, we 
+	 * dont want the hierarchy to just get destroyed)
+	 */
+	for (list = project->objects; list; list = list->next)
+	{
+		gwidget = glade_widget_get_from_gobject (list->data);
+
+		if (gwidget->parent &&
+		    glade_widget_class_container_has_child (gwidget->parent->widget_class,
+							    gwidget->parent->object,
+							    gwidget->object))
+			glade_widget_remove_child (gwidget->parent, gwidget);
+	}
+
 	/* Remove objects from the project */
 	for (list = project->objects; list; list = list->next)
 	{
 		gwidget = glade_widget_get_from_gobject (list->data);
 
-		g_object_unref (G_OBJECT (list->data));
-		g_object_unref (G_OBJECT (gwidget));
+		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
+		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
 	}
 	project->objects = NULL;
 
