@@ -1453,6 +1453,7 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 	 * slate after calling glade_project_open().
 	 */
 	project->changed = FALSE;
+	project->loading = FALSE;
 
 	return project;	
 }

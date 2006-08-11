@@ -6,10 +6,13 @@
 	  o Removed g_criticals in functions that return FALSE to signify not-found properties.
 	  o Setup packing properties so they are available to the plugin at replace_child time.
 
-	* src/glade-project.c: Unparent all widgets before closing the project,
-	  this stops the recursive "destroy" signal from happening and allows us
-	  to better manage the project widgets (not to mention it avoids a buggy
-	  assertion from the GtkNotebook at destruction time).
+	* src/glade-project.c: 
+	  o Unparent all widgets before closing the project, this stops the recursive "destroy" 
+	    signal from happening and allows us to better manage the project widgets
+	    (not to mention it avoids a buggy assertion from the GtkNotebook at 
+	    destruction time).
+	  o Fixed a bug where loaded projects were never marked with unsaved changes
+	    (since loaded propjects were infinately project->loading == TRUE).
 
 	* src/glade-command.c: Fixed bookkeeping of special-child-type when redoing
 	  a paste command.
