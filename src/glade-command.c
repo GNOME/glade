@@ -1240,6 +1240,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 	GladeProject       *active_project = glade_app_get_project ();
 	CommandData        *cdata;
 	GList              *list, *remove = NULL, *l;
+	gchar              *special_child_type;
 
 	if (me->widgets)
 	{
@@ -1252,20 +1253,21 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 
 			if (cdata->parent != NULL)
 			{
-				/* Restore special-child-type when undoing a "cut" command */
-				if (me->original_type == GLADE_CUT)
+				/* Prepare special-child-type for the paste. */
+				if (cdata->props_recorded == FALSE)
+				{
+					/* Clear it the first time */
+					g_object_set_data (cdata->widget->object,
+							   "special-child-type", NULL);
+				}
+				else
 				{
 					g_object_set_data_full (cdata->widget->object, 
 								"special-child-type",
 								g_strdup (cdata->special_type), 
 								g_free);
 				}
-				else
-				{
-					g_object_set_data (cdata->widget->object,
-							   "special-child-type", NULL);
-				}
-		
+
 				/* glade_command_paste ganauntees that if 
 				 * there we are pasting to a placeholder, 
 				 * there is only one widget.
@@ -1315,6 +1317,17 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 							 glade_property_dup
 							 (GLADE_PROPERTY (l->data),
 							  cdata->widget));
+
+
+					/* Record the special-type here after replacing */
+					if ((special_child_type = 
+					     g_object_get_data (cdata->widget->object, 
+								"special-child-type")) != NULL)
+					{
+						g_free (cdata->special_type);
+						cdata->special_type = g_strdup (special_child_type);
+					}
+
 
 					/* Mark the properties as recorded
 					 */

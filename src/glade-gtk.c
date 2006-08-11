@@ -2377,6 +2377,8 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 			g_idle_add (notebook_kick_child_into_position, NULL);
 		}
 	}
+	else 
+		gtk_widget_destroy (GTK_WIDGET (new));
 }	
 
 gboolean GLADEGTK_API
