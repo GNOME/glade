@@ -144,10 +144,20 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	if (gold_widget && gold_widget != gnew_widget)
 		gold_widget->parent = NULL;
 
+	/* Setup packing properties here so that they are available on the new
+	 * widget for use in the plugin.
+	 */
+	if (gnew_widget) 
+		glade_widget_set_packing_properties (gnew_widget, widget);
+
+
 	glade_widget_class_container_replace_child 
 		(widget->widget_class, widget->object,
 		 old_object, new_object);
 
+	/* Setup packing properties here again so we can introspect the new
+	 * values from the plugin.
+	 */
 	if (gnew_widget) 
 		glade_widget_set_packing_properties (gnew_widget, widget);
 }

@@ -2317,24 +2317,6 @@ glade_gtk_notebook_remove_child (GObject *object, GObject *child)
 	
 }
 
-static struct KickChild {
-	GladeWidget *gchild;
-	gint         position;
-} notebook_kick;
-
-static gboolean
-notebook_kick_child_into_position (gpointer data)
-{
-	if (notebook_kick.gchild)
-	{
-		glade_widget_pack_property_set (notebook_kick.gchild, 
-						"position", 
-						notebook_kick.position);
-		notebook_kick.gchild = NULL;
-	}
-	return FALSE;
-}
-
 void GLADEGTK_API
 glade_gtk_notebook_replace_child (GtkWidget *container,
 				  GtkWidget *current,
@@ -2371,11 +2353,7 @@ glade_gtk_notebook_replace_child (GtkWidget *container,
 		glade_gtk_notebook_add_child (G_OBJECT (container), G_OBJECT (new));
 		
 		if (glade_widget_pack_property_set (gnew, "position", position) == FALSE)
-		{
-			notebook_kick.gchild = gnew;
-			notebook_kick.position = position;
-			g_idle_add (notebook_kick_child_into_position, NULL);
-		}
+			g_critical ("No position property found on new widget");
 	}
 	else 
 		gtk_widget_destroy (GTK_WIDGET (new));

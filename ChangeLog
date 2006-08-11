@@ -2,8 +2,9 @@
 
 	* src/glade-gtk.c: Improved notebook code some more.
 
-	* src/glade-widget.c: Removed g_criticals in functions that return
-	  FALSE to signify not-found properties.
+	* src/glade-widget.c: 
+	  o Removed g_criticals in functions that return FALSE to signify not-found properties.
+	  o Setup packing properties so they are available to the plugin at replace_child time.
 
 	* src/glade-project.c: Unparent all widgets before closing the project,
 	  this stops the recursive "destroy" signal from happening and allows us
