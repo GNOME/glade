@@ -2655,11 +2655,11 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	if (GTK_IS_INPUT_DIALOG (object))
 	{
 		save_button = glade_widget_class_create_internal
-			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->save_button),
+			(widget, G_OBJECT (GTK_INPUT_DIALOG (dialog)->save_button),
 			 "save_button", "inputdialog", FALSE, reason);
 
 		close_button = glade_widget_class_create_internal
-			(widget, G_OBJECT(GTK_INPUT_DIALOG (dialog)->close_button),
+			(widget, G_OBJECT (GTK_INPUT_DIALOG (dialog)->close_button),
 			 "close_button", "inputdialog", FALSE, reason);
 
 	}
@@ -2737,14 +2737,18 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 		/* Only set these on the original create. */
 		if (reason == GLADE_CREATE_USER)
 		{
-			if (GTK_IS_MESSAGE_DIALOG (dialog))
+
+			if (GTK_IS_MESSAGE_DIALOG (object))
 				glade_widget_property_set (vbox_widget, "size", 2);
-			else
+			else if (GTK_IS_ABOUT_DIALOG (object))
 				glade_widget_property_set (vbox_widget, "size", 3);
-			
+			else if (GTK_IS_FILE_CHOOSER_DIALOG (object))
+				glade_widget_property_set (vbox_widget, "size", 3);
+			else		
+				glade_widget_property_set (vbox_widget, "size", 2);
+
 			glade_widget_property_set (actionarea_widget, "size", 2);
-			glade_widget_property_set (actionarea_widget,
-						   "layout-style", GTK_BUTTONBOX_END);
+			glade_widget_property_set (actionarea_widget, "layout-style", GTK_BUTTONBOX_END);
 		}
 	}
 
