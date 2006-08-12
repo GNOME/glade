@@ -873,7 +873,7 @@ gpw_cut_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 gpw_paste_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	glade_app_command_paste ();
+	glade_app_command_paste (NULL);
 }
 
 static void
@@ -1657,19 +1657,8 @@ glade_project_window_create (GladeProjectWindow *gpw)
 					       "/MenuBar/HelpMenu/Manual");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (editor_item), FALSE);
 
-	if (glade_util_have_devhelp ())
-	{
-		glade_editor_show_info (glade_app_get_editor ());
-		glade_editor_hide_context_info (glade_app_get_editor ());
-		g_signal_connect (G_OBJECT (glade_app_get_editor ()), "gtk-doc-search",
-				  G_CALLBACK (gpw_doc_search_cb), gpw);
-	}
-	else
-	{
-
-		gtk_widget_set_sensitive (editor_item, FALSE);
-		gtk_widget_set_sensitive (docs_item, FALSE);
-	}
+	gtk_widget_set_sensitive (editor_item, FALSE);
+	gtk_widget_set_sensitive (docs_item, FALSE);
 
 	gtk_box_pack_start (GTK_BOX (vbox), project_view, TRUE, TRUE, 0);
 	gtk_box_pack_end (GTK_BOX (vbox), statusbar, FALSE, TRUE, 0);
@@ -1942,4 +1931,35 @@ glade_project_window_new (void)
 			  G_CALLBACK (gpw_clipboard_notify_handler_cb),
 			  gpw);
 	return gpw;
+}
+
+void
+glade_project_window_check_devhelp (GladeProjectWindow *gpw)
+{
+	GtkWidget *editor_item, *docs_item;
+	
+	editor_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+						 "/MenuBar/ViewMenu/PropertyEditorHelp");
+	docs_item = gtk_ui_manager_get_widget (gpw->priv->ui,
+					       "/MenuBar/HelpMenu/Manual");
+
+	if (glade_util_have_devhelp ())
+	{
+		GladeEditor *editor = glade_app_get_editor ();
+		glade_editor_show_info (editor);
+		glade_editor_hide_context_info (editor);
+		
+		g_signal_handlers_disconnect_by_func (editor, gpw_doc_search_cb, gpw);
+		
+		g_signal_connect (editor, "gtk-doc-search",
+				  G_CALLBACK (gpw_doc_search_cb), gpw);
+		
+		gtk_widget_set_sensitive (editor_item, TRUE);
+		gtk_widget_set_sensitive (docs_item, TRUE);
+	}
+	else
+	{
+		gtk_widget_set_sensitive (editor_item, FALSE);
+		gtk_widget_set_sensitive (docs_item, FALSE);
+	}
 }

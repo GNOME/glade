@@ -112,7 +112,7 @@ void               glade_app_command_copy (void);
 LIBGLADEUI_API 
 void               glade_app_command_cut (void);
 LIBGLADEUI_API 
-void               glade_app_command_paste (void);
+void               glade_app_command_paste (GladePlaceholder *placeholder);
 LIBGLADEUI_API 
 void               glade_app_command_delete (void);
 LIBGLADEUI_API

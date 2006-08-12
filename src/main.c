@@ -41,12 +41,13 @@
 
 
 /* Application arguments */
-static gboolean version = FALSE;
+static gboolean version = FALSE, without_devhelp = FALSE;
 static gchar **files = NULL;
 
 static GOptionEntry option_entries[] = 
 {
   { "version", '\0', 0, G_OPTION_ARG_NONE, &version, "output version information and exit", NULL },
+  { "without-devhelp", '\0', 0, G_OPTION_ARG_NONE, &without_devhelp, "disable DevHelp check", NULL },
   { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files, "", "" },
   { NULL }
 };
@@ -144,6 +145,9 @@ main (int argc, char *argv[])
 	
 	project_window = glade_project_window_new ();
 	
+	if (without_devhelp == FALSE)
+		glade_project_window_check_devhelp (project_window);
+	
 	if (widget_name != NULL)
 	{
 		GladeWidgetClass *class;
@@ -167,7 +171,8 @@ main (int argc, char *argv[])
 		}
 		g_strfreev (files);
 	}
-	else 
+
+	if (glade_app_get_project () == NULL)
 		glade_project_window_new_project (project_window);
 
 	glade_project_window_show_all (project_window);

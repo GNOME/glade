@@ -38,7 +38,7 @@ GladeProjectWindow * glade_project_window_new (void);
 void                 glade_project_window_show_all (GladeProjectWindow *gpw);
 void                 glade_project_window_new_project (GladeProjectWindow *gpw);
 void                 glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path);
-
+void                 glade_project_window_check_devhelp (GladeProjectWindow *gpw);
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_WINDOW_H__ */

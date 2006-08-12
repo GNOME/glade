@@ -1065,7 +1065,7 @@ glade_app_command_cut (void)
  * selection (the project must have only one object selected).
  */
 void
-glade_app_command_paste (void)
+glade_app_command_paste (GladePlaceholder *placeholder)
 {
 	GladeApp           *app;
 	GladeClipboard     *clipboard;
@@ -1084,7 +1084,8 @@ glade_app_command_paste (void)
 	/* If there is a selection, paste in to the selected widget, otherwise
 	 * paste into the placeholder's parent.
 	 */
-	parent = list ? glade_widget_get_from_gobject (list->data) : NULL;
+	parent = list ? glade_widget_get_from_gobject (list->data) : 
+		 (placeholder) ? glade_placeholder_get_parent (placeholder) : NULL;
 	
 	if (parent && GLADE_IS_FIXED (parent)) fixed = GLADE_FIXED (parent);
 		
@@ -1162,7 +1163,7 @@ glade_app_command_paste (void)
 		return;
 	}
 
-	glade_command_paste (clipboard->selection, parent, NULL);
+	glade_command_paste (clipboard->selection, parent, placeholder);
 	glade_app_update_ui ();
 }
 
