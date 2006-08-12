@@ -1193,12 +1193,15 @@ static void
 gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
 	gchar *authors[] =
-		{ "Joaquin Cuenca Abela <e98cuenc@yahoo.com>",
-		  "Chema Celorio <chema@ximian.com>",
+		{ "Chema Celorio <chema@ximian.com>",
+		  "Joaquin Cuenca Abela <e98cuenc@yahoo.com>",
 		  "Paolo Borelli <pborelli@katamail.com>",
 		  "Archit Baweja <bighead@users.sourceforge.net>",
 		  "Shane Butler <shane_b@operamail.com>",
 		  "Tristan Van Berkom <tvb@gnome.org>",
+		  "Ivan Wong <email@ivanwong.info>",
+		  "Juan Pablo Ugarte <juanpablougarte@gmail.com>",
+		  "Vincent Geddes <vincent.geddes@gmail.com>",
 		  NULL };
 
 	gchar *translators =
@@ -1208,11 +1211,24 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Duarte Loreto <happyguy_pt@hotmail.com>\n"
 		  "Zbigniew Chyla <cyba@gnome.pl>\n"
 		  "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
-		  "Takeshi AIHANA <aihana@gnome.gr.jp>\n");
+		  "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+		  "Kjartan Maraas <kmaraas@gnome.org>\n"
+		  "Carlos Perell Marn <carlos@gnome-db.org>\n"
+		  "Valek Filippov <frob@df.ru>\n"
+		  "Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
+		  "Christophe Merlet <christophe@merlet.net>\n"
+		  "Funda Wang <fundawang@linux.net.cn>\n"
+		  "Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
+		  "Adam Weinberger <adamw@gnome.org>\n"
+		  "Raphael Higino <raphaelh@cvs.gnome.org>\n"
+		  "Clytie Siddall <clytie@riverland.net.au>\n"
+		  "Jordi Mas <jmas@softcatala.org>\n"
+		  "Vincent van Adrighem <adrighem@gnome.org>\n"
+		  "Daniel Nylander <po@danielnylander.se>\n");
 
 	gchar *comments =
-		_("Glade is a User Interface Builder for GTK+ and GNOME.\n"
-		  "This version is a rewrite of the Glade 2.0.0 version, "
+		_("Glade is a User Interface Designer for GTK+ and GNOME.\n"
+		  "This version is a rewrite of the Glade 2 version, "
 		  "originally created by Damon Chaplin\n");
 
 	gchar *license =
@@ -1230,8 +1246,9 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "MA 02110-1301, USA.");
 
 	gchar *copyright =
-		"(C) 2001-2005 Ximian, Inc.\n"
-		"(C) 2001-2005 Joaquin Cuenca Abela, Paolo Borelli, et al.";
+		"(C) 2001-2006 Ximian, Inc.\n"
+		"(C) 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+		"(C) 2001-2006 Tristan Van Berkom, Juan Pablo Ugarte, et al.";
 	
 	gtk_show_about_dialog (GTK_WINDOW (gpw->priv->window),
 			       "name",  PACKAGE_NAME,
