@@ -693,6 +693,7 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 {
 	GladeWidget *child, *gparent;
 	GtkTreeIter iter, parent;
+	gboolean retval;
 
 	if (glade_base_editor_get_child_selected (e, &iter) == FALSE) return;
 
@@ -712,7 +713,7 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 	
 	/* Emit delete-child signal */
 	g_signal_emit (e, glade_base_editor_signals[SIGNAL_DELETE_CHILD],
-		       0, gparent, child);
+		       0, gparent, child, &retval);
 
 	glade_command_pop_group ();
 }

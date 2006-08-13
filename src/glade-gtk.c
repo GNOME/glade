@@ -3564,11 +3564,12 @@ glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
 				   gpointer data)
 {
 	GObject *item = glade_widget_get_object (gparent);
-	GtkWidget *submenu;
+	GtkWidget *submenu = NULL;
 	GList list = {0, };
-	gint n_children = 0;
+	gint n_children;
 	
-	if ((submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (item))))
+	if (GTK_IS_MENU_ITEM (item) &&
+	    (submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (item))))
 	{
 		GList *l = gtk_container_get_children (GTK_CONTAINER (submenu));
 		n_children = g_list_length (l);
