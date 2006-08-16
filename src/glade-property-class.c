@@ -171,6 +171,7 @@ glade_property_class_new (gpointer handle)
 	property_class->translatable = FALSE;
 	property_class->type = GPC_NORMAL;
 	property_class->virtual = TRUE;
+	property_class->transfer_on_paste = FALSE;
 
 	return property_class;
 }
@@ -1625,6 +1626,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  class->visible);
 	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
 	class->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, class->resource);
+	class->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, class->transfer_on_paste);
 
 	/* No atk introspection here.
 	 */

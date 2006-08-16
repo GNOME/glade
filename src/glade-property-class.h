@@ -174,6 +174,8 @@ struct _GladePropertyClass
 			     * directory).
 			     */
 	
+	gboolean transfer_on_paste;
+	
 	/* Delagate to verify if this is a valid value for this property,
 	 * if this function exists and returns FALSE, then glade_property_set
 	 * will abort before making any changes

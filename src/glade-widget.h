@@ -185,6 +185,11 @@ gboolean                glade_widget_has_decendant          (GladeWidget      *w
 							     GType             type);
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_event_widget           (void);
+
+LIBGLADEUI_API
+GList                  *glade_widget_dup_properties         (GList            *template_props,
+                                                             gboolean          as_load);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

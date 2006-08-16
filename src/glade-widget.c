@@ -660,7 +660,7 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget, GladeWi
 	return object;
 }
 
-static GList *
+GList *
 glade_widget_dup_properties (GList *template_props, gboolean as_load)
 {
 	GList *list, *properties = NULL;
@@ -1458,6 +1458,9 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 
 	if (gwidget->internal)
 		glade_widget_copy_properties (gwidget, template);
+	
+	if (gwidget->packing_properties == NULL)
+		gwidget->packing_properties = glade_widget_dup_properties (template->packing_properties , FALSE);
 	
 	/* If custom properties are still at thier
 	 * default value, they need to be synced.

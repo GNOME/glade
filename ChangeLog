@@ -1,3 +1,21 @@
+2006-08-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-command.c: fixed bug 345604
+	  "Pasting a widget does not paste the packing options"
+
+	* src/glade-property-class.[ch]: added transfer_on_paste property to
+	  GladePropertyClass.
+
+	* src/glade-widget.[ch]: exported glade_widget_dup_properties()
+
+	* src/glade.h added GLADE_TAG_TRANSFER_ON_PASTE tag.
+
+	* widgets/gtk+.xml.in: set transfer-on-paste on corresponding packing
+	  properties.
+
+	* src/glade-base-editor.c: fixed posible bug when emiting delete-child
+	  signal.
+
 2006-08-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in, NEWS: Wrapping the 3.0 tarball.
