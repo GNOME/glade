@@ -1266,7 +1266,10 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 		for (list = me->widgets; list && list->data; list = list->next)
 		{
 			cdata  = list->data;
-			remove = g_list_prepend (remove, cdata->widget);
+
+			/* Pasted widgets arent on the clipboard */
+			if (me->original_type == GLADE_CUT)
+				remove = g_list_prepend (remove, cdata->widget);
 
 			if (cdata->parent != NULL)
 			{
@@ -1401,10 +1404,12 @@ glade_command_cut_execute (GladeCommandCutCopyPaste *me)
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
 		cdata = list->data;
-		add   = g_list_prepend (add, cdata->widget);
 
 		if (me->original_type == GLADE_CUT)
 		{
+			/* Pasted widgets dont return to the clipboard */
+			add = g_list_prepend (add, cdata->widget);
+
 			if ((special_child_type = 
 			     g_object_get_data (cdata->widget->object, 
 						"special-child-type")) != NULL)
@@ -1622,15 +1627,22 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 			g_critical ("Internal widget in Cut/Copy/Paste");
 
 		/* Widget */
-		if (type == GLADE_COPY)
+		if (type == GLADE_COPY || type == GLADE_PASTE)
 		{
 			cdata->widget = glade_widget_dup (widget);
+
 			/* Copy or not, we need a reference for GladeCommand, and
 			 * a global reference for Glade.
 			 */
 			cdata->widget = g_object_ref (G_OBJECT (cdata->widget));
-		} else
+		} 
+		else
+		{
+			/* Only cut widgets are used directly and moved to and from the
+			 *  clipboard.
+			 */
 			cdata->widget = g_object_ref (G_OBJECT (widget));
+		}
 		
 		/* Parent */
 		if (parent == NULL)
