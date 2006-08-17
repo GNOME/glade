@@ -3,6 +3,11 @@
 	* src/glade-command.c: Now you can paste widgets to your hearts content.
 	  (bug 345603)
 
+	* src/glade-editor-property.c, src/glade-property-class.c:
+	  Now adjustments are saved as decimal values instead of doubles
+	  (glade-- code generator didnt like doubles... we'll create 
+	  adjustment objects anyway in the future builder).
+
 2006-08-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-command.c: fixed bug 345604

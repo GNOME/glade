@@ -393,11 +393,13 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 	else if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
 		GtkAdjustment *adj = GTK_ADJUSTMENT (object);
-		string = g_strdup_printf ("%lf %lf %lf %lf %lf %lf", 
-					  adj->value, adj->lower, adj->upper, 
-					  adj->step_increment, 
-					  adj->page_increment,
-					  adj->page_size);
+		
+		/* Glade format expects integers */
+		string = g_strdup_printf ("%d %d %d %d %d %d", 
+					  (gint)adj->value, (gint)adj->lower, (gint)adj->upper, 
+					  (gint)adj->step_increment, 
+					  (gint)adj->page_increment,
+					  (gint)adj->page_size);
 	}
 	else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
 		string = g_strdup (gwidget->name);

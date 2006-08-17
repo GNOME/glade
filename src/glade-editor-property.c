@@ -2855,30 +2855,27 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
 	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
 	GtkWidget *widget;
 	GtkTable *table;
-	
+
+	/* No decimal precision as we are only putting integer values
+	 * in the glade file (older glade files do this, we'll just respect it).
+	 */
 	eprop_adj->value = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->value), 2);
 	eprop_adj->ids.value = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->value, value);
 	eprop_adj->value_adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (eprop_adj->value));
 	
 	eprop_adj->lower = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->lower), 2);
 	eprop_adj->ids.lower = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->lower, lower);
 	
 	eprop_adj->upper = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->upper), 2);
 	eprop_adj->ids.upper = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->upper, upper);
 	
 	eprop_adj->step_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->step_increment), 2);
 	eprop_adj->ids.step_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->step_increment, step_increment);
 	
 	eprop_adj->page_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_increment), 2);
 	eprop_adj->ids.page_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_increment, page_increment);
 
 	eprop_adj->page_size = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_size), 2);
 	eprop_adj->ids.page_size = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_size, page_size);
 
 	/* Eprop */
