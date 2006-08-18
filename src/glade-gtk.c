@@ -2495,7 +2495,7 @@ glade_gtk_expander_post_create (GObject *expander, GladeCreateReason reason)
 	g_return_if_fail (GTK_IS_EXPANDER (expander));
 	gexpander = glade_widget_get_from_gobject (expander);
 	g_return_if_fail (GLADE_IS_WIDGET (gexpander));
-	
+
 	/* If we didnt put this object here... */
 	if ((label = gtk_expander_get_label_widget (GTK_EXPANDER (expander))) == NULL ||
 	    (glade_widget_get_from_gobject (label) == NULL))
@@ -2513,6 +2513,11 @@ glade_gtk_expander_post_create (GObject *expander, GladeCreateReason reason)
 
 		gtk_widget_show (GTK_WIDGET (glabel->object));
 	}
+
+	gtk_expander_set_expanded (GTK_EXPANDER (expander), TRUE);
+	
+	gtk_container_add (GTK_CONTAINER (expander), glade_placeholder_new ());
+
 }
 
 void GLADEGTK_API
@@ -2550,8 +2555,29 @@ glade_gtk_expander_add_child (GObject *object, GObject *child)
 	}
 	else
 	{
+		glade_gtk_container_add_child (GTK_WIDGET (object), 
+					       GTK_WIDGET (child));
+	}
+}
+
+void GLADEGTK_API
+glade_gtk_expander_remove_child (GObject *object, GObject *child)
+{
+	gchar *special_child_type;
+
+	special_child_type = g_object_get_data (child, "special-child-type");
+	if (special_child_type &&
+	    !strcmp (special_child_type, "label_item"))
+	{
+		gtk_expander_set_label_widget (GTK_EXPANDER (object),
+					       glade_placeholder_new ());
+	}
+	else
+	{
+		gtk_container_remove (GTK_CONTAINER (object),
+				      GTK_WIDGET (child));
 		gtk_container_add (GTK_CONTAINER (object),
-				   GTK_WIDGET (child));
+				   glade_placeholder_new ());
 	}
 }
 
