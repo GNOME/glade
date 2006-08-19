@@ -37,7 +37,7 @@
 #include "glade-project-window.h"
 #include "glade-debug.h"
 
-#define APPLICATION_NAME (_("Glade 3"))
+#define APPLICATION_NAME (_("Glade"))
 
 
 /* Application arguments */

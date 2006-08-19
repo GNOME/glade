@@ -257,19 +257,19 @@ gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkAction *action;
 	gchar *project_name;
-	gchar *tooltip;
+	gchar *tooltip = NULL;
 	
 	/* Get associated action */
 	action = GTK_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
 
 	/* Set action label */
-	project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
+	project_name = glade_project_display_name (project, TRUE, FALSE, TRUE);
 	g_object_set (action, "label", project_name, NULL);
 
 	/* Set action tooltip */
-	if (project->readonly != FALSE)
+	if (project->readonly != FALSE && project->path)
 		tooltip = g_strdup_printf ("%s %s", project->path, READONLY_INDICATOR);
-	else
+	else if (project->path)
 		tooltip = g_strdup_printf ("%s", project->path);
 	
 	g_object_set (action, "tooltip", tooltip, NULL);
@@ -327,6 +327,7 @@ static void
 gpw_set_sensitivity_according_to_project (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkAction *action;
+	gboolean is_first_in_list = FALSE, is_last_in_list = FALSE;
 
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Save");
 	gtk_action_set_sensitive (action,
@@ -348,6 +349,19 @@ gpw_set_sensitivity_according_to_project (GladeProjectWindow *gpw, GladeProject 
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Delete");
 	gtk_action_set_sensitive (action,
 				  glade_project_get_has_selection (project));
+
+	action = GTK_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
+	g_return_if_fail (GTK_IS_ACTION (action));
+	is_first_in_list = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (action), "is-first-in-list"));
+	is_last_in_list = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (action), "is-last-in-list"));
+
+
+	action = gtk_action_group_get_action (gpw->priv->project_actions, "PreviousProject");
+	gtk_action_set_sensitive (action, !is_first_in_list);
+	
+	action = gtk_action_group_get_action (gpw->priv->project_actions, "NextProject");
+	gtk_action_set_sensitive (action, !is_last_in_list);
+
 }
 
 static void
@@ -400,13 +414,14 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		GtkRadioAction *action;
 		gchar *action_name;
 		gchar *project_name;
-		gchar *tooltip;
+		gchar *tooltip = NULL;
+		gchar *accel;
 
 		project = GLADE_PROJECT (l->data);
 
 		action_name = g_strdup_printf ("Project_%d", i);
-		project_name = glade_project_display_name (project, TRUE, TRUE, TRUE);
-		if (project->readonly != FALSE)
+		project_name = glade_project_display_name (project, TRUE, FALSE, TRUE);
+		if (project->readonly != FALSE && project->path)
 			tooltip = g_strdup_printf ("%s %s",project->path, READONLY_INDICATOR);
 		else
 			tooltip = g_strdup (project->path);
@@ -417,19 +432,28 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		g_object_set_data (G_OBJECT (project), "project-list-action", action);
 		g_object_set_data (G_OBJECT (action), "project", project);
 
+		/* add additional data for Previous/Next Project actions */
+		if (l->prev == NULL)
+			g_object_set_data (G_OBJECT (action), "is-first-in-list", GINT_TO_POINTER (TRUE));
+		if (l->next == NULL)
+			g_object_set_data (G_OBJECT (action), "is-last-in-list", GINT_TO_POINTER (TRUE));
+
 		if (group != NULL)
 			gtk_radio_action_set_group (action, group);
 
 		group = gtk_radio_action_get_group (action);
 
-		gtk_action_group_add_action (p->projects_list_menu_actions, GTK_ACTION (action));
+		/* alt + 1, 2, 3... 0 to switch to the first ten tabs */
+		accel = (i < 10) ? g_strdup_printf ("<alt>%d", (i + 1) % 10) : NULL;
 
-		if (project == glade_app_get_project ())
-			gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
+		gtk_action_group_add_action_with_accel (p->projects_list_menu_actions, GTK_ACTION (action), accel);
 
 		g_signal_connect (action, "activate",
 				  G_CALLBACK (gpw_projects_list_menu_activate_cb),
 				  gpw);
+
+		if (project == glade_app_get_project ())
+			gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
 		gtk_ui_manager_add_ui (p->ui, id,
 				       "/MenuBar/ProjectMenu/ProjectsListPlaceholder",
@@ -442,6 +466,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *gpw)
 		g_free (action_name);
 		g_free (project_name);
 		g_free (tooltip);
+		g_free (accel);
 	}
 }
 
@@ -475,7 +500,7 @@ gpw_open_cb (GtkAction *action, GladeProjectWindow *gpw)
 	gchar               *path = NULL;
 	gchar               *dir;
 
-	filechooser = glade_util_file_dialog_new (_("Open..."), GTK_WINDOW (gpw->priv->window),
+	filechooser = glade_util_file_dialog_new (_("Open\342\200\246"), GTK_WINDOW (gpw->priv->window),
 						   GLADE_FILE_DIALOG_ACTION_OPEN);
 
 	if ((dir = gpw_get_recent_dir (gpw)) != NULL)
@@ -678,13 +703,13 @@ gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 	}
 
 	/* If instead we dont have a path yet, fire up a file selector */
-	gpw_save_as (gpw, _("Save..."));
+	gpw_save_as (gpw, _("Save\342\200\246"));
 }
 
 static void
 gpw_save_as_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	gpw_save_as (gpw, _("Save as ..."));
+	gpw_save_as (gpw, _("Save as\342\200\246"));
 }
 
 static gboolean
@@ -1166,6 +1191,50 @@ gpw_show_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 		gpw_show_clipboard_view (gpw);
 }
 
+void
+glade_project_window_prev_project_cb (GtkAction *action, GladeProjectWindow *window)
+{
+	GladeProject *project;
+	GtkToggleAction *project_list_action;
+	GList *l;
+
+	project = glade_app_get_project ();
+
+	l = glade_app_get_projects ();
+	l = g_list_find (l, project);
+
+	if ((l = g_list_previous (l)) != NULL)
+	{
+		project = GLADE_PROJECT (l->data);
+		
+		project_list_action = GTK_TOGGLE_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
+
+		gtk_toggle_action_set_active (project_list_action, TRUE); 
+	}	
+}
+
+void
+glade_project_window_next_project_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	GladeProject *project;
+	GtkToggleAction *project_list_action;
+	GList *l;
+
+	project = glade_app_get_project ();
+
+	l = glade_app_get_projects ();
+	l = g_list_find (l, project);
+
+	if ((l = g_list_next (l)) != NULL)
+	{
+		project = GLADE_PROJECT (l->data);
+		
+		project_list_action = GTK_TOGGLE_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
+
+		gtk_toggle_action_set_active (project_list_action, TRUE); 
+	}	
+}
+
 static void
 gpw_toggle_editor_help_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
@@ -1192,7 +1261,7 @@ gpw_documentation_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void 
 gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	gchar *authors[] =
+	static const gchar * const authors[] =
 		{ "Chema Celorio <chema@ximian.com>",
 		  "Joaquin Cuenca Abela <e98cuenc@yahoo.com>",
 		  "Paolo Borelli <pborelli@katamail.com>",
@@ -1204,35 +1273,35 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Vincent Geddes <vincent.geddes@gmail.com>",
 		  NULL };
 
-	gchar *translators =
-		_("Fatih Demir <kabalak@gtranslator.org>\n"
-		  "Christian Rose <menthos@menthos.com>\n"
-		  "Pablo Saratxaga <pablo@mandrakesoft.com>\n"
-		  "Duarte Loreto <happyguy_pt@hotmail.com>\n"
-		  "Zbigniew Chyla <cyba@gnome.pl>\n"
-		  "Hasbullah Bin Pit <sebol@ikhlas.com>\n"
-		  "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
-		  "Kjartan Maraas <kmaraas@gnome.org>\n"
-		  "Carlos Perell Marn <carlos@gnome-db.org>\n"
-		  "Valek Filippov <frob@df.ru>\n"
-		  "Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
-		  "Christophe Merlet <christophe@merlet.net>\n"
-		  "Funda Wang <fundawang@linux.net.cn>\n"
-		  "Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
-		  "Adam Weinberger <adamw@gnome.org>\n"
-		  "Raphael Higino <raphaelh@cvs.gnome.org>\n"
-		  "Clytie Siddall <clytie@riverland.net.au>\n"
-		  "Jordi Mas <jmas@softcatala.org>\n"
-		  "Vincent van Adrighem <adrighem@gnome.org>\n"
-		  "Daniel Nylander <po@danielnylander.se>\n");
+	static const gchar translators[] =
+		"Fatih Demir <kabalak@gtranslator.org>\n"
+		"Christian Rose <menthos@menthos.com>\n"
+		"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
+		"Duarte Loreto <happyguy_pt@hotmail.com>\n"
+		"Zbigniew Chyla <cyba@gnome.pl>\n"
+		"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+		"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+		"Kjartan Maraas <kmaraas@gnome.org>\n"
+		"Carlos Perell Marn <carlos@gnome-db.org>\n"
+		"Valek Filippov <frob@df.ru>\n"
+		"Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
+		"Christophe Merlet <christophe@merlet.net>\n"
+		"Funda Wang <fundawang@linux.net.cn>\n"
+		"Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
+		"Adam Weinberger <adamw@gnome.org>\n"
+		"Raphael Higino <raphaelh@cvs.gnome.org>\n"
+		"Clytie Siddall <clytie@riverland.net.au>\n"
+		"Jordi Mas <jmas@softcatala.org>\n"
+		"Vincent van Adrighem <adrighem@gnome.org>\n"
+		"Daniel Nylander <po@danielnylander.se>\n";
 
-	gchar *comments =
-		_("Glade is a User Interface Designer for GTK+ and GNOME.\n"
+	static const gchar comments[] =
+		N_("Glade is a user interface designer for GTK+ and GNOME.\n"
 		  "This version is a rewrite of the Glade 2 version, "
 		  "originally created by Damon Chaplin\n");
 
-	gchar *license =
-		_("This program is free software; you can redistribute it and/or modify\n"
+	static const gchar license[] =
+		N_("This program is free software; you can redistribute it and/or modify\n"
 		  "it under the terms of the GNU General Public License as\n"
 		  "published by the Free Software Foundation; either version 2 of the\n"
 		  "License, or (at your option) any later version.\n\n"
@@ -1245,13 +1314,13 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, "
 		  "MA 02110-1301, USA.");
 
-	gchar *copyright =
-		"(C) 2001-2006 Ximian, Inc.\n"
-		"(C) 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-		"(C) 2001-2006 Tristan Van Berkom, Juan Pablo Ugarte, et al.";
+	static const gchar copyright[] =
+		"Copyright \xc2\xa9 2001-2006 Ximian, Inc.\n"
+		"Copyright \xc2\xa9 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+		"Copyright \xc2\xa9 2001-2006 Tristan Van Berkom, Juan Pablo Ugarte, et al.";
 	
 	gtk_show_about_dialog (GTK_WINDOW (gpw->priv->window),
-			       "name",  PACKAGE_NAME,
+			       "name", g_get_application_name (),
 			       "logo-icon-name", "glade-3",
 			       "authors", authors,
 			       "translator-credits", translators,
@@ -1259,6 +1328,7 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 			       "license", license,
 			       "copyright", copyright,
 			       "version", PACKAGE_VERSION,
+			       "website", "http://glade.gnome.org",
 			       NULL);
 }
 
@@ -1303,6 +1373,9 @@ static const gchar *ui_info =
 "      <menuitem action='PropertyEditorHelp'/>\n"
 "    </menu>\n"
 "    <menu action='ProjectMenu'>\n"
+"      <menuitem action='PreviousProject'/>\n"
+"      <menuitem action='NextProject'/>\n"
+"      <separator/>\n"
 "      <placeholder name='ProjectsListPlaceholder'/>\n"
 "    </menu>\n"
 "    <menu action='HelpMenu'>\n"
@@ -1324,15 +1397,15 @@ static GtkActionEntry static_entries[] = {
 	{ "FileMenu", NULL, N_("_File") },
 	{ "EditMenu", NULL, N_("_Edit") },
 	{ "ViewMenu", NULL, N_("_View") },
-	{ "ProjectMenu", NULL, N_("_Project") },
+	{ "ProjectMenu", NULL, N_("_Projects") },
 	{ "HelpMenu", NULL, N_("_Help") },
 	
 	/* FileMenu */
 	{ "New", GTK_STOCK_NEW, N_("_New"), "<control>N",
-	  N_("Create a new project file"), G_CALLBACK (gpw_new_cb) },
+	  N_("Create a new project"), G_CALLBACK (gpw_new_cb) },
 	
 	{ "Open", GTK_STOCK_OPEN, N_("_Open"),"<control>O",
-	  N_("Open a project file"), G_CALLBACK (gpw_open_cb) },
+	  N_("Open a project"), G_CALLBACK (gpw_open_cb) },
 	
 	{ "Recents", NULL, N_("Open _Recent"), NULL, NULL },
 	
@@ -1358,13 +1431,13 @@ static GtkActionEntry project_entries[] = {
 
 	/* FileMenu */
 	{ "Save", GTK_STOCK_SAVE, N_("_Save"),"<control>S",
-	  N_("Save the current project file"), G_CALLBACK (gpw_save_cb) },
+	  N_("Save the current project"), G_CALLBACK (gpw_save_cb) },
 	
-	{ "SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As..."), NULL,
-	  N_("Save the current project file with a different name"), G_CALLBACK (gpw_save_as_cb) },
+	{ "SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As\342\200\246"), NULL,
+	  N_("Save the current project with a different name"), G_CALLBACK (gpw_save_as_cb) },
 	
 	{ "Close", GTK_STOCK_CLOSE, N_("_Close"), "<control>W",
-	  N_("Close the current project file"), G_CALLBACK (gpw_close_cb) },
+	  N_("Close the current project"), G_CALLBACK (gpw_close_cb) },
 
 	/* EditMenu */	
 	{ "Undo", GTK_STOCK_UNDO, N_("_Undo"), "<control>Z",
@@ -1397,7 +1470,14 @@ static GtkActionEntry project_entries[] = {
 	
 	{ "Clipboard", NULL, N_("_Clipboard"), NULL,
 	  N_("Show the clipboard"),
-	  G_CALLBACK (gpw_show_clipboard_cb) }
+	  G_CALLBACK (gpw_show_clipboard_cb) },
+
+	/* ProjectsMenu */
+	{ "PreviousProject", NULL, N_("_Previous Project"), "<control>Page_Up",
+	  N_("Activate previous project"), G_CALLBACK (glade_project_window_prev_project_cb) },
+
+	{ "NextProject", NULL, N_("_Next Project"), "<control>Page_Down",
+	  N_("Activate next project"), G_CALLBACK (glade_project_window_next_project_cb) }
 
 
 };
@@ -1698,9 +1778,9 @@ glade_project_window_add_project (GladeProjectWindow *gpw, GladeProject *project
 			  G_CALLBACK (gpw_project_notify_handler_cb),
 			  gpw);
 
-	gpw_set_sensitivity_according_to_project (gpw, project);
-
 	gpw_refresh_projects_list_menu (gpw);
+
+	gpw_set_sensitivity_according_to_project (gpw, project);
 
 	gpw_refresh_title (gpw);
 
