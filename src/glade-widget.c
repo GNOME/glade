@@ -502,6 +502,10 @@ glade_widget_event_private (GtkWidget   *widget,
 	 */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
 
+	/* This manages to happen sometimes... lord knows why */
+	if (event_widget == NULL)
+		return FALSE;
+
 	gtk_widget_get_pointer (event_widget, &x, &y);
 	deep_event_widget = 
 		glade_widget_retrieve_from_position (event_widget, x, y);

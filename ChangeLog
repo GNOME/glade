@@ -1,6 +1,9 @@
 2006-08-19  Tristan Van Berkom <tvb@gnome.org>
 
-	* src/glade-widget.[ch]: Added glade_widget_remove_property ()
+	* src/glade-widget.[ch]: 
+	  o Added glade_widget_remove_property ()
+	  o Fixed textview segfault (bug 352054) by checking nulls from
+	    gdk_window_get_user_data().
 
 	* src/glade-editor-property.c: Hide widget when no property loaded
 
