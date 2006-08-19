@@ -1,3 +1,10 @@
+2006-08-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-widget-class.c: glade_widget_class_list_signals () now list
+	  signals implemented by interfaces.
+	  Added gwc_iface_not_implemented_by_parent () and
+	  glade_widget_class_add_signals().
+
 2006-08-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml.in: Fixed expanders, 

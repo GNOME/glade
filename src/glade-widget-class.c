@@ -258,45 +258,71 @@ glade_widget_class_list_children (GladeWidgetClass *class)
 	return children;
 }
 
+static void
+glade_widget_class_add_signals (GList **signals, GType type)
+{
+	guint count, *sig_ids, num_signals;
+	GladeSignalClass *cur;
+	
+	if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
+	{
+		sig_ids = g_signal_list_ids (type, &num_signals);
+
+		for (count = 0; count < num_signals; count++)
+		{
+			cur = g_new0 (GladeSignalClass, 1);
+			
+			g_signal_query (sig_ids[count], &(cur->query));
+
+			/* Since glib gave us this signal id... it should
+			 * exist no matter what.
+			 */
+			g_assert (cur->query.signal_id != 0);
+
+			cur->name = (cur->query.signal_name);
+			cur->type = (gchar *) g_type_name (type);
+
+			*signals = g_list_prepend (*signals, cur);
+		}
+		g_free (sig_ids);
+	}
+}
+
+static gboolean
+gwc_iface_not_implemented_by_parent (GType type, GType iface)
+{
+	GType *i, *p;
+	
+	type = g_type_parent (type);
+	if (g_type_is_a (type, G_TYPE_OBJECT) == FALSE) return TRUE;
+	
+	for (i = p = g_type_interfaces (type, NULL); *i; i++)
+		if (*i == iface) { g_free (p); return FALSE; }
+		
+	g_free (p);
+	return TRUE;
+}
+
 static GList * 
 glade_widget_class_list_signals (GladeWidgetClass *class) 
 {
 	GList *signals = NULL;
-	GType type;
-	guint count;
-	guint *sig_ids;
-	guint num_signals;
-	GladeSignalClass *cur;
+	GType type, *i, *p;
 
 	g_return_val_if_fail (class->type != 0, NULL);
 
-	type = class->type;
-	while (g_type_is_a (type, G_TYPE_OBJECT))
+	for (type = class->type; g_type_is_a (type, G_TYPE_OBJECT);
+	     type = g_type_parent (type))
 	{
-		if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
-		{
-			sig_ids = g_signal_list_ids (type, &num_signals);
+		/* Add class signals */
+		glade_widget_class_add_signals (&signals, type);
+	
+		/* Add class interfaces signals */
+		for (i = p = g_type_interfaces (type, NULL); *i; i++)
+			if (gwc_iface_not_implemented_by_parent (type, *i))
+				glade_widget_class_add_signals (&signals, *i);
 
-			for (count = 0; count < num_signals; count++)
-			{
-				cur = g_new0 (GladeSignalClass, 1);
-				
-				g_signal_query (sig_ids[count], &(cur->query));
-
-				/* Since glib gave us this signal id... it should
-				 * exist no matter what.
-				 */
-				g_assert (cur->query.signal_id != 0);
-
-				cur->name = (cur->query.signal_name);
-				cur->type = (gchar *) g_type_name (type);
-
-				signals = g_list_prepend (signals, cur);
-			}
-			g_free (sig_ids);
-		}
-
-		type = g_type_parent (type);
+		g_free (p);
 	}
 
 	return g_list_reverse (signals);
