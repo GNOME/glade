@@ -438,8 +438,7 @@ glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint ro
 			  pos, pos+1, row, row +1,
 			  pos ? GTK_EXPAND | GTK_FILL : GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
-			  0, 0);
-
+			  3, 1);
 }
 
 static GladeEditorProperty *
@@ -564,9 +563,6 @@ glade_editor_table_new (void)
 	table = g_new0 (GladeEditorTable, 1);
 
 	table->table_widget = gtk_table_new (0, 0, FALSE);
-
-	gtk_table_set_row_spacings (GTK_TABLE (table->table_widget), 2);
-	gtk_table_set_col_spacings (GTK_TABLE (table->table_widget), 6);
 
 	g_object_ref (G_OBJECT(table->table_widget));
 

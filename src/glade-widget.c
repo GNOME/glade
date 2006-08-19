@@ -660,6 +660,16 @@ glade_widget_build_object (GladeWidgetClass *klass, GladeWidget *widget, GladeWi
 	return object;
 }
 
+/**
+ * glade_widget_dup_properties:
+ * @template_props: the #GladeProperty list to copy
+ * @as_load: whether to behave as if loading the project
+ *
+ * Copies a list of properties, if @as_load is specified, then
+ * properties that are not saved to the glade file are ignored.
+ *
+ * Returns: A newly allocated #GList of new #GladeProperty objects.
+ */
 GList *
 glade_widget_dup_properties (GList *template_props, gboolean as_load)
 {
@@ -676,6 +686,38 @@ glade_widget_dup_properties (GList *template_props, gboolean as_load)
 	}
 	return g_list_reverse (properties);
 }
+
+/**
+ * glade_widget_remove_property:
+ * @widget: A #GladeWidget
+ * @id_property: the name of the property
+ *
+ * Removes the #GladeProperty indicated by @id_property
+ * from @widget (this is intended for use in the plugin, to
+ * remove properties from composite children that dont make
+ * sence to allow the user to specify, notably - properties
+ * that are proxied through the composite widget's properties or
+ * style properties).
+ */
+void
+glade_widget_remove_property (GladeWidget  *widget,
+			      const gchar  *id_property)
+{
+	GladeProperty *prop;
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (id_property);
+
+	if ((prop = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		widget->properties = g_list_remove (widget->properties, prop);
+		g_object_unref (prop);
+	}
+	else
+		g_critical ("Couldnt find property %s on widget %s\n",
+			    id_property, widget->name);
+}
+
 
 static void
 glade_widget_sync_custom_props (GladeWidget *widget)

@@ -1,3 +1,19 @@
+2006-08-19  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget.[ch]: Added glade_widget_remove_property ()
+
+	* src/glade-editor-property.c: Hide widget when no property loaded
+
+	* src/glade-editor.c: Fixed packing up so that invisible children
+	  dont screw up the layout.
+
+	* src/glade-gtk.c: Removed "border-width" on action area and vbox
+	  in GtkDialogs that expose them, also removed "spacing" on the
+	  action area - these props are controlled by "content-area-border", 
+	  "button-spacing" and "action-area-border" style props on the dialog.
+
+	* src/glade-property.c: Added #if 0 debugging code.
+
 2006-08-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-widget-class.c: glade_widget_class_list_signals () now list

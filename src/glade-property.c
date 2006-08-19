@@ -216,6 +216,17 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	gboolean      changed = FALSE;
 	GValue old_value = {0,};
 
+#if 0
+	{
+		gchar *str = glade_property_class_make_string_from_gvalue
+			(property->class, value);
+		g_print ("Setting property %s on %s to %s\n",
+			 property->class->id,
+			 property->widget ? property->widget->name : "unknown", str);
+		g_free (str);
+	}
+#endif
+
 	if (!g_value_type_compatible (G_VALUE_TYPE (property->value), G_VALUE_TYPE (value)))
 	{
 		g_warning ("Trying to assign an incompatible value to property %s\n",

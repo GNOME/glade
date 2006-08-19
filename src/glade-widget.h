@@ -157,6 +157,12 @@ GladeProperty          *glade_widget_get_property           (GladeWidget      *w
 LIBGLADEUI_API 
 GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
 							     const gchar      *id_property);
+LIBGLADEUI_API
+GList                  *glade_widget_dup_properties         (GList            *template_props,
+                                                             gboolean          as_load);
+LIBGLADEUI_API
+void                    glade_widget_remove_property        (GladeWidget      *widget,
+							     const gchar      *id_property);
 LIBGLADEUI_API 
 void                    glade_widget_show                   (GladeWidget      *widget);
 LIBGLADEUI_API 
@@ -185,10 +191,6 @@ gboolean                glade_widget_has_decendant          (GladeWidget      *w
 							     GType             type);
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_event_widget           (void);
-
-LIBGLADEUI_API
-GList                  *glade_widget_dup_properties         (GList            *template_props,
-                                                             gboolean          as_load);
 
 /*******************************************************************************
                       Project, object property references

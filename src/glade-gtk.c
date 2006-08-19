@@ -2760,6 +2760,14 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 			(vbox_widget, G_OBJECT(dialog->action_area),
 			 "action_area", "dialog", FALSE, reason);
 
+		/* These properties are controlled by the GtkDialog style properties:
+		 * "content-area-border", "button-spacing" and "action-area-border",
+		 * so we must disable thier use.
+		 */
+		glade_widget_remove_property (vbox_widget, "border-width");
+		glade_widget_remove_property (actionarea_widget, "border-width");
+		glade_widget_remove_property (actionarea_widget, "spacing");
+
 		/* Only set these on the original create. */
 		if (reason == GLADE_CREATE_USER)
 		{

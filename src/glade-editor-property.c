@@ -419,6 +419,19 @@ static void
 glade_editor_property_load_common (GladeEditorProperty *eprop, 
 				   GladeProperty       *property)
 {
+	/* Hide properties that are removed for some particular widgets. 
+	 */
+	if (property)
+	{
+		gtk_widget_show (GTK_WIDGET (eprop));
+		gtk_widget_show (eprop->eventbox);
+	}
+	else
+	{
+		gtk_widget_hide (GTK_WIDGET (eprop));
+		gtk_widget_hide (eprop->eventbox);
+	}
+
 	/* disconnect anything from previously loaded property */
 	if (eprop->property != property && eprop->property != NULL) 
 	{
@@ -451,7 +464,9 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		 * without leeking signal connections to properties :-/
 		 */
 		if (property == NULL) 
+		{
 			eprop->property = NULL;
+		}
 	}
 
 	/* Connect new stuff, deal with tooltip
@@ -3744,14 +3759,9 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
 	if (widget)
-	{
-		if ((property = 
-		     glade_widget_get_property (widget, eprop->class->id)) == NULL)
-		{
-			g_critical ("Couldnt find property of class %s on widget of class %s\n",
-				    eprop->class->id, widget->widget_class->name);
-		}
-	}
+		/* properties are allowed to be missing on some internal widgets */
+		property = glade_widget_get_property (widget, eprop->class->id);
+
 	glade_editor_property_load (eprop, property);
 }
 
