@@ -258,11 +258,19 @@ glade_widget_class_list_children (GladeWidgetClass *class)
 	return children;
 }
 
+static gint
+glade_widget_class_signal_comp (gconstpointer a, gconstpointer b)
+{
+	const GladeSignalClass *signal_a = a, *signal_b = b;	
+	return strcmp (signal_b->query.signal_name, signal_a->query.signal_name);
+}
+
 static void
 glade_widget_class_add_signals (GList **signals, GType type)
 {
 	guint count, *sig_ids, num_signals;
 	GladeSignalClass *cur;
+	GList *list = NULL;
 	
 	if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
 	{
@@ -282,9 +290,12 @@ glade_widget_class_add_signals (GList **signals, GType type)
 			cur->name = (cur->query.signal_name);
 			cur->type = (gchar *) g_type_name (type);
 
-			*signals = g_list_prepend (*signals, cur);
+			list = g_list_prepend (list, cur);
 		}
 		g_free (sig_ids);
+		
+		list = g_list_sort (list, glade_widget_class_signal_comp);
+		*signals = g_list_concat (list, *signals);
 	}
 }
 
