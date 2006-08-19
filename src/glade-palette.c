@@ -40,6 +40,7 @@
 #include "glade-widget.h"
 #include "glade-widget-class.h"
 #include <glib/gi18n-lib.h>
+#include <gdk/gdk.h>
 
 #define GLADE_PALETTE_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					  GLADE_TYPE_PALETTE,                   \
@@ -65,6 +66,7 @@ struct _GladePalettePrivate
 	GladeItemAppearance item_appearance;
 
 	gboolean use_small_item_icons;
+	gboolean locked; /* Wheater the palette should "stick" the selector */
 };
 
 enum
@@ -181,7 +183,7 @@ glade_palette_get_property (GObject    *object,
 			break;
 		case PROP_ITEM_APPEARANCE:
 			g_value_set_enum (value, priv->item_appearance);
-			break;			
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;			
@@ -288,9 +290,19 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 		return;
 
 	if (button == priv->selector)
+	{
 		priv->current_item_class = NULL;
+		priv->locked = FALSE;
+	}
 	else
+	{
+		GdkModifierType mask;
+		
 		priv->current_item_class = glade_palette_item_get_widget_class (GLADE_PALETTE_ITEM (button));
+		
+		gdk_window_get_pointer (button->window, NULL, NULL, &mask);
+	  	priv->locked = mask & GDK_CONTROL_MASK;
+	}
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
 }
@@ -626,7 +638,9 @@ glade_palette_deselect_current_item (GladePalette *palette)
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->selector), TRUE);
+	if (priv->locked == FALSE)
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->selector),
+					      TRUE);
 }
 
 /**
@@ -660,6 +674,4 @@ glade_palette_get_use_small_item_icons (GladePalette *palette)
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
 	return priv->use_small_item_icons;
-
-
 }
