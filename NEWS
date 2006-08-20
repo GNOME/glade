@@ -1,4 +1,23 @@
 ===========
+Glade 3.0.1
+===========
+
+New features and fixes
+======================
+    - Pasting a widget does not paste the packing options (bug 345604) (Juan Pablo Ugarte)
+    - Now you can paste widgets to your hearts content (bug 345603)
+    - Fixed expander widgets (they were missing placeholders).
+    - Adjustments are saved witout floating point precision in the glade file (reports of
+      glade-- code generator disliking the decimal points).
+    - Fixed an embaressing segfault when removing items using the menu/toolbar editor (Juan Pablo)
+    - Interface signals are now properly introspected + alphabetically sorted (Juan Pablo)
+    - Removed some properties on children internal to composite widgets, properties that
+      we're controlled by style properties on the GtkDialog widget (bug 352018).
+    - Enhancements to the "Projects" menu + minor UI enhancements (Vincent Geddes)
+    - Palette items can be locked down with CNTL-click matching glade-2 behaviour (bug 303679)
+
+
+===========
 Glade 3.0.0
 ===========
 
