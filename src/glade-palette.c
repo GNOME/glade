@@ -298,10 +298,13 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	{
 		GdkModifierType mask;
 		
-		priv->current_item_class = glade_palette_item_get_widget_class (GLADE_PALETTE_ITEM (button));
+		priv->current_item_class = 
+			glade_palette_item_get_widget_class (GLADE_PALETTE_ITEM (button));
 		
 		gdk_window_get_pointer (button->window, NULL, NULL, &mask);
-	  	priv->locked = mask & GDK_CONTROL_MASK;
+
+	  	priv->locked = 
+			(!priv->current_item_class->toplevel) && (mask & GDK_CONTROL_MASK);
 	}
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
