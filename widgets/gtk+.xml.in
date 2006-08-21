@@ -7,7 +7,7 @@
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 
-	<property common="True" id="tooltip" _name="Tooltip" default="">
+	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True">
 	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>A tooltip text for this widget</_tooltip>
 	  <set-function>glade_gtk_widget_set_tooltip</set-function>
@@ -176,7 +176,7 @@
 	<property id="icon-name"/>
 	<property id="resizable" ignore="True" />
 	<property id="decorated" ignore="True" />
-	<property id="title" ignore="True" />
+	<property id="title" ignore="True" translatable="True"/>
       	<property id="window-position" ignore="True">
   	  <displayable-values>
 	    <value id="GTK_WIN_POS_NONE" _name="None"/>
@@ -367,10 +367,10 @@
         <property id="label">
 	  <set-function>glade_gtk_tool_button_set_label</set-function>
 	</property>
-        <property id="icon-name" translatable="False">
+        <property id="icon-name">
 	  <set-function>glade_gtk_tool_button_set_icon_name</set-function>
 	</property>
-	<property id="stock-id" visible="False" translatable="False">
+	<property id="stock-id" visible="False">
 	  <set-function>glade_gtk_tool_button_set_stock_id</set-function>
 	</property>
         <property id="glade-type" _name="Image Type" save="False">
@@ -381,7 +381,7 @@
 	  <spec>glade_standard_stock_spec</spec>
 	  <set-function>glade_gtk_tool_button_set_glade_stock</set-function>
 	</property>
-	<property id="icon" _name="File Name" translatable="False">
+	<property id="icon" _name="File Name">
 	  <spec>glade_standard_pixbuf_spec</spec>
 	  <set-function>glade_gtk_tool_button_set_icon</set-function>
 	</property>
