@@ -505,7 +505,7 @@ gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
 {
-	gchar    *string = NULL, **strv;
+	gchar    *string = NULL, **strv, str[FLOAT_BUFSIZ];
 	GObject  *object;
 	GdkColor *color;
 	GList    *objects, *accels;
@@ -571,9 +571,15 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
 		string = g_strdup_printf ("%llu", g_value_get_uint64 (value));
 	else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
-		string = g_strdup_printf ("%f", g_value_get_float (value));
+	{
+		g_ascii_dtostr (str, FLOAT_BUFSIZ, g_value_get_float (value));
+		string = g_strdup (str);
+	}
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
-		string = g_strdup_printf ("%g", g_value_get_double (value));
+	{
+		g_ascii_dtostr (str, FLOAT_BUFSIZ, g_value_get_double (value));
+		string = g_strdup (str);
+	}
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
 	{
 		if (property_class->resource && g_value_get_string (value) != NULL)
