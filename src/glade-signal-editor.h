@@ -28,6 +28,10 @@ struct _GladeSignalEditor
 	GtkWidget *signals_list;
 	GtkTreeStore *model;
 	GtkTreeView *tree_view;
+	
+	GtkListStore *handler_store; /* This store contains all the posible handler names */
+	GtkEntryCompletion *completion;
+	GtkTreeIter iters[2];
 };
 
 

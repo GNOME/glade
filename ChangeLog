@@ -2,6 +2,12 @@
 
 	* src/glade-widget-class.c: glade_widget_class_add_signals()
 	  simplification.
+
+	* src/glade-signal-editor.[ch]: signal editor UI improved (bug 127149)
+	  o Handler column now uses a GtkCellRendererCombo with inline entry
+	    completion.
+	  o added completion to User Data column.
+	  o Lookup column disabled.
 	  
 2006-08-22  Tristan Van Berkom <tvb@gnome.org>
 

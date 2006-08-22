@@ -55,8 +55,7 @@ enum
 };
 
 #define HANDLER_DEFAULT  "<Type the signal's handler here>"
-#define USERDATA_DEFAULT "<Type the object's name or symbol to lookup here>"
-
+#define USERDATA_DEFAULT "<Type the object's name here>"
 
 static void
 glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
@@ -107,6 +106,13 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	g_free (userdata);
 }
 
+/*
+  glade files do not support symbol names as signal handler user_data arguments
+  yet, so we disabled the lookup column.
+*/
+#define LOOKUP_COLUMN 0
+
+#if LOOKUP_COLUMN
 static void
 glade_signal_editor_lookup_toggled (GtkCellRendererToggle *cell,
 				    gchar                 *path_str,
@@ -175,6 +181,7 @@ glade_signal_editor_is_valid_identifier (const char *text)
 
 	return TRUE;
 }
+#endif
 
 static void
 append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
@@ -408,7 +415,141 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 	g_free (userdata);
 }
 
+static void
+glade_signal_editor_construct_handler_store (GladeSignalEditor *editor)
+{
+	const gchar *handlers[] = {"gtk_widget_show", 
+				   "gtk_widget_hide",
+				   "gtk_widget_grab_focus",
+				   "gtk_widget_destroy",
+				   "gtk_true",
+				   "gtk_false",
+				   "gtk_main_quit",
+				   NULL};
+	GtkTreeIter iter, *iters = editor->iters;
+	GtkEntryCompletion *completion;
+	GtkListStore *store;
+	gint i;
+				   
+	store = gtk_list_store_new (1, G_TYPE_STRING);
+		
+	gtk_list_store_append (store, &iters[0]);
+	gtk_list_store_append (store, &iters[1]);
+		
+	for (i = 0; handlers[i]; i++)
+	{
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, handlers[i], -1);
+	}
+	
+	completion = gtk_entry_completion_new ();
+	gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (store));
+	gtk_entry_completion_set_text_column (completion, 0);
+	gtk_entry_completion_set_inline_completion (completion, TRUE);
+	gtk_entry_completion_set_popup_completion (completion, FALSE);
+	
+	editor->handler_store = store;
+	editor->completion = completion;
+}
 
+static void
+glade_signal_editor_handler_store_update (GladeSignalEditor *editor,
+					  const gchar *path)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
+	GtkListStore *store = editor->handler_store;
+	GtkTreeIter iter, *iters = editor->iters;
+	gchar *handler, *signal, *name;
+	
+	name = (gchar *) glade_widget_get_name (editor->widget);
+		
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+	{
+		gtk_tree_model_get (model, &iter, COLUMN_SIGNAL, &signal, -1);
+		if (signal) glade_util_replace (signal, '-', '_');
+		else return;
+	}
+	else return;
+
+	handler = g_strdup_printf ("on_%s_%s", name, signal);
+	gtk_list_store_set (store, &iters[0], 0, handler, -1);
+	g_free (handler);
+
+	handler = g_strdup_printf ("%s_%s_cb", name, signal);
+	gtk_list_store_set (store, &iters[1], 0, handler, -1);
+	g_free (handler);
+	
+	g_free (signal);
+}
+
+static void
+glade_signal_editor_editing_started (GtkEntry *entry, gboolean handler)
+{
+	const gchar *text = gtk_entry_get_text (entry);
+	
+	if ((handler) ? is_void_signal_handler (text) : is_void_user_data (text))
+		gtk_entry_set_text (entry, "");
+}
+
+static void
+glade_signal_editor_handler_editing_started (GtkCellRenderer *cell,
+					     GtkCellEditable *editable,
+					     const gchar *path,
+					     GladeSignalEditor *editor)
+{
+	GtkEntry *entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (editable)));
+	
+	glade_signal_editor_editing_started (entry, TRUE);
+	
+	glade_signal_editor_handler_store_update (editor, path);
+	
+	gtk_entry_set_completion (entry, editor->completion);
+}
+
+static void
+glade_signal_editor_user_data_editing_started (GtkCellRenderer *cell,
+					       GtkCellEditable *editable,
+					       const gchar *path,
+					       GladeSignalEditor *editor)
+{
+	GtkEntry *entry = GTK_ENTRY (editable);
+	GtkEntryCompletion *completion;
+	GtkListStore *store;
+	GtkTreeIter iter;
+	GList *list;
+	
+	g_return_if_fail (editor->widget != NULL);
+	
+	glade_signal_editor_editing_started (entry, FALSE);
+	
+	store = gtk_list_store_new (1, G_TYPE_STRING);
+	
+	for (list = editor->widget->project->objects;
+	     list && list->data;
+	     list = g_list_next (list))
+	{
+		GladeWidget *widget = glade_widget_get_from_gobject (list->data);
+		
+		if (widget)
+		{
+			gtk_list_store_append (store, &iter);
+			gtk_list_store_set (store, &iter, 0, widget->name, -1);
+		}
+	}
+	
+	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), 0,
+					      GTK_SORT_DESCENDING);
+	
+	completion = gtk_entry_completion_new ();
+	
+	gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (store));
+	gtk_entry_completion_set_text_column (completion, 0);	
+	gtk_entry_set_completion (entry, completion);
+	
+	/* Get rid of references */
+	g_object_unref (store);
+	g_object_unref (completion);
+}
 
 static void
 glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
@@ -533,6 +674,9 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	g_signal_connect(view, "row-activated", (GCallback) row_activated, NULL);
 
+	/* Contruct handler model */
+	glade_signal_editor_construct_handler_store (editor);
+
 	/************************ signal column ************************/
  	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), "weight", PANGO_WEIGHT_BOLD, NULL); 
@@ -541,13 +685,20 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
  	gtk_tree_view_append_column (view, column);
 
 	/************************ handler column ************************/
- 	renderer = gtk_cell_renderer_text_new ();
+ 	renderer = gtk_cell_renderer_combo_new ();
 	g_object_set (G_OBJECT (renderer),
 		      "style", PANGO_STYLE_ITALIC,
-		      "foreground", "Gray", NULL);
+		      "foreground", "Gray",
+		      "model", GTK_TREE_MODEL (editor->handler_store),
+		      "text-column", 0,
+		      NULL);
 	
 	g_signal_connect (renderer, "edited",
 			  G_CALLBACK (glade_signal_editor_handler_cell_edited), editor);
+
+	g_signal_connect (renderer, "editing-started",
+			  G_CALLBACK (glade_signal_editor_handler_editing_started),
+			  editor);
 
 	column = gtk_tree_view_column_new_with_attributes
 		(_("Handler"),     renderer,
@@ -566,6 +717,11 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	g_signal_connect (renderer, "edited",
 			  G_CALLBACK (glade_signal_editor_userdata_cell_edited), editor);
+	
+	g_signal_connect (renderer, "editing-started",
+			  G_CALLBACK (glade_signal_editor_user_data_editing_started),
+			  editor);
+	
 	column = gtk_tree_view_column_new_with_attributes
 		(_("User data"), renderer,
 		 "text",           COLUMN_USERDATA,
@@ -574,7 +730,8 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 "editable",       COLUMN_USERDATA_EDITABLE, NULL);
 
  	gtk_tree_view_append_column (view, column);
-
+	
+#if LOOKUP_COLUMN
 	/************************ lookup column ************************/
  	renderer = gtk_cell_renderer_toggle_new ();
 	g_signal_connect (renderer, "toggled",
@@ -585,7 +742,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 "visible", COLUMN_LOOKUP_VISIBLE, NULL);
 
  	gtk_tree_view_append_column (view, column);
-	
+#endif
 	/************************ after column ************************/
 	renderer = gtk_cell_renderer_toggle_new ();
 	g_signal_connect (renderer, "toggled",
