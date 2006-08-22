@@ -456,6 +456,8 @@
     <glade-widget-class name="GtkEntry" generic-name="entry" _title="Text Entry">
       <post-create-function>glade_gtk_entry_post_create</post-create-function>
       <properties>
+	<property id="text" translatable="True"/>
+
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-action="True">
 	  <_tooltip>Set the desctription of the Activate atk action</_tooltip>
@@ -601,6 +603,7 @@
 
     <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">
       <properties>
+	<property id="title" translatable="True"/>
 	<property id="size" disabled="True"/>
 	<property id="dialog" disabled="True"/>
         <property id="action">
@@ -619,6 +622,7 @@
 
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <properties>
+	<property id="title" translatable="True"/>
 	<property id="color" default="Black"/>
 
 	<!-- These props dont apply to color buttons -->
@@ -631,6 +635,8 @@
 
     <glade-widget-class name="GtkFontButton" generic-name="fontbutton" _title="Font Button">
       <properties>
+	<property id="title" translatable="True"/>
+
 	<!-- These props dont apply to font buttons -->
 	<property id="glade-type" disabled="True"/>
 	<property id="label" disabled="True"/>
@@ -676,6 +682,7 @@
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
+        <property id="text" translatable="True"/>
         <property id="activity-blocks" disabled="True"/>
 	<property id="activity-step" disabled="True"/>
 	<property id="adjustment" disabled="True"/>
@@ -1150,7 +1157,29 @@
     <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
     -->
     
-   <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" _title="About Dialog"/>
+   <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" _title="About Dialog">
+      <properties>
+	<property id="copyright" translatable="True">
+	  <visible-lines>2</visible-lines>
+	</property>
+	<property id="comments" translatable="True">
+	  <visible-lines>2</visible-lines>
+	</property>
+	<property id="license" translatable="True">
+	  <visible-lines>2</visible-lines>
+	</property>
+	<property id="website-label" translatable="True">
+	  <visible-lines>2</visible-lines>
+	</property>
+	
+	<!-- It is disputable whether this should really be translatable -->
+	<property id="translator-credits" translatable="True">
+	  <_tooltip>You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation</_tooltip>
+	  <visible-lines>2</visible-lines>
+	</property>
+      </properties>
+   </glade-widget-class>
+
    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog"/>
     
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" _title="File Chooser Dialog">

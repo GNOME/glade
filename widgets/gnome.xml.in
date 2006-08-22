@@ -76,13 +76,15 @@
             <value id="GNOME_EDGE_OTHER" _name="Other"/>
           </displayable-values>
 	</property>
-	<property id="title" _name="Title">
+	<property id="title" _name="Title" translatable="True">
 	  <spec>glade_standard_string_spec</spec>
 	  <set-function>glade_gnome_dpe_set_title</set-function>
+          <visible-lines>2</visible-lines>
 	</property>
-	<property id="text" _name="Text">
+	<property id="text" _name="Text" translatable="True">
 	  <spec>glade_standard_string_spec</spec>
 	  <set-function>glade_gnome_dpe_set_text</set-function>
+          <visible-lines>4</visible-lines>
 	</property>
 	<property id="title-foreground" _name="Title Foreground Color" default="#FFFFFF">
 	  <spec>glade_standard_gdkcolor_spec</spec>
@@ -123,6 +125,10 @@
       <post-create-function>glade_gnome_dps_post_create</post-create-function>
       <get-internal-child-function>glade_gnome_dps_get_internal_child</get-internal-child-function>
       <properties>
+	<property id="title" translatable="True">
+          <visible-lines>2</visible-lines>
+	</property>
+
         <property id="background-set" disabled="True"/>
 	<property id="background" visible="False" save="False" default="#4B6983">
 	  <set-function>glade_gnome_dps_set_background</set-function>
