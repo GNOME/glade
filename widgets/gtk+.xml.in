@@ -211,7 +211,7 @@
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <properties>
-        <property id="label" _name="Label">
+        <property id="label" _name="Label" translatable="True">
 	  <_tooltip>The text of the menu item</_tooltip>
           <spec>glade_standard_string_spec</spec>
           <set-function>glade_gtk_menu_item_set_label</set-function>
