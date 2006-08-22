@@ -392,14 +392,36 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 	}
 	else if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
+#define FLOAT_BUFSIZ 128
+
 		GtkAdjustment *adj = GTK_ADJUSTMENT (object);
-		
-		/* Glade format expects integers */
-		string = g_strdup_printf ("%d %d %d %d %d %d", 
-					  (gint)adj->value, (gint)adj->lower, (gint)adj->upper, 
-					  (gint)adj->step_increment, 
-					  (gint)adj->page_increment,
-					  (gint)adj->page_size);
+		GString       *str = g_string_new ("");
+		gchar          buff[FLOAT_BUFSIZ];
+
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->value);
+		g_string_append (str, buff);
+
+		g_string_append_c (str, ' ');
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->lower);
+		g_string_append (str, buff);
+
+		g_string_append_c (str, ' ');
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->upper);
+		g_string_append (str, buff);
+
+		g_string_append_c (str, ' ');
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->step_increment);
+		g_string_append (str, buff);
+
+		g_string_append_c (str, ' ');
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->page_increment);
+		g_string_append (str, buff);
+
+		g_string_append_c (str, ' ');
+		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->page_size);
+		g_string_append (str, buff);
+
+		string = g_string_free (str, FALSE);
 	}
 	else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
 		string = g_strdup (gwidget->name);
