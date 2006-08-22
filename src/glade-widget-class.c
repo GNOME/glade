@@ -299,38 +299,24 @@ glade_widget_class_add_signals (GList **signals, GType type)
 	}
 }
 
-static gboolean
-gwc_iface_not_implemented_by_parent (GType type, GType iface)
-{
-	GType *i, *p;
-	
-	type = g_type_parent (type);
-	if (g_type_is_a (type, G_TYPE_OBJECT) == FALSE) return TRUE;
-	
-	for (i = p = g_type_interfaces (type, NULL); *i; i++)
-		if (*i == iface) { g_free (p); return FALSE; }
-		
-	g_free (p);
-	return TRUE;
-}
-
 static GList * 
 glade_widget_class_list_signals (GladeWidgetClass *class) 
 {
 	GList *signals = NULL;
-	GType type, *i, *p;
+	GType type, parent, *i, *p;
 
 	g_return_val_if_fail (class->type != 0, NULL);
 
-	for (type = class->type; g_type_is_a (type, G_TYPE_OBJECT);
-	     type = g_type_parent (type))
+	for (type = class->type; g_type_is_a (type, G_TYPE_OBJECT); type = parent)
 	{
+		parent = g_type_parent (type);
+		
 		/* Add class signals */
 		glade_widget_class_add_signals (&signals, type);
 	
 		/* Add class interfaces signals */
 		for (i = p = g_type_interfaces (type, NULL); *i; i++)
-			if (gwc_iface_not_implemented_by_parent (type, *i))
+			if (!glade_util_class_implements_interface (parent, *i))
 				glade_widget_class_add_signals (&signals, *i);
 
 		g_free (p);
