@@ -82,9 +82,6 @@ LIBGLADEUI_API
 GList            *glade_util_container_get_all_children (GtkContainer *container);
 
 LIBGLADEUI_API
-GList            *glade_util_uri_list_parse (const gchar* uri_list);
-
-LIBGLADEUI_API
 gboolean          glade_util_gtkcontainer_relation     (GladeWidget *parent,
 							GladeWidget *widget);
 LIBGLADEUI_API

@@ -1659,33 +1659,37 @@ gpw_drag_data_received (GtkWidget *widget,
 			GdkDragContext *context,
 			gint x, gint y,
 			GtkSelectionData *selection_data,
-			guint info, guint time, GladeProjectWindow *gpw)
+			guint info, guint time, GladeProjectWindow *window)
 {
-	gchar *uri_list;
-	GList *list = NULL;
+	gchar **uris, **str;
+	gchar *data;
 
 	if (info != TARGET_URI_LIST)
 		return;
 
-	/*
-	 * Mmh... it looks like on Windows selection_data->data is not
-	 * NULL terminated, so we need to make sure our local copy is.
-	 */
-	uri_list = g_new (gchar, selection_data->length + 1);
-	memcpy (uri_list, selection_data->data, selection_data->length);
-	uri_list[selection_data->length] = 0;
+	/* On MS-Windows, it looks like `selection_data->data' is not NULL terminated. */
+	data = g_new (gchar, selection_data->length + 1);
+	memcpy (data, selection_data->data, selection_data->length);
+	data[selection_data->length] = 0;
 
-	list = glade_util_uri_list_parse (uri_list);
-	for (; list; list = list->next)
+	uris = g_uri_list_extract_uris (data);
+
+	for (str = uris; *str; str++)
 	{
-		if (list->data)
-			glade_project_window_open_project (gpw, list->data);
+		GError *error = NULL;
+		gchar *path = g_filename_from_uri (*str, NULL, &error);
 
-		/* we can now free each string in the list */
-		g_free (list->data);
+		if (path)
+			glade_project_window_open_project (window, path);
+		else
+		{
+			g_warning ("Could not convert uri to local path: %s", error->message); 
+
+			g_error_free (error);
+		}
+		g_free (path);
 	}
-
-	g_list_free (list);
+	g_strfreev (uris);
 }
 
 static gboolean
