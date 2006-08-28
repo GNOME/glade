@@ -3203,7 +3203,6 @@ key_edited (GtkCellRendererText *cell,
 {
 	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
 	gboolean         key_was_set;
-	gchar           *signal;
 	const gchar     *text;
 	GtkTreeIter      iter, parent_iter, new_iter;
 
@@ -3211,11 +3210,9 @@ key_edited (GtkCellRendererText *cell,
 						  &iter, path_string))
 		return;
 
-	gtk_tree_model_get
-		(eprop_accel->model, &iter,
-		 ACCEL_COLUMN_KEY_ENTERED, &key_was_set,
-		 ACCEL_COLUMN_SIGNAL, &signal,
-		 -1);
+	gtk_tree_model_get (eprop_accel->model, &iter,
+			    ACCEL_COLUMN_KEY_ENTERED, &key_was_set,
+			    -1);
 
 	/* If user selects "none"; remove old entry or ignore new one.
 	 */
@@ -3248,22 +3245,31 @@ key_edited (GtkCellRendererText *cell,
 	if (key_was_set == FALSE &&
 	    gtk_tree_model_iter_parent (eprop_accel->model,
 					&parent_iter, &iter))
-	{
+	{	
+		gchar *signal, *real_signal;
+		
+		gtk_tree_model_get (eprop_accel->model, &iter,
+				    ACCEL_COLUMN_SIGNAL, &signal,
+				    ACCEL_COLUMN_REAL_SIGNAL, &real_signal,
+				    -1);
+		
 		/* Append a new empty slot at the end */
 		gtk_tree_store_insert_after (GTK_TREE_STORE (eprop_accel->model), 
 					     &new_iter, &parent_iter, &iter);
-		gtk_tree_store_set    
-			(GTK_TREE_STORE (eprop_accel->model), &new_iter,
-			 ACCEL_COLUMN_SIGNAL, signal,
-			 ACCEL_COLUMN_IS_CLASS, FALSE,
-			 ACCEL_COLUMN_IS_SIGNAL, TRUE,
-			 ACCEL_COLUMN_MOD_SHIFT, FALSE,
-			 ACCEL_COLUMN_MOD_CNTL, FALSE,
-			 ACCEL_COLUMN_MOD_ALT, FALSE,
-			 ACCEL_COLUMN_KEY, _("<choose a key>"),
-			 ACCEL_COLUMN_KEY_ENTERED, FALSE,
-			 ACCEL_COLUMN_KEY_SLOT, TRUE,
-			 -1);
+		gtk_tree_store_set (GTK_TREE_STORE (eprop_accel->model), &new_iter,
+				    ACCEL_COLUMN_SIGNAL, signal,
+				    ACCEL_COLUMN_REAL_SIGNAL, real_signal,
+				    ACCEL_COLUMN_IS_CLASS, FALSE,
+				    ACCEL_COLUMN_IS_SIGNAL, TRUE,
+				    ACCEL_COLUMN_MOD_SHIFT, FALSE,
+				    ACCEL_COLUMN_MOD_CNTL, FALSE,
+				    ACCEL_COLUMN_MOD_ALT, FALSE,
+				    ACCEL_COLUMN_KEY, _("<choose a key>"),
+				    ACCEL_COLUMN_KEY_ENTERED, FALSE,
+				    ACCEL_COLUMN_KEY_SLOT, TRUE,
+				    -1);
+		g_free (signal);
+		g_free (real_signal);
 	}
 }
 
@@ -3434,32 +3440,31 @@ glade_eprop_accel_accum_accelerators (GtkTreeModel  *model,
 				      GList         **ret)
 {
 	GladeAccelInfo *info;
-	gchar          *signal;
-	gchar          *key_str;
+	gchar          *signal, *key_str;
 	gboolean        shift, cntl, alt, entered;
 
+	gtk_tree_model_get (model, iter, ACCEL_COLUMN_KEY_ENTERED, &entered, -1);
+	if (entered == FALSE) return FALSE;
+	
 	gtk_tree_model_get (model, iter,
 			    ACCEL_COLUMN_REAL_SIGNAL, &signal,
 			    ACCEL_COLUMN_KEY,         &key_str,
 			    ACCEL_COLUMN_MOD_SHIFT,   &shift,
 			    ACCEL_COLUMN_MOD_CNTL,    &cntl,
 			    ACCEL_COLUMN_MOD_ALT,     &alt,
-			    ACCEL_COLUMN_KEY_ENTERED, &entered,
 			    -1);
+
+	info            = g_new0 (GladeAccelInfo, 1);
+	info->signal    = signal;
+	info->key       = glade_builtin_key_from_string (key_str);
+	info->modifiers = (shift ? GDK_SHIFT_MASK   : 0) |
+			  (cntl  ? GDK_CONTROL_MASK : 0) |
+			  (alt   ? GDK_MOD1_MASK    : 0);
+
+	*ret = g_list_prepend (*ret, info);
+
+	g_free (key_str);
 	
-	if (entered)
-	{
-		info            = g_new0 (GladeAccelInfo, 1);
-		info->signal    = g_strdup (signal);
-		info->key       = glade_builtin_key_from_string (key_str);
-		info->modifiers = 
-			(shift ? GDK_SHIFT_MASK   : 0) |
-			(cntl  ? GDK_CONTROL_MASK : 0) |
-			(alt   ? GDK_MOD1_MASK    : 0);
-
-		*ret = g_list_prepend (*ret, info);
-	}
-
 	return FALSE;
 }
 

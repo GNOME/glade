@@ -774,6 +774,10 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	for (list = widget->packing_properties; list && list->data; list = list->next)
 	{
 		property               = GLADE_PROPERTY (list->data);
+		
+		if (glade_property_class_is_visible (property->class) == FALSE)
+			continue;
+		
 		editor_property        = glade_editor_table_append_item (editor->packing_etable, 
 									 property->class, FALSE);
 		editor->packing_eprops = g_list_prepend (editor->packing_eprops, editor_property);

@@ -1732,3 +1732,26 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 
 	return retval;
 }
+
+/**
+ * glade_util_object_is_loading:
+ * @object: A #GObject
+ *
+ * Returns: Whether the object's project is being loaded or not.
+ *       
+ */
+gboolean
+glade_util_object_is_loading (GObject *object)
+{
+	GladeProject *project;
+	GladeWidget *widget;
+
+	g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+	
+	widget = glade_widget_get_from_gobject (object);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	
+	project = glade_widget_get_project (widget);
+	
+	return glade_project_is_loading (project);
+}

@@ -838,9 +838,18 @@
 	  <type>GtkWidget</type>
 	  <add-child-function>glade_gtk_paned_add_child</add-child-function>
 	  <remove-child-function>glade_gtk_paned_remove_child</remove-child-function>
+	  <child-set-property-function>glade_gtk_paned_set_child_property</child-set-property-function>
+	  <child-get-property-function>glade_gtk_paned_get_child_property</child-get-property-function>
           <properties>
             <property id="resize" transfer-on-paste="True"/>
             <property id="shrink" transfer-on-paste="True"/>
+	    <!--
+	    Whether to add the child to the top/left or bottom/right pane.
+	    This virtual property is used to remember child position in undo/redo.
+	    -->
+	    <property id="first" save="False" visible="False">
+	      <spec>glade_standard_boolean_spec</spec>
+	    </property>
           </properties>
 	</child>
       </children>

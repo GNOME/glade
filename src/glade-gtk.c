@@ -2452,23 +2452,51 @@ glade_gtk_paned_post_create (GObject *paned, GladeCreateReason reason)
 void GLADEGTK_API 
 glade_gtk_paned_add_child (GObject *object, GObject *child)
 {
-	GList *children, *list;
+	GtkPaned *paned;
+	GtkWidget *child1, *child2;
+	gboolean loading;
+	
+	g_return_if_fail (GTK_IS_PANED (object));
+	
+	paned = GTK_PANED (object);
+	loading = glade_util_object_is_loading (object);
+	
+	child1 = gtk_paned_get_child1 (paned);
+	child2 = gtk_paned_get_child2 (paned);
 
-	if ((children = gtk_container_get_children (GTK_CONTAINER (object))) != NULL)
+	if (loading == FALSE)
 	{
-		for (list = children; list; list = list->next)
+		/* Remove a placeholder */
+		if (child1 && GLADE_IS_PLACEHOLDER (child1))
 		{
-			/* Make way for the incomming widget */
-			if (GLADE_IS_PLACEHOLDER (list->data))
-			{
-				gtk_container_remove (GTK_CONTAINER (object), 
-						      GTK_WIDGET (list->data));
-				break;
-			}
+			gtk_container_remove (GTK_CONTAINER (object), child1);
+			child1 = NULL;
+		}
+		else if (child2 && GLADE_IS_PLACEHOLDER (child2))
+		{
+			gtk_container_remove (GTK_CONTAINER (object), child2);
+			child2 = NULL;
 		}
 	}
-	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
+	/* Add the child */
+	if (child1 == NULL)
+		gtk_paned_add1 (paned, GTK_WIDGET (child));
+	else if (child2 == NULL)
+		gtk_paned_add2 (paned, GTK_WIDGET (child));
+	
+	if (GLADE_IS_PLACEHOLDER (child) == FALSE && loading)
+	{
+		GladeWidget *gchild = glade_widget_get_from_gobject (child);
+		
+		if (gchild && gchild->packing_properties)
+		{
+			if (child1 == NULL)
+				glade_widget_pack_property_set (gchild, "first", TRUE);
+			else if (child2 == NULL)
+				glade_widget_pack_property_set (gchild, "first", FALSE);
+		}
+	}
 }
 
 void GLADEGTK_API 
@@ -2477,6 +2505,60 @@ glade_gtk_paned_remove_child (GObject *object, GObject *child)
 	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
 	glade_gtk_paned_post_create (object, GLADE_CREATE_USER);
+}
+
+void GLADEGTK_API
+glade_gtk_paned_set_child_property (GObject *container,
+				    GObject *child,
+				    const gchar *property_name,
+				    const GValue *value)
+{
+	if (strcmp (property_name, "first") == 0)
+	{
+		GtkPaned *paned = GTK_PANED (container);
+		gboolean first = g_value_get_boolean (value);
+		GtkWidget *place, *wchild = GTK_WIDGET (child);
+		
+		place = (first) ? gtk_paned_get_child1 (paned) :
+				  gtk_paned_get_child2 (paned);
+		
+		if (place && GLADE_IS_PLACEHOLDER (place))
+			gtk_container_remove (GTK_CONTAINER (container), place);
+		
+		g_object_ref (child);
+		gtk_container_remove (GTK_CONTAINER (container), wchild);
+		if (first)
+			gtk_paned_add1 (paned, wchild);
+		else
+			gtk_paned_add2 (paned, wchild);
+		g_object_unref (child);
+		
+		/* Ensure placeholders */
+		if ((place = gtk_paned_get_child1 (paned)) == NULL)
+			gtk_paned_add1 (paned, glade_placeholder_new ());
+		
+		if ((place = gtk_paned_get_child2 (paned)) == NULL)
+			gtk_paned_add2 (paned, glade_placeholder_new ());
+	}
+	else
+		gtk_container_child_set_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name, value);
+}
+
+void GLADEGTK_API
+glade_gtk_paned_get_child_property (GObject *container,
+				    GObject *child,
+				    const gchar *property_name,
+				    GValue *value)
+{
+	if (strcmp (property_name, "first") == 0)
+		g_value_set_boolean (value, GTK_WIDGET (child) ==
+				     gtk_paned_get_child1 (GTK_PANED (container)));
+	else
+		gtk_container_child_get_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name, value);
 }
 
 /* ----------------------------- GtkExpander ------------------------------ */
@@ -4341,22 +4423,18 @@ glade_gtk_toolbar_set_child_property (GObject *container,
 void GLADEGTK_API
 glade_gtk_toolbar_add_child (GObject *object, GObject *child)
 {
-	GladeWidget *gtoolbar;
-	GladeProject *project;
 	GtkToolbar *toolbar;
 	GtkToolItem *item;
 	
 	g_return_if_fail (GTK_IS_TOOLBAR (object));
 	g_return_if_fail (GTK_IS_TOOL_ITEM (child));
 	
-	gtoolbar = glade_widget_get_from_gobject (object);
-	project = glade_widget_get_project (gtoolbar);
 	toolbar = GTK_TOOLBAR (object);
 	item = GTK_TOOL_ITEM (child);
 	
 	gtk_toolbar_insert (toolbar, item, -1);
 		
-	if (glade_project_is_loading (project))
+	if (glade_util_object_is_loading (object))
 	{
 		GladeWidget *gchild = glade_widget_get_from_gobject (child);
 		

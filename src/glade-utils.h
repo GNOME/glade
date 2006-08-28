@@ -146,6 +146,9 @@ gboolean          glade_util_deep_fixed_event      (GtkWidget   *widget,
 LIBGLADEUI_API
 GtkWidget        *glade_util_get_placeholder_from_pointer (GtkContainer *container);
 
+LIBGLADEUI_API
+gboolean          glade_util_object_is_loading     (GObject *object);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

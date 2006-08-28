@@ -1,3 +1,24 @@
+2006-08-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c: Fixed bug 345075 "GtkPaned is invisible on load".
+	  added new functions glade_gtk_paned_set_child_property() and
+	  glade_gtk_paned_get_child_property().
+
+	* src/glade-editor.c: do not load invisible packing properties in
+	  glade_editor_load_packing_page().
+
+	* widgets/gtk+.xml.in: GtkPaned support improved.
+	  o Added new virtual child property "first".
+	  o Added child-set-property-function and child-get-property-function
+
+	* src/glade-utils.[ch]: added convenience function
+	  glade_util_object_is_loading()
+
+	* src/glade-editor-property.c: Fixed bug 352825 "segmentation fault when
+	  saving after adding multiple accelerators to buttons"
+	  set ACCEL_COLUMN_REAL_SIGNAL in key_edited() when a new slot is
+	  appended and free string allocated by gtk_tree_model_get().
+
 2006-08-24  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* src/glade-utils.[ch]: Remove glade_util_uri_list_parse().
