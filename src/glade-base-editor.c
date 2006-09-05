@@ -585,9 +585,10 @@ glade_base_editor_reorder_children (GladeBaseEditor *editor, GtkTreeIter *child)
 	do
 	{
 		gtk_tree_model_get (model, &iter, GLADE_BASE_EDITOR_MENU_GWIDGET, &gchild, -1);
-		position++;
+		
 		if ((property = glade_widget_get_property (gchild, "position")) != NULL)
 			glade_command_set_property (property, position);
+		position++;
 	} while (gtk_tree_model_iter_next (model, &iter));
 }
 
@@ -852,7 +853,7 @@ glade_base_editor_reorder (GladeBaseEditor *editor, GtkTreeIter *iter)
 	{
 		glade_base_editor_clear (editor);
 		glade_base_editor_fill_store (editor);
-		glade_base_editor_find_child (editor, gparent, &editor->priv->iter);
+		glade_base_editor_find_child (editor, gchild, &editor->priv->iter);
 	}
 
 	glade_command_pop_group ();
@@ -1162,10 +1163,13 @@ glade_base_editor_move_child (GladeBaseEditor *editor,
 {
 	GList list = {0, };
 
-	list.data = gchild;
-	glade_command_cut (&list);
-	glade_command_paste (&list, gparent, NULL);
-	
+	if (gparent != glade_widget_get_parent (gchild))
+	{
+		list.data = gchild;
+		glade_command_cut (&list);
+		glade_command_paste (&list, gparent, NULL);
+	}
+
 	return TRUE;
 }
 

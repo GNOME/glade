@@ -1,3 +1,12 @@
+2006-09-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-base-editor.c, src/glade-gtk.c: small optimization, there is
+	  no need to move a child if the new parent is the same as the old one.
+	  (in GladeBaseEditor "move-child" signal handlers)
+
+	* src/glade-command.c: fixed a warnign in glade_command_delete_execute()
+	  Widgets in the clipboard have no parents.
+
 2006-08-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-gtk.c: Fixed bug 345075 "GtkPaned is invisible on load".

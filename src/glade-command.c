@@ -953,7 +953,7 @@ glade_command_delete_execute (GladeCommandCreateDelete *me)
 	{
 		cdata = list->data;
 
-		if (cdata->parent)
+		if (cdata->parent && me->from_clipboard == FALSE)
 		{
 			if (cdata->placeholder)
 				glade_widget_replace
