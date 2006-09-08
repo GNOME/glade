@@ -668,6 +668,7 @@
 
     <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry">
       <post-create-function>glade_gtk_combo_box_entry_post_create</post-create-function>
+      <get-internal-child-function>glade_gtk_combo_box_entry_get_internal_child</get-internal-child-function>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">

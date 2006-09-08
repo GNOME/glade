@@ -1,4 +1,12 @@
-2006-08-17  Tristan Van Berkom <tvb@gnome.org>
+2006-09-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-gtk.c: added glade_gtk_combo_box_entry_get_internal_child()
+	  Fixed bug 354716 "cut&paste ComboBoxEntry crashes Glade"
+
+	* widgets/gtk+.xml.in: added GtkComboBoxEntry's
+	  get-internal-child-function.
+
+2006-09-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: Backing out multiple consecutive pastes from 3.0,
 	  reopening bug 345603.

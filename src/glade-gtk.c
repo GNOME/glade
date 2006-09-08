@@ -4859,6 +4859,18 @@ glade_gtk_combo_box_entry_post_create (GObject *object, GladeCreateReason reason
 		 "entry", "comboboxentry", FALSE, reason);
 }
 
+void GLADEGTK_API
+glade_gtk_combo_box_entry_get_internal_child (GObject *object, 
+					      const gchar *name,
+					      GObject **child)
+{
+	g_return_if_fail (GTK_IS_COMBO_BOX_ENTRY (object));
+	
+	if (strcmp ("entry", name) == 0)
+		*child = G_OBJECT (gtk_bin_get_child (GTK_BIN (object)));
+	else
+		*child = NULL;
+}
 
 /* ----------------------------- GtkOptionMenu ------------------------------ */
 void GLADEGTK_API
