@@ -6,6 +6,11 @@
 	* widgets/gtk+.xml.in: added GtkComboBoxEntry's
 	  get-internal-child-function.
 
+	* src/glade-gnome.c: added glade_gnome_date_edit_post_create()
+	  Fixed bug 351589 "GnomeDateEdit widget displays time when it shouldn't"
+
+	* widgets/gnome.xml.in: added GnomeDateEdit's post-create-function
+
 2006-09-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: Backing out multiple consecutive pastes from 3.0,

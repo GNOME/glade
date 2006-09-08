@@ -283,6 +283,20 @@ glade_gnome_app_bar_post_create (GObject *object, GladeCreateReason reason)
 	gnome_appbar_set_status (GNOME_APPBAR (object), _("Status Message."));
 }
 
+/* GnomeDateEdit */
+void GLADEGNOME_API
+glade_gnome_date_edit_post_create (GObject *object, GladeCreateReason reason)
+{
+	g_return_if_fail (GNOME_IS_DATE_EDIT (object));
+
+	/* DateEdit's "dateedit-flags" property hides/shows some widgets so we 
+	 * need to explicitly tell that they should not be affected by 
+	 * gtk_widget_show_all() (its, for example, called after a paste)
+	 */
+	gtk_container_foreach (GTK_CONTAINER (object),
+			       gtk_widget_set_no_show_all, TRUE);
+}
+
 /* GnomeDruid */
 static GladeWidget *
 glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
