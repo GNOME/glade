@@ -174,7 +174,9 @@ struct _GladePropertyClass
 			     * directory).
 			     */
 	
-	gboolean transfer_on_paste;
+	gboolean transfer_on_paste; /* If this is a packing prop, 
+				     * wether we should transfer it on paste.
+				     */
 	
 	/* Delagate to verify if this is a valid value for this property,
 	 * if this function exists and returns FALSE, then glade_property_set

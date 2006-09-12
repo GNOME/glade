@@ -742,19 +742,26 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 	
 	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF && project)
 	{
+		static GtkWidget *widget = NULL;
 		GdkPixbuf *pixbuf;
-
+ 
 		fullpath = glade_project_resource_fullpath (project, string);
-
-		if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) != NULL)
+ 
+		if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) == NULL)
 		{
-			g_object_set_data_full (G_OBJECT(pixbuf), 
-						"GladeFileName",
-						g_strdup (string),
-						g_free);
-
-			object = G_OBJECT(pixbuf);
+			if (widget == NULL) widget = gtk_label_new ("");
+			pixbuf = gtk_widget_render_icon (widget,
+							 GTK_STOCK_MISSING_IMAGE,
+							 GTK_ICON_SIZE_MENU, NULL);
 		}
+ 
+		if (pixbuf)
+		{
+			object = G_OBJECT (pixbuf);
+			g_object_set_data_full (object, "GladeFileName",
+						g_strdup (string), g_free);
+		}
+ 
 		g_free (fullpath);
 	}
 	if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)

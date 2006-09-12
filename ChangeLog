@@ -1,5 +1,21 @@
 2006-09-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
+	* src/glade-gtk.c: GtkImage support improved. Finally no more 
+	  g_object_set_data() :)
+
+	* src/glade-project.c: Emit "parse-finished" after setting project's
+	  loading flag.
+	  
+	* src/glade-property-class.[ch]:
+	  make glade_property_class_make_object_from_string () returns a missing
+	  image icon if resource file is not found. This also make glade do not
+	  forget missing files.
+	  
+	* src/glade-gnome.c:  fixed a silly warning in
+	  glade_gnome_date_edit_post_create()
+
+2006-09-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
 	* src/glade-gtk.c: added glade_gtk_combo_box_entry_get_internal_child()
 	  Fixed bug 354716 "cut&paste ComboBoxEntry crashes Glade"
 

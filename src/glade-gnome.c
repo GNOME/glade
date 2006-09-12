@@ -284,6 +284,12 @@ glade_gnome_app_bar_post_create (GObject *object, GladeCreateReason reason)
 }
 
 /* GnomeDateEdit */
+static void
+glade_gnome_date_edit_set_no_show_all (GtkWidget *widget, gpointer data)
+{
+	gtk_widget_set_no_show_all (widget, TRUE);
+}
+
 void GLADEGNOME_API
 glade_gnome_date_edit_post_create (GObject *object, GladeCreateReason reason)
 {
@@ -294,7 +300,7 @@ glade_gnome_date_edit_post_create (GObject *object, GladeCreateReason reason)
 	 * gtk_widget_show_all() (its, for example, called after a paste)
 	 */
 	gtk_container_foreach (GTK_CONTAINER (object),
-			       gtk_widget_set_no_show_all, TRUE);
+			       glade_gnome_date_edit_set_no_show_all, NULL);
 }
 
 /* GnomeDruid */

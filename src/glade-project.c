@@ -1446,15 +1446,15 @@ glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
 		glade_project_add_object (project, NULL, widget->object);
 	}
 
-	/* Emit "parse-finished" signal */
-	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
 	/* Reset project status here too so that you get a clean
 	 * slate after calling glade_project_open().
 	 */
 	project->changed = FALSE;
 	project->loading = FALSE;
 
+	/* Emit "parse-finished" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
+	
 	return project;	
 }
 
