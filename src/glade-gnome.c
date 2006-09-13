@@ -176,8 +176,12 @@ GList * GLADEGNOME_API
 glade_gnome_app_get_children (GObject *object)
 {
 	GList *list = NULL;
-	GnomeApp *app = GNOME_APP (object);
+	GnomeApp *app;
 
+	g_return_val_if_fail (GNOME_IS_APP (object), NULL);
+	
+	app = GNOME_APP (object);
+	
 	if (app->dock) list = g_list_append (list, G_OBJECT (app->dock));
 	if (app->statusbar) list = g_list_append (list, G_OBJECT (app->statusbar));
 	if (app->contents) list = g_list_append (list, G_OBJECT (app->contents));
@@ -870,10 +874,13 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 void GLADEGNOME_API
 glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 {
-	GnomeDialog *dialog = GNOME_DIALOG (object);
 	GladeWidget *gdialog, *gvbox, *gaction_area;
 	GtkWidget *separator;
-
+	GnomeDialog *dialog;
+	
+	g_return_if_fail (GNOME_IS_DIALOG (object));
+	
+	dialog = GNOME_DIALOG (object);
 	gdialog = glade_widget_get_from_gobject (object);
 	
 	/* Ignore close signal */
@@ -1003,6 +1010,8 @@ glade_gnome_about_dialog_get_children (GObject *object)
 void GLADEGNOME_API
 glade_gnome_about_set_name (GObject *object, GValue *value)
 {
+	g_return_if_fail (GNOME_IS_ABOUT (object));
+	
 	if (g_value_get_string (value))
 		g_object_set_property (object, "name", value);
 }
@@ -1010,6 +1019,8 @@ glade_gnome_about_set_name (GObject *object, GValue *value)
 void GLADEGNOME_API
 glade_gnome_about_set_version (GObject *object, GValue *value)
 {
+	g_return_if_fail (GNOME_IS_ABOUT (object));
+	
 	if (g_value_get_string (value))
 		g_object_set_property (object, "version", value);
 }
@@ -1256,6 +1267,8 @@ glade_gnome_font_picker_get_children (GObject *object)
 {
 	GtkWidget *child;
 	
+	g_return_val_if_fail (GNOME_IS_FONT_PICKER (object), NULL);
+	
 	if ((child = gnome_font_picker_uw_get_widget (GNOME_FONT_PICKER (object))))
 		return g_list_append (NULL, G_OBJECT (child));
 	else
@@ -1265,6 +1278,7 @@ glade_gnome_font_picker_get_children (GObject *object)
 void GLADEGNOME_API
 glade_gnome_font_picker_add_child (GtkWidget *container, GtkWidget *child)
 {
+	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), child);	
 }
 
@@ -1507,54 +1521,7 @@ glade_gnome_gtk_pack_type_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
-/* BonoboDock */
-void GLADEGNOME_API
-glade_gnome_bonobodock_add_item (GObject *object, GObject *child)
-{
-	bonobo_dock_add_item (BONOBO_DOCK (object), BONOBO_DOCK_ITEM (child),
-			      0,0,0,0, TRUE);
-}
-
-void GLADEGNOME_API
-glade_gnome_bonobodock_add_client_area (GObject *object, GObject *child)
-{
-	bonobo_dock_set_client_area (BONOBO_DOCK (object), GTK_WIDGET (child));
-}
-
-GList * GLADEGNOME_API
-glade_gnome_bonobodock_get_children (GObject *object)
-{
-	GList *list = NULL, *l;
-	BonoboDock *dock = BONOBO_DOCK (object);
-	BonoboDockLayout *layout = bonobo_dock_get_layout (dock);
-	
-	for (l = layout->items; l; l = l->next)
-	{
-		BonoboDockLayoutItem *li = (BonoboDockLayoutItem *) l->data;
-		list = g_list_prepend (list, li->item);
-	}
-	
-	return list;
-}
-
-GList * GLADEGNOME_API
-glade_gnome_bonobodock_get_client_area (GObject *object)
-{
-	GtkWidget *client_area = bonobo_dock_get_client_area (BONOBO_DOCK (object));
-	
-	if (client_area) return g_list_append (NULL, client_area);
-	
-	return NULL;
-}
-
-void GLADEGNOME_API
-glade_gnome_bonobodock_replace_client_area (GtkWidget *container,
-					    GtkWidget *current,
-					    GtkWidget *new)
-{
-	bonobo_dock_set_client_area (BONOBO_DOCK (container), new);
-}
-
+/* BonoboDockBand convenience functions */
 static BonoboDockBand *
 glade_gnome_bdb_get_band (GList *bands, GtkWidget *widget)
 {
@@ -1592,6 +1559,78 @@ glade_gnome_bd_get_band (BonoboDock *dock, GtkWidget *widget)
 	if (retval) return retval;
 		
 	return NULL;
+}
+
+/* BonoboDock */
+void GLADEGNOME_API
+glade_gnome_bonobodock_add_item (GObject *object, GObject *child)
+{
+	g_return_if_fail (BONOBO_IS_DOCK (object));
+	g_return_if_fail (BONOBO_IS_DOCK_ITEM (child));
+	
+	bonobo_dock_add_item (BONOBO_DOCK (object), BONOBO_DOCK_ITEM (child),
+			      0,0,0,0, TRUE);
+}
+
+void GLADEGNOME_API
+glade_gnome_bonobodock_remove_item (GObject *object, GObject *child)
+{
+	BonoboDockBand *band;
+	
+	g_return_if_fail (BONOBO_IS_DOCK (object));
+	
+	band = glade_gnome_bd_get_band (BONOBO_DOCK (object), GTK_WIDGET (child));
+	
+	gtk_container_remove (GTK_CONTAINER (band), GTK_WIDGET (child));
+}
+
+void GLADEGNOME_API
+glade_gnome_bonobodock_add_client_area (GObject *object, GObject *child)
+{
+	g_return_if_fail (BONOBO_IS_DOCK (object));
+	bonobo_dock_set_client_area (BONOBO_DOCK (object), GTK_WIDGET (child));
+}
+
+GList * GLADEGNOME_API
+glade_gnome_bonobodock_get_children (GObject *object)
+{
+	GList *list = NULL, *l;
+	BonoboDockLayout *layout;
+	
+	g_return_val_if_fail (BONOBO_IS_DOCK (object), NULL);
+	
+	layout = bonobo_dock_get_layout (BONOBO_DOCK (object));
+	
+	for (l = layout->items; l; l = l->next)
+	{
+		BonoboDockLayoutItem *li = (BonoboDockLayoutItem *) l->data;
+		list = g_list_prepend (list, li->item);
+	}
+	
+	return list;
+}
+
+GList * GLADEGNOME_API
+glade_gnome_bonobodock_get_client_area (GObject *object)
+{
+	GtkWidget *client_area;
+	
+	g_return_val_if_fail (BONOBO_IS_DOCK (object), NULL);
+	
+	client_area = bonobo_dock_get_client_area (BONOBO_DOCK (object));
+	
+	if (client_area) return g_list_append (NULL, client_area);
+	
+	return NULL;
+}
+
+void GLADEGNOME_API
+glade_gnome_bonobodock_replace_client_area (GtkWidget *container,
+					    GtkWidget *current,
+					    GtkWidget *new)
+{
+	g_return_if_fail (BONOBO_IS_DOCK (container));
+	bonobo_dock_set_client_area (BONOBO_DOCK (container), new);
 }
 
 static gboolean
@@ -1637,6 +1676,7 @@ glade_gnome_bonobodock_set_child_property (GObject *container,
 	gboolean new_band = FALSE;
 	
 	g_return_if_fail (BONOBO_IS_DOCK (container));
+	g_return_if_fail (BONOBO_IS_DOCK_ITEM (child));
 
 	dock = BONOBO_DOCK (container);
 	item = BONOBO_DOCK_ITEM (child);
@@ -1720,6 +1760,7 @@ glade_gnome_bonobodock_get_child_property (GObject *container,
 void GLADEGNOME_API
 glade_gnome_bonobodock_set_allow_floating (GObject *object, GValue *value)
 {
+	g_return_if_fail (BONOBO_IS_DOCK (object));
 	bonobo_dock_allow_floating_items (BONOBO_DOCK (object),
 					  g_value_get_boolean (value));
 }

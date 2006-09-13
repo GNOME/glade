@@ -12,6 +12,7 @@
         <child>
           <type>BonoboDockItem</type>
           <add-child-function>glade_gnome_bonobodock_add_item</add-child-function>
+	  <remove-child-function>glade_gnome_bonobodock_remove_item</remove-child-function>
 	  <get-children-function>glade_gnome_bonobodock_get_children</get-children-function>
 	  <child-set-property-function>glade_gnome_bonobodock_set_child_property</child-set-property-function>
 	  <child-get-property-function>glade_gnome_bonobodock_get_child_property</child-get-property-function>
