@@ -862,9 +862,9 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 
 	for (i = 0; i < eclass->n_values; i++)
 	{
-		gchar *value_name = 
+		const gchar *value_name = 
 			glade_property_class_get_displayable_value
-			(class, eclass->values[i].value);
+				(class, eclass->values[i].value);
 		if (value_name == NULL) value_name = eclass->values[i].value_name;
 		
 		if (stock && strcmp (eclass->values[i].value_nick, "glade-none"))
@@ -943,7 +943,7 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 			GtkTreeIter iter;
 			guint mask;
 			gboolean setting;
-			gchar *value_name;
+			const gchar *value_name;
 			
 			mask = class->values[flag_num].value;
 			setting = ((value & mask) == mask) ? TRUE : FALSE;

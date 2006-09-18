@@ -518,6 +518,46 @@ glade_editor_table_append_class_field (GladeEditorTable *table)
 	table->rows++;
 }
 
+static gint
+glade_editor_property_class_comp (gconstpointer a, gconstpointer b)
+{
+	const GladePropertyClass *ca = a, *cb = b;
+	
+	if (ca->pspec->owner_type == cb->pspec->owner_type)
+	{
+		gdouble result = ca->weight - cb->weight;
+		/* Avoid cast to int */
+		if (result < 0.0) return -1;
+		else if (result > 0.0) return 1;
+		else return 0;
+	}
+	else
+		return (ca->common || ca->packing) ?
+			ca->pspec->owner_type - cb->pspec->owner_type :
+			cb->pspec->owner_type - ca->pspec->owner_type;
+}
+
+static GList *
+glade_editor_widget_class_get_sorted_properties (GladeWidgetClass *class)
+{
+	GList *l, *a = NULL, *b = NULL;
+	
+	for (l = class->properties; l && l->data; l = g_list_next (l))
+	{
+		GladePropertyClass *class = l->data;
+		
+		if (class->common || class->packing)
+			a = g_list_prepend (a, class);
+		else
+			b = g_list_prepend (b, class);
+	}
+	
+	a = g_list_sort (a, glade_editor_property_class_comp);
+	b = g_list_sort (b, glade_editor_property_class_comp);
+
+	return g_list_concat (a, b);
+}
+
 static gboolean
 glade_editor_table_append_items (GladeEditorTable *table,
 				 GladeWidgetClass *class,
@@ -525,9 +565,11 @@ glade_editor_table_append_items (GladeEditorTable *table,
 {
 	GladeEditorProperty *property;
 	GladePropertyClass  *property_class;
-	GList *list;
+	GList *list, *sorted_list;
 
-	for (list = class->properties; list != NULL; list = list->next)
+	sorted_list = glade_editor_widget_class_get_sorted_properties (class);
+	
+	for (list = sorted_list; list != NULL; list = list->next)
 	{
 		property_class = (GladePropertyClass *) list->data;
 
@@ -552,6 +594,9 @@ glade_editor_table_append_items (GladeEditorTable *table,
 							   type == TABLE_TYPE_QUERY);
 		table->properties = g_list_prepend (table->properties, property);
 	}
+	
+	g_list_free (sorted_list);
+	
 	return TRUE;
 }
 
@@ -738,13 +783,20 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
 	editor->loaded_class = class;
 }
 
+static gint
+glade_editor_property_comp (gconstpointer a, gconstpointer b)
+{
+	const GladeProperty *prop_a = a, *prop_b = b;
+	return glade_editor_property_class_comp (prop_a->class, prop_b->class);
+}
+
 static void
 glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 {
 	GladeEditorProperty *editor_property;
 	GladeProperty       *property;
 	GladeWidget         *parent;
-	GList               *list;
+	GList               *list, *sorted_list;
 	GtkWidget           *child;
 
 	/* Remove the old properties */
@@ -771,7 +823,11 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	editor->packing_etable->editor = editor;
 	editor->packing_etable->type   = TABLE_TYPE_PACKING;
 
-	for (list = widget->packing_properties; list && list->data; list = list->next)
+	/* Sort packing properties by weight */
+	sorted_list = g_list_copy (widget->packing_properties);
+	sorted_list = g_list_sort (sorted_list, glade_editor_property_comp);
+	
+	for (list = sorted_list; list && list->data; list = list->next)
 	{
 		property               = GLADE_PROPERTY (list->data);
 		
@@ -784,6 +840,8 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 		glade_editor_property_load (editor_property, property);
 	}
 
+	g_list_free (sorted_list);
+	
 	gtk_widget_show (editor->packing_etable->table_widget);
 
 	gtk_container_add (GTK_CONTAINER (editor->page_packing), 

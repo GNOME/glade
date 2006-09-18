@@ -172,6 +172,7 @@ glade_property_class_new (gpointer handle)
 	property_class->type = GPC_NORMAL;
 	property_class->virtual = TRUE;
 	property_class->transfer_on_paste = FALSE;
+	property_class->weight = -1.0;
 
 	return property_class;
 }
@@ -293,10 +294,10 @@ glade_property_class_free (GladePropertyClass *property_class)
 		{
 			gchar *name, *nick;
 			
-			name = g_array_index(disp_val, GEnumValue, i).value_name;
+			name = (gchar *) g_array_index (disp_val, GEnumValue, i).value_name;
 			if (name) g_free(name);
 			
-			nick = g_array_index(disp_val, GEnumValue, i).value_nick;
+			nick = (gchar *) g_array_index (disp_val, GEnumValue, i).value_nick;
 			if (nick) g_free(nick);
 		}
 		
@@ -352,7 +353,7 @@ glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fv
 	
 	while ((fvalue = g_flags_get_first_value(fclass, fvals)) != NULL)
 	{
-		gchar *val_str = NULL;
+		const gchar *val_str = NULL;
 		
 		fvals &= ~fvalue->value;
 		
@@ -362,7 +363,7 @@ glade_property_class_make_string_from_flags (GladePropertyClass *class, guint fv
 		if (string->str[0])
 			g_string_append(string, " | ");
 		
-		g_string_append(string, (val_str) ? val_str : fvalue->value_name);
+		g_string_append (string, (val_str) ? val_str : fvalue->value_name);
 		
 		/* If one of the flags value is 0 this loop become infinite :) */
 		if (fvalue->value == 0) break;
@@ -1337,7 +1338,7 @@ glade_property_class_is_object (GladePropertyClass  *class)
  *
  * Returns: a (gchar *) if a diplayable value was found, otherwise NULL.
  */
-gchar *
+const gchar *
 glade_property_class_get_displayable_value(GladePropertyClass *class, gint value)
 {
 	gint i, len;
@@ -1663,6 +1664,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	class->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  class->visible);
 	class->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   class->ignore);
 	class->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, class->resource);
+	class->weight   = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,   class->weight);
 	class->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, class->transfer_on_paste);
 
 	/* No atk introspection here.

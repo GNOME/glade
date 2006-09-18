@@ -178,6 +178,10 @@ struct _GladePropertyClass
 				     * wether we should transfer it on paste.
 				     */
 	
+	gdouble weight;	/* This will determine the position of this property in 
+			 * the editor.
+			 */
+	
 	/* Delagate to verify if this is a valid value for this property,
 	 * if this function exists and returns FALSE, then glade_property_set
 	 * will abort before making any changes
@@ -252,8 +256,8 @@ gboolean            glade_property_class_update_from_node        (GladeXmlNode  
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);
 LIBGLADEUI_API
-gchar              *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
-								  gint                value);
+G_CONST_RETURN gchar *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
+								    gint                value);
 LIBGLADEUI_API
 GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
 LIBGLADEUI_API

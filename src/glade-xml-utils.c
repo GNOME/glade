@@ -10,7 +10,7 @@
 
 #include <string.h>
 #include <glib.h>
-#include <string.h>
+#include <errno.h>
 
 #include "glade-xml-utils.h"
 
@@ -342,6 +342,32 @@ glade_xml_get_property_boolean (GladeXmlNode *node_in,
 	g_free (value);
 
 	return ret;
+}
+
+gdouble
+glade_xml_get_property_double (GladeXmlNode *node_in,
+			       const gchar *name,
+			       gdouble _default)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gdouble retval;
+	gchar *value;
+	
+	if ((value = glade_xml_get_property (node, name)) == NULL)
+		return _default;
+
+	retval = g_ascii_strtod (value, NULL);
+	
+	if (errno)
+	{
+		g_free (value);
+		return _default;
+	}
+	else
+	{
+		g_free (value);
+		return retval;
+	}
 }
 
 void

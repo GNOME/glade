@@ -137,6 +137,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_ATK_PROPERTY                    "atk-property"
 #define GLADE_TAG_FIXED                           "fixed"
 #define GLADE_TAG_TRANSFER_ON_PASTE               "transfer-on-paste"
+#define GLADE_TAG_WEIGHT                          "weight"
 
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F

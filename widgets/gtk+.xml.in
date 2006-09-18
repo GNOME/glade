@@ -7,7 +7,7 @@
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 
-	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True">
+	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5">
 	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>A tooltip text for this widget</_tooltip>
 	  <set-function>glade_gtk_widget_set_tooltip</set-function>
@@ -114,6 +114,8 @@
 	  <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
 	  <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
 	  <properties>
+	    <property id="position" weight="0"/>
+	    <property id="padding" transfer-on-paste="True" weight="0.5"/>
 	    <property id="expand" transfer-on-paste="True"/>
 	    <property id="fill" transfer-on-paste="True"/>
 	    <property id="pack-type" transfer-on-paste="True">
@@ -122,7 +124,6 @@
 		<value id="GTK_PACK_END" _name="End"/>
 	      </displayable-values>
 	    </property>
-	    <property id="padding" transfer-on-paste="True"/>
 	  </properties>
 	</child>
       </children>
@@ -507,13 +508,15 @@
             <visible-lines>2</visible-lines>
 	</property>
 
-	<property id="stock" _name="Stock Button" save="False">
+	<property id="use-underline" weight="1.5"/>
+
+	<property id="stock" _name="Stock Button" save="False" weight="1.6">
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
 
-	<property id="glade-type" _name="Edit Type" save="False">
+	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_button_type_spec</spec>
 	  <set-function>glade_gtk_button_set_type</set-function>
 	</property>
@@ -719,7 +722,7 @@
 	<property id="stock" visible="False">
 	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
-	<property id="glade-type" _name="Edit Type" save="False">
+	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_image_type_spec</spec>
 	  <set-function>glade_gtk_image_set_type</set-function>
 	</property>
@@ -729,13 +732,13 @@
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>
 	<property id="pixbuf" _name="File Name"/>
-	<property id="glade-stock" _name="Stock Image" save="False">
+	<property id="glade-stock" _name="Stock Image" save="False" weight="1.5">
 	  <_tooltip>A builtin stock image</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
 	  <set-function>glade_gtk_image_set_glade_stock</set-function>
 	</property>
-	<property id="icon-name" _name="Icon Name">
+	<property id="icon-name" _name="Icon Name" weight="1.6">
 	  <set-function>glade_gtk_image_set_icon_name</set-function>
 	</property>
       </properties>
