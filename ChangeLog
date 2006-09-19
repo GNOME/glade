@@ -1,3 +1,14 @@
+2006-09-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-parser.[ch]:
+	  o Removed function glade_interface_add_comment()
+	  o Added new member comment to GladeInterface.
+
+	* src/glade-project.[ch]: fixed Bug 342889 
+	  "Put some comment telling about glade-3 in glade files"
+	  o Added new function glade_project_update_comment().
+	  o Added new member comment to GladeProject.
+
 2006-09-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-property-class.[ch]:

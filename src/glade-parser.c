@@ -459,6 +459,13 @@ glade_parser_end_document(GladeParseState *state)
 }
 
 static void
+glade_parser_comment (GladeParseState *state, const xmlChar *comment)
+{
+	if (state->state == PARSER_START)
+		state->interface->comment = g_strdup (CAST_BAD (comment));
+}
+
+static void
 glade_parser_start_element(GladeParseState *state,
 			   const xmlChar *name, const xmlChar **attrs)
 {
@@ -1083,7 +1090,7 @@ static xmlSAXHandler glade_parser = {
     (charactersSAXFunc)glade_parser_characters, /* characters */
     0, /* ignorableWhitespace */
     0, /* processingInstruction */
-    (commentSAXFunc)0, /* comment */
+    (commentSAXFunc)glade_parser_comment, /* comment */
     (warningSAXFunc)glade_parser_warning, /* warning */
     (errorSAXFunc)glade_parser_error, /* error */
     (fatalErrorSAXFunc)glade_parser_fatal_error, /* fatalError */
@@ -1153,6 +1160,8 @@ glade_interface_destroy(GladeInterface *interface)
      * of the strings. */
     g_hash_table_destroy(interface->strings);
 
+    g_free (interface->comment);
+    
     g_free(interface);
 }
 
@@ -1545,35 +1554,11 @@ dump_widget(xmlNode *parent, GladeWidgetInfo *info, gint indent)
 	xmlNodeAddContent(widget, BAD_CAST("  "));
 }
 
-static void
-glade_interface_add_comment (xmlDoc *doc)
-{
-	time_t now = time (NULL);
-	xmlNode *comment;
-	gchar *str;
-	
-	str = g_strdup_printf (_(" Generated with %s\n"
-				 "\tVersion: %s\n"
-				 "\tDate: %s"
-				 "\tUser: %s\n"
-				 "\tHost: %s\n"),
-				PACKAGE_NAME,
-				PACKAGE_VERSION,
-				ctime (&now),
-				g_get_user_name (),
-				g_get_host_name ());
-	
-	comment = xmlNewComment(BAD_CAST (str));
-	xmlDocSetRootElement(doc, comment);
-	
-	g_free (str);
-}
-
 static xmlDoc *
 glade_interface_make_doc (GladeInterface *interface)
 {
     xmlDoc *doc;
-    xmlNode *root;
+    xmlNode *root, *comment;
     gint i;
 
     doc = xmlNewDoc(BAD_CAST("1.0"));
@@ -1581,7 +1566,11 @@ glade_interface_make_doc (GladeInterface *interface)
     xmlCreateIntSubset(doc, BAD_CAST("glade-interface"),
 		       NULL, BAD_CAST("glade-2.0.dtd"));
 
-    glade_interface_add_comment (doc);
+    if (interface->comment)
+    {
+	comment = xmlNewComment(BAD_CAST (interface->comment));
+	xmlDocSetRootElement(doc, comment);
+    }
 	
     root = xmlNewNode(NULL, BAD_CAST("glade-interface"));
     xmlDocSetRootElement(doc, root);

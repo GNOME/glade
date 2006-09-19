@@ -63,6 +63,10 @@ struct _GladeProject
 	GtkAccelGroup *accel_group;
 
 	GHashTable *resources; /* resource filenames & thier associated properties */
+	
+	gchar *comment; /* XML comment, Glade will preserve whatever comment was
+			 * in file, so users can delete or change it.
+			 */
 };
 
 struct _GladeProjectClass

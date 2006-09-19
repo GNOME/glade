@@ -124,6 +124,8 @@ struct _GladeInterface {
     GHashTable *names;
 
     GHashTable *strings;
+
+    gchar *comment;
 };
 
 /* the actual functions ... */
