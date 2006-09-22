@@ -677,6 +677,14 @@
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
       <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
       <properties>
+        <property id="enable-grid-lines"  ignore="True">
+  	  <displayable-values>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_VERTICAL" _name="Vertical"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
+	  </displayable-values>
+	</property>
         <property id="hadjustment" disabled="True"/>
 	<property id="vadjustment" disabled="True"/>
       </properties>

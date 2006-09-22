@@ -12,7 +12,10 @@
 	  - Use stock "images" for GtkImage
 	  - GtkImage "type" property now defaults to "stock"
 	  - GtkImage stock id now defaults to "gtk-missing-image"
-	
+	  - Ignore "enable-grid-lines" 2.10 property on treeview since
+	    it causes crashes on load (fixes bug 353611)
+	  - Added displayable values for "enable-grid-lines" 2.10 property
+
 2006-09-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-project.c reworked glade_project_update_comment()
