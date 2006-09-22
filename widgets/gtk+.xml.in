@@ -378,8 +378,8 @@
 	  <spec>glade_gtk_image_type_spec</spec>
 	  <set-function>glade_gtk_tool_button_set_type</set-function>
 	</property>
-	<property id="glade-stock" _name="Stock Item" save="False">
-	  <spec>glade_standard_stock_spec</spec>
+	<property id="glade-stock" _name="Stock Image" save="False">
+	  <spec>glade_standard_stock_image_spec</spec>
 	  <set-function>glade_gtk_tool_button_set_glade_stock</set-function>
 	</property>
 	<property id="icon" _name="File Name">
@@ -719,7 +719,7 @@
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
       <post-create-function>glade_gtk_image_post_create</post-create-function>
       <properties>
-	<property id="stock" visible="False">
+	<property id="stock" visible="False" default="gtk-missing-image">
 	  <set-function>glade_gtk_image_set_stock</set-function>
 	</property>
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
@@ -732,9 +732,9 @@
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>
 	<property id="pixbuf" _name="File Name"/>
-	<property id="glade-stock" _name="Stock Image" save="False" weight="1.5">
+	<property id="glade-stock" _name="Stock Image" save="False" weight="1.5" default="gtk-missing-image">
 	  <_tooltip>A builtin stock image</_tooltip>
-	  <spec>glade_standard_stock_spec</spec>
+	  <spec>glade_standard_stock_image_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
 	  <set-function>glade_gtk_image_set_glade_stock</set-function>
 	</property>

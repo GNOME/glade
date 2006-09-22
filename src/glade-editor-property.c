@@ -856,7 +856,8 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 	
 	class  = eprop->class;
 	eclass = g_type_class_ref (class->pspec->value_type);
-	stock  = (class->pspec->value_type == GLADE_TYPE_STOCK);
+	stock  = (class->pspec->value_type == GLADE_TYPE_STOCK) ||
+		(class->pspec->value_type == GLADE_TYPE_STOCK_IMAGE);
 
 	menu = gtk_menu_new ();
 

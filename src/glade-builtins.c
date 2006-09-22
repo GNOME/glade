@@ -54,9 +54,24 @@ struct _GladeParamSpecAccel {
 /************************************************************
  *      Auto-generate the enum type for stock properties    *
  ************************************************************/
+ 
+/* Hard-coded list of stock images from gtk+ that are not stock "items" */
+static const gchar *builtin_stock_images[] = 
+{
+	"gtk-dialog-authentication", /* GTK_STOCK_DIALOG_AUTHENTICATION */
+	"gtk-dnd",                   /* GTK_STOCK_DND */
+	"gtk-dnd-multiple",          /* GTK_STOCK_DND_MULTIPLE */
+	"gtk-color-picker",          /* GTK_STOCK_COLOR_PICKER */
+	"gtk-directory",             /* GTK_STOCK_DIRECTORY */
+	"gtk-file",                  /* GTK_STOCK_FILE */
+	"gtk-missing-image"          /* GTK_STOCK_MISSING_IMAGE */
+};
+
 static GSList *stock_prefixs = NULL;
 static gboolean stock_prefixs_done = FALSE;
 
+/* FIXME: func needs documentation
+ */
 void
 glade_standard_stock_append_prefix (const gchar *prefix)
 {
@@ -69,61 +84,95 @@ glade_standard_stock_append_prefix (const gchar *prefix)
 	stock_prefixs = g_slist_append (stock_prefixs, g_strdup (prefix));
 }
 
+GArray *
+list_stock_items (gboolean include_images)
+{
+	GtkStockItem  item;
+	GSList       *l, *stock_list, *p;
+	gchar        *stock_id, *prefix;
+	gint          stock_enum = 1, i;
+	GEnumValue    value;
+	GArray       *values;
+	
+	/* We have ownership of the retuened list & the
+	 * strings within
+	 */
+	stock_list = g_slist_reverse (gtk_stock_list_ids ());
+
+	values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
+				    g_slist_length (stock_list) + 1);
+	
+	
+	/* Add first "no stock" element */
+	value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
+	value.value_name = g_strdup ("None");
+	value.value      = 0;
+	values = g_array_append_val (values, value);
+	
+	/* We want gtk+ stock items to appear first */
+	stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
+	for (p = stock_prefixs; p; p = g_slist_next (p))
+	{
+		prefix = p->data;
+		
+		for (l = stock_list; l; l = g_slist_next (l))
+		{
+			stock_id = l->data;
+			if (g_str_has_prefix (stock_id, prefix) == FALSE ||
+			    gtk_stock_lookup (stock_id, &item) == FALSE )
+				continue;
+			
+			value.value      = stock_enum++;
+			value.value_name = g_strdup (item.label);
+			value.value_nick = stock_id; // Passing ownership here.
+			values = g_array_append_val (values, value);
+		}
+
+		/* Images are appended after the gtk+ group of items */
+		if (include_images && !strcmp (prefix, "gtk-"))
+		{
+			for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
+			{
+				value.value      = stock_enum++;
+				value.value_name = g_strdup (builtin_stock_images[i]);
+				value.value_nick = g_strdup (builtin_stock_images[i]);
+				values = g_array_append_val (values, value);
+			}
+		}
+
+	}
+	
+	stock_prefixs_done = TRUE;
+	g_slist_free (stock_list);
+
+	return values;
+}
+
 GType
 glade_standard_stock_get_type (void)
 {
 	static GType etype = 0;
+
 	if (etype == 0) {
+		GArray *values = list_stock_items (FALSE);
 
-		GtkStockItem  item;
-		GSList       *l, *stock_list, *p;
-		gchar        *stock_id, *prefix;
-		gint          stock_enum = 1;
-		GEnumValue    value;
-		GArray       *values;
-			
-		/* We have ownership of the retuened list & the
-		 * strings within
-		 */
-		stock_list = g_slist_reverse (gtk_stock_list_ids ());
+		etype = g_enum_register_static ("GladeStock", 
+						(GEnumValue *)g_array_free (values, FALSE));
+	}
+	return etype;
+}
 
-		values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
-					    g_slist_length (stock_list) + 1);
 
-		/* Add first "no stock" element */
-		value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
-		value.value_name = g_strdup ("None");
-		value.value      = 0;
-		values = g_array_append_val (values, value);
-		
-		/* We want gtk+ stock items to appear first */
-		stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
-		for (p = stock_prefixs; p; p = g_slist_next (p))
-		{
-			prefix = p->data;
-			
-			for (l = stock_list; l; l = g_slist_next (l))
-			{
-				stock_id = l->data;
-				if (g_str_has_prefix (stock_id, prefix) == FALSE ||
-				    gtk_stock_lookup (stock_id, &item) == FALSE )
-					continue;
-				
-				value.value      = stock_enum++;
-				value.value_name = g_strdup (item.label);
-				value.value_nick = stock_id; // Passing ownership here.
-				values = g_array_append_val (values, value);
-			}
-			g_free (prefix);
-		}
-		
-		etype = g_enum_register_static ("GladeStock", (GEnumValue *)values->data);
-		
-		stock_prefixs_done = TRUE;
-		g_slist_free (stock_prefixs);
-		stock_prefixs = NULL;
-		
-		g_slist_free (stock_list);
+GType
+glade_standard_stock_image_get_type (void)
+{
+	static GType etype = 0;
+
+	if (etype == 0) {
+		GArray *values = list_stock_items (TRUE);
+
+		etype = g_enum_register_static ("GladeStockImage", 
+						(GEnumValue *)g_array_free (values, FALSE));
 	}
 	return etype;
 }
@@ -133,7 +182,16 @@ glade_standard_stock_spec (void)
 {
 	return g_param_spec_enum ("stock", _("Stock"), 
 				  _("A builtin stock item"),
-				  glade_standard_stock_get_type (),
+				  GLADE_TYPE_STOCK,
+				  0, G_PARAM_READWRITE);
+}
+
+GParamSpec *
+glade_standard_stock_image_spec (void)
+{
+	return g_param_spec_enum ("stock-image", _("Stock Image"), 
+				  _("A builtin stock image"),
+				  GLADE_TYPE_STOCK_IMAGE,
 				  0, G_PARAM_READWRITE);
 }
 

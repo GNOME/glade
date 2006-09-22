@@ -218,7 +218,7 @@ glade_gtk_image_type_spec (void)
 	return g_param_spec_enum ("type", _("Method"), 
 				  _("The method to use to edit this image"),
 				  glade_gtk_image_type_get_type (),
-				  0, G_PARAM_READWRITE);
+				  1, G_PARAM_READWRITE);
 }
 
 GParamSpec * GLADEGTK_API
@@ -245,9 +245,9 @@ void GLADEGTK_API
 glade_gtk_widget_set_tooltip (GObject *object, GValue *value)
 {
 	GladeWidget   *glade_widget = glade_widget_get_from_gobject (GTK_WIDGET (object));
-	GladeProject       *project = (GladeProject *)glade_widget_get_project (glade_widget);
-	GtkTooltips *tooltips = glade_project_get_tooltips (project);
-	const char *tooltip;
+	GladeProject  *project = (GladeProject *)glade_widget_get_project (glade_widget);
+	GtkTooltips   *tooltips = glade_project_get_tooltips (project);
+	const char    *tooltip;
 
 	/* TODO: handle GtkToolItems with gtk_tool_item_set_tooltip() */
 	tooltip = g_value_get_string (value);
@@ -3368,17 +3368,16 @@ void GLADEGTK_API
 glade_gtk_image_post_create (GObject *object, GladeCreateReason reason)
 {
 	GladeWidget *gimage;
+	
+	if (reason == GLADE_CREATE_LOAD)
+	{
+		gimage = glade_widget_get_from_gobject (object);
 
-	if (reason != GLADE_CREATE_LOAD) return;
-	
-	g_return_if_fail (GTK_IS_IMAGE (object));
-	gimage = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gimage));
-	
-	g_signal_connect (glade_widget_get_project (gimage),
-			  "parse-finished",
-			  G_CALLBACK (glade_gtk_image_parse_finished),
-			  gimage);
+		g_signal_connect (glade_widget_get_project (gimage),
+				  "parse-finished",
+				  G_CALLBACK (glade_gtk_image_parse_finished),
+				  gimage);
+	}
 }
 
 void GLADEGTK_API
@@ -4613,10 +4612,17 @@ glade_gtk_tool_button_set_stock_id (GObject *object, GValue *value)
 		
 	if ((stock_id = g_value_get_string (value)))
 	{
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-		eval = g_enum_get_value_by_nick (eclass, stock_id);
-		
-		glade_widget_property_set (gbutton, "glade-stock", eval->value);
+		eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
+
+		if ((eval = g_enum_get_value_by_nick (eclass, stock_id)) != NULL)
+			glade_widget_property_set (gbutton, "glade-stock", eval->value);
+		else
+		{
+			glade_widget_property_set (gbutton, "glade-stock", 
+						   "gtk-missing-image");
+			g_warning ("Invalid stock-id '%s' found in toolbutton", stock_id);
+		}
+
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_IMAGE_STOCK);
 		
 		g_type_class_unref (eclass);
@@ -4642,11 +4648,15 @@ glade_gtk_tool_button_set_glade_stock (GObject *object, GValue *value)
 
 	if (val)
 	{
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-		eval = g_enum_get_value (eclass, val);
-		
-		glade_widget_property_set (gbutton, "stock-id", eval->value_nick);
-		
+		eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
+
+		if ((eval = g_enum_get_value (eclass, val)) != NULL)
+			glade_widget_property_set (gbutton, "stock-id", eval->value_nick);
+		else
+		{
+			glade_widget_property_set (gbutton, "stock-id", "gtk-missing-image");
+			g_warning ("Invalid glade stock id '%d' found in toolbutton", val);
+		}		
 		g_type_class_unref (eclass);
 	}
 	else

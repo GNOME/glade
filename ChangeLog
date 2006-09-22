@@ -1,3 +1,18 @@
+2006-09-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-builtins.[ch]: Added GLADE_TYPE_STOCK_IMAGE (and standard
+	  pspec for it), this is stock items plus the additional "stock images"
+	  from gtkstock.h (closing bug 353522).
+
+	* src/glade-editor-property.c: recognize new stock image pspec type.
+
+	* src/glade-gtk.c, widgets/gtk+.xml.in:
+	  - Bulletproofed toolbar code wrt stock images (also use stock "images"
+	    instead of items here)
+	  - Use stock "images" for GtkImage
+	  - GtkImage "type" property now defaults to "stock"
+	  - GtkImage stock id now defaults to "gtk-missing-image"
+	
 2006-09-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-project.c reworked glade_project_update_comment()
