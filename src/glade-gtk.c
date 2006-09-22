@@ -2760,6 +2760,13 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 	if (!widget)
 		return;
 
+
+	if (reason == GLADE_CREATE_USER)
+	{
+		/* HIG complient border-width defaults on dialogs */
+		glade_widget_property_set (widget, "border-width", 5);
+	}
+
 	if (GTK_IS_INPUT_DIALOG (object))
 	{
 		save_button = glade_widget_class_create_internal
@@ -2853,6 +2860,9 @@ glade_gtk_dialog_post_create (GObject *object, GladeCreateReason reason)
 		/* Only set these on the original create. */
 		if (reason == GLADE_CREATE_USER)
 		{
+
+			/* HIG complient spacing defaults on dialogs */
+			glade_widget_property_set (vbox_widget, "spacing", 2);
 
 			if (GTK_IS_MESSAGE_DIALOG (object))
 				glade_widget_property_set (vbox_widget, "size", 2);
