@@ -1909,6 +1909,15 @@ glade_eprop_resource_entry_activate (GtkEntry *entry, GladeEditorProperty *eprop
 	g_free (value);
 }
 
+static gboolean
+glade_eprop_resource_entry_focus_out (GtkWidget           *entry,
+				      GdkEventFocus       *event,
+				      GladeEditorProperty *eprop)
+{
+	glade_eprop_resource_entry_activate (GTK_ENTRY (entry), eprop);
+	return FALSE;
+}
+
 static void
 glade_eprop_resource_select_file (GtkButton *button, GladeEditorProperty *eprop)
 {
@@ -2001,6 +2010,9 @@ glade_eprop_resource_create_input (GladeEditorProperty *eprop)
 
 	g_signal_connect (G_OBJECT (eprop_resource->entry), "activate",
 			  G_CALLBACK (glade_eprop_resource_entry_activate), 
+			  eprop);
+	g_signal_connect (G_OBJECT (eprop_resource->entry), "focus-out-event",
+			  G_CALLBACK (glade_eprop_resource_entry_focus_out),
 			  eprop);
 	g_signal_connect (G_OBJECT (eprop_resource->button), "clicked",
 			  G_CALLBACK (glade_eprop_resource_select_file), 
