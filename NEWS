@@ -1,4 +1,42 @@
 ===========
+Glade 3.0.2
+===========
+
+New features and fixes
+======================
+    - Fixed some properties to be translatable (reported by Olivier Rolland)
+    - Now use non-locale specific functions to write out double values to 
+      glade files, revert to use floating precision in adjustments.
+    - Signal editor UI improved (bug 127149) (Juan Pablo Ugarte)
+    - Reimplemented file drag and drop (bug 352458) (Vincent Geddes)
+    - Fixed accelerator dialog segfaults (bug 352825) (Juan Pablo Ugarte)
+    - Improved GtkPaned support (bug 345075) (Juan Pablo Ugarte)
+    - Backing out multiple consecutive pastes (reopening bug 345603)
+      (this fixes menu editor segfaults among other things)
+    - Fixed ComboBoxEntry crash (bug 354716) (Juan Pablo Ugarte)
+    - Ordering of properties in the editor window 
+      (bug 345893) (Juan Pablo Ugarte)
+    - Allow a dynamic user-editable comment prepended to the 
+      glade file (Bug 342889) (Juan Pablo Ugarte)
+    - Added new stock listing that includes the stock "images" (which
+      are not gtk+ stock "items"), and enabled them for GtkImage and
+      GtkToolItem. (bug 353522)
+    - GtkImage now defaults to an initial "gtk-broken-image" stock type.
+    - Ignore "enable-grid-lines" 2.10 property on treeview since it causes 
+      crashes on load (fixes bug 353611)
+    - Added displayable values for "enable-grid-lines" 2.10 property
+    - Set some HIG-ish defaults on dialogs
+    - Fixed lost icons on images (bug 353126) (Juan Pablo Ugarte)
+    - Namespace issues with libglade initial fix (Juan Pablo Ugarte)
+    - Few more misc fixes by Juan Pablo and myself.
+
+New and updated translations
+============================
+    - Changwoo Ryu (ko)
+    - David Lodge (en_GB)
+    - Francisco Javier F. Serrador (es)
+
+===========
 Glade 3.0.1
 ===========
 
