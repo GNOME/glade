@@ -129,19 +129,23 @@ struct _GladeInterface {
 };
 
 /* the actual functions ... */
-GladeInterface *glade_interface_new       (void);
-GladeInterface *glade_parser_parse_file   (const gchar *file,
-					   const gchar *domain);
-GladeInterface *glade_parser_parse_buffer (const gchar *buffer, gint len,
-					   const gchar *domain);
-void            glade_interface_destroy   (GladeInterface  *interface);
-void            glade_interface_dump      (GladeInterface  *interface,
-					   const gchar     *filename);
-gboolean        glade_interface_dump_full (GladeInterface  *interface, 
-					   const gchar     *filename,
-					   GError         **error);
-G_CONST_RETURN gchar    *glade_parser_pvalue_from_winfo (GladeWidgetInfo *winfo,
-							 const gchar     *pname);
+GladeInterface *glade_parser_interface_new (void);
+
+GladeInterface *glade_parser_interface_new_from_file (const gchar *file,
+						      const gchar *domain);
+
+GladeInterface *glade_parser_interface_new_from_buffer (const gchar *buffer,
+							gint len,
+							const gchar *domain);
+
+void            glade_parser_interface_destroy   (GladeInterface  *interface);
+
+gboolean        glade_parser_interface_dump (GladeInterface  *interface, 
+					     const gchar     *filename,
+					     GError         **error);
+
+G_CONST_RETURN gchar *glade_parser_pvalue_from_winfo (GladeWidgetInfo *winfo,
+						      const gchar     *pname);
 
 G_END_DECLS
 

@@ -1391,7 +1391,7 @@ glade_project_write (GladeProject *project)
 	gchar          **strv = NULL;
 	guint            i;
 
-	interface = glade_interface_new ();
+	interface = glade_parser_interface_new ();
 
 	if ((required = glade_project_required_libs (project)) != NULL)
 	{
@@ -1573,7 +1573,7 @@ glade_project_open (const gchar *path)
 	g_return_val_if_fail (path != NULL, NULL);
 
 	if ((interface = 
-	     glade_parser_parse_file (path, NULL)) != NULL)
+	     glade_parser_interface_new_from_file (path, NULL)) != NULL)
 	{
 		if ((project = 
 		     glade_project_new_from_interface (interface, 
@@ -1585,7 +1585,7 @@ glade_project_open (const gchar *path)
 			glade_project_fix_object_props (project);
 		}
 		
-		glade_interface_destroy (interface);
+		glade_parser_interface_destroy (interface);
 	
 	}
 
@@ -1656,8 +1656,8 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 		return FALSE;
 	}
 
-	ret = glade_interface_dump_full (interface, path, error);
-	glade_interface_destroy (interface);
+	ret = glade_parser_interface_dump (interface, path, error);
+	glade_parser_interface_destroy (interface);
 
 	canonical_path = glade_util_canonical_path (path);
 	g_assert (canonical_path);
