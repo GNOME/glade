@@ -4,7 +4,6 @@
 
 G_BEGIN_DECLS
 
-
 #define GLADE_TYPE_PROJECT_VIEW            (glade_project_view_get_type ())
 #define GLADE_PROJECT_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PROJECT_VIEW, GladeProjectView))
 #define GLADE_PROJECT_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PROJECT_VIEW, GladeProjectViewClass))
@@ -12,53 +11,26 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT_VIEW))
 #define GLADE_PROJECT_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT_VIEW, GladeProjectViewClass))
 
-
-/* A view of a GladeProject. */
-typedef struct _GladeProjectView       GladeProjectView;
-typedef struct _GladeProjectViewClass  GladeProjectViewClass;
+/* A view of a GladeProject */
+typedef struct _GladeProjectView         GladeProjectView;
+typedef struct _GladeProjectViewClass    GladeProjectViewClass;
+typedef struct _GladeProjectViewPrivate  GladeProjectViewPrivate;
 
 struct _GladeProjectView
 {
-	GtkScrolledWindow scrolled_window; /* The project view is a scrolled
-					    * window containing a tree view
-					    * of the project
-					    */
+	GtkScrolledWindow sw; /* The parent is a scrolled window */
 
-	GtkTreeStore *model; /* The model */
-
-	GtkWidget *tree_view; /* The view */
-
-	gboolean is_list; /* If true the view is a list, if false the view
-			   * is a tree
-			   */
-
-	GladeProject *project; /* A pointer so that we can get back to the
-				* project that we are a view for
-				*/
-
-	GList *project_data; /* A list of private data structures of 
-			      * project specific data.
-			      */
-	
-	gboolean updating_selection; /* True when we are going to set the
-				      * project selection. So that we don't
-				      * recurse cause we are also listening
-				      * for the project changed selection
-				      * signal
-				      */
-	gboolean updating_treeview; /* Eliminate feedback from the tree-view 
-				     * (same as updating_selection)
-				     */
+	GladeProjectViewPrivate *priv;
 };
 
 struct _GladeProjectViewClass
 {
 	GtkScrolledWindowClass parent_class;
 
-	void   (*add_item)      (GladeProjectView *view,
-				 GladeWidget *widget);
-	void   (*remove_item)   (GladeProjectView *view,
-				 GladeWidget *widget);
+	void   (*add_item)            (GladeProjectView *view,
+				       GladeWidget *widget);
+	void   (*remove_item)         (GladeProjectView *view,
+				       GladeWidget *widget);
 	void   (*widget_name_changed) (GladeProjectView *view,
 				       GladeWidget *widget);
 
@@ -67,33 +39,27 @@ struct _GladeProjectViewClass
 	 * are the other way arround, the selection in the view changed
 	 * and we need to let the project know about it. Chema
 	 */
-	void   (*selection_update) (GladeProjectView *view,
-				    GladeProject *project);
+	void   (*selection_update)    (GladeProjectView *view,
+				       GladeProject *project);
 };
 
-/**
- * GladeProjectViewType:
- * @GLADE_PROJECT_VIEW_LIST: View only toplevels as a flat list
- * @GLADE_PROJECT_VIEW_TREE: View as the entire project tree
- */
-typedef enum {
-	GLADE_PROJECT_VIEW_LIST,
-	GLADE_PROJECT_VIEW_TREE,
-} GladeProjectViewType;
-
+LIBGLADEUI_API
+GType             glade_project_view_get_type (void) G_GNUC_CONST;
 
 LIBGLADEUI_API
-GType glade_project_view_get_type (void);
+GtkWidget        *glade_project_view_new (void);
 
 LIBGLADEUI_API
-GladeProjectView *glade_project_view_new (GladeProjectViewType type);
+GladeProject     *glade_project_view_get_project (GladeProjectView *view);
 
 LIBGLADEUI_API
-GladeProject *glade_project_view_get_project (GladeProjectView *view);
-
+void              glade_project_view_set_project (GladeProjectView *view, GladeProject *project);
+				     
 LIBGLADEUI_API
-void glade_project_view_set_project (GladeProjectView *view,
-				     GladeProject *project);
+void              glade_project_view_expand_all (GladeProjectView *view);
+				     
+LIBGLADEUI_API
+void              glade_project_view_collapse_all (GladeProjectView *view);
 
 G_END_DECLS
 

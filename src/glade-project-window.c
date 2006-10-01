@@ -1060,26 +1060,25 @@ gpw_hide_editor (GladeApp *app)
 }
 
 static void 
-gpw_expand_treeview (GtkButton *button, GtkTreeView *tree)
+gpw_expand_treeview_cb (GtkButton *button, GladeProjectView *view)
 {
-	gtk_tree_view_expand_all (tree);
-	gtk_widget_queue_draw (GTK_WIDGET (tree));
+	glade_project_view_expand_all (view);
 }
 
+static void 
+gpw_collapse_treeview_cb (GtkButton *button, GladeProjectView *view)
+{
+	glade_project_view_collapse_all (view);	
+}
 
 static GtkWidget* 
 gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 {
 	GtkWidget *hbox, *vbox;
-	GladeProjectView *view;
+	GtkWidget *view;
 
-	view = glade_project_view_new (GLADE_PROJECT_VIEW_TREE);
-	glade_app_add_project_view (view);
-
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view),
-					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (view), GTK_SHADOW_IN);
-
+	view = glade_project_view_new ();
+	glade_app_add_project_view (GLADE_PROJECT_VIEW (view));
 
 	gtk_container_set_border_width (GTK_CONTAINER (view), GLADE_GENERIC_BORDER_WIDTH);
 
@@ -1103,12 +1102,12 @@ gpw_create_widget_tree_contents (GladeProjectWindow *gpw)
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
 	g_signal_connect (G_OBJECT (gpw->priv->expand), "clicked",
-			  G_CALLBACK (gpw_expand_treeview), 
-			  view->tree_view);
+			  G_CALLBACK (gpw_expand_treeview_cb), 
+			  view);
 
-	g_signal_connect_swapped (G_OBJECT (gpw->priv->collapse), "clicked",
-				  G_CALLBACK (gtk_tree_view_collapse_all), 
-				  view->tree_view);
+	g_signal_connect (G_OBJECT (gpw->priv->collapse), "clicked",
+			  G_CALLBACK (gpw_collapse_treeview_cb), 
+			  view);
 
 	return vbox;
 }
