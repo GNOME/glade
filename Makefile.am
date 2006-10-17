@@ -26,6 +26,8 @@ install-data-hook:
 
 
 EXTRA_DIST = \
+	COPYING.GPL \
+	COPYING.LGPL \
 	glade-3.desktop.in \
 	glade-3.png \
 	intltool-extract.in \
