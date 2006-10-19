@@ -34,7 +34,7 @@ typedef struct _GladeProperty       GladeProperty;
 typedef struct _GladeProject        GladeProject;
 typedef enum   _GladeItemAppearance GladeItemAppearance;
 
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-widget.h"
 #include "glade-property-class.h"
 #include "glade-property.h"
@@ -56,6 +56,13 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_YES          "Yes"
 #define GLADE_TAG_NO           "No"
 #define GLADE_ENUM_DATA_TAG    "GladeEnumDataTag"
+
+#define GLADE_LARGE_ICON_SUBDIR "22x22"
+#define GLADE_LARGE_ICON_SIZE 22
+
+#define GLADE_SMALL_ICON_SUBDIR "16x16"
+#define GLADE_SMALL_ICON_SIZE 16
+
 
 #define GLADE_TAG_EVENT_HANDLER_CONNECTED "EventHandlerConnected"
 
@@ -101,6 +108,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_CHILD_SET_PROP_FUNCTION         "child-set-property-function"
 #define GLADE_TAG_CHILD_GET_PROP_FUNCTION         "child-get-property-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
+#define GLADE_TAG_PACKING_PROPERTIES              "packing-properties"
 #define GLADE_TAG_PROPERTY                        "property"
 #define GLADE_TAG_TYPE                            "type"
 #define GLADE_TAG_SPEC                            "spec"
@@ -122,8 +130,6 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_ID                              "id"
 #define GLADE_TAG_KEY                             "key"
 #define GLADE_TAG_VALUE                           "value"
-#define GLADE_TAG_CHILD                           "child"
-#define GLADE_TAG_CHILDREN                        "children"
 #define GLADE_TAG_TRANSLATABLE                    "translatable"
 #define GLADE_TAG_PACKING_DEFAULTS                "packing-defaults"
 #define GLADE_TAG_PARENT_CLASS                    "parent-class"

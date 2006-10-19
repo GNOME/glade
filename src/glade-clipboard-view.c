@@ -32,7 +32,7 @@
 #include "glade-clipboard.h"
 #include "glade-clipboard-view.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-popup.h"
 
 
@@ -130,24 +130,28 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 				    GtkTreeIter *iter,
 				    gpointer data)
 {
-	gboolean is_icon = GPOINTER_TO_INT (data);
+	gboolean     is_icon = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
+	GdkPixbuf   *pixbuf = NULL;
 
 	gtk_tree_model_get (tree_model, iter, 0, &widget, -1);
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->widget_class != NULL);
-	g_return_if_fail (widget->widget_class->small_icon != NULL);
+
+	g_object_get (widget->adaptor, "small-icon", &pixbuf, NULL);
+	g_return_if_fail (pixbuf != NULL);
 
 	if (is_icon)
 		g_object_set (G_OBJECT (cell),
-			      "pixbuf", widget->widget_class->small_icon,
+			      "pixbuf", pixbuf,
 			      NULL);
 	else
 		g_object_set (G_OBJECT (cell),
 			      "text", widget->name,
 			      NULL);
+
+	g_object_unref (pixbuf);
 }
 
 static gint

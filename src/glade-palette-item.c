@@ -48,13 +48,15 @@ struct _GladePaletteItemPrivate
 
 	gboolean use_small_icon;
 
-	const GladeWidgetClass *widget_class; /* The widget class associated with this item */
+	GladeWidgetAdaptor *adaptor; /* The widget class adaptor associated 
+				      * with this item 
+				      */
 };
 
 enum
 {
 	PROP_0,
-	PROP_WIDGET_CLASS,
+	PROP_ADAPTOR,
 	PROP_APPEARANCE,
 	PROP_USE_SMALL_ICON
 };
@@ -133,6 +135,8 @@ void
 glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_small_icon)
 {
 	GladePaletteItemPrivate *priv;
+	GdkPixbuf               *pixbuf = NULL;
+
 	g_return_if_fail (GLADE_IS_PALETTE_ITEM (item));
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
 
@@ -142,12 +146,13 @@ glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_smal
 		priv->use_small_icon = use_small_icon;		
 
 		if (use_small_icon != FALSE)
-			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
-						   priv->widget_class->small_icon);
+			g_object_get (priv->adaptor, "small-icon", &pixbuf, NULL);
 		else
-			gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon),
-						   priv->widget_class->large_icon); 
+			g_object_get (priv->adaptor, "large-icon", &pixbuf, NULL);
 
+		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), pixbuf);
+		g_object_unref (G_OBJECT (pixbuf));
+		
 		g_object_notify (G_OBJECT (item), "use-small-icon");
 	}
 }
@@ -169,8 +174,8 @@ glade_palette_item_set_property (GObject *object,
 
 	switch (prop_id)
 	{
-		case PROP_WIDGET_CLASS:
-			priv->widget_class = (const GladeWidgetClass *) g_value_get_pointer (value);
+		case PROP_ADAPTOR:
+			priv->adaptor = g_value_get_object (value);
 			break;
 		case PROP_APPEARANCE:
 			glade_palette_item_set_appearance (item, g_value_get_enum (value));
@@ -195,8 +200,8 @@ glade_palette_item_get_property (GObject    *object,
 
 	switch (prop_id)
 	{
-		case PROP_WIDGET_CLASS:
-			g_value_set_pointer (value, (gpointer) priv->widget_class);
+		case PROP_ADAPTOR:
+			g_value_set_pointer (value, (gpointer) priv->adaptor);
 			break;
 		case PROP_APPEARANCE:
 			g_value_set_enum (value, priv->appearance);
@@ -241,11 +246,12 @@ glade_palette_item_class_init (GladePaletteItemClass *class)
 	object_class->dispose = glade_palette_item_dispose;
 
 	g_object_class_install_property (object_class,
-					 PROP_WIDGET_CLASS,
-					 g_param_spec_pointer  ("widget-class",
-							        "Widget Class",
-							        "The widget class associated with this item",
-							        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE ));
+					 PROP_ADAPTOR,
+					 g_param_spec_object  ("adaptor",
+							        "Adaptor",
+							        "The widget adaptor associated with this item",
+							       GLADE_TYPE_WIDGET_ADAPTOR,
+							       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE ));
 
 	g_object_class_install_property (object_class,
 					 PROP_APPEARANCE,
@@ -276,7 +282,7 @@ glade_palette_item_init (GladePaletteItem *item)
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
 
 	priv->label = NULL;
-	priv->widget_class = NULL;
+	priv->adaptor = NULL;
 	priv->use_small_icon = FALSE;
 	priv->appearance =  0;
 
@@ -334,23 +340,24 @@ glade_palette_item_get_type (void)
 
 /**
  * glade_palette_item_new:
- * @widget_class: A #GladeWidgetClass
+ * @adaptor: A #GladeWidgetAdaptor
  * @group: The group to add this item to.
  * @appearance: The appearance of the item
  *
  * Returns: A #GtkWidget
  */
 GtkWidget*
-glade_palette_item_new (const GladeWidgetClass *widget_class, GtkRadioButton *group)
+glade_palette_item_new (GladeWidgetAdaptor *adaptor, GtkRadioButton *group)
 {
-	GladePaletteItem *item;
+	GladePaletteItem        *item;
 	GladePaletteItemPrivate *priv;
+	GdkPixbuf               *pixbuf = NULL;
 
-	g_return_val_if_fail (widget_class != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
 	item = g_object_new (GLADE_TYPE_PALETTE_ITEM,
 			     "group", group,
-			     "widget-class", widget_class,
+			     "adaptor", adaptor,
 			     "appearance", GLADE_ITEM_ICON_ONLY,
 			     NULL);
 
@@ -358,8 +365,15 @@ glade_palette_item_new (const GladeWidgetClass *widget_class, GtkRadioButton *gr
 
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
 
-	gtk_label_set_text (GTK_LABEL (priv->label), widget_class->palette_name);
-	gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), widget_class->large_icon);
+	gtk_label_set_text (GTK_LABEL (priv->label), adaptor->title);
+
+	g_object_get (G_OBJECT (adaptor), "large-icon", &pixbuf, NULL);
+	if (pixbuf) 
+	{
+		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), pixbuf);
+		g_object_unref (G_OBJECT (pixbuf));
+	} else
+		g_warning ("couldnt get an icon from adaptor %s\n", adaptor->name);
 
 	return GTK_WIDGET (item);
 }
@@ -393,17 +407,17 @@ glade_palette_item_get_use_small_icon (GladePaletteItem *item)
 }
 
 /**
- * glade_palette_item_get_widget_class:
+ * glade_palette_item_get_adaptor:
  * @palette: A #GladePaletteItem
  *
  * Returns: the #GladeWidgetClass associated with this item.
  */
-GladeWidgetClass*
-glade_palette_item_get_widget_class (GladePaletteItem *item)
+GladeWidgetAdaptor *
+glade_palette_item_get_adaptor (GladePaletteItem *item)
 {
 	GladePaletteItemPrivate *priv;
 	g_return_val_if_fail (GLADE_IS_PALETTE_ITEM (item), NULL);	
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
 
-	return (GladeWidgetClass *) priv->widget_class;
+	return priv->adaptor;
 }

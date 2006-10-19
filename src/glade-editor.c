@@ -31,7 +31,7 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-editor.h"
 #include "glade-signal-editor.h"
 #include "glade-parameter.h"
@@ -254,11 +254,16 @@ static void
 glade_editor_on_docs_click (GtkButton *button,
 			    GladeEditor *editor)
 {
+	gchar *book;
+
 	if (editor->loaded_widget)
+	{
+		g_object_get (editor->loaded_widget->adaptor, "book", &book, NULL);
 		g_signal_emit (G_OBJECT (editor),
 			       glade_editor_signals[GTK_DOC_SEARCH],
-			       0, editor->loaded_widget->widget_class->book,
-			       editor->loaded_widget->widget_class->name, NULL);
+			       0, book, editor->loaded_widget->adaptor->name, NULL);
+		g_free (book);
+	}
 }
 
 
@@ -508,7 +513,7 @@ glade_editor_table_append_class_field (GladeEditorTable *table)
 	gtk_widget_show (label);
 	
 	class_entry = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (class_entry), table->glade_widget_class->name);
+	gtk_entry_set_text (GTK_ENTRY (class_entry), table->adaptor->name);
 	gtk_editable_set_editable (GTK_EDITABLE (class_entry), FALSE);
 	gtk_widget_show (class_entry);
 
@@ -538,11 +543,11 @@ glade_editor_property_class_comp (gconstpointer a, gconstpointer b)
 }
 
 static GList *
-glade_editor_widget_class_get_sorted_properties (GladeWidgetClass *class)
+glade_editor_get_sorted_properties (GladeWidgetAdaptor *adaptor)
 {
 	GList *l, *a = NULL, *b = NULL;
 	
-	for (l = class->properties; l && l->data; l = g_list_next (l))
+	for (l = adaptor->properties; l && l->data; l = g_list_next (l))
 	{
 		GladePropertyClass *class = l->data;
 		
@@ -559,15 +564,15 @@ glade_editor_widget_class_get_sorted_properties (GladeWidgetClass *class)
 }
 
 static gboolean
-glade_editor_table_append_items (GladeEditorTable *table,
-				 GladeWidgetClass *class,
-				 GladeEditorTableType type)
+glade_editor_table_append_items (GladeEditorTable     *table,
+				 GladeWidgetAdaptor   *adaptor,
+				 GladeEditorTableType  type)
 {
 	GladeEditorProperty *property;
 	GladePropertyClass  *property_class;
 	GList *list, *sorted_list;
 
-	sorted_list = glade_editor_widget_class_get_sorted_properties (class);
+	sorted_list = glade_editor_get_sorted_properties (adaptor);
 	
 	for (list = sorted_list; list != NULL; list = list->next)
 	{
@@ -622,18 +627,18 @@ glade_editor_table_free (GladeEditorTable *etable)
 }
 
 static GladeEditorTable *
-glade_editor_table_create (GladeEditor *editor,
-			   GladeWidgetClass *class,
-			   GladeEditorTableType type)
+glade_editor_table_create (GladeEditor          *editor,
+			   GladeWidgetAdaptor   *adaptor,
+			   GladeEditorTableType  type)
 {
 	GladeEditorTable *table;
 
 	g_return_val_if_fail (GLADE_IS_EDITOR (editor), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (class), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
 	table = glade_editor_table_new ();
 	table->editor = editor;
-	table->glade_widget_class = class;
+	table->adaptor = adaptor;
 	table->type = type;
 
 	if (type == TABLE_TYPE_GENERAL)
@@ -642,7 +647,7 @@ glade_editor_table_create (GladeEditor *editor,
 		glade_editor_table_append_name_field (table);
 	}
 
-	if (!glade_editor_table_append_items (table, class, type))
+	if (!glade_editor_table_append_items (table, adaptor, type))
 		return NULL;
 
 	gtk_widget_show (table->table_widget);
@@ -652,7 +657,7 @@ glade_editor_table_create (GladeEditor *editor,
 
 static GladeEditorTable *
 glade_editor_get_table_from_class (GladeEditor *editor,
-				   GladeWidgetClass *class,
+				   GladeWidgetAdaptor *adaptor,
 				   GladeEditorTableType type)
 {
 	GladeEditorTable *table;
@@ -663,11 +668,11 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 		table = list->data;
 		if (type != table->type)
 			continue;
-		if (table->glade_widget_class == class)
+		if (table->adaptor == adaptor)
 			return table;
 	}
 
-	table = glade_editor_table_create (editor, class, type);
+	table = glade_editor_table_create (editor, adaptor, type);
 	g_return_val_if_fail (table != NULL, NULL);
 
 	editor->widget_tables = g_list_prepend (editor->widget_tables, table);
@@ -677,7 +682,7 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 
 static void
 glade_editor_load_page (GladeEditor          *editor, 
-			GladeWidgetClass     *class,
+			GladeWidgetAdaptor   *adaptor,
 			GladeEditorTableType  type)
 {
 	GladeEditorTable *table;
@@ -714,10 +719,10 @@ glade_editor_load_page (GladeEditor          *editor,
 	}
 	g_list_free (children);
 
-	if (!class)
+	if (!adaptor)
 		return;
 
-	table = glade_editor_get_table_from_class (editor, class, type);
+	table = glade_editor_get_table_from_class (editor, adaptor, type);
 
 	/* Attach the new table */
 	gtk_container_add (GTK_CONTAINER (container), table->table_widget);
@@ -754,7 +759,7 @@ void
 glade_editor_update_widget_name (GladeEditor *editor)
 {
 	GladeEditorTable *table = glade_editor_get_table_from_class
-		(editor, editor->loaded_class, TABLE_TYPE_GENERAL);
+		(editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL);
 
 	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
 	gtk_entry_set_text (GTK_ENTRY (table->name_entry), editor->loaded_widget->name);
@@ -762,7 +767,7 @@ glade_editor_update_widget_name (GladeEditor *editor)
 }
 
 static void
-glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
+glade_editor_load_signal_page (GladeEditor *editor)
 {
 	if (editor->signal_editor == NULL) {
 		editor->signal_editor = glade_signal_editor_new ((gpointer) editor);
@@ -772,15 +777,15 @@ glade_editor_load_signal_page (GladeEditor *editor, GladeWidgetClass *class)
 }
 
 static void
-glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetClass *class)
+glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetAdaptor *adaptor)
 {
-	glade_editor_load_page (editor, class, TABLE_TYPE_GENERAL);
-	glade_editor_load_page (editor, class, TABLE_TYPE_COMMON);
-	glade_editor_load_page (editor, class, TABLE_TYPE_ATK);
+	glade_editor_load_page (editor, adaptor, TABLE_TYPE_GENERAL);
+	glade_editor_load_page (editor, adaptor, TABLE_TYPE_COMMON);
+	glade_editor_load_page (editor, adaptor, TABLE_TYPE_ATK);
 
-	glade_editor_load_signal_page  (editor, class);
+	glade_editor_load_signal_page  (editor);
 	
-	editor->loaded_class = class;
+	editor->loaded_adaptor = adaptor;
 }
 
 static gint
@@ -868,7 +873,7 @@ glade_editor_load_table (GladeEditor         *editor,
 	GList               *list;
 
 	table = glade_editor_get_table_from_class
-		(editor, widget->widget_class, type);
+		(editor, widget->adaptor, type);
 	if (table->name_entry)
 		gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
 
@@ -882,8 +887,9 @@ glade_editor_load_table (GladeEditor         *editor,
 static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
-	GladeWidgetClass *class;
-	GladeProject     *project;
+	GladeWidgetAdaptor *adaptor;
+	GladeProject       *project;
+	gchar              *book;
 
 	/* Disconnect from last widget */
 	if (editor->loaded_widget != NULL)
@@ -893,9 +899,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 					     editor->project_closed_signal_id);
 	}	
 	/* Load the GladeWidgetClass */
-	class = widget ? widget->widget_class : NULL;
-	if (editor->loaded_class != class || class == NULL)
-		glade_editor_load_widget_class (editor, class);
+	adaptor = widget ? widget->adaptor : NULL;
+	if (editor->loaded_adaptor != adaptor || adaptor == NULL)
+		glade_editor_load_widget_class (editor, adaptor);
 
 	glade_editor_load_packing_page (editor, widget);
 	glade_signal_editor_load_widget (editor->signal_editor, widget);
@@ -918,8 +924,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	}
 	gtk_widget_set_sensitive (editor->reset_button, TRUE);
 
-	gtk_widget_set_sensitive (editor->info_button, 
-				  editor->loaded_class->book != NULL);
+	g_object_get (editor->loaded_adaptor, "book", &book, NULL);
+	gtk_widget_set_sensitive (editor->info_button, book != NULL);
+	g_free (book);
 
 	editor->loading = TRUE;
 
@@ -981,7 +988,7 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	gint		     answer;
 	gboolean	     retval = TRUE;
 
-	title = g_strdup_printf (_("Create a %s"), widget->widget_class->name);
+	title = g_strdup_printf (_("Create a %s"), widget->adaptor->name);
 
 	dialog = gtk_dialog_new_with_buttons (title, NULL,
 		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
@@ -993,7 +1000,7 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	g_free (title);
 
 	table = glade_editor_get_table_from_class (editor,
-						   widget->widget_class,
+						   widget->adaptor,
 						   TABLE_TYPE_QUERY);
 
 

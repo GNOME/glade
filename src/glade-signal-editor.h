@@ -21,7 +21,7 @@ struct _GladeSignalEditor
 	GtkWidget *main_window;  /* A vbox where all the widgets are added */
 
 	GladeWidget *widget;
-	GladeWidgetClass *class;
+	GladeWidgetAdaptor *adaptor;
 
 	gpointer  *editor;
 

@@ -38,7 +38,7 @@
 #include "glade-debug.h"
 #include "glade-placeholder.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
@@ -125,11 +125,12 @@ glade_util_compose_get_type_func (const gchar *name)
 
 /**
  * glade_util_get_type_from_name:
- * @name:
+ * @name: the name of the #GType - like 'GtkWidget'.
  *
- * TODO: write me
+ * Looks up the type registering function from a plugin
+ * and initializes & returns the type for @name.
  *
- * Returns:
+ * Returns: the new #GType
  */
 GType
 glade_util_get_type_from_name (const gchar *name)
@@ -1003,13 +1004,11 @@ glade_util_container_get_all_children (GtkContainer *container)
 gboolean
 glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
 {
-	GladeSupportedChild *support;
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-	return (GTK_IS_CONTAINER (parent->object)                      &&
-		(support = glade_widget_class_get_child_support
-		 (parent->widget_class, widget->widget_class->type))   &&
-		(support->type == GTK_TYPE_WIDGET));
+
+	return (GTK_IS_CONTAINER (parent->object) &&
+		GTK_IS_WIDGET (widget->object));
 }
 
 /**
@@ -1044,9 +1043,9 @@ glade_util_widget_pastable (GladeWidget *child,
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (child),  FALSE);
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
-	return (glade_widget_class_get_child_support
-		(parent->widget_class,
-		 child->widget_class->type) != NULL) ? TRUE : FALSE;
+
+	/* FIXME: what to do now ? */
+	return TRUE;
 }
 
 /**
@@ -1062,8 +1061,8 @@ glade_util_count_placeholders (GladeWidget *parent)
 	GList *list, *children;
 
 	/* count placeholders */
-	if ((children = glade_widget_class_container_get_children
-	     (parent->widget_class, parent->object)) != NULL)
+	if ((children = glade_widget_adaptor_get_children
+	     (parent->adaptor, parent->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 		{
@@ -1686,7 +1685,7 @@ glade_util_deep_fixed_event (GtkWidget   *widget,
 	     search = search->parent);
 
 	if (search && GLADE_IS_FIXED (search) && search != gwidget)
-		return GLADE_WIDGET_GET_KLASS (search)->event (widget, event, search);
+		return GLADE_WIDGET_GET_CLASS (search)->event (widget, event, search);
 
 	return FALSE;
 }

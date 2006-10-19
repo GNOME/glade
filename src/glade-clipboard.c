@@ -27,7 +27,6 @@
 #include "glade-clipboard-view.h"
 #include "glade-clipboard.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
 #include "glade-placeholder.h"
 #include "glade-project.h"
 

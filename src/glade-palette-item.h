@@ -29,7 +29,7 @@
 
 #include "glade.h"
 #include "glade-palette.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 
 #include <gtk/gtkradiobutton.h>
 
@@ -70,10 +70,10 @@ struct _GladePaletteItemClass
 
 GType                 glade_palette_item_get_type (void) G_GNUC_CONST;
 
-GtkWidget            *glade_palette_item_new (const GladeWidgetClass* widget_class, 
-					      GtkRadioButton *group);
+GtkWidget            *glade_palette_item_new (GladeWidgetAdaptor *adaptor, 
+					      GtkRadioButton     *group);
 
-GladeWidgetClass*     glade_palette_item_get_widget_class (GladePaletteItem *item) G_GNUC_CONST;
+GladeWidgetAdaptor   *glade_palette_item_get_adaptor (GladePaletteItem *item) G_GNUC_CONST;
 
 GladeItemAppearance   glade_palette_item_get_appearance (GladePaletteItem *item) G_GNUC_CONST;
 

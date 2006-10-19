@@ -38,7 +38,7 @@
 #include "glade-catalog.h"
 #include "glade-project.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
 
@@ -53,7 +53,7 @@ struct _GladePalettePrivate
 	GtkWidget *selector;    /* Selector item button */
 	GtkWidget *tray;	/* Where all the item groups are contained */
 
-	GladeWidgetClass *current_item_class; /* The currently selected item class */
+	GladeWidgetAdaptor *current_item; /* The currently selected item adaptor */
 
 	GSList *sections;   	         /* List of GladePaletteExpanders */ 
 	GSList *items_radio_group;       /* Radio group for palette item buttons */
@@ -78,7 +78,7 @@ enum
 enum
 {
 	PROP_0,
-	PROP_CURRENT_ITEM_CLASS,
+	PROP_CURRENT_ITEM,
 	PROP_ITEM_APPEARANCE,
 	PROP_USE_SMALL_ITEM_ICONS
 };
@@ -175,8 +175,8 @@ glade_palette_get_property (GObject    *object,
 
 	switch (prop_id)
 	{
-		case PROP_CURRENT_ITEM_CLASS:
-			g_value_set_pointer (value, (gpointer) priv->current_item_class);
+		case PROP_CURRENT_ITEM:
+			g_value_set_pointer (value, (gpointer) priv->current_item);
 			break;
 		case PROP_USE_SMALL_ITEM_ICONS:
 			g_value_set_boolean (value, priv->use_small_item_icons);
@@ -266,10 +266,10 @@ glade_palette_class_init (GladePaletteClass *class)
 							       G_PARAM_READWRITE));
 
 	g_object_class_install_property (object_class,
-					 PROP_CURRENT_ITEM_CLASS,
-					 g_param_spec_pointer  ("current-item-class",
+					 PROP_CURRENT_ITEM,
+					 g_param_spec_pointer  ("current-item",
 							        "Current Item Class",
-							        "The GladeWidgetClass of the currently selected item",
+							        "The GladeWidgetAdaptor of the currently selected item",
 							        G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof (GladePalettePrivate));
@@ -291,40 +291,40 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 
 	if (button == priv->selector)
 	{
-		priv->current_item_class = NULL;
+		priv->current_item = NULL;
 		priv->locked = FALSE;
 	}
 	else
 	{
 		GdkModifierType mask;
 		
-		priv->current_item_class = 
-			glade_palette_item_get_widget_class (GLADE_PALETTE_ITEM (button));
+		priv->current_item = 
+			glade_palette_item_get_adaptor (GLADE_PALETTE_ITEM (button));
 		
 		gdk_window_get_pointer (button->window, NULL, NULL, &mask);
 
 	  	priv->locked = 
-			(!priv->current_item_class->toplevel) && (mask & GDK_CONTROL_MASK);
+			(! GWA_IS_TOPLEVEL (priv->current_item)) && (mask & GDK_CONTROL_MASK);
 	}
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
 }
 
 static GtkWidget*
-glade_palette_new_item (GladePalette *palette, GladeWidgetClass *widget_class)
+glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 {
 	GladePalettePrivate *priv;
 	GtkWidget *item;
 
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET_CLASS (widget_class), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
-	item = glade_palette_item_new (widget_class, GTK_RADIO_BUTTON (priv->selector));
+	item = glade_palette_item_new (adaptor, GTK_RADIO_BUTTON (priv->selector));
 
 	glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (item), priv->item_appearance);
 
-	gtk_tooltips_set_tip (priv->tooltips, item, widget_class->palette_name, NULL);
+	gtk_tooltips_set_tip (priv->tooltips, item, adaptor->title, NULL);
 
 	g_signal_connect (G_OBJECT (item), "toggled",
 			  G_CALLBACK (glade_palette_on_button_toggled), palette);
@@ -349,12 +349,12 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	box = glade_palette_box_new ();
 
 	/* Go through all the widget classes in this catalog. */
-	for (l = glade_widget_group_get_widget_classes (group); l; l = l->next)
+	for (l = glade_widget_group_get_adaptors (group); l; l = l->next)
 	{
-		GladeWidgetClass *class =  GLADE_WIDGET_CLASS (l->data);
+		GladeWidgetAdaptor *adaptor =  GLADE_WIDGET_ADAPTOR (l->data);
 
 		/* Create new item */
-		item = glade_palette_new_item (palette, class);
+		item = glade_palette_new_item (palette, adaptor);
 		gtk_size_group_add_widget (priv->size_group, GTK_WIDGET (item));
 		gtk_container_add (GTK_CONTAINER (box), item);
 
@@ -490,7 +490,7 @@ glade_palette_init (GladePalette *palette)
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
 	priv->catalogs = NULL;
-	priv->current_item_class = NULL;
+	priv->current_item = NULL;
 	priv->items_radio_group = NULL;
 	priv->sections = NULL;
 	priv->item_appearance = GLADE_ITEM_ICON_ONLY;
@@ -550,23 +550,23 @@ glade_palette_get_type (void)
 }
 
 /**
- * glade_palette_get_current_item_class:
+ * glade_palette_get_current_item:
  * @palette: a #GladePalette
  *
- * Gets the #GladeWidgetClass of the currently selected item.
+ * Gets the #GladeWidgetAdaptor of the currently selected item.
  *
- * Returns: the #GladeWidgetClass of currently selected item, or NULL
+ * Returns: the #GladeWidgetAdaptor of currently selected item, or NULL
  *          if no item is selected.
  */
-GladeWidgetClass *
-glade_palette_get_current_item_class (GladePalette *palette)
+GladeWidgetAdaptor *
+glade_palette_get_current_item (GladePalette *palette)
 {
 	GladePalettePrivate *priv;
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
 
-	return priv->current_item_class;
+	return priv->current_item;
 
 }
 
@@ -608,7 +608,7 @@ glade_palette_new (const GList *catalogs, GladeItemAppearance item_appearance)
 		{
 			GladeWidgetGroup *group = GLADE_WIDGET_GROUP (groups->data);
 
-			if (glade_widget_group_get_widget_classes (group)) 
+			if (glade_widget_group_get_adaptors (group)) 
 				glade_palette_append_item_group (palette, group);
 		}
 	}

@@ -24,7 +24,7 @@
 #include "glade-app.h"
 #include "glade-palette.h"
 #include "glade-cursor.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -94,8 +94,8 @@ set_cursor (GdkCursor *gdk_cursor)
 void
 glade_cursor_set (GdkWindow *window, GladeCursorType type)
 {
-	GladeWidgetClass *widget_class;
-	GdkCursor        *the_cursor = NULL;
+	GladeWidgetAdaptor *adaptor;
+	GdkCursor          *the_cursor = NULL;
 	g_return_if_fail (cursor != NULL);
 
 	switch (type) {
@@ -104,20 +104,17 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
  		gdk_window_set_cursor (window, cursor->selector);
 		break;
 	case GLADE_CURSOR_ADD_WIDGET:
-
-		widget_class = glade_palette_get_current_item_class (glade_app_get_palette ());
-
-		if (widget_class != NULL)
+		if ((adaptor = 
+		     glade_palette_get_current_item (glade_app_get_palette ())) != NULL)
 		{
-			if (widget_class->cursor != NULL)
-				the_cursor = widget_class->cursor;
-			else
+			g_object_get (adaptor, "cursor", &the_cursor, NULL);
+			
+			if (the_cursor == NULL)
 				the_cursor = cursor->add_widget;
+			
 		}
 		else
-		{ 
 			the_cursor = cursor->add_widget;
-		}
 		break;
 	case GLADE_CURSOR_RESIZE_TOP_LEFT:
 		the_cursor = cursor->resize_top_left;

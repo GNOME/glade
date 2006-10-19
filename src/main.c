@@ -53,12 +53,10 @@ static GOptionEntry option_entries[] =
 };
 
 /* Debugging arguments */
-static gchar *widget_name = NULL;
 static gboolean verbose = FALSE;
 
 static GOptionEntry debug_option_entries[] = 
 {
-  { "dump", 'd', 0, G_OPTION_ARG_STRING, &widget_name, "dump the properties of a widget", "GTKWIDGET" },
   { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "be verbose", NULL },
   { NULL }
 };
@@ -148,14 +146,6 @@ main (int argc, char *argv[])
 	if (without_devhelp == FALSE)
 		glade_project_window_check_devhelp (project_window);
 	
-	if (widget_name != NULL)
-	{
-		GladeWidgetClass *class;
-		class = glade_widget_class_get_by_name (widget_name);
-		if (class)
-			glade_widget_class_dump_param_specs (class);
-		return 0;
-	}
 	
 	/* load files specified on commandline */
 	if (files != NULL)

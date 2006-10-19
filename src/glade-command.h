@@ -96,12 +96,12 @@ void           glade_command_set_name      (GladeWidget       *glade_widget, con
 
 /************************ create/delete ******************************/
 LIBGLADEUI_API
-void           glade_command_delete        (GList             *widgets);
+void           glade_command_delete        (GList              *widgets);
 LIBGLADEUI_API
-GladeWidget   *glade_command_create        (GladeWidgetClass  *class,
-					    GladeWidget       *parent,
-					    GladePlaceholder  *placeholder,
-					    GladeProject      *project);
+GladeWidget   *glade_command_create        (GladeWidgetAdaptor *adaptor,
+					    GladeWidget        *parent,
+					    GladePlaceholder   *placeholder,
+					    GladeProject       *project);
 
 /************************ cut/copy/paste ******************************/
 LIBGLADEUI_API

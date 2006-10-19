@@ -211,8 +211,8 @@ glade_base_editor_fill_store_real (GladeBaseEditor *e,
 	GList *children, *l;
 	GtkTreeIter iter;
 	
-	children = l = glade_widget_class_container_get_children (gwidget->widget_class,
-								  G_OBJECT (widget));
+	children = l = glade_widget_adaptor_get_children (gwidget->adaptor,
+							  G_OBJECT (widget));
 	
 	while (l)
 	{
@@ -1057,12 +1057,12 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 			       GType type)
 {
 	GladeBaseEditorPrivate *e = editor->priv;
-	GladeWidgetClass *klass = glade_widget_class_get_by_type (type);
-	GladeWidget *parent, *gchild_new;
-	GList list = {0, }, *children, *l;
-	GObject *child, *child_new;
-	GtkTreeIter iter;
-	gchar *name, *class_name;
+	GladeWidgetAdaptor     *adaptor = glade_widget_adaptor_get_by_type (type);
+	GladeWidget            *parent, *gchild_new;
+	GList                   list = {0, }, *children, *l;
+	GObject                *child, *child_new;
+	GtkTreeIter             iter;
+	gchar                  *name, *class_name;
 
 	if (glade_base_editor_get_type_info (editor, NULL, type,
 					     GLADE_BASE_EDITOR_NAME, &class_name,
@@ -1075,11 +1075,11 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	glade_base_editor_find_child (editor, gchild, &iter);
 	
 	/* Create new widget */
-	gchild_new = glade_command_create (klass, parent, NULL, e->project);
+	gchild_new = glade_command_create (adaptor, parent, NULL, e->project);
 	child_new = glade_widget_get_object (gchild_new);
 
 	/* Cut and Paste childrens */
-	if ((children = glade_widget_class_container_get_children (klass, child)))
+	if ((children = glade_widget_adaptor_get_children (adaptor, child)))
 	{
 		GList *gchildren = NULL;
 		
@@ -1151,7 +1151,7 @@ glade_base_editor_build_child (GladeBaseEditor *editor,
 			       GladeWidget *gparent,
 			       GType type)
 {
-	return glade_command_create (glade_widget_class_get_by_type (type),
+	return glade_command_create (glade_widget_adaptor_get_by_type (type),
 				     gparent, NULL,
 				     glade_widget_get_project (gparent));
 }

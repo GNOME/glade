@@ -31,7 +31,6 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
 #include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"

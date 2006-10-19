@@ -2,6 +2,8 @@
 #ifndef __GLADE_SIGNAL_H__
 #define __GLADE_SIGNAL_H__
 
+#include "glade-parser.h"
+
 G_BEGIN_DECLS
 
 

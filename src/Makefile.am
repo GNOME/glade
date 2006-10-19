@@ -52,13 +52,13 @@ libgladegtkinclude_HEADERS = glade-gtk.h
 
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
+	glade-widget-adaptor.c \
 	glade-debug.c \
 	glade-project.c \
 	glade-parameter.c \
 	glade-placeholder.c \
 	glade-custom.c \
 	glade-project-view.c \
-	glade-widget-class.c \
 	glade-xml-utils.c \
 	glade-palette.c \
 	glade-palette-item.c \
@@ -116,7 +116,7 @@ libgladeuiinclude_HEADERS = \
 	glade-palette-expander.h \
 	glade-cursor.h \
 	glade-widget.h \
-	glade-widget-class.h \
+	glade-widget-adaptor.h \
 	glade-property.h \
 	glade-property-class.h \
 	glade-popup.h \

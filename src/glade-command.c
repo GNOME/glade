@@ -31,7 +31,6 @@
 #include "glade-project.h"
 #include "glade-xml-utils.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
 #include "glade-palette.h"
 #include "glade-command.h"
 #include "glade-property.h"
@@ -1139,28 +1138,28 @@ glade_command_delete (GList *widgets)
 
 /**
  * glade_command_create:
- * @class:		the class of the widget (GtkWindow or GtkButton)
+ * @adaptor:		A #GladeWidgetAdaptor
  * @placeholder:	the placeholder which will be substituted by the widget
  * @project:            the project his widget belongs to.
  *
- * Creates a new widget of @class and put in place of the @placeholder
+ * Creates a new widget using @adaptor and put in place of the @placeholder
  * in the @project
  *
  * Returns the newly created widget.
  */
 GladeWidget *
-glade_command_create (GladeWidgetClass *class,
-		      GladeWidget      *parent,
-		      GladePlaceholder *placeholder,
-		      GladeProject     *project)
+glade_command_create (GladeWidgetAdaptor *adaptor,
+		      GladeWidget        *parent,
+		      GladePlaceholder   *placeholder,
+		      GladeProject       *project)
 {
 	GladeCommandCreateDelete *me;
 	CommandData              *cdata;
 	GladeWidget              *widget;
 
-	g_return_val_if_fail (class != NULL, NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	if (class->toplevel == FALSE)
+	if (GWA_IS_TOPLEVEL (adaptor) == FALSE)
 		g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 
  	me            = g_object_new (GLADE_COMMAND_CREATE_DELETE_TYPE, NULL);
@@ -1173,10 +1172,10 @@ glade_command_create (GladeWidgetClass *class,
 	
 	me->widgets = g_list_append (me->widgets, cdata);
 
-	widget = glade_widget_class_create_widget (class, TRUE,
-						   "parent", parent, 
-						   "project", project, 
-						   NULL);
+	widget = glade_widget_adaptor_create_widget (adaptor, TRUE,
+						     "parent", parent, 
+						     "project", project, 
+						     NULL);
 
 	/* widget may be null, e.g. the user clicked cancel on a query */
 	if ((cdata->widget = widget) == NULL)
@@ -1675,8 +1674,8 @@ glade_command_cut_copy_paste_common (GList                 *widgets,
 				glade_command_placeholder_connect
 						(cdata, GLADE_PLACEHOLDER (child));
 			}
-			else if ((children = glade_widget_class_container_get_children
-				 (cdata->parent->widget_class, cdata->parent->object)) != NULL)
+			else if ((children = glade_widget_adaptor_get_children
+				 (cdata->parent->adaptor, cdata->parent->object)) != NULL)
 			{
 				for (l = children; l && l->data; l = l->next)
 				{

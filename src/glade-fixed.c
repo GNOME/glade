@@ -656,7 +656,7 @@ glade_fixed_child_event (GladeWidget *gwidget,
 	 */
 	if ((GLADE_IS_PLACEHOLDER (event_widget) ||
 	     GLADE_IS_FIXED (event_gwidget))     &&
-	    glade_palette_get_current_item_class (glade_app_get_palette ()) != NULL)
+	    glade_palette_get_current_item (glade_app_get_palette ()) != NULL)
 	{
 		glade_cursor_set (((GdkEventAny *)event)->window, 
 				  GLADE_CURSOR_ADD_WIDGET);
@@ -684,7 +684,7 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
 	/* Chain up for the basic parenting */
-	GLADE_WIDGET_KLASS (parent_class)->add_child
+	GLADE_WIDGET_CLASS (parent_class)->add_child
 		(GLADE_WIDGET (fixed), child, at_mouse);
 
 	/* Could be a delagate object that is not a widget or a special
@@ -742,7 +742,7 @@ glade_fixed_remove_child_impl (GladeWidget *fixed,
 	glade_fixed_disconnect_child (GLADE_FIXED (fixed), child);
 
 	/* Chain up for the basic unparenting */
-	GLADE_WIDGET_KLASS (parent_class)->remove_child
+	GLADE_WIDGET_CLASS (parent_class)->remove_child
 		(GLADE_WIDGET (fixed), child);
 }
 
@@ -758,7 +758,7 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 		glade_fixed_disconnect_child (GLADE_FIXED (fixed), gold_widget);
 
 	/* Chain up for the basic reparenting */
-	GLADE_WIDGET_KLASS (parent_class)->replace_child
+	GLADE_WIDGET_CLASS (parent_class)->replace_child
 		(GLADE_WIDGET (fixed), old_object, new_object);
 
 	if (gnew_widget)
@@ -770,15 +770,15 @@ glade_fixed_event (GtkWidget   *widget,
 		   GdkEvent    *event,
 		   GladeWidget *gwidget_fixed)
 {
-	GladeFixed       *fixed = GLADE_FIXED (gwidget_fixed);
-	GladeWidgetClass *item_class;
-	GtkWidget        *event_widget;
-	gboolean          handled = FALSE;
-	GladeWidget      *event_gwidget, *search;
+	GladeFixed         *fixed = GLADE_FIXED (gwidget_fixed);
+	GladeWidgetAdaptor *adaptor;
+	GtkWidget          *event_widget;
+	gboolean            handled = FALSE;
+	GladeWidget        *event_gwidget, *search;
 
 	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
 
-	item_class = glade_palette_get_current_item_class (glade_app_get_palette ());
+	adaptor = glade_palette_get_current_item (glade_app_get_palette ());
 
 	/* Get the event widget and the deep widget */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
@@ -786,7 +786,7 @@ glade_fixed_event (GtkWidget   *widget,
 
 	/* If the GladeWidget used this event... let it slide.
 	 */
-	if (GLADE_WIDGET_KLASS (parent_class)->event (widget, event, gwidget_fixed))
+	if (GLADE_WIDGET_CLASS (parent_class)->event (widget, event, gwidget_fixed))
 		return TRUE;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE);
@@ -817,7 +817,7 @@ glade_fixed_event (GtkWidget   *widget,
 		/* Early return for placeholders with selection in
 		 * the palette.
 		 */
-		if (item_class)
+		if (adaptor)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
@@ -870,13 +870,13 @@ glade_fixed_event (GtkWidget   *widget,
 		if (((GdkEventButton *) event)->button == 1)
 		{
 
-			if (item_class != NULL)
+			if (adaptor != NULL)
 			{
 				/* A widget type is selected in the palette.
 				 * Add a new widget of that type.
 				 */
 				fixed->creating = TRUE;
-				glade_command_create (item_class, 
+				glade_command_create (adaptor, 
 						      GLADE_WIDGET (fixed), NULL, 
 						      GLADE_WIDGET (fixed)->project);
 				fixed->creating = FALSE;
@@ -889,7 +889,7 @@ glade_fixed_event (GtkWidget   *widget,
 		break;
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
-		if (item_class != NULL)
+		if (adaptor != NULL)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
@@ -1000,7 +1000,7 @@ static void
 glade_fixed_class_init (GladeFixedClass *fixed_class)
 {
 	GObjectClass     *gobject_class = G_OBJECT_CLASS (fixed_class);
-	GladeWidgetKlass *gwidget_class = GLADE_WIDGET_KLASS (fixed_class);
+	GladeWidgetClass *gwidget_class = GLADE_WIDGET_CLASS (fixed_class);
 
 	parent_class = 
 		G_OBJECT_CLASS

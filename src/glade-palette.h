@@ -71,7 +71,7 @@ LIBGLADEUI_API
 void                 glade_palette_deselect_current_item (GladePalette *palette);
 
 LIBGLADEUI_API
-GladeWidgetClass    *glade_palette_get_current_item_class (GladePalette *palette) G_GNUC_CONST;
+GladeWidgetAdaptor  *glade_palette_get_current_item (GladePalette *palette) G_GNUC_CONST;
 
 LIBGLADEUI_API
 GladeItemAppearance  glade_palette_get_item_appearance (GladePalette *palette) G_GNUC_CONST;

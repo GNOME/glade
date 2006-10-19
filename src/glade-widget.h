@@ -5,7 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-signal.h"
 #include "glade-property.h"
 
@@ -13,19 +13,21 @@ G_BEGIN_DECLS
  
 #define GLADE_TYPE_WIDGET            (glade_widget_get_type ())
 #define GLADE_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WIDGET, GladeWidget))
-#define GLADE_WIDGET_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET, GladeWidgetKlass))
+#define GLADE_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET, GladeWidgetClass))
 #define GLADE_IS_WIDGET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET))
-#define GLADE_IS_WIDGET_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
-#define GLADE_WIDGET_GET_KLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetKlass))
+#define GLADE_IS_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
+#define GLADE_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetClass))
 
-typedef struct _GladeWidgetKlass  GladeWidgetKlass;
+typedef struct _GladeWidgetClass  GladeWidgetClass;
 
 struct _GladeWidget
 {
 	GObject parent_instance;
 
-	GladeWidgetClass *widget_class;
-	GladeProject     *project;     /* A pointer to the project that this widget belongs to. */
+	GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
+
+	GladeProject       *project; /* A pointer to the project that this 
+					widget currently belongs to. */
 
 	GladeWidget  *parent;  /* A pointer to the parent widget in the hierarchy */
 	
@@ -95,7 +97,7 @@ struct _GladeWidget
 	gchar             *construct_internal;
 };
 
-struct _GladeWidgetKlass
+struct _GladeWidgetClass
 {
 	GObjectClass parent_class;
 
@@ -279,7 +281,7 @@ void                    glade_widget_set_project	    (GladeWidget      *widget,
 LIBGLADEUI_API 
 GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
 LIBGLADEUI_API 
-GladeWidgetClass       *glade_widget_get_class              (GladeWidget      *widget);
+GladeWidgetAdaptor     *glade_widget_get_adaptor            (GladeWidget      *widget);
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
 LIBGLADEUI_API 

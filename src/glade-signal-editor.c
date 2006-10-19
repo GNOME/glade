@@ -29,7 +29,7 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-signal.h"
 #include "glade-signal-editor.h"
 #include "glade-editor.h"
@@ -840,14 +840,14 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	gtk_tree_store_clear (editor->model);
 
 	editor->widget = widget;
-	editor->class = widget ? widget->widget_class : NULL;
+	editor->adaptor = widget ? widget->adaptor : NULL;
 
 	if (!widget)
 		return;
 
 	/* Loop over every signal type
 	 */
-	for (list = editor->class->signals; list; list = list->next)
+	for (list = editor->adaptor->signals; list; list = list->next)
 	{
 		GladeSignalClass *signal = (GladeSignalClass *) list->data;
   

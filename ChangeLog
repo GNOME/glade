@@ -1,3 +1,25 @@
+2006-10-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/Makefile.am src/glade-app.c src/glade-base-editor.c 
+	src/glade-catalog.c src/glade-catalog.h src/glade-clipboard-view.c 
+	src/glade-clipboard.c src/glade-command.c src/glade-command.h 
+	src/glade-cursor.c src/glade-editor-property.c 
+	src/glade-editor.c src/glade-editor.h src/glade-fixed.c 
+	src/glade-fixed.h src/glade-gnome.c src/glade-gtk.c 
+	src/glade-palette-item.c src/glade-palette-item.h 
+	src/glade-palette.c src/glade-palette.h 
+	src/glade-placeholder.c src/glade-popup.c 
+	src/glade-project-view.c src/glade-project.c 
+	src/glade-property-class.c src/glade-property.c 
+	src/glade-property.h src/glade-signal-editor.c 
+	src/glade-signal-editor.h src/glade-signal.h src/glade-utils.c 
+	src/glade-widget.c src/glade-widget.h src/glade.h src/main.c 
+	widgets/bonobo.xml.in widgets/gnome.xml.in widgets/gtk+.xml.in: 
+
+	Added glade-widget-adaptor.[ch], removed glade-widget-class.[ch].
+
+	Modified most sources to cope with the major api change.
+
 2006-10-18  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* Makefile.am: Update icon theme cache on uninstall.

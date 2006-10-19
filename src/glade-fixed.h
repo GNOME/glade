@@ -75,7 +75,7 @@ struct _GladeFixed {
 };
 
 struct _GladeFixedClass {
-	GladeWidgetKlass   parent_class;
+	GladeWidgetClass   parent_class;
 
 	gboolean     (* configure_child) (GladeFixed *, GladeWidget *, GdkRectangle *);
 	gboolean     (* configure_begin) (GladeFixed *, GladeWidget *);

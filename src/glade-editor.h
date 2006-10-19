@@ -46,20 +46,20 @@ struct _GladeEditor
 				     * if no widgets are selected
 				     */
 
-	GladeWidgetClass *loaded_class; /* A pointer to the loaded
-					 * GladeWidgetClass. Note that we can
-					 * have a class loaded without a
-					 * loaded_widget. For this reason we
-					 * can't use loaded_widget->class.
-					 * When a widget is selected we load
-					 * this class in the editor first and
-					 * then fill the values of the inputs
-					 * with the GladeProperty items.
-					 * This is usefull for not having
-					 * to redraw/container_add the widgets
-					 * when we switch from widgets of the
-					 * same class
-					 */
+	GladeWidgetAdaptor *loaded_adaptor; /* A pointer to the loaded
+					     * GladeWidgetAdaptor. Note that we can
+					     * have a class loaded without a
+					     * loaded_widget. For this reason we
+					     * can't use loaded_widget->adaptor.
+					     * When a widget is selected we load
+					     * this class in the editor first and
+					     * then fill the values of the inputs
+					     * with the GladeProperty items.
+					     * This is usefull for not having
+					     * to redraw/container_add the widgets
+					     * when we switch from widgets of the
+					     * same class
+					     */
 
 
 	/* The editor has (at this moment) four tabs; these are pointers to the 
@@ -150,9 +150,9 @@ struct _GladeEditorTable
 			      * editor arround.
 			      */
 	
-	GladeWidgetClass *glade_widget_class; /* The GladeWidgetClass this
-					       * table belongs to.
-					       */
+	GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor this
+				      * table belongs to.
+				      */
 
 	GtkWidget *table_widget; /* This widget is a gtk_vbox that is displayed
 				  * in the glade-editor when a widget of this

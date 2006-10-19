@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2006 The GNOME Foundation.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -37,7 +38,7 @@
 #include "glade-property-class.h"
 #include "glade-parameter.h"
 #include "glade-project.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-debug.h"
 #include "glade-app.h"
 #include "glade-editor.h"
@@ -141,8 +142,8 @@ glade_property_sync_property (GladeProperty *property, const GValue *value)
 	{
 		GladeWidget  *parent = glade_widget_get_parent (property->widget);
 		GladeWidget  *child  = property->widget;
-		glade_widget_class_container_set_property 
-			(parent->widget_class, parent->object, child->object,
+		glade_widget_adaptor_child_set_property 
+			(parent->adaptor, parent->object, child->object,
 			 property->class->id, value);
 	}
 	else

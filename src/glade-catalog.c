@@ -35,7 +35,7 @@
 
 #include "glade.h"
 #include "glade-catalog.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 
 typedef void   (*GladeCatalogInitFunc) (void);
 
@@ -57,7 +57,7 @@ struct _GladeCatalog
 				  */
 
 	GList *widget_groups;    /* List of widget groups (palette)   */
-	GList *widget_classes;   /* List of widget classes (all)      */
+	GList *adaptors;         /* List of widget class adaptors (all)  */
 
 	GladeXmlContext *context;/* Xml context is stored after open
 				  * before classes are loaded         */
@@ -75,7 +75,7 @@ struct _GladeWidgetGroup
 
 	gboolean expanded;       /* Whether group is expanded in the palette */
 
-	GList *widget_classes;   /* List of classes in the palette    */
+	GList *adaptors;         /* List of class adaptors in the palette    */
 };
 
 static void            catalog_load         (GladeCatalog     *catalog);
@@ -263,20 +263,19 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 	node = glade_xml_node_get_children (widgets_node);
 	for (; node; node = glade_xml_node_next (node)) 
 	{
-		const gchar      *node_name;
-		GladeWidgetClass *widget_class;
+		const gchar        *node_name;
+		GladeWidgetAdaptor *adaptor;
 
 		node_name = glade_xml_node_get_name (node);
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
 			continue;
 	
-		widget_class = glade_widget_class_new 
+		adaptor = glade_widget_adaptor_from_catalog 
 			(node, catalog->name, catalog->library, 
 			 catalog->domain ? catalog->domain : catalog->library,
 			 catalog->book);
 
-		catalog->widget_classes = g_list_prepend (catalog->widget_classes,
-							  widget_class);
+		catalog->adaptors = g_list_prepend (catalog->adaptors, adaptor);
 	}
 
 	return TRUE;
@@ -319,38 +318,37 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 				 catalog->domain : catalog->library, 
 				 group->title);
 
-	group->widget_classes = NULL;
+	group->adaptors = NULL;
 
 	node = glade_xml_node_get_children (group_node);
 	for (; node; node = glade_xml_node_next (node)) 
 	{
-		const gchar      *node_name;
-		GladeWidgetClass *widget_class;
-		gchar            *name;
+		const gchar        *node_name;
+		GladeWidgetAdaptor *adaptor;
+		gchar              *name;
 
 		node_name = glade_xml_node_get_name (node);
 		
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS_REF) == 0)
 		{
-			name = glade_xml_get_property_string (node, GLADE_TAG_NAME);
-			if (!name)
+			if ((name = 
+			     glade_xml_get_property_string (node, GLADE_TAG_NAME)) == NULL)
 			{
 				g_warning ("Couldn't find required property on %s",
 					   GLADE_TAG_GLADE_WIDGET_CLASS);
 				continue;
 			}
 
-			widget_class = glade_widget_class_get_by_name (name);
-			if (!widget_class) 
+			if ((adaptor = glade_widget_adaptor_get_by_name (name)) == NULL)
 			{
-				g_warning ("Tried to include undefined widget class '%s' in a widget group", name);
+				g_warning ("Tried to include undefined widget "
+					   "class '%s' in a widget group", name);
 				g_free (name);
 				continue;
 			}
 			g_free (name);
 
-			group->widget_classes = g_list_prepend (group->widget_classes,
-								widget_class);
+			group->adaptors = g_list_prepend (group->adaptors, adaptor);
 
 		}
 		else if (strcmp (node_name, GLADE_TAG_DEFAULT_PALETTE_STATE) == 0)
@@ -361,7 +359,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		}
 	}
 
-	group->widget_classes = g_list_reverse (group->widget_classes);
+	group->adaptors = g_list_reverse (group->adaptors);
 
 	catalog->widget_groups = g_list_prepend (catalog->widget_groups,
 						 group);
@@ -378,7 +376,7 @@ widget_group_free (GladeWidgetGroup *group)
 	g_free (group->title);
 
 	/* The actual widget classes will be free elsewhere */
-	g_list_free (group->widget_classes);
+	g_list_free (group->adaptors);
 }
 	
 GList *
@@ -459,11 +457,11 @@ glade_catalog_get_widget_groups (GladeCatalog *catalog)
 }
 
 GList *
-glade_catalog_get_widget_classes (GladeCatalog *catalog)
+glade_catalog_get_adaptors (GladeCatalog *catalog)
 {
 	g_return_val_if_fail (catalog != NULL, NULL);
 
-	return catalog->widget_classes;	
+	return catalog->adaptors;	
 }
 
 void
@@ -478,10 +476,10 @@ glade_catalog_free (GladeCatalog *catalog)
 	if (catalog->book)
 		g_free (catalog->book);
 	
-	for (list = catalog->widget_classes; list; list = list->next)
-		glade_widget_class_free (GLADE_WIDGET_CLASS (list->data));
+	for (list = catalog->adaptors; list; list = list->next)
+		g_object_unref (list->data);
 	
-	g_list_free (catalog->widget_classes);
+	g_list_free (catalog->adaptors);
 
 	for (list = catalog->widget_groups; list; list = list->next) 
 		widget_group_free (GLADE_WIDGET_GROUP (list->data));
@@ -516,11 +514,11 @@ glade_widget_group_get_expanded (GladeWidgetGroup *group)
 }
 
 GList *
-glade_widget_group_get_widget_classes (GladeWidgetGroup *group)
+glade_widget_group_get_adaptors (GladeWidgetGroup *group)
 {
 	g_return_val_if_fail (group != NULL, NULL);
 
-	return group->widget_classes;
+	return group->adaptors;
 }
 
 gboolean

@@ -80,7 +80,7 @@ struct _GladePropertyKlass
 };
 
 LIBGLADEUI_API
-GType                   glade_property_get_type              (void);
+GType                   glade_property_get_type              (void) G_GNUC_CONST;
 LIBGLADEUI_API
 GladeProperty          *glade_property_new                   (GladePropertyClass *class,
 							      GladeWidget        *widget,

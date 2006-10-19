@@ -31,18 +31,13 @@
 #include <glib/gstdio.h>
 
 #include "glade.h"
-#include "glade-project.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
-#include "glade-xml-utils.h"
-#include "glade-widget.h"
-#include "glade-placeholder.h"
-#include "glade-editor.h"
-#include "glade-utils.h"
 #include "glade-id-allocator.h"
 #include "glade-app.h"
-#include "glade-catalog.h"
 #include "glade-marshallers.h"
+#include "glade-catalog.h"
+
+#include "glade-project.h"
 
 enum
 {
@@ -116,9 +111,9 @@ glade_project_dispose (GObject *object)
 		gwidget = glade_widget_get_from_gobject (list->data);
 
 		if (gwidget->parent &&
-		    glade_widget_class_container_has_child (gwidget->parent->widget_class,
-							    gwidget->parent->object,
-							    gwidget->object))
+		    glade_widget_adaptor_has_child (gwidget->parent->adaptor,
+						    gwidget->parent->object,
+						    gwidget->object))
 			glade_widget_remove_child (gwidget->parent, gwidget);
 	}
 
@@ -792,8 +787,8 @@ glade_project_sync_resources_for_widget (GladeProject *project,
 	GList *children, *l;
 	GladeWidget *gchild;
 
-	children = glade_widget_class_container_get_children
-		(gwidget->widget_class, gwidget->object);
+	children = glade_widget_adaptor_get_children
+		(gwidget->adaptor, gwidget->object);
 
 	for (l = children; l; l = l->next)
 		if ((gchild = 
@@ -842,8 +837,8 @@ glade_project_add_object (GladeProject *project,
 	/* Code body starts here */
 	reentrancy_count++;
 
-	if ((children = glade_widget_class_container_get_children
-	     (gwidget->widget_class, gwidget->object)) != NULL)
+	if ((children = glade_widget_adaptor_get_children
+	     (gwidget->adaptor, gwidget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 			glade_project_add_object
@@ -978,8 +973,9 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 	/* Notify widget is being removed from the project */
 	glade_widget_project_notify (gwidget, NULL);
 	
-	if ((children = glade_widget_class_container_get_children (gwidget->widget_class,
-								   gwidget->object)) != NULL)
+	if ((children = 
+	     glade_widget_adaptor_get_children (gwidget->adaptor,
+						gwidget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 			glade_project_remove_object (project, G_OBJECT (list->data));
@@ -1304,23 +1300,25 @@ glade_project_required_libs (GladeProject *project)
 
 	for (l = project->objects; l; l = l->next)
 	{
+		gchar *catalog = NULL;
+
 		gwidget = glade_widget_get_from_gobject (l->data);
 		g_assert (gwidget);
 
-		if (gwidget->widget_class->catalog)
+		g_object_get (gwidget->adaptor, "catalog", &catalog, NULL);
+
+		if (catalog)
 		{
 			listed = FALSE;
 			for (ll = required; ll; ll = ll->next)
-				if (!strcmp ((gchar *)ll->data, 
-					     gwidget->widget_class->catalog))
+				if (!strcmp ((gchar *)ll->data, catalog))
 				{
 					listed = TRUE;
 					break;
 				}
 
 			if (!listed)
-				required = g_list_prepend 
-					(required, gwidget->widget_class->catalog);
+				required = g_list_prepend (required, catalog);
 		}
 	}
 	return required;
@@ -1397,7 +1395,7 @@ glade_project_write (GladeProject *project)
 	{
 		strv = g_malloc0 (g_list_length (required) * sizeof (char *));
 		for (i = 0, list = required; list; i++, list = list->next)
-			strv[i] = g_strdup (list->data);
+			strv[i] = list->data; /* list->data is allocated for us */
 
 		interface->n_requires = g_list_length (required);
 		interface->requires   = strv;

@@ -241,17 +241,20 @@ static void
 glade_editor_property_info_clicked_cb (GtkWidget           *info,
 				       GladeEditorProperty *eprop)
 {
-	GladeWidgetClass *wclass;
-	gchar            *search;
+	GladeWidgetAdaptor *adaptor;
+	gchar              *search, *book;
 
-	wclass = glade_widget_class_from_pclass (eprop->class);
-	search = g_strdup_printf ("The %s property", eprop->class->id);
+	adaptor = glade_widget_adaptor_from_pclass (eprop->class);
+	search  = g_strdup_printf ("The %s property", eprop->class->id);
+
+	g_object_get (adaptor, "book", &book, NULL);
 
 	g_signal_emit (G_OBJECT (eprop),
 		       glade_editor_property_signals[GTK_DOC_SEARCH],
-		       0, wclass->book,
+		       0, book,
 		       g_type_name (eprop->class->pspec->owner_type), search);
 
+	g_free (book);
 	g_free (search);
 }
 
@@ -2123,7 +2126,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 					 (GLADE_PARAM_SPEC_OBJECTS(eprop->class->pspec)));
 				good_type = 
 					glade_util_class_implements_interface
-					(widget->widget_class->type, 
+					(widget->adaptor->type, 
 					 glade_param_spec_objects_get_type 
 					 (GLADE_PARAM_SPEC_OBJECTS(eprop->class->pspec)));
 			}
@@ -2132,7 +2135,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 				has_decendant = glade_widget_has_decendant 
 					(widget, eprop->class->pspec->value_type);
 
-				good_type = g_type_is_a (widget->widget_class->type, 
+				good_type = g_type_is_a (widget->adaptor->type, 
 							 eprop->class->pspec->value_type);
 
 			}
@@ -2146,7 +2149,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 					 OBJ_COLUMN_WIDGET_NAME, 
 					 glade_eprop_object_name (widget->name, model, parent_iter),
 					 OBJ_COLUMN_WIDGET_CLASS, 
-					 widget->widget_class->palette_name,
+					 widget->adaptor->title,
 					 /* Selectable if its a compatible type and
 					  * its not itself.
 					  */
@@ -2158,8 +2161,8 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 			}
 
 			if (has_decendant &&
-			    (children = glade_widget_class_container_get_children
-			     (widget->widget_class, widget->object)) != NULL)
+			    (children = glade_widget_adaptor_get_children
+			     (widget->adaptor, widget->object)) != NULL)
 			{
 				GtkTreeIter *copy = NULL;
 
@@ -2339,8 +2342,8 @@ glade_eprop_object_view (GladeEditorProperty *eprop,
 static gchar *
 glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 {
-	GladeWidgetClass *klass;
-	const gchar      *format = 
+	GladeWidgetAdaptor *adaptor;
+	const gchar        *format = 
 		GLADE_IS_PARAM_SPEC_OBJECTS (eprop->class->pspec) ?
 		_("Choose %s implementors") : _("Choose a %s in this project");
 
@@ -2348,10 +2351,10 @@ glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 		return g_strdup_printf (format, g_type_name 
 					(glade_param_spec_objects_get_type 
 					 (GLADE_PARAM_SPEC_OBJECTS (eprop->class->pspec))));
-	else if ((klass =
-		  glade_widget_class_get_by_type
+	else if ((adaptor =
+		  glade_widget_adaptor_get_by_type
 		  (eprop->class->pspec->value_type)) != NULL)
-		return g_strdup_printf (format, klass->palette_name);
+		return g_strdup_printf (format, adaptor->title);
 	
 	/* Fallback on type name (which would look like "GtkButton"
 	 * instead of "Button" and maybe not translated).
@@ -3098,21 +3101,21 @@ static void
 glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
 				 GtkTreeView         *view)
 {
-	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GladeSignalClass  *sclass;
-	GladeWidgetClass  *wclass = glade_widget_class_from_pclass (eprop->class);
-	GtkTreeStore      *model = (GtkTreeStore *)gtk_tree_view_get_model (view);
-	GtkTreeIter        iter;
-	GladeEpropIterTab *parent_tab;
-	GladeAccelInfo    *info;
-	GList             *list, *l, *found, *accelerators;
-	gchar             *name;
+	GladeEPropAccel    *eprop_accel = GLADE_EPROP_ACCEL (eprop);
+	GladeSignalClass   *sclass;
+	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_from_pclass (eprop->class);
+	GtkTreeStore       *model = (GtkTreeStore *)gtk_tree_view_get_model (view);
+	GtkTreeIter         iter;
+	GladeEpropIterTab  *parent_tab;
+	GladeAccelInfo     *info;
+	GList              *list, *l, *found, *accelerators;
+	gchar              *name;
 
 	accelerators = g_value_get_boxed (eprop->property->value);
 
 	/* First make parent iters...
 	 */
-	for (list = wclass->signals; list; list = list->next)
+	for (list = adaptor->signals; list; list = list->next)
 	{
 		sclass = list->data;
 
@@ -3143,7 +3146,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
 
 	/* Now we populate...
 	 */
-	for (list = wclass->signals; list; list = list->next)
+	for (list = adaptor->signals; list; list = list->next)
 	{
 		sclass = list->data;
 
@@ -3795,14 +3798,17 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 void
 glade_editor_property_show_info (GladeEditorProperty *eprop)
 {
-	GladeWidgetClass *wclass;
+	GladeWidgetAdaptor *adaptor;
+	gchar              *book;
 
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
-	wclass = glade_widget_class_from_pclass (eprop->class);
+	adaptor = glade_widget_adaptor_from_pclass (eprop->class);
+
+	g_object_get (adaptor, "book", &book, NULL);
 
 	if (eprop->class->virtual == FALSE &&
-	    wclass->book          != NULL)
+	    book                  != NULL)
 		gtk_widget_show (eprop->info);
 	else
 	{
@@ -3813,6 +3819,7 @@ glade_editor_property_show_info (GladeEditorProperty *eprop)
 		gtk_widget_set_sensitive (eprop->info, FALSE);
 	}
 
+	g_free (book);
 	eprop->show_info = TRUE;
 	g_object_notify (G_OBJECT (eprop), "show-info");
 }

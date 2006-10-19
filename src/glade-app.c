@@ -35,7 +35,6 @@
 #include "glade-clipboard.h"
 #include "glade-clipboard-view.h"
 #include "glade-widget.h"
-#include "glade-widget-class.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-project.h"
@@ -264,19 +263,19 @@ glade_app_update_ui_default (GladeApp *app)
 static void
 on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 {
-	GladeWidgetClass *class;
-	GladeWidget *widget;
+	GladeWidgetAdaptor *adaptor;
+	GladeWidget        *widget;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	class = glade_palette_get_current_item_class (palette);
+	adaptor = glade_palette_get_current_item (palette);
 
 	/* class may be NULL if the selector was pressed */
-	if (class && class->toplevel)
+	if (adaptor && GWA_IS_TOPLEVEL (adaptor))
 	{
-		widget = glade_command_create (class, NULL, NULL, app->priv->active_project);
+		widget = glade_command_create (adaptor, NULL, NULL, app->priv->active_project);
 		
 		/* if this is a top level widget set the accel group */
-		if (app->priv->accel_group && GTK_IS_WINDOW (widget->object))
+		if (widget && app->priv->accel_group && GTK_IS_WINDOW (widget->object))
 		{
 			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
 						    app->priv->accel_group);

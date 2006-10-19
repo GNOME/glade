@@ -87,9 +87,11 @@ glade_gnomeui_init ()
 
 /* GnomeApp */
 void GLADEGNOME_API
-glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_app_post_create (GladeWidgetAdaptor *adaptor,
+			     GObject            *object, 
+			     GladeCreateReason   reason)
 {
-	static GladeWidgetClass *menubar_class = NULL, *dock_item_class;
+	static GladeWidgetAdaptor *menubar_adaptor = NULL, *dock_item_adaptor;
 	GladeWidget *gapp, *gdock, *gdock_item, *gmenubar;
 	GladeProject *project;
 	GnomeApp *app;
@@ -104,7 +106,7 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	project = glade_widget_get_project (gapp);
 	
 	/* Add BonoboDock */
-	gdock = glade_widget_class_create_internal
+	gdock = glade_widget_adaptor_create_internal
 		(gapp, G_OBJECT (app->dock),
 		 "dock",
 		 glade_widget_get_name (gapp),
@@ -114,25 +116,25 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	if (reason != GLADE_CREATE_USER) return;
 	
 	/* Add MenuBar */
-	if (menubar_class == NULL)
+	if (menubar_adaptor == NULL)
 	{
-		dock_item_class = glade_widget_class_get_by_type (BONOBO_TYPE_DOCK_ITEM);
-		menubar_class = glade_widget_class_get_by_type (GTK_TYPE_MENU_BAR);
+		dock_item_adaptor = glade_widget_adaptor_get_by_type (BONOBO_TYPE_DOCK_ITEM);
+		menubar_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_MENU_BAR);
 	}
 
 	/* DockItem */
-	gdock_item = glade_widget_class_create_widget (dock_item_class, FALSE,
-						       "parent", gdock, 
-						       "project", project, NULL);
+	gdock_item = glade_widget_adaptor_create_widget (dock_item_adaptor, FALSE,
+							 "parent", gdock, 
+							 "project", project, NULL);
 	glade_widget_add_child (gdock, gdock_item, FALSE);
 	glade_widget_pack_property_set (gdock_item, "behavior", 
 					BONOBO_DOCK_ITEM_BEH_EXCLUSIVE |
 					BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL |
 					BONOBO_DOCK_ITEM_BEH_LOCKED);
 	/* MenuBar */
-	gmenubar = glade_widget_class_create_widget (menubar_class, FALSE,
-						     "parent", gdock_item, 
-						     "project", project, NULL);
+	gmenubar = glade_widget_adaptor_create_widget (menubar_adaptor, FALSE,
+						       "parent", gdock_item, 
+						       "project", project, NULL);
 
 	glade_widget_add_child (gdock_item, gmenubar, FALSE);
 	
@@ -144,36 +146,39 @@ glade_gnome_app_post_create (GObject *object, GladeCreateReason reason)
 	glade_widget_property_set (gapp, "has-statusbar", TRUE);
 }
 
-void GLADEGNOME_API
-glade_gnome_app_get_internal_child (GObject *object, 
-				    const gchar *name,
-				    GObject **child)
+GObject * GLADEGNOME_API
+glade_gnome_app_get_internal_child (GladeWidgetAdaptor  *adaptor,
+				    GObject             *object, 
+				    const gchar         *name)
 {
-	GnomeApp *app;
+	GObject     *child = NULL;
+	GnomeApp    *app;
 	GladeWidget *gapp;
 	
-	g_return_if_fail (GNOME_IS_APP (object));
+	g_return_val_if_fail (GNOME_IS_APP (object), NULL);
 	
 	app = GNOME_APP (object);
 	gapp = glade_widget_get_from_gobject (object);
 	
 	if (strcmp ("dock", name) == 0)
-		*child = G_OBJECT (app->dock);
+		child = G_OBJECT (app->dock);
 	else if (strcmp ("appbar", name) == 0)
 	{
-		*child = G_OBJECT (app->statusbar);
-		if (*child == NULL)
+		child = G_OBJECT (app->statusbar);
+		if (child == NULL)
 		{
+			/* XXX Is this appropriate ? */
 			glade_widget_property_set (gapp, "has-statusbar", TRUE);
-			*child = G_OBJECT (app->statusbar);
+			child = G_OBJECT (app->statusbar);
 		}
 	}
-	else
-		*child = NULL;
+
+	return child;
 }
 
 GList * GLADEGNOME_API
-glade_gnome_app_get_children (GObject *object)
+glade_gnome_app_get_children (GladeWidgetAdaptor  *adaptor,
+			      GObject             *object)
 {
 	GList *list = NULL;
 	GnomeApp *app;
@@ -190,10 +195,11 @@ glade_gnome_app_get_children (GObject *object)
 }
 
 void GLADEGNOME_API
-glade_gnome_app_set_child_property (GObject *container,
-				    GObject *child,
-				    const gchar *property_name,
-				    GValue *value)
+glade_gnome_app_set_child_property (GladeWidgetAdaptor  *adaptor,
+				    GObject             *container,
+				    GObject             *child,
+				    const gchar         *property_name,
+				    GValue              *value)
 {
 	GnomeApp *app;
 	
@@ -211,10 +217,11 @@ glade_gnome_app_set_child_property (GObject *container,
 }
 
 void GLADEGNOME_API
-glade_gnome_app_get_child_property (GObject *container,
-				    GObject *child,
-				    const gchar *property_name,
-				    GValue *value)
+glade_gnome_app_get_child_property (GladeWidgetAdaptor  *adaptor,
+				    GObject             *container,
+				    GObject             *child,
+				    const gchar         *property_name,
+				    GValue              *value)
 {
 	GnomeApp *app;
 	
@@ -251,7 +258,7 @@ glade_gnome_app_set_has_statusbar (GObject *object, GValue *value)
 
 			gnome_app_set_statusbar (app, bar);
 			
-			gbar = glade_widget_class_create_internal
+			gbar = glade_widget_adaptor_create_internal
 				(gapp, G_OBJECT (bar), "appbar",
 				 glade_widget_get_name (gapp),
 				 FALSE, GLADE_CREATE_USER);
@@ -281,7 +288,9 @@ gnome_app_bar_get_type ()
 }
 
 void GLADEGNOME_API
-glade_gnome_app_bar_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_app_bar_post_create (GladeWidgetAdaptor  *adaptor,
+				 GObject             *object, 
+				 GladeCreateReason    reason)
 {
 	g_return_if_fail (GNOME_IS_APPBAR (object));
 	gnome_appbar_set_status (GNOME_APPBAR (object), _("Status Message."));
@@ -295,7 +304,9 @@ glade_gnome_date_edit_set_no_show_all (GtkWidget *widget, gpointer data)
 }
 
 void GLADEGNOME_API
-glade_gnome_date_edit_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_date_edit_post_create (GladeWidgetAdaptor  *adaptor,
+				   GObject             *object, 
+				   GladeCreateReason    reason)
 {
 	g_return_if_fail (GNOME_IS_DATE_EDIT (object));
 
@@ -312,18 +323,18 @@ static GladeWidget *
 glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
 {
 	GladeWidget *gpage;
-	static GladeWidgetClass *dps_class = NULL, *dpe_class;
+	static GladeWidgetAdaptor *dps_adaptor = NULL, *dpe_adaptor;
 	GladeProject *project = glade_widget_get_project (gdruid);
 	
-	if (dps_class == NULL)
+	if (dps_adaptor == NULL)
 	{
-		dps_class = glade_widget_class_get_by_type (GNOME_TYPE_DRUID_PAGE_STANDARD);
-		dpe_class = glade_widget_class_get_by_type (GNOME_TYPE_DRUID_PAGE_EDGE);
+		dps_adaptor = glade_widget_adaptor_get_by_type (GNOME_TYPE_DRUID_PAGE_STANDARD);
+		dpe_adaptor = glade_widget_adaptor_get_by_type (GNOME_TYPE_DRUID_PAGE_EDGE);
 	}
 	
-	gpage = glade_widget_class_create_widget (edge ? dpe_class : dps_class, FALSE,
-						  "parent", gdruid, 
-						  "project", project, NULL);
+	gpage = glade_widget_adaptor_create_widget (edge ? dpe_adaptor : dps_adaptor, FALSE,
+						    "parent", gdruid, 
+						    "project", project, NULL);
 	
 	glade_widget_add_child (gdruid, gpage, FALSE);
 
@@ -331,7 +342,9 @@ glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
 }
 
 void GLADEGNOME_API
-glade_gnome_druid_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_druid_post_create (GladeWidgetAdaptor  *adaptor,
+			       GObject             *object, 
+			       GladeCreateReason    reason)
 {
 	GladeWidget *gdruid, *gpage;
 
@@ -394,11 +407,14 @@ glade_gnome_druid_page_cb (GnomeDruidPage *druidpage,
 }
 
 void GLADEGNOME_API
-glade_gnome_druid_add_child (GObject *container, GObject *child)
+glade_gnome_druid_add_child (GladeWidgetAdaptor  *adaptor,
+			     GObject             *container, 
+			     GObject             *child)
 {
 	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
 
+	/* XXX This needed ? */
 	g_signal_handlers_disconnect_matched (child, G_SIGNAL_MATCH_FUNC, 0, 0, NULL,
 					      glade_gnome_druid_page_cb, NULL);
 
@@ -411,10 +427,15 @@ glade_gnome_druid_add_child (GObject *container, GObject *child)
 }
 
 void GLADEGNOME_API
-glade_gnome_druid_remove_child (GObject *container, GObject *child)
+glade_gnome_druid_remove_child (GladeWidgetAdaptor  *adaptor,
+				GObject             *container, 
+				GObject             *child)
 {
 	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
+
+	g_signal_handlers_disconnect_matched (child, G_SIGNAL_MATCH_FUNC, 0, 0, NULL,
+					      glade_gnome_druid_page_cb, NULL);
 	
 	gtk_container_remove (GTK_CONTAINER (container), GTK_WIDGET (child));
 }
@@ -464,10 +485,11 @@ glade_gnome_druid_get_page_position (GnomeDruid *druid, GnomeDruidPage *page)
 }
 
 void GLADEGNOME_API
-glade_gnome_druid_set_child_property (GObject *container,
-				      GObject *child,
-				      const gchar *property_name,
-				      GValue *value)
+glade_gnome_druid_set_child_property (GladeWidgetAdaptor  *adaptor,
+				      GObject             *container,
+				      GObject             *child,
+				      const gchar         *property_name,
+				      GValue              *value)
 {
 	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
@@ -493,17 +515,20 @@ glade_gnome_druid_set_child_property (GObject *container,
 	}
 	else
 		/* Chain Up */
-		gtk_container_child_set_property (GTK_CONTAINER (container), 
-						  GTK_WIDGET (child),
-						  property_name,
-						  value);
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_set_property (adaptor,
+								  GTK_CONTAINER (container), 
+								  GTK_WIDGET (child),
+								  property_name,
+								  value);
 }
 
 void GLADEGNOME_API
-glade_gnome_druid_get_child_property (GObject *container,
-				      GObject *child,
-				      const gchar *property_name,
-				      GValue *value)
+glade_gnome_druid_get_child_property (GladeWidgetAdaptor  *adaptor,
+				      GObject             *container,
+				      GObject             *child,
+				      const gchar         *property_name,
+				      GValue              *value)
 {
 	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
@@ -514,15 +539,19 @@ glade_gnome_druid_get_child_property (GObject *container,
 							GNOME_DRUID_PAGE (child)));
 	else
 		/* Chain Up */
-		gtk_container_child_get_property (GTK_CONTAINER (container), 
-						  GTK_WIDGET (child),
-						  property_name,
-						  value);
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_get_property (adaptor,
+								  GTK_CONTAINER (container), 
+								  GTK_WIDGET (child),
+								  property_name,
+								  value);
 }
 
 /* GnomeDruidPageStandard */
 void GLADEGNOME_API
-glade_gnome_dps_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_dps_post_create (GladeWidgetAdaptor  *adaptor,
+			     GObject             *object, 
+			     GladeCreateReason    reason)
 {
 	GladeWidget *gpage, *gvbox;
 	GObject *vbox;
@@ -531,29 +560,32 @@ glade_gnome_dps_post_create (GObject *object, GladeCreateReason reason)
 	
 	gpage = glade_widget_get_from_gobject (object);
 	vbox = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
-	gvbox = glade_widget_class_create_internal (gpage, vbox, "vbox",
-						    glade_widget_get_name (gpage),
-						    FALSE, GLADE_CREATE_LOAD);
+	gvbox = glade_widget_adaptor_create_internal (gpage, vbox, "vbox",
+						      glade_widget_get_name (gpage),
+						      FALSE, GLADE_CREATE_LOAD);
 	
 	if (reason == GLADE_CREATE_USER)
 		glade_widget_property_set (gvbox, "size", 1);
 }
 
-void GLADEGNOME_API
-glade_gnome_dps_get_internal_child (GObject *object, 
-				    const gchar *name,
-				    GObject **child)
+GObject * GLADEGNOME_API
+glade_gnome_dps_get_internal_child (GladeWidgetAdaptor  *adaptor,
+				    GObject             *object, 
+				    const gchar         *name)
 {
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object));
+	GObject *child = NULL;
+
+	g_return_val_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object), NULL);
 	
 	if (strcmp (name, "vbox") == 0)
-		*child = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
-	else
-		*child = NULL;
+		child = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
+
+	return child;
 }
 
 GList * GLADEGNOME_API
-glade_gnome_dps_get_children (GObject *object)
+glade_gnome_dps_get_children (GladeWidgetAdaptor  *adaptor,
+			      GObject             *object)
 {
 	GList *list = NULL;
 	GnomeDruidPageStandard *page;
@@ -844,18 +876,18 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 			       const gchar *stock)
 {
 	GladeProject *project = glade_widget_get_project (gaction_area);
-	static GladeWidgetClass *button_class = NULL;
+	static GladeWidgetAdaptor *button_adaptor = NULL;
 	GladeWidget *gbutton;
 	GObject *button;
 	GEnumClass *eclass;
 	GEnumValue *eval;
 
-	if (button_class == NULL)
-		button_class = glade_widget_class_get_by_type (GTK_TYPE_BUTTON);
+	if (button_adaptor == NULL)
+		button_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_BUTTON);
 		
-	gbutton = glade_widget_class_create_widget (button_class, FALSE,
-						    "parent", gaction_area, 
-						    "project", project, FALSE);
+	gbutton = glade_widget_adaptor_create_widget (button_adaptor, FALSE,
+						      "parent", gaction_area, 
+						      "project", project, FALSE);
 	
 	eclass = g_type_class_ref (glade_standard_stock_get_type ());
 	if ((eval = g_enum_get_value_by_nick (eclass, stock)) != NULL)
@@ -867,12 +899,14 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 	
 	button = glade_widget_get_object (gbutton);
 	
-	glade_widget_class_container_add (glade_widget_get_class (gaction_area),
-					  action_area, button);
+	glade_widget_adaptor_add (glade_widget_get_adaptor (gaction_area),
+				  action_area, button);
 }
 
 void GLADEGNOME_API
-glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_dialog_post_create (GladeWidgetAdaptor  *adaptor,
+				GObject             *object, 
+				GladeCreateReason    reason)
 {
 	GladeWidget *gdialog, *gvbox, *gaction_area;
 	GtkWidget *separator;
@@ -890,7 +924,7 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 	{
 		GnomePropertyBox *pbox = GNOME_PROPERTY_BOX (object);
 		
-		gaction_area = glade_widget_class_create_internal
+		gaction_area = glade_widget_adaptor_create_internal
 			(gdialog, G_OBJECT (pbox->notebook), "notebook",
 			 glade_widget_get_name (gdialog),
 			 FALSE, GLADE_CREATE_LOAD);
@@ -900,7 +934,7 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 	}
 	
 	/* vbox internal child */
-	gvbox = glade_widget_class_create_internal
+	gvbox = glade_widget_adaptor_create_internal
 		(gdialog, G_OBJECT (dialog->vbox), "vbox",
 		 glade_widget_get_name (gdialog),
 		 FALSE, GLADE_CREATE_LOAD);
@@ -924,11 +958,11 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 			
 	/* action area internal child */
 	gaction_area = 
-		glade_widget_class_create_internal (gvbox,
-						    G_OBJECT (dialog->action_area),
-						    "action_area",
-						    glade_widget_get_name (gvbox),
-						    FALSE, GLADE_CREATE_LOAD);
+		glade_widget_adaptor_create_internal (gvbox,
+						      G_OBJECT (dialog->action_area),
+						      "action_area",
+						      glade_widget_get_name (gvbox),
+						      FALSE, GLADE_CREATE_LOAD);
 	
 	glade_widget_property_set (gaction_area, "size", 0);
 	
@@ -955,24 +989,26 @@ glade_gnome_dialog_post_create (GObject *object, GladeCreateReason reason)
 	}
 }
 
-void GLADEGNOME_API
-glade_gnome_dialog_get_internal_child (GObject *object, 
-				       const gchar *name,
-				       GObject **child)
+GObject * GLADEGNOME_API
+glade_gnome_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
+				       GObject             *object, 
+				       const gchar         *name)
 {
-	g_return_if_fail (GNOME_IS_DIALOG (object));
+	GObject *child = NULL;
+
+	g_return_val_if_fail (GNOME_IS_DIALOG (object), NULL);
 
 	if (strcmp (name, "vbox") == 0)
-		*child = G_OBJECT (GNOME_DIALOG (object)->vbox);
-	else
-	if (GNOME_IS_PROPERTY_BOX (object) && strcmp (name, "notebook") == 0)
-		*child = G_OBJECT (GNOME_PROPERTY_BOX (object)->notebook);
-	else
-		*child = NULL;
+		child = G_OBJECT (GNOME_DIALOG (object)->vbox);
+	else if (GNOME_IS_PROPERTY_BOX (object) && strcmp (name, "notebook") == 0)
+		child = G_OBJECT (GNOME_PROPERTY_BOX (object)->notebook);
+
+	return child;
 }
 
 GList * GLADEGNOME_API
-glade_gnome_dialog_get_children (GObject *object)
+glade_gnome_dialog_get_children (GladeWidgetAdaptor  *adaptor,
+				 GObject             *object)
 {
 	GList *list = NULL;
 	GnomeDialog *dialog;
@@ -995,15 +1031,19 @@ glade_gnome_dialog_get_children (GObject *object)
 
 /* GnomeAbout */
 void GLADEGNOME_API
-glade_gnome_about_dialog_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_about_dialog_post_create (GladeWidgetAdaptor  *adaptor,
+				      GObject             *object, 
+				      GladeCreateReason    reason)
 {
 	g_return_if_fail (GNOME_IS_ABOUT (object));
 	gtk_dialog_set_response_sensitive (GTK_DIALOG (object), GTK_RESPONSE_CLOSE, FALSE);	
 }
 
 GList * GLADEGNOME_API
-glade_gnome_about_dialog_get_children (GObject *object)
+glade_gnome_about_dialog_get_children (GladeWidgetAdaptor  *adaptor,
+				       GObject             *object)
 {
+	/* XXX Why this ? */
 	return NULL;
 }
 
@@ -1027,7 +1067,9 @@ glade_gnome_about_set_version (GObject *object, GValue *value)
 
 /* GnomeIconList */
 void GLADEGNOME_API
-glade_gnome_icon_list_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_icon_list_post_create (GladeWidgetAdaptor  *adaptor,
+				   GObject             *object, 
+				   GladeCreateReason    reason)
 {
 	g_return_if_fail (GNOME_IS_ICON_LIST (object));
 	/* Freeze the widget so we dont get the signals that cause a segfault */
@@ -1146,43 +1188,49 @@ glade_gnome_message_box_set_message (GObject *object, GValue *value)
 
 /* GnomeEntry & GnomeFileEntry */
 /* GnomeFileEntry is not derived from GnomeEntry... but hey!!! they should :) */
-void GLADEGNOME_API
-glade_gnome_entry_get_internal_child (GObject *object, 
-				      const gchar *name,
-				      GObject **child)
+GObject * GLADEGNOME_API
+glade_gnome_entry_get_internal_child (GladeWidgetAdaptor  *adaptor,
+				      GObject             *object, 
+				      const gchar         *name)
 {
-	g_return_if_fail (GNOME_IS_ENTRY (object) || GNOME_IS_FILE_ENTRY (object));
+	GObject *child = NULL;
+
+	g_return_val_if_fail (GNOME_IS_ENTRY (object) || 
+			      GNOME_IS_FILE_ENTRY (object), NULL);
 
 	if (strcmp (name, "entry") == 0)
 	{
 		if (GNOME_IS_ENTRY (object))
-			*child = G_OBJECT (gnome_entry_gtk_entry (GNOME_ENTRY (object)));
+			child = G_OBJECT (gnome_entry_gtk_entry (GNOME_ENTRY (object)));
 		else
-			*child = G_OBJECT (gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (object)));
+			child = G_OBJECT (gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (object)));
 	}
-	else
-		*child = NULL;
+
+	return child;
 }
 
 void GLADEGNOME_API
-glade_gnome_entry_post_create (GObject *object, GladeCreateReason reason)
+glade_gnome_entry_post_create (GladeWidgetAdaptor  *adaptor,
+			       GObject             *object, 
+			       GladeCreateReason    reason)
 {
 	GladeWidget *gentry;
 	GObject *child;
 
 	g_return_if_fail (GNOME_IS_ENTRY (object) || GNOME_IS_FILE_ENTRY (object));
 
-	glade_gnome_entry_get_internal_child (object, "entry", &child);
+	child = glade_gnome_entry_get_internal_child (adaptor, object, "entry");
 	
 	gentry = glade_widget_get_from_gobject (object);
-	glade_widget_class_create_internal (gentry,
-					    child, "entry",
-					    glade_widget_get_name (gentry),
-					    FALSE, reason);
+	glade_widget_adaptor_create_internal (gentry,
+					      child, "entry",
+					      glade_widget_get_name (gentry),
+					      FALSE, reason);
 }
 
 GList * GLADEGNOME_API
-glade_gnome_entry_get_children (GObject *object)
+glade_gnome_entry_get_children (GladeWidgetAdaptor  *adaptor,
+				GObject             *object)
 {
 	GList *list = NULL;
 	GtkWidget *entry;
@@ -1263,7 +1311,8 @@ glade_gnome_font_picker_set_mode (GObject *object, GValue *value)
 }
 
 GList * GLADEGNOME_API
-glade_gnome_font_picker_get_children (GObject *object)
+glade_gnome_font_picker_get_children (GladeWidgetAdaptor  *adaptor,
+				      GObject             *object)
 {
 	GtkWidget *child;
 	
@@ -1276,23 +1325,28 @@ glade_gnome_font_picker_get_children (GObject *object)
 }
 
 void GLADEGNOME_API
-glade_gnome_font_picker_add_child (GtkWidget *container, GtkWidget *child)
+glade_gnome_font_picker_add_child (GladeWidgetAdaptor  *adaptor,
+				   GtkWidget           *container, 
+				   GtkWidget           *child)
 {
 	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), child);	
 }
 
 void GLADEGNOME_API
-glade_gnome_font_picker_remove_child (GtkWidget *container, GtkWidget *child)
+glade_gnome_font_picker_remove_child (GladeWidgetAdaptor  *adaptor,
+				      GtkWidget           *container, 
+				      GtkWidget           *child)
 {
 	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), glade_placeholder_new ());
 }
 
 void GLADEGNOME_API
-glade_gnome_font_picker_replace_child (GtkWidget *container,
-				       GtkWidget *current,
-				       GtkWidget *new)
+glade_gnome_font_picker_replace_child (GladeWidgetAdaptor  *adaptor,
+				       GtkWidget           *container,
+				       GtkWidget           *current,
+				       GtkWidget           *new)
 {
 	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), new);
@@ -1563,17 +1617,24 @@ glade_gnome_bd_get_band (BonoboDock *dock, GtkWidget *widget)
 
 /* BonoboDock */
 void GLADEGNOME_API
-glade_gnome_bonobodock_add_item (GObject *object, GObject *child)
+glade_gnome_bonobodock_add_child (GladeWidgetAdaptor  *adaptor,
+				 GObject             *object,
+				 GObject             *child)
 {
 	g_return_if_fail (BONOBO_IS_DOCK (object));
-	g_return_if_fail (BONOBO_IS_DOCK_ITEM (child));
 	
-	bonobo_dock_add_item (BONOBO_DOCK (object), BONOBO_DOCK_ITEM (child),
-			      0,0,0,0, TRUE);
+
+	if (BONOBO_IS_DOCK_ITEM (child))
+		bonobo_dock_add_item (BONOBO_DOCK (object), BONOBO_DOCK_ITEM (child),
+				      0,0,0,0, TRUE);
+	else if (GTK_IS_WIDGET (child))
+		bonobo_dock_set_client_area (BONOBO_DOCK (object), GTK_WIDGET (child));
 }
 
 void GLADEGNOME_API
-glade_gnome_bonobodock_remove_item (GObject *object, GObject *child)
+glade_gnome_bonobodock_remove_child (GladeWidgetAdaptor  *adaptor,
+				     GObject             *object, 
+				     GObject             *child)
 {
 	BonoboDockBand *band;
 	
@@ -1584,50 +1645,36 @@ glade_gnome_bonobodock_remove_item (GObject *object, GObject *child)
 	gtk_container_remove (GTK_CONTAINER (band), GTK_WIDGET (child));
 }
 
-void GLADEGNOME_API
-glade_gnome_bonobodock_add_client_area (GObject *object, GObject *child)
-{
-	g_return_if_fail (BONOBO_IS_DOCK (object));
-	bonobo_dock_set_client_area (BONOBO_DOCK (object), GTK_WIDGET (child));
-}
-
 GList * GLADEGNOME_API
-glade_gnome_bonobodock_get_children (GObject *object)
+glade_gnome_bonobodock_get_children (GladeWidgetAdaptor  *adaptor,
+				     GObject             *object)
 {
-	GList *list = NULL, *l;
+	GList            *list = NULL, *l;
+	GtkWidget        *client_area;
 	BonoboDockLayout *layout;
 	
 	g_return_val_if_fail (BONOBO_IS_DOCK (object), NULL);
 	
-	layout = bonobo_dock_get_layout (BONOBO_DOCK (object));
+	layout      = bonobo_dock_get_layout (BONOBO_DOCK (object));
+	client_area = bonobo_dock_get_client_area (BONOBO_DOCK (object));
 	
 	for (l = layout->items; l; l = l->next)
 	{
 		BonoboDockLayoutItem *li = (BonoboDockLayoutItem *) l->data;
 		list = g_list_prepend (list, li->item);
 	}
-	
-	return list;
-}
 
-GList * GLADEGNOME_API
-glade_gnome_bonobodock_get_client_area (GObject *object)
-{
-	GtkWidget *client_area;
+	if (client_area) 
+		list = g_list_prepend (list, client_area);
 	
-	g_return_val_if_fail (BONOBO_IS_DOCK (object), NULL);
-	
-	client_area = bonobo_dock_get_client_area (BONOBO_DOCK (object));
-	
-	if (client_area) return g_list_append (NULL, client_area);
-	
-	return NULL;
+	return g_list_reverse (list);
 }
 
 void GLADEGNOME_API
-glade_gnome_bonobodock_replace_client_area (GtkWidget *container,
-					    GtkWidget *current,
-					    GtkWidget *new)
+glade_gnome_bonobodock_replace_child (GladeWidgetAdaptor  *adaptor,
+				      GtkWidget           *container,
+				      GtkWidget           *current,
+				      GtkWidget           *new)
 {
 	g_return_if_fail (BONOBO_IS_DOCK (container));
 	bonobo_dock_set_client_area (BONOBO_DOCK (container), new);
@@ -1662,10 +1709,11 @@ glade_gnome_bonobodockitem_get_props (BonoboDock *doc,
 }
 
 void GLADEGNOME_API
-glade_gnome_bonobodock_set_child_property (GObject *container,
-					   GObject *child,
-					   const gchar *property_name,
-					   GValue *value)
+glade_gnome_bonobodock_set_child_property (GladeWidgetAdaptor  *adaptor,
+					   GObject             *container,
+					   GObject             *child,
+					   const gchar         *property_name,
+					   GValue              *value)
 {
 	BonoboDock *dock;
 	BonoboDockItem *item;
@@ -1726,10 +1774,11 @@ glade_gnome_bonobodock_set_child_property (GObject *container,
 }
 
 void GLADEGNOME_API
-glade_gnome_bonobodock_get_child_property (GObject *container,
-					   GObject *child,
-					   const gchar *property_name,
-					   GValue *value)
+glade_gnome_bonobodock_get_child_property (GladeWidgetAdaptor  *adaptor,
+					   GObject             *container,
+					   GObject             *child,
+					   const gchar         *property_name,
+					   GValue              *value)
 {
 	BonoboDockPlacement placement;
 	guint band_num, band_position, offset;
@@ -1765,12 +1814,3 @@ glade_gnome_bonobodock_set_allow_floating (GObject *object, GValue *value)
 					  g_value_get_boolean (value));
 }
 
-/* BonoboDockItem */
-void GLADEGNOME_API
-glade_gnome_bonobodockitem_post_create (GObject *object, GladeCreateReason reason)
-{
-	if (reason != GLADE_CREATE_USER) return;
-	g_return_if_fail (BONOBO_IS_DOCK_ITEM (object));
-	
-	gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
-}

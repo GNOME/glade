@@ -29,7 +29,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-project.h"
-#include "glade-widget-class.h"
+#include "glade-widget-adaptor.h"
 #include "glade-project-view.h"
 #include "glade-popup.h"
 #include "glade-app.h"
@@ -138,8 +138,8 @@ glade_project_view_populate_model_real (GtkTreeStore *model,
 			gtk_tree_store_set    (model, &iter, WIDGET_COLUMN, widget, -1);
 
 			if (add_childs &&
-			    (children = glade_widget_class_container_get_children
-			     (widget->widget_class, widget->object)) != NULL)
+			    (children = glade_widget_adaptor_get_children
+			     (widget->adaptor, widget->object)) != NULL)
 			{
 				GtkTreeIter *copy = NULL;
 
@@ -220,11 +220,8 @@ static void
 glade_project_view_remove_item (GladeProjectView *view,
 				GladeWidget *widget)
 {
-	GladeWidgetClass *class;
-	GtkTreeModel     *model;
-	GtkTreeIter      *iter;
-
-	class = glade_widget_get_class (widget);
+	GtkTreeModel       *model;
+	GtkTreeIter        *iter;
 	
 	model = GTK_TREE_MODEL (view->priv->model);
 
@@ -260,7 +257,6 @@ glade_project_view_selection_update (GladeProjectView *view,
 				     GladeProject *project)
 {
 	GladeWidget      *widget;
-	GladeWidgetClass *class;
 	GtkTreeSelection *selection;
 	GtkTreeModel     *model;
 	GtkTreeIter      *iter;
@@ -286,8 +282,6 @@ glade_project_view_selection_update (GladeProjectView *view,
 		if ((widget = glade_widget_get_from_gobject
 		     (G_OBJECT (list->data))) != NULL)
 		{
-			class  = glade_widget_get_class (widget);
-
 			if ((iter = glade_util_find_iter_by_widget 
 			     (model, widget, WIDGET_COLUMN)) != NULL)
 			{
@@ -615,24 +609,26 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  gpointer data)
 {
 	GPVCellType  type = GPOINTER_TO_INT (data);
+	GdkPixbuf   *small_icon = NULL;
 	GladeWidget *widget;
 	gchar       *text = NULL, *child_type;
 
 	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
 
 	/* The cell exists, but not widget has been asociated with it */
-	if (!widget) return;
+	if (!GLADE_IS_WIDGET (widget)) return;
 
 	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->widget_class != NULL);
-	g_return_if_fail (widget->widget_class->name != NULL);
-	g_return_if_fail (widget->widget_class->small_icon != NULL);
+	g_return_if_fail (widget->adaptor != NULL);
+	g_return_if_fail (widget->adaptor->name != NULL);
+
+	g_object_get (widget->adaptor, "small-icon", &small_icon, NULL);
+	g_return_if_fail (small_icon != NULL);
 
 	switch (type) 
 	{
 	case CELL_ICON:
-		g_object_set (G_OBJECT (cell), "pixbuf", 
-			      widget->widget_class->small_icon, NULL);
+		g_object_set (G_OBJECT (cell), "pixbuf", small_icon, NULL);
 		break;
 	case CELL_NAME:
 		g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
@@ -652,6 +648,8 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	default:
 		break;
 	}
+
+	g_object_unref (small_icon);
 }
 
 static void
