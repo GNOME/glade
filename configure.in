@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-IT_PROG_INTLTOOL([0.35.0])
+IT_PROG_INTLTOOL([0.34.0])
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
@@ -54,31 +54,6 @@ dnl ================================================================
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0  libxml-2.0 >= 2.4.0)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
-
-dnl ================================================================
-dnl Check for Python
-dnl ================================================================
-AC_ARG_ENABLE(python,
-[  --disable-python         disable python scripting module],
-	check_python=$enableval, check_python=yes)
-
-if test x"$check_python" = x"yes"; then
-	PYTHON="nop"
-	AC_PATH_PROGS([PYTHON], [python])
-
-	if test "$PYTHON" != "nop"; then
-		PKG_CHECK_MODULES(PYGTK, pygtk-2.0 >= 2.8.0)
-		PYTHON_CFLAGS="`$PYTHON -c "from distutils import sysconfig; getvar = sysconfig.get_config_var; flags = ['-I' + sysconfig.get_python_inc(), '-I' + sysconfig.get_python_inc(plat_specific=True)]; print ' '.join(flags)"` $PYGTK_CFLAGS"
-		PYTHON_LIBS="`$PYTHON -c "from distutils import sysconfig; pyver = sysconfig.get_config_var('VERSION'); getvar = sysconfig.get_config_var; libs = getvar('LIBS').split() + getvar('SYSLIBS').split(); libs.append('-lpython'+pyver); libs.insert(0, '-L' + getvar('LIBPL')); print ' '.join(libs)"` $PYGTK_LIBS"
-		AC_SUBST(PYTHON_CFLAGS)
-		AC_SUBST(PYTHON_LIBS)
-		have_python=yes
-	fi
-else
-	have_python=no
-fi
-
-AM_CONDITIONAL(BUILD_PYTHON, test x"$have_python" = "xyes")
 
 dnl ================================================================
 dnl Check for optional gnome libs
@@ -157,6 +132,5 @@ Configuration:
 	Source code location:	${srcdir}
 	Compiler:		${CC} 
 	GnomeUI Catalog:	${have_gnome}
-	Python Scripting:	${have_python}
 
 "

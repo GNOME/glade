@@ -401,17 +401,29 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor   *adaptor,
 					  gint                  n_specs,
 					  gboolean              is_packing)
 {
+	GladeWidgetAdaptor *parent_adaptor = gwa_get_parent_adaptor (adaptor);
 	GladePropertyClass *property_class;
+	GType               class_type;
 	gint                i;
 	GList              *list = NULL;
 
 	for (i = 0; i < n_specs; i++)
 	{
-		/* Only create properties that dont exist on the adaptor yet */
-		if (specs[i]->owner_type != adaptor->type)
-			continue;
+		gboolean found;
 
-		if ((property_class = 
+		/* Only create properties that dont exist on the adaptor yet */
+		for (found = FALSE, class_type = adaptor->type;
+		     ((!parent_adaptor && class_type != 0) ||
+		      ( parent_adaptor && class_type != parent_adaptor->type));
+		     class_type = g_type_parent (class_type))
+			if (specs[i]->owner_type == class_type)
+			{
+				found = TRUE;
+				break;
+			}
+
+		if (found && 
+		    (property_class = 
 		     glade_property_class_new_from_spec (adaptor, specs[i])) != NULL)
 			list = g_list_prepend (list, property_class);
 	}

@@ -6,6 +6,7 @@
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
+	<property id="no-show-all" weight="4.6" ignore="True"/>
 
 	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5">
 	  <spec>glade_standard_string_spec</spec>
@@ -83,7 +84,8 @@
       <get-children-function>glade_gtk_container_get_children</get-children-function>
 
       <properties>
-        <property id="resize-mode">
+        <property id="border-width" common="True" weight="2.5"/>
+        <property id="resize-mode" common="True" weight="4.7">
   	  <displayable-values>
 	    <value id="GTK_RESIZE_PARENT" _name="Parent"/>
 	    <value id="GTK_RESIZE_QUEUE" _name="Queue"/>
@@ -501,6 +503,16 @@
 	  <_tooltip>The stock item for this button</_tooltip>
 	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
+
+	<property id="image-position" weight="1.7">
+  	  <displayable-values>
+	    <value id="GTK_POS_LEFT" _name="Left"/>
+	    <value id="GTK_POS_RIGHT" _name="Right"/>
+	    <value id="GTK_POS_TOP" _name="Top"/>
+	    <value id="GTK_POS_BOTTOM" _name="Bottom"/>
+	  </displayable-values>
+	</property>
+
 
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_button_type_spec</spec>

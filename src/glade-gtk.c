@@ -3173,6 +3173,11 @@ glade_gtk_button_disable_stock (GladeWidget *gwidget)
 	glade_widget_property_set_sensitive
 		(gwidget, "stock", FALSE,
 		 _("This only applies with stock type buttons"));
+
+	glade_widget_property_set_sensitive
+		(gwidget, "image-position", FALSE,
+		 _("This only applies with stock type buttons"));
+
 }
 
 static void
@@ -3302,6 +3307,7 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 	case GLADEGTK_BUTTON_STOCK:
 		glade_widget_property_set (gwidget, "use-stock", TRUE);
 		glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
+		glade_widget_property_set_sensitive (gwidget, "image-position", TRUE, NULL);
 		glade_gtk_button_disable_label (gwidget);
 		break;
 	case GLADEGTK_BUTTON_CONTAINER:
@@ -3322,6 +3328,10 @@ glade_gtk_button_set_type (GObject *object, GValue *value)
 			
 			glade_widget_property_set_sensitive
 				(gwidget, "stock", FALSE,
+				 _("This only applies with stock type buttons"));
+
+			glade_widget_property_set_sensitive
+				(gwidget, "image-position", FALSE,
 				 _("This only applies with stock type buttons"));
 			
 			glade_widget_property_set_sensitive
