@@ -32,6 +32,8 @@ struct _GladeProjectViewClass
 	void   (*remove_item)         (GladeProjectView *view,
 				       GladeWidget *widget);
 	void   (*widget_name_changed) (GladeProjectView *view,
+				       GladeWidget *widget);				       
+	void    (*item_activated)     (GladeProjectView *view,
 				       GladeWidget *widget);
 
 	/* Selection update is when the project changes the selection

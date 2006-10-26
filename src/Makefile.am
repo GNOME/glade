@@ -64,6 +64,8 @@ libgladeui_1_la_SOURCES = \
 	glade-palette-item.c \
 	glade-palette-box.c \
 	glade-palette-expander.c \
+	glade-design-layout.c \
+	glade-design-view.c \
 	glade-cursor.c \
 	glade-property.c \
 	glade-property-class.c \
@@ -114,6 +116,8 @@ libgladeuiinclude_HEADERS = \
 	glade-palette-item.h \
 	glade-palette-box.h \
 	glade-palette-expander.h \
+	glade-design-layout.h \
+	glade-design-view.h \
 	glade-cursor.h \
 	glade-widget.h \
 	glade-widget-adaptor.h \

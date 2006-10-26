@@ -84,12 +84,6 @@ struct _GladeWidget
 			       * added/removed from the project).
 			       */
 
-	/* Save toplevel positions */
-	gint      save_x;
-	gint      save_y;
-	gboolean  pos_saved;
-
-
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
 	GladeWidgetInfo   *construct_info;

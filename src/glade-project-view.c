@@ -37,6 +37,12 @@
 #define GLADE_PROJECT_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					       GLADE_TYPE_PROJECT_VIEW,              \
 			 		       GladeProjectViewPrivate))
+
+enum
+{
+	ITEM_ACTIVATED,
+	LAST_SIGNAL
+};
 					  
 enum
 {
@@ -100,6 +106,7 @@ typedef struct
 	GList       *list;
 } GPVAccumPair;
 
+static guint glade_project_view_signals[LAST_SIGNAL] = {0};
 static GtkScrolledWindow *parent_class = NULL;
 
 static void gpv_project_data_free         (GPVProjectData *pdata);
@@ -664,6 +671,24 @@ glade_project_view_class_init (GladeProjectViewClass *class)
 	class->remove_item          = glade_project_view_remove_item;
 	class->widget_name_changed  = glade_project_view_widget_name_changed;
 	class->selection_update     = glade_project_view_selection_update;
+
+	/**
+	 * GladeProjectView::item-activated:
+	 * @view the #GladeProjectView which received the signal.
+	 * @widget: the #GladeWidget that was activated.
+	 *
+	 * Emitted when a item is activated in the GtkTreeView of a GladeProjectView.
+	 */
+	glade_project_view_signals[ITEM_ACTIVATED] =
+		g_signal_new ("item_activated",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeProjectViewClass, item_activated),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__OBJECT,
+			      G_TYPE_NONE,
+			      1,
+			      GLADE_TYPE_WIDGET);
 	
 	g_type_class_add_private (object_class, sizeof (GladeProjectViewPrivate));
 }
@@ -761,7 +786,7 @@ glade_project_view_init (GladeProjectView *view)
 #endif
  
 	priv->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (priv->model));
-	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (priv->tree_view), TRUE);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (priv->tree_view), FALSE);
 
 	/* the view now holds a reference, we can get rid of our own */
 	g_object_unref (G_OBJECT (priv->model));

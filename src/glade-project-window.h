@@ -15,7 +15,7 @@ G_BEGIN_DECLS
 
 typedef struct _GladeProjectWindow      GladeProjectWindow;
 typedef struct _GladeProjectWindowClass GladeProjectWindowClass;
-typedef struct _GladeProjectWindowPriv  GladeProjectWindowPriv;
+typedef struct _GladeProjectWindowPrivate  GladeProjectWindowPrivate;
 
 /* A GladeProjectWindow specifies a loaded glade application.
  * it contains pointers to all the components that make up
@@ -25,7 +25,8 @@ typedef struct _GladeProjectWindowPriv  GladeProjectWindowPriv;
 struct _GladeProjectWindow
 {
 	GladeApp parent;
-	GladeProjectWindowPriv *priv;
+	
+	GladeProjectWindowPrivate *priv;
 };
 
 struct _GladeProjectWindowClass
