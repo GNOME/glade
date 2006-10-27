@@ -562,8 +562,8 @@ glade_parser_start_element(GladeParseState *state,
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = glade_xml_alloc_propname(state->interface, 
-						     CAST_BAD(attrs[i+1]));
+		    state->comment = glade_xml_alloc_string(state->interface, 
+							    CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
 		else
@@ -623,8 +623,8 @@ glade_parser_start_element(GladeParseState *state,
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = glade_xml_alloc_propname(state->interface, 
-						     CAST_BAD(attrs[i+1]));
+		    state->comment = glade_xml_alloc_string(state->interface, 
+							    CAST_BAD(attrs[i+1]));
 		else
 		    g_warning("unknown attribute `%s' for <atkproperty>.",
 			      attrs[i]);
@@ -779,8 +779,8 @@ glade_parser_start_element(GladeParseState *state,
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("context")))
 		    state->context_prop = !xmlStrcmp(attrs[i+1], BAD_CAST("yes"));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("comments")))
-		    state->comment = glade_xml_alloc_propname(state->interface, 
-						     CAST_BAD(attrs[i+1]));
+		    state->comment = glade_xml_alloc_string(state->interface, 
+							    CAST_BAD(attrs[i+1]));
 		else if (!xmlStrcmp(attrs[i], BAD_CAST("agent")))
 		    bad_agent = xmlStrcmp(attrs[i], BAD_CAST("libglade")) != 0;
 		else
