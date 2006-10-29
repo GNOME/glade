@@ -138,13 +138,6 @@ glade_popup_clipboard_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 	glade_app_command_delete_clipboard ();
 }
 
-static void
-glade_popup_properties_cb  (GtkMenuItem *item, GladeWidget *widget)
-{
-	glade_popup_select_cb (item, widget);
-	glade_app_show_properties (TRUE);
-}
-
 /********************************************************
                     POPUP BUILDING
  *******************************************************/
@@ -227,8 +220,6 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_PROPERTIES, NULL, TRUE,
-			         glade_popup_properties_cb, widget);
 
 	if (add_childs &&
 	    !g_type_is_a (widget->adaptor->type, GTK_TYPE_WINDOW)) {

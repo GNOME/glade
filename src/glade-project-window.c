@@ -66,7 +66,11 @@ struct _GladeProjectWindowPrivate
 	GtkActionGroup *projects_list_menu_actions;/* Projects list menu actions */
 	
 	GtkLabel *label; /* the title of property editor dock */
-
+	
+	GtkRecentManager *recent_manager;
+	GtkWidget *recent_menu;
+	
+	gchar *default_path; /* the default path for open/save operations */
 };
 
 const gint   GLADE_WIDGET_TREE_WIDTH      = 230;
@@ -77,6 +81,7 @@ static gpointer parent_class = NULL;
 
 static void gpw_refresh_undo_redo (GladeProjectWindow *gpw);
 
+static void gpw_recent_chooser_item_activated_cb (GtkRecentChooser *chooser, GladeProjectWindow *gpw);
 
 G_DEFINE_TYPE(GladeProjectWindow, glade_project_window, GLADE_TYPE_APP)
 
@@ -107,6 +112,81 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	gtk_window_set_title (GTK_WINDOW (gpw->priv->window), title);
 
 	g_free (title);
+}
+
+static const gchar*
+gpw_get_default_path (GladeProjectWindow *gpw)
+{
+	return gpw->priv->default_path;
+}
+
+static void
+update_default_path (GladeProjectWindow *gpw, GladeProject *project)
+{
+	gchar *path;
+	
+	g_return_if_fail (project->path != NULL);
+
+	path = g_path_get_dirname (project->path);
+
+	g_free (gpw->priv->default_path);
+	gpw->priv->default_path = g_strdup (path);
+
+	g_free (path);
+}
+
+static gboolean
+gpw_window_state_event_cb (GtkWidget *widget,
+			   GdkEventWindowState *event,
+			   GladeProjectWindow *gpw)
+{
+	if (event->changed_mask &
+	    (GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN))
+	{
+		gboolean show;
+
+		show = !(event->new_window_state &
+			(GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN));
+
+		gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gpw->priv->statusbar), show);
+	}
+
+	return FALSE;
+}
+
+static void
+gpw_window_screen_changed_cb (GtkWidget *widget,
+			      GdkScreen *old_screen,
+			      GladeProjectWindow *gpw)
+{
+	GtkWidget *menu_item;
+	GtkRecentFilter *filter;
+	GdkScreen *screen;
+
+	screen = gtk_widget_get_screen (widget);	
+
+	gpw->priv->recent_manager = gtk_recent_manager_get_for_screen (screen);
+
+	gtk_menu_detach (GTK_MENU (gpw->priv->recent_menu));
+	g_object_unref (G_OBJECT (gpw->priv->recent_menu));
+	
+	gpw->priv->recent_menu = gtk_recent_chooser_menu_new_for_manager (gpw->priv->recent_manager);
+
+	gtk_recent_chooser_set_local_only (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), TRUE);
+	gtk_recent_chooser_set_show_icons (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), FALSE);
+	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), GTK_RECENT_SORT_MRU);
+
+	filter = gtk_recent_filter_new ();
+	gtk_recent_filter_add_application (filter, g_get_application_name());
+	gtk_recent_chooser_set_filter (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), filter);
+
+	g_signal_connect (gpw->priv->recent_menu,
+			  "item-activated",
+			  G_CALLBACK (gpw_recent_chooser_item_activated_cb),
+			  gpw);
+			  
+	menu_item = gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar/FileMenu/OpenRecent");
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), gpw->priv->recent_menu);
 }
 
 static void
@@ -446,15 +526,84 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 	p->projects_list_menu_ui_id = id;
 }
 
+
+void
+gpw_recent_add (GladeProjectWindow *gpw, const gchar *path)
+{
+	GtkRecentData *recent_data;
+	gchar *uri;
+	GError *error = NULL;
+
+	uri = g_filename_to_uri (path, NULL, &error);
+	if (error)
+	{	
+		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
+		g_error_free (error);
+		return;
+	}
+
+	recent_data = g_slice_new (GtkRecentData);
+
+	recent_data->display_name   = NULL;
+	recent_data->description    = NULL;
+	recent_data->mime_type      = "application/x-glade";
+	recent_data->app_name       = (gchar *) g_get_application_name ();
+	recent_data->app_exec       = g_strjoin (" ", g_get_prgname (), "%u", NULL);
+	recent_data->groups         = NULL;
+	recent_data->is_private     = FALSE;
+
+	if (!gtk_recent_manager_add_full (gpw->priv->recent_manager,
+				          uri,
+				          recent_data))
+	{
+      		g_warning ("Unable to add '%s' to the list of recently used documents", uri);
+	}
+
+	g_free (uri);
+	g_free (recent_data->app_exec);
+	g_slice_free (GtkRecentData, recent_data);
+
+}
+
+void
+gpw_recent_remove (GladeProjectWindow *gpw, const gchar *path)
+{
+	gchar *uri;
+	GError *error = NULL;
+
+	uri = g_filename_to_uri (path, NULL, &error);
+	if (error)
+	{	
+		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
+		g_error_free (error);
+		return;
+	}
+	
+	gtk_recent_manager_remove_item (gpw->priv->recent_manager, uri, &error);
+	if (error)
+	{
+		g_warning ("Could not remove recent-files uri \"%s\": %s", uri, error->message);	
+	}
+	
+	g_free (uri);
+}
+
 static void
 gpw_open_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	GtkWidget           *filechooser;
-	gchar               *path = NULL;
+	GtkWidget *filechooser;
+	gchar     *path = NULL, *default_path;
 
 	filechooser = glade_util_file_dialog_new (_("Open\342\200\246"), GTK_WINDOW (gpw->priv->window),
 						   GLADE_FILE_DIALOG_ACTION_OPEN);
 
+
+	default_path = g_strdup (gpw_get_default_path (gpw));
+	if (default_path != NULL)
+	{
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser), default_path);
+		g_free (default_path);
+	}
 
 	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
 		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
@@ -494,6 +643,9 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	/* Get display_name here, it could have changed with "Save As..." */
 	display_name = glade_project_display_name (project, FALSE, FALSE, FALSE);
 
+	gpw_recent_add (gpw, project->path);
+	update_default_path (gpw, project);
+
 	/* refresh names */
 	gpw_refresh_title (gpw);
 	gpw_refresh_projects_list_item (gpw, project);
@@ -528,9 +680,20 @@ gpw_save_as (GladeProjectWindow *gpw)
 						  GLADE_FILE_DIALOG_ACTION_SAVE);
 
 	if (project->path)
+	{
 		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), project->path);
+	}
 	else	
+	{
+		gchar *default_path = g_strdup (gpw_get_default_path (gpw));
+		if (default_path != NULL)
+		{
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser), default_path);
+			g_free (default_path);
+		}
+
 		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (filechooser), project->name);
+	}
 	
  	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
 		path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
@@ -663,11 +826,19 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 		{
 			GtkWidget *filechooser;
 			gchar *path = NULL;
+			gchar *default_path;
 
 			filechooser =
 				glade_util_file_dialog_new (_("Save\342\200\246"),
 							    GTK_WINDOW (gpw->priv->window),
 							    GLADE_FILE_DIALOG_ACTION_SAVE);
+	
+			default_path = g_strdup (gpw_get_default_path (gpw));
+			if (default_path != NULL)
+			{
+				gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser), default_path);
+				g_free (default_path);
+			}
 
 			gtk_file_chooser_set_current_name
 				(GTK_FILE_CHOOSER (filechooser), project->name);
@@ -993,6 +1164,31 @@ gpw_notebook_tab_removed_cb (GtkNotebook *notebook,
 }
 
 static void
+gpw_recent_chooser_item_activated_cb (GtkRecentChooser *chooser, GladeProjectWindow *gpw)
+{
+	gchar *uri, *path;
+	GError *error = NULL;
+
+	uri = gtk_recent_chooser_get_current_uri (chooser);
+
+	path = g_filename_from_uri (uri, NULL, NULL);
+	if (error)
+	{
+		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
+		g_error_free (error);
+		return;
+	}
+	
+	if (!glade_project_window_open_project (gpw, path))
+	{
+		gpw_recent_remove (gpw, path);
+	}
+
+	g_free (uri);
+	g_free (path);
+}
+
+static void
 gpw_palette_appearance_change_cb (GtkRadioAction *action,
 				  GtkRadioAction *current,
 				  GladeProjectWindow *gpw)
@@ -1121,6 +1317,7 @@ static const gchar *ui_info =
 "    <menu action='FileMenu'>\n"
 "      <menuitem action='New'/>\n"
 "      <menuitem action='Open'/>\n"
+"      <menuitem action='OpenRecent'/>\n"
 "      <separator/>\n"
 "      <menuitem action='Save'/>\n"
 "      <menuitem action='SaveAs'/>\n"
@@ -1188,6 +1385,8 @@ static GtkActionEntry static_entries[] = {
 	
 	{ "Open", GTK_STOCK_OPEN, N_("_Open"),"<control>O",
 	  N_("Open a project"), G_CALLBACK (gpw_open_cb) },
+
+	{ "OpenRecent", NULL, N_("Open _Recent") },	
 	
 	{ "Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	  N_("Quit the program"), G_CALLBACK (gpw_quit_cb) },
@@ -1440,7 +1639,9 @@ gpw_drag_data_received (GtkWidget *widget,
 		gchar *path = g_filename_from_uri (*str, NULL, &error);
 
 		if (path)
+		{
 			glade_project_window_open_project (window, path);
+		}
 		else
 		{
 			g_warning ("Could not convert uri to local path: %s", error->message); 
@@ -1477,10 +1678,13 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *palette;
 	GtkWidget *editor;
 	GtkWidget *dockitem;
+	GtkWidget *widget;
+	GtkRecentFilter *filter;
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gpw->priv->window = window;
 	gtk_window_maximize (GTK_WINDOW (window));
+	gtk_window_set_default_size (GTK_WINDOW (window), 720, 540);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -1500,13 +1704,16 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	hpaned1 = gtk_hpaned_new ();
 	hpaned2 = gtk_hpaned_new ();
 	vpaned = gtk_vpaned_new ();
-	
-	/* minimum size for far-right pane */
-	gtk_widget_set_size_request (vpaned, 310, -1);
 
 	gtk_box_pack_start (GTK_BOX (vbox), hpaned1, TRUE, TRUE, 0);
 	gtk_paned_pack1 (GTK_PANED (hpaned1), hpaned2, TRUE, FALSE);
 	gtk_paned_pack2 (GTK_PANED (hpaned1), vpaned, FALSE, FALSE);
+
+	/* divider position between design area and editor/tree */
+	gtk_paned_set_position (GTK_PANED (hpaned1), 370);
+	/* divider position between tree and editor */	
+	gtk_paned_set_position (GTK_PANED (vpaned), 135);
+
 
 	gtk_widget_show_all (hpaned1);
 	gtk_widget_show_all (hpaned2);
@@ -1559,6 +1766,28 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_widget_set_sensitive (editor_item, FALSE);
 	gtk_widget_set_sensitive (docs_item, FALSE);
 	
+	/* recent files */	
+	gpw->priv->recent_manager = gtk_recent_manager_get_for_screen (gtk_widget_get_screen (gpw->priv->window));
+
+	gpw->priv->recent_menu = gtk_recent_chooser_menu_new_for_manager (gpw->priv->recent_manager);
+
+	gtk_recent_chooser_set_local_only (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), TRUE);
+	gtk_recent_chooser_set_show_icons (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), FALSE);
+	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), GTK_RECENT_SORT_MRU);
+
+	filter = gtk_recent_filter_new ();
+	gtk_recent_filter_add_application (filter, g_get_application_name());
+	gtk_recent_chooser_set_filter (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), filter);
+
+	g_signal_connect (gpw->priv->recent_menu,
+			  "item-activated",
+			  G_CALLBACK (gpw_recent_chooser_item_activated_cb),
+			  gpw);
+			  
+	widget = gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar/FileMenu/OpenRecent");
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (widget), gpw->priv->recent_menu);		  
+	
+	
 	/* support for opening a file by dragging onto the project window */
 	gtk_drag_dest_set (GTK_WIDGET (window),
 			   GTK_DEST_DEFAULT_ALL,
@@ -1571,7 +1800,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	g_signal_connect (G_OBJECT (window), "delete_event",
 			  G_CALLBACK (gpw_delete_event), gpw);
 			  
-	/* Connect signals notebook */
+	/* connect signals notebook */
 	g_signal_connect (gpw->priv->notebook,
 			  "switch-page",
 			  G_CALLBACK (gpw_notebook_switch_page_cb),
@@ -1583,6 +1812,16 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	g_signal_connect (gpw->priv->notebook,
 			  "page-removed",
 			  G_CALLBACK (gpw_notebook_tab_removed_cb),
+			  gpw);
+			  
+			  
+	/* GtkWindow events */
+	g_signal_connect (gpw->priv->window, "screen-changed",
+			  G_CALLBACK (gpw_window_screen_changed_cb),
+			  gpw);
+			  
+	g_signal_connect (gpw->priv->window, "window-state-event",
+			  G_CALLBACK (gpw_window_state_event_cb),
 			  gpw);
 }
 
@@ -1619,12 +1858,12 @@ glade_project_window_new_project (GladeProjectWindow *gpw)
 	glade_project_window_add_project (gpw, project);
 }
 
-void
+gboolean
 glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 {
 	GladeProject *project;
 
-	g_return_if_fail (path != NULL);
+	g_return_val_if_fail (path != NULL, FALSE);
 
 	/* dont allow more than one project with the same name to be
 	 * opened simultainiously.
@@ -1633,14 +1872,21 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 	{
 		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
 				       _("%s is already open"), path);
-		return;
+		return TRUE; /* let this pass */
 	}
 	
 	if ((project = glade_project_open (path)) == NULL)
-		return;
+		return FALSE;
 
 	glade_project_window_add_project (gpw, project);
+	
+	gpw_recent_add (gpw, project->path);
+	update_default_path (gpw, project);
+	
+	return TRUE;
 }
+
+
 
 static void
 glade_project_window_change_menu_label (GladeProjectWindow *gpw,
@@ -1728,6 +1974,8 @@ glade_project_window_show_all (GladeProjectWindow *gpw)
 static void
 glade_project_window_finalize (GObject *object)
 {
+	g_free (GLADE_PROJECT_WINDOW (object)->priv->default_path);
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -1755,6 +2003,7 @@ glade_project_window_init (GladeProjectWindow *gpw)
 	gpw->priv = GLADE_PROJECT_WINDOW_GET_PRIVATE (gpw);
 	
 	gpw->priv->label = NULL;
+	gpw->priv->default_path = NULL;
 
 }
 
