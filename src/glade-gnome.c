@@ -517,8 +517,8 @@ glade_gnome_druid_set_child_property (GladeWidgetAdaptor  *adaptor,
 		/* Chain Up */
 		GWA_GET_CLASS
 			(GTK_TYPE_CONTAINER)->child_set_property (adaptor,
-								  GTK_CONTAINER (container), 
-								  GTK_WIDGET (child),
+								  container, 
+								  child,
 								  property_name,
 								  value);
 }
@@ -541,8 +541,8 @@ glade_gnome_druid_get_child_property (GladeWidgetAdaptor  *adaptor,
 		/* Chain Up */
 		GWA_GET_CLASS
 			(GTK_TYPE_CONTAINER)->child_get_property (adaptor,
-								  GTK_CONTAINER (container), 
-								  GTK_WIDGET (child),
+								  container, 
+								  child,
 								  property_name,
 								  value);
 }

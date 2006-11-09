@@ -254,11 +254,35 @@ catalog_sort (GList *catalogs)
 	return sorted;
 }
 
+static GHashTable *modules = NULL;
+
+static GModule *
+catalog_load_library (GladeCatalog *catalog)
+{
+	GModule *module;
+
+	if (modules == NULL)
+		modules = g_hash_table_new (g_str_hash, g_str_equal);
+		
+	if (catalog->library == NULL) return NULL;
+
+	if ((module = g_hash_table_lookup (modules, catalog->library)))
+		return module;	
+		
+	if ((module = glade_util_load_library (catalog->library)))
+		g_hash_table_insert (modules, g_strdup (catalog->library), module);
+	else
+		g_warning ("Failed to load external library '%s'",
+			   catalog->library);
+		
+	return module;
+}
 
 static gboolean
 catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 {
 	GladeXmlNode *node;
+	GModule *module = catalog_load_library (catalog);
 
 	node = glade_xml_node_get_children (widgets_node);
 	for (; node; node = glade_xml_node_next (node)) 
@@ -271,7 +295,7 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 			continue;
 	
 		adaptor = glade_widget_adaptor_from_catalog 
-			(node, catalog->name, catalog->library, 
+			(node, catalog->name, module,
 			 catalog->domain ? catalog->domain : catalog->library,
 			 catalog->book);
 
@@ -530,4 +554,28 @@ glade_catalog_is_loaded (const gchar *name)
 		if (!strcmp (name, (gchar *)l->data))
 			return TRUE;
 	return FALSE;
+}
+
+
+static void 
+catalog_module_close (gpointer key, gpointer value, gpointer user_data)
+{
+	g_module_close (value);
+	g_free (key);
+}
+
+/**
+ * glade_catalog_modules_close:
+ *
+ * Close every opened module.
+ *
+ */
+void
+glade_catalog_modules_close ()
+{
+	if (modules == NULL) return;
+		
+	g_hash_table_foreach (modules, catalog_module_close, NULL);
+	g_hash_table_destroy (modules);
+	modules = NULL;
 }

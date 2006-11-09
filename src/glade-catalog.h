@@ -61,6 +61,9 @@ void          glade_widget_group_free               (GladeWidgetGroup *group);
 LIBGLADEUI_API 
 gboolean      glade_catalog_is_loaded               (const gchar      *name);
 
+LIBGLADEUI_API
+void          glade_catalog_modules_close           (void);
+
 G_END_DECLS
 
 #endif /* __GLADE_CATALOG_H__ */

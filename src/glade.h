@@ -22,10 +22,6 @@
 # define LIBGLADEUI_API		extern
 #endif
 
-#ifdef GLADE_H
-# error libglade included with libgladeui is not compatible
-#endif
-
 /* Circular header dependancie are fixed here with forward 
  * declarations.
  */

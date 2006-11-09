@@ -30,22 +30,10 @@
 #include <glib/gi18n-lib.h>
 
 #include "glade.h"
-#include "glade-palette.h"
-#include "glade-editor.h"
-#include "glade-clipboard.h"
 #include "glade-clipboard-view.h"
-#include "glade-widget.h"
-#include "glade-property.h"
-#include "glade-property-class.h"
-#include "glade-project.h"
-#include "glade-project-view.h"
-#include "glade-placeholder.h"
-#include "glade-command.h"
 #include "glade-debug.h"
-#include "glade-utils.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-app.h"
 #include "glade-paths.h"
 #include "glade-fixed.h"
 
@@ -168,6 +156,7 @@ glade_app_finalize (GObject *app)
 	g_free (glade_locale_dir);
 	g_free (glade_icon_dir);
 #endif
+	glade_catalog_modules_close ();
 
 	g_free (GLADE_APP (app)->priv);
 	if (parent_class->finalize)
@@ -755,7 +744,7 @@ glade_app_get_project_by_path (const gchar *project_path)
 	GList    *l;
 	gchar *canonical_path;
 
-	if (project_path == NULL) return FALSE;
+	if (project_path == NULL) return NULL;
 
 	app = glade_app_get ();
 

@@ -1,3 +1,25 @@
+2006-11-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-catalog.[ch]:
+	  o manage all GModules with a hash table.
+	  o added glade_catalog_modules_close()
+
+	* src/glade-app.c:
+	  o call glade_catalog_modules_close() when the app finalize.
+	  o removed unnecesary headers.
+
+	* src/glade-gnome.c: fixed some warnings.
+	
+	* src/glade-utils.c: slight optimization in function 
+	  glade_util_get_type_from_name (), check if type is already registered.
+
+	* src/glade.h: removed unneeded #ifdef GLADE_H check.
+	
+	* src/glade-widget-adaptor.[ch]:
+	  o removed module member from GladeWidgetAdaptorPriv since now we keep
+	    all the openned modules inside glade-catalog.c
+	  o added glade_abort_if_derived_adaptors_exist().
+
 2006-10-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS: Rolling 3.1.0

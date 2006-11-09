@@ -311,7 +311,7 @@ GType glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 LIBGLADEUI_API
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,
 							    const gchar          *catname,
-							    const gchar          *library,
+							    GModule              *module,
 							    const gchar          *domain,
 							    const gchar          *book);
 LIBGLADEUI_API

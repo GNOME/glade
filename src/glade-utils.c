@@ -139,8 +139,9 @@ glade_util_get_type_from_name (const gchar *name)
 	GType (*get_type) ();
 	GType type = 0;
 	gchar  *func_name;
-
-	if ((func_name = glade_util_compose_get_type_func (name)) != NULL)
+	
+	if ((type = g_type_from_name (name)) == 0 &&
+	    (func_name = glade_util_compose_get_type_func (name)) != NULL)
 	{
 		
 		if (!allsymbols)
@@ -151,17 +152,17 @@ glade_util_get_type_from_name (const gchar *name)
 		{
 			g_assert (get_type);
 			type = get_type ();
-		} else {
+		}
+		else
+		{
 			g_warning (_("We could not find the symbol \"%s\""),
 				   func_name);
 		}
 		g_free (func_name);
 	}
 
-	if (type == 0) {
-		g_warning(_("Could not get the type from \"%s"),
-			  name);
-	}
+	if (type == 0)
+		g_warning(_("Could not get the type from \"%s\""), name);
 	
 	return type;
 }
