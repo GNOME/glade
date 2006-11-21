@@ -1,3 +1,9 @@
+2006-11-21  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.c: Fixed a segfault in glade_widget_dup(), some things
+	  are done before setting the "class", so I made sure not to touch the
+	  class member during object construction time.
+
 2006-11-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.in: Added python/pygtk checks.

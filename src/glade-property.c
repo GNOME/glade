@@ -284,7 +284,10 @@ glade_property_sync_impl (GladeProperty *property)
 	/* Heh, here are the many reasons not to
 	 * sync a property ;-)
 	 */
-	if (/* optional properties that are disabled */
+	if (/* the class can be NULL during object,
+	     * construction this is just a temporary state */
+	    property->class == NULL       ||
+	    /* optional properties that are disabled */
 	    property->enabled == FALSE    || 
 	    /* explicit "never sync" flag */
 	    property->class->ignore       || 
