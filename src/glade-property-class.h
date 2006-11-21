@@ -32,45 +32,6 @@ typedef enum {
 	GPC_ACCEL_PROPERTY
 } GPCType;
 
-/**
- * GladeVerifyPropertyFunc:
- * @object: A #GObject
- * @value: The #GValue
- *
- * This delagate function is always called whenever setting any
- * properties with the exception of load time, and copy/paste time
- * (basicly the two places where we recreate a hierarchy that we
- * already know "works"
- *
- * Returns: whether or not its OK to set @value on @object
- */
-typedef gboolean (* GladeVerifyPropertyFunc) (GObject      *object,
-					      const GValue *value);
-
-/**
- * GladeSetPropertyFunc:
- * @object: A #GObject
- * @value: The #GValue
- *
- * This delagate function is used to apply the property value on
- * the runtime object.
- *
- * Sets @value on @object for a given #GladePropertyClass
- */
-typedef void     (* GladeSetPropertyFunc)    (GObject      *object,
-					      const GValue *value);
-
-/**
- * GladeGetPropertyFunc:
- * @object: A #GObject
- * @value: The #GValue
- *
- * Gets @value on @object for a given #GladePropertyClass
- */
-typedef void     (* GladeGetPropertyFunc)    (GObject      *object,
-					      GValue       *value);
-
-
 struct _GladePropertyClass
 {
 	GPCType type; /* A symbolic type used to load/save properties differently
@@ -182,30 +143,6 @@ struct _GladePropertyClass
 			 * the editor.
 			 */
 	
-	/* Delagate to verify if this is a valid value for this property,
-	 * if this function exists and returns FALSE, then glade_property_set
-	 * will abort before making any changes
-	 */
-	GladeVerifyPropertyFunc verify_function;
-	
-	/* If this property can't be set with g_object_set then
-	 * we need to implement it inside glade. This is a pointer
-	 * to the function that can set this property. The functions
-	 * to work arround these problems are inside glade-gtk.c
-	 */
-	GladeSetPropertyFunc set_function;
-
-	/* If this property can't be get with g_object_get then
-	 * we need to implement it inside glade. This is a pointer
-	 * to the function that can get this property. The functions
-	 * to work arround these problems are inside glade-gtk.c
-	 *
-	 * Note that since glade knows what the property values are 
-	 * at all times regardless of the objects copy, this is currently
-	 * only used to obtain the values of packing properties that are
-	 * set by the said object's parent at "container_add" time.
-	 */
-	GladeGetPropertyFunc get_function;
 };
 
 LIBGLADEUI_API

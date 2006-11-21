@@ -131,27 +131,6 @@ glade_property_equals_value_impl (GladeProperty *property,
 				    property->value, value);
 }
 
-/*
- * Generic set function for properties that do not have a
- * custom set_property method. This includes packing properties.
- */
-static void
-glade_property_sync_property (GladeProperty *property, const GValue *value)
-{
-	if (property->class->packing)
-	{
-		GladeWidget  *parent = glade_widget_get_parent (property->widget);
-		GladeWidget  *child  = property->widget;
-		glade_widget_adaptor_child_set_property 
-			(parent->adaptor, parent->object, child->object,
-			 property->class->id, value);
-	}
-	else
-	{
-		GObject *gobject = G_OBJECT (glade_widget_get_object (property->widget));
-		g_object_set_property (gobject, property->class->id, value);
-	}
-}
 
 static void
 glade_property_update_prop_refs (GladeProperty *property, 
@@ -235,15 +214,17 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 		return;
 	}
 
+	/* Check if the backend doesnt give us permission to
+	 * set this value.
+	 */
 	if (glade_property_superuser () == FALSE &&
 	    property->widget &&
-	    property->class->verify_function &&
-	    project && glade_project_is_loading (project) == FALSE)
-	{
-		GObject *object = glade_widget_get_object (property->widget);
-		if (property->class->verify_function (object, value) == FALSE)
-			return;
-	}
+	    project && glade_project_is_loading (project) == FALSE &&
+	    glade_widget_adaptor_verify_property (property->widget->adaptor, 
+						  property->widget->object,
+						  property->class->id,
+						  value) == FALSE)
+		return;
 	
 	/* save "changed" state.
 	 */
@@ -315,55 +296,20 @@ glade_property_sync_impl (GladeProperty *property)
 
 	property->syncing = TRUE;
 
-	if (property->class->set_function)
-		/* if there is a custom set_property, use it */
-		(*property->class->set_function)
-			(glade_widget_get_object (property->widget), property->value);
-	else if (property->class->construct_only)
-	{
-		/* In the case of construct_only, the widget must be rebuilt, here we
-		 * take care of updating the project if the widget is in a project and
-		 * updating the selection if the widget was selected.
-		 */
-		GList    *selection;
-		gboolean  reselect  = FALSE;
-		gboolean  inproject =
-			property->widget->project ?
-			(glade_project_has_object
-			 (property->widget->project,
-			  glade_widget_get_object (property->widget)) ? TRUE : FALSE) : FALSE;
-		
-		if (inproject)
-		{
-			if ((selection =
-			     glade_project_selection_get
-			     (property->widget->project)) != NULL &&
-			    g_list_find(selection,
-					glade_widget_get_object (property->widget)) != NULL)
-			{
-				reselect = TRUE;
-				glade_project_selection_remove
-					(property->widget->project,
-					 glade_widget_get_object (property->widget), FALSE);
-			}
-			glade_project_remove_object (property->widget->project,
-						     glade_widget_get_object (property->widget));
-		}
-
+	/* In the case of construct_only, the widget instance must be rebuilt
+	 * to apply the property
+	 */
+	if (property->class->construct_only)
 		glade_widget_rebuild (property->widget);
-
-		if (inproject)
-		{
-			glade_project_add_object (property->widget->project, NULL,
-						  glade_widget_get_object (property->widget));
-			if (reselect)
-				glade_project_selection_add
-					(property->widget->project,
-					 glade_widget_get_object (property->widget), TRUE);
-		}
-	}
+	else if (property->class->packing)
+		glade_widget_child_set_property (glade_widget_get_parent (property->widget),
+						 property->widget, 
+						 property->class->id, 
+						 property->value);
 	else
-		glade_property_sync_property (property, property->value);
+		glade_widget_object_set_property (property->widget, 
+						  property->class->id, 
+						  property->value);
 
 	property->syncing = FALSE;
 }
@@ -1596,7 +1542,11 @@ glade_property_set_enabled (GladeProperty *property,
 			    gboolean       enabled)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
 	property->enabled = enabled;
+	if (enabled)
+		glade_property_sync (property);
+
 	g_object_notify (G_OBJECT (property), "enabled");
 }
 

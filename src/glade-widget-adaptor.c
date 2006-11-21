@@ -652,10 +652,10 @@ glade_widget_adaptor_finalize (GObject *object)
 }
 
 static void
-glade_widget_adaptor_set_property (GObject         *object,
-				   guint            prop_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec)
+glade_widget_adaptor_real_set_property (GObject         *object,
+					guint            prop_id,
+					const GValue    *value,
+					GParamSpec      *pspec)
 {
 	GladeWidgetAdaptor *adaptor;
 
@@ -697,10 +697,10 @@ glade_widget_adaptor_set_property (GObject         *object,
 }
 
 static void
-glade_widget_adaptor_get_property (GObject         *object,
-				   guint            prop_id,
-				   GValue          *value,
-				   GParamSpec      *pspec)
+glade_widget_adaptor_real_get_property (GObject         *object,
+					guint            prop_id,
+					GValue          *value,
+					GParamSpec      *pspec)
 {
 
 	GladeWidgetAdaptor *adaptor;
@@ -727,6 +727,31 @@ glade_widget_adaptor_get_property (GObject         *object,
 	}
 }
 
+/*******************************************************************************
+                  GladeWidgetAdaptor base class implementations
+ *******************************************************************************/
+static void
+glade_widget_adaptor_object_set_property (GladeWidgetAdaptor *adaptor,
+					  GObject            *object,
+					  const gchar        *property_name,
+					  const GValue       *value)
+{
+	g_object_set_property (object, property_name, value);
+}
+
+static void
+glade_widget_adaptor_object_get_property (GladeWidgetAdaptor *adaptor,
+					  GObject            *object,
+					  const gchar        *property_name,
+					  GValue             *value)
+{
+	g_object_get_property (object, property_name, value);
+}
+
+
+/*******************************************************************************
+            GladeWidgetAdaptor type registration and class initializer
+ *******************************************************************************/
 static void
 glade_widget_adaptor_init (GladeWidgetAdaptor *adaptor)
 {
@@ -745,13 +770,16 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	/* GObjectClass */
 	object_class->constructor           = glade_widget_adaptor_constructor;
 	object_class->finalize              = glade_widget_adaptor_finalize;
-	object_class->set_property          = glade_widget_adaptor_set_property;
-	object_class->get_property          = glade_widget_adaptor_get_property;
+	object_class->set_property          = glade_widget_adaptor_real_set_property;
+	object_class->get_property          = glade_widget_adaptor_real_get_property;
 
 	/* Class methods */
 	adaptor_class->post_create          = NULL;
 	adaptor_class->launch_editor        = NULL;
 	adaptor_class->get_internal_child   = NULL;
+	adaptor_class->verify_property      = NULL;
+	adaptor_class->set_property         = glade_widget_adaptor_object_set_property;
+	adaptor_class->get_property         = glade_widget_adaptor_object_get_property;
 	adaptor_class->add                  = NULL;
 	adaptor_class->remove               = NULL;
 	adaptor_class->replace_child        = NULL;
@@ -1069,7 +1097,8 @@ gwa_update_properties_from_node (GladeWidgetAdaptor  *adaptor,
 				 GladeXmlNode        *node,
 				 GModule             *module,
 				 GList              **properties,
-				 const gchar         *domain)
+				 const gchar         *domain,
+				 gboolean             is_packing)
 {
 	GladeXmlNode *child;
 
@@ -1109,6 +1138,13 @@ gwa_update_properties_from_node (GladeWidgetAdaptor  *adaptor,
 		{
 			property_class = glade_property_class_new (adaptor);
 			property_class->id = g_strdup (id);
+
+			/* When creating new virtual packing properties,
+			 * make sure we mark them as such here. 
+			 */
+			if (is_packing)
+				property_class->packing = TRUE;
+
 			*properties = g_list_append (*properties, property_class);
 			list = g_list_last (*properties);
 		}
@@ -1156,6 +1192,18 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 					      GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
 					      (gpointer *)&adaptor_class->launch_editor);
 
+		glade_xml_load_sym_from_node (node, module, 
+					      GLADE_TAG_SET_FUNCTION, 
+					      (gpointer *)&adaptor_class->set_property);
+
+		glade_xml_load_sym_from_node (node, module, 
+					      GLADE_TAG_GET_FUNCTION, 
+					      (gpointer *)&adaptor_class->get_property);
+
+		glade_xml_load_sym_from_node (node, module, 
+					      GLADE_TAG_VERIFY_FUNCTION, 
+					      (gpointer *)&adaptor_class->verify_property);
+
 		glade_xml_load_sym_from_node (node, module,
 					      GLADE_TAG_ADD_CHILD_FUNCTION,
 					      (gpointer *)&adaptor_class->add);
@@ -1177,6 +1225,10 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 					      (gpointer *)&adaptor_class->child_get_property);
 
 		glade_xml_load_sym_from_node (node, module,
+					      GLADE_TAG_CHILD_VERIFY_FUNCTION,
+					      (gpointer *)&adaptor_class->child_verify_property);
+
+		glade_xml_load_sym_from_node (node, module,
 					      GLADE_TAG_REPLACE_CHILD_FUNCTION,
 					      (gpointer *)&adaptor_class->replace_child);
 
@@ -1196,12 +1248,12 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	if ((child = 
 	     glade_xml_search_child (node, GLADE_TAG_PROPERTIES)) != NULL)
 		gwa_update_properties_from_node
-			(adaptor, child, module, &adaptor->properties, domain);
+			(adaptor, child, module, &adaptor->properties, domain, FALSE);
 
 	if ((child = 
 	     glade_xml_search_child (node, GLADE_TAG_PACKING_PROPERTIES)) != NULL)
 		gwa_update_properties_from_node
-			(adaptor, child, module, &adaptor->packing_props, domain);
+			(adaptor, child, module, &adaptor->packing_props, domain, TRUE);
 
 	if ((child = 
 	     glade_xml_search_child (node, GLADE_TAG_PACKING_DEFAULTS)) != NULL)
@@ -1591,7 +1643,7 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
 		/* Ignore properties based on some criteria
 		 */
 		if (pclass == NULL       || /* Unaccounted for in the builder */
-		    pclass->set_function || /* should not be set before 
+		    pclass->virtual      || /* should not be set before 
 					       GladeWidget wrapper exists */
 		    pclass->ignore)         /* Catalog explicitly ignores the object */
 			continue;
@@ -1703,6 +1755,92 @@ glade_widget_adaptor_launch_editor (GladeWidgetAdaptor *adaptor,
 }
 
 /**
+ * glade_widget_adaptor_set_property:
+ * @adaptor:       A #GladeWidgetAdaptor
+ * @object:        The #GObject
+ * @property_name: The property identifier
+ * @value:         The #GValue
+ *
+ * This delagate function is used to apply the property value on
+ * the runtime object.
+ *
+ */
+void
+glade_widget_adaptor_set_property (GladeWidgetAdaptor *adaptor,
+				   GObject            *object,
+				   const gchar        *property_name,
+				   const GValue       *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	/* The base class provides an implementation */
+	GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->set_property (adaptor, object, property_name, value);
+}
+
+
+/**
+ * glade_widget_adaptor_get_property:
+ * @adaptor:       A #GladeWidgetAdaptor
+ * @object:        The #GObject
+ * @property_name: The property identifier
+ * @value:         The #GValue
+ *
+ * Gets @value of @property_name on @object.
+ *
+ */
+void
+glade_widget_adaptor_get_property (GladeWidgetAdaptor *adaptor,
+				   GObject            *object,
+				   const gchar        *property_name,
+				   GValue             *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (G_IS_OBJECT (object));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	/* The base class provides an implementation */
+	GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->get_property (adaptor, object, property_name, value);
+}
+
+
+/**
+ * glade_widget_adaptor_verify_property:
+ * @adaptor:       A #GladeWidgetAdaptor
+ * @object:        The #GObject
+ * @property_name: The property identifier
+ * @value:         The #GValue
+ *
+ * This delagate function is always called whenever setting any
+ * properties with the exception of load time, and copy/paste time
+ * (basicly the two places where we recreate a hierarchy that we
+ * already know "works") its basicly an optional backend provided
+ * boundry checker for properties.
+ *
+ * Returns: whether or not its OK to set @value on @object, this function
+ * will silently return TRUE if the class did not provide a verify function.
+ */
+gboolean
+glade_widget_adaptor_verify_property    (GladeWidgetAdaptor *adaptor,
+					 GObject            *object,
+					 const gchar        *property_name,
+					 const GValue       *value)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+	g_return_val_if_fail (property_name != NULL && value != NULL, FALSE);
+
+	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->verify_property)
+		return GLADE_WIDGET_ADAPTOR_GET_CLASS
+			(adaptor)->verify_property (adaptor, object, property_name, value);
+
+	return TRUE;
+}
+
+/**
  * glade_widget_adaptor_add:
  * @adaptor:   A #GladeWidgetAdaptor
  * @container: The #GObject container
@@ -1769,7 +1907,7 @@ glade_widget_adaptor_get_children (GladeWidgetAdaptor *adaptor,
 		return GLADE_WIDGET_ADAPTOR_GET_CLASS
 			(adaptor)->get_children (adaptor, container);
 
-	/* XXX Dont complain here if no implementation is found */
+	/* Dont complain here if no implementation is found */
 
 	return NULL;
 }
@@ -1837,7 +1975,7 @@ glade_widget_adaptor_child_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /**
- * glade_widget_adaptor_child_set_property:
+ * glade_widget_adaptor_child_get_property:
  * @adaptor:       A #GladeWidgetAdaptor
  * @container:     The #GObject container
  * @child:         The #GObject child
@@ -1865,6 +2003,45 @@ glade_widget_adaptor_child_get_property (GladeWidgetAdaptor *adaptor,
 	else
 		g_critical ("No child_set_property() support in adaptor %s", adaptor->name);
 }
+
+/**
+ * glade_widget_adaptor_child_verify_property:
+ * @adaptor:       A #GladeWidgetAdaptor
+ * @container:     The #GObject container
+ * @child:         The #GObject child
+ * @property_name: The id of the property
+ * @value:         The @GValue
+ *
+ * This delagate function is always called whenever setting any
+ * properties with the exception of load time, and copy/paste time
+ * (basicly the two places where we recreate a hierarchy that we
+ * already know "works") its basicly an optional backend provided
+ * boundry checker for properties.
+ *
+ * Returns: whether or not its OK to set @value on @object, this function
+ * will silently return TRUE if the class did not provide a verify function.
+ */
+gboolean
+glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
+					    GObject            *container,
+					    GObject            *child,
+					    const gchar        *property_name,
+					    GValue             *value)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (container), FALSE);
+	g_return_val_if_fail (G_IS_OBJECT (child), FALSE);
+	g_return_val_if_fail (property_name != NULL && value != NULL, FALSE);
+
+	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->child_verify_property)
+		return GLADE_WIDGET_ADAPTOR_GET_CLASS
+			(adaptor)->child_verify_property (adaptor, 
+							  container, child,
+							  property_name, value);
+
+	return TRUE;
+}
+
 
 /**
  * glade_widget_adaptor_replace_child:

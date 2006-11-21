@@ -160,9 +160,6 @@ glade_property_class_new (gpointer handle)
 	property_class->common = FALSE;
 	property_class->packing = FALSE;
 	property_class->is_modified = FALSE;
-	property_class->verify_function = NULL;
-	property_class->set_function = NULL;
-	property_class->get_function = NULL;
 	property_class->visible = TRUE;
 	property_class->save = TRUE;
 	property_class->ignore = FALSE;
@@ -1689,12 +1686,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		class->optional_default =
 			glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL_DEFAULT, 
 							class->optional_default);
-
-	/* Get any delagate functions for accessing this property
-	 */
-	glade_xml_load_sym_from_node (node, module, GLADE_TAG_SET_FUNCTION,    (gpointer *)&class->set_function);
-	glade_xml_load_sym_from_node (node, module, GLADE_TAG_GET_FUNCTION,    (gpointer *)&class->get_function);
-	glade_xml_load_sym_from_node (node, module, GLADE_TAG_VERIFY_FUNCTION, (gpointer *)&class->verify_function);
 
 	/* notify that we changed the property class */
 	class->is_modified = TRUE;

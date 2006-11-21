@@ -789,8 +789,10 @@ glade_fixed_event (GtkWidget   *widget,
 	if (GLADE_WIDGET_CLASS (parent_class)->event (widget, event, gwidget_fixed))
 		return TRUE;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE);
-
+	/* XXX g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE); */
+	if (!GLADE_IS_WIDGET (event_gwidget))
+		return FALSE;
+	
 	/* Get the gwidget that is a direct child of 'fixed' */
 	for (search = event_gwidget; 
 	     search && GLADE_IS_FIXED (search->parent) == FALSE;

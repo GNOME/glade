@@ -1,3 +1,37 @@
+2006-11-20  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-property.c: 
+	  - glade_property_set_enabled(), when enableing a property, sync its 
+	    value incase it has any visual feedback.
+	  - removed the horrid code that dealt with the project and selection
+	    when calling glade_widget_rebuild()
+	  - use new glade_widget_object_set_property()/glade_widget_child_set_property().
+
+	* src/glade-widget.c: 
+	  - glade_widget_rebuild(), added the afore mentioned horrid code - doesnt 
+	    seem so horrid over here.
+	  - added apis to proxy property setting onto the object (via the gwa).
+	  - Now sync all properties again at sync_custom_props() time (since there's
+	    no set_function anymore and property->class->virtual isnt enough).
+	
+	* src/glade-design-layout.c: Added commented alternative code for
+	  resizing, TODO remove the direct property setting stuff and handle it
+	  somewhere appropriate.
+
+	* src/glade-fixed.c: Commented out a g_return_if_fail and temporarily
+	  put an if (statement) return; need to work on handling events differently
+	  now (its no big deal, there are just some extra events now comming from the
+	  toplevels at focus change times and stuff that are irrelevent to the 
+	  glade widgets and so the code complains).
+
+	* src/glade-gnome.c, src/glade-gtk.c: Ported to the new api for 
+	  set_property/get_property/verify_property.
+
+	* src/glade-property-class.[ch]: Removed get/set/verify property backend hooks
+
+	* src/glade-widget-adaptor.[ch]: Added get/set/verify property backend hooks,
+	  now the adaptor is a solid self-contained proxy to the plugin.
+
 2006-11-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-catalog.[ch]:
@@ -19,6 +53,22 @@
 	  o removed module member from GladeWidgetAdaptorPriv since now we keep
 	    all the openned modules inside glade-catalog.c
 	  o added glade_abort_if_derived_adaptors_exist().
+
+2006-10-29  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* src/glade-project-window.c:
+	  - Use the new GtkRecent API, and make it screen aware.
+	  - Added the notion of a 'default_path' for file open/save
+	    operations. Replaces the previous recent-file based
+	    implementation.
+	  - Hide statusbar grip when window is in maximised state.
+	  - Set a reasonable default size for props editor and tree.
+
+	* src/glade-popup.c: Removed the "Properties" context action as 
+	  it doesn't really make sense in the single-window ui.
+
+	* widgets/gtk+.xml.in: Added some displayable values for the
+	  GtkWindow::type-hint property.
 
 2006-10-27  Tristan Van Berkom <tvb@gnome.org>
 

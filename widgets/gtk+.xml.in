@@ -2,6 +2,10 @@
   <glade-widget-classes>
 
     <glade-widget-class name="GtkWidget" _title="Widget">
+
+      <set-property-function>glade_gtk_widget_set_property</set-property-function>
+      <get-property-function>glade_gtk_widget_get_property</get-property-function>
+
       <properties>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
@@ -11,8 +15,6 @@
 	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5">
 	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>A tooltip text for this widget</_tooltip>
-	  <set-function>glade_gtk_widget_set_tooltip</set-function>
-	  <get-function>glade_gtk_widget_get_tooltip</get-function>
 	</property>
 
 	<property common="True" id="extension-events">
@@ -99,6 +101,8 @@
     <glade-widget-class name="GtkBox" _title="Box" fixed="True">
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
+      <set-property-function>glade_gtk_box_set_property</set-property-function>
+      <get-property-function>glade_gtk_box_get_property</get-property-function>
       <add-child-function>glade_gtk_box_add_child</add-child-function>
       <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
@@ -107,8 +111,6 @@
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of items in the box</_tooltip>
-	  <set-function>glade_gtk_box_set_size</set-function>
-	  <get-function>glade_gtk_box_get_size</get-function>
 	  <verify-function>glade_gtk_box_verify_size</verify-function>
 	</property>
       </properties>
@@ -211,17 +213,16 @@
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_submenu</get-children-function>
+      <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
       <add-child-function>glade_gtk_menu_item_add_submenu</add-child-function>
       <remove-child-function>glade_gtk_menu_item_remove_submenu</remove-child-function>
       <properties>
         <property id="label" _name="Label" translatable="True">
 	  <_tooltip>The text of the menu item</_tooltip>
           <spec>glade_standard_string_spec</spec>
-          <set-function>glade_gtk_menu_item_set_label</set-function>
         </property>
         <property id="use-underline" _name="Use Underline">
           <spec>glade_standard_boolean_spec</spec>
-          <set-function>glade_gtk_menu_item_set_use_underline</set-function>
         </property>
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-action="True">
@@ -231,12 +232,11 @@
 	</property>
 	<!--
 	This property is added by glade2 gnome support and makes reference to
-	GNOMEUIINFO_MENU_* macros. This set-function maps these properties to 
+	GNOMEUIINFO_MENU_* macros. The set-property-function maps these properties to 
 	existing non deprecated gtk ones
 	-->
         <property id="stock-item" visible="False" save="False">
           <spec>glade_gtk_gnome_ui_info_spec</spec>
-          <set-function>glade_gtk_menu_item_set_stock_item</set-function>
         </property>
       </properties>
     </glade-widget-class>
@@ -244,26 +244,23 @@
     <glade-widget-class name="GtkCheckMenuItem" generic-name="checkmenuitem" _title="Check Menu Item"/>
 
     <glade-widget-class name="GtkRadioMenuItem" generic-name="radiomenuitem" _title="Radio Menu Item">
+      <set-property-function>glade_gtk_radio_menu_item_set_property</set-property-function>
       <properties>
         <property id="draw-as-radio" default="True"/>
 	<property id="inconsistent" visible="False" save="False" default="False"/>
-	<property id="group" _name="Group">
-          <set-function>glade_gtk_radio_menu_item_set_group</set-function>
-        </property>
       </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
       <get-internal-child-function>glade_gtk_image_menu_item_get_internal_child</get-internal-child-function>
+      <set-property-function>glade_gtk_image_menu_item_set_property</set-property-function>
       <properties>
         <property id="use-stock" visible="False">
 	  <spec>glade_standard_boolean_spec</spec>
-	  <set-function>glade_gtk_image_menu_item_set_use_stock</set-function>
         </property>
 	<property id="stock" _name="Stock Item" save="False">
 	  <_tooltip>A stock item, select None to choose a custom image and label</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
-	  <set-function>glade_gtk_image_menu_item_set_stock</set-function>
 	</property>
 	<property id="image" disabled="True" />
       </properties>
@@ -353,29 +350,19 @@
     <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolitem" _title="Separator Tool Item"/>
 	
     <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
+
+      <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
       <properties>
         <property id="icon-widget" disabled="True"/>
 	<property id="label-widget" disabled="True"/>
-        <property id="label">
-	  <set-function>glade_gtk_tool_button_set_label</set-function>
-	</property>
-        <property id="icon-name">
-	  <set-function>glade_gtk_tool_button_set_icon_name</set-function>
-	</property>
-	<property id="stock-id" visible="False">
-	  <set-function>glade_gtk_tool_button_set_stock_id</set-function>
-	</property>
         <property id="glade-type" _name="Image Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
-	  <set-function>glade_gtk_tool_button_set_type</set-function>
 	</property>
 	<property id="glade-stock" _name="Stock Image" save="False">
 	  <spec>glade_standard_stock_image_spec</spec>
-	  <set-function>glade_gtk_tool_button_set_glade_stock</set-function>
 	</property>
 	<property id="icon" _name="File Name">
 	  <spec>glade_standard_pixbuf_spec</spec>
-	  <set-function>glade_gtk_tool_button_set_icon</set-function>
 	</property>
       </properties>
     </glade-widget-class>
@@ -418,13 +405,14 @@
     </glade-widget-class>
 
     <glade-widget-class name="GtkLabel" generic-name="label" _title="Label">
+      <set-property-function>glade_gtk_label_set_property</set-property-function>
+
       <properties>
         <property id="selectable" ignore="True"/>
 	<property id="pattern" default=""/>
 	<property id="max-width-chars" _name="Maximun Width"/>
       	<property id="label" default="label" translatable="True">
             <visible-lines>2</visible-lines>
-	    <set-function>glade_gtk_label_set_label</set-function>
         </property>
       	<property id="justify">
   	  <displayable-values>
@@ -461,13 +449,14 @@
 
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
       <post-create-function>glade_gtk_text_view_post_create</post-create-function>
+      <set-property-function>glade_gtk_text_view_set_property</set-property-function>
+
       <properties>
 	<!-- Text of the textview -->
 	<property id="text" _name="Text" translatable="True">
 	  <_tooltip>Set the text in the view's text buffer</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
-	  <set-function>glade_gtk_text_view_set_text</set-function>
 	</property>
 	<property id="justification">
   	  <displayable-values>
@@ -494,6 +483,8 @@
       <add-child-function>glade_gtk_button_add_child</add-child-function>
       <remove-child-function>glade_gtk_button_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_button_replace_child</replace-child-function>
+      <set-property-function>glade_gtk_button_set_property</set-property-function>
+
       <properties>
 	<property id="image" disabled="True"/>
 	<property id="use-stock" visible="False"/>
@@ -507,7 +498,6 @@
 	<property id="stock" _name="Stock Button" save="False" weight="1.6">
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
-	  <set-function>glade_gtk_button_set_stock</set-function>
 	</property>
 
 	<property id="image-position" weight="1.7">
@@ -522,7 +512,6 @@
 
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_button_type_spec</spec>
-	  <set-function>glade_gtk_button_set_type</set-function>
 	</property>
 
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True">
@@ -577,13 +566,12 @@
 
     <glade-widget-class name="GtkSpinButton" generic-name="spinbutton" _title="Spin Button">
       <post-create-function>empty</post-create-function>
+      <set-property-function>glade_gtk_spin_button_set_property</set-property-function>
       <properties>
         <property id="text" disabled="True"/>
         <property id="value" disabled="True"/>
 	<property id="can-focus" default="True"/>
-        <property id="adjustment" default="0 0 100 1 10 10">
-	  <set-function>glade_gtk_spin_button_set_adjustment</set-function>
-	</property>
+        <property id="adjustment" default="0 0 100 1 10 10"/>
         <property id="update-policy">
   	  <displayable-values>
 	    <value id="GTK_UPDATE_ALWAYS" _name="Always"/>
@@ -646,6 +634,7 @@
 
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
+      <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
       <properties>
         <property id="active" ignore="True"/>
         <property id="column-span-column" ignore="True"/>
@@ -653,7 +642,6 @@
 	<property id="items" _name="Items" translatable="True">
 	  <spec>glade_standard_strv_spec</spec>
 	  <_tooltip>The items in this combo box</_tooltip>
-	  <set-function>glade_gtk_combo_box_set_items</set-function>
 	</property>
 
 	<!-- Atk press property -->
@@ -722,13 +710,11 @@
 
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
       <post-create-function>glade_gtk_image_post_create</post-create-function>
+      <set-property-function>glade_gtk_image_set_property</set-property-function>
       <properties>
-	<property id="stock" visible="False" default="gtk-missing-image">
-	  <set-function>glade_gtk_image_set_stock</set-function>
-	</property>
+	<property id="stock" visible="False" default="gtk-missing-image"/>
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_image_type_spec</spec>
-	  <set-function>glade_gtk_image_set_type</set-function>
 	</property>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
@@ -740,11 +726,8 @@
 	  <_tooltip>A builtin stock image</_tooltip>
 	  <spec>glade_standard_stock_image_spec</spec>
 	  <_tooltip>The stock item for this image</_tooltip>
-	  <set-function>glade_gtk_image_set_glade_stock</set-function>
 	</property>
-	<property id="icon-name" _name="Icon Name" weight="1.6">
-	  <set-function>glade_gtk_image_set_icon_name</set-function>
-	</property>
+	<property id="icon-name" _name="Icon Name" weight="1.6"/>
       </properties>
     </glade-widget-class>
 
@@ -767,19 +750,16 @@
     <glade-widget-class name="GtkTable" generic-name="table" _title="Table" fixed="True">
       <post-create-function>glade_gtk_table_post_create</post-create-function>
       <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
+      <child-verify-function>glade_gtk_table_child_verify_property</child-verify-function>
       <add-child-function>glade_gtk_table_add_child</add-child-function>
       <remove-child-function>glade_gtk_table_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_table_replace_child</replace-child-function>
+      <set-property-function>glade_gtk_table_set_property</set-property-function>
+      <verify-property-function>glade_gtk_table_verify_property</verify-property-function>
 
       <properties>
-	<property id="n-rows" default="3" query="True">
-	  <set-function>glade_gtk_table_set_n_rows</set-function>
-	  <verify-function>glade_gtk_table_verify_n_rows</verify-function>
-	</property>
-	<property id="n-columns" default="3" query="True">
-	  <set-function>glade_gtk_table_set_n_columns</set-function>
-	  <verify-function>glade_gtk_table_verify_n_columns</verify-function>
-	</property>
+	<property id="n-rows" default="3" query="True"/>
+	<property id="n-columns" default="3" query="True"/>
       </properties>
       
       <packing-properties>
@@ -799,18 +779,6 @@
         </property>
         <property id="x-padding" transfer-on-paste="True"/>
         <property id="y-padding" transfer-on-paste="True"/>
-        <property id="right-attach">
-          <verify-function>glade_gtk_table_verify_right_attach</verify-function>
-        </property>
-        <property id="left-attach">
-          <verify-function>glade_gtk_table_verify_left_attach</verify-function>
-        </property>
-        <property id="bottom-attach">
-          <verify-function>glade_gtk_table_verify_bottom_attach</verify-function>
-        </property>
-  	<property id="top-attach">
-          <verify-function>glade_gtk_table_verify_top_attach</verify-function>
-        </property>
       </packing-properties>
     </glade-widget-class>
 
@@ -844,7 +812,10 @@
       <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
       <child-set-property-function>glade_gtk_notebook_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_notebook_get_child_property</child-get-property-function>
+      <child-verify-property-function>glade_gtk_notebook_child_verify_property</child-verify-property-function>
       <special-child-type>type</special-child-type>
+      <set-property-function>glade_gtk_notebook_set_property</set-property-function>
+      <verify-property-function>glade_gtk_notebook_verify_property</verify-property-function>
 
       <properties>
 	<property id="page" save="False">
@@ -854,8 +825,6 @@
 	<property id="pages" _name="Number of pages" save="False" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
-	  <set-function>glade_gtk_notebook_set_n_pages</set-function>
-	  <verify-function>glade_gtk_notebook_verify_n_pages</verify-function>
 	</property>
       	<property id="tab-pos">
   	  <displayable-values>
@@ -1242,12 +1211,12 @@
 
     <glade-widget-class name="GtkListItem" generic-name="listitem" _title="List Item">
       <post-create-function>glade_gtk_list_item_post_create</post-create-function>
+      <set-property-function>glade_gtk_list_item_set_property</set-property-function>
+      <get-property-function>glade_gtk_list_item_get_property</get-property-function>
       <properties>
 	<property id="label" _name="Label" translatable="True">
 	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>The text to display</_tooltip>
-	  <set-function>glade_gtk_list_item_set_label</set-function>
-	  <get-function>glade_gtk_list_item_get_label</get-function>
 	</property>
       </properties>
     </glade-widget-class>

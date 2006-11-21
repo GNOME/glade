@@ -55,8 +55,10 @@ typedef struct _GladeSignalClass         GladeSignalClass;
  * Shorthand for referencing glade adaptor classes from
  * the plugin eg. GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor...
  */
-#define GWA_GET_CLASS(type) \
-    GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_by_type(type))
+#define GWA_GET_CLASS(type)                                                      \
+    (((type) == G_TYPE_OBJECT) ?                                                 \
+     (GladeWidgetAdaptorClass *)g_type_class_peek (GLADE_TYPE_WIDGET_ADAPTOR) :  \
+     GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_by_type(type)))
 
 
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
@@ -90,9 +92,60 @@ typedef enum _GladeCreateReason
 } GladeCreateReason;
 
 /**
+ * GladeSetPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject
+ * @property_name: The property identifier
+ * @value: The #GValue
+ *
+ * This delagate function is used to apply the property value on
+ * the runtime object.
+ *
+ * Sets @value on @object for a given #GladePropertyClass
+ */
+typedef void     (* GladeSetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
+					      GObject            *object,
+					      const gchar        *property_name,
+					      const GValue       *value);
+
+/**
+ * GladeGetPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject
+ * @property_name: The property identifier
+ * @value: The #GValue
+ *
+ * Gets @value on @object for a given #GladePropertyClass
+ */
+typedef void     (* GladeGetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
+					      GObject            *object,
+					      const gchar        *property_name,
+					      GValue             *value);
+
+/**
+ * GladeVerifyPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject
+ * @property_name: The property identifier
+ * @value: The #GValue
+ *
+ * This delagate function is always called whenever setting any
+ * properties with the exception of load time, and copy/paste time
+ * (basicly the two places where we recreate a hierarchy that we
+ * already know "works") its basicly an optional backend provided
+ * boundry checker for properties.
+ *
+ * Returns: whether or not its OK to set @value on @object
+ */
+typedef gboolean (* GladeVerifyPropertyFunc)      (GladeWidgetAdaptor *adaptor,
+						   GObject            *object,
+						   const gchar        *property_name,
+						   const GValue       *value);
+
+/**
  * GladeChildSetPropertyFunc:
  * @adaptor: A #GladeWidgetAdaptor
- * @container: A #GObject container
+ * @container: The #GObject container
  * @child: The #GObject child
  * @property_name: The property name
  * @value: The #GValue
@@ -108,7 +161,8 @@ typedef void   (* GladeChildSetPropertyFunc)      (GladeWidgetAdaptor *adaptor,
 
 /**
  * GladeChildGetPropertyFunc:
- * @container: A #GObject container
+ * @adaptor: A #GladeWidgetAdaptor
+ * @container: The #GObject container
  * @child: The #GObject child
  * @property_name: The property name
  * @value: The #GValue
@@ -121,6 +175,29 @@ typedef void   (* GladeChildGetPropertyFunc)      (GladeWidgetAdaptor *adaptor,
 						   GObject            *child,
 						   const gchar        *property_name,
 						   GValue             *value);
+
+/**
+ * GladeChildVerifyPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @container: The #GObject container
+ * @child: The #GObject child
+ * @property_name: The property name
+ * @value: The #GValue
+ *
+ * This delagate function is always called whenever setting any
+ * properties with the exception of load time, and copy/paste time
+ * (basicly the two places where we recreate a hierarchy that we
+ * already know "works") its basicly an optional backend provided
+ * boundry checker for properties.
+ *
+ * Returns: whether or not its OK to set @value on @object
+ */
+typedef gboolean (* GladeChildVerifyPropertyFunc) (GladeWidgetAdaptor *adaptor,
+						   GObject            *container,
+						   GObject            *child,
+						   const gchar        *property_name,
+						   GValue             *value);
+
 
 /**
  * GladeGetChildrenFunc:
@@ -281,14 +358,42 @@ struct _GladeWidgetAdaptorClass
 	
 	GladeEditorLaunchFunc      launch_editor; /* Entry point for custom editors. */
 
+
+	/* Delagate to verify if this is a valid value for this property,
+	 * if this function exists and returns FALSE, then glade_property_set
+	 * will abort before making any changes
+	 */
+	GladeVerifyPropertyFunc verify_property;
+	
+	/* An optional backend function used instead of g_object_set()
+	 * virtual properties must be handled with this function.
+	 */
+	GladeSetPropertyFunc set_property;
+
+	/* An optional backend function used instead of g_object_get()
+	 * virtual properties must be handled with this function.
+	 *
+	 * Note that since glade knows what the property values are 
+	 * at all times regardless of the objects copy, this is currently
+	 * only used to obtain the values of packing properties that are
+	 * set by the said object's parent at "container_add" time.
+	 */
+	GladeGetPropertyFunc get_property;
+
+
 	GladeAddChildFunc          add;              /* Adds a new child of this type */
 	GladeRemoveChildFunc       remove;           /* Removes a child from the container */
 	GladeGetChildrenFunc       get_children;     /* Returns a list of direct children for
 						      * this support type.
 						      */
+
+
 	
-	GladeChildSetPropertyFunc  child_set_property; /* Sets/Gets a packing property */
-	GladeChildGetPropertyFunc  child_get_property; /* for this child */
+	GladeChildVerifyPropertyFunc child_verify_property; /* A boundry checker for 
+							     * packing properties 
+							     */
+	GladeChildSetPropertyFunc    child_set_property; /* Sets/Gets a packing property */
+	GladeChildGetPropertyFunc    child_get_property; /* for this child */
 	
 	GladeReplaceChildFunc      replace_child;  /* This method replaces a 
 						    * child widget with
@@ -305,7 +410,7 @@ struct _GladeWidgetAdaptorClass
     ((pclass) ? (GladeWidgetAdaptor *)((GladePropertyClass *)(pclass))->handle : NULL)
 
 LIBGLADEUI_API
-GType glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
+GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
  
 
 LIBGLADEUI_API
@@ -356,6 +461,21 @@ LIBGLADEUI_API
 void                 glade_widget_adaptor_launch_editor      (GladeWidgetAdaptor *adaptor,
 							      GObject            *object);
 LIBGLADEUI_API
+void                 glade_widget_adaptor_set_property       (GladeWidgetAdaptor *adaptor,
+							      GObject            *object,
+							      const gchar        *property_name,
+							      const GValue       *value);
+LIBGLADEUI_API
+void                 glade_widget_adaptor_get_property       (GladeWidgetAdaptor *adaptor,
+							      GObject            *object,
+							      const gchar        *property_name,
+							      GValue             *value);
+LIBGLADEUI_API
+gboolean             glade_widget_adaptor_verify_property    (GladeWidgetAdaptor *adaptor,
+							      GObject            *object,
+							      const gchar        *property_name,
+							      const GValue       *value);
+LIBGLADEUI_API
 void                 glade_widget_adaptor_add                (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child);
@@ -382,6 +502,12 @@ void                 glade_widget_adaptor_child_get_property (GladeWidgetAdaptor
 							      GObject            *child,
 							      const gchar        *property_name,
 							      GValue             *value);
+LIBGLADEUI_API
+gboolean             glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
+								 GObject            *container,
+								 GObject            *child,
+								 const gchar        *property_name,
+								 GValue             *value);
 LIBGLADEUI_API
 void                 glade_widget_adaptor_replace_child      (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,

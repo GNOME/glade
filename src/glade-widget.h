@@ -202,6 +202,28 @@ void                    glade_widget_remove_prop_ref        (GladeWidget      *w
 							     GladeProperty    *property);
 
 /*******************************************************************************
+            Functions that deal with properties on the runtime object
+ *******************************************************************************/
+LIBGLADEUI_API
+void                    glade_widget_object_set_property    (GladeWidget      *widget,
+							     const gchar      *property_name,
+							     const GValue     *value);
+LIBGLADEUI_API
+void                    glade_widget_object_get_property    (GladeWidget      *widget,
+							     const gchar      *property_name,
+							     GValue           *value);
+LIBGLADEUI_API
+void                    glade_widget_child_set_property     (GladeWidget      *widget,
+							     GladeWidget      *child,
+							     const gchar      *property_name,
+							     const GValue     *value);
+LIBGLADEUI_API
+void                    glade_widget_child_get_property     (GladeWidget      *widget,
+							     GladeWidget      *child,
+							     const gchar      *property_name,
+							     GValue           *value);
+
+/*******************************************************************************
                    GladeProperty api convenience wrappers
  *******************************************************************************/
 LIBGLADEUI_API 

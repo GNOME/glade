@@ -582,10 +582,10 @@ glade_widget_template_params (GladeWidget      *widget,
 		
 		/* Ignore properties based on some criteria
 		 */
-		if (pclass == NULL       || /* Unaccounted for in the builder */
-		    pclass->set_function || /* should not be set before 
-					       GladeWidget wrapper exists */
-		    pclass->ignore)         /* Catalog explicitly ignores the object */
+		if (pclass == NULL  || /* Unaccounted for in the builder */
+		    pclass->virtual || /* should not be set before 
+					  GladeWidget wrapper exists */
+		    pclass->ignore)    /* Catalog explicitly ignores the object */
 			continue;
 
 		if (construct &&
@@ -736,8 +736,14 @@ glade_widget_sync_custom_props (GladeWidget *widget)
 	for (l = widget->properties; l && l->data; l = l->next)
 	{
 		GladeProperty *prop  = GLADE_PROPERTY(l->data);
-		if (prop->class->set_function)
-			glade_property_sync (prop);
+
+		/* This used to be based on whether a function was
+		 * provided by the backend to treat the said property, now
+		 * that function is classwide so we dont know, so currently
+		 * we are just syncing all properties for the sake of those
+		 * properties.
+		 */
+		glade_property_sync (prop);
 	}
 }
 
@@ -826,8 +832,7 @@ glade_widget_constructor (GType                  type,
 					  gwidget->object,
 					  gwidget->construct_reason);
 
-	/* Properties that have custom set_functions on them need to be
-	 * explicitly synchronized.
+	/* Virtual properties need to be explicitly synchronized.
 	 */
 	if (gwidget->construct_reason == GLADE_CREATE_USER)
 		glade_widget_sync_custom_props (gwidget);
@@ -1336,11 +1341,8 @@ glade_widget_set_default_packing_properties (GladeWidget *container,
 								      def,
 								      child->project);
 		
-		glade_widget_adaptor_child_set_property (container->adaptor,
-							 container->object,
-							 child->object,
-							 property_class->id,
-							 value);
+		glade_widget_child_set_property (container, child,
+						 property_class->id, value);
 		g_value_unset (value);
 		g_free (value);
 	}
@@ -2079,8 +2081,8 @@ glade_widget_info_params (GladeWidgetAdaptor *adaptor,
 		glade_property_class =
 			glade_widget_adaptor_get_property_class (adaptor,
 								 pspec[i]->name);
-		if (glade_property_class == NULL ||
-		    glade_property_class->set_function ||
+		if (glade_property_class == NULL  ||
+		    glade_property_class->virtual ||
 		    glade_property_class->ignore)
 			continue;
 
@@ -2415,10 +2417,31 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	GObject            *new_object, *old_object;
 	GladeWidgetAdaptor *adaptor;
 	GList              *children;
+	gboolean            reselect = FALSE, inproject;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
 
+
 	adaptor = glade_widget->adaptor;
+
+	/* Here we take care removing the widget from the project and
+	 * the selection before rebuilding the instance.
+	 */
+	inproject = glade_widget->project ?
+		(glade_project_has_object
+		 (glade_widget->project, glade_widget->object) ? TRUE : FALSE) : FALSE;
+
+	if (inproject)
+	{
+		if (glade_project_is_selected (glade_widget->project, 
+					       glade_widget->object))
+		{
+			reselect = TRUE;
+			glade_project_selection_remove
+				(glade_widget->project, glade_widget->object, FALSE);
+		}
+		glade_project_remove_object (glade_widget->project, glade_widget->object);
+	}
 
 	/* Extract and keep the child hierarchies aside... */
 	children = glade_widget_extract_children (glade_widget);
@@ -2465,7 +2488,19 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	}
 	else
 		g_object_unref (old_object);
-	
+
+	/* If the widget was in a project (and maybe the selection), then
+	 * restore that stuff.
+	 */
+	if (inproject)
+	{
+		glade_project_add_object (glade_widget->project, NULL,
+					  glade_widget->object);
+		if (reselect)
+			glade_project_selection_add
+				(glade_widget->project, glade_widget->object, TRUE);
+	}
+
  	/* We shouldnt show if its not already visible */
 	if (glade_widget->visible)
 		glade_widget_show (glade_widget);
@@ -3031,6 +3066,105 @@ glade_widget_pack_property_default (GladeWidget *widget,
 	return FALSE;
 }
 
+
+/**
+ * glade_widget_object_set_property:
+ * @widget:        A #GladeWidget
+ * @property_name: The property identifier
+ * @value:         The #GValue
+ *
+ * This function applies @value to the property @property_name on
+ * the runtime object of @widget.
+ */
+void
+glade_widget_object_set_property (GladeWidget      *widget,
+				  const gchar      *property_name,
+				  const GValue     *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	glade_widget_adaptor_set_property (widget->adaptor,
+					   widget->object,
+					   property_name, value);
+}
+
+
+/**
+ * glade_widget_object_get_property:
+ * @widget:        A #GladeWidget
+ * @property_name: The property identifier
+ * @value:         The #GValue
+ *
+ * This function retrieves the value of the property @property_name on
+ * the runtime object of @widget and sets it in @value.
+ */
+void
+glade_widget_object_get_property (GladeWidget      *widget,
+				  const gchar      *property_name,
+				  GValue           *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	glade_widget_adaptor_get_property (widget->adaptor,
+					   widget->object,
+					   property_name, value);
+}
+
+/**
+ * glade_widget_child_set_property:
+ * @widget:        A #GladeWidget
+ * @child:         The #GladeWidget child
+ * @property_name: The id of the property
+ * @value:         The @GValue
+ *
+ * Sets @child's packing property identified by @property_name to @value.
+ */
+void
+glade_widget_child_set_property (GladeWidget      *widget,
+				 GladeWidget      *child,
+				 const gchar      *property_name,
+				 const GValue     *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (child));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	glade_widget_adaptor_child_set_property (widget->adaptor,
+						 widget->object,
+						 child->object,
+						 property_name, value);
+}
+
+/**
+ * glade_widget_child_get_property:
+ * @widget:        A #GladeWidget
+ * @child:         The #GladeWidget child
+ * @property_name: The id of the property
+ * @value:         The @GValue
+ *
+ * Gets @child's packing property identified by @property_name.
+ */
+void
+glade_widget_child_get_property (GladeWidget      *widget,
+				 GladeWidget      *child,
+				 const gchar      *property_name,
+				 GValue           *value)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (child));
+	g_return_if_fail (property_name != NULL && value != NULL);
+
+	glade_widget_adaptor_child_get_property (widget->adaptor,
+						 widget->object,
+						 child->object,
+						 property_name, value);
+
+}
+
+
+
 /**
  * glade_widget_set_object:
  * @gwidget: A #GladeWidget
@@ -3204,12 +3338,9 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 		{
 			GladeProperty *property = list->data;
 			g_value_reset (property->value);
-			glade_widget_adaptor_child_get_property 
-				(container->adaptor,
-				 container->object,
-				 widget->object,
-				 property->class->id,
-				 property->value);
+			glade_widget_child_get_property 
+				(container,
+				 widget, property->class->id, property->value);
 		}
 	}
 }

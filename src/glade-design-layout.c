@@ -172,17 +172,20 @@ static void
 glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 {
 	GladeDesignLayoutPrivate *priv;
-	GtkWidget *widget;
-	GtkWidget *child;
+	GtkWidget     *widget;
+	GtkWidget     *child;
+	GtkAllocation  allocation;
 	GladeWidget *child_glade_widget;
 	GladePointerRegion region;
+
+
 	gint x, y;
 	gint new_width, new_height;
 	
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
 	widget = GTK_WIDGET (layout);
 	child = gtk_bin_get_child (GTK_BIN (layout));
-	
+
 	if (child == NULL)
 		return;
 
@@ -198,6 +201,7 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 		}
 		
 		child_glade_widget = glade_widget_get_from_gobject (child);
+		allocation         = child->allocation;
 
 		if (priv->activity == GLADE_ACTIVITY_RESIZE_WIDTH)
 		{
@@ -205,11 +209,20 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			
 			if (new_width < priv->current_size_request->width)
 				new_width = priv->current_size_request->width;
+
+			/* FIXME: use size_allocate and emit a signal, let the
+			 * glade core handle widget properties at a more appropriate 
+			 * place, also, it might be a little agressive to change property
+			 * values automaticly by default, maybe we should check if
+			 * "default width" is enabled and set that, else check if
+			 * "width request" is enabled, and set that, or not set any 
+			 * properties at all.
+			 */
+/* 			allocation.width = new_width; */
+/* 			gtk_widget_size_allocate (child, &allocation); */
 				
-			//g_object_set (child, "width-request", new_width,
-			//		     NULL);
-					     
-			glade_widget_property_set_enabled (child_glade_widget, "default-width", TRUE);					    
+			
+			glade_widget_property_set_enabled (child_glade_widget, "default-width", TRUE);
 			glade_widget_property_set (child_glade_widget, "default-width", new_width, NULL);
 			
 			gtk_widget_queue_draw (widget);
@@ -221,11 +234,11 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			if (new_height < priv->current_size_request->height)
 				new_height = priv->current_size_request->height;
 				
-			//g_object_set (child, "height-request", new_height, 
-			//		     NULL);
+/* 			allocation.height = new_height; */
+/* 			gtk_widget_size_allocate (child, &allocation); */
 
-			glade_widget_property_set_enabled (child_glade_widget, "default-height", TRUE);					     
-			glade_widget_property_set (child_glade_widget, "default-height", new_height, NULL);					     
+			glade_widget_property_set_enabled (child_glade_widget, "default-height", TRUE);
+			glade_widget_property_set (child_glade_widget, "default-height", new_height, NULL);
 					     
 			gtk_widget_queue_draw (widget);
 		}
@@ -239,13 +252,14 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			if (new_height < priv->current_size_request->height)
 				new_height = priv->current_size_request->height;
 				
-			//g_object_set (child, "width-request",  new_width,
-			//		     "height-request", new_height,
-			//		     NULL);
+
+/* 			allocation.height = new_height; */
+/* 			allocation.width  = new_width; */
+/* 			gtk_widget_size_allocate (child, &allocation); */
 
 			glade_widget_property_set_enabled (child_glade_widget, "default-width", TRUE);
-			glade_widget_property_set_enabled (child_glade_widget, "default-height", TRUE);					     
-			glade_widget_property_set (child_glade_widget, "default-width", new_width, NULL);					     
+			glade_widget_property_set_enabled (child_glade_widget, "default-height", TRUE);
+			glade_widget_property_set (child_glade_widget, "default-width", new_width, NULL);
 			glade_widget_property_set (child_glade_widget, "default-height", new_height, NULL);
 								     
 			gtk_widget_queue_draw (widget);
