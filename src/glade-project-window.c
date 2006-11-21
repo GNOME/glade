@@ -33,6 +33,7 @@
 #include "glade.h"
 #include "glade-design-view.h"
 #include "glade-project-window.h"
+#include "glade-binding.h"
 
 #define GLADE_ACTION_GROUP_STATIC "GladeStatic"
 #define GLADE_ACTION_GROUP_PROJECT "GladeProject"
@@ -69,7 +70,9 @@ struct _GladeProjectWindowPrivate
 	
 	GtkRecentManager *recent_manager;
 	GtkWidget *recent_menu;
-	
+
+	GtkWidget *console;
+
 	gchar *default_path; /* the default path for open/save operations */
 };
 
@@ -989,6 +992,55 @@ gpw_redo_cb (GtkAction *action, GladeProjectWindow *gpw)
 	glade_app_command_redo ();
 }
 
+static gboolean
+gpw_hide_window_on_delete (GtkWidget *window, gpointer not_used, GtkUIManager *ui)
+{
+	glade_util_hide_window (GTK_WINDOW (window));
+	return TRUE;
+}
+
+static void
+gpw_construct_console (GladeProjectWindow *gpw)
+{
+	GtkWidget *window, *console, *notebook;
+	GList *list, *l;
+	
+	g_return_if_fail (gpw != NULL);
+
+	window = gpw->priv->console = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+	gtk_window_set_title (GTK_WINDOW (window), _("Glade's Script Console"));
+	gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
+	gtk_widget_set_size_request (window, 640, 480);
+	
+	notebook = gtk_notebook_new ();
+	gtk_container_add (GTK_CONTAINER (window), notebook);
+	gtk_widget_show (notebook);
+	
+	for (list = l = glade_binding_get_all(); l && l->data; l = g_list_next (l))
+	{
+		GladeBinding *binding = l->data;
+		
+		if ((console = glade_binding_console_new (binding)))
+		{
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook), console,
+						  gtk_label_new (glade_binding_get_name (binding)));
+			gtk_widget_show (console);
+		}
+	}
+
+	if (list == NULL)
+		gtk_widget_set_sensitive (gtk_ui_manager_get_widget 
+					  (gpw->priv->ui, "/MenuBar/ViewMenu/Console"),
+					  FALSE);
+
+	g_list_free (list);
+	
+	/* Delete event, don't destroy it */
+	g_signal_connect (window, "delete-event",
+			  G_CALLBACK (gpw_hide_window_on_delete), gpw->priv->ui);
+}
+
 static void
 gpw_doc_search_cb (GladeEditor        *editor,
 		   const gchar        *book,
@@ -997,43 +1049,6 @@ gpw_doc_search_cb (GladeEditor        *editor,
 		   GladeProjectWindow *gpw)
 {
 	glade_util_search_devhelp (book, page, search);
-}
-
-static gboolean
-gpw_hide_clipboard_view_on_delete (GtkWidget *clipboard_view, gpointer not_used,
-				   GtkUIManager *ui)
-{
-	glade_util_hide_window (GTK_WINDOW (clipboard_view));
-	return TRUE;
-}
-
-static void 
-gpw_create_clipboard_view (GladeProjectWindow *gpw)
-{
-	GtkWidget *view;
-	
-	view = glade_app_get_clipboard_view ();
-
-	g_signal_connect (G_OBJECT (view), "delete_event",
-			  G_CALLBACK (gpw_hide_clipboard_view_on_delete),
-			  gpw->priv->ui);
-}
-
-static void
-gpw_show_clipboard_view (GladeProjectWindow *gpw)
-{
-	static gboolean created = FALSE;
-	
-	g_return_if_fail (gpw != NULL);
-
-	if (!created)
-	{
-		gpw_create_clipboard_view (gpw);
-		created = TRUE;
-	}
-	
-	gtk_widget_show_all (GTK_WIDGET (glade_app_get_clipboard_view ()));
-        gtk_window_present (GTK_WINDOW (glade_app_get_clipboard_view ()));
 }
 
 static void
@@ -1090,6 +1105,16 @@ gpw_notebook_switch_page_cb (GtkNotebook *notebook,
 
 	g_free (action_name);
 
+}
+
+static void
+gpw_show_console_cb (GtkAction *action, GladeProjectWindow *gpw)
+{
+	g_return_if_fail (gpw != NULL);
+
+	gtk_widget_show (gpw->priv->console);
+
+	gtk_window_present (GTK_WINDOW (gpw->priv->console));
 }
 
 static void
@@ -1211,7 +1236,20 @@ gpw_palette_toggle_small_icons_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 gpw_show_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-	gpw_show_clipboard_view (gpw);
+	static GtkWidget *view = NULL;
+	
+	g_return_if_fail (gpw != NULL);
+
+	if (view == NULL)
+	{
+		view = glade_app_get_clipboard_view ();
+
+		g_signal_connect (view, "delete_event",
+				  G_CALLBACK (gpw_hide_window_on_delete),
+				  gpw->priv->ui);
+	}
+	
+        gtk_window_present (GTK_WINDOW (view));
 }
 
 static void
@@ -1336,6 +1374,7 @@ static const gchar *ui_info =
 "    </menu>\n"
 "    <menu action='ViewMenu'>\n"
 "      <menuitem action='Clipboard'/>\n"
+"      <menuitem action='Console'/>\n"
 "      <separator/>\n"
 "      <menu action='PaletteAppearance'>\n"
 "        <menuitem action='IconsAndLabels'/>\n"
@@ -1439,7 +1478,11 @@ static GtkActionEntry project_entries[] = {
 	{ "Clipboard", NULL, N_("_Clipboard"), NULL,
 	  N_("Show the clipboard"),
 	  G_CALLBACK (gpw_show_clipboard_cb) },
-
+	  
+	{ "Console", NULL, N_("C_onsole"), NULL,
+	  N_("Show Script-do console"),
+	  G_CALLBACK (gpw_show_console_cb) },
+	  
 	/* ProjectsMenu */
 	{ "PreviousProject", NULL, N_("_Previous Project"), "<control>Page_Up",
 	  N_("Activate previous project"), G_CALLBACK (glade_project_window_previous_project_cb) },
@@ -1765,6 +1808,9 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	gtk_widget_set_sensitive (editor_item, FALSE);
 	gtk_widget_set_sensitive (docs_item, FALSE);
+	
+	/* Console */
+	gpw_construct_console (gpw);
 	
 	/* recent files */	
 	gpw->priv->recent_manager = gtk_recent_manager_get_for_screen (gtk_widget_get_screen (gpw->priv->window));

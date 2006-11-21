@@ -1,3 +1,55 @@
+2006-11-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.in: Added python/pygtk checks.
+
+	* src/Makefile.am: added glade-binding.[ch] and BUILD_PYTHON rules
+
+	* src/glade-app.c:
+	  o added glade_scripts_dir and glade_bindings_dir globals
+	  o loading / unloading bindings.
+
+	* src/glade-binding.[ch]: GladeBinding support this is the glue code
+	  between glade core and bindings modules.
+
+	* src/glade-catalog.c: support for loading catalogs supported by
+	  bindings, added language member to GladeCatalog.
+
+	* src/glade-marshallers.list: added new marshallers BOOLEAN:STRING and
+	  BOOLEAN:OBJECT,STRING
+
+	* src/glade-paths.sh.in: added GLADE_BINDINGSDIR and GLADE_SCRIPTSDIR.
+
+	* src/glade-popup.c: added support for GWAAction
+	  (shows context actions as menu items)
+
+	* src/glade-project-window.c: added window which a console for each
+	  GladeBinding that provide a console.
+
+	* glade-python-gwa.c: GladeWidgetAdaptor python wrapper.
+
+	* glade-python-gwa.[defs override]: files used by pygtk-codegen-2.0
+	  to create glade-python-gwa.c
+
+	* glade-python.c: GladeBinding plugin for python language.
+
+	* src/glade-widget-adaptor.[ch]:
+	  o added GWAAction support.
+	  o added "action-activated" signal
+	  o added glade_create_reason_get_type() so the enum can be exposed in
+	    bindings as a GEnum.
+	  o added "adaptor" property to glade-widget-class this way non C catalog
+	    plugins can define the GladeWidgetAdaptor derived class.
+	    <glade-widget-class name="Custom" adaptor="CustomAdaptor"/>
+	  o setup binding scripts as actions.
+	  o added glade_widget_adaptor_emit_action_activated()
+	    (used in glade-popup.c)
+
+	* src/glade-widget.[ch]: added "action-activated" signal.
+
+	* src/glade.h: added GLADE_TAG_LANGUAGE, GLADE_TAG_ACTION_GROUP,
+	  GLADE_TAG_ACTION, GLADE_TAG_STOCK, glade_scripts_dir and
+	  glade_bindings_dir.
+
 2006-11-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-property.c: 

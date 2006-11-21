@@ -36,11 +36,13 @@
 #include "glade.h"
 #include "glade-catalog.h"
 #include "glade-widget-adaptor.h"
+#include "glade-binding.h"
 
 typedef void   (*GladeCatalogInitFunc) (void);
 
 struct _GladeCatalog
 {
+	gchar *language;	 /* Library language, NULL means language is C */
 	gchar *library;          /* Library name for backend support  */
 
 	gchar *name;             /* Symbolic catalog name             */
@@ -148,6 +150,8 @@ catalog_open (const gchar *filename)
 		return NULL;
 	}
 	
+	catalog->language =
+		glade_xml_get_property_string (root, GLADE_TAG_LANGUAGE);
 	catalog->library =
 		glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
 	catalog->dep_catalog =
@@ -159,7 +163,7 @@ catalog_open (const gchar *filename)
 	catalog->init_function_name =
 		glade_xml_get_value_string (root, GLADE_TAG_INIT_FUNCTION);
 	
-	if (catalog->init_function_name)
+	if (catalog->init_function_name && catalog->language == NULL)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
 
@@ -266,16 +270,26 @@ catalog_load_library (GladeCatalog *catalog)
 		
 	if (catalog->library == NULL) return NULL;
 
-	if ((module = g_hash_table_lookup (modules, catalog->library)))
-		return module;	
-		
-	if ((module = glade_util_load_library (catalog->library)))
-		g_hash_table_insert (modules, g_strdup (catalog->library), module);
+	if (catalog->language)
+	{
+		GladeBinding *binding = glade_binding_get (catalog->language);
+		if (binding)
+			glade_binding_library_load (binding, catalog->library);
+		return NULL;
+	}
 	else
-		g_warning ("Failed to load external library '%s'",
-			   catalog->library);
+	{
+		if ((module = g_hash_table_lookup (modules, catalog->library)))
+			return module;	
 		
-	return module;
+		if ((module = glade_util_load_library (catalog->library)))
+			g_hash_table_insert (modules, g_strdup (catalog->library), module);
+		else
+			g_warning ("Failed to load external library '%s'",
+				   catalog->library);
+		
+		return module;
+	}
 }
 
 static gboolean

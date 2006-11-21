@@ -76,6 +76,7 @@ enum
 	BUTTON_RELEASE_EVENT,
 	MOTION_NOTIFY_EVENT,
 	ENTER_NOTIFY_EVENT,
+	ACTION_ACTIVATED,
 	LAST_SIGNAL
 };
 
@@ -1265,6 +1266,26 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
 			      GDK_TYPE_EVENT);
+
+	/**
+	 * GladeWidget::action-activated:
+	 * @widget: the #GladeWidget which received the signal.
+	 * @action_id: the action id (signal detail) or NULL.
+	 *
+	 * Use this to catch up actions. This signal is proxied from 
+	 * GladeWidgetAdaptor's "action-emited" signal default handler.
+	 *
+	 * Returns TRUE to stop others handlers being invoked.
+	 *
+	 */
+	glade_widget_signals [ACTION_ACTIVATED] =
+		g_signal_new ("action-activated",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
+			      G_STRUCT_OFFSET (GladeWidgetClass, action_activated),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__STRING,
+			      G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
 }
 
 GType

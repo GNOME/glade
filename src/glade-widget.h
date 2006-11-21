@@ -102,7 +102,8 @@ struct _GladeWidgetClass
 	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
-
+	gboolean     (*action_activated)        (GladeWidget *, const gchar *);
+	
 	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
 	gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
 	gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
@@ -110,7 +111,6 @@ struct _GladeWidgetClass
 
 	void         (*setup_events)            (GladeWidget *, GtkWidget *);
 	gboolean     (*event)                   (GtkWidget *, GdkEvent *, GladeWidget *);
-
 };
 
 /*******************************************************************************

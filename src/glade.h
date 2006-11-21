@@ -86,6 +86,8 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_GLADE_WIDGET_GROUP              "glade-widget-group"
 #define GLADE_TAG_GLADE_WIDGET_CLASS_REF          "glade-widget-class-ref"
 
+#define GLADE_TAG_LANGUAGE                        "language"
+#define GLADE_TAG_ADAPTOR                         "adaptor"
 #define GLADE_TAG_LIBRARY                         "library"
 #define GLADE_TAG_DEPENDS                         "depends"
 #define GLADE_TAG_DOMAIN                          "domain"
@@ -145,6 +147,9 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_FIXED                           "fixed"
 #define GLADE_TAG_TRANSFER_ON_PASTE               "transfer-on-paste"
 #define GLADE_TAG_WEIGHT                          "weight"
+#define GLADE_TAG_ACTION_GROUP                    "action-group"
+#define GLADE_TAG_ACTION                          "action"
+#define GLADE_TAG_STOCK                           "stock"
 
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F
@@ -155,9 +160,11 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 LIBGLADEUI_API gboolean glade_verbose;
 
 LIBGLADEUI_API gchar* glade_pixmaps_dir;
+LIBGLADEUI_API gchar* glade_scripts_dir;
 LIBGLADEUI_API gchar* glade_catalogs_dir;
 LIBGLADEUI_API gchar* glade_modules_dir;
 LIBGLADEUI_API gchar* glade_plugins_dir;
+LIBGLADEUI_API gchar* glade_bindings_dir;
 LIBGLADEUI_API gchar* glade_locale_dir;
 LIBGLADEUI_API gchar* glade_icon_dir;
 

@@ -36,6 +36,7 @@
 #include "glade-catalog.h"
 #include "glade-paths.h"
 #include "glade-fixed.h"
+#include "glade-binding.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
@@ -81,8 +82,10 @@ enum
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
 gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
+gchar *glade_scripts_dir = GLADE_SCRIPTSDIR;
 gchar *glade_catalogs_dir = GLADE_CATALOGSDIR;
 gchar *glade_modules_dir = GLADE_MODULESDIR;
+gchar *glade_bindings_dir = GLADE_BINDINGSDIR;
 gchar *glade_plugins_dir = GLADE_PLUGINSDIR;
 gchar *glade_locale_dir = GLADE_LOCALEDIR;
 gchar *glade_icon_dir = GLADE_ICONDIR;
@@ -151,11 +154,16 @@ glade_app_finalize (GObject *app)
 
 #ifdef G_OS_WIN32 
 	g_free (glade_pixmaps_dir);
+	g_free (glade_scripts_dir);
 	g_free (glade_catalogs_dir);
 	g_free (glade_modules_dir);
+	g_free (glade_bindings_dir);	
 	g_free (glade_locale_dir);
 	g_free (glade_icon_dir);
 #endif
+	
+	glade_binding_unload_all ();
+	
 	glade_catalog_modules_close ();
 
 	g_free (GLADE_APP (app)->priv);
@@ -308,14 +316,19 @@ glade_app_init (GladeApp *app)
 	
 		prefix = g_win32_get_package_installation_directory (NULL, NULL);
 		glade_pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+		glade_scripts_dir = g_build_filename (prefix, "share", PACKAGE, GLADE_BINDING_SCRIPT_DIR, NULL);
 		glade_catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 		glade_modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
+		glade_bindings_dir = g_build_filename (prefix, "lib", PACKAGE, "bindings", NULL);
 		glade_locale_dir = g_build_filename (prefix, "share", "locale", NULL);
 		glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
 		g_free (prefix);
 #endif
 	
 		glade_cursor_init ();
+		
+		glade_binding_load_all ();
+		
 		initialized = TRUE;
 	}
 	app->priv = g_new0 (GladeAppPriv, 1);

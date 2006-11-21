@@ -91,6 +91,8 @@ typedef enum _GladeCreateReason
 	GLADE_CREATE_REASONS
 } GladeCreateReason;
 
+#define GLADE_CREATE_REASON (glade_create_reason_get_type())
+
 /**
  * GladeSetPropertyFunc:
  * @adaptor: A #GladeWidgetAdaptor
@@ -292,6 +294,14 @@ struct _GladeSignalClass
 
 };
 
+typedef struct _GWAAction GWAAction;
+struct _GWAAction
+{
+	gchar *id, *label, *stock;
+	gboolean is_a_group;
+	GList *actions;
+};
+
 /* Note that everything that must be processed at the creation of
  * every instance is managed on the instance structure, and everywhere
  * that we want to take advantage of inheritance is handled in the class
@@ -332,6 +342,7 @@ struct _GladeWidgetAdaptor
 
         GList       *child_packings; /* Default packing property values */
 
+	GList       *actions;        /* A list of GWAAction */
 
 	GladeWidgetAdaptorPriv *priv;
 
@@ -401,6 +412,8 @@ struct _GladeWidgetAdaptorClass
 						    * replace a placeholder with
 						    * a widget and viceversa.
 						    */
+	/* Signals */
+	gboolean                   (*action_activated) (GladeWidgetAdaptor *, GladeWidget *, const gchar *);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -412,6 +425,8 @@ struct _GladeWidgetAdaptorClass
 LIBGLADEUI_API
 GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
  
+LIBGLADEUI_API
+GType glade_create_reason_get_type          (void) G_GNUC_CONST;
 
 LIBGLADEUI_API
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,
@@ -522,7 +537,9 @@ LIBGLADEUI_API G_CONST_RETURN
 gchar               *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
 							      GladeWidgetAdaptor *parent_adaptor,
 							      const gchar        *propert_id);
-
+LIBGLADEUI_API
+void                 glade_widget_adaptor_action_activate    (GladeWidget *widget,
+					    		      const gchar *action_id);
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */

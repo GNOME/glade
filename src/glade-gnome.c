@@ -1690,7 +1690,7 @@ glade_gnome_bd_get_band (BonoboDock *dock, GtkWidget *widget)
 	if ((retval = glade_gnome_bdb_get_band (dock->top_bands, widget))    ||
 	    (retval = glade_gnome_bdb_get_band (dock->bottom_bands, widget)) ||
 	    (retval = glade_gnome_bdb_get_band (dock->right_bands, widget))  ||
-	    (retval = glade_gnome_bdb_get_band (dock->left_bands, widget))) 42;
+	    (retval = glade_gnome_bdb_get_band (dock->left_bands, widget)));
 	
 	return retval;
 }
