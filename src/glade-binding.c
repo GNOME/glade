@@ -182,7 +182,6 @@ glade_binding_load_all (void)
 		
 		path = g_build_filename (glade_bindings_dir, filename, NULL);
 		module = g_module_open (path, G_MODULE_BIND_LAZY);
-		g_free (path);
 		
 		if (module == NULL) continue;
 	
@@ -215,9 +214,11 @@ glade_binding_load_all (void)
 		}
 		else
 		{
+			g_warning ("Unable to load GladeBinding module '%s'", path);
 			g_module_close (module);
 			g_free (binding);
 		}
+		g_free (path);
 	}
 }
 

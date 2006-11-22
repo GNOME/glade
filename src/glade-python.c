@@ -365,16 +365,6 @@ static PyMethodDef GladeStderrMethods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-void
-glade_python_init ()
-{
-	char *argv[2] = {"", NULL};
-	Py_Initialize ();
-	PySys_SetArgv (1, argv);
-	init_pygobject ();
-	pyg_disable_warning_redirections ();
-}
-
 /* Bindings */
 void
 glade_python_binding_finalize (GladeBindingCtrl *ctrl)
@@ -509,6 +499,45 @@ glade_python_binding_console_new (void)
 */
 void glade_python_gwa_register_classes (PyObject *d);
 
+static void
+glade_python_init (void)
+{
+	char *argv[2] = {"", NULL};
+
+	/* Init interpreter */
+	Py_Initialize ();
+	PySys_SetArgv (1, argv);
+}
+
+static void
+glade_python_init_pygtk_check (gint req_major, gint req_minor, gint req_micro)
+{
+	PyObject *gobject, *mdict, *version;
+	int found_major, found_minor, found_micro;
+	
+	init_pygobject();
+	
+	gobject = PyImport_ImportModule("gobject");
+	mdict = PyModule_GetDict(gobject);
+        version = PyDict_GetItemString(mdict, "pygtk_version");
+	if (!version)
+	{
+		PyErr_SetString(PyExc_ImportError, "PyGObject version too old");
+		return;
+	}
+	if (!PyArg_ParseTuple(version, "iii", &found_major, &found_minor, &found_micro))
+		return;
+	if (req_major != found_major || req_minor >  found_minor ||
+	    (req_minor == found_minor && req_micro > found_micro))
+	{
+		PyErr_Format(PyExc_ImportError, 
+                     "PyGObject version mismatch, %d.%d.%d is required, "
+                     "found %d.%d.%d.", req_major, req_minor, req_micro,
+                     found_major, found_minor, found_micro);
+		return;
+	}
+}
+
 gboolean
 glade_binding_init (GladeBindingCtrl *ctrl)
 {
@@ -529,8 +558,25 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 
     	Py_SetProgramName (PACKAGE_NAME);
 	
-    	/* Initialize the Python interpreter if it is not */
-	if (Py_IsInitialized() == FALSE) glade_python_init ();
+    	/* Initialize the Python interpreter */
+	glade_python_init ();
+	
+	/* Check and init pygobject >= 2.12.0 */
+	PyErr_Clear ();	
+	glade_python_init_pygtk_check (PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO);
+	if (PyErr_Occurred ())
+	{
+		g_warning ("Unable to load pygobject module >= %d.%d.%d, "
+			   "please make sure it is in python's path (sys.path). "
+			   "(use PYTHONPATH env variable to specify non default paths)",
+			   PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO);
+		PyErr_Clear ();
+		Py_Finalize ();
+		g_object_unref (PythonBuffer);
+		return FALSE;
+	}
+	
+	pyg_disable_warning_redirections ();
 	
 	/* Create glade object */
 	glade = Py_InitModule ("glade", GladeMethods);

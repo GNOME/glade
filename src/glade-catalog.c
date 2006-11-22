@@ -140,7 +140,6 @@ catalog_open (const gchar *filename)
 	catalog = g_new0 (GladeCatalog, 1);
 	catalog->context = context;
 	catalog->name    = glade_xml_get_property_string (root, GLADE_TAG_NAME);
-	loaded_catalogs = g_list_prepend (loaded_catalogs, g_strdup (catalog->name));
 
 	if (!catalog->name) 
 	{
@@ -152,6 +151,21 @@ catalog_open (const gchar *filename)
 	
 	catalog->language =
 		glade_xml_get_property_string (root, GLADE_TAG_LANGUAGE);
+	
+	if (catalog->language && (glade_binding_get (catalog->language)) == NULL)
+	{
+		g_warning ("%s language is not supported. "
+			   "Make sure the corresponding GladeBinding module is available.",
+			   catalog->language);
+		g_free (catalog->name);
+		g_free (catalog->language);
+		g_free (catalog);
+		glade_xml_context_free (context);
+		return NULL;
+	}
+	
+	loaded_catalogs = g_list_prepend (loaded_catalogs, g_strdup (catalog->name));
+	
 	catalog->library =
 		glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
 	catalog->dep_catalog =

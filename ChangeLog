@@ -1,4 +1,23 @@
-2006-11-22  Andreas Köhler andi5.py@gmx.net>
+2006-11-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.in: added PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR and
+	  PYGTK_REQ_MICRO to config.h
+
+	* src/glade-python.c: check for pygobject >= 2.12.0
+
+	* src/glade-python-gwa.override: fixed packing property bug in 
+	  glade_python_support_init_value()
+
+	* src/glade-python-gwa.c: updated.
+
+	* src/glade-project-window.c: show clipboard.
+
+	* src/glade-catalog.c: check catalog's language is valid.
+
+	* src/glade-binding.c: added a warning message when we can not load
+	  a module.
+
+2006-11-22  Andreas Köhler <andi5.py@gmx.net>
 
 	* src/glade-design-view.h: dllexported functions with
 	  LIBGLADEUI_API.
@@ -36,12 +55,12 @@
 	* src/glade-project-window.c: added window which a console for each
 	  GladeBinding that provide a console.
 
-	* glade-python-gwa.c: GladeWidgetAdaptor python wrapper.
+	* src/glade-python-gwa.c: GladeWidgetAdaptor python wrapper.
 
-	* glade-python-gwa.[defs override]: files used by pygtk-codegen-2.0
+	* src/glade-python-gwa.[defs override]: files used by pygtk-codegen-2.0
 	  to create glade-python-gwa.c
 
-	* glade-python.c: GladeBinding plugin for python language.
+	* src/glade-python.c: GladeBinding plugin for python language.
 
 	* src/glade-widget-adaptor.[ch]:
 	  o added GWAAction support.

@@ -46,8 +46,10 @@ glade_python_support_init_value (GObject *object,
 	
 	if (property == NULL)
 	{
-        	PyErr_Format (PyExc_TypeError, "%s does not support property `%s'",
-			      (is_pack) ? "container ": "object", property_name);
+        	PyErr_Format (PyExc_TypeError, "'%s' does not support %s property `%s'",
+			      glade_widget_get_name (widget),
+			      (is_pack) ? "packing" : "",
+			      property_name);
 		return FALSE;
 	}
 	
@@ -442,7 +444,7 @@ _wrap_GladeWidgetAdaptor__do_child_verify_property(PyObject *cls, PyObject *args
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     
-    glade_python_support_init_value (container->obj, TRUE, property_name, &value);
+    glade_python_support_init_value (child->obj, TRUE, property_name, &value);
     pyg_value_from_pyobject (&value, val);
     
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->child_verify_property)
@@ -565,7 +567,7 @@ _wrap_GladeWidgetAdaptor__do_child_set_property(PyObject *cls, PyObject *args, P
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     
-    glade_python_support_init_value (container->obj, TRUE, property_name, &value);
+    glade_python_support_init_value (child->obj, TRUE, property_name, &value);
     pyg_value_from_pyobject (&value, val);
     
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->child_set_property)
@@ -696,7 +698,7 @@ _wrap_GladeWidgetAdaptor__do_child_get_property(PyObject *cls, PyObject *args, P
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->child_get_property)
     {
-	glade_python_support_init_value (container->obj, TRUE, property_name, &value);
+	glade_python_support_init_value (child->obj, TRUE, property_name, &value);
         GLADE_WIDGET_ADAPTOR_CLASS(klass)->child_get_property(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(container->obj), G_OBJECT(child->obj), property_name, &value);
 	ret = pyg_value_as_pyobject (&value, TRUE);
 	g_value_unset (&value);

@@ -1247,6 +1247,7 @@ gpw_show_clipboard_cb (GtkAction *action, GladeProjectWindow *gpw)
 		g_signal_connect (view, "delete_event",
 				  G_CALLBACK (gpw_hide_window_on_delete),
 				  gpw->priv->ui);
+		gtk_widget_show_all (view);
 	}
 	
         gtk_window_present (GTK_WINDOW (view));
