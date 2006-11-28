@@ -1,3 +1,12 @@
+2006-11-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-widget-adaptor.c:
+	  o reference adaptor->type class in glade_widget_adaptor_constructor()
+	    because gwa_setup_properties() and gwa_list_signals() need this.
+	  o added extra checks in adaptor methods
+	    g_type_is_a (G_OBJECT_TYPE (object), adaptor->type)
+	    now we can safelly get rid of checks in the plugin code.
+
 2006-11-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.in: added PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR and
