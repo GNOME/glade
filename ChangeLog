@@ -1,3 +1,13 @@
+2006-11-30  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* widgets/gnome.xml.in: removed glade_gnome_about_dialog_get_children()
+
+	* src/glade-gnome.c: Code cleanup
+	  o removed every g_return_if_fail()
+	  o removed glade_gnome_about_dialog_get_children()
+	  o glade_gnome_dpe_set_property() reworked. (lots of function merged)
+	  o glade_gnome_dps_set_property() fixed.
+
 2006-11-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-widget-adaptor.c:

@@ -92,18 +92,12 @@ glade_gnome_app_post_create (GladeWidgetAdaptor *adaptor,
 			     GladeCreateReason   reason)
 {
 	static GladeWidgetAdaptor *menubar_adaptor = NULL, *dock_item_adaptor;
-	GladeWidget *gapp, *gdock, *gdock_item, *gmenubar;
-	GladeProject *project;
-	GnomeApp *app;
-	
-	g_return_if_fail (GNOME_IS_APP (object));
+	GnomeApp *app = GNOME_APP (object);
+	GladeWidget *gapp = glade_widget_get_from_gobject (object);
+	GladeProject *project = glade_widget_get_project (gapp);
+	GladeWidget *gdock, *gdock_item, *gmenubar;
 	
 	gtk_window_set_default_size (GTK_WINDOW (object), 440, 250);
-	
-	app = GNOME_APP (object);
-	gapp = glade_widget_get_from_gobject (object);
-	
-	project = glade_widget_get_project (gapp);
 	
 	/* Add BonoboDock */
 	gdock = glade_widget_adaptor_create_internal
@@ -152,13 +146,8 @@ glade_gnome_app_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				    const gchar         *name)
 {
 	GObject     *child = NULL;
-	GnomeApp    *app;
-	GladeWidget *gapp;
-	
-	g_return_val_if_fail (GNOME_IS_APP (object), NULL);
-	
-	app = GNOME_APP (object);
-	gapp = glade_widget_get_from_gobject (object);
+	GnomeApp    *app   = GNOME_APP (object);
+	GladeWidget *gapp  = glade_widget_get_from_gobject (object);
 	
 	if (strcmp ("dock", name) == 0)
 		child = G_OBJECT (app->dock);
@@ -167,7 +156,12 @@ glade_gnome_app_get_internal_child (GladeWidgetAdaptor  *adaptor,
 		child = G_OBJECT (app->statusbar);
 		if (child == NULL)
 		{
-			/* XXX Is this appropriate ? */
+			/*
+			  Create appbar, libglade handle this as an internal
+			  widget but appbar is not created by GnomeApp.
+			  So we need to create it here for loading purpouses since
+			  "has-statusbar" property is not saved in the .glade file.
+			*/
 			glade_widget_property_set (gapp, "has-statusbar", TRUE);
 			child = G_OBJECT (app->statusbar);
 		}
@@ -180,12 +174,8 @@ GList * GLADEGNOME_API
 glade_gnome_app_get_children (GladeWidgetAdaptor  *adaptor,
 			      GObject             *object)
 {
+	GnomeApp *app = GNOME_APP (object);
 	GList *list = NULL;
-	GnomeApp *app;
-
-	g_return_val_if_fail (GNOME_IS_APP (object), NULL);
-	
-	app = GNOME_APP (object);
 	
 	if (app->dock) list = g_list_append (list, G_OBJECT (app->dock));
 	if (app->statusbar) list = g_list_append (list, G_OBJECT (app->statusbar));
@@ -201,13 +191,10 @@ glade_gnome_app_set_child_property (GladeWidgetAdaptor  *adaptor,
 				    const gchar         *property_name,
 				    GValue              *value)
 {
-	GnomeApp *app;
+	GnomeApp *app = GNOME_APP (container);
 	
-	g_return_if_fail (GNOME_IS_APP (container));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	
-	app = GNOME_APP (container);
-
 	gtk_container_child_set_property (GTK_CONTAINER (app->vbox), 
 					  (GNOME_IS_APPBAR (child)) 
 						? gtk_widget_get_parent (GTK_WIDGET (child))
@@ -223,13 +210,10 @@ glade_gnome_app_get_child_property (GladeWidgetAdaptor  *adaptor,
 				    const gchar         *property_name,
 				    GValue              *value)
 {
-	GnomeApp *app;
+	GnomeApp *app = GNOME_APP (container);
 	
-	g_return_if_fail (GNOME_IS_APP (container));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	
-	app = GNOME_APP (container);
-
 	gtk_container_child_get_property (GTK_CONTAINER (app->vbox), 
 					  (GNOME_IS_APPBAR (child)) 
 						? gtk_widget_get_parent (GTK_WIDGET (child))
@@ -241,13 +225,8 @@ glade_gnome_app_get_child_property (GladeWidgetAdaptor  *adaptor,
 static void
 glade_gnome_app_set_has_statusbar (GObject *object, const GValue *value)
 {
-	GnomeApp *app;
-	GladeWidget *gapp, *gbar;
-	
-	g_return_if_fail (GNOME_IS_APP (object));
-	
-	app = GNOME_APP (object);
-	gapp = glade_widget_get_from_gobject (object);
+	GnomeApp *app = GNOME_APP (object);
+	GladeWidget *gapp = glade_widget_get_from_gobject (object), *gbar;
 	
 	if (g_value_get_boolean (value))
 	{
@@ -271,6 +250,7 @@ glade_gnome_app_set_has_statusbar (GObject *object, const GValue *value)
 	{
 		if (app->statusbar)
 		{
+			/* FIXME: we need to destroy GladeWidgets too */
 			glade_project_remove_object (glade_widget_get_project (gapp),
 						     G_OBJECT (app->statusbar));
 			gtk_container_remove (GTK_CONTAINER (app->vbox),
@@ -309,7 +289,6 @@ glade_gnome_app_bar_post_create (GladeWidgetAdaptor  *adaptor,
 				 GObject             *object, 
 				 GladeCreateReason    reason)
 {
-	g_return_if_fail (GNOME_IS_APPBAR (object));
 	gnome_appbar_set_status (GNOME_APPBAR (object), _("Status Message."));
 }
 
@@ -325,8 +304,6 @@ glade_gnome_date_edit_post_create (GladeWidgetAdaptor  *adaptor,
 				   GObject             *object, 
 				   GladeCreateReason    reason)
 {
-	g_return_if_fail (GNOME_IS_DATE_EDIT (object));
-
 	/* DateEdit's "dateedit-flags" property hides/shows some widgets so we 
 	 * need to explicitly tell that they should not be affected by 
 	 * gtk_widget_show_all() (its, for example, called after a paste)
@@ -365,8 +342,6 @@ glade_gnome_druid_post_create (GladeWidgetAdaptor  *adaptor,
 {
 	GladeWidget *gdruid, *gpage;
 
-	g_return_if_fail (GNOME_IS_DRUID (object));
-	
 	if (reason != GLADE_CREATE_USER) return;
 
 	gdruid = glade_widget_get_from_gobject (object);
@@ -428,10 +403,12 @@ glade_gnome_druid_add_child (GladeWidgetAdaptor  *adaptor,
 			     GObject             *container, 
 			     GObject             *child)
 {
-	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
 
-	/* XXX This needed ? */
+	/*
+	  Disconnect handlers just in case this child was already added
+	  in another druid.
+	 */
 	g_signal_handlers_disconnect_matched (child, G_SIGNAL_MATCH_FUNC, 0, 0, NULL,
 					      glade_gnome_druid_page_cb, NULL);
 
@@ -448,7 +425,6 @@ glade_gnome_druid_remove_child (GladeWidgetAdaptor  *adaptor,
 				GObject             *container, 
 				GObject             *child)
 {
-	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
 
 	g_signal_handlers_disconnect_matched (child, G_SIGNAL_MATCH_FUNC, 0, 0, NULL,
@@ -508,7 +484,6 @@ glade_gnome_druid_set_child_property (GladeWidgetAdaptor  *adaptor,
 				      const gchar         *property_name,
 				      GValue              *value)
 {
-	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
 	
 	if (strcmp (property_name, "position") == 0)
@@ -547,7 +522,6 @@ glade_gnome_druid_get_child_property (GladeWidgetAdaptor  *adaptor,
 				      const gchar         *property_name,
 				      GValue              *value)
 {
-	g_return_if_fail (GNOME_IS_DRUID (container));
 	g_return_if_fail (GNOME_IS_DRUID_PAGE (child));
 	
 	if (strcmp (property_name, "position") == 0)
@@ -573,8 +547,6 @@ glade_gnome_dps_post_create (GladeWidgetAdaptor  *adaptor,
 	GladeWidget *gpage, *gvbox;
 	GObject *vbox;
 	
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object));
-	
 	gpage = glade_widget_get_from_gobject (object);
 	vbox = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
 	gvbox = glade_widget_adaptor_create_internal (gpage, vbox, "vbox",
@@ -591,8 +563,6 @@ glade_gnome_dps_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				    const gchar         *name)
 {
 	GObject *child = NULL;
-
-	g_return_val_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object), NULL);
 	
 	if (strcmp (name, "vbox") == 0)
 		child = G_OBJECT (GNOME_DRUID_PAGE_STANDARD (object)->vbox);
@@ -604,13 +574,9 @@ GList * GLADEGNOME_API
 glade_gnome_dps_get_children (GladeWidgetAdaptor  *adaptor,
 			      GObject             *object)
 {
+	GnomeDruidPageStandard *page = GNOME_DRUID_PAGE_STANDARD (object);
 	GList *list = NULL;
-	GnomeDruidPageStandard *page;
 	
-	g_return_val_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object), NULL);
-	
-	page = GNOME_DRUID_PAGE_STANDARD (object);
-
 	if (page->vbox) list = g_list_append (list, G_OBJECT (page->vbox));
 		
 	return list;
@@ -624,8 +590,6 @@ glade_gnome_dps_set_color_common (GObject      *object,
 	GladeProperty *prop;
 	const gchar *color_str;
 	GValue *color;
-	
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_STANDARD (object));
 	
 	if ((color_str = g_value_get_string (value)) == NULL) return;
 
@@ -644,11 +608,14 @@ glade_gnome_dps_set_property (GladeWidgetAdaptor *adaptor,
 			      const GValue       *value)
 {
 
-	if (!strcmp (id, "background-gdk") ||
-	    !strcmp (id, "contents-background-gdk") ||
-	    !strcmp (id, "logo-background-gdk") ||
-	    !strcmp (id, "title-foreground-gdk"))
-		glade_gnome_dps_set_color_common (object, id, value);
+	if (!strcmp (id, "background"))
+		glade_gnome_dps_set_color_common (object, "background-gdk", value);
+	else if (!strcmp (id, "contents-background"))
+		glade_gnome_dps_set_color_common (object, "contents-background-gdk", value);
+	else if (!strcmp (id, "logo-background"))
+		glade_gnome_dps_set_color_common (object, "logo-background-gdk", value);
+	else if (!strcmp (id, "title-foreground"))
+		glade_gnome_dps_set_color_common (object, "title-foreground-gdk", value);
 	else
 		/* Skip GNOME_TYPE_DRUID_PAGE since we didnt register an
 		 * adaptor for that abstract class.
@@ -685,117 +652,6 @@ glade_gnome_dpe_position_spec (void)
 				  GNOME_EDGE_OTHER, G_PARAM_READWRITE);
 }
 
-static void
-glade_gnome_dpe_set_title (GObject *object, const GValue *value)
-{
-	const gchar *title;
-	
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-	
-	if ((title = g_value_get_string (value)))
-		gnome_druid_page_edge_set_title (GNOME_DRUID_PAGE_EDGE (object),
-						 title);
-}
-
-static void
-glade_gnome_dpe_set_text (GObject *object, const GValue *value)
-{
-	const gchar *text;
-	
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-	
-	if ((text = g_value_get_string (value)))
-		gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (object),
-						text);
-}
-
-static void
-glade_gnome_dpe_set_title_foreground (GObject *object, const GValue *value)
-{
-	GdkColor *color;
-
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-
-	if ((color = (GdkColor *) g_value_get_boxed (value)))
-		gnome_druid_page_edge_set_title_color (GNOME_DRUID_PAGE_EDGE (object),
-						       color);
-}
-
-static void
-glade_gnome_dpe_set_text_foreground (GObject *object, const GValue *value)
-{
-	GdkColor *color;
-
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-
-	if ((color = (GdkColor *) g_value_get_boxed (value)))
-		gnome_druid_page_edge_set_text_color (GNOME_DRUID_PAGE_EDGE (object),
-						      color);
-}
-
-static void
-glade_gnome_dpe_set_background (GObject *object, const GValue *value)
-{
-	GdkColor *color;
-
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-
-	if ((color = (GdkColor *) g_value_get_boxed (value)))
-		gnome_druid_page_edge_set_bg_color (GNOME_DRUID_PAGE_EDGE (object),
-						    color);
-}
-
-static void
-glade_gnome_dpe_set_contents_background (GObject *object, const GValue *value)
-{
-	GdkColor *color;
-
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-
-	if ((color = (GdkColor *) g_value_get_boxed (value)))
-		gnome_druid_page_edge_set_textbox_color (GNOME_DRUID_PAGE_EDGE (object),
-							 color);
-}
-
-static void
-glade_gnome_dpe_set_logo_background (GObject *object, const GValue *value)
-{
-	GdkColor *color;
-
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-
-	if ((color = (GdkColor *) g_value_get_boxed (value)))
-		gnome_druid_page_edge_set_logo_bg_color (GNOME_DRUID_PAGE_EDGE (object),
-							 color);
-}
-
-static void
-glade_gnome_dpe_set_logo (GObject *object, const GValue *value)
-{
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-	
-	gnome_druid_page_edge_set_logo (GNOME_DRUID_PAGE_EDGE (object),
-					GDK_PIXBUF (g_value_get_object (value)));
-}
-
-static void
-glade_gnome_dpe_set_watermark (GObject *object, const GValue *value)
-{
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-	
-	gnome_druid_page_edge_set_logo (GNOME_DRUID_PAGE_EDGE (object),
-					GDK_PIXBUF (g_value_get_object (value)));
-}
-
-static void
-glade_gnome_dpe_set_top_watermark (GObject *object, const GValue *value)
-{
-	g_return_if_fail (GNOME_IS_DRUID_PAGE_EDGE (object));
-	
-	gnome_druid_page_edge_set_top_watermark (GNOME_DRUID_PAGE_EDGE (object),
-						 GDK_PIXBUF (g_value_get_object (value)));
-}
-
 void GLADEGNOME_API
 glade_gnome_dpe_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
@@ -803,26 +659,53 @@ glade_gnome_dpe_set_property (GladeWidgetAdaptor *adaptor,
 			      const GValue       *value)
 
 {
+	GnomeDruidPageEdge *page = GNOME_DRUID_PAGE_EDGE (object);
+	const gchar *text = NULL;
+	GObject *pixbuf = NULL;
+	GdkColor *color = NULL;
+	
+	if (G_VALUE_HOLDS (value, G_TYPE_STRING))
+		text = g_value_get_string (value);
+	else if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
+		pixbuf = g_value_get_object (value);
+	else if (G_VALUE_HOLDS (value, GDK_TYPE_COLOR))
+		color = (GdkColor *) g_value_get_boxed (value);
+	
 	if (!strcmp (id, "title"))
-		glade_gnome_dpe_set_title (object, value);
+	{
+		if (text) gnome_druid_page_edge_set_title (page, text);
+	}
 	else if (!strcmp (id, "text"))
-		glade_gnome_dpe_set_text (object, value);
+	{
+		if (text) gnome_druid_page_edge_set_text (page, text);
+	}
 	else if (!strcmp (id, "title-foreground"))
-		glade_gnome_dpe_set_title_foreground (object, value);
+	{
+		if (color) gnome_druid_page_edge_set_title_color (page, color);
+	}
 	else if (!strcmp (id, "text-foreground"))
-		glade_gnome_dpe_set_text_foreground (object, value);
+	{
+		if (color) gnome_druid_page_edge_set_text_color (page, color);
+	}
 	else if (!strcmp (id, "background"))
-		glade_gnome_dpe_set_background (object, value);
+	{
+		if (color) gnome_druid_page_edge_set_bg_color (page, color);
+	}
 	else if (!strcmp (id, "contents-background"))
-		glade_gnome_dpe_set_contents_background (object, value);
+	{
+		if (color) gnome_druid_page_edge_set_textbox_color (page, color);
+	}
 	else if (!strcmp (id, "logo-background"))
-		glade_gnome_dpe_set_logo_background (object, value);
+	{
+		if (color) gnome_druid_page_edge_set_logo_bg_color (page, color);
+	}
 	else if (!strcmp (id, "logo"))
-		glade_gnome_dpe_set_logo (object, value);
+		gnome_druid_page_edge_set_logo (page, GDK_PIXBUF (pixbuf));
 	else if (!strcmp (id, "watermark"))
-		glade_gnome_dpe_set_watermark (object, value);
+		gnome_druid_page_edge_set_watermark (page, GDK_PIXBUF (pixbuf));
 	else if (!strcmp (id, "top-watermark"))
-		glade_gnome_dpe_set_top_watermark (object, value);
+		gnome_druid_page_edge_set_top_watermark (page, GDK_PIXBUF (pixbuf));
+	else if (!strcmp (id, "position"));
 	else
 		/* Skip GNOME_TYPE_DRUID_PAGE since we didnt register an
 		 * adaptor for that abstract class.
@@ -838,7 +721,6 @@ glade_gnome_icon_entry_set_property (GladeWidgetAdaptor *adaptor,
 				     GObject            *object,
 				     const gchar        *id,
 				     const GValue       *value)
-
 {
 	if (!strcmp (id, "max-saved"))
 		gnome_icon_entry_set_max_saved (GNOME_ICON_ENTRY (object),
@@ -864,8 +746,6 @@ glade_gnome_canvas_set_coordinate_common (GObject               *object,
 					  GnomeCanvasCoordinate  coordinate)
 {
 	gdouble x1, y1, x2, y2;
-	
-	g_return_if_fail (GNOME_IS_CANVAS (object));
 	
 	gnome_canvas_get_scroll_region  (GNOME_CANVAS (object),
 					 &x1, &y1, &x2, &y2);
@@ -951,14 +831,10 @@ glade_gnome_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 				GObject             *object, 
 				GladeCreateReason    reason)
 {
-	GladeWidget *gdialog, *gvbox, *gaction_area;
+	GladeWidget *gdialog = glade_widget_get_from_gobject (object);
+	GnomeDialog *dialog = GNOME_DIALOG (object);
+	GladeWidget *gvbox, *gaction_area;
 	GtkWidget *separator;
-	GnomeDialog *dialog;
-	
-	g_return_if_fail (GNOME_IS_DIALOG (object));
-	
-	dialog = GNOME_DIALOG (object);
-	gdialog = glade_widget_get_from_gobject (object);
 	
 	/* Ignore close signal */
 	g_signal_connect (object, "close", G_CALLBACK (gtk_true), NULL);
@@ -1038,9 +914,7 @@ glade_gnome_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				       const gchar         *name)
 {
 	GObject *child = NULL;
-
-	g_return_val_if_fail (GNOME_IS_DIALOG (object), NULL);
-
+	
 	if (strcmp (name, "vbox") == 0)
 		child = G_OBJECT (GNOME_DIALOG (object)->vbox);
 	else if (GNOME_IS_PROPERTY_BOX (object) && strcmp (name, "notebook") == 0)
@@ -1053,12 +927,8 @@ GList * GLADEGNOME_API
 glade_gnome_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 				 GObject             *object)
 {
+	GnomeDialog *dialog = GNOME_DIALOG (object);
 	GList *list = NULL;
-	GnomeDialog *dialog;
-	
-	g_return_val_if_fail (GNOME_IS_DIALOG (object), NULL);
-	
-	dialog = GNOME_DIALOG (object);
 
 	if (dialog->vbox) list = g_list_append (list, G_OBJECT (dialog->vbox));
 	
@@ -1078,16 +948,7 @@ glade_gnome_about_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 				      GObject             *object, 
 				      GladeCreateReason    reason)
 {
-	g_return_if_fail (GNOME_IS_ABOUT (object));
 	gtk_dialog_set_response_sensitive (GTK_DIALOG (object), GTK_RESPONSE_CLOSE, FALSE);	
-}
-
-GList * GLADEGNOME_API
-glade_gnome_about_dialog_get_children (GladeWidgetAdaptor  *adaptor,
-				       GObject             *object)
-{
-	/* XXX Why this ? */
-	return NULL;
 }
 
 void GLADEGNOME_API
@@ -1190,8 +1051,6 @@ glade_gnome_message_box_set_type (GObject *object, const GValue *value)
 {
 	gchar *message, *type;
 	
-	g_return_if_fail (GNOME_IS_MESSAGE_BOX (object));
-	
 	glade_gnome_message_clean (object);
 	glade_widget_property_get (glade_widget_get_from_gobject (object),
 				   "message", &message);
@@ -1204,8 +1063,6 @@ static void
 glade_gnome_message_box_set_message (GObject *object, const GValue *value)
 {
 	GladeGnomeMessageBoxType type;
-
-	g_return_if_fail (GNOME_IS_MESSAGE_BOX (object));
 	
 	glade_gnome_message_clean (object);
 	glade_widget_property_get (glade_widget_get_from_gobject (object),
@@ -1241,9 +1098,6 @@ glade_gnome_entry_get_internal_child (GladeWidgetAdaptor  *adaptor,
 {
 	GObject *child = NULL;
 
-	g_return_val_if_fail (GNOME_IS_ENTRY (object) || 
-			      GNOME_IS_FILE_ENTRY (object), NULL);
-
 	if (strcmp (name, "entry") == 0)
 	{
 		if (GNOME_IS_ENTRY (object))
@@ -1263,8 +1117,6 @@ glade_gnome_entry_post_create (GladeWidgetAdaptor  *adaptor,
 	GladeWidget *gentry;
 	GObject *child;
 
-	g_return_if_fail (GNOME_IS_ENTRY (object) || GNOME_IS_FILE_ENTRY (object));
-
 	child = glade_gnome_entry_get_internal_child (adaptor, object, "entry");
 	
 	gentry = glade_widget_get_from_gobject (object);
@@ -1281,8 +1133,6 @@ glade_gnome_entry_get_children (GladeWidgetAdaptor  *adaptor,
 	GList *list = NULL;
 	GtkWidget *entry;
 	
-	g_return_val_if_fail (GNOME_IS_ENTRY (object) || GNOME_IS_FILE_ENTRY (object), NULL);
-
 	if (GNOME_IS_ENTRY (object))
 		entry = gnome_entry_gtk_entry (GNOME_ENTRY (object));
 	else
@@ -1330,8 +1180,6 @@ glade_gnome_file_entry_set_property (GladeWidgetAdaptor *adaptor,
 void GLADEGNOME_API
 glade_gnome_pixmap_entry_set_do_preview (GObject *object, GValue *value)
 {
-	g_return_if_fail (GNOME_IS_PIXMAP_ENTRY (object));
-	
 	gnome_pixmap_entry_set_preview (GNOME_PIXMAP_ENTRY (object),
 					g_value_get_boolean (value));
 }
@@ -1344,8 +1192,6 @@ glade_gnome_font_picker_set_mode (GObject *object, const GValue *value)
 	GnomeFontPicker *gfp;
 	GnomeFontPickerMode mode;
 	GObject *child;
-	
-	g_return_if_fail (GNOME_IS_FONT_PICKER (object));
 	
 	mode = g_value_get_enum (value);
 	if (mode == GNOME_FONT_PICKER_MODE_UNKNOWN) return;
@@ -1397,9 +1243,7 @@ glade_gnome_font_picker_get_children (GladeWidgetAdaptor  *adaptor,
 				      GObject             *object)
 {
 	GtkWidget *child;
-	
-	g_return_val_if_fail (GNOME_IS_FONT_PICKER (object), NULL);
-	
+		
 	if ((child = gnome_font_picker_uw_get_widget (GNOME_FONT_PICKER (object))))
 		return g_list_append (NULL, G_OBJECT (child));
 	else
@@ -1411,7 +1255,6 @@ glade_gnome_font_picker_add_child (GladeWidgetAdaptor  *adaptor,
 				   GtkWidget           *container, 
 				   GtkWidget           *child)
 {
-	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), child);	
 }
 
@@ -1420,7 +1263,6 @@ glade_gnome_font_picker_remove_child (GladeWidgetAdaptor  *adaptor,
 				      GtkWidget           *container, 
 				      GtkWidget           *child)
 {
-	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), glade_placeholder_new ());
 }
 
@@ -1430,7 +1272,6 @@ glade_gnome_font_picker_replace_child (GladeWidgetAdaptor  *adaptor,
 				       GtkWidget           *current,
 				       GtkWidget           *new)
 {
-	g_return_if_fail (GNOME_IS_FONT_PICKER (container));
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), new);
 }
 
@@ -1440,7 +1281,6 @@ glade_gnome_icon_list_post_create (GladeWidgetAdaptor  *adaptor,
 				   GObject             *object, 
 				   GladeCreateReason    reason)
 {
-	g_return_if_fail (GNOME_IS_ICON_LIST (object));
 	/* Freeze the widget so we dont get the signals that cause a segfault */
 	gnome_icon_list_freeze (GNOME_ICON_LIST (object));
 }
@@ -1530,8 +1370,6 @@ glade_gnome_pixmap_set_scaled_common (GObject *object,
 				      const GValue *value,
 				      const gchar *property)
 {
-	g_return_if_fail (GNOME_IS_PIXMAP (object));
-	
 	if (glade_gnome_pixmap_set_filename_common (object))
 	{
 		GladeWidget *gp = glade_widget_get_from_gobject (object);
@@ -1701,8 +1539,6 @@ glade_gnome_bonobodock_add_child (GladeWidgetAdaptor  *adaptor,
 				  GObject             *object,
 				  GObject             *child)
 {
-	g_return_if_fail (BONOBO_IS_DOCK (object));
-
 	if (BONOBO_IS_DOCK_ITEM (child))
 		bonobo_dock_add_item (BONOBO_DOCK (object), BONOBO_DOCK_ITEM (child),
 				      0,0,0,0, TRUE);
@@ -1716,9 +1552,7 @@ glade_gnome_bonobodock_remove_child (GladeWidgetAdaptor  *adaptor,
 				     GObject             *child)
 {
 	BonoboDockBand *band;
-	
-	g_return_if_fail (BONOBO_IS_DOCK (object));
-	
+		
 	band = glade_gnome_bd_get_band (BONOBO_DOCK (object), GTK_WIDGET (child));
 	
 	gtk_container_remove (GTK_CONTAINER (band), GTK_WIDGET (child));
@@ -1731,9 +1565,7 @@ glade_gnome_bonobodock_get_children (GladeWidgetAdaptor  *adaptor,
 	GList            *list = NULL, *l;
 	GtkWidget        *client_area;
 	BonoboDockLayout *layout;
-	
-	g_return_val_if_fail (BONOBO_IS_DOCK (object), NULL);
-	
+		
 	layout      = bonobo_dock_get_layout (BONOBO_DOCK (object));
 	client_area = bonobo_dock_get_client_area (BONOBO_DOCK (object));
 	
@@ -1755,7 +1587,6 @@ glade_gnome_bonobodock_replace_child (GladeWidgetAdaptor  *adaptor,
 				      GtkWidget           *current,
 				      GtkWidget           *new)
 {
-	g_return_if_fail (BONOBO_IS_DOCK (container));
 	bonobo_dock_set_client_area (BONOBO_DOCK (container), new);
 }
 
@@ -1802,8 +1633,6 @@ glade_gnome_bonobodock_set_child_property (GladeWidgetAdaptor  *adaptor,
 	GtkWidget *wchild;
 	gboolean new_band = FALSE;
 	
-	g_return_if_fail (BONOBO_IS_DOCK (container));
-
 	if (!BONOBO_IS_DOCK_ITEM (child))
 		/* Ignore packing properties of client area */
 		return;
@@ -1864,8 +1693,6 @@ glade_gnome_bonobodock_get_child_property (GladeWidgetAdaptor  *adaptor,
 {
 	BonoboDockPlacement placement;
 	guint band_num, band_position, offset;
-	
-	g_return_if_fail (BONOBO_IS_DOCK (container));
 
 	if (!BONOBO_IS_DOCK_ITEM (child))
 		/* Ignore packing properties of client area, 
