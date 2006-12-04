@@ -331,8 +331,7 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 				 glade_placeholder_get_parent (placeholder),
 				 placeholder, project);
 
-			/* reset the palette */
-			glade_palette_deselect_current_item (palette);
+			glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
 
 			/* reset the cursor */
 			glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);

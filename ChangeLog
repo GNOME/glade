@@ -1,3 +1,27 @@
+2006-12-03  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* src/glade-palette.[ch]:
+	  - Refactor GladePalette code slightly
+	  - Selector button can now be hidden.
+	  - Palette items are now implemented as toggle buttons.
+	
+	* src/glade-palette-item.[ch]: GladePaletteItem is now a
+	  subclass of GtkToggleButton instead of GtkRadioButton.
+	  
+	* src/glade-app.c, src/glade-fixed.c, src/glade-placeholder.c:
+	  update for change in GladePalette API.
+	  
+	* src/glade-design-layout.c: Improved drawing code.
+	
+	* src/glade-project-window.c:
+	  - Refactored recent files code.
+	  - Added "Widget Selector" button to main toolbar. Is an
+	    external selector button for the palette
+	  - Fixed #373255 - "Doesn't warn about unsaved document
+	    on quit"
+
+	* pixmaps/selector.png: New selector button.
+
 2006-11-30  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* widgets/gnome.xml.in: removed glade_gnome_about_dialog_get_children()

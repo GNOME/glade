@@ -278,7 +278,7 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 						    app->priv->accel_group);
 		}
 
-		glade_palette_deselect_current_item (palette);
+		glade_palette_deselect_current_item (palette, FALSE);
 	}
 }
 
@@ -339,7 +339,7 @@ glade_app_init (GladeApp *app)
 	app->priv->catalogs = glade_catalog_load_all ();
 	
 	/* Create palette */
-	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs, GLADE_ITEM_ICON_ONLY);
+	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
 	g_object_ref (app->priv->palette);
 	gtk_object_sink (GTK_OBJECT (app->priv->palette));
 	gtk_widget_show_all (GTK_WIDGET (app->priv->palette));

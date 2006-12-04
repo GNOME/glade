@@ -883,8 +883,8 @@ glade_fixed_event (GtkWidget   *widget,
 						      GLADE_WIDGET (fixed)->project);
 				fixed->creating = FALSE;
 				
-				/* reset the palette */
-				glade_palette_deselect_current_item (glade_app_get_palette ());
+				glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
+					
 				handled = TRUE;
 			}
 		}

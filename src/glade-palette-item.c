@@ -62,8 +62,10 @@ enum
 };
 
 
-static GtkRadioButton *parent_class = NULL;
+static GtkToggleButton *parent_class = NULL;
 
+
+G_DEFINE_TYPE(GladePaletteItem, glade_palette_item, GTK_TYPE_TOGGLE_BUTTON)
 
 static void
 glade_palette_item_update_appearance (GladePaletteItem *item)
@@ -279,7 +281,7 @@ glade_palette_item_init (GladePaletteItem *item)
 {
 	GladePaletteItemPrivate *priv;
 
-	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
+	priv = item->priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
 
 	priv->label = NULL;
 	priv->adaptor = NULL;
@@ -312,32 +314,6 @@ glade_palette_item_init (GladePaletteItem *item)
 	gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (item), FALSE);
 }
 
-GType
-glade_palette_item_get_type (void)
-{
-	static GType type = 0;
-
-	if (!type)
-	{
-		static const GTypeInfo info =
-		{
-			sizeof (GladePaletteItemClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_palette_item_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladePaletteItem),
-			0,
-			(GInstanceInitFunc) glade_palette_item_init
-		};
-
-		type = g_type_register_static (GTK_TYPE_RADIO_BUTTON, "GladePaletteItem", &info, 0);
-	}
-
-	return type;
-}
-
 /**
  * glade_palette_item_new:
  * @adaptor: A #GladeWidgetAdaptor
@@ -347,7 +323,7 @@ glade_palette_item_get_type (void)
  * Returns: A #GtkWidget
  */
 GtkWidget*
-glade_palette_item_new (GladeWidgetAdaptor *adaptor, GtkRadioButton *group)
+glade_palette_item_new (GladeWidgetAdaptor *adaptor)
 {
 	GladePaletteItem        *item;
 	GladePaletteItemPrivate *priv;
@@ -356,7 +332,6 @@ glade_palette_item_new (GladeWidgetAdaptor *adaptor, GtkRadioButton *group)
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
 	item = g_object_new (GLADE_TYPE_PALETTE_ITEM,
-			     "group", group,
 			     "adaptor", adaptor,
 			     "appearance", GLADE_ITEM_ICON_ONLY,
 			     NULL);

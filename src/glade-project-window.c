@@ -74,6 +74,9 @@ struct _GladeProjectWindowPrivate
 	GtkWidget *console;
 
 	gchar *default_path; /* the default path for open/save operations */
+	
+	GtkToggleToolButton *selector_button; /* the widget selector button (replaces the one in the palette) */
+	
 };
 
 const gint   GLADE_WIDGET_TREE_WIDTH      = 230;
@@ -157,13 +160,32 @@ gpw_window_state_event_cb (GtkWidget *widget,
 	return FALSE;
 }
 
+static GtkWidget *
+create_recent_chooser_menu (GladeProjectWindow *gpw, GtkRecentManager *manager)
+{
+	GtkWidget *recent_menu;
+	GtkRecentFilter *filter;
+
+	recent_menu = gtk_recent_chooser_menu_new_for_manager (manager);
+
+	gtk_recent_chooser_set_local_only (GTK_RECENT_CHOOSER (recent_menu), TRUE);
+	gtk_recent_chooser_set_show_icons (GTK_RECENT_CHOOSER (recent_menu), FALSE);
+	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (recent_menu), GTK_RECENT_SORT_MRU);
+	gtk_recent_chooser_menu_set_show_numbers (GTK_RECENT_CHOOSER_MENU (recent_menu), TRUE);
+
+	filter = gtk_recent_filter_new ();
+	gtk_recent_filter_add_application (filter, g_get_application_name());
+	gtk_recent_chooser_set_filter (GTK_RECENT_CHOOSER (recent_menu), filter);
+
+	return recent_menu;
+}
+
 static void
 gpw_window_screen_changed_cb (GtkWidget *widget,
 			      GdkScreen *old_screen,
 			      GladeProjectWindow *gpw)
 {
 	GtkWidget *menu_item;
-	GtkRecentFilter *filter;
 	GdkScreen *screen;
 
 	screen = gtk_widget_get_screen (widget);	
@@ -173,15 +195,7 @@ gpw_window_screen_changed_cb (GtkWidget *widget,
 	gtk_menu_detach (GTK_MENU (gpw->priv->recent_menu));
 	g_object_unref (G_OBJECT (gpw->priv->recent_menu));
 	
-	gpw->priv->recent_menu = gtk_recent_chooser_menu_new_for_manager (gpw->priv->recent_manager);
-
-	gtk_recent_chooser_set_local_only (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), TRUE);
-	gtk_recent_chooser_set_show_icons (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), FALSE);
-	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), GTK_RECENT_SORT_MRU);
-
-	filter = gtk_recent_filter_new ();
-	gtk_recent_filter_add_application (filter, g_get_application_name());
-	gtk_recent_chooser_set_filter (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), filter);
+	gpw->priv->recent_menu = create_recent_chooser_menu (gpw, gpw->priv->recent_manager);
 
 	g_signal_connect (gpw->priv->recent_menu,
 			  "item-activated",
@@ -383,6 +397,24 @@ gpw_construct_dock_item (GladeProjectWindow *gpw, const gchar *title, GtkWidget 
 	g_object_set_data (G_OBJECT (vbox), "dock-label", label);
 
 	return vbox;
+}
+
+void
+on_palette_toggled (GladePalette *palette, GladeProjectWindow *gpw)
+{
+	if (glade_palette_get_current_item (palette))
+		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, FALSE);	
+	else
+		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);			
+}
+
+void
+on_selector_button_toggled (GtkToggleToolButton *button, GladeProjectWindow *gpw)
+{
+	if (gtk_toggle_tool_button_get_active (gpw->priv->selector_button))
+		glade_palette_deselect_current_item (glade_app_get_palette(), FALSE);
+	else if (glade_palette_get_current_item (glade_app_get_palette()) == FALSE)
+		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);
 }
 
 static void
@@ -918,7 +950,7 @@ gpw_close_cb (GtkAction *action, GladeProjectWindow *gpw)
 static void
 gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 {
-/*	GList *list;
+	GList *list;
 
 	for (list = glade_app_get_projects (); list; list = list->next)
 	{
@@ -935,10 +967,11 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 	while (glade_app_get_projects ())
 	{
 		GladeProject *project = GLADE_PROJECT (glade_app_get_projects ()->data);
-		do_close (gpw, project);
+		do_close (gpw, glade_design_view_get_from_project (project));
 	}
-*/
+
 	gtk_main_quit ();
+
 }
 
 static void
@@ -1706,6 +1739,33 @@ gpw_delete_event (GtkWindow *w, GdkEvent *event, GladeProjectWindow *gpw)
 	return TRUE;	
 }
 
+static GtkWidget *
+create_selector_tool_button (GtkToolbar *toolbar)
+{
+	GtkToolItem  *button;
+	GtkWidget    *image;
+	gchar        *image_path;
+	
+	image_path = g_build_filename (glade_pixmaps_dir, "selector.png", NULL);
+	image = gtk_image_new_from_file (image_path);
+	g_free (image_path);
+	
+	button = gtk_toggle_tool_button_new ();
+	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (button), TRUE);
+	
+	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
+	
+	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
+				   toolbar->tooltips,
+				   _("Select a widget"),
+				   NULL);
+	
+	gtk_widget_show (GTK_WIDGET (button));
+	gtk_widget_show (image);
+	
+	return GTK_WIDGET (button);
+}
+
 static void
 glade_project_window_create (GladeProjectWindow *gpw)
 {
@@ -1723,7 +1783,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *editor;
 	GtkWidget *dockitem;
 	GtkWidget *widget;
-	GtkRecentFilter *filter;
+	GtkToolItem *sep;
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gpw->priv->window = window;
@@ -1754,9 +1814,9 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_paned_pack2 (GTK_PANED (hpaned1), vpaned, FALSE, FALSE);
 
 	/* divider position between design area and editor/tree */
-	gtk_paned_set_position (GTK_PANED (hpaned1), 370);
+	gtk_paned_set_position (GTK_PANED (hpaned1), 350);
 	/* divider position between tree and editor */	
-	gtk_paned_set_position (GTK_PANED (vpaned), 135);
+	gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
 
 	gtk_widget_show_all (hpaned1);
@@ -1765,6 +1825,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 
 	/* palette */
 	palette = GTK_WIDGET (glade_app_get_palette ());
+	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
 	dockitem = gpw_construct_dock_item (gpw, _("Palette"), palette);
 	gtk_paned_pack1 (GTK_PANED (hpaned2), dockitem, FALSE, FALSE);
 
@@ -1775,7 +1836,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_paned_pack2 (GTK_PANED (hpaned2), gpw->priv->notebook, TRUE, FALSE);
 	gtk_widget_show (gpw->priv->notebook);
 
-	/* project view */	
+	/* project view */
 	project_view = GLADE_PROJECT_VIEW (glade_project_view_new ());
 	glade_app_add_project_view (project_view);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (project_view),
@@ -1791,7 +1852,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gpw->priv->label = GTK_LABEL (g_object_get_data (G_OBJECT (dockitem), "dock-label"));
 	gtk_label_set_ellipsize	(GTK_LABEL (gpw->priv->label), PANGO_ELLIPSIZE_END);
 	gtk_misc_set_alignment (GTK_MISC (gpw->priv->label), 0, 0.5);
-	gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, FALSE, FALSE);
+	gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, TRUE, FALSE);
 
 	/* status bar */
 	statusbar = gpw_construct_statusbar (gpw);
@@ -1816,15 +1877,7 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	/* recent files */	
 	gpw->priv->recent_manager = gtk_recent_manager_get_for_screen (gtk_widget_get_screen (gpw->priv->window));
 
-	gpw->priv->recent_menu = gtk_recent_chooser_menu_new_for_manager (gpw->priv->recent_manager);
-
-	gtk_recent_chooser_set_local_only (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), TRUE);
-	gtk_recent_chooser_set_show_icons (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), FALSE);
-	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), GTK_RECENT_SORT_MRU);
-
-	filter = gtk_recent_filter_new ();
-	gtk_recent_filter_add_application (filter, g_get_application_name());
-	gtk_recent_chooser_set_filter (GTK_RECENT_CHOOSER (gpw->priv->recent_menu), filter);
+	gpw->priv->recent_menu = create_recent_chooser_menu (gpw, gpw->priv->recent_manager);
 
 	g_signal_connect (gpw->priv->recent_menu,
 			  "item-activated",
@@ -1833,6 +1886,21 @@ glade_project_window_create (GladeProjectWindow *gpw)
 			  
 	widget = gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar/FileMenu/OpenRecent");
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (widget), gpw->priv->recent_menu);		  
+	
+	/* palette selector button */
+	
+	gpw->priv->selector_button = GTK_TOGGLE_TOOL_BUTTON (create_selector_tool_button (GTK_TOOLBAR (toolbar)));	
+	
+	sep = gtk_separator_tool_item_new();
+	gtk_widget_show (GTK_WIDGET (sep));
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (sep), -1);
+	
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (gpw->priv->selector_button), -1);
+	
+	g_signal_connect (G_OBJECT (glade_app_get_palette ()), "toggled",
+			  G_CALLBACK (on_palette_toggled), gpw);
+	g_signal_connect (G_OBJECT (gpw->priv->selector_button), "toggled",
+			  G_CALLBACK (on_selector_button_toggled), gpw);
 	
 	
 	/* support for opening a file by dragging onto the project window */

@@ -23,7 +23,6 @@
  */
 
 #include "glade-design-layout.h"
-
 #include "glade.h"
 
 #include <gtk/gtk.h>
@@ -123,7 +122,8 @@ glade_design_layout_get_pointer_region (GladeDesignLayout *layout, int x, int y)
 }
 
 
-
+/* this handler ensures that the user cannot
+ * resize a widget below it minimum acceptable size */
 static void
 child_size_request_handler (GtkWidget         *widget,
 			    GtkRequisition    *req,
@@ -160,11 +160,9 @@ child_size_request_handler (GtkWidget         *widget,
 
 		if (old_height > new_height)
 			widget->requisition.height = old_height;
-
-		gtk_widget_queue_draw (GTK_WIDGET (layout));
 	}
 	
-
+	gtk_widget_queue_draw (GTK_WIDGET (layout));
 	
 }
 
@@ -225,7 +223,6 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			glade_widget_property_set_enabled (child_glade_widget, "default-width", TRUE);
 			glade_widget_property_set (child_glade_widget, "default-width", new_width, NULL);
 			
-			gtk_widget_queue_draw (widget);
 		}
 		else if (priv->activity == GLADE_ACTIVITY_RESIZE_HEIGHT)
 		{
@@ -240,7 +237,6 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			glade_widget_property_set_enabled (child_glade_widget, "default-height", TRUE);
 			glade_widget_property_set (child_glade_widget, "default-height", new_height, NULL);
 					     
-			gtk_widget_queue_draw (widget);
 		}
 		else if (priv->activity == GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT)
 		{
@@ -262,7 +258,6 @@ glade_design_layout_handle_event (GladeDesignLayout *layout, GdkEvent* ev)
 			glade_widget_property_set (child_glade_widget, "default-width", new_width, NULL);
 			glade_widget_property_set (child_glade_widget, "default-height", new_height, NULL);
 								     
-			gtk_widget_queue_draw (widget);
 		}
 		else
 		{
@@ -632,20 +627,39 @@ glade_design_layout_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+/* creates a gc to draw a nice border around the child */
+GdkGC*
+create_outline_gc (GtkWidget *widget)
+{
+	GdkGC *gc;
+	GdkGCValues values;
+
+	gc = gdk_gc_new (widget->window);
+	
+	/* we want the light_gc values as a start */
+	gdk_gc_copy (gc, widget->style->light_gc[GTK_STATE_SELECTED]);
+
+	values.line_width = OUTLINE_WIDTH;
+	gdk_gc_set_values (gc, &values, GDK_GC_LINE_WIDTH);
+
+	return gc;
+}
+
+
 static gboolean
 glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 {
 	GladeDesignLayout *layout;
-	GdkGC *outline_gc;
-	GdkGCValues gc_values;
+	GdkGC *gc;
 	GtkWidget *child;
-	double x, y, w, h;
+	int x, y, w, h;
 	int border_width;
 
 	layout = GLADE_DESIGN_LAYOUT (widget);
 
 	border_width = GTK_CONTAINER (widget)->border_width;
 
+	/* draw a white widget background */
 	gdk_draw_rectangle (widget->window,
 			    widget->style->base_gc [GTK_WIDGET_STATE (widget)],
 			    TRUE,
@@ -663,26 +677,23 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 		w = child->allocation.width + OUTLINE_WIDTH;
 		h = child->allocation.height + OUTLINE_WIDTH;
 
-		/* configure outline_gc */
-		outline_gc = gdk_gc_new (widget->window);
-		gdk_gc_copy (outline_gc, widget->style->light_gc[GTK_STATE_SELECTED]);
-		gc_values.line_width = OUTLINE_WIDTH;
-		gdk_gc_set_values (outline_gc, &gc_values, GDK_GC_LINE_WIDTH);
+		gc = create_outline_gc (widget);
 
+		/* draw outline around child */
 		gdk_draw_rectangle (widget->window,
-				    outline_gc,
+				    gc,
 				    FALSE,
 				    x, y, w, h);
-				    
-		g_object_unref (outline_gc);
 
-		if (GTK_WIDGET_NO_WINDOW (child))
-			gdk_draw_rectangle (widget->window,
-					    widget->style->bg_gc[GTK_STATE_NORMAL],
-					    TRUE,
-					    child->allocation.x, child->allocation.y, 
-					    child->allocation.width, child->allocation.height);
+		/* draw a filled rectangle in case child does not draw 
+		 * it's own background (a GTK_WIDGET_NO_WINDOW child). */
+		gdk_draw_rectangle (widget->window,
+				    widget->style->fg_gc[GTK_STATE_NORMAL],
+				    TRUE,
+				    x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2, 
+				    w - OUTLINE_WIDTH, h - OUTLINE_WIDTH);
 
+		g_object_unref (gc);
 	}	
 
 	return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, ev);
