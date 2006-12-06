@@ -1,3 +1,20 @@
+2006-12-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.in: added AC_CHECK_HEADERS(Python.h)
+	
+	* src/glade-binding.[ch]: scripts indexed by GType name instead of GType
+	  this way we do not need glade_util_get_type_from_name() anymore.
+
+	* src/glade-widget-adaptor.c: fixed regression in 
+	  gwa_setup_introspected_props_from_pspecs() Interface introduced
+	  properties where skipped.
+
+	* src/glade-gtk.c: Added GtkAssistant support code.
+
+	* widgets/gtk+.xml.in: Added gtk+ 2.10 widget classes.
+	  GtkAssistant, GtkLinkButton, GtkPageSetupUnixDialog,
+	  GtkPrintUnixDialog, GtkRecentChooserWidget and GtkRecentChooserDialog.
+
 2006-12-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Starting on blockers for 3.2

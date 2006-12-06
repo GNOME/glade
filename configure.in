@@ -89,12 +89,15 @@ if test x"$check_python" = x"yes"; then
     if test -f $PYTHON -a "$have_pygtk" = "yes"; then
              PYTHON_CFLAGS="`$PYTHON -c "from distutils import sysconfig; getvar = sysconfig.get_config_var; flags = ['-I' + sysconfig.get_python_inc(), '-I' + sysconfig.get_python_inc(plat_specific=True)]; print ' '.join(flags)"` $PYGTK_CFLAGS"
              PYTHON_LIBS="`$PYTHON -c "from distutils import sysconfig; pyver = sysconfig.get_config_var('VERSION'); getvar = sysconfig.get_config_var; libs = getvar('LIBS').split() + getvar('SYSLIBS').split(); libs.append('-lpython'+pyver); libs.insert(0, '-L' + getvar('LIBPL')); print ' '.join(libs)"` $PYGTK_LIBS"
+	     save_CFLAGS=$CFLAGS
+	     CFLAGS=$PYTHON_CFLAGS
+	     AC_CHECK_HEADERS(Python.h, have_python=yes, have_python=no)
+	     CFLAGS=$save_CFLAGS
              AC_SUBST(PYTHON_CFLAGS)
              AC_SUBST(PYTHON_LIBS)
 	     AC_DEFINE_UNQUOTED(PYGTK_REQ_MAYOR, $PYGTK_REQ_MAYOR, Pygtk mayor version required)
 	     AC_DEFINE_UNQUOTED(PYGTK_REQ_MINOR, $PYGTK_REQ_MINOR, Pygtk minor version required)
 	     AC_DEFINE_UNQUOTED(PYGTK_REQ_MICRO, $PYGTK_REQ_MICRO, Pygtk micro version required)
-             have_python=yes
     else
         have_python=no
     fi
@@ -114,6 +117,7 @@ case $host_os in
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
+AC_PROG_CXX
 
 dnl ================================================================
 dnl Misc substitutions

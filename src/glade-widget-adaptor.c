@@ -448,7 +448,9 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor   *adaptor,
 		     ((!parent_adaptor && class_type != 0) ||
 		      ( parent_adaptor && class_type != parent_adaptor->type));
 		     class_type = g_type_parent (class_type))
-			if (specs[i]->owner_type == class_type)
+			if (specs[i]->owner_type == class_type ||
+			    (G_TYPE_IS_INTERFACE (specs[i]->owner_type) &&
+			    glade_util_class_implements_interface (class_type, specs[i]->owner_type)))
 			{
 				found = TRUE;
 				break;
@@ -1521,7 +1523,7 @@ gwa_setup_binding_scripts (GladeWidgetAdaptor *adaptor)
 		GladeBinding *binding = l->data;
 		GList *list;
 	
-		for (list = g_datalist_id_get_data (&binding->context_scripts, adaptor->type);
+		for (list = g_hash_table_lookup (binding->context_scripts, adaptor->name);
 		     list; list = g_list_next (list))
 		{
 			GladeBindingScript *script = list->data;

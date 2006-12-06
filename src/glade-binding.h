@@ -105,7 +105,7 @@ struct _GladeBinding {
 	
 	GList *scripts;   /* A list of GladeBindingScript */
 	
-	GData *context_scripts; /* A list of GladeBindingScript separated by GType */
+	GHashTable *context_scripts; /* A table of GladeBindingScript's list */
 	
 	GladeBindingCtrl ctrl;
 };

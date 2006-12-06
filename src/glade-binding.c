@@ -39,12 +39,11 @@ The bindings modules provides this functionality to the core trought a couple
 of obligatory functions.
 
 GladeBindingInitFunc glade_binding_init() to initialize the binding and
-GladeBindingLibraryLoadFunc glade_binding_library_load() to load a library
-written in language supported by the binding.
+GladeBindingLibraryLoadFunc to load a library written in language supported
+by the binding.
 
 You can add Scripting capability to the core by providing 
-GladeBindingRunScriptFunc glade_binding_run_script() and/or
-GladeBindingConsoleNewFunc glade_binding_console_new()
+GladeBindingRunScriptFunc and/or GladeBindingConsoleNewFunc
 
 The core will search for script in two different directories,
 datadir/package/scripts/ and g_get_user_config_dir()/package/scripts/
@@ -122,23 +121,25 @@ glade_binding_script_load (GladeBinding *binding, gchar *rootdir)
 
 	while ((filename = g_dir_read_name (dir)))
 	{
-		gchar *path = g_build_filename (rootdir, filename, NULL);
-		GType type;
+		gchar *key, *path = g_build_filename (rootdir, filename, NULL);
 
-		if (g_file_test (path, G_FILE_TEST_IS_DIR) &&
-		    (type = glade_util_get_type_from_name (filename)))
+		if (g_file_test (path, G_FILE_TEST_IS_DIR))
 		{
 			GList *list, *old_list;
 
 			list = glade_binding_get_script_list (binding, path);
-			old_list = g_datalist_id_get_data (&binding->context_scripts,
-							   type);
+			if (g_hash_table_lookup_extended (binding->context_scripts,
+							  filename,	
+							  (gpointer)&key, 
+							  (gpointer)&old_list))
+			{
+				g_hash_table_steal (binding->context_scripts, key);
+				g_free (key);
+				list = g_list_concat (old_list, list);
+			}
 
-			g_datalist_id_remove_no_notify (&binding->context_scripts, type);
-			list = g_list_concat (old_list, list);
-
-			g_datalist_id_set_data_full (&binding->context_scripts, type, list,
-						     glade_binding_classes_destroy);
+			g_hash_table_insert (binding->context_scripts,
+					     g_strdup (filename), list);
 		}
 		else if (g_file_test (path, G_FILE_TEST_IS_REGULAR))
 			binding->scripts = glade_binding_script_add (binding->scripts, binding, path);
@@ -151,6 +152,18 @@ glade_binding_script_load (GladeBinding *binding, gchar *rootdir)
  * glade_binding_load_all:
  *
  * Loads and initialize every binding plugin.
+ *
+ * Loads scripts for bindings that have GladeBindingRunScriptFunc implemented.
+ *
+ * This function will search for script in two different directories,
+ * datadir/package/scripts/ and g_get_user_config_dir()/package/scripts/
+ * 
+ * The hierarchy in those directories should be binding_name/gtype_name/ *
+ * For example if you want to add a python script to GtkContainers you can do it
+ * by installing the script file in g_get_user_config_dir()/glade3/scripts/python/GtkContainer/Delete_Children.py
+ * This will add a context menu item for any GtkContainer called "Delete Children"
+ * that will trigger GtkContainer's widget adaptor "action-activated::Delete_Children" signal.
+ * This signal is proxied by GladeWidget.
  *
  */
 void
@@ -175,7 +188,7 @@ glade_binding_load_all (void)
 		GladeBindingInitFunc init;
 		GladeBinding *binding;
 		GModule *module;
-		gchar *path;
+		gchar *path, *rootdir;
 		
 		if (g_str_has_suffix (filename, G_MODULE_SUFFIX) == FALSE)
 			continue;
@@ -188,36 +201,35 @@ glade_binding_load_all (void)
 		binding = g_new0 (GladeBinding, 1);
 		binding->module = module;
 		
-		if (g_module_symbol (module, "glade_binding_init",
-				     (gpointer)&init) &&
-		    init (&binding->ctrl) && binding->ctrl.name)
-		{
-
-			g_hash_table_insert (bindings, binding->ctrl.name, binding);
-			
-			if (binding->ctrl.run_script)
-			{
-				gchar *rootdir;
-				g_datalist_init (&binding->context_scripts);
-				
-				rootdir = g_build_filename (glade_scripts_dir,
-							    binding->ctrl.name, NULL);
-				glade_binding_script_load (binding, rootdir);
-				g_free (rootdir);
-		
-				rootdir = g_build_filename (g_get_user_config_dir (),
-							    PACKAGE_NAME, GLADE_BINDING_SCRIPT_DIR,
-							    binding->ctrl.name, NULL);
-				glade_binding_script_load (binding, rootdir);
-				g_free (rootdir);
-			}
-		}
-		else
+		if ((g_module_symbol (module, "glade_binding_init", (gpointer)&init) &&
+		    init (&binding->ctrl) && binding->ctrl.name) == FALSE)
 		{
 			g_warning ("Unable to load GladeBinding module '%s'", path);
 			g_module_close (module);
 			g_free (binding);
+			g_free (path);
+			continue;
 		}
+			
+		g_hash_table_insert (bindings, binding->ctrl.name, binding);
+		
+		/* Load Scripts */
+		binding->context_scripts = g_hash_table_new_full (g_str_hash,
+								  g_str_equal,
+								  g_free,
+								  glade_binding_classes_destroy);
+
+		/* datadir/package/scripts/ */
+		rootdir = g_build_filename (glade_scripts_dir, binding->ctrl.name, NULL);
+		glade_binding_script_load (binding, rootdir);
+		g_free (rootdir);
+	
+		/* g_get_user_config_dir()/package/scripts/ */
+		rootdir = g_build_filename (g_get_user_config_dir (),
+					    PACKAGE_NAME, GLADE_BINDING_SCRIPT_DIR,
+					    binding->ctrl.name, NULL);
+		glade_binding_script_load (binding, rootdir);
+		g_free (rootdir);
 		g_free (path);
 	}
 }
@@ -235,7 +247,7 @@ glade_binding_remove (gpointer key, gpointer value, gpointer user_data)
 		glade_binding_classes_destroy (binding->scripts);
 	
 	if (binding->context_scripts)
-		g_datalist_clear (&binding->context_scripts);
+		g_hash_table_remove_all (binding->context_scripts);
 	
 	g_free (binding);
 }

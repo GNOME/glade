@@ -1250,8 +1250,73 @@
       </properties>
     </glade-widget-class>
 
-  </glade-widget-classes>
+    <glade-widget-class name="GtkAssistant" generic-name="assistant" _title="Assistant">
+      <post-create-function>glade_gtk_assistant_post_create</post-create-function>
+      <add-child-function>glade_gtk_assistant_add_child</add-child-function>
+      <remove-child-function>glade_gtk_assistant_remove_child</remove-child-function>
+      <replace-child-function>glade_gtk_assistant_replace_child</replace-child-function>
+      <set-property-function>glade_gtk_assistant_set_property</set-property-function>
+      <get-property-function>glade_gtk_assistant_get_property</get-property-function>
+      <verify-property-function>glade_gtk_assistant_verify_property</verify-property-function>
+      <child-set-property-function>glade_gtk_assistant_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_assistant_get_child_property</child-get-property-function>
+      <properties>
+        <property save="False" id="size" _name="Size">
+	  <_tooltip>Number of pages</_tooltip>
+	  <spec>glade_standard_int_spec</spec>
+	</property>
+      </properties>
+      <packing-properties>
+        <property id="complete" disabled="True"/>
+	<property id="page-type" ignore="True">
+  	  <displayable-values>
+	    <value id="GTK_ASSISTANT_PAGE_CONTENT" _name="Content"/>
+	    <value id="GTK_ASSISTANT_PAGE_INTRO" _name="Intro"/>
+	    <value id="GTK_ASSISTANT_PAGE_CONFIRM" _name="Confirm"/>
+	    <value id="GTK_ASSISTANT_PAGE_SUMMARY" _name="Summary"/>
+	    <value id="GTK_ASSISTANT_PAGE_PROGRESS" _name="Progress"/>
+	  </displayable-values>
+	</property>
+        <property save="False" id="position" name="Position">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The page position in the Assistant</_tooltip>
+	</property>
+      </packing-properties>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button"/>
+    
+    <glade-widget-class name="GtkPageSetupUnixDialog" generic-name="pagesetupdialog" _title="Page Setup Dialog"/>
+    <glade-widget-class name="GtkPrintUnixDialog" generic-name="printdialog" _title="Print Dialog"/>
 
+    <glade-widget-class name="GtkRecentChooserWidget" generic-name="recentchooser" _title="Recent Chooser">
+      <properties>
+	<property id="size" disabled="True"/>
+        <property id="sort-type">
+  	  <displayable-values>
+	    <value id="GTK_RECENT_SORT_NONE" _name="None"/>
+	    <value id="GTK_RECENT_SORT_MRU" _name="Most Recently Used first"/>
+	    <value id="GTK_RECENT_SORT_LRU" _name="Least Recently Used first"/>
+	    <value id="GTK_RECENT_SORT_CUSTOM" _name="Custom"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+    
+    <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog">
+      <properties>
+        <property id="sort-type">
+  	  <displayable-values>
+	    <value id="GTK_RECENT_SORT_NONE" _name="None"/>
+	    <value id="GTK_RECENT_SORT_MRU" _name="Most Recently Used first"/>
+	    <value id="GTK_RECENT_SORT_LRU" _name="Least Recently Used first"/>
+	    <value id="GTK_RECENT_SORT_CUSTOM" _name="Custom"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+  </glade-widget-classes>
+  
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
     <glade-widget-class-ref name="GtkWindow"/>
     <glade-widget-class-ref name="GtkDialog"/>
@@ -1261,6 +1326,10 @@
     <glade-widget-class-ref name="GtkFontSelectionDialog"/>
     <glade-widget-class-ref name="GtkInputDialog"/>
     <glade-widget-class-ref name="GtkMessageDialog"/>
+    <glade-widget-class-ref name="GtkPageSetupUnixDialog"/>
+    <glade-widget-class-ref name="GtkPrintUnixDialog"/>
+    <glade-widget-class-ref name="GtkRecentChooserDialog"/>
+    <glade-widget-class-ref name="GtkAssistant"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-containers" _title="Containers">
@@ -1295,6 +1364,7 @@
     <glade-widget-class-ref name="GtkFileChooserButton"/>
     <glade-widget-class-ref name="GtkColorButton"/>
     <glade-widget-class-ref name="GtkFontButton"/>
+    <glade-widget-class-ref name="GtkLinkButton"/>
 
     <glade-widget-class-ref name="GtkImage"/>
     <glade-widget-class-ref name="GtkLabel"/>
@@ -1323,6 +1393,8 @@
     <glade-widget-class-ref name="GtkVSeparator"/>
     <glade-widget-class-ref name="GtkArrow"/>
     <glade-widget-class-ref name="GtkDrawingArea"/>
+    
+    <glade-widget-class-ref name="GtkRecentChooserWidget"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
