@@ -9,7 +9,10 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
+AC_CONFIG_MACRO_DIR([m4])
+
 IT_PROG_INTLTOOL([0.35.0])
+
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
@@ -72,6 +75,33 @@ else
 fi
 
 AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
+
+dnl ================================================================
+dnl   GNOME User Manual (requires gnome-doc-utils)
+dnl ================================================================
+AC_ARG_ENABLE(user_manual,
+[  --enable-user-manual   Build GNOME user manual],
+        enable_user_manual=yes, enable_user_manual=no)
+
+if test x"$enable_user_manual" = "xyes"; then
+GNOME_DOC_INIT
+else
+ENABLE_SK_TRUE="#"
+ENABLE_SK_FALSE=""
+fi
+
+AM_CONDITIONAL(DISABLE_USER_MANUAL, test x"$enable_user_manual" = "xno")
+
+dnl ================================================================
+dnl Scrollkeeper
+dnl ================================================================
+if test x"$enable_gnome" = "xyes" ; then
+  AC_PATH_PROG(SK_CONFIG, scrollkeeper-config, no)
+
+  if test x"$SK_CONFIG" = "xno"; then
+    AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
+  fi
+fi
 
 dnl ===============================================================
 dnl Check for Python
@@ -145,7 +175,7 @@ AC_SUBST(glade_scriptsdir)
 AC_SUBST(glade_icondir)
 AC_SUBST(glade_localedir)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 pixmaps/Makefile
 pixmaps/16x16/Makefile
@@ -158,14 +188,17 @@ src/glade-3.pc
 src/glade-paths.sh
 doc/Makefile
 doc/version.xml
+help/Makefile
 ])
+
+AC_OUTPUT
 
 echo "
 
 Configuration:
 
 	Source code location:	${srcdir}
-	Compiler:		${CC} 
+	Compiler:		${CC}
 	GnomeUI Catalog:	${have_gnome}
 	Python Binding:		${have_python}
 "

@@ -19,6 +19,7 @@ glade_bindingsdir="@glade_bindingsdir@"
 glade_pixmapsdir="@glade_pixmapsdir@"
 glade_scriptsdir="@glade_scriptsdir@"
 glade_icondir="@glade_icondir@"
+glade_gnomehelpdir="@HELP_DIR@"
 glade_localedir="@glade_localedir@"
 
 cat <<EOF
@@ -37,6 +38,7 @@ cat <<EOF
 #define GLADE_PIXMAPSDIR "$glade_pixmapsdir"
 #define GLADE_SCRIPTSDIR "$glade_scriptsdir"
 #define GLADE_ICONDIR "$glade_icondir"
+#define GLADE_GNOMEHELPDIR "$glade_gnomehelpdir"
 #define GLADE_LOCALEDIR "$glade_localedir"
 
 #endif /* GLADE_PATHS_H */

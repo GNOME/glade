@@ -1,6 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
+if DISABLE_USER_MANUAL
 SUBDIRS = src po pixmaps widgets doc
+else
+SUBDIRS = src po pixmaps widgets doc help
+endif
+
+ACLOCAL_AMFLAGS = -I m4
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -26,17 +32,22 @@ update-icon-cache:
                 echo "***   $(gtk_update_icon_cache)"; \
 	fi
 
-
 EXTRA_DIST = \
 	COPYING.GPL \
 	COPYING.LGPL \
+	m4 \
 	glade-3.desktop.in \
 	glade-3.png \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in
-
+	intltool-update.in \
+	gnome-doc-utils.make
 
 CLEANFILES = $(DESKTOP_FILES)
 
-DISTCLEANFILES = intltool-extract intltool-merge intltool-update
+DISTCLEANFILES = intltool-extract \
+                 intltool-merge \
+                 intltool-update \
+                 gnome-doc-utils.make
+
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc

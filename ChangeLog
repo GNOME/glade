@@ -1,3 +1,36 @@
+2006-12-07  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* help/ChangeLog, help/Makefile.am, help/glade.omf.in,
+	  help/.cvsignore, help/C/glade.xml, help/C/legal.xml,
+	  help/C/figures/main-window.png, m4/.cvsignore: New files.
+
+	* configure.in: 
+	  - Check for gnome-doc-utils and scrollkeeper
+	  - Use AC_CONFIG_FILES instead of AC_OUTPUT with args.
+	    AC_OUTPUT with args is deprecated.
+	  - set macro dir with AC_CONFIG_MACRO_DIR.
+
+	* Makefile.am:
+	  - Update for gnome-doc-utils integration.
+	  - Conditionally set SUBDIRS if docs building is enabled.
+	  - Set `ACLOCAL_AMFLAGS = -I m4' as recommended in
+	    Autoconf manual.
+
+	* .cvsignore: Add `gnome-doc-utils.make'.
+
+	* src/glade-utils.[ch]: New function `glade_util_url_show'.
+
+	* src/glade-project-window.c:
+	  - Add functionality for launching the GNOME user manual.
+	  - Set URL hook for GtkAboutDialog.
+	  - If devhelp is not available, the online developer reference
+	    is displayed instead.
+
+	* src/glade-paths.sh.in: New variable GLADE_GNOMEHELPDIR.
+
+	* glade-3.desktop.in: Add "X-GNOME-DocPath" entry.
+	  Add "GTK" to "Categories".
+
 2006-12-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.in: added AC_CHECK_HEADERS(Python.h)

@@ -23,7 +23,6 @@ typedef enum
 	GLADE_UI_YES_OR_NO
 } GladeUIMessageType;
 
-
 LIBGLADEUI_API
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 LIBGLADEUI_API
@@ -148,6 +147,9 @@ GtkWidget        *glade_util_get_placeholder_from_pointer (GtkContainer *contain
 
 LIBGLADEUI_API
 gboolean          glade_util_object_is_loading     (GObject *object);
+
+LIBGLADEUI_API
+gboolean          glade_util_url_show              (const gchar *url);
 
 G_END_DECLS
 

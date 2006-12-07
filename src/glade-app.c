@@ -1287,7 +1287,7 @@ glade_app_command_redo (void)
  * glade_app_set_accel_group:
  *
  * Sets @accel_group to @app.
- * The acceleration group will be atached to every toplevel widget in this application.
+ * The acceleration group will be attached to every toplevel widget in this application.
  */
 void
 glade_app_set_accel_group (GtkAccelGroup *accel_group)
