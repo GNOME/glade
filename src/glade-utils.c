@@ -135,23 +135,25 @@ glade_util_compose_get_type_func (const gchar *name)
 
 /**
  * glade_util_get_type_from_name:
- * @name: the name of the #GType - like 'GtkWidget'.
+ * @name: the name of the #GType - like 'GtkWidget' or a "get-type" function.
+ * @have_func: function-name flag -- true if the name is a "get-type" function.
  *
- * Looks up the type registering function from a plugin
- * and initializes & returns the type for @name.
+ * Returns the type using the "get type" function name based on @name.  
+ * If the @have_func flag is true,@name is used directly, otherwise the get-type 
+ * function is contrived from @name then used.
  *
  * Returns: the new #GType
  */
 GType
-glade_util_get_type_from_name (const gchar *name)
+glade_util_get_type_from_name (const gchar *name, gboolean have_func)
 {
 	static GModule *allsymbols = NULL;
 	GType (*get_type) ();
 	GType type = 0;
-	gchar  *func_name;
+	gchar  *func_name = (gchar*)name;
 	
 	if ((type = g_type_from_name (name)) == 0 &&
-	    (func_name = glade_util_compose_get_type_func (name)) != NULL)
+	    (have_func || (func_name = glade_util_compose_get_type_func (name)) != NULL))
 	{
 		
 		if (!allsymbols)

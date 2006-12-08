@@ -26,12 +26,12 @@ and does not implement any special container relationships (which we will
 explain in further detail later on) the catalog entry should really just be
 a one liner like this:
       <programlisting>
-<![CDATA[<glade-widget-class name="GtkLabel" generic-name="label" title="Label"/>]]></programlisting>
+<![CDATA[<glade-widget-class name="GtkLabel" get-type-function="gtk_label_get_type" generic-name="label" title="Label"/>]]></programlisting>
     </para>
     <para>
 To delve further into details; the complex layout looks like this:
       <programlisting>
-<![CDATA[<glade-widget-class name="GtkLabel" generic-name="label" title="Label">
+<![CDATA[<glade-widget-class name="GtkLabel" get-type-function="gtk_label_get_type" generic-name="label" title="Label">
 
   ... widget class support functions go here
 
@@ -57,9 +57,22 @@ To delve further into details; the complex layout looks like this:
         <term>name</term>
         <listitem>
           <para>
-The 'name' property is the class name of the widget; this will essentially be 
-used to instantiate the actual class by deriving 'gtk_label_get_type' from 'GtkLabel' 
-and searching for 'gtk_label_get_type' in the support library.
+The 'name' property is the class name of the widget; unless the 'get-type-function'
+property is present, this will essentially be used to instantiate the actual class 
+by deriving 'gtk_label_get_type' from 'GtkLabel' and searching for 'gtk_label_get_type' 
+in the support library.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-type-function</term>
+        <listitem>
+          <para>
+The 'get-type-function' property is used to explicitly specify the name of the 
+function used to get the type of the widget.  It is optional, but if it is not
+present, the 'name' property will be used to guess the name of the function,
+a process that could lead to unexpected results.
           </para>
         </listitem>
       </varlistentry>

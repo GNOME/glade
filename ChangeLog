@@ -1,3 +1,20 @@
+2006-12-08  Jeff Westerinen <jeff.westerinen@palmsource.com>
+
+	* doc/widgetclasses.sgml
+	  - changed the description of the "name" property of the
+	    glade-widget-class tag.
+
+	* src/glade-utils.[ch]
+	  - changed glade_util_get_type_from_name() to being able to use the
+	    name arg directly as the "get type" function.
+
+	* src/glade-widget-adaptor.c
+	  - changed glade_widget_adaptor_from_catalog() to now check for a
+	    "get-type-function" property.  If one is found, it is used to get 
+	    the widget type instead of "name" property.
+
+	* src/glade.h: added the "get-type-function" property definition.
+
 2006-12-07  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* help/ChangeLog, help/Makefile.am, help/glade.omf.in,

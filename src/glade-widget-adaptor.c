@@ -1568,7 +1568,7 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 				   const gchar      *book)
 {
 	GladeWidgetAdaptor *adaptor = NULL;
-	gchar              *name, *generic_name, *adaptor_name;
+	gchar              *name, *generic_name, *adaptor_name, *func_name;
 	GType               object_type, adaptor_type, parent_type;
 
 	if (!glade_xml_node_verify (class_node, GLADE_TAG_GLADE_WIDGET_CLASS))
@@ -1582,7 +1582,13 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	     (class_node, GLADE_TAG_NAME, NULL)) == NULL)
 		return NULL;
 
-	if ((object_type = glade_util_get_type_from_name (name)) == 0)
+	/* get the object type directly by function, if possible, else by name hack */
+	if ((func_name = glade_xml_get_property_string (class_node, GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
+		object_type = glade_util_get_type_from_name (func_name, TRUE);
+	else
+		object_type = glade_util_get_type_from_name (name, FALSE);
+		
+	if (object_type == 0)
 	{
 		g_warning ("Failed to load the GType for '%s'", name);
 		g_free (name);

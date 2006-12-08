@@ -150,6 +150,7 @@ typedef enum   _GladeItemAppearance GladeItemAppearance;
 #define GLADE_TAG_ACTION_GROUP                    "action-group"
 #define GLADE_TAG_ACTION                          "action"
 #define GLADE_TAG_STOCK                           "stock"
+#define GLADE_TAG_GET_TYPE_FUNCTION               "get-type-function"
 
 #define GLADE_NUMERICAL_STEP_INCREMENT             1
 #define GLADE_FLOATING_STEP_INCREMENT              0.01F

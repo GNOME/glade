@@ -26,7 +26,7 @@ typedef enum
 LIBGLADEUI_API
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 LIBGLADEUI_API
-GType		glade_util_get_type_from_name	(const gchar *name);
+GType		glade_util_get_type_from_name	(const gchar *name, gboolean have_func);
 LIBGLADEUI_API
 GParamSpec      *glade_utils_get_pspec_from_funcname (const gchar *funcname);
 LIBGLADEUI_API
