@@ -3327,7 +3327,8 @@ glade_gtk_image_disable_icon_name (GladeWidget *gwidget)
 static void
 glade_gtk_image_disable_stock (GladeWidget *gwidget)
 {
-	glade_widget_property_reset (gwidget, "glade-stock");
+	glade_widget_property_set (gwidget, "glade-stock", NULL);
+	glade_widget_property_set (gwidget, "stock", NULL);
 	glade_widget_property_set_sensitive (gwidget, "glade-stock", FALSE,
 		 	_("This only applies with stock type images"));
 }
