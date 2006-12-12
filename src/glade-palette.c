@@ -312,14 +312,14 @@ glade_palette_finalize (GObject *object)
 }
 
 static void
-glade_palette_class_init (GladePaletteClass *class)
+glade_palette_class_init (GladePaletteClass *klass)
 {
 	GObjectClass *object_class;
 
-	object_class = G_OBJECT_CLASS (class);
-	parent_class = g_type_class_peek_parent (class);
+	object_class = G_OBJECT_CLASS (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
-	class->toggled = NULL;
+	klass->toggled = NULL;
 	
 	object_class->get_property = glade_palette_get_property;
 	object_class->set_property = glade_palette_set_property;

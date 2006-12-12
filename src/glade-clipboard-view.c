@@ -40,7 +40,7 @@ const gint GLADE_CLIPBOARD_VIEW_WIDTH  = 230;
 const gint GLADE_CLIPBOARD_VIEW_HEIGHT = 200;
 
 static void
-glade_clipboard_view_class_init (GladeClipboardViewClass *class)
+glade_clipboard_view_class_init (GladeClipboardViewClass *klass)
 {
 
 }

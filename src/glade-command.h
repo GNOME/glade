@@ -47,10 +47,10 @@ struct _GladeCommandClass
 {
 	GObjectClass parent_class;
 
-	gboolean (* execute)     (GladeCommand *this);
-	gboolean (* undo)        (GladeCommand *this);
-	gboolean (* unifies)     (GladeCommand *this, GladeCommand *other);
-	void     (* collapse)    (GladeCommand *this, GladeCommand *other);
+	gboolean (* execute)     (GladeCommand *this_cmd);
+	gboolean (* undo)        (GladeCommand *this_cmd);
+	gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
+	void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
 };
 
 
@@ -123,7 +123,7 @@ void           glade_command_remove_signal (GladeWidget       *glade_widget,
 LIBGLADEUI_API
 void           glade_command_change_signal (GladeWidget       *glade_widget, 
 					    const GladeSignal *old, 
-					    const GladeSignal *new);
+					    const GladeSignal *new_signal);
 
 
 G_END_DECLS

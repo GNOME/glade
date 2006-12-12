@@ -105,11 +105,11 @@ gboolean          glade_util_basenames_match       (const gchar  *path1,
 LIBGLADEUI_API
 GList            *glade_util_purify_list           (GList        *list);
 LIBGLADEUI_API
-GList            *glade_util_added_in_list         (GList        *old,
-						    GList        *new);
+GList            *glade_util_added_in_list         (GList        *old_list,
+						    GList        *new_list);
 LIBGLADEUI_API
-GList            *glade_util_removed_from_list     (GList        *old,
-						    GList        *new);
+GList            *glade_util_removed_from_list     (GList        *old_list,
+						    GList        *new_list);
 LIBGLADEUI_API
 gchar            *glade_util_canonical_path        (const gchar  *path);
 

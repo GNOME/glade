@@ -261,7 +261,7 @@ static PyTypeObject *
 glade_python_register_class (GType type)
 {
 	GType parent = g_type_parent (type);
-	PyTypeObject *class, *parent_class;
+	PyTypeObject *klass, *parent_class;
 	
 	if (parent == 0 || type == GLADE_TYPE_WIDGET_ADAPTOR)
 		return &PyGladeWidgetAdaptor_Type;
@@ -271,22 +271,22 @@ glade_python_register_class (GType type)
 	else
 		parent_class = pygobject_lookup_class (parent);
 	
-	class = pygobject_lookup_class (type);
+	klass = pygobject_lookup_class (type);
 	
-	pygobject_register_class (glade_dict, g_type_name (type), type, class,
+	pygobject_register_class (glade_dict, g_type_name (type), type, klass,
 				  Py_BuildValue("(O)", parent_class));
 	pyg_set_object_has_new_constructor (type);
 
-	g_hash_table_insert (registered_classes, GUINT_TO_POINTER (type), class);
+	g_hash_table_insert (registered_classes, GUINT_TO_POINTER (type), klass);
 	
-	return class;
+	return klass;
 }
 
 static PyObject *
 glade_python_get_adaptor_for_type (PyObject *self, PyObject *args)
 {
 	GladeWidgetAdaptor *adaptor;
-	PyObject *class;
+	PyObject *klass;
 	gchar *name;
 
 	if (PyArg_ParseTuple(args, "s", &name) &&
@@ -294,8 +294,8 @@ glade_python_get_adaptor_for_type (PyObject *self, PyObject *args)
 	{
 		GType type = G_TYPE_FROM_INSTANCE (adaptor);
 
-		if ((class = g_hash_table_lookup (registered_classes, GUINT_TO_POINTER (type))))
-			return (PyObject *) class;
+		if ((klass = g_hash_table_lookup (registered_classes, GUINT_TO_POINTER (type))))
+			return (PyObject *) klass;
 		else
 			return (PyObject *) glade_python_register_class (type);
 	}

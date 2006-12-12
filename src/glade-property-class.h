@@ -55,10 +55,10 @@ struct _GladePropertyClass
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
 
-	gboolean virtual; /* Whether this is a virtual property with its pspec supplied
-			   * via the catalog (or hard code-paths); or FALSE if its a real
-			   * GObject introspected property
-			   */
+	gboolean virt; /* Whether this is a virtual property with its pspec supplied
+			* via the catalog (or hard code-paths); or FALSE if its a real
+			* GObject introspected property
+			*/
 
 	GValue *def;      /* The default value for this property (this will exist
 			   * as a copy of orig_def if not specified by the catalog)
@@ -176,14 +176,14 @@ LIBGLADEUI_API
 GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,
 								  va_list              vl);
 LIBGLADEUI_API
-void                glade_property_class_set_vl_from_gvalue      (GladePropertyClass  *class,
+void                glade_property_class_set_vl_from_gvalue      (GladePropertyClass  *klass,
 								  GValue              *value,
 								  va_list              vl);
 LIBGLADEUI_API
-GValue             *glade_property_class_make_gvalue             (GladePropertyClass  *class,
+GValue             *glade_property_class_make_gvalue             (GladePropertyClass  *klass,
 								  ...);
 LIBGLADEUI_API
-void                glade_property_class_get_from_gvalue         (GladePropertyClass  *class,
+void                glade_property_class_get_from_gvalue         (GladePropertyClass  *klass,
 								  GValue              *value,
 								  ...);
 LIBGLADEUI_API
@@ -193,15 +193,15 @@ gboolean            glade_property_class_update_from_node        (GladeXmlNode  
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);
 LIBGLADEUI_API
-G_CONST_RETURN gchar *glade_property_class_get_displayable_value   (GladePropertyClass *class, 
+G_CONST_RETURN gchar *glade_property_class_get_displayable_value   (GladePropertyClass *klass, 
 								    gint                value);
 LIBGLADEUI_API
 GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
 LIBGLADEUI_API
-gboolean            glade_property_class_match                   (GladePropertyClass *class,
+gboolean            glade_property_class_match                   (GladePropertyClass *klass,
 								  GladePropertyClass *comp);
 LIBGLADEUI_API
-gboolean            glade_property_class_void_value              (GladePropertyClass *class,
+gboolean            glade_property_class_void_value              (GladePropertyClass *klass,
 								  GValue             *value);
 LIBGLADEUI_API
 G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);

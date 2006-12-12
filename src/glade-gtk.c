@@ -307,7 +307,7 @@ void GLADEGTK_API
 glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 				   GtkWidget          *container,
 				   GtkWidget          *current,
-				   GtkWidget          *new)
+				   GtkWidget          *new_widget)
 {
 	GParamSpec **param_spec;
 	GValue *value;
@@ -328,11 +328,11 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 	}
 
 	gtk_container_remove (GTK_CONTAINER (container), current);
-	gtk_container_add (GTK_CONTAINER (container), new);
+	gtk_container_add (GTK_CONTAINER (container), new_widget);
 
 	for (i = 0; i < nproperties; i++) {
 		gtk_container_child_set_property
-			(GTK_CONTAINER (container), new, param_spec[i]->name, &value[i]);
+			(GTK_CONTAINER (container), new_widget, param_spec[i]->name, &value[i]);
 	}
 	
 	for (i = 0; i < nproperties; i++)
@@ -1355,19 +1355,19 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 			       GladeWidget *child,
 			       GtkWidget   *table)
 {
-	GladeGtkTableChild new = { child, };
+	GladeGtkTableChild new_child = { child, };
 
 	glade_widget_pack_property_get (child, "left-attach", 
-					&new.left_attach);
+					&new_child.left_attach);
 	glade_widget_pack_property_get (child, "right-attach", 
-					&new.right_attach);
+					&new_child.right_attach);
 	glade_widget_pack_property_get (child, "top-attach", 
-					&new.top_attach);
+					&new_child.top_attach);
 	glade_widget_pack_property_get (child, "bottom-attach", 
-					&new.bottom_attach);
+					&new_child.bottom_attach);
 
 	/* Compare the meaningfull part of the current edit. */
-	if (memcmp (&new, &table_edit, TABLE_CHILD_CMP_SIZE) != 0)
+	if (memcmp (&new_child, &table_edit, TABLE_CHILD_CMP_SIZE) != 0)
 	{
 		GValue left_attach_value   = { 0, };
 		GValue right_attach_value = { 0, };
@@ -1545,18 +1545,18 @@ void GLADEGTK_API
 glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *current,
-			       GtkWidget          *new)
+			       GtkWidget          *new_widget)
 {
 	g_return_if_fail (GTK_IS_TABLE (container));
 	g_return_if_fail (GTK_IS_WIDGET (current));
-	g_return_if_fail (GTK_IS_WIDGET (new));
+	g_return_if_fail (GTK_IS_WIDGET (new_widget));
 	
 	/* Chain Up */
 	GWA_GET_CLASS
 		(GTK_TYPE_CONTAINER)->replace_child (adaptor, 
 						     G_OBJECT (container), 
 						     G_OBJECT (current), 
-						     G_OBJECT (new));
+						     G_OBJECT (new_widget));
 	
 	/* If we are replacing a GladeWidget, we must refresh placeholders
 	 * because the widget may have spanned multiple rows/columns, we must
@@ -1565,7 +1565,7 @@ glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
 	 * (since the remaining placeholder templates no longer exist, only the
 	 * first pasted widget would have proper packing properties).
 	 */
-	if (glade_widget_get_from_gobject (new) == FALSE)
+	if (glade_widget_get_from_gobject (new_widget) == FALSE)
 		glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
 
 }
@@ -1888,7 +1888,7 @@ void GLADEGTK_API
 glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *current,
-			       GtkWidget          *new)
+			       GtkWidget          *new_widget)
 {
 	gchar *special_child_type;
 
@@ -1897,8 +1897,8 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
 
 	if (special_child_type && !strcmp (special_child_type, "label_item"))
 	{
-		g_object_set_data (G_OBJECT (new), "special-child-type", "label_item");
-		gtk_frame_set_label_widget (GTK_FRAME (container), new);
+		g_object_set_data (G_OBJECT (new_widget), "special-child-type", "label_item");
+		gtk_frame_set_label_widget (GTK_FRAME (container), new_widget);
 		return;
 	}
 
@@ -1907,7 +1907,7 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
 		(GTK_TYPE_CONTAINER)->replace_child (adaptor, 
 						     G_OBJECT (container), 
 						     G_OBJECT (current),
-						     G_OBJECT (new));
+						     G_OBJECT (new_widget));
 }
 
 void GLADEGTK_API
@@ -2490,7 +2490,7 @@ void GLADEGTK_API
 glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
 				  GtkWidget          *container,
 				  GtkWidget          *current,
-				  GtkWidget          *new)
+				  GtkWidget          *new_widget)
 {
 	GtkNotebook *notebook;
 	GladeWidget *gcurrent, *gnew;
@@ -2512,25 +2512,25 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
 	}
 	
 	if (g_object_get_data (G_OBJECT (current), "special-child-type"))
-		g_object_set_data (G_OBJECT (new), "special-child-type", "tab");
+		g_object_set_data (G_OBJECT (new_widget), "special-child-type", "tab");
 
 	glade_gtk_notebook_remove_child (adaptor, 
 					 G_OBJECT (container), 
 					 G_OBJECT (current));
 
-	if (GLADE_IS_PLACEHOLDER (new) == FALSE)
+	if (GLADE_IS_PLACEHOLDER (new_widget) == FALSE)
 	{
-		gnew = glade_widget_get_from_gobject (new);
+		gnew = glade_widget_get_from_gobject (new_widget);
 
 		glade_gtk_notebook_add_child (adaptor, 
 					      G_OBJECT (container), 
-					      G_OBJECT (new));
+					      G_OBJECT (new_widget));
 		
 		if (glade_widget_pack_property_set (gnew, "position", position) == FALSE)
 			g_critical ("No position property found on new widget");
 	}
 	else 
-		gtk_widget_destroy (GTK_WIDGET (new));
+		gtk_widget_destroy (GTK_WIDGET (new_widget));
 }	
 
 gboolean GLADEGTK_API
@@ -2800,7 +2800,7 @@ void GLADEGTK_API
 glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 				  GtkWidget          *container,
 				  GtkWidget          *current,
-				  GtkWidget          *new)
+				  GtkWidget          *new_widget)
 {
 	gchar *special_child_type;
 
@@ -2809,8 +2809,8 @@ glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 
 	if (special_child_type && !strcmp (special_child_type, "label_item"))
 	{
-		g_object_set_data (G_OBJECT (new), "special-child-type", "label_item");
-		gtk_expander_set_label_widget (GTK_EXPANDER (container), new);
+		g_object_set_data (G_OBJECT (new_widget), "special-child-type", "label_item");
+		gtk_expander_set_label_widget (GTK_EXPANDER (container), new_widget);
 		return;
 	}
 
@@ -2819,7 +2819,7 @@ glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 		(GTK_TYPE_CONTAINER)->replace_child (adaptor, 
 						     G_OBJECT (container), 
 						     G_OBJECT (current),
-						     G_OBJECT (new));
+						     G_OBJECT (new_widget));
 }
 
 
@@ -3513,7 +3513,7 @@ void GLADEGTK_API
 glade_gtk_button_replace_child (GladeWidgetAdaptor  *adaptor,
 				GtkWidget           *container,
 				GtkWidget           *current,
-				GtkWidget           *new)
+				GtkWidget           *new_widget)
 {
 	GladeWidget *gbutton = glade_widget_get_from_gobject (container);
 
@@ -3523,9 +3523,9 @@ glade_gtk_button_replace_child (GladeWidgetAdaptor  *adaptor,
 		(GTK_TYPE_CONTAINER)->replace_child (adaptor, 
 						     G_OBJECT (container), 
 						     G_OBJECT (current), 
-						     G_OBJECT (new));
+						     G_OBJECT (new_widget));
 	
-	if (GLADE_IS_PLACEHOLDER (new))
+	if (GLADE_IS_PLACEHOLDER (new_widget))
 		glade_widget_property_set_sensitive (gbutton, "glade-type", TRUE, NULL);
 	else
 		glade_widget_property_set_sensitive (gbutton, "glade-type", FALSE,
@@ -5704,10 +5704,10 @@ void GLADEGTK_API
 glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
 				   GObject *container,
 				   GObject *current,
-				   GObject *new)
+				   GObject *new_object)
 {
 	GtkAssistant *assistant = GTK_ASSISTANT (container);
-	GtkWidget *page = GTK_WIDGET (new), *old_page = GTK_WIDGET (current);
+	GtkWidget *page = GTK_WIDGET (new_object), *old_page = GTK_WIDGET (current);
 	gint pos = glade_gtk_assistant_get_page (assistant, old_page);
 	gboolean set_current = gtk_assistant_get_current_page (assistant) == pos;
 	

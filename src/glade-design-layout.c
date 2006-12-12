@@ -723,16 +723,16 @@ glade_design_layout_init (GladeDesignLayout *layout)
 }
 
 static void
-glade_design_layout_class_init (GladeDesignLayoutClass *class)
+glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 {
 	GObjectClass       *object_class;
 	GtkWidgetClass     *widget_class;
 	GtkContainerClass  *container_class;
 
-	object_class = G_OBJECT_CLASS (class);
-	parent_class = g_type_class_peek_parent (class);
-	widget_class = GTK_WIDGET_CLASS (class);
-	container_class = GTK_CONTAINER_CLASS (class);
+	object_class = G_OBJECT_CLASS (klass);
+	parent_class = g_type_class_peek_parent (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
+	container_class = GTK_CONTAINER_CLASS (klass);
 
 	object_class->dispose               = glade_design_layout_dispose;	
 	object_class->finalize              = glade_design_layout_finalize;

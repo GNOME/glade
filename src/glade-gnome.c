@@ -596,7 +596,7 @@ glade_gnome_dps_set_color_common (GObject      *object,
 	prop = glade_widget_get_property (glade_widget_get_from_gobject (object),
 					  property_name);
 	
-	color = glade_property_class_make_gvalue_from_string (prop->class,
+	color = glade_property_class_make_gvalue_from_string (prop->klass,
 							      color_str, NULL);
 	if (color) glade_property_set_value (prop, color);
 }
@@ -1270,9 +1270,9 @@ void GLADEGNOME_API
 glade_gnome_font_picker_replace_child (GladeWidgetAdaptor  *adaptor,
 				       GtkWidget           *container,
 				       GtkWidget           *current,
-				       GtkWidget           *new)
+				       GtkWidget           *new_widget)
 {
-	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), new);
+	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), new_widget);
 }
 
 /* GnomeIconList */
@@ -1352,7 +1352,7 @@ glade_gnome_pixmap_set_filename_common (GObject *object)
 	{
 		GladeProperty *property = glade_widget_get_property (gp, "filename");
 		gchar *file = glade_property_class_make_string_from_gvalue
-					     (property->class, property->value);
+					     (property->klass, property->value);
 		if (file)
 		{
 			gnome_pixmap_load_file_at_size (GNOME_PIXMAP (object),
@@ -1585,9 +1585,9 @@ void GLADEGNOME_API
 glade_gnome_bonobodock_replace_child (GladeWidgetAdaptor  *adaptor,
 				      GtkWidget           *container,
 				      GtkWidget           *current,
-				      GtkWidget           *new)
+				      GtkWidget           *new_widget)
 {
-	bonobo_dock_set_client_area (BONOBO_DOCK (container), new);
+	bonobo_dock_set_client_area (BONOBO_DOCK (container), new_widget);
 }
 
 static gboolean

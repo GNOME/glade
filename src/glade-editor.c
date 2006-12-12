@@ -127,17 +127,17 @@ glade_editor_get_property (GObject    *object,
 
 
 static void
-glade_editor_class_init (GladeEditorClass *class)
+glade_editor_class_init (GladeEditorClass *klass)
 {
 	GObjectClass       *object_class;
 
-	parent_class = g_type_class_peek_parent (class);
-	object_class = G_OBJECT_CLASS (class);
+	parent_class = g_type_class_peek_parent (klass);
+	object_class = G_OBJECT_CLASS (klass);
 
 	object_class->set_property = glade_editor_set_property;
 	object_class->get_property = glade_editor_get_property;
 
-	class->gtk_doc_search = NULL;
+	klass->gtk_doc_search = NULL;
 
 	/* Properties */
 	g_object_class_install_property
@@ -448,12 +448,12 @@ glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint ro
 
 static GladeEditorProperty *
 glade_editor_table_append_item (GladeEditorTable *table,
-				GladePropertyClass *class,
+				GladePropertyClass *klass,
 				gboolean from_query_dialog)
 {
 	GladeEditorProperty *property;
 
-	property = glade_editor_property_new (class, from_query_dialog == FALSE);
+	property = glade_editor_property_new (klass, from_query_dialog == FALSE);
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->eventbox);
 
@@ -549,12 +549,12 @@ glade_editor_get_sorted_properties (GladeWidgetAdaptor *adaptor)
 	
 	for (l = adaptor->properties; l && l->data; l = g_list_next (l))
 	{
-		GladePropertyClass *class = l->data;
+		GladePropertyClass *klass = l->data;
 		
-		if (class->common || class->packing)
-			a = g_list_prepend (a, class);
+		if (klass->common || klass->packing)
+			a = g_list_prepend (a, klass);
 		else
-			b = g_list_prepend (b, class);
+			b = g_list_prepend (b, klass);
 	}
 	
 	a = g_list_sort (a, glade_editor_property_class_comp);
@@ -792,7 +792,7 @@ static gint
 glade_editor_property_comp (gconstpointer a, gconstpointer b)
 {
 	const GladeProperty *prop_a = a, *prop_b = b;
-	return glade_editor_property_class_comp (prop_a->class, prop_b->class);
+	return glade_editor_property_class_comp (prop_a->klass, prop_b->klass);
 }
 
 static void
@@ -836,11 +836,11 @@ glade_editor_load_packing_page (GladeEditor *editor, GladeWidget *widget)
 	{
 		property               = GLADE_PROPERTY (list->data);
 		
-		if (glade_property_class_is_visible (property->class) == FALSE)
+		if (glade_property_class_is_visible (property->klass) == FALSE)
 			continue;
 		
 		editor_property        = glade_editor_table_append_item (editor->packing_etable, 
-									 property->class, FALSE);
+									 property->klass, FALSE);
 		editor->packing_eprops = g_list_prepend (editor->packing_eprops, editor_property);
 		glade_editor_property_load (editor_property, property);
 	}
@@ -1188,13 +1188,13 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 	{
 		property = list->data;
 
-		if (glade_property_class_is_visible (property->class) == FALSE)
+		if (glade_property_class_is_visible (property->klass) == FALSE)
 			continue;
 		
-		if (property->class->type != GPC_NORMAL && 
-		    property->class->type != GPC_ACCEL_PROPERTY)
+		if (property->klass->type != GPC_NORMAL && 
+		    property->klass->type != GPC_ACCEL_PROPERTY)
 			iter = &atk_iter;
-		else if (property->class->common)
+		else if (property->klass->common)
 			iter = &common_iter;
 		else
 			iter = &general_iter;
@@ -1204,7 +1204,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 		gtk_tree_store_append (model, &property_iter, iter);
 		gtk_tree_store_set    (model, &property_iter,
 				       COLUMN_ENABLED,   !def,
-				       COLUMN_PROP_NAME, property->class->name,
+				       COLUMN_PROP_NAME, property->klass->name,
 				       COLUMN_PROPERTY,  property,
 				       COLUMN_PARENT,    FALSE,
 				       COLUMN_CHILD,     TRUE,

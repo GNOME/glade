@@ -128,14 +128,14 @@ glade_design_view_init (GladeDesignView *view)
 }
 
 static void
-glade_design_view_class_init (GladeDesignViewClass *class)
+glade_design_view_class_init (GladeDesignViewClass *klass)
 {
 	GObjectClass    *object_class;
 	GtkWidgetClass  *widget_class;
 
-	parent_class = g_type_class_peek_parent (class);
-	object_class = G_OBJECT_CLASS (class);
-	widget_class = GTK_WIDGET_CLASS (class);
+	parent_class = g_type_class_peek_parent (klass);
+	object_class = G_OBJECT_CLASS (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
 
 	object_class->get_property = glade_design_view_get_property;
 	object_class->set_property = glade_design_view_set_property;

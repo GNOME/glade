@@ -130,25 +130,25 @@ gwa_properties_set_weight (GList **properties, GType parent)
 
 	for (l = *properties; l && l->data; l = g_list_next (l))
 	{
-		GladePropertyClass *class = l->data;
-		GPCType type = class->type;
+		GladePropertyClass *klass = l->data;
+		GPCType type = klass->type;
 	
-		if (class->visible &&
-		    (parent) ? parent == class->pspec->owner_type : TRUE &&
+		if (klass->visible &&
+		    (parent) ? parent == klass->pspec->owner_type : TRUE &&
 	    	    (type == GPC_NORMAL || type == GPC_ACCEL_PROPERTY))
 		{
 			/* Use a different counter for each tab (common, packing and normal) */
-			if (class->common) common++;
-			else if (class->packing) packing++;
+			if (klass->common) common++;
+			else if (klass->packing) packing++;
 			else normal++;
 
 			/* Skip if it is already set */
-			if (class->weight >= 0.0) continue;
+			if (klass->weight >= 0.0) continue;
 			
 			/* Special-casing weight of properties for seperate tabs */
-			if (class->common) class->weight = common;
-			else if (class->packing) class->weight = packing;
-			else class->weight = normal;
+			if (klass->common) klass->weight = common;
+			else if (klass->packing) klass->weight = packing;
+			else klass->weight = normal;
 		}
 	}
 }
@@ -1948,7 +1948,7 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
 		/* Ignore properties based on some criteria
 		 */
 		if (pclass == NULL       || /* Unaccounted for in the builder */
-		    pclass->virtual      || /* should not be set before 
+		    pclass->virt         || /* should not be set before 
 					       GladeWidget wrapper exists */
 		    pclass->ignore)         /* Catalog explicitly ignores the object */
 			continue;
@@ -2374,18 +2374,18 @@ glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
 void
 glade_widget_adaptor_replace_child (GladeWidgetAdaptor *adaptor,
 				    GObject            *container,
-				    GObject            *old,
-				    GObject            *new)
+				    GObject            *old_obj,
+				    GObject            *new_obj)
 {
 	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 	g_return_if_fail (G_IS_OBJECT (container));
-	g_return_if_fail (G_IS_OBJECT (old));
-	g_return_if_fail (G_IS_OBJECT (new));
+	g_return_if_fail (G_IS_OBJECT (old_obj));
+	g_return_if_fail (G_IS_OBJECT (new_obj));
 	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (container), adaptor->type));
 
 	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->replace_child)
 		GLADE_WIDGET_ADAPTOR_GET_CLASS 
-			(adaptor)->replace_child (adaptor, container, old, new);
+			(adaptor)->replace_child (adaptor, container, old_obj, new_obj);
 	else
 		g_critical ("No replace_child() support in adaptor %s", adaptor->name);
 }

@@ -579,12 +579,12 @@ glade_widget_template_params (GladeWidget      *widget,
 		     glade_widget_get_property (widget, pspec[i]->name)) == NULL)
 			continue;
 
-		pclass = glade_property->class;
+		pclass = glade_property->klass;
 		
 		/* Ignore properties based on some criteria
 		 */
 		if (pclass == NULL  || /* Unaccounted for in the builder */
-		    pclass->virtual || /* should not be set before 
+		    pclass->virt    || /* should not be set before 
 					  GladeWidget wrapper exists */
 		    pclass->ignore)    /* Catalog explicitly ignores the object */
 			continue;
@@ -690,7 +690,7 @@ glade_widget_dup_properties (GList *template_props, gboolean as_load)
 	{
 		GladeProperty *prop = list->data;
 		
-		if (prop->class->save == FALSE && as_load)
+		if (prop->klass->save == FALSE && as_load)
 			continue;
 
 		properties = g_list_prepend (properties, glade_property_dup (prop, NULL));
@@ -1321,7 +1321,7 @@ glade_widget_get_type (void)
 static void
 glade_widget_copy_packing_props (GladeWidget *parent,
 				 GladeWidget *child,
-				 GladeWidget *template)
+				 GladeWidget *template_widget)
 {
 	GladeProperty *dup_prop, *orig_prop;
 	GList         *l;
@@ -1334,7 +1334,7 @@ glade_widget_copy_packing_props (GladeWidget *parent,
 	{
 		dup_prop  = GLADE_PROPERTY(l->data);
 		orig_prop =
-			glade_widget_get_property (template, dup_prop->class->id);
+			glade_widget_get_property (template_widget, dup_prop->klass->id);
 		glade_property_set_value (dup_prop, orig_prop->value);
 	}
 }
@@ -1417,7 +1417,7 @@ glade_widget_get_internal_func (GladeWidget *parent, GladeWidget **parent_ret)
 
 
 static GladeWidget *
-glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
+glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template_widget)
 {
 	GladeGetInternalFunc  get_internal;
 	GladeWidget *gwidget = NULL, *internal_parent;
@@ -1425,11 +1425,11 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	GtkWidget   *placeholder;
 	gchar       *child_type;
 	
-	g_return_val_if_fail (template != NULL && GLADE_IS_WIDGET(template), NULL);
+	g_return_val_if_fail (template_widget != NULL && GLADE_IS_WIDGET(template_widget), NULL);
 	g_return_val_if_fail (parent == NULL || GLADE_IS_WIDGET (parent), NULL);
 
 	/* Dont actually duplicate internal widgets, but recurse through them anyway. */
-	if (template->internal)
+	if (template_widget->internal)
 	{
 		GObject *internal_object = NULL;
 
@@ -1443,7 +1443,7 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 			 */
 			internal_object = get_internal (internal_parent->adaptor,
 							internal_parent->object, 
-							template->internal);
+							template_widget->internal);
 			g_assert (internal_object);
 			
 			gwidget = glade_widget_get_from_gobject (internal_object);
@@ -1452,20 +1452,20 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	}
 	else
 	{
-		gchar *name = glade_project_new_widget_name (template->project, template->name);
+		gchar *name = glade_project_new_widget_name (template_widget->project, template_widget->name);
 		gwidget = glade_widget_adaptor_create_widget
-			(template->adaptor, FALSE,
+			(template_widget->adaptor, FALSE,
 			 "name", name,
 			 "parent", parent, 
-			 "project", template->project,
-			 "template", template, 
+			 "project", template_widget->project,
+			 "template", template_widget, 
 			 "reason", GLADE_CREATE_COPY, NULL);
 		g_free (name);
 	}
  	
 	if ((children =
-	     glade_widget_adaptor_get_children (template->adaptor,
-						template->object)) != NULL)
+	     glade_widget_adaptor_get_children (template_widget->adaptor,
+						template_widget->object)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 		{
@@ -1523,10 +1523,10 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	}
 
 	if (gwidget->internal)
-		glade_widget_copy_properties (gwidget, template);
+		glade_widget_copy_properties (gwidget, template_widget);
 	
 	if (gwidget->packing_properties == NULL)
-		gwidget->packing_properties = glade_widget_dup_properties (template->packing_properties , FALSE);
+		gwidget->packing_properties = glade_widget_dup_properties (template_widget->packing_properties , FALSE);
 	
 	/* If custom properties are still at thier
 	 * default value, they need to be synced.
@@ -1539,9 +1539,9 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template)
 	if (GTK_IS_WINDOW (gwidget->object))
 	{
 		gint width, height;
-		g_assert (GTK_IS_WINDOW (template->object));
+		g_assert (GTK_IS_WINDOW (template_widget->object));
 
-		gtk_window_get_size (GTK_WINDOW (template->object), 
+		gtk_window_get_size (GTK_WINDOW (template_widget->object), 
 				     &width, &height);
 		gtk_window_resize (GTK_WINDOW (gwidget->object),
 				   width, height);
@@ -1668,7 +1668,7 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 				GladeProperty *saved_prop = l->data;
 				GladeProperty *widget_prop = 
 					glade_widget_get_property (gchild,
-								   saved_prop->class->id);
+								   saved_prop->klass->id);
 				
 				glade_property_get_value (saved_prop, &value);
 				glade_property_set_value (widget_prop, &value);
@@ -1694,7 +1694,7 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 				GladeProperty *saved_prop = l->data;
 				GladeProperty *widget_prop = 
 					glade_widget_get_pack_property (extract->widget,
-									saved_prop->class->id);
+									saved_prop->klass->id);
 				
 				glade_property_get_value (saved_prop, &value);
 				glade_property_set_value (widget_prop, &value);
@@ -1947,7 +1947,7 @@ glade_widget_new_child_from_child_info (GladeChildInfo *info,
 	for (list = child->packing_properties; list; list = list->next)
 	{
 		GladeProperty *property = list->data;
-		glade_property_read (property, property->class, 
+		glade_property_read (property, property->klass, 
 				     loading_project, info, TRUE);
 	}
 	return TRUE;
@@ -1999,7 +1999,7 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
  		for (list = widget->properties; list; list = list->next)
   		{
 			property = list->data;
-			glade_property_read (property, property->class, 
+			glade_property_read (property, property->klass, 
 					     loading_project, info, TRUE);
 		}
 	}
@@ -2008,12 +2008,12 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 
 
 static GList *
-glade_widget_properties_from_widget_info (GladeWidgetAdaptor *class,
+glade_widget_properties_from_widget_info (GladeWidgetAdaptor *klass,
 					  GladeWidgetInfo  *info)
 {
 	GList  *properties = NULL, *list;
 	
-	for (list = class->properties; list && list->data; list = list->next)
+	for (list = klass->properties; list && list->data; list = list->next)
 	{
 		GladePropertyClass *pclass = list->data;
 		GladeProperty      *property;
@@ -2023,7 +2023,7 @@ glade_widget_properties_from_widget_info (GladeWidgetAdaptor *class,
 		 */
 		property = glade_property_new (pclass, NULL, NULL, FALSE);
 
-		glade_property_read (property, property->class, 
+		glade_property_read (property, property->klass, 
 				     loading_project, info, TRUE);
 
 		properties = g_list_prepend (properties, property);
@@ -2103,7 +2103,7 @@ glade_widget_info_params (GladeWidgetAdaptor *adaptor,
 			glade_widget_adaptor_get_property_class (adaptor,
 								 pspec[i]->name);
 		if (glade_property_class == NULL  ||
-		    glade_property_class->virtual ||
+		    glade_property_class->virt    ||
 		    glade_property_class->ignore)
 			continue;
 
@@ -2336,14 +2336,14 @@ glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
 /**
  * glade_widget_copy_properties:
  * @widget:   a 'dest' #GladeWidget
- * @template: a 'src' #GladeWidget
+ * @template_widget: a 'src' #GladeWidget
  *
  * Sets properties in @widget based on the values of
- * matching properties in @template
+ * matching properties in @template_widget
  */
 void
 glade_widget_copy_properties (GladeWidget *widget,
-			      GladeWidget *template)
+			      GladeWidget *template_widget)
 {
 	GList *l;
 	for (l = widget->properties; l && l->data; l = l->next)
@@ -2357,9 +2357,9 @@ glade_widget_copy_properties (GladeWidget *widget,
 		 * classes, like GtkImageMenuItem --> GtkCheckMenuItem).
 		 */
 		if ((template_prop =
-		     glade_widget_get_property (template, 
-						widget_prop->class->id)) != NULL &&
-		    glade_property_class_match (template_prop->class, widget_prop->class))
+		     glade_widget_get_property (template_prop, 
+						widget_prop->klass->id)) != NULL &&
+		    glade_property_class_match (template_prop->klass, widget_prop->klass))
 			glade_property_set_value (widget_prop, template_prop->value);
 	}
 }
@@ -2403,21 +2403,21 @@ glade_widget_remove_child (GladeWidget      *parent,
 
 /**
  * glade_widget_dup:
- * @template: a #GladeWidget
+ * @template_widget: a #GladeWidget
  *
  * Creates a deep copy of #GladeWidget.
  *
  * Returns: The newly created #GladeWidget
  */
 GladeWidget *
-glade_widget_dup (GladeWidget *template)
+glade_widget_dup (GladeWidget *template_widget)
 {
 	GladeWidget *widget;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET (template), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (template_widget), NULL);
 	
 	glade_widget_push_superuser ();
-	widget = glade_widget_dup_internal (NULL, template);
+	widget = glade_widget_dup_internal (NULL, template_widget);
 	glade_widget_pop_superuser ();
 
 	return widget;
@@ -2720,7 +2720,7 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 		
 	for (list = widget->properties; list; list = list->next) {
 		property = list->data;
-		if (strcmp (property->class->id, id_buffer) == 0)
+		if (strcmp (property->klass->id, id_buffer) == 0)
 			return property;
 	}
 	return glade_widget_get_pack_property (widget, id_property);
@@ -2749,7 +2749,7 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 
 	for (list = widget->packing_properties; list; list = list->next) {
 		property = list->data;
-		if (strcmp (property->class->id, id_buffer) == 0)
+		if (strcmp (property->klass->id, id_buffer) == 0)
 			return property;
 	}
 	return NULL;
@@ -3361,7 +3361,7 @@ glade_widget_set_packing_properties (GladeWidget *widget,
 			g_value_reset (property->value);
 			glade_widget_child_get_property 
 				(container,
-				 widget, property->class->id, property->value);
+				 widget, property->klass->id, property->value);
 		}
 	}
 }
@@ -3507,10 +3507,10 @@ glade_widget_write (GladeWidget *widget, GladeInterface *interface)
 		GladeProperty *property = list->data;
 
 		/* This should never happen */
-		if (property->class->packing)
+		if (property->klass->packing)
 			continue;
 
-		switch (property->class->type)
+		switch (property->klass->type)
 		{
 		case GPC_NORMAL:
 			glade_property_write (property, interface, props);
@@ -3678,7 +3678,7 @@ glade_widget_write_child (GArray         *children,
 			GladeProperty *property;
 
 			property = list->data;
-			g_assert (property->class->packing != FALSE);
+			g_assert (property->klass->packing != FALSE);
 			glade_property_write (property, interface, props);
 		}
 	}
@@ -3866,21 +3866,21 @@ static GtkBinClass*
 get_bin_class_ancestor (gpointer descendant_class)
 {
 	gpointer parent_class;
-	gpointer class;
+	gpointer klass;
 
-	class = descendant_class;
+	klass = descendant_class;
 
-	if (!GTK_IS_BIN_CLASS (class))
+	if (!GTK_IS_BIN_CLASS (klass))
 		return NULL;
 
-	while (GTK_IS_BIN_CLASS (parent_class = g_type_class_peek_parent (class)))
+	while (GTK_IS_BIN_CLASS (parent_class = g_type_class_peek_parent (klass)))
 	{
-		class = parent_class;
-		parent_class = g_type_class_peek_parent (class);
+		klass = parent_class;
+		parent_class = g_type_class_peek_parent (klass);
 
 	}
 
-	return GTK_BIN_CLASS (class);
+	return GTK_BIN_CLASS (klass);
 }
 
 static GladeOriginalHandlers*

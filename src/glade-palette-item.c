@@ -235,12 +235,12 @@ glade_palette_item_dispose (GObject *object)
 }
 
 static void
-glade_palette_item_class_init (GladePaletteItemClass *class)
+glade_palette_item_class_init (GladePaletteItemClass *klass)
 {
 	GObjectClass *object_class;
 
-	object_class = G_OBJECT_CLASS (class);
-	parent_class = g_type_class_peek_parent (class);
+	object_class = G_OBJECT_CLASS (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
 
 	object_class->get_property = glade_palette_item_get_property;

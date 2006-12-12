@@ -660,17 +660,17 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 }
 
 static void
-glade_project_view_class_init (GladeProjectViewClass *class)
+glade_project_view_class_init (GladeProjectViewClass *klass)
 {
 	GObjectClass *object_class;
 
-	object_class = G_OBJECT_CLASS (class);
-	parent_class = g_type_class_peek_parent (class);
+	object_class = G_OBJECT_CLASS (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
-	class->add_item             = glade_project_view_add_item;
-	class->remove_item          = glade_project_view_remove_item;
-	class->widget_name_changed  = glade_project_view_widget_name_changed;
-	class->selection_update     = glade_project_view_selection_update;
+	klass->add_item             = glade_project_view_add_item;
+	klass->remove_item          = glade_project_view_remove_item;
+	klass->widget_name_changed  = glade_project_view_widget_name_changed;
+	klass->selection_update     = glade_project_view_selection_update;
 
 	/**
 	 * GladeProjectView::item-activated:

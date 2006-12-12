@@ -366,13 +366,13 @@ _wrap_GladeWidgetAdaptor__do_replace_child(PyObject *cls, PyObject *args, PyObje
 {
     gpointer klass;
     static char *kwlist[] = { "self", "container", "old", "new", NULL };
-    PyGObject *self, *container, *old, *new;
+    PyGObject *self, *container, *old_obj, *new_obj;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old, &PyGObject_Type, &new))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old_obj, &PyGObject_Type, &new_obj))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child)
-        GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(container->obj), G_OBJECT(old->obj), G_OBJECT(new->obj));
+        GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(container->obj), G_OBJECT(old_obj->obj), G_OBJECT(new_obj->obj));
     else {
         PyErr_SetString(PyExc_NotImplementedError, "virtual method GladeWidgetAdaptor.replace_child not implemented");
         g_type_class_unref(klass);
@@ -1252,7 +1252,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_remove(GladeWidgetAdaptor *self, GObject*pare
     pyg_gil_state_release(__py_state);
 }
 static void
-_wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObject*container, GObject*old, GObject*new)
+_wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObject*container, GObject*old_obj, GObject*new_obj)
 {
     PyGILState_STATE __py_state;
     PyObject *py_self;
@@ -1277,14 +1277,14 @@ _wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObje
         Py_INCREF(Py_None);
         py_container = Py_None;
     }
-    if (old)
-        py_old = pygobject_new((GObject *) old);
+    if (old_obj)
+        py_old = pygobject_new((GObject *) old_obj);
     else {
         Py_INCREF(Py_None);
         py_old = Py_None;
     }
-    if (new)
-        py_new = pygobject_new((GObject *) new);
+    if (new_obj)
+        py_new = pygobject_new((GObject *) new_obj);
     else {
         Py_INCREF(Py_None);
         py_new = Py_None;

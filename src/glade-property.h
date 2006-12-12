@@ -21,7 +21,7 @@ struct _GladeProperty
 {
 	GObject             parent_instance;
 
-	GladePropertyClass *class;     /* A pointer to the GladeProperty that this
+	GladePropertyClass *klass;     /* A pointer to the GladeProperty that this
 					* setting specifies
 					*/
 	GladeWidget        *widget;    /* A pointer to the GladeWidget that this
@@ -82,12 +82,12 @@ struct _GladePropertyKlass
 LIBGLADEUI_API
 GType                   glade_property_get_type              (void) G_GNUC_CONST;
 LIBGLADEUI_API
-GladeProperty          *glade_property_new                   (GladePropertyClass *class,
+GladeProperty          *glade_property_new                   (GladePropertyClass *klass,
 							      GladeWidget        *widget,
 							      GValue             *value,
 							      gboolean            catalog_default);
 LIBGLADEUI_API
-GladeProperty          *glade_property_dup                   (GladeProperty      *template,
+GladeProperty          *glade_property_dup                   (GladeProperty      *template_prop,
 							      GladeWidget        *widget);
 LIBGLADEUI_API
 void                    glade_property_reset                 (GladeProperty      *property);

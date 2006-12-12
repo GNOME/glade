@@ -2260,15 +2260,15 @@ glade_project_window_finalize (GObject *object)
 }
 
 static void
-glade_project_window_class_init (GladeProjectWindowClass * class)
+glade_project_window_class_init (GladeProjectWindowClass * klass)
 {
 	GObjectClass *object_class;
 	GladeAppClass *app_class;
-	g_return_if_fail (class != NULL);
+	g_return_if_fail (klass != NULL);
 
-	parent_class = g_type_class_peek_parent (class);
-	object_class = G_OBJECT_CLASS  (class);
-	app_class    = GLADE_APP_CLASS (class);
+	parent_class = g_type_class_peek_parent (klass);
+	object_class = G_OBJECT_CLASS  (klass);
+	app_class    = GLADE_APP_CLASS (klass);
 
 	object_class->finalize = glade_project_window_finalize;
 

@@ -1211,14 +1211,14 @@ glade_util_purify_list (GList *list)
  *
  */
 GList *
-glade_util_added_in_list (GList *old,
-			  GList *new)
+glade_util_added_in_list (GList *old_list,
+			  GList *new_list)
 {
 	GList *added = NULL, *list;
 
-	for (list = new; list; list = list->next)
+	for (list = new_list; list; list = list->next)
 	{
-		if (!g_list_find (old, list->data))
+		if (!g_list_find (old_list, list->data))
 			added = g_list_prepend (added, list->data);
 	} 
 
@@ -1235,14 +1235,14 @@ glade_util_added_in_list (GList *old,
  *
  */
 GList *
-glade_util_removed_from_list (GList *old,
-			      GList *new)
+glade_util_removed_from_list (GList *old_list,
+			      GList *new_list)
 {
 	GList *added = NULL, *list;
 
-	for (list = old; list; list = list->next)
+	for (list = old_list; list; list = list->next)
 	{
-		if (!g_list_find (new, list->data))
+		if (!g_list_find (new_list, list->data))
 			added = g_list_prepend (added, list->data);
 	} 
 

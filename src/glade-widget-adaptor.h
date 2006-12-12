@@ -243,8 +243,8 @@ typedef void     (* GladeRemoveChildFunc)         (GladeWidgetAdaptor *adaptor,
  */
 typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
 						   GObject            *container,  
-						   GObject            *old,
-						   GObject            *new);
+						   GObject            *old_obj,
+						   GObject            *new_obj);
 
 /**
  * GladePostCreateFunc:
@@ -526,8 +526,8 @@ gboolean             glade_widget_adaptor_child_verify_property (GladeWidgetAdap
 LIBGLADEUI_API
 void                 glade_widget_adaptor_replace_child      (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
-							      GObject            *old,
-							      GObject            *new);
+							      GObject            *old_obj,
+							      GObject            *new_obj);
 LIBGLADEUI_API
 gboolean             glade_widget_adaptor_contains_extra     (GladeWidgetAdaptor *adaptor);
 LIBGLADEUI_API

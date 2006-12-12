@@ -113,19 +113,19 @@ glade_palette_box_get_type (void)
 }
 
 static void
-glade_palette_box_class_init (GladePaletteBoxClass *class)
+glade_palette_box_class_init (GladePaletteBoxClass *klass)
 {
 	GObjectClass *gobject_class;
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
 
-	parent_class = g_type_class_peek_parent (class);
+	parent_class = g_type_class_peek_parent (klass);
 
-	gobject_class = G_OBJECT_CLASS (class);
+	gobject_class = G_OBJECT_CLASS (klass);
 	gobject_class->set_property = glade_palette_box_set_property;
 	gobject_class->get_property = glade_palette_box_get_property;
 
-	container_class = GTK_CONTAINER_CLASS (class);
+	container_class = GTK_CONTAINER_CLASS (klass);
 	container_class->add = glade_palette_box_add;
 	container_class->remove = glade_palette_box_remove;
 	container_class->forall = glade_palette_box_forall;
@@ -133,7 +133,7 @@ glade_palette_box_class_init (GladePaletteBoxClass *class)
 	container_class->set_child_property = glade_palette_box_set_child_property;
 	container_class->get_child_property = glade_palette_box_get_child_property;
 
-	widget_class = GTK_WIDGET_CLASS (class);
+	widget_class = GTK_WIDGET_CLASS (klass);
 	widget_class->size_request = glade_palette_box_size_request;
 	widget_class->size_allocate = glade_palette_box_size_allocate;
 

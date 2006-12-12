@@ -17,7 +17,7 @@ typedef struct _GladeEditorPropertyClass   GladeEditorPropertyClass;
 struct _GladeEditorProperty {
 	GtkHBox             parent_instance;
 
-	GladePropertyClass *class;          /* The property class this GladeEditorProperty was created for
+	GladePropertyClass *klass;          /* The property class this GladeEditorProperty was created for
 					     */
 	GladeProperty      *property;       /* The currently loaded property
 					     */
@@ -80,7 +80,7 @@ struct _GladeEditorPropertyClass {
 LIBGLADEUI_API
 GType                glade_editor_property_get_type       (void);
 LIBGLADEUI_API
-GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *class,
+GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *klass,
 							   gboolean             use_command);
 LIBGLADEUI_API
 GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,

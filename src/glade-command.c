@@ -115,13 +115,13 @@ glade_command_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_unifies_impl (GladeCommand *this, GladeCommand *other)
+glade_command_unifies_impl (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	return FALSE;
 }
 
 static void
-glade_command_collapse_impl (GladeCommand *this, GladeCommand *other)
+glade_command_collapse_impl (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	g_return_if_reached ();
 }
@@ -154,9 +154,9 @@ func ## _execute (GladeCommand *me);					\
 static void								\
 func ## _finalize (GObject *object);					\
 static gboolean								\
-func ## _unifies (GladeCommand *this, GladeCommand *other);		\
+func ## _unifies (GladeCommand *this_cmd, GladeCommand *other_cmd);		\
 static void								\
-func ## _collapse (GladeCommand *this, GladeCommand *other);		\
+func ## _collapse (GladeCommand *this_cmd, GladeCommand *other_cmd);		\
 static void								\
 func ## _class_init (gpointer parent_tmp, gpointer notused)		\
 {									\
@@ -357,10 +357,10 @@ glade_command_set_property_execute (GladeCommand *cmd)
 		{
 			gchar *str =
 				glade_property_class_make_string_from_gvalue 
-				(sdata->property->class, &new_value);
+				(sdata->property->klass, &new_value);
 
 			g_print ("Setting %s property of %s to %s (sumode: %d)\n",
-				 sdata->property->class->id,
+				 sdata->property->klass->id,
 				 sdata->property->widget->name,
 				 str, glade_property_superuser ());
 
@@ -371,12 +371,12 @@ glade_command_set_property_execute (GladeCommand *cmd)
 		/* Packing properties need to be refreshed here since
 		 * they are reset when they get added to containers.
 		 */
-		if (sdata->property->class->packing)
+		if (sdata->property->klass->packing)
 		{
 			GladeProperty *tmp_prop;
 
 			tmp_prop = glade_widget_get_pack_property
-				(sdata->property->widget, sdata->property->class->id);
+				(sdata->property->widget, sdata->property->klass->id);
 
 			if (sdata->property != tmp_prop)
 			{
@@ -443,17 +443,17 @@ glade_command_set_property_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_set_property_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
        GladeCommandSetProperty *cmd1,   *cmd2;
        GCSetPropData           *pdata1, *pdata2;
        GList                   *list, *l;
 
-       if (GLADE_IS_COMMAND_SET_PROPERTY (this) && 
-	   GLADE_IS_COMMAND_SET_PROPERTY (other))
+       if (GLADE_IS_COMMAND_SET_PROPERTY (this_cmd) && 
+	   GLADE_IS_COMMAND_SET_PROPERTY (other_cmd))
        {
-               cmd1 = (GladeCommandSetProperty*) this;
-               cmd2 = (GladeCommandSetProperty*) other;
+               cmd1 = (GladeCommandSetProperty*) this_cmd;
+               cmd2 = (GladeCommandSetProperty*) other_cmd;
 
 	       if (g_list_length (cmd1->sdata) != 
 		   g_list_length (cmd2->sdata))
@@ -467,8 +467,8 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 			       pdata2 = l->data;
 
 			       if (pdata1->property->widget == pdata2->property->widget &&
-				   glade_property_class_match (pdata1->property->class,
-							       pdata2->property->class))
+				   glade_property_class_match (pdata1->property->klass,
+							       pdata2->property->klass))
 				       break;
 		       }
 		       
@@ -486,17 +486,17 @@ glade_command_set_property_unifies (GladeCommand *this, GladeCommand *other)
 }
 
 static void
-glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_set_property_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	GladeCommandSetProperty *cmd1,   *cmd2;
 	GCSetPropData           *pdata1, *pdata2;
 	GList                   *list, *l;
 	
-	g_return_if_fail (GLADE_IS_COMMAND_SET_PROPERTY (this) &&
-			  GLADE_IS_COMMAND_SET_PROPERTY (other));
+	g_return_if_fail (GLADE_IS_COMMAND_SET_PROPERTY (this_cmd) &&
+			  GLADE_IS_COMMAND_SET_PROPERTY (other_cmd));
 	
-	cmd1 = (GladeCommandSetProperty*) this;
-	cmd2 = (GladeCommandSetProperty*) other;
+	cmd1 = (GladeCommandSetProperty*) this_cmd;
+	cmd2 = (GladeCommandSetProperty*) other_cmd;
 
 
 	for (list = cmd1->sdata; list; list = list->next)
@@ -506,8 +506,8 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 		{
 			pdata2 = l->data;
 			
-			if (glade_property_class_match (pdata1->property->class,
-							pdata2->property->class))
+			if (glade_property_class_match (pdata1->property->klass,
+							pdata2->property->klass))
 			{
 				/* Merge the GCSetPropData structs manually here
 				 */
@@ -519,9 +519,9 @@ glade_command_set_property_collapse (GladeCommand *this, GladeCommand *other)
 
 	/* Set the description
 	 */
-	g_free (this->description);
-	this->description = other->description;
-	other->description = NULL;
+	g_free (this_cmd->description);
+	this_cmd->description = other_cmd->description;
+	other_cmd->description = NULL;
 
 	glade_app_update_ui ();
 }
@@ -542,16 +542,16 @@ glade_command_set_property_description (GladeCommandSetProperty *me)
 	else 
 	{
 		sdata = me->sdata->data;
-		value_name = glade_property_class_make_string_from_gvalue (sdata->property->class, 
+		value_name = glade_property_class_make_string_from_gvalue (sdata->property->klass, 
 									   sdata->new_value);
 		if (!value_name || strlen (value_name) > MAX_UNDO_MENU_ITEM_VALUE_LEN
 		    || strchr (value_name, '_')) {
 			description = g_strdup_printf (_("Setting %s of %s"),
-						       sdata->property->class->name,
+						       sdata->property->klass->name,
 						       sdata->property->widget->name);
 		} else {
 			description = g_strdup_printf (_("Setting %s of %s to %s"),
-						       sdata->property->class->name,
+						       sdata->property->klass->name,
 						       sdata->property->widget->name, value_name);
 		}
 		g_free (value_name);
@@ -665,7 +665,7 @@ glade_command_set_property (GladeProperty *property, ...)
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
 	va_start (args, property);
-	value = glade_property_class_make_gvalue_from_vl (property->class, args);
+	value = glade_property_class_make_gvalue_from_vl (property->klass, args);
 	va_end (args);
 	
 	glade_command_set_property_value (property, value);
@@ -739,15 +739,15 @@ glade_command_set_name_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_set_name_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_set_name_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	GladeCommandSetName *cmd1;
 	GladeCommandSetName *cmd2;
 
-	if (GLADE_IS_COMMAND_SET_NAME (this) && GLADE_IS_COMMAND_SET_NAME (other))
+	if (GLADE_IS_COMMAND_SET_NAME (this_cmd) && GLADE_IS_COMMAND_SET_NAME (other_cmd))
 	{
-		cmd1 = GLADE_COMMAND_SET_NAME (this);
-		cmd2 = GLADE_COMMAND_SET_NAME (other);
+		cmd1 = GLADE_COMMAND_SET_NAME (this_cmd);
+		cmd2 = GLADE_COMMAND_SET_NAME (other_cmd);
 
 		return (cmd1->widget == cmd2->widget);
 	}
@@ -756,19 +756,19 @@ glade_command_set_name_unifies (GladeCommand *this, GladeCommand *other)
 }
 
 static void
-glade_command_set_name_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_set_name_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
-	GladeCommandSetName *nthis = GLADE_COMMAND_SET_NAME (this);
-	GladeCommandSetName *nother = GLADE_COMMAND_SET_NAME (other);
+	GladeCommandSetName *nthis = GLADE_COMMAND_SET_NAME (this_cmd);
+	GladeCommandSetName *nother = GLADE_COMMAND_SET_NAME (other_cmd);
 
-	g_return_if_fail (GLADE_IS_COMMAND_SET_NAME (this) && GLADE_IS_COMMAND_SET_NAME (other));
+	g_return_if_fail (GLADE_IS_COMMAND_SET_NAME (this_cmd) && GLADE_IS_COMMAND_SET_NAME (other_cmd));
 
 	g_free (nthis->old_name);
 	nthis->old_name = nother->old_name;
 	nother->old_name = NULL;
 
-	g_free (this->description);
-	this->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
+	g_free (this_cmd->description);
+	this_cmd->description = g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
 
 	glade_app_update_ui ();
 }
@@ -885,7 +885,7 @@ glade_command_create_execute (GladeCommandCreateDelete *me)
 				GladeProperty *saved_prop = l->data;
 				GladeProperty *widget_prop = 
 					glade_widget_get_pack_property (cdata->widget,
-									saved_prop->class->id);
+									saved_prop->klass->id);
 				
 				glade_property_get_value (saved_prop, &value);
 				glade_property_set_value (widget_prop, &value);
@@ -1033,13 +1033,13 @@ glade_command_create_delete_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_create_delete_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_create_delete_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	return FALSE;
 }
 
 static void
-glade_command_create_delete_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_create_delete_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	g_return_if_reached ();
 }
@@ -1213,10 +1213,10 @@ glade_command_transfer_props (GladeWidget *gnew, GList *saved_props)
 	{
 		GladeProperty *prop, *sprop = l->data;
 		
-		prop = glade_widget_get_pack_property (gnew, sprop->class->id);
+		prop = glade_widget_get_pack_property (gnew, sprop->klass->id);
 
-		if (prop && sprop->class->transfer_on_paste &&
-		    glade_property_class_match (prop->class, sprop->class))
+		if (prop && sprop->klass->transfer_on_paste &&
+		    glade_property_class_match (prop->klass, sprop->klass))
 			glade_property_set_value (prop, sprop->value);
 	}
 }
@@ -1319,7 +1319,7 @@ glade_command_paste_execute (GladeCommandCutCopyPaste *me)
 					GladeProperty *saved_prop = l->data;
 					GladeProperty *widget_prop = 
 						glade_widget_get_pack_property (cdata->widget,
-										saved_prop->class->id);
+										saved_prop->klass->id);
 
 					glade_property_get_value (saved_prop, &value);
 					glade_property_set_value (widget_prop, &value);
@@ -1555,13 +1555,13 @@ glade_command_cut_copy_paste_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_cut_copy_paste_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_cut_copy_paste_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	return FALSE;
 }
 
 static void
-glade_command_cut_copy_paste_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_cut_copy_paste_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	g_return_if_reached ();
 }
@@ -1826,15 +1826,15 @@ glade_command_add_signal_finalize (GObject *obj)
 }
 
 static gboolean
-glade_command_add_signal_undo (GladeCommand *this)
+glade_command_add_signal_undo (GladeCommand *this_cmd)
 {
-	return glade_command_add_signal_execute (this);
+	return glade_command_add_signal_execute (this_cmd);
 }
 
 static gboolean
-glade_command_add_signal_execute (GladeCommand *this)
+glade_command_add_signal_execute (GladeCommand *this_cmd)
 {
-	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (this);
+	GladeCommandAddSignal *cmd = GLADE_COMMAND_ADD_SIGNAL (this_cmd);
 	GladeSignal           *temp;
 
 	switch (cmd->type)
@@ -1862,13 +1862,13 @@ glade_command_add_signal_execute (GladeCommand *this)
 }
 
 static gboolean
-glade_command_add_signal_unifies (GladeCommand *this, GladeCommand *other)
+glade_command_add_signal_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	return FALSE;
 }
 
 static void
-glade_command_add_signal_collapse (GladeCommand *this, GladeCommand *other)
+glade_command_add_signal_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	g_return_if_reached ();
 }
@@ -1946,8 +1946,8 @@ glade_command_remove_signal (GladeWidget *glade_widget, const GladeSignal *signa
 void
 glade_command_change_signal	(GladeWidget *glade_widget, 
 				 const GladeSignal *old, 
-				 const GladeSignal *new)
+				 const GladeSignal *new_signal)
 {
 	glade_command_add_remove_change_signal 
-		(glade_widget, old, new, GLADE_CHANGE);
+		(glade_widget, old, new_signal, GLADE_CHANGE);
 }

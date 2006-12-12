@@ -140,10 +140,10 @@ void                    glade_widget_replace                (GladeWidget      *p
 LIBGLADEUI_API 
 void                    glade_widget_rebuild                (GladeWidget      *glade_widget);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_dup                    (GladeWidget      *template);
+GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget);
 LIBGLADEUI_API 
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
-							     GladeWidget      *template);
+							     GladeWidget      *template_widget);
 LIBGLADEUI_API
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
 							     GladeWidget      *container);
