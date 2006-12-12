@@ -3,11 +3,15 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 datadir=@datadir@
 includedir=@includedir@/libgladeui-1.0/libgladeui
-idldir=@datadir@/idl/libgladeui-1.0/libgladeui
+catalogdir=@datadir@/@PACKAGE@/catalogs
+pixmapdir=@datadir@/@PACKAGE@/pixmaps
+moduledir=@libdir@/@PACKAGE@/modules
 
-Name: libgladeui
-Description: Libraries for embedding Glade in applications.
-Version: @VERSION@
-Requires: gtk+-2.0 >= 2.2.0 libxml-2.0 >= 2.4.0
+
+Name: Glade
+Description: Glade interface designer library
+URL: http://glade.gnome.org
+Version: @PACKAGE_VERSION@
+Requires: gtk+-2.0 >= 2.10.0 libxml-2.0 >= 2.4.0
 Libs: -L${libdir} -lgladeui-1
 Cflags: -I${includedir}

@@ -1,5 +1,12 @@
-2006-12-08  Jeff Westerinen <jeff.westerinen@palmsource.com>
+2006-12-12  Vincent Geddes <vincent.geddes@gmail.com>
 
+	* configure.in, src/Makefile.am, src/.cvsignore: The pkg-config
+	  entry is now `libgladeui-1.0.pc'.
+
+	* doc/catalogintro.sgml: Update for change in pkg-config entry.
+
+2006-12-08  Jeff Westerinen <jeff.westerinen@palmsource.com>
+	
 	* doc/widgetclasses.sgml
 	  - changed the description of the "name" property of the
 	    glade-widget-class tag.
@@ -11,7 +18,7 @@
 	* src/glade-widget-adaptor.c
 	  - changed glade_widget_adaptor_from_catalog() to now check for a
 	    "get-type-function" property.  If one is found, it is used to get 
-	    the widget type instead of "name" property.
+	    the widget type instead of "name" property (fixes bug 377435)
 
 	* src/glade.h: added the "get-type-function" property definition.
 

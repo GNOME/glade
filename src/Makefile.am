@@ -145,7 +145,7 @@ libgladeuiinclude_HEADERS = \
 	atk.xpm
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libgladeui-1.0.pc glade-3.pc
+pkgconfig_DATA = libgladeui-1.0.pc
 
 if BUILD_PYTHON
 gladepython_LTLIBRARIES = libgladepython.la
