@@ -2,6 +2,7 @@
 #ifndef __GLADE_UTILS_H__
 #define __GLADE_UTILS_H__
 
+#include <glib.h>
 
 G_BEGIN_DECLS
 
@@ -150,6 +151,9 @@ gboolean          glade_util_object_is_loading     (GObject *object);
 
 LIBGLADEUI_API
 gboolean          glade_util_url_show              (const gchar *url);
+
+LIBGLADEUI_API
+time_t            glade_util_get_file_mtime        (const gchar *filename, GError **error);
 
 G_END_DECLS
 

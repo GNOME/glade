@@ -68,6 +68,7 @@ static GHashTable   *allocated_untitled_numbers = NULL;
 /*******************************************************************
                             GObjectClass
  *******************************************************************/
+ 
 static void
 glade_project_list_unref (GList *original_list)
 {
@@ -196,7 +197,6 @@ glade_project_walk_forward (GladeProject *project)
 	else
 		project->prev_redo_item = project->undo_stack;
 }
-
 
 static void
 glade_project_undo_impl (GladeProject *project)
@@ -361,6 +361,7 @@ glade_project_init (GladeProject *project)
 	project->resources = g_hash_table_new_full (g_direct_hash, 
 						    g_direct_equal, 
 						    NULL, g_free);
+
 }
 
 static void
@@ -1593,7 +1594,11 @@ glade_project_open (const gchar *path)
 			glade_project_set_readonly (project, TRUE);
 
 		project->changed = FALSE;
+		
+		project->mtime = glade_util_get_file_mtime (project->path, NULL);
 	}
+	
+	
 
 	return project;
 }
@@ -1686,6 +1691,8 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 	glade_project_set_readonly (project, 
 				    !glade_util_file_is_writeable (project->path));
+
+	project->mtime = glade_util_get_file_mtime (project->path, NULL);
 
 	if (project->changed)
 	{
@@ -2056,4 +2063,10 @@ glade_project_is_loading (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 	
 	return project->loading;
+}
+
+time_t
+glade_project_get_file_mtime (GladeProject *project)
+{
+	return project->mtime;
 }

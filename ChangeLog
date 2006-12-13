@@ -1,3 +1,12 @@
+2006-12-13  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* src/glade-utils.[ch]: new function glade_util_get_file_mtime().
+
+	* src/glade-project-window.c: Test project files for external
+	  changes in gpw_save(). Adjust border width of main window contents.
+
+	* src/glade-project.c: stat project file when opening or saving.
+
 2006-12-12  Oliver Nittka  <oly@nittka.com>
 
 	* src/glade-base-editor.c src/glade-clipboard-view.c src/glade-command.c

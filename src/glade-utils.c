@@ -1908,3 +1908,33 @@ glade_util_url_show (const gchar *url)
 	return glade_util_url_show_unix (url);
 #endif
 }
+
+/**
+ * glade_util_get_file_mtime:
+ * @filename: A filename
+ * @error: return location for errors
+ *
+ * Gets the UTC modification time of file @filename.
+ *
+ * Returns: The mtime of the file, or %0 if the file attributes
+ *          could not be read.
+ */
+time_t
+glade_util_get_file_mtime (const gchar *filename, GError **error)
+{
+	struct stat info;
+	time_t *mtime;
+	gint retval;
+	
+	retval = g_stat (filename, &info);
+	
+	if (retval != 0) {
+		g_set_error (error,
+		             G_FILE_ERROR,
+		             g_file_error_from_errno (errno),
+		             "could not stat file '%s': %s", filename, g_strerror (errno));    
+		return (time_t) 0;
+	} else {
+		return info.st_mtime;
+	}
+}

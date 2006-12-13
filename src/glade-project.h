@@ -67,6 +67,8 @@ struct _GladeProject
 	gchar *comment; /* XML comment, Glade will preserve whatever comment was
 			 * in file, so users can delete or change it.
 			 */
+			 
+	time_t  mtime; /* last UTC modification time of file, or 0 if it could not be read */
 };
 
 struct _GladeProjectClass
@@ -196,6 +198,9 @@ gchar        *glade_project_display_name          (GladeProject  *project,
 
 LIBGLADEUI_API 
 gboolean      glade_project_is_loading            (GladeProject *project);
+
+LIBGLADEUI_API 
+time_t        glade_project_get_file_mtime        (GladeProject *project);
 
 G_END_DECLS
 
