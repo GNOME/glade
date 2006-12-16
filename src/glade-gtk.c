@@ -3213,6 +3213,27 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 }
 
 
+void GLADEGTK_API
+glade_gtk_dialog_set_property (GladeWidgetAdaptor *adaptor,
+			       GObject            *object, 
+			       const gchar        *id,
+			       const GValue       *value)
+{
+	if (GTK_IS_MESSAGE_DIALOG (object) && !strcmp (id, "image"))
+	{
+		/* Gtk+ 2.10 crashes when you unset the image of 
+		 * a message dialog, so we dont ever unset it.
+		 */
+		if (g_value_get_object (value))
+			gtk_message_dialog_set_image (GTK_MESSAGE_DIALOG (object),
+						      GTK_WIDGET (g_value_get_object (value)));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_WINDOW)->set_property (adaptor, object,
+							       id, value);
+}
+
+
 /* ----------------------------- GtkFontButton ------------------------------ */
 /* Use the font-buttons launch dialog to actually set the font-name
  * glade property through the glade-command api.
