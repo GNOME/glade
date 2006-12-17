@@ -1923,7 +1923,6 @@ time_t
 glade_util_get_file_mtime (const gchar *filename, GError **error)
 {
 	struct stat info;
-	time_t *mtime;
 	gint retval;
 	
 	retval = g_stat (filename, &info);
