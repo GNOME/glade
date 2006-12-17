@@ -738,13 +738,17 @@ glade_widget_sync_custom_props (GladeWidget *widget)
 	{
 		GladeProperty *prop  = GLADE_PROPERTY(l->data);
 
-		/* This used to be based on whether a function was
+		/* XXX We need a better option to this hack.
+		 *
+		 * This used to be based on whether a function was
 		 * provided by the backend to treat the said property, now
 		 * that function is classwide so we dont know, so currently
 		 * we are just syncing all properties for the sake of those
 		 * properties.
 		 */
-		glade_property_sync (prop);
+		if (!prop->klass->construct_only)
+			glade_property_sync (prop);
+
 	}
 }
 
@@ -2357,7 +2361,7 @@ glade_widget_copy_properties (GladeWidget *widget,
 		 * classes, like GtkImageMenuItem --> GtkCheckMenuItem).
 		 */
 		if ((template_prop =
-		     glade_widget_get_property (template_prop, 
+		     glade_widget_get_property (template_widget, 
 						widget_prop->klass->id)) != NULL &&
 		    glade_property_class_match (template_prop->klass, widget_prop->klass))
 			glade_property_set_value (widget_prop, template_prop->value);

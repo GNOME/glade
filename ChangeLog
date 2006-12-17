@@ -1,4 +1,12 @@
-2006-12-12  Tristan Van Berkom <tvb@gnome.org>
+2006-12-16  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-widget.c: glade_widget_sync_custom_properties()
+	  dont sync construct_only props, does bad things inside constructors.
+	  (really need to fix this bad concept of sync'ing props).
+
+	* widgets/canvas.xml.in: ignore some virtual properties on the icon list.
+
+2006-12-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml.in:
 	  - Fixed a crash due to gtk_message_dialog_set_image "image" 2.10
