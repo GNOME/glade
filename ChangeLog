@@ -1,11 +1,13 @@
 2006-12-18  Tristan Van Berkom <tvb@gnome.org>
 
+	* configure.in, NEWS: Rolling 3.1.4
+
 	* src/glade-widget-adaptor.c: Fixed loading of "special-child-type" from
 	  the catalog, fixes bugs with GtkFrame, GtkNotebook (bug 373251), GtkExpander etc.
 
 	* src/gtk+.xml.in: Disable the "label" property of expanders, expander labels are
 	  identified by thier internal label widget, when setting the "label" property the
-	  widget gets lost from the hierarchy, so thats fixed (bug 386352).
+	  widget gets lost from the hierarchy, so thats fixed (bug 386352)
 
 2006-12-18  Tristan Van Berkom <tvb@gnome.org>
 
