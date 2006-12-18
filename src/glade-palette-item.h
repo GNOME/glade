@@ -47,13 +47,13 @@ typedef struct _GladePaletteItem         GladePaletteItem;
 typedef struct _GladePaletteItemPrivate  GladePaletteItemPrivate;
 typedef struct _GladePaletteItemClass    GladePaletteItemClass;
 
-enum _GladeItemAppearance {
+typedef enum _GladeItemAppearance {
 
 	GLADE_ITEM_ICON_AND_LABEL,
 	GLADE_ITEM_ICON_ONLY,
 	GLADE_ITEM_LABEL_ONLY
 
-};
+} GladeItemAppearance;
 
 struct _GladePaletteItem
 {

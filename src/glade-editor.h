@@ -20,16 +20,15 @@ G_BEGIN_DECLS
 typedef struct _GladeEditor          GladeEditor;
 typedef struct _GladeEditorClass     GladeEditorClass;
 typedef struct _GladeEditorTable     GladeEditorTable;
-typedef enum   _GladeEditorTableType GladeEditorTableType;
 
-enum _GladeEditorTableType
+typedef enum _GladeEditorTableType
 {
 	TABLE_TYPE_GENERAL,
 	TABLE_TYPE_COMMON,
 	TABLE_TYPE_PACKING,
 	TABLE_TYPE_ATK,
 	TABLE_TYPE_QUERY
-};
+} GladeEditorTableType;
 
 /* The GladeEditor is a window that is used to display and modify widget
  * properties. The glade editor contains the details of the selected

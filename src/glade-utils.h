@@ -7,13 +7,11 @@
 G_BEGIN_DECLS
 
 
-typedef enum   _GladeUtilFileDialogType GladeUtilFileDialogType;
-
-enum _GladeUtilFileDialogType
+typedef enum _GladeUtilFileDialogType
 {
         GLADE_FILE_DIALOG_ACTION_OPEN,
         GLADE_FILE_DIALOG_ACTION_SAVE
-};
+} GladeUtilFileDialogType;
 
 typedef enum 
 {

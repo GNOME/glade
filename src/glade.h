@@ -28,7 +28,6 @@
 typedef struct _GladeWidget         GladeWidget;
 typedef struct _GladeProperty       GladeProperty;
 typedef struct _GladeProject        GladeProject;
-typedef enum   _GladeItemAppearance GladeItemAppearance;
 
 #include "glade-widget-adaptor.h"
 #include "glade-widget.h"

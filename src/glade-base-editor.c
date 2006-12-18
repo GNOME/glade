@@ -72,9 +72,8 @@ struct _GladeBaseEditorPrivate
 };
 
 typedef struct _GladeBaseEditorSignal     GladeBaseEditorSignal;
-typedef enum   _GladeBaseEditorSignalType GladeBaseEditorSignalType;
 
-enum _GladeBaseEditorSignalType
+typedef enum _GladeBaseEditorSignalType
 {
 	SIGNAL_CHILD_SELECTED,
 	SIGNAL_CHANGE_TYPE,
@@ -83,7 +82,7 @@ enum _GladeBaseEditorSignalType
 	SIGNAL_DELETE_CHILD,
 	SIGNAL_MOVE_CHILD,
 	LAST_SIGNAL
-};
+} GladeBaseEditorSignalType;
 
 struct _GladeBaseEditorSignal
 {
