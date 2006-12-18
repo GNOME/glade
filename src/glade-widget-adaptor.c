@@ -596,7 +596,7 @@ glade_widget_adaptor_constructor (GType                  type,
 				  guint                  n_construct_properties,
 				  GObjectConstructParam *construct_properties)
 {
-	GladeWidgetAdaptor   *adaptor;
+	GladeWidgetAdaptor   *adaptor, *parent_adaptor;
 	GObject              *ret_obj;
 	GObjectClass         *object_class;
 
@@ -606,7 +606,8 @@ glade_widget_adaptor_constructor (GType                  type,
 		(type, n_construct_properties, construct_properties);
 
 	adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
-
+	parent_adaptor = gwa_get_parent_adaptor (adaptor);
+	
 	if (adaptor->type == G_TYPE_NONE)
 		g_warning ("Adaptor created without a type");
 	if (adaptor->name == NULL)
@@ -631,6 +632,12 @@ glade_widget_adaptor_constructor (GType                  type,
 	/* Inherit packing defaults here */
 	adaptor->child_packings = gwa_inherit_child_packing (adaptor);
 
+	/* Inherit special-child-type */
+	if (parent_adaptor)
+		adaptor->priv->special_child_type =
+			parent_adaptor->priv->special_child_type ?
+			g_strdup (parent_adaptor->priv->special_child_type) : NULL;
+	
 	gwa_action_setup (adaptor);
 	
 	return ret_obj;
@@ -1409,7 +1416,8 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	GladeWidgetAdaptorClass *adaptor_class = 
 		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor);
 	GladeXmlNode *child;
-
+	gchar        *child_type;
+	
 	if (module)
 	{
 		glade_xml_load_sym_from_node (node, module,
@@ -1474,6 +1482,12 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 		glade_xml_get_property_boolean
 		(node, GLADE_XML_TAG_TOPLEVEL, adaptor_class->toplevel);
 
+	/* Override the special-child-type here */
+	if ((child_type =
+	     glade_xml_get_value_string (node, GLADE_TAG_SPECIAL_CHILD_TYPE)) != NULL)
+		adaptor->priv->special_child_type =
+			(g_free (adaptor->priv->special_child_type), child_type);
+	
 	/* if we found a <properties> tag on the xml file, we add the properties
 	 * that we read from the xml file to the class.
 	 */

@@ -1865,7 +1865,7 @@ glade_widget_set_child_type_from_child_info (GladeChildInfo     *child_info,
 	gchar          *special_child_type;
 
 	g_object_get (parent_adaptor, "special-child-type", &special_child_type, NULL);
-
+	
 	if (!special_child_type)
 		return -1;
 
@@ -1875,6 +1875,7 @@ glade_widget_set_child_type_from_child_info (GladeChildInfo     *child_info,
 		if (!strcmp (prop_info->name, special_child_type))
 		{
 			g_free (special_child_type);
+			
 			g_object_set_data_full (child,
 						"special-child-type",
 						g_strdup (prop_info->value),
