@@ -148,8 +148,6 @@ case $host_os in
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
-AC_PROG_CXX
-
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])
