@@ -10,11 +10,10 @@ ACLOCAL_AMFLAGS = -I m4
 
 @INTLTOOL_DESKTOP_RULE@
 
-DESKTOP_IN_FILES = glade-3.desktop.in
-DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
+desktop_in_files = glade-3.desktop.in.in
 
 desktopdir = $(datadir)/applications
-desktop_DATA = $(DESKTOP_FILES)
+desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
 
 appicondir = $(datadir)/icons/hicolor/48x48/apps
 appicon_DATA = glade-3.png
@@ -36,14 +35,13 @@ EXTRA_DIST = \
 	COPYING.GPL \
 	COPYING.LGPL \
 	m4 \
-	glade-3.desktop.in \
 	glade-3.png \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
 	gnome-doc-utils.make
 
-CLEANFILES = $(DESKTOP_FILES)
+CLEANFILES = $(desktop_DATA)
 
 DISTCLEANFILES = intltool-extract \
                  intltool-merge \
