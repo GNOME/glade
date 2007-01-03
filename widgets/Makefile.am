@@ -2,7 +2,7 @@
 
 CLEANFILES = gtk+.xml
 
-catalogsdir = $(glade_catalogsdir)
+catalogsdir = $(pkgdatadir)/catalogs
 
 catalogs_DATA = gtk+.xml gtk+.xml.in
 

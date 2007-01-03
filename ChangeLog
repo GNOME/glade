@@ -1,3 +1,20 @@
+2007-01-03  Christian Persch  <chpe@svn.gnome.org>
+
+	* configure.in:
+	* glade-3.desktop.in:
+	* pixmaps/16x16/Makefile.am:
+	* pixmaps/22x22/Makefile.am:
+	* pixmaps/Makefile.am:
+	* src/Makefile.am:
+	* src/glade-app.c:
+	* src/glade-binding.c:
+	* src/glade-paths.sh.in:
+	* src/glade-project-window.c:
+	* src/libgladeui-1.0.pc.in:
+	* widgets/Makefile.am:
+	Use the correct way to define paths, using _CPPFLAGS in Makefile.am.
+	Fixes build problem with autoconf 2.60 wrt. datarootdir. Bug #392379.
+
 2006-12-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in, NEWS: Rolling 3.1.4

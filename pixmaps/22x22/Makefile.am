@@ -1,4 +1,4 @@
-largeiconsdir = $(glade_pixmapsdir)/22x22
+largeiconsdir = $(pkgdatadir)/pixmaps/22x22
 
 largeicons_DATA = \
 	alignment.png \

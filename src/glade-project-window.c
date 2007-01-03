@@ -32,7 +32,6 @@
 #include <gtk/gtkstock.h>
 
 #include "glade.h"
-#include "glade-paths.h"
 #include "glade-design-view.h"
 #include "glade-project-window.h"
 #include "glade-binding.h"

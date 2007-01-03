@@ -34,7 +34,6 @@
 #include "glade-debug.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-paths.h"
 #include "glade-fixed.h"
 #include "glade-binding.h"
 

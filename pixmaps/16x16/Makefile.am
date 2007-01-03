@@ -1,4 +1,4 @@
-smalliconsdir = $(glade_pixmapsdir)/16x16
+smalliconsdir = $(pkgdatadir)/pixmaps/16x16
 
 smallicons_DATA = \
 	alignment.png \

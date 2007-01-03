@@ -26,7 +26,6 @@
 
 #include "glade.h"
 #include "glade-binding.h"
-#include "glade-paths.h"
 #include <string.h>
 
 /*

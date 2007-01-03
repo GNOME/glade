@@ -1,14 +1,24 @@
-## Process this file with automake to produce Makefile.in
 SUBDIRS=
 
+common_defines = \
+	-DGLADE_DATADIR="\"$(pkgdatadir)\""		\
+	-DGLADE_LIBDIR="\"$(pkglibdir)\""		\
+	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
+	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
+	-DGLADE_PLUGINSDIR="\"$(pkglibdir)/plugins\""	\
+	-DGLADE_BINDINGSDIR="\"$(pkglibdir)/bindings\""	\
+	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
+	-DGLADE_SCRIPTSDIR="\"$(pkgdatadir)/scripts\""	\
+	-DGLADE_ICONDIR="\"$(datadir)/pixmaps\""	\
+	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""	\
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
 
 bin_PROGRAMS = glade-3
 lib_LTLIBRARIES = libgladeui-1.la
 
 BUILT_SOURCES = \
         glade-marshallers.c \
-        glade-marshallers.h \
-	glade-paths.h
+        glade-marshallers.h
 
 CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = glade-marshallers.list
@@ -16,18 +26,25 @@ EXTRA_DIST = glade-marshallers.list
 
 # The main application code
 #
-glade_3_CFLAGS =           \
-	-g -Wall           \
+glade_3_CPPFLAGS = \
+	$(common_defines)  \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
-	$(GTK_CFLAGS)
+	$(AM_CPPFLAGS)
+
+glade_3_CFLAGS =           \
+	-g -Wall           \
+	$(GTK_CFLAGS)      \
+	$(AM_CFLAGS)
+
+glade_3_LDFLAGS = \
+	$(AM_LDFLAGS)
 
 glade_3_LDADD = libgladeui-1.la
+
 glade_3_SOURCES = \
 	glade-project-window.c glade-project-window.h \
 	main.c
-
-glade_3_LDFLAGS =
 
 if WITH_WIN32
 glade_3_LDFLAGS += -mwindows
@@ -35,17 +52,21 @@ endif
 
 # The GTK catalog backend
 gladegtk_LTLIBRARIES = libgladegtk.la
-gladegtkdir = $(glade_modulesdir)
+gladegtkdir = $(pkglibdir)/modules
 
+libgladegtk_la_CPPLAGS =   \
+	$(common_defines)  \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	$(AM_CPPFLAGS)
 
 libgladegtk_la_CFLAGS =    \
 	-g -Wall           \
-	-I$(top_srcdir)    \
-	-I$(top_builddir)  \
-	$(GTK_CFLAGS)
+	$(GTK_CFLAGS)	   \
+	$(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c
-libgladegtk_la_LDFLAGS     = -module -avoid-version
+libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = libgladeui-1.la $(GTK_LIBS)
 libgladegtkincludedir      = $(includedir)/libgladeui-1.0/libgladeui
 libgladegtkinclude_HEADERS = glade-gtk.h
@@ -91,14 +112,19 @@ libgladeui_1_la_SOURCES = \
 	glade-binding.c \
 	glade-base-editor.c
 
-libgladeui_1_la_CFLAGS =    \
+libgladeui_1_la_CPPFLAGS =  \
 	-DINSIDE_LIBGLADEUI \
-	-g -Wall            \
+	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
-	$(GTK_CFLAGS)
+	$(AM_CPPFLAGS)
 
-libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE)
+libgladeui_1_la_CFLAGS =    \
+	-g -Wall            \
+	$(GTK_CFLAGS)       \
+	$(AM_CFLAGS)
+
+libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
 libgladeui_1_la_LIBADD = $(GTK_LIBS)
 
 libgladeuiincludedir=$(includedir)/libgladeui-1.0/libgladeui
@@ -149,20 +175,22 @@ pkgconfig_DATA = libgladeui-1.0.pc
 
 if BUILD_PYTHON
 gladepython_LTLIBRARIES = libgladepython.la
-gladepythondir = $(glade_bindingsdir)
+gladepythondir = $(pkglibdir)/bindings
 libgladepython_la_SOURCES = glade-python.c glade-python-gwa.c
-libgladepython_la_CFLAGS = -g -Wall $(PYTHON_CFLAGS) $(GTK_CFLAGS)
-libgladepython_la_LDFLAGS = -module -avoid-version $(PYTHON_LIBS)
+libgladepython_la_CPPFLAGS = $(common_defines) $(AM_CPPFLAGS)
+libgladepython_la_CFLAGS = -g -Wall $(PYTHON_CFLAGS) $(GTK_CFLAGS) $(AM_CFLAGS)
+libgladepython_la_LDFLAGS = -module -avoid-version $(PYTHON_LIBS) $(AM_LDFLAGS)
 libgladepython_la_LIBADD = libgladeui-1.la $(PYTHON_LIBS)
 
 endif
 
 if BUILD_GNOME
 gladegnome_LTLIBRARIES = libgladegnome.la
-gladegnomedir = $(glade_modulesdir)
+gladegnomedir = $(pkglibdir)/modules
 libgladegnome_la_SOURCES = glade-gnome.c
-libgladegnome_la_CFLAGS = -g -Wall $(GNOME_CFLAGS)
-libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS)
+libgladegnome_la_CPPFLAGS = $(common_defines) $(AM_CPPFLAGS)
+libgladegnome_la_CFLAGS = -g -Wall $(GNOME_CFLAGS) $(AM_CPPFLAGS)
+libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS) $(AM_LDFLAGS)
 libgladegnome_la_LIBADD = libgladeui-1.la $(GLADE_LIBS)
 endif
 
@@ -191,11 +219,3 @@ glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --body > glade-marshallers-c.tmp     \
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
-
-glade-paths.h: glade-paths.sh
-	@sh $< > $@.tmp ;					\
-	if cmp -s $@.tmp $@; then				\
-	    rm $@.tmp;						\
-	else							\
-	    mv $@.tmp $@ ; echo updated glade-paths.h ;	\
-	fi

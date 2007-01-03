@@ -5,9 +5,10 @@ AC_INIT(glade3, 3.1.4,
 	http://bugzilla.gnome.org/enter_bug.cgi?product=glade3)
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([1.9 foreign no-dist-gzip dist-bzip2])
+
 AM_MAINTAINER_MODE
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -149,31 +150,10 @@ AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
 AC_PROG_CXX
 
-dnl ================================================================
-dnl Misc substitutions
-dnl ================================================================
-glade_version="${VERSION}"
-glade_datadir='${datadir}/${PACKAGE}'
-glade_libdir='${libdir}/${PACKAGE}'
-glade_catalogsdir='${glade_datadir}/catalogs'
-glade_pixmapsdir='${glade_datadir}/pixmaps'
-glade_scriptsdir='${glade_datadir}/scripts'
-glade_modulesdir='${glade_libdir}/modules'
-glade_pluginsdir='${glade_libdir}/plugins'
-glade_bindingsdir='${glade_libdir}/bindings'
-glade_icondir='${datadir}/pixmaps'
-glade_localedir='${prefix}/${DATADIRNAME}/locale'
-AC_SUBST(glade_version)
-AC_SUBST(glade_datadir)
-AC_SUBST(glade_libdir)
-AC_SUBST(glade_catalogsdir)
-AC_SUBST(glade_modulesdir)
-AC_SUBST(glade_pluginsdir)
-AC_SUBST(glade_bindingsdir)
-AC_SUBST(glade_pixmapsdir)
-AC_SUBST(glade_scriptsdir)
-AC_SUBST(glade_icondir)
-AC_SUBST(glade_localedir)
+AC_SUBST([AM_CPPFLAGS])
+AC_SUBST([AM_CFLAGS])
+AC_SUBST([AM_CXXFLAGS])
+AC_SUBST([AM_LDFLAGS])
 
 AC_CONFIG_FILES([
 Makefile
@@ -184,7 +164,6 @@ widgets/Makefile
 po/Makefile.in
 src/Makefile
 src/libgladeui-1.0.pc
-src/glade-paths.sh
 doc/Makefile
 doc/version.xml
 help/Makefile
