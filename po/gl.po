@@ -1,110 +1,131 @@
 # translation of gl.po to Galego
 # Ruben Lopez Gomez <ryu@mundivia.es>, 1999.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
+# Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2006, 2007.
 # Galician translation of Glade
-# Copyright (C) 1999, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2005, 2006, 2007 Free Software Foundation, Inc.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-04 19:25+0100\n"
-"PO-Revision-Date: 2006-11-12 13:57+0100\n"
-"Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
+"POT-Creation-Date: 2007-01-08 00:28+0100\n"
+"PO-Revision-Date: 2007-01-02 12:12+0100\n"
+"Last-Translator: Ignacio Casal Quinteiro <icq@cvs.gnome.org>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#: ../glade-3.desktop.in.h:1
+#: ../glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Crear ou abrir deseños de interface de usuario para aplicacións GTK+"
 
-#: ../glade-3.desktop.in.h:2
+#: ../glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
 msgstr "Deseñador de interfaces Glade "
 
-#: ../glade-3.desktop.in.h:3
+#: ../glade-3.desktop.in.in.h:3
 msgid "User Interface Designer"
 msgstr "Deseñador de interfaces de usuario"
 
-#: ../src/main.c:40 ../src/main.c:85
+#: ../src/main.c:40 ../src/main.c:83
 msgid "Glade"
 msgstr "Glade"
 
-#: ../src/main.c:86
+#: ../src/main.c:84
 msgid "Glade options"
 msgstr "Opcións de Glade"
 
-#: ../src/main.c:135
-msgid "gmodule support not found. gmodule support is required for glade to work"
-msgstr "Non se atopou soporte para gmodule. Necesítase gmodule para que glade funcione"
+#: ../src/main.c:133
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+"Non se atopou soporte para gmodule. Necesítase gmodule para que glade "
+"funcione"
 
-#: ../src/main.c:170
+#: ../src/main.c:160
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Imposible abrir o '%s', o ficheiro non existe.\n"
 
-#: ../src/glade-project-window.c:73
-msgid "[read-only]"
-msgstr "[só lectura]"
+#: ../src/glade-project-window.c:43
+msgid "[Read Only]"
+msgstr "[Só lectura]"
 
-#: ../src/glade-project-window.c:503
+#: ../src/glade-project-window.c:109
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "Non se puido amosar a URL '%s'"
+
+#: ../src/glade-project-window.c:113
+msgid "No suitable web browser executable could be found."
+msgstr ""
+
+#: ../src/glade-project-window.c:610
+#, c-format
+msgid "Activate %s"
+msgstr ""
+
+#: ../src/glade-project-window.c:728
 msgid "Open…"
 msgstr "Abrir..."
 
-#: ../src/glade-project-window.c:534
-msgid ""
-"Are you sure you want to clear the\n"
-"list of recent projects?"
+#: ../src/glade-project-window.c:770
+#, c-format
+msgid "The file %s has been modified since reading it"
 msgstr ""
-"Está seguro de que quere limpar a\n"
-"lista de proxectos recentes?"
 
-#: ../src/glade-project-window.c:535
-msgid ""
-"If you clear the list of recent projects, they will be\n"
-"permanently deleted."
+#: ../src/glade-project-window.c:774
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
-"Se limpa a lista de proxectos recentes, borraranse\n"
-"permanentemente."
+"Se o garda, poderíanse perder tódolos cambios externos. Gardalo de todas "
+"maneiras?"
 
-#: ../src/glade-project-window.c:572
+#: ../src/glade-project-window.c:778
+msgid "_Save Anyway"
+msgstr "_Gardar de todas maneiras"
+
+#: ../src/glade-project-window.c:785
+msgid "_Don't Save"
+msgstr "_Non gardar"
+
+#: ../src/glade-project-window.c:808
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Fallou ao gardar %s: %s"
 
-#: ../src/glade-project-window.c:594
+#: ../src/glade-project-window.c:829
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Proxecto '%s' gardado"
 
-#: ../src/glade-project-window.c:612 ../src/glade-project-window.c:695
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:848 ../src/glade-project-window.c:931
 msgid "No open projects to save"
 msgstr "Ningún proxecto aberto para gardar"
 
-#: ../src/glade-project-window.c:658
+#: ../src/glade-project-window.c:852
+msgid "Save As…"
+msgstr "Gardar como..."
+
+#: ../src/glade-project-window.c:894
 #, c-format
 msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
 "save the file."
-msgstr "Non se puido gardar o ficheiro %s. Non ten os permisos necesarios para gardar o ficheiro."
+msgstr ""
+"Non se puido gardar o ficheiro %s. Non ten os permisos necesarios para "
+"gardar o ficheiro."
 
-#: ../src/glade-project-window.c:671
+#: ../src/glade-project-window.c:907
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
-msgstr "Non se puido gardar o ficheiro %s. Outro proxecto con esa ruta está aberto."
+msgstr ""
+"Non se puido gardar o ficheiro %s. Outro proxecto con esa ruta está aberto."
 
-#. If instead we dont have a path yet, fire up a file selector
-#: ../src/glade-project-window.c:706
-msgid "Save…"
-msgstr "Gardar..."
-
-#: ../src/glade-project-window.c:712
-msgid "Save as…"
-msgstr "Gardar como..."
-
-#: ../src/glade-project-window.c:726
+#: ../src/glade-project-window.c:959
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -112,49 +133,54 @@ msgid ""
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Quere gardar os cambios ao proxecto \"%s\" antes de pechar?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Quere gardar os cambios ao proxecto \"%"
+"s\" antes de pechar?</span>\n"
 "\n"
 "Os seus cambios perderanse se non os garda.\n"
 
-#: ../src/glade-project-window.c:740
+#: ../src/glade-project-window.c:973
 msgid "_Close without Saving"
 msgstr "_Pechar sen gardar"
 
-#: ../src/glade-project-window.c:761
+#: ../src/glade-project-window.c:994
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Fallou ao gardar %s a %s: %s"
 
-#: ../src/glade-project-window.c:773
-msgid "Save ..."
-msgstr "Gardar ..."
+#: ../src/glade-project-window.c:1006
+msgid "Save…"
+msgstr "Gardar..."
 
-#: ../src/glade-project-window.c:954
-msgid "Palette"
-msgstr "Paleta"
+#: ../src/glade-project-window.c:1184
+msgid "Glade's Script Console"
+msgstr "Consola de Scripts de Glade"
 
-#: ../src/glade-project-window.c:1023 ../src/glade-widget.c:1104
-msgid "Properties"
-msgstr "Propiedades"
+#: ../src/glade-project-window.c:1464
+msgid "Could not display the online user manual"
+msgstr "Non se puido amosar o manual de usuario en liña"
 
-#: ../src/glade-project-window.c:1092
-msgid "E_xpand all"
-msgstr "E_xpandir todo"
+#: ../src/glade-project-window.c:1467 ../src/glade-project-window.c:1505
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr ""
 
-#: ../src/glade-project-window.c:1096
-msgid "_Collapse all"
-msgstr "_Contraer todo"
+#: ../src/glade-project-window.c:1502
+msgid "Could not display the online developer reference manual"
+msgstr "Non se puido amosar o manual de referencia do desenvolvedor en liña"
 
-#: ../src/glade-project-window.c:1299
+#: ../src/glade-project-window.c:1557
 msgid ""
 "Glade is a user interface designer for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2 version, originally created by "
 "Damon Chaplin\n"
 msgstr ""
 "Glade é un deseñador de interfaces de usuario para GTK+ e Gnome.\n"
-"Esta versión é unha reescritura da versión 2, creada orixinalmente por Damon Chaplin\n"
+"Esta versión é unha reescritura da versión 2, creada orixinalmente por Damon "
+"Chaplin\n"
 
-#: ../src/glade-project-window.c:1304
+#: ../src/glade-project-window.c:1562
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -171,262 +197,288 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
 "USA."
 msgstr ""
+"Este programa é software libre; pode redistribuílo e/ou modificalo\n"
+"baixo os termos da Licenza Pública Xeral de GNU tal como\n"
+"o publica a Free Software Foundation; tanto na versión 2 da\n"
+"Licenza como (a súa elección) calquer versión posterior.\n"
+"\n"
+"Este programa distribúese coa esperanza de que será útil,\n"
+"pero SEN NINGUNHA GARANTÍA; sen incluso a garantía implicada\n"
+"de MERCANTIBILIDADE ou ADECUACIÓN PARA UN PROPÓSITO PARTICULAR. Vexa a \n"
+"licenza PúblicaXeral de GNU para máis detalles.\n"
+"\n"
+"Debeu recibir unha copia da Licenza Pública Xeral de GNU\n"
+"xunto con este programa; se non, escriba á Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 
 #. File
-#: ../src/glade-project-window.c:1397 ../src/glade-gtk.c:4177
-#: ../src/glade-gtk.c:4327
+#: ../src/glade-project-window.c:1657 ../src/glade-gtk.c:4411
+#: ../src/glade-gtk.c:4709
 msgid "_File"
 msgstr "_Ficheiro"
 
 #. Edit
-#: ../src/glade-project-window.c:1398 ../src/glade-gtk.c:4180
-#: ../src/glade-gtk.c:4337
+#: ../src/glade-project-window.c:1658 ../src/glade-gtk.c:4414
+#: ../src/glade-gtk.c:4719
 msgid "_Edit"
 msgstr "_Editar"
 
 #. View
-#: ../src/glade-project-window.c:1399 ../src/glade-gtk.c:4183
-#: ../src/glade-gtk.c:4345
+#: ../src/glade-project-window.c:1659 ../src/glade-gtk.c:4417
+#: ../src/glade-gtk.c:4727
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/glade-project-window.c:1400
+#: ../src/glade-project-window.c:1660
 msgid "_Projects"
 msgstr "_Proxectos"
 
 #. Help
-#: ../src/glade-project-window.c:1401 ../src/glade-gtk.c:4195
-#: ../src/glade-gtk.c:4348
+#: ../src/glade-project-window.c:1661 ../src/glade-gtk.c:4429
+#: ../src/glade-gtk.c:4730
 msgid "_Help"
 msgstr "A_xuda"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1404
+#: ../src/glade-project-window.c:1664
 msgid "_New"
 msgstr "_Novo"
 
-#: ../src/glade-project-window.c:1405
+#: ../src/glade-project-window.c:1665
 msgid "Create a new project"
 msgstr "Crear un novo proxecto"
 
-#: ../src/glade-project-window.c:1407
+#: ../src/glade-project-window.c:1667
 msgid "_Open"
 msgstr "_Abrir"
 
-#: ../src/glade-project-window.c:1408
+#: ../src/glade-project-window.c:1668
 msgid "Open a project"
 msgstr "_Abrir un proxecto"
 
-#: ../src/glade-project-window.c:1410
+#: ../src/glade-project-window.c:1670
 msgid "Open _Recent"
 msgstr "Abrir _recentes"
 
-#: ../src/glade-project-window.c:1412
-msgid "Clear Recent Projects"
-msgstr "Limpar proxectos recentes"
-
-#: ../src/glade-project-window.c:1415
+#: ../src/glade-project-window.c:1672
 msgid "_Quit"
 msgstr "_Saír"
 
-#: ../src/glade-project-window.c:1416
+#: ../src/glade-project-window.c:1673
 msgid "Quit the program"
 msgstr "Sae do programa"
 
 #. HelpMenu
-#: ../src/glade-project-window.c:1422
+#: ../src/glade-project-window.c:1679
 msgid "_About"
 msgstr "_Acerca de"
 
-#: ../src/glade-project-window.c:1423
-msgid "Shows the About Dialog"
-msgstr "Amosar o diálogo 'Acerca de'"
+#: ../src/glade-project-window.c:1680
+msgid "About this application"
+msgstr "Acerca desta aplicación"
 
-#: ../src/glade-project-window.c:1425
-msgid "_Documentation"
-msgstr "_Documentación"
+#: ../src/glade-project-window.c:1682
+msgid "_Contents"
+msgstr "_Contidos"
 
-#: ../src/glade-project-window.c:1426
-msgid "Documentation about Glade"
-msgstr "Documentación sobre Glade"
+#: ../src/glade-project-window.c:1683
+msgid "Display the user manual"
+msgstr "Amosar o manual de usuario"
+
+#: ../src/glade-project-window.c:1685
+msgid "_Developer Reference"
+msgstr "Referencia do _desenvolvedor"
+
+#: ../src/glade-project-window.c:1686
+msgid "Display the developer reference manual"
+msgstr "Amosar o manual de referencia do desenvolvedor"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1433
+#: ../src/glade-project-window.c:1693
 msgid "_Save"
 msgstr "_Gardar"
 
-#: ../src/glade-project-window.c:1434
+#: ../src/glade-project-window.c:1694
 msgid "Save the current project"
 msgstr "Garda o proxecto actual"
 
-#: ../src/glade-project-window.c:1436
+#: ../src/glade-project-window.c:1696
 msgid "Save _As…"
 msgstr "Gardar _como..."
 
-#: ../src/glade-project-window.c:1437
+#: ../src/glade-project-window.c:1697
 msgid "Save the current project with a different name"
 msgstr "Garda o proxecto actual cun nome diferente"
 
-#: ../src/glade-project-window.c:1439
+#: ../src/glade-project-window.c:1699
 msgid "_Close"
 msgstr "_Pechar"
 
-#: ../src/glade-project-window.c:1440
+#: ../src/glade-project-window.c:1700
 msgid "Close the current project"
 msgstr "Pechar o proxecto actual"
 
 #. EditMenu
-#: ../src/glade-project-window.c:1443 ../src/glade-project-window.c:1889
+#: ../src/glade-project-window.c:1703 ../src/glade-project-window.c:2263
 msgid "_Undo"
 msgstr "_Desfacer"
 
-#: ../src/glade-project-window.c:1444
+#: ../src/glade-project-window.c:1704
 msgid "Undo the last action"
 msgstr "Desfai a última acción"
 
-#: ../src/glade-project-window.c:1446 ../src/glade-project-window.c:1900
+#: ../src/glade-project-window.c:1706 ../src/glade-project-window.c:2274
 msgid "_Redo"
 msgstr "_Refacer"
 
-#: ../src/glade-project-window.c:1447
+#: ../src/glade-project-window.c:1707
 msgid "Redo the last action"
 msgstr "Refai a última acción"
 
-#: ../src/glade-project-window.c:1449
+#: ../src/glade-project-window.c:1709
 msgid "C_ut"
 msgstr "C_ortar"
 
-#: ../src/glade-project-window.c:1450
+#: ../src/glade-project-window.c:1710
 msgid "Cut the selection"
 msgstr "Corta a selección"
 
-#: ../src/glade-project-window.c:1452
+#: ../src/glade-project-window.c:1712
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: ../src/glade-project-window.c:1453
+#: ../src/glade-project-window.c:1713
 msgid "Copy the selection"
 msgstr "Copia a selección"
 
-#: ../src/glade-project-window.c:1455
+#: ../src/glade-project-window.c:1715
 msgid "_Paste"
 msgstr "_Pegar"
 
-#: ../src/glade-project-window.c:1456
+#: ../src/glade-project-window.c:1716
 msgid "Paste the clipboard"
 msgstr "Pega ao portarretallos"
 
-#: ../src/glade-project-window.c:1458
+#: ../src/glade-project-window.c:1718
 msgid "_Delete"
 msgstr "_Borrar"
 
-#: ../src/glade-project-window.c:1459
+#: ../src/glade-project-window.c:1719
 msgid "Delete the selection"
 msgstr "Borra a selección"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1463
-msgid "Property _Editor"
-msgstr "_Editor de propiedades"
-
-#: ../src/glade-project-window.c:1464
-msgid "Show the property editor"
-msgstr "Amosa o editor de propiedades"
-
-#: ../src/glade-project-window.c:1467
-msgid "_Palette"
-msgstr "_Paleta"
-
-#: ../src/glade-project-window.c:1468
-msgid "Show the palette of widgets"
-msgstr "Amosa a paleta de widgets"
-
-#: ../src/glade-project-window.c:1471
+#: ../src/glade-project-window.c:1723
 msgid "_Clipboard"
 msgstr "_Portarretallos"
 
-#: ../src/glade-project-window.c:1472
+#: ../src/glade-project-window.c:1724
 msgid "Show the clipboard"
 msgstr "Amosa o portarretallos"
 
+#: ../src/glade-project-window.c:1727
+msgid "C_onsole"
+msgstr "C_onsola"
+
+#: ../src/glade-project-window.c:1728
+msgid "Show Script-do console"
+msgstr ""
+
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1476
+#: ../src/glade-project-window.c:1732
 msgid "_Previous Project"
 msgstr "Proxecto _anterior"
 
-#: ../src/glade-project-window.c:1477
+#: ../src/glade-project-window.c:1733
 msgid "Activate previous project"
 msgstr "Activa o proxecto anterior"
 
-#: ../src/glade-project-window.c:1479
+#: ../src/glade-project-window.c:1735
 msgid "_Next Project"
 msgstr "Proxecto _seguinte"
 
-#: ../src/glade-project-window.c:1480
+#: ../src/glade-project-window.c:1736
 msgid "Activate next project"
 msgstr "Activa o proxecto seguinte"
 
-#: ../src/glade-project-window.c:1488
+#: ../src/glade-project-window.c:1744
 msgid "_Use Small Icons"
 msgstr "_Usar iconas pequenas"
 
-#: ../src/glade-project-window.c:1489
+#: ../src/glade-project-window.c:1745
 msgid "Show items using small icons"
 msgstr "Amosa os elementos usando iconas pequenas"
 
-#: ../src/glade-project-window.c:1492
+#: ../src/glade-project-window.c:1748
 msgid "Context _Help"
 msgstr "A_xuda de contexto"
 
-#: ../src/glade-project-window.c:1493
+#: ../src/glade-project-window.c:1749
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Amosa ou agocha os botóns de axuda contextual no editor"
 
-#: ../src/glade-project-window.c:1500
+#: ../src/glade-project-window.c:1756
 msgid "Text beside icons"
 msgstr "Texto ao carón das iconas"
 
-#: ../src/glade-project-window.c:1501
+#: ../src/glade-project-window.c:1757
 msgid "Display items as text beside icons"
 msgstr "Amosa os elementos como texto ao carón das iconas"
 
-#: ../src/glade-project-window.c:1503
+#: ../src/glade-project-window.c:1759
 msgid "_Icons only"
 msgstr "Só _iconas"
 
-#: ../src/glade-project-window.c:1504
+#: ../src/glade-project-window.c:1760
 msgid "Display items as icons only"
 msgstr "Amosa os elementos só como iconas"
 
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1762
 msgid "_Text only"
 msgstr "Só _texto"
 
-#: ../src/glade-project-window.c:1507
+#: ../src/glade-project-window.c:1763
 msgid "Display items as text only"
 msgstr "Amosa os elementos só como texto"
 
-#: ../src/glade-project-window.c:1805
+#: ../src/glade-project-window.c:1971
+msgid "Select a widget"
+msgstr "Seleccionar un widget"
+
+#: ../src/glade-project-window.c:2042
+msgid "Palette"
+msgstr "Paleta"
+
+#: ../src/glade-project-window.c:2058
+msgid "Inspector"
+msgstr ""
+
+#: ../src/glade-project-window.c:2064 ../src/glade-widget.c:1120
+msgid "Properties"
+msgstr "Propiedades"
+
+#: ../src/glade-project-window.c:2179
 msgid "Could not create a new project."
 msgstr "Non se puido crear un proxecto novo."
 
-#: ../src/glade-project-window.c:1827
+#: ../src/glade-project-window.c:2198
 #, c-format
 msgid "%s is already open"
 msgstr "%s xa está aberto"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:1891 ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2265 ../src/glade-app.c:236
 #, c-format
 msgid "Undo: %s"
 msgstr "Desfacer: %s"
 
-#: ../src/glade-project-window.c:1891 ../src/glade-project-window.c:1902
-#: ../src/glade-app.c:242
+#: ../src/glade-project-window.c:2265 ../src/glade-project-window.c:2276
+#: ../src/glade-app.c:237
 msgid "the last action"
 msgstr "a última acción"
 
-#: ../src/glade-project-window.c:1902 ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2276 ../src/glade-app.c:236
 #, c-format
 msgid "Redo: %s"
 msgstr "Refacer: %s"
@@ -449,7 +501,8 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
-"Tentouse gardar os datos privados ao directorio %s pero é un ficheiro regular.\n"
+"Tentouse gardar os datos privados ao directorio %s pero é un ficheiro "
+"regular.\n"
 "Non se gardará ningún dato privado nesta sesión"
 
 #: ../src/glade-app.c:525
@@ -521,12 +574,11 @@ msgstr "Só se pode pegar un widget cada vez neste colector"
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Cantidade insuficiente de lugares de colocación no colector destino"
 
-#: ../src/glade-app.c:1201 ../src/glade-app.c:1248 ../src/glade-command.c:1078
-#, fuzzy
+#: ../src/glade-app.c:1201 ../src/glade-app.c:1248 ../src/glade-command.c:1077
 msgid "You cannot delete a widget internal to a composite widget."
-msgstr "Necesita seleccionar un widget sobre o cal pegar"
+msgstr "Non pode borrar un widget interno a un widget composto."
 
-#: ../src/glade-builtins.c:183 ../src/glade-gtk.c:187 ../src/glade-gtk.c:207
+#: ../src/glade-builtins.c:183 ../src/glade-gtk.c:189 ../src/glade-gtk.c:209
 #, fuzzy
 msgid "Stock"
 msgstr "Elemento de inventario:"
@@ -536,892 +588,847 @@ msgstr "Elemento de inventario:"
 msgid "A builtin stock item"
 msgstr "Engadir elemendo dock aboiante"
 
-#: ../src/glade-builtins.c:192 ../widgets/gtk+.xml.in.h:214
+#: ../src/glade-builtins.c:192 ../widgets/gtk+.xml.in.h:230
 #, fuzzy
 msgid "Stock Image"
 msgstr "Elemento de inventario:"
 
 #: ../src/glade-builtins.c:193 ../widgets/gtk+.xml.in.h:1
-#, fuzzy
 msgid "A builtin stock image"
-msgstr "Engadir elemendo dock aboiante"
+msgstr ""
 
 #: ../src/glade-builtins.c:523
-#, fuzzy
 msgid "Objects"
-msgstr "Obxeto"
+msgstr "Obxectos"
 
 #: ../src/glade-builtins.c:524
 msgid "A list of objects"
-msgstr ""
+msgstr "Unha lista de obxectos"
 
 #: ../src/glade-builtins.c:533
 msgid "Pixbuf"
-msgstr ""
+msgstr "Pixbuf"
 
 #: ../src/glade-builtins.c:534
 msgid "A pixbuf value"
-msgstr ""
+msgstr "Un valor pixbuf"
 
 #: ../src/glade-builtins.c:542
-#, fuzzy
 msgid "GdkColor"
-msgstr "Cor:"
+msgstr "GdkColor"
 
 #: ../src/glade-builtins.c:543
 msgid "A gdk color value"
-msgstr ""
+msgstr "Un valor de cor gdk"
 
-#: ../src/glade-builtins.c:551 ../src/glade-property-class.c:1191
+#: ../src/glade-builtins.c:551 ../src/glade-property-class.c:1187
 msgid "Accelerators"
 msgstr "Aceleradores"
 
-#: ../src/glade-builtins.c:552 ../src/glade-property-class.c:1192
-#, fuzzy
+#: ../src/glade-builtins.c:552 ../src/glade-property-class.c:1188
 msgid "A list of accelerator keys"
-msgstr "A tecla aceleradora"
+msgstr "Unha lista de teclas aceleradoras"
 
 #: ../src/glade-builtins.c:563
-#, fuzzy
 msgid "Integer"
-msgstr "Centro"
+msgstr "Enteiro"
 
 #: ../src/glade-builtins.c:564
-#, fuzzy
 msgid "An integer value"
-msgstr "Valor inicial"
+msgstr "Un valor enteiro"
 
 #: ../src/glade-builtins.c:572
 msgid "Unsigned Integer"
-msgstr ""
+msgstr "Enteiro sen signo"
 
 #: ../src/glade-builtins.c:573
 msgid "An unsigned integer value"
-msgstr ""
+msgstr "Un valor enteiro sen signo"
 
 #: ../src/glade-builtins.c:580
-#, fuzzy
 msgid "String"
-msgstr "Cadea1:"
+msgstr "Cadea"
 
 #: ../src/glade-builtins.c:581
-#, fuzzy
 msgid "An entry"
-msgstr "Entrada de Gnome"
+msgstr "Unha entrada"
 
 #: ../src/glade-builtins.c:588
 msgid "Strv"
-msgstr ""
+msgstr "Strv"
 
 #: ../src/glade-builtins.c:589
-#, fuzzy
 msgid "String array"
-msgstr "Cadea1:"
+msgstr "Array de cadeas"
 
 #: ../src/glade-builtins.c:597
-#, fuzzy
 msgid "Float"
-msgstr "Fonte:"
+msgstr "Flotante"
 
 #: ../src/glade-builtins.c:598
-#, fuzzy
 msgid "A floating point entry"
-msgstr "Engadir elemendo dock aboiante"
+msgstr "Unha entrada en coma flotante"
 
 #: ../src/glade-builtins.c:606
 msgid "Boolean"
-msgstr ""
+msgstr "Booleano"
 
 #: ../src/glade-builtins.c:607
 msgid "A boolean value"
-msgstr ""
+msgstr "Un valor booleano"
 
-#: ../src/glade-base-editor.c:469
+#: ../src/glade-base-editor.c:468
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "Establecendo o tipo de obxecto en %s a %s"
 
-#: ../src/glade-base-editor.c:634
+#: ../src/glade-base-editor.c:633
 #, c-format
 msgid "Add a %s to %s"
-msgstr ""
+msgstr "Engadir un %s a %s"
 
-#: ../src/glade-base-editor.c:711
+#: ../src/glade-base-editor.c:710
 #, c-format
 msgid "Delete %s child from %s"
-msgstr ""
+msgstr "Borrar %s fillo de %s"
 
-#: ../src/glade-base-editor.c:834
+#: ../src/glade-base-editor.c:833
 #, c-format
 msgid "Reorder %s's children"
-msgstr ""
+msgstr "Reordear os fillos de %s"
 
-#: ../src/glade-base-editor.c:1413 ../src/glade-gtk.c:206
-#: ../widgets/gtk+.xml.in.h:126
+#: ../src/glade-base-editor.c:1412 ../src/glade-gtk.c:208
+#: ../widgets/gtk+.xml.in.h:132
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../src/glade-base-editor.c:1426
+#: ../src/glade-base-editor.c:1425 ../src/glade-widget-adaptor.c:916
 msgid "Type"
 msgstr "Tipo"
 
 #. Name
-#: ../src/glade-base-editor.c:1599
-#, fuzzy
+#: ../src/glade-base-editor.c:1598
 msgid "Name :"
-msgstr "Nome:"
+msgstr "Nome :"
 
 #. Type
-#: ../src/glade-base-editor.c:1609
-#, fuzzy
+#: ../src/glade-base-editor.c:1608
 msgid "Type :"
-msgstr "Tipo:"
+msgstr "Tipo :"
 
-#: ../src/glade-clipboard-view.c:201 ../src/glade-project-view.c:677
-#: ../widgets/gtk+.xml.in.h:261
+#: ../src/glade-clipboard-view.c:205 ../src/glade-project-view.c:721
+#: ../widgets/gtk+.xml.in.h:279
 msgid "Widget"
 msgstr "Widget"
 
-#: ../src/glade-command.c:542
+#: ../src/glade-command.c:541
 msgid "Setting multiple properties"
-msgstr ""
+msgstr "Establecendo propiedades múltiples"
 
-#: ../src/glade-command.c:550
+#: ../src/glade-command.c:549
 #, c-format
 msgid "Setting %s of %s"
-msgstr ""
+msgstr "Establecendo %s de %s"
 
-#: ../src/glade-command.c:554
+#: ../src/glade-command.c:553
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr ""
+msgstr "Establecendo %s de %s a %s"
 
-#: ../src/glade-command.c:772 ../src/glade-command.c:799
+#: ../src/glade-command.c:771 ../src/glade-command.c:798
 #, c-format
 msgid "Renaming %s to %s"
-msgstr ""
+msgstr "Renomeando %s a %s"
 
-#: ../src/glade-command.c:1123
-#, fuzzy, c-format
+#: ../src/glade-command.c:1122
+#, c-format
 msgid "Delete %s"
-msgstr "Borrar"
+msgstr "Borrar %s"
 
-#: ../src/glade-command.c:1127
-#, fuzzy
+#: ../src/glade-command.c:1126
 msgid "Delete multiple"
-msgstr "Selección múltiple:"
+msgstr "Borrado múltiple"
 
-#: ../src/glade-command.c:1195
+#: ../src/glade-command.c:1194
 #, c-format
 msgid "Create %s"
-msgstr ""
+msgstr "Crear %s"
+
+#: ../src/glade-command.c:1590
+#, c-format
+msgid "Cut %s"
+msgstr "Cortar %s"
 
 #: ../src/glade-command.c:1591
-#, fuzzy, c-format
-msgid "Cut %s"
-msgstr "Cortar"
-
-#: ../src/glade-command.c:1592
-#, fuzzy, c-format
+#, c-format
 msgid "Copy %s"
-msgstr "Copiar"
+msgstr "Copiar %s"
 
-#: ../src/glade-command.c:1592
-#, fuzzy, c-format
+#: ../src/glade-command.c:1591
+#, c-format
 msgid "Paste %s"
-msgstr "Pegar"
+msgstr "Pegar %s"
 
-#: ../src/glade-command.c:1613
+#: ../src/glade-command.c:1612
 msgid "multiple"
-msgstr ""
+msgstr "múltiple"
+
+#: ../src/glade-command.c:1897
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Engadir un manexador de sinal %s"
 
 #: ../src/glade-command.c:1898
-#, fuzzy, c-format
-msgid "Add signal handler %s"
-msgstr "A sinal para a que engades o manexador"
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Eliminar o manexador de sinal %s"
 
 #: ../src/glade-command.c:1899
-#, fuzzy, c-format
-msgid "Remove signal handler %s"
-msgstr "A sinal para a que engades o manexador"
-
-#: ../src/glade-command.c:1900
-#, fuzzy, c-format
+#, c-format
 msgid "Change signal handler %s"
-msgstr "A sinal para a que engades o manexador"
+msgstr "Cambiar manexador de sinal %s"
 
-#: ../src/glade-cursor.c:191
+#: ../src/glade-cursor.c:188
 #, c-format
 msgid "Unable to load image (%s)"
-msgstr ""
+msgstr "Imposible cargar a imaxe (%s)"
 
-#: ../src/glade-editor-property.c:271
+#: ../src/glade-editor-property.c:274
 msgid "View GTK+ documentation for this property"
-msgstr ""
+msgstr "Ver documentación de GTK+ para esta propiedade"
 
-#: ../src/glade-editor-property.c:573
-#, fuzzy
+#: ../src/glade-editor-property.c:576
 msgid "Property Class"
-msgstr "Propiedades"
+msgstr "Clase de propiedade"
 
-#: ../src/glade-editor-property.c:574
+#: ../src/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
+"A clase GladePropertyClass para a que se creou este GladeEditorProperty "
 
-#: ../src/glade-editor-property.c:580
-#, fuzzy
+#: ../src/glade-editor-property.c:583
 msgid "Use Command"
-msgstr "Usar Fonte:"
+msgstr "Usar comando"
 
-#: ../src/glade-editor-property.c:581
+#: ../src/glade-editor-property.c:584
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
+"Indica se deberíamos usar a API de comandos para a pila de desfacer/refacer"
 
-#: ../src/glade-editor-property.c:587
-#, fuzzy
+#: ../src/glade-editor-property.c:590
 msgid "Show Info"
-msgstr "Amosar Popup:"
+msgstr "Amosar información"
 
-#: ../src/glade-editor-property.c:588
+#: ../src/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
-msgstr ""
+msgstr "Indica se deberíamos amosar un botón de información"
 
-#: ../src/glade-editor-property.c:1116
+#: ../src/glade-editor-property.c:1119
 #, fuzzy
 msgid "Set Flags"
-msgstr "Seleccione Ficheiro"
+msgstr "Establecer "
 
-#: ../src/glade-editor-property.c:1449
+#: ../src/glade-editor-property.c:1452
 msgid "Edit Text Property"
 msgstr "Editar propiedade do texto"
 
 #. Text
-#: ../src/glade-editor-property.c:1466
-#, fuzzy
+#: ../src/glade-editor-property.c:1469
 msgid "_Text:"
-msgstr "Texto:"
+msgstr "_Texto:"
 
-#: ../src/glade-editor-property.c:1502
+#: ../src/glade-editor-property.c:1505
 msgid "T_ranslatable"
 msgstr "T_raducible"
 
-#: ../src/glade-editor-property.c:1515
-#, fuzzy
+#: ../src/glade-editor-property.c:1518
 msgid "Has context _prefix"
 msgstr "Ten _prefixo de contexto"
 
 #. Comments.
-#: ../src/glade-editor-property.c:1529
-#, fuzzy
+#: ../src/glade-editor-property.c:1532
 msgid "Co_mments for translators:"
-msgstr "<b>Co_mentarios para os traductores:</b>"
+msgstr "Co_mentarios para os tradutores:"
 
-#: ../src/glade-editor-property.c:1698 ../src/glade-editor-property.c:1714
+#: ../src/glade-editor-property.c:1701 ../src/glade-editor-property.c:1717
 msgid "Yes"
-msgstr "Sí"
+msgstr "Si"
 
-#: ../src/glade-editor-property.c:1698 ../src/glade-editor-property.c:1714
-#: ../src/glade-editor-property.c:1729
+#: ../src/glade-editor-property.c:1701 ../src/glade-editor-property.c:1717
+#: ../src/glade-editor-property.c:1732
 msgid "No"
 msgstr "Non"
 
-#: ../src/glade-editor-property.c:2319 ../src/glade-widget.c:1056
+#: ../src/glade-editor-property.c:2322 ../src/glade-widget.c:1072
+#: ../src/glade-widget-adaptor.c:908
 msgid "Name"
 msgstr "Nome"
 
-#: ../src/glade-editor-property.c:2331 ../src/glade-widget.c:1087
-#, fuzzy
+#: ../src/glade-editor-property.c:2334
 msgid "Class"
-msgstr "Clase:"
+msgstr "Clase"
 
-#: ../src/glade-editor-property.c:2345
+#: ../src/glade-editor-property.c:2348
 #, c-format
 msgid "Choose %s implementors"
-msgstr ""
+msgstr "Escolla %s implementadores"
 
-#: ../src/glade-editor-property.c:2345
+#: ../src/glade-editor-property.c:2348
 #, c-format
 msgid "Choose a %s in this project"
-msgstr ""
+msgstr "Escolla un %s neste proxecto"
 
 #. Checklist
-#: ../src/glade-editor-property.c:2397 ../src/glade-editor-property.c:2602
-#, fuzzy
+#: ../src/glade-editor-property.c:2400 ../src/glade-editor-property.c:2605
 msgid "Objects:"
-msgstr "Obxeto:"
+msgstr "Obxectos:"
 
-#: ../src/glade-editor-property.c:2917
+#: ../src/glade-editor-property.c:2920
 msgid "Value:"
 msgstr "Valor:"
 
-#: ../src/glade-editor-property.c:2918
-#, fuzzy
-msgid "The current value"
-msgstr "Valor inicial"
-
-#: ../src/glade-editor-property.c:2920
-#, fuzzy
-msgid "Lower:"
-msgstr "Hora de inicio:"
-
 #: ../src/glade-editor-property.c:2921
-msgid "The minimum value"
-msgstr "Valor mínimo"
+msgid "The current value"
+msgstr "O valor actual"
 
 #: ../src/glade-editor-property.c:2923
-#, fuzzy
-msgid "Upper:"
-msgstr "Hora de fin:"
+msgid "Lower:"
+msgstr "Mínimo:"
 
 #: ../src/glade-editor-property.c:2924
-msgid "The maximum value"
-msgstr "Valor máximo"
+msgid "The minimum value"
+msgstr "O valor mínimo"
 
 #: ../src/glade-editor-property.c:2926
-#, fuzzy
-msgid "Step inc:"
-msgstr "Inc. Paso:"
+msgid "Upper:"
+msgstr "Máximo:"
 
 #: ../src/glade-editor-property.c:2927
-msgid "The increment to use to make minor changes to the value"
-msgstr ""
+msgid "The maximum value"
+msgstr "O valor máximo"
 
 #: ../src/glade-editor-property.c:2929
-#, fuzzy
-msgid "Page inc:"
-msgstr "Inc. Páxina"
+msgid "Step inc:"
+msgstr "Inc. de paso:"
 
 #: ../src/glade-editor-property.c:2930
-msgid "The increment to use to make major changes to the value"
-msgstr ""
+msgid "The increment to use to make minor changes to the value"
+msgstr "O incremento a usar para facer cambios menores ao valor"
 
 #: ../src/glade-editor-property.c:2932
-#, fuzzy
-msgid "Page size:"
-msgstr "Tamaño de Páxina:"
+msgid "Page inc:"
+msgstr "Inc. de páxina:"
 
 #: ../src/glade-editor-property.c:2933
+msgid "The increment to use to make major changes to the value"
+msgstr "O incremento a usar para facer cambios maiores ao valor"
+
+#: ../src/glade-editor-property.c:2935
+msgid "Page size:"
+msgstr "Tamaño de páxina:"
+
+#: ../src/glade-editor-property.c:2936
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
 msgstr ""
+"O tamaño de páxina (nun GtkScrollbar isto é o tamaño da área que é "
+"actualmente visible)"
 
-#: ../src/glade-editor-property.c:3010
+#: ../src/glade-editor-property.c:3013
 msgid "Alphanumerical"
-msgstr ""
+msgstr "Alfanumérico"
 
-#: ../src/glade-editor-property.c:3015
+#: ../src/glade-editor-property.c:3018
 msgid "Extra"
-msgstr ""
+msgstr "Extra"
 
-#: ../src/glade-editor-property.c:3020
+#: ../src/glade-editor-property.c:3023
 #, fuzzy
 msgid "Keypad"
 msgstr "Tecla"
 
-#: ../src/glade-editor-property.c:3025
-#, fuzzy
+#: ../src/glade-editor-property.c:3028
 msgid "Functions"
-msgstr "Fracción:"
+msgstr "Funcións"
 
-#: ../src/glade-editor-property.c:3030 ../widgets/gnome.xml.in.h:24
-#, fuzzy
+#: ../src/glade-editor-property.c:3033 ../widgets/gnome.xml.in.h:24
 msgid "Other"
-msgstr "Degradado:"
+msgstr "Outro"
 
-#: ../src/glade-editor-property.c:3201 ../src/glade-editor-property.c:3235
-#: ../src/glade-editor-property.c:3280
+#: ../src/glade-editor-property.c:3204 ../src/glade-editor-property.c:3238
+#: ../src/glade-editor-property.c:3283
 msgid "<choose a key>"
-msgstr ""
+msgstr "<escoller unha tecla>"
 
-#: ../src/glade-editor-property.c:3234 ../widgets/gtk+.xml.in.h:144
+#: ../src/glade-editor-property.c:3237 ../widgets/gtk+.xml.in.h:153
 #: ../widgets/bonobo.xml.in.h:13
 msgid "None"
 msgstr "Ningún"
 
-#: ../src/glade-editor-property.c:3360 ../src/glade-signal-editor.c:684
+#: ../src/glade-editor-property.c:3363 ../src/glade-signal-editor.c:684
 msgid "Signal"
 msgstr "Sinal"
 
-#: ../src/glade-editor-property.c:3387
+#: ../src/glade-editor-property.c:3390
 msgid "Key"
 msgstr "Tecla"
 
-#: ../src/glade-editor-property.c:3401
+#: ../src/glade-editor-property.c:3404
 msgid "Shift"
-msgstr "Shift"
+msgstr "Maiús"
 
-#: ../src/glade-editor-property.c:3417
-#, fuzzy
+#: ../src/glade-editor-property.c:3420
 msgid "Control"
-msgstr "Ctrl"
+msgstr "Control"
 
-#: ../src/glade-editor-property.c:3433
+#: ../src/glade-editor-property.c:3436
 msgid "Alt"
 msgstr "Alt"
 
-#: ../src/glade-editor-property.c:3499
-#, fuzzy
+#: ../src/glade-editor-property.c:3502
 msgid "Choose accelerator keys..."
-msgstr "A tecla aceleradora"
+msgstr "Escoller teclas de acelerador..."
 
 #: ../src/glade-editor.c:146
-#, fuzzy
 msgid "Show info"
-msgstr "Amosar ocultos:"
+msgstr "Amosar info"
 
 #: ../src/glade-editor.c:147
-#, fuzzy
 msgid "Whether to show an informational button for the loaded widget"
-msgstr "Indica se o expansor está aberto inicialmente para revelar o widget fillo"
+msgstr "Indica se se amosa un botón de información para o widget cargado"
 
 #: ../src/glade-editor.c:154
 msgid "Show context info"
-msgstr ""
+msgstr "Amosar información de contexto"
 
 #: ../src/glade-editor.c:155
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
 msgstr ""
+"Indica se se amosa un botón de informacińo para cada propiedade e sinal no "
+"editor"
 
 #. construct tab label widget
-#: ../src/glade-editor.c:196 ../src/glade-editor.c:317
-#: ../src/glade-editor.c:1171
-#, fuzzy
+#: ../src/glade-editor.c:196 ../src/glade-editor.c:322
+#: ../src/glade-editor.c:1178
 msgid "Accessibility"
-msgstr "Visibilidade:"
+msgstr "Accesibilidade"
 
 #. configure page container
-#: ../src/glade-editor.c:212 ../src/glade-editor.c:316
-#, fuzzy
+#: ../src/glade-editor.c:212 ../src/glade-editor.c:321
 msgid "_Signals"
-msgstr "Sinais"
+msgstr "_Sinais"
 
-#: ../src/glade-editor.c:278
-#, fuzzy
+#: ../src/glade-editor.c:283
 msgid "View documentation for the selected widget"
-msgstr "Borra o widget seleccionado"
+msgstr "Ver a documentación do widget seleccionado"
 
-#: ../src/glade-editor.c:298
+#: ../src/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
-msgstr ""
+msgstr "Restablecer propiedades do widget aos seus valores por defecto"
 
-#: ../src/glade-editor.c:313
-#, fuzzy
+#: ../src/glade-editor.c:318
 msgid "_General"
-msgstr "Xeral"
+msgstr "_Xeral"
 
-#: ../src/glade-editor.c:314
-#, fuzzy
+#: ../src/glade-editor.c:319
 msgid "_Packing"
-msgstr "Empaquetado"
+msgstr "_Empaquetado"
 
-#: ../src/glade-editor.c:315
-#, fuzzy
+#: ../src/glade-editor.c:320
 msgid "_Common"
-msgstr "Comúns"
+msgstr "_Común"
 
-#: ../src/glade-editor.c:332
-#, fuzzy
+#: ../src/glade-editor.c:337
 msgid "_Edit..."
-msgstr "Editar..."
+msgstr "_Editar..."
 
 #. Name
-#: ../src/glade-editor.c:478
+#: ../src/glade-editor.c:483
 msgid "Name:"
 msgstr "Nome:"
 
 #. Class
-#: ../src/glade-editor.c:506
+#: ../src/glade-editor.c:511
 msgid "Class:"
 msgstr "Clase:"
 
-#: ../src/glade-editor.c:984
-#, fuzzy, c-format
+#: ../src/glade-editor.c:991
+#, c-format
 msgid "Create a %s"
-msgstr "Crea un novo ficheiro"
+msgstr "Crear un %s"
 
-#: ../src/glade-editor.c:1102
-#, fuzzy
+#: ../src/glade-editor.c:1109
 msgid "Reset"
-msgstr "Redimensionar:"
+msgstr "Restablecer"
 
-#: ../src/glade-editor.c:1116
-#, fuzzy
+#: ../src/glade-editor.c:1123
 msgid "Property"
-msgstr "Propiedades"
+msgstr "Propiedade"
 
-#: ../src/glade-editor.c:1151
+#: ../src/glade-editor.c:1158
 msgid "General"
 msgstr "Xeral"
 
-#: ../src/glade-editor.c:1161
+#: ../src/glade-editor.c:1168
 msgid "Common"
-msgstr "Comúns"
+msgstr "Común"
 
-#: ../src/glade-editor.c:1206
+#: ../src/glade-editor.c:1213
 msgid "(default)"
-msgstr ""
+msgstr "(por defecto)"
 
-#: ../src/glade-editor.c:1221
+#: ../src/glade-editor.c:1228
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
+"Seleccione as propiedades que quere restablecer aos seus valores por defecto"
 
-#: ../src/glade-editor.c:1353
-#, fuzzy
+#: ../src/glade-editor.c:1360
 msgid "Reset Widget Properties"
-msgstr "Fixar o nome dos Widgets"
+msgstr "Restablecer propiedades do widget"
 
 #. Checklist
-#: ../src/glade-editor.c:1370
-#, fuzzy
+#: ../src/glade-editor.c:1377
 msgid "_Properties:"
-msgstr "Propiedades:"
-
-#: ../src/glade-editor.c:1399
-#, fuzzy
-msgid "_Select All"
-msgstr "Seleccione Ficheiro"
+msgstr "_Propiedades:"
 
 #: ../src/glade-editor.c:1406
+msgid "_Select All"
+msgstr "_Seleccionar todo"
+
+#: ../src/glade-editor.c:1413
 msgid "_Unselect All"
-msgstr ""
+msgstr "_Deseleccionar todo"
 
 #. Description
-#: ../src/glade-editor.c:1415
-#, fuzzy
+#: ../src/glade-editor.c:1422
 msgid "Property _Description:"
-msgstr "Descrición:"
+msgstr "_Descrición da propiedade:"
 
-#: ../src/glade-fixed.c:467 ../src/glade-gtk.c:1306
+#: ../src/glade-fixed.c:467 ../src/glade-gtk.c:1410
 #, c-format
 msgid "Placing %s inside %s"
-msgstr ""
+msgstr "Poñendo %s dentro de %s"
 
-#: ../src/glade-fixed.c:1027
+#: ../src/glade-fixed.c:1029
 msgid "X position property"
-msgstr ""
+msgstr "Propiedade da posición X"
 
-#: ../src/glade-fixed.c:1028
+#: ../src/glade-fixed.c:1030
 msgid "The property used to set the X position of a child object"
-msgstr ""
+msgstr "A propiedade usada para establecer a posición X dun obxecto fillo"
 
-#: ../src/glade-fixed.c:1034
+#: ../src/glade-fixed.c:1036
 msgid "Y position property"
-msgstr ""
+msgstr "Propiedade da posición Y"
 
-#: ../src/glade-fixed.c:1035
+#: ../src/glade-fixed.c:1037
 msgid "The property used to set the Y position of a child object"
-msgstr ""
+msgstr "A propiedade usada para establecer a posición Y dun obxecto fillo"
 
-#: ../src/glade-fixed.c:1041
-#, fuzzy
+#: ../src/glade-fixed.c:1043
 msgid "Width property"
-msgstr "Editar propiedade do texto"
+msgstr "Propiedade de anchura"
 
-#: ../src/glade-fixed.c:1042
+#: ../src/glade-fixed.c:1044
 msgid "The property used to set the width of a child object"
-msgstr ""
+msgstr "A propiedade usada para establecer a anchura dun obxecto fillo"
 
-#: ../src/glade-fixed.c:1048
-#, fuzzy
+#: ../src/glade-fixed.c:1050
 msgid "Height property"
-msgstr "Editar propiedade do texto"
+msgstr "Propiedade de altura"
 
-#: ../src/glade-fixed.c:1049
-#, fuzzy
+#: ../src/glade-fixed.c:1051
 msgid "The property used to set the height of a child object"
-msgstr "Espacio a poñer á dereita do widget fillo"
+msgstr "A propiedade usada para establecer a altura do obxecto fillo"
 
-#: ../src/glade-fixed.c:1055
+#: ../src/glade-fixed.c:1057
 msgid "Can resize"
-msgstr ""
+msgstr "Pódese redimensionar"
 
-#: ../src/glade-fixed.c:1056
-#, fuzzy
+#: ../src/glade-fixed.c:1058
 msgid "Whether this container supports resizes of child widgets"
-msgstr "Indica se o expansor está aberto inicialmente para revelar o widget fillo"
+msgstr "Indica se este colector soporta redimensionados dos widgets fillos"
 
-#: ../src/glade-fixed.c:1062
-#, fuzzy
+#: ../src/glade-fixed.c:1064
 msgid "Use Placeholders"
-msgstr "Usar FileChooser:"
+msgstr "Usar reservas de espazo"
 
-#: ../src/glade-fixed.c:1063
+#: ../src/glade-fixed.c:1065
 msgid ""
 "Whether this container use placeholders, the backend is responsable for "
 "setting up this property"
 msgstr ""
+"Indica se este colector usará reserva de espazo, o backend é responsable "
+"para establecer esta propiedade"
 
-#: ../src/glade-palette.c:471
-#, fuzzy
-msgid "Widget Selector"
-msgstr "Selector do proveedor"
+#: ../src/glade-palette.c:617
+msgid "Widget selector"
+msgstr "Selector de widgets"
 
 #: ../src/glade-parser.c:1190
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find glade file %s"
-msgstr ""
-"Non se puido engadir ó ficheiro:\n"
-"  %s\n"
+msgstr "Non se puido atopar o ficheiro glade %s"
 
 #: ../src/glade-parser.c:1203 ../src/glade-parser.c:1211
-#, fuzzy, c-format
+#, c-format
 msgid "Errors parsing glade file %s"
-msgstr ""
-"Erro escribindo ao ficheiro:\n"
-"  %s\n"
+msgstr "Erros analizando o ficheiro glade %s"
 
 #: ../src/glade-parser.c:1641
 msgid "Could not allocate memory for interface"
-msgstr ""
+msgstr "Non se puido reservar memoria para a interface"
 
-#: ../src/glade-popup.c:271
-#, fuzzy
+#: ../src/glade-popup.c:254
 msgid "_Select"
-msgstr "Seleccionar"
+msgstr "_Seleccionar"
 
-#: ../src/glade-project.c:566
+#: ../src/glade-project.c:562
 msgid "Has Unsaved Changes"
-msgstr ""
+msgstr "Ten cambios sen gardar"
 
-#: ../src/glade-project.c:567
+#: ../src/glade-project.c:563
 msgid "Whether project has unsaved changes"
-msgstr ""
+msgstr "Indica se o proxecto ten cambios sen gardar"
 
-#: ../src/glade-project.c:574
-#, fuzzy
+#: ../src/glade-project.c:570
 msgid "Has Selection"
-msgstr "Selección ao pasar por enriba:"
+msgstr "Ten selección"
 
-#: ../src/glade-project.c:575
+#: ../src/glade-project.c:571
 msgid "Whether project has a selection"
-msgstr ""
+msgstr "Indica se o proxecto ten unha selección"
 
-#: ../src/glade-project.c:582
-#, fuzzy
+#: ../src/glade-project.c:578
 msgid "Read Only"
-msgstr "Só local:"
+msgstr "Só lectura"
 
-#: ../src/glade-project.c:583
+#: ../src/glade-project.c:579
 msgid "Whether project is read only or not"
-msgstr ""
+msgstr "Indica se o proxecto é de só lectura ou non"
 
-#: ../src/glade-project.c:1461
+#: ../src/glade-project.c:1460
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"Fallou ao cargar %s.\n"
+"Os seguintes catálogos requeridos non están dispoñibles: %s"
 
 #. Atk click property
-#: ../src/glade-property-class.c:52 ../widgets/gtk+.xml.in.h:46
+#: ../src/glade-property-class.c:51 ../widgets/gtk+.xml.in.h:47
 msgid "Click"
-msgstr "Pulsación"
+msgstr "Click"
 
 #. Atk click property
-#: ../src/glade-property-class.c:53 ../widgets/gtk+.xml.in.h:195
-#, fuzzy
+#: ../src/glade-property-class.c:52 ../widgets/gtk+.xml.in.h:210
 msgid "Set the desctription of the Click atk action"
-msgstr "Introduza a descrición da acción a pasar ás tecnoloxías de accesibilidade"
+msgstr "Establece a descrición da acción atk Click"
 
 #. Atk press property
-#: ../src/glade-property-class.c:54 ../widgets/gtk+.xml.in.h:167
+#: ../src/glade-property-class.c:53 ../widgets/gtk+.xml.in.h:178
 msgid "Press"
-msgstr "Premer"
+msgstr "Press"
 
 #. Atk press property
-#: ../src/glade-property-class.c:55 ../widgets/gtk+.xml.in.h:197
-#, fuzzy
+#: ../src/glade-property-class.c:54 ../widgets/gtk+.xml.in.h:212
 msgid "Set the desctription of the Press atk action"
-msgstr "Introduza a descrición da acción a pasar ás tecnoloxías de accesibilidade"
+msgstr "Establece a descrición da acción atk Press"
 
 #. Atk release property
-#: ../src/glade-property-class.c:56 ../widgets/gtk+.xml.in.h:179
+#: ../src/glade-property-class.c:55 ../widgets/gtk+.xml.in.h:194
 msgid "Release"
-msgstr "Liberación"
+msgstr "Release"
 
 #. Atk release property
-#: ../src/glade-property-class.c:57 ../widgets/gtk+.xml.in.h:199
+#: ../src/glade-property-class.c:56 ../widgets/gtk+.xml.in.h:214
 msgid "Set the desctription of the Release atk action"
-msgstr ""
+msgstr "Establece a descrición da acción atk Release"
 
 #. Atk activate property
-#: ../src/glade-property-class.c:58 ../widgets/gtk+.xml.in.h:14
-#, fuzzy
+#: ../src/glade-property-class.c:57 ../widgets/gtk+.xml.in.h:14
 msgid "Activate"
-msgstr "Activo"
+msgstr "Activate"
 
 #. Atk activate property
-#: ../src/glade-property-class.c:59 ../widgets/gtk+.xml.in.h:193
-#, fuzzy
+#: ../src/glade-property-class.c:58 ../widgets/gtk+.xml.in.h:208
 msgid "Set the desctription of the Activate atk action"
-msgstr "Introduza a descrición da acción a pasar ás tecnoloxías de accesibilidade"
+msgstr "Establece a descrición da acción atk Activate"
 
-#: ../src/glade-property-class.c:63
+#: ../src/glade-property-class.c:62
 msgid "Controlled By"
 msgstr "Controlado por"
 
-#: ../src/glade-property-class.c:64
+#: ../src/glade-property-class.c:63
 msgid "Indicates an object controlled by one or more target objects"
-msgstr ""
+msgstr "Indica un obxecto controlado por un ou máis obxectos de destino"
 
-#: ../src/glade-property-class.c:66
+#: ../src/glade-property-class.c:65
 msgid "Controller For"
 msgstr "Controlador para"
 
-#: ../src/glade-property-class.c:67
+#: ../src/glade-property-class.c:66
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
+"Indica que un obxecto é un controlador para un ou máis obxectos destino"
 
-#: ../src/glade-property-class.c:69
+#: ../src/glade-property-class.c:68
 msgid "Labelled By"
 msgstr "Etiquetado por"
 
-#: ../src/glade-property-class.c:70
+#: ../src/glade-property-class.c:69
 msgid "Indicates an object is labelled by one or more target objects"
-msgstr ""
+msgstr "Indica que un obxecto está etiquetado por un ou máis obxectos destino"
 
-#: ../src/glade-property-class.c:72
+#: ../src/glade-property-class.c:71
 msgid "Label For"
 msgstr "Etiqueta para"
 
-#: ../src/glade-property-class.c:73
+#: ../src/glade-property-class.c:72
 msgid "Indicates an object is a label for one or more target objects"
-msgstr ""
+msgstr "Indica que un obxecto é unha etiqueta para un ou máis obxectos destino"
 
-#: ../src/glade-property-class.c:75
+#: ../src/glade-property-class.c:74
 msgid "Member Of"
 msgstr "Membro de"
 
-#: ../src/glade-property-class.c:76
-msgid "Indicates an object is a member of a group of one or more target objects"
+#: ../src/glade-property-class.c:75
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
 msgstr ""
+"Indica que un obxecto é un membro dun grupo de un ou máis obxectos destino"
 
-#: ../src/glade-property-class.c:78
-#, fuzzy
+#: ../src/glade-property-class.c:77
 msgid "Child Node Of"
 msgstr "Nodo fillo de"
 
-#: ../src/glade-property-class.c:79
+#: ../src/glade-property-class.c:78
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr ""
+"Indica que un obxecto é unha cela nunha táboa árbore que se amosa porque "
+"unha cela na mesma columna está expandida e identifica esa cela"
+
+#: ../src/glade-property-class.c:81
+msgid "Flows To"
+msgstr "Flúe a"
 
 #: ../src/glade-property-class.c:82
-msgid "Flows To"
-msgstr "Flúe hacia"
-
-#: ../src/glade-property-class.c:83
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Indica que o obxecto ten contido que flúe loxicamente a outro obxecto "
+"AtkObject dunha forma secuencial, (por exemplo, un fluxo de texto)"
 
-#: ../src/glade-property-class.c:86
+#: ../src/glade-property-class.c:85
 msgid "Flows From"
 msgstr "Flúe desde"
 
-#: ../src/glade-property-class.c:87
+#: ../src/glade-property-class.c:86
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Indica que o obxecto ten contido que flúe loxicamente desde outro obxecto "
+"AtkObject dunha forma secuencial, (por exemplo, fluxo de texto)"
 
-#: ../src/glade-property-class.c:90
+#: ../src/glade-property-class.c:89
 msgid "Subwindow Of"
 msgstr "Subfiestra de"
 
-#: ../src/glade-property-class.c:91
+#: ../src/glade-property-class.c:90
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in  the UI hierarchy to that component"
 msgstr ""
+"Indica unha subfiestra adxuntada a un compoñente pero que de outra maneira "
+"non ten conexión na xerarquía da IU a ese compoñente"
 
-#: ../src/glade-property-class.c:94
+#: ../src/glade-property-class.c:93
 msgid "Embeds"
 msgstr "Empotra"
 
-#: ../src/glade-property-class.c:95
+#: ../src/glade-property-class.c:94
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
+"Indica que o obxecto empotra visualmente o contido doutro obxecto, por "
+"exemplo, o contido deste obxecto flúe arredor doutro contido"
 
-#: ../src/glade-property-class.c:98
+#: ../src/glade-property-class.c:97
 msgid "Embedded By"
 msgstr "Empotrado por"
 
-#: ../src/glade-property-class.c:99
+#: ../src/glade-property-class.c:98
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visualy "
 "embedded in another object"
 msgstr ""
 
-#: ../src/glade-property-class.c:102
+#: ../src/glade-property-class.c:101
 msgid "Popup For"
 msgstr "Emerxente para"
 
-#: ../src/glade-property-class.c:103
+#: ../src/glade-property-class.c:102
 msgid "Indicates that an object is a popup for another object"
-msgstr ""
+msgstr "Indica que un obxecto é un emerxente para outro obxecto"
 
-#: ../src/glade-property-class.c:105
+#: ../src/glade-property-class.c:104
 msgid "Parent Window Of"
 msgstr "Fiestra nai de"
 
-#: ../src/glade-property-class.c:106
+#: ../src/glade-property-class.c:105
 msgid "Indicates that an object is a parent window of another object"
-msgstr ""
+msgstr "Indica que un obxecto é unha fiestra nai doutro obxecto"
 
-#: ../src/glade-property.c:630
-#, fuzzy
+#: ../src/glade-property.c:587
 msgid "Enabled"
-msgstr "Táboa"
+msgstr "Activado"
 
-#: ../src/glade-property.c:631
+#: ../src/glade-property.c:588
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "Se a propiedade é opcional, isto está no seu estado activado"
 
-#: ../src/glade-property.c:637
-#, fuzzy
+#: ../src/glade-property.c:594
 msgid "Sensitive"
-msgstr "Sensible:"
+msgstr "Sensible"
 
-#: ../src/glade-property.c:638
+#: ../src/glade-property.c:595
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
+"Isto proporciona aos backends o control para establecer a propiedade de "
+"sensibilidade"
 
-#: ../src/glade-property.c:644
-#, fuzzy
+#: ../src/glade-property.c:601
 msgid "Comment"
-msgstr "Comentarios:"
+msgstr "Comentario"
 
-#: ../src/glade-property.c:645
-#, fuzzy
+#: ../src/glade-property.c:602
 msgid "Comment for translators"
-msgstr "<b>Co_mentarios para os traductores:</b>"
+msgstr "Comentario para os tradutores"
 
-#: ../src/glade-property.c:651
-#, fuzzy
+#: ../src/glade-property.c:608
 msgid "Translatable"
-msgstr "T_raducible"
+msgstr "Traducible"
 
-#: ../src/glade-property.c:652
+#: ../src/glade-property.c:609
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "Indica se esta propiedade é traducible ou non"
 
-#: ../src/glade-property.c:658
-#, fuzzy
+#: ../src/glade-property.c:615
 msgid "Has Context"
-msgstr "Ten _prefixo de contexto"
+msgstr "Ten contexto"
 
-#: ../src/glade-property.c:659
-#, fuzzy
+#: ../src/glade-property.c:616
 msgid "Whether or not the translatable string has a context prefix"
-msgstr "Necesita indicar un ficheiro para almacenar as cadeas traducibles"
+msgstr "Indica se a cadea traducible ten un prefixo de contexto"
 
 #: ../src/glade-signal-editor.c:704
 msgid "Handler"
@@ -1429,222 +1436,302 @@ msgstr "Manexador"
 
 #: ../src/glade-signal-editor.c:726
 msgid "User data"
-msgstr ""
+msgstr "Datos de usuario"
 
 #: ../src/glade-signal-editor.c:740
 msgid "Lookup"
-msgstr ""
+msgstr "Procurar"
 
 #: ../src/glade-signal-editor.c:751
 msgid "After"
-msgstr "Despóis"
+msgstr "Despois"
 
-#: ../src/glade-utils.c:154 ../src/glade-utils.c:187
+#: ../src/glade-utils.c:170 ../src/glade-utils.c:201
 #, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr ""
+msgstr "Non se atopou o símbolo \"%s\""
 
-#: ../src/glade-utils.c:161
+#: ../src/glade-utils.c:177
 #, c-format
-msgid "Could not get the type from \"%s"
-msgstr ""
+msgid "Could not get the type from \"%s\""
+msgstr "Non se obteu o tipo de \"%s\""
 
-#: ../src/glade-utils.c:528
-#, fuzzy
+#: ../src/glade-utils.c:542
 msgid "All Files"
-msgstr "Seleccione Ficheiro"
+msgstr "Tódolos ficheiros"
 
-#: ../src/glade-utils.c:533
-#, fuzzy
+#: ../src/glade-utils.c:547
 msgid "Glade Files"
-msgstr "Gardar ficheiro"
+msgstr "Ficheiros Glade"
 
-#: ../src/glade-utils.c:1341
+#: ../src/glade-utils.c:1353
 #, c-format
 msgid ""
 "%s exists.\n"
 "Do you want to replace it?"
 msgstr ""
+"%s existe.\n"
+"Quere reemprazalo?"
 
-#: ../src/glade-utils.c:1369
-#, fuzzy, c-format
+#: ../src/glade-utils.c:1381
+#, c-format
 msgid "Error writing to %s: %s"
-msgstr ""
-"Erro escribindo ao ficheiro:\n"
-"  %s\n"
+msgstr "Erro ao escribir en %s: %s"
 
-#: ../src/glade-utils.c:1383
-#, fuzzy, c-format
+#: ../src/glade-utils.c:1395
+#, c-format
 msgid "Error reading %s: %s"
-msgstr "Error lendo ficheiro"
+msgstr "Erro lendo %s: %s"
 
-#: ../src/glade-utils.c:1398
+#: ../src/glade-utils.c:1410
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
-msgstr ""
+msgstr "Erro ao apagar a canle de E/S %s: %s"
 
-#: ../src/glade-utils.c:1408
+#: ../src/glade-utils.c:1420
 #, c-format
 msgid "Failed to open %s for writing: %s"
-msgstr ""
+msgstr "Fallou ao abrir %s para escribir: %s"
 
-#: ../src/glade-utils.c:1419
+#: ../src/glade-utils.c:1431
 #, c-format
 msgid "Error shutting down io channel %s: %s"
-msgstr ""
+msgstr "Erro apagando a canle de entrada/saída %s: %s"
 
-#: ../src/glade-utils.c:1428
+#: ../src/glade-utils.c:1440
 #, c-format
 msgid "Failed to open %s for reading: %s"
-msgstr ""
+msgstr "Fallou ao abrir %s para lectura: %s"
 
-#: ../src/glade-utils.c:1486
+#: ../src/glade-utils.c:1498
 #, c-format
 msgid "Unable to open the module %s (%s)."
-msgstr ""
+msgstr "Imposible abrir o módulo %s (%s)."
 
-#: ../src/glade-widget-class.c:395 ../src/glade-widget-class.c:429
-#, c-format
-msgid "Unable to load icon for %s (%s)"
-msgstr ""
-
-#: ../src/glade-widget-class.c:407 ../src/glade-widget-class.c:441
-#, c-format
-msgid "Unable to load stock icon (%s)"
-msgstr ""
-
-#: ../src/glade-widget.c:1057
+#: ../src/glade-widget.c:1073
 msgid "The name of the widget"
 msgstr "O nome do widget"
 
-#: ../src/glade-widget.c:1064
-msgid "Internal name"
-msgstr ""
-
-#: ../src/glade-widget.c:1065
-#, fuzzy
-msgid "The internal name of the widget"
-msgstr "O nome do widget"
-
-#: ../src/glade-widget.c:1071
-msgid "Anarchist"
-msgstr ""
-
-#: ../src/glade-widget.c:1072
-msgid "Whether this composite child is an ancestral child or an anarchist child"
-msgstr ""
-
-#: ../src/glade-widget.c:1079
-msgid "Object"
-msgstr "Obxeto"
-
 #: ../src/glade-widget.c:1080
-#, fuzzy
-msgid "The object associated"
-msgstr "O Ficheiro do proxecto"
+msgid "Internal name"
+msgstr "Nome interno"
+
+#: ../src/glade-widget.c:1081
+msgid "The internal name of the widget"
+msgstr "O nome interno do widget"
+
+#: ../src/glade-widget.c:1087
+msgid "Anarchist"
+msgstr "Anarquista"
 
 #: ../src/glade-widget.c:1088
-#, fuzzy
-msgid "The class of the associated gtk+ widget"
-msgstr "A clase do widget"
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr ""
+"Indica se este descendente composto é un descendente ancestral ou un "
+"descendente anarquista"
 
 #: ../src/glade-widget.c:1095
-#, fuzzy
-msgid "Project"
-msgstr "_Proxecto"
+msgid "Object"
+msgstr "Obxecto"
 
 #: ../src/glade-widget.c:1096
-#, fuzzy
-msgid "The glade project that this widget belongs to"
-msgstr "Os eventos X que o widget recibe"
+msgid "The object associated"
+msgstr "O obxecto asociado"
 
-#: ../src/glade-widget.c:1105
-msgid "A list of GladeProperties"
+#: ../src/glade-widget.c:1103
+msgid "Adaptor"
 msgstr ""
 
-#: ../src/glade-widget.c:1111 ../widgets/gtk+.xml.in.h:160
-#, fuzzy
-msgid "Parent"
-msgstr "Paleta"
+#: ../src/glade-widget.c:1104
+msgid "The class adaptor for the associated widget"
+msgstr "A clase adaptor para o widget asociado"
+
+#: ../src/glade-widget.c:1111
+msgid "Project"
+msgstr "Proxecto"
 
 #: ../src/glade-widget.c:1112
+msgid "The glade project that this widget belongs to"
+msgstr "O proxecto glade ao que pertence este widget"
+
+#: ../src/glade-widget.c:1121
+msgid "A list of GladeProperties"
+msgstr "Unha lista de GladeProperties"
+
+#: ../src/glade-widget.c:1127 ../widgets/gtk+.xml.in.h:171
+msgid "Parent"
+msgstr "Pai"
+
+#: ../src/glade-widget.c:1128
 msgid "A pointer to the parenting GladeWidget"
-msgstr ""
+msgstr "Un punteiro ao GladeWidget pai"
 
-#: ../src/glade-widget.c:1119
+#: ../src/glade-widget.c:1135
 msgid "Internal Name"
-msgstr ""
+msgstr "Nome interno"
 
-#: ../src/glade-widget.c:1120
+#: ../src/glade-widget.c:1136
 msgid "A generic name prefix for internal widgets"
-msgstr ""
+msgstr "Un prefixo de nome xenérico  para os widgets internos"
 
-#: ../src/glade-widget.c:1125
+#: ../src/glade-widget.c:1141
 msgid "Template"
-msgstr ""
+msgstr "Modelo"
 
-#: ../src/glade-widget.c:1126
+#: ../src/glade-widget.c:1142
 msgid "A GladeWidget template to base a new widget on"
-msgstr ""
+msgstr "Un modelo GladeWidget no que basear un novo widget"
 
-#: ../src/glade-widget.c:1132 ../widgets/gtk+.xml.in.h:121
+#: ../src/glade-widget.c:1148 ../widgets/gtk+.xml.in.h:126
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
-#: ../src/glade-widget.c:1133
+#: ../src/glade-widget.c:1149
 msgid "A GladeWidgetInfo struct to base a new widget on"
-msgstr ""
+msgstr "Unha estrutura GladeWidgetInfo na que basear un novo widget"
 
-#: ../src/glade-widget.c:1138
-#, fuzzy
+#: ../src/glade-widget.c:1154
 msgid "Reason"
-msgstr "Liberación"
+msgstr "Razón"
 
-#: ../src/glade-widget.c:1139
+#: ../src/glade-widget.c:1155
 msgid "A GladeCreateReason for this creation"
+msgstr "Unha GladeCreateReason para esta creación"
+
+#: ../src/glade-widget-adaptor.c:183 ../src/glade-widget-adaptor.c:223
+#, fuzzy, c-format
+msgid "Unable to load icon for %s (%s)"
+msgstr "Imposible cargar a imaxe (%s)"
+
+#: ../src/glade-widget-adaptor.c:198 ../src/glade-widget-adaptor.c:238
+#, fuzzy, c-format
+msgid "Unable to load stock icon (%s)"
+msgstr "Imposible cargar a imaxe (%s)"
+
+#: ../src/glade-widget-adaptor.c:332
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
 msgstr ""
 
-#: ../src/glade-project-view.c:623
+#: ../src/glade-widget-adaptor.c:909
+#, fuzzy
+msgid "Name of the class"
+msgstr "Número de elementos"
+
+#: ../src/glade-widget-adaptor.c:917
+#, fuzzy
+msgid "GType of the class"
+msgstr "O tipo de caixa de mensaxes"
+
+#: ../src/glade-widget-adaptor.c:924 ../widgets/gnome.xml.in.h:45
+msgid "Title"
+msgstr "Título"
+
+#: ../src/glade-widget-adaptor.c:925
+msgid "Translated title for the class used in the glade UI"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:932
+#, fuzzy
+msgid "Generic Name"
+msgstr "Xenérico"
+
+#: ../src/glade-widget-adaptor.c:933
+#, fuzzy
+msgid "Used to generate names of new widgets"
+msgstr "O nome interno do widget"
+
+#: ../src/glade-widget-adaptor.c:940
+#, fuzzy
+msgid "Catalog"
+msgstr "Diálogo"
+
+#: ../src/glade-widget-adaptor.c:941
+msgid "The name of the widget catalog this class was declared by"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:948
+#, fuzzy
+msgid "Book"
+msgstr "Procurar"
+
+#: ../src/glade-widget-adaptor.c:949
+msgid "DevHelp search namespace for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:956
+msgid "Special Child Type"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:957
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:965
+msgid "Large Icon"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:966
+msgid "The 22x22 icon for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:973
+#, fuzzy
+msgid "Small Icon"
+msgstr "_Usar iconas pequenas"
+
+#: ../src/glade-widget-adaptor.c:974
+msgid "The 16x16 icon for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:981 ../widgets/gtk+.xml.in.h:63
+msgid "Cursor"
+msgstr "Cursor"
+
+#: ../src/glade-widget-adaptor.c:982
+msgid "A cursor for inserting widgets in the UI"
+msgstr ""
+
+#: ../src/glade-project-view.c:646
 #, c-format
 msgid "(internal %s)"
-msgstr ""
+msgstr "(interno %s)"
 
-#: ../src/glade-project-view.c:627
+#: ../src/glade-project-view.c:650
 #, c-format
 msgid "(%s child)"
-msgstr ""
+msgstr "(fillo de %s)"
 
 #: ../src/glade-custom.c:217
-#, fuzzy
 msgid "Creation Function"
 msgstr "Función de creación"
 
 #: ../src/glade-custom.c:218
-#, fuzzy
 msgid "The function which creates this widget"
-msgstr "A función que crea o widget"
+msgstr "A función que crea este widget"
 
 #: ../src/glade-custom.c:224
-#, fuzzy
 msgid "String 1"
-msgstr "Cadea1:"
+msgstr "Cadea 1"
 
 #: ../src/glade-custom.c:225
 msgid "The first string argument to pass to the function"
-msgstr "O primeiro argumento (cadea) que se lle pasa á función"
+msgstr "O primeiro argumento cadea que se lle pasa á función"
 
 #: ../src/glade-custom.c:231
-#, fuzzy
 msgid "String 2"
-msgstr "Cadea2:"
+msgstr "Cadea 2"
 
 #: ../src/glade-custom.c:232
 msgid "The second string argument to pass to the function"
-msgstr "O segundo argumento (cadea) que se lle pasa á función"
+msgstr "O segundo argumento cadea que se lle pasa á función"
 
 #: ../src/glade-custom.c:238
 msgid "Integer 1"
-msgstr ""
+msgstr "Enteiro 1"
 
 #: ../src/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
@@ -1652,131 +1739,124 @@ msgstr "O primeiro argumento enteiro que se lle pasa á función"
 
 #: ../src/glade-custom.c:245
 msgid "Integer 2"
-msgstr ""
+msgstr "Enteiro 2"
 
 #: ../src/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
 msgstr "O segundo argumento enteiro que se lle pasa á función"
 
-#: ../src/glade-gtk.c:169
+#: ../src/glade-gtk.c:171
 msgid "GnomeUIInfo"
-msgstr ""
+msgstr "GnomeUIInfo"
 
-#: ../src/glade-gtk.c:170
+#: ../src/glade-gtk.c:172
 msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
-
-#: ../src/glade-gtk.c:186
-#, fuzzy
-msgid "Filename"
-msgstr "Cambiar nome"
+msgstr "Escolla o elemento de stock de GnomeUIInfo"
 
 #: ../src/glade-gtk.c:188
-#, fuzzy
+msgid "Filename"
+msgstr "Nome de ficheiro"
+
+#: ../src/glade-gtk.c:190
 msgid "Icon Theme"
-msgstr "Vista de iconas"
+msgstr "Tema de icona"
 
-#: ../src/glade-gtk.c:208 ../widgets/gtk+.xml.in.h:55
-#, fuzzy
+#: ../src/glade-gtk.c:210 ../widgets/gtk+.xml.in.h:57
 msgid "Container"
-msgstr "Centro"
+msgstr "Colector"
 
-#: ../src/glade-gtk.c:218 ../src/glade-gtk.c:227
-#, fuzzy
+#: ../src/glade-gtk.c:220 ../src/glade-gtk.c:229
 msgid "Method"
-msgstr "Mod"
+msgstr "Método"
 
-#: ../src/glade-gtk.c:219
-#, fuzzy
+#: ../src/glade-gtk.c:221
 msgid "The method to use to edit this image"
-msgstr "A fonte a usar para calqueira texto no widget"
+msgstr "O método a usar para editar esta imaxe"
 
-#: ../src/glade-gtk.c:228
-#, fuzzy
+#: ../src/glade-gtk.c:230
 msgid "The method to use to edit this button"
-msgstr "Texto que se amosa no botón"
+msgstr "O método a usar para editar este botón"
 
-#: ../src/glade-gtk.c:532
+#: ../src/glade-gtk.c:587
 #, c-format
 msgid "Ordering children of %s"
-msgstr ""
+msgstr "Arranxando fillos de %s"
 
-#: ../src/glade-gtk.c:3028 ../src/glade-gtk.c:3032 ../src/glade-gtk.c:3195
-#: ../src/glade-gtk.c:3199
+#: ../src/glade-gtk.c:3275 ../src/glade-gtk.c:3279 ../src/glade-gtk.c:3454
+#: ../src/glade-gtk.c:3458
 msgid "This only applies with label type buttons"
-msgstr ""
+msgstr "Isto só se aplica cos botóns de tipo etiqueta"
 
-#: ../src/glade-gtk.c:3043 ../src/glade-gtk.c:3191
+#: ../src/glade-gtk.c:3290 ../src/glade-gtk.c:3294 ../src/glade-gtk.c:3446
+#: ../src/glade-gtk.c:3450
 msgid "This only applies with stock type buttons"
-msgstr ""
+msgstr "Isto só se aplica aos botóns de tipo stock"
 
-#: ../src/glade-gtk.c:3274 ../src/glade-gtk.c:3294
+#: ../src/glade-gtk.c:3554 ../src/glade-gtk.c:3576
 msgid "You must remove any children before you can set the type"
-msgstr ""
+msgstr "Debe quitar calquer fillo antes de que poida establecer o tipo"
 
-#: ../src/glade-gtk.c:3316 ../src/glade-gtk.c:4569
+#: ../src/glade-gtk.c:3600 ../src/glade-gtk.c:4959
 msgid "This only applies with file type images"
-msgstr ""
+msgstr "Isto só se aplica cos tipos de ficheiros de imaxes"
 
-#: ../src/glade-gtk.c:3324 ../src/glade-gtk.c:4573
+#: ../src/glade-gtk.c:3608 ../src/glade-gtk.c:4963
 msgid "This only applies to Icon Theme type images"
-msgstr ""
+msgstr "Isto só se aplica ás imaxes de tipo Tema de icona"
 
-#: ../src/glade-gtk.c:3332 ../src/glade-gtk.c:4571
+#: ../src/glade-gtk.c:3617 ../src/glade-gtk.c:4961
 msgid "This only applies with stock type images"
-msgstr ""
+msgstr "Isto só se aplica ás imaxes de stock"
 
-#: ../src/glade-gtk.c:3344
+#: ../src/glade-gtk.c:3629
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr ""
+"O tamaño do píxel toma prioridade sobre o tamaño da icona. Se quere usar o "
+"tamaño da icona, poña o tamaño do píxel a -1"
 
-#: ../src/glade-gtk.c:3370
+#: ../src/glade-gtk.c:3655
 msgid "Pixel Size takes precedence over Icon size"
-msgstr ""
+msgstr "O tamaño do píxel toma prioridade sobre o tamaño da icona"
 
-#: ../src/glade-gtk.c:3622 ../src/glade-gtk.c:4463
-#, fuzzy
+#: ../src/glade-gtk.c:3942 ../src/glade-gtk.c:4850
 msgid "<separator>"
-msgstr "separador"
+msgstr "<separador>"
 
-#: ../src/glade-gtk.c:3796 ../widgets/gtk+.xml.in.h:145
+#: ../src/glade-gtk.c:4117 ../widgets/gtk+.xml.in.h:154
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/glade-gtk.c:3797 ../widgets/gtk+.xml.in.h:116
+#: ../src/glade-gtk.c:4118 ../widgets/gtk+.xml.in.h:121
 msgid "Image"
 msgstr "Imaxe"
 
-#: ../src/glade-gtk.c:3798
+#: ../src/glade-gtk.c:4119
 msgid "Check"
-msgstr "Comprobar"
+msgstr "Caixa"
 
-#: ../src/glade-gtk.c:3799 ../src/glade-gtk.c:4521
+#: ../src/glade-gtk.c:4120 ../src/glade-gtk.c:4909
 msgid "Radio"
 msgstr "Radio"
 
-#: ../src/glade-gtk.c:3800 ../src/glade-gtk.c:4524
-#, fuzzy
+#: ../src/glade-gtk.c:4121 ../src/glade-gtk.c:4912
 msgid "Separator"
-msgstr "separador"
+msgstr "Separador"
 
-#: ../src/glade-gtk.c:3804
+#: ../src/glade-gtk.c:4125
 msgid "Add Item"
-msgstr ""
+msgstr "Engadir elemento"
 
-#: ../src/glade-gtk.c:3805
-#, fuzzy
+#: ../src/glade-gtk.c:4126
 msgid "Add Child Item"
-msgstr "Engadir _fillo"
+msgstr "Engadir elemento fillo"
 
-#: ../src/glade-gtk.c:3806 ../src/glade-gtk.c:4533
-#, fuzzy
+#: ../src/glade-gtk.c:4127 ../src/glade-gtk.c:4921
 msgid "Add Separator"
-msgstr "Engadir _separador"
+msgstr "Engadir separador"
 
-#: ../src/glade-gtk.c:3819
+#: ../src/glade-gtk.c:4140
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1784,155 +1864,157 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>Consellos:</b></big>\n"
+"  * Botón dereito sobre a vista da árbore parar engadir elementos.\n"
+"  * Prema borrar para quitar o elemento seleccionado.\n"
+"  * Arrastrar e soltar para reordear.\n"
+"  * O tipo da columna é editable."
 
-#: ../src/glade-gtk.c:4049
-msgid "This does not apply with stock items"
-msgstr ""
-
-#: ../src/glade-gtk.c:4135
+#: ../src/glade-gtk.c:4369
 msgid "Print S_etup"
-msgstr ""
+msgstr "Configuración de _impresión"
 
-#: ../src/glade-gtk.c:4139
+#: ../src/glade-gtk.c:4373
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "Procurar _seguinte"
 
-#: ../src/glade-gtk.c:4143
+#: ../src/glade-gtk.c:4377
 msgid "_Undo Move"
-msgstr ""
+msgstr "_Defacer movemento"
 
-#: ../src/glade-gtk.c:4147
+#: ../src/glade-gtk.c:4381
 msgid "_Redo Move"
-msgstr ""
+msgstr "_Refacer movemento"
 
-#: ../src/glade-gtk.c:4150
-#, fuzzy
+#: ../src/glade-gtk.c:4384
 msgid "Select _All"
-msgstr "Seleccione Ficheiro"
+msgstr "Seleccionar _todo"
 
-#: ../src/glade-gtk.c:4153
-#, fuzzy
+#: ../src/glade-gtk.c:4387
 msgid "_New Game"
-msgstr "Nova táboa"
+msgstr "Xogo _novo"
 
-#: ../src/glade-gtk.c:4156
+#: ../src/glade-gtk.c:4390
 msgid "_Pause game"
-msgstr ""
+msgstr "Pausar _xogo"
 
-#: ../src/glade-gtk.c:4159
+#: ../src/glade-gtk.c:4393
 msgid "_Restart Game"
-msgstr ""
+msgstr "_Reiniciar xogo"
 
-#: ../src/glade-gtk.c:4162
-#, fuzzy
+#: ../src/glade-gtk.c:4396
 msgid "_Hint"
-msgstr "_Editar"
+msgstr "_Pista"
 
-#: ../src/glade-gtk.c:4165
+#: ../src/glade-gtk.c:4399
 msgid "_Scores..."
-msgstr ""
+msgstr "_Puntuacións..."
 
-#: ../src/glade-gtk.c:4168
+#: ../src/glade-gtk.c:4402
 msgid "_End Game"
-msgstr ""
+msgstr "_Rematar xogo"
 
-#: ../src/glade-gtk.c:4171
-#, fuzzy
+#: ../src/glade-gtk.c:4405
 msgid "Create New _Window"
-msgstr "Crea un novo ficheiro"
+msgstr "Crear _fiestra nova"
 
-#: ../src/glade-gtk.c:4174
+#: ../src/glade-gtk.c:4408
 msgid "_Close This Window"
-msgstr ""
+msgstr "_Pechar esta fiestra"
 
-#: ../src/glade-gtk.c:4186
+#: ../src/glade-gtk.c:4420
 msgid "_Settings"
-msgstr ""
+msgstr "_Opcións"
 
-#: ../src/glade-gtk.c:4189
-#, fuzzy
+#: ../src/glade-gtk.c:4423
 msgid "Fi_les"
-msgstr "_Ficheiro"
+msgstr "Fic_heiros"
 
-#: ../src/glade-gtk.c:4192
-#, fuzzy
+#: ../src/glade-gtk.c:4426
 msgid "_Windows"
-msgstr "Fiestra"
+msgstr "_Fiestras"
 
-#: ../src/glade-gtk.c:4198
-#, fuzzy
+#: ../src/glade-gtk.c:4432
 msgid "_Game"
-msgstr "_Gnome"
+msgstr "_Xogo"
 
-#: ../src/glade-gtk.c:4356
-#, fuzzy
+#: ../src/glade-gtk.c:4528
+msgid "This does not apply with stock items"
+msgstr "Isto non se aplica aos elementos de stock"
+
+#: ../src/glade-gtk.c:4738
 msgid "Menu Bar Editor"
-msgstr "Editor de menú"
+msgstr "Editor de barra de menú"
 
-#: ../src/glade-gtk.c:4363
+#: ../src/glade-gtk.c:4745
 msgid "Menu Editor"
 msgstr "Editor de menú"
 
-#: ../src/glade-gtk.c:4472
+#: ../src/glade-gtk.c:4859
 msgid "<custom>"
-msgstr ""
+msgstr "<personalizado>"
 
-#: ../src/glade-gtk.c:4519 ../widgets/gtk+.xml.in.h:30
+#: ../src/glade-gtk.c:4907 ../widgets/gtk+.xml.in.h:31
 msgid "Button"
 msgstr "Botón"
 
-#: ../src/glade-gtk.c:4520
-#, fuzzy
+#: ../src/glade-gtk.c:4908
 msgid "Toggle"
-msgstr "Botón de Dous Estados"
+msgstr "Conmutar"
 
-#: ../src/glade-gtk.c:4522 ../widgets/gtk+.xml.in.h:135
-#, fuzzy
+#: ../src/glade-gtk.c:4910 ../widgets/gtk+.xml.in.h:143
 msgid "Menu"
-msgstr "Barra de Menú"
+msgstr "Menú"
 
-#: ../src/glade-gtk.c:4523
-#, fuzzy
+#: ../src/glade-gtk.c:4911
 msgid "Item"
-msgstr "Elementos:"
+msgstr "Elemento"
 
-#: ../src/glade-gtk.c:4528
-#, fuzzy
+#: ../src/glade-gtk.c:4916
 msgid "Add Tool Button"
-msgstr "Botón de barra de ferramentas"
+msgstr "Engadir botón de ferramenta"
 
-#: ../src/glade-gtk.c:4529
-#, fuzzy
+#: ../src/glade-gtk.c:4917
 msgid "Add Toggle Button"
-msgstr "Botón de Dous Estados"
+msgstr "Engadir botón conmutable"
 
-#: ../src/glade-gtk.c:4530
-#, fuzzy
+#: ../src/glade-gtk.c:4918
 msgid "Add Radio Button"
-msgstr "Botón de Radio"
+msgstr "Engadir botón de radio"
 
-#: ../src/glade-gtk.c:4531
-#, fuzzy
+#: ../src/glade-gtk.c:4919
 msgid "Add Menu Button"
-msgstr "Engadir caixa de eventos"
+msgstr "Engadir botón de menú"
 
-#: ../src/glade-gtk.c:4532
-#, fuzzy
+#: ../src/glade-gtk.c:4920
 msgid "Add Tool Item"
-msgstr "Elemento da barra de ferramentas"
+msgstr "Engadir elemento de ferramenta"
 
-#: ../src/glade-gtk.c:4541
-#, fuzzy
+#: ../src/glade-gtk.c:4929
 msgid "Tool Bar Editor"
-msgstr "Editor da táboa"
+msgstr "Editor de barra de ferramentas"
+
+#: ../src/glade-gtk.c:5682
+msgid "Introduction page"
+msgstr "Páxina de introdución"
+
+#: ../src/glade-gtk.c:5686
+msgid "Content page"
+msgstr "Páxina de contido"
+
+#: ../src/glade-gtk.c:5690
+msgid "Confirm page"
+msgstr "Páxina de confirmación"
 
 #: ../widgets/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
 msgstr ""
+"Un elemento de stock, seleccione Ningún para escoller unha imaxe e etiqueta "
+"personalizada"
 
 #: ../widgets/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "Un texto de suxestión para este widget"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -1943,43 +2025,37 @@ msgid "About Dialog"
 msgstr "Diálogo Acerca de"
 
 #: ../widgets/gtk+.xml.in.h:9
-#, fuzzy
 msgid "Accel Label"
-msgstr "Etiqueta de menú:"
+msgstr "Etiqueta do acelerador"
 
 #: ../widgets/gtk+.xml.in.h:10
-#, fuzzy
 msgid "Accessible Description"
-msgstr "Descrición"
+msgstr "Descrición accesible"
 
 #. Atk name and description properties
 #: ../widgets/gtk+.xml.in.h:12
 msgid "Accessible Name"
-msgstr ""
+msgstr "Nome accesible"
 
 #: ../widgets/gtk+.xml.in.h:15
 msgid "Alignment"
-msgstr "Aliñamento"
+msgstr "Aliñación"
 
 #: ../widgets/gtk+.xml.in.h:16
-#, fuzzy
 msgid "All"
-msgstr "Alt"
+msgstr "Todo"
 
 #: ../widgets/gtk+.xml.in.h:17
-#, fuzzy
 msgid "All Events"
-msgstr "Eventos:"
+msgstr "Tódolos eventos"
 
 #: ../widgets/gtk+.xml.in.h:18 ../widgets/gnome.xml.in.h:2
-#, fuzzy
 msgid "Always"
-msgstr "Usar Sempre:"
+msgstr "Sempre"
 
 #: ../widgets/gtk+.xml.in.h:19
-#, fuzzy
 msgid "Always Center"
-msgstr "Centro"
+msgstr "Sempre centrado"
 
 #: ../widgets/gtk+.xml.in.h:20
 msgid "Arrow"
@@ -1987,1114 +2063,1078 @@ msgstr "Frecha"
 
 #: ../widgets/gtk+.xml.in.h:21
 msgid "Aspect Frame"
-msgstr "Aspecto do frame"
+msgstr "Marco de proporción"
 
 #: ../widgets/gtk+.xml.in.h:22
-#, fuzzy
+msgid "Assistant"
+msgstr "Asistente"
+
+#: ../widgets/gtk+.xml.in.h:23
 msgid "Automatic"
 msgstr "Automático"
 
-#: ../widgets/gtk+.xml.in.h:23
-#, fuzzy
-msgid "Both"
-msgstr "Abaixo"
-
 #: ../widgets/gtk+.xml.in.h:24
-#, fuzzy
-msgid "Both Horizontal"
-msgstr "Amosar Horizontal:"
+msgid "Both"
+msgstr "Ambos"
 
-#: ../widgets/gtk+.xml.in.h:25 ../widgets/bonobo.xml.in.h:1
+#: ../widgets/gtk+.xml.in.h:25
+msgid "Both Horizontal"
+msgstr "Ambos horizontais"
+
+#: ../widgets/gtk+.xml.in.h:26 ../widgets/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "Abaixo"
 
-#: ../widgets/gtk+.xml.in.h:26
-#, fuzzy
-msgid "Bottom Left"
-msgstr "Abaixo"
-
 #: ../widgets/gtk+.xml.in.h:27
-#, fuzzy
-msgid "Bottom Right"
-msgstr "Abaixo"
+msgid "Bottom Left"
+msgstr "Abaixo á esquerda"
 
 #: ../widgets/gtk+.xml.in.h:28
-#, fuzzy
-msgid "Bottom to Top"
-msgstr "Abaixo"
+msgid "Bottom Right"
+msgstr "Abaixo á dereita"
 
 #: ../widgets/gtk+.xml.in.h:29
-msgid "Box"
-msgstr ""
+msgid "Bottom to Top"
+msgstr "De abaixo a arriba"
 
-#: ../widgets/gtk+.xml.in.h:31
-msgid "Button 1 Motion"
-msgstr ""
+#: ../widgets/gtk+.xml.in.h:30
+msgid "Box"
+msgstr "Caixa"
 
 #: ../widgets/gtk+.xml.in.h:32
-msgid "Button 2 Motion"
-msgstr ""
+msgid "Button 1 Motion"
+msgstr "Movemento do botón 1"
 
 #: ../widgets/gtk+.xml.in.h:33
-msgid "Button 3 Motion"
-msgstr ""
+msgid "Button 2 Motion"
+msgstr "Movemento do botón 2"
 
 #: ../widgets/gtk+.xml.in.h:34
-#, fuzzy
-msgid "Button Box"
-msgstr "Botón"
+msgid "Button 3 Motion"
+msgstr "Movemento do botón 3"
 
 #: ../widgets/gtk+.xml.in.h:35
-#, fuzzy
-msgid "Button Motion"
-msgstr "Botón"
+msgid "Button Box"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:36
-#, fuzzy
-msgid "Button Press"
-msgstr "Botón"
+msgid "Button Motion"
+msgstr "Movemento do botón"
 
 #: ../widgets/gtk+.xml.in.h:37
-#, fuzzy
-msgid "Button Release"
-msgstr "Relieve do botón"
+msgid "Button Press"
+msgstr "Pulsación do botón"
 
 #: ../widgets/gtk+.xml.in.h:38
+msgid "Button Release"
+msgstr "Liberación do botón"
+
+#: ../widgets/gtk+.xml.in.h:39
 msgid "Calendar"
 msgstr "Calendario"
 
-#: ../widgets/gtk+.xml.in.h:39
+#: ../widgets/gtk+.xml.in.h:40
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../widgets/gtk+.xml.in.h:40
-msgid "Center"
-msgstr "Centro"
-
 #: ../widgets/gtk+.xml.in.h:41
-msgid "Center on Parent"
-msgstr ""
+msgid "Center"
+msgstr "Centrar"
 
 #: ../widgets/gtk+.xml.in.h:42
+msgid "Center on Parent"
+msgstr "Centrar no pai"
+
+#: ../widgets/gtk+.xml.in.h:43
 msgid "Character"
 msgstr "Carácter"
 
-#: ../widgets/gtk+.xml.in.h:43
-msgid "Check Button"
-msgstr "Botón de Chequeo"
-
 #: ../widgets/gtk+.xml.in.h:44
-msgid "Check Menu Item"
-msgstr "Botón de Chequeo de Menú"
+msgid "Check Button"
+msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:47
+#: ../widgets/gtk+.xml.in.h:45
+msgid "Check Menu Item"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:48
 msgid "Close"
 msgstr "Pechar"
 
-#: ../widgets/gtk+.xml.in.h:48
-#, fuzzy
-msgid "Color Button"
-msgstr "Botón de barra de ferramentas"
-
 #: ../widgets/gtk+.xml.in.h:49
-msgid "Color Selection"
-msgstr "Selección de Cor"
+msgid "Color Button"
+msgstr "Botón de cor"
 
 #: ../widgets/gtk+.xml.in.h:50
-msgid "Color Selection Dialog"
-msgstr "Diálogo para escoller unha cor"
+msgid "Color Selection"
+msgstr "Selección de cor"
 
 #: ../widgets/gtk+.xml.in.h:51
-msgid "Columned List"
-msgstr "Lista con Columnas"
+msgid "Color Selection Dialog"
+msgstr "Diálogo selección de cor"
 
 #: ../widgets/gtk+.xml.in.h:52
-#, fuzzy
-msgid "Combo"
-msgstr "Comúns"
+msgid "Columned List"
+msgstr "Lista con columnas"
 
 #: ../widgets/gtk+.xml.in.h:53
-msgid "Combo Box"
-msgstr "Caixa Combo"
+msgid "Combo"
+msgstr "Combo"
 
 #: ../widgets/gtk+.xml.in.h:54
+msgid "Combo Box"
+msgstr "Caixa combo"
+
+#: ../widgets/gtk+.xml.in.h:55
 msgid "Combo Box Entry"
-msgstr "Entrada da caixa combo"
+msgstr "Entrada de caixa combo"
 
 #: ../widgets/gtk+.xml.in.h:56
-#, fuzzy
-msgid "Containers"
-msgstr "Centro"
-
-#: ../widgets/gtk+.xml.in.h:57
-msgid "Continuous"
-msgstr ""
+msgid "Confirm"
+msgstr "Confirmar"
 
 #: ../widgets/gtk+.xml.in.h:58
-#, fuzzy
-msgid "Control and Display"
-msgstr "A icona a mostrar"
+msgid "Containers"
+msgstr "Colectores"
 
-#: ../widgets/gtk+.xml.in.h:59 ../widgets/gnome.xml.in.h:5
-#, fuzzy
-msgid "Create Folder"
-msgstr "Crea un novo ficheiro"
+#: ../widgets/gtk+.xml.in.h:59
+msgid "Content"
+msgstr "Contido"
 
 #: ../widgets/gtk+.xml.in.h:60
-msgid "Cursor"
-msgstr ""
+msgid "Continuous"
+msgstr "Continuo"
 
 #: ../widgets/gtk+.xml.in.h:61
+msgid "Control and Display"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:62 ../widgets/gnome.xml.in.h:5
+msgid "Create Folder"
+msgstr "Crear cartafol"
+
+#: ../widgets/gtk+.xml.in.h:64
 msgid "Curve"
 msgstr "Curva"
 
-#: ../widgets/gtk+.xml.in.h:62
-#, fuzzy
-msgid "Custom widget"
-msgstr "Widget a medida"
-
-#: ../widgets/gtk+.xml.in.h:63
-#, fuzzy
-msgid "Default"
-msgstr "Pode ser por defecto:"
-
-#: ../widgets/gtk+.xml.in.h:64
-#, fuzzy
-msgid "Delayed"
-msgstr "Borrar"
-
 #: ../widgets/gtk+.xml.in.h:65
-#, fuzzy
-msgid "Description of an object, formatted for assistive technology access"
-msgstr "A descrición do widget a pasar ás tecnoloxías de accesibilidade"
+msgid "Custom"
+msgstr "Personalizado"
 
 #: ../widgets/gtk+.xml.in.h:66
-msgid "Desktop"
-msgstr ""
+msgid "Custom widget"
+msgstr "Widget personalizado"
 
 #: ../widgets/gtk+.xml.in.h:67
+msgid "Default"
+msgstr "Por defecto"
+
+#: ../widgets/gtk+.xml.in.h:68
+msgid "Delayed"
+msgstr "Retrasado"
+
+#: ../widgets/gtk+.xml.in.h:69
+msgid "Description of an object, formatted for assistive technology access"
+msgstr ""
+"Descrición dun obxecto, formatado para acceso a tecnoloxías de asistencia"
+
+#: ../widgets/gtk+.xml.in.h:70
+msgid "Desktop"
+msgstr "Escritorio"
+
+#: ../widgets/gtk+.xml.in.h:71
 msgid "Dialog"
 msgstr "Diálogo"
 
-#: ../widgets/gtk+.xml.in.h:68
-#, fuzzy
-msgid "Dialog Box"
-msgstr "Caixa de diálogo GNOME"
-
-#: ../widgets/gtk+.xml.in.h:69
-msgid "Discontinuous"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:70
-msgid "Discrete"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:71
-msgid "Dock"
-msgstr ""
-
 #: ../widgets/gtk+.xml.in.h:72
-msgid "Down"
-msgstr ""
+msgid "Dialog Box"
+msgstr "Caixa de diálogo"
 
 #: ../widgets/gtk+.xml.in.h:73
-msgid "Drawing Area"
-msgstr "Zona de Debuxo"
+msgid "Discontinuous"
+msgstr "Discontinuo"
 
 #: ../widgets/gtk+.xml.in.h:74
-#, fuzzy
-msgid "East"
-msgstr "Pegar"
+msgid "Discrete"
+msgstr "Discreto"
 
 #: ../widgets/gtk+.xml.in.h:75
-#, fuzzy
-msgid "Edge"
-msgstr "Widget"
+msgid "Dock"
+msgstr "Empotrar"
 
 #: ../widgets/gtk+.xml.in.h:76
-#, fuzzy
-msgid "Edit Type"
-msgstr "Tipo Inicial:"
+msgid "Down"
+msgstr "Baixar"
 
-#: ../widgets/gtk+.xml.in.h:77 ../widgets/gnome.xml.in.h:7
-#, fuzzy
-msgid "End"
-msgstr "Expandir:"
+#: ../widgets/gtk+.xml.in.h:77
+msgid "Drag and Drop"
+msgstr "Arrastrar e soltar"
 
 #: ../widgets/gtk+.xml.in.h:78
+msgid "Drawing Area"
+msgstr "Zona de debuxo"
+
+#: ../widgets/gtk+.xml.in.h:79
+#, fuzzy
+msgid "Drop Down Menu"
+msgstr "Menú de Opcións"
+
+#: ../widgets/gtk+.xml.in.h:80
+msgid "East"
+msgstr "Este"
+
+#: ../widgets/gtk+.xml.in.h:81
+msgid "Edge"
+msgstr "Bordo"
+
+#: ../widgets/gtk+.xml.in.h:82
+msgid "Edit Type"
+msgstr "Editar tipo"
+
+#: ../widgets/gtk+.xml.in.h:83 ../widgets/gnome.xml.in.h:7
+msgid "End"
+msgstr "Final"
+
+#: ../widgets/gtk+.xml.in.h:84
 msgid "Enter Notify"
-msgstr ""
+msgstr "Notificar entrada"
 
-#: ../widgets/gtk+.xml.in.h:79 ../widgets/gnome.xml.in.h:8
+#: ../widgets/gtk+.xml.in.h:85 ../widgets/gnome.xml.in.h:8
 msgid "Error"
-msgstr "Error"
+msgstr "Erro"
 
-#: ../widgets/gtk+.xml.in.h:80 ../widgets/bonobo.xml.in.h:2
+#: ../widgets/gtk+.xml.in.h:86 ../widgets/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:81 ../widgets/bonobo.xml.in.h:3
+#: ../widgets/gtk+.xml.in.h:87 ../widgets/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:82
+#: ../widgets/gtk+.xml.in.h:88
 msgid "Event Box"
-msgstr "Caixa de Eventos"
+msgstr "Caixa de eventos"
 
-#: ../widgets/gtk+.xml.in.h:83 ../widgets/gnome.xml.in.h:9
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:89 ../widgets/gnome.xml.in.h:9
 msgid "Expand"
-msgstr "Expandir:"
+msgstr "Expandir"
 
-#: ../widgets/gtk+.xml.in.h:84
+#: ../widgets/gtk+.xml.in.h:90
 msgid "Expander"
 msgstr "Expansor"
 
-#: ../widgets/gtk+.xml.in.h:85
+#: ../widgets/gtk+.xml.in.h:91
 msgid "Exposure"
-msgstr ""
+msgstr "Esposición"
 
-#: ../widgets/gtk+.xml.in.h:86
+#: ../widgets/gtk+.xml.in.h:92
 msgid "File Chooser Button"
-msgstr "Botón de escoller ficheiro"
+msgstr "Botón do selector de ficheiros"
 
-#: ../widgets/gtk+.xml.in.h:87
+#: ../widgets/gtk+.xml.in.h:93
 msgid "File Chooser Dialog"
-msgstr "Diálogo para escoller Ficheiro"
+msgstr "Diálogo do selector de ficheiros"
 
-#: ../widgets/gtk+.xml.in.h:88
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:94
 msgid "File Name"
-msgstr "Nome"
+msgstr "Nome de ficheiro"
 
-#: ../widgets/gtk+.xml.in.h:89
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:95
 msgid "File Selection"
-msgstr "Diálogo para escoller Ficheiro"
+msgstr "Selección de ficheiros"
 
-#: ../widgets/gtk+.xml.in.h:90 ../widgets/gnome.xml.in.h:11
+#: ../widgets/gtk+.xml.in.h:96 ../widgets/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "Encher"
 
-#: ../widgets/gtk+.xml.in.h:91
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:97
 msgid "Fixed"
-msgstr "_Ficheiro"
+msgstr "Fixo"
 
-#: ../widgets/gtk+.xml.in.h:92
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:98
 msgid "Focus Change"
-msgstr "Enfocar Destino:"
+msgstr "Cambio de foco"
 
-#: ../widgets/gtk+.xml.in.h:93
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:99
 msgid "Font Button"
-msgstr "Botón de escoller fonte"
+msgstr "Botón de fonte"
 
-#: ../widgets/gtk+.xml.in.h:94
+#: ../widgets/gtk+.xml.in.h:100
 msgid "Font Selection"
-msgstr "Selección de Fonte"
+msgstr "Selección de fonte"
 
-#: ../widgets/gtk+.xml.in.h:95
+#: ../widgets/gtk+.xml.in.h:101
 msgid "Font Selection Dialog"
-msgstr "Diálogo para escoller Fonte"
+msgstr "Diálogo de selección de fonte"
 
-#: ../widgets/gtk+.xml.in.h:96
+#: ../widgets/gtk+.xml.in.h:102
 msgid "Frame"
 msgstr "Marco"
 
-#: ../widgets/gtk+.xml.in.h:97
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:103
 msgid "Free"
-msgstr "Marco"
-
-#: ../widgets/gtk+.xml.in.h:98
-msgid "Gamma Curve"
-msgstr "Curva Gamma"
-
-#: ../widgets/gtk+.xml.in.h:99
-msgid "Group"
-msgstr "Grupo"
-
-#: ../widgets/gtk+.xml.in.h:100
-msgid "Gtk+ Obsolete"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:101
-msgid "Half"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:102
-msgid "Handle Box"
-msgstr "Caixa Aboiante"
-
-#: ../widgets/gtk+.xml.in.h:103 ../widgets/bonobo.xml.in.h:6
-#, fuzzy
-msgid "Horizontal"
-msgstr "Caixa Horizontal"
+msgstr "Libre"
 
 #: ../widgets/gtk+.xml.in.h:104
-msgid "Horizontal Box"
-msgstr "Caixa Horizontal"
+msgid "Gamma Curve"
+msgstr "Curva gamma"
 
 #: ../widgets/gtk+.xml.in.h:105
-msgid "Horizontal Button Box"
-msgstr "Caixa de Botóns Horizontal"
+msgid "Gtk+ Obsolete"
+msgstr "Gtk+ obsoleto"
 
 #: ../widgets/gtk+.xml.in.h:106
-msgid "Horizontal Panes"
-msgstr "Panel Horizontal"
+msgid "Half"
+msgstr "Metade"
 
 #: ../widgets/gtk+.xml.in.h:107
-msgid "Horizontal Ruler"
-msgstr "Regra Horizontal"
+msgid "Handle Box"
+msgstr "Caixa con manipulador"
 
-#: ../widgets/gtk+.xml.in.h:108
-msgid "Horizontal Scale"
-msgstr "Escala Horizontal"
+#: ../widgets/gtk+.xml.in.h:108 ../widgets/bonobo.xml.in.h:6
+msgid "Horizontal"
+msgstr "Horizontal"
 
 #: ../widgets/gtk+.xml.in.h:109
-msgid "Horizontal Scrollbar"
-msgstr "Barra de Desplazamento Horizontal"
+msgid "Horizontal Box"
+msgstr "Caixa horizontal"
 
 #: ../widgets/gtk+.xml.in.h:110
-#, fuzzy
-msgid "Horizontal Separator"
-msgstr "Separador Horizontal"
+msgid "Horizontal Button Box"
+msgstr "Caixa de botóns horizontal"
 
 #: ../widgets/gtk+.xml.in.h:111
-#, fuzzy
-msgid "Horizontal and Vertical"
-msgstr "Panel Horizontal"
+msgid "Horizontal Panes"
+msgstr "Paneis horizontais"
 
 #: ../widgets/gtk+.xml.in.h:112
-#, fuzzy
-msgid "Icon Name"
-msgstr "Vista de iconas"
+msgid "Horizontal Ruler"
+msgstr "Regra horizontal"
 
 #: ../widgets/gtk+.xml.in.h:113
+msgid "Horizontal Scale"
+msgstr "Escala horizontal"
+
+#: ../widgets/gtk+.xml.in.h:114
+msgid "Horizontal Scrollbar"
+msgstr "Barra de desplazamento horizontal"
+
+#: ../widgets/gtk+.xml.in.h:115
+msgid "Horizontal Separator"
+msgstr "Separador horizontal"
+
+#: ../widgets/gtk+.xml.in.h:116
+msgid "Horizontal and Vertical"
+msgstr "Horizontal e vertical"
+
+#: ../widgets/gtk+.xml.in.h:117
+msgid "Icon Name"
+msgstr "Nome da icona"
+
+#: ../widgets/gtk+.xml.in.h:118
 msgid "Icon View"
 msgstr "Vista de iconas"
 
-#: ../widgets/gtk+.xml.in.h:114
-#, fuzzy
-msgid "Icons"
-msgstr "Icono"
-
-#: ../widgets/gtk+.xml.in.h:115
-msgid "If Valid"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:117
-#, fuzzy
-msgid "Image Menu Item"
-msgstr "Elemento do Menú"
-
-#: ../widgets/gtk+.xml.in.h:118
-#, fuzzy
-msgid "Image Type"
-msgstr "Tipo de elmento:"
-
 #: ../widgets/gtk+.xml.in.h:119
-msgid "Immediate"
-msgstr ""
+msgid "Icons"
+msgstr "Iconas"
 
-#: ../widgets/gtk+.xml.in.h:120 ../widgets/bonobo.xml.in.h:7
-#, fuzzy
-msgid "In"
-msgstr "Icono"
+#: ../widgets/gtk+.xml.in.h:120
+msgid "If Valid"
+msgstr "Se é válido"
 
 #: ../widgets/gtk+.xml.in.h:122
-msgid "Input Dialog"
-msgstr "Diálogo de Entrada"
+msgid "Image Menu Item"
+msgstr "Elemento de imaxe do menú"
 
 #: ../widgets/gtk+.xml.in.h:123
-#, fuzzy
-msgid "Items"
-msgstr "Elementos:"
+msgid "Image Type"
+msgstr "Tipo de imaxe"
 
 #: ../widgets/gtk+.xml.in.h:124
-#, fuzzy
-msgid "Key Press"
-msgstr "Premer"
+msgid "Immediate"
+msgstr "Inmediato"
 
-#: ../widgets/gtk+.xml.in.h:125
-#, fuzzy
-msgid "Key Release"
-msgstr "Liberación"
+#: ../widgets/gtk+.xml.in.h:125 ../widgets/bonobo.xml.in.h:7
+msgid "In"
+msgstr "Interior"
 
 #: ../widgets/gtk+.xml.in.h:127
+msgid "Input Dialog"
+msgstr "Diálogo de entrada"
+
+#: ../widgets/gtk+.xml.in.h:128
+msgid "Intro"
+msgstr "Intro"
+
+#: ../widgets/gtk+.xml.in.h:129
+msgid "Items"
+msgstr "Elementos"
+
+#: ../widgets/gtk+.xml.in.h:130
+msgid "Key Press"
+msgstr "Pulsación de tecla"
+
+#: ../widgets/gtk+.xml.in.h:131
+msgid "Key Release"
+msgstr "Liberación de tecla"
+
+#: ../widgets/gtk+.xml.in.h:133
 msgid "Layout"
 msgstr "Colocación"
 
-#: ../widgets/gtk+.xml.in.h:128
-msgid "Leave Notify"
+#: ../widgets/gtk+.xml.in.h:134
+msgid "Least Recently Used first"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:129 ../widgets/bonobo.xml.in.h:8
+#: ../widgets/gtk+.xml.in.h:135
+msgid "Leave Notify"
+msgstr "Notificar saída"
+
+#: ../widgets/gtk+.xml.in.h:136 ../widgets/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "Esquerda"
 
-#: ../widgets/gtk+.xml.in.h:130
+#: ../widgets/gtk+.xml.in.h:137
 msgid "Left to Right"
-msgstr ""
+msgstr "Esquerda a dereita"
 
-#: ../widgets/gtk+.xml.in.h:131
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:138
 msgid "Linear"
-msgstr "Liñas"
+msgstr "Liñal"
 
-#: ../widgets/gtk+.xml.in.h:132
+#: ../widgets/gtk+.xml.in.h:139
+msgid "Link Button"
+msgstr "Botón de enlace"
+
+#: ../widgets/gtk+.xml.in.h:140
 msgid "List"
 msgstr "Lista"
 
-#: ../widgets/gtk+.xml.in.h:133
-msgid "List Item"
-msgstr "Opción da Lista"
-
-#: ../widgets/gtk+.xml.in.h:134
-msgid "Maximun Width"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:136
-msgid "Menu Bar"
-msgstr "Barra de Menú"
-
-#: ../widgets/gtk+.xml.in.h:137
-msgid "Menu Item"
-msgstr "Elemento do Menú"
-
-#: ../widgets/gtk+.xml.in.h:138
-#, fuzzy
-msgid "Menu Shell"
-msgstr "Etiqueta de menú:"
-
-#: ../widgets/gtk+.xml.in.h:139
-#, fuzzy
-msgid "Menu Tool Button"
-msgstr "Botón de barra de ferramentas"
-
-#: ../widgets/gtk+.xml.in.h:140
-#, fuzzy
-msgid "Message Dialog"
-msgstr "Mensaxe:"
-
 #: ../widgets/gtk+.xml.in.h:141
-msgid "Middle"
-msgstr ""
+msgid "List Item"
+msgstr "Elemento de lista"
 
 #: ../widgets/gtk+.xml.in.h:142
-#, fuzzy
-msgid "Mouse"
-msgstr "Pechar"
+msgid "Maximun Width"
+msgstr "Anchura máxima"
 
-#: ../widgets/gtk+.xml.in.h:143 ../widgets/gnome.xml.in.h:22
-msgid "Never"
-msgstr ""
+#: ../widgets/gtk+.xml.in.h:144
+msgid "Menu Bar"
+msgstr "Barra de menú"
+
+#: ../widgets/gtk+.xml.in.h:145
+msgid "Menu Item"
+msgstr "Elemento do menú"
 
 #: ../widgets/gtk+.xml.in.h:146
-msgid "North"
-msgstr ""
+msgid "Menu Shell"
+msgstr "Shell do menú"
 
 #: ../widgets/gtk+.xml.in.h:147
-msgid "North East"
-msgstr ""
+msgid "Menu Tool Button"
+msgstr "Botón do menú"
 
 #: ../widgets/gtk+.xml.in.h:148
-msgid "North West"
-msgstr ""
+msgid "Message Dialog"
+msgstr "Diálogo de mensaxe"
 
 #: ../widgets/gtk+.xml.in.h:149
+msgid "Middle"
+msgstr "Medio"
+
+#: ../widgets/gtk+.xml.in.h:150
+msgid "Most Recently Used first"
+msgstr "Primeiro o máis usado recentemente"
+
+#: ../widgets/gtk+.xml.in.h:151
+msgid "Mouse"
+msgstr "Rato"
+
+#: ../widgets/gtk+.xml.in.h:152 ../widgets/gnome.xml.in.h:22
+msgid "Never"
+msgstr "Nunca"
+
+#: ../widgets/gtk+.xml.in.h:155
+msgid "North"
+msgstr "Norte"
+
+#: ../widgets/gtk+.xml.in.h:156
+msgid "North East"
+msgstr "Noreste"
+
+#: ../widgets/gtk+.xml.in.h:157
+msgid "North West"
+msgstr "Noroeste"
+
+#: ../widgets/gtk+.xml.in.h:158
 msgid "Notebook"
 msgstr "Caderno"
 
-#: ../widgets/gtk+.xml.in.h:150
-#, fuzzy
-msgid "Number of items"
-msgstr "Número de elementos:"
+#: ../widgets/gtk+.xml.in.h:159
+msgid "Notification"
+msgstr "Notificación"
 
-#: ../widgets/gtk+.xml.in.h:151
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:160
+msgid "Number of items"
+msgstr "Número de elementos"
+
+#: ../widgets/gtk+.xml.in.h:161
 msgid "Number of pages"
-msgstr "Número de páxinas:"
+msgstr "Número de páxinas"
 
 #. Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:153
+#: ../widgets/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
-msgstr ""
+msgstr "Nome da instancia do obxecto formatado para tecnoloxías de asistencia"
 
-#: ../widgets/gtk+.xml.in.h:154
+#: ../widgets/gtk+.xml.in.h:164
 msgid "Ok"
-msgstr ""
+msgstr "Aceptar"
 
-#: ../widgets/gtk+.xml.in.h:155
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:165
 msgid "Ok, Cancel"
-msgstr "Cancelar"
+msgstr "Aceptar, Cancelar"
 
-#: ../widgets/gtk+.xml.in.h:156 ../widgets/gnome.xml.in.h:23
+#: ../widgets/gtk+.xml.in.h:166 ../widgets/gnome.xml.in.h:23
 msgid "Open"
 msgstr "Abrir"
 
-#: ../widgets/gtk+.xml.in.h:157
+#: ../widgets/gtk+.xml.in.h:167
 msgid "Option Menu"
-msgstr "Menú de Opcións"
+msgstr "Menú de opción"
 
-#: ../widgets/gtk+.xml.in.h:158 ../widgets/bonobo.xml.in.h:14
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:168 ../widgets/bonobo.xml.in.h:14
 msgid "Out"
-msgstr "Cortar"
+msgstr "Fora"
 
-#: ../widgets/gtk+.xml.in.h:159
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:169
+msgid "Page Setup Dialog"
+msgstr "Diálogo de configuración de páxina"
+
+#: ../widgets/gtk+.xml.in.h:170
 msgid "Paned"
-msgstr "Pegar"
+msgstr "No panel"
 
-#: ../widgets/gtk+.xml.in.h:161
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:172
 msgid "Pointer Motion"
-msgstr "Posición"
+msgstr "Movemento do punteiro"
 
-#: ../widgets/gtk+.xml.in.h:162
+#: ../widgets/gtk+.xml.in.h:173
 msgid "Pointer Motion Hint"
-msgstr ""
+msgstr "Pista de movemento do punteiro"
 
-#: ../widgets/gtk+.xml.in.h:163
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:174
 msgid "Popup"
-msgstr "Emerxente para"
+msgstr "Emerxente"
 
-#: ../widgets/gtk+.xml.in.h:164
+#: ../widgets/gtk+.xml.in.h:175
 msgid "Popup Menu"
-msgstr "Menú Popup"
+msgstr "Menú emerxente"
 
-#: ../widgets/gtk+.xml.in.h:165 ../src/glade-gnome.c:635
+#: ../widgets/gtk+.xml.in.h:176 ../src/glade-gnome.c:649
 #: ../widgets/gnome.xml.in.h:27
-#, fuzzy
 msgid "Position"
 msgstr "Posición"
 
-#: ../widgets/gtk+.xml.in.h:168
-msgid "Progress Bar"
-msgstr "Barra de Progreso"
-
-#: ../widgets/gtk+.xml.in.h:169
-#, fuzzy
-msgid "Property Change"
-msgstr "Caixa de diálogo de propiedades"
-
-#: ../widgets/gtk+.xml.in.h:170
-msgid "Proximity  Out"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:171
-msgid "Proximity In"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:172 ../widgets/gnome.xml.in.h:30
-#, fuzzy
-msgid "Question"
-msgstr "Descrición"
-
-#: ../widgets/gtk+.xml.in.h:173
-msgid "Queue"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:174
-msgid "Radio Button"
-msgstr "Botón de Radio"
-
-#: ../widgets/gtk+.xml.in.h:175
-msgid "Radio Menu Item"
-msgstr "Elemento de Menú Radio"
-
-#: ../widgets/gtk+.xml.in.h:176
-#, fuzzy
-msgid "Radio Tool Button"
-msgstr "Botón de Radio"
-
-#: ../widgets/gtk+.xml.in.h:177
-#, fuzzy
-msgid "Range"
-msgstr "Imaxe"
+#: ../widgets/gtk+.xml.in.h:179
+msgid "Print Dialog"
+msgstr "Diálogo de impresión"
 
 #: ../widgets/gtk+.xml.in.h:180
-#, fuzzy
-msgid "Response ID"
-msgstr "ID da resposta:"
+msgid "Progress"
+msgstr "Progreso"
 
-#: ../widgets/gtk+.xml.in.h:181 ../widgets/bonobo.xml.in.h:15
+#: ../widgets/gtk+.xml.in.h:181
+msgid "Progress Bar"
+msgstr "Barra de progreso"
+
+#: ../widgets/gtk+.xml.in.h:182
+msgid "Property Change"
+msgstr "Cambio de propiedade"
+
+#: ../widgets/gtk+.xml.in.h:183
+msgid "Proximity  Out"
+msgstr "Proximidade  fora"
+
+#: ../widgets/gtk+.xml.in.h:184
+msgid "Proximity In"
+msgstr "Proximidade  dentro"
+
+#: ../widgets/gtk+.xml.in.h:185 ../widgets/gnome.xml.in.h:30
+msgid "Question"
+msgstr "Pregunta"
+
+#: ../widgets/gtk+.xml.in.h:186
+msgid "Queue"
+msgstr "Cola"
+
+#: ../widgets/gtk+.xml.in.h:187
+msgid "Radio Button"
+msgstr "Botón de radio"
+
+#: ../widgets/gtk+.xml.in.h:188
+msgid "Radio Menu Item"
+msgstr "Elemento do menú de radio"
+
+#: ../widgets/gtk+.xml.in.h:189
+msgid "Radio Tool Button"
+msgstr "Botón de ferramenta de radio"
+
+#: ../widgets/gtk+.xml.in.h:190
+msgid "Range"
+msgstr "Rango"
+
+#: ../widgets/gtk+.xml.in.h:191
+msgid "Recent Chooser"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:192
+#, fuzzy
+msgid "Recent Chooser Dialog"
+msgstr "Diálogo para escoller Ficheiro"
+
+#: ../widgets/gtk+.xml.in.h:195
+msgid "Response ID"
+msgstr "ID da resposta"
+
+#: ../widgets/gtk+.xml.in.h:196 ../widgets/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "Dereita"
 
-#: ../widgets/gtk+.xml.in.h:182
+#: ../widgets/gtk+.xml.in.h:197
 msgid "Right to Left"
-msgstr ""
+msgstr "Dereita a esquerda"
 
-#: ../widgets/gtk+.xml.in.h:183
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:198
 msgid "Ruler"
-msgstr "Rol:"
+msgstr "Regra"
 
-#: ../widgets/gtk+.xml.in.h:184 ../widgets/gnome.xml.in.h:31
+#: ../widgets/gtk+.xml.in.h:199 ../widgets/gnome.xml.in.h:31
 msgid "Save"
 msgstr "Gardar"
 
-#: ../widgets/gtk+.xml.in.h:185
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:200
 msgid "Scale"
-msgstr "Escalado:"
+msgstr "Escala"
 
-#: ../widgets/gtk+.xml.in.h:186
-#, fuzzy
-msgid "Scroll"
-msgstr "Scrollable:"
-
-#: ../widgets/gtk+.xml.in.h:187
-msgid "Scrolled Window"
-msgstr "Ventana con desprazamiento"
-
-#: ../widgets/gtk+.xml.in.h:188 ../widgets/gnome.xml.in.h:34
-#, fuzzy
-msgid "Select Folder"
-msgstr "Seleccione Ficheiro"
-
-#: ../widgets/gtk+.xml.in.h:189
-#, fuzzy
-msgid "Separator Menu Item"
-msgstr "Separador de menús"
-
-#: ../widgets/gtk+.xml.in.h:190
-#, fuzzy
-msgid "Separator Tool Item"
-msgstr "Separador de menús"
-
-#: ../widgets/gtk+.xml.in.h:191
-msgid "Set the current page (strictly for editing purposes)"
-msgstr ""
-
-#. Text of the textview
 #: ../widgets/gtk+.xml.in.h:201
-msgid "Set the text in the view's text buffer"
-msgstr ""
+msgid "Scroll"
+msgstr "Desprazamento"
 
 #: ../widgets/gtk+.xml.in.h:202
-#, fuzzy
-msgid "Shrink"
-msgstr "Diminuir:"
+msgid "Scrolled Window"
+msgstr "Fiestra con barras de desprazamento"
 
-#: ../widgets/gtk+.xml.in.h:203
-msgid "South"
-msgstr ""
+#: ../widgets/gtk+.xml.in.h:203 ../widgets/gnome.xml.in.h:34
+msgid "Select Folder"
+msgstr "Seleccionar cartafol"
 
 #: ../widgets/gtk+.xml.in.h:204
-msgid "South East"
-msgstr ""
+msgid "Separator Menu Item"
+msgstr "Separador do elemento do menú"
 
 #: ../widgets/gtk+.xml.in.h:205
-msgid "South West"
-msgstr ""
+msgid "Separator Tool Item"
+msgstr "Elemento separador de ferramentas"
 
 #: ../widgets/gtk+.xml.in.h:206
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "Establecer a páxina actual (estrictamente para editar)"
+
+#. Text of the textview
+#: ../widgets/gtk+.xml.in.h:216
+msgid "Set the text in the view's text buffer"
+msgstr "Establece o texto no búfer de texto da vista"
+
+#: ../widgets/gtk+.xml.in.h:217
+msgid "Shrink"
+msgstr "Encoller"
+
+#: ../widgets/gtk+.xml.in.h:218
+msgid "Size"
+msgstr "Tamaño"
+
+#: ../widgets/gtk+.xml.in.h:219
+msgid "South"
+msgstr "Sur"
+
+#: ../widgets/gtk+.xml.in.h:220
+msgid "South East"
+msgstr "Sureste"
+
+#: ../widgets/gtk+.xml.in.h:221
+msgid "South West"
+msgstr "Suroeste"
+
+#: ../widgets/gtk+.xml.in.h:222
 msgid "Spin Button"
-msgstr "Botón de Incremento"
+msgstr "Botón de incremento"
 
-#: ../widgets/gtk+.xml.in.h:207
+#: ../widgets/gtk+.xml.in.h:223
 msgid "Splash Screen"
-msgstr ""
+msgstr "Pantalla de benvida"
 
-#: ../widgets/gtk+.xml.in.h:208
+#: ../widgets/gtk+.xml.in.h:224
 msgid "Spline"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:209
+#: ../widgets/gtk+.xml.in.h:225
 msgid "Spread"
-msgstr ""
+msgstr "Desparramado"
 
-#: ../widgets/gtk+.xml.in.h:210 ../widgets/gnome.xml.in.h:36
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:226 ../widgets/gnome.xml.in.h:36
 msgid "Start"
-msgstr "Estado:"
+msgstr "Inicio"
 
-#: ../widgets/gtk+.xml.in.h:211
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:227
 msgid "Static"
-msgstr "Texto estático:"
+msgstr "Estático"
 
-#: ../widgets/gtk+.xml.in.h:212
+#: ../widgets/gtk+.xml.in.h:228
 msgid "Status Bar"
-msgstr "Barra de Estado"
+msgstr "Barra de estado"
 
-#: ../widgets/gtk+.xml.in.h:213
+#: ../widgets/gtk+.xml.in.h:229
 #, fuzzy
 msgid "Stock Button"
-msgstr "Botón de inventario:"
+msgstr "Botón de inventario"
 
-#: ../widgets/gtk+.xml.in.h:215
+#: ../widgets/gtk+.xml.in.h:231
 #, fuzzy
 msgid "Stock Item"
 msgstr "Elemento de inventario:"
 
-#: ../widgets/gtk+.xml.in.h:216
+#: ../widgets/gtk+.xml.in.h:232
 msgid "Structure"
-msgstr ""
+msgstr "Estrutura"
 
-#: ../widgets/gtk+.xml.in.h:217
+#: ../widgets/gtk+.xml.in.h:233
 msgid "Substructure"
-msgstr ""
+msgstr "Subestrutura"
 
-#: ../widgets/gtk+.xml.in.h:218
+#: ../widgets/gtk+.xml.in.h:234
+msgid "Summary"
+msgstr "Resumo"
+
+#: ../widgets/gtk+.xml.in.h:235
 msgid "Table"
 msgstr "Táboa"
 
 #. Text of the textview
-#: ../widgets/gtk+.xml.in.h:220 ../widgets/gnome.xml.in.h:39
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:237 ../widgets/gnome.xml.in.h:39
 msgid "Text"
-msgstr "Texto:"
+msgstr "Texto"
 
-#: ../widgets/gtk+.xml.in.h:221
+#: ../widgets/gtk+.xml.in.h:238
 msgid "Text Entry"
-msgstr "Entrada de Texto"
+msgstr "Entrada de texto"
 
-#: ../widgets/gtk+.xml.in.h:222
+#: ../widgets/gtk+.xml.in.h:239
 msgid "Text View"
 msgstr "Vista do texto"
 
-#: ../widgets/gtk+.xml.in.h:223
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:240
 msgid "The items in this combo box"
-msgstr "Os elementos na lista combo, un por liña"
+msgstr "Os elementos nesta caixa combo"
 
-#: ../widgets/gtk+.xml.in.h:224
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:241
 msgid "The number of items in the box"
-msgstr "Número de widgets na caixa"
+msgstr "O número de elementos na caixa"
 
-#: ../widgets/gtk+.xml.in.h:225
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:242
 msgid "The number of pages in the notebook"
-msgstr "Número de widgets na caixa"
+msgstr "O número de páxinas no caderno"
 
-#: ../widgets/gtk+.xml.in.h:226
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:243
+msgid "The page position in the Assistant"
+msgstr "A posición da páxina no asistente"
+
+#: ../widgets/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
-msgstr "Posicion das pestanas do notebook"
+msgstr "A posición do elemento na shell do menú"
 
-#: ../widgets/gtk+.xml.in.h:227
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:245
 msgid "The position of the tool item in the toolbar"
-msgstr "Cantos elementos ten a barra de ferramentas"
+msgstr "A posición do elemento na barra de ferramentas"
 
-#: ../widgets/gtk+.xml.in.h:228
+#: ../widgets/gtk+.xml.in.h:246
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr ""
+"O ID de resposta deste botón nun diálogo (NON é útil se este botón non está "
+"nun GtkDialog)"
 
-#: ../widgets/gtk+.xml.in.h:229
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:247
 msgid "The stock item for this button"
-msgstr "O elemento de inventario a usar."
+msgstr "O elemento de inventario para este botón"
 
-#: ../widgets/gtk+.xml.in.h:230
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:248
 msgid "The stock item for this image"
-msgstr "O elemento de inventario a usar."
+msgstr "O elemento de inventario para esta imaxe"
 
-#: ../widgets/gtk+.xml.in.h:231
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:249
 msgid "The text of the menu item"
-msgstr "O tipo da curva"
+msgstr "O texto do elemente de menú"
 
-#: ../widgets/gtk+.xml.in.h:232
+#: ../widgets/gtk+.xml.in.h:250
 msgid "The text to display"
-msgstr "Texto a amosar"
+msgstr "O texto a amosar"
 
-#: ../widgets/gtk+.xml.in.h:233
+#: ../widgets/gtk+.xml.in.h:251
 msgid "Toggle Button"
-msgstr "Botón de Dous Estados"
+msgstr "Botón conmutable"
 
-#: ../widgets/gtk+.xml.in.h:234
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:252
 msgid "Toggle Tool Button"
-msgstr "Botón de Dous Estados"
+msgstr "Botón de ferramenta conmutable"
 
-#: ../widgets/gtk+.xml.in.h:235
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:253
 msgid "Tool Bar"
-msgstr "Barra de Ferramentas"
+msgstr "Barra de ferramentas"
 
-#: ../widgets/gtk+.xml.in.h:236
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:254
 msgid "Tool Button"
-msgstr "Botón de barra de ferramentas"
+msgstr "Botón de ferramenta"
 
-#: ../widgets/gtk+.xml.in.h:237
+#: ../widgets/gtk+.xml.in.h:255
 msgid "Toolbar"
-msgstr "Barra de Ferramentas"
+msgstr "Barra de ferramentas"
 
-#: ../widgets/gtk+.xml.in.h:238
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:256
 msgid "Tooltip"
-msgstr "Texto de axuda:"
+msgstr "Consello"
 
-#: ../widgets/gtk+.xml.in.h:239 ../widgets/bonobo.xml.in.h:16
+#: ../widgets/gtk+.xml.in.h:257 ../widgets/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "Arriba"
 
-#: ../widgets/gtk+.xml.in.h:240
-#, fuzzy
-msgid "Top Left"
-msgstr "Esquerda"
-
-#: ../widgets/gtk+.xml.in.h:241
-msgid "Top Level"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:242
-#, fuzzy
-msgid "Top Right"
-msgstr "Dereita"
-
-#: ../widgets/gtk+.xml.in.h:243
-#, fuzzy
-msgid "Top to Bottom"
-msgstr "Abaixo"
-
-#: ../widgets/gtk+.xml.in.h:244
-msgid "Toplevels"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:245
-#, fuzzy
-msgid "Tree View"
-msgstr "Vista do texto"
-
-#: ../widgets/gtk+.xml.in.h:246
-msgid "Up"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:247
-#, fuzzy
-msgid "Use Underline"
-msgstr "Usar subraiado:"
-
-#: ../widgets/gtk+.xml.in.h:248
-msgid "Utility"
-msgstr ""
-
-#: ../widgets/gtk+.xml.in.h:249 ../widgets/bonobo.xml.in.h:17
-#, fuzzy
-msgid "Vertical"
-msgstr "Caixa Vertical"
-
-#: ../widgets/gtk+.xml.in.h:250
-msgid "Vertical Box"
-msgstr "Caixa Vertical"
-
-#: ../widgets/gtk+.xml.in.h:251
-msgid "Vertical Button Box"
-msgstr "Caixa de Botóns Vertical"
-
-#: ../widgets/gtk+.xml.in.h:252
-msgid "Vertical Panes"
-msgstr "Panel Vertical"
-
-#: ../widgets/gtk+.xml.in.h:253
-msgid "Vertical Ruler"
-msgstr "Regla Vertical"
-
-#: ../widgets/gtk+.xml.in.h:254
-msgid "Vertical Scale"
-msgstr "Escala Vertical"
-
-#: ../widgets/gtk+.xml.in.h:255
-msgid "Vertical Scrollbar"
-msgstr "Barra de Desprazamiento Vertical"
-
-#: ../widgets/gtk+.xml.in.h:256
-msgid "Vertical Separator"
-msgstr "Separador Vertical"
-
-#: ../widgets/gtk+.xml.in.h:257
-msgid "Viewport"
-msgstr "Vista"
-
 #: ../widgets/gtk+.xml.in.h:258
-#, fuzzy
-msgid "Visibility Notify"
-msgstr "Visibilidade:"
+msgid "Top Left"
+msgstr "Arriba á esquerda"
 
-#: ../widgets/gtk+.xml.in.h:259 ../widgets/gnome.xml.in.h:53
-#, fuzzy
-msgid "Warning"
-msgstr "Axuste de liñas:"
+#: ../widgets/gtk+.xml.in.h:259
+msgid "Top Level"
+msgstr "Nivel superior"
 
 #: ../widgets/gtk+.xml.in.h:260
-#, fuzzy
-msgid "West"
-msgstr "Widget"
+msgid "Top Right"
+msgstr "Arriba á dereita"
+
+#: ../widgets/gtk+.xml.in.h:261
+msgid "Top to Bottom"
+msgstr "De arriba a abaixo"
 
 #: ../widgets/gtk+.xml.in.h:262
+msgid "Toplevels"
+msgstr "Niveis superiores"
+
+#: ../widgets/gtk+.xml.in.h:263
+msgid "Tree View"
+msgstr "Vista de árbore"
+
+#: ../widgets/gtk+.xml.in.h:264
+msgid "Up"
+msgstr "Subir"
+
+#: ../widgets/gtk+.xml.in.h:265
+msgid "Use Underline"
+msgstr "Usar subraiado"
+
+#: ../widgets/gtk+.xml.in.h:266
+msgid "Utility"
+msgstr "Utilidade"
+
+#: ../widgets/gtk+.xml.in.h:267 ../widgets/bonobo.xml.in.h:17
+msgid "Vertical"
+msgstr "Vertical"
+
+#: ../widgets/gtk+.xml.in.h:268
+msgid "Vertical Box"
+msgstr "Caixa vertical"
+
+#: ../widgets/gtk+.xml.in.h:269
+msgid "Vertical Button Box"
+msgstr "Caixa de botón vertical"
+
+#: ../widgets/gtk+.xml.in.h:270
+msgid "Vertical Panes"
+msgstr "Paneis verticais"
+
+#: ../widgets/gtk+.xml.in.h:271
+msgid "Vertical Ruler"
+msgstr "Regra vertical"
+
+#: ../widgets/gtk+.xml.in.h:272
+msgid "Vertical Scale"
+msgstr "Escala vertical"
+
+#: ../widgets/gtk+.xml.in.h:273
+msgid "Vertical Scrollbar"
+msgstr "Barra de desprazamiento vertical"
+
+#: ../widgets/gtk+.xml.in.h:274
+msgid "Vertical Separator"
+msgstr "Separador vertical"
+
+#: ../widgets/gtk+.xml.in.h:275
+msgid "Viewport"
+msgstr "Porto de vista"
+
+#: ../widgets/gtk+.xml.in.h:276
+msgid "Visibility Notify"
+msgstr "Notificar visibilidade"
+
+#: ../widgets/gtk+.xml.in.h:277 ../widgets/gnome.xml.in.h:53
+msgid "Warning"
+msgstr "Aviso"
+
+#: ../widgets/gtk+.xml.in.h:278
+msgid "West"
+msgstr "Oeste"
+
+#: ../widgets/gtk+.xml.in.h:280
 msgid "Window"
 msgstr "Fiestra"
 
-#: ../widgets/gtk+.xml.in.h:263
+#: ../widgets/gtk+.xml.in.h:281
 msgid "Word"
 msgstr "Palabra"
 
-#: ../widgets/gtk+.xml.in.h:264
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:282
 msgid "Word Character"
-msgstr "Carácter"
+msgstr "Carácter de palabra"
 
-#: ../widgets/gtk+.xml.in.h:265
-#, fuzzy
+#: ../widgets/gtk+.xml.in.h:283
 msgid "Yes, No"
-msgstr "Sí"
+msgstr "Sí, Non"
 
-#: ../widgets/gtk+.xml.in.h:266
+#: ../widgets/gtk+.xml.in.h:284
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
+"Pode marcar isto como traducible e establecer un nome/enderezo se quere "
+"amosar un tradutor específico da tradución, noutro caso debería listar "
+"tódolos tradutores e desmarcar esta cadea para tradución"
 
-#: ../src/glade-gnome.c:287
+#: ../src/glade-gnome.c:292
 msgid "Status Message."
 msgstr "Mensaxe de estado."
 
-#: ../src/glade-gnome.c:636
-#, fuzzy
+#: ../src/glade-gnome.c:650
 msgid "The position in the druid"
-msgstr "A posición do divisor"
+msgstr "A posición no asistente"
 
-#: ../src/glade-gnome.c:1067
-#, fuzzy
+#: ../src/glade-gnome.c:1002
 msgid "Message box type"
-msgstr "Tipo da Mensaxe:"
+msgstr "Tipo de caixa de mensaxes"
 
-#: ../src/glade-gnome.c:1068
+#: ../src/glade-gnome.c:1003
 msgid "The type of the message box"
 msgstr "O tipo de caixa de mensaxes"
 
-#: ../src/glade-gnome.c:1257
+#: ../src/glade-gnome.c:1219
 msgid "This property is valid only in font information mode"
-msgstr ""
+msgstr "Esta propiedade é válida só no modo de información de fonte"
 
-#: ../src/glade-gnome.c:1321 ../widgets/canvas.xml.in.h:13
-#, fuzzy
+#: ../src/glade-gnome.c:1307 ../widgets/canvas.xml.in.h:14
 msgid "Selection Mode"
-msgstr "Escoller Modo:"
+msgstr "Modo de selección"
 
-#: ../src/glade-gnome.c:1322
-#, fuzzy
+#: ../src/glade-gnome.c:1308
 msgid "Choose the Selection Mode"
-msgstr "O modo de selección"
+msgstr "Escoller o modo de selección"
 
-#: ../src/glade-gnome.c:1479
+#: ../src/glade-gnome.c:1458
 msgid "Placement"
-msgstr ""
+msgstr "Emprazamento"
 
-#: ../src/glade-gnome.c:1480
+#: ../src/glade-gnome.c:1459
 msgid "Choose the BonoboDockPlacement type"
-msgstr ""
+msgstr "Escolla o tipo de BonoboDockPlacement"
 
-#: ../src/glade-gnome.c:1508
+#: ../src/glade-gnome.c:1487
 msgid "Behavior"
-msgstr ""
+msgstr "Comportamento"
 
-#: ../src/glade-gnome.c:1509
+#: ../src/glade-gnome.c:1488
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "Escolla o tipo de BonoboDockItemBehavior"
 
-#: ../src/glade-gnome.c:1518
-#, fuzzy
+#: ../src/glade-gnome.c:1497
 msgid "Pack Type"
-msgstr "Tipo"
+msgstr "Tipo de empaquetado"
 
-#: ../src/glade-gnome.c:1519
+#: ../src/glade-gnome.c:1498
 msgid "Choose the Pack Type"
-msgstr ""
+msgstr "Escolla o tipo de empaquetado"
 
 #: ../widgets/gnome.xml.in.h:1
-#, fuzzy
 msgid "24-Hour Format"
-msgstr "Formato 24 Horas:"
+msgstr "Formato 24 horas"
 
 #: ../widgets/gnome.xml.in.h:3
-#, fuzzy
 msgid "Background Color"
 msgstr "Cor do fondo"
 
 #: ../widgets/gnome.xml.in.h:4
-#, fuzzy
 msgid "Contents Background Color"
-msgstr "Contidos do fondo. Cor:"
+msgstr "Cor de fondo dos contidos"
 
 #: ../widgets/gnome.xml.in.h:6
-#, fuzzy
 msgid "Dither"
-msgstr "Degradado:"
+msgstr ""
 
 #: ../widgets/gnome.xml.in.h:10
-#, fuzzy
 msgid "File"
-msgstr "_Ficheiro"
+msgstr "Ficheiro"
 
 #: ../widgets/gnome.xml.in.h:12
-#, fuzzy
 msgid "Font Information"
-msgstr "Selección de Fonte"
+msgstr "Información da fonte"
 
 #: ../widgets/gnome.xml.in.h:13
 msgid "GNOME UI Obsolete"
-msgstr ""
+msgstr "IU Gnome obsoleta"
 
 #: ../widgets/gnome.xml.in.h:14
 msgid "GNOME User Interface"
-msgstr ""
+msgstr "Interface de usuario de Gnome"
 
 #: ../widgets/gnome.xml.in.h:15
-#, fuzzy
 msgid "Generic"
-msgstr "Xeral"
+msgstr "Xenérico"
 
 #: ../widgets/gnome.xml.in.h:16
-#, fuzzy
 msgid "Information"
-msgstr "Fracción:"
+msgstr "Información"
 
 #: ../widgets/gnome.xml.in.h:17
-#, fuzzy
 msgid "Logo"
-msgstr "Logo:"
+msgstr "Logo"
 
 #: ../widgets/gnome.xml.in.h:18
-#, fuzzy
 msgid "Logo Background Color"
-msgstr "Cor do fondo"
+msgstr "Cor de fondo do logo"
 
 #: ../widgets/gnome.xml.in.h:19
-#, fuzzy
 msgid "Max Saved"
-msgstr "Max Grabados:"
+msgstr "Max gardados"
 
 #: ../widgets/gnome.xml.in.h:20
-#, fuzzy
 msgid "Message"
-msgstr "Mensaxe:"
+msgstr "Mensaxe"
 
 #: ../widgets/gnome.xml.in.h:21
-#, fuzzy
 msgid "Monday First"
-msgstr "Luns primeiro:"
+msgstr "Luns primeiro"
 
 #: ../widgets/gnome.xml.in.h:25
-#, fuzzy
 msgid "Padding"
-msgstr "Recheo"
+msgstr ""
 
 #: ../widgets/gnome.xml.in.h:26
 #, fuzzy
@@ -3102,44 +3142,36 @@ msgid "Pixmap"
 msgstr "Imaxe de Gnome"
 
 #: ../widgets/gnome.xml.in.h:28
-#, fuzzy
 msgid "Program Name"
-msgstr "Nome do programa:"
+msgstr "Nome do programa"
 
 #: ../widgets/gnome.xml.in.h:29
-#, fuzzy
 msgid "Program Version"
-msgstr "Nome do programa:"
+msgstr "Versión do programa"
 
 #: ../widgets/gnome.xml.in.h:32
-#, fuzzy
 msgid "Scaled Height"
-msgstr "Alto escalado:"
+msgstr "Alto escalado"
 
 #: ../widgets/gnome.xml.in.h:33
-#, fuzzy
 msgid "Scaled Width"
-msgstr "Ancho escalado:"
+msgstr "Ancho escalado"
 
 #: ../widgets/gnome.xml.in.h:35
-#, fuzzy
 msgid "Show Time"
-msgstr "Amosar hora:"
+msgstr "Amosar hora"
 
 #: ../widgets/gnome.xml.in.h:37
-#, fuzzy
 msgid "StatusBar"
-msgstr "Barra de Estado"
+msgstr "Barra de estado"
 
 #: ../widgets/gnome.xml.in.h:38
-#, fuzzy
 msgid "Store Config"
-msgstr "Gardar configuración"
+msgstr "Almacenar configuración"
 
 #: ../widgets/gnome.xml.in.h:40
-#, fuzzy
 msgid "Text Foreground Color"
-msgstr "Cor do primeiro plano "
+msgstr "Cor do primeiro plano  do texto"
 
 #: ../widgets/gnome.xml.in.h:41
 msgid "The height to scale the pixmap to"
@@ -3158,30 +3190,21 @@ msgstr "Ficheiro da imaxe"
 msgid "The width to scale the pixmap to"
 msgstr "A anchura á cal escalar a imaxe"
 
-#: ../widgets/gnome.xml.in.h:45
-#, fuzzy
-msgid "Title"
-msgstr "Título"
-
 #: ../widgets/gnome.xml.in.h:46
-#, fuzzy
 msgid "Title Foreground Color"
-msgstr "Cor do primeiro plano "
+msgstr "Cor do primeiro plano do título"
 
 #: ../widgets/gnome.xml.in.h:47
-#, fuzzy
 msgid "Top Watermark"
-msgstr "Marca de auga superior:"
+msgstr "Marca de auga superior"
 
 #: ../widgets/gnome.xml.in.h:48
-#, fuzzy
 msgid "Unknown"
-msgstr "Clase descoñecida"
+msgstr "Descoñecido"
 
 #: ../widgets/gnome.xml.in.h:49
-#, fuzzy
 msgid "Use Alpha"
-msgstr "Usar Alfa:"
+msgstr "Usar alfa"
 
 #: ../widgets/gnome.xml.in.h:50
 msgid ""
@@ -3189,70 +3212,61 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Usado para pasar información acerca da posición dun GnomeDruidPage dentro do "
+"GnomeDruid. Isto permite o \"rodeado\" correcto do contido para debuxar a "
+"páxina"
 
 #: ../widgets/gnome.xml.in.h:51
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #: ../widgets/gnome.xml.in.h:52
-#, fuzzy
 msgid "User Widget"
-msgstr "Widget"
+msgstr "Widget de usuario"
 
 #: ../widgets/gnome.xml.in.h:54
-#, fuzzy
 msgid "Watermark"
-msgstr "Marca de auga superior:"
+msgstr "Marca de auga"
 
 #: ../widgets/bonobo.xml.in.h:4
-#, fuzzy
 msgid "Exclusive"
-msgstr "Exclusivo:"
+msgstr "Exclusivo"
 
 #: ../widgets/bonobo.xml.in.h:5
-#, fuzzy
 msgid "Floating"
-msgstr "Permitir Aboiar:"
+msgstr "Flotante"
 
 #: ../widgets/bonobo.xml.in.h:9
-#, fuzzy
 msgid "Locked"
-msgstr "Bloqueado:"
+msgstr "Bloqueado"
 
 #: ../widgets/bonobo.xml.in.h:10
-#, fuzzy
 msgid "Never Floating"
-msgstr "Nunca aboiar:"
+msgstr "Xamais flotante"
 
 #: ../widgets/bonobo.xml.in.h:11
-#, fuzzy
 msgid "Never Horizontal"
-msgstr "Xamais Horizontal:"
+msgstr "Xamais horizontal"
 
 #: ../widgets/bonobo.xml.in.h:12
-#, fuzzy
 msgid "Never Vertical"
-msgstr "Xamais Vertical:"
+msgstr "Xamais vertical"
 
 #: ../widgets/canvas.xml.in.h:1
-#, fuzzy
 msgid "Browse"
-msgstr "Facer un Browse..."
+msgstr "Examinar"
 
 #: ../widgets/canvas.xml.in.h:2
-#, fuzzy
 msgid "Column Spacing"
-msgstr "Esp. Col:"
+msgstr "Espaciado de columnas"
 
 #: ../widgets/canvas.xml.in.h:3
-#, fuzzy
 msgid "GNOME Canvas"
-msgstr "Canvas de Gnome"
+msgstr "Lenzo de Gnome"
 
 #: ../widgets/canvas.xml.in.h:4
-#, fuzzy
 msgid "Icon Width"
-msgstr "Ancho da icona:"
+msgstr "Ancho de iconas"
 
 #: ../widgets/canvas.xml.in.h:5
 msgid "If the icon text can be edited by the user"
@@ -3265,92 +3279,85 @@ msgid ""
 msgstr "Se o texto da icona é estático, nese caso non copiará o GnomeIconList"
 
 #: ../widgets/canvas.xml.in.h:7
-#, fuzzy
 msgid "Max X"
-msgstr "Máximo:"
+msgstr "X máx."
 
 #: ../widgets/canvas.xml.in.h:8
-#, fuzzy
 msgid "Max Y"
-msgstr "Máximo:"
+msgstr "Y máx."
 
 #: ../widgets/canvas.xml.in.h:9
-#, fuzzy
 msgid "Min X"
-msgstr "Mínimo:"
+msgstr "X mín."
 
 #: ../widgets/canvas.xml.in.h:10
-#, fuzzy
 msgid "Min Y"
-msgstr "Mínimo:"
+msgstr "Y mín."
 
 #: ../widgets/canvas.xml.in.h:11
-#, fuzzy
 msgid "Multiple"
-msgstr "Selección múltiple:"
+msgstr "Múltiple"
 
 #: ../widgets/canvas.xml.in.h:12
-#, fuzzy
-msgid "Row Spacing"
-msgstr "Esp. Filas:"
+msgid "Pixels per unit"
+msgstr "Píxeles por unidade"
 
-#: ../widgets/canvas.xml.in.h:14
-#, fuzzy
-msgid "Single"
-msgstr "Ángulo:"
+#: ../widgets/canvas.xml.in.h:13
+msgid "Row Spacing"
+msgstr "Espaciado de ringleiras"
 
 #: ../widgets/canvas.xml.in.h:15
-#, fuzzy
-msgid "Text Editable"
-msgstr "Texto editable:"
+msgid "Single"
+msgstr "Único"
 
 #: ../widgets/canvas.xml.in.h:16
-#, fuzzy
-msgid "Text Spacing"
-msgstr "Espaciado do texto:"
+msgid "Text Editable"
+msgstr "Texto editable"
 
 #: ../widgets/canvas.xml.in.h:17
-#, fuzzy
-msgid "Text Static"
-msgstr "Texto estático:"
+msgid "Text Spacing"
+msgstr "Espaciado do texto"
 
 #: ../widgets/canvas.xml.in.h:18
-msgid "The maximum x coordinate"
-msgstr "A coordenada x superior"
+msgid "Text Static"
+msgstr "Texto estático"
 
 #: ../widgets/canvas.xml.in.h:19
-msgid "The maximum y coordinate"
-msgstr "A coordenada y superior"
+msgid "The maximum x coordinate"
+msgstr "A coordenada x máxima"
 
 #: ../widgets/canvas.xml.in.h:20
-msgid "The minimum x coordinate"
-msgstr "A coordenada x inferior"
+msgid "The maximum y coordinate"
+msgstr "A coordenada y máxima"
 
 #: ../widgets/canvas.xml.in.h:21
-msgid "The minimum y coordinate"
-msgstr "A coordenada y inferior"
+msgid "The minimum x coordinate"
+msgstr "A coordenada x mínima"
 
 #: ../widgets/canvas.xml.in.h:22
-msgid "The number of pixels between columns of icons"
-msgstr "Número de pixels entre columnas e iconas"
+msgid "The minimum y coordinate"
+msgstr "A coordenada y mínima"
 
 #: ../widgets/canvas.xml.in.h:23
-msgid "The number of pixels between rows of icons"
-msgstr "Número de pixels entre ringleiras e iconas"
+msgid "The number of pixels between columns of icons"
+msgstr "O número de píxeles entre columnas e iconas"
 
 #: ../widgets/canvas.xml.in.h:24
-msgid "The number of pixels between the text and the icon"
-msgstr "O número de pixels entre o texto e a icona"
+msgid "The number of pixels between rows of icons"
+msgstr "O número de píxeles entre ringleiras e iconas"
 
 #: ../widgets/canvas.xml.in.h:25
-msgid "The number of pixels corresponding to one unit"
-msgstr "O número de píxels que contén a unha unidade"
+msgid "The number of pixels between the text and the icon"
+msgstr "O número de píxeles entre o texto e a icona"
 
 #: ../widgets/canvas.xml.in.h:26
+msgid "The number of pixels corresponding to one unit"
+msgstr "O número de píxeles que contén a unha unidade"
+
+#: ../widgets/canvas.xml.in.h:27
 msgid "The selection mode"
 msgstr "O modo de selección"
 
-#: ../widgets/canvas.xml.in.h:27
+#: ../widgets/canvas.xml.in.h:28
 msgid "The width of each icon"
 msgstr "O ancho de cada icona"
-
