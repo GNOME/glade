@@ -7,157 +7,176 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-17 21:14+0000\n"
+"POT-Creation-Date: 2007-01-04 01:55+0000\n"
 "PO-Revision-Date: 2006-11-18 00:49+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n >= 3 && n <= 10 ? 3 : n >= 11 && n <= 99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n >= "
+"3 && n <= 10 ? 3 : n >= 11 && n <= 99 ? 4 : 5;\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../glade-3.desktop.in.h:1
+#: ../glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr ""
 
-#: ../glade-3.desktop.in.h:2
+#: ../glade-3.desktop.in.in.h:2
 #, fuzzy
 msgid "Glade Interface Designer"
 msgstr "واجهة خط التّوازي"
 
-#: ../glade-3.desktop.in.h:3
+#: ../glade-3.desktop.in.in.h:3
 #, fuzzy
 msgid "User Interface Designer"
 msgstr "حاوي واجهة المستخدم"
 
-#: ../src/main.c:40
-#: ../src/main.c:85
+#: ../src/main.c:40 ../src/main.c:83
 msgid "Glade"
 msgstr ""
 
-#: ../src/main.c:86
+#: ../src/main.c:84
 #, fuzzy
 msgid "Glade options"
 msgstr "<b>خيارات العرض:</b>"
 
-#: ../src/main.c:135
-msgid "gmodule support not found. gmodule support is required for glade to work"
+#: ../src/main.c:133
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 
-#: ../src/main.c:170
+#: ../src/main.c:160
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr ""
 
-#: ../src/glade-project-window.c:73
+#: ../src/glade-project-window.c:43
 #, fuzzy
-msgid "[read-only]"
-msgstr "[للقراءة فقط]"
+msgid "[Read Only]"
+msgstr "يقرأ فقط"
 
-#: ../src/glade-project-window.c:503
+#: ../src/glade-project-window.c:109
+#, fuzzy, c-format
+msgid "Could not display the URL '%s'"
+msgstr "لم أتمكن من تحميل ملف glade"
+
+#: ../src/glade-project-window.c:113
+msgid "No suitable web browser executable could be found."
+msgstr ""
+
+#: ../src/glade-project-window.c:610
+#, fuzzy, c-format
+msgid "Activate %s"
+msgstr "تنشيط"
+
+#: ../src/glade-project-window.c:728
 msgid "Open…"
 msgstr ""
 
-#: ../src/glade-project-window.c:534
-msgid ""
-"Are you sure you want to clear the\n"
-"list of recent projects?"
+#: ../src/glade-project-window.c:770
+#, c-format
+msgid "The file %s has been modified since reading it"
 msgstr ""
 
-#: ../src/glade-project-window.c:535
-msgid ""
-"If you clear the list of recent projects, they will be\n"
-"permanently deleted."
+#: ../src/glade-project-window.c:774
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 
-#: ../src/glade-project-window.c:572
+#: ../src/glade-project-window.c:778
+msgid "_Save Anyway"
+msgstr ""
+
+#: ../src/glade-project-window.c:785
+#, fuzzy
+msgid "_Don't Save"
+msgstr "_حفظ"
+
+#: ../src/glade-project-window.c:808
 #, fuzzy, c-format
 msgid "Failed to save %s: %s"
 msgstr "فشل في حفظ قاعدة بيانات المستخدم إلى %s"
 
-#: ../src/glade-project-window.c:594
+#: ../src/glade-project-window.c:829
 #, fuzzy, c-format
 msgid "Project '%s' saved"
 msgstr "البحث المحفوظ"
 
-#: ../src/glade-project-window.c:612
-#: ../src/glade-project-window.c:695
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:848 ../src/glade-project-window.c:931
 #, fuzzy
 msgid "No open projects to save"
 msgstr "لا وجود لقاعدة بيانات لحفظ اعداداتك"
 
-#: ../src/glade-project-window.c:658
+#: ../src/glade-project-window.c:852
+#, fuzzy
+msgid "Save As…"
+msgstr "حفظ كـ..."
+
+#: ../src/glade-project-window.c:894
 #, c-format
-msgid "Could not save the file %s. You do not have the permissions necessary to save the file."
+msgid ""
+"Could not save the file %s. You do not have the permissions necessary to "
+"save the file."
 msgstr ""
 
-#: ../src/glade-project-window.c:671
+#: ../src/glade-project-window.c:907
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 
-#. If instead we dont have a path yet, fire up a file selector
-#: ../src/glade-project-window.c:706
-msgid "Save…"
-msgstr ""
-
-#: ../src/glade-project-window.c:712
-#, fuzzy
-msgid "Save as…"
-msgstr "حفظ كـ..."
-
-#: ../src/glade-project-window.c:726
+#: ../src/glade-project-window.c:959
 #, c-format
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
 
-#: ../src/glade-project-window.c:740
+#: ../src/glade-project-window.c:973
 #, fuzzy
 msgid "_Close without Saving"
 msgstr "غلق _دون حفظ"
 
-#: ../src/glade-project-window.c:761
+#: ../src/glade-project-window.c:994
 #, fuzzy, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "فشل في حفظ قاعدة بيانات المستخدم إلى %s"
 
-#: ../src/glade-project-window.c:773
-#, fuzzy
-msgid "Save ..."
-msgstr "حفظ"
-
-#: ../src/glade-project-window.c:954
-#, fuzzy
-msgid "Palette"
-msgstr "ال_لوحة:"
-
-#: ../src/glade-project-window.c:1023
-#: ../src/glade-widget.c:1104
-#, fuzzy
-msgid "Properties"
-msgstr "خصائص"
-
-#: ../src/glade-project-window.c:1092
-#, fuzzy
-msgid "E_xpand all"
-msgstr "نسخ ال_كل"
-
-#: ../src/glade-project-window.c:1096
-#, fuzzy
-msgid "_Collapse all"
-msgstr "إنهيار الكل"
-
-#: ../src/glade-project-window.c:1299
-msgid ""
-"Glade is a user interface designer for GTK+ and GNOME.\n"
-"This version is a rewrite of the Glade 2 version, originally created by Damon Chaplin\n"
+#: ../src/glade-project-window.c:1006
+msgid "Save…"
 msgstr ""
 
-#: ../src/glade-project-window.c:1304
+#: ../src/glade-project-window.c:1184
+#, fuzzy
+msgid "Glade's Script Console"
+msgstr "<b>خيارات العرض:</b>"
+
+#: ../src/glade-project-window.c:1464
+msgid "Could not display the online user manual"
+msgstr ""
+
+#: ../src/glade-project-window.c:1467 ../src/glade-project-window.c:1505
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr ""
+
+#: ../src/glade-project-window.c:1502
+msgid "Could not display the online developer reference manual"
+msgstr ""
+
+#: ../src/glade-project-window.c:1557
+msgid ""
+"Glade is a user interface designer for GTK+ and GNOME.\n"
+"This version is a rewrite of the Glade 2 version, originally created by "
+"Damon Chaplin\n"
+msgstr ""
+
+#: ../src/glade-project-window.c:1562
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -171,304 +190,309 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 msgstr ""
 
 #. File
-#: ../src/glade-project-window.c:1397
-#: ../src/glade-gtk.c:4177
-#: ../src/glade-gtk.c:4327
+#: ../src/glade-project-window.c:1657 ../src/glade-gtk.c:4411
+#: ../src/glade-gtk.c:4709
 #, fuzzy
 msgid "_File"
 msgstr "_ملف"
 
 #. Edit
-#: ../src/glade-project-window.c:1398
-#: ../src/glade-gtk.c:4180
-#: ../src/glade-gtk.c:4337
+#: ../src/glade-project-window.c:1658 ../src/glade-gtk.c:4414
+#: ../src/glade-gtk.c:4719
 #, fuzzy
 msgid "_Edit"
 msgstr "_تحرير"
 
 #. View
-#: ../src/glade-project-window.c:1399
-#: ../src/glade-gtk.c:4183
-#: ../src/glade-gtk.c:4345
+#: ../src/glade-project-window.c:1659 ../src/glade-gtk.c:4417
+#: ../src/glade-gtk.c:4727
 #, fuzzy
 msgid "_View"
 msgstr "_اعرض"
 
-#: ../src/glade-project-window.c:1400
+#: ../src/glade-project-window.c:1660
 msgid "_Projects"
 msgstr ""
 
 #. Help
-#: ../src/glade-project-window.c:1401
-#: ../src/glade-gtk.c:4195
-#: ../src/glade-gtk.c:4348
+#: ../src/glade-project-window.c:1661 ../src/glade-gtk.c:4429
+#: ../src/glade-gtk.c:4730
 #, fuzzy
 msgid "_Help"
 msgstr "م_ساعدة"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1404
+#: ../src/glade-project-window.c:1664
 #, fuzzy
 msgid "_New"
 msgstr "_جديد"
 
-#: ../src/glade-project-window.c:1405
+#: ../src/glade-project-window.c:1665
 #, fuzzy
 msgid "Create a new project"
 msgstr "انشاء موضوع جديد"
 
-#: ../src/glade-project-window.c:1407
+#: ../src/glade-project-window.c:1667
 #, fuzzy
 msgid "_Open"
 msgstr "_فتح"
 
-#: ../src/glade-project-window.c:1408
+#: ../src/glade-project-window.c:1668
 #, fuzzy
 msgid "Open a project"
 msgstr "فتح ملف"
 
-#: ../src/glade-project-window.c:1410
+#: ../src/glade-project-window.c:1670
 #, fuzzy
 msgid "Open _Recent"
 msgstr "فتح التعديلات الأخيرة"
 
-#: ../src/glade-project-window.c:1412
-#, fuzzy
-msgid "Clear Recent Projects"
-msgstr " مسح المستندات الأخيرة"
-
-#: ../src/glade-project-window.c:1415
+#: ../src/glade-project-window.c:1672
 #, fuzzy
 msgid "_Quit"
 msgstr "إ_نهي"
 
-#: ../src/glade-project-window.c:1416
+#: ../src/glade-project-window.c:1673
 #, fuzzy
 msgid "Quit the program"
 msgstr "خروج من البرنامج"
 
 #. HelpMenu
-#: ../src/glade-project-window.c:1422
+#: ../src/glade-project-window.c:1679
 #, fuzzy
 msgid "_About"
 msgstr "_حول"
 
-#: ../src/glade-project-window.c:1423
+#: ../src/glade-project-window.c:1680
 #, fuzzy
-msgid "Shows the About Dialog"
-msgstr "استخدم صناديق الحوار"
+msgid "About this application"
+msgstr "قص المنتقى"
 
-#: ../src/glade-project-window.c:1425
+#: ../src/glade-project-window.c:1682
 #, fuzzy
-msgid "_Documentation"
-msgstr "التو_ثيق:"
+msgid "_Contents"
+msgstr "م_ستمر"
 
-#: ../src/glade-project-window.c:1426
-#, fuzzy
-msgid "Documentation about Glade"
-msgstr "حول هذا التّطبيق"
+#: ../src/glade-project-window.c:1683
+msgid "Display the user manual"
+msgstr ""
+
+#: ../src/glade-project-window.c:1685
+msgid "_Developer Reference"
+msgstr ""
+
+#: ../src/glade-project-window.c:1686
+msgid "Display the developer reference manual"
+msgstr ""
 
 #. FileMenu
-#: ../src/glade-project-window.c:1433
+#: ../src/glade-project-window.c:1693
 #, fuzzy
 msgid "_Save"
 msgstr "_حفظ"
 
-#: ../src/glade-project-window.c:1434
+#: ../src/glade-project-window.c:1694
 #, fuzzy
 msgid "Save the current project"
 msgstr "إ_حفظ الصورة الحالية"
 
-#: ../src/glade-project-window.c:1436
+#: ../src/glade-project-window.c:1696
 #, fuzzy
 msgid "Save _As…"
 msgstr "حفظ كـ..."
 
-#: ../src/glade-project-window.c:1437
+#: ../src/glade-project-window.c:1697
 #, fuzzy
 msgid "Save the current project with a different name"
 msgstr "حفظ الملف الحالي بإسم مغاير"
 
-#: ../src/glade-project-window.c:1439
+#: ../src/glade-project-window.c:1699
 #, fuzzy
 msgid "_Close"
 msgstr "أ_غلق"
 
-#: ../src/glade-project-window.c:1440
+#: ../src/glade-project-window.c:1700
 #, fuzzy
 msgid "Close the current project"
 msgstr "غلق الملف الحالي"
 
 #. EditMenu
-#: ../src/glade-project-window.c:1443
-#: ../src/glade-project-window.c:1889
+#: ../src/glade-project-window.c:1703 ../src/glade-project-window.c:2263
 #, fuzzy
 msgid "_Undo"
 msgstr "إ_لغاء"
 
-#: ../src/glade-project-window.c:1444
+#: ../src/glade-project-window.c:1704
 #, fuzzy
 msgid "Undo the last action"
 msgstr "تراجع عن العمل الأخير"
 
-#: ../src/glade-project-window.c:1446
-#: ../src/glade-project-window.c:1900
+#: ../src/glade-project-window.c:1706 ../src/glade-project-window.c:2274
 #, fuzzy
 msgid "_Redo"
 msgstr "_إعادة"
 
-#: ../src/glade-project-window.c:1447
+#: ../src/glade-project-window.c:1707
 #, fuzzy
 msgid "Redo the last action"
 msgstr "تكرار آخر عملية متراجع عنها"
 
-#: ../src/glade-project-window.c:1449
+#: ../src/glade-project-window.c:1709
 #, fuzzy
 msgid "C_ut"
 msgstr "_قص"
 
-#: ../src/glade-project-window.c:1450
+#: ../src/glade-project-window.c:1710
 #, fuzzy
 msgid "Cut the selection"
 msgstr "قص المنتقى"
 
-#: ../src/glade-project-window.c:1452
+#: ../src/glade-project-window.c:1712
 #, fuzzy
 msgid "_Copy"
 msgstr "_نسخ"
 
-#: ../src/glade-project-window.c:1453
+#: ../src/glade-project-window.c:1713
 #, fuzzy
 msgid "Copy the selection"
 msgstr "نسخ المنتقى"
 
-#: ../src/glade-project-window.c:1455
+#: ../src/glade-project-window.c:1715
 #, fuzzy
 msgid "_Paste"
 msgstr "_لصق"
 
-#: ../src/glade-project-window.c:1456
+#: ../src/glade-project-window.c:1716
 #, fuzzy
 msgid "Paste the clipboard"
 msgstr "لصق الحافظة الوسيطة"
 
-#: ../src/glade-project-window.c:1458
+#: ../src/glade-project-window.c:1718
 #, fuzzy
 msgid "_Delete"
 msgstr "إح_ذف"
 
-#: ../src/glade-project-window.c:1459
+#: ../src/glade-project-window.c:1719
 #, fuzzy
 msgid "Delete the selection"
 msgstr "حذف المنتقى من المحفوظة"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1463
-#, fuzzy
-msgid "Property _Editor"
-msgstr "بيانات جسم محرّر الخاصيات"
-
-#: ../src/glade-project-window.c:1464
-#, fuzzy
-msgid "Show the property editor"
-msgstr "بيانات جسم محرّر الخاصيات"
-
-#: ../src/glade-project-window.c:1467
-#, fuzzy
-msgid "_Palette"
-msgstr "ال_لوحة:"
-
-#: ../src/glade-project-window.c:1468
-#, fuzzy
-msgid "Show the palette of widgets"
-msgstr "تفضيلات لوحة الرموز"
-
-#: ../src/glade-project-window.c:1471
+#: ../src/glade-project-window.c:1723
 #, fuzzy
 msgid "_Clipboard"
 msgstr "لصق الحافظة الوسيطة"
 
-#: ../src/glade-project-window.c:1472
+#: ../src/glade-project-window.c:1724
 #, fuzzy
 msgid "Show the clipboard"
 msgstr "لصق الحافظة الوسيطة"
 
+#: ../src/glade-project-window.c:1727
+#, fuzzy
+msgid "C_onsole"
+msgstr "قطعة"
+
+#: ../src/glade-project-window.c:1728
+msgid "Show Script-do console"
+msgstr ""
+
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1476
+#: ../src/glade-project-window.c:1732
 #, fuzzy
 msgid "_Previous Project"
 msgstr "الصّ_ورة السّابقة"
 
-#: ../src/glade-project-window.c:1477
+#: ../src/glade-project-window.c:1733
 #, fuzzy
 msgid "Activate previous project"
 msgstr "تنشيط اللسان السابق"
 
-#: ../src/glade-project-window.c:1479
+#: ../src/glade-project-window.c:1735
 #, fuzzy
 msgid "_Next Project"
 msgstr "الصّورة ال_تّالية"
 
-#: ../src/glade-project-window.c:1480
+#: ../src/glade-project-window.c:1736
 #, fuzzy
 msgid "Activate next project"
 msgstr "تنشيط اللسان التالي"
 
-#: ../src/glade-project-window.c:1488
+#: ../src/glade-project-window.c:1744
 #, fuzzy
 msgid "_Use Small Icons"
 msgstr "النص تحت الأيقونة"
 
-#: ../src/glade-project-window.c:1489
+#: ../src/glade-project-window.c:1745
 msgid "Show items using small icons"
 msgstr ""
 
-#: ../src/glade-project-window.c:1492
+#: ../src/glade-project-window.c:1748
 #, fuzzy
 msgid "Context _Help"
 msgstr "رسالة مساعدة"
 
-#: ../src/glade-project-window.c:1493
+#: ../src/glade-project-window.c:1749
 msgid "Show or hide contextual help buttons in the editor"
 msgstr ""
 
-#: ../src/glade-project-window.c:1500
+#: ../src/glade-project-window.c:1756
 #, fuzzy
 msgid "Text beside icons"
 msgstr "النص بجانب الأيقونة"
 
-#: ../src/glade-project-window.c:1501
+#: ../src/glade-project-window.c:1757
 msgid "Display items as text beside icons"
 msgstr ""
 
-#: ../src/glade-project-window.c:1503
+#: ../src/glade-project-window.c:1759
 #, fuzzy
 msgid "_Icons only"
 msgstr "أيقونات فقط"
 
-#: ../src/glade-project-window.c:1504
+#: ../src/glade-project-window.c:1760
 msgid "Display items as icons only"
 msgstr ""
 
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1762
 #, fuzzy
 msgid "_Text only"
 msgstr "نص فقط"
 
-#: ../src/glade-project-window.c:1507
+#: ../src/glade-project-window.c:1763
 msgid "Display items as text only"
 msgstr ""
 
-#: ../src/glade-project-window.c:1805
+#: ../src/glade-project-window.c:1971
+#, fuzzy
+msgid "Select a widget"
+msgstr "انتقاء المجلّد"
+
+#: ../src/glade-project-window.c:2042
+#, fuzzy
+msgid "Palette"
+msgstr "ال_لوحة:"
+
+#: ../src/glade-project-window.c:2058
+msgid "Inspector"
+msgstr ""
+
+#: ../src/glade-project-window.c:2064 ../src/glade-widget.c:1120
+#, fuzzy
+msgid "Properties"
+msgstr "خصائص"
+
+#: ../src/glade-project-window.c:2179
 #, fuzzy
 msgid "Could not create a new project."
 msgstr "لا يمكن البدء في تحميل برنامج جديد"
 
-#: ../src/glade-project-window.c:1827
+#: ../src/glade-project-window.c:2198
 #, fuzzy, c-format
 msgid "%s is already open"
 msgstr ""
@@ -476,21 +500,18 @@ msgstr ""
 " \"%s\"\n"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:1891
-#: ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2265 ../src/glade-app.c:236
 #, fuzzy, c-format
 msgid "Undo: %s"
 msgstr "إ_لغاء"
 
-#: ../src/glade-project-window.c:1891
-#: ../src/glade-project-window.c:1902
-#: ../src/glade-app.c:242
+#: ../src/glade-project-window.c:2265 ../src/glade-project-window.c:2276
+#: ../src/glade-app.c:237
 #, fuzzy
 msgid "the last action"
 msgstr "تراجع عن العمل الأخير"
 
-#: ../src/glade-project-window.c:1902
-#: ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2276 ../src/glade-app.c:236
 #, fuzzy, c-format
 msgid "Redo: %s"
 msgstr "تكرار"
@@ -549,9 +570,7 @@ msgstr ""
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr ""
 
-#: ../src/glade-app.c:1001
-#: ../src/glade-app.c:1054
-#: ../src/glade-app.c:1216
+#: ../src/glade-app.c:1001 ../src/glade-app.c:1054 ../src/glade-app.c:1216
 #, fuzzy
 msgid "No widget selected."
 msgstr "لم يتم انتقاء أيّة تطبيقات"
@@ -565,8 +584,7 @@ msgstr ""
 msgid "Unable to paste to multiple widgets"
 msgstr "لا يمكن إيجاد القطع المطلوبة داخل %s."
 
-#: ../src/glade-app.c:1109
-#: ../src/glade-app.c:1238
+#: ../src/glade-app.c:1109 ../src/glade-app.c:1238
 msgid "No widget selected on the clipboard"
 msgstr ""
 
@@ -583,15 +601,11 @@ msgstr ""
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
-#: ../src/glade-app.c:1201
-#: ../src/glade-app.c:1248
-#: ../src/glade-command.c:1078
+#: ../src/glade-app.c:1201 ../src/glade-app.c:1248 ../src/glade-command.c:1077
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr ""
 
-#: ../src/glade-builtins.c:183
-#: ../src/glade-gtk.c:187
-#: ../src/glade-gtk.c:207
+#: ../src/glade-builtins.c:183 ../src/glade-gtk.c:189 ../src/glade-gtk.c:209
 #, fuzzy
 msgid "Stock"
 msgstr "المخزون المتبقّي:"
@@ -601,14 +615,12 @@ msgstr "المخزون المتبقّي:"
 msgid "A builtin stock item"
 msgstr "سهم المخزون المعروض على العنصر"
 
-#: ../src/glade-builtins.c:192
-#: ../widgets/gtk+.xml.in.h:214
+#: ../src/glade-builtins.c:192 ../widgets/gtk+.xml.in.h:230
 #, fuzzy
 msgid "Stock Image"
 msgstr "صورة الفيديو"
 
-#: ../src/glade-builtins.c:193
-#: ../widgets/gtk+.xml.in.h:1
+#: ../src/glade-builtins.c:193 ../widgets/gtk+.xml.in.h:1
 #, fuzzy
 msgid "A builtin stock image"
 msgstr "حدود الصّورة/العلامة"
@@ -642,14 +654,12 @@ msgstr ""
 msgid "A gdk color value"
 msgstr "لون GDK fill"
 
-#: ../src/glade-builtins.c:551
-#: ../src/glade-property-class.c:1191
+#: ../src/glade-builtins.c:551 ../src/glade-property-class.c:1187
 #, fuzzy
 msgid "Accelerators"
 msgstr "مسرعات القائمة ال_قابلة للتغيير"
 
-#: ../src/glade-builtins.c:552
-#: ../src/glade-property-class.c:1192
+#: ../src/glade-builtins.c:552 ../src/glade-property-class.c:1188
 #, fuzzy
 msgid "A list of accelerator keys"
 msgstr "_سرد المفاتيح الحديثة"
@@ -713,360 +723,351 @@ msgstr "منطقي"
 msgid "A boolean value"
 msgstr "قيمة منطقية"
 
-#: ../src/glade-base-editor.c:469
+#: ../src/glade-base-editor.c:468
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr ""
 
-#: ../src/glade-base-editor.c:634
+#: ../src/glade-base-editor.c:633
 #, fuzzy, c-format
 msgid "Add a %s to %s"
 msgstr "مُرفق للإضافة."
 
-#: ../src/glade-base-editor.c:711
+#: ../src/glade-base-editor.c:710
 #, fuzzy, c-format
 msgid "Delete %s child from %s"
 msgstr "ا_حذف من المهملات"
 
-#: ../src/glade-base-editor.c:834
+#: ../src/glade-base-editor.c:833
 #, fuzzy, c-format
 msgid "Reorder %s's children"
 msgstr "لا يوجد أبناء"
 
-#: ../src/glade-base-editor.c:1413
-#: ../src/glade-gtk.c:206
-#: ../widgets/gtk+.xml.in.h:126
+#: ../src/glade-base-editor.c:1412 ../src/glade-gtk.c:208
+#: ../widgets/gtk+.xml.in.h:132
 #, fuzzy
 msgid "Label"
 msgstr "علامة"
 
-#: ../src/glade-base-editor.c:1426
+#: ../src/glade-base-editor.c:1425 ../src/glade-widget-adaptor.c:916
 #, fuzzy
 msgid "Type"
 msgstr "النّوع"
 
 #. Name
-#: ../src/glade-base-editor.c:1599
+#: ../src/glade-base-editor.c:1598
 #, fuzzy
 msgid "Name :"
 msgstr "اسم"
 
 #. Type
-#: ../src/glade-base-editor.c:1609
+#: ../src/glade-base-editor.c:1608
 #, fuzzy
 msgid "Type :"
 msgstr "النّوع:"
 
-#: ../src/glade-clipboard-view.c:201
-#: ../src/glade-project-view.c:677
-#: ../widgets/gtk+.xml.in.h:261
+#: ../src/glade-clipboard-view.c:205 ../src/glade-project-view.c:721
+#: ../widgets/gtk+.xml.in.h:279
 #, fuzzy
 msgid "Widget"
 msgstr "كائن"
 
-#: ../src/glade-command.c:542
+#: ../src/glade-command.c:541
 #, fuzzy
 msgid "Setting multiple properties"
 msgstr "خصائص عنصر القائمة"
 
-#: ../src/glade-command.c:550
+#: ../src/glade-command.c:549
 #, fuzzy, c-format
 msgid "Setting %s of %s"
 msgstr "<b>تعيينات المؤشر</b>"
 
-#: ../src/glade-command.c:554
+#: ../src/glade-command.c:553
 #, fuzzy, c-format
 msgid "Setting %s of %s to %s"
 msgstr "%s: خطأ ضبط %s كـ %s"
 
-#: ../src/glade-command.c:772
-#: ../src/glade-command.c:799
+#: ../src/glade-command.c:771 ../src/glade-command.c:798
 #, fuzzy, c-format
 msgid "Renaming %s to %s"
 msgstr "إعادة تسمية \"%s\" إلى \"%s\"."
 
-#: ../src/glade-command.c:1123
+#: ../src/glade-command.c:1122
 #, fuzzy, c-format
 msgid "Delete %s"
 msgstr "إح_ذف"
 
-#: ../src/glade-command.c:1127
+#: ../src/glade-command.c:1126
 #, fuzzy
 msgid "Delete multiple"
 msgstr "VCards عديدة"
 
-#: ../src/glade-command.c:1195
+#: ../src/glade-command.c:1194
 #, fuzzy, c-format
 msgid "Create %s"
 msgstr "إ_نشاء"
 
-#: ../src/glade-command.c:1591
+#: ../src/glade-command.c:1590
 #, fuzzy, c-format
 msgid "Cut %s"
 msgstr "قص"
 
-#: ../src/glade-command.c:1592
+#: ../src/glade-command.c:1591
 #, fuzzy, c-format
 msgid "Copy %s"
 msgstr "نسخ"
 
-#: ../src/glade-command.c:1592
+#: ../src/glade-command.c:1591
 #, fuzzy, c-format
 msgid "Paste %s"
 msgstr "لصق"
 
-#: ../src/glade-command.c:1613
+#: ../src/glade-command.c:1612
 #, fuzzy
 msgid "multiple"
 msgstr "متعدد"
 
-#: ../src/glade-command.c:1898
+#: ../src/glade-command.c:1897
 #, fuzzy, c-format
 msgid "Add signal handler %s"
 msgstr "%s: خطأ ضبط معالج الإشارات %s: %s"
 
-#: ../src/glade-command.c:1899
+#: ../src/glade-command.c:1898
 #, fuzzy, c-format
 msgid "Remove signal handler %s"
 msgstr "%s: خطأ ضبط معالج الإشارات %s: %s"
 
-#: ../src/glade-command.c:1900
+#: ../src/glade-command.c:1899
 #, fuzzy, c-format
 msgid "Change signal handler %s"
 msgstr "%s: خطأ ضبط معالج الإشارات %s: %s"
 
-#: ../src/glade-cursor.c:191
+#: ../src/glade-cursor.c:188
 #, fuzzy, c-format
 msgid "Unable to load image (%s)"
 msgstr ""
 "لا يمكن تحميل صورة:\n"
 "%s"
 
-#: ../src/glade-editor-property.c:271
+#: ../src/glade-editor-property.c:274
 msgid "View GTK+ documentation for this property"
 msgstr ""
 
-#: ../src/glade-editor-property.c:573
+#: ../src/glade-editor-property.c:576
 #, fuzzy
 msgid "Property Class"
 msgstr "قائمة الأصناف"
 
-#: ../src/glade-editor-property.c:574
+#: ../src/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 
-#: ../src/glade-editor-property.c:580
+#: ../src/glade-editor-property.c:583
 #, fuzzy
 msgid "Use Command"
 msgstr "ا_ستعمل امرا مخصصا"
 
-#: ../src/glade-editor-property.c:581
+#: ../src/glade-editor-property.c:584
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 
-#: ../src/glade-editor-property.c:587
+#: ../src/glade-editor-property.c:590
 #, fuzzy
 msgid "Show Info"
 msgstr "عرض خيارات المعلومات"
 
-#: ../src/glade-editor-property.c:588
+#: ../src/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
 msgstr ""
 
-#: ../src/glade-editor-property.c:1116
+#: ../src/glade-editor-property.c:1119
 #, fuzzy
 msgid "Set Flags"
 msgstr "شارات البريمجات"
 
-#: ../src/glade-editor-property.c:1449
+#: ../src/glade-editor-property.c:1452
 #, fuzzy
 msgid "Edit Text Property"
 msgstr "تحرير ملفات نصية"
 
 #. Text
-#: ../src/glade-editor-property.c:1466
+#: ../src/glade-editor-property.c:1469
 #, fuzzy
 msgid "_Text:"
 msgstr "النّ_ص:"
 
-#: ../src/glade-editor-property.c:1502
+#: ../src/glade-editor-property.c:1505
 msgid "T_ranslatable"
 msgstr ""
 
-#: ../src/glade-editor-property.c:1515
+#: ../src/glade-editor-property.c:1518
 #, fuzzy
 msgid "Has context _prefix"
 msgstr "يوجد مقدمة moniker غير معروفة في Moniker"
 
 #. Comments.
-#: ../src/glade-editor-property.c:1529
+#: ../src/glade-editor-property.c:1532
 msgid "Co_mments for translators:"
 msgstr ""
 
-#: ../src/glade-editor-property.c:1698
-#: ../src/glade-editor-property.c:1714
+#: ../src/glade-editor-property.c:1701 ../src/glade-editor-property.c:1717
 #, fuzzy
 msgid "Yes"
 msgstr "نعم"
 
-#: ../src/glade-editor-property.c:1698
-#: ../src/glade-editor-property.c:1714
-#: ../src/glade-editor-property.c:1729
+#: ../src/glade-editor-property.c:1701 ../src/glade-editor-property.c:1717
+#: ../src/glade-editor-property.c:1732
 #, fuzzy
 msgid "No"
 msgstr "لا"
 
-#: ../src/glade-editor-property.c:2319
-#: ../src/glade-widget.c:1056
+#: ../src/glade-editor-property.c:2322 ../src/glade-widget.c:1072
+#: ../src/glade-widget-adaptor.c:908
 #, fuzzy
 msgid "Name"
 msgstr "اسم"
 
-#: ../src/glade-editor-property.c:2331
-#: ../src/glade-widget.c:1087
+#: ../src/glade-editor-property.c:2334
 #, fuzzy
 msgid "Class"
 msgstr "الطبقة"
 
-#: ../src/glade-editor-property.c:2345
+#: ../src/glade-editor-property.c:2348
 #, fuzzy, c-format
 msgid "Choose %s implementors"
 msgstr "اختر صوتا"
 
-#: ../src/glade-editor-property.c:2345
+#: ../src/glade-editor-property.c:2348
 #, fuzzy, c-format
 msgid "Choose a %s in this project"
 msgstr "فتح الوصلة في النافذة الحالية"
 
 #. Checklist
-#: ../src/glade-editor-property.c:2397
-#: ../src/glade-editor-property.c:2602
+#: ../src/glade-editor-property.c:2400 ../src/glade-editor-property.c:2605
 #, fuzzy
 msgid "Objects:"
 msgstr "أجسام"
 
-#: ../src/glade-editor-property.c:2917
+#: ../src/glade-editor-property.c:2920
 #, fuzzy
 msgid "Value:"
 msgstr "القيمة"
 
-#: ../src/glade-editor-property.c:2918
+#: ../src/glade-editor-property.c:2921
 #, fuzzy
 msgid "The current value"
 msgstr "القيمة الحالية"
 
-#: ../src/glade-editor-property.c:2920
+#: ../src/glade-editor-property.c:2923
 #, fuzzy
 msgid "Lower:"
 msgstr "أدنى"
 
-#: ../src/glade-editor-property.c:2921
+#: ../src/glade-editor-property.c:2924
 #, fuzzy
 msgid "The minimum value"
 msgstr "القيمة الدنيا"
 
-#: ../src/glade-editor-property.c:2923
+#: ../src/glade-editor-property.c:2926
 #, fuzzy
 msgid "Upper:"
 msgstr "الأعلى"
 
-#: ../src/glade-editor-property.c:2924
+#: ../src/glade-editor-property.c:2927
 #, fuzzy
 msgid "The maximum value"
 msgstr "القيمة القصوى"
 
-#: ../src/glade-editor-property.c:2926
+#: ../src/glade-editor-property.c:2929
 #, fuzzy
 msgid "Step inc:"
 msgstr "تدريج شدّة الصوت"
 
-#: ../src/glade-editor-property.c:2927
-msgid "The increment to use to make minor changes to the value"
-msgstr ""
-
-#: ../src/glade-editor-property.c:2929
-#, fuzzy
-msgid "Page inc:"
-msgstr "<b>الصفحة الرئيسية</b>"
-
 #: ../src/glade-editor-property.c:2930
-msgid "The increment to use to make major changes to the value"
+msgid "The increment to use to make minor changes to the value"
 msgstr ""
 
 #: ../src/glade-editor-property.c:2932
 #, fuzzy
+msgid "Page inc:"
+msgstr "<b>الصفحة الرئيسية</b>"
+
+#: ../src/glade-editor-property.c:2933
+msgid "The increment to use to make major changes to the value"
+msgstr ""
+
+#: ../src/glade-editor-property.c:2935
+#, fuzzy
 msgid "Page size:"
 msgstr "حجم الصفحة"
 
-#: ../src/glade-editor-property.c:2933
-msgid "The page size (in a GtkScrollbar this is the size of the area which is currently visible)"
+#: ../src/glade-editor-property.c:2936
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
 msgstr ""
 
-#: ../src/glade-editor-property.c:3010
+#: ../src/glade-editor-property.c:3013
 msgid "Alphanumerical"
 msgstr ""
 
-#: ../src/glade-editor-property.c:3015
+#: ../src/glade-editor-property.c:3018
 #, fuzzy
 msgid "Extra"
 msgstr "حيات اضافية"
 
-#: ../src/glade-editor-property.c:3020
+#: ../src/glade-editor-property.c:3023
 msgid "Keypad"
 msgstr ""
 
-#: ../src/glade-editor-property.c:3025
+#: ../src/glade-editor-property.c:3028
 #, fuzzy
 msgid "Functions"
 msgstr "دالات"
 
-#: ../src/glade-editor-property.c:3030
-#: ../widgets/gnome.xml.in.h:24
+#: ../src/glade-editor-property.c:3033 ../widgets/gnome.xml.in.h:24
 #, fuzzy
 msgid "Other"
 msgstr "أخرى"
 
-#: ../src/glade-editor-property.c:3201
-#: ../src/glade-editor-property.c:3235
-#: ../src/glade-editor-property.c:3280
+#: ../src/glade-editor-property.c:3204 ../src/glade-editor-property.c:3238
+#: ../src/glade-editor-property.c:3283
 #, fuzzy
 msgid "<choose a key>"
 msgstr "اتفاق على المفتاح"
 
-#: ../src/glade-editor-property.c:3234
-#: ../widgets/gtk+.xml.in.h:144
+#: ../src/glade-editor-property.c:3237 ../widgets/gtk+.xml.in.h:153
 #: ../widgets/bonobo.xml.in.h:13
 #, fuzzy
 msgid "None"
 msgstr "لا شيء"
 
-#: ../src/glade-editor-property.c:3360
-#: ../src/glade-signal-editor.c:684
+#: ../src/glade-editor-property.c:3363 ../src/glade-signal-editor.c:684
 #, fuzzy
 msgid "Signal"
 msgstr "الإشارة"
 
-#: ../src/glade-editor-property.c:3387
+#: ../src/glade-editor-property.c:3390
 #, fuzzy
 msgid "Key"
 msgstr "المفتاح"
 
-#: ../src/glade-editor-property.c:3401
+#: ../src/glade-editor-property.c:3404
 #, fuzzy
 msgid "Shift"
 msgstr "Shift"
 
-#: ../src/glade-editor-property.c:3417
+#: ../src/glade-editor-property.c:3420
 #, fuzzy
 msgid "Control"
 msgstr "قطعة"
 
-#: ../src/glade-editor-property.c:3433
+#: ../src/glade-editor-property.c:3436
 #, fuzzy
 msgid "Alt"
 msgstr "Alt"
 
-#: ../src/glade-editor-property.c:3499
+#: ../src/glade-editor-property.c:3502
 #, fuzzy
 msgid "Choose accelerator keys..."
 msgstr "_سرد المفاتيح الحديثة"
@@ -1086,186 +1087,187 @@ msgid "Show context info"
 msgstr "عرض خيارات المعلومات"
 
 #: ../src/glade-editor.c:155
-msgid "Whether to show an informational button for each property and signal in the editor"
+msgid ""
+"Whether to show an informational button for each property and signal in the "
+"editor"
 msgstr ""
 
 #. construct tab label widget
-#: ../src/glade-editor.c:196
-#: ../src/glade-editor.c:317
-#: ../src/glade-editor.c:1171
+#: ../src/glade-editor.c:196 ../src/glade-editor.c:322
+#: ../src/glade-editor.c:1178
 #, fuzzy
 msgid "Accessibility"
 msgstr "الإعانة"
 
 #. configure page container
-#: ../src/glade-editor.c:212
-#: ../src/glade-editor.c:316
+#: ../src/glade-editor.c:212 ../src/glade-editor.c:321
 msgid "_Signals"
 msgstr ""
 
-#: ../src/glade-editor.c:278
+#: ../src/glade-editor.c:283
 msgid "View documentation for the selected widget"
 msgstr ""
 
-#: ../src/glade-editor.c:298
+#: ../src/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
 msgstr ""
 
-#: ../src/glade-editor.c:313
+#: ../src/glade-editor.c:318
 #, fuzzy
 msgid "_General"
 msgstr "عامّ"
 
-#: ../src/glade-editor.c:314
+#: ../src/glade-editor.c:319
 msgid "_Packing"
 msgstr ""
 
-#: ../src/glade-editor.c:315
+#: ../src/glade-editor.c:320
 #, fuzzy
 msgid "_Common"
 msgstr "متداول"
 
-#: ../src/glade-editor.c:332
+#: ../src/glade-editor.c:337
 #, fuzzy
 msgid "_Edit..."
 msgstr "_تحرير"
 
 #. Name
-#: ../src/glade-editor.c:478
+#: ../src/glade-editor.c:483
 #, fuzzy
 msgid "Name:"
 msgstr "اسم:"
 
 #. Class
-#: ../src/glade-editor.c:506
+#: ../src/glade-editor.c:511
 #, fuzzy
 msgid "Class:"
 msgstr "الطبقة"
 
-#: ../src/glade-editor.c:984
+#: ../src/glade-editor.c:991
 #, fuzzy, c-format
 msgid "Create a %s"
 msgstr "إ_نشاء"
 
-#: ../src/glade-editor.c:1102
+#: ../src/glade-editor.c:1109
 #, fuzzy
 msgid "Reset"
 msgstr "إعادة ضبط"
 
-#: ../src/glade-editor.c:1116
+#: ../src/glade-editor.c:1123
 #, fuzzy
 msgid "Property"
 msgstr "أسماء الخصائص"
 
-#: ../src/glade-editor.c:1151
+#: ../src/glade-editor.c:1158
 #, fuzzy
 msgid "General"
 msgstr "عامّ"
 
-#: ../src/glade-editor.c:1161
+#: ../src/glade-editor.c:1168
 #, fuzzy
 msgid "Common"
 msgstr "متداول"
 
-#: ../src/glade-editor.c:1206
+#: ../src/glade-editor.c:1213
 #, fuzzy
 msgid "(default)"
 msgstr "الافتراضي"
 
-#: ../src/glade-editor.c:1221
+#: ../src/glade-editor.c:1228
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 
-#: ../src/glade-editor.c:1353
+#: ../src/glade-editor.c:1360
 #, fuzzy
 msgid "Reset Widget Properties"
 msgstr "خصائص عنصر القائمة"
 
 #. Checklist
-#: ../src/glade-editor.c:1370
+#: ../src/glade-editor.c:1377
 #, fuzzy
 msgid "_Properties:"
 msgstr "_خاصيات"
 
-#: ../src/glade-editor.c:1399
+#: ../src/glade-editor.c:1406
 #, fuzzy
 msgid "_Select All"
 msgstr "_إنتقاء الكلّ"
 
-#: ../src/glade-editor.c:1406
+#: ../src/glade-editor.c:1413
 #, fuzzy
 msgid "_Unselect All"
 msgstr "نسخ ال_كل"
 
 #. Description
-#: ../src/glade-editor.c:1415
+#: ../src/glade-editor.c:1422
 #, fuzzy
 msgid "Property _Description:"
 msgstr "الوصف يحتوي على"
 
-#: ../src/glade-fixed.c:467
-#: ../src/glade-gtk.c:1306
+#: ../src/glade-fixed.c:467 ../src/glade-gtk.c:1410
 #, fuzzy, c-format
 msgid "Placing %s inside %s"
 msgstr "بكسلات داخل الالتواء"
 
-#: ../src/glade-fixed.c:1027
+#: ../src/glade-fixed.c:1029
 #, fuzzy
 msgid "X position property"
 msgstr "أسماء الخصائص"
 
-#: ../src/glade-fixed.c:1028
+#: ../src/glade-fixed.c:1030
 msgid "The property used to set the X position of a child object"
 msgstr ""
 
-#: ../src/glade-fixed.c:1034
+#: ../src/glade-fixed.c:1036
 #, fuzzy
 msgid "Y position property"
 msgstr "أسماء الخصائص"
 
-#: ../src/glade-fixed.c:1035
+#: ../src/glade-fixed.c:1037
 msgid "The property used to set the Y position of a child object"
 msgstr ""
 
-#: ../src/glade-fixed.c:1041
+#: ../src/glade-fixed.c:1043
 #, fuzzy
 msgid "Width property"
 msgstr "أسماء الخصائص"
 
-#: ../src/glade-fixed.c:1042
+#: ../src/glade-fixed.c:1044
 msgid "The property used to set the width of a child object"
 msgstr ""
 
-#: ../src/glade-fixed.c:1048
+#: ../src/glade-fixed.c:1050
 #, fuzzy
 msgid "Height property"
 msgstr "أسماء الخصائص"
 
-#: ../src/glade-fixed.c:1049
+#: ../src/glade-fixed.c:1051
 msgid "The property used to set the height of a child object"
 msgstr ""
 
-#: ../src/glade-fixed.c:1055
+#: ../src/glade-fixed.c:1057
 #, fuzzy
 msgid "Can resize"
 msgstr "لا إعادة تحجيم"
 
-#: ../src/glade-fixed.c:1056
+#: ../src/glade-fixed.c:1058
 msgid "Whether this container supports resizes of child widgets"
 msgstr ""
 
-#: ../src/glade-fixed.c:1062
+#: ../src/glade-fixed.c:1064
 #, fuzzy
 msgid "Use Placeholders"
 msgstr "استخدام الثّلاث نقاط"
 
-#: ../src/glade-fixed.c:1063
-msgid "Whether this container use placeholders, the backend is responsable for setting up this property"
+#: ../src/glade-fixed.c:1065
+msgid ""
+"Whether this container use placeholders, the backend is responsable for "
+"setting up this property"
 msgstr ""
 
-#: ../src/glade-palette.c:471
+#: ../src/glade-palette.c:617
 #, fuzzy
-msgid "Widget Selector"
+msgid "Widget selector"
 msgstr "امتقاء الخيارات"
 
 #: ../src/glade-parser.c:1190
@@ -1273,8 +1275,7 @@ msgstr "امتقاء الخيارات"
 msgid "Could not find glade file %s"
 msgstr "لم أتمكن من تحميل ملف glade"
 
-#: ../src/glade-parser.c:1203
-#: ../src/glade-parser.c:1211
+#: ../src/glade-parser.c:1203 ../src/glade-parser.c:1211
 #, fuzzy, c-format
 msgid "Errors parsing glade file %s"
 msgstr "لم أتمكن من تحميل ملف glade"
@@ -1283,40 +1284,40 @@ msgstr "لم أتمكن من تحميل ملف glade"
 msgid "Could not allocate memory for interface"
 msgstr ""
 
-#: ../src/glade-popup.c:271
+#: ../src/glade-popup.c:254
 #, fuzzy
 msgid "_Select"
 msgstr "_إختار"
 
-#: ../src/glade-project.c:566
+#: ../src/glade-project.c:562
 #, fuzzy
 msgid "Has Unsaved Changes"
 msgstr "مست_ندات بتغييرات غير محفوظة:"
 
-#: ../src/glade-project.c:567
+#: ../src/glade-project.c:563
 msgid "Whether project has unsaved changes"
 msgstr ""
 
-#: ../src/glade-project.c:574
+#: ../src/glade-project.c:570
 #, fuzzy
 msgid "Has Selection"
 msgstr "<b>الحرف المنتقى:</b>"
 
-#: ../src/glade-project.c:575
+#: ../src/glade-project.c:571
 #, fuzzy
 msgid "Whether project has a selection"
 msgstr "فيما إذا كان لعمود القوائم مفاتيح إعانة"
 
-#: ../src/glade-project.c:582
+#: ../src/glade-project.c:578
 #, fuzzy
 msgid "Read Only"
 msgstr "يقرأ فقط"
 
-#: ../src/glade-project.c:583
+#: ../src/glade-project.c:579
 msgid "Whether project is read only or not"
 msgstr ""
 
-#: ../src/glade-project.c:1461
+#: ../src/glade-project.c:1460
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1324,215 +1325,220 @@ msgid ""
 msgstr ""
 
 #. Atk click property
-#: ../src/glade-property-class.c:52
-#: ../widgets/gtk+.xml.in.h:46
+#: ../src/glade-property-class.c:51 ../widgets/gtk+.xml.in.h:47
 #, fuzzy
 msgid "Click"
 msgstr "انقر"
 
 #. Atk click property
-#: ../src/glade-property-class.c:53
-#: ../widgets/gtk+.xml.in.h:195
+#: ../src/glade-property-class.c:52 ../widgets/gtk+.xml.in.h:210
 msgid "Set the desctription of the Click atk action"
 msgstr ""
 
 #. Atk press property
-#: ../src/glade-property-class.c:54
-#: ../widgets/gtk+.xml.in.h:167
+#: ../src/glade-property-class.c:53 ../widgets/gtk+.xml.in.h:178
 #, fuzzy
 msgid "Press"
 msgstr "نقر"
 
 #. Atk press property
-#: ../src/glade-property-class.c:55
-#: ../widgets/gtk+.xml.in.h:197
+#: ../src/glade-property-class.c:54 ../widgets/gtk+.xml.in.h:212
 msgid "Set the desctription of the Press atk action"
 msgstr ""
 
 #. Atk release property
-#: ../src/glade-property-class.c:56
-#: ../widgets/gtk+.xml.in.h:179
+#: ../src/glade-property-class.c:55 ../widgets/gtk+.xml.in.h:194
 #, fuzzy
 msgid "Release"
 msgstr "تسريح"
 
 #. Atk release property
-#: ../src/glade-property-class.c:57
-#: ../widgets/gtk+.xml.in.h:199
+#: ../src/glade-property-class.c:56 ../widgets/gtk+.xml.in.h:214
 msgid "Set the desctription of the Release atk action"
 msgstr ""
 
 #. Atk activate property
-#: ../src/glade-property-class.c:58
-#: ../widgets/gtk+.xml.in.h:14
+#: ../src/glade-property-class.c:57 ../widgets/gtk+.xml.in.h:14
 #, fuzzy
 msgid "Activate"
 msgstr "تنشيط"
 
 #. Atk activate property
-#: ../src/glade-property-class.c:59
-#: ../widgets/gtk+.xml.in.h:193
+#: ../src/glade-property-class.c:58 ../widgets/gtk+.xml.in.h:208
 msgid "Set the desctription of the Activate atk action"
 msgstr ""
 
-#: ../src/glade-property-class.c:63
+#: ../src/glade-property-class.c:62
 #, fuzzy
 msgid "Controlled By"
 msgstr "المطورون"
 
-#: ../src/glade-property-class.c:64
+#: ../src/glade-property-class.c:63
 msgid "Indicates an object controlled by one or more target objects"
 msgstr ""
 
-#: ../src/glade-property-class.c:66
+#: ../src/glade-property-class.c:65
 #, fuzzy
 msgid "Controller For"
 msgstr "ل_لّغة:"
 
-#: ../src/glade-property-class.c:67
+#: ../src/glade-property-class.c:66
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
 
-#: ../src/glade-property-class.c:69
+#: ../src/glade-property-class.c:68
 #, fuzzy
 msgid "Labelled By"
 msgstr "المطورون"
 
-#: ../src/glade-property-class.c:70
+#: ../src/glade-property-class.c:69
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr ""
 
-#: ../src/glade-property-class.c:72
+#: ../src/glade-property-class.c:71
 #, fuzzy
 msgid "Label For"
 msgstr "للعلامة"
 
-#: ../src/glade-property-class.c:73
+#: ../src/glade-property-class.c:72
 msgid "Indicates an object is a label for one or more target objects"
 msgstr ""
 
-#: ../src/glade-property-class.c:75
+#: ../src/glade-property-class.c:74
 #, fuzzy
 msgid "Member Of"
 msgstr "عضو"
 
-#: ../src/glade-property-class.c:76
-msgid "Indicates an object is a member of a group of one or more target objects"
+#: ../src/glade-property-class.c:75
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 
-#: ../src/glade-property-class.c:78
+#: ../src/glade-property-class.c:77
 #, fuzzy
 msgid "Child Node Of"
 msgstr "اذهب إلى الابن"
 
-#: ../src/glade-property-class.c:79
-msgid "Indicates an object is a cell in a treetable which is displayed because a cell in the same column is expanded and identifies that cell"
+#: ../src/glade-property-class.c:78
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
 msgstr ""
 
-#: ../src/glade-property-class.c:82
+#: ../src/glade-property-class.c:81
 #, fuzzy
 msgid "Flows To"
 msgstr "مسجل ل %s"
 
-#: ../src/glade-property-class.c:83
-msgid "Indicates that the object has content that flows logically to another AtkObject in a sequential way, (for instance text-flow)"
+#: ../src/glade-property-class.c:82
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
 
-#: ../src/glade-property-class.c:86
+#: ../src/glade-property-class.c:85
 #, fuzzy
 msgid "Flows From"
 msgstr "أخبار من %s"
 
-#: ../src/glade-property-class.c:87
-msgid "Indicates that the object has content that flows logically from another AtkObject in a sequential way, (for instance text-flow)"
+#: ../src/glade-property-class.c:86
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
 
-#: ../src/glade-property-class.c:90
+#: ../src/glade-property-class.c:89
 msgid "Subwindow Of"
 msgstr ""
 
-#: ../src/glade-property-class.c:91
-msgid "Indicates a subwindow attached to a component but otherwise has no connection in  the UI hierarchy to that component"
+#: ../src/glade-property-class.c:90
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in  the UI hierarchy to that component"
 msgstr ""
 
-#: ../src/glade-property-class.c:94
+#: ../src/glade-property-class.c:93
 msgid "Embeds"
 msgstr ""
 
-#: ../src/glade-property-class.c:95
-msgid "Indicates that the object visually embeds another object's content, i.e. this object's content flows around another's content"
+#: ../src/glade-property-class.c:94
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
 msgstr ""
 
-#: ../src/glade-property-class.c:98
+#: ../src/glade-property-class.c:97
 #, fuzzy
 msgid "Embedded By"
 msgstr "المطورون"
 
-#: ../src/glade-property-class.c:99
-msgid "Inverse of 'Embeds', indicates that this object's content is visualy embedded in another object"
+#: ../src/glade-property-class.c:98
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visualy "
+"embedded in another object"
 msgstr ""
 
-#: ../src/glade-property-class.c:102
+#: ../src/glade-property-class.c:101
 #, fuzzy
 msgid "Popup For"
 msgstr "ل_لّغة:"
 
-#: ../src/glade-property-class.c:103
+#: ../src/glade-property-class.c:102
 msgid "Indicates that an object is a popup for another object"
 msgstr ""
 
-#: ../src/glade-property-class.c:105
+#: ../src/glade-property-class.c:104
 #, fuzzy
 msgid "Parent Window Of"
 msgstr "مبدل النافذة"
 
-#: ../src/glade-property-class.c:106
+#: ../src/glade-property-class.c:105
 msgid "Indicates that an object is a parent window of another object"
 msgstr ""
 
-#: ../src/glade-property.c:637
+#: ../src/glade-property.c:587
 #, fuzzy
 msgid "Enabled"
 msgstr "مفعّل"
 
-#: ../src/glade-property.c:638
+#: ../src/glade-property.c:588
 msgid "If the property is optional, this is its enabled state"
 msgstr ""
 
-#: ../src/glade-property.c:644
+#: ../src/glade-property.c:594
 #, fuzzy
 msgid "Sensitive"
 msgstr "حساس"
 
-#: ../src/glade-property.c:645
+#: ../src/glade-property.c:595
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: ../src/glade-property.c:651
+#: ../src/glade-property.c:601
 #, fuzzy
 msgid "Comment"
 msgstr "ملاحظة"
 
-#: ../src/glade-property.c:652
+#: ../src/glade-property.c:602
 #, fuzzy
 msgid "Comment for translators"
 msgstr "كلمة المرور للمستند %s"
 
-#: ../src/glade-property.c:658
+#: ../src/glade-property.c:608
 msgid "Translatable"
 msgstr ""
 
-#: ../src/glade-property.c:659
+#: ../src/glade-property.c:609
 #, fuzzy
 msgid "Whether this property is translatable or not"
 msgstr "إن كانت هذه الشاشة داخل شاشة (Xnest)."
 
-#: ../src/glade-property.c:665
+#: ../src/glade-property.c:615
 #, fuzzy
 msgid "Has Context"
 msgstr "سياق مراسِل فوري"
 
-#: ../src/glade-property.c:666
+#: ../src/glade-property.c:616
 msgid "Whether or not the translatable string has a context prefix"
 msgstr ""
 
@@ -1556,28 +1562,27 @@ msgstr "البحث"
 msgid "After"
 msgstr "بعد"
 
-#: ../src/glade-utils.c:154
-#: ../src/glade-utils.c:187
+#: ../src/glade-utils.c:170 ../src/glade-utils.c:201
 #, fuzzy, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "لا يوجد ملف البكسمب '%s'\n"
 
-#: ../src/glade-utils.c:161
+#: ../src/glade-utils.c:177
 #, fuzzy, c-format
-msgid "Could not get the type from \"%s"
+msgid "Could not get the type from \"%s\""
 msgstr "لم يمكن قراءة التّحيّة من %s: %s"
 
-#: ../src/glade-utils.c:528
+#: ../src/glade-utils.c:542
 #, fuzzy
 msgid "All Files"
 msgstr "كل الملفّات"
 
-#: ../src/glade-utils.c:533
+#: ../src/glade-utils.c:547
 #, fuzzy
 msgid "Glade Files"
 msgstr "كل الملفّات"
 
-#: ../src/glade-utils.c:1341
+#: ../src/glade-utils.c:1353
 #, fuzzy, c-format
 msgid ""
 "%s exists.\n"
@@ -1586,158 +1591,248 @@ msgstr ""
 "%s موجود\n"
 "هل تريد تنميقه؟"
 
-#: ../src/glade-utils.c:1369
+#: ../src/glade-utils.c:1381
 #, fuzzy, c-format
 msgid "Error writing to %s: %s"
 msgstr "خطأ أثناء الكتابة ل '%s'"
 
-#: ../src/glade-utils.c:1383
+#: ../src/glade-utils.c:1395
 #, fuzzy, c-format
 msgid "Error reading %s: %s"
 msgstr "خطأ في قراءة الملف '%s': %s"
 
-#: ../src/glade-utils.c:1398
+#: ../src/glade-utils.c:1410
 #, fuzzy, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "فشل في غلق خادم اﻻعدادات: %s"
 
-#: ../src/glade-utils.c:1408
+#: ../src/glade-utils.c:1420
 #, fuzzy, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "فشل فتح '%s' لكتابة: %s"
 
-#: ../src/glade-utils.c:1419
+#: ../src/glade-utils.c:1431
 #, c-format
 msgid "Error shutting down io channel %s: %s"
 msgstr ""
 
-#: ../src/glade-utils.c:1428
+#: ../src/glade-utils.c:1440
 #, fuzzy, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "فشل فتح '%s' لكتابة: %s"
 
-#: ../src/glade-utils.c:1486
+#: ../src/glade-utils.c:1498
 #, fuzzy, c-format
 msgid "Unable to open the module %s (%s)."
 msgstr "تعذر فتح المستند"
 
-#: ../src/glade-widget-class.c:395
-#: ../src/glade-widget-class.c:429
-#, fuzzy, c-format
-msgid "Unable to load icon for %s (%s)"
-msgstr "لا يمكن تحميل مخزون الأيقونات '%s'\n"
-
-#: ../src/glade-widget-class.c:407
-#: ../src/glade-widget-class.c:441
-#, fuzzy, c-format
-msgid "Unable to load stock icon (%s)"
-msgstr "لا يمكن تحميل مخزون الأيقونات '%s'\n"
-
-#: ../src/glade-widget.c:1057
+#: ../src/glade-widget.c:1073
 #, fuzzy
 msgid "The name of the widget"
 msgstr "اسم الكائن"
 
-#: ../src/glade-widget.c:1064
+#: ../src/glade-widget.c:1080
 #, fuzzy
 msgid "Internal name"
 msgstr "اسم الموصول"
 
-#: ../src/glade-widget.c:1065
+#: ../src/glade-widget.c:1081
 #, fuzzy
 msgid "The internal name of the widget"
 msgstr "قطعة التلميح نشطة"
 
-#: ../src/glade-widget.c:1071
+#: ../src/glade-widget.c:1087
 msgid "Anarchist"
 msgstr ""
 
-#: ../src/glade-widget.c:1072
-msgid "Whether this composite child is an ancestral child or an anarchist child"
+#: ../src/glade-widget.c:1088
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 
-#: ../src/glade-widget.c:1079
+#: ../src/glade-widget.c:1095
 #, fuzzy
 msgid "Object"
 msgstr "جسم"
 
-#: ../src/glade-widget.c:1080
+#: ../src/glade-widget.c:1096
 #, fuzzy
 msgid "The object associated"
 msgstr "معلومات ملازمة"
 
-#: ../src/glade-widget.c:1088
-msgid "The class of the associated gtk+ widget"
+#: ../src/glade-widget.c:1103
+#, fuzzy
+msgid "Adaptor"
+msgstr "فا_صل جديد"
+
+#: ../src/glade-widget.c:1104
+msgid "The class adaptor for the associated widget"
 msgstr ""
 
-#: ../src/glade-widget.c:1095
+#: ../src/glade-widget.c:1111
 msgid "Project"
 msgstr ""
 
-#: ../src/glade-widget.c:1096
+#: ../src/glade-widget.c:1112
 msgid "The glade project that this widget belongs to"
 msgstr ""
 
-#: ../src/glade-widget.c:1105
+#: ../src/glade-widget.c:1121
 #, fuzzy
 msgid "A list of GladeProperties"
 msgstr "قائمة الحسابات"
 
-#: ../src/glade-widget.c:1111
-#: ../widgets/gtk+.xml.in.h:160
+#: ../src/glade-widget.c:1127 ../widgets/gtk+.xml.in.h:171
 #, fuzzy
 msgid "Parent"
 msgstr "أب"
 
-#: ../src/glade-widget.c:1112
+#: ../src/glade-widget.c:1128
 #, fuzzy
 msgid "A pointer to the parenting GladeWidget"
 msgstr "مؤشّر لموقع FTP (%s)"
 
-#: ../src/glade-widget.c:1119
+#: ../src/glade-widget.c:1135
 #, fuzzy
 msgid "Internal Name"
 msgstr "اسم الموصول"
 
-#: ../src/glade-widget.c:1120
+#: ../src/glade-widget.c:1136
 msgid "A generic name prefix for internal widgets"
 msgstr ""
 
-#: ../src/glade-widget.c:1125
+#: ../src/glade-widget.c:1141
 #, fuzzy
 msgid "Template"
 msgstr "قالب"
 
-#: ../src/glade-widget.c:1126
+#: ../src/glade-widget.c:1142
 msgid "A GladeWidget template to base a new widget on"
 msgstr ""
 
-#: ../src/glade-widget.c:1132
-#: ../widgets/gtk+.xml.in.h:121
+#: ../src/glade-widget.c:1148 ../widgets/gtk+.xml.in.h:126
 #, fuzzy
 msgid "Info"
 msgstr "معلومات التّرتيب"
 
-#: ../src/glade-widget.c:1133
+#: ../src/glade-widget.c:1149
 msgid "A GladeWidgetInfo struct to base a new widget on"
 msgstr ""
 
-#: ../src/glade-widget.c:1138
+#: ../src/glade-widget.c:1154
 #, fuzzy
 msgid "Reason"
 msgstr "السبب"
 
-#: ../src/glade-widget.c:1139
+#: ../src/glade-widget.c:1155
 #, fuzzy
 msgid "A GladeCreateReason for this creation"
 msgstr "فقط ل_هذه الجلسة"
 
-#: ../src/glade-project-view.c:623
+#: ../src/glade-widget-adaptor.c:183 ../src/glade-widget-adaptor.c:223
+#, fuzzy, c-format
+msgid "Unable to load icon for %s (%s)"
+msgstr "لا يمكن تحميل مخزون الأيقونات '%s'\n"
+
+#: ../src/glade-widget-adaptor.c:198 ../src/glade-widget-adaptor.c:238
+#, fuzzy, c-format
+msgid "Unable to load stock icon (%s)"
+msgstr "لا يمكن تحميل مخزون الأيقونات '%s'\n"
+
+#: ../src/glade-widget-adaptor.c:332
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:909
+#, fuzzy
+msgid "Name of the class"
+msgstr "_عد العناصر:"
+
+#: ../src/glade-widget-adaptor.c:917
+#, fuzzy
+msgid "GType of the class"
+msgstr "رسم حدود الصناديق"
+
+#: ../src/glade-widget-adaptor.c:924 ../widgets/gnome.xml.in.h:45
+#, fuzzy
+msgid "Title"
+msgstr "العنوان"
+
+#: ../src/glade-widget-adaptor.c:925
+msgid "Translated title for the class used in the glade UI"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:932
+#, fuzzy
+msgid "Generic Name"
+msgstr "عام"
+
+#: ../src/glade-widget-adaptor.c:933
+#, fuzzy
+msgid "Used to generate names of new widgets"
+msgstr "قطعة التلميح نشطة"
+
+#: ../src/glade-widget-adaptor.c:940
+#, fuzzy
+msgid "Catalog"
+msgstr "حوار"
+
+#: ../src/glade-widget-adaptor.c:941
+msgid "The name of the widget catalog this class was declared by"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:948
+#, fuzzy
+msgid "Book"
+msgstr "البحث"
+
+#: ../src/glade-widget-adaptor.c:949
+msgid "DevHelp search namespace for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:956
+msgid "Special Child Type"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:957
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:965
+msgid "Large Icon"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:966
+msgid "The 22x22 icon for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:973
+#, fuzzy
+msgid "Small Icon"
+msgstr "النص تحت الأيقونة"
+
+#: ../src/glade-widget-adaptor.c:974
+msgid "The 16x16 icon for this widget class"
+msgstr ""
+
+#: ../src/glade-widget-adaptor.c:981 ../widgets/gtk+.xml.in.h:63
+#, fuzzy
+msgid "Cursor"
+msgstr "موقع المؤشّر"
+
+#: ../src/glade-widget-adaptor.c:982
+msgid "A cursor for inserting widgets in the UI"
+msgstr ""
+
+#: ../src/glade-project-view.c:646
 #, fuzzy, c-format
 msgid "(internal %s)"
 msgstr "إطار داخلي"
 
-#: ../src/glade-project-view.c:627
+#: ../src/glade-project-view.c:650
 #, fuzzy, c-format
 msgid "(%s child)"
 msgstr "ابن"
@@ -1787,142 +1882,130 @@ msgstr "عدد صحيح"
 msgid "The second integer argument to pass to the function"
 msgstr ""
 
-#: ../src/glade-gtk.c:169
+#: ../src/glade-gtk.c:171
 msgid "GnomeUIInfo"
 msgstr ""
 
-#: ../src/glade-gtk.c:170
+#: ../src/glade-gtk.c:172
 #, fuzzy
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "سهم المخزون المعروض على العنصر"
 
-#: ../src/glade-gtk.c:186
+#: ../src/glade-gtk.c:188
 #, fuzzy
 msgid "Filename"
 msgstr "اسم الملف"
 
-#: ../src/glade-gtk.c:188
+#: ../src/glade-gtk.c:190
 #, fuzzy
 msgid "Icon Theme"
 msgstr "تيمة الأيقونة"
 
-#: ../src/glade-gtk.c:208
-#: ../widgets/gtk+.xml.in.h:55
+#: ../src/glade-gtk.c:210 ../widgets/gtk+.xml.in.h:57
 #, fuzzy
 msgid "Container"
 msgstr "حاوي html"
 
-#: ../src/glade-gtk.c:218
-#: ../src/glade-gtk.c:227
+#: ../src/glade-gtk.c:220 ../src/glade-gtk.c:229
 #, fuzzy
 msgid "Method"
 msgstr "<b>ال_طريقة:</b>"
 
-#: ../src/glade-gtk.c:219
+#: ../src/glade-gtk.c:221
 msgid "The method to use to edit this image"
 msgstr ""
 
-#: ../src/glade-gtk.c:228
+#: ../src/glade-gtk.c:230
 msgid "The method to use to edit this button"
 msgstr ""
 
-#: ../src/glade-gtk.c:532
+#: ../src/glade-gtk.c:587
 #, fuzzy, c-format
 msgid "Ordering children of %s"
 msgstr "لا يوجد أبناء"
 
-#: ../src/glade-gtk.c:3028
-#: ../src/glade-gtk.c:3032
-#: ../src/glade-gtk.c:3195
-#: ../src/glade-gtk.c:3199
+#: ../src/glade-gtk.c:3275 ../src/glade-gtk.c:3279 ../src/glade-gtk.c:3454
+#: ../src/glade-gtk.c:3458
 msgid "This only applies with label type buttons"
 msgstr ""
 
-#: ../src/glade-gtk.c:3043
-#: ../src/glade-gtk.c:3191
+#: ../src/glade-gtk.c:3290 ../src/glade-gtk.c:3294 ../src/glade-gtk.c:3446
+#: ../src/glade-gtk.c:3450
 msgid "This only applies with stock type buttons"
 msgstr ""
 
-#: ../src/glade-gtk.c:3274
-#: ../src/glade-gtk.c:3294
+#: ../src/glade-gtk.c:3554 ../src/glade-gtk.c:3576
 msgid "You must remove any children before you can set the type"
 msgstr ""
 
-#: ../src/glade-gtk.c:3316
-#: ../src/glade-gtk.c:4569
+#: ../src/glade-gtk.c:3600 ../src/glade-gtk.c:4959
 msgid "This only applies with file type images"
 msgstr ""
 
-#: ../src/glade-gtk.c:3324
-#: ../src/glade-gtk.c:4573
+#: ../src/glade-gtk.c:3608 ../src/glade-gtk.c:4963
 msgid "This only applies to Icon Theme type images"
 msgstr ""
 
-#: ../src/glade-gtk.c:3332
-#: ../src/glade-gtk.c:4571
+#: ../src/glade-gtk.c:3617 ../src/glade-gtk.c:4961
 msgid "This only applies with stock type images"
 msgstr ""
 
-#: ../src/glade-gtk.c:3344
-msgid "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, set Pixel size to -1"
+#: ../src/glade-gtk.c:3629
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
 msgstr ""
 
-#: ../src/glade-gtk.c:3370
+#: ../src/glade-gtk.c:3655
 msgid "Pixel Size takes precedence over Icon size"
 msgstr ""
 
-#: ../src/glade-gtk.c:3622
-#: ../src/glade-gtk.c:4463
+#: ../src/glade-gtk.c:3942 ../src/glade-gtk.c:4850
 #, fuzzy
 msgid "<separator>"
 msgstr "فاصل"
 
-#: ../src/glade-gtk.c:3796
-#: ../widgets/gtk+.xml.in.h:145
+#: ../src/glade-gtk.c:4117 ../widgets/gtk+.xml.in.h:154
 #, fuzzy
 msgid "Normal"
 msgstr "عادي"
 
-#: ../src/glade-gtk.c:3797
-#: ../widgets/gtk+.xml.in.h:116
+#: ../src/glade-gtk.c:4118 ../widgets/gtk+.xml.in.h:121
 #, fuzzy
 msgid "Image"
 msgstr "صورة"
 
-#: ../src/glade-gtk.c:3798
+#: ../src/glade-gtk.c:4119
 #, fuzzy
 msgid "Check"
 msgstr "تثبت من تهجيئ الكلمات"
 
-#: ../src/glade-gtk.c:3799
-#: ../src/glade-gtk.c:4521
+#: ../src/glade-gtk.c:4120 ../src/glade-gtk.c:4909
 #, fuzzy
 msgid "Radio"
 msgstr "المذياع"
 
-#: ../src/glade-gtk.c:3800
-#: ../src/glade-gtk.c:4524
+#: ../src/glade-gtk.c:4121 ../src/glade-gtk.c:4912
 #, fuzzy
 msgid "Separator"
 msgstr "فاصل"
 
-#: ../src/glade-gtk.c:3804
+#: ../src/glade-gtk.c:4125
 #, fuzzy
 msgid "Add Item"
 msgstr "إضافة مادة جديدة"
 
-#: ../src/glade-gtk.c:3805
+#: ../src/glade-gtk.c:4126
 #, fuzzy
 msgid "Add Child Item"
 msgstr "إضافة مادة جديدة"
 
-#: ../src/glade-gtk.c:3806
-#: ../src/glade-gtk.c:4533
+#: ../src/glade-gtk.c:4127 ../src/glade-gtk.c:4921
 #, fuzzy
 msgid "Add Separator"
 msgstr "فا_صل جديد"
 
-#: ../src/glade-gtk.c:3819
+#: ../src/glade-gtk.c:4140
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1931,161 +2014,172 @@ msgid ""
 "  * Type column is editable."
 msgstr ""
 
-#: ../src/glade-gtk.c:4049
-msgid "This does not apply with stock items"
-msgstr ""
-
-#: ../src/glade-gtk.c:4135
+#: ../src/glade-gtk.c:4369
 #, fuzzy
 msgid "Print S_etup"
 msgstr "_تعيين الطباعة..."
 
-#: ../src/glade-gtk.c:4139
+#: ../src/glade-gtk.c:4373
 #, fuzzy
 msgid "Find Ne_xt"
 msgstr "إيجاد الت_الي"
 
-#: ../src/glade-gtk.c:4143
+#: ../src/glade-gtk.c:4377
 #, fuzzy
 msgid "_Undo Move"
 msgstr "_تراجع عن الحركة الأخيرة"
 
-#: ../src/glade-gtk.c:4147
+#: ../src/glade-gtk.c:4381
 #, fuzzy
 msgid "_Redo Move"
 msgstr "_تكرار الحركة الأخيرة"
 
-#: ../src/glade-gtk.c:4150
+#: ../src/glade-gtk.c:4384
 #, fuzzy
 msgid "Select _All"
 msgstr "اختيا_ر الكل"
 
-#: ../src/glade-gtk.c:4153
+#: ../src/glade-gtk.c:4387
 #, fuzzy
 msgid "_New Game"
 msgstr "_لعبة جديدة"
 
-#: ../src/glade-gtk.c:4156
+#: ../src/glade-gtk.c:4390
 #, fuzzy
 msgid "_Pause game"
 msgstr "إيقاف اللعبة"
 
-#: ../src/glade-gtk.c:4159
+#: ../src/glade-gtk.c:4393
 #, fuzzy
 msgid "_Restart Game"
 msgstr "بدء اللّعبة من _جديد"
 
-#: ../src/glade-gtk.c:4162
+#: ../src/glade-gtk.c:4396
 #, fuzzy
 msgid "_Hint"
 msgstr "_تلميحة"
 
-#: ../src/glade-gtk.c:4165
+#: ../src/glade-gtk.c:4399
 #, fuzzy
 msgid "_Scores..."
 msgstr "ال_نتائج..."
 
-#: ../src/glade-gtk.c:4168
+#: ../src/glade-gtk.c:4402
 #, fuzzy
 msgid "_End Game"
 msgstr "إ_نهاء اللعبة الحالية"
 
-#: ../src/glade-gtk.c:4171
+#: ../src/glade-gtk.c:4405
 #, fuzzy
 msgid "Create New _Window"
 msgstr "إ_نشاء نافذة جديدة"
 
-#: ../src/glade-gtk.c:4174
+#: ../src/glade-gtk.c:4408
 #, fuzzy
 msgid "_Close This Window"
 msgstr "_غلق هذه النافذة"
 
-#: ../src/glade-gtk.c:4186
+#: ../src/glade-gtk.c:4420
 #, fuzzy
 msgid "_Settings"
 msgstr "_تعيينات"
 
-#: ../src/glade-gtk.c:4189
+#: ../src/glade-gtk.c:4423
 #, fuzzy
 msgid "Fi_les"
 msgstr "م_لفات"
 
-#: ../src/glade-gtk.c:4192
+#: ../src/glade-gtk.c:4426
 #, fuzzy
 msgid "_Windows"
 msgstr "_نوافذ"
 
-#: ../src/glade-gtk.c:4198
+#: ../src/glade-gtk.c:4432
 #, fuzzy
 msgid "_Game"
 msgstr "_لعبة"
 
-#: ../src/glade-gtk.c:4356
+#: ../src/glade-gtk.c:4528
+msgid "This does not apply with stock items"
+msgstr ""
+
+#: ../src/glade-gtk.c:4738
 #, fuzzy
 msgid "Menu Bar Editor"
 msgstr "محرر قائمة ألاكارت"
 
-#: ../src/glade-gtk.c:4363
+#: ../src/glade-gtk.c:4745
 #, fuzzy
 msgid "Menu Editor"
 msgstr "محرر القوائم"
 
-#: ../src/glade-gtk.c:4472
+#: ../src/glade-gtk.c:4859
 #, fuzzy
 msgid "<custom>"
 msgstr "مخصص:"
 
-#: ../src/glade-gtk.c:4519
-#: ../widgets/gtk+.xml.in.h:30
+#: ../src/glade-gtk.c:4907 ../widgets/gtk+.xml.in.h:31
 #, fuzzy
 msgid "Button"
 msgstr "زر"
 
-#: ../src/glade-gtk.c:4520
+#: ../src/glade-gtk.c:4908
 #, fuzzy
 msgid "Toggle"
 msgstr "تحول"
 
-#: ../src/glade-gtk.c:4522
-#: ../widgets/gtk+.xml.in.h:135
+#: ../src/glade-gtk.c:4910 ../widgets/gtk+.xml.in.h:143
 #, fuzzy
 msgid "Menu"
 msgstr "قائمة"
 
-#: ../src/glade-gtk.c:4523
+#: ../src/glade-gtk.c:4911
 #, fuzzy
 msgid "Item"
 msgstr "عنصر"
 
-#: ../src/glade-gtk.c:4528
+#: ../src/glade-gtk.c:4916
 #, fuzzy
 msgid "Add Tool Button"
 msgstr "زر في اللوحة"
 
-#: ../src/glade-gtk.c:4529
+#: ../src/glade-gtk.c:4917
 #, fuzzy
 msgid "Add Toggle Button"
 msgstr "حالة التحول للزر"
 
-#: ../src/glade-gtk.c:4530
+#: ../src/glade-gtk.c:4918
 #, fuzzy
 msgid "Add Radio Button"
 msgstr "رسم زر التحول كزر مشع"
 
-#: ../src/glade-gtk.c:4531
+#: ../src/glade-gtk.c:4919
 #, fuzzy
 msgid "Add Menu Button"
 msgstr "أضف التشفير إلى القائمة"
 
-#: ../src/glade-gtk.c:4532
+#: ../src/glade-gtk.c:4920
 #, fuzzy
 msgid "Add Tool Item"
 msgstr "إضافة مادة جديدة"
 
-#: ../src/glade-gtk.c:4541
+#: ../src/glade-gtk.c:4929
 #, fuzzy
 msgid "Tool Bar Editor"
 msgstr "بدون عمود الأدوات"
+
+#: ../src/glade-gtk.c:5682
+msgid "Introduction page"
+msgstr ""
+
+#: ../src/glade-gtk.c:5686
+#, fuzzy
+msgid "Content page"
+msgstr "رسالة مساعدة"
+
+#: ../src/glade-gtk.c:5690
+msgid "Confirm page"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
@@ -2136,8 +2230,7 @@ msgstr "الكل"
 msgid "All Events"
 msgstr "الأحداث الصوتيّة"
 
-#: ../widgets/gtk+.xml.in.h:18
-#: ../widgets/gnome.xml.in.h:2
+#: ../widgets/gtk+.xml.in.h:18 ../widgets/gnome.xml.in.h:2
 #, fuzzy
 msgid "Always"
 msgstr "دائماً"
@@ -2158,1162 +2251,1221 @@ msgid "Aspect Frame"
 msgstr "معدل الإطارات"
 
 #: ../widgets/gtk+.xml.in.h:22
+msgid "Assistant"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:23
 #, fuzzy
 msgid "Automatic"
 msgstr "آلي"
 
-#: ../widgets/gtk+.xml.in.h:23
+#: ../widgets/gtk+.xml.in.h:24
 #, fuzzy
 msgid "Both"
 msgstr "كلاهما (Picture-in-Picture)"
 
-#: ../widgets/gtk+.xml.in.h:24
+#: ../widgets/gtk+.xml.in.h:25
 #, fuzzy
 msgid "Both Horizontal"
 msgstr "قلب أ_فقي"
 
-#: ../widgets/gtk+.xml.in.h:25
-#: ../widgets/bonobo.xml.in.h:1
+#: ../widgets/gtk+.xml.in.h:26 ../widgets/bonobo.xml.in.h:1
 #, fuzzy
 msgid "Bottom"
 msgstr "الأسفل"
 
-#: ../widgets/gtk+.xml.in.h:26
+#: ../widgets/gtk+.xml.in.h:27
 #, fuzzy
 msgid "Bottom Left"
 msgstr "الإلتفاف إلى جهة اليسار"
 
-#: ../widgets/gtk+.xml.in.h:27
+#: ../widgets/gtk+.xml.in.h:28
 #, fuzzy
 msgid "Bottom Right"
 msgstr "الإلتفاف إلى جهة اليمين"
 
-#: ../widgets/gtk+.xml.in.h:28
+#: ../widgets/gtk+.xml.in.h:29
 #, fuzzy
 msgid "Bottom to Top"
 msgstr "من الأسفل إلى الأعلى"
 
-#: ../widgets/gtk+.xml.in.h:29
+#: ../widgets/gtk+.xml.in.h:30
 #, fuzzy
 msgid "Box"
 msgstr "مربّع"
 
-#: ../widgets/gtk+.xml.in.h:31
+#: ../widgets/gtk+.xml.in.h:32
 #, fuzzy
 msgid "Button 1 Motion"
 msgstr "حدود الحركة"
 
-#: ../widgets/gtk+.xml.in.h:32
+#: ../widgets/gtk+.xml.in.h:33
 #, fuzzy
 msgid "Button 2 Motion"
 msgstr "حدود الحركة"
 
-#: ../widgets/gtk+.xml.in.h:33
+#: ../widgets/gtk+.xml.in.h:34
 #, fuzzy
 msgid "Button 3 Motion"
 msgstr "حدود الحركة"
 
-#: ../widgets/gtk+.xml.in.h:34
+#: ../widgets/gtk+.xml.in.h:35
 #, fuzzy
 msgid "Button Box"
 msgstr "_صندوق البريد:"
 
-#: ../widgets/gtk+.xml.in.h:35
+#: ../widgets/gtk+.xml.in.h:36
 #, fuzzy
 msgid "Button Motion"
 msgstr "حدود الحركة"
 
-#: ../widgets/gtk+.xml.in.h:36
+#: ../widgets/gtk+.xml.in.h:37
 #, fuzzy
 msgid "Button Press"
 msgstr "<اضغط مفتاحاً>"
 
-#: ../widgets/gtk+.xml.in.h:37
+#: ../widgets/gtk+.xml.in.h:38
 #, fuzzy
 msgid "Button Release"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:38
+#: ../widgets/gtk+.xml.in.h:39
 #, fuzzy
 msgid "Calendar"
 msgstr "الرُّزنامة"
 
-#: ../widgets/gtk+.xml.in.h:39
+#: ../widgets/gtk+.xml.in.h:40
 #, fuzzy
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: ../widgets/gtk+.xml.in.h:40
+#: ../widgets/gtk+.xml.in.h:41
 #, fuzzy
 msgid "Center"
 msgstr "وسط"
 
-#: ../widgets/gtk+.xml.in.h:41
+#: ../widgets/gtk+.xml.in.h:42
 #, fuzzy
 msgid "Center on Parent"
 msgstr "توسيط الشريط على محور س"
 
-#: ../widgets/gtk+.xml.in.h:42
+#: ../widgets/gtk+.xml.in.h:43
 #, fuzzy
 msgid "Character"
 msgstr "الرمز"
 
-#: ../widgets/gtk+.xml.in.h:43
+#: ../widgets/gtk+.xml.in.h:44
 #, fuzzy
 msgid "Check Button"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:44
+#: ../widgets/gtk+.xml.in.h:45
 #, fuzzy
 msgid "Check Menu Item"
 msgstr "اضبط عنصر القائمة"
 
-#: ../widgets/gtk+.xml.in.h:47
+#: ../widgets/gtk+.xml.in.h:48
 #, fuzzy
 msgid "Close"
 msgstr "غلق"
 
-#: ../widgets/gtk+.xml.in.h:48
+#: ../widgets/gtk+.xml.in.h:49
 #, fuzzy
 msgid "Color Button"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:49
+#: ../widgets/gtk+.xml.in.h:50
 #, fuzzy
 msgid "Color Selection"
 msgstr "اللون المنقى"
 
-#: ../widgets/gtk+.xml.in.h:50
+#: ../widgets/gtk+.xml.in.h:51
 #, fuzzy
 msgid "Color Selection Dialog"
 msgstr "عنوان حوار انتقاء الألوان"
 
-#: ../widgets/gtk+.xml.in.h:51
+#: ../widgets/gtk+.xml.in.h:52
 #, fuzzy
 msgid "Columned List"
 msgstr "قائمة الحسابات"
 
-#: ../widgets/gtk+.xml.in.h:52
+#: ../widgets/gtk+.xml.in.h:53
 #, fuzzy
 msgid "Combo"
 msgstr "إطار كومبو"
 
-#: ../widgets/gtk+.xml.in.h:53
+#: ../widgets/gtk+.xml.in.h:54
 #, fuzzy
 msgid "Combo Box"
 msgstr "إطار كومبو"
 
-#: ../widgets/gtk+.xml.in.h:54
+#: ../widgets/gtk+.xml.in.h:55
 #, fuzzy
 msgid "Combo Box Entry"
 msgstr "نموذج لصندوق المجموعات"
 
 #: ../widgets/gtk+.xml.in.h:56
+#, fuzzy
+msgid "Confirm"
+msgstr "حاوي html"
+
+#: ../widgets/gtk+.xml.in.h:58
 msgid "Containers"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:57
+#: ../widgets/gtk+.xml.in.h:59
+#, fuzzy
+msgid "Content"
+msgstr "ملاحظة"
+
+#: ../widgets/gtk+.xml.in.h:60
 #, fuzzy
 msgid "Continuous"
 msgstr "م_ستمر"
 
-#: ../widgets/gtk+.xml.in.h:58
+#: ../widgets/gtk+.xml.in.h:61
 #, fuzzy
 msgid "Control and Display"
 msgstr "اسم الملف للتحميل و العرض"
 
-#: ../widgets/gtk+.xml.in.h:59
-#: ../widgets/gnome.xml.in.h:5
+#: ../widgets/gtk+.xml.in.h:62 ../widgets/gnome.xml.in.h:5
 #, fuzzy
 msgid "Create Folder"
 msgstr "إنشيء مجلد"
 
-#: ../widgets/gtk+.xml.in.h:60
-#, fuzzy
-msgid "Cursor"
-msgstr "موقع المؤشّر"
-
-#: ../widgets/gtk+.xml.in.h:61
+#: ../widgets/gtk+.xml.in.h:64
 #, fuzzy
 msgid "Curve"
 msgstr "نوع المنحنى"
 
-#: ../widgets/gtk+.xml.in.h:62
+#: ../widgets/gtk+.xml.in.h:65
+#, fuzzy
+msgid "Custom"
+msgstr "مخصص:"
+
+#: ../widgets/gtk+.xml.in.h:66
 #, fuzzy
 msgid "Custom widget"
 msgstr "محيطات القطعة"
 
-#: ../widgets/gtk+.xml.in.h:63
+#: ../widgets/gtk+.xml.in.h:67
 #, fuzzy
 msgid "Default"
 msgstr "الافتراضي"
 
-#: ../widgets/gtk+.xml.in.h:64
+#: ../widgets/gtk+.xml.in.h:68
 msgid "Delayed"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:65
+#: ../widgets/gtk+.xml.in.h:69
 #, fuzzy
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "وصف جسم، مهيئ للنفاذ عبره إلى تكنولوجيا مساعدة المعوقين"
 
-#: ../widgets/gtk+.xml.in.h:66
+#: ../widgets/gtk+.xml.in.h:70
 #, fuzzy
 msgid "Desktop"
 msgstr "سطح المكتب"
 
-#: ../widgets/gtk+.xml.in.h:67
+#: ../widgets/gtk+.xml.in.h:71
 #, fuzzy
 msgid "Dialog"
 msgstr "حوار"
 
-#: ../widgets/gtk+.xml.in.h:68
+#: ../widgets/gtk+.xml.in.h:72
 #, fuzzy
 msgid "Dialog Box"
 msgstr "صندوق حوار"
 
-#: ../widgets/gtk+.xml.in.h:69
+#: ../widgets/gtk+.xml.in.h:73
 msgid "Discontinuous"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:70
+#: ../widgets/gtk+.xml.in.h:74
 #, fuzzy
 msgid "Discrete"
 msgstr "القوالب المتقطعة"
 
-#: ../widgets/gtk+.xml.in.h:71
+#: ../widgets/gtk+.xml.in.h:75
 #, fuzzy
 msgid "Dock"
 msgstr "إرساء"
 
-#: ../widgets/gtk+.xml.in.h:72
+#: ../widgets/gtk+.xml.in.h:76
 #, fuzzy
 msgid "Down"
 msgstr "أسفل"
 
-#: ../widgets/gtk+.xml.in.h:73
+#: ../widgets/gtk+.xml.in.h:77
+msgid "Drag and Drop"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:78
 #, fuzzy
 msgid "Drawing Area"
 msgstr "مساحة رسم"
 
-#: ../widgets/gtk+.xml.in.h:74
+#: ../widgets/gtk+.xml.in.h:79
+#, fuzzy
+msgid "Drop Down Menu"
+msgstr "مخطط القائمة"
+
+#: ../widgets/gtk+.xml.in.h:80
 #, fuzzy
 msgid "East"
 msgstr "شرق"
 
-#: ../widgets/gtk+.xml.in.h:75
+#: ../widgets/gtk+.xml.in.h:81
 #, fuzzy
 msgid "Edge"
 msgstr "حافة سريعة"
 
-#: ../widgets/gtk+.xml.in.h:76
+#: ../widgets/gtk+.xml.in.h:82
 #, fuzzy
 msgid "Edit Type"
 msgstr "نوع التّنبيه"
 
-#: ../widgets/gtk+.xml.in.h:77
-#: ../widgets/gnome.xml.in.h:7
+#: ../widgets/gtk+.xml.in.h:83 ../widgets/gnome.xml.in.h:7
 #, fuzzy
 msgid "End"
 msgstr "نهاية"
 
-#: ../widgets/gtk+.xml.in.h:78
+#: ../widgets/gtk+.xml.in.h:84
 #, fuzzy
 msgid "Enter Notify"
 msgstr "أدخل كلمة المرور"
 
-#: ../widgets/gtk+.xml.in.h:79
-#: ../widgets/gnome.xml.in.h:8
+#: ../widgets/gtk+.xml.in.h:85 ../widgets/gnome.xml.in.h:8
 #, fuzzy
 msgid "Error"
 msgstr "خطأ"
 
-#: ../widgets/gtk+.xml.in.h:80
-#: ../widgets/bonobo.xml.in.h:2
+#: ../widgets/gtk+.xml.in.h:86 ../widgets/bonobo.xml.in.h:2
 #, fuzzy
 msgid "Etched In"
 msgstr "تكبير"
 
-#: ../widgets/gtk+.xml.in.h:81
-#: ../widgets/bonobo.xml.in.h:3
+#: ../widgets/gtk+.xml.in.h:87 ../widgets/bonobo.xml.in.h:3
 #, fuzzy
 msgid "Etched Out"
 msgstr "اخرج"
 
-#: ../widgets/gtk+.xml.in.h:82
+#: ../widgets/gtk+.xml.in.h:88
 #, fuzzy
 msgid "Event Box"
 msgstr "_صندوق البريد:"
 
-#: ../widgets/gtk+.xml.in.h:83
-#: ../widgets/gnome.xml.in.h:9
+#: ../widgets/gtk+.xml.in.h:89 ../widgets/gnome.xml.in.h:9
 #, fuzzy
 msgid "Expand"
 msgstr "تمديد"
 
-#: ../widgets/gtk+.xml.in.h:84
+#: ../widgets/gtk+.xml.in.h:90
 #, fuzzy
 msgid "Expander"
 msgstr "حجم الموسّع"
 
-#: ../widgets/gtk+.xml.in.h:85
+#: ../widgets/gtk+.xml.in.h:91
 #, fuzzy
 msgid "Exposure"
 msgstr "زمن التعرض"
 
-#: ../widgets/gtk+.xml.in.h:86
+#: ../widgets/gtk+.xml.in.h:92
 #, fuzzy
 msgid "File Chooser Button"
 msgstr "خلفيّة منتقي الملفات الإفتراضيّة"
 
-#: ../widgets/gtk+.xml.in.h:87
+#: ../widgets/gtk+.xml.in.h:93
 #, fuzzy
 msgid "File Chooser Dialog"
 msgstr "اعرض صندوق حوار اختيار ملف"
 
-#: ../widgets/gtk+.xml.in.h:88
+#: ../widgets/gtk+.xml.in.h:94
 #, fuzzy
 msgid "File Name"
 msgstr "إسم الملف:"
 
-#: ../widgets/gtk+.xml.in.h:89
+#: ../widgets/gtk+.xml.in.h:95
 #, fuzzy
 msgid "File Selection"
 msgstr "خيارات إنتقاء الملف"
 
-#: ../widgets/gtk+.xml.in.h:90
-#: ../widgets/gnome.xml.in.h:11
+#: ../widgets/gtk+.xml.in.h:96 ../widgets/gnome.xml.in.h:11
 #, fuzzy
 msgid "Fill"
 msgstr "ملأ"
 
-#: ../widgets/gtk+.xml.in.h:91
+#: ../widgets/gtk+.xml.in.h:97
 #, fuzzy
 msgid "Fixed"
 msgstr "_عرض ثابت:"
 
-#: ../widgets/gtk+.xml.in.h:92
+#: ../widgets/gtk+.xml.in.h:98
 #, fuzzy
 msgid "Focus Change"
 msgstr "تغيير كلمة المرور"
 
-#: ../widgets/gtk+.xml.in.h:93
+#: ../widgets/gtk+.xml.in.h:99
 #, fuzzy
 msgid "Font Button"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:94
+#: ../widgets/gtk+.xml.in.h:100
 #, fuzzy
 msgid "Font Selection"
 msgstr "الخط المنتقى"
 
-#: ../widgets/gtk+.xml.in.h:95
+#: ../widgets/gtk+.xml.in.h:101
 #, fuzzy
 msgid "Font Selection Dialog"
 msgstr "عنوان حوار انتقاء الخطوط"
 
-#: ../widgets/gtk+.xml.in.h:96
+#: ../widgets/gtk+.xml.in.h:102
 #, fuzzy
 msgid "Frame"
 msgstr "إطار"
 
-#: ../widgets/gtk+.xml.in.h:97
+#: ../widgets/gtk+.xml.in.h:103
 #, fuzzy
 msgid "Free"
 msgstr "متوفّر"
 
-#: ../widgets/gtk+.xml.in.h:98
+#: ../widgets/gtk+.xml.in.h:104
 #, fuzzy
 msgid "Gamma Curve"
 msgstr "نوع المنحنى"
 
-#: ../widgets/gtk+.xml.in.h:99
-#, fuzzy
-msgid "Group"
-msgstr "مجموعة"
-
-#: ../widgets/gtk+.xml.in.h:100
+#: ../widgets/gtk+.xml.in.h:105
 #, fuzzy
 msgid "Gtk+ Obsolete"
 msgstr "خيارات GTK+"
 
-#: ../widgets/gtk+.xml.in.h:101
+#: ../widgets/gtk+.xml.in.h:106
 #, fuzzy
 msgid "Half"
 msgstr "علامة نصفية مجمعة"
 
-#: ../widgets/gtk+.xml.in.h:102
+#: ../widgets/gtk+.xml.in.h:107
 #, fuzzy
 msgid "Handle Box"
 msgstr "_صندوق البريد:"
 
-#: ../widgets/gtk+.xml.in.h:103
-#: ../widgets/bonobo.xml.in.h:6
+#: ../widgets/gtk+.xml.in.h:108 ../widgets/bonobo.xml.in.h:6
 #, fuzzy
 msgid "Horizontal"
 msgstr "أفقي:"
 
-#: ../widgets/gtk+.xml.in.h:104
+#: ../widgets/gtk+.xml.in.h:109
 #, fuzzy
 msgid "Horizontal Box"
 msgstr "_صندوق البريد:"
 
-#: ../widgets/gtk+.xml.in.h:105
+#: ../widgets/gtk+.xml.in.h:110
 #, fuzzy
 msgid "Horizontal Button Box"
 msgstr "رسم حدود الصناديق"
 
-#: ../widgets/gtk+.xml.in.h:106
+#: ../widgets/gtk+.xml.in.h:111
 #, fuzzy
 msgid "Horizontal Panes"
 msgstr "قلب أ_فقي"
 
-#: ../widgets/gtk+.xml.in.h:107
+#: ../widgets/gtk+.xml.in.h:112
 #, fuzzy
 msgid "Horizontal Ruler"
 msgstr "قلب أ_فقي"
 
-#: ../widgets/gtk+.xml.in.h:108
+#: ../widgets/gtk+.xml.in.h:113
 #, fuzzy
 msgid "Horizontal Scale"
 msgstr "قياس أفقي"
 
-#: ../widgets/gtk+.xml.in.h:109
+#: ../widgets/gtk+.xml.in.h:114
 #, fuzzy
 msgid "Horizontal Scrollbar"
 msgstr "سياسة عمود اللف الأفقي"
 
-#: ../widgets/gtk+.xml.in.h:110
+#: ../widgets/gtk+.xml.in.h:115
 #, fuzzy
 msgid "Horizontal Separator"
 msgstr "العرض الأفقي للفاصل"
 
-#: ../widgets/gtk+.xml.in.h:111
+#: ../widgets/gtk+.xml.in.h:116
 #, fuzzy
 msgid "Horizontal and Vertical"
 msgstr "شبكة رسم عموديّة"
 
-#: ../widgets/gtk+.xml.in.h:112
+#: ../widgets/gtk+.xml.in.h:117
 #, fuzzy
 msgid "Icon Name"
 msgstr "اسم تيمة الأيقونات"
 
-#: ../widgets/gtk+.xml.in.h:113
+#: ../widgets/gtk+.xml.in.h:118
 #, fuzzy
 msgid "Icon View"
 msgstr "مشهد الأيقونات"
 
-#: ../widgets/gtk+.xml.in.h:114
+#: ../widgets/gtk+.xml.in.h:119
 #, fuzzy
 msgid "Icons"
 msgstr "أيقونات"
 
-#: ../widgets/gtk+.xml.in.h:115
+#: ../widgets/gtk+.xml.in.h:120
 #, fuzzy
 msgid "If Valid"
 msgstr "توقيع سليم"
 
-#: ../widgets/gtk+.xml.in.h:117
+#: ../widgets/gtk+.xml.in.h:122
 #, fuzzy
 msgid "Image Menu Item"
 msgstr "خصائص عنصر القائمة"
 
-#: ../widgets/gtk+.xml.in.h:118
+#: ../widgets/gtk+.xml.in.h:123
 #, fuzzy
 msgid "Image Type"
 msgstr "نوع الصورة:"
 
-#: ../widgets/gtk+.xml.in.h:119
+#: ../widgets/gtk+.xml.in.h:124
 msgid "Immediate"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:120
-#: ../widgets/bonobo.xml.in.h:7
+#: ../widgets/gtk+.xml.in.h:125 ../widgets/bonobo.xml.in.h:7
 #, fuzzy
 msgid "In"
 msgstr "داخل"
 
-#: ../widgets/gtk+.xml.in.h:122
+#: ../widgets/gtk+.xml.in.h:127
 #, fuzzy
 msgid "Input Dialog"
 msgstr "غلق الحوار"
 
-#: ../widgets/gtk+.xml.in.h:123
+#: ../widgets/gtk+.xml.in.h:128
+#, fuzzy
+msgid "Intro"
+msgstr "عدد صحيح"
+
+#: ../widgets/gtk+.xml.in.h:129
 #, fuzzy
 msgid "Items"
 msgstr "عناصر"
 
-#: ../widgets/gtk+.xml.in.h:124
+#: ../widgets/gtk+.xml.in.h:130
 #, fuzzy
 msgid "Key Press"
 msgstr "<اضغط مفتاحاً>"
 
-#: ../widgets/gtk+.xml.in.h:125
+#: ../widgets/gtk+.xml.in.h:131
 #, fuzzy
 msgid "Key Release"
 msgstr "اتفاق على المفتاح"
 
-#: ../widgets/gtk+.xml.in.h:127
+#: ../widgets/gtk+.xml.in.h:133
 #, fuzzy
 msgid "Layout"
 msgstr "التصميم"
 
-#: ../widgets/gtk+.xml.in.h:128
+#: ../widgets/gtk+.xml.in.h:134
+msgid "Least Recently Used first"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:135
 #, fuzzy
 msgid "Leave Notify"
 msgstr "الخروج من نمط ملئ الشاشة"
 
-#: ../widgets/gtk+.xml.in.h:129
-#: ../widgets/bonobo.xml.in.h:8
+#: ../widgets/gtk+.xml.in.h:136 ../widgets/bonobo.xml.in.h:8
 #, fuzzy
 msgid "Left"
 msgstr "اليسار"
 
-#: ../widgets/gtk+.xml.in.h:130
+#: ../widgets/gtk+.xml.in.h:137
 #, fuzzy
 msgid "Left to Right"
 msgstr "من اليسار إلى اليمين"
 
-#: ../widgets/gtk+.xml.in.h:131
+#: ../widgets/gtk+.xml.in.h:138
 #, fuzzy
 msgid "Linear"
 msgstr "خطي ب"
 
-#: ../widgets/gtk+.xml.in.h:132
+#: ../widgets/gtk+.xml.in.h:139
+#, fuzzy
+msgid "Link Button"
+msgstr "زر تدوير"
+
+#: ../widgets/gtk+.xml.in.h:140
 #, fuzzy
 msgid "List"
 msgstr "قائمة"
 
-#: ../widgets/gtk+.xml.in.h:133
+#: ../widgets/gtk+.xml.in.h:141
 #, fuzzy
 msgid "List Item"
 msgstr "جرد العناصر"
 
-#: ../widgets/gtk+.xml.in.h:134
+#: ../widgets/gtk+.xml.in.h:142
 #, fuzzy
 msgid "Maximun Width"
 msgstr "_عرض ثابت:"
 
-#: ../widgets/gtk+.xml.in.h:136
+#: ../widgets/gtk+.xml.in.h:144
 #, fuzzy
 msgid "Menu Bar"
 msgstr "شريط القائمة"
 
-#: ../widgets/gtk+.xml.in.h:137
+#: ../widgets/gtk+.xml.in.h:145
 #, fuzzy
 msgid "Menu Item"
 msgstr "عنصر قائمة"
 
-#: ../widgets/gtk+.xml.in.h:138
+#: ../widgets/gtk+.xml.in.h:146
 #, fuzzy
 msgid "Menu Shell"
 msgstr "هيكل إفُليوشِن"
 
-#: ../widgets/gtk+.xml.in.h:139
+#: ../widgets/gtk+.xml.in.h:147
 #, fuzzy
 msgid "Menu Tool Button"
 msgstr "زر في اللوحة"
 
-#: ../widgets/gtk+.xml.in.h:140
+#: ../widgets/gtk+.xml.in.h:148
 #, fuzzy
 msgid "Message Dialog"
 msgstr "غلق الحوار"
 
-#: ../widgets/gtk+.xml.in.h:141
+#: ../widgets/gtk+.xml.in.h:149
 #, fuzzy
 msgid "Middle"
 msgstr "وسط"
 
-#: ../widgets/gtk+.xml.in.h:142
+#: ../widgets/gtk+.xml.in.h:150
+msgid "Most Recently Used first"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:151
 #, fuzzy
 msgid "Mouse"
 msgstr "الفأرة"
 
-#: ../widgets/gtk+.xml.in.h:143
-#: ../widgets/gnome.xml.in.h:22
+#: ../widgets/gtk+.xml.in.h:152 ../widgets/gnome.xml.in.h:22
 #, fuzzy
 msgid "Never"
 msgstr "أبداً"
 
-#: ../widgets/gtk+.xml.in.h:146
+#: ../widgets/gtk+.xml.in.h:155
 #, fuzzy
 msgid "North"
 msgstr "شمال"
 
-#: ../widgets/gtk+.xml.in.h:147
+#: ../widgets/gtk+.xml.in.h:156
 #, fuzzy
 msgid "North East"
 msgstr "شرق - شمال شرقي"
 
-#: ../widgets/gtk+.xml.in.h:148
+#: ../widgets/gtk+.xml.in.h:157
 #, fuzzy
 msgid "North West"
 msgstr "غرب - جنوب غربي"
 
-#: ../widgets/gtk+.xml.in.h:149
+#: ../widgets/gtk+.xml.in.h:158
 msgid "Notebook"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:150
+#: ../widgets/gtk+.xml.in.h:159
+#, fuzzy
+msgid "Notification"
+msgstr "موقع"
+
+#: ../widgets/gtk+.xml.in.h:160
 #, fuzzy
 msgid "Number of items"
 msgstr "_عد العناصر:"
 
-#: ../widgets/gtk+.xml.in.h:151
+#: ../widgets/gtk+.xml.in.h:161
 #, fuzzy
 msgid "Number of pages"
 msgstr "عدد الصفحات"
 
 #. Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:153
+#: ../widgets/gtk+.xml.in.h:163
 #, fuzzy
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "اسم نموذج الجسم المهيئ للاستخدام من قبل التكنولوجيا المعينة"
 
-#: ../widgets/gtk+.xml.in.h:154
+#: ../widgets/gtk+.xml.in.h:164
 #, fuzzy
 msgid "Ok"
 msgstr "موافق"
 
-#: ../widgets/gtk+.xml.in.h:155
+#: ../widgets/gtk+.xml.in.h:165
 #, fuzzy
 msgid "Ok, Cancel"
 msgstr "إلغاء الحفظ..."
 
-#: ../widgets/gtk+.xml.in.h:156
-#: ../widgets/gnome.xml.in.h:23
+#: ../widgets/gtk+.xml.in.h:166 ../widgets/gnome.xml.in.h:23
 #, fuzzy
 msgid "Open"
 msgstr "فتح"
 
-#: ../widgets/gtk+.xml.in.h:157
+#: ../widgets/gtk+.xml.in.h:167
 #, fuzzy
 msgid "Option Menu"
 msgstr "مخطط القائمة"
 
-#: ../widgets/gtk+.xml.in.h:158
-#: ../widgets/bonobo.xml.in.h:14
+#: ../widgets/gtk+.xml.in.h:168 ../widgets/bonobo.xml.in.h:14
 #, fuzzy
 msgid "Out"
 msgstr "خارج"
 
-#: ../widgets/gtk+.xml.in.h:159
+#: ../widgets/gtk+.xml.in.h:169
+#, fuzzy
+msgid "Page Setup Dialog"
+msgstr "غلق الحوار"
+
+#: ../widgets/gtk+.xml.in.h:170
 msgid "Paned"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:161
+#: ../widgets/gtk+.xml.in.h:172
 #, fuzzy
 msgid "Pointer Motion"
 msgstr "حدود الحركة"
 
-#: ../widgets/gtk+.xml.in.h:162
+#: ../widgets/gtk+.xml.in.h:173
 #, fuzzy
 msgid "Pointer Motion Hint"
 msgstr "لا تتوفّر تلميحة"
 
-#: ../widgets/gtk+.xml.in.h:163
+#: ../widgets/gtk+.xml.in.h:174
 #, fuzzy
 msgid "Popup"
 msgstr "نوافذ قافزة"
 
-#: ../widgets/gtk+.xml.in.h:164
+#: ../widgets/gtk+.xml.in.h:175
 #, fuzzy
 msgid "Popup Menu"
 msgstr "قائمة منبثقة"
 
-#: ../widgets/gtk+.xml.in.h:165
-#: ../src/glade-gnome.c:635
+#: ../widgets/gtk+.xml.in.h:176 ../src/glade-gnome.c:649
 #: ../widgets/gnome.xml.in.h:27
 #, fuzzy
 msgid "Position"
 msgstr "موقع"
 
-#: ../widgets/gtk+.xml.in.h:168
+#: ../widgets/gtk+.xml.in.h:179
+#, fuzzy
+msgid "Print Dialog"
+msgstr "غلق الحوار"
+
+#: ../widgets/gtk+.xml.in.h:180
+#, fuzzy
+msgid "Progress"
+msgstr "عمود التقدم"
+
+#: ../widgets/gtk+.xml.in.h:181
 #, fuzzy
 msgid "Progress Bar"
 msgstr "عمود التقدم"
 
-#: ../widgets/gtk+.xml.in.h:169
+#: ../widgets/gtk+.xml.in.h:182
 #, fuzzy
 msgid "Property Change"
 msgstr "تغيير كلمة المرور"
 
-#: ../widgets/gtk+.xml.in.h:170
+#: ../widgets/gtk+.xml.in.h:183
 #, fuzzy
 msgid "Proximity  Out"
 msgstr "اخرج"
 
-#: ../widgets/gtk+.xml.in.h:171
+#: ../widgets/gtk+.xml.in.h:184
 #, fuzzy
 msgid "Proximity In"
 msgstr "تكبير"
 
-#: ../widgets/gtk+.xml.in.h:172
-#: ../widgets/gnome.xml.in.h:30
+#: ../widgets/gtk+.xml.in.h:185 ../widgets/gnome.xml.in.h:30
 #, fuzzy
 msgid "Question"
 msgstr "سؤال"
 
-#: ../widgets/gtk+.xml.in.h:173
+#: ../widgets/gtk+.xml.in.h:186
 msgid "Queue"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:174
+#: ../widgets/gtk+.xml.in.h:187
 #, fuzzy
 msgid "Radio Button"
 msgstr "زر مشع"
 
-#: ../widgets/gtk+.xml.in.h:175
+#: ../widgets/gtk+.xml.in.h:188
 #, fuzzy
 msgid "Radio Menu Item"
 msgstr "عنصر قائمة مشع"
 
-#: ../widgets/gtk+.xml.in.h:176
+#: ../widgets/gtk+.xml.in.h:189
 #, fuzzy
 msgid "Radio Tool Button"
 msgstr "رسم زر التحول كزر مشع"
 
-#: ../widgets/gtk+.xml.in.h:177
+#: ../widgets/gtk+.xml.in.h:190
 #, fuzzy
 msgid "Range"
 msgstr "نطاق"
 
-#: ../widgets/gtk+.xml.in.h:180
+#: ../widgets/gtk+.xml.in.h:191
+msgid "Recent Chooser"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:192
+#, fuzzy
+msgid "Recent Chooser Dialog"
+msgstr "اعرض صندوق حوار اختيار ملف"
+
+#: ../widgets/gtk+.xml.in.h:195
 #, fuzzy
 msgid "Response ID"
 msgstr "هوية البوّاب:"
 
-#: ../widgets/gtk+.xml.in.h:181
-#: ../widgets/bonobo.xml.in.h:15
+#: ../widgets/gtk+.xml.in.h:196 ../widgets/bonobo.xml.in.h:15
 #, fuzzy
 msgid "Right"
 msgstr "اليمين"
 
-#: ../widgets/gtk+.xml.in.h:182
+#: ../widgets/gtk+.xml.in.h:197
 #, fuzzy
 msgid "Right to Left"
 msgstr "من اليمين إلى اليسار"
 
-#: ../widgets/gtk+.xml.in.h:183
+#: ../widgets/gtk+.xml.in.h:198
 #, fuzzy
 msgid "Ruler"
 msgstr "الحد الأسفل للمسطرة"
 
-#: ../widgets/gtk+.xml.in.h:184
-#: ../widgets/gnome.xml.in.h:31
+#: ../widgets/gtk+.xml.in.h:199 ../widgets/gnome.xml.in.h:31
 #, fuzzy
 msgid "Save"
 msgstr "حفظ"
 
-#: ../widgets/gtk+.xml.in.h:185
+#: ../widgets/gtk+.xml.in.h:200
 #, fuzzy
 msgid "Scale"
 msgstr "القياس"
 
-#: ../widgets/gtk+.xml.in.h:186
+#: ../widgets/gtk+.xml.in.h:201
 #, fuzzy
 msgid "Scroll"
 msgstr "الإلتفاف إلى الأعلى"
 
-#: ../widgets/gtk+.xml.in.h:187
+#: ../widgets/gtk+.xml.in.h:202
 #, fuzzy
 msgid "Scrolled Window"
 msgstr "مبدل النافذة"
 
-#: ../widgets/gtk+.xml.in.h:188
-#: ../widgets/gnome.xml.in.h:34
+#: ../widgets/gtk+.xml.in.h:203 ../widgets/gnome.xml.in.h:34
 #, fuzzy
 msgid "Select Folder"
 msgstr "انتقاء المجلّد"
 
-#: ../widgets/gtk+.xml.in.h:189
+#: ../widgets/gtk+.xml.in.h:204
 #, fuzzy
 msgid "Separator Menu Item"
 msgstr "خصائص عنصر القائمة"
 
-#: ../widgets/gtk+.xml.in.h:190
+#: ../widgets/gtk+.xml.in.h:205
 #, fuzzy
 msgid "Separator Tool Item"
 msgstr "خصائص عنصر القائمة"
 
-#: ../widgets/gtk+.xml.in.h:191
+#: ../widgets/gtk+.xml.in.h:206
 msgid "Set the current page (strictly for editing purposes)"
 msgstr ""
 
 #. Text of the textview
-#: ../widgets/gtk+.xml.in.h:201
+#: ../widgets/gtk+.xml.in.h:216
 #, fuzzy
 msgid "Set the text in the view's text buffer"
 msgstr "حدد نص خيار البحث \"Look in folder\""
 
-#: ../widgets/gtk+.xml.in.h:202
+#: ../widgets/gtk+.xml.in.h:217
 #, fuzzy
 msgid "Shrink"
 msgstr "تقليص"
 
-#: ../widgets/gtk+.xml.in.h:203
+#: ../widgets/gtk+.xml.in.h:218
+#, fuzzy
+msgid "Size"
+msgstr "محور وح_يد:"
+
+#: ../widgets/gtk+.xml.in.h:219
 #, fuzzy
 msgid "South"
 msgstr "جنوب"
 
-#: ../widgets/gtk+.xml.in.h:204
+#: ../widgets/gtk+.xml.in.h:220
 #, fuzzy
 msgid "South East"
 msgstr "شرق وجنوب شرق انكلترا"
 
-#: ../widgets/gtk+.xml.in.h:205
+#: ../widgets/gtk+.xml.in.h:221
 #, fuzzy
 msgid "South West"
 msgstr "غرب - جنوب غربي"
 
-#: ../widgets/gtk+.xml.in.h:206
+#: ../widgets/gtk+.xml.in.h:222
 #, fuzzy
 msgid "Spin Button"
 msgstr "زر تدوير"
 
-#: ../widgets/gtk+.xml.in.h:207
+#: ../widgets/gtk+.xml.in.h:223
 #, fuzzy
 msgid "Splash Screen"
 msgstr "إظهار شاشة الترحيب"
 
-#: ../widgets/gtk+.xml.in.h:208
+#: ../widgets/gtk+.xml.in.h:224
 msgid "Spline"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:209
+#: ../widgets/gtk+.xml.in.h:225
 #, fuzzy
 msgid "Spread"
 msgstr "خلية جدول"
 
-#: ../widgets/gtk+.xml.in.h:210
-#: ../widgets/gnome.xml.in.h:36
+#: ../widgets/gtk+.xml.in.h:226 ../widgets/gnome.xml.in.h:36
 #, fuzzy
 msgid "Start"
 msgstr "إبدأ"
 
-#: ../widgets/gtk+.xml.in.h:211
+#: ../widgets/gtk+.xml.in.h:227
 msgid "Static"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:212
+#: ../widgets/gtk+.xml.in.h:228
 #, fuzzy
 msgid "Status Bar"
 msgstr "عمود حالة"
 
-#: ../widgets/gtk+.xml.in.h:213
+#: ../widgets/gtk+.xml.in.h:229
 #, fuzzy
 msgid "Stock Button"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:215
+#: ../widgets/gtk+.xml.in.h:231
 #, fuzzy
 msgid "Stock Item"
 msgstr "عنصر _جديد"
 
-#: ../widgets/gtk+.xml.in.h:216
+#: ../widgets/gtk+.xml.in.h:232
 msgid "Structure"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:217
+#: ../widgets/gtk+.xml.in.h:233
 msgid "Substructure"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:218
+#: ../widgets/gtk+.xml.in.h:234
+msgid "Summary"
+msgstr ""
+
+#: ../widgets/gtk+.xml.in.h:235
 #, fuzzy
 msgid "Table"
 msgstr "جدول"
 
 #. Text of the textview
-#: ../widgets/gtk+.xml.in.h:220
-#: ../widgets/gnome.xml.in.h:39
+#: ../widgets/gtk+.xml.in.h:237 ../widgets/gnome.xml.in.h:39
 #, fuzzy
 msgid "Text"
 msgstr "النّص"
 
-#: ../widgets/gtk+.xml.in.h:221
+#: ../widgets/gtk+.xml.in.h:238
 #, fuzzy
 msgid "Text Entry"
 msgstr "ادخال كتابة تنبئيا"
 
-#: ../widgets/gtk+.xml.in.h:222
+#: ../widgets/gtk+.xml.in.h:239
 #, fuzzy
 msgid "Text View"
 msgstr "عرض النَّص"
 
-#: ../widgets/gtk+.xml.in.h:223
+#: ../widgets/gtk+.xml.in.h:240
 #, fuzzy
 msgid "The items in this combo box"
 msgstr "انتقي جميع العناصر في هذه النافذة"
 
-#: ../widgets/gtk+.xml.in.h:224
+#: ../widgets/gtk+.xml.in.h:241
 #, fuzzy
 msgid "The number of items in the box"
 msgstr "لا عناصر في التاريخ"
 
-#: ../widgets/gtk+.xml.in.h:225
+#: ../widgets/gtk+.xml.in.h:242
 #, fuzzy
 msgid "The number of pages in the notebook"
 msgstr "مجموع الصفحات في المستند"
 
-#: ../widgets/gtk+.xml.in.h:226
+#: ../widgets/gtk+.xml.in.h:243
+#, fuzzy
+msgid "The page position in the Assistant"
+msgstr "نوع الشبكة المحددة باستخدام المساعد"
+
+#: ../widgets/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:227
+#: ../widgets/gtk+.xml.in.h:245
 msgid "The position of the tool item in the toolbar"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:228
-msgid "The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)"
+#: ../widgets/gtk+.xml.in.h:246
+msgid ""
+"The response ID of this button in a dialog (it's NOT useful if this button "
+"is not in a GtkDialog)"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:229
+#: ../widgets/gtk+.xml.in.h:247
 #, fuzzy
 msgid "The stock item for this button"
 msgstr "انقر هذا الزر لعرض قائمة للأوامر السابقة"
 
-#: ../widgets/gtk+.xml.in.h:230
+#: ../widgets/gtk+.xml.in.h:248
 #, fuzzy
 msgid "The stock item for this image"
 msgstr "هوية المخزون لصورة مخزون للعرض"
 
-#: ../widgets/gtk+.xml.in.h:231
+#: ../widgets/gtk+.xml.in.h:249
 #, fuzzy
 msgid "The text of the menu item"
 msgstr "خصائص عنصر القائمة"
 
-#: ../widgets/gtk+.xml.in.h:232
+#: ../widgets/gtk+.xml.in.h:250
 #, fuzzy
 msgid "The text to display"
 msgstr "نص العرض"
 
-#: ../widgets/gtk+.xml.in.h:233
+#: ../widgets/gtk+.xml.in.h:251
 #, fuzzy
 msgid "Toggle Button"
 msgstr "زر تحول"
 
-#: ../widgets/gtk+.xml.in.h:234
+#: ../widgets/gtk+.xml.in.h:252
 #, fuzzy
 msgid "Toggle Tool Button"
 msgstr "حالة التحول للزر"
 
-#: ../widgets/gtk+.xml.in.h:235
+#: ../widgets/gtk+.xml.in.h:253
 #, fuzzy
 msgid "Tool Bar"
 msgstr "عمود أدوات"
 
-#: ../widgets/gtk+.xml.in.h:236
+#: ../widgets/gtk+.xml.in.h:254
 #, fuzzy
 msgid "Tool Button"
 msgstr "رسم الزّر"
 
-#: ../widgets/gtk+.xml.in.h:237
+#: ../widgets/gtk+.xml.in.h:255
 #, fuzzy
 msgid "Toolbar"
 msgstr "شريط الأ_دوات"
 
-#: ../widgets/gtk+.xml.in.h:238
+#: ../widgets/gtk+.xml.in.h:256
 #, fuzzy
 msgid "Tooltip"
 msgstr "التّلميحة"
 
-#: ../widgets/gtk+.xml.in.h:239
-#: ../widgets/bonobo.xml.in.h:16
+#: ../widgets/gtk+.xml.in.h:257 ../widgets/bonobo.xml.in.h:16
 #, fuzzy
 msgid "Top"
 msgstr "الأعلى"
 
-#: ../widgets/gtk+.xml.in.h:240
+#: ../widgets/gtk+.xml.in.h:258
 #, fuzzy
 msgid "Top Left"
 msgstr "الإلتفاف إلى جهة اليسار"
 
-#: ../widgets/gtk+.xml.in.h:241
+#: ../widgets/gtk+.xml.in.h:259
 #, fuzzy
 msgid "Top Level"
 msgstr "مستوى واحد"
 
-#: ../widgets/gtk+.xml.in.h:242
+#: ../widgets/gtk+.xml.in.h:260
 #, fuzzy
 msgid "Top Right"
 msgstr "الإلتفاف إلى جهة اليمين"
 
-#: ../widgets/gtk+.xml.in.h:243
+#: ../widgets/gtk+.xml.in.h:261
 #, fuzzy
 msgid "Top to Bottom"
 msgstr "من الأسفل إلى الأعلى"
 
-#: ../widgets/gtk+.xml.in.h:244
+#: ../widgets/gtk+.xml.in.h:262
 msgid "Toplevels"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:245
+#: ../widgets/gtk+.xml.in.h:263
 #, fuzzy
 msgid "Tree View"
 msgstr "مشهد شجرة GTK"
 
-#: ../widgets/gtk+.xml.in.h:246
+#: ../widgets/gtk+.xml.in.h:264
 #, fuzzy
 msgid "Up"
 msgstr "أعلى"
 
-#: ../widgets/gtk+.xml.in.h:247
+#: ../widgets/gtk+.xml.in.h:265
 #, fuzzy
 msgid "Use Underline"
 msgstr "استخدام التسطير"
 
-#: ../widgets/gtk+.xml.in.h:248
+#: ../widgets/gtk+.xml.in.h:266
 #, fuzzy
 msgid "Utility"
 msgstr "/نوافذ/أ_دات"
 
-#: ../widgets/gtk+.xml.in.h:249
-#: ../widgets/bonobo.xml.in.h:17
+#: ../widgets/gtk+.xml.in.h:267 ../widgets/bonobo.xml.in.h:17
 #, fuzzy
 msgid "Vertical"
 msgstr "رأسي:"
 
-#: ../widgets/gtk+.xml.in.h:250
+#: ../widgets/gtk+.xml.in.h:268
 #, fuzzy
 msgid "Vertical Box"
 msgstr "_صندوق البريد:"
 
-#: ../widgets/gtk+.xml.in.h:251
+#: ../widgets/gtk+.xml.in.h:269
 #, fuzzy
 msgid "Vertical Button Box"
 msgstr "رسم حدود الصناديق"
 
-#: ../widgets/gtk+.xml.in.h:252
+#: ../widgets/gtk+.xml.in.h:270
 #, fuzzy
 msgid "Vertical Panes"
 msgstr "قلب _عمودي"
 
-#: ../widgets/gtk+.xml.in.h:253
+#: ../widgets/gtk+.xml.in.h:271
 #, fuzzy
 msgid "Vertical Ruler"
 msgstr "قلب _عمودي"
 
-#: ../widgets/gtk+.xml.in.h:254
+#: ../widgets/gtk+.xml.in.h:272
 #, fuzzy
 msgid "Vertical Scale"
 msgstr "قياس عمودي"
 
-#: ../widgets/gtk+.xml.in.h:255
+#: ../widgets/gtk+.xml.in.h:273
 #, fuzzy
 msgid "Vertical Scrollbar"
 msgstr "سياسة عمود التدرج العمودي"
 
-#: ../widgets/gtk+.xml.in.h:256
+#: ../widgets/gtk+.xml.in.h:274
 #, fuzzy
 msgid "Vertical Separator"
 msgstr "العرض العمودي للفاصل"
 
-#: ../widgets/gtk+.xml.in.h:257
+#: ../widgets/gtk+.xml.in.h:275
 #, fuzzy
 msgid "Viewport"
 msgstr "منفذ عرض"
 
-#: ../widgets/gtk+.xml.in.h:258
+#: ../widgets/gtk+.xml.in.h:276
 #, fuzzy
 msgid "Visibility Notify"
 msgstr "نوع التّبليغ ببريدٍ جديد"
 
-#: ../widgets/gtk+.xml.in.h:259
-#: ../widgets/gnome.xml.in.h:53
+#: ../widgets/gtk+.xml.in.h:277 ../widgets/gnome.xml.in.h:53
 #, fuzzy
 msgid "Warning"
 msgstr "تحذير"
 
-#: ../widgets/gtk+.xml.in.h:260
+#: ../widgets/gtk+.xml.in.h:278
 #, fuzzy
 msgid "West"
 msgstr "غرب"
 
-#: ../widgets/gtk+.xml.in.h:262
+#: ../widgets/gtk+.xml.in.h:280
 #, fuzzy
 msgid "Window"
 msgstr "نافذة"
 
-#: ../widgets/gtk+.xml.in.h:263
+#: ../widgets/gtk+.xml.in.h:281
 #, fuzzy
 msgid "Word"
 msgstr "كلمة"
 
-#: ../widgets/gtk+.xml.in.h:264
+#: ../widgets/gtk+.xml.in.h:282
 #, fuzzy
 msgid "Word Character"
 msgstr "تشفيرة الرموز"
 
-#: ../widgets/gtk+.xml.in.h:265
+#: ../widgets/gtk+.xml.in.h:283
 #, fuzzy
 msgid "Yes, No"
 msgstr "ن = نعم أو ل = لا؟ >"
 
-#: ../widgets/gtk+.xml.in.h:266
-msgid "You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation"
+#: ../widgets/gtk+.xml.in.h:284
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
 msgstr ""
 
-#: ../src/glade-gnome.c:287
+#: ../src/glade-gnome.c:292
 #, fuzzy
 msgid "Status Message."
 msgstr "إر_سال رسالة"
 
-#: ../src/glade-gnome.c:636
+#: ../src/glade-gnome.c:650
 #, fuzzy
 msgid "The position in the druid"
 msgstr "نوع الشبكة المحددة باستخدام المساعد"
 
-#: ../src/glade-gnome.c:1067
+#: ../src/glade-gnome.c:1002
 #, fuzzy
 msgid "Message box type"
 msgstr "نوع جهاز الخرج"
 
-#: ../src/glade-gnome.c:1068
+#: ../src/glade-gnome.c:1003
 #, fuzzy
 msgid "The type of the message box"
 msgstr "رسم حدود الصناديق"
 
-#: ../src/glade-gnome.c:1257
+#: ../src/glade-gnome.c:1219
 msgid "This property is valid only in font information mode"
 msgstr ""
 
-#: ../src/glade-gnome.c:1321
-#: ../widgets/canvas.xml.in.h:13
+#: ../src/glade-gnome.c:1307 ../widgets/canvas.xml.in.h:14
 #, fuzzy
 msgid "Selection Mode"
 msgstr "نمط الانتقاء"
 
-#: ../src/glade-gnome.c:1322
+#: ../src/glade-gnome.c:1308
 #, fuzzy
 msgid "Choose the Selection Mode"
 msgstr "نمط اختيار شاشة العرض."
 
-#: ../src/glade-gnome.c:1479
+#: ../src/glade-gnome.c:1458
 #, fuzzy
 msgid "Placement"
 msgstr "<b>وضعية المكبّر</b>"
 
-#: ../src/glade-gnome.c:1480
+#: ../src/glade-gnome.c:1459
 #, fuzzy
 msgid "Choose the BonoboDockPlacement type"
 msgstr "اختر نوع القرص"
 
-#: ../src/glade-gnome.c:1508
+#: ../src/glade-gnome.c:1487
 #, fuzzy
 msgid "Behavior"
 msgstr "السلوك"
 
-#: ../src/glade-gnome.c:1509
+#: ../src/glade-gnome.c:1488
 #, fuzzy
 msgid "Choose the BonoboDockItemBehavior type"
 msgstr "اختر نوع القرص"
 
-#: ../src/glade-gnome.c:1518
+#: ../src/glade-gnome.c:1497
 #, fuzzy
 msgid "Pack Type"
 msgstr "نوع التحزيم"
 
-#: ../src/glade-gnome.c:1519
+#: ../src/glade-gnome.c:1498
 #, fuzzy
 msgid "Choose the Pack Type"
 msgstr "نوع حزم الألسنة"
@@ -3461,11 +3613,6 @@ msgstr "لا يوجد ملف البكسمب '%s'"
 msgid "The width to scale the pixmap to"
 msgstr "فشل تلقي البكسماب %s"
 
-#: ../widgets/gnome.xml.in.h:45
-#, fuzzy
-msgid "Title"
-msgstr "العنوان"
-
 #: ../widgets/gnome.xml.in.h:46
 #, fuzzy
 msgid "Title Foreground Color"
@@ -3487,7 +3634,10 @@ msgid "Use Alpha"
 msgstr "استخدام الشفافية (قنات ألفا)"
 
 #: ../widgets/gnome.xml.in.h:50
-msgid "Used to pass around information about the position of a GnomeDruidPage within the overall GnomeDruid. This enables the correct \"surrounding\" content for the page to be drawn"
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
 msgstr ""
 
 #: ../widgets/gnome.xml.in.h:51
@@ -3559,7 +3709,9 @@ msgid "If the icon text can be edited by the user"
 msgstr ""
 
 #: ../widgets/canvas.xml.in.h:6
-msgid "If the icon text is static, in which case it will not be copied by the GnomeIconList"
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
 msgstr ""
 
 #: ../widgets/canvas.xml.in.h:7
@@ -3588,76 +3740,135 @@ msgid "Multiple"
 msgstr "متعدد"
 
 #: ../widgets/canvas.xml.in.h:12
+msgid "Pixels per unit"
+msgstr ""
+
+#: ../widgets/canvas.xml.in.h:13
 #, fuzzy
 msgid "Row Spacing"
 msgstr "فراغات السطور"
 
-#: ../widgets/canvas.xml.in.h:14
+#: ../widgets/canvas.xml.in.h:15
 #, fuzzy
 msgid "Single"
 msgstr "محور وح_يد:"
 
-#: ../widgets/canvas.xml.in.h:15
+#: ../widgets/canvas.xml.in.h:16
 #, fuzzy
 msgid "Text Editable"
 msgstr "نص العلامة."
 
-#: ../widgets/canvas.xml.in.h:16
+#: ../widgets/canvas.xml.in.h:17
 #, fuzzy
 msgid "Text Spacing"
 msgstr "تَبَاعُد المؤشر"
 
-#: ../widgets/canvas.xml.in.h:17
+#: ../widgets/canvas.xml.in.h:18
 #, fuzzy
 msgid "Text Static"
 msgstr "نص العلامة."
 
-#: ../widgets/canvas.xml.in.h:18
+#: ../widgets/canvas.xml.in.h:19
 #, fuzzy
 msgid "The maximum x coordinate"
 msgstr "أظهر احداثي س"
 
-#: ../widgets/canvas.xml.in.h:19
+#: ../widgets/canvas.xml.in.h:20
 #, fuzzy
 msgid "The maximum y coordinate"
 msgstr "أظهر احداثي س"
 
-#: ../widgets/canvas.xml.in.h:20
+#: ../widgets/canvas.xml.in.h:21
 #, fuzzy
 msgid "The minimum x coordinate"
 msgstr "أظهر احداثي س"
 
-#: ../widgets/canvas.xml.in.h:21
+#: ../widgets/canvas.xml.in.h:22
 #, fuzzy
 msgid "The minimum y coordinate"
 msgstr "أظهر احداثي س"
 
-#: ../widgets/canvas.xml.in.h:22
+#: ../widgets/canvas.xml.in.h:23
 #, fuzzy
 msgid "The number of pixels between columns of icons"
 msgstr "عدد البكسلات بين أعمدة اللف و النافذة الملفوفة"
 
-#: ../widgets/canvas.xml.in.h:23
+#: ../widgets/canvas.xml.in.h:24
 #, fuzzy
 msgid "The number of pixels between rows of icons"
 msgstr "عدد البكسلات بين أعمدة اللف و النافذة الملفوفة"
 
-#: ../widgets/canvas.xml.in.h:24
+#: ../widgets/canvas.xml.in.h:25
 #, fuzzy
 msgid "The number of pixels between the text and the icon"
 msgstr "عدد البكسلات بين أعمدة اللف و النافذة الملفوفة"
 
-#: ../widgets/canvas.xml.in.h:25
+#: ../widgets/canvas.xml.in.h:26
 msgid "The number of pixels corresponding to one unit"
 msgstr ""
 
-#: ../widgets/canvas.xml.in.h:26
+#: ../widgets/canvas.xml.in.h:27
 #, fuzzy
 msgid "The selection mode"
 msgstr "نمط الانتقاء"
 
-#: ../widgets/canvas.xml.in.h:27
+#: ../widgets/canvas.xml.in.h:28
 #, fuzzy
 msgid "The width of each icon"
 msgstr "عرض الأيقونة صفر"
 
+#, fuzzy
+#~ msgid "[read-only]"
+#~ msgstr "[للقراءة فقط]"
+
+#, fuzzy
+#~ msgid "Save as…"
+#~ msgstr "حفظ كـ..."
+
+#, fuzzy
+#~ msgid "Save ..."
+#~ msgstr "حفظ"
+
+#, fuzzy
+#~ msgid "E_xpand all"
+#~ msgstr "نسخ ال_كل"
+
+#, fuzzy
+#~ msgid "_Collapse all"
+#~ msgstr "إنهيار الكل"
+
+#, fuzzy
+#~ msgid "Clear Recent Projects"
+#~ msgstr " مسح المستندات الأخيرة"
+
+#, fuzzy
+#~ msgid "Shows the About Dialog"
+#~ msgstr "استخدم صناديق الحوار"
+
+#, fuzzy
+#~ msgid "_Documentation"
+#~ msgstr "التو_ثيق:"
+
+#, fuzzy
+#~ msgid "Documentation about Glade"
+#~ msgstr "حول هذا التّطبيق"
+
+#, fuzzy
+#~ msgid "Property _Editor"
+#~ msgstr "بيانات جسم محرّر الخاصيات"
+
+#, fuzzy
+#~ msgid "Show the property editor"
+#~ msgstr "بيانات جسم محرّر الخاصيات"
+
+#, fuzzy
+#~ msgid "_Palette"
+#~ msgstr "ال_لوحة:"
+
+#, fuzzy
+#~ msgid "Show the palette of widgets"
+#~ msgstr "تفضيلات لوحة الرموز"
+
+#, fuzzy
+#~ msgid "Group"
+#~ msgstr "مجموعة"
