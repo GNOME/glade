@@ -1,3 +1,26 @@
+2007-01-17  Christian Persch  <chpe@svn.gnome.org>
+
+	* src/glade-accumulators.c:
+	* src/glade-base-editor.c:
+	* src/glade-binding.c:
+	* src/glade-clipboard.c:
+	* src/glade-cursor.c:
+	* src/glade-debug.c:
+	* src/glade-design-layout.c:
+	* src/glade-design-view.c:
+	* src/glade-gnome.c:
+	* src/glade-id-allocator.c:
+	* src/glade-palette-box.c:
+	* src/glade-palette-expander.c:
+	* src/glade-palette-item.c:
+	* src/glade-parameter.c:
+	* src/glade-placeholder.c:
+	* src/glade-signal.c:
+	* src/glade-xml-utils.c: Include config.h.
+
+        * src/glade-app.c: (glade_app_init): Bind the gettext domain. Bug
+	#397429.
+
 2007-01-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-devhelp.[ch]: removed obsolete files.

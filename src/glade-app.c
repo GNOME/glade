@@ -323,7 +323,10 @@ glade_app_init (GladeApp *app)
 		glade_icon_dir = g_build_filename (prefix, "share", "pixmaps", NULL);
 		g_free (prefix);
 #endif
-	
+
+		bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
+		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
 		glade_cursor_init ();
 		
 		glade_binding_load_all ();

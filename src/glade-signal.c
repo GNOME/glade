@@ -21,7 +21,11 @@
  *   Paolo Borelli <pborelli@katamail.com>
  */
 
+#include "config.h"
+
 #include <string.h>
+
+#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-signal.h"

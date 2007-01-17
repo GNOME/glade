@@ -22,6 +22,8 @@
  *
  */
 
+#include "config.h"
+
 #include "glade-design-layout.h"
 #include "glade.h"
 

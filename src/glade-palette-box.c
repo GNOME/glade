@@ -24,6 +24,8 @@
  *
  */
 
+#include "config.h"
+
 #include "glade-palette-box.h"
 
 

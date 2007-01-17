@@ -28,6 +28,8 @@
  *      
  */
 
+#include "config.h"
+
 #include "glade-palette-expander.h"
 
 #include <gtk/gtkexpander.h>

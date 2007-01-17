@@ -20,6 +20,8 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
+#include "config.h"
+
 #include "glade.h"
 #include "glade-editor-property.h"
 #include <libbonoboui.h>

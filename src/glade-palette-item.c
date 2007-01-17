@@ -24,6 +24,8 @@
  *
  */
 
+#include "config.h"
+
 #include <gtk/gtkalignment.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtklabel.h>

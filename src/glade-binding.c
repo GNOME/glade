@@ -24,6 +24,8 @@
 #include <config.h>
 #endif
 
+#include <glib/gi18n-lib.h>
+
 #include "glade.h"
 #include "glade-binding.h"
 #include <string.h>

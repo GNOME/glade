@@ -23,6 +23,9 @@
  * USA.
  */
 
+#include "config.h"
+
+#include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-clipboard-view.h"
 #include "glade-clipboard.h"

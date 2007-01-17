@@ -20,6 +20,8 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include "config.h"
+
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
 

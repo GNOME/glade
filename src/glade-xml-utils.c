@@ -8,6 +8,8 @@
  *   Chema Celorio <chema@gnome.org>
  */
 
+#include "config.h"
+
 #include <string.h>
 #include <glib.h>
 #include <errno.h>

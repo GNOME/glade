@@ -20,6 +20,7 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
+#include "config.h"
 
 #include "glade-app.h"
 #include "glade-palette.h"

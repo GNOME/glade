@@ -20,6 +20,7 @@
  *   Owen Taylor  <otaylor@redhat.com>
  */
 
+#include "config.h"
 
 #include <glib.h>
 #include <string.h>

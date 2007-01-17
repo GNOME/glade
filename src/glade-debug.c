@@ -20,6 +20,8 @@
  *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
  */
 
+#include "config.h"
+
 #include "glade.h"
 #include "glade-debug.h"
 
