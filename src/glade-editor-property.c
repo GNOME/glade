@@ -1110,29 +1110,46 @@ static void
 glade_eprop_flags_show_dialog (GtkWidget           *button,
 			       GladeEditorProperty *eprop)
 {
-	GtkWidget *editor;
 	GtkWidget *dialog;
-	GtkWidget *swindow;
-	guint      response_id ;
+	GtkWidget *view;
+	GtkWidget *label;
+	GtkWidget *vbox;
 
-	editor = gtk_widget_get_toplevel (button);
-	dialog = gtk_dialog_new_with_buttons (_("Set Flags"),
-					      GTK_WINDOW (editor),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-					      GTK_STOCK_CANCEL,
-					      GTK_RESPONSE_CANCEL,
-					      GTK_STOCK_OK,
-					      GTK_RESPONSE_OK,
+	dialog = gtk_dialog_new_with_buttons (_("Select Fields"),
+					      GTK_WINDOW (gtk_widget_get_toplevel (button)),
+					      GTK_DIALOG_MODAL,
+					      GTK_STOCK_CLOSE,
+					      GTK_RESPONSE_CLOSE,
 					      NULL);
+					      
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
 
-	swindow = glade_eprop_flags_create_treeview (eprop);
-	gtk_container_set_border_width (GTK_CONTAINER (swindow),
-					GLADE_GENERIC_BORDER_WIDTH);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    swindow, TRUE, TRUE, 0);
-	response_id = gtk_dialog_run (GTK_DIALOG (dialog));
+	/* HIG spacings */
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
 
+	vbox = gtk_vbox_new (FALSE, 6);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+
+	view = glade_eprop_flags_create_treeview (eprop);
+	
+	label = gtk_label_new_with_mnemonic (_("_Select individual fields:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), gtk_bin_get_child (GTK_BIN (view)));
+
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);	
+	gtk_box_pack_start (GTK_BOX (vbox), view, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+
+	gtk_widget_show (label);
+	gtk_widget_show (view);
+	gtk_widget_show (vbox);			    
+			    
+	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
 }
 
@@ -1434,11 +1451,11 @@ static void
 glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 				   GladeEditorProperty *eprop)
 {
-	GtkWidget     *editor;
 	GtkWidget     *dialog;
 	GtkWidget     *vbox, *hbox;
 	GtkWidget     *label;
 	GtkWidget     *sw;
+	GtkWidget     *alignment;
 	GtkWidget     *text_view, *comment_view;
 	GtkTextBuffer *text_buffer, *comment_buffer;
 	GtkWidget     *translatable_button, *context_button;
@@ -1447,21 +1464,30 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	gchar         *str;
 	GParamSpec    *pspec;
 
-	
-	editor = gtk_widget_get_toplevel (entry);
-	dialog = gtk_dialog_new_with_buttons (_("Edit Text Property"),
-					      GTK_WINDOW (editor),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+	dialog = gtk_dialog_new_with_buttons (_("Edit Text"),
+					      GTK_WINDOW (gtk_widget_get_toplevel (entry)),
+					      GTK_DIALOG_MODAL,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+						 GTK_RESPONSE_OK,
+						 GTK_RESPONSE_CANCEL);
+
+	/* HIG spacings */
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+
 
 	vbox = gtk_vbox_new (FALSE, 6);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
 	gtk_widget_show (vbox);
-
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
@@ -1515,7 +1541,7 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 		glade_util_widget_set_tooltip (translatable_button,
 					       g_param_spec_get_blurb (pspec));
 
-	context_button = gtk_check_button_new_with_mnemonic (_("Has context _prefix"));
+	context_button = gtk_check_button_new_with_mnemonic (_("_Has context prefix"));
 	gtk_widget_show (context_button);
 	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button),
@@ -1528,11 +1554,16 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 		glade_util_widget_set_tooltip (context_button,
 					       g_param_spec_get_blurb (pspec));
 
+	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 0, 0, 0);
+	gtk_widget_show (alignment);
+
 	/* Comments. */
 	label = gtk_label_new_with_mnemonic (_("Co_mments for translators:"));
 	gtk_widget_show (label);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (alignment), label);
+	gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (sw);
@@ -1542,6 +1573,7 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
 	comment_view = gtk_text_view_new ();
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (comment_view), GTK_WRAP_WORD);
 	gtk_widget_show (comment_view);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), comment_view);
@@ -2378,26 +2410,38 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
-
 	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (parent),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_DIALOG_MODAL,
 					      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 	g_free (title);
+	
+	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+						 GTK_RESPONSE_OK,
+						 GTK_RESPONSE_CANCEL,
+						 GLADE_RESPONSE_CLEAR);
+	
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+	/* HIG settings */
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
 
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
 	/* Checklist */
-	label = gtk_label_new (_("Objects:"));
+	label = gtk_label_new_with_mnemonic (_("O_bjects:"));
 	gtk_widget_show (label);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -2419,6 +2463,9 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 
 	gtk_widget_show (tree_view);
 	gtk_container_add (GTK_CONTAINER (sw), tree_view);
+	
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), tree_view);
+	
 	
 	/* Run the dialog */
 	res = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -2452,6 +2499,7 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 		g_value_unset (value);
 		g_free (value);
 	}
+	
 	gtk_widget_destroy (dialog);
 }
 

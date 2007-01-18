@@ -42,7 +42,7 @@
 
 #define READONLY_INDICATOR (_("[Read Only]"))
 
-#define GLADE_URL_USER_MANUAL      "http://glade.gnome.org/doc/manual"
+#define GLADE_URL_USER_MANUAL      "http://glade.gnome.org/manual/index.html"
 #define GLADE_URL_DEVELOPER_MANUAL "http://glade.gnome.org/docs/index.html"
 
 #define GLADE_PROJECT_WINDOW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),  \

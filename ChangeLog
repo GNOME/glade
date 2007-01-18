@@ -1,3 +1,22 @@
+2007-01-17  Tristan Van Berkom <tvb@gnome.org>
+
+	* autogen.sh: renamed configure.in -> configure.ac
+
+2007-01-07  Vincent Geddes <vincent.geddes@gmail.com>
+
+        * configure.in: Quote some macro arguments. Use AS_HELP_STRING
+	  to format the messages for AC_ARG_ENABLE macros. Other cleanups
+	  and updates.
+
+	* src/glade-editor-property.c: Modified some dialogs for HIG
+	  compliance. Mostly about adjusting border widths and spacings,
+	  and setting mnemonics. Title for "Edit Text Property" dialog
+	  is now a simpler "Edit Text". Title for "Select Flags" dialog
+	  is also now a more descriptive "Select Events".
+
+	* src/glade-project-window.c: Set URL for online help to
+	  "http://glade.gnome.org/manual/index.html".
+
 2007-01-17  Christian Persch  <chpe@svn.gnome.org>
 
 	* src/glade-accumulators.c:

@@ -1,16 +1,18 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
-AC_INIT(glade3, 3.1.4,
-	http://bugzilla.gnome.org/enter_bug.cgi?product=glade3)
+AC_INIT([glade3], [3.1.4],
+	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
+	
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/glade.h])
+AC_CONFIG_MACRO_DIR([m4])
+
 AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE([1.9 foreign no-dist-gzip dist-bzip2])
 
 AM_MAINTAINER_MODE
-AC_CONFIG_HEADERS([config.h])
-
-AC_CONFIG_MACRO_DIR([m4])
 
 IT_PROG_INTLTOOL([0.35.0])
 
@@ -55,7 +57,7 @@ GTK_DOC_CHECK(1.4)
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0  libxml-2.0 >= 2.4.0)
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0  libxml-2.0 >= 2.4.0])
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 
@@ -63,11 +65,11 @@ dnl ================================================================
 dnl Check for optional gnome libs
 dnl ================================================================
 AC_ARG_ENABLE(gnome,
-[  --disable-gnome         disable gnome catalog],
-	check_gnome=$enableval, check_gnome=yes)
+    AS_HELP_STRING([--disable-gnome], [disable gnome catalog]),
+    check_gnome=$enableval, check_gnome=yes)
 
 if test x"$check_gnome" = x"yes"; then
-  PKG_CHECK_MODULES(GNOME, libbonoboui-2.0 libgnomeui-2.0,
+  PKG_CHECK_MODULES(GNOME, [libbonoboui-2.0 libgnomeui-2.0],
     [have_gnome=yes],[have_gnome=no])
   AC_SUBST(GNOME_LIBS)
   AC_SUBST(GNOME_CFLAGS)
@@ -81,8 +83,8 @@ dnl ================================================================
 dnl   GNOME User Manual (requires gnome-doc-utils)
 dnl ================================================================
 AC_ARG_ENABLE(user_manual,
-[  --enable-user-manual   Build GNOME user manual],
-        enable_user_manual=yes, enable_user_manual=no)
+    AS_HELP_STRING([--enable-user-manual], [build GNOME user manual]),
+    enable_user_manual=yes, enable_user_manual=no)
 
 if test x"$enable_user_manual" = "xyes"; then
 GNOME_DOC_INIT
@@ -100,7 +102,7 @@ if test x"$enable_gnome" = "xyes" ; then
   AC_PATH_PROG(SK_CONFIG, scrollkeeper-config, no)
 
   if test x"$SK_CONFIG" = "xno"; then
-    AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
+    AC_MSG_ERROR([Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net])
   fi
 fi
 
@@ -108,8 +110,8 @@ dnl ===============================================================
 dnl Check for Python
 dnl ================================================================
 AC_ARG_ENABLE(python,
-[  --disable-python         disable python scripting module],
-     check_python=$enableval, check_python=yes)
+    AS_HELP_STRING([--disable-python], [disable python scripting module]),
+    check_python=$enableval, check_python=yes)
 
 if test x"$check_python" = x"yes"; then
     AC_PATH_PROGS([PYTHON], [python])
@@ -142,9 +144,12 @@ dnl ================================================================
 dnl Check for windows
 dnl ================================================================
 case $host_os in
-*mingw* | pw32* | cygwin*)
-  win32=yes
-  ;;
+  *mingw* | pw32* | cygwin*)
+    win32=yes
+    ;;
+  *)
+    win32=no
+    ;;
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
@@ -178,4 +183,5 @@ Configuration:
 	Compiler:		${CC}
 	GnomeUI Catalog:	${have_gnome}
 	Python Binding:		${have_python}
+	GNOME User Manual:	${enable_user_manual}
 "

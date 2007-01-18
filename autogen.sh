@@ -7,7 +7,7 @@ test -z "$srcdir" && srcdir=.
 PKG_NAME="glade"
 
 
-(test -f $srcdir/configure.in \
+(test -f $srcdir/configure.ac \
   && test -f $srcdir/autogen.sh) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level $PKG_NAME directory"
