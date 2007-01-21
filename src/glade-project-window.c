@@ -1531,28 +1531,6 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Vincent Geddes <vincent.geddes@gmail.com>",
 		  NULL };
 
-	static const gchar translators[] =
-		"Fatih Demir <kabalak@gtranslator.org>\n"
-		"Christian Rose <menthos@menthos.com>\n"
-		"Pablo Saratxaga <pablo@mandrakesoft.com>\n"
-		"Duarte Loreto <happyguy_pt@hotmail.com>\n"
-		"Zbigniew Chyla <cyba@gnome.pl>\n"
-		"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
-		"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
-		"Kjartan Maraas <kmaraas@gnome.org>\n"
-		"Carlos Perell Marn <carlos@gnome-db.org>\n"
-		"Valek Filippov <frob@df.ru>\n"
-		"Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
-		"Christophe Merlet <christophe@merlet.net>\n"
-		"Funda Wang <fundawang@linux.net.cn>\n"
-		"Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
-		"Adam Weinberger <adamw@gnome.org>\n"
-		"Raphael Higino <raphaelh@cvs.gnome.org>\n"
-		"Clytie Siddall <clytie@riverland.net.au>\n"
-		"Jordi Mas <jmas@softcatala.org>\n"
-		"Vincent van Adrighem <adrighem@gnome.org>\n"
-		"Daniel Nylander <po@danielnylander.se>\n";
-
 	static const gchar comments[] =
 		N_("Glade is a user interface designer for GTK+ and GNOME.\n"
 		  "This version is a rewrite of the Glade 2 version, "
@@ -1581,7 +1559,7 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 			       "name", g_get_application_name (),
 			       "logo-icon-name", "glade-3",
 			       "authors", authors,
-			       "translator-credits", translators,
+			       "translator-credits", _("translator-credits"),
 			       "comments", comments,
 			       "license", license,
 			       "copyright", copyright,
