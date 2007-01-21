@@ -1183,6 +1183,8 @@ GladeInterface *
 glade_parser_interface_new_from_file (const gchar *file, const gchar *domain)
 {
     GladeParseState state = { 0 };
+    int prevSubstituteEntities;
+    int rc;
 
     if (!g_file_test(file, G_FILE_TEST_IS_REGULAR)) {
 	glade_util_ui_message (glade_app_get_window (), 
@@ -1197,7 +1199,13 @@ glade_parser_interface_new_from_file (const gchar *file, const gchar *domain)
     else
 	state.domain = textdomain(NULL);
 
-    if (xmlSAXUserParseFile(&glade_parser, &state, file) < 0) {
+    prevSubstituteEntities = xmlSubstituteEntitiesDefault(1);
+
+    rc = xmlSAXUserParseFile(&glade_parser, &state, file);
+
+    xmlSubstituteEntitiesDefault(prevSubstituteEntities);
+
+    if (rc < 0) {
 	glade_util_ui_message (glade_app_get_window (), 
 			       GLADE_UI_ERROR,
 			       _("Errors parsing glade file %s"), file);
@@ -1237,6 +1245,8 @@ glade_parser_interface_new_from_buffer (const gchar *buffer,
 					const gchar *domain)
 {
     GladeParseState state = { 0 };
+    int prevSubstituteEntities;
+    int rc;
 
     state.interface = NULL;
     if (domain)
@@ -1244,7 +1254,13 @@ glade_parser_interface_new_from_buffer (const gchar *buffer,
     else
 	state.domain = textdomain(NULL);
 
-    if (xmlSAXUserParseMemory(&glade_parser, &state, buffer, len) < 0) {
+    prevSubstituteEntities = xmlSubstituteEntitiesDefault(1);
+
+    rc = xmlSAXUserParseMemory(&glade_parser, &state, buffer, len);
+
+    xmlSubstituteEntitiesDefault(prevSubstituteEntities);
+
+    if (rc < 0) {
 	g_warning("document not well formed!");
 	if (state.interface)
 	    glade_parser_interface_destroy (state.interface);

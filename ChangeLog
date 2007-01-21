@@ -1,3 +1,9 @@
+2007-01-27  someone <bugs@outerspace.dyndns.org>
+
+	* src/glade-parser.c: use xmlSubstituteEntitiesDefault() when
+	  loading/saving glade files in order to maintain '&' charachters
+	  in labels (fixes bug 396311).
+
 2007-01-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* autogen.sh: renamed configure.in -> configure.ac
