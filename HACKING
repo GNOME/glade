@@ -14,14 +14,12 @@ Glade-3 bugs are tracked in the glade3 module of
 http://bugzilla.gnome.org
 
 
-CVS
+SVN
 ~~~
-The Glade-3 repository is hosted at cvs.gnome.org
+The Glade-3 repository is hosted at svn.gnome.org
 To check out a copy of Glade-3 you can use the following commands:
-cvs -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome login
-[just press enter when required for a password]
-cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co glade3
-You then need to run autogen.sh and make to build Glade-3.
+
+svn checkout svn://svn.gnome.org/svn/glade3 glade3
 
 
 Patches
@@ -29,6 +27,9 @@ Patches
 Patches must be in the unified format (diff -u) and must include a
 ChangeLog entry. Please send all patches to bugzilla.
 
+Currently svn only permits this with the following command:
+
+svn diff --diff-cmd=/usr/bin/diff -x -uBp . > file.patch
 
 Coding Style
 ~~~~~~~~~~~~
