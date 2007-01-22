@@ -1097,8 +1097,7 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 		
 		if (gchildren)
 		{
-			glade_command_cut (gchildren);
-			glade_command_paste (gchildren, gchild_new, NULL);
+			glade_command_dnd (gchildren, gchild_new, NULL);
 		
 			g_list_free (children);
 			g_list_free (gchildren);
@@ -1167,8 +1166,7 @@ glade_base_editor_move_child (GladeBaseEditor *editor,
 	if (gparent != glade_widget_get_parent (gchild))
 	{
 		list.data = gchild;
-		glade_command_cut (&list);
-		glade_command_paste (&list, gparent, NULL);
+		glade_command_dnd (&list, gparent, NULL);
 	}
 
 	return TRUE;

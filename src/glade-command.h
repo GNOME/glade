@@ -112,6 +112,10 @@ LIBGLADEUI_API
 void           glade_command_paste         (GList             *widgets,
 					    GladeWidget       *parent,
 					    GladePlaceholder  *placeholder);
+LIBGLADEUI_API
+void           glade_command_dnd           (GList             *widgets,
+					    GladeWidget       *parent,
+					    GladePlaceholder  *placeholder);
 
 /************************ signals ******************************/
 LIBGLADEUI_API

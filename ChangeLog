@@ -1,9 +1,37 @@
-2007-01-27  Vincent Geddes <vincent.geddes@gmail.com>
+2007-01-22  Jeff Westerinen  <jeff.westerinen@palmsource.com>
+	Fix for bug 345603:
+
+	* src/glade-command.c, src/glade-command.h:
+	  - Redesigned the implementation of the following commands:
+	    - glade_command_delete
+	    - glade_command_create
+	    - glade_command_cut
+	    - glade_command_copy
+	    - glade_command_paste
+            These are now command aliases.
+	    - Added a new drag-and-drop command, glade_command_dnd, to replace former
+	      glade_command_cut/glade_command_paste command pairs.
+	    - Added the following set of canonical commands which comprise the implementation
+	      of the command aliases:
+	    - glade_command_add
+	    - glade_command_remove
+	    - glade_command_clipboard_add
+	    - glade_command_clipboard_remove
+
+	* src/glade-gtk.c:
+	  Replaced the cut/paste command pair with the dnd command in 
+	  glade_gtk_menu_shell_move_child().
+	
+	* src/glade-base-editor.c:
+	  Replaced the cut/paste command pair with the dnd command in 
+	  glade_base_editor_change_type() and glade_base_editor_move_child(). 
+
+2007-01-20  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* src/glade-project-window.c: modify translator-credits prop
 	  for About dialog.
 
-2007-01-27  someone <bugs@outerspace.dyndns.org>
+2007-01-20  someone <bugs@outerspace.dyndns.org>
 
 	* src/glade-parser.c: use xmlSubstituteEntitiesDefault() when
 	  loading/saving glade files in order to maintain '&' charachters
@@ -50,10 +78,6 @@
 
         * src/glade-app.c: (glade_app_init): Bind the gettext domain. Bug
 	#397429.
-
-2007-01-17  Tristan Van Berkom <tvb@gnome.org>
-
-	* src/glade-devhelp.[ch]: removed obsolete files.
 
 2007-01-17  Tristan Van Berkom <tvb@gnome.org>
 

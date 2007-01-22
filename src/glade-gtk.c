@@ -4037,8 +4037,7 @@ glade_gtk_menu_shell_move_child (GladeBaseEditor *editor,
 	if (gparent != glade_widget_get_parent (gchild))
 	{
 		list.data = gchild;
-		glade_command_cut (&list);
-		glade_command_paste (&list, gparent, NULL);
+		glade_command_dnd (&list, gparent, NULL);
 	}
 	
 	return TRUE;
