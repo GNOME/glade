@@ -6,4 +6,4 @@ DOC_MODULE = glade
 DOC_INCLUDES = legal.xml
 DOC_FIGURES = figures/main-window.png
 
-DOC_LINGUAS = sv
+DOC_LINGUAS = en_GB.po sv
