@@ -20,14 +20,15 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+
+
+#include <glade.h>
+#include <glade-binding.h>
 
 #include <Python.h>
 #include <pygobject.h>
-#include "glade.h"
-#include "glade-binding.h"
+
 
 static GtkTextBuffer *PythonBuffer = NULL;
 static GtkTextMark   *PythonBufferEnd;

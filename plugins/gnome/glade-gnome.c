@@ -20,16 +20,21 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
-#include "config.h"
+#include <config.h>
 
-#include "glade.h"
-#include "glade-editor-property.h"
+#include <glade.h>
+#include <glade-editor-property.h>
+#include <glade-gtk.h>
+
 #include <libbonoboui.h>
 #include <libgnome/libgnome.h>
 #include <libgnomeui/libgnomeui.h>
 
-#include "glade-gtk.h"
-#define GLADEGNOME_API GLADEGTK_API
+#ifdef G_OS_WIN32
+#define GLADEGNOME_API __declspec(dllexport)
+#else
+#define GLADEGNOME_API
+#endif
 
 /* This function does absolutely nothing
  * (and is for use in overriding post_create functions).

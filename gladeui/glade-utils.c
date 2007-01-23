@@ -33,7 +33,6 @@
 
 #include "glade.h"
 #include "glade-project.h"
-#include "glade-project-window.h"
 #include "glade-command.h"
 #include "glade-debug.h"
 #include "glade-placeholder.h"

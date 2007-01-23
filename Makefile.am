@@ -1,47 +1,22 @@
 ## Process this file with automake to produce Makefile.in
 
 if DISABLE_USER_MANUAL
-SUBDIRS = src po pixmaps widgets doc
+SUBDIRS = po data gladeui src plugins bindings doc
 else
-SUBDIRS = src po pixmaps widgets doc help
+SUBDIRS = po data gladeui src plugins bindings help doc
 endif
 
 ACLOCAL_AMFLAGS = -I m4
 
-@INTLTOOL_DESKTOP_RULE@
-
-desktop_in_files = glade-3.desktop.in.in
-
-desktopdir = $(datadir)/applications
-desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
-
-appicondir = $(datadir)/icons/hicolor/48x48/apps
-appicon_DATA = glade-3.png
-
-gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
-
-install-data-hook: update-icon-cache
-uninstall-hook: update-icon-cache
-update-icon-cache:
-	@-if test -z "$(DESTDIR)"; then \
-		echo "Updating Gtk icon cache."; \
-                $(gtk_update_icon_cache); \
-	else \
-		echo "*** Icon cache not updated.  After (un)install, run this:"; \
-                echo "***   $(gtk_update_icon_cache)"; \
-	fi
-
 EXTRA_DIST = \
+	autogen.sh \
 	COPYING.GPL \
 	COPYING.LGPL \
 	m4 \
-	glade-3.png \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
 	gnome-doc-utils.make
-
-CLEANFILES = $(desktop_DATA)
 
 DISTCLEANFILES = intltool-extract \
                  intltool-merge \

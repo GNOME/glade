@@ -1,6 +1,8 @@
-largeiconsdir = $(pkgdatadir)/pixmaps/22x22
+## Process this file with automake to produce Makefile.in
 
-largeicons_DATA = \
+iconsdir = $(pkgdatadir)/pixmaps/16x16
+
+icons_DATA = \
 	alignment.png \
 	aspectframe.png \
 	accellabel.png \
@@ -43,24 +45,24 @@ largeicons_DATA = \
 	hseparator.png \
 	iconview.png \
 	image.png \
-	imagemenuitem.png \
 	inputdialog.png \
+	imagemenuitem.png \
 	label.png \
 	layout.png \
 	list.png \
 	listitem.png \
 	menu.png \
 	menuitem.png \
-	menubar.png \
 	menutoolbutton.png \
+	menubar.png \
 	messagedialog.png \
 	notebook.png \
 	optionmenu.png \
 	progressbar.png \
 	radiobutton.png \
-	ruler.png \
 	radiomenuitem.png \
 	radiotoolbutton.png \
+	ruler.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \
@@ -84,30 +86,4 @@ largeicons_DATA = \
 	vseparator.png \
 	window.png
 
-if BUILD_GNOME
-largeicons_DATA += bonobodockitem.png \
-	gnomecanvas.png \
-	gnomedruidpageedge.png \
-	gnomefontpicker.png \
-	gnomepixmap.png \
-	bonobodock.png \
-	gnomecolorpicker.png \
-	gnomedruidpagestandard.png \
-	gnomehref.png \
-	gnomepixmapentry.png \
-	gnomeabout.png \
-	gnomedruid.png \
-	gnomeiconentry.png \
-	gnomeiconselection.png \
-	gnomeapp.png \
-	gnomedateedit.png \
-	gnomeentry.png \
-	gnomeiconlist.png \
-	gnomeappbar.png \
-	gnomedialog.png \
-	gnomefileentry.png \
-	gnomemessagebox.png \
-	gnomepropertybox.png
-endif
-
-EXTRA_DIST = $(largeicons_DATA)
+EXTRA_DIST = $(icons_DATA)

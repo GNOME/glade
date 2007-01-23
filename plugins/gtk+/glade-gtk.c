@@ -22,20 +22,18 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
-#include <string.h>
-#include <stdlib.h>
+#include <config.h>
 
 #include "glade-gtk.h"
-#include "glade-editor-property.h"
-#include "glade-base-editor.h"
 
-#include "fixed_bg.xpm"
+#include <glade-editor-property.h>
+#include <glade-base-editor.h>
+#include <fixed_bg.xpm>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+#include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* --------------------------------- Constants ------------------------------ */
 #define FIXED_DEFAULT_CHILD_WIDTH  100

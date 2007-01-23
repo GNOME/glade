@@ -2,7 +2,8 @@
 #ifndef __GLADE_GTK_H__
 #define __GLADE_GTK_H__
 
-#include "glade.h"
+#include <glade.h>
+#include <glib-object.h>
 
 #ifdef G_OS_WIN32
 #define GLADEGTK_API __declspec(dllexport)

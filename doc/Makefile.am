@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # We require automake 1.6 at least.
-AUTOMAKE_OPTIONS = 1.6
+AUTOMAKE_OPTIONS = 1.9
 
 # This is a blank Makefile.am for using gtk-doc.
 # Copy this to your project's API docs directory and modify the variables to
@@ -17,7 +17,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
-DOC_SOURCE_DIR=../src
+DOC_SOURCE_DIR=../gladeui
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -42,8 +42,8 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/src/*.h
-CFILE_GLOB=$(top_srcdir)/src/*.c
+HFILE_GLOB=$(top_srcdir)/gladeui/*.h
+CFILE_GLOB=$(top_srcdir)/gladeui/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -53,7 +53,6 @@ IGNORE_HFILES=\
 	glade-accumulators.h \
 	glade-marshallers.h \
 	glade-paths.h \
-	glade-project-window.h \
 	glade-custom.h \
 	glade-cursor.h \
 	glade-id-allocator.h \
@@ -94,8 +93,14 @@ expand_content_files=\
 # signals and properties.
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
-INCLUDES=-I$(top_srcdir)/src `pkg-config --cflags gtk+-2.0`
-GTKDOC_LIBS=${top_builddir}/src/libgladeui-1.la
+GTKDOC_CFLAGS= \
+	-I$(top_srcdir)/gladeui	  \
+	-I$(top_builddir)/gladeui \
+	-I$(top_srcdir)           \
+	-I$(top_builddir)         \
+	`pkg-config --cflags gtk+-2.0`
+	
+GTKDOC_LIBS=${top_builddir}/gladeui/libgladeui-1.la
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

@@ -5,7 +5,7 @@ AC_INIT([glade3], [3.1.4],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
 	
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/glade.h])
+AC_CONFIG_SRCDIR([gladeui/glade.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_SYSTEM
@@ -160,14 +160,24 @@ AC_SUBST([AM_LDFLAGS])
 
 AC_CONFIG_FILES([
 Makefile
-glade-3.desktop.in
-pixmaps/Makefile
-pixmaps/16x16/Makefile
-pixmaps/22x22/Makefile
-widgets/Makefile
-po/Makefile.in
+data/libgladeui-1.0.pc
+data/glade-3.desktop.in
+data/Makefile
+data/icons/Makefile
+gladeui/Makefile
 src/Makefile
-src/libgladeui-1.0.pc
+plugins/Makefile
+plugins/gtk+/Makefile
+plugins/gtk+/icons/Makefile
+plugins/gtk+/icons/16x16/Makefile
+plugins/gtk+/icons/22x22/Makefile
+plugins/gnome/Makefile
+plugins/gnome/icons/Makefile
+plugins/gnome/icons/16x16/Makefile
+plugins/gnome/icons/22x22/Makefile
+bindings/Makefile
+bindings/python/Makefile
+po/Makefile.in
 doc/Makefile
 doc/version.xml
 help/Makefile

@@ -3,46 +3,46 @@
 
 
 # Main application
-glade-3.desktop.in.in
+data/glade-3.desktop.in.in
 src/main.c
 src/glade-project-window.c
 
 # libgladeui shared core library
-src/glade-app.c
-src/glade-builtins.c
-src/glade-base-editor.c
-src/glade-catalog.c
-src/glade-clipboard-view.c
-src/glade-clipboard.c
-src/glade-command.c
-src/glade-cursor.c
-src/glade-debug.c
-src/glade-editor-property.c
-src/glade-editor.c
-src/glade-fixed.c
-src/glade-palette.c
-src/glade-parameter.c
-src/glade-parser.c
-src/glade-placeholder.c
-src/glade-popup.c
-src/glade-project.c
-src/glade-property-class.c
-src/glade-property.c
-src/glade-signal-editor.c
-src/glade-signal.c
-src/glade-utils.c
-src/glade-widget.c
-src/glade-widget-adaptor.c
-src/glade-xml-utils.c
-src/glade-project-view.c
-src/glade-custom.c
+gladeui/glade-app.c
+gladeui/glade-builtins.c
+gladeui/glade-base-editor.c
+gladeui/glade-catalog.c
+gladeui/glade-clipboard-view.c
+gladeui/glade-clipboard.c
+gladeui/glade-command.c
+gladeui/glade-cursor.c
+gladeui/glade-debug.c
+gladeui/glade-editor-property.c
+gladeui/glade-editor.c
+gladeui/glade-fixed.c
+gladeui/glade-palette.c
+gladeui/glade-parameter.c
+gladeui/glade-parser.c
+gladeui/glade-placeholder.c
+gladeui/glade-popup.c
+gladeui/glade-project.c
+gladeui/glade-property-class.c
+gladeui/glade-property.c
+gladeui/glade-signal-editor.c
+gladeui/glade-signal.c
+gladeui/glade-utils.c
+gladeui/glade-widget.c
+gladeui/glade-widget-adaptor.c
+gladeui/glade-xml-utils.c
+gladeui/glade-project-view.c
+gladeui/glade-custom.c
 
 # gtk plugin backend
-src/glade-gtk.c
-widgets/gtk+.xml.in
+plugins/gtk+/glade-gtk.c
+plugins/gtk+/gtk+.xml.in
 
 # gnome plugin backend
-src/glade-gnome.c
-widgets/gnome.xml.in
-widgets/bonobo.xml.in
-widgets/canvas.xml.in
+plugins/gnome/glade-gnome.c
+plugins/gnome/gnome.xml.in
+plugins/gnome/bonobo.xml.in
+plugins/gnome/canvas.xml.in

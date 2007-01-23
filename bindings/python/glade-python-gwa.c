@@ -7,7 +7,7 @@
 #line 23 "glade-python-gwa.override"
 #include <Python.h>               
 #include <pygobject.h>
-#include "glade.h"
+#include <glade.h>
 
 static gboolean
 glade_python_support_init_value (GObject *object,

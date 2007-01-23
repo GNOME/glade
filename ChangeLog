@@ -1,3 +1,12 @@
+2007-01-23  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* Reorganised package structure, moved a lot of files
+	  and directories. Modified the Makefile.am in most directories.
+
+	* po/POTFILES.in, po/POTFILES.skip: Update for reorganisation.
+
+	* configure.ac: Add files to AC_CONFIG_FILES. Change AC_CONFIG_SRCDIR.
+
 2007-01-22  Jeff Westerinen  <jeff.westerinen@palmsource.com>
 	Fix for bug 345603:
 
@@ -8,7 +17,7 @@
 	    - glade_command_cut
 	    - glade_command_copy
 	    - glade_command_paste
-            These are now command aliases.
+	      These are now command aliases.
 	    - Added a new drag-and-drop command, glade_command_dnd, to replace former
 	      glade_command_cut/glade_command_paste command pairs.
 	    - Added the following set of canonical commands which comprise the implementation
