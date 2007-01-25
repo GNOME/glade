@@ -5,8 +5,8 @@
 #include <glib-object.h>
 #include <gdk/gdk.h>
 
-#include "glade-widget.h"
-#include "glade-cursor.h"
+#include <gladeui/glade-widget.h>
+#include <gladeui/glade-cursor.h>
 
 G_BEGIN_DECLS
 

@@ -8,7 +8,6 @@ common_defines = \
 	-DGLADE_BINDINGSDIR="\"$(pkglibdir)/bindings\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
 	-DGLADE_SCRIPTSDIR="\"$(pkgdatadir)/scripts\""	\
-	-DGLADE_ICONDIR="\"$(datadir)/pixmaps\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""
 
 lib_LTLIBRARIES = libgladeui-1.la
@@ -74,7 +73,7 @@ libgladeui_1_la_CFLAGS =    \
 libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
 libgladeui_1_la_LIBADD = $(GTK_LIBS)
 
-libgladeuiincludedir=$(includedir)/libgladeui-1.0/libgladeui
+libgladeuiincludedir=$(includedir)/libgladeui-1.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-debug.h \

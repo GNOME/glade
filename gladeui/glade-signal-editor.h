@@ -2,7 +2,7 @@
 #ifndef __GLADE_SIGNAL_EDITOR_H__
 #define __GLADE_SIGNAL_EDITOR_H__
 
-#include "glade.h"
+#include <gladeui/glade.h>
 
 G_BEGIN_DECLS
 

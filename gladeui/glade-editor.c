@@ -190,7 +190,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 
 	/* alignment is needed to ensure property labels have some padding on the left */
 	alignment = gtk_alignment_new (0.5, 0, 1, 0);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, GLADE_GENERIC_BORDER_WIDTH, 0);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 6, 0);
 
 	/* construct tab label widget */
 	if (g_utf8_collate (name, _("Accessibility")) == 0)
@@ -214,7 +214,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 		gtk_alignment_set (GTK_ALIGNMENT (alignment), 0.5, 0.5, 1, 1);
 		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 0, 0);
 
-		gtk_container_set_border_width (GTK_CONTAINER (alignment), GLADE_GENERIC_BORDER_WIDTH);
+		gtk_container_set_border_width (GTK_CONTAINER (alignment), 6);
 		gtk_notebook_insert_page (GTK_NOTEBOOK (editor->notebook), alignment, 
 					  label_widget, page++);
 	}
@@ -226,7 +226,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 		gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw),
 						       GTK_WIDGET (alignment));
-		gtk_container_set_border_width (GTK_CONTAINER (sw), GLADE_GENERIC_BORDER_WIDTH);
+		gtk_container_set_border_width (GTK_CONTAINER (sw), 6);
 
 		gtk_notebook_insert_page (GTK_NOTEBOOK (editor->notebook), sw, 
 					  label_widget, page++);
@@ -1369,7 +1369,7 @@ glade_editor_reset_dialog (GladeEditor *editor)
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
@@ -1406,14 +1406,14 @@ glade_editor_reset_dialog (GladeEditor *editor)
 	button = gtk_button_new_with_mnemonic (_("_Select All"));
 	gtk_widget_show (button);
 	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (button), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (button), 6);
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_reset_select_all_clicked), tree_view);
 
 	button = gtk_button_new_with_mnemonic (_("_Unselect All"));
 	gtk_widget_show (button);
 	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (button), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (button), 6);
 	g_signal_connect (G_OBJECT (button), "clicked",
 			  G_CALLBACK (glade_editor_reset_unselect_all_clicked), tree_view);
 

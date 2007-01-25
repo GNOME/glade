@@ -8,11 +8,11 @@ desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libgladeui-1.0.pc
+pkgconfig_DATA = gladeui-1.0.pc
 
 EXTRA_DIST = 				\
 	$(desktop_in_files)		\
-	libgladeui-1.0.pc.in
+	gladeui-1.0.pc.in
 
 CLEANFILES =	 			\
 	$(desktop_DATA)			\

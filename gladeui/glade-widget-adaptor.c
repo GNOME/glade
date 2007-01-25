@@ -20,20 +20,7 @@
  *   Tristan Van Berkom <tvb@gnome.org>
  */
 
-
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
-/* For g_file_exists */
-#include <sys/types.h>
-#include <string.h>
-
-#include <glib/gdir.h>
-#include <gmodule.h>
-#include <ctype.h>
-
-#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-widget-adaptor.h"
@@ -43,6 +30,20 @@
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 #include "glade-binding.h"
+
+/* For g_file_exists */
+#include <sys/types.h>
+#include <string.h>
+
+#include <glib/gdir.h>
+#include <glib/gi18n-lib.h>
+#include <gmodule.h>
+#include <ctype.h>
+
+#define LARGE_ICON_SUBDIR "22x22"
+#define LARGE_ICON_SIZE 22
+#define SMALL_ICON_SUBDIR "16x16"
+#define SMALL_ICON_SIZE 16
 
 struct _GladeWidgetAdaptorPriv {
 
@@ -167,15 +168,15 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 
 	/* load large 22x22 icon */
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S
-				     GLADE_LARGE_ICON_SUBDIR
+				     LARGE_ICON_SUBDIR
 				     G_DIR_SEPARATOR_S "%s.png", 
 				     glade_pixmaps_dir, 
 				     adaptor->generic_name);
 
 	adaptor->priv->large_icon = 
 		gdk_pixbuf_new_from_file_at_size (icon_path, 
-						  GLADE_LARGE_ICON_SIZE, 
-						  GLADE_LARGE_ICON_SIZE, 
+						  LARGE_ICON_SIZE, 
+						  LARGE_ICON_SIZE, 
 						  &error);
 	
 	if (adaptor->priv->large_icon == NULL)
@@ -190,7 +191,7 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 		adaptor->priv->large_icon = 
 			gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
 						  GTK_STOCK_MISSING_IMAGE, 
-						  GLADE_LARGE_ICON_SIZE, 
+						  LARGE_ICON_SIZE, 
 						  GTK_ICON_LOOKUP_USE_BUILTIN, 
 						  &error);
 		if (adaptor->priv->large_icon == NULL)
@@ -207,15 +208,15 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 
 	/* load small 16x16 icon */
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S 
-				     GLADE_SMALL_ICON_SUBDIR
+				     SMALL_ICON_SUBDIR
 				     G_DIR_SEPARATOR_S "%s.png", 
 				     glade_pixmaps_dir, 
 				     adaptor->generic_name);
 
 	adaptor->priv->small_icon = 
 		gdk_pixbuf_new_from_file_at_size (icon_path, 
-						  GLADE_SMALL_ICON_SIZE, 
-						  GLADE_SMALL_ICON_SIZE, 
+						  SMALL_ICON_SIZE, 
+						  SMALL_ICON_SIZE, 
 						  &error);
 	
 	if (adaptor->priv->small_icon == NULL)
@@ -230,7 +231,7 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 		adaptor->priv->small_icon = 
 			gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
 						  GTK_STOCK_MISSING_IMAGE, 
-						  GLADE_SMALL_ICON_SIZE, 
+						  SMALL_ICON_SIZE, 
 						  GTK_ICON_LOOKUP_USE_BUILTIN, 
 						  &error);
 		if (adaptor->priv->small_icon == NULL)
@@ -1480,7 +1481,7 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	/* Check if this class is toplevel */
 	adaptor_class->toplevel =
 		glade_xml_get_property_boolean
-		(node, GLADE_XML_TAG_TOPLEVEL, adaptor_class->toplevel);
+		(node, GLADE_TAG_TOPLEVEL, adaptor_class->toplevel);
 
 	/* Override the special-child-type here */
 	if ((child_type =

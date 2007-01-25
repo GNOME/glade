@@ -2645,7 +2645,7 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 
@@ -3560,7 +3560,7 @@ glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
 

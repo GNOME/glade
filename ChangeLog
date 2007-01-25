@@ -1,9 +1,25 @@
+2007-01-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* Makefile.am, configure.ac, plugins/Makefile.am, bindings/Makefile.am:
+	  fixed conditionally building gnome & python.
+
 2007-01-25  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* set 'svn:ignore' properties for the directory tree. 
 	  Delete all '.cvsignore' files.
 
 	* src/glade-project-window.c: Change window title in line with HIG.
+
+	* data/libgladeui-1.0.pc.in: Renamed to gladeui-1.0.pc.in.
+	  Updated for change in location of header files.
+
+	* gladeui/glade.h, gladeui/glade-xml-utils.c: Cleaned up 'glade.h'.     
+	  - Moved GLADE_TAG_* defines to glade-xml-utils.h.
+	  - Nuked GLADE_GENERIC_BORDER_WIDTH.
+
+	* gladeui/*.h, plugins/gtk+/glade-gtk.[ch],
+	  plugins/gnome/glade-gnome.ch, bindings/python/*.[ch]:
+	  Changed header files location for libgladeui. 	
 
 2007-01-23  Vincent Geddes <vincent.geddes@gmail.com>
 

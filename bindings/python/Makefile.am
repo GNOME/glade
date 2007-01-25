@@ -16,8 +16,8 @@ libgladepython_la_CPPFLAGS = \
 libgladepython_la_CFLAGS = \
 	-g -Wall           \
 	$(top_srcdir)      \
-	-I$(top_srcdir)/gladeui    \
-	-I$(top_builddir)/gladeui  \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
 	$(PYTHON_CFLAGS)   \
 	$(GTK_CFLAGS)      \
 	$(AM_CFLAGS)

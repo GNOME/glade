@@ -3,8 +3,8 @@
 bin_PROGRAMS = glade-3
 
 glade_3_CPPFLAGS = \
-	-I$(top_srcdir)/gladeui    \
-	-I$(top_builddir)/gladeui  \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
 	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
 	$(AM_CPPFLAGS)
 

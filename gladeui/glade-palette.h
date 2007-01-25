@@ -29,8 +29,8 @@
 #ifndef __GLADE_PALETTE_H__
 #define __GLADE_PALETTE_H__
 
-#include "glade.h"
-#include "glade-palette-item.h"
+#include <gladeui/glade.h>
+#include <gladeui/glade-palette-item.h>
 
 #include <gtk/gtkvbox.h>
 

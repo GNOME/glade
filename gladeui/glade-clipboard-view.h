@@ -2,7 +2,7 @@
 #ifndef __GLADE_CLIPBOARD_VIEW_H__
 #define __GLADE_CLIPBOARD_VIEW_H__
 
-#include "glade.h"
+#include <gladeui/glade.h>
 
 G_BEGIN_DECLS
 

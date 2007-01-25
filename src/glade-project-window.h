@@ -2,7 +2,7 @@
 #ifndef __GLADE_PROJECT_WINDOW_H__
 #define __GLADE_PROJECT_WINDOW_H__
 
-#include "glade-app.h"
+#include <gladeui/glade-app.h>
 
 G_BEGIN_DECLS
 

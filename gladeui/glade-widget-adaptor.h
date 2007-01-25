@@ -2,11 +2,11 @@
 #ifndef __GLADE_WIDGET_ADAPTOR_H__
 #define __GLADE_WIDGET_ADAPTOR_H__
 
+#include <gladeui/glade-xml-utils.h>
+#include <gladeui/glade-property-class.h>
 #include <glib-object.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
-#include "glade-xml-utils.h"
-#include "glade-property-class.h"
 
 G_BEGIN_DECLS
 

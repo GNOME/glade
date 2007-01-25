@@ -1857,7 +1857,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 		gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (buttonbox), button, TRUE);
 	}
 	
-	gtk_container_set_border_width (GTK_CONTAINER (editor), GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
 	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));
 	
 	gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);

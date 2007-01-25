@@ -93,7 +93,7 @@ ENABLE_SK_TRUE="#"
 ENABLE_SK_FALSE=""
 fi
 
-AM_CONDITIONAL(DISABLE_USER_MANUAL, test x"$enable_user_manual" = "xno")
+AM_CONDITIONAL(BUILD_USER_MANUAL, test x"$enable_user_manual" = "xyes")
 
 dnl ================================================================
 dnl Scrollkeeper
@@ -160,7 +160,7 @@ AC_SUBST([AM_LDFLAGS])
 
 AC_CONFIG_FILES([
 Makefile
-data/libgladeui-1.0.pc
+data/gladeui-1.0.pc
 data/glade-3.desktop.in
 data/Makefile
 data/icons/Makefile

@@ -26,9 +26,9 @@
 
 #include "glade-gtk.h"
 
-#include <glade-editor-property.h>
-#include <glade-base-editor.h>
-#include <fixed_bg.xpm>
+#include <gladeui/glade-editor-property.h>
+#include <gladeui/glade-base-editor.h>
+#include <gladeui/fixed_bg.xpm>
 
 #include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>

@@ -25,17 +25,16 @@
 #include <config.h>
 #endif
 
-#include <glib.h>
-#include <glib/gi18n.h>
+#include "glade-project-window.h"
 
-#include <locale.h>
-#include <gmodule.h>
+#include <gladeui/glade.h>
+#include <gladeui/glade-debug.h>
 
 #include <stdlib.h> /* defines __argc & __argv on the windows build */
-
-#include "glade.h"
-#include "glade-project-window.h"
-#include "glade-debug.h"
+#include <locale.h>
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <gmodule.h>
 
 #define APPLICATION_NAME (_("Glade"))
 

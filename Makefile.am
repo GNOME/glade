@@ -1,9 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
-if DISABLE_USER_MANUAL
+
 SUBDIRS = po data gladeui src plugins bindings doc
-else
-SUBDIRS = po data gladeui src plugins bindings help doc
+
+if BUILD_USER_MANUAL
+SUBDIRS += help
 endif
 
 ACLOCAL_AMFLAGS = -I m4

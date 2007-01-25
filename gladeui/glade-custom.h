@@ -2,8 +2,8 @@
 #ifndef __GLADE_CUSTOM_H__
 #define __GLADE_CUSTOM_H__
 
+#include <gladeui/glade.h>
 #include <gtk/gtk.h>
-#include "glade.h"
 
 G_BEGIN_DECLS
 

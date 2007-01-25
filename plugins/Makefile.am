@@ -1,3 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = gtk+ gnome
+SUBDIRS = gtk+
+
+if BUILD_GNOME
+SUBDIRS += gnome
+endif

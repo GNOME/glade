@@ -25,16 +25,17 @@
 #include <config.h>
 #endif
 
+#include "glade-project-window.h"
+
+#include <gladeui/glade.h>
+#include <gladeui/glade-design-view.h>
+#include <gladeui/glade-binding.h>
+
 #include <string.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
-
-#include "glade.h"
-#include "glade-design-view.h"
-#include "glade-project-window.h"
-#include "glade-binding.h"
 
 #define GLADE_ACTION_GROUP_STATIC "GladeStatic"
 #define GLADE_ACTION_GROUP_PROJECT "GladeProject"

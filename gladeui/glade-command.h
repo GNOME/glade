@@ -2,12 +2,12 @@
 #ifndef __GLADE_COMMAND_H__
 #define __GLADE_COMMAND_H__
 
+#include <gladeui/glade-placeholder.h>
+#include <gladeui/glade-widget.h>
+#include <gladeui/glade-signal.h>
+#include <gladeui/glade-property.h>
+#include <gladeui/glade-project.h>
 #include <glib-object.h>
-#include "glade-placeholder.h"
-#include "glade-widget.h"
-#include "glade-signal.h"
-#include "glade-property.h"
-#include "glade-project.h"
 
 G_BEGIN_DECLS
 

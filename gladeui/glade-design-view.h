@@ -25,9 +25,9 @@
 #ifndef __GLADE_DESIGN_VIEW_H__
 #define __GLADE_DESIGN_VIEW_H__
 
-#include "glade.h"
-#include "glade-project.h"
-#include "glade-design-layout.h"
+#include <gladeui/glade.h>
+#include <gladeui/glade-project.h>
+#include <gladeui/glade-design-layout.h>
 
 #include <gtk/gtkvbox.h>
 

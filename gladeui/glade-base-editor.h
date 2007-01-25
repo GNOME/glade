@@ -26,8 +26,8 @@
 #include <config.h>
 #endif
 
-#include "glade-widget.h"
-#include "glade-marshallers.h"
+#include <gladeui/glade-widget.h>
+#include <gladeui/glade-marshallers.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

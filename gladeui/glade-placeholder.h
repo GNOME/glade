@@ -2,8 +2,8 @@
 #ifndef __GLADE_PLACEHOLDER_H__
 #define __GLADE_PLACEHOLDER_H__
 
+#include <gladeui/glade-widget.h>
 #include <gtk/gtk.h>
-#include "glade-widget.h"
 
 G_BEGIN_DECLS
 

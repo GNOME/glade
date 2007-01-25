@@ -22,10 +22,10 @@
 #ifndef __GLADE_APP_H__
 #define __GLADE_APP_H__
 
-#include "glade-editor.h"
-#include "glade-palette.h"
-#include "glade-clipboard.h"
-#include "glade-project-view.h"
+#include <gladeui/glade-editor.h>
+#include <gladeui/glade-palette.h>
+#include <gladeui/glade-clipboard.h>
+#include <gladeui/glade-project-view.h>
 
 G_BEGIN_DECLS
 

@@ -18,8 +18,8 @@ libgladegtk_la_CPPLAGS =   \
 libgladegtk_la_CFLAGS =    \
 	-g -Wall           \
 	-I$(top_srcdir)    \
-	-I$(top_srcdir)/gladeui    \
-	-I$(top_builddir)/gladeui  \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
 	$(GTK_CFLAGS)	   \
 	$(AM_CFLAGS)
 

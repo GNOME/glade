@@ -37,6 +37,11 @@
 #include "glade-editor-property.h"
 #include "glade-debug.h"
 
+#define NUMERICAL_STEP_INCREMENT   1
+#define FLOATING_STEP_INCREMENT    0.01F
+#define NUMERICAL_PAGE_INCREMENT   10
+#define NUMERICAL_PAGE_SIZE        1
+
 
 /* Hardcoded recognized atk actions
  */
@@ -1492,10 +1497,10 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 
 	return (GtkAdjustment *)gtk_adjustment_new (def, min, max,
 						    float_range ?
-						    GLADE_FLOATING_STEP_INCREMENT :
-						    GLADE_NUMERICAL_STEP_INCREMENT,
-						    GLADE_NUMERICAL_PAGE_INCREMENT,
-						    GLADE_NUMERICAL_PAGE_SIZE);
+						    FLOATING_STEP_INCREMENT :
+						    NUMERICAL_STEP_INCREMENT,
+						    NUMERICAL_PAGE_INCREMENT,
+						    NUMERICAL_PAGE_SIZE);
 }
 
 /**

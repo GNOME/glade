@@ -3,7 +3,7 @@
 #define __GLADE_BUILTINS_H__
 
 #include <glib-object.h>
-#include "glade.h"
+#include <gladeui/glade.h>
 
 G_BEGIN_DECLS
 

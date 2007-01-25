@@ -2,7 +2,7 @@
 #ifndef __GLADE_GTK_H__
 #define __GLADE_GTK_H__
 
-#include <glade.h>
+#include <gladeui/glade.h>
 #include <glib-object.h>
 
 #ifdef G_OS_WIN32

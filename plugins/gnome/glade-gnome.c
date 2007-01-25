@@ -22,8 +22,9 @@
 
 #include <config.h>
 
-#include <glade.h>
-#include <glade-editor-property.h>
+#include <gladeui/glade.h>
+#include <gladeui/glade-editor-property.h>
+
 #include <glade-gtk.h>
 
 #include <libbonoboui.h>

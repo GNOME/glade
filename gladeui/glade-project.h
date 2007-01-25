@@ -2,8 +2,8 @@
 #ifndef __GLADE_PROJECT_H__
 #define __GLADE_PROJECT_H__
 
-#include "glade-widget.h"
-#include "glade-command.h"
+#include <gladeui/glade-widget.h>
+#include <gladeui/glade-command.h>
 
 G_BEGIN_DECLS
 

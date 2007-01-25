@@ -2,6 +2,10 @@
 #ifndef __GLADE_PROPERTY_CLASS_H__
 #define __GLADE_PROPERTY_CLASS_H__
 
+#include <glib.h>
+#include <glib-object.h>
+#include <gtk/gtkadjustment.h>
+
 G_BEGIN_DECLS
 
 /* The GladePropertyClass structure parameters of a GladeProperty.

@@ -251,7 +251,7 @@ glade_clipboard_view_construct (GladeClipboardView *view)
 	gtk_scrolled_window_set_shadow_type
 		(GTK_SCROLLED_WINDOW (scrolled_window), GTK_SHADOW_IN);
 	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 
-					GLADE_GENERIC_BORDER_WIDTH);
+					6);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);

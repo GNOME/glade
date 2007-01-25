@@ -23,8 +23,8 @@
 #include <config.h>
 
 
-#include <glade.h>
-#include <glade-binding.h>
+#include <gladeui/glade.h>
+#include <gladeui/glade-binding.h>
 
 #include <Python.h>
 #include <pygobject.h>
@@ -451,8 +451,7 @@ glade_python_binding_console_new (void)
 	gulong handler_id;
 	
 	vbox = gtk_vbox_new (FALSE, 4);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox),
-					GLADE_GENERIC_BORDER_WIDTH);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 	
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),

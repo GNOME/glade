@@ -27,9 +27,9 @@
 #ifndef __GLADE_PALETTE_ITEM_H__
 #define __GLADE_PALETTE_ITEM_H__
 
-#include "glade.h"
-#include "glade-palette.h"
-#include "glade-widget-adaptor.h"
+#include <gladeui/glade.h>
+#include <gladeui/glade-palette.h>
+#include <gladeui/glade-widget-adaptor.h>
 
 #include <gtk/gtktogglebutton.h>
 
