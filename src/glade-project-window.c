@@ -200,17 +200,17 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 		name = glade_project_display_name (project, TRUE, FALSE, FALSE);
 		
 		if (project->readonly != FALSE)
-			title = g_strdup_printf ("%s %s - %s", name,
-						 READONLY_INDICATOR, g_get_application_name ());
+			title = g_strdup_printf ("%s %s", name, READONLY_INDICATOR);
 		else
-			title = g_strdup_printf ("%s - %s", name,
-						 g_get_application_name ());
+			title = g_strdup_printf ("%s", name);
 		
 		g_free (name);
 	}
 	else
-		title = g_strdup_printf ("%s", g_get_application_name ());
-
+	{
+		title = g_strdup (_("User Interface Designer"));
+	}
+	
 	gtk_window_set_title (GTK_WINDOW (gpw->priv->window), title);
 
 	g_free (title);
