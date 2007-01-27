@@ -75,7 +75,7 @@
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkContainer" _title="Container">
+    <glade-widget-class name="GtkContainer" _title="Container" use-placeholders="True">
       <post-create-function>glade_gtk_container_post_create</post-create-function>
 
       <add-child-function>glade_gtk_container_add_child</add-child-function>
@@ -196,7 +196,7 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuShell" _title="Menu Shell">
+    <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False">
       <post-create-function>empty</post-create-function>
       <add-child-function>glade_gtk_menu_shell_add_item</add-child-function>
       <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>
@@ -210,7 +210,7 @@
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item">
+    <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_submenu</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
@@ -302,7 +302,7 @@
       </packing-defaults>
     </glade-widget-class>
       
-    <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar">
+    <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar" use-placeholders="False">
       <post-create-function>empty</post-create-function>
       <launch-editor-function>glade_gtk_toolbar_launch_editor</launch-editor-function>
       <add-child-function>glade_gtk_toolbar_add_child</add-child-function>
@@ -989,7 +989,7 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" fixed="True">
+    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" fixed="True" use-placeholders="False">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 
@@ -999,7 +999,7 @@
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" fixed="True">
+    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" fixed="True" use-placeholders="False">
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 

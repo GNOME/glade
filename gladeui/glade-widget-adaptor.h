@@ -47,6 +47,15 @@ typedef struct _GladeSignalClass         GladeSignalClass;
 #define GWA_IS_TOPLEVEL(obj) \
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->toplevel : FALSE)
 
+/**
+ * GWA_USE_PLACEHOLDERS:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks whether this widget class has been marked to
+ * use placeholders in child widget operations
+ */
+#define GWA_USE_PLACEHOLDERS(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->use_placeholders : FALSE)
 
 /**
  * GWA_GET_CLASS:
@@ -357,15 +366,18 @@ struct _GladeWidgetAdaptorClass
 						*/
 	gboolean                   toplevel;   /* If this class is toplevel */
 
-
-	GladePostCreateFunc        post_create;   /* Executed after widget creation: 
-						      * plugins use this to setup various
-						      * support codes.
+	gboolean                   use_placeholders; /* Whether or not to use placeholders
+						      * to interface with child widgets.
 						      */
 
+	GladePostCreateFunc        post_create;   /* Executed after widget creation: 
+						   * plugins use this to setup various
+						   * support codes.
+						   */
+
 	GladeGetInternalFunc       get_internal_child; /* Retrieves the the internal child
-							   * of the given name.
-							   */
+							* of the given name.
+							*/
 	
 	GladeEditorLaunchFunc      launch_editor; /* Entry point for custom editors. */
 
@@ -540,6 +552,10 @@ gchar               *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor
 LIBGLADEUI_API
 void                 glade_widget_adaptor_action_activate    (GladeWidget *widget,
 					    		      const gchar *action_id);
+
+LIBGLADEUI_API
+gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */

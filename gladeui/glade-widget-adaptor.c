@@ -1483,6 +1483,11 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_TOPLEVEL, adaptor_class->toplevel);
 
+	/* Check if this class uses placeholders for child widgets */
+	adaptor_class->use_placeholders =
+		glade_xml_get_property_boolean
+		(node, GLADE_TAG_USE_PLACEHOLDERS, adaptor_class->use_placeholders);
+
 	/* Override the special-child-type here */
 	if ((child_type =
 	     glade_xml_get_value_string (node, GLADE_TAG_SPECIAL_CHILD_TYPE)) != NULL)
@@ -2418,6 +2423,8 @@ glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
 	GladePropertyClass *pclass;
 	GList *l;
 
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+
 	for (l = adaptor->properties; l; l = l->next)
 	{
 		pclass = l->data;
@@ -2447,6 +2454,9 @@ glade_widget_adaptor_get_packing_default (GladeWidgetAdaptor *child_adaptor,
 {
 	GladeChildPacking *packing = NULL;
 	GList             *l;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (child_adaptor), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (container_adaptor), NULL);
 	
 	if ((packing = 
 	     glade_widget_adaptor_get_child_packing (child_adaptor,
@@ -2496,4 +2506,27 @@ glade_widget_adaptor_action_activate (GladeWidget *widget, const gchar *action_i
 		else
 			return;
 	}
+}
+
+
+/**
+ * glade_widget_adaptor_is_container:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Checks whether or not this adaptor has support
+ * to interface with child objects.
+ *
+ * Returns whether or not @adaptor is a container
+ */
+gboolean
+glade_widget_adaptor_is_container (GladeWidgetAdaptor *adaptor)
+{
+
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+
+	/* A GWA container must at least implement add/remove/get_children
+	 */
+	return 	(GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->add &&
+		 GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->remove &&
+		 GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->get_children);
 }

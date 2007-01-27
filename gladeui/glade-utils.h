@@ -80,16 +80,6 @@ LIBGLADEUI_API
 GList            *glade_util_container_get_all_children (GtkContainer *container);
 
 LIBGLADEUI_API
-gboolean          glade_util_gtkcontainer_relation     (GladeWidget *parent,
-							GladeWidget *widget);
-LIBGLADEUI_API
-gboolean          glade_util_any_gtkcontainer_relation (GladeWidget *parent, 
-							GList       *widgets);
-
-LIBGLADEUI_API
-gboolean          glade_util_widget_pastable       (GladeWidget *child,  
-						    GladeWidget *parent);
-LIBGLADEUI_API
 gint              glade_util_count_placeholders    (GladeWidget *parent);
 
 LIBGLADEUI_API

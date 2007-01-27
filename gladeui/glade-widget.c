@@ -4321,3 +4321,29 @@ glade_widget_embed_using_signals (GladeWidget *widget)
 	g_object_set_qdata (G_OBJECT (widget), 
 			   glade_embedded_window_quark, GINT_TO_POINTER (TRUE));
 }
+
+/**
+ * glade_widget_placeholder_relation:
+ * @parent: A #GladeWidget
+ * @widget: The child #GladeWidget
+ *
+ * Returns whether placeholders should be used
+ * in operations concerning this parent & child.
+ *
+ * Currently that criteria is whether @parent is a
+ * GtkContainer, @widget is a GtkWidget and the parent
+ * adaptor has been marked to use placeholders.
+ *
+ * Returns: whether to use placeholders for this relationship.
+ */
+gboolean
+glade_widget_placeholder_relation (GladeWidget *parent, 
+				   GladeWidget *widget)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	return (GTK_IS_CONTAINER (parent->object) &&
+		GTK_IS_WIDGET (widget->object) &&
+		GWA_USE_PLACEHOLDERS (parent->adaptor));
+}

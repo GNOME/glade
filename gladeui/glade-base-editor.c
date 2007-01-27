@@ -697,7 +697,7 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 	GtkTreeIter iter, parent;
 	gboolean retval;
 
-	if (glade_base_editor_get_child_selected (e, &iter) == FALSE) return;
+	if (!glade_base_editor_get_child_selected (e, &iter)) return;
 
 	gtk_tree_model_get (e->priv->model, &iter,
 			    GLADE_BASE_EDITOR_MENU_GWIDGET, &child, -1);
@@ -1080,7 +1080,7 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	child_new = glade_widget_get_object (gchild_new);
 
 	/* Cut and Paste childrens */
-	if ((children = glade_widget_adaptor_get_children (adaptor, child)))
+	if ((children = glade_widget_adaptor_get_children (gchild->adaptor, child)))
 	{
 		GList *gchildren = NULL;
 		

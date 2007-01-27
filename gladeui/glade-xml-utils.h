@@ -102,12 +102,14 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_STOCK                           "stock"
 #define GLADE_TAG_GET_TYPE_FUNCTION               "get-type-function"
 #define GLADE_TAG_TOPLEVEL                        "toplevel"
+#define GLADE_TAG_USE_PLACEHOLDERS                "use-placeholders"
 #define GLADE_TAG_EVENT_HANDLER_CONNECTED         "EventHandlerConnected"
 #define GLADE_TAG_FALSE                           "False"
 #define GLADE_TAG_TRUE                            "True"
 #define GLADE_TAG_YES                             "Yes"
 #define GLADE_TAG_NO                              "No"
 #define GLADE_ENUM_DATA_TAG                       "GladeEnumDataTag"
+
 
 /* search child */
 GladeXmlNode *   glade_xml_search_child          (GladeXmlNode * node, const gchar *name);

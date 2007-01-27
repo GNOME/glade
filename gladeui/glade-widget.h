@@ -188,6 +188,10 @@ gboolean                glade_widget_has_decendant          (GladeWidget      *w
 LIBGLADEUI_API 
 GladeWidget            *glade_widget_event_widget           (void);
 
+LIBGLADEUI_API
+gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
+							     GladeWidget      *widget);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

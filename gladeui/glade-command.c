@@ -921,7 +921,8 @@ glade_command_add (GList *widgets, GladeWidget *parent, GladePlaceholder *placeh
 		{
 			glade_command_placeholder_connect (cdata, placeholder);
 		}
-		else if (cdata->parent && glade_util_gtkcontainer_relation (cdata->parent, widget))
+		else if (cdata->parent && 
+			 glade_widget_placeholder_relation (cdata->parent, widget))
 		{
 			GtkContainer *cont = GTK_CONTAINER (cdata->parent->object);
 			
@@ -1011,6 +1012,8 @@ glade_command_remove (GList *widgets)
 		}
 	}
 
+	me->project = glade_widget_get_project (widget);
+
 	for (list = widgets; list && list->data; list = list->next)
 	{
 		widget         = list->data;
@@ -1018,14 +1021,13 @@ glade_command_remove (GList *widgets)
 		cdata          = g_new0 (CommandData, 1);
 		cdata->widget  = g_object_ref (G_OBJECT (widget));
 		cdata->parent  = glade_widget_get_parent (widget);
+		cdata->project = glade_widget_get_project (widget);
 
 		if (widget->internal)
 			g_critical ("Internal widget in Remove");
 
-		/* !fixed here */
 		if (cdata->parent != NULL &&
-		    GLADE_IS_FIXED (cdata->parent) == FALSE &&
-		    glade_util_gtkcontainer_relation 
+		    glade_widget_placeholder_relation 
 		    (cdata->parent, cdata->widget))
 		{
 			glade_command_placeholder_connect 
@@ -1085,7 +1087,7 @@ glade_command_transfer_props (GladeWidget *gnew, GList *saved_props)
 	}
 }
 
-static gboolean
+gboolean
 glade_command_add_execute (GladeCommandAddRemove *me)
 {
 	GladeProject       *active_project = glade_app_get_project ();
@@ -1095,6 +1097,9 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
 	if (me->widgets)
 	{
+		/* XXX FIXME: Selection here should be specific to the project
+		 * related to this command
+		 */
 		glade_app_selection_clear (FALSE);
 
 		for (list = me->widgets; list && list->data; list = list->next)

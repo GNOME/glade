@@ -1,3 +1,39 @@
+2007-01-27  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-command.c: Set project properly in glade_command_remove()
+	  (this fixes undo/redo of add/remove commands in the menueditor... along
+	  with the following fixes).
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.h: 
+	  Added GWA_USE_PLACEHOLDERS(), a boolean on the GWA that is loaded 
+	  from the catalog.
+
+	* gladeui/glade-utils.[ch]: Removed glade_util_[any_]container_relation.
+
+	* gladeui/glade-widget.[ch]: Added glade_widget_placeholder_relation
+
+	* gladeui/glade-app.c, gladeui/glade-fixed.c: Adjusted callers for new
+	  glade-widget api.
+
+	* gladeui/glade-fixed.[ch]: Removed the "use-placehodlers" property
+	  since it is now redundant with the new GWA_USE_PLACEHOLDERS (this
+	  simplifies things a little).
+
+	* gladeui/glade-binding.c: Fixed obnoxious startup errors (bug 399178),
+	  glade_binding_get_all(), use g_list_prepend()/g_list_reverse() instead
+	  of g_list_append() to build a list.
+
+	* gladeui/glade-base-editor.c: Use the right adaptor for gwa_get_children
+	  in glade_base_editor_change_type () (was using adaptor for the destination
+	  type).
+	
+	* plugins/gtk/glade-gtk.c: Remove use of "use-placeholders" property
+	  on GladeFixed objects.
+
+	* plugins/gtk/gtk+.xml.in: Setup the "use-placeholders" attribute properly
+	  (TRUE on GtkContainer, FALSE on GtkMenuShell, GtkMenuItem, GtkToolBar,
+	  GtkFixed, GtkLayout).
+
 2007-01-25  Christian Persch  <chpe@svn.gnome.org>
 
 	* help/Makefile.am: Correct DOC_LINGUAS.

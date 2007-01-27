@@ -53,7 +53,6 @@ struct _GladeFixed {
         gboolean          can_resize; /* whether the container supports child resizes or only
 				       * drags.
 				       */
-	gboolean          use_placeholders;
 
 	/* State machine used to commit properties at the end
 	 * of a drag or a resize (i.e. a "configure").

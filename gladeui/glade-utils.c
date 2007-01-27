@@ -1005,63 +1005,7 @@ glade_util_container_get_all_children (GtkContainer *container)
 }
 
 /**
- * glade_util_gtkcontainer_relation:
- * @widget: a GladeWidget
- * @parent: a GladeWidget
- *
- *
- * Returns whether this widget is parented by a GtkContainer
- * and that it is parented through the GtkContainer interface.
- */
-gboolean
-glade_util_gtkcontainer_relation (GladeWidget *parent, GladeWidget *widget)
-{
-	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-
-	return (GTK_IS_CONTAINER (parent->object) &&
-		GTK_IS_WIDGET (widget->object));
-}
-
-/**
- * glade_util_any_gtkcontainer_relation:
- * @widgets: a #GList of #GladeWidgets
- * @parent:  the parent #GladeWidget
- *
- * Returns: whether any of these widgets are parented by a GtkContainer
- * through the GtkContainer interface.
- */
-gboolean
-glade_util_any_gtkcontainer_relation (GladeWidget *parent, GList *widgets)
-{
-	GList *list;
-	for (list = widgets; list && list->data; list = list->next)
-		if (glade_util_gtkcontainer_relation 
-		    (parent, GLADE_WIDGET (list->data)))
-		    return TRUE;
-	return FALSE;
-}
-
-/**
- * glade_util_widget_pastable:
- * @child: a GladeWidget
- * @widget: a GladeWidget
- *
- * Returns whether this parent widget has an implementation to parent child.
- */
-gboolean
-glade_util_widget_pastable (GladeWidget *child,
-			    GladeWidget *parent)
-{
-	g_return_val_if_fail (GLADE_IS_WIDGET (child),  FALSE);
-	g_return_val_if_fail (GLADE_IS_WIDGET (parent), FALSE);
-
-	/* FIXME: what to do now ? */
-	return TRUE;
-}
-
-/**
- * glade_util_widget_pastable:
+ * glade_util_count_placeholders:
  * @parent: a #GladeWidget
  *
  * Returns the amount of #GladePlaceholders parented by @parent

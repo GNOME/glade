@@ -45,8 +45,7 @@ enum {
 	PROP_Y_PROP,
 	PROP_WIDTH_PROP,
 	PROP_HEIGHT_PROP,
-	PROP_CAN_RESIZE,
-	PROP_USE_PLACEHOLDERS
+	PROP_CAN_RESIZE
 };
 
 /* signals */
@@ -686,12 +685,6 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	/* Chain up for the basic parenting */
 	GLADE_WIDGET_CLASS (parent_class)->add_child
 		(GLADE_WIDGET (fixed), child, at_mouse);
-
-	/* Could be a delagate object that is not a widget or a special
-	 * relationship like menushell->menuitem
-	 */
-	if (!glade_util_gtkcontainer_relation (GLADE_WIDGET (fixed), child))
-		return;
 	
 	gtk_widget_add_events (GTK_WIDGET (child->object),
 			       GDK_POINTER_MOTION_MASK      |
@@ -956,9 +949,6 @@ glade_fixed_set_property (GObject      *object,
 	case PROP_CAN_RESIZE:
 		fixed->can_resize = g_value_get_boolean (value);
 		break;
-	case PROP_USE_PLACEHOLDERS:
-		fixed->use_placeholders = g_value_get_boolean (value);
-		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -980,7 +970,6 @@ glade_fixed_get_property (GObject    *object,
 	case PROP_WIDTH_PROP:       g_value_set_string  (value, fixed->width_prop);       break;
 	case PROP_HEIGHT_PROP:      g_value_set_string  (value, fixed->height_prop);      break;
 	case PROP_CAN_RESIZE:       g_value_set_boolean (value, fixed->can_resize);       break;
-	case PROP_USE_PLACEHOLDERS: g_value_set_boolean (value, fixed->use_placeholders); break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -1057,13 +1046,6 @@ glade_fixed_class_init (GladeFixedClass *fixed_class)
 		 ("can_resize", _("Can resize"),
 		  _("Whether this container supports resizes of child widgets"),
 		  TRUE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
-	g_object_class_install_property 
-		(gobject_class, PROP_USE_PLACEHOLDERS,
-		 g_param_spec_boolean 
-		 ("use_placeholders", _("Use Placeholders"),
-		  _("Whether this container use placeholders, the backend is responsable for setting up this property"),
-		  FALSE, G_PARAM_READWRITE));
 
 	/**
 	 * GladeFixed::configure-child:

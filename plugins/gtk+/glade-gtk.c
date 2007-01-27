@@ -613,7 +613,6 @@ glade_gtk_box_post_create (GladeWidgetAdaptor *adaptor,
 	 */
 	g_object_set (gwidget,
 		      "can-resize", FALSE,
-		      "use-placeholders", TRUE,
 		      NULL);
 
 	g_signal_connect (G_OBJECT (gwidget), "configure-child",
@@ -1436,8 +1435,6 @@ glade_gtk_table_post_create (GladeWidgetAdaptor *adaptor,
 {
 	GladeWidget    *gwidget =
 		glade_widget_get_from_gobject (container);
-
-	g_object_set (gwidget, "use-placeholders", TRUE, NULL);
 	
 	g_signal_connect (G_OBJECT (gwidget), "configure-child",
 			  G_CALLBACK (glade_gtk_table_configure_child), container);
@@ -2953,7 +2950,7 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 	g_return_if_fail (GTK_IS_CONTAINER (object));
 	g_return_if_fail (GTK_IS_WIDGET (child));
 
-	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
+	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
 /* ----------------------------- GtkWindow ------------------------------ */

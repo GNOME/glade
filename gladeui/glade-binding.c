@@ -303,7 +303,7 @@ static void
 glade_binding_get_all_foreach (gpointer key, gpointer value, gpointer user_data)
 {
 	GList **l = user_data;
-	*l = g_list_append (*l, value);
+	*l = g_list_prepend (*l, value);
 }
 
 /**
@@ -316,10 +316,11 @@ GList *
 glade_binding_get_all (void)
 {
 	GList *l = NULL;
+
+	if (bindings)
+		g_hash_table_foreach (bindings, glade_binding_get_all_foreach, &l);
 	
-	g_hash_table_foreach (bindings, glade_binding_get_all_foreach, &l);
-	
-	return l;
+	return g_list_reverse (l);
 }
 
 /**
