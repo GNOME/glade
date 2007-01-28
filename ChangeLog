@@ -1,3 +1,12 @@
+2007-01-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-command.c: Made 'pasting' an explicit arg of glade_command_add(),
+	  this fixes the broken clipboard selection search (since we now use dupped 
+	  widgets only in pastes), now packing defaults and packing property tranfers
+	  on paste both work.
+
+	* gladeui/glade-widget.c: Removed redundant code.
+
 2007-01-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: Set project properly in glade_command_remove()

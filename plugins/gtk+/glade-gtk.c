@@ -758,7 +758,7 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 	}
 
 	/* Chain Up */
-	if (is_position == FALSE)
+	if (!is_position)
 		GWA_GET_CLASS
 			(GTK_TYPE_CONTAINER)->child_set_property (adaptor, 
 								  container, 

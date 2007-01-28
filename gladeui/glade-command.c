@@ -816,8 +816,8 @@ glade_command_set_name (GladeWidget *widget, const gchar* name)
 typedef struct {
 	GladeCommand	parent;
 	GladeProject	*project;
-	GList			*widgets;
-	gboolean		add;
+	GList		*widgets;
+	gboolean	add;
 	gboolean        from_clipboard;
 } GladeCommandAddRemove;
 
@@ -859,13 +859,20 @@ glade_command_placeholder_connect (CommandData *cdata,
  * @widgets: a #Glist
  * @parent: a #GladeWidget
  * @placeholder: a #GladePlaceholder
+ * @pasting: whether we are pasting an existing widget or creating a new one.
  *
  * Performs an add command on all widgets in @widgets to @parent, possibly
  * replacing @placeholder (note toplevels dont need a parent; the active project
  * will be used when pasting toplevel objects).
+ * Pasted widgets will persist packing properties from thier cut/copy source
+ * while newly added widgets will prefer packing defaults.
+ *
  */
 void
-glade_command_add (GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
+glade_command_add (GList            *widgets, 
+		   GladeWidget      *parent, 
+		   GladePlaceholder *placeholder,
+		   gboolean          pasting)
 {
 	GladeCommandAddRemove	*me;
 	CommandData				*cdata;
@@ -878,7 +885,7 @@ glade_command_add (GList *widgets, GladeWidget *parent, GladePlaceholder *placeh
 
 	me = g_object_new (GLADE_COMMAND_ADD_REMOVE_TYPE, NULL);
 	me->add = TRUE;
-	me->from_clipboard = (g_list_find(glade_app_get_clipboard()->selection, widgets->data) != NULL);
+	me->from_clipboard = pasting;
 
 	/* Things can go wrong in this function if the dataset is inacurate,
 	 * we make no real attempt here to recover, just g_critical() and
@@ -997,7 +1004,7 @@ glade_command_remove (GList *widgets)
 
  	me = g_object_new (GLADE_COMMAND_ADD_REMOVE_TYPE, NULL);
 	me->add = FALSE;
-	me->from_clipboard = (g_list_find(glade_app_get_clipboard()->selection, widgets->data) != NULL);
+	me->from_clipboard = FALSE;
 
 	/* internal children cannot be deleted. Notify the user. */
 	for (list = widgets; list && list->data; list = list->next)
@@ -1087,7 +1094,7 @@ glade_command_transfer_props (GladeWidget *gnew, GList *saved_props)
 	}
 }
 
-gboolean
+static gboolean
 glade_command_add_execute (GladeCommandAddRemove *me)
 {
 	GladeProject       *active_project = glade_app_get_project ();
@@ -1105,6 +1112,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 		for (list = me->widgets; list && list->data; list = list->next)
 		{
 			cdata  = list->data;
+			saved_props = NULL;
 
 			if (cdata->parent != NULL)
 			{
@@ -1123,7 +1131,11 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 								g_free);
 				}
 
-				saved_props = glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
+				/* Only transfer properties when they are from the clipboard,
+				 * otherwise prioritize packing defaults. 
+				 */
+				if (me->from_clipboard)
+					saved_props = glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
 
 				/* glade_command_paste ganauntees that if 
 				 * there we are pasting to a placeholder, 
@@ -1142,6 +1154,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 								cdata->widget, 
 								cdata->props_recorded == FALSE);
 				}
+
 
 				glade_command_transfer_props (cdata->widget, saved_props);
 				
@@ -1523,7 +1536,7 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 	widgets = g_list_prepend(widgets, widget);
 	description = g_strdup_printf (_("Create %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_push_group(description);
-	glade_command_add(widgets, parent, placeholder);
+	glade_command_add(widgets, parent, placeholder, FALSE);
 	glade_command_pop_group();
 	
 	if (widgets)
@@ -1630,7 +1643,7 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 	}
 	description = g_strdup_printf (_("Paste %s"), g_list_length (widgets) == 1 ? copiedWidget->name : _("multiple"));
 	glade_command_push_group(description);
-	glade_command_add(copiedWidgets, parent, placeholder);
+	glade_command_add(copiedWidgets, parent, placeholder, TRUE);
 	glade_command_pop_group();
 	
 	if (copiedWidgets)
@@ -1659,7 +1672,7 @@ glade_command_dnd(GList *widgets, GladeWidget *parent, GladePlaceholder *placeho
 	description = g_strdup_printf (_("Drag-n-Drop from %s to %s"), parent->name, g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_push_group(description);
 	glade_command_remove(widgets);
-	glade_command_add(widgets, parent, placeholder);
+	glade_command_add(widgets, parent, placeholder, TRUE);
 	glade_command_pop_group();
 }
 

@@ -151,19 +151,12 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	if (gold_widget && gold_widget != gnew_widget)
 		gold_widget->parent = NULL;
 
-	/* Setup packing properties here so that they are available on the new
-	 * widget for use in the plugin.
-	 */
-	if (gnew_widget) 
-		glade_widget_set_packing_properties (gnew_widget, widget);
-
-
 	glade_widget_adaptor_replace_child 
 		(widget->adaptor, widget->object,
 		 old_object, new_object);
 
-	/* Setup packing properties here again so we can introspect the new
-	 * values from the plugin.
+	/* Setup packing properties here so we can introspect the new
+	 * values from the backend.
 	 */
 	if (gnew_widget) 
 		glade_widget_set_packing_properties (gnew_widget, widget);
@@ -3314,7 +3307,7 @@ glade_widget_set_parent (GladeWidget *widget,
 		else
 			glade_widget_sync_packing_props (widget);
 	}
-	    
+
 	g_object_notify (G_OBJECT (widget), "parent");
 }
 
@@ -3332,7 +3325,7 @@ void
 glade_widget_set_packing_properties (GladeWidget *widget,
 				     GladeWidget *container)
 {
-	GList                *list;
+	GList *list;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_WIDGET (container));
