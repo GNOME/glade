@@ -7,6 +7,9 @@
 
 	* gladeui/glade-widget.c: Removed redundant code.
 
+	* src/glade-project-window.c: Re-Implemented hack for accelerators to
+	  work cooperatively with text entries in the editor. (fixes bug 396447)
+
 2007-01-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: Set project properly in glade_command_remove()

@@ -497,7 +497,7 @@ glade_widget_event_private (GtkWidget   *widget,
 
 	/* Some synthetic events (like focus-change) dont come with a window */
 	if (((GdkEventAny *)event)->window == NULL) return FALSE;
-	
+
 	/* Get the widget at mouse position before anything else
 	 */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);

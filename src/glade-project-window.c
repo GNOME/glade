@@ -1956,6 +1956,24 @@ create_selector_tool_button (GtkToolbar *toolbar)
 	return GTK_WIDGET (button);
 }
 
+static gint
+gpw_hijack_editor_key_press (GtkWidget          *win, 
+			     GdkEventKey        *event, 
+			     GladeProjectWindow *gpw)
+{
+	if (GTK_WINDOW (win)->focus_widget &&
+	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
+	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
+	{
+		return gtk_widget_event (GTK_WINDOW (win)->focus_widget, 
+					 (GdkEvent *)event);
+	}
+	return FALSE;
+}
+
 static void
 glade_project_window_create (GladeProjectWindow *gpw)
 {
@@ -2126,6 +2144,10 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	g_signal_connect (gpw->priv->window, "window-state-event",
 			  G_CALLBACK (gpw_window_state_event_cb),
 			  gpw);
+
+	g_signal_connect (G_OBJECT (gpw->priv->window), "key-press-event",
+			  G_CALLBACK (gpw_hijack_editor_key_press), gpw);
+
 }
 
 static void
