@@ -1,7 +1,7 @@
 <glade-catalog name="gnome" library="gladegnome" depends="gtk+" domain="glade-3" book="libgnomeui">
   <init-function>glade_gnomeui_init</init-function>
   <glade-widget-classes>
-    <glade-widget-class name="GnomeApp" generic-name="gnomeapp" title="Gnome App">
+    <glade-widget-class name="GnomeApp" generic-name="gnomeapp" title="Gnome App" default-width="440" default-height="250">
       <post-create-function>glade_gnome_app_post_create</post-create-function>
       <get-internal-child-function>glade_gnome_app_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gnome_app_get_children</get-children-function>

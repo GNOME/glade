@@ -84,6 +84,10 @@ struct _GladeWidget
 			       * added/removed from the project).
 			       */
 
+	gint               width;   /* Current size used in the UI, this is only */
+	gint               height;  /* usefull for parentless widgets in the
+				     * GladeDesignLayout */
+
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
 	GladeWidgetInfo   *construct_info;

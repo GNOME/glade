@@ -57,6 +57,28 @@ typedef struct _GladeSignalClass         GladeSignalClass;
 #define GWA_USE_PLACEHOLDERS(obj) \
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->use_placeholders : FALSE)
 
+
+/**
+ * GWA_DEFAULT_WIDTH:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Returns the default width to be used when this widget
+ * is toplevel in the GladeDesignLayout
+ */
+#define GWA_DEFAULT_WIDTH(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->default_width : -1)
+
+
+/**
+ * GWA_DEFAULT_HEIGHT:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Returns the default width to be used when this widget
+ * is toplevel in the GladeDesignLayout
+ */
+#define GWA_DEFAULT_HEIGHT(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->default_height : -1)
+
 /**
  * GWA_GET_CLASS:
  * @type: A #GType
@@ -369,6 +391,9 @@ struct _GladeWidgetAdaptorClass
 	gboolean                   use_placeholders; /* Whether or not to use placeholders
 						      * to interface with child widgets.
 						      */
+
+	gint                       default_width;  /* Default width in GladeDesignLayout */
+	gint                       default_height; /* Default height in GladeDesignLayout */
 
 	GladePostCreateFunc        post_create;   /* Executed after widget creation: 
 						   * plugins use this to setup various

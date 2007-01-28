@@ -2965,8 +2965,6 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
 	/* Chain her up first */
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
-
-	gtk_window_set_default_size (window, 440, 250);
 }
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
@@ -3104,12 +3102,6 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			glade_widget_property_set (actionarea_widget, "layout-style", GTK_BUTTONBOX_END);
 		}
 	}
-
-	/* set a reasonable default size for a dialog */
-	if (GTK_IS_MESSAGE_DIALOG (dialog))
-		gtk_window_set_default_size (GTK_WINDOW (object), 400, 115);
-	else
-		gtk_window_set_default_size (GTK_WINDOW (dialog), 320, 260);
 }
 
 
@@ -5688,8 +5680,6 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
 		
 		glade_widget_property_set (parent, "size", 3);
 	}
-	
-	gtk_window_set_default_size (GTK_WINDOW (object), 440, 250);
 }
 
 void GLADEGTK_API

@@ -1,7 +1,7 @@
 <glade-catalog name="gtk+" library="gladegtk" domain="glade-3" book="gtk">
   <glade-widget-classes>
 
-    <glade-widget-class name="GtkWidget" _title="Widget">
+    <glade-widget-class name="GtkWidget" _title="Widget" default-width="100" default-height="60">
 
       <set-property-function>glade_gtk_widget_set_property</set-property-function>
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
@@ -129,7 +129,7 @@
       </packing-properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True">
+    <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
       <post-create-function>glade_gtk_window_post_create</post-create-function>
 
       <properties> 
@@ -731,7 +731,7 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkDialog" generic-name="dialog" _title="Dialog Box">
+    <glade-widget-class name="GtkDialog" generic-name="dialog" _title="Dialog Box" default-width="320" default-height="260">
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_dialog_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_dialog_get_children</get-children-function>
@@ -1134,7 +1134,7 @@
    
     <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" _title="Input Dialog"/>
     
-    <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog">
+    <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
       <properties>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>

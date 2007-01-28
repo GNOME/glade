@@ -170,8 +170,8 @@ glade_design_view_new (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
 	view = g_object_new (GLADE_TYPE_DESIGN_VIEW, 
-			    "project", project,
-			    NULL);
+			     "project", project,
+			     NULL);
 
 	return GTK_WIDGET (view);
 }

@@ -105,8 +105,6 @@ glade_gnome_app_post_create (GladeWidgetAdaptor *adaptor,
 	GladeProject *project = glade_widget_get_project (gapp);
 	GladeWidget *gdock, *gdock_item, *gmenubar;
 	
-	gtk_window_set_default_size (GTK_WINDOW (object), 440, 250);
-	
 	/* Add BonoboDock */
 	gdock = glade_widget_adaptor_create_internal
 		(gapp, G_OBJECT (app->dock),

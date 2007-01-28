@@ -882,6 +882,13 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 
 	adaptor_class->action_activated     = gwa_action_activated_impl;
 
+	/* Base defaults here */
+	adaptor_class->fixed                = FALSE;
+	adaptor_class->toplevel             = FALSE;
+	adaptor_class->use_placeholders     = FALSE;
+	adaptor_class->default_width        = -1;
+	adaptor_class->default_height       = -1;
+
 	/**
 	 * GladeWidgetAdaptor::action-activated:
 	 * @adaptor: the GladeWidgetAdaptor which received the signal.
@@ -1487,6 +1494,14 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	adaptor_class->use_placeholders =
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_USE_PLACEHOLDERS, adaptor_class->use_placeholders);
+
+	/* Check default size when used as a toplevel in the GladeDesignView */
+	adaptor_class->default_width =
+		glade_xml_get_property_int
+		(node, GLADE_TAG_DEFAULT_WIDTH, adaptor_class->default_width);
+	adaptor_class->default_height =
+		glade_xml_get_property_int
+		(node, GLADE_TAG_DEFAULT_HEIGHT, adaptor_class->default_height);
 
 	/* Override the special-child-type here */
 	if ((child_type =

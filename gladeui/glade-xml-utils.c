@@ -358,6 +358,8 @@ glade_xml_get_property_double (GladeXmlNode *node_in,
 	if ((value = glade_xml_get_property (node, name)) == NULL)
 		return _default;
 
+	errno = 0;
+
 	retval = g_ascii_strtod (value, NULL);
 	
 	if (errno)
@@ -370,6 +372,25 @@ glade_xml_get_property_double (GladeXmlNode *node_in,
 		g_free (value);
 		return retval;
 	}
+}
+
+gint
+glade_xml_get_property_int (GladeXmlNode *node_in,
+			    const gchar *name,
+			    gint _default)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gint retval;
+	gchar *value;
+	
+	if ((value = glade_xml_get_property (node, name)) == NULL)
+		return _default;
+
+	retval = atoi (value);
+	
+	g_free (value);
+
+	return retval;
 }
 
 void

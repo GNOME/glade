@@ -103,6 +103,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_GET_TYPE_FUNCTION               "get-type-function"
 #define GLADE_TAG_TOPLEVEL                        "toplevel"
 #define GLADE_TAG_USE_PLACEHOLDERS                "use-placeholders"
+#define GLADE_TAG_DEFAULT_WIDTH                   "default-width"
+#define GLADE_TAG_DEFAULT_HEIGHT                  "default-height"
 #define GLADE_TAG_EVENT_HANDLER_CONNECTED         "EventHandlerConnected"
 #define GLADE_TAG_FALSE                           "False"
 #define GLADE_TAG_TRUE                            "True"
@@ -137,6 +139,7 @@ gchar *  glade_xml_get_property_string_required (GladeXmlNode *node_in, const gc
 gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name);
 gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
 gdouble  glade_xml_get_property_double (GladeXmlNode *node_in, const gchar *name, gdouble _default);
+gint     glade_xml_get_property_int (GladeXmlNode *node_in, const gchar *name, gint _default);
 
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);

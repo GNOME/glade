@@ -10,6 +10,20 @@
 	* src/glade-project-window.c: Re-Implemented hack for accelerators to
 	  work cooperatively with text entries in the editor. (fixes bug 396447)
 
+	* gladeui/glade-design-layout.[ch]: 
+	  Now works like a pure widget, uses gtk_widget_size_allocate() to resize 
+	  children and gtk_widget_queue_resize() to resize itself (removed default
+	  size control for now).
+
+	* gladeui/glade-xml-utils.[ch], gladeui/glade-widget.[ch], 
+	  gladeui/glade-widget-adaptor.[ch], plugins/gtk/gtk+.xml.in,
+	  plugins/gtk/glade-gtk.c, plugins/gnome/glade-gnome.c: 
+	  - Added glade_xml_get_property_int()
+	  - Added default-width/height to catalog/GWA
+	  - Added toplevel-width/height properties to GladeWidget
+	  - Use default-width/height in catalogs instead of gtk_window_set_default_size()
+	    in plugin code.
+
 2007-01-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: Set project properly in glade_command_remove()

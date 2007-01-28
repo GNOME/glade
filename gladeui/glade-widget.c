@@ -94,7 +94,9 @@ enum
 	PROP_INTERNAL_NAME,
 	PROP_TEMPLATE,
 	PROP_INFO,
-	PROP_REASON
+	PROP_REASON,
+	PROP_TOPLEVEL_WIDTH,
+	PROP_TOPLEVEL_HEIGHT
 };
 
 static guint         glade_widget_signals[LAST_SIGNAL] = {0};
@@ -814,6 +816,10 @@ glade_widget_constructor (GType                  type,
 		glade_widget_set_object (gwidget, object);
 	}
 
+	/* Setup width/height */
+	gwidget->width  = GWA_DEFAULT_WIDTH (gwidget->adaptor);
+	gwidget->height = GWA_DEFAULT_HEIGHT (gwidget->adaptor);
+
 	/* Introspect object properties before passing it to post_create,
 	 * but only when its freshly created (depend on glade file at
 	 * load time and copying properties at dup time).
@@ -942,6 +948,12 @@ glade_widget_set_real_property (GObject         *object,
 	case PROP_REASON:
 		widget->construct_reason = g_value_get_int (value);
 		break;
+	case PROP_TOPLEVEL_WIDTH:
+		widget->width = g_value_get_int (value);
+		break;
+	case PROP_TOPLEVEL_HEIGHT:
+		widget->height = g_value_get_int (value);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -984,6 +996,12 @@ glade_widget_get_real_property (GObject         *object,
 	case PROP_PARENT:
 		g_value_set_object (value, widget->parent);
 		break;
+	case PROP_TOPLEVEL_WIDTH:
+		g_value_set_int (value, widget->width);
+		break;
+	case PROP_TOPLEVEL_HEIGHT:
+		g_value_set_int (value, widget->height);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -1025,6 +1043,10 @@ glade_widget_init (GladeWidget *widget)
 		(g_str_hash, g_str_equal,
 		 (GDestroyNotify) g_free,
 		 (GDestroyNotify) free_signals);
+	
+	/* Initial invalid values */
+	widget->width  = -1;
+	widget->height = -1;
 }
 
 static void
@@ -1150,7 +1172,27 @@ glade_widget_class_init (GladeWidgetClass *klass)
 				   GLADE_CREATE_REASONS - 1,
 				   GLADE_CREATE_USER,
 				   G_PARAM_CONSTRUCT_ONLY|G_PARAM_WRITABLE));
-	
+
+	g_object_class_install_property
+		(object_class, 	PROP_TOPLEVEL_WIDTH,
+		 g_param_spec_int ("toplevel-width", _("Toplevel Width"),
+				   _("The width of the widget when toplevel in "
+				     "the GladeDesignLayout"),
+				   -1,
+				   G_MAXINT,
+				   -1,
+				   G_PARAM_READWRITE));
+
+	g_object_class_install_property
+		(object_class, 	PROP_TOPLEVEL_HEIGHT,
+		 g_param_spec_int ("toplevel-height", _("Toplevel Height"),
+				   _("The height of the widget when toplevel in "
+				     "the GladeDesignLayout"),
+				   -1,
+				   G_MAXINT,
+				   -1,
+				   G_PARAM_READWRITE));
+
 	/**
 	 * GladeWidget::add-signal-handler:
 	 * @gladewidget: the #GladeWidget which received the signal.
