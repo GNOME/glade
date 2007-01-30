@@ -1,18 +1,18 @@
 # Swedish messages for Glade2.
-# Copyright (C) 2001, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2006, 2007 Free Software Foundation, Inc.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007.
 # Christian Rose <menthos@menthos.com>, 2001.
-# Daniel Nylander <po@danielnylander.se>, 2006.
 #
-# $Id$
+# $Id: sv.po,v 1.12 2006/12/28 11:57:34 dnylande Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Glade2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-28 05:48+0100\n"
-"PO-Revision-Date: 2006-12-28 11:46+0100\n"
+"POT-Creation-Date: 2007-01-02 04:46+0000\n"
+"PO-Revision-Date: 2007-01-30 22:21+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
-"Language-Team: Swedish <sv@li.org>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,9 +35,8 @@ msgid "Glade"
 msgstr "Glade"
 
 #: ../src/main.c:84
-#, fuzzy
 msgid "Glade options"
-msgstr "Alternativ för användargränssnittssbyggaren Glade"
+msgstr "Alternativ för Glade"
 
 #: ../src/main.c:133
 msgid "gmodule support not found. gmodule support is required for glade to work"
@@ -53,13 +52,13 @@ msgid "[Read Only]"
 msgstr "[Skrivskyddad]"
 
 #: ../src/glade-project-window.c:110
-#, fuzzy, c-format
+#, c-format
 msgid "Could not display the URL '%s'"
-msgstr "Kunde inte hitta glade-filen %s"
+msgstr "Kunde inte visa url:en \"%s\""
 
 #: ../src/glade-project-window.c:114
 msgid "No suitable web browser executable could be found."
-msgstr ""
+msgstr "Ingen lämplig webbläsare kunde hittas."
 
 #: ../src/glade-project-window.c:611
 #, c-format
@@ -73,11 +72,11 @@ msgstr "Öppna..."
 #: ../src/glade-project-window.c:771
 #, c-format
 msgid "The file %s has been modified since reading it"
-msgstr ""
+msgstr "Filen %s har blivit ändrat sedan den lästes in"
 
 #: ../src/glade-project-window.c:775
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr ""
+msgstr "Om du sparar den kan alla externa ändringar att gå förlorade. Spara den ändå?"
 
 #: ../src/glade-project-window.c:779
 msgid "_Save Anyway"
@@ -111,7 +110,7 @@ msgstr "Spara som..."
 #: ../src/glade-project-window.c:895
 #, c-format
 msgid "Could not save the file %s. You do not have the permissions necessary to save the file."
-msgstr ""
+msgstr "Kunde inte spara filen %s. Du har inte tillräckliga rättigheter att spara filen."
 
 #: ../src/glade-project-window.c:908
 #, c-format
@@ -154,11 +153,11 @@ msgstr "Kunde inte visa användarhandboken"
 #: ../src/glade-project-window.c:1506
 #, c-format
 msgid "No suitable web browser executable could be found to be executed and to display the URL: %s"
-msgstr ""
+msgstr "Ingen lämplig webbläsare kunde hittas för att starta och visa url:en: %s"
 
 #: ../src/glade-project-window.c:1503
 msgid "Could not display the online developer reference manual"
-msgstr ""
+msgstr "Kunde inte visa utvecklarnas referenshandbok på webben"
 
 #: ../src/glade-project-window.c:1558
 msgid ""
@@ -380,7 +379,7 @@ msgstr ""
 #. ProjectsMenu
 #: ../src/glade-project-window.c:1733
 msgid "_Previous Project"
-msgstr "_Tidigare projekt"
+msgstr "_Föregående projekt"
 
 #: ../src/glade-project-window.c:1734
 msgid "Activate previous project"
@@ -404,11 +403,11 @@ msgstr "Visa poster med små ikoner"
 
 #: ../src/glade-project-window.c:1749
 msgid "Context _Help"
-msgstr ""
+msgstr "Sammanhangs_hjälp"
 
 #: ../src/glade-project-window.c:1750
 msgid "Show or hide contextual help buttons in the editor"
-msgstr ""
+msgstr "Visa eller dölj sammanhangshjälpknappar i redigeraren"
 
 #: ../src/glade-project-window.c:1757
 msgid "Text beside icons"
@@ -435,9 +434,8 @@ msgid "Display items as text only"
 msgstr "Visa poster endast som text"
 
 #: ../src/glade-project-window.c:1972
-#, fuzzy
 msgid "Select a widget"
-msgstr "Välj mapp"
+msgstr "Välj en widget"
 
 #: ../src/glade-project-window.c:2043
 msgid "Palette"
@@ -445,7 +443,7 @@ msgstr "Palett"
 
 #: ../src/glade-project-window.c:2059
 msgid "Inspector"
-msgstr ""
+msgstr "Inspekterare"
 
 #: ../src/glade-project-window.c:2065
 #: ../src/glade-widget.c:1120
@@ -498,6 +496,8 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Försöker att spara privat data till katalogen %s men den är en vanlig fil.\n"
+"Ingen privat data kommer att sparas i den här sessionen"
 
 #: ../src/glade-app.c:526
 #, c-format
@@ -505,6 +505,8 @@ msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Misslyckades med att skapa katalogen %s för att spara privat data.\n"
+"Ingen privat data kommer att bli sparad i den här sessionen"
 
 #: ../src/glade-app.c:554
 #, c-format
@@ -512,6 +514,8 @@ msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Fel vid skrivning av privat data till %s (%s).\n"
+"Ingen privat data kommer att sparas i den här sessionen"
 
 #: ../src/glade-app.c:566
 #, c-format
@@ -526,6 +530,8 @@ msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Fel vid öppnandet av %s för att skriva privat data (%s).\n"
+"Ingen privat data kommer att sparas i den här sessionen"
 
 #: ../src/glade-app.c:987
 msgid "You cannot copy a widget internal to a composite widget."
@@ -543,12 +549,12 @@ msgstr ""
 
 #: ../src/glade-app.c:1100
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "Kunde inte klistra in flera widgetar"
 
 #: ../src/glade-app.c:1110
 #: ../src/glade-app.c:1239
 msgid "No widget selected on the clipboard"
-msgstr ""
+msgstr "Ingen widget vald i urklipp"
 
 #: ../src/glade-app.c:1129
 #, c-format
@@ -582,12 +588,12 @@ msgstr ""
 #: ../src/glade-builtins.c:192
 #: ../widgets/gtk+.xml.in.h:230
 msgid "Stock Image"
-msgstr ""
+msgstr "Standardbild"
 
 #: ../src/glade-builtins.c:193
 #: ../widgets/gtk+.xml.in.h:1
 msgid "A builtin stock image"
-msgstr ""
+msgstr "En inbyggd standardbild"
 
 #: ../src/glade-builtins.c:523
 msgid "Objects"
@@ -599,21 +605,19 @@ msgstr "En lista på objekt"
 
 #: ../src/glade-builtins.c:533
 msgid "Pixbuf"
-msgstr ""
+msgstr "Pixbuf"
 
 #: ../src/glade-builtins.c:534
-#, fuzzy
 msgid "A pixbuf value"
-msgstr "Ett booleskt värde"
+msgstr ""
 
 #: ../src/glade-builtins.c:542
 msgid "GdkColor"
-msgstr ""
+msgstr "GdkColor"
 
 #: ../src/glade-builtins.c:543
-#, fuzzy
 msgid "A gdk color value"
-msgstr "Ett booleskt värde"
+msgstr ""
 
 #: ../src/glade-builtins.c:551
 #: ../src/glade-property-class.c:1187
@@ -622,9 +626,8 @@ msgstr "Snabbtangenter"
 
 #: ../src/glade-builtins.c:552
 #: ../src/glade-property-class.c:1188
-#, fuzzy
 msgid "A list of accelerator keys"
-msgstr "En lista på GladeProperties"
+msgstr "En lista över snabbtangenter"
 
 #: ../src/glade-builtins.c:563
 msgid "Integer"
@@ -635,14 +638,12 @@ msgid "An integer value"
 msgstr "Ett heltalsvärde"
 
 #: ../src/glade-builtins.c:572
-#, fuzzy
 msgid "Unsigned Integer"
-msgstr "Heltal"
+msgstr ""
 
 #: ../src/glade-builtins.c:573
-#, fuzzy
 msgid "An unsigned integer value"
-msgstr "Ett heltalsvärde"
+msgstr ""
 
 #: ../src/glade-builtins.c:580
 msgid "String"
@@ -662,7 +663,7 @@ msgstr ""
 
 #: ../src/glade-builtins.c:597
 msgid "Float"
-msgstr ""
+msgstr "Flyttal"
 
 #: ../src/glade-builtins.c:598
 msgid "A floating point entry"
@@ -679,7 +680,7 @@ msgstr "Ett booleskt värde"
 #: ../src/glade-base-editor.c:468
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "Ställer in objekttyp på %s till %s"
 
 #: ../src/glade-base-editor.c:633
 #, c-format
@@ -725,17 +726,17 @@ msgstr "Widget"
 
 #: ../src/glade-command.c:541
 msgid "Setting multiple properties"
-msgstr ""
+msgstr "Ställer in flera egenskaper"
 
 #: ../src/glade-command.c:549
 #, c-format
 msgid "Setting %s of %s"
-msgstr ""
+msgstr "Ställer in %s av %s"
 
 #: ../src/glade-command.c:553
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr ""
+msgstr "Ställer in %s av %s till %s"
 
 #: ../src/glade-command.c:771
 #: ../src/glade-command.c:798
@@ -750,7 +751,7 @@ msgstr "Ta bort %s"
 
 #: ../src/glade-command.c:1126
 msgid "Delete multiple"
-msgstr ""
+msgstr "Ta bort flera"
 
 #: ../src/glade-command.c:1194
 #, c-format
@@ -774,12 +775,12 @@ msgstr "Klistra in %s"
 
 #: ../src/glade-command.c:1612
 msgid "multiple"
-msgstr ""
+msgstr "flera"
 
 #: ../src/glade-command.c:1897
 #, c-format
 msgid "Add signal handler %s"
-msgstr ""
+msgstr "Lägg till signalhandtaget %s"
 
 #: ../src/glade-command.c:1898
 #, c-format
@@ -801,13 +802,12 @@ msgid "View GTK+ documentation for this property"
 msgstr "Visa GTK+-dokumentationen för den här egenskapen"
 
 #: ../src/glade-editor-property.c:576
-#, fuzzy
 msgid "Property Class"
-msgstr "Egenskaper"
+msgstr "Egenskapsklass"
 
 #: ../src/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "Den GladePropertyClass som GladeEditorProperty skapades för"
 
 #: ../src/glade-editor-property.c:583
 msgid "Use Command"
@@ -823,7 +823,7 @@ msgstr "Visa information"
 
 #: ../src/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
-msgstr ""
+msgstr "Huruvida vi ska visa en informationsknapp"
 
 #: ../src/glade-editor-property.c:1119
 msgid "Set Flags"
@@ -831,7 +831,7 @@ msgstr "Ställ in flaggor"
 
 #: ../src/glade-editor-property.c:1452
 msgid "Edit Text Property"
-msgstr ""
+msgstr "Redigera textegenskap"
 
 #. Text
 #: ../src/glade-editor-property.c:1469
@@ -844,7 +844,7 @@ msgstr "Öve_rsättningsbar"
 
 #: ../src/glade-editor-property.c:1518
 msgid "Has context _prefix"
-msgstr ""
+msgstr "Har sammanhangs_prefix"
 
 #. Comments.
 #: ../src/glade-editor-property.c:1532
@@ -921,9 +921,8 @@ msgid "The increment to use to make minor changes to the value"
 msgstr ""
 
 #: ../src/glade-editor-property.c:2932
-#, fuzzy
 msgid "Page inc:"
-msgstr "Sidstorlek :"
+msgstr ""
 
 #: ../src/glade-editor-property.c:2933
 msgid "The increment to use to make major changes to the value"
@@ -955,9 +954,8 @@ msgstr "Funktioner"
 
 #: ../src/glade-editor-property.c:3033
 #: ../widgets/gnome.xml.in.h:24
-#, fuzzy
 msgid "Other"
-msgstr "Efter"
+msgstr "Annat"
 
 #: ../src/glade-editor-property.c:3204
 #: ../src/glade-editor-property.c:3238
@@ -1006,7 +1004,7 @@ msgstr ""
 
 #: ../src/glade-editor.c:154
 msgid "Show context info"
-msgstr ""
+msgstr "Visa sammanhangsinfo"
 
 #: ../src/glade-editor.c:155
 msgid "Whether to show an informational button for each property and signal in the editor"
@@ -1030,9 +1028,8 @@ msgid "View documentation for the selected widget"
 msgstr ""
 
 #: ../src/glade-editor.c:303
-#, fuzzy
 msgid "Reset widget properties to their defaults"
-msgstr "Återställ widgetegenskaper"
+msgstr ""
 
 #: ../src/glade-editor.c:318
 msgid "_General"
@@ -1115,7 +1112,7 @@ msgstr "Egenskaps_beskrivning:"
 #: ../src/glade-gtk.c:1410
 #, c-format
 msgid "Placing %s inside %s"
-msgstr ""
+msgstr "Placerar %s inuti %s"
 
 #: ../src/glade-fixed.c:1029
 msgid "X position property"
@@ -1134,18 +1131,16 @@ msgid "The property used to set the Y position of a child object"
 msgstr ""
 
 #: ../src/glade-fixed.c:1043
-#, fuzzy
 msgid "Width property"
-msgstr "Egenskaper"
+msgstr ""
 
 #: ../src/glade-fixed.c:1044
 msgid "The property used to set the width of a child object"
 msgstr ""
 
 #: ../src/glade-fixed.c:1050
-#, fuzzy
 msgid "Height property"
-msgstr "Egenskaper"
+msgstr ""
 
 #: ../src/glade-fixed.c:1051
 msgid "The property used to set the height of a child object"
@@ -1153,7 +1148,7 @@ msgstr ""
 
 #: ../src/glade-fixed.c:1057
 msgid "Can resize"
-msgstr ""
+msgstr "Kan ändra storlek"
 
 #: ../src/glade-fixed.c:1058
 msgid "Whether this container supports resizes of child widgets"
@@ -1161,16 +1156,15 @@ msgstr ""
 
 #: ../src/glade-fixed.c:1064
 msgid "Use Placeholders"
-msgstr ""
+msgstr "Använd platshållare"
 
 #: ../src/glade-fixed.c:1065
 msgid "Whether this container use placeholders, the backend is responsable for setting up this property"
 msgstr ""
 
 #: ../src/glade-palette.c:617
-#, fuzzy
 msgid "Widget selector"
-msgstr "Ingen widget markerad."
+msgstr ""
 
 #: ../src/glade-parser.c:1190
 #, c-format
@@ -1181,7 +1175,7 @@ msgstr "Kunde inte hitta glade-filen %s"
 #: ../src/glade-parser.c:1211
 #, c-format
 msgid "Errors parsing glade file %s"
-msgstr ""
+msgstr "Fel vid tolkning av glade-filen %s"
 
 #: ../src/glade-parser.c:1641
 msgid "Could not allocate memory for interface"
@@ -1200,9 +1194,8 @@ msgid "Whether project has unsaved changes"
 msgstr "Huruvida projektet har osparade ändringar"
 
 #: ../src/glade-project.c:570
-#, fuzzy
 msgid "Has Selection"
-msgstr "Välj signal"
+msgstr ""
 
 #: ../src/glade-project.c:571
 msgid "Whether project has a selection"
@@ -1222,6 +1215,8 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"Misslyckades med att läsa in %s.\n"
+"Följande krävda kataloger är inte tillgängliga: %s"
 
 #. Atk click property
 #: ../src/glade-property-class.c:51
@@ -1251,7 +1246,7 @@ msgstr ""
 #: ../src/glade-property-class.c:55
 #: ../widgets/gtk+.xml.in.h:194
 msgid "Release"
-msgstr ""
+msgstr "Utgåva"
 
 #. Atk release property
 #: ../src/glade-property-class.c:56
@@ -1277,33 +1272,31 @@ msgstr "Kontrolleras av"
 
 #: ../src/glade-property-class.c:63
 msgid "Indicates an object controlled by one or more target objects"
-msgstr ""
+msgstr "Indikerar att ett objekt kontrolleras av ett eller flera målobjekt"
 
 #: ../src/glade-property-class.c:65
 msgid "Controller For"
-msgstr ""
+msgstr "Kontroller för"
 
 #: ../src/glade-property-class.c:66
 msgid "Indicates an object is a controller for one or more target objects"
-msgstr ""
+msgstr "Indikerar att ett objekt är en kontroller för ett eller flera målobjekt"
 
 #: ../src/glade-property-class.c:68
-#, fuzzy
 msgid "Labelled By"
-msgstr "Etikett"
+msgstr "Etiketterad för"
 
 #: ../src/glade-property-class.c:69
 msgid "Indicates an object is labelled by one or more target objects"
-msgstr ""
+msgstr "Indikerar att ett objekt är etiketterat av ett eller flera målobjekt"
 
 #: ../src/glade-property-class.c:71
-#, fuzzy
 msgid "Label For"
-msgstr "Etikett"
+msgstr "Etikett för"
 
 #: ../src/glade-property-class.c:72
 msgid "Indicates an object is a label for one or more target objects"
-msgstr ""
+msgstr "Indikerar att att objekt är en etikett för ett eller flera målobjekt"
 
 #: ../src/glade-property-class.c:74
 msgid "Member Of"
@@ -1311,11 +1304,11 @@ msgstr "Medlem av"
 
 #: ../src/glade-property-class.c:75
 msgid "Indicates an object is a member of a group of one or more target objects"
-msgstr ""
+msgstr "Indikerar att ett objekt är medlem av en grupp av ett eller flera målobjekt "
 
 #: ../src/glade-property-class.c:77
 msgid "Child Node Of"
-msgstr ""
+msgstr "Barnnod till"
 
 #: ../src/glade-property-class.c:78
 msgid "Indicates an object is a cell in a treetable which is displayed because a cell in the same column is expanded and identifies that cell"
@@ -1346,9 +1339,8 @@ msgid "Indicates a subwindow attached to a component but otherwise has no connec
 msgstr ""
 
 #: ../src/glade-property-class.c:93
-#, fuzzy
 msgid "Embeds"
-msgstr "Aktiverad"
+msgstr "Inbäddar"
 
 #: ../src/glade-property-class.c:94
 msgid "Indicates that the object visually embeds another object's content, i.e. this object's content flows around another's content"
@@ -1356,16 +1348,15 @@ msgstr ""
 
 #: ../src/glade-property-class.c:97
 msgid "Embedded By"
-msgstr ""
+msgstr "Inbäddad av"
 
 #: ../src/glade-property-class.c:98
 msgid "Inverse of 'Embeds', indicates that this object's content is visualy embedded in another object"
 msgstr ""
 
 #: ../src/glade-property-class.c:101
-#, fuzzy
 msgid "Popup For"
-msgstr "Popup"
+msgstr "Popup för"
 
 #: ../src/glade-property-class.c:102
 msgid "Indicates that an object is a popup for another object"
@@ -1373,7 +1364,7 @@ msgstr ""
 
 #: ../src/glade-property-class.c:104
 msgid "Parent Window Of"
-msgstr ""
+msgstr "Föräldrafönster till"
 
 #: ../src/glade-property-class.c:105
 msgid "Indicates that an object is a parent window of another object"
@@ -1409,11 +1400,11 @@ msgstr "Översättningsbar"
 
 #: ../src/glade-property.c:609
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "Huruvida den här egenskapen är översättningsbar eller inte"
 
 #: ../src/glade-property.c:615
 msgid "Has Context"
-msgstr ""
+msgstr "Har sammanhang"
 
 #: ../src/glade-property.c:616
 msgid "Whether or not the translatable string has a context prefix"
@@ -1442,9 +1433,9 @@ msgid "We could not find the symbol \"%s\""
 msgstr "Vi kunde inte hitta symbolen \"%s\""
 
 #: ../src/glade-utils.c:177
-#, fuzzy, c-format
+#, c-format
 msgid "Could not get the type from \"%s\""
-msgstr "Kunde inte få typen \"%s"
+msgstr "Kunde inte få typen från \"%s\""
 
 #: ../src/glade-utils.c:542
 msgid "All Files"
@@ -1494,9 +1485,9 @@ msgid "Failed to open %s for reading: %s"
 msgstr "Misslyckades med att öppna %s för läsning: %s"
 
 #: ../src/glade-utils.c:1498
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open the module %s (%s)."
-msgstr "Kunde inte öppna \"%s\", filen finns inte.\n"
+msgstr "Kunde inte öppna modulen %s (%s)."
 
 #: ../src/glade-widget.c:1073
 msgid "The name of the widget"
@@ -1508,7 +1499,7 @@ msgstr "Internt namn"
 
 #: ../src/glade-widget.c:1081
 msgid "The internal name of the widget"
-msgstr ""
+msgstr "Interna namnet för widgeten"
 
 #: ../src/glade-widget.c:1087
 msgid "Anarchist"
@@ -1527,9 +1518,8 @@ msgid "The object associated"
 msgstr ""
 
 #: ../src/glade-widget.c:1103
-#, fuzzy
 msgid "Adaptor"
-msgstr "Lägg till avgränsare"
+msgstr ""
 
 #: ../src/glade-widget.c:1104
 msgid "The class adaptor for the associated widget"
@@ -1562,7 +1552,7 @@ msgstr "Internt namn"
 
 #: ../src/glade-widget.c:1136
 msgid "A generic name prefix for internal widgets"
-msgstr ""
+msgstr "Ett allmänt namnprefix för interna widgetar"
 
 #: ../src/glade-widget.c:1141
 msgid "Template"
@@ -1570,7 +1560,7 @@ msgstr "Mall"
 
 #: ../src/glade-widget.c:1142
 msgid "A GladeWidget template to base a new widget on"
-msgstr ""
+msgstr "En GladeWidget-mall att basera en ny widget på"
 
 #: ../src/glade-widget.c:1148
 #: ../widgets/gtk+.xml.in.h:126
@@ -1587,19 +1577,19 @@ msgstr "Anledning"
 
 #: ../src/glade-widget.c:1155
 msgid "A GladeCreateReason for this creation"
-msgstr ""
+msgstr "Ett GladeCreateReason för denna skapelse"
 
 #: ../src/glade-widget-adaptor.c:183
 #: ../src/glade-widget-adaptor.c:223
 #, c-format
 msgid "Unable to load icon for %s (%s)"
-msgstr ""
+msgstr "Kunde inte läsa in ikon för %s (%s)"
 
 #: ../src/glade-widget-adaptor.c:198
 #: ../src/glade-widget-adaptor.c:238
 #, c-format
 msgid "Unable to load stock icon (%s)"
-msgstr ""
+msgstr "Kunde inte läsa in standardikon (%s)"
 
 #: ../src/glade-widget-adaptor.c:332
 #, c-format
@@ -1612,7 +1602,7 @@ msgstr "Namn på klassen"
 
 #: ../src/glade-widget-adaptor.c:917
 msgid "GType of the class"
-msgstr ""
+msgstr "GType av klassen"
 
 #: ../src/glade-widget-adaptor.c:924
 #: ../widgets/gnome.xml.in.h:45
@@ -1628,9 +1618,8 @@ msgid "Generic Name"
 msgstr "Allmänt namn"
 
 #: ../src/glade-widget-adaptor.c:933
-#, fuzzy
 msgid "Used to generate names of new widgets"
-msgstr "Namnet på widgeten"
+msgstr ""
 
 #: ../src/glade-widget-adaptor.c:940
 msgid "Catalog"
@@ -1638,7 +1627,7 @@ msgstr "Katalog"
 
 #: ../src/glade-widget-adaptor.c:941
 msgid "The name of the widget catalog this class was declared by"
-msgstr ""
+msgstr "Namnet på widgetkatalogen som denna klass deklarerades av"
 
 #: ../src/glade-widget-adaptor.c:948
 msgid "Book"
@@ -1697,7 +1686,7 @@ msgstr ""
 
 #: ../src/glade-custom.c:218
 msgid "The function which creates this widget"
-msgstr ""
+msgstr "Funktionen som skapar denna widget"
 
 #: ../src/glade-custom.c:224
 msgid "String 1"
@@ -1705,7 +1694,7 @@ msgstr "Sträng 1"
 
 #: ../src/glade-custom.c:225
 msgid "The first string argument to pass to the function"
-msgstr ""
+msgstr "Första strängargumentet att skicka till funktionen"
 
 #: ../src/glade-custom.c:231
 msgid "String 2"
@@ -1713,7 +1702,7 @@ msgstr "Sträng 2"
 
 #: ../src/glade-custom.c:232
 msgid "The second string argument to pass to the function"
-msgstr ""
+msgstr "Andra strängargumentet att skicka till funktionen"
 
 #: ../src/glade-custom.c:238
 msgid "Integer 1"
@@ -1721,7 +1710,7 @@ msgstr "Heltal 1"
 
 #: ../src/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
-msgstr ""
+msgstr "Första heltalsargumentet att skicka till funktionen"
 
 #: ../src/glade-custom.c:245
 msgid "Integer 2"
@@ -1729,11 +1718,11 @@ msgstr "Heltal 2"
 
 #: ../src/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
-msgstr ""
+msgstr "Andra heltalsargumentet att skicka till funktionen"
 
 #: ../src/glade-gtk.c:171
 msgid "GnomeUIInfo"
-msgstr ""
+msgstr "GnomeUIInfo"
 
 #: ../src/glade-gtk.c:172
 msgid "Choose the GnomeUIInfo stock item"
@@ -1865,7 +1854,7 @@ msgstr ""
 
 #: ../src/glade-gtk.c:4369
 msgid "Print S_etup"
-msgstr ""
+msgstr "Uts_kriftskonfiguration"
 
 #: ../src/glade-gtk.c:4373
 msgid "Find Ne_xt"
@@ -1945,7 +1934,7 @@ msgstr "Menyredigerare"
 
 #: ../src/glade-gtk.c:4859
 msgid "<custom>"
-msgstr ""
+msgstr "<anpassad>"
 
 #: ../src/glade-gtk.c:4907
 #: ../widgets/gtk+.xml.in.h:31
@@ -1975,20 +1964,19 @@ msgstr "Lägg till växlingsknapp"
 
 #: ../src/glade-gtk.c:4918
 msgid "Add Radio Button"
-msgstr ""
+msgstr "Lägg till radioknapp"
 
 #: ../src/glade-gtk.c:4919
 msgid "Add Menu Button"
-msgstr ""
+msgstr "Lägg till menyknapp"
 
 #: ../src/glade-gtk.c:4920
 msgid "Add Tool Item"
 msgstr ""
 
 #: ../src/glade-gtk.c:4929
-#, fuzzy
 msgid "Tool Bar Editor"
-msgstr "Verktygsrad"
+msgstr "Verktygsradsredigerare"
 
 #: ../src/glade-gtk.c:5682
 msgid "Introduction page"
@@ -2008,7 +1996,7 @@ msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "En verktygstipstext för denna widget"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -2016,7 +2004,7 @@ msgstr ""
 #.
 #: ../widgets/gtk+.xml.in.h:8
 msgid "About Dialog"
-msgstr ""
+msgstr "Om-dialog"
 
 #: ../widgets/gtk+.xml.in.h:9
 msgid "Accel Label"
@@ -2028,9 +2016,8 @@ msgstr ""
 
 #. Atk name and description properties
 #: ../widgets/gtk+.xml.in.h:12
-#, fuzzy
 msgid "Accessible Name"
-msgstr "Namn:"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:15
 msgid "Alignment"
@@ -2051,7 +2038,7 @@ msgstr "Alltid"
 
 #: ../widgets/gtk+.xml.in.h:19
 msgid "Always Center"
-msgstr ""
+msgstr "Centrera alltid"
 
 #: ../widgets/gtk+.xml.in.h:20
 msgid "Arrow"
@@ -2075,24 +2062,24 @@ msgstr "Båda"
 
 #: ../widgets/gtk+.xml.in.h:25
 msgid "Both Horizontal"
-msgstr ""
+msgstr "Båda horisontellt"
 
 #: ../widgets/gtk+.xml.in.h:26
 #: ../widgets/bonobo.xml.in.h:1
 msgid "Bottom"
-msgstr ""
+msgstr "Nederkant"
 
 #: ../widgets/gtk+.xml.in.h:27
 msgid "Bottom Left"
-msgstr ""
+msgstr "Nedre vänster"
 
 #: ../widgets/gtk+.xml.in.h:28
 msgid "Bottom Right"
-msgstr ""
+msgstr "Nedre höger"
 
 #: ../widgets/gtk+.xml.in.h:29
 msgid "Bottom to Top"
-msgstr ""
+msgstr "Nederkant till överkant"
 
 #: ../widgets/gtk+.xml.in.h:30
 msgid "Box"
@@ -2100,15 +2087,15 @@ msgstr "Ruta"
 
 #: ../widgets/gtk+.xml.in.h:32
 msgid "Button 1 Motion"
-msgstr ""
+msgstr "Knapp 1-rörelse"
 
 #: ../widgets/gtk+.xml.in.h:33
 msgid "Button 2 Motion"
-msgstr ""
+msgstr "Knapp 2-rörelse"
 
 #: ../widgets/gtk+.xml.in.h:34
 msgid "Button 3 Motion"
-msgstr ""
+msgstr "Knapp 3-rörelse"
 
 #: ../widgets/gtk+.xml.in.h:35
 msgid "Button Box"
@@ -2116,11 +2103,11 @@ msgstr "Knappruta"
 
 #: ../widgets/gtk+.xml.in.h:36
 msgid "Button Motion"
-msgstr ""
+msgstr "Knapprörelse"
 
 #: ../widgets/gtk+.xml.in.h:37
 msgid "Button Press"
-msgstr ""
+msgstr "Knapptryck"
 
 #: ../widgets/gtk+.xml.in.h:38
 msgid "Button Release"
@@ -2135,13 +2122,12 @@ msgid "Cancel"
 msgstr "Avbryt"
 
 #: ../widgets/gtk+.xml.in.h:41
-#, fuzzy
 msgid "Center"
-msgstr "Gemensam"
+msgstr "Centrera"
 
 #: ../widgets/gtk+.xml.in.h:42
 msgid "Center on Parent"
-msgstr ""
+msgstr "Centrera på förälder"
 
 #: ../widgets/gtk+.xml.in.h:43
 msgid "Character"
@@ -2149,7 +2135,7 @@ msgstr "Tecken"
 
 #: ../widgets/gtk+.xml.in.h:44
 msgid "Check Button"
-msgstr ""
+msgstr "Kryssknapp"
 
 #: ../widgets/gtk+.xml.in.h:45
 msgid "Check Menu Item"
@@ -2161,12 +2147,11 @@ msgstr "Stäng"
 
 #: ../widgets/gtk+.xml.in.h:49
 msgid "Color Button"
-msgstr ""
+msgstr "Färgknapp"
 
 #: ../widgets/gtk+.xml.in.h:50
-#, fuzzy
 msgid "Color Selection"
-msgstr "Välj signal"
+msgstr "Färgval"
 
 #: ../widgets/gtk+.xml.in.h:51
 msgid "Color Selection Dialog"
@@ -2174,7 +2159,7 @@ msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:52
 msgid "Columned List"
-msgstr ""
+msgstr "Lista i kolumner"
 
 #: ../widgets/gtk+.xml.in.h:53
 msgid "Combo"
@@ -2235,7 +2220,7 @@ msgstr "Fördröjd"
 
 #: ../widgets/gtk+.xml.in.h:69
 msgid "Description of an object, formatted for assistive technology access"
-msgstr ""
+msgstr "Beskrivning av ett objekt, formaterat för hjälpmedelsteknikåtkomst"
 
 #: ../widgets/gtk+.xml.in.h:70
 msgid "Desktop"
@@ -2275,7 +2260,7 @@ msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:79
 msgid "Drop Down Menu"
-msgstr ""
+msgstr "Rullgardinsmeny"
 
 #: ../widgets/gtk+.xml.in.h:80
 msgid "East"
@@ -2323,9 +2308,8 @@ msgid "Expand"
 msgstr "Expandera"
 
 #: ../widgets/gtk+.xml.in.h:90
-#, fuzzy
 msgid "Expander"
-msgstr "Hanterare"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:91
 msgid "Exposure"
@@ -2333,20 +2317,19 @@ msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:92
 msgid "File Chooser Button"
-msgstr ""
+msgstr "Filväljarknapp"
 
 #: ../widgets/gtk+.xml.in.h:93
 msgid "File Chooser Dialog"
-msgstr ""
+msgstr "Filväljardialog"
 
 #: ../widgets/gtk+.xml.in.h:94
 msgid "File Name"
 msgstr "Filnamn"
 
 #: ../widgets/gtk+.xml.in.h:95
-#, fuzzy
 msgid "File Selection"
-msgstr "Välj signal"
+msgstr "Filmarkering"
 
 #: ../widgets/gtk+.xml.in.h:96
 #: ../widgets/gnome.xml.in.h:11
@@ -2366,18 +2349,16 @@ msgid "Font Button"
 msgstr "Typsnittsknapp"
 
 #: ../widgets/gtk+.xml.in.h:100
-#, fuzzy
 msgid "Font Selection"
-msgstr "Välj signal"
+msgstr "Typsnittsmarkering"
 
 #: ../widgets/gtk+.xml.in.h:101
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "Typsnittsväljardialog"
 
 #: ../widgets/gtk+.xml.in.h:102
-#, fuzzy
 msgid "Frame"
-msgstr "Namn:"
+msgstr "Ram"
 
 #: ../widgets/gtk+.xml.in.h:103
 msgid "Free"
@@ -2396,9 +2377,8 @@ msgid "Half"
 msgstr "Halv"
 
 #: ../widgets/gtk+.xml.in.h:107
-#, fuzzy
 msgid "Handle Box"
-msgstr "Hanterare"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:108
 #: ../widgets/bonobo.xml.in.h:6
@@ -2407,7 +2387,7 @@ msgstr "Horisontal"
 
 #: ../widgets/gtk+.xml.in.h:109
 msgid "Horizontal Box"
-msgstr ""
+msgstr "Horisontell ruta"
 
 #: ../widgets/gtk+.xml.in.h:110
 msgid "Horizontal Button Box"
@@ -2427,11 +2407,11 @@ msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:114
 msgid "Horizontal Scrollbar"
-msgstr ""
+msgstr "Horisontell rullist"
 
 #: ../widgets/gtk+.xml.in.h:115
 msgid "Horizontal Separator"
-msgstr ""
+msgstr "Horisontell avgränsare"
 
 #: ../widgets/gtk+.xml.in.h:116
 msgid "Horizontal and Vertical"
@@ -2472,12 +2452,11 @@ msgstr "In"
 
 #: ../widgets/gtk+.xml.in.h:127
 msgid "Input Dialog"
-msgstr ""
+msgstr "Inmatningsdialog"
 
 #: ../widgets/gtk+.xml.in.h:128
-#, fuzzy
 msgid "Intro"
-msgstr "Heltal"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:129
 msgid "Items"
@@ -2485,7 +2464,7 @@ msgstr "Poster"
 
 #: ../widgets/gtk+.xml.in.h:130
 msgid "Key Press"
-msgstr ""
+msgstr "Tangenttryck"
 
 #: ../widgets/gtk+.xml.in.h:131
 msgid "Key Release"
@@ -2545,9 +2524,8 @@ msgid "Menu Shell"
 msgstr "Menyskal"
 
 #: ../widgets/gtk+.xml.in.h:147
-#, fuzzy
 msgid "Menu Tool Button"
-msgstr "Växla knapp"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:148
 msgid "Message Dialog"
@@ -2601,7 +2579,7 @@ msgstr "Antal sidor"
 #. Atk name and description properties
 #: ../widgets/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
-msgstr ""
+msgstr "Objektinstansens namn formaterat för hjälpmedelsteknikåtkomst"
 
 #: ../widgets/gtk+.xml.in.h:164
 msgid "Ok"
@@ -2626,9 +2604,8 @@ msgid "Out"
 msgstr "Ut"
 
 #: ../widgets/gtk+.xml.in.h:169
-#, fuzzy
 msgid "Page Setup Dialog"
-msgstr "Meddelandedialog"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:170
 msgid "Paned"
@@ -2669,9 +2646,8 @@ msgid "Progress Bar"
 msgstr "Förloppsindikator"
 
 #: ../widgets/gtk+.xml.in.h:182
-#, fuzzy
 msgid "Property Change"
-msgstr "Egenskaper"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:183
 msgid "Proximity  Out"
@@ -2699,9 +2675,8 @@ msgid "Radio Menu Item"
 msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:189
-#, fuzzy
 msgid "Radio Tool Button"
-msgstr "Växla knapp"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:190
 msgid "Range"
@@ -2729,9 +2704,8 @@ msgid "Right to Left"
 msgstr "Höger till vänster"
 
 #: ../widgets/gtk+.xml.in.h:198
-#, fuzzy
 msgid "Ruler"
-msgstr "Töm"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:199
 #: ../widgets/gnome.xml.in.h:31
@@ -2748,7 +2722,7 @@ msgstr "Rulla"
 
 #: ../widgets/gtk+.xml.in.h:202
 msgid "Scrolled Window"
-msgstr ""
+msgstr "Rullat fönster"
 
 #: ../widgets/gtk+.xml.in.h:203
 #: ../widgets/gnome.xml.in.h:34
@@ -2760,9 +2734,8 @@ msgid "Separator Menu Item"
 msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:205
-#, fuzzy
 msgid "Separator Tool Item"
-msgstr "Avgränsare"
+msgstr ""
 
 #: ../widgets/gtk+.xml.in.h:206
 msgid "Set the current page (strictly for editing purposes)"
@@ -2854,7 +2827,7 @@ msgstr "Text"
 
 #: ../widgets/gtk+.xml.in.h:238
 msgid "Text Entry"
-msgstr ""
+msgstr "Textfält"
 
 #: ../widgets/gtk+.xml.in.h:239
 msgid "Text View"
@@ -3037,7 +3010,7 @@ msgstr "Ja, Nej"
 
 #: ../widgets/gtk+.xml.in.h:284
 msgid "You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation"
-msgstr ""
+msgstr "Du kan markera den här som översättningsbar och ställa in ett namn/adress om du vill visa en specifik översättare, annars ska du lista alla översättare och avmarkera den här strängen för översättning"
 
 #: ../src/glade-gnome.c:292
 msgid "Status Message."
@@ -3045,17 +3018,15 @@ msgstr "Statusmeddelande."
 
 #: ../src/glade-gnome.c:650
 msgid "The position in the druid"
-msgstr ""
+msgstr "Positionen i guiden"
 
 #: ../src/glade-gnome.c:1002
-#, fuzzy
 msgid "Message box type"
-msgstr "Meddelandedialog"
+msgstr ""
 
 #: ../src/glade-gnome.c:1003
-#, fuzzy
 msgid "The type of the message box"
-msgstr "Namnet på widgeten"
+msgstr "Typen för meddelanderutan"
 
 #: ../src/glade-gnome.c:1219
 msgid "This property is valid only in font information mode"
@@ -3063,23 +3034,20 @@ msgstr ""
 
 #: ../src/glade-gnome.c:1307
 #: ../widgets/canvas.xml.in.h:14
-#, fuzzy
 msgid "Selection Mode"
-msgstr "Välj mapp"
+msgstr ""
 
 #: ../src/glade-gnome.c:1308
-#, fuzzy
 msgid "Choose the Selection Mode"
-msgstr "Välj signal"
+msgstr ""
 
 #: ../src/glade-gnome.c:1458
 msgid "Placement"
 msgstr "Placering"
 
 #: ../src/glade-gnome.c:1459
-#, fuzzy
 msgid "Choose the BonoboDockPlacement type"
-msgstr "Välj bildtyp"
+msgstr "Välj BonoboDockPlacement-typen"
 
 #: ../src/glade-gnome.c:1487
 msgid "Behavior"
@@ -3087,17 +3055,15 @@ msgstr "Beteende"
 
 #: ../src/glade-gnome.c:1488
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "Välj BonoboDockItemBehavior-typen"
 
 #: ../src/glade-gnome.c:1497
-#, fuzzy
 msgid "Pack Type"
-msgstr "Bildtyp"
+msgstr ""
 
 #: ../src/glade-gnome.c:1498
-#, fuzzy
 msgid "Choose the Pack Type"
-msgstr "Välj bildtyp"
+msgstr ""
 
 #: ../widgets/gnome.xml.in.h:1
 msgid "24-Hour Format"
@@ -3120,9 +3086,8 @@ msgid "File"
 msgstr "Fil"
 
 #: ../widgets/gnome.xml.in.h:12
-#, fuzzy
 msgid "Font Information"
-msgstr "Välj signal"
+msgstr "Typsnittsinformation"
 
 #: ../widgets/gnome.xml.in.h:13
 msgid "GNOME UI Obsolete"
@@ -3146,12 +3111,11 @@ msgstr "Logotyp"
 
 #: ../widgets/gnome.xml.in.h:18
 msgid "Logo Background Color"
-msgstr ""
+msgstr "Logotypbakgrundsfärg"
 
 #: ../widgets/gnome.xml.in.h:19
-#, fuzzy
 msgid "Max Saved"
-msgstr "Spara"
+msgstr ""
 
 #: ../widgets/gnome.xml.in.h:20
 msgid "Message"
@@ -3159,16 +3123,15 @@ msgstr "Meddelande"
 
 #: ../widgets/gnome.xml.in.h:21
 msgid "Monday First"
-msgstr ""
+msgstr "Måndag först"
 
 #: ../widgets/gnome.xml.in.h:25
-#, fuzzy
 msgid "Padding"
-msgstr "_Packning"
+msgstr ""
 
 #: ../widgets/gnome.xml.in.h:26
 msgid "Pixmap"
-msgstr ""
+msgstr "Pixmap"
 
 #: ../widgets/gnome.xml.in.h:28
 msgid "Program Name"
@@ -3200,7 +3163,7 @@ msgstr "Lagra konfiguration"
 
 #: ../widgets/gnome.xml.in.h:40
 msgid "Text Foreground Color"
-msgstr ""
+msgstr "Textförgrundsfärg"
 
 #: ../widgets/gnome.xml.in.h:41
 msgid "The height to scale the pixmap to"
@@ -3220,7 +3183,7 @@ msgstr ""
 
 #: ../widgets/gnome.xml.in.h:46
 msgid "Title Foreground Color"
-msgstr ""
+msgstr "Titelförgrundsfärg"
 
 #: ../widgets/gnome.xml.in.h:47
 msgid "Top Watermark"
@@ -3232,7 +3195,7 @@ msgstr "Okänd"
 
 #: ../widgets/gnome.xml.in.h:49
 msgid "Use Alpha"
-msgstr ""
+msgstr "Använd alfa"
 
 #: ../widgets/gnome.xml.in.h:50
 msgid "Used to pass around information about the position of a GnomeDruidPage within the overall GnomeDruid. This enables the correct \"surrounding\" content for the page to be drawn"
@@ -3243,9 +3206,8 @@ msgid "User"
 msgstr "Användare"
 
 #: ../widgets/gnome.xml.in.h:52
-#, fuzzy
 msgid "User Widget"
-msgstr "Widget"
+msgstr "Användarwidget"
 
 #: ../widgets/gnome.xml.in.h:54
 msgid "Watermark"
@@ -3293,11 +3255,11 @@ msgstr "Ikonbredd"
 
 #: ../widgets/canvas.xml.in.h:5
 msgid "If the icon text can be edited by the user"
-msgstr ""
+msgstr "Om ikontexten kan redigeras av användaren"
 
 #: ../widgets/canvas.xml.in.h:6
 msgid "If the icon text is static, in which case it will not be copied by the GnomeIconList"
-msgstr ""
+msgstr "Om ikontexten är statisk, vilket innebär att den inte kommer att kopieras av GnomeIconList"
 
 #: ../widgets/canvas.xml.in.h:7
 msgid "Max X"
@@ -3317,7 +3279,7 @@ msgstr "Min Y"
 
 #: ../widgets/canvas.xml.in.h:11
 msgid "Multiple"
-msgstr ""
+msgstr "Flera"
 
 #: ../widgets/canvas.xml.in.h:12
 msgid "Pixels per unit"
@@ -3328,9 +3290,8 @@ msgid "Row Spacing"
 msgstr ""
 
 #: ../widgets/canvas.xml.in.h:15
-#, fuzzy
 msgid "Single"
-msgstr "Sträng"
+msgstr "En"
 
 #: ../widgets/canvas.xml.in.h:16
 msgid "Text Editable"
@@ -3362,24 +3323,23 @@ msgstr "Minimal y-koordinat"
 
 #: ../widgets/canvas.xml.in.h:23
 msgid "The number of pixels between columns of icons"
-msgstr ""
+msgstr "Antal bildpunkter mellan kolumner av ikoner"
 
 #: ../widgets/canvas.xml.in.h:24
 msgid "The number of pixels between rows of icons"
-msgstr ""
+msgstr "Antal bildpunkter mellan rader av ikoner"
 
 #: ../widgets/canvas.xml.in.h:25
 msgid "The number of pixels between the text and the icon"
-msgstr ""
+msgstr "Antal bildpunkter mellan texten och ikonen"
 
 #: ../widgets/canvas.xml.in.h:26
 msgid "The number of pixels corresponding to one unit"
 msgstr ""
 
 #: ../widgets/canvas.xml.in.h:27
-#, fuzzy
 msgid "The selection mode"
-msgstr "Välj signal"
+msgstr "Markeringsläget"
 
 #: ../widgets/canvas.xml.in.h:28
 msgid "The width of each icon"
