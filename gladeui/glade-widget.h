@@ -113,8 +113,7 @@ struct _GladeWidgetClass
 	gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
 	gint         (*enter_notify_event)      (GladeWidget *, GdkEvent *);
 
-	void         (*setup_events)            (GladeWidget *, GtkWidget *);
-	gboolean     (*event)                   (GtkWidget *, GdkEvent *, GladeWidget *);
+	gboolean     (*event)                   (GladeWidget *, GdkEvent *);
 };
 
 /*******************************************************************************
@@ -180,18 +179,16 @@ void                    glade_widget_change_signal_handler  (GladeWidget      *w
 LIBGLADEUI_API 
 GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
 							     const gchar      *signal_name);
-
 LIBGLADEUI_API 
 gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
 LIBGLADEUI_API 
 void                    glade_widget_launch_editor          (GladeWidget      *widget);
-
 LIBGLADEUI_API 
 gboolean                glade_widget_has_decendant          (GladeWidget      *widget,
 							     GType             type);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_event_widget           (void);
-
+gboolean                glade_widget_event                  (GladeWidget      *gwidget,
+							     GdkEvent         *event);
 LIBGLADEUI_API
 gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
 							     GladeWidget      *widget);

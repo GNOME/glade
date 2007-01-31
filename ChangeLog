@@ -1,3 +1,30 @@
+2007-01-31  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.[ch]: 
+	  o Removed search algorythm for child widgets, removed glade_widget_event_widget (), 
+	    removed popup-menu signal handler, removed call to gtk_window_set_decorated() 
+	    on toplevel project widgets, removed widget->setup_events(), removed hide_on_delete()
+	  o Added glade_widget_event() to feed events directly to widgets from the design layout.
+	  o Call glade_app_hierarchy_changed() upon add/remove/replace operations
+
+	* gladeui/glade-utils.c: Removed glade_utils_deep_fixed_event() and the
+	  hacky widget grab that went with it.
+
+	* gladeui/glade-app.[ch]: Added glade_app_hierarchy_changed() and added
+	  "hierarchy-changed" signal.
+	
+	* gladeui/glade-design-layout.c: 
+	  o Make sure event window is always on top by trapping GladeApp's "hierarchy-changed"
+	    signal
+	  o Feed events directly to the proper GladeWidget, if its not handled then pass it
+	    on to the underlying widgets (using gtk_widget_event() directly).
+
+	* gladeui/glade-cursor.c: Removed the recursive cursor setting routine.
+
+	* gladeui/glade-fixed.c: Simplified immensely by removing redundant code,
+	  now there is only one GladeWidget to deal with, no searching and gropeing
+	  for the appropriate widget to operate on.
+
 2007-01-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: Made 'pasting' an explicit arg of glade_command_add(),

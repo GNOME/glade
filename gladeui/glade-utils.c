@@ -1615,37 +1615,6 @@ glade_util_search_devhelp (const gchar *book,
 	if (page_comm) g_free (page_comm);
 }
 
-static GladeWidget *grabed_widget = NULL;
-void
-glade_util_set_grabed_widget (GladeWidget *gwidget)
-{
-	grabed_widget = gwidget;
-}
-
-gboolean
-glade_util_deep_fixed_event (GtkWidget   *widget,
-			     GdkEvent    *event,
-			     GladeWidget *gwidget)
-{
-	GladeWidget *event_widget, *search;
-
-	if (grabed_widget)
-		event_widget = grabed_widget;
-	else
-		event_widget = glade_widget_event_widget ();
-
-	/* Look for a child GladeFixed
-	 */
-	for (search = event_widget;
-	     search && search != gwidget && GLADE_IS_FIXED (search) == FALSE;
-	     search = search->parent);
-
-	if (search && GLADE_IS_FIXED (search) && search != gwidget)
-		return GLADE_WIDGET_GET_CLASS (search)->event (widget, event, search);
-
-	return FALSE;
-}
-
 GtkWidget *
 glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {

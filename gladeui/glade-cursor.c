@@ -34,56 +34,6 @@
 
 static GladeCursor *cursor = NULL;
 
-
-static void
-set_cursor_recurse (GtkWidget *widget, 
-		    GdkCursor *gdk_cursor)
-{
-	GList *children, *list;
-
-	if (!GTK_WIDGET_VISIBLE (widget) || 
-	    !GTK_WIDGET_REALIZED (widget))
-		return;
-
-	gdk_window_set_cursor (widget->window, gdk_cursor);
-
-	if (GTK_IS_CONTAINER (widget) &&
-	    (children = 
-	     glade_util_container_get_all_children (GTK_CONTAINER (widget))) != NULL)
-	{
-		for (list = children; list; list = list->next)
-		{
-			set_cursor_recurse (GTK_WIDGET (list->data), gdk_cursor);
-		}
-		g_list_free (children);
-	}
-}
-
-
-static void
-set_cursor (GdkCursor *gdk_cursor)
-{
-	GladeProject *project;
-	GList        *list, *projects;
-
-	for (projects = glade_app_get_projects ();
-	     projects; projects = projects->next)
-	{
-		project = projects->data;
-
-		for (list = project->objects; 
-		     list; list = list->next)
-		{
-			GObject *object = list->data;
-
-			if (GTK_IS_WINDOW (object))
-			{
-				set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
-			}
-		}
-	}
-}
-
 /**
  * glade_cursor_set:
  * @window: a #GdkWindow
@@ -101,7 +51,6 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 
 	switch (type) {
 	case GLADE_CURSOR_SELECTOR:
-		set_cursor (cursor->selector);
  		gdk_window_set_cursor (window, cursor->selector);
 		break;
 	case GLADE_CURSOR_ADD_WIDGET:
@@ -149,8 +98,6 @@ glade_cursor_set (GdkWindow *window, GladeCursorType type)
 	}
 
 	gdk_window_set_cursor (window, the_cursor);
-	set_cursor (the_cursor);
-	
 }
 
 /**

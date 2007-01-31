@@ -489,6 +489,24 @@ glade_fixed_configure_end_impl (GladeFixed  *fixed,
 	return TRUE;
 }
 
+
+static void
+glade_fixed_cancel_operation (GladeFixed      *fixed,
+			      GladeCursorType  new_operation)
+{
+	gboolean handled;
+	
+	g_signal_emit (G_OBJECT (fixed),
+		       glade_fixed_signals[CONFIGURE_END],
+		       0, fixed->configuring, &handled);
+
+	/* Leave the machine state intact untill after
+	 * the user handled signal. 
+	 */
+	fixed->operation   = new_operation;
+	fixed->configuring = NULL;
+}			      
+
 static gboolean
 glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GladeWidget *child,
@@ -497,8 +515,9 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 {
 	GladeCursorType  operation;
 	GtkWidget       *fixed_widget, *child_widget;
-	gboolean         handled = FALSE, sig_handled;
 	gint             fixed_x, fixed_y, child_x, child_y;
+	gboolean         handled = FALSE, sig_handled;
+	gboolean         button_down;
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
@@ -527,39 +546,45 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	{
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
+
+		/* Get button state */
+		if (event->type == GDK_ENTER_NOTIFY)
+			button_down = 
+				((GdkEventCrossing *)event)->state & GDK_BUTTON1_MASK;
+		else
+			button_down =
+				((GdkEventMotion *)event)->state & GDK_BUTTON1_MASK;
+
 		if (fixed->configuring == NULL)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  operation);
-		} 
-		else if (event->type == GDK_MOTION_NOTIFY) 
+		} else if (fixed->configuring && !button_down)
+		{
+			/* Cancel drags that no longer have mouse down */
+			glade_cursor_set (((GdkEventAny *)event)->window, 
+					  operation);
+
+			glade_fixed_cancel_operation (fixed, operation);
+			handled = TRUE;
+		} else if (fixed->configuring && 
+			   event->type == GDK_MOTION_NOTIFY)
 		{
 			/* Need to update mouse for configures. */
 			gtk_widget_get_pointer (fixed_widget,
 						&fixed->mouse_x, &fixed->mouse_y);
-
-#if 0
-			g_print ("glade_fixed_handle_child_event (fixed: %s): "
-				 "Setting mouse pointer to %d %d "
-				 "(event widget %p no window %d)\n", 
-				 GLADE_WIDGET (fixed)->name,
-				 fixed->mouse_x, fixed->mouse_y, 
-				 event_widget, GTK_WIDGET_NO_WINDOW (fixed_widget));
-#endif
-
 
 			glade_fixed_configure_widget (fixed, child);
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  fixed->operation);
 			handled = TRUE;
 		}
+
 		gdk_window_get_pointer (GTK_WIDGET (child->object)->window, NULL, NULL, NULL);
 		break;
 	case GDK_BUTTON_PRESS:
 		if (((GdkEventButton *)event)->button == 1)
 		{
-			glade_util_set_grabed_widget (child);
-			
 			fixed->configuring = child;
 			/* Save widget allocation and pointer pos */
 			glade_fixed_save_state (fixed, child);
@@ -575,24 +600,14 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		}
 		break;
 	case GDK_BUTTON_RELEASE:
+
 		if (((GdkEventButton *)event)->button == 1 && 
 		    fixed->configuring)
 		{
-			glade_util_set_grabed_widget (NULL);
-			
-			// cancel drag stuff
 			glade_cursor_set (((GdkEventAny *)event)->window,
 					  operation);
-			
-			g_signal_emit (G_OBJECT (fixed),
-				       glade_fixed_signals[CONFIGURE_END],
-				       0, child, &sig_handled);
 
-			/* Leave the machine state intact untill after
-			 * the user handled signal. 
-			 */
-			fixed->operation   = operation;
-			fixed->configuring = NULL;
+			glade_fixed_cancel_operation (fixed, operation);
 			handled = TRUE;
 		}
 		break;
@@ -608,12 +623,10 @@ glade_fixed_child_event (GladeWidget *gwidget,
 			 GdkEvent    *event,
 			 GladeFixed  *fixed)
 {
-	GtkWidget   *event_widget;
-	GladeWidget *search, *event_gwidget;
+	GtkWidget *event_widget;
 
 	/* Get the basic event info... */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-	event_gwidget = glade_widget_event_widget ();
 
 	/* Skip all this choosyness if we're already in a drag/resize
 	 */
@@ -624,37 +637,11 @@ glade_fixed_child_event (GladeWidget *gwidget,
 	}
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
-	g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE);
 
-	/* Get the gwidget that is a direct child of a 'fixed' */
-	for (search = gwidget; 
-	     search && GLADE_IS_FIXED (search->parent) == FALSE;
-	     search = search->parent);
-
-	/* This event handler is for direct children of the fixed
-	 * widget that connected, discard any events from child widgets.
-	 * (except shallow placeholders)
-	 */
-	if (search == NULL || search != gwidget || 
-	    (GLADE_IS_PLACEHOLDER (event_gwidget) == FALSE &&
-	     event_gwidget != search))
-		return FALSE;
-
-	/* Dont do anything for placeholders that are too deep.
-	 * (i.e. they must be parented by the fixed's direct child)
-	 */
-	if (GLADE_IS_PLACEHOLDER (event_widget))
-	{
-		if (search != glade_placeholder_get_parent
-		    (GLADE_PLACEHOLDER (event_widget)))
-			return FALSE;
-	}
-
-	/* Early return for placeholders or fixed children with selection in
+	/* Early return for fixed children with selection in
 	 * the palette.
 	 */
-	if ((GLADE_IS_PLACEHOLDER (event_widget) ||
-	     GLADE_IS_FIXED (event_gwidget))     &&
+	if (GLADE_IS_FIXED (gwidget) &&
 	    glade_palette_get_current_item (glade_app_get_palette ()) != NULL)
 	{
 		glade_cursor_set (((GdkEventAny *)event)->window, 
@@ -759,67 +746,23 @@ glade_fixed_replace_child_impl (GladeWidget *fixed,
 }
 
 static gint
-glade_fixed_event (GtkWidget   *widget, 
-		   GdkEvent    *event,
-		   GladeWidget *gwidget_fixed)
+glade_fixed_event (GladeWidget *gwidget_fixed,
+		   GdkEvent    *event)
 {
 	GladeFixed         *fixed = GLADE_FIXED (gwidget_fixed);
 	GladeWidgetAdaptor *adaptor;
 	GtkWidget          *event_widget;
 	gboolean            handled = FALSE;
-	GladeWidget        *event_gwidget, *search;
-
-	gdk_window_get_pointer (widget->window, NULL, NULL, NULL);
 
 	adaptor = glade_palette_get_current_item (glade_app_get_palette ());
 
 	/* Get the event widget and the deep widget */
 	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-	event_gwidget = glade_widget_event_widget ();
 
 	/* If the GladeWidget used this event... let it slide.
 	 */
-	if (GLADE_WIDGET_CLASS (parent_class)->event (widget, event, gwidget_fixed))
+	if (GLADE_WIDGET_CLASS (parent_class)->event (gwidget_fixed, event))
 		return TRUE;
-
-	/* XXX g_return_val_if_fail (GLADE_IS_WIDGET (event_gwidget), FALSE); */
-	if (!GLADE_IS_WIDGET (event_gwidget))
-		return FALSE;
-	
-	/* Get the gwidget that is a direct child of 'fixed' */
-	for (search = event_gwidget; 
-	     search && GLADE_IS_FIXED (search->parent) == FALSE;
-	     search = search->parent);
-	
-	/* Igore events that come from other fixed or thier children
-	 * deeper in the hierarchy (it happens when they all return
-	 * FALSE from thier event handlers).
-	 */
-	if (event_gwidget != gwidget_fixed &&
-	    (search && search->parent != gwidget_fixed))
-		return FALSE;
-
-	/* Dont do anything for placeholders that are too deep.
-	 * (i.e. they must be parented by the fixed's direct child)
-	 */
-	if (GLADE_IS_PLACEHOLDER (event_widget))
-	{
-		if (search == NULL ||
-		    search != glade_placeholder_get_parent
-		    (GLADE_PLACEHOLDER (event_widget)))
-			return FALSE;
-
-		/* Early return for placeholders with selection in
-		 * the palette.
-		 */
-		if (adaptor)
-		{
-			glade_cursor_set (((GdkEventAny *)event)->window, 
-					  GLADE_CURSOR_ADD_WIDGET);
-			return FALSE;
-		}
-
-	}
 
 	switch (event->type)
 	{
@@ -828,19 +771,16 @@ glade_fixed_event (GtkWidget   *widget,
 	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
 	case GDK_BUTTON_RELEASE:
-		if (gwidget_fixed == event_gwidget) 
-		{
-
-			gtk_widget_get_pointer (GTK_WIDGET (gwidget_fixed->object),
-						&fixed->mouse_x, &fixed->mouse_y);
-
+		
+		gtk_widget_get_pointer (GTK_WIDGET (gwidget_fixed->object),
+					&fixed->mouse_x, &fixed->mouse_y);
+		
 #if 0
-			g_print ("glade_fixed_event (fixed: %s): Setting mouse pointer to %d %d "
-				 "(event widget %p)\n", 
-				 GLADE_WIDGET (fixed)->name,
-				 fixed->mouse_x, fixed->mouse_y, event_widget);
+		g_print ("glade_fixed_event (fixed: %s): Setting mouse pointer to %d %d "
+			 "(event widget %p)\n", 
+			 GLADE_WIDGET (fixed)->name,
+			 fixed->mouse_x, fixed->mouse_y, event_widget);
 #endif
-		}
 	
 		if (fixed->configuring)
 		{
@@ -848,12 +788,6 @@ glade_fixed_event (GtkWidget   *widget,
 				(fixed, fixed->configuring, 
 				 event_widget, event);
 		} 
-		else if (gwidget_fixed != event_gwidget)
-		{
-			if (search && search == event_gwidget)
-				return glade_fixed_handle_child_event
-					(fixed, search, event_widget, event);
-		}
 		break;
 	default:
 		break;

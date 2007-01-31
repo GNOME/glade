@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * glade-design-view.c
  *
@@ -126,7 +127,6 @@ glade_design_view_init (GladeDesignView *view)
 	gtk_box_pack_start (GTK_BOX (view), sw, TRUE, TRUE, 0);
 
 	gtk_container_set_border_width (GTK_CONTAINER (view), 0);
-	
 }
 
 static void

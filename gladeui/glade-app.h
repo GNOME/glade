@@ -57,6 +57,7 @@ struct _GladeAppClass
 	void   (*  hide_properties) (GladeApp* app);
 
 	/* signals */
+	void   (* hierarchy_changed)(GladeApp *app, GladeWidget *toplevel);
 	void   (* update_ui_signal) (GladeApp *app);
 };
 
@@ -140,6 +141,9 @@ GtkWidget 	 *glade_app_redo_button_new (void);
 
 LIBGLADEUI_API 
 GList            *glade_app_get_selection (void);
+
+LIBGLADEUI_API 
+void              glade_app_hierarchy_changed (GladeWidget *widget);
 
 
 /* These handle selection on a global scope and take care

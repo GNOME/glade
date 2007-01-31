@@ -36,6 +36,7 @@
 #include "glade-catalog.h"
 #include "glade-fixed.h"
 #include "glade-binding.h"
+#include "glade-marshallers.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
@@ -67,7 +68,8 @@ struct _GladeAppPriv {
 
 enum
 {
-	UPDATE_UI_SIGNAL,
+	HIERARCHY_CHANGED,
+	UPDATE_UI,
 	LAST_SIGNAL
 };
 
@@ -393,7 +395,7 @@ glade_app_class_init (GladeAppClass * klass)
 	 *
 	 * Emitted when a project name changes or a cut/copy/paste/delete occurred.
 	 */
-	glade_app_signals[UPDATE_UI_SIGNAL] =
+	glade_app_signals[UPDATE_UI] =
 		g_signal_new ("update-ui",
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_FIRST,
@@ -402,6 +404,25 @@ glade_app_class_init (GladeAppClass * klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE, 0);
+
+
+	/**
+	 * GladeApp::hierarchy-changed:
+	 * @gladeapp: the #GladeApp which received the signal.
+	 * @arg1: The toplevel #GladeWidget who's hierarchy was modified
+	 *
+	 * Emitted when a #GladeWidget is added or removed from a toplevel 
+	 * #GladeWidget's hierarchy.
+	 */
+	glade_app_signals[HIERARCHY_CHANGED] =
+		g_signal_new ("hierarchy-changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeAppClass,
+					       hierarchy_changed),
+			      NULL, NULL,
+			      glade_marshal_VOID__OBJECT,
+			      G_TYPE_NONE, 1, G_TYPE_OBJECT);
 
 
 	g_object_class_install_property 
@@ -638,8 +659,18 @@ glade_app_update_ui (void)
 	GladeApp *app = glade_app_get ();
 
 	g_signal_emit (G_OBJECT (app),
-		       glade_app_signals[UPDATE_UI_SIGNAL], 0);
+		       glade_app_signals[UPDATE_UI], 0);
+}
 
+void
+glade_app_hierarchy_changed (GladeWidget *widget)
+{
+	GladeApp *app = glade_app_get();
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	g_signal_emit (G_OBJECT (app),
+		       glade_app_signals[HIERARCHY_CHANGED], 0, widget);
 }
 
 void
@@ -1394,7 +1425,6 @@ glade_app_redo_button_new (void)
 	GladeApp  *app    = glade_app_get();
 	return glade_app_undo_redo_button_new (app, FALSE);
 }
-
 
 GList*
 glade_app_get_selection (void)

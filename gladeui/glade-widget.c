@@ -108,11 +108,6 @@ static GObjectClass *parent_class = NULL;
 static GladeProject *loading_project = NULL;
 static GQuark        glade_widget_name_quark = 0;
 
-/* An optimization to avoid looking up the deepest
- * widget more than once in an event.
- */
-static GladeWidget  *deep_event_widget = NULL;
-
 /*******************************************************************************
                            GladeWidget class methods
  *******************************************************************************/
@@ -263,117 +258,16 @@ glade_widget_change_signal_handler_impl (GladeWidget *widget,
 }
 
 
-/* A temp data struct that we use when looking for a widget inside a container
- * we need a struct, because the forall can only pass one pointer
- */
-typedef struct {
-	gint x;
-	gint y;
-	GtkWidget *found;
-	GtkWidget *toplevel;
-} GladeFindInContainerData;
-
-static void
-glade_widget_find_inside_container (GtkWidget *widget, GladeFindInContainerData *data)
-{
-	int x;
-	int y;
-
-	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
-	if (GTK_WIDGET_MAPPED(widget) &&
-	    x >= 0 && x < widget->allocation.width && y >= 0 && y < widget->allocation.height)
-	{
-		if (glade_widget_get_from_gobject (widget))
-			data->found = widget;
-		else if (GTK_IS_CONTAINER (widget))
-		{
-			/* Recurse and see if any project objects exist
-			 * under this container that is not in the project
-			 * (mostly for dialog buttons).
-			 */
-			GladeFindInContainerData search;
-			search.x = data->x;
-			search.y = data->y;
-			search.toplevel = data->toplevel;
-			search.found = NULL;
-
-			gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
-					      glade_widget_find_inside_container, &search);
-
-			data->found = search.found;
-		}
-	}
-}
-
-static GladeWidget *
-glade_widget_find_deepest_child_at_position (GtkContainer *toplevel,
-					     GtkContainer *container,
-					     int top_x, int top_y)
-{
-	GladeFindInContainerData data;
-
-	data.x = top_x;
-	data.y = top_y;
-	data.toplevel = GTK_WIDGET (toplevel);
-	data.found = NULL;
-
-	gtk_container_forall (container, (GtkCallback)
-			      glade_widget_find_inside_container, &data);
-
-	if (data.found && GTK_IS_CONTAINER (data.found))
-		return glade_widget_find_deepest_child_at_position
-			(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
-	else if (data.found)
-		return glade_widget_get_from_gobject (data.found);
-	else
-		return glade_widget_get_from_gobject (container);
-}
-
-/*
- * Returns: the real widget that was "clicked over" for a given event 
- * (coordinates) and a widget. 
- * For example, when a label is clicked the button press event is triggered 
- * for its parent, this function takes the event and the widget that got the 
- * event and returns the real #GladeWidget that was clicked
- *
- */
-GladeWidget *
-glade_widget_retrieve_from_position (GtkWidget *base, int x, int y)
-{
-	GladeWidget *lookup;
-	GtkWidget   *widget;
-	gint         top_x;
-	gint         top_y;
-	
-	widget = gtk_widget_get_toplevel (base);
-	if (!GTK_WIDGET_TOPLEVEL (widget))
-		return NULL;
-
-	gtk_widget_translate_coordinates (base, widget, x, y, &top_x, &top_y);
-
-	lookup = glade_widget_find_deepest_child_at_position
-		(GTK_CONTAINER (widget), GTK_CONTAINER (widget), top_x, top_y);
-
-	return lookup;
-}
-
 static gboolean
 glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 				      GdkEvent       *base_event)
 {
-	GladeWidget       *glade_widget;
-	GtkWidget         *event_widget, *widget;
+	GtkWidget         *widget;
 	GdkEventButton    *event = (GdkEventButton *)base_event;
 	gboolean           handled = FALSE;
 
-	/* Get event widget and event glade_widget
-	 */
-	gdk_window_get_user_data (event->window, (gpointer)&event_widget);
-	if ((glade_widget = deep_event_widget) == NULL)
-		return FALSE;
-
 	/* make sure to grab focus, since we may stop default handlers */
-	widget = GTK_WIDGET (glade_widget_get_object (glade_widget));
+	widget = GTK_WIDGET (glade_widget_get_object (gwidget));
 	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
 		gtk_widget_grab_focus (widget);
 
@@ -382,78 +276,40 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 	{
 		if (event->state & GDK_CONTROL_MASK)
 		{
-			if (glade_project_is_selected (glade_widget->project,
-						       glade_widget->object))
+			if (glade_project_is_selected (gwidget->project,
+						       gwidget->object))
 				glade_app_selection_remove 
-					(glade_widget->object, TRUE);
+					(gwidget->object, TRUE);
 			else
 				glade_app_selection_add
-					(glade_widget->object, TRUE);
+					(gwidget->object, TRUE);
 			handled = TRUE;
 		}
-		else if (glade_project_is_selected (glade_widget->project,
-						    glade_widget->object) == FALSE)
+		else if (glade_project_is_selected (gwidget->project,
+						    gwidget->object) == FALSE)
 		{
 			glade_util_clear_selection ();
 			glade_app_selection_set 
-				(glade_widget->object, TRUE);
+				(gwidget->object, TRUE);
 			handled = TRUE;
 		}
 	}
 	else if (event->button == 3)
 	{
-		glade_popup_widget_pop (glade_widget, event, TRUE);
+		glade_popup_widget_pop (gwidget, event, TRUE);
 		handled = TRUE;
 	}
 
 	return handled;
 }
 
-static gboolean    
-glade_widget_hide_on_delete (GtkWidget *widget,
-			     GdkEvent *event,
-			     gpointer user_data)
-{
-	GladeWidget *gwidget =
-		glade_widget_get_from_gobject (widget);
-	glade_widget_hide (gwidget);
-	return TRUE;
-}
-
 static gboolean
-glade_widget_popup_menu (GtkWidget *widget, gpointer unused_data)
-{
-	GladeWidget *glade_widget;
-
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-
-	glade_widget = glade_widget_get_from_gobject (widget);
-	glade_popup_widget_pop (glade_widget, NULL, TRUE);
-
-	return TRUE;
-}
-
-static void
-glade_widget_setup_events (GladeWidget *gwidget,
-			   GtkWidget   *widget)
-{
-	gtk_widget_add_events (widget,
-			       GDK_POINTER_MOTION_MASK      |
-			       GDK_POINTER_MOTION_HINT_MASK |
-			       GDK_BUTTON_PRESS_MASK        |
-			       GDK_BUTTON_RELEASE_MASK      |
-			       GDK_ENTER_NOTIFY_MASK);
-	
-}
-
-static gboolean
-glade_widget_event (GtkWidget   *widget,
-		    GdkEvent    *event,
-		    GladeWidget *gwidget)
+glade_widget_event_impl (GladeWidget *gwidget,
+			 GdkEvent    *event)
 {
 	gboolean handled = FALSE;
 
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
 
 	switch (event->type) 
 	{
@@ -488,46 +344,33 @@ glade_widget_event (GtkWidget   *widget,
 	return handled;
 }
 
-static gboolean
-glade_widget_event_private (GtkWidget   *widget,
-			    GdkEvent    *event,
-			    GladeWidget *gwidget)
-{
-	GtkWidget *event_widget;
-	gboolean   handled;
-	gint       x, y;
 
-	/* Some synthetic events (like focus-change) dont come with a window */
+/**
+ * glade_widget_event:
+ * @event: A #GdkEvent
+ *
+ * Feed an event to be handled on the project GladeWidget
+ * hierarchy.
+ *
+ * Returns whether the event was handled or not.
+ */
+gboolean
+glade_widget_event (GladeWidget *gwidget,
+		    GdkEvent    *event)
+{
+	gboolean   handled = FALSE;
+
+	/* Lets just avoid some synthetic events (like focus-change) */
 	if (((GdkEventAny *)event)->window == NULL) return FALSE;
 
-	/* Get the widget at mouse position before anything else
-	 */
-	gdk_window_get_user_data (((GdkEventAny *)event)->window, (gpointer)&event_widget);
-
-	/* This manages to happen sometimes... lord knows why */
-	if (event_widget == NULL)
-		return FALSE;
-
-	gtk_widget_get_pointer (event_widget, &x, &y);
-	deep_event_widget = 
-		glade_widget_retrieve_from_position (event_widget, x, y);
-
-	/* Check if there are deep fixed widgets without windows
-	 * that need to be processed first.
-	 */
-	if ((handled = glade_util_deep_fixed_event (widget, event, gwidget)) == FALSE)
-	{
-
-		/* Run the real class handler now.
-		 */
-		handled = GLADE_WIDGET_GET_CLASS (gwidget)->event (widget, event, gwidget);
+	handled = GLADE_WIDGET_GET_CLASS (gwidget)->event (gwidget, event);
 
 #if 0
-		if (event->type != GDK_EXPOSE)
-			g_print ("event widget '%s' handled '%d' event '%d'\n",
-				 deep_event_widget->name, handled, event->type);
+	if (event->type != GDK_EXPOSE)
+		g_print ("event widget '%s' handled '%d' event '%d'\n",
+			 gwidget->name, handled, event->type);
 #endif
-	}
+
 	return handled;
 }
 
@@ -1070,8 +913,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 	klass->add_child              = glade_widget_add_child_impl;
 	klass->remove_child           = glade_widget_remove_child_impl;
 	klass->replace_child          = glade_widget_replace_child_impl;
-	klass->setup_events           = glade_widget_setup_events;
-	klass->event                  = glade_widget_event;
+	klass->event                  = glade_widget_event_impl;
 
 	klass->add_signal_handler     = glade_widget_add_signal_handler_impl;
 	klass->remove_signal_handler  = glade_widget_remove_signal_handler_impl;
@@ -1818,6 +1660,7 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 	}
 }
 
+
 /* Connects a signal handler to the 'event' signal for a widget and
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
@@ -1832,7 +1675,7 @@ glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk,
 	if (!g_object_get_data (G_OBJECT (widget_gtk),
 				GLADE_TAG_EVENT_HANDLER_CONNECTED)) 
 	{
-		g_signal_connect (G_OBJECT (widget_gtk), "event",
+		g_signal_connect (G_OBJECT (widget_gtk), "expose-event",
 				  callback, gwidget);
 
 		g_object_set_data (G_OBJECT (widget_gtk),
@@ -1849,13 +1692,8 @@ glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk,
 							    (widget_gtk))) != NULL)
 		{
 			for (list = children; list; list = list->next)
-			{
-				GLADE_WIDGET_GET_CLASS (gwidget)->setup_events
-					(gwidget, GTK_WIDGET (list->data));
-
 				glade_widget_connect_signal_handlers 
 					(GTK_WIDGET (list->data), callback, gwidget);
-			}
 			g_list_free (children);
 		}
 	}
@@ -2404,6 +2242,16 @@ glade_widget_copy_properties (GladeWidget *widget,
 	}
 }
 
+static GladeWidget *
+glade_widget_toplevel (GladeWidget *widget)
+{
+	GladeWidget *ret = widget;
+
+	while (ret->parent) ret = ret->parent;
+
+	return ret;
+}
+
 /**
  * glade_widget_add_child:
  * @parent: A #GladeWidget
@@ -2422,6 +2270,8 @@ glade_widget_add_child (GladeWidget      *parent,
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
 	GLADE_WIDGET_GET_CLASS (parent)->add_child (parent, child, at_mouse);
+
+	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /**
@@ -2439,6 +2289,8 @@ glade_widget_remove_child (GladeWidget      *parent,
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
 	GLADE_WIDGET_GET_CLASS (parent)->remove_child (parent, child);
+
+	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /**
@@ -2565,6 +2417,9 @@ glade_widget_rebuild (GladeWidget *glade_widget)
  	/* We shouldnt show if its not already visible */
 	if (glade_widget->visible)
 		glade_widget_show (glade_widget);
+
+
+	glade_app_hierarchy_changed (glade_widget_toplevel (glade_widget));
 }
 
 /**
@@ -3224,7 +3079,15 @@ glade_widget_child_get_property (GladeWidget      *widget,
 
 }
 
+gboolean 
+glade_widget_expose_private (GtkWidget *widget,
+			     GdkEventExpose *event,
+			     GladeWidget *gwidget)
+{
+	glade_util_queue_draw_nodes (((GdkEventExpose*) event)->window);
 
+	return FALSE;
+}
 
 /**
  * glade_widget_set_object:
@@ -3255,32 +3118,17 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 
 	if (g_type_is_a (gwidget->adaptor->type, GTK_TYPE_WIDGET))
 	{
-		
-		/* Make sure dialogs and such have close buttons.
-		 */
-		if (g_type_is_a (gwidget->adaptor->type, GTK_TYPE_WINDOW))
-			gtk_window_set_decorated (GTK_WINDOW (new_object), TRUE);
-
 		/* Disable any built-in DnD
 		 */
 		gtk_drag_dest_unset (GTK_WIDGET (new_object));
 		gtk_drag_source_unset (GTK_WIDGET (new_object));
 
-		/* Take care of events and toolkit signals.
+		/* Take care of drawing selection directly on widgets
+		 * for the time being
 		 */
-		GLADE_WIDGET_GET_CLASS (gwidget)->setup_events
-			(gwidget, GTK_WIDGET (new_object));
-
-		if (GTK_WIDGET_TOPLEVEL (new_object))
-			g_signal_connect (G_OBJECT (new_object), "delete_event",
-					  G_CALLBACK (glade_widget_hide_on_delete), NULL);
-		
-		g_signal_connect (G_OBJECT (new_object), "popup_menu",
-				  G_CALLBACK (glade_widget_popup_menu), NULL);
-		
 		glade_widget_connect_signal_handlers
-			(GTK_WIDGET(new_object), 
-			 G_CALLBACK (glade_widget_event_private),
+			(GTK_WIDGET(new_object),
+			 G_CALLBACK (glade_widget_expose_private),
 			 gwidget);
 	}
 
@@ -3441,26 +3289,6 @@ glade_widget_has_decendant (GladeWidget *widget, GType type)
 	return found;
 }
 
-
-/**
- * glade_widget_event_widget:
- *
- * During events, this function returns the deepest
- * project widget at moust position, or %NULL if it is
- * not a mouse event.
- *
- * Handle with care, you must be in an event for 
- * the return value to be meaningfull
- *
- * Returns a #GladeWidget
- */
-GladeWidget *
-glade_widget_event_widget (void)
-{
-	return deep_event_widget;
-}
-
-
 /**
  * glade_widget_replace:
  * @old_object: a #GObject
@@ -3478,6 +3306,8 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 	g_return_if_fail (G_IS_OBJECT (new_object));
 
 	GLADE_WIDGET_GET_CLASS (parent)->replace_child (parent, old_object, new_object);
+
+	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /* XML Serialization */
