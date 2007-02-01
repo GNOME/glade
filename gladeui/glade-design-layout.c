@@ -68,14 +68,14 @@ struct _GladeDesignLayoutPrivate
 	GdkCursor *cursor_resize_bottom_right;
 
 	/* state machine */
-	GladeActivity  activity;    /* the current activity */
+	GladeActivity   activity;   /* the current activity */
 	GtkRequisition *current_size_request;
 	gint dx;                    /* child.width - event.pointer.x   */
 	gint dy;                    /* child.height - event.pointer.y  */
 	gint new_width;             /* user's new requested width */
 	gint new_height;            /* user's new requested height */
 
-	gulong hierarchy_changed_id;
+	gulong widget_event_id;
 };
 
 static GtkBinClass *parent_class = NULL;
@@ -406,7 +406,10 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom_right);
 
 		else if (region == GLADE_REGION_OUTSIDE)
+		{
 			gdk_window_set_cursor (priv->event_window, NULL);
+			glade_cursor_set (priv->event_window, GLADE_CURSOR_SELECTOR);
+		}
 	}
 	return FALSE;
 }
@@ -480,48 +483,6 @@ glade_design_layout_button_release_event (GtkWidget *widget, GdkEventButton *ev)
 	return FALSE;
 }
 
-static gboolean
-glade_design_layout_event (GtkWidget *widget, GdkEvent *ev)
-{
-	GladeWidget *gwidget;
-	GtkWidget   *child;
-	gboolean     retval;
-	gint         x, y;
-
-	gtk_widget_get_pointer (widget, &x, &y);
-	gwidget = glade_design_layout_deepest_gwidget_at_position
-		(GTK_CONTAINER (widget), GTK_CONTAINER (widget), x, y);
-
-	child = glade_design_layout_deepest_widget_at_position 
-		(GTK_CONTAINER (widget), GTK_CONTAINER (widget), x, y);
-
-	/* First try a placeholder */
-	if (GLADE_IS_PLACEHOLDER (child) && ev->type != GDK_EXPOSE)
-	{
-		retval = gtk_widget_event (child, ev);
-
-		if (retval)
-			return retval;
-	}
-
-	/* Then we try a GladeWidget */
-	if (gwidget) 
-	{
-		retval = glade_widget_event (gwidget, ev);
-
-		if (retval)
-			return retval;
-	}
-
-	/* Then we send it to a project widget (the actual GtkWidget) */
-	if (child && child != widget && ev->type != GDK_EXPOSE)
-	{
-		return gtk_widget_event (child, ev);
-	}
-	
-	return FALSE;
-}
-
 static void
 glade_design_layout_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
@@ -586,10 +547,10 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	{
 		if (priv->event_window)
 			gdk_window_move_resize (priv->event_window,
-						allocation->x/*  + border_width */,
-						allocation->y/*  + border_width */,
-						allocation->width/*  - 2 * border_width */ ,
-						allocation->height/*  - 2 * border_width */);
+						allocation->x,
+						allocation->y,
+						allocation->width,
+						allocation->height);
 
 	}
 
@@ -661,10 +622,10 @@ glade_design_layout_realize (GtkWidget *widget)
 
 	border_width = GTK_CONTAINER (widget)->border_width;
 
-	attributes.x = widget->allocation.x/*  + border_width */;
-	attributes.y = widget->allocation.y/*  + border_width */;
-	attributes.width = widget->allocation.width/*  - 2 * border_width */;
-	attributes.height = widget->allocation.height/*  - 2 * border_width */;
+	attributes.x = widget->allocation.x;
+	attributes.y = widget->allocation.y;
+	attributes.width = widget->allocation.width;
+	attributes.height = widget->allocation.height;
 
 	attributes.window_type = GDK_WINDOW_CHILD;
 	attributes.wclass = GDK_INPUT_ONLY;
@@ -685,8 +646,6 @@ glade_design_layout_realize (GtkWidget *widget)
 	priv->event_window = gdk_window_new (gtk_widget_get_parent_window (widget),
 					     &attributes, attributes_mask);
 	gdk_window_set_user_data (priv->event_window, widget);
-
-	gdk_window_raise (priv->event_window);
 
 	widget->style = gtk_style_attach (widget->style, widget->window);
 	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
@@ -725,6 +684,8 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 			  container);
 
 	GTK_CONTAINER_CLASS (parent_class)->add (container, widget);
+
+	gdk_window_lower (layout->priv->event_window);
 }
 
 static void
@@ -763,10 +724,9 @@ glade_design_layout_finalize (GObject *object)
 {
 	GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (object);
 
-	g_free (priv->current_size_request);
+	g_signal_handler_disconnect (glade_app_get (), priv->widget_event_id);
 
-	g_signal_handler_disconnect (glade_app_get (), 
-				     priv->hierarchy_changed_id);
+	g_free (priv->current_size_request);
 	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -796,8 +756,8 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 	GladeDesignLayout *layout;
 	GdkGC *gc;
 	GtkWidget *child;
-	int x, y, w, h;
-	int border_width;
+	gint x, y, w, h;
+	gint border_width;
 
 	layout = GLADE_DESIGN_LAYOUT (widget);
 
@@ -843,13 +803,62 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 	return TRUE;
 }
 
-static void
-glade_design_layout_hierarchy_changed (GladeApp          *app,
-				       GladeWidget       *toplevel,
-				       GladeDesignLayout *layout)
+static gboolean
+glade_design_layout_widget_event (GladeApp          *app,
+				  GladeWidget       *event_gwidget,
+				  GdkEvent          *event,
+				  GladeDesignLayout *layout)
 {
-	if (layout->priv->event_window)
-		gdk_window_raise (layout->priv->event_window);
+	GladeWidget *gwidget;
+	GtkWidget   *child;
+	gboolean     retval;
+	gint         x, y;
+
+	gtk_widget_get_pointer (GTK_WIDGET (layout), &x, &y);
+	gwidget = glade_design_layout_deepest_gwidget_at_position
+		(GTK_CONTAINER (layout), GTK_CONTAINER (layout), x, y);
+
+	child = glade_design_layout_deepest_widget_at_position 
+		(GTK_CONTAINER (layout), GTK_CONTAINER (layout), x, y);
+
+	/* First try a placeholder */
+	if (GLADE_IS_PLACEHOLDER (child) && event->type != GDK_EXPOSE)
+	{
+		retval = gtk_widget_event (child, event);
+
+		if (retval)
+			return retval;
+	}
+
+	/* Then we try a GladeWidget */
+	if (gwidget) 
+	{
+		retval = glade_widget_event (gwidget, event);
+
+		if (retval)
+			return retval;
+	}
+
+	return FALSE;
+}
+
+static gboolean
+glade_design_layout_propagate_event (GtkWidget *widget,
+				     GdkEvent  *event)
+{
+	GtkWidget *child;
+
+	if ((child = GTK_BIN (widget)->child) != NULL) 
+	{
+		GladeWidget *gwidget = 
+			glade_widget_get_from_gobject (child);
+
+		if (gwidget)
+			return glade_design_layout_widget_event (glade_app_get (),
+								 gwidget, event,
+								 GLADE_DESIGN_LAYOUT (widget));
+	}		
+	return FALSE;
 }
 
 static void
@@ -873,9 +882,11 @@ glade_design_layout_init (GladeDesignLayout *layout)
 	priv->new_width = -1;
 	priv->new_height = -1;
 
-	priv->hierarchy_changed_id = 
-		g_signal_connect (glade_app_get (), "hierarchy-changed",
-				  G_CALLBACK (glade_design_layout_hierarchy_changed), layout);
+	priv->widget_event_id = 
+		g_signal_connect (glade_app_get (), "widget-event",
+				  G_CALLBACK (glade_design_layout_widget_event),
+				  layout);
+				  
 }
 
 static void
@@ -896,7 +907,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	container_class->add                = glade_design_layout_add;
 	container_class->remove             = glade_design_layout_remove;
 
-	widget_class->event                 = glade_design_layout_event;
+	widget_class->event                 = glade_design_layout_propagate_event;
 	widget_class->motion_notify_event   = glade_design_layout_motion_notify_event;
 	widget_class->leave_notify_event    = glade_design_layout_leave_notify_event;
 	widget_class->button_press_event    = glade_design_layout_button_press_event;

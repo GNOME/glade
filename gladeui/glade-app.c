@@ -37,6 +37,7 @@
 #include "glade-fixed.h"
 #include "glade-binding.h"
 #include "glade-marshallers.h"
+#include "glade-accumulators.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
@@ -68,7 +69,7 @@ struct _GladeAppPriv {
 
 enum
 {
-	HIERARCHY_CHANGED,
+	WIDGET_EVENT,
 	UPDATE_UI,
 	LAST_SIGNAL
 };
@@ -407,23 +408,27 @@ glade_app_class_init (GladeAppClass * klass)
 
 
 	/**
-	 * GladeApp::hierarchy-changed:
+	 * GladeApp::widget-event:
 	 * @gladeapp: the #GladeApp which received the signal.
-	 * @arg1: The toplevel #GladeWidget who's hierarchy was modified
+	 * @arg1: The toplevel #GladeWidget who's hierarchy recieved an event
+	 * @arg2: The #GdkEvent
 	 *
-	 * Emitted when a #GladeWidget is added or removed from a toplevel 
-	 * #GladeWidget's hierarchy.
+	 * Emitted when a #GladeWidget or one of its children is a GtkWidget derivative
+	 * and is about to recieve an event from gdk.
+	 *
+	 * Returns: whether the event was handled or not
 	 */
-	glade_app_signals[HIERARCHY_CHANGED] =
-		g_signal_new ("hierarchy-changed",
+	glade_app_signals[WIDGET_EVENT] =
+		g_signal_new ("widget-event",
 			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
+			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladeAppClass,
-					       hierarchy_changed),
-			      NULL, NULL,
-			      glade_marshal_VOID__OBJECT,
-			      G_TYPE_NONE, 1, G_TYPE_OBJECT);
-
+					       widget_event),
+			      glade_boolean_handled_accumulator, NULL,
+			      glade_marshal_BOOLEAN__OBJECT_BOXED,
+			      G_TYPE_BOOLEAN, 2, 
+			      GLADE_TYPE_WIDGET, 
+			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
 	g_object_class_install_property 
 		(object_class, PROP_ACTIVE_PROJECT,
@@ -662,16 +667,37 @@ glade_app_update_ui (void)
 		       glade_app_signals[UPDATE_UI], 0);
 }
 
-void
-glade_app_hierarchy_changed (GladeWidget *widget)
+/**
+ * glade_app_widget_event:
+ * @widget: the #GladeWidget that recieved the event
+ * @event: the #GdkEvent
+ *
+ * Notifies the core that a widget recieved an event,
+ * the core will then take responsability of sending
+ * the right event to the right widget.
+ *
+ * Returns whether the event was handled by glade.
+ */
+gboolean
+glade_app_widget_event (GladeWidget *widget, 
+			GdkEvent    *event)
 {
-	GladeApp *app = glade_app_get();
+	GladeApp    *app = glade_app_get ();
+	GladeWidget *toplevel = widget;
+	gboolean     retval = FALSE;
 
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (event != NULL, FALSE);
+	
+	while (toplevel->parent) 
+		toplevel = toplevel->parent;
 
 	g_signal_emit (G_OBJECT (app),
-		       glade_app_signals[HIERARCHY_CHANGED], 0, widget);
+		       glade_app_signals[WIDGET_EVENT], 0, widget, event, &retval);
+
+	return retval;
 }
+
 
 void
 glade_app_set_window (GtkWidget *window)

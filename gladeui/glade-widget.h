@@ -111,7 +111,6 @@ struct _GladeWidgetClass
 	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
 	gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
 	gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
-	gint         (*enter_notify_event)      (GladeWidget *, GdkEvent *);
 
 	gboolean     (*event)                   (GladeWidget *, GdkEvent *);
 };

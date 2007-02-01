@@ -31,6 +31,7 @@
 
 #include <glib-object.h>
 #include <glib/gi18n-lib.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "glade.h"
 #include "glade-accumulators.h"
@@ -60,7 +61,6 @@ typedef struct {
 	gulong press_id;
 	gulong release_id;
 	gulong motion_id;
-	gulong enter_id;
 } GFSigData;
 
 #define CHILD_WIDTH_MIN    20
@@ -358,7 +358,6 @@ glade_fixed_disconnect_child (GladeFixed   *fixed,
 	{
 		g_signal_handler_disconnect (child, data->press_id);
 		g_signal_handler_disconnect (child, data->release_id);
-		g_signal_handler_disconnect (child, data->enter_id);
 		g_signal_handler_disconnect (child, data->motion_id);
                     
 		g_object_set_data (G_OBJECT (child), "glade-fixed-signal-data", NULL);
@@ -389,14 +388,11 @@ glade_fixed_connect_child (GladeFixed   *fixed,
 		g_signal_connect
 		(child, "button-release-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
-	data->enter_id =
-		g_signal_connect
-		(child, "enter-notify-event", G_CALLBACK
-		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
 	data->motion_id = 
 		g_signal_connect
 		(child, "motion-notify-event", G_CALLBACK
 		 (GLADE_FIXED_GET_CLASS(fixed)->child_event), fixed);
+
 
 	g_object_set_data_full (G_OBJECT (child), "glade-fixed-signal-data", 
 				data, g_free);
@@ -514,10 +510,10 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 				GdkEvent    *event)
 {
 	GladeCursorType  operation;
+	GdkModifierType  event_state = 0;
 	GtkWidget       *fixed_widget, *child_widget;
 	gint             fixed_x, fixed_y, child_x, child_y;
 	gboolean         handled = FALSE, sig_handled;
-	gboolean         button_down;
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
@@ -542,24 +538,21 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	else
 		operation = GLADE_CURSOR_DRAG;
 
+	gdk_event_get_state (event, &event_state);
+
 	switch (event->type)
 	{
-	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
-
-		/* Get button state */
-		if (event->type == GDK_ENTER_NOTIFY)
-			button_down = 
-				((GdkEventCrossing *)event)->state & GDK_BUTTON1_MASK;
-		else
-			button_down =
-				((GdkEventMotion *)event)->state & GDK_BUTTON1_MASK;
-
 		if (fixed->configuring == NULL)
 		{
-			glade_cursor_set (((GdkEventAny *)event)->window, 
-					  operation);
-		} else if (fixed->configuring && !button_down)
+			if (event_state & GDK_SHIFT_MASK)
+				glade_cursor_set (((GdkEventAny *)event)->window, 
+						  operation);
+			else
+				glade_cursor_set (((GdkEventAny *)event)->window, 
+						  GLADE_CURSOR_SELECTOR);
+
+		} else if (fixed->configuring && !(event_state & GDK_BUTTON1_MASK))
 		{
 			/* Cancel drags that no longer have mouse down */
 			glade_cursor_set (((GdkEventAny *)event)->window, 
@@ -567,8 +560,7 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 
 			glade_fixed_cancel_operation (fixed, operation);
 			handled = TRUE;
-		} else if (fixed->configuring && 
-			   event->type == GDK_MOTION_NOTIFY)
+		} else if (fixed->configuring)
 		{
 			/* Need to update mouse for configures. */
 			gtk_widget_get_pointer (fixed_widget,
@@ -583,7 +575,10 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		gdk_window_get_pointer (GTK_WIDGET (child->object)->window, NULL, NULL, NULL);
 		break;
 	case GDK_BUTTON_PRESS:
-		if (((GdkEventButton *)event)->button == 1)
+		/* We cant rely on GDK_BUTTON1_MASK since event->state isnt yet updated
+		 * by the current event itself 
+		 */
+		if (((GdkEventButton *)event)->button == 1 && (event_state & GDK_SHIFT_MASK))
 		{
 			fixed->configuring = child;
 			/* Save widget allocation and pointer pos */
@@ -600,19 +595,21 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		}
 		break;
 	case GDK_BUTTON_RELEASE:
-
-		if (((GdkEventButton *)event)->button == 1 && 
-		    fixed->configuring)
+		if (((GdkEventButton *)event)->button == 1 && fixed->configuring)
 		{
-			glade_cursor_set (((GdkEventAny *)event)->window,
-					  operation);
+
+			if (event_state & GDK_SHIFT_MASK)
+				glade_cursor_set (((GdkEventAny *)event)->window,
+						  operation);
+			else
+				glade_cursor_set (((GdkEventAny *)event)->window,
+						  GLADE_CURSOR_SELECTOR);
 
 			glade_fixed_cancel_operation (fixed, operation);
 			handled = TRUE;
 		}
 		break;
 	default:
-		g_debug ("Unhandled event");
 		break;
 	}
 	return handled;
@@ -768,20 +765,10 @@ glade_fixed_event (GladeWidget *gwidget_fixed,
 	{
 
 	case GDK_BUTTON_PRESS:
-	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
 	case GDK_BUTTON_RELEASE:
-		
 		gtk_widget_get_pointer (GTK_WIDGET (gwidget_fixed->object),
 					&fixed->mouse_x, &fixed->mouse_y);
-		
-#if 0
-		g_print ("glade_fixed_event (fixed: %s): Setting mouse pointer to %d %d "
-			 "(event widget %p)\n", 
-			 GLADE_WIDGET (fixed)->name,
-			 fixed->mouse_x, fixed->mouse_y, event_widget);
-#endif
-	
 		if (fixed->configuring)
 		{
 			return glade_fixed_handle_child_event
@@ -816,16 +803,17 @@ glade_fixed_event (GladeWidget *gwidget_fixed,
 			}
 		}
 		break;
-	case GDK_ENTER_NOTIFY:
 	case GDK_MOTION_NOTIFY:
 		if (adaptor != NULL)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
+
 			handled = TRUE;
 		}
+		/* XXX I dont think this line is needed */
 		else if (GLADE_IS_FIXED (gwidget_fixed->parent) == FALSE)
-			glade_cursor_set (((GdkEventAny *)event)->window, 
+			glade_cursor_set (((GdkEventAny *)event)->window,
 					  GLADE_CURSOR_SELECTOR);
 		break;
 	default:

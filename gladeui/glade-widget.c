@@ -75,7 +75,6 @@ enum
 	BUTTON_PRESS_EVENT,
 	BUTTON_RELEASE_EVENT,
 	MOTION_NOTIFY_EVENT,
-	ENTER_NOTIFY_EVENT,
 	ACTION_ACTIVATED,
 	LAST_SIGNAL
 };
@@ -291,7 +290,12 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 			glade_util_clear_selection ();
 			glade_app_selection_set 
 				(gwidget->object, TRUE);
-			handled = TRUE;
+
+			/* Add selection without interrupting event flow 
+			 * when shift is down, this allows better behaviour
+			 * for GladeFixed children 
+			 */
+			handled = !(event->state & GDK_SHIFT_MASK);
 		}
 	}
 	else if (event->button == 3)
@@ -326,11 +330,6 @@ glade_widget_event_impl (GladeWidget *gwidget,
 	case GDK_MOTION_NOTIFY:
 		g_signal_emit (gwidget, 
 			       glade_widget_signals[MOTION_NOTIFY_EVENT], 0, 
-			       event, &handled);
-		break;
-	case GDK_ENTER_NOTIFY:
-		g_signal_emit (gwidget, 
-			       glade_widget_signals[ENTER_NOTIFY_EVENT], 0, 
 			       event, &handled);
 		break;
 	case GDK_EXPOSE:
@@ -922,8 +921,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 	klass->button_press_event     = glade_widget_button_press_event_impl;
 	klass->button_release_event   = NULL;
 	klass->motion_notify_event    = NULL;
-	klass->enter_notify_event     = NULL;
-	
+
 	g_object_class_install_property
 		(object_class, PROP_NAME,
 		 g_param_spec_string ("name", _("Name"),
@@ -1099,7 +1097,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_boolean_handled_accumulator, NULL,
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
-			      GDK_TYPE_EVENT);
+			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
 	/**
 	 * GladeWidget::button-relese-event:
@@ -1114,7 +1112,7 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_boolean_handled_accumulator, NULL,
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
-			      GDK_TYPE_EVENT);
+			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
 
 	/**
@@ -1130,23 +1128,8 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_boolean_handled_accumulator, NULL,
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
-			      GDK_TYPE_EVENT);
+			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
-
-	/**
-	 * GladeWidget::enter-notify-event:
-	 * @gladewidget: the #GladeWidget which received the signal.
-	 * @arg1: the #GdkEvent
-	 */
-	glade_widget_signals[ENTER_NOTIFY_EVENT] =
-		g_signal_new ("enter-notify-event",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeWidgetClass, enter_notify_event),
-			      glade_boolean_handled_accumulator, NULL,
-			      glade_marshal_BOOLEAN__BOXED,
-			      G_TYPE_BOOLEAN, 1,
-			      GDK_TYPE_EVENT);
 
 	/**
 	 * GladeWidget::action-activated:
@@ -1660,7 +1643,6 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 	}
 }
 
-
 /* Connects a signal handler to the 'event' signal for a widget and
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
@@ -1675,7 +1657,16 @@ glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk,
 	if (!g_object_get_data (G_OBJECT (widget_gtk),
 				GLADE_TAG_EVENT_HANDLER_CONNECTED)) 
 	{
-		g_signal_connect (G_OBJECT (widget_gtk), "expose-event",
+		/* Make sure we can recieve the kind of events we're
+		 * connecting for 
+		 */
+		gtk_widget_add_events (widget_gtk,
+				       GDK_POINTER_MOTION_MASK      | /* Handle pointer events */
+				       GDK_POINTER_MOTION_HINT_MASK | /* for drag/resize and   */
+				       GDK_BUTTON_PRESS_MASK        | /* managing selection.   */
+				       GDK_BUTTON_RELEASE_MASK);
+
+		g_signal_connect (G_OBJECT (widget_gtk), "event",
 				  callback, gwidget);
 
 		g_object_set_data (G_OBJECT (widget_gtk),
@@ -2242,16 +2233,6 @@ glade_widget_copy_properties (GladeWidget *widget,
 	}
 }
 
-static GladeWidget *
-glade_widget_toplevel (GladeWidget *widget)
-{
-	GladeWidget *ret = widget;
-
-	while (ret->parent) ret = ret->parent;
-
-	return ret;
-}
-
 /**
  * glade_widget_add_child:
  * @parent: A #GladeWidget
@@ -2270,8 +2251,6 @@ glade_widget_add_child (GladeWidget      *parent,
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
 	GLADE_WIDGET_GET_CLASS (parent)->add_child (parent, child, at_mouse);
-
-	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /**
@@ -2289,8 +2268,6 @@ glade_widget_remove_child (GladeWidget      *parent,
 	g_return_if_fail (GLADE_IS_WIDGET (child));
 
 	GLADE_WIDGET_GET_CLASS (parent)->remove_child (parent, child);
-
-	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /**
@@ -2417,9 +2394,6 @@ glade_widget_rebuild (GladeWidget *glade_widget)
  	/* We shouldnt show if its not already visible */
 	if (glade_widget->visible)
 		glade_widget_show (glade_widget);
-
-
-	glade_app_hierarchy_changed (glade_widget_toplevel (glade_widget));
 }
 
 /**
@@ -3080,13 +3054,12 @@ glade_widget_child_get_property (GladeWidget      *widget,
 }
 
 gboolean 
-glade_widget_expose_private (GtkWidget *widget,
-			     GdkEventExpose *event,
-			     GladeWidget *gwidget)
+glade_widget_event_private (GtkWidget   *widget,
+			    GdkEvent    *event,
+			    GladeWidget *gwidget)
 {
-	glade_util_queue_draw_nodes (((GdkEventExpose*) event)->window);
-
-	return FALSE;
+	/* Whoa, now that's trust. */
+	return glade_app_widget_event (gwidget, event);
 }
 
 /**
@@ -3128,7 +3101,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 		 */
 		glade_widget_connect_signal_handlers
 			(GTK_WIDGET(new_object),
-			 G_CALLBACK (glade_widget_expose_private),
+			 G_CALLBACK (glade_widget_event_private),
 			 gwidget);
 	}
 
@@ -3306,8 +3279,6 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 	g_return_if_fail (G_IS_OBJECT (new_object));
 
 	GLADE_WIDGET_GET_CLASS (parent)->replace_child (parent, old_object, new_object);
-
-	glade_app_hierarchy_changed (glade_widget_toplevel (parent));
 }
 
 /* XML Serialization */
