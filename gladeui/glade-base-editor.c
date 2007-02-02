@@ -1371,7 +1371,7 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	
 	/* Children store */
 	e->children = gtk_list_store_new (GLADE_BASE_EDITOR_N_COLUMNS,
-					  G_TYPE_UINT, G_TYPE_STRING);
+					  G_TYPE_GTYPE, G_TYPE_STRING);
 
 	/* Paned */
 	e->paned = paned = gtk_vpaned_new ();
