@@ -1643,7 +1643,7 @@ static GtkActionEntry static_entries[] = {
 	{ "New", GTK_STOCK_NEW, N_("_New"), "<control>N",
 	  N_("Create a new project"), G_CALLBACK (gpw_new_cb) },
 	
-	{ "Open", GTK_STOCK_OPEN, N_("_Open"),"<control>O",
+	{ "Open", GTK_STOCK_OPEN, N_("_Open\342\200\246"),"<control>O",
 	  N_("Open a project"), G_CALLBACK (gpw_open_cb) },
 
 	{ "OpenRecent", NULL, N_("Open _Recent") },	
@@ -1664,6 +1664,7 @@ static GtkActionEntry static_entries[] = {
 	{ "DeveloperReference", NULL, N_("_Developer Reference"), NULL,
 	  N_("Display the developer reference manual"), G_CALLBACK (gpw_show_developer_manual_cb) }
 };
+
 static guint n_static_entries = G_N_ELEMENTS (static_entries);
 
 static GtkActionEntry project_entries[] = {
