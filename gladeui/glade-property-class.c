@@ -54,13 +54,13 @@ typedef struct {
 
 static const GPCAtkPropertyTab action_names_table[] = {
 	{ "click",   "atk-click",   N_("Click"),   
-	  N_("Set the desctription of the Click atk action") },
+	  N_("Set the description of the Click atk action") },
 	{ "press",   "atk-press",   N_("Press"),   
-	  N_("Set the desctription of the Press atk action") },
+	  N_("Set the description of the Press atk action") },
 	{ "release", "atk-release", N_("Release"), 
-	  N_("Set the desctription of the Release atk action") },
+	  N_("Set the description of the Release atk action") },
 	{ "activate", "atk-activate", N_("Activate"), 
-	  N_("Set the desctription of the Activate atk action") }
+	  N_("Set the description of the Activate atk action") }
 };
 
 static const GPCAtkPropertyTab relation_names_table[] = {
