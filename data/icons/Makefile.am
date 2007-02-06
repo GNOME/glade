@@ -1,7 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-appicondir = $(datadir)/icons/hicolor/48x48/apps
-appicon_DATA = glade-3.png
+SUBDIRS = hicolor
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 
@@ -21,4 +20,4 @@ pixmapsdir = $(pkgdatadir)/pixmaps
 pixmaps_DATA = selector.png devhelp.png plus.png
 
 	
-EXTRA_DIST = glade-3.png $(pixmaps_DATA)
+EXTRA_DIST = $(pixmaps_DATA)
