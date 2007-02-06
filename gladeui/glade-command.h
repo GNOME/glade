@@ -129,6 +129,13 @@ void           glade_command_change_signal (GladeWidget       *glade_widget,
 					    const GladeSignal *old, 
 					    const GladeSignal *new_signal);
 
+/************************ set i18n ******************************/
+LIBGLADEUI_API
+void           glade_command_set_i18n      (GladeProperty     *property,
+                        gboolean translatable,
+                        gboolean has_context,
+                        const gchar *comment);
+
 
 G_END_DECLS
 

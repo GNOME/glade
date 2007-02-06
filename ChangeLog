@@ -1,3 +1,12 @@
+2007-02-06  Jeff Westerinen  <jeff.westerinen@palmsource.com>
+
+	* gladeui/glade-editor-property.c: changed glade_eprop_text_show_i18n_dialog()
+	  to call a command to change the i18n metadata on the label property
+	  instead of changing it directly.  This allows the change to be
+	  un-/re-done (bug 352454).
+
+	* gladeui/glade-command.[ch]: added the glade_command_set_i18n command.
+
 2007-02-05  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* src/glade-project-window.c: Add ellipsis to the label of the "Open"

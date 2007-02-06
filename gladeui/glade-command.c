@@ -1848,3 +1848,168 @@ glade_command_change_signal	(GladeWidget *glade_widget,
 	glade_command_add_remove_change_signal 
 		(glade_widget, old, new_signal, GLADE_CHANGE);
 }
+
+/******************************************************************************
+ * 
+ * set i18n metadata
+ * 
+ * This command sets the i18n metadata on a label property.
+ * 
+ *****************************************************************************/
+
+typedef struct {
+	GladeCommand   parent;
+	GladeProperty *property;
+	gboolean       translatable;
+	gboolean       has_context;
+	gchar         *comment;
+	gboolean       old_translatable;
+	gboolean       old_has_context;
+	gchar         *old_comment;
+} GladeCommandSetI18n;
+
+
+GLADE_MAKE_COMMAND (GladeCommandSetI18n, glade_command_set_i18n);
+#define GLADE_COMMAND_SET_I18N_TYPE			(glade_command_set_i18n_get_type ())
+#define GLADE_COMMAND_SET_I18N(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_I18N_TYPE, GladeCommandSetI18n))
+#define GLADE_COMMAND_SET_I18N_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_SET_I18N_TYPE, GladeCommandSetI18nClass))
+#define GLADE_IS_COMMAND_SET_I18N(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_I18N_TYPE))
+#define GLADE_IS_COMMAND_SET_I18N_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_I18N_TYPE))
+
+static gboolean
+glade_command_set_i18n_execute(GladeCommand *cmd)
+{
+	GladeCommandSetI18n *me = (GladeCommandSetI18n *)cmd;
+	gboolean  temp_translatable;
+	gboolean  temp_has_context;
+	gchar    *temp_comment;
+	
+	/* sanity check */
+	g_return_val_if_fail (me != NULL, TRUE);
+	g_return_val_if_fail (me->property != NULL, TRUE);
+
+	/* set the new values in the property */
+	glade_property_i18n_set_translatable(me->property, me->translatable);	
+	glade_property_i18n_set_has_context(me->property, me->has_context);
+	glade_property_i18n_set_comment(me->property, me->comment);
+
+	/* swap the current values with the old values to prepare for undo */
+	temp_translatable = me->translatable;
+	temp_has_context = me->has_context;
+	temp_comment = me->comment;
+	me->translatable = me->old_translatable;
+	me->has_context = me->old_has_context;
+	me->comment = me->old_comment;
+	me->old_translatable = temp_translatable;
+	me->old_has_context = temp_has_context;
+	me->old_comment = temp_comment;
+	
+	return TRUE;
+}
+
+static gboolean
+glade_command_set_i18n_undo(GladeCommand *cmd)
+{
+	return glade_command_set_i18n_execute(cmd);
+}
+
+static void
+glade_command_set_i18n_finalize(GObject *obj)
+{
+	GladeCommandSetI18n	*me;
+	
+	g_return_if_fail(GLADE_IS_COMMAND_SET_I18N(obj));
+
+	me = GLADE_COMMAND_SET_I18N(obj);
+	g_free (me->comment);
+	g_free (me->old_comment);
+	
+	glade_command_finalize(obj);
+}
+
+static gboolean
+glade_command_set_i18n_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+	GladeCommandSetI18n *cmd1;
+	GladeCommandSetI18n *cmd2;
+
+	if (GLADE_IS_COMMAND_SET_I18N (this_cmd) && GLADE_IS_COMMAND_SET_I18N (other_cmd))
+	{
+		cmd1 = GLADE_COMMAND_SET_I18N (this_cmd);
+		cmd2 = GLADE_COMMAND_SET_I18N (other_cmd);
+
+		return (cmd1->property == cmd2->property);
+	}
+
+	return FALSE;
+}
+
+static void
+glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+	/* this command is the one that will be used for an undo of the sequence of like commands */
+	GladeCommandSetI18n *this = GLADE_COMMAND_SET_I18N (this_cmd);
+	
+	/* the other command contains the values that will be used for a redo */
+	GladeCommandSetI18n *other = GLADE_COMMAND_SET_I18N (other_cmd);
+
+	g_return_if_fail (GLADE_IS_COMMAND_SET_I18N (this_cmd) && GLADE_IS_COMMAND_SET_I18N (other_cmd));
+
+	/* adjust this command to contain, as its old values, the other command's current values */
+	this->old_translatable = other->old_translatable;
+	this->old_has_context = other->old_has_context;
+	g_free (this->old_comment);
+	this->old_comment = other->old_comment;
+	other->old_comment = NULL;
+
+	glade_app_update_ui ();
+}
+
+/**
+ * glade_command_set_i18n:
+ * @property: a #GladeProperty
+ * @translatable: a #gboolean
+ * @has_context: a #gboolean
+ * @comment: a #const gchar *
+ *
+ * Sets the i18n data on the property.
+ */
+void
+glade_command_set_i18n (GladeProperty *property, gboolean translatable, gboolean has_context, const gchar *comment)
+{
+	GladeCommandSetI18n *me;
+	
+	g_return_if_fail(property);
+	
+	/* check that something changed before continuing with the command */
+	if (translatable == property->i18n_translatable &&
+		has_context == property->i18n_has_context   &&
+		((comment == NULL && property->i18n_comment == NULL) ||
+		 (comment && property->i18n_comment && !strcmp(property->i18n_comment, comment))))
+		return;
+
+	/* load up the command */
+ 	me = g_object_new(GLADE_COMMAND_SET_I18N_TYPE, NULL);
+	me->property = property;
+	me->translatable = translatable;
+	me->has_context = has_context;
+	me->comment = g_strdup(comment);
+	me->old_translatable = property->i18n_translatable;
+	me->old_has_context = property->i18n_has_context;
+	me->old_comment = g_strdup(property->i18n_comment);
+	GLADE_COMMAND(me)->description = g_strdup_printf(_("Setting i18n metadata"));;
+	
+	glade_command_check_group(GLADE_COMMAND(me));
+	
+	/* execute the command and push it on the stack if successful */
+	if (glade_command_set_i18n_execute(GLADE_COMMAND(me)))
+	{
+		glade_project_push_undo(glade_app_get_project(), GLADE_COMMAND(me));
+	}
+	else
+	{
+		g_object_unref(G_OBJECT(me));
+	}
+}
+
+

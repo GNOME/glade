@@ -1593,15 +1593,24 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	res = gtk_dialog_run (GTK_DIALOG (dialog));
 	if (res == GTK_RESPONSE_OK) {
 		GtkTextIter start, end;
+		gboolean translatable, has_context;
 		
-		/* Get the new values. */
-		glade_property_i18n_set_translatable (
-			eprop->property,
-			gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button)));
-		glade_property_i18n_set_has_context (
-			eprop->property,
-			gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button)));
+		/* get the new values for translatable, has_context, and comment */
+		translatable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button));
+		has_context = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button));
 
+		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
+		str = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
+		if (str[0] == '\0')
+		{
+			g_free (str);
+			str = NULL;
+		}
+		
+		/* set the new i18n data via a glade command so it can be undone */
+		glade_command_set_i18n (eprop->property, translatable, has_context, str);
+		g_free (str);
+		
 		/* Text */
 		gtk_text_buffer_get_bounds (text_buffer, &start, &end);
 		str = gtk_text_buffer_get_text (text_buffer, &start, &end, TRUE);
@@ -1611,20 +1620,10 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 			str = NULL;
 		}
 		
+		/* set the new text */
 		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
 		g_free (str);
 		
-		/* Comment */
-		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
-		str = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
-		if (str[0] == '\0')
-		{
-			g_free (str);
-			str = NULL;
-		}
-
-		glade_property_i18n_set_comment (eprop->property, str);
-		g_free (str);
 	}
 
 	gtk_widget_destroy (dialog);
