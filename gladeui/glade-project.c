@@ -684,7 +684,7 @@ glade_project_new (gboolean untitled)
 	if (untitled)
 	{
 		project->untitled_number = glade_project_get_untitled_number ();
-		project->name = g_strdup_printf ("Untitled %d", project->untitled_number);
+		project->name = g_strdup_printf (_("Unsaved %d"), project->untitled_number);
 	}
 
 	return project;

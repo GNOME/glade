@@ -1652,7 +1652,7 @@ static GtkActionEntry static_entries[] = {
 	  N_("Quit the program"), G_CALLBACK (gpw_quit_cb) },
 
 	/* ViewMenu */
-	{ "PaletteAppearance", NULL, "Palette _Appearance" },
+	{ "PaletteAppearance", NULL, N_("Palette _Appearance") },
 	
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL,
