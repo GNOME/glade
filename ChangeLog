@@ -1,3 +1,12 @@
+2007-02-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gnome/gnome.xml.in, 
+	  plugins/gnome/canvas.xml.in, plugins/gnome/bonobo.xml.in:
+	  Fixed domain 'glade-3' -> 'glade3' (bug 404917)
+
+	* src/glade-project-window.c: Fixed translation of 'comments' and
+	  'liscence' properties of the about dialog (bug 404917).
+
 2007-02-06  Jeff Westerinen  <jeff.westerinen@palmsource.com>
 
 	* gladeui/glade-editor-property.c: changed glade_eprop_text_show_i18n_dialog()
