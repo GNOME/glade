@@ -6,6 +6,7 @@
 
 #line 23 "glade-python-gwa.override"
 #include <Python.h>               
+#define NO_IMPORT_PYGOBJECT
 #include <pygobject.h>
 #include <gladeui/glade.h>
 

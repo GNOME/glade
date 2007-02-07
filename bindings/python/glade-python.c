@@ -326,7 +326,7 @@ static PyMethodDef GladeMethods[] = {
 
 /* GladeStdout GladeStderr write method */
 static PyObject *
-glade_python_std_write (PyObject *self, PyObject *args, gboolean stdout)
+glade_python_std_write (PyObject *self, PyObject *args, gboolean __stdout)
 {
 	gchar *string;
 	
@@ -334,7 +334,7 @@ glade_python_std_write (PyObject *self, PyObject *args, gboolean stdout)
 	{
 		GtkTextIter iter;
 		gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-		if (stdout)
+		if (__stdout)
 			gtk_text_buffer_insert (PythonBuffer, &iter, string, -1);
 		else
 			gtk_text_buffer_insert_with_tags_by_name (PythonBuffer, 
