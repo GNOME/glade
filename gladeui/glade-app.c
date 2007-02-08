@@ -20,14 +20,7 @@
  *   Naba Kumar <naba@gnome.org>
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
-#include <string.h>
-#include <glib.h>
-#include <glib/gstdio.h>
-#include <glib/gi18n-lib.h>
 
 #include "glade.h"
 #include "glade-clipboard-view.h"
@@ -39,12 +32,30 @@
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 
+#include <string.h>
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
-struct _GladeAppPriv {
-	
-	/* Class private member data */
+#define GLADE_APP_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_APP, GladeAppPrivate))
+
+enum
+{
+	WIDGET_EVENT,
+	UPDATE_UI,
+	LAST_SIGNAL
+};
+
+enum
+{
+	PROP_0,
+	PROP_ACTIVE_PROJECT
+};
+
+struct _GladeAppPrivate
+{
 	GtkWidget *window;
 	
 	GladePalette *palette;         /* See glade-palette */
@@ -67,20 +78,6 @@ struct _GladeAppPriv {
 	GList *undo_list, *redo_list;	/* Lists of buttons to refresh in update-ui signal */
 };
 
-enum
-{
-	WIDGET_EVENT,
-	UPDATE_UI,
-	LAST_SIGNAL
-};
-
-
-enum
-{
-	PROP_0,
-	PROP_ACTIVE_PROJECT
-};
-
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
 gchar *glade_scripts_dir = GLADE_SCRIPTSDIR;
@@ -92,8 +89,9 @@ gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
 gchar *glade_locale_dir = GLADE_LOCALEDIR;
 gboolean glade_verbose = FALSE;
 
-static GObjectClass   * parent_class = NULL;
-static GladeApp       * the_app = NULL;
+static GladeApp *singleton_app = NULL;
+
+G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
 
 
 /*****************************************************************
@@ -104,15 +102,22 @@ glade_app_constructor (GType                  type,
                        guint                  n_construct_properties,
                        GObjectConstructParam *construct_properties)
 {
-
-	/* Singleton */
-	if (!the_app)
-		the_app = (GladeApp *)parent_class->constructor 
-			(type, n_construct_properties, construct_properties);
+	GObject *object;
+	
+	/* singleton */
+	if (!singleton_app)
+	{
+		object = G_OBJECT_CLASS (glade_app_parent_class)->constructor (type,
+									       n_construct_properties,
+									       construct_properties);
+		singleton_app = GLADE_APP (object);
+	}
 	else
-		g_object_ref (the_app);
-  
-	return G_OBJECT (the_app);
+	{
+		g_object_ref (singleton_app);
+	}
+	  
+	return G_OBJECT (singleton_app);
 }
 
 
@@ -120,7 +125,7 @@ glade_app_constructor (GType                  type,
 static void
 glade_app_dispose (GObject *app)
 {
-	GladeAppPriv *priv = GLADE_APP (app)->priv;
+	GladeAppPrivate *priv = GLADE_APP_GET_PRIVATE (app);
 	
 	if (priv->editor)
 	{
@@ -145,8 +150,7 @@ glade_app_dispose (GObject *app)
 		priv->config = NULL;
 	}
 	
-	if (parent_class->dispose)
-		parent_class->dispose (app);
+	G_OBJECT_CLASS (glade_app_parent_class)->dispose (app);
 }
 
 static void
@@ -167,9 +171,7 @@ glade_app_finalize (GObject *app)
 	
 	glade_catalog_modules_close ();
 
-	g_free (GLADE_APP (app)->priv);
-	if (parent_class->finalize)
-		parent_class->finalize (app);
+	G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
 }
 
 static void
@@ -310,6 +312,8 @@ glade_app_init (GladeApp *app)
 {
 	static gboolean initialized = FALSE;
 	
+	app->priv = GLADE_APP_GET_PRIVATE (app);	
+	
 	if (!initialized)
 	{
 #ifdef G_OS_WIN32
@@ -334,7 +338,6 @@ glade_app_init (GladeApp *app)
 		
 		initialized = TRUE;
 	}
-	app->priv = g_new0 (GladeAppPriv, 1);
 
 	app->priv->accel_group = NULL;
 	
@@ -375,10 +378,8 @@ static void
 glade_app_class_init (GladeAppClass * klass)
 {
 	GObjectClass *object_class;
-	g_return_if_fail (klass != NULL);
 	
-	parent_class = g_type_class_peek_parent (klass);
-	object_class = (GObjectClass *) klass;
+	object_class = G_OBJECT_CLASS (klass);
 	
 	object_class->constructor  = glade_app_constructor;
 	object_class->dispose      = glade_app_dispose;
@@ -437,32 +438,8 @@ glade_app_class_init (GladeAppClass * klass)
 		  _("The active project"),
 		  GLADE_TYPE_PROJECT, G_PARAM_READWRITE));
 
-}
-
-GType
-glade_app_get_type ()
-{
-	static GType obj_type = 0;
 	
-	if (!obj_type)
-	{
-		static const GTypeInfo obj_info = 
-		{
-			sizeof (GladeAppClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_app_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,           /* class_data */
-			sizeof (GladeApp),
-			0,              /* n_preallocs */
-			(GInstanceInitFunc) glade_app_init,
-			NULL            /* value_table */
-		};
-		obj_type = g_type_register_static (G_TYPE_OBJECT,
-		                                   "GladeApp", &obj_info, 0);
-	}
-	return obj_type;
+	g_type_class_add_private (klass, sizeof (GladeAppPrivate));
 }
 
 /*****************************************************************
@@ -630,9 +607,9 @@ glade_app_set_transient_parent (GtkWindow *parent)
 
 	/* Loop over all projects/widgets and set_transient_for the toplevels.
 	 */
-	for (projects = glade_app_get_projects (); // projects
+	for (projects = glade_app_get_projects (); /* projects */
 	     projects; projects = projects->next) 
-		for (objects = GLADE_PROJECT (projects->data)->objects;  // widgets
+		for (objects = GLADE_PROJECT (projects->data)->objects;  /* widgets */
 		     objects; objects = objects->next)
 			if (GTK_IS_WINDOW (objects->data))
 				gtk_window_set_transient_for
@@ -653,9 +630,9 @@ glade_app_get_transient_parent (void)
 GladeApp *
 glade_app_get (void)
 {
-	if (!the_app)
+	if (!singleton_app)
 		g_critical ("No available GladeApp");
-	return the_app;
+	return singleton_app;
 }
 
 void

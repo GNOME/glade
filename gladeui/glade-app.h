@@ -19,6 +19,7 @@
  * Authors:
  *   Naba Kumar <naba@gnome.org>
  */
+ 
 #ifndef __GLADE_APP_H__
 #define __GLADE_APP_H__
 
@@ -38,14 +39,16 @@ G_BEGIN_DECLS
 #define GLADE_IS_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_APP))
 #define GLADE_APP_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_APP, GladeAppClass))
 
-typedef struct _GladeApp GladeApp;
-typedef struct _GladeAppClass GladeAppClass;
-typedef struct _GladeAppPriv GladeAppPriv;
+typedef struct _GladeApp        GladeApp;
+typedef struct _GladeAppPrivate GladeAppPrivate;
+typedef struct _GladeAppClass   GladeAppClass;
 
 struct _GladeApp
 {
-	GObject parent;
-	GladeAppPriv *priv;
+	/*< private >*/
+	GObject          parent_instance;
+	
+	GladeAppPrivate *priv;
 };
 
 struct _GladeAppClass
@@ -53,14 +56,15 @@ struct _GladeAppClass
 	GObjectClass parent_class;
 	
 	/* class methods */
-	void   (*  show_properties) (GladeApp* app, gboolean raise);
+	void   (*  show_properties) (GladeApp* app,
+				     gboolean  raise);
 	void   (*  hide_properties) (GladeApp* app);
 
 	/* signals */
 	void   (* widget_event)     (GladeApp    *app, 
 				     GladeWidget *toplevel,
 				     GdkEvent    *event);
-	void   (* update_ui_signal) (GladeApp *app);
+	void   (* update_ui_signal) (GladeApp    *app);
 };
 
 LIBGLADEUI_API 

@@ -2,6 +2,7 @@
 #ifndef __GLADE_EDITOR_PROPERTY_H__
 #define __GLADE_EDITOR_PROPERTY_H__
 
+G_BEGIN_DECLS
 
 #define GLADE_TYPE_EDITOR_PROPERTY            (glade_editor_property_get_type())
 #define GLADE_EDITOR_PROPERTY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_PROPERTY, GladeEditorProperty))
@@ -99,4 +100,6 @@ void                 glade_editor_property_show_info      (GladeEditorProperty *
 LIBGLADEUI_API
 void                 glade_editor_property_hide_info      (GladeEditorProperty *eprop);
 
-#endif // __GLADE_EDITOR_PROPERTY_H__
+G_END_DECLS
+
+#endif /* __GLADE_EDITOR_PROPERTY_H__ */

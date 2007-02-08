@@ -87,7 +87,7 @@ void           glade_command_set_properties      (GladeProperty *property,
 						  ...);
 LIBGLADEUI_API
 void           glade_command_set_properties_list (GladeProject  *project, 
-						  GList         *props); // list of GCSetPropData
+						  GList         *props); /* list of GCSetPropData */
 
 /************************** name ******************************/
 LIBGLADEUI_API

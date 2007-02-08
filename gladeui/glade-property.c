@@ -650,7 +650,7 @@ glade_property_get_type (void)
 	{
 		static const GTypeInfo property_info = 
 		{
-			sizeof (GladePropertyKlass), // Klass is our class
+			sizeof (GladePropertyKlass), /* Klass is our class */
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
 			(GClassInitFunc) glade_property_klass_init,

@@ -1,3 +1,15 @@
+2007-02-06  Vincent Geddes <vincent.geddes@gmail.com>
+
+        * gladeui/*.[ch]: Replaced C++ style comments with the more portable ISO C syntax.
+          
+        * gladeui/glade-app.[ch]: Use the G_DEFINE_TYPE() and
+          g_type_class_add_private() idioms for registering the class.
+          
+        * README.cvs: Renamed to 'README.svn'.
+        
+        * plugins/gtk+/icons/16x16/Makefile.am, plugins/gtk+/icons/22x22/Makefile.am:
+          Added some icons.
+
 2007-02-07  Paul <ephraim_owns@hotmail.com>
 
 	* bindings/python/Makefile.am: Removed $(top_srcdir) from CFLAGS.

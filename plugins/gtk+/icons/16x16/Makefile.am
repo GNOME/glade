@@ -3,6 +3,7 @@
 iconsdir = $(pkgdatadir)/pixmaps/16x16
 
 icons_DATA = \
+	assistant.png \
 	alignment.png \
 	aspectframe.png \
 	accellabel.png \
@@ -51,6 +52,7 @@ icons_DATA = \
 	layout.png \
 	list.png \
 	listitem.png \
+	linkbutton.png \
 	menu.png \
 	menuitem.png \
 	menutoolbutton.png \
@@ -59,9 +61,11 @@ icons_DATA = \
 	notebook.png \
 	optionmenu.png \
 	progressbar.png \
+	pagesetupdialog.png \
 	radiobutton.png \
 	radiomenuitem.png \
 	radiotoolbutton.png \
+	recentchooser.png \
 	ruler.png \
 	scrolledwindow.png \
 	spinbutton.png \

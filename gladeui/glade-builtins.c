@@ -104,7 +104,7 @@ list_stock_items (gboolean include_images)
 	
 	
 	/* Add first "no stock" element */
-	value.value_nick = g_strdup ("glade-none"); // Passing ownership here.
+	value.value_nick = g_strdup ("glade-none"); /* Passing ownership here */
 	value.value_name = g_strdup ("None");
 	value.value      = 0;
 	values = g_array_append_val (values, value);
@@ -124,7 +124,7 @@ list_stock_items (gboolean include_images)
 			
 			value.value      = stock_enum++;
 			value.value_name = g_strdup (item.label);
-			value.value_nick = stock_id; // Passing ownership here.
+			value.value_nick = stock_id; /* Passing ownership here */
 			values = g_array_append_val (values, value);
 		}
 
@@ -303,7 +303,7 @@ static gboolean
 param_accel_validate (GParamSpec *pspec,
 		      GValue     *value)
 {
-	//GladeParamSpecAccel *aspec = GLADE_PARAM_SPEC_ACCEL (pspec);
+	/* GladeParamSpecAccel *aspec = GLADE_PARAM_SPEC_ACCEL (pspec); */
 	GList               *accels, *list, *toremove = NULL;
 	GladeAccelInfo      *info;
 

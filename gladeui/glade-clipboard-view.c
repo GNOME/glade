@@ -377,7 +377,7 @@ glade_clipboard_view_refresh_sel (GladeClipboardView *view)
 		     (GTK_TREE_MODEL (view->model), widget, 0)) != NULL)
 		{
 			gtk_tree_selection_select_iter (sel, iter);
-			// gtk_tree_iter_free (iter);
+			/* gtk_tree_iter_free (iter); */
 		}
 	}
 	view->updating = FALSE;

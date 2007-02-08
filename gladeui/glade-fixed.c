@@ -782,7 +782,7 @@ glade_fixed_event (GladeWidget *gwidget_fixed,
 
 	switch (event->type)
 	{
-	case GDK_BUTTON_PRESS: // add widget
+	case GDK_BUTTON_PRESS: /* add widget */
 		if (((GdkEventButton *) event)->button == 1)
 		{
 
