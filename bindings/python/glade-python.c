@@ -22,18 +22,13 @@
 
 #include <config.h>
 
+#include <Python.h>
+#include <pygobject.h>
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-binding.h>
 
-#include <Python.h>
-#include <pygobject.h>
-
-
-static GtkTextBuffer *PythonBuffer = NULL;
-static GtkTextMark   *PythonBufferEnd;
-
-static 	PyObject *glade, *glade_dict, *GladeError, *GladeStdout, *GladeStderr;
+static 	PyObject *glade, *glade_dict, *GladeError;
 
 static PyObject *
 glade_python_undo (PyObject *self, PyObject *args)
@@ -324,57 +319,11 @@ static PyMethodDef GladeMethods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-/* GladeStdout GladeStderr write method */
-static PyObject *
-glade_python_std_write (PyObject *self, PyObject *args, gboolean __stdout)
-{
-	gchar *string;
-	
-	if (PythonBuffer && PyArg_ParseTuple(args, "s", &string))
-	{
-		GtkTextIter iter;
-		gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-		if (__stdout)
-			gtk_text_buffer_insert (PythonBuffer, &iter, string, -1);
-		else
-			gtk_text_buffer_insert_with_tags_by_name (PythonBuffer, 
-				&iter, string, -1, "red_foreground", NULL);
-	}
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_stdout_write (PyObject *self, PyObject *args)
-{
-	return glade_python_std_write (self, args, TRUE);
-}
-static PyObject *
-glade_python_stderr_write (PyObject *self, PyObject *args)
-{
-	return glade_python_std_write (self, args, FALSE);
-}
-
-static PyMethodDef GladeStdoutMethods[] = {
-    {"write",  glade_python_stdout_write, METH_VARARGS, NULL},
-    {NULL, NULL, 0, NULL}
-};
-
-static PyMethodDef GladeStderrMethods[] = {
-    {"write",  glade_python_stderr_write, METH_VARARGS, NULL},
-    {NULL, NULL, 0, NULL}
-};
-
 /* Bindings */
 void
 glade_python_binding_finalize (GladeBindingCtrl *ctrl)
 {
-	if (PythonBuffer)
-	{
-		Py_Finalize ();
-		g_object_unref (PythonBuffer);
-	}
+	Py_Finalize ();
 }
 
 void 
@@ -412,85 +361,6 @@ glade_python_binding_run_script (const gchar *path, gchar **argv)
 	fclose (fp);
 	
 	return retval;
-}
-
-static void
-glade_python_console_entry_activate (GtkEntry *entry, GtkTextView *textview)
-{
-	const gchar *command = gtk_entry_get_text (entry);
-	GtkTextIter iter;
-	
-	gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-	gtk_text_buffer_insert_with_tags_by_name (PythonBuffer, &iter, ">>> ", -1,
-						  "blue_foreground", NULL);
-	gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-	gtk_text_buffer_insert_with_tags_by_name (PythonBuffer, &iter, command, -1,
-						  "blue_foreground", NULL);
-	gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-	gtk_text_buffer_insert (PythonBuffer, &iter, "\n", -1);
-	
-	if (PyRun_SimpleString (command) == 0) gtk_entry_set_text (entry, "");
-}
-
-static void
-glade_python_buffer_changed (GtkTextBuffer *buffer, GtkTextView *textview)
-{
-	gtk_text_view_scroll_to_mark (textview, PythonBufferEnd, 0.0, TRUE, 0.0, 1.0);
-}
-
-static void 
-glade_python_textview_destroy (GtkObject *object, gpointer data)
-{
-	g_signal_handler_disconnect (PythonBuffer, GPOINTER_TO_UINT (data));
-}
-
-GtkWidget *
-glade_python_binding_console_new (void)
-{
-	GtkWidget *vbox, *hbox, *textview, *label, *entry, *sw;
-	gulong handler_id;
-	
-	vbox = gtk_vbox_new (FALSE, 4);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
-	
-	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
-					     GTK_SHADOW_ETCHED_IN);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-					GTK_POLICY_AUTOMATIC,
-					GTK_POLICY_AUTOMATIC);
-	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
-	
-	textview = gtk_text_view_new_with_buffer (PythonBuffer);
-	gtk_text_view_set_editable (GTK_TEXT_VIEW (textview), FALSE);
-	gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (textview), FALSE);
-	gtk_container_add (GTK_CONTAINER (sw), textview);
-	handler_id = g_signal_connect (PythonBuffer, "changed",
-				       G_CALLBACK (glade_python_buffer_changed),
-				       GTK_TEXT_VIEW (textview));
-	g_signal_connect (textview, "destroy",
-			  G_CALLBACK (glade_python_textview_destroy),
-			  GUINT_TO_POINTER (handler_id));
-
-	hbox = gtk_hbox_new (FALSE, 4);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-	
-	label = gtk_label_new (">>>");
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-	
-	entry = gtk_entry_new ();
-	g_signal_connect (entry, "activate", 
-			  G_CALLBACK (glade_python_console_entry_activate),
-			  GTK_TEXT_VIEW (textview));
-	gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
-	
-	gtk_widget_show (textview);
-	gtk_widget_show (label);
-	gtk_widget_show (entry);
-	gtk_widget_show (hbox);
-	gtk_widget_show (sw);
-
-	return vbox;
 }
 
 /*
@@ -541,24 +411,11 @@ glade_python_init_pygtk_check (gint req_major, gint req_minor, gint req_micro)
 gboolean
 glade_binding_init (GladeBindingCtrl *ctrl)
 {
-	GtkTextIter iter;
 	gchar *command;
 	
-	if (PythonBuffer == NULL)
-	{	
-		PythonBuffer = gtk_text_buffer_new (NULL);
-		gtk_text_buffer_create_tag (PythonBuffer, "blue_foreground",
-					    "foreground", "blue", NULL);
-		gtk_text_buffer_create_tag (PythonBuffer, "red_foreground",
-					    "foreground", "red", NULL);
-		gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-		PythonBufferEnd = gtk_text_buffer_create_mark (PythonBuffer, NULL, &iter, FALSE);
-	}
-	else return FALSE;
-
     	Py_SetProgramName (PACKAGE_NAME);
 	
-    	/* Initialize the Python interpreter */
+	/* Initialize the Python interpreter */
 	glade_python_init ();
 	
 	/* Check and init pygobject >= 2.12.0 */
@@ -566,13 +423,15 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 	glade_python_init_pygtk_check (PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO);
 	if (PyErr_Occurred ())
 	{
+		PyObject *ptype, *pvalue, *ptraceback;
+		PyErr_Fetch(&ptype, &pvalue, &ptraceback);
 		g_warning ("Unable to load pygobject module >= %d.%d.%d, "
 			   "please make sure it is in python's path (sys.path). "
-			   "(use PYTHONPATH env variable to specify non default paths)",
-			   PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO);
+			   "(use PYTHONPATH env variable to specify non default paths)\n%s",
+			   PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO,
+			   PyString_AsString (pvalue));
 		PyErr_Clear ();
 		Py_Finalize ();
-		g_object_unref (PythonBuffer);
 		return FALSE;
 	}
 	
@@ -584,13 +443,6 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 	Py_INCREF (GladeError);
 	PyModule_AddObject (glade, "error", GladeError);
 
-	/* Create GladeStdout and GladeStderr objects */
-	GladeStdout = Py_InitModule ("stdout", GladeStdoutMethods);
-	PySys_SetObject("stdout", GladeStdout);
-
-	GladeStderr = Py_InitModule ("stderr", GladeStderrMethods);
-	PySys_SetObject("stderr", GladeStderr);
-	
 	/* Register GladeUI classes (GladeWidgetAdaptor) */
 	glade_dict = PyModule_GetDict (glade);
 	glade_python_gwa_register_classes (glade_dict);
@@ -608,18 +460,12 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 				    glade_modules_dir);
 	PyRun_SimpleString (command);
 	g_free (command);
-
-	gtk_text_buffer_get_end_iter (PythonBuffer, &iter);
-	gtk_text_buffer_insert_with_tags_by_name (PythonBuffer, &iter,
-					">>> import sys;\n>>> import glade;\n",
-					-1, "blue_foreground", NULL);
 	
 	/* Setup ctrl members */
 	ctrl->name = "python";
 	ctrl->finalize = glade_python_binding_finalize;
 	ctrl->library_load = glade_python_binding_library_load;
 	ctrl->run_script = glade_python_binding_run_script;
-	ctrl->console_new = glade_python_binding_console_new;
 	
 	return TRUE;
 }

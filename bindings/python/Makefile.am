@@ -13,6 +13,7 @@ libgladepython_la_CPPFLAGS = \
 	-I$(top_srcdir)      \
 	-I$(top_builddir)    \
 	$(AM_CPPFLAGS)
+
 libgladepython_la_CFLAGS = \
 	-g -Wall           \
 	-I$(top_srcdir)    \
@@ -20,6 +21,7 @@ libgladepython_la_CFLAGS = \
 	$(PYTHON_CFLAGS)   \
 	$(GTK_CFLAGS)      \
 	$(AM_CFLAGS)
+
 libgladepython_la_LDFLAGS = -module -avoid-version $(PYTHON_LIBS) $(AM_LDFLAGS)
 libgladepython_la_LIBADD = $(libgladeui) $(PYTHON_LIBS)
 

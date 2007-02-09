@@ -1491,51 +1491,53 @@ glade_util_have_devhelp (void)
     "No DevHelp installed on your system, " \
     "devhelp feature will be disabled."
 
-	if (have_devhelp < 0)
+	if (have_devhelp >= 0) return have_devhelp;
+	
+	have_devhelp = 0;
+
+	if ((ptr = g_find_program_in_path ("devhelp")) != NULL)
 	{
-		have_devhelp = 0;
+		g_free (ptr);
 
-		if ((ptr = g_find_program_in_path ("devhelp")) != NULL)
+		if (g_spawn_command_line_sync ("devhelp --version", 
+					       &ptr, NULL, &ret, &error))
 		{
-			g_free (ptr);
-
-
-			if (g_spawn_command_line_sync ("devhelp --version", 
-						       &ptr, NULL, &ret, &error))
+			/* If we have a successfull return code.. parse the output.
+			 */
+			if (ret == 0)
 			{
-				/* If we have a successfull return code.. parse the output.
-				 */
-				if (ret == 0)
+				gchar name[16];
+				if ((cnt = sscanf (ptr, "%15s %d.%d\n", 
+						   name, &major, &minor)) == 3)
 				{
+					/* Devhelp 0.12 required.
+					 */
+					if (major >= 0 && minor >= 12)
+						have_devhelp = 1;
+					else	
+						g_message (DEVHELP_OLD_MESSAGE);
+				}
+				else
 					
-					if ((cnt = sscanf (ptr, "DevHelp %d.%d\n", 
-							   &major, &minor)) == 2)
-					{
-						/* Devhelp 0.12 required.
-						 */
-						if (major >= 0 &&
-						    minor >= 12)
-							have_devhelp = 1;
-						else	
-							g_message (DEVHELP_OLD_MESSAGE);
-				} else if (ptr != NULL || 
-						   strlen (ptr) > 0) 
+				{
+					if (ptr != NULL || strlen (ptr) > 0)
 						g_warning ("devhelp had unparsable output: "
 							   "'%s' (parsed %d elements)", ptr, cnt);
 					else
 						g_message (DEVHELP_OLD_MESSAGE);
-				} else {
-					g_warning ("devhelp had bad return code: '%d'", ret);
 				}
-			} else {
-				g_warning ("Error trying to launch devhelp: %s",
-					   error->message);
-				g_error_free (error);
 			}
-		} else
-			g_message (DEVHELP_MISSING_MESSAGE);
-		
+			else g_warning ("devhelp had bad return code: '%d'", ret);
+		}
+		else
+		{
+			g_warning ("Error trying to launch devhelp: %s",
+				   error->message);
+			g_error_free (error);
+		}
 	}
+	else g_message (DEVHELP_MISSING_MESSAGE);
+	
 	return have_devhelp;
 }
 

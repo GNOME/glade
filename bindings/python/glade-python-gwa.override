@@ -20,10 +20,12 @@
  */
 %%
 headers
-#include <gladeui/glade.h>
-#include <Python.h>               
+
+#include <Python.h>
 #define NO_IMPORT_PYGOBJECT
 #include <pygobject.h>
+
+#include <gladeui/glade.h>
 
 static gboolean
 glade_python_support_init_value (GObject *object,

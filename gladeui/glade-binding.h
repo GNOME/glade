@@ -78,17 +78,6 @@ typedef void     (*GladeBindingLibraryLoadFunc) (const gchar *str);
 typedef gint     (*GladeBindingRunScriptFunc)   (const gchar *path,
 						 gchar **argv);
 
-/**
- * GladeBindingConsoleNewFunc:
- *
- * Create a new console widget for this binding.
- * In glade3 this widget will be packed in the console window.
- *
- * Returns: A new GtkWidget.
- *
- */
-typedef GtkWidget *(*GladeBindingConsoleNewFunc)  (void);
-
 struct _GladeBindingCtrl {
 	gchar *name;   /* the name of the module (ie: python) */
 	
@@ -96,7 +85,6 @@ struct _GladeBindingCtrl {
 	GladeBindingFinalizeFunc    finalize;
 	GladeBindingLibraryLoadFunc library_load;
 	GladeBindingRunScriptFunc   run_script;
-	GladeBindingConsoleNewFunc  console_new;
 };
 
 typedef struct _GladeBinding GladeBinding;
@@ -139,9 +127,6 @@ LIBGLADEUI_API
 gint          glade_binding_run_script (GladeBinding *script, 
 					const gchar *path,
 					gchar **argv);
-
-LIBGLADEUI_API
-GtkWidget    *glade_binding_console_new (GladeBinding *binding);
 
 G_END_DECLS
 

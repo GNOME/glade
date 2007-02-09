@@ -341,24 +341,6 @@ glade_binding_library_load (GladeBinding *binding, const gchar *library)
 }
 
 /**
- * glade_binding_console_new:
- *
- * @binding: a GladeBinding.
- *
- * Create a new console.
- *
- */
-GtkWidget *
-glade_binding_console_new (GladeBinding *binding)
-{
-	g_return_val_if_fail (binding != NULL, NULL);
-	if (binding->ctrl.console_new)
-		return binding->ctrl.console_new ();
-	else
-		return NULL;
-}
-
-/**
  * glade_binding_run_script:
  *
  * @binding: a GladeBinding.

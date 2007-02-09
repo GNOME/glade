@@ -5,9 +5,11 @@
 
 
 #line 23 "glade-python-gwa.override"
-#include <Python.h>               
+
+#include <Python.h>
 #define NO_IMPORT_PYGOBJECT
 #include <pygobject.h>
+
 #include <gladeui/glade.h>
 
 static gboolean
@@ -77,7 +79,7 @@ glade_python_support_list_from_glist (GList *list)
   GValue* and GList* types.
 */
 
-#line 80 "glade-python-gwa.c"
+#line 83 "glade-python-gwa.c"
 
 
 /* ---------- types from other modules ---------- */
@@ -88,13 +90,13 @@ static PyTypeObject *_PyGObject_Type;
 /* ---------- forward type declarations ---------- */
 PyTypeObject PyGladeWidgetAdaptor_Type;
 
-#line 91 "glade-python-gwa.c"
+#line 94 "glade-python-gwa.c"
 
 
 
 /* ----------- GladeWidgetAdaptor ----------- */
 
-#line 98 "glade-python-gwa.override"
+#line 101 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_verify_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -124,10 +126,10 @@ _wrap_GladeWidgetAdaptor__do_verify_property(PyObject *cls, PyObject *args, PyOb
     return PyBool_FromLong(ret);
 
 }
-#line 127 "glade-python-gwa.c"
+#line 130 "glade-python-gwa.c"
 
 
-#line 212 "glade-python-gwa.override"
+#line 215 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_set_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -156,10 +158,10 @@ _wrap_GladeWidgetAdaptor__do_set_property(PyObject *cls, PyObject *args, PyObjec
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 159 "glade-python-gwa.c"
+#line 162 "glade-python-gwa.c"
 
 
-#line 332 "glade-python-gwa.override"
+#line 335 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_get_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -189,10 +191,10 @@ _wrap_GladeWidgetAdaptor__do_get_property(PyObject *cls, PyObject *args, PyObjec
     g_type_class_unref(klass);
     return ret;
 }
-#line 192 "glade-python-gwa.c"
+#line 195 "glade-python-gwa.c"
 
 
-#line 432 "glade-python-gwa.override"
+#line 435 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_child_verify_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -222,10 +224,10 @@ _wrap_GladeWidgetAdaptor__do_child_verify_property(PyObject *cls, PyObject *args
     return PyBool_FromLong(ret);
 
 }
-#line 225 "glade-python-gwa.c"
+#line 228 "glade-python-gwa.c"
 
 
-#line 556 "glade-python-gwa.override"
+#line 559 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_child_set_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -254,10 +256,10 @@ _wrap_GladeWidgetAdaptor__do_child_set_property(PyObject *cls, PyObject *args, P
     Py_INCREF(Py_None);
     return Py_None;
 }
-#line 257 "glade-python-gwa.c"
+#line 260 "glade-python-gwa.c"
 
 
-#line 686 "glade-python-gwa.override"
+#line 689 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_child_get_property(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -286,10 +288,10 @@ _wrap_GladeWidgetAdaptor__do_child_get_property(PyObject *cls, PyObject *args, P
     g_type_class_unref(klass);
     return ret;
 }
-#line 289 "glade-python-gwa.c"
+#line 292 "glade-python-gwa.c"
 
 
-#line 794 "glade-python-gwa.override"
+#line 797 "glade-python-gwa.override"
 static PyObject *
 _wrap_GladeWidgetAdaptor__do_get_children(PyObject *cls, PyObject *args, PyObject *kwargs)
 {
@@ -315,7 +317,7 @@ _wrap_GladeWidgetAdaptor__do_get_children(PyObject *cls, PyObject *args, PyObjec
     g_list_free (ret);
     return list;
 }
-#line 318 "glade-python-gwa.c"
+#line 321 "glade-python-gwa.c"
 
 
 static PyObject *
@@ -367,13 +369,13 @@ _wrap_GladeWidgetAdaptor__do_replace_child(PyObject *cls, PyObject *args, PyObje
 {
     gpointer klass;
     static char *kwlist[] = { "self", "container", "old", "new", NULL };
-    PyGObject *self, *container, *old_obj, *new_obj;
+    PyGObject *self, *container, *old, *new;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old_obj, &PyGObject_Type, &new_obj))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old, &PyGObject_Type, &new))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child)
-        GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(container->obj), G_OBJECT(old_obj->obj), G_OBJECT(new_obj->obj));
+        GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(container->obj), G_OBJECT(old->obj), G_OBJECT(new->obj));
     else {
         PyErr_SetString(PyExc_NotImplementedError, "virtual method GladeWidgetAdaptor.replace_child not implemented");
         g_type_class_unref(klass);
@@ -518,7 +520,7 @@ PyTypeObject PyGladeWidgetAdaptor_Type = {
     (inquiry)0              /* tp_is_gc */
 };
 
-#line 129 "glade-python-gwa.override"
+#line 132 "glade-python-gwa.override"
 static gboolean
 _wrap_GladeWidgetAdaptor__proxy_do_verify_property(GladeWidgetAdaptor *self, GObject*object, const gchar*property_name, const GValue*value)
 {
@@ -600,10 +602,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_verify_property(GladeWidgetAdaptor *self, GOb
     
     return retval;
 }
-#line 603 "glade-python-gwa.c"
+#line 606 "glade-python-gwa.c"
 
 
-#line 242 "glade-python-gwa.override"
+#line 245 "glade-python-gwa.override"
 static void
 _wrap_GladeWidgetAdaptor__proxy_do_set_property(GladeWidgetAdaptor *self, GObject*object, const gchar*property_name, const GValue*value)
 {
@@ -692,10 +694,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_set_property(GladeWidgetAdaptor *self, GObjec
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 695 "glade-python-gwa.c"
+#line 698 "glade-python-gwa.c"
 
 
-#line 363 "glade-python-gwa.override"
+#line 366 "glade-python-gwa.override"
 static void
 _wrap_GladeWidgetAdaptor__proxy_do_get_property(GladeWidgetAdaptor *self, GObject*object, const gchar*property_name, GValue *value)
 {
@@ -763,10 +765,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_property(GladeWidgetAdaptor *self, GObjec
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 766 "glade-python-gwa.c"
+#line 769 "glade-python-gwa.c"
 
 
-#line 463 "glade-python-gwa.override"
+#line 466 "glade-python-gwa.override"
 static gboolean
 _wrap_GladeWidgetAdaptor__proxy_do_child_verify_property(GladeWidgetAdaptor *self, GObject*container, GObject*child, const gchar*property_name, GValue*value)
 {
@@ -858,10 +860,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_verify_property(GladeWidgetAdaptor *sel
     
     return retval;
 }
-#line 861 "glade-python-gwa.c"
+#line 864 "glade-python-gwa.c"
 
 
-#line 586 "glade-python-gwa.override"
+#line 589 "glade-python-gwa.override"
 static void
 _wrap_GladeWidgetAdaptor__proxy_do_child_set_property(GladeWidgetAdaptor *self, GObject*container, GObject*child, const gchar*property_name, const GValue *value)
 {
@@ -960,10 +962,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_set_property(GladeWidgetAdaptor *self, 
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 963 "glade-python-gwa.c"
+#line 966 "glade-python-gwa.c"
 
 
-#line 716 "glade-python-gwa.override"
+#line 719 "glade-python-gwa.override"
 static void
 _wrap_GladeWidgetAdaptor__proxy_do_child_get_property(GladeWidgetAdaptor *self, GObject*container, GObject*child, const gchar*property_name, GValue *value)
 {
@@ -1040,10 +1042,10 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_get_property(GladeWidgetAdaptor *self, 
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 1043 "glade-python-gwa.c"
+#line 1046 "glade-python-gwa.c"
 
 
-#line 821 "glade-python-gwa.override"
+#line 824 "glade-python-gwa.override"
 static GList*
 _wrap_GladeWidgetAdaptor__proxy_do_get_children(GladeWidgetAdaptor *self, GObject*container)
 {
@@ -1103,7 +1105,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_children(GladeWidgetAdaptor *self, GObjec
     
     return retval;
 }
-#line 1106 "glade-python-gwa.c"
+#line 1109 "glade-python-gwa.c"
 
 
 static void
@@ -1253,7 +1255,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_remove(GladeWidgetAdaptor *self, GObject*pare
     pyg_gil_state_release(__py_state);
 }
 static void
-_wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObject*container, GObject*old_obj, GObject*new_obj)
+_wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObject*container, GObject*old, GObject*new)
 {
     PyGILState_STATE __py_state;
     PyObject *py_self;
@@ -1278,14 +1280,14 @@ _wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObje
         Py_INCREF(Py_None);
         py_container = Py_None;
     }
-    if (old_obj)
-        py_old = pygobject_new((GObject *) old_obj);
+    if (old)
+        py_old = pygobject_new((GObject *) old);
     else {
         Py_INCREF(Py_None);
         py_old = Py_None;
     }
-    if (new_obj)
-        py_new = pygobject_new((GObject *) new_obj);
+    if (new)
+        py_new = pygobject_new((GObject *) new);
     else {
         Py_INCREF(Py_None);
         py_new = Py_None;
@@ -1670,7 +1672,7 @@ glade_python_gwa_register_classes(PyObject *d)
     }
 
 
-#line 1673 "glade-python-gwa.c"
+#line 1676 "glade-python-gwa.c"
     pygobject_register_class(d, "GladeWidgetAdaptor", GLADE_TYPE_WIDGET_ADAPTOR, &PyGladeWidgetAdaptor_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GLADE_TYPE_WIDGET_ADAPTOR);
     pyg_register_class_init(GLADE_TYPE_WIDGET_ADAPTOR, __GladeWidgetAdaptor_class_init);
