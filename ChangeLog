@@ -1,3 +1,14 @@
+2007-02-06  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* src/main.c:
+	  - Add summary of the application's functionality in the '--help'
+	    output (with g_option_context_set_summary()).
+	  - Set translation domain for the main option group.          
+
+        * docs/catalogintro.sgml: pkg-config file is now 'gladeui-1.0'.
+        
+        * data/glade-3.desktop.in.in: Added 'GUIDesigner' to 'Categories'.
+
 2007-02-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-utils.c: fixed bug in glade_util_have_devhelp()

@@ -21,9 +21,7 @@
  *   Vincent Geddes <vgeddes@metroweb.co.za>
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include "glade-project-window.h"
 
@@ -45,10 +43,16 @@ static gchar **files = NULL;
 
 static GOptionEntry option_entries[] = 
 {
-  { "version", '\0', 0, G_OPTION_ARG_NONE, &version, "output version information and exit", NULL },
-  { "without-devhelp", '\0', 0, G_OPTION_ARG_NONE, &without_devhelp, "disable DevHelp check", NULL },
-  { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files, "", "" },
-  { NULL }
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &version,
+	  N_("Output version information and exit"), NULL },
+	  
+	{ "without-devhelp", '\0', 0, G_OPTION_ARG_NONE, &without_devhelp,
+	  N_("Disable Devhelp integration"), NULL },
+	  
+	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files, 
+	  NULL, N_("[FILE...]") },
+	  
+	{ NULL }
 };
 
 /* Debugging arguments */
@@ -76,18 +80,21 @@ main (int argc, char *argv[])
 #endif
 
 	/* Set up option groups */
-	option_context = g_option_context_new ("[FILE...]");
+	option_context = g_option_context_new (NULL);
+	
+	g_option_context_set_summary (option_context, _("Create or edit user interface designs for GTK+ or GNOME applications."));
 
 	option_group = g_option_group_new ("glade",
-					   N_("Glade"),
+					   N_("Glade options"),
 					   N_("Glade options"),
 					   NULL, NULL);
 	g_option_group_add_entries (option_group, option_entries);
 	g_option_context_set_main_group (option_context, option_group);
+	g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
 
 	option_group = g_option_group_new ("debug",
 					   "Glade debug options",
-					   "Show debug options",
+					   "Show Glade debug options",
 					   NULL, NULL);
 	g_option_group_add_entries (option_group, debug_option_entries);
 	g_option_context_add_group (option_context, option_group);
