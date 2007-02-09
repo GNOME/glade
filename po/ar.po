@@ -1,21 +1,24 @@
+# translation of glade3.HEAD.ar.po to Arabic
 # Arabic translations for PACKAGE package.
 # Copyright (C) 2006 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Automatically generated, 2006.
 #
+# Automatically generated, 2006.
+# Khaled Hosny <khaledhosny@eglug.org>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-07 07:12+0000\n"
-"PO-Revision-Date: 2007-02-08 16:10-0000\n"
-"Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
+"POT-Creation-Date: 2007-02-09 07:57-0800\n"
+"PO-Revision-Date: 2007-02-09 18:52+0200\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n >= 3 && n <= 10 ? 3 : n >= 11 && n <= 99 ? 4 : 5;\n"
+"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n"
 "X-Poedit-Language: Arabic\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
@@ -25,13 +28,11 @@ msgstr "انشئ او افتح واجهات مستخدم لتطبيقات جي �
 msgid "Glade Interface Designer"
 msgstr "مخطط الواجهة غلايد"
 
-#: ../data/glade-3.desktop.in.in.h:3
-#: ../src/glade-project-window.c:212
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:212
 msgid "User Interface Designer"
 msgstr "مخطط واجهة المستخدم"
 
-#: ../src/main.c:39
-#: ../src/main.c:82
+#: ../src/main.c:39 ../src/main.c:82
 msgid "Glade"
 msgstr "جلايد (Glade)"
 
@@ -99,8 +100,7 @@ msgstr "تم حفظ المشروع '%s'"
 
 #. Just in case the menu-item is not insensitive
 #. Just in case the menu-item or button is not insensitive
-#: ../src/glade-project-window.c:849
-#: ../src/glade-project-window.c:932
+#: ../src/glade-project-window.c:849 ../src/glade-project-window.c:932
 msgid "No open projects to save"
 msgstr "لا مشاريع مفتوحة للحفظ"
 
@@ -110,7 +110,9 @@ msgstr "احفظ كـ..."
 
 #: ../src/glade-project-window.c:895
 #, c-format
-msgid "Could not save the file %s. You do not have the permissions necessary to save the file."
+msgid ""
+"Could not save the file %s. You do not have the permissions necessary to "
+"save the file."
 msgstr "لا يمكن حفظ الملف %s. لا تملك الصلاحيات الكافية."
 
 #: ../src/glade-project-window.c:908
@@ -121,11 +123,13 @@ msgstr "لا يمكن حفظ الملف %s. مشروع آخر بنفس المس�
 #: ../src/glade-project-window.c:960
 #, c-format
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">حفظ التغييرات للمشروع \"%s\" قبل الغلق؟</span>\n"
+"<span weight=\"bold\" size=\"larger\">حفظ التغييرات للمشروع \"%s\" قبل "
+"الغلق؟</span>\n"
 "\n"
 "ستضيع تغييراتك ان لم تحفظها.\n"
 
@@ -150,10 +154,11 @@ msgstr "طرفية السكريبت لغلايد"
 msgid "Could not display the online user manual"
 msgstr "لم يمكن عرض مساعدة المستخدم"
 
-#: ../src/glade-project-window.c:1468
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1468 ../src/glade-project-window.c:1506
 #, c-format
-msgid "No suitable web browser executable could be found to be executed and to display the URL: %s"
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
 msgstr "لم يمكن ايجاد تطبيق متصفح الشبكة مناسب فتح العنوان %s"
 
 #: ../src/glade-project-window.c:1503
@@ -163,7 +168,8 @@ msgstr "لم يمكن عرض مساعدة المطور"
 #: ../src/glade-project-window.c:1536
 msgid ""
 "Glade is a user interface designer for GTK+ and GNOME.\n"
-"This version is a rewrite of the Glade 2 version, originally created by Damon Chaplin\n"
+"This version is a rewrite of the Glade 2 version, originally created by "
+"Damon Chaplin\n"
 msgstr ""
 "جلايد هو مصمّم واجهات لـجي تي كاي و جنوم. \n"
 "هذا الإصدار هو اعادة كتابة للبرنامج الأصلي المطور من طرف دامون شابلن\n"
@@ -182,12 +188,18 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 msgstr ""
-"هذا البرنامج حر، يمكنك توزيعه و/أو تعديله حسب بنود رخصة جنو العمومية كما نشرتها مؤسسة البرامج الحرة، الإصدار الثاني أو أي إصدار أحدث (حسب رغبتك).\n"
-"هذا البرنامج يوزع على أمل أن يكون مفيداً، ولكن دون أية ضمانات، بما في ذلك ضمانات قابلية البرنامج للتسويق أو الملاءمة لغرض معين. انظر نص رخصة جنو العمومية لمزيد من التفاصيل.\n"
-"من المفترض أنك تلقيت نسخة من رخصة جنو العمومية مع هذا البرنامج؛ إذا لم يحدث هذا فاكتب إلى:\n"
-"Free Software Fondation Inc., 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA"
+"هذا البرنامج حر، يمكنك توزيعه و/أو تعديله حسب بنود رخصة جنو العمومية كما "
+"نشرتها مؤسسة البرامج الحرة، الإصدار الثاني أو أي إصدار أحدث (حسب رغبتك).\n"
+"هذا البرنامج يوزع على أمل أن يكون مفيداً، ولكن دون أية ضمانات، بما في ذلك "
+"ضمانات قابلية البرنامج للتسويق أو الملاءمة لغرض معين. انظر نص رخصة جنو "
+"العمومية لمزيد من التفاصيل.\n"
+"من المفترض أنك تلقيت نسخة من رخصة جنو العمومية مع هذا البرنامج؛ إذا لم يحدث "
+"هذا فاكتب إلى:\n"
+"Free Software Fondation Inc., 59 Temple Place - Suite 330, Boston, MA 02111 "
+"- 1307, USA"
 
 #: ../src/glade-project-window.c:1563
 msgid "translator-credits"
@@ -196,22 +208,19 @@ msgstr ""
 "جهاد عفيفي\t<djihed@gmail.com>"
 
 #. File
-#: ../src/glade-project-window.c:1636
-#: ../plugins/gtk+/glade-gtk.c:4397
+#: ../src/glade-project-window.c:1636 ../plugins/gtk+/glade-gtk.c:4397
 #: ../plugins/gtk+/glade-gtk.c:4695
 msgid "_File"
 msgstr "_ملف"
 
 #. Edit
-#: ../src/glade-project-window.c:1637
-#: ../plugins/gtk+/glade-gtk.c:4400
+#: ../src/glade-project-window.c:1637 ../plugins/gtk+/glade-gtk.c:4400
 #: ../plugins/gtk+/glade-gtk.c:4705
 msgid "_Edit"
 msgstr "_حرّر"
 
 #. View
-#: ../src/glade-project-window.c:1638
-#: ../plugins/gtk+/glade-gtk.c:4403
+#: ../src/glade-project-window.c:1638 ../plugins/gtk+/glade-gtk.c:4403
 #: ../plugins/gtk+/glade-gtk.c:4713
 msgid "_View"
 msgstr "إ_عرض"
@@ -221,8 +230,7 @@ msgid "_Projects"
 msgstr "م_شاريع"
 
 #. Help
-#: ../src/glade-project-window.c:1640
-#: ../plugins/gtk+/glade-gtk.c:4415
+#: ../src/glade-project-window.c:1640 ../plugins/gtk+/glade-gtk.c:4415
 #: ../plugins/gtk+/glade-gtk.c:4716
 msgid "_Help"
 msgstr "م_ساعدة"
@@ -312,8 +320,7 @@ msgid "Close the current project"
 msgstr "غلق المشروع الحالي"
 
 #. EditMenu
-#: ../src/glade-project-window.c:1683
-#: ../src/glade-project-window.c:2265
+#: ../src/glade-project-window.c:1683 ../src/glade-project-window.c:2266
 msgid "_Undo"
 msgstr "_تراجع"
 
@@ -321,8 +328,7 @@ msgstr "_تراجع"
 msgid "Undo the last action"
 msgstr "تراجع عن العمل الأخير"
 
-#: ../src/glade-project-window.c:1686
-#: ../src/glade-project-window.c:2276
+#: ../src/glade-project-window.c:1686 ../src/glade-project-window.c:2277
 msgid "_Redo"
 msgstr "_إعادة"
 
@@ -436,64 +442,64 @@ msgstr "_نص فقط"
 msgid "Display items as text only"
 msgstr "أظهر الأزرار بنص فقط"
 
-#: ../src/glade-project-window.c:1951
-msgid "Select a widget"
-msgstr "اختر قطعة"
+#: ../src/glade-project-window.c:1948
+msgid "Select Widgets"
+msgstr "انتقِ قطعة"
 
-#: ../src/glade-project-window.c:2040
+#: ../src/glade-project-window.c:1952
+msgid "Select widgets in the workspace"
+msgstr "انتقِ قطعة في مساحة العمل"
+
+#: ../src/glade-project-window.c:2041
 msgid "Palette"
 msgstr "لوحة"
 
-#: ../src/glade-project-window.c:2056
+#: ../src/glade-project-window.c:2057
 msgid "Inspector"
 msgstr "المفتش"
 
-#: ../src/glade-project-window.c:2062
-#: ../gladeui/glade-widget.c:975
+#: ../src/glade-project-window.c:2063 ../gladeui/glade-widget.c:975
 msgid "Properties"
 msgstr "خصائص"
 
-#: ../src/glade-project-window.c:2181
+#: ../src/glade-project-window.c:2182
 msgid "Could not create a new project."
 msgstr "لا يمكن انشاء مشروع جديد"
 
-#: ../src/glade-project-window.c:2200
+#: ../src/glade-project-window.c:2201
 #, c-format
 msgid "%s is already open"
 msgstr "%s مفتوح مسبقا"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:2267
-#: ../gladeui/glade-app.c:238
+#: ../src/glade-project-window.c:2268 ../gladeui/glade-app.c:240
 #, c-format
 msgid "Undo: %s"
 msgstr "تراجع: %s"
 
-#: ../src/glade-project-window.c:2267
-#: ../src/glade-project-window.c:2278
-#: ../gladeui/glade-app.c:239
+#: ../src/glade-project-window.c:2268 ../src/glade-project-window.c:2279
+#: ../gladeui/glade-app.c:241
 msgid "the last action"
 msgstr "العمل الأخير"
 
-#: ../src/glade-project-window.c:2278
-#: ../gladeui/glade-app.c:238
+#: ../src/glade-project-window.c:2279 ../gladeui/glade-app.c:240
 #, c-format
 msgid "Redo: %s"
 msgstr "إعادة: %s"
 
-#: ../gladeui/glade-app.c:362
+#: ../gladeui/glade-app.c:365
 msgid "Clipboard"
 msgstr "حافظة"
 
-#: ../gladeui/glade-app.c:436
+#: ../gladeui/glade-app.c:437
 msgid "Active Project"
 msgstr "مشروع نشط"
 
-#: ../gladeui/glade-app.c:437
+#: ../gladeui/glade-app.c:438
 msgid "The active project"
 msgstr "المشروع النشط"
 
-#: ../gladeui/glade-app.c:539
+#: ../gladeui/glade-app.c:516
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -502,7 +508,7 @@ msgstr ""
 "محاولة كتابة بيانات شخصية للدليل %s لكنه ملف عادي.\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:552
+#: ../gladeui/glade-app.c:529
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -511,7 +517,7 @@ msgstr ""
 "خطأ عند انشاء المجلد %s كتابة بيانات خصوصية.\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:580
+#: ../gladeui/glade-app.c:557
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -520,7 +526,7 @@ msgstr ""
 "خطأ عند كتابة بيانات خصوصية لـ %s (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:592
+#: ../gladeui/glade-app.c:569
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -529,7 +535,7 @@ msgstr ""
 "خطأ عند تسلسل بيانات التهيئة للحفظ  (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:605
+#: ../gladeui/glade-app.c:582
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -538,53 +544,49 @@ msgstr ""
 "خطأ عند فتح %s لكتابة بيانات خصوصية (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:1044
+#: ../gladeui/glade-app.c:1021
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr "لا يمكنك نسخ قطعة داخلية في قطعة مركبة"
 
-#: ../gladeui/glade-app.c:1059
-#: ../gladeui/glade-app.c:1112
-#: ../gladeui/glade-app.c:1287
+#: ../gladeui/glade-app.c:1036 ../gladeui/glade-app.c:1089
+#: ../gladeui/glade-app.c:1264
 msgid "No widget selected."
 msgstr "لم يتم انتقاء أيّة قطعة"
 
-#: ../gladeui/glade-app.c:1097
+#: ../gladeui/glade-app.c:1074
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "لا يمكنك قص قطعة داخلية في قطعة مركبة"
 
-#: ../gladeui/glade-app.c:1156
+#: ../gladeui/glade-app.c:1133
 msgid "Unable to paste to the selected parent"
 msgstr "لا يمكن لصق الاب المختار"
 
-#: ../gladeui/glade-app.c:1167
+#: ../gladeui/glade-app.c:1144
 msgid "Unable to paste to multiple widgets"
 msgstr "لا يمكن اللق لقطع مختلفة"
 
-#: ../gladeui/glade-app.c:1177
-#: ../gladeui/glade-app.c:1309
+#: ../gladeui/glade-app.c:1154 ../gladeui/glade-app.c:1286
 msgid "No widget selected on the clipboard"
 msgstr "لا قطعة مختارة في الحافظة"
 
-#: ../gladeui/glade-app.c:1203
+#: ../gladeui/glade-app.c:1180
 #, c-format
 msgid "Unable to paste widget %s without a parent"
 msgstr "لا يمكن لصق القطعة %s من دون أب"
 
-#: ../gladeui/glade-app.c:1220
+#: ../gladeui/glade-app.c:1197
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "يمكن لصق قطعة واحدة فقط كل مرة غلى هذه الحاوية"
 
-#: ../gladeui/glade-app.c:1232
+#: ../gladeui/glade-app.c:1209
 msgid "Insufficient amount of placeholders in target container"
 msgstr "عدد غير كاف للفراغات في الحاوية"
 
-#: ../gladeui/glade-app.c:1272
-#: ../gladeui/glade-app.c:1319
+#: ../gladeui/glade-app.c:1249 ../gladeui/glade-app.c:1296
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "لا يمكنك حذف قطعة داخلية في قطعة مركّبة."
 
-#: ../gladeui/glade-builtins.c:183
-#: ../plugins/gtk+/glade-gtk.c:187
+#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
 #: ../plugins/gtk+/glade-gtk.c:207
 msgid "Stock"
 msgstr "مخزون"
@@ -593,13 +595,11 @@ msgstr "مخزون"
 msgid "A builtin stock item"
 msgstr "عنصر مخزون"
 
-#: ../gladeui/glade-builtins.c:192
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Stock Image"
 msgstr "صورة مخزنة"
 
-#: ../gladeui/glade-builtins.c:193
-#: ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A builtin stock image"
 msgstr "صورة مخزنة"
 
@@ -627,13 +627,11 @@ msgstr "GdkColor"
 msgid "A gdk color value"
 msgstr "قيمة لون جي دي كاي gdk "
 
-#: ../gladeui/glade-builtins.c:551
-#: ../gladeui/glade-property-class.c:1192
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1192
 msgid "Accelerators"
 msgstr "مسرّعات"
 
-#: ../gladeui/glade-builtins.c:552
-#: ../gladeui/glade-property-class.c:1193
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1193
 msgid "A list of accelerator keys"
 msgstr "قائمة مفاتيح مسرعة"
 
@@ -705,14 +703,12 @@ msgstr "حذف الابن %s من %s"
 msgid "Reorder %s's children"
 msgstr "اعادة ترتيب ابناء %s"
 
-#: ../gladeui/glade-base-editor.c:1412
-#: ../plugins/gtk+/glade-gtk.c:206
+#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
 #: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Label"
 msgstr "تسمية"
 
-#: ../gladeui/glade-base-editor.c:1425
-#: ../gladeui/glade-widget-adaptor.c:924
+#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
 msgid "Type"
 msgstr "نوع"
 
@@ -726,8 +722,7 @@ msgstr "اسم :"
 msgid "Type :"
 msgstr "نوع :"
 
-#: ../gladeui/glade-clipboard-view.c:205
-#: ../gladeui/glade-project-view.c:721
+#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
 #: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Widget"
 msgstr "قطعة"
@@ -746,8 +741,7 @@ msgstr "تتعيين %s لـ %s"
 msgid "Setting %s of %s to %s"
 msgstr "ضبط %s لـ %s إلى %s"
 
-#: ../gladeui/glade-command.c:771
-#: ../gladeui/glade-command.c:798
+#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "إعادة تسمية %s إلى %s."
@@ -757,14 +751,10 @@ msgstr "إعادة تسمية %s إلى %s."
 msgid "Add %s"
 msgstr "أضف %s"
 
-#: ../gladeui/glade-command.c:904
-#: ../gladeui/glade-command.c:1371
-#: ../gladeui/glade-command.c:1374
-#: ../gladeui/glade-command.c:1537
-#: ../gladeui/glade-command.c:1563
-#: ../gladeui/glade-command.c:1584
-#: ../gladeui/glade-command.c:1611
-#: ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
 #: ../gladeui/glade-command.c:1672
 msgid "multiple"
 msgstr "متعدد"
@@ -915,8 +905,7 @@ msgstr "نعم"
 msgid "No"
 msgstr "لا"
 
-#: ../gladeui/glade-editor-property.c:2353
-#: ../gladeui/glade-widget.c:927
+#: ../gladeui/glade-editor-property.c:2353 ../gladeui/glade-widget.c:927
 #: ../gladeui/glade-widget-adaptor.c:916
 msgid "Name"
 msgstr "اسم"
@@ -990,7 +979,9 @@ msgid "Page size:"
 msgstr "حجم الصفحة:"
 
 #: ../gladeui/glade-editor-property.c:2983
-msgid "The page size (in a GtkScrollbar this is the size of the area which is currently visible)"
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
 msgstr "حجم الصفحة (في GtkScrollbar  هذا حجم المساحة المرئية)"
 
 #: ../gladeui/glade-editor-property.c:3060
@@ -1009,8 +1000,7 @@ msgstr "لوحة مفاتيح"
 msgid "Functions"
 msgstr "وظائف"
 
-#: ../gladeui/glade-editor-property.c:3080
-#: ../plugins/gnome/gnome.xml.in.h:24
+#: ../gladeui/glade-editor-property.c:3080 ../plugins/gnome/gnome.xml.in.h:24
 msgid "Other"
 msgstr "أخرى"
 
@@ -1020,8 +1010,7 @@ msgstr "أخرى"
 msgid "<choose a key>"
 msgstr "<اختر مفتاحا>"
 
-#: ../gladeui/glade-editor-property.c:3284
-#: ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../gladeui/glade-editor-property.c:3284 ../plugins/gtk+/gtk+.xml.in.h:153
 #: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "لاشيء"
@@ -1064,19 +1053,19 @@ msgid "Show context info"
 msgstr "اعرض معلومات سياقية"
 
 #: ../gladeui/glade-editor.c:155
-msgid "Whether to show an informational button for each property and signal in the editor"
+msgid ""
+"Whether to show an informational button for each property and signal in the "
+"editor"
 msgstr "في ما إذا يتم عرض زر معلوماتي لكل خاصية و اشارة للمحرّر"
 
 #. construct tab label widget
-#: ../gladeui/glade-editor.c:196
-#: ../gladeui/glade-editor.c:322
+#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
 #: ../gladeui/glade-editor.c:1178
 msgid "Accessibility"
 msgstr "الإتاحة"
 
 #. configure page container
-#: ../gladeui/glade-editor.c:212
-#: ../gladeui/glade-editor.c:321
+#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
 msgid "_Signals"
 msgstr "اشارة"
 
@@ -1165,8 +1154,7 @@ msgstr "ال_غ اختيار الكلّ"
 msgid "Property _Description:"
 msgstr "و_صف الخاصية:"
 
-#: ../gladeui/glade-fixed.c:462
-#: ../plugins/gtk+/glade-gtk.c:1407
+#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "وضع %s داخل %s"
@@ -1220,8 +1208,7 @@ msgstr "منتقي القطع"
 msgid "Could not find glade file %s"
 msgstr "لم يمكن ايجاد ملف غلايد %s"
 
-#: ../gladeui/glade-parser.c:1211
-#: ../gladeui/glade-parser.c:1219
+#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
 #, c-format
 msgid "Errors parsing glade file %s"
 msgstr "خطأ تحميل ملف غلايد %s"
@@ -1273,50 +1260,42 @@ msgstr ""
 "الفهارس الحالية غير متوفرة: %s"
 
 #. Atk click property
-#: ../gladeui/glade-property-class.c:56
-#: ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Click"
 msgstr "نقر"
 
 #. Atk click property
-#: ../gladeui/glade-property-class.c:57
-#: ../plugins/gtk+/gtk+.xml.in.h:210
+#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Set the description of the Click atk action"
 msgstr "حدد وصف حدث atk  نقر "
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:58
-#: ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Press"
 msgstr "ضغط"
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:59
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Set the description of the Press atk action"
 msgstr "حدد وصف حدث atk ضغط "
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:60
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Release"
 msgstr "تسريح"
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:61
-#: ../plugins/gtk+/gtk+.xml.in.h:214
+#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Set the description of the Release atk action"
 msgstr "حدد وصف عمل تسريح آ تي كاي atk "
 
 #. Atk activate property
-#: ../gladeui/glade-property-class.c:62
-#: ../plugins/gtk+/gtk+.xml.in.h:14
+#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Activate"
 msgstr "تنشيط"
 
 #. Atk activate property
-#: ../gladeui/glade-property-class.c:63
-#: ../plugins/gtk+/gtk+.xml.in.h:208
+#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Set the description of the Activate atk action"
 msgstr "حدد وصف عمل تنشيط آ تي كاي atk "
 
@@ -1365,39 +1344,57 @@ msgid "Child Node Of"
 msgstr "العقدة الإبن لـ"
 
 #: ../gladeui/glade-property-class.c:83
-msgid "Indicates an object is a cell in a treetable which is displayed because a cell in the same column is expanded and identifies that cell"
-msgstr "يحدد ان جسما هو خلية في جدول شجرة معروضة لأن خلية في نفس العمود متمددة و تعرّف الخلية"
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+"يحدد ان جسما هو خلية في جدول شجرة معروضة لأن خلية في نفس العمود متمددة و "
+"تعرّف الخلية"
 
 #: ../gladeui/glade-property-class.c:86
 msgid "Flows To"
 msgstr "يتدلى لـ"
 
 #: ../gladeui/glade-property-class.c:87
-msgid "Indicates that the object has content that flows logically to another AtkObject in a sequential way, (for instance text-flow)"
-msgstr "يحدد ان هذا الجسم له محتويات تتدلى منطقيا إلى AtkObject آخر بطريقة متعاقبة (مثال: نص)"
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"يحدد ان هذا الجسم له محتويات تتدلى منطقيا إلى AtkObject آخر بطريقة متعاقبة "
+"(مثال: نص)"
 
 #: ../gladeui/glade-property-class.c:90
 msgid "Flows From"
 msgstr "يتدلى من"
 
 #: ../gladeui/glade-property-class.c:91
-msgid "Indicates that the object has content that flows logically from another AtkObject in a sequential way, (for instance text-flow)"
-msgstr "يحدد ان هذا الجسم له محتويات تتدلى منطقيا من AtkObject آخر بطريقة متعاقبة (مثال: نص)"
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"يحدد ان هذا الجسم له محتويات تتدلى منطقيا من AtkObject آخر بطريقة متعاقبة "
+"(مثال: نص)"
 
 #: ../gladeui/glade-property-class.c:94
 msgid "Subwindow Of"
 msgstr "نافذة ابن لـ"
 
 #: ../gladeui/glade-property-class.c:95
-msgid "Indicates a subwindow attached to a component but otherwise has no connection in  the UI hierarchy to that component"
-msgstr "يحدد نافذة سفلية ملصقة بمكوّن لكن لا تملك أي اتصال في التسلسل الهرمي لهذا المكون"
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in  the UI hierarchy to that component"
+msgstr ""
+"يحدد نافذة سفلية ملصقة بمكوّن لكن لا تملك أي اتصال في التسلسل الهرمي لهذا "
+"المكون"
 
 #: ../gladeui/glade-property-class.c:98
 msgid "Embeds"
 msgstr "تحتوي على"
 
 #: ../gladeui/glade-property-class.c:99
-msgid "Indicates that the object visually embeds another object's content, i.e. this object's content flows around another's content"
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
 msgstr "يحدد أن هذا الجسم يحتوي على محتويات جسم آخر"
 
 #: ../gladeui/glade-property-class.c:102
@@ -1405,7 +1402,9 @@ msgid "Embedded By"
 msgstr "محتواة من طرف"
 
 #: ../gladeui/glade-property-class.c:103
-msgid "Inverse of 'Embeds', indicates that this object's content is visualy embedded in another object"
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visualy "
+"embedded in another object"
 msgstr "عكس 'يحوي'، يحدد ان هذا الجسم محتوى في جسم آخر"
 
 #: ../gladeui/glade-property-class.c:106
@@ -1480,8 +1479,7 @@ msgstr "بحث"
 msgid "After"
 msgstr "بعد"
 
-#: ../gladeui/glade-utils.c:169
-#: ../gladeui/glade-utils.c:200
+#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "لم يمكن ايجاد الرمز \"%s\""
@@ -1592,8 +1590,7 @@ msgstr "مشروع جلايد الذي تنتمي له هذه القطعة"
 msgid "A list of GladeProperties"
 msgstr "قائمة GladeProperties"
 
-#: ../gladeui/glade-widget.c:982
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../gladeui/glade-widget.c:982 ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Parent"
 msgstr "أب"
 
@@ -1617,8 +1614,7 @@ msgstr "قالب"
 msgid "A GladeWidget template to base a new widget on"
 msgstr "قالب GladeWidget المستعمل لانشاء قطعة جديدة"
 
-#: ../gladeui/glade-widget.c:1003
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../gladeui/glade-widget.c:1003 ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Info"
 msgstr "معلومات"
 
@@ -1650,14 +1646,12 @@ msgstr "ارتفاع المستوى العلوي"
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "ارتفاع القطعة عندما يكون مستوا علويا لـ GladeDesignLayout"
 
-#: ../gladeui/glade-widget-adaptor.c:184
-#: ../gladeui/glade-widget-adaptor.c:224
+#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
 #, c-format
 msgid "Unable to load icon for %s (%s)"
 msgstr "لا يمكن تحميل مخزون الأيقونات لـ  %s (%s)"
 
-#: ../gladeui/glade-widget-adaptor.c:199
-#: ../gladeui/glade-widget-adaptor.c:239
+#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
 #, c-format
 msgid "Unable to load stock icon (%s)"
 msgstr "لا يمكن تحميل مخزون الأيقونات  (%s)"
@@ -1675,8 +1669,7 @@ msgstr "اسم الصنف"
 msgid "GType of the class"
 msgstr "نوع جي GType للصنف"
 
-#: ../gladeui/glade-widget-adaptor.c:932
-#: ../plugins/gnome/gnome.xml.in.h:45
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:45
 msgid "Title"
 msgstr "عنوان"
 
@@ -1713,7 +1706,9 @@ msgid "Special Child Type"
 msgstr "نوع ابن خاص"
 
 #: ../gladeui/glade-widget-adaptor.c:965
-msgid "Holds the name of the packing property to depict special children for this container class"
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
 msgstr "تحتوي على اسم خاصية التحزيم لرسم أبناء خاصين لهذه الحاوية"
 
 #: ../gladeui/glade-widget-adaptor.c:973
@@ -1732,8 +1727,7 @@ msgstr "أيقونة صغيرة"
 msgid "The 16x16 icon for this widget class"
 msgstr "ايقونة 16x16 لصنف القطعة هذه"
 
-#: ../gladeui/glade-widget-adaptor.c:989
-#: ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Cursor"
 msgstr "مؤشّر"
 
@@ -1807,13 +1801,11 @@ msgstr "اسم الملف"
 msgid "Icon Theme"
 msgstr "سِمة الأيقونات"
 
-#: ../plugins/gtk+/glade-gtk.c:208
-#: ../plugins/gtk+/gtk+.xml.in.h:57
+#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Container"
 msgstr "حاوي"
 
-#: ../plugins/gtk+/glade-gtk.c:218
-#: ../plugins/gtk+/glade-gtk.c:227
+#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
 msgid "Method"
 msgstr "طريقة"
 
@@ -1831,60 +1823,53 @@ msgstr "الطريقة المستخدمة لتحرير الزر"
 msgid "Ordering children of %s"
 msgstr "ترتيب أبناء %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3262
-#: ../plugins/gtk+/glade-gtk.c:3266
-#: ../plugins/gtk+/glade-gtk.c:3441
-#: ../plugins/gtk+/glade-gtk.c:3445
+#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3266
+#: ../plugins/gtk+/glade-gtk.c:3441 ../plugins/gtk+/glade-gtk.c:3445
 msgid "This only applies with label type buttons"
 msgstr "يطبق هذا فقط لأزرار التسمية"
 
-#: ../plugins/gtk+/glade-gtk.c:3277
-#: ../plugins/gtk+/glade-gtk.c:3281
-#: ../plugins/gtk+/glade-gtk.c:3433
-#: ../plugins/gtk+/glade-gtk.c:3437
+#: ../plugins/gtk+/glade-gtk.c:3277 ../plugins/gtk+/glade-gtk.c:3281
+#: ../plugins/gtk+/glade-gtk.c:3433 ../plugins/gtk+/glade-gtk.c:3437
 msgid "This only applies with stock type buttons"
 msgstr "يطبق هذا فقط للأزرار المخزنة"
 
-#: ../plugins/gtk+/glade-gtk.c:3541
-#: ../plugins/gtk+/glade-gtk.c:3563
+#: ../plugins/gtk+/glade-gtk.c:3541 ../plugins/gtk+/glade-gtk.c:3563
 msgid "You must remove any children before you can set the type"
 msgstr "يجب حذف كل الأبناء قبل تحديد النوع"
 
-#: ../plugins/gtk+/glade-gtk.c:3587
-#: ../plugins/gtk+/glade-gtk.c:4945
+#: ../plugins/gtk+/glade-gtk.c:3587 ../plugins/gtk+/glade-gtk.c:4945
 msgid "This only applies with file type images"
 msgstr "يطبق هذا فقط لصور من ملفات"
 
-#: ../plugins/gtk+/glade-gtk.c:3595
-#: ../plugins/gtk+/glade-gtk.c:4949
+#: ../plugins/gtk+/glade-gtk.c:3595 ../plugins/gtk+/glade-gtk.c:4949
 msgid "This only applies to Icon Theme type images"
 msgstr "يطبق هذا فقط في ايقونات نسق"
 
-#: ../plugins/gtk+/glade-gtk.c:3604
-#: ../plugins/gtk+/glade-gtk.c:4947
+#: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4947
 msgid "This only applies with stock type images"
 msgstr "يطبق هذا فقط في الصور المخزنة"
 
 #: ../plugins/gtk+/glade-gtk.c:3616
-msgid "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, set Pixel size to -1"
-msgstr "حجم البكسل له اولوية اكبر من حجم الايقونة، اذا اردت استعمال حجم الأيقونة، حدد حجم البكسل -1"
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+"حجم البكسل له اولوية اكبر من حجم الايقونة، اذا اردت استعمال حجم الأيقونة، "
+"حدد حجم البكسل -1"
 
 #: ../plugins/gtk+/glade-gtk.c:3642
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "حجم البكسل له اولوية اكبر من حجم الايقونة"
 
-#: ../plugins/gtk+/glade-gtk.c:3929
-#: ../plugins/gtk+/glade-gtk.c:4836
+#: ../plugins/gtk+/glade-gtk.c:3929 ../plugins/gtk+/glade-gtk.c:4836
 msgid "<separator>"
 msgstr "<فاصل>"
 
-#: ../plugins/gtk+/glade-gtk.c:4103
-#: ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/glade-gtk.c:4103 ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Normal"
 msgstr "عادي"
 
-#: ../plugins/gtk+/glade-gtk.c:4104
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/glade-gtk.c:4104 ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Image"
 msgstr "صورة"
 
@@ -1892,13 +1877,11 @@ msgstr "صورة"
 msgid "Check"
 msgstr "تدقيق"
 
-#: ../plugins/gtk+/glade-gtk.c:4106
-#: ../plugins/gtk+/glade-gtk.c:4895
+#: ../plugins/gtk+/glade-gtk.c:4106 ../plugins/gtk+/glade-gtk.c:4895
 msgid "Radio"
 msgstr "مذياع"
 
-#: ../plugins/gtk+/glade-gtk.c:4107
-#: ../plugins/gtk+/glade-gtk.c:4898
+#: ../plugins/gtk+/glade-gtk.c:4107 ../plugins/gtk+/glade-gtk.c:4898
 msgid "Separator"
 msgstr "فاصل"
 
@@ -1910,8 +1893,7 @@ msgstr "اضف عنصرا"
 msgid "Add Child Item"
 msgstr "اضف عنصر ابن"
 
-#: ../plugins/gtk+/glade-gtk.c:4113
-#: ../plugins/gtk+/glade-gtk.c:4907
+#: ../plugins/gtk+/glade-gtk.c:4113 ../plugins/gtk+/glade-gtk.c:4907
 msgid "Add Separator"
 msgstr "اضف فاصل"
 
@@ -2013,8 +1995,7 @@ msgstr "محرر القوائم"
 msgid "<custom>"
 msgstr "<مخصص>"
 
-#: ../plugins/gtk+/glade-gtk.c:4893
-#: ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/glade-gtk.c:4893 ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Button"
 msgstr "زر"
 
@@ -2022,8 +2003,7 @@ msgstr "زر"
 msgid "Toggle"
 msgstr "تحول"
 
-#: ../plugins/gtk+/glade-gtk.c:4896
-#: ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:4896 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Menu"
 msgstr "قائمة"
 
@@ -2108,8 +2088,7 @@ msgstr "الكل"
 msgid "All Events"
 msgstr "كل الأحداث"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:18
-#: ../plugins/gnome/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:18 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "دائماً"
 
@@ -2141,8 +2120,7 @@ msgstr "كلاهما"
 msgid "Both Horizontal"
 msgstr "كلاهما أفقيا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:26
-#: ../plugins/gnome/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "أدنى"
 
@@ -2270,8 +2248,7 @@ msgstr "مستمر"
 msgid "Control and Display"
 msgstr "العرض و التحكم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62
-#: ../plugins/gnome/gnome.xml.in.h:5
+#: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "إنشيء مجلد"
 
@@ -2352,8 +2329,7 @@ msgid "Edit Type"
 msgstr "نوع التحرير"
 
 # I think this is not meant as an order, IIRC it is descriptive
-#: ../plugins/gtk+/gtk+.xml.in.h:83
-#: ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "نهاية"
 
@@ -2361,18 +2337,15 @@ msgstr "نهاية"
 msgid "Enter Notify"
 msgstr "ادخل تنبيه"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
-#: ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "خطأ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
-#: ../plugins/gnome/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr "مطوية داخليا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87
-#: ../plugins/gnome/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr "مطوية خارجيا"
 
@@ -2380,8 +2353,7 @@ msgstr "مطوية خارجيا"
 msgid "Event Box"
 msgstr "صندوق حدث"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:89
-#: ../plugins/gnome/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "تمديد"
 
@@ -2409,8 +2381,7 @@ msgstr "إسم الملف"
 msgid "File Selection"
 msgstr "اختيار الملف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:96
-#: ../plugins/gnome/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "ملأ"
 
@@ -2458,8 +2429,7 @@ msgstr "نصف"
 msgid "Handle Box"
 msgstr "صندوق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:108
-#: ../plugins/gnome/bonobo.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
 msgstr "أفقي"
 
@@ -2523,8 +2493,7 @@ msgstr "نوع الصورة"
 msgid "Immediate"
 msgstr "حالي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
-#: ../plugins/gnome/bonobo.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
 msgstr "داخل"
 
@@ -2560,8 +2529,7 @@ msgstr "افتح محفوظة مستخدمة مؤخرا آخرا"
 msgid "Leave Notify"
 msgstr "ترك تنبيه"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136
-#: ../plugins/gnome/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "اليسار"
 
@@ -2621,8 +2589,7 @@ msgstr "افتح محفوظة مستخدمة مؤخرا أولا"
 msgid "Mouse"
 msgstr "الفأرة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152
-#: ../plugins/gnome/gnome.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:22
 msgid "Never"
 msgstr "أبداً"
 
@@ -2667,8 +2634,7 @@ msgstr "موافق"
 msgid "Ok, Cancel"
 msgstr "موافق، الغاء"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
-#: ../plugins/gnome/gnome.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:23
 msgid "Open"
 msgstr "افتح"
 
@@ -2676,8 +2642,7 @@ msgstr "افتح"
 msgid "Option Menu"
 msgstr "قائمة خيار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
-#: ../plugins/gnome/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "خارج"
 
@@ -2705,8 +2670,7 @@ msgstr "منبثقة"
 msgid "Popup Menu"
 msgstr "قائمة منبثقة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
-#: ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
 #: ../plugins/gnome/gnome.xml.in.h:27
 msgid "Position"
 msgstr "الموضع"
@@ -2735,8 +2699,7 @@ msgstr "تقريب خارجي"
 msgid "Proximity In"
 msgstr "تقريب داخلي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185
-#: ../plugins/gnome/gnome.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:30
 msgid "Question"
 msgstr "سؤال"
 
@@ -2772,8 +2735,7 @@ msgstr "حوار اداة اختيار من جديد"
 msgid "Response ID"
 msgstr "هوية الإجابة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196
-#: ../plugins/gnome/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "اليمين"
 
@@ -2785,8 +2747,7 @@ msgstr "من اليمين إلى اليسار"
 msgid "Ruler"
 msgstr "مسطرة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
-#: ../plugins/gnome/gnome.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:31
 msgid "Save"
 msgstr "احفظ"
 
@@ -2802,8 +2763,7 @@ msgstr "لف"
 msgid "Scrolled Window"
 msgstr "لنافذة ملفوفة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203
-#: ../plugins/gnome/gnome.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:34
 msgid "Select Folder"
 msgstr "انتقي مجلّداً"
 
@@ -2860,8 +2820,7 @@ msgstr "Spline"
 msgid "Spread"
 msgstr "انتشار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226
-#: ../plugins/gnome/gnome.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:36
 msgid "Start"
 msgstr "إبدأ"
 
@@ -2899,8 +2858,7 @@ msgid "Table"
 msgstr "جدول"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:237
-#: ../plugins/gnome/gnome.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:39
 msgid "Text"
 msgstr "نص"
 
@@ -2937,7 +2895,9 @@ msgid "The position of the tool item in the toolbar"
 msgstr "موقع عنصر الأداة في شريط الأدوات"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:246
-msgid "The response ID of this button in a dialog (it's NOT useful if this button is not in a GtkDialog)"
+msgid ""
+"The response ID of this button in a dialog (it's NOT useful if this button "
+"is not in a GtkDialog)"
 msgstr "هوية إجابة الزر في حوار (غير مفيد اذا وُجد الزر خارج حوار)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
@@ -2980,8 +2940,7 @@ msgstr "شريط الأدوات"
 msgid "Tooltip"
 msgstr "تلميحة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257
-#: ../plugins/gnome/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "الأعلى"
 
@@ -3021,8 +2980,7 @@ msgstr "استخدم التسطير"
 msgid "Utility"
 msgstr "أداة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
-#: ../plugins/gnome/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "عمودي"
 
@@ -3062,8 +3020,7 @@ msgstr "منفذ عرض"
 msgid "Visibility Notify"
 msgstr "تذكير الرؤية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:277
-#: ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Warning"
 msgstr "تحذير"
 
@@ -3088,8 +3045,13 @@ msgid "Yes, No"
 msgstr "نعم، لا"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:284
-msgid "You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation"
-msgstr "يمكنك تحديد هذه كقابلة للترجمة ، او ضع اسماء كل المترجمين و حدد هذه كغير قابلة للترجمة"
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr ""
+"يمكنك تحديد هذه كقابلة للترجمة ، او ضع اسماء كل المترجمين و حدد هذه كغير "
+"قابلة للترجمة"
 
 #: ../plugins/gnome/glade-gnome.c:298
 msgid "Status Message."
@@ -3111,8 +3073,7 @@ msgstr "نوع صندوق الرسالة"
 msgid "This property is valid only in font information mode"
 msgstr "هذه الخاصية صحيحة فقط في نسق معلومات الخط"
 
-#: ../plugins/gnome/glade-gnome.c:1313
-#: ../plugins/gnome/canvas.xml.in.h:14
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:14
 msgid "Selection Mode"
 msgstr "نمط الانتقاء"
 
@@ -3277,8 +3238,13 @@ msgid "Use Alpha"
 msgstr "استخدم الفا"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
-msgid "Used to pass around information about the position of a GnomeDruidPage within the overall GnomeDruid. This enables the correct \"surrounding\" content for the page to be drawn"
-msgstr "تستخدم لتمرير معلومات حول مكان GnomeDruidPage  في GnomeDruid. يمكّن هذا المحتويات المطوقة للصفحة المرسومة"
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
+msgstr ""
+"تستخدم لتمرير معلومات حول مكان GnomeDruidPage  في GnomeDruid. يمكّن هذا "
+"المحتويات المطوقة للصفحة المرسومة"
 
 #: ../plugins/gnome/gnome.xml.in.h:51
 msgid "User"
@@ -3337,7 +3303,9 @@ msgid "If the icon text can be edited by the user"
 msgstr "اذا يمكن تحرير نص الايقونة من طرف المستخدم"
 
 #: ../plugins/gnome/canvas.xml.in.h:6
-msgid "If the icon text is static, in which case it will not be copied by the GnomeIconList"
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
 msgstr "اذا كان نص الايقونة ثابتا، في هذه الحالية لا يتم نسخها من طرف GnomeIconList"
 
 #: ../plugins/gnome/canvas.xml.in.h:7
@@ -3423,72 +3391,4 @@ msgstr "نمط الانتقاء"
 #: ../plugins/gnome/canvas.xml.in.h:28
 msgid "The width of each icon"
 msgstr "عرض كل الأيقونة"
-
-#, fuzzy
-#~ msgid "Set Flags"
-#~ msgstr "شارات البريمجات"
-
-#, fuzzy
-#~ msgid "Edit Text Property"
-#~ msgstr "تحرير ملفات نصية"
-
-#, fuzzy
-#~ msgid "Use Placeholders"
-#~ msgstr "استخدام الثّلاث نقاط"
-
-#, fuzzy
-#~ msgid "[read-only]"
-#~ msgstr "[للقراءة فقط]"
-
-#, fuzzy
-#~ msgid "Save as…"
-#~ msgstr "حفظ كـ..."
-
-#, fuzzy
-#~ msgid "Save ..."
-#~ msgstr "حفظ"
-
-#, fuzzy
-#~ msgid "E_xpand all"
-#~ msgstr "نسخ ال_كل"
-
-#, fuzzy
-#~ msgid "_Collapse all"
-#~ msgstr "إنهيار الكل"
-
-#, fuzzy
-#~ msgid "Clear Recent Projects"
-#~ msgstr " مسح المستندات الأخيرة"
-
-#, fuzzy
-#~ msgid "Shows the About Dialog"
-#~ msgstr "استخدم صناديق الحوار"
-
-#, fuzzy
-#~ msgid "_Documentation"
-#~ msgstr "التو_ثيق:"
-
-#, fuzzy
-#~ msgid "Documentation about Glade"
-#~ msgstr "حول هذا التّطبيق"
-
-#, fuzzy
-#~ msgid "Property _Editor"
-#~ msgstr "بيانات جسم محرّر الخاصيات"
-
-#, fuzzy
-#~ msgid "Show the property editor"
-#~ msgstr "بيانات جسم محرّر الخاصيات"
-
-#, fuzzy
-#~ msgid "_Palette"
-#~ msgstr "ال_لوحة:"
-
-#, fuzzy
-#~ msgid "Show the palette of widgets"
-#~ msgstr "تفضيلات لوحة الرموز"
-
-#, fuzzy
-#~ msgid "Group"
-#~ msgstr "مجموعة"
 
