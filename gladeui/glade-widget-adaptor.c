@@ -170,7 +170,7 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S
 				     LARGE_ICON_SUBDIR
 				     G_DIR_SEPARATOR_S "%s.png", 
-				     glade_pixmaps_dir, 
+				     glade_app_get_pixmaps_dir (), 
 				     adaptor->generic_name);
 
 	adaptor->priv->large_icon = 
@@ -210,7 +210,7 @@ gwa_load_icons (GladeWidgetAdaptor *adaptor)
 	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S 
 				     SMALL_ICON_SUBDIR
 				     G_DIR_SEPARATOR_S "%s.png", 
-				     glade_pixmaps_dir, 
+				     glade_app_get_pixmaps_dir (), 
 				     adaptor->generic_name);
 
 	adaptor->priv->small_icon = 

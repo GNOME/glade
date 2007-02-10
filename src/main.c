@@ -26,6 +26,7 @@
 #include "glade-project-window.h"
 
 #include <gladeui/glade.h>
+#include <gladeui/glade-app.h>
 #include <gladeui/glade-debug.h>
 
 #include <stdlib.h> /* defines __argc & __argv on the windows build */
@@ -74,7 +75,7 @@ main (int argc, char *argv[])
 
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
-	bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
+	bindtextdomain (GETTEXT_PACKAGE, glade_app_get_locale_dir ());
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 #endif

@@ -566,7 +566,7 @@ glade_palette_create_selector_button (GladePalette *palette)
 	
 	gtk_container_set_border_width (GTK_CONTAINER (selector), 0);
 
-	path = g_build_filename (glade_pixmaps_dir, "selector.png", NULL);
+	path = g_build_filename (glade_app_get_pixmaps_dir (), "selector.png", NULL);
 	image = gtk_image_new_from_file (path);
 	gtk_widget_show (image);
 	

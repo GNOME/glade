@@ -441,7 +441,7 @@ glade_catalog_load_all (void)
 	GladeCatalog *catalog;
 	
 	/* Read all files in catalog dir */
-	dir = g_dir_open (glade_catalogs_dir, 0, &error);
+	dir = g_dir_open (glade_app_get_catalogs_dir (), 0, &error);
 	if (!dir) 
 	{
 		g_warning ("Failed to open catalog directory: %s",
@@ -461,7 +461,7 @@ glade_catalog_load_all (void)
 		if (!g_str_has_suffix (filename, ".xml")) 
 			continue;
 
-		catalog_filename = g_build_filename (glade_catalogs_dir,
+		catalog_filename = g_build_filename (glade_app_get_catalogs_dir (),
 						     filename, NULL);
 		catalog = catalog_open (catalog_filename);
 		g_free (catalog_filename);

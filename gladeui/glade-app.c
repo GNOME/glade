@@ -80,16 +80,18 @@ struct _GladeAppPrivate
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
-gchar *glade_scripts_dir = GLADE_SCRIPTSDIR;
-gchar *glade_catalogs_dir = GLADE_CATALOGSDIR;
-gchar *glade_modules_dir = GLADE_MODULESDIR;
-gchar *glade_bindings_dir = GLADE_BINDINGSDIR;
-gchar *glade_plugins_dir = GLADE_PLUGINSDIR;
-gchar *glade_pixmaps_dir = GLADE_PIXMAPSDIR;
-gchar *glade_locale_dir = GLADE_LOCALEDIR;
-gboolean glade_verbose = FALSE;
+/* installation paths */
+static gchar *scripts_dir  = NULL;
+static gchar *catalogs_dir = NULL;
+static gchar *modules_dir  = NULL;
+static gchar *bindings_dir = NULL;
+static gchar *plugins_dir  = NULL;
+static gchar *pixmaps_dir  = NULL;
+static gchar *locale_dir   = NULL;
 
 static GladeApp *singleton_app = NULL;
+
+static void glade_init_check (void);
 
 G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
 
@@ -307,6 +309,106 @@ glade_app_config_load (GladeApp *app)
 	return config;
 }
 
+const gchar *
+glade_app_get_scripts_dir (void)
+{
+	glade_init_check ();
+
+	return scripts_dir;
+}
+
+const gchar *
+glade_app_get_catalogs_dir (void)
+{
+	glade_init_check ();
+	
+	return catalogs_dir;
+}
+
+const gchar *
+glade_app_get_modules_dir (void)
+{
+	glade_init_check ();
+
+	return modules_dir;
+}
+
+const gchar *
+glade_app_get_plugins_dir (void)
+{
+	glade_init_check ();
+
+	return plugins_dir;
+}
+
+
+const gchar *
+glade_app_get_pixmaps_dir (void)
+{
+	glade_init_check ();
+
+	return pixmaps_dir;
+}
+
+const gchar *
+glade_app_get_locale_dir (void)
+{
+	glade_init_check ();
+	
+	return locale_dir;
+}
+
+const gchar *
+glade_app_get_bindings_dir (void)
+{
+	glade_init_check ();
+	
+	return bindings_dir;
+}
+
+/* build package paths at runtime */
+static void
+build_package_paths (void)
+{
+#ifdef G_OS_WIN32
+	gchar *prefix;
+	
+	prefix = g_win32_get_package_installation_directory (NULL, NULL);
+	scripts_dir  = g_build_filename (prefix, "share", PACKAGE, GLADE_BINDING_SCRIPT_DIR, NULL);
+	pixmaps_dir  = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
+	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
+	bindings_dir = g_build_filename (prefix, "lib", PACKAGE, "bindings", NULL);
+	locale_dir   = g_build_filename (prefix, "share", "locale", NULL);
+	g_free (prefix);
+#else
+	scripts_dir  = g_strdup (GLADE_SCRIPTSDIR);
+	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
+	modules_dir  = g_strdup (GLADE_MODULESDIR);
+	bindings_dir = g_strdup (GLADE_BINDINGSDIR);
+	plugins_dir  = g_strdup (GLADE_PLUGINSDIR);
+	pixmaps_dir  = g_strdup (GLADE_PIXMAPSDIR);
+	locale_dir   = g_strdup (GLADE_LOCALEDIR);
+#endif
+}
+
+/* initialization function for libgladeui (not GladeApp) */
+static void
+glade_init_check (void)
+{
+	static gboolean initialised = FALSE;
+	
+	if (initialised)
+		return;
+
+	build_package_paths ();
+
+	bindtextdomain (GETTEXT_PACKAGE, locale_dir);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
+	initialised = TRUE;
+}
+
 static void
 glade_app_init (GladeApp *app)
 {
@@ -314,24 +416,10 @@ glade_app_init (GladeApp *app)
 	
 	app->priv = GLADE_APP_GET_PRIVATE (app);	
 	
+	glade_init_check ();	
+	
 	if (!initialized)
 	{
-#ifdef G_OS_WIN32
-		gchar *prefix;
-	
-		prefix = g_win32_get_package_installation_directory (NULL, NULL);
-		glade_scripts_dir = g_build_filename (prefix, "share", PACKAGE, GLADE_BINDING_SCRIPT_DIR, NULL);
-		glade_pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
-		glade_catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
-		glade_modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
-		glade_bindings_dir = g_build_filename (prefix, "lib", PACKAGE, "bindings", NULL);
-		glade_locale_dir = g_build_filename (prefix, "share", "locale", NULL);
-		g_free (prefix);
-#endif
-
-		bindtextdomain (GETTEXT_PACKAGE, glade_locale_dir);
-		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-
 		glade_cursor_init ();
 		
 		glade_binding_load_all ();

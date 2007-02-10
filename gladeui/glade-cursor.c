@@ -177,7 +177,7 @@ glade_cursor_init (void)
 	cursor->add_widget_pixbuf   = NULL;
 
 	/* load "add" cursor pixbuf */
-	path = g_build_filename (glade_pixmaps_dir, ADD_PIXBUF_FILENAME, NULL);
+	path = g_build_filename (glade_app_get_pixmaps_dir (), ADD_PIXBUF_FILENAME, NULL);
 
 	cursor->add_widget_pixbuf = gdk_pixbuf_new_from_file (path, &error);
 

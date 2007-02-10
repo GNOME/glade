@@ -1,4 +1,4 @@
-2007-02-06  Vincent Geddes <vincent.geddes@gmail.com>
+2007-02-10  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* src/main.c:
 	  - Add summary of the application's functionality in the '--help'
@@ -8,6 +8,22 @@
         * docs/catalogintro.sgml: pkg-config file is now 'gladeui-1.0'.
         
         * data/glade-3.desktop.in.in: Added 'GUIDesigner' to 'Categories'.
+
+        * gladeui/glade.h, gladeui/glade-app.[ch]:
+          - Added a private initialisation function `glade_init_check()' for
+            libgladeui.
+          - Remove the 'bad' public variables that defined various installation
+            paths. These paths can now be obtained from static class methods on
+            GladeApp (static as in the Java and C++ sense).        
+        
+        * src/main.c, src/glade-project-window.c, gladeui/glade-catalog.c,
+          gladeui/glade-binding.c, gladeui/glade-cursor.c,
+          gladeui/glade-palette.c gladeui/glade-widget-adaptor.c, 
+          gladeui/glade-utils.c, bindings/python/glade-python.c: Use the new
+          GladeApp methods for obtaining installation paths.
+          
+        * gladeui/glade-palette-box.[ch]: Use G_DEFINE_TYPE() and
+          g_type_class_add_private().
 
 2007-02-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
@@ -19,7 +35,7 @@
 
 	* bindings/python/glade-python-gwa.c: regenerated with pygtk-codegen-2.0
 
-2007-02-06  Vincent Geddes <vincent.geddes@gmail.com>
+2007-02-08  Vincent Geddes <vincent.geddes@gmail.com>
 
         * gladeui/*.[ch]: Replaced C++ style comments with the more portable ISO C syntax.
           

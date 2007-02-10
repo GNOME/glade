@@ -46,7 +46,7 @@ typedef struct _GladeAppClass   GladeAppClass;
 struct _GladeApp
 {
 	/*< private >*/
-	GObject          parent_instance;
+	GObject parent_instance;
 	
 	GladeAppPrivate *priv;
 };
@@ -68,13 +68,13 @@ struct _GladeAppClass
 };
 
 LIBGLADEUI_API 
-GType              glade_app_get_type (void) G_GNUC_CONST;
+GType              glade_app_get_type   (void) G_GNUC_CONST;
 
 LIBGLADEUI_API 
-GladeApp*          glade_app_get (void);
+GladeApp*          glade_app_get        (void);
 
 LIBGLADEUI_API 
-void               glade_app_update_ui (void);
+void               glade_app_update_ui  (void);
 
 LIBGLADEUI_API 
 gboolean           glade_app_widget_event (GladeWidget *widget, 
@@ -156,21 +156,36 @@ GList            *glade_app_get_selection (void);
  * of multiple project logic.
  */
 LIBGLADEUI_API 
-gboolean           glade_app_is_selected      (GObject      *object);
+gboolean           glade_app_is_selected       (GObject  *object);
 LIBGLADEUI_API 
-void               glade_app_selection_set    (GObject      *object,
-					       gboolean      emit_signal);
+void               glade_app_selection_set     (GObject  *object,
+					        gboolean  emit_signal);
 LIBGLADEUI_API 
-void               glade_app_selection_add    (GObject      *object,
-					       gboolean      emit_signal);
+void               glade_app_selection_add     (GObject  *object,
+					        gboolean  emit_signal);
 LIBGLADEUI_API 
-void               glade_app_selection_remove (GObject      *object,
-					       gboolean      emit_signal);
+void               glade_app_selection_remove  (GObject  *object,
+					        gboolean  emit_signal);
 LIBGLADEUI_API 
-void               glade_app_selection_clear  (gboolean      emit_signal);
+void               glade_app_selection_clear   (gboolean  emit_signal);
 LIBGLADEUI_API 
-void               glade_app_selection_changed(void);
+void               glade_app_selection_changed (void);
 
+/* package paths */
+LIBGLADEUI_API
+const gchar       *glade_app_get_scripts_dir   (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_catalogs_dir  (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_modules_dir   (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_plugins_dir   (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_pixmaps_dir   (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_locale_dir    (void) G_GNUC_CONST;
+LIBGLADEUI_API
+const gchar       *glade_app_get_bindings_dir  (void) G_GNUC_CONST;
 
 G_END_DECLS
 

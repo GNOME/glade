@@ -2,10 +2,9 @@
 /*
  * glade-palette-box.h
  *
- * Copyright (C) 2006 The Gnome Foundation.
+ * Copyright (C) 2007 Vincent Geddes.
  *
- * Authors:
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ * Author: Vincent Geddes <vincent.geddes@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +26,6 @@
 #ifndef __GLADE_PALETTE_BOX_H__
 #define __GLADE_PALETTE_BOX_H__
 
-#include <gdk/gdk.h>
 #include <gtk/gtkcontainer.h>
 
 G_BEGIN_DECLS
@@ -40,15 +38,15 @@ G_BEGIN_DECLS
 #define GLADE_PALETTE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PALETTE_BOX, GladePaletteBoxClass))
 
 typedef struct _GladePaletteBox	       GladePaletteBox;
+typedef struct _GladePaletteBoxPrivate GladePaletteBoxPrivate;
 typedef struct _GladePaletteBoxClass   GladePaletteBoxClass;
-typedef struct _GladePaletteBoxChild   GladePaletteBoxChild;
 
 struct _GladePaletteBox
 {
-	GtkContainer container;
+	/*< private >*/
+	GtkContainer parent_instance;
 
-	/* private */
-	GList *children;
+	GladePaletteBoxPrivate *priv;
 };
 
 struct _GladePaletteBoxClass
@@ -56,19 +54,16 @@ struct _GladePaletteBoxClass
 	GtkContainerClass parent_class;
 };
 
-struct _GladePaletteBoxChild
-{
-	GtkWidget *widget;
-};
 
 
-GType                glade_palette_box_get_type (void) G_GNUC_CONST;
 
-GtkWidget*           glade_palette_box_new (void);
+GType          glade_palette_box_get_type       (void) G_GNUC_CONST;
 
-void                 glade_palette_box_reorder_child (GladePaletteBox *box,
-                                                      GtkWidget *child,
-                                                      gint position);
+GtkWidget     *glade_palette_box_new            (void);
+
+void           glade_palette_box_reorder_child  (GladePaletteBox *box,
+                                                 GtkWidget       *child,
+                                                 gint             position);
 
 
 G_END_DECLS

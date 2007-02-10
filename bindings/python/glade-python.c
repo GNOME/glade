@@ -457,7 +457,7 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 
 	/* Import glade module and set path */
 	command = g_strdup_printf ("import sys; import glade; sys.path+=['.', '%s'];\n",
-				    glade_modules_dir);
+				    glade_app_get_modules_dir ());
 	PyRun_SimpleString (command);
 	g_free (command);
 	

@@ -45,17 +45,4 @@ typedef struct _GladeProject        GladeProject;
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-fixed.h>
 
-/* FIXME: should not expose variables in the public interface.
-          It would be better if these were implemented as
-          private methods on GladeApp.
-*/
-LIBGLADEUI_API gboolean glade_verbose;
-LIBGLADEUI_API gchar* glade_scripts_dir;
-LIBGLADEUI_API gchar* glade_catalogs_dir;
-LIBGLADEUI_API gchar* glade_modules_dir;
-LIBGLADEUI_API gchar* glade_plugins_dir;
-LIBGLADEUI_API gchar* glade_bindings_dir;
-LIBGLADEUI_API gchar* glade_pixmaps_dir;
-LIBGLADEUI_API gchar* glade_locale_dir;
-
 #endif /* __GLADE_H__ */

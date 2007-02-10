@@ -1434,7 +1434,7 @@ glade_util_load_library (const gchar *library_name)
 	gchar   *path;
 	GModule *module;
 
-	path = g_module_build_path (glade_modules_dir, library_name);
+	path = g_module_build_path (glade_app_get_modules_dir (), library_name);
 
 	if ((module = g_module_open (path, G_MODULE_BIND_LAZY)) == NULL)
 	{
@@ -1567,7 +1567,7 @@ glade_util_get_devhelp_icon (GtkIconSize size)
 	}
 	else
 	{
-		path = g_build_filename (glade_pixmaps_dir, GLADE_DEVHELP_FALLBACK_ICON_FILE, NULL);
+		path = g_build_filename (glade_app_get_pixmaps_dir (), GLADE_DEVHELP_FALLBACK_ICON_FILE, NULL);
 
 		gtk_image_set_from_file (GTK_IMAGE (image), path);
 

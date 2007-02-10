@@ -175,7 +175,7 @@ glade_binding_load_all (void)
 	GDir *dir;
 
 	/* Read all files in bindings dir */
-	if ((dir = g_dir_open (glade_bindings_dir, 0, &error)) == NULL) 
+	if ((dir = g_dir_open (glade_app_get_bindings_dir (), 0, &error)) == NULL) 
 	{
 		g_warning ("Failed to open bindings directory: %s", error->message);
 		return;
@@ -194,7 +194,7 @@ glade_binding_load_all (void)
 		if (g_str_has_suffix (filename, G_MODULE_SUFFIX) == FALSE)
 			continue;
 		
-		path = g_build_filename (glade_bindings_dir, filename, NULL);
+		path = g_build_filename (glade_app_get_bindings_dir (), filename, NULL);
 		module = g_module_open (path, G_MODULE_BIND_LAZY);
 		
 		if (module == NULL) continue;
@@ -221,7 +221,7 @@ glade_binding_load_all (void)
 								  glade_binding_classes_destroy);
 
 		/* datadir/package/scripts/ */
-		rootdir = g_build_filename (glade_scripts_dir, binding->ctrl.name, NULL);
+		rootdir = g_build_filename (glade_app_get_scripts_dir (), binding->ctrl.name, NULL);
 		glade_binding_script_load (binding, rootdir);
 		g_free (rootdir);
 	

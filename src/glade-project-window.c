@@ -1878,7 +1878,7 @@ create_selector_tool_button (GtkToolbar *toolbar)
 	GtkWidget    *image;
 	gchar        *image_path;
 	
-	image_path = g_build_filename (glade_pixmaps_dir, "selector.png", NULL);
+	image_path = g_build_filename (glade_app_get_pixmaps_dir (), "selector.png", NULL);
 	image = gtk_image_new_from_file (image_path);
 	g_free (image_path);
 	
