@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-09 07:57-0800\n"
+"POT-Creation-Date: 2007-02-11 04:40-0800\n"
 "PO-Revision-Date: 2007-02-09 18:52+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n"
+"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && "
+"n<=10 ? 2 : 3\n"
 "X-Poedit-Language: Arabic\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -28,23 +29,41 @@ msgstr "انشئ او افتح واجهات مستخدم لتطبيقات جي �
 msgid "Glade Interface Designer"
 msgstr "مخطط الواجهة غلايد"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:212
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
 msgid "User Interface Designer"
 msgstr "مخطط واجهة المستخدم"
 
-#: ../src/main.c:39 ../src/main.c:82
+#: ../src/main.c:38
 msgid "Glade"
 msgstr "جلايد (Glade)"
 
-#: ../src/main.c:83
+#: ../src/main.c:48
+msgid "Output version information and exit"
+msgstr ""
+
+#: ../src/main.c:51
+msgid "Disable Devhelp integration"
+msgstr ""
+
+#: ../src/main.c:54
+msgid "[FILE...]"
+msgstr ""
+
+#: ../src/main.c:86
+#, fuzzy
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr "انشئ او افتح واجهات مستخدم لتطبيقات جي تي كاي+ (‎GTK+)"
+
+#: ../src/main.c:89 ../src/main.c:90
 msgid "Glade options"
 msgstr "خيارات غلايد"
 
-#: ../src/main.c:132
-msgid "gmodule support not found. gmodule support is required for glade to work"
+#: ../src/main.c:140
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
 msgstr "دعم وحدة جي gmodule  غير موجود. دعم وحدة جي مطلوب لعمل جلايد"
 
-#: ../src/main.c:159
+#: ../src/main.c:167
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "لا يمكن فتح '%s'، الملف غير موجود.\n"
@@ -53,74 +72,74 @@ msgstr "لا يمكن فتح '%s'، الملف غير موجود.\n"
 msgid "[Read Only]"
 msgstr "[للقراءة فقط]"
 
-#: ../src/glade-project-window.c:110
+#: ../src/glade-project-window.c:108
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "لم يمكن عرض العنوان '%s'"
 
-#: ../src/glade-project-window.c:114
+#: ../src/glade-project-window.c:112
 msgid "No suitable web browser executable could be found."
 msgstr "لم يمكن ايجاد تطبيق متصفح الشبكة"
 
-#: ../src/glade-project-window.c:611
+#: ../src/glade-project-window.c:609
 #, c-format
 msgid "Activate %s"
 msgstr "نشّط %s"
 
-#: ../src/glade-project-window.c:729
+#: ../src/glade-project-window.c:727
 msgid "Open…"
 msgstr "افتح..."
 
-#: ../src/glade-project-window.c:771
+#: ../src/glade-project-window.c:769
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "تم تعديل الملف %s منذ قراءته."
 
-#: ../src/glade-project-window.c:775
+#: ../src/glade-project-window.c:773
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "إذا حفظت، ستضيع كل التغييرات الخارجية. احفظ رغم ذلك؟"
 
-#: ../src/glade-project-window.c:779
+#: ../src/glade-project-window.c:777
 msgid "_Save Anyway"
 msgstr "ا_حفظ على أي حال"
 
-#: ../src/glade-project-window.c:786
+#: ../src/glade-project-window.c:784
 msgid "_Don't Save"
 msgstr "_لا تحفظ"
 
-#: ../src/glade-project-window.c:809
+#: ../src/glade-project-window.c:807
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "فشل في حفظ %s: %s"
 
-#: ../src/glade-project-window.c:830
+#: ../src/glade-project-window.c:828
 #, c-format
 msgid "Project '%s' saved"
 msgstr "تم حفظ المشروع '%s'"
 
 #. Just in case the menu-item is not insensitive
 #. Just in case the menu-item or button is not insensitive
-#: ../src/glade-project-window.c:849 ../src/glade-project-window.c:932
+#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
 msgid "No open projects to save"
 msgstr "لا مشاريع مفتوحة للحفظ"
 
-#: ../src/glade-project-window.c:853
+#: ../src/glade-project-window.c:851
 msgid "Save As…"
 msgstr "احفظ كـ..."
 
-#: ../src/glade-project-window.c:895
+#: ../src/glade-project-window.c:893
 #, c-format
 msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
 "save the file."
 msgstr "لا يمكن حفظ الملف %s. لا تملك الصلاحيات الكافية."
 
-#: ../src/glade-project-window.c:908
+#: ../src/glade-project-window.c:906
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "لا يمكن حفظ الملف %s. مشروع آخر بنفس المسار مفتوح"
 
-#: ../src/glade-project-window.c:960
+#: ../src/glade-project-window.c:958
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -133,39 +152,35 @@ msgstr ""
 "\n"
 "ستضيع تغييراتك ان لم تحفظها.\n"
 
-#: ../src/glade-project-window.c:974
+#: ../src/glade-project-window.c:972
 msgid "_Close without Saving"
 msgstr "ا_غلق بدون حفظ"
 
-#: ../src/glade-project-window.c:995
+#: ../src/glade-project-window.c:993
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "فشل في حفظ %s إلى %s: %s"
 
-#: ../src/glade-project-window.c:1007
+#: ../src/glade-project-window.c:1005
 msgid "Save…"
 msgstr "حفظ..."
 
-#: ../src/glade-project-window.c:1185
-msgid "Glade's Script Console"
-msgstr "طرفية السكريبت لغلايد"
-
-#: ../src/glade-project-window.c:1465
+#: ../src/glade-project-window.c:1411
 msgid "Could not display the online user manual"
 msgstr "لم يمكن عرض مساعدة المستخدم"
 
-#: ../src/glade-project-window.c:1468 ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr "لم يمكن ايجاد تطبيق متصفح الشبكة مناسب فتح العنوان %s"
 
-#: ../src/glade-project-window.c:1503
+#: ../src/glade-project-window.c:1449
 msgid "Could not display the online developer reference manual"
 msgstr "لم يمكن عرض مساعدة المطور"
 
-#: ../src/glade-project-window.c:1536
+#: ../src/glade-project-window.c:1482
 msgid ""
 "Glade is a user interface designer for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2 version, originally created by "
@@ -174,7 +189,7 @@ msgstr ""
 "جلايد هو مصمّم واجهات لـجي تي كاي و جنوم. \n"
 "هذا الإصدار هو اعادة كتابة للبرنامج الأصلي المطور من طرف دامون شابلن\n"
 
-#: ../src/glade-project-window.c:1541
+#: ../src/glade-project-window.c:1487
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -201,305 +216,297 @@ msgstr ""
 "Free Software Fondation Inc., 59 Temple Place - Suite 330, Boston, MA 02111 "
 "- 1307, USA"
 
-#: ../src/glade-project-window.c:1563
+#: ../src/glade-project-window.c:1509
 msgid "translator-credits"
 msgstr ""
 "فريق عربآيز للترجمة http://www.arabeyes.org :\n"
 "جهاد عفيفي\t<djihed@gmail.com>"
 
 #. File
-#: ../src/glade-project-window.c:1636 ../plugins/gtk+/glade-gtk.c:4397
+#: ../src/glade-project-window.c:1581 ../plugins/gtk+/glade-gtk.c:4397
 #: ../plugins/gtk+/glade-gtk.c:4695
 msgid "_File"
 msgstr "_ملف"
 
 #. Edit
-#: ../src/glade-project-window.c:1637 ../plugins/gtk+/glade-gtk.c:4400
+#: ../src/glade-project-window.c:1582 ../plugins/gtk+/glade-gtk.c:4400
 #: ../plugins/gtk+/glade-gtk.c:4705
 msgid "_Edit"
 msgstr "_حرّر"
 
 #. View
-#: ../src/glade-project-window.c:1638 ../plugins/gtk+/glade-gtk.c:4403
+#: ../src/glade-project-window.c:1583 ../plugins/gtk+/glade-gtk.c:4403
 #: ../plugins/gtk+/glade-gtk.c:4713
 msgid "_View"
 msgstr "إ_عرض"
 
-#: ../src/glade-project-window.c:1639
+#: ../src/glade-project-window.c:1584
 msgid "_Projects"
 msgstr "م_شاريع"
 
 #. Help
-#: ../src/glade-project-window.c:1640 ../plugins/gtk+/glade-gtk.c:4415
+#: ../src/glade-project-window.c:1585 ../plugins/gtk+/glade-gtk.c:4415
 #: ../plugins/gtk+/glade-gtk.c:4716
 msgid "_Help"
 msgstr "م_ساعدة"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1643
+#: ../src/glade-project-window.c:1588
 msgid "_New"
 msgstr "_جديد"
 
-#: ../src/glade-project-window.c:1644
+#: ../src/glade-project-window.c:1589
 msgid "Create a new project"
 msgstr "انشيء مشروع جديد"
 
-#: ../src/glade-project-window.c:1646
+#: ../src/glade-project-window.c:1591
 msgid "_Open…"
 msgstr "ا_فتح..."
 
-#: ../src/glade-project-window.c:1647
+#: ../src/glade-project-window.c:1592
 msgid "Open a project"
 msgstr "افتح المشروع"
 
-#: ../src/glade-project-window.c:1649
+#: ../src/glade-project-window.c:1594
 msgid "Open _Recent"
 msgstr "افتح من _جديد"
 
-#: ../src/glade-project-window.c:1651
+#: ../src/glade-project-window.c:1596
 msgid "_Quit"
 msgstr "ا_خرج"
 
-#: ../src/glade-project-window.c:1652
+#: ../src/glade-project-window.c:1597
 msgid "Quit the program"
 msgstr "اخرج من البرنامج"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1655
+#: ../src/glade-project-window.c:1600
 msgid "Palette _Appearance"
 msgstr "_عرض الصفيحة"
 
 #. HelpMenu
-#: ../src/glade-project-window.c:1658
+#: ../src/glade-project-window.c:1603
 msgid "_About"
 msgstr "_حول"
 
-#: ../src/glade-project-window.c:1659
+#: ../src/glade-project-window.c:1604
 msgid "About this application"
 msgstr "حول هذا التّطبيق"
 
-#: ../src/glade-project-window.c:1661
+#: ../src/glade-project-window.c:1606
 msgid "_Contents"
 msgstr "_المحتويات"
 
-#: ../src/glade-project-window.c:1662
+#: ../src/glade-project-window.c:1607
 msgid "Display the user manual"
 msgstr "عرض المساعدة للمستخدم"
 
-#: ../src/glade-project-window.c:1664
+#: ../src/glade-project-window.c:1609
 msgid "_Developer Reference"
 msgstr "مرجع الم_طور"
 
-#: ../src/glade-project-window.c:1665
+#: ../src/glade-project-window.c:1610
 msgid "Display the developer reference manual"
 msgstr "اعرض مرجع المطور"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1673
+#: ../src/glade-project-window.c:1618
 msgid "_Save"
 msgstr "ا_حفظ"
 
-#: ../src/glade-project-window.c:1674
+#: ../src/glade-project-window.c:1619
 msgid "Save the current project"
 msgstr "إ_حفظ المشروع الحالي"
 
-#: ../src/glade-project-window.c:1676
+#: ../src/glade-project-window.c:1621
 msgid "Save _As…"
 msgstr "احفظ _كـ..."
 
-#: ../src/glade-project-window.c:1677
+#: ../src/glade-project-window.c:1622
 msgid "Save the current project with a different name"
 msgstr "احفظ المشروع الحالي الحالي بإسم مغاير"
 
-#: ../src/glade-project-window.c:1679
+#: ../src/glade-project-window.c:1624
 msgid "_Close"
 msgstr "أ_غلق"
 
-#: ../src/glade-project-window.c:1680
+#: ../src/glade-project-window.c:1625
 msgid "Close the current project"
 msgstr "غلق المشروع الحالي"
 
 #. EditMenu
-#: ../src/glade-project-window.c:1683 ../src/glade-project-window.c:2266
+#: ../src/glade-project-window.c:1628 ../src/glade-project-window.c:2204
 msgid "_Undo"
 msgstr "_تراجع"
 
-#: ../src/glade-project-window.c:1684
+#: ../src/glade-project-window.c:1629
 msgid "Undo the last action"
 msgstr "تراجع عن العمل الأخير"
 
-#: ../src/glade-project-window.c:1686 ../src/glade-project-window.c:2277
+#: ../src/glade-project-window.c:1631 ../src/glade-project-window.c:2215
 msgid "_Redo"
 msgstr "_إعادة"
 
-#: ../src/glade-project-window.c:1687
+#: ../src/glade-project-window.c:1632
 msgid "Redo the last action"
 msgstr "أعِد آخر عملية"
 
-#: ../src/glade-project-window.c:1689
+#: ../src/glade-project-window.c:1634
 msgid "C_ut"
 msgstr "_قص"
 
-#: ../src/glade-project-window.c:1690
+#: ../src/glade-project-window.c:1635
 msgid "Cut the selection"
 msgstr "قص المنتقى"
 
-#: ../src/glade-project-window.c:1692
+#: ../src/glade-project-window.c:1637
 msgid "_Copy"
 msgstr "ا_نسخ"
 
-#: ../src/glade-project-window.c:1693
+#: ../src/glade-project-window.c:1638
 msgid "Copy the selection"
 msgstr "انسخ المنتقى"
 
-#: ../src/glade-project-window.c:1695
+#: ../src/glade-project-window.c:1640
 msgid "_Paste"
 msgstr "ا_لصق"
 
-#: ../src/glade-project-window.c:1696
+#: ../src/glade-project-window.c:1641
 msgid "Paste the clipboard"
 msgstr "الصق الحافظة"
 
-#: ../src/glade-project-window.c:1698
+#: ../src/glade-project-window.c:1643
 msgid "_Delete"
 msgstr "إح_ذف"
 
-#: ../src/glade-project-window.c:1699
+#: ../src/glade-project-window.c:1644
 msgid "Delete the selection"
 msgstr "حذف المنتقى"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1703
+#: ../src/glade-project-window.c:1648
 msgid "_Clipboard"
 msgstr "ال_حافظة"
 
-#: ../src/glade-project-window.c:1704
+#: ../src/glade-project-window.c:1649
 msgid "Show the clipboard"
 msgstr "اعرض الحافظة"
 
-#: ../src/glade-project-window.c:1707
-msgid "C_onsole"
-msgstr "ط_رفية"
-
-#: ../src/glade-project-window.c:1708
-msgid "Show Script-do console"
-msgstr "اعرض طرفية فعل-سكريبت"
-
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1712
+#: ../src/glade-project-window.c:1653
 msgid "_Previous Project"
 msgstr "المشروع ال_سابق"
 
-#: ../src/glade-project-window.c:1713
+#: ../src/glade-project-window.c:1654
 msgid "Activate previous project"
 msgstr "نشّط المشروع السابق"
 
-#: ../src/glade-project-window.c:1715
+#: ../src/glade-project-window.c:1656
 msgid "_Next Project"
 msgstr "المشروع ال_تالي"
 
-#: ../src/glade-project-window.c:1716
+#: ../src/glade-project-window.c:1657
 msgid "Activate next project"
 msgstr "نشّط المشروع التالي"
 
-#: ../src/glade-project-window.c:1724
+#: ../src/glade-project-window.c:1665
 msgid "_Use Small Icons"
 msgstr "استعمل أيقونات _صغيرة"
 
-#: ../src/glade-project-window.c:1725
+#: ../src/glade-project-window.c:1666
 msgid "Show items using small icons"
 msgstr "اعرض العناصر كايقونات صغيرة"
 
-#: ../src/glade-project-window.c:1728
+#: ../src/glade-project-window.c:1669
 msgid "Context _Help"
 msgstr "مساعدة _سياقية"
 
-#: ../src/glade-project-window.c:1729
+#: ../src/glade-project-window.c:1670
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "اعرض او اخف ازرار مساعدة سياقية في المحرّر"
 
-#: ../src/glade-project-window.c:1736
+#: ../src/glade-project-window.c:1677
 msgid "Text beside icons"
 msgstr "نص بجانب الأيقونة"
 
-#: ../src/glade-project-window.c:1737
+#: ../src/glade-project-window.c:1678
 msgid "Display items as text beside icons"
 msgstr "اعرض العناصر كنص مع ايقونات"
 
-#: ../src/glade-project-window.c:1739
+#: ../src/glade-project-window.c:1680
 msgid "_Icons only"
 msgstr "أي_قونات فقط"
 
-#: ../src/glade-project-window.c:1740
+#: ../src/glade-project-window.c:1681
 msgid "Display items as icons only"
 msgstr "أظهر الأزرار كأيقونات فقط"
 
-#: ../src/glade-project-window.c:1742
+#: ../src/glade-project-window.c:1683
 msgid "_Text only"
 msgstr "_نص فقط"
 
-#: ../src/glade-project-window.c:1743
+#: ../src/glade-project-window.c:1684
 msgid "Display items as text only"
 msgstr "أظهر الأزرار بنص فقط"
 
-#: ../src/glade-project-window.c:1948
+#: ../src/glade-project-window.c:1889
 msgid "Select Widgets"
 msgstr "انتقِ قطعة"
 
-#: ../src/glade-project-window.c:1952
+#: ../src/glade-project-window.c:1893
 msgid "Select widgets in the workspace"
 msgstr "انتقِ قطعة في مساحة العمل"
 
-#: ../src/glade-project-window.c:2041
+#: ../src/glade-project-window.c:1982
 msgid "Palette"
 msgstr "لوحة"
 
-#: ../src/glade-project-window.c:2057
+#: ../src/glade-project-window.c:1998
 msgid "Inspector"
 msgstr "المفتش"
 
-#: ../src/glade-project-window.c:2063 ../gladeui/glade-widget.c:975
+#: ../src/glade-project-window.c:2004 ../gladeui/glade-widget.c:975
 msgid "Properties"
 msgstr "خصائص"
 
-#: ../src/glade-project-window.c:2182
+#: ../src/glade-project-window.c:2120
 msgid "Could not create a new project."
 msgstr "لا يمكن انشاء مشروع جديد"
 
-#: ../src/glade-project-window.c:2201
+#: ../src/glade-project-window.c:2139
 #, c-format
 msgid "%s is already open"
 msgstr "%s مفتوح مسبقا"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:2268 ../gladeui/glade-app.c:240
+#: ../src/glade-project-window.c:2206 ../gladeui/glade-app.c:242
 #, c-format
 msgid "Undo: %s"
 msgstr "تراجع: %s"
 
-#: ../src/glade-project-window.c:2268 ../src/glade-project-window.c:2279
-#: ../gladeui/glade-app.c:241
+#: ../src/glade-project-window.c:2206 ../src/glade-project-window.c:2217
+#: ../gladeui/glade-app.c:243
 msgid "the last action"
 msgstr "العمل الأخير"
 
-#: ../src/glade-project-window.c:2279 ../gladeui/glade-app.c:240
+#: ../src/glade-project-window.c:2217 ../gladeui/glade-app.c:242
 #, c-format
 msgid "Redo: %s"
 msgstr "إعادة: %s"
 
-#: ../gladeui/glade-app.c:365
+#: ../gladeui/glade-app.c:453
 msgid "Clipboard"
 msgstr "حافظة"
 
-#: ../gladeui/glade-app.c:437
+#: ../gladeui/glade-app.c:525
 msgid "Active Project"
 msgstr "مشروع نشط"
 
-#: ../gladeui/glade-app.c:438
+#: ../gladeui/glade-app.c:526
 msgid "The active project"
 msgstr "المشروع النشط"
 
-#: ../gladeui/glade-app.c:516
+#: ../gladeui/glade-app.c:604
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -508,7 +515,7 @@ msgstr ""
 "محاولة كتابة بيانات شخصية للدليل %s لكنه ملف عادي.\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:529
+#: ../gladeui/glade-app.c:617
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -517,7 +524,7 @@ msgstr ""
 "خطأ عند انشاء المجلد %s كتابة بيانات خصوصية.\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:557
+#: ../gladeui/glade-app.c:645
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -526,7 +533,7 @@ msgstr ""
 "خطأ عند كتابة بيانات خصوصية لـ %s (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:569
+#: ../gladeui/glade-app.c:657
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -535,7 +542,7 @@ msgstr ""
 "خطأ عند تسلسل بيانات التهيئة للحفظ  (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:582
+#: ../gladeui/glade-app.c:670
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -544,45 +551,45 @@ msgstr ""
 "خطأ عند فتح %s لكتابة بيانات خصوصية (%s).\n"
 "لن يتم حفظ أي بيانات خصوصية في هذه الجلسة"
 
-#: ../gladeui/glade-app.c:1021
+#: ../gladeui/glade-app.c:1109
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr "لا يمكنك نسخ قطعة داخلية في قطعة مركبة"
 
-#: ../gladeui/glade-app.c:1036 ../gladeui/glade-app.c:1089
-#: ../gladeui/glade-app.c:1264
+#: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
+#: ../gladeui/glade-app.c:1352
 msgid "No widget selected."
 msgstr "لم يتم انتقاء أيّة قطعة"
 
-#: ../gladeui/glade-app.c:1074
+#: ../gladeui/glade-app.c:1162
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "لا يمكنك قص قطعة داخلية في قطعة مركبة"
 
-#: ../gladeui/glade-app.c:1133
+#: ../gladeui/glade-app.c:1221
 msgid "Unable to paste to the selected parent"
 msgstr "لا يمكن لصق الاب المختار"
 
-#: ../gladeui/glade-app.c:1144
+#: ../gladeui/glade-app.c:1232
 msgid "Unable to paste to multiple widgets"
 msgstr "لا يمكن اللق لقطع مختلفة"
 
-#: ../gladeui/glade-app.c:1154 ../gladeui/glade-app.c:1286
+#: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
 msgid "No widget selected on the clipboard"
 msgstr "لا قطعة مختارة في الحافظة"
 
-#: ../gladeui/glade-app.c:1180
+#: ../gladeui/glade-app.c:1268
 #, c-format
 msgid "Unable to paste widget %s without a parent"
 msgstr "لا يمكن لصق القطعة %s من دون أب"
 
-#: ../gladeui/glade-app.c:1197
+#: ../gladeui/glade-app.c:1285
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "يمكن لصق قطعة واحدة فقط كل مرة غلى هذه الحاوية"
 
-#: ../gladeui/glade-app.c:1209
+#: ../gladeui/glade-app.c:1297
 msgid "Insufficient amount of placeholders in target container"
 msgstr "عدد غير كاف للفراغات في الحاوية"
 
-#: ../gladeui/glade-app.c:1249 ../gladeui/glade-app.c:1296
+#: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "لا يمكنك حذف قطعة داخلية في قطعة مركّبة."
 
@@ -1336,7 +1343,8 @@ msgid "Member Of"
 msgstr "عضو لـ"
 
 #: ../gladeui/glade-property-class.c:80
-msgid "Indicates an object is a member of a group of one or more target objects"
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
 msgstr "يحدد أن جسما هو عضو في مجموعة جسم أو أكثر"
 
 #: ../gladeui/glade-property-class.c:82
@@ -1559,7 +1567,8 @@ msgstr "فوضوي"
 
 # هاها!!!
 #: ../gladeui/glade-widget.c:943
-msgid "Whether this composite child is an ancestral child or an anarchist child"
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
 msgstr "اذا كان الابن المركب ابنا عاديا او ابنا فوضويا"
 
 #: ../gladeui/glade-widget.c:950
@@ -3306,7 +3315,8 @@ msgstr "اذا يمكن تحرير نص الايقونة من طرف المست�
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
-msgstr "اذا كان نص الايقونة ثابتا، في هذه الحالية لا يتم نسخها من طرف GnomeIconList"
+msgstr ""
+"اذا كان نص الايقونة ثابتا، في هذه الحالية لا يتم نسخها من طرف GnomeIconList"
 
 #: ../plugins/gnome/canvas.xml.in.h:7
 msgid "Max X"
@@ -3392,3 +3402,11 @@ msgstr "نمط الانتقاء"
 msgid "The width of each icon"
 msgstr "عرض كل الأيقونة"
 
+#~ msgid "Glade's Script Console"
+#~ msgstr "طرفية السكريبت لغلايد"
+
+#~ msgid "C_onsole"
+#~ msgstr "ط_رفية"
+
+#~ msgid "Show Script-do console"
+#~ msgstr "اعرض طرفية فعل-سكريبت"
