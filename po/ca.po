@@ -3,93 +3,130 @@
 # 
 # Jordi Mas <jmas@softcatala.org>, 2006
 # Quico Llach <quico@softcatala.org>, 2000.
-# Xavier Conde Rueda <xavi.conde@gmail.com>, 2003, 2004, 2006
+# Xavier Conde Rueda <xavi.conde@gmail.com>, 2003-2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-17 09:57+0100\n"
-"PO-Revision-Date: 2006-11-16 22:47+0100\n"
+"POT-Creation-Date: 2007-02-10 03:32+0000\n"
+"PO-Revision-Date: 2007-02-11 22:47+0100\n"
 "Last-Translator: Xavier Conde Rueda <xavi.conde@gmail.com>\n"
-"Language-Team:  Softcatalà <tradgnome@softcatala.org>\n"
+"Language-Team:  Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../glade-3.desktop.in.h:1
+#: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Creeu o obriu dissenys d'interfície d'usuari per a aplicacions GTK+"
 
-#: ../glade-3.desktop.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
 msgstr "Dissenyador d'interfícies Glade"
 
-#: ../glade-3.desktop.in.h:3
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
 msgid "User Interface Designer"
 msgstr "Dissenyador d'interfícies d'usuari"
 
-#: ../src/main.c:40 ../src/main.c:85
+#: ../src/main.c:37
 msgid "Glade"
 msgstr "Glade"
 
-#: ../src/main.c:86
+#: ../src/main.c:47
+msgid "Output version information and exit"
+msgstr "Escriu la informació quant a la versió i surt"
+
+#: ../src/main.c:50
+msgid "Disable Devhelp integration"
+msgstr "Inhabilita la integració amb el Devhelp"
+
+#: ../src/main.c:53
+msgid "[FILE...]"
+msgstr "[FITXER...]"
+
+#: ../src/main.c:85
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr "Creeu o editeu dissenys d'interfície d'usuari per a aplicacions GTK+ i GNOME."
+
+#: ../src/main.c:88 ../src/main.c:89
 msgid "Glade options"
 msgstr "Opcions del Glade"
 
-#: ../src/main.c:135
+#: ../src/main.c:139
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "El gmodule no es troba disponible. Cal el gmodule perquè funcioni el glade"
 
-#: ../src/main.c:170
+#: ../src/main.c:166
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "No es pot obrir «%s», el fitxer no existeix.\n"
 
-#: ../src/glade-project-window.c:73
-msgid "[read-only]"
-msgstr "[només-lectura]"
+#: ../src/glade-project-window.c:44
+msgid "[Read Only]"
+msgstr "[Només lectura]"
+
+#: ../src/glade-project-window.c:108
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "No es pot mostrar la URL «%s»"
+
+#: ../src/glade-project-window.c:112
+msgid "No suitable web browser executable could be found."
+msgstr "No s'ha trobat cap navegador executable."
+
+#: ../src/glade-project-window.c:609
+#, c-format
+msgid "Activate %s"
+msgstr "Activa %s"
 
 #
-#: ../src/glade-project-window.c:503
+#: ../src/glade-project-window.c:727
 msgid "Open…"
-msgstr "Obre…"
+msgstr "Obre..."
 
-#: ../src/glade-project-window.c:534
-msgid ""
-"Are you sure you want to clear the\n"
-"list of recent projects?"
-msgstr ""
-"Esteu segur que voleu netejar la\n"
-"llista de projectes recents?"
+#: ../src/glade-project-window.c:769
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "S'ha modificat el fitxer %s des que es va llegir"
 
-#: ../src/glade-project-window.c:535
-msgid ""
-"If you clear the list of recent projects, they will be\n"
-"permanently deleted."
-msgstr ""
-"Si netegeu la llista de projectes recents, s'esborraran\n"
-"permanentment."
+#: ../src/glade-project-window.c:773
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr "Si ho deseu, es perdran tots els canvis externs. Voleu fer-ho?"
+
+#: ../src/glade-project-window.c:777
+msgid "_Save Anyway"
+msgstr "De_sa"
+
+#: ../src/glade-project-window.c:784
+msgid "_Don't Save"
+msgstr "No ho _desis"
 
 #
-#: ../src/glade-project-window.c:572
+#: ../src/glade-project-window.c:807
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "No s'ha pogut desar %s: %s"
 
-#: ../src/glade-project-window.c:594
+#: ../src/glade-project-window.c:828
 #, c-format
 msgid "Project '%s' saved"
 msgstr "S'ha desat el projecte «%s»"
 
 #
-#: ../src/glade-project-window.c:612 ../src/glade-project-window.c:695
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
 msgid "No open projects to save"
 msgstr "No hi ha projectes oberts per desar"
 
-#: ../src/glade-project-window.c:658
+#: ../src/glade-project-window.c:851
+msgid "Save As…"
+msgstr "Anomena i desa..."
+
+#: ../src/glade-project-window.c:893
 #, c-format
 msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
@@ -98,23 +135,13 @@ msgstr ""
 "No s'ha pogut desar el fitxer %s. No teniu els permissos necessaris per "
 "desar el fitxer."
 
-#: ../src/glade-project-window.c:671
+#: ../src/glade-project-window.c:906
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "No es pot desar el fitxer %s. Ja hi ha un projecte obert amb aquest camí."
 
-#. If instead we dont have a path yet, fire up a file selector
-#: ../src/glade-project-window.c:706
-msgid "Save…"
-msgstr "Desa…"
-
-#
-#: ../src/glade-project-window.c:712
-msgid "Save as…"
-msgstr "Anomena i desa..."
-
-#: ../src/glade-project-window.c:726
+#: ../src/glade-project-window.c:958
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -122,53 +149,51 @@ msgid ""
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Voleu desar els canvis al projecte \"%s"
-"\" abans de tancar?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Voleu desar els canvis al projecte «%s"
+"» abans de tancar?</span>\n"
 "\n"
 "Els vostres canvis es perdran si no els deseu.\n"
 
-#: ../src/glade-project-window.c:740
+#: ../src/glade-project-window.c:972
 msgid "_Close without Saving"
 msgstr "_Tanca sense desar"
 
-#: ../src/glade-project-window.c:761
+#: ../src/glade-project-window.c:993
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "No s'ha pogut desar %s a %s: %s"
 
-#: ../src/glade-project-window.c:773
-msgid "Save ..."
+#: ../src/glade-project-window.c:1005
+msgid "Save…"
 msgstr "Desa..."
 
-#
-#: ../src/glade-project-window.c:954
-msgid "Palette"
-msgstr "Paleta"
+#: ../src/glade-project-window.c:1411
+msgid "Could not display the online user manual"
+msgstr "No s'ha pogut mostrar el manual d'usuari en línia"
 
-#
-#: ../src/glade-project-window.c:1023 ../src/glade-widget.c:1104
-msgid "Properties"
-msgstr "Propietats"
+#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr "No s'ha trobat cap navegador web executable per mostrar la URL: %s"
 
-#: ../src/glade-project-window.c:1092
-msgid "E_xpand all"
-msgstr "E_xpandeix tot"
+#: ../src/glade-project-window.c:1449
+msgid "Could not display the online developer reference manual"
+msgstr ""
+"No s'ha pogut mostrar el manual en línia de referència del desenvolupador"
 
-#: ../src/glade-project-window.c:1096
-msgid "_Collapse all"
-msgstr "_Plega tot"
-
-#: ../src/glade-project-window.c:1299
+#: ../src/glade-project-window.c:1482
 msgid ""
 "Glade is a user interface designer for GTK+ and GNOME.\n"
 "This version is a rewrite of the Glade 2 version, originally created by "
 "Damon Chaplin\n"
 msgstr ""
 "El Glade és un dissenyador d'interfícies d'usuari per a GTK+ i GNOME.\n"
-"Aquesta versió ha sigut reescrita respecte a la versió 2 de Glade, creat "
+"Aquesta versió ha sigut reescrita a partir de la versió 2 de Glade, creat "
 "originalment per en Damon Chaplin\n"
 
-#: ../src/glade-project-window.c:1304
+#: ../src/glade-project-window.c:1487
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -185,7 +210,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
 "USA."
 msgstr ""
-"Aquest és programari lliure; podeu redistribuir-lo i/o modificar-lo\n"
+"Això és programari lliure; podeu redistribuir-lo i/o modificar-lo\n"
 "sota els termes de la Llicència Pública General GNU tal i com ha estat\n"
 "publicada per la Free Software Foundation; bé sota la versió 2 de la\n"
 "Llicència o (si ho preferiu) sota una de més recent.\n"
@@ -200,294 +225,313 @@ msgstr ""
 "Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,\n"
 "MA 02111, USA."
 
+#: ../src/glade-project-window.c:1509
+msgid "translator-credits"
+msgstr "Jordi Mas <jmas@softcatala.org>\n"
+"Quico Llach <quico@softcatala.org>\n"
+"Xavier Conde Rueda <xavi.conde@gmail.com>"
+
 #
 #. File
-#: ../src/glade-project-window.c:1397 ../src/glade-gtk.c:4177
-#: ../src/glade-gtk.c:4327
+#: ../src/glade-project-window.c:1581 ../plugins/gtk+/glade-gtk.c:4397
+#: ../plugins/gtk+/glade-gtk.c:4695
 msgid "_File"
 msgstr "_Fitxer"
 
 #. Edit
-#: ../src/glade-project-window.c:1398 ../src/glade-gtk.c:4180
-#: ../src/glade-gtk.c:4337
+#: ../src/glade-project-window.c:1582 ../plugins/gtk+/glade-gtk.c:4400
+#: ../plugins/gtk+/glade-gtk.c:4705
 msgid "_Edit"
 msgstr "_Edita"
 
 #. View
-#: ../src/glade-project-window.c:1399 ../src/glade-gtk.c:4183
-#: ../src/glade-gtk.c:4345
+#: ../src/glade-project-window.c:1583 ../plugins/gtk+/glade-gtk.c:4403
+#: ../plugins/gtk+/glade-gtk.c:4713
 msgid "_View"
 msgstr "_Visualització"
 
 #
-#: ../src/glade-project-window.c:1400
+#: ../src/glade-project-window.c:1584
 msgid "_Projects"
-msgstr "_Projectes:"
+msgstr "_Projectes"
 
 #
 #. Help
-#: ../src/glade-project-window.c:1401 ../src/glade-gtk.c:4195
-#: ../src/glade-gtk.c:4348
+#: ../src/glade-project-window.c:1585 ../plugins/gtk+/glade-gtk.c:4415
+#: ../plugins/gtk+/glade-gtk.c:4716
 msgid "_Help"
 msgstr "Aj_uda"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1404
+#: ../src/glade-project-window.c:1588
 msgid "_New"
 msgstr "_Nou"
 
-#: ../src/glade-project-window.c:1405
+#: ../src/glade-project-window.c:1589
 msgid "Create a new project"
 msgstr "Crea un nou projecte"
 
 #
-#: ../src/glade-project-window.c:1407
-msgid "_Open"
-msgstr "_Obre"
+#: ../src/glade-project-window.c:1591
+msgid "_Open…"
+msgstr "_Obre..."
 
-#: ../src/glade-project-window.c:1408
+#: ../src/glade-project-window.c:1592
 msgid "Open a project"
 msgstr "Obre un projecte"
 
-#: ../src/glade-project-window.c:1410
+#: ../src/glade-project-window.c:1594
 msgid "Open _Recent"
-msgstr "Obre un _recent"
+msgstr "Obre'n un _recent"
 
-#: ../src/glade-project-window.c:1412
-msgid "Clear Recent Projects"
-msgstr "Neteja els projectes recents"
-
-#: ../src/glade-project-window.c:1415
+#: ../src/glade-project-window.c:1596
 msgid "_Quit"
 msgstr "_Surt"
 
-#: ../src/glade-project-window.c:1416
+#: ../src/glade-project-window.c:1597
 msgid "Quit the program"
 msgstr "Surt del programa"
 
+#. ViewMenu
+#: ../src/glade-project-window.c:1600
+msgid "Palette _Appearance"
+msgstr "_Aparença de la paleta"
+
 #. HelpMenu
-#: ../src/glade-project-window.c:1422
+#: ../src/glade-project-window.c:1603
 msgid "_About"
 msgstr "_Quant a"
 
-#: ../src/glade-project-window.c:1423
-msgid "Shows the About Dialog"
-msgstr "Mostra el diàleg de «Quant a»"
+#: ../src/glade-project-window.c:1604
+msgid "About this application"
+msgstr "Quant a aquesta aplicació"
 
-#: ../src/glade-project-window.c:1425
-msgid "_Documentation"
-msgstr "_Documentació"
+#: ../src/glade-project-window.c:1606
+msgid "_Contents"
+msgstr "_Continguts"
 
-#: ../src/glade-project-window.c:1426
-msgid "Documentation about Glade"
-msgstr "Documentació quant al Glade"
+#: ../src/glade-project-window.c:1607
+msgid "Display the user manual"
+msgstr "Mostra el manual d'usuari"
+
+#: ../src/glade-project-window.c:1609
+msgid "_Developer Reference"
+msgstr "_Referència per als desenvolupadors"
+
+#: ../src/glade-project-window.c:1610
+msgid "Display the developer reference manual"
+msgstr "Mostra el manual de referència per a desenvolupadors"
 
 #. FileMenu
-#: ../src/glade-project-window.c:1433
+#: ../src/glade-project-window.c:1618
 msgid "_Save"
 msgstr "_Desa"
 
-#: ../src/glade-project-window.c:1434
+#: ../src/glade-project-window.c:1619
 msgid "Save the current project"
 msgstr "Desa el projecte actual"
 
-#: ../src/glade-project-window.c:1436
+#: ../src/glade-project-window.c:1621
 msgid "Save _As…"
-msgstr "_Anomena i desa…"
+msgstr "_Anomena i desa..."
 
-#: ../src/glade-project-window.c:1437
+#: ../src/glade-project-window.c:1622
 msgid "Save the current project with a different name"
 msgstr "Desa el projecte actual amb un nom diferent"
 
 #
-#: ../src/glade-project-window.c:1439
+#: ../src/glade-project-window.c:1624
 msgid "_Close"
 msgstr "_Tanca"
 
-#: ../src/glade-project-window.c:1440
+#: ../src/glade-project-window.c:1625
 msgid "Close the current project"
 msgstr "Tanca el projecte actual"
 
 #
 #. EditMenu
-#: ../src/glade-project-window.c:1443 ../src/glade-project-window.c:1889
+#: ../src/glade-project-window.c:1628 ../src/glade-project-window.c:2204
 msgid "_Undo"
 msgstr "_Desfés"
 
-#: ../src/glade-project-window.c:1444
+#: ../src/glade-project-window.c:1629
 msgid "Undo the last action"
 msgstr "Desfés la darrera acció"
 
 #
-#: ../src/glade-project-window.c:1446 ../src/glade-project-window.c:1900
+#: ../src/glade-project-window.c:1631 ../src/glade-project-window.c:2215
 msgid "_Redo"
 msgstr "_Refés"
 
-#: ../src/glade-project-window.c:1447
+#: ../src/glade-project-window.c:1632
 msgid "Redo the last action"
 msgstr "Refés la darrera acció"
 
 #
-#: ../src/glade-project-window.c:1449
+#: ../src/glade-project-window.c:1634
 msgid "C_ut"
 msgstr "_Retalla"
 
-#: ../src/glade-project-window.c:1450
+#: ../src/glade-project-window.c:1635
 msgid "Cut the selection"
 msgstr "Retalla la selecció"
 
 #
-#: ../src/glade-project-window.c:1452
+#: ../src/glade-project-window.c:1637
 msgid "_Copy"
 msgstr "_Copia"
 
-#: ../src/glade-project-window.c:1453
+#: ../src/glade-project-window.c:1638
 msgid "Copy the selection"
 msgstr "Copia la selecció"
 
 #
-#: ../src/glade-project-window.c:1455
+#: ../src/glade-project-window.c:1640
 msgid "_Paste"
 msgstr "_Enganxa"
 
-#: ../src/glade-project-window.c:1456
+#: ../src/glade-project-window.c:1641
 msgid "Paste the clipboard"
 msgstr "Enganxa el porta-retalls"
 
-#: ../src/glade-project-window.c:1458
+#: ../src/glade-project-window.c:1643
 msgid "_Delete"
 msgstr "_Suprimeix"
 
-#: ../src/glade-project-window.c:1459
+#: ../src/glade-project-window.c:1644
 msgid "Delete the selection"
 msgstr "Suprimeix la selecció"
 
 #
 #. ViewMenu
-#: ../src/glade-project-window.c:1463
-msgid "Property _Editor"
-msgstr "_Editor de propietats"
-
-#: ../src/glade-project-window.c:1464
-msgid "Show the property editor"
-msgstr "Mostra l'editor de propietats"
-
-#
-#: ../src/glade-project-window.c:1467
-msgid "_Palette"
-msgstr "_Paleta"
-
-#: ../src/glade-project-window.c:1468
-msgid "Show the palette of widgets"
-msgstr "Mostra la paleta de ginys"
-
-#
-#: ../src/glade-project-window.c:1471
+#: ../src/glade-project-window.c:1648
 msgid "_Clipboard"
 msgstr "_Porta-retalls"
 
-#: ../src/glade-project-window.c:1472
+#: ../src/glade-project-window.c:1649
 msgid "Show the clipboard"
 msgstr "Mostra el porta-retalls"
 
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1476
+#: ../src/glade-project-window.c:1653
 msgid "_Previous Project"
 msgstr "_Projecte anterior"
 
-#: ../src/glade-project-window.c:1477
+#: ../src/glade-project-window.c:1654
 msgid "Activate previous project"
-msgstr "Activa l'anterior projecte"
+msgstr "Activa el projecte anterior"
 
-#: ../src/glade-project-window.c:1479
+#: ../src/glade-project-window.c:1656
 msgid "_Next Project"
-msgstr "_Següent projecte"
+msgstr "Pr_ojecte següent"
 
-#: ../src/glade-project-window.c:1480
+#: ../src/glade-project-window.c:1657
 msgid "Activate next project"
-msgstr "Activa el següent projecte"
+msgstr "Activa el projecte següent"
 
-#: ../src/glade-project-window.c:1488
+#: ../src/glade-project-window.c:1665
 msgid "_Use Small Icons"
 msgstr "_Usa icones petites"
 
-#: ../src/glade-project-window.c:1489
+#: ../src/glade-project-window.c:1666
 msgid "Show items using small icons"
 msgstr "Mostra elements fent servir icones petites"
 
-#: ../src/glade-project-window.c:1492
+#: ../src/glade-project-window.c:1669
 msgid "Context _Help"
 msgstr "_Ajuda contextual"
 
-#: ../src/glade-project-window.c:1493
+#: ../src/glade-project-window.c:1670
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Mostra o amaga els botons d'ajuda contextual en l'editor"
 
-#: ../src/glade-project-window.c:1500
+#: ../src/glade-project-window.c:1677
 msgid "Text beside icons"
 msgstr "Text al costat de les icones"
 
-#: ../src/glade-project-window.c:1501
+#: ../src/glade-project-window.c:1678
 msgid "Display items as text beside icons"
 msgstr "Mostra els elements com a text al costat de les icones"
 
-#: ../src/glade-project-window.c:1503
+#: ../src/glade-project-window.c:1680
 msgid "_Icons only"
 msgstr "Només _icones"
 
-#: ../src/glade-project-window.c:1504
+#: ../src/glade-project-window.c:1681
 msgid "Display items as icons only"
 msgstr "Mostra elements només com a icones"
 
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1683
 msgid "_Text only"
 msgstr "Només _text"
 
-#: ../src/glade-project-window.c:1507
+#: ../src/glade-project-window.c:1684
 msgid "Display items as text only"
 msgstr "Mostra els elements com a text només"
 
-#: ../src/glade-project-window.c:1805
+#: ../src/glade-project-window.c:1889
+msgid "Select Widgets"
+msgstr "Seleccioneu ginys"
+
+#: ../src/glade-project-window.c:1893
+msgid "Select widgets in the workspace"
+msgstr "Seleccioneu ginys en l'espai de treball"
+
+#
+#: ../src/glade-project-window.c:1982
+msgid "Palette"
+msgstr "Paleta"
+
+#: ../src/glade-project-window.c:1998
+msgid "Inspector"
+msgstr "Inspector"
+
+#
+#: ../src/glade-project-window.c:2004 ../gladeui/glade-widget.c:975
+msgid "Properties"
+msgstr "Propietats"
+
+#: ../src/glade-project-window.c:2120
 msgid "Could not create a new project."
 msgstr "No s'ha pogut crear un nou projecte."
 
-#: ../src/glade-project-window.c:1827
+#: ../src/glade-project-window.c:2139
 #, c-format
 msgid "%s is already open"
 msgstr "«%s» ja està obert"
 
 #
 #. Change tooltips
-#: ../src/glade-project-window.c:1891 ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2206 ../gladeui/glade-app.c:240
 #, c-format
 msgid "Undo: %s"
 msgstr "Desfés: %s"
 
-#: ../src/glade-project-window.c:1891 ../src/glade-project-window.c:1902
-#: ../src/glade-app.c:242
+#: ../src/glade-project-window.c:2206 ../src/glade-project-window.c:2217
+#: ../gladeui/glade-app.c:241
 msgid "the last action"
 msgstr "la darrera acció"
 
 #
-#: ../src/glade-project-window.c:1902 ../src/glade-app.c:241
+#: ../src/glade-project-window.c:2217 ../gladeui/glade-app.c:240
 #, c-format
 msgid "Redo: %s"
 msgstr "Refés: %s"
 
 #
-#: ../src/glade-app.c:358
+#: ../gladeui/glade-app.c:365
 msgid "Clipboard"
 msgstr "Porta-retalls"
 
-#: ../src/glade-app.c:409
+#: ../gladeui/glade-app.c:437
 msgid "Active Project"
 msgstr "Projecte actiu"
 
-#: ../src/glade-app.c:410
+#: ../gladeui/glade-app.c:438
 msgid "The active project"
 msgstr "El projecte actiu"
 
-#: ../src/glade-app.c:512
+#: ../gladeui/glade-app.c:516
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -496,7 +540,7 @@ msgstr ""
 "S'està intentant desar dades privades al directori %s, però es tracta d'un "
 "fitxer de dades. No es desaran dades privades en aquesta sessió"
 
-#: ../src/glade-app.c:525
+#: ../gladeui/glade-app.c:529
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -505,7 +549,7 @@ msgstr ""
 "No s'ha pogut crear el directori %s per desar dades privades.\n"
 "No es desaran dades privades en aquesta sessió"
 
-#: ../src/glade-app.c:553
+#: ../gladeui/glade-app.c:557
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -514,7 +558,7 @@ msgstr ""
 "S'ha produït un error en escriure dades privades a %s (%s).\n"
 "No es desaran dades privades en aquesta sessió"
 
-#: ../src/glade-app.c:565
+#: ../gladeui/glade-app.c:569
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -523,7 +567,7 @@ msgstr ""
 "S'ha produït un error en serialitzar les dades a desar (%s).\n"
 "No es desaran dades privades en aquesta sessió"
 
-#: ../src/glade-app.c:578
+#: ../gladeui/glade-app.c:582
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -532,395 +576,454 @@ msgstr ""
 "S'ha produït un error en obrir %s per escriure dades privades (%s).\n"
 "No es desaran dades privades en aquesta sessió"
 
-#: ../src/glade-app.c:986
+#: ../gladeui/glade-app.c:1021
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr "No podeu copiar un giny intern d'un giny compost."
 
-#: ../src/glade-app.c:1001 ../src/glade-app.c:1054 ../src/glade-app.c:1216
+#: ../gladeui/glade-app.c:1036 ../gladeui/glade-app.c:1089
+#: ../gladeui/glade-app.c:1264
 msgid "No widget selected."
 msgstr "No s'ha seleccionat cap giny."
 
-#: ../src/glade-app.c:1039
+#: ../gladeui/glade-app.c:1074
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "No podeu retallar un giny intern d'un giny compost."
 
-#: ../src/glade-app.c:1099
+#
+#: ../gladeui/glade-app.c:1133
+msgid "Unable to paste to the selected parent"
+msgstr "No es pot enganxar al pare seleccionat"
+
+#: ../gladeui/glade-app.c:1144
 msgid "Unable to paste to multiple widgets"
 msgstr "No es pot enganxar més d'un giny"
 
-#: ../src/glade-app.c:1109 ../src/glade-app.c:1238
+#: ../gladeui/glade-app.c:1154 ../gladeui/glade-app.c:1286
 msgid "No widget selected on the clipboard"
 msgstr "No s'ha seleccionat cap giny al porta-retalls"
 
 #
-#: ../src/glade-app.c:1128
+#: ../gladeui/glade-app.c:1180
 #, c-format
-msgid "Unable to paste widget %s to parent %s"
-msgstr "No es pot enganxar el giny %s al pare %s"
+msgid "Unable to paste widget %s without a parent"
+msgstr "No es pot enganxar el giny %s sense un pare"
 
-#: ../src/glade-app.c:1150
+#: ../gladeui/glade-app.c:1197
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Només es pot enganxar un giny a la vegada en aquest contenidor"
 
-#: ../src/glade-app.c:1161
+#: ../gladeui/glade-app.c:1209
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
-#: ../src/glade-app.c:1201 ../src/glade-app.c:1248 ../src/glade-command.c:1078
+#: ../gladeui/glade-app.c:1249 ../gladeui/glade-app.c:1296
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "No podeu suprimir un giny intern d'un giny compost."
 
-#: ../src/glade-builtins.c:183 ../src/glade-gtk.c:187 ../src/glade-gtk.c:207
+#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
+#: ../plugins/gtk+/glade-gtk.c:207
 msgid "Stock"
 msgstr "Predeterminat"
 
-#: ../src/glade-builtins.c:184
+#: ../gladeui/glade-builtins.c:184
 msgid "A builtin stock item"
 msgstr "Un element predeterminat"
 
-#: ../src/glade-builtins.c:192 ../widgets/gtk+.xml.in.h:214
+#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Stock Image"
 msgstr "Imatge predeterminada"
 
-#: ../src/glade-builtins.c:193 ../widgets/gtk+.xml.in.h:1
+#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A builtin stock image"
 msgstr "Una imatge predeterminada"
 
-#: ../src/glade-builtins.c:523
+#: ../gladeui/glade-builtins.c:523
 msgid "Objects"
 msgstr "Objectes"
 
-#: ../src/glade-builtins.c:524
+#: ../gladeui/glade-builtins.c:524
 msgid "A list of objects"
 msgstr "Una llista d'objectes"
 
-#: ../src/glade-builtins.c:533
+#: ../gladeui/glade-builtins.c:533
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../src/glade-builtins.c:534
+#: ../gladeui/glade-builtins.c:534
 msgid "A pixbuf value"
 msgstr "Un valor de memòria de píxels"
 
-#: ../src/glade-builtins.c:542
+#: ../gladeui/glade-builtins.c:542
 msgid "GdkColor"
 msgstr "GdkColor"
 
-#: ../src/glade-builtins.c:543
+#: ../gladeui/glade-builtins.c:543
 msgid "A gdk color value"
 msgstr "Un valor de color gdk"
 
-#: ../src/glade-builtins.c:551 ../src/glade-property-class.c:1191
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1192
 msgid "Accelerators"
 msgstr "Acceleradors"
 
-#: ../src/glade-builtins.c:552 ../src/glade-property-class.c:1192
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1193
 msgid "A list of accelerator keys"
 msgstr "Una llista de tecles d'accelerador"
 
-#: ../src/glade-builtins.c:563
+#: ../gladeui/glade-builtins.c:563
 msgid "Integer"
 msgstr "Enter"
 
-#: ../src/glade-builtins.c:564
+#: ../gladeui/glade-builtins.c:564
 msgid "An integer value"
 msgstr "Un valor enter"
 
-#: ../src/glade-builtins.c:572
+#: ../gladeui/glade-builtins.c:572
 msgid "Unsigned Integer"
 msgstr "Enter sense signe"
 
-#: ../src/glade-builtins.c:573
+#: ../gladeui/glade-builtins.c:573
 msgid "An unsigned integer value"
 msgstr "Un valor enter sense signe"
 
-#: ../src/glade-builtins.c:580
+#: ../gladeui/glade-builtins.c:580
 msgid "String"
 msgstr "Cadena"
 
-#: ../src/glade-builtins.c:581
+#: ../gladeui/glade-builtins.c:581
 msgid "An entry"
 msgstr "Una entrada"
 
-#: ../src/glade-builtins.c:588
+#: ../gladeui/glade-builtins.c:588
 msgid "Strv"
 msgstr "VectC"
 
-#: ../src/glade-builtins.c:589
+#: ../gladeui/glade-builtins.c:589
 msgid "String array"
 msgstr "Vector de cadena"
 
-#: ../src/glade-builtins.c:597
+#: ../gladeui/glade-builtins.c:597
 msgid "Float"
 msgstr "Punt flotant"
 
-#: ../src/glade-builtins.c:598
+#: ../gladeui/glade-builtins.c:598
 msgid "A floating point entry"
 msgstr "Una entrada de punt flotant"
 
-#: ../src/glade-builtins.c:606
+#: ../gladeui/glade-builtins.c:606
 msgid "Boolean"
 msgstr "Booleà"
 
-#: ../src/glade-builtins.c:607
+#: ../gladeui/glade-builtins.c:607
 msgid "A boolean value"
 msgstr "Un valor booleà"
 
-#: ../src/glade-base-editor.c:469
+#: ../gladeui/glade-base-editor.c:470
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "S'està establint el tipus d'objecte a %s com a %s"
 
-#: ../src/glade-base-editor.c:634
+#: ../gladeui/glade-base-editor.c:635
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Afegeix un %s a %s"
 
-#: ../src/glade-base-editor.c:711
+#: ../gladeui/glade-base-editor.c:712
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Suprimeix el fill %s de %s"
 
-#: ../src/glade-base-editor.c:834
+#: ../gladeui/glade-base-editor.c:835
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Reordena els fills de %s"
 
-#: ../src/glade-base-editor.c:1413 ../src/glade-gtk.c:206
-#: ../widgets/gtk+.xml.in.h:126
+#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../src/glade-base-editor.c:1426
+#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
 msgid "Type"
 msgstr "Tipus"
 
 #
 #. Name
-#: ../src/glade-base-editor.c:1599
+#: ../gladeui/glade-base-editor.c:1598
 msgid "Name :"
 msgstr "Nom:"
 
 #
 #. Type
-#: ../src/glade-base-editor.c:1609
+#: ../gladeui/glade-base-editor.c:1608
 msgid "Type :"
 msgstr "Tipus:"
 
-#: ../src/glade-clipboard-view.c:201 ../src/glade-project-view.c:677
-#: ../widgets/gtk+.xml.in.h:261
+#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
+#: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Widget"
 msgstr "Giny"
 
-#: ../src/glade-command.c:542
+#: ../gladeui/glade-command.c:541
 msgid "Setting multiple properties"
 msgstr "S'està establint múltiples propietats"
 
-#: ../src/glade-command.c:550
+#: ../gladeui/glade-command.c:549
 #, c-format
 msgid "Setting %s of %s"
 msgstr "S'està establint %s de %s"
 
-#: ../src/glade-command.c:554
+#: ../gladeui/glade-command.c:553
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "S'està establint %s de %s a %s"
 
-#: ../src/glade-command.c:772 ../src/glade-command.c:799
+#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "Reanomena %s a %s"
 
-#: ../src/glade-command.c:1123
+#: ../gladeui/glade-command.c:903
 #, c-format
-msgid "Delete %s"
+msgid "Add %s"
+msgstr "Afegeix %s"
+
+#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:1672
+msgid "multiple"
+msgstr "múltiple"
+
+#: ../gladeui/glade-command.c:1017
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr "No podeu suprimir un giny intern d'un giny compost."
+
+#
+#: ../gladeui/glade-command.c:1063
+#, c-format
+msgid "Remove %s"
 msgstr "Suprimeix %s"
 
-#: ../src/glade-command.c:1127
-msgid "Delete multiple"
-msgstr "Suprimeix múltiples"
+#: ../gladeui/glade-command.c:1067
+msgid "Remove multiple"
+msgstr "Suprimeix-ne múltiples"
 
-#: ../src/glade-command.c:1195
+#
+#: ../gladeui/glade-command.c:1371
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Afegeix «%s» al porta-retalls"
+
+#
+#: ../gladeui/glade-command.c:1374
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Suprimeix «%s » del porta-retalls"
+
+#: ../gladeui/glade-command.c:1537
 #, c-format
 msgid "Create %s"
 msgstr "Crea %s"
 
+#: ../gladeui/glade-command.c:1563
+#, c-format
+msgid "Delete %s"
+msgstr "Suprimeix %s"
+
 #
-#: ../src/glade-command.c:1591
+#: ../gladeui/glade-command.c:1584
 #, c-format
 msgid "Cut %s"
 msgstr "Retalla  %s"
 
 #
-#: ../src/glade-command.c:1592
+#: ../gladeui/glade-command.c:1611
 #, c-format
 msgid "Copy %s"
 msgstr "Copia  %s"
 
 #
-#: ../src/glade-command.c:1592
+#: ../gladeui/glade-command.c:1644
 #, c-format
 msgid "Paste %s"
 msgstr "Enganxa %s"
 
-#: ../src/glade-command.c:1613
-msgid "multiple"
-msgstr "múltiple"
+#: ../gladeui/glade-command.c:1672
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Arrossega de %s a %s"
 
-#: ../src/glade-command.c:1898
+#: ../gladeui/glade-command.c:1794
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Afegeix gestor de senyals %s"
 
-#: ../src/glade-command.c:1899
+#: ../gladeui/glade-command.c:1795
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Suprimeix el gestor de senyals %s"
 
-#: ../src/glade-command.c:1900
+#: ../gladeui/glade-command.c:1796
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Canvia el gestor de senyals %s"
 
-#: ../src/glade-cursor.c:191
+#: ../gladeui/glade-command.c:2000
+msgid "Setting i18n metadata"
+msgstr "Metadades d'i18n"
+
+#: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
 msgstr "No es pot carregar la imatge (%s)"
 
-#: ../src/glade-editor-property.c:271
+#: ../gladeui/glade-editor-property.c:274
 msgid "View GTK+ documentation for this property"
 msgstr "Visualitza la documentació de GTK+ per a aquesta propietat"
 
-#: ../src/glade-editor-property.c:573
+#: ../gladeui/glade-editor-property.c:576
 msgid "Property Class"
 msgstr "Classe de la propietat"
 
-#: ../src/glade-editor-property.c:574
+#: ../gladeui/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "La GladePropertyClass perquè es va crear aquest GladeEditorProperty"
 
-#: ../src/glade-editor-property.c:580
+#: ../gladeui/glade-editor-property.c:583
 msgid "Use Command"
 msgstr "Usa ordres"
 
-#: ../src/glade-editor-property.c:581
+#: ../gladeui/glade-editor-property.c:584
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Si s'ha de fer servir l'API d'ordres per a la pila de desfer/refer"
 
-#: ../src/glade-editor-property.c:587
+#: ../gladeui/glade-editor-property.c:590
 msgid "Show Info"
 msgstr "Mostra informació"
 
-#: ../src/glade-editor-property.c:588
+#: ../gladeui/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
 msgstr "Si s'ha de mostrar un botó informatiu"
 
-#: ../src/glade-editor-property.c:1116
-msgid "Set Flags"
-msgstr "Estableix els senyaladors"
+#: ../gladeui/glade-editor-property.c:1118
+msgid "Select Fields"
+msgstr "Seleccioneu els camps"
 
-#: ../src/glade-editor-property.c:1449
-msgid "Edit Text Property"
-msgstr "Edita la propietat del text"
+#: ../gladeui/glade-editor-property.c:1140
+msgid "_Select individual fields:"
+msgstr "_Seleccioneu camps individuals:"
+
+#: ../gladeui/glade-editor-property.c:1467
+msgid "Edit Text"
+msgstr "Edita el text"
 
 #
 #. Text
-#: ../src/glade-editor-property.c:1466
+#: ../gladeui/glade-editor-property.c:1495
 msgid "_Text:"
 msgstr "_Text:"
 
-#: ../src/glade-editor-property.c:1502
+#: ../gladeui/glade-editor-property.c:1531
 msgid "T_ranslatable"
 msgstr "T_raduïble"
 
-#: ../src/glade-editor-property.c:1515
-msgid "Has context _prefix"
+#: ../gladeui/glade-editor-property.c:1544
+msgid "_Has context prefix"
 msgstr "Té _prefix de context"
 
 #. Comments.
-#: ../src/glade-editor-property.c:1529
+#: ../gladeui/glade-editor-property.c:1562
 msgid "Co_mments for translators:"
 msgstr "Co_mentaris per a traductors:"
 
 #
-#: ../src/glade-editor-property.c:1698 ../src/glade-editor-property.c:1714
+#: ../gladeui/glade-editor-property.c:1732
+#: ../gladeui/glade-editor-property.c:1748
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/glade-editor-property.c:1698 ../src/glade-editor-property.c:1714
-#: ../src/glade-editor-property.c:1729
+#: ../gladeui/glade-editor-property.c:1732
+#: ../gladeui/glade-editor-property.c:1748
+#: ../gladeui/glade-editor-property.c:1763
 msgid "No"
 msgstr "No"
 
 #
-#: ../src/glade-editor-property.c:2319 ../src/glade-widget.c:1056
+#: ../gladeui/glade-editor-property.c:2353 ../gladeui/glade-widget.c:927
+#: ../gladeui/glade-widget-adaptor.c:916
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/glade-editor-property.c:2331 ../src/glade-widget.c:1087
+#: ../gladeui/glade-editor-property.c:2365
 msgid "Class"
 msgstr "Classe"
 
-#: ../src/glade-editor-property.c:2345
+#: ../gladeui/glade-editor-property.c:2379
 #, c-format
 msgid "Choose %s implementors"
-msgstr "Escolliur els implementadors de %s"
+msgstr "Escolliu els implementadors de %s"
 
-#: ../src/glade-editor-property.c:2345
+#: ../gladeui/glade-editor-property.c:2379
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Escolliu un %s en aquest projecte"
 
 #. Checklist
-#: ../src/glade-editor-property.c:2397 ../src/glade-editor-property.c:2602
+#: ../gladeui/glade-editor-property.c:2443
+msgid "O_bjects:"
+msgstr "O_bjectes:"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2652
 msgid "Objects:"
 msgstr "Objectes:"
 
-#: ../src/glade-editor-property.c:2917
+#: ../gladeui/glade-editor-property.c:2967
 msgid "Value:"
 msgstr "Valor:"
 
-#: ../src/glade-editor-property.c:2918
+#: ../gladeui/glade-editor-property.c:2968
 msgid "The current value"
 msgstr "El valor actual"
 
-#: ../src/glade-editor-property.c:2920
+#: ../gladeui/glade-editor-property.c:2970
 msgid "Lower:"
 msgstr "Inferior:"
 
-#: ../src/glade-editor-property.c:2921
+#: ../gladeui/glade-editor-property.c:2971
 msgid "The minimum value"
 msgstr "El valor mínim"
 
-#: ../src/glade-editor-property.c:2923
+#: ../gladeui/glade-editor-property.c:2973
 msgid "Upper:"
 msgstr "Superior:"
 
-#: ../src/glade-editor-property.c:2924
+#: ../gladeui/glade-editor-property.c:2974
 msgid "The maximum value"
 msgstr "El valor màxim"
 
-#: ../src/glade-editor-property.c:2926
+#: ../gladeui/glade-editor-property.c:2976
 msgid "Step inc:"
 msgstr "Pas:"
 
-#: ../src/glade-editor-property.c:2927
+#: ../gladeui/glade-editor-property.c:2977
 msgid "The increment to use to make minor changes to the value"
 msgstr "L'increment que s'usarà per fer canvis menors al valor"
 
-#: ../src/glade-editor-property.c:2929
+#: ../gladeui/glade-editor-property.c:2979
 msgid "Page inc:"
 msgstr "Pàgina:"
 
-#: ../src/glade-editor-property.c:2930
+#: ../gladeui/glade-editor-property.c:2980
 msgid "The increment to use to make major changes to the value"
 msgstr "L'increment que s'usarà per fer canvis majors al valor"
 
-#: ../src/glade-editor-property.c:2932
+#: ../gladeui/glade-editor-property.c:2982
 msgid "Page size:"
 msgstr "Mida de pàgina:"
 
-#: ../src/glade-editor-property.c:2933
+#: ../gladeui/glade-editor-property.c:2983
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
@@ -928,74 +1031,76 @@ msgstr ""
 "La mida de la pàgina (en un GtkScrollbar és la mida de l'àrea visible "
 "actualment)"
 
-#: ../src/glade-editor-property.c:3010
+#: ../gladeui/glade-editor-property.c:3060
 msgid "Alphanumerical"
 msgstr "Alfanumèric"
 
-#: ../src/glade-editor-property.c:3015
+#: ../gladeui/glade-editor-property.c:3065
 msgid "Extra"
 msgstr "Extra"
 
-#: ../src/glade-editor-property.c:3020
+#: ../gladeui/glade-editor-property.c:3070
 msgid "Keypad"
-msgstr ""
+msgstr "Teclat numèric"
 
-#: ../src/glade-editor-property.c:3025
+#: ../gladeui/glade-editor-property.c:3075
 msgid "Functions"
 msgstr "Funcions"
 
-#: ../src/glade-editor-property.c:3030 ../widgets/gnome.xml.in.h:24
+#: ../gladeui/glade-editor-property.c:3080 ../plugins/gnome/gnome.xml.in.h:24
 msgid "Other"
 msgstr "Altre"
 
-#: ../src/glade-editor-property.c:3201 ../src/glade-editor-property.c:3235
-#: ../src/glade-editor-property.c:3280
+#: ../gladeui/glade-editor-property.c:3251
+#: ../gladeui/glade-editor-property.c:3285
+#: ../gladeui/glade-editor-property.c:3330
 msgid "<choose a key>"
 msgstr "<escolliu una clau>"
 
-#: ../src/glade-editor-property.c:3234 ../widgets/gtk+.xml.in.h:144
-#: ../widgets/bonobo.xml.in.h:13
+#: ../gladeui/glade-editor-property.c:3284 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "Cap"
 
-#: ../src/glade-editor-property.c:3360 ../src/glade-signal-editor.c:684
+#: ../gladeui/glade-editor-property.c:3410
+#: ../gladeui/glade-signal-editor.c:684
 msgid "Signal"
 msgstr "Senyal"
 
-#: ../src/glade-editor-property.c:3387
+#: ../gladeui/glade-editor-property.c:3437
 msgid "Key"
 msgstr "Tecla"
 
-#: ../src/glade-editor-property.c:3401
+#: ../gladeui/glade-editor-property.c:3451
 msgid "Shift"
 msgstr "Maj"
 
 #
-#: ../src/glade-editor-property.c:3417
+#: ../gladeui/glade-editor-property.c:3467
 msgid "Control"
 msgstr "Control"
 
-#: ../src/glade-editor-property.c:3433
+#: ../gladeui/glade-editor-property.c:3483
 msgid "Alt"
 msgstr "Alt"
 
-#: ../src/glade-editor-property.c:3499
+#: ../gladeui/glade-editor-property.c:3549
 msgid "Choose accelerator keys..."
 msgstr "Escull les tecles de l'accelerador..."
 
-#: ../src/glade-editor.c:146
+#: ../gladeui/glade-editor.c:146
 msgid "Show info"
 msgstr "Mostra informació"
 
-#: ../src/glade-editor.c:147
+#: ../gladeui/glade-editor.c:147
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Si s'ha de mostrar un botó informatiu per al giny carregat"
 
-#: ../src/glade-editor.c:154
+#: ../gladeui/glade-editor.c:154
 msgid "Show context info"
 msgstr "Mostra la informació del context"
 
-#: ../src/glade-editor.c:155
+#: ../gladeui/glade-editor.c:155
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
@@ -1004,211 +1109,206 @@ msgstr ""
 "l'editor"
 
 #. construct tab label widget
-#: ../src/glade-editor.c:196 ../src/glade-editor.c:317
-#: ../src/glade-editor.c:1171
+#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
+#: ../gladeui/glade-editor.c:1178
 msgid "Accessibility"
 msgstr "Accessibilitat"
 
 #
 #. configure page container
-#: ../src/glade-editor.c:212 ../src/glade-editor.c:316
+#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
 msgid "_Signals"
 msgstr "_Senyals"
 
-#: ../src/glade-editor.c:278
+#: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
 msgstr "Visualitza la documentació per al giny seleccionat"
 
-#: ../src/glade-editor.c:298
+#: ../gladeui/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
 msgstr "Reinicia les propietats del giny als valors predeterminats"
 
 #
-#: ../src/glade-editor.c:313
+#: ../gladeui/glade-editor.c:318
 msgid "_General"
 msgstr "_General"
 
 #
-#: ../src/glade-editor.c:314
+#: ../gladeui/glade-editor.c:319
 msgid "_Packing"
 msgstr "_Empaquetat"
 
 #
-#: ../src/glade-editor.c:315
+#: ../gladeui/glade-editor.c:320
 msgid "_Common"
 msgstr "_Comú"
 
-#: ../src/glade-editor.c:332
+#: ../gladeui/glade-editor.c:337
 msgid "_Edit..."
 msgstr "_Edita..."
 
 #
 #. Name
-#: ../src/glade-editor.c:478
+#: ../gladeui/glade-editor.c:483
 msgid "Name:"
 msgstr "Nom:"
 
 #. Class
-#: ../src/glade-editor.c:506
+#: ../gladeui/glade-editor.c:511
 msgid "Class:"
 msgstr "Classe:"
 
-#: ../src/glade-editor.c:984
+#: ../gladeui/glade-editor.c:991
 #, c-format
 msgid "Create a %s"
 msgstr "Crea un %s"
 
-#: ../src/glade-editor.c:1102
+#: ../gladeui/glade-editor.c:1109
 msgid "Reset"
 msgstr "Reinicia"
 
-#: ../src/glade-editor.c:1116
+#: ../gladeui/glade-editor.c:1123
 msgid "Property"
 msgstr "Propietat"
 
-#: ../src/glade-editor.c:1151
+#: ../gladeui/glade-editor.c:1158
 msgid "General"
 msgstr "General"
 
-#: ../src/glade-editor.c:1161
+#: ../gladeui/glade-editor.c:1168
 msgid "Common"
 msgstr "Comú"
 
-#: ../src/glade-editor.c:1206
+#: ../gladeui/glade-editor.c:1213
 msgid "(default)"
 msgstr "(Per defecte)"
 
-#: ../src/glade-editor.c:1221
+#: ../gladeui/glade-editor.c:1228
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Seleccioneu les propietats que voleu reiniciar als seus valors predeterminats"
 
-#: ../src/glade-editor.c:1353
+#: ../gladeui/glade-editor.c:1360
 msgid "Reset Widget Properties"
 msgstr "Reinicia les propietats del giny"
 
 #
 #. Checklist
-#: ../src/glade-editor.c:1370
+#: ../gladeui/glade-editor.c:1377
 msgid "_Properties:"
 msgstr "_Propietats:"
 
-#: ../src/glade-editor.c:1399
+#: ../gladeui/glade-editor.c:1406
 msgid "_Select All"
 msgstr "_Selecciona-ho tot"
 
-#: ../src/glade-editor.c:1406
+#: ../gladeui/glade-editor.c:1413
 msgid "_Unselect All"
 msgstr "_No seleccionis res"
 
 #
 #. Description
-#: ../src/glade-editor.c:1415
+#: ../gladeui/glade-editor.c:1422
 msgid "Property _Description:"
 msgstr "Descripció de la _propietat:"
 
-#: ../src/glade-fixed.c:467 ../src/glade-gtk.c:1306
+#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "S'està col·locant %s dintre de %s"
 
-#: ../src/glade-fixed.c:1027
+#: ../gladeui/glade-fixed.c:940
 msgid "X position property"
 msgstr "Propietat de posició X"
 
-#: ../src/glade-fixed.c:1028
+#: ../gladeui/glade-fixed.c:941
 msgid "The property used to set the X position of a child object"
 msgstr "La propietat emprada per establir la posició X d'un objecte fill"
 
-#: ../src/glade-fixed.c:1034
+#: ../gladeui/glade-fixed.c:947
 msgid "Y position property"
 msgstr "Propietat de posició Y"
 
-#: ../src/glade-fixed.c:1035
+#: ../gladeui/glade-fixed.c:948
 msgid "The property used to set the Y position of a child object"
 msgstr "La propietat emprada per establir la posició Y d'un objecte fill"
 
-#: ../src/glade-fixed.c:1041
+#: ../gladeui/glade-fixed.c:954
 msgid "Width property"
 msgstr "Propietat d'amplada"
 
-#: ../src/glade-fixed.c:1042
+#: ../gladeui/glade-fixed.c:955
 msgid "The property used to set the width of a child object"
 msgstr "La propietat emprada per establir l'amplada d'un objecte fill"
 
-#: ../src/glade-fixed.c:1048
+#: ../gladeui/glade-fixed.c:961
 msgid "Height property"
 msgstr "Propietat d'alçària"
 
-#: ../src/glade-fixed.c:1049
+#: ../gladeui/glade-fixed.c:962
 msgid "The property used to set the height of a child object"
 msgstr "La propietat emprada per establir l'alçària d'un objecte fill"
 
-#: ../src/glade-fixed.c:1055
+#: ../gladeui/glade-fixed.c:968
 msgid "Can resize"
 msgstr "Pot canviar de mida"
 
-#: ../src/glade-fixed.c:1056
+#: ../gladeui/glade-fixed.c:969
 msgid "Whether this container supports resizes of child widgets"
 msgstr "Si aquest contenidor permet canviar la mida dels ginys fills"
 
-#: ../src/glade-fixed.c:1062
-msgid "Use Placeholders"
-msgstr ""
-
-#: ../src/glade-fixed.c:1063
-msgid ""
-"Whether this container use placeholders, the backend is responsable for "
-"setting up this property"
-msgstr ""
-
-#: ../src/glade-palette.c:471
-msgid "Widget Selector"
+#: ../gladeui/glade-palette.c:617
+msgid "Widget selector"
 msgstr "Seleccionador de ginys"
 
-#: ../src/glade-parser.c:1190
+#: ../gladeui/glade-parser.c:1192
 #, c-format
 msgid "Could not find glade file %s"
 msgstr "No es pot trobar el fitxer glade %s"
 
-#: ../src/glade-parser.c:1203 ../src/glade-parser.c:1211
+#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
 #, c-format
 msgid "Errors parsing glade file %s"
 msgstr "S'ha produït un error en analitzar el fitxer glade %s"
 
-#: ../src/glade-parser.c:1641
+#: ../gladeui/glade-parser.c:1657
 msgid "Could not allocate memory for interface"
 msgstr "No es pot assignar memòria per a la interfície"
 
-#: ../src/glade-popup.c:271
+#: ../gladeui/glade-popup.c:254
 msgid "_Select"
 msgstr "_Seleccioneu"
 
-#: ../src/glade-project.c:566
+#: ../gladeui/glade-project.c:562
 msgid "Has Unsaved Changes"
 msgstr "Té canvis sense desar"
 
-#: ../src/glade-project.c:567
+#: ../gladeui/glade-project.c:563
 msgid "Whether project has unsaved changes"
 msgstr "Si el projecte té canvis sense desar"
 
-#: ../src/glade-project.c:574
+#: ../gladeui/glade-project.c:570
 msgid "Has Selection"
 msgstr "Té selecció"
 
-#: ../src/glade-project.c:575
+#: ../gladeui/glade-project.c:571
 msgid "Whether project has a selection"
 msgstr "Si el projecte té selecció"
 
-#: ../src/glade-project.c:582
+#: ../gladeui/glade-project.c:578
 msgid "Read Only"
 msgstr "Només lectura"
 
-#: ../src/glade-project.c:583
+#: ../gladeui/glade-project.c:579
 msgid "Whether project is read only or not"
 msgstr "Si el projecte és només de lectura"
 
-#: ../src/glade-project.c:1461
+#: ../gladeui/glade-project.c:687
+#, c-format
+msgid "Unsaved %d"
+msgstr "Sense desar %d"
+
+#: ../gladeui/glade-project.c:1460
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1218,91 +1318,91 @@ msgstr ""
 "Els següents catàlegs requerits no es troben disponibles: %s"
 
 #. Atk click property
-#: ../src/glade-property-class.c:52 ../widgets/gtk+.xml.in.h:46
+#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Click"
 msgstr "Clic"
 
 #. Atk click property
-#: ../src/glade-property-class.c:53 ../widgets/gtk+.xml.in.h:195
-msgid "Set the desctription of the Click atk action"
+#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "Set the description of the Click atk action"
 msgstr "Estableix la descripció de l'acció atk Click"
 
 #. Atk press property
-#: ../src/glade-property-class.c:54 ../widgets/gtk+.xml.in.h:167
+#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Press"
 msgstr "Prem"
 
 #. Atk press property
-#: ../src/glade-property-class.c:55 ../widgets/gtk+.xml.in.h:197
-msgid "Set the desctription of the Press atk action"
+#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Set the description of the Press atk action"
 msgstr "Estableix la descripció de l'acció atk Press (prem)"
 
 #. Atk release property
-#: ../src/glade-property-class.c:56 ../widgets/gtk+.xml.in.h:179
+#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Release"
 msgstr "Allibera"
 
 #. Atk release property
-#: ../src/glade-property-class.c:57 ../widgets/gtk+.xml.in.h:199
-msgid "Set the desctription of the Release atk action"
+#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
+msgid "Set the description of the Release atk action"
 msgstr "Estableix la descripció de l'acció atk Release (allibera)"
 
 #. Atk activate property
-#: ../src/glade-property-class.c:58 ../widgets/gtk+.xml.in.h:14
+#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Activate"
 msgstr "Activa"
 
 #. Atk activate property
-#: ../src/glade-property-class.c:59 ../widgets/gtk+.xml.in.h:193
-msgid "Set the desctription of the Activate atk action"
+#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "Set the description of the Activate atk action"
 msgstr "Estableix la descripció de l'acció atk Activate (activa)"
 
-#: ../src/glade-property-class.c:63
+#: ../gladeui/glade-property-class.c:67
 msgid "Controlled By"
 msgstr "Controlat per"
 
-#: ../src/glade-property-class.c:64
+#: ../gladeui/glade-property-class.c:68
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Indica que un objecte és controlat per un o més objectes"
 
-#: ../src/glade-property-class.c:66
+#: ../gladeui/glade-property-class.c:70
 msgid "Controller For"
 msgstr "Controlat per a"
 
-#: ../src/glade-property-class.c:67
+#: ../gladeui/glade-property-class.c:71
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Indica que un objecte és un controlador per a un o més objectes"
 
-#: ../src/glade-property-class.c:69
+#: ../gladeui/glade-property-class.c:73
 msgid "Labelled By"
 msgstr "Etiquetat per"
 
-#: ../src/glade-property-class.c:70
+#: ../gladeui/glade-property-class.c:74
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr "Indica que un objecte està etiquetat per un o més objectes"
 
-#: ../src/glade-property-class.c:72
+#: ../gladeui/glade-property-class.c:76
 msgid "Label For"
 msgstr "Etiquetat per a"
 
-#: ../src/glade-property-class.c:73
+#: ../gladeui/glade-property-class.c:77
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Indica que un objecte és una etiqueta per a un o més objectes"
 
-#: ../src/glade-property-class.c:75
+#: ../gladeui/glade-property-class.c:79
 msgid "Member Of"
 msgstr "Membre de"
 
-#: ../src/glade-property-class.c:76
+#: ../gladeui/glade-property-class.c:80
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "Indica que un objecte és un membre d'un grup d'un o més objectes destí"
 
-#: ../src/glade-property-class.c:78
+#: ../gladeui/glade-property-class.c:82
 msgid "Child Node Of"
 msgstr "Node fill de"
 
-#: ../src/glade-property-class.c:79
+#: ../gladeui/glade-property-class.c:83
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -1311,11 +1411,11 @@ msgstr ""
 "perquè una cel·la en la mateixa columna s'ha expandit i identifica aquella "
 "cel·la."
 
-#: ../src/glade-property-class.c:82
+#: ../gladeui/glade-property-class.c:86
 msgid "Flows To"
 msgstr "Flota cap a"
 
-#: ../src/glade-property-class.c:83
+#: ../gladeui/glade-property-class.c:87
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -1323,11 +1423,11 @@ msgstr ""
 "Indica que l'objecte té contingut que flota lògicament cap a un altre "
 "AtkObject en forma seqüencial (per exemple un flux de text)"
 
-#: ../src/glade-property-class.c:86
+#: ../gladeui/glade-property-class.c:90
 msgid "Flows From"
 msgstr "Flota des de"
 
-#: ../src/glade-property-class.c:87
+#: ../gladeui/glade-property-class.c:91
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -1335,11 +1435,11 @@ msgstr ""
 "Indica que l'objecte té contingut que flota lògicament des d'un altre "
 "AtkObject en forma seqüencial (per exemple un flux de text)"
 
-#: ../src/glade-property-class.c:90
+#: ../gladeui/glade-property-class.c:94
 msgid "Subwindow Of"
 msgstr "Subfinestra de"
 
-#: ../src/glade-property-class.c:91
+#: ../gladeui/glade-property-class.c:95
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in  the UI hierarchy to that component"
@@ -1347,11 +1447,11 @@ msgstr ""
 "Indica una subfinestra adjunta a un component, però que no té cap altre "
 "connexió en la jerarquia de la UI del component"
 
-#: ../src/glade-property-class.c:94
+#: ../gladeui/glade-property-class.c:98
 msgid "Embeds"
 msgstr "Incrusta"
 
-#: ../src/glade-property-class.c:95
+#: ../gladeui/glade-property-class.c:99
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
@@ -1359,11 +1459,11 @@ msgstr ""
 "Indica que un objecte incrusta visualment el contingut d'un altre, p. e. el "
 "contingut d'aquest objecte flota al voltant del contingut d'un altre"
 
-#: ../src/glade-property-class.c:98
+#: ../gladeui/glade-property-class.c:102
 msgid "Embedded By"
 msgstr "Incrustat per"
 
-#: ../src/glade-property-class.c:99
+#: ../gladeui/glade-property-class.c:103
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visualy "
 "embedded in another object"
@@ -1371,99 +1471,99 @@ msgstr ""
 "El contrari d'«Incrusta», indica que el contingut d'aquest objecte està "
 "incrustat visualment en un altre objecte"
 
-#: ../src/glade-property-class.c:102
+#: ../gladeui/glade-property-class.c:106
 msgid "Popup For"
 msgstr "Menú emergent"
 
-#: ../src/glade-property-class.c:103
+#: ../gladeui/glade-property-class.c:107
 msgid "Indicates that an object is a popup for another object"
 msgstr "Indica que un objecte és un menú emergent per a un altre objecte"
 
-#: ../src/glade-property-class.c:105
+#: ../gladeui/glade-property-class.c:109
 msgid "Parent Window Of"
 msgstr "Finestra pare de"
 
-#: ../src/glade-property-class.c:106
+#: ../gladeui/glade-property-class.c:110
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Indica que un objecte és una finestra pare d'un altre objecte"
 
-#: ../src/glade-property.c:637
+#: ../gladeui/glade-property.c:587
 msgid "Enabled"
 msgstr "Habilitat"
 
-#: ../src/glade-property.c:638
+#: ../gladeui/glade-property.c:588
 msgid "If the property is optional, this is its enabled state"
 msgstr "Si la propietat és opcional, això és el seu estat d'habilitació"
 
-#: ../src/glade-property.c:644
+#: ../gladeui/glade-property.c:594
 msgid "Sensitive"
 msgstr "Sensible"
 
-#: ../src/glade-property.c:645
+#: ../gladeui/glade-property.c:595
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 "Això dóna control al rerefons per establir la propietat de sensibilitat"
 
 #
-#: ../src/glade-property.c:651
+#: ../gladeui/glade-property.c:601
 msgid "Comment"
 msgstr "Comentari"
 
-#: ../src/glade-property.c:652
+#: ../gladeui/glade-property.c:602
 msgid "Comment for translators"
 msgstr "Comentari per a traductors"
 
-#: ../src/glade-property.c:658
+#: ../gladeui/glade-property.c:608
 msgid "Translatable"
 msgstr "Traduïble"
 
-#: ../src/glade-property.c:659
+#: ../gladeui/glade-property.c:609
 msgid "Whether this property is translatable or not"
 msgstr "Si aquesta propietat és traduïble"
 
-#: ../src/glade-property.c:665
+#: ../gladeui/glade-property.c:615
 msgid "Has Context"
 msgstr "Té context"
 
-#: ../src/glade-property.c:666
+#: ../gladeui/glade-property.c:616
 msgid "Whether or not the translatable string has a context prefix"
 msgstr "Si la cadena traduïble té un prefix de context"
 
-#: ../src/glade-signal-editor.c:704
+#: ../gladeui/glade-signal-editor.c:704
 msgid "Handler"
 msgstr "Gestor"
 
-#: ../src/glade-signal-editor.c:726
+#: ../gladeui/glade-signal-editor.c:726
 msgid "User data"
 msgstr "Data d'usuari"
 
-#: ../src/glade-signal-editor.c:740
+#: ../gladeui/glade-signal-editor.c:740
 msgid "Lookup"
 msgstr "Cerca"
 
-#: ../src/glade-signal-editor.c:751
+#: ../gladeui/glade-signal-editor.c:751
 msgid "After"
 msgstr "Després"
 
-#: ../src/glade-utils.c:154 ../src/glade-utils.c:187
+#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "No s'ha pogut trobar el símbol «%s»"
 
-#: ../src/glade-utils.c:161
-#, fuzzy, c-format
-msgid "Could not get the type from \"%s"
+#: ../gladeui/glade-utils.c:176
+#, c-format
+msgid "Could not get the type from \"%s\""
 msgstr "No es pot obtenir el tipus de «%s»"
 
-#: ../src/glade-utils.c:528
+#: ../gladeui/glade-utils.c:541
 msgid "All Files"
 msgstr "Tots els fitxers"
 
-#: ../src/glade-utils.c:533
+#: ../gladeui/glade-utils.c:546
 msgid "Glade Files"
 msgstr "Fitxers glade"
 
-#: ../src/glade-utils.c:1341
+#: ../gladeui/glade-utils.c:1296
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1472,251 +1572,353 @@ msgstr ""
 "%s existeix.\n"
 "Voleu reemplaçar-lo?"
 
-#: ../src/glade-utils.c:1369
+#: ../gladeui/glade-utils.c:1324
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "S'ha produït un error en escriure a %s: %s"
 
-#: ../src/glade-utils.c:1383
+#: ../gladeui/glade-utils.c:1338
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "S'ha produït un error en llegir %s: %s"
 
-#: ../src/glade-utils.c:1398
+#: ../gladeui/glade-utils.c:1353
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "S'ha produït un error en tancar el canal d'E/S %s: %s"
 
-#: ../src/glade-utils.c:1408
+#: ../gladeui/glade-utils.c:1363
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "No s'ha pogut obrir %s per a escriure: %s"
 
-#: ../src/glade-utils.c:1419
+#: ../gladeui/glade-utils.c:1374
 #, c-format
 msgid "Error shutting down io channel %s: %s"
 msgstr "S'ha produït un error en tancar el canal d'E/S %s: %s"
 
-#: ../src/glade-utils.c:1428
+#: ../gladeui/glade-utils.c:1383
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "No s'ha pogut obrir %s per llegir: %s"
 
-#: ../src/glade-utils.c:1486
+#: ../gladeui/glade-utils.c:1441
 #, c-format
 msgid "Unable to open the module %s (%s)."
 msgstr "No s'ha pogut obrir el mòdul %s (%s)."
 
-#: ../src/glade-widget-class.c:395 ../src/glade-widget-class.c:429
-#, c-format
-msgid "Unable to load icon for %s (%s)"
-msgstr "No es pot carregar la icona per a %s (%s)"
-
-#: ../src/glade-widget-class.c:407 ../src/glade-widget-class.c:441
-#, c-format
-msgid "Unable to load stock icon (%s)"
-msgstr "No es pot carregar la icona predeterminada (%s)"
-
-#: ../src/glade-widget.c:1057
+#: ../gladeui/glade-widget.c:928
 msgid "The name of the widget"
 msgstr "El nom del giny"
 
-#: ../src/glade-widget.c:1064
+#: ../gladeui/glade-widget.c:935
 msgid "Internal name"
 msgstr "Nom intern"
 
-#: ../src/glade-widget.c:1065
+#: ../gladeui/glade-widget.c:936
 msgid "The internal name of the widget"
 msgstr "El nom intern d'un giny"
 
-#: ../src/glade-widget.c:1071
+#: ../gladeui/glade-widget.c:942
 msgid "Anarchist"
 msgstr "Anarquista"
 
-#: ../src/glade-widget.c:1072
+#: ../gladeui/glade-widget.c:943
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Si aquest fill compost és un fill amb pare o un fill anarquista"
 
-#: ../src/glade-widget.c:1079
+#: ../gladeui/glade-widget.c:950
 msgid "Object"
 msgstr "Objecte"
 
-#: ../src/glade-widget.c:1080
+#: ../gladeui/glade-widget.c:951
 msgid "The object associated"
 msgstr "L'objecte associat"
 
-#: ../src/glade-widget.c:1088
-#, fuzzy
-msgid "The class of the associated gtk+ widget"
-msgstr "La classe del giny gtk+ associat"
+#: ../gladeui/glade-widget.c:958
+msgid "Adaptor"
+msgstr "Adaptador"
 
-#: ../src/glade-widget.c:1095
+#: ../gladeui/glade-widget.c:959
+msgid "The class adaptor for the associated widget"
+msgstr "La classe adaptadora per al giny associat"
+
+#: ../gladeui/glade-widget.c:966
 msgid "Project"
 msgstr "Projecte"
 
-#: ../src/glade-widget.c:1096
+#: ../gladeui/glade-widget.c:967
 msgid "The glade project that this widget belongs to"
 msgstr "El projecte glade al que pertany aquest giny"
 
-#: ../src/glade-widget.c:1105
+#: ../gladeui/glade-widget.c:976
 msgid "A list of GladeProperties"
 msgstr "Una llista de GladeProperties"
 
-#: ../src/glade-widget.c:1111 ../widgets/gtk+.xml.in.h:160
+#: ../gladeui/glade-widget.c:982 ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Parent"
 msgstr "Pare"
 
-#: ../src/glade-widget.c:1112
+#: ../gladeui/glade-widget.c:983
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Un punter al GladeWidget pare"
 
-#: ../src/glade-widget.c:1119
+#: ../gladeui/glade-widget.c:990
 msgid "Internal Name"
 msgstr "Nom intern"
 
-#: ../src/glade-widget.c:1120
+#: ../gladeui/glade-widget.c:991
 msgid "A generic name prefix for internal widgets"
 msgstr "Un prefix de nom genèric per a ginys interns"
 
-#: ../src/glade-widget.c:1125
+#: ../gladeui/glade-widget.c:996
 msgid "Template"
 msgstr "Plantilla"
 
-#: ../src/glade-widget.c:1126
+#: ../gladeui/glade-widget.c:997
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Una plantilla GladeWidget per basar-hi un nou giny"
 
-#: ../src/glade-widget.c:1132 ../widgets/gtk+.xml.in.h:121
+#: ../gladeui/glade-widget.c:1003 ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Info"
 msgstr "Informació"
 
-#: ../src/glade-widget.c:1133
+#: ../gladeui/glade-widget.c:1004
 msgid "A GladeWidgetInfo struct to base a new widget on"
 msgstr "Una estructura GladeWidgetInfo per basar-hi un nou giny"
 
-#: ../src/glade-widget.c:1138
+#: ../gladeui/glade-widget.c:1009
 msgid "Reason"
 msgstr "Raó"
 
-#: ../src/glade-widget.c:1139
+#: ../gladeui/glade-widget.c:1010
 msgid "A GladeCreateReason for this creation"
 msgstr "Un GladeCreateReason per a aquesta creació"
 
-#: ../src/glade-project-view.c:623
+#: ../gladeui/glade-widget.c:1018
+msgid "Toplevel Width"
+msgstr "Amplada superior"
+
+#: ../gladeui/glade-widget.c:1019
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "L'amplada del giny al capdamunt en el GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1028
+msgid "Toplevel Height"
+msgstr "Alçada superior"
+
+#: ../gladeui/glade-widget.c:1029
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "L'alçada del giny al capdamunt en el GladeDesignLayout"
+
+#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
+#, c-format
+msgid "Unable to load icon for %s (%s)"
+msgstr "No es pot carregar la icona per a %s (%s)"
+
+#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
+#, c-format
+msgid "Unable to load stock icon (%s)"
+msgstr "No es pot carregar la icona predeterminada (%s)"
+
+#: ../gladeui/glade-widget-adaptor.c:333
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr "Ja existeix un adaptador derivador (%s) de %s"
+
+#: ../gladeui/glade-widget-adaptor.c:917
+msgid "Name of the class"
+msgstr "Nom de la classe"
+
+#: ../gladeui/glade-widget-adaptor.c:925
+msgid "GType of the class"
+msgstr "GType de la classe"
+
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:45
+msgid "Title"
+msgstr "Títol"
+
+#: ../gladeui/glade-widget-adaptor.c:933
+msgid "Translated title for the class used in the glade UI"
+msgstr "Títol traduït per a la classe usada en la UI del glade"
+
+#: ../gladeui/glade-widget-adaptor.c:940
+msgid "Generic Name"
+msgstr "Nom genèric"
+
+#: ../gladeui/glade-widget-adaptor.c:941
+msgid "Used to generate names of new widgets"
+msgstr "Emprat per generar els noms dels nous widgets"
+
+#
+#: ../gladeui/glade-widget-adaptor.c:948
+msgid "Catalog"
+msgstr "Catàleg"
+
+#: ../gladeui/glade-widget-adaptor.c:949
+msgid "The name of the widget catalog this class was declared by"
+msgstr "El nom del catàleg de ginys que va declarar aquesta classe"
+
+#: ../gladeui/glade-widget-adaptor.c:956
+msgid "Book"
+msgstr "Llibre"
+
+#: ../gladeui/glade-widget-adaptor.c:957
+msgid "DevHelp search namespace for this widget class"
+msgstr "Espai de noms del DevHelp per a aquesta classe de ginys"
+
+#: ../gladeui/glade-widget-adaptor.c:964
+msgid "Special Child Type"
+msgstr "Tipus de fill especial"
+
+#: ../gladeui/glade-widget-adaptor.c:965
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+"Conté el nom de la propietat d'empaquetament per especificar fills especials "
+"per a aquesta classe contenidora"
+
+#: ../gladeui/glade-widget-adaptor.c:973
+msgid "Large Icon"
+msgstr "Icona petita"
+
+#: ../gladeui/glade-widget-adaptor.c:974
+msgid "The 22x22 icon for this widget class"
+msgstr "Una icona de 22x22 per a aquesta classe de ginys"
+
+#: ../gladeui/glade-widget-adaptor.c:981
+msgid "Small Icon"
+msgstr "Icones petites"
+
+#: ../gladeui/glade-widget-adaptor.c:982
+msgid "The 16x16 icon for this widget class"
+msgstr "La icona de 16x16 per a aquesta classe de ginys"
+
+#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Cursor"
+msgstr "Cursor"
+
+#: ../gladeui/glade-widget-adaptor.c:990
+msgid "A cursor for inserting widgets in the UI"
+msgstr "El cursor per a inserir ginys en la UI"
+
+#: ../gladeui/glade-project-view.c:646
 #, c-format
 msgid "(internal %s)"
 msgstr "(%s intern)"
 
-#: ../src/glade-project-view.c:627
+#: ../gladeui/glade-project-view.c:650
 #, c-format
 msgid "(%s child)"
 msgstr "(fill %s)"
 
-#: ../src/glade-custom.c:217
+#: ../gladeui/glade-custom.c:217
 msgid "Creation Function"
 msgstr "Funció de creació"
 
-#: ../src/glade-custom.c:218
+#: ../gladeui/glade-custom.c:218
 msgid "The function which creates this widget"
 msgstr "La funció que crea aquest giny"
 
-#: ../src/glade-custom.c:224
+#: ../gladeui/glade-custom.c:224
 msgid "String 1"
 msgstr "Cadena 1"
 
-#: ../src/glade-custom.c:225
+#: ../gladeui/glade-custom.c:225
 msgid "The first string argument to pass to the function"
 msgstr "El primer argument de tipus cadena que es passa a la funció"
 
-#: ../src/glade-custom.c:231
+#: ../gladeui/glade-custom.c:231
 msgid "String 2"
 msgstr "Cadena 2"
 
-#: ../src/glade-custom.c:232
+#: ../gladeui/glade-custom.c:232
 msgid "The second string argument to pass to the function"
 msgstr "El segon argument de tipus cadena que es passa a la funció"
 
-#: ../src/glade-custom.c:238
+#: ../gladeui/glade-custom.c:238
 msgid "Integer 1"
 msgstr "Enter 1"
 
-#: ../src/glade-custom.c:239
+#: ../gladeui/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
 msgstr "El primer argument enter que es passa a la funció"
 
-#: ../src/glade-custom.c:245
+#: ../gladeui/glade-custom.c:245
 msgid "Integer 2"
 msgstr "Enter 2"
 
-#: ../src/glade-custom.c:246
+#: ../gladeui/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
 msgstr "El segon argument enter que es passa a la funció"
 
-#: ../src/glade-gtk.c:169
+#: ../plugins/gtk+/glade-gtk.c:169
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../src/glade-gtk.c:170
+#: ../plugins/gtk+/glade-gtk.c:170
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "Escull l'element predeterminat del GnomeUIInfo"
 
 #
-#: ../src/glade-gtk.c:186
+#: ../plugins/gtk+/glade-gtk.c:186
 msgid "Filename"
 msgstr "Nom del fitxer"
 
-#: ../src/glade-gtk.c:188
+#: ../plugins/gtk+/glade-gtk.c:188
 msgid "Icon Theme"
 msgstr "Nom de la icona"
 
-#: ../src/glade-gtk.c:208 ../widgets/gtk+.xml.in.h:55
+#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Container"
 msgstr "Contenidor"
 
-#: ../src/glade-gtk.c:218 ../src/glade-gtk.c:227
+#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
 msgid "Method"
 msgstr "Mètode"
 
-#: ../src/glade-gtk.c:219
+#: ../plugins/gtk+/glade-gtk.c:219
 msgid "The method to use to edit this image"
 msgstr "El mètode a emprar per editar aquesta imatge"
 
-#: ../src/glade-gtk.c:228
+#: ../plugins/gtk+/glade-gtk.c:228
 msgid "The method to use to edit this button"
 msgstr "El mètode a emprar per editar aquest botó"
 
-#: ../src/glade-gtk.c:532
+#: ../plugins/gtk+/glade-gtk.c:585
 #, c-format
 msgid "Ordering children of %s"
-msgstr ""
+msgstr "Ordenació dels fills de %s"
 
-#: ../src/glade-gtk.c:3028 ../src/glade-gtk.c:3032 ../src/glade-gtk.c:3195
-#: ../src/glade-gtk.c:3199
+#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3266
+#: ../plugins/gtk+/glade-gtk.c:3441 ../plugins/gtk+/glade-gtk.c:3445
 msgid "This only applies with label type buttons"
 msgstr "Només aplica a botons de tipus etiqueta"
 
-#: ../src/glade-gtk.c:3043 ../src/glade-gtk.c:3191
+#: ../plugins/gtk+/glade-gtk.c:3277 ../plugins/gtk+/glade-gtk.c:3281
+#: ../plugins/gtk+/glade-gtk.c:3433 ../plugins/gtk+/glade-gtk.c:3437
 msgid "This only applies with stock type buttons"
 msgstr "Només aplica a botons de tipus predeterminat"
 
-#: ../src/glade-gtk.c:3274 ../src/glade-gtk.c:3294
+#: ../plugins/gtk+/glade-gtk.c:3541 ../plugins/gtk+/glade-gtk.c:3563
 msgid "You must remove any children before you can set the type"
 msgstr "Heu de suprimir qualsevol fill abans d'establir el tipus"
 
-#: ../src/glade-gtk.c:3316 ../src/glade-gtk.c:4569
+#: ../plugins/gtk+/glade-gtk.c:3587 ../plugins/gtk+/glade-gtk.c:4945
 msgid "This only applies with file type images"
 msgstr "Només aplica a fitxers de tipus imatge"
 
-#: ../src/glade-gtk.c:3324 ../src/glade-gtk.c:4573
+#: ../plugins/gtk+/glade-gtk.c:3595 ../plugins/gtk+/glade-gtk.c:4949
 msgid "This only applies to Icon Theme type images"
 msgstr "Icona"
 
-#: ../src/glade-gtk.c:3332 ../src/glade-gtk.c:4571
+#: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4947
 msgid "This only applies with stock type images"
 msgstr "Només aplica a imatges de tipus predeterminat"
 
-#: ../src/glade-gtk.c:3344
+#: ../plugins/gtk+/glade-gtk.c:3616
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
@@ -1724,47 +1926,47 @@ msgstr ""
 "La mida de píxel precedeix a la mida d'icona; si voleu usar la mida d'icona, "
 "establiu la mida de píxel a -1"
 
-#: ../src/glade-gtk.c:3370
+#: ../plugins/gtk+/glade-gtk.c:3642
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "La mida de píxel es prefereix abans que la mida d'icona"
 
-#: ../src/glade-gtk.c:3622 ../src/glade-gtk.c:4463
+#: ../plugins/gtk+/glade-gtk.c:3929 ../plugins/gtk+/glade-gtk.c:4836
 msgid "<separator>"
 msgstr "<separador>"
 
-#: ../src/glade-gtk.c:3796 ../widgets/gtk+.xml.in.h:145
+#: ../plugins/gtk+/glade-gtk.c:4103 ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/glade-gtk.c:3797 ../widgets/gtk+.xml.in.h:116
+#: ../plugins/gtk+/glade-gtk.c:4104 ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Image"
 msgstr "Image"
 
-#: ../src/glade-gtk.c:3798
+#: ../plugins/gtk+/glade-gtk.c:4105
 msgid "Check"
 msgstr "Comprovació"
 
-#: ../src/glade-gtk.c:3799 ../src/glade-gtk.c:4521
+#: ../plugins/gtk+/glade-gtk.c:4106 ../plugins/gtk+/glade-gtk.c:4895
 msgid "Radio"
 msgstr "Grup"
 
-#: ../src/glade-gtk.c:3800 ../src/glade-gtk.c:4524
+#: ../plugins/gtk+/glade-gtk.c:4107 ../plugins/gtk+/glade-gtk.c:4898
 msgid "Separator"
 msgstr "Separador"
 
-#: ../src/glade-gtk.c:3804
+#: ../plugins/gtk+/glade-gtk.c:4111
 msgid "Add Item"
 msgstr "Afegeix element"
 
-#: ../src/glade-gtk.c:3805
+#: ../plugins/gtk+/glade-gtk.c:4112
 msgid "Add Child Item"
 msgstr "Afegeix element fill"
 
-#: ../src/glade-gtk.c:3806 ../src/glade-gtk.c:4533
+#: ../plugins/gtk+/glade-gtk.c:4113 ../plugins/gtk+/glade-gtk.c:4907
 msgid "Add Separator"
 msgstr "Afegeix separador"
 
-#: ../src/glade-gtk.c:3819
+#: ../plugins/gtk+/glade-gtk.c:4126
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1779,141 +1981,153 @@ msgstr ""
 "  * Arrossegueu i deixeu anar per reordenar.\n"
 "  * La columna de tipus es pot editar."
 
-#: ../src/glade-gtk.c:4049
-msgid "This does not apply with stock items"
-msgstr "No aplica als elements predeterminats"
-
-#: ../src/glade-gtk.c:4135
+#: ../plugins/gtk+/glade-gtk.c:4355
 msgid "Print S_etup"
 msgstr "Configuració d'impr_essió"
 
-#: ../src/glade-gtk.c:4139
+#: ../plugins/gtk+/glade-gtk.c:4359
 msgid "Find Ne_xt"
 msgstr "Troba el se_güent"
 
-#: ../src/glade-gtk.c:4143
+#: ../plugins/gtk+/glade-gtk.c:4363
 msgid "_Undo Move"
 msgstr "_Desfés el moviment"
 
-#: ../src/glade-gtk.c:4147
+#: ../plugins/gtk+/glade-gtk.c:4367
 msgid "_Redo Move"
 msgstr "To_rna a fer el moviment"
 
-#: ../src/glade-gtk.c:4150
+#: ../plugins/gtk+/glade-gtk.c:4370
 msgid "Select _All"
 msgstr "Seleccion_a-ho tot"
 
-#: ../src/glade-gtk.c:4153
+#: ../plugins/gtk+/glade-gtk.c:4373
 msgid "_New Game"
 msgstr "_Nou joc"
 
-#: ../src/glade-gtk.c:4156
+#: ../plugins/gtk+/glade-gtk.c:4376
 msgid "_Pause game"
 msgstr "_Pausa el joc"
 
-#: ../src/glade-gtk.c:4159
+#: ../plugins/gtk+/glade-gtk.c:4379
 msgid "_Restart Game"
 msgstr "_Reinicia el joc"
 
-#: ../src/glade-gtk.c:4162
+#: ../plugins/gtk+/glade-gtk.c:4382
 msgid "_Hint"
 msgstr "_Consell"
 
-#: ../src/glade-gtk.c:4165
+#: ../plugins/gtk+/glade-gtk.c:4385
 msgid "_Scores..."
 msgstr "_Puntuació..."
 
-#: ../src/glade-gtk.c:4168
+#: ../plugins/gtk+/glade-gtk.c:4388
 msgid "_End Game"
 msgstr "Fi d_el joc"
 
-#: ../src/glade-gtk.c:4171
+#: ../plugins/gtk+/glade-gtk.c:4391
 msgid "Create New _Window"
 msgstr "Crea una no_va finestra"
 
-#: ../src/glade-gtk.c:4174
+#: ../plugins/gtk+/glade-gtk.c:4394
 msgid "_Close This Window"
 msgstr "Tan_ca aquesta finestra"
 
-#: ../src/glade-gtk.c:4186
+#: ../plugins/gtk+/glade-gtk.c:4406
 msgid "_Settings"
 msgstr "_Configuració"
 
 #
-#: ../src/glade-gtk.c:4189
+#: ../plugins/gtk+/glade-gtk.c:4409
 msgid "Fi_les"
 msgstr "_Fitxers"
 
 #
-#: ../src/glade-gtk.c:4192
+#: ../plugins/gtk+/glade-gtk.c:4412
 msgid "_Windows"
 msgstr "_Finestres"
 
 #
-#: ../src/glade-gtk.c:4198
+#: ../plugins/gtk+/glade-gtk.c:4418
 msgid "_Game"
 msgstr "_Joc"
 
-#: ../src/glade-gtk.c:4356
+#: ../plugins/gtk+/glade-gtk.c:4514
+msgid "This does not apply with stock items"
+msgstr "No aplica als elements predeterminats"
+
+#: ../plugins/gtk+/glade-gtk.c:4724
 msgid "Menu Bar Editor"
 msgstr "Editor de la barra de menú"
 
-#: ../src/glade-gtk.c:4363
+#: ../plugins/gtk+/glade-gtk.c:4731
 msgid "Menu Editor"
 msgstr "Editor de menú"
 
-#: ../src/glade-gtk.c:4472
+#: ../plugins/gtk+/glade-gtk.c:4845
 msgid "<custom>"
 msgstr "<personalitzat>"
 
 #
-#: ../src/glade-gtk.c:4519 ../widgets/gtk+.xml.in.h:30
+#: ../plugins/gtk+/glade-gtk.c:4893 ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Button"
 msgstr "Botó"
 
-#: ../src/glade-gtk.c:4520
+#: ../plugins/gtk+/glade-gtk.c:4894
 msgid "Toggle"
 msgstr "Botó de commutació"
 
-#: ../src/glade-gtk.c:4522 ../widgets/gtk+.xml.in.h:135
+#: ../plugins/gtk+/glade-gtk.c:4896 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Menu"
 msgstr "Menú"
 
-#: ../src/glade-gtk.c:4523
+#: ../plugins/gtk+/glade-gtk.c:4897
 msgid "Item"
 msgstr "Element"
 
-#: ../src/glade-gtk.c:4528
+#: ../plugins/gtk+/glade-gtk.c:4902
 msgid "Add Tool Button"
 msgstr "Afegeix botó d'eina"
 
-#: ../src/glade-gtk.c:4529
+#: ../plugins/gtk+/glade-gtk.c:4903
 msgid "Add Toggle Button"
 msgstr "Afegeix botó de commutació"
 
-#: ../src/glade-gtk.c:4530
+#: ../plugins/gtk+/glade-gtk.c:4904
 msgid "Add Radio Button"
 msgstr "Afegeix botó de grup"
 
-#: ../src/glade-gtk.c:4531
+#: ../plugins/gtk+/glade-gtk.c:4905
 msgid "Add Menu Button"
-msgstr "Afe botó de menú"
+msgstr "Afegeix botó de menú"
 
-#: ../src/glade-gtk.c:4532
+#: ../plugins/gtk+/glade-gtk.c:4906
 msgid "Add Tool Item"
 msgstr "Afegeix element d'eina"
 
-#: ../src/glade-gtk.c:4541
+#: ../plugins/gtk+/glade-gtk.c:4915
 msgid "Tool Bar Editor"
 msgstr "Editor de la barra d'eines"
 
-#: ../widgets/gtk+.xml.in.h:2
+#: ../plugins/gtk+/glade-gtk.c:5668
+msgid "Introduction page"
+msgstr "Pàgina d'introducció"
+
+#: ../plugins/gtk+/glade-gtk.c:5672
+msgid "Content page"
+msgstr "Pàgina de contingut"
+
+#: ../plugins/gtk+/glade-gtk.c:5676
+msgid "Confirm page"
+msgstr "Pàgina de confirmació"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
 msgstr ""
 "Un element predeterminat, escolliu Cap per seleccionar una imatge i un text "
 "personalitzats"
 
-#: ../widgets/gtk+.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
 msgstr "Un consell per a aquest giny"
 
@@ -1921,801 +2135,871 @@ msgstr "Un consell per a aquest giny"
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../widgets/gtk+.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:8
 msgid "About Dialog"
 msgstr "Diàleg \"Quant a\""
 
-#: ../widgets/gtk+.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Label"
 msgstr "Etiqueta acceleradora"
 
-#: ../widgets/gtk+.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "Accessible Description"
 msgstr "Descripció accessible"
 
 #
 #. Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:12
+#: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accessible Name"
 msgstr "Nom accessible"
 
 #
-#: ../widgets/gtk+.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Alignment"
 msgstr "Alineació"
 
-#: ../widgets/gtk+.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:16
 msgid "All"
 msgstr "Tots"
 
-#: ../widgets/gtk+.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "All Events"
 msgstr "Tots els esdeveniments"
 
-#: ../widgets/gtk+.xml.in.h:18 ../widgets/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:18 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "Sempre"
 
-#: ../widgets/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Always Center"
 msgstr "Centra sempre"
 
 #
-#: ../widgets/gtk+.xml.in.h:20
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "Arrow"
 msgstr "Fletxa"
 
 #
-#: ../widgets/gtk+.xml.in.h:21
+#: ../plugins/gtk+/gtk+.xml.in.h:21
 msgid "Aspect Frame"
 msgstr "Aspecte del marc"
 
-#: ../widgets/gtk+.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:22
+msgid "Assistant"
+msgstr "Auxiliar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
 msgid "Automatic"
 msgstr "Automàtic"
 
-#: ../widgets/gtk+.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Both"
 msgstr "Ambdós"
 
-#: ../widgets/gtk+.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Both Horizontal"
 msgstr "Ambdós horitzontal"
 
 #
-#: ../widgets/gtk+.xml.in.h:25 ../widgets/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "Inferior"
 
 #
-#: ../widgets/gtk+.xml.in.h:26
+#: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Bottom Left"
 msgstr "Inferior esquerra"
 
 #
-#: ../widgets/gtk+.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Bottom Right"
 msgstr "Inferior dreta"
 
 #
-#: ../widgets/gtk+.xml.in.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Bottom to Top"
 msgstr "Inferior superior"
 
-#: ../widgets/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Box"
 msgstr "Caixa"
 
-#: ../widgets/gtk+.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Button 1 Motion"
 msgstr "Moviment botó 1"
 
-#: ../widgets/gtk+.xml.in.h:32
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Button 2 Motion"
 msgstr "Moviment botó 2"
 
-#: ../widgets/gtk+.xml.in.h:33
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Button 3 Motion"
 msgstr "Moviment botó 3"
 
-#: ../widgets/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Button Box"
 msgstr "Caixa de botons"
 
-#: ../widgets/gtk+.xml.in.h:35
+#: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button Motion"
 msgstr "Moviment del botó"
 
-#: ../widgets/gtk+.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button Press"
 msgstr "Botó premut"
 
-#: ../widgets/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button Release"
 msgstr "Botó alliberat"
 
 #
-#: ../widgets/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Calendar"
 msgstr "Calendari"
 
 #
-#: ../widgets/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Cancel"
 msgstr "Cancel·la"
 
 #
-#: ../widgets/gtk+.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Center"
 msgstr "Centra"
 
-#: ../widgets/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Center on Parent"
 msgstr "Centra en el pare"
 
 #
-#: ../widgets/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Character"
 msgstr "Caràcter"
 
-#: ../widgets/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Check Button"
 msgstr "Botó de comprovació"
 
-#: ../widgets/gtk+.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Check Menu Item"
 msgstr "Element de menú de comprovació"
 
 #
-#: ../widgets/gtk+.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Close"
 msgstr "Tanca"
 
-#: ../widgets/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Color Button"
 msgstr "Botó de color"
 
-#: ../widgets/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Color Selection"
 msgstr "Selecció de color"
 
-#: ../widgets/gtk+.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Color Selection Dialog"
 msgstr "Diàleg de selecció de color"
 
-#: ../widgets/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Columned List"
 msgstr "Llista amb columnes"
 
-#: ../widgets/gtk+.xml.in.h:52
+#: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Combo"
 msgstr "Quadre combinat"
 
 #
-#: ../widgets/gtk+.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Combo Box"
 msgstr "Quadre combinat"
 
 #
-#: ../widgets/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Combo Box Entry"
 msgstr "Entrada del quadre combinat"
 
-#: ../widgets/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:56
+msgid "Confirm"
+msgstr "Confirmació"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Containers"
 msgstr "Contenidors"
 
-#: ../widgets/gtk+.xml.in.h:57
+#
+#: ../plugins/gtk+/gtk+.xml.in.h:59
+msgid "Content"
+msgstr "Contingut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Continuous"
 msgstr "Continu"
 
-#: ../widgets/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Control and Display"
 msgstr "Control i visualització"
 
-#: ../widgets/gtk+.xml.in.h:59 ../widgets/gnome.xml.in.h:5
+#: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "Crea una carpeta"
 
-#: ../widgets/gtk+.xml.in.h:60
-msgid "Cursor"
-msgstr "Cursor"
-
 #
-#: ../widgets/gtk+.xml.in.h:61
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Curve"
 msgstr "Corba"
 
-#: ../widgets/gtk+.xml.in.h:62
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Custom"
+msgstr "Personalitzat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Custom widget"
 msgstr "Giny personalitzat"
 
 #
-#: ../widgets/gtk+.xml.in.h:63
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Default"
 msgstr "Predeterminat"
 
-#: ../widgets/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Delayed"
 msgstr "Retrassat"
 
-#: ../widgets/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Description of an object, formatted for assistive technology access"
 msgstr ""
 "Descripció d'un objecte, formatejada per a accedir mitjançant tecnologies "
 "assistives"
 
-#: ../widgets/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Desktop"
 msgstr "Escriptori"
 
 #
-#: ../widgets/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Dialog"
 msgstr "Diàleg"
 
-#: ../widgets/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Dialog Box"
 msgstr "Diàleg"
 
-#: ../widgets/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Discontinuous"
 msgstr "Discontinu"
 
-#: ../widgets/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Discrete"
 msgstr "Discret"
 
-#: ../widgets/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Dock"
 msgstr "Acoblador"
 
-#: ../widgets/gtk+.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Down"
 msgstr "Avall"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+msgid "Drag and Drop"
+msgstr "Arrossega i deixa anar"
+
 #
-#: ../widgets/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Drawing Area"
 msgstr "Àrea de dibuix"
 
-#: ../widgets/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+msgid "Drop Down Menu"
+msgstr "Menú desplegable"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "East"
 msgstr "Est"
 
-#: ../widgets/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Edge"
 msgstr "Vora"
 
-#: ../widgets/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Edit Type"
 msgstr "Edita el tipus"
 
-#: ../widgets/gtk+.xml.in.h:77 ../widgets/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "Fi"
 
-#: ../widgets/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Enter Notify"
 msgstr "Notificació d'entrada"
 
 #
-#: ../widgets/gtk+.xml.in.h:79 ../widgets/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "Error"
 
-#: ../widgets/gtk+.xml.in.h:80 ../widgets/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr "Gravat"
 
-#: ../widgets/gtk+.xml.in.h:81 ../widgets/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr "Relleu"
 
-#: ../widgets/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Event Box"
 msgstr "Caixa d'esdeveniments"
 
-#: ../widgets/gtk+.xml.in.h:83 ../widgets/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "Expandeix"
 
-#: ../widgets/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Expander"
 msgstr "Expansor"
 
-#: ../widgets/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Exposure"
 msgstr "Exposició"
 
-#: ../widgets/gtk+.xml.in.h:86
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "File Chooser Button"
 msgstr "Botó de selecció de fitxers"
 
 #
-#: ../widgets/gtk+.xml.in.h:87
+#: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "File Chooser Dialog"
 msgstr "Diàleg de selecció de fitxers"
 
 #
-#: ../widgets/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "File Name"
 msgstr "Nom del fitxer"
 
-#: ../widgets/gtk+.xml.in.h:89
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "File Selection"
 msgstr "Selecció de fitxers"
 
 #
-#: ../widgets/gtk+.xml.in.h:90 ../widgets/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "Omple"
 
-#: ../widgets/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Fixed"
 msgstr "Fixat"
 
-#: ../widgets/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Focus Change"
 msgstr "Canvi de focus"
 
-#: ../widgets/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Font Button"
 msgstr "Botó de tipus de lletra"
 
-#: ../widgets/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Font Selection"
 msgstr "Selecció del tipus de lletra"
 
-#: ../widgets/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Font Selection Dialog"
 msgstr "Diàleg de selecció del tipus de lletra"
 
-#: ../widgets/gtk+.xml.in.h:96
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Frame"
 msgstr "Marc"
 
-#: ../widgets/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Free"
 msgstr "Lliure"
 
-#: ../widgets/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Gamma Curve"
 msgstr "Corba gamma"
 
-#: ../widgets/gtk+.xml.in.h:99
-msgid "Group"
-msgstr "Grup"
-
-#: ../widgets/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Gtk+ Obsolete"
 msgstr "Obsolets"
 
-#: ../widgets/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Half"
 msgstr "Mig"
 
-#: ../widgets/gtk+.xml.in.h:102
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Handle Box"
 msgstr "Nansa"
 
-#: ../widgets/gtk+.xml.in.h:103 ../widgets/bonobo.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
 msgstr "Horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Horizontal Box"
 msgstr "Caixa horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:105
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Horizontal Button Box"
 msgstr "Caixa de botons horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:106
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Horizontal Panes"
 msgstr "Subfinestres horitzontals"
 
-#: ../widgets/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Horizontal Ruler"
 msgstr "Regle horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:108
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Horizontal Scale"
 msgstr "Escala horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Horizontal Scrollbar"
 msgstr "Barra de desplaçament horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Horizontal Separator"
 msgstr "Separador horitzontal"
 
-#: ../widgets/gtk+.xml.in.h:111
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Horizontal and Vertical"
 msgstr "Horitzontal i vertical"
 
-#: ../widgets/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Icon Name"
 msgstr "Nom d'icona"
 
-#: ../widgets/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Icon View"
 msgstr "Visualització d'icona"
 
-#: ../widgets/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Icons"
 msgstr "Icones"
 
-#: ../widgets/gtk+.xml.in.h:115
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "If Valid"
 msgstr "Si és vàlid"
 
-#: ../widgets/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Image Menu Item"
 msgstr "Element de menú d'imatge"
 
-#: ../widgets/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Image Type"
 msgstr "Tipus d'imatge"
 
-#: ../widgets/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Immediate"
 msgstr "Immediat"
 
-#: ../widgets/gtk+.xml.in.h:120 ../widgets/bonobo.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
 msgstr "Dins"
 
-#: ../widgets/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Input Dialog"
 msgstr "Diàleg d'entrada"
 
-#: ../widgets/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Intro"
+msgstr "Tecla de retorn"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Items"
 msgstr "Elements"
 
-#: ../widgets/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "Key Press"
 msgstr "Tecla premuda"
 
-#: ../widgets/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Key Release"
 msgstr "Tecla alliberada"
 
-#: ../widgets/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Layout"
 msgstr "Disposició"
 
-#: ../widgets/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Least Recently Used first"
+msgstr "Primer els emprats menys recentment"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Leave Notify"
 msgstr "Notificació en abandonar"
 
-#: ../widgets/gtk+.xml.in.h:129 ../widgets/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "Esquerra"
 
-#: ../widgets/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Left to Right"
 msgstr "Esquerra a dreta"
 
-#: ../widgets/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Linear"
 msgstr "Lineal"
 
-#: ../widgets/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Link Button"
+msgstr "Botó d'enllaç"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "List"
 msgstr "Llista"
 
-#: ../widgets/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "List Item"
 msgstr "Element de la llista"
 
-#: ../widgets/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Maximun Width"
 msgstr "Amplada màxima"
 
-#: ../widgets/gtk+.xml.in.h:136
+#: ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Menu Bar"
 msgstr "Barra de menú"
 
-#: ../widgets/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "Menu Item"
 msgstr "Element del menú"
 
-#: ../widgets/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Menu Shell"
 msgstr "Menú"
 
-#: ../widgets/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Menu Tool Button"
 msgstr "Botó de menú d'eina"
 
-#: ../widgets/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Message Dialog"
 msgstr "Diàleg de missatges"
 
-#: ../widgets/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Middle"
 msgstr "Mitjà"
 
-#: ../widgets/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:150
+msgid "Most Recently Used first"
+msgstr "Primer els emprats més recentment"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Mouse"
 msgstr "Ratolí"
 
-#: ../widgets/gtk+.xml.in.h:143 ../widgets/gnome.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:22
 msgid "Never"
 msgstr "Mai"
 
-#: ../widgets/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "North"
 msgstr "Nord"
 
-#: ../widgets/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "North East"
 msgstr "Norest"
 
-#: ../widgets/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "North West"
 msgstr "Noroest"
 
-#: ../widgets/gtk+.xml.in.h:149
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Notebook"
 msgstr "Bloc de notes"
 
-#: ../widgets/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Notification"
+msgstr "Notificació"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Number of items"
 msgstr "Nombre d'elements"
 
-#: ../widgets/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "Number of pages"
 msgstr "Nombre de pàgines"
 
 #. Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:153
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
 msgstr ""
 "El nom de la instància de l'objecte, formatejat per a accedir amb "
 "tecnologies assistives"
 
-#: ../widgets/gtk+.xml.in.h:154
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Ok"
 msgstr "D'acord"
 
 #
-#: ../widgets/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Ok, Cancel"
 msgstr "D'acord, Cancel·la"
 
 #
-#: ../widgets/gtk+.xml.in.h:156 ../widgets/gnome.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:23
 msgid "Open"
 msgstr "Obre"
 
-#: ../widgets/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Option Menu"
 msgstr "Menú d'opcions"
 
-#: ../widgets/gtk+.xml.in.h:158 ../widgets/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "Fora"
 
-#: ../widgets/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Page Setup Dialog"
+msgstr "Diàleg de configuració de pàgina"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Paned"
 msgstr "Amb subfinestres"
 
-#: ../widgets/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Pointer Motion"
 msgstr "Moviment del punter"
 
-#: ../widgets/gtk+.xml.in.h:162
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Pointer Motion Hint"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:163
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Popup"
 msgstr "Emergent"
 
-#: ../widgets/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "Popup Menu"
 msgstr "Menú emergent"
 
-#: ../widgets/gtk+.xml.in.h:165 ../src/glade-gnome.c:635
-#: ../widgets/gnome.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gnome/gnome.xml.in.h:27
 msgid "Position"
 msgstr "Posició"
 
-#: ../widgets/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Print Dialog"
+msgstr "Diàleg d'impressió"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Progress"
+msgstr "Progrés"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Progress Bar"
 msgstr "Barra de progrés"
 
-#: ../widgets/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Property Change"
 msgstr "Canvi de propietat"
 
-#: ../widgets/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Proximity  Out"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Proximity In"
 msgstr ""
 
-#: ../widgets/gtk+.xml.in.h:172 ../widgets/gnome.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:30
 msgid "Question"
 msgstr "Pregunta"
 
-#: ../widgets/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Queue"
 msgstr "Cua"
 
-#: ../widgets/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Radio Button"
 msgstr "Botó de grup"
 
-#: ../widgets/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Radio Menu Item"
 msgstr "Element de botó de grup de menú"
 
-#: ../widgets/gtk+.xml.in.h:176
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Radio Tool Button"
 msgstr "Botó de grup d'eina"
 
-#: ../widgets/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Range"
 msgstr "Rang"
 
-#: ../widgets/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Recent Chooser"
+msgstr "Seleccionador del recent"
+
+#
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+msgid "Recent Chooser Dialog"
+msgstr "Diàleg de selecció del recent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Response ID"
 msgstr "ID de resposta"
 
-#: ../widgets/gtk+.xml.in.h:181 ../widgets/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "Dreta"
 
-#: ../widgets/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Right to Left"
 msgstr "Dreta a esquerra"
 
-#: ../widgets/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Ruler"
 msgstr "Regle"
 
-#: ../widgets/gtk+.xml.in.h:184 ../widgets/gnome.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:31
 msgid "Save"
 msgstr "Desa"
 
-#: ../widgets/gtk+.xml.in.h:185
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Scale"
 msgstr "Escala"
 
-#: ../widgets/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Scroll"
 msgstr "Desplaça"
 
-#: ../widgets/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Scrolled Window"
 msgstr "Finestra amb desplaçament"
 
-#: ../widgets/gtk+.xml.in.h:188 ../widgets/gnome.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:34
 msgid "Select Folder"
 msgstr "Seleccioneu la carpeta"
 
-#: ../widgets/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Separator Menu Item"
 msgstr "Element separador de menú"
 
-#: ../widgets/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Separator Tool Item"
 msgstr "Element separador d'eines"
 
-#: ../widgets/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "Estableix la pàgina actual (només per a editar)"
 
 #. Text of the textview
-#: ../widgets/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Set the text in the view's text buffer"
 msgstr "Estableix el text en la memòria intermitja de text de la visualització"
 
-#: ../widgets/gtk+.xml.in.h:202
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Shrink"
 msgstr "Encongeix"
 
-#: ../widgets/gtk+.xml.in.h:203
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+msgid "Size"
+msgstr "Mida"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "South"
 msgstr "Sud"
 
-#: ../widgets/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "South East"
 msgstr "Sudest"
 
-#: ../widgets/gtk+.xml.in.h:205
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "South West"
 msgstr "Sudoest"
 
-#: ../widgets/gtk+.xml.in.h:206
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Spin Button"
-msgstr ""
+msgstr "Botó de selecció de valors"
 
-#: ../widgets/gtk+.xml.in.h:207
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Splash Screen"
 msgstr "Pantalla flaix"
 
-#: ../widgets/gtk+.xml.in.h:208
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Spline"
-msgstr ""
+msgstr "Corba"
 
-#: ../widgets/gtk+.xml.in.h:209
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Spread"
 msgstr "Escampa"
 
-#: ../widgets/gtk+.xml.in.h:210 ../widgets/gnome.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:36
 msgid "Start"
 msgstr "Inici"
 
-#: ../widgets/gtk+.xml.in.h:211
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Static"
 msgstr "Estàtic"
 
-#: ../widgets/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Status Bar"
 msgstr "Barra d'estat"
 
-#: ../widgets/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Stock Button"
 msgstr "Botó predeterminat"
 
-#: ../widgets/gtk+.xml.in.h:215
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Stock Item"
 msgstr "Element predeterminat"
 
-#: ../widgets/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Structure"
 msgstr "Estructura"
 
-#: ../widgets/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Substructure"
 msgstr "Subestructura"
 
-#: ../widgets/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:234
+msgid "Summary"
+msgstr "Resum"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Table"
 msgstr "Taula"
 
 #. Text of the textview
-#: ../widgets/gtk+.xml.in.h:220 ../widgets/gnome.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:39
 msgid "Text"
 msgstr "Text"
 
-#: ../widgets/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Text Entry"
 msgstr "Entrada de text"
 
-#: ../widgets/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Text View"
 msgstr "Visualització de text"
 
-#: ../widgets/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "The items in this combo box"
 msgstr "Els elements en aquesta caixa combinada"
 
-#: ../widgets/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "The number of items in the box"
 msgstr "El nombre d'elements en la caixa"
 
-#: ../widgets/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "The number of pages in the notebook"
 msgstr "El nombre de pàgines en la llibreta"
 
-#: ../widgets/gtk+.xml.in.h:226
+#: ../plugins/gtk+/gtk+.xml.in.h:243
+msgid "The page position in the Assistant"
+msgstr "La posició de la pàgina en l'auxiliar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
 msgstr "La posició de l'element de menú en el menú"
 
-#: ../widgets/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "The position of the tool item in the toolbar"
 msgstr "La posició de l'element d'eina en la barra d'eines"
 
-#: ../widgets/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
@@ -2723,420 +3007,422 @@ msgstr ""
 "L'ID de resposta d'aquest botó en un diàleg (no és útil si aquest botó no "
 "està en un GtkDialog)"
 
-#: ../widgets/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "The stock item for this button"
 msgstr "L'element predeterminat per a aquest botó"
 
-#: ../widgets/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "The stock item for this image"
 msgstr "L'element predeterminat per a aquesta imatge"
 
-#: ../widgets/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "The text of the menu item"
 msgstr "El text de l'element de menú"
 
-#: ../widgets/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "The text to display"
 msgstr "El text per mostrar"
 
-#: ../widgets/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Toggle Button"
 msgstr "Botó de commutació"
 
-#: ../widgets/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Toggle Tool Button"
 msgstr "Botó de commutació d'eina"
 
-#: ../widgets/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Tool Bar"
 msgstr "Barra d'eines"
 
-#: ../widgets/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Tool Button"
 msgstr "Botó de d'eina"
 
-#: ../widgets/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Toolbar"
 msgstr "Barra d'eines"
 
-#: ../widgets/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Tooltip"
 msgstr "Consell flotant"
 
-#: ../widgets/gtk+.xml.in.h:239 ../widgets/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "Superior"
 
-#: ../widgets/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Top Left"
 msgstr "Superior esquerre"
 
-#: ../widgets/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Top Level"
 msgstr "Superior"
 
-#: ../widgets/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Top Right"
 msgstr "Superior dret"
 
-#: ../widgets/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Top to Bottom"
 msgstr "Superior a inferior"
 
-#: ../widgets/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Toplevels"
 msgstr "Superiors"
 
-#: ../widgets/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Tree View"
 msgstr "Visualització d'arbre"
 
-#: ../widgets/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Up"
 msgstr "Amunt"
 
-#: ../widgets/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Use Underline"
 msgstr "Amb subratllat"
 
-#: ../widgets/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Utility"
 msgstr "Utilitat"
 
-#: ../widgets/gtk+.xml.in.h:249 ../widgets/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "Vertical"
 
 #
-#: ../widgets/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Vertical Box"
 msgstr "Caixa vertical"
 
 #
-#: ../widgets/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Vertical Button Box"
 msgstr "Caixa vertical de botons"
 
 #
-#: ../widgets/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Vertical Panes"
 msgstr "Subfinestres verticals"
 
 #
-#: ../widgets/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Vertical Ruler"
 msgstr "Regle vertical"
 
-#: ../widgets/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Vertical Scale"
 msgstr "Escala vertical"
 
-#: ../widgets/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Vertical Scrollbar"
 msgstr "Barra de desplaçament vertical"
 
-#: ../widgets/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Vertical Separator"
 msgstr "Separador vertical"
 
-#: ../widgets/gtk+.xml.in.h:257
+#: ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Viewport"
 msgstr "Finestra de visualització"
 
-#: ../widgets/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Visibility Notify"
 msgstr "Notificació de visibilitat"
 
-#: ../widgets/gtk+.xml.in.h:259 ../widgets/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Warning"
 msgstr "Avís"
 
-#: ../widgets/gtk+.xml.in.h:260
+#: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "West"
 msgstr "Oest"
 
 #
-#: ../widgets/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Window"
 msgstr "Finestra"
 
 #
-#: ../widgets/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:281
 msgid "Word"
 msgstr "Paraula"
 
 #
-#: ../widgets/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Word Character"
 msgstr "Paraula caràcter"
 
 #
-#: ../widgets/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Yes, No"
 msgstr "Sí, No"
 
-#: ../widgets/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
+"Marqueu-ho com a traduïble i establiu nom i adreça si voleu mostrar un "
+"traductor només. En cas contrari, llisteu tots els traductors i deshabiliteu "
+"la traducció d'aquesta cadena"
 
-#: ../src/glade-gnome.c:287
+#: ../plugins/gnome/glade-gnome.c:298
 msgid "Status Message."
 msgstr "Missatge d'estat."
 
-#: ../src/glade-gnome.c:636
+#: ../plugins/gnome/glade-gnome.c:656
 msgid "The position in the druid"
 msgstr "La posició en l'auxiliar"
 
-#: ../src/glade-gnome.c:1067
+#: ../plugins/gnome/glade-gnome.c:1008
 msgid "Message box type"
 msgstr "Tipus de caixa de missatge"
 
-#: ../src/glade-gnome.c:1068
+#: ../plugins/gnome/glade-gnome.c:1009
 msgid "The type of the message box"
 msgstr "El tipus de caixa de missatge"
 
-#: ../src/glade-gnome.c:1257
+#: ../plugins/gnome/glade-gnome.c:1225
 msgid "This property is valid only in font information mode"
 msgstr ""
 "Aquesta propietat només és vàlida en el mode d'informació del tipus de lletra"
 
-#: ../src/glade-gnome.c:1321 ../widgets/canvas.xml.in.h:13
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:14
 msgid "Selection Mode"
 msgstr "Mode de selecció"
 
-#: ../src/glade-gnome.c:1322
+#: ../plugins/gnome/glade-gnome.c:1314
 msgid "Choose the Selection Mode"
 msgstr "Escolliu el mode de selecció"
 
-#: ../src/glade-gnome.c:1479
+#: ../plugins/gnome/glade-gnome.c:1464
 msgid "Placement"
 msgstr "Emplaçament"
 
-#: ../src/glade-gnome.c:1480
+#: ../plugins/gnome/glade-gnome.c:1465
 msgid "Choose the BonoboDockPlacement type"
 msgstr "Escolliu el tipus de BonoboDockPlacement"
 
-#: ../src/glade-gnome.c:1508
+#: ../plugins/gnome/glade-gnome.c:1493
 msgid "Behavior"
 msgstr "Comportament"
 
-#: ../src/glade-gnome.c:1509
+#: ../plugins/gnome/glade-gnome.c:1494
 msgid "Choose the BonoboDockItemBehavior type"
 msgstr "Escolliu el tipus de BonoboDockItemBehavior"
 
-#: ../src/glade-gnome.c:1518
+#: ../plugins/gnome/glade-gnome.c:1503
 msgid "Pack Type"
 msgstr "Tipus d'empaquetat"
 
-#: ../src/glade-gnome.c:1519
+#: ../plugins/gnome/glade-gnome.c:1504
 msgid "Choose the Pack Type"
 msgstr "Escolliu el tipus d'empaquetat"
 
-#: ../widgets/gnome.xml.in.h:1
+#: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
 msgstr "Format de 24 hores"
 
-#: ../widgets/gnome.xml.in.h:3
+#: ../plugins/gnome/gnome.xml.in.h:3
 msgid "Background Color"
 msgstr "Color de fons"
 
-#: ../widgets/gnome.xml.in.h:4
+#: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
 msgstr "Color de fons del contingut"
 
-#: ../widgets/gnome.xml.in.h:6
+#: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
 msgstr "Tramatge"
 
 #
-#: ../widgets/gnome.xml.in.h:10
+#: ../plugins/gnome/gnome.xml.in.h:10
 msgid "File"
 msgstr "Fitxer"
 
-#: ../widgets/gnome.xml.in.h:12
+#: ../plugins/gnome/gnome.xml.in.h:12
 msgid "Font Information"
 msgstr "Informació del tipus de lletra"
 
-#: ../widgets/gnome.xml.in.h:13
+#: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME UI Obsolete"
 msgstr "Ginys del GNOME obsolets"
 
 #
-#: ../widgets/gnome.xml.in.h:14
+#: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME User Interface"
 msgstr "Interfície d'usuari del GNOME"
 
-#: ../widgets/gnome.xml.in.h:15
+#: ../plugins/gnome/gnome.xml.in.h:15
 msgid "Generic"
 msgstr "Genèric"
 
-#: ../widgets/gnome.xml.in.h:16
+#: ../plugins/gnome/gnome.xml.in.h:16
 msgid "Information"
 msgstr "Informació"
 
-#: ../widgets/gnome.xml.in.h:17
+#: ../plugins/gnome/gnome.xml.in.h:17
 msgid "Logo"
 msgstr "Logotipus"
 
-#: ../widgets/gnome.xml.in.h:18
+#: ../plugins/gnome/gnome.xml.in.h:18
 msgid "Logo Background Color"
 msgstr "Color de fons del logotipus"
 
-#: ../widgets/gnome.xml.in.h:19
+#: ../plugins/gnome/gnome.xml.in.h:19
 msgid "Max Saved"
 msgstr "Màxims desats"
 
-#: ../widgets/gnome.xml.in.h:20
+#: ../plugins/gnome/gnome.xml.in.h:20
 msgid "Message"
 msgstr "Missatge"
 
-#: ../widgets/gnome.xml.in.h:21
+#: ../plugins/gnome/gnome.xml.in.h:21
 msgid "Monday First"
 msgstr "Primer el dilluns"
 
-#: ../widgets/gnome.xml.in.h:25
+#: ../plugins/gnome/gnome.xml.in.h:25
 msgid "Padding"
 msgstr "Farciment"
 
-#: ../widgets/gnome.xml.in.h:26
+#: ../plugins/gnome/gnome.xml.in.h:26
 msgid "Pixmap"
 msgstr "Mapa de píxels"
 
-#: ../widgets/gnome.xml.in.h:28
+#: ../plugins/gnome/gnome.xml.in.h:28
 msgid "Program Name"
 msgstr "Nom del programa"
 
-#: ../widgets/gnome.xml.in.h:29
+#: ../plugins/gnome/gnome.xml.in.h:29
 msgid "Program Version"
 msgstr "Versió del programa"
 
-#: ../widgets/gnome.xml.in.h:32
+#: ../plugins/gnome/gnome.xml.in.h:32
 msgid "Scaled Height"
 msgstr "Alçària escalada"
 
-#: ../widgets/gnome.xml.in.h:33
+#: ../plugins/gnome/gnome.xml.in.h:33
 msgid "Scaled Width"
 msgstr "Amplada escalada"
 
-#: ../widgets/gnome.xml.in.h:35
+#: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Show Time"
 msgstr "Mostra l'hora"
 
-#: ../widgets/gnome.xml.in.h:37
+#: ../plugins/gnome/gnome.xml.in.h:37
 msgid "StatusBar"
 msgstr "Barra d'estat"
 
-#: ../widgets/gnome.xml.in.h:38
+#: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Store Config"
 msgstr "Desa la configuració"
 
-#: ../widgets/gnome.xml.in.h:40
+#: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Text Foreground Color"
 msgstr "Color de primer pla del text"
 
-#: ../widgets/gnome.xml.in.h:41
+#: ../plugins/gnome/gnome.xml.in.h:41
 msgid "The height to scale the pixmap to"
 msgstr "L'alçada a escalar el mapa de píxels"
 
-#: ../widgets/gnome.xml.in.h:42
+#: ../plugins/gnome/gnome.xml.in.h:42
 msgid "The maximum number of history entries saved"
-msgstr "El nombre màxim d'entrades d'historia desades"
+msgstr "El nombre màxim d'entrades d'història desades"
 
-#: ../widgets/gnome.xml.in.h:43
+#: ../plugins/gnome/gnome.xml.in.h:43
 msgid "The pixmap file"
 msgstr "El fitxer de mapa de píxels"
 
-#: ../widgets/gnome.xml.in.h:44
+#: ../plugins/gnome/gnome.xml.in.h:44
 msgid "The width to scale the pixmap to"
 msgstr "L'amplada a escalar el mapa de píxels"
 
-#: ../widgets/gnome.xml.in.h:45
-msgid "Title"
-msgstr "Títol"
-
-#: ../widgets/gnome.xml.in.h:46
+#: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Title Foreground Color"
 msgstr "Color de primer pla del títol"
 
-#: ../widgets/gnome.xml.in.h:47
+#: ../plugins/gnome/gnome.xml.in.h:47
 msgid "Top Watermark"
 msgstr "Marca d'aigua superior"
 
-#: ../widgets/gnome.xml.in.h:48
+#: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../widgets/gnome.xml.in.h:49
+#: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Use Alpha"
 msgstr "Amb transparència"
 
-#: ../widgets/gnome.xml.in.h:50
+#: ../plugins/gnome/gnome.xml.in.h:50
 msgid ""
 "Used to pass around information about the position of a GnomeDruidPage "
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Emprat per passar informació quant a la posició d'una GnomeDruidPage d'entre "
+"totes les del GnomeDruid. Això permet dibuixar el contingut correcte per als "
+"voltants"
 
-#: ../widgets/gnome.xml.in.h:51
+#: ../plugins/gnome/gnome.xml.in.h:51
 msgid "User"
 msgstr "Usuari"
 
-#: ../widgets/gnome.xml.in.h:52
+#: ../plugins/gnome/gnome.xml.in.h:52
 msgid "User Widget"
 msgstr "Giny de l'usuari"
 
-#: ../widgets/gnome.xml.in.h:54
+#: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Watermark"
 msgstr "Marca d'aigua"
 
-#: ../widgets/bonobo.xml.in.h:4
+#: ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Exclusive"
 msgstr "Exclusiu"
 
-#: ../widgets/bonobo.xml.in.h:5
+#: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Floating"
 msgstr "Flotant"
 
-#: ../widgets/bonobo.xml.in.h:9
+#: ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Locked"
 msgstr "Blocat"
 
-#: ../widgets/bonobo.xml.in.h:10
+#: ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Never Floating"
 msgstr "Mai flotant"
 
-#: ../widgets/bonobo.xml.in.h:11
+#: ../plugins/gnome/bonobo.xml.in.h:11
 msgid "Never Horizontal"
 msgstr "Mai en horitzontal"
 
-#: ../widgets/bonobo.xml.in.h:12
+#: ../plugins/gnome/bonobo.xml.in.h:12
 msgid "Never Vertical"
 msgstr "Mai en vertical"
 
-#: ../widgets/canvas.xml.in.h:1
+#: ../plugins/gnome/canvas.xml.in.h:1
 msgid "Browse"
 msgstr "Navega"
 
-#: ../widgets/canvas.xml.in.h:2
+#: ../plugins/gnome/canvas.xml.in.h:2
 msgid "Column Spacing"
 msgstr "Espaiat de columnes"
 
-#: ../widgets/canvas.xml.in.h:3
+#: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
 msgstr "Llenç del Gnome"
 
-#: ../widgets/canvas.xml.in.h:4
+#: ../plugins/gnome/canvas.xml.in.h:4
 msgid "Icon Width"
 msgstr "Amplada d'icona"
 
-#: ../widgets/canvas.xml.in.h:5
+#: ../plugins/gnome/canvas.xml.in.h:5
 msgid "If the icon text can be edited by the user"
 msgstr "Si l'usuari pot editar el text de la icona"
 
-#: ../widgets/canvas.xml.in.h:6
+#: ../plugins/gnome/canvas.xml.in.h:6
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
@@ -3144,103 +3430,165 @@ msgstr ""
 "Si el text de la icona és estàtic; en aquest cas el GnomeIconList no el "
 "copiarà"
 
-#: ../widgets/canvas.xml.in.h:7
+#: ../plugins/gnome/canvas.xml.in.h:7
 msgid "Max X"
 msgstr "Màx X"
 
-#: ../widgets/canvas.xml.in.h:8
+#: ../plugins/gnome/canvas.xml.in.h:8
 msgid "Max Y"
 msgstr "Màx Y"
 
-#: ../widgets/canvas.xml.in.h:9
+#: ../plugins/gnome/canvas.xml.in.h:9
 msgid "Min X"
 msgstr "Mín X"
 
-#: ../widgets/canvas.xml.in.h:10
+#: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Min Y"
 msgstr "Mín Y"
 
-#: ../widgets/canvas.xml.in.h:11
+#: ../plugins/gnome/canvas.xml.in.h:11
 msgid "Multiple"
 msgstr "Múltiple"
 
-#: ../widgets/canvas.xml.in.h:12
+#: ../plugins/gnome/canvas.xml.in.h:12
+msgid "Pixels per unit"
+msgstr "Píxels per unitat"
+
+#: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Row Spacing"
 msgstr "Espaiat de files"
 
-#: ../widgets/canvas.xml.in.h:14
+#: ../plugins/gnome/canvas.xml.in.h:15
 msgid "Single"
 msgstr "Únic"
 
-#: ../widgets/canvas.xml.in.h:15
+#: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Text Editable"
 msgstr "Text editable"
 
-#: ../widgets/canvas.xml.in.h:16
+#: ../plugins/gnome/canvas.xml.in.h:17
 msgid "Text Spacing"
 msgstr "Espaiat del text"
 
-#: ../widgets/canvas.xml.in.h:17
+#: ../plugins/gnome/canvas.xml.in.h:18
 msgid "Text Static"
 msgstr "Text estàtic"
 
-#: ../widgets/canvas.xml.in.h:18
+#: ../plugins/gnome/canvas.xml.in.h:19
 msgid "The maximum x coordinate"
 msgstr "La coordenada x màxima"
 
-#: ../widgets/canvas.xml.in.h:19
+#: ../plugins/gnome/canvas.xml.in.h:20
 msgid "The maximum y coordinate"
-msgstr "La coordenada y máxima"
+msgstr "La coordenada y màxima"
 
-#: ../widgets/canvas.xml.in.h:20
+#: ../plugins/gnome/canvas.xml.in.h:21
 msgid "The minimum x coordinate"
 msgstr "La coordenada x mínima"
 
-#: ../widgets/canvas.xml.in.h:21
+#: ../plugins/gnome/canvas.xml.in.h:22
 msgid "The minimum y coordinate"
 msgstr "La coordenada y mínima"
 
-#: ../widgets/canvas.xml.in.h:22
+#: ../plugins/gnome/canvas.xml.in.h:23
 msgid "The number of pixels between columns of icons"
 msgstr "El nombre de píxels entre columnes d'icones"
 
-#: ../widgets/canvas.xml.in.h:23
+#: ../plugins/gnome/canvas.xml.in.h:24
 msgid "The number of pixels between rows of icons"
 msgstr "El nombre de píxels entre les files d'icones"
 
-#: ../widgets/canvas.xml.in.h:24
+#: ../plugins/gnome/canvas.xml.in.h:25
 msgid "The number of pixels between the text and the icon"
 msgstr "El nombre de píxels entre el text i la icona"
 
-#: ../widgets/canvas.xml.in.h:25
+#: ../plugins/gnome/canvas.xml.in.h:26
 msgid "The number of pixels corresponding to one unit"
 msgstr "El nombre de píxels corresponents a una unitat"
 
-#: ../widgets/canvas.xml.in.h:26
+#: ../plugins/gnome/canvas.xml.in.h:27
 msgid "The selection mode"
 msgstr "El mode de selecció"
 
-#: ../widgets/canvas.xml.in.h:27
+#: ../plugins/gnome/canvas.xml.in.h:28
 msgid "The width of each icon"
 msgstr "L'amplada de cada icona"
 
-#~ msgid "[Read Only]"
-#~ msgstr "[Només lectura]"
+msgid "[read-only]"
+msgstr "[només-lectura]"
 
-#~ msgid "Activate %s"
-#~ msgstr "Activa %s"
+msgid ""
+"Are you sure you want to clear the\n"
+"list of recent projects?"
+msgstr ""
+"Esteu segur que voleu netejar la\n"
+"llista de projectes recents?"
 
-#~ msgid "Save As…"
-#~ msgstr "Anomena i desa…"
+msgid ""
+"If you clear the list of recent projects, they will be\n"
+"permanently deleted."
+msgstr ""
+"Si netegeu la llista de projectes recents, s'esborraran\n"
+"permanentment."
 
-#, fuzzy
-#~ msgid "Adaptor"
-#~ msgstr "Afegeix separador"
+#
+msgid "Save as…"
+msgstr "Anomena i desa..."
 
-#, fuzzy
-#~ msgid "Drop Down Menu"
-#~ msgstr "Menú d'opcions"
+msgid "Save ..."
+msgstr "Desa..."
 
-#, fuzzy
-#~ msgid "Notification"
-#~ msgstr "Posició"
+msgid "E_xpand all"
+msgstr "E_xpandeix tot"
+
+msgid "_Collapse all"
+msgstr "_Plega tot"
+
+#
+msgid "_Open"
+msgstr "_Obre"
+
+msgid "Clear Recent Projects"
+msgstr "Neteja els projectes recents"
+
+msgid "Shows the About Dialog"
+msgstr "Mostra el diàleg de «Quant a»"
+
+msgid "_Documentation"
+msgstr "_Documentació"
+
+msgid "Documentation about Glade"
+msgstr "Documentació quant al Glade"
+
+#
+msgid "Property _Editor"
+msgstr "_Editor de propietats"
+
+msgid "Show the property editor"
+msgstr "Mostra l'editor de propietats"
+
+#
+msgid "_Palette"
+msgstr "_Paleta"
+
+msgid "Show the palette of widgets"
+msgstr "Mostra la paleta de ginys"
+
+msgid "Set Flags"
+msgstr "Estableix els senyaladors"
+
+msgid "Edit Text Property"
+msgstr "Edita la propietat del text"
+
+msgid "Group"
+msgstr "Grup"
+
+#~ msgid "Glade's Script Console"
+#~ msgstr "Consola d'script del Glade"
+
+#
+#~ msgid "C_onsole"
+#~ msgstr "Control"
+
+#~ msgid "Show Script-do console"
+#~ msgstr "Mostra la consola d'script"
