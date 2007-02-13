@@ -1,4 +1,56 @@
 ===========
+Glade 3.1.5
+===========
+
+New features and fixes
+======================
+    - Fixed build problem with autoconf 2.60 wrt. datarootdir (bug 392379) - Christian Persch
+    - Added version to bugzilla info in the .desktop file  (bug 392395) - Christian Persch
+    - Bind the gettext domain (bug 397429) - Christian Persch
+    - Setup online manual - Vincent Geddes
+    - use xmlSubstituteEntitiesDefault() when loading/saving glade files (bug 396311) - anonymous
+      patch submitter
+    - Use standard "translator-credits" property the standard way in the about dialog - Vincent Geddes
+    - GladeCommand refactoring work, allows for multiple paste commands now (bug 345603) - Jeff Westerinen
+    - Reorganized package directory structure and adapted makefiles - Vincent Geddes
+    - Renamed some things to fit more with the HIG - Vincent Geddes
+    - Fixed obnoxious startup errors (bug 399178) - Tristan Van Berkom
+    - Implement concept of "use-placeholders" for container adaptors to distinguish
+      whether they use placehodlers for thier children (the core handles them
+      differently), note that menuitems,fixed,toolbar etc dont use placeholders 
+      for thier children - Tristan Van Berkom
+    - Fixed packing defaults (a menubar in a HBox is initially expand = False) - Tristan Van Berkom
+    - Fixed the layout to not touch default-width/default-height implicitly when resizing the toplevel inside
+      the workspace, this required some refactoring too - Tristan Van Berkom
+    - Completely reworked event handling, considerably reduced lines of code involved and
+      improved stability, also now drag/resize is only available with the SHIFT modifier active, 
+      as a side effect, you can now also interact with project widgets in the workspace much
+      better. - Tristan Van Berkom
+    - Implemented undo/redo for i18n property metadata (bug 352454) - Jeff Westerinen
+    - Fixed translations of strings from the catalog and some strings in the about 
+      dialog (bug 404917) - Tristan Van Berkom
+    - Added the new glade icon - Andreas Nilsson
+    - Fixed compilation of python code - Paul
+    - Call GNOME_DOC_INIT unconditionally (Bug 392411) - Christian Persch
+    - Improved configure check for python - Vincent Geddes
+
+New and updated translations
+============================
+    - Daniel Nylander (sv)
+    - David Lodge (en_GB)
+    - Clytie Siddall (vi)
+    - Ignacio Casal Quinteiro (gl)
+    - Gabor Kelemen (hu)
+    - Djihed Afifi (ar)
+    - Hendrik Richter (de)
+    - A S Alam (pa)
+    - Takeshi AIHANA (ja)
+    - Duarte Loreto (pt)
+    - Jonathan Ernst, Claude Paroz and Stéphane Raimbault (fr)
+    - Supranee Thirawatthanasuk, Theppitak Karoonboonyanan (th)
+    - Jordi Mas (ca)
+
+===========
 Glade 3.1.4
 ===========
 

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
-AC_INIT([glade3], [3.1.4],
+AC_INIT([glade3], [3.1.5],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
 	
 AC_CONFIG_HEADERS([config.h])
@@ -34,8 +34,8 @@ AM_PROG_LIBTOOL
 # If any interfaces have been added since the last public release, then increment GLADE_AGE.
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
-GLADE_REVISION=3
-GLADE_CURRENT=4
+GLADE_REVISION=0
+GLADE_CURRENT=5
 GLADE_AGE=0
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)
