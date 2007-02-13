@@ -79,32 +79,11 @@ fi
 
 AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
 
-dnl ================================================================
-dnl   GNOME User Manual (requires gnome-doc-utils)
-dnl ================================================================
-AC_ARG_ENABLE(user_manual,
-    AS_HELP_STRING([--enable-user-manual], [build GNOME user manual]),
-    enable_user_manual=yes, enable_user_manual=no)
+# ==================================================================
+# Glade User Manual (requires gnome-doc-utils)
+# ==================================================================
 
-if test x"$enable_user_manual" = "xyes"; then
-GNOME_DOC_INIT
-else
-ENABLE_SK_TRUE="#"
-ENABLE_SK_FALSE=""
-fi
-
-AM_CONDITIONAL(BUILD_USER_MANUAL, test x"$enable_user_manual" = "xyes")
-
-dnl ================================================================
-dnl Scrollkeeper
-dnl ================================================================
-if test x"$enable_gnome" = "xyes" ; then
-  AC_PATH_PROG(SK_CONFIG, scrollkeeper-config, no)
-
-  if test x"$SK_CONFIG" = "xno"; then
-    AC_MSG_ERROR([Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net])
-  fi
-fi
+GNOME_DOC_INIT([0.9.0],[],[:])
 
 dnl ===============================================================
 dnl Check for Python
@@ -206,5 +185,5 @@ Configuration:
 	Compiler:		${CC}
 	GnomeUI Catalog:	${have_gnome}
 	Python Binding:		${have_python}
-	GNOME User Manual:	${enable_user_manual}
+	Glade User Manual:	${gdu_cv_have_gdu}
 "

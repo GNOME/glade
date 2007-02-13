@@ -1,9 +1,6 @@
-## Process this file with automake to produce Makefile.in
-
-
 SUBDIRS = po data gladeui src plugins bindings doc
 
-if BUILD_USER_MANUAL
+if HAVE_GNOME_DOC_UTILS
 SUBDIRS += help
 endif
 
