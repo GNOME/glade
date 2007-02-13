@@ -1478,11 +1478,6 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 		  "Vincent Geddes <vincent.geddes@gmail.com>",
 		  NULL };
 
-	static const gchar comments[] =
-		N_("Glade is a user interface designer for GTK+ and GNOME.\n"
-		  "This version is a rewrite of the Glade 2 version, "
-		  "originally created by Damon Chaplin\n");
-
 	static const gchar license[] =
 		N_("This program is free software; you can redistribute it and/or modify\n"
 		  "it under the terms of the GNU General Public License as\n"
@@ -1507,7 +1502,7 @@ gpw_about_cb (GtkAction *action, GladeProjectWindow *gpw)
 			       "logo-icon-name", "glade-3",
 			       "authors", authors,
 			       "translator-credits", _("translator-credits"),
-			       "comments", _(comments),
+			       "comments", _("A user interface designer for GTK+ and GNOME."),
 			       "license", _(license),
 			       "copyright", copyright,
 			       "version", PACKAGE_VERSION,
