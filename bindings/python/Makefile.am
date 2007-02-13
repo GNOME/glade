@@ -19,6 +19,8 @@ libgladepython_la_CFLAGS = \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
 	$(PYTHON_CFLAGS)   \
+	$(NO_STRICT_ALIASING_CFLAGS) \
+	$(PYGTK_CFLAGS)	   \
 	$(GTK_CFLAGS)      \
 	$(AM_CFLAGS)
 

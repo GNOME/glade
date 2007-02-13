@@ -420,7 +420,7 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 	
 	/* Check and init pygobject >= 2.12.0 */
 	PyErr_Clear ();	
-	glade_python_init_pygtk_check (PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO);
+	glade_python_init_pygtk_check (PYGTK_REQUIRED_MAJOR, PYGTK_REQUIRED_MINOR, PYGTK_REQUIRED_MICRO);
 	if (PyErr_Occurred ())
 	{
 		PyObject *ptype, *pvalue, *ptraceback;
@@ -428,7 +428,7 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 		g_warning ("Unable to load pygobject module >= %d.%d.%d, "
 			   "please make sure it is in python's path (sys.path). "
 			   "(use PYTHONPATH env variable to specify non default paths)\n%s",
-			   PYGTK_REQ_MAYOR, PYGTK_REQ_MINOR, PYGTK_REQ_MICRO,
+			   PYGTK_REQUIRED_MAJOR, PYGTK_REQUIRED_MINOR, PYGTK_REQUIRED_MICRO,
 			   PyString_AsString (pvalue));
 		PyErr_Clear ();
 		Py_Finalize ();

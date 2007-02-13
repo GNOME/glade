@@ -2,7 +2,7 @@
 
 SUBDIRS = 
 
-if BUILD_PYTHON
+if ENABLE_PYTHON
 SUBDIRS += python
 endif
 
