@@ -1746,15 +1746,17 @@ glade_util_url_show_unix (const gchar *url)
 		{
 		        gchar *args[128] = { 0, };
 		        guint n = 0;
+		        gchar *string;
+		        gchar fallback_error[64] = "Ok";
+		        gboolean success;
+
 		        args[n++] = (gchar*) browsers[i].prg;
 		        
 		        if (browsers[i].arg1)
 		        	args[n++] = (gchar*) browsers[i].arg1;
 		        
-		        gchar *string = g_strconcat (browsers[i].prefix, url, browsers[i].postfix, NULL);
+		        string = g_strconcat (browsers[i].prefix, url, browsers[i].postfix, NULL);
 		        args[n] = string;
-		        gchar fallback_error[64] = "Ok";
-		        gboolean success;
         
 		        if (!browsers[i].asyncronous) /* start syncronously and check exit code */
 			{

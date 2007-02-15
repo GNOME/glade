@@ -293,8 +293,9 @@ glade_palette_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	/* Allocate real estate to children */
 	for (l = box->priv->children; l; l = l->next)
 	{
-		child = (GladePaletteBoxChild *) (l->data);
 		gint horizontal_space_remaining;
+
+		child = (GladePaletteBoxChild *) (l->data);
 
 		if (GTK_WIDGET_VISIBLE (child->widget))
 		{

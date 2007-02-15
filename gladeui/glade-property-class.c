@@ -849,7 +849,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	}
 	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
 	{
-		GValueArray *value_array = g_value_array_new (0);;
+		GValueArray *value_array = g_value_array_new (0);
 		GValue str_value = {0, };
 		gint i;
 			

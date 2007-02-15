@@ -50,6 +50,21 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Name of the gettext pac
 AM_GLIB_GNU_GETTEXT
 
 dnl ================================================================
+dnl va_copy.
+dnl ================================================================
+AC_MSG_CHECKING([how to copy va_list])
+AC_TRY_LINK([#include <stdarg.h>], [va_list ap1, ap2; va_copy(ap1, ap2);],
+        AC_MSG_RESULT([va_copy]),
+        [ AH_TEMPLATE([va_copy], [define if va_copy is not available])
+        AC_TRY_LINK([#include <stdarg.h>], [va_list ap1, ap2; __va_copy(ap1, ap2);],
+            [ AC_DEFINE([va_copy], [__va_copy])
+            AC_MSG_RESULT([__va_copy])],
+            [ AC_DEFINE([va_copy(dest,src)], [memcpy(&dest,&src,sizeof(va_list))])
+            AC_MSG_RESULT([memcpy])]
+            )
+        ])
+
+dnl ================================================================
 dnl Check for gtk-doc
 dnl ================================================================
 GTK_DOC_CHECK(1.4)

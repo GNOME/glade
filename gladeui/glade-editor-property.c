@@ -990,11 +990,10 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
 		     GladeEditorProperty   *eprop)
 {
 	GtkTreeIter iter;
-	guint new_value;
+	guint new_value = 0;
 	gboolean selected;
-	guint value;
-	value = new_value =0;
-	gint flag_num=0;
+	guint value = 0;
+	gint flag_num = 0;
 	GFlagsClass *klass;
 
 	GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS(eprop);
