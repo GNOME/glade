@@ -256,6 +256,9 @@ LIBGLADEUI_API
 gboolean                glade_widget_property_default       (GladeWidget      *widget,
 							     const gchar      *id_property);
 LIBGLADEUI_API 
+gboolean                glade_widget_property_original_default (GladeWidget      *widget,
+							     const gchar      *id_property);
+LIBGLADEUI_API 
 gboolean                glade_widget_pack_property_default  (GladeWidget      *widget,
 							     const gchar      *id_property);
 LIBGLADEUI_API 

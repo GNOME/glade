@@ -1,3 +1,15 @@
+2007-02-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget.[ch]: added glade_widget_property_original_default()
+
+	* gladeui/glade-property.[ch]: added glade_property_original_default()
+	  and glade_property_original_reset()
+
+	* plugins/gtk+/glade-gtk.c: fixed bug 397043
+	  "Not able to set label and stock separately in GtkImageMenuItems"
+
+	* plugins/gtk+/gtk+.xml.in: added generic-name to GtkMenuShell.
+
 2006-02-15  Jens Granseuer <jensgr@gmx.net>
 
 	* Fixed sources to build with gcc 2.95 (bug 406504)

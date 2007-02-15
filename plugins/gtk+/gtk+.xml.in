@@ -196,7 +196,7 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False">
+    <glade-widget-class name="GtkMenuShell" generic-name="menushell" _title="Menu Shell" use-placeholders="False">
       <post-create-function>empty</post-create-function>
       <add-child-function>glade_gtk_menu_shell_add_item</add-child-function>
       <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>

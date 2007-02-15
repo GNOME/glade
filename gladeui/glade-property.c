@@ -93,20 +93,6 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	return property;
 }
 
-void
-glade_property_reset_impl (GladeProperty *property)
-{
-	GLADE_PROPERTY_GET_KLASS (property)->set_value
-		(property, property->klass->def);
-}
-
-gboolean
-glade_property_default_impl (GladeProperty *property)
-{
-	return GLADE_PROPERTY_GET_KLASS (property)->equals_value
-		(property, property->klass->def);
-}
-
 gboolean
 glade_property_equals_value_impl (GladeProperty *property,
 				  const GValue  *value)
@@ -567,8 +553,6 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 
 	/* Class methods */
 	prop_class->dup                   = glade_property_dup_impl;
-	prop_class->reset                 = glade_property_reset_impl;
-	prop_class->def                   = glade_property_default_impl;
 	prop_class->equals_value          = glade_property_equals_value_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
 	prop_class->get_value             = glade_property_get_value_impl;
@@ -1039,6 +1023,15 @@ glade_property_dup (GladeProperty *template_prop, GladeWidget *widget)
 	return GLADE_PROPERTY_GET_KLASS (template_prop)->dup (template_prop, widget);
 }
 
+static void
+glade_property_reset_common (GladeProperty *property, gboolean original)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	GLADE_PROPERTY_GET_KLASS (property)->set_value
+		(property, (original) ? property->klass->orig_def : property->klass->def);
+}
+
 /**
  * glade_property_reset:
  * @property: A #GladeProperty
@@ -1048,8 +1041,27 @@ glade_property_dup (GladeProperty *template_prop, GladeWidget *widget)
 void
 glade_property_reset (GladeProperty *property)
 {
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	GLADE_PROPERTY_GET_KLASS (property)->reset (property);
+	glade_property_reset_common (property, FALSE);
+}
+
+/**
+ * glade_property_original_reset:
+ * @property: A #GladeProperty
+ *
+ * Resets this property to its original default value
+ */
+void
+glade_property_original_reset (GladeProperty *property)
+{
+	glade_property_reset_common (property, TRUE);
+}
+
+static gboolean
+glade_property_default_common (GladeProperty *property, gboolean orig)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	return GLADE_PROPERTY_GET_KLASS (property)->equals_value
+		(property, (orig)  ? property->klass->orig_def : property->klass->def);
 }
 
 /**
@@ -1061,8 +1073,19 @@ glade_property_reset (GladeProperty *property)
 gboolean
 glade_property_default (GladeProperty *property)
 {
-	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
-	return GLADE_PROPERTY_GET_KLASS (property)->def (property);
+	return glade_property_default_common (property, FALSE);
+}
+
+/**
+ * glade_property_original_default:
+ * @property: A #GladeProperty
+ *
+ * Returns: Whether this property is at its original default value
+ */
+gboolean
+glade_property_original_default (GladeProperty *property)
+{
+	return glade_property_default_common (property, TRUE);
 }
 
 /**

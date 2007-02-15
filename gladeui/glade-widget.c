@@ -1891,7 +1891,9 @@ glade_widget_properties_from_widget_info (GladeWidgetAdaptor *klass,
 		 * otherwise initialize property to default.
 		 */
 		property = glade_property_new (pclass, NULL, NULL, FALSE);
-
+		
+		glade_property_original_reset (property);
+		
 		glade_property_read (property, property->klass, 
 				     loading_project, info, TRUE);
 
@@ -2912,6 +2914,21 @@ glade_widget_pack_property_reset (GladeWidget   *widget,
 	return FALSE;
 }
 
+static gboolean
+glade_widget_property_default_common (GladeWidget *widget,
+			       const gchar *id_property, gboolean original)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+		return (original) ? glade_property_original_default (property) :
+			glade_property_default (property);
+
+	return FALSE;
+}
+
 /**
  * glade_widget_property_default:
  * @widget: a #GladeWidget
@@ -2924,14 +2941,22 @@ gboolean
 glade_widget_property_default (GladeWidget *widget,
 			       const gchar *id_property)
 {
-	GladeProperty *property;
-	
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	return glade_widget_property_default_common (widget, id_property, FALSE);
+}
 
-	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
-		return glade_property_default (property);
-
-	return FALSE;
+/**
+ * glade_widget_property_original_default:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ *
+ * Returns: whether whether @id_property was found and is 
+ * currently set to it's original default value.
+ */
+gboolean
+glade_widget_property_original_default (GladeWidget *widget,
+			       const gchar *id_property)
+{
+	return glade_widget_property_default_common (widget, id_property, TRUE);
 }
 
 /**
