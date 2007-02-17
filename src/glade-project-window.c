@@ -1580,25 +1580,25 @@ static GtkActionEntry static_entries[] = {
 	{ "HelpMenu", NULL, N_("_Help") },
 	
 	/* FileMenu */
-	{ "New", GTK_STOCK_NEW, N_("_New"), "<control>N",
+	{ "New", GTK_STOCK_NEW, NULL, "<control>N",
 	  N_("Create a new project"), G_CALLBACK (gpw_new_cb) },
 	
-	{ "Open", GTK_STOCK_OPEN, N_("_Open\342\200\246"),"<control>O",
+	{ "Open", GTK_STOCK_OPEN, N_("_Open\342\200\246") ,"<control>O",
 	  N_("Open a project"), G_CALLBACK (gpw_open_cb) },
 
 	{ "OpenRecent", NULL, N_("Open _Recent") },	
 	
-	{ "Quit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
+	{ "Quit", GTK_STOCK_QUIT, NULL, "<control>Q",
 	  N_("Quit the program"), G_CALLBACK (gpw_quit_cb) },
 
 	/* ViewMenu */
 	{ "PaletteAppearance", NULL, N_("Palette _Appearance") },
 	
 	/* HelpMenu */
-	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL,
+	{ "About", GTK_STOCK_ABOUT, NULL, NULL,
 	  N_("About this application"), G_CALLBACK (gpw_about_cb) },
 
-	{ "HelpContents", GTK_STOCK_HELP, N_("_Contents"), "F1",
+	{ "HelpContents", GTK_STOCK_HELP, NULL, "F1",
 	  N_("Display the user manual"), G_CALLBACK (gpw_show_help_cb) },
 
 	{ "DeveloperReference", NULL, N_("_Developer Reference"), NULL,
@@ -1610,32 +1610,32 @@ static guint n_static_entries = G_N_ELEMENTS (static_entries);
 static GtkActionEntry project_entries[] = {
 
 	/* FileMenu */
-	{ "Save", GTK_STOCK_SAVE, N_("_Save"),"<control>S",
+	{ "Save", GTK_STOCK_SAVE, NULL, "<control>S",
 	  N_("Save the current project"), G_CALLBACK (gpw_save_cb) },
 	
 	{ "SaveAs", GTK_STOCK_SAVE_AS, N_("Save _As\342\200\246"), NULL,
 	  N_("Save the current project with a different name"), G_CALLBACK (gpw_save_as_cb) },
 	
-	{ "Close", GTK_STOCK_CLOSE, N_("_Close"), "<control>W",
+	{ "Close", GTK_STOCK_CLOSE, NULL, "<control>W",
 	  N_("Close the current project"), G_CALLBACK (gpw_close_cb) },
 
 	/* EditMenu */	
-	{ "Undo", GTK_STOCK_UNDO, N_("_Undo"), "<control>Z",
+	{ "Undo", GTK_STOCK_UNDO, NULL, "<control>Z",
 	  N_("Undo the last action"),	G_CALLBACK (gpw_undo_cb) },
 	
-	{ "Redo", GTK_STOCK_REDO, N_("_Redo"), "<control>R",
+	{ "Redo", GTK_STOCK_REDO, NULL, "<control>R",
 	  N_("Redo the last action"),	G_CALLBACK (gpw_redo_cb) },
 	
-	{ "Cut", GTK_STOCK_CUT, N_("C_ut"), NULL,
+	{ "Cut", GTK_STOCK_CUT, NULL, NULL,
 	  N_("Cut the selection"), G_CALLBACK (gpw_cut_cb) },
 	
-	{ "Copy", GTK_STOCK_COPY, N_("_Copy"), NULL,
+	{ "Copy", GTK_STOCK_COPY, NULL, NULL,
 	  N_("Copy the selection"), G_CALLBACK (gpw_copy_cb) },
 	
-	{ "Paste", GTK_STOCK_PASTE, N_("_Paste"), NULL,
+	{ "Paste", GTK_STOCK_PASTE, NULL, NULL,
 	  N_("Paste the clipboard"), G_CALLBACK (gpw_paste_cb) },
 	
-	{ "Delete", GTK_STOCK_DELETE, N_("_Delete"), "Delete",
+	{ "Delete", GTK_STOCK_DELETE, NULL, "Delete",
 	  N_("Delete the selection"), G_CALLBACK (gpw_delete_cb) },
 
 	/* ViewMenu */
