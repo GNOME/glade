@@ -50,4 +50,4 @@ automake_version=1.9
 #  ;;
 #esac
 
-REQUIRED_AUTOMAKE_VERSION="$automake_version" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
+REQUIRED_GNOME_DOC_UTILS_VERSION=0.9.0 REQUIRED_AUTOMAKE_VERSION="$automake_version" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
