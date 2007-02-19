@@ -3,11 +3,11 @@
 # Clytie Siddall <clytie@riverland.net.au>, 2006-2007.
 # 
 msgid ""
-""
-msgstr "Project-Id-Version: glade3 HEAD\n"
+msgstr ""
+"Project-Id-Version: glade3 HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 04:46+0000\n"
-"PO-Revision-Date: 2007-01-05 14:34+1030\n"
+"POT-Creation-Date: 2007-02-18 03:27+0000\n"
+"PO-Revision-Date: 2007-02-19 15:16+0700\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,33 +16,49 @@ msgstr "Project-Id-Version: glade3 HEAD\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.6fc1\n"
 
-#: ../glade-3.desktop.in.h:1
+#: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Tạo hay mở bản đồ án thiết kế giao diện người dùng cho ứng dụng GTK+"
 
-#: ../glade-3.desktop.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
 msgstr "Bộ thiết kế giao diện Glade"
 
-#: ../glade-3.desktop.in.h:3
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
 msgid "User Interface Designer"
 msgstr "Bộ thiết kế giao diện người dùng"
 
-#: ../src/main.c:40
-#: ../src/main.c:83
+#: ../src/main.c:38
 msgid "Glade"
 msgstr "Glade"
 
-#: ../src/main.c:84
+#: ../src/main.c:48
+msgid "Output version information and exit"
+msgstr "Xuất thông tin phiên bản và thoát"
+
+#: ../src/main.c:51
+msgid "Disable Devhelp integration"
+msgstr "Tắt tích hợp Devhelp"
+
+#: ../src/main.c:54
+msgid "[FILE...]"
+msgstr "[FILE...]"
+
+#: ../src/main.c:86
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr "Tạo hay mở thiết kế giao diện người dùng cho ứng dụng GTK+."
+
+#: ../src/main.c:89 ../src/main.c:90
 msgid "Glade options"
 msgstr "Tùy chọn Glade"
 
-#: ../src/main.c:133
+#: ../src/main.c:140
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
-msgstr "không tìm thấy cách hỗ trợ gmodule, mà cần thiết cho trình glade hoạt động"
+msgstr ""
+"không tìm thấy cách hỗ trợ gmodule, mà cần thiết cho trình glade hoạt động"
 
-#: ../src/main.c:160
+#: ../src/main.c:167
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Không thể mở « %s » vì tập tin đó không tồn tại.\n"
@@ -51,128 +67,119 @@ msgstr "Không thể mở « %s » vì tập tin đó không tồn tại.\n"
 msgid "[Read Only]"
 msgstr "[Chỉ đọc]"
 
-#: ../src/glade-project-window.c:110
+#: ../src/glade-project-window.c:108
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "Không thể hiển thị địa chỉ URL « %s »"
 
-#: ../src/glade-project-window.c:114
+#: ../src/glade-project-window.c:112
 msgid "No suitable web browser executable could be found."
 msgstr "Không tìm thấy trình duyệt Mạng thích hợp chạy được."
 
-#: ../src/glade-project-window.c:611
+#: ../src/glade-project-window.c:609
 #, c-format
 msgid "Activate %s"
 msgstr "Kích hoạt %s"
 
-#: ../src/glade-project-window.c:729
+#: ../src/glade-project-window.c:727
 msgid "Open…"
-msgstr "Mở..."
+msgstr "Mở…"
 
-#: ../src/glade-project-window.c:771
+#: ../src/glade-project-window.c:769
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Tập tin %s đã bị sửa đổi kể từ đọc nó lần trước"
 
-#: ../src/glade-project-window.c:775
+#: ../src/glade-project-window.c:773
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Lưu thì tất cả các thay đổi bên ngoài có thể bị mất. Vẫn còn lưu không?"
+msgstr ""
+"Lưu thì tất cả các thay đổi bên ngoài có thể bị mất. Vẫn còn lưu không?"
 
-#: ../src/glade-project-window.c:779
+#: ../src/glade-project-window.c:777
 msgid "_Save Anyway"
 msgstr "Vẫn _lưu"
 
-#: ../src/glade-project-window.c:786
+#: ../src/glade-project-window.c:784
 msgid "_Don't Save"
 msgstr "_Không lưu"
 
-#: ../src/glade-project-window.c:809
+#: ../src/glade-project-window.c:807
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Lỗi lưu %s: %s"
 
-#: ../src/glade-project-window.c:830
+#: ../src/glade-project-window.c:828
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Mới lưu dự án « %s »."
 
-#.Just in case the menu-item is not insensitive
-#.Just in case the menu-item or button is not insensitive
-#: ../src/glade-project-window.c:849
-#: ../src/glade-project-window.c:932
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
 msgid "No open projects to save"
 msgstr "Không có dự án đang mở cần lưu."
 
-#: ../src/glade-project-window.c:853
+#: ../src/glade-project-window.c:851
 msgid "Save As…"
-msgstr "Lưu dạng..."
+msgstr "Lưu dạng…"
 
-#: ../src/glade-project-window.c:895
+#: ../src/glade-project-window.c:893
 #, c-format
 msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
 "save the file."
 msgstr "Không thể lưu tập tin %s. Bạn không có quyền lưu tập tin đó."
 
-#: ../src/glade-project-window.c:908
+#: ../src/glade-project-window.c:906
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
-msgstr "Không thể lưu tập tin %s. Hiện thời có một dự án khác cùng đường dẫn đã mở."
+msgstr ""
+"Không thể lưu tập tin %s. Hiện thời có một dự án khác cùng đường dẫn đã mở."
 
-#: ../src/glade-project-window.c:960
+#: ../src/glade-project-window.c:958
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
 "closing?</span>\n"
 "\n"
 "Your changes will be lost if you don't save them.\n"
-msgstr "<span weight=\"bold\" size=\"larger\">Lưu các thay đổi trong dự án « %s » "
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Lưu các thay đổi trong dự án « %s » "
 "trước khi đóng chứ?</span>\n"
 "\n"
 "Nếu bạn không lưu các thay đổi này, chúng sẽ bị mất hoàn toàn.\n"
 
-#: ../src/glade-project-window.c:974
+#: ../src/glade-project-window.c:972
 msgid "_Close without Saving"
 msgstr "_Đóng mà không lưu"
 
-#: ../src/glade-project-window.c:995
+#: ../src/glade-project-window.c:993
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Lỗi lưu %s vào « %s »: %s"
 
-#: ../src/glade-project-window.c:1007
+#: ../src/glade-project-window.c:1005
 msgid "Save…"
-msgstr "Lưu..."
+msgstr "Lưu…"
 
-#: ../src/glade-project-window.c:1185
-msgid "Glade's Script Console"
-msgstr "Bàn giao tiếp văn lệnh Glade"
-
-#: ../src/glade-project-window.c:1465
+#: ../src/glade-project-window.c:1411
 msgid "Could not display the online user manual"
 msgstr "Không thể hiển thị sổ tay người dùng trực tuyến"
 
-#: ../src/glade-project-window.c:1468
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
-msgstr "Không tìm thấy trình duyệt Mạng thích hợp chạy được để chạy và hiển thị địa chỉ URL: %s"
+msgstr ""
+"Không tìm thấy trình duyệt Mạng thích hợp chạy được để chạy và hiển thị địa "
+"chỉ URL: %s"
 
-#: ../src/glade-project-window.c:1503
+#: ../src/glade-project-window.c:1449
 msgid "Could not display the online developer reference manual"
 msgstr "Không thể hiển thị sổ tay nhà phát triển trực tuyến"
 
-#: ../src/glade-project-window.c:1558
-msgid ""
-"Glade is a user interface designer for GTK+ and GNOME.\n"
-"This version is a rewrite of the Glade 2 version, originally created by "
-"Damon Chaplin\n"
-msgstr "Trình Glade là một bộ thiết kế giao diện người dùng cho GTK+ và GNOME.\n"
-"Phiên bản này là bản ghi lại của phiên bản Glade 2, được tạo đầu tiên bởi Damon Chaplin.\n"
-
-#: ../src/glade-project-window.c:1563
+#: ../src/glade-project-window.c:1482
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -188,7 +195,8 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
 "USA."
-msgstr "Chương trình này là phần mềm tự do;\n"
+msgstr ""
+"Chương trình này là phần mềm tự do;\n"
 "bạn có thể phân phối và/hay sửa đổí nó với điều kiện cua\n"
 "Quyền Công Chung Gnu (GPL) như được xuất do\n"
 "Free Software Foundation; hoặc phiên bản 2, hoặc (tùy chọn)\n"
@@ -205,3196 +213,3234 @@ msgstr "Chương trình này là phần mềm tự do;\n"
 "51 Franklin Street, Fifth Floor,\n"
 "MA 02110-1301, USA (Mỹ)."
 
-#.File
-#: ../src/glade-project-window.c:1658
-#: ../src/glade-gtk.c:4411
-#: ../src/glade-gtk.c:4709
+#: ../src/glade-project-window.c:1504
+msgid "translator-credits"
+msgstr "Nhóm Việt hoá GNOME <gnomevi-list@lists.sourceforge.net>"
+
+#: ../src/glade-project-window.c:1505
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "Bộ thiết kế giao diện người dùng cho GTK+ và GNOME."
+
+#. File
+#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4401
+#: ../plugins/gtk+/glade-gtk.c:4699
 msgid "_File"
 msgstr "_Tập tin"
 
-#.Edit
-#: ../src/glade-project-window.c:1659
-#: ../src/glade-gtk.c:4414
-#: ../src/glade-gtk.c:4719
+#. Edit
+#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4404
+#: ../plugins/gtk+/glade-gtk.c:4709
 msgid "_Edit"
-msgstr "_Hiệu chỉnh..."
+msgstr "_Hiệu chỉnh"
 
-#.View
-#: ../src/glade-project-window.c:1660
-#: ../src/glade-gtk.c:4417
-#: ../src/glade-gtk.c:4727
+#. View
+#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4407
+#: ../plugins/gtk+/glade-gtk.c:4717
 msgid "_View"
 msgstr "_Xem"
 
-#: ../src/glade-project-window.c:1661
+#: ../src/glade-project-window.c:1579
 msgid "_Projects"
 msgstr "_Dự án"
 
-#.Help
-#: ../src/glade-project-window.c:1662
-#: ../src/glade-gtk.c:4429
-#: ../src/glade-gtk.c:4730
+#. Help
+#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4419
+#: ../plugins/gtk+/glade-gtk.c:4720
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#.FileMenu
-#: ../src/glade-project-window.c:1665
-msgid "_New"
-msgstr "Mớ_i"
-
-#: ../src/glade-project-window.c:1666
+#: ../src/glade-project-window.c:1584
 msgid "Create a new project"
 msgstr "Tạo một dự án mới."
 
-#: ../src/glade-project-window.c:1668
-msgid "_Open"
-msgstr "_Mở"
+#: ../src/glade-project-window.c:1586
+msgid "_Open…"
+msgstr "_Mở…"
 
-#: ../src/glade-project-window.c:1669
+#: ../src/glade-project-window.c:1587
 msgid "Open a project"
 msgstr "Mở một dự án"
 
-#: ../src/glade-project-window.c:1671
+#: ../src/glade-project-window.c:1589
 msgid "Open _Recent"
 msgstr "Mở _gần đây"
 
-#: ../src/glade-project-window.c:1673
-msgid "_Quit"
-msgstr "T_hoát"
-
-#: ../src/glade-project-window.c:1674
+#: ../src/glade-project-window.c:1592
 msgid "Quit the program"
 msgstr "Thoát khỏi chương trình"
 
-#.HelpMenu
-#: ../src/glade-project-window.c:1680
-msgid "_About"
-msgstr "_Giới thiệu"
+#. ViewMenu
+#: ../src/glade-project-window.c:1595
+msgid "Palette _Appearance"
+msgstr "_Diện mạo hộp"
 
-#: ../src/glade-project-window.c:1681
+#: ../src/glade-project-window.c:1599
 msgid "About this application"
 msgstr "Giới thiệu về ứng dụng này"
 
-#: ../src/glade-project-window.c:1683
-msgid "_Contents"
-msgstr "Mụ_c lục"
-
-#: ../src/glade-project-window.c:1684
+#: ../src/glade-project-window.c:1602
 msgid "Display the user manual"
 msgstr "Hiển thị sổ tay người dùng"
 
-#: ../src/glade-project-window.c:1686
+#: ../src/glade-project-window.c:1604
 msgid "_Developer Reference"
 msgstr "Tham chiếu _phát triển"
 
-#: ../src/glade-project-window.c:1687
+#: ../src/glade-project-window.c:1605
 msgid "Display the developer reference manual"
 msgstr "Hiển thị sổ tay tham chiếu nhà phát triển"
 
-#.FileMenu
-#: ../src/glade-project-window.c:1694
-msgid "_Save"
-msgstr "_Lưu"
-
-#: ../src/glade-project-window.c:1695
+#: ../src/glade-project-window.c:1614
 msgid "Save the current project"
 msgstr "Lưu dự án hiện thời"
 
-#: ../src/glade-project-window.c:1697
+#: ../src/glade-project-window.c:1616
 msgid "Save _As…"
-msgstr "Lưu _dạng..."
+msgstr "Lưu _dạng…"
 
-#: ../src/glade-project-window.c:1698
+#: ../src/glade-project-window.c:1617
 msgid "Save the current project with a different name"
 msgstr "Lưu dự án hiện thời có tên khác"
 
-#: ../src/glade-project-window.c:1700
-msgid "_Close"
-msgstr "Đón_g"
-
-#: ../src/glade-project-window.c:1701
+#: ../src/glade-project-window.c:1620
 msgid "Close the current project"
 msgstr "Đóng dự án hiện thời"
 
-#.EditMenu
-#: ../src/glade-project-window.c:1704
-#: ../src/glade-project-window.c:2264
-msgid "_Undo"
-msgstr "_Hồi lại"
-
-#: ../src/glade-project-window.c:1705
+#: ../src/glade-project-window.c:1624
 msgid "Undo the last action"
 msgstr "Hủy hành động cuối cùng"
 
-#: ../src/glade-project-window.c:1707
-#: ../src/glade-project-window.c:2275
-msgid "_Redo"
-msgstr "_Làm lại"
-
-#: ../src/glade-project-window.c:1708
+#: ../src/glade-project-window.c:1627
 msgid "Redo the last action"
 msgstr "Làm lại hành động cuối cùng"
 
-#: ../src/glade-project-window.c:1710
-msgid "C_ut"
-msgstr "Cắ_t"
-
-#: ../src/glade-project-window.c:1711
+#: ../src/glade-project-window.c:1630
 msgid "Cut the selection"
 msgstr "Cắt vùng chọn"
 
-#: ../src/glade-project-window.c:1713
-msgid "_Copy"
-msgstr "_Chép"
-
-#: ../src/glade-project-window.c:1714
+#: ../src/glade-project-window.c:1633
 msgid "Copy the selection"
 msgstr "Sao chép vùng chọn"
 
-#: ../src/glade-project-window.c:1716
-msgid "_Paste"
-msgstr "_Dán"
-
-#: ../src/glade-project-window.c:1717
+#: ../src/glade-project-window.c:1636
 msgid "Paste the clipboard"
 msgstr "Dán bảng nháp"
 
-#: ../src/glade-project-window.c:1719
-msgid "_Delete"
-msgstr "_Xoá"
-
-#: ../src/glade-project-window.c:1720
+#: ../src/glade-project-window.c:1639
 msgid "Delete the selection"
 msgstr "Xoá vùng chọn"
 
-#.ViewMenu
-#: ../src/glade-project-window.c:1724
+#. ViewMenu
+#: ../src/glade-project-window.c:1643
 msgid "_Clipboard"
 msgstr "_Bảng nháp"
 
-#: ../src/glade-project-window.c:1725
+#: ../src/glade-project-window.c:1644
 msgid "Show the clipboard"
 msgstr "Hiện bảng nháp"
 
-#: ../src/glade-project-window.c:1728
-msgid "C_onsole"
-msgstr "Bàn gia_o tiếp"
-
-#: ../src/glade-project-window.c:1729
-msgid "Show Script-do console"
-msgstr "HIện bàn giao tiếp Script-do"
-
-#.ProjectsMenu
-#: ../src/glade-project-window.c:1733
+#. ProjectsMenu
+#: ../src/glade-project-window.c:1648
 msgid "_Previous Project"
 msgstr "Dự án t_rước"
 
-#: ../src/glade-project-window.c:1734
+#: ../src/glade-project-window.c:1649
 msgid "Activate previous project"
 msgstr "Kích hoạt dự án trước"
 
-#: ../src/glade-project-window.c:1736
+#: ../src/glade-project-window.c:1651
 msgid "_Next Project"
 msgstr "Dự án _kế"
 
-#: ../src/glade-project-window.c:1737
+#: ../src/glade-project-window.c:1652
 msgid "Activate next project"
 msgstr "Kích hoạt dự án kế tiếp"
 
-#: ../src/glade-project-window.c:1745
+#: ../src/glade-project-window.c:1660
 msgid "_Use Small Icons"
 msgstr "Biể_u tượng nhỏ"
 
-#: ../src/glade-project-window.c:1746
+#: ../src/glade-project-window.c:1661
 msgid "Show items using small icons"
 msgstr "Hiện mục bằng biểu tượng nhỏ"
 
-#: ../src/glade-project-window.c:1749
+#: ../src/glade-project-window.c:1664
 msgid "Context _Help"
 msgstr "Trợ g_iúp ngữ cảnh"
 
-#: ../src/glade-project-window.c:1750
+#: ../src/glade-project-window.c:1665
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Ẩn/hiện các cái nút trợ giúp ngữ cảnh trong bộ soạn thảo"
 
-#: ../src/glade-project-window.c:1757
+#: ../src/glade-project-window.c:1672
 msgid "Text beside icons"
 msgstr "Văn bản ở cạnh biểu tượng"
 
-#: ../src/glade-project-window.c:1758
+#: ../src/glade-project-window.c:1673
 msgid "Display items as text beside icons"
 msgstr "Hiện mục dạng văn bản ở cạnh biểu tượng"
 
-#: ../src/glade-project-window.c:1760
+#: ../src/glade-project-window.c:1675
 msgid "_Icons only"
 msgstr "Chỉ b_iểu tượng"
 
-#: ../src/glade-project-window.c:1761
+#: ../src/glade-project-window.c:1676
 msgid "Display items as icons only"
 msgstr "Hiện mục chỉ dạng biểu tượng"
 
-#: ../src/glade-project-window.c:1763
+#: ../src/glade-project-window.c:1678
 msgid "_Text only"
 msgstr "Chỉ _văn bản"
 
-#: ../src/glade-project-window.c:1764
+#: ../src/glade-project-window.c:1679
 msgid "Display items as text only"
 msgstr "Hiện mục chỉ dạng văn bản"
 
-#: ../src/glade-project-window.c:1972
-msgid "Select a widget"
+#: ../src/glade-project-window.c:1884
+msgid "Select Widgets"
 msgstr "Chọn ô điều khiển"
 
-#: ../src/glade-project-window.c:2043
+#: ../src/glade-project-window.c:1888
+msgid "Select widgets in the workspace"
+msgstr "Chọn ô điều khiển trong vùng làm việc"
+
+#: ../src/glade-project-window.c:1977
 msgid "Palette"
 msgstr "Bảng chọn"
 
-#: ../src/glade-project-window.c:2059
+#: ../src/glade-project-window.c:1993
 msgid "Inspector"
 msgstr "Bộ xem xét"
 
-#: ../src/glade-project-window.c:2065
-#: ../src/glade-widget.c:1120
+#: ../src/glade-project-window.c:1999 ../gladeui/glade-widget.c:975
 msgid "Properties"
 msgstr "Thuộc tính"
 
-#: ../src/glade-project-window.c:2180
+#: ../src/glade-project-window.c:2115
 msgid "Could not create a new project."
 msgstr "Không thể tạo một dự án mới."
 
-#: ../src/glade-project-window.c:2199
+#: ../src/glade-project-window.c:2134
 #, c-format
 msgid "%s is already open"
 msgstr "%s đã được mở"
 
-#.Change tooltips
-#: ../src/glade-project-window.c:2266
-#: ../src/glade-app.c:237
+#: ../src/glade-project-window.c:2199
+msgid "_Undo"
+msgstr "_Hồi lại"
+
+#. Change tooltips
+#: ../src/glade-project-window.c:2201 ../gladeui/glade-app.c:242
 #, c-format
 msgid "Undo: %s"
 msgstr "Hồi lại: %s"
 
-#: ../src/glade-project-window.c:2266
-#: ../src/glade-project-window.c:2277
-#: ../src/glade-app.c:238
+#: ../src/glade-project-window.c:2201 ../src/glade-project-window.c:2212
+#: ../gladeui/glade-app.c:243
 msgid "the last action"
 msgstr "hành động cuối cùng"
 
-#: ../src/glade-project-window.c:2277
-#: ../src/glade-app.c:237
+#: ../src/glade-project-window.c:2210
+msgid "_Redo"
+msgstr "_Làm lại"
+
+#: ../src/glade-project-window.c:2212 ../gladeui/glade-app.c:242
 #, c-format
 msgid "Redo: %s"
 msgstr "Làm lại: %s"
 
-#: ../src/glade-app.c:359
+#: ../gladeui/glade-app.c:453
 msgid "Clipboard"
 msgstr "Bảng tạm"
 
-#: ../src/glade-app.c:410
+#: ../gladeui/glade-app.c:525
 msgid "Active Project"
 msgstr "Dự án hoạt động"
 
-#: ../src/glade-app.c:411
+#: ../gladeui/glade-app.c:526
 msgid "The active project"
 msgstr "Dự án hoạt động"
 
-#: ../src/glade-app.c:513
+#: ../gladeui/glade-app.c:604
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
-msgstr "Đang cố lưu dữ liệu riêng vào thư mục %s, nhưng nó là tập tin chuẩn.\n"
+msgstr ""
+"Đang cố lưu dữ liệu riêng vào thư mục %s, nhưng nó là tập tin chuẩn.\n"
 "Như thế thì sẽ không lưu dữ liệu riêng nào trong phiên chạy này."
 
-#: ../src/glade-app.c:526
+#: ../gladeui/glade-app.c:617
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
-msgstr "Việc tạo thư mục %s nơi cần lưu dữ liệu riêng bị lỗi.\n"
+msgstr ""
+"Việc tạo thư mục %s nơi cần lưu dữ liệu riêng bị lỗi.\n"
 "Như thế thì sẽ không lưu dữ liệu riêng nào trong phiên chạy này."
 
-#: ../src/glade-app.c:554
+#: ../gladeui/glade-app.c:645
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
-msgstr "Gặp lỗi khi ghi dữ liệu vào %s (%s).\n"
+msgstr ""
+"Gặp lỗi khi ghi dữ liệu vào %s (%s).\n"
 "Như thế thì sẽ không lưu dữ liệu riêng nào trong phiên chạy này."
 
-#: ../src/glade-app.c:566
+#: ../gladeui/glade-app.c:657
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
-msgstr "Gặp lỗi khi xếp theo thứ tự dữ liệu cấu hình cần lưu (%s).\n"
+msgstr ""
+"Gặp lỗi khi xếp theo thứ tự dữ liệu cấu hình cần lưu (%s).\n"
 "Như thế thì sẽ không lưu dữ liệu riêng nào trong phiên chạy này."
 
-#: ../src/glade-app.c:579
+#: ../gladeui/glade-app.c:670
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
-msgstr "Gập lỗi khi mở %s để ghi dữ liệu riêng (%s).\n"
+msgstr ""
+"Gập lỗi khi mở %s để ghi dữ liệu riêng (%s).\n"
 "Như thế thì sẽ không lưu dữ liệu riêng nào trong phiên chạy này."
 
-#: ../src/glade-app.c:987
+#: ../gladeui/glade-app.c:1109
 msgid "You cannot copy a widget internal to a composite widget."
-msgstr "Bạn không thể sao chép một ô điều khiển là một phần của ô điều khiển ghép."
+msgstr ""
+"Bạn không thể sao chép một ô điều khiển là một phần của ô điều khiển ghép."
 
-#: ../src/glade-app.c:1002
-#: ../src/glade-app.c:1055
-#: ../src/glade-app.c:1217
+#: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
+#: ../gladeui/glade-app.c:1352
 msgid "No widget selected."
-msgstr "• Chưa chọn ô điều khiển. •"
+msgstr "Chưa chọn ô điều khiển."
 
-#: ../src/glade-app.c:1040
+#: ../gladeui/glade-app.c:1162
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "Bạn không thể cắt một ô điều khiển là một phần của ô điều khiển ghép."
 
-#: ../src/glade-app.c:1100
+#: ../gladeui/glade-app.c:1221
+msgid "Unable to paste to the selected parent"
+msgstr "Không thể dán vào ô điều khiển mẹ được chọn"
+
+#: ../gladeui/glade-app.c:1232
 msgid "Unable to paste to multiple widgets"
 msgstr "Không thể dán nhiều ô điều khiển"
 
-#: ../src/glade-app.c:1110
-#: ../src/glade-app.c:1239
+#: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
 msgid "No widget selected on the clipboard"
 msgstr "Không có ô điều khiển được chọn trên bảng tạm"
 
-#: ../src/glade-app.c:1129
+#: ../gladeui/glade-app.c:1268
 #, c-format
-msgid "Unable to paste widget %s to parent %s"
-msgstr "Không thể dán ô điều khiển %s vào mẹ %s"
+msgid "Unable to paste widget %s without a parent"
+msgstr "Không thể dán ô điều khiển %s vào ô điều khiển mẹ"
 
-#: ../src/glade-app.c:1151
+#: ../gladeui/glade-app.c:1285
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Có thể dán cùng lúc chỉ một ô điều khiển vào đồ chứa này."
 
-#: ../src/glade-app.c:1162
+#: ../gladeui/glade-app.c:1297
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Không đủ bộ giữ chỗ trong đồ chứa đích"
 
-#: ../src/glade-app.c:1202
-#: ../src/glade-app.c:1249
-#: ../src/glade-command.c:1077
+#: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
 msgid "You cannot delete a widget internal to a composite widget."
-msgstr "Bạn không thể xoá bỏ một ô điều khiển là một phần của ô điều khiển ghép."
+msgstr ""
+"Bạn không thể xoá bỏ một ô điều khiển là một phần của ô điều khiển ghép."
 
-#: ../src/glade-builtins.c:183
-#: ../src/glade-gtk.c:189
-#: ../src/glade-gtk.c:209
+#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
+#: ../plugins/gtk+/glade-gtk.c:207
 msgid "Stock"
 msgstr "Kho"
 
-#: ../src/glade-builtins.c:184
+#: ../gladeui/glade-builtins.c:184
 msgid "A builtin stock item"
 msgstr "Mục kho có sẵn"
 
-#: ../src/glade-builtins.c:192
-#: ../widgets/gtk+.xml.in.h:230
+#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Stock Image"
 msgstr "Ảnh kho"
 
-#: ../src/glade-builtins.c:193
-#: ../widgets/gtk+.xml.in.h:1
+#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A builtin stock image"
 msgstr "Một ảnh kho có sẵn"
 
-#: ../src/glade-builtins.c:523
+#: ../gladeui/glade-builtins.c:523
 msgid "Objects"
 msgstr "Đối tượng"
 
-#: ../src/glade-builtins.c:524
+#: ../gladeui/glade-builtins.c:524
 msgid "A list of objects"
 msgstr "Danh sách các đối tượng"
 
-#: ../src/glade-builtins.c:533
+#: ../gladeui/glade-builtins.c:533
 msgid "Pixbuf"
 msgstr "Bộ đệm điểm ảnh"
 
-#: ../src/glade-builtins.c:534
+#: ../gladeui/glade-builtins.c:534
 msgid "A pixbuf value"
 msgstr "Giá trị đệm điểm ảnh"
 
-#: ../src/glade-builtins.c:542
+#: ../gladeui/glade-builtins.c:542
 msgid "GdkColor"
 msgstr "MàuGDK"
 
-#: ../src/glade-builtins.c:543
+#: ../gladeui/glade-builtins.c:543
 msgid "A gdk color value"
 msgstr "Giá trị màu GDK"
 
-#: ../src/glade-builtins.c:551
-#: ../src/glade-property-class.c:1187
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1192
 msgid "Accelerators"
 msgstr "Phím tăng tốc"
 
-#: ../src/glade-builtins.c:552
-#: ../src/glade-property-class.c:1188
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1193
 msgid "A list of accelerator keys"
 msgstr "Danh sách các phím tăng tốc"
 
-#: ../src/glade-builtins.c:563
+#: ../gladeui/glade-builtins.c:563
 msgid "Integer"
 msgstr "Số nguyên"
 
-#: ../src/glade-builtins.c:564
+#: ../gladeui/glade-builtins.c:564
 msgid "An integer value"
 msgstr "Giá trị số nguyên"
 
-#: ../src/glade-builtins.c:572
+#: ../gladeui/glade-builtins.c:572
 msgid "Unsigned Integer"
 msgstr "Số nguyên vô dấu"
 
-#: ../src/glade-builtins.c:573
+#: ../gladeui/glade-builtins.c:573
 msgid "An unsigned integer value"
 msgstr "Giá trị số nguyên không có dấu"
 
-#: ../src/glade-builtins.c:580
+#: ../gladeui/glade-builtins.c:580
 msgid "String"
 msgstr "Chuỗi"
 
-#: ../src/glade-builtins.c:581
+#: ../gladeui/glade-builtins.c:581
 msgid "An entry"
 msgstr "Mục nhập"
 
-#: ../src/glade-builtins.c:588
+#: ../gladeui/glade-builtins.c:588
 msgid "Strv"
 msgstr "Strv"
 
-#: ../src/glade-builtins.c:589
+#: ../gladeui/glade-builtins.c:589
 msgid "String array"
 msgstr "Mảng chuỗi"
 
-#: ../src/glade-builtins.c:597
+#: ../gladeui/glade-builtins.c:597
 msgid "Float"
 msgstr "Phù động"
 
-#: ../src/glade-builtins.c:598
+#: ../gladeui/glade-builtins.c:598
 msgid "A floating point entry"
 msgstr "Mục nhập điểm phù động"
 
-#: ../src/glade-builtins.c:606
+#: ../gladeui/glade-builtins.c:606
 msgid "Boolean"
 msgstr "Bun"
 
-#: ../src/glade-builtins.c:607
+#: ../gladeui/glade-builtins.c:607
 msgid "A boolean value"
 msgstr "Giá trị luận lý"
 
-#: ../src/glade-base-editor.c:468
+#: ../gladeui/glade-base-editor.c:470
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Đang đặt kiểu mục trên %s thành %s"
 
-#: ../src/glade-base-editor.c:633
+#: ../gladeui/glade-base-editor.c:635
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Thêm một %s vào %s"
 
-#: ../src/glade-base-editor.c:710
+#: ../gladeui/glade-base-editor.c:712
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Xoá %s con ra %s"
 
-#: ../src/glade-base-editor.c:833
+#: ../gladeui/glade-base-editor.c:835
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Sắp xếp lại các điều con của %s"
 
-#: ../src/glade-base-editor.c:1412
-#: ../src/glade-gtk.c:208
-#: ../widgets/gtk+.xml.in.h:132
+#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Label"
 msgstr "Nhãn"
 
-#: ../src/glade-base-editor.c:1425
-#: ../src/glade-widget-adaptor.c:916
+#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
 msgid "Type"
 msgstr "Kiểu"
 
-#.Name
-#: ../src/glade-base-editor.c:1598
+#. Name
+#: ../gladeui/glade-base-editor.c:1598
 msgid "Name :"
 msgstr "Tên :"
 
-#.Type
-#: ../src/glade-base-editor.c:1608
+#. Type
+#: ../gladeui/glade-base-editor.c:1608
 msgid "Type :"
 msgstr "Kiểu :"
 
-#: ../src/glade-clipboard-view.c:205
-#: ../src/glade-project-view.c:721
-#: ../widgets/gtk+.xml.in.h:279
+#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
+#: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Widget"
 msgstr "Ô điều khiển"
 
-#: ../src/glade-command.c:541
+#: ../gladeui/glade-command.c:541
 msgid "Setting multiple properties"
 msgstr "Thiết lập nhiều thuộc tính"
 
-#: ../src/glade-command.c:549
+#: ../gladeui/glade-command.c:549
 #, c-format
 msgid "Setting %s of %s"
-msgstr "Đang đặt %s trên %s..."
+msgstr "Đang đặt %s trên %s"
 
-#: ../src/glade-command.c:553
+#: ../gladeui/glade-command.c:553
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr "Đang đặt %s trên %s thành %s..."
+msgstr "Đang đặt %s trên %s thành %s"
 
-#: ../src/glade-command.c:771
-#: ../src/glade-command.c:798
+#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
 #, c-format
 msgid "Renaming %s to %s"
-msgstr "Đang đổi tên %s thành %s..."
+msgstr "Đang đổi tên %s thành %s"
 
-#: ../src/glade-command.c:1122
+#: ../gladeui/glade-command.c:903
 #, c-format
-msgid "Delete %s"
-msgstr "Xoá bỏ %s"
+msgid "Add %s"
+msgstr "Thêm %s"
 
-#: ../src/glade-command.c:1126
-msgid "Delete multiple"
-msgstr "Xoá bỏ nhiều"
+#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:1672
+msgid "multiple"
+msgstr "nhiều"
 
-#: ../src/glade-command.c:1194
+#: ../gladeui/glade-command.c:1017
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr "Bạn không thể loại bỏ một ô điều khiển nội, là một phần của ô điều khiển ghép."
+
+#: ../gladeui/glade-command.c:1063
+#, c-format
+msgid "Remove %s"
+msgstr "Loại bỏ %s"
+
+#: ../gladeui/glade-command.c:1067
+msgid "Remove multiple"
+msgstr "Loại bỏ đồng loạt"
+
+#: ../gladeui/glade-command.c:1371
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Bảng tạm thêm %s"
+
+#: ../gladeui/glade-command.c:1374
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Bảng tạm bỏ %s"
+
+#: ../gladeui/glade-command.c:1537
 #, c-format
 msgid "Create %s"
 msgstr "Tạo %s"
 
-#: ../src/glade-command.c:1590
+#: ../gladeui/glade-command.c:1563
+#, c-format
+msgid "Delete %s"
+msgstr "Xoá bỏ %s"
+
+#: ../gladeui/glade-command.c:1584
 #, c-format
 msgid "Cut %s"
 msgstr "Cắt %s"
 
-#: ../src/glade-command.c:1591
+#: ../gladeui/glade-command.c:1611
 #, c-format
 msgid "Copy %s"
 msgstr "Chép %s"
 
-#: ../src/glade-command.c:1591
+#: ../gladeui/glade-command.c:1644
 #, c-format
 msgid "Paste %s"
 msgstr "Dán %s"
 
-#: ../src/glade-command.c:1612
-msgid "multiple"
-msgstr "nhiều"
+#: ../gladeui/glade-command.c:1672
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Kéo/Thả từ %s đến %s"
 
-#: ../src/glade-command.c:1897
+#: ../gladeui/glade-command.c:1794
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Thêm bộ quản lý tín hiệu %s"
 
-#: ../src/glade-command.c:1898
+#: ../gladeui/glade-command.c:1795
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Gở bỏ bộ quản lý tín hiệu %s"
 
-#: ../src/glade-command.c:1899
+#: ../gladeui/glade-command.c:1796
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Đổi bộ quản lý tín hiệu %s"
 
-#: ../src/glade-cursor.c:188
+#: ../gladeui/glade-command.c:2000
+msgid "Setting i18n metadata"
+msgstr "Dữ liệu thiết lập i18n"
+
+#: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
 msgstr "Không thể nạp ảnh (%s)"
 
-#: ../src/glade-editor-property.c:274
+#: ../gladeui/glade-editor-property.c:274
 msgid "View GTK+ documentation for this property"
 msgstr "Xem tài liệu hướng dẫn GTK+ về thuộc tính này"
 
-#: ../src/glade-editor-property.c:576
+#: ../gladeui/glade-editor-property.c:576
 msgid "Property Class"
 msgstr "Hạng tài sản"
 
-#: ../src/glade-editor-property.c:577
+#: ../gladeui/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr "GladePropertyClass (hạng tài sản Glade) mà GladeEditorProperty (thuộc tính "
+msgstr ""
+"GladePropertyClass (hạng tài sản Glade) mà GladeEditorProperty (thuộc tính "
 "bộ hiệu chỉnh) này được tạo cho nó"
 
-#: ../src/glade-editor-property.c:583
+#: ../gladeui/glade-editor-property.c:583
 msgid "Use Command"
 msgstr "Dùng lệnh"
 
-#: ../src/glade-editor-property.c:584
+#: ../gladeui/glade-editor-property.c:584
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Chúng ta có nên dùng API lệnh cho đống hồi lại/làm lại hay không"
 
-#: ../src/glade-editor-property.c:590
+#: ../gladeui/glade-editor-property.c:590
 msgid "Show Info"
 msgstr "Hiện thông tin"
 
-#: ../src/glade-editor-property.c:591
+#: ../gladeui/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
 msgstr "Hiện/Ẩn cái nút thông tin"
 
-#: ../src/glade-editor-property.c:1119
-msgid "Set Flags"
-msgstr "Đặt cờ"
+#: ../gladeui/glade-editor-property.c:1117
+msgid "Select Fields"
+msgstr "Chọn trường"
 
-#: ../src/glade-editor-property.c:1452
-msgid "Edit Text Property"
-msgstr "Sửa đổi thuộc tính chữ"
+#: ../gladeui/glade-editor-property.c:1139
+msgid "_Select individual fields:"
+msgstr "_Chọn các trường độc lập:"
 
-#.Text
-#: ../src/glade-editor-property.c:1469
+#: ../gladeui/glade-editor-property.c:1466
+msgid "Edit Text"
+msgstr "Sửa chữ"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1494
 msgid "_Text:"
-msgstr "_Chữ :"
+msgstr "_Chữ:"
 
-#: ../src/glade-editor-property.c:1505
+#: ../gladeui/glade-editor-property.c:1530
 msgid "T_ranslatable"
 msgstr "_Dịch được"
 
-#: ../src/glade-editor-property.c:1518
-msgid "Has context _prefix"
+#: ../gladeui/glade-editor-property.c:1543
+msgid "_Has context prefix"
 msgstr "Có _tiền tố ngữ cảnh"
 
-#.Comments.
-#: ../src/glade-editor-property.c:1532
+#. Comments.
+#: ../gladeui/glade-editor-property.c:1561
 msgid "Co_mments for translators:"
 msgstr "Ghi _chú cho người dịch:"
 
-#: ../src/glade-editor-property.c:1701
-#: ../src/glade-editor-property.c:1717
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
 msgid "Yes"
 msgstr "Có"
 
-#: ../src/glade-editor-property.c:1701
-#: ../src/glade-editor-property.c:1717
-#: ../src/glade-editor-property.c:1732
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
+#: ../gladeui/glade-editor-property.c:1762
 msgid "No"
 msgstr "Không"
 
-#: ../src/glade-editor-property.c:2322
-#: ../src/glade-widget.c:1072
-#: ../src/glade-widget-adaptor.c:908
+#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:927
+#: ../gladeui/glade-widget-adaptor.c:916
 msgid "Name"
 msgstr "Tên"
 
-#: ../src/glade-editor-property.c:2334
+#: ../gladeui/glade-editor-property.c:2364
 msgid "Class"
 msgstr "Hạng"
 
-#: ../src/glade-editor-property.c:2348
+#: ../gladeui/glade-editor-property.c:2378
 #, c-format
 msgid "Choose %s implementors"
 msgstr "Chọn bộ thực hiện %s"
 
-#: ../src/glade-editor-property.c:2348
+#: ../gladeui/glade-editor-property.c:2378
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Chọn một %s trong dự án này"
 
-#.Checklist
-#: ../src/glade-editor-property.c:2400
-#: ../src/glade-editor-property.c:2605
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2442
+msgid "O_bjects:"
+msgstr "Đố_i tượng:"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2651
 msgid "Objects:"
 msgstr "Đối tượng:"
 
-#: ../src/glade-editor-property.c:2920
+#: ../gladeui/glade-editor-property.c:2966
 msgid "Value:"
 msgstr "Giá trị:"
 
-#: ../src/glade-editor-property.c:2921
+#: ../gladeui/glade-editor-property.c:2967
 msgid "The current value"
 msgstr "Giá trị hiện có"
 
-#: ../src/glade-editor-property.c:2923
+#: ../gladeui/glade-editor-property.c:2969
 msgid "Lower:"
 msgstr "Dưới:"
 
-#: ../src/glade-editor-property.c:2924
+#: ../gladeui/glade-editor-property.c:2970
 msgid "The minimum value"
 msgstr "Giá trị tối thiểu"
 
-#: ../src/glade-editor-property.c:2926
+#: ../gladeui/glade-editor-property.c:2972
 msgid "Upper:"
 msgstr "Trên:"
 
-#: ../src/glade-editor-property.c:2927
+#: ../gladeui/glade-editor-property.c:2973
 msgid "The maximum value"
 msgstr "Giá trị tối đa"
 
-#: ../src/glade-editor-property.c:2929
+#: ../gladeui/glade-editor-property.c:2975
 msgid "Step inc:"
 msgstr "Nấc tăng:"
 
-#: ../src/glade-editor-property.c:2930
+#: ../gladeui/glade-editor-property.c:2976
 msgid "The increment to use to make minor changes to the value"
 msgstr "Tăng cần dùng khi thay đổi giá trị một ít"
 
-#: ../src/glade-editor-property.c:2932
+#: ../gladeui/glade-editor-property.c:2978
 msgid "Page inc:"
 msgstr "Tăng trang:"
 
-#: ../src/glade-editor-property.c:2933
+#: ../gladeui/glade-editor-property.c:2979
 msgid "The increment to use to make major changes to the value"
 msgstr "Tăng cần dùng khi thay đổi giá trị nhiều"
 
-#: ../src/glade-editor-property.c:2935
+#: ../gladeui/glade-editor-property.c:2981
 msgid "Page size:"
 msgstr "Cỡ trang:"
 
-#: ../src/glade-editor-property.c:2936
+#: ../gladeui/glade-editor-property.c:2982
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
 msgstr "Kích cỡ trang (trong GtkScrollbar, đây là kích cỡ của vùng hiện rõ)"
 
-#: ../src/glade-editor-property.c:3013
+#: ../gladeui/glade-editor-property.c:3059
 msgid "Alphanumerical"
 msgstr "Chữ số"
 
-#: ../src/glade-editor-property.c:3018
+#: ../gladeui/glade-editor-property.c:3064
 msgid "Extra"
 msgstr "Thêm nữa"
 
-#: ../src/glade-editor-property.c:3023
+#: ../gladeui/glade-editor-property.c:3069
 msgid "Keypad"
 msgstr "Vùng phím"
 
-#: ../src/glade-editor-property.c:3028
+#: ../gladeui/glade-editor-property.c:3074
 msgid "Functions"
 msgstr "Hàm"
 
-#: ../src/glade-editor-property.c:3033
-#: ../widgets/gnome.xml.in.h:24
+#: ../gladeui/glade-editor-property.c:3079 ../plugins/gnome/gnome.xml.in.h:24
 msgid "Other"
 msgstr "Khác"
 
-#: ../src/glade-editor-property.c:3204
-#: ../src/glade-editor-property.c:3238
-#: ../src/glade-editor-property.c:3283
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3329
 msgid "<choose a key>"
 msgstr "<chọn một phím>"
 
-#: ../src/glade-editor-property.c:3237
-#: ../widgets/gtk+.xml.in.h:153
-#: ../widgets/bonobo.xml.in.h:13
+#: ../gladeui/glade-editor-property.c:3283 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "Không có"
 
-#: ../src/glade-editor-property.c:3363
-#: ../src/glade-signal-editor.c:684
+#: ../gladeui/glade-editor-property.c:3409
+#: ../gladeui/glade-signal-editor.c:684
 msgid "Signal"
 msgstr "Tín hiệu"
 
-#: ../src/glade-editor-property.c:3390
+#: ../gladeui/glade-editor-property.c:3436
 msgid "Key"
 msgstr "Phím"
 
-#: ../src/glade-editor-property.c:3404
+#: ../gladeui/glade-editor-property.c:3450
 msgid "Shift"
 msgstr "Shift"
 
-#: ../src/glade-editor-property.c:3420
+#: ../gladeui/glade-editor-property.c:3466
 msgid "Control"
 msgstr "Control"
 
-#: ../src/glade-editor-property.c:3436
+#: ../gladeui/glade-editor-property.c:3482
 msgid "Alt"
 msgstr "Alt"
 
-#: ../src/glade-editor-property.c:3502
+#: ../gladeui/glade-editor-property.c:3548
 msgid "Choose accelerator keys..."
 msgstr "Chọn phím tăng tốc..."
 
-#: ../src/glade-editor.c:146
+#: ../gladeui/glade-editor.c:146
 msgid "Show info"
 msgstr "Hiện thông tin"
 
-#: ../src/glade-editor.c:147
+#: ../gladeui/glade-editor.c:147
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Hiện/Ẩn cái nút thông tin cho ô điều khiển đã tải"
 
-#: ../src/glade-editor.c:154
+#: ../gladeui/glade-editor.c:154
 msgid "Show context info"
 msgstr "Hiện thông tin ngữ cảnh"
 
-#: ../src/glade-editor.c:155
+#: ../gladeui/glade-editor.c:155
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
-msgstr "Hiện/Ẩn cái nút thông tin cho mỗi tài sản và tín hiệu trong bộ hiệu chỉnh"
+msgstr ""
+"Hiện/Ẩn cái nút thông tin cho mỗi tài sản và tín hiệu trong bộ hiệu chỉnh"
 
-#.construct tab label widget
-#: ../src/glade-editor.c:196
-#: ../src/glade-editor.c:322
-#: ../src/glade-editor.c:1178
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
+#: ../gladeui/glade-editor.c:1178
 msgid "Accessibility"
 msgstr "Khả năng truy cập"
 
-#.configure page container
-#: ../src/glade-editor.c:212
-#: ../src/glade-editor.c:321
+#. configure page container
+#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
 msgid "_Signals"
 msgstr "_Tín hiệu"
 
-#: ../src/glade-editor.c:283
+#: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
 msgstr "Xem tài liệu hướng dẫn về ô điều khiển đã chọn"
 
-#: ../src/glade-editor.c:303
+#: ../gladeui/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
 msgstr "Đặt lại các thuộc tính ô điều khiển về giá trị mặc định"
 
-#: ../src/glade-editor.c:318
+#: ../gladeui/glade-editor.c:318
 msgid "_General"
 msgstr "_Chung"
 
-#: ../src/glade-editor.c:319
+#: ../gladeui/glade-editor.c:319
 msgid "_Packing"
 msgstr "_Nén"
 
-#: ../src/glade-editor.c:320
+#: ../gladeui/glade-editor.c:320
 msgid "_Common"
 msgstr "_Hay dùng"
 
-#: ../src/glade-editor.c:337
+#: ../gladeui/glade-editor.c:337
 msgid "_Edit..."
 msgstr "_Hiệu chỉnh..."
 
-#.Name
-#: ../src/glade-editor.c:483
+#. Name
+#: ../gladeui/glade-editor.c:483
 msgid "Name:"
 msgstr "Tên:"
 
-#.Class
-#: ../src/glade-editor.c:511
+#. Class
+#: ../gladeui/glade-editor.c:511
 msgid "Class:"
 msgstr "Hạng:"
 
-#: ../src/glade-editor.c:991
+#: ../gladeui/glade-editor.c:991
 #, c-format
 msgid "Create a %s"
 msgstr "Tạo %s"
 
-#: ../src/glade-editor.c:1109
+#: ../gladeui/glade-editor.c:1109
 msgid "Reset"
 msgstr "Đặt lại"
 
-#: ../src/glade-editor.c:1123
+#: ../gladeui/glade-editor.c:1123
 msgid "Property"
 msgstr "Thuộc tính"
 
-#: ../src/glade-editor.c:1158
+#: ../gladeui/glade-editor.c:1158
 msgid "General"
 msgstr "Chung"
 
-#: ../src/glade-editor.c:1168
+#: ../gladeui/glade-editor.c:1168
 msgid "Common"
 msgstr "Hay dùng"
 
-#: ../src/glade-editor.c:1213
+#: ../gladeui/glade-editor.c:1213
 msgid "(default)"
 msgstr "(mặc định)"
 
-#: ../src/glade-editor.c:1228
+#: ../gladeui/glade-editor.c:1228
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Hãy chọn các thuộc tính bạn muốn đặt lại thành giá trị mặc định"
 
-#: ../src/glade-editor.c:1360
+#: ../gladeui/glade-editor.c:1360
 msgid "Reset Widget Properties"
 msgstr "Đặt lại Thuộc tính Ô điều khiển"
 
-#.Checklist
-#: ../src/glade-editor.c:1377
+#. Checklist
+#: ../gladeui/glade-editor.c:1377
 msgid "_Properties:"
 msgstr "Th_uộc tính:"
 
-#: ../src/glade-editor.c:1406
+#: ../gladeui/glade-editor.c:1406
 msgid "_Select All"
 msgstr "_Chọn hết"
 
-#: ../src/glade-editor.c:1413
+#: ../gladeui/glade-editor.c:1413
 msgid "_Unselect All"
 msgstr "_Bỏ chọn hết"
 
-#.Description
-#: ../src/glade-editor.c:1422
+#. Description
+#: ../gladeui/glade-editor.c:1422
 msgid "Property _Description:"
 msgstr "_Mô tả thuộc tính:"
 
-#: ../src/glade-fixed.c:467
-#: ../src/glade-gtk.c:1410
+#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Đang để %s bên trong %s"
 
-#: ../src/glade-fixed.c:1029
+#: ../gladeui/glade-fixed.c:940
 msgid "X position property"
 msgstr "Thuộc tính vị trí X"
 
-#: ../src/glade-fixed.c:1030
+#: ../gladeui/glade-fixed.c:941
 msgid "The property used to set the X position of a child object"
 msgstr "Thuộc tính dùng để đặt vị trí X của đối tượng con."
 
-#: ../src/glade-fixed.c:1036
+#: ../gladeui/glade-fixed.c:947
 msgid "Y position property"
 msgstr "Thuộc tính vị trí Y"
 
-#: ../src/glade-fixed.c:1037
+#: ../gladeui/glade-fixed.c:948
 msgid "The property used to set the Y position of a child object"
 msgstr "Thuộc tính dùng để đặt vị trí Y của đối tượng con."
 
-#: ../src/glade-fixed.c:1043
+#: ../gladeui/glade-fixed.c:954
 msgid "Width property"
 msgstr "Thuộc tính rộng"
 
-#: ../src/glade-fixed.c:1044
+#: ../gladeui/glade-fixed.c:955
 msgid "The property used to set the width of a child object"
 msgstr "Thuộc tính dùng để đặt độ rộng của đối tượng con."
 
-#: ../src/glade-fixed.c:1050
+#: ../gladeui/glade-fixed.c:961
 msgid "Height property"
 msgstr "Thuộc tính cao"
 
-#: ../src/glade-fixed.c:1051
+#: ../gladeui/glade-fixed.c:962
 msgid "The property used to set the height of a child object"
 msgstr "Thuộc tính dùng để đặt độ cao của đối tượng con."
 
-#: ../src/glade-fixed.c:1057
+#: ../gladeui/glade-fixed.c:968
 msgid "Can resize"
 msgstr "Đổi cỡ được"
 
-#: ../src/glade-fixed.c:1058
+#: ../gladeui/glade-fixed.c:969
 msgid "Whether this container supports resizes of child widgets"
-msgstr "Đồ chứa này có nên hỗ trợ khả năng thay đổi kích cỡ của ô điều khiển con hay không"
+msgstr ""
+"Đồ chứa này có nên hỗ trợ khả năng thay đổi kích cỡ của ô điều khiển con hay "
+"không"
 
-#: ../src/glade-fixed.c:1064
-msgid "Use Placeholders"
-msgstr "Dùng bộ giữ chỗ"
-
-#: ../src/glade-fixed.c:1065
-msgid ""
-"Whether this container use placeholders, the backend is responsable for "
-"setting up this property"
-msgstr "Đồ chứa này có nên dùng bộ giữ chỗ hay không; hậu phương vẫn cần phải thiết lập thuộc tính này"
-
-#: ../src/glade-palette.c:617
+#: ../gladeui/glade-palette.c:617
 msgid "Widget selector"
 msgstr "Bộ chọn ô điều khiển"
 
-#: ../src/glade-parser.c:1190
+#: ../gladeui/glade-parser.c:1192
 #, c-format
 msgid "Could not find glade file %s"
 msgstr "Không tìm thấy tập tin Glade %s"
 
-#: ../src/glade-parser.c:1203
-#: ../src/glade-parser.c:1211
+#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
 #, c-format
 msgid "Errors parsing glade file %s"
 msgstr "Gặp lỗi khi phân tách tập tin Glade %s"
 
-#: ../src/glade-parser.c:1641
+#: ../gladeui/glade-parser.c:1657
 msgid "Could not allocate memory for interface"
 msgstr "Không thể cấp phát bộ nhớ cho giao diện"
 
-#: ../src/glade-popup.c:254
+#: ../gladeui/glade-popup.c:254
 msgid "_Select"
 msgstr "_Chọn"
 
-#: ../src/glade-project.c:562
+#: ../gladeui/glade-project.c:562
 msgid "Has Unsaved Changes"
 msgstr "Có thay đổi chưa lưu"
 
-#: ../src/glade-project.c:563
+#: ../gladeui/glade-project.c:563
 msgid "Whether project has unsaved changes"
 msgstr "Dự án có điều thay đổi chưa lưu không"
 
-#: ../src/glade-project.c:570
+#: ../gladeui/glade-project.c:570
 msgid "Has Selection"
 msgstr "Có vùng chọn"
 
-#: ../src/glade-project.c:571
+#: ../gladeui/glade-project.c:571
 msgid "Whether project has a selection"
 msgstr "Dự án có vùng chọn không"
 
-#: ../src/glade-project.c:578
+#: ../gladeui/glade-project.c:578
 msgid "Read Only"
 msgstr "Chỉ đọc"
 
-#: ../src/glade-project.c:579
+#: ../gladeui/glade-project.c:579
 msgid "Whether project is read only or not"
 msgstr "Dự án chỉ có quyền đọc không"
 
-#: ../src/glade-project.c:1460
+#: ../gladeui/glade-project.c:687
+#, c-format
+msgid "Unsaved %d"
+msgstr "%d chưa lưu"
+
+#: ../gladeui/glade-project.c:1460
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
-msgstr "Việc tải %s bị lỗi.\n"
+msgstr ""
+"Việc tải %s bị lỗi.\n"
 "Những phân loại theo đây không sẵn sàng: %s"
 
-#.Atk click property
-#: ../src/glade-property-class.c:51
-#: ../widgets/gtk+.xml.in.h:47
+#. Atk click property
+#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Click"
 msgstr "Nhấn"
 
-#.Atk click property
-#: ../src/glade-property-class.c:52
-#: ../widgets/gtk+.xml.in.h:210
-msgid "Set the desctription of the Click atk action"
-msgstr "Đặt mô tả của hành động atk Nhấn"
+#. Atk click property
+#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "Set the description of the Click atk action"
+msgstr "Đặt mô tả của hành động atk Nhấn (Click)"
 
-#.Atk press property
-#: ../src/glade-property-class.c:53
-#: ../widgets/gtk+.xml.in.h:178
+#. Atk press property
+#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Press"
 msgstr "Bấm"
 
-#.Atk press property
-#: ../src/glade-property-class.c:54
-#: ../widgets/gtk+.xml.in.h:212
-msgid "Set the desctription of the Press atk action"
-msgstr "Đặt mô tả của hành động atk Bấm"
+#. Atk press property
+#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Set the description of the Press atk action"
+msgstr "Đặt mô tả của hành động atk Bấm (Press)"
 
-#.Atk release property
-#: ../src/glade-property-class.c:55
-#: ../widgets/gtk+.xml.in.h:194
+#. Atk release property
+#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Release"
 msgstr "Buông"
 
-#.Atk release property
-#: ../src/glade-property-class.c:56
-#: ../widgets/gtk+.xml.in.h:214
-msgid "Set the desctription of the Release atk action"
-msgstr "Đặt mô tả của hành động atk Buông"
+#. Atk release property
+#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
+msgid "Set the description of the Release atk action"
+msgstr "Đặt mô tả của hành động atk Buông (Release)"
 
-#.Atk activate property
-#: ../src/glade-property-class.c:57
-#: ../widgets/gtk+.xml.in.h:14
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Activate"
 msgstr "Kích hoạt"
 
-#.Atk activate property
-#: ../src/glade-property-class.c:58
-#: ../widgets/gtk+.xml.in.h:208
-msgid "Set the desctription of the Activate atk action"
-msgstr "Đặt mô tả của hành động atk Kích hoạt"
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "Set the description of the Activate atk action"
+msgstr "Đặt mô tả của hành động atk Kích hoạt (Activate)"
 
-#: ../src/glade-property-class.c:62
+#: ../gladeui/glade-property-class.c:67
 msgid "Controlled By"
 msgstr "Bị điều khiển bởi"
 
-#: ../src/glade-property-class.c:63
+#: ../gladeui/glade-property-class.c:68
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Ngụ ý đối tượng bị điều khiển bởi một hay nhiều đối tượng đích"
 
-#: ../src/glade-property-class.c:65
+#: ../gladeui/glade-property-class.c:70
 msgid "Controller For"
 msgstr "Bộ điều khiển cho"
 
-#: ../src/glade-property-class.c:66
+#: ../gladeui/glade-property-class.c:71
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Ngụ ý đối tượng là bộ điều khiển cho một hay nhiều đối tượng đích"
 
-#: ../src/glade-property-class.c:68
+#: ../gladeui/glade-property-class.c:73
 msgid "Labelled By"
 msgstr "Bị nhãn bởi"
 
-#: ../src/glade-property-class.c:69
+#: ../gladeui/glade-property-class.c:74
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr "Ngụ ý đối tượng bị nhãn bởi một hay nhiều đối tượng đích"
 
-#: ../src/glade-property-class.c:71
+#: ../gladeui/glade-property-class.c:76
 msgid "Label For"
 msgstr "Nhãn cho"
 
-#: ../src/glade-property-class.c:72
+#: ../gladeui/glade-property-class.c:77
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Ngụ ý đối tượng là nhãn cho một hay nhiều đối tượng đích"
 
-#: ../src/glade-property-class.c:74
+#: ../gladeui/glade-property-class.c:79
 msgid "Member Of"
 msgstr "Thành viên"
 
-#: ../src/glade-property-class.c:75
+#: ../gladeui/glade-property-class.c:80
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
-msgstr "Ngụ ý đối tượng là thành viên của nhóm chứa một hay nhiều đối tượng đích"
+msgstr ""
+"Ngụ ý đối tượng là thành viên của nhóm chứa một hay nhiều đối tượng đích"
 
-#: ../src/glade-property-class.c:77
+#: ../gladeui/glade-property-class.c:82
 msgid "Child Node Of"
 msgstr "Nút con"
 
-#: ../src/glade-property-class.c:78
+#: ../gladeui/glade-property-class.c:83
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
-msgstr "Ngụ ý đối tượng là ô trong bảng cây được hiển thị vì ô cùng cột được mở rộng "
+msgstr ""
+"Ngụ ý đối tượng là ô trong bảng cây được hiển thị vì ô cùng cột được mở rộng "
 "và ngụ ý ô đó"
 
-#: ../src/glade-property-class.c:81
+#: ../gladeui/glade-property-class.c:86
 msgid "Flows To"
 msgstr "Chảy đến"
 
-#: ../src/glade-property-class.c:82
+#: ../gladeui/glade-property-class.c:87
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
-msgstr "Ngụ ý đối tượng có nội dung luồng hợp lý đến một đối tượng ATK khác bằng "
+msgstr ""
+"Ngụ ý đối tượng có nội dung luồng hợp lý đến một đối tượng ATK khác bằng "
 "cách tuần tự (v.d. luồng chữ)"
 
-#: ../src/glade-property-class.c:85
+#: ../gladeui/glade-property-class.c:90
 msgid "Flows From"
 msgstr "Chảy từ"
 
-#: ../src/glade-property-class.c:86
+#: ../gladeui/glade-property-class.c:91
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
-msgstr "Ngụ ý đối tượng có nội dung luồng hợp lý từ một đối tượng ATK khác bằng cách "
+msgstr ""
+"Ngụ ý đối tượng có nội dung luồng hợp lý từ một đối tượng ATK khác bằng cách "
 "tuần tự (v.d. luồng chữ)"
 
-#: ../src/glade-property-class.c:89
+#: ../gladeui/glade-property-class.c:94
 msgid "Subwindow Of"
 msgstr "Cửa sổ phụ"
 
-#: ../src/glade-property-class.c:90
+#: ../gladeui/glade-property-class.c:95
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in  the UI hierarchy to that component"
-msgstr "Ngụ ý cửa sổ phụ được nối lại với thành phần nhưng mặc khác không kết nối đến thành phần giao diện người dùng đó trong phân cấp "
+msgstr ""
+"Ngụ ý cửa sổ phụ được nối lại với thành phần nhưng mặc khác không kết nối "
+"đến thành phần giao diện người dùng đó trong phân cấp "
 
-#: ../src/glade-property-class.c:93
+#: ../gladeui/glade-property-class.c:98
 msgid "Embeds"
 msgstr "Làm nhúng"
 
-#: ../src/glade-property-class.c:94
+#: ../gladeui/glade-property-class.c:99
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
-msgstr "Ngụ ý đối tượng làm nhúng trực quan nội dung của đối tượng khác, tức là nội "
+msgstr ""
+"Ngụ ý đối tượng làm nhúng trực quan nội dung của đối tượng khác, tức là nội "
 "dung đối tượng này chảy quanh nội dung đối tượng khác."
 
-#: ../src/glade-property-class.c:97
+#: ../gladeui/glade-property-class.c:102
 msgid "Embedded By"
 msgstr "Nhúng bởi"
 
-#: ../src/glade-property-class.c:98
+#: ../gladeui/glade-property-class.c:103
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visualy "
 "embedded in another object"
-msgstr "Ngược lại « Làm nhúng », ngụ ý nội dung đối tượng nhúng trực quan trong đối "
+msgstr ""
+"Ngược lại « Làm nhúng », ngụ ý nội dung đối tượng nhúng trực quan trong đối "
 "tượng khác"
 
-#: ../src/glade-property-class.c:101
+#: ../gladeui/glade-property-class.c:106
 msgid "Popup For"
 msgstr "Bật lên"
 
-#: ../src/glade-property-class.c:102
+#: ../gladeui/glade-property-class.c:107
 msgid "Indicates that an object is a popup for another object"
 msgstr "Ngụ ý đối tượng là điều bật lên cho đối tượng khác."
 
-#: ../src/glade-property-class.c:104
+#: ../gladeui/glade-property-class.c:109
 msgid "Parent Window Of"
 msgstr "Cửa sổ mẹ"
 
-#: ../src/glade-property-class.c:105
+#: ../gladeui/glade-property-class.c:110
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Ngụ ý đối tượng là cửa sổ mẹ của đối tượng khác"
 
-#: ../src/glade-property.c:587
+#: ../gladeui/glade-property.c:571
 msgid "Enabled"
 msgstr "Hoạt động"
 
-#: ../src/glade-property.c:588
+#: ../gladeui/glade-property.c:572
 msgid "If the property is optional, this is its enabled state"
 msgstr "Nếu thuộc tính là tùy chọn, điều này là tính trạng hoạt động của nó"
 
-#: ../src/glade-property.c:594
+#: ../gladeui/glade-property.c:578
 msgid "Sensitive"
 msgstr "Nhạy cảm"
 
-#: ../src/glade-property.c:595
+#: ../gladeui/glade-property.c:579
 msgid "This gives backends control to set property sensitivity"
 msgstr "Tính năng này cho phép hậu phương đặt độ nhạy cảm của thuộc tính"
 
-#: ../src/glade-property.c:601
+#: ../gladeui/glade-property.c:585
 msgid "Comment"
 msgstr "Ghi chú"
 
-#: ../src/glade-property.c:602
+#: ../gladeui/glade-property.c:586
 msgid "Comment for translators"
 msgstr "Ghi chú cho người dịch"
 
-#: ../src/glade-property.c:608
+#: ../gladeui/glade-property.c:592
 msgid "Translatable"
 msgstr "Dịch được"
 
-#: ../src/glade-property.c:609
+#: ../gladeui/glade-property.c:593
 msgid "Whether this property is translatable or not"
 msgstr "Có nên thông dịch thuộc tính này hay không."
 
-#: ../src/glade-property.c:615
+#: ../gladeui/glade-property.c:599
 msgid "Has Context"
 msgstr "Có ngữ cảnh"
 
-#: ../src/glade-property.c:616
+#: ../gladeui/glade-property.c:600
 msgid "Whether or not the translatable string has a context prefix"
 msgstr "Chuỗi có khả năng dịch có tiền tố ngữ cảnh hay không"
 
-#: ../src/glade-signal-editor.c:704
+#: ../gladeui/glade-signal-editor.c:704
 msgid "Handler"
 msgstr "Bộ quản lý"
 
-#: ../src/glade-signal-editor.c:726
+#: ../gladeui/glade-signal-editor.c:726
 msgid "User data"
 msgstr "Dữ liệu người dùng"
 
-#: ../src/glade-signal-editor.c:740
+#: ../gladeui/glade-signal-editor.c:740
 msgid "Lookup"
 msgstr "Tra tìm"
 
-#: ../src/glade-signal-editor.c:751
+#: ../gladeui/glade-signal-editor.c:751
 msgid "After"
 msgstr "Sau"
 
-#: ../src/glade-utils.c:170
-#: ../src/glade-utils.c:201
+#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "Không tìm thấy ký hiệu « %s »"
 
-#: ../src/glade-utils.c:177
+#: ../gladeui/glade-utils.c:176
 #, c-format
 msgid "Could not get the type from \"%s\""
 msgstr "Không thể lấy kiểu từ « %s »"
 
-#: ../src/glade-utils.c:542
+#: ../gladeui/glade-utils.c:541
 msgid "All Files"
 msgstr "Mọi tập tin"
 
-#: ../src/glade-utils.c:547
+#: ../gladeui/glade-utils.c:546
 msgid "Glade Files"
 msgstr "Tập tin Glade"
 
-#: ../src/glade-utils.c:1353
+#: ../gladeui/glade-utils.c:1296
 #, c-format
 msgid ""
 "%s exists.\n"
 "Do you want to replace it?"
-msgstr "%s đã có.\n"
+msgstr ""
+"%s đã có.\n"
 "Bạn có muốn thay thế nó không?"
 
-#: ../src/glade-utils.c:1381
+#: ../gladeui/glade-utils.c:1324
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "Gặp lỗi khi ghi vào %s: %s"
 
-#: ../src/glade-utils.c:1395
+#: ../gladeui/glade-utils.c:1338
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "Gặp lỗi khi đọc %s: %s"
 
-#: ../src/glade-utils.c:1410
+#: ../gladeui/glade-utils.c:1353
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "Gặp lỗi khi đóng kênh nhập/xuất %s: %s"
 
-#: ../src/glade-utils.c:1420
+#: ../gladeui/glade-utils.c:1363
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "Việc mở %s để ghi bị lỗi: %s"
 
-#: ../src/glade-utils.c:1431
+#: ../gladeui/glade-utils.c:1374
 #, c-format
 msgid "Error shutting down io channel %s: %s"
 msgstr "Gặp lỗi khi đóng kênh %s: %s"
 
-#: ../src/glade-utils.c:1440
+#: ../gladeui/glade-utils.c:1383
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "Việc mở %s để đọc bị lỗi: %s"
 
-#: ../src/glade-utils.c:1498
+#: ../gladeui/glade-utils.c:1441
 #, c-format
 msgid "Unable to open the module %s (%s)."
 msgstr "Không thể mở mô-đun %s (%s)."
 
-#: ../src/glade-widget.c:1073
+#: ../gladeui/glade-widget.c:928
 msgid "The name of the widget"
 msgstr "Tên của ô điều khiển."
 
-#: ../src/glade-widget.c:1080
+#: ../gladeui/glade-widget.c:935
 msgid "Internal name"
 msgstr "Tên nội bộ"
 
-#: ../src/glade-widget.c:1081
+#: ../gladeui/glade-widget.c:936
 msgid "The internal name of the widget"
 msgstr "Tên nội bộ của ô điều khiển."
 
-#: ../src/glade-widget.c:1087
+#: ../gladeui/glade-widget.c:942
 msgid "Anarchist"
 msgstr "Vô thứ tự"
 
-#: ../src/glade-widget.c:1088
+#: ../gladeui/glade-widget.c:943
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
-msgstr "Nếu điều con ghép này là điều con theo thứ tự (ancestral), hoặc điều con vô "
+msgstr ""
+"Nếu điều con ghép này là điều con theo thứ tự (ancestral), hoặc điều con vô "
 "thứ tự (anarchist)"
 
-#: ../src/glade-widget.c:1095
+#: ../gladeui/glade-widget.c:950
 msgid "Object"
 msgstr "Đối tượng"
 
-#: ../src/glade-widget.c:1096
+#: ../gladeui/glade-widget.c:951
 msgid "The object associated"
 msgstr "Đối tượng tương ứng"
 
-#: ../src/glade-widget.c:1103
+#: ../gladeui/glade-widget.c:958
 msgid "Adaptor"
 msgstr "Bộ tiếp hợp"
 
-#: ../src/glade-widget.c:1104
+#: ../gladeui/glade-widget.c:959
 msgid "The class adaptor for the associated widget"
 msgstr "Bộ tiếp hợp hạng cho ô điều khiển tương ứng"
 
-#: ../src/glade-widget.c:1111
+#: ../gladeui/glade-widget.c:966
 msgid "Project"
 msgstr "Dự án"
 
-#: ../src/glade-widget.c:1112
+#: ../gladeui/glade-widget.c:967
 msgid "The glade project that this widget belongs to"
 msgstr "Dự án Glade mà ô điều khiển này thuộc về nó."
 
-#: ../src/glade-widget.c:1121
+#: ../gladeui/glade-widget.c:976
 msgid "A list of GladeProperties"
 msgstr "Danh sách thuộc tính Glade"
 
-#: ../src/glade-widget.c:1127
-#: ../widgets/gtk+.xml.in.h:171
+#: ../gladeui/glade-widget.c:982 ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Parent"
 msgstr "Mẹ"
 
-#: ../src/glade-widget.c:1128
+#: ../gladeui/glade-widget.c:983
 msgid "A pointer to the parenting GladeWidget"
 msgstr "Bộ trỏ tới GladeWidget (ô điều khiển) mẹ."
 
-#: ../src/glade-widget.c:1135
+#: ../gladeui/glade-widget.c:990
 msgid "Internal Name"
 msgstr "Tên nội bộ"
 
-#: ../src/glade-widget.c:1136
+#: ../gladeui/glade-widget.c:991
 msgid "A generic name prefix for internal widgets"
 msgstr "Một tiền tố tên giống loài cho các ô điều khiển nội bộ"
 
-#: ../src/glade-widget.c:1141
+#: ../gladeui/glade-widget.c:996
 msgid "Template"
 msgstr "Mẫu"
 
-#: ../src/glade-widget.c:1142
+#: ../gladeui/glade-widget.c:997
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Một mẫu GladeWidget vào đó cần dựa ô điều khiển mới"
 
-#: ../src/glade-widget.c:1148
-#: ../widgets/gtk+.xml.in.h:126
+#: ../gladeui/glade-widget.c:1003 ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Info"
 msgstr "Thông tin"
 
-#: ../src/glade-widget.c:1149
+#: ../gladeui/glade-widget.c:1004
 msgid "A GladeWidgetInfo struct to base a new widget on"
 msgstr "Một cấu trúc GladeWidget vào đó có thể dựa ô điều khiển mới"
 
-#: ../src/glade-widget.c:1154
+#: ../gladeui/glade-widget.c:1009
 msgid "Reason"
 msgstr "Lý do"
 
-#: ../src/glade-widget.c:1155
+#: ../gladeui/glade-widget.c:1010
 msgid "A GladeCreateReason for this creation"
 msgstr "Một lý do kiểu GladeCreateReason (Glade tạo lý do) cho việc tạo này"
 
-#: ../src/glade-widget-adaptor.c:183
-#: ../src/glade-widget-adaptor.c:223
+#: ../gladeui/glade-widget.c:1018
+msgid "Toplevel Width"
+msgstr "Độ rộng toplevel"
+
+#: ../gladeui/glade-widget.c:1019
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "Độ rộng ô điều khiển khi nằm trên định GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1028
+msgid "Toplevel Height"
+msgstr "Chiều cao toplevel"
+
+#: ../gladeui/glade-widget.c:1029
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "Chiều cao ô điều khiển khi nằm trên đỉnh GladeDesignLayout"
+
+#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
 #, c-format
 msgid "Unable to load icon for %s (%s)"
 msgstr "Không thể nạp biểu tượng cho %s (%s)"
 
-#: ../src/glade-widget-adaptor.c:198
-#: ../src/glade-widget-adaptor.c:238
+#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
 #, c-format
 msgid "Unable to load stock icon (%s)"
 msgstr "Không thể nạp biểu tượng kho (%s)"
 
-#: ../src/glade-widget-adaptor.c:332
+#: ../gladeui/glade-widget-adaptor.c:333
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Một bộ tiếp hợp đã bắt nguồn (%s) từ %s đã có."
 
-#: ../src/glade-widget-adaptor.c:909
+#: ../gladeui/glade-widget-adaptor.c:917
 msgid "Name of the class"
 msgstr "Tên của hạng"
 
-#: ../src/glade-widget-adaptor.c:917
+#: ../gladeui/glade-widget-adaptor.c:925
 msgid "GType of the class"
 msgstr "Kiểu GType của hạng"
 
-#: ../src/glade-widget-adaptor.c:924
-#: ../widgets/gnome.xml.in.h:45
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:45
 msgid "Title"
 msgstr "Tựa"
 
-#: ../src/glade-widget-adaptor.c:925
+#: ../gladeui/glade-widget-adaptor.c:933
 msgid "Translated title for the class used in the glade UI"
 msgstr "Tựa đã dịch cho hạng được dùng trong UI glade"
 
-#: ../src/glade-widget-adaptor.c:932
+#: ../gladeui/glade-widget-adaptor.c:940
 msgid "Generic Name"
 msgstr "Tên giống loài"
 
-#: ../src/glade-widget-adaptor.c:933
+#: ../gladeui/glade-widget-adaptor.c:941
 msgid "Used to generate names of new widgets"
 msgstr "Dùng để tạo ra tên của mỗi ô điều khiển mới"
 
-#: ../src/glade-widget-adaptor.c:940
+#: ../gladeui/glade-widget-adaptor.c:948
 msgid "Catalog"
 msgstr "Phân loại"
 
-#: ../src/glade-widget-adaptor.c:941
+#: ../gladeui/glade-widget-adaptor.c:949
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Tên của phân loại ô điều khiển bởi đó hạng này được tuyên bố"
 
-#: ../src/glade-widget-adaptor.c:948
+#: ../gladeui/glade-widget-adaptor.c:956
 msgid "Book"
 msgstr "Sách"
 
-#: ../src/glade-widget-adaptor.c:949
+#: ../gladeui/glade-widget-adaptor.c:957
 msgid "DevHelp search namespace for this widget class"
-msgstr "Tên miền tìm kiếm trợ trong giúp phát triển DevHelp cho hạng ô điều khiển này"
+msgstr ""
+"Tên miền tìm kiếm trợ trong giúp phát triển DevHelp cho hạng ô điều khiển này"
 
-#: ../src/glade-widget-adaptor.c:956
+#: ../gladeui/glade-widget-adaptor.c:964
 msgid "Special Child Type"
 msgstr "Kiểu con đặc biệt"
 
-#: ../src/glade-widget-adaptor.c:957
+#: ../gladeui/glade-widget-adaptor.c:965
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
-msgstr "Giữ tên của thuộc tính gom lại để hiển thị các con đặc biệt cho hạng đồ chứa này"
+msgstr ""
+"Giữ tên của thuộc tính gom lại để hiển thị các con đặc biệt cho hạng đồ chứa "
+"này"
 
-#: ../src/glade-widget-adaptor.c:965
+#: ../gladeui/glade-widget-adaptor.c:973
 msgid "Large Icon"
 msgstr "Biểu tượng lớn"
 
-#: ../src/glade-widget-adaptor.c:966
+#: ../gladeui/glade-widget-adaptor.c:974
 msgid "The 22x22 icon for this widget class"
 msgstr "Biểu tượng 22×22 cho hạng ô điều khiển này"
 
-#: ../src/glade-widget-adaptor.c:973
+#: ../gladeui/glade-widget-adaptor.c:981
 msgid "Small Icon"
 msgstr "Biểu tượng nhỏ"
 
-#: ../src/glade-widget-adaptor.c:974
+#: ../gladeui/glade-widget-adaptor.c:982
 msgid "The 16x16 icon for this widget class"
 msgstr "Biểu tượng 16×16 cho hạng ô điều khiển này"
 
-#: ../src/glade-widget-adaptor.c:981
-#: ../widgets/gtk+.xml.in.h:63
+#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Cursor"
 msgstr "Con chạy"
 
-#: ../src/glade-widget-adaptor.c:982
+#: ../gladeui/glade-widget-adaptor.c:990
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Một con trỏ để chèn ô điều khiển vào UI"
 
-#: ../src/glade-project-view.c:646
+#: ../gladeui/glade-project-view.c:646
 #, c-format
 msgid "(internal %s)"
 msgstr "(%s nội bộ)"
 
-#: ../src/glade-project-view.c:650
+#: ../gladeui/glade-project-view.c:650
 #, c-format
 msgid "(%s child)"
 msgstr "(điều con %s)"
 
-#: ../src/glade-custom.c:217
+#: ../gladeui/glade-custom.c:217
 msgid "Creation Function"
 msgstr "Hàm tạo"
 
-#: ../src/glade-custom.c:218
+#: ../gladeui/glade-custom.c:218
 msgid "The function which creates this widget"
 msgstr "Hàm mà tạo ô điều khiển này"
 
-#: ../src/glade-custom.c:224
+#: ../gladeui/glade-custom.c:224
 msgid "String 1"
 msgstr "Chuỗi 1"
 
-#: ../src/glade-custom.c:225
+#: ../gladeui/glade-custom.c:225
 msgid "The first string argument to pass to the function"
 msgstr "Đối số dạng chuỗi thứ nhất cần gởi qua cho hàm"
 
-#: ../src/glade-custom.c:231
+#: ../gladeui/glade-custom.c:231
 msgid "String 2"
 msgstr "Chuỗi 2"
 
-#: ../src/glade-custom.c:232
+#: ../gladeui/glade-custom.c:232
 msgid "The second string argument to pass to the function"
 msgstr "Đối số dạng chuỗi thứ hai cần gởi qua cho hàm"
 
-#: ../src/glade-custom.c:238
+#: ../gladeui/glade-custom.c:238
 msgid "Integer 1"
 msgstr "Số nguyên 1"
 
-#: ../src/glade-custom.c:239
+#: ../gladeui/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
 msgstr "Đối số dạng số nguyên thứ nhất cần gởi qua cho hàm"
 
-#: ../src/glade-custom.c:245
+#: ../gladeui/glade-custom.c:245
 msgid "Integer 2"
 msgstr "Số nguyên 2"
 
-#: ../src/glade-custom.c:246
+#: ../gladeui/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
 msgstr "Đối số dạng số nguyên thứ hai cần gởi qua cho hàm"
 
-#: ../src/glade-gtk.c:171
+#: ../plugins/gtk+/glade-gtk.c:169
 msgid "GnomeUIInfo"
 msgstr "TinUIGnome"
 
-#: ../src/glade-gtk.c:172
+#: ../plugins/gtk+/glade-gtk.c:170
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "Chọn mục kho GnomeUIInfo (thông tin UI Gnome)"
 
-#: ../src/glade-gtk.c:188
+#: ../plugins/gtk+/glade-gtk.c:186
 msgid "Filename"
 msgstr "Tên tập tin"
 
-#: ../src/glade-gtk.c:190
+#: ../plugins/gtk+/glade-gtk.c:188
 msgid "Icon Theme"
 msgstr "Sắc thái biểu tượng"
 
-#: ../src/glade-gtk.c:210
-#: ../widgets/gtk+.xml.in.h:57
+#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Container"
 msgstr "Đồ chứa"
 
-#: ../src/glade-gtk.c:220
-#: ../src/glade-gtk.c:229
+#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
 msgid "Method"
 msgstr "Phương pháp"
 
-#: ../src/glade-gtk.c:221
+#: ../plugins/gtk+/glade-gtk.c:219
 msgid "The method to use to edit this image"
 msgstr "Phương pháp cần dùng để hiệu chỉnh ảnh này"
 
-#: ../src/glade-gtk.c:230
+#: ../plugins/gtk+/glade-gtk.c:228
 msgid "The method to use to edit this button"
 msgstr "Phương pháp cần dùng để hiệu chỉnh cái nút này"
 
-#: ../src/glade-gtk.c:587
+#: ../plugins/gtk+/glade-gtk.c:585
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Thứ tự các con của %s"
 
-#: ../src/glade-gtk.c:3275
-#: ../src/glade-gtk.c:3279
-#: ../src/glade-gtk.c:3454
-#: ../src/glade-gtk.c:3458
+#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3266
+#: ../plugins/gtk+/glade-gtk.c:3441 ../plugins/gtk+/glade-gtk.c:3445
 msgid "This only applies with label type buttons"
 msgstr "Chỉ áp dụng cho cái nút kiểu nhãn"
 
-#: ../src/glade-gtk.c:3290
-#: ../src/glade-gtk.c:3294
-#: ../src/glade-gtk.c:3446
-#: ../src/glade-gtk.c:3450
+#: ../plugins/gtk+/glade-gtk.c:3277 ../plugins/gtk+/glade-gtk.c:3281
+#: ../plugins/gtk+/glade-gtk.c:3433 ../plugins/gtk+/glade-gtk.c:3437
 msgid "This only applies with stock type buttons"
 msgstr "Chỉ áp dụng cho cái nút kiểu kho"
 
-#: ../src/glade-gtk.c:3554
-#: ../src/glade-gtk.c:3576
+#: ../plugins/gtk+/glade-gtk.c:3541 ../plugins/gtk+/glade-gtk.c:3563
 msgid "You must remove any children before you can set the type"
 msgstr "Bạn phải gỡ bỏ điều con nào trước khi có thể đặt kiểu"
 
-#: ../src/glade-gtk.c:3600
-#: ../src/glade-gtk.c:4959
+#: ../plugins/gtk+/glade-gtk.c:3587 ../plugins/gtk+/glade-gtk.c:4949
 msgid "This only applies with file type images"
 msgstr "Chỉ áp dụng cho ảnh kiểu tập tin."
 
-#: ../src/glade-gtk.c:3608
-#: ../src/glade-gtk.c:4963
+#: ../plugins/gtk+/glade-gtk.c:3595 ../plugins/gtk+/glade-gtk.c:4953
 msgid "This only applies to Icon Theme type images"
 msgstr "Chỉ áp dụng cho ảnh kiểu Sắc thái Biểu tượng."
 
-#: ../src/glade-gtk.c:3617
-#: ../src/glade-gtk.c:4961
+#: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4951
 msgid "This only applies with stock type images"
 msgstr "Chỉ áp dụng cho ảnh kiểu kho."
 
-#: ../src/glade-gtk.c:3629
+#: ../plugins/gtk+/glade-gtk.c:3616
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
-msgstr "Kích cỡ điểm ảnh được ở trên Kích cỡ Biểu tượng; nếu bạn muốn sử dụng Kích "
+msgstr ""
+"Kích cỡ điểm ảnh được ở trên Kích cỡ Biểu tượng; nếu bạn muốn sử dụng Kích "
 "cỡ Biểu tượng, hãy lập Kích cỡ Điểm ảnh thành -1."
 
-#: ../src/glade-gtk.c:3655
+#: ../plugins/gtk+/glade-gtk.c:3642
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "Kích cỡ điểm ảnh được ở trên Kích cỡ Biểu tượng."
 
-#: ../src/glade-gtk.c:3942
-#: ../src/glade-gtk.c:4850
+#: ../plugins/gtk+/glade-gtk.c:3933 ../plugins/gtk+/glade-gtk.c:4840
 msgid "<separator>"
 msgstr "<bộ ngăn cách>"
 
-#: ../src/glade-gtk.c:4117
-#: ../widgets/gtk+.xml.in.h:154
+#: ../plugins/gtk+/glade-gtk.c:4107 ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Normal"
 msgstr "Chuẩn"
 
-#: ../src/glade-gtk.c:4118
-#: ../widgets/gtk+.xml.in.h:121
+#: ../plugins/gtk+/glade-gtk.c:4108 ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Image"
 msgstr "Ảnh"
 
-#: ../src/glade-gtk.c:4119
+#: ../plugins/gtk+/glade-gtk.c:4109
 msgid "Check"
 msgstr "Kiểm tra"
 
-#: ../src/glade-gtk.c:4120
-#: ../src/glade-gtk.c:4909
+#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/glade-gtk.c:4899
 msgid "Radio"
 msgstr "Chọn một"
 
-#: ../src/glade-gtk.c:4121
-#: ../src/glade-gtk.c:4912
+#: ../plugins/gtk+/glade-gtk.c:4111 ../plugins/gtk+/glade-gtk.c:4902
 msgid "Separator"
 msgstr "Bộ ngăn cách"
 
-#: ../src/glade-gtk.c:4125
+#: ../plugins/gtk+/glade-gtk.c:4115
 msgid "Add Item"
 msgstr "Thêm mục"
 
-#: ../src/glade-gtk.c:4126
+#: ../plugins/gtk+/glade-gtk.c:4116
 msgid "Add Child Item"
 msgstr "Thêm mục con"
 
-#: ../src/glade-gtk.c:4127
-#: ../src/glade-gtk.c:4921
+#: ../plugins/gtk+/glade-gtk.c:4117 ../plugins/gtk+/glade-gtk.c:4911
 msgid "Add Separator"
 msgstr "Thêm Bộ phân cách"
 
-#: ../src/glade-gtk.c:4140
+#: ../plugins/gtk+/glade-gtk.c:4130
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
 "  * Press Delete to remove the selected item.\n"
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
-msgstr "<big><b>Mẹo :</b></big>\n"
-"  • Nhắp-phải trên khung xem cây, để thêm mục.\n"
-"  • Bấm phím Delete để gỡ bỏ mục được chọn.\n"
-"  • Kéo và Thả để sắp xếp lại.\n"
-"  • Có thể sửa đổi cột Kiểu."
+msgstr ""
+"<big><b>Mẹo :</b></big>\n"
+"  * Nhắp-phải trên khung xem cây, để thêm mục.\n"
+"  * Bấm phím Delete để gỡ bỏ mục được chọn.\n"
+"  * Kéo và Thả để sắp xếp lại.\n"
+"  * Có thể sửa đổi cột Kiểu."
 
-#: ../src/glade-gtk.c:4369
+#: ../plugins/gtk+/glade-gtk.c:4359
 msgid "Print S_etup"
 msgstr "Thi_ết lập in"
 
-#: ../src/glade-gtk.c:4373
+#: ../plugins/gtk+/glade-gtk.c:4363
 msgid "Find Ne_xt"
 msgstr "Tìm _kế"
 
-#: ../src/glade-gtk.c:4377
+#: ../plugins/gtk+/glade-gtk.c:4367
 msgid "_Undo Move"
 msgstr "_Hồi lại chuyển"
 
-#: ../src/glade-gtk.c:4381
+#: ../plugins/gtk+/glade-gtk.c:4371
 msgid "_Redo Move"
 msgstr "_Làm lại chuyển"
 
-#: ../src/glade-gtk.c:4384
+#: ../plugins/gtk+/glade-gtk.c:4374
 msgid "Select _All"
 msgstr "Chọn _hết"
 
-#: ../src/glade-gtk.c:4387
+#: ../plugins/gtk+/glade-gtk.c:4377
 msgid "_New Game"
 msgstr "Lượt chơi _mới"
 
-#: ../src/glade-gtk.c:4390
+#: ../plugins/gtk+/glade-gtk.c:4380
 msgid "_Pause game"
 msgstr "_Tạm dừng chơi"
 
-#: ../src/glade-gtk.c:4393
+#: ../plugins/gtk+/glade-gtk.c:4383
 msgid "_Restart Game"
 msgstr "_Bắt đầu lại chơi"
 
-#: ../src/glade-gtk.c:4396
+#: ../plugins/gtk+/glade-gtk.c:4386
 msgid "_Hint"
 msgstr "Gợi _ý"
 
-#: ../src/glade-gtk.c:4399
+#: ../plugins/gtk+/glade-gtk.c:4389
 msgid "_Scores..."
 msgstr "_Điểm..."
 
-#: ../src/glade-gtk.c:4402
+#: ../plugins/gtk+/glade-gtk.c:4392
 msgid "_End Game"
 msgstr "_Kết thúc chơi"
 
-#: ../src/glade-gtk.c:4405
+#: ../plugins/gtk+/glade-gtk.c:4395
 msgid "Create New _Window"
 msgstr "Tạo _cửa sổ mới"
 
-#: ../src/glade-gtk.c:4408
+#: ../plugins/gtk+/glade-gtk.c:4398
 msgid "_Close This Window"
 msgstr "Đón_g cửa sổ này"
 
-#: ../src/glade-gtk.c:4420
+#: ../plugins/gtk+/glade-gtk.c:4410
 msgid "_Settings"
 msgstr "Thiết _lập"
 
-#: ../src/glade-gtk.c:4423
+#: ../plugins/gtk+/glade-gtk.c:4413
 msgid "Fi_les"
 msgstr "_Tập tin"
 
-#: ../src/glade-gtk.c:4426
+#: ../plugins/gtk+/glade-gtk.c:4416
 msgid "_Windows"
 msgstr "_Cửa sổ"
 
-#: ../src/glade-gtk.c:4432
+#: ../plugins/gtk+/glade-gtk.c:4422
 msgid "_Game"
 msgstr "_Lượt"
 
-#: ../src/glade-gtk.c:4528
+#: ../plugins/gtk+/glade-gtk.c:4518
 msgid "This does not apply with stock items"
 msgstr "Không áp dụng cho mục kho."
 
-#: ../src/glade-gtk.c:4738
+#: ../plugins/gtk+/glade-gtk.c:4728
 msgid "Menu Bar Editor"
 msgstr "Bộ hiệu chỉnh thanh trình đơn"
 
-#: ../src/glade-gtk.c:4745
+#: ../plugins/gtk+/glade-gtk.c:4735
 msgid "Menu Editor"
 msgstr "Bộ sửa trình đơn"
 
-#: ../src/glade-gtk.c:4859
+#: ../plugins/gtk+/glade-gtk.c:4849
 msgid "<custom>"
 msgstr "<riêng>"
 
-#: ../src/glade-gtk.c:4907
-#: ../widgets/gtk+.xml.in.h:31
+#: ../plugins/gtk+/glade-gtk.c:4897 ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Button"
 msgstr "Nút"
 
-#: ../src/glade-gtk.c:4908
+#: ../plugins/gtk+/glade-gtk.c:4898
 msgid "Toggle"
 msgstr "Bật/tắt"
 
-#: ../src/glade-gtk.c:4910
-#: ../widgets/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:4900 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Menu"
 msgstr "Trình đơn"
 
-#: ../src/glade-gtk.c:4911
+#: ../plugins/gtk+/glade-gtk.c:4901
 msgid "Item"
 msgstr "Mục"
 
-#: ../src/glade-gtk.c:4916
+#: ../plugins/gtk+/glade-gtk.c:4906
 msgid "Add Tool Button"
 msgstr "Thêm nút công cụ"
 
-#: ../src/glade-gtk.c:4917
+#: ../plugins/gtk+/glade-gtk.c:4907
 msgid "Add Toggle Button"
 msgstr "Thêm nút bật/tắt"
 
-#: ../src/glade-gtk.c:4918
+#: ../plugins/gtk+/glade-gtk.c:4908
 msgid "Add Radio Button"
 msgstr "Thêm nút chọn một"
 
-#: ../src/glade-gtk.c:4919
+#: ../plugins/gtk+/glade-gtk.c:4909
 msgid "Add Menu Button"
 msgstr "Thêm nút trình đơn"
 
-#: ../src/glade-gtk.c:4920
+#: ../plugins/gtk+/glade-gtk.c:4910
 msgid "Add Tool Item"
 msgstr "Thêm mục công cụ"
 
-#: ../src/glade-gtk.c:4929
+#: ../plugins/gtk+/glade-gtk.c:4919
 msgid "Tool Bar Editor"
 msgstr "Bộ sửa thanh trình đơn"
 
-#: ../src/glade-gtk.c:5682
+#: ../plugins/gtk+/glade-gtk.c:5672
 msgid "Introduction page"
 msgstr "Trang giới thiệu"
 
-#: ../src/glade-gtk.c:5686
+#: ../plugins/gtk+/glade-gtk.c:5676
 msgid "Content page"
 msgstr "Trang nội dung"
 
-#: ../src/glade-gtk.c:5690
+#: ../plugins/gtk+/glade-gtk.c:5680
 msgid "Confirm page"
 msgstr "Trang xác nhận"
 
-#: ../widgets/gtk+.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
 msgstr "Một mục kho, hãy chọn « Không có » để chọn một ảnh và nhãn riêng."
 
-#: ../widgets/gtk+.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
 msgstr "Chuỗi mẹo công cụ cho ô điều khiển này"
 
-#.NOT AVAILABLES ON WIN32
-#.<glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
-#.<glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../widgets/gtk+.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:8
 msgid "About Dialog"
 msgstr "Hộp thoại giới thiệu"
 
-#: ../widgets/gtk+.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Label"
 msgstr "Nhãn phím tắt"
 
-#: ../widgets/gtk+.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "Accessible Description"
 msgstr "Mô tả có thể truy cập"
 
-#.Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:12
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accessible Name"
 msgstr "Tên có thể truy cập"
 
-#: ../widgets/gtk+.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Alignment"
 msgstr "Canh lề"
 
-#: ../widgets/gtk+.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:16
 msgid "All"
 msgstr "Tất cả"
 
-#: ../widgets/gtk+.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "All Events"
 msgstr "Mọi sự kiện"
 
-#: ../widgets/gtk+.xml.in.h:18
-#: ../widgets/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:18 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "Luôn"
 
-#: ../widgets/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Always Center"
 msgstr "Luôn giữa lại"
 
-#: ../widgets/gtk+.xml.in.h:20
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "Arrow"
 msgstr "Mũi tên"
 
-#: ../widgets/gtk+.xml.in.h:21
+#: ../plugins/gtk+/gtk+.xml.in.h:21
 msgid "Aspect Frame"
 msgstr "Khung hình thể"
 
-#: ../widgets/gtk+.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Assistant"
 msgstr "Trợ lý"
 
-#: ../widgets/gtk+.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:23
 msgid "Automatic"
 msgstr "Tự động"
 
-#: ../widgets/gtk+.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Both"
 msgstr "Cả hai"
 
-#: ../widgets/gtk+.xml.in.h:25
+#: ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Both Horizontal"
 msgstr "Cả hai ngang"
 
-#: ../widgets/gtk+.xml.in.h:26
-#: ../widgets/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "Dưới"
 
-#: ../widgets/gtk+.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Bottom Left"
 msgstr "Trái dưới"
 
-#: ../widgets/gtk+.xml.in.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Bottom Right"
 msgstr "Phải dưới"
 
-#: ../widgets/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Bottom to Top"
 msgstr "Dưới đến trên"
 
-#: ../widgets/gtk+.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Box"
 msgstr "Hộp"
 
-#: ../widgets/gtk+.xml.in.h:32
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Button 1 Motion"
 msgstr "Cách chuyển Nút 1"
 
-#: ../widgets/gtk+.xml.in.h:33
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Button 2 Motion"
 msgstr "Cách chuyển Nút 2"
 
-#: ../widgets/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Button 3 Motion"
 msgstr "Cách chuyển Nút 3"
 
-#: ../widgets/gtk+.xml.in.h:35
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Button Box"
 msgstr "Hộp nút"
 
-#: ../widgets/gtk+.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button Motion"
 msgstr "Cách chuyển"
 
-#: ../widgets/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button Press"
 msgstr "Nhấn nút"
 
-#: ../widgets/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button Release"
 msgstr "Nhả nút"
 
-#: ../widgets/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Calendar"
 msgstr "Lịch"
 
-#: ../widgets/gtk+.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Cancel"
 msgstr "Thôi"
 
-#: ../widgets/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Center"
 msgstr "Giữa"
 
-#: ../widgets/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Center on Parent"
 msgstr "Giữa lại lên mẹ"
 
-#: ../widgets/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Character"
 msgstr "Ký tự"
 
-#: ../widgets/gtk+.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Check Button"
 msgstr "Nút kiểm"
 
-#: ../widgets/gtk+.xml.in.h:45
+#: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Check Menu Item"
 msgstr "Mục trình đơn kiểm"
 
-#: ../widgets/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Close"
 msgstr "Đóng"
 
-#: ../widgets/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Color Button"
 msgstr "Nút màu"
 
-#: ../widgets/gtk+.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Color Selection"
 msgstr "Chọn màu"
 
-#: ../widgets/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Color Selection Dialog"
 msgstr "Hộp thoại chọn màu"
 
-#: ../widgets/gtk+.xml.in.h:52
+#: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Columned List"
 msgstr "Danh sách cột"
 
-#: ../widgets/gtk+.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Combo"
 msgstr "Tổ hợp"
 
-#: ../widgets/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Combo Box"
 msgstr "Hộp tổ hợp"
 
-#: ../widgets/gtk+.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Combo Box Entry"
 msgstr "Mục nhập hộp tổ hợp"
 
-#: ../widgets/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Confirm"
 msgstr "Xác nhận"
 
-#: ../widgets/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Containers"
 msgstr "Đồ chứa"
 
-#: ../widgets/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Content"
 msgstr "Nội dung"
 
-#: ../widgets/gtk+.xml.in.h:60
+#: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Continuous"
 msgstr "Liên tục"
 
-#: ../widgets/gtk+.xml.in.h:61
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Control and Display"
 msgstr "Điều khiển và Hiển thị"
 
-#: ../widgets/gtk+.xml.in.h:62
-#: ../widgets/gnome.xml.in.h:5
+#: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "Tạo thư mục"
 
-#: ../widgets/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Curve"
 msgstr "Cong"
 
-#: ../widgets/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Custom"
 msgstr "Riêng"
 
-#: ../widgets/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Custom widget"
 msgstr "Ô điều kiện riêng"
 
-#: ../widgets/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Default"
 msgstr "Mặc định"
 
-#: ../widgets/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Delayed"
 msgstr "Trễ"
 
-#: ../widgets/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Description of an object, formatted for assistive technology access"
-msgstr "Mô tả đối tượmg, được định dạng để cho khả năng truy cập kỹ thuật giúp đỡ"
+msgstr ""
+"Mô tả đối tượmg, được định dạng để cho khả năng truy cập kỹ thuật giúp đỡ"
 
-#: ../widgets/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Desktop"
 msgstr "Môi trường"
 
-#: ../widgets/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Dialog"
 msgstr "Hộp thoại"
 
-#: ../widgets/gtk+.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Dialog Box"
 msgstr "Hộp thoại"
 
-#: ../widgets/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Discontinuous"
 msgstr "Gián đoạn"
 
-#: ../widgets/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Discrete"
 msgstr "Rời rạc"
 
-#: ../widgets/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Dock"
 msgstr "Cụ neo"
 
-#: ../widgets/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Down"
 msgstr "Xuống"
 
-#: ../widgets/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Drag and Drop"
 msgstr "Kéo và Thả"
 
-#: ../widgets/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Drawing Area"
 msgstr "Vùng vẽ"
 
-#: ../widgets/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Drop Down Menu"
 msgstr "Trình đơn thả xuống"
 
-#: ../widgets/gtk+.xml.in.h:80
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "East"
 msgstr "Đông"
 
-#: ../widgets/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Edge"
 msgstr "Cạnh"
 
-#: ../widgets/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Edit Type"
 msgstr "Sửa kiểu"
 
-#: ../widgets/gtk+.xml.in.h:83
-#: ../widgets/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "Kết thúc"
 
-#: ../widgets/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Enter Notify"
 msgstr "Gõ Thông báo"
 
-#: ../widgets/gtk+.xml.in.h:85
-#: ../widgets/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "Lỗi"
 
-#: ../widgets/gtk+.xml.in.h:86
-#: ../widgets/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr "Đã khắc vào"
 
-#: ../widgets/gtk+.xml.in.h:87
-#: ../widgets/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr "Đã khắc ra"
 
-#: ../widgets/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Event Box"
 msgstr "Ô sự kiện"
 
-#: ../widgets/gtk+.xml.in.h:89
-#: ../widgets/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "Bung"
 
-#: ../widgets/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Expander"
 msgstr "Bộ bung"
 
-#: ../widgets/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Exposure"
 msgstr "Phơi nắng"
 
-#: ../widgets/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "File Chooser Button"
 msgstr "Nút chọn tập tin"
 
-#: ../widgets/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "File Chooser Dialog"
 msgstr "Hộp thoại chọn tập tin"
 
-#: ../widgets/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "File Name"
 msgstr "Tên tập tin"
 
-#: ../widgets/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "File Selection"
 msgstr "Chọn tập tin"
 
-#: ../widgets/gtk+.xml.in.h:96
-#: ../widgets/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "Điền đầy"
 
-#: ../widgets/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Fixed"
 msgstr "Cố định"
 
-#: ../widgets/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Focus Change"
 msgstr "Đổi tiêu điểm"
 
-#: ../widgets/gtk+.xml.in.h:99
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Font Button"
 msgstr "Nút phông chữ"
 
-#: ../widgets/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Font Selection"
 msgstr "Chọn phông chữ"
 
-#: ../widgets/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Font Selection Dialog"
 msgstr "Hộp thoại chọn phông chữ"
 
-#: ../widgets/gtk+.xml.in.h:102
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Frame"
 msgstr "Khung"
 
-#: ../widgets/gtk+.xml.in.h:103
+#: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Free"
 msgstr "Tự do"
 
-#: ../widgets/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Gamma Curve"
 msgstr "Cong Gamma (γ)"
 
-#: ../widgets/gtk+.xml.in.h:105
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Gtk+ Obsolete"
 msgstr "Gtk+ Cũ"
 
-#: ../widgets/gtk+.xml.in.h:106
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Half"
 msgstr "Nửa"
 
-#: ../widgets/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Handle Box"
 msgstr "Ô móc kéo"
 
-#: ../widgets/gtk+.xml.in.h:108
-#: ../widgets/bonobo.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
 msgstr "Ngang"
 
-#: ../widgets/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Horizontal Box"
 msgstr "Hộp ngang"
 
-#: ../widgets/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Horizontal Button Box"
 msgstr "Hộp nút ngang"
 
-#: ../widgets/gtk+.xml.in.h:111
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Horizontal Panes"
 msgstr "Ô cửa sổ ngang"
 
-#: ../widgets/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Horizontal Ruler"
 msgstr "Thước ngang"
 
-#: ../widgets/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Horizontal Scale"
 msgstr "Tỷ lệ ngang"
 
-#: ../widgets/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Horizontal Scrollbar"
 msgstr "Thanh cuộn ngang"
 
-#: ../widgets/gtk+.xml.in.h:115
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Horizontal Separator"
 msgstr "Bộ phân cách ngang"
 
-#: ../widgets/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Horizontal and Vertical"
 msgstr "Dọc và Ngang"
 
-#: ../widgets/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Icon Name"
 msgstr "Tên biểu tượng"
 
-#: ../widgets/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Icon View"
 msgstr "Ô xem biểu tượng"
 
-#: ../widgets/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Icons"
 msgstr "Biểu tượng"
 
-#: ../widgets/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "If Valid"
 msgstr "Nếu hợp lệ"
 
-#: ../widgets/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Image Menu Item"
 msgstr "Mục trình đơn Ảnh"
 
-#: ../widgets/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Image Type"
 msgstr "Kiểu ảnh"
 
-#: ../widgets/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Immediate"
 msgstr "Trung cấp"
 
-#: ../widgets/gtk+.xml.in.h:125
-#: ../widgets/bonobo.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
 msgstr "Vào"
 
-#: ../widgets/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Input Dialog"
 msgstr "Hộp thoại nhập"
 
-#: ../widgets/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Intro"
 msgstr "Giới thiệu"
 
-#: ../widgets/gtk+.xml.in.h:129
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Items"
 msgstr "Mục"
 
-#: ../widgets/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "Key Press"
 msgstr "Nhấn phím"
 
-#: ../widgets/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Key Release"
 msgstr "Nhả phím"
 
-#: ../widgets/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Layout"
 msgstr "Bố trí"
 
-#: ../widgets/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Least Recently Used first"
 msgstr "Dùng ít gần đây nhất trước"
 
-#: ../widgets/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Leave Notify"
 msgstr "Rời Thông báo"
 
-#: ../widgets/gtk+.xml.in.h:136
-#: ../widgets/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "Trái"
 
-#: ../widgets/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Left to Right"
 msgstr "Trái qua Phải"
 
-#: ../widgets/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Linear"
 msgstr "Tuyến"
 
-#: ../widgets/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:139
 msgid "Link Button"
 msgstr "Nút liên kết"
 
-#: ../widgets/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "List"
 msgstr "Danh sách"
 
-#: ../widgets/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "List Item"
 msgstr "Mục danh sách"
 
-#: ../widgets/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Maximun Width"
 msgstr "Rộng tối đa"
 
-#: ../widgets/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Menu Bar"
 msgstr "Thanh trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:145
+#: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "Menu Item"
 msgstr "Mục trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Menu Shell"
 msgstr "Hệ vỏ trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Menu Tool Button"
 msgstr "Nút công cụ trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Message Dialog"
 msgstr "Hộp thoại thông điệp"
 
-#: ../widgets/gtk+.xml.in.h:149
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Middle"
 msgstr "Giữa"
 
-#: ../widgets/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Most Recently Used first"
 msgstr "Dùng gần đây nhất trước"
 
-#: ../widgets/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Mouse"
 msgstr "Chuột"
 
-#: ../widgets/gtk+.xml.in.h:152
-#: ../widgets/gnome.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:22
 msgid "Never"
 msgstr "Không bao giờ"
 
-#: ../widgets/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "North"
 msgstr "Bắc"
 
-#: ../widgets/gtk+.xml.in.h:156
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "North East"
 msgstr "Đông Bắc"
 
-#: ../widgets/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "North West"
 msgstr "Tây Bắc"
 
-#: ../widgets/gtk+.xml.in.h:158
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Notebook"
 msgstr "Vở"
 
-#: ../widgets/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Notification"
 msgstr "Thông báo"
 
-#: ../widgets/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Number of items"
 msgstr "Số mục"
 
-#: ../widgets/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "Number of pages"
 msgstr "Số trang"
 
-#.Atk name and description properties
-#: ../widgets/gtk+.xml.in.h:163
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
-msgstr "Tên của thể hiện đối tượng, được định dạng để cho khả năng truy cập kỹ thuật "
+msgstr ""
+"Tên của thể hiện đối tượng, được định dạng để cho khả năng truy cập kỹ thuật "
 "giúp đỡ"
 
-#: ../widgets/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Ok"
 msgstr "Được"
 
-#: ../widgets/gtk+.xml.in.h:165
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Ok, Cancel"
 msgstr "Được, Thôi"
 
-#: ../widgets/gtk+.xml.in.h:166
-#: ../widgets/gnome.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:23
 msgid "Open"
 msgstr "Mở"
 
-#: ../widgets/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Option Menu"
 msgstr "Trình đơn Tùy chọn"
 
-#: ../widgets/gtk+.xml.in.h:168
-#: ../widgets/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "Ra"
 
-#: ../widgets/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Page Setup Dialog"
 msgstr "Hộp thoại thiết lập trang"
 
-#: ../widgets/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Paned"
 msgstr "Có ô"
 
-#: ../widgets/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Pointer Motion"
 msgstr "Cách chuyển con trỏ"
 
-#: ../widgets/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Pointer Motion Hint"
 msgstr "Gợi ý cách chuyển con trỏ"
 
-#: ../widgets/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Popup"
 msgstr "Bật lên"
 
-#: ../widgets/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "Popup Menu"
 msgstr "Trình đơn bật lên"
 
-#: ../widgets/gtk+.xml.in.h:176
-#: ../src/glade-gnome.c:649
-#: ../widgets/gnome.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gnome/gnome.xml.in.h:27
 msgid "Position"
 msgstr "Vị trí"
 
-#: ../widgets/gtk+.xml.in.h:179
+#: ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Print Dialog"
 msgstr "Hộp thoại in"
 
-#: ../widgets/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Progress"
 msgstr "Tiến hành"
 
-#: ../widgets/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Progress Bar"
 msgstr "Thanh tiến hành"
 
-#: ../widgets/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Property Change"
 msgstr "Đổi thuộc tính"
 
-#: ../widgets/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Proximity  Out"
 msgstr "Độ gần\tRa"
 
-#: ../widgets/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Proximity In"
 msgstr "Độ gần\tVào"
 
-#: ../widgets/gtk+.xml.in.h:185
-#: ../widgets/gnome.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:30
 msgid "Question"
 msgstr "Câu hỏi"
 
-#: ../widgets/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Queue"
 msgstr "Hàng đợi"
 
-#: ../widgets/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Radio Button"
 msgstr "Nút chọn một"
 
-#: ../widgets/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Radio Menu Item"
 msgstr "Mục trình đơn chọn một"
 
-#: ../widgets/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Radio Tool Button"
 msgstr "Nút công cụ chọn một"
 
-#: ../widgets/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Range"
 msgstr "Phạm vi"
 
-#: ../widgets/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Recent Chooser"
 msgstr "Bộ chọn gần đây"
 
-#: ../widgets/gtk+.xml.in.h:192
+#: ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Recent Chooser Dialog"
 msgstr "Hộp thoại bộ chọn gần đây"
 
-#: ../widgets/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Response ID"
 msgstr "ID đáp ứng"
 
-#: ../widgets/gtk+.xml.in.h:196
-#: ../widgets/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "Phải"
 
-#: ../widgets/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Right to Left"
 msgstr "Phải qua Trái"
 
-#: ../widgets/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Ruler"
 msgstr "Thước đo"
 
-#: ../widgets/gtk+.xml.in.h:199
-#: ../widgets/gnome.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:31
 msgid "Save"
 msgstr "Lưu"
 
-#: ../widgets/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Scale"
 msgstr "Tỷ lệ"
 
-#: ../widgets/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Scroll"
 msgstr "Cuộn"
 
-#: ../widgets/gtk+.xml.in.h:202
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Scrolled Window"
 msgstr "Cửa sổ cuộn"
 
-#: ../widgets/gtk+.xml.in.h:203
-#: ../widgets/gnome.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:34
 msgid "Select Folder"
 msgstr "Chọn thư mục"
 
-#: ../widgets/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Separator Menu Item"
 msgstr "Mục trình đơn bộ ngăn cách"
 
-#: ../widgets/gtk+.xml.in.h:205
+#: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Separator Tool Item"
 msgstr "Mục công cụ bộ ngăn cách"
 
-#: ../widgets/gtk+.xml.in.h:206
+#: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "Đặt trang hiện thời (cho mục đích chỉnh sửa hẳn)"
 
-#.Text of the textview
-#: ../widgets/gtk+.xml.in.h:216
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Set the text in the view's text buffer"
 msgstr "Đặt văn bản trong bộ đệm văn bản của ô xem"
 
-#: ../widgets/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Shrink"
 msgstr "Nhỏ hơn"
 
-#: ../widgets/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Size"
 msgstr "Cỡ"
 
-#: ../widgets/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "South"
 msgstr "Nam"
 
-#: ../widgets/gtk+.xml.in.h:220
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "South East"
 msgstr "Nam Đông"
 
-#: ../widgets/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "South West"
 msgstr "Nam Tây"
 
-#: ../widgets/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Spin Button"
 msgstr "Nút xoay"
 
-#: ../widgets/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Splash Screen"
 msgstr "Màn hình giật gân"
 
-#: ../widgets/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Spline"
 msgstr "Chốt trục"
 
-#: ../widgets/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Spread"
 msgstr "Phết"
 
-#: ../widgets/gtk+.xml.in.h:226
-#: ../widgets/gnome.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:36
 msgid "Start"
 msgstr "Bắt đầu"
 
-#: ../widgets/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Static"
 msgstr "Tĩnh"
 
-#: ../widgets/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Status Bar"
 msgstr "Thanh trạng thái"
 
-#: ../widgets/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Stock Button"
 msgstr "Nút kho"
 
-#: ../widgets/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Stock Item"
 msgstr "Mục kho"
 
-#: ../widgets/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Structure"
 msgstr "Cấu trúc"
 
-#: ../widgets/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Substructure"
 msgstr "Cấu trúc phụ"
 
-#: ../widgets/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Summary"
 msgstr "Tóm tắt"
 
-#: ../widgets/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Table"
 msgstr "Bảng"
 
-#.Text of the textview
-#: ../widgets/gtk+.xml.in.h:237
-#: ../widgets/gnome.xml.in.h:39
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:39
 msgid "Text"
 msgstr "Chữ"
 
-#: ../widgets/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Text Entry"
 msgstr "Mục nhập chữ"
 
-#: ../widgets/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Text View"
 msgstr "Khung xem chữ"
 
-#: ../widgets/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "The items in this combo box"
 msgstr "Các mục trong hộp tổ hợp"
 
-#: ../widgets/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "The number of items in the box"
 msgstr "Số mục trong hộp"
 
-#: ../widgets/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "The number of pages in the notebook"
 msgstr "Số trang trong vở"
 
-#: ../widgets/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "The page position in the Assistant"
 msgstr "Vị trí trang trong trợ lý"
 
-#: ../widgets/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
 msgstr "Vị trí của mục trình đơn trong hệ vỏ trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "The position of the tool item in the toolbar"
 msgstr "Vị trí của mục công cụ trên thanh công cụ"
 
-#: ../widgets/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
-msgstr "ID đáp ứng của cái nút này trong hộp thoại (VÔ ích nếu cái nút này không "
+msgstr ""
+"ID đáp ứng của cái nút này trong hộp thoại (VÔ ích nếu cái nút này không "
 "phải trong một hộp thoại GtkDialog)"
 
-#: ../widgets/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "The stock item for this button"
 msgstr "Mục kho cho cái nút này"
 
-#: ../widgets/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "The stock item for this image"
 msgstr "Mục kho cho ảnh này"
 
-#: ../widgets/gtk+.xml.in.h:249
+#: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "The text of the menu item"
 msgstr "Chuỗi của mục trình đơn"
 
-#: ../widgets/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "The text to display"
 msgstr "Chuỗi chữ cần hiển thị"
 
-#: ../widgets/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Toggle Button"
 msgstr "Nút bật/tắt"
 
-#: ../widgets/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Toggle Tool Button"
 msgstr "Bật/tắt nút công cụ"
 
-#: ../widgets/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Tool Bar"
 msgstr "Thanh công cụ"
 
-#: ../widgets/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Tool Button"
 msgstr "Nút công cụ"
 
-#: ../widgets/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Toolbar"
 msgstr "Thanh công cụ"
 
-#: ../widgets/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Tooltip"
 msgstr "Mẹo công cụ"
 
-#: ../widgets/gtk+.xml.in.h:257
-#: ../widgets/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "Trên"
 
-#: ../widgets/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Top Left"
 msgstr "Trái trên"
 
-#: ../widgets/gtk+.xml.in.h:259
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Top Level"
 msgstr "Cấp trên"
 
-#: ../widgets/gtk+.xml.in.h:260
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Top Right"
 msgstr "Trên phải"
 
-#: ../widgets/gtk+.xml.in.h:261
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Top to Bottom"
 msgstr "Trên xuống dưới"
 
-#: ../widgets/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Toplevels"
 msgstr "Cấp trên"
 
-#: ../widgets/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Tree View"
 msgstr "Khung xem cây"
 
-#: ../widgets/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Up"
 msgstr "Lên"
 
-#: ../widgets/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Use Underline"
 msgstr "Dùng gạch chân"
 
-#: ../widgets/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Utility"
 msgstr "Tiện ích"
 
-#: ../widgets/gtk+.xml.in.h:267
-#: ../widgets/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "Dọc"
 
-#: ../widgets/gtk+.xml.in.h:268
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Vertical Box"
 msgstr "Hộp dọc"
 
-#: ../widgets/gtk+.xml.in.h:269
+#: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Vertical Button Box"
 msgstr "Hộp nút dọc"
 
-#: ../widgets/gtk+.xml.in.h:270
+#: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Vertical Panes"
 msgstr "Ô cửa sổ dọc"
 
-#: ../widgets/gtk+.xml.in.h:271
+#: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Vertical Ruler"
 msgstr "Thước dọc"
 
-#: ../widgets/gtk+.xml.in.h:272
+#: ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Vertical Scale"
 msgstr "Tỷ lệ dọc"
 
-#: ../widgets/gtk+.xml.in.h:273
+#: ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Vertical Scrollbar"
 msgstr "Thanh cuộn dọc"
 
-#: ../widgets/gtk+.xml.in.h:274
+#: ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Vertical Separator"
 msgstr "Bộ phân cách dọc"
 
-#: ../widgets/gtk+.xml.in.h:275
+#: ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Viewport"
 msgstr "Cổng xem"
 
-#: ../widgets/gtk+.xml.in.h:276
+#: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Visibility Notify"
 msgstr "Thông báo hiện rõ"
 
-#: ../widgets/gtk+.xml.in.h:277
-#: ../widgets/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Warning"
 msgstr "Cảnh báo"
 
-#: ../widgets/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "West"
 msgstr "Tây"
 
-#: ../widgets/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Window"
 msgstr "Cửa sổ"
 
-#: ../widgets/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:281
 msgid "Word"
 msgstr "Từ"
 
-#: ../widgets/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Word Character"
 msgstr "Ký tự từ"
 
-#: ../widgets/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Yes, No"
 msgstr "Có, Không"
 
-#: ../widgets/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
-msgstr "Vẫn có thể đánh dấu điều này có khả năng dịch và đặt một tên/địa chỉ nếu bạn muốn hiển thị dịch giả đặc trưng cho bản dịch, không thì bạn nên liệt kê mọi dịch giả và hủy đánh dấu chuỗi này có khả năng dịch."
+msgstr ""
+"Vẫn có thể đánh dấu điều này có khả năng dịch và đặt một tên/địa chỉ nếu bạn "
+"muốn hiển thị dịch giả đặc trưng cho bản dịch, không thì bạn nên liệt kê mọi "
+"dịch giả và hủy đánh dấu chuỗi này có khả năng dịch."
 
-#: ../src/glade-gnome.c:292
+#: ../plugins/gnome/glade-gnome.c:298
 msgid "Status Message."
 msgstr "Thông điệp trạng thái"
 
-#: ../src/glade-gnome.c:650
+#: ../plugins/gnome/glade-gnome.c:656
 msgid "The position in the druid"
 msgstr "Vị trí trong thủ thuật"
 
-#: ../src/glade-gnome.c:1002
+#: ../plugins/gnome/glade-gnome.c:1008
 msgid "Message box type"
 msgstr "Kiểu hộp thông điệp"
 
-#: ../src/glade-gnome.c:1003
+#: ../plugins/gnome/glade-gnome.c:1009
 msgid "The type of the message box"
 msgstr "Kiểu của hộp thông điệp"
 
-#: ../src/glade-gnome.c:1219
+#: ../plugins/gnome/glade-gnome.c:1225
 msgid "This property is valid only in font information mode"
 msgstr "Tài sản này là hợp lệ chỉ trong chế độ thông tin phông chữ"
 
-#: ../src/glade-gnome.c:1307
-#: ../widgets/canvas.xml.in.h:14
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:14
 msgid "Selection Mode"
 msgstr "Chế độ chọn"
 
-#: ../src/glade-gnome.c:1308
+#: ../plugins/gnome/glade-gnome.c:1314
 msgid "Choose the Selection Mode"
 msgstr "Chọn chế độ chọn"
 
-#: ../src/glade-gnome.c:1458
+#: ../plugins/gnome/glade-gnome.c:1464
 msgid "Placement"
 msgstr "Định vị"
 
-#: ../src/glade-gnome.c:1459
+#: ../plugins/gnome/glade-gnome.c:1465
 msgid "Choose the BonoboDockPlacement type"
 msgstr "Chọn kiểu định vị neo Bonobo (BonoboDockPlacement)"
 
-#: ../src/glade-gnome.c:1487
+#: ../plugins/gnome/glade-gnome.c:1493
 msgid "Behavior"
 msgstr "Ứng xử"
 
-#: ../src/glade-gnome.c:1488
+#: ../plugins/gnome/glade-gnome.c:1494
 msgid "Choose the BonoboDockItemBehavior type"
 msgstr "Chọn kiểu ứng xử mục neo Bonob (BonoboDockItemBehavior)"
 
-#: ../src/glade-gnome.c:1497
+#: ../plugins/gnome/glade-gnome.c:1503
 msgid "Pack Type"
 msgstr "Kiểu gom lại"
 
-#: ../src/glade-gnome.c:1498
+#: ../plugins/gnome/glade-gnome.c:1504
 msgid "Choose the Pack Type"
 msgstr "Chọn kiểu gom lại"
 
-#: ../widgets/gnome.xml.in.h:1
+#: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
 msgstr "Định dạng 24 giờ"
 
-#: ../widgets/gnome.xml.in.h:3
+#: ../plugins/gnome/gnome.xml.in.h:3
 msgid "Background Color"
 msgstr "Màu nền"
 
-#: ../widgets/gnome.xml.in.h:4
+#: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
 msgstr "Màu nền nội dung"
 
-#: ../widgets/gnome.xml.in.h:6
+#: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
 msgstr "Rung động"
 
-#: ../widgets/gnome.xml.in.h:10
+#: ../plugins/gnome/gnome.xml.in.h:10
 msgid "File"
 msgstr "Tập tin"
 
-#: ../widgets/gnome.xml.in.h:12
+#: ../plugins/gnome/gnome.xml.in.h:12
 msgid "Font Information"
 msgstr "Thông tin phông chữ"
 
-#: ../widgets/gnome.xml.in.h:13
+#: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME UI Obsolete"
 msgstr "Giao diện đồ họa Gnome quá cũ"
 
-#: ../widgets/gnome.xml.in.h:14
+#: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME User Interface"
 msgstr "Giao diện người dùng Gnome"
 
-#: ../widgets/gnome.xml.in.h:15
+#: ../plugins/gnome/gnome.xml.in.h:15
 msgid "Generic"
 msgstr "Giống loài"
 
-#: ../widgets/gnome.xml.in.h:16
+#: ../plugins/gnome/gnome.xml.in.h:16
 msgid "Information"
 msgstr "Thông tin"
 
-#: ../widgets/gnome.xml.in.h:17
+#: ../plugins/gnome/gnome.xml.in.h:17
 msgid "Logo"
 msgstr "Biểu hình"
 
-#: ../widgets/gnome.xml.in.h:18
+#: ../plugins/gnome/gnome.xml.in.h:18
 msgid "Logo Background Color"
 msgstr "Màu nền biểu hình"
 
-#: ../widgets/gnome.xml.in.h:19
+#: ../plugins/gnome/gnome.xml.in.h:19
 msgid "Max Saved"
 msgstr "Lưu tối đa"
 
-#: ../widgets/gnome.xml.in.h:20
+#: ../plugins/gnome/gnome.xml.in.h:20
 msgid "Message"
 msgstr "Thông điệp"
 
-#: ../widgets/gnome.xml.in.h:21
+#: ../plugins/gnome/gnome.xml.in.h:21
 msgid "Monday First"
 msgstr "Hôm Thứ Hai đi trước"
 
-#: ../widgets/gnome.xml.in.h:25
+#: ../plugins/gnome/gnome.xml.in.h:25
 msgid "Padding"
 msgstr "Đệm"
 
-#: ../widgets/gnome.xml.in.h:26
+#: ../plugins/gnome/gnome.xml.in.h:26
 msgid "Pixmap"
 msgstr "Sơ đồ điểm ảnh"
 
-#: ../widgets/gnome.xml.in.h:28
+#: ../plugins/gnome/gnome.xml.in.h:28
 msgid "Program Name"
 msgstr "Tên chương trình"
 
-#: ../widgets/gnome.xml.in.h:29
+#: ../plugins/gnome/gnome.xml.in.h:29
 msgid "Program Version"
 msgstr "Phiên bản chương trình"
 
-#: ../widgets/gnome.xml.in.h:32
+#: ../plugins/gnome/gnome.xml.in.h:32
 msgid "Scaled Height"
 msgstr "Độ cao đã co dãn"
 
-#: ../widgets/gnome.xml.in.h:33
+#: ../plugins/gnome/gnome.xml.in.h:33
 msgid "Scaled Width"
 msgstr "Độ rộng đã co dãn"
 
-#: ../widgets/gnome.xml.in.h:35
+#: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Show Time"
 msgstr "Hiện giờ"
 
-#: ../widgets/gnome.xml.in.h:37
+#: ../plugins/gnome/gnome.xml.in.h:37
 msgid "StatusBar"
 msgstr "Thanh trạng thái"
 
-#: ../widgets/gnome.xml.in.h:38
+#: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Store Config"
 msgstr "Lưu cấu hình"
 
-#: ../widgets/gnome.xml.in.h:40
+#: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Text Foreground Color"
 msgstr "Màu cảnh gần chữ"
 
-#: ../widgets/gnome.xml.in.h:41
+#: ../plugins/gnome/gnome.xml.in.h:41
 msgid "The height to scale the pixmap to"
 msgstr "Độ cao với đó cần co dãn sơ đồ điểm ảnh"
 
-#: ../widgets/gnome.xml.in.h:42
+#: ../plugins/gnome/gnome.xml.in.h:42
 msgid "The maximum number of history entries saved"
 msgstr "Số mục nhập lược sử tối đa được lưu"
 
-#: ../widgets/gnome.xml.in.h:43
+#: ../plugins/gnome/gnome.xml.in.h:43
 msgid "The pixmap file"
 msgstr "Tập tin sơ đồ điểm ảnh"
 
-#: ../widgets/gnome.xml.in.h:44
+#: ../plugins/gnome/gnome.xml.in.h:44
 msgid "The width to scale the pixmap to"
 msgstr "Độ rộng với đó cần co dãn sơ đồ điểm ảnh"
 
-#: ../widgets/gnome.xml.in.h:46
+#: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Title Foreground Color"
 msgstr "Màu cảnh gần tựa"
 
-#: ../widgets/gnome.xml.in.h:47
+#: ../plugins/gnome/gnome.xml.in.h:47
 msgid "Top Watermark"
 msgstr "Thủy ấn trên"
 
-#: ../widgets/gnome.xml.in.h:48
+#: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Unknown"
 msgstr "Không rõ"
 
-#: ../widgets/gnome.xml.in.h:49
+#: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Use Alpha"
 msgstr "Dùng anfa"
 
-#: ../widgets/gnome.xml.in.h:50
+#: ../plugins/gnome/gnome.xml.in.h:50
 msgid ""
 "Used to pass around information about the position of a GnomeDruidPage "
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
-msgstr "Được dùng để gởi ra thông tin về vị trí của trang thủ thuật GnomeDruidPage "
+msgstr ""
+"Được dùng để gởi ra thông tin về vị trí của trang thủ thuật GnomeDruidPage "
 "bên trong toàn bộ thủ thuật GnomeDruid. Nó hiệu lực vẽ nội dung « bao quanh "
 "» cho trang."
 
-#: ../widgets/gnome.xml.in.h:51
+#: ../plugins/gnome/gnome.xml.in.h:51
 msgid "User"
 msgstr "Người dùng"
 
-#: ../widgets/gnome.xml.in.h:52
+#: ../plugins/gnome/gnome.xml.in.h:52
 msgid "User Widget"
 msgstr "Ô điều khiển người dùng"
 
-#: ../widgets/gnome.xml.in.h:54
+#: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Watermark"
 msgstr "Thủy ấn"
 
-#: ../widgets/bonobo.xml.in.h:4
+#: ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Exclusive"
 msgstr "Dành riêng"
 
-#: ../widgets/bonobo.xml.in.h:5
+#: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Floating"
 msgstr "Nổi"
 
-#: ../widgets/bonobo.xml.in.h:9
+#: ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Locked"
 msgstr "Bị khoá"
 
-#: ../widgets/bonobo.xml.in.h:10
+#: ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Never Floating"
 msgstr "Không bao giờ nổi"
 
-#: ../widgets/bonobo.xml.in.h:11
+#: ../plugins/gnome/bonobo.xml.in.h:11
 msgid "Never Horizontal"
 msgstr "Không bao giờ nằm ngang"
 
-#: ../widgets/bonobo.xml.in.h:12
+#: ../plugins/gnome/bonobo.xml.in.h:12
 msgid "Never Vertical"
 msgstr "Không bao giờ nằm dọc"
 
-#: ../widgets/canvas.xml.in.h:1
+#: ../plugins/gnome/canvas.xml.in.h:1
 msgid "Browse"
 msgstr "Duyệt"
 
-#: ../widgets/canvas.xml.in.h:2
+#: ../plugins/gnome/canvas.xml.in.h:2
 msgid "Column Spacing"
 msgstr "Cách cột"
 
-#: ../widgets/canvas.xml.in.h:3
+#: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
 msgstr "GNOME Canvas"
 
-#: ../widgets/canvas.xml.in.h:4
+#: ../plugins/gnome/canvas.xml.in.h:4
 msgid "Icon Width"
 msgstr "Rộng biểu tượng"
 
-#: ../widgets/canvas.xml.in.h:5
+#: ../plugins/gnome/canvas.xml.in.h:5
 msgid "If the icon text can be edited by the user"
 msgstr "Nếu người dùng có thể hiệu chỉnh nhãn biểu tượng không"
 
-#: ../widgets/canvas.xml.in.h:6
+#: ../plugins/gnome/canvas.xml.in.h:6
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
-msgstr "Nếu nhãn biểu tượng là tĩnh, trong trường hợp đó nó sẽ không được sao chép "
+msgstr ""
+"Nếu nhãn biểu tượng là tĩnh, trong trường hợp đó nó sẽ không được sao chép "
 "bởi danh sách biểu tượng GnomeIconList"
 
-#: ../widgets/canvas.xml.in.h:7
+#: ../plugins/gnome/canvas.xml.in.h:7
 msgid "Max X"
 msgstr "X đa"
 
-#: ../widgets/canvas.xml.in.h:8
+#: ../plugins/gnome/canvas.xml.in.h:8
 msgid "Max Y"
 msgstr "Y đa"
 
-#: ../widgets/canvas.xml.in.h:9
+#: ../plugins/gnome/canvas.xml.in.h:9
 msgid "Min X"
 msgstr "X thiểu"
 
-#: ../widgets/canvas.xml.in.h:10
+#: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Min Y"
 msgstr "Y thiểu"
 
-#: ../widgets/canvas.xml.in.h:11
+#: ../plugins/gnome/canvas.xml.in.h:11
 msgid "Multiple"
 msgstr "Nhiều"
 
-#: ../widgets/canvas.xml.in.h:12
+#: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Pixels per unit"
 msgstr "Điểm ảnh trên mỗi đơn vị"
 
-#: ../widgets/canvas.xml.in.h:13
+#: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Row Spacing"
 msgstr "Cách hàng"
 
-#: ../widgets/canvas.xml.in.h:15
+#: ../plugins/gnome/canvas.xml.in.h:15
 msgid "Single"
 msgstr "Đơn"
 
-#: ../widgets/canvas.xml.in.h:16
+#: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Text Editable"
 msgstr "Sửa được chữ"
 
-#: ../widgets/canvas.xml.in.h:17
+#: ../plugins/gnome/canvas.xml.in.h:17
 msgid "Text Spacing"
 msgstr "Cách chữ"
 
-#: ../widgets/canvas.xml.in.h:18
+#: ../plugins/gnome/canvas.xml.in.h:18
 msgid "Text Static"
 msgstr "Chữ tĩnh"
 
-#: ../widgets/canvas.xml.in.h:19
+#: ../plugins/gnome/canvas.xml.in.h:19
 msgid "The maximum x coordinate"
 msgstr "Tọa độ X tối đa"
 
-#: ../widgets/canvas.xml.in.h:20
+#: ../plugins/gnome/canvas.xml.in.h:20
 msgid "The maximum y coordinate"
 msgstr "Tọa độ Y tối đa"
 
-#: ../widgets/canvas.xml.in.h:21
+#: ../plugins/gnome/canvas.xml.in.h:21
 msgid "The minimum x coordinate"
 msgstr "Tọa độ X tối thiểu"
 
-#: ../widgets/canvas.xml.in.h:22
+#: ../plugins/gnome/canvas.xml.in.h:22
 msgid "The minimum y coordinate"
 msgstr "Tọa độ Y tối thiểu"
 
-#: ../widgets/canvas.xml.in.h:23
+#: ../plugins/gnome/canvas.xml.in.h:23
 msgid "The number of pixels between columns of icons"
 msgstr "Số điểm ảnh giữa hai cột biểu tượng"
 
-#: ../widgets/canvas.xml.in.h:24
+#: ../plugins/gnome/canvas.xml.in.h:24
 msgid "The number of pixels between rows of icons"
 msgstr "Số điểm ảnh giữa hai hàng biểu tượng"
 
-#: ../widgets/canvas.xml.in.h:25
+#: ../plugins/gnome/canvas.xml.in.h:25
 msgid "The number of pixels between the text and the icon"
 msgstr "Số điểm ảnh giữa nhãn và biểu tượng"
 
-#: ../widgets/canvas.xml.in.h:26
+#: ../plugins/gnome/canvas.xml.in.h:26
 msgid "The number of pixels corresponding to one unit"
 msgstr "Số điểm ảnh tương ứng với một đơn vị"
 
-#: ../widgets/canvas.xml.in.h:27
+#: ../plugins/gnome/canvas.xml.in.h:27
 msgid "The selection mode"
 msgstr "Chế độ chọn"
 
-#: ../widgets/canvas.xml.in.h:28
+#: ../plugins/gnome/canvas.xml.in.h:28
 msgid "The width of each icon"
 msgstr "Độ rộng của mỗi biểu tượng"
+
+#~ msgid "Glade's Script Console"
+#~ msgstr "Bàn giao tiếp văn lệnh Glade"
+
+#~ msgid ""
+#~ "Glade is a user interface designer for GTK+ and GNOME.\n"
+#~ "This version is a rewrite of the Glade 2 version, originally created by "
+#~ "Damon Chaplin\n"
+#~ msgstr ""
+#~ "Trình Glade là một bộ thiết kế giao diện người dùng cho GTK+ và GNOME.\n"
+#~ "Phiên bản này là bản ghi lại của phiên bản Glade 2, được tạo đầu tiên bởi "
+#~ "Damon Chaplin.\n"
+
+#~ msgid "_New"
+#~ msgstr "Mớ_i"
+
+#~ msgid "_Open"
+#~ msgstr "_Mở"
+
+#~ msgid "_Quit"
+#~ msgstr "T_hoát"
+
+#~ msgid "_About"
+#~ msgstr "_Giới thiệu"
+
+#~ msgid "_Contents"
+#~ msgstr "Mụ_c lục"
+
+#~ msgid "_Save"
+#~ msgstr "_Lưu"
+
+#~ msgid "_Close"
+#~ msgstr "Đón_g"
+
+#~ msgid "C_ut"
+#~ msgstr "Cắ_t"
+
+#~ msgid "_Copy"
+#~ msgstr "_Chép"
+
+#~ msgid "_Paste"
+#~ msgstr "_Dán"
+
+#~ msgid "_Delete"
+#~ msgstr "_Xoá"
+
+#~ msgid "C_onsole"
+#~ msgstr "Bàn gia_o tiếp"
+
+#~ msgid "Show Script-do console"
+#~ msgstr "HIện bàn giao tiếp Script-do"
+
+#~ msgid "Set Flags"
+#~ msgstr "Đặt cờ"
+
+#~ msgid "Edit Text Property"
+#~ msgstr "Sửa đổi thuộc tính chữ"
+
+#~ msgid "Use Placeholders"
+#~ msgstr "Dùng bộ giữ chỗ"
+
+#~ msgid ""
+#~ "Whether this container use placeholders, the backend is responsable for "
+#~ "setting up this property"
+#~ msgstr ""
+#~ "Đồ chứa này có nên dùng bộ giữ chỗ hay không; hậu phương vẫn cần phải "
+#~ "thiết lập thuộc tính này"
