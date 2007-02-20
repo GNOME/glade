@@ -550,8 +550,6 @@ glade_util_file_dialog_new (const gchar *title, GtkWindow *parent,
 
 	gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (file_dialog), TRUE);
 	gtk_dialog_set_default_response (GTK_DIALOG (file_dialog), GTK_RESPONSE_OK);
-	
-	gtk_window_set_position (GTK_WINDOW (file_dialog), GTK_WIN_POS_CENTER);
 
 	return file_dialog;
 }
