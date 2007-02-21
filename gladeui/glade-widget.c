@@ -566,6 +566,20 @@ glade_widget_remove_property (GladeWidget  *widget,
 			    id_property, widget->name);
 }
 
+static void
+glade_widget_set_catalog_defaults (GList *list)
+{
+	GList *l;
+	for (l = list; l && l->data; l = l->next)
+	{
+		GladeProperty *prop  = l->data;
+		GladePropertyClass *klass = prop->klass;
+		
+		if (glade_property_equals_value (prop, klass->orig_def) &&
+		     g_param_values_cmp (klass->pspec, klass->orig_def, klass->def))
+			glade_property_reset (prop);
+	}
+}
 
 static void
 glade_widget_sync_custom_props (GladeWidget *widget)
@@ -671,6 +685,10 @@ glade_widget_constructor (GType                  type,
 		for (list = gwidget->properties; list; list = list->next)
 			glade_property_load (GLADE_PROPERTY (list->data));
 
+	/* We only use catalog defaults when the widget was created by the user! */
+	if (gwidget->construct_reason == GLADE_CREATE_USER)
+		glade_widget_set_catalog_defaults (gwidget->properties);
+	
 	/* Only call this once the GladeWidget is completely built
 	 * (but before calling custom handlers...)
 	 */
@@ -685,7 +703,7 @@ glade_widget_constructor (GType                  type,
 
 	if (gwidget->parent && gwidget->packing_properties == NULL)
 		glade_widget_set_packing_properties (gwidget, gwidget->parent);
-
+	
 	if (GTK_IS_WIDGET (gwidget->object) && !GTK_WIDGET_TOPLEVEL (gwidget->object))
 	{
 		gwidget->visible = TRUE;
@@ -1630,7 +1648,7 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 		{
 			property_class = GLADE_PROPERTY_CLASS(list->data);
 			if ((property = glade_property_new (property_class, 
-							    widget, NULL, TRUE)) == NULL)
+							    widget, NULL)) == NULL)
 			{
 				g_warning ("Failed to create [%s] property",
 					   property_class->id);
@@ -1708,8 +1726,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 	     list && list->data; list = list->next)
 	{
 		property_class = list->data;
-		property       = glade_property_new
-			(property_class, widget, NULL, TRUE);
+		property       = glade_property_new (property_class, widget, NULL);
 		packing_props  = g_list_prepend (packing_props, property);
 
 	}
@@ -1890,7 +1907,7 @@ glade_widget_properties_from_widget_info (GladeWidgetAdaptor *klass,
 		/* If there is a value in the XML, initialize property with it,
 		 * otherwise initialize property to default.
 		 */
-		property = glade_property_new (pclass, NULL, NULL, FALSE);
+		property = glade_property_new (pclass, NULL, NULL);
 		
 		glade_property_original_reset (property);
 		

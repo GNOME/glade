@@ -1,3 +1,18 @@
+2007-02-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-property.[ch]: make glade_property_new() always
+	  return instrospected value (catalog_default parameter removed)
+
+	* gladeui/glade-widget.c: added glade_widget_set_catalog_defaults()
+	  to set catalog default values in glade_widget_constructor() when
+	  the widget is created by the user.
+
+	* plugins/gtk+/glade-gtk.c: glade_gtk_menu_item_get_children()
+	  added GtkImageMenuItem support.
+
+	* plugins/gtk+/gtk+.xml.in: GtkMenuItem get-children function
+	  renamed to glade_gtk_menu_item_get_children()
+
 2007-02-20  Vincent Geddes  <vincent.geddes@gmail.com>
 
         * src/glade-utils.c: Remove redundant call to `gtk_window_set_position()'

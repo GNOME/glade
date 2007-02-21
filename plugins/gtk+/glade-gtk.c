@@ -4137,7 +4137,7 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 
 /* ----------------------------- GtkMenuItem(s) ------------------------------ */
 GList * GLADEGTK_API
-glade_gtk_menu_item_get_submenu (GladeWidgetAdaptor *adaptor,
+glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 				 GObject *object)
 {
 	GList *list = NULL;
@@ -4145,10 +4145,13 @@ glade_gtk_menu_item_get_submenu (GladeWidgetAdaptor *adaptor,
 	
 	g_return_val_if_fail (GTK_IS_MENU_ITEM (object), NULL);
 	
-	child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object));
+	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
+		list = g_list_append (list, child);
 	
-	if (child) list = g_list_append (list, child);
-	
+	if (GTK_IS_IMAGE_MENU_ITEM (object) &&
+	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
+		list = g_list_append (list, child);
+
 	return list;
 }
 

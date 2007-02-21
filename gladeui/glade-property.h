@@ -82,8 +82,7 @@ GType                   glade_property_get_type              (void) G_GNUC_CONST
 LIBGLADEUI_API
 GladeProperty          *glade_property_new                   (GladePropertyClass *klass,
 							      GladeWidget        *widget,
-							      GValue             *value,
-							      gboolean            catalog_default);
+							      GValue             *value);
 LIBGLADEUI_API
 GladeProperty          *glade_property_dup                   (GladeProperty      *template_prop,
 							      GladeWidget        *widget);
