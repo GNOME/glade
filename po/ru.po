@@ -1325,16 +1325,20 @@ msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Показывает, что содержимое обхекта логически следует за содержимым "
+"другого объекта, например по порядку чтения текста."
 
 #: ../gladeui/glade-property-class.c:90
 msgid "Flows From"
-msgstr ""
+msgstr "Следует перед"
 
 #: ../gladeui/glade-property-class.c:91
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Показывает, что содержимое объекта логически следует перед содержимым "
+"другого объекта, например, по порядку чтения текста"
 
 #: ../gladeui/glade-property-class.c:94
 msgid "Subwindow Of"
@@ -1345,6 +1349,8 @@ msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in  the UI hierarchy to that component"
 msgstr ""
+"Показывает что подокно присоединено к компоненту, но  "
+"не связано никаким другим образом в пользовательском интерфейсе"
 
 #: ../gladeui/glade-property-class.c:98
 msgid "Embeds"
@@ -1359,13 +1365,14 @@ msgstr ""
 
 #: ../gladeui/glade-property-class.c:102
 msgid "Embedded By"
-msgstr ""
+msgstr "Встроен в"
 
 #: ../gladeui/glade-property-class.c:103
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visualy "
 "embedded in another object"
 msgstr ""
+"Обратное понятие к понятию 'Содерижит', показывает, что содержимое объекта визуально встроенно в другой объект"
 
 #: ../gladeui/glade-property-class.c:106
 msgid "Popup For"
@@ -1616,7 +1623,7 @@ msgstr "Не удалось загрузить значок для %s (%s)"
 #: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
 #, c-format
 msgid "Unable to load stock icon (%s)"
-msgstr "Не удалось открыть предопределённый значок (%s)"
+msgstr "Не удалось открыть встроенный значок (%s)"
 
 #: ../gladeui/glade-widget-adaptor.c:333
 #, c-format
@@ -1672,6 +1679,7 @@ msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
+"Содержит тип упаковки для того, чтобы отобразить специальные дочерние элементы контейнера"
 
 #: ../gladeui/glade-widget-adaptor.c:973
 msgid "Large Icon"
@@ -1808,13 +1816,15 @@ msgstr "Это применимо только к изображениям из 
 
 #: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4951
 msgid "This only applies with stock type images"
-msgstr "Это применимо только к предопределённым изображениям"
+msgstr "Это применимо только к встроенным элементам"
 
 #: ../plugins/gtk+/glade-gtk.c:3616
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr ""
+"Размер в пикселях более приоритетный, чем размер значка. Если необходимо использовать "
+"размер заданный для значка, установите размер в пискселях в -1"
 
 #: ../plugins/gtk+/glade-gtk.c:3642
 msgid "Pixel Size takes precedence over Icon size"
@@ -1864,6 +1874,11 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>Подсказки:</b></big>\n"
+"  * Щёлкните правой кнопкой мыши над деревом для того, чтобы добавить элементы.\n"
+"  * Нажмите Delete, чтобы удалить выделенные элементы.\n"
+"  * Переносите элементы мышью, чтобы переупорядочить их.\n"
+"  * Колонку типа можно редактировать."
 
 #: ../plugins/gtk+/glade-gtk.c:4359
 msgid "Print S_etup"
@@ -1935,7 +1950,7 @@ msgstr "_Игра"
 
 #: ../plugins/gtk+/glade-gtk.c:4518
 msgid "This does not apply with stock items"
-msgstr "Это не совместимо с заранее определёнными элементами"
+msgstr "Это не совместимо с встроенными элементами"
 
 #: ../plugins/gtk+/glade-gtk.c:4728
 msgid "Menu Bar Editor"
@@ -2003,7 +2018,7 @@ msgstr "Страница подтверждения"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
-msgstr ""
+msgstr "Встроенный элемент. Выберите 'Нет' для задания изображения и метки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
@@ -2023,13 +2038,12 @@ msgstr "Метка ускорителя"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "Accessible Description"
-msgstr ""
+msgstr "Описание для вспомогательных технологий"
 
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:12
-#, fuzzy
 msgid "Accessible Name"
-msgstr "Метка ускорителя"
+msgstr "Имя для вспомогательных технологий"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Alignment"
@@ -2061,7 +2075,7 @@ msgstr "Рамка отношения"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Assistant"
-msgstr ""
+msgstr "Помощник"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:23
 msgid "Automatic"
@@ -2093,36 +2107,35 @@ msgstr "Снизу вверх"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Box"
-msgstr ""
+msgstr "Группа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Button 1 Motion"
-msgstr ""
+msgstr "Движение нажатой 1-ой кнопки мыши"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Button 2 Motion"
-msgstr ""
+msgstr "Движение нажатой 2-ой кнопки мыши"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Button 3 Motion"
-msgstr ""
+msgstr "Движение нажатой 3-ей кнопки мыши"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:35
-#, fuzzy
 msgid "Button Box"
-msgstr "Кнопка"
+msgstr "Группа кнопок"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button Motion"
-msgstr ""
+msgstr "Движение указателя с нажатой кнопкой"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button Press"
-msgstr ""
+msgstr "Нажатие кнопки мыши"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button Release"
-msgstr ""
+msgstr "Отпускание кнопки мыши"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Calendar"
@@ -2150,7 +2163,7 @@ msgstr "Поле для отметки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Check Menu Item"
-msgstr ""
+msgstr "Элемент меню с отметкой"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Close"
@@ -2186,25 +2199,23 @@ msgstr "Элемент выпадающего списка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Confirm"
-msgstr ""
+msgstr "Подтверждение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:58
-#, fuzzy
 msgid "Containers"
-msgstr "По центру"
+msgstr "Контейнеры"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:59
-#, fuzzy
 msgid "Content"
-msgstr "Комментарий"
+msgstr "Содержимое"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Continuous"
-msgstr ""
+msgstr "Непрерывно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Control and Display"
-msgstr ""
+msgstr "Управление и отображение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
@@ -2215,13 +2226,12 @@ msgid "Curve"
 msgstr "Кривая"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:65
-#, fuzzy
 msgid "Custom"
-msgstr "Курсор"
+msgstr "Дополнительно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Custom widget"
-msgstr ""
+msgstr "Дополнительные виджеты"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Default"
@@ -2229,11 +2239,11 @@ msgstr "Исходный"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Delayed"
-msgstr ""
+msgstr "Отложенный"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Description of an object, formatted for assistive technology access"
-msgstr ""
+msgstr "Описание объекта, отформатированное для доступа вспомогательных технологий"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Desktop"
@@ -2249,7 +2259,7 @@ msgstr "Окно диалога"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Discontinuous"
-msgstr ""
+msgstr "Дискретное"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Discrete"
@@ -2265,16 +2275,15 @@ msgstr "Вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Drag and Drop"
-msgstr ""
+msgstr "Перенос мышью"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Drawing Area"
 msgstr "Область для рисования"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:79
-#, fuzzy
 msgid "Drop Down Menu"
-msgstr "Меню параметров"
+msgstr "Выпадающее меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "East"
@@ -2285,9 +2294,8 @@ msgid "Edge"
 msgstr "Край"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
-#, fuzzy
 msgid "Edit Type"
-msgstr "Тип элемента:"
+msgstr "Правка типа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
@@ -2303,23 +2311,23 @@ msgstr "Ошибка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
-msgstr ""
+msgstr "Вогнута внутрь"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
-msgstr ""
+msgstr "Вогнута наружу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Event Box"
-msgstr ""
+msgstr "Область событий"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
-msgstr ""
+msgstr "Раскрыть"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Expander"
-msgstr ""
+msgstr "Раскрыватель"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Exposure"
@@ -2334,9 +2342,8 @@ msgid "File Chooser Dialog"
 msgstr "Диалог выбора файлов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:94
-#, fuzzy
 msgid "File Name"
-msgstr "Название"
+msgstr "Имя файла"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "File Selection"
@@ -2348,7 +2355,7 @@ msgstr "Заполнение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Fixed"
-msgstr "Фикс."
+msgstr "Фиксированный"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Focus Change"
@@ -2396,11 +2403,11 @@ msgstr "Горизонтально"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Horizontal Box"
-msgstr ""
+msgstr "Горизонтальный ящик"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Horizontal Button Box"
-msgstr ""
+msgstr "Горизонтальная группа кнопок"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Horizontal Panes"
@@ -2423,19 +2430,16 @@ msgid "Horizontal Separator"
 msgstr "Горизонтальный разделитель"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:116
-#, fuzzy
 msgid "Horizontal and Vertical"
-msgstr "Горизонтальная панель"
+msgstr "Горизонтальный и вертикальный"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:117
-#, fuzzy
 msgid "Icon Name"
-msgstr "Название"
+msgstr "Название значка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:118
-#, fuzzy
 msgid "Icon View"
-msgstr "Значок"
+msgstr "Просмотр значков"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Icons"
@@ -2443,11 +2447,11 @@ msgstr "Значки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "If Valid"
-msgstr ""
+msgstr "Если корректно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Image Menu Item"
-msgstr ""
+msgstr "Элемент меню значок"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Image Type"
@@ -2455,20 +2459,19 @@ msgstr "Тип изображения"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Immediate"
-msgstr ""
+msgstr "Немедленно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
-msgstr ""
+msgstr "В"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Input Dialog"
 msgstr "Диалог ввода"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:128
-#, fuzzy
 msgid "Intro"
-msgstr "Инфо"
+msgstr "Введение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Items"
@@ -2488,7 +2491,7 @@ msgstr "Расположение"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Least Recently Used first"
-msgstr ""
+msgstr "Сначала самый давно использовавшийся"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Leave Notify"
@@ -2507,9 +2510,8 @@ msgid "Linear"
 msgstr "Линейное"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:139
-#, fuzzy
 msgid "Link Button"
-msgstr "Крутящаяся кнопка"
+msgstr "Кнопка со ссылкой"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "List"
@@ -2528,18 +2530,16 @@ msgid "Menu Bar"
 msgstr "Строка меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:145
-#, fuzzy
 msgid "Menu Item"
-msgstr "Меню"
+msgstr "Элемент меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Menu Shell"
-msgstr ""
+msgstr "Меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:147
-#, fuzzy
 msgid "Menu Tool Button"
-msgstr "Кнопка-переключатель"
+msgstr "Кнопка-инструмент"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Message Dialog"
@@ -2551,7 +2551,7 @@ msgstr "Середина"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Most Recently Used first"
-msgstr ""
+msgstr "Сначала самый недавно использовавшийся"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Mouse"
@@ -2579,7 +2579,7 @@ msgstr "Записная книжка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Notification"
-msgstr ""
+msgstr "Уведомление"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Number of items"
@@ -2592,7 +2592,7 @@ msgstr "Число страниц"
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
-msgstr ""
+msgstr "Имя объекта, отформатированное для доступа вспомогательных технологий"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Ok"
@@ -2612,16 +2612,15 @@ msgstr "Меню параметров"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
-msgstr ""
+msgstr "Выход"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:169
-#, fuzzy
 msgid "Page Setup Dialog"
-msgstr "Диалог сообщения"
+msgstr "Диалог параметров страницы"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Paned"
-msgstr ""
+msgstr "Разделяемое окно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Pointer Motion"
@@ -2641,17 +2640,14 @@ msgstr "Всплывающее меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
 #: ../plugins/gnome/gnome.xml.in.h:27
-#, fuzzy
 msgid "Position"
-msgstr "Движение указателя"
+msgstr "Позиция"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:179
-#, fuzzy
 msgid "Print Dialog"
-msgstr "Диалог ввода"
+msgstr "Диалог печати"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:180
-#, fuzzy
 msgid "Progress"
 msgstr "Индикатор выполнения"
 
@@ -2661,15 +2657,15 @@ msgstr "Индикатор выполнения"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Property Change"
-msgstr ""
+msgstr "Изменение свойства"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Proximity  Out"
-msgstr ""
+msgstr "Близко"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Proximity In"
-msgstr ""
+msgstr "В непосредственной близости"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:30
 msgid "Question"
@@ -2685,26 +2681,23 @@ msgstr "Радио-кнопка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Radio Menu Item"
-msgstr ""
+msgstr "Радио элемент меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:189
-#, fuzzy
 msgid "Radio Tool Button"
-msgstr "Радио-кнопка"
+msgstr "Радио-кнопка панели инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:190
-#, fuzzy
 msgid "Range"
-msgstr "Изображение"
+msgstr "Промежуток"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Recent Chooser"
-msgstr ""
+msgstr "Недавние файлы"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
-#, fuzzy
 msgid "Recent Chooser Dialog"
-msgstr "Диалог выбора файлов"
+msgstr "Диалог выбора недавних файлов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Response ID"
@@ -2720,16 +2713,15 @@ msgstr "Справа налево"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Ruler"
-msgstr ""
+msgstr "Линейка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:31
 msgid "Save"
 msgstr "Сохранить"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:200
-#, fuzzy
 msgid "Scale"
-msgstr "Сохранить"
+msgstr "Шкала"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Scroll"
@@ -2745,20 +2737,20 @@ msgstr "Выбрать каталог"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Separator Menu Item"
-msgstr ""
+msgstr "Разделитель в меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Separator Tool Item"
-msgstr ""
+msgstr "Разделитель на панели инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Set the current page (strictly for editing purposes)"
-msgstr ""
+msgstr "Установить текущую страницу (только для редактирования)"
 
 #. Text of the textview
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Set the text in the view's text buffer"
-msgstr ""
+msgstr "Установить текст в буфере текстового виджета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Shrink"
@@ -2802,7 +2794,7 @@ msgstr "Начало"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Static"
-msgstr ""
+msgstr "Статическое"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Status Bar"
@@ -2813,9 +2805,8 @@ msgid "Stock Button"
 msgstr "Готовая кнопка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:231
-#, fuzzy
 msgid "Stock Item"
-msgstr "Встроенный элемент:"
+msgstr "Встроенный элемент"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Structure"
@@ -2823,11 +2814,11 @@ msgstr "Структура"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Substructure"
-msgstr ""
+msgstr "Подструктура"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Summary"
-msgstr ""
+msgstr "Описание"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Table"
@@ -2852,7 +2843,7 @@ msgstr "Пункты этого выпадающего меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "The number of items in the box"
-msgstr ""
+msgstr "Число элементов в контейнере"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "The number of pages in the notebook"
@@ -2860,22 +2851,23 @@ msgstr "Число страниц в записной книжке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "The page position in the Assistant"
-msgstr ""
+msgstr "Позиция страницы в помощнике"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
-msgstr ""
+msgstr "Позиция элемента меню в меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:245
-#, fuzzy
 msgid "The position of the tool item in the toolbar"
-msgstr "Число элементов на панели инструментов"
+msgstr "Позиция элемента на панели инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr ""
+"Идентификатор ответа этой кнопки в диалоге (не используется для кнопок, не "
+"упакованных в диалог)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "The stock item for this button"
@@ -2886,9 +2878,8 @@ msgid "The stock item for this image"
 msgstr "Готовый элемент для этого изображения"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:249
-#, fuzzy
 msgid "The text of the menu item"
-msgstr "Название виджета"
+msgstr "Текст элемента меню"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "The text to display"
@@ -2899,18 +2890,16 @@ msgid "Toggle Button"
 msgstr "Кнопка-переключатель"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:252
-#, fuzzy
 msgid "Toggle Tool Button"
-msgstr "Кнопка-переключатель"
+msgstr "Кнопка-переключатель на панели инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Tool Bar"
 msgstr "Панель инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:254
-#, fuzzy
 msgid "Tool Button"
-msgstr "Кнопка-переключатель"
+msgstr "Кнопка на панели инструментов"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Toolbar"
@@ -2941,9 +2930,8 @@ msgid "Top to Bottom"
 msgstr "Сверху вниз"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:262
-#, fuzzy
 msgid "Toplevels"
-msgstr "Верхний уровень"
+msgstr "Окна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Tree View"
@@ -2955,11 +2943,11 @@ msgstr "Вверх"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Use Underline"
-msgstr ""
+msgstr "Испльзовать подчёркивание"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Utility"
-msgstr ""
+msgstr "Вспомогательное"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
@@ -2967,11 +2955,11 @@ msgstr "Вертикальное"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Vertical Box"
-msgstr ""
+msgstr "Вертикальный контейнер"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Vertical Button Box"
-msgstr ""
+msgstr "Вертикальная группа кнопок"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Vertical Panes"
@@ -2999,7 +2987,7 @@ msgstr "Окно просмотра"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Visibility Notify"
-msgstr ""
+msgstr "Уведомление о показе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Warning"
@@ -3019,7 +3007,7 @@ msgstr "Слово"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Word Character"
-msgstr ""
+msgstr "Символ слова"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Yes, No"
@@ -3031,210 +3019,194 @@ msgid ""
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
+"Вы можете пометить его для перевода и добавить имя или адрес переводчика, если "
+"необходимо показывать имена переводчиков для каждого перевода в отдельности. "
+"В противном случае нужно перечислить всех переводчиков и отменить "
+"пометку о переводе."
 
 #: ../plugins/gnome/glade-gnome.c:298
-#, fuzzy
 msgid "Status Message."
-msgstr "Строка состояния"
+msgstr "Сообщение о состоянии."
 
 #: ../plugins/gnome/glade-gnome.c:656
 msgid "The position in the druid"
-msgstr ""
+msgstr "Позиция помощника"
 
 #: ../plugins/gnome/glade-gnome.c:1008
-#, fuzzy
 msgid "Message box type"
-msgstr "Диалог сообщения"
+msgstr "Тип диалога сообщения"
 
 #: ../plugins/gnome/glade-gnome.c:1009
-#, fuzzy
 msgid "The type of the message box"
-msgstr "Название виджета"
+msgstr "Тип всплывающего диалога сообщения"
 
 #: ../plugins/gnome/glade-gnome.c:1225
 msgid "This property is valid only in font information mode"
-msgstr ""
+msgstr "Это свойство действует только в режиме отображения шрифта"
 
 #: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:14
-#, fuzzy
 msgid "Selection Mode"
-msgstr "Выбрать каталог"
+msgstr "Режим выделения"
 
 #: ../plugins/gnome/glade-gnome.c:1314
-#, fuzzy
 msgid "Choose the Selection Mode"
-msgstr "Выбор цвета"
+msgstr "Выберите режим выделения"
 
 #: ../plugins/gnome/glade-gnome.c:1464
-#, fuzzy
 msgid "Placement"
-msgstr "Родитель"
+msgstr "Размещение"
 
 #: ../plugins/gnome/glade-gnome.c:1465
-#, fuzzy
 msgid "Choose the BonoboDockPlacement type"
-msgstr "Выбрать тип изображения"
+msgstr "Выберите тип размещения присоедниямого элемента BonoboDockItem"
 
 #: ../plugins/gnome/glade-gnome.c:1493
 msgid "Behavior"
-msgstr ""
+msgstr "Поведение"
 
 #: ../plugins/gnome/glade-gnome.c:1494
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "Выберите модель поведения присоединямого элемента BonoboDockItem"
 
 #: ../plugins/gnome/glade-gnome.c:1503
-#, fuzzy
 msgid "Pack Type"
-msgstr "Тип изображения"
+msgstr "Тип упаковки"
 
 #: ../plugins/gnome/glade-gnome.c:1504
-#, fuzzy
 msgid "Choose the Pack Type"
-msgstr "Выбрать тип изображения"
+msgstr "Выберите тип упаковки"
 
 #: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
-msgstr ""
+msgstr "24-часовой формат"
 
 #: ../plugins/gnome/gnome.xml.in.h:3
 msgid "Background Color"
-msgstr ""
+msgstr "Цвет фона"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
-msgstr ""
+msgstr "Цвет фона содержимого"
 
 #: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
-msgstr ""
+msgstr "Размыть"
 
 #: ../plugins/gnome/gnome.xml.in.h:10
-#, fuzzy
 msgid "File"
-msgstr "_Файл"
+msgstr "Файл"
 
 #: ../plugins/gnome/gnome.xml.in.h:12
-#, fuzzy
 msgid "Font Information"
-msgstr "Движение указателя"
+msgstr "Информация о шрифте"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
-#, fuzzy
 msgid "GNOME UI Obsolete"
-msgstr "Упразднённые Gtk+"
+msgstr "Упразднённые элементы интерфейса GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:14
-#, fuzzy
 msgid "GNOME User Interface"
-msgstr "Создание интерфейсов пользователя"
+msgstr "Пользовательский интерфейс GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:15
-#, fuzzy
 msgid "Generic"
 msgstr "Основные"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 #: ../plugins/gnome/gnome.xml.in.h:17
-#, fuzzy
 msgid "Logo"
-msgstr "Найти"
+msgstr "Логотип"
 
 #: ../plugins/gnome/gnome.xml.in.h:18
 msgid "Logo Background Color"
-msgstr ""
+msgstr "Цвет фона логотипа"
 
 #: ../plugins/gnome/gnome.xml.in.h:19
-#, fuzzy
 msgid "Max Saved"
-msgstr "Сохранить"
+msgstr "Максимальное число для сохранения"
 
 #: ../plugins/gnome/gnome.xml.in.h:20
-#, fuzzy
 msgid "Message"
-msgstr "Диалог сообщения"
+msgstr "Сообщение"
 
 #: ../plugins/gnome/gnome.xml.in.h:21
 msgid "Monday First"
-msgstr ""
+msgstr "Начиная с понедельника"
 
 #: ../plugins/gnome/gnome.xml.in.h:25
-#, fuzzy
 msgid "Padding"
-msgstr "Упаковка"
+msgstr "Промежутки"
 
 #: ../plugins/gnome/gnome.xml.in.h:26
 msgid "Pixmap"
-msgstr ""
+msgstr "Изображение на сервере"
 
 #: ../plugins/gnome/gnome.xml.in.h:28
 msgid "Program Name"
-msgstr ""
+msgstr "Имя программы"
 
 #: ../plugins/gnome/gnome.xml.in.h:29
 msgid "Program Version"
-msgstr ""
+msgstr "Версия программы"
 
 #: ../plugins/gnome/gnome.xml.in.h:32
 msgid "Scaled Height"
-msgstr ""
+msgstr "Высота масштабирования"
 
 #: ../plugins/gnome/gnome.xml.in.h:33
-#, fuzzy
 msgid "Scaled Width"
-msgstr "Прокручиваемое окно"
+msgstr "Ширина масштабирования"
 
 #: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Show Time"
-msgstr ""
+msgstr "Показать время"
 
 #: ../plugins/gnome/gnome.xml.in.h:37
-#, fuzzy
 msgid "StatusBar"
 msgstr "Строка состояния"
 
 #: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Store Config"
-msgstr ""
+msgstr "Сохранить конфигурацию"
 
 #: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Text Foreground Color"
-msgstr ""
+msgstr "Цвет текста"
 
 #: ../plugins/gnome/gnome.xml.in.h:41
 msgid "The height to scale the pixmap to"
-msgstr ""
+msgstr "Высота для масштабирования изображения"
 
 #: ../plugins/gnome/gnome.xml.in.h:42
 msgid "The maximum number of history entries saved"
-msgstr ""
+msgstr "Максимальное число элементов в истории"
 
 #: ../plugins/gnome/gnome.xml.in.h:43
 msgid "The pixmap file"
-msgstr ""
+msgstr "Файл с изображением"
 
 #: ../plugins/gnome/gnome.xml.in.h:44
 msgid "The width to scale the pixmap to"
-msgstr ""
+msgstr "Ширина для масштабирования изображения"
 
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Title Foreground Color"
-msgstr ""
+msgstr "Цвет заголовка"
 
 #: ../plugins/gnome/gnome.xml.in.h:47
 msgid "Top Watermark"
-msgstr ""
+msgstr "Верхняя отметка"
 
 #: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Unknown"
-msgstr ""
+msgstr "Неизвестно"
 
 #: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Use Alpha"
-msgstr ""
+msgstr "Использовать альфа-канал"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
 msgid ""
@@ -3242,144 +3214,135 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Используется для передачи информации о позиции страницы помощника GnomeDruid "
+"Таким образом создаётся правильное 'окружение' для содержимого страницы"
 
 #: ../plugins/gnome/gnome.xml.in.h:51
-#, fuzzy
 msgid "User"
-msgstr "Данные пользователя"
+msgstr "Пользователь"
 
 #: ../plugins/gnome/gnome.xml.in.h:52
-#, fuzzy
 msgid "User Widget"
-msgstr "Эл.управления"
+msgstr "Виджет для отображения пользователей"
 
 #: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Watermark"
-msgstr ""
+msgstr "Отметка"
 
 #: ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Exclusive"
-msgstr ""
+msgstr "Исключительное"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
-#, fuzzy
 msgid "Floating"
 msgstr "Плавающее"
 
 #: ../plugins/gnome/bonobo.xml.in.h:9
-#, fuzzy
 msgid "Locked"
-msgstr "Сокет"
+msgstr "Закреплённое"
 
 #: ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Never Floating"
-msgstr ""
+msgstr "Никогда не плавающее"
 
 #: ../plugins/gnome/bonobo.xml.in.h:11
-#, fuzzy
 msgid "Never Horizontal"
-msgstr "Горизонтально"
+msgstr "Никогда не горизонтальное"
 
 #: ../plugins/gnome/bonobo.xml.in.h:12
-#, fuzzy
 msgid "Never Vertical"
-msgstr "Вертикальное"
+msgstr "Никогда не вертикальное"
 
 #: ../plugins/gnome/canvas.xml.in.h:1
 msgid "Browse"
-msgstr ""
+msgstr "Обзор"
 
 #: ../plugins/gnome/canvas.xml.in.h:2
 msgid "Column Spacing"
-msgstr ""
+msgstr "Промежутки между столбцами"
 
 #: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
-msgstr ""
+msgstr "Канва GNOME"
 
 #: ../plugins/gnome/canvas.xml.in.h:4
-#, fuzzy
 msgid "Icon Width"
-msgstr "Максимальная ширина"
+msgstr "Ширина значка"
 
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "If the icon text can be edited by the user"
-msgstr ""
+msgstr "Текст значка может редактироваться пользователем"
 
 #: ../plugins/gnome/canvas.xml.in.h:6
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
 msgstr ""
+"Если текст значка постоянен, в каком случае он не будет скопирован в GnomeIconList"
 
 #: ../plugins/gnome/canvas.xml.in.h:7
 msgid "Max X"
-msgstr ""
+msgstr "Макс X"
 
 #: ../plugins/gnome/canvas.xml.in.h:8
 msgid "Max Y"
-msgstr ""
+msgstr "Макс Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:9
 msgid "Min X"
-msgstr ""
+msgstr "Мин X"
 
 #: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Min Y"
-msgstr ""
+msgstr "Мин Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:11
-#, fuzzy
 msgid "Multiple"
-msgstr "несколько"
+msgstr "Несколько"
 
 #: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Pixels per unit"
-msgstr ""
+msgstr "Пикселей в элементе"
 
 #: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Row Spacing"
-msgstr ""
+msgstr "Промежутки между строками"
 
 #: ../plugins/gnome/canvas.xml.in.h:15
-#, fuzzy
 msgid "Single"
-msgstr "Сплайн"
+msgstr "Единственный"
 
 #: ../plugins/gnome/canvas.xml.in.h:16
-#, fuzzy
 msgid "Text Editable"
-msgstr "Просмотр текста"
+msgstr "Редактируемый текст"
 
 #: ../plugins/gnome/canvas.xml.in.h:17
 msgid "Text Spacing"
-msgstr ""
+msgstr "Промежутки между текстом"
 
 #: ../plugins/gnome/canvas.xml.in.h:18
-#, fuzzy
 msgid "Text Static"
-msgstr "Просмотр текста"
+msgstr "Статический текст"
 
 #: ../plugins/gnome/canvas.xml.in.h:19
 msgid "The maximum x coordinate"
-msgstr ""
+msgstr "Максимальная координата x"
 
 #: ../plugins/gnome/canvas.xml.in.h:20
 msgid "The maximum y coordinate"
-msgstr ""
+msgstr "Максимальная координата y"
 
 #: ../plugins/gnome/canvas.xml.in.h:21
 msgid "The minimum x coordinate"
-msgstr ""
+msgstr "Минимальная координата x"
 
 #: ../plugins/gnome/canvas.xml.in.h:22
 msgid "The minimum y coordinate"
-msgstr ""
+msgstr "Минимальная координата y"
 
 #: ../plugins/gnome/canvas.xml.in.h:23
-#, fuzzy
 msgid "The number of pixels between columns of icons"
-msgstr "Число страниц в записной книжке"
+msgstr "Число пикселей между колонками значков"
 
 #: ../plugins/gnome/canvas.xml.in.h:24
 msgid "The number of pixels between rows of icons"
@@ -3401,37 +3364,3 @@ msgstr "Режим выделения"
 msgid "The width of each icon"
 msgstr "Ширина каждого значка"
 
-#, fuzzy
-#~ msgid "_New"
-#~ msgstr "Создать"
-
-#, fuzzy
-#~ msgid "_Quit"
-#~ msgstr "_Правка"
-
-#, fuzzy
-#~ msgid "_Contents"
-#~ msgstr "Комментарий"
-
-#, fuzzy
-#~ msgid "_Save"
-#~ msgstr "Сохранить"
-
-#, fuzzy
-#~ msgid "_Close"
-#~ msgstr "Закрыть"
-
-#, fuzzy
-#~ msgid "C_ut"
-#~ msgstr "Вырезать %s"
-
-#, fuzzy
-#~ msgid "_Copy"
-#~ msgstr "Скопировать %s"
-
-#, fuzzy
-#~ msgid "_Paste"
-#~ msgstr "Вставить %s"
-
-#~ msgid "_Delete"
-#~ msgstr "Удалить"
