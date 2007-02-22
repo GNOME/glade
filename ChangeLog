@@ -1,4 +1,11 @@
-2007-02-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+2007-02-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gnome/canvas.xml.in, plugins/gnome/gnome.xml.in,
+	  src/glade-project-window.c, gladeui/glade-signal-editor.c:
+	  Marked new translatable strings.
+	  Closes bugs #410735 and #410731.
+
+2007-02-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-property.[ch]: make glade_property_new() always
 	  return instrospected value (catalog_default parameter removed)
@@ -8,7 +15,7 @@
 	  the widget is created by the user.
 
 	* plugins/gtk+/glade-gtk.c: glade_gtk_menu_item_get_children()
-	  added GtkImageMenuItem support.
+	  added GtkImageMenuItem support. fix bug #404322
 
 	* plugins/gtk+/gtk+.xml.in: GtkMenuItem get-children function
 	  renamed to glade_gtk_menu_item_get_children()

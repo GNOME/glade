@@ -1,6 +1,6 @@
 <glade-catalog name="canvas" library="gladegnome" depends="gnome" domain="glade3">
   <glade-widget-classes>
-    <glade-widget-class name="GnomeCanvas" generic-name="gnomecanvas" title="Gnome Canvas">
+    <glade-widget-class name="GnomeCanvas" generic-name="gnomecanvas" _title="Gnome Canvas">
       <set-property-function>glade_gnome_canvas_set_property</set-property-function>
       <properties>
         <property id="scroll-x1" _name="Min X">
@@ -27,7 +27,7 @@
     </glade-widget-class>
 
     <!-- This is deprecated -->
-    <glade-widget-class name="GnomeIconList" generic-name="gnomeiconlist" title="Gnome Icon List">
+    <glade-widget-class name="GnomeIconList" generic-name="gnomeiconlist" _title="Gnome Icon List">
       <post-create-function>glade_gnome_icon_list_post_create</post-create-function>
       <set-property-function>glade_gnome_icon_list_set_property</set-property-function>
       <properties>

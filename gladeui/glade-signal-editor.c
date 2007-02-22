@@ -54,8 +54,8 @@ enum
 	NUM_COLUMNS
 };
 
-#define HANDLER_DEFAULT  "<Type the signal's handler here>"
-#define USERDATA_DEFAULT "<Type the object's name here>"
+#define HANDLER_DEFAULT  _("<Type the signal's handler here>")
+#define USERDATA_DEFAULT _("<Type the object's name here>")
 
 static void
 glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,

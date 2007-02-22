@@ -329,7 +329,7 @@ project_selection_changed_cb (GladeProject *project, GladeProjectWindow *gpw)
 		
 			glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
 			
-			text = g_strdup_printf ("%s [%s] - Properties",
+			text = g_strdup_printf (_("%s [%s] - Properties"),
 						glade_widget_get_name (glade_widget),
 						G_OBJECT_TYPE_NAME (glade_widget->object));
 					
@@ -339,7 +339,7 @@ project_selection_changed_cb (GladeProject *project, GladeProjectWindow *gpw)
 		}	
 		else
 		{
-			gtk_label_set_text (label, "Properties");
+			gtk_label_set_text (label, _("Properties"));
 		}
 			
 	}
