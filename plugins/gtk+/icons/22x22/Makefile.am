@@ -62,11 +62,13 @@ icons_DATA = \
 	optionmenu.png \
 	progressbar.png \
 	pagesetupdialog.png \
+	printdialog.png \
 	radiobutton.png \
 	ruler.png \
 	radiomenuitem.png \
 	radiotoolbutton.png \
 	recentchooser.png \
+	recentchooserdialog.png \
 	scrolledwindow.png \
 	spinbutton.png \
 	statusbar.png \
