@@ -394,33 +394,31 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 	}
 	else if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
-#define FLOAT_BUFSIZ 128
-
 		GtkAdjustment *adj = GTK_ADJUSTMENT (object);
-		GString       *str = g_string_new ("");
-		gchar          buff[FLOAT_BUFSIZ];
+		GString       *str = g_string_sized_new (G_ASCII_DTOSTR_BUF_SIZE * 6 + 6);
+		gchar          buff[G_ASCII_DTOSTR_BUF_SIZE];
 
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->value);
+		g_ascii_dtostr (buff, sizeof (buff), adj->value);
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->lower);
+		g_ascii_dtostr (buff, sizeof (buff), adj->lower);
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->upper);
+		g_ascii_dtostr (buff, sizeof (buff), adj->upper);
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->step_increment);
+		g_ascii_dtostr (buff, sizeof (buff), adj->step_increment);
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->page_increment);
+		g_ascii_dtostr (buff, sizeof (buff), adj->page_increment);
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, FLOAT_BUFSIZ, adj->page_size);
+		g_ascii_dtostr (buff, sizeof (buff), adj->page_size);
 		g_string_append (str, buff);
 
 		string = g_string_free (str, FALSE);
@@ -507,7 +505,7 @@ gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
 					      const GValue *value)
 {
-	gchar    *string = NULL, **strv, str[FLOAT_BUFSIZ];
+	gchar    *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
 	GObject  *object;
 	GdkColor *color;
 	GList    *objects, *accels;
@@ -569,17 +567,17 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_ULONG(property_class->pspec))
 		string = g_strdup_printf ("%lu", g_value_get_ulong (value));
 	else if (G_IS_PARAM_SPEC_INT64(property_class->pspec))
-		string = g_strdup_printf ("%lld", g_value_get_int64 (value));
+		string = g_strdup_printf ("%" G_GINT64_FORMAT, g_value_get_int64 (value));
 	else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
-		string = g_strdup_printf ("%llu", g_value_get_uint64 (value));
+		string = g_strdup_printf ("%" G_GUINT64_FORMAT, g_value_get_uint64 (value));
 	else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
 	{
-		g_ascii_dtostr (str, FLOAT_BUFSIZ, g_value_get_float (value));
+		g_ascii_dtostr (str, sizeof (str), g_value_get_float (value));
 		string = g_strdup (str);
 	}
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 	{
-		g_ascii_dtostr (str, FLOAT_BUFSIZ, g_value_get_double (value));
+		g_ascii_dtostr (str, sizeof (str), g_value_get_double (value));
 		string = g_strdup (str);
 	}
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
@@ -596,9 +594,10 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		string = g_strdup_printf ("%c", g_value_get_uchar (value));
 	else if (G_IS_PARAM_SPEC_UNICHAR(property_class->pspec))
 	{
-		string = g_malloc (7);
-		g_unichar_to_utf8 (g_value_get_uint (value), string);
-		*g_utf8_next_char(string) = '\0';
+                int len;
+                string = g_malloc (7);
+                len = g_unichar_to_utf8 (g_value_get_uint (value), string);
+                string[len] = '\0';
 	}
 	else if (G_IS_PARAM_SPEC_BOOLEAN(property_class->pspec))
 		string = g_strdup_printf ("%s", g_value_get_boolean (value) ?
@@ -882,25 +881,21 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		}
 	}
 	else if (G_IS_PARAM_SPEC_INT(property_class->pspec))
-		g_value_set_int (value, atoi (string));
+		g_value_set_int (value, g_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_UINT(property_class->pspec))
-		g_value_set_uint (value, atoi (string));
+		g_value_set_uint (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_LONG(property_class->pspec))
-		g_value_set_long (value, strtol (string, NULL, 10));
+		g_value_set_long (value, g_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_ULONG(property_class->pspec))
-		g_value_set_ulong (value, strtoul (string, NULL, 10));
+		g_value_set_ulong (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_INT64(property_class->pspec))
-#ifndef G_OS_WIN32
-		g_value_set_int64 (value, strtoll (string, NULL, 10));
-#else
-		g_value_set_int64 (value, _atoi64 (string));
-#endif
+		g_value_set_int64 (value, g_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
 		g_value_set_uint64 (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
-		g_value_set_float (value, (float) atof (string));
+		g_value_set_float (value, (float) g_ascii_strtod (string, NULL));
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
-		g_value_set_double (value, (float) atof (string));
+		g_value_set_double (value, g_ascii_strtod (string, NULL));
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
 	{
 		/* This can be called when loading defaults from
