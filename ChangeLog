@@ -1,3 +1,8 @@
+2007-03-01  Vincent Geddes  <vincent.geddes@gmail.com>
+
+    * bindings/python/Makefile.am: Added required libraries to 
+      libgladepython_la_LIBADD. Bug #412827.
+
 2007-02-28  Christian Persch  <chpe@svn.gnome.org>
 
 	* gladeui/glade-property-class.c:
@@ -6,7 +11,7 @@
 	(glade_property_class_make_gvalue_from_string): Use locale independent
 	integer and float parsing routines. Bug #396433.
 
-2007-02-26  Vincent Geddes  <vincent.geddes@gmail.com>
+2007-02-26  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* plugins/gtk+/icons/16x16/recentchooserdialog.png,
 	  plugins/gtk+/icons/16x16/printdialog.png,

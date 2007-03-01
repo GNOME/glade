@@ -24,8 +24,13 @@ libgladepython_la_CFLAGS = \
 	$(GTK_CFLAGS)      \
 	$(AM_CFLAGS)
 
-libgladepython_la_LDFLAGS = -module -avoid-version $(PYTHON_LIBS) $(AM_LDFLAGS)
-libgladepython_la_LIBADD = $(libgladeui) $(PYTHON_LIBS)
+libgladepython_la_LDFLAGS = -module -avoid-version
+libgladepython_la_LIBADD = \
+	$(libgladeui)          \
+	$(PYTHON_LIB_LOC)      \
+	$(PYTHON_LIBS)		   \
+	$(PYTHON_EXTRA_LIBS)   \
+	$(PYGTK_LIBS)
 
 if WITH_WIN32
   libgladepython_la_LDFLAGS += -no-undefined
