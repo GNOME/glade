@@ -680,11 +680,10 @@ glade_widget_constructor (GType                  type,
 	 * but only when its freshly created (depend on glade file at
 	 * load time and copying properties at dup time).
 	 */
-	if (gwidget->internal != NULL &&
-	    gwidget->construct_reason == GLADE_CREATE_USER)
+	if (gwidget->construct_reason == GLADE_CREATE_USER)
 		for (list = gwidget->properties; list; list = list->next)
 			glade_property_load (GLADE_PROPERTY (list->data));
-
+	
 	/* We only use catalog defaults when the widget was created by the user! */
 	if (gwidget->construct_reason == GLADE_CREATE_USER)
 		glade_widget_set_catalog_defaults (gwidget->properties);
@@ -2880,6 +2879,69 @@ glade_widget_pack_property_set_enabled (GladeWidget      *widget,
 	}
 	return FALSE;
 }
+
+/**
+ * glade_widget_property_set_save_always:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @setting: the setting 
+ *
+ * Sets whether @id_property in @widget should be special cased
+ * to always be saved regardless of its default value.
+ * (used for some special cases like properties
+ * that are assigned initial values in composite widgets
+ * or derived widget code).
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_property_set_save_always (GladeWidget      *widget,
+				       const gchar      *id_property,
+				       gboolean          setting)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_save_always (property, setting);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_pack_property_set_save_always:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @setting: the setting 
+ *
+ * Sets whether @id_property in @widget should be special cased
+ * to always be saved regardless of its default value.
+ * (used for some special cases like properties
+ * that are assigned initial values in composite widgets
+ * or derived widget code).
+ *
+ * Returns: whether @id_property was found or not.
+ */
+gboolean
+glade_widget_pack_property_set_save_always (GladeWidget      *widget,
+					    const gchar      *id_property,
+					    gboolean          setting)
+{
+	GladeProperty *property;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+	{
+		glade_property_set_save_always (property, setting);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 
 /**
  * glade_widget_property_reset:

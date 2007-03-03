@@ -47,6 +47,13 @@ struct _GladeProperty
 					* widget.
 					*/
 
+	gboolean            save_always; /* Used to make a special case exception and always
+					  * save this property regardless of what the default
+					  * value is (used for some special cases like properties
+					  * that are assigned initial values in composite widgets
+					  * or derived widget code).
+					  */
+
 	/* Used only for translatable strings. */
 	gboolean  i18n_translatable;
 	gboolean  i18n_has_context;
@@ -149,6 +156,13 @@ void                    glade_property_set_sensitive         (GladeProperty     
 							      const gchar        *reason);
 LIBGLADEUI_API
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);
+
+LIBGLADEUI_API
+void                    glade_property_set_save_always       (GladeProperty      *property,
+							      gboolean            setting);
+LIBGLADEUI_API
+gboolean                glade_property_get_save_always       (GladeProperty      *property);
+
 LIBGLADEUI_API
 void                    glade_property_set_enabled           (GladeProperty      *property,
 							      gboolean            enabled);

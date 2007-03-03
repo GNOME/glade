@@ -1,7 +1,18 @@
+2006-03-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-property.[ch], gladeui/glade-widget.[ch]:
+	  - Added property_set_save_always() functions
+	  - Introspect initial values of all properties even if they're
+	    not composite children (sometimes derived widgets set a property
+	    to a non-default value).
+
+	* plugins/gtk+/glade-gtk.c: set "save-always" on the "type-hint"
+	  property of GtkDialog. Bug #412848.
+
 2007-03-01  Vincent Geddes  <vincent.geddes@gmail.com>
 
-    * bindings/python/Makefile.am: Added required libraries to 
-      libgladepython_la_LIBADD. Bug #412827.
+	* bindings/python/Makefile.am: Added required libraries to 
+	libgladepython_la_LIBADD. Bug #412827.
 
 2007-02-28  Christian Persch  <chpe@svn.gnome.org>
 

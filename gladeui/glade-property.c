@@ -337,10 +337,11 @@ glade_property_write_impl (GladeProperty  *property,
 	g_assert (property->klass->orig_def);
 	g_assert (property->klass->def);
 
-	/* Skip properties that are default
-	 * (by original pspec default) 
+	/* Skip properties that are default by original pspec default
+	 * (excepting those that specified otherwise).
 	 */
-	if (glade_property_equals_value (property, property->klass->orig_def))
+	if (!property->save_always &&
+	    glade_property_equals_value (property, property->klass->orig_def))
 		return FALSE;
 
 	/* we should change each '-' by '_' on the name of the property 
@@ -1556,6 +1557,41 @@ glade_property_get_sensitive (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 	return property->sensitive;
+}
+
+/**
+ * glade_property_set_save_always:
+ * @property: A #GladeProperty
+ * @setting: the value to set
+ *
+ * Sets whether this property should be special cased
+ * to always be saved regardless of its default value.
+ * (used for some special cases like properties
+ * that are assigned initial values in composite widgets
+ * or derived widget code).
+ */
+void
+glade_property_set_save_always (GladeProperty      *property,
+				gboolean            setting)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	property->save_always = setting;
+}
+
+/**
+ * glade_property_get_save_always:
+ * @property: A #GladeProperty
+ *
+ * Returns whether this property is special cased
+ * to always be saved regardless of its default value.
+ */
+gboolean
+glade_property_get_save_always (GladeProperty      *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+
+	return property->save_always;
 }
 
 void
