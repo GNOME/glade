@@ -1,3 +1,8 @@
+2006-03-05  Halton Huo <halton.huo@sun.com>
+
+	* Define GCC_WARN_FLAGS in configure.ac, if use gcc, put -Wall into CFLAGS,
+	otherwise not. Replace -Wall with @GCC_WARN_FLAGS@ in Makefile.am
+	
 2006-03-03  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property.[ch], gladeui/glade-widget.[ch]:

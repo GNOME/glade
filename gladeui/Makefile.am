@@ -66,7 +66,7 @@ libgladeui_1_la_CPPFLAGS =  \
 	$(AM_CPPFLAGS)
 
 libgladeui_1_la_CFLAGS =    \
-	-g -Wall            \
+	-g @GCC_WARN_FLAGS@ \
 	$(GTK_CFLAGS)       \
 	$(AM_CFLAGS)
 

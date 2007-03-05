@@ -223,6 +223,15 @@ case $host_os in
 esac
 AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
 
+dnl ================================================================
+dnl Only use -Wall if we have gcc
+dnl ================================================================
+if test "x$GCC" = "xyes"; then
+    GCC_WARN_FLAGS="-Wall"
+fi
+
+AC_SUBST(GCC_WARN_FLAGS)
+
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])

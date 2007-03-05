@@ -8,9 +8,9 @@ glade_3_CPPFLAGS = \
 	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
 	$(AM_CPPFLAGS)
 
-glade_3_CFLAGS =           \
-	-g -Wall           \
-	$(GTK_CFLAGS)      \
+glade_3_CFLAGS =            \
+	-g @GCC_WARN_FLAGS@ \
+	$(GTK_CFLAGS)       \
 	$(AM_CFLAGS)
 
 glade_3_LDFLAGS = $(AM_LDFLAGS)

@@ -15,12 +15,12 @@ libgladegtk_la_CPPLAGS =   \
 	-I$(top_builddir)  \
 	$(AM_CPPFLAGS)
 
-libgladegtk_la_CFLAGS =    \
-	-g -Wall           \
-	-I$(top_srcdir)    \
-	-I$(top_srcdir)    \
-	-I$(top_builddir)  \
-	$(GTK_CFLAGS)	   \
+libgladegtk_la_CFLAGS =     \
+	-g @GCC_WARN_FLAGS@ \
+	-I$(top_srcdir)     \
+	-I$(top_srcdir)     \
+	-I$(top_builddir)   \
+	$(GTK_CFLAGS)	    \
 	$(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c glade-gtk.h

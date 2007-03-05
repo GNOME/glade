@@ -13,7 +13,7 @@ gladegnomedir = $(pkglibdir)/modules
 libgladegnome_la_SOURCES = glade-gnome.c
 libgladegnome_la_CPPFLAGS = $(AM_CPPFLAGS)
 libgladegnome_la_CFLAGS = \
-	-g -Wall                     \
+	-g @GCC_WARN_FLAGS@          \
 	-I$(top_srcdir)              \
 	-I$(top_builddir)            \
 	-I$(top_srcdir)/plugins/gtk+ \
