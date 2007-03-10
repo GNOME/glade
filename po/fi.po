@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-20 09:03+0300\n"
-"PO-Revision-Date: 2007-02-21 19:31+0300\n"
+"POT-Creation-Date: 2007-03-06 06:34+0300\n"
+"PO-Revision-Date: 2007-03-10 22:35+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -34,11 +34,11 @@ msgstr "Glade"
 
 #: ../src/main.c:48
 msgid "Output version information and exit"
-msgstr ""
+msgstr "Näytä versiotiedot ja lopeta"
 
 #: ../src/main.c:51
 msgid "Disable Devhelp integration"
-msgstr ""
+msgstr "Poista devhelp-integrointi käytöstä"
 
 #: ../src/main.c:54
 msgid "[FILE...]"
@@ -56,11 +56,12 @@ msgstr "Gladen valinnat"
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
+"gmodule-tukea ei löydy. Gladen toiminta vaatii gmodule-tuen"
 
 #: ../src/main.c:167
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
-msgstr ""
+msgstr "Tiedostoa \"%s\" ei voi avata, sitä ei ole olemassa.\n"
 
 #: ../src/glade-project-window.c:44
 msgid "[Read Only]"
@@ -73,7 +74,17 @@ msgstr "Verkko-osoitetta \"%s\" ei voitu näyttää"
 
 #: ../src/glade-project-window.c:112
 msgid "No suitable web browser executable could be found."
-msgstr ""
+msgstr "Suoritettavaa selainohjelmaa ei löytynyt."
+
+#: ../src/glade-project-window.c:332
+#, c-format
+msgid "%s [%s] - Properties"
+msgstr "%s [%s] - ominaisuudet"
+
+#: ../src/glade-project-window.c:342 ../src/glade-project-window.c:1999
+#: ../gladeui/glade-widget.c:992
+msgid "Properties"
+msgstr "Ominaisuudet"
 
 #: ../src/glade-project-window.c:609
 #, c-format
@@ -91,8 +102,9 @@ msgstr "Tiedostoa %s on muokattu lukemisen jälkeen"
 
 #: ../src/glade-project-window.c:773
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Jos tallennat sen, hukataan levylle muualta tehdyt muutokset. "
-"Tallennetaanko joka tapauksessa?"
+msgstr ""
+"Jos tallennat sen, hukataan levylle muualta tehdyt muutokset. Tallennetaanko "
+"joka tapauksessa?"
 
 #: ../src/glade-project-window.c:777
 msgid "_Save Anyway"
@@ -128,11 +140,14 @@ msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
 "save the file."
 msgstr ""
+"Tiedostoa %s ei voitu tallentaa. Oikeutesi eivät riitä tiedoston "
+"tallentamiseen."
 
 #: ../src/glade-project-window.c:906
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
+"Tiedostoa %s ei voitu tallentaa. Toinen projekti on auki samassa polussa."
 
 #: ../src/glade-project-window.c:958
 #, c-format
@@ -142,8 +157,8 @@ msgid ""
 "\n"
 "Your changes will be lost if you don't save them.\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Tallennetaanko muutokset "
-"projektiin \"%s\" ennen sulkemista?</span>\n"
+"<span weight=\"bold\" size=\"larger\">Tallennetaanko muutokset projektiin \"%"
+"s\" ennen sulkemista?</span>\n"
 "\n"
 "Muutoksesi projektiin hukataan, jos et tallenna niitä.\n"
 
@@ -154,7 +169,7 @@ msgstr "S_ulje tallentamatta"
 #: ../src/glade-project-window.c:993
 #, c-format
 msgid "Failed to save %s to %s: %s"
-msgstr ""
+msgstr "Tiedostoa %s kohteeseen %s ei voitu tallentaa: %s"
 
 #: ../src/glade-project-window.c:1005
 msgid "Save…"
@@ -162,7 +177,7 @@ msgstr "Tallenna..."
 
 #: ../src/glade-project-window.c:1411
 msgid "Could not display the online user manual"
-msgstr ""
+msgstr "Verkko-ohjetta ei voitu näyttää"
 
 #: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
 #, c-format
@@ -170,10 +185,11 @@ msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr ""
+"Sopivaa selainta ei löytynyt, jotta voitaisiin näyttää sivu %s"
 
 #: ../src/glade-project-window.c:1449
 msgid "Could not display the online developer reference manual"
-msgstr ""
+msgstr "Kehittäjän referenssiä verkosta ei voitu näyttää"
 
 #: ../src/glade-project-window.c:1482
 msgid ""
@@ -192,6 +208,19 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
 "USA."
 msgstr ""
+"Glade3 on vapaa ohjelma; voit levittää sitä edelleen ja/tai muokata sitä\n"
+"GNU:n GPL-lisenssin sallimilla tavoilla siten kuin Free Software Foundation\n"
+"on sen määritellyt; voit halutessasi käyttää lisenssin versiota 2 taikka mitä\n"
+"tahansa tämän jälkeen ilmestynyttä versiota.\n"
+"\n"
+"Glade3:a levitetään siinä toivossa, että siitä on hyötyä, mutta ILMAN MITÄÄN\n"
+"TAKUUTA; jopa ilman konkludenttista takuuta MYYNTIKELPOISUUDESTA TAI\n"
+"SOVELTUMISESTA TIETTYYN ERITYISEEN TARKOITUKSEEN. Yksityiskohtien osalta\n"
+"katso GNU:n GPL-lisenssiä.\n"
+"\n"
+"Sinun olisi pitänyt saada kopio GNU:n GPL-lisenssistä Evincen mukana; jos et "
+"sitä saanut, niin lähetä kirje Free Software Foundation, Inc. :lle, "
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/glade-project-window.c:1504
 msgid "translator-credits"
@@ -205,20 +234,20 @@ msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Käyttöliittymien suunnittelutyökalu GTK+ -ja Gnome-sovelluksille"
 
 #. File
-#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4401
-#: ../plugins/gtk+/glade-gtk.c:4699
+#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4406
+#: ../plugins/gtk+/glade-gtk.c:4704
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Edit
-#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4404
-#: ../plugins/gtk+/glade-gtk.c:4709
+#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4409
+#: ../plugins/gtk+/glade-gtk.c:4714
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #. View
-#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4407
-#: ../plugins/gtk+/glade-gtk.c:4717
+#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4412
+#: ../plugins/gtk+/glade-gtk.c:4722
 msgid "_View"
 msgstr "_Näytä"
 
@@ -227,8 +256,8 @@ msgid "_Projects"
 msgstr "_Projektit"
 
 #. Help
-#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4419
-#: ../plugins/gtk+/glade-gtk.c:4720
+#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4424
+#: ../plugins/gtk+/glade-gtk.c:4725
 msgid "_Help"
 msgstr "O_hje"
 
@@ -255,7 +284,7 @@ msgstr "Lopeta sovellus"
 #. ViewMenu
 #: ../src/glade-project-window.c:1595
 msgid "Palette _Appearance"
-msgstr ""
+msgstr "Paletin _ulkoasu"
 
 #: ../src/glade-project-window.c:1599
 msgid "About this application"
@@ -267,11 +296,11 @@ msgstr "Näytä käyttäjän ohje"
 
 #: ../src/glade-project-window.c:1604
 msgid "_Developer Reference"
-msgstr ""
+msgstr "_Kehittäjän referenssi"
 
 #: ../src/glade-project-window.c:1605
 msgid "Display the developer reference manual"
-msgstr ""
+msgstr "Näytä kehittäjän manuaali"
 
 #: ../src/glade-project-window.c:1614
 msgid "Save the current project"
@@ -311,7 +340,7 @@ msgstr "Liitä leikepöydältä"
 
 #: ../src/glade-project-window.c:1639
 msgid "Delete the selection"
-msgstr ""
+msgstr "Poista valinta"
 
 #. ViewMenu
 #: ../src/glade-project-window.c:1643
@@ -345,15 +374,15 @@ msgstr "_Käytä pieniä kuvakkeita"
 
 #: ../src/glade-project-window.c:1661
 msgid "Show items using small icons"
-msgstr ""
+msgstr "Näytä kohdat pieninä kuvakkeina"
 
 #: ../src/glade-project-window.c:1664
 msgid "Context _Help"
-msgstr ""
+msgstr "Konteksti_ohje"
 
 #: ../src/glade-project-window.c:1665
 msgid "Show or hide contextual help buttons in the editor"
-msgstr ""
+msgstr "Näytä tai piilota kontekstiin liittyvät ohjepainikkeet muokkaimessa"
 
 #: ../src/glade-project-window.c:1672
 msgid "Text beside icons"
@@ -365,7 +394,7 @@ msgstr "Näytä kohdat kuvakkeina ja tekstinä"
 
 #: ../src/glade-project-window.c:1675
 msgid "_Icons only"
-msgstr "Va_in kuvakekkeet"
+msgstr "Va_in kuvakkeet"
 
 #: ../src/glade-project-window.c:1676
 msgid "Display items as icons only"
@@ -385,7 +414,7 @@ msgstr "Valitse ikkunaelementit"
 
 #: ../src/glade-project-window.c:1888
 msgid "Select widgets in the workspace"
-msgstr ""
+msgstr "Näytä ikkunaelementit työpöydällä"
 
 #: ../src/glade-project-window.c:1977
 msgid "Palette"
@@ -393,11 +422,7 @@ msgstr "Paletti"
 
 #: ../src/glade-project-window.c:1993
 msgid "Inspector"
-msgstr ""
-
-#: ../src/glade-project-window.c:1999 ../gladeui/glade-widget.c:975
-msgid "Properties"
-msgstr "Ominaisuudet"
+msgstr "Rakenne"
 
 #: ../src/glade-project-window.c:2115
 msgid "Could not create a new project."
@@ -450,6 +475,9 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Yritettiin tallentaa yksityisiä tietoja kansioon %s, mutta se ei ole "
+"tavallinen tiedosto.\n"
+"Tässä istunnossa ei tallenneta mitään yksityisiä tietoja."
 
 #: ../gladeui/glade-app.c:617
 #, c-format
@@ -457,6 +485,8 @@ msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Kansiota %s ei voitu luoda yksityisen tiedon tallennusta varten.\n"
+"Tässä istunnossa ei tallenneta mitään yksityisiä tietoja."
 
 #: ../gladeui/glade-app.c:645
 #, c-format
@@ -464,6 +494,8 @@ msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Virhe kirjoitettaessa yksityisiä tietoja tiedostoon %s (%s).\n"
+"Tässä istunnossa ei tallenneta mitään yksityisiä tietoja."
 
 #: ../gladeui/glade-app.c:657
 #, c-format
@@ -471,6 +503,8 @@ msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Virhe sarjallistettaessa asetustietoja tallennusta varten (%s).\n"
+"Tässä istunnossa ei tallenneta mitään yksityisiä tietoja."
 
 #: ../gladeui/glade-app.c:670
 #, c-format
@@ -478,10 +512,12 @@ msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Virhe avattaessa %s yksityisten tietojen tallennusta varten (%s).\n"
+"Tässä istunnossa ei tallenneta mitään yksityisiä tietoja."
 
 #: ../gladeui/glade-app.c:1109
 msgid "You cannot copy a widget internal to a composite widget."
-msgstr ""
+msgstr "Et voi kopioida yhdistetyn ikkunaelementin sisäistä elementtiä."
 
 #: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
 #: ../gladeui/glade-app.c:1352
@@ -490,45 +526,45 @@ msgstr "Ikkunaelementtiä ei ole valittu."
 
 #: ../gladeui/glade-app.c:1162
 msgid "You cannot cut a widget internal to a composite widget."
-msgstr ""
+msgstr "Et voi leikata yhdistetyn ikkunaelementin sisäistä elementtiä."
 
 #: ../gladeui/glade-app.c:1221
 msgid "Unable to paste to the selected parent"
-msgstr ""
+msgstr "Valittuun äitielementtiin ei voi liittää"
 
 #: ../gladeui/glade-app.c:1232
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "Useisiin ikkunaelementteihin ei voi liittää"
 
 #: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
 msgid "No widget selected on the clipboard"
-msgstr ""
+msgstr "Leikepöydältä ei ole valittu ikkunaelementtiä"
 
 #: ../gladeui/glade-app.c:1268
 #, c-format
 msgid "Unable to paste widget %s without a parent"
-msgstr ""
+msgstr "Ikkunaelementtiä %s ei voi liittää ilman äitielementtiä"
 
 #: ../gladeui/glade-app.c:1285
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
+msgstr "Tähän säilöön voi liittää vain yhden elementin kerrallaan"
 
 #: ../gladeui/glade-app.c:1297
 msgid "Insufficient amount of placeholders in target container"
-msgstr ""
+msgstr "Kohdesäilössä ei ole tarpeeksi vapaita paikkoja"
 
 #: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
 msgid "You cannot delete a widget internal to a composite widget."
-msgstr ""
+msgstr "Et voi poistaa yhdistetyn ikkunaelementin sisäistä elementtiä."
 
 #: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
 #: ../plugins/gtk+/glade-gtk.c:207
 msgid "Stock"
-msgstr ""
+msgstr "Vakio"
 
 #: ../gladeui/glade-builtins.c:184
 msgid "A builtin stock item"
-msgstr ""
+msgstr "Sisäänrakennettu vakiokohta"
 
 #: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Stock Image"
@@ -544,15 +580,15 @@ msgstr "Oliot"
 
 #: ../gladeui/glade-builtins.c:524
 msgid "A list of objects"
-msgstr ""
+msgstr "Kohdeluettelo"
 
 #: ../gladeui/glade-builtins.c:533
 msgid "Pixbuf"
-msgstr ""
+msgstr "Pixbuf"
 
 #: ../gladeui/glade-builtins.c:534
 msgid "A pixbuf value"
-msgstr ""
+msgstr "Pixbuf-arvo"
 
 #: ../gladeui/glade-builtins.c:542
 msgid "GdkColor"
@@ -560,15 +596,15 @@ msgstr "GdkColor"
 
 #: ../gladeui/glade-builtins.c:543
 msgid "A gdk color value"
-msgstr ""
+msgstr "GDK-väriarvo"
 
-#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1192
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1187
 msgid "Accelerators"
-msgstr ""
+msgstr "Näppäinoikotiet"
 
-#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1193
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1188
 msgid "A list of accelerator keys"
-msgstr ""
+msgstr "Lista näppäinoikoteistä"
 
 #: ../gladeui/glade-builtins.c:563
 msgid "Integer"
@@ -576,15 +612,15 @@ msgstr "Kokonaisluku"
 
 #: ../gladeui/glade-builtins.c:564
 msgid "An integer value"
-msgstr ""
+msgstr "Kokonaislukuarvo"
 
 #: ../gladeui/glade-builtins.c:572
 msgid "Unsigned Integer"
-msgstr ""
+msgstr "Etumerkitön kokonaisluku"
 
 #: ../gladeui/glade-builtins.c:573
 msgid "An unsigned integer value"
-msgstr ""
+msgstr "Etumerkitön kokonaislukuarvo"
 
 #: ../gladeui/glade-builtins.c:580
 msgid "String"
@@ -592,15 +628,15 @@ msgstr "Merkkijono"
 
 #: ../gladeui/glade-builtins.c:581
 msgid "An entry"
-msgstr ""
+msgstr "Syöttökenttä"
 
 #: ../gladeui/glade-builtins.c:588
 msgid "Strv"
-msgstr ""
+msgstr "Strv"
 
 #: ../gladeui/glade-builtins.c:589
 msgid "String array"
-msgstr ""
+msgstr "Merkkijonotaulukko"
 
 #: ../gladeui/glade-builtins.c:597
 msgid "Float"
@@ -608,44 +644,44 @@ msgstr "Liukuluku"
 
 #: ../gladeui/glade-builtins.c:598
 msgid "A floating point entry"
-msgstr ""
+msgstr "Liukulukuarvo"
 
 #: ../gladeui/glade-builtins.c:606
 msgid "Boolean"
-msgstr ""
+msgstr "Totuusarvo"
 
 #: ../gladeui/glade-builtins.c:607
 msgid "A boolean value"
-msgstr ""
+msgstr "Totuusarvo"
 
 #: ../gladeui/glade-base-editor.c:470
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "Asetetaan kohteen tyyppi sijainnissa %s arvoon %s"
 
 #: ../gladeui/glade-base-editor.c:635
 #, c-format
 msgid "Add a %s to %s"
-msgstr ""
+msgstr "Lisää %s kohtaan %s"
 
 #: ../gladeui/glade-base-editor.c:712
 #, c-format
 msgid "Delete %s child from %s"
-msgstr ""
+msgstr "Poista %s lapsi lähteestä %s"
 
 #: ../gladeui/glade-base-editor.c:835
 #, c-format
 msgid "Reorder %s's children"
-msgstr ""
+msgstr "Järjestä kohteen %s lapset uudestaan"
 
 #: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
 #: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Label"
-msgstr ""
+msgstr "Otsikko"
 
 #: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
 msgid "Type"
-msgstr ""
+msgstr "Tyyppi"
 
 #. Name
 #: ../gladeui/glade-base-editor.c:1598
@@ -660,26 +696,26 @@ msgstr "Tyyppi:"
 #: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
 #: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Widget"
-msgstr ""
+msgstr "Ikkunaelementti"
 
 #: ../gladeui/glade-command.c:541
 msgid "Setting multiple properties"
-msgstr ""
+msgstr "Asetetaan useita ominaisuuksia"
 
 #: ../gladeui/glade-command.c:549
 #, c-format
 msgid "Setting %s of %s"
-msgstr ""
+msgstr "Asetetaan %s / %s"
 
 #: ../gladeui/glade-command.c:553
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr ""
+msgstr "Asetetaan %s / %s arvoon %s"
 
 #: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
 #, c-format
 msgid "Renaming %s to %s"
-msgstr ""
+msgstr "Nimetään %s uudestaan nimelle %s"
 
 #: ../gladeui/glade-command.c:903
 #, c-format
@@ -696,7 +732,7 @@ msgstr "useita"
 
 #: ../gladeui/glade-command.c:1017
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr ""
+msgstr "Et voi poistaa yhdistetyn ikkunaelementin sisäistä elementtiä."
 
 #: ../gladeui/glade-command.c:1063
 #, c-format
@@ -710,17 +746,17 @@ msgstr "Poista useita"
 #: ../gladeui/glade-command.c:1371
 #, c-format
 msgid "Clipboard add %s"
-msgstr ""
+msgstr "Lisää leikepöydältä %s"
 
 #: ../gladeui/glade-command.c:1374
 #, c-format
 msgid "Clipboard remove %s"
-msgstr ""
+msgstr "Poista leikepöydältä %s"
 
 #: ../gladeui/glade-command.c:1537
 #, c-format
 msgid "Create %s"
-msgstr ""
+msgstr "Luo %s"
 
 #: ../gladeui/glade-command.c:1563
 #, c-format
@@ -745,35 +781,35 @@ msgstr "Liitä %s"
 #: ../gladeui/glade-command.c:1672
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
-msgstr ""
+msgstr "Raahaa ja tiputa lähteestä %s kohteeseen %s"
 
 #: ../gladeui/glade-command.c:1794
 #, c-format
 msgid "Add signal handler %s"
-msgstr ""
+msgstr "Lisää signaalikäsittelijä %s"
 
 #: ../gladeui/glade-command.c:1795
 #, c-format
 msgid "Remove signal handler %s"
-msgstr ""
+msgstr "Poista signaalikäsittelijä %s"
 
 #: ../gladeui/glade-command.c:1796
 #, c-format
 msgid "Change signal handler %s"
-msgstr ""
+msgstr "Muuta signaalikäsittelijää %s"
 
 #: ../gladeui/glade-command.c:2000
 msgid "Setting i18n metadata"
-msgstr ""
+msgstr "Asetetaan i18n-metatietoja"
 
 #: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
-msgstr ""
+msgstr "Kuvaa ei voitu ladata (%s)"
 
 #: ../gladeui/glade-editor-property.c:274
 msgid "View GTK+ documentation for this property"
-msgstr ""
+msgstr "Näytä tämän ominaisuudet GTK+ -dokumentaatio"
 
 #: ../gladeui/glade-editor-property.c:576
 msgid "Property Class"
@@ -781,7 +817,7 @@ msgstr "Ominaisuusluokka"
 
 #: ../gladeui/glade-editor-property.c:577
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "GladePropertyClass, jolle tämä GladeEditorProperty luotiin"
 
 #: ../gladeui/glade-editor-property.c:583
 msgid "Use Command"
@@ -789,15 +825,15 @@ msgstr "Käytä komentoa"
 
 #: ../gladeui/glade-editor-property.c:584
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr ""
+msgstr "Käytetäänkö komentorajapintaa peru/tee uudestaan -pinolle"
 
 #: ../gladeui/glade-editor-property.c:590
 msgid "Show Info"
-msgstr "Näytä tietoja"
+msgstr "Näytä tiedot"
 
 #: ../gladeui/glade-editor-property.c:591
 msgid "Whether we should show an informational button"
-msgstr ""
+msgstr "Näytetäänkö tietopainike"
 
 #: ../gladeui/glade-editor-property.c:1117
 msgid "Select Fields"
@@ -805,7 +841,7 @@ msgstr "Valitse kentät"
 
 #: ../gladeui/glade-editor-property.c:1139
 msgid "_Select individual fields:"
-msgstr ""
+msgstr "_Valitse yksittäisiä kenttiä:"
 
 #: ../gladeui/glade-editor-property.c:1466
 msgid "Edit Text"
@@ -822,7 +858,7 @@ msgstr "_Käännettävissä"
 
 #: ../gladeui/glade-editor-property.c:1543
 msgid "_Has context prefix"
-msgstr ""
+msgstr "_Sisältää kontekstin etuliitteen"
 
 #. Comments.
 #: ../gladeui/glade-editor-property.c:1561
@@ -840,7 +876,7 @@ msgstr "Kyllä"
 msgid "No"
 msgstr "Ei"
 
-#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:927
+#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:944
 #: ../gladeui/glade-widget-adaptor.c:916
 msgid "Name"
 msgstr "Nimi"
@@ -852,12 +888,12 @@ msgstr "Luokka"
 #: ../gladeui/glade-editor-property.c:2378
 #, c-format
 msgid "Choose %s implementors"
-msgstr ""
+msgstr "Valitse kohteen %s toteuttajat"
 
 #: ../gladeui/glade-editor-property.c:2378
 #, c-format
 msgid "Choose a %s in this project"
-msgstr ""
+msgstr "Valitse %s tästä projektista"
 
 #. Checklist
 #: ../gladeui/glade-editor-property.c:2442
@@ -899,7 +935,7 @@ msgstr "Askelväli:"
 
 #: ../gladeui/glade-editor-property.c:2976
 msgid "The increment to use to make minor changes to the value"
-msgstr ""
+msgstr "Arvon pienten muutosten askelväli"
 
 #: ../gladeui/glade-editor-property.c:2978
 msgid "Page inc:"
@@ -907,7 +943,7 @@ msgstr "Sivun kasvatus:"
 
 #: ../gladeui/glade-editor-property.c:2979
 msgid "The increment to use to make major changes to the value"
-msgstr ""
+msgstr "Arvon suurten muutosten askelväli"
 
 #: ../gladeui/glade-editor-property.c:2981
 msgid "Page size:"
@@ -918,10 +954,11 @@ msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
 msgstr ""
+"Sivun koko. GtkScrollbar-elementissä tämä on näkyvissä olevan alueen koko."
 
 #: ../gladeui/glade-editor-property.c:3059
 msgid "Alphanumerical"
-msgstr ""
+msgstr "Alfanumeerinen"
 
 #: ../gladeui/glade-editor-property.c:3064
 msgid "Extra"
@@ -929,16 +966,15 @@ msgstr "Lisätiedot"
 
 #: ../gladeui/glade-editor-property.c:3069
 msgid "Keypad"
-msgstr ""
+msgstr "Sormio"
 
 #: ../gladeui/glade-editor-property.c:3074
 msgid "Functions"
 msgstr "Funktiot"
 
-#: ../gladeui/glade-editor-property.c:3079 ../plugins/gnome/gnome.xml.in.h:24
+#: ../gladeui/glade-editor-property.c:3079 ../plugins/gnome/gnome.xml.in.h:43
 msgid "Other"
-msgstr "Muut"
-
+msgstr "Muut" 
 #: ../gladeui/glade-editor-property.c:3250
 #: ../gladeui/glade-editor-property.c:3284
 #: ../gladeui/glade-editor-property.c:3329
@@ -973,25 +1009,27 @@ msgstr "Alt"
 
 #: ../gladeui/glade-editor-property.c:3548
 msgid "Choose accelerator keys..."
-msgstr ""
+msgstr "Valitse näppäinoikotiet..."
 
 #: ../gladeui/glade-editor.c:146
 msgid "Show info"
-msgstr "Näytä tietoja"
+msgstr "Näytä tietopainike"
 
 #: ../gladeui/glade-editor.c:147
 msgid "Whether to show an informational button for the loaded widget"
-msgstr ""
+msgstr "Näytetäänkö ladatulle ikkunaelementille tietopainike"
 
 #: ../gladeui/glade-editor.c:154
 msgid "Show context info"
-msgstr ""
+msgstr "Näytä kontekstitiedot"
 
 #: ../gladeui/glade-editor.c:155
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
 msgstr ""
+"Näytetäänkö tietopainike jokaiselle ominaisuudelle ja signaalille "
+"muokkaimessa"
 
 #. construct tab label widget
 #: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
@@ -1006,11 +1044,11 @@ msgstr "_Signaalit"
 
 #: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
-msgstr ""
+msgstr "Näytä valitun ikkunaelementin dokumentaatio"
 
 #: ../gladeui/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
-msgstr ""
+msgstr "Palauta ikkunaelementin ominaisuudet oletusarvoihin"
 
 #: ../gladeui/glade-editor.c:318
 msgid "_General"
@@ -1041,7 +1079,7 @@ msgstr "Luokka:"
 #: ../gladeui/glade-editor.c:991
 #, c-format
 msgid "Create a %s"
-msgstr ""
+msgstr "Luo %s"
 
 #: ../gladeui/glade-editor.c:1109
 msgid "Reset"
@@ -1065,11 +1103,11 @@ msgstr "(oletus)"
 
 #: ../gladeui/glade-editor.c:1228
 msgid "Select the properties that you want to reset to their default values"
-msgstr ""
+msgstr "Valitse ominaisuudet, jotka haluat palauttaa oletusarvoihin"
 
 #: ../gladeui/glade-editor.c:1360
 msgid "Reset Widget Properties"
-msgstr ""
+msgstr "Palauta ikkunaelementin ominaisuudet"
 
 #. Checklist
 #: ../gladeui/glade-editor.c:1377
@@ -1082,61 +1120,61 @@ msgstr "Valitse k_aikki"
 
 #: ../gladeui/glade-editor.c:1413
 msgid "_Unselect All"
-msgstr ""
+msgstr "Per_u kaikki valinnat"
 
 #. Description
 #: ../gladeui/glade-editor.c:1422
 msgid "Property _Description:"
-msgstr ""
+msgstr "Ominaisuuden _kuvaus:"
 
 #: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
 #, c-format
 msgid "Placing %s inside %s"
-msgstr ""
+msgstr "Sijoitetaan %s kohdan %s sisään"
 
 #: ../gladeui/glade-fixed.c:940
 msgid "X position property"
-msgstr ""
+msgstr "X-sijainnin ominaisuus"
 
 #: ../gladeui/glade-fixed.c:941
 msgid "The property used to set the X position of a child object"
-msgstr ""
+msgstr "Lapsiolion X-sijainnin asetuksessa käytetty ominaisuus"
 
 #: ../gladeui/glade-fixed.c:947
 msgid "Y position property"
-msgstr ""
+msgstr "Y-sijainnin ominaisuus"
 
 #: ../gladeui/glade-fixed.c:948
 msgid "The property used to set the Y position of a child object"
-msgstr ""
+msgstr "Lapsiolion Y-sijainnin asetuksessa käytetty ominaisuus"
 
 #: ../gladeui/glade-fixed.c:954
 msgid "Width property"
-msgstr ""
+msgstr "Leveyden ominaisuus"
 
 #: ../gladeui/glade-fixed.c:955
 msgid "The property used to set the width of a child object"
-msgstr ""
+msgstr "Lapsiolion leveyden asetuksessa käytetty ominaisuus"
 
 #: ../gladeui/glade-fixed.c:961
 msgid "Height property"
-msgstr ""
+msgstr "Korkeuden ominaisuus"
 
 #: ../gladeui/glade-fixed.c:962
 msgid "The property used to set the height of a child object"
-msgstr ""
+msgstr "Lapsiolion leveyden asetuksessa käytetty ominaisuus"
 
 #: ../gladeui/glade-fixed.c:968
 msgid "Can resize"
-msgstr ""
+msgstr "Kokoa voi muuttaa"
 
 #: ../gladeui/glade-fixed.c:969
 msgid "Whether this container supports resizes of child widgets"
-msgstr ""
+msgstr "Tukeeko tämä säilö lapsielementtien koon muuttamista"
 
 #: ../gladeui/glade-palette.c:617
 msgid "Widget selector"
-msgstr ""
+msgstr "Ikkunaelementin valitsin"
 
 #: ../gladeui/glade-parser.c:1192
 #, c-format
@@ -1162,15 +1200,15 @@ msgstr "Tallentamattomia muutoksia"
 
 #: ../gladeui/glade-project.c:563
 msgid "Whether project has unsaved changes"
-msgstr ""
+msgstr "Onko projektissa tallentamattomia muutoksia"
 
 #: ../gladeui/glade-project.c:570
 msgid "Has Selection"
-msgstr ""
+msgstr "Sisältää valinnan"
 
 #: ../gladeui/glade-project.c:571
 msgid "Whether project has a selection"
-msgstr ""
+msgstr "Onko projektissa määritelty valinta"
 
 #: ../gladeui/glade-project.c:578
 msgid "Read Only"
@@ -1178,12 +1216,12 @@ msgstr "Vain luku"
 
 #: ../gladeui/glade-project.c:579
 msgid "Whether project is read only or not"
-msgstr ""
+msgstr "Onko projekti vain luettavissa"
 
 #: ../gladeui/glade-project.c:687
 #, c-format
 msgid "Unsaved %d"
-msgstr ""
+msgstr "Tallentamaton %d"
 
 #: ../gladeui/glade-project.c:1460
 #, c-format
@@ -1191,6 +1229,8 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"Tiedostoa %s ei voitu ladata.\n"
+"Seuraavat vaaditut luettelot eivät ole käytettävissä: %s"
 
 #. Atk click property
 #: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
@@ -1200,7 +1240,7 @@ msgstr "Napsauta"
 #. Atk click property
 #: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Set the description of the Click atk action"
-msgstr ""
+msgstr "Aseta atk-toiminnon \"Napsauta\" kuvaus"
 
 #. Atk press property
 #: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
@@ -1210,7 +1250,7 @@ msgstr "Paina"
 #. Atk press property
 #: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Set the description of the Press atk action"
-msgstr ""
+msgstr "Aseta atk-toiminnon \"Paina\" kuvaus"
 
 #. Atk release property
 #: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
@@ -1220,7 +1260,7 @@ msgstr "Vapauta"
 #. Atk release property
 #: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Set the description of the Release atk action"
-msgstr ""
+msgstr "Aseta atk-toiminnon \"Vapauta\" kuvaus"
 
 #. Atk activate property
 #: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
@@ -1230,164 +1270,184 @@ msgstr "Aktivoi"
 #. Atk activate property
 #: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Set the description of the Activate atk action"
-msgstr ""
+msgstr "Aseta atk-toiminnon \"Aktivoi\" kuvaus"
 
 #: ../gladeui/glade-property-class.c:67
 msgid "Controlled By"
-msgstr ""
+msgstr "Kohteen ohjain"
 
 #: ../gladeui/glade-property-class.c:68
 msgid "Indicates an object controlled by one or more target objects"
-msgstr ""
+msgstr "Esittää kohdetta, jota ohjaa yksi tai useampia muita kohteita"
 
 #: ../gladeui/glade-property-class.c:70
 msgid "Controller For"
-msgstr ""
+msgstr "Ohjain kohteelle"
 
 #: ../gladeui/glade-property-class.c:71
 msgid "Indicates an object is a controller for one or more target objects"
-msgstr ""
+msgstr "Esittää kohdetta, joka ohjaa yhtä tai useampia muuta kohdetta"
 
 #: ../gladeui/glade-property-class.c:73
 msgid "Labelled By"
-msgstr ""
+msgstr "Nimennyt"
 
 #: ../gladeui/glade-property-class.c:74
 msgid "Indicates an object is labelled by one or more target objects"
-msgstr ""
+msgstr "Ilmaisee, että yksi tai useampi kohde on nimennyt tämän"
 
 #: ../gladeui/glade-property-class.c:76
 msgid "Label For"
-msgstr ""
+msgstr "Nimeää"
 
 #: ../gladeui/glade-property-class.c:77
 msgid "Indicates an object is a label for one or more target objects"
-msgstr ""
+msgstr "Ilmaisee, että kohde on nimi yhdelle tai useammalle muulle kohteelle"
 
 #: ../gladeui/glade-property-class.c:79
 msgid "Member Of"
-msgstr ""
+msgstr "Kuuluu ryhmään"
 
 #: ../gladeui/glade-property-class.c:80
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
+"Ilmaisee, että kohde on yhden tai useamman kohderyhmän jäsen"
 
 #: ../gladeui/glade-property-class.c:82
 msgid "Child Node Of"
-msgstr ""
+msgstr "Kohteen lapsisolmu"
 
 #: ../gladeui/glade-property-class.c:83
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr ""
+"Ilmaisee, että kohde on solu puutaulussa, joka näytetään, koska solu "
+"samassa sarakkeessa laajennettiin ja määrittää solun"
 
 #: ../gladeui/glade-property-class.c:86
 msgid "Flows To"
-msgstr ""
+msgstr "Valuu kohtaan"
 
 #: ../gladeui/glade-property-class.c:87
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Ilmaisee, että kohde sisältää tietoa, joka valuu loogisesti toiseen "
+"AtkObject-olioon perättäisessä järjestyksessä, esimerkiksi tekstivirta"
 
 #: ../gladeui/glade-property-class.c:90
 msgid "Flows From"
-msgstr ""
+msgstr "Valuu kohdasta"
 
 #: ../gladeui/glade-property-class.c:91
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Ilmaisee, että kohde sisältää tietoa, joka valuu loogisesti toisesta "
+"AtkObject-oliosta perättäisessä järjestyksessä, esimerkiksi tekstivirta"
 
 #: ../gladeui/glade-property-class.c:94
 msgid "Subwindow Of"
-msgstr ""
+msgstr "Ali-ikkuna"
 
 #: ../gladeui/glade-property-class.c:95
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in  the UI hierarchy to that component"
 msgstr ""
+"Ilmaisee, että komponenttiin oon liitetty ali-ikkuna, muttei muuten "
+"ole yhteydessä komponentin käyttöliittymärakenteeseen"
 
 #: ../gladeui/glade-property-class.c:98
 msgid "Embeds"
-msgstr "Upotukset"
+msgstr "Upottaa"
 
 #: ../gladeui/glade-property-class.c:99
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
+"Ilmaisee, että kohteeseen on upotettu toisen kohteen sisältö, eli tämän "
+"kohteen sisältö piirretään toisen kohteen ympärille"
 
 #: ../gladeui/glade-property-class.c:102
 msgid "Embedded By"
-msgstr ""
+msgstr "Upottanut"
 
 #: ../gladeui/glade-property-class.c:103
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visualy "
 "embedded in another object"
 msgstr ""
+"Ilmaisee, että tämän kohteen sisältö on upotettu toisen kohteen sisään"
 
 #: ../gladeui/glade-property-class.c:106
 msgid "Popup For"
-msgstr ""
+msgstr "Ponnahdusikkuna toiselle"
 
 #: ../gladeui/glade-property-class.c:107
 msgid "Indicates that an object is a popup for another object"
-msgstr ""
+msgstr "Ilmaisee, että kohde on ponnahdusikkuna toiselle kohteelle"
 
 #: ../gladeui/glade-property-class.c:109
 msgid "Parent Window Of"
-msgstr ""
+msgstr "Toisen kohteen vanhempi"
 
 #: ../gladeui/glade-property-class.c:110
 msgid "Indicates that an object is a parent window of another object"
-msgstr ""
+msgstr "Ilmaisee, että kohde on toisen kohteen vanhempi"
 
-#: ../gladeui/glade-property.c:571
+#: ../gladeui/glade-property.c:572
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: ../gladeui/glade-property.c:572
+#: ../gladeui/glade-property.c:573
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
-
-#: ../gladeui/glade-property.c:578
-msgid "Sensitive"
-msgstr ""
+msgstr "Jos ominaisuus on valinnainen, tämä ilmaisee sen olevan käytössä"
 
 #: ../gladeui/glade-property.c:579
-msgid "This gives backends control to set property sensitivity"
-msgstr ""
+msgid "Sensitive"
+msgstr "Herkkyys"
 
-#: ../gladeui/glade-property.c:585
+#: ../gladeui/glade-property.c:580
+msgid "This gives backends control to set property sensitivity"
+msgstr "Tämä antaa järjestelmälle mahdollisuuden asettaa ominaisuuden herkkyys"
+
+#: ../gladeui/glade-property.c:586
 msgid "Comment"
 msgstr "Kommentti"
 
-#: ../gladeui/glade-property.c:586
+#: ../gladeui/glade-property.c:587
 msgid "Comment for translators"
 msgstr "Kommentti kääntäjille"
 
-#: ../gladeui/glade-property.c:592
+#: ../gladeui/glade-property.c:593
 msgid "Translatable"
 msgstr "Käännettävissä"
 
-#: ../gladeui/glade-property.c:593
+#: ../gladeui/glade-property.c:594
 msgid "Whether this property is translatable or not"
-msgstr ""
-
-#: ../gladeui/glade-property.c:599
-msgid "Has Context"
-msgstr ""
+msgstr "Onko tämä ominaisuus käännettävissä"
 
 #: ../gladeui/glade-property.c:600
+msgid "Has Context"
+msgstr "Sisältää kontekstin"
+
+#: ../gladeui/glade-property.c:601
 msgid "Whether or not the translatable string has a context prefix"
-msgstr ""
+msgstr "Onko käänettävässä merkkijonossa kontekstin etuliite"
+
+#: ../gladeui/glade-signal-editor.c:57
+msgid "<Type the signal's handler here>"
+msgstr "<Lisää tähän signaalinkäsittelijä>"
+
+#: ../gladeui/glade-signal-editor.c:58
+msgid "<Type the object's name here>"
+msgstr "<Lisää tähän kohteen nimi>"
 
 #: ../gladeui/glade-signal-editor.c:704
 msgid "Handler"
@@ -1399,11 +1459,11 @@ msgstr "Käyttäjän tiedot"
 
 #: ../gladeui/glade-signal-editor.c:740
 msgid "Lookup"
-msgstr ""
+msgstr "Etsintä"
 
 #: ../gladeui/glade-signal-editor.c:751
 msgid "After"
-msgstr "Jälkeen"
+msgstr "Seuraava"
 
 #: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
 #, c-format
@@ -1423,7 +1483,7 @@ msgstr "Kaikki tiedostot"
 msgid "Glade Files"
 msgstr "Glade-tiedostot"
 
-#: ../gladeui/glade-utils.c:1296
+#: ../gladeui/glade-utils.c:1294
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1432,160 +1492,161 @@ msgstr ""
 "%s on olemassa.\n"
 "Haluatko korvata sen?"
 
-#: ../gladeui/glade-utils.c:1324
+#: ../gladeui/glade-utils.c:1322
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "Virhe kirjoitettaessa tiedostoon %s: %s"
 
-#: ../gladeui/glade-utils.c:1338
+#: ../gladeui/glade-utils.c:1336
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "Virhe luettaessa tiedostoa %s: %s"
 
-#: ../gladeui/glade-utils.c:1353
+#: ../gladeui/glade-utils.c:1351
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "Virhe sammutettaessa IO-kanavaa %s: %s"
 
-#: ../gladeui/glade-utils.c:1363
+#: ../gladeui/glade-utils.c:1361
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "Kohdetta %s ei voitu avata kirjoitettavaksi: %s"
 
-#: ../gladeui/glade-utils.c:1374
+#: ../gladeui/glade-utils.c:1372
 #, c-format
 msgid "Error shutting down io channel %s: %s"
 msgstr "IO-kanavaa %s ei voitu sulkea: %s"
 
-#: ../gladeui/glade-utils.c:1383
+#: ../gladeui/glade-utils.c:1381
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "Tiedostoa %s ei voitu avata luettavaksi: %s"
 
-#: ../gladeui/glade-utils.c:1441
+#: ../gladeui/glade-utils.c:1439
 #, c-format
 msgid "Unable to open the module %s (%s)."
 msgstr "Modulia %s ei voitu avata (%s)."
 
-#: ../gladeui/glade-widget.c:928
+#: ../gladeui/glade-widget.c:945
 msgid "The name of the widget"
 msgstr "Ikkunaelementin nimi"
 
-#: ../gladeui/glade-widget.c:935
+#: ../gladeui/glade-widget.c:952
 msgid "Internal name"
 msgstr "Sisäinen nimi"
 
-#: ../gladeui/glade-widget.c:936
+#: ../gladeui/glade-widget.c:953
 msgid "The internal name of the widget"
 msgstr "Ikkunaelementin sisäinen nimi"
 
-#: ../gladeui/glade-widget.c:942
+#: ../gladeui/glade-widget.c:959
 msgid "Anarchist"
-msgstr ""
+msgstr "Anarkisti"
 
-#: ../gladeui/glade-widget.c:943
+#: ../gladeui/glade-widget.c:960
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
+"Onko tämä yhdistelmälapsi peritynyt vai anarkistinen lapsi"
 
-#: ../gladeui/glade-widget.c:950
+#: ../gladeui/glade-widget.c:967
 msgid "Object"
 msgstr "Olio"
 
-#: ../gladeui/glade-widget.c:951
+#: ../gladeui/glade-widget.c:968
 msgid "The object associated"
-msgstr ""
+msgstr "Liittyvä kohde"
 
-#: ../gladeui/glade-widget.c:958
+#: ../gladeui/glade-widget.c:975
 msgid "Adaptor"
-msgstr ""
+msgstr "Adapteri"
 
-#: ../gladeui/glade-widget.c:959
+#: ../gladeui/glade-widget.c:976
 msgid "The class adaptor for the associated widget"
-msgstr ""
+msgstr "Luokan adapteri siihen liittyvälle elementille"
 
-#: ../gladeui/glade-widget.c:966
+#: ../gladeui/glade-widget.c:983
 msgid "Project"
 msgstr "Projekti"
 
-#: ../gladeui/glade-widget.c:967
+#: ../gladeui/glade-widget.c:984
 msgid "The glade project that this widget belongs to"
-msgstr ""
+msgstr "Glade-projekti, johon tämä elementti kuuluu"
 
-#: ../gladeui/glade-widget.c:976
+#: ../gladeui/glade-widget.c:993
 msgid "A list of GladeProperties"
-msgstr ""
+msgstr "GladeProperties-luettelo"
 
-#: ../gladeui/glade-widget.c:982 ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../gladeui/glade-widget.c:999 ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Parent"
 msgstr "Vanhempi"
 
-#: ../gladeui/glade-widget.c:983
+#: ../gladeui/glade-widget.c:1000
 msgid "A pointer to the parenting GladeWidget"
-msgstr ""
+msgstr "Osoitin ylläolevaan GladeWidget-elementtiin"
 
-#: ../gladeui/glade-widget.c:990
+#: ../gladeui/glade-widget.c:1007
 msgid "Internal Name"
 msgstr "Sisäinen nimi"
 
-#: ../gladeui/glade-widget.c:991
+#: ../gladeui/glade-widget.c:1008
 msgid "A generic name prefix for internal widgets"
-msgstr ""
+msgstr "Yleinen nimien etuliite sisäisille elementeille"
 
-#: ../gladeui/glade-widget.c:996
+#: ../gladeui/glade-widget.c:1013
 msgid "Template"
 msgstr "Pohja"
 
-#: ../gladeui/glade-widget.c:997
+#: ../gladeui/glade-widget.c:1014
 msgid "A GladeWidget template to base a new widget on"
-msgstr ""
+msgstr "Uusien elementtien pohjana käytettävä GladeWidget-pohja"
 
-#: ../gladeui/glade-widget.c:1003 ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../gladeui/glade-widget.c:1020 ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Info"
 msgstr "Tiedot"
 
-#: ../gladeui/glade-widget.c:1004
+#: ../gladeui/glade-widget.c:1021
 msgid "A GladeWidgetInfo struct to base a new widget on"
-msgstr ""
+msgstr "Uuden elementin pohjana käytettävä GladeWidgetInfo-rakenne"
 
-#: ../gladeui/glade-widget.c:1009
+#: ../gladeui/glade-widget.c:1026
 msgid "Reason"
 msgstr "Syy"
 
-#: ../gladeui/glade-widget.c:1010
+#: ../gladeui/glade-widget.c:1027
 msgid "A GladeCreateReason for this creation"
-msgstr ""
+msgstr "Tämän luonnille asetettu GladeCreateReason"
 
-#: ../gladeui/glade-widget.c:1018
+#: ../gladeui/glade-widget.c:1035
 msgid "Toplevel Width"
 msgstr "Ylimmän tason leveys"
 
-#: ../gladeui/glade-widget.c:1019
+#: ../gladeui/glade-widget.c:1036
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
-msgstr ""
+msgstr "Elementin leveys, kun ylin taso on GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1028
+#: ../gladeui/glade-widget.c:1045
 msgid "Toplevel Height"
 msgstr "Ylimmän tason korkeus"
 
-#: ../gladeui/glade-widget.c:1029
+#: ../gladeui/glade-widget.c:1046
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
-msgstr ""
+msgstr "Elementin korkeus, kun ylin taso on GladeDesignLayout"
 
 #: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
 #, c-format
 msgid "Unable to load icon for %s (%s)"
-msgstr ""
+msgstr "Kuvaketta kohteelle %s ei voi ladata (%s)"
 
 #: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
 #, c-format
 msgid "Unable to load stock icon (%s)"
-msgstr ""
+msgstr "Vakiokuvaketta ei voi ladata (%s)"
 
 #: ../gladeui/glade-widget-adaptor.c:333
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr ""
+msgstr "Johdettu adapteri (%s) luokasta %s on jo olemassa!"
 
 #: ../gladeui/glade-widget-adaptor.c:917
 msgid "Name of the class"
@@ -1595,13 +1656,13 @@ msgstr "Luokan nimi"
 msgid "GType of the class"
 msgstr "Luokan GType"
 
-#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:45
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:64
 msgid "Title"
 msgstr "Otsikko"
 
 #: ../gladeui/glade-widget-adaptor.c:933
 msgid "Translated title for the class used in the glade UI"
-msgstr ""
+msgstr "Käännetty luokan otsikko, jota käytetään glade-käyttöliittymässä"
 
 #: ../gladeui/glade-widget-adaptor.c:940
 msgid "Generic Name"
@@ -1609,7 +1670,7 @@ msgstr "Yleinen nimi"
 
 #: ../gladeui/glade-widget-adaptor.c:941
 msgid "Used to generate names of new widgets"
-msgstr ""
+msgstr "Käytetään uusien ikkunaelementtien luonnissa"
 
 #: ../gladeui/glade-widget-adaptor.c:948
 msgid "Catalog"
@@ -1617,7 +1678,7 @@ msgstr "Luettelo"
 
 #: ../gladeui/glade-widget-adaptor.c:949
 msgid "The name of the widget catalog this class was declared by"
-msgstr ""
+msgstr "Tämän luokan esitelleen ikkunaelementtiluettelon nimi"
 
 #: ../gladeui/glade-widget-adaptor.c:956
 msgid "Book"
@@ -1625,17 +1686,19 @@ msgstr "Kirja"
 
 #: ../gladeui/glade-widget-adaptor.c:957
 msgid "DevHelp search namespace for this widget class"
-msgstr ""
+msgstr "Tämän ikkunaelementtiluokan DevHelp-hakujen nimiavaruus"
 
 #: ../gladeui/glade-widget-adaptor.c:964
 msgid "Special Child Type"
-msgstr ""
+msgstr "Erityinen lapsityyppi"
 
 #: ../gladeui/glade-widget-adaptor.c:965
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
+"Sisälää pakkausominaisuuden nimen, jolla erityiset lapsityypit voidaan "
+"selvittää tälle säilöluokalle"
 
 #: ../gladeui/glade-widget-adaptor.c:973
 msgid "Large Icon"
@@ -1643,7 +1706,7 @@ msgstr "Suuri kuvake"
 
 #: ../gladeui/glade-widget-adaptor.c:974
 msgid "The 22x22 icon for this widget class"
-msgstr ""
+msgstr "Tämän ikkunaluokan 22x22 pikselin kuvake"
 
 #: ../gladeui/glade-widget-adaptor.c:981
 msgid "Small Icon"
@@ -1651,7 +1714,7 @@ msgstr "Pieni kuvake"
 
 #: ../gladeui/glade-widget-adaptor.c:982
 msgid "The 16x16 icon for this widget class"
-msgstr ""
+msgstr "Tämän ikkunaluokan 16x16 pikselin kuvake"
 
 #: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Cursor"
@@ -1669,7 +1732,7 @@ msgstr "(sisäinen %s)"
 #: ../gladeui/glade-project-view.c:650
 #, c-format
 msgid "(%s child)"
-msgstr ""
+msgstr "(%s-lapsi)"
 
 #: ../gladeui/glade-custom.c:217
 msgid "Creation Function"
@@ -1677,7 +1740,7 @@ msgstr "Luontifunktio"
 
 #: ../gladeui/glade-custom.c:218
 msgid "The function which creates this widget"
-msgstr ""
+msgstr "Funktio, joka luo tämän ikkunaelementin"
 
 #: ../gladeui/glade-custom.c:224
 msgid "String 1"
@@ -1685,7 +1748,7 @@ msgstr "Merkkijono 1"
 
 #: ../gladeui/glade-custom.c:225
 msgid "The first string argument to pass to the function"
-msgstr ""
+msgstr "Ensimmäinen funktiolle välitettävä merkkijono"
 
 #: ../gladeui/glade-custom.c:231
 msgid "String 2"
@@ -1693,7 +1756,7 @@ msgstr "Merkkijono 2"
 
 #: ../gladeui/glade-custom.c:232
 msgid "The second string argument to pass to the function"
-msgstr ""
+msgstr "Toinen funktiolle välitettävä merkkijono"
 
 #: ../gladeui/glade-custom.c:238
 msgid "Integer 1"
@@ -1701,7 +1764,7 @@ msgstr "Kokonaisluku 1"
 
 #: ../gladeui/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
-msgstr ""
+msgstr "Ensimmäinen funktiolle välitettävä kokonaislukuarvo"
 
 #: ../gladeui/glade-custom.c:245
 msgid "Integer 2"
@@ -1709,15 +1772,15 @@ msgstr "Kokonaisluku 2"
 
 #: ../gladeui/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
-msgstr ""
+msgstr "funktiolle välitettävä kokonaislukuarvo"
 
 #: ../plugins/gtk+/glade-gtk.c:169
 msgid "GnomeUIInfo"
-msgstr ""
+msgstr "GnomeUIInfo"
 
 #: ../plugins/gtk+/glade-gtk.c:170
 msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
+msgstr "Valitse GnomeUIInfo vakioesitys"
 
 #: ../plugins/gtk+/glade-gtk.c:186
 msgid "Filename"
@@ -1733,94 +1796,96 @@ msgstr "Säilö"
 
 #: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
 msgid "Method"
-msgstr "Metodi"
+msgstr "Menetelmä"
 
 #: ../plugins/gtk+/glade-gtk.c:219
 msgid "The method to use to edit this image"
-msgstr ""
+msgstr "Tämän kuvan muokkaukseen käytetty menetelmä"
 
 #: ../plugins/gtk+/glade-gtk.c:228
 msgid "The method to use to edit this button"
-msgstr ""
+msgstr "Tämän painikkeen muokkaukseen käytetty menetelmä"
 
 #: ../plugins/gtk+/glade-gtk.c:585
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Järjestetään kohdan %s lapset"
 
-#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3266
-#: ../plugins/gtk+/glade-gtk.c:3441 ../plugins/gtk+/glade-gtk.c:3445
+#: ../plugins/gtk+/glade-gtk.c:3264 ../plugins/gtk+/glade-gtk.c:3268
+#: ../plugins/gtk+/glade-gtk.c:3443 ../plugins/gtk+/glade-gtk.c:3447
 msgid "This only applies with label type buttons"
-msgstr ""
+msgstr "Tämä koskee vain nimiöpainikkeita"
 
-#: ../plugins/gtk+/glade-gtk.c:3277 ../plugins/gtk+/glade-gtk.c:3281
-#: ../plugins/gtk+/glade-gtk.c:3433 ../plugins/gtk+/glade-gtk.c:3437
+#: ../plugins/gtk+/glade-gtk.c:3279 ../plugins/gtk+/glade-gtk.c:3283
+#: ../plugins/gtk+/glade-gtk.c:3435 ../plugins/gtk+/glade-gtk.c:3439
 msgid "This only applies with stock type buttons"
-msgstr ""
+msgstr "Tämä koskee vain vakiopainikkeita"
 
-#: ../plugins/gtk+/glade-gtk.c:3541 ../plugins/gtk+/glade-gtk.c:3563
+#: ../plugins/gtk+/glade-gtk.c:3543 ../plugins/gtk+/glade-gtk.c:3565
 msgid "You must remove any children before you can set the type"
-msgstr ""
+msgstr "Kaikki lapset täytyy poistaa ennen kuin nimen voi asettaa"
 
-#: ../plugins/gtk+/glade-gtk.c:3587 ../plugins/gtk+/glade-gtk.c:4949
+#: ../plugins/gtk+/glade-gtk.c:3589 ../plugins/gtk+/glade-gtk.c:4954
 msgid "This only applies with file type images"
-msgstr ""
+msgstr "Tämä koskee vain tiedostopohjaisia kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:3595 ../plugins/gtk+/glade-gtk.c:4953
+#: ../plugins/gtk+/glade-gtk.c:3597 ../plugins/gtk+/glade-gtk.c:4958
 msgid "This only applies to Icon Theme type images"
-msgstr ""
+msgstr "Tämä koskee vain kuvaketeemojen kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4951
+#: ../plugins/gtk+/glade-gtk.c:3606 ../plugins/gtk+/glade-gtk.c:4956
 msgid "This only applies with stock type images"
-msgstr ""
+msgstr "Tämä koskee vain vakiokuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:3616
+#: ../plugins/gtk+/glade-gtk.c:3618
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr ""
+"Pikselikoko ohittaa kuvakkeen koon. Jos haluat käyttää kuvakekokoa, "
+"aseta pikselikoko arvoon -1"
 
-#: ../plugins/gtk+/glade-gtk.c:3642
+#: ../plugins/gtk+/glade-gtk.c:3644
 msgid "Pixel Size takes precedence over Icon size"
-msgstr ""
+msgstr "Pikselikoko ohittaa kuvakkeen koon"
 
-#: ../plugins/gtk+/glade-gtk.c:3933 ../plugins/gtk+/glade-gtk.c:4840
+#: ../plugins/gtk+/glade-gtk.c:3935 ../plugins/gtk+/glade-gtk.c:4845
 msgid "<separator>"
 msgstr "<erotin>"
 
-#: ../plugins/gtk+/glade-gtk.c:4107 ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/glade-gtk.c:4109 ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Normal"
 msgstr "Tavallinen"
 
-#: ../plugins/gtk+/glade-gtk.c:4108 ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Image"
 msgstr "Kuva"
 
-#: ../plugins/gtk+/glade-gtk.c:4109
+#: ../plugins/gtk+/glade-gtk.c:4111
 msgid "Check"
-msgstr ""
+msgstr "Valinta"
 
-#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/glade-gtk.c:4899
+#: ../plugins/gtk+/glade-gtk.c:4112 ../plugins/gtk+/glade-gtk.c:4904
 msgid "Radio"
-msgstr ""
+msgstr "Vaihtoehto"
 
-#: ../plugins/gtk+/glade-gtk.c:4111 ../plugins/gtk+/glade-gtk.c:4902
+#: ../plugins/gtk+/glade-gtk.c:4113 ../plugins/gtk+/glade-gtk.c:4907
 msgid "Separator"
 msgstr "Erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:4115
+#: ../plugins/gtk+/glade-gtk.c:4117
 msgid "Add Item"
 msgstr "Lisää kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:4116
+#: ../plugins/gtk+/glade-gtk.c:4118
 msgid "Add Child Item"
 msgstr "Lisää lapsisolmu"
 
-#: ../plugins/gtk+/glade-gtk.c:4117 ../plugins/gtk+/glade-gtk.c:4911
+#: ../plugins/gtk+/glade-gtk.c:4119 ../plugins/gtk+/glade-gtk.c:4916
 msgid "Add Separator"
 msgstr "Lisää erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:4130
+#: ../plugins/gtk+/glade-gtk.c:4132
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1828,150 +1893,155 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>Vinkkejä:</b></big>\n"
+"  * Lisää kohtia napsauttamalla puunäkymää oikealla napilla.\n"
+"  * Poista valittu kohta Delete-näppäimellä.\n"
+"  * Järjestä uudestaan raahaamalla.\n"
+"  * Tyyppi-saraketta voi muokata."
 
-#: ../plugins/gtk+/glade-gtk.c:4359
+#: ../plugins/gtk+/glade-gtk.c:4364
 msgid "Print S_etup"
 msgstr "Tulostusas_etukset"
 
-#: ../plugins/gtk+/glade-gtk.c:4363
+#: ../plugins/gtk+/glade-gtk.c:4368
 msgid "Find Ne_xt"
 msgstr "Etsi _seuraava"
 
-#: ../plugins/gtk+/glade-gtk.c:4367
+#: ../plugins/gtk+/glade-gtk.c:4372
 msgid "_Undo Move"
 msgstr "_Peru siirto"
 
-#: ../plugins/gtk+/glade-gtk.c:4371
+#: ../plugins/gtk+/glade-gtk.c:4376
 msgid "_Redo Move"
 msgstr "_Siirrä uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:4374
+#: ../plugins/gtk+/glade-gtk.c:4379
 msgid "Select _All"
 msgstr "Valitse k_aikki"
 
-#: ../plugins/gtk+/glade-gtk.c:4377
+#: ../plugins/gtk+/glade-gtk.c:4382
 msgid "_New Game"
 msgstr "_Uusi peli"
 
-#: ../plugins/gtk+/glade-gtk.c:4380
+#: ../plugins/gtk+/glade-gtk.c:4385
 msgid "_Pause game"
 msgstr "_Pysäytä peli"
 
-#: ../plugins/gtk+/glade-gtk.c:4383
+#: ../plugins/gtk+/glade-gtk.c:4388
 msgid "_Restart Game"
 msgstr "A_loita peli uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:4386
+#: ../plugins/gtk+/glade-gtk.c:4391
 msgid "_Hint"
 msgstr "_Vihje"
 
-#: ../plugins/gtk+/glade-gtk.c:4389
+#: ../plugins/gtk+/glade-gtk.c:4394
 msgid "_Scores..."
 msgstr "_Tulokset..."
 
-#: ../plugins/gtk+/glade-gtk.c:4392
+#: ../plugins/gtk+/glade-gtk.c:4397
 msgid "_End Game"
 msgstr "_Lopeta peli"
 
-#: ../plugins/gtk+/glade-gtk.c:4395
+#: ../plugins/gtk+/glade-gtk.c:4400
 msgid "Create New _Window"
 msgstr "Luo uusi _ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:4398
+#: ../plugins/gtk+/glade-gtk.c:4403
 msgid "_Close This Window"
 msgstr "_Sulje tämä ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:4410
+#: ../plugins/gtk+/glade-gtk.c:4415
 msgid "_Settings"
 msgstr "_Asetukset"
 
-#: ../plugins/gtk+/glade-gtk.c:4413
+#: ../plugins/gtk+/glade-gtk.c:4418
 msgid "Fi_les"
 msgstr "_Tiedostot"
 
-#: ../plugins/gtk+/glade-gtk.c:4416
+#: ../plugins/gtk+/glade-gtk.c:4421
 msgid "_Windows"
 msgstr "_Ikkunat"
 
-#: ../plugins/gtk+/glade-gtk.c:4422
+#: ../plugins/gtk+/glade-gtk.c:4427
 msgid "_Game"
 msgstr "_Peli"
 
-#: ../plugins/gtk+/glade-gtk.c:4518
+#: ../plugins/gtk+/glade-gtk.c:4523
 msgid "This does not apply with stock items"
-msgstr ""
+msgstr "Tämä ei koske vakiokohtia"
 
-#: ../plugins/gtk+/glade-gtk.c:4728
+#: ../plugins/gtk+/glade-gtk.c:4733
 msgid "Menu Bar Editor"
 msgstr "Valikkopalkin muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:4735
+#: ../plugins/gtk+/glade-gtk.c:4740
 msgid "Menu Editor"
 msgstr "Valikkomuokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:4849
+#: ../plugins/gtk+/glade-gtk.c:4854
 msgid "<custom>"
 msgstr "<oma>"
 
-#: ../plugins/gtk+/glade-gtk.c:4897 ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/glade-gtk.c:4902 ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Button"
 msgstr "Nappi"
 
-#: ../plugins/gtk+/glade-gtk.c:4898
+#: ../plugins/gtk+/glade-gtk.c:4903
 msgid "Toggle"
-msgstr ""
+msgstr "Vipu"
 
-#: ../plugins/gtk+/glade-gtk.c:4900 ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:4905 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Menu"
 msgstr "Valikko"
 
-#: ../plugins/gtk+/glade-gtk.c:4901
+#: ../plugins/gtk+/glade-gtk.c:4906
 msgid "Item"
 msgstr "Kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:4906
+#: ../plugins/gtk+/glade-gtk.c:4911
 msgid "Add Tool Button"
 msgstr "Lisää työkalunappi"
 
-#: ../plugins/gtk+/glade-gtk.c:4907
+#: ../plugins/gtk+/glade-gtk.c:4912
 msgid "Add Toggle Button"
-msgstr ""
+msgstr "Lisää vipupainike"
 
-#: ../plugins/gtk+/glade-gtk.c:4908
+#: ../plugins/gtk+/glade-gtk.c:4913
 msgid "Add Radio Button"
-msgstr ""
+msgstr "Lisää vaihtoehtopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:4909
+#: ../plugins/gtk+/glade-gtk.c:4914
 msgid "Add Menu Button"
-msgstr ""
+msgstr "Lisää valikkopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:4910
+#: ../plugins/gtk+/glade-gtk.c:4915
 msgid "Add Tool Item"
 msgstr "Lisää työkalun kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:4919
+#: ../plugins/gtk+/glade-gtk.c:4924
 msgid "Tool Bar Editor"
 msgstr "Työkalupalkin muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:5672
+#: ../plugins/gtk+/glade-gtk.c:5677
 msgid "Introduction page"
 msgstr "Esittelysivu"
 
-#: ../plugins/gtk+/glade-gtk.c:5676
+#: ../plugins/gtk+/glade-gtk.c:5681
 msgid "Content page"
 msgstr "Sisältösivu"
 
-#: ../plugins/gtk+/glade-gtk.c:5680
+#: ../plugins/gtk+/glade-gtk.c:5685
 msgid "Confirm page"
 msgstr "Vahvistussivu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
-msgstr ""
+msgstr "Vakiokohta, valitse Ei mitään jos haluat oman kuvan ja nimen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "Vinkkiteksti tälle elementille"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -1983,16 +2053,16 @@ msgstr "Tietoja-ikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Label"
-msgstr ""
+msgstr "Pikavalinnan otsake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "Accessible Description"
-msgstr ""
+msgstr "Estettömyyskuvaus"
 
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accessible Name"
-msgstr ""
+msgstr "Estettömyysnimi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Alignment"
@@ -2020,7 +2090,7 @@ msgstr "Nuoli"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:21
 msgid "Aspect Frame"
-msgstr ""
+msgstr "Näkymän raami"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Assistant"
@@ -2036,7 +2106,7 @@ msgstr "Molemmat"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Both Horizontal"
-msgstr ""
+msgstr "Molemmat vaakasuunnassa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
@@ -2056,19 +2126,19 @@ msgstr "Alhaalta ylös"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Box"
-msgstr ""
+msgstr "Laatikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Button 1 Motion"
-msgstr ""
+msgstr "Napin 1 liike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Button 2 Motion"
-msgstr ""
+msgstr "Napin 2 liike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Button 3 Motion"
-msgstr ""
+msgstr "Napin 3 liike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Button Box"
@@ -2076,7 +2146,7 @@ msgstr "Nappilaatikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button Motion"
-msgstr ""
+msgstr "Napin liike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button Press"
@@ -2100,7 +2170,7 @@ msgstr "Keskitä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Center on Parent"
-msgstr ""
+msgstr "Keskitä vanhemmassa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Character"
@@ -2108,11 +2178,11 @@ msgstr "Merkki"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Check Button"
-msgstr ""
+msgstr "Valintapainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Check Menu Item"
-msgstr ""
+msgstr "Valikon valintakohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Close"
@@ -2124,27 +2194,27 @@ msgstr "Värinappi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Color Selection"
-msgstr "Värin valinta"
+msgstr "Värinvalinta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Color Selection Dialog"
-msgstr "Värin valintaikkuna"
+msgstr "Värinvalintaikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Columned List"
-msgstr ""
+msgstr "Sarakelista"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Combo"
-msgstr ""
+msgstr "Yhdistelmä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Combo Box"
-msgstr ""
+msgstr "Yhdistelmäruutu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Combo Box Entry"
-msgstr ""
+msgstr "Yhdistelmäruudun kohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Confirm"
@@ -2164,11 +2234,11 @@ msgstr "Jatkuva"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Control and Display"
-msgstr "Ohjaa ja näytä"
+msgstr "Ohjaimet ja näyttö"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
-msgstr ""
+msgstr "Luo kansio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Curve"
@@ -2192,7 +2262,7 @@ msgstr "Viivästetty"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Description of an object, formatted for assistive technology access"
-msgstr ""
+msgstr "Kohteen kuvaus, muotoiltu esteettömyysohjelmistoja varten"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Desktop"
@@ -2200,19 +2270,19 @@ msgstr "Työpöytä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Dialog"
-msgstr ""
+msgstr "Valintaikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Dialog Box"
-msgstr ""
+msgstr "Valintaruutu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Discontinuous"
-msgstr ""
+msgstr "Epäjatkuva"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Discrete"
-msgstr ""
+msgstr "Erillinen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Dock"
@@ -2220,7 +2290,7 @@ msgstr "Telakka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Down"
-msgstr ""
+msgstr "Alas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Drag and Drop"
@@ -2232,7 +2302,7 @@ msgstr "Piirtoalue"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Drop Down Menu"
-msgstr ""
+msgstr "Pudotusvalikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "East"
@@ -2252,7 +2322,7 @@ msgstr "Loppu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Enter Notify"
-msgstr ""
+msgstr "Saapumishuomautus"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
@@ -2260,11 +2330,11 @@ msgstr "Virhe"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
-msgstr ""
+msgstr "Kaiverrettu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
-msgstr ""
+msgstr "Pinnasta nostettu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Event Box"
@@ -2280,11 +2350,11 @@ msgstr "Laajennin"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Exposure"
-msgstr ""
+msgstr "Paljastaminen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "File Chooser Button"
-msgstr ""
+msgstr "Tiedostonvalintapainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "File Chooser Dialog"
@@ -2308,7 +2378,7 @@ msgstr "Kiinteä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Focus Change"
-msgstr ""
+msgstr "Kohdistusmuutos"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Font Button"
@@ -2320,11 +2390,11 @@ msgstr "Kirjasimen valinta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "Kirjasimen valintaikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Frame"
-msgstr ""
+msgstr "Raami"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Free"
@@ -2332,19 +2402,19 @@ msgstr "Tyhjä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Gamma Curve"
-msgstr ""
+msgstr "Gammakäyrä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Gtk+ Obsolete"
-msgstr ""
+msgstr "Gtk+ vanhentuneet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Half"
-msgstr ""
+msgstr "Puolikas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Handle Box"
-msgstr ""
+msgstr "Kahvalaatikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
@@ -2360,15 +2430,15 @@ msgstr "Vaakasuuntainen nappilaatikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Horizontal Panes"
-msgstr ""
+msgstr "Vaakapaneelit"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Horizontal Ruler"
-msgstr ""
+msgstr "Vaakaviivain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Horizontal Scale"
-msgstr ""
+msgstr "Vaaka-asteikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Horizontal Scrollbar"
@@ -2380,7 +2450,7 @@ msgstr "Vaakaerotin"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Horizontal and Vertical"
-msgstr ""
+msgstr "Vaaka- ja pystysuuntaiset"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Icon Name"
@@ -2400,7 +2470,7 @@ msgstr "Jos kelvollinen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Image Menu Item"
-msgstr ""
+msgstr "Valikon kuvakohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Image Type"
@@ -2408,11 +2478,11 @@ msgstr "Kuvan tyyppi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Immediate"
-msgstr ""
+msgstr "Välitön"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
-msgstr ""
+msgstr "Kohdassa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Input Dialog"
@@ -2444,7 +2514,7 @@ msgstr "Pisin aika sitten käytetty ensin"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Leave Notify"
-msgstr ""
+msgstr "Poistumishuomautus"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
@@ -2456,7 +2526,7 @@ msgstr "Vasemmalta oikealle"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Linear"
-msgstr ""
+msgstr "Suoraviivainen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:139
 msgid "Link Button"
@@ -2484,11 +2554,11 @@ msgstr "Valikon kohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Menu Shell"
-msgstr ""
+msgstr "Valikkokuori"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Menu Tool Button"
-msgstr ""
+msgstr "Valikkotyökalun painike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Message Dialog"
@@ -2496,7 +2566,7 @@ msgstr "Viesti-ikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Middle"
-msgstr ""
+msgstr "Keskellä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Most Recently Used first"
@@ -2506,7 +2576,7 @@ msgstr "Viimeksi käytetty ensin"
 msgid "Mouse"
 msgstr "Hiiri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Never"
 msgstr "Ei koskaan"
 
@@ -2516,15 +2586,15 @@ msgstr "Pohjoinen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "North East"
-msgstr ""
+msgstr "Koillinen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "North West"
-msgstr ""
+msgstr "Luode"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Notebook"
-msgstr ""
+msgstr "Muistio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Notification"
@@ -2541,7 +2611,7 @@ msgstr "Sivujen lukumäärä"
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Object instance's name formatted for assistive technology access"
-msgstr ""
+msgstr "Kohteen esiintymän nimi esteettömyystukea varten"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Ok"
@@ -2551,17 +2621,17 @@ msgstr "Ok"
 msgid "Ok, Cancel"
 msgstr "Ok, Peru"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:42
 msgid "Open"
 msgstr "Avaa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Option Menu"
-msgstr ""
+msgstr "Valintavalikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
-msgstr ""
+msgstr "Ulos"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Page Setup Dialog"
@@ -2569,7 +2639,7 @@ msgstr "Sivuasetusikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Paned"
-msgstr ""
+msgstr "Paneelina"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Pointer Motion"
@@ -2577,7 +2647,7 @@ msgstr "Kohdistimen liike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Pointer Motion Hint"
-msgstr ""
+msgstr "Kohdistimen liikevihje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Popup"
@@ -2588,7 +2658,7 @@ msgid "Popup Menu"
 msgstr "Ponnahdusvalikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
-#: ../plugins/gnome/gnome.xml.in.h:27
+#: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Position"
 msgstr "Sijainti"
 
@@ -2606,17 +2676,17 @@ msgstr "Edistymispalkki"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Property Change"
-msgstr ""
+msgstr "Ominaisuuden muutos"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Proximity  Out"
-msgstr ""
+msgstr "Läheisyys loittonee"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Proximity In"
-msgstr ""
+msgstr "Läheisyys lähenee"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:49
 msgid "Question"
 msgstr "Kysymys"
 
@@ -2626,15 +2696,15 @@ msgstr "Jono"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Radio Button"
-msgstr ""
+msgstr "Vaihtoehtopainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Radio Menu Item"
-msgstr ""
+msgstr "Valikon vaihtoehtokohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Radio Tool Button"
-msgstr ""
+msgstr "Työkaluvaihtoehto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Range"
@@ -2650,7 +2720,7 @@ msgstr "Äskettäisten tiedostojen valintaikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Response ID"
-msgstr ""
+msgstr "Vastetunniste"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
@@ -2658,19 +2728,19 @@ msgstr "Oikea"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Right to Left"
-msgstr ""
+msgstr "Oikealta vasemmalle"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Ruler"
-msgstr ""
+msgstr "Viivain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:50
 msgid "Save"
 msgstr "Tallenna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Scale"
-msgstr ""
+msgstr "Asteikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Scroll"
@@ -2680,7 +2750,7 @@ msgstr "Vieritä"
 msgid "Scrolled Window"
 msgstr "Vieritettävä ikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Select Folder"
 msgstr "Valitse kansio"
 
@@ -2711,39 +2781,39 @@ msgstr "Koko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "South"
-msgstr ""
+msgstr "Etelä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "South East"
-msgstr ""
+msgstr "Kaakko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "South West"
-msgstr ""
+msgstr "Lounas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Spin Button"
-msgstr ""
+msgstr "Pyöröpainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Splash Screen"
-msgstr ""
+msgstr "Käynnistyskuva"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Spline"
-msgstr ""
+msgstr "Spline"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Spread"
-msgstr ""
+msgstr "Levitä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:55
 msgid "Start"
 msgstr "Alku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Static"
-msgstr ""
+msgstr "Kiinteä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Status Bar"
@@ -2751,11 +2821,11 @@ msgstr "Tilarivi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Stock Button"
-msgstr ""
+msgstr "Vakiopainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Stock Item"
-msgstr ""
+msgstr "Vakiokohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Structure"
@@ -2763,7 +2833,7 @@ msgstr "Rakenne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Substructure"
-msgstr ""
+msgstr "Alirakenne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Summary"
@@ -2774,7 +2844,7 @@ msgid "Table"
 msgstr "Taulukko"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:58
 msgid "Text"
 msgstr "Teksti"
 
@@ -2788,41 +2858,43 @@ msgstr "Tekstinäkymä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "The items in this combo box"
-msgstr ""
+msgstr "Laatikossa olevat kohdat"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "The number of items in the box"
-msgstr ""
+msgstr "Laatikossa olevien kohtien lukumäärä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "The number of pages in the notebook"
-msgstr ""
+msgstr "Muistion sivujen lukumäärä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "The page position in the Assistant"
-msgstr ""
+msgstr "Sivun sijainti apulaisessa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "The position of the menu item in the menu shell"
-msgstr ""
+msgstr "Valikon kohdan sijainti valikossa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "The position of the tool item in the toolbar"
-msgstr ""
+msgstr "Työkalun sijainti työkalupalkissa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr ""
+"Tämän painikkeen vastetunniste valintaikkunassa. Tämä ei ole hyöydyllinen "
+"jos painike ei ole GtkDialog-elementissä."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "The stock item for this button"
-msgstr ""
+msgstr "Painikkeen vakiokohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "The stock item for this image"
-msgstr ""
+msgstr "Kuvan vakiokohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "The text of the menu item"
@@ -2834,11 +2906,11 @@ msgstr "Näytettävä teksti"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Toggle Button"
-msgstr ""
+msgstr "Vipupainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Toggle Tool Button"
-msgstr ""
+msgstr "Työkaluvipupainike"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Tool Bar"
@@ -2862,7 +2934,7 @@ msgstr "Ylä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Top Left"
-msgstr ""
+msgstr "Ylävasemmalla"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Top Level"
@@ -2870,7 +2942,7 @@ msgstr "Ylin taso"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Top Right"
-msgstr "Ylhäältä oikealle"
+msgstr "Yläoikealla"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Top to Bottom"
@@ -2910,33 +2982,33 @@ msgstr "Pystysuuntainen nappilaatikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Vertical Panes"
-msgstr ""
+msgstr "Pystypaneelit"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Vertical Ruler"
-msgstr ""
+msgstr "Pystyviivain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Vertical Scale"
-msgstr ""
+msgstr "Pystyasteikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Vertical Scrollbar"
-msgstr ""
+msgstr "Pystyvierityspalkki"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Vertical Separator"
-msgstr ""
+msgstr "Pystyerotin"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Viewport"
-msgstr ""
+msgstr "Näkymä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Visibility Notify"
 msgstr "Näkyvyyshuomautus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:72
 msgid "Warning"
 msgstr "Varoitus"
 
@@ -2954,11 +3026,11 @@ msgstr "Sana"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Word Character"
-msgstr ""
+msgstr "Sanan merkki"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Yes, No"
-msgstr ""
+msgstr "Kyllä, Ei"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid ""
@@ -2966,6 +3038,10 @@ msgid ""
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
+"Voit merkitä tämän käännettäväksi ja asettaa nimen tai osoitteen, jos "
+"haluat näyttää käännöksestä riippuvan kääntäjän. Muussa tapauksessa "
+"tulisi listata kaikki kääntäjät ja poistaa tämä merkkijono käännettävien "
+"joukosta"
 
 #: ../plugins/gnome/glade-gnome.c:298
 msgid "Status Message."
@@ -2973,7 +3049,7 @@ msgstr "Tilaviesti."
 
 #: ../plugins/gnome/glade-gnome.c:656
 msgid "The position in the druid"
-msgstr ""
+msgstr "Sijainti apulaisessa"
 
 #: ../plugins/gnome/glade-gnome.c:1008
 msgid "Message box type"
@@ -2987,7 +3063,8 @@ msgstr "Viestilaatikon tyyppi"
 msgid "This property is valid only in font information mode"
 msgstr "Tämä ominaisuus on kelvollinen vain kirjasintietotilassa"
 
-#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:14
+#. This is deprecated
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:23
 msgid "Selection Mode"
 msgstr "Valintatila"
 
@@ -3005,11 +3082,11 @@ msgstr "Valitse BonoboDockPlacement-tyyppi"
 
 #: ../plugins/gnome/glade-gnome.c:1493
 msgid "Behavior"
-msgstr ""
+msgstr "Toimintatapa"
 
 #: ../plugins/gnome/glade-gnome.c:1494
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "Valitse käytettävä BonoboDockItemBehavior-tyyppi"
 
 #: ../plugins/gnome/glade-gnome.c:1503
 msgid "Pack Type"
@@ -3033,7 +3110,7 @@ msgstr "Sisällön taustaväri"
 
 #: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
-msgstr ""
+msgstr "Pehmennys"
 
 #: ../plugins/gnome/gnome.xml.in.h:10
 msgid "File"
@@ -3045,134 +3122,210 @@ msgstr "Tietoja kirjasimesta"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME UI Obsolete"
-msgstr ""
+msgstr "Gnome vanhentuneet"
 
 #: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME User Interface"
-msgstr ""
+msgstr "Gnome"
 
 #: ../plugins/gnome/gnome.xml.in.h:15
 msgid "Generic"
 msgstr "Yleinen"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
+msgid "Gnome About"
+msgstr "Gnomen tietoja-ikkuna"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+msgid "Gnome App"
+msgstr "Gnome-sovellus"
+
+#: ../plugins/gnome/gnome.xml.in.h:18
+msgid "Gnome App Bar"
+msgstr "Gnomen sovelluspalkki"
+
+#: ../plugins/gnome/gnome.xml.in.h:19
+msgid "Gnome Color Picker"
+msgstr "Gnomen värivalitsin"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+msgid "Gnome Date Edit"
+msgstr "Gnomen päivämäärämuokkain"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:22
+msgid "Gnome Dialog"
+msgstr "Gnome-ikkuna"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+msgid "Gnome Druid"
+msgstr "Gnomen apulainen"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+msgid "Gnome Druid Page Edge"
+msgstr "Gnomen apulaissivu, reunalla"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+msgid "Gnome Druid Page Standard"
+msgstr "Gnomen apulaissivu, tavallinen"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+msgid "Gnome File Entry"
+msgstr "Gnomen tiedostovalitsin"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+msgid "Gnome Font Picker"
+msgstr "Gnomen kirjasinvalitsin"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+msgid "Gnome HRef"
+msgstr "Gnomen HRef"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+msgid "Gnome Icon Entry"
+msgstr "Gnomen kuvakesyöte"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+msgid "Gnome Icon Selection"
+msgstr "Gnomen kuvakevalitsin"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+msgid "Gnome Message Box"
+msgstr "Gnomen viesti-ikkuna"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
+msgid "Gnome Pixmap"
+msgstr "Gnomen pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:33
+msgid "Gnome Pixmap Entry"
+msgstr "Gnomen pixmap-elementti"
+
+#: ../plugins/gnome/gnome.xml.in.h:34
+msgid "Gnome Property Box"
+msgstr "Gnomen ominaisuuslaatikko"
+
+#: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Information"
 msgstr "Tietoja"
 
-#: ../plugins/gnome/gnome.xml.in.h:17
+#: ../plugins/gnome/gnome.xml.in.h:36
 msgid "Logo"
 msgstr "Logo"
 
-#: ../plugins/gnome/gnome.xml.in.h:18
+#: ../plugins/gnome/gnome.xml.in.h:37
 msgid "Logo Background Color"
 msgstr "Logon taustaväri"
 
-#: ../plugins/gnome/gnome.xml.in.h:19
+#: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Max Saved"
-msgstr ""
+msgstr "Tallenna enintään"
 
-#: ../plugins/gnome/gnome.xml.in.h:20
+#: ../plugins/gnome/gnome.xml.in.h:39
 msgid "Message"
 msgstr "Viesti"
 
-#: ../plugins/gnome/gnome.xml.in.h:21
+#: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Monday First"
 msgstr "Maanantai ensin"
 
-#: ../plugins/gnome/gnome.xml.in.h:25
+#: ../plugins/gnome/gnome.xml.in.h:44
 msgid "Padding"
-msgstr ""
+msgstr "Täyte"
 
-#: ../plugins/gnome/gnome.xml.in.h:26
+#: ../plugins/gnome/gnome.xml.in.h:45
 msgid "Pixmap"
-msgstr ""
+msgstr "Pixmap"
 
-#: ../plugins/gnome/gnome.xml.in.h:28
+#: ../plugins/gnome/gnome.xml.in.h:47
 msgid "Program Name"
 msgstr "Sovelluksen nimi"
 
-#: ../plugins/gnome/gnome.xml.in.h:29
+#: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Program Version"
 msgstr "Sovelluksen nimi"
 
-#: ../plugins/gnome/gnome.xml.in.h:32
+#: ../plugins/gnome/gnome.xml.in.h:51
 msgid "Scaled Height"
-msgstr ""
+msgstr "Venytetty korkeus"
 
-#: ../plugins/gnome/gnome.xml.in.h:33
+#: ../plugins/gnome/gnome.xml.in.h:52
 msgid "Scaled Width"
-msgstr ""
+msgstr "Venytetty leveys"
 
-#: ../plugins/gnome/gnome.xml.in.h:35
+#: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Show Time"
 msgstr "Näytä aika"
 
-#: ../plugins/gnome/gnome.xml.in.h:37
+#: ../plugins/gnome/gnome.xml.in.h:56
 msgid "StatusBar"
 msgstr "Tilarivi"
 
-#: ../plugins/gnome/gnome.xml.in.h:38
+#: ../plugins/gnome/gnome.xml.in.h:57
 msgid "Store Config"
-msgstr ""
+msgstr "Tallenna asetukset"
 
-#: ../plugins/gnome/gnome.xml.in.h:40
+#: ../plugins/gnome/gnome.xml.in.h:59
 msgid "Text Foreground Color"
 msgstr "Tekstin edustaväri"
 
-#: ../plugins/gnome/gnome.xml.in.h:41
+#: ../plugins/gnome/gnome.xml.in.h:60
 msgid "The height to scale the pixmap to"
-msgstr ""
+msgstr "Korkeus, johon pixmap venytetään"
 
-#: ../plugins/gnome/gnome.xml.in.h:42
+#: ../plugins/gnome/gnome.xml.in.h:61
 msgid "The maximum number of history entries saved"
-msgstr ""
+msgstr "Tallennettujen historiakohtien enimmäismäärä"
 
-#: ../plugins/gnome/gnome.xml.in.h:43
+#: ../plugins/gnome/gnome.xml.in.h:62
 msgid "The pixmap file"
 msgstr "Pixmap-tiedosto"
 
-#: ../plugins/gnome/gnome.xml.in.h:44
+#: ../plugins/gnome/gnome.xml.in.h:63
 msgid "The width to scale the pixmap to"
-msgstr ""
+msgstr "Leveys, johon pixmap venytetään"
 
-#: ../plugins/gnome/gnome.xml.in.h:46
+#: ../plugins/gnome/gnome.xml.in.h:65
 msgid "Title Foreground Color"
 msgstr "Otsikon edustaväri"
 
-#: ../plugins/gnome/gnome.xml.in.h:47
+#: ../plugins/gnome/gnome.xml.in.h:66
 msgid "Top Watermark"
-msgstr ""
+msgstr "Yläosan vesileima"
 
-#: ../plugins/gnome/gnome.xml.in.h:48
+#: ../plugins/gnome/gnome.xml.in.h:67
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../plugins/gnome/gnome.xml.in.h:49
+#: ../plugins/gnome/gnome.xml.in.h:68
 msgid "Use Alpha"
-msgstr ""
+msgstr "Käytä läpinäkyvyyttä"
 
-#: ../plugins/gnome/gnome.xml.in.h:50
+#: ../plugins/gnome/gnome.xml.in.h:69
 msgid ""
 "Used to pass around information about the position of a GnomeDruidPage "
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Käytetään tiedon välittämiseen GnomeDruidPage-elementin sijainnista "
+"GnomeDruid-rakenteen sisällä. Tämä mahdollistaa oikein valitun "
+"ympäröivän alueen piirtämisen"
 
-#: ../plugins/gnome/gnome.xml.in.h:51
+#: ../plugins/gnome/gnome.xml.in.h:70
 msgid "User"
 msgstr "Oma"
 
-#: ../plugins/gnome/gnome.xml.in.h:52
+#: ../plugins/gnome/gnome.xml.in.h:71
 msgid "User Widget"
 msgstr "Käyttäjän ikkunaelementti"
 
-#: ../plugins/gnome/gnome.xml.in.h:54
+#: ../plugins/gnome/gnome.xml.in.h:73
 msgid "Watermark"
 msgstr "Vesileima"
 
 #: ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Exclusive"
-msgstr ""
+msgstr "Poissulkeva"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Floating"
@@ -3194,113 +3347,132 @@ msgstr "Ei koskaan vaakasuuntainen"
 msgid "Never Vertical"
 msgstr "Ei koskaan pystysuuntainen"
 
-#: ../plugins/gnome/canvas.xml.in.h:1
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:2
 msgid "Browse"
 msgstr "Selaa"
 
-#: ../plugins/gnome/canvas.xml.in.h:2
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:4
 msgid "Column Spacing"
 msgstr "Sarakkeiden välistys"
 
-#: ../plugins/gnome/canvas.xml.in.h:3
+#: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Canvas"
-msgstr ""
+msgstr "Gnomen kangas"
 
-#: ../plugins/gnome/canvas.xml.in.h:4
+#: ../plugins/gnome/canvas.xml.in.h:6
+msgid "Gnome Canvas"
+msgstr "Gnomen kangas"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:8
+msgid "Gnome Icon List"
+msgstr "Gnomen kuvakeluettelo"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Icon Width"
 msgstr "Kuvakkeen leveys"
 
-#: ../plugins/gnome/canvas.xml.in.h:5
+#: ../plugins/gnome/canvas.xml.in.h:11
 msgid "If the icon text can be edited by the user"
-msgstr ""
+msgstr "Voiko käyttäjä muokata kuvakkeen tekstiä"
 
-#: ../plugins/gnome/canvas.xml.in.h:6
+#: ../plugins/gnome/canvas.xml.in.h:12
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
 msgstr ""
+"Onko kuvakkeen teksti kiinteä, jolloin sitä ei kopioida GnomeIconList-"
+"kohteeseen"
 
-#: ../plugins/gnome/canvas.xml.in.h:7
+#: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Max X"
-msgstr ""
+msgstr "Max X"
 
-#: ../plugins/gnome/canvas.xml.in.h:8
+#: ../plugins/gnome/canvas.xml.in.h:14
 msgid "Max Y"
-msgstr ""
+msgstr "Max Y"
 
-#: ../plugins/gnome/canvas.xml.in.h:9
+#: ../plugins/gnome/canvas.xml.in.h:15
 msgid "Min X"
-msgstr ""
+msgstr "Min X"
 
-#: ../plugins/gnome/canvas.xml.in.h:10
+#: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Min Y"
-msgstr ""
+msgstr "Min y"
 
-#: ../plugins/gnome/canvas.xml.in.h:11
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:18
 msgid "Multiple"
 msgstr "Useita"
 
-#: ../plugins/gnome/canvas.xml.in.h:12
+#: ../plugins/gnome/canvas.xml.in.h:19
 msgid "Pixels per unit"
 msgstr "Pikseleitä yksikköä kohti"
 
-#: ../plugins/gnome/canvas.xml.in.h:13
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:21
 msgid "Row Spacing"
 msgstr "Riviväli"
 
-#: ../plugins/gnome/canvas.xml.in.h:15
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:25
 msgid "Single"
 msgstr "Yksi"
 
-#: ../plugins/gnome/canvas.xml.in.h:16
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:27
 msgid "Text Editable"
 msgstr "Teksti muokattavissa"
 
-#: ../plugins/gnome/canvas.xml.in.h:17
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:29
 msgid "Text Spacing"
 msgstr "Tekstin välistys"
 
-#: ../plugins/gnome/canvas.xml.in.h:18
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:31
 msgid "Text Static"
-msgstr ""
+msgstr "Kiinteä teksti"
 
-#: ../plugins/gnome/canvas.xml.in.h:19
+#: ../plugins/gnome/canvas.xml.in.h:32
 msgid "The maximum x coordinate"
-msgstr ""
+msgstr "X-koordinaatin suurin mahdollinen arvo"
 
-#: ../plugins/gnome/canvas.xml.in.h:20
+#: ../plugins/gnome/canvas.xml.in.h:33
 msgid "The maximum y coordinate"
-msgstr ""
+msgstr "Y-koordinaatin suurin mahdollinen arvo"
 
-#: ../plugins/gnome/canvas.xml.in.h:21
+#: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The minimum x coordinate"
-msgstr ""
+msgstr "X-koordinaatin pienin mahdollinen rvo"
 
-#: ../plugins/gnome/canvas.xml.in.h:22
+#: ../plugins/gnome/canvas.xml.in.h:35
 msgid "The minimum y coordinate"
-msgstr ""
+msgstr "Y-koordinaatin pienin mahdollinen arvo"
 
-#: ../plugins/gnome/canvas.xml.in.h:23
+#: ../plugins/gnome/canvas.xml.in.h:36
 msgid "The number of pixels between columns of icons"
-msgstr ""
+msgstr "Kuvakesarakkeiden välissä oleva pikselimäärä"
 
-#: ../plugins/gnome/canvas.xml.in.h:24
+#: ../plugins/gnome/canvas.xml.in.h:37
 msgid "The number of pixels between rows of icons"
-msgstr ""
+msgstr "Kuvakerivien välissä oleva pikselimäärä"
 
-#: ../plugins/gnome/canvas.xml.in.h:25
+#: ../plugins/gnome/canvas.xml.in.h:38
 msgid "The number of pixels between the text and the icon"
-msgstr ""
+msgstr "Tekstin ja kuvakkeen välissä oleva pikselimäärä"
 
-#: ../plugins/gnome/canvas.xml.in.h:26
+#: ../plugins/gnome/canvas.xml.in.h:39
 msgid "The number of pixels corresponding to one unit"
-msgstr ""
+msgstr "Yhtä yksikköä vastaava pikselimäärä"
 
-#: ../plugins/gnome/canvas.xml.in.h:27
+#: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The selection mode"
 msgstr "Valintatila"
 
-#: ../plugins/gnome/canvas.xml.in.h:28
+#: ../plugins/gnome/canvas.xml.in.h:41
 msgid "The width of each icon"
 msgstr "Kuvakkeiden leveys"
-
