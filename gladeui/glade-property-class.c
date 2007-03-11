@@ -1670,12 +1670,22 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->weight   = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,   klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 
-	/* No atk introspection here.
+	/* A sprinkle of hard-code to get atk properties working right
 	 */
 	if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_ACTION, FALSE))
 		klass->type = GPC_ATK_ACTION;
 	else if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, FALSE))
-		klass->type = GPC_ATK_PROPERTY;
+	{
+		if (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec))
+			klass->type = GPC_ATK_RELATION;
+		else
+			klass->type = GPC_ATK_PROPERTY;
+	}
+
+	/* Special case accelerators here.
+	 */
+	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
+		klass->type = GPC_ACCEL_PROPERTY;
 
 	/* Special case pixbuf here.
 	 */
