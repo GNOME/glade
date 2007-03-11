@@ -85,8 +85,6 @@ LIBGLADEUI_API void         glade_param_spec_objects_set_type (GladeParamSpecObj
 							       GType                  type);
 LIBGLADEUI_API GType        glade_param_spec_objects_get_type (GladeParamSpecObjects *pspec);
 
-LIBGLADEUI_API GParamSpec **glade_list_atk_relations        (GType  owner_type, 
-							     guint *n_specs);
 LIBGLADEUI_API GParamSpec  *glade_standard_pixbuf_spec      (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_gdkcolor_spec    (void);
 LIBGLADEUI_API GParamSpec  *glade_standard_objects_spec     (void);

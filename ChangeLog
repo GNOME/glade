@@ -2,6 +2,17 @@
 
 	* configure.ac, NEWS: Rolling 3.2.0
 
+2006-03-11  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-property-class.c: Fix handling of atk
+	properties specified by the plugin.
+
+	* plugins/gtk/gtk+.xml.in: Specified atk relation properties
+	for GtkWidgetClass and also specified the acceleretor property
+	for GtkWidgetClass (fixes bug 383121).
+
+	* TODO: Updated 
+	
 2006-03-05  Halton Huo <halton.huo@sun.com>
 
 	* Define GCC_WARN_FLAGS in configure.ac, if use gcc, put -Wall into CFLAGS,
