@@ -1,0 +1,3545 @@
+# translation of lt.po to Lithuanian
+# Lithuanian translation of Glade-3
+# Copyright (C) 2001-2006, Ximian Inc., T. Van Berkom et al.
+# Vytautas Liuolia <vytautas.liuolia@gmail.com>, 2007.
+# Žygimantas Beručka <zygis@gnome.org>, 2007. 
+#
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: lt\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-06 14:20+0200\n"
+"PO-Revision-Date: 2007-03-09 12:18+0200\n"
+"Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
+"Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../data/glade-3.desktop.in.in.h:1
+msgid "Create or open user interface designs for GTK+ applications"
+msgstr "Kurti arba atverti GTK+ programų naudotojo sąsajas"
+
+#: ../data/glade-3.desktop.in.in.h:2
+msgid "Glade Interface Designer"
+msgstr "Glade naudotojo sąsajos projektavimo įrankis"
+
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
+msgid "User Interface Designer"
+msgstr "Naudotojo sąsajos projektavimo įrankis"
+
+#: ../src/main.c:38
+msgid "Glade"
+msgstr "Glade"
+
+#: ../src/main.c:48
+msgid "Output version information and exit"
+msgstr "Išvesties versijos informacija"
+
+#: ../src/main.c:51
+msgid "Disable Devhelp integration"
+msgstr "Išjungti Devhelp integraciją"
+
+#: ../src/main.c:54
+msgid "[FILE...]"
+msgstr "[FAILAS...]"
+
+#: ../src/main.c:86
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr "Kurti arba atverti GTK+ programų naudotojo sąsajas"
+
+#: ../src/main.c:89 ../src/main.c:90
+msgid "Glade options"
+msgstr "Glade nustatymai"
+
+#: ../src/main.c:140
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr "gmodule palaikymas nerastas. Glade darbui reikalingas gmodule."
+
+#: ../src/main.c:167
+#, c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "Nepavyko atverti '%s', failas neegzistuoja.\n"
+
+#: ../src/glade-project-window.c:44
+msgid "[Read Only]"
+msgstr "[Tik skaitomas]"
+
+#: ../src/glade-project-window.c:108
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "Nepavyko parodyti nuorodos „%s“"
+
+#: ../src/glade-project-window.c:112
+msgid "No suitable web browser executable could be found."
+msgstr "Nepavyko rasti tinkamos interneto naršyklės vykdomojo failo."
+
+#: ../src/glade-project-window.c:332
+#, c-format
+msgid "%s [%s] - Properties"
+msgstr "%s [%s] - Savybės"
+
+#: ../src/glade-project-window.c:342 ../src/glade-project-window.c:1999
+#: ../gladeui/glade-widget.c:992
+msgid "Properties"
+msgstr "Savybės"
+
+#: ../src/glade-project-window.c:609
+#, c-format
+msgid "Activate %s"
+msgstr "Aktyvuoti %s"
+
+#: ../src/glade-project-window.c:727
+msgid "Open…"
+msgstr "Atverti…"
+
+#: ../src/glade-project-window.c:769
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "Failas %s nuo jo perskaitymo buvo pakeistas"
+
+#: ../src/glade-project-window.c:773
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Jei išsaugosite, visi išoriniai pakeitimai bus prarasti. Vis tiek išsaugoti?"
+
+#: ../src/glade-project-window.c:777
+msgid "_Save Anyway"
+msgstr "Vis tiek iš_saugoti"
+
+#: ../src/glade-project-window.c:784
+msgid "_Don't Save"
+msgstr "_Nesaugoti"
+
+#: ../src/glade-project-window.c:807
+#, c-format
+msgid "Failed to save %s: %s"
+msgstr "Nepavyko išsaugoti %s: %s"
+
+#: ../src/glade-project-window.c:828
+#, c-format
+msgid "Project '%s' saved"
+msgstr "Projektas „%s“ išsaugotas"
+
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
+msgid "No open projects to save"
+msgstr "Nėra atvertų projektų, kuriuos būtų galima išsaugoti"
+
+#: ../src/glade-project-window.c:851
+msgid "Save As…"
+msgstr "Išsaugoti kaip…"
+
+#: ../src/glade-project-window.c:893
+#, c-format
+msgid ""
+"Could not save the file %s. You do not have the permissions necessary to "
+"save the file."
+msgstr "Nepavyko išsaugoti failo %s. Neturite reikiamų teisių šiam failui."
+
+#: ../src/glade-project-window.c:906
+#, c-format
+msgid "Could not save file %s. Another project with that path is open."
+msgstr ""
+"Nepavyko išsaugoti failo %s. Kitas projektas atvertas tame pačiame aplanke."
+
+#: ../src/glade-project-window.c:958
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Išsaugoti projekto „%s“ pakeitimus "
+"prieš uždarant</span>\n"
+"\n"
+"Prarasite pakeitimus, jei neišsaugosite.\n"
+
+#: ../src/glade-project-window.c:972
+msgid "_Close without Saving"
+msgstr "_Užverti neišsaugant"
+
+#: ../src/glade-project-window.c:993
+#, c-format
+msgid "Failed to save %s to %s: %s"
+msgstr "Nepavyko išsaugoti %s kaip %s: %s"
+
+#: ../src/glade-project-window.c:1005
+msgid "Save…"
+msgstr "Išsaugoti…"
+
+#: ../src/glade-project-window.c:1411
+msgid "Could not display the online user manual"
+msgstr "Nepavyko parodyti žinyno internete"
+
+#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr "Nerasta tinkama interneto naršyklė, reikalinga parodyti nuorodą %s"
+
+#: ../src/glade-project-window.c:1449
+msgid "Could not display the online developer reference manual"
+msgstr "Nepavyko parodyti programuotojo žinyno internete"
+
+#: ../src/glade-project-window.c:1482
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as\n"
+"published by the Free Software Foundation; either version 2 of the\n"
+"License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
+msgstr ""
+"Ši programa yra laisva programinė įranga; galite ją platinti ir/ar "
+"modifikuoti\n"
+"GNU bendrosios viešosios licencijos sąlygomis, kurios paskelbtos\n"
+"Laisvosios programinės įrangos fondo; 2-osios arba (Jūsų pasirinkimu)\n"
+"bet kurios vėlesnės licencijos versijos sąlygomis.\n"
+"\n"
+"Ši programa yra platinama tikintis, kad ji bus naudinga, bet BE JOKIŲ "
+"GARANTIJŲ;\n"
+"netgi be numanomų PARDAVIMO arba TINKAMUMO TAM TIKRAM TIKSLUI garantijų.\n"
+"Dėl išsamesnės informacijos žiūrėkite GNU bendrąją viešąją licenciją.\n"
+"\n"
+"Jūs turėjote gauti GNU bendrosios viešosios licencijos kopiją kartu su šia "
+"programa;\n"
+"jeigu negavote, rašykite Laisvosios programinės įrangos fondui,\n"
+"59 Temple Place, Suite 330, Boston, MA  02111-1307  USA"
+
+#: ../src/glade-project-window.c:1504
+msgid "translator-credits"
+msgstr ""
+"Vertėjas:\n"
+"Vytautas Liuolia <vytautas.liuolia@gmail.com>"
+
+#: ../src/glade-project-window.c:1505
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "GNOME ir GTK+ naudotojo sąsajos įrankis"
+
+#. File
+#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4406
+#: ../plugins/gtk+/glade-gtk.c:4704
+msgid "_File"
+msgstr "_Failas"
+
+#. Edit
+#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4409
+#: ../plugins/gtk+/glade-gtk.c:4714
+msgid "_Edit"
+msgstr "_Keisti"
+
+#. View
+#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4412
+#: ../plugins/gtk+/glade-gtk.c:4722
+msgid "_View"
+msgstr "_Rodyti"
+
+#: ../src/glade-project-window.c:1579
+msgid "_Projects"
+msgstr "Pr_ojektai"
+
+#. Help
+#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4424
+#: ../plugins/gtk+/glade-gtk.c:4725
+msgid "_Help"
+msgstr "_Žinynas"
+
+#: ../src/glade-project-window.c:1584
+msgid "Create a new project"
+msgstr "Sukurti naują projektą"
+
+#: ../src/glade-project-window.c:1586
+msgid "_Open…"
+msgstr "_Atverti…"
+
+#: ../src/glade-project-window.c:1587
+msgid "Open a project"
+msgstr "Atverti projektą"
+
+#: ../src/glade-project-window.c:1589
+msgid "Open _Recent"
+msgstr "Pasku_tinieji failai"
+
+#: ../src/glade-project-window.c:1592
+msgid "Quit the program"
+msgstr "Išeiti iš programos"
+
+#. ViewMenu
+#: ../src/glade-project-window.c:1595
+msgid "Palette _Appearance"
+msgstr "_Paletės išvaizda"
+
+#: ../src/glade-project-window.c:1599
+msgid "About this application"
+msgstr "Apie šią programą"
+
+#: ../src/glade-project-window.c:1602
+msgid "Display the user manual"
+msgstr "Parodyti naudotojo žinyną"
+
+#: ../src/glade-project-window.c:1604
+msgid "_Developer Reference"
+msgstr "P_rogramuotojo žinynas"
+
+#: ../src/glade-project-window.c:1605
+msgid "Display the developer reference manual"
+msgstr "Parodyti programuotojo žinyną"
+
+#: ../src/glade-project-window.c:1614
+msgid "Save the current project"
+msgstr "Išsaugoti esamą projektą"
+
+#: ../src/glade-project-window.c:1616
+msgid "Save _As…"
+msgstr "Įšsaugoti _kaip…"
+
+#: ../src/glade-project-window.c:1617
+msgid "Save the current project with a different name"
+msgstr "Išsaugoti esamą projektą kitu pavadinimu"
+
+#: ../src/glade-project-window.c:1620
+msgid "Close the current project"
+msgstr "Uždaryti dabartinį projektą"
+
+#: ../src/glade-project-window.c:1624
+msgid "Undo the last action"
+msgstr "Atšaukti paskutinį veiksmą"
+
+#: ../src/glade-project-window.c:1627
+msgid "Redo the last action"
+msgstr "Pakartoti paskutinį veiksmą"
+
+#: ../src/glade-project-window.c:1630
+msgid "Cut the selection"
+msgstr "Iškirpti pasirinktus objektus"
+
+#: ../src/glade-project-window.c:1633
+msgid "Copy the selection"
+msgstr "Kopijuoti pasirinktus objektus"
+
+#: ../src/glade-project-window.c:1636
+msgid "Paste the clipboard"
+msgstr "Įdėti iškarpinės turinį"
+
+#: ../src/glade-project-window.c:1639
+msgid "Delete the selection"
+msgstr "Ištrinti pasirinktus objektus"
+
+#. ViewMenu
+#: ../src/glade-project-window.c:1643
+msgid "_Clipboard"
+msgstr "Iš_karpinė"
+
+#: ../src/glade-project-window.c:1644
+msgid "Show the clipboard"
+msgstr "Rodyti iškarpinės turinį"
+
+#. ProjectsMenu
+#: ../src/glade-project-window.c:1648
+msgid "_Previous Project"
+msgstr "_Ankstesnis projektas"
+
+#: ../src/glade-project-window.c:1649
+msgid "Activate previous project"
+msgstr "Aktyvuoti ankstesnį projektą"
+
+#: ../src/glade-project-window.c:1651
+msgid "_Next Project"
+msgstr "_Kitas projektas"
+
+#: ../src/glade-project-window.c:1652
+msgid "Activate next project"
+msgstr "Aktyvuoti kitą projektą"
+
+#: ../src/glade-project-window.c:1660
+msgid "_Use Small Icons"
+msgstr "_Naudoti mažas piktogramas"
+
+#: ../src/glade-project-window.c:1661
+msgid "Show items using small icons"
+msgstr "Rodyti elementus naudojant mažas piktogramas"
+
+#: ../src/glade-project-window.c:1664
+msgid "Context _Help"
+msgstr "_Kontekstinis žinynas"
+
+#: ../src/glade-project-window.c:1665
+msgid "Show or hide contextual help buttons in the editor"
+msgstr "Rodyti arba slėpti kontekstinio žinyno mygtukus redaktoriuje"
+
+#: ../src/glade-project-window.c:1672
+msgid "Text beside icons"
+msgstr "Tekstas šalia piktogramų"
+
+#: ../src/glade-project-window.c:1673
+msgid "Display items as text beside icons"
+msgstr "Rodyti elementus kaip tekstą prie piktogramų"
+
+#: ../src/glade-project-window.c:1675
+msgid "_Icons only"
+msgstr "Tik _piktogramos"
+
+#: ../src/glade-project-window.c:1676
+msgid "Display items as icons only"
+msgstr "Rodyti elementus tik kaip piktogramas"
+
+#: ../src/glade-project-window.c:1678
+msgid "_Text only"
+msgstr "Tik _tekstas"
+
+#: ../src/glade-project-window.c:1679
+msgid "Display items as text only"
+msgstr "Rodyti elementus tik kaip tekstą"
+
+#: ../src/glade-project-window.c:1884
+msgid "Select Widgets"
+msgstr "Pasirinkite valdymo elementus"
+
+#: ../src/glade-project-window.c:1888
+msgid "Select widgets in the workspace"
+msgstr "Pasirinkite valdymo elementus darbalaukyje"
+
+#: ../src/glade-project-window.c:1977
+msgid "Palette"
+msgstr "Paletė"
+
+#: ../src/glade-project-window.c:1993
+msgid "Inspector"
+msgstr "Tikrinimas"
+
+#: ../src/glade-project-window.c:2115
+msgid "Could not create a new project."
+msgstr "Nepavyko sukurti naujo projekto."
+
+#: ../src/glade-project-window.c:2134
+#, c-format
+msgid "%s is already open"
+msgstr "%s jau atvertas"
+
+#: ../src/glade-project-window.c:2199
+msgid "_Undo"
+msgstr "_Atšaukti"
+
+#. Change tooltips
+#: ../src/glade-project-window.c:2201 ../gladeui/glade-app.c:242
+#, c-format
+msgid "Undo: %s"
+msgstr "Atšaukti: %s"
+
+#: ../src/glade-project-window.c:2201 ../src/glade-project-window.c:2212
+#: ../gladeui/glade-app.c:243
+msgid "the last action"
+msgstr "paskutinis veiksmas"
+
+#: ../src/glade-project-window.c:2210
+msgid "_Redo"
+msgstr "Paka_rtoti"
+
+#: ../src/glade-project-window.c:2212 ../gladeui/glade-app.c:242
+#, c-format
+msgid "Redo: %s"
+msgstr "Pakartoti %s"
+
+#: ../gladeui/glade-app.c:453
+msgid "Clipboard"
+msgstr "Iškarpinė"
+
+#: ../gladeui/glade-app.c:525
+msgid "Active Project"
+msgstr "Aktyvus projektas"
+
+#: ../gladeui/glade-app.c:526
+msgid "The active project"
+msgstr "Aktyvus projektas"
+
+#: ../gladeui/glade-app.c:604
+#, c-format
+msgid ""
+"Trying to save private data to %s directory but it is a regular file.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Bandoma išsaugoti asmeninius duomenis į aplanką %s, bet tai yra failas, o ne "
+"aplankas.\n"
+"Jokie asmeniniai duomenys šiame seanse nebus išsaugoti"
+
+#: ../gladeui/glade-app.c:617
+#, c-format
+msgid ""
+"Failed to create directory %s to save private data.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Nepavyko sukurti direktorijos %s, reikalingos asmeniniams duomenims "
+"įrašyti.\n"
+"Jokie asmeniniai duomenys šiame seanse nebus išsaugoti"
+
+#: ../gladeui/glade-app.c:645
+#, c-format
+msgid ""
+"Error writing private data to %s (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Klaida rašant asmeninius duomenis į %s (%s).\n"
+"Jokie asmeniniai duomenys šiame seanse nebus išsaugoti"
+
+#: ../gladeui/glade-app.c:657
+#, c-format
+msgid ""
+"Error serializing configuration data to save (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Klaida serializuojant konfigūracijos duomenis saugojimui (%s).\n"
+"Jokie asmeniniai duomenys šiame seanse nebus išsaugoti"
+
+#: ../gladeui/glade-app.c:670
+#, c-format
+msgid ""
+"Error opening %s to write private data (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Klaida atidarant %s asmeninių duomenų rašymui (%s).\n"
+"Jokie asmeniniai duomenys šiame seanse nebus išsaugoti"
+
+#: ../gladeui/glade-app.c:1109
+msgid "You cannot copy a widget internal to a composite widget."
+msgstr ""
+"Neįmanoma kopijuoti šio valdymo elemento, nes jis yra sudėtinio valdymo elemento dalis."
+
+#: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
+#: ../gladeui/glade-app.c:1352
+msgid "No widget selected."
+msgstr "Nepasirinktas joks valdymo elementas"
+
+#: ../gladeui/glade-app.c:1162
+msgid "You cannot cut a widget internal to a composite widget."
+msgstr ""
+"Neįmanoma iškirpti šio valdymo elemento, nes jis yra sudėtinio valdymo elemento dalis."
+
+#: ../gladeui/glade-app.c:1221
+msgid "Unable to paste to the selected parent"
+msgstr "Nepavyko įdėti į pasirinktą pirminį objektą"
+
+#: ../gladeui/glade-app.c:1232
+msgid "Unable to paste to multiple widgets"
+msgstr "Nepavyko įdėti kelių valdymo elementų iškart"
+
+#: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
+msgid "No widget selected on the clipboard"
+msgstr "Iškarpinėje nėra valdymo elementų"
+
+#: ../gladeui/glade-app.c:1268
+#, c-format
+msgid "Unable to paste widget %s without a parent"
+msgstr "Nepavyko įdėti valdymo elemento %s be pirminio objekto"
+
+#: ../gladeui/glade-app.c:1285
+msgid "Only one widget can be pasted at a time to this container"
+msgstr "Tik vienas valdymo elementas gali būti įdėtas į šį konteinerį"
+
+#: ../gladeui/glade-app.c:1297
+msgid "Insufficient amount of placeholders in target container"
+msgstr "Nepakankamas vietų skaičius taikinio konteineryje"
+
+#: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
+msgid "You cannot delete a widget internal to a composite widget."
+msgstr ""
+"Neįmanoma ištrinti šio valdymo elemento, nes jis yra sudėtinio valdymo elemento dalis."
+
+#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
+#: ../plugins/gtk+/glade-gtk.c:207
+msgid "Stock"
+msgstr "Standartinis"
+
+#: ../gladeui/glade-builtins.c:184
+msgid "A builtin stock item"
+msgstr "Įsiūtas standartinis elementas"
+
+#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
+msgid "Stock Image"
+msgstr "Standartinis paveikslėlis"
+
+#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
+msgid "A builtin stock image"
+msgstr "Įtaisytasis standartinis paveikslėlis"
+
+#: ../gladeui/glade-builtins.c:523
+msgid "Objects"
+msgstr "Objektai"
+
+#: ../gladeui/glade-builtins.c:524
+msgid "A list of objects"
+msgstr "Objektų sąrašas"
+
+#: ../gladeui/glade-builtins.c:533
+msgid "Pixbuf"
+msgstr "Paveikslas"
+
+#: ../gladeui/glade-builtins.c:534
+msgid "A pixbuf value"
+msgstr "Paveikslėlio reikšmė"
+
+#: ../gladeui/glade-builtins.c:542
+msgid "GdkColor"
+msgstr "GdkColor"
+
+#: ../gladeui/glade-builtins.c:543
+msgid "A gdk color value"
+msgstr "Gdk spalvos reikšmė"
+
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1187
+msgid "Accelerators"
+msgstr "Spartieji klavišai"
+
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1188
+msgid "A list of accelerator keys"
+msgstr "Sparčiųjų klavišų sąrašas"
+
+#: ../gladeui/glade-builtins.c:563
+msgid "Integer"
+msgstr "Sveikasis skaičius"
+
+#: ../gladeui/glade-builtins.c:564
+msgid "An integer value"
+msgstr "Skaitinė vertė"
+
+#: ../gladeui/glade-builtins.c:572
+msgid "Unsigned Integer"
+msgstr "Sveikasis skaičius (be ženklo)"
+
+#: ../gladeui/glade-builtins.c:573
+msgid "An unsigned integer value"
+msgstr "Sveikasis skaičius (be ženklo)"
+
+#: ../gladeui/glade-builtins.c:580
+msgid "String"
+msgstr "Simbolių eilutė"
+
+#: ../gladeui/glade-builtins.c:581
+msgid "An entry"
+msgstr "Laukelis"
+
+#: ../gladeui/glade-builtins.c:588
+msgid "Strv"
+msgstr "Simbolių eilučių masyvas"
+
+#: ../gladeui/glade-builtins.c:589
+msgid "String array"
+msgstr "Simbolių eilučių masyvas"
+
+#: ../gladeui/glade-builtins.c:597
+msgid "Float"
+msgstr "Slankaus kablelio skaičius"
+
+#: ../gladeui/glade-builtins.c:598
+msgid "A floating point entry"
+msgstr "Slankaus kablelio įrašas"
+
+#: ../gladeui/glade-builtins.c:606
+msgid "Boolean"
+msgstr "Loginė"
+
+#: ../gladeui/glade-builtins.c:607
+msgid "A boolean value"
+msgstr "Loginė reikšmė"
+
+#: ../gladeui/glade-base-editor.c:470
+#, c-format
+msgid "Setting object type on %s to %s"
+msgstr "Nustatomas objekto tipas %s (į %s)"
+
+#: ../gladeui/glade-base-editor.c:635
+#, c-format
+msgid "Add a %s to %s"
+msgstr "Pridėti %s prie %s"
+
+#: ../gladeui/glade-base-editor.c:712
+#, c-format
+msgid "Delete %s child from %s"
+msgstr "Ištrinti %s antrinį objektą iš %s"
+
+#: ../gladeui/glade-base-editor.c:835
+#, c-format
+msgid "Reorder %s's children"
+msgstr "Pertvarkyti %s antrinius objektus"
+
+#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
+#: ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "Label"
+msgstr "Žymė"
+
+#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
+msgid "Type"
+msgstr "Tipas"
+
+#. Name
+#: ../gladeui/glade-base-editor.c:1598
+msgid "Name :"
+msgstr "Vardas:"
+
+#. Type
+#: ../gladeui/glade-base-editor.c:1608
+msgid "Type :"
+msgstr "Tipas:"
+
+#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
+#: ../plugins/gtk+/gtk+.xml.in.h:279
+msgid "Widget"
+msgstr "Valdymo elementas"
+
+#: ../gladeui/glade-command.c:541
+msgid "Setting multiple properties"
+msgstr "Nustatomos kelios savybės"
+
+#: ../gladeui/glade-command.c:549
+#, c-format
+msgid "Setting %s of %s"
+msgstr "Nustatoma(s) %s objektui %s"
+
+#: ../gladeui/glade-command.c:553
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr "Nustatoma %s (iš %s) į %s"
+
+#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
+#, c-format
+msgid "Renaming %s to %s"
+msgstr "Pervadinti %s į %s"
+
+#: ../gladeui/glade-command.c:903
+#, c-format
+msgid "Add %s"
+msgstr "Pridėti %s"
+
+#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:1672
+msgid "multiple"
+msgstr "kartotinis"
+
+#: ../gladeui/glade-command.c:1017
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr ""
+"Neįmanoma pašalinti šio valdymo elemento, nes jis yra sudėtinio valdymo elemento dalis."
+
+#: ../gladeui/glade-command.c:1063
+#, c-format
+msgid "Remove %s"
+msgstr "Pašalinti %s"
+
+#: ../gladeui/glade-command.c:1067
+msgid "Remove multiple"
+msgstr "Pašalinti besikartojančius"
+
+#: ../gladeui/glade-command.c:1371
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Įdėti %s iškarpinę"
+
+#: ../gladeui/glade-command.c:1374
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Pašalinti %s iš iškarpinės"
+
+#: ../gladeui/glade-command.c:1537
+#, c-format
+msgid "Create %s"
+msgstr "Sukurti %s"
+
+#: ../gladeui/glade-command.c:1563
+#, c-format
+msgid "Delete %s"
+msgstr "Ištrinti %s"
+
+#: ../gladeui/glade-command.c:1584
+#, c-format
+msgid "Cut %s"
+msgstr "Iškirpti %s"
+
+#: ../gladeui/glade-command.c:1611
+#, c-format
+msgid "Copy %s"
+msgstr "Kopijuoti %s"
+
+#: ../gladeui/glade-command.c:1644
+#, c-format
+msgid "Paste %s"
+msgstr "Įdėti %s"
+
+#: ../gladeui/glade-command.c:1672
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Nuvilkti iš %s į %s"
+
+#: ../gladeui/glade-command.c:1794
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Pridėti signalo valdiklį %s"
+
+#: ../gladeui/glade-command.c:1795
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Pašalinti signalo valdiklį %s"
+
+#: ../gladeui/glade-command.c:1796
+#, c-format
+msgid "Change signal handler %s"
+msgstr "Pakeisti signalo valdiklį %s"
+
+#: ../gladeui/glade-command.c:2000
+msgid "Setting i18n metadata"
+msgstr "Nustatomi i18n metaduomenys"
+
+#: ../gladeui/glade-cursor.c:186
+#, c-format
+msgid "Unable to load image (%s)"
+msgstr "Nepavyko įkrauti paveikslėlio (%s)"
+
+#: ../gladeui/glade-editor-property.c:274
+msgid "View GTK+ documentation for this property"
+msgstr "Rodyti šios savybės GTK dokumentaciją"
+
+#: ../gladeui/glade-editor-property.c:576
+msgid "Property Class"
+msgstr "Savybės klasė"
+
+#: ../gladeui/glade-editor-property.c:577
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr ""
+"GladePropertyClass klasė, kuriai ši GladeEditorProperty savybė buvo sukurta"
+
+#: ../gladeui/glade-editor-property.c:583
+msgid "Use Command"
+msgstr "Naudoti komandą"
+
+#: ../gladeui/glade-editor-property.c:584
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr "Ar turėtume naudoti komandų API atšaukimo/kartojimo veiksmams"
+
+#: ../gladeui/glade-editor-property.c:590
+msgid "Show Info"
+msgstr "Rodyti informaciją"
+
+#: ../gladeui/glade-editor-property.c:591
+msgid "Whether we should show an informational button"
+msgstr "Ar turėtumeme rodyti papildomą informacinį mygtuką"
+
+#: ../gladeui/glade-editor-property.c:1117
+msgid "Select Fields"
+msgstr "Pasirinkite laukus"
+
+#: ../gladeui/glade-editor-property.c:1139
+msgid "_Select individual fields:"
+msgstr "Pasirinkite individualius laukus"
+
+#: ../gladeui/glade-editor-property.c:1466
+msgid "Edit Text"
+msgstr "Redaguoti tekstą"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1494
+msgid "_Text:"
+msgstr "_Tekstas:"
+
+#: ../gladeui/glade-editor-property.c:1530
+msgid "T_ranslatable"
+msgstr "Verčiamas"
+
+#: ../gladeui/glade-editor-property.c:1543
+msgid "_Has context prefix"
+msgstr "Turi kontekstinę priesagą"
+
+#. Comments.
+#: ../gladeui/glade-editor-property.c:1561
+msgid "Co_mments for translators:"
+msgstr "Komentarai vertėjams:"
+
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
+msgid "Yes"
+msgstr "Taip"
+
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
+#: ../gladeui/glade-editor-property.c:1762
+msgid "No"
+msgstr "Ne"
+
+#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:944
+#: ../gladeui/glade-widget-adaptor.c:916
+msgid "Name"
+msgstr "Vardas"
+
+#: ../gladeui/glade-editor-property.c:2364
+msgid "Class"
+msgstr "Klasė"
+
+#: ../gladeui/glade-editor-property.c:2378
+#, c-format
+msgid "Choose %s implementors"
+msgstr "Pasirinkite %s įgyvendintojus"
+
+#: ../gladeui/glade-editor-property.c:2378
+#, c-format
+msgid "Choose a %s in this project"
+msgstr "Pasirinkite %s šiam projektui"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2442
+msgid "O_bjects:"
+msgstr "O_bjektai:"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2651
+msgid "Objects:"
+msgstr "Objektai:"
+
+#: ../gladeui/glade-editor-property.c:2966
+msgid "Value:"
+msgstr "Vertė:"
+
+#: ../gladeui/glade-editor-property.c:2967
+msgid "The current value"
+msgstr "Esama vertė"
+
+#: ../gladeui/glade-editor-property.c:2969
+msgid "Lower:"
+msgstr "Apatinis:"
+
+#: ../gladeui/glade-editor-property.c:2970
+msgid "The minimum value"
+msgstr "Minimali vertė"
+
+#: ../gladeui/glade-editor-property.c:2972
+msgid "Upper:"
+msgstr "Viršutinis:"
+
+#: ../gladeui/glade-editor-property.c:2973
+msgid "The maximum value"
+msgstr "Maksimali vertė"
+
+#: ../gladeui/glade-editor-property.c:2975
+msgid "Step inc:"
+msgstr "Žingsnis:"
+
+#: ../gladeui/glade-editor-property.c:2976
+msgid "The increment to use to make minor changes to the value"
+msgstr "Žingsnis mažiems vertės pokyčiams"
+
+#: ../gladeui/glade-editor-property.c:2978
+msgid "Page inc:"
+msgstr "Puslapio padidėjimas:"
+
+#: ../gladeui/glade-editor-property.c:2979
+msgid "The increment to use to make major changes to the value"
+msgstr "Žingsnis dideliems vertės pokyčiams"
+
+#: ../gladeui/glade-editor-property.c:2981
+msgid "Page size:"
+msgstr "Puslapio dydis:"
+
+#: ../gladeui/glade-editor-property.c:2982
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
+msgstr ""
+"Puslapio dydis (GtkScrollbar atveju tai yra šiuo metu matoma ploto dalis)"
+
+#: ../gladeui/glade-editor-property.c:3059
+msgid "Alphanumerical"
+msgstr "Raidė ar skaičius"
+
+#: ../gladeui/glade-editor-property.c:3064
+msgid "Extra"
+msgstr "Papildomi"
+
+#: ../gladeui/glade-editor-property.c:3069
+msgid "Keypad"
+msgstr "Klaviatūra"
+
+#: ../gladeui/glade-editor-property.c:3074
+msgid "Functions"
+msgstr "Funkcijos"
+
+#: ../gladeui/glade-editor-property.c:3079 ../plugins/gnome/gnome.xml.in.h:43
+msgid "Other"
+msgstr "Kiti"
+
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3329
+msgid "<choose a key>"
+msgstr "<pasirinkite klavišą>"
+
+#: ../gladeui/glade-editor-property.c:3283 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gnome/bonobo.xml.in.h:13
+msgid "None"
+msgstr "Joks"
+
+#: ../gladeui/glade-editor-property.c:3409
+#: ../gladeui/glade-signal-editor.c:684
+msgid "Signal"
+msgstr "Signalas"
+
+#: ../gladeui/glade-editor-property.c:3436
+msgid "Key"
+msgstr "Klavišas"
+
+#: ../gladeui/glade-editor-property.c:3450
+msgid "Shift"
+msgstr "Shift"
+
+#: ../gladeui/glade-editor-property.c:3466
+msgid "Control"
+msgstr "Control"
+
+#: ../gladeui/glade-editor-property.c:3482
+msgid "Alt"
+msgstr "Alt"
+
+#: ../gladeui/glade-editor-property.c:3548
+msgid "Choose accelerator keys..."
+msgstr "Išsirinkite sparčiuosius klavišus..."
+
+#: ../gladeui/glade-editor.c:146
+msgid "Show info"
+msgstr "Rodyti informaciją"
+
+#: ../gladeui/glade-editor.c:147
+msgid "Whether to show an informational button for the loaded widget"
+msgstr "Ar rodyti informacinį mygtuką įkrautam valdymo elementui"
+
+#: ../gladeui/glade-editor.c:154
+msgid "Show context info"
+msgstr "Rodyti kontekstinę informaciją"
+
+#: ../gladeui/glade-editor.c:155
+msgid ""
+"Whether to show an informational button for each property and signal in the "
+"editor"
+msgstr ""
+"Ar rodyti informacinį mygtuką prie kiekvienos savybės ir signalo redaktoriuje"
+
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
+#: ../gladeui/glade-editor.c:1178
+msgid "Accessibility"
+msgstr "Pritaikymas neįgaliesiems"
+
+#. configure page container
+#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
+msgid "_Signals"
+msgstr "_Signalai"
+
+#: ../gladeui/glade-editor.c:283
+msgid "View documentation for the selected widget"
+msgstr "Rodyti pasirinkto valdymo elemento dokumentaciją"
+
+#: ../gladeui/glade-editor.c:303
+msgid "Reset widget properties to their defaults"
+msgstr "Atstatyti valdymo elemento savybes į įprastines"
+
+#: ../gladeui/glade-editor.c:318
+msgid "_General"
+msgstr "_Bendros"
+
+#: ../gladeui/glade-editor.c:319
+msgid "_Packing"
+msgstr "_Pakavimas"
+
+#: ../gladeui/glade-editor.c:320
+msgid "_Common"
+msgstr "Į_prastinės"
+
+#: ../gladeui/glade-editor.c:337
+msgid "_Edit..."
+msgstr "_Redaguoti"
+
+#. Name
+#: ../gladeui/glade-editor.c:483
+msgid "Name:"
+msgstr "Vardas:"
+
+#. Class
+#: ../gladeui/glade-editor.c:511
+msgid "Class:"
+msgstr "Klasė:"
+
+#: ../gladeui/glade-editor.c:991
+#, c-format
+msgid "Create a %s"
+msgstr "Sukurti %s"
+
+#: ../gladeui/glade-editor.c:1109
+msgid "Reset"
+msgstr "Perkrauti"
+
+#: ../gladeui/glade-editor.c:1123
+msgid "Property"
+msgstr "Savybė"
+
+#: ../gladeui/glade-editor.c:1158
+msgid "General"
+msgstr "Bendras"
+
+#: ../gladeui/glade-editor.c:1168
+msgid "Common"
+msgstr "Įprastas"
+
+#: ../gladeui/glade-editor.c:1213
+msgid "(default)"
+msgstr "(standartinis)"
+
+#: ../gladeui/glade-editor.c:1228
+msgid "Select the properties that you want to reset to their default values"
+msgstr "Išsirinkite savybes, kurioms norite suteikti standartines reikšmes"
+
+#: ../gladeui/glade-editor.c:1360
+msgid "Reset Widget Properties"
+msgstr "Atstatyti valdymo elemento savybes"
+
+#. Checklist
+#: ../gladeui/glade-editor.c:1377
+msgid "_Properties:"
+msgstr "_Savybės:"
+
+#: ../gladeui/glade-editor.c:1406
+msgid "_Select All"
+msgstr "_Pasirinkti visus:"
+
+#: ../gladeui/glade-editor.c:1413
+msgid "_Unselect All"
+msgstr "_Nepasirinkti nieko"
+
+#. Description
+#: ../gladeui/glade-editor.c:1422
+msgid "Property _Description:"
+msgstr "Savybės aprašas"
+
+#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
+#, c-format
+msgid "Placing %s inside %s"
+msgstr "Įdedama %s į %s"
+
+#: ../gladeui/glade-fixed.c:940
+msgid "X position property"
+msgstr "X padėtis"
+
+#: ../gladeui/glade-fixed.c:941
+msgid "The property used to set the X position of a child object"
+msgstr "Savybė, naudojama nustatyti antrinio objekto X koordinatę"
+
+#: ../gladeui/glade-fixed.c:947
+msgid "Y position property"
+msgstr "Y padėtis"
+
+#: ../gladeui/glade-fixed.c:948
+msgid "The property used to set the Y position of a child object"
+msgstr "Savybė, naudojama nustatyti antrinio objekto Y koordinatę"
+
+#: ../gladeui/glade-fixed.c:954
+msgid "Width property"
+msgstr "Pločio savybė"
+
+#: ../gladeui/glade-fixed.c:955
+msgid "The property used to set the width of a child object"
+msgstr "Savybė, naudojama antrinio objekto pločiui nustatyti"
+
+#: ../gladeui/glade-fixed.c:961
+msgid "Height property"
+msgstr "Aukščio savybė"
+
+#: ../gladeui/glade-fixed.c:962
+msgid "The property used to set the height of a child object"
+msgstr "Savybė, naudojama antrinio objekto aukščiui nustatyti"
+
+#: ../gladeui/glade-fixed.c:968
+msgid "Can resize"
+msgstr "Galima keisti dydį"
+
+#: ../gladeui/glade-fixed.c:969
+msgid "Whether this container supports resizes of child widgets"
+msgstr "Ar šis konteineris palaiko antrinių valdymo elementų dydžio kitimą"
+
+#: ../gladeui/glade-palette.c:617
+msgid "Widget selector"
+msgstr "Valdymo elementų parinkiklis"
+
+#: ../gladeui/glade-parser.c:1192
+#, c-format
+msgid "Could not find glade file %s"
+msgstr "Glade failas %s nerastas"
+
+#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
+#, c-format
+msgid "Errors parsing glade file %s"
+msgstr "Klaidą skaitant Glade failą %s"
+
+#: ../gladeui/glade-parser.c:1657
+msgid "Could not allocate memory for interface"
+msgstr "Nepavyko rezervuoti atminties sąsajai"
+
+#: ../gladeui/glade-popup.c:254
+msgid "_Select"
+msgstr "_Pasirinkti"
+
+#: ../gladeui/glade-project.c:562
+msgid "Has Unsaved Changes"
+msgstr "Projekte yra neišsaugotų pakeitimų"
+
+#: ../gladeui/glade-project.c:563
+msgid "Whether project has unsaved changes"
+msgstr "Ar projekte yra neišsaugotų pakeitimų"
+
+#: ../gladeui/glade-project.c:570
+msgid "Has Selection"
+msgstr "Turi parinkimą"
+
+#: ../gladeui/glade-project.c:571
+msgid "Whether project has a selection"
+msgstr "Ar projekte yra parinkimas"
+
+#: ../gladeui/glade-project.c:578
+msgid "Read Only"
+msgstr "Tik skaitomas"
+
+#: ../gladeui/glade-project.c:579
+msgid "Whether project is read only or not"
+msgstr "Ar projektas yra tik skaitomas"
+
+#: ../gladeui/glade-project.c:687
+#, c-format
+msgid "Unsaved %d"
+msgstr "Neišsaugota %d"
+
+#: ../gladeui/glade-project.c:1460
+#, c-format
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr ""
+"Nepavyko įkelti %s.\n"
+"Šie katalogai yra neprieinami: %s"
+
+#. Atk click property
+#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
+msgid "Click"
+msgstr "Spustelėjimas"
+
+#. Atk click property
+#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "Set the description of the Click atk action"
+msgstr "Nustatykite ATK spustelėjimo veiksmo aprašą"
+
+#. Atk press property
+#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
+msgid "Press"
+msgstr "Paspaudimas"
+
+#. Atk press property
+#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Set the description of the Press atk action"
+msgstr "Nustatykite ATK paspaudimo veiksmo aprašą"
+
+#. Atk release property
+#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
+msgid "Release"
+msgstr "Atleidimas"
+
+#. Atk release property
+#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
+msgid "Set the description of the Release atk action"
+msgstr "Nustatykite ATK atleidimo veiksmo aprašą"
+
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
+msgid "Activate"
+msgstr "Aktyvavimas"
+
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "Set the description of the Activate atk action"
+msgstr "Nustatykite ATK aktyvavimo veiksmo aprašą"
+
+#: ../gladeui/glade-property-class.c:67
+msgid "Controlled By"
+msgstr "Kontroliuojamas"
+
+#: ../gladeui/glade-property-class.c:68
+msgid "Indicates an object controlled by one or more target objects"
+msgstr "Rodo, jog šis objektas kontroliuojamas vieno ar daugiau kitų objektų"
+
+#: ../gladeui/glade-property-class.c:70
+msgid "Controller For"
+msgstr "Kontroliuoja"
+
+#: ../gladeui/glade-property-class.c:71
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr "Rodo, jog objektas yra kontroleris vienam ar keliems objektams"
+
+#: ../gladeui/glade-property-class.c:73
+msgid "Labelled By"
+msgstr "Pažymėtas"
+
+#: ../gladeui/glade-property-class.c:74
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr "Rodo, jog objektas yra pažymėtas vieno ar daugiau objektų"
+
+#: ../gladeui/glade-property-class.c:76
+msgid "Label For"
+msgstr "Pažymi"
+
+#: ../gladeui/glade-property-class.c:77
+msgid "Indicates an object is a label for one or more target objects"
+msgstr "Rodo, jog šis objektas yra antraštė vienam ar keliems objektams"
+
+#: ../gladeui/glade-property-class.c:79
+msgid "Member Of"
+msgstr "Šio narys"
+
+#: ../gladeui/glade-property-class.c:80
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr "Rodo, jog objektas yra objektų grupės narys"
+
+#: ../gladeui/glade-property-class.c:82
+msgid "Child Node Of"
+msgstr "Yra šio antrinis objektas"
+
+#: ../gladeui/glade-property-class.c:83
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+"Rodo, jog objektas yra langelis struktūriniame sąraše, kuris yra rodomas "
+"todėl, kad langelis tame pačiame stulpelyje yra išplėstas ir susijęs"
+
+#: ../gladeui/glade-property-class.c:86
+msgid "Flows To"
+msgstr "Veda į"
+
+#: ../gladeui/glade-property-class.c:87
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr "Rodo, jog objekto turinys nuosekliai veda prie kito AtkObject."
+
+#: ../gladeui/glade-property-class.c:90
+msgid "Flows From"
+msgstr "Išplaukia iš"
+
+#: ../gladeui/glade-property-class.c:91
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr "Rodo, jog objektas nuosekliai išplaukia iš kito AtkObject."
+
+#: ../gladeui/glade-property-class.c:94
+msgid "Subwindow Of"
+msgstr "Polangis"
+
+#: ../gladeui/glade-property-class.c:95
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in  the UI hierarchy to that component"
+msgstr ""
+"Rodo, jog polangis prikabintas prie valdymo elemento, bet šiaip neturi "
+"jokio sąryšio naudotojo sąsajos hierarchijoje"
+
+#: ../gladeui/glade-property-class.c:98
+msgid "Embeds"
+msgstr "Paveldi"
+
+#: ../gladeui/glade-property-class.c:99
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr "Rodo, jog objektas vizualiai paveldi kito objekto turinį."
+
+#: ../gladeui/glade-property-class.c:102
+msgid "Embedded By"
+msgstr "Įdėtas į"
+
+#: ../gladeui/glade-property-class.c:103
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visualy "
+"embedded in another object"
+msgstr ""
+"„Embeds“ inversija, rodo, jog šio objekto turinys yra vizualiai įdėtas į "
+"kitą objektą"
+
+#: ../gladeui/glade-property-class.c:106
+msgid "Popup For"
+msgstr "Iššokantis"
+
+#: ../gladeui/glade-property-class.c:107
+msgid "Indicates that an object is a popup for another object"
+msgstr "Rodo, jog šis objektas yra kito objekto iššokančioji dalis"
+
+#: ../gladeui/glade-property-class.c:109
+msgid "Parent Window Of"
+msgstr "Pirminis langas"
+
+#: ../gladeui/glade-property-class.c:110
+msgid "Indicates that an object is a parent window of another object"
+msgstr "Rodo, jog šis objektas yra pirminis kito objekto langas"
+
+#: ../gladeui/glade-property.c:572
+msgid "Enabled"
+msgstr "Įjungtas"
+
+#: ../gladeui/glade-property.c:573
+msgid "If the property is optional, this is its enabled state"
+msgstr "Jei ši savybė yra neprivaloma, tai yra jos įjungta būsena"
+
+#: ../gladeui/glade-property.c:579
+msgid "Sensitive"
+msgstr "Jautrus"
+
+#: ../gladeui/glade-property.c:580
+msgid "This gives backends control to set property sensitivity"
+msgstr "Suteikia teisę posistemės objektams nustatyti savybės jautrumą"
+
+#: ../gladeui/glade-property.c:586
+msgid "Comment"
+msgstr "Komentaras"
+
+#: ../gladeui/glade-property.c:587
+msgid "Comment for translators"
+msgstr "Komentaras vertėjams"
+
+#: ../gladeui/glade-property.c:593
+msgid "Translatable"
+msgstr "Verčiamas"
+
+#: ../gladeui/glade-property.c:594
+msgid "Whether this property is translatable or not"
+msgstr "Ar pasirinkta savybė gali būti verčiama į kitas kalbas"
+
+#: ../gladeui/glade-property.c:600
+msgid "Has Context"
+msgstr "Turi kontekstą"
+
+#: ../gladeui/glade-property.c:601
+msgid "Whether or not the translatable string has a context prefix"
+msgstr "Ar verčiama simbolių eilutė turi konteksto prefiksą"
+
+#: ../gladeui/glade-signal-editor.c:57
+msgid "<Type the signal's handler here>"
+msgstr "<Čia įveskite signalo valdiklį>"
+
+#: ../gladeui/glade-signal-editor.c:58
+msgid "<Type the object's name here>"
+msgstr "<Čia įveskite objekto pavadinimą>"
+
+#: ../gladeui/glade-signal-editor.c:704
+msgid "Handler"
+msgstr "Valdiklis"
+
+#: ../gladeui/glade-signal-editor.c:726
+msgid "User data"
+msgstr "Naudotojo duomenys"
+
+#: ../gladeui/glade-signal-editor.c:740
+msgid "Lookup"
+msgstr "Paieška"
+
+#: ../gladeui/glade-signal-editor.c:751
+msgid "After"
+msgstr "Po įvykio"
+
+#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
+#, c-format
+msgid "We could not find the symbol \"%s\""
+msgstr "Nepavyko rasti simbolio „%s“"
+
+#: ../gladeui/glade-utils.c:176
+#, c-format
+msgid "Could not get the type from \"%s\""
+msgstr "Nepavyko nustatyti tipo iš „%s“"
+
+#: ../gladeui/glade-utils.c:541
+msgid "All Files"
+msgstr "Visi failai"
+
+#: ../gladeui/glade-utils.c:546
+msgid "Glade Files"
+msgstr "Glade failai"
+
+#: ../gladeui/glade-utils.c:1294
+#, c-format
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%s egzistuoja.\n"
+"Ar norite jį pakeisti?"
+
+#: ../gladeui/glade-utils.c:1322
+#, c-format
+msgid "Error writing to %s: %s"
+msgstr "Klaida rašant į %s: %s"
+
+#: ../gladeui/glade-utils.c:1336
+#, c-format
+msgid "Error reading %s: %s"
+msgstr "Klaida skaitant %s: %s"
+
+#: ../gladeui/glade-utils.c:1351
+#, c-format
+msgid "Error shutting down I/O channel %s: %s"
+msgstr "Klaida uždarant įvesties/išvesties kanalą %s: %s"
+
+#: ../gladeui/glade-utils.c:1361
+#, c-format
+msgid "Failed to open %s for writing: %s"
+msgstr "Nepavyko atverti %s rašymui: %s"
+
+#: ../gladeui/glade-utils.c:1372
+#, c-format
+msgid "Error shutting down io channel %s: %s"
+msgstr "Klaida uždarant įvesties/išvesties kanalą %s: %s"
+
+#: ../gladeui/glade-utils.c:1381
+#, c-format
+msgid "Failed to open %s for reading: %s"
+msgstr "Nepavyko atverti %s skaitymui: %s"
+
+#: ../gladeui/glade-utils.c:1439
+#, c-format
+msgid "Unable to open the module %s (%s)."
+msgstr "Nepavyko atverti modulio %s (%s)."
+
+#: ../gladeui/glade-widget.c:945
+msgid "The name of the widget"
+msgstr "Valdymo elemento vardas"
+
+#: ../gladeui/glade-widget.c:952
+msgid "Internal name"
+msgstr "Vidinis vardas"
+
+#: ../gladeui/glade-widget.c:953
+msgid "The internal name of the widget"
+msgstr "Valdymo elemento vidinis vardas"
+
+#: ../gladeui/glade-widget.c:959
+msgid "Anarchist"
+msgstr "Anarchistas"
+
+#: ../gladeui/glade-widget.c:960
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr "Ar šis sudėtinis antrinis objektas yra paveldėtas, ar anarchistas"
+
+#: ../gladeui/glade-widget.c:967
+msgid "Object"
+msgstr "Objektas"
+
+#: ../gladeui/glade-widget.c:968
+msgid "The object associated"
+msgstr "Susietas objektas"
+
+#: ../gladeui/glade-widget.c:975
+msgid "Adaptor"
+msgstr "Adapteris"
+
+#: ../gladeui/glade-widget.c:976
+msgid "The class adaptor for the associated widget"
+msgstr "Klasės adapteris susietam valdymo elementui"
+
+#: ../gladeui/glade-widget.c:983
+msgid "Project"
+msgstr "Projektas"
+
+#: ../gladeui/glade-widget.c:984
+msgid "The glade project that this widget belongs to"
+msgstr "Glade projektas, kuriam priklauso šis valdymo elementas"
+
+#: ../gladeui/glade-widget.c:993
+msgid "A list of GladeProperties"
+msgstr "GladeProperties sąrašas"
+
+#: ../gladeui/glade-widget.c:999 ../plugins/gtk+/gtk+.xml.in.h:171
+msgid "Parent"
+msgstr "Pirminis"
+
+#: ../gladeui/glade-widget.c:1000
+msgid "A pointer to the parenting GladeWidget"
+msgstr "Nuoroda į antrinį GladeWidget"
+
+#: ../gladeui/glade-widget.c:1007
+msgid "Internal Name"
+msgstr "Vidinis vardas"
+
+#: ../gladeui/glade-widget.c:1008
+msgid "A generic name prefix for internal widgets"
+msgstr "Bendras prefiksas vidiniams valdymo elementams"
+
+#: ../gladeui/glade-widget.c:1013
+msgid "Template"
+msgstr "Šablonas"
+
+#: ../gladeui/glade-widget.c:1014
+msgid "A GladeWidget template to base a new widget on"
+msgstr "GladeWidget šablonas naujam valdymo elementui"
+
+#: ../gladeui/glade-widget.c:1020 ../plugins/gtk+/gtk+.xml.in.h:126
+msgid "Info"
+msgstr "Informacija"
+
+#: ../gladeui/glade-widget.c:1021
+msgid "A GladeWidgetInfo struct to base a new widget on"
+msgstr "GladeWidgetInfo struct, naudojama kaip bazė naujam valdymo elementui"
+
+#: ../gladeui/glade-widget.c:1026
+msgid "Reason"
+msgstr "Priežastis"
+
+#: ../gladeui/glade-widget.c:1027
+msgid "A GladeCreateReason for this creation"
+msgstr "GladeCreateReason šiam sukūrimui"
+
+#: ../gladeui/glade-widget.c:1035
+msgid "Toplevel Width"
+msgstr "Viršutinio lango plotis"
+
+#: ../gladeui/glade-widget.c:1036
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "Valdymo elemento plotis, kai jis yra viršutinis GladeDesignLayout išdėstyme"
+
+#: ../gladeui/glade-widget.c:1045
+msgid "Toplevel Height"
+msgstr "Lango aukštis"
+
+#: ../gladeui/glade-widget.c:1046
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "Valdymo elemento aukštis, kai jis yra viršutinis GladeDesignLayout išdėstyme"
+
+#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
+#, c-format
+msgid "Unable to load icon for %s (%s)"
+msgstr "Nepavyko įkelti piktogramos objektui %s (%s)"
+
+#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
+#, c-format
+msgid "Unable to load stock icon (%s)"
+msgstr "Nepavyko įkelti standartinės piktogramos (%s)"
+
+#: ../gladeui/glade-widget-adaptor.c:333
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr "Išvestinis adapteris (%s) iš %s jau egzistuoja!"
+
+#: ../gladeui/glade-widget-adaptor.c:917
+msgid "Name of the class"
+msgstr "Klasės pavadinimas"
+
+#: ../gladeui/glade-widget-adaptor.c:925
+msgid "GType of the class"
+msgstr "Klasės GType tipas"
+
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:64
+msgid "Title"
+msgstr "Pavadinimas"
+
+#: ../gladeui/glade-widget-adaptor.c:933
+msgid "Translated title for the class used in the glade UI"
+msgstr "Išverstas klasės, naudojamos Glade UI, pavadinimas"
+
+#: ../gladeui/glade-widget-adaptor.c:940
+msgid "Generic Name"
+msgstr "Bendrinis vardas"
+
+#: ../gladeui/glade-widget-adaptor.c:941
+msgid "Used to generate names of new widgets"
+msgstr "Naudojamas generuojant naujų valdymo elementų vardus"
+
+#: ../gladeui/glade-widget-adaptor.c:948
+msgid "Catalog"
+msgstr "Katalogas"
+
+#: ../gladeui/glade-widget-adaptor.c:949
+msgid "The name of the widget catalog this class was declared by"
+msgstr "Valdymo elementų katalogo vardas buvo apibrėžtas"
+
+#: ../gladeui/glade-widget-adaptor.c:956
+msgid "Book"
+msgstr "Knyga"
+
+#: ../gladeui/glade-widget-adaptor.c:957
+msgid "DevHelp search namespace for this widget class"
+msgstr "DevHelp paieškos sritis šiai valdymo elementų klasei"
+
+#: ../gladeui/glade-widget-adaptor.c:964
+msgid "Special Child Type"
+msgstr "Specialus antrinio objekto tipas"
+
+#: ../gladeui/glade-widget-adaptor.c:965
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+"Saugo pakavimo savybės vardą, skirtą pavaizduoti specialius šios "
+"konteinerio klasės antrinius elmentus"
+
+#: ../gladeui/glade-widget-adaptor.c:973
+msgid "Large Icon"
+msgstr "Didelė piktograma"
+
+#: ../gladeui/glade-widget-adaptor.c:974
+msgid "The 22x22 icon for this widget class"
+msgstr "22x22 piktograma šiai valdymo elementų klasei"
+
+#: ../gladeui/glade-widget-adaptor.c:981
+msgid "Small Icon"
+msgstr "Maža piktograma"
+
+#: ../gladeui/glade-widget-adaptor.c:982
+msgid "The 16x16 icon for this widget class"
+msgstr "16x16 piktograma šiai valdymo elementų klasei"
+
+#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Cursor"
+msgstr "Žymeklis"
+
+#: ../gladeui/glade-widget-adaptor.c:990
+msgid "A cursor for inserting widgets in the UI"
+msgstr ""
+"Žymeklis, kuriuo įterpiami valdymo elementai naudotojo sąsajoje"
+
+#: ../gladeui/glade-project-view.c:646
+#, c-format
+msgid "(internal %s)"
+msgstr "(vidinis %s)"
+
+#: ../gladeui/glade-project-view.c:650
+#, c-format
+msgid "(%s child)"
+msgstr "(%s antrinis objektas)"
+
+#: ../gladeui/glade-custom.c:217
+msgid "Creation Function"
+msgstr "Sukuriančioji funkcija"
+
+#: ../gladeui/glade-custom.c:218
+msgid "The function which creates this widget"
+msgstr "Šį valdymo elementą sukurianti funkcija"
+
+#: ../gladeui/glade-custom.c:224
+msgid "String 1"
+msgstr "Simbolių eilutė 1"
+
+#: ../gladeui/glade-custom.c:225
+msgid "The first string argument to pass to the function"
+msgstr "Pirmasis simbolių eilutės tipo argumentas funkcijai"
+
+#: ../gladeui/glade-custom.c:231
+msgid "String 2"
+msgstr "Simbolių eilutė 2"
+
+#: ../gladeui/glade-custom.c:232
+msgid "The second string argument to pass to the function"
+msgstr "Antrasis simbolių eilutės tipo argumentas funkcijai"
+
+#: ../gladeui/glade-custom.c:238
+msgid "Integer 1"
+msgstr "Sveikasis skaičius 1"
+
+#: ../gladeui/glade-custom.c:239
+msgid "The first integer argument to pass to the function"
+msgstr "Pirmasis sveikojo skaičiaus tipo argumentas funkcijai"
+
+#: ../gladeui/glade-custom.c:245
+msgid "Integer 2"
+msgstr "Sveikasis skaičius 2"
+
+#: ../gladeui/glade-custom.c:246
+msgid "The second integer argument to pass to the function"
+msgstr "Antrasis sveikojo skaičiaus tipo argumentas funkcijai"
+
+#: ../plugins/gtk+/glade-gtk.c:169
+msgid "GnomeUIInfo"
+msgstr "GnomeUIInfo"
+
+#: ../plugins/gtk+/glade-gtk.c:170
+msgid "Choose the GnomeUIInfo stock item"
+msgstr "Pasirinkite standartinį GnomeUIInfo elementą"
+
+#: ../plugins/gtk+/glade-gtk.c:186
+msgid "Filename"
+msgstr "Failo vardas"
+
+#: ../plugins/gtk+/glade-gtk.c:188
+msgid "Icon Theme"
+msgstr "Piktogramų tema"
+
+#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:57
+msgid "Container"
+msgstr "Konteineris"
+
+#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
+msgid "Method"
+msgstr "Metodas"
+
+#: ../plugins/gtk+/glade-gtk.c:219
+msgid "The method to use to edit this image"
+msgstr "Metodas, naudojamas šiam paveikslėliui redaguoti"
+
+#: ../plugins/gtk+/glade-gtk.c:228
+msgid "The method to use to edit this button"
+msgstr "Metodas, naudojamas šiam mygtukui redaguoti"
+
+#: ../plugins/gtk+/glade-gtk.c:585
+#, c-format
+msgid "Ordering children of %s"
+msgstr "Rūšiuojami %s antriniai objektai"
+
+#: ../plugins/gtk+/glade-gtk.c:3264 ../plugins/gtk+/glade-gtk.c:3268
+#: ../plugins/gtk+/glade-gtk.c:3443 ../plugins/gtk+/glade-gtk.c:3447
+msgid "This only applies with label type buttons"
+msgstr "Tai tinka tik mygtukams su antrašte"
+
+#: ../plugins/gtk+/glade-gtk.c:3279 ../plugins/gtk+/glade-gtk.c:3283
+#: ../plugins/gtk+/glade-gtk.c:3435 ../plugins/gtk+/glade-gtk.c:3439
+msgid "This only applies with stock type buttons"
+msgstr "Tai tinka tik standartiniams mygtukams"
+
+#: ../plugins/gtk+/glade-gtk.c:3543 ../plugins/gtk+/glade-gtk.c:3565
+msgid "You must remove any children before you can set the type"
+msgstr "Privalote pašalinti visus antrinius objektus prieš nustatydami tipą"
+
+#: ../plugins/gtk+/glade-gtk.c:3589 ../plugins/gtk+/glade-gtk.c:4954
+msgid "This only applies with file type images"
+msgstr "Tai tinka tik failo tipo paveikslėliams"
+
+#: ../plugins/gtk+/glade-gtk.c:3597 ../plugins/gtk+/glade-gtk.c:4958
+msgid "This only applies to Icon Theme type images"
+msgstr "Tai tinka tik piktogramų temos paveikslėliams"
+
+#: ../plugins/gtk+/glade-gtk.c:3606 ../plugins/gtk+/glade-gtk.c:4956
+msgid "This only applies with stock type images"
+msgstr "Tai tinka tik standartiniams paveikslėliams"
+
+#: ../plugins/gtk+/glade-gtk.c:3618
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+"Dydis pikseliais turi pirmenybės teisę prieš piktogramos dydį; jei norite naudoti "
+"piktogramos dydį, nurodykite dydį pikseliais -1"
+
+#: ../plugins/gtk+/glade-gtk.c:3644
+msgid "Pixel Size takes precedence over Icon size"
+msgstr "Dydis pikseliais turi pirmenybės teisę prieš piktogramos dydį"
+
+#: ../plugins/gtk+/glade-gtk.c:3935 ../plugins/gtk+/glade-gtk.c:4845
+msgid "<separator>"
+msgstr "<skirtukas>"
+
+#: ../plugins/gtk+/glade-gtk.c:4109 ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Normal"
+msgstr "Normalus"
+
+#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/gtk+.xml.in.h:121
+msgid "Image"
+msgstr "Paveikslėlis"
+
+#: ../plugins/gtk+/glade-gtk.c:4111
+msgid "Check"
+msgstr "Žymimasis"
+
+#: ../plugins/gtk+/glade-gtk.c:4112 ../plugins/gtk+/glade-gtk.c:4904
+msgid "Radio"
+msgstr "Akutė"
+
+#: ../plugins/gtk+/glade-gtk.c:4113 ../plugins/gtk+/glade-gtk.c:4907
+msgid "Separator"
+msgstr "Skirtukas"
+
+#: ../plugins/gtk+/glade-gtk.c:4117
+msgid "Add Item"
+msgstr "Pridėti elementą"
+
+#: ../plugins/gtk+/glade-gtk.c:4118
+msgid "Add Child Item"
+msgstr "Pridėti antrinį objektą"
+
+#: ../plugins/gtk+/glade-gtk.c:4119 ../plugins/gtk+/glade-gtk.c:4916
+msgid "Add Separator"
+msgstr "Pridėti skirtuką"
+
+#: ../plugins/gtk+/glade-gtk.c:4132
+msgid ""
+"<big><b>Tips:</b></big>\n"
+"  * Right click over the treeview to add items.\n"
+"  * Press Delete to remove the selected item.\n"
+"  * Drag &amp; Drop to reorder.\n"
+"  * Type column is editable."
+msgstr ""
+"<big><b>Naudingi patarimai</b></big>\n"
+"  * Paspauskite dešinįjį pelės mygtuką medžio rodinyje, "
+"norėdami pridėti elementų.\n"
+"  * Paspauskite Delete, norėdami pašalinti elementą.\n"
+"  * Vilkite, norėdami pakeisti vietą.\n"
+"  * Tipo stulpelis yra redaguojamas."
+
+#: ../plugins/gtk+/glade-gtk.c:4364
+msgid "Print S_etup"
+msgstr "Spausdinimo sąran_ka "
+
+#: ../plugins/gtk+/glade-gtk.c:4368
+msgid "Find Ne_xt"
+msgstr "Surasti _kitą"
+
+#: ../plugins/gtk+/glade-gtk.c:4372
+msgid "_Undo Move"
+msgstr "_Atšaukti ėjimą"
+
+#: ../plugins/gtk+/glade-gtk.c:4376
+msgid "_Redo Move"
+msgstr "Paka_rtoti ėjimą"
+
+#: ../plugins/gtk+/glade-gtk.c:4379
+msgid "Select _All"
+msgstr "Pasirinkti _viską"
+
+#: ../plugins/gtk+/glade-gtk.c:4382
+msgid "_New Game"
+msgstr "_Baigti žaidimą"
+
+#: ../plugins/gtk+/glade-gtk.c:4385
+msgid "_Pause game"
+msgstr "_Pauzė žaidime"
+
+#: ../plugins/gtk+/glade-gtk.c:4388
+msgid "_Restart Game"
+msgstr "_Paleisti žaidimą iš naujo"
+
+#: ../plugins/gtk+/glade-gtk.c:4391
+msgid "_Hint"
+msgstr "_Užuomina"
+
+#: ../plugins/gtk+/glade-gtk.c:4394
+msgid "_Scores..."
+msgstr "_Taškai..."
+
+#: ../plugins/gtk+/glade-gtk.c:4397
+msgid "_End Game"
+msgstr "_Baigti žaidimą"
+
+#: ../plugins/gtk+/glade-gtk.c:4400
+msgid "Create New _Window"
+msgstr "Sukurti naują _langą"
+
+#: ../plugins/gtk+/glade-gtk.c:4403
+msgid "_Close This Window"
+msgstr "_Uždaryti šį langą"
+
+#: ../plugins/gtk+/glade-gtk.c:4415
+msgid "_Settings"
+msgstr "_Parametrai"
+
+#: ../plugins/gtk+/glade-gtk.c:4418
+msgid "Fi_les"
+msgstr "Fai_lai"
+
+#: ../plugins/gtk+/glade-gtk.c:4421
+msgid "_Windows"
+msgstr "_Langai"
+
+#: ../plugins/gtk+/glade-gtk.c:4427
+msgid "_Game"
+msgstr "Ž_aidimas"
+
+#: ../plugins/gtk+/glade-gtk.c:4523
+msgid "This does not apply with stock items"
+msgstr "Tai netinka standartiniams elementams"
+
+#: ../plugins/gtk+/glade-gtk.c:4733
+msgid "Menu Bar Editor"
+msgstr "Meniu juostos redaktorius"
+
+#: ../plugins/gtk+/glade-gtk.c:4740
+msgid "Menu Editor"
+msgstr "Meniu redaktorius"
+
+#: ../plugins/gtk+/glade-gtk.c:4854
+msgid "<custom>"
+msgstr "<pasirinktinis>"
+
+#: ../plugins/gtk+/glade-gtk.c:4902 ../plugins/gtk+/gtk+.xml.in.h:31
+msgid "Button"
+msgstr "Mygtukas"
+
+#: ../plugins/gtk+/glade-gtk.c:4903
+msgid "Toggle"
+msgstr "Perjungti"
+
+#: ../plugins/gtk+/glade-gtk.c:4905 ../plugins/gtk+/gtk+.xml.in.h:143
+msgid "Menu"
+msgstr "Meniu"
+
+#: ../plugins/gtk+/glade-gtk.c:4906
+msgid "Item"
+msgstr "Elementas"
+
+#: ../plugins/gtk+/glade-gtk.c:4911
+msgid "Add Tool Button"
+msgstr "Pridėti įrankinės mygtuką"
+
+#: ../plugins/gtk+/glade-gtk.c:4912
+msgid "Add Toggle Button"
+msgstr "Pridėti perjungiamą mygtuką"
+
+#: ../plugins/gtk+/glade-gtk.c:4913
+msgid "Add Radio Button"
+msgstr "Pridėti mygtuką su akute"
+
+#: ../plugins/gtk+/glade-gtk.c:4914
+msgid "Add Menu Button"
+msgstr "Pridėti meniu mygtuką"
+
+#: ../plugins/gtk+/glade-gtk.c:4915
+msgid "Add Tool Item"
+msgstr "Pridėti įrankinės elementą"
+
+#: ../plugins/gtk+/glade-gtk.c:4924
+msgid "Tool Bar Editor"
+msgstr "Įrankių juostos redaktorius"
+
+#: ../plugins/gtk+/glade-gtk.c:5677
+msgid "Introduction page"
+msgstr "Įžanginis puslapis"
+
+#: ../plugins/gtk+/glade-gtk.c:5681
+msgid "Content page"
+msgstr "Turinio puslapis"
+
+#: ../plugins/gtk+/glade-gtk.c:5685
+msgid "Confirm page"
+msgstr "Patvirtinimo puslapis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
+msgid "A stock item, select None to choose a custom image and label"
+msgstr ""
+"Standartinis elementas, pasirinkite Joks, norėdami pasirinktinio "
+"paveikslėlio ar antraštės"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:3
+msgid "A tooltip text for this widget"
+msgstr "Pagalbinė antraštė šiam valdymo elementui"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:8
+msgid "About Dialog"
+msgstr "Dialogas apie programą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:9
+msgid "Accel Label"
+msgstr "Sparčiojo klavišo žymė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:10
+msgid "Accessible Description"
+msgstr "Aprašas"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+msgid "Accessible Name"
+msgstr "Pavadinimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:15
+msgid "Alignment"
+msgstr "Lygiavimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:16
+msgid "All"
+msgstr "Visi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "All Events"
+msgstr "Visi įvykiai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:18 ../plugins/gnome/gnome.xml.in.h:2
+msgid "Always"
+msgstr "Visada"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:19
+msgid "Always Center"
+msgstr "Visada centruoti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:20
+msgid "Arrow"
+msgstr "Rodyklė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:21
+msgid "Aspect Frame"
+msgstr "Santykio rėmelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:22
+msgid "Assistant"
+msgstr "Asistentas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+msgid "Automatic"
+msgstr "Automatinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:24
+msgid "Both"
+msgstr "Abu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:25
+msgid "Both Horizontal"
+msgstr "Abu horizontalūs"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
+msgid "Bottom"
+msgstr "Apačia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:27
+msgid "Bottom Left"
+msgstr "Apačioje kairėje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:28
+msgid "Bottom Right"
+msgstr "Apačioje dešinėje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+msgid "Bottom to Top"
+msgstr "Iš apačios į viršų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+msgid "Box"
+msgstr "Langelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:32
+msgid "Button 1 Motion"
+msgstr "Judėjimas (1-as mygtukas)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:33
+msgid "Button 2 Motion"
+msgstr "Judėjimas (2-as mygtukas)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:34
+msgid "Button 3 Motion"
+msgstr "Judėjimas (3-as mygtukas)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:35
+msgid "Button Box"
+msgstr "Mygtukų langelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:36
+msgid "Button Motion"
+msgstr "Judėjimas (su mygtuku)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:37
+msgid "Button Press"
+msgstr "Mygtuko paspaudimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
+msgid "Button Release"
+msgstr "Mygtuko atleidimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:39
+msgid "Calendar"
+msgstr "Kalendorius"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:40
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:41
+msgid "Center"
+msgstr "Centruoti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+msgid "Center on Parent"
+msgstr "Centruoti ties pirminiu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+msgid "Character"
+msgstr "Ties simboliais"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
+msgid "Check Button"
+msgstr "Žymimasis langelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Check Menu Item"
+msgstr "Žymimasis meniu elementas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:48
+msgid "Close"
+msgstr "Uždaryti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:49
+msgid "Color Button"
+msgstr "Spalvų parinkimo mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Color Selection"
+msgstr "Spalvų atranka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+msgid "Color Selection Dialog"
+msgstr "Spalvų parinkimo dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Columned List"
+msgstr "Sąrašas su stulpeliais"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:53
+msgid "Combo"
+msgstr "Išskleidžiamasis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:54
+msgid "Combo Box"
+msgstr "Išskleidžiamasis sąrašas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:55
+msgid "Combo Box Entry"
+msgstr "Jungtinis laukelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:56
+msgid "Confirm"
+msgstr "Pavirtinti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
+msgid "Containers"
+msgstr "Konteineriai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:59
+msgid "Content"
+msgstr "Turinys"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:60
+msgid "Continuous"
+msgstr "Tęstinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:61
+msgid "Control and Display"
+msgstr "Valdymas ir vaizdavimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
+msgid "Create Folder"
+msgstr "Sukurti aplanką"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:64
+msgid "Curve"
+msgstr "Kreivė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Custom"
+msgstr "Pritaikytas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
+msgid "Custom widget"
+msgstr "Nestandartinis valdymo elementas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:67
+msgid "Default"
+msgstr "Standartinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:68
+msgid "Delayed"
+msgstr "Uždelstas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:69
+msgid "Description of an object, formatted for assistive technology access"
+msgstr "Objekto, pritaikyto neįgaliesiems, aprašas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+msgid "Desktop"
+msgstr "Darbastalis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:71
+msgid "Dialog"
+msgstr "Dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:72
+msgid "Dialog Box"
+msgstr "Dialogo langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:73
+msgid "Discontinuous"
+msgstr "Trūkus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:74
+msgid "Discrete"
+msgstr "Diskretus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
+msgid "Dock"
+msgstr "Dokas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:76
+msgid "Down"
+msgstr "Žemyn"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+msgid "Drag and Drop"
+msgstr "Nuvelkamas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Drawing Area"
+msgstr "Piešimo sritis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+msgid "Drop Down Menu"
+msgstr "Išskleidžiamas meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "East"
+msgstr "Rytų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:81
+msgid "Edge"
+msgstr "Kraštas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:82
+msgid "Edit Type"
+msgstr "Redaguoti tipą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
+msgid "End"
+msgstr "Pabaiga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:84
+msgid "Enter Notify"
+msgstr "Pranešimas apie įėjimą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
+msgid "Error"
+msgstr "Klaida"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
+msgid "Etched In"
+msgstr "Išėsdintas (įdubęs)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
+msgid "Etched Out"
+msgstr "Išėsdintas (iškilęs)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
+msgid "Event Box"
+msgstr "Įvykių laukelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
+msgid "Expand"
+msgstr "Išskleisti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:90
+msgid "Expander"
+msgstr "Išskleidimo mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:91
+msgid "Exposure"
+msgstr "Sutepimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:92
+msgid "File Chooser Button"
+msgstr "Failų parinkimo mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+msgid "File Chooser Dialog"
+msgstr "Failų parinkimo dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:94
+msgid "File Name"
+msgstr "Failo vardas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:95
+msgid "File Selection"
+msgstr "Failų parinkimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/gnome.xml.in.h:11
+msgid "Fill"
+msgstr "Užpildyti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:97
+msgid "Fixed"
+msgstr "Fiksuotas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98
+msgid "Focus Change"
+msgstr "Aktyvinimo pasikeitimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99
+msgid "Font Button"
+msgstr "Šriftų parinkimo mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:100
+msgid "Font Selection"
+msgstr "Šriftų parinkimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:101
+msgid "Font Selection Dialog"
+msgstr "Šriftų parinkimo dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102
+msgid "Frame"
+msgstr "Rėmelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:103
+msgid "Free"
+msgstr "Laisvas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:104
+msgid "Gamma Curve"
+msgstr "Gamos kreivė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:105
+msgid "Gtk+ Obsolete"
+msgstr "GTK+ pasenę"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:106
+msgid "Half"
+msgstr "Pusinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:107
+msgid "Handle Box"
+msgstr "Slankiojamas langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
+msgid "Horizontal"
+msgstr "Horizontalus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:109
+msgid "Horizontal Box"
+msgstr "Horizontalus langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+msgid "Horizontal Button Box"
+msgstr "Horizontalus mygtukų langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "Horizontal Panes"
+msgstr "Horizontalūs polangiai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
+msgid "Horizontal Ruler"
+msgstr "Horizontali liniuotė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:113
+msgid "Horizontal Scale"
+msgstr "Horizontali skalė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+msgid "Horizontal Scrollbar"
+msgstr "Horizontalus slankiklis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115
+msgid "Horizontal Separator"
+msgstr "Horizontalus skirtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116
+msgid "Horizontal and Vertical"
+msgstr "Horizontalus ir vertikalus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Icon Name"
+msgstr "Piktogramos pavadinimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+msgid "Icon View"
+msgstr "Piktogramų rodinys"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:119
+msgid "Icons"
+msgstr "Piktogramos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:120
+msgid "If Valid"
+msgstr "Jei tinkamas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:122
+msgid "Image Menu Item"
+msgstr "Meniu elementas su paveikslėliu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:123
+msgid "Image Type"
+msgstr "Paveikslėlio tipas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
+msgid "Immediate"
+msgstr "Akimirksninis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
+msgid "In"
+msgstr "Viduje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:127
+msgid "Input Dialog"
+msgstr "Įvesties dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Intro"
+msgstr "Įžanga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
+msgid "Items"
+msgstr "Elementai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:130
+msgid "Key Press"
+msgstr "Klavišo paspaudimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:131
+msgid "Key Release"
+msgstr "Klavišo atleidimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:133
+msgid "Layout"
+msgstr "Išdėstymas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Least Recently Used first"
+msgstr "Paskiausiai naudotus rodyti pirma"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Leave Notify"
+msgstr "Palikti pranešimą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
+msgid "Left"
+msgstr "Kairė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+msgid "Left to Right"
+msgstr "Iš kairės į dešinę"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:138
+msgid "Linear"
+msgstr "Tiesinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Link Button"
+msgstr "Nuorodos mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
+msgid "List"
+msgstr "Sąrašas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:141
+msgid "List Item"
+msgstr "Sąrašo elementas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "Maximun Width"
+msgstr "Maksimalus plotis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:144
+msgid "Menu Bar"
+msgstr "Meniu juosta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+msgid "Menu Item"
+msgstr "Meniu elementas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
+msgid "Menu Shell"
+msgstr "Meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147
+msgid "Menu Tool Button"
+msgstr "Meniu įrankinis mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148
+msgid "Message Dialog"
+msgstr "Pranešimo dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:149
+msgid "Middle"
+msgstr "Vidurinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:150
+msgid "Most Recently Used first"
+msgstr "Paskiausiai naudotus rodyti pirma"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:151
+msgid "Mouse"
+msgstr "Pelė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:41
+msgid "Never"
+msgstr "Niekada"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:155
+msgid "North"
+msgstr "Šiaurės"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+msgid "North East"
+msgstr "Šiaurės rytų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+msgid "North West"
+msgstr "Šiaurės vakarų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158
+msgid "Notebook"
+msgstr "Kortelės"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Notification"
+msgstr "Pranešimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
+msgid "Number of items"
+msgstr "Elementų skaičius"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:161
+msgid "Number of pages"
+msgstr "Kortelių skaičius"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+msgid "Object instance's name formatted for assistive technology access"
+msgstr "Objekto, pritaikyto neįgaliesiems, vardas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid "Ok"
+msgstr "Gerai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165
+msgid "Ok, Cancel"
+msgstr "Gerai, atšaukti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:42
+msgid "Open"
+msgstr "Atverti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167
+msgid "Option Menu"
+msgstr "Parinkčių meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
+msgid "Out"
+msgstr "Išorėje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Page Setup Dialog"
+msgstr "Puslapio sąrankos dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+msgid "Paned"
+msgstr "Polangiai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:172
+msgid "Pointer Motion"
+msgstr "Žymeklio judėjimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:173
+msgid "Pointer Motion Hint"
+msgstr "Žymeklio judėjimas (atsargesnis)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid "Popup"
+msgstr "Iškylantysis langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+msgid "Popup Menu"
+msgstr "Iššokantis meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gnome/gnome.xml.in.h:46
+msgid "Position"
+msgstr "Padėtis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Print Dialog"
+msgstr "Spausdinimo dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Progress"
+msgstr "Eiga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
+msgid "Progress Bar"
+msgstr "Eigos juosta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:182
+msgid "Property Change"
+msgstr "Savybės pasikeitimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+msgid "Proximity  Out"
+msgstr "Įvesties nutolimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:184
+msgid "Proximity In"
+msgstr "Įvesties priartėjimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:49
+msgid "Question"
+msgstr "Klausimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:186
+msgid "Queue"
+msgstr "Eilė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+msgid "Radio Button"
+msgstr "Akutė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
+msgid "Radio Menu Item"
+msgstr "Meniu elementas su akute"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:189
+msgid "Radio Tool Button"
+msgstr "Meniu įrankinis mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:190
+msgid "Range"
+msgstr "Ruožas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Recent Chooser"
+msgstr "Paskutinieji dokumentai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+msgid "Recent Chooser Dialog"
+msgstr "Paskutiniųjų dokumentų dialogas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Response ID"
+msgstr "Atsako ID"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
+msgid "Right"
+msgstr "Dešinė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:197
+msgid "Right to Left"
+msgstr "Iš dešinės į kairę"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:198
+msgid "Ruler"
+msgstr "Liniuotė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:50
+msgid "Save"
+msgstr "Išsaugoti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:200
+msgid "Scale"
+msgstr "Skalė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:201
+msgid "Scroll"
+msgstr "Slinkti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:202
+msgid "Scrolled Window"
+msgstr "Slankiojamas langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:53
+msgid "Select Folder"
+msgstr "Pasirinkite aplanką"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:204
+msgid "Separator Menu Item"
+msgstr "Meniu skyriklis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+msgid "Separator Tool Item"
+msgstr "Įrankinės skyriklis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:206
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "Nustatyti esamą puslapį (tik redagavimo tikslams)"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+msgid "Set the text in the view's text buffer"
+msgstr "Nustatyti langelio tekstą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:217
+msgid "Shrink"
+msgstr "Sutraukti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+msgid "Size"
+msgstr "Dydis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219
+msgid "South"
+msgstr "Pietų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220
+msgid "South East"
+msgstr "Pietryčių"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:221
+msgid "South West"
+msgstr "Pietvakarių"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:222
+msgid "Spin Button"
+msgstr "Suktukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:223
+msgid "Splash Screen"
+msgstr "Įžanginis ekranas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:224
+msgid "Spline"
+msgstr "Kreivė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:225
+msgid "Spread"
+msgstr "Išplėsti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:55
+msgid "Start"
+msgstr "Pradžia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:227
+msgid "Static"
+msgstr "Statiškas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:228
+msgid "Status Bar"
+msgstr "Būsenos juosta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:229
+msgid "Stock Button"
+msgstr "Standartinis mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+msgid "Stock Item"
+msgstr "Standartinis elementas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:232
+msgid "Structure"
+msgstr "Struktūra"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:233
+msgid "Substructure"
+msgstr "Postruktūra"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:234
+msgid "Summary"
+msgstr "Santrauka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
+msgid "Table"
+msgstr "Lentelė"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:58
+msgid "Text"
+msgstr "Tekstas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:238
+msgid "Text Entry"
+msgstr "Teksto laukelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:239
+msgid "Text View"
+msgstr "Teksto langelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:240
+msgid "The items in this combo box"
+msgstr "Išskleidžiamo sąrašo elementai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:241
+msgid "The number of items in the box"
+msgstr "Elementų kiekis langelyje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:242
+msgid "The number of pages in the notebook"
+msgstr "Kortelių skaičius"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:243
+msgid "The page position in the Assistant"
+msgstr "Puslapio vieta asistente"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:244
+msgid "The position of the menu item in the menu shell"
+msgstr "Elemento padėtis meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:245
+msgid "The position of the tool item in the toolbar"
+msgstr "Elemento padėtis įrankių juostoje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:246
+msgid ""
+"The response ID of this button in a dialog (it's NOT useful if this button "
+"is not in a GtkDialog)"
+msgstr ""
+"Atsako ID mygtukui dialoge (neturi prasmės, jei šis mygtukas yra ne elemente "
+"GtkDialog)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:247
+msgid "The stock item for this button"
+msgstr "Standartinis elementas šiam mygtukui"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:248
+msgid "The stock item for this image"
+msgstr "Standartinis elementas šiam paveikslėliui"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:249
+msgid "The text of the menu item"
+msgstr "Meniu elemento tekstas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:250
+msgid "The text to display"
+msgstr "Rodytinas tekstas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+msgid "Toggle Button"
+msgstr "Perjungiamas mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+msgid "Toggle Tool Button"
+msgstr "Perjungiamas įrankinės mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+msgid "Tool Bar"
+msgstr "Priemonių juosta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+msgid "Tool Button"
+msgstr "Priemonių juostos mygtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:255
+msgid "Toolbar"
+msgstr "Įrankinė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
+msgid "Tooltip"
+msgstr "Pagalbinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:16
+msgid "Top"
+msgstr "Viršus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:258
+msgid "Top Left"
+msgstr "Viršuje kairėje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:259
+msgid "Top Level"
+msgstr "Viršutinis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:260
+msgid "Top Right"
+msgstr "Viršuje dešinėje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:261
+msgid "Top to Bottom"
+msgstr "Iš viršaus į apačią"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Toplevels"
+msgstr "Langai ir dialogai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:263
+msgid "Tree View"
+msgstr "Medis arba sąrašas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:264
+msgid "Up"
+msgstr "Aukštyn"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+msgid "Use Underline"
+msgstr "Naudoti pabraukimą"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266
+msgid "Utility"
+msgstr "Įrankis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
+msgid "Vertical"
+msgstr "Vertikalus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:268
+msgid "Vertical Box"
+msgstr "Vertikalūs langeliai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:269
+msgid "Vertical Button Box"
+msgstr "Vertikalus mygtukų langelis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:270
+msgid "Vertical Panes"
+msgstr "Vertikalūs polangiai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:271
+msgid "Vertical Ruler"
+msgstr "Vertikali liniuotė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:272
+msgid "Vertical Scale"
+msgstr "Vertikali skalė"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:273
+msgid "Vertical Scrollbar"
+msgstr "Vertikalus slankiklis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:274
+msgid "Vertical Separator"
+msgstr "Vertikalus skirtukas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:275
+msgid "Viewport"
+msgstr "Slankiojamas vaizdas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+msgid "Visibility Notify"
+msgstr "Matomumo pranešimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:72
+msgid "Warning"
+msgstr "Įspėjimas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:278
+msgid "West"
+msgstr "Vakarų"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
+msgid "Window"
+msgstr "Langas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+msgid "Word"
+msgstr "Ties žodžiais"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:282
+msgid "Word Character"
+msgstr "Ties simboliais/žodžiais"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+msgid "Yes, No"
+msgstr "Taip, Ne"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr ""
+"Galite pažymėti tai kaip dar verčiama, ir nustatyti vardą/adresą, jei norite "
+"parodyti tam tikro vertėjo indėlį, kitu atveju pateikite pilną vertėjų sąrašą"
+
+#: ../plugins/gnome/glade-gnome.c:298
+msgid "Status Message."
+msgstr "Būsenos pranešimas."
+
+#: ../plugins/gnome/glade-gnome.c:656
+msgid "The position in the druid"
+msgstr "Padėtis vediklyje"
+
+#: ../plugins/gnome/glade-gnome.c:1008
+msgid "Message box type"
+msgstr "Pranešimo lango tipas"
+
+#: ../plugins/gnome/glade-gnome.c:1009
+msgid "The type of the message box"
+msgstr "Pranešimo lango tipas"
+
+#: ../plugins/gnome/glade-gnome.c:1225
+msgid "This property is valid only in font information mode"
+msgstr "Ši savybė naudinga tik šriftų informacijos veiksenoje"
+
+#. This is deprecated
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:23
+msgid "Selection Mode"
+msgstr "Parinkimo veiksena"
+
+#: ../plugins/gnome/glade-gnome.c:1314
+msgid "Choose the Selection Mode"
+msgstr "Pasirinkite parinkimo veikseną"
+
+#: ../plugins/gnome/glade-gnome.c:1464
+msgid "Placement"
+msgstr "Išdėstymas"
+
+#: ../plugins/gnome/glade-gnome.c:1465
+msgid "Choose the BonoboDockPlacement type"
+msgstr "Pasirinkite BonoboDockPlacement tipą"
+
+#: ../plugins/gnome/glade-gnome.c:1493
+msgid "Behavior"
+msgstr "Veikimas"
+
+#: ../plugins/gnome/glade-gnome.c:1494
+msgid "Choose the BonoboDockItemBehavior type"
+msgstr "Pasirinkite BonoboDockItemBehaviour tipą"
+
+#: ../plugins/gnome/glade-gnome.c:1503
+msgid "Pack Type"
+msgstr "Pakavimo būdas"
+
+#: ../plugins/gnome/glade-gnome.c:1504
+msgid "Choose the Pack Type"
+msgstr "Pasirinkite pakavimo būdą"
+
+#: ../plugins/gnome/gnome.xml.in.h:1
+msgid "24-Hour Format"
+msgstr "24 valandų formatas"
+
+#: ../plugins/gnome/gnome.xml.in.h:3
+msgid "Background Color"
+msgstr "Fono spalva"
+
+#: ../plugins/gnome/gnome.xml.in.h:4
+msgid "Contents Background Color"
+msgstr "Turinio fono spalva"
+
+#: ../plugins/gnome/gnome.xml.in.h:6
+msgid "Dither"
+msgstr "Smulkinti"
+
+#: ../plugins/gnome/gnome.xml.in.h:10
+msgid "File"
+msgstr "Failas"
+
+#: ../plugins/gnome/gnome.xml.in.h:12
+msgid "Font Information"
+msgstr "Šrifto informacija"
+
+#: ../plugins/gnome/gnome.xml.in.h:13
+msgid "GNOME UI Obsolete"
+msgstr "GNOME UI pasenę"
+
+#: ../plugins/gnome/gnome.xml.in.h:14
+msgid "GNOME User Interface"
+msgstr "GNOME naudotojo sąsaja"
+
+#: ../plugins/gnome/gnome.xml.in.h:15
+msgid "Generic"
+msgstr "Bendras"
+
+#: ../plugins/gnome/gnome.xml.in.h:16
+msgid "Gnome About"
+msgstr "Gnome apie programą"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+msgid "Gnome App"
+msgstr "Gnome programa"
+
+#: ../plugins/gnome/gnome.xml.in.h:18
+msgid "Gnome App Bar"
+msgstr "Gnome programos juosta"
+
+#: ../plugins/gnome/gnome.xml.in.h:19
+msgid "Gnome Color Picker"
+msgstr "Gnome spalvų parinkiklis"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+msgid "Gnome Date Edit"
+msgstr "Gnome datos redaktorius"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:22
+msgid "Gnome Dialog"
+msgstr "Gnome dialogas"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+msgid "Gnome Druid"
+msgstr "Gnome vediklis"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+msgid "Gnome Druid Page Edge"
+msgstr "Gnome vediklio kraštinis puslapis"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+msgid "Gnome Druid Page Standard"
+msgstr "Gnome vediklio puslapio standartas"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+msgid "Gnome File Entry"
+msgstr "Gnome failo įvestis"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+msgid "Gnome Font Picker"
+msgstr "Gnome šrifto parinkiklis"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+msgid "Gnome HRef"
+msgstr "Gnome nuoroda"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+msgid "Gnome Icon Entry"
+msgstr "Gnome piktogramos įvestis"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+msgid "Gnome Icon Selection"
+msgstr "Gnome piktogramų atranka"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+msgid "Gnome Message Box"
+msgstr "Gnome pranešimo dialogas"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
+msgid "Gnome Pixmap"
+msgstr "Gnome paveiksliukas"
+
+#: ../plugins/gnome/gnome.xml.in.h:33
+msgid "Gnome Pixmap Entry"
+msgstr "Gnome paveiksliuko atranka"
+
+#: ../plugins/gnome/gnome.xml.in.h:34
+msgid "Gnome Property Box"
+msgstr "Gnome savybės laukelis"
+
+#: ../plugins/gnome/gnome.xml.in.h:35
+msgid "Information"
+msgstr "Informacija"
+
+#: ../plugins/gnome/gnome.xml.in.h:36
+msgid "Logo"
+msgstr "Logotipas"
+
+#: ../plugins/gnome/gnome.xml.in.h:37
+msgid "Logo Background Color"
+msgstr "Logotipo fonas"
+
+#: ../plugins/gnome/gnome.xml.in.h:38
+msgid "Max Saved"
+msgstr "Daugiausia išsaugoma"
+
+#: ../plugins/gnome/gnome.xml.in.h:39
+msgid "Message"
+msgstr "Žinutė"
+
+#: ../plugins/gnome/gnome.xml.in.h:40
+msgid "Monday First"
+msgstr "Pradėti nuo pirmadienio"
+
+#: ../plugins/gnome/gnome.xml.in.h:44
+msgid "Padding"
+msgstr "Tarpai"
+
+#: ../plugins/gnome/gnome.xml.in.h:45
+msgid "Pixmap"
+msgstr "Paveikslėlis"
+
+#: ../plugins/gnome/gnome.xml.in.h:47
+msgid "Program Name"
+msgstr "Programos vardas"
+
+#: ../plugins/gnome/gnome.xml.in.h:48
+msgid "Program Version"
+msgstr "Programos versija"
+
+#: ../plugins/gnome/gnome.xml.in.h:51
+msgid "Scaled Height"
+msgstr "Pakeistas aukštis"
+
+#: ../plugins/gnome/gnome.xml.in.h:52
+msgid "Scaled Width"
+msgstr "Pakeistas plotis"
+
+#: ../plugins/gnome/gnome.xml.in.h:54
+msgid "Show Time"
+msgstr "Rodyti laiką"
+
+#: ../plugins/gnome/gnome.xml.in.h:56
+msgid "StatusBar"
+msgstr "StatusBar"
+
+#: ../plugins/gnome/gnome.xml.in.h:57
+msgid "Store Config"
+msgstr "Išsaugoti konfigūraciją"
+
+#: ../plugins/gnome/gnome.xml.in.h:59
+msgid "Text Foreground Color"
+msgstr "Teksto spalva"
+
+#: ../plugins/gnome/gnome.xml.in.h:60
+msgid "The height to scale the pixmap to"
+msgstr "Naujas paveikslėlio dydis"
+
+#: ../plugins/gnome/gnome.xml.in.h:61
+msgid "The maximum number of history entries saved"
+msgstr "Maksimalus istorijos įrašų kiekis"
+
+#: ../plugins/gnome/gnome.xml.in.h:62
+msgid "The pixmap file"
+msgstr "Paveikslėlio failas"
+
+#: ../plugins/gnome/gnome.xml.in.h:63
+msgid "The width to scale the pixmap to"
+msgstr "Naujas paveikslėlio plotis"
+
+#: ../plugins/gnome/gnome.xml.in.h:65
+msgid "Title Foreground Color"
+msgstr "Pavadinimo spalva"
+
+#: ../plugins/gnome/gnome.xml.in.h:66
+msgid "Top Watermark"
+msgstr "Viršutinis vandenženklis"
+
+#: ../plugins/gnome/gnome.xml.in.h:67
+msgid "Unknown"
+msgstr "Nežinomas"
+
+#: ../plugins/gnome/gnome.xml.in.h:68
+msgid "Use Alpha"
+msgstr "Naudoti permatomumą"
+
+#: ../plugins/gnome/gnome.xml.in.h:69
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
+msgstr ""
+"Naudojama perduoti informacijai apie GnomeDruidPage puslapio padėtį visame "
+"GnomeDruid vediklyje. Tai leidžia teisingai piešti puslapį supantį turinį."
+
+#: ../plugins/gnome/gnome.xml.in.h:70
+msgid "User"
+msgstr "Naudotojas"
+
+#: ../plugins/gnome/gnome.xml.in.h:71
+msgid "User Widget"
+msgstr "Naudotojo valdymo elementas"
+
+#: ../plugins/gnome/gnome.xml.in.h:73
+msgid "Watermark"
+msgstr "Vandenženklis"
+
+#: ../plugins/gnome/bonobo.xml.in.h:4
+msgid "Exclusive"
+msgstr "Išskirtinis"
+
+#: ../plugins/gnome/bonobo.xml.in.h:5
+msgid "Floating"
+msgstr "Slankusis"
+
+#: ../plugins/gnome/bonobo.xml.in.h:9
+msgid "Locked"
+msgstr "Užrakinta"
+
+#: ../plugins/gnome/bonobo.xml.in.h:10
+msgid "Never Floating"
+msgstr "Neslankiojamas"
+
+#: ../plugins/gnome/bonobo.xml.in.h:11
+msgid "Never Horizontal"
+msgstr "Nehorizontalus"
+
+#: ../plugins/gnome/bonobo.xml.in.h:12
+msgid "Never Vertical"
+msgstr "Nevertikalus"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:2
+msgid "Browse"
+msgstr "Naršyti"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:4
+msgid "Column Spacing"
+msgstr "Tarpas tarp stulpelių"
+
+#: ../plugins/gnome/canvas.xml.in.h:5
+msgid "GNOME Canvas"
+msgstr "GNOME atvaizdavimas"
+
+#: ../plugins/gnome/canvas.xml.in.h:6
+msgid "Gnome Canvas"
+msgstr "GNOME atvaizdavimas"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:8
+msgid "Gnome Icon List"
+msgstr "Gnome piktogramų sąrašas"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:10
+msgid "Icon Width"
+msgstr "Piktogramos plotis"
+
+#: ../plugins/gnome/canvas.xml.in.h:11
+msgid "If the icon text can be edited by the user"
+msgstr "Ar piktogramos tekstas gali būti redaguojamas naudotojo"
+
+#: ../plugins/gnome/canvas.xml.in.h:12
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
+msgstr ""
+"Ar piktogramos tekstas yra statiškas (šiuo atveju jis nebus nukopijuotas į "
+"GnomeIconList)"
+
+#: ../plugins/gnome/canvas.xml.in.h:13
+msgid "Max X"
+msgstr "Maks. X"
+
+#: ../plugins/gnome/canvas.xml.in.h:14
+msgid "Max Y"
+msgstr "Maks. Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:15
+msgid "Min X"
+msgstr "Min. X"
+
+#: ../plugins/gnome/canvas.xml.in.h:16
+msgid "Min Y"
+msgstr "Min. Y"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:18
+msgid "Multiple"
+msgstr "Kartotinis"
+
+#: ../plugins/gnome/canvas.xml.in.h:19
+msgid "Pixels per unit"
+msgstr "Pikselių skaičius vienete"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:21
+msgid "Row Spacing"
+msgstr "Tarpas tarp eilučių"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:25
+msgid "Single"
+msgstr "Vientisas"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:27
+msgid "Text Editable"
+msgstr "Redaguojamas tekstas"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:29
+msgid "Text Spacing"
+msgstr "Tarpai tarp raidžių"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:31
+msgid "Text Static"
+msgstr "Statinis tekstas"
+
+#: ../plugins/gnome/canvas.xml.in.h:32
+msgid "The maximum x coordinate"
+msgstr "Didžiausia galima x koordinatė"
+
+#: ../plugins/gnome/canvas.xml.in.h:33
+msgid "The maximum y coordinate"
+msgstr "Didžiausia galima y koordinatė"
+
+#: ../plugins/gnome/canvas.xml.in.h:34
+msgid "The minimum x coordinate"
+msgstr "Mažiausia galima x koordinatė"
+
+#: ../plugins/gnome/canvas.xml.in.h:35
+msgid "The minimum y coordinate"
+msgstr "Mažiausia galima y koordinatė"
+
+#: ../plugins/gnome/canvas.xml.in.h:36
+msgid "The number of pixels between columns of icons"
+msgstr "Pikselių skaičius tarp piktogramų stulpelių"
+
+#: ../plugins/gnome/canvas.xml.in.h:37
+msgid "The number of pixels between rows of icons"
+msgstr "Pikselių skaičius tarp piktogramų eilučių"
+
+#: ../plugins/gnome/canvas.xml.in.h:38
+msgid "The number of pixels between the text and the icon"
+msgstr "Pikselių skaičius tarp teksto ir piktogramų"
+
+#: ../plugins/gnome/canvas.xml.in.h:39
+msgid "The number of pixels corresponding to one unit"
+msgstr "Vieneto dydis pikseliais"
+
+#: ../plugins/gnome/canvas.xml.in.h:40
+msgid "The selection mode"
+msgstr "Parinkimo veiksena"
+
+#: ../plugins/gnome/canvas.xml.in.h:41
+msgid "The width of each icon"
+msgstr "Kiekvienos piktogramos plotis"
+
+#~ msgid "[read-only]"
+#~ msgstr "[tik skaityti]"
+
+#~ msgid "Save as…"
+#~ msgstr "Išsaugoti kaip..."
+
+#~ msgid "Save ..."
+#~ msgstr "Išsaugoti ..."
+
+#~ msgid "E_xpand all"
+#~ msgstr "Iš_skleisti visus"
+
+#~ msgid "_Collapse all"
+#~ msgstr "Su_traukti visus"
+
+#~ msgid ""
+#~ "Glade is a user interface designer for GTK+ and GNOME.\n"
+#~ "This version is a rewrite of the Glade 2 version, originally created by "
+#~ "Damon Chaplin\n"
+#~ msgstr ""
+#~ "Glade yra naudotojo sąsajos konstravimo įrankis GTK+ bei GNOME. \n"
+#~ "Ši versija yra iš naujo perrašytas Glade 2, kuris buvo sukurtas Damon "
+#~ "Chaplin.\n"
+
+#~ msgid "_New"
+#~ msgstr "_Naujas"
+
+#~ msgid "_Open"
+#~ msgstr "_Atverti"
+
+#~ msgid "_Quit"
+#~ msgstr "Iš_eiti"
+
+#~ msgid "_About"
+#~ msgstr "_Apie"
+
+#~ msgid "_Documentation"
+#~ msgstr "_Dokumentacija"
+
+#~ msgid "Documentation about Glade"
+#~ msgstr "Dokumentacija apie Glade"
+
+#~ msgid "_Close"
+#~ msgstr "_Uždaryti"
+
+#~ msgid "C_ut"
+#~ msgstr "_Iškirpti"
+
+#~ msgid "_Copy"
+#~ msgstr "_Kopijuoti"
+
+#~ msgid "_Paste"
+#~ msgstr "Į_dėti"
+
+#~ msgid "_Delete"
+#~ msgstr "Iš_trinti"
+
+#~ msgid "Property _Editor"
+#~ msgstr "Savybės"
+
+#~ msgid "Show the property editor"
+#~ msgstr "Rodyti savybių redaktorių"
+
+#~ msgid "_Palette"
+#~ msgstr "_Paletė"
+
+#~ msgid "Group"
+#~ msgstr "Grupė"

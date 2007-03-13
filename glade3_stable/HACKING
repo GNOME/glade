@@ -1,0 +1,69 @@
+
+Mailing List
+~~~~~~~~~~~~
+Glade-3 discussion takes place on glade-devel@ximian.org
+To subscribe or to consult archives visit
+http://lists.ximian.com/mailman/listinfo/glade-devel
+When posting to the list include [glade3] in the subject,
+since the list is also used for Glade-2 developement.
+
+
+Bugzilla
+~~~~~~~~
+Glade-3 bugs are tracked in the glade3 module of 
+http://bugzilla.gnome.org
+
+
+SVN
+~~~
+The Glade-3 repository is hosted at svn.gnome.org
+To check out a copy of Glade-3 you can use the following commands:
+
+svn checkout svn://svn.gnome.org/svn/glade3 glade3
+
+
+Patches
+~~~~~~~
+Patches must be in the unified format (diff -u) and must include a
+ChangeLog entry. Please send all patches to bugzilla.
+
+Currently svn only permits this with the following command:
+
+svn diff --diff-cmd=/usr/bin/diff -x -uBp . > file.patch
+
+Coding Style
+~~~~~~~~~~~~
+Code in Glade-3 should follow the GNOME Programming Guidelines
+(http://developer.gnome.org/doc/guides/programming-guidelines/),
+basically this means being consistent with the sorrounding code.
+The only exception is that we prefer having braces always on a new line
+e.g.:
+
+if (...)
+{
+	...
+}
+
+Note however that a lot of the current codebase still uses the following
+style:
+
+if (...) {
+	...
+}
+
+Over time we'll migrate to the preferred form.
+
+Naming conventions:
+- function names should be lowercase and prefixed with the
+  file name (or, if the function is static and the name too long,
+  with an abbreviation), e.g:
+  glade_project_window_my_function () 
+  gpw_my_loooooooooong_named_fuction ()
+- variable names should be lowercase and be short but self explanatory;
+  if you need more than one word use an underscore, e.g:
+  my_variable
+
+Also try to order your functions so that prototypes are not needed.
+
+
+

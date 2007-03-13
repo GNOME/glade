@@ -1,0 +1,125 @@
+<refentry id="children" revision="8 Feb 2006">
+  <refmeta>
+    <refentrytitle>Container Objects</refentrytitle>
+    <refmiscinfo>Glade UI</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>Containers</refname>
+    <refpurpose>
+How to add support for hierarchic widget relationships
+    </refpurpose>
+  </refnamediv>
+
+  <refsect1>
+    <title>Defining Containers in the Catalog</title>
+    <para>
+GtkContainer objects which parent GtkWidget objects have built-in detection in the
+glade core; but other container relationships may be constructed; if for example you
+wished to treat a GtkMenuBar --> GtkMenuItem relationship specially in the plugin;
+Any GObject can parent any GObject. The default GtkContainer --> GtkWidget relationship
+can also be modified for a GtkContainer derived object.
+    </para>
+    <para>
+Child support definitions are identified by the GType of supported child class and
+are embedded into a glade-widget-class block like so:
+      <programlisting>
+<![CDATA[<glade-widget-class name="Foo">
+
+  <children>
+    <child>
+    <type>Bar</type>
+
+      ... 'Foo --> Bar' container relationship parameters go here
+
+      <properties>
+
+        ... packing property definition for this container relationship
+
+      </properties>
+
+    </child>
+
+    ... more child definitions here ...
+
+  </children>
+
+</glade-widget-class>]]></programlisting>
+Note that you can access and modify and even add virtual packing properties in
+exactly the same way as previously described with normal object properties.
+    </para>
+  </refsect1>
+  <refsect2>
+    <title>Container Relationship Parameter Tag Definitions</title>
+    <para>
+      <variablelist>
+        <varlistentry>
+          <term>add-child-function</term>
+          <listitem>
+            <para>
+A #GladeAddChildFunc used to add child objects from parent objects.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>remove-child-function</term>
+          <listitem>
+            <para>
+A #GladeRemoveChildFunc used to remove child objects from parent objects.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>replace-child-function</term>
+          <listitem>
+            <para>
+A #GladeReplaceChildFunc Used to swap placholders with project widgets.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>get-children-function</term>
+          <listitem>
+            <para>
+A #GladeGetChildrenFunc to return a list of children for this container. If you
+have any anarchist internal children; they should be listed here along with
+normal children.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>child-set-property-function</term>
+          <listitem>
+            <para>
+A #GladeChildSetPropertyFunc to set a packing property on this child.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>child-get-property-function</term>
+          <listitem>
+            <para>
+A #GladeChildGetPropertyFunc to get a packing property on this child.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>special-child-type</term>
+          <listitem>
+            <para>
+A special type identifier that will indicate whether this is an alternate
+child type; such as a notebook tab label or a frame label. The value of 
+special-child-type is the name of the added packing property for this child type;
+you must then use the type to add children to the "correct port" at load time.
+            </para>
+            <para>
+Currently this isnt very neatly done; you must do:
+<programlisting>g_object_set_data (child, "special-child-type", type);</programlisting>
+when creating special child types and handle it on replace-child; look at glade-gtk.c for 
+examples.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+  </refsect2>
+</refentry>

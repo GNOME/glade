@@ -1,0 +1,93 @@
+<!-- ##### SECTION Title ##### -->
+GladeClipboard
+
+<!-- ##### SECTION Short_Description ##### -->
+A list of #GladeWidget objects not in any #GladeProject
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The #GladeClipboard is a singleton and is an accumulative shelf
+of all cut or copied #GladeWidget in the application. A #GladeWidget
+can be cut from one #GladeProject and pasted to another.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GladeClipboard ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG GladeClipboard:has-selection ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION glade_clipboard_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_clipboard_add ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+@widgets: 
+
+
+<!-- ##### FUNCTION glade_clipboard_remove ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+@widgets: 
+
+
+<!-- ##### FUNCTION glade_clipboard_selection_add ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+@widget: 
+
+
+<!-- ##### FUNCTION glade_clipboard_selection_remove ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+@widget: 
+
+
+<!-- ##### FUNCTION glade_clipboard_selection_clear ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+
+
+<!-- ##### FUNCTION glade_clipboard_get_has_selection ##### -->
+<para>
+
+</para>
+
+@clipboard: 
+@Returns: 
+
+

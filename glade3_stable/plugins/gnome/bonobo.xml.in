@@ -1,0 +1,70 @@
+<glade-catalog name="bonobo" library="gladegnome" depends="gnome" domain="glade3">
+  <glade-widget-classes>
+    <glade-widget-class name="BonoboDock" generic-name="bonobodock" title="Bonobo Dock">
+      <set-property-function>glade_gnome_bonobodock_set_property</set-property-function>
+      <add-child-function>glade_gnome_bonobodock_add_child</add-child-function>
+      <remove-child-function>glade_gnome_bonobodock_remove_child</remove-child-function>
+      <replace-child-function>glade_gnome_bonobodock_replace_child</replace-child-function>
+      <get-children-function>glade_gnome_bonobodock_get_children</get-children-function>
+      <child-set-property-function>glade_gnome_bonobodock_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gnome_bonobodock_get_child_property</child-get-property-function>
+      <properties>
+        <property id="allow-floating" name="Allow Floating">
+	  <tooltip>If floating dock iteam are allowed</tooltip>
+	  <spec>glade_standard_boolean_spec</spec>
+	</property>
+      </properties>
+
+      <packing-properties>
+        <property id="placement">
+          <spec>glade_gnome_bonobo_dock_placement_spec</spec>
+          <displayable-values>
+            <value id="BONOBO_DOCK_LEFT" _name="Left"/>
+            <value id="BONOBO_DOCK_RIGHT" _name="Right"/>
+            <value id="BONOBO_DOCK_TOP" _name="Top"/>
+            <value id="BONOBO_DOCK_BOTTOM" _name="Bottom"/>
+            <value id="BONOBO_DOCK_FLOATING" _name="Floating"/>
+          </displayable-values>
+        </property>
+        <property id="band" name="Band">
+	  <spec>glade_standard_int_spec</spec>
+	</property>
+        <property id="position" name="Position">
+	  <spec>glade_standard_int_spec</spec>
+	</property>
+        <property id="offset" name="Offset">
+	  <spec>glade_standard_int_spec</spec>
+	</property>
+        <property id="behavior">
+	  <spec>glade_gnome_bonobo_dock_item_behavior_spec</spec>
+          <displayable-values>
+            <value id="BONOBO_DOCK_ITEM_BEH_EXCLUSIVE" _name="Exclusive"/>
+            <value id="BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING" _name="Never Floating"/>
+            <value id="BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL" _name="Never Vertical"/>
+	    <value id="BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL" _name="Never Horizontal"/>
+	    <value id="BONOBO_DOCK_ITEM_BEH_LOCKED" _name="Locked"/>
+          </displayable-values>
+	</property>
+      </packing-properties>
+    </glade-widget-class>
+    <glade-widget-class name="BonoboDockItem" generic-name="bonobodockitem" title="Bonobo Dock Item">
+      <properties>
+      	<property id="shadow">
+  	  <displayable-values>
+	    <value id="GTK_SHADOW_NONE" _name="None"/>
+	    <value id="GTK_SHADOW_IN" _name="In"/>
+	    <value id="GTK_SHADOW_OUT" _name="Out"/>
+	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
+	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
+	  </displayable-values>
+	</property>
+	<property id="orientation">
+  	  <displayable-values>
+	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+  </glade-widget-classes>
+</glade-catalog>

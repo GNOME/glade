@@ -1,0 +1,279 @@
+<refentry id="properties" revision="8 Feb 2006">
+  <refmeta>
+    <refentrytitle>Property Class Definitions</refentrytitle>
+    <refmiscinfo>Glade UI</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>Property Classes</refname>
+    <refpurpose>
+How to augment or define a #GladePropertyClass
+    </refpurpose>
+  </refnamediv>
+
+  <refsect1>
+    <title>Property Class Parameters</title>
+    <para>
+There are alot of things that can be done with properties in glade; properties
+can be added and removed from widget classes, lets list all the different
+things you can do with properties.
+    </para>
+    <para>
+Properties of the 'property' tag:
+      <variablelist>
+        <varlistentry>
+          <term>name</term>
+          <listitem>
+            <para>
+The name to be used in the interface, this string is translated.
+(if name is not specified; it defaults to the nickname of the #GParamSpec)
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>id</term>
+          <listitem>
+            <para>
+This is manditory and specifies the property that we are modifying (or adding)
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>disabled</term>
+          <listitem>
+            <para>
+Remove this property from this widget class and derived classes
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>default</term>
+          <listitem>
+            <para>
+A default value to be used for this property
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>translatable</term>
+          <listitem>
+            <para>
+For text properties, whether the property value is translatable in glade
+interfaces (this will enable the i18n dialog on text properties). Defaults to False.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>common</term>
+          <listitem>
+            <para>
+If set to "True", the property will end up on the common tab even if
+its not a property of GtkWidgetClass.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>optional</term>
+          <listitem>
+            <para>
+Whether this property is an optional property, this will make the property
+insensitive and add a check box to enable it (like width/height-request for
+example).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>optional-default</term>
+          <listitem>
+            <para>
+If this is in fact an optional property; whether it is enabled by default.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>query</term>
+          <listitem>
+            <para>
+If query is set; the property will be queried from the user in a dialog
+when adding the owning widget class instance to the project.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>save</term>
+          <listitem>
+            <para>
+Whether to save this property to the glade file (default "True")
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>visible</term>
+          <listitem>
+            <para>
+Whether to show the property in the editor (default "True")
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>ignore</term>
+          <listitem>
+            <para>
+Whether to set the property on the object instance (via g_object_set_property or
+plugin override functions) when it changes in the editor (the value in the editor
+is the value saved).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>resource</term>
+          <listitem>
+            <para>
+This is for string properties that represent filenames that are packaged with
+the glade file (like pixbufs); you can set this to "True" and the string
+property will be treated like a resource.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+
+    <para>
+Child tags of the 'property' tag:
+      <variablelist>
+
+        <varlistentry>
+          <term>spec</term>
+          <listitem>
+            <para>
+Specifies a function to be used to return a #GParamSpec for this property;
+this is used to add virtual properties to an object (like the "size" property
+on #GtkBox).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>tooltip</term>
+          <listitem>
+            <para>
+The tooltip to be displayed in the property editor for this property, this
+is also translated. The tooltip defaults to the blurb of the associated
+#GParamSpec.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>visible-lines</term>
+          <listitem>
+            <para>
+An integer value to specify how many lines will be shown for text properties
+in the editor (this doesnt really work because of the complexity of calculating
+size of rendered text; instead, just set this to 2 if you want the text property
+to be edited in a textview with a scrolled window as opposed to a simple text entry).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>set-function</term>
+          <listitem>
+            <para>
+A #GladeSetPropertyFunc used to set the property instead of g_object_set()
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>get-function</term>
+          <listitem>
+            <para>
+A #GladeSetPropertyFunc function used to set the property instead of g_object_get()
+            </para>
+            <para>
+Technical note: that the get-function is hardly ever used, the only 
+time glade-3 will actually ask the object what a property's value should be; 
+is when adding a widget to a container and introspecting the values that 
+the container assigned the child as packing properties.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>verify-function</term>
+          <listitem>
+            <para>
+A #GladeVerifyPropertyFunc function to verify whether the requested value is valid. 
+If specified; the editor will not allow the user to commit a value that this 
+function returns False for.
+            </para>
+            <para>
+Technical note: verify functions are nescisary in glade-3 because of
+the abstraction between the value maintained in the glade-3 core and
+the value that is actually on the said GObject's property. In other words,
+if verify-function returns false; glade's value won't change and set-function
+won't be called, if set-function decides not commit the said value, thats
+its own rotten business (hehe) and if the property is set to ignore="True",
+verify functions will still function properly even if set-functions are not
+called for that property.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+  </refsect1>
+  <refsect2>
+    <title>Displayable Values, Packing defaults and such</title>
+    <para>
+Enum and Flag type properties tend to have long complicated names unsuited for the glade
+environment, glade will allow you to substitute these names using the displayable-values
+child tag; the form looks like this:
+      <programlisting>
+<![CDATA[<property id="pack-type">
+  <displayable-values>
+    <value id="GTK_PACK_START" name="Start"></value>
+    <value id="GTK_PACK_END" name="End"></value>
+  </displayable-values>
+</property>]]></programlisting>
+Note that the "name" (which will be the resulting name for each `id') is a translated
+string.
+    </para>
+
+    <para>
+A widget class may have default packing properties for each type of container that
+it can be added to; a short example should suffice as a description of how this works:
+      <programlisting>
+<![CDATA[<packing-defaults>
+  <parent-class name="GtkVBox">
+    <child-property id="expand" default="false"/>
+  </parent-class>
+</packing-defaults>]]></programlisting>
+Note that you can list any number of 'packing-defaults' in a row.
+    </para>
+
+    <para>
+Properties can have additional parameters; these are completely unused by glade
+but may be usefull for a plugin writer who may want to use the GladeParameter
+api to find parameters on property classes; the form looks like this:
+      <programlisting>
+<![CDATA[<property id="foo">
+  <parameters>
+    <parameter key="Min" value="1"/>
+    <parameter key="Max" value="10000"/>
+  </parameters>
+</property>]]></programlisting>
+    </para>
+  </refsect2>
+</refentry>
