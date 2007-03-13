@@ -160,12 +160,12 @@ glade_app_finalize (GObject *app)
 {
 
 #ifdef G_OS_WIN32 
-	g_free (glade_scripts_dir);
-	g_free (glade_catalogs_dir);
-	g_free (glade_modules_dir);
-	g_free (glade_bindings_dir);
-	g_free (glade_pixmaps_dir);	
-	g_free (glade_locale_dir);
+	g_free (scripts_dir);
+	g_free (catalogs_dir);
+	g_free (modules_dir);
+	g_free (bindings_dir);
+	g_free (pixmaps_dir);	
+	g_free (locale_dir);
 
 #endif
 	

@@ -1690,7 +1690,7 @@ glade_util_url_show_win32 (const gchar *url)
 	/* win32 API call */
 	retval = ShellExecuteA (NULL, "open", url, NULL, NULL, SW_NORMAL);
 	
-	if (code <= 32)
+	if (retval <= 32)
 		return FALSE;
 
 	return TRUE;
