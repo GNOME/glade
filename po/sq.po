@@ -1,0 +1,3981 @@
+# Përkthimi i glade3.HEAD në shqip.
+# Përkthimi i mesazheve të glade në shqip
+# This file is distributed under the same license as the Glade package.
+# Copyright (C) 2004, 2007 Free Software Foundation, Inc.
+#
+# Laurent Dhima <laurenti@alblinux.net>, 2004, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: glade3.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-14 09:45+0100\n"
+"PO-Revision-Date: 2007-03-13 19:16+0100\n"
+"Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
+"Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/glade-3.desktop.in.in.h:1
+msgid "Create or open user interface designs for GTK+ applications"
+msgstr "Krijon ose hap vizatime interfaqesh përdorimi për aplikativë GTK+"
+
+#: ../data/glade-3.desktop.in.in.h:2
+msgid "Glade Interface Designer"
+msgstr "Glade - Vizatuesi i Interfaqeve"
+
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
+msgid "User Interface Designer"
+msgstr "Vizatuesi i Interfaqeve të përdorimit"
+
+#: ../src/main.c:38
+msgid "Glade"
+msgstr "Glade"
+
+#: ../src/main.c:48
+msgid "Output version information and exit"
+msgstr "Printon informacione mbi versionin dhe del"
+
+#: ../src/main.c:51
+msgid "Disable Devhelp integration"
+msgstr "Çaktivo integrimin e Devhelp"
+
+#: ../src/main.c:54
+msgid "[FILE...]"
+msgstr "[FILE...]"
+
+#: ../src/main.c:86
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr "Krijo ose ndrysho vizatime interfaqesh për aplikativë GTK+ apo GNOME."
+
+#: ../src/main.c:89 ../src/main.c:90
+msgid "Glade options"
+msgstr "Opsionet e Glade"
+
+#: ../src/main.c:140
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+"Suporti për gmodule nuk u gjet. Suporti për gmodule është i domosdoshëm që "
+"glade të funksionojë"
+
+#: ../src/main.c:167
+#, c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "E pamundur hapja e '%s', file nuk ekziston.\n"
+
+#: ../src/glade-project-window.c:44
+msgid "[Read Only]"
+msgstr "[Vetëm në lexim]"
+
+#: ../src/glade-project-window.c:108
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "E pamundur shfaqja e URL '%s'"
+
+#: ../src/glade-project-window.c:112
+msgid "No suitable web browser executable could be found."
+msgstr ""
+"E pamundur gjetja e të ekzekutueshmes së një shfletuesi web të përshtatshëm."
+
+#: ../src/glade-project-window.c:332
+#, c-format
+msgid "%s [%s] - Properties"
+msgstr "%s [%s] - Pronësitë"
+
+#: ../src/glade-project-window.c:342 ../src/glade-project-window.c:1999
+#: ../gladeui/glade-widget.c:992
+msgid "Properties"
+msgstr "Pronësitë"
+
+#: ../src/glade-project-window.c:609
+#, c-format
+msgid "Activate %s"
+msgstr "Aktivo %s"
+
+#: ../src/glade-project-window.c:727
+msgid "Open…"
+msgstr "Hap..."
+
+#: ../src/glade-project-window.c:769
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "File %s është ndryshuar që nga leximi i tij"
+
+#: ../src/glade-project-window.c:773
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Nëse e ruani, të gjitha ndryshimet e jashtme do të humbasin. Ruan sidoqoftë?"
+
+#: ../src/glade-project-window.c:777
+msgid "_Save Anyway"
+msgstr "_Ruaj sidoqoftë"
+
+#: ../src/glade-project-window.c:784
+msgid "_Don't Save"
+msgstr "_Mos ruaj"
+
+#: ../src/glade-project-window.c:807
+#, c-format
+msgid "Failed to save %s: %s"
+msgstr "Ruajtja e %s dështoi: %s"
+
+#: ../src/glade-project-window.c:828
+#, c-format
+msgid "Project '%s' saved"
+msgstr "Projekti '%s' u ruajt"
+
+#. Just in case the menu-item is not insensitive
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
+msgid "No open projects to save"
+msgstr "Asnjë projekt i hapur për t'u ruajtur"
+
+#: ../src/glade-project-window.c:851
+msgid "Save As…"
+msgstr "Ruaj si..."
+
+#: ../src/glade-project-window.c:893
+#, c-format
+msgid ""
+"Could not save the file %s. You do not have the permissions necessary to "
+"save the file."
+msgstr ""
+"E pamundur ruajtja e file %s. Nuk keni të drejta të mjaftueshme për t'a "
+"ruajtur."
+
+#: ../src/glade-project-window.c:906
+#, c-format
+msgid "Could not save file %s. Another project with that path is open."
+msgstr ""
+"E pamundur ruajtja e file %s. Një tjetër projekt me atë pozicion është akoma "
+"i hapur."
+
+#: ../src/glade-project-window.c:958
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Ruani ndryshimet tek projekti \"%s\" "
+"përpara se ta mbyllni?</span>\n"
+"\n"
+"Ndryshimet do të humbasin nëse nuk i ruani.\n"
+
+#: ../src/glade-project-window.c:972
+msgid "_Close without Saving"
+msgstr "_Mbyll pa ruajtur"
+
+#: ../src/glade-project-window.c:993
+#, c-format
+msgid "Failed to save %s to %s: %s"
+msgstr "Dështoi ruajtja e %s tek %s: %s"
+
+#: ../src/glade-project-window.c:1005
+msgid "Save…"
+msgstr "Ruaj..."
+
+#: ../src/glade-project-window.c:1411
+msgid "Could not display the online user manual"
+msgstr "E pamundur shfaqja e manualit në linjë të përdorimit"
+
+#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr ""
+"E pamundur gjetja e të ekzekutueshmes së një shfletuesi web të përshtatshëm "
+"për tu ekzekutuar dhe për të shfaqur URL: %s"
+
+#: ../src/glade-project-window.c:1449
+msgid "Could not display the online developer reference manual"
+msgstr "E pamundur shfaqja e manualit në linjë të zhvilluesit"
+
+#: ../src/glade-project-window.c:1482
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as\n"
+"published by the Free Software Foundation; either version 2 of the\n"
+"License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
+msgstr ""
+"Ky program është software i lirë; mund të shpërndahet dhe/apo ndryshohet\n"
+"sipas kushteve të liçencës GNU General Public License, sikurse\n"
+"publikuar nga Free Software Foundation; versioni 2 i liçencës,\n"
+"ose (sipas dëshirës) një version më të ri.\n"
+"\n"
+"Ky program shpërndahet me shpresën që mund të rezultojë i dobishëm,\n"
+"por PA ASNJË LLOJ GARANCIE, pa as garancinë e shprehur të\n"
+"TREGTIMIT apo APLIKIMIT PËR NJË QËLLIM TË CAKTUAR.  Shiko, për\n"
+"informacione të mëtejshme, liçencën GNU General Public License.\n"
+"\n"
+"Një kopje e GNU General Public License duhet t'ju ketë arritur së bashku\n"
+"me këtë program. Nëse jo, shkruani tek:\n"
+"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, \n"
+"Boston, MA 02110-1301, USA."
+
+#: ../src/glade-project-window.c:1504
+msgid "translator-credits"
+msgstr "Laurent Dhima <laurenti@alblinux.net>"
+
+#: ../src/glade-project-window.c:1505
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "Një vizatues interfaqesh përdorimi për GTK+ dhe GNOME."
+
+#. File
+#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4406
+#: ../plugins/gtk+/glade-gtk.c:4704
+msgid "_File"
+msgstr "_File"
+
+#. Edit
+#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4409
+#: ../plugins/gtk+/glade-gtk.c:4714
+msgid "_Edit"
+msgstr "_Ndrysho"
+
+#. View
+#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4412
+#: ../plugins/gtk+/glade-gtk.c:4722
+msgid "_View"
+msgstr "_Shfaq"
+
+#: ../src/glade-project-window.c:1579
+msgid "_Projects"
+msgstr "_Projekte"
+
+#. Help
+#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4424
+#: ../plugins/gtk+/glade-gtk.c:4725
+msgid "_Help"
+msgstr "_Ndihmë"
+
+#: ../src/glade-project-window.c:1584
+msgid "Create a new project"
+msgstr "Krijo një projekt të ri"
+
+#: ../src/glade-project-window.c:1586
+msgid "_Open…"
+msgstr "_Hap..."
+
+#: ../src/glade-project-window.c:1587
+msgid "Open a project"
+msgstr "Hap një projekt"
+
+#: ../src/glade-project-window.c:1589
+msgid "Open _Recent"
+msgstr "Hap të _fundit"
+
+#: ../src/glade-project-window.c:1592
+msgid "Quit the program"
+msgstr "Del nga programi"
+
+#. ViewMenu
+#: ../src/glade-project-window.c:1595
+msgid "Palette _Appearance"
+msgstr "P_araqitja e paletës"
+
+#: ../src/glade-project-window.c:1599
+msgid "About this application"
+msgstr "Informacione në lidhje me këtë aplikativ"
+
+#: ../src/glade-project-window.c:1602
+msgid "Display the user manual"
+msgstr "Shfaq manualin e përdorimit"
+
+#: ../src/glade-project-window.c:1604
+msgid "_Developer Reference"
+msgstr "_Orientuesi i zhvilluesit"
+
+#: ../src/glade-project-window.c:1605
+msgid "Display the developer reference manual"
+msgstr "Shfaq manualin orientues të zhvilluesit"
+
+#: ../src/glade-project-window.c:1614
+msgid "Save the current project"
+msgstr "Ruaj projektin aktual"
+
+#: ../src/glade-project-window.c:1616
+msgid "Save _As…"
+msgstr "Ru_aj si..."
+
+#: ../src/glade-project-window.c:1617
+msgid "Save the current project with a different name"
+msgstr "Ruaj projektin aktual me një emër tjetër"
+
+#: ../src/glade-project-window.c:1620
+msgid "Close the current project"
+msgstr "Mbyll projektin aktual"
+
+#: ../src/glade-project-window.c:1624
+msgid "Undo the last action"
+msgstr "Anullo veprimin e fundit"
+
+#: ../src/glade-project-window.c:1627
+msgid "Redo the last action"
+msgstr "Përsërit veprimin e fundit"
+
+#: ../src/glade-project-window.c:1630
+msgid "Cut the selection"
+msgstr "Preje zgjedhjen"
+
+#: ../src/glade-project-window.c:1633
+msgid "Copy the selection"
+msgstr "Kopjo zgjedhjen"
+
+#: ../src/glade-project-window.c:1636
+msgid "Paste the clipboard"
+msgstr "Ngjit nga shënimet"
+
+#: ../src/glade-project-window.c:1639
+msgid "Delete the selection"
+msgstr "Elemino zgjedhjen"
+
+#. ViewMenu
+#: ../src/glade-project-window.c:1643
+msgid "_Clipboard"
+msgstr "_Shënime"
+
+#: ../src/glade-project-window.c:1644
+msgid "Show the clipboard"
+msgstr "Shfaq shënimet"
+
+#. ProjectsMenu
+#: ../src/glade-project-window.c:1648
+msgid "_Previous Project"
+msgstr "_Projekti paraardhës"
+
+#: ../src/glade-project-window.c:1649
+msgid "Activate previous project"
+msgstr "Aktivo projektin paraardhës"
+
+#: ../src/glade-project-window.c:1651
+msgid "_Next Project"
+msgstr "Projekti _Në vijim"
+
+#: ../src/glade-project-window.c:1652
+msgid "Activate next project"
+msgstr "Aktivo projektin në vijim"
+
+#: ../src/glade-project-window.c:1660
+msgid "_Use Small Icons"
+msgstr "_Përdor ikona të vogla"
+
+#: ../src/glade-project-window.c:1661
+msgid "Show items using small icons"
+msgstr "Shfaq elementët duke përdorur ikona të vogla"
+
+#: ../src/glade-project-window.c:1664
+msgid "Context _Help"
+msgstr "Ndi_hmë sipas kontekstit"
+
+#: ../src/glade-project-window.c:1665
+msgid "Show or hide contextual help buttons in the editor"
+msgstr "Shfaq ose fsheh pulsantët e ndihmës sipas kontekstit në editor"
+
+#: ../src/glade-project-window.c:1672
+msgid "Text beside icons"
+msgstr "Tekst anash ikonave"
+
+#: ../src/glade-project-window.c:1673
+msgid "Display items as text beside icons"
+msgstr "Shfaq elementët si tekst anash ikonave"
+
+#: ../src/glade-project-window.c:1675
+msgid "_Icons only"
+msgstr "Vetëm _Ikona"
+
+#: ../src/glade-project-window.c:1676
+msgid "Display items as icons only"
+msgstr "Shfaq elementët vetëm si ikona"
+
+#: ../src/glade-project-window.c:1678
+msgid "_Text only"
+msgstr "Vetëm _Tekst"
+
+#: ../src/glade-project-window.c:1679
+msgid "Display items as text only"
+msgstr "Shfaq elementët vetëm si tekste"
+
+#: ../src/glade-project-window.c:1884
+msgid "Select Widgets"
+msgstr "Zgjidh \"widgets\""
+
+#: ../src/glade-project-window.c:1888
+msgid "Select widgets in the workspace"
+msgstr "Zgjidh widgets në hapësirën e punës"
+
+#: ../src/glade-project-window.c:1977
+msgid "Palette"
+msgstr "Paleta"
+
+#: ../src/glade-project-window.c:1993
+msgid "Inspector"
+msgstr "Inspektori"
+
+#: ../src/glade-project-window.c:2115
+msgid "Could not create a new project."
+msgstr "I pamundur krijimi i një projekti të ri."
+
+#: ../src/glade-project-window.c:2134
+#, c-format
+msgid "%s is already open"
+msgstr "%s është rregullisht i hapur"
+
+#: ../src/glade-project-window.c:2199
+msgid "_Undo"
+msgstr "_Anullo"
+
+#. Change tooltips
+#: ../src/glade-project-window.c:2201 ../gladeui/glade-app.c:242
+#, c-format
+msgid "Undo: %s"
+msgstr "Anullo: %s"
+
+#: ../src/glade-project-window.c:2201 ../src/glade-project-window.c:2212
+#: ../gladeui/glade-app.c:243
+msgid "the last action"
+msgstr "veprimin e fundit"
+
+#: ../src/glade-project-window.c:2210
+msgid "_Redo"
+msgstr "_Përsërit"
+
+#: ../src/glade-project-window.c:2212 ../gladeui/glade-app.c:242
+#, c-format
+msgid "Redo: %s"
+msgstr "Përsërit: %s"
+
+#: ../gladeui/glade-app.c:453
+msgid "Clipboard"
+msgstr "Shënime"
+
+#: ../gladeui/glade-app.c:525
+msgid "Active Project"
+msgstr "Projekti aktiv"
+
+#: ../gladeui/glade-app.c:526
+msgid "The active project"
+msgstr "Projekti aktiv"
+
+#: ../gladeui/glade-app.c:604
+#, c-format
+msgid ""
+"Trying to save private data to %s directory but it is a regular file.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Përpjekje për të ruajtur të dhnat tek directory %s por është një file i "
+"rregullt.\n"
+"Asnjë e dhënë private do të ruhet në këtë seancë"
+
+#: ../gladeui/glade-app.c:617
+#, c-format
+msgid ""
+"Failed to create directory %s to save private data.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Krijimi i directory %s për të ruajtur të dhënat private dështoi.\n"
+"Asnjë e dhënë private do të ruhet në këtë seancë"
+
+#: ../gladeui/glade-app.c:645
+#, c-format
+msgid ""
+"Error writing private data to %s (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Gabim gjatë shkrimit të të dhënave private tek %s (%s).\n"
+"Asnjë e dhënë private do të ruhet në këtë seancë"
+
+#: ../gladeui/glade-app.c:657
+#, c-format
+msgid ""
+"Error serializing configuration data to save (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Gabim në serializimin e të dhënave të konfigurimit për ruajtje (%s).\n"
+"Asnjë e dhënë private do të ruhet në këtë seancë"
+
+#: ../gladeui/glade-app.c:670
+#, c-format
+msgid ""
+"Error opening %s to write private data (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Gabim gjatë hapjes së %s për të shkruar të dhënat private (%s).\n"
+"Asnjë e dhënë private do të ruhet në këtë seancë"
+
+#: ../gladeui/glade-app.c:1109
+msgid "You cannot copy a widget internal to a composite widget."
+msgstr "Nuk mund të kopjosh një widget në brendësi të një widget të kompozuar."
+
+#: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
+#: ../gladeui/glade-app.c:1352
+msgid "No widget selected."
+msgstr "Nuk është zgjedhur asnjë widget."
+
+#: ../gladeui/glade-app.c:1162
+msgid "You cannot cut a widget internal to a composite widget."
+msgstr "Nuk mund të presësh një widget në brendësi të një widget të kompozuar."
+
+#: ../gladeui/glade-app.c:1221
+msgid "Unable to paste to the selected parent"
+msgstr "E pamundur ngjitja tek prindi i zgjedhur"
+
+#: ../gladeui/glade-app.c:1232
+msgid "Unable to paste to multiple widgets"
+msgstr "E pamundur ngjitja tek widgets shumëfish"
+
+#: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
+msgid "No widget selected on the clipboard"
+msgstr "Nuk është zgjedhur asnjë widget në shënime"
+
+#: ../gladeui/glade-app.c:1268
+#, c-format
+msgid "Unable to paste widget %s without a parent"
+msgstr "E pamundur ngjitja e widget %s pa një prind"
+
+#: ../gladeui/glade-app.c:1285
+msgid "Only one widget can be pasted at a time to this container"
+msgstr "Në këtë përmbajtës mund të ngjitet vetëm një widget njëkohësisht"
+
+#: ../gladeui/glade-app.c:1297
+msgid "Insufficient amount of placeholders in target container"
+msgstr "Numër i pamjaftueshëm vendshënuesish në përmbajtësin objektiv"
+
+#: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
+msgid "You cannot delete a widget internal to a composite widget."
+msgstr ""
+"Nuk mund të eleminosh një widget në brendësi të një widget të kompozuar."
+
+#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
+#: ../plugins/gtk+/glade-gtk.c:207
+msgid "Stock"
+msgstr "Stock"
+
+#: ../gladeui/glade-builtins.c:184
+msgid "A builtin stock item"
+msgstr "Një element stock i integruar"
+
+#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:264
+msgid "Stock Image"
+msgstr "Figurë stock"
+
+#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
+msgid "A builtin stock image"
+msgstr "Një figurë stock e integruar"
+
+#: ../gladeui/glade-builtins.c:523
+msgid "Objects"
+msgstr "Objekte"
+
+#: ../gladeui/glade-builtins.c:524
+msgid "A list of objects"
+msgstr "Një listë objektesh"
+
+#: ../gladeui/glade-builtins.c:533
+msgid "Pixbuf"
+msgstr "Pixbuf"
+
+#: ../gladeui/glade-builtins.c:534
+msgid "A pixbuf value"
+msgstr "Një vlerë pixbuf"
+
+#: ../gladeui/glade-builtins.c:542
+msgid "GdkColor"
+msgstr "GdkColor"
+
+#: ../gladeui/glade-builtins.c:543
+msgid "A gdk color value"
+msgstr "Një vlerë ngjyre gdk"
+
+#. Accelerators
+#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1187
+#: ../plugins/gtk+/gtk+.xml.in.h:11
+msgid "Accelerators"
+msgstr "Përshpejtues"
+
+#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1188
+msgid "A list of accelerator keys"
+msgstr "Një listë pulsantësh përshpejtues"
+
+#: ../gladeui/glade-builtins.c:563
+msgid "Integer"
+msgstr "I plotë"
+
+#: ../gladeui/glade-builtins.c:564
+msgid "An integer value"
+msgstr "Një vlerë e plotë"
+
+#: ../gladeui/glade-builtins.c:572
+msgid "Unsigned Integer"
+msgstr "I plotë pa shenjë"
+
+#: ../gladeui/glade-builtins.c:573
+msgid "An unsigned integer value"
+msgstr "Një vlerë e plotë pa shenjë"
+
+#: ../gladeui/glade-builtins.c:580
+msgid "String"
+msgstr "String"
+
+#: ../gladeui/glade-builtins.c:581
+msgid "An entry"
+msgstr "Një zë"
+
+#: ../gladeui/glade-builtins.c:588
+msgid "Strv"
+msgstr "Strv"
+
+#: ../gladeui/glade-builtins.c:589
+msgid "String array"
+msgstr "Vektor stringe"
+
+#: ../gladeui/glade-builtins.c:597
+msgid "Float"
+msgstr "Presje e lëvizëshme"
+
+#: ../gladeui/glade-builtins.c:598
+msgid "A floating point entry"
+msgstr "Një zë me presje të lëvizëshme"
+
+#: ../gladeui/glade-builtins.c:606
+msgid "Boolean"
+msgstr "Booleane"
+
+#: ../gladeui/glade-builtins.c:607
+msgid "A boolean value"
+msgstr "Një vlerë booleane"
+
+#: ../gladeui/glade-base-editor.c:470
+#, c-format
+msgid "Setting object type on %s to %s"
+msgstr "Përcaktimi i llojit të objektit nga %s në %s"
+
+#: ../gladeui/glade-base-editor.c:635
+#, c-format
+msgid "Add a %s to %s"
+msgstr "Shto një %s tek %s"
+
+#: ../gladeui/glade-base-editor.c:712
+#, c-format
+msgid "Delete %s child from %s"
+msgstr "Elemino birin %s nga %s"
+
+#: ../gladeui/glade-base-editor.c:835
+#, c-format
+msgid "Reorder %s's children"
+msgstr "Riorganizimi i bijve të %s"
+
+#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Label"
+msgstr "Etiketa"
+
+#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
+msgid "Type"
+msgstr "Lloji"
+
+#. Name
+#: ../gladeui/glade-base-editor.c:1598
+msgid "Name :"
+msgstr "Emri :"
+
+#. Type
+#: ../gladeui/glade-base-editor.c:1608
+msgid "Type :"
+msgstr "Lloji :"
+
+#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
+#: ../plugins/gtk+/gtk+.xml.in.h:314
+msgid "Widget"
+msgstr "\"Widget\""
+
+#: ../gladeui/glade-command.c:541
+msgid "Setting multiple properties"
+msgstr "Caktimi i pronësive shumëfishe"
+
+#: ../gladeui/glade-command.c:549
+#, c-format
+msgid "Setting %s of %s"
+msgstr "Caktimi në %s i %s"
+
+#: ../gladeui/glade-command.c:553
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr "Caktimi në %s i %s në %s"
+
+#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
+#, c-format
+msgid "Renaming %s to %s"
+msgstr "Riemërtimi i %s në %s"
+
+#: ../gladeui/glade-command.c:903
+#, c-format
+msgid "Add %s"
+msgstr "Shto %s"
+
+#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:1672
+msgid "multiple"
+msgstr "shumëfish"
+
+#: ../gladeui/glade-command.c:1017
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr "Nuk mund të heqësh një widget në brendësi të një widget të kompozuar."
+
+#: ../gladeui/glade-command.c:1063
+#, c-format
+msgid "Remove %s"
+msgstr "Hiq %s"
+
+#: ../gladeui/glade-command.c:1067
+msgid "Remove multiple"
+msgstr "Heqje e shumëfishtë"
+
+#: ../gladeui/glade-command.c:1371
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Shtoi shënimeve %s"
+
+#: ../gladeui/glade-command.c:1374
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Hiqi shënimeve %s"
+
+#: ../gladeui/glade-command.c:1537
+#, c-format
+msgid "Create %s"
+msgstr "Krijo %s"
+
+#: ../gladeui/glade-command.c:1563
+#, c-format
+msgid "Delete %s"
+msgstr "Elemino %s"
+
+#: ../gladeui/glade-command.c:1584
+#, c-format
+msgid "Cut %s"
+msgstr "Preje %s"
+
+#: ../gladeui/glade-command.c:1611
+#, c-format
+msgid "Copy %s"
+msgstr "Kopjo %s"
+
+#: ../gladeui/glade-command.c:1644
+#, c-format
+msgid "Paste %s"
+msgstr "Ngjit %s"
+
+#: ../gladeui/glade-command.c:1672
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Tërhiq dhe lësho nga %s tek %s"
+
+#: ../gladeui/glade-command.c:1794
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Shto trajtues sinjali %s"
+
+#: ../gladeui/glade-command.c:1795
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Hiq trajtues sinjali %s"
+
+#: ../gladeui/glade-command.c:1796
+#, c-format
+msgid "Change signal handler %s"
+msgstr "Ndrysho trajtues sinjali %s"
+
+#: ../gladeui/glade-command.c:2000
+msgid "Setting i18n metadata"
+msgstr "Rregullimi i metadata-ve i18n"
+
+#: ../gladeui/glade-cursor.c:186
+#, c-format
+msgid "Unable to load image (%s)"
+msgstr "I pamundur ngarkimi i figurës (%s)"
+
+#: ../gladeui/glade-editor-property.c:274
+msgid "View GTK+ documentation for this property"
+msgstr "Shfaq dokumentimin GTK+ për këtë pronësi"
+
+#: ../gladeui/glade-editor-property.c:576
+msgid "Property Class"
+msgstr "Pronësitë e klasës"
+
+#: ../gladeui/glade-editor-property.c:577
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr "GladePropertyClass për të cilën është krijuar kjo GladeEditorProperty"
+
+#: ../gladeui/glade-editor-property.c:583
+msgid "Use Command"
+msgstr "Përdor komandën"
+
+#: ../gladeui/glade-editor-property.c:584
+#, fuzzy
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr "për anullo përsërit"
+
+#: ../gladeui/glade-editor-property.c:590
+msgid "Show Info"
+msgstr "Shfaq informacionet"
+
+#: ../gladeui/glade-editor-property.c:591
+msgid "Whether we should show an informational button"
+msgstr "Tregon nëse duhet shfaqur një pulsant informues"
+
+#: ../gladeui/glade-editor-property.c:1117
+msgid "Select Fields"
+msgstr "Zgjidh fushat"
+
+#: ../gladeui/glade-editor-property.c:1139
+msgid "_Select individual fields:"
+msgstr "_Zgjidh fushat e veçanta:"
+
+#: ../gladeui/glade-editor-property.c:1466
+msgid "Edit Text"
+msgstr "Ndrysho tekstin"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1494
+msgid "_Text:"
+msgstr "_Teksti:"
+
+#: ../gladeui/glade-editor-property.c:1530
+msgid "T_ranslatable"
+msgstr "I pë_rkthyeshëm"
+
+#: ../gladeui/glade-editor-property.c:1543
+msgid "_Has context prefix"
+msgstr "_Ka prefiks sipas kontekstit"
+
+#. Comments.
+#: ../gladeui/glade-editor-property.c:1561
+msgid "Co_mments for translators:"
+msgstr "Ko_mente për përkthyesit:"
+
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
+msgid "Yes"
+msgstr "Po"
+
+#: ../gladeui/glade-editor-property.c:1731
+#: ../gladeui/glade-editor-property.c:1747
+#: ../gladeui/glade-editor-property.c:1762
+msgid "No"
+msgstr "Jo"
+
+#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:944
+#: ../gladeui/glade-widget-adaptor.c:916
+msgid "Name"
+msgstr "Emri"
+
+#: ../gladeui/glade-editor-property.c:2364
+msgid "Class"
+msgstr "Klasa"
+
+#: ../gladeui/glade-editor-property.c:2378
+#, c-format
+msgid "Choose %s implementors"
+msgstr "Zgjidh plotësuesit e %s"
+
+#: ../gladeui/glade-editor-property.c:2378
+#, c-format
+msgid "Choose a %s in this project"
+msgstr "Zgjidh një %s në këtë projekt"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2442
+msgid "O_bjects:"
+msgstr "O_bjekte:"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2651
+msgid "Objects:"
+msgstr "Objekte:"
+
+#: ../gladeui/glade-editor-property.c:2966
+msgid "Value:"
+msgstr "Vlera:"
+
+#: ../gladeui/glade-editor-property.c:2967
+msgid "The current value"
+msgstr "Vlera aktuale"
+
+#: ../gladeui/glade-editor-property.c:2969
+msgid "Lower:"
+msgstr "E poshtme:"
+
+#: ../gladeui/glade-editor-property.c:2970
+msgid "The minimum value"
+msgstr "Vlera më e ulët"
+
+#: ../gladeui/glade-editor-property.c:2972
+msgid "Upper:"
+msgstr "E sipërme:"
+
+#: ../gladeui/glade-editor-property.c:2973
+msgid "The maximum value"
+msgstr "Vlera më e lartë"
+
+#: ../gladeui/glade-editor-property.c:2975
+#, fuzzy
+msgid "Step inc:"
+msgstr "H:"
+
+#: ../gladeui/glade-editor-property.c:2976
+msgid "The increment to use to make minor changes to the value"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:2978
+#, fuzzy
+msgid "Page inc:"
+msgstr "Faqja:"
+
+#: ../gladeui/glade-editor-property.c:2979
+msgid "The increment to use to make major changes to the value"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:2981
+msgid "Page size:"
+msgstr "Madhësia e faqes:"
+
+#: ../gladeui/glade-editor-property.c:2982
+#, fuzzy
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
+msgstr "faqe në a është nga është i dukshëm"
+
+#: ../gladeui/glade-editor-property.c:3059
+msgid "Alphanumerical"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:3064
+msgid "Extra"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:3069
+#, fuzzy
+msgid "Keypad"
+msgstr "Kyçi"
+
+#: ../gladeui/glade-editor-property.c:3074
+#, fuzzy
+msgid "Functions"
+msgstr "Fraksioni:"
+
+#: ../gladeui/glade-editor-property.c:3079 ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gnome/gnome.xml.in.h:43
+#, fuzzy
+msgid "Other"
+msgstr "Tjetër"
+
+#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3284
+#: ../gladeui/glade-editor-property.c:3329
+msgid "<choose a key>"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:3283 ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gnome/bonobo.xml.in.h:13
+msgid "None"
+msgstr "Asnjë"
+
+#: ../gladeui/glade-editor-property.c:3409
+#: ../gladeui/glade-signal-editor.c:684
+msgid "Signal"
+msgstr "Sinjali"
+
+#: ../gladeui/glade-editor-property.c:3436
+msgid "Key"
+msgstr "Kyçi"
+
+#: ../gladeui/glade-editor-property.c:3450
+msgid "Shift"
+msgstr "Shift"
+
+#: ../gladeui/glade-editor-property.c:3466
+#, fuzzy
+msgid "Control"
+msgstr "Ctrl"
+
+#: ../gladeui/glade-editor-property.c:3482
+msgid "Alt"
+msgstr "Alt"
+
+#: ../gladeui/glade-editor-property.c:3548
+#, fuzzy
+msgid "Choose accelerator keys..."
+msgstr "Ti"
+
+#: ../gladeui/glade-editor.c:146
+#, fuzzy
+msgid "Show info"
+msgstr "Shfaq:"
+
+#: ../gladeui/glade-editor.c:147
+#, fuzzy
+msgid "Whether to show an informational button for the loaded widget"
+msgstr "është fëmi (sekondar, i dytë)"
+
+#: ../gladeui/glade-editor.c:154
+#, fuzzy
+msgid "Show context info"
+msgstr "Shfaq"
+
+#: ../gladeui/glade-editor.c:155
+#, fuzzy
+msgid ""
+"Whether to show an informational button for each property and signal in the "
+"editor"
+msgstr "për dhe në"
+
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
+#: ../gladeui/glade-editor.c:1178
+#, fuzzy
+msgid "Accessibility"
+msgstr "Dukshmëria:"
+
+#. configure page container
+#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
+#, fuzzy
+msgid "_Signals"
+msgstr "Sinjali"
+
+#: ../gladeui/glade-editor.c:283
+#, fuzzy
+msgid "View documentation for the selected widget"
+msgstr "Elemino"
+
+#: ../gladeui/glade-editor.c:303
+#, fuzzy
+msgid "Reset widget properties to their defaults"
+msgstr "Nga fillimi pronësitë"
+
+#: ../gladeui/glade-editor.c:318
+#, fuzzy
+msgid "_General"
+msgstr "Të përgjithshme"
+
+#: ../gladeui/glade-editor.c:319
+#, fuzzy
+msgid "_Packing"
+msgstr "Hapësira:"
+
+#: ../gladeui/glade-editor.c:320
+#, fuzzy
+msgid "_Common"
+msgstr "Të përbashkët"
+
+#: ../gladeui/glade-editor.c:337
+#, fuzzy
+msgid "_Edit..."
+msgstr "Ndrysho..."
+
+#. Name
+#: ../gladeui/glade-editor.c:483
+msgid "Name:"
+msgstr "Emri:"
+
+#. Class
+#: ../gladeui/glade-editor.c:511
+#, fuzzy
+msgid "Class:"
+msgstr "Klasa:"
+
+#: ../gladeui/glade-editor.c:991
+#, fuzzy, c-format
+msgid "Create a %s"
+msgstr "Krijo a i ri"
+
+#: ../gladeui/glade-editor.c:1109
+#, fuzzy
+msgid "Reset"
+msgstr "Ripërmaso:"
+
+#: ../gladeui/glade-editor.c:1123
+#, fuzzy
+msgid "Property"
+msgstr "Pronësitë"
+
+#: ../gladeui/glade-editor.c:1158
+msgid "General"
+msgstr "Të përgjithshme"
+
+#: ../gladeui/glade-editor.c:1168
+msgid "Common"
+msgstr "Të përbashkët"
+
+#: ../gladeui/glade-editor.c:1213
+#, fuzzy
+msgid "(default)"
+msgstr "prezgjedhur"
+
+#: ../gladeui/glade-editor.c:1228
+#, fuzzy
+msgid "Select the properties that you want to reset to their default values"
+msgstr "Zgjidh pronësitë rivendos prezgjedhur"
+
+#: ../gladeui/glade-editor.c:1360
+#, fuzzy
+msgid "Reset Widget Properties"
+msgstr "\"Widget\""
+
+#. Checklist
+#: ../gladeui/glade-editor.c:1377
+#, fuzzy
+msgid "_Properties:"
+msgstr "Pronësitë "
+
+#: ../gladeui/glade-editor.c:1406
+#, fuzzy
+msgid "_Select All"
+msgstr "Zgjidh file"
+
+#: ../gladeui/glade-editor.c:1413
+#, fuzzy
+msgid "_Unselect All"
+msgstr "Gjithçka"
+
+#. Description
+#: ../gladeui/glade-editor.c:1422
+#, fuzzy
+msgid "Property _Description:"
+msgstr "Përshkrimi:"
+
+#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
+#, c-format
+msgid "Placing %s inside %s"
+msgstr ""
+
+#: ../gladeui/glade-fixed.c:940
+#, fuzzy
+msgid "X position property"
+msgstr "X"
+
+#: ../gladeui/glade-fixed.c:941
+#, fuzzy
+msgid "The property used to set the X position of a child object"
+msgstr "X nga a bir"
+
+#: ../gladeui/glade-fixed.c:947
+#, fuzzy
+msgid "Y position property"
+msgstr "Y"
+
+#: ../gladeui/glade-fixed.c:948
+#, fuzzy
+msgid "The property used to set the Y position of a child object"
+msgstr "Y nga a bir"
+
+#: ../gladeui/glade-fixed.c:954
+#, fuzzy
+msgid "Width property"
+msgstr "Gjerësia"
+
+#: ../gladeui/glade-fixed.c:955
+#, fuzzy
+msgid "The property used to set the width of a child object"
+msgstr "gjerësia nga a bir"
+
+#: ../gladeui/glade-fixed.c:961
+#, fuzzy
+msgid "Height property"
+msgstr "Lartësia"
+
+#: ../gladeui/glade-fixed.c:962
+#, fuzzy
+msgid "The property used to set the height of a child object"
+msgstr "Hapësira djathtas nga fëmi (sekondar, i dytë)"
+
+#: ../gladeui/glade-fixed.c:968
+msgid "Can resize"
+msgstr ""
+
+#: ../gladeui/glade-fixed.c:969
+#, fuzzy
+msgid "Whether this container supports resizes of child widgets"
+msgstr "është fëmi (sekondar, i dytë)"
+
+#: ../gladeui/glade-palette.c:617
+#, fuzzy
+msgid "Widget selector"
+msgstr "\"Widget\" Degëzimi"
+
+#: ../gladeui/glade-parser.c:1192
+#, fuzzy, c-format
+msgid "Could not find glade file %s"
+msgstr ""
+"\n"
+" j"
+
+#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
+#, fuzzy, c-format
+msgid "Errors parsing glade file %s"
+msgstr ""
+"Gabim\n"
+" j"
+
+#: ../gladeui/glade-parser.c:1657
+#, fuzzy
+msgid "Could not allocate memory for interface"
+msgstr "nuk për"
+
+#: ../gladeui/glade-popup.c:254
+#, fuzzy
+msgid "_Select"
+msgstr "Zgjidh"
+
+#: ../gladeui/glade-project.c:562
+msgid "Has Unsaved Changes"
+msgstr ""
+
+#: ../gladeui/glade-project.c:563
+msgid "Whether project has unsaved changes"
+msgstr ""
+
+#: ../gladeui/glade-project.c:570
+#, fuzzy
+msgid "Has Selection"
+msgstr "Zgjedhja e ngjyrës"
+
+#: ../gladeui/glade-project.c:571
+#, fuzzy
+msgid "Whether project has a selection"
+msgstr "a"
+
+#: ../gladeui/glade-project.c:578
+#, fuzzy
+msgid "Read Only"
+msgstr "Lokale Vetëm:"
+
+#: ../gladeui/glade-project.c:579
+#, fuzzy
+msgid "Whether project is read only or not"
+msgstr "është ose nuk"
+
+#: ../gladeui/glade-project.c:687
+#, c-format
+msgid "Unsaved %d"
+msgstr ""
+
+#: ../gladeui/glade-project.c:1460
+#, fuzzy, c-format
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr "Dështoi vijues kërkohet jo në dispozicion"
+
+#. Atk click property
+#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:49
+msgid "Click"
+msgstr ""
+
+#. Atk click property
+#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:244
+#, fuzzy
+msgid "Set the description of the Click atk action"
+msgstr "Shto përshkrimi nga akcion"
+
+#. Atk press property
+#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Press"
+msgstr "Shtypi"
+
+#. Atk press property
+#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:246
+#, fuzzy
+msgid "Set the description of the Press atk action"
+msgstr "Shto përshkrimi nga akcion"
+
+#. Atk release property
+#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:228
+msgid "Release"
+msgstr "Release"
+
+#. Atk release property
+#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:248
+#, fuzzy
+msgid "Set the description of the Release atk action"
+msgstr "përshkrimi nga Release"
+
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:16
+#, fuzzy
+msgid "Activate"
+msgstr "Aktiv"
+
+#. Atk activate property
+#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:242
+#, fuzzy
+msgid "Set the description of the Activate atk action"
+msgstr "Shto përshkrimi nga akcion"
+
+#. Atk relationset properties
+#: ../gladeui/glade-property-class.c:67 ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Controlled By"
+msgstr ""
+
+#. Atk relationset properties
+#: ../gladeui/glade-property-class.c:68 ../plugins/gtk+/gtk+.xml.in.h:139
+#, fuzzy
+msgid "Indicates an object controlled by one or more target objects"
+msgstr "nga ose tjetër"
+
+#: ../gladeui/glade-property-class.c:70 ../plugins/gtk+/gtk+.xml.in.h:66
+msgid "Controller For"
+msgstr ""
+
+#: ../gladeui/glade-property-class.c:71 ../plugins/gtk+/gtk+.xml.in.h:141
+#, fuzzy
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr "është a për ose tjetër"
+
+#: ../gladeui/glade-property-class.c:73 ../plugins/gtk+/gtk+.xml.in.h:161
+msgid "Labelled By"
+msgstr ""
+
+#: ../gladeui/glade-property-class.c:74 ../plugins/gtk+/gtk+.xml.in.h:144
+#, fuzzy
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr "është nga ose tjetër"
+
+#: ../gladeui/glade-property-class.c:76 ../plugins/gtk+/gtk+.xml.in.h:160
+#, fuzzy
+msgid "Label For"
+msgstr "Etiketa"
+
+#: ../gladeui/glade-property-class.c:77 ../plugins/gtk+/gtk+.xml.in.h:142
+#, fuzzy
+msgid "Indicates an object is a label for one or more target objects"
+msgstr "është a etiketa për ose tjetër"
+
+#: ../gladeui/glade-property-class.c:79 ../plugins/gtk+/gtk+.xml.in.h:172
+#, fuzzy
+msgid "Member Of"
+msgstr "Anëtar"
+
+#: ../gladeui/glade-property-class.c:80 ../plugins/gtk+/gtk+.xml.in.h:143
+#, fuzzy
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr "është a nga a nga ose tjetër"
+
+#: ../gladeui/glade-property-class.c:82
+#, fuzzy
+msgid "Child Node Of"
+msgstr "Bir"
+
+#: ../gladeui/glade-property-class.c:83 ../plugins/gtk+/gtk+.xml.in.h:140
+#, fuzzy
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr "është a në a është a në është e shtrirë dhe"
+
+#: ../gladeui/glade-property-class.c:86 ../plugins/gtk+/gtk+.xml.in.h:108
+#, fuzzy
+msgid "Flows To"
+msgstr "Për"
+
+#: ../gladeui/glade-property-class.c:87 ../plugins/gtk+/gtk+.xml.in.h:150
+#, fuzzy
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr "përmbajtja në a për tekst"
+
+#: ../gladeui/glade-property-class.c:90 ../plugins/gtk+/gtk+.xml.in.h:107
+#, fuzzy
+msgid "Flows From"
+msgstr "Nga"
+
+#: ../gladeui/glade-property-class.c:91 ../plugins/gtk+/gtk+.xml.in.h:149
+#, fuzzy
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr "përmbajtja në a për tekst"
+
+#: ../gladeui/glade-property-class.c:94 ../plugins/gtk+/gtk+.xml.in.h:268
+msgid "Subwindow Of"
+msgstr ""
+
+#: ../gladeui/glade-property-class.c:95
+#, fuzzy
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in  the UI hierarchy to that component"
+msgstr "a a jo në"
+
+#: ../gladeui/glade-property-class.c:98 ../plugins/gtk+/gtk+.xml.in.h:91
+msgid "Embeds"
+msgstr ""
+
+#: ../gladeui/glade-property-class.c:99 ../plugins/gtk+/gtk+.xml.in.h:151
+#, fuzzy
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr "përmbajtja e përmbajtja përmbajtja"
+
+#: ../gladeui/glade-property-class.c:102 ../plugins/gtk+/gtk+.xml.in.h:90
+#, fuzzy
+msgid "Embedded By"
+msgstr "Trupëzuar"
+
+#: ../gladeui/glade-property-class.c:103 ../plugins/gtk+/gtk+.xml.in.h:155
+#, fuzzy
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visualy "
+"embedded in another object"
+msgstr "nga përmbajtja është në"
+
+#: ../gladeui/glade-property-class.c:106 ../plugins/gtk+/gtk+.xml.in.h:208
+#, fuzzy
+msgid "Popup For"
+msgstr "Menu"
+
+#: ../gladeui/glade-property-class.c:107 ../plugins/gtk+/gtk+.xml.in.h:146
+#, fuzzy
+msgid "Indicates that an object is a popup for another object"
+msgstr "është a popup për"
+
+#: ../gladeui/glade-property-class.c:109 ../plugins/gtk+/gtk+.xml.in.h:204
+#, fuzzy
+msgid "Parent Window Of"
+msgstr "Prindi Dritarja"
+
+#: ../gladeui/glade-property-class.c:110 ../plugins/gtk+/gtk+.xml.in.h:145
+#, fuzzy
+msgid "Indicates that an object is a parent window of another object"
+msgstr "është a prind dritare nga"
+
+#: ../gladeui/glade-property.c:572
+#, fuzzy
+msgid "Enabled"
+msgstr "Tabela"
+
+#: ../gladeui/glade-property.c:573
+#, fuzzy
+msgid "If the property is optional, this is its enabled state"
+msgstr "është është aktivuar"
+
+#: ../gladeui/glade-property.c:579
+#, fuzzy
+msgid "Sensitive"
+msgstr "I ndjeshëm:"
+
+#: ../gladeui/glade-property.c:580
+#, fuzzy
+msgid "This gives backends control to set property sensitivity"
+msgstr "kontrolli"
+
+#: ../gladeui/glade-property.c:586
+#, fuzzy
+msgid "Comment"
+msgstr "Komente:"
+
+#: ../gladeui/glade-property.c:587
+#, fuzzy
+msgid "Comment for translators"
+msgstr "Komenti për"
+
+#: ../gladeui/glade-property.c:593
+#, fuzzy
+msgid "Translatable"
+msgstr "Përkthyes:"
+
+#: ../gladeui/glade-property.c:594
+#, fuzzy
+msgid "Whether this property is translatable or not"
+msgstr "është ose nuk"
+
+#: ../gladeui/glade-property.c:600
+#, fuzzy
+msgid "Has Context"
+msgstr "Konteksti"
+
+#: ../gladeui/glade-property.c:601
+#, fuzzy
+msgid "Whether or not the translatable string has a context prefix"
+msgstr "Ti File"
+
+#: ../gladeui/glade-signal-editor.c:57
+#, fuzzy
+msgid "<Type the signal's handler here>"
+msgstr "shto a për"
+
+#: ../gladeui/glade-signal-editor.c:58
+msgid "<Type the object's name here>"
+msgstr ""
+
+#: ../gladeui/glade-signal-editor.c:704
+msgid "Handler"
+msgstr ""
+
+#: ../gladeui/glade-signal-editor.c:726
+#, fuzzy
+msgid "User data"
+msgstr "Përdoruesi"
+
+#: ../gladeui/glade-signal-editor.c:740
+#, fuzzy
+msgid "Lookup"
+msgstr "Mbikqyr"
+
+#: ../gladeui/glade-signal-editor.c:751
+msgid "After"
+msgstr ""
+
+#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
+#, fuzzy, c-format
+msgid "We could not find the symbol \"%s\""
+msgstr "Më nuk gjej"
+
+#: ../gladeui/glade-utils.c:176
+#, fuzzy, c-format
+msgid "Could not get the type from \"%s\""
+msgstr "nuk lloji"
+
+#: ../gladeui/glade-utils.c:541
+#, fuzzy
+msgid "All Files"
+msgstr "Zgjidh file"
+
+#: ../gladeui/glade-utils.c:546
+#, fuzzy
+msgid "Glade Files"
+msgstr "Ruaj File"
+
+#: ../gladeui/glade-utils.c:1294
+#, fuzzy, c-format
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr "ekziston?"
+
+#: ../gladeui/glade-utils.c:1322
+#, fuzzy, c-format
+msgid "Error writing to %s: %s"
+msgstr ""
+"Gabim\n"
+" j"
+
+#: ../gladeui/glade-utils.c:1336
+#, fuzzy, c-format
+msgid "Error reading %s: %s"
+msgstr "Gabim"
+
+#: ../gladeui/glade-utils.c:1351
+#, fuzzy, c-format
+msgid "Error shutting down I/O channel %s: %s"
+msgstr "Gabim poshtë I O"
+
+#: ../gladeui/glade-utils.c:1361
+#, fuzzy, c-format
+msgid "Failed to open %s for writing: %s"
+msgstr "Dështoi hap për"
+
+#: ../gladeui/glade-utils.c:1372
+#, fuzzy, c-format
+msgid "Error shutting down io channel %s: %s"
+msgstr "Gabim poshtë"
+
+#: ../gladeui/glade-utils.c:1381
+#, fuzzy, c-format
+msgid "Failed to open %s for reading: %s"
+msgstr "Dështoi hap për"
+
+#: ../gladeui/glade-utils.c:1439
+#, fuzzy, c-format
+msgid "Unable to open the module %s (%s)."
+msgstr "hap moduli."
+
+#: ../gladeui/glade-widget.c:945
+msgid "The name of the widget"
+msgstr "Emri i widget"
+
+#: ../gladeui/glade-widget.c:952
+msgid "Internal name"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:953
+#, fuzzy
+msgid "The internal name of the widget"
+msgstr "Emri i widget"
+
+#: ../gladeui/glade-widget.c:959
+msgid "Anarchist"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:960
+#, fuzzy
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr "bir është bir ose bir"
+
+#: ../gladeui/glade-widget.c:967
+#, fuzzy
+msgid "Object"
+msgstr "Objekti"
+
+#: ../gladeui/glade-widget.c:968
+#, fuzzy
+msgid "The object associated"
+msgstr "E re."
+
+#: ../gladeui/glade-widget.c:975
+msgid "Adaptor"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:976
+#, fuzzy
+msgid "The class adaptor for the associated widget"
+msgstr "nga"
+
+#: ../gladeui/glade-widget.c:983
+#, fuzzy
+msgid "Project"
+msgstr "Projekti"
+
+#: ../gladeui/glade-widget.c:984
+#, fuzzy
+msgid "The glade project that this widget belongs to"
+msgstr "X"
+
+#: ../gladeui/glade-widget.c:993
+#, fuzzy
+msgid "A list of GladeProperties"
+msgstr "A lista nga"
+
+#: ../gladeui/glade-widget.c:999 ../plugins/gtk+/gtk+.xml.in.h:203
+#, fuzzy
+msgid "Parent"
+msgstr "Prindi"
+
+#: ../gladeui/glade-widget.c:1000
+#, fuzzy
+msgid "A pointer to the parenting GladeWidget"
+msgstr "A"
+
+#: ../gladeui/glade-widget.c:1007
+#, fuzzy
+msgid "Internal Name"
+msgstr "Emri"
+
+#: ../gladeui/glade-widget.c:1008
+#, fuzzy
+msgid "A generic name prefix for internal widgets"
+msgstr "A për"
+
+#: ../gladeui/glade-widget.c:1013
+#, fuzzy
+msgid "Template"
+msgstr "Shabllon"
+
+#: ../gladeui/glade-widget.c:1014
+#, fuzzy
+msgid "A GladeWidget template to base a new widget on"
+msgstr "A a i ri në"
+
+#: ../gladeui/glade-widget.c:1020 ../plugins/gtk+/gtk+.xml.in.h:152
+msgid "Info"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1021
+#, fuzzy
+msgid "A GladeWidgetInfo struct to base a new widget on"
+msgstr "A a i ri në"
+
+#: ../gladeui/glade-widget.c:1026
+#, fuzzy
+msgid "Reason"
+msgstr "Release"
+
+#: ../gladeui/glade-widget.c:1027
+#, fuzzy
+msgid "A GladeCreateReason for this creation"
+msgstr "A për"
+
+#: ../gladeui/glade-widget.c:1035
+#, fuzzy
+msgid "Toplevel Width"
+msgstr "Gjerësia"
+
+#: ../gladeui/glade-widget.c:1036
+#, fuzzy
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "X nga në"
+
+#: ../gladeui/glade-widget.c:1045
+#, fuzzy
+msgid "Toplevel Height"
+msgstr "Shkallëzuar:"
+
+#: ../gladeui/glade-widget.c:1046
+#, fuzzy
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "X nga në"
+
+#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
+#, fuzzy, c-format
+msgid "Unable to load icon for %s (%s)"
+msgstr "ikonë për"
+
+#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
+#, fuzzy, c-format
+msgid "Unable to load stock icon (%s)"
+msgstr "ikonë"
+
+#: ../gladeui/glade-widget-adaptor.c:333
+#, fuzzy, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr "A nga!"
+
+#: ../gladeui/glade-widget-adaptor.c:917
+#, fuzzy
+msgid "Name of the class"
+msgstr "Numri nga elementët:"
+
+#: ../gladeui/glade-widget-adaptor.c:925
+#, fuzzy
+msgid "GType of the class"
+msgstr "lloji nga"
+
+#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:64
+#, fuzzy
+msgid "Title"
+msgstr "Titulli:"
+
+#: ../gladeui/glade-widget-adaptor.c:933
+#, fuzzy
+msgid "Translated title for the class used in the glade UI"
+msgstr "Përkthyer titulli për në"
+
+#: ../gladeui/glade-widget-adaptor.c:940
+#, fuzzy
+msgid "Generic Name"
+msgstr "Të përgjithshme"
+
+#: ../gladeui/glade-widget-adaptor.c:941
+#, fuzzy
+msgid "Used to generate names of new widgets"
+msgstr "Emri i widget"
+
+#: ../gladeui/glade-widget-adaptor.c:948
+#, fuzzy
+msgid "Catalog"
+msgstr "Dialogu"
+
+#: ../gladeui/glade-widget-adaptor.c:949
+#, fuzzy
+msgid "The name of the widget catalog this class was declared by"
+msgstr "emri nga"
+
+#: ../gladeui/glade-widget-adaptor.c:956
+#, fuzzy
+msgid "Book"
+msgstr "Poshtë"
+
+#: ../gladeui/glade-widget-adaptor.c:957
+#, fuzzy
+msgid "DevHelp search namespace for this widget class"
+msgstr "kërko namespace për"
+
+#: ../gladeui/glade-widget-adaptor.c:964
+#, fuzzy
+msgid "Special Child Type"
+msgstr "Speciale Bir Lloji"
+
+#: ../gladeui/glade-widget-adaptor.c:965
+#, fuzzy
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr "nga për"
+
+#: ../gladeui/glade-widget-adaptor.c:973
+#, fuzzy
+msgid "Large Icon"
+msgstr "Ikona:"
+
+#: ../gladeui/glade-widget-adaptor.c:974
+#, fuzzy
+msgid "The 22x22 icon for this widget class"
+msgstr "ikonë për dritare"
+
+#: ../gladeui/glade-widget-adaptor.c:981
+#, fuzzy
+msgid "Small Icon"
+msgstr "I vogël Ikona"
+
+#: ../gladeui/glade-widget-adaptor.c:982
+#, fuzzy
+msgid "The 16x16 icon for this widget class"
+msgstr "ikonë për dritare"
+
+#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:68
+msgid "Cursor"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:990
+#, fuzzy
+msgid "A cursor for inserting widgets in the UI"
+msgstr "A për në"
+
+#: ../gladeui/glade-project-view.c:646
+#, c-format
+msgid "(internal %s)"
+msgstr ""
+
+#: ../gladeui/glade-project-view.c:650
+#, fuzzy, c-format
+msgid "(%s child)"
+msgstr "bir"
+
+#: ../gladeui/glade-custom.c:217
+#, fuzzy
+msgid "Creation Function"
+msgstr "Funksioni:"
+
+#: ../gladeui/glade-custom.c:218
+#, fuzzy
+msgid "The function which creates this widget"
+msgstr "gërmë për çdo tekst në"
+
+#: ../gladeui/glade-custom.c:224
+#, fuzzy
+msgid "String 1"
+msgstr "String2:"
+
+#: ../gladeui/glade-custom.c:225
+#, fuzzy
+msgid "The first string argument to pass to the function"
+msgstr "i pari"
+
+#: ../gladeui/glade-custom.c:231
+#, fuzzy
+msgid "String 2"
+msgstr "String2:"
+
+#: ../gladeui/glade-custom.c:232
+#, fuzzy
+msgid "The second string argument to pass to the function"
+msgstr "sekondë"
+
+#: ../gladeui/glade-custom.c:238
+#, fuzzy
+msgid "Integer 1"
+msgstr "Integrues 1"
+
+#: ../gladeui/glade-custom.c:239
+#, fuzzy
+msgid "The first integer argument to pass to the function"
+msgstr "i pari"
+
+#: ../gladeui/glade-custom.c:245
+#, fuzzy
+msgid "Integer 2"
+msgstr "Integrues 2"
+
+#: ../gladeui/glade-custom.c:246
+#, fuzzy
+msgid "The second integer argument to pass to the function"
+msgstr "sekondë"
+
+#: ../plugins/gtk+/glade-gtk.c:169
+msgid "GnomeUIInfo"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:170
+#, fuzzy
+msgid "Choose the GnomeUIInfo stock item"
+msgstr "element"
+
+#: ../plugins/gtk+/glade-gtk.c:186
+#, fuzzy
+msgid "Filename"
+msgstr "Riemërto"
+
+#: ../plugins/gtk+/glade-gtk.c:188
+#, fuzzy
+msgid "Icon Theme"
+msgstr "Madhësia:"
+
+#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:59
+#, fuzzy
+msgid "Container"
+msgstr "Në qendër"
+
+#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
+msgid "Method"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:219
+#, fuzzy
+msgid "The method to use to edit this image"
+msgstr "gërmë për çdo tekst në"
+
+#: ../plugins/gtk+/glade-gtk.c:228
+#, fuzzy
+msgid "The method to use to edit this button"
+msgstr "tekst në"
+
+#: ../plugins/gtk+/glade-gtk.c:585
+#, fuzzy, c-format
+msgid "Ordering children of %s"
+msgstr "nga"
+
+#: ../plugins/gtk+/glade-gtk.c:3264 ../plugins/gtk+/glade-gtk.c:3268
+#: ../plugins/gtk+/glade-gtk.c:3443 ../plugins/gtk+/glade-gtk.c:3447
+#, fuzzy
+msgid "This only applies with label type buttons"
+msgstr "me etiketa lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3279 ../plugins/gtk+/glade-gtk.c:3283
+#: ../plugins/gtk+/glade-gtk.c:3435 ../plugins/gtk+/glade-gtk.c:3439
+#, fuzzy
+msgid "This only applies with stock type buttons"
+msgstr "me lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3543 ../plugins/gtk+/glade-gtk.c:3565
+#, fuzzy
+msgid "You must remove any children before you can set the type"
+msgstr "Ti hiq përpara lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3589 ../plugins/gtk+/glade-gtk.c:4954
+#, fuzzy
+msgid "This only applies with file type images"
+msgstr "me file lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3597 ../plugins/gtk+/glade-gtk.c:4958
+#, fuzzy
+msgid "This only applies to Icon Theme type images"
+msgstr "Ikona Tema lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3606 ../plugins/gtk+/glade-gtk.c:4956
+#, fuzzy
+msgid "This only applies with stock type images"
+msgstr "me lloji"
+
+#: ../plugins/gtk+/glade-gtk.c:3618
+#, fuzzy
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr "Pixel Madhësia Ikona Madhësia Ikona Madhësia Pixel 1"
+
+#: ../plugins/gtk+/glade-gtk.c:3644
+#, fuzzy
+msgid "Pixel Size takes precedence over Icon size"
+msgstr "Pixel Madhësia Ikona"
+
+#: ../plugins/gtk+/glade-gtk.c:3935 ../plugins/gtk+/glade-gtk.c:4845
+#, fuzzy
+msgid "<separator>"
+msgstr "veçues"
+
+#: ../plugins/gtk+/glade-gtk.c:4109 ../plugins/gtk+/gtk+.xml.in.h:185
+msgid "Normal"
+msgstr "Normal"
+
+#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "Image"
+msgstr "Figura"
+
+#: ../plugins/gtk+/glade-gtk.c:4111
+msgid "Check"
+msgstr "Kontrolli"
+
+#: ../plugins/gtk+/glade-gtk.c:4112 ../plugins/gtk+/glade-gtk.c:4904
+msgid "Radio"
+msgstr "Radio"
+
+#: ../plugins/gtk+/glade-gtk.c:4113 ../plugins/gtk+/glade-gtk.c:4907
+#, fuzzy
+msgid "Separator"
+msgstr "veçues"
+
+#: ../plugins/gtk+/glade-gtk.c:4117
+#, fuzzy
+msgid "Add Item"
+msgstr "Shto Zë (Item)"
+
+#: ../plugins/gtk+/glade-gtk.c:4118
+#, fuzzy
+msgid "Add Child Item"
+msgstr "Shto Bir"
+
+#: ../plugins/gtk+/glade-gtk.c:4119 ../plugins/gtk+/glade-gtk.c:4916
+#, fuzzy
+msgid "Add Separator"
+msgstr "Shto Ndarës"
+
+#: ../plugins/gtk+/glade-gtk.c:4132
+#, fuzzy
+msgid ""
+"<big><b>Tips:</b></big>\n"
+"  * Right click over the treeview to add items.\n"
+"  * Press Delete to remove the selected item.\n"
+"  * Drag &amp; Drop to reorder.\n"
+"  * Type column is editable."
+msgstr ""
+"<big><b></b></big>\n"
+" Djathtas kliko shto elementët\n"
+" Shtypi Elemino hiq zgjedhur element\n"
+"&amp; Hidh\n"
+" Lloji është."
+
+#: ../plugins/gtk+/glade-gtk.c:4364
+#, fuzzy
+msgid "Print S_etup"
+msgstr "Printo Rr_egullimi"
+
+#: ../plugins/gtk+/glade-gtk.c:4368
+#, fuzzy
+msgid "Find Ne_xt"
+msgstr "Gjej në va_zhdim"
+
+#: ../plugins/gtk+/glade-gtk.c:4372
+#, fuzzy
+msgid "_Undo Move"
+msgstr "_Zhbëj Lëvizjen"
+
+#: ../plugins/gtk+/glade-gtk.c:4376
+#, fuzzy
+msgid "_Redo Move"
+msgstr "_Ribëj Lëvizjen"
+
+#: ../plugins/gtk+/glade-gtk.c:4379
+#, fuzzy
+msgid "Select _All"
+msgstr "Zgjidh file"
+
+#: ../plugins/gtk+/glade-gtk.c:4382
+#, fuzzy
+msgid "_New Game"
+msgstr "E re tabelë"
+
+#: ../plugins/gtk+/glade-gtk.c:4385
+#, fuzzy
+msgid "_Pause game"
+msgstr "_Pezullo"
+
+#: ../plugins/gtk+/glade-gtk.c:4388
+#, fuzzy
+msgid "_Restart Game"
+msgstr "_Rifillo lojën"
+
+#: ../plugins/gtk+/glade-gtk.c:4391
+#, fuzzy
+msgid "_Hint"
+msgstr "_Ndrysho"
+
+#: ../plugins/gtk+/glade-gtk.c:4394
+#, fuzzy
+msgid "_Scores..."
+msgstr "_Pikë..."
+
+#: ../plugins/gtk+/glade-gtk.c:4397
+#, fuzzy
+msgid "_End Game"
+msgstr "_Mbaro Lojën"
+
+#: ../plugins/gtk+/glade-gtk.c:4400
+#, fuzzy
+msgid "Create New _Window"
+msgstr "Krijo a i ri"
+
+#: ../plugins/gtk+/glade-gtk.c:4403
+#, fuzzy
+msgid "_Close This Window"
+msgstr "_Mbylle këtë dritare"
+
+#: ../plugins/gtk+/glade-gtk.c:4415
+#, fuzzy
+msgid "_Settings"
+msgstr "_Rregullime"
+
+#: ../plugins/gtk+/glade-gtk.c:4418
+#, fuzzy
+msgid "Fi_les"
+msgstr "_File"
+
+#: ../plugins/gtk+/glade-gtk.c:4421
+#, fuzzy
+msgid "_Windows"
+msgstr "Dritarja"
+
+#: ../plugins/gtk+/glade-gtk.c:4427
+#, fuzzy
+msgid "_Game"
+msgstr "Emri"
+
+#: ../plugins/gtk+/glade-gtk.c:4523
+#, fuzzy
+msgid "This does not apply with stock items"
+msgstr "nuk apliko me elementët"
+
+#: ../plugins/gtk+/glade-gtk.c:4733
+#, fuzzy
+msgid "Menu Bar Editor"
+msgstr "Editori i Menuve"
+
+#: ../plugins/gtk+/glade-gtk.c:4740
+msgid "Menu Editor"
+msgstr "Editori i Menuve"
+
+#: ../plugins/gtk+/glade-gtk.c:4854
+msgid "<custom>"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:4902 ../plugins/gtk+/gtk+.xml.in.h:33
+msgid "Button"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/glade-gtk.c:4903
+#, fuzzy
+msgid "Toggle"
+msgstr "Kavo Butoni"
+
+#: ../plugins/gtk+/glade-gtk.c:4905 ../plugins/gtk+/gtk+.xml.in.h:173
+#, fuzzy
+msgid "Menu"
+msgstr "Paneli i Menusë"
+
+#: ../plugins/gtk+/glade-gtk.c:4906
+#, fuzzy
+msgid "Item"
+msgstr "Elementë:"
+
+#: ../plugins/gtk+/glade-gtk.c:4911
+#, fuzzy
+msgid "Add Tool Button"
+msgstr "Paneli i instrumentëve Butoni"
+
+#: ../plugins/gtk+/glade-gtk.c:4912
+#, fuzzy
+msgid "Add Toggle Button"
+msgstr "Kavo Butoni"
+
+#: ../plugins/gtk+/glade-gtk.c:4913
+#, fuzzy
+msgid "Add Radio Button"
+msgstr "Radio Butoni"
+
+#: ../plugins/gtk+/glade-gtk.c:4914
+#, fuzzy
+msgid "Add Menu Button"
+msgstr "Shto Ndodhi Kuti"
+
+#: ../plugins/gtk+/glade-gtk.c:4915
+#, fuzzy
+msgid "Add Tool Item"
+msgstr "Paneli i instrumentëve"
+
+#: ../plugins/gtk+/glade-gtk.c:4924
+#, fuzzy
+msgid "Tool Bar Editor"
+msgstr "Tabela Editori "
+
+#: ../plugins/gtk+/glade-gtk.c:5677
+#, fuzzy
+msgid "Introduction page"
+msgstr "faqe"
+
+#: ../plugins/gtk+/glade-gtk.c:5681
+#, fuzzy
+msgid "Content page"
+msgstr "Përmbajtja faqe"
+
+#: ../plugins/gtk+/glade-gtk.c:5685
+#, fuzzy
+msgid "Confirm page"
+msgstr "Konfirmo faqe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
+#, fuzzy
+msgid "A stock item, select None to choose a custom image and label"
+msgstr "A element zgjidh Asnjë a e personalizuar figurë dhe etiketa"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:3
+#, fuzzy
+msgid "A tooltip text for this widget"
+msgstr "A tekst për"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:8
+#, fuzzy
+msgid "About Dialog"
+msgstr "Informacione Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:9
+#, fuzzy
+msgid "Accel Label"
+msgstr "Menu Etiketa:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+#, fuzzy
+msgid "Accessible Description"
+msgstr "Përshkrimi"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:14
+#, fuzzy
+msgid "Accessible Name"
+msgstr "Emër i thjeshtuar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "Alignment"
+msgstr "Drejtimi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:18
+#, fuzzy
+msgid "All"
+msgstr "Alt"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:19
+#, fuzzy
+msgid "All Events"
+msgstr "Ndodhitë:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:20 ../plugins/gnome/gnome.xml.in.h:2
+#, fuzzy
+msgid "Always"
+msgstr "Gjithmonë:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:21
+#, fuzzy
+msgid "Always Center"
+msgstr "Në qendër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:22
+msgid "Arrow"
+msgstr "Shigjeta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+#, fuzzy
+msgid "Aspect Frame"
+msgstr "Korniza"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:24
+#, fuzzy
+msgid "Assistant"
+msgstr "Asistenti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:25
+#, fuzzy
+msgid "Automatic"
+msgstr "Automatike"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:26
+#, fuzzy
+msgid "Both"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:27
+#, fuzzy
+msgid "Both Horizontal"
+msgstr "Shfaq:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:28 ../plugins/gnome/bonobo.xml.in.h:1
+msgid "Bottom"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+#, fuzzy
+msgid "Bottom Left"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+#, fuzzy
+msgid "Bottom Right"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:31
+#, fuzzy
+msgid "Bottom to Top"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:32
+#, fuzzy
+msgid "Box"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:34
+#, fuzzy
+msgid "Button 1 Motion"
+msgstr "Butoni Lëvizja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:35
+#, fuzzy
+msgid "Button 2 Motion"
+msgstr "Butoni Lëvizja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:36
+#, fuzzy
+msgid "Button 3 Motion"
+msgstr "Butoni Lëvizja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:37
+#, fuzzy
+msgid "Button Box"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
+#, fuzzy
+msgid "Button Motion"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:39
+#, fuzzy
+msgid "Button Press"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:40
+#, fuzzy
+msgid "Button Release"
+msgstr "Butoni:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:41
+msgid "Calendar"
+msgstr "Kalendari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+msgid "Cancel"
+msgstr "Anullo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+#, fuzzy
+msgid "Center"
+msgstr "Në qendër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
+#, fuzzy
+msgid "Center on Parent"
+msgstr "Në qendër në Prindi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Character"
+msgstr "Simboli"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
+#, fuzzy
+msgid "Check Button"
+msgstr "Kontrolli Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:47
+#, fuzzy
+msgid "Check Menu Item"
+msgstr "Kontrolli Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Close"
+msgstr "Mbyll"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+#, fuzzy
+msgid "Color Button"
+msgstr "Paneli i instrumentëve Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Color Selection"
+msgstr "Zgjedhja e ngjyrës"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:53
+#, fuzzy
+msgid "Color Selection Dialog"
+msgstr "Ngjyra Zgjedhja Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:54
+#, fuzzy
+msgid "Columned List"
+msgstr "Lista"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:55
+#, fuzzy
+msgid "Combo"
+msgstr "Të përbashkët"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:56
+#, fuzzy
+msgid "Combo Box"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:57
+#, fuzzy
+msgid "Combo Box Entry"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
+#, fuzzy
+msgid "Confirm"
+msgstr "Konfirmo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:60
+#, fuzzy
+msgid "Containers"
+msgstr "Në qendër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:61
+#, fuzzy
+msgid "Content"
+msgstr "Komente:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:62
+msgid "Continuous"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:63
+#, fuzzy
+msgid "Control and Display"
+msgstr "ikonë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:67 ../plugins/gnome/gnome.xml.in.h:5
+#, fuzzy
+msgid "Create Folder"
+msgstr "Krijo a i ri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:69
+msgid "Curve"
+msgstr "Hark"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+#, fuzzy
+msgid "Custom"
+msgstr "Preje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:71
+#, fuzzy
+msgid "Custom widget"
+msgstr "E personalizuar \"Widget\""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:72
+#, fuzzy
+msgid "Default"
+msgstr "E prezgjedhur:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:73
+#, fuzzy
+msgid "Delayed"
+msgstr "Elemino"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:74
+msgid "Described By"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
+#, fuzzy
+msgid "Description For"
+msgstr "Përshkrimi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:76
+#, fuzzy
+msgid "Description of an object, formatted for assistive technology access"
+msgstr "përshkrimi nga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+#, fuzzy
+msgid "Desktop"
+msgstr "Hapësira e Punës"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Dialog"
+msgstr "Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+#, fuzzy
+msgid "Dialog Box"
+msgstr "Dialogu Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "Discontinuous"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:81
+msgid "Discrete"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:82
+#, fuzzy
+msgid "Dock"
+msgstr "Qelia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:83
+#, fuzzy
+msgid "Down"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:84
+#, fuzzy
+msgid "Drag and Drop"
+msgstr "dhe Hidh"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:85
+msgid "Drawing Area"
+msgstr "Zona e vizatimit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:86
+#, fuzzy
+msgid "Drop Down Menu"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:87
+#, fuzzy
+msgid "East"
+msgstr "Ngjite"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
+#, fuzzy
+msgid "Edge"
+msgstr "\"Widget\""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:89
+#, fuzzy
+msgid "Edit Type"
+msgstr "Lloji:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:92 ../plugins/gnome/gnome.xml.in.h:7
+#, fuzzy
+msgid "End"
+msgstr "Shpalos:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+#, fuzzy
+msgid "Enter Notify"
+msgstr "Shto"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:94 ../plugins/gnome/gnome.xml.in.h:8
+msgid "Error"
+msgstr "Gabim"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:95 ../plugins/gnome/bonobo.xml.in.h:2
+#, fuzzy
+msgid "Etched In"
+msgstr "Zmadho"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/bonobo.xml.in.h:3
+#, fuzzy
+msgid "Etched Out"
+msgstr "Zvogëlo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:97
+#, fuzzy
+msgid "Event Box"
+msgstr "Ndodhi Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98 ../plugins/gnome/gnome.xml.in.h:9
+#, fuzzy
+msgid "Expand"
+msgstr "Shpalos:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99
+msgid "Expander"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:100
+msgid "Exposure"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:101
+#, fuzzy
+msgid "File Chooser Button"
+msgstr "Gërmat Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102
+#, fuzzy
+msgid "File Chooser Dialog"
+msgstr "File Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:103
+#, fuzzy
+msgid "File Name"
+msgstr "Emri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:104
+#, fuzzy
+msgid "File Selection"
+msgstr "File Zgjedhja Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:105 ../plugins/gnome/gnome.xml.in.h:11
+msgid "Fill"
+msgstr "Mbush (përshtat)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:106
+#, fuzzy
+msgid "Fixed"
+msgstr "_File"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:109
+#, fuzzy
+msgid "Focus Change"
+msgstr "Fokus Objektivi:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+#, fuzzy
+msgid "Font Button"
+msgstr "Gërmat Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "Font Selection"
+msgstr "Zgjedhja e gërmave"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
+#, fuzzy
+msgid "Font Selection Dialog"
+msgstr "Gërmat Zgjedhja Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:113
+msgid "Frame"
+msgstr "Korniza"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+#, fuzzy
+msgid "Free"
+msgstr "Korniza"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115
+#, fuzzy
+msgid "Gamma Curve"
+msgstr "Gamma Hark"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116
+msgid "Gtk+ Obsolete"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Half"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+#, fuzzy
+msgid "Handle Box"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:119 ../plugins/gnome/bonobo.xml.in.h:6
+#, fuzzy
+msgid "Horizontal"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:120
+#, fuzzy
+msgid "Horizontal Box"
+msgstr "Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:121
+#, fuzzy
+msgid "Horizontal Button Box"
+msgstr "Butoni Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:122
+#, fuzzy
+msgid "Horizontal Panes"
+msgstr "Horizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:123
+#, fuzzy
+msgid "Horizontal Ruler"
+msgstr "Horizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
+#, fuzzy
+msgid "Horizontal Scale"
+msgstr "Shkalla"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:125
+#, fuzzy
+msgid "Horizontal Scrollbar"
+msgstr "Horizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:126
+#, fuzzy
+msgid "Horizontal Separator"
+msgstr "Ndarës"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:127
+#, fuzzy
+msgid "Horizontal and Vertical"
+msgstr "Horizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+#, fuzzy
+msgid "Icon Name"
+msgstr "Madhësia:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
+#, fuzzy
+msgid "Icon View"
+msgstr "Madhësia:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:130
+#, fuzzy
+msgid "Icons"
+msgstr "Ikona"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:131
+msgid "If Valid"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:133
+#, fuzzy
+msgid "Image Menu Item"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+#, fuzzy
+msgid "Image Type"
+msgstr "Lloji:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Immediate"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:7
+#, fuzzy
+msgid "In"
+msgstr "Ikona"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+#, fuzzy
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in the UI hierarchy to that component"
+msgstr "a a jo në"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147
+#, fuzzy
+msgid ""
+"Indicates that an object provides descriptive information about another "
+"object; more verbose than 'Label For'"
+msgstr "informacione tjetër Etiketa"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148
+#, fuzzy
+msgid ""
+"Indicates that another object provides descriptive information about this "
+"object; more verbose than 'Labelled By'"
+msgstr "informacione tjetër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:153
+#, fuzzy
+msgid "Input Dialog"
+msgstr "Input Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Intro"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+#, fuzzy
+msgid "Items"
+msgstr "Elementë:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+#, fuzzy
+msgid "Key Press"
+msgstr "Shtypi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158
+#, fuzzy
+msgid "Key Release"
+msgstr "Release"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:162
+msgid "Layout"
+msgstr "Planimetria"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+#, fuzzy
+msgid "Least Recently Used first"
+msgstr "Në përdorim i pari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid "Leave Notify"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gnome/bonobo.xml.in.h:8
+msgid "Left"
+msgstr "Majtas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166
+#, fuzzy
+msgid "Left to Right"
+msgstr "Nga e majta në të djathtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167
+#, fuzzy
+msgid "Linear"
+msgstr "Rreshta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168
+#, fuzzy
+msgid "Link Button"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "List"
+msgstr "Lista"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+#, fuzzy
+msgid "List Item"
+msgstr "Lista"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:171
+#, fuzzy
+msgid "Maximun Width"
+msgstr "Gjerësia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid "Menu Bar"
+msgstr "Paneli i Menusë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+#, fuzzy
+msgid "Menu Item"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176
+#, fuzzy
+msgid "Menu Shell"
+msgstr "Menu Etiketa:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:177
+#, fuzzy
+msgid "Menu Tool Button"
+msgstr "Paneli i instrumentëve Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:178
+#, fuzzy
+msgid "Message Dialog"
+msgstr "Mesazhi:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+#, fuzzy
+msgid "Middle"
+msgstr "Qendror"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+#, fuzzy
+msgid "Most Recently Used first"
+msgstr "Në përdorim i pari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
+#, fuzzy
+msgid "Mouse"
+msgstr "Mbyll"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:182 ../plugins/gnome/gnome.xml.in.h:41
+#, fuzzy
+msgid "Never"
+msgstr "Asnjëherë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+#, fuzzy
+msgid "Node Child Of"
+msgstr "Bir"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:186
+#, fuzzy
+msgid "North"
+msgstr "Veri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+#, fuzzy
+msgid "North East"
+msgstr "Veri Lindje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
+#, fuzzy
+msgid "North West"
+msgstr "Veri Perëndim"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:189
+msgid "Notebook"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:190
+#, fuzzy
+msgid "Notification"
+msgstr "Orientimi:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+#, fuzzy
+msgid "Number of items"
+msgstr "Numri nga elementët:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+#, fuzzy
+msgid "Number of pages"
+msgstr "Numri nga faqe:"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:194
+#, fuzzy
+msgid "Object instance's name formatted for assistive technology access"
+msgstr ""
+"emri i instancës së objektit i formatuar për të qenë i pranueshëm nga "
+"teknollogjitë asistuese"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Ok"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:196
+#, fuzzy
+msgid "Ok, Cancel"
+msgstr "Anullo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:197 ../plugins/gnome/gnome.xml.in.h:42
+msgid "Open"
+msgstr "Hap"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:198
+#, fuzzy
+msgid "Option Menu"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:200 ../plugins/gnome/bonobo.xml.in.h:14
+#, fuzzy
+msgid "Out"
+msgstr "Preje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:201
+#, fuzzy
+msgid "Page Setup Dialog"
+msgstr "File Zgjedhja Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:202
+#, fuzzy
+msgid "Paned"
+msgstr "Ngjite"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+#, fuzzy
+msgid "Pointer Motion"
+msgstr "Pozicioni:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:206
+#, fuzzy
+msgid "Pointer Motion Hint"
+msgstr "Kursori Lëvizja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:207
+#, fuzzy
+msgid "Popup"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:209
+#, fuzzy
+msgid "Popup Menu"
+msgstr "Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:210 ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gnome/gnome.xml.in.h:46
+#, fuzzy
+msgid "Position"
+msgstr "Pozicioni:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:213
+#, fuzzy
+msgid "Print Dialog"
+msgstr "Input Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:214
+#, fuzzy
+msgid "Progress"
+msgstr "Progresi:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:215
+#, fuzzy
+msgid "Progress Bar"
+msgstr "Progresi Bar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+#, fuzzy
+msgid "Property Change"
+msgstr "Pronësia Dialogu Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:217
+#, fuzzy
+msgid "Proximity  Out"
+msgstr "Zvogëlo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+#, fuzzy
+msgid "Proximity In"
+msgstr "Zmadho"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219 ../plugins/gnome/gnome.xml.in.h:49
+#, fuzzy
+msgid "Question"
+msgstr "Përshkrimi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220
+msgid "Queue"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:221
+#, fuzzy
+msgid "Radio Button"
+msgstr "Radio Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:222
+#, fuzzy
+msgid "Radio Menu Item"
+msgstr "Radio Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:223
+#, fuzzy
+msgid "Radio Tool Button"
+msgstr "Radio Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:224
+#, fuzzy
+msgid "Range"
+msgstr "Figura"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:225
+#, fuzzy
+msgid "Recent Chooser"
+msgstr "File"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:226
+#, fuzzy
+msgid "Recent Chooser Dialog"
+msgstr "File Dialogu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:229
+#, fuzzy
+msgid "Response ID"
+msgstr "ID:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:230 ../plugins/gnome/bonobo.xml.in.h:15
+msgid "Right"
+msgstr "Djathtas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+#, fuzzy
+msgid "Right to Left"
+msgstr "Nga e djathta në të majtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:232
+#, fuzzy
+msgid "Ruler"
+msgstr "Roli:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/gnome.xml.in.h:50
+msgid "Save"
+msgstr "Ruaj"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:234
+#, fuzzy
+msgid "Scale"
+msgstr "Shkallëzuar:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
+#, fuzzy
+msgid "Scroll"
+msgstr "I përshkueshëm:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:236
+#, fuzzy
+msgid "Scrolled Window"
+msgstr "Dritarja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:53
+#, fuzzy
+msgid "Select Folder"
+msgstr "Zgjidh file"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:238
+#, fuzzy
+msgid "Separator Menu Item"
+msgstr "Ndarës për Menutë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:239
+#, fuzzy
+msgid "Separator Tool Item"
+msgstr "Ndarës për Menutë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:240
+#, fuzzy
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "faqe për"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:250
+#, fuzzy
+msgid "Set the text in the view's text buffer"
+msgstr "tekst në shfaq tekst"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+#, fuzzy
+msgid "Shrink"
+msgstr "Tkurr:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+#, fuzzy
+msgid "Size"
+msgstr "Madhësia:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+#, fuzzy
+msgid "South"
+msgstr "Jug"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+#, fuzzy
+msgid "South East"
+msgstr "Jug Lindje"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:255
+#, fuzzy
+msgid "South West"
+msgstr "Jug Perëndim"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
+#, fuzzy
+msgid "Spin Button"
+msgstr "Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:257
+#, fuzzy
+msgid "Splash Screen"
+msgstr "Ekrani"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:258
+msgid "Spline"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:259
+msgid "Spread"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:260 ../plugins/gnome/gnome.xml.in.h:55
+#, fuzzy
+msgid "Start"
+msgstr "Gjëndja:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:261
+#, fuzzy
+msgid "Static"
+msgstr "Teksti:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Status Bar"
+msgstr "Paneli i gjendjes"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:263
+#, fuzzy
+msgid "Stock Button"
+msgstr "Butoni:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+#, fuzzy
+msgid "Stock Item"
+msgstr "Qelia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266
+msgid "Structure"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:267
+msgid "Substructure"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:269
+#, fuzzy
+msgid "Summary"
+msgstr "Përmbledhja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:270
+msgid "Table"
+msgstr "Tabela"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:272 ../plugins/gnome/gnome.xml.in.h:58
+#, fuzzy
+msgid "Text"
+msgstr "Teksti:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:273
+#, fuzzy
+msgid "Text Entry"
+msgstr "Teksti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:274
+msgid "Text View"
+msgstr "Paraqitja si tekst"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:275
+#, fuzzy
+msgid "The items in this combo box"
+msgstr "elementët në lista"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+#, fuzzy
+msgid "The number of items in the box"
+msgstr "nga në"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:277
+#, fuzzy
+msgid "The number of pages in the notebook"
+msgstr "nga në"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:278
+#, fuzzy
+msgid "The page position in the Assistant"
+msgstr "faqe në lista nga faqe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:279
+#, fuzzy
+msgid "The position of the menu item in the menu shell"
+msgstr "nga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
+#, fuzzy
+msgid "The position of the tool item in the toolbar"
+msgstr "nga elementët në"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+#, fuzzy
+msgid ""
+"The response ID of this button in a dialog (it's NOT useful if this button "
+"is not in a GtkDialog)"
+msgstr "ID nga në a dritare dialogu është nuk në a"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:282
+#, fuzzy
+msgid "The stock item for this button"
+msgstr "element."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+#, fuzzy
+msgid "The stock item for this image"
+msgstr "element."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
+#, fuzzy
+msgid "The text of the menu item"
+msgstr "lloji nga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:285
+#, fuzzy
+msgid "The text to display"
+msgstr "tekst"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:286
+#, fuzzy
+msgid "Toggle Button"
+msgstr "Kavo Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:287
+#, fuzzy
+msgid "Toggle Tool Button"
+msgstr "Kavo Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:288
+#, fuzzy
+msgid "Tool Bar"
+msgstr "Paneli i instrumentëve"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:289
+#, fuzzy
+msgid "Tool Button"
+msgstr "Paneli i instrumentëve Butoni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:290
+msgid "Toolbar"
+msgstr "Paneli i instrumentëve"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:291
+#, fuzzy
+msgid "Tooltip"
+msgstr "Tregues:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:292 ../plugins/gnome/bonobo.xml.in.h:16
+msgid "Top"
+msgstr "Sipër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:293
+#, fuzzy
+msgid "Top Left"
+msgstr "Majtas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:294
+#, fuzzy
+msgid "Top Level"
+msgstr "Sipër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:295
+#, fuzzy
+msgid "Top Right"
+msgstr "Djathtas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:296
+#, fuzzy
+msgid "Top to Bottom"
+msgstr "Poshtë"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:297
+msgid "Toplevels"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:298
+#, fuzzy
+msgid "Tree View"
+msgstr "Paraqitja si tekst"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:299
+#, fuzzy
+msgid "Up"
+msgstr "Sipër"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:300
+#, fuzzy
+msgid "Use Underline"
+msgstr "Nënvizuar:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:301
+msgid "Utility"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:302 ../plugins/gnome/bonobo.xml.in.h:17
+#, fuzzy
+msgid "Vertical"
+msgstr "Vertikal Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:303
+#, fuzzy
+msgid "Vertical Box"
+msgstr "Vertikal Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:304
+#, fuzzy
+msgid "Vertical Button Box"
+msgstr "Vertikal Butoni Kuti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:305
+#, fuzzy
+msgid "Vertical Panes"
+msgstr "Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:306
+#, fuzzy
+msgid "Vertical Ruler"
+msgstr "Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:307
+#, fuzzy
+msgid "Vertical Scale"
+msgstr "Vertikal Shkalla"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:308
+#, fuzzy
+msgid "Vertical Scrollbar"
+msgstr "Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:309
+#, fuzzy
+msgid "Vertical Separator"
+msgstr "Vertikal Ndarës"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:310
+msgid "Viewport"
+msgstr "Viewport"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:311
+#, fuzzy
+msgid "Visibility Notify"
+msgstr "Dukshmëria:"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:312 ../plugins/gnome/gnome.xml.in.h:72
+#, fuzzy
+msgid "Warning"
+msgstr "Kujdes"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:313
+#, fuzzy
+msgid "West"
+msgstr "\"Widget\""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:315
+msgid "Window"
+msgstr "Dritarja"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:316
+msgid "Word"
+msgstr "Fjala"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:317
+#, fuzzy
+msgid "Word Character"
+msgstr "Simboli"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:318
+#, fuzzy
+msgid "Yes, No"
+msgstr "Po"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:319
+#, fuzzy
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr "Ti dhe a lista gjithçka dhe string për"
+
+#: ../plugins/gnome/glade-gnome.c:298
+#, fuzzy
+msgid "Status Message."
+msgstr "Gjendja Mesazh."
+
+#: ../plugins/gnome/glade-gnome.c:656
+#, fuzzy
+msgid "The position in the druid"
+msgstr "nga"
+
+#: ../plugins/gnome/glade-gnome.c:1008
+#, fuzzy
+msgid "Message box type"
+msgstr "Mesazh Lloji:"
+
+#: ../plugins/gnome/glade-gnome.c:1009
+#, fuzzy
+msgid "The type of the message box"
+msgstr "lloji nga mesazh"
+
+#: ../plugins/gnome/glade-gnome.c:1225
+#, fuzzy
+msgid "This property is valid only in font information mode"
+msgstr "është në modaliteti"
+
+#. This is deprecated
+#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:23
+#, fuzzy
+msgid "Selection Mode"
+msgstr "Zgjidh Modaliteti:"
+
+#: ../plugins/gnome/glade-gnome.c:1314
+#, fuzzy
+msgid "Choose the Selection Mode"
+msgstr "modaliteti"
+
+#: ../plugins/gnome/glade-gnome.c:1464
+#, fuzzy
+msgid "Placement"
+msgstr "Vendosja"
+
+#: ../plugins/gnome/glade-gnome.c:1465
+#, fuzzy
+msgid "Choose the BonoboDockPlacement type"
+msgstr "lloji"
+
+#: ../plugins/gnome/glade-gnome.c:1493
+#, fuzzy
+msgid "Behavior"
+msgstr "Sjellja"
+
+#: ../plugins/gnome/glade-gnome.c:1494
+#, fuzzy
+msgid "Choose the BonoboDockItemBehavior type"
+msgstr "lloji"
+
+#: ../plugins/gnome/glade-gnome.c:1503
+#, fuzzy
+msgid "Pack Type"
+msgstr "Lloji"
+
+#: ../plugins/gnome/glade-gnome.c:1504
+#, fuzzy
+msgid "Choose the Pack Type"
+msgstr "Lloji"
+
+#: ../plugins/gnome/gnome.xml.in.h:1
+#, fuzzy
+msgid "24-Hour Format"
+msgstr "Formati:"
+
+#: ../plugins/gnome/gnome.xml.in.h:3
+#, fuzzy
+msgid "Background Color"
+msgstr "Ngjyra e sfondit"
+
+#: ../plugins/gnome/gnome.xml.in.h:4
+#, fuzzy
+msgid "Contents Background Color"
+msgstr "Përmbajtja Mbrapa Ngjyra:"
+
+#: ../plugins/gnome/gnome.xml.in.h:6
+msgid "Dither"
+msgstr ""
+
+#: ../plugins/gnome/gnome.xml.in.h:10
+#, fuzzy
+msgid "File"
+msgstr "_File"
+
+#: ../plugins/gnome/gnome.xml.in.h:12
+#, fuzzy
+msgid "Font Information"
+msgstr "Zgjedhja e gërmave"
+
+#: ../plugins/gnome/gnome.xml.in.h:13
+#, fuzzy
+msgid "GNOME UI Obsolete"
+msgstr "GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:14
+#, fuzzy
+msgid "GNOME User Interface"
+msgstr "Vizaton interfaqet e përdoruesit"
+
+#: ../plugins/gnome/gnome.xml.in.h:15
+#, fuzzy
+msgid "Generic"
+msgstr "Të përgjithshme"
+
+#: ../plugins/gnome/gnome.xml.in.h:16
+#, fuzzy
+msgid "Gnome About"
+msgstr "Informacione Dialogu"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+#, fuzzy
+msgid "Gnome App"
+msgstr "Pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:18
+#, fuzzy
+msgid "Gnome App Bar"
+msgstr "Program Bar"
+
+#: ../plugins/gnome/gnome.xml.in.h:19
+#, fuzzy
+msgid "Gnome Color Picker"
+msgstr "Ngjyra"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+#, fuzzy
+msgid "Gnome Date Edit"
+msgstr "File"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:22
+#, fuzzy
+msgid "Gnome Dialog"
+msgstr "Dialogu Kuti"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+#, fuzzy
+msgid "Gnome Druid"
+msgstr "E re Robot"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+#, fuzzy
+msgid "Gnome Druid Page Edge"
+msgstr "E re Robot"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+#, fuzzy
+msgid "Gnome Druid Page Standard"
+msgstr "Robot Standart Faqja"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+#, fuzzy
+msgid "Gnome File Entry"
+msgstr "File"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+#, fuzzy
+msgid "Gnome Font Picker"
+msgstr "Gërmat"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+#, fuzzy
+msgid "Gnome HRef"
+msgstr "Lidhje Butoni"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+#, fuzzy
+msgid "Gnome Icon Entry"
+msgstr "Ikona"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+#, fuzzy
+msgid "Gnome Icon Selection"
+msgstr "Zgjedhja"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+#, fuzzy
+msgid "Gnome Message Box"
+msgstr "Mesazh Kuti"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
+#, fuzzy
+msgid "Gnome Pixmap"
+msgstr "Pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:33
+#, fuzzy
+msgid "Gnome Pixmap Entry"
+msgstr "Pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:34
+#, fuzzy
+msgid "Gnome Property Box"
+msgstr "E re"
+
+#: ../plugins/gnome/gnome.xml.in.h:35
+#, fuzzy
+msgid "Information"
+msgstr "Fraksioni:"
+
+#: ../plugins/gnome/gnome.xml.in.h:36
+#, fuzzy
+msgid "Logo"
+msgstr "Stema:"
+
+#: ../plugins/gnome/gnome.xml.in.h:37
+#, fuzzy
+msgid "Logo Background Color"
+msgstr "Ngjyra e sfondit"
+
+#: ../plugins/gnome/gnome.xml.in.h:38
+#, fuzzy
+msgid "Max Saved"
+msgstr "Ruaj"
+
+#: ../plugins/gnome/gnome.xml.in.h:39
+#, fuzzy
+msgid "Message"
+msgstr "Mesazhi:"
+
+#: ../plugins/gnome/gnome.xml.in.h:40
+#, fuzzy
+msgid "Monday First"
+msgstr "E hënë E Para:"
+
+#: ../plugins/gnome/gnome.xml.in.h:44
+#, fuzzy
+msgid "Padding"
+msgstr "Zbutje:"
+
+#: ../plugins/gnome/gnome.xml.in.h:45
+#, fuzzy
+msgid "Pixmap"
+msgstr "Pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:47
+#, fuzzy
+msgid "Program Name"
+msgstr "Programi Emri:"
+
+#: ../plugins/gnome/gnome.xml.in.h:48
+#, fuzzy
+msgid "Program Version"
+msgstr "Programi Emri:"
+
+#: ../plugins/gnome/gnome.xml.in.h:51
+#, fuzzy
+msgid "Scaled Height"
+msgstr "Shkallëzuar:"
+
+#: ../plugins/gnome/gnome.xml.in.h:52
+#, fuzzy
+msgid "Scaled Width"
+msgstr "Shkallëzuar Gjerësia:"
+
+#: ../plugins/gnome/gnome.xml.in.h:54
+#, fuzzy
+msgid "Show Time"
+msgstr "Shfaq Ora:"
+
+#: ../plugins/gnome/gnome.xml.in.h:56
+#, fuzzy
+msgid "StatusBar"
+msgstr "Paneli i gjendjes"
+
+#: ../plugins/gnome/gnome.xml.in.h:57
+#, fuzzy
+msgid "Store Config"
+msgstr "Konfigurim:"
+
+#: ../plugins/gnome/gnome.xml.in.h:59
+#, fuzzy
+msgid "Text Foreground Color"
+msgstr "Ngjyra ballore"
+
+#: ../plugins/gnome/gnome.xml.in.h:60
+#, fuzzy
+msgid "The height to scale the pixmap to"
+msgstr "lartësia"
+
+#: ../plugins/gnome/gnome.xml.in.h:61
+#, fuzzy
+msgid "The maximum number of history entries saved"
+msgstr "maksimum nga"
+
+#: ../plugins/gnome/gnome.xml.in.h:62
+#, fuzzy
+msgid "The pixmap file"
+msgstr "është"
+
+#: ../plugins/gnome/gnome.xml.in.h:63
+#, fuzzy
+msgid "The width to scale the pixmap to"
+msgstr "gjerësia"
+
+#: ../plugins/gnome/gnome.xml.in.h:65
+#, fuzzy
+msgid "Title Foreground Color"
+msgstr "Ngjyra ballore"
+
+#: ../plugins/gnome/gnome.xml.in.h:66
+#, fuzzy
+msgid "Top Watermark"
+msgstr "Sipër:"
+
+#: ../plugins/gnome/gnome.xml.in.h:67
+#, fuzzy
+msgid "Unknown"
+msgstr "Klasa nuk njihet"
+
+#: ../plugins/gnome/gnome.xml.in.h:68
+#, fuzzy
+msgid "Use Alpha"
+msgstr "Alfa:"
+
+#: ../plugins/gnome/gnome.xml.in.h:69
+#, fuzzy
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
+msgstr "Në përdorim informacione nga a përmbajtja për faqe"
+
+#: ../plugins/gnome/gnome.xml.in.h:70
+#, fuzzy
+msgid "User"
+msgstr "Përdoruesi"
+
+#: ../plugins/gnome/gnome.xml.in.h:71
+#, fuzzy
+msgid "User Widget"
+msgstr "\"Widget\""
+
+#: ../plugins/gnome/gnome.xml.in.h:73
+#, fuzzy
+msgid "Watermark"
+msgstr "Sipër:"
+
+#: ../plugins/gnome/bonobo.xml.in.h:4
+msgid "Exclusive"
+msgstr ""
+
+#: ../plugins/gnome/bonobo.xml.in.h:5
+#, fuzzy
+msgid "Floating"
+msgstr "Lejo:"
+
+#: ../plugins/gnome/bonobo.xml.in.h:9
+#, fuzzy
+msgid "Locked"
+msgstr "E bllokuar:"
+
+#: ../plugins/gnome/bonobo.xml.in.h:10
+#, fuzzy
+msgid "Never Floating"
+msgstr "Asnjëherë:"
+
+#: ../plugins/gnome/bonobo.xml.in.h:11
+#, fuzzy
+msgid "Never Horizontal"
+msgstr "Asnjëherë:"
+
+#: ../plugins/gnome/bonobo.xml.in.h:12
+#, fuzzy
+msgid "Never Vertical"
+msgstr "Asnjëherë Vertikal:"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:2
+#, fuzzy
+msgid "Browse"
+msgstr "Shfleto..."
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:4
+#, fuzzy
+msgid "Column Spacing"
+msgstr "Hapësira e ndërmjetme:"
+
+#: ../plugins/gnome/canvas.xml.in.h:5
+#, fuzzy
+msgid "GNOME Canvas"
+msgstr "GNOME Tela (vizatimi)"
+
+#: ../plugins/gnome/canvas.xml.in.h:6
+#, fuzzy
+msgid "Gnome Canvas"
+msgstr "Tela (vizatimi)"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:8
+#, fuzzy
+msgid "Gnome Icon List"
+msgstr "Ikona"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:10
+#, fuzzy
+msgid "Icon Width"
+msgstr "Gjerësia:"
+
+#: ../plugins/gnome/canvas.xml.in.h:11
+#, fuzzy
+msgid "If the icon text can be edited by the user"
+msgstr "ikonë tekst nga përdorues"
+
+#: ../plugins/gnome/canvas.xml.in.h:12
+#, fuzzy
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
+msgstr "ikonë tekst është në nuk nga"
+
+#: ../plugins/gnome/canvas.xml.in.h:13
+#, fuzzy
+msgid "Max X"
+msgstr "X"
+
+#: ../plugins/gnome/canvas.xml.in.h:14
+#, fuzzy
+msgid "Max Y"
+msgstr "Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:15
+#, fuzzy
+msgid "Min X"
+msgstr "X"
+
+#: ../plugins/gnome/canvas.xml.in.h:16
+#, fuzzy
+msgid "Min Y"
+msgstr "Y"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:18
+#, fuzzy
+msgid "Multiple"
+msgstr "Zgjidh Shumëfishe:"
+
+#: ../plugins/gnome/canvas.xml.in.h:19
+#, fuzzy
+msgid "Pixels per unit"
+msgstr "Pixels Njësia:"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:21
+#, fuzzy
+msgid "Row Spacing"
+msgstr "Rresht Hapësira e ndërmjetme:"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:25
+#, fuzzy
+msgid "Single"
+msgstr "Sinjali"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:27
+#, fuzzy
+msgid "Text Editable"
+msgstr "Teksti Pjesë e ndryshueshme:"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:29
+#, fuzzy
+msgid "Text Spacing"
+msgstr "Teksti Hapësira e ndërmjetme:"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:31
+#, fuzzy
+msgid "Text Static"
+msgstr "Teksti:"
+
+#: ../plugins/gnome/canvas.xml.in.h:32
+#, fuzzy
+msgid "The maximum x coordinate"
+msgstr "maksimum x"
+
+#: ../plugins/gnome/canvas.xml.in.h:33
+#, fuzzy
+msgid "The maximum y coordinate"
+msgstr "maksimum p"
+
+#: ../plugins/gnome/canvas.xml.in.h:34
+#, fuzzy
+msgid "The minimum x coordinate"
+msgstr "minimum x"
+
+#: ../plugins/gnome/canvas.xml.in.h:35
+#, fuzzy
+msgid "The minimum y coordinate"
+msgstr "minimum p"
+
+#: ../plugins/gnome/canvas.xml.in.h:36
+#, fuzzy
+msgid "The number of pixels between columns of icons"
+msgstr "nga pixels kollonat nga"
+
+#: ../plugins/gnome/canvas.xml.in.h:37
+#, fuzzy
+msgid "The number of pixels between rows of icons"
+msgstr "nga pixels rreshta nga"
+
+#: ../plugins/gnome/canvas.xml.in.h:38
+#, fuzzy
+msgid "The number of pixels between the text and the icon"
+msgstr "nga pixels tekst dhe ikonë"
+
+#: ../plugins/gnome/canvas.xml.in.h:39
+#, fuzzy
+msgid "The number of pixels corresponding to one unit"
+msgstr "nga pixels"
+
+#: ../plugins/gnome/canvas.xml.in.h:40
+#, fuzzy
+msgid "The selection mode"
+msgstr "modaliteti"
+
+#: ../plugins/gnome/canvas.xml.in.h:41
+#, fuzzy
+msgid "The width of each icon"
+msgstr "gjerësia nga ikonë"
