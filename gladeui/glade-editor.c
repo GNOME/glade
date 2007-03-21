@@ -537,9 +537,12 @@ glade_editor_property_class_comp (gconstpointer a, gconstpointer b)
 		else return 0;
 	}
 	else
-		return (ca->common || ca->packing) ?
-			ca->pspec->owner_type - cb->pspec->owner_type :
-			cb->pspec->owner_type - ca->pspec->owner_type;
+	{
+		if (g_type_is_a (ca->pspec->owner_type, cb->pspec->owner_type))
+			return (ca->common || ca->packing) ? 1 : -1;
+		else
+			return (ca->common || ca->packing) ? -1 : 1;
+	}
 }
 
 static GList *

@@ -1,3 +1,9 @@
+2007-03-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor.c: use g_type_is_a() to compare types
+	  in glade_editor_property_class_comp() (fixes bug #396436).
+	  based on Christian Persch's patch
+			    
 2007-03-20  Bruno Boaventura  <brunobol@gnome.org>
 
         * data/glade3.desktop.in.in: Remove incorrect "Application" category
