@@ -471,13 +471,13 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 
 	}
 
-	title = g_strdup_printf ("<b>%s</b>", glade_widget_group_get_title (group));
+	title = g_strdup_printf ("%s", glade_widget_group_get_title (group));
 
 	/* Put items box in a expander */
 	expander = glade_palette_expander_new (title);
 	glade_palette_expander_set_spacing (GLADE_PALETTE_EXPANDER (expander), 2);
 	glade_palette_expander_set_use_markup (GLADE_PALETTE_EXPANDER (expander), TRUE);
-	gtk_container_set_border_width (GTK_CONTAINER (expander), 1);
+	gtk_container_set_border_width (GTK_CONTAINER (expander), 0);
 
 	/* set default expanded state */
 	glade_palette_expander_set_expanded (GLADE_PALETTE_EXPANDER (expander), 
