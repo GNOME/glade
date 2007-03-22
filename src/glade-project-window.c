@@ -1623,7 +1623,7 @@ static GtkActionEntry project_entries[] = {
 	{ "Undo", GTK_STOCK_UNDO, NULL, "<control>Z",
 	  N_("Undo the last action"),	G_CALLBACK (gpw_undo_cb) },
 	
-	{ "Redo", GTK_STOCK_REDO, NULL, "<control>R",
+	{ "Redo", GTK_STOCK_REDO, NULL, "<shift><control>Z",
 	  N_("Redo the last action"),	G_CALLBACK (gpw_redo_cb) },
 	
 	{ "Cut", GTK_STOCK_CUT, NULL, NULL,
