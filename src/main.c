@@ -29,11 +29,15 @@
 #include <gladeui/glade-app.h>
 #include <gladeui/glade-debug.h>
 
-#include <stdlib.h> /* defines __argc & __argv on the windows build */
+#include <stdlib.h>
 #include <locale.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gmodule.h>
+
+#ifdef G_OS_WIN32
+#  include <windows.h>
+#endif
 
 #define APPLICATION_NAME (_("Glade"))
 
@@ -183,10 +187,13 @@ main (int argc, char *argv[])
 }
 
 #ifdef G_OS_WIN32
-/* In case we build this as a windowed application */
+
+/* In case we build this as a windowed application. */
 
 #ifdef __GNUC__
-#define _stdcall  __attribute__((stdcall))
+#  ifndef _stdcall
+#    define _stdcall  __attribute__((stdcall))
+#  endif
 #endif
 
 int _stdcall
@@ -197,4 +204,5 @@ WinMain (struct HINSTANCE__ *hInstance,
 {
 	return main (__argc, __argv);
 }
+
 #endif
