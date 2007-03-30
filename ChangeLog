@@ -1,3 +1,10 @@
+2007-03-30  Christian Persch  <chpe@gnome.org>
+
+	* gladeui/glade-parameter.c: (glade_parameter_get_integer),
+	(glade_parameter_get_float):
+	* gladeui/glade-xml-utils.c: (glade_xml_get_property_int): Don't use
+	atoi/atof. Bug #414358.
+
 2007-03-22  John Millikin  <jmillikin@gmail.com>
 
         * src/glade-project-window.c: Use Shift+Ctrl+Z as the accelerator for Redo,

@@ -386,7 +386,7 @@ glade_xml_get_property_int (GladeXmlNode *node_in,
 	if ((value = glade_xml_get_property (node, name)) == NULL)
 		return _default;
 
-	retval = atoi (value);
+	retval = g_ascii_strtoll (value, NULL, 10);
 	
 	g_free (value);
 

@@ -49,7 +49,7 @@ glade_parameter_get_integer (GList *parameters, const gchar *key, gint *value)
 	for (; list != NULL; list = list->next) {
 		parameter = list->data;
 		if (strcmp (key, parameter->key) == 0) {
-			*value = atoi (parameter->value);
+			*value = g_ascii_strtoll (parameter->value, NULL, 10);
 			return;
 		}
 	}
@@ -74,7 +74,7 @@ glade_parameter_get_float (GList *parameters, const gchar *key, gfloat *value)
 	for (; list != NULL; list = list->next) {
 		parameter = list->data;
 		if (strcmp (key, parameter->key) == 0) {
-			*value = (float) atof (parameter->value);
+			*value = (float) g_ascii_strtod (parameter->value, NULL);
 			return;
 		}
 	}
