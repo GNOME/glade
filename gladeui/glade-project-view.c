@@ -616,7 +616,6 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 				  gpointer data)
 {
 	GPVCellType  type = GPOINTER_TO_INT (data);
-	GdkPixbuf   *small_icon = NULL;
 	GladeWidget *widget;
 	gchar       *text = NULL, *child_type;
 
@@ -629,13 +628,11 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	g_return_if_fail (widget->adaptor != NULL);
 	g_return_if_fail (widget->adaptor->name != NULL);
 
-	g_object_get (widget->adaptor, "small-icon", &small_icon, NULL);
-	g_return_if_fail (small_icon != NULL);
-
 	switch (type) 
 	{
 	case CELL_ICON:
-		g_object_set (G_OBJECT (cell), "pixbuf", small_icon, NULL);
+		g_object_set (G_OBJECT (cell), "icon-name", widget->adaptor->icon_name, NULL);
+		g_object_set (G_OBJECT (cell), "stock-size", GTK_ICON_SIZE_MENU, NULL);
 		break;
 	case CELL_NAME:
 		g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
@@ -655,8 +652,6 @@ glade_project_view_cell_function (GtkTreeViewColumn *tree_column,
 	default:
 		break;
 	}
-
-	g_object_unref (small_icon);
 }
 
 static void

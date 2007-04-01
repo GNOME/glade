@@ -2,10 +2,9 @@
 /*
  * glade-palette-item.c
  *
- * Copyright (C) 2006 The GNOME Foundation.
+ * Copyright (C) 2007 Vincent Geddes
  *
- * Authors:
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ * Authors:  Vincent Geddes <vgeddes@metroweb.co.za>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,9 +61,6 @@ enum
 	PROP_APPEARANCE,
 	PROP_USE_SMALL_ICON
 };
-
-
-static GtkToggleButton *parent_class = NULL;
 
 
 G_DEFINE_TYPE(GladePaletteItem, glade_palette_item, GTK_TYPE_TOGGLE_BUTTON)
@@ -139,26 +135,35 @@ void
 glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_small_icon)
 {
 	GladePaletteItemPrivate *priv;
-	GdkPixbuf               *pixbuf = NULL;
 
 	g_return_if_fail (GLADE_IS_PALETTE_ITEM (item));
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
-
 
 	if (priv->use_small_icon != use_small_icon)
 	{
 		priv->use_small_icon = use_small_icon;		
 
 		if (use_small_icon != FALSE)
-			g_object_get (priv->adaptor, "small-icon", &pixbuf, NULL);
+			gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), priv->adaptor->icon_name, GTK_ICON_SIZE_MENU);
 		else
-			g_object_get (priv->adaptor, "large-icon", &pixbuf, NULL);
-
-		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), pixbuf);
-		g_object_unref (G_OBJECT (pixbuf));
+			gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), priv->adaptor->icon_name, GTK_ICON_SIZE_BUTTON);
 		
 		g_object_notify (G_OBJECT (item), "use-small-icon");
 	}
+}
+
+static void
+glade_palette_set_adaptor (GladePaletteItem *item, GladeWidgetAdaptor *adaptor)
+{
+	GladePaletteItemPrivate *priv;
+	
+	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
+
+	priv->adaptor = adaptor;
+	
+	gtk_label_set_text (GTK_LABEL (priv->label), adaptor->title);
+
+	gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), adaptor->icon_name, GTK_ICON_SIZE_BUTTON);
 }
 
 static void 
@@ -179,7 +184,7 @@ glade_palette_item_set_property (GObject *object,
 	switch (prop_id)
 	{
 		case PROP_ADAPTOR:
-			priv->adaptor = g_value_get_object (value);
+			glade_palette_set_adaptor (item, g_value_get_object (value));
 			break;
 		case PROP_APPEARANCE:
 			glade_palette_item_set_appearance (item, g_value_get_enum (value));
@@ -242,12 +247,10 @@ glade_palette_item_class_init (GladePaletteItemClass *klass)
 	GObjectClass *object_class;
 
 	object_class = G_OBJECT_CLASS (klass);
-	parent_class = g_type_class_peek_parent (klass);
-
 
 	object_class->get_property = glade_palette_item_get_property;
 	object_class->set_property = glade_palette_item_set_property;
-	object_class->dispose = glade_palette_item_dispose;
+	object_class->dispose      = glade_palette_item_dispose;
 
 	g_object_class_install_property (object_class,
 					 PROP_ADAPTOR,
@@ -274,7 +277,7 @@ glade_palette_item_class_init (GladePaletteItemClass *klass)
 							       FALSE,
 							       G_PARAM_READWRITE));
 
-	g_type_class_add_private (object_class, sizeof (GladePaletteItemPrivate));
+	g_type_class_add_private (klass, sizeof (GladePaletteItemPrivate));
 }
 
 
@@ -328,8 +331,6 @@ GtkWidget*
 glade_palette_item_new (GladeWidgetAdaptor *adaptor)
 {
 	GladePaletteItem        *item;
-	GladePaletteItemPrivate *priv;
-	GdkPixbuf               *pixbuf = NULL;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
@@ -337,20 +338,6 @@ glade_palette_item_new (GladeWidgetAdaptor *adaptor)
 			     "adaptor", adaptor,
 			     "appearance", GLADE_ITEM_ICON_ONLY,
 			     NULL);
-
-	g_return_val_if_fail (item != NULL, NULL);
-
-	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
-
-	gtk_label_set_text (GTK_LABEL (priv->label), adaptor->title);
-
-	g_object_get (G_OBJECT (adaptor), "large-icon", &pixbuf, NULL);
-	if (pixbuf) 
-	{
-		gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), pixbuf);
-		g_object_unref (G_OBJECT (pixbuf));
-	} else
-		g_warning ("couldnt get an icon from adaptor %s\n", adaptor->name);
 
 	return GTK_WIDGET (item);
 }

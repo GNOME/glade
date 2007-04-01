@@ -420,6 +420,9 @@ glade_app_init (GladeApp *app)
 	
 	if (!initialized)
 	{
+		gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+						   GLADE_DATADIR G_DIR_SEPARATOR_S "pixmaps");	
+	
 		glade_cursor_init ();
 		
 		glade_binding_load_all ();

@@ -132,26 +132,22 @@ glade_clipboard_view_cell_function (GtkTreeViewColumn *tree_column,
 {
 	gboolean     is_icon = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
-	GdkPixbuf   *pixbuf = NULL;
 
 	gtk_tree_model_get (tree_model, iter, 0, &widget, -1);
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (widget->name != NULL);
 
-	g_object_get (widget->adaptor, "small-icon", &pixbuf, NULL);
-	g_return_if_fail (pixbuf != NULL);
-
 	if (is_icon)
 		g_object_set (G_OBJECT (cell),
-			      "pixbuf", pixbuf,
+			      "icon-name", widget->adaptor->icon_name,
+			      "stock-size", GTK_ICON_SIZE_MENU,
 			      NULL);
 	else
 		g_object_set (G_OBJECT (cell),
 			      "text", widget->name,
 			      NULL);
 
-	g_object_unref (pixbuf);
 }
 
 static gint

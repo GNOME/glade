@@ -1,3 +1,26 @@
+2007-04-01  Vincent Geddes  <vincent.geddes@gmail.com>
+
+        * plugins/gtk+/icons/*, plugins/gnome/icons/*: Renamed all icons.
+
+        * gladeui/glade-project-view.c, gladeui/glade-widget-adaptor.[ch],
+          gladeui/glade-palette-item.c, gladeui/glade-clipboard-view.c:
+          Use GtkIconTheme for loading and managing widget icons.
+          New "icon-name" property on GladeWidgetAdaptor.
+
+        * gladeui/glade-catalog: Added catalog property "icon-prefix". The
+          default value of this property is set to the catalog name.
+
+        * gladeui/glade-app.c: Add GtkIconTheme search path for widget icons.
+
+        * plugins/gtk+/icons/16x16/Makefile.am,
+          plugins/gtk+/icons/22x22/Makefile.am,
+          plugins/gnome/icons/16x16/Makefile.am,
+          plugins/gnome/icons/22x22/Makefile.am: Renamed icon files.
+
+        * gladeui/glade-widget-adaptor.c: Use g_type_class_add_private().
+
+        * doc/widgetclasses.sgml, doc/catalogintro.sgml: Update documentation.
+
 2007-03-30  Vincent Geddes  <vincent.geddes@gmail.com>
 
         * src/main.c: Fix warnings when building on win32.

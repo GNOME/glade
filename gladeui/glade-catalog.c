@@ -58,6 +58,8 @@ struct _GladeCatalog
 	gchar *book;             /* Devhelp search domain
 				  */
 
+	gchar *icon_prefix;      /* the prefix for icons */
+
 	GList *widget_groups;    /* List of widget groups (palette)   */
 	GList *adaptors;         /* List of widget class adaptors (all)  */
 
@@ -174,9 +176,16 @@ catalog_open (const gchar *filename)
 		glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
 	catalog->book =
 		glade_xml_get_property_string (root, GLADE_TAG_BOOK);
+	catalog->icon_prefix =
+		glade_xml_get_property_string (root, GLADE_TAG_ICON_PREFIX);
 	catalog->init_function_name =
 		glade_xml_get_value_string (root, GLADE_TAG_INIT_FUNCTION);
 	
+
+	/* catalog->icon_prefix defaults to catalog->name */
+	if (!catalog->icon_prefix)
+		catalog->icon_prefix = g_strdup (catalog->name);
+
 	if (catalog->init_function_name && catalog->language == NULL)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
@@ -315,17 +324,21 @@ catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 	node = glade_xml_node_get_children (widgets_node);
 	for (; node; node = glade_xml_node_next (node)) 
 	{
-		const gchar        *node_name;
+		const gchar        *node_name, *domain;
 		GladeWidgetAdaptor *adaptor;
 
 		node_name = glade_xml_node_get_name (node);
 		if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0) 
 			continue;
 	
-		adaptor = glade_widget_adaptor_from_catalog 
-			(node, catalog->name, module,
-			 catalog->domain ? catalog->domain : catalog->library,
-			 catalog->book);
+		domain = catalog->domain ? catalog->domain : catalog->library;
+		
+		adaptor = glade_widget_adaptor_from_catalog (node,
+							     catalog->name,
+							     catalog->icon_prefix,
+							     module,
+			 				     domain, 
+			 				     catalog->book);
 
 		catalog->adaptors = g_list_prepend (catalog->adaptors, adaptor);
 	}
@@ -527,6 +540,9 @@ glade_catalog_free (GladeCatalog *catalog)
 	g_free (catalog->name);
 	if (catalog->book)
 		g_free (catalog->book);
+		
+	if (catalog->icon_prefix)
+		g_free (catalog->icon_prefix);
 	
 	for (list = catalog->adaptors; list; list = list->next)
 		g_object_unref (list->data);

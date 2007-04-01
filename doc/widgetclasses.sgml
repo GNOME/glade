@@ -6,7 +6,7 @@
   <refnamediv>
     <refname>Widget Classes</refname>
     <refpurpose>
-How to augment or define a #GladeWidgetClass
+Adding support for custom widgets 
     </refpurpose>
   </refnamediv>
 
@@ -50,7 +50,8 @@ To delve further into details; the complex layout looks like this:
     </para>
 
   </refsect1>
-  <refsect2>
+  
+  <refsect1>
     <title>Widget Class Parameters</title>
     <variablelist>
       <varlistentry>
@@ -81,9 +82,20 @@ a process that could lead to unexpected results.
         <term>generic-name</term>
         <listitem>
           <para>
-The 'generic-name' property is used to get the icon name for the widget palette
-and is a regular icon theme icon. The generic name is also used to generate 
-a default name for instances of the widget in the UI editor.
+The 'generic-name' is used to generate a default name for instances of the
+widget in the UI editor. It is also used in conjunction with the 'icon-prefix'
+to form an icon name for the widget.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+ <varlistentry>
+        <term>icon-name</term>
+        <listitem>
+          <para>
+The 'icon-name' property is used to explicitly set an icon name for this widget.
+These icon names are looked up in the current icon theme to retrieve an icon for
+the widget.
           </para>
         </listitem>
       </varlistentry>
@@ -143,8 +155,31 @@ your application via libglade.
       </varlistentry>
 
     </variablelist>
-  </refsect2>
-  <refsect3>
+  </refsect1>
+  
+  <refsect1>
+      <title>Icons</title>
+  <para>The Glade palette and other components use icons to represent the various widget classes. 
+  It is a good idea to provide icons for your widget classes, as this
+  enhances the user interface.</para>    
+      
+  <para>Glade uses the GTK+ GtkIconTheme facility to provide icons for widget classes. Any icon
+  available in the current icon theme can be used as an icon for a widget class.</para>
+  
+  <para>By default, an icon name of the format "widget-CATALOG_NAME-GENERIC_NAME"
+  is assigned to every widget class. CATALOG_NAME is the value of catalog name attribute, and GENERIC_NAME is
+  the value of an widget class's generic name attribute.</para>
+  
+  <para>To explicity set an icon name for a widget class, the "icon-name" attribute of the "glade-widget-class"
+  element can be specified. This will override the default icon name assigned to the widget class.</para>
+  
+  <para>Icon files can be installed under any system icon theme folder, but we recommend
+  that you install them in glade's private icon theme folder:</para>
+  
+  <programlisting>pkg-config --variable=pixmapdir gladeui-1.0</programlisting>
+  
+  </refsect1>
+  <refsect1>
     <title>Grouping widget classes in the catalog</title>
     <para>
 The widgets are groups in different groups in the Glade UI. Those groups
@@ -160,5 +195,5 @@ are defined in the catalog file as follows:
 </glade-widget-group>]]></programlisting>
 The file should contain one or more widget groups.
     </para>
-  </refsect3>
+  </refsect1>
 </refentry>

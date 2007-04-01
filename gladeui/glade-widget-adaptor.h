@@ -22,10 +22,10 @@ G_BEGIN_DECLS
 #define GLADE_WIDGET_ADAPTOR_GET_CLASS(o)    \
         (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
 
-typedef struct _GladeWidgetAdaptor       GladeWidgetAdaptor;
-typedef struct _GladeWidgetAdaptorClass  GladeWidgetAdaptorClass;
-typedef struct _GladeWidgetAdaptorPriv   GladeWidgetAdaptorPriv;
-typedef struct _GladeSignalClass         GladeSignalClass;
+typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
+typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
+typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
+typedef struct _GladeSignalClass          GladeSignalClass;
 
 /**
  * GWA_IS_FIXED:
@@ -351,6 +351,8 @@ struct _GladeWidgetAdaptor
 				    * example "button" so that we generate button1,
 				    * button2, buttonX ..
 				    */
+				    
+	gchar       *icon_name;    /* icon name for widget class */
 
 	gchar       *title;        /* Translated class name used in the UI */
 
@@ -375,7 +377,7 @@ struct _GladeWidgetAdaptor
 
 	GList       *actions;        /* A list of GWAAction */
 
-	GladeWidgetAdaptorPriv *priv;
+	GladeWidgetAdaptorPrivate *priv;
 
 };
 
@@ -468,6 +470,7 @@ GType glade_create_reason_get_type          (void) G_GNUC_CONST;
 LIBGLADEUI_API
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,
 							    const gchar          *catname,
+							    const gchar          *icon_prefix,
 							    GModule              *module,
 							    const gchar          *domain,
 							    const gchar          *book);
@@ -580,6 +583,7 @@ void                 glade_widget_adaptor_action_activate    (GladeWidget *widge
 
 LIBGLADEUI_API
 gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
+
 
 G_END_DECLS
 

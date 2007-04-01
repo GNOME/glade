@@ -40,12 +40,12 @@
 #include <gmodule.h>
 #include <ctype.h>
 
-#define LARGE_ICON_SUBDIR "22x22"
-#define LARGE_ICON_SIZE 22
-#define SMALL_ICON_SUBDIR "16x16"
-#define SMALL_ICON_SIZE 16
+#define DEFAULT_ICON_NAME "widget-gtk-frame"
 
-struct _GladeWidgetAdaptorPriv {
+#define GLADE_WIDGET_ADAPTOR_GET_PRIVATE(o)  \
+        (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptorPrivate))
+
+struct _GladeWidgetAdaptorPrivate {
 
 	gchar       *catalog;      /* The name of the widget catalog this class
 				    * was declared by.
@@ -53,9 +53,6 @@ struct _GladeWidgetAdaptorPriv {
 
 	gchar       *book;         /* DevHelp search namespace for this widget class
 				    */
-
-	GdkPixbuf   *large_icon;   /* The 22x22 icon for the widget */
-	GdkPixbuf   *small_icon;   /* The 16x16 icon for the widget */
 
 	GdkCursor   *cursor;       /* a cursor for inserting widgets */
 
@@ -76,11 +73,10 @@ enum {
 	PROP_TYPE,
 	PROP_TITLE,
 	PROP_GENERIC_NAME,
+	PROP_ICON_NAME,
 	PROP_CATALOG,
 	PROP_BOOK,
 	PROP_SPECIAL_TYPE,
-	PROP_SMALL_ICON,
-	PROP_LARGE_ICON,
 	PROP_CURSOR
 };
 
@@ -155,105 +151,12 @@ gwa_properties_set_weight (GList **properties, GType parent)
 }
 
 static void
-gwa_load_icons (GladeWidgetAdaptor *adaptor)
-{
-	GError    *error = NULL;
-	gchar     *icon_path;
-
-	/* only certain widget classes need to have icons */
-	if (G_TYPE_IS_INSTANTIATABLE (adaptor->type) == FALSE ||
-            G_TYPE_IS_ABSTRACT (adaptor->type) != FALSE ||
-            adaptor->generic_name == NULL)
-		return;
-
-	/* load large 22x22 icon */
-	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S
-				     LARGE_ICON_SUBDIR
-				     G_DIR_SEPARATOR_S "%s.png", 
-				     glade_app_get_pixmaps_dir (), 
-				     adaptor->generic_name);
-
-	adaptor->priv->large_icon = 
-		gdk_pixbuf_new_from_file_at_size (icon_path, 
-						  LARGE_ICON_SIZE, 
-						  LARGE_ICON_SIZE, 
-						  &error);
-	
-	if (adaptor->priv->large_icon == NULL)
-	{
-		g_warning (_("Unable to load icon for %s (%s)"), 
-			   adaptor->name, error->message);
-
-		g_error_free (error);
-		error = NULL;
-
-		/* use stock missing icon */
-		adaptor->priv->large_icon = 
-			gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
-						  GTK_STOCK_MISSING_IMAGE, 
-						  LARGE_ICON_SIZE, 
-						  GTK_ICON_LOOKUP_USE_BUILTIN, 
-						  &error);
-		if (adaptor->priv->large_icon == NULL)
-		{
-			g_critical (_("Unable to load stock icon (%s)"),
-				    error->message);
-
-			g_error_free (error);
-			error = NULL;
-		}
-	}
-	g_free (icon_path);
-
-
-	/* load small 16x16 icon */
-	icon_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S 
-				     SMALL_ICON_SUBDIR
-				     G_DIR_SEPARATOR_S "%s.png", 
-				     glade_app_get_pixmaps_dir (), 
-				     adaptor->generic_name);
-
-	adaptor->priv->small_icon = 
-		gdk_pixbuf_new_from_file_at_size (icon_path, 
-						  SMALL_ICON_SIZE, 
-						  SMALL_ICON_SIZE, 
-						  &error);
-	
-	if (adaptor->priv->small_icon == NULL)
-	{
-		g_warning (_("Unable to load icon for %s (%s)"), 
-			   adaptor->name, error->message);
-
-		g_error_free (error);
-		error = NULL;
-
-		/* use stock missing icon */
-		adaptor->priv->small_icon = 
-			gtk_icon_theme_load_icon (gtk_icon_theme_get_default (), 
-						  GTK_STOCK_MISSING_IMAGE, 
-						  SMALL_ICON_SIZE, 
-						  GTK_ICON_LOOKUP_USE_BUILTIN, 
-						  &error);
-		if (adaptor->priv->small_icon == NULL)
-		{
-			g_critical (_("Unable to load stock icon (%s)"),
-				    error->message);
-
-			g_error_free (error);
-			error = NULL;
-		}
-	}
-
-	g_free (icon_path);
-
-}
-
-static void
 gwa_create_cursor (GladeWidgetAdaptor *adaptor)
 {
-	GdkPixbuf *tmp_pixbuf;
+	GdkPixbuf *tmp_pixbuf, *widget_pixbuf;
 	const GdkPixbuf *add_pixbuf;
 	GdkDisplay *display;
+	GError *error = NULL;
 
 	/* only certain widget classes need to have cursors */
 	if (G_TYPE_IS_INSTANTIATABLE (adaptor->type) == FALSE ||
@@ -271,9 +174,28 @@ gwa_create_cursor (GladeWidgetAdaptor *adaptor)
 	tmp_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 32, 32);
 	gdk_pixbuf_fill (tmp_pixbuf, 0x00000000);
 
+	if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), adaptor->icon_name))
+	{
+		widget_pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+							  adaptor->icon_name,
+							  22,
+							  0,
+							  &error);
+		
+		if (error) {
+			g_warning ("Could not load image data for named icon '%s': %s", 
+				   adaptor->icon_name,
+				   error->message);
+			g_error_free (error);
+			return;
+		}
+	
+	} else {
+		return;
+	}
 
 	/* composite pixbufs */
-	gdk_pixbuf_composite (adaptor->priv->large_icon, tmp_pixbuf,
+	gdk_pixbuf_composite (widget_pixbuf, tmp_pixbuf,
 			      8, 8, 22, 22,
 			      8, 8, 1, 1,
                               GDK_INTERP_NEAREST, 255);
@@ -286,7 +208,8 @@ gwa_create_cursor (GladeWidgetAdaptor *adaptor)
 
 	adaptor->priv->cursor = gdk_cursor_new_from_pixbuf (display, tmp_pixbuf, 6, 6);
 
-	g_object_unref(tmp_pixbuf);
+	g_object_unref (tmp_pixbuf);
+	g_object_unref (widget_pixbuf);
 }
 
 
@@ -615,7 +538,9 @@ glade_widget_adaptor_constructor (GType                  type,
 		g_warning ("Adaptor created without a name");
 
 	/* Build decorations */
-	gwa_load_icons (adaptor);
+	if (!adaptor->icon_name) {		
+		adaptor->icon_name = g_strdup ("gtk-missing-image");
+	}
 	gwa_create_cursor (adaptor);
 
 	/* Let it leek */
@@ -710,15 +635,10 @@ glade_widget_adaptor_finalize (GObject *object)
 	if (adaptor->priv->cursor != NULL)
 		gdk_cursor_unref (adaptor->priv->cursor);
 
-	if (adaptor->priv->large_icon != NULL)
-		g_object_unref (G_OBJECT (adaptor->priv->large_icon));
-
-	if (adaptor->priv->small_icon != NULL)
-		g_object_unref (G_OBJECT (adaptor->priv->small_icon));
-
 	if (adaptor->name)         g_free (adaptor->name);
 	if (adaptor->generic_name) g_free (adaptor->generic_name);
 	if (adaptor->title)        g_free (adaptor->title);
+	if (adaptor->icon_name)    g_free (adaptor->icon_name);
 
 	if (adaptor->actions)      gwa_actions_free (adaptor->actions);
 	
@@ -742,6 +662,10 @@ glade_widget_adaptor_real_set_property (GObject         *object,
 	case PROP_NAME:
 		/* assume once (construct-only) */
 		adaptor->name = g_value_dup_string (value);
+		break;
+	case PROP_ICON_NAME:
+		/* assume once (construct-only) */
+		adaptor->icon_name = g_value_dup_string (value);
 		break;
 	case PROP_TYPE:
 		adaptor->type = g_value_get_gtype (value);
@@ -785,17 +709,16 @@ glade_widget_adaptor_real_get_property (GObject         *object,
 
 	switch (prop_id)
 	{
-	case PROP_NAME:         g_value_set_string (value, adaptor->name);          break;
-	case PROP_TYPE:	        g_value_set_gtype  (value, adaptor->type);          break;
-	case PROP_TITLE:        g_value_set_string (value, adaptor->title);         break;
-	case PROP_GENERIC_NAME: g_value_set_string (value, adaptor->generic_name);  break;
-	case PROP_CATALOG:      g_value_set_string (value, adaptor->priv->catalog); break;
-	case PROP_BOOK:         g_value_set_string (value, adaptor->priv->book);    break;
+	case PROP_NAME:         g_value_set_string (value, adaptor->name);             break;
+	case PROP_TYPE:	        g_value_set_gtype  (value, adaptor->type);             break;
+	case PROP_TITLE:        g_value_set_string (value, adaptor->title);            break;
+	case PROP_GENERIC_NAME: g_value_set_string (value, adaptor->generic_name);     break;
+	case PROP_ICON_NAME:    g_value_set_string (value, adaptor->icon_name);        break;
+	case PROP_CATALOG:      g_value_set_string (value, adaptor->priv->catalog);    break;
+	case PROP_BOOK:         g_value_set_string (value, adaptor->priv->book);       break;
 	case PROP_SPECIAL_TYPE: 
 		g_value_set_string (value, adaptor->priv->special_child_type); 
 		break;
-	case PROP_SMALL_ICON: g_value_set_object  (value, adaptor->priv->small_icon); break;
-	case PROP_LARGE_ICON: g_value_set_object  (value, adaptor->priv->large_icon); break;
 	case PROP_CURSOR:     g_value_set_pointer (value, adaptor->priv->cursor);     break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -831,7 +754,7 @@ glade_widget_adaptor_object_get_property (GladeWidgetAdaptor *adaptor,
 static void
 glade_widget_adaptor_init (GladeWidgetAdaptor *adaptor)
 {
-	adaptor->priv = g_new0 (GladeWidgetAdaptorPriv, 1);
+	adaptor->priv = GLADE_WIDGET_ADAPTOR_GET_PRIVATE (adaptor);
 }
 
 static gboolean
@@ -941,6 +864,14 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 		  _("Used to generate names of new widgets"),
 		  NULL, 
 		  G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+		  
+	g_object_class_install_property 
+		(object_class, PROP_ICON_NAME,
+		 g_param_spec_string 
+		 ("icon-name", _("Icon Name"), 
+		  _("The icon name"),
+		  DEFAULT_ICON_NAME, 
+		  G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
 	g_object_class_install_property 
 		(object_class, PROP_CATALOG,
@@ -968,27 +899,13 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 		  G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
 	g_object_class_install_property 
-		(object_class, PROP_LARGE_ICON,
-		 g_param_spec_object 
-		 ("large-icon", _("Large Icon"), 
-		  _("The 22x22 icon for this widget class"),
-		  GDK_TYPE_PIXBUF, 
-		  G_PARAM_READABLE));
-
-	g_object_class_install_property 
-		(object_class, PROP_SMALL_ICON,
-		 g_param_spec_object 
-		 ("small-icon", _("Small Icon"), 
-		  _("The 16x16 icon for this widget class"),
-		  GDK_TYPE_PIXBUF, 
-		  G_PARAM_READABLE));
-
-	g_object_class_install_property 
 		(object_class, PROP_CURSOR,
 		 g_param_spec_pointer 
 		 ("cursor", _("Cursor"), 
 		  _("A cursor for inserting widgets in the UI"),
 		  G_PARAM_READABLE));
+		  
+	g_type_class_add_private (adaptor_class, sizeof (GladeWidgetAdaptorPrivate));
 }
 
 GType
@@ -1421,8 +1338,7 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 		      GModule            *module,
 		      const gchar        *domain)
 {
-	GladeWidgetAdaptorClass *adaptor_class = 
-		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor);
+	GladeWidgetAdaptorClass *adaptor_class = GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor);
 	GladeXmlNode *child;
 	gchar        *child_type;
 	
@@ -1481,6 +1397,7 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 					      (gpointer *)&adaptor_class->replace_child);
 
 	}
+	
 	adaptor_class->fixed = 
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_FIXED, adaptor_class->fixed);
@@ -1582,6 +1499,52 @@ gwa_setup_binding_scripts (GladeWidgetAdaptor *adaptor)
 	g_list_free (bindings);
 }
 
+/** 
+ * create_icon_name_for_adaptor:
+ * @adaptor_name: The name of the widget class
+ * @adaptor_type: The #GType of the adaptor class
+ * @icon_name:    The icon name as set from the catalog
+ * @icon_prefix:  The icon prefix as set from the catalog
+ * @generic_name: The generic name for the widget class
+ *
+ * Creates a suitable icon name for an adaptor, based on several parameters.
+ *
+ * Returns: An icon name, or NULL if the adaptor does not require one.
+ */
+static gchar *
+create_icon_name_for_adaptor (const gchar *adaptor_name,
+			      GType        adaptor_type,
+			      const gchar *icon_name,
+			      const gchar *icon_prefix,
+			      const gchar *generic_name)
+{
+	gchar *name;
+
+	/* only certain widget adaptors need to have icons */
+	if (G_TYPE_IS_INSTANTIATABLE (adaptor_type) == FALSE ||
+            G_TYPE_IS_ABSTRACT (adaptor_type) != FALSE ||
+            generic_name == NULL)
+	{
+		return NULL;
+	}
+	
+	/* if no icon name has been specified, we then fallback to a default icon name */
+	if (!icon_name)
+		name = g_strdup_printf ("widget-%s-%s", icon_prefix, generic_name);
+	else
+		name = g_strdup (icon_name);
+		
+	/* check if icon is available */
+	if (!gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), name))
+	{
+		g_warning ("No icon named '%s' was found for widget class '%s'.", name, adaptor_name);
+		g_free (name);
+		name = g_strdup (DEFAULT_ICON_NAME);
+	}
+	
+	return name;
+}
+
 /**
  * glade_widget_adaptor_from_catalog:
  * @class_node: A #GladeXmlNode
@@ -1598,12 +1561,13 @@ gwa_setup_binding_scripts (GladeWidgetAdaptor *adaptor)
 GladeWidgetAdaptor *
 glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 				   const gchar      *catname,
+				   const gchar      *icon_prefix,
 				   GModule          *module,
 				   const gchar      *domain,
 				   const gchar      *book)
 {
 	GladeWidgetAdaptor *adaptor = NULL;
-	gchar              *name, *generic_name, *adaptor_name, *func_name;
+	gchar              *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name, *func_name;
 	GType               object_type, adaptor_type, parent_type;
 
 	if (!glade_xml_node_verify (class_node, GLADE_TAG_GLADE_WIDGET_CLASS))
@@ -1653,13 +1617,25 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	}
 	
 	generic_name = glade_xml_get_property_string (class_node, GLADE_TAG_GENERIC_NAME);
-	adaptor      = g_object_new (adaptor_type, 
-				     "type", object_type,
-				     "name", name,
-				     "generic-name", generic_name,
-				     NULL);
-	if (generic_name)
-		g_free (generic_name);
+	icon_name    = glade_xml_get_property_string (class_node, GLADE_TAG_ICON_NAME);
+	
+	/* get a suitable icon name for adaptor */
+	adaptor_icon_name = create_icon_name_for_adaptor (name,
+							  adaptor_type,
+							  icon_name,
+							  icon_prefix,
+							  generic_name);
+
+	adaptor = g_object_new (adaptor_type, 
+				"type", object_type,
+				"name", name,
+				"generic-name", generic_name,
+				"icon-name", adaptor_icon_name,
+				NULL);
+				
+	g_free (generic_name);
+	g_free (icon_name);
+	g_free (adaptor_icon_name);
 	
 	if ((adaptor->title = glade_xml_get_property_string_required
 	     (class_node, GLADE_TAG_TITLE,

@@ -63,12 +63,12 @@ library to use:
     </para>
 
   </refsect1>
-  <refsect2>
+  <refsect1>
     <title>Toplevel catalog properties and tags</title>
     <para>
 When defining the catalog, the 'name' and 'library' 
-are both manditory properties of the 'glade-catalog' tag; optionally
-you can also use 'depends' and 'domain'.
+are both manditory attributes of the 'glade-catalog' tag; optionally
+you can also use 'icon-prefix', 'depends' and 'domain'.
     </para>
 
     <variablelist>
@@ -79,6 +79,16 @@ you can also use 'depends' and 'domain'.
 The 'name' property is simply a string identifier for the catalog in 
 question, it will be used to identify your catalog so that the glade file can explicitly
 require it and to manage inter catalog dependencies.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>icon-prefix</term>
+        <listitem>
+          <para>
+The 'icon-prefix' attribute is used to form icon names for widgets. This property defaults
+to the value of the 'name' attribute.
           </para>
         </listitem>
       </varlistentry>
@@ -150,8 +160,8 @@ Your catalog's init-function will be called before any widget classes are instan
         </listitem>
       </varlistentry>
     </variablelist>
-  </refsect2>
-  <refsect3>
+  </refsect1>
+  <refsect1>
     <title>Validating and installing</title>
     <para>
 The DTD that is shipped with Glade can be used to validate your catalog
@@ -171,5 +181,5 @@ The icons for palette etc go into the pixmap directory:
 The plugin library should be installed into the modules directory:
       <programlisting>pkg-config --variable=moduledir gladeui-1.0</programlisting>
     </para>
-  </refsect3>
+  </refsect1>
 </refentry>
