@@ -77,6 +77,13 @@ AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 
 dnl ================================================================
+dnl Check for the unix print widgets in gtk+
+dnl ================================================================
+LIBS=$GTK_LIBS
+AC_CHECK_FUNCS(gtk_print_unix_dialog_new,[have_unix_print=yes]; break,[have_unix_print=no])
+AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
+
+dnl ================================================================
 dnl Check for optional gnome libs
 dnl ================================================================
 AC_ARG_ENABLE(gnome,
@@ -281,9 +288,10 @@ echo "
 
 Configuration:
 
-	Source code location:	${srcdir}
-	Compiler:		${CC}
-	GnomeUI Catalog:	${have_gnome}
-	Python Binding:		${have_python}
-	Glade User Manual:	${gdu_cv_have_gdu}
+	Source code location:	 ${srcdir}
+	Compiler:		 ${CC}
+	GTK+ UNIX Print Widgets: ${have_unix_print}
+	GnomeUI Widgets:	 ${have_gnome}
+	Python Binding:		 ${have_python}
+	Glade User Manual:	 ${gdu_cv_have_gdu}
 "

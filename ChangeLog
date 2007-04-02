@@ -1,3 +1,20 @@
+2007-04-02  Jeff Westerinen  <jeff.westerinen@palmsource.com>
+
+	* plugins/gtk+/gtk+.xml.in: removed the GtkPageSetupUnixDialog and 
+	  GtkPrintUnixDialog widgets from the gtk+ catalog. Fixes #392340.
+
+	* plugins/gtk+/gtkunixprint.xml.in: added new, separate catalog for
+	  the unix print widgets.
+
+	* plugins/gtk+/Makefile.am: modified the make file to include the new
+	  unix print catalog if found by configure.
+
+	* configure.ac: modified configure to check for the existence of
+	  the unix print widgets.
+
+	* po/POTFILES.in: added the new unix print catalog to the list of 
+	  translatable files.
+
 2007-04-01  Vincent Geddes  <vincent.geddes@gmail.com>
 
         * plugins/gtk+/icons/*, plugins/gnome/icons/*: Renamed all icons.

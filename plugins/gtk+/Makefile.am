@@ -35,10 +35,16 @@ endif
 # catalog data
 
 catalogsdir = $(pkgdatadir)/catalogs
+
 catalogs_DATA = gtk+.xml gtk+.xml.in
+
+if HAVE_GTK_UNIX_PRINT
+catalogs_DATA += gtkunixprint.xml gtkunixprint.xml.in
+endif
+
 @INTLTOOL_XML_NOMERGE_RULE@
 
 
-CLEANFILES = gtk+.xml
+CLEANFILES = gtk+.xml gtkunixprint.xml
 
 EXTRA_DIST = $(catalogs_DATA)
