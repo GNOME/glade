@@ -4,10 +4,10 @@
 
 2007-04-02  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * src/glade-project-window.c:
-          - Remove hard-coded newlines from license text. Enable "wrap-license"
-            property on GtkAboutDialog. Fixes #409120.
-          - s/this program/Glade/ in license text.
+	* src/glade-project-window.c:
+	  - Remove hard-coded newlines from license text. Enable "wrap-license"
+	    property on GtkAboutDialog. Fixes #409120.
+	  - s/this program/Glade/ in license text.
 
 2007-04-02  Jeff Westerinen  <jeff.westerinen@palmsource.com>
 
@@ -28,30 +28,30 @@
 
 2007-04-01  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * plugins/gtk+/icons/*, plugins/gnome/icons/*: Renamed all icons.
+	* plugins/gtk+/icons/*, plugins/gnome/icons/*: Renamed all icons.
 
-        * gladeui/glade-project-view.c, gladeui/glade-widget-adaptor.[ch],
-          gladeui/glade-palette-item.c, gladeui/glade-clipboard-view.c:
-          Use GtkIconTheme for loading and managing widget icons.
-          New "icon-name" property on GladeWidgetAdaptor.
+	* gladeui/glade-project-view.c, gladeui/glade-widget-adaptor.[ch],
+	  gladeui/glade-palette-item.c, gladeui/glade-clipboard-view.c:
+	  Use GtkIconTheme for loading and managing widget icons.
+	  New "icon-name" property on GladeWidgetAdaptor.
 
-        * gladeui/glade-catalog: Added catalog property "icon-prefix". The
-          default value of this property is set to the catalog name.
+	* gladeui/glade-catalog: Added catalog property "icon-prefix". The
+	  default value of this property is set to the catalog name.
 
-        * gladeui/glade-app.c: Add GtkIconTheme search path for widget icons.
+	* gladeui/glade-app.c: Add GtkIconTheme search path for widget icons.
 
-        * plugins/gtk+/icons/16x16/Makefile.am,
-          plugins/gtk+/icons/22x22/Makefile.am,
-          plugins/gnome/icons/16x16/Makefile.am,
-          plugins/gnome/icons/22x22/Makefile.am: Renamed icon files.
+	* plugins/gtk+/icons/16x16/Makefile.am,
+	  plugins/gtk+/icons/22x22/Makefile.am,
+	  plugins/gnome/icons/16x16/Makefile.am,
+	  plugins/gnome/icons/22x22/Makefile.am: Renamed icon files.
 
-        * gladeui/glade-widget-adaptor.c: Use g_type_class_add_private().
+	* gladeui/glade-widget-adaptor.c: Use g_type_class_add_private().
 
-        * doc/widgetclasses.sgml, doc/catalogintro.sgml: Update documentation.
+	* doc/widgetclasses.sgml, doc/catalogintro.sgml: Update documentation.
 
 2007-03-30  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * src/main.c: Fix warnings when building on win32.
+	* src/main.c: Fix warnings when building on win32.
 
 2007-03-30  Christian Persch  <chpe@gnome.org>
 
@@ -62,25 +62,25 @@
 
 2007-03-22  John Millikin  <jmillikin@gmail.com>
 
-        * src/glade-project-window.c: Use Shift+Ctrl+Z as the accelerator for Redo,
-          as specified by the HIG.
+	* src/glade-project-window.c: Use Shift+Ctrl+Z as the accelerator for Redo,
+	  as specified by the HIG.
 
 2007-03-22  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * gladeui/glade-palette-expander.[ch]: Rewrote expander widget implementation.
-        
-        * gladeui/glade-palette.c: Update for change in expander widget.
+	* gladeui/glade-palette-expander.[ch]: Rewrote expander widget implementation.
+	
+	* gladeui/glade-palette.c: Update for change in expander widget.
 
 2007-03-20  Bruno Boaventura  <brunobol@gnome.org>
 
-        * data/glade3.desktop.in.in: Remove incorrect "Application" category
-          from Categories. Add "GNOME" to Categories. Fixes #417618.
+	* data/glade3.desktop.in.in: Remove incorrect "Application" category
+	  from Categories. Add "GNOME" to Categories. Fixes #417618.
 
 2007-03-15  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * COPYING: Update licensing information. After we reorganised
-          the package structure, the LGPL-licensed pixmaps were put into
-          different directories.
+	* COPYING: Update licensing information. After we reorganised
+	  the package structure, the LGPL-licensed pixmaps were put into
+	  different directories.
 
 2007-03-13  Olivier Delhomme <olivierdelhomme@gmail.com>
 
@@ -171,13 +171,13 @@
 
 2007-02-20  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * src/glade-utils.c: Remove redundant call to `gtk_window_set_position()'
-          in `glade_util_file_dialog_new()'. Fixes #408879.
+	* src/glade-utils.c: Remove redundant call to `gtk_window_set_position()'
+	  in `glade_util_file_dialog_new()'. Fixes #408879.
 
 2007-02-17  Vincent Geddes  <vincent.geddes@gmail.com>
 
-        * src/glade-project-window.c: Remove duplicate labels for stock
-          items (patch by Nickolay V. Shmyrev, fixes #408874).
+	* src/glade-project-window.c: Remove duplicate labels for stock
+	  items (patch by Nickolay V. Shmyrev, fixes #408874).
 
 2007-02-17  Christian Persch  <chpe@svn.gnome.org>
 
