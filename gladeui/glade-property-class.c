@@ -775,8 +775,15 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 	if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
 		gdouble value, lower, upper, step_increment, page_increment, page_size;
-		
-		sscanf (string, "%lf %lf %lf %lf %lf %lf", &value, &lower, &upper, &step_increment, &page_increment, &page_size);
+                gchar *pstring = (gchar*) string;
+
+                value = g_ascii_strtod (pstring, &pstring);
+                lower = g_ascii_strtod (pstring, &pstring);
+                upper = g_ascii_strtod (pstring, &pstring);
+                step_increment = g_ascii_strtod (pstring, &pstring);
+                page_increment = g_ascii_strtod (pstring, &pstring);
+                page_size = g_ascii_strtod (pstring, &pstring);
+
 		object = G_OBJECT (gtk_adjustment_new (value, lower, upper, step_increment, page_increment, page_size));
 	}
 	else

@@ -193,23 +193,24 @@ glade_xml_node_verify (GladeXmlNode *node_in, const gchar *name)
 gboolean
 glade_xml_get_value_int (GladeXmlNode *node_in, const gchar *name, gint *val)
 {
-	xmlNodePtr node = (xmlNodePtr) node_in;
-	gchar *ret;
-	gint i;
-	gint res;
+        xmlNodePtr node = (xmlNodePtr) node_in;
+        gchar *value, *endptr = NULL;
+        gint64 i;
 
-	ret = glade_xml_get_value (node, name);
-	if (ret == NULL) return 0;
-	res = sscanf (ret, "%d", &i);
-	g_free (ret);
+        value = glade_xml_get_value (node, name);
+        if (value == NULL)
+                return FALSE;
 
-	if (res == 1)
-	{
-	        *val = i;
-		return TRUE;
-	}
+        errno = 0;
+        i = g_ascii_strtoll (value, &endptr, 10);
+        if (errno != 0 || (i == 0 && endptr == value)) {
+                g_free (value);
+                return FALSE;
+        }
 
-	return FALSE;
+        g_free (value);
+        *val = (gint) i;
+        return TRUE;
 }
 
 /**
