@@ -1,3 +1,10 @@
+2007-04-08  Christian Persch  <chpe@gnome.org>
+
+	* gladeui/glade-property-class.c:
+	(glade_property_class_make_object_from_string):
+	* gladeui/glade-xml-utils.c: (glade_xml_get_value_int):
+	- Don't use sscanf. Bug #424547, patch by Ivan Baldo and myself.
+
 2006-04-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Make "label" property of GtkToolButton translatable
