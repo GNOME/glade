@@ -149,65 +149,65 @@ struct _GladePropertyClass
 	
 };
 
-LIBGLADEUI_API
+
 GladePropertyClass *glade_property_class_new                     (gpointer             handle);
-LIBGLADEUI_API
+
 GladePropertyClass *glade_property_class_new_from_spec           (gpointer             handle,
 								  GParamSpec          *spec);
-LIBGLADEUI_API 
+ 
 GList              *glade_property_class_list_atk_relations      (gpointer             handle,
 								  GType                owner_type);
-LIBGLADEUI_API
+
 GladePropertyClass *glade_property_class_accel_property          (gpointer             handle,
 								  GType                owner_type);
 
-LIBGLADEUI_API
+
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
-LIBGLADEUI_API
+
 void                glade_property_class_free                    (GladePropertyClass  *property_class);
-LIBGLADEUI_API
+
 gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
-LIBGLADEUI_API
+
 gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class);
-LIBGLADEUI_API
+
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
 								  GladeProject        *project);
-LIBGLADEUI_API
+
 gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 								  const GValue        *value);
-LIBGLADEUI_API
+
 GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,
 								  va_list              vl);
-LIBGLADEUI_API
+
 void                glade_property_class_set_vl_from_gvalue      (GladePropertyClass  *klass,
 								  GValue              *value,
 								  va_list              vl);
-LIBGLADEUI_API
+
 GValue             *glade_property_class_make_gvalue             (GladePropertyClass  *klass,
 								  ...);
-LIBGLADEUI_API
+
 void                glade_property_class_get_from_gvalue         (GladePropertyClass  *klass,
 								  GValue              *value,
 								  ...);
-LIBGLADEUI_API
+
 gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
 								  GModule             *module,
 								  GType                object_type,
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);
-LIBGLADEUI_API
+
 G_CONST_RETURN gchar *glade_property_class_get_displayable_value   (GladePropertyClass *klass, 
 								    gint                value);
-LIBGLADEUI_API
+
 GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
-LIBGLADEUI_API
+
 gboolean            glade_property_class_match                   (GladePropertyClass *klass,
 								  GladePropertyClass *comp);
-LIBGLADEUI_API
+
 gboolean            glade_property_class_void_value              (GladePropertyClass *klass,
 								  GValue             *value);
-LIBGLADEUI_API
+
 G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);
 
 G_END_DECLS

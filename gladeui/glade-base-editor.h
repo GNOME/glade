@@ -22,12 +22,9 @@
 #ifndef __GLADE_BASE_EDITOR_H__
 #define __GLADE_BASE_EDITOR_H__
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-marshallers.h>
+
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -62,37 +59,30 @@ struct _GladeBaseEditorClass
 	gboolean      (*move_child)       (GladeBaseEditor *, GladeWidget *, GladeWidget *);
 };
 
-LIBGLADEUI_API
+
 GType                glade_base_editor_get_type               (void);
 
-LIBGLADEUI_API
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
 								 gboolean tree_like,
 								 ...);
 
-LIBGLADEUI_API
 void                 glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 							       GladeWidget *gchild);
 
-LIBGLADEUI_API
 void                 glade_base_editor_add_properties         (GladeBaseEditor *editor,
 							       GladeWidget *gchild,
 							       ...);
 
-LIBGLADEUI_API 
 void                 glade_base_editor_add_label              (GladeBaseEditor *editor,
 							       gchar *str);
 
-LIBGLADEUI_API
 void                 glade_base_editor_add_popup_items        (GladeBaseEditor *editor,
 							       ...);
 
-LIBGLADEUI_API
 void                 glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor,
 							       gboolean val);
 
 /* Convenience functions */
-LIBGLADEUI_API
 GtkWidget           *glade_base_editor_pack_new_window        (GladeBaseEditor *editor,
 							       gchar *title,
 							       gchar *markup);

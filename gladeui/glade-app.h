@@ -67,124 +67,121 @@ struct _GladeAppClass
 	void   (* update_ui_signal) (GladeApp    *app);
 };
 
-LIBGLADEUI_API 
+ 
 GType              glade_app_get_type   (void) G_GNUC_CONST;
 
-LIBGLADEUI_API 
 GladeApp*          glade_app_get        (void);
 
-LIBGLADEUI_API 
 void               glade_app_update_ui  (void);
 
-LIBGLADEUI_API 
 gboolean           glade_app_widget_event (GladeWidget *widget, 
 					   GdkEvent    *event);
-LIBGLADEUI_API 
+ 
 void               glade_app_set_window (GtkWidget *window);
-LIBGLADEUI_API 
+ 
 GtkWidget*         glade_app_get_window (void);
 
-LIBGLADEUI_API 
+ 
 GladeEditor*       glade_app_get_editor (void);
-LIBGLADEUI_API 
+ 
 GladePalette*      glade_app_get_palette (void);
-LIBGLADEUI_API 
+ 
 GladeClipboard*    glade_app_get_clipboard (void);
-LIBGLADEUI_API 
+ 
 GtkWidget*         glade_app_get_clipboard_view (void);
 
-LIBGLADEUI_API 
+ 
 GladeProject*      glade_app_get_project (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_set_project (GladeProject *project);
-LIBGLADEUI_API 
+ 
 void               glade_app_add_project (GladeProject *project);
-LIBGLADEUI_API 
+ 
 void               glade_app_remove_project (GladeProject *project);
-LIBGLADEUI_API 
+ 
 GList*             glade_app_get_projects (void);
-LIBGLADEUI_API 
+ 
 GKeyFile*          glade_app_get_config (void);
-LIBGLADEUI_API 
+ 
 gboolean           glade_app_is_project_loaded (const gchar *project_path);
-LIBGLADEUI_API 
+ 
 GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
-LIBGLADEUI_API 
+ 
 void               glade_app_show_properties (gboolean raise);
-LIBGLADEUI_API 
+ 
 void               glade_app_hide_properties (void);
 
-LIBGLADEUI_API 
+ 
 void               glade_app_add_project_view (GladeProjectView *view);
 
-LIBGLADEUI_API 
+ 
 void               glade_app_command_copy (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_command_cut (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_command_paste (GladePlaceholder *placeholder);
-LIBGLADEUI_API 
+ 
 void               glade_app_command_delete (void);
-LIBGLADEUI_API
+
 void               glade_app_command_delete_clipboard (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_command_undo (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_command_redo (void);
 
-LIBGLADEUI_API 
+ 
 gint               glade_app_config_save (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_set_transient_parent (GtkWindow *parent);
-LIBGLADEUI_API 
+ 
 GtkWindow         *glade_app_get_transient_parent (void);
-LIBGLADEUI_API 
+ 
 void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
-LIBGLADEUI_API 
+ 
 void               glade_app_update_instance_count  (GladeProject *project);
 
-LIBGLADEUI_API 
+ 
 GtkWidget 	 *glade_app_undo_button_new (void);
-LIBGLADEUI_API 
+ 
 GtkWidget 	 *glade_app_redo_button_new (void);
 
-LIBGLADEUI_API 
+ 
 GList            *glade_app_get_selection (void);
 
 
 /* These handle selection on a global scope and take care
  * of multiple project logic.
  */
-LIBGLADEUI_API 
+ 
 gboolean           glade_app_is_selected       (GObject  *object);
-LIBGLADEUI_API 
+ 
 void               glade_app_selection_set     (GObject  *object,
 					        gboolean  emit_signal);
-LIBGLADEUI_API 
+ 
 void               glade_app_selection_add     (GObject  *object,
 					        gboolean  emit_signal);
-LIBGLADEUI_API 
+ 
 void               glade_app_selection_remove  (GObject  *object,
 					        gboolean  emit_signal);
-LIBGLADEUI_API 
+ 
 void               glade_app_selection_clear   (gboolean  emit_signal);
-LIBGLADEUI_API 
+ 
 void               glade_app_selection_changed (void);
 
 /* package paths */
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_scripts_dir   (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_catalogs_dir  (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_modules_dir   (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_plugins_dir   (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_pixmaps_dir   (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_locale_dir    (void) G_GNUC_CONST;
-LIBGLADEUI_API
+
 const gchar       *glade_app_get_bindings_dir  (void) G_GNUC_CONST;
 
 G_END_DECLS

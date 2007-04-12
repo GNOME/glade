@@ -86,7 +86,6 @@ struct _GladeFixedClass {
 
 };
 
-LIBGLADEUI_API
 GType              glade_fixed_get_type     (void);
 
 G_END_DECLS

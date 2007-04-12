@@ -27,4 +27,4 @@ gboolean glade_stop_emission_accumulator   (GSignalInvocationHint *ihint,
 					    gpointer               dummy);
 G_END_DECLS
 
-#endif   /* __GLADE_ACCUM_H__ */
+#endif   /* __GLADE_ACCUMULATORS_H__ */

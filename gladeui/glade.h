@@ -1,32 +1,32 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * glade.h
+ *
+ * Copyright (C) 2007 The GNOME Foundation.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 #ifndef __GLADE_H__
 #define __GLADE_H__
 
-/* symbol export attributes
-*/
-#ifndef __GNUC__
-# define __DLL_IMPORT__	__declspec(dllimport)
-# define __DLL_EXPORT__	__declspec(dllexport)
-#else
-# define __DLL_IMPORT__	__attribute__((dllimport)) extern
-# define __DLL_EXPORT__	__attribute__((dllexport)) extern
-#endif 
-
-#if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
-# ifdef INSIDE_LIBGLADEUI
-#  define LIBGLADEUI_API	__DLL_EXPORT__
-# else
-#  define LIBGLADEUI_API	__DLL_IMPORT__
-# endif
-#else
-# define LIBGLADEUI_API		extern
-#endif
-
-/* fix circular header dependencies with forward declarations.
+/* FIXME: forward declarations to get around circular header dependencies.
  */
-typedef struct _GladeWidget         GladeWidget;
-typedef struct _GladeProperty       GladeProperty;
-typedef struct _GladeProject        GladeProject;
+typedef struct _GladeWidget    GladeWidget;
+typedef struct _GladeProperty  GladeProperty;
+typedef struct _GladeProject   GladeProject;
 
 #include <gladeui/glade-widget-adaptor.h>
 #include <gladeui/glade-widget.h>

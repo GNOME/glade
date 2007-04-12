@@ -15,7 +15,8 @@ G_BEGIN_DECLS
 typedef struct _GladeEditorProperty        GladeEditorProperty;
 typedef struct _GladeEditorPropertyClass   GladeEditorPropertyClass;
 
-struct _GladeEditorProperty {
+struct _GladeEditorProperty
+{
 	GtkHBox             parent_instance;
 
 	GladePropertyClass *klass;          /* The property class this GladeEditorProperty was created for
@@ -78,27 +79,28 @@ struct _GladeEditorPropertyClass {
 };
 
 
-LIBGLADEUI_API
+
 GType                glade_editor_property_get_type       (void);
-LIBGLADEUI_API
+
 GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *klass,
 							   gboolean             use_command);
-LIBGLADEUI_API
+
 GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
 							    const gchar        *property,
 							    gboolean            use_command);
-LIBGLADEUI_API
+
 void                 glade_editor_property_load           (GladeEditorProperty *eprop,
 							   GladeProperty       *property);
-LIBGLADEUI_API
+
 void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 							   GladeWidget         *widget);
-LIBGLADEUI_API
+
 gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
-LIBGLADEUI_API
+
 void                 glade_editor_property_show_info      (GladeEditorProperty *eprop);
-LIBGLADEUI_API
+
 void                 glade_editor_property_hide_info      (GladeEditorProperty *eprop);
+
 
 G_END_DECLS
 

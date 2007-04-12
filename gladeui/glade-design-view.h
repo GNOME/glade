@@ -57,19 +57,15 @@ struct _GladeDesignViewClass
 
 };
 
-LIBGLADEUI_API
+
 GType              glade_design_view_get_type (void) G_GNUC_CONST;
 
-LIBGLADEUI_API
 GtkWidget         *glade_design_view_new (GladeProject *project);
 
-LIBGLADEUI_API
 GladeProject      *glade_design_view_get_project (GladeDesignView *view);
 
-LIBGLADEUI_API
 GladeDesignView   *glade_design_view_get_from_project (GladeProject *project);
 
-LIBGLADEUI_API
 GladeDesignLayout *glade_design_view_get_layout (GladeDesignView *view);
 
 

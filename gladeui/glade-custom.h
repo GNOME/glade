@@ -54,8 +54,8 @@ struct _GladeCustomClass
 /* Since the class is called Custom and not GladeCustom, 
  * glade-widget-class will search for custom_get_type() instead
  * if glade_custom_get_type()
- */
-LIBGLADEUI_API GType  custom_get_type  (void) G_GNUC_CONST;
+ */ 
+GType  custom_get_type  (void) G_GNUC_CONST;
 
 G_END_DECLS
 

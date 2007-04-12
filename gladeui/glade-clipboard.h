@@ -13,8 +13,9 @@ G_BEGIN_DECLS
 typedef struct _GladeClipboard      GladeClipboard;
 typedef struct _GladeClipboardClass GladeClipboardClass;
 
-struct _GladeClipboard {
-	GObject __parent__;
+struct _GladeClipboard
+{
+	GObject    parent_instance;
 
 	GList     *widgets;     /* A list of GladeWidget's on the clipboard */
 	GList     *selection;   /* Selection list of GladeWidget's */
@@ -22,32 +23,31 @@ struct _GladeClipboard {
 	GtkWidget *view;        /* see glade-clipboard-view.c */
 };
 
-struct _GladeClipboardClass {
-	GObjectClass __parent__;
+struct _GladeClipboardClass
+{
+	GObjectClass parent_class;
 };
 
 
-LIBGLADEUI_API
+
 GType           glade_clipboard_get_type         (void);
 
-LIBGLADEUI_API
 GladeClipboard *glade_clipboard_new              (void);
-LIBGLADEUI_API
+
 void            glade_clipboard_add              (GladeClipboard *clipboard, 
 						  GList          *widgets);
-LIBGLADEUI_API
+
 void            glade_clipboard_remove           (GladeClipboard *clipboard, 
 						  GList          *widgets);
 
-LIBGLADEUI_API
 void            glade_clipboard_selection_add    (GladeClipboard *clipboard, 
 						  GladeWidget    *widget);
-LIBGLADEUI_API
+
 void            glade_clipboard_selection_remove (GladeClipboard *clipboard, 
 						  GladeWidget    *widget);
-LIBGLADEUI_API
+
 void            glade_clipboard_selection_clear  (GladeClipboard *clipboard);
-LIBGLADEUI_API
+
 gboolean        glade_clipboard_get_has_selection  (GladeClipboard *clipboard);
 
 

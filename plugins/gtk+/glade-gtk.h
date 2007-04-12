@@ -5,12 +5,6 @@
 #include <gladeui/glade.h>
 #include <glib-object.h>
 
-#ifdef G_OS_WIN32
-#define GLADEGTK_API __declspec(dllexport)
-#else
-#define GLADEGTK_API
-#endif
-
 /* Types */
 
 typedef enum {
@@ -25,7 +19,7 @@ typedef enum {
 	GLADEGTK_BUTTON_CONTAINER
 } GladeGtkButtonType;
 
-GType GLADEGTK_API		glade_gtk_image_type_get_type (void);
-GType GLADEGTK_API		glade_gtk_button_type_get_type (void);
+GType glade_gtk_image_type_get_type (void);
+GType glade_gtk_button_type_get_type (void);
 
 #endif /* __GLADE_GTK_H__ */

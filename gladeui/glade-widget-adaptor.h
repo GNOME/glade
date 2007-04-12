@@ -461,127 +461,127 @@ struct _GladeWidgetAdaptorClass
 #define glade_widget_adaptor_from_pclass(pclass) \
     ((pclass) ? (GladeWidgetAdaptor *)((GladePropertyClass *)(pclass))->handle : NULL)
 
-LIBGLADEUI_API
+
 GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
  
-LIBGLADEUI_API
+
 GType glade_create_reason_get_type          (void) G_GNUC_CONST;
 
-LIBGLADEUI_API
+
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,
 							    const gchar          *catname,
 							    const gchar          *icon_prefix,
 							    GModule              *module,
 							    const gchar          *domain,
 							    const gchar          *book);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_register         (GladeWidgetAdaptor   *adaptor);
-LIBGLADEUI_API 
+ 
 GladeWidget         *glade_widget_adaptor_create_internal  (GladeWidget          *parent,
 							    GObject              *internal_object,
 							    const gchar          *internal_name,
 							    const gchar          *parent_name,
 							    gboolean              anarchist,
 							    GladeCreateReason     reason);
-LIBGLADEUI_API
+
 GladeWidget         *glade_widget_adaptor_create_widget_real (gboolean            query, 
 							      const gchar        *first_property,
 							      ...);
 
-LIBGLADEUI_API
+
 GladeWidgetAdaptor  *glade_widget_adaptor_get_by_name        (const gchar        *name);
-LIBGLADEUI_API
+
 GladeWidgetAdaptor  *glade_widget_adaptor_get_by_type        (GType               type);
-LIBGLADEUI_API
+
 GList               *glade_widget_adaptor_get_derived_adaptors (GType             type);
-LIBGLADEUI_API
+
 GladePropertyClass  *glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
 							      const gchar        *name);
-LIBGLADEUI_API
+
 GladePropertyClass  *glade_widget_adaptor_get_pack_property_class (GladeWidgetAdaptor *adaptor,
 								   const gchar        *name);
-LIBGLADEUI_API
+
 GParameter          *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
 							      gboolean            construct,
 							      guint              *n_params);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      GladeCreateReason   reason);
-LIBGLADEUI_API
+
 GObject             *glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *internal_name);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_launch_editor      (GladeWidgetAdaptor *adaptor,
 							      GObject            *object);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_set_property       (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *property_name,
 							      const GValue       *value);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_get_property       (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *property_name,
 							      GValue             *value);
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_verify_property    (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *property_name,
 							      const GValue       *value);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_add                (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_remove             (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child);
-LIBGLADEUI_API
+
 GList               *glade_widget_adaptor_get_children       (GladeWidgetAdaptor *adaptor,
 							      GObject            *container);
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_has_child          (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_child_set_property (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child,
 							      const gchar        *property_name,
 							      const GValue       *value);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_child_get_property (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *child,
 							      const gchar        *property_name,
 							      GValue             *value);
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
 								 GObject            *container,
 								 GObject            *child,
 								 const gchar        *property_name,
 								 GValue             *value);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_replace_child      (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,
 							      GObject            *old_obj,
 							      GObject            *new_obj);
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_contains_extra     (GladeWidgetAdaptor *adaptor);
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_query              (GladeWidgetAdaptor *adaptor);
 
-LIBGLADEUI_API G_CONST_RETURN
+G_CONST_RETURN
 gchar               *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
 							      GladeWidgetAdaptor *parent_adaptor,
 							      const gchar        *propert_id);
-LIBGLADEUI_API
+
 void                 glade_widget_adaptor_action_activate    (GladeWidget *widget,
 					    		      const gchar *action_id);
 
-LIBGLADEUI_API
+
 gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
 
 

@@ -1,3 +1,28 @@
+2007-04-12  Vincent Geddes  <vincent.geddes@gmail.com>
+
+	* gladeui/Makefile.am: Auto-generate `gladeui.def' for DLL symbol
+	  exports. Remove -DINSIDE_LIBGLADEUI from libgladeui_1_la_CPPFLAGS.
+
+	* gladeui/glade-accumulators.h, gladeui/glade-app.h,
+	  gladeui/glade-base-editor.h, gladeui/glade-binding.h,
+	  gladeui/glade-builtins.h, gladeui/glade-catalog.h,
+	  gladeui/glade-clipboard-view.h, gladeui/glade-clipboard.h,
+	  gladeui/glade-command.h, gladeui/glade-custom.h,
+	  gladeui/glade-debug.h, gladeui/glade-design-view.h,
+	  gladeui/glade-editor-property.h, gladeui/glade-editor.h,
+	  gladeui/glade-fixed.h, gladeui/glade-palette.h,
+	  gladeui/glade-parameter.h, gladeui/glade-placeholder.h,
+	  gladeui/glade-project-view.h, gladeui/glade-project.h,
+	  gladeui/glade-property-class.h, gladeui/glade-property.h,
+	  gladeui/glade-signal-editor.h, gladeui/glade-utils.h,
+	  gladeui/glade-widget-adaptor.h, gladeui/glade-widget.h,
+	  gladeui/glade.h:
+	  Remove LIBGLADEUI_API function attributes.
+
+	* plugins/gnome/glade-gnome.c, plugins/gtk+/glade-gtk.c,
+	  plugins/gtk+/glade-gtk.h:
+	  Remove GLADEGTK_API and GLADEGNOME_API function attributes.
+
 2007-04-08  Christian Persch  <chpe@gnome.org>
 
 	* gladeui/glade-property-class.c:

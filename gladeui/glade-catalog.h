@@ -32,36 +32,34 @@ typedef struct _GladeCatalog       GladeCatalog;
 typedef struct _GladeWidgetGroup   GladeWidgetGroup;
 
 
-LIBGLADEUI_API 
+
 GList *       glade_catalog_load_all                (void);
 
-LIBGLADEUI_API 
+
 const gchar * glade_catalog_get_name                (GladeCatalog     *catalog);
 
-LIBGLADEUI_API 
+
 GList *       glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
-LIBGLADEUI_API 
+
 GList *       glade_catalog_get_adaptors            (GladeCatalog     *catalog);
 
-LIBGLADEUI_API 
+
 void          glade_catalog_free                    (GladeCatalog     *catalog);
 
-LIBGLADEUI_API 
+
 const gchar * glade_widget_group_get_name           (GladeWidgetGroup *group);
-LIBGLADEUI_API 
+
 const gchar * glade_widget_group_get_title          (GladeWidgetGroup *group);
-LIBGLADEUI_API 
+
 gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
-LIBGLADEUI_API 
+
 GList *       glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
 
-LIBGLADEUI_API 
+
 void          glade_widget_group_free               (GladeWidgetGroup *group);
 
-LIBGLADEUI_API 
 gboolean      glade_catalog_is_loaded               (const gchar      *name);
 
-LIBGLADEUI_API
 void          glade_catalog_modules_close           (void);
 
 G_END_DECLS

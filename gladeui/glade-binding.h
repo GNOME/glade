@@ -104,30 +104,25 @@ struct _GladeBindingScript {
 	gchar *name, *path;
 };
 
-LIBGLADEUI_API
+
 void          glade_binding_load_all (void);
 
-LIBGLADEUI_API
 void          glade_binding_unload_all (void);
 
-LIBGLADEUI_API
 GladeBinding *glade_binding_get (const gchar *name);
 
-LIBGLADEUI_API
 const gchar  *glade_binding_get_name (GladeBinding *binding);
 
-LIBGLADEUI_API
 GList        *glade_binding_get_all ();
 
-LIBGLADEUI_API
 void          glade_binding_library_load (GladeBinding *binding,
 					  const gchar *library);
 
-LIBGLADEUI_API
 gint          glade_binding_run_script (GladeBinding *script, 
 					const gchar *path,
 					gchar **argv);
 
+
 G_END_DECLS
 
-#endif
+#endif /* __GLADE_BINDING_H__ */

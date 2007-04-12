@@ -45,22 +45,17 @@ struct _GladeProjectViewClass
 				       GladeProject *project);
 };
 
-LIBGLADEUI_API
+
 GType             glade_project_view_get_type (void) G_GNUC_CONST;
 
-LIBGLADEUI_API
 GtkWidget        *glade_project_view_new (void);
 
-LIBGLADEUI_API
 GladeProject     *glade_project_view_get_project (GladeProjectView *view);
 
-LIBGLADEUI_API
 void              glade_project_view_set_project (GladeProjectView *view, GladeProject *project);
 				     
-LIBGLADEUI_API
 void              glade_project_view_expand_all (GladeProjectView *view);
 				     
-LIBGLADEUI_API
 void              glade_project_view_collapse_all (GladeProjectView *view);
 
 G_END_DECLS

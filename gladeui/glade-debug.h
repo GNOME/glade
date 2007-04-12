@@ -2,6 +2,10 @@
 #ifndef __GLADE_DEBUG_H__
 #define __GLADE_DEBUG_H__
 
-LIBGLADEUI_API void glade_setup_log_handlers (void);
+G_BEGIN_DECLS
 
-#endif /* __GLADE-DEBUG_H__ */
+void glade_setup_log_handlers (void);
+
+G_END_DECLS
+
+#endif /* __GLADE_DEBUG_H__ */

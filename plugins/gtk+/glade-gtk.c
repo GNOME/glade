@@ -163,7 +163,7 @@ glade_gtk_gnome_ui_info_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGTK_API
+GParamSpec *
 glade_gtk_gnome_ui_info_spec (void)
 {
 	return g_param_spec_enum ("gnomeuiinfo", _("GnomeUIInfo"), 
@@ -172,7 +172,7 @@ glade_gtk_gnome_ui_info_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
-GType GLADEGTK_API
+GType
 glade_gtk_image_type_get_type (void)
 {
 	static GType etype = 0;
@@ -192,7 +192,7 @@ glade_gtk_image_type_get_type (void)
 	return etype;
 }
 
-GType GLADEGTK_API
+GType
 glade_gtk_button_type_get_type (void)
 {
 	static GType etype = 0;
@@ -212,7 +212,7 @@ glade_gtk_button_type_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGTK_API
+GParamSpec *
 glade_gtk_image_type_spec (void)
 {
 	return g_param_spec_enum ("type", _("Method"), 
@@ -221,7 +221,7 @@ glade_gtk_image_type_spec (void)
 				  1, G_PARAM_READWRITE);
 }
 
-GParamSpec * GLADEGTK_API
+GParamSpec *
 glade_gtk_button_type_spec (void)
 {
 	return g_param_spec_enum ("type", _("Method"), 
@@ -234,14 +234,14 @@ glade_gtk_button_type_spec (void)
 /* This function does absolutely nothing
  * (and is for use in overriding post_create functions).
  */
-void GLADEGTK_API
+void
 empty (GObject *container, GladeCreateReason reason)
 {
 }
 
 
 /* ----------------------------- GtkWidget ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
 			       const gchar        *id,
@@ -265,7 +265,7 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
 		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_widget_get_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
 			       const gchar        *id,
@@ -284,7 +284,7 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkContainer ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_container_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *container, 
 				 GladeCreateReason   reason)
@@ -301,7 +301,7 @@ glade_gtk_container_post_create (GladeWidgetAdaptor *adaptor,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 				   GtkWidget          *container,
 				   GtkWidget          *current,
@@ -340,7 +340,7 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 	g_free (value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_container_add_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *child)
@@ -354,7 +354,7 @@ glade_gtk_container_add_child (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (container), child);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_container_remove_child (GladeWidgetAdaptor *adaptor,
 				  GtkWidget          *container,
 				  GtkWidget          *child)
@@ -367,7 +367,7 @@ glade_gtk_container_remove_child (GladeWidgetAdaptor *adaptor,
 		gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
 }
 
-void GLADEGTK_API
+void
 glade_gtk_container_set_child_property (GladeWidgetAdaptor *adaptor,
 					GObject            *container,
 					GObject            *child,
@@ -379,7 +379,7 @@ glade_gtk_container_set_child_property (GladeWidgetAdaptor *adaptor,
 					  property_name, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
 					GObject            *container,
 					GObject            *child,
@@ -392,7 +392,7 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-GList * GLADEGTK_API
+GList *
 glade_gtk_container_get_children (GladeWidgetAdaptor  *adaptor,
 				  GtkContainer        *container)
 {
@@ -601,7 +601,7 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 	return TRUE;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_box_post_create (GladeWidgetAdaptor *adaptor,
 			   GObject            *container, 
 			   GladeCreateReason   reason)
@@ -658,7 +658,7 @@ sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b)
 	return position_a - position_b;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *container,
 				  GObject            *child,
@@ -771,7 +771,7 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
 			    GObject            *object, 
 			    const gchar        *id,
@@ -866,7 +866,7 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_box_set_property (GladeWidgetAdaptor *adaptor,
 			    GObject            *object, 
 			    const gchar        *id,
@@ -899,7 +899,7 @@ glade_gtk_box_verify_size (GObject *object, const GValue *value)
 }
 
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
 			       const gchar        *id,
@@ -914,7 +914,7 @@ glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 			 GObject            *object,
 			 GObject            *child)
@@ -962,7 +962,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 		glade_widget_pack_property_set (gchild, "position", num_children - 1);
 }
 
-GObject * GLADEGTK_API
+GObject *
 glade_gtk_box_get_internal_child (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *name)
@@ -991,7 +991,7 @@ glade_gtk_box_get_internal_child (GladeWidgetAdaptor *adaptor,
 	return child;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
 			    GObject            *object, 
 			    GObject            *child)
@@ -1428,7 +1428,7 @@ glade_gtk_table_configure_end (GladeFixed  *fixed,
 	return TRUE;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_table_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *container, 
 			     GladeCreateReason   reason)
@@ -1510,7 +1510,7 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,
 			   GObject            *object, 
 			   GObject            *child)
@@ -1523,7 +1523,7 @@ glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,
 	glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_table_remove_child (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      GObject            *child)
@@ -1536,7 +1536,7 @@ glade_gtk_table_remove_child (GladeWidgetAdaptor *adaptor,
 	glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *current,
@@ -1647,7 +1647,7 @@ glade_gtk_table_set_n_common (GObject *object, const GValue *value, gboolean for
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_table_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      const gchar        *id,
@@ -1678,7 +1678,7 @@ glade_gtk_table_verify_n_common (GObject *object, const GValue *value, gboolean 
 	return TRUE;
 }
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 const gchar        *id,
@@ -1695,7 +1695,7 @@ glade_gtk_table_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_table_set_child_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *container,
 				    GObject            *child,
@@ -1783,7 +1783,7 @@ glade_gtk_table_verify_right_bottom_attach (GObject *object,
 	return TRUE;
 }
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
 				       GObject            *container,
 				       GObject            *child,
@@ -1820,7 +1820,7 @@ glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkFrame ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *frame, 
 			     GladeCreateReason   reason)
@@ -1879,7 +1879,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, frame, reason);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *current,
@@ -1905,7 +1905,7 @@ glade_gtk_frame_replace_child (GladeWidgetAdaptor *adaptor,
 						     G_OBJECT (new_widget));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 			   GObject            *object, 
 			   GObject            *child)
@@ -2199,7 +2199,7 @@ glade_gtk_notebook_switch_page (GtkNotebook     *notebook,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
 				GObject            *notebook, 
 				GladeCreateReason   reason)
@@ -2292,7 +2292,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_set_property (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 const gchar        *id,
@@ -2329,7 +2329,7 @@ glade_gtk_notebook_verify_n_pages (GObject *object, const GValue *value)
 	return TRUE;
 }
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *object, 
 				    const gchar        *id,
@@ -2344,7 +2344,7 @@ glade_gtk_notebook_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-void GLADEGTK_API 
+void 
 glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      GObject            *child)
@@ -2443,7 +2443,7 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_remove_child (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GObject            *child)
@@ -2481,7 +2481,7 @@ glade_gtk_notebook_remove_child (GladeWidgetAdaptor *adaptor,
 	
 }
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
 				  GtkWidget          *container,
 				  GtkWidget          *current,
@@ -2528,7 +2528,7 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
 		gtk_widget_destroy (GTK_WIDGET (new_widget));
 }	
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
 					  GObject            *container,
 					  GObject            *child,
@@ -2548,7 +2548,7 @@ glade_gtk_notebook_child_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
 				       GObject            *container,
 				       GObject            *child,
@@ -2576,7 +2576,7 @@ glade_gtk_notebook_set_child_property (GladeWidgetAdaptor *adaptor,
 								  property_name, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
 				       GObject            *container,
 				       GObject            *child,
@@ -2612,7 +2612,7 @@ glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
 
 
 /* ----------------------------- GtkPaned ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_paned_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *paned, 
 			     GladeCreateReason   reason)
@@ -2626,7 +2626,7 @@ glade_gtk_paned_post_create (GladeWidgetAdaptor *adaptor,
 		gtk_paned_add2 (GTK_PANED (paned), glade_placeholder_new ());
 }
 
-void GLADEGTK_API 
+void 
 glade_gtk_paned_add_child (GladeWidgetAdaptor *adaptor,
 			   GObject            *object, 
 			   GObject            *child)
@@ -2678,7 +2678,7 @@ glade_gtk_paned_add_child (GladeWidgetAdaptor *adaptor,
 	}
 }
 
-void GLADEGTK_API 
+void 
 glade_gtk_paned_remove_child (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
 			      GObject            *child)
@@ -2688,7 +2688,7 @@ glade_gtk_paned_remove_child (GladeWidgetAdaptor *adaptor,
 	glade_gtk_paned_post_create (adaptor, object, GLADE_CREATE_USER);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_paned_set_child_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *container,
 				    GObject            *child,
@@ -2730,7 +2730,7 @@ glade_gtk_paned_set_child_property (GladeWidgetAdaptor *adaptor,
 								  property_name, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_paned_get_child_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *container,
 				    GObject            *child,
@@ -2749,7 +2749,7 @@ glade_gtk_paned_get_child_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkExpander ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_expander_post_create (GladeWidgetAdaptor *adaptor,
 				GObject            *expander, 
 				GladeCreateReason   reason)
@@ -2791,7 +2791,7 @@ glade_gtk_expander_post_create (GladeWidgetAdaptor *adaptor,
 
 }
 
-void GLADEGTK_API
+void
 glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 				  GtkWidget          *container,
 				  GtkWidget          *current,
@@ -2818,7 +2818,7 @@ glade_gtk_expander_replace_child (GladeWidgetAdaptor *adaptor,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_expander_add_child (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      GObject            *child)
@@ -2838,7 +2838,7 @@ glade_gtk_expander_add_child (GladeWidgetAdaptor *adaptor,
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->add (adaptor, object, child); 
 }
 
-void GLADEGTK_API
+void
 glade_gtk_expander_remove_child (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GObject            *child)
@@ -2877,7 +2877,7 @@ glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
 			glade_command_set_property (prop, text);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_entry_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *object,
 			     GladeCreateReason   reason)
@@ -2917,7 +2917,7 @@ glade_gtk_fixed_layout_realize (GtkWidget *widget)
 			  (GWeakNotify)glade_gtk_fixed_layout_finalize, backing);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor *adaptor,
 				    GObject            *object, 
 				    GladeCreateReason   reason)
@@ -2931,7 +2931,7 @@ glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor *adaptor,
 			       G_CALLBACK(glade_gtk_fixed_layout_realize), NULL);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor  *adaptor,
 				  GObject             *object, 
 				  GObject             *child)
@@ -2942,7 +2942,7 @@ glade_gtk_fixed_layout_add_child (GladeWidgetAdaptor  *adaptor,
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 				     GObject             *object, 
 				     GObject             *child)
@@ -2954,7 +2954,7 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 }
 
 /* ----------------------------- GtkWindow ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
 			      GladeCreateReason   reason)
@@ -2968,7 +2968,7 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      GladeCreateReason   reason)
@@ -3107,7 +3107,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 
-GtkWidget * GLADEGTK_API
+GtkWidget *
 glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				     GtkDialog           *dialog,
 				     const gchar         *name)
@@ -3165,7 +3165,7 @@ glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	return child;
 }
 
-GList * GLADEGTK_API
+GList *
 glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 			       GtkDialog           *dialog)
 {
@@ -3203,7 +3203,7 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_dialog_set_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
 			       const gchar        *id,
@@ -3340,7 +3340,7 @@ glade_gtk_button_post_create_parse_finished (GladeProject *project,
 	g_type_class_unref (eclass);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_button_post_create (GladeWidgetAdaptor  *adaptor,
 			      GObject             *button, 
 			      GladeCreateReason    reason)
@@ -3505,7 +3505,7 @@ glade_gtk_button_set_stock (GObject *object, const GValue *value)
 	g_type_class_unref (eclass);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
 			       const gchar        *id,
@@ -3520,7 +3520,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_button_replace_child (GladeWidgetAdaptor  *adaptor,
 				GtkWidget           *container,
 				GtkWidget           *current,
@@ -3545,7 +3545,7 @@ glade_gtk_button_replace_child (GladeWidgetAdaptor  *adaptor,
 
 }
 
-void GLADEGTK_API
+void
 glade_gtk_button_add_child (GladeWidgetAdaptor  *adaptor,
 			    GObject             *object, 
 			    GObject             *child)
@@ -3567,7 +3567,7 @@ glade_gtk_button_add_child (GladeWidgetAdaptor  *adaptor,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_button_remove_child (GladeWidgetAdaptor  *adaptor,
 			       GObject             *object, 
 			       GObject             *child)
@@ -3648,7 +3648,7 @@ glade_gtk_image_parse_finished (GladeProject *project, GladeWidget *gimage)
 			  gimage);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_image_post_create (GladeWidgetAdaptor  *adaptor,
 			     GObject             *object, 
 			     GladeCreateReason    reason)
@@ -3795,7 +3795,7 @@ glade_gtk_image_set_glade_stock (GObject *object, const GValue *value)
 	g_type_class_unref (eclass);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      const gchar        *id,
@@ -3815,7 +3815,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkMenuShell ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor, 
 			       GObject             *object, 
 			       GObject             *child)
@@ -3828,7 +3828,7 @@ glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_menu_shell_remove_item (GladeWidgetAdaptor  *adaptor,
 				  GObject             *object, 
 				  GObject             *child)
@@ -3856,7 +3856,7 @@ glade_gtk_menu_shell_get_item_position (GObject *container, GObject *child)
 	return position;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_shell_get_child_property (GladeWidgetAdaptor  *adaptor,
 					 GObject             *container,
 					 GObject             *child,
@@ -3882,7 +3882,7 @@ glade_gtk_menu_shell_get_child_property (GladeWidgetAdaptor  *adaptor,
 								  value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_shell_set_child_property (GladeWidgetAdaptor  *adaptor,
 					 GObject             *container,
 					 GObject             *child,
@@ -4138,7 +4138,7 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 }
 
 /* ----------------------------- GtkMenuItem(s) ------------------------------ */
-GList * GLADEGTK_API
+GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 				 GObject *object)
 {
@@ -4157,7 +4157,7 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 	return list;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_item_add_submenu (GladeWidgetAdaptor *adaptor,
 				 GObject *object, GObject *child)
 {
@@ -4173,7 +4173,7 @@ glade_gtk_menu_item_add_submenu (GladeWidgetAdaptor *adaptor,
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (object), GTK_WIDGET (child));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_item_remove_submenu (GladeWidgetAdaptor *adaptor,
 				    GObject *object, GObject *child)
 {
@@ -4186,7 +4186,7 @@ glade_gtk_menu_item_remove_submenu (GladeWidgetAdaptor *adaptor,
 #define glade_return_if_re_entrancy(o,p,v) \
 	if ((v) == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (o), p))) return; g_object_set_data (G_OBJECT (o), p, GINT_TO_POINTER ((v)))
 	
-void GLADEGTK_API
+void
 glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor, 
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -4312,7 +4312,7 @@ glade_gtk_menu_item_set_use_underline (GObject *object, const GValue *value)
 	gtk_label_set_use_underline (GTK_LABEL (label), g_value_get_boolean (value));
 }
 
-GObject * GLADEGTK_API
+GObject *
 glade_gtk_image_menu_item_get_internal_child (GladeWidgetAdaptor *adaptor,
 					      GObject            *parent,
 					      const gchar        *name);
@@ -4448,7 +4448,7 @@ glade_gtk_menu_item_set_stock_item (GObject *object, const GValue *value)
 	glade_widget_property_set (gitem, "label", label);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *id,
@@ -4465,7 +4465,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-GObject * GLADEGTK_API
+GObject *
 glade_gtk_image_menu_item_get_internal_child (GladeWidgetAdaptor *adaptor,
 					      GObject            *parent,
 					      const gchar        *name)
@@ -4562,7 +4562,7 @@ glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
 	g_type_class_unref (eclass);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 					GObject            *object, 
 					const gchar        *id,
@@ -4593,7 +4593,7 @@ glade_gtk_radio_menu_item_set_group (GObject *object, const GValue *value)
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 					GObject            *object, 
 					const gchar        *id,
@@ -4684,7 +4684,7 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 	return gitem;
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 				GObject            *object, 
 				GladeCreateReason   reason)
@@ -4727,21 +4727,21 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 	glade_gtk_menu_bar_append_new_item (gsubmenu, project, "gtk-about", TRUE);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_menu_bar_launch_editor (GladeWidgetAdaptor *adaptor, GObject *menubar)
 {
 	glade_gtk_menu_shell_launch_editor (menubar, _("Menu Bar Editor"));
 }
 
 /* ------------------------------ GtkMenu -------------------------------- */
-void GLADEGTK_API
+void
 glade_gtk_menu_launch_editor (GladeWidgetAdaptor *adaptor, GObject *menu)
 {
 	glade_gtk_menu_shell_launch_editor (menu, _("Menu Editor"));
 }
 
 /* ----------------------------- GtkToolBar ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
 				      GObject            *container,
 				      GObject            *child,
@@ -4765,7 +4765,7 @@ glade_gtk_toolbar_get_child_property (GladeWidgetAdaptor *adaptor,
 								  property_name, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
 				      GObject            *container,
 				      GObject            *child,
@@ -4800,7 +4800,7 @@ glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor *adaptor,
 								  property_name, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_toolbar_add_child (GladeWidgetAdaptor *adaptor,
 			     GObject *object, GObject *child)
 {
@@ -4826,7 +4826,7 @@ glade_gtk_toolbar_add_child (GladeWidgetAdaptor *adaptor,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_toolbar_remove_child (GladeWidgetAdaptor *adaptor, 
 				GObject *object, GObject *child)
 {
@@ -4891,7 +4891,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 						  "group", "active", NULL);	
 }
 
-void GLADEGTK_API
+void
 glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor, 
 				 GObject            *toolbar)
 {
@@ -4926,7 +4926,7 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkToolItem ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor, 
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -5096,7 +5096,7 @@ glade_gtk_tool_button_set_icon_name (GObject *object, const GValue *value)
 	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (object), name);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *object, 
 				    const gchar        *id,
@@ -5143,7 +5143,7 @@ glade_gtk_label_set_label (GObject *object, const GValue *value)
 		gtk_label_set_use_underline (GTK_LABEL (object), use_underline);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_label_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      const gchar        *id,
@@ -5186,7 +5186,7 @@ glade_gtk_text_view_stop_double_click (GtkWidget *widget,
 		event->type == GDK_3BUTTON_PRESS);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -5231,7 +5231,7 @@ glade_gtk_text_view_set_text (GObject *object, const GValue *value)
 	g_signal_handlers_unblock_by_func (buffy, glade_gtk_text_view_changed, gtext);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *id,
@@ -5247,7 +5247,7 @@ glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
 
 
 /* ----------------------------- GtkComboBox ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -5292,7 +5292,7 @@ glade_gtk_combo_box_set_items (GObject *object, const GValue *value)
 				gtk_combo_box_append_text (combo, split[i]);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *id,
@@ -5307,7 +5307,7 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkComboBoxEntry ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_combo_box_entry_post_create (GladeWidgetAdaptor *adaptor,
 				       GObject            *object, 
 				       GladeCreateReason   reason)
@@ -5322,7 +5322,7 @@ glade_gtk_combo_box_entry_post_create (GladeWidgetAdaptor *adaptor,
 		 "entry", "comboboxentry", FALSE, reason);
 }
 
-GObject * GLADEGTK_API
+GObject *
 glade_gtk_combo_box_entry_get_internal_child (GladeWidgetAdaptor *adaptor,
 					      GObject *object, 
 					      const gchar *name)
@@ -5355,7 +5355,7 @@ glade_gtk_spin_button_set_adjustment (GObject *object, const GValue *value)
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *object, 
 				    const gchar        *id,
@@ -5370,7 +5370,7 @@ glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkTreeView ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_tree_view_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -5398,7 +5398,7 @@ glade_gtk_tree_view_post_create (GladeWidgetAdaptor *adaptor,
 
 
 /* ----------------------------- GtkCombo ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_combo_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *object,
 			     GladeCreateReason   reason)
@@ -5421,7 +5421,7 @@ glade_gtk_combo_post_create (GladeWidgetAdaptor *adaptor,
 
 }
 
-GObject * GLADEGTK_API
+GObject *
 glade_gtk_combo_get_internal_child (GladeWidgetAdaptor *adaptor,
 				    GtkCombo           *combo,
 				    const gchar        *name)
@@ -5438,7 +5438,7 @@ glade_gtk_combo_get_internal_child (GladeWidgetAdaptor *adaptor,
 	return child;
 }
 
-GList * GLADEGTK_API
+GList *
 glade_gtk_combo_get_children (GtkCombo *combo)
 {
 	GList *list = NULL;
@@ -5455,7 +5455,7 @@ glade_gtk_combo_get_children (GtkCombo *combo)
 }
 
 /* ----------------------------- GtkListItem ------------------------------ */
-void GLADEGTK_API
+void
 glade_gtk_list_item_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
@@ -5496,7 +5496,7 @@ glade_gtk_list_item_get_label (GObject *object, GValue *value)
 	g_value_set_string (value, gtk_label_get_text (GTK_LABEL (label)));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_list_item_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *id,
@@ -5510,7 +5510,7 @@ glade_gtk_list_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_list_item_get_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
 				  const gchar        *id,
@@ -5525,7 +5525,7 @@ glade_gtk_list_item_get_property (GladeWidgetAdaptor *adaptor,
 }
 
 
-void GLADEGTK_API
+void
 glade_gtk_listitem_add_child (GladeWidgetAdaptor  *adaptor,
 			      GObject             *object, 
 			      GObject             *child)
@@ -5536,7 +5536,7 @@ glade_gtk_listitem_add_child (GladeWidgetAdaptor  *adaptor,
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_listitem_remove_child (GladeWidgetAdaptor  *adaptor,
 				 GObject             *object, 
 				 GObject             *child)
@@ -5655,7 +5655,7 @@ glade_gtk_assistant_parse_finished (GladeProject *project,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject *object, 
 				 GladeCreateReason reason)
@@ -5691,7 +5691,7 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
 	}
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_add_child (GladeWidgetAdaptor *adaptor,
 			       GObject *container,
 			       GObject *child)
@@ -5702,7 +5702,7 @@ glade_gtk_assistant_add_child (GladeWidgetAdaptor *adaptor,
 	gtk_assistant_append_page (assistant, widget);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
 				  GObject *container, 
 				  GObject *child)
@@ -5715,7 +5715,7 @@ glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
 			   	   gtk_assistant_get_n_pages (assistant));
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
 				   GObject *container,
 				   GObject *current,
@@ -5734,7 +5734,7 @@ glade_gtk_assistant_replace_child (GladeWidgetAdaptor *adaptor,
 	if (set_current) gtk_assistant_set_current_page (assistant, pos);
 }
 
-gboolean GLADEGTK_API
+gboolean
 glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
 				     GObject *object, 
 				     const gchar *property_name,
@@ -5753,7 +5753,7 @@ glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
 								 value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject *object,
 				  const gchar *property_name,
@@ -5780,7 +5780,7 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
 						       value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
 				  GObject *object,
 				  const gchar *property_name,
@@ -5800,7 +5800,7 @@ glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
 						       value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
 					GObject            *container,
 					GObject            *child,
@@ -5842,7 +5842,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
 							     value);
 }
 
-void GLADEGTK_API
+void
 glade_gtk_assistant_get_child_property (GladeWidgetAdaptor *adaptor,
 					GObject            *container,
 					GObject            *child,

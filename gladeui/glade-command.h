@@ -54,83 +54,83 @@ struct _GladeCommandClass
 };
 
 
-LIBGLADEUI_API
+
 GType          glade_command_get_type      (void);
-LIBGLADEUI_API
+
 void           glade_command_push_group    (const gchar       *fmt,
 					    ...);
-LIBGLADEUI_API
+
 void           glade_command_pop_group     (void);
 
-LIBGLADEUI_API
+
 gboolean       glade_command_execute       (GladeCommand      *command);
-LIBGLADEUI_API
+
 gboolean       glade_command_undo          (GladeCommand      *command);
-LIBGLADEUI_API
+
 gboolean       glade_command_unifies       (GladeCommand      *command,
 					    GladeCommand      *other);
-LIBGLADEUI_API
+
 void           glade_command_collapse      (GladeCommand      *command,
 					    GladeCommand      *other);
 
 /************************** properties *********************************/
-LIBGLADEUI_API
+
 void           glade_command_set_property        (GladeProperty *property,     
 					          ...);
-LIBGLADEUI_API
+
 void           glade_command_set_property_value  (GladeProperty *property,     
 						  const GValue  *value);
-LIBGLADEUI_API
+
 void           glade_command_set_properties      (GladeProperty *property, 
 					          const GValue  *old_value, 
 					          const GValue  *new_value,
 						  ...);
-LIBGLADEUI_API
+
 void           glade_command_set_properties_list (GladeProject  *project, 
 						  GList         *props); /* list of GCSetPropData */
 
 /************************** name ******************************/
-LIBGLADEUI_API
+
 void           glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 
 
 /************************ create/delete ******************************/
-LIBGLADEUI_API
+
 void           glade_command_delete        (GList              *widgets);
-LIBGLADEUI_API
+
 GladeWidget   *glade_command_create        (GladeWidgetAdaptor *adaptor,
 					    GladeWidget        *parent,
 					    GladePlaceholder   *placeholder,
 					    GladeProject       *project);
 
 /************************ cut/copy/paste ******************************/
-LIBGLADEUI_API
+
 void           glade_command_cut           (GList             *widgets);
-LIBGLADEUI_API
+
 void           glade_command_copy          (GList             *widgets);
-LIBGLADEUI_API
+
 void           glade_command_paste         (GList             *widgets,
 					    GladeWidget       *parent,
 					    GladePlaceholder  *placeholder);
-LIBGLADEUI_API
+
 void           glade_command_dnd           (GList             *widgets,
 					    GladeWidget       *parent,
 					    GladePlaceholder  *placeholder);
 
 /************************ signals ******************************/
-LIBGLADEUI_API
+
 void           glade_command_add_signal    (GladeWidget       *glade_widget, 
 					    const GladeSignal *signal);
-LIBGLADEUI_API
+
 void           glade_command_remove_signal (GladeWidget       *glade_widget, 
 					    const GladeSignal *signal);
-LIBGLADEUI_API
+
 void           glade_command_change_signal (GladeWidget       *glade_widget, 
 					    const GladeSignal *old, 
 					    const GladeSignal *new_signal);
 
 /************************ set i18n ******************************/
-LIBGLADEUI_API
+
 void           glade_command_set_i18n      (GladeProperty     *property,
                         gboolean translatable,
                         gboolean has_context,
@@ -139,4 +139,4 @@ void           glade_command_set_i18n      (GladeProperty     *property,
 
 G_END_DECLS
 
-#endif /* GLADE_COMMAND_H */
+#endif /* __GLADE_COMMAND_H__ */

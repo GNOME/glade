@@ -103,103 +103,103 @@ struct _GladeProjectClass
 	void          (*parse_finished)      (GladeProject *project);
 };
 
-LIBGLADEUI_API
+
 GType         glade_project_get_type (void);
 
-LIBGLADEUI_API
+
 GladeProject *glade_project_new                 (gboolean     untitled);
-LIBGLADEUI_API
+
 GladeProject *glade_project_open                (const gchar  *path);
-LIBGLADEUI_API
+
 gboolean      glade_project_save                (GladeProject *project, 
 						 const gchar  *path, 
 						 GError      **error);
 
-LIBGLADEUI_API
+
 void          glade_project_undo                (GladeProject *project);
-LIBGLADEUI_API
+
 void          glade_project_redo                (GladeProject *project);
-LIBGLADEUI_API
+
 GladeCommand *glade_project_next_undo_item      (GladeProject *project);
-LIBGLADEUI_API
+
 GladeCommand *glade_project_next_redo_item      (GladeProject *project);
-LIBGLADEUI_API
+
 void          glade_project_push_undo           (GladeProject *project, 
 						 GladeCommand *cmd);
 
-LIBGLADEUI_API
+
 void          glade_project_reset_path          (GladeProject *project);
-LIBGLADEUI_API
+
 gboolean      glade_project_get_readonly        (GladeProject *project);
-LIBGLADEUI_API
+
 void          glade_project_add_object          (GladeProject *project, 
 						 GladeProject *old_project,
 						 GObject      *object);
-LIBGLADEUI_API
+
 void          glade_project_remove_object       (GladeProject *project, GObject     *object);
-LIBGLADEUI_API
+
 gboolean      glade_project_has_object          (GladeProject *project, GObject     *object);
-LIBGLADEUI_API
+
 GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
-LIBGLADEUI_API
+
 char         *glade_project_new_widget_name     (GladeProject *project, const char  *base_name);
-LIBGLADEUI_API
+
 void          glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,
 						 const char   *old_name);
-LIBGLADEUI_API
+
 GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
 
 /* Selection */
-LIBGLADEUI_API
+
 gboolean      glade_project_is_selected         (GladeProject *project,
 						 GObject      *object);
-LIBGLADEUI_API
+
 void          glade_project_selection_set       (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
-LIBGLADEUI_API
+
 void          glade_project_selection_add       (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
-LIBGLADEUI_API
+
 void          glade_project_selection_remove    (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
-LIBGLADEUI_API
+
 void          glade_project_selection_clear     (GladeProject *project,
 						 gboolean      emit_signal);
-LIBGLADEUI_API
+
 void          glade_project_selection_changed   (GladeProject *project);
-LIBGLADEUI_API
+
 GList        *glade_project_selection_get       (GladeProject *project);
-LIBGLADEUI_API
+
 gboolean      glade_project_get_has_selection   (GladeProject *project);
-LIBGLADEUI_API
+
 void          glade_project_set_accel_group     (GladeProject  *project, 
 						 GtkAccelGroup *accel_group);
 
-LIBGLADEUI_API
+
 void          glade_project_set_resource          (GladeProject  *project, 
 						   GladeProperty *property,
 						   const gchar   *resource);
 
-LIBGLADEUI_API
+
 GList        *glade_project_list_resources        (GladeProject  *project);
 
-LIBGLADEUI_API
+
 gchar        *glade_project_resource_fullpath     (GladeProject  *project,
 						   const gchar   *resource);
 
-LIBGLADEUI_API
+
 gchar        *glade_project_display_name          (GladeProject  *project, 
 						   gboolean       unsaved_changes,
 						   gboolean       tab_aligned,
 						   gboolean       mnemonic);
 
-LIBGLADEUI_API 
+ 
 gboolean      glade_project_is_loading            (GladeProject *project);
 
-LIBGLADEUI_API 
+ 
 time_t        glade_project_get_file_mtime        (GladeProject *project);
 
 G_END_DECLS

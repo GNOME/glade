@@ -31,22 +31,16 @@
 #include <libgnome/libgnome.h>
 #include <libgnomeui/libgnomeui.h>
 
-#ifdef G_OS_WIN32
-#define GLADEGNOME_API __declspec(dllexport)
-#else
-#define GLADEGNOME_API
-#endif
-
 /* This function does absolutely nothing
  * (and is for use in overriding post_create functions).
  */
-void GLADEGNOME_API
+void
 empty (GObject *container, GladeCreateReason reason)
 {
 }
 
 /* Catalog init function */
-void GLADEGNOME_API
+void
 glade_gnomeui_init ()
 {
 	gchar *argv[2] = {"glade-3", NULL};
@@ -94,7 +88,7 @@ glade_gnomeui_init ()
 }
 
 /* GnomeApp */
-void GLADEGNOME_API
+void
 glade_gnome_app_post_create (GladeWidgetAdaptor *adaptor,
 			     GObject            *object, 
 			     GladeCreateReason   reason)
@@ -146,7 +140,7 @@ glade_gnome_app_post_create (GladeWidgetAdaptor *adaptor,
 	glade_widget_property_set (gapp, "has-statusbar", TRUE);
 }
 
-GObject * GLADEGNOME_API
+GObject *
 glade_gnome_app_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				    GObject             *object, 
 				    const gchar         *name)
@@ -176,7 +170,7 @@ glade_gnome_app_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	return child;
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_app_get_children (GladeWidgetAdaptor  *adaptor,
 			      GObject             *object)
 {
@@ -190,7 +184,7 @@ glade_gnome_app_get_children (GladeWidgetAdaptor  *adaptor,
 	return list;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_app_set_child_property (GladeWidgetAdaptor  *adaptor,
 				    GObject             *container,
 				    GObject             *child,
@@ -209,7 +203,7 @@ glade_gnome_app_set_child_property (GladeWidgetAdaptor  *adaptor,
 					  value);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_app_get_child_property (GladeWidgetAdaptor  *adaptor,
 				    GObject             *container,
 				    GObject             *child,
@@ -267,7 +261,7 @@ glade_gnome_app_set_has_statusbar (GObject *object, const GValue *value)
 }
 
 
-void GLADEGNOME_API
+void
 glade_gnome_app_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
 			      const gchar        *id,
@@ -284,13 +278,13 @@ glade_gnome_app_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* GnomeAppBar */
-GType GLADEGNOME_API
+GType
 gnome_app_bar_get_type ()
 {
 	return gnome_appbar_get_type ();
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_app_bar_post_create (GladeWidgetAdaptor  *adaptor,
 				 GObject             *object, 
 				 GladeCreateReason    reason)
@@ -305,7 +299,7 @@ glade_gnome_date_edit_set_no_show_all (GtkWidget *widget, gpointer data)
 	gtk_widget_set_no_show_all (widget, TRUE);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_date_edit_post_create (GladeWidgetAdaptor  *adaptor,
 				   GObject             *object, 
 				   GladeCreateReason    reason)
@@ -341,7 +335,7 @@ glade_gnome_druid_add_page (GladeWidget *gdruid, gboolean edge)
 	return gpage;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_druid_post_create (GladeWidgetAdaptor  *adaptor,
 			       GObject             *object, 
 			       GladeCreateReason    reason)
@@ -404,7 +398,7 @@ glade_gnome_druid_page_cb (GnomeDruidPage *druidpage,
 	return TRUE;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_druid_add_child (GladeWidgetAdaptor  *adaptor,
 			     GObject             *container, 
 			     GObject             *child)
@@ -426,7 +420,7 @@ glade_gnome_druid_add_child (GladeWidgetAdaptor  *adaptor,
 					GINT_TO_POINTER (FALSE));	
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_druid_remove_child (GladeWidgetAdaptor  *adaptor,
 				GObject             *container, 
 				GObject             *child)
@@ -483,7 +477,7 @@ glade_gnome_druid_get_page_position (GnomeDruid *druid, GnomeDruidPage *page)
 	return i;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_druid_set_child_property (GladeWidgetAdaptor  *adaptor,
 				      GObject             *container,
 				      GObject             *child,
@@ -521,7 +515,7 @@ glade_gnome_druid_set_child_property (GladeWidgetAdaptor  *adaptor,
 								  value);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_druid_get_child_property (GladeWidgetAdaptor  *adaptor,
 				      GObject             *container,
 				      GObject             *child,
@@ -545,7 +539,7 @@ glade_gnome_druid_get_child_property (GladeWidgetAdaptor  *adaptor,
 }
 
 /* GnomeDruidPageStandard */
-void GLADEGNOME_API
+void
 glade_gnome_dps_post_create (GladeWidgetAdaptor  *adaptor,
 			     GObject             *object, 
 			     GladeCreateReason    reason)
@@ -563,7 +557,7 @@ glade_gnome_dps_post_create (GladeWidgetAdaptor  *adaptor,
 		glade_widget_property_set (gvbox, "size", 1);
 }
 
-GObject * GLADEGNOME_API
+GObject *
 glade_gnome_dps_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				    GObject             *object, 
 				    const gchar         *name)
@@ -576,7 +570,7 @@ glade_gnome_dps_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	return child;
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_dps_get_children (GladeWidgetAdaptor  *adaptor,
 			      GObject             *object)
 {
@@ -607,7 +601,7 @@ glade_gnome_dps_set_color_common (GObject      *object,
 	if (color) glade_property_set_value (prop, color);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_dps_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
 			      const gchar        *id,
@@ -649,7 +643,7 @@ glade_gnome_dpe_position_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_dpe_position_spec (void)
 {
 	return g_param_spec_enum ("position", _("Position"), 
@@ -658,7 +652,7 @@ glade_gnome_dpe_position_spec (void)
 				  GNOME_EDGE_OTHER, G_PARAM_READWRITE);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_dpe_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object,
 			      const gchar        *id,
@@ -722,7 +716,7 @@ glade_gnome_dpe_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* GnomeIconEntry */
-void GLADEGNOME_API
+void
 glade_gnome_icon_entry_set_property (GladeWidgetAdaptor *adaptor,
 				     GObject            *object,
 				     const gchar        *id,
@@ -775,7 +769,7 @@ glade_gnome_canvas_set_coordinate_common (GObject               *object,
 	gnome_canvas_set_scroll_region  (GNOME_CANVAS (object), x1, y1, x2, y2);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_canvas_set_property (GladeWidgetAdaptor *adaptor,
 				 GObject            *object,
 				 const gchar        *id,
@@ -832,7 +826,7 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 				  action_area, button);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 				GObject             *object, 
 				GladeCreateReason    reason)
@@ -914,7 +908,7 @@ glade_gnome_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 	}
 }
 
-GObject * GLADEGNOME_API
+GObject *
 glade_gnome_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				       GObject             *object, 
 				       const gchar         *name)
@@ -929,7 +923,7 @@ glade_gnome_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	return child;
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 				 GObject             *object)
 {
@@ -949,7 +943,7 @@ glade_gnome_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 }
 
 /* GnomeAbout */
-void GLADEGNOME_API
+void
 glade_gnome_about_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 				      GObject             *object, 
 				      GladeCreateReason    reason)
@@ -957,7 +951,7 @@ glade_gnome_about_dialog_post_create (GladeWidgetAdaptor  *adaptor,
 	gtk_dialog_set_response_sensitive (GTK_DIALOG (object), GTK_RESPONSE_CLOSE, FALSE);	
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_about_dialog_set_property (GladeWidgetAdaptor *adaptor,
 				       GObject            *object,
 				       const gchar        *id,
@@ -1002,7 +996,7 @@ glade_gnome_message_box_type_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_message_box_type_spec (void)
 {
 	return g_param_spec_enum ("message_box_type", _("Message box type"), 
@@ -1079,7 +1073,7 @@ glade_gnome_message_box_set_message (GObject *object, const GValue *value)
 				     NULL);	
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_message_box_set_property (GladeWidgetAdaptor *adaptor,
 				      GObject            *object,
 				      const gchar        *id,
@@ -1097,7 +1091,7 @@ glade_gnome_message_box_set_property (GladeWidgetAdaptor *adaptor,
 
 /* GnomeEntry & GnomeFileEntry */
 /* GnomeFileEntry is not derived from GnomeEntry... but hey!!! they should :) */
-GObject * GLADEGNOME_API
+GObject *
 glade_gnome_entry_get_internal_child (GladeWidgetAdaptor  *adaptor,
 				      GObject             *object, 
 				      const gchar         *name)
@@ -1115,7 +1109,7 @@ glade_gnome_entry_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	return child;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_entry_post_create (GladeWidgetAdaptor  *adaptor,
 			       GObject             *object, 
 			       GladeCreateReason    reason)
@@ -1132,7 +1126,7 @@ glade_gnome_entry_post_create (GladeWidgetAdaptor  *adaptor,
 					      FALSE, reason);
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_entry_get_children (GladeWidgetAdaptor  *adaptor,
 				GObject             *object)
 {
@@ -1149,7 +1143,7 @@ glade_gnome_entry_get_children (GladeWidgetAdaptor  *adaptor,
 	return list;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_entry_set_property (GladeWidgetAdaptor *adaptor,
 				GObject            *object,
 				const gchar        *id,
@@ -1163,7 +1157,7 @@ glade_gnome_entry_set_property (GladeWidgetAdaptor *adaptor,
 							      id, value);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_file_entry_set_property (GladeWidgetAdaptor *adaptor,
 				     GObject            *object,
 				     const gchar        *id,
@@ -1183,7 +1177,7 @@ glade_gnome_file_entry_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* GnomePixmapEntry */
-void GLADEGNOME_API
+void
 glade_gnome_pixmap_entry_set_do_preview (GObject *object, GValue *value)
 {
 	gnome_pixmap_entry_set_preview (GNOME_PIXMAP_ENTRY (object),
@@ -1230,7 +1224,7 @@ glade_gnome_font_picker_set_mode (GObject *object, const GValue *value)
 	}
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_font_picker_set_property (GladeWidgetAdaptor *adaptor,
 				      GObject            *object,
 				      const gchar        *id,
@@ -1244,7 +1238,7 @@ glade_gnome_font_picker_set_property (GladeWidgetAdaptor *adaptor,
 							       id, value);
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_font_picker_get_children (GladeWidgetAdaptor  *adaptor,
 				      GObject             *object)
 {
@@ -1256,7 +1250,7 @@ glade_gnome_font_picker_get_children (GladeWidgetAdaptor  *adaptor,
 		return NULL;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_font_picker_add_child (GladeWidgetAdaptor  *adaptor,
 				   GtkWidget           *container, 
 				   GtkWidget           *child)
@@ -1264,7 +1258,7 @@ glade_gnome_font_picker_add_child (GladeWidgetAdaptor  *adaptor,
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), child);	
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_font_picker_remove_child (GladeWidgetAdaptor  *adaptor,
 				      GtkWidget           *container, 
 				      GtkWidget           *child)
@@ -1272,7 +1266,7 @@ glade_gnome_font_picker_remove_child (GladeWidgetAdaptor  *adaptor,
 	gnome_font_picker_uw_set_widget (GNOME_FONT_PICKER (container), glade_placeholder_new ());
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_font_picker_replace_child (GladeWidgetAdaptor  *adaptor,
 				       GtkWidget           *container,
 				       GtkWidget           *current,
@@ -1282,7 +1276,7 @@ glade_gnome_font_picker_replace_child (GladeWidgetAdaptor  *adaptor,
 }
 
 /* GnomeIconList */
-void GLADEGNOME_API
+void
 glade_gnome_icon_list_post_create (GladeWidgetAdaptor  *adaptor,
 				   GObject             *object, 
 				   GladeCreateReason    reason)
@@ -1307,7 +1301,7 @@ glade_gnome_icon_list_selection_mode_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_icon_list_selection_mode_spec (void)
 {
 	return g_param_spec_enum ("selection_mode", _("Selection Mode"), 
@@ -1316,7 +1310,7 @@ glade_gnome_icon_list_selection_mode_spec (void)
 				  GTK_SELECTION_SINGLE, G_PARAM_READWRITE);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_icon_list_set_property (GladeWidgetAdaptor *adaptor,
 				    GObject            *object,
 				    const gchar        *id,
@@ -1396,20 +1390,20 @@ glade_gnome_pixmap_set_scaled_common (GObject *object,
 	}
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_pixmap_set_scaled_width (GObject *object, GValue *value)
 {
 	glade_gnome_pixmap_set_scaled_common (object, value, "scaled-height");
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_pixmap_set_scaled_height (GObject *object, GValue *value)
 {
 	glade_gnome_pixmap_set_scaled_common (object, value, "scaled-width");
 }
 
 
-void GLADEGNOME_API
+void
 glade_gnome_pixmap_set_property (GladeWidgetAdaptor *adaptor,
 				 GObject            *object,
 				 const gchar        *id,
@@ -1458,7 +1452,7 @@ glade_gnome_bonobo_dock_placement_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_bonobo_dock_placement_spec (void)
 {
 	return g_param_spec_enum ("placement", _("Placement"), 
@@ -1487,7 +1481,7 @@ glade_gnome_bonobo_dock_item_behavior_get_type (void)
 	return etype;
 }
 
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_bonobo_dock_item_behavior_spec (void)
 {
 	return g_param_spec_flags ("behavior", _("Behavior"), 
@@ -1497,7 +1491,7 @@ glade_gnome_bonobo_dock_item_behavior_spec (void)
 }
 
 /* GtkPackType */
-GParamSpec * GLADEGNOME_API
+GParamSpec *
 glade_gnome_gtk_pack_type_spec (void)
 {
 	return g_param_spec_enum ("pack_type", _("Pack Type"), 
@@ -1540,7 +1534,7 @@ glade_gnome_bd_get_band (BonoboDock *dock, GtkWidget *widget)
 }
 
 /* BonoboDock */
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_add_child (GladeWidgetAdaptor  *adaptor,
 				  GObject             *object,
 				  GObject             *child)
@@ -1552,7 +1546,7 @@ glade_gnome_bonobodock_add_child (GladeWidgetAdaptor  *adaptor,
 		bonobo_dock_set_client_area (BONOBO_DOCK (object), GTK_WIDGET (child));
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_remove_child (GladeWidgetAdaptor  *adaptor,
 				     GObject             *object, 
 				     GObject             *child)
@@ -1564,7 +1558,7 @@ glade_gnome_bonobodock_remove_child (GladeWidgetAdaptor  *adaptor,
 	gtk_container_remove (GTK_CONTAINER (band), GTK_WIDGET (child));
 }
 
-GList * GLADEGNOME_API
+GList *
 glade_gnome_bonobodock_get_children (GladeWidgetAdaptor  *adaptor,
 				     GObject             *object)
 {
@@ -1587,7 +1581,7 @@ glade_gnome_bonobodock_get_children (GladeWidgetAdaptor  *adaptor,
 	return g_list_reverse (list);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_replace_child (GladeWidgetAdaptor  *adaptor,
 				      GtkWidget           *container,
 				      GtkWidget           *current,
@@ -1624,7 +1618,7 @@ glade_gnome_bonobodockitem_get_props (BonoboDock *doc,
         return FALSE;
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_set_child_property (GladeWidgetAdaptor  *adaptor,
 					   GObject             *container,
 					   GObject             *child,
@@ -1690,7 +1684,7 @@ glade_gnome_bonobodock_set_child_property (GladeWidgetAdaptor  *adaptor,
 		g_warning ("BonoboDockItem's band not found.\n");
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_get_child_property (GladeWidgetAdaptor  *adaptor,
 					   GObject             *container,
 					   GObject             *child,
@@ -1729,7 +1723,7 @@ glade_gnome_bonobodock_get_child_property (GladeWidgetAdaptor  *adaptor,
 		g_value_set_int (value, offset);
 }
 
-void GLADEGNOME_API
+void
 glade_gnome_bonobodock_set_property (GladeWidgetAdaptor *adaptor,
 				     GObject            *object,
 				     const gchar        *id,

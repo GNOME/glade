@@ -61,31 +61,23 @@ struct _GladePaletteClass
 	void (*toggled)    (GladePalette *palette);
 };
 
-LIBGLADEUI_API
+
 GType                glade_palette_get_type (void) G_GNUC_CONST;
 
-LIBGLADEUI_API
 GtkWidget           *glade_palette_new (const GList *catalogs);
 
-LIBGLADEUI_API
 void                 glade_palette_deselect_current_item (GladePalette *palette, gboolean sticky_aware);
 
-LIBGLADEUI_API
 GladeWidgetAdaptor  *glade_palette_get_current_item (GladePalette *palette);
 
-LIBGLADEUI_API
 GladeItemAppearance  glade_palette_get_item_appearance (GladePalette *palette);
 
-LIBGLADEUI_API
 void                 glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance appearance);
 
-LIBGLADEUI_API
 gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette);
 
-LIBGLADEUI_API
 void		     glade_palette_set_use_small_item_icons (GladePalette *palette, gboolean use_small_item_icons);
 
-LIBGLADEUI_API
 void		     glade_palette_set_show_selector_button (GladePalette *palette, gboolean show_selector_button);
 
 G_END_DECLS
