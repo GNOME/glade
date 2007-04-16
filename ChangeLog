@@ -1,7 +1,15 @@
 2007-04-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-	* plugins/gtk+/glade-gtk.c: stop GtkFileChooserDefault "hierarchy-changed" and 
-	  "screen-changed" default handlers (fixes bug #415021)
+	* plugins/gtk+/glade-gtk.c: stop GtkFileChooserDefault "hierarchy-changed"
+	  and "screen-changed" default handlers (fixes bug #415021)
+
+	* plugins/gtk+/glade-gtk.c: added GtkFileChooserWidget post-create function
+
+	* plugins/gtk+/gtk+.xml.in: added GtkFileChooserWidget
+
+	* plugins/gtk+/icons/22x22/widget-gtk-filechooserwidget.png,
+	  plugins/gtk+/icons/16x16/widget-gtk-filechooserwidget.png: new icons,
+	  they are the same as GtkFileChooserDialog but without the borders :)
 
 2007-04-12  Vincent Geddes  <vincent.geddes@gmail.com>
 

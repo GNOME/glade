@@ -698,6 +698,24 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" _title="File Chooser Widget">
+      <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
+      <properties>
+        <property id="size" default="1"  query="False" />
+        <property id="action">
+  	  <displayable-values>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" _name="Open"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" _name="Select Folder"/>
+	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
+	  </displayable-values>
+        </property>
+	<property id="extra-widget" disabled="True" />
+	<property id="preview-widget" disabled="True" />
+	<property id="filter" disabled="True" />
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <properties>
 	<property id="title" translatable="True"/>
@@ -1483,6 +1501,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkDrawingArea"/>
     
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
+    <glade-widget-class-ref name="GtkFileChooserWidget"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">

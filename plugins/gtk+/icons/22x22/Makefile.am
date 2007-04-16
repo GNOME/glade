@@ -30,6 +30,7 @@ icons_DATA = \
         widget-gtk-expander.png \
         widget-gtk-filechooserbutton.png \
         widget-gtk-filechooserdialog.png \
+        widget-gtk-filechooserwidget.png \
         widget-gtk-fileselection.png \
         widget-gtk-fixed.png \
         widget-gtk-fontbutton.png \

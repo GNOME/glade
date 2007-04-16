@@ -3282,6 +3282,16 @@ glade_gtk_dialog_set_property (GladeWidgetAdaptor *adaptor,
 							       id, value);
 }
 
+/* ----------------------------- GtkFileChooserWidget ------------------------------ */
+void
+glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
+					   GObject            *object,
+					   GladeCreateReason   reason)
+{
+	gtk_container_forall (GTK_CONTAINER (object),
+			      glade_gtk_file_chooser_default_forall,
+			      NULL);
+}
 
 /* ----------------------------- GtkFontButton ------------------------------ */
 /* Use the font-buttons launch dialog to actually set the font-name
