@@ -493,8 +493,6 @@ GladeWidgetAdaptor  *glade_widget_adaptor_get_by_name        (const gchar       
 
 GladeWidgetAdaptor  *glade_widget_adaptor_get_by_type        (GType               type);
 
-GList               *glade_widget_adaptor_get_derived_adaptors (GType             type);
-
 GladePropertyClass  *glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
 							      const gchar        *name);
 
@@ -568,8 +566,6 @@ void                 glade_widget_adaptor_replace_child      (GladeWidgetAdaptor
 							      GObject            *container,
 							      GObject            *old_obj,
 							      GObject            *new_obj);
-
-gboolean             glade_widget_adaptor_contains_extra     (GladeWidgetAdaptor *adaptor);
 
 gboolean             glade_widget_adaptor_query              (GladeWidgetAdaptor *adaptor);
 

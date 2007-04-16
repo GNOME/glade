@@ -47,4 +47,4 @@ endif
 
 CLEANFILES = gtk+.xml gtkunixprint.xml
 
-EXTRA_DIST = $(catalogs_DATA)
+EXTRA_DIST = gtk+.xml gtk+.xml.in gtkunixprint.xml gtkunixprint.xml.in
