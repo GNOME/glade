@@ -2968,6 +2968,54 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
+static void
+glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer data)
+{
+	g_signal_stop_emission (instance, GPOINTER_TO_UINT (data) , 0);
+}
+
+static void
+glade_gtk_file_chooser_default_forall (GtkWidget *widget, gpointer data)
+{
+	static gpointer hierarchy = NULL, screen;
+	
+	/* Since GtkFileChooserDefault is not exposed we check if its a
+	 * GtkFileChooser
+	 */
+	if (GTK_IS_FILE_CHOOSER (widget))
+	{
+		if (hierarchy == NULL)
+		{
+			hierarchy = GUINT_TO_POINTER (g_signal_lookup (
+							"hierarchy-changed",
+							GTK_TYPE_WIDGET));
+			screen = GUINT_TO_POINTER (g_signal_lookup (
+							"screen-changed",
+							GTK_TYPE_WIDGET));
+		}
+		/* Finally we can connect to the signals we want to stop its
+		 * default handler. Since both signals has the same signature
+		 * we use one callback for both :)
+		 */
+		g_signal_connect (widget, "hierarchy-changed",
+				  G_CALLBACK (glade_gtk_stop_emission_POINTER),
+				  hierarchy);
+		g_signal_connect (widget, "screen-changed",
+				  G_CALLBACK (glade_gtk_stop_emission_POINTER),
+				  screen);
+	}
+}
+
+static void
+glade_gtk_file_chooser_forall (GtkWidget *widget, gpointer data)
+{
+	/* GtkFileChooserWidget packs a GtkFileChooserDefault */
+	if (GTK_IS_FILE_CHOOSER_WIDGET (widget))
+		gtk_container_forall (GTK_CONTAINER (widget),
+				      glade_gtk_file_chooser_default_forall,
+				      NULL);
+}
+
 void GLADEGTK_API
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
@@ -3068,6 +3116,17 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 	}
 	else
 	{
+		/* We need to stop default emissions of "hierarchy-changed" and 
+		 * "screen-changed" of GtkFileChooserDefault to avoid an abort()
+		 * when doing a reparent.
+		 * GtkFileChooserDialog packs a GtkFileChooserWidget in 
+		 * his internal vbox.
+		 */
+		if (GTK_IS_FILE_CHOOSER_DIALOG (object))
+			gtk_container_forall (GTK_CONTAINER (dialog->vbox),
+					      glade_gtk_file_chooser_forall,
+					      NULL);
+		
 		vbox_widget = glade_widget_adaptor_create_internal 
 			(widget, G_OBJECT(dialog->vbox),
 			 "vbox", "dialog", FALSE, reason);
