@@ -32,6 +32,6 @@ libgladepython_la_LIBADD = \
 	$(PYTHON_EXTRA_LIBS)   \
 	$(PYGTK_LIBS)
 
-if WITH_WIN32
+if PLATFORM_WIN32
   libgladepython_la_LDFLAGS += -no-undefined
 endif

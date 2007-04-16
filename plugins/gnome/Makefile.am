@@ -22,7 +22,7 @@ libgladegnome_la_CFLAGS = \
 libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS) $(AM_LDFLAGS)
 libgladegnome_la_LIBADD = $(libgladeui) $(GLADE_LIBS)
 
-if WITH_WIN32
+if PLATFORM_WIN32
   libgladegnome_la_LDFLAGS += -no-undefined
 endif
 

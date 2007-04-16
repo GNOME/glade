@@ -1,3 +1,14 @@
+2007-04-16  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* configure.ac: Check for windres on win32. Define version using
+	  separate numbered components (major, minor, micro).
+	  
+	* data/icons/glade-3.ico: New application icon in win32 ICO format.
+	
+	* gladeui/gladeui.rc.in, gladeui/Makefile.am, src/glade-3.rc.in,
+	  src/Makefile.am: Added win32 resources for the libgladeui dll
+	  and the application executable.
+	  
 2007-04-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c: stop GtkFileChooserDefault "hierarchy-changed"
@@ -11,7 +22,7 @@
 	  plugins/gtk+/icons/16x16/widget-gtk-filechooserwidget.png: new icons,
 	  they are the same as GtkFileChooserDialog but without the borders :)
 
-2007-04-12  Vincent Geddes  <vincent.geddes@gmail.com>
+2007-04-12  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/Makefile.am: Auto-generate `gladeui.def' for DLL symbol
 	  exports. Remove -DINSIDE_LIBGLADEUI from libgladeui_1_la_CPPFLAGS.

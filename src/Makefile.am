@@ -22,6 +22,11 @@ glade_3_SOURCES = \
 	glade-project-window.h \
 	main.c
 
-if WITH_WIN32
-  glade_3_LDFLAGS += -mwindows
+if PLATFORM_WIN32
+  glade_3_LDADD += glade-win32-res.o
 endif
+
+glade-win32-res.o: glade-3.rc
+	$(WINDRES) $< $@
+
+EXTRA_DIST = glade-3.rc.in

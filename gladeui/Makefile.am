@@ -14,7 +14,7 @@ lib_LTLIBRARIES = libgladeui-1.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = atk.xpm glade-marshallers.list
+EXTRA_DIST = atk.xpm glade-marshallers.list gladeui.rc.in
 
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
@@ -116,10 +116,13 @@ libgladeuiinclude_HEADERS = \
 	fixed_bg.xpm
 	
 
-if WITH_WIN32
-  libgladeui_1_la_LDFLAGS += -no-undefined -export-symbols gladeui.def
-  libgladeui_1_la_DEPENDENCIES = gladeui.def
+if PLATFORM_WIN32
+  libgladeui_1_la_LDFLAGS += -no-undefined -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+  libgladeui_1_la_DEPENDENCIES = gladeui.def gladeui-win32-res.o
 endif
+
+gladeui-win32-res.o: gladeui.rc
+	$(WINDRES) $< $@
 
 # gladeui.def: auto-generated DEF file for linker input
 # The routines below will scan the header files and extracts symbol declarations.

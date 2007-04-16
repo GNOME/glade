@@ -1,12 +1,25 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
-AC_INIT([glade3], [3.1.5],
+
+m4_define(glade_major_version, 3)
+m4_define(glade_minor_version, 3)
+m4_define(glade_micro_version, 0)
+m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
+
+AC_INIT([glade3], [glade_version],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
 	
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([gladeui/glade.h])
 AC_CONFIG_MACRO_DIR([m4])
+
+AC_DEFINE(GLADE_MAJOR_VERSION, glade_major_version, [Glade major version])
+AC_SUBST(GLADE_MAJOR_VERSION, glade_major_version)
+AC_DEFINE(GLADE_MINOR_VERSION, glade_minor_version, [Glade minor version])
+AC_SUBST(GLADE_MINOR_VERSION, glade_minor_version)
+AC_DEFINE(GLADE_MICRO_VERSION, glade_micro_version, [Glade micro version])
+AC_SUBST(GLADE_MICRO_VERSION, glade_micro_version)
 
 AC_CANONICAL_SYSTEM
 
@@ -222,13 +235,20 @@ dnl Check for windows
 dnl ================================================================
 case $host_os in
   *mingw* | pw32* | cygwin*)
-    win32=yes
+    platform_win32=yes
     ;;
   *)
-    win32=no
+    platform_win32=no
     ;;
 esac
-AM_CONDITIONAL(WITH_WIN32, test x"$win32" = "xyes")
+AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = "xyes")
+
+if test "$platform_win32" = "yes"; then
+  AC_CHECK_TOOL(WINDRES, windres, no)
+  if test "$WINDRES" = no; then
+    AC_MSG_ERROR([*** Could not find an implementation of windres in your PATH.])
+  fi
+fi
 
 dnl ================================================================
 dnl Only use -Wall if we have gcc
@@ -264,7 +284,9 @@ data/icons/hicolor/48x48/apps/Makefile
 data/icons/hicolor/scalable/Makefile
 data/icons/hicolor/scalable/apps/Makefile
 gladeui/Makefile
+gladeui/gladeui.rc
 src/Makefile
+src/glade-3.rc
 plugins/Makefile
 plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
@@ -293,5 +315,4 @@ Configuration:
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	GnomeUI Widgets:	 ${have_gnome}
 	Python Binding:		 ${have_python}
-	Glade User Manual:	 ${gdu_cv_have_gdu}
 "

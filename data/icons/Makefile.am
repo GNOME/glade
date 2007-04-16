@@ -20,4 +20,4 @@ pixmapsdir = $(pkgdatadir)/pixmaps
 pixmaps_DATA = selector.png devhelp.png plus.png
 
 	
-EXTRA_DIST = $(pixmaps_DATA)
+EXTRA_DIST = $(pixmaps_DATA) glade-3.ico

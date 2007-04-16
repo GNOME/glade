@@ -27,7 +27,7 @@ libgladegtk_la_SOURCES     = glade-gtk.c glade-gtk.h
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
-if WITH_WIN32
+if PLATFORM_WIN32
   libgladegtk_la_LDFLAGS += -no-undefined
 endif
 
