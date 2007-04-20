@@ -313,6 +313,6 @@ Configuration:
 	Source code location:	 ${srcdir}
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
-	GnomeUI Widgets:	 ${have_gnome}
+	GNOME UI Widgets:	 ${have_gnome}
 	Python Binding:		 ${have_python}
 "
