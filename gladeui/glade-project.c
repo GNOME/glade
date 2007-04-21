@@ -618,22 +618,22 @@ glade_project_get_readonly (GladeProject *project)
 
 /**
  * glade_project_new:
- * @untitled: Whether or not this project is untitled
+ * @unsaved: Whether or not this project is unsaved
  *
- * Creates a new #GladeProject. If @untitled is %TRUE, sets the project's
- * name to "Untitled 1" or some such, giving a unique number each time
+ * Creates a new #GladeProject. If @unsaved is %TRUE, sets the project's
+ * name to "Unsaved 1" or some such, giving a unique number each time
  * called.
  *
  * Returns: a new #GladeProject
  */
 GladeProject *
-glade_project_new (gboolean untitled)
+glade_project_new (gboolean unsaved)
 {
 	GladeProject *project;
 
 	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
 
-	if (untitled)
+	if (unsaved)
 	{
 		project->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
 		project->name = g_strdup_printf (_("Unsaved %d"), project->unsaved_number);

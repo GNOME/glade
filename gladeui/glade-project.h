@@ -107,7 +107,7 @@ struct _GladeProjectClass
 GType         glade_project_get_type (void);
 
 
-GladeProject *glade_project_new                 (gboolean     untitled);
+GladeProject *glade_project_new                 (gboolean     unsaved);
 
 GladeProject *glade_project_open                (const gchar  *path);
 
