@@ -2,6 +2,11 @@
 /*
  * Copyright (C) 2004 Owen Taylor
  *
+ * Authors:
+ *   Owen Taylor  <otaylor@redhat.com>
+ *
+ * Modified by the Glade developers
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -16,17 +21,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- * Authors:
- *   Owen Taylor  <otaylor@redhat.com>
  */
 
 #include "config.h"
+#include "glade-id-allocator.h"
 
 #include <glib.h>
 #include <string.h>
-#include "glade-id-allocator.h"
 
 #define INITIAL_WORDS 4
+
+struct _GladeIDAllocator
+{
+	guint     n_words;
+	guint32  *data;
+};
 
 /**
  * glade_id_allocator_new:
@@ -36,26 +45,29 @@
 GladeIDAllocator *
 glade_id_allocator_new (void)
 {
-	GladeIDAllocator *allocator = g_new (GladeIDAllocator, 1);
+	GladeIDAllocator *allocator = g_slice_new (GladeIDAllocator);
 
 	allocator->n_words = INITIAL_WORDS;
 	allocator->data = g_new (guint32, INITIAL_WORDS);
+	
 	memset (allocator->data, 0xff, INITIAL_WORDS * sizeof (guint32));
       
 	return allocator;
 }
 
 /**
- * glade_id_allocator_free:
+ * glade_id_allocator_destroy:
  * @allocator: a #GladeIDAllocator
  *
  * Frees @allocator and its associated memory
  */
 void
-glade_id_allocator_free (GladeIDAllocator *allocator)
+glade_id_allocator_destroy (GladeIDAllocator *allocator)
 {
+	g_return_if_fail (allocator != NULL);
+
 	g_free (allocator->data);
-	g_free (allocator);
+	g_slice_free (GladeIDAllocator, allocator);
 }
 
 static inline gint
@@ -99,8 +111,10 @@ first_set_bit (guint32 word)
  * Returns:
  */
 guint
-glade_id_allocator_alloc (GladeIDAllocator *allocator)
+glade_id_allocator_allocate (GladeIDAllocator *allocator)
 {
+	g_return_val_if_fail (allocator != NULL, 0);
+
 	guint i;
 
 	for (i = 0; i < allocator->n_words; i++)
@@ -136,8 +150,10 @@ glade_id_allocator_alloc (GladeIDAllocator *allocator)
  */
 void
 glade_id_allocator_release (GladeIDAllocator *allocator,
-			guint         id)
+			    guint             id)
 {
+	g_return_if_fail (allocator != NULL);
+
 	id--;
 	allocator->data[id >> 5] |= 1 << (id & 31);
 }
@@ -151,7 +167,7 @@ int main (int argc, char **argv)
 
 	for (i = 0; i < 1000; i++)
 	{
-		guint id = glade_id_allocator_alloc (allocator);
+		guint id = glade_id_allocator_allocate (allocator);
 		g_assert (id == i);
 	}
   
@@ -167,7 +183,7 @@ int main (int argc, char **argv)
 			glade_id_allocator_release (allocator, i);
 	}
 
-	glade_id_allocator_free (allocator);
+	glade_id_allocator_destroy (allocator);
 
 	return 0;
 }

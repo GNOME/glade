@@ -29,7 +29,7 @@ struct _GladeProject
 
 	gint   instance; /* How many projects with this name */
 
-	gint   untitled_number; /* A unique number for this project if it is untitled */
+	gint   unsaved_number; /* A unique number for this project if it is untitled */
 
 	gboolean readonly; /* A flag that is set if the project is readonly */
 

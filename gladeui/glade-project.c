@@ -61,14 +61,26 @@ enum
 	PROP_READ_ONLY
 };
 
-static guint         glade_project_signals[LAST_SIGNAL] = {0};
-static GObjectClass *parent_class = NULL;
-static GHashTable   *allocated_untitled_numbers = NULL;
+static guint              glade_project_signals[LAST_SIGNAL] = {0};
+
+static GladeIDAllocator  *unsaved_number_allocator = NULL;
+
+G_DEFINE_TYPE (GladeProject, glade_project, G_TYPE_OBJECT)
+
 
 /*******************************************************************
                             GObjectClass
  *******************************************************************/
- 
+
+static GladeIDAllocator *
+get_unsaved_number_allocator (void)
+{
+	if (unsaved_number_allocator == NULL)
+		unsaved_number_allocator = glade_id_allocator_new ();
+		
+	return unsaved_number_allocator;
+}
+
 static void
 glade_project_list_unref (GList *original_list)
 {
@@ -78,14 +90,6 @@ glade_project_list_unref (GList *original_list)
 
 	if (original_list != NULL)
 		g_list_free (original_list);
-}
-
-static void
-glade_project_release_untitled_number (gint n)
-{
-	g_return_if_fail (allocated_untitled_numbers != NULL);
-
-	g_hash_table_remove (allocated_untitled_numbers, GINT_TO_POINTER (n));
 }
 
 static void
@@ -131,7 +135,7 @@ glade_project_dispose (GObject *object)
 	gtk_object_destroy (GTK_OBJECT (project->tooltips));
 	project->tooltips = NULL;
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
 
 static void
@@ -143,14 +147,14 @@ glade_project_finalize (GObject *object)
 	g_free (project->path);
 	g_free (project->comment);
 
-	if (project->untitled_number > 0)
-		glade_project_release_untitled_number (project->untitled_number);
+	if (project->unsaved_number > 0)
+		glade_id_allocator_release (get_unsaved_number_allocator (), project->unsaved_number);
 
 	g_hash_table_destroy (project->widget_names_allocator);
 	g_hash_table_destroy (project->widget_old_names);
 	g_hash_table_destroy (project->resources);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (glade_project_parent_class)->finalize (object);
 }
 
 static void
@@ -343,7 +347,7 @@ glade_project_init (GladeProject *project)
 	project->path = NULL;
 	project->name = NULL;
 	project->instance = 0;
-	project->untitled_number = 0;
+	project->unsaved_number = 0;
 	project->readonly = FALSE;
 	project->objects = NULL;
 	project->selection = NULL;
@@ -352,7 +356,7 @@ glade_project_init (GladeProject *project)
 	project->prev_redo_item = NULL;
 	project->widget_names_allocator = 
 		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, 
-				       (GDestroyNotify) glade_id_allocator_free);
+				       (GDestroyNotify) glade_id_allocator_destroy);
 	project->widget_old_names = 
 		g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
 	project->tooltips = gtk_tooltips_new ();
@@ -370,8 +374,6 @@ glade_project_class_init (GladeProjectClass *klass)
 	GObjectClass *object_class;
 
 	object_class = G_OBJECT_CLASS (klass);
-
-	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->get_property = glade_project_get_property;
 	object_class->finalize     = glade_project_finalize;
@@ -585,56 +587,6 @@ glade_project_class_init (GladeProjectClass *klass)
 /*******************************************************************
                                   API
  *******************************************************************/
-GType
-glade_project_get_type (void)
-{
-	static GType type = 0;
-
-	if (!type)
-	{
-		static const GTypeInfo info = {
-			sizeof (GladeProjectClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) glade_project_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (GladeProject),
-			0,
-			(GInstanceInitFunc) glade_project_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT, "GladeProject", &info, 0);
-	}
-
-	return type;
-}
-
-
-static gint
-glade_project_get_untitled_number (void)
-{
-	gint i = 1;
-
-	if (allocated_untitled_numbers == NULL)
-		allocated_untitled_numbers = g_hash_table_new (NULL, NULL);
-
-	g_return_val_if_fail (allocated_untitled_numbers != NULL, -1);
-
-	while (TRUE)
-	{
-		if (g_hash_table_lookup (allocated_untitled_numbers, GINT_TO_POINTER (i)) == NULL)
-		{
-			g_hash_table_insert (allocated_untitled_numbers, 
-					     GINT_TO_POINTER (i),
-					     GINT_TO_POINTER (i));
-
-			return i;
-		}
-
-		++i;
-	}
-}
 
 static void
 glade_project_set_readonly (GladeProject *project, gboolean readonly)
@@ -683,8 +635,8 @@ glade_project_new (gboolean untitled)
 
 	if (untitled)
 	{
-		project->untitled_number = glade_project_get_untitled_number ();
-		project->name = g_strdup_printf (_("Unsaved %d"), project->untitled_number);
+		project->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
+		project->name = g_strdup_printf (_("Unsaved %d"), project->unsaved_number);
 	}
 
 	return project;
@@ -1097,7 +1049,7 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 
 	while (TRUE)
 	{
-		i = glade_id_allocator_alloc (id_allocator);
+		i = glade_id_allocator_allocate (id_allocator);
 		name = g_strdup_printf ("%s%u", base_name, i);
 
 		/* ok, there is no widget with this name, so return the name */
@@ -1700,10 +1652,10 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
 	}
 
-	if (project->untitled_number > 0)
+	if (project->unsaved_number > 0)
 	{
-		glade_project_release_untitled_number (project->untitled_number);
-		project->untitled_number = 0;
+		glade_id_allocator_release (get_unsaved_number_allocator (), project->unsaved_number);
+		project->unsaved_number = 0;
         }
 
 	g_free (canonical_path);

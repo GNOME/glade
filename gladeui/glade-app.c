@@ -39,6 +39,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkstock.h>
 
+#define GLADE_CONFIG_FILENAME "glade-3.conf"
+
 #define GLADE_APP_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_APP, GladeAppPrivate))
 
 enum

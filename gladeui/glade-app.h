@@ -30,8 +30,6 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_CONFIG_FILENAME "glade-3.conf"
-
 #define GLADE_TYPE_APP            (glade_app_get_type())
 #define GLADE_APP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_APP, GladeApp))
 #define GLADE_APP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_APP, GladeAppClass))

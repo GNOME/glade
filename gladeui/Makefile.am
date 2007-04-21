@@ -47,6 +47,7 @@ libgladeui_1_la_SOURCES = \
 	glade-clipboard-view.c \
 	glade-command.c \
 	glade-id-allocator.c \
+	glade-id-allocator.h \
 	glade-marshallers.c \
 	glade-accumulators.c \
 	glade-parser.c \
@@ -61,7 +62,6 @@ libgladeui_1_la_SOURCES = \
 	glade-palette-expander.h \
 	glade-popup.h \
 	glade-catalog.h \
-	glade-id-allocator.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
 	glade-parser.h \

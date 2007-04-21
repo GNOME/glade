@@ -4,6 +4,13 @@
 	
 	* gladeui/glade-widget.c: Clean up toplevel embedding code, remove
 	  unused embedding implementation. Fix embedding warning.
+	  
+	* glade-id-allocator.c, glade-id-allocator.h: Performed house cleaning.
+          - Use g_slice_new where appropriate.
+          - Hide private implementation details.
+          - Added g_return_if_fail guards.
+          
+        * gladeui/glade-project.c: Use GladeIDAllocator for allocating unsaved numbers.
 
 2007-04-20  Vincent Geddes <vincent.geddes@gmail.com>
 
