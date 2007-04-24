@@ -112,6 +112,7 @@ glade_project_dispose (GObject *object)
 		gwidget = glade_widget_get_from_gobject (list->data);
 
 		if (gwidget->parent &&
+		    gwidget->internal == NULL &&
 		    glade_widget_adaptor_has_child (gwidget->parent->adaptor,
 						    gwidget->parent->object,
 						    gwidget->object))

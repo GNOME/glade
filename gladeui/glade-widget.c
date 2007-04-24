@@ -735,10 +735,14 @@ glade_widget_dispose (GObject *object)
 
 	g_return_if_fail (GLADE_IS_WIDGET (object));
 
-	if (GTK_IS_OBJECT (widget->object))
-		gtk_object_destroy (GTK_OBJECT (widget->object));
-	else 
-		g_object_unref (widget->object);
+	/* We do not keep a reference to internal widgets */
+	if (widget->internal == NULL)
+	{
+		if (GTK_IS_OBJECT (widget->object))
+			gtk_object_destroy (GTK_OBJECT (widget->object));
+		else 
+			g_object_unref (widget->object);
+	}
 
 	if (widget->properties)
 	{
@@ -3189,8 +3193,12 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	adaptor    = gwidget->adaptor;
 	old_object = gwidget->object;
 	
-	/* Add internal reference to new widget */
-	gwidget->object = g_object_ref (G_OBJECT(new_object));
+	/* Add internal reference to new widget if its not internal */
+	if (gwidget->internal)
+		gwidget->object = G_OBJECT(new_object);
+	else
+		gwidget->object = g_object_ref (G_OBJECT(new_object));
+	
 	g_object_set_qdata (G_OBJECT (new_object), glade_widget_name_quark, gwidget);
 
 	if (g_type_is_a (gwidget->adaptor->type, GTK_TYPE_WIDGET))
@@ -3210,7 +3218,7 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	}
 
 	/* Remove internal reference to old widget */
-	if (old_object) {
+	if (gwidget->internal == NULL && old_object) {
 		g_object_set_qdata (G_OBJECT (old_object), glade_widget_name_quark, NULL);
 		g_object_unref (G_OBJECT (old_object));
 	}
