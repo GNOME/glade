@@ -1801,17 +1801,17 @@ glade_eprop_unichar_load (GladeEditorProperty *eprop, GladeProperty *property)
 	/* Chain up first */
 	editor_property_class->load (eprop, property);
 
-	if (property && GTK_IS_EDITABLE (eprop_unichar->entry)) {
-		GtkEditable *editable = GTK_EDITABLE (eprop_unichar->entry);
-		gint insert_pos = 0;
-		gunichar ch;
-		gchar utf8st[6];
-
-		ch = g_value_get_uint (property->value);
-
-		g_unichar_to_utf8 (ch, utf8st);
- 		gtk_editable_delete_text (editable, 0, -1);
-		gtk_editable_insert_text (editable, utf8st, 1, &insert_pos);
+	if (property && GTK_IS_ENTRY (eprop_unichar->entry))
+	{
+		GtkEntry *entry = GTK_ENTRY (eprop_unichar->entry);
+		gchar utf8st[8];
+		gint n;
+		
+		if ((n = g_unichar_to_utf8 (g_value_get_uint (property->value), utf8st)))
+		{
+			utf8st[n] = '\0';
+			gtk_entry_set_text (entry, utf8st);
+		}
 	}
 }
 
@@ -1820,33 +1820,31 @@ static void
 glade_eprop_unichar_changed (GtkWidget           *entry,
 			     GladeEditorProperty *eprop)
 {
-	GValue val = { 0, };
-	guint len;
-	gchar *text;
-	gunichar unich = '\0';
+	const gchar *text;
 
 	if (eprop->loading) return;
 
-	if ((text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1)) != NULL)
+	if ((text = gtk_entry_get_text (GTK_ENTRY (entry))) != NULL)
 	{
-		len = g_utf8_strlen (text, -1);
-		unich = g_utf8_get_char (text);
-		g_free (text);
+		gunichar unich = g_utf8_get_char (text);
+		GValue val = { 0, };
+		
+		g_value_init (&val, G_TYPE_UINT);
+		g_value_set_uint (&val, unich);
+
+		glade_editor_property_commit (eprop, &val);
+
+		g_value_unset (&val);
 	}
-
-	g_value_init (&val, G_TYPE_UINT);
-	g_value_set_uint (&val, unich);
-
-	glade_editor_property_commit (eprop, &val);
-
-	g_value_unset (&val);
 }
 
 static void
 glade_eprop_unichar_delete (GtkEditable *editable,
 			    gint start_pos,
-			    gint end_pos)
+			    gint end_pos,
+			    GladeEditorProperty *eprop)
 {
+	if (eprop->loading) return;
 	gtk_editable_select_region (editable, 0, -1);
 	g_signal_stop_emission_by_name (G_OBJECT (editable), "delete_text");
 }
@@ -1858,6 +1856,7 @@ glade_eprop_unichar_insert (GtkWidget *entry,
 			    gint *position,
 			    GladeEditorProperty *eprop)
 {
+	if (eprop->loading) return;
 	g_signal_handlers_block_by_func
 		(G_OBJECT (entry), G_CALLBACK (glade_eprop_unichar_changed), eprop);
 	g_signal_handlers_block_by_func
