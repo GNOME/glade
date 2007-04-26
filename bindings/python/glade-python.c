@@ -51,7 +51,7 @@ glade_python_redo (PyObject *self, PyObject *args)
 static PyObject *
 glade_python_project_new (PyObject *self, PyObject *args)
 {	
-	glade_app_add_project (glade_project_new (TRUE));
+	glade_app_add_project (glade_project_new ());
 
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -70,7 +70,7 @@ glade_python_project_open (PyObject *self, PyObject *args)
 		
 		if ((project = glade_app_get_project_by_path (path)))
 			glade_app_set_project (project);
-		else if ((project = glade_project_open (path)))
+		else if ((project = glade_project_load (path)))
 			glade_app_add_project (project);
 		else
 			return Py_None;
@@ -110,7 +110,7 @@ static PyObject *
 glade_python_project_get (PyObject *self, PyObject *args)
 {
 	GladeProject *project = glade_app_get_project ();
-	return Py_BuildValue ("s", (project) ? project->name : "");
+	return Py_BuildValue ("s", (project) ? glade_project_get_name (project) : "");
 }
 
 static PyObject *
@@ -124,7 +124,7 @@ glade_python_project_list (PyObject *self, PyObject *args)
 	for (p = projects; p && p->data; p = g_list_next (p))
 	{
 		GladeProject *project = p->data;
-		PyList_Append (list, Py_BuildValue ("s", project->name));
+		PyList_Append (list, Py_BuildValue ("s", glade_project_get_name (project)));
 	}
 	
 	return list;
@@ -239,7 +239,7 @@ glade_python_widget_list (PyObject *self, PyObject *args)
 	
 	list = PyList_New (0);
 	
-	for (p = project->objects; p && p->data; p = g_list_next (p))
+	for (p = (GList *) glade_project_get_objects (project); p && p->data; p = g_list_next (p))
 	{
 		GladeWidget *widget = glade_widget_get_from_gobject (p->data);
 		if (widget)

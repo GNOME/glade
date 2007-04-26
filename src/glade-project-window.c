@@ -186,6 +186,187 @@ glade_project_window_help_show (const gchar *link_id)
 	return retval && !exit_status;
 }
 
+
+/* the following functions are taken from gedit-utils.c */
+
+static gchar *
+str_middle_truncate (const gchar *string,
+		     guint        truncate_length)
+{
+	GString     *truncated;
+	guint        length;
+	guint        n_chars;
+	guint        num_left_chars;
+	guint        right_offset;
+	guint        delimiter_length;
+	const gchar *delimiter = "\342\200\246";
+
+	g_return_val_if_fail (string != NULL, NULL);
+
+	length = strlen (string);
+
+	g_return_val_if_fail (g_utf8_validate (string, length, NULL), NULL);
+
+	/* It doesnt make sense to truncate strings to less than
+	 * the size of the delimiter plus 2 characters (one on each
+	 * side)
+	 */
+	delimiter_length = g_utf8_strlen (delimiter, -1);
+	if (truncate_length < (delimiter_length + 2)) {
+		return g_strdup (string);
+	}
+
+	n_chars = g_utf8_strlen (string, length);
+
+	/* Make sure the string is not already small enough. */
+	if (n_chars <= truncate_length) {
+		return g_strdup (string);
+	}
+
+	/* Find the 'middle' where the truncation will occur. */
+	num_left_chars = (truncate_length - delimiter_length) / 2;
+	right_offset = n_chars - truncate_length + num_left_chars + delimiter_length;
+
+	truncated = g_string_new_len (string,
+				      g_utf8_offset_to_pointer (string, num_left_chars) - string);
+	g_string_append (truncated, delimiter);
+	g_string_append (truncated, g_utf8_offset_to_pointer (string, right_offset));
+		
+	return g_string_free (truncated, FALSE);
+}
+
+/*
+ * Doubles underscore to avoid spurious menu accels - taken from gedit-utils.c
+ */
+static gchar * 
+escape_underscores (const gchar* text,
+		    gssize       length)
+{
+	GString *str;
+	const gchar *p;
+	const gchar *end;
+
+	g_return_val_if_fail (text != NULL, NULL);
+
+	if (length < 0)
+		length = strlen (text);
+
+	str = g_string_sized_new (length);
+
+	p = text;
+	end = text + length;
+
+	while (p != end)
+	{
+		const gchar *next;
+		next = g_utf8_next_char (p);
+
+		switch (*p)
+		{
+			case '_':
+				g_string_append (str, "__");
+				break;
+			default:
+				g_string_append_len (str, p, next - p);
+				break;
+		}
+
+		p = next;
+	}
+
+	return g_string_free (str, FALSE);
+}
+
+typedef enum
+{
+	FORMAT_NAME_MARK_UNSAVED        = 1 << 0,
+	FORMAT_NAME_ESCAPE_UNDERSCORES  = 1 << 1,
+	FORMAT_NAME_MIDDLE_TRUNCATE     = 1 << 2
+} FormatNameFlags;
+
+#define MAX_TITLE_LENGTH 100
+
+static gchar *
+get_formatted_project_name_for_display (GladeProject *project, FormatNameFlags format_flags)
+{
+	gchar *name, *pass1, *pass2, *pass3;
+	
+	g_return_val_if_fail (project != NULL, NULL);
+	
+	name = glade_project_get_name (project);
+	
+	if ((format_flags & FORMAT_NAME_MARK_UNSAVED)
+	    && glade_project_get_has_unsaved_changes (project))
+		pass1 = g_strdup_printf ("*%s", name);
+	else
+		pass1 = g_strdup (name);
+		
+	if (format_flags & FORMAT_NAME_ESCAPE_UNDERSCORES)
+		pass2 = escape_underscores (pass1, -1);
+	else
+		pass2 = g_strdup (pass1);
+		
+	if (format_flags & FORMAT_NAME_MIDDLE_TRUNCATE)
+		pass3 = str_middle_truncate (pass2, MAX_TITLE_LENGTH);
+	else
+		pass3 = g_strdup (pass2); 
+
+	g_free (name);
+	g_free (pass1);	
+	g_free (pass2);
+	
+	return pass3;
+}
+
+static gchar *
+replace_home_dir_with_tilde (const gchar *path)
+{
+#ifdef G_OS_UNIX
+	gchar *tmp;
+	gchar *home;
+
+	g_return_val_if_fail (path != NULL, NULL);
+
+	/* Note that g_get_home_dir returns a const string */
+	tmp = (gchar *) g_get_home_dir ();
+
+	if (tmp == NULL)
+		return g_strdup (path);
+
+	home = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
+	if (home == NULL)
+		return g_strdup (path);
+
+	if (strcmp (path, home) == 0)
+	{
+		g_free (home);
+		
+		return g_strdup ("~");
+	}
+
+	tmp = home;
+	home = g_strdup_printf ("%s/", tmp);
+	g_free (tmp);
+
+	if (g_str_has_prefix (path, home))
+	{
+		gchar *res;
+
+		res = g_strdup_printf ("~/%s", path + strlen (home));
+
+		g_free (home);
+		
+		return res;		
+	}
+
+	g_free (home);
+
+	return g_strdup (path);
+#else
+	return g_strdup (path);
+#endif
+}
+
 static void
 gpw_refresh_title (GladeProjectWindow *gpw)
 {
@@ -196,9 +377,11 @@ gpw_refresh_title (GladeProjectWindow *gpw)
 	{
 		project = glade_design_view_get_project (gpw->priv->active_view);
 
-		name = glade_project_display_name (project, TRUE, FALSE, FALSE);
+		name = get_formatted_project_name_for_display (project, 
+							       FORMAT_NAME_MARK_UNSAVED |
+							       FORMAT_NAME_MIDDLE_TRUNCATE);
 		
-		if (project->readonly != FALSE)
+		if (glade_project_get_readonly (project) != FALSE)
 			title = g_strdup_printf ("%s %s", name, READONLY_INDICATOR);
 		else
 			title = g_strdup_printf ("%s", name);
@@ -226,9 +409,9 @@ update_default_path (GladeProjectWindow *gpw, GladeProject *project)
 {
 	gchar *path;
 	
-	g_return_if_fail (project->path != NULL);
+	g_return_if_fail (glade_project_get_path (project) != NULL);
 
-	path = g_path_get_dirname (project->path);
+	path = g_path_get_dirname (glade_project_get_path (project));
 
 	g_free (gpw->priv->default_path);
 	gpw->priv->default_path = g_strdup (path);
@@ -354,26 +537,57 @@ glade_project_window_get_active_view (GladeProjectWindow *gpw)
 	return gpw->priv->active_view;
 }
 
+static gchar *
+format_project_list_item_tooltip (GladeProject *project)
+{
+	gchar *tooltip, *path, *name;
+
+	if (glade_project_get_path (project))
+	{
+		path = replace_home_dir_with_tilde (glade_project_get_path (project));
+		
+		if (glade_project_get_readonly (project))
+		{
+			tooltip = g_strdup_printf ("Activate '%s' %s",
+					   	   path,
+					   	   READONLY_INDICATOR);
+		}
+		else
+		{
+			tooltip = g_strdup_printf ("Activate '%s'", path);		
+		}
+		g_free (path);
+	}
+	else
+	{
+		name = glade_project_get_name (project);
+		tooltip = g_strdup_printf ("Activate '%s'", name);
+		g_free (name);
+	}
+	
+	return tooltip;
+}
+
 static void
 gpw_refresh_projects_list_item (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkAction *action;
 	gchar *project_name;
-	gchar *tooltip = NULL;
+	gchar *tooltip;
 	
 	/* Get associated action */
 	action = GTK_ACTION (g_object_get_data (G_OBJECT (project), "project-list-action"));
 
 	/* Set action label */
-	project_name = glade_project_display_name (project, TRUE, FALSE, TRUE);
+	project_name = get_formatted_project_name_for_display (project,
+							       FORMAT_NAME_MARK_UNSAVED |
+							       FORMAT_NAME_ESCAPE_UNDERSCORES |
+							       FORMAT_NAME_MIDDLE_TRUNCATE);
+							
 	g_object_set (action, "label", project_name, NULL);
 
 	/* Set action tooltip */
-	if (project->readonly != FALSE && project->path)
-		tooltip = g_strdup_printf ("%s %s", project->path, READONLY_INDICATOR);
-	else if (project->path)
-		tooltip = g_strdup_printf ("%s", project->path);
-	
+	tooltip = format_project_list_item_tooltip (project);
 	g_object_set (action, "tooltip", tooltip, NULL);
 	
 	g_free (tooltip);
@@ -588,7 +802,6 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 		GtkRadioAction *action;
 		gchar *action_name;
 		gchar *project_name;
-		gchar *name;
 		gchar *tooltip;
 		gchar *accel;
 
@@ -604,15 +817,19 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 		 * get the same accel.
 		 */
 		action_name = g_strdup_printf ("Tab_%d", i);
-		project_name = glade_project_display_name (project, TRUE, FALSE, FALSE);
-		name = glade_util_duplicate_underscores (project_name);
-		tooltip =  g_strdup_printf (_("Activate %s"), project_name);
+		project_name = get_formatted_project_name_for_display (project,
+								       FORMAT_NAME_MARK_UNSAVED |
+								       FORMAT_NAME_MIDDLE_TRUNCATE |
+								       FORMAT_NAME_ESCAPE_UNDERSCORES);				       
+		tooltip = format_project_list_item_tooltip (project);
+		
+
 
 		/* alt + 1, 2, 3... 0 to switch to the first ten tabs */
 		accel = (i < 10) ? g_strdup_printf ("<alt>%d", (i + 1) % 10) : NULL;
 
 		action = gtk_radio_action_new (action_name, 
-					       name,
+					       project_name,
 					       tooltip, 
 					       NULL,
 					       i);
@@ -648,7 +865,6 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 
 		g_free (action_name);
 		g_free (project_name);
-		g_free (name);
 		g_free (tooltip);
 		g_free (accel);
 	}
@@ -758,7 +974,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	gint       response;
 
 	/* check for external modification to the project file */
-	mtime = glade_util_get_file_mtime (project->path, NULL);
+	mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
 	
 	if (mtime > glade_project_get_file_mtime (project)) {
 	
@@ -767,7 +983,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 						 GTK_MESSAGE_WARNING,
 						 GTK_BUTTONS_NONE,
 						 _("The file %s has been modified since reading it"),
-						 project->path);
+						 glade_project_get_path (project));
 						 
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), 				 
 							  _("If you save it, all the external changes could be lost. Save it anyway?"));
@@ -797,7 +1013,7 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	}
 		  
 	/* Interestingly; we cannot use `path' after glade_project_reset_path
-	 * because we are getting called with project->path as an argument.
+	 * because we are getting called with glade_project_get_path (project) as an argument.
 	 */
 	if (!glade_project_save (project, path, &error))
 	{
@@ -814,9 +1030,9 @@ gpw_save (GladeProjectWindow *gpw, GladeProject *project, const gchar *path)
 	glade_app_update_instance_count (project);
 
 	/* Get display_name here, it could have changed with "Save As..." */
-	display_name = glade_project_display_name (project, FALSE, FALSE, FALSE);
+	display_name = glade_project_get_name (project);
 
-	gpw_recent_add (gpw, project->path);
+	gpw_recent_add (gpw, glade_project_get_path (project));
 	update_default_path (gpw, project);
 
 	/* refresh names */
@@ -837,7 +1053,7 @@ gpw_save_as (GladeProjectWindow *gpw)
  	GladeProject *project, *another_project;
  	GtkWidget *filechooser;
 	gchar *path = NULL;
-	gchar *real_path, *ch;
+	gchar *real_path, *ch, *project_name;
 	
 	project = glade_design_view_get_project (gpw->priv->active_view);
 	
@@ -852,9 +1068,9 @@ gpw_save_as (GladeProjectWindow *gpw)
 						  GTK_WINDOW (gpw->priv->window),
 						  GLADE_FILE_DIALOG_ACTION_SAVE);
 
-	if (project->path)
+	if (glade_project_get_path (project))
 	{
-		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), project->path);
+		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), glade_project_get_path (project));
 	}
 	else	
 	{
@@ -865,7 +1081,9 @@ gpw_save_as (GladeProjectWindow *gpw)
 			g_free (default_path);
 		}
 
-		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (filechooser), project->name);
+		project_name = glade_project_get_name (project);
+		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (filechooser), project_name);
+		g_free (project_name);
 	}
 	
  	if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
@@ -931,9 +1149,9 @@ gpw_save_cb (GtkAction *action, GladeProjectWindow *gpw)
 		return;
 	}
 
-	if (project->path != NULL) 
+	if (glade_project_get_path (project) != NULL) 
 	{
-		gpw_save (gpw, project, project->path);
+		gpw_save (gpw, project, glade_project_get_path (project));
  		return;
 	}
 
@@ -951,12 +1169,14 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 {
 	GtkWidget *dialog;
 	gboolean close = FALSE;
-	gchar *msg;
+	gchar *msg, *project_name = NULL;
 	gint ret;
 	GError *error = NULL;
 
+	project_name = glade_project_get_name (project);
+
 	msg = g_strdup_printf (_("<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n\n"
-				 "Your changes will be lost if you don't save them.\n"), project->name);
+				 "Your changes will be lost if you don't save them.\n"), project_name);
 
 	dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->priv->window),
 					 GTK_DIALOG_MODAL,
@@ -982,16 +1202,16 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 		 * since it saves the current project, while the modified 
                  * project we are saving may be not the current one.
 		 */
-		if (project->path != NULL)
+		if (glade_project_get_path (project) != NULL)
 		{
 			if ((close = glade_project_save
-			     (project, project->path, &error)) == FALSE)
+			     (project, glade_project_get_path (project), &error)) == FALSE)
 			{
 
 				glade_util_ui_message
 					(gpw->priv->window, GLADE_UI_ERROR, 
 					 _("Failed to save %s to %s: %s"),
-					 project->name, project->path, error->message);
+					 project_name, glade_project_get_path (project), error->message);
 				g_error_free (error);
 			}
 		}
@@ -1014,7 +1234,7 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 			}
 
 			gtk_file_chooser_set_current_name
-				(GTK_FILE_CHOOSER (filechooser), project->name);
+				(GTK_FILE_CHOOSER (filechooser), project_name);
 
 			
 			if (gtk_dialog_run (GTK_DIALOG(filechooser)) == GTK_RESPONSE_OK)
@@ -1044,6 +1264,7 @@ gpw_confirm_close_project (GladeProjectWindow *gpw, GladeProject *project)
 		close = FALSE;
 	}
 
+	g_free (project_name);
 	gtk_widget_destroy (dialog);
 	return close;
 }
@@ -1076,7 +1297,7 @@ gpw_close_cb (GtkAction *action, GladeProjectWindow *gpw)
 	if (view == NULL)
 		return;
 
-	if (project->changed)
+	if (glade_project_get_has_unsaved_changes (project))
 	{
 		close = gpw_confirm_close_project (gpw, project);
 			if (!close)
@@ -1094,7 +1315,7 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 	{
 		GladeProject *project = GLADE_PROJECT (list->data);
 
-		if (project->changed)
+		if (glade_project_get_has_unsaved_changes (project))
 		{
 			gboolean quit = gpw_confirm_close_project (gpw, project);
 			if (!quit)
@@ -2110,7 +2331,7 @@ glade_project_window_new_project (GladeProjectWindow *gpw)
 {
 	GladeProject *project;
 
-	project = glade_project_new (TRUE);
+	project = glade_project_new ();
 	if (!project)
 	{
 		glade_util_ui_message (gpw->priv->window, 
@@ -2138,12 +2359,12 @@ glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 		return TRUE; /* let this pass */
 	}
 	
-	if ((project = glade_project_open (path)) == NULL)
+	if ((project = glade_project_load (path)) == NULL)
 		return FALSE;
 
 	glade_project_window_add_project (gpw, project);
 	
-	gpw_recent_add (gpw, project->path);
+	gpw_recent_add (gpw, glade_project_get_path (project));
 	update_default_path (gpw, project);
 	
 	return TRUE;

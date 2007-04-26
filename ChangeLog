@@ -1,3 +1,23 @@
+2007-04-26  Vincent Geddes <vincent.geddes@gmail.com>
+
+	* gladeui/glade-project.h, gladeui/glade-project.c:
+	  - Hide private implementation details (Added GladeProjectPrivate).
+          - Added private field accessors glade_project_get_path, glade_project_get_name,
+            glade_project_get_objects, and glade_project_get_has_unsaved_changes.
+          - Removed project->name field.
+          - Removed glade_project_display_name method.
+          
+        * gladeui/glade-editor-property.c, gladeui/glade-project-view.c,
+	  gladeui/glade-cursor.c, gladeui/glade-signal-editor.c, gladeui/glade-app.c
+	  gladeui/glade-property-class.c: Update for change in GladeProject.
+   
+        * src/glade-project-window.c: Update for change in GladeProject. Added
+          methods for formatting paths and names. Fix display of tooltips for
+          items in the project list menu.
+          
+        * gladeui/glade-palette-item.c, gladeui/glade-palette.c: Update to use 
+          g_object_ref_sink().        
+
 2007-04-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-editor-property.c: fixed a bug in GladeEPropUnichar
@@ -19,7 +39,10 @@
           - Hide private implementation details.
           - Added g_return_if_fail guards.
           
-        * gladeui/glade-project.c: Use GladeIDAllocator for allocating unsaved numbers.
+        * gladeui/glade-project.c, gladeui/glade-project.h:
+          - Move to using GladeIDAllocator for allocating unsaved numbers.
+          - Rename some variables since projects are now considered "unsaved"
+            instead of "untitled" (#400357, Wouter Bolsterlee).
 
 2007-04-20  Vincent Geddes <vincent.geddes@gmail.com>
 

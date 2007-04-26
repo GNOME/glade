@@ -359,7 +359,7 @@ glade_palette_box_remove (GtkContainer *container, GtkWidget *widget)
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	box = GLADE_PALETTE_BOX (container);
-
+	
   	children = box->priv->children;
 	while (children != NULL)
 	{
@@ -373,7 +373,7 @@ glade_palette_box_remove (GtkContainer *container, GtkWidget *widget)
 			was_visible = GTK_WIDGET_VISIBLE (widget);
 
 			gtk_widget_unparent (widget);
-
+			
 			box->priv->children = g_list_remove (box->priv->children, child);
 			
 			g_slice_free (GladePaletteBoxChild, child);

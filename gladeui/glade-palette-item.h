@@ -57,7 +57,7 @@ typedef enum _GladeItemAppearance {
 
 struct _GladePaletteItem
 {
-	GtkToggleButton button; /* The parent is a radio button */
+	GtkToggleButton parent_instance;
 	
 	GladePaletteItemPrivate *priv;
 

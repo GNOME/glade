@@ -702,7 +702,7 @@ glade_app_set_transient_parent (GtkWindow *parent)
 	 */
 	for (projects = glade_app_get_projects (); /* projects */
 	     projects; projects = projects->next) 
-		for (objects = GLADE_PROJECT (projects->data)->objects;  /* widgets */
+		for (objects = (GList *) glade_project_get_objects (GLADE_PROJECT (projects->data));  /* widgets */
 		     objects; objects = objects->next)
 			if (GTK_IS_WINDOW (objects->data))
 				gtk_window_set_transient_for
@@ -853,7 +853,8 @@ glade_app_is_project_loaded (const gchar *project_path)
 	GList    *list;
 	gboolean  loaded = FALSE;
 
-	if (project_path == NULL) return FALSE;
+	if (project_path == NULL)
+		return FALSE;
 
 	app = glade_app_get ();
 
@@ -861,8 +862,8 @@ glade_app_is_project_loaded (const gchar *project_path)
 	{
 		GladeProject *cur_project = GLADE_PROJECT (list->data);
 
-		if ((loaded = cur_project->path && 
-		     (strcmp (cur_project->path, project_path) == 0)))
+		if ((loaded = glade_project_get_path (cur_project) && 
+		     (strcmp (glade_project_get_path (cur_project), project_path) == 0)))
 			break;
 	}
 
@@ -884,7 +885,8 @@ glade_app_get_project_by_path (const gchar *project_path)
 	GList    *l;
 	gchar *canonical_path;
 
-	if (project_path == NULL) return NULL;
+	if (project_path == NULL)
+		return NULL;
 
 	app = glade_app_get ();
 
@@ -894,7 +896,7 @@ glade_app_get_project_by_path (const gchar *project_path)
 	{
 		GladeProject *project = (GladeProject *) l->data;
 
-		if (project->path && strcmp (canonical_path, project->path) == 0) {
+		if (glade_project_get_path (project) && strcmp (canonical_path, glade_project_get_path (project)) == 0) {
 			g_free (canonical_path);
 			return project;
 		}
@@ -932,37 +934,44 @@ void
 glade_app_update_instance_count (GladeProject *project)
 {
 	GladeApp  *app;
-	GladeProject *prj;
 	GList *l;
 	gint temp, max = 0, i = 0, uncounted_projects = 0;
+	gchar *project_name;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 		
-	if (project->instance > 0) return;
+	if (glade_project_get_instance_count (project) > 0)
+		return;
+
+	project_name = glade_project_get_name (project);
 
 	app = glade_app_get ();
 
 	for (l = app->priv->projects; l; l = l->next)
 	{
-		prj = l->data;
+		GladeProject *prj = GLADE_PROJECT (l->data);
+		gchar *name = glade_project_get_name (project);
 
-		if (prj != project &&
-		    prj->name && !strcmp (prj->name, project->name))
+		if (prj != project && !g_utf8_collate (name, project_name))
 		{
 			i++;
-			temp = MAX (prj->instance + 1, i);
+			temp = MAX (glade_project_get_instance_count (prj) + 1, i);
 			max  = MAX (temp, max);
 
-			if (prj->instance < 1)
+			if (glade_project_get_instance_count (prj) < 1)
 				uncounted_projects++;
 		}
+		
+		g_free (name);
 	}
+	
+	g_free (project_name);
 
 	/* Dont reset the initially opened project */
-	if (uncounted_projects > 1 || 
-	    g_list_find (app->priv->projects, project) == NULL)
-		project->instance = MAX (max, i);
-
+	if (uncounted_projects > 1 || g_list_find (app->priv->projects, project) == NULL)
+	{
+		glade_project_set_instance_count (project, MAX (max, i));
+	}
 }
 
 void
@@ -972,7 +981,7 @@ glade_app_add_project (GladeProject *project)
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	/* If the project was previously loaded, don't re-load */
-	if (glade_app_is_project_loaded (project->path))
+	if (glade_app_is_project_loaded (glade_project_get_path (project)))
 	{
 		glade_app_set_project (project);
 		return;

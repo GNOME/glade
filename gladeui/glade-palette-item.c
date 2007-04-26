@@ -230,15 +230,31 @@ glade_palette_item_dispose (GObject *object)
 	GladePaletteItem *item;
 	GladePaletteItemPrivate *priv;
 
-	g_return_if_fail (GLADE_IS_PALETTE_ITEM (object));
 	item = GLADE_PALETTE_ITEM (object);
 	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
-
-	g_object_unref (priv->alignment);
-	g_object_unref (priv->hbox);
-	g_object_unref (priv->icon);
-	g_object_unref (priv->label);
-
+/*
+	if (priv->alignment)
+	{
+		g_object_unref (priv->alignment);
+		priv->alignment = NULL;
+	}
+	if (priv->hbox)
+	{
+		g_object_unref (priv->hbox);	
+		priv->hbox = NULL;
+	}
+	if (priv->icon)
+	{
+		g_object_unref (priv->icon);
+		priv->icon = NULL;
+	}
+	if (priv->label)
+	{
+		g_object_unref (priv->label);
+		priv->label = NULL;
+	}
+*/	
+	G_OBJECT_CLASS (glade_palette_item_parent_class)->dispose (object);
 }
 
 static void
@@ -287,30 +303,26 @@ glade_palette_item_init (GladePaletteItem *item)
 	GladePaletteItemPrivate *priv;
 
 	priv = item->priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
-
+	
 	priv->label = NULL;
 	priv->adaptor = NULL;
 	priv->use_small_icon = FALSE;
 	priv->appearance =  0;
 
 	priv->alignment = gtk_alignment_new (0.0, 0.5, 0.5, 0.5);
-	g_object_ref (priv->alignment);
-	gtk_object_sink (GTK_OBJECT (priv->alignment));
+	g_object_ref_sink (priv->alignment);
 	gtk_widget_show (GTK_WIDGET (priv->alignment));
 
 	priv->hbox = gtk_hbox_new (FALSE, 6);
-	g_object_ref (priv->hbox);
-	gtk_object_sink (GTK_OBJECT (priv->hbox));
+	g_object_ref_sink (priv->hbox);
 	gtk_widget_show (GTK_WIDGET (priv->hbox));
 
 	priv->icon = gtk_image_new ();
-	g_object_ref (priv->icon);
-	gtk_object_sink (GTK_OBJECT (priv->icon));
+	g_object_ref_sink (priv->icon);
 	gtk_widget_show (GTK_WIDGET (priv->icon));
 
 	priv->label = gtk_label_new (NULL);
-	g_object_ref (priv->label);
-	gtk_object_sink (GTK_OBJECT (priv->label));
+	g_object_ref_sink (priv->label);
 	gtk_widget_show (GTK_WIDGET (priv->label));
 
 	gtk_container_add (GTK_CONTAINER (priv->alignment), priv->hbox);

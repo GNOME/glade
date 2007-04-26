@@ -912,7 +912,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		if (property_class->resource && project)
 		{
 			fullpath = g_build_filename
-				(project->path, string, NULL);
+				(glade_project_get_path (project), string, NULL);
 			g_value_set_string (value, fullpath);
 			g_free (fullpath);
 		}

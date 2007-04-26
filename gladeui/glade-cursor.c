@@ -70,7 +70,7 @@ set_cursor (GdkCursor *gdk_cursor)
 	{
 		project = projects->data;
 
-		for (list = project->objects; 
+		for (list = (GList *) glade_project_get_objects (project); 
 		     list; list = list->next)
 		{
 			GObject *object = list->data;

@@ -2214,7 +2214,7 @@ glade_eprop_object_populate_view (GladeEditorProperty *eprop,
 	GList         *list, *toplevels = NULL;
 
 	/* Make a list of only the toplevel widgets */
-	for (list = project->objects; list; list = list->next)
+	for (list = (GList *) glade_project_get_objects (project); list; list = list->next)
 	{
 		GObject *object = G_OBJECT (list->data);
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);

@@ -524,7 +524,7 @@ glade_signal_editor_user_data_editing_started (GtkCellRenderer *cell,
 	
 	store = gtk_list_store_new (1, G_TYPE_STRING);
 	
-	for (list = editor->widget->project->objects;
+	for (list = (GList *) glade_project_get_objects (editor->widget->project);
 	     list && list->data;
 	     list = g_list_next (list))
 	{

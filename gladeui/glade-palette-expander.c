@@ -644,3 +644,4 @@ glade_palette_expander_new (const gchar *label)
 			     "label", label,
 			     NULL);
 }
+

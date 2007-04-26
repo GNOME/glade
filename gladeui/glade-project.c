@@ -20,9 +20,7 @@
  *   Chema Celorio <chema@celorio.com>
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -38,6 +36,8 @@
 #include "glade-catalog.h"
 
 #include "glade-project.h"
+
+#define GLADE_PROJECT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_PROJECT, GladeProjectPrivate))
 
 enum
 {
@@ -58,12 +58,67 @@ enum
 	PROP_0,
 	PROP_HAS_UNSAVED_CHANGES,
 	PROP_HAS_SELECTION,
+	PROP_PATH,
 	PROP_READ_ONLY
 };
+
+struct _GladeProjectPrivate
+{
+	gchar *path;     /* The full canonical path of the glade file for this project */
+
+	guint   instance_count; /* How many projects with this name */
+
+	gint   unsaved_number; /* A unique number for this project if it is untitled */
+
+	gboolean readonly; /* A flag that is set if the project is readonly */
+
+	gboolean loading;/* A flags that is set when the project is loading */
+	
+	gboolean changed;    /* A flag that is set when a project has changes
+			      * if this flag is not set we don't have to query
+			      * for confirmation after a close or exit is
+			      * requested
+			      */
+
+	GList *objects; /* A list of #GObjects that make up this project.
+			 * The objects are stored in no particular order.
+			 */
+
+	GList *selection; /* We need to keep the selection in the project
+			   * because we have multiple projects and when the
+			   * user switchs between them, he will probably
+			   * not want to loose the selection. This is a list
+			   * of #GtkWidget items.
+			   */
+
+	gboolean has_selection; /* Whether the project has a selection */
+
+	GList *undo_stack; /* A stack with the last executed commands */
+	GList *prev_redo_item; /* Points to the item previous to the redo items */
+	GHashTable *widget_names_allocator; /* hash table with the used widget names */
+	GHashTable *widget_old_names; /* widget -> old name of the widget */
+	GtkTooltips *tooltips;
+	
+	GtkAccelGroup *accel_group;
+
+	GHashTable *resources; /* resource filenames & thier associated properties */
+	
+	gchar *comment; /* XML comment, Glade will preserve whatever comment was
+			 * in file, so users can delete or change it.
+			 */
+			 
+	time_t  mtime; /* last UTC modification time of file, or 0 if it could not be read */
+};
+
 
 static guint              glade_project_signals[LAST_SIGNAL] = {0};
 
 static GladeIDAllocator  *unsaved_number_allocator = NULL;
+
+static gboolean glade_project_load_from_interface (GladeProject   *project,
+						   GladeInterface *interface,
+						   const gchar    *path);
+
 
 G_DEFINE_TYPE (GladeProject, glade_project, G_TYPE_OBJECT)
 
@@ -104,14 +159,14 @@ glade_project_dispose (GObject *object)
 	
 	glade_project_selection_clear (project, TRUE);
 
-	glade_project_list_unref (project->undo_stack);
-	project->undo_stack = NULL;
+	glade_project_list_unref (project->priv->undo_stack);
+	project->priv->undo_stack = NULL;
 
 	/* Unparent all widgets in the heirarchy first 
 	 * (Since we are bookkeeping exact reference counts, we 
 	 * dont want the hierarchy to just get destroyed)
 	 */
-	for (list = project->objects; list; list = list->next)
+	for (list = project->priv->objects; list; list = list->next)
 	{
 		gwidget = glade_widget_get_from_gobject (list->data);
 
@@ -124,17 +179,17 @@ glade_project_dispose (GObject *object)
 	}
 
 	/* Remove objects from the project */
-	for (list = project->objects; list; list = list->next)
+	for (list = project->priv->objects; list; list = list->next)
 	{
 		gwidget = glade_widget_get_from_gobject (list->data);
 
 		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
 		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
 	}
-	project->objects = NULL;
+	project->priv->objects = NULL;
 
-	gtk_object_destroy (GTK_OBJECT (project->tooltips));
-	project->tooltips = NULL;
+	gtk_object_destroy (GTK_OBJECT (project->priv->tooltips));
+	project->priv->tooltips = NULL;
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
@@ -144,16 +199,15 @@ glade_project_finalize (GObject *object)
 {
 	GladeProject *project = GLADE_PROJECT (object);
 
-	g_free (project->name);
-	g_free (project->path);
-	g_free (project->comment);
+	g_free (project->priv->path);
+	g_free (project->priv->comment);
 
-	if (project->unsaved_number > 0)
-		glade_id_allocator_release (get_unsaved_number_allocator (), project->unsaved_number);
+	if (project->priv->unsaved_number > 0)
+		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
 
-	g_hash_table_destroy (project->widget_names_allocator);
-	g_hash_table_destroy (project->widget_old_names);
-	g_hash_table_destroy (project->resources);
+	g_hash_table_destroy (project->priv->widget_names_allocator);
+	g_hash_table_destroy (project->priv->widget_old_names);
+	g_hash_table_destroy (project->priv->resources);
 
 	G_OBJECT_CLASS (glade_project_parent_class)->finalize (object);
 }
@@ -169,14 +223,17 @@ glade_project_get_property (GObject    *object,
 	switch (prop_id)
 	{
 		case PROP_HAS_UNSAVED_CHANGES:
-			g_value_set_boolean (value, project->changed);
+			g_value_set_boolean (value, project->priv->changed);
 			break;
 		case PROP_HAS_SELECTION:
-			g_value_set_boolean (value, project->has_selection);
+			g_value_set_boolean (value, project->priv->has_selection);
 			break;			
 		case PROP_READ_ONLY:
-			g_value_set_boolean (value, project->readonly);
-			break;		
+			g_value_set_boolean (value, project->priv->readonly);
+			break;
+		case PROP_PATH:
+			g_value_set_string (value, project->priv->path);
+			break;				
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;			
@@ -190,17 +247,17 @@ glade_project_get_property (GObject    *object,
 static void
 glade_project_walk_back (GladeProject *project)
 {
-	if (project->prev_redo_item)
-		project->prev_redo_item = project->prev_redo_item->prev;
+	if (project->priv->prev_redo_item)
+		project->priv->prev_redo_item = project->priv->prev_redo_item->prev;
 }
 
 static void
 glade_project_walk_forward (GladeProject *project)
 {
-	if (project->prev_redo_item)
-		project->prev_redo_item = project->prev_redo_item->next;
+	if (project->priv->prev_redo_item)
+		project->priv->prev_redo_item = project->priv->prev_redo_item->next;
 	else
-		project->prev_redo_item = project->undo_stack;
+		project->priv->prev_redo_item = project->priv->undo_stack;
 }
 
 static void
@@ -250,7 +307,7 @@ glade_project_next_undo_item_impl (GladeProject *project)
 {
 	GList *l;
 
-	if ((l = project->prev_redo_item) == NULL)
+	if ((l = project->priv->prev_redo_item) == NULL)
 		return NULL;
 
 	return GLADE_COMMAND (l->data);
@@ -261,9 +318,9 @@ glade_project_next_redo_item_impl (GladeProject *project)
 {
 	GList *l;
 
-	if ((l = project->prev_redo_item) == NULL)
-		return project->undo_stack ? 
-			GLADE_COMMAND (project->undo_stack->data) : NULL;
+	if ((l = project->priv->prev_redo_item) == NULL)
+		return project->priv->undo_stack ? 
+			GLADE_COMMAND (project->priv->undo_stack->data) : NULL;
 	else
 		return l->next ? GLADE_COMMAND (l->next->data) : NULL;
 }
@@ -275,9 +332,9 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 
 	/* If there are no "redo" items, and the last "undo" item unifies with
 	   us, then we collapse the two items in one and we're done */
-	if (project->prev_redo_item != NULL && project->prev_redo_item->next == NULL)
+	if (project->priv->prev_redo_item != NULL && project->priv->prev_redo_item->next == NULL)
 	{
-		GladeCommand *cmd1 = project->prev_redo_item->data;
+		GladeCommand *cmd1 = project->priv->prev_redo_item->data;
 		
 		if (glade_command_unifies (cmd1, cmd))
 		{
@@ -292,7 +349,7 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 	}
 
 	/* We should now free all the "redo" items */
-	tmp_redo_item = g_list_next (project->prev_redo_item);
+	tmp_redo_item = g_list_next (project->priv->prev_redo_item);
 	while (tmp_redo_item)
 	{
 		g_assert (tmp_redo_item->data);
@@ -300,24 +357,24 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 		tmp_redo_item = g_list_next (tmp_redo_item);
 	}
 
-	if (project->prev_redo_item)
+	if (project->priv->prev_redo_item)
 	{
-		g_list_free (g_list_next (project->prev_redo_item));
-		project->prev_redo_item->next = NULL;
+		g_list_free (g_list_next (project->priv->prev_redo_item));
+		project->priv->prev_redo_item->next = NULL;
 	}
 	else
 	{
-		g_list_free (project->undo_stack);
-		project->undo_stack = NULL;
+		g_list_free (project->priv->undo_stack);
+		project->priv->undo_stack = NULL;
 	}
 
 	/* and then push the new undo item */
-	project->undo_stack = g_list_append (project->undo_stack, cmd);
+	project->priv->undo_stack = g_list_append (project->priv->undo_stack, cmd);
 
-	if (project->prev_redo_item == NULL)
-		project->prev_redo_item = project->undo_stack;
+	if (project->priv->prev_redo_item == NULL)
+		project->priv->prev_redo_item = project->priv->undo_stack;
 	else
-		project->prev_redo_item = g_list_next (project->prev_redo_item);
+		project->priv->prev_redo_item = g_list_next (project->priv->prev_redo_item);
 
 
 	g_signal_emit (G_OBJECT (project),
@@ -330,9 +387,9 @@ glade_project_changed_impl (GladeProject *project,
 			    GladeCommand *command,
 			    gboolean      forward)
 {
-	if (!project->changed && !project->loading)
+	if (!project->priv->changed && !project->priv->loading)
 	{
-		project->changed = TRUE;
+		project->priv->changed = TRUE;
 		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
 	}
 
@@ -345,28 +402,33 @@ glade_project_changed_impl (GladeProject *project,
 static void
 glade_project_init (GladeProject *project)
 {
-	project->path = NULL;
-	project->name = NULL;
-	project->instance = 0;
-	project->unsaved_number = 0;
-	project->readonly = FALSE;
-	project->objects = NULL;
-	project->selection = NULL;
-	project->has_selection = FALSE;
-	project->undo_stack = NULL;
-	project->prev_redo_item = NULL;
-	project->widget_names_allocator = 
-		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, 
-				       (GDestroyNotify) glade_id_allocator_destroy);
-	project->widget_old_names = 
-		g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
-	project->tooltips = gtk_tooltips_new ();
-	project->accel_group = NULL;
+	GladeProjectPrivate *priv;
+	
+	project->priv = priv = GLADE_PROJECT_GET_PRIVATE (project);	
 
-	project->resources = g_hash_table_new_full (g_direct_hash, 
-						    g_direct_equal, 
-						    NULL, g_free);
+	priv->path = NULL;
+	priv->instance_count = 0;
+	priv->readonly = FALSE;
+	priv->objects = NULL;
+	priv->selection = NULL;
+	priv->has_selection = FALSE;
+	priv->undo_stack = NULL;
+	priv->prev_redo_item = NULL;
+	priv->widget_names_allocator = g_hash_table_new_full (g_str_hash,
+							      g_str_equal,
+							      g_free, 
+				       			      (GDestroyNotify) glade_id_allocator_destroy);
+				       
+	priv->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
 
+	priv->tooltips = gtk_tooltips_new ();
+	priv->accel_group = NULL;
+
+	priv->resources = g_hash_table_new_full (g_direct_hash, 
+						 g_direct_equal, 
+						 NULL, g_free);
+
+	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
 }
 
 static void
@@ -582,7 +644,16 @@ glade_project_class_init (GladeProjectClass *klass)
 							       _("Whether project is read only or not"),
 							       FALSE,
 							       G_PARAM_READABLE));
-
+							       
+	g_object_class_install_property (object_class,
+					 PROP_PATH,
+					 g_param_spec_string ("path",
+							      _("Path"),
+							      _("The filesystem path of the project"),
+							      NULL,
+							      G_PARAM_READABLE));
+							       
+	g_type_class_add_private (klass, sizeof (GladeProjectPrivate));
 }
 
 /*******************************************************************
@@ -594,9 +665,9 @@ glade_project_set_readonly (GladeProject *project, gboolean readonly)
 {
 	g_assert (GLADE_IS_PROJECT (project));
 	
-	if (project->readonly != readonly)
+	if (project->priv->readonly != readonly)
 	{
-		project->readonly = readonly;
+		project->priv->readonly = readonly;
 		g_object_notify (G_OBJECT (project), "read-only");
 	}
 }                                                                                               
@@ -612,36 +683,58 @@ glade_project_set_readonly (GladeProject *project, gboolean readonly)
 gboolean
 glade_project_get_readonly (GladeProject *project)
 {
-	g_assert (project != NULL);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
-	return project->readonly;
+	return project->priv->readonly;
 }
 
 /**
  * glade_project_new:
- * @unsaved: Whether or not this project is unsaved
  *
- * Creates a new #GladeProject. If @unsaved is %TRUE, sets the project's
- * name to "Unsaved 1" or some such, giving a unique number each time
- * called.
+ * Creates a new #GladeProject.
  *
  * Returns: a new #GladeProject
  */
 GladeProject *
-glade_project_new (gboolean unsaved)
+glade_project_new (void)
 {
-	GladeProject *project;
+	return g_object_new (GLADE_TYPE_PROJECT, NULL);
+}
 
-	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
+gboolean
+glade_project_load_from_file (GladeProject *project, const gchar *path)
+{
+	GladeInterface *interface;
+	
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE); 
+	g_return_val_if_fail (path != NULL, FALSE);
 
-	if (unsaved)
+	interface = glade_parser_interface_new_from_file (path, NULL);
+
+	if (interface != NULL)
 	{
-		project->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
-		project->name = g_strdup_printf (_("Unsaved %d"), project->unsaved_number);
+		if (!glade_project_load_from_interface (project, interface, path))
+		{
+			glade_parser_interface_destroy (interface);
+			return FALSE;
+		}
+		glade_parser_interface_destroy (interface);
+	}
+	else
+	{
+		return FALSE;
 	}
 
-	return project;
+	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
+		glade_project_set_readonly (project, TRUE);
+
+	project->priv->changed = FALSE;
+		
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
+
+	return TRUE;
 }
+
 
 /**
  * glade_project_selection_changed:
@@ -669,9 +762,9 @@ glade_project_on_widget_notify (GladeWidget *widget, GParamSpec *arg, GladeProje
 	case 'n':
 		if (strcmp (arg->name, "name") == 0)
 		{
-			const char *old_name = g_hash_table_lookup (project->widget_old_names, widget);
+			const char *old_name = g_hash_table_lookup (project->priv->widget_old_names, widget);
 			glade_project_widget_name_changed (project, widget, old_name);
-			g_hash_table_insert (project->widget_old_names, widget, g_strdup (glade_widget_get_name (widget)));
+			g_hash_table_insert (project->priv->widget_old_names, widget, g_strdup (glade_widget_get_name (widget)));
 		}
 
 	case 'p':
@@ -801,13 +894,13 @@ glade_project_add_object (GladeProject *project,
 	}
 
 	glade_widget_set_project (gwidget, (gpointer)project);
-	g_hash_table_insert (project->widget_old_names,
+	g_hash_table_insert (project->priv->widget_old_names,
 			     gwidget, g_strdup (glade_widget_get_name (gwidget)));
 
 	g_signal_connect (G_OBJECT (gwidget), "notify",
 			  (GCallback) glade_project_on_widget_notify, project);
 
-	project->objects = g_list_prepend (project->objects, g_object_ref (object));
+	project->priv->objects = g_list_prepend (project->priv->objects, g_object_ref (object));
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
@@ -838,7 +931,7 @@ glade_project_has_object (GladeProject *project, GObject *object)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 	g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
-	return (g_list_find (project->objects, object)) != NULL;
+	return (g_list_find (project->priv->objects, object)) != NULL;
 }
 
 /**
@@ -879,7 +972,7 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 	base_widget_name = g_strdup (widget_name);
 	*(base_widget_name + (first_number - widget_name)) = 0;
 	
-	id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_widget_name);
+	id_allocator = g_hash_table_lookup (project->priv->widget_names_allocator, base_widget_name);
 	if (id_allocator == NULL)
 		goto lblend;
 
@@ -890,7 +983,7 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_wid
 	glade_id_allocator_release (id_allocator, id);
 
  lblend:
-	g_hash_table_remove (project->widget_old_names, glade_widget);
+	g_hash_table_remove (project->priv->widget_old_names, glade_widget);
 	g_free (base_widget_name);
 }
 
@@ -938,12 +1031,12 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 	
 	glade_project_selection_remove (project, object, TRUE);
 
-	if ((link = g_list_find (project->objects, object)) != NULL)
+	if ((link = g_list_find (project->priv->objects, object)) != NULL)
 	{
 		g_object_unref (object);
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
-		project->objects = g_list_delete_link (project->objects, link);
+		project->priv->objects = g_list_delete_link (project->priv->objects, link);
 	}
 
 	g_signal_emit (G_OBJECT (project),
@@ -995,7 +1088,7 @@ glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 	g_return_val_if_fail (name != NULL, NULL);
 
-	for (list = project->objects; list; list = list->next) {
+	for (list = project->priv->objects; list; list = list->next) {
 		GladeWidget *widget;
 
 		widget = glade_widget_get_from_gobject (list->data);
@@ -1039,12 +1132,12 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 		base_name = freeme;
 	}
 	
-	id_allocator = g_hash_table_lookup (project->widget_names_allocator, base_name);
+	id_allocator = g_hash_table_lookup (project->priv->widget_names_allocator, base_name);
 
 	if (id_allocator == NULL)
 	{
 		id_allocator = glade_id_allocator_new ();
-		g_hash_table_insert (project->widget_names_allocator,
+		g_hash_table_insert (project->priv->widget_names_allocator,
 				     g_strdup (base_name), id_allocator);
 	}
 
@@ -1072,9 +1165,9 @@ glade_project_set_has_selection (GladeProject *project, gboolean has_selection)
 {
 	g_assert (GLADE_IS_PROJECT (project));
 
-	if (project->has_selection != has_selection)
+	if (project->priv->has_selection != has_selection)
 	{
-		project->has_selection = has_selection;
+		project->priv->has_selection = has_selection;
 		g_object_notify (G_OBJECT (project), "has-selection");
 	}
 }
@@ -1090,7 +1183,7 @@ glade_project_get_has_selection (GladeProject *project)
 {
 	g_assert (GLADE_IS_PROJECT (project));
 
-	return project->has_selection;
+	return project->priv->has_selection;
 }
 
 /**
@@ -1105,7 +1198,7 @@ glade_project_is_selected (GladeProject *project,
 			   GObject      *object)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-	return (g_list_find (project->selection, object)) != NULL;
+	return (g_list_find (project->priv->selection, object)) != NULL;
 }
 
 /**
@@ -1121,13 +1214,13 @@ void
 glade_project_selection_clear (GladeProject *project, gboolean emit_signal)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	if (project->selection == NULL)
+	if (project->priv->selection == NULL)
 		return;
 
 	glade_util_clear_selection ();
 
-	g_list_free (project->selection);
-	project->selection = NULL;
+	g_list_free (project->priv->selection);
+	project->priv->selection = NULL;
 	glade_project_set_has_selection (project, FALSE);
 
 	if (emit_signal)
@@ -1157,8 +1250,8 @@ glade_project_selection_remove (GladeProject *project,
 	{
 		if (GTK_IS_WIDGET (object))
 			glade_util_remove_selection (GTK_WIDGET (object));
-		project->selection = g_list_remove (project->selection, object);
-		if (project->selection == NULL)
+		project->priv->selection = g_list_remove (project->priv->selection, object);
+		if (project->priv->selection == NULL)
 			glade_project_set_has_selection (project, FALSE);
 		if (emit_signal)
 			glade_project_selection_changed (project);
@@ -1183,15 +1276,15 @@ glade_project_selection_add (GladeProject *project,
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
-	g_return_if_fail (g_list_find (project->objects, object) != NULL);
+	g_return_if_fail (g_list_find (project->priv->objects, object) != NULL);
 
 	if (glade_project_is_selected (project, object) == FALSE)
 	{
 		if (GTK_IS_WIDGET (object))
 			glade_util_add_selection (GTK_WIDGET (object));
-		if (project->selection == NULL)
+		if (project->priv->selection == NULL)
 			glade_project_set_has_selection (project, TRUE);
-		project->selection = g_list_prepend (project->selection, object);
+		project->priv->selection = g_list_prepend (project->priv->selection, object);
 		if (emit_signal)
 			glade_project_selection_changed (project);
 	}
@@ -1216,14 +1309,14 @@ glade_project_selection_set (GladeProject *project,
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
 
-	if (g_list_find (project->objects, object) == NULL)
+	if (g_list_find (project->priv->objects, object) == NULL)
 		return;
 
-	if (project->selection == NULL)
+	if (project->priv->selection == NULL)
 		glade_project_set_has_selection (project, TRUE);
 
 	if (glade_project_is_selected (project, object) == FALSE ||
-	    g_list_length (project->selection) != 1)
+	    g_list_length (project->priv->selection) != 1)
 	{
 		glade_project_selection_clear (project, FALSE);
 		glade_project_selection_add (project, object, emit_signal);
@@ -1242,7 +1335,7 @@ glade_project_selection_get (GladeProject *project)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	return project->selection;
+	return project->priv->selection;
 }
 
 static GList *
@@ -1252,7 +1345,7 @@ glade_project_required_libs (GladeProject *project)
 	GladeWidget *gwidget;
 	gboolean     listed;
 
-	for (l = project->objects; l; l = l->next)
+	for (l = project->priv->objects; l; l = l->next)
 	{
 		gchar *catalog = NULL;
 
@@ -1298,13 +1391,13 @@ glade_project_update_comment (GladeProject *project)
 	gchar **lines, **l, *comment = NULL;
 	
 	/* If project has no comment -> add the new one */
-	if (project->comment == NULL)
+	if (project->priv->comment == NULL)
 	{
-		project->comment = glade_project_make_comment ();
+		project->priv->comment = glade_project_make_comment ();
 		return;
 	}
 	
-	for (lines = l = g_strsplit (project->comment, "\n", 0); *l; l++)
+	for (lines = l = g_strsplit (project->priv->comment, "\n", 0); *l; l++)
 	{
 		gchar *start;
 		
@@ -1321,8 +1414,8 @@ glade_project_update_comment (GladeProject *project)
 	
 	if (comment)
 	{
-		g_free (project->comment);
-		project->comment = g_strjoinv ("\n", lines);
+		g_free (project->priv->comment);
+		project->priv->comment = g_strjoinv ("\n", lines);
 	}
 	
 	g_strfreev (lines);
@@ -1357,7 +1450,7 @@ glade_project_write (GladeProject *project)
 		g_list_free (required);
 	}
 
-	for (i = 0, list = project->objects; list; list = list->next)
+	for (i = 0, list = project->priv->objects; list; list = list->next)
 	{
 		GladeWidget *widget;
 		GladeWidgetInfo *info;
@@ -1386,7 +1479,7 @@ glade_project_write (GladeProject *project)
 	g_list_free (tops);
 
 	glade_project_update_comment (project);
-	interface->comment = g_strdup (project->comment);
+	interface->comment = g_strdup (project->priv->comment);
 	
 	return interface;
 }
@@ -1417,57 +1510,6 @@ loadable_interface (GladeInterface *interface, const gchar *path)
 	return loadable;
 }
 
-static GladeProject *
-glade_project_new_from_interface (GladeInterface *interface, const gchar *path)
-{
-	GladeProject *project;
-	GladeWidget  *widget;
-	guint i;
-
-	g_return_val_if_fail (interface != NULL, NULL);
-	g_return_val_if_fail (path != NULL, NULL);
-
-	if (loadable_interface (interface, path) == FALSE)
-		return NULL;
-
-	project = glade_project_new (FALSE);
-
-	project->path = glade_util_canonical_path (path);
-	
-	if (project->name) g_free (project->name);
-
-	project->name = g_path_get_basename (path);
-	project->selection = NULL;
-	project->objects = NULL;
-	project->loading = TRUE;
-
-	/* keep a comment */
-	if (interface->comment)
-		project->comment = g_strdup (interface->comment);
-	
-	for (i = 0; i < interface->n_toplevels; ++i)
-	{
-		widget = glade_widget_read ((gpointer)project, interface->toplevels[i]);
-		if (!widget)
-		{
-			g_warning ("Failed to read a <widget> tag");
-			continue;
-		}
-		glade_project_add_object (project, NULL, widget->object);
-	}
-
-	/* Reset project status here too so that you get a clean
-	 * slate after calling glade_project_open().
-	 */
-	project->changed = FALSE;
-	project->loading = FALSE;
-
-	/* Emit "parse-finished" signal */
-	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
-	return project;	
-}
-
 static void 
 glade_project_fix_object_props (GladeProject *project)
 {
@@ -1477,7 +1519,7 @@ glade_project_fix_object_props (GladeProject *project)
 	GladeProperty *property;
 	gchar         *txt;
 
-	for (l = project->objects; l; l = l->next)
+	for (l = project->priv->objects; l; l = l->next)
 	{
 		gwidget = glade_widget_get_from_gobject (l->data);
 
@@ -1507,8 +1549,63 @@ glade_project_fix_object_props (GladeProject *project)
 	}
 }
 
+static gboolean
+glade_project_load_from_interface (GladeProject   *project,
+				   GladeInterface *interface,
+				   const gchar    *path)
+{
+	GladeWidget  *widget;
+	guint         i;
+
+	g_return_val_if_fail (project != NULL, FALSE);
+	g_return_val_if_fail (interface != NULL, FALSE);
+	g_return_val_if_fail (path != NULL, FALSE);
+
+	if (loadable_interface (interface, path) == FALSE)
+		return FALSE;
+
+	project->priv->path = glade_util_canonical_path (path);
+	
+	project->priv->selection = NULL;
+	project->priv->objects = NULL;
+	project->priv->loading = TRUE;
+
+	/* keep a comment */
+	if (interface->comment)
+		project->priv->comment = g_strdup (interface->comment);
+	
+	for (i = 0; i < interface->n_toplevels; ++i)
+	{
+		widget = glade_widget_read ((gpointer) project, interface->toplevels[i]);
+		
+		if (!widget)
+		{
+			g_warning ("Failed to read a <widget> tag");
+			continue;
+		}
+
+		glade_project_add_object (project, NULL, widget->object);
+	}
+
+	/* Reset project status here too so that you get a clean
+	 * slate after calling glade_project_open().
+	 */
+	project->priv->changed = FALSE;
+	project->priv->loading = FALSE;
+
+	/* Emit "parse-finished" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
+	
+	/* Now we have to loop over all the object properties
+	 * and fix'em all ('cause they probably weren't found)
+	 */
+	glade_project_fix_object_props (project);
+	
+	return TRUE;	
+}
+
 /**
- * glade_project_open:
+ * glade_project_load:
  * @path:
  * 
  * Opens a project at the given path.
@@ -1517,43 +1614,26 @@ glade_project_fix_object_props (GladeProject *project)
  *          failure
  */
 GladeProject *
-glade_project_open (const gchar *path)
+glade_project_load (const gchar *path)
 {
-	GladeProject *project = NULL;
-	GladeInterface *interface;
+	GladeProject *project;
+	gboolean      retval;
 	
 	g_return_val_if_fail (path != NULL, NULL);
-
-	if ((interface = 
-	     glade_parser_interface_new_from_file (path, NULL)) != NULL)
+	
+	project = glade_project_new ();
+	
+	retval = glade_project_load_from_file (project, path);
+	
+	if (retval)
 	{
-		if ((project = 
-		     glade_project_new_from_interface (interface, 
-						       path)) != NULL)
-		{
-			/* Now we have to loop over all the object properties
-			 * and fix'em all ('cause they probably weren't found)
-			 */
-			glade_project_fix_object_props (project);
-		}
-		
-		glade_parser_interface_destroy (interface);
-	
+		return project;
 	}
-
-	if (project)
+	else
 	{
-		if (glade_util_file_is_writeable (project->path) == FALSE)
-			glade_project_set_readonly (project, TRUE);
-
-		project->changed = FALSE;
-		
-		project->mtime = glade_util_get_file_mtime (project->path, NULL);
+		g_object_unref (project);
+		return NULL;
 	}
-	
-	
-
-	return project;
 }
 
 static void
@@ -1618,14 +1698,14 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	canonical_path = glade_util_canonical_path (path);
 	g_assert (canonical_path);
 
-	if (project->path == NULL ||
-	    strcmp (canonical_path, project->path))
+	if (project->priv->path == NULL ||
+	    strcmp (canonical_path, project->priv->path))
         {
 		gchar *old_dir, *new_dir;
 
-		if (project->path)
+		if (project->priv->path)
 		{
-			old_dir = g_path_get_dirname (project->path);
+			old_dir = g_path_get_dirname (project->priv->path);
 			new_dir = g_path_get_dirname (canonical_path);
 
 			glade_project_move_resources (project, 
@@ -1634,29 +1714,25 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 			g_free (old_dir);
 			g_free (new_dir);
 		}
-		project->path = (g_free (project->path),
+		project->priv->path = (g_free (project->priv->path),
 				 g_strdup (canonical_path));
-
-		project->name = (g_free (project->name),
-				 g_path_get_basename (project->path));
-
 	}
 
 	glade_project_set_readonly (project, 
-				    !glade_util_file_is_writeable (project->path));
+				    !glade_util_file_is_writeable (project->priv->path));
 
-	project->mtime = glade_util_get_file_mtime (project->path, NULL);
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 
-	if (project->changed)
+	if (project->priv->changed)
 	{
-		project->changed = FALSE;
+		project->priv->changed = FALSE;
 		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
 	}
 
-	if (project->unsaved_number > 0)
+	if (project->priv->unsaved_number > 0)
 	{
-		glade_id_allocator_release (get_unsaved_number_allocator (), project->unsaved_number);
-		project->unsaved_number = 0;
+		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
+		project->priv->unsaved_number = 0;
         }
 
 	g_free (canonical_path);
@@ -1744,7 +1820,7 @@ void
 glade_project_reset_path (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	project->path = (g_free (project->path), NULL);
+	project->priv->path = (g_free (project->priv->path), NULL);
 }
 
 /**
@@ -1757,7 +1833,7 @@ GtkTooltips *
 glade_project_get_tooltips (GladeProject *project)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	return project->tooltips;
+	return project->priv->tooltips;
 }
 
 /**
@@ -1774,13 +1850,13 @@ glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group
 
 	g_return_if_fail (GLADE_IS_PROJECT (project) && GTK_IS_ACCEL_GROUP (accel_group));
                 
-	objects = project->objects;
+	objects = project->priv->objects;
 	while (objects)
 	{
 		if(GTK_IS_WINDOW (objects->data))
 		{
-			if (project->accel_group)
-				gtk_window_remove_accel_group (GTK_WINDOW (objects->data), project->accel_group);
+			if (project->priv->accel_group)
+				gtk_window_remove_accel_group (GTK_WINDOW (objects->data), project->priv->accel_group);
 			
 			gtk_window_add_accel_group (GTK_WINDOW (objects->data), accel_group);
 		}
@@ -1788,7 +1864,7 @@ glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group
 		objects = objects->next;
 	}
 	
-	project->accel_group = accel_group;
+	project->priv->accel_group = accel_group;
 }
 
 /**
@@ -1807,9 +1883,10 @@ glade_project_resource_fullpath (GladeProject *project,
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	if (project->path == NULL) return g_strdup (resource);
+	if (project->priv->path == NULL)
+		return g_strdup (resource);
 	
-	project_dir = g_path_get_dirname (project->path);
+	project_dir = g_path_get_dirname (project->priv->path);
 	fullpath    = g_build_filename (project_dir, resource, NULL);
 	g_free (project_dir);
 
@@ -1852,7 +1929,7 @@ glade_project_set_resource (GladeProject  *project,
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
 	if ((last_resource = 
-	     g_hash_table_lookup (project->resources, property)) != NULL)
+	     g_hash_table_lookup (project->priv->resources, property)) != NULL)
 		last_resource_dup = g_strdup (last_resource);
 
 	/* Get dependable input */
@@ -1865,9 +1942,9 @@ glade_project_set_resource (GladeProject  *project,
 	if (last_resource_dup && 
 	    (base_resource == NULL || strcmp (last_resource_dup, base_resource)))
 	{
-		g_hash_table_remove (project->resources, property);
+		g_hash_table_remove (project->priv->resources, property);
 
-		if (g_hash_table_find (project->resources,
+		if (g_hash_table_find (project->priv->resources,
 				       (GHRFunc)find_resource_by_resource,
 				       last_resource_dup) == NULL)
 			g_signal_emit (G_OBJECT (project),
@@ -1877,12 +1954,12 @@ glade_project_set_resource (GladeProject  *project,
 	
 	/* Copy files when importing widgets with resources.
 	 */
-	if (project->path)
+	if (project->priv->path)
 	{
-		dirname = g_path_get_dirname (project->path);
+		dirname = g_path_get_dirname (project->priv->path);
 		fullpath = g_build_filename (dirname, base_resource, NULL);
 	
-		if (resource && project->path && 
+		if (resource && project->priv->path && 
 		    g_file_test (resource, G_FILE_TEST_IS_REGULAR) &&
 		    strcmp (fullpath, resource))
 		{
@@ -1904,14 +1981,14 @@ glade_project_set_resource (GladeProject  *project,
 		 */
 		if ((last_resource_dup == NULL || 
 		     strcmp (last_resource_dup, base_resource)) &&
-		    g_hash_table_find (project->resources,
+		    g_hash_table_find (project->priv->resources,
 				       (GHRFunc)find_resource_by_resource,
 				       base_resource) == NULL)
 			g_signal_emit (G_OBJECT (project),
 				       glade_project_signals [RESOURCE_ADDED],
 				       0, base_resource);
 
-		g_hash_table_insert (project->resources, property, base_resource);
+		g_hash_table_insert (project->priv->resources, property, base_resource);
 
 	}
 	g_free (last_resource_dup);
@@ -1943,64 +2020,28 @@ glade_project_list_resources (GladeProject  *project)
 	GList *list = NULL;
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	g_hash_table_foreach (project->resources, 
+	g_hash_table_foreach (project->priv->resources, 
 			      (GHFunc)list_resources_accum, &list);
 	return list;
 }
 
-
-
-/**
- * glade_project_display_name:
- * @project: A #GladeProject
- * @unsaved_changes: whether to prepend a '*' to names 
- *                   of projects with unsaved changes
- * @tab_aligned: whether to prepend a tab and align unsaved
- *               names using the tab (for the project menu)
- * @mnemonic: Pass %TRUE here if you are going to use this in
- *            a mnemonic label... this will escape the underscores nicely.
- *
- * Returns: A newly allocated string to uniquely 
- *          describe this open project.
- *       
- */
-gchar *
-glade_project_display_name (GladeProject *project, 
-			    gboolean      unsaved_changes,
-			    gboolean      tab_aligned,
-			    gboolean      mnemonic)
+const gchar *
+glade_project_get_path (GladeProject *project)
 {
-	const gchar *prefix         =
-		tab_aligned ? "\t" : "";
-	const gchar *unsaved_prefix = unsaved_changes ? 
-		(tab_aligned ? "     *\t" : "*") : prefix;
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	gchar       *prefixed_name  = NULL;
-	gchar       *final_name     = NULL;
+	return project->priv->path;
+}
 
-	prefixed_name = 
-		g_strdup_printf ("%s%s", 
-				 project->changed ? unsaved_prefix : prefix,
-				 project->name);
+gchar *
+glade_project_get_name (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	if (project->instance > 0)
-	{
-		final_name = 
-			g_strdup_printf ("%s <%d>", 
-					 prefixed_name, project->instance);
-		g_free (prefixed_name);
-	}
+	if (project->priv->path)
+		return g_filename_display_basename (project->priv->path);
 	else
-		final_name = prefixed_name;
-
-	if (mnemonic)
-	{
-		prefixed_name = glade_util_duplicate_underscores (final_name);
-		g_free (final_name);
-		return prefixed_name;
-	}
-	
-	return final_name;
+		return g_strdup_printf (_("Unsaved %i"), project->priv->unsaved_number);
 }
 
 /**
@@ -2015,11 +2056,46 @@ glade_project_is_loading (GladeProject *project)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 	
-	return project->loading;
+	return project->priv->loading;
 }
 
 time_t
 glade_project_get_file_mtime (GladeProject *project)
 {
-	return project->mtime;
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
+	
+	return project->priv->mtime;
 }
+
+const GList *
+glade_project_get_objects (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	
+	return project->priv->objects;
+}
+
+guint
+glade_project_get_instance_count (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
+
+	return project->priv->instance_count;
+}
+
+void
+glade_project_set_instance_count (GladeProject *project, guint instance_count)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	project->priv->instance_count = instance_count;
+}
+
+gboolean
+glade_project_get_has_unsaved_changes (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	return project->priv->changed;
+}
+

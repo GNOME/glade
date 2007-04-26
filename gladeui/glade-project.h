@@ -14,61 +14,14 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
 #define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
 
-typedef struct _GladeProjectClass  GladeProjectClass;
+typedef struct _GladeProjectPrivate  GladeProjectPrivate;
+typedef struct _GladeProjectClass    GladeProjectClass;
 
-/* A GladeProject is well... a project nothing more nothing less. It is the
- * memory representation of a glade file
- */
 struct _GladeProject
 {
-	GObject object;
+	GObject parent_instance;
 
-	gchar *name;     /* The name of the project like network-conf */
-
-	gchar *path;     /* The full path of the glade file for this project */
-
-	gint   instance; /* How many projects with this name */
-
-	gint   unsaved_number; /* A unique number for this project if it is untitled */
-
-	gboolean readonly; /* A flag that is set if the project is readonly */
-
-	gboolean loading;/* A flags that is set when the project is loading */
-	
-	gboolean changed;    /* A flag that is set when a project has changes
-			      * if this flag is not set we don't have to query
-			      * for confirmation after a close or exit is
-			      * requested
-			      */
-
-	GList *objects; /* A list of #GObjects that make up this project.
-			 * The objects are stored in no particular order.
-			 */
-
-	GList *selection; /* We need to keep the selection in the project
-			   * because we have multiple projects and when the
-			   * user switchs between them, he will probably
-			   * not want to loose the selection. This is a list
-			   * of #GtkWidget items.
-			   */
-
-	gboolean has_selection; /* Whether the project has a selection */
-
-	GList *undo_stack; /* A stack with the last executed commands */
-	GList *prev_redo_item; /* Points to the item previous to the redo items */
-	GHashTable *widget_names_allocator; /* hash table with the used widget names */
-	GHashTable *widget_old_names; /* widget -> old name of the widget */
-	GtkTooltips *tooltips;
-	
-	GtkAccelGroup *accel_group;
-
-	GHashTable *resources; /* resource filenames & thier associated properties */
-	
-	gchar *comment; /* XML comment, Glade will preserve whatever comment was
-			 * in file, so users can delete or change it.
-			 */
-			 
-	time_t  mtime; /* last UTC modification time of file, or 0 if it could not be read */
+	GladeProjectPrivate *priv;
 };
 
 struct _GladeProjectClass
@@ -104,103 +57,110 @@ struct _GladeProjectClass
 };
 
 
-GType         glade_project_get_type (void);
+GType          glade_project_get_type            (void) G_GNUC_CONST;
+
+GladeProject  *glade_project_new                 (void);
+
+gboolean       glade_project_load_from_file      (GladeProject *project, const gchar *path);
+
+GladeProject  *glade_project_load                (const gchar  *path);
+
+gboolean       glade_project_save                (GladeProject *project, 
+						  const gchar   *path, 
+						  GError       **error);
+						 
+const gchar   *glade_project_get_path            (GladeProject *project);						 
+
+gchar         *glade_project_get_name            (GladeProject *project);
 
 
-GladeProject *glade_project_new                 (gboolean     unsaved);
+void           glade_project_undo                (GladeProject *project);
 
-GladeProject *glade_project_open                (const gchar  *path);
+void           glade_project_redo                (GladeProject *project);
 
-gboolean      glade_project_save                (GladeProject *project, 
-						 const gchar  *path, 
-						 GError      **error);
+GladeCommand  *glade_project_next_undo_item      (GladeProject *project);
 
+GladeCommand  *glade_project_next_redo_item      (GladeProject *project);
 
-void          glade_project_undo                (GladeProject *project);
-
-void          glade_project_redo                (GladeProject *project);
-
-GladeCommand *glade_project_next_undo_item      (GladeProject *project);
-
-GladeCommand *glade_project_next_redo_item      (GladeProject *project);
-
-void          glade_project_push_undo           (GladeProject *project, 
-						 GladeCommand *cmd);
+void           glade_project_push_undo           (GladeProject *project, 
+						  GladeCommand *cmd);
 
 
-void          glade_project_reset_path          (GladeProject *project);
+void           glade_project_reset_path          (GladeProject *project);
 
-gboolean      glade_project_get_readonly        (GladeProject *project);
+gboolean       glade_project_get_readonly        (GladeProject *project);
 
-void          glade_project_add_object          (GladeProject *project, 
-						 GladeProject *old_project,
-						 GObject      *object);
+const GList   *glade_project_get_objects         (GladeProject *project);
 
-void          glade_project_remove_object       (GladeProject *project, GObject     *object);
+void           glade_project_add_object          (GladeProject *project, 
+						  GladeProject *old_project,
+						  GObject      *object);
 
-gboolean      glade_project_has_object          (GladeProject *project, GObject     *object);
+void           glade_project_remove_object       (GladeProject *project, GObject     *object);
 
-GladeWidget  *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
+gboolean       glade_project_has_object          (GladeProject *project, GObject     *object);
 
-char         *glade_project_new_widget_name     (GladeProject *project, const char  *base_name);
+GladeWidget   *glade_project_get_widget_by_name  (GladeProject *project, const char  *name);
 
-void          glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,
+char          *glade_project_new_widget_name     (GladeProject *project, const char  *base_name);
+
+void           glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,
 						 const char   *old_name);
 
-GtkTooltips  *glade_project_get_tooltips        (GladeProject *project);
+GtkTooltips   *glade_project_get_tooltips        (GladeProject *project);
 
 /* Selection */
 
-gboolean      glade_project_is_selected         (GladeProject *project,
+gboolean       glade_project_is_selected         (GladeProject *project,
 						 GObject      *object);
 
-void          glade_project_selection_set       (GladeProject *project,
+void           glade_project_selection_set       (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
 
-void          glade_project_selection_add       (GladeProject *project,
+void           glade_project_selection_add       (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
 
-void          glade_project_selection_remove    (GladeProject *project,
+void           glade_project_selection_remove    (GladeProject *project,
 						 GObject      *object,
 						 gboolean      emit_signal);
 
-void          glade_project_selection_clear     (GladeProject *project,
+void           glade_project_selection_clear     (GladeProject *project,
 						 gboolean      emit_signal);
 
-void          glade_project_selection_changed   (GladeProject *project);
+void           glade_project_selection_changed   (GladeProject *project);
 
-GList        *glade_project_selection_get       (GladeProject *project);
+GList         *glade_project_selection_get       (GladeProject *project);
 
-gboolean      glade_project_get_has_selection   (GladeProject *project);
+gboolean       glade_project_get_has_selection   (GladeProject *project);
 
-void          glade_project_set_accel_group     (GladeProject  *project, 
-						 GtkAccelGroup *accel_group);
+void           glade_project_set_accel_group     (GladeProject  *project, 
+						  GtkAccelGroup *accel_group);
 
 
-void          glade_project_set_resource          (GladeProject  *project, 
+void           glade_project_set_resource         (GladeProject  *project, 
 						   GladeProperty *property,
 						   const gchar   *resource);
 
 
-GList        *glade_project_list_resources        (GladeProject  *project);
+GList         *glade_project_list_resources       (GladeProject  *project);
 
 
-gchar        *glade_project_resource_fullpath     (GladeProject  *project,
+gchar         *glade_project_resource_fullpath    (GladeProject  *project,
 						   const gchar   *resource);
-
-
-gchar        *glade_project_display_name          (GladeProject  *project, 
-						   gboolean       unsaved_changes,
-						   gboolean       tab_aligned,
-						   gboolean       mnemonic);
+ 
+gboolean       glade_project_is_loading           (GladeProject *project);
 
  
-gboolean      glade_project_is_loading            (GladeProject *project);
+time_t         glade_project_get_file_mtime       (GladeProject *project);
 
- 
-time_t        glade_project_get_file_mtime        (GladeProject *project);
+  
+guint          glade_project_get_instance_count   (GladeProject *project);
+
+void           glade_project_set_instance_count   (GladeProject *project, guint instance_count);
+
+gboolean       glade_project_get_has_unsaved_changes (GladeProject *project);
 
 G_END_DECLS
 
