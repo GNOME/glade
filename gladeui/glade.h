@@ -42,7 +42,6 @@ typedef struct _GladeProject   GladeProject;
 #include <gladeui/glade-placeholder.h>
 #include <gladeui/glade-utils.h>
 #include <gladeui/glade-builtins.h>
-#include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-fixed.h>
 
 #endif /* __GLADE_H__ */

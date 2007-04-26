@@ -102,9 +102,9 @@ G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
  *                    GObjectClass                               *
  *****************************************************************/
 static GObject *
-glade_app_constructor (GType                  type,
-                       guint                  n_construct_properties,
-                       GObjectConstructParam *construct_properties)
+glade_app_constructor (GType                   type,
+                       guint                   n_construct_properties,
+                       GObjectConstructParam  *construct_properties)
 {
 	GObject *object;
 	
@@ -168,7 +168,6 @@ glade_app_finalize (GObject *app)
 	g_free (bindings_dir);
 	g_free (pixmaps_dir);	
 	g_free (locale_dir);
-
 #endif
 	
 	glade_binding_unload_all ();
@@ -439,17 +438,15 @@ glade_app_init (GladeApp *app)
 	
 	/* Create palette */
 	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
-	g_object_ref (app->priv->palette);
-	gtk_object_sink (GTK_OBJECT (app->priv->palette));
-	gtk_widget_show_all (GTK_WIDGET (app->priv->palette));
+	g_object_ref_sink (app->priv->palette);
+	
 	g_signal_connect (G_OBJECT (app->priv->palette), "toggled",
 			  G_CALLBACK (on_palette_button_clicked), app);
 
 	/* Create Editor */
 	app->priv->editor = GLADE_EDITOR (glade_editor_new ());
-	g_object_ref (app->priv->editor);
-	gtk_object_sink (GTK_OBJECT (app->priv->editor));
-	gtk_widget_show (GTK_WIDGET (app->priv->editor));
+	g_object_ref_sink (GTK_OBJECT (app->priv->editor));
+	
 	glade_editor_refresh (app->priv->editor);
 	
 	/* Create clipboard */

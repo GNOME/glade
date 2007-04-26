@@ -1,5 +1,14 @@
 2007-04-26  Vincent Geddes <vincent.geddes@gmail.com>
 
+	* gladeui/Makefile.am: install some missing header files. Fixes an
+	  Anjuta compilation error.
+
+        * gladeui/glade-app.c: Update to use g_object_ref_sink ().
+        
+        * gladeui/glade-palette-expander.c: Correctly handle internal widget.
+
+2007-04-26  Vincent Geddes <vincent.geddes@gmail.com>
+
 	* gladeui/glade-project.h, gladeui/glade-project.c:
 	  - Hide private implementation details (Added GladeProjectPrivate).
           - Added private field accessors glade_project_get_path, glade_project_get_name,

@@ -75,7 +75,9 @@ static void   glade_palette_expander_size_allocate (GtkWidget      *widget,
 static void   glade_palette_expander_map           (GtkWidget      *widget);
 static void   glade_palette_expander_unmap         (GtkWidget      *widget);
 static void   glade_palette_expander_add           (GtkContainer   *container,
-						    GtkWidget      *widget);		    
+						    GtkWidget      *widget);
+static void   glade_palette_expander_remove        (GtkContainer   *container,
+						    GtkWidget      *widget);	    
 static void   glade_palette_expander_forall        (GtkContainer   *container,
 						    gboolean        include_internals,
 						    GtkCallback     callback,
@@ -125,6 +127,7 @@ glade_palette_expander_class_init (GladePaletteExpanderClass *klass)
 	object_class->get_property = glade_palette_expander_get_property;
 
 	container_class->add    = glade_palette_expander_add;
+	container_class->remove = glade_palette_expander_remove;
 	container_class->forall = glade_palette_expander_forall;
 	
 	widget_class->size_request         = glade_palette_expander_size_request;
@@ -435,9 +438,31 @@ glade_palette_expander_add (GtkContainer *container,
 {
 	GTK_CONTAINER_CLASS (glade_palette_expander_parent_class)->add (container, widget);
 
-	gtk_widget_set_child_visible (widget,
-				      GLADE_PALETTE_EXPANDER (container)->priv->expanded);
+	gtk_widget_set_child_visible (widget, GLADE_PALETTE_EXPANDER (container)->priv->expanded);
 	gtk_widget_queue_resize (GTK_WIDGET (container));
+}
+
+static void
+glade_palette_expander_remove (GtkContainer *container,
+			       GtkWidget    *widget)
+{
+  GladePaletteExpander *expander = GLADE_PALETTE_EXPANDER (container);
+
+	if (expander->priv->button == widget)
+	{	
+		gtk_widget_unparent (expander->priv->button);
+		expander->priv->button = NULL;
+
+		if (GTK_WIDGET_VISIBLE (expander))
+			gtk_widget_queue_resize (GTK_WIDGET (expander));
+
+		g_object_notify (G_OBJECT (expander), "label");
+	}
+	else
+	{
+    		GTK_CONTAINER_CLASS (glade_palette_expander_parent_class)->remove (container, widget);
+	}
+
 }
 
 static void
@@ -452,8 +477,8 @@ glade_palette_expander_forall (GtkContainer *container,
 	if (bin->child)
 		(* callback) (bin->child, callback_data);
 	
-	(* callback) (priv->button, callback_data);
-		
+	if (priv->button)	
+		(* callback) (priv->button, callback_data);
 }
 
 static gboolean
@@ -480,7 +505,7 @@ button_drag_motion (GtkWidget        *widget,
 		    guint             time,
 		    GladePaletteExpander *expander)
 {
-  GladePaletteExpanderPrivate *priv = expander->priv;
+	GladePaletteExpanderPrivate *priv = expander->priv;
 
 	if (!priv->expanded && !priv->expand_timer_handle)
 	{
@@ -504,7 +529,7 @@ button_drag_leave (GtkWidget      *widget,
 		   guint           time,
 		   GladePaletteExpander *expander)
 {
-  GladePaletteExpanderPrivate *priv = expander->priv;
+	GladePaletteExpanderPrivate *priv = expander->priv;
 
 	if (priv->expand_timer_handle)
 	{

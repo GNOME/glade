@@ -64,10 +64,6 @@ libgladeui_1_la_SOURCES = \
 	glade-catalog.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
-	glade-parser.h \
-	glade-cursor.h \
-	glade-signal.h \
-	glade-xml-utils.h \
 	atk.xpm
 
 libgladeui_1_la_CPPFLAGS =  \
@@ -98,6 +94,7 @@ libgladeuiinclude_HEADERS = \
 	glade-editor-property.h \
 	glade-signal-editor.h \
 	glade-palette.h \
+	glade-palette-item.h \
 	glade-design-layout.h \
 	glade-design-view.h \
 	glade-widget.h \
@@ -113,6 +110,10 @@ libgladeuiinclude_HEADERS = \
 	glade-fixed.h \
 	glade-binding.h \
 	glade-base-editor.h \
+	glade-xml-utils.h \
+	glade-parser.h \
+	glade-signal.h \
+	glade-cursor.h \
 	fixed_bg.xpm
 	
 

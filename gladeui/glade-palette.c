@@ -278,11 +278,9 @@ glade_palette_get_property (GObject    *object,
 static void
 glade_palette_dispose (GObject *object)
 {
-	GladePalette        *palette;
 	GladePalettePrivate *priv;
   
-	palette = GLADE_PALETTE (object);
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = GLADE_PALETTE_GET_PRIVATE (object);
 
 	priv->catalogs = NULL;
 
@@ -291,12 +289,16 @@ glade_palette_dispose (GObject *object)
 		g_object_unref (priv->tray);
 		priv->tray = NULL;
 	}
-
-	g_object_unref (priv->tooltips);
-	g_object_unref (priv->static_tooltips);
+	
+	if (priv->tooltips && priv->static_tooltips)
+	{
+		g_object_unref (priv->tooltips);
+		g_object_unref (priv->static_tooltips);
+		priv->tooltips = NULL;
+		priv->static_tooltips = NULL;
+	}
 
 	G_OBJECT_CLASS (glade_palette_parent_class)->dispose (object);
-
 }
 
 static void
@@ -605,11 +607,9 @@ glade_palette_init (GladePalette *palette)
 
 	/* create tooltips */
 	priv->tooltips = gtk_tooltips_new ();
-	g_object_ref (priv->tooltips);
-	gtk_object_sink (GTK_OBJECT (priv->tooltips));
+	g_object_ref_sink (GTK_OBJECT (priv->tooltips));
 	priv->static_tooltips = gtk_tooltips_new ();
-	g_object_ref (priv->static_tooltips);
-	gtk_object_sink (GTK_OBJECT (priv->static_tooltips));
+	g_object_ref_sink (GTK_OBJECT (priv->static_tooltips));
 
 	gtk_tooltips_set_tip (priv->static_tooltips, priv->selector_button, _("Widget selector"), NULL);
 

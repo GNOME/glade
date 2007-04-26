@@ -49,7 +49,7 @@ typedef struct _GladePaletteClass    GladePaletteClass;
 
 struct _GladePalette
 {
-	GtkVBox vbox; /* The parent is a vbox */
+	GtkVBox parent_instance;
 
 	GladePalettePrivate *priv;
 };
@@ -62,24 +62,29 @@ struct _GladePaletteClass
 };
 
 
-GType                glade_palette_get_type (void) G_GNUC_CONST;
+GType                glade_palette_get_type                 (void) G_GNUC_CONST;
 
-GtkWidget           *glade_palette_new (const GList *catalogs);
+GtkWidget           *glade_palette_new                      (const GList  *catalogs);
 
-void                 glade_palette_deselect_current_item (GladePalette *palette, gboolean sticky_aware);
+void                 glade_palette_deselect_current_item    (GladePalette *palette,
+							     gboolean      sticky_aware);
 
-GladeWidgetAdaptor  *glade_palette_get_current_item (GladePalette *palette);
+GladeWidgetAdaptor  *glade_palette_get_current_item         (GladePalette *palette);
 
-GladeItemAppearance  glade_palette_get_item_appearance (GladePalette *palette);
+GladeItemAppearance  glade_palette_get_item_appearance      (GladePalette *palette);
 
-void                 glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance appearance);
-
+void                 glade_palette_set_item_appearance      (GladePalette       *palette,
+							     GladeItemAppearance appearance);
+							     
 gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette);
 
-void		     glade_palette_set_use_small_item_icons (GladePalette *palette, gboolean use_small_item_icons);
-
-void		     glade_palette_set_show_selector_button (GladePalette *palette, gboolean show_selector_button);
+void		     glade_palette_set_use_small_item_icons (GladePalette *palette,
+							     gboolean      use_small_item_icons);
+							     
+void		     glade_palette_set_show_selector_button (GladePalette *palette,
+							     gboolean      show_selector_button);
 
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_H__ */
+

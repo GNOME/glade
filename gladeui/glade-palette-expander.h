@@ -83,3 +83,4 @@ gboolean      glade_palette_expander_get_use_markup   (GladePaletteExpander *exp
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_EXPANDER_H__ */
+
