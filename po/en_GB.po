@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-torrent\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-22 20:07+0100\n"
-"PO-Revision-Date: 2007-04-22 20:08-0000\n"
+"POT-Creation-Date: 2007-04-27 07:01+0100\n"
+"PO-Revision-Date: 2007-04-27 07:01-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: en_GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgid "Glade Interface Designer"
 msgstr "Glade Interface Designer"
 
 #: ../data/glade-3.desktop.in.in.h:3
-#: ../src/glade-project-window.c:210
+#: ../src/glade-project-window.c:393
 msgid "User Interface Designer"
 msgstr "User Interface Designer"
 
@@ -76,75 +76,70 @@ msgstr "Could not display the URL '%s'"
 msgid "No suitable web browser executable could be found."
 msgstr "No suitable web browser executable could be found."
 
-#: ../src/glade-project-window.c:332
+#: ../src/glade-project-window.c:515
 #, c-format
 msgid "%s [%s] - Properties"
 msgstr "%s [%s] - Properties"
 
-#: ../src/glade-project-window.c:342
-#: ../src/glade-project-window.c:2002
-#: ../gladeui/glade-widget.c:991
+#: ../src/glade-project-window.c:525
+#: ../src/glade-project-window.c:2223
+#: ../gladeui/glade-widget.c:995
 msgid "Properties"
 msgstr "Properties"
 
-#: ../src/glade-project-window.c:609
-#, c-format
-msgid "Activate %s"
-msgstr "Activate %s"
-
-#: ../src/glade-project-window.c:727
+#: ../src/glade-project-window.c:943
 msgid "Open…"
 msgstr "Open…"
 
-#: ../src/glade-project-window.c:769
+#: ../src/glade-project-window.c:985
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "The file %s has been modified since reading it"
 
-#: ../src/glade-project-window.c:773
+#: ../src/glade-project-window.c:989
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "If you save it, all the external changes could be lost. Save it anyway?"
 
-#: ../src/glade-project-window.c:777
+#: ../src/glade-project-window.c:993
 msgid "_Save Anyway"
 msgstr "_Save Anyway"
 
-#: ../src/glade-project-window.c:784
+#: ../src/glade-project-window.c:1000
 msgid "_Don't Save"
 msgstr "_Don't Save"
 
-#: ../src/glade-project-window.c:807
+#: ../src/glade-project-window.c:1023
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Failed to save %s: %s"
 
-#: ../src/glade-project-window.c:828
+#: ../src/glade-project-window.c:1044
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Project '%s' saved"
 
 #. Just in case the menu-item is not insensitive
 #. Just in case the menu-item or button is not insensitive
-#: ../src/glade-project-window.c:847
-#: ../src/glade-project-window.c:930
+#: ../src/glade-project-window.c:1063
+#: ../src/glade-project-window.c:1148
 msgid "No open projects to save"
 msgstr "No open projects to save"
 
-#: ../src/glade-project-window.c:851
+#: ../src/glade-project-window.c:1067
 msgid "Save As…"
 msgstr "Save As…"
 
-#: ../src/glade-project-window.c:893
+#: ../src/glade-project-window.c:1111
 #, c-format
 msgid "Could not save the file %s. You do not have the permissions necessary to save the file."
 msgstr "Could not save the file %s. You do not have the permissions necessary to save the file."
 
-#: ../src/glade-project-window.c:906
+#: ../src/glade-project-window.c:1124
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Could not save file %s. Another project with that path is open."
 
-#: ../src/glade-project-window.c:958
+#: ../src/glade-project-window.c:1178
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before closing?</span>\n"
@@ -155,34 +150,34 @@ msgstr ""
 "\n"
 "Your changes will be lost if you don't save them.\n"
 
-#: ../src/glade-project-window.c:972
+#: ../src/glade-project-window.c:1192
 msgid "_Close without Saving"
 msgstr "_Close without Saving"
 
-#: ../src/glade-project-window.c:993
+#: ../src/glade-project-window.c:1213
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Failed to save %s to %s: %s"
 
-#: ../src/glade-project-window.c:1005
+#: ../src/glade-project-window.c:1225
 msgid "Save…"
 msgstr "Save…"
 
-#: ../src/glade-project-window.c:1411
+#: ../src/glade-project-window.c:1632
 msgid "Could not display the online user manual"
 msgstr "Could not display the online user manual"
 
-#: ../src/glade-project-window.c:1414
-#: ../src/glade-project-window.c:1452
+#: ../src/glade-project-window.c:1635
+#: ../src/glade-project-window.c:1673
 #, c-format
 msgid "No suitable web browser executable could be found to be executed and to display the URL: %s"
 msgstr "No suitable web browser executable could be found to be executed and to display the URL: %s"
 
-#: ../src/glade-project-window.c:1449
+#: ../src/glade-project-window.c:1670
 msgid "Could not display the online developer reference manual"
 msgstr "Could not display the online developer reference manual"
 
-#: ../src/glade-project-window.c:1482
+#: ../src/glade-project-window.c:1703
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
@@ -196,258 +191,258 @@ msgstr ""
 "\n"
 "You should have received a copy of the GNU General Public Licence along with Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/glade-project-window.c:1506
+#: ../src/glade-project-window.c:1727
 msgid "translator-credits"
 msgstr "David Lodge <dave@cirt.net>"
 
-#: ../src/glade-project-window.c:1507
+#: ../src/glade-project-window.c:1728
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "A user interface designer for GTK+ and GNOME."
 
 #. File
-#: ../src/glade-project-window.c:1579
+#: ../src/glade-project-window.c:1800
 #: ../plugins/gtk+/glade-gtk.c:4475
 #: ../plugins/gtk+/glade-gtk.c:4773
 msgid "_File"
 msgstr "_File"
 
 #. Edit
-#: ../src/glade-project-window.c:1580
+#: ../src/glade-project-window.c:1801
 #: ../plugins/gtk+/glade-gtk.c:4478
 #: ../plugins/gtk+/glade-gtk.c:4783
 msgid "_Edit"
 msgstr "_Edit"
 
 #. View
-#: ../src/glade-project-window.c:1581
+#: ../src/glade-project-window.c:1802
 #: ../plugins/gtk+/glade-gtk.c:4481
 #: ../plugins/gtk+/glade-gtk.c:4791
 msgid "_View"
 msgstr "_View"
 
-#: ../src/glade-project-window.c:1582
+#: ../src/glade-project-window.c:1803
 msgid "_Projects"
 msgstr "_Projects"
 
 #. Help
-#: ../src/glade-project-window.c:1583
+#: ../src/glade-project-window.c:1804
 #: ../plugins/gtk+/glade-gtk.c:4493
 #: ../plugins/gtk+/glade-gtk.c:4794
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/glade-project-window.c:1587
+#: ../src/glade-project-window.c:1808
 msgid "Create a new project"
 msgstr "Create a new project"
 
-#: ../src/glade-project-window.c:1589
+#: ../src/glade-project-window.c:1810
 msgid "_Open…"
 msgstr "_Open…"
 
-#: ../src/glade-project-window.c:1590
+#: ../src/glade-project-window.c:1811
 msgid "Open a project"
 msgstr "Open a project"
 
-#: ../src/glade-project-window.c:1592
+#: ../src/glade-project-window.c:1813
 msgid "Open _Recent"
 msgstr "Open _Recent"
 
-#: ../src/glade-project-window.c:1595
+#: ../src/glade-project-window.c:1816
 msgid "Quit the program"
 msgstr "Quit the program"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1598
+#: ../src/glade-project-window.c:1819
 msgid "Palette _Appearance"
 msgstr "Palette _Appearance"
 
-#: ../src/glade-project-window.c:1602
+#: ../src/glade-project-window.c:1823
 msgid "About this application"
 msgstr "About this application"
 
-#: ../src/glade-project-window.c:1605
+#: ../src/glade-project-window.c:1826
 msgid "Display the user manual"
 msgstr "Display the user manual"
 
-#: ../src/glade-project-window.c:1607
+#: ../src/glade-project-window.c:1828
 msgid "_Developer Reference"
 msgstr "_Developer Reference"
 
-#: ../src/glade-project-window.c:1608
+#: ../src/glade-project-window.c:1829
 msgid "Display the developer reference manual"
 msgstr "Display the developer reference manual"
 
-#: ../src/glade-project-window.c:1617
+#: ../src/glade-project-window.c:1838
 msgid "Save the current project"
 msgstr "Save the current project"
 
-#: ../src/glade-project-window.c:1619
+#: ../src/glade-project-window.c:1840
 msgid "Save _As…"
 msgstr "Save _As…"
 
-#: ../src/glade-project-window.c:1620
+#: ../src/glade-project-window.c:1841
 msgid "Save the current project with a different name"
 msgstr "Save the current project with a different name"
 
-#: ../src/glade-project-window.c:1623
+#: ../src/glade-project-window.c:1844
 msgid "Close the current project"
 msgstr "Close the current project"
 
-#: ../src/glade-project-window.c:1627
+#: ../src/glade-project-window.c:1848
 msgid "Undo the last action"
 msgstr "Undo the last action"
 
-#: ../src/glade-project-window.c:1630
+#: ../src/glade-project-window.c:1851
 msgid "Redo the last action"
 msgstr "Redo the last action"
 
-#: ../src/glade-project-window.c:1633
+#: ../src/glade-project-window.c:1854
 msgid "Cut the selection"
 msgstr "Cut the selection"
 
-#: ../src/glade-project-window.c:1636
+#: ../src/glade-project-window.c:1857
 msgid "Copy the selection"
 msgstr "Copy the selection"
 
-#: ../src/glade-project-window.c:1639
+#: ../src/glade-project-window.c:1860
 msgid "Paste the clipboard"
 msgstr "Paste the clipboard"
 
-#: ../src/glade-project-window.c:1642
+#: ../src/glade-project-window.c:1863
 msgid "Delete the selection"
 msgstr "Delete the selection"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1646
+#: ../src/glade-project-window.c:1867
 msgid "_Clipboard"
 msgstr "_Clipboard"
 
-#: ../src/glade-project-window.c:1647
+#: ../src/glade-project-window.c:1868
 msgid "Show the clipboard"
 msgstr "Show the clipboard"
 
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1651
+#: ../src/glade-project-window.c:1872
 msgid "_Previous Project"
 msgstr "_Previous Project"
 
-#: ../src/glade-project-window.c:1652
+#: ../src/glade-project-window.c:1873
 msgid "Activate previous project"
 msgstr "Activate previous project"
 
-#: ../src/glade-project-window.c:1654
+#: ../src/glade-project-window.c:1875
 msgid "_Next Project"
 msgstr "_Next Project"
 
-#: ../src/glade-project-window.c:1655
+#: ../src/glade-project-window.c:1876
 msgid "Activate next project"
 msgstr "Activate next project"
 
-#: ../src/glade-project-window.c:1663
+#: ../src/glade-project-window.c:1884
 msgid "_Use Small Icons"
 msgstr "_Use Small Icons"
 
-#: ../src/glade-project-window.c:1664
+#: ../src/glade-project-window.c:1885
 msgid "Show items using small icons"
 msgstr "Show items using small icons"
 
-#: ../src/glade-project-window.c:1667
+#: ../src/glade-project-window.c:1888
 msgid "Context _Help"
 msgstr "Context _Help"
 
-#: ../src/glade-project-window.c:1668
+#: ../src/glade-project-window.c:1889
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Show or hide contextual help buttons in the editor"
 
-#: ../src/glade-project-window.c:1675
+#: ../src/glade-project-window.c:1896
 msgid "Text beside icons"
 msgstr "Text beside icons"
 
-#: ../src/glade-project-window.c:1676
+#: ../src/glade-project-window.c:1897
 msgid "Display items as text beside icons"
 msgstr "Display items as text beside icons"
 
-#: ../src/glade-project-window.c:1678
+#: ../src/glade-project-window.c:1899
 msgid "_Icons only"
 msgstr "_Icons only"
 
-#: ../src/glade-project-window.c:1679
+#: ../src/glade-project-window.c:1900
 msgid "Display items as icons only"
 msgstr "Display items as icons only"
 
-#: ../src/glade-project-window.c:1681
+#: ../src/glade-project-window.c:1902
 msgid "_Text only"
 msgstr "_Text only"
 
-#: ../src/glade-project-window.c:1682
+#: ../src/glade-project-window.c:1903
 msgid "Display items as text only"
 msgstr "Display items as text only"
 
-#: ../src/glade-project-window.c:1887
+#: ../src/glade-project-window.c:2108
 msgid "Select Widgets"
 msgstr "Select Widgets"
 
-#: ../src/glade-project-window.c:1891
+#: ../src/glade-project-window.c:2112
 msgid "Select widgets in the workspace"
 msgstr "Select widgets in the workspace"
 
-#: ../src/glade-project-window.c:1980
+#: ../src/glade-project-window.c:2201
 msgid "Palette"
 msgstr "Palette"
 
-#: ../src/glade-project-window.c:1996
+#: ../src/glade-project-window.c:2217
 msgid "Inspector"
 msgstr "Inspector"
 
-#: ../src/glade-project-window.c:2118
+#: ../src/glade-project-window.c:2339
 msgid "Could not create a new project."
 msgstr "Could not create a new project."
 
-#: ../src/glade-project-window.c:2137
+#: ../src/glade-project-window.c:2358
 #, c-format
 msgid "%s is already open"
 msgstr "%s is already open"
 
-#: ../src/glade-project-window.c:2202
+#: ../src/glade-project-window.c:2423
 msgid "_Undo"
 msgstr "_Undo"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:2204
-#: ../gladeui/glade-app.c:244
+#: ../src/glade-project-window.c:2425
+#: ../gladeui/glade-app.c:243
 #, c-format
 msgid "Undo: %s"
 msgstr "Undo: %s"
 
-#: ../src/glade-project-window.c:2204
-#: ../src/glade-project-window.c:2215
-#: ../gladeui/glade-app.c:245
+#: ../src/glade-project-window.c:2425
+#: ../src/glade-project-window.c:2436
+#: ../gladeui/glade-app.c:244
 msgid "the last action"
 msgstr "the last action"
 
-#: ../src/glade-project-window.c:2213
+#: ../src/glade-project-window.c:2434
 msgid "_Redo"
 msgstr "_Redo"
 
-#: ../src/glade-project-window.c:2215
-#: ../gladeui/glade-app.c:244
+#: ../src/glade-project-window.c:2436
+#: ../gladeui/glade-app.c:243
 #, c-format
 msgid "Redo: %s"
 msgstr "Redo: %s"
 
-#: ../gladeui/glade-app.c:458
+#: ../gladeui/glade-app.c:455
 msgid "Clipboard"
 msgstr "Clipboard"
 
-#: ../gladeui/glade-app.c:530
+#: ../gladeui/glade-app.c:527
 msgid "Active Project"
 msgstr "Active Project"
 
-#: ../gladeui/glade-app.c:531
+#: ../gladeui/glade-app.c:528
 msgid "The active project"
 msgstr "The active project"
 
-#: ../gladeui/glade-app.c:609
+#: ../gladeui/glade-app.c:606
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -456,7 +451,7 @@ msgstr ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 
-#: ../gladeui/glade-app.c:622
+#: ../gladeui/glade-app.c:619
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -465,7 +460,7 @@ msgstr ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 
-#: ../gladeui/glade-app.c:650
+#: ../gladeui/glade-app.c:647
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -474,7 +469,7 @@ msgstr ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 
-#: ../gladeui/glade-app.c:662
+#: ../gladeui/glade-app.c:659
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -483,7 +478,7 @@ msgstr ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 
-#: ../gladeui/glade-app.c:675
+#: ../gladeui/glade-app.c:672
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -492,48 +487,48 @@ msgstr ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 
-#: ../gladeui/glade-app.c:1114
+#: ../gladeui/glade-app.c:1120
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr "You cannot copy a widget internal to a composite widget."
 
-#: ../gladeui/glade-app.c:1129
-#: ../gladeui/glade-app.c:1182
-#: ../gladeui/glade-app.c:1357
+#: ../gladeui/glade-app.c:1135
+#: ../gladeui/glade-app.c:1188
+#: ../gladeui/glade-app.c:1363
 msgid "No widget selected."
 msgstr "No widget selected."
 
-#: ../gladeui/glade-app.c:1167
+#: ../gladeui/glade-app.c:1173
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "You cannot cut a widget internal to a composite widget."
 
-#: ../gladeui/glade-app.c:1226
+#: ../gladeui/glade-app.c:1232
 msgid "Unable to paste to the selected parent"
 msgstr "Unable to paste to the selected parent"
 
-#: ../gladeui/glade-app.c:1237
+#: ../gladeui/glade-app.c:1243
 msgid "Unable to paste to multiple widgets"
 msgstr "Unable to paste to multiple widgets"
 
-#: ../gladeui/glade-app.c:1247
-#: ../gladeui/glade-app.c:1379
+#: ../gladeui/glade-app.c:1253
+#: ../gladeui/glade-app.c:1385
 msgid "No widget selected on the clipboard"
 msgstr "No widget selected on the clipboard"
 
-#: ../gladeui/glade-app.c:1273
+#: ../gladeui/glade-app.c:1279
 #, c-format
 msgid "Unable to paste widget %s without a parent"
 msgstr "Unable to paste widget %s without a parent"
 
-#: ../gladeui/glade-app.c:1290
+#: ../gladeui/glade-app.c:1296
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Only one widget can be pasted at a time to this container"
 
-#: ../gladeui/glade-app.c:1302
+#: ../gladeui/glade-app.c:1308
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Insufficient amount of placeholders in target container"
 
-#: ../gladeui/glade-app.c:1342
-#: ../gladeui/glade-app.c:1389
+#: ../gladeui/glade-app.c:1348
+#: ../gladeui/glade-app.c:1395
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "You cannot delete a widget internal to a composite widget."
 
@@ -871,140 +866,140 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
-#: ../gladeui/glade-editor-property.c:2352
-#: ../gladeui/glade-widget.c:943
+#: ../gladeui/glade-editor-property.c:2351
+#: ../gladeui/glade-widget.c:947
 #: ../gladeui/glade-widget-adaptor.c:839
 msgid "Name"
 msgstr "Name"
 
-#: ../gladeui/glade-editor-property.c:2364
+#: ../gladeui/glade-editor-property.c:2363
 msgid "Class"
 msgstr "Class"
 
-#: ../gladeui/glade-editor-property.c:2378
+#: ../gladeui/glade-editor-property.c:2377
 #, c-format
 msgid "Choose %s implementors"
 msgstr "Choose %s implementors"
 
-#: ../gladeui/glade-editor-property.c:2378
+#: ../gladeui/glade-editor-property.c:2377
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Choose a %s in this project"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2442
+#: ../gladeui/glade-editor-property.c:2441
 msgid "O_bjects:"
 msgstr "O_bjects:"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2651
+#: ../gladeui/glade-editor-property.c:2650
 msgid "Objects:"
 msgstr "Objects:"
 
-#: ../gladeui/glade-editor-property.c:2966
+#: ../gladeui/glade-editor-property.c:2965
 msgid "Value:"
 msgstr "Value:"
 
-#: ../gladeui/glade-editor-property.c:2967
+#: ../gladeui/glade-editor-property.c:2966
 msgid "The current value"
 msgstr "The current value"
 
-#: ../gladeui/glade-editor-property.c:2969
+#: ../gladeui/glade-editor-property.c:2968
 msgid "Lower:"
 msgstr "Lower:"
 
-#: ../gladeui/glade-editor-property.c:2970
+#: ../gladeui/glade-editor-property.c:2969
 msgid "The minimum value"
 msgstr "The minimum value"
 
-#: ../gladeui/glade-editor-property.c:2972
+#: ../gladeui/glade-editor-property.c:2971
 msgid "Upper:"
 msgstr "Upper:"
 
-#: ../gladeui/glade-editor-property.c:2973
+#: ../gladeui/glade-editor-property.c:2972
 msgid "The maximum value"
 msgstr "The maximum value"
 
-#: ../gladeui/glade-editor-property.c:2975
+#: ../gladeui/glade-editor-property.c:2974
 msgid "Step inc:"
 msgstr "Step inc:"
 
-#: ../gladeui/glade-editor-property.c:2976
+#: ../gladeui/glade-editor-property.c:2975
 msgid "The increment to use to make minor changes to the value"
 msgstr "The increment to use to make minor changes to the value"
 
-#: ../gladeui/glade-editor-property.c:2978
+#: ../gladeui/glade-editor-property.c:2977
 msgid "Page inc:"
 msgstr "Page inc:"
 
-#: ../gladeui/glade-editor-property.c:2979
+#: ../gladeui/glade-editor-property.c:2978
 msgid "The increment to use to make major changes to the value"
 msgstr "The increment to use to make major changes to the value"
 
-#: ../gladeui/glade-editor-property.c:2981
+#: ../gladeui/glade-editor-property.c:2980
 msgid "Page size:"
 msgstr "Page size:"
 
-#: ../gladeui/glade-editor-property.c:2982
+#: ../gladeui/glade-editor-property.c:2981
 msgid "The page size (in a GtkScrollbar this is the size of the area which is currently visible)"
 msgstr "The page size (in a GtkScrollbar this is the size of the area which is currently visible)"
 
-#: ../gladeui/glade-editor-property.c:3059
+#: ../gladeui/glade-editor-property.c:3058
 msgid "Alphanumerical"
 msgstr "Alphanumerical"
 
-#: ../gladeui/glade-editor-property.c:3064
+#: ../gladeui/glade-editor-property.c:3063
 msgid "Extra"
 msgstr "Extra"
 
-#: ../gladeui/glade-editor-property.c:3069
+#: ../gladeui/glade-editor-property.c:3068
 msgid "Keypad"
 msgstr "Keypad"
 
-#: ../gladeui/glade-editor-property.c:3074
+#: ../gladeui/glade-editor-property.c:3073
 msgid "Functions"
 msgstr "Functions"
 
-#: ../gladeui/glade-editor-property.c:3079
+#: ../gladeui/glade-editor-property.c:3078
 #: ../plugins/gtk+/gtk+.xml.in.h:200
 #: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Other"
 msgstr "Other"
 
-#: ../gladeui/glade-editor-property.c:3250
-#: ../gladeui/glade-editor-property.c:3284
-#: ../gladeui/glade-editor-property.c:3329
+#: ../gladeui/glade-editor-property.c:3249
+#: ../gladeui/glade-editor-property.c:3283
+#: ../gladeui/glade-editor-property.c:3328
 msgid "<choose a key>"
 msgstr "<choose a key>"
 
-#: ../gladeui/glade-editor-property.c:3283
+#: ../gladeui/glade-editor-property.c:3282
 #: ../plugins/gtk+/gtk+.xml.in.h:185
 #: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "None"
 
-#: ../gladeui/glade-editor-property.c:3409
+#: ../gladeui/glade-editor-property.c:3408
 #: ../gladeui/glade-signal-editor.c:684
 msgid "Signal"
 msgstr "Signal"
 
-#: ../gladeui/glade-editor-property.c:3436
+#: ../gladeui/glade-editor-property.c:3435
 msgid "Key"
 msgstr "Key"
 
-#: ../gladeui/glade-editor-property.c:3450
+#: ../gladeui/glade-editor-property.c:3449
 msgid "Shift"
 msgstr "Shift"
 
-#: ../gladeui/glade-editor-property.c:3466
+#: ../gladeui/glade-editor-property.c:3465
 msgid "Control"
 msgstr "Control"
 
-#: ../gladeui/glade-editor-property.c:3482
+#: ../gladeui/glade-editor-property.c:3481
 msgid "Alt"
 msgstr "Alt"
 
-#: ../gladeui/glade-editor-property.c:3548
+#: ../gladeui/glade-editor-property.c:3547
 msgid "Choose accelerator keys..."
 msgstr "Choose accelerator keys..."
 
@@ -1168,7 +1163,7 @@ msgstr "Can resize"
 msgid "Whether this container supports resizes of child widgets"
 msgstr "Whether this container supports resizes of child widgets"
 
-#: ../gladeui/glade-palette.c:617
+#: ../gladeui/glade-palette.c:614
 msgid "Widget selector"
 msgstr "Widget selector"
 
@@ -1191,36 +1186,39 @@ msgstr "Could not allocate memory for interface"
 msgid "_Select"
 msgstr "_Select"
 
-#: ../gladeui/glade-project.c:564
+#: ../gladeui/glade-project.c:627
 msgid "Has Unsaved Changes"
 msgstr "Has Unsaved Changes"
 
-#: ../gladeui/glade-project.c:565
+#: ../gladeui/glade-project.c:628
 msgid "Whether project has unsaved changes"
 msgstr "Whether project has unsaved changes"
 
-#: ../gladeui/glade-project.c:572
+#: ../gladeui/glade-project.c:635
 msgid "Has Selection"
 msgstr "Has Selection"
 
-#: ../gladeui/glade-project.c:573
+#: ../gladeui/glade-project.c:636
 msgid "Whether project has a selection"
 msgstr "Whether project has a selection"
 
-#: ../gladeui/glade-project.c:580
+#: ../gladeui/glade-project.c:643
 msgid "Read Only"
 msgstr "Read Only"
 
-#: ../gladeui/glade-project.c:581
+#: ../gladeui/glade-project.c:644
 msgid "Whether project is read only or not"
 msgstr "Whether project is read only or not"
 
-#: ../gladeui/glade-project.c:639
-#, c-format
-msgid "Unsaved %d"
-msgstr "Unsaved %d"
+#: ../gladeui/glade-project.c:651
+msgid "Path"
+msgstr "Path"
 
-#: ../gladeui/glade-project.c:1412
+#: ../gladeui/glade-project.c:652
+msgid "The filesystem path of the project"
+msgstr "The filesystem path of the project"
+
+#: ../gladeui/glade-project.c:1506
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1228,6 +1226,11 @@ msgid ""
 msgstr ""
 "Failed to load %s.\n"
 "The following required catalogues are unavailable: %s"
+
+#: ../gladeui/glade-project.c:2044
+#, c-format
+msgid "Unsaved %i"
+msgstr "Unsaved %i"
 
 #. Atk click property
 #: ../gladeui/glade-property-class.c:56
@@ -1534,109 +1537,109 @@ msgstr "Failed to open %s for reading: %s"
 msgid "Unable to open the module %s (%s)."
 msgstr "Unable to open the module %s (%s)."
 
-#: ../gladeui/glade-widget.c:944
+#: ../gladeui/glade-widget.c:948
 msgid "The name of the widget"
 msgstr "The name of the widget"
 
-#: ../gladeui/glade-widget.c:951
+#: ../gladeui/glade-widget.c:955
 msgid "Internal name"
 msgstr "Internal name"
 
-#: ../gladeui/glade-widget.c:952
+#: ../gladeui/glade-widget.c:956
 msgid "The internal name of the widget"
 msgstr "The internal name of the widget"
 
-#: ../gladeui/glade-widget.c:958
+#: ../gladeui/glade-widget.c:962
 msgid "Anarchist"
 msgstr "Anarchist"
 
-#: ../gladeui/glade-widget.c:959
+#: ../gladeui/glade-widget.c:963
 msgid "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Whether this composite child is an ancestral child or an anarchist child"
 
-#: ../gladeui/glade-widget.c:966
+#: ../gladeui/glade-widget.c:970
 msgid "Object"
 msgstr "Object"
 
-#: ../gladeui/glade-widget.c:967
+#: ../gladeui/glade-widget.c:971
 msgid "The object associated"
 msgstr "The object associated"
 
-#: ../gladeui/glade-widget.c:974
+#: ../gladeui/glade-widget.c:978
 msgid "Adaptor"
 msgstr "Adaptor"
 
-#: ../gladeui/glade-widget.c:975
+#: ../gladeui/glade-widget.c:979
 msgid "The class adaptor for the associated widget"
 msgstr "The class adaptor for the associated widget"
 
-#: ../gladeui/glade-widget.c:982
+#: ../gladeui/glade-widget.c:986
 msgid "Project"
 msgstr "Project"
 
-#: ../gladeui/glade-widget.c:983
+#: ../gladeui/glade-widget.c:987
 msgid "The glade project that this widget belongs to"
 msgstr "The glade project that this widget belongs to"
 
-#: ../gladeui/glade-widget.c:992
+#: ../gladeui/glade-widget.c:996
 msgid "A list of GladeProperties"
 msgstr "A list of GladeProperties"
 
-#: ../gladeui/glade-widget.c:998
+#: ../gladeui/glade-widget.c:1002
 #: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Parent"
 msgstr "Parent"
 
-#: ../gladeui/glade-widget.c:999
+#: ../gladeui/glade-widget.c:1003
 msgid "A pointer to the parenting GladeWidget"
 msgstr "A pointer to the parenting GladeWidget"
 
-#: ../gladeui/glade-widget.c:1006
+#: ../gladeui/glade-widget.c:1010
 msgid "Internal Name"
 msgstr "Internal Name"
 
-#: ../gladeui/glade-widget.c:1007
+#: ../gladeui/glade-widget.c:1011
 msgid "A generic name prefix for internal widgets"
 msgstr "A generic name prefix for internal widgets"
 
-#: ../gladeui/glade-widget.c:1012
+#: ../gladeui/glade-widget.c:1016
 msgid "Template"
 msgstr "Template"
 
-#: ../gladeui/glade-widget.c:1013
+#: ../gladeui/glade-widget.c:1017
 msgid "A GladeWidget template to base a new widget on"
 msgstr "A GladeWidget template to base a new widget on"
 
-#: ../gladeui/glade-widget.c:1019
+#: ../gladeui/glade-widget.c:1023
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Info"
 msgstr "Info"
 
-#: ../gladeui/glade-widget.c:1020
+#: ../gladeui/glade-widget.c:1024
 msgid "A GladeWidgetInfo struct to base a new widget on"
 msgstr "A GladeWidgetInfo struct to base a new widget on"
 
-#: ../gladeui/glade-widget.c:1025
+#: ../gladeui/glade-widget.c:1029
 msgid "Reason"
 msgstr "Reason"
 
-#: ../gladeui/glade-widget.c:1026
+#: ../gladeui/glade-widget.c:1030
 msgid "A GladeCreateReason for this creation"
 msgstr "A GladeCreateReason for this creation"
 
-#: ../gladeui/glade-widget.c:1034
+#: ../gladeui/glade-widget.c:1038
 msgid "Toplevel Width"
 msgstr "Toplevel Width"
 
-#: ../gladeui/glade-widget.c:1035
+#: ../gladeui/glade-widget.c:1039
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "The width of the widget when toplevel in the GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1044
+#: ../gladeui/glade-widget.c:1048
 msgid "Toplevel Height"
 msgstr "Toplevel Height"
 
-#: ../gladeui/glade-widget.c:1045
+#: ../gladeui/glade-widget.c:1049
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "The height of the widget when toplevel in the GladeDesignLayout"
 
@@ -3508,6 +3511,8 @@ msgstr "The selection mode"
 msgid "The width of each icon"
 msgstr "The width of each icon"
 
+#~ msgid "Activate %s"
+#~ msgstr "Activate %s"
 #~ msgid "Unable to load icon for %s (%s)"
 #~ msgstr "Unable to load icon for %s (%s)"
 #~ msgid "Unable to load stock icon (%s)"
@@ -3544,8 +3549,6 @@ msgstr "The width of each icon"
 #~ msgstr "C_ut"
 #~ msgid "_Copy"
 #~ msgstr "_Copy"
-#~ msgid "_Paste"
-#~ msgstr "_Paste"
 #~ msgid "_Delete"
 #~ msgstr "_Delete"
 #~ msgid ""
