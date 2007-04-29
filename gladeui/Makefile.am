@@ -14,7 +14,7 @@ lib_LTLIBRARIES = libgladeui-1.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = atk.xpm glade-marshallers.list gladeui.rc.in
+EXTRA_DIST = glade-marshallers.list gladeui.rc.in
 
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
@@ -63,8 +63,7 @@ libgladeui_1_la_SOURCES = \
 	glade-popup.h \
 	glade-catalog.h \
 	glade-marshallers.h \
-	glade-accumulators.h \
-	atk.xpm
+	glade-accumulators.h
 
 libgladeui_1_la_CPPFLAGS =  \
 	$(common_defines)   \

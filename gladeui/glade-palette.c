@@ -39,6 +39,7 @@
 #include "glade-project.h"
 #include "glade-widget.h"
 #include "glade-widget-adaptor.h"
+
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
 
@@ -48,27 +49,27 @@
 
 struct _GladePalettePrivate
 {
-	const GList *catalogs;        /* List of widget catalogs */
+	const GList  *catalogs;        /* List of widget catalogs */
 
-	GtkWidget *selector_hbox;	
-	GtkWidget *selector_button;
+	GtkWidget    *selector_hbox;	
+	GtkWidget    *selector_button;
 
-	GtkWidget *tray;	/* Where all the item groups are contained */
+	GtkWidget    *tray;	         /* Where all the item groups are contained */
 
-	GladePaletteItem *current_item; /* The currently selected item */
+	GladePaletteItem *current_item;  /* The currently selected item */
 
-	GSList *sections;   	         /* List of GladePaletteExpanders */ 
+	GSList       *sections;          /* List of GladePaletteExpanders */ 
 
-	GtkTooltips *tooltips;           /* Tooltips for the item buttons */
-	GtkTooltips *static_tooltips;    /* These tooltips never get disabled */
+	GtkTooltips  *tooltips;          /* Tooltips for the item buttons */
+	GtkTooltips  *static_tooltips;   /* These tooltips never get disabled */
 
 	GtkSizeGroup *size_group;        /* All items have the same dimensions */
 
 	GladeItemAppearance item_appearance;
 
-	gboolean use_small_item_icons;
+	gboolean      use_small_item_icons;
 	
-	gboolean sticky_selection_mode; /* whether sticky_selection mode has been enabled */
+	gboolean      sticky_selection_mode; /* whether sticky_selection mode has been enabled */
 };
 
 enum
@@ -215,6 +216,15 @@ glade_palette_set_show_selector_button (GladePalette *palette, gboolean show_sel
 
 }
 
+/* override GtkWidget::show_all since we have internal widgets we wish to keep
+ * hidden unless we decide otherwise, like the hidden selector button.
+ */
+static void
+glade_palette_show_all (GtkWidget *widget)
+{
+	gtk_widget_show (widget);
+}
+
 static void 
 glade_palette_set_property (GObject *object,
 		            guint prop_id,
@@ -289,26 +299,26 @@ glade_palette_dispose (GObject *object)
 		g_object_unref (priv->tray);
 		priv->tray = NULL;
 	}
-	
-	if (priv->tooltips && priv->static_tooltips)
+	if (priv->tooltips)
 	{
 		g_object_unref (priv->tooltips);
+		priv->tooltips = NULL;	
+	}
+	if (priv->static_tooltips)
+	{
 		g_object_unref (priv->static_tooltips);
-		priv->tooltips = NULL;
 		priv->static_tooltips = NULL;
 	}
-
+	
 	G_OBJECT_CLASS (glade_palette_parent_class)->dispose (object);
 }
 
 static void
 glade_palette_finalize (GObject *object)
 {
-	GladePalette        *palette;
 	GladePalettePrivate *priv;
   
-	palette = GLADE_PALETTE (object);
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = GLADE_PALETTE_GET_PRIVATE (object);
 
 	g_slist_free (priv->sections);
 
@@ -318,9 +328,11 @@ glade_palette_finalize (GObject *object)
 static void
 glade_palette_class_init (GladePaletteClass *klass)
 {
-	GObjectClass *object_class;
+	GObjectClass   *object_class;
+	GtkWidgetClass *widget_class;
 
 	object_class = G_OBJECT_CLASS (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
 
 	klass->toggled = NULL;
 	
@@ -328,6 +340,8 @@ glade_palette_class_init (GladePaletteClass *klass)
 	object_class->set_property = glade_palette_set_property;
 	object_class->dispose = glade_palette_dispose;
 	object_class->finalize = glade_palette_finalize;
+	
+	widget_class->show_all = glade_palette_show_all;
 
 	glade_palette_signals[TOGGLED] =
 		g_signal_new ("toggled",

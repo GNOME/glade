@@ -43,7 +43,6 @@
 #include "glade-project.h"
 #include "glade-utils.h"
 #include "glade-editor-property.h"
-#include "atk.xpm"
 
 enum
 {
@@ -185,7 +184,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 	GtkWidget     *sw;
 	GtkWidget     *label_widget;
 	GtkWidget     *image;
-	GdkPixbuf     *pixbuf;
+	static gchar  *path;
 	static gint page = 0;
 
 	/* alignment is needed to ensure property labels have some padding on the left */
@@ -195,19 +194,20 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 	/* construct tab label widget */
 	if (g_utf8_collate (name, _("Accessibility")) == 0)
 	{
-		pixbuf = gdk_pixbuf_new_from_xpm_data ((const char**) glade_atk_xpm);
+		path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
+		image = gtk_image_new_from_file (path);
 		label_widget = gtk_event_box_new ();
-		image = gtk_image_new_from_pixbuf (pixbuf);
 		gtk_container_add (GTK_CONTAINER (label_widget), image);
-		g_object_unref (G_OBJECT (pixbuf));
-		gtk_widget_show (image);
 		gtk_widget_show (label_widget);
+		gtk_widget_show (image);
 
 		glade_util_widget_set_tooltip (label_widget, name);
 	}
 	else
+	{
 		label_widget = gtk_label_new_with_mnemonic (name);
-
+	}
+	
 	/* configure page container */
 	if (g_utf8_collate (name, _("_Signals")) == 0)
 	{
