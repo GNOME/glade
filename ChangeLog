@@ -1,12 +1,13 @@
-2007-04-26  Vincent Geddes <vincent.geddes@gmail.com>
+2007-04-29  Vincent Geddes <vincent.geddes@gmail.com>
 
-	* gladeui/Makefile.am: install some missing header files. Fixes an
-	  Anjuta compilation error.
-
-        * gladeui/glade-app.c: Update to use g_object_ref_sink ().
-        
-        * gladeui/glade-palette-expander.c: Correctly handle internal widget.
-
+	* gladeui/glade-palette.c: Override GtkWidget::show_all to ensure
+	  hidden selector button is not accidentally made visible.
+	  
+	* gladeui/atk.xpm, gladeui/Makefile.am, data/icons/atk.png,
+	  data/icons/Makefile.am: Moved gladeui/atk.xpm to data/icons/atk.png
+	  
+	* gladeui/glade-editor.c: Update to use atk.png instead of atk.xpm. 
+	
 2007-04-26  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-project.h, gladeui/glade-project.c:
