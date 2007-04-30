@@ -1,3 +1,19 @@
+2007-04-26  Jeff Westerinen <jeff.westerinen@access-company.com>
+
+	* plugins/gtk+/glade-gtk.c:
+	    - added a general launch_editor action signal handler.
+	    - hooked the launch_editor action signal in the GtkMenuItem post_create function.
+	    - hooked the launch_editor action signal in the GtkMenuBar post_create function.
+	    - created a GtkMenu post_create function containing a hook for the launch_editor
+	      action signal.
+	  (bug 433055)
+
+	* plugins/gtk+/gtk+.xml.in: 
+	    - Added "launch_editor" action to GtkMenuItem.
+	    - Added "launch_editor" action to GtkMenuBar.
+	    - Added "launch_editor" action and post_create function to GtkMenu.
+	  (bug 433055)
+
 2007-04-29  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-palette.c: Override GtkWidget::show_all to ensure

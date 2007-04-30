@@ -301,6 +301,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
+      <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
@@ -364,6 +365,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" _title="Menu Bar">
+      <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
       <launch-editor-function>glade_gtk_menu_bar_launch_editor</launch-editor-function>
       <!-- menubar is a container you can't add placeholders to it -->
@@ -1019,8 +1021,9 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
+      <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <!-- We do not want glade_gtk_container_post_create be executed -->
-      <post-create-function>empty</post-create-function>
+      <post-create-function>glade_gtk_menu_post_create</post-create-function>
       <launch-editor-function>glade_gtk_menu_launch_editor</launch-editor-function>
    </glade-widget-class>
     

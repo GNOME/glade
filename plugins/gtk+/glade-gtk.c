@@ -3883,6 +3883,15 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 							       id, value);
 }
 
+/* ----------------------------- menu callbacks ------------------------------ */
+static gboolean
+glade_gtk_menu_launch_editor_action (GladeWidget *gwidget, const gchar *data)
+{
+	glade_widget_launch_editor (gwidget);
+	return TRUE;
+}
+
+
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
 glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor, 
@@ -4266,6 +4275,9 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor,
 	gitem = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gitem));
 
+	/* hook the launch_editor action signal for all items */
+	g_signal_connect (gitem, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
+	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
 	
 	if (gtk_bin_get_child (GTK_BIN (object)) == NULL)
@@ -4761,11 +4773,14 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 	GladeProject *project;
 	GladeWidget *gmenubar, *gitem, *gsubmenu;
 	
-	if (reason != GLADE_CREATE_USER) return;
-	
 	g_return_if_fail (GTK_IS_MENU_BAR (object));
 	gmenubar = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gmenubar));
+	
+	/* hook the launch_editor action signal for all reasons */
+	g_signal_connect (gmenubar, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
+	
+	if (reason != GLADE_CREATE_USER) return;
 	
 	project = glade_widget_get_project (gmenubar);
 	
@@ -4807,6 +4822,22 @@ void
 glade_gtk_menu_launch_editor (GladeWidgetAdaptor *adaptor, GObject *menu)
 {
 	glade_gtk_menu_shell_launch_editor (menu, _("Menu Editor"));
+}
+
+void
+glade_gtk_menu_post_create (GladeWidgetAdaptor *adaptor,
+				GObject            *object, 
+				GladeCreateReason   reason)
+{
+	GladeWidget *gmenu;
+	
+	g_return_if_fail (GTK_IS_MENU (object));
+	gmenu = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gmenu));
+	
+	/* hook the launch_editor action signal for all reasons */
+	g_signal_connect (gmenu, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
+	
 }
 
 /* ----------------------------- GtkToolBar ------------------------------ */
