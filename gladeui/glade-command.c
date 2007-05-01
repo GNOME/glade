@@ -1576,10 +1576,14 @@ void
 glade_command_cut(GList *widgets)
 {
 	GladeWidget *widget;
+	GList       *l;
 	gchar *description;	
 	
 	g_return_if_fail (widgets != NULL);
-	
+
+	for (l = widgets; l; l = l->next)
+		g_object_set_data (G_OBJECT (l->data), "glade-command-was-cut", GINT_TO_POINTER (TRUE));
+		
 	widget = widgets->data;
 	description = g_strdup_printf (_("Cut %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_push_group(description);
@@ -1597,24 +1601,24 @@ glade_command_cut(GList *widgets)
 void
 glade_command_copy(GList *widgets)
 {
-	GList *list, *copiedWidgets = NULL;
-	GladeWidget *copiedWidget = NULL;
+	GList *list, *copied_widgets = NULL;
+	GladeWidget *copied_widget = NULL;
 	gchar *description;	
 	
 	g_return_if_fail (widgets != NULL);
 	
 	for (list = widgets; list && list->data; list = list->next)
 	{
-		copiedWidget = glade_widget_dup(list->data);
-		copiedWidgets = g_list_prepend(copiedWidgets, copiedWidget);
+		copied_widget = glade_widget_dup(list->data, FALSE);
+		copied_widgets = g_list_prepend(copied_widgets, copied_widget);
 	}
-	description = g_strdup_printf (_("Copy %s"), g_list_length (widgets) == 1 ? copiedWidget->name : _("multiple"));
+	description = g_strdup_printf (_("Copy %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
 	glade_command_push_group(description);
-	glade_command_clipboard_add(copiedWidgets);
+	glade_command_clipboard_add(copied_widgets);
 	glade_command_pop_group();
 	
-	if (copiedWidgets)
-		g_list_free(copiedWidgets);
+	if (copied_widgets)
+		g_list_free(copied_widgets);
 }
 
 /**
@@ -1630,24 +1634,27 @@ glade_command_copy(GList *widgets)
 void
 glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
-	GList *list, *copiedWidgets = NULL;
-	GladeWidget *copiedWidget = NULL;
+	GList *list, *copied_widgets = NULL;
+	GladeWidget *copied_widget = NULL;
 	gchar *description;	
-
+	gboolean exact;
+	
 	g_return_if_fail (widgets != NULL);
 	
 	for (list = widgets; list && list->data; list = list->next)
 	{
-		copiedWidget = glade_widget_dup(list->data);
-		copiedWidgets = g_list_prepend(copiedWidgets, copiedWidget);
+		exact = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (list->data), "glade-command-was-cut"));
+
+		copied_widget = glade_widget_dup(list->data, exact);
+		copied_widgets = g_list_prepend(copied_widgets, copied_widget);
 	}
-	description = g_strdup_printf (_("Paste %s"), g_list_length (widgets) == 1 ? copiedWidget->name : _("multiple"));
+	description = g_strdup_printf (_("Paste %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
 	glade_command_push_group(description);
-	glade_command_add(copiedWidgets, parent, placeholder, TRUE);
+	glade_command_add(copied_widgets, parent, placeholder, TRUE);
 	glade_command_pop_group();
 	
-	if (copiedWidgets)
-		g_list_free(copiedWidgets);
+	if (copied_widgets)
+		g_list_free(copied_widgets);
 }
 
 /**

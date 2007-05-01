@@ -142,7 +142,11 @@ void                    glade_widget_replace                (GladeWidget      *p
 LIBGLADEUI_API 
 void                    glade_widget_rebuild                (GladeWidget      *glade_widget);
 LIBGLADEUI_API 
-GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget);
+GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget,
+							     gboolean          exact);
+LIBGLADEUI_API
+void                    glade_widget_copy_signals           (GladeWidget      *widget,
+							     GladeWidget      *template_widget);
 LIBGLADEUI_API 
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
 							     GladeWidget      *template_widget);

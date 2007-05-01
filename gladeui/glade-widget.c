@@ -1302,7 +1302,9 @@ glade_widget_get_internal_func (GladeWidget *parent, GladeWidget **parent_ret)
 
 
 static GladeWidget *
-glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template_widget)
+glade_widget_dup_internal (GladeWidget *parent,
+			   GladeWidget *template_widget,
+			   gboolean     exact)
 {
 	GladeGetInternalFunc  get_internal;
 	GladeWidget *gwidget = NULL, *internal_parent;
@@ -1337,7 +1339,14 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template_widget)
 	}
 	else
 	{
-		gchar *name = glade_project_new_widget_name (template_widget->project, template_widget->name);
+		gchar *name;
+
+		if (exact)
+			name = g_strdup (template_widget->name);
+		else
+			name = glade_project_new_widget_name (template_widget->project,
+							      template_widget->name);
+		
 		gwidget = glade_widget_adaptor_create_widget
 			(template_widget->adaptor, FALSE,
 			 "name", name,
@@ -1347,7 +1356,11 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template_widget)
 			 "reason", GLADE_CREATE_COPY, NULL);
 		g_free (name);
 	}
- 	
+
+	/* Copy signals over here regardless of internal or not... */
+	if (exact)
+		glade_widget_copy_signals (gwidget, template_widget);
+	
 	if ((children =
 	     glade_widget_adaptor_get_children (template_widget->adaptor,
 						template_widget->object)) != NULL)
@@ -1380,7 +1393,7 @@ glade_widget_dup_internal (GladeWidget *parent, GladeWidget *template_widget)
 			else
 			{
 				/* Recurse through every GladeWidget (internal or not) */
-				child_dup = glade_widget_dup_internal (gwidget, child_gwidget);
+				child_dup = glade_widget_dup_internal (gwidget, child_gwidget, exact);
 
 				if (child_gwidget->internal == NULL)
 				{
@@ -2224,6 +2237,41 @@ glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
 	widget->prop_refs_readonly = FALSE;
 }
 
+static void
+glade_widget_copy_signal_foreach (const gchar *key,
+				  GPtrArray   *signals,
+				  GladeWidget *dest)
+{
+	GladeSignal *signal;
+	gint i;
+
+	for (i = 0; i < signals->len; i++)
+	{
+		signal = (GladeSignal *)signals->pdata[i];
+		glade_widget_add_signal_handler	(dest, signal);
+	}
+}
+
+/**
+ * glade_widget_copy_signals:
+ * @widget:   a 'dest' #GladeWidget
+ * @template_widget: a 'src' #GladeWidget
+ *
+ * Sets signals in @widget based on the values of
+ * matching signals in @template_widget
+ */
+void
+glade_widget_copy_signals (GladeWidget *widget,
+			   GladeWidget *template_widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (template_widget));
+
+	g_hash_table_foreach (template_widget->signals,
+			      (GHFunc)glade_widget_copy_signal_foreach,
+			      widget);
+}
+
 /**
  * glade_widget_copy_properties:
  * @widget:   a 'dest' #GladeWidget
@@ -2237,6 +2285,10 @@ glade_widget_copy_properties (GladeWidget *widget,
 			      GladeWidget *template_widget)
 {
 	GList *l;
+
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (template_widget));
+
 	for (l = widget->properties; l && l->data; l = l->next)
 	{
 		GladeProperty *widget_prop  = GLADE_PROPERTY(l->data);
@@ -2295,20 +2347,25 @@ glade_widget_remove_child (GladeWidget      *parent,
 /**
  * glade_widget_dup:
  * @template_widget: a #GladeWidget
+ * @exact: whether or not to creat an exact duplicate
  *
- * Creates a deep copy of #GladeWidget.
+ * Creates a deep copy of #GladeWidget. if @exact is specified,
+ * the widget name is preserved and signals are carried over
+ * (this is used to maintain names & signals in Cut/Paste context
+ * as opposed to Copy/Paste contexts).
  *
  * Returns: The newly created #GladeWidget
  */
 GladeWidget *
-glade_widget_dup (GladeWidget *template_widget)
+glade_widget_dup (GladeWidget *template_widget,
+		  gboolean     exact)
 {
 	GladeWidget *widget;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (template_widget), NULL);
 	
 	glade_widget_push_superuser ();
-	widget = glade_widget_dup_internal (NULL, template_widget);
+	widget = glade_widget_dup_internal (NULL, template_widget, exact);
 	glade_widget_pop_superuser ();
 
 	return widget;
