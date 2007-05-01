@@ -267,6 +267,7 @@ glade_project_view_selection_update (GladeProjectView *view,
 	GtkTreeSelection *selection;
 	GtkTreeModel     *model;
 	GtkTreeIter      *iter;
+	GtkTreePath      *path, *ancestor_path;
 	GList            *list;
 
 	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
@@ -292,8 +293,25 @@ glade_project_view_selection_update (GladeProjectView *view,
 			if ((iter = glade_util_find_iter_by_widget 
 			     (model, widget, WIDGET_COLUMN)) != NULL)
 			{
-				gtk_tree_selection_select_iter (selection, iter);
+				path = gtk_tree_model_get_path (model, iter);
+				ancestor_path = gtk_tree_path_copy (path);
+							
+				/* expand parent node */ 
+				if (gtk_tree_path_up (ancestor_path))
+					gtk_tree_view_expand_to_path (GTK_TREE_VIEW (view->priv->tree_view), ancestor_path);			
+			
+				gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (view->priv->tree_view),
+							      path, 
+							      NULL,
+							      TRUE,
+							      0.5,
+							      0);
+			
+				gtk_tree_selection_select_iter (selection, iter);				
+				
 				gtk_tree_iter_free (iter);
+				gtk_tree_path_free (path);
+				gtk_tree_path_free (ancestor_path);
 			}
 		}
 	}
