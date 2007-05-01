@@ -1,3 +1,11 @@
+2007-05-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.[ch]: Added 'exact' argument to glade_widget_dup() and
+	  added glade_widget_copy_signals()
+
+	* gladeui/glade-command.c: dup the widget "exactly" when pasting widgets that
+	  were cut (not copied), fixing bug 432519
+
 2007-04-26  Jeff Westerinen <jeff.westerinen@access-company.com>
 
 	* plugins/gtk+/glade-gtk.c:

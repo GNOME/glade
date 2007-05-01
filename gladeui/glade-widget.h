@@ -142,8 +142,10 @@ void                    glade_widget_replace                (GladeWidget      *p
  
 void                    glade_widget_rebuild                (GladeWidget      *gwidget);
  
-GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget);
- 
+GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget,
+							     gboolean          exact);
+void                    glade_widget_copy_signals           (GladeWidget      *widget,
+							     GladeWidget      *template_widget);
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
 							     GladeWidget      *template_widget);
 
