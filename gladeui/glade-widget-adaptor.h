@@ -26,6 +26,7 @@ typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 typedef struct _GladeSignalClass          GladeSignalClass;
+typedef struct _GWAAction                 GWAAction;
 
 /**
  * GWA_IS_FIXED:
@@ -325,12 +326,15 @@ struct _GladeSignalClass
 
 };
 
-typedef struct _GWAAction GWAAction;
 struct _GWAAction
 {
-	gchar *id, *label, *stock;
-	gboolean is_a_group;
-	GList *actions;
+	gchar     *id;           /* The identifier of this action in the action tree */
+	gchar     *label;        /* A translated label to show in the UI for this action */
+	gchar     *stock;        /* If set, this stock item will be shown in the UI along side
+				  * the label */
+	gboolean   is_a_group;   /* Marks whether this action is a group and can have children */
+
+	GList     *actions;      /* Recursive list of child actions */
 };
 
 /* Note that everything that must be processed at the creation of

@@ -29,7 +29,6 @@
 #include "glade-signal.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
-#include "glade-binding.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -1449,56 +1448,6 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-static gboolean
-gwa_script_item_activate_cb (GladeWidgetAdaptor *adaptor,
-			     GladeWidget *widget,
-			     const gchar *action_id,
-			     GladeBindingScript *script)
-{
-	gchar *argv[2] = {widget->name, NULL};
-	
-	glade_binding_run_script (script->binding, script->path, argv);
-	return TRUE;
-}
-
-static void
-gwa_setup_binding_scripts (GladeWidgetAdaptor *adaptor)
-{
-	GList *l, *bindings;
-
-	if ((bindings = glade_binding_get_all ()) == NULL) return;
-	
-	gwa_action_append (adaptor, NULL, "scripts", "Scripts", NULL, TRUE);
-	
-	for (l = bindings; l; l = g_list_next (l))
-	{
-		GladeBinding *binding = l->data;
-		GList *list;
-	
-		for (list = g_hash_table_lookup (binding->context_scripts, adaptor->name);
-		     list; list = g_list_next (list))
-		{
-			GladeBindingScript *script = list->data;
-			gchar *detailed_signal, *name = g_strdup (script->name);
-			
-			detailed_signal = g_strdup_printf ("action-activated::%s", script->name);
-			glade_util_replace (name, '_', ' ');
-
-			gwa_action_append (adaptor, "scripts", script->name,
-					   name, NULL, FALSE);
-
-			g_signal_connect (adaptor, detailed_signal,
-					  G_CALLBACK (gwa_script_item_activate_cb),
-					  script);
-
-			g_free (name);
-			g_free (detailed_signal);
-		}
-	}
-	
-	g_list_free (bindings);
-}
-
 /** 
  * create_icon_name_for_adaptor:
  * @adaptor_name: The name of the widget class
@@ -1682,8 +1631,6 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 		gwa_properties_set_weight (&adaptor->properties, parent_type);
 		gwa_properties_set_weight (&adaptor->packing_props, parent_type);
 	}
-
-	gwa_setup_binding_scripts (adaptor);
 	
 	glade_widget_adaptor_register (adaptor);
 

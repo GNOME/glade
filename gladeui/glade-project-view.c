@@ -608,7 +608,7 @@ glade_project_view_button_press_cb (GtkWidget        *widget,
 			if (widget != NULL &&
 				    event->button == 3)
 			{
-				glade_popup_widget_pop (widget, event, FALSE);
+				glade_popup_widget_pop (widget, event);
 				handled = TRUE;
 			}
 			gtk_tree_path_free (path);

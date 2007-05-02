@@ -1,6 +1,15 @@
+2007-05-02  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-popup.[ch], gladeui/glade-widget.c, gladeui/glade-project-view.c: 
+	  Removed submenus for the ancestry since Vincent did that magic to the project view, 
+	  all is cleaner now.
+
+	* gladeui/glade-widget-adaptor.c: Removed #include "glade-binding.h" and
+	  all the scripting crap that went with it.
+
 2007-05-01  Vincent Geddes <vincent.geddes@gmail.com>
- 
-        * gladeui/glade-project-view.c: Expand and scroll to selection. Fixes #392225.
+
+	* gladeui/glade-project-view.c: Expand and scroll to selection. Fixes #392225.
 
 2007-05-01  Tristan Van Berkom <tvb@gnome.org>
 

@@ -299,7 +299,7 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 	}
 	else if (event->button == 3)
 	{
-		glade_popup_widget_pop (gwidget, event, TRUE);
+		glade_popup_widget_pop (gwidget, event);
 		handled = TRUE;
 	}
 

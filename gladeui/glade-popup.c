@@ -174,33 +174,6 @@ glade_popup_append_item (GtkWidget *popup_menu,
 	return menu_item;
 }
 
-static GtkWidget *
-glade_popup_create_menu (GladeWidget *widget, gboolean add_childs);
-
-static void
-glade_popup_populate_childs (GtkWidget* popup_menu, GladeWidget* parent)
-{
-	while (parent) {
-		GtkWidget *child;
-		GtkWidget *child_menu;
-		GtkWidget *separator;
-
-		separator = gtk_menu_item_new ();
-		gtk_widget_show (separator);
-		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-				       separator);
-			
-		child = gtk_menu_item_new_with_label (parent->name);
-		child_menu = glade_popup_create_menu (parent, FALSE);
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (child),
-					   child_menu);
-		gtk_widget_show (child);
-		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu),
-				       child);
-
-		parent = glade_widget_get_parent (parent);
-	}
-}
 
 static void
 glade_popup_menuitem_activated (GtkMenuItem *item, GladeWidget *widget)
@@ -212,12 +185,12 @@ glade_popup_menuitem_activated (GtkMenuItem *item, GladeWidget *widget)
 }
 
 static void
-glade_popup_add_actions (GtkWidget *menu, GladeWidget *widget, GList *actions)
+glade_popup_add_actions_recurse (GtkWidget *menu, GladeWidget *widget, GList *actions)
 {
 	GList *list;
 	GtkWidget *item;
-	
-	for (list = actions; list; list = g_list_next (list))
+
+	for (list = widget->adaptor->actions; list; list = g_list_next (list))
 	{
 		GWAAction *action = list->data;
 		GtkWidget *submenu = NULL;
@@ -225,7 +198,7 @@ glade_popup_add_actions (GtkWidget *menu, GladeWidget *widget, GList *actions)
 		if (action->actions)
 		{
 			submenu = gtk_menu_new ();
-			glade_popup_add_actions (submenu, widget, action->actions);
+			glade_popup_add_actions_recurse (submenu, widget, action->actions);
 		}
 		
 		if (action->is_a_group && submenu == NULL) continue;
@@ -235,16 +208,34 @@ glade_popup_add_actions (GtkWidget *menu, GladeWidget *widget, GList *actions)
 				action->label, TRUE,
 				(action->is_a_group) ? NULL : glade_popup_menuitem_activated,
 				(action->is_a_group) ? NULL : widget);
+
 		if (action->is_a_group == FALSE)
 			g_object_set_data (G_OBJECT (item), "menuitem_detail", action->id);
 		
 		if (submenu)
 			gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 	}
+
+}
+
+static void
+glade_popup_add_actions (GtkWidget *menu, GladeWidget *widget)
+{
+	GtkWidget *separator;
+
+	if (widget->adaptor->actions)
+	{
+		separator = gtk_menu_item_new ();
+		gtk_widget_show (separator);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+				       separator);
+
+		glade_popup_add_actions_recurse (menu, widget, widget->adaptor->actions);
+	}
 }
 
 static GtkWidget *
-glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
+glade_popup_create_menu (GladeWidget *widget)
 {
 	GtkWidget *popup_menu;
 	gboolean   sensitive;
@@ -265,14 +256,7 @@ glade_popup_create_menu (GladeWidget *widget, gboolean add_childs)
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
-	glade_popup_add_actions (popup_menu, widget, widget->adaptor->actions);
-
-	if (add_childs &&
-	    !g_type_is_a (widget->adaptor->type, GTK_TYPE_WINDOW)) {
-		GladeWidget *parent = glade_widget_get_parent (widget);
-		g_return_val_if_fail (GLADE_IS_WIDGET (parent), popup_menu);
-		glade_popup_populate_childs(popup_menu, parent);
-	}
+	glade_popup_add_actions (popup_menu, widget);
 
 	return popup_menu;
 }
@@ -281,7 +265,6 @@ static GtkWidget *
 glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 {
 	GtkWidget   *popup_menu;
-	GladeWidget *parent;
 	gboolean     sensitive;
 
 	popup_menu = gtk_menu_new ();
@@ -289,9 +272,6 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
 	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
 				 glade_popup_placeholder_paste_cb, placeholder);
-
-	if ((parent = glade_placeholder_get_parent (placeholder)))
-		glade_popup_populate_childs(popup_menu, parent);
 
 	return popup_menu;
 }
@@ -318,7 +298,7 @@ glade_popup_create_clipboard_menu (GladeWidget *widget)
 }
 
 void
-glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add_children)
+glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 {
 	GtkWidget *popup_menu;
 	gint button;
@@ -326,7 +306,7 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event, gboolean add
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	popup_menu = glade_popup_create_menu (widget, add_children);
+	popup_menu = glade_popup_create_menu (widget);
 
 	if (event)
 	{
