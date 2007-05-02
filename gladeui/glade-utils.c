@@ -1851,3 +1851,189 @@ glade_util_get_file_mtime (const gchar *filename, GError **error)
 		return info.st_mtime;
 	}
 }
+
+/* The following functions are local replacements for problematic glib functions */
+
+static guint64
+glade_util_parse_long_long (const gchar *nptr,
+		   gchar      **endptr,
+		   guint        base,
+		   gboolean    *negative)
+{
+  /* this code is based on on the strtol(3) code from GNU libc released under
+   * the GNU Lesser General Public License.
+   *
+   * Copyright (C) 1991,92,94,95,96,97,98,99,2000,01,02
+   *        Free Software Foundation, Inc.
+   */
+#define ISSPACE(c)		((c) == ' ' || (c) == '\f' || (c) == '\n' || \
+				 (c) == '\r' || (c) == '\t' || (c) == '\v')
+#define ISUPPER(c)		((c) >= 'A' && (c) <= 'Z')
+#define ISLOWER(c)		((c) >= 'a' && (c) <= 'z')
+#define ISALPHA(c)		(ISUPPER (c) || ISLOWER (c))
+#define	TOUPPER(c)		(ISLOWER (c) ? (c) - 'a' + 'A' : (c))
+#define	TOLOWER(c)		(ISUPPER (c) ? (c) - 'A' + 'a' : (c))
+  gboolean overflow;
+  guint64 cutoff;
+  guint64 cutlim;
+  guint64 ui64;
+  const gchar *s, *save;
+  guchar c;
+  
+  g_return_val_if_fail (nptr != NULL, 0);
+  
+  if (base == 1 || base > 36)
+    {
+      errno = EINVAL;
+      return 0;
+    }
+  
+  save = s = nptr;
+  
+  /* Skip white space.  */
+  while (ISSPACE (*s))
+    ++s;
+
+  if (G_UNLIKELY (!*s))
+    goto noconv;
+  
+  /* Check for a sign.  */
+  *negative = FALSE;
+  if (*s == '-')
+    {
+      *negative = TRUE;
+      ++s;
+    }
+  else if (*s == '+')
+    ++s;
+  
+  /* Recognize number prefix and if BASE is zero, figure it out ourselves.  */
+  if (*s == '0')
+    {
+      if ((base == 0 || base == 16) && TOUPPER (s[1]) == 'X')
+	{
+	  s += 2;
+	  base = 16;
+	}
+      else if (base == 0)
+	base = 8;
+    }
+  else if (base == 0)
+    base = 10;
+  
+  /* Save the pointer so we can check later if anything happened.  */
+  save = s;
+  cutoff = G_MAXUINT64 / base;
+  cutlim = G_MAXUINT64 % base;
+  
+  overflow = FALSE;
+  ui64 = 0;
+  c = *s;
+  for (; c; c = *++s)
+    {
+      if (c >= '0' && c <= '9')
+	c -= '0';
+      else if (ISALPHA (c))
+	c = TOUPPER (c) - 'A' + 10;
+      else
+	break;
+      if (c >= base)
+	break;
+      /* Check for overflow.  */
+      if (ui64 > cutoff || (ui64 == cutoff && c > cutlim))
+	overflow = TRUE;
+      else
+	{
+	  ui64 *= base;
+	  ui64 += c;
+	}
+    }
+  
+  /* Check if anything actually happened.  */
+  if (s == save)
+    goto noconv;
+  
+  /* Store in ENDPTR the address of one character
+     past the last character we converted.  */
+  if (endptr)
+    *endptr = (gchar*) s;
+  
+  if (G_UNLIKELY (overflow))
+    {
+      errno = ERANGE;
+      return G_MAXUINT64;
+    }
+
+  return ui64;
+  
+ noconv:
+  /* We must handle a special case here: the base is 0 or 16 and the
+     first two characters are '0' and 'x', but the rest are no
+     hexadecimal digits.  This is no error case.  We return 0 and
+     ENDPTR points to the `x`.  */
+  if (endptr)
+    {
+      if (save - nptr >= 2 && TOUPPER (save[-1]) == 'X'
+	  && save[-2] == '0')
+	*endptr = (gchar*) &save[-1];
+      else
+	/*  There was no number to convert.  */
+	*endptr = (gchar*) nptr;
+    }
+  return 0;
+}
+
+/**
+ * g_ascii_strtoll:
+ * @nptr:    the string to convert to a numeric value.
+ * @endptr:  if non-%NULL, it returns the character after
+ *           the last character used in the conversion.
+ * @base:    to be used for the conversion, 2..36 or 0
+ *
+ * Converts a string to a #gint64 value.
+ * This function behaves like the standard strtoll() function
+ * does in the C locale. It does this without actually
+ * changing the current locale, since that would not be
+ * thread-safe.
+ *
+ * This function is typically used when reading configuration
+ * files or other non-user input that should be locale independent.
+ * To handle input from the user you should normally use the
+ * locale-sensitive system strtoll() function.
+ *
+ * If the correct value would cause overflow, %G_MAXINT64 or %G_MININT64
+ * is returned, and %ERANGE is stored in %errno.  If the base is
+ * outside the valid range, zero is returned, and %EINVAL is stored
+ * in %errno.  If the string conversion fails, zero is returned, and
+ * @endptr returns @nptr (if @endptr is non-%NULL).
+ *
+ * Return value: the #gint64 value or zero on error.
+ *
+ * Since: 2.12
+ **/
+gint64 
+glade_util_ascii_strtoll (const gchar *nptr,
+		 gchar      **endptr,
+		 guint        base)
+{
+  gboolean negative;
+  guint64 result;
+
+  result = glade_util_parse_long_long (nptr, endptr, base, &negative);
+
+  if (negative && result > (guint64) G_MININT64)
+    {
+      errno = ERANGE;
+      return G_MININT64;
+    }
+  else if (!negative && result > (guint64) G_MAXINT64)
+    {
+      errno = ERANGE;
+      return G_MAXINT64;
+    }
+  else if (negative)
+    return - (gint64) result;
+  else
+    return (gint64) result;
+}
+

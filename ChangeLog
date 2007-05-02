@@ -1,3 +1,10 @@
+2007-05-02  Jeff Westerinen  <jeff.westerinen@palmsource.com>
+
+	* gladeui/glade-utils.[ch]: Added glade_util_ascii_strtoll()
+
+	* gladeui/glade-xml-utils.c, gladeui/glade-property-class.c: use a local
+	  workaround for a bug in g_ascii_strtoll for the time being (fixes bug 434207)
+
 2007-05-01  Vincent Geddes <vincent.geddes@gmail.com>
  
         * gladeui/glade-project-view.c: Expand and scroll to selection. Fixes #392225.

@@ -143,6 +143,13 @@ gboolean          glade_util_url_show              (const gchar *url);
 LIBGLADEUI_API
 time_t            glade_util_get_file_mtime        (const gchar *filename, GError **error);
 
+/* Local string to/from double conversion functions */
+
+LIBGLADEUI_API
+gint64		      glade_util_ascii_strtoll  (const gchar *nptr,
+					gchar      **endptr,
+					guint        base);
+					
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

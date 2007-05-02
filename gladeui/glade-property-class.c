@@ -888,15 +888,15 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		}
 	}
 	else if (G_IS_PARAM_SPEC_INT(property_class->pspec))
-		g_value_set_int (value, g_ascii_strtoll (string, NULL, 10));
+		g_value_set_int (value, glade_util_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_UINT(property_class->pspec))
 		g_value_set_uint (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_LONG(property_class->pspec))
-		g_value_set_long (value, g_ascii_strtoll (string, NULL, 10));
+		g_value_set_long (value, glade_util_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_ULONG(property_class->pspec))
 		g_value_set_ulong (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_INT64(property_class->pspec))
-		g_value_set_int64 (value, g_ascii_strtoll (string, NULL, 10));
+		g_value_set_int64 (value, glade_util_ascii_strtoll (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_UINT64(property_class->pspec))
 		g_value_set_uint64 (value, g_ascii_strtoull (string, NULL, 10));
 	else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))

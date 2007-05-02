@@ -202,7 +202,7 @@ glade_xml_get_value_int (GladeXmlNode *node_in, const gchar *name, gint *val)
                 return FALSE;
 
         errno = 0;
-        i = g_ascii_strtoll (value, &endptr, 10);
+        i = glade_util_ascii_strtoll (value, &endptr, 10);
         if (errno != 0 || (i == 0 && endptr == value)) {
                 g_free (value);
                 return FALSE;
