@@ -1,3 +1,18 @@
+2007-05-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/gtk+.xml.in:
+	  - diabled "has-separator" property in GtkColorSelectionDialog,
+	    GtkFontSelectionDialog and GtkInputDialog to avoid a gtk warning.
+
+	  - GtkComboBox "model" property disabled.
+
+	* plugins/gtk+/glade-gtk.c:
+	    - Make every GtkInputDialog's internal GtkOptionMenu insensitive.
+	      This is a workaround for bug #433975
+
+	    - Warning fixed in glade_gtk_paned_set_child_property() and
+	       glade_gtk_text_view_post_create()
+
 2007-05-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-popup.[ch], gladeui/glade-widget.c, gladeui/glade-project-view.c: 

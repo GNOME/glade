@@ -239,6 +239,12 @@ empty (GObject *container, GladeCreateReason reason)
 {
 }
 
+/* This function is used to stop default handlers  */
+static void
+glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer data)
+{
+	g_signal_stop_emission (instance, GPOINTER_TO_UINT (data) , 0);
+}
 
 /* ----------------------------- GtkWidget ------------------------------ */
 void
@@ -2716,11 +2722,14 @@ glade_gtk_paned_set_child_property (GladeWidgetAdaptor *adaptor,
 		g_object_unref (child);
 		
 		/* Ensure placeholders */
-		if ((place = gtk_paned_get_child1 (paned)) == NULL)
-			gtk_paned_add1 (paned, glade_placeholder_new ());
+		if (glade_util_object_is_loading (child) == FALSE)
+		{
+			if ((place = gtk_paned_get_child1 (paned)) == NULL)
+				gtk_paned_add1 (paned, glade_placeholder_new ());
 		
-		if ((place = gtk_paned_get_child2 (paned)) == NULL)
-			gtk_paned_add2 (paned, glade_placeholder_new ());
+			if ((place = gtk_paned_get_child2 (paned)) == NULL)
+				gtk_paned_add2 (paned, glade_placeholder_new ());
+		}
 	}
 	else
 		/* Chain Up */
@@ -2969,12 +2978,6 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void
-glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer data)
-{
-	g_signal_stop_emission (instance, GPOINTER_TO_UINT (data) , 0);
-}
-
-static void
 glade_gtk_file_chooser_default_forall (GtkWidget *widget, gpointer data)
 {
 	static gpointer hierarchy = NULL, screen;
@@ -3016,6 +3019,18 @@ glade_gtk_file_chooser_forall (GtkWidget *widget, gpointer data)
 				      NULL);
 }
 
+static void
+glade_gtk_input_dialog_forall (GtkWidget *widget, gpointer data)
+{
+	/* Make every option menu insensitive, yes it use a deprecated widget */
+	if (GTK_IS_OPTION_MENU (widget))
+		gtk_widget_set_sensitive (widget, FALSE);
+	else if (GTK_IS_CONTAINER (widget))
+		gtk_container_forall (GTK_CONTAINER (widget),
+				      glade_gtk_input_dialog_forall,
+				      NULL);
+}
+
 void 
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
@@ -3044,14 +3059,24 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 
 	if (GTK_IS_INPUT_DIALOG (object))
 	{
+		GtkInputDialog *id = GTK_INPUT_DIALOG (dialog);
+			
 		save_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_INPUT_DIALOG (dialog)->save_button),
+			(widget, G_OBJECT (id->save_button),
 			 "save_button", "inputdialog", FALSE, reason);
-
 		close_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_INPUT_DIALOG (dialog)->close_button),
+			(widget, G_OBJECT (id->close_button),
 			 "close_button", "inputdialog", FALSE, reason);
-
+		/*
+		  On device and mode menu items "activate" signal handlers 
+		  GtkInputDialog call gtk_widget_get_toplevel() and assume that
+		  the toplevel returned is the GtkInputDialog but since the 
+		  dialog is embed inside glade the returned pointer is not what
+		  expected and this gives a segfault :S
+		*/
+		gtk_container_forall (GTK_CONTAINER (dialog),
+				      glade_gtk_input_dialog_forall,
+				      NULL);
 	}
 	else if (GTK_IS_FILE_SELECTION (object))
 	{
@@ -5298,6 +5323,9 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 	gtext = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gtext));
 	
+	/* This makes gtk_text_view_set_buffer() stop complaing */
+	gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
+		
 	gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
 	g_signal_connect (buffy, "changed",
 			  G_CALLBACK (glade_gtk_text_view_changed),
