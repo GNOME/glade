@@ -723,6 +723,7 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
       <properties>
+        <property id="model" disabled="True"/>
         <property id="active" ignore="True"/>
         <property id="column-span-column" ignore="True"/>
         <property id="row-span-column" ignore="True"/>
@@ -1199,8 +1200,12 @@ embedded in another object</_tooltip>
       </properties>
    </glade-widget-class>
 
-   <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog"/>
-    
+    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog">
+      <properties>
+        <property id="has-separator"  disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" _title="File Chooser Dialog">
       <properties>
 	<property id="action">
@@ -1217,9 +1222,17 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkFontSelectionDialog" generic-name="fontselectiondialog" _title="Font Selection Dialog"/>
-   
-    <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" _title="Input Dialog"/>
+    <glade-widget-class name="GtkFontSelectionDialog" generic-name="fontselectiondialog" _title="Font Selection Dialog">
+      <properties>
+        <property id="has-separator"  disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" _title="Input Dialog">
+      <properties>
+        <property id="has-separator"  disabled="True"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
       <properties>
