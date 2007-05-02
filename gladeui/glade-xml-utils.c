@@ -14,12 +14,15 @@
 #include <glib.h>
 #include <errno.h>
 
+#include "glade.h"
 #include "glade-xml-utils.h"
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlmemory.h>
+
+#include "glade-utils.h"
 
 struct _GladeXmlNode
 {
