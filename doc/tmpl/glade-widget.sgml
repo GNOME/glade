@@ -69,15 +69,6 @@ convenience api for getting and setting properties (mostly from the plugin).
 @arg1: 
 @arg2: 
 
-<!-- ##### SIGNAL GladeWidget::enter-notify-event ##### -->
-<para>
-
-</para>
-
-@gladewidget: the object which received the signal.
-@event: 
-@Returns: 
-
 <!-- ##### SIGNAL GladeWidget::motion-notify-event ##### -->
 <para>
 
@@ -151,6 +142,16 @@ convenience api for getting and setting properties (mostly from the plugin).
 </para>
 
 <!-- ##### ARG GladeWidget:template ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GladeWidget:toplevel-height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG GladeWidget:toplevel-width ##### -->
 <para>
 
 </para>
@@ -491,7 +492,7 @@ convenience api for getting and setting properties (mostly from the plugin).
 
 </para>
 
-@glade_widget: 
+@gwidget: 
 
 
 <!-- ##### FUNCTION glade_widget_dup ##### -->
@@ -500,6 +501,7 @@ convenience api for getting and setting properties (mostly from the plugin).
 </para>
 
 @template_widget: 
+@exact: 
 @Returns: 
 
 
@@ -594,14 +596,6 @@ convenience api for getting and setting properties (mostly from the plugin).
 
 @widget: 
 @parent: 
-
-
-<!-- ##### FUNCTION glade_widget_event_widget ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION glade_widget_superuser ##### -->
