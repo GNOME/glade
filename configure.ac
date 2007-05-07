@@ -129,7 +129,7 @@ AC_MSG_CHECKING([whether Python support is requested])
 AC_ARG_ENABLE([python],
 	AS_HELP_STRING([--enable-python],[Enable python support]),
 	[enable_python=$enableval have_python=$enableval],
-	[enable_python=autodetect have_python=yes])
+	[enable_python=autodetect have_python=no])
 AC_MSG_RESULT([$enable_python])
 
 if test "x$have_python" != "xno"; then
