@@ -122,6 +122,12 @@ struct _GladePropertyClass
 	gboolean save;      /* Whether we should save to the glade file or not
 			     * (mostly just for custom glade properties)
 			     */
+	gboolean save_always; /* Used to make a special case exception and always
+			       * save this property regardless of what the default
+			       * value is (used for some special cases like properties
+			       * that are assigned initial values in composite widgets
+			       * or derived widget code).
+			       */
 	gboolean visible;   /* Whether or not to show this property in the editor
 			     */
 	gboolean ignore;    /* When true, we will not sync the object when the property

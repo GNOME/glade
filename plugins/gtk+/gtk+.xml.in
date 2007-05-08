@@ -852,6 +852,7 @@ embedded in another object</_tooltip>
 	<property id="default-width"  default="0" optional="True" optional-default="False"/>
 	<property id="default-height" default="0" optional="True" optional-default="False"/>
 	<property id="has-separator"  default="False"/>
+	<property id="type-hint"  save-always="True"/>
       </properties>
 
     </glade-widget-class>
@@ -1160,8 +1161,9 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
+        <property id="can-focus" save-always="True"/>
         <property id="hadjustment" disabled="True"/>
-	<property id="vadjustment" disabled="True"/>
+        <property id="vadjustment" disabled="True"/>
         <property id="window-placement-set" ignore="True"/>
       	<property id="shadow-type">
   	  <displayable-values>

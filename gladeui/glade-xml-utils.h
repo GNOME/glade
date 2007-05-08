@@ -87,6 +87,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_NICK                            "nick"
 #define GLADE_TAG_SPECIAL_CHILD_TYPE              "special-child-type"
 #define GLADE_TAG_SAVE                            "save"
+#define GLADE_TAG_SAVE_ALWAYS                     "save-always"
 #define GLADE_TAG_EDITABLE                        "editable"
 #define GLADE_TAG_IGNORE                          "ignore"
 #define GLADE_TAG_VISIBLE_LINES                   "visible-lines"
