@@ -25,8 +25,6 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_BINDING_SCRIPT_DIR "scripts"
-
 typedef struct _GladeBindingCtrl GladeBindingCtrl;
 
 /**
@@ -66,44 +64,20 @@ typedef void     (*GladeBindingFinalizeFunc)    (GladeBindingCtrl *ctrl);
  */
 typedef void     (*GladeBindingLibraryLoadFunc) (const gchar *str);
 
-/**
- * GladeBindingRunScriptFunc:
- *
- * @path: the script path.
- *
- * Run the script @path.
- * Define this function for the binding to support running scripts.
- *
- */
-typedef gint     (*GladeBindingRunScriptFunc)   (const gchar *path,
-						 gchar **argv);
-
 struct _GladeBindingCtrl {
 	gchar *name;   /* the name of the module (ie: python) */
 	
 	/* Module symbols */
 	GladeBindingFinalizeFunc    finalize;
 	GladeBindingLibraryLoadFunc library_load;
-	GladeBindingRunScriptFunc   run_script;
 };
 
 typedef struct _GladeBinding GladeBinding;
 struct _GladeBinding {
 	GModule  *module; /* The binding module */
 	
-	GList *scripts;   /* A list of GladeBindingScript */
-	
-	GHashTable *context_scripts; /* A table of GladeBindingScript's list */
-	
 	GladeBindingCtrl ctrl;
 };
-
-typedef struct _GladeBindingScript GladeBindingScript ;
-struct _GladeBindingScript {
-	GladeBinding *binding;
-	gchar *name, *path;
-};
-
 
 void          glade_binding_load_all (void);
 
@@ -117,11 +91,6 @@ GList        *glade_binding_get_all ();
 
 void          glade_binding_library_load (GladeBinding *binding,
 					  const gchar *library);
-
-gint          glade_binding_run_script (GladeBinding *script, 
-					const gchar *path,
-					gchar **argv);
-
 
 G_END_DECLS
 

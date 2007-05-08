@@ -28,226 +28,7 @@
 #include <gladeui/glade.h>
 #include <gladeui/glade-binding.h>
 
-static 	PyObject *glade, *glade_dict, *GladeError;
-
-static PyObject *
-glade_python_undo (PyObject *self, PyObject *args)
-{
-	glade_app_command_undo ();
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_redo (PyObject *self, PyObject *args)
-{
-	glade_app_command_redo ();
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_project_new (PyObject *self, PyObject *args)
-{	
-	glade_app_add_project (glade_project_new ());
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_project_open (PyObject *self, PyObject *args)
-{
-	gchar *path;
-	
-	Py_INCREF(Py_None);
-	
-	if (PyArg_ParseTuple(args, "s", &path))
-	{
-		GladeProject *project;
-		
-		if ((project = glade_app_get_project_by_path (path)))
-			glade_app_set_project (project);
-		else if ((project = glade_project_load (path)))
-			glade_app_add_project (project);
-		else
-			return Py_None;
-	}
-	
-	return Py_None;
-}
-
-static PyObject *
-glade_python_project_save (PyObject *self, PyObject *args)
-{
-	gchar *path;
-	
-	if (PyArg_ParseTuple(args, "s", &path))
-		glade_project_save (glade_app_get_project (), path, NULL);
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_project_close (PyObject *self, PyObject *args)
-{
-	gchar *path;
-	
-	if (PyArg_ParseTuple(args, "s", &path))
-	{
-		GladeProject *project = glade_app_get_project_by_path (path);
-		if (project) glade_app_remove_project (project);
-	}
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_project_get (PyObject *self, PyObject *args)
-{
-	GladeProject *project = glade_app_get_project ();
-	return Py_BuildValue ("s", (project) ? glade_project_get_name (project) : "");
-}
-
-static PyObject *
-glade_python_project_list (PyObject *self, PyObject *args)
-{
-	GList *p, *projects = glade_app_get_projects ();
-	PyObject *list;
-	
-	list = PyList_New (0);
-	
-	for (p = projects; p && p->data; p = g_list_next (p))
-	{
-		GladeProject *project = p->data;
-		PyList_Append (list, Py_BuildValue ("s", glade_project_get_name (project)));
-	}
-	
-	return list;
-}
-
-static PyObject *
-glade_python_project_set (PyObject *self, PyObject *args)
-{
-	gchar *path;
-	
-	if (PyArg_ParseTuple(args, "s", &path))
-	{
-		GladeProject *project = glade_app_get_project_by_path (path);
-		if (project) glade_app_set_project (project);
-	}
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_widget_new (PyObject *self, PyObject *args)
-{
-	GladeProject *project = glade_app_get_project ();
-	GladeWidgetAdaptor *adaptor; 
-	GladeWidget *widget = NULL;
-	gchar *class_name, *parent;
-
-	if (project && PyArg_ParseTuple(args, "ss", &class_name, &parent) &&
-	    (adaptor = glade_widget_adaptor_get_by_name (class_name)))
-		widget = glade_command_create (adaptor,
-				glade_project_get_widget_by_name (project, parent),
-				NULL, project);
-	
-	return Py_BuildValue ("s", (widget) ? widget->name : "");
-}
-
-static PyObject *
-glade_python_widget_delete (PyObject *self, PyObject *args)
-{
-	GladeProject *project = glade_app_get_project ();
-	gchar *name;
-	
-	if (project && PyArg_ParseTuple(args, "s", &name))
-	{
-		GladeWidget *widget;
-		if ((widget = glade_project_get_widget_by_name (project, name)))
-		{
-			GList list;
-			list.data = widget;
-			list.next = list.prev = NULL;
-			glade_command_delete (&list);
-		}
-	}
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_widget_set (PyObject *self, PyObject *args)
-{
-	GladeProject *project = glade_app_get_project ();
-	gchar *name, *id_property;
-	PyObject *val;
-	
-	if (project && PyArg_ParseTuple(args, "ssO", &name, &id_property, &val))
-	{
-		GladeWidget *widget;
-		GladeProperty *property;
-
-		if ((widget = glade_project_get_widget_by_name (project, name)) &&
-		    (property = glade_widget_get_property (widget, id_property)))
-		{
-			GValue value = {0,};
-			g_value_init (&value, G_VALUE_TYPE (property->value));
-			if (pyg_value_from_pyobject (&value, val) == 0)
-				glade_command_set_property_value (property, &value);
-		}
-	}
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_widget_get (PyObject *self, PyObject *args)
-{
-	GladeProject *project = glade_app_get_project ();
-	gchar *name, *id_property;
-	
-	if (project && PyArg_ParseTuple(args, "ss", &name, &id_property))
-	{
-		GladeWidget *widget;
-		GladeProperty *property;
-
-		if ((widget = glade_project_get_widget_by_name (project, name)) &&
-		    (property = glade_widget_get_property (widget, id_property)))
-			return pyg_value_as_pyobject (property->value, TRUE);
-	}
-	
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-static PyObject *
-glade_python_widget_list (PyObject *self, PyObject *args)
-{
-	GList *p;
-	GladeProject *project = glade_app_get_project ();
-	PyObject *list;
-	
-	list = PyList_New (0);
-	
-	for (p = (GList *) glade_project_get_objects (project); p && p->data; p = g_list_next (p))
-	{
-		GladeWidget *widget = glade_widget_get_from_gobject (p->data);
-		if (widget)
-			PyList_Append (list, Py_BuildValue ("s", glade_widget_get_name (widget)));
-	}
-	
-	return list;
-}
+static PyObject *gladeui, *gladeui_dict, *GladeuiError;
 
 extern PyTypeObject PyGladeWidgetAdaptor_Type;
 
@@ -269,7 +50,7 @@ glade_python_register_class (GType type)
 	
 	klass = pygobject_lookup_class (type);
 	
-	pygobject_register_class (glade_dict, g_type_name (type), type, klass,
+	pygobject_register_class (gladeui_dict, g_type_name (type), type, klass,
 				  Py_BuildValue("(O)", parent_class));
 	pyg_set_object_has_new_constructor (type);
 
@@ -300,21 +81,7 @@ glade_python_get_adaptor_for_type (PyObject *self, PyObject *args)
 	return Py_None;
 }
 
-static PyMethodDef GladeMethods[] = {
-	{"undo",  glade_python_undo, METH_VARARGS, "Execute undo command."},
-	{"redo",  glade_python_redo, METH_VARARGS, "Execute redo command."},
-	{"project_new",  glade_python_project_new, METH_VARARGS, "Create a new project."},
-	{"project_open",  glade_python_project_open, METH_VARARGS, "Open an existing project."},
-	{"project_save",  glade_python_project_save, METH_VARARGS, "Save the current project."},
-	{"project_close",  glade_python_project_close, METH_VARARGS, "Close the current project."},
-	{"project_get",  glade_python_project_get, METH_VARARGS, "Get the current project."},
-	{"project_set",  glade_python_project_set, METH_VARARGS, "Set the current project."},
-	{"project_list",  glade_python_project_list, METH_VARARGS, "List all projects."},
-	{"widget_new",  glade_python_widget_new, METH_VARARGS, "Create a new GtkWidget."},
-	{"widget_delete",  glade_python_widget_delete, METH_VARARGS, "Delete a GtkWidget."},
-	{"widget_set",  glade_python_widget_set, METH_VARARGS, "Set a GtkWidget's property."},
-	{"widget_get",  glade_python_widget_get, METH_VARARGS, "Get a GtkWidget's property."},
-	{"widget_list",  glade_python_widget_list, METH_VARARGS, "List all widgets."},
+static PyMethodDef GladeuiMethods[] = {
 	{"get_adaptor_for_type",  glade_python_get_adaptor_for_type, METH_VARARGS, "Get the corresponding GladeWidgetAdaptor. Use this function to create your own derived Adaptor."},
 	{NULL, NULL, 0, NULL}
 };
@@ -332,35 +99,6 @@ glade_python_binding_library_load (const gchar *library)
 	gchar *str = g_strdup_printf ("import %s;", library);
 	PyRun_SimpleString (str);
 	g_free (str);
-}
-
-gint
-glade_python_binding_run_script (const gchar *path, gchar **argv)
-{
-	FILE *fp = fopen (path, "r");
-	gint retval, i;
-	
-	if (fp == NULL) return -1;
-	
-	PyRun_SimpleString ("sys.argv = [];");
-	
-	if (argv)
-	{
-		GString *string = g_string_new ("");
-		
-		for (i = 0; argv[i]; i++)
-		{
-			g_string_printf (string, "sys.argv += ['%s'];", argv[i]);
-			PyRun_SimpleString (string->str);
-		}
-		
-		g_string_free (string, TRUE);
-	}
-	
-	retval = PyRun_SimpleFile (fp, path);
-	fclose (fp);
-	
-	return retval;
 }
 
 /*
@@ -438,14 +176,14 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 	pyg_disable_warning_redirections ();
 	
 	/* Create glade object */
-	glade = Py_InitModule ("glade", GladeMethods);
-	GladeError = PyErr_NewException ("glade.error", NULL, NULL);
-	Py_INCREF (GladeError);
-	PyModule_AddObject (glade, "error", GladeError);
+	gladeui = Py_InitModule ("glade", GladeuiMethods);
+	GladeuiError = PyErr_NewException ("glade.error", NULL, NULL);
+	Py_INCREF (GladeuiError);
+	PyModule_AddObject (gladeui, "error", GladeuiError);
 
 	/* Register GladeUI classes (GladeWidgetAdaptor) */
-	glade_dict = PyModule_GetDict (glade);
-	glade_python_gwa_register_classes (glade_dict);
+	gladeui_dict = PyModule_GetDict (gladeui);
+	glade_python_gwa_register_classes (gladeui_dict);
 	
 	/* Create registered_classes hash table */
 	registered_classes = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -465,7 +203,6 @@ glade_binding_init (GladeBindingCtrl *ctrl)
 	ctrl->name = "python";
 	ctrl->finalize = glade_python_binding_finalize;
 	ctrl->library_load = glade_python_binding_library_load;
-	ctrl->run_script = glade_python_binding_run_script;
 	
 	return TRUE;
 }
