@@ -167,6 +167,7 @@ glade_property_class_new (gpointer handle)
 	property_class->is_modified = FALSE;
 	property_class->visible = TRUE;
 	property_class->save = TRUE;
+	property_class->save_always = FALSE;
 	property_class->ignore = FALSE;
 	property_class->resource = FALSE;
 	property_class->translatable = FALSE;
@@ -1676,7 +1677,8 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, klass->resource);
 	klass->weight   = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,   klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
-
+	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
+	
 	/* A sprinkle of hard-code to get atk properties working right
 	 */
 	if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_ACTION, FALSE))

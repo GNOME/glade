@@ -3048,9 +3048,6 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 	if (!widget)
 		return;
 
-	/* Mark properties that are initially modified by the dialog */
-	glade_widget_property_set_save_always (widget, "type-hint", TRUE);
-
 	if (reason == GLADE_CREATE_USER)
 	{
 		/* HIG complient border-width defaults on dialogs */

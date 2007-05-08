@@ -340,7 +340,7 @@ glade_property_write_impl (GladeProperty  *property,
 	/* Skip properties that are default by original pspec default
 	 * (excepting those that specified otherwise).
 	 */
-	if (!property->save_always &&
+	if (!(property->klass->save_always || property->save_always) &&
 	    glade_property_equals_value (property, property->klass->orig_def))
 		return FALSE;
 
