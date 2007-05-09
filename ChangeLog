@@ -1,5 +1,10 @@
 2007-05-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* plugins/gtk+/gtk+.xml.in: Set "resize" and "shrink" properties to be "save-always"
+	  since gtkpaned.c does some hardcoded stuff when adding widgets. Fixes bug 364215.
+
+2007-05-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-widget.[ch], gladeui/glade-editor.c,
 	  gladeui/glade-xml-utils.h:
 	  Removed notion of custom widget editors.
