@@ -1,3 +1,12 @@
+2007-05-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-widget.[ch], gladeui/glade-editor.c,
+	  gladeui/glade-xml-utils.h:
+	  Removed notion of custom widget editors.
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: removed custom editor hooks,
+	  implemented menu editor via actions only (toolbar editor temporarily disabled).
+
 2007-05-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* bindings/python/glade-python.c, gladeui/glade-binding.c, 

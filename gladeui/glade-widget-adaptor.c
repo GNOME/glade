@@ -790,7 +790,6 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 
 	/* Class methods */
 	adaptor_class->post_create          = NULL;
-	adaptor_class->launch_editor        = NULL;
 	adaptor_class->get_internal_child   = NULL;
 	adaptor_class->verify_property      = NULL;
 	adaptor_class->set_property         = glade_widget_adaptor_object_set_property;
@@ -1350,10 +1349,6 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 		glade_xml_load_sym_from_node (node, module,
 					      GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
 					      (gpointer *)&adaptor_class->get_internal_child);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_LAUNCH_EDITOR_FUNCTION,
-					      (gpointer *)&adaptor_class->launch_editor);
 
 		glade_xml_load_sym_from_node (node, module, 
 					      GLADE_TAG_SET_FUNCTION, 
@@ -1996,28 +1991,6 @@ glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
 		g_critical ("No get_internal_child() support in adaptor %s", adaptor->name);
 
 	return NULL;
-}
-
-/**
- * glade_widget_adaptor_launch_editor:
- * @adaptor:       A #GladeWidgetAdaptor
- * @object:        The #GObject
- *
- * Launches a custom object editor for @object.
- */
-void
-glade_widget_adaptor_launch_editor (GladeWidgetAdaptor *adaptor,
-				    GObject            *object)
-{
-	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
-	g_return_if_fail (G_IS_OBJECT (object));
-	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (object), adaptor->type));
-
-	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->launch_editor)
-		GLADE_WIDGET_ADAPTOR_GET_CLASS
-			(adaptor)->launch_editor (adaptor, object);
-	else
-		g_critical ("No launch_editor() support in adaptor %s", adaptor->name);
 }
 
 /**

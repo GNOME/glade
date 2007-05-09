@@ -303,16 +303,6 @@ typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
 						   const gchar        *name);
 
 
-/**
- * GladeEditorLaunchFunc:
- * @object: A #GObject
- *
- * Called to launch a custom editor for @object
- */
-typedef void     (* GladeEditorLaunchFunc)        (GladeWidgetAdaptor *adaptor,
-						   GObject            *object);
-
-
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
  */
@@ -409,9 +399,6 @@ struct _GladeWidgetAdaptorClass
 	GladeGetInternalFunc       get_internal_child; /* Retrieves the the internal child
 							* of the given name.
 							*/
-	
-	GladeEditorLaunchFunc      launch_editor; /* Entry point for custom editors. */
-
 
 	/* Delagate to verify if this is a valid value for this property,
 	 * if this function exists and returns FALSE, then glade_property_set
@@ -514,9 +501,6 @@ void                 glade_widget_adaptor_post_create        (GladeWidgetAdaptor
 GObject             *glade_widget_adaptor_get_internal_child (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *internal_name);
-
-void                 glade_widget_adaptor_launch_editor      (GladeWidgetAdaptor *adaptor,
-							      GObject            *object);
 
 void                 glade_widget_adaptor_set_property       (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,

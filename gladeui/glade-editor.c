@@ -244,13 +244,6 @@ glade_editor_on_reset_click (GtkButton *button,
 }
 
 static void
-glade_editor_on_launch_click (GtkButton *button,
-			     GladeEditor *editor)
-{
-	glade_widget_launch_editor (editor->loaded_widget);
-}
-
-static void
 glade_editor_on_docs_click (GtkButton *button,
 			    GladeEditor *editor)
 {
@@ -331,15 +324,6 @@ glade_editor_init (GladeEditor *editor)
 	hbox = gtk_hbox_new (FALSE, 6);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 0);
 	gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
-
-	/* Custom editor button */
-	editor->launch_button = gtk_button_new ();
-	label = gtk_label_new_with_mnemonic (_("_Edit..."));
-	gtk_misc_set_padding (GTK_MISC (label), 12, 0);
-	gtk_container_add (GTK_CONTAINER (editor->launch_button), label);
-	gtk_box_pack_start (GTK_BOX (hbox), editor->launch_button, FALSE, FALSE, 0);
-	g_signal_connect (G_OBJECT (editor->launch_button), "clicked",
-			  G_CALLBACK (glade_editor_on_launch_click), editor);
 
 	size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
@@ -908,13 +892,6 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
 	glade_editor_load_packing_page (editor, widget);
 	glade_signal_editor_load_widget (editor->signal_editor, widget);
-
-
-	if (widget && glade_widget_has_launcher (widget))
-		gtk_widget_show (editor->launch_button);
-	else
-		gtk_widget_hide (editor->launch_button);
-
 
 	/* we are just clearing, we are done */
 	if (widget == NULL)

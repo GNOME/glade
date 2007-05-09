@@ -181,10 +181,6 @@ void                    glade_widget_change_signal_handler  (GladeWidget      *w
 GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
 							     const gchar      *signal_name);
  
-gboolean                glade_widget_has_launcher           (GladeWidget      *widget);
- 
-void                    glade_widget_launch_editor          (GladeWidget      *widget);
- 
 gboolean                glade_widget_has_decendant          (GladeWidget      *widget,
 							     GType             type);
  

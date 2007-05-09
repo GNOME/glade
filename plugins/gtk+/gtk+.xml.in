@@ -301,7 +301,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
-      <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
+      <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
@@ -367,7 +367,6 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" _title="Menu Bar">
       <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
-      <launch-editor-function>glade_gtk_menu_bar_launch_editor</launch-editor-function>
       <!-- menubar is a container you can't add placeholders to it -->
       <properties>
         <property id="child-pack-direction">
@@ -396,7 +395,6 @@ embedded in another object</_tooltip>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar" use-placeholders="False">
       <post-create-function>empty</post-create-function>
-      <launch-editor-function>glade_gtk_toolbar_launch_editor</launch-editor-function>
       <add-child-function>glade_gtk_toolbar_add_child</add-child-function>
       <remove-child-function>glade_gtk_toolbar_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
@@ -1026,7 +1024,6 @@ embedded in another object</_tooltip>
       <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>glade_gtk_menu_post_create</post-create-function>
-      <launch-editor-function>glade_gtk_menu_launch_editor</launch-editor-function>
    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>

@@ -3906,10 +3906,21 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- menu callbacks ------------------------------ */
+static void glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title);
+
 static gboolean
 glade_gtk_menu_launch_editor_action (GladeWidget *gwidget, const gchar *data)
 {
-	glade_widget_launch_editor (gwidget);
+	GladeWidget *iter = gwidget;
+	     
+	while (!GTK_IS_MENU_BAR (iter->object) &&
+	       /* Make sure we support menus inside toolbars */
+	       iter->parent && GTK_IS_MENU_SHELL (iter->parent->object))
+		iter = iter->parent;
+	
+	glade_gtk_menu_shell_launch_editor (iter->object,
+					    GTK_IS_MENU_BAR (iter->object) ?
+					    _("Menu Bar Editor") : _("Menu Editor"));
 	return TRUE;
 }
 
@@ -4833,19 +4844,7 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 	glade_gtk_menu_bar_append_new_item (gsubmenu, project, "gtk-about", TRUE);
 }
 
-void
-glade_gtk_menu_bar_launch_editor (GladeWidgetAdaptor *adaptor, GObject *menubar)
-{
-	glade_gtk_menu_shell_launch_editor (menubar, _("Menu Bar Editor"));
-}
-
 /* ------------------------------ GtkMenu -------------------------------- */
-void
-glade_gtk_menu_launch_editor (GladeWidgetAdaptor *adaptor, GObject *menu)
-{
-	glade_gtk_menu_shell_launch_editor (menu, _("Menu Editor"));
-}
-
 void
 glade_gtk_menu_post_create (GladeWidgetAdaptor *adaptor,
 				GObject            *object, 
@@ -5013,6 +5012,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 						  "group", "active", NULL);	
 }
 
+/* XXX Must reintegrate this code with actions when ready */
 void
 glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor, 
 				 GObject            *toolbar)
