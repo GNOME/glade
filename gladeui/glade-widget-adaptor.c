@@ -1401,11 +1401,6 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_REPLACE_CHILD_FUNCTION,
 					  &symbol))
 		klass->replace_child = symbol;
-
-	if (glade_xml_load_sym_from_node (node, module,
-					  GLADE_TAG_ACTION_ACTIVATE_FUNCTION,
-					  &symbol))
-		klass->action_activate = symbol;
 }
 
 static gboolean
