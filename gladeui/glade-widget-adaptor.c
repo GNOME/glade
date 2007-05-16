@@ -1328,6 +1328,84 @@ gwa_update_actions (GladeWidgetAdaptor *adaptor,
 		g_free (label);
 		g_free (stock);
 	}
+
+static void
+gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
+			       GladeXmlNode            *node,
+			       GModule                 *module)
+{
+	gpointer symbol;
+	
+	/*
+	 * We use a temporary variable to avoid a bogus gcc warning.
+	 * the thing it that g_module_symbol() should use a function pointer
+	 * instead of a gpointer!
+	 */
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_POST_CREATE_FUNCTION,
+					  &symbol))
+		klass->post_create = symbol;
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
+					  &symbol))
+		klass->get_internal_child = symbol;
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_SET_FUNCTION,
+					  &symbol))
+		klass->set_property = symbol;
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_GET_FUNCTION,
+					  &symbol))
+		klass->get_property = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_VERIFY_FUNCTION,
+					  &symbol))
+		klass->verify_property = symbol;
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_ADD_CHILD_FUNCTION,
+					  &symbol))
+		klass->add = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_REMOVE_CHILD_FUNCTION,
+					  &symbol))
+		klass->remove = symbol;
+	
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_GET_CHILDREN_FUNCTION,
+					  &symbol))
+		klass->get_children = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CHILD_SET_PROP_FUNCTION,
+					  &symbol))
+		klass->child_set_property = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+				      GLADE_TAG_CHILD_GET_PROP_FUNCTION,
+				      &symbol))
+		klass->child_get_property = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CHILD_VERIFY_FUNCTION,
+					  &symbol))
+		klass->child_verify_property = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_REPLACE_CHILD_FUNCTION,
+					  &symbol))
+		klass->replace_child = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_ACTION_ACTIVATE_FUNCTION,
+					  &symbol))
+		klass->action_activate = symbol;
 }
 
 static gboolean
@@ -1340,57 +1418,8 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	GladeXmlNode *child;
 	gchar        *child_type;
 	
-	if (module)
-	{
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_POST_CREATE_FUNCTION,
-					      (gpointer *)&adaptor_class->post_create);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
-					      (gpointer *)&adaptor_class->get_internal_child);
-
-		glade_xml_load_sym_from_node (node, module, 
-					      GLADE_TAG_SET_FUNCTION, 
-					      (gpointer *)&adaptor_class->set_property);
-
-		glade_xml_load_sym_from_node (node, module, 
-					      GLADE_TAG_GET_FUNCTION, 
-					      (gpointer *)&adaptor_class->get_property);
-
-		glade_xml_load_sym_from_node (node, module, 
-					      GLADE_TAG_VERIFY_FUNCTION, 
-					      (gpointer *)&adaptor_class->verify_property);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_ADD_CHILD_FUNCTION,
-					      (gpointer *)&adaptor_class->add);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_REMOVE_CHILD_FUNCTION,
-					      (gpointer *)&adaptor_class->remove);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_GET_CHILDREN_FUNCTION,
-					      (gpointer *)&adaptor_class->get_children);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_CHILD_SET_PROP_FUNCTION,
-					      (gpointer *)&adaptor_class->child_set_property);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_CHILD_GET_PROP_FUNCTION,
-					      (gpointer *)&adaptor_class->child_get_property);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_CHILD_VERIFY_FUNCTION,
-					      (gpointer *)&adaptor_class->child_verify_property);
-
-		glade_xml_load_sym_from_node (node, module,
-					      GLADE_TAG_REPLACE_CHILD_FUNCTION,
-					      (gpointer *)&adaptor_class->replace_child);
-
-	}
+	/* Load catalog symbols from module */
+	if (module) gwa_extend_with_node_load_sym (adaptor_class, node, module);
 	
 	adaptor_class->fixed = 
 		glade_xml_get_property_boolean

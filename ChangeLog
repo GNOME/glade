@@ -1,3 +1,12 @@
+2007-05-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget-adaptor.[ch]: fixed bogus type punned warnings adding a 
+	  local variable in gwa_extend_with_node_load_sym() as pointed by galtgendo@o2.pl
+	  (bug 435912)
+
+	* gladeui/glade-xml-utils.[ch]: glade_xml_load_sym_from_node() now returns
+	   wheater or not the symbol was found.
+
 2007-05-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Set "response-id" property to be "save-always" fixing
