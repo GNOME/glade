@@ -452,11 +452,13 @@ struct _GladeWidgetAdaptorClass
 #define glade_widget_adaptor_from_pclass(pclass) \
     ((pclass) ? (GladeWidgetAdaptor *)((GladePropertyClass *)(pclass))->handle : NULL)
 
+#define glade_widget_adaptor_from_pspec(pspec) \
+    ((pspec) ? glade_widget_adaptor_get_by_type (((GParamSpec *)(pspec))->owner_type) : NULL)
 
 GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
  
 
-GType glade_create_reason_get_type          (void) G_GNUC_CONST;
+GType                glade_create_reason_get_type          (void) G_GNUC_CONST;
 
 
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,

@@ -305,7 +305,6 @@ glade_editor_init (GladeEditor *editor)
 {
 	GtkSizeGroup *size_group;
 	GtkWidget *hbox;
-	GtkWidget *label;
 
 	editor->notebook     = gtk_notebook_new ();
 	editor->page_widget  = glade_editor_notebook_page (editor, _("_General"));

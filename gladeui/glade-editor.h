@@ -100,10 +100,6 @@ struct _GladeEditor
 			   * was loaded.
 			   */
 
-	GtkWidget *launch_button; /* Button used to launch custom editors implemented
-				   * through the plugin backend.
-				   */
-
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
 	
