@@ -421,6 +421,7 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 		{
 			GladePropertyClass *pclass =
 				glade_property_class_clone (list->data);
+			pclass->handle = adaptor;
 			properties = g_list_prepend (properties, pclass);
 		}
 	}

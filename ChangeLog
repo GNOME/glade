@@ -1,3 +1,13 @@
+2007-05-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.[ch]: Added glade_widget_adaptor_from_pspec()
+	  and made glade_widget_adaptor_from_pclass() always return the owning
+	  adaptor and not the adaptor for the class which the property was originally
+	  created for.
+
+	* gladeui/glade-editor-property.c: Use glade_widget_adaptor_from_pspec()
+	  where appropriate (Fixing bug 423425)
+
 2007-05-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Set "response-id" property to be "save-always" fixing

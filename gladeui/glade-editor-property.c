@@ -244,7 +244,7 @@ glade_editor_property_info_clicked_cb (GtkWidget           *info,
 	GladeWidgetAdaptor *adaptor;
 	gchar              *search, *book;
 
-	adaptor = glade_widget_adaptor_from_pclass (eprop->klass);
+	adaptor = glade_widget_adaptor_from_pspec (eprop->klass->pspec);
 	search  = g_strdup_printf ("The %s property", eprop->klass->id);
 
 	g_object_get (adaptor, "book", &book, NULL);
@@ -3848,7 +3848,7 @@ glade_editor_property_show_info (GladeEditorProperty *eprop)
 
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
-	adaptor = glade_widget_adaptor_from_pclass (eprop->klass);
+	adaptor = glade_widget_adaptor_from_pspec (eprop->klass->pspec);
 
 	g_object_get (adaptor, "book", &book, NULL);
 
