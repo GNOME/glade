@@ -777,14 +777,14 @@ glade_xml_alloc_propname(GladeInterface *interface, const gchar *string)
     return glade_xml_alloc_string(interface, norm_str->str);
 }
 
-gboolean
+
+void
 glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 			      GModule          *module,
 			      gchar            *tagname,
 			      gpointer         *sym_location)
 {
 	static GModule *self = NULL;
-	gboolean retval = FALSE;
 	gchar *buff;
 
 	if (!self) 
@@ -798,7 +798,7 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 				   "no module available to load it from !", 
 				   buff, tagname);
 			g_free (buff);
-			return FALSE;
+			return;
 		}
 
 		/* I use here a g_warning to signal these errors instead of a dialog 
@@ -813,14 +813,10 @@ glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 		 *
 		 * XXX http://bugzilla.gnome.org/show_bug.cgi?id=331797
 		 */
-		if (g_module_symbol (module, buff, sym_location) ||
-		    g_module_symbol (self, buff, sym_location))
-			retval = TRUE;
-		else
-			g_warning ("Could not find %s in %s or in global namespace\n",
-				   buff, g_module_name (module));
-
+		if (!g_module_symbol (module, buff, sym_location))
+			if (!g_module_symbol (self, buff, sym_location))
+				g_warning ("Could not find %s in %s or in global namespace\n",
+					   buff, g_module_name (module));
 		g_free (buff);
 	}
-	return retval;
 }

@@ -175,7 +175,7 @@ GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 gchar *		glade_xml_alloc_string   (GladeInterface *interface, const gchar *string);
 gchar *		glade_xml_alloc_propname (GladeInterface *interface, const gchar *string);
 
-gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
+void            glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 					      GModule          *module,
 					      gchar            *tagname,
 					      gpointer         *sym_location);
