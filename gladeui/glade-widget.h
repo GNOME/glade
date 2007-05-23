@@ -3,6 +3,7 @@
 #define __GLADE_WIDGET_H__
 
 #include <gladeui/glade-widget-adaptor.h>
+#include <gladeui/glade-widget-action.h>
 #include <gladeui/glade-signal.h>
 #include <gladeui/glade-property.h>
 
@@ -88,6 +89,8 @@ struct _GladeWidget
 	gint               height;  /* usefull for parentless widgets in the
 				     * GladeDesignLayout */
 
+	GList *actions;		/* A GladeWidgetAction list */
+	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
 	GladeWidgetInfo   *construct_info;
@@ -106,7 +109,6 @@ struct _GladeWidgetClass
 	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
 	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
-	gboolean     (*action_activated)        (GladeWidget *, const gchar *);
 	
 	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
 	gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
@@ -189,6 +191,15 @@ gboolean                glade_widget_event                  (GladeWidget      *g
 
 gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
 							     GladeWidget      *widget);
+
+GladeWidgetAction *     glade_widget_get_action             (GladeWidget *widget,
+							     const gchar *action_path);
+
+void                    glade_widget_remove_action          (GladeWidget *widget,
+							     const gchar *action_path);
+
+GtkWidget *             glade_widget_create_action_menu     (GladeWidget *widget,
+							     const gchar *action_path);
 
 /*******************************************************************************
                       Project, object property references

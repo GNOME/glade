@@ -1,3 +1,49 @@
+2007-05-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/Makefile.am: added gladeui/glade-widget-action.[ch]
+
+	* gladeui/glade-popup.[ch]:
+	  - added glade_popup_action_populate_menu()
+
+	  - adapted popup code to reflect action changes.
+
+	* gladeui/glade-widget-action.[ch]: GladeWidgetAction GObject sources.
+
+	* gladeui/glade-widget-adaptor.[ch]:
+
+	  - action-activated signal removed
+
+	  - added GladeActionActivateFunc
+
+	  - added glade_widget_adaptor_action_add() and glade_widget_adaptor_action_remove()
+
+	  - glade_widget_adaptor_action_activate() reworked. 
+
+	  - load symbol and other catalog stuff in gwa_derived_class_init()
+
+	  - added the posibility to override GObject constructor from the catalog.
+	    This is a good place to add/remove actions, use GWA_GET_OCLASS() to chain up.
+
+	* gladeui/glade-widget.[ch]:
+	  - removed action-activated signal
+
+	  - added glade_widget_get_action (), glade_widget_remove_action() and
+	    glade_widget_create_action_menu()
+
+	* gladeui/glade-xml-utils.h: added GLADE_TAG_ACTION_ACTIVATE_FUNCTION and 
+	  GLADE_TAG_CONSTRUCTOR_FUNCTION tags
+
+	* plugins/gtk+/glade-gtk.c:
+	  - added glade_gtk_menu_shell_action_activate() glade_gtk_menu_item_action_activate()
+	    and glade_gtk_toolbar_action_activate()
+
+	  - removed glade_gtk_menu_post_create() and glade_gtk_menu_launch_editor_action()
+
+	* plugins/gtk+/gtk+.xml.in:
+	  - glade_gtk_menu_post_create() removed
+
+	  - added action-activate-function for MenuShell MenuItem and Toolbar.
+
 2007-05-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* Patch reaplied with the missing '}' :S (bug 435912)

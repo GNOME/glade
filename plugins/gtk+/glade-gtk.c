@@ -3905,26 +3905,6 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 							       id, value);
 }
 
-/* ----------------------------- menu callbacks ------------------------------ */
-static void glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title);
-
-static gboolean
-glade_gtk_menu_launch_editor_action (GladeWidget *gwidget, const gchar *data)
-{
-	GladeWidget *iter = gwidget;
-	     
-	while (!GTK_IS_MENU_BAR (iter->object) &&
-	       /* Make sure we support menus inside toolbars */
-	       iter->parent && GTK_IS_MENU_SHELL (iter->parent->object))
-		iter = iter->parent;
-	
-	glade_gtk_menu_shell_launch_editor (iter->object,
-					    GTK_IS_MENU_BAR (iter->object) ?
-					    _("Menu Bar Editor") : _("Menu Editor"));
-	return TRUE;
-}
-
-
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
 glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor, 
@@ -4248,6 +4228,24 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 	gtk_widget_show (window);
 }
 
+void
+glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
+				      GObject *object,
+				      const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		if (GTK_IS_MENU_BAR (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu Bar"));
+		else if (GTK_IS_MENU (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
+
 /* ----------------------------- GtkMenuItem(s) ------------------------------ */
 GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
@@ -4307,9 +4305,6 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	gitem = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gitem));
-
-	/* hook the launch_editor action signal for all items */
-	g_signal_connect (gitem, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
 	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
 	
@@ -4721,6 +4716,31 @@ glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
+void
+glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
+				     GObject *object,
+				     const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		GladeWidget *w = glade_widget_get_from_gobject (object);
+		
+		while ((w = glade_widget_get_parent (w)))
+		{
+			GObject *obj = glade_widget_get_object (w);
+			if (GTK_IS_MENU_SHELL (obj)) object = obj;
+		}
+		
+		if (GTK_IS_MENU_BAR (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu Bar"));
+		else if (GTK_IS_MENU (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
 
 /* ----------------------------- GtkMenuBar ------------------------------ */
 static GladeWidget * 
@@ -4810,9 +4830,6 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 	gmenubar = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gmenubar));
 	
-	/* hook the launch_editor action signal for all reasons */
-	g_signal_connect (gmenubar, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
-	
 	if (reason != GLADE_CREATE_USER) return;
 	
 	project = glade_widget_get_project (gmenubar);
@@ -4842,23 +4859,6 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor *adaptor,
 	gitem = glade_gtk_menu_bar_append_new_item (gmenubar, project, _("_Help"), FALSE);	
 	gsubmenu = glade_gtk_menu_bar_append_new_submenu (gitem, project);
 	glade_gtk_menu_bar_append_new_item (gsubmenu, project, "gtk-about", TRUE);
-}
-
-/* ------------------------------ GtkMenu -------------------------------- */
-void
-glade_gtk_menu_post_create (GladeWidgetAdaptor *adaptor,
-				GObject            *object, 
-				GladeCreateReason   reason)
-{
-	GladeWidget *gmenu;
-	
-	g_return_if_fail (GTK_IS_MENU (object));
-	gmenu = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gmenu));
-	
-	/* hook the launch_editor action signal for all reasons */
-	g_signal_connect (gmenu, "action-activated::launch_editor", G_CALLBACK (glade_gtk_menu_launch_editor_action), NULL);
-	
 }
 
 /* ----------------------------- GtkToolBar ------------------------------ */
@@ -5012,7 +5012,6 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 						  "group", "active", NULL);	
 }
 
-/* XXX Must reintegrate this code with actions when ready */
 void
 glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor, 
 				 GObject            *toolbar)
@@ -5045,6 +5044,21 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
 	
 	window = glade_base_editor_pack_new_window (editor, _("Tool Bar Editor"), NULL);
 	gtk_widget_show (window);
+}
+
+void
+glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
+				   GObject *object,
+				   const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		glade_gtk_toolbar_launch_editor (adaptor, object);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
 }
 
 /* ----------------------------- GtkToolItem ------------------------------ */

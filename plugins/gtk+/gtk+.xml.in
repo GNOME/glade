@@ -292,6 +292,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>
       <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_menu_shell_get_child_property</child-get-property-function>
+      <action-activate-function>glade_gtk_menu_shell_action_activate</action-activate-function>
       <packing-properties>
         <property id="position" _name="Position" default="-1" save="False">
           <spec>glade_standard_int_spec</spec>
@@ -307,6 +308,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
       <add-child-function>glade_gtk_menu_item_add_submenu</add-child-function>
       <remove-child-function>glade_gtk_menu_item_remove_submenu</remove-child-function>
+      <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
       <properties>
         <property id="label" _name="Label" translatable="True">
 	  <_tooltip>The text of the menu item</_tooltip>
@@ -399,6 +401,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_toolbar_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_toolbar_get_child_property</child-get-property-function>
+      <action-activate-function>glade_gtk_toolbar_action_activate</action-activate-function>
 
       <properties>
 	<property id="orientation">
@@ -1023,7 +1026,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
       <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <!-- We do not want glade_gtk_container_post_create be executed -->
-      <post-create-function>glade_gtk_menu_post_create</post-create-function>
+      <post-create-function>empty</post-create-function>
    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>

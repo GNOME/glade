@@ -176,62 +176,81 @@ glade_popup_append_item (GtkWidget *popup_menu,
 
 
 static void
-glade_popup_menuitem_activated (GtkMenuItem *item, GladeWidget *widget)
+glade_popup_menuitem_activated (GtkMenuItem *item, const gchar *action_path)
 {
-	gchar *detail;
+	GladeWidget *widget;
 	
-	if ((detail = g_object_get_data (G_OBJECT (item), "menuitem_detail")))
-		glade_widget_adaptor_action_activate (widget, detail);
+	if ((widget = g_object_get_data (G_OBJECT (item), "glade-widget")))
+		glade_widget_adaptor_action_activate (widget->adaptor,
+						      widget->object,
+						      action_path);
 }
 
-static void
-glade_popup_add_actions_recurse (GtkWidget *menu, GladeWidget *widget, GList *actions)
+static gint
+glade_popup_action_populate_menu_real (GtkWidget *menu,
+				       GladeWidget *widget,
+				       GladeWidgetAction *action)
 {
-	GList *list;
 	GtkWidget *item;
+	GList *list;
+	gint n = 0;
 
-	for (list = widget->adaptor->actions; list; list = g_list_next (list))
+	for (list = (action) ? action->actions : widget->actions;
+	     list;
+	     list = g_list_next (list))
 	{
-		GWAAction *action = list->data;
+		GladeWidgetAction *a = list->data;
 		GtkWidget *submenu = NULL;
-		
-		if (action->actions)
+
+		if (a->actions)
 		{
 			submenu = gtk_menu_new ();
-			glade_popup_add_actions_recurse (submenu, widget, action->actions);
+			n += glade_popup_action_populate_menu (submenu, widget, a);
 		}
-		
-		if (action->is_a_group && submenu == NULL) continue;
-		
+				
 		item = glade_popup_append_item (menu, 
-				action->stock,
-				action->label, TRUE,
-				(action->is_a_group) ? NULL : glade_popup_menuitem_activated,
-				(action->is_a_group) ? NULL : widget);
-
-		if (action->is_a_group == FALSE)
-			g_object_set_data (G_OBJECT (item), "menuitem_detail", action->id);
+				a->klass->stock,
+				a->klass->label, TRUE,
+				(a->actions) ? NULL : glade_popup_menuitem_activated,
+				(a->actions) ? NULL : a->klass->path);
+		
+		g_object_set_data (G_OBJECT (item), "glade-widget", widget);
+		gtk_widget_set_sensitive (item, a->sensitive);
 		
 		if (submenu)
 			gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+		
+		n++;
 	}
 
+	return n;
 }
 
-static void
-glade_popup_add_actions (GtkWidget *menu, GladeWidget *widget)
+/*
+ * glade_popup_action_populate_menu:
+ * @menu: a GtkMenu to put the actions menu items.
+ * @widget: A #GladeWidget
+ * @action: a @widget subaction or NULL to include all actions.
+ *
+ * Populate a GtkMenu with widget's actions
+ *
+ * Returns the number of action appended to the menu.
+ */
+gint
+glade_popup_action_populate_menu (GtkWidget *menu,
+				  GladeWidget *widget,
+				  GladeWidgetAction *action)
 {
-	GtkWidget *separator;
-
-	if (widget->adaptor->actions)
+	g_return_val_if_fail (GTK_IS_MENU (menu), 0);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), 0);
+	if (action)
 	{
-		separator = gtk_menu_item_new ();
-		gtk_widget_show (separator);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu),
-				       separator);
-
-		glade_popup_add_actions_recurse (menu, widget, widget->adaptor->actions);
+		g_return_val_if_fail (GLADE_IS_WIDGET_ACTION (action), 0);
+		if (action != glade_widget_get_action (widget, action->klass->path))
+			return 0;
 	}
+	
+	return glade_popup_action_populate_menu_real (menu, widget, action);
 }
 
 static GtkWidget *
@@ -256,7 +275,14 @@ glade_popup_create_menu (GladeWidget *widget)
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
-	glade_popup_add_actions (popup_menu, widget);
+	if (widget->actions)
+	{
+		GtkWidget *separator = gtk_menu_item_new ();
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+		gtk_widget_show (separator);
+
+		glade_popup_action_populate_menu (popup_menu, widget, NULL);
+	}
 
 	return popup_menu;
 }

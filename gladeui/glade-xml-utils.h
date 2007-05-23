@@ -55,6 +55,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_CHILD_SET_PROP_FUNCTION         "child-set-property-function"
 #define GLADE_TAG_CHILD_GET_PROP_FUNCTION         "child-get-property-function"
 #define GLADE_TAG_CHILD_VERIFY_FUNCTION           "child-verify-function"
+#define GLADE_TAG_CONSTRUCTOR_FUNCTION            "constructor-function"
+#define GLADE_TAG_ACTION_ACTIVATE_FUNCTION        "action-activate-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
 #define GLADE_TAG_PACKING_PROPERTIES              "packing-properties"
 #define GLADE_TAG_PROPERTY                        "property"

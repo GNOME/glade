@@ -45,6 +45,7 @@
 #include "glade-editor.h"
 #include "glade-app.h"
 #include "glade-design-view.h"
+#include "glade-widget-action.h"
 
 
 
@@ -74,7 +75,6 @@ enum
 	BUTTON_PRESS_EVENT,
 	BUTTON_RELEASE_EVENT,
 	MOTION_NOTIFY_EVENT,
-	ACTION_ACTIVATED,
 	LAST_SIGNAL
 };
 
@@ -754,6 +754,12 @@ glade_widget_dispose (GObject *object)
 		g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->packing_properties);
 	}
+	
+	if (widget->actions)
+	{
+		g_list_foreach (widget->actions, (GFunc)g_object_unref, NULL);
+		g_list_free (widget->actions);
+	}
 
  	if (G_OBJECT_CLASS(parent_class)->dispose)
 		G_OBJECT_CLASS(parent_class)->dispose(object);
@@ -1149,27 +1155,6 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
 			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
-
-
-	/**
-	 * GladeWidget::action-activated:
-	 * @widget: the #GladeWidget which received the signal.
-	 * @action_id: the action id (signal detail) or NULL.
-	 *
-	 * Use this to catch up actions. This signal is proxied from 
-	 * GladeWidgetAdaptor's "action-emited" signal default handler.
-	 *
-	 * Returns TRUE to stop others handlers being invoked.
-	 *
-	 */
-	glade_widget_signals [ACTION_ACTIVATED] =
-		g_signal_new ("action-activated",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-			      G_STRUCT_OFFSET (GladeWidgetClass, action_activated),
-			      glade_boolean_handled_accumulator, NULL,
-			      glade_marshal_BOOLEAN__STRING,
-			      G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
 }
 
 GType
@@ -1642,6 +1627,23 @@ glade_widget_set_properties (GladeWidget *widget, GList *properties)
 }
 
 static void
+glade_widget_set_actions (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
+{
+	GList *l;
+	
+	for (l = adaptor->actions; l; l = g_list_next (l))
+	{
+		GWActionClass *action = l->data;
+		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
+					     "klass", action, NULL);
+		
+		widget->actions = g_list_prepend (widget->actions,
+						  GLADE_WIDGET_ACTION (obj));
+	}
+	widget->actions = g_list_reverse (widget->actions);
+}
+
+static void
 glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 {
 	GladePropertyClass *property_class;
@@ -1674,6 +1676,9 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 		}
 		widget->properties = g_list_reverse (widget->properties);
 	}
+	
+	/* Create actions from adaptor */
+	glade_widget_set_actions (widget, adaptor);
 }
 
 /* Connects a signal handler to the 'event' signal for a widget and
@@ -3809,6 +3814,96 @@ glade_widget_placeholder_relation (GladeWidget *parent,
 		GWA_USE_PLACEHOLDERS (parent->adaptor));
 }
 
+static GladeWidgetAction *
+glade_widget_action_lookup (GList **actions, const gchar *path, gboolean remove)
+{
+	GList *l;
+	
+	for (l = *actions; l; l = g_list_next (l))
+	{
+		GladeWidgetAction *action = l->data;
+		
+		if (strcmp (action->klass->path, path) == 0)
+		{
+			if (remove)
+			{
+				*actions = g_list_remove (*actions, action);
+				g_object_unref (action);
+				return NULL;
+			}
+			return action;
+		}
+		
+		if (action->actions &&
+		    g_str_has_prefix (path, action->klass->path) &&
+		    (action = glade_widget_action_lookup (&action->actions, path, remove)))
+			return action;
+	}
+	
+	return NULL;
+}
+
+/**
+ * glade_widget_get_action:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ *
+ * Returns a #GladeWidgetAction object indentified by @action_path.
+ *
+ * Returns: the action or NULL if not found.
+ */
+GladeWidgetAction *
+glade_widget_get_action (GladeWidget *widget, const gchar *action_path)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (action_path == NULL, NULL);
+	
+	return glade_widget_action_lookup (&widget->actions, action_path, FALSE);
+}
+
+/**
+ * glade_widget_remove_action:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ *
+ * Remove an action.
+ */
+void
+glade_widget_remove_action (GladeWidget *widget, const gchar *action_path)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (action_path != NULL);
+	
+	glade_widget_action_lookup (&widget->actions, action_path, TRUE);
+}
+
+/**
+ * glade_widget_create_action_menu:
+ * @widget: a #GladeWidget
+ * @action_path: an action path or NULL to include every @widget action.
+ *
+ * Create a new GtkMenu with every action in it. 
+ *
+ */
+GtkWidget *
+glade_widget_create_action_menu (GladeWidget *widget, const gchar *action_path)
+{
+	GladeWidgetAction *action = NULL;
+	GtkWidget *menu;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	if (action_path)
+		action = glade_widget_action_lookup (&widget->actions, action_path, FALSE);
+	
+	menu = gtk_menu_new ();
+	if (glade_popup_action_populate_menu (menu, widget, action))
+		return menu;
+	
+	g_object_unref (G_OBJECT (menu));
+	
+	return NULL;
+}
 
 /*******************************************************************************
  *                           Toplevel GladeWidget Embedding                    *

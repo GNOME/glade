@@ -26,7 +26,6 @@ typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 typedef struct _GladeSignalClass          GladeSignalClass;
-typedef struct _GWAAction                 GWAAction;
 
 /**
  * GWA_IS_FIXED:
@@ -91,6 +90,14 @@ typedef struct _GWAAction                 GWAAction;
     (((type) == G_TYPE_OBJECT) ?                                                 \
      (GladeWidgetAdaptorClass *)g_type_class_peek (GLADE_TYPE_WIDGET_ADAPTOR) :  \
      GLADE_WIDGET_ADAPTOR_GET_CLASS (glade_widget_adaptor_get_by_type(type)))
+
+/**
+ * GWA_GET_OCLASS:
+ * @type: A #GType.
+ *
+ * Same as GWA_GET_CLASS but casted to GObjectClass
+ */
+#define GWA_GET_OCLASS(type) ((GObjectClass*)GWA_GET_CLASS(type))
 
 
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
@@ -302,6 +309,18 @@ typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
 						   GObject            *parent,
 						   const gchar        *name);
 
+/**
+ * GladeActionActivatedFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject
+ * @action_id: The action identifier
+ *
+ * This delagate function is used to catch actions from the core.
+ *
+ */
+typedef void     (* GladeActionActivateFunc)  (GladeWidgetAdaptor *adaptor,
+					       GObject            *object,
+					       const gchar        *action_id);
 
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
@@ -314,17 +333,6 @@ struct _GladeSignalClass
 	gchar       *type;         /* Name of the object class that this signal belongs to
 				    * eg GtkButton */
 
-};
-
-struct _GWAAction
-{
-	gchar     *id;           /* The identifier of this action in the action tree */
-	gchar     *label;        /* A translated label to show in the UI for this action */
-	gchar     *stock;        /* If set, this stock item will be shown in the UI along side
-				  * the label */
-	gboolean   is_a_group;   /* Marks whether this action is a group and can have children */
-
-	GList     *actions;      /* Recursive list of child actions */
 };
 
 /* Note that everything that must be processed at the creation of
@@ -369,7 +377,7 @@ struct _GladeWidgetAdaptor
 
         GList       *child_packings; /* Default packing property values */
 
-	GList       *actions;        /* A list of GWAAction */
+	GList       *actions;        /* A list of GWActionClass */
 
 	GladeWidgetAdaptorPrivate *priv;
 
@@ -442,8 +450,8 @@ struct _GladeWidgetAdaptorClass
 						    * replace a placeholder with
 						    * a widget and viceversa.
 						    */
-	/* Signals */
-	gboolean                   (*action_activated) (GladeWidgetAdaptor *, GladeWidget *, const gchar *);
+	
+	GladeActionActivateFunc    action_activate; /* This method is used to catch actions */
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -564,13 +572,19 @@ gchar               *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor
 							      GladeWidgetAdaptor *parent_adaptor,
 							      const gchar        *propert_id);
 
-void                 glade_widget_adaptor_action_activate    (GladeWidget *widget,
-					    		      const gchar *action_id);
-
-
 gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
 
+gboolean             glade_widget_adaptor_action_add         (GladeWidgetAdaptor *adaptor,
+							      const gchar *action_path,
+							      const gchar *label,
+							      const gchar *stock);
 
+gboolean             glade_widget_adaptor_action_remove      (GladeWidgetAdaptor *adaptor,
+							      const gchar *action_path);
+
+void                 glade_widget_adaptor_action_activate    (GladeWidgetAdaptor *adaptor,
+							      GObject            *object,
+							      const gchar        *action_path);
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */
