@@ -1635,7 +1635,7 @@ glade_widget_set_actions (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 	{
 		GWActionClass *action = l->data;
 		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-					     "klass", action, NULL);
+					     "class", action, NULL);
 		
 		widget->actions = g_list_prepend (widget->actions,
 						  GLADE_WIDGET_ACTION (obj));
@@ -3856,7 +3856,7 @@ GladeWidgetAction *
 glade_widget_get_action (GladeWidget *widget, const gchar *action_path)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
-	g_return_val_if_fail (action_path == NULL, NULL);
+	g_return_val_if_fail (action_path != NULL, NULL);
 	
 	return glade_widget_action_lookup (&widget->actions, action_path, FALSE);
 }

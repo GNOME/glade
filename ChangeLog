@@ -1,3 +1,19 @@
+2007-05-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget-action.[ch]:
+
+	  - memory leak fixed in glade_widget_action_class_clone()
+
+	  - glade_widget_action_set_sensitive() declared and used in 
+	    gobject set_property() method.
+
+	  - GladeWidgetAction "klass" property renamed to "class"
+
+	* gladeui/glade-widget.c:
+	  - fixed check in glade_widget_get_action()
+
+	  - adapted to reflect GladeWidgetAction property rename.
+
 2007-05-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/Makefile.am: added gladeui/glade-widget-action.[ch]

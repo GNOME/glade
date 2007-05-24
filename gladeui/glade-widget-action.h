@@ -64,15 +64,17 @@ struct _GladeWidgetAction
 	GList *actions;		/* List of actions */
 };
 
-GType          glade_widget_action_get_type    (void) G_GNUC_CONST;
+GType          glade_widget_action_get_type      (void) G_GNUC_CONST;
 
-void           glade_widget_action_class_free  (GWActionClass *action);
+void           glade_widget_action_class_free    (GWActionClass *action);
 
-GWActionClass *glade_widget_action_class_clone (GWActionClass *action);
+GWActionClass *glade_widget_action_class_clone   (GWActionClass *action);
 
-gboolean       glade_widget_action_remove      (GladeWidgetAction *action,
-						GladeWidgetAction *child);
+gboolean       glade_widget_action_remove        (GladeWidgetAction *action,
+						  GladeWidgetAction *child);
 
+void           glade_widget_action_set_sensitive (GladeWidgetAction *action,
+						  gboolean sensitive);
 G_END_DECLS
 
 #endif /* _GLADE_WIDGET_ACTION_H_ */
