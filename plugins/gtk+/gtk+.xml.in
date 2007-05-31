@@ -196,6 +196,12 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_box_add_child</add-child-function>
       <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
+      <child-action-activate-function>glade_gtk_box_child_action_activate</child-action-activate-function>
+
+      <packing-actions>
+        <action id="insert_before" _name="Insert Before"/>
+        <action id="insert_after" _name="Insert After"/>
+      </packing-actions>
 
       <properties>
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
@@ -302,13 +308,15 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
-      <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
       <add-child-function>glade_gtk_menu_item_add_submenu</add-child-function>
       <remove-child-function>glade_gtk_menu_item_remove_submenu</remove-child-function>
       <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
+      <actions>
+        <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
+      </actions>
       <properties>
         <property id="label" _name="Label" translatable="True">
 	  <_tooltip>The text of the menu item</_tooltip>
@@ -367,9 +375,11 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuBar" generic-name="menubar" _title="Menu Bar">
-      <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
       <post-create-function>glade_gtk_menu_bar_post_create</post-create-function>
       <!-- menubar is a container you can't add placeholders to it -->
+      <actions>
+        <action id="launch_editor" _name="Edit Menu Bar" stock="gtk-edit"/>
+      </actions>
       <properties>
         <property id="child-pack-direction">
           <displayable-values>
@@ -870,6 +880,18 @@ embedded in another object</_tooltip>
       <replace-child-function>glade_gtk_table_replace_child</replace-child-function>
       <set-property-function>glade_gtk_table_set_property</set-property-function>
       <verify-property-function>glade_gtk_table_verify_property</verify-property-function>
+      <child-action-activate-function>glade_gtk_table_child_action_activate</child-action-activate-function>
+
+      <packing-actions>
+        <action id="insert_row" _name="Insert Row">
+          <action id="before" _name="Before"/>
+          <action id="after" _name="After"/>
+        </action>
+        <action id="insert_column" _name="Insert Column">
+          <action id="before" _name="Before"/>
+          <action id="after" _name="After"/>
+        </action>
+      </packing-actions>
 
       <properties>
 	<property id="n-rows" default="3" query="True"/>
@@ -1024,9 +1046,11 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
-      <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
       <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>empty</post-create-function>
+      <actions>
+        <action id="launch_editor" _name="Edit Menu" stock="gtk-edit"/>
+      </actions>
    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>

@@ -91,6 +91,10 @@ struct _GladeWidget
 
 	GList *actions;		/* A GladeWidgetAction list */
 	
+	GList *packing_actions;	/* A GladeWidgetAction list, this actions are
+				 * related to the container and they are not always present.
+				 */
+	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
 	GladeWidgetInfo   *construct_info;
@@ -195,7 +199,13 @@ gboolean                glade_widget_placeholder_relation   (GladeWidget      *p
 GladeWidgetAction *     glade_widget_get_action             (GladeWidget *widget,
 							     const gchar *action_path);
 
+GladeWidgetAction *     glade_widget_get_pack_action        (GladeWidget *widget,
+							     const gchar *action_path);
+
 void                    glade_widget_remove_action          (GladeWidget *widget,
+							     const gchar *action_path);
+
+void                    glade_widget_remove_pack_action     (GladeWidget *widget,
 							     const gchar *action_path);
 
 GtkWidget *             glade_widget_create_action_menu     (GladeWidget *widget,

@@ -71,7 +71,7 @@ glade_widget_action_constructor(GType type,
 	
 	if (action->klass == NULL)
 	{
-		g_warning ("GLadeWidgetAction constructed without klass properties");
+		g_warning ("GladeWidgetAction constructed without class property");
 		return object;
 	}
 	
@@ -79,7 +79,7 @@ glade_widget_action_constructor(GType type,
 	{
 		GWActionClass *action_class = l->data;
 		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-					     "klass", action_class,
+					     "class", action_class,
 					     NULL);
 		
 		action->actions = g_list_prepend (action->actions,

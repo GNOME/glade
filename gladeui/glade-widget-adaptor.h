@@ -313,14 +313,29 @@ typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
  * GladeActionActivatedFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @object: The #GObject
- * @action_id: The action identifier
+ * @action_path: The action path
  *
  * This delagate function is used to catch actions from the core.
  *
  */
 typedef void     (* GladeActionActivateFunc)  (GladeWidgetAdaptor *adaptor,
 					       GObject            *object,
-					       const gchar        *action_id);
+					       const gchar        *action_path);
+
+/**
+ * GladeChildActionActivatedFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @container: The #GtkContainer
+ * @object: The #GObject
+ * @action_path: The action path
+ *
+ * This delagate function is used to catch packing actions from the core.
+ *
+ */
+typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
+						   GObject            *container,
+						   GObject            *object,
+						   const gchar        *action_path);
 
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
@@ -378,6 +393,8 @@ struct _GladeWidgetAdaptor
         GList       *child_packings; /* Default packing property values */
 
 	GList       *actions;        /* A list of GWActionClass */
+	
+	GList       *packing_actions;/* A list of GWActionClass for child objects */
 
 	GladeWidgetAdaptorPrivate *priv;
 
@@ -451,7 +468,8 @@ struct _GladeWidgetAdaptorClass
 						    * a widget and viceversa.
 						    */
 	
-	GladeActionActivateFunc    action_activate; /* This method is used to catch actions */
+	GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
+	GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -579,12 +597,25 @@ gboolean             glade_widget_adaptor_action_add         (GladeWidgetAdaptor
 							      const gchar *label,
 							      const gchar *stock);
 
+gboolean             glade_widget_adaptor_pack_action_add    (GladeWidgetAdaptor *adaptor,
+							      const gchar *action_path,
+							      const gchar *label,
+							      const gchar *stock);
+
 gboolean             glade_widget_adaptor_action_remove      (GladeWidgetAdaptor *adaptor,
+							      const gchar *action_path);
+
+gboolean             glade_widget_adaptor_pack_action_remove (GladeWidgetAdaptor *adaptor,
 							      const gchar *action_path);
 
 void                 glade_widget_adaptor_action_activate    (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *action_path);
+
+void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
+								 GObject            *container,
+								 GObject            *object,
+								 const gchar        *action_path);
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */

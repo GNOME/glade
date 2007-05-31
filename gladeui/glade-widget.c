@@ -110,6 +110,30 @@ static GQuark        glade_widget_name_quark = 0;
                            GladeWidget class methods
  *******************************************************************************/
 static void
+glade_widget_set_packing_actions (GladeWidget *widget, GladeWidget *parent)
+{
+	GList *l;
+	
+	if (widget->packing_actions)
+	{
+		g_list_foreach (widget->packing_actions, (GFunc)g_object_unref, NULL);
+		g_list_free (widget->packing_actions);
+		widget->packing_actions = NULL;
+	}
+	
+	for (l = parent->adaptor->packing_actions; l; l = g_list_next (l))
+	{
+		GWActionClass *action = l->data;
+		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
+					     "class", action, NULL);
+		
+		widget->packing_actions = g_list_prepend (widget->packing_actions,
+							  GLADE_WIDGET_ACTION (obj));
+	}
+	widget->packing_actions = g_list_reverse (widget->packing_actions);
+}
+
+static void
 glade_widget_add_child_impl (GladeWidget  *widget,
 			     GladeWidget  *child,
 			     gboolean      at_mouse)
@@ -124,6 +148,7 @@ glade_widget_add_child_impl (GladeWidget  *widget,
 		(widget->adaptor, widget->object, child->object);
 
 	glade_widget_set_packing_properties (child, widget);
+	glade_widget_set_packing_actions (child, widget);
 }
 
 static void
@@ -153,8 +178,11 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	/* Setup packing properties here so we can introspect the new
 	 * values from the backend.
 	 */
-	if (gnew_widget) 
+	if (gnew_widget)
+	{
 		glade_widget_set_packing_properties (gnew_widget, widget);
+		glade_widget_set_packing_actions (gnew_widget, widget);
+	}
 }
 
 static void
@@ -760,7 +788,13 @@ glade_widget_dispose (GObject *object)
 		g_list_foreach (widget->actions, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->actions);
 	}
-
+	
+	if (widget->packing_actions)
+	{
+		g_list_foreach (widget->packing_actions, (GFunc)g_object_unref, NULL);
+		g_list_free (widget->packing_actions);
+	}
+	
  	if (G_OBJECT_CLASS(parent_class)->dispose)
 		G_OBJECT_CLASS(parent_class)->dispose(object);
 }
@@ -3343,6 +3377,8 @@ glade_widget_set_parent (GladeWidget *widget,
 		else
 			glade_widget_sync_packing_props (widget);
 	}
+	
+	if (parent) glade_widget_set_packing_actions (widget, parent);
 
 	g_object_notify (G_OBJECT (widget), "parent");
 }
@@ -3862,6 +3898,24 @@ glade_widget_get_action (GladeWidget *widget, const gchar *action_path)
 }
 
 /**
+ * glade_widget_get_pack_action:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ *
+ * Returns a #GladeWidgetAction object indentified by @action_path.
+ *
+ * Returns: the action or NULL if not found.
+ */
+GladeWidgetAction *
+glade_widget_get_pack_action (GladeWidget *widget, const gchar *action_path)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (action_path != NULL, NULL);
+	
+	return glade_widget_action_lookup (&widget->packing_actions, action_path, FALSE);
+}
+
+/**
  * glade_widget_remove_action:
  * @widget: a #GladeWidget
  * @action_path: a full action path including groups
@@ -3875,6 +3929,22 @@ glade_widget_remove_action (GladeWidget *widget, const gchar *action_path)
 	g_return_if_fail (action_path != NULL);
 	
 	glade_widget_action_lookup (&widget->actions, action_path, TRUE);
+}
+
+/**
+ * glade_widget_remove_pack_action:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ *
+ * Remove a packing action.
+ */
+void
+glade_widget_remove_pack_action (GladeWidget *widget, const gchar *action_path)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (action_path != NULL);
+	
+	glade_widget_action_lookup (&widget->packing_actions, action_path, TRUE);
 }
 
 /**
@@ -3894,7 +3964,11 @@ glade_widget_create_action_menu (GladeWidget *widget, const gchar *action_path)
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
 	if (action_path)
+	{
 		action = glade_widget_action_lookup (&widget->actions, action_path, FALSE);
+		if (action == NULL)
+			action = glade_widget_action_lookup (&widget->packing_actions, action_path, FALSE);
+	}
 	
 	menu = gtk_menu_new ();
 	if (glade_popup_action_populate_menu (menu, widget, action))

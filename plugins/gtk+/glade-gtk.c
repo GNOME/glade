@@ -1019,6 +1019,74 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
 	}
 }
 
+static void
+glade_gtk_box_child_insert_action (GladeWidgetAdaptor *adaptor,
+				   GObject *container,
+				   GObject *object,
+				   const gchar *group_format,
+				   gboolean after)
+{
+	GladeWidget *parent, *widget;
+	GList *children, *l;
+	gint child_pos, size;
+	
+	widget = glade_widget_get_from_gobject (object);
+	glade_widget_pack_property_get (widget, "position", &child_pos);
+	
+	glade_command_push_group (group_format, glade_widget_get_name (widget));
+	
+	children = glade_widget_adaptor_get_children (adaptor, container);
+	
+	/* Expand container */
+	parent = glade_widget_get_from_gobject (container);
+	glade_widget_property_get (parent, "size", &size);
+	glade_command_set_property (glade_widget_get_property (parent, "size"),
+				    size + 1);
+	
+	/* Reoder children */
+	for (l = children; l; l = g_list_next (l))
+	{
+		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
+		gint pos;
+			
+		/* Skip placeholders */
+		if (gchild == NULL) continue;
+		
+		glade_widget_pack_property_get (gchild, "position", &pos);
+		if ((after) ? pos > child_pos : pos >= child_pos)
+			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"),
+						    pos + 1);
+				
+	}
+		
+	g_list_free (children);
+	glade_command_pop_group ();
+}
+
+void
+glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
+				     GObject            *container,
+				     GObject            *object,
+				     const gchar        *action_path)
+{
+	if (strcmp (action_path, "insert_after") == 0)
+	{
+		glade_gtk_box_child_insert_action (adaptor, container, object,
+						   _("Insert after widget %s"),
+						   TRUE);
+	}
+	else if (strcmp (action_path, "insert_before") == 0)
+	{
+		glade_gtk_box_child_insert_action (adaptor, container, object,
+						   _("Insert before widget %s"),
+						   FALSE);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+									   container,
+									   object,
+									   action_path);
+}
 
 /* ----------------------------- GtkTable ------------------------------ */
 typedef struct {
@@ -1823,6 +1891,102 @@ glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
 								     id, value);
 
 	return TRUE;
+}
+
+static void
+glade_gtk_table_child_insert_action (GladeWidgetAdaptor *adaptor,
+				     GObject *container,
+				     GObject *object,
+				     const gchar *group_format,
+				     const gchar *n_row_col,
+				     const gchar *attach1,
+				     const gchar *attach2,
+				     gboolean after)
+{
+	GladeWidget *parent, *widget;
+	GList *children, *l;
+	gint child_pos, size;
+	
+	widget = glade_widget_get_from_gobject (object);
+	glade_widget_pack_property_get (widget, attach1, &child_pos);
+	
+	glade_command_push_group (group_format, glade_widget_get_name (widget));
+		
+	children = glade_widget_adaptor_get_children (adaptor, container);
+	/* Make sure widgets does not get destroyed */
+	g_list_foreach (children, (GFunc) g_object_ref, NULL);
+	
+	/* Expand the table */
+	parent = glade_widget_get_from_gobject (container);
+	glade_widget_property_get (parent, n_row_col, &size);
+	glade_command_set_property (glade_widget_get_property (parent, n_row_col),
+				    size + 1);
+	
+	/* Reorder children */
+	for (l = children; l; l = g_list_next (l))
+	{
+		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
+		gint pos, pos2;
+			
+		/* Skip placeholders */
+		if (gchild == NULL) continue;
+		
+		glade_widget_pack_property_get (gchild, attach1, &pos);
+		if ((after) ? pos > child_pos : pos >= child_pos)
+		{
+			glade_widget_pack_property_get (gchild, attach2, &pos2);
+			glade_command_set_property (glade_widget_get_pack_property (gchild, attach1),
+						    pos + 1);
+			glade_command_set_property (glade_widget_get_pack_property (gchild, attach2),
+						    pos2 + 1);
+		}
+	}
+	
+	g_list_foreach (children, (GFunc) g_object_unref, NULL);
+	g_list_free (children);
+	
+	glade_command_pop_group ();
+}
+
+void
+glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
+				       GObject            *container,
+				       GObject            *object,
+				       const gchar        *action_path)
+{
+	if (strcmp (action_path, "insert_row/after") == 0)
+	{
+		glade_gtk_table_child_insert_action (adaptor, container, object,
+						     _("Insert Row after widget %s"),
+						     "n-rows","top-attach",
+						     "bottom-attach", TRUE);
+	}
+	else if (strcmp (action_path, "insert_row/before") == 0)
+	{
+		glade_gtk_table_child_insert_action (adaptor, container, object,
+						     _("Insert Row before widget %s"),
+						     "n-rows","top-attach",
+						     "bottom-attach", FALSE);
+	}
+	else if (strcmp (action_path, "insert_column/after") == 0)
+	{
+		glade_gtk_table_child_insert_action (adaptor, container, object,
+						     _("Insert Column after widget %s"),
+						     "n-columns","right-attach",
+						     "left-attach", TRUE);
+	}
+	else if (strcmp (action_path, "insert_column/before") == 0)
+	{
+		glade_gtk_table_child_insert_action (adaptor, container, object,
+						     _("Insert Column before widget %s"),
+						     "n-columns","right-attach",
+						     "left-attach", FALSE);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+									   container,
+									   object,
+									   action_path);
 }
 
 /* ----------------------------- GtkFrame ------------------------------ */
