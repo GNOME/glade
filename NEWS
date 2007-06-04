@@ -1,4 +1,115 @@
 ===========
+Glade 3.3.0
+===========
+    - Allow plugin authors to add context menu items for thier widgets
+      (one entry point to act upon a widget, and another to operate on
+      a widget's child). - Juan Pablo Ugarte
+    - Insert before/after context menu actions for GtkBox & GtkTable (bug 438881) - Juan Pablo Ugarte
+
+===========
+Glade 3.2.2
+===========
+    - Allow properties to be marked "save-always" in the catalog - Juan Pablo Ugarte
+    - Set "save-always" on these properties:
+      o GtkDialog's "type-hint" - Juan Pablo Ugarte
+      o GtkScrolledWindow's "can-focus" - Juan Pablo Ugarte
+      o GtkPaned's "resize" and "shrink" (bug 364215) - Tristan Van Berkom
+      o GtkButton's "response-id" (bug 410272) -Tristan Van Berkom
+    - Now list all activatable signals in the Accelerator key dialog.
+
+New and updated translations
+============================
+    - Theppitak Karoonboonyanan (th)
+
+
+===========
+Glade 3.2.1
+===========
+    - Some win32 build issues fixed - Olivier Delhomme
+    - Add "GNOME" to Categories (love bug 417618) - Bruno Boaventura
+    - Property ordering fixed (bug 396436) - Juan Pablo Ugarte/Christian Persch
+    - "label" property of GtkToolButton now translatable - Tristan Van Berkom
+    - dont use sscanf in (de)serialization (bug 424547) - Christian Persch/Ivan Baldo
+    - workaround "hierarchy-changed" signal crashes in filechooserdialog (bug 415021) - Juan Pablo Ugarte
+    - unichar property charachers now properly displayed - Juan Pablo Ugarte
+    - Cut/Pasted widgets now behave as expected (bug 432519) - Tristan Van Berkom
+    - Inspector expands/scrolls to position upon selections (bug 392225) - Vincent Geddes
+    - Negative integer properties work properly now (bug 434207) - Jeff Westerinen
+    - Workaround for inputdialog crashes (bug 433975) - Juan Pablo Ugarte
+    - Fixed some irrelevent runtime warnings - Juan Pablo Ugarte
+
+New and updated translations
+============================
+    - Leonardo Ferreira Fontenelle (pt_BR)
+    - Ilkka Tuohela (fi)
+    - Simos Xenitellis, Nikos Charonitakis (el)
+    - Abel Cheung (zh_HK, zh_TW)
+    - Daniel Nylander (sv)
+    - Maxim Dziumanenko (uk)
+    - Luca Ferretti (it)
+    - Djihed Afifi (ar)
+    - Ani Peter (ml)
+    - Takeshi AIHANA (ja)
+    - Nickolay V. Shmyrev (ru)
+    - Jovan Naumovski (mk)
+    - Alexander Shopov (bg)
+    - David Lodge (en_GB)
+    - Gabor Kelemen (hu)
+    - Duarte Loreto (pt)
+    - Gintautas Miliauskas (lt)
+    - Stéphane Raimbault (fr)
+    - Laurent Dhima (sq)
+    - Pema Geyleg (dz)
+    - Jorge Gonzalez, Claudio Saavedra (es)
+    - Kjartan Maraas (nb)
+    - Peter Bach (da)
+
+
+===========
+Glade 3.2.0
+===========
+    - Fixed sources to build with gcc 2.95 (bug 406504) - Jens Granseuer
+    - Fixed the imfamous: "Not able to set label and stock separately 
+      in GtkImageMenuItems" (bug 397043) - Juan Pablo Ugarte
+    - Added remaining missing icons - Vincent Geddes
+    - Use locale independent integer and float parsing routines (bug 396433) - Christian Persch
+    - Save some properties unconditionally, fixes (bug 412848) - Tristan Van Berkom
+    - Revived accelerator & atk relationset properties (bug 383121) - Tristan Van Berkom
+    - other bug fixes by Nickolay V. Shmyrev, Christian Persch, Vincent Geddes, Halton Huo
+
+New and updated translations
+============================
+    - Duarte Loreto (pt)
+    - Djihed Afifi (ar)
+    - David Lodge (en_GB)
+    - Daniel Nylander (sv)
+    - Nguyễn Thái Ngọc Duy (vi)
+    - Artur Flinta (pl)
+    - Stéphane Raimbault (fr)
+    - Takeshi AIHANA (ja)
+    - Ilkka Tuohela (fi)
+    - Nickolay V. Shmyrev (ru)
+    - Changwoo Ryu (ko)
+    - Ignacio Casal Quinteiro (gl)
+    - Kjartan Maraas (nb)
+    - Duarte Loreto (pt)
+    - Ole Laursen (da)
+    - Hendrik Brandt (de)
+    - Jovan Naumovski (mk)
+    - Raphael Higino, Leonardo Ferreira Fontenelle (pt_BR)
+    - Theppitak Karoonboonyanan (th)
+    - Gabor Kelemen (hu)
+    - Gintautas Miliauskas, Žygimantas Beručka (lt)
+    - Josep Puigdemont i Casamajó (ca)
+    - Alexander Shopov (bg)
+    - Ani Peter (ml)
+    - Luca Ferretti (it)
+    - Maxim Dziumanenko (uk)
+    - Abel Cheung (zh_HK, zh_TW)
+    - Nikos Charonitakis, Simos Xenitellis (el)
+    - Ilkka Tuohela (fi)
+
+===========
 Glade 3.1.5
 ===========
 
@@ -46,7 +157,7 @@ New and updated translations
     - A S Alam (pa)
     - Takeshi AIHANA (ja)
     - Duarte Loreto (pt)
-    - Jonathan Ernst, Claude Paroz and St�phane Raimbault (fr)
+    - Jonathan Ernst, Claude Paroz and Stéphane Raimbault (fr)
     - Supranee Thirawatthanasuk, Theppitak Karoonboonyanan (th)
     - Jordi Mas (ca)
 
@@ -110,11 +221,11 @@ New features and fixes
     - Added core support for plugins to implement actions on the context menu,
       AND support for scripted context menu actions (Juan Pablo Ugarte)
     - Cleanup of gnome catalog code (Juan Pable Ugarte)
-    - Misc bugfixes by Vincent, Juan Pablo, Andreas K�hler and myself.
+    - Misc bugfixes by Vincent, Juan Pablo, Andreas Köhler and myself.
 
 New and updated translations
 ============================
-    - Josep Puigdemont i Casamaj� (ca)
+    - Josep Puigdemont i Casamajó (ca)
 
 
 ===========
@@ -151,7 +262,7 @@ New and updated translations
     - Abel Cheung (zh_HK, zh_TW)
     - Francisco Javier F. Serrador (es)
     - Ignacio Casal Quinteiro (gl)
-    - Josep Puigdemont i Casamaj� (ca)
+    - Josep Puigdemont i Casamajó (ca)
     - Djihed Afifi (ar)
 
 ===========
@@ -369,7 +480,7 @@ Contributors:
  o Kjartan Maraas
  o Michael Meeks
  o James Willcox
- o Joaqu�n Cuenca Abela
+ o Joaquín Cuenca Abela
  o Paolo Borelli
  o Tommi Komulainen
  o Damon Chaplin

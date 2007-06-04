@@ -48,7 +48,7 @@ AM_PROG_LIBTOOL
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
 GLADE_REVISION=0
-GLADE_CURRENT=5
+GLADE_CURRENT=6
 GLADE_AGE=0
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)
