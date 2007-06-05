@@ -952,6 +952,12 @@ embedded in another object</_tooltip>
       <special-child-type>type</special-child-type>
       <set-property-function>glade_gtk_notebook_set_property</set-property-function>
       <verify-property-function>glade_gtk_notebook_verify_property</verify-property-function>
+      <child-action-activate-function>glade_gtk_notebook_child_action_activate</child-action-activate-function>
+
+      <packing-actions>
+        <action id="insert_page_before" name="Insert Page Before"/>
+        <action id="insert_page_after" name="Insert Page After"/>
+      </packing-actions>
 
       <properties>
 	<property id="page" save="False">
