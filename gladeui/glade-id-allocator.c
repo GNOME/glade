@@ -113,9 +113,9 @@ first_set_bit (guint32 word)
 guint
 glade_id_allocator_allocate (GladeIDAllocator *allocator)
 {
-	g_return_val_if_fail (allocator != NULL, 0);
-
 	guint i;
+
+	g_return_val_if_fail (allocator != NULL, 0);
 
 	for (i = 0; i < allocator->n_words; i++)
 	{
