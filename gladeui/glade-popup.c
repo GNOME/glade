@@ -180,7 +180,7 @@ glade_popup_menuitem_activated (GtkMenuItem *item, const gchar *action_path)
 {
 	GladeWidget *widget;
 	
-	if ((widget = g_object_get_data (G_OBJECT (item), "glade-widget")))
+	if ((widget = g_object_get_data (G_OBJECT (item), "gwa-data")))
 		glade_widget_adaptor_action_activate (widget->adaptor,
 						      widget->object,
 						      action_path);
@@ -191,26 +191,40 @@ glade_popup_menuitem_packing_activated (GtkMenuItem *item, const gchar *action_p
 {
 	GladeWidget *widget;
 	
-	if ((widget = g_object_get_data (G_OBJECT (item), "glade-widget")))
+	if ((widget = g_object_get_data (G_OBJECT (item), "gwa-data")))
 		glade_widget_adaptor_child_action_activate (widget->parent->adaptor,
 							    widget->parent->object,
 							    widget->object,
 							    action_path);
 }
 
+static void
+glade_popup_menuitem_ph_packing_activated (GtkMenuItem *item, const gchar *action_path)
+{
+	GladePlaceholder *ph;
+	GladeWidget *parent;
+	
+	if ((ph = g_object_get_data (G_OBJECT (item), "gwa-data")))
+	{
+		parent = glade_placeholder_get_parent (ph);
+		glade_widget_adaptor_child_action_activate (parent->adaptor,
+							    parent->object,
+							    G_OBJECT (ph),
+							    action_path);
+	}
+}
+
 static gint
 glade_popup_action_populate_menu_real (GtkWidget *menu,
-				       GladeWidget *widget,
-				       GladeWidgetAction *action,
-				       gboolean packing)
+				       GList *actions,
+				       GCallback callback,
+				       gpointer data)
 {
 	GtkWidget *item;
 	GList *list;
 	gint n = 0;
 
-	for (list = (action) ? action->actions : (packing) ? widget->packing_actions : widget->actions;
-	     list;
-	     list = g_list_next (list))
+	for (list = actions; list; list = g_list_next (list))
 	{
 		GladeWidgetAction *a = list->data;
 		GtkWidget *submenu = NULL;
@@ -218,18 +232,19 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
 		if (a->actions)
 		{
 			submenu = gtk_menu_new ();
-			n += glade_popup_action_populate_menu_real (submenu, widget, a, packing);
+			n += glade_popup_action_populate_menu_real (submenu,
+								    a->actions,
+								    callback,
+								    data);
 		}
 				
 		item = glade_popup_append_item (menu, 
-				a->klass->stock,
-				a->klass->label, TRUE,
-				(a->actions) ? NULL : (packing)
-					? glade_popup_menuitem_packing_activated
-					: glade_popup_menuitem_activated,
-				(a->actions) ? NULL : a->klass->path);
+						a->klass->stock,
+						a->klass->label, TRUE,
+						(a->actions) ? NULL : callback,
+						(a->actions) ? NULL : a->klass->path);
 		
-		g_object_set_data (G_OBJECT (item), "glade-widget", widget);
+		g_object_set_data (G_OBJECT (item), "gwa-data", data);
 		gtk_widget_set_sensitive (item, a->sensitive);
 		
 		if (submenu)
@@ -265,15 +280,24 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 	{
 		g_return_val_if_fail (GLADE_IS_WIDGET_ACTION (action), 0);
 		if (glade_widget_get_action (widget, action->klass->path))
-			return glade_popup_action_populate_menu_real (menu, widget, action, FALSE);
+			return glade_popup_action_populate_menu_real (menu,
+								      action->actions,
+								      G_CALLBACK (glade_popup_menuitem_activated),
+								      widget);
 		
 		if (glade_widget_get_pack_action (widget, action->klass->path))
-			return glade_popup_action_populate_menu_real (menu, widget, action, TRUE);
-		
+			return glade_popup_action_populate_menu_real (menu,
+								      action->actions,
+								      G_CALLBACK (glade_popup_menuitem_packing_activated),
+								      widget);
+
 		return 0;
 	}
 	
-	n = glade_popup_action_populate_menu_real (menu, widget, action, FALSE);
+	n = glade_popup_action_populate_menu_real (menu,
+						   widget->actions,
+						   G_CALLBACK (glade_popup_menuitem_activated),
+						   widget);
 	
 	if (widget->packing_actions)
 	{
@@ -283,7 +307,10 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
 			gtk_widget_show (separator);
 		}
-		n += glade_popup_action_populate_menu_real (menu, widget, action, TRUE);
+		n += glade_popup_action_populate_menu_real (menu,
+							    widget->packing_actions,
+							    G_CALLBACK (glade_popup_menuitem_packing_activated),
+							    widget);
 	}
 	
 	return n;
@@ -335,6 +362,18 @@ glade_popup_create_placeholder_menu (GladePlaceholder *placeholder)
 	glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
 				 glade_popup_placeholder_paste_cb, placeholder);
 
+	if (placeholder->packing_actions)
+	{
+		GtkWidget *separator = gtk_menu_item_new ();
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+		gtk_widget_show (separator);
+
+		glade_popup_action_populate_menu_real (popup_menu,
+						       placeholder->packing_actions,
+						       G_CALLBACK (glade_popup_menuitem_ph_packing_activated),
+						       placeholder);
+	}
+	
 	return popup_menu;
 }
 

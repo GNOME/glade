@@ -608,6 +608,8 @@ gboolean             glade_widget_adaptor_action_remove      (GladeWidgetAdaptor
 gboolean             glade_widget_adaptor_pack_action_remove (GladeWidgetAdaptor *adaptor,
 							      const gchar *action_path);
 
+GList               *glade_widget_adaptor_pack_actions_new   (GladeWidgetAdaptor *adaptor);
+
 void                 glade_widget_adaptor_action_activate    (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,
 							      const gchar        *action_path);

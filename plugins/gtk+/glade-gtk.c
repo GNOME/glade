@@ -1027,21 +1027,22 @@ glade_gtk_box_notebook_child_insert_action (GladeWidgetAdaptor *adaptor,
 					    const gchar *group_format,
 					    gboolean after)
 {
-	GladeWidget *parent, *widget;
+	GladeWidget *parent;
 	GList *children, *l;
 	gint child_pos, size;
 	
-	widget = glade_widget_get_from_gobject (object);
-	glade_widget_pack_property_get (widget, "position", &child_pos);
+	gtk_container_child_get (GTK_CONTAINER (container),
+				 GTK_WIDGET (object),
+				 "position", &child_pos, NULL);
 	
-	glade_command_push_group (group_format, glade_widget_get_name (widget));
+	parent = glade_widget_get_from_gobject (container);
+	glade_command_push_group (group_format, glade_widget_get_name (parent));
 	
 	children = glade_widget_adaptor_get_children (adaptor, container);
 	/* Make sure widgets does not get destroyed */
 	g_list_foreach (children, (GFunc) g_object_ref, NULL);
 	
 	/* Expand container */
-	parent = glade_widget_get_from_gobject (container);
 	glade_widget_property_get (parent, size_prop, &size);
 	glade_command_set_property (glade_widget_get_property (parent, size_prop),
 				    size + 1);
@@ -1076,14 +1077,14 @@ glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
 	{
 		glade_gtk_box_notebook_child_insert_action (adaptor, container,
 							    object, "size",
-							    _("Insert after widget %s"),
+							    _("Insert placeholder to %s"),
 							    TRUE);
 	}
 	else if (strcmp (action_path, "insert_before") == 0)
 	{
 		glade_gtk_box_notebook_child_insert_action (adaptor, container,
 							    object, "size",
-							    _("Insert before widget %s"),
+							    _("Insert placeholder to %s"),
 							    FALSE);
 	}
 	else
@@ -1908,21 +1909,22 @@ glade_gtk_table_child_insert_action (GladeWidgetAdaptor *adaptor,
 				     const gchar *attach2,
 				     gboolean after)
 {
-	GladeWidget *parent, *widget;
+	GladeWidget *parent;
 	GList *children, *l;
 	gint child_pos, size;
 	
-	widget = glade_widget_get_from_gobject (object);
-	glade_widget_pack_property_get (widget, attach1, &child_pos);
+	gtk_container_child_get (GTK_CONTAINER (container),
+				 GTK_WIDGET (object),
+				 attach1, &child_pos, NULL);
 	
-	glade_command_push_group (group_format, glade_widget_get_name (widget));
+	parent = glade_widget_get_from_gobject (container);
+	glade_command_push_group (group_format, glade_widget_get_name (parent));
 		
 	children = glade_widget_adaptor_get_children (adaptor, container);
 	/* Make sure widgets does not get destroyed */
 	g_list_foreach (children, (GFunc) g_object_ref, NULL);
 	
 	/* Expand the table */
-	parent = glade_widget_get_from_gobject (container);
 	glade_widget_property_get (parent, n_row_col, &size);
 	glade_command_set_property (glade_widget_get_property (parent, n_row_col),
 				    size + 1);
@@ -1962,28 +1964,28 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
 	if (strcmp (action_path, "insert_row/after") == 0)
 	{
 		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Row after widget %s"),
+						     _("Insert Row on %s"),
 						     "n-rows","top-attach",
 						     "bottom-attach", TRUE);
 	}
 	else if (strcmp (action_path, "insert_row/before") == 0)
 	{
 		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Row before widget %s"),
+						     _("Insert Row on %s"),
 						     "n-rows","top-attach",
 						     "bottom-attach", FALSE);
 	}
 	else if (strcmp (action_path, "insert_column/after") == 0)
 	{
 		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Column after widget %s"),
+						     _("Insert Column on %s"),
 						     "n-columns","right-attach",
 						     "left-attach", TRUE);
 	}
 	else if (strcmp (action_path, "insert_column/before") == 0)
 	{
 		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Column before widget %s"),
+						     _("Insert Column on %s"),
 						     "n-columns","right-attach",
 						     "left-attach", FALSE);
 	}
@@ -2795,14 +2797,14 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
 	{
 		glade_gtk_box_notebook_child_insert_action (adaptor, container,
 							    object, "pages",
-							    _("Insert page after widget %s"),
+							    _("Insert page on %s"),
 							    TRUE);
 	}
 	else if (strcmp (action_path, "insert_page_before") == 0)
 	{
 		glade_gtk_box_notebook_child_insert_action (adaptor, container,
 							    object, "pages",
-							    _("Insert page before widget %s"),
+							    _("Insert page on %s"),
 							    FALSE);
 	}
 	else

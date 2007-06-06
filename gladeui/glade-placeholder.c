@@ -120,9 +120,29 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 }
 
 static void
+glade_placeholder_notify_parent (GObject    *gobject,
+				 GParamSpec *arg1,
+				 gpointer    user_data)
+{
+	GladePlaceholder *placeholder = GLADE_PLACEHOLDER (gobject);
+	GladeWidget *parent = glade_placeholder_get_parent (placeholder);
+	
+	if (placeholder->packing_actions)
+	{
+		g_list_foreach (placeholder->packing_actions, (GFunc)g_object_unref, NULL);
+		g_list_free (placeholder->packing_actions);
+		placeholder->packing_actions = NULL;
+	}
+	
+	if (parent && parent->adaptor->packing_actions)
+		placeholder->packing_actions = glade_widget_adaptor_pack_actions_new (parent->adaptor);	
+}
+
+static void
 glade_placeholder_init (GladePlaceholder *placeholder)
 {
 	placeholder->placeholder_pixmap = NULL;
+	placeholder->packing_actions = NULL;
 
 	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (placeholder), GTK_CAN_FOCUS);
 
@@ -130,6 +150,10 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 				     GLADE_PLACEHOLDER_WIDTH_REQ,
 				     GLADE_PLACEHOLDER_HEIGHT_REQ);
 
+	g_signal_connect (placeholder, "notify::parent",
+			  G_CALLBACK (glade_placeholder_notify_parent),
+			  NULL);
+	
 	gtk_widget_show (GTK_WIDGET (placeholder));
 }
 
@@ -157,6 +181,12 @@ glade_placeholder_finalize (GObject *object)
 	if (placeholder->placeholder_pixmap)
 		g_object_unref (placeholder->placeholder_pixmap);
 
+	if (placeholder->packing_actions)
+	{
+		g_list_foreach (placeholder->packing_actions, (GFunc)g_object_unref, NULL);
+		g_list_free (placeholder->packing_actions);
+	}
+	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

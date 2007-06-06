@@ -112,8 +112,6 @@ static GQuark        glade_widget_name_quark = 0;
 static void
 glade_widget_set_packing_actions (GladeWidget *widget, GladeWidget *parent)
 {
-	GList *l;
-	
 	if (widget->packing_actions)
 	{
 		g_list_foreach (widget->packing_actions, (GFunc)g_object_unref, NULL);
@@ -121,16 +119,8 @@ glade_widget_set_packing_actions (GladeWidget *widget, GladeWidget *parent)
 		widget->packing_actions = NULL;
 	}
 	
-	for (l = parent->adaptor->packing_actions; l; l = g_list_next (l))
-	{
-		GWActionClass *action = l->data;
-		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
-					     "class", action, NULL);
-		
-		widget->packing_actions = g_list_prepend (widget->packing_actions,
-							  GLADE_WIDGET_ACTION (obj));
-	}
-	widget->packing_actions = g_list_reverse (widget->packing_actions);
+	if (parent->adaptor->packing_actions)
+		widget->packing_actions = glade_widget_adaptor_pack_actions_new (parent->adaptor);
 }
 
 static void

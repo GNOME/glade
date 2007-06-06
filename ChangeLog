@@ -1,5 +1,17 @@
 2007-06-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
+	* gladeui/glade-placeholder.[ch]: added packing action list to GladePlaceholder
+
+	* gladeui/glade-popup.c: added packing actions to placeholder popup
+
+	* gladeui/glade-widget-adaptor.[ch]: added glade_widget_adaptor_pack_actions_new ()
+
+	* gladeui/glade-widget.c: use new function glade_widget_adaptor_pack_actions_new () in
+	  glade_widget_set_packing_actions()
+
+	* plugins/gtk+/glade-gtk.c: take into acount placeholders get paking actions
+	  glade_gtk_box_notebook_child_insert_action() and glade_gtk_table_child_insert_action() fixed.
+
 	* gladeui/glade-app.[ch], gladeui/Makefile.am: removed every reference to 
 	  binding script directory. (bug #444605)
 

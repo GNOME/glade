@@ -2572,6 +2572,33 @@ glade_widget_adaptor_pack_action_remove (GladeWidgetAdaptor *adaptor,
 							action_path);
 }
 
+
+/**
+ * glade_widget_adaptor_pack_actions_new:
+ * @adaptor: A #GladeWidgetAdaptor
+ *
+ * Create a list of packing actions.
+ *
+ * Returns: a new list of GladeWidgetAction.
+ */
+GList *
+glade_widget_adaptor_pack_actions_new (GladeWidgetAdaptor *adaptor)
+{
+	GList *l, *list = NULL;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+	
+	for (l = adaptor->packing_actions; l; l = g_list_next (l))
+	{
+		GWActionClass *action = l->data;
+		GObject *obj = g_object_new (GLADE_TYPE_WIDGET_ACTION,
+					     "class", action, NULL);
+		
+		list = g_list_prepend (list, GLADE_WIDGET_ACTION (obj));
+	}
+	return g_list_reverse (list);
+}
+
 /**
  * glade_widget_adaptor_action_activate:
  * @adaptor:   A #GladeWidgetAdaptor

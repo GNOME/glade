@@ -26,6 +26,8 @@ struct _GladePlaceholder
 	GtkWidget widget;
 
 	GdkPixmap *placeholder_pixmap;
+	
+	GList *packing_actions;
 };
 
 struct _GladePlaceholderClass
