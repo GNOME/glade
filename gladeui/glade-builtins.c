@@ -110,7 +110,10 @@ list_stock_items (gboolean include_images)
 	values = g_array_append_val (values, value);
 	
 	/* We want gtk+ stock items to appear first */
-	stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
+	if ((stock_prefixs && strcmp (stock_prefixs->data, "gtk-")) ||
+	    stock_prefixs == NULL)
+		stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
+	
 	for (p = stock_prefixs; p; p = g_slist_next (p))
 	{
 		prefix = p->data;

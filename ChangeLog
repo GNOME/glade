@@ -1,5 +1,8 @@
 2007-06-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
+	* gladeui/glade-builtins.c: in list_stock_items() "gtk-" prefix must be prepended just once.
+	  otherwise gtk items gets listed twice!
+
 	* gladeui/glade-placeholder.[ch]: added packing action list to GladePlaceholder
 
 	* gladeui/glade-popup.c: added packing actions to placeholder popup
