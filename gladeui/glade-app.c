@@ -83,7 +83,6 @@ struct _GladeAppPrivate
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 
 /* installation paths */
-static gchar *scripts_dir  = NULL;
 static gchar *catalogs_dir = NULL;
 static gchar *modules_dir  = NULL;
 static gchar *bindings_dir = NULL;
@@ -161,8 +160,7 @@ static void
 glade_app_finalize (GObject *app)
 {
 
-#ifdef G_OS_WIN32 
-	g_free (scripts_dir);
+#ifdef G_OS_WIN32
 	g_free (catalogs_dir);
 	g_free (modules_dir);
 	g_free (bindings_dir);
@@ -311,14 +309,6 @@ glade_app_config_load (GladeApp *app)
 }
 
 const gchar *
-glade_app_get_scripts_dir (void)
-{
-	glade_init_check ();
-
-	return scripts_dir;
-}
-
-const gchar *
 glade_app_get_catalogs_dir (void)
 {
 	glade_init_check ();
@@ -375,7 +365,6 @@ build_package_paths (void)
 	gchar *prefix;
 	
 	prefix = g_win32_get_package_installation_directory (NULL, NULL);
-	scripts_dir  = g_build_filename (prefix, "share", PACKAGE, GLADE_BINDING_SCRIPT_DIR, NULL);
 	pixmaps_dir  = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
 	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
@@ -383,7 +372,6 @@ build_package_paths (void)
 	locale_dir   = g_build_filename (prefix, "share", "locale", NULL);
 	g_free (prefix);
 #else
-	scripts_dir  = g_strdup (GLADE_SCRIPTSDIR);
 	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
 	modules_dir  = g_strdup (GLADE_MODULESDIR);
 	bindings_dir = g_strdup (GLADE_BINDINGSDIR);

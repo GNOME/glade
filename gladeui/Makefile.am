@@ -7,7 +7,6 @@ common_defines = \
 	-DGLADE_PLUGINSDIR="\"$(pkglibdir)/plugins\""	\
 	-DGLADE_BINDINGSDIR="\"$(pkglibdir)/bindings\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
-	-DGLADE_SCRIPTSDIR="\"$(pkgdatadir)/scripts\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""
 
 lib_LTLIBRARIES = libgladeui-1.la

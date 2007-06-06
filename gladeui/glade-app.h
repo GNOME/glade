@@ -168,8 +168,6 @@ void               glade_app_selection_changed (void);
 
 /* package paths */
 
-const gchar       *glade_app_get_scripts_dir   (void) G_GNUC_CONST;
-
 const gchar       *glade_app_get_catalogs_dir  (void) G_GNUC_CONST;
 
 const gchar       *glade_app_get_modules_dir   (void) G_GNUC_CONST;
