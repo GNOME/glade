@@ -61,7 +61,7 @@ glade_binding_load_all (void)
 	GDir *dir;
 
 	/* Read all files in bindings dir */
-	if ((dir = g_dir_open (glade_app_get_bindings_dir (), 0, &error))) 
+	if ((dir = g_dir_open (glade_app_get_bindings_dir (), 0, &error)) == NULL) 
 	{
 		g_error_free (error);
 		return;
