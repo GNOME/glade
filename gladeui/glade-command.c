@@ -1117,25 +1117,33 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 			if (cdata->parent != NULL)
 			{
 				/* Prepare special-child-type for the paste. */
-				if (cdata->props_recorded == FALSE)
+				if (me->from_clipboard)
 				{
-					/* Clear it the first time */
-					g_object_set_data (cdata->widget->object,
-							   "special-child-type", NULL);
+					if (cdata->props_recorded == FALSE)
+					{
+						/* Clear it the first time */
+						g_object_set_data (cdata->widget->object,
+								   "special-child-type", NULL);
+					}
+					else
+					{
+						g_object_set_data_full (cdata->widget->object, 
+									"special-child-type",
+									g_strdup (cdata->special_type), 
+									g_free);
+					}
 				}
-				else
-				{
-					g_object_set_data_full (cdata->widget->object, 
-								"special-child-type",
-								g_strdup (cdata->special_type), 
-								g_free);
-				}
-
+				
 				/* Only transfer properties when they are from the clipboard,
 				 * otherwise prioritize packing defaults. 
 				 */
 				if (me->from_clipboard)
-					saved_props = glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
+				{
+					saved_props =
+						glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
+					
+					glade_widget_set_packing_properties (cdata->widget, cdata->parent);
+				}
 
 				/* glade_command_paste ganauntees that if 
 				 * there we are pasting to a placeholder, 

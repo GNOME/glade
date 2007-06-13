@@ -1,6 +1,15 @@
+2006-06-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-command.c: 
+	  - Fixed cut/paste inside notebooks (widgets wanted to stay on the same page they 
+	    were cut from)
+	  - Fixed special-child-type handling, dont stomp on the special child type for a
+	    delete/undo combination (a tab widget deleted and brought back was showing up
+	    in the page).
+
 2006-06-13  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * plugins/gtk+/gtk+.xml.in: HIG: Use "Edit.." instead of "Edit Menu", and so on.
+	* plugins/gtk+/gtk+.xml.in: HIG: Use "Edit.." instead of "Edit Menu", and so on.
 
 	* configure.ac: Calculate libtool CURRENT-minus-AGE value.
 	
