@@ -1,4 +1,22 @@
-2006-06-06  Tristan Van Berkom <tvb@gnome.org>
+2007-06-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget-adaptor.c: added some extra checks in 
+	  glade_widget_adaptor_action_add_real()
+
+	* plugins/gtk+/glade-gtk.c: added new actions support code
+	  - glade_gtk_box_notebook_child_insert_action() renamed to
+	    glade_gtk_box_notebook_child_insert_remove_action()
+
+	  - glade_gtk_table_child_insert_action() renamed to 
+	    glade_gtk_table_child_insert_remove_action()
+
+	* plugins/gtk+/gtk+.xml.in: added new actions
+
+	  - GtkTable remove_row and remove_column
+
+	  - GtkNotebook remove_page
+
+2006-06-13  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: 
 	  - Fixed cut/paste inside notebooks (widgets wanted to stay on the same page they 

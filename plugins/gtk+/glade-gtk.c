@@ -1020,52 +1020,13 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
 }
 
 static void
-glade_gtk_box_notebook_child_insert_action (GladeWidgetAdaptor *adaptor,
-					    GObject *container,
-					    GObject *object,
-					    const gchar *size_prop,
-					    const gchar *group_format,
-					    gboolean after)
-{
-	GladeWidget *parent;
-	GList *children, *l;
-	gint child_pos, size;
-	
-	gtk_container_child_get (GTK_CONTAINER (container),
-				 GTK_WIDGET (object),
-				 "position", &child_pos, NULL);
-	
-	parent = glade_widget_get_from_gobject (container);
-	glade_command_push_group (group_format, glade_widget_get_name (parent));
-	
-	children = glade_widget_adaptor_get_children (adaptor, container);
-	/* Make sure widgets does not get destroyed */
-	g_list_foreach (children, (GFunc) g_object_ref, NULL);
-	
-	/* Expand container */
-	glade_widget_property_get (parent, size_prop, &size);
-	glade_command_set_property (glade_widget_get_property (parent, size_prop),
-				    size + 1);
-	
-	/* Reoder children */
-	for (l = children; l; l = g_list_next (l))
-	{
-		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
-		gint pos;
-			
-		/* Skip placeholders */
-		if (gchild == NULL) continue;
-		
-		glade_widget_pack_property_get (gchild, "position", &pos);
-		if ((after) ? pos > child_pos : pos >= child_pos)
-			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"),
-						    pos + 1);
-	}
-	
-	g_list_foreach (children, (GFunc) g_object_unref, NULL);
-	g_list_free (children);
-	glade_command_pop_group ();
-}
+glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
+						   GObject *container,
+						   GObject *object,
+						   const gchar *size_prop,
+						   const gchar *group_format,
+						   gboolean remove,
+						   gboolean after);
 
 void
 glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
@@ -1075,17 +1036,17 @@ glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
 {
 	if (strcmp (action_path, "insert_after") == 0)
 	{
-		glade_gtk_box_notebook_child_insert_action (adaptor, container,
-							    object, "size",
-							    _("Insert placeholder to %s"),
-							    TRUE);
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "size",
+								   _("Insert placeholder to %s"),
+								   FALSE, TRUE);
 	}
 	else if (strcmp (action_path, "insert_before") == 0)
 	{
-		glade_gtk_box_notebook_child_insert_action (adaptor, container,
-							    object, "size",
-							    _("Insert placeholder to %s"),
-							    FALSE);
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "size",
+								   _("Insert placeholder to %s"),
+								   FALSE, FALSE);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
@@ -1900,18 +1861,19 @@ glade_gtk_table_child_verify_property (GladeWidgetAdaptor *adaptor,
 }
 
 static void
-glade_gtk_table_child_insert_action (GladeWidgetAdaptor *adaptor,
-				     GObject *container,
-				     GObject *object,
-				     const gchar *group_format,
-				     const gchar *n_row_col,
-				     const gchar *attach1,
-				     const gchar *attach2,
-				     gboolean after)
+glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
+					    GObject *container,
+					    GObject *object,
+					    const gchar *group_format,
+					    const gchar *n_row_col,
+					    const gchar *attach1,
+					    const gchar *attach2,
+					    gboolean remove,
+					    gboolean after)
 {
 	GladeWidget *parent;
 	GList *children, *l;
-	gint child_pos, size;
+	gint child_pos, size, offset;
 	
 	gtk_container_child_get (GTK_CONTAINER (container),
 				 GTK_WIDGET (object),
@@ -1924,10 +1886,37 @@ glade_gtk_table_child_insert_action (GladeWidgetAdaptor *adaptor,
 	/* Make sure widgets does not get destroyed */
 	g_list_foreach (children, (GFunc) g_object_ref, NULL);
 	
-	/* Expand the table */
 	glade_widget_property_get (parent, n_row_col, &size);
-	glade_command_set_property (glade_widget_get_property (parent, n_row_col),
-				    size + 1);
+	
+	if (remove)
+	{
+		GList *del = NULL;
+		/* Remove children first */
+		for (l = children; l; l = g_list_next (l))
+		{
+			GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
+			gint pos;
+			
+			/* Skip placeholders */
+			if (gchild == NULL) continue;
+		
+			glade_widget_pack_property_get (gchild, attach1, &pos);
+			if (pos == child_pos) del = g_list_prepend (del, gchild);
+		}
+		if (del)
+		{
+			glade_command_delete (del);
+			g_list_free (del);
+		}
+		offset = -1;
+	}
+	else
+	{
+		/* Expand the table */
+		glade_command_set_property (glade_widget_get_property (parent, n_row_col),
+					    size + 1);
+		offset = 1;
+	}
 	
 	/* Reorder children */
 	for (l = children; l; l = g_list_next (l))
@@ -1943,10 +1932,17 @@ glade_gtk_table_child_insert_action (GladeWidgetAdaptor *adaptor,
 		{
 			glade_widget_pack_property_get (gchild, attach2, &pos2);
 			glade_command_set_property (glade_widget_get_pack_property (gchild, attach1),
-						    pos + 1);
+						    pos + offset);
 			glade_command_set_property (glade_widget_get_pack_property (gchild, attach2),
-						    pos2 + 1);
+						    pos2 + offset);
 		}
+	}
+	
+	if (remove)
+	{
+		/* Shrink the table */
+		glade_command_set_property (glade_widget_get_property (parent, n_row_col),
+					    size - 1);
 	}
 	
 	g_list_foreach (children, (GFunc) g_object_unref, NULL);
@@ -1963,31 +1959,51 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
 {
 	if (strcmp (action_path, "insert_row/after") == 0)
 	{
-		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Row on %s"),
-						     "n-rows","top-attach",
-						     "bottom-attach", TRUE);
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Insert Row on %s"),
+							    "n-rows","top-attach",
+							    "bottom-attach",
+							    FALSE, TRUE);
 	}
 	else if (strcmp (action_path, "insert_row/before") == 0)
 	{
-		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Row on %s"),
-						     "n-rows","top-attach",
-						     "bottom-attach", FALSE);
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Insert Row on %s"),
+							    "n-rows","top-attach",
+							    "bottom-attach",
+							    FALSE, FALSE);
 	}
 	else if (strcmp (action_path, "insert_column/after") == 0)
 	{
-		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Column on %s"),
-						     "n-columns","right-attach",
-						     "left-attach", TRUE);
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Insert Column on %s"),
+							    "n-columns","right-attach",
+							    "left-attach",
+							    FALSE, TRUE);
 	}
 	else if (strcmp (action_path, "insert_column/before") == 0)
 	{
-		glade_gtk_table_child_insert_action (adaptor, container, object,
-						     _("Insert Column on %s"),
-						     "n-columns","right-attach",
-						     "left-attach", FALSE);
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Insert Column on %s"),
+							    "n-columns","right-attach",
+							    "left-attach",
+							    FALSE, FALSE);
+	}
+	else if (strcmp (action_path, "remove_column") == 0)
+	{
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Remove Column on %s"),
+							    "n-columns","right-attach",
+							    "left-attach",
+							    TRUE, TRUE);
+	}
+	else if (strcmp (action_path, "remove_row") == 0)
+	{
+		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
+							    _("Remove Row on %s"),
+							    "n-rows","top-attach",
+							    "bottom-attach",
+							    TRUE, TRUE);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
@@ -2786,6 +2802,94 @@ glade_gtk_notebook_get_child_property (GladeWidgetAdaptor *adaptor,
 						  value);
 }
 
+static void
+glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
+						   GObject *container,
+						   GObject *object,
+						   const gchar *size_prop,
+						   const gchar *group_format,
+						   gboolean remove,
+						   gboolean after)
+{
+	GladeWidget *parent;
+	GList *children, *l;
+	gint child_pos, size, offset;
+	
+	if (GTK_IS_NOTEBOOK (container) &&
+	    g_object_get_data (object, "special-child-type"))
+		/* Its a Tab! */
+		child_pos = notebook_search_tab (GTK_NOTEBOOK (container),
+						 GTK_WIDGET (object));
+	else
+		gtk_container_child_get (GTK_CONTAINER (container),
+					 GTK_WIDGET (object),
+					 "position", &child_pos, NULL);
+	
+	parent = glade_widget_get_from_gobject (container);
+	glade_command_push_group (group_format, glade_widget_get_name (parent));
+	
+	children = glade_widget_adaptor_get_children (adaptor, container);
+	/* Make sure widgets does not get destroyed */
+	g_list_foreach (children, (GFunc) g_object_ref, NULL);
+	
+	glade_widget_property_get (parent, size_prop, &size);
+	
+	if (remove)
+	{
+		GList *del = NULL;
+		offset = -1;
+		/* Remove children first */
+		for (l = children; l; l = g_list_next (l))
+		{
+			GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
+			gint pos;
+			
+			/* Skip placeholders */
+			if (gchild == NULL) continue;
+		
+			glade_widget_pack_property_get (gchild, "position", &pos);
+			if (pos == child_pos) del = g_list_prepend (del, gchild);
+		}
+		if (del)
+		{
+			glade_command_delete (del);
+			g_list_free (del);
+		}
+	}
+	else
+	{
+		/* Expand container */
+		glade_command_set_property (glade_widget_get_property (parent, size_prop),
+					    size + 1);
+		offset = 1;
+	}
+	
+	/* Reoder children */
+	for (l = children; l; l = g_list_next (l))
+	{
+		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
+		gint pos;
+			
+		/* Skip placeholders */
+		if (gchild == NULL) continue;
+		
+		glade_widget_pack_property_get (gchild, "position", &pos);
+		if ((after) ? pos > child_pos : pos >= child_pos)
+			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"),
+						    pos + offset);
+	}
+	
+	if (remove)
+	{
+		/* Shrink container */
+		glade_command_set_property (glade_widget_get_property (parent, size_prop),
+					    size - 1);
+	}
+	
+	g_list_foreach (children, (GFunc) g_object_unref, NULL);
+	g_list_free (children);
+	glade_command_pop_group ();
+}
 
 void
 glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
@@ -2795,17 +2899,24 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
 {
 	if (strcmp (action_path, "insert_page_after") == 0)
 	{
-		glade_gtk_box_notebook_child_insert_action (adaptor, container,
-							    object, "pages",
-							    _("Insert page on %s"),
-							    TRUE);
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "pages",
+								   _("Insert page on %s"),
+								   FALSE, TRUE);
 	}
 	else if (strcmp (action_path, "insert_page_before") == 0)
 	{
-		glade_gtk_box_notebook_child_insert_action (adaptor, container,
-							    object, "pages",
-							    _("Insert page on %s"),
-							    FALSE);
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "pages",
+								   _("Insert page on %s"),
+								   FALSE, FALSE);
+	}
+	else if (strcmp (action_path, "remove_page") == 0)
+	{
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "pages",
+								   _("Insert page on %s"),
+								   TRUE, TRUE);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,

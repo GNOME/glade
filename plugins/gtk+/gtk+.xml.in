@@ -199,8 +199,8 @@ embedded in another object</_tooltip>
       <child-action-activate-function>glade_gtk_box_child_action_activate</child-action-activate-function>
 
       <packing-actions>
-        <action id="insert_before" _name="Insert Before"/>
-        <action id="insert_after" _name="Insert After"/>
+        <action id="insert_before" _name="Insert Before" stock="gtk-add"/>
+        <action id="insert_after" _name="Insert After" stock="gtk-add"/>
       </packing-actions>
 
       <properties>
@@ -883,14 +883,16 @@ embedded in another object</_tooltip>
       <child-action-activate-function>glade_gtk_table_child_action_activate</child-action-activate-function>
 
       <packing-actions>
-        <action id="insert_row" _name="Insert Row">
+        <action id="insert_row" _name="Insert Row" stock="gtk-add">
           <action id="before" _name="Before"/>
           <action id="after" _name="After"/>
         </action>
-        <action id="insert_column" _name="Insert Column">
+        <action id="insert_column" _name="Insert Column" stock="gtk-add">
           <action id="before" _name="Before"/>
           <action id="after" _name="After"/>
         </action>
+        <action id="remove_row" _name="Remove Row" stock="gtk-remove"/>
+        <action id="remove_column" _name="Remove Column" stock="gtk-remove"/>
       </packing-actions>
 
       <properties>
@@ -955,8 +957,9 @@ embedded in another object</_tooltip>
       <child-action-activate-function>glade_gtk_notebook_child_action_activate</child-action-activate-function>
 
       <packing-actions>
-        <action id="insert_page_before" name="Insert Page Before"/>
-        <action id="insert_page_after" name="Insert Page After"/>
+        <action id="insert_page_before" _name="Insert Page Before" stock="gtk-add"/>
+        <action id="insert_page_after" _name="Insert Page After" stock="gtk-add"/>
+        <action id="remove_page" _name="Remove Page"  stock="gtk-remove"/>
       </packing-actions>
 
       <properties>

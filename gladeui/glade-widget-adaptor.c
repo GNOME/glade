@@ -2440,18 +2440,33 @@ glade_widget_adaptor_action_add_real (GList **list,
 
 	if ((action = gwa_action_lookup (*list, id)))
 	{
-		if (action->label) g_free (action->label);
-		if (action->stock) g_free (action->stock);
+		/* Update parent's label/stock */
+		if (label && action->label)
+		{
+			g_free (action->label);
+			if (strcmp (label, "") == 0) label = NULL;
+			action->label = (label) ? g_strdup (label) : NULL;
+		}
+		if (stock && action->stock)
+		{
+			g_free (action->stock);
+			if (strcmp (stock, "") == 0) stock = NULL;
+			action->stock = (stock) ? g_strdup (stock) : NULL;
+		}
 	}
 	else
 	{
+		/* New Action */
 		action = g_new0 (GWActionClass, 1);
 		action->path = g_strdup (action_path);
 		action->id = (gchar*) gwa_action_path_get_id (action->path);
-	}
 	
-	action->label = (label) ? g_strdup (label) : NULL;
-	action->stock = (stock) ? g_strdup (stock) : NULL;
+		if (label && strcmp (label, "") == 0) label = NULL;
+		if (stock && strcmp (stock, "") == 0) stock = NULL;
+		
+		action->label = (label) ? g_strdup (label) : NULL;
+		action->stock = (stock) ? g_strdup (stock) : NULL;
+	}
 	
 	*list = g_list_append (*list, action);
 	
