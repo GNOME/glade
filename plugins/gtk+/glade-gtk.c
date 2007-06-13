@@ -4144,7 +4144,7 @@ glade_gtk_image_set_stock (GObject *object, const GValue *value)
 	if ((str = g_value_dup_string (value)) &&
 	    glade_util_object_is_loading (object))
 	{
-		GEnumClass *eclass = g_type_class_ref (GLADE_TYPE_STOCK);
+		GEnumClass *eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
 		GEnumValue *eval;
 		
 		if ((eval = g_enum_get_value_by_nick (eclass, str)) != NULL)

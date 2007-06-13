@@ -1,3 +1,9 @@
+2007-06-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c:  glade_gtk_image_set_stock() property make reference
+	  to GLADE_TYPE_STOCK_IMAGE not GLADE_TYPE_STOCK! fixes bug #444959
+	  (yes I live in UTC -3 you insensitive... heh)
+
 2006-06-14  Vincent Geddes <vincent.geddes@gmail.com>
 
         * gladeui/glade-app.c: Change GtkMessageType of _warning_ dialogs from
