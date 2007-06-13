@@ -1104,7 +1104,7 @@ glade_app_command_copy (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_INFO,
+				 GLADE_UI_WARN,
 				 _("You cannot copy a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1157,7 +1157,7 @@ glade_app_command_cut (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_INFO,
+				 GLADE_UI_WARN,
 				 _("You cannot cut a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1332,7 +1332,7 @@ glade_app_command_delete (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_INFO,
+				 GLADE_UI_WARN,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1379,7 +1379,7 @@ glade_app_command_delete_clipboard (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_INFO,
+				 GLADE_UI_WARN,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
 			return;
