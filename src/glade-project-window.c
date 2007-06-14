@@ -101,22 +101,22 @@ about_dialog_activate_link_func (GtkAboutDialog *dialog, const gchar *link, Glad
 	
 	if (!retval)
 	{
-		warning_dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->priv->window),
-						 GTK_DIALOG_MODAL,
-						 GTK_MESSAGE_WARNING,
-						 GTK_BUTTONS_OK,
-						 _("Could not display the URL '%s'"),
-						 link);
+		warning_dialog = gtk_message_dialog_new (GTK_WINDOW (dialog),
+							 GTK_DIALOG_MODAL,
+							 GTK_MESSAGE_ERROR,
+							 GTK_BUTTONS_OK,
+							 _("Could not display the URL '%s'"),
+							 link);
 						 
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (warning_dialog),
-							  _("No suitable web browser executable could be found."));
+							  _("No suitable web browser could be found."));
 						 	
 		gtk_window_set_title (GTK_WINDOW (warning_dialog), "");
-
+		
 		g_signal_connect_swapped (warning_dialog, "response",
 					  G_CALLBACK (gtk_widget_destroy),
-					  dialog);
-
+					  warning_dialog);
+				
 		gtk_widget_show (warning_dialog);
 	}	
 

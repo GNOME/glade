@@ -19,17 +19,8 @@
  * Authors:
  *   Chema Celorio <chema@celorio.com>
  */
-#ifdef HAVE_CONFIG_H
+ 
 #include <config.h>
-#endif
-
-#include <string.h>
-#include <gtk/gtktooltips.h>
-#include <gdk/gdkkeysyms.h>
-#include <gmodule.h>
-#include <glib/gi18n-lib.h>
-#include <glib/gstdio.h>
-#include <errno.h>
 
 #include "glade.h"
 #include "glade-project.h"
@@ -43,14 +34,18 @@
 #include "glade-clipboard.h"
 #include "glade-fixed.h"
 
+#include <string.h>
+#include <gtk/gtktooltips.h>
+#include <gdk/gdkkeysyms.h>
+#include <gmodule.h>
+#include <glib/gi18n-lib.h>
+#include <glib/gstdio.h>
+#include <errno.h>
+
 #ifdef G_OS_WIN32
-long __stdcall
-ShellExecuteA (long        hwnd,
-               const char* lpOperation,
-               const char* lpFile,
-               const char* lpParameters,
-               const char* lpDirectory,
-               int         nShowCmd);
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <shellapi.h>
 #endif
 
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
@@ -1681,16 +1676,15 @@ glade_util_object_is_loading (GObject *object)
 }
 
 #ifdef G_OS_WIN32
-#define SW_NORMAL 1
 
 static gboolean
 glade_util_url_show_win32 (const gchar *url)
 {
-	gint retval;
-	/* win32 API call */
-	retval = ShellExecuteA (NULL, "open", url, NULL, NULL, SW_NORMAL);
+	HINSTANCE h;
 	
-	if (retval <= 32)
+	h = ShellExecuteA (NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+	
+	if ((int)h <= 32)
 		return FALSE;
 
 	return TRUE;
