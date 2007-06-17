@@ -85,7 +85,7 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 
 	{ "flows-to", "atk-flows-to", N_("Flows To"),
 	  N_("Indicates that the object has content that flows logically to another "
-	     "AtkObject in a sequential way, (for instance text-flow)") },
+	     "AtkObject in a sequential way (text-flow, for instance).") },
 
 	{ "flows-from", "atk-flows-from", N_("Flows From"),
 	  N_("Indicates that the object has content that flows logically from another "
@@ -93,7 +93,7 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 
 	{ "subwindow-of", "atk-subwindow-of", N_("Subwindow Of"),
 	  N_("Indicates a subwindow attached to a component but otherwise has no "
-	     "connection in  the UI hierarchy to that component") },
+	     "connection in the UI hierarchy to that component") },
 
 	{ "embeds", "atk-embeds", N_("Embeds"),
 	  N_("Indicates that the object visually embeds another object's content, "
@@ -101,7 +101,7 @@ static const GPCAtkPropertyTab relation_names_table[] = {
 
 	{ "embedded-by", "atk-embedded-by", N_("Embedded By"),
 	  N_("Inverse of 'Embeds', indicates that this object's content "
-	     "is visualy embedded in another object") },
+	     "is visually embedded in another object") },
 
 	{ "popup-for", "atk-popup-for", N_("Popup For"),
 	  N_("Indicates that an object is a popup for another object") },

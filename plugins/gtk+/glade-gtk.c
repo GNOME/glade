@@ -6129,7 +6129,7 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
 						     GTK_ASSISTANT_PAGE_CONTENT);
 	
 		glade_gtk_assistant_append_new_page (parent, project,
-						     _("Confirm page"),
+						     _("Confirmation page"),
 						     GTK_ASSISTANT_PAGE_CONFIRM);
 		
 		gtk_assistant_set_current_page (GTK_ASSISTANT (object), 0);

@@ -126,7 +126,7 @@ AtkObject in a sequential way, (for instance text-flow)</_tooltip>
 
 	<property id="subwindow-of" _name="Subwindow Of" ignore="True" atk-property="True">
 	  <_tooltip>Indicates a subwindow attached to a component but otherwise has no 
-connection in  the UI hierarchy to that component</_tooltip>
+connection in the UI hierarchy to that component</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
@@ -137,7 +137,7 @@ this object's content flows around another's content</_tooltip>
 	</property>
 
 	<property id="embedded-by" _name="Embedded By" ignore="True" atk-property="True">
-	  <_tooltip>Inverse of 'Embeds', indicates that this object's content is visualy 
+	  <_tooltip>Inverse of 'Embeds', indicates that this object's content is visually 
 embedded in another object</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
@@ -1048,6 +1048,7 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
+    
     <glade-widget-class name="GtkHScale" generic-name="hscale" _title="Horizontal Scale"/>
     
     <glade-widget-class name="GtkVScale" generic-name="vscale" _title="Vertical Scale"/>
