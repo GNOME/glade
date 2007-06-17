@@ -1375,11 +1375,21 @@ glade_command_clipboard_add_remove_common (GList *widgets, gboolean add)
 	}
 	me->add = add;
 	if (add)
-		GLADE_COMMAND(me)->description = 
-			g_strdup_printf (_("Clipboard add %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
+	{
+		if (g_list_length (widgets) == 1)
+			GLADE_COMMAND(me)->description = g_strdup_printf (_("Clipboard add %s"),
+									  widget->name);
+		else
+			GLADE_COMMAND(me)->description =  g_strdup (_("Clipboard add multiple"));
+	}
 	else
-		GLADE_COMMAND(me)->description = 
-			g_strdup_printf (_("Clipboard remove %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
+	{
+		if (g_list_length (widgets) == 1)
+			GLADE_COMMAND(me)->description = g_strdup_printf (_("Clipboard remove %s"),
+									  widget->name);
+		else
+			GLADE_COMMAND(me)->description =  g_strdup (_("Clipboard remove multiple"));
+	}	
 	
 	glade_command_check_group(GLADE_COMMAND(me));
 	
