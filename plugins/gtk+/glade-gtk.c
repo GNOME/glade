@@ -2915,7 +2915,7 @@ glade_gtk_notebook_child_action_activate (GladeWidgetAdaptor *adaptor,
 	{
 		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
 								   object, "pages",
-								   _("Insert page on %s"),
+								   _("Remove page from %s"),
 								   TRUE, TRUE);
 	}
 	else

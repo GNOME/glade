@@ -1,6 +1,13 @@
+2006-06-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* NEWS, configure.ac: Rolling 3.3.1
+
+	* gladeui/plugins/gtk+/glade-gtk.c: Corrected undo item for
+	"remove page" action to say "Removed page from notebook1".
+
 2006-06-17  Vincent Geddes <vincent.geddes@gmail.com>
 
-	* gladeui/glade-editor-propertyc: Ensure parameter list passed to
+	* gladeui/glade-editor-property.c: Ensure parameter list passed to
 	  gtk_dialog_set_alternative_button_order() is terminated (#424509).
 	  
 	* gladeui/glade-command.c: Make strings more translatable (#419979).
@@ -21,11 +28,11 @@
 
 2006-06-14  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * gladeui/glade-app.c: Change GtkMessageType of _warning_ dialogs from
-          GTK_MESSAGE_INFO to GTK_MESSAGE_WARNING. 
+	* gladeui/glade-app.c: Change GtkMessageType of _warning_ dialogs from
+	  GTK_MESSAGE_INFO to GTK_MESSAGE_WARNING. 
 
-        * gladeui/glade-utils.c, src/glade-project-window.c: Fix and improve URL
-          launching on win32.
+	* gladeui/glade-utils.c, src/glade-project-window.c: Fix and improve URL
+	  launching on win32.
 
 2007-06-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
