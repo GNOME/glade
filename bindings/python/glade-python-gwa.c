@@ -88,7 +88,7 @@ static PyTypeObject *_PyGObject_Type;
 
 
 /* ---------- forward type declarations ---------- */
-PyTypeObject PyGladeWidgetAdaptor_Type;
+PyTypeObject G_GNUC_INTERNAL PyGladeWidgetAdaptor_Type;
 
 #line 94 "glade-python-gwa.c"
 
@@ -327,7 +327,7 @@ _wrap_GladeWidgetAdaptor__do_add(PyObject *cls, PyObject *args, PyObject *kwargs
     static char *kwlist[] = { "self", "parent", "child", NULL };
     PyGObject *self, *parent, *child;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!:GladeWidgetAdaptor.add", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &PyGObject_Type, &child))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O!:GladeWidgetAdaptor.add", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &PyGObject_Type, &child))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->add)
@@ -349,7 +349,7 @@ _wrap_GladeWidgetAdaptor__do_remove(PyObject *cls, PyObject *args, PyObject *kwa
     static char *kwlist[] = { "self", "parent", "child", NULL };
     PyGObject *self, *parent, *child;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!:GladeWidgetAdaptor.remove", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &PyGObject_Type, &child))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O!:GladeWidgetAdaptor.remove", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &PyGObject_Type, &child))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->remove)
@@ -371,7 +371,7 @@ _wrap_GladeWidgetAdaptor__do_replace_child(PyObject *cls, PyObject *args, PyObje
     static char *kwlist[] = { "self", "container", "old", "new", NULL };
     PyGObject *self, *container, *old, *new;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old, &PyGObject_Type, &new))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O!O!:GladeWidgetAdaptor.replace_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &container, &PyGObject_Type, &old, &PyGObject_Type, &new))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->replace_child)
@@ -395,9 +395,9 @@ _wrap_GladeWidgetAdaptor__do_post_create(PyObject *cls, PyObject *args, PyObject
     PyObject *py_reason = NULL;
     GladeCreateReason reason;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!O:GladeWidgetAdaptor.post_create", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &object, &py_reason))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O:GladeWidgetAdaptor.post_create", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &object, &py_reason))
         return NULL;
-    if (pyg_enum_get_value(GLADE_CREATE_REASON, py_reason, (gint *)&reason))
+    if (pyg_enum_get_value(GLADE_CREATE_REASON, py_reason, (gpointer)&reason))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->post_create)
@@ -421,7 +421,7 @@ _wrap_GladeWidgetAdaptor__do_get_internal_child(PyObject *cls, PyObject *args, P
     char *name;
     GObject *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!s:GladeWidgetAdaptor.get_internal_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!s:GladeWidgetAdaptor.get_internal_child", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &parent, &name))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->get_internal_child)
@@ -436,84 +436,73 @@ _wrap_GladeWidgetAdaptor__do_get_internal_child(PyObject *cls, PyObject *args, P
     return pygobject_new((GObject *)ret);
 }
 
-static PyObject *
-_wrap_GladeWidgetAdaptor__do_launch_editor(PyObject *cls, PyObject *args, PyObject *kwargs)
-{
-    gpointer klass;
-    static char *kwlist[] = { "self", "object", NULL };
-    PyGObject *self, *object;
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O!O!:GladeWidgetAdaptor.launch_editor", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &object))
-        return NULL;
-    klass = g_type_class_ref(pyg_type_from_object(cls));
-    if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->launch_editor)
-        GLADE_WIDGET_ADAPTOR_CLASS(klass)->launch_editor(GLADE_WIDGET_ADAPTOR(self->obj), G_OBJECT(object->obj));
-    else {
-        PyErr_SetString(PyExc_NotImplementedError, "virtual method GladeWidgetAdaptor.launch_editor not implemented");
-        g_type_class_unref(klass);
-        return NULL;
-    }
-    g_type_class_unref(klass);
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-
-static PyMethodDef _PyGladeWidgetAdaptor_methods[] = {
-    { "do_verify_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_verify_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_set_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_set_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_get_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_child_verify_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_verify_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_child_set_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_set_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_child_get_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_get_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_get_children", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_children, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_add", (PyCFunction)_wrap_GladeWidgetAdaptor__do_add, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_remove", (PyCFunction)_wrap_GladeWidgetAdaptor__do_remove, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_replace_child", (PyCFunction)_wrap_GladeWidgetAdaptor__do_replace_child, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_post_create", (PyCFunction)_wrap_GladeWidgetAdaptor__do_post_create, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_get_internal_child", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_internal_child, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { "do_launch_editor", (PyCFunction)_wrap_GladeWidgetAdaptor__do_launch_editor, METH_VARARGS|METH_KEYWORDS|METH_CLASS },
-    { NULL, NULL, 0 }
+static const PyMethodDef _PyGladeWidgetAdaptor_methods[] = {
+    { "do_verify_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_verify_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_set_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_set_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_get_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_child_verify_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_verify_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_child_set_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_set_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_child_get_property", (PyCFunction)_wrap_GladeWidgetAdaptor__do_child_get_property, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_get_children", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_children, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_add", (PyCFunction)_wrap_GladeWidgetAdaptor__do_add, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_remove", (PyCFunction)_wrap_GladeWidgetAdaptor__do_remove, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_replace_child", (PyCFunction)_wrap_GladeWidgetAdaptor__do_replace_child, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_post_create", (PyCFunction)_wrap_GladeWidgetAdaptor__do_post_create, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { "do_get_internal_child", (PyCFunction)_wrap_GladeWidgetAdaptor__do_get_internal_child, METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+      NULL },
+    { NULL, NULL, 0, NULL }
 };
 
-PyTypeObject PyGladeWidgetAdaptor_Type = {
+PyTypeObject G_GNUC_INTERNAL PyGladeWidgetAdaptor_Type = {
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "GladeWidgetAdaptor",			/* tp_name */
-    sizeof(PyGObject),	        /* tp_basicsize */
-    0,					/* tp_itemsize */
+    0,                                 /* ob_size */
+    "GladeWidgetAdaptor",                   /* tp_name */
+    sizeof(PyGObject),          /* tp_basicsize */
+    0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)0,	/* tp_dealloc */
-    (printfunc)0,			/* tp_print */
-    (getattrfunc)0,	/* tp_getattr */
-    (setattrfunc)0,	/* tp_setattr */
-    (cmpfunc)0,		/* tp_compare */
-    (reprfunc)0,		/* tp_repr */
+    (destructor)0,        /* tp_dealloc */
+    (printfunc)0,                      /* tp_print */
+    (getattrfunc)0,       /* tp_getattr */
+    (setattrfunc)0,       /* tp_setattr */
+    (cmpfunc)0,           /* tp_compare */
+    (reprfunc)0,             /* tp_repr */
     (PyNumberMethods*)0,     /* tp_as_number */
     (PySequenceMethods*)0, /* tp_as_sequence */
     (PyMappingMethods*)0,   /* tp_as_mapping */
-    (hashfunc)0,		/* tp_hash */
-    (ternaryfunc)0,		/* tp_call */
-    (reprfunc)0,		/* tp_str */
-    (getattrofunc)0,	/* tp_getattro */
-    (setattrofunc)0,	/* tp_setattro */
-    (PyBufferProcs*)0,	/* tp_as_buffer */
+    (hashfunc)0,             /* tp_hash */
+    (ternaryfunc)0,          /* tp_call */
+    (reprfunc)0,              /* tp_str */
+    (getattrofunc)0,     /* tp_getattro */
+    (setattrofunc)0,     /* tp_setattro */
+    (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                      /* tp_flags */
-    NULL, 				/* Documentation string */
-    (traverseproc)0,	/* tp_traverse */
-    (inquiry)0,		/* tp_clear */
-    (richcmpfunc)0,	/* tp_richcompare */
+    NULL,                        /* Documentation string */
+    (traverseproc)0,     /* tp_traverse */
+    (inquiry)0,             /* tp_clear */
+    (richcmpfunc)0,   /* tp_richcompare */
     offsetof(PyGObject, weakreflist),             /* tp_weaklistoffset */
-    (getiterfunc)0,		/* tp_iter */
-    (iternextfunc)0,	/* tp_iternext */
-    _PyGladeWidgetAdaptor_methods,			/* tp_methods */
-    0,					/* tp_members */
-    0,		       	/* tp_getset */
-    NULL,				/* tp_base */
-    NULL,				/* tp_dict */
-    (descrgetfunc)0,	/* tp_descr_get */
-    (descrsetfunc)0,	/* tp_descr_set */
+    (getiterfunc)0,          /* tp_iter */
+    (iternextfunc)0,     /* tp_iternext */
+    (struct PyMethodDef*)_PyGladeWidgetAdaptor_methods, /* tp_methods */
+    (struct PyMemberDef*)0,              /* tp_members */
+    (struct PyGetSetDef*)0,  /* tp_getset */
+    NULL,                              /* tp_base */
+    NULL,                              /* tp_dict */
+    (descrgetfunc)0,    /* tp_descr_get */
+    (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)0,		/* tp_init */
+    (initproc)0,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
@@ -602,7 +591,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_verify_property(GladeWidgetAdaptor *self, GOb
     
     return retval;
 }
-#line 606 "glade-python-gwa.c"
+#line 595 "glade-python-gwa.c"
 
 
 #line 245 "glade-python-gwa.override"
@@ -694,7 +683,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_set_property(GladeWidgetAdaptor *self, GObjec
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 698 "glade-python-gwa.c"
+#line 687 "glade-python-gwa.c"
 
 
 #line 366 "glade-python-gwa.override"
@@ -765,7 +754,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_property(GladeWidgetAdaptor *self, GObjec
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 769 "glade-python-gwa.c"
+#line 758 "glade-python-gwa.c"
 
 
 #line 466 "glade-python-gwa.override"
@@ -860,7 +849,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_verify_property(GladeWidgetAdaptor *sel
     
     return retval;
 }
-#line 864 "glade-python-gwa.c"
+#line 853 "glade-python-gwa.c"
 
 
 #line 589 "glade-python-gwa.override"
@@ -962,7 +951,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_set_property(GladeWidgetAdaptor *self, 
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 966 "glade-python-gwa.c"
+#line 955 "glade-python-gwa.c"
 
 
 #line 719 "glade-python-gwa.override"
@@ -1042,7 +1031,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_child_get_property(GladeWidgetAdaptor *self, 
     Py_DECREF(py_self);
     pyg_gil_state_release(__py_state);
 }
-#line 1046 "glade-python-gwa.c"
+#line 1035 "glade-python-gwa.c"
 
 
 #line 824 "glade-python-gwa.override"
@@ -1105,7 +1094,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_children(GladeWidgetAdaptor *self, GObjec
     
     return retval;
 }
-#line 1109 "glade-python-gwa.c"
+#line 1098 "glade-python-gwa.c"
 
 
 static void
@@ -1164,9 +1153,8 @@ _wrap_GladeWidgetAdaptor__proxy_do_add(GladeWidgetAdaptor *self, GObject*parent,
         return;
     }
     if (py_retval != Py_None) {
-        if (PyErr_Occurred())
-            PyErr_Print();
         PyErr_SetString(PyExc_TypeError, "retval should be None");
+        PyErr_Print();
         Py_DECREF(py_retval);
         Py_DECREF(py_method);
         Py_DECREF(py_args);
@@ -1174,6 +1162,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_add(GladeWidgetAdaptor *self, GObject*parent,
         pyg_gil_state_release(__py_state);
         return;
     }
+    
     
     Py_DECREF(py_retval);
     Py_DECREF(py_method);
@@ -1237,9 +1226,8 @@ _wrap_GladeWidgetAdaptor__proxy_do_remove(GladeWidgetAdaptor *self, GObject*pare
         return;
     }
     if (py_retval != Py_None) {
-        if (PyErr_Occurred())
-            PyErr_Print();
         PyErr_SetString(PyExc_TypeError, "retval should be None");
+        PyErr_Print();
         Py_DECREF(py_retval);
         Py_DECREF(py_method);
         Py_DECREF(py_args);
@@ -1247,6 +1235,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_remove(GladeWidgetAdaptor *self, GObject*pare
         pyg_gil_state_release(__py_state);
         return;
     }
+    
     
     Py_DECREF(py_retval);
     Py_DECREF(py_method);
@@ -1318,9 +1307,8 @@ _wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObje
         return;
     }
     if (py_retval != Py_None) {
-        if (PyErr_Occurred())
-            PyErr_Print();
         PyErr_SetString(PyExc_TypeError, "retval should be None");
+        PyErr_Print();
         Py_DECREF(py_retval);
         Py_DECREF(py_method);
         Py_DECREF(py_args);
@@ -1328,6 +1316,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_replace_child(GladeWidgetAdaptor *self, GObje
         pyg_gil_state_release(__py_state);
         return;
     }
+    
     
     Py_DECREF(py_retval);
     Py_DECREF(py_method);
@@ -1394,9 +1383,8 @@ _wrap_GladeWidgetAdaptor__proxy_do_post_create(GladeWidgetAdaptor *self, GObject
         return;
     }
     if (py_retval != Py_None) {
-        if (PyErr_Occurred())
-            PyErr_Print();
         PyErr_SetString(PyExc_TypeError, "retval should be None");
+        PyErr_Print();
         Py_DECREF(py_retval);
         Py_DECREF(py_method);
         Py_DECREF(py_args);
@@ -1404,6 +1392,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_post_create(GladeWidgetAdaptor *self, GObject
         pyg_gil_state_release(__py_state);
         return;
     }
+    
     
     Py_DECREF(py_retval);
     Py_DECREF(py_method);
@@ -1483,6 +1472,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_internal_child(GladeWidgetAdaptor *self, 
     retval = (GObject*) pygobject_get(py_retval);
     g_object_ref((GObject *) retval);
     
+    
     Py_DECREF(py_retval);
     Py_DECREF(py_method);
     Py_DECREF(py_args);
@@ -1490,71 +1480,6 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_internal_child(GladeWidgetAdaptor *self, 
     pyg_gil_state_release(__py_state);
     
     return retval;
-}
-static void
-_wrap_GladeWidgetAdaptor__proxy_do_launch_editor(GladeWidgetAdaptor *self, GObject*object)
-{
-    PyGILState_STATE __py_state;
-    PyObject *py_self;
-    PyObject *py_object = NULL;
-    PyObject *py_retval;
-    PyObject *py_args;
-    PyObject *py_method;
-    
-    __py_state = pyg_gil_state_ensure();
-    py_self = pygobject_new((GObject *) self);
-    if (!py_self) {
-        if (PyErr_Occurred())
-            PyErr_Print();
-        pyg_gil_state_release(__py_state);
-        return;
-    }
-    if (object)
-        py_object = pygobject_new((GObject *) object);
-    else {
-        Py_INCREF(Py_None);
-        py_object = Py_None;
-    }
-    
-    py_args = PyTuple_New(1);
-    PyTuple_SET_ITEM(py_args, 0, py_object);
-    
-    py_method = PyObject_GetAttrString(py_self, "do_launch_editor");
-    if (!py_method) {
-        if (PyErr_Occurred())
-            PyErr_Print();
-        Py_DECREF(py_args);
-        Py_DECREF(py_self);
-        pyg_gil_state_release(__py_state);
-        return;
-    }
-    py_retval = PyObject_CallObject(py_method, py_args);
-    if (!py_retval) {
-        if (PyErr_Occurred())
-            PyErr_Print();
-        Py_DECREF(py_method);
-        Py_DECREF(py_args);
-        Py_DECREF(py_self);
-        pyg_gil_state_release(__py_state);
-        return;
-    }
-    if (py_retval != Py_None) {
-        if (PyErr_Occurred())
-            PyErr_Print();
-        PyErr_SetString(PyExc_TypeError, "retval should be None");
-        Py_DECREF(py_retval);
-        Py_DECREF(py_method);
-        Py_DECREF(py_args);
-        Py_DECREF(py_self);
-        pyg_gil_state_release(__py_state);
-        return;
-    }
-    
-    Py_DECREF(py_retval);
-    Py_DECREF(py_method);
-    Py_DECREF(py_args);
-    Py_DECREF(py_self);
-    pyg_gil_state_release(__py_state);
 }
 
 static int
@@ -1564,78 +1489,133 @@ __GladeWidgetAdaptor_class_init(gpointer gclass, PyTypeObject *pyclass)
     GladeWidgetAdaptorClass *klass = GLADE_WIDGET_ADAPTOR_CLASS(gclass);
     PyObject *gsignals = PyDict_GetItemString(pyclass->tp_dict, "__gsignals__");
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_verify_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "verify_property")))
-        klass->verify_property = _wrap_GladeWidgetAdaptor__proxy_do_verify_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_verify_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "verify_property")))
+            klass->verify_property = _wrap_GladeWidgetAdaptor__proxy_do_verify_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_set_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "set_property")))
-        klass->set_property = _wrap_GladeWidgetAdaptor__proxy_do_set_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_set_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "set_property")))
+            klass->set_property = _wrap_GladeWidgetAdaptor__proxy_do_set_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_get_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "get_property")))
-        klass->get_property = _wrap_GladeWidgetAdaptor__proxy_do_get_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_get_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "get_property")))
+            klass->get_property = _wrap_GladeWidgetAdaptor__proxy_do_get_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_child_verify_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "child_verify_property")))
-        klass->child_verify_property = _wrap_GladeWidgetAdaptor__proxy_do_child_verify_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_child_verify_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "child_verify_property")))
+            klass->child_verify_property = _wrap_GladeWidgetAdaptor__proxy_do_child_verify_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_child_set_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "child_set_property")))
-        klass->child_set_property = _wrap_GladeWidgetAdaptor__proxy_do_child_set_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_child_set_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "child_set_property")))
+            klass->child_set_property = _wrap_GladeWidgetAdaptor__proxy_do_child_set_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_child_get_property"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "child_get_property")))
-        klass->child_get_property = _wrap_GladeWidgetAdaptor__proxy_do_child_get_property;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_child_get_property");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "child_get_property")))
+            klass->child_get_property = _wrap_GladeWidgetAdaptor__proxy_do_child_get_property;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_get_children"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "get_children")))
-        klass->get_children = _wrap_GladeWidgetAdaptor__proxy_do_get_children;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_get_children");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "get_children")))
+            klass->get_children = _wrap_GladeWidgetAdaptor__proxy_do_get_children;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_add"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "add")))
-        klass->add = _wrap_GladeWidgetAdaptor__proxy_do_add;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_add");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "add")))
+            klass->add = _wrap_GladeWidgetAdaptor__proxy_do_add;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_remove"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "remove")))
-        klass->remove = _wrap_GladeWidgetAdaptor__proxy_do_remove;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_remove");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "remove")))
+            klass->remove = _wrap_GladeWidgetAdaptor__proxy_do_remove;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_replace_child"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "replace_child")))
-        klass->replace_child = _wrap_GladeWidgetAdaptor__proxy_do_replace_child;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_replace_child");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "replace_child")))
+            klass->replace_child = _wrap_GladeWidgetAdaptor__proxy_do_replace_child;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_post_create"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "post_create")))
-        klass->post_create = _wrap_GladeWidgetAdaptor__proxy_do_post_create;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_post_create");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "post_create")))
+            klass->post_create = _wrap_GladeWidgetAdaptor__proxy_do_post_create;
+        Py_DECREF(o);
+    }
 
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_get_internal_child"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "get_internal_child")))
-        klass->get_internal_child = _wrap_GladeWidgetAdaptor__proxy_do_get_internal_child;
-
-    if ((o = PyDict_GetItemString(pyclass->tp_dict, "do_launch_editor"))
-        && !PyObject_TypeCheck(o, &PyCFunction_Type)
-        && !(gsignals && PyDict_GetItemString(gsignals, "launch_editor")))
-        klass->launch_editor = _wrap_GladeWidgetAdaptor__proxy_do_launch_editor;
+    o = PyObject_GetAttrString((PyObject *) pyclass, "do_get_internal_child");
+    if (o == NULL)
+        PyErr_Clear();
+    else {
+        if (!PyObject_TypeCheck(o, &PyCFunction_Type)
+            && !(gsignals && PyDict_GetItemString(gsignals, "get_internal_child")))
+            klass->get_internal_child = _wrap_GladeWidgetAdaptor__proxy_do_get_internal_child;
+        Py_DECREF(o);
+    }
     return 0;
 }
 
 
 /* ----------- functions ----------- */
 
-PyMethodDef glade_python_gwa_functions[] = {
-    { NULL, NULL, 0 }
+const PyMethodDef glade_python_gwa_functions[] = {
+    { NULL, NULL, 0, NULL }
 };
 
 
@@ -1657,22 +1637,20 @@ glade_python_gwa_register_classes(PyObject *d)
     PyObject *module;
 
     if ((module = PyImport_ImportModule("gobject")) != NULL) {
-        PyObject *moddict = PyModule_GetDict(module);
-
-        _PyGObject_Type = (PyTypeObject *)PyDict_GetItemString(moddict, "GObject");
+        _PyGObject_Type = (PyTypeObject *)PyObject_GetAttrString(module, "GObject");
         if (_PyGObject_Type == NULL) {
             PyErr_SetString(PyExc_ImportError,
                 "cannot import name GObject from gobject");
-            return;
+            return ;
         }
     } else {
         PyErr_SetString(PyExc_ImportError,
             "could not import gobject");
-        return;
+        return ;
     }
 
 
-#line 1676 "glade-python-gwa.c"
+#line 1654 "glade-python-gwa.c"
     pygobject_register_class(d, "GladeWidgetAdaptor", GLADE_TYPE_WIDGET_ADAPTOR, &PyGladeWidgetAdaptor_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GLADE_TYPE_WIDGET_ADAPTOR);
     pyg_register_class_init(GLADE_TYPE_WIDGET_ADAPTOR, __GladeWidgetAdaptor_class_init);
