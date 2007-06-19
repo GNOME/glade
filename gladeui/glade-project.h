@@ -85,6 +85,8 @@ GladeCommand  *glade_project_next_redo_item      (GladeProject *project);
 void           glade_project_push_undo           (GladeProject *project, 
 						  GladeCommand *cmd);
 
+GtkWidget     *glade_project_undo_items          (GladeProject *project);
+GtkWidget     *glade_project_redo_items          (GladeProject *project);
 
 void           glade_project_reset_path          (GladeProject *project);
 

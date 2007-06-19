@@ -328,7 +328,7 @@ glade_project_next_redo_item_impl (GladeProject *project)
 static void
 glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 {
-	GList* tmp_redo_item;
+	GList *tmp_redo_item;
 
 	/* If there are no "redo" items, and the last "undo" item unifies with
 	   us, then we collapse the two items in one and we're done */
@@ -1815,6 +1815,153 @@ glade_project_push_undo (GladeProject *project, GladeCommand *cmd)
 
 	GLADE_PROJECT_GET_CLASS (project)->push_undo (project, cmd);
 }
+
+static GList *
+walk_command (GList *list, gboolean forward)
+{
+	GladeCommand *cmd = list->data;
+	GladeCommand *next_cmd;
+
+	if (forward)
+		list = list->next;
+	else
+		list = list->prev;
+	
+	next_cmd = list ? list->data : NULL;
+	
+	while (list && next_cmd->group_id != 0 &&
+	       next_cmd->group_id == cmd->group_id)
+	{
+		if (forward)
+			list = list->next;
+		else
+			list = list->prev;
+
+		if (list)
+			next_cmd = list->data;
+	}
+
+	return list;
+}
+
+static void
+undo_item_activated (GtkMenuItem  *item,
+		     GladeProject *project)
+{
+	gint index, next_index;
+	
+	GladeCommand *cmd = g_object_get_data (G_OBJECT (item), "command-data");
+	GladeCommand *next_cmd;
+
+	index = g_list_index (project->priv->undo_stack, cmd);
+
+	do
+	{
+		next_cmd = glade_project_next_undo_item (project);
+		next_index = g_list_index (project->priv->undo_stack, next_cmd);
+
+		glade_project_undo (project);
+		
+	} while (next_index > index);
+}
+
+static void
+redo_item_activated (GtkMenuItem  *item,
+		     GladeProject *project)
+{
+	gint index, next_index;
+	
+	GladeCommand *cmd = g_object_get_data (G_OBJECT (item), "command-data");
+	GladeCommand *next_cmd;
+
+	index = g_list_index (project->priv->undo_stack, cmd);
+
+	do
+	{
+		next_cmd = glade_project_next_redo_item (project);
+		next_index = g_list_index (project->priv->undo_stack, next_cmd);
+
+		glade_project_redo (project);
+		
+	} while (next_index < index);
+}
+
+
+/**
+ * glade_project_undo_items:
+ * @project: A #GladeProject
+ *
+ * Creates a menu of the undo items in the project stack
+ *
+ * Returns: A newly created menu
+ */
+GtkWidget *
+glade_project_undo_items (GladeProject *project)
+{
+	GtkMenu *menu = NULL;
+	GtkWidget *item;
+	GladeCommand *cmd;
+	GList   *l;
+
+	for (l = project->priv->prev_redo_item; l; l = walk_command (l, FALSE))
+	{
+		cmd = l->data;
+
+		if (!menu)
+			menu = (GtkMenu *)gtk_menu_new ();
+		
+		item = gtk_menu_item_new_with_label (cmd->description);
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), GTK_WIDGET (item));
+		g_object_set_data (G_OBJECT (item), "command-data", cmd);
+
+		g_signal_connect (G_OBJECT (item), "activate",
+				  G_CALLBACK (undo_item_activated), project);
+
+	}
+	
+	return menu;
+}
+
+/**
+ * glade_project_redo_items:
+ * @project: A #GladeProject
+ *
+ * Creates a menu of the undo items in the project stack
+ *
+ * Returns: A newly created menu
+ */
+GtkWidget *
+glade_project_redo_items (GladeProject *project)
+{
+	GtkMenu *menu = NULL;
+	GtkWidget *item;
+	GladeCommand *cmd;
+	GList   *l;
+
+	for (l = project->priv->prev_redo_item ?
+		     project->priv->prev_redo_item->next :
+		     project->priv->undo_stack;
+	     l; l = walk_command (l, TRUE))
+	{
+		cmd = l->data;
+
+		if (!menu)
+			menu = (GtkMenu *)gtk_menu_new ();
+		
+		item = gtk_menu_item_new_with_label (cmd->description);
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), GTK_WIDGET (item));
+		g_object_set_data (G_OBJECT (item), "command-data", cmd);
+
+		g_signal_connect (G_OBJECT (item), "activate",
+				  G_CALLBACK (redo_item_activated), project);
+
+	}
+	
+	return menu;
+}
+
 
 void
 glade_project_reset_path (GladeProject *project)

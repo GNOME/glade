@@ -79,7 +79,9 @@ struct _GladeProjectWindowPrivate
 	gchar *default_path; /* the default path for open/save operations */
 	
 	GtkToggleToolButton *selector_button; /* the widget selector button (replaces the one in the palette) */
-	
+
+	GtkToolItem *undo; /* customized buttons for undo/redo with history */
+	GtkToolItem *redo;
 };
 
 static GladeAppClass *parent_class = NULL;
@@ -1787,9 +1789,6 @@ static const gchar *ui_info =
 "    <toolitem action='Open'/>"
 "    <toolitem action='Save'/>"
 "    <separator/>\n"
-"    <toolitem action='Undo'/>"
-"    <toolitem action='Redo'/>"
-"    <separator/>\n"
 "    <toolitem action='Cut'/>"
 "    <toolitem action='Copy'/>"
 "    <toolitem action='Paste'/>"
@@ -1802,6 +1801,8 @@ static GtkActionEntry static_entries[] = {
 	{ "ViewMenu", NULL, N_("_View") },
 	{ "ProjectMenu", NULL, N_("_Projects") },
 	{ "HelpMenu", NULL, N_("_Help") },
+	{ "UndoMenu", NULL, NULL },
+	{ "RedoMenu", NULL, NULL },
 	
 	/* FileMenu */
 	{ "New", GTK_STOCK_NEW, NULL, "<control>N",
@@ -2154,7 +2155,8 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *dockitem;
 	GtkWidget *widget;
 	GtkToolItem *sep;
-
+	GtkAction *action;
+	
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gpw->priv->window = window;
 	gtk_window_maximize (GTK_WINDOW (window));
@@ -2174,6 +2176,24 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
 	gtk_widget_show (toolbar);
 
+	/* undo/redo buttons */
+	gpw->priv->undo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_UNDO);
+	gpw->priv->redo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_REDO);
+	gtk_widget_show (GTK_WIDGET (gpw->priv->undo));
+	gtk_widget_show (GTK_WIDGET (gpw->priv->redo));
+
+	sep = gtk_separator_tool_item_new();
+	gtk_widget_show (GTK_WIDGET (sep));
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (sep), 3);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (gpw->priv->undo), 4);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (gpw->priv->redo), 5);
+
+	action = gtk_ui_manager_get_action (gpw->priv->ui, "/MenuBar/EditMenu/Undo");
+	gtk_action_connect_proxy (action, GTK_WIDGET (gpw->priv->undo));
+
+	action = gtk_ui_manager_get_action (gpw->priv->ui, "/MenuBar/EditMenu/Redo");
+	gtk_action_connect_proxy (action, GTK_WIDGET (gpw->priv->redo));
+	
 	/* main contents */
 	hpaned1 = gtk_hpaned_new ();
 	hpaned2 = gtk_hpaned_new ();
@@ -2253,7 +2273,6 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (widget), gpw->priv->recent_menu);		  
 	
 	/* palette selector button */
-	
 	gpw->priv->selector_button = GTK_TOGGLE_TOOL_BUTTON (create_selector_tool_button (GTK_TOOLBAR (toolbar)));	
 	
 	sep = gtk_separator_tool_item_new();
@@ -2418,14 +2437,14 @@ gpw_refresh_undo_redo (GladeProjectWindow *gpw)
 	/* Refresh Undo */
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Undo");
 	gtk_action_set_sensitive (action, undo != NULL);
-
+	
 	glade_project_window_change_menu_label
 		(gpw, "/MenuBar/EditMenu/Undo", _("_Undo"), undo ? undo->description : NULL);
 
 	tooltip = g_strdup_printf (_("Undo: %s"), undo ? undo->description : _("the last action"));
 	g_object_set (action, "tooltip", tooltip, NULL);
 	g_free (tooltip);
-	
+
 	/* Refresh Redo */
 	action = gtk_action_group_get_action (gpw->priv->project_actions, "Redo");
 	gtk_action_set_sensitive (action, redo != NULL);
@@ -2436,6 +2455,11 @@ gpw_refresh_undo_redo (GladeProjectWindow *gpw)
 	tooltip = g_strdup_printf (_("Redo: %s"), redo ? redo->description : _("the last action"));
 	g_object_set (action, "tooltip", tooltip, NULL);
 	g_free (tooltip);
+
+	/* Refresh menus */
+	gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (gpw->priv->undo), glade_project_undo_items (project));
+	gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (gpw->priv->redo), glade_project_redo_items (project));
+
 }
 
 static void

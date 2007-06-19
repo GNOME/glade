@@ -2,6 +2,12 @@
 
 	* plugins/gtk+/gtk+.xml.in: Added launch_editor action for toolbars.
 
+	* gladeui/glade-project.[ch]: added glade_project_undo_items() and
+	glade_project_redo_items().
+
+	* src/glade-project-window.c: Made Undo/Redo buttons use a GtkMenuToolButton
+	and include undo/redo history in those buttons
+
 2007-06-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* bindings/python/glade-python-gwa.defs: deleted launch_editor wrapper.
