@@ -281,7 +281,7 @@ glade_palette_item_class_init (GladePaletteItemClass *klass)
 					 g_param_spec_enum  ("appearance",
 							     "Appearance",
 							     "The appearance of the item",
-							     GLADE_ITEM_APPEARANCE_TYPE,
+							     GLADE_TYPE_ITEM_APPEARANCE,
 							     GLADE_ITEM_ICON_ONLY,
 							     G_PARAM_READWRITE));
 

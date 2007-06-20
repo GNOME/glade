@@ -53,7 +53,8 @@ enum
 enum
 {
 	PROP_0,
-	PROP_ACTIVE_PROJECT
+	PROP_ACTIVE_PROJECT,
+	PROP_POINTER_MODE
 };
 
 struct _GladeAppPrivate
@@ -78,6 +79,8 @@ struct _GladeAppPrivate
 				      */
 	GtkAccelGroup *accel_group;	/* Default acceleration group for this app */
 	GList *undo_list, *redo_list;	/* Lists of buttons to refresh in update-ui signal */
+
+	GladePointerMode pointer_mode;  /* Current mode for the pointer in the workspace */
 };
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
@@ -95,6 +98,27 @@ static GladeApp *singleton_app = NULL;
 static void glade_init_check (void);
 
 G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
+
+
+GType
+glade_pointer_mode_get_type (void)
+{
+	static GType etype = 0;
+
+	if (etype == 0) 
+	{
+		static const GEnumValue values[] = 
+		{
+			{ GLADE_POINTER_SELECT,      "select",      "Select widgets" },
+			{ GLADE_POINTER_ADD_WIDGET,  "add",         "Add widgets" },
+			{ GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag and resize widgets" },
+			{ 0, NULL, NULL }
+		};
+		etype = g_enum_register_static ("GladePointerMode", 
+						values);
+	}
+	return etype;
+}
 
 
 /*****************************************************************
@@ -186,6 +210,9 @@ glade_app_set_property (GObject      *object,
 	case PROP_ACTIVE_PROJECT:
 		glade_app_set_project (g_value_get_object (value));
 		break;
+	case PROP_POINTER_MODE:
+		glade_app_set_pointer_mode (g_value_get_enum (value));
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID
 			(object, property_id, pspec);
@@ -206,6 +233,9 @@ glade_app_get_property (GObject      *object,
 	{
 	case PROP_ACTIVE_PROJECT:
 		g_value_set_object (value, app->priv->active_project);
+		break;
+	case PROP_POINTER_MODE:
+		g_value_set_enum (value, app->priv->pointer_mode);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID(object,property_id,pspec);
@@ -516,6 +546,14 @@ glade_app_class_init (GladeAppClass * klass)
 		  _("The active project"),
 		  GLADE_TYPE_PROJECT, G_PARAM_READWRITE));
 
+	g_object_class_install_property 
+		(object_class, PROP_POINTER_MODE,
+		 g_param_spec_enum 
+		 ("pointer-mode", _("Pointer Mode"), 
+		  _("Current mode for the pointer in the workspace"),
+		  GLADE_TYPE_POINTER_MODE,
+		  GLADE_POINTER_SELECT,
+		  G_PARAM_READWRITE));
 	
 	g_type_class_add_private (klass, sizeof (GladeAppPrivate));
 }
@@ -1069,6 +1107,39 @@ glade_app_set_project (GladeProject *project)
 	glade_app_update_ui ();
 
 	g_object_notify (G_OBJECT (app), "active-project");
+}
+
+
+/**
+ * glade_app_set_pointer_mode:
+ * @mode: A #GladePointerMode
+ *
+ * Sets the #GladePointerMode
+ */
+void
+glade_app_set_pointer_mode (GladePointerMode mode)
+{
+	GladeApp *app = glade_app_get();
+
+	app->priv->pointer_mode = mode;
+
+	g_object_notify (G_OBJECT (app), "pointer-mode");
+}
+
+
+/**
+ * glade_app_get_pointer_mode:
+ *
+ * Gets the current #GladePointerMode
+ * 
+ * Returns: The #GladePointerMode
+ */
+GladePointerMode
+glade_app_get_pointer_mode (void)
+{
+	GladeApp *app = glade_app_get();
+
+	return app->priv->pointer_mode;
 }
 
 /**

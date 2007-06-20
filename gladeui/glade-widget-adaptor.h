@@ -26,6 +26,7 @@ typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 typedef struct _GladeSignalClass          GladeSignalClass;
+typedef enum   _GladeCreateReason         GladeCreateReason;
 
 /**
  * GWA_IS_FIXED:
@@ -121,14 +122,14 @@ typedef struct _GladeSignalClass          GladeSignalClass;
  *
  * These are the reasons your #GladePostCreateFunc can be called.
  */
-typedef enum _GladeCreateReason
+enum _GladeCreateReason
 {
 	GLADE_CREATE_USER = 0,
 	GLADE_CREATE_COPY,
 	GLADE_CREATE_LOAD,
 	GLADE_CREATE_REBUILD,
 	GLADE_CREATE_REASONS
-} GladeCreateReason;
+};
 
 #define GLADE_CREATE_REASON (glade_create_reason_get_type())
 

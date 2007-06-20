@@ -338,13 +338,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 	
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	if (((GdkEventMotion *)ev)->is_hint)
-		gdk_window_get_pointer (priv->event_window, &x, &y, NULL);
-	else
-	{
-		x = (gint) ((GdkEventMotion *)ev)->x;
-		y = (gint) ((GdkEventMotion *)ev)->y;
-	}
+	gdk_window_get_pointer (priv->event_window, &x, &y, NULL);
 	
 	child_glade_widget = glade_widget_get_from_gobject (child);
 	allocation         = child->allocation;
@@ -425,10 +419,9 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 	if ((child = GTK_BIN (widget)->child) == NULL)
 		return FALSE;
 
-	x = (gint) ((GdkEventButton *) ev)->x;
-	y = (gint) ((GdkEventButton *) ev)->y;
-	
-	priv   = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+
+	gdk_window_get_pointer (priv->event_window, &x, &y, NULL);
 	region = glade_design_layout_get_pointer_region (GLADE_DESIGN_LAYOUT (widget), x, y);
 
 	if (((GdkEventButton *) ev)->button == 1) 

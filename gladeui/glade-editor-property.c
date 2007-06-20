@@ -197,7 +197,7 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 		gtk_widget_set_sensitive (eprop->check, sensitive);
 }
 
-void
+static void
 glade_editor_property_value_changed_cb (GladeProperty       *property,
 					GValue              *old_value,
 					GValue              *value,

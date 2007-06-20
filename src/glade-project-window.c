@@ -79,6 +79,8 @@ struct _GladeProjectWindowPrivate
 	gchar *default_path; /* the default path for open/save operations */
 	
 	GtkToggleToolButton *selector_button; /* the widget selector button (replaces the one in the palette) */
+	GtkToggleToolButton *drag_resize_button; /* sets the pointer to drag/resize mode */
+	gboolean             setting_pointer_mode; /* avoid feedback signal loops */
 
 	GtkToolItem *undo; /* customized buttons for undo/redo with history */
 	GtkToolItem *redo;
@@ -710,22 +712,52 @@ gpw_construct_dock_item (GladeProjectWindow *gpw, const gchar *title, GtkWidget 
 	return vbox;
 }
 
-void
-on_palette_toggled (GladePalette *palette, GladeProjectWindow *gpw)
-{
-	if (glade_palette_get_current_item (palette))
-		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, FALSE);	
-	else
-		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);			
-}
-
-void
+static void
 on_selector_button_toggled (GtkToggleToolButton *button, GladeProjectWindow *gpw)
 {
+	if (gpw->priv->setting_pointer_mode)
+		return;
+
 	if (gtk_toggle_tool_button_get_active (gpw->priv->selector_button))
+	{
 		glade_palette_deselect_current_item (glade_app_get_palette(), FALSE);
-	else if (glade_palette_get_current_item (glade_app_get_palette()) == FALSE)
+		glade_app_set_pointer_mode (GLADE_POINTER_SELECT);
+	}
+	else
 		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);
+}
+
+static void
+on_drag_resize_button_toggled (GtkToggleToolButton *button, GladeProjectWindow *gpw)
+{
+	if (gpw->priv->setting_pointer_mode)
+		return;
+
+	if (gtk_toggle_tool_button_get_active (gpw->priv->drag_resize_button))
+		glade_app_set_pointer_mode (GLADE_POINTER_DRAG_RESIZE);
+	else
+		gtk_toggle_tool_button_set_active (gpw->priv->drag_resize_button, TRUE);
+
+}
+
+static void
+on_pointer_mode_changed (GladeApp           *app,
+			 GParamSpec         *pspec,
+			 GladeProjectWindow *gpw)
+{
+	gpw->priv->setting_pointer_mode = TRUE;
+
+	if (glade_app_get_pointer_mode () == GLADE_POINTER_SELECT)
+		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);
+	else
+		gtk_toggle_tool_button_set_active (gpw->priv->selector_button, FALSE);
+
+	if (glade_app_get_pointer_mode () == GLADE_POINTER_DRAG_RESIZE)
+		gtk_toggle_tool_button_set_active (gpw->priv->drag_resize_button, TRUE);
+	else
+		gtk_toggle_tool_button_set_active (gpw->priv->drag_resize_button, FALSE);
+
+	gpw->priv->setting_pointer_mode = FALSE;
 }
 
 static void
@@ -2119,6 +2151,35 @@ create_selector_tool_button (GtkToolbar *toolbar)
 	return GTK_WIDGET (button);
 }
 
+static GtkWidget *
+create_drag_resize_tool_button (GtkToolbar *toolbar)
+{
+	GtkToolItem  *button;
+	GtkWidget    *image;
+	gchar        *image_path;
+	
+	image_path = g_build_filename (glade_app_get_pixmaps_dir (), "selector.png", NULL);
+	image = gtk_image_new_from_file (image_path);
+	g_free (image_path);
+	
+	button = gtk_toggle_tool_button_new ();
+	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (button), TRUE);
+	
+	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
+	gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Drag Resize"));
+	
+	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
+				   toolbar->tooltips,
+				   _("Drag and resize widgets in the workspace"),
+				   NULL);
+	
+	gtk_widget_show (GTK_WIDGET (button));
+	gtk_widget_show (image);
+	
+	return GTK_WIDGET (button);
+}
+
+
 static gint
 gpw_hijack_editor_key_press (GtkWidget          *win, 
 			     GdkEventKey        *event, 
@@ -2272,19 +2333,31 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	widget = gtk_ui_manager_get_widget (gpw->priv->ui, "/MenuBar/FileMenu/OpenRecent");
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (widget), gpw->priv->recent_menu);		  
 	
-	/* palette selector button */
-	gpw->priv->selector_button = GTK_TOGGLE_TOOL_BUTTON (create_selector_tool_button (GTK_TOOLBAR (toolbar)));	
-	
+	/* palette selector & drag/resize buttons */
 	sep = gtk_separator_tool_item_new();
 	gtk_widget_show (GTK_WIDGET (sep));
 	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (sep), -1);
+
+	gpw->priv->selector_button = 
+		GTK_TOGGLE_TOOL_BUTTON (create_selector_tool_button (GTK_TOOLBAR (toolbar)));	
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+			    GTK_TOOL_ITEM (gpw->priv->selector_button), -1);
+
+	gpw->priv->drag_resize_button = 
+		GTK_TOGGLE_TOOL_BUTTON (create_drag_resize_tool_button 
+					(GTK_TOOLBAR (toolbar)));	
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+			    GTK_TOOL_ITEM (gpw->priv->drag_resize_button), -1);
 	
-	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), GTK_TOOL_ITEM (gpw->priv->selector_button), -1);
-	
-	g_signal_connect (G_OBJECT (glade_app_get_palette ()), "toggled",
-			  G_CALLBACK (on_palette_toggled), gpw);
+	gtk_toggle_tool_button_set_active (gpw->priv->selector_button, TRUE);
+	gtk_toggle_tool_button_set_active (gpw->priv->drag_resize_button, FALSE);
+
 	g_signal_connect (G_OBJECT (gpw->priv->selector_button), "toggled",
 			  G_CALLBACK (on_selector_button_toggled), gpw);
+	g_signal_connect (G_OBJECT (gpw->priv->drag_resize_button), "toggled",
+			  G_CALLBACK (on_drag_resize_button_toggled), gpw);
+	g_signal_connect (G_OBJECT (glade_app_get()), "notify::pointer-mode",
+			  G_CALLBACK (on_pointer_mode_changed), gpw);
 	
 	
 	/* support for opening a file by dragging onto the project window */

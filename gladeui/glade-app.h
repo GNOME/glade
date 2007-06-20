@@ -37,9 +37,29 @@ G_BEGIN_DECLS
 #define GLADE_IS_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_APP))
 #define GLADE_APP_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_APP, GladeAppClass))
 
-typedef struct _GladeApp        GladeApp;
-typedef struct _GladeAppPrivate GladeAppPrivate;
-typedef struct _GladeAppClass   GladeAppClass;
+#define GLADE_TYPE_POINTER_MODE   (glade_pointer_mode_get_type())
+
+typedef struct _GladeApp         GladeApp;
+typedef struct _GladeAppPrivate  GladeAppPrivate;
+typedef struct _GladeAppClass    GladeAppClass;
+typedef enum   _GladePointerMode GladePointerMode;
+
+
+/**
+ * GladePointerMode:
+ * @GLADE_POINTER_SELECT:      Mouse pointer used for selecting widgets
+ * @GLADE_POINTER_ADD_WIDGET:  Mouse pointer used for adding widgets
+ * @GLADE_POINTER_DRAG_RESIZE: Mouse pointer used for dragging and 
+ *                             resizing widgets in containers
+ *
+ * Indicates what the pointer is used for in the workspace.
+ */
+enum _GladePointerMode
+{
+	GLADE_POINTER_SELECT = 0,
+	GLADE_POINTER_ADD_WIDGET,
+	GLADE_POINTER_DRAG_RESIZE
+};
 
 struct _GladeApp
 {
@@ -68,6 +88,8 @@ struct _GladeAppClass
  
 GType              glade_app_get_type   (void) G_GNUC_CONST;
 
+GType              glade_pointer_mode_get_type (void) G_GNUC_CONST;
+
 GladeApp*          glade_app_get        (void);
 
 void               glade_app_update_ui  (void);
@@ -88,11 +110,14 @@ GladeClipboard*    glade_app_get_clipboard (void);
  
 GtkWidget*         glade_app_get_clipboard_view (void);
 
- 
 GladeProject*      glade_app_get_project (void);
  
 void               glade_app_set_project (GladeProject *project);
+
+GladePointerMode   glade_app_get_pointer_mode (void);
  
+void               glade_app_set_pointer_mode (GladePointerMode mode);
+
 void               glade_app_add_project (GladeProject *project);
  
 void               glade_app_remove_project (GladeProject *project);

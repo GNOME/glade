@@ -9,8 +9,9 @@ G_BEGIN_DECLS
 
 typedef struct _GladeParamSpecObjects   GladeParamSpecObjects;
 typedef struct _GladeParamSpecAccel     GladeParamSpecAccel;
-
 typedef struct _GladeKey                GladeKey;
+
+
 struct _GladeKey {
 	guint  value;
 	gchar *name;
@@ -29,7 +30,7 @@ extern const GladeKey GladeKeys[];
 #define	GLADE_TYPE_ACCEL_GLIST         (glade_accel_glist_get_type())
 #define	GLADE_TYPE_PARAM_OBJECTS       (glade_param_objects_get_type())
 #define	GLADE_TYPE_PARAM_ACCEL         (glade_param_accel_get_type())
-#define GLADE_ITEM_APPEARANCE_TYPE     (glade_item_appearance_get_type())
+#define GLADE_TYPE_ITEM_APPEARANCE     (glade_item_appearance_get_type())
 
 #define GLADE_IS_STOCK(pspec) \
         (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GLADE_TYPE_STOCK))
@@ -58,7 +59,6 @@ GType        glade_accel_glist_get_type          (void) G_GNUC_CONST;
 GType        glade_param_objects_get_type        (void) G_GNUC_CONST;
 GType        glade_param_accel_get_type          (void) G_GNUC_CONST;
 GType        glade_item_appearance_get_type      (void) G_GNUC_CONST;
-
 
 guint        glade_builtin_key_from_string (const gchar   *string);
 const gchar *glade_builtin_string_from_key (guint          key);

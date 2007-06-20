@@ -309,24 +309,24 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 static gboolean                                                                 
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
-	GladeWidgetAdaptor *adaptor;
+	GladePointerMode    pointer_mode;
 	GladeWidget        *gparent;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
 	gparent = glade_placeholder_get_parent (GLADE_PLACEHOLDER (widget));
-	adaptor = glade_palette_get_current_item (glade_app_get_palette ());
+	pointer_mode = glade_app_get_pointer_mode ();
 
-	if (adaptor == NULL && 
+	if (pointer_mode == GLADE_POINTER_SELECT && 
 	    /* If we are the child of a widget that is in a GladeFixed, then
 	     * we are the means of drag/resize and we dont want to fight for
 	     * the cursor (ideally; GladeCursor should somehow deal with such
 	     * concurrencies I suppose).
 	     */
 	    (gparent->parent && 
-	     GLADE_IS_FIXED (gparent->parent)) == FALSE)
+	     GLADE_IS_FIXED (gparent->parent)) == FALSE) 
                 glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-	else if (adaptor)
+	else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
                 glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
 
 	return FALSE;

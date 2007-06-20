@@ -511,12 +511,15 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 {
 	GladeCursorType  operation;
 	GdkModifierType  event_state = 0;
+	GladePointerMode pointer_mode;
 	GtkWidget       *fixed_widget, *child_widget;
 	gint             fixed_x, fixed_y, child_x, child_y;
 	gboolean         handled = FALSE, sig_handled;
 
 	fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	child_widget = GTK_WIDGET (child->object);
+
+	pointer_mode = glade_app_get_pointer_mode ();
 
 	/* when widget->window points to a parent window, these calculations
 	 * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
@@ -545,10 +548,11 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 	case GDK_MOTION_NOTIFY:
 		if (fixed->configuring == NULL)
 		{
-			if (event_state & GDK_SHIFT_MASK)
+			if ((event_state & GDK_SHIFT_MASK) ||
+			    pointer_mode == GLADE_POINTER_DRAG_RESIZE)
 				glade_cursor_set (((GdkEventAny *)event)->window, 
 						  operation);
-			else
+			else if (pointer_mode == GLADE_POINTER_SELECT)
 				glade_cursor_set (((GdkEventAny *)event)->window, 
 						  GLADE_CURSOR_SELECTOR);
 
@@ -578,7 +582,9 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		/* We cant rely on GDK_BUTTON1_MASK since event->state isnt yet updated
 		 * by the current event itself 
 		 */
-		if (((GdkEventButton *)event)->button == 1 && (event_state & GDK_SHIFT_MASK))
+		if (((GdkEventButton *)event)->button == 1 && 
+		    ((event_state & GDK_SHIFT_MASK) ||
+		     pointer_mode == GLADE_POINTER_DRAG_RESIZE))
 		{
 			fixed->configuring = child;
 			/* Save widget allocation and pointer pos */
@@ -598,7 +604,8 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 		if (((GdkEventButton *)event)->button == 1 && fixed->configuring)
 		{
 
-			if (event_state & GDK_SHIFT_MASK)
+			if ((event_state & GDK_SHIFT_MASK) ||
+			    pointer_mode == GLADE_POINTER_DRAG_RESIZE)
 				glade_cursor_set (((GdkEventAny *)event)->window,
 						  operation);
 			else
@@ -639,7 +646,7 @@ glade_fixed_child_event (GladeWidget *gwidget,
 	 * the palette.
 	 */
 	if (GLADE_IS_FIXED (gwidget) &&
-	    glade_palette_get_current_item (glade_app_get_palette ()) != NULL)
+	    glade_app_get_pointer_mode() == GLADE_POINTER_ADD_WIDGET)
 	{
 		glade_cursor_set (((GdkEventAny *)event)->window, 
 				  GLADE_CURSOR_ADD_WIDGET);
@@ -804,15 +811,15 @@ glade_fixed_event (GladeWidget *gwidget_fixed,
 		}
 		break;
 	case GDK_MOTION_NOTIFY:
-		if (adaptor != NULL)
+		if (glade_app_get_pointer_mode() == GLADE_POINTER_ADD_WIDGET)
 		{
 			glade_cursor_set (((GdkEventAny *)event)->window, 
 					  GLADE_CURSOR_ADD_WIDGET);
 
 			handled = TRUE;
 		}
-		/* XXX I dont think this line is needed */
-		else if (GLADE_IS_FIXED (gwidget_fixed->parent) == FALSE)
+		else if (GLADE_IS_FIXED (gwidget_fixed->parent) == FALSE &&
+			 glade_app_get_pointer_mode() == GLADE_POINTER_SELECT)
 			glade_cursor_set (((GdkEventAny *)event)->window,
 					  GLADE_CURSOR_SELECTOR);
 		break;

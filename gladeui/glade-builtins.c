@@ -100,7 +100,7 @@ list_stock_items (gboolean include_images)
 	stock_list = g_slist_reverse (gtk_stock_list_ids ());
 
 	values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
-				    g_slist_length (stock_list) + 1);
+				    g_slist_length (stock_list) + 2);
 	
 	
 	/* Add first "no stock" element */
@@ -144,6 +144,12 @@ list_stock_items (gboolean include_images)
 		}
 
 	}
+
+	/* Add the trailing end marker */
+	value.value      = 0;
+	value.value_name = NULL;
+	value.value_nick = NULL;
+	values = g_array_append_val (values, value);
 	
 	stock_prefixs_done = TRUE;
 	g_slist_free (stock_list);
