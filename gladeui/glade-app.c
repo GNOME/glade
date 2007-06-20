@@ -67,8 +67,7 @@ struct _GladeAppPrivate
 	GladeEditor *editor;           /* See glade-editor */
 	GladeClipboard *clipboard;     /* See glade-clipboard */
 	GList *catalogs;               /* See glade-catalog */
-	
-	GList *views;    /* A list of GladeProjectView item */
+
 	GList *projects; /* The list of Projects */
 	
 	GKeyFile *config;/* The configuration file */
@@ -169,7 +168,7 @@ glade_app_dispose (GObject *app)
 		gtk_widget_destroy (GTK_WIDGET (priv->clipboard->view));
 		priv->clipboard = NULL;
 	}
-	/* FIXME: Remove views and projects */
+	/* FIXME: Remove projects */
 	
 	if (priv->config)
 	{
@@ -856,19 +855,6 @@ glade_app_get_config (void)
 	return app->priv->config;
 }
 
-void
-glade_app_add_project_view (GladeProjectView *view)
-{
-	GladeApp *app;
-	g_return_if_fail (GLADE_IS_PROJECT_VIEW (view));
-
-	app = glade_app_get ();
-
-	app->priv->views = g_list_prepend (app->priv->views, view);
-	if (app->priv->active_project)
-		glade_project_view_set_project (view, app->priv->active_project);
-}
-
 gboolean
 glade_app_is_project_loaded (const gchar *project_path)
 {
@@ -1074,7 +1060,6 @@ void
 glade_app_set_project (GladeProject *project)
 {
 	GladeApp *app = glade_app_get();
-	GList *list;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -1093,12 +1078,6 @@ glade_app_set_project (GladeProject *project)
 		glade_project_selection_clear (app->priv->active_project, FALSE);
 
 	app->priv->active_project = project;
-
-	for (list = app->priv->views; list; list = list->next)
-	{
-		GladeProjectView *view = list->data;
-		glade_project_view_set_project (view, project);
-	}
 
 	/* (XXX really ?) trigger the selection changed signal to update the editor */
 	glade_project_selection_changed (project);

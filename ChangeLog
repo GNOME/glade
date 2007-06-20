@@ -1,3 +1,18 @@
+2006-06-20  Vincent Geddes <vincent.geddes@gmail.com>
+
+        * gladeui/glade-inspector.[ch]: New Inspector implementation.
+          - The Inspector no longer records session data. 
+          - GtkTreeModel of inspector is now synchronised with project data
+            in an incremental fashion, instead of being totally rebuilt on changes.
+          
+        * gladeui/glade-project-view.[ch]: Removed.
+        
+        * gladeui/glade-app.[ch]: Remove glade_app_add_project_view(). Inspectors
+          are now managed by the frontend.
+          
+        * src/glade-project-window: A unique GladeInspector is associated with        
+          each open project. These inspectors are stored in a GtkNotebook. 
+
 2006-06-19  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Added launch_editor action for toolbars.

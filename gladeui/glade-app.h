@@ -26,7 +26,6 @@
 #include <gladeui/glade-editor.h>
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-clipboard.h>
-#include <gladeui/glade-project-view.h>
 
 G_BEGIN_DECLS
 
@@ -133,9 +132,6 @@ GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
 void               glade_app_show_properties (gboolean raise);
  
 void               glade_app_hide_properties (void);
-
- 
-void               glade_app_add_project_view (GladeProjectView *view);
 
  
 void               glade_app_command_copy (void);

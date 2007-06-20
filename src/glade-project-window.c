@@ -30,6 +30,7 @@
 #include <gladeui/glade.h>
 #include <gladeui/glade-design-view.h>
 #include <gladeui/glade-binding.h>
+#include <gladeui/glade-inspector.h>
 
 #include <string.h>
 #include <glib/gstdio.h>
@@ -59,6 +60,8 @@ struct _GladeProjectWindowPrivate
 	GtkWidget *notebook;
 	GladeDesignView *active_view;
 	gint num_tabs;
+
+	GtkWidget *inspectors_notebook;
 
 	GtkWidget *statusbar; /* A pointer to the status bar. */
 	guint statusbar_menu_context_id; /* The context id of the menu bar */
@@ -1448,6 +1451,19 @@ glade_project_window_next_project_cb (GtkAction *action, GladeProjectWindow *win
 }
 
 static void
+inspector_item_activated_cb (GladeInspector     *inspector,
+		             GladeProjectWindow *gpw)
+{
+	GList *item = glade_inspector_get_selected_items (inspector);
+	g_assert (GLADE_IS_WIDGET (item->data) && (item->next == NULL));
+	
+	/* switch to this widget in the workspace */
+	glade_widget_show (GLADE_WIDGET (item->data));
+	
+	g_list_free (item);
+}
+
+static void
 gpw_notebook_switch_page_cb (GtkNotebook *notebook,
 			     GtkNotebookPage *page,
 			     guint page_num,
@@ -1475,6 +1491,9 @@ gpw_notebook_switch_page_cb (GtkNotebook *notebook,
 	gpw_refresh_title (gpw);
 	gpw_set_sensitivity_according_to_project (gpw, project);
 	
+	/* switch to the project's inspector */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), page_num);	
+	
 	/* activate the corresponding item in the project menu */
 	action_name = g_strdup_printf ("Tab_%d", page_num);
 	action = gtk_action_group_get_action (gpw->priv->projects_list_menu_actions,
@@ -1498,6 +1517,7 @@ gpw_notebook_tab_added_cb (GtkNotebook *notebook,
 			   GladeProjectWindow *gpw)
 {
 	GladeProject *project;
+	GtkWidget    *inspector;
 
 	++gpw->priv->num_tabs;
 	
@@ -1514,6 +1534,18 @@ gpw_notebook_tab_added_cb (GtkNotebook *notebook,
 	g_signal_connect (G_OBJECT (project), "notify::read-only",
 			  G_CALLBACK (gpw_project_notify_handler_cb),
 			  gpw);
+
+	/* create inspector */
+	inspector = glade_inspector_new ();
+	gtk_widget_show (inspector);
+	glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
+	
+	g_signal_connect (inspector, "item-activated",
+			  G_CALLBACK (inspector_item_activated_cb),
+			  gpw); 
+	
+	gtk_notebook_append_page (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), inspector, NULL);
+	
 
 	gpw_set_sensitivity_according_to_project (gpw, project);
 
@@ -1532,7 +1564,8 @@ gpw_notebook_tab_removed_cb (GtkNotebook *notebook,
 			     guint page_num,
 			     GladeProjectWindow *gpw)
 {
-	GladeProject *project;
+	GladeProject   *project;
+	GladeInspector *inspector;
 
 	--gpw->priv->num_tabs;
 
@@ -1550,6 +1583,10 @@ gpw_notebook_tab_removed_cb (GtkNotebook *notebook,
 
 	/* FIXME: this function needs to be preferably called somewhere else */
 	glade_app_remove_project (project);
+
+	inspector = (GladeInspector *) gtk_notebook_get_nth_page (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), page_num);
+
+	gtk_notebook_remove_page (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), page_num);
 
 	gpw_refresh_projects_list_menu (gpw);
 
@@ -2208,7 +2245,6 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	GtkWidget *vpaned;
 	GtkWidget *menubar;
 	GtkWidget *toolbar;
-	GladeProjectView *project_view;
 	GtkWidget *statusbar;
 	GtkWidget *editor_item;
 	GtkWidget *palette;
@@ -2289,15 +2325,13 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_paned_pack2 (GTK_PANED (hpaned2), gpw->priv->notebook, TRUE, FALSE);
 	gtk_widget_show (gpw->priv->notebook);
 
-	/* project view */
-	project_view = GLADE_PROJECT_VIEW (glade_project_view_new ());
-	glade_app_add_project_view (project_view);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (project_view),
-					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (project_view), GTK_SHADOW_IN);
-	dockitem = gpw_construct_dock_item (gpw, _("Inspector"), GTK_WIDGET (project_view));
+	/* inspectors */
+	gpw->priv->inspectors_notebook = gtk_notebook_new ();	
+	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), FALSE);
+	gtk_notebook_set_show_border (GTK_NOTEBOOK (gpw->priv->inspectors_notebook), FALSE);	
+	gtk_widget_show (gpw->priv->inspectors_notebook);	
+	dockitem = gpw_construct_dock_item (gpw, _("Inspector"), gpw->priv->inspectors_notebook);
 	gtk_paned_pack1 (GTK_PANED (vpaned), dockitem, FALSE, FALSE); 
-	gtk_widget_show_all (GTK_WIDGET (project_view));
 
 	/* editor */
 	editor = GTK_WIDGET (glade_app_get_editor ());

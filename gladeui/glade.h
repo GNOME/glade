@@ -38,7 +38,7 @@ typedef struct _GladeProject   GladeProject;
 #include <gladeui/glade-editor.h>
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-clipboard.h>
-#include <gladeui/glade-project-view.h>
+#include <gladeui/glade-inspector.h>
 #include <gladeui/glade-placeholder.h>
 #include <gladeui/glade-utils.h>
 #include <gladeui/glade-builtins.h>
