@@ -5,18 +5,18 @@
 
 2006-06-20  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * gladeui/glade-inspector.[ch]: New Inspector implementation.
-          - The Inspector no longer records session data. 
-          - GtkTreeModel of inspector is now synchronised with project data
-            in an incremental fashion, instead of being totally rebuilt on changes.
-          
-        * gladeui/glade-project-view.[ch]: Removed.
-        
-        * gladeui/glade-app.[ch]: Remove glade_app_add_project_view(). Inspectors
-          are now managed by the frontend.
-          
-        * src/glade-project-window: A unique GladeInspector is associated with        
-          each open project. These inspectors are stored in a GtkNotebook. 
+	* gladeui/glade-inspector.[ch]: New Inspector implementation.
+	  - The Inspector no longer records session data. 
+	  - GtkTreeModel of inspector is now synchronised with project data
+	    in an incremental fashion, instead of being totally rebuilt on changes.
+	  
+	* gladeui/glade-project-view.[ch]: Removed.
+	
+	* gladeui/glade-app.[ch]: Remove glade_app_add_project_view(). Inspectors
+	  are now managed by the frontend.
+	  
+	* src/glade-project-window: A unique GladeInspector is associated with	
+	  each open project. These inspectors are stored in a GtkNotebook. 
 
 2006-06-19  Tristan Van Berkom <tvb@gnome.org>
 
@@ -332,8 +332,8 @@
 
 2007-05-04  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * doc/tmpl/glade-project.sgml, doc/tmpl/glade-app.sgml,
-          doc/tmpl/glade-widget.sgml, doc/tmpl/glade-property.sgml,
+	* doc/tmpl/glade-project.sgml, doc/tmpl/glade-app.sgml,
+	  doc/tmpl/glade-widget.sgml, doc/tmpl/glade-property.sgml,
 	  doc/tmpl/glade-widget-class.sgml, doc/tmpl/glade-fixed.sgml
 	  doc/tmpl/glade-utils.sgml: Update documentation templates.
 
@@ -403,21 +403,21 @@
 
 	* gladeui/glade-project.h, gladeui/glade-project.c:
 	  - Hide private implementation details (Added GladeProjectPrivate).
-          - Added private field accessors glade_project_get_path, glade_project_get_name,
-            glade_project_get_objects, and glade_project_get_has_unsaved_changes.
-          - Removed project->name field.
-          - Removed glade_project_display_name method.
-          
-        * gladeui/glade-editor-property.c, gladeui/glade-project-view.c,
+	  - Added private field accessors glade_project_get_path, glade_project_get_name,
+	    glade_project_get_objects, and glade_project_get_has_unsaved_changes.
+	  - Removed project->name field.
+	  - Removed glade_project_display_name method.
+	  
+	* gladeui/glade-editor-property.c, gladeui/glade-project-view.c,
 	  gladeui/glade-cursor.c, gladeui/glade-signal-editor.c, gladeui/glade-app.c
 	  gladeui/glade-property-class.c: Update for change in GladeProject.
    
-        * src/glade-project-window.c: Update for change in GladeProject. Added
-          methods for formatting paths and names. Fix display of tooltips for
-          items in the project list menu.
-          
-        * gladeui/glade-palette-item.c, gladeui/glade-palette.c: Update to use 
-          g_object_ref_sink().        
+	* src/glade-project-window.c: Update for change in GladeProject. Added
+	  methods for formatting paths and names. Fix display of tooltips for
+	  items in the project list menu.
+	  
+	* gladeui/glade-palette-item.c, gladeui/glade-palette.c: Update to use 
+	  g_object_ref_sink().	
 
 2007-04-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
@@ -436,14 +436,14 @@
 	  unused embedding implementation. Fix embedding warning.
 	  
 	* glade-id-allocator.c, glade-id-allocator.h: Performed house cleaning.
-          - Use g_slice_new where appropriate.
-          - Hide private implementation details.
-          - Added g_return_if_fail guards.
-          
-        * gladeui/glade-project.c, gladeui/glade-project.h:
-          - Move to using GladeIDAllocator for allocating unsaved numbers.
-          - Rename some variables since projects are now considered "unsaved"
-            instead of "untitled" (#400357, Wouter Bolsterlee).
+	  - Use g_slice_new where appropriate.
+	  - Hide private implementation details.
+	  - Added g_return_if_fail guards.
+	  
+	* gladeui/glade-project.c, gladeui/glade-project.h:
+	  - Move to using GladeIDAllocator for allocating unsaved numbers.
+	  - Rename some variables since projects are now considered "unsaved"
+	    instead of "untitled" (#400357, Wouter Bolsterlee).
 
 2007-04-20  Vincent Geddes <vincent.geddes@gmail.com>
 
@@ -738,27 +738,27 @@
 	* src/main.c:
 	  - Add summary of the application's functionality in the '--help'
 	    output (with g_option_context_set_summary()).
-	  - Set translation domain for the main option group.          
+	  - Set translation domain for the main option group.	  
 
-        * docs/catalogintro.sgml: pkg-config file is now 'gladeui-1.0'.
-        
-        * data/glade-3.desktop.in.in: Added 'GUIDesigner' to 'Categories'.
+	* docs/catalogintro.sgml: pkg-config file is now 'gladeui-1.0'.
+	
+	* data/glade-3.desktop.in.in: Added 'GUIDesigner' to 'Categories'.
 
-        * gladeui/glade.h, gladeui/glade-app.[ch]:
-          - Added a private initialisation function `glade_init_check()' for
-            libgladeui.
-          - Remove the 'bad' public variables that defined various installation
-            paths. These paths can now be obtained from static class methods on
-            GladeApp (static as in the Java and C++ sense).        
-        
-        * src/main.c, src/glade-project-window.c, gladeui/glade-catalog.c,
-          gladeui/glade-binding.c, gladeui/glade-cursor.c,
-          gladeui/glade-palette.c gladeui/glade-widget-adaptor.c, 
-          gladeui/glade-utils.c, bindings/python/glade-python.c: Use the new
-          GladeApp methods for obtaining installation paths.
-          
-        * gladeui/glade-palette-box.[ch]: Use G_DEFINE_TYPE() and
-          g_type_class_add_private().
+	* gladeui/glade.h, gladeui/glade-app.[ch]:
+	  - Added a private initialisation function `glade_init_check()' for
+	    libgladeui.
+	  - Remove the 'bad' public variables that defined various installation
+	    paths. These paths can now be obtained from static class methods on
+	    GladeApp (static as in the Java and C++ sense).	
+	
+	* src/main.c, src/glade-project-window.c, gladeui/glade-catalog.c,
+	  gladeui/glade-binding.c, gladeui/glade-cursor.c,
+	  gladeui/glade-palette.c gladeui/glade-widget-adaptor.c, 
+	  gladeui/glade-utils.c, bindings/python/glade-python.c: Use the new
+	  GladeApp methods for obtaining installation paths.
+	  
+	* gladeui/glade-palette-box.[ch]: Use G_DEFINE_TYPE() and
+	  g_type_class_add_private().
 
 2007-02-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
@@ -772,19 +772,19 @@
 
 2007-02-08  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * gladeui/*.[ch]: Replaced C++ style comments with the more portable ISO C syntax.
-          
-        * gladeui/glade-app.[ch]: Use the G_DEFINE_TYPE() and
-          g_type_class_add_private() idioms for registering the class.
-          
-        * README.cvs: Renamed to 'README.svn'.
-        
-        * README: Corrected some typos and updated GTK+ required to 2.10.0.
-        
-        * plugins/gtk+/icons/16x16/Makefile.am, plugins/gtk+/icons/22x22/Makefile.am:
-          Added some icons.
-          
-        * src/glade-project-window.c: Set the label for the Selector toolbutton.
+	* gladeui/*.[ch]: Replaced C++ style comments with the more portable ISO C syntax.
+	  
+	* gladeui/glade-app.[ch]: Use the G_DEFINE_TYPE() and
+	  g_type_class_add_private() idioms for registering the class.
+	  
+	* README.cvs: Renamed to 'README.svn'.
+	
+	* README: Corrected some typos and updated GTK+ required to 2.10.0.
+	
+	* plugins/gtk+/icons/16x16/Makefile.am, plugins/gtk+/icons/22x22/Makefile.am:
+	  Added some icons.
+	  
+	* src/glade-project-window.c: Set the label for the Selector toolbutton.
 
 2007-02-07  Paul <ephraim_owns@hotmail.com>
 
@@ -1029,7 +1029,7 @@
 
 2007-01-07  Vincent Geddes <vincent.geddes@gmail.com>
 
-        * configure.in: Quote some macro arguments. Use AS_HELP_STRING
+	* configure.in: Quote some macro arguments. Use AS_HELP_STRING
 	  to format the messages for AC_ARG_ENABLE macros. Other cleanups
 	  and updates.
 
@@ -1062,7 +1062,7 @@
 	* src/glade-signal.c:
 	* src/glade-xml-utils.c: Include config.h.
 
-        * src/glade-app.c: (glade_app_init): Bind the gettext domain. Bug
+	* src/glade-app.c: (glade_app_init): Bind the gettext domain. Bug
 	#397429.
 
 2007-01-17  Tristan Van Berkom <tvb@gnome.org>
