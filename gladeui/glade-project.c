@@ -1898,7 +1898,7 @@ redo_item_activated (GtkMenuItem  *item,
 GtkWidget *
 glade_project_undo_items (GladeProject *project)
 {
-	GtkMenu *menu = NULL;
+	GtkWidget *menu = NULL;
 	GtkWidget *item;
 	GladeCommand *cmd;
 	GList   *l;
@@ -1907,8 +1907,7 @@ glade_project_undo_items (GladeProject *project)
 	{
 		cmd = l->data;
 
-		if (!menu)
-			menu = (GtkMenu *)gtk_menu_new ();
+		if (!menu) menu = gtk_menu_new ();
 		
 		item = gtk_menu_item_new_with_label (cmd->description);
 		gtk_widget_show (item);
@@ -1934,7 +1933,7 @@ glade_project_undo_items (GladeProject *project)
 GtkWidget *
 glade_project_redo_items (GladeProject *project)
 {
-	GtkMenu *menu = NULL;
+	GtkWidget *menu = NULL;
 	GtkWidget *item;
 	GladeCommand *cmd;
 	GList   *l;
@@ -1946,8 +1945,7 @@ glade_project_redo_items (GladeProject *project)
 	{
 		cmd = l->data;
 
-		if (!menu)
-			menu = (GtkMenu *)gtk_menu_new ();
+		if (!menu) menu = gtk_menu_new ();
 		
 		item = gtk_menu_item_new_with_label (cmd->description);
 		gtk_widget_show (item);
