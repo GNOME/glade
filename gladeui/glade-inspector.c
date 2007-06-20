@@ -153,7 +153,7 @@ glade_inspector_class_init (GladeInspectorClass *klass)
 
 	/**
 	 * GladeInspector::selection-changed:
-	 * @inspector the #GladeInspector which received the signal.
+	 * @inspector: the object which received the signal
 	 *
 	 * Emitted when the selection changes in the GladeInspector.
 	 */
@@ -169,7 +169,7 @@ glade_inspector_class_init (GladeInspectorClass *klass)
 
 	/**
 	 * GladeInspector::item-activated:
-	 * @inspector the #GladeInspector which received the signal.
+	 * @inspector: the object which received the signal
 	 *
 	 * Emitted when a item is activated in the GladeInspector.
 	 */
@@ -387,12 +387,10 @@ project_widget_name_changed_cb (GladeProject   *project,
 
 	iter = glade_util_find_iter_by_widget (model, widget, WIDGET_COLUMN);
 
-	if (iter != NULL)
+	if (iter)
 	{
 		path = gtk_tree_model_get_path (model, iter);
-		
 		gtk_tree_model_row_changed (model, path, iter);
-		
 		gtk_tree_iter_free (iter);
 	}
 }
@@ -694,9 +692,10 @@ connect_project_signals (GladeInspector *inspector,
 /**
  * glade_inspector_set_project:
  * @inspector: a #GladeInspector
- * @project: a #GladeProject or %NULL
+ * @project: a #GladeProject
  *
- * Sets the project of @inspector to @project.
+ * Sets the current project of @inspector to @project. To unset the current
+ * project, pass %NULL for @project.
  */
 void
 glade_inspector_set_project (GladeInspector *inspector,
@@ -787,4 +786,23 @@ glade_inspector_new (void)
 {
 	return g_object_new (GLADE_TYPE_INSPECTOR, NULL);
 }
+
+/**
+ * glade_inspector_new_with_project:
+ * @project: a #GladeProject
+ *
+ * Creates a new #GladeInspector with @project
+ * 
+ * Returns: a new #GladeInspector
+ */
+GtkWidget *
+glade_inspector_new_with_project (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	return g_object_new (GLADE_TYPE_INSPECTOR,
+			     "project", project,
+			     NULL);
+}
+
 

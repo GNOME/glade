@@ -1,4 +1,4 @@
-<INCLUDE>glade.h</INCLUDE>
+<INCLUDE>gladeui/glade.h</INCLUDE>
 
 <SECTION>
 <FILE>glade-app</FILE>
@@ -243,22 +243,23 @@ GLADE_PLACEHOLDER_HEIGHT_REQ
 </SECTION>
 
 <SECTION>
-<FILE>glade-project-view</FILE>
-<TITLE>GladeProjectView</TITLE>
-GladeProjectViewType
-GladeProjectView
-glade_project_view_new
-glade_project_view_get_project
-glade_project_view_set_project
+<FILE>glade-inspector</FILE>
+<TITLE>GladeInspector</TITLE>
+GladeInspector
+glade_inspector_new
+glade_inspector_new_with_project
+glade_inspector_get_project
+glade_inspector_set_project
+glade_inspector_get_selected_items
 <SUBSECTION Standard>
-GLADE_PROJECT_VIEW
-GLADE_IS_PROJECT_VIEW
-GLADE_TYPE_PROJECT_VIEW
-glade_project_view_get_type
-GLADE_PROJECT_VIEW_CLASS
-GLADE_IS_PROJECT_VIEW_CLASS
-GLADE_PROJECT_VIEW_GET_CLASS
-GladeProjectViewClass
+GLADE_INSPECTOR
+GLADE_IS_INSPECTOR
+GLADE_TYPE_INSPECTOR
+GLADE_INSPECTOR_CLASS
+GLADE_IS_INSPECTOR_CLASS
+GLADE_INSPECTOR_GET_CLASS
+glade_inspector_get_type
+GladeInspectorClass
 </SECTION>
 
 <SECTION>

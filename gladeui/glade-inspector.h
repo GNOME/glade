@@ -67,6 +67,8 @@ GType          glade_inspector_get_type           (void) G_GNUC_CONST;
 
 GtkWidget     *glade_inspector_new                (void);
 
+GtkWidget     *glade_inspector_new_with_project   (GladeProject   *project);
+
 void           glade_inspector_set_project        (GladeInspector *inspector,
 					           GladeProject   *project);
 
