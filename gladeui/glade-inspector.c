@@ -367,10 +367,11 @@ project_remove_widget_cb (GladeProject   *project,
 	iter = glade_util_find_iter_by_widget (GTK_TREE_MODEL (inspector->priv->model),
 					       widget,
 					       WIDGET_COLUMN);
-
-	gtk_tree_store_remove (inspector->priv->model, iter);
-	
-	gtk_tree_iter_free (iter);	
+	if (iter)
+	{
+		gtk_tree_store_remove (inspector->priv->model, iter);
+		gtk_tree_iter_free (iter);
+	}
 }
 
 static void
