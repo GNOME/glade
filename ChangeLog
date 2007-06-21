@@ -1,3 +1,29 @@
+2007-06-22  Vincent Geddes <vgeddes@gnome.org>
+
+	* plugins/gnome/glade-gnome.h,
+	  plugins/gtk+/glade-gtk.c
+	  plugins/gtk+/glade-gtk.h
+	  plugins/gtk+/Makefile.am,
+	  plugins/gnome/glade-gnome.c,
+	  plugins/gnome/Makefile.am,
+	  src/glade-project-window.c,
+	  gladeui/glade-editor-property.c,
+	  gladeui/glade-parameter.c,
+	  gladeui/glade-widget.c,
+	  gladeui/glade-command.c,
+	  gladeui/glade-palette.c,
+	  gladeui/glade-utils.c,
+	  gladeui/glade-accumulators.c,
+	  gladeui/glade-palette.h,
+	  gladeui/glade-binding.h,
+	  gladeui/glade-app.c,
+	  gladeui/glade-property.c,
+	  gladeui/glade-builtins.c,
+	  gladeui/glade-project.c,
+	  gladeui/Makefile.am: Fix "missing prototype" errors reported by
+	  gcc due to increased warning level (-Wmissing-prototypes). Added
+	  glade-gnome.h with function prototypes as well.
+
 2007-06-21  Christian Persch  <chpe@gnome.org>
 
 	* bindings/python/Makefile.am:
@@ -11,9 +37,6 @@
 2006-06-21  Vincent Geddes <vincent.geddes@gmail.com>
 	
 	* gladeui/glade-app.[ch], gladeui/glade-widget-adaptor.c: Misc cleanups.
-
-        * plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-gtk.h: Fix errors reported
-          by gcc (due to higher warning level).
 
 2006-06-20  Tristan Van Berkom <tvb@gnome.org>
 

@@ -868,7 +868,7 @@ glade_command_placeholder_connect (CommandData *cdata,
  * while newly added widgets will prefer packing defaults.
  *
  */
-void
+static void
 glade_command_add (GList            *widgets, 
 		   GladeWidget      *parent, 
 		   GladePlaceholder *placeholder,
@@ -992,7 +992,7 @@ glade_command_add (GList            *widgets,
  *
  * Performs a remove command on all widgets in @widgets from @parent.
  */
-void
+static void
 glade_command_remove (GList *widgets)
 {
 	GladeCommandAddRemove	*me;
@@ -1358,7 +1358,7 @@ GLADE_MAKE_COMMAND (GladeCommandClipboardAddRemove, glade_command_clipboard_add_
 #define GLADE_IS_COMMAND_CLIPBOARD_ADD_REMOVE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_CLIPBOARD_ADD_REMOVE_TYPE))
 #define GLADE_IS_COMMAND_CLIPBOARD_ADD_REMOVE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_CLIPBOARD_ADD_REMOVE_TYPE))
 
-void
+static void
 glade_command_clipboard_add_remove_common (GList *widgets, gboolean add)
 {
 	GladeCommandClipboardAddRemove	*me;
@@ -1409,7 +1409,7 @@ glade_command_clipboard_add_remove_common (GList *widgets, gboolean add)
  *
  * Performs an add command on all widgets in @widgets to the clipboard.
  */
-void
+static void
 glade_command_clipboard_add(GList *widgets)
 {
 	glade_command_clipboard_add_remove_common(widgets, TRUE);
@@ -1421,11 +1421,16 @@ glade_command_clipboard_add(GList *widgets)
  *
  * Performs a remove command on all widgets in @widgets from the clipboard.
  */
-void
+ 
+/* not used anywhere */
+
+#if 0
+static void
 glade_command_clipboard_remove (GList *widgets)
 {
 	glade_command_clipboard_add_remove_common(widgets, FALSE);
 }
+#endif
 
 static gboolean
 glade_command_clipboard_add_execute (GladeCommandClipboardAddRemove *me)

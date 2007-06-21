@@ -276,7 +276,7 @@ glade_app_refresh_undo_redo_button (GladeApp *app,
 	gtk_widget_set_sensitive (button, command != NULL);
 }
 
-void
+static void
 glade_app_update_ui_default (GladeApp *app)
 {
 	GList *list;

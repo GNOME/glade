@@ -942,7 +942,7 @@ glade_project_has_object (GladeProject *project, GObject *object)
  *
  * TODO: Write me
  */
-void
+static void
 glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_widget, const char *widget_name)
 {
 	const char *first_number = widget_name;
@@ -1160,7 +1160,7 @@ glade_project_new_widget_name (GladeProject *project, const char *base_name)
 	return name;
 }
 
-void
+static void
 glade_project_set_has_selection (GladeProject *project, gboolean has_selection)
 {
 	g_assert (GLADE_IS_PROJECT (project));

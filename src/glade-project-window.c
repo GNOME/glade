@@ -910,7 +910,7 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 }
 
 
-void
+static void
 gpw_recent_add (GladeProjectWindow *gpw, const gchar *path)
 {
 	GtkRecentData *recent_data;
@@ -948,7 +948,7 @@ gpw_recent_add (GladeProjectWindow *gpw, const gchar *path)
 
 }
 
-void
+static void
 gpw_recent_remove (GladeProjectWindow *gpw, const gchar *path)
 {
 	gchar *uri;

@@ -79,18 +79,18 @@ struct _GladeBinding {
 	GladeBindingCtrl ctrl;
 };
 
-void          glade_binding_load_all (void);
+void          glade_binding_load_all      (void);
 
-void          glade_binding_unload_all (void);
+void          glade_binding_unload_all    (void);
 
-GladeBinding *glade_binding_get (const gchar *name);
+GladeBinding *glade_binding_get           (const gchar *name);
 
-const gchar  *glade_binding_get_name (GladeBinding *binding);
+const gchar  *glade_binding_get_name      (GladeBinding *binding);
 
-GList        *glade_binding_get_all ();
+GList        *glade_binding_get_all       (void);
 
-void          glade_binding_library_load (GladeBinding *binding,
-					  const gchar *library);
+void          glade_binding_library_load  (GladeBinding *binding,
+					   const gchar  *library);
 
 G_END_DECLS
 

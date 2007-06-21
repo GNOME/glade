@@ -84,7 +84,7 @@ glade_standard_stock_append_prefix (const gchar *prefix)
 	stock_prefixs = g_slist_append (stock_prefixs, g_strdup (prefix));
 }
 
-GArray *
+static GArray *
 list_stock_items (gboolean include_images)
 {
 	GtkStockItem  item;

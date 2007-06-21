@@ -22,8 +22,11 @@ libgladegnome_la_CFLAGS = \
 libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS) $(AM_LDFLAGS)
 libgladegnome_la_LIBADD = $(libgladeui) $(GLADE_LIBS)
 
+libgladegnomeincludedir= $(includedir)/libgladeui-1.0/gladeui
+libgladegnomeinclude_HEADERS = glade-gnome.h
+
 if PLATFORM_WIN32
-  libgladegnome_la_LDFLAGS += -no-undefined
+libgladegnome_la_LDFLAGS += -no-undefined
 endif
 
 

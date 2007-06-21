@@ -93,7 +93,7 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	return property;
 }
 
-gboolean
+static gboolean
 glade_property_equals_value_impl (GladeProperty *property,
 				  const GValue  *value)
 {
@@ -1101,7 +1101,7 @@ glade_property_equals_value (GladeProperty      *property,
  *
  * Returns: Whether this property is equal to the value provided
  */
-gboolean
+static gboolean
 glade_property_equals_va_list (GladeProperty *property, va_list vl)
 {
 	GValue   *value;

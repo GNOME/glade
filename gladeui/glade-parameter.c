@@ -221,7 +221,7 @@ glade_parameter_new_from_node (GladeXmlNode *node)
  * Returns: the #GList node containing the located #GladeParameter,
  *          or %NULL if none is found
  */
-GList *
+static GList *
 glade_parameter_list_find_by_key (GList *list, const gchar *key)
 {
 	GladeParameter *parameter;

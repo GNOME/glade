@@ -25,6 +25,8 @@
 
 #include "config.h"
 
+#include "glade-accumulators.h"
+
 #include <glib-object.h>
 
 

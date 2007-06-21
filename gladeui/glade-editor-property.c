@@ -2230,7 +2230,7 @@ glade_eprop_object_populate_view (GladeEditorProperty *eprop,
 	g_list_free (toplevels);
 }
 
-gboolean
+static gboolean
 glade_eprop_object_clear_iter (GtkTreeModel *model,
 			       GtkTreePath *path,
 			       GtkTreeIter *iter,
@@ -2241,7 +2241,7 @@ glade_eprop_object_clear_iter (GtkTreeModel *model,
 	return FALSE;
 }
 
-gboolean
+static gboolean
 glade_eprop_object_selected_widget (GtkTreeModel  *model,
 				    GtkTreePath   *path,
 				    GtkTreeIter   *iter,
@@ -2596,7 +2596,7 @@ glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 }
 
-gboolean
+static gboolean
 glade_eprop_objects_selected_widget (GtkTreeModel  *model,
 				     GtkTreePath    *path,
 				     GtkTreeIter    *iter,
@@ -3042,7 +3042,7 @@ GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel)
 #define GLADE_EPROP_ACCEL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ACCEL, GladeEPropAccelClass))
 
 
-GtkTreeModel *
+static GtkTreeModel *
 create_keysyms_model (void)
 {
 	GtkTreeModel *model;
@@ -3496,7 +3496,7 @@ glade_eprop_accel_view (GladeEditorProperty *eprop)
 	return view_widget;
 }
 
-gboolean
+static gboolean
 glade_eprop_accel_accum_accelerators (GtkTreeModel  *model,
 				      GtkTreePath    *path,
 				      GtkTreeIter    *iter,

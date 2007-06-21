@@ -83,6 +83,8 @@ void		     glade_palette_set_use_small_item_icons (GladePalette *palette,
 							     
 void		     glade_palette_set_show_selector_button (GladePalette *palette,
 							     gboolean      show_selector_button);
+							     
+gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
 
 G_END_DECLS
 

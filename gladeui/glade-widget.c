@@ -2128,7 +2128,7 @@ glade_widget_debug_real (GladeWidget *widget, int indent)
  * Prints some information about a #GladeWidget, currently
  * this is unmaintained.
  */
-void
+static void
 glade_widget_debug (GladeWidget *widget)
 {
 	glade_widget_debug_real (widget, 0);
@@ -3246,7 +3246,7 @@ glade_widget_child_get_property (GladeWidget      *widget,
 
 }
 
-gboolean 
+static gboolean 
 glade_widget_event_private (GtkWidget   *widget,
 			    GdkEvent    *event,
 			    GladeWidget *gwidget)

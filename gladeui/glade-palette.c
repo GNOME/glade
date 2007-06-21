@@ -94,10 +94,10 @@ static void glade_palette_append_item_group (GladePalette *palette, GladeWidgetG
 
 static void glade_palette_update_appearance (GladePalette *palette);
 
-G_DEFINE_TYPE(GladePalette, glade_palette, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GladePalette, glade_palette, GTK_TYPE_VBOX)
 
 
-void
+static void
 selector_button_toggled_cb (GtkToggleButton *button, GladePalette *palette)
 {
 	if (gtk_toggle_button_get_active (button))

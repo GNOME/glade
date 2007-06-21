@@ -772,7 +772,7 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
  *
  * Returns: %FALSE
  */
-gboolean
+static gboolean
 glade_util_draw_nodes_idle (GdkWindow *expose_win)
 {
 	GtkWidget *expose_widget;

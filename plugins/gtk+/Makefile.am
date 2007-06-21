@@ -23,12 +23,15 @@ libgladegtk_la_CFLAGS =    \
 	$(WARN_CFLAGS)     \
 	$(AM_CFLAGS)
 
-libgladegtk_la_SOURCES     = glade-gtk.c glade-gtk.h
+libgladegtk_la_SOURCES     = glade-gtk.c 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
+libgladegtkincludedir= $(includedir)/libgladeui-1.0/gladeui
+libgladegtkinclude_HEADERS = glade-gtk.h
+
 if PLATFORM_WIN32
-  libgladegtk_la_LDFLAGS += -no-undefined
+libgladegtk_la_LDFLAGS += -no-undefined
 endif
 
 
