@@ -56,6 +56,13 @@ AC_SUBST(GLADE_CURRENT)
 AC_SUBST(GLADE_AGE)
 AC_SUBST(GLADE_CURRENT_MINUS_AGE)
 
+# ================================================================
+
+GNOME_COMMON_INIT
+GNOME_DEBUG_CHECK
+GNOME_COMPILE_WARNINGS([maximum])
+GNOME_MAINTAINER_MODE_DEFINES
+
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================

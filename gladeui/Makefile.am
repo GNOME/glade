@@ -72,8 +72,8 @@ libgladeui_1_la_CPPFLAGS =  \
 	$(AM_CPPFLAGS)
 
 libgladeui_1_la_CFLAGS =    \
-	-g @GCC_WARN_FLAGS@ \
 	$(GTK_CFLAGS)       \
+	$(WARN_CFLAGS)      \
 	$(AM_CFLAGS)
 
 libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
@@ -118,8 +118,8 @@ libgladeuiinclude_HEADERS = \
 	
 
 if PLATFORM_WIN32
-  libgladeui_1_la_LDFLAGS += -no-undefined -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-  libgladeui_1_la_DEPENDENCIES = gladeui.def gladeui-win32-res.o
+libgladeui_1_la_LDFLAGS += -no-undefined -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+libgladeui_1_la_DEPENDENCIES = gladeui.def gladeui-win32-res.o
 endif
 
 gladeui-win32-res.o: gladeui.rc
