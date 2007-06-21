@@ -60,6 +60,8 @@ struct _GladeProjectWindowPrivate
 	GtkWidget *notebook;
 	GladeDesignView *active_view;
 	gint num_tabs;
+	
+	GtkTooltips *tooltips;
 
 	GtkWidget *inspectors_notebook;
 
@@ -2273,11 +2275,22 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
 	gtk_widget_show (toolbar);
 
+	/* tooltips object */
+	gpw->priv->tooltips =  gtk_tooltips_new ();
+
 	/* undo/redo buttons */
 	gpw->priv->undo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_UNDO);
 	gpw->priv->redo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_REDO);
 	gtk_widget_show (GTK_WIDGET (gpw->priv->undo));
 	gtk_widget_show (GTK_WIDGET (gpw->priv->redo));
+	gtk_menu_tool_button_set_arrow_tooltip (GTK_MENU_TOOL_BUTTON (gpw->priv->undo),
+						gpw->priv->tooltips,
+						_("Go back in undo history"),
+						NULL);
+	gtk_menu_tool_button_set_arrow_tooltip (GTK_MENU_TOOL_BUTTON (gpw->priv->redo),
+						gpw->priv->tooltips,
+						("Go forward in undo history"),
+						NULL); 
 
 	sep = gtk_separator_tool_item_new();
 	gtk_widget_show (GTK_WIDGET (sep));
