@@ -939,9 +939,11 @@ glade_property_read_accel_prop (GladeProperty      *property,
 	g_value_init (gvalue, GLADE_TYPE_ACCEL_GLIST);
 	g_value_take_boxed (gvalue, accels);
 
+
 	if (property)
 		GLADE_PROPERTY_GET_KLASS
 			(property)->set_value (property, gvalue);
+
 	
 	if (free_value)
 	{

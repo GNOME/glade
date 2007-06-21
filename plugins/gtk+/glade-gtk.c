@@ -2124,6 +2124,7 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 typedef struct 
 {
 	gint   pages;
+	gint   page;
 
 	GList *children;
 	GList *tabs;
@@ -2274,6 +2275,7 @@ glade_gtk_notebook_extract_children (GtkWidget *notebook)
 
 	nchildren        = g_new0 (NotebookChildren, 1);
 	nchildren->pages = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
+	nchildren->page  = gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook));
 		
 	/* Ref all the project widgets and build returned list first */
 	for (list = children; list; list = list->next)
@@ -2357,6 +2359,9 @@ glade_gtk_notebook_insert_children (GtkWidget *notebook, NotebookChildren *nchil
 		g_object_unref (G_OBJECT (page));
 		g_object_unref (G_OBJECT (tab));
 	}
+
+	/* Stay on the same page */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), nchildren->page);
 	
 	/* Free the original lists now */
 	if (nchildren->children)

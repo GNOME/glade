@@ -390,6 +390,7 @@ handle_accel(GladeParseState *state, const xmlChar **attrs)
     if (!state->accels)
 	state->accels = g_array_new(FALSE, FALSE,
 				    sizeof(GladeAccelInfo));
+
     g_array_append_val(state->accels, info);
 }
 
