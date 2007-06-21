@@ -294,8 +294,8 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkMenuShell" generic-name="menushell" _title="Menu Shell" use-placeholders="False">
       <post-create-function>empty</post-create-function>
-      <add-child-function>glade_gtk_menu_shell_add_item</add-child-function>
-      <remove-child-function>glade_gtk_menu_shell_remove_item</remove-child-function>
+      <add-child-function>glade_gtk_menu_shell_add_child</add-child-function>
+      <remove-child-function>glade_gtk_menu_shell_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_menu_shell_get_child_property</child-get-property-function>
       <action-activate-function>glade_gtk_menu_shell_action_activate</action-activate-function>
@@ -311,8 +311,8 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
-      <add-child-function>glade_gtk_menu_item_add_submenu</add-child-function>
-      <remove-child-function>glade_gtk_menu_item_remove_submenu</remove-child-function>
+      <add-child-function>glade_gtk_menu_item_add_child</add-child-function>
+      <remove-child-function>glade_gtk_menu_item_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit"/>

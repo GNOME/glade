@@ -4170,7 +4170,7 @@ glade_gtk_image_set_stock (GObject *object, const GValue *value)
 	g_free (str);
 }
 
-void
+static void
 glade_gtk_image_set_glade_stock (GObject *object, const GValue *value)
 {
 	GladeWidget   *gwidget;
@@ -4220,7 +4220,7 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
-glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor, 
+glade_gtk_menu_shell_add_child (GladeWidgetAdaptor  *adaptor, 
 			       GObject             *object, 
 			       GObject             *child)
 {
@@ -4233,7 +4233,7 @@ glade_gtk_menu_shell_add_item (GladeWidgetAdaptor  *adaptor,
 
 
 void
-glade_gtk_menu_shell_remove_item (GladeWidgetAdaptor  *adaptor,
+glade_gtk_menu_shell_remove_child (GladeWidgetAdaptor  *adaptor,
 				  GObject             *object, 
 				  GObject             *child)
 {
@@ -4580,8 +4580,8 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_menu_item_add_submenu (GladeWidgetAdaptor *adaptor,
-				 GObject *object, GObject *child)
+glade_gtk_menu_item_add_child (GladeWidgetAdaptor *adaptor,
+			       GObject *object, GObject *child)
 {
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	g_return_if_fail (GTK_IS_MENU (child));
@@ -4596,8 +4596,8 @@ glade_gtk_menu_item_add_submenu (GladeWidgetAdaptor *adaptor,
 }
 
 void
-glade_gtk_menu_item_remove_submenu (GladeWidgetAdaptor *adaptor,
-				    GObject *object, GObject *child)
+glade_gtk_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
+				  GObject *object, GObject *child)
 {
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	g_return_if_fail (GTK_IS_MENU (child));
@@ -5325,7 +5325,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 						  "group", "active", NULL);	
 }
 
-void
+static void
 glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor, 
 				 GObject            *toolbar)
 {
