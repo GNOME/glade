@@ -62,7 +62,6 @@ enum _GladePointerMode
 
 struct _GladeApp
 {
-	/*< private >*/
 	GObject parent_instance;
 	
 	GladeAppPrivate *priv;

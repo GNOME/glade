@@ -11,22 +11,15 @@
 G_BEGIN_DECLS
 
 #define GLADE_TYPE_WIDGET_ADAPTOR            (glade_widget_adaptor_get_type())
-#define GLADE_WIDGET_ADAPTOR(obj)            \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptor))
-#define GLADE_WIDGET_ADAPTOR_CLASS(klass)    \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
-#define GLADE_IS_WIDGET_ADAPTOR(obj)         \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET_ADAPTOR))
-#define GLADE_IS_WIDGET_ADAPTOR_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ADAPTOR))
-#define GLADE_WIDGET_ADAPTOR_GET_CLASS(o)    \
-        (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
+#define GLADE_WIDGET_ADAPTOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptor))
+#define GLADE_WIDGET_ADAPTOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
+#define GLADE_IS_WIDGET_ADAPTOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_WIDGET_ADAPTOR))
+#define GLADE_IS_WIDGET_ADAPTOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ADAPTOR))
+#define GLADE_WIDGET_ADAPTOR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
 
 typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
-typedef struct _GladeSignalClass          GladeSignalClass;
-typedef enum   _GladeCreateReason         GladeCreateReason;
 
 /**
  * GWA_IS_FIXED:
@@ -122,14 +115,14 @@ typedef enum   _GladeCreateReason         GladeCreateReason;
  *
  * These are the reasons your #GladePostCreateFunc can be called.
  */
-enum _GladeCreateReason
+typedef enum
 {
 	GLADE_CREATE_USER = 0,
 	GLADE_CREATE_COPY,
 	GLADE_CREATE_LOAD,
 	GLADE_CREATE_REBUILD,
 	GLADE_CREATE_REASONS
-};
+} GladeCreateReason;
 
 #define GLADE_CREATE_REASON (glade_create_reason_get_type())
 
@@ -341,6 +334,7 @@ typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
  */
+typedef struct _GladeSignalClass GladeSignalClass; 
 struct _GladeSignalClass
 {
 	GSignalQuery query;

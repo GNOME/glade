@@ -1231,7 +1231,7 @@ glade_app_command_cut (void)
 
 /**
  * glade_app_command_paste:
- * @app: A #GladeApp
+ * @placeholder: A #GladePlaceholder
  *
  * Paste the clipboard selection to the active project's 
  * selection (the project must have only one object selected).
@@ -1355,7 +1355,6 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 
 /**
  * glade_app_command_delete:
- * @app: A #GladeApp
  *
  * Delete the active project's selection.
  */
@@ -1405,7 +1404,6 @@ glade_app_command_delete (void)
 
 /**
  * glade_app_command_delete_clipboard:
- * @app: A #GladeApp
  *
  * Delete the clipboard's selection.
  */
@@ -1470,7 +1468,7 @@ glade_app_command_redo (void)
 /*
  * glade_app_set_accel_group:
  *
- * Sets @accel_group to @app.
+ * Sets @accel_group to app.
  * The acceleration group will be attached to every toplevel widget in this application.
  */
 void
