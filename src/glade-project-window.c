@@ -2576,7 +2576,10 @@ glade_project_window_update_ui (GladeApp *app)
 	
 	/* Chain Up */
 	GLADE_APP_CLASS (parent_class)->update_ui_signal (app);
-	
+       
+	if (gpw->priv->active_view)
+		gtk_widget_queue_draw (GTK_WIDGET (gpw->priv->active_view));
+
 	gpw_refresh_undo_redo (gpw);
 }
 
