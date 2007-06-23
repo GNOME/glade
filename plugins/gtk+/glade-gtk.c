@@ -5399,6 +5399,8 @@ glade_gtk_tool_button_set_type (GObject *object, const GValue *value)
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
 	
+	if (glade_util_object_is_loading (object)) return;
+	
 	glade_widget_property_set_sensitive (gbutton, "icon", FALSE,
 				_("This only applies with file type images"));
 	glade_widget_property_set_sensitive (gbutton, "glade-stock", FALSE,
@@ -5520,6 +5522,7 @@ glade_gtk_tool_button_set_icon (GObject *object, const GValue *value)
 	if ((pixbuf = g_value_get_object (value)))
 	{
 		image = gtk_image_new_from_pixbuf (GDK_PIXBUF (pixbuf));
+		gtk_widget_show (image);
 		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_IMAGE_FILENAME);
 	}
 	
