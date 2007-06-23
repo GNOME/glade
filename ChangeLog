@@ -1,3 +1,15 @@
+2007-06-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c:
+
+	  - glade_gtk_image_set_stock() property make reference  to GLADE_TYPE_STOCK_IMAGE 
+	    not GLADE_TYPE_STOCK! fixes bug #444959
+
+	  - glade_gtk_tool_button_set_type() return if loading fixes #450177.
+
+	* gladeui/glade-builtins.c: in list_stock_items() "gtk-" prefix must be prepended just once.
+	  otherwise gtk items gets listed twice!
+
 2006-05-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac, NEWS: Rolling 3.2.2
