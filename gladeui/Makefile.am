@@ -1,5 +1,6 @@
 
 common_defines = \
+	-DG_LOG_DOMAIN=\"GladeUI\"                      \
 	-DGLADE_DATADIR="\"$(pkgdatadir)\""		\
 	-DGLADE_LIBDIR="\"$(pkglibdir)\""		\
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
