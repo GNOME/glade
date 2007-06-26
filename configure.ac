@@ -259,15 +259,6 @@ if test "$platform_win32" = "yes"; then
   fi
 fi
 
-dnl ================================================================
-dnl Only use -Wall if we have gcc
-dnl ================================================================
-if test "x$GCC" = "xyes"; then
-    GCC_WARN_FLAGS="-Wall"
-fi
-
-AC_SUBST(GCC_WARN_FLAGS)
-
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])
