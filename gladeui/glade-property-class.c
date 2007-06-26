@@ -1376,12 +1376,28 @@ glade_property_class_get_displayable_value(GladePropertyClass *klass, gint value
  */
 static GArray *
 gpc_get_displayable_values_from_node (GladeXmlNode *node, 
-				      GEnumValue   *values, 
-				      gint          n_values,
+				      GladePropertyClass *klass,				   
 				      const gchar  *domain)
 {
+	gpointer the_class = g_type_class_ref(klass->pspec->value_type);
 	GArray *array;
 	GladeXmlNode *child;
+	GEnumValue *values;
+	gint n_values, n = 0;
+	gboolean first_not_found = TRUE;
+	
+	if (G_IS_PARAM_SPEC_ENUM(klass->pspec))
+	{
+		GEnumClass *eclass = the_class;
+		values = eclass->values;
+		n_values = eclass->n_values;
+	}
+	else
+	{
+		GFlagsClass *fclass = the_class;
+		values = (GEnumValue*)fclass->values;
+		n_values = fclass->n_values;
+	}
 	
 	if ((child = glade_xml_search_child (node, GLADE_TAG_VALUE)) == NULL)
 		return NULL;
@@ -1425,10 +1441,52 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node,
 				break;
 			}
 		}
+		
+		if (i == n_values)
+		{
+			if (first_not_found)
+			{
+				g_message (_("Displayable value id not found in %s::%s"),
+					   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
+				first_not_found = FALSE;
+			}
+			g_message ("\t%s",id);
+		}
+		else n++;
+		
 		g_free(id);
 		
 		child = glade_xml_node_next (child);
 	}
+	
+	if (n != n_values)
+	{
+		gint i;
+		
+		g_message (_("%d missing displayable value for %s::%s"), n_values - n,
+			   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
+		
+		for(i=0; i < n_values; i++)
+		{
+			gboolean not_found = TRUE;
+			child = glade_xml_node_get_children (node);
+			while (child != NULL)
+			{
+				if(strcmp (glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL),
+					   values[i].value_name) == 0)
+				{
+					not_found = FALSE;
+					break;
+				}
+				child = glade_xml_node_next (child);
+			}
+			
+			if (not_found)
+				g_message ("\t%s", values[i].value_name);
+		}
+	}
+	
+	g_type_class_unref(the_class);
 	
 	return array;
 }
@@ -1628,32 +1686,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		klass->tooltip = g_strdup (dgettext (domain, buff));
 	}
 
-	/* If this property's value is an enumeration then we try to get the displayable values */
-	if (G_IS_PARAM_SPEC_ENUM(klass->pspec))
-	{
-		GEnumClass  *eclass = g_type_class_ref(klass->pspec->value_type);
-		
-		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
-		if (child)
-			klass->displayable_values = gpc_get_displayable_values_from_node
-				(child, eclass->values, eclass->n_values, domain);
-		
-		g_type_class_unref(eclass);
-	}
-	
-	/* the same way if it is a Flags property */
-	if (G_IS_PARAM_SPEC_FLAGS(klass->pspec))
-	{
-		GFlagsClass  *fclass = g_type_class_ref(klass->pspec->value_type);
-		
-		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
-		if (child)
-			klass->displayable_values = gpc_get_displayable_values_from_node
-				(child, (GEnumValue*)fclass->values, fclass->n_values, domain);
-		
-		g_type_class_unref(fclass);
-	}
-
 	/* Visible lines */
 	glade_xml_get_value_int (node, GLADE_TAG_VISIBLE_LINES,  &klass->visible_lines);
 
@@ -1678,6 +1710,28 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->weight   = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,   klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
+	
+	/* If this property's value is an enumeration or flag then we try to get the displayable values */
+	if (G_IS_PARAM_SPEC_ENUM(klass->pspec) ||
+	    G_IS_PARAM_SPEC_FLAGS(klass->pspec))
+	{
+		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
+		if (child)
+		{
+			klass->displayable_values = gpc_get_displayable_values_from_node
+				(child, klass, domain);
+		}
+		else if (!klass->displayable_values && klass->visible &&
+			 klass->pspec->value_type != GLADE_TYPE_STOCK &&
+			 klass->pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
+		{
+			/* Displayable values could be defined in the parent class
+			 * We do not need displayable values if the property is not visible
+			 */
+			g_message (_("No displayable values for %s::%s"),
+				   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
+		}
+	}
 	
 	/* A sprinkle of hard-code to get atk properties working right
 	 */

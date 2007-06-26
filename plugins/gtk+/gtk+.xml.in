@@ -463,6 +463,11 @@ embedded in another object</_tooltip>
 	<property id="label-widget" disabled="True"/>
         <property id="glade-type" _name="Image Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
+           <displayable-values>
+             <value id="GLADEGTK_IMAGE_FILENAME" _name="Filename"/>
+             <value id="GLADEGTK_IMAGE_STOCK" _name="Stock"/>
+             <value id="GLADEGTK_IMAGE_ICONTHEME" _name="Icon Theme"/>
+           </displayable-values>
 	</property>
 	<property id="glade-stock" _name="Stock Image" save="False">
 	  <spec>glade_standard_stock_image_spec</spec>
@@ -619,6 +624,11 @@ embedded in another object</_tooltip>
 
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_button_type_spec</spec>
+  	  <displayable-values>
+	    <value id="GLADEGTK_BUTTON_LABEL" _name="Label"/>
+	    <value id="GLADEGTK_BUTTON_STOCK" _name="Stock"/>
+	    <value id="GLADEGTK_BUTTON_CONTAINER" _name="Container"/>
+	  </displayable-values>
 	</property>
 
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
@@ -841,6 +851,11 @@ embedded in another object</_tooltip>
 	<property id="stock" visible="False" default="gtk-missing-image"/>
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_image_type_spec</spec>
+           <displayable-values>
+             <value id="GLADEGTK_IMAGE_FILENAME" _name="Filename"/>
+             <value id="GLADEGTK_IMAGE_STOCK" _name="Stock"/>
+             <value id="GLADEGTK_IMAGE_ICONTHEME" _name="Icon Theme"/>
+           </displayable-values>
 	</property>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
@@ -1126,6 +1141,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ARROW_DOWN" _name="Down"/>
 	    <value id="GTK_ARROW_LEFT" _name="Left"/>
 	    <value id="GTK_ARROW_RIGHT" _name="Right"/>
+	    <value id="GTK_ARROW_NONE" _name="None"/>
 	  </displayable-values>
 	</property>
       	<property id="shadow-type">

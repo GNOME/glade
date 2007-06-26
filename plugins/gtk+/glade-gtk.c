@@ -178,14 +178,11 @@ glade_gtk_image_type_get_type (void)
 	static GType etype = 0;
 	if (etype == 0) {
 		static GEnumValue values[] = {
-			{ GLADEGTK_IMAGE_FILENAME,  "a",   "glade-gtk-image-filename" },
-			{ GLADEGTK_IMAGE_STOCK,     "b",      "glade-gtk-image-stock" },
-			{ GLADEGTK_IMAGE_ICONTHEME, "c", "glade-gtk-image-icontheme" },
+			{ GLADEGTK_IMAGE_FILENAME,  "GLADEGTK_IMAGE_FILENAME",   "glade-gtk-image-filename" },
+			{ GLADEGTK_IMAGE_STOCK,     "GLADEGTK_IMAGE_STOCK",      "glade-gtk-image-stock" },
+			{ GLADEGTK_IMAGE_ICONTHEME, "GLADEGTK_IMAGE_ICONTHEME", "glade-gtk-image-icontheme" },
 			{ 0, NULL, NULL }
 		};
-		values[GLADEGTK_IMAGE_FILENAME].value_name  = _("Filename");
-		values[GLADEGTK_IMAGE_STOCK].value_name     = _("Stock");
-		values[GLADEGTK_IMAGE_ICONTHEME].value_name = _("Icon Theme");
 
 		etype = g_enum_register_static ("GladeGtkImageType", values);
 	}
@@ -198,14 +195,11 @@ glade_gtk_button_type_get_type (void)
 	static GType etype = 0;
 	if (etype == 0) {
 		static GEnumValue values[] = {
-			{ GLADEGTK_BUTTON_LABEL,     "a", "glade-gtk-button-label" },
-			{ GLADEGTK_BUTTON_STOCK,     "b", "glade-gtk-button-stock" },
-			{ GLADEGTK_BUTTON_CONTAINER, "c", "glade-gtk-button-container" },
+			{ GLADEGTK_BUTTON_LABEL,     "GLADEGTK_BUTTON_LABEL", "glade-gtk-button-label" },
+			{ GLADEGTK_BUTTON_STOCK,     "GLADEGTK_BUTTON_STOCK", "glade-gtk-button-stock" },
+			{ GLADEGTK_BUTTON_CONTAINER, "GLADEGTK_BUTTON_CONTAINER", "glade-gtk-button-container" },
 			{ 0, NULL, NULL }
 		};
-		values[GLADEGTK_BUTTON_LABEL].value_name      = _("Label");
-		values[GLADEGTK_BUTTON_STOCK].value_name      = _("Stock");
-		values[GLADEGTK_BUTTON_CONTAINER].value_name  = _("Container");
 
 		etype = g_enum_register_static ("GladeGtkButtonType", values);
 	}
