@@ -56,6 +56,21 @@ AC_SUBST(GLADE_CURRENT)
 AC_SUBST(GLADE_AGE)
 AC_SUBST(GLADE_CURRENT_MINUS_AGE)
 
+dnl are we unstable or stable?
+m4_define([glade_unstable],
+          m4_if(m4_eval(glade_minor_version % 2), [1], [yes], [no]))
+GLADE_UNSTABLE=glade_unstable
+AC_SUBST(GLADE_UNSTABLE)
+
+dnl The symbol GLADE_UNSTABLE is defined above for substitution in
+dnl Makefiles and conditionally defined here as a preprocessor symbol
+dnl and automake conditional.
+if test "x$GLADE_UNSTABLE" = "xyes"; then
+  AC_DEFINE(GLADE_UNSTABLE, 1,
+            [Define to 1 if this is an unstable version of Glade])
+fi
+AM_CONDITIONAL(GLADE_UNSTABLE, test "x$GLADE_UNSTABLE" = "xyes")
+
 # ================================================================
 
 GNOME_COMMON_INIT
@@ -252,7 +267,17 @@ case $host_os in
 esac
 AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = "xyes")
 
-if test "$platform_win32" = "yes"; then
+case $host_os in
+  *mingw*)
+    native_win32=yes
+    ;;
+  *)
+    native_win32=no
+    ;;
+esac
+AM_CONDITIONAL(NATIVE_WIN32, test x"$native_win32" = "xyes")
+
+if test "$native_win32" = "yes"; then
   AC_CHECK_TOOL(WINDRES, windres, no)
   if test "$WINDRES" = no; then
     AC_MSG_ERROR([*** Could not find an implementation of windres in your PATH.])

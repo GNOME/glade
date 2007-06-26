@@ -22,8 +22,11 @@ glade_3_SOURCES = \
 	glade-project-window.h \
 	main.c
 
-if PLATFORM_WIN32
-  glade_3_LDADD += glade-win32-res.o
+if NATIVE_WIN32
+glade_3_LDADD += glade-win32-res.o
+if !GLADE_UNSTABLE
+glade_3_LDFLAGS += -mwindows
+endif
 endif
 
 glade-win32-res.o: glade-3.rc

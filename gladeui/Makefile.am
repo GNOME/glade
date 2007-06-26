@@ -119,8 +119,12 @@ libgladeuiinclude_HEADERS = \
 	
 
 if PLATFORM_WIN32
-libgladeui_1_la_LDFLAGS += -no-undefined -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-libgladeui_1_la_DEPENDENCIES = gladeui.def gladeui-win32-res.o
+libgladeui_1_la_LDFLAGS += -no-undefined
+endif
+
+if NATIVE_WIN32
+libgladeui_1_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+libgladeui_1_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
 endif
 
 gladeui-win32-res.o: gladeui.rc

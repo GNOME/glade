@@ -1,3 +1,10 @@
+2007-06-26  Vincent Geddes <vgeddes@gnome.org>
+
+	* src/Makefile.am
+	  configure.ac
+	  gladeui/Makefile.am: Cygwin build fixes. Only apply "-mwindows" ld flag
+	  if we are in unstable development.
+
 2007-06-24  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/Makefile.am: Set log domain for libgladeui to "GladeUI".
