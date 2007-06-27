@@ -15,6 +15,10 @@
 	  configure.ac
 	  gladeui/Makefile.am: Cygwin build fixes. Only apply "-mwindows" ld flag
 	  if we are in unstable development.
+	  
+        * configure.ac, plugins/gtk+/Makefile.am,
+          plugins/gnome/Makefile.am: Substitute PLUGINS_WARN_CFLAGS as the warning flags
+          for compiling plugins. Don't use the warning flags defined by GNOME_COMPILE_WARNINGS. 
 
 2007-06-24  Vincent Geddes <vgeddes@gnome.org>
 

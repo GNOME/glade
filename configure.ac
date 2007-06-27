@@ -78,6 +78,13 @@ GNOME_DEBUG_CHECK
 GNOME_COMPILE_WARNINGS([maximum])
 GNOME_MAINTAINER_MODE_DEFINES
 
+# For the plugins, we don't use the warning flags defined by GNOME_COMPILE_WARNINGS.
+# These flags include -Wmissing-prototypes, which we prefer not to use.
+if test "x$GCC" = "xyes"; then
+    PLUGINS_WARN_CFLAGS="-Wall -Wnested-externs -Wpointer-arith"
+fi
+AC_SUBST(PLUGINS_WARN_CFLAGS)
+
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================

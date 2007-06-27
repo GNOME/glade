@@ -22,8 +22,6 @@
 
 #include <config.h>
 
-#include "glade-gnome.h"
-
 #include <gladeui/glade.h>
 #include <gladeui/glade-editor-property.h>
 
@@ -31,7 +29,7 @@
 
 #include <libbonoboui.h>
 #include <libgnome/libgnome.h>
-#include <libgnomeui/libgnomeui.h>
+#include <libgnomeui/libgnomeui.h>	
 
 /* This function does absolutely nothing
  * (and is for use in overriding post_create functions).

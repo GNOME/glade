@@ -17,13 +17,10 @@ libgladegnome_la_CFLAGS = \
 	-I$(top_builddir)            \
 	-I$(top_srcdir)/plugins/gtk+ \
 	$(GNOME_CFLAGS)              \
-	$(WARN_CFLAGS)               \
+	$(PLUGINS_WARN_CFLAGS)       \
 	$(AM_CPPFLAGS)
 libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS) $(AM_LDFLAGS)
 libgladegnome_la_LIBADD = $(libgladeui) $(GLADE_LIBS)
-
-libgladegnomeincludedir= $(includedir)/libgladeui-1.0/gladeui
-libgladegnomeinclude_HEADERS = glade-gnome.h
 
 if PLATFORM_WIN32
 libgladegnome_la_LDFLAGS += -no-undefined
