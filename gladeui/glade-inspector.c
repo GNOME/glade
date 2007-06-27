@@ -525,10 +525,9 @@ button_press_cb (GtkWidget      *widget,
 			 */
 			gtk_tree_model_get (GTK_TREE_MODEL (inspector->priv->model), &iter,
 					    WIDGET_COLUMN, &widget, -1);
-			if (widget != NULL &&
-				    event->button == 3)
+			if (widget != NULL && event->button == 3)
 			{
-				glade_popup_widget_pop (widget, event);
+				glade_popup_widget_pop (widget, event, FALSE);
 				handled = TRUE;
 			}
 			gtk_tree_path_free (path);

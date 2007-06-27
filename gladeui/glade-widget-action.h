@@ -45,6 +45,8 @@ struct _GWActionClass
 	gchar    *label;        /* A translated label to show in the UI for this action */
 	gchar    *stock;        /* If set, this stock item will be shown in the UI along side
 				 * the label */
+	gboolean important;	/* If this action is important */
+
 	GList    *actions;      /* Recursive list of child actions */
 };
 

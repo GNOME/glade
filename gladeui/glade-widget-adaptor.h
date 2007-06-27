@@ -590,12 +590,14 @@ gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor
 gboolean             glade_widget_adaptor_action_add         (GladeWidgetAdaptor *adaptor,
 							      const gchar *action_path,
 							      const gchar *label,
-							      const gchar *stock);
+							      const gchar *stock,
+							      gboolean important);
 
 gboolean             glade_widget_adaptor_pack_action_add    (GladeWidgetAdaptor *adaptor,
 							      const gchar *action_path,
 							      const gchar *label,
-							      const gchar *stock);
+							      const gchar *stock,
+							      gboolean important);
 
 gboolean             glade_widget_adaptor_action_remove      (GladeWidgetAdaptor *adaptor,
 							      const gchar *action_path);

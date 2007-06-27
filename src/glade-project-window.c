@@ -30,6 +30,7 @@
 #include <gladeui/glade.h>
 #include <gladeui/glade-design-view.h>
 #include <gladeui/glade-binding.h>
+#include <gladeui/glade-popup.h>
 #include <gladeui/glade-inspector.h>
 
 #include <string.h>
@@ -89,6 +90,9 @@ struct _GladeProjectWindowPrivate
 
 	GtkToolItem *undo; /* customized buttons for undo/redo with history */
 	GtkToolItem *redo;
+	
+	GtkWidget *toolbar; /* Actions are added to the toolbar */
+	gint actions_start; /* start of action items */
 };
 
 static GladeAppClass *parent_class = NULL;
@@ -494,6 +498,107 @@ gpw_window_screen_changed_cb (GtkWidget *widget,
 }
 
 static void
+glade_project_window_activate_action (GtkToolButton *toolbutton,
+				      GladeWidgetAction *action) 
+{
+	GladeWidget *widget;
+	
+	if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
+		glade_widget_adaptor_action_activate (widget->adaptor,
+						      widget->object,
+						      action->klass->path);
+}
+
+static void
+glade_project_window_action_notify_sensitive (GObject *gobject,
+					      GParamSpec *arg1,
+					      GtkWidget *item)
+{
+	GladeWidgetAction *action = GLADE_WIDGET_ACTION (gobject);
+	gtk_widget_set_sensitive (item, action->sensitive);
+}
+
+static void
+glade_project_window_action_disconnect (gpointer data, GClosure *closure)
+{
+	g_signal_handlers_disconnect_matched (data, G_SIGNAL_MATCH_FUNC,
+					      0, 0, NULL,
+					      glade_project_window_action_notify_sensitive,
+					      NULL);
+}
+
+static void
+glade_project_window_clean_actions (GladeProjectWindow *gpw)
+{
+	GtkContainer *container = GTK_CONTAINER (gpw->priv->toolbar);
+	GtkToolbar *bar = GTK_TOOLBAR (gpw->priv->toolbar);
+	GtkToolItem *item;
+	
+	if (gpw->priv->actions_start)
+	{
+		while ((item = gtk_toolbar_get_nth_item (bar, gpw->priv->actions_start)))
+			gtk_container_remove (container, GTK_WIDGET (item));
+	}
+}
+
+static void
+glade_project_window_add_actions (GladeProjectWindow *gpw,
+				  GladeWidget *widget,
+				  GList *actions)
+{
+	GtkToolbar *bar = GTK_TOOLBAR (gpw->priv->toolbar);
+	GtkToolItem *item = gtk_separator_tool_item_new ();
+	gint n = 0;
+	GList *l;
+
+	gtk_toolbar_insert (bar, item, -1);
+	gtk_widget_show (GTK_WIDGET (item));
+
+	if (gpw->priv->actions_start == 0)
+		gpw->priv->actions_start = gtk_toolbar_get_item_index (bar, item);
+			
+	for (l = actions; l; l = g_list_next (l))
+	{
+		GladeWidgetAction *a = l->data;
+		
+		if (!a->klass->important) continue;
+		
+		if (a->actions)
+		{
+			g_warning ("Trying to add a group action to the toolbar is unsupported");
+			continue;
+		}
+
+		item = gtk_tool_button_new_from_stock ((a->klass->stock) ? a->klass->stock : "gtk-execute");
+		if (a->klass->label)
+			gtk_tool_button_set_label (GTK_TOOL_BUTTON (item),
+						   a->klass->label);
+		
+		g_object_set_data (G_OBJECT (item), "glade-widget", widget);
+		/* We use destroy_data to keep track of notify::sensitive callbacks
+		 * on the action object and disconnect them when the toolbar item
+		 * gets destroyed.
+		 */
+		g_signal_connect_data (item, "clicked",
+				       G_CALLBACK (glade_project_window_activate_action),
+				       a, glade_project_window_action_disconnect, 0);
+			
+		gtk_widget_set_sensitive (GTK_WIDGET (item), a->sensitive);
+
+		g_signal_connect (a, "notify::sensitive",
+				  G_CALLBACK (glade_project_window_activate_action),
+				  GTK_WIDGET (item));
+		
+		gtk_toolbar_insert (bar, item, -1);
+		gtk_tool_item_set_homogeneous (item, FALSE);
+		gtk_widget_show (GTK_WIDGET (item));
+		n++;
+	}
+	
+	if (n == 0) glade_project_window_clean_actions (gpw);
+}
+
+static void
 project_selection_changed_cb (GladeProject *project, GladeProjectWindow *gpw)
 {
 	GladeWidget *glade_widget = NULL;
@@ -528,12 +633,15 @@ project_selection_changed_cb (GladeProject *project, GladeProjectWindow *gpw)
 			gtk_label_set_text (label, text);
 			
 			g_free (text);
+			glade_project_window_clean_actions (gpw);
+			if (glade_widget->actions)
+				glade_project_window_add_actions (gpw, glade_widget,
+								  glade_widget->actions);
 		}	
 		else
 		{
 			gtk_label_set_text (label, _("Properties"));
 		}
-			
 	}
 	
 }
@@ -2271,9 +2379,10 @@ glade_project_window_create (GladeProjectWindow *gpw)
 	gtk_widget_show (menubar);
 
 	/* toolbar */
-	toolbar = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar");
+	gpw->priv->toolbar = toolbar = gtk_ui_manager_get_widget (gpw->priv->ui, "/ToolBar");
 	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, TRUE, 0);
 	gtk_widget_show (toolbar);
+	gpw->priv->actions_start = 0;
 
 	/* tooltips object */
 	gpw->priv->tooltips =  gtk_tooltips_new ();

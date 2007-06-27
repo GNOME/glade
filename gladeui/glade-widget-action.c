@@ -199,6 +199,7 @@ glade_widget_action_class_clone (GWActionClass *action)
 	copy->path = g_strdup (action->path);
 	copy->label = g_strdup (action->label);
 	copy->stock = g_strdup (action->stock);
+	copy->important = action->important;
 	
 	/* id points to path! */
 	copy->id = copy->path + (action->id - action->path);

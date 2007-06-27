@@ -116,6 +116,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_NO                              "No"
 #define GLADE_TAG_ICON_PREFIX                     "icon-prefix"
 #define GLADE_TAG_ICON_NAME                       "icon-name"
+#define GLADE_TAG_IMPORTANT                       "important"
 #define GLADE_ENUM_DATA_TAG                       "GladeEnumDataTag"
 
 

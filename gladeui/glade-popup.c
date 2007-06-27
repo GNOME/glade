@@ -261,6 +261,7 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
  * @menu: a GtkMenu to put the actions menu items.
  * @widget: A #GladeWidget
  * @action: a @widget subaction or NULL to include all actions.
+ * @packing: TRUE to include packing actions
  *
  * Populate a GtkMenu with widget's actions
  *
@@ -269,7 +270,8 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
 gint
 glade_popup_action_populate_menu (GtkWidget *menu,
 				  GladeWidget *widget,
-				  GladeWidgetAction *action)
+				  GladeWidgetAction *action,
+				  gboolean packing)
 {
 	gint n;
 
@@ -299,7 +301,7 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 						   G_CALLBACK (glade_popup_menuitem_activated),
 						   widget);
 	
-	if (widget->packing_actions)
+	if (packing && widget->packing_actions)
 	{
 		if (n)
 		{
@@ -317,7 +319,7 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 }
 
 static GtkWidget *
-glade_popup_create_menu (GladeWidget *widget)
+glade_popup_create_menu (GladeWidget *widget, gboolean packing)
 {
 	GtkWidget *popup_menu;
 	gboolean   sensitive;
@@ -338,13 +340,13 @@ glade_popup_create_menu (GladeWidget *widget)
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
-	if (widget->actions || widget->packing_actions)
+	if (widget->actions || (packing && widget->packing_actions))
 	{
 		GtkWidget *separator = gtk_menu_item_new ();
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
 		gtk_widget_show (separator);
 
-		glade_popup_action_populate_menu (popup_menu, widget, NULL);
+		glade_popup_action_populate_menu (popup_menu, widget, NULL, packing);
 	}
 
 	return popup_menu;
@@ -399,7 +401,9 @@ glade_popup_create_clipboard_menu (GladeWidget *widget)
 }
 
 void
-glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
+glade_popup_widget_pop (GladeWidget *widget,
+			GdkEventButton *event,
+			gboolean packing)
 {
 	GtkWidget *popup_menu;
 	gint button;
@@ -407,7 +411,7 @@ glade_popup_widget_pop (GladeWidget *widget, GdkEventButton *event)
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-	popup_menu = glade_popup_create_menu (widget);
+	popup_menu = glade_popup_create_menu (widget, packing);
 
 	if (event)
 	{

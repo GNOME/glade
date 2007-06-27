@@ -317,7 +317,7 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 	}
 	else if (event->button == 3)
 	{
-		glade_popup_widget_pop (gwidget, event);
+		glade_popup_widget_pop (gwidget, event, TRUE);
 		handled = TRUE;
 	}
 
@@ -3961,7 +3961,7 @@ glade_widget_create_action_menu (GladeWidget *widget, const gchar *action_path)
 	}
 	
 	menu = gtk_menu_new ();
-	if (glade_popup_action_populate_menu (menu, widget, action))
+	if (glade_popup_action_populate_menu (menu, widget, action, TRUE))
 		return menu;
 	
 	g_object_unref (G_OBJECT (menu));

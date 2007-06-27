@@ -1324,7 +1324,7 @@ gwa_action_update_from_node (GladeWidgetAdaptor *adaptor,
 {
 	GladeXmlNode *child;
 	gchar *id, *label, *stock, *action_path;
-	gboolean group;
+	gboolean group, important;
 	
 	for (child = glade_xml_node_get_children (node);
 	     child; child = glade_xml_node_next (child))
@@ -1344,11 +1344,12 @@ gwa_action_update_from_node (GladeWidgetAdaptor *adaptor,
 		
 		label = glade_xml_get_property_string (child, GLADE_TAG_NAME);
 		stock = glade_xml_get_property_string (child, GLADE_TAG_STOCK);
-
+		important = glade_xml_get_property_boolean (child, GLADE_TAG_IMPORTANT, FALSE);
+			
 		if (is_packing)
-			glade_widget_adaptor_pack_action_add (adaptor, action_path, label, stock);
+			glade_widget_adaptor_pack_action_add (adaptor, action_path, label, stock, important);
 		else
-			glade_widget_adaptor_action_add (adaptor, action_path, label, stock);
+			glade_widget_adaptor_action_add (adaptor, action_path, label, stock, important);
 		
 		if (group) gwa_action_update_from_node (adaptor, is_packing, child, action_path);
 		
@@ -2428,7 +2429,8 @@ static gboolean
 glade_widget_adaptor_action_add_real (GList **list,
 				      const gchar *action_path,
 				      const gchar *label,
-				      const gchar *stock)
+				      const gchar *stock,
+				      gboolean important)
 {
 	GWActionClass *action, *group;
 	const gchar *id;
@@ -2468,6 +2470,8 @@ glade_widget_adaptor_action_add_real (GList **list,
 		action->stock = (stock) ? g_strdup (stock) : NULL;
 	}
 	
+	action->important = important;
+	
 	*list = g_list_append (*list, action);
 	
 	return TRUE;
@@ -2479,6 +2483,7 @@ glade_widget_adaptor_action_add_real (GList **list,
  * @action_path: The identifier of this action in the action tree
  * @label: A translated label to show in the UI for this action
  * @stock: If set, this stock item will be shown in the UI along side the label.
+ * @important: if this action is important.
  *
  * Add an action to @adaptor.
  * If the action is present then it overrides label and stock
@@ -2489,7 +2494,8 @@ gboolean
 glade_widget_adaptor_action_add (GladeWidgetAdaptor *adaptor,
 				 const gchar *action_path,
 				 const gchar *label,
-				 const gchar *stock)
+				 const gchar *stock,
+				 gboolean important)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
 	g_return_val_if_fail (action_path != NULL, FALSE);
@@ -2497,7 +2503,8 @@ glade_widget_adaptor_action_add (GladeWidgetAdaptor *adaptor,
 	return glade_widget_adaptor_action_add_real (&adaptor->actions,
 						     action_path,
 						     label,
-						     stock);
+						     stock,
+						     important);
 }
 
 /**
@@ -2506,6 +2513,7 @@ glade_widget_adaptor_action_add (GladeWidgetAdaptor *adaptor,
  * @action_path: The identifier of this action in the action tree
  * @label: A translated label to show in the UI for this action
  * @stock: If set, this stock item will be shown in the UI along side the label.
+ * @important: if this action is important.
  *
  * Add a packing action to @adaptor.
  * If the action is present then it overrides label and stock
@@ -2516,7 +2524,8 @@ gboolean
 glade_widget_adaptor_pack_action_add (GladeWidgetAdaptor *adaptor,
 				      const gchar *action_path,
 				      const gchar *label,
-				      const gchar *stock)
+				      const gchar *stock,
+				      gboolean important)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
 	g_return_val_if_fail (action_path != NULL, FALSE);
@@ -2524,7 +2533,8 @@ glade_widget_adaptor_pack_action_add (GladeWidgetAdaptor *adaptor,
 	return glade_widget_adaptor_action_add_real (&adaptor->packing_actions,
 						     action_path,
 						     label,
-						     stock);
+						     stock,
+						     important);
 }
 
 static gboolean
