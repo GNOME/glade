@@ -101,6 +101,8 @@ static void gpw_refresh_undo_redo (GladeProjectWindow *gpw);
 
 static void gpw_recent_chooser_item_activated_cb (GtkRecentChooser *chooser, GladeProjectWindow *gpw);
 
+static void check_reload_project (GladeProjectWindow *gpw, GladeProject *project);
+
 
 G_DEFINE_TYPE(GladeProjectWindow, glade_project_window, GLADE_TYPE_APP)
 
@@ -904,6 +906,97 @@ gpw_set_sensitivity_according_to_project (GladeProjectWindow *window, GladeProje
 }
 
 static void
+gpw_recent_add (GladeProjectWindow *gpw, const gchar *path)
+{
+	GtkRecentData *recent_data;
+	gchar *uri;
+	GError *error = NULL;
+
+	uri = g_filename_to_uri (path, NULL, &error);
+	if (error)
+	{	
+		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
+		g_error_free (error);
+		return;
+	}
+
+	recent_data = g_slice_new (GtkRecentData);
+
+	recent_data->display_name   = NULL;
+	recent_data->description    = NULL;
+	recent_data->mime_type      = "application/x-glade";
+	recent_data->app_name       = (gchar *) g_get_application_name ();
+	recent_data->app_exec       = g_strjoin (" ", g_get_prgname (), "%u", NULL);
+	recent_data->groups         = NULL;
+	recent_data->is_private     = FALSE;
+
+	if (!gtk_recent_manager_add_full (gpw->priv->recent_manager,
+				          uri,
+				          recent_data))
+	{
+      		g_warning ("Unable to add '%s' to the list of recently used documents", uri);
+	}
+
+	g_free (uri);
+	g_free (recent_data->app_exec);
+	g_slice_free (GtkRecentData, recent_data);
+
+}
+
+static void
+gpw_recent_remove (GladeProjectWindow *gpw, const gchar *path)
+{
+	gchar *uri;
+	GError *error = NULL;
+
+	uri = g_filename_to_uri (path, NULL, &error);
+	if (error)
+	{	
+		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
+		g_error_free (error);
+		return;
+	}
+	
+	gtk_recent_manager_remove_item (gpw->priv->recent_manager, uri, &error);
+	if (error)
+	{
+		g_warning ("Could not remove recent-files uri \"%s\": %s", uri, error->message);	
+	}
+	
+	g_free (uri);
+}
+
+/* switch to a project and check if we need to reload it.
+ *
+ */
+static void
+switch_to_project (GladeProjectWindow *window, GladeProject *project)
+{
+	GladeProjectWindowPrivate *priv = window->priv;
+	guint i, n = gtk_notebook_get_n_pages (GTK_NOTEBOOK (priv->notebook)); 
+
+	/* increase project popularity */
+	gpw_recent_add (window, glade_project_get_path (project));
+	update_default_path (window, project);	
+
+	for (i = 0; i < n; i++)
+	{
+		GladeProject *project_i;
+		GtkWidget    *view;
+	
+		view = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->notebook), i);
+		project_i = glade_design_view_get_project (GLADE_DESIGN_VIEW (view));	
+		
+		if (project == project_i)
+		{
+			gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->notebook), i);
+			break;
+		}
+	}
+	check_reload_project (window, project);
+}
+
+static void
 gpw_projects_list_menu_activate_cb (GtkAction *action, GladeProjectWindow *window)
 {
 	gint n;
@@ -1017,68 +1110,6 @@ gpw_refresh_projects_list_menu (GladeProjectWindow *window)
 	}
 
 	p->projects_list_menu_ui_id = id;
-}
-
-
-static void
-gpw_recent_add (GladeProjectWindow *gpw, const gchar *path)
-{
-	GtkRecentData *recent_data;
-	gchar *uri;
-	GError *error = NULL;
-
-	uri = g_filename_to_uri (path, NULL, &error);
-	if (error)
-	{	
-		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
-		g_error_free (error);
-		return;
-	}
-
-	recent_data = g_slice_new (GtkRecentData);
-
-	recent_data->display_name   = NULL;
-	recent_data->description    = NULL;
-	recent_data->mime_type      = "application/x-glade";
-	recent_data->app_name       = (gchar *) g_get_application_name ();
-	recent_data->app_exec       = g_strjoin (" ", g_get_prgname (), "%u", NULL);
-	recent_data->groups         = NULL;
-	recent_data->is_private     = FALSE;
-
-	if (!gtk_recent_manager_add_full (gpw->priv->recent_manager,
-				          uri,
-				          recent_data))
-	{
-      		g_warning ("Unable to add '%s' to the list of recently used documents", uri);
-	}
-
-	g_free (uri);
-	g_free (recent_data->app_exec);
-	g_slice_free (GtkRecentData, recent_data);
-
-}
-
-static void
-gpw_recent_remove (GladeProjectWindow *gpw, const gchar *path)
-{
-	gchar *uri;
-	GError *error = NULL;
-
-	uri = g_filename_to_uri (path, NULL, &error);
-	if (error)
-	{	
-		g_warning ("Could not convert uri \"%s\" to a local path: %s", uri, error->message);
-		g_error_free (error);
-		return;
-	}
-	
-	gtk_recent_manager_remove_item (gpw->priv->recent_manager, uri, &error);
-	if (error)
-	{
-		g_warning ("Could not remove recent-files uri \"%s\": %s", uri, error->message);	
-	}
-	
-	g_free (uri);
 }
 
 static void
@@ -1617,7 +1648,6 @@ gpw_notebook_switch_page_cb (GtkNotebook *notebook,
 		gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
 	g_free (action_name);
-
 }
 
 static void
@@ -1724,11 +1754,8 @@ gpw_recent_chooser_item_activated_cb (GtkRecentChooser *chooser, GladeProjectWin
 		g_error_free (error);
 		return;
 	}
-	
-	if (!glade_project_window_open_project (gpw, path))
-	{
-		gpw_recent_remove (gpw, path);
-	}
+
+	glade_project_window_open_project (gpw, path);
 
 	g_free (uri);
 	g_free (path);
@@ -2590,32 +2617,136 @@ glade_project_window_new_project (GladeProjectWindow *gpw)
 	glade_project_window_add_project (gpw, project);
 }
 
+static gboolean
+open_project (GladeProjectWindow *gpw, const gchar *path)
+{
+	GladeProject *project;
+	
+	project = glade_project_load (path);
+	if (!project)
+	{
+		gpw_recent_remove (gpw, path);
+		return FALSE;
+	}
+	
+	glade_project_window_add_project (gpw, project);
+
+	/* increase project popularity */		
+	gpw_recent_add (gpw, glade_project_get_path (project));
+	update_default_path (gpw, project);
+	
+	return TRUE;
+
+}
+
+static void
+check_reload_project (GladeProjectWindow *gpw, GladeProject *project)
+{
+	GladeDesignView *view;
+	gchar           *path;
+	gint             ret;
+	
+	GtkWidget *dialog;
+	GtkWidget *button;
+	gint       response;
+	
+	/* Reopen the project if it has external modifications.
+	 * Prompt for permission to reopen.
+	 */
+	if ((glade_util_get_file_mtime (glade_project_get_path (project), NULL)
+	    <= glade_project_get_file_mtime (project)))
+	{
+		return;
+	}
+
+	if (glade_project_get_has_unsaved_changes (project))
+	{
+		dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->priv->window),
+						 GTK_DIALOG_MODAL,
+						 GTK_MESSAGE_WARNING,
+						 GTK_BUTTONS_NONE,
+						 _("The project %s has unsaved changes"),
+						 glade_project_get_path (project));
+						 
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), 				 
+							  _("If you reload it, all unsaved changes "
+							    "could be lost. Reload it anyway?"));			
+	}
+	else
+	{
+		dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->priv->window),
+						 GTK_DIALOG_MODAL,
+						 GTK_MESSAGE_WARNING,
+						 GTK_BUTTONS_NONE,
+						 _("The project file %s has been externally modified"),
+						 glade_project_get_path (project));
+						 
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), 				 
+							  _("Do you want to reload the project?"));
+							  
+	}
+	
+	gtk_window_set_title (GTK_WINDOW (dialog), "");
+	
+	button = gtk_button_new_with_mnemonic (_("_Reload"));
+	gtk_button_set_image (GTK_BUTTON (button),
+        		      gtk_image_new_from_stock (GTK_STOCK_REFRESH,
+        		      				GTK_ICON_SIZE_BUTTON));
+	gtk_widget_show (button);
+
+	gtk_dialog_add_button (GTK_DIALOG (dialog), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT);
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, GTK_RESPONSE_ACCEPT);
+					 
+	gtk_dialog_set_default_response	(GTK_DIALOG (dialog), GTK_RESPONSE_REJECT);
+	
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+	
+	gtk_widget_destroy (dialog);
+	
+	if (response == GTK_RESPONSE_REJECT)
+	{
+		return;
+	}	
+		
+	/* Reopen */ 
+	view = glade_design_view_get_from_project (project);
+	path = g_strdup (glade_project_get_path (project));
+
+	do_close (gpw, view);
+	ret = open_project (gpw, path);
+	g_free (path);
+}
+
+/** 
+ * glade_project_window_open_project: 
+ * @gpw: a #GladeProjectWindow
+ * @path: the filesystem path of the project
+ *
+ * Opens a project file. If the project is already open, switch to that
+ * project.
+ * 
+ * Returns: #TRUE if the project was opened
+ */
 gboolean
 glade_project_window_open_project (GladeProjectWindow *gpw, const gchar *path)
 {
 	GladeProject *project;
 
+	g_return_val_if_fail (GLADE_IS_PROJECT_WINDOW (gpw), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
-	/* dont allow more than one project with the same name to be
-	 * opened simultainiously.
-	 */
-	if (glade_app_is_project_loaded ((gchar*)path))
+	/* dont allow a project to be opened twice */
+	project = glade_app_get_project_by_path (path);	 
+	if (project)
 	{
-		glade_util_ui_message (gpw->priv->window, GLADE_UI_WARN, 
-				       _("%s is already open"), path);
-		return TRUE; /* let this pass */
+		/* just switch to the project */	
+		switch_to_project (gpw, project);
+		return TRUE;
 	}
-	
-	if ((project = glade_project_load (path)) == NULL)
-		return FALSE;
-
-	glade_project_window_add_project (gpw, project);
-	
-	gpw_recent_add (gpw, glade_project_get_path (project));
-	update_default_path (gpw, project);
-	
-	return TRUE;
+	else
+	{
+		return open_project (gpw, path);
+	}
 }
 
 
