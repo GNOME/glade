@@ -956,6 +956,18 @@ glade_editor_refresh (GladeEditor *editor)
 	glade_editor_load_widget_real (editor, editor->loaded_widget);
 }
 
+static void
+query_dialog_style_set_cb (GtkWidget *dialog,
+			   GtkStyle  *previous_style,
+			   gpointer   user_data)
+{
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 12);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 12);
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 0);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+}
+
+
 gboolean
 glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 {
@@ -978,22 +990,29 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 
 	g_free (title);
 
+	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+						 GTK_RESPONSE_OK,
+						 GTK_RESPONSE_CANCEL,
+						 -1);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
 	table = glade_editor_get_table_from_class (editor,
 						   widget->adaptor,
 						   TABLE_TYPE_QUERY);
 
 
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
-
-	gtk_container_set_border_width (GTK_CONTAINER (table->table_widget), 6);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    table->table_widget,
-			    TRUE, TRUE, 4);
+			    FALSE, FALSE, 6);
 	for (list = table->properties; list; list = list->next)
 	{
 		property = list->data;
 		glade_editor_property_load_by_widget (property, widget);
 	}
+
+	g_signal_connect (dialog, "style-set", 
+			  G_CALLBACK (query_dialog_style_set_cb),
+			  NULL);
 
 	answer = gtk_dialog_run (GTK_DIALOG (dialog));
 
