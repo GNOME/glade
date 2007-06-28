@@ -6,7 +6,7 @@ msgid ""
 ""
 msgstr "Project-Id-Version: glade3 HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-27 03:22+0100\n"
+"POT-Creation-Date: 2007-06-28 03:23+0100\n"
 "PO-Revision-Date: 2007-06-27 14:51+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -25,7 +25,7 @@ msgid "Glade Interface Designer"
 msgstr "Bộ thiết kế giao diện Glade"
 
 #: ../data/glade-3.desktop.in.in.h:3
-#: ../src/glade-project-window.c:402
+#: ../src/glade-project-window.c:408
 msgid "User Interface Designer"
 msgstr "Bộ thiết kế giao diện người dùng"
 
@@ -64,85 +64,85 @@ msgstr "không tìm thấy cách hỗ trợ gmodule, mà cần thiết cho trìn
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Không thể mở « %s » vì tập tin đó không tồn tại.\n"
 
-#: ../src/glade-project-window.c:45
+#: ../src/glade-project-window.c:46
 msgid "[Read Only]"
 msgstr "[Chỉ đọc]"
 
-#: ../src/glade-project-window.c:117
+#: ../src/glade-project-window.c:123
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "Không thể hiển thị địa chỉ URL « %s »"
 
-#: ../src/glade-project-window.c:121
+#: ../src/glade-project-window.c:127
 msgid "No suitable web browser could be found."
 msgstr "Không tìm thấy trình duyệt Mạng thích hợp."
 
-#: ../src/glade-project-window.c:524
+#: ../src/glade-project-window.c:631
 #, c-format
 msgid "%s [%s] - Properties"
 msgstr "%s [%s] - Thuộc tính"
 
-#: ../src/glade-project-window.c:534
-#: ../src/glade-project-window.c:2351
+#: ../src/glade-project-window.c:645
+#: ../src/glade-project-window.c:2487
 #: ../gladeui/glade-widget.c:1025
 msgid "Properties"
 msgstr "Thuộc tính"
 
-#: ../src/glade-project-window.c:982
+#: ../src/glade-project-window.c:1121
 msgid "Open…"
 msgstr "Mở…"
 
-#: ../src/glade-project-window.c:1024
+#: ../src/glade-project-window.c:1163
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Tập tin %s đã bị sửa đổi kể từ đọc nó lần trước"
 
-#: ../src/glade-project-window.c:1028
+#: ../src/glade-project-window.c:1167
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "Lưu thì tất cả các thay đổi bên ngoài có thể bị mất. Vẫn còn lưu không?"
 
-#: ../src/glade-project-window.c:1032
+#: ../src/glade-project-window.c:1171
 msgid "_Save Anyway"
 msgstr "Vẫn _lưu"
 
-#: ../src/glade-project-window.c:1039
+#: ../src/glade-project-window.c:1178
 msgid "_Don't Save"
 msgstr "_Không lưu"
 
-#: ../src/glade-project-window.c:1062
+#: ../src/glade-project-window.c:1201
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Lỗi lưu %s: %s"
 
-#: ../src/glade-project-window.c:1083
+#: ../src/glade-project-window.c:1222
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Mới lưu dự án « %s »."
 
-#: ../src/glade-project-window.c:1102
-#: ../src/glade-project-window.c:1187
+#: ../src/glade-project-window.c:1241
+#: ../src/glade-project-window.c:1326
 #. Just in case the menu-item is not insensitive
 #. Just in case the menu-item or button is not insensitive
 msgid "No open projects to save"
 msgstr "Không có dự án đang mở cần lưu."
 
-#: ../src/glade-project-window.c:1106
+#: ../src/glade-project-window.c:1245
 msgid "Save As…"
 msgstr "Lưu dạng…"
 
-#: ../src/glade-project-window.c:1150
+#: ../src/glade-project-window.c:1289
 #, c-format
 msgid ""
 "Could not save the file %s. You do not have the permissions necessary to "
 "save the file."
 msgstr "Không thể lưu tập tin %s. Bạn không có quyền lưu tập tin đó."
 
-#: ../src/glade-project-window.c:1163
+#: ../src/glade-project-window.c:1302
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "Không thể lưu tập tin %s. Hiện thời có một dự án khác cùng đường dẫn đã mở."
 
-#: ../src/glade-project-window.c:1217
+#: ../src/glade-project-window.c:1356
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -154,25 +154,25 @@ msgstr "<span weight=\"bold\" size=\"larger\">Lưu các thay đổi trong dự �
 "\n"
 "Nếu bạn không lưu các thay đổi này, chúng sẽ bị mất hoàn toàn.\n"
 
-#: ../src/glade-project-window.c:1231
+#: ../src/glade-project-window.c:1370
 msgid "_Close without Saving"
 msgstr "_Đóng mà không lưu"
 
-#: ../src/glade-project-window.c:1252
+#: ../src/glade-project-window.c:1391
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Lỗi lưu %s vào « %s »: %s"
 
-#: ../src/glade-project-window.c:1264
+#: ../src/glade-project-window.c:1403
 msgid "Save…"
 msgstr "Lưu…"
 
-#: ../src/glade-project-window.c:1705
+#: ../src/glade-project-window.c:1840
 msgid "Could not display the online user manual"
 msgstr "Không thể hiển thị sổ tay người dùng trực tuyến"
 
-#: ../src/glade-project-window.c:1708
-#: ../src/glade-project-window.c:1746
+#: ../src/glade-project-window.c:1843
+#: ../src/glade-project-window.c:1881
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
@@ -180,11 +180,11 @@ msgid ""
 msgstr "Không tìm thấy trình duyệt Mạng thích hợp chạy được để chạy và hiển thị địa "
 "chỉ URL: %s"
 
-#: ../src/glade-project-window.c:1743
+#: ../src/glade-project-window.c:1878
 msgid "Could not display the online developer reference manual"
 msgstr "Không thể hiển thị sổ tay nhà phát triển trực tuyến"
 
-#: ../src/glade-project-window.c:1776
+#: ../src/glade-project-window.c:1911
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -214,253 +214,270 @@ msgstr "Chương trình này là phần mềm tự do; bạn có thể phát hà
 "51 Franklin Street, Fifth Floor,\n"
 "Boston, MA  02110-1301, USA (Mỹ)."
 
-#: ../src/glade-project-window.c:1800
+#: ../src/glade-project-window.c:1935
 msgid "translator-credits"
 msgstr "Nhóm Việt hoá GNOME <gnomevi-list@lists.sourceforge.net>"
 
-#: ../src/glade-project-window.c:1801
+#: ../src/glade-project-window.c:1936
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Bộ thiết kế giao diện người dùng cho GTK+ và GNOME."
 
-#: ../src/glade-project-window.c:1870
+#: ../src/glade-project-window.c:2005
 #: ../plugins/gtk+/glade-gtk.c:4822
 #: ../plugins/gtk+/glade-gtk.c:5145
 #. File
 msgid "_File"
 msgstr "_Tập tin"
 
-#: ../src/glade-project-window.c:1871
+#: ../src/glade-project-window.c:2006
 #: ../plugins/gtk+/glade-gtk.c:4825
 #: ../plugins/gtk+/glade-gtk.c:5155
 #. Edit
 msgid "_Edit"
 msgstr "_Hiệu chỉnh"
 
-#: ../src/glade-project-window.c:1872
+#: ../src/glade-project-window.c:2007
 #: ../plugins/gtk+/glade-gtk.c:4828
 #: ../plugins/gtk+/glade-gtk.c:5163
 #. View
 msgid "_View"
 msgstr "_Xem"
 
-#: ../src/glade-project-window.c:1873
+#: ../src/glade-project-window.c:2008
 msgid "_Projects"
 msgstr "_Dự án"
 
-#: ../src/glade-project-window.c:1874
+#: ../src/glade-project-window.c:2009
 #: ../plugins/gtk+/glade-gtk.c:4840
 #: ../plugins/gtk+/glade-gtk.c:5166
 #. Help
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: ../src/glade-project-window.c:1880
+#: ../src/glade-project-window.c:2015
 msgid "Create a new project"
 msgstr "Tạo một dự án mới."
 
-#: ../src/glade-project-window.c:1882
+#: ../src/glade-project-window.c:2017
 msgid "_Open…"
 msgstr "_Mở…"
 
-#: ../src/glade-project-window.c:1883
+#: ../src/glade-project-window.c:2018
 msgid "Open a project"
 msgstr "Mở một dự án"
 
-#: ../src/glade-project-window.c:1885
+#: ../src/glade-project-window.c:2020
 msgid "Open _Recent"
 msgstr "Mở _gần đây"
 
-#: ../src/glade-project-window.c:1888
+#: ../src/glade-project-window.c:2023
 msgid "Quit the program"
 msgstr "Thoát khỏi chương trình"
 
-#: ../src/glade-project-window.c:1891
+#: ../src/glade-project-window.c:2026
 #. ViewMenu
 msgid "Palette _Appearance"
 msgstr "_Diện mạo hộp"
 
-#: ../src/glade-project-window.c:1895
+#: ../src/glade-project-window.c:2030
 msgid "About this application"
 msgstr "Giới thiệu về ứng dụng này"
 
-#: ../src/glade-project-window.c:1898
+#: ../src/glade-project-window.c:2033
 msgid "Display the user manual"
 msgstr "Hiển thị sổ tay người dùng"
 
-#: ../src/glade-project-window.c:1900
+#: ../src/glade-project-window.c:2035
 msgid "_Developer Reference"
 msgstr "Tham chiếu _phát triển"
 
-#: ../src/glade-project-window.c:1901
+#: ../src/glade-project-window.c:2036
 msgid "Display the developer reference manual"
 msgstr "Hiển thị sổ tay tham chiếu nhà phát triển"
 
-#: ../src/glade-project-window.c:1910
+#: ../src/glade-project-window.c:2045
 msgid "Save the current project"
 msgstr "Lưu dự án hiện thời"
 
-#: ../src/glade-project-window.c:1912
+#: ../src/glade-project-window.c:2047
 msgid "Save _As…"
 msgstr "Lưu _dạng…"
 
-#: ../src/glade-project-window.c:1913
+#: ../src/glade-project-window.c:2048
 msgid "Save the current project with a different name"
 msgstr "Lưu dự án hiện thời có tên khác"
 
-#: ../src/glade-project-window.c:1916
+#: ../src/glade-project-window.c:2051
 msgid "Close the current project"
 msgstr "Đóng dự án hiện thời"
 
-#: ../src/glade-project-window.c:1920
+#: ../src/glade-project-window.c:2055
 msgid "Undo the last action"
 msgstr "Hủy hành động cuối cùng"
 
-#: ../src/glade-project-window.c:1923
+#: ../src/glade-project-window.c:2058
 msgid "Redo the last action"
 msgstr "Làm lại hành động cuối cùng"
 
-#: ../src/glade-project-window.c:1926
+#: ../src/glade-project-window.c:2061
 msgid "Cut the selection"
 msgstr "Cắt vùng chọn"
 
-#: ../src/glade-project-window.c:1929
+#: ../src/glade-project-window.c:2064
 msgid "Copy the selection"
 msgstr "Sao chép vùng chọn"
 
-#: ../src/glade-project-window.c:1932
+#: ../src/glade-project-window.c:2067
 msgid "Paste the clipboard"
 msgstr "Dán bảng nháp"
 
-#: ../src/glade-project-window.c:1935
+#: ../src/glade-project-window.c:2070
 msgid "Delete the selection"
 msgstr "Xoá vùng chọn"
 
-#: ../src/glade-project-window.c:1939
+#: ../src/glade-project-window.c:2074
 #. ViewMenu
 msgid "_Clipboard"
 msgstr "_Bảng nháp"
 
-#: ../src/glade-project-window.c:1940
+#: ../src/glade-project-window.c:2075
 msgid "Show the clipboard"
 msgstr "Hiện bảng nháp"
 
-#: ../src/glade-project-window.c:1944
+#: ../src/glade-project-window.c:2079
 #. ProjectsMenu
 msgid "_Previous Project"
 msgstr "Dự án t_rước"
 
-#: ../src/glade-project-window.c:1945
+#: ../src/glade-project-window.c:2080
 msgid "Activate previous project"
 msgstr "Kích hoạt dự án trước"
 
-#: ../src/glade-project-window.c:1947
+#: ../src/glade-project-window.c:2082
 msgid "_Next Project"
 msgstr "Dự án _kế"
 
-#: ../src/glade-project-window.c:1948
+#: ../src/glade-project-window.c:2083
 msgid "Activate next project"
 msgstr "Kích hoạt dự án kế tiếp"
 
-#: ../src/glade-project-window.c:1956
+#: ../src/glade-project-window.c:2091
 msgid "_Use Small Icons"
 msgstr "Biể_u tượng nhỏ"
 
-#: ../src/glade-project-window.c:1957
+#: ../src/glade-project-window.c:2092
 msgid "Show items using small icons"
 msgstr "Hiện mục bằng biểu tượng nhỏ"
 
-#: ../src/glade-project-window.c:1960
+#: ../src/glade-project-window.c:2095
 msgid "Context _Help"
 msgstr "Trợ g_iúp ngữ cảnh"
 
-#: ../src/glade-project-window.c:1961
+#: ../src/glade-project-window.c:2096
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Ẩn/hiện các cái nút trợ giúp ngữ cảnh trong bộ soạn thảo"
 
-#: ../src/glade-project-window.c:1968
+#: ../src/glade-project-window.c:2103
 #: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Text beside icons"
 msgstr "Văn bản ở cạnh biểu tượng"
 
-#: ../src/glade-project-window.c:1969
+#: ../src/glade-project-window.c:2104
 msgid "Display items as text beside icons"
 msgstr "Hiện mục dạng văn bản ở cạnh biểu tượng"
 
-#: ../src/glade-project-window.c:1971
+#: ../src/glade-project-window.c:2106
 msgid "_Icons only"
 msgstr "Chỉ b_iểu tượng"
 
-#: ../src/glade-project-window.c:1972
+#: ../src/glade-project-window.c:2107
 msgid "Display items as icons only"
 msgstr "Hiện mục chỉ dạng biểu tượng"
 
-#: ../src/glade-project-window.c:1974
+#: ../src/glade-project-window.c:2109
 msgid "_Text only"
 msgstr "Chỉ _văn bản"
 
-#: ../src/glade-project-window.c:1975
+#: ../src/glade-project-window.c:2110
 msgid "Display items as text only"
 msgstr "Hiện mục chỉ dạng văn bản"
 
-#: ../src/glade-project-window.c:2180
+#: ../src/glade-project-window.c:2315
 msgid "Select Widgets"
 msgstr "Chọn ô điều khiển"
 
-#: ../src/glade-project-window.c:2184
+#: ../src/glade-project-window.c:2319
 msgid "Select widgets in the workspace"
 msgstr "Chọn ô điều khiển trong vùng làm việc"
 
-#: ../src/glade-project-window.c:2208
+#: ../src/glade-project-window.c:2343
 msgid "Drag Resize"
 msgstr "Kéo đổi cỡ"
 
-#: ../src/glade-project-window.c:2212
+#: ../src/glade-project-window.c:2347
 msgid "Drag and resize widgets in the workspace"
 msgstr "Kéo và thay đổi kích cỡ của ô điều khiển trong vùng làm việc"
 
-#: ../src/glade-project-window.c:2288
+#: ../src/glade-project-window.c:2424
 msgid "Go back in undo history"
 msgstr "Lùi lại trong lược sử hủy bước"
 
-#: ../src/glade-project-window.c:2331
+#: ../src/glade-project-window.c:2467
 msgid "Palette"
 msgstr "Bảng chọn"
 
-#: ../src/glade-project-window.c:2346
+#: ../src/glade-project-window.c:2482
 msgid "Inspector"
 msgstr "Bộ xem xét"
 
-#: ../src/glade-project-window.c:2478
+#: ../src/glade-project-window.c:2614
 msgid "Could not create a new project."
 msgstr "Không thể tạo một dự án mới."
 
-#: ../src/glade-project-window.c:2497
+#: ../src/glade-project-window.c:2668
 #, c-format
-msgid "%s is already open"
-msgstr "%s đã được mở"
+msgid "The project %s has unsaved changes"
+msgstr "Dự án %s có thay đổi chưa lưu"
 
-#: ../src/glade-project-window.c:2562
+#: ../src/glade-project-window.c:2672
+msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
+msgstr "Nạp lại thì tất cả các thay đổi chưa lưu có thể bị mất. Vẫn còn nạp lại không?"
+
+#: ../src/glade-project-window.c:2681
+#, c-format
+msgid "The project file %s has been externally modified"
+msgstr "Tập tin dự án %s đã bị sửa đổi bên ngoài"
+
+#: ../src/glade-project-window.c:2685
+msgid "Do you want to reload the project?"
+msgstr "Bạn có muốn nạp lại dự án không?"
+
+#: ../src/glade-project-window.c:2691
+msgid "_Reload"
+msgstr "Nạp _lại"
+
+#: ../src/glade-project-window.c:2802
 msgid "_Undo"
 msgstr "_Hồi lại"
 
-#: ../src/glade-project-window.c:2564
+#: ../src/glade-project-window.c:2804
 #: ../gladeui/glade-app.c:270
 #, c-format
 #. Change tooltips
 msgid "Undo: %s"
 msgstr "Hồi lại: %s"
 
-#: ../src/glade-project-window.c:2564
-#: ../src/glade-project-window.c:2575
+#: ../src/glade-project-window.c:2804
+#: ../src/glade-project-window.c:2815
 #: ../gladeui/glade-app.c:271
 msgid "the last action"
 msgstr "hành động cuối cùng"
 
-#: ../src/glade-project-window.c:2573
+#: ../src/glade-project-window.c:2813
 msgid "_Redo"
 msgstr "_Làm lại"
 
-#: ../src/glade-project-window.c:2575
+#: ../src/glade-project-window.c:2815
 #: ../gladeui/glade-app.c:270
 #, c-format
 msgid "Redo: %s"
@@ -1227,7 +1244,7 @@ msgstr "Gặp lỗi khi phân tách tập tin Glade %s"
 msgid "Could not allocate memory for interface"
 msgstr "Không thể cấp phát bộ nhớ cho giao diện"
 
-#: ../gladeui/glade-popup.c:327
+#: ../gladeui/glade-popup.c:329
 msgid "_Select"
 msgstr "_Chọn"
 
@@ -1806,12 +1823,12 @@ msgstr "Một con trỏ để chèn ô điều khiển vào UI"
 msgid "The project being inspected"
 msgstr "Dự án đang được kiểm tra"
 
-#: ../gladeui/glade-inspector.c:582
+#: ../gladeui/glade-inspector.c:581
 #, c-format
 msgid "(internal %s)"
 msgstr "(%s nội bộ)"
 
-#: ../gladeui/glade-inspector.c:586
+#: ../gladeui/glade-inspector.c:585
 #, c-format
 msgid "(%s child)"
 msgstr "(điều con %s)"
@@ -3713,3 +3730,6 @@ msgstr "Chế độ chọn"
 #: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The width of each icon"
 msgstr "Độ rộng của mỗi biểu tượng"
+
+#~ msgid "%s is already open"
+#~ msgstr "%s đã được mở"
