@@ -41,7 +41,6 @@ typedef struct _GladePaletteExpanderClass    GladePaletteExpanderClass;
 
 struct _GladePaletteExpander
 {
-	/*< private >*/
 	GtkBin parent_instance;
 
 	GladePaletteExpanderPrivate *priv;
@@ -83,4 +82,3 @@ gboolean      glade_palette_expander_get_use_markup   (GladePaletteExpander *exp
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_EXPANDER_H__ */
-

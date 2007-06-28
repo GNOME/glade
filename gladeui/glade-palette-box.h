@@ -43,7 +43,6 @@ typedef struct _GladePaletteBoxClass   GladePaletteBoxClass;
 
 struct _GladePaletteBox
 {
-	/*< private >*/
 	GtkContainer parent_instance;
 
 	GladePaletteBoxPrivate *priv;
