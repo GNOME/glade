@@ -60,7 +60,7 @@ struct _GladePaletteClass
 	void (*toggled)    (GladePalette *palette);
 };
 
-typedef enum _GladeItemAppearance
+typedef enum
 {
 	GLADE_ITEM_ICON_AND_LABEL,
 	GLADE_ITEM_ICON_ONLY,
