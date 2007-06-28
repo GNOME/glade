@@ -46,7 +46,7 @@ typedef struct _GladeDesignViewClass    GladeDesignViewClass;
 
 struct _GladeDesignView
 {
-	GtkVBox vbox; /* The parent is a box */
+	GtkVBox parent_instance;
 
 	GladeDesignViewPrivate *priv;
 };
@@ -58,15 +58,15 @@ struct _GladeDesignViewClass
 };
 
 
-GType              glade_design_view_get_type (void) G_GNUC_CONST;
+GType              glade_design_view_get_type         (void) G_GNUC_CONST;
 
-GtkWidget         *glade_design_view_new (GladeProject *project);
+GtkWidget         *glade_design_view_new              (GladeProject *project);
 
-GladeProject      *glade_design_view_get_project (GladeDesignView *view);
+GladeProject      *glade_design_view_get_project      (GladeDesignView *view);
 
 GladeDesignView   *glade_design_view_get_from_project (GladeProject *project);
 
-GladeDesignLayout *glade_design_view_get_layout (GladeDesignView *view);
+GladeDesignLayout *glade_design_view_get_layout       (GladeDesignView *view);
 
 
 G_END_DECLS

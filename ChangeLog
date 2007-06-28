@@ -9,6 +9,9 @@
 	* src/glade-project-window.c (glade_project_window_open_project), (switch_project),
 	  (check_reload_project), (open_project): Attempt to reload an open project if
 	  the user tries to open it again (#450483).
+	  
+	* plugins/gtk+/Makefile.am, plugins/gnome/Makefile.am: Set log domains
+	  "GladeUI-GTK" and "GladeUI-GNOME" respectively.
 
 2007-06-27  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 

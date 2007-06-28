@@ -15,12 +15,12 @@ libgladegtk_la_CPPLAGS =   \
 	-I$(top_builddir)  \
 	$(AM_CPPFLAGS)
 
-libgladegtk_la_CFLAGS =    \
-	-I$(top_srcdir)    \
-	-I$(top_srcdir)    \
-	-I$(top_builddir)  \
-	$(GTK_CFLAGS)	           \
-	$(PLUGINS_WARN_CFLAGS)     \
+libgladegtk_la_CFLAGS =  \
+	-DG_LOG_DOMAIN=\"GladeUI-GTK\" \
+	-I$(top_srcdir)                \
+	-I$(top_builddir)              \
+	$(GTK_CFLAGS)	               \
+	$(PLUGINS_WARN_CFLAGS)         \
 	$(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c 

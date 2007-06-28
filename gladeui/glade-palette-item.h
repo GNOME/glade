@@ -2,10 +2,10 @@
 /*
  * glade-palette-item.h
  *
- * Copyright (C) 2006 The GNOME Foundation.
+ * Copyright (C) 2006 Vincent Geddes
  *
  * Authors:
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ *   Vincent Geddes <vgeddes@gnome.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,19 +62,21 @@ struct _GladePaletteItemClass
 
 };
 
-GType                 glade_palette_item_get_type (void) G_GNUC_CONST;
+GType                 glade_palette_item_get_type           (void) G_GNUC_CONST;
 
-GtkWidget            *glade_palette_item_new (GladeWidgetAdaptor *adaptor);
+GtkWidget            *glade_palette_item_new                (GladeWidgetAdaptor *adaptor);
 
-GladeWidgetAdaptor   *glade_palette_item_get_adaptor (GladePaletteItem *item);
+GladeWidgetAdaptor   *glade_palette_item_get_adaptor        (GladePaletteItem *item);
 
-GladeItemAppearance   glade_palette_item_get_appearance (GladePaletteItem *item);
+GladeItemAppearance   glade_palette_item_get_appearance     (GladePaletteItem *item);
 
-void		      glade_palette_item_set_appearance (GladePaletteItem *item, GladeItemAppearance appearance);
+void		      glade_palette_item_set_appearance     (GladePaletteItem   *item,
+							     GladeItemAppearance appearance);
 
 gboolean              glade_palette_item_get_use_small_icon (GladePaletteItem *item);
 
-void		      glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_small_icon);
+void		      glade_palette_item_set_use_small_icon (GladePaletteItem *item,
+							     gboolean          use_small_icon);
 
 
 G_END_DECLS
