@@ -1,3 +1,12 @@
+2007-06-29  Vincent Geddes <vgeddes@gnome.org>
+
+	* gladeui/glade-project.c, gladeui/glade-project.h: Rename
+	  glade_project_get_has_unsaved_changes() to glade_project_get_modified().
+	  Set "modified" to FALSE if we undo the command that caused the first
+	  unsaved modification in a project (#392324).
+	
+	* src/glade-project-window.c: Update for API changes in GladeProject.
+
 2007-06-28  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/fixed_bg.xpm, gladeui/Makefile.am,

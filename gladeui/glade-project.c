@@ -56,7 +56,7 @@ enum
 enum
 {
 	PROP_0,
-	PROP_HAS_UNSAVED_CHANGES,
+	PROP_MODIFIED,
 	PROP_HAS_SELECTION,
 	PROP_PATH,
 	PROP_READ_ONLY
@@ -64,21 +64,21 @@ enum
 
 struct _GladeProjectPrivate
 {
-	gchar *path;     /* The full canonical path of the glade file for this project */
+	gchar *path;            /* The full canonical path of the glade file for this project */
 
 	guint   instance_count; /* How many projects with this name */
 
-	gint   unsaved_number; /* A unique number for this project if it is untitled */
+	gint   unsaved_number;  /* A unique number for this project if it is untitled */
 
-	gboolean readonly; /* A flag that is set if the project is readonly */
+	gboolean readonly;      /* A flag that is set if the project is readonly */
 
-	gboolean loading;/* A flags that is set when the project is loading */
+	gboolean loading;       /* A flags that is set when the project is loading */
 	
-	gboolean changed;    /* A flag that is set when a project has changes
-			      * if this flag is not set we don't have to query
-			      * for confirmation after a close or exit is
-			      * requested
-			      */
+	gboolean modified;    /* A flag that is set when a project has unsaved modifications
+			       * if this flag is not set we don't have to query
+			       * for confirmation after a close or exit is
+			       * requested
+			       */
 
 	GList *objects; /* A list of #GObjects that make up this project.
 			 * The objects are stored in no particular order.
@@ -91,23 +91,28 @@ struct _GladeProjectPrivate
 			   * of #GtkWidget items.
 			   */
 
-	gboolean has_selection; /* Whether the project has a selection */
+	gboolean     has_selection;           /* Whether the project has a selection */
 
-	GList *undo_stack; /* A stack with the last executed commands */
-	GList *prev_redo_item; /* Points to the item previous to the redo items */
-	GHashTable *widget_names_allocator; /* hash table with the used widget names */
-	GHashTable *widget_old_names; /* widget -> old name of the widget */
+	GList       *undo_stack;              /* A stack with the last executed commands */
+	GList       *prev_redo_item;          /* Points to the item previous to the redo items */
+	GHashTable  *widget_names_allocator;  /* hash table with the used widget names */
+	GHashTable  *widget_old_names;        /* widget -> old name of the widget */
 	GtkTooltips *tooltips;
+	
+	GladeCommand *first_modification; /* we record the first modification, so that we
+	                                   * can set "has-unsaved-changes" to FALSE when we
+	                                   * undo this modification
+	                                   */
 	
 	GtkAccelGroup *accel_group;
 
 	GHashTable *resources; /* resource filenames & thier associated properties */
 	
-	gchar *comment; /* XML comment, Glade will preserve whatever comment was
-			 * in file, so users can delete or change it.
-			 */
+	gchar *comment;        /* XML comment, Glade will preserve whatever comment was
+			        * in file, so users can delete or change it.
+			        */
 			 
-	time_t  mtime; /* last UTC modification time of file, or 0 if it could not be read */
+	time_t  mtime;         /* last UTC modification time of file, or 0 if it could not be read */
 };
 
 
@@ -222,8 +227,8 @@ glade_project_get_property (GObject    *object,
 
 	switch (prop_id)
 	{
-		case PROP_HAS_UNSAVED_CHANGES:
-			g_value_set_boolean (value, project->priv->changed);
+		case PROP_MODIFIED:
+			g_value_set_boolean (value, project->priv->modified);
 			break;
 		case PROP_HAS_SELECTION:
 			g_value_set_boolean (value, project->priv->has_selection);
@@ -240,6 +245,30 @@ glade_project_get_property (GObject    *object,
 	}
 }
 
+static void
+glade_project_set_modified (GladeProject *project, gboolean modified)
+{
+	GladeProjectPrivate *priv = project->priv;
+
+	if (priv->modified != modified)
+	{
+		priv->modified = !priv->modified;
+
+		if (priv->modified)
+		{
+			g_assert (priv->first_modification == NULL);
+			priv->first_modification = glade_project_next_undo_item (project);
+		}
+		else
+		{
+			g_assert (priv->first_modification != NULL);
+			priv->first_modification = NULL;
+		}
+
+		g_object_notify (G_OBJECT (project), "modified");
+
+	}
+}
 
 /*******************************************************************
                           GladeProjectClass
@@ -266,7 +295,7 @@ glade_project_undo_impl (GladeProject *project)
 	GladeCommand *cmd, *next_cmd;
 
 	while ((cmd = glade_project_next_undo_item (project)) != NULL)
-	{
+	{	
 		glade_command_undo (cmd);
 
 		glade_project_walk_back (project);
@@ -274,6 +303,14 @@ glade_project_undo_impl (GladeProject *project)
 		g_signal_emit (G_OBJECT (project),
 			       glade_project_signals [CHANGED], 
 			       0, cmd, FALSE);
+
+		/* set "has-unsaved-changes" to FALSE if this undo command caused
+		 * any unsaved changes.
+		 */
+		if (cmd == project->priv->first_modification)
+		{
+			glade_project_set_modified (project, FALSE);	
+		}
 
 		if ((next_cmd = glade_project_next_undo_item (project)) != NULL &&
 		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
@@ -328,13 +365,14 @@ glade_project_next_redo_item_impl (GladeProject *project)
 static void
 glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 {
+	GladeProjectPrivate *priv = project->priv;
 	GList *tmp_redo_item;
 
 	/* If there are no "redo" items, and the last "undo" item unifies with
 	   us, then we collapse the two items in one and we're done */
-	if (project->priv->prev_redo_item != NULL && project->priv->prev_redo_item->next == NULL)
+	if (priv->prev_redo_item != NULL && priv->prev_redo_item->next == NULL)
 	{
-		GladeCommand *cmd1 = project->priv->prev_redo_item->data;
+		GladeCommand *cmd1 = priv->prev_redo_item->data;
 		
 		if (glade_command_unifies (cmd1, cmd))
 		{
@@ -349,32 +387,38 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 	}
 
 	/* We should now free all the "redo" items */
-	tmp_redo_item = g_list_next (project->priv->prev_redo_item);
+	tmp_redo_item = g_list_next (priv->prev_redo_item);
 	while (tmp_redo_item)
 	{
 		g_assert (tmp_redo_item->data);
+		
+		/* just for safety, we might not need this */
+		if (GLADE_COMMAND (tmp_redo_item->data) == priv->first_modification)
+			priv->first_modification = NULL;
+		
 		g_object_unref (G_OBJECT (tmp_redo_item->data));
+		
 		tmp_redo_item = g_list_next (tmp_redo_item);
 	}
 
-	if (project->priv->prev_redo_item)
+	if (priv->prev_redo_item)
 	{
-		g_list_free (g_list_next (project->priv->prev_redo_item));
-		project->priv->prev_redo_item->next = NULL;
+		g_list_free (g_list_next (priv->prev_redo_item));
+		priv->prev_redo_item->next = NULL;
 	}
 	else
 	{
-		g_list_free (project->priv->undo_stack);
-		project->priv->undo_stack = NULL;
+		g_list_free (priv->undo_stack);
+		priv->undo_stack = NULL;
 	}
 
 	/* and then push the new undo item */
-	project->priv->undo_stack = g_list_append (project->priv->undo_stack, cmd);
+	priv->undo_stack = g_list_append (priv->undo_stack, cmd);
 
 	if (project->priv->prev_redo_item == NULL)
-		project->priv->prev_redo_item = project->priv->undo_stack;
+		priv->prev_redo_item = priv->undo_stack;
 	else
-		project->priv->prev_redo_item = g_list_next (project->priv->prev_redo_item);
+		priv->prev_redo_item = g_list_next (priv->prev_redo_item);
 
 
 	g_signal_emit (G_OBJECT (project),
@@ -387,12 +431,10 @@ glade_project_changed_impl (GladeProject *project,
 			    GladeCommand *command,
 			    gboolean      forward)
 {
-	if (!project->priv->changed && !project->priv->loading)
+	if (!project->priv->modified && !project->priv->loading)
 	{
-		project->priv->changed = TRUE;
-		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
+		glade_project_set_modified (project, TRUE);
 	}
-
 	glade_app_update_ui ();
 }
 
@@ -414,6 +456,7 @@ glade_project_init (GladeProject *project)
 	priv->has_selection = FALSE;
 	priv->undo_stack = NULL;
 	priv->prev_redo_item = NULL;
+	priv->first_modification = NULL;
 	priv->widget_names_allocator = g_hash_table_new_full (g_str_hash,
 							      g_str_equal,
 							      g_free, 
@@ -428,7 +471,7 @@ glade_project_init (GladeProject *project)
 						 g_direct_equal, 
 						 NULL, g_free);
 
-	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
+	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());	
 }
 
 static void
@@ -622,10 +665,10 @@ glade_project_class_init (GladeProjectClass *klass)
 			      0);
 
 	g_object_class_install_property (object_class,
-					 PROP_HAS_UNSAVED_CHANGES,
-					 g_param_spec_boolean ("has-unsaved-changes",
-							       _("Has Unsaved Changes"),
-							       _("Whether project has unsaved changes"),
+					 PROP_MODIFIED,
+					 g_param_spec_boolean ("modified",
+							       _(""),
+							       _("Whether project has beem modified since it was last saved"),
 							       FALSE,
 							       G_PARAM_READABLE));
 
@@ -728,7 +771,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
 
-	project->priv->changed = FALSE;
+	project->priv->modified = FALSE;
 		
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 
@@ -1590,7 +1633,7 @@ glade_project_load_from_interface (GladeProject   *project,
 	/* Reset project status here too so that you get a clean
 	 * slate after calling glade_project_open().
 	 */
-	project->priv->changed = FALSE;
+	project->priv->modified = FALSE;
 	project->priv->loading = FALSE;
 
 	/* Emit "parse-finished" signal */
@@ -1722,12 +1765,8 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 				    !glade_util_file_is_writeable (project->priv->path));
 
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
-
-	if (project->priv->changed)
-	{
-		project->priv->changed = FALSE;
-		g_object_notify (G_OBJECT (project), "has-unsaved-changes");
-	}
+	
+	glade_project_set_modified (project, FALSE);
 
 	if (project->priv->unsaved_number > 0)
 	{
@@ -2193,7 +2232,7 @@ glade_project_get_name (GladeProject *project)
  * glade_project_is_loading:
  * @project: A #GladeProject
  *
- * Returns: Whether the project is being loaded or not.
+ * Returns: Whether the project is being loaded or not
  *       
  */
 gboolean
@@ -2236,11 +2275,19 @@ glade_project_set_instance_count (GladeProject *project, guint instance_count)
 	project->priv->instance_count = instance_count;
 }
 
+/** 
+ * glade_project_get_modified:
+ * @project: a #GladeProject
+ *
+ * Get's whether the project has been modified since it was last saved.
+ *
+ * Returns: #TRUE if the project has been modified since it was last saved
+ */ 
 gboolean
-glade_project_get_has_unsaved_changes (GladeProject *project)
+glade_project_get_modified (GladeProject *project)
 {
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
-	return project->priv->changed;
+	return project->priv->modified;
 }
 

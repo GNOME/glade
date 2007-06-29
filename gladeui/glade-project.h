@@ -86,6 +86,7 @@ void           glade_project_push_undo           (GladeProject *project,
 						  GladeCommand *cmd);
 
 GtkWidget     *glade_project_undo_items          (GladeProject *project);
+
 GtkWidget     *glade_project_redo_items          (GladeProject *project);
 
 void           glade_project_reset_path          (GladeProject *project);
@@ -140,29 +141,24 @@ gboolean       glade_project_get_has_selection   (GladeProject *project);
 void           glade_project_set_accel_group     (GladeProject  *project, 
 						  GtkAccelGroup *accel_group);
 
-
 void           glade_project_set_resource         (GladeProject  *project, 
 						   GladeProperty *property,
 						   const gchar   *resource);
 
-
 GList         *glade_project_list_resources       (GladeProject  *project);
-
 
 gchar         *glade_project_resource_fullpath    (GladeProject  *project,
 						   const gchar   *resource);
  
 gboolean       glade_project_is_loading           (GladeProject *project);
-
  
 time_t         glade_project_get_file_mtime       (GladeProject *project);
-
   
 guint          glade_project_get_instance_count   (GladeProject *project);
 
 void           glade_project_set_instance_count   (GladeProject *project, guint instance_count);
 
-gboolean       glade_project_get_has_unsaved_changes (GladeProject *project);
+gboolean       glade_project_get_modified         (GladeProject *project);
 
 G_END_DECLS
 

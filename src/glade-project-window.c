@@ -311,7 +311,7 @@ get_formatted_project_name_for_display (GladeProject *project, FormatNameFlags f
 	name = glade_project_get_name (project);
 	
 	if ((format_flags & FORMAT_NAME_MARK_UNSAVED)
-	    && glade_project_get_has_unsaved_changes (project))
+	    && glade_project_get_modified (project))
 		pass1 = g_strdup_printf ("*%s", name);
 	else
 		pass1 = g_strdup (name);
@@ -755,7 +755,7 @@ gpw_project_notify_handler_cb (GladeProject *project, GParamSpec *spec, GladePro
 {
 	GtkAction *action;
 
-	if (strcmp (spec->name, "has-unsaved-changes") == 0)	
+	if (strcmp (spec->name, "modified") == 0)	
 	{
 		gpw_refresh_title (gpw);
 		gpw_refresh_projects_list_item (gpw, project);
@@ -1475,7 +1475,7 @@ gpw_close_cb (GtkAction *action, GladeProjectWindow *gpw)
 	if (view == NULL)
 		return;
 
-	if (glade_project_get_has_unsaved_changes (project))
+	if (glade_project_get_modified (project))
 	{
 		close = gpw_confirm_close_project (gpw, project);
 			if (!close)
@@ -1493,7 +1493,7 @@ gpw_quit_cb (GtkAction *action, GladeProjectWindow *gpw)
 	{
 		GladeProject *project = GLADE_PROJECT (list->data);
 
-		if (glade_project_get_has_unsaved_changes (project))
+		if (glade_project_get_modified (project))
 		{
 			gboolean quit = gpw_confirm_close_project (gpw, project);
 			if (!quit)
@@ -1663,7 +1663,7 @@ gpw_notebook_tab_added_cb (GtkNotebook *notebook,
 	
 	project = glade_design_view_get_project (view);
 
-	g_signal_connect (G_OBJECT (project), "notify::has-unsaved-changes",
+	g_signal_connect (G_OBJECT (project), "notify::modified",
 			  G_CALLBACK (gpw_project_notify_handler_cb),
 			  gpw);	
 	g_signal_connect (G_OBJECT (project), "selection-changed",
@@ -2659,7 +2659,7 @@ check_reload_project (GladeProjectWindow *gpw, GladeProject *project)
 		return;
 	}
 
-	if (glade_project_get_has_unsaved_changes (project))
+	if (glade_project_get_modified (project))
 	{
 		dialog = gtk_message_dialog_new (GTK_WINDOW (gpw->priv->window),
 						 GTK_DIALOG_MODAL,
