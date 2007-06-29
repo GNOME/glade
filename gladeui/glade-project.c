@@ -100,7 +100,7 @@ struct _GladeProjectPrivate
 	GtkTooltips *tooltips;
 	
 	GladeCommand *first_modification; /* we record the first modification, so that we
-	                                   * can set "has-unsaved-changes" to FALSE when we
+	                                   * can set "modification" to FALSE when we
 	                                   * undo this modification
 	                                   */
 	
@@ -304,7 +304,7 @@ glade_project_undo_impl (GladeProject *project)
 			       glade_project_signals [CHANGED], 
 			       0, cmd, FALSE);
 
-		/* set "has-unsaved-changes" to FALSE if this undo command caused
+		/* set "modified" to FALSE if this undo command caused
 		 * any unsaved changes.
 		 */
 		if (cmd == project->priv->first_modification)
