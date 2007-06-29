@@ -25,10 +25,11 @@
 #include <config.h>
 
 #include "glade-gtk.h"
+#include "fixed-bg.xpm"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
-#include <gladeui/fixed_bg.xpm>
+
 
 #include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>

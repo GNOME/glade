@@ -114,8 +114,7 @@ libgladeuiinclude_HEADERS = \
 	glade-parser.h \
 	glade-signal.h \
 	glade-cursor.h \
-	glade-widget-action.h \
-	fixed_bg.xpm
+	glade-widget-action.h
 	
 
 if PLATFORM_WIN32

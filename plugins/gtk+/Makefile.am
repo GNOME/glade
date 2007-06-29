@@ -23,7 +23,7 @@ libgladegtk_la_CFLAGS =  \
 	$(PLUGINS_WARN_CFLAGS)         \
 	$(AM_CFLAGS)
 
-libgladegtk_la_SOURCES     = glade-gtk.c 
+libgladegtk_la_SOURCES     = glade-gtk.c fixed-bg.xpm
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
