@@ -2,6 +2,7 @@
 /*
  * Copyright (C) 2001 Ximian, Inc.
  * Copyright (C) 2004 Imendio AB
+ * Copyright (C) 2007 The GNOME Foundation
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -21,46 +22,41 @@
 #ifndef __GLADE_CATALOG_H__
 #define __GLADE_CATALOG_H__
 
+#include <glib.h>
+
 G_BEGIN_DECLS
 
-#define GLADE_CATALOG(c) ((GladeCatalog *) c)
+#define GLADE_CATALOG(c)    ((GladeCatalog *) c)
 #define GLADE_IS_CATALOG(c) (c != NULL)
 
-#define GLADE_WIDGET_GROUP(x) ((GladeWidgetGroup *) x)
+typedef struct _GladeCatalog GladeCatalog;
 
-typedef struct _GladeCatalog       GladeCatalog;
-typedef struct _GladeWidgetGroup   GladeWidgetGroup;
+#define GLADE_WIDGET_GROUP(g)    ((GladeWidgetGroup *) g)
+#define GLADE_IS_WIDGET_GROUP(g) (g != NULL)
 
-
-
-GList *       glade_catalog_load_all                (void);
+typedef struct _GladeWidgetGroup GladeWidgetGroup;
 
 
-const gchar * glade_catalog_get_name                (GladeCatalog     *catalog);
+const GList  *glade_catalog_load_all                (void);
 
+const gchar  *glade_catalog_get_name                (GladeCatalog     *catalog);
 
-GList *       glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
+GList        *glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
 
-GList *       glade_catalog_get_adaptors            (GladeCatalog     *catalog);
-
-
-void          glade_catalog_free                    (GladeCatalog     *catalog);
-
-
-const gchar * glade_widget_group_get_name           (GladeWidgetGroup *group);
-
-const gchar * glade_widget_group_get_title          (GladeWidgetGroup *group);
-
-gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
-
-GList *       glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
-
-
-void          glade_widget_group_free               (GladeWidgetGroup *group);
+GList        *glade_catalog_get_adaptors            (GladeCatalog     *catalog);
 
 gboolean      glade_catalog_is_loaded               (const gchar      *name);
 
-void          glade_catalog_modules_close           (void);
+void          glade_catalog_destroy_all             (void);
+
+
+const gchar  *glade_widget_group_get_name           (GladeWidgetGroup *group);
+
+const gchar  *glade_widget_group_get_title          (GladeWidgetGroup *group);
+
+gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
+
+const GList  *glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
 
 G_END_DECLS
 

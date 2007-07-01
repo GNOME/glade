@@ -1,3 +1,10 @@
+2007-07-01  Vincent Geddes <vgeddes@gnome.org>
+
+	* gladeui/glade-catalog.h, gladeui/glade-catalog.c:
+	  Add glade_catalog_destroy_all(). Use g_slice_new() for mem allocation.
+	  
+	* gladeui/glade-app.c: Free catalogs in finalize.
+
 2007-06-29  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-project.c, gladeui/glade-project.h: Rename

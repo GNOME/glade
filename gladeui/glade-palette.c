@@ -484,7 +484,7 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	box = glade_palette_box_new ();
 
 	/* Go through all the widget classes in this catalog. */
-	for (l = glade_widget_group_get_adaptors (group); l; l = l->next)
+	for (l = (GList *) glade_widget_group_get_adaptors (group); l; l = l->next)
 	{
 		GladeWidgetAdaptor *adaptor =  GLADE_WIDGET_ADAPTOR (l->data);
 

@@ -182,18 +182,14 @@ glade_app_dispose (GObject *app)
 static void
 glade_app_finalize (GObject *app)
 {
-
-#ifdef G_OS_WIN32
 	g_free (catalogs_dir);
 	g_free (modules_dir);
 	g_free (bindings_dir);
 	g_free (pixmaps_dir);	
 	g_free (locale_dir);
-#endif
-	
-	glade_binding_unload_all ();
-	
-	glade_catalog_modules_close ();
+
+	glade_binding_unload_all ();	
+	glade_catalog_destroy_all ();
 
 	G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
 }
@@ -451,7 +447,7 @@ glade_app_init (GladeApp *app)
 	app->priv->accel_group = NULL;
 	
 	/* Initialize app objects */
-	app->priv->catalogs = glade_catalog_load_all ();
+	app->priv->catalogs = (GList *) glade_catalog_load_all ();
 	
 	/* Create palette */
 	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
