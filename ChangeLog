@@ -1,7 +1,7 @@
 2007-07-02  Vincent Geddes <vgeddes@gnome.org>
 
-	* gladeui/glade-app.c: Revert last change. Do not free catalogs
-	  in finalize as a result of #453105.
+	* gladeui/glade-catalog.c: Properly handle dgettext() operations
+	  (#453105, Christian Persch).
 
 2007-07-01  Vincent Geddes <vgeddes@gnome.org>
 

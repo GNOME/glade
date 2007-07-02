@@ -189,8 +189,7 @@ glade_app_finalize (GObject *app)
 	g_free (locale_dir);
 
 	glade_binding_unload_all ();	
-	
-	/* FIXME: destroy catalogs */
+	glade_catalog_destroy_all ();
 
 	G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
 }

@@ -373,6 +373,7 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 {
 	GladeWidgetGroup *group;
 	GladeXmlNode     *node;
+        char *title, *translated_title;
 
 	group = g_slice_new0 (GladeWidgetGroup);
 	
@@ -386,9 +387,9 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 		return FALSE;
 	}
 	
-	group->title = glade_xml_get_property_string (group_node,
-						      GLADE_TAG_TITLE);
-	if (!group->title) 
+	title = glade_xml_get_property_string (group_node,
+					       GLADE_TAG_TITLE);
+	if (!title)
 	{ 
 		g_warning ("Required property 'title' not found in group node");
 		widget_group_destroy (group);
@@ -399,9 +400,18 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 	group->expanded = TRUE;
 
 	/* Translate it */
-	group->title = dgettext (catalog->domain ? 
-				 catalog->domain : catalog->library, 
-				 group->title);
+	translated_title = dgettext (catalog->domain ?
+				     catalog->domain : catalog->library, 
+				     title);
+        if (translated_title != title)
+        {
+                group->title = g_strdup (translated_title);
+                g_free (title);
+        }
+        else
+        {
+                group->title = title;
+        }
 
 	group->adaptors = NULL;
 
