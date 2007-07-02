@@ -1,7 +1,10 @@
 2007-07-02  Vincent Geddes <vgeddes@gnome.org>
 
-	* gladeui/glade-catalog.c: Properly handle dgettext() operations
-	  (#453105, Christian Persch).
+	* gladeui/glade-catalog.c, gladeui/glade-widget-adaptor.c: Properly
+	  handle dgettext() operations (#453105, Christian Persch).
+	  
+	* gladeui/glade-binding.c (glade_binding_load_all): Close GDir when
+	  finished reading.
 
 2007-07-01  Vincent Geddes <vgeddes@gnome.org>
 

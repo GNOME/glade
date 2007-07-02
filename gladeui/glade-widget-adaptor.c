@@ -1474,6 +1474,7 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 {
 	GladeWidgetAdaptor *adaptor = NULL;
 	gchar              *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name, *func_name;
+	gchar              *title, *translated_title;
 	GType               object_type, adaptor_type, parent_type;
 	GWADerivedClassData data;
 	
@@ -1552,21 +1553,32 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	g_free (generic_name);
 	g_free (icon_name);
 	g_free (adaptor_icon_name);
-	
-	if ((adaptor->title = glade_xml_get_property_string_required
-	     (class_node, GLADE_TAG_TITLE,
-	      "This value is needed to display object class names in the UI")) == NULL)
+
+
+	title = glade_xml_get_property_string_required (class_node,
+							GLADE_TAG_TITLE,
+	      						"This value is needed to "
+	      						"display object class names "
+	      						"in the UI");
+	if (title == NULL)
 	{
-		g_warning ("Class '%s' built without a '%s'", name, GLADE_TAG_TITLE);
+		g_warning ("Class '%s' declared without a '%s' attribute", name, GLADE_TAG_TITLE);
 		adaptor->title = g_strdup (name);
 	}
-	
-	/* Translate title */
-	if (adaptor->title != dgettext (domain, adaptor->title))
+	else
 	{
-		gchar *ptr   = dgettext (domain, adaptor->title);
-		g_free (adaptor->title);
-		adaptor->title = ptr;
+		/* translate */
+		translated_title = dgettext (domain, title);
+		if (translated_title != title)
+		{
+			/* gettext owns translated_title */
+			adaptor->title = g_strdup (translated_title);
+			g_free (title);
+		}
+		else
+		{
+			adaptor->title = title;
+		}
 	}
 
 	if (G_TYPE_IS_INSTANTIATABLE (adaptor->type)    &&

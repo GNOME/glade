@@ -101,6 +101,8 @@ glade_binding_load_all (void)
 		g_hash_table_insert (bindings, binding->ctrl.name, binding);
 		g_free (path);
 	}
+	
+	g_dir_close (dir);
 }
 
 static void 
