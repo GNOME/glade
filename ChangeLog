@@ -1,3 +1,8 @@
+2007-07-02  Vincent Geddes <vgeddes@gnome.org>
+
+	* gladeui/glade-app.c: Revert last change. Do not free catalogs
+	  in finalize as a result of #453105.
+
 2007-07-01  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-catalog.h, gladeui/glade-catalog.c:
