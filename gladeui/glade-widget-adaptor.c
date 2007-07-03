@@ -2257,7 +2257,7 @@ glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
 					    GObject            *container,
 					    GObject            *child,
 					    const gchar        *property_name,
-					    GValue             *value)
+					    const GValue       *value)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
 	g_return_val_if_fail (G_IS_OBJECT (container), FALSE);

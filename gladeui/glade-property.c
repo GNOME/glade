@@ -174,6 +174,29 @@ glade_property_update_prop_refs (GladeProperty *property,
 	}
 }
 
+static gboolean
+glade_property_verify (GladeProperty *property, const GValue *value)
+{
+	if (property->klass->packing)
+	{
+		if (property->widget->parent)
+			return glade_widget_adaptor_child_verify_property (property->widget->parent->adaptor,
+									   property->widget->parent->object,
+									   property->widget->object,
+									   property->klass->id,
+									   value);
+		else
+			return FALSE;
+	}
+	else
+	{
+		return glade_widget_adaptor_verify_property (property->widget->adaptor, 
+							     property->widget->object,
+							     property->klass->id,
+							     value);
+	}
+}
+
 static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
@@ -203,13 +226,9 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	/* Check if the backend doesnt give us permission to
 	 * set this value.
 	 */
-	if (glade_property_superuser () == FALSE &&
-	    property->widget &&
+	if (glade_property_superuser () == FALSE && property->widget &&
 	    project && glade_project_is_loading (project) == FALSE &&
-	    glade_widget_adaptor_verify_property (property->widget->adaptor, 
-						  property->widget->object,
-						  property->klass->id,
-						  value) == FALSE)
+	    glade_property_verify (property, value) == FALSE)
 		return;
 	
 	/* save "changed" state.

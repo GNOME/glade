@@ -231,7 +231,7 @@ typedef gboolean (* GladeChildVerifyPropertyFunc) (GladeWidgetAdaptor *adaptor,
 						   GObject            *container,
 						   GObject            *child,
 						   const gchar        *property_name,
-						   GValue             *value);
+						   const GValue       *value);
 
 
 /**
@@ -571,7 +571,7 @@ gboolean             glade_widget_adaptor_child_verify_property (GladeWidgetAdap
 								 GObject            *container,
 								 GObject            *child,
 								 const gchar        *property_name,
-								 GValue             *value);
+								 const GValue       *value);
 
 void                 glade_widget_adaptor_replace_child      (GladeWidgetAdaptor *adaptor,
 							      GObject            *container,

@@ -7,6 +7,12 @@
 
 2007-07-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
+	* gladeui/glade-widget-adaptor.[ch]: set glade_widget_adaptor_child_verify_property()
+	  value parameter as constant.
+
+	* gladeui/glade-property.c: added packing property verify check in 
+	  glade_property_set_value_impl().
+
 	* plugins/gtk+/gtk+.xml.in: fixed verify-function and child-verify-function tags
 	  for GtkBox, GtkTable, GtkNotebook and GtkAssistant classes.
 
