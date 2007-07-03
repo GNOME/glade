@@ -1,3 +1,10 @@
+2007-07-03  Vincent Geddes <vgeddes@gnome.org>
+
+	* gladeui/glade-binding.c: Upgrade to g_slice_new().
+	
+	* bindings/python/glade-python.c: Run garbage collector before finalizing
+	  interpreter. Use Py_InitializeEx() instead of Py_Initialize() (#453104).
+
 2007-07-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/gtk+.xml.in: fixed verify-function and child-verify-function tags

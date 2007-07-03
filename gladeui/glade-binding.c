@@ -85,7 +85,7 @@ glade_binding_load_all (void)
 		
 		if (module == NULL) continue;
 	
-		binding = g_new0 (GladeBinding, 1);
+		binding = g_slice_new0 (GladeBinding);
 		binding->module = module;
 		
 		if ((g_module_symbol (module, "glade_binding_init", (gpointer)&init) &&
@@ -93,7 +93,7 @@ glade_binding_load_all (void)
 		{
 			g_warning ("Unable to load GladeBinding module '%s'", path);
 			g_module_close (module);
-			g_free (binding);
+			g_slice_free (GladeBinding, binding);
 			g_free (path);
 			continue;
 		}
@@ -110,11 +110,12 @@ glade_binding_remove (gpointer key, gpointer value, gpointer user_data)
 {
 	GladeBinding *binding = value;
 	
-	if (binding->ctrl.finalize) binding->ctrl.finalize (&binding->ctrl);
+	if (binding->ctrl.finalize)
+		binding->ctrl.finalize (&binding->ctrl);
 
 	g_module_close (binding->module);
 	
-	g_free (binding);
+	g_slice_free (GladeBinding, binding);
 }
 
 /**
@@ -126,7 +127,8 @@ glade_binding_remove (gpointer key, gpointer value, gpointer user_data)
 void
 glade_binding_unload_all (void)
 {
-	if (bindings == NULL) return;
+	if (bindings == NULL)
+		return;
 		
 	g_hash_table_foreach (bindings, glade_binding_remove, NULL);
 	g_hash_table_destroy (bindings);

@@ -22,11 +22,11 @@
 
 #include <config.h>
 
-#include <Python.h>
-#include <pygobject.h>
-
 #include <gladeui/glade.h>
 #include <gladeui/glade-binding.h>
+
+#include <Python.h>
+#include <pygobject.h>
 
 static PyObject *gladeui, *gladeui_dict, *GladeuiError;
 
@@ -90,7 +90,13 @@ static PyMethodDef GladeuiMethods[] = {
 void
 glade_python_binding_finalize (GladeBindingCtrl *ctrl)
 {
-	Py_Finalize ();
+	if (Py_IsInitialized ())
+	{
+		while (PyGC_Collect ())
+			;
+
+		Py_Finalize ();
+	}	
 }
 
 void 
@@ -112,8 +118,8 @@ glade_python_init (void)
 {
 	char *argv[2] = {"", NULL};
 
-	/* Init interpreter */
-	Py_Initialize ();
+	Py_InitializeEx (0);
+	
 	PySys_SetArgv (1, argv);
 }
 
