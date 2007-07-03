@@ -193,6 +193,7 @@ embedded in another object</_tooltip>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
       <set-property-function>glade_gtk_box_set_property</set-property-function>
       <get-property-function>glade_gtk_box_get_property</get-property-function>
+      <verify-function>glade_gtk_box_verify_property</verify-function>
       <add-child-function>glade_gtk_box_add_child</add-child-function>
       <remove-child-function>glade_gtk_box_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_box_set_child_property</child-set-property-function>
@@ -207,7 +208,6 @@ embedded in another object</_tooltip>
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of items in the box</_tooltip>
-	  <verify-function>glade_gtk_box_verify_size</verify-function>
 	</property>
       </properties>
 
@@ -897,7 +897,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_table_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_table_replace_child</replace-child-function>
       <set-property-function>glade_gtk_table_set_property</set-property-function>
-      <verify-property-function>glade_gtk_table_verify_property</verify-property-function>
+      <verify-function>glade_gtk_table_verify_property</verify-function>
       <child-action-activate-function>glade_gtk_table_child_action_activate</child-action-activate-function>
 
       <packing-actions>
@@ -968,10 +968,10 @@ embedded in another object</_tooltip>
       <replace-child-function>glade_gtk_notebook_replace_child</replace-child-function>
       <child-set-property-function>glade_gtk_notebook_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_notebook_get_child_property</child-get-property-function>
-      <child-verify-property-function>glade_gtk_notebook_child_verify_property</child-verify-property-function>
+      <child-verify-function>glade_gtk_notebook_child_verify_property</child-verify-function>
       <special-child-type>type</special-child-type>
       <set-property-function>glade_gtk_notebook_set_property</set-property-function>
-      <verify-property-function>glade_gtk_notebook_verify_property</verify-property-function>
+      <verify-function>glade_gtk_notebook_verify_property</verify-function>
       <child-action-activate-function>glade_gtk_notebook_child_action_activate</child-action-activate-function>
 
       <packing-actions>
@@ -1007,9 +1007,6 @@ embedded in another object</_tooltip>
             <value id="GTK_PACK_END" _name="End"/>
           </displayable-values>
         </property>	    
-        <property id="position">
-          <verify-function>glade_gtk_notebook_verify_position</verify-function>
-        </property>
       </packing-properties>
     </glade-widget-class>
 
@@ -1439,7 +1436,7 @@ embedded in another object</_tooltip>
       <replace-child-function>glade_gtk_assistant_replace_child</replace-child-function>
       <set-property-function>glade_gtk_assistant_set_property</set-property-function>
       <get-property-function>glade_gtk_assistant_get_property</get-property-function>
-      <verify-property-function>glade_gtk_assistant_verify_property</verify-property-function>
+      <verify-function>glade_gtk_assistant_verify_property</verify-function>
       <child-set-property-function>glade_gtk_assistant_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_assistant_get_child_property</child-get-property-function>
       <properties>
