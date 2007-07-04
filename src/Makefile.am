@@ -18,8 +18,8 @@ glade_3_LDFLAGS = $(AM_LDFLAGS)
 glade_3_LDADD = $(top_builddir)/gladeui/libgladeui-1.la
 
 glade_3_SOURCES = \
-	glade-project-window.c \
-	glade-project-window.h \
+	glade-window.c \
+	glade-window.h \
 	main.c
 
 if NATIVE_WIN32

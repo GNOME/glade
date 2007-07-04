@@ -18,12 +18,12 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ *   Vincent Geddes <vgeddes@gnome.org>
  */
 
 #include <config.h>
 
-#include "glade-project-window.h"
+#include "glade-window.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-app.h>
@@ -72,7 +72,7 @@ static GOptionEntry debug_option_entries[] =
 int
 main (int argc, char *argv[])
 {
-	GladeProjectWindow *project_window;
+	GladeWindow *window;
 	GOptionContext *option_context;
 	GOptionGroup *option_group;
 	GError *error = NULL;
@@ -152,10 +152,10 @@ main (int argc, char *argv[])
 	glade_setup_log_handlers ();
 	
 	
-	project_window = glade_project_window_new ();
+	window = GLADE_WINDOW (glade_window_new ());
 	
 	if (without_devhelp == FALSE)
-		glade_project_window_check_devhelp (project_window);
+		glade_window_check_devhelp (window);
 	
 	
 	/* load files specified on commandline */
@@ -166,7 +166,7 @@ main (int argc, char *argv[])
 		for (i=0; files[i] ; ++i)
 		{
 			if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
-				glade_project_window_open_project (project_window, files[i]);
+				glade_window_open_project (window, files[i]);
 			else
 				g_warning (_("Unable to open '%s', the file does not exist.\n"), files[i]);
 		}
@@ -174,14 +174,11 @@ main (int argc, char *argv[])
 	}
 
 	if (glade_app_get_project () == NULL)
-		glade_project_window_new_project (project_window);
+		glade_window_new_project (window);
 
-	glade_project_window_show_all (project_window);
+	gtk_widget_show (GTK_WIDGET (window));
 
 	gtk_main ();
-
-	/* destroy GladeApp */
-	g_object_unref (project_window);
 
 	return 0;
 }

@@ -86,6 +86,8 @@ struct _GladeAppClass
  
 GType              glade_app_get_type   (void) G_GNUC_CONST;
 
+GladeApp*          glade_app_new        (void);
+
 GType              glade_pointer_mode_get_type (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_get        (void);

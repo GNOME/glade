@@ -1673,3 +1673,10 @@ glade_app_selection_changed (void)
 		glade_project_selection_changed (project);
 	}
 }
+
+GladeApp*
+glade_app_new (void)
+{
+	return g_object_new (GLADE_TYPE_APP, NULL);
+}
+

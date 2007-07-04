@@ -4,6 +4,12 @@
 	
 	* bindings/python/glade-python.c: Run garbage collector before finalizing
 	  interpreter. Use Py_InitializeEx() instead of Py_Initialize() (#453104).
+	  
+	* gladeui/glade-app.h, gladeui/glade-app.c: New method glade_app_new().
+
+	* src/glade-project-window.h, src/glade-project-window.c: Renamed
+	  to glade-window.h and glade-window.c respectively. GladeWindow now
+	  subclasses GtkWindow instead of GladeApp (#449928).
 
 2007-07-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
