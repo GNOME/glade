@@ -1463,8 +1463,14 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button"/>
-    
+    <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button">
+      <properties>
+        <!-- The pspec of this prop says that the default is http://www.gtk.org but gtk_link_button_init() does not set it up
+               do we need to override it to avoid seting a NULL value. -->
+        <property id="uri" default="http://glade.gnome.org"/>
+      </properties>
+   </glade-widget-class>
+
     <glade-widget-class name="GtkRecentChooserWidget" generic-name="recentchooser" _title="Recent Chooser">
       <properties>
 	<property id="size" disabled="True"/>

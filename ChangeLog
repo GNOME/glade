@@ -1,3 +1,11 @@
+2007-07-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-property.c: skip properties that are not readable in
+	  glade_property_load_impl() (fixes #453107 and #453111)
+
+	* plugins/gtk+/gtk+.xml.in: added default value to GtkLinkButton::uri property
+	  fixes #453110
+
 2007-07-04  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-property-class.c
