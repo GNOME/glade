@@ -1421,8 +1421,8 @@ glade_project_make_comment ()
 {
 	time_t now = time (NULL);
 	gchar *comment;
-	comment = g_strdup_printf (GLADE_XML_COMMENT" "PACKAGE_VERSION" on %sby %s@%s",
-				   ctime (&now), g_get_user_name (), g_get_host_name ());
+	comment = g_strdup_printf (GLADE_XML_COMMENT" "PACKAGE_VERSION" on %s",
+				   ctime (&now));
 	glade_util_replace (comment, '\n', ' ');
 	
 	return comment;

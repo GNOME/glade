@@ -77,6 +77,9 @@ main (int argc, char *argv[])
 	GOptionGroup *option_group;
 	GError *error = NULL;
 
+	if (!g_thread_supported ())
+		g_thread_init (NULL);
+
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, glade_app_get_locale_dir ());
