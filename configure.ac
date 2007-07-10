@@ -330,6 +330,7 @@ plugins/gnome/icons/16x16/Makefile
 plugins/gnome/icons/22x22/Makefile
 bindings/Makefile
 bindings/python/Makefile
+tests/Makefile
 po/Makefile.in
 doc/Makefile
 doc/version.xml
