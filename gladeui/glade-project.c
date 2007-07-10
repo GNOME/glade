@@ -245,28 +245,46 @@ glade_project_get_property (GObject    *object,
 	}
 }
 
+/**
+ * glade_project_set_modified:
+ * @project: a #GladeProject
+ * @modified: Whether the project should be set as modified or not
+ * @modification: The first #GladeCommand which caused the project to have unsaved changes
+ *
+ * Set's whether a #GladeProject should be flagged as modified or not. This is useful
+ * for indicating that a project has unsaved changes. If @modified is #TRUE, then
+ * @modification will be recorded as the first change which caused the project to 
+ * have unsaved changes. @modified is #FALSE then @modification will be ignored.
+ *
+ * If @project is already flagged as modified, then calling this method with
+ * @modified as #TRUE, will have no effect. Likewise, if @project is unmodified
+ * then calling this method with @modified as #FALSE, will have no effect.
+ *
+ */
 static void
-glade_project_set_modified (GladeProject *project, gboolean modified)
+glade_project_set_modified (GladeProject *project,
+			    gboolean      modified,
+			    GladeCommand *modification)
 {
 	GladeProjectPrivate *priv = project->priv;
 
 	if (priv->modified != modified)
 	{
 		priv->modified = !priv->modified;
-
+		
 		if (priv->modified)
 		{
 			g_assert (priv->first_modification == NULL);
-			priv->first_modification = glade_project_next_undo_item (project);
+			g_assert (modification != NULL);
+			priv->first_modification = modification;
 		}
 		else
 		{
 			g_assert (priv->first_modification != NULL);
 			priv->first_modification = NULL;
 		}
-
+		
 		g_object_notify (G_OBJECT (project), "modified");
-
 	}
 }
 
@@ -303,14 +321,6 @@ glade_project_undo_impl (GladeProject *project)
 		g_signal_emit (G_OBJECT (project),
 			       glade_project_signals [CHANGED], 
 			       0, cmd, FALSE);
-
-		/* set "modified" to FALSE if this undo command caused
-		 * any unsaved changes.
-		 */
-		if (cmd == project->priv->first_modification)
-		{
-			glade_project_set_modified (project, FALSE);	
-		}
 
 		if ((next_cmd = glade_project_next_undo_item (project)) != NULL &&
 		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
@@ -431,9 +441,15 @@ glade_project_changed_impl (GladeProject *project,
 			    GladeCommand *command,
 			    gboolean      forward)
 {
-	if (!project->priv->modified && !project->priv->loading)
+	if (!project->priv->loading)
 	{
-		glade_project_set_modified (project, TRUE);
+		/* if this command is the first modification to cause the project
+		 * to have unsaved changes, then we can now flag the project as unmodified
+		 */
+		if (command == project->priv->first_modification)
+			glade_project_set_modified (project, FALSE, NULL);
+		else
+			glade_project_set_modified (project, TRUE, command);				
 	}
 	glade_app_update_ui ();
 }
@@ -1766,7 +1782,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 	
-	glade_project_set_modified (project, FALSE);
+	glade_project_set_modified (project, FALSE, NULL);
 
 	if (project->priv->unsaved_number > 0)
 	{
