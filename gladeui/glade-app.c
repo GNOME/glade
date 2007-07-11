@@ -995,6 +995,8 @@ glade_app_add_project (GladeProject *project)
 
 	app = glade_app_get ();
 	
+	g_object_ref (project);
+	
 	app->priv->projects = g_list_append (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */
