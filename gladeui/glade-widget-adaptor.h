@@ -124,7 +124,7 @@ typedef enum
 	GLADE_CREATE_REASONS
 } GladeCreateReason;
 
-#define GLADE_CREATE_REASON (glade_create_reason_get_type())
+#define GLADE_TYPE_CREATE_REASON (glade_create_reason_get_type())
 
 /**
  * GladeSetPropertyFunc:
