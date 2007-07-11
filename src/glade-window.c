@@ -2092,11 +2092,10 @@ static const gchar ui_info[] =
 "        <menuitem action='UseSmallIcons'/>"
 "      </menu>"
 "      <menuitem action='PropertyEditorHelp'/>"
-"      <menu action='Docking'>"
-"        <menuitem action='DockPalette'/>"
-"        <menuitem action='DockInspector'/>"
-"        <menuitem action='DockEditor'/>"
-"      </menu>"
+"      <separator/>"
+"      <menuitem action='DockPalette'/>"
+"      <menuitem action='DockInspector'/>"
+"      <menuitem action='DockEditor'/>"
 "    </menu>"
 "    <menu action='ProjectMenu'>"
 "      <menuitem action='PreviousProject'/>"
@@ -2145,7 +2144,6 @@ static GtkActionEntry static_entries[] = {
 
 	/* ViewMenu */
 	{ "PaletteAppearance", NULL, N_("Palette _Appearance") },
-	{ "Docking", NULL, N_("_Docking") },
 	
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, NULL, NULL,
