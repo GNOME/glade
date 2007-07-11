@@ -1590,10 +1590,10 @@ hide_window_on_delete (GtkWidget *window, gpointer not_used, GtkUIManager *ui)
 
 static void
 doc_search_cb (GladeEditor        *editor,
-		   const gchar        *book,
-		   const gchar        *page,
-		   const gchar        *search,
-		   GladeWindow *window)
+	       const gchar        *book,
+	       const gchar        *page,
+	       const gchar        *search,
+	       GladeWindow *window)
 {
 	glade_util_search_devhelp (book, page, search);
 }
@@ -1852,6 +1852,7 @@ toggle_palette_dock_cb (GtkAction *action, GladeWindow *window)
 
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 200, 540);
 		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		gtk_window_set_title (GTK_WINDOW (toplevel), _("Palette"));
 		
 		g_object_ref (window->priv->palette_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->left_pane), window->priv->palette_dock);
@@ -1884,6 +1885,7 @@ toggle_inspector_dock_cb (GtkAction *action, GladeWindow *window)
 
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 300, 540);
 		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		gtk_window_set_title (GTK_WINDOW (toplevel), _("Inspector"));
 		
 		g_object_ref (window->priv->inspector_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->inspector_dock);
@@ -1920,6 +1922,7 @@ toggle_editor_dock_cb (GtkAction *action, GladeWindow *window)
 		
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 500, 700);
 		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		gtk_window_set_title (GTK_WINDOW (toplevel), _("Properties"));
 		
 		g_object_ref (window->priv->editor_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->editor_dock);
