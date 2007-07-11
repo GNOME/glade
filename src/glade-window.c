@@ -92,6 +92,15 @@ struct _GladeWindowPrivate
 	
 	GtkWidget           *toolbar;              /* Actions are added to the toolbar */
 	gint                 actions_start;        /* start of action items */
+
+	GtkWidget           *palette_dock;         /* The palette including scrollbars and title */
+	GtkWidget           *inspector_dock;       /* The inspector including scrollbars and title */
+	GtkWidget           *editor_dock;          /* The editor including scrollbars and title */
+
+	/* paned windows that tools get docked into/out of */
+	GtkWidget           *left_pane;
+	GtkWidget           *right_pane;
+	
 };
 
 static void refresh_undo_redo                (GladeWindow      *window);
@@ -1814,18 +1823,115 @@ show_clipboard_cb (GtkAction *action, GladeWindow *window)
 static void
 toggle_editor_help_cb (GtkAction *action, GladeWindow *window)
 {
-	GtkWidget *help_item;
-
 	if (glade_util_have_devhelp() == FALSE)
 		return;
 
-	help_item = gtk_ui_manager_get_widget (window->priv->ui,
-						 "/MenuBar/ViewMenu/PropertyEditorHelp");
-
-	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (help_item)))
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
 		glade_editor_show_context_info (glade_app_get_editor ());
 	else
 		glade_editor_hide_context_info (glade_app_get_editor ());
+}
+
+static void
+toggle_palette_dock_cb (GtkAction *action, GladeWindow *window)
+{
+	GtkWidget *toplevel;
+	
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+	{
+		toplevel = gtk_widget_get_toplevel (window->priv->palette_dock);
+
+		g_object_ref (window->priv->palette_dock);
+		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->palette_dock);
+		gtk_paned_pack1 (GTK_PANED (window->priv->left_pane), window->priv->palette_dock, FALSE, FALSE);
+		g_object_unref (window->priv->palette_dock);
+
+		gtk_widget_destroy (toplevel);
+	} else {
+		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+		gtk_window_set_default_size (GTK_WINDOW (toplevel), 200, 540);
+		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		
+		g_object_ref (window->priv->palette_dock);
+		gtk_container_remove (GTK_CONTAINER (window->priv->left_pane), window->priv->palette_dock);
+		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->palette_dock);
+		g_object_unref (window->priv->palette_dock);
+
+		gtk_window_present (GTK_WINDOW (toplevel));
+	}
+}
+
+static void
+toggle_inspector_dock_cb (GtkAction *action, GladeWindow *window)
+{
+	GtkWidget *toplevel;
+	
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+	{
+		toplevel = gtk_widget_get_toplevel (window->priv->inspector_dock);
+
+		g_object_ref (window->priv->inspector_dock);
+		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->inspector_dock);
+		gtk_paned_pack1 (GTK_PANED (window->priv->right_pane), window->priv->inspector_dock, FALSE, FALSE);
+		g_object_unref (window->priv->inspector_dock);
+
+		gtk_widget_destroy (toplevel);
+
+		gtk_widget_show (window->priv->right_pane);
+	} else {
+		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+		gtk_window_set_default_size (GTK_WINDOW (toplevel), 300, 540);
+		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		
+		g_object_ref (window->priv->inspector_dock);
+		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->inspector_dock);
+		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->inspector_dock);
+		g_object_unref (window->priv->inspector_dock);
+
+		gtk_window_present (GTK_WINDOW (toplevel));
+
+		if (!GTK_PANED (window->priv->right_pane)->child1 &&
+		    !GTK_PANED (window->priv->right_pane)->child2)
+			gtk_widget_hide (window->priv->right_pane);
+	}
+}
+
+static void
+toggle_editor_dock_cb (GtkAction *action, GladeWindow *window)
+{
+	GtkWidget *toplevel;
+	
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+	{
+		toplevel = gtk_widget_get_toplevel (window->priv->editor_dock);
+
+		g_object_ref (window->priv->editor_dock);
+		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->editor_dock);
+		gtk_paned_pack2 (GTK_PANED (window->priv->right_pane), window->priv->editor_dock, FALSE, FALSE);
+		g_object_unref (window->priv->editor_dock);
+
+		gtk_widget_destroy (toplevel);
+
+		gtk_widget_show (window->priv->right_pane);
+	} else {
+		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+		
+		gtk_window_set_default_size (GTK_WINDOW (toplevel), 500, 700);
+		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
+		
+		g_object_ref (window->priv->editor_dock);
+		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->editor_dock);
+		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->editor_dock);
+		g_object_unref (window->priv->editor_dock);
+
+		gtk_window_present (GTK_WINDOW (toplevel));
+
+		if (!GTK_PANED (window->priv->right_pane)->child1 &&
+		    !GTK_PANED (window->priv->right_pane)->child2)
+			gtk_widget_hide (window->priv->right_pane);
+	}
 }
 
 static void
@@ -1986,6 +2092,11 @@ static const gchar ui_info[] =
 "        <menuitem action='UseSmallIcons'/>"
 "      </menu>"
 "      <menuitem action='PropertyEditorHelp'/>"
+"      <menu action='Docking'>"
+"        <menuitem action='DockPalette'/>"
+"        <menuitem action='DockInspector'/>"
+"        <menuitem action='DockEditor'/>"
+"      </menu>"
 "    </menu>"
 "    <menu action='ProjectMenu'>"
 "      <menuitem action='PreviousProject'/>"
@@ -2034,6 +2145,7 @@ static GtkActionEntry static_entries[] = {
 
 	/* ViewMenu */
 	{ "PaletteAppearance", NULL, N_("Palette _Appearance") },
+	{ "Docking", NULL, N_("_Docking") },
 	
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, NULL, NULL,
@@ -2104,7 +2216,20 @@ static GtkToggleActionEntry view_entries[] = {
 
 	{ "PropertyEditorHelp", NULL, N_("Context _Help"), NULL,
 	  N_("Show or hide contextual help buttons in the editor"),
-	  G_CALLBACK (toggle_editor_help_cb), FALSE }
+	  G_CALLBACK (toggle_editor_help_cb), FALSE },
+
+	{ "DockPalette", NULL, N_("Dock _Palette"), NULL,
+	  N_("Dock the palette into the main window"),
+	  G_CALLBACK (toggle_palette_dock_cb), TRUE },
+
+	{ "DockInspector", NULL, N_("Dock _Inspector"), NULL,
+	  N_("Dock the inspector into the main window"),
+	  G_CALLBACK (toggle_inspector_dock_cb), TRUE },
+
+	{ "DockEditor", NULL, N_("Dock _Editor"), NULL,
+	  N_("Dock the editor into the main window"),
+	  G_CALLBACK (toggle_editor_dock_cb), TRUE },
+
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
 
@@ -2720,7 +2845,9 @@ glade_window_init (GladeWindow *window)
 	hpaned1 = gtk_hpaned_new ();
 	hpaned2 = gtk_hpaned_new ();
 	vpaned = gtk_vpaned_new ();
-
+	priv->left_pane = hpaned2;
+	priv->right_pane = vpaned;
+	
 	gtk_container_set_border_width (GTK_CONTAINER (hpaned1), 2);
 
 	gtk_box_pack_start (GTK_BOX (vbox), hpaned1, TRUE, TRUE, 0);
@@ -2741,7 +2868,8 @@ glade_window_init (GladeWindow *window)
 	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
 	dockitem = construct_dock_item (window, _("Palette"), palette);
 	gtk_paned_pack1 (GTK_PANED (hpaned2), dockitem, FALSE, FALSE);
-
+	priv->palette_dock = dockitem;
+	
 	/* notebook */
 	priv->notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), FALSE);
@@ -2756,6 +2884,7 @@ glade_window_init (GladeWindow *window)
 	gtk_widget_show (priv->inspectors_notebook);	
 	dockitem = construct_dock_item (window, _("Inspector"), priv->inspectors_notebook);
 	gtk_paned_pack1 (GTK_PANED (vpaned), dockitem, FALSE, FALSE); 
+	priv->inspector_dock = dockitem;
 
 	/* editor */
 	editor = GTK_WIDGET (glade_app_get_editor ());
@@ -2764,9 +2893,9 @@ glade_window_init (GladeWindow *window)
 	gtk_label_set_ellipsize	(GTK_LABEL (priv->label), PANGO_ELLIPSIZE_END);
 	gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
 	gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, TRUE, FALSE);
+	priv->editor_dock = dockitem;
 
 	/* status bar */
-
 	priv->statusbar = gtk_statusbar_new ();
 	priv->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar),
 										"menu");
