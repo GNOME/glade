@@ -26,7 +26,6 @@
 #include "glade.h"
 #include "glade-catalog.h"
 #include "glade-widget-adaptor.h"
-#include "glade-binding.h"
 
 #include <string.h>
 #include <sys/types.h>
@@ -181,18 +180,6 @@ catalog_open (const gchar *filename)
 		return NULL;
 	}
 	
-	catalog->language =
-		glade_xml_get_property_string (root, GLADE_TAG_LANGUAGE);
-	
-	if (catalog->language && (glade_binding_get (catalog->language)) == NULL)
-	{
-		g_warning ("%s language is not supported. "
-			   "Make sure the corresponding GladeBinding module is available.",
-			   catalog->language);
-		catalog_destroy (catalog);
-		return NULL;
-	}
-	
 	catalog->library      = glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
 	catalog->dep_catalog  = glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
 	catalog->domain       = glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
@@ -315,26 +302,16 @@ catalog_load_library (GladeCatalog *catalog)
 	if (catalog->library == NULL)
 		return NULL;
 
-	if (catalog->language)
-	{
-		GladeBinding *binding = glade_binding_get (catalog->language);
-		if (binding)
-			glade_binding_library_load (binding, catalog->library);
-		return NULL;
-	}
+	if ((module = g_hash_table_lookup (modules, catalog->library)))
+		return module;	
+	
+	if ((module = glade_util_load_library (catalog->library)))
+		g_hash_table_insert (modules, g_strdup (catalog->library), module);
 	else
-	{
-		if ((module = g_hash_table_lookup (modules, catalog->library)))
-			return module;	
+		g_warning ("Failed to load external library '%s'",
+			   catalog->library);
 		
-		if ((module = glade_util_load_library (catalog->library)))
-			g_hash_table_insert (modules, g_strdup (catalog->library), module);
-		else
-			g_warning ("Failed to load external library '%s'",
-				   catalog->library);
-		
-		return module;
-	}
+	return module;
 }
 
 static gboolean

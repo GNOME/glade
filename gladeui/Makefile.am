@@ -6,7 +6,6 @@ common_defines = \
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
 	-DGLADE_PLUGINSDIR="\"$(pkglibdir)/plugins\""	\
-	-DGLADE_BINDINGSDIR="\"$(pkglibdir)/bindings\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""
 
@@ -55,7 +54,6 @@ libgladeui_1_la_SOURCES = \
 	glade-app.c \
 	glade-keysyms.c \
 	glade-fixed.c \
-	glade-binding.c \
 	glade-base-editor.c \
 	glade-palette-item.h \
 	glade-palette-box.h \
@@ -108,7 +106,6 @@ libgladeuiinclude_HEADERS = \
 	glade-app.h \
 	glade-builtins.h \
 	glade-fixed.h \
-	glade-binding.h \
 	glade-base-editor.h \
 	glade-xml-utils.h \
 	glade-parser.h \

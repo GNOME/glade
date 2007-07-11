@@ -36,7 +36,6 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_GLADE_WIDGET_CLASS              "glade-widget-class"
 #define GLADE_TAG_GLADE_WIDGET_GROUP              "glade-widget-group"
 #define GLADE_TAG_GLADE_WIDGET_CLASS_REF          "glade-widget-class-ref"
-#define GLADE_TAG_LANGUAGE                        "language"
 #define GLADE_TAG_ADAPTOR                         "adaptor"
 #define GLADE_TAG_LIBRARY                         "library"
 #define GLADE_TAG_DEPENDS                         "depends"

@@ -29,7 +29,6 @@
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-design-view.h>
-#include <gladeui/glade-binding.h>
 #include <gladeui/glade-popup.h>
 #include <gladeui/glade-inspector.h>
 

@@ -1,4 +1,4 @@
-SUBDIRS = po data gladeui src plugins bindings doc
+SUBDIRS = po data gladeui src plugins doc
 
 if HAVE_GNOME_DOC_UTILS
 SUBDIRS += help

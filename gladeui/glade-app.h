@@ -200,8 +200,6 @@ const gchar       *glade_app_get_pixmaps_dir   (void) G_GNUC_CONST;
 
 const gchar       *glade_app_get_locale_dir    (void) G_GNUC_CONST;
 
-const gchar       *glade_app_get_bindings_dir  (void) G_GNUC_CONST;
-
 G_END_DECLS
 
 #endif /* __GLADE_APP_H__ */

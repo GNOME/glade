@@ -28,7 +28,6 @@
 #include "glade-cursor.h"
 #include "glade-catalog.h"
 #include "glade-fixed.h"
-#include "glade-binding.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 
@@ -87,7 +86,6 @@ static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 /* installation paths */
 static gchar *catalogs_dir = NULL;
 static gchar *modules_dir  = NULL;
-static gchar *bindings_dir = NULL;
 static gchar *plugins_dir  = NULL;
 static gchar *pixmaps_dir  = NULL;
 static gchar *locale_dir   = NULL;
@@ -184,11 +182,9 @@ glade_app_finalize (GObject *app)
 {
 	g_free (catalogs_dir);
 	g_free (modules_dir);
-	g_free (bindings_dir);
 	g_free (pixmaps_dir);	
 	g_free (locale_dir);
-
-	glade_binding_unload_all ();	
+	
 	glade_catalog_destroy_all ();
 
 	G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
@@ -374,14 +370,6 @@ glade_app_get_locale_dir (void)
 	return locale_dir;
 }
 
-const gchar *
-glade_app_get_bindings_dir (void)
-{
-	glade_init_check ();
-	
-	return bindings_dir;
-}
-
 /* build package paths at runtime */
 static void
 build_package_paths (void)
@@ -393,13 +381,11 @@ build_package_paths (void)
 	pixmaps_dir  = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
 	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
-	bindings_dir = g_build_filename (prefix, "lib", PACKAGE, "bindings", NULL);
 	locale_dir   = g_build_filename (prefix, "share", "locale", NULL);
 	g_free (prefix);
 #else
 	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
 	modules_dir  = g_strdup (GLADE_MODULESDIR);
-	bindings_dir = g_strdup (GLADE_BINDINGSDIR);
 	plugins_dir  = g_strdup (GLADE_PLUGINSDIR);
 	pixmaps_dir  = g_strdup (GLADE_PIXMAPSDIR);
 	locale_dir   = g_strdup (GLADE_LOCALEDIR);
@@ -438,8 +424,6 @@ glade_app_init (GladeApp *app)
 						   GLADE_DATADIR G_DIR_SEPARATOR_S "pixmaps");	
 	
 		glade_cursor_init ();
-		
-		glade_binding_load_all ();
 		
 		initialized = TRUE;
 	}

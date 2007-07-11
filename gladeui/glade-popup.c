@@ -35,7 +35,6 @@
 #include "glade-command.h"
 #include "glade-project.h"
 #include "glade-app.h"
-#include "glade-binding.h"
 
 /********************************************************
                       WIDGET POPUP
