@@ -1,0 +1,224 @@
+/* -*- Mode: C; c-basic-offset: 8 -*- */
+%%
+headers
+#define NO_IMPORT_PYGOBJECT
+#include <pygobject.h>
+#include <pygtk/pygtk.h>
+
+#include <glib.h>
+
+#include <gladeui/glade.h>
+#include <gladeui/glade-app.h>
+#include <gladeui/glade-base-editor.h>
+#include <gladeui/glade-binding.h>
+#include <gladeui/glade-builtins.h>
+#include <gladeui/glade-clipboard-view.h>
+#include <gladeui/glade-clipboard.h>
+#include <gladeui/glade-command.h>
+#include <gladeui/glade-custom.h>
+#include <gladeui/glade-design-layout.h>
+#include <gladeui/glade-design-view.h>
+#include <gladeui/glade-editor-property.h>
+#include <gladeui/glade-editor.h>
+#include <gladeui/glade-fixed.h>
+#include <gladeui/glade-palette-item.h>
+#include <gladeui/glade-palette.h>
+#include <gladeui/glade-placeholder.h>
+#include <gladeui/glade-inspector.h>
+#include <gladeui/glade-project.h>
+#include <gladeui/glade-property-class.h>
+#include <gladeui/glade-property.h>
+#include <gladeui/glade-signal-editor.h>
+#include <gladeui/glade-signal.h>
+#include <gladeui/glade-widget-adaptor.h>
+#include <gladeui/glade-widget.h>
+
+%%
+modulename gladeui                     
+%%
+import gobject.GObject as PyGObject_Type
+import gtk.gdk.Window as PyGdkWindow_Type
+import gtk.Table as PyGtkTable_Type
+import gtk.Bin as PyGtkBin_Type
+import gtk.Container as PyGtkContainer_Type
+import gtk.Widget as PyGtkWidget_Type
+import gtk.AccelGroup as PyGtkAccelGroup_Type
+import gtk.VBox as PyGtkVBox_Type
+import gtk.HBox as PyGtkHBox_Type
+import gtk.ToggleButton as PyGtkToggleButton_Type
+import gtk.ScrolledWindow as PyGtkScrolledWindow_Type
+import gtk.TextBuffer as PyGtkTextBuffer_Type
+import gtk.ListStore as PyGtkListStore_Type
+import gtk.Window as PyGtkWindow_Type
+import gtk.TreeStore as PyGtkTreeStore_Type
+import gtk.TreeModel as PyGtkTreeModel_Type
+import gtk.ListStore as PyGtkListStore_Type
+import gtk.TextView as PyGtkTextView_Type
+%%
+ignore-glob
+  *_get_type                            
+%%
+override glade_app_get_catalogs_dir
+static PyObject *
+_wrap_glade_app_get_catalogs_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_catalogs_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_modules_dir
+static PyObject *
+_wrap_glade_app_get_modules_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_modules_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_plugins_dir
+static PyObject *
+_wrap_glade_app_get_plugins_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_plugins_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_pixmaps_dir
+static PyObject *
+_wrap_glade_app_get_pixmaps_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_pixmaps_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_locale_dir
+static PyObject *
+_wrap_glade_app_get_locale_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_locale_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_bindings_dir
+static PyObject *
+_wrap_glade_app_get_bindings_dir(PyGObject *self)
+{
+    const gchar *ret;
+
+    
+    ret = glade_app_get_bindings_dir();
+    
+    if (ret)
+        return PyString_FromString(ret);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_get_palette
+static PyObject *
+_wrap_glade_app_get_palette(PyGObject *self)
+{
+    GladePalette *ret;
+
+    
+    ret = glade_app_get_palette();
+    
+    /* pygobject_new handles NULL checking */
+    return pygobject_new((GObject *)ret);
+}
+%%
+override glade_app_get_project
+static PyObject *
+_wrap_glade_app_get_project(PyGObject *self)
+{
+    GladeProject *ret;
+
+    
+    ret = glade_app_get_project();
+    
+    /* pygobject_new handles NULL checking */
+    return pygobject_new((GObject *)ret);
+}
+%%
+override glade_app_set_project kwargs
+static PyObject *
+_wrap_glade_app_set_project(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "project", NULL };
+    PyGObject *project;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GladeApp.set_project", kwlist, &PyGladeProject_Type, &project))
+        return NULL;
+    
+    glade_app_set_project(GLADE_PROJECT(project->obj));
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_add_project kwargs
+static PyObject *
+_wrap_glade_app_add_project(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "project", NULL };
+    PyGObject *project;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GladeApp.add_project", kwlist, &PyGladeProject_Type, &project))
+        return NULL;
+    
+    glade_app_add_project(GLADE_PROJECT(project->obj));
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%
+override glade_app_remove_project kwargs
+static PyObject *
+_wrap_glade_app_remove_project(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "project", NULL };
+    PyGObject *project;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GladeApp.remove_project", kwlist, &PyGladeProject_Type, &project))
+        return NULL;
+    
+    glade_app_remove_project(GLADE_PROJECT(project->obj));
+    
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+%%

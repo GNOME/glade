@@ -3,6 +3,6 @@
 SUBDIRS = 
 
 if ENABLE_PYTHON
-SUBDIRS += python
+SUBDIRS += python python-gladeui
 endif
 

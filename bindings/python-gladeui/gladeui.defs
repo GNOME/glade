@@ -1,0 +1,2772 @@
+;; -*- scheme -*-
+; object definitions ...
+(define-object App
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeApp")
+  (gtype-id "GLADE_TYPE_APP")
+)
+
+(define-object Clipboard
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeClipboard")
+  (gtype-id "GLADE_TYPE_CLIPBOARD")
+)
+
+(define-object ClipboardView
+  (in-module "Glade")
+  (parent "GtkWindow")
+  (c-name "GladeClipboardView")
+  (gtype-id "GLADE_TYPE_CLIPBOARD_VIEW")
+)
+
+(define-object Command
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeCommand")
+  (gtype-id "GLADE_TYPE_COMMAND")
+)
+
+(define-object DesignLayout
+  (in-module "Glade")
+  (parent "GtkBin")
+  (c-name "GladeDesignLayout")
+  (gtype-id "GLADE_TYPE_DESIGN_LAYOUT")
+)
+
+(define-object DesignView
+  (in-module "Glade")
+  (parent "GtkVBox")
+  (c-name "GladeDesignView")
+  (gtype-id "GLADE_TYPE_DESIGN_VIEW")
+)
+
+(define-object Editor
+  (in-module "Glade")
+  (parent "GtkVBox")
+  (c-name "GladeEditor")
+  (gtype-id "GLADE_TYPE_EDITOR")
+)
+
+(define-object Inspector
+  (in-module "Glade")
+  (parent "GtkVBox")
+  (c-name "GladeInspector")
+  (gtype-id "GLADE_TYPE_INSPECTOR")
+)
+
+(define-object Palette
+  (in-module "Glade")
+  (parent "GtkVBox")
+  (c-name "GladePalette")
+  (gtype-id "GLADE_TYPE_PALETTE")
+)
+
+(define-object Placeholder
+  (in-module "Glade")
+  (parent "GtkWidget")
+  (c-name "GladePlaceholder")
+  (gtype-id "GLADE_TYPE_PLACEHOLDER")
+)
+
+(define-object Project
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeProject")
+  (gtype-id "GLADE_TYPE_PROJECT")
+)
+
+(define-object Widget
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeWidget")
+  (gtype-id "GLADE_TYPE_WIDGET")
+)
+
+(define-object WidgetAdaptor
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeWidgetAdaptor")
+  (gtype-id "GLADE_TYPE_WIDGET_ADAPTOR")
+)
+
+;; Enumerations and flags ...
+
+(define-enum ItemAppearance
+  (in-module "Glade")
+  (c-name "GladeItemAppearance")
+  (gtype-id "GLADE_TYPE_ITEM_APPEARANCE")
+  (values
+    '("icon-and-label" "GLADE_ITEM_ICON_AND_LABEL")
+    '("icon-only" "GLADE_ITEM_ICON_ONLY")
+    '("label-only" "GLADE_ITEM_LABEL_ONLY")
+  )
+)
+
+(define-enum CreateReason
+  (in-module "Glade")
+  (c-name "GladeCreateReason")
+  (gtype-id "GLADE_TYPE_CREATE_REASON")
+  (values
+    '("user" "GLADE_CREATE_USER")
+    '("copy" "GLADE_CREATE_COPY")
+    '("load" "GLADE_CREATE_LOAD")
+    '("rebuild" "GLADE_CREATE_REBUILD")
+    '("reasons" "GLADE_CREATE_REASONS")
+  )
+)
+
+
+;; From glade-app.h
+
+(define-function glade_app_get_type
+  (c-name "glade_app_get_type")
+  (return-type "GType")
+)
+
+(define-function get_app
+  (c-name "glade_app_get")
+  (return-type "GladeApp*")
+)
+
+(define-function update_ui
+  (c-name "glade_app_update_ui")
+  (return-type "none")
+)
+
+(define-function glade_app_widget_event
+  (c-name "glade_app_widget_event")
+  (return-type "gboolean")
+  (parameters
+    '("GladeWidget*" "widget")
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-function glade_app_set_window
+  (c-name "glade_app_set_window")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "window")
+  )
+)
+
+(define-function glade_app_get_window
+  (c-name "glade_app_get_window")
+  (return-type "GtkWidget*")
+)
+
+(define-function glade_app_get_editor
+  (c-name "glade_app_get_editor")
+  (return-type "GladeEditor*")
+)
+
+(define-method get_palette
+  (of-object "GladeApp")
+  (c-name "glade_app_get_palette")
+  (return-type "GladePalette*")
+)
+
+(define-function glade_app_get_clipboard
+  (c-name "glade_app_get_clipboard")
+  (return-type "GladeClipboard*")
+)
+
+(define-function glade_app_get_clipboard_view
+  (c-name "glade_app_get_clipboard_view")
+  (return-type "GtkWidget*")
+)
+
+(define-method get_project
+  (of-object "GladeApp")
+  (c-name "glade_app_get_project")
+  (return-type "GladeProject*")
+)
+
+(define-method set_project
+  (of-object "GladeApp")
+  (c-name "glade_app_set_project")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method add_project
+  (of-object "GladeApp")
+  (c-name "glade_app_add_project")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method remove_project
+  (of-object "GladeApp")
+  (c-name "glade_app_remove_project")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-function glade_app_get_projects
+  (c-name "glade_app_get_projects")
+  (return-type "GList*")
+)
+
+(define-function glade_app_get_config
+  (c-name "glade_app_get_config")
+  (return-type "GKeyFile*")
+)
+
+(define-function glade_app_is_project_loaded
+  (c-name "glade_app_is_project_loaded")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "project_path")
+  )
+)
+
+(define-function glade_app_get_project_by_path
+  (c-name "glade_app_get_project_by_path")
+  (return-type "GladeProject*")
+  (parameters
+    '("const-gchar*" "project_path")
+  )
+)
+
+(define-function glade_app_show_properties
+  (c-name "glade_app_show_properties")
+  (return-type "none")
+  (parameters
+    '("gboolean" "raise")
+  )
+)
+
+(define-function glade_app_hide_properties
+  (c-name "glade_app_hide_properties")
+  (return-type "none")
+)
+
+
+(define-function glade_app_command_copy
+  (c-name "glade_app_command_copy")
+  (return-type "none")
+)
+
+(define-function glade_app_command_cut
+  (c-name "glade_app_command_cut")
+  (return-type "none")
+)
+
+(define-function glade_app_command_paste
+  (c-name "glade_app_command_paste")
+  (return-type "none")
+  (parameters
+    '("GladePlaceholder*" "placeholder")
+  )
+)
+
+(define-function glade_app_command_delete
+  (c-name "glade_app_command_delete")
+  (return-type "none")
+)
+
+(define-function glade_app_command_delete_clipboard
+  (c-name "glade_app_command_delete_clipboard")
+  (return-type "none")
+)
+
+(define-function glade_app_command_undo
+  (c-name "glade_app_command_undo")
+  (return-type "none")
+)
+
+(define-function glade_app_command_redo
+  (c-name "glade_app_command_redo")
+  (return-type "none")
+)
+
+(define-function glade_app_config_save
+  (c-name "glade_app_config_save")
+  (return-type "gint")
+)
+
+(define-function glade_app_set_transient_parent
+  (c-name "glade_app_set_transient_parent")
+  (return-type "none")
+  (parameters
+    '("GtkWindow*" "parent")
+  )
+)
+
+(define-function glade_app_get_transient_parent
+  (c-name "glade_app_get_transient_parent")
+  (return-type "GtkWindow*")
+)
+
+(define-function glade_app_set_accel_group
+  (c-name "glade_app_set_accel_group")
+  (return-type "none")
+  (parameters
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-function glade_app_update_instance_count
+  (c-name "glade_app_update_instance_count")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-function glade_app_undo_button_new
+  (c-name "glade_app_undo_button_new")
+  (is-constructor-of "GladeAppUndoButton")
+  (return-type "GtkWidget*")
+)
+
+(define-function glade_app_redo_button_new
+  (c-name "glade_app_redo_button_new")
+  (is-constructor-of "GladeAppRedoButton")
+  (return-type "GtkWidget*")
+)
+
+(define-function glade_app_get_selection
+  (c-name "glade_app_get_selection")
+  (return-type "GList*")
+)
+
+(define-function glade_app_is_selected
+  (c-name "glade_app_is_selected")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-function glade_app_selection_set
+  (c-name "glade_app_selection_set")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-function glade_app_selection_add
+  (c-name "glade_app_selection_add")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-function glade_app_selection_remove
+  (c-name "glade_app_selection_remove")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-function glade_app_selection_clear
+  (c-name "glade_app_selection_clear")
+  (return-type "none")
+  (parameters
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-function glade_app_selection_changed
+  (c-name "glade_app_selection_changed")
+  (return-type "none")
+)
+
+(define-method get_catalogs_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_catalogs_dir")
+  (return-type "const-gchar*")
+)
+
+(define-method get_modules_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_modules_dir")
+  (return-type "const-gchar*")
+)
+
+(define-method get_plugins_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_plugins_dir")
+  (return-type "const-gchar*")
+)
+
+(define-method get_pixmaps_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_pixmaps_dir")
+  (return-type "const-gchar*")
+)
+
+(define-method get_locale_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_locale_dir")
+  (return-type "const-gchar*")
+)
+
+(define-method get_bindings_dir
+  (of-object "GladeApp")
+  (c-name "glade_app_get_bindings_dir")
+  (return-type "const-gchar*")
+)
+
+
+;; From glade-builtins.h
+
+(define-function glade_standard_stock_get_type
+  (c-name "glade_standard_stock_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_standard_stock_image_get_type
+  (c-name "glade_standard_stock_image_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_glist_get_type
+  (c-name "glade_glist_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_accel_glist_get_type
+  (c-name "glade_accel_glist_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_param_objects_get_type
+  (c-name "glade_param_objects_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_param_accel_get_type
+  (c-name "glade_param_accel_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_item_appearance_get_type
+  (c-name "glade_item_appearance_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_builtin_key_from_string
+  (c-name "glade_builtin_key_from_string")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "string")
+  )
+)
+
+(define-function glade_builtin_string_from_key
+  (c-name "glade_builtin_string_from_key")
+  (return-type "const-gchar*")
+  (parameters
+    '("guint" "key")
+  )
+)
+
+(define-function glade_accel_list_copy
+  (c-name "glade_accel_list_copy")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "accels")
+  )
+)
+
+(define-function glade_accel_list_free
+  (c-name "glade_accel_list_free")
+  (return-type "none")
+  (parameters
+    '("GList*" "accels")
+  )
+)
+
+(define-function glade_param_spec_objects
+  (c-name "glade_param_spec_objects")
+  (return-type "GParamSpec*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "nick")
+    '("const-gchar*" "blurb")
+    '("GType" "accepted_type")
+    '("GParamFlags" "flags")
+  )
+)
+
+(define-function glade_param_spec_accel
+  (c-name "glade_param_spec_accel")
+  (return-type "GParamSpec*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "nick")
+    '("const-gchar*" "blurb")
+    '("GType" "widget_type")
+    '("GParamFlags" "flags")
+  )
+)
+
+(define-method set_type
+  (of-object "GladeParamSpecObjects")
+  (c-name "glade_param_spec_objects_set_type")
+  (return-type "none")
+  (parameters
+    '("GType" "type")
+  )
+)
+
+(define-method get_type
+  (of-object "GladeParamSpecObjects")
+  (c-name "glade_param_spec_objects_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_standard_pixbuf_spec
+  (c-name "glade_standard_pixbuf_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_gdkcolor_spec
+  (c-name "glade_standard_gdkcolor_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_objects_spec
+  (c-name "glade_standard_objects_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_stock_spec
+  (c-name "glade_standard_stock_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_stock_image_spec
+  (c-name "glade_standard_stock_image_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_accel_spec
+  (c-name "glade_standard_accel_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_int_spec
+  (c-name "glade_standard_int_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_uint_spec
+  (c-name "glade_standard_uint_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_string_spec
+  (c-name "glade_standard_string_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_strv_spec
+  (c-name "glade_standard_strv_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_float_spec
+  (c-name "glade_standard_float_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_boolean_spec
+  (c-name "glade_standard_boolean_spec")
+  (return-type "GParamSpec*")
+)
+
+(define-function glade_standard_stock_append_prefix
+  (c-name "glade_standard_stock_append_prefix")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "prefix")
+  )
+)
+
+(define-function glade_keyval_valid
+  (c-name "glade_keyval_valid")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "val")
+  )
+)
+
+
+
+;; From glade-clipboard-view.h
+
+(define-function glade_clipboard_view_get_type
+  (c-name "glade_clipboard_view_get_type")
+  (return-type "GType")
+)
+
+(define-method view_new
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_view_new")
+  (return-type "GtkWidget*")
+)
+
+(define-method add
+  (of-object "GladeClipboardView")
+  (c-name "glade_clipboard_view_add")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method remove
+  (of-object "GladeClipboardView")
+  (c-name "glade_clipboard_view_remove")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method refresh_sel
+  (of-object "GladeClipboardView")
+  (c-name "glade_clipboard_view_refresh_sel")
+  (return-type "none")
+)
+
+
+
+;; From glade-clipboard.h
+
+(define-function glade_clipboard_get_type
+  (c-name "glade_clipboard_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_clipboard_new
+  (c-name "glade_clipboard_new")
+  (is-constructor-of "GladeClipboard")
+  (return-type "GladeClipboard*")
+)
+
+(define-method add
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_add")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+  )
+)
+
+(define-method remove
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_remove")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+  )
+)
+
+(define-method selection_add
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_selection_add")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method selection_remove
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_selection_remove")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method selection_clear
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_selection_clear")
+  (return-type "none")
+)
+
+(define-method get_has_selection
+  (of-object "GladeClipboard")
+  (c-name "glade_clipboard_get_has_selection")
+  (return-type "gboolean")
+)
+
+
+
+;; From glade-command.h
+
+(define-function glade_command_get_type
+  (c-name "glade_command_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_command_push_group
+  (c-name "glade_command_push_group")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "fmt")
+  )
+  (varargs #t)
+)
+
+(define-function glade_command_pop_group
+  (c-name "glade_command_pop_group")
+  (return-type "none")
+)
+
+(define-method execute
+  (of-object "GladeCommand")
+  (c-name "glade_command_execute")
+  (return-type "gboolean")
+)
+
+(define-method undo
+  (of-object "GladeCommand")
+  (c-name "glade_command_undo")
+  (return-type "gboolean")
+)
+
+(define-method unifies
+  (of-object "GladeCommand")
+  (c-name "glade_command_unifies")
+  (return-type "gboolean")
+  (parameters
+    '("GladeCommand*" "other")
+  )
+)
+
+(define-method collapse
+  (of-object "GladeCommand")
+  (c-name "glade_command_collapse")
+  (return-type "none")
+  (parameters
+    '("GladeCommand*" "other")
+  )
+)
+
+(define-function glade_command_set_property
+  (c-name "glade_command_set_property")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+  )
+  (varargs #t)
+)
+
+(define-function glade_command_set_property_value
+  (c-name "glade_command_set_property_value")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-function glade_command_set_properties
+  (c-name "glade_command_set_properties")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+    '("const-GValue*" "old_value")
+    '("const-GValue*" "new_value")
+  )
+  (varargs #t)
+)
+
+(define-function glade_command_set_properties_list
+  (c-name "glade_command_set_properties_list")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+    '("GList*" "props")
+  )
+)
+
+(define-function glade_command_set_name
+  (c-name "glade_command_set_name")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "glade_widget")
+    '("const-gchar*" "name")
+  )
+)
+
+(define-function glade_command_delete
+  (c-name "glade_command_delete")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+  )
+)
+
+(define-function glade_command_create
+  (c-name "glade_command_create")
+  (return-type "GladeWidget*")
+  (parameters
+    '("GladeWidgetAdaptor*" "adaptor")
+    '("GladeWidget*" "parent")
+    '("GladePlaceholder*" "placeholder")
+    '("GladeProject*" "project")
+  )
+)
+
+(define-function glade_command_cut
+  (c-name "glade_command_cut")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+  )
+)
+
+(define-function glade_command_copy
+  (c-name "glade_command_copy")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+  )
+)
+
+(define-function glade_command_paste
+  (c-name "glade_command_paste")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+    '("GladeWidget*" "parent")
+    '("GladePlaceholder*" "placeholder")
+  )
+)
+
+(define-function glade_command_dnd
+  (c-name "glade_command_dnd")
+  (return-type "none")
+  (parameters
+    '("GList*" "widgets")
+    '("GladeWidget*" "parent")
+    '("GladePlaceholder*" "placeholder")
+  )
+)
+
+(define-function glade_command_add_signal
+  (c-name "glade_command_add_signal")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "glade_widget")
+    '("const-GladeSignal*" "signal")
+  )
+)
+
+(define-function glade_command_remove_signal
+  (c-name "glade_command_remove_signal")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "glade_widget")
+    '("const-GladeSignal*" "signal")
+  )
+)
+
+(define-function glade_command_change_signal
+  (c-name "glade_command_change_signal")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "glade_widget")
+    '("const-GladeSignal*" "old")
+    '("const-GladeSignal*" "new_signal")
+  )
+)
+
+(define-function glade_command_set_i18n
+  (c-name "glade_command_set_i18n")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+    '("gboolean" "translatable")
+    '("gboolean" "has_context")
+    '("const-gchar*" "comment")
+  )
+)
+
+
+
+;; From glade-design-layout.h
+
+(define-function glade_design_layout_get_type
+  (c-name "glade_design_layout_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_design_layout_new
+  (c-name "glade_design_layout_new")
+  (is-constructor-of "GladeDesignLayout")
+  (return-type "GtkWidget*")
+)
+
+
+
+;; From glade-design-view.h
+
+(define-function glade_design_view_get_type
+  (c-name "glade_design_view_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_design_view_new
+  (c-name "glade_design_view_new")
+  (is-constructor-of "GladeDesignView")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method get_project
+  (of-object "GladeDesignView")
+  (c-name "glade_design_view_get_project")
+  (return-type "GladeProject*")
+)
+
+(define-function glade_design_view_get_from_project
+  (c-name "glade_design_view_get_from_project")
+  (return-type "GladeDesignView*")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method get_layout
+  (of-object "GladeDesignView")
+  (c-name "glade_design_view_get_layout")
+  (return-type "GladeDesignLayout*")
+)
+
+
+
+;; From glade-editor.h
+
+(define-function glade_editor_get_type
+  (c-name "glade_editor_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_editor_new
+  (c-name "glade_editor_new")
+  (is-constructor-of "GladeEditor")
+  (return-type "GladeEditor*")
+)
+
+(define-method load_widget
+  (of-object "GladeEditor")
+  (c-name "glade_editor_load_widget")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method refresh
+  (of-object "GladeEditor")
+  (c-name "glade_editor_refresh")
+  (return-type "none")
+)
+
+(define-method update_widget_name
+  (of-object "GladeEditor")
+  (c-name "glade_editor_update_widget_name")
+  (return-type "none")
+)
+
+(define-method query_dialog
+  (of-object "GladeEditor")
+  (c-name "glade_editor_query_dialog")
+  (return-type "gboolean")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method show_info
+  (of-object "GladeEditor")
+  (c-name "glade_editor_show_info")
+  (return-type "none")
+)
+
+(define-method show_context_info
+  (of-object "GladeEditor")
+  (c-name "glade_editor_show_context_info")
+  (return-type "none")
+)
+
+(define-method hide_info
+  (of-object "GladeEditor")
+  (c-name "glade_editor_hide_info")
+  (return-type "none")
+)
+
+(define-method hide_context_info
+  (of-object "GladeEditor")
+  (c-name "glade_editor_hide_context_info")
+  (return-type "none")
+)
+
+
+
+;; From glade-palette.h
+
+(define-function glade_palette_get_type
+  (c-name "glade_palette_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_palette_new
+  (c-name "glade_palette_new")
+  (is-constructor-of "GladePalette")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-GList*" "catalogs")
+  )
+)
+
+(define-method deselect_current_item
+  (of-object "GladePalette")
+  (c-name "glade_palette_deselect_current_item")
+  (return-type "none")
+  (parameters
+    '("gboolean" "sticky_aware")
+  )
+)
+
+(define-method get_current_item
+  (of-object "GladePalette")
+  (c-name "glade_palette_get_current_item")
+  (return-type "GladeWidgetAdaptor*")
+)
+
+(define-method get_item_appearance
+  (of-object "GladePalette")
+  (c-name "glade_palette_get_item_appearance")
+  (return-type "GladeItemAppearance")
+)
+
+(define-method set_item_appearance
+  (of-object "GladePalette")
+  (c-name "glade_palette_set_item_appearance")
+  (return-type "none")
+  (parameters
+    '("GladeItemAppearance" "appearance")
+  )
+)
+
+(define-method get_use_small_item_icons
+  (of-object "GladePalette")
+  (c-name "glade_palette_get_use_small_item_icons")
+  (return-type "gboolean")
+)
+
+(define-method set_use_small_item_icons
+  (of-object "GladePalette")
+  (c-name "glade_palette_set_use_small_item_icons")
+  (return-type "none")
+  (parameters
+    '("gboolean" "use_small_item_icons")
+  )
+)
+
+(define-method set_show_selector_button
+  (of-object "GladePalette")
+  (c-name "glade_palette_set_show_selector_button")
+  (return-type "none")
+  (parameters
+    '("gboolean" "show_selector_button")
+  )
+)
+
+(define-method get_show_selector_button
+  (of-object "GladePalette")
+  (c-name "glade_palette_get_show_selector_button")
+  (return-type "gboolean")
+)
+
+
+
+;; From glade-placeholder.h
+
+(define-function glade_placeholder_get_type
+  (c-name "glade_placeholder_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_placeholder_new
+  (c-name "glade_placeholder_new")
+  (is-constructor-of "GladePlaceholder")
+  (return-type "GtkWidget*")
+)
+
+(define-method get_parent
+  (of-object "GladePlaceholder")
+  (c-name "glade_placeholder_get_parent")
+  (return-type "GladeWidget*")
+)
+
+
+
+;; From glade-inspector.h
+
+(define-function glade_inspector_get_type
+  (c-name "glade_inspector_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_inspector_new
+  (c-name "glade_inspector_new")
+  (is-constructor-of "GladeInspector")
+  (return-type "GtkWidget*")
+)
+
+(define-function glade_inspector_new_with_project
+  (c-name "glade_inspector_new_with_project")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method set_project
+  (of-object "GladeInspector")
+  (c-name "glade_inspector_set_project")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method get_project
+  (of-object "GladeInspector")
+  (c-name "glade_inspector_get_project")
+  (return-type "GladeProject*")
+)
+
+(define-method get_selected_items
+  (of-object "GladeInspector")
+  (c-name "glade_inspector_get_selected_items")
+  (return-type "GList*")
+)
+
+
+
+;; From glade-project.h
+
+(define-function glade_project_get_type
+  (c-name "glade_project_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_project_new
+  (c-name "glade_project_new")
+  (is-constructor-of "GladeProject")
+  (return-type "GladeProject*")
+)
+
+(define-method load_from_file
+  (of-object "GladeProject")
+  (c-name "glade_project_load_from_file")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "path")
+  )
+)
+
+(define-function glade_project_load
+  (c-name "glade_project_load")
+  (return-type "GladeProject*")
+  (parameters
+    '("const-gchar*" "path")
+  )
+)
+
+(define-method save
+  (of-object "GladeProject")
+  (c-name "glade_project_save")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "path")
+    '("GError**" "error")
+  )
+)
+
+(define-method get_path
+  (of-object "GladeProject")
+  (c-name "glade_project_get_path")
+  (return-type "const-gchar*")
+)
+
+(define-method get_name
+  (of-object "GladeProject")
+  (c-name "glade_project_get_name")
+  (return-type "gchar*")
+)
+
+(define-method undo
+  (of-object "GladeProject")
+  (c-name "glade_project_undo")
+  (return-type "none")
+)
+
+(define-method redo
+  (of-object "GladeProject")
+  (c-name "glade_project_redo")
+  (return-type "none")
+)
+
+(define-method next_undo_item
+  (of-object "GladeProject")
+  (c-name "glade_project_next_undo_item")
+  (return-type "GladeCommand*")
+)
+
+(define-method next_redo_item
+  (of-object "GladeProject")
+  (c-name "glade_project_next_redo_item")
+  (return-type "GladeCommand*")
+)
+
+(define-method push_undo
+  (of-object "GladeProject")
+  (c-name "glade_project_push_undo")
+  (return-type "none")
+  (parameters
+    '("GladeCommand*" "cmd")
+  )
+)
+
+(define-method undo_items
+  (of-object "GladeProject")
+  (c-name "glade_project_undo_items")
+  (return-type "GtkWidget*")
+)
+
+(define-method redo_items
+  (of-object "GladeProject")
+  (c-name "glade_project_redo_items")
+  (return-type "GtkWidget*")
+)
+
+(define-method reset_path
+  (of-object "GladeProject")
+  (c-name "glade_project_reset_path")
+  (return-type "none")
+)
+
+(define-method get_readonly
+  (of-object "GladeProject")
+  (c-name "glade_project_get_readonly")
+  (return-type "gboolean")
+)
+
+(define-method get_objects
+  (of-object "GladeProject")
+  (c-name "glade_project_get_objects")
+  (return-type "const-GList*")
+)
+
+(define-method add_object
+  (of-object "GladeProject")
+  (c-name "glade_project_add_object")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "old_project")
+    '("GObject*" "object")
+  )
+)
+
+(define-method remove_object
+  (of-object "GladeProject")
+  (c-name "glade_project_remove_object")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-method has_object
+  (of-object "GladeProject")
+  (c-name "glade_project_has_object")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-method get_widget_by_name
+  (of-object "GladeProject")
+  (c-name "glade_project_get_widget_by_name")
+  (return-type "GladeWidget*")
+  (parameters
+    '("const-char*" "name")
+  )
+)
+
+(define-method new_widget_name
+  (of-object "GladeProject")
+  (c-name "glade_project_new_widget_name")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "base_name")
+  )
+)
+
+(define-method widget_name_changed
+  (of-object "GladeProject")
+  (c-name "glade_project_widget_name_changed")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+    '("const-char*" "old_name")
+  )
+)
+
+(define-method get_tooltips
+  (of-object "GladeProject")
+  (c-name "glade_project_get_tooltips")
+  (return-type "GtkTooltips*")
+)
+
+(define-method is_selected
+  (of-object "GladeProject")
+  (c-name "glade_project_is_selected")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-method selection_set
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_set")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-method selection_add
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_add")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-method selection_remove
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_remove")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-method selection_clear
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_clear")
+  (return-type "none")
+  (parameters
+    '("gboolean" "emit_signal")
+  )
+)
+
+(define-method selection_changed
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_changed")
+  (return-type "none")
+)
+
+(define-method selection_get
+  (of-object "GladeProject")
+  (c-name "glade_project_selection_get")
+  (return-type "GList*")
+)
+
+(define-method get_has_selection
+  (of-object "GladeProject")
+  (c-name "glade_project_get_has_selection")
+  (return-type "gboolean")
+)
+
+(define-method set_accel_group
+  (of-object "GladeProject")
+  (c-name "glade_project_set_accel_group")
+  (return-type "none")
+  (parameters
+    '("GtkAccelGroup*" "accel_group")
+  )
+)
+
+(define-method set_resource
+  (of-object "GladeProject")
+  (c-name "glade_project_set_resource")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+    '("const-gchar*" "resource")
+  )
+)
+
+(define-method list_resources
+  (of-object "GladeProject")
+  (c-name "glade_project_list_resources")
+  (return-type "GList*")
+)
+
+(define-method resource_fullpath
+  (of-object "GladeProject")
+  (c-name "glade_project_resource_fullpath")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "resource")
+  )
+)
+
+(define-method is_loading
+  (of-object "GladeProject")
+  (c-name "glade_project_is_loading")
+  (return-type "gboolean")
+)
+
+(define-method get_file_mtime
+  (of-object "GladeProject")
+  (c-name "glade_project_get_file_mtime")
+  (return-type "time_t")
+)
+
+(define-method get_instance_count
+  (of-object "GladeProject")
+  (c-name "glade_project_get_instance_count")
+  (return-type "guint")
+)
+
+(define-method set_instance_count
+  (of-object "GladeProject")
+  (c-name "glade_project_set_instance_count")
+  (return-type "none")
+  (parameters
+    '("guint" "instance_count")
+  )
+)
+
+(define-method get_modified
+  (of-object "GladeProject")
+  (c-name "glade_project_get_modified")
+  (return-type "gboolean")
+)
+
+
+
+;; From glade-property.h
+
+(define-function glade_property_get_type
+  (c-name "glade_property_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_property_new
+  (c-name "glade_property_new")
+  (is-constructor-of "GladeProperty")
+  (return-type "GladeProperty*")
+  (parameters
+    '("GladePropertyClass*" "klass")
+    '("GladeWidget*" "widget")
+    '("GValue*" "value")
+  )
+)
+
+(define-method dup
+  (of-object "GladeProperty")
+  (c-name "glade_property_dup")
+  (return-type "GladeProperty*")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method reset
+  (of-object "GladeProperty")
+  (c-name "glade_property_reset")
+  (return-type "none")
+)
+
+(define-method original_reset
+  (of-object "GladeProperty")
+  (c-name "glade_property_original_reset")
+  (return-type "none")
+)
+
+(define-method default
+  (of-object "GladeProperty")
+  (c-name "glade_property_default")
+  (return-type "gboolean")
+)
+
+(define-method original_default
+  (of-object "GladeProperty")
+  (c-name "glade_property_original_default")
+  (return-type "gboolean")
+)
+
+(define-method equals_value
+  (of-object "GladeProperty")
+  (c-name "glade_property_equals_value")
+  (return-type "gboolean")
+  (parameters
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method equals
+  (of-object "GladeProperty")
+  (c-name "glade_property_equals")
+  (return-type "gboolean")
+  (parameters
+  )
+  (varargs #t)
+)
+
+(define-method set_value
+  (of-object "GladeProperty")
+  (c-name "glade_property_set_value")
+  (return-type "none")
+  (parameters
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method set_va_list
+  (of-object "GladeProperty")
+  (c-name "glade_property_set_va_list")
+  (return-type "none")
+  (parameters
+    '("va_list" "vl")
+  )
+)
+
+(define-method set
+  (of-object "GladeProperty")
+  (c-name "glade_property_set")
+  (return-type "none")
+  (parameters
+  )
+  (varargs #t)
+)
+
+(define-method get_value
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_value")
+  (return-type "none")
+  (parameters
+    '("GValue*" "value")
+  )
+)
+
+(define-method get_default
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_default")
+  (return-type "none")
+  (parameters
+    '("GValue*" "value")
+  )
+)
+
+(define-method get_va_list
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_va_list")
+  (return-type "none")
+  (parameters
+    '("va_list" "vl")
+  )
+)
+
+(define-method get
+  (of-object "GladeProperty")
+  (c-name "glade_property_get")
+  (return-type "none")
+  (parameters
+  )
+  (varargs #t)
+)
+
+(define-method add_object
+  (of-object "GladeProperty")
+  (c-name "glade_property_add_object")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-method remove_object
+  (of-object "GladeProperty")
+  (c-name "glade_property_remove_object")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+  )
+)
+
+(define-method sync
+  (of-object "GladeProperty")
+  (c-name "glade_property_sync")
+  (return-type "none")
+)
+
+(define-method load
+  (of-object "GladeProperty")
+  (c-name "glade_property_load")
+  (return-type "none")
+)
+
+(define-method read
+  (of-object "GladeProperty")
+  (c-name "glade_property_read")
+  (return-type "GValue*")
+  (parameters
+    '("GladePropertyClass*" "pclass")
+    '("GladeProject*" "project")
+    '("gpointer" "info")
+    '("gboolean" "free_value")
+  )
+)
+
+(define-method write
+  (of-object "GladeProperty")
+  (c-name "glade_property_write")
+  (return-type "gboolean")
+  (parameters
+    '("GladeInterface*" "interface")
+    '("GArray*" "props")
+  )
+)
+
+(define-method get_tooltip
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_tooltip")
+  (return-type "const-gchar*")
+)
+
+(define-method set_sensitive
+  (of-object "GladeProperty")
+  (c-name "glade_property_set_sensitive")
+  (return-type "none")
+  (parameters
+    '("gboolean" "sensitive")
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method get_sensitive
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_sensitive")
+  (return-type "gboolean")
+)
+
+(define-method set_save_always
+  (of-object "GladeProperty")
+  (c-name "glade_property_set_save_always")
+  (return-type "none")
+  (parameters
+    '("gboolean" "setting")
+  )
+)
+
+(define-method get_save_always
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_save_always")
+  (return-type "gboolean")
+)
+
+(define-method set_enabled
+  (of-object "GladeProperty")
+  (c-name "glade_property_set_enabled")
+  (return-type "none")
+  (parameters
+    '("gboolean" "enabled")
+  )
+)
+
+(define-method get_enabled
+  (of-object "GladeProperty")
+  (c-name "glade_property_get_enabled")
+  (return-type "gboolean")
+)
+
+(define-method i18n_set_comment
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_set_comment")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "str")
+  )
+)
+
+(define-method i18n_get_comment
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_get_comment")
+  (return-type "const-gchar*")
+)
+
+(define-method i18n_set_translatable
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_set_translatable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "translatable")
+  )
+)
+
+(define-method i18n_get_translatable
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_get_translatable")
+  (return-type "gboolean")
+)
+
+(define-method i18n_set_has_context
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_set_has_context")
+  (return-type "none")
+  (parameters
+    '("gboolean" "has_context")
+  )
+)
+
+(define-method i18n_get_has_context
+  (of-object "GladeProperty")
+  (c-name "glade_property_i18n_get_has_context")
+  (return-type "gboolean")
+)
+
+(define-function glade_property_push_superuser
+  (c-name "glade_property_push_superuser")
+  (return-type "none")
+)
+
+(define-function glade_property_pop_superuser
+  (c-name "glade_property_pop_superuser")
+  (return-type "none")
+)
+
+(define-function glade_property_superuser
+  (c-name "glade_property_superuser")
+  (return-type "gboolean")
+)
+
+
+
+;; From glade-signal-editor.h
+
+(define-method get_widget
+  (of-object "GladeSignalEditor")
+  (c-name "glade_signal_editor_get_widget")
+  (return-type "GtkWidget*")
+)
+
+(define-function glade_signal_editor_new
+  (c-name "glade_signal_editor_new")
+  (is-constructor-of "GladeSignalEditor")
+  (return-type "GladeSignalEditor*")
+  (parameters
+    '("gpointer*" "editor")
+  )
+)
+
+(define-method load_widget
+  (of-object "GladeSignalEditor")
+  (c-name "glade_signal_editor_load_widget")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+
+
+;; From glade-signal.h
+
+(define-function glade_signal_new
+  (c-name "glade_signal_new")
+  (is-constructor-of "GladeSignal")
+  (return-type "GladeSignal*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "handler")
+    '("const-gchar*" "userdata")
+    '("gboolean" "lookup")
+    '("gboolean" "after")
+  )
+)
+
+(define-method clone
+  (of-object "GladeSignal")
+  (c-name "glade_signal_clone")
+  (return-type "GladeSignal*")
+)
+
+(define-method free
+  (of-object "GladeSignal")
+  (c-name "glade_signal_free")
+  (return-type "none")
+)
+
+(define-method equal
+  (of-object "GladeSignal")
+  (c-name "glade_signal_equal")
+  (return-type "gboolean")
+  (parameters
+    '("GladeSignal*" "sig2")
+  )
+)
+
+(define-function glade_signal_write
+  (c-name "glade_signal_write")
+  (return-type "gboolean")
+  (parameters
+    '("GladeSignalInfo*" "info")
+    '("GladeSignal*" "signal")
+    '("GladeInterface*" "interface")
+  )
+)
+
+(define-function glade_signal_new_from_signal_info
+  (c-name "glade_signal_new_from_signal_info")
+  (return-type "GladeSignal*")
+  (parameters
+    '("GladeSignalInfo*" "info")
+  )
+)
+
+
+
+;; From glade-widget-adaptor.h
+
+(define-function glade_widget_adaptor_get_type
+  (c-name "glade_widget_adaptor_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_create_reason_get_type
+  (c-name "glade_create_reason_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_widget_adaptor_from_catalog
+  (c-name "glade_widget_adaptor_from_catalog")
+  (return-type "GladeWidgetAdaptor*")
+  (parameters
+    '("GladeXmlNode*" "class_node")
+    '("const-gchar*" "catname")
+    '("const-gchar*" "icon_prefix")
+    '("GModule*" "module")
+    '("const-gchar*" "domain")
+    '("const-gchar*" "book")
+  )
+)
+
+(define-method register
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_register")
+  (return-type "none")
+)
+
+(define-method adaptor_create_internal
+  (of-object "GladeWidget")
+  (c-name "glade_widget_adaptor_create_internal")
+  (return-type "GladeWidget*")
+  (parameters
+    '("GObject*" "internal_object")
+    '("const-gchar*" "internal_name")
+    '("const-gchar*" "parent_name")
+    '("gboolean" "anarchist")
+    '("GladeCreateReason" "reason")
+  )
+)
+
+(define-function glade_widget_adaptor_create_widget_real
+  (c-name "glade_widget_adaptor_create_widget_real")
+  (return-type "GladeWidget*")
+  (parameters
+    '("gboolean" "query")
+    '("const-gchar*" "first_property")
+  )
+  (varargs #t)
+)
+
+(define-function glade_widget_adaptor_get_by_name
+  (c-name "glade_widget_adaptor_get_by_name")
+  (return-type "GladeWidgetAdaptor*")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-function glade_widget_adaptor_get_by_type
+  (c-name "glade_widget_adaptor_get_by_type")
+  (return-type "GladeWidgetAdaptor*")
+  (parameters
+    '("GType" "type")
+  )
+)
+
+(define-method get_property_class
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_property_class")
+  (return-type "GladePropertyClass*")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-method get_pack_property_class
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_pack_property_class")
+  (return-type "GladePropertyClass*")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-method default_params
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_default_params")
+  (return-type "GParameter*")
+  (parameters
+    '("gboolean" "construct")
+    '("guint*" "n_params")
+  )
+)
+
+(define-method post_create
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_post_create")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("GladeCreateReason" "reason")
+  )
+)
+
+(define-method get_internal_child
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_internal_child")
+  (return-type "GObject*")
+  (parameters
+    '("GObject*" "object")
+    '("const-gchar*" "internal_name")
+  )
+)
+
+(define-method set_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_set_property")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method get_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_property")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("const-gchar*" "property_name")
+    '("GValue*" "value")
+  )
+)
+
+(define-method verify_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_verify_property")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "object")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method add
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_add")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+  )
+)
+
+(define-method remove
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_remove")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+  )
+)
+
+(define-method get_children
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_children")
+  (return-type "GList*")
+  (parameters
+    '("GObject*" "container")
+  )
+)
+
+(define-method has_child
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_has_child")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+  )
+)
+
+(define-method child_set_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_child_set_property")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method child_get_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_child_get_property")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+    '("const-gchar*" "property_name")
+    '("GValue*" "value")
+  )
+)
+
+(define-method child_verify_property
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_child_verify_property")
+  (return-type "gboolean")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "child")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method replace_child
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_replace_child")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "old_obj")
+    '("GObject*" "new_obj")
+  )
+)
+
+(define-method query
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_query")
+  (return-type "gboolean")
+)
+
+(define-method get_packing_default
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_get_packing_default")
+  (return-type "const-gchar*")
+  (parameters
+    '("GladeWidgetAdaptor*" "parent_adaptor")
+    '("const-gchar*" "propert_id")
+  )
+)
+
+(define-method is_container
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_is_container")
+  (return-type "gboolean")
+)
+
+(define-method action_add
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_action_add")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "action_path")
+    '("const-gchar*" "label")
+    '("const-gchar*" "stock")
+    '("gboolean" "important")
+  )
+)
+
+(define-method pack_action_add
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_pack_action_add")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "action_path")
+    '("const-gchar*" "label")
+    '("const-gchar*" "stock")
+    '("gboolean" "important")
+  )
+)
+
+(define-method action_remove
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_action_remove")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method pack_action_remove
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_pack_action_remove")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method pack_actions_new
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_pack_actions_new")
+  (return-type "GList*")
+)
+
+(define-method action_activate
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_action_activate")
+  (return-type "none")
+  (parameters
+    '("GObject*" "object")
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method child_action_activate
+  (of-object "GladeWidgetAdaptor")
+  (c-name "glade_widget_adaptor_child_action_activate")
+  (return-type "none")
+  (parameters
+    '("GObject*" "container")
+    '("GObject*" "object")
+    '("const-gchar*" "action_path")
+  )
+)
+
+
+
+;; From glade-widget.h
+
+(define-function glade_widget_get_type
+  (c-name "glade_widget_get_type")
+  (return-type "GType")
+)
+
+(define-function glade_widget_get_from_gobject
+  (c-name "glade_widget_get_from_gobject")
+  (return-type "GladeWidget*")
+  (parameters
+    '("gpointer" "object")
+  )
+)
+
+(define-method add_child
+  (of-object "GladeWidget")
+  (c-name "glade_widget_add_child")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "child")
+    '("gboolean" "at_mouse")
+  )
+)
+
+(define-method remove_child
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_child")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "child")
+  )
+)
+
+(define-method write
+  (of-object "GladeWidget")
+  (c-name "glade_widget_write")
+  (return-type "GladeWidgetInfo*")
+  (parameters
+    '("GladeInterface*" "interface")
+  )
+)
+
+(define-function glade_widget_read
+  (c-name "glade_widget_read")
+  (return-type "GladeWidget*")
+  (parameters
+    '("GladeProject*" "project")
+    '("GladeWidgetInfo*" "info")
+  )
+)
+
+(define-method replace
+  (of-object "GladeWidget")
+  (c-name "glade_widget_replace")
+  (return-type "none")
+  (parameters
+    '("GObject*" "old_object")
+    '("GObject*" "new_object")
+  )
+)
+
+(define-method rebuild
+  (of-object "GladeWidget")
+  (c-name "glade_widget_rebuild")
+  (return-type "none")
+)
+
+(define-method dup
+  (of-object "GladeWidget")
+  (c-name "glade_widget_dup")
+  (return-type "GladeWidget*")
+  (parameters
+    '("gboolean" "exact")
+  )
+)
+
+(define-method copy_signals
+  (of-object "GladeWidget")
+  (c-name "glade_widget_copy_signals")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "template_widget")
+  )
+)
+
+(define-method copy_properties
+  (of-object "GladeWidget")
+  (c-name "glade_widget_copy_properties")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "template_widget")
+  )
+)
+
+(define-method set_packing_properties
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_packing_properties")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "container")
+  )
+)
+
+(define-method get_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_property")
+  (return-type "GladeProperty*")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method get_pack_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_pack_property")
+  (return-type "GladeProperty*")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-function glade_widget_dup_properties
+  (c-name "glade_widget_dup_properties")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "template_props")
+    '("gboolean" "as_load")
+  )
+)
+
+(define-method remove_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method show
+  (of-object "GladeWidget")
+  (c-name "glade_widget_show")
+  (return-type "none")
+)
+
+(define-method hide
+  (of-object "GladeWidget")
+  (c-name "glade_widget_hide")
+  (return-type "none")
+)
+
+(define-method add_signal_handler
+  (of-object "GladeWidget")
+  (c-name "glade_widget_add_signal_handler")
+  (return-type "none")
+  (parameters
+    '("GladeSignal*" "signal_handler")
+  )
+)
+
+(define-method remove_signal_handler
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_signal_handler")
+  (return-type "none")
+  (parameters
+    '("GladeSignal*" "signal_handler")
+  )
+)
+
+(define-method change_signal_handler
+  (of-object "GladeWidget")
+  (c-name "glade_widget_change_signal_handler")
+  (return-type "none")
+  (parameters
+    '("GladeSignal*" "old_signal_handler")
+    '("GladeSignal*" "new_signal_handler")
+  )
+)
+
+(define-method list_signal_handlers
+  (of-object "GladeWidget")
+  (c-name "glade_widget_list_signal_handlers")
+  (return-type "GPtrArray*")
+  (parameters
+    '("const-gchar*" "signal_name")
+  )
+)
+
+(define-method has_decendant
+  (of-object "GladeWidget")
+  (c-name "glade_widget_has_decendant")
+  (return-type "gboolean")
+  (parameters
+    '("GType" "type")
+  )
+)
+
+(define-method event
+  (of-object "GladeWidget")
+  (c-name "glade_widget_event")
+  (return-type "gboolean")
+  (parameters
+    '("GdkEvent*" "event")
+  )
+)
+
+(define-method placeholder_relation
+  (of-object "GladeWidget")
+  (c-name "glade_widget_placeholder_relation")
+  (return-type "gboolean")
+  (parameters
+    '("GladeWidget*" "widget")
+  )
+)
+
+(define-method get_action
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_action")
+  (return-type "GladeWidgetAction*")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method get_pack_action
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_pack_action")
+  (return-type "GladeWidgetAction*")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method remove_action
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_action")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method remove_pack_action
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_pack_action")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method create_action_menu
+  (of-object "GladeWidget")
+  (c-name "glade_widget_create_action_menu")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "action_path")
+  )
+)
+
+(define-method project_notify
+  (of-object "GladeWidget")
+  (c-name "glade_widget_project_notify")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method add_prop_ref
+  (of-object "GladeWidget")
+  (c-name "glade_widget_add_prop_ref")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+  )
+)
+
+(define-method remove_prop_ref
+  (of-object "GladeWidget")
+  (c-name "glade_widget_remove_prop_ref")
+  (return-type "none")
+  (parameters
+    '("GladeProperty*" "property")
+  )
+)
+
+(define-method object_set_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_object_set_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method object_get_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_object_get_property")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "property_name")
+    '("GValue*" "value")
+  )
+)
+
+(define-method child_set_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_child_set_property")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "child")
+    '("const-gchar*" "property_name")
+    '("const-GValue*" "value")
+  )
+)
+
+(define-method child_get_property
+  (of-object "GladeWidget")
+  (c-name "glade_widget_child_get_property")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "child")
+    '("const-gchar*" "property_name")
+    '("GValue*" "value")
+  )
+)
+
+(define-method property_get
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_get")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+  (varargs #t)
+)
+
+(define-method property_set
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_set")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+  (varargs #t)
+)
+
+(define-method pack_property_get
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_get")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+  (varargs #t)
+)
+
+(define-method pack_property_set
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_set")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+  (varargs #t)
+)
+
+(define-method property_reset
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_reset")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method pack_property_reset
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_reset")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method property_default
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_default")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method property_original_default
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_original_default")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method pack_property_default
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_default")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+  )
+)
+
+(define-method property_set_sensitive
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_set_sensitive")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "sensitive")
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method pack_property_set_sensitive
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_set_sensitive")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "sensitive")
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method property_set_enabled
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_set_enabled")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "enabled")
+  )
+)
+
+(define-method pack_property_set_enabled
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_set_enabled")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "enabled")
+  )
+)
+
+(define-method property_set_save_always
+  (of-object "GladeWidget")
+  (c-name "glade_widget_property_set_save_always")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "setting")
+  )
+)
+
+(define-method pack_property_set_save_always
+  (of-object "GladeWidget")
+  (c-name "glade_widget_pack_property_set_save_always")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "id_property")
+    '("gboolean" "setting")
+  )
+)
+
+(define-method set_name
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_name")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-method get_name
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_name")
+  (return-type "const-gchar*")
+)
+
+(define-method set_internal
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_internal")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "internal")
+  )
+)
+
+(define-method get_internal
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_internal")
+  (return-type "const-gchar*")
+)
+
+(define-method set_object
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_object")
+  (return-type "none")
+  (parameters
+    '("GObject*" "new_object")
+  )
+)
+
+(define-method get_object
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_object")
+  (return-type "GObject*")
+)
+
+(define-method set_project
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_project")
+  (return-type "none")
+  (parameters
+    '("GladeProject*" "project")
+  )
+)
+
+(define-method get_project
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_project")
+  (return-type "GladeProject*")
+)
+
+(define-method get_adaptor
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_adaptor")
+  (return-type "GladeWidgetAdaptor*")
+)
+
+(define-method get_parent
+  (of-object "GladeWidget")
+  (c-name "glade_widget_get_parent")
+  (return-type "GladeWidget*")
+)
+
+(define-method set_parent
+  (of-object "GladeWidget")
+  (c-name "glade_widget_set_parent")
+  (return-type "none")
+  (parameters
+    '("GladeWidget*" "parent")
+  )
+)
+
+(define-function glade_widget_superuser
+  (c-name "glade_widget_superuser")
+  (return-type "gboolean")
+)
+
+(define-function glade_widget_push_superuser
+  (c-name "glade_widget_push_superuser")
+  (return-type "none")
+)
+
+(define-function glade_widget_pop_superuser
+  (c-name "glade_widget_pop_superuser")
+  (return-type "none")
+)
+
+

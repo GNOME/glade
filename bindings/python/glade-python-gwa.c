@@ -397,7 +397,7 @@ _wrap_GladeWidgetAdaptor__do_post_create(PyObject *cls, PyObject *args, PyObject
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!O:GladeWidgetAdaptor.post_create", kwlist, &PyGladeWidgetAdaptor_Type, &self, &PyGObject_Type, &object, &py_reason))
         return NULL;
-    if (pyg_enum_get_value(GLADE_CREATE_REASON, py_reason, (gpointer)&reason))
+    if (pyg_enum_get_value(GLADE_TYPE_CREATE_REASON, py_reason, (gpointer)&reason))
         return NULL;
     klass = g_type_class_ref(pyg_type_from_object(cls));
     if (GLADE_WIDGET_ADAPTOR_CLASS(klass)->post_create)
@@ -1349,7 +1349,7 @@ _wrap_GladeWidgetAdaptor__proxy_do_post_create(GladeWidgetAdaptor *self, GObject
         Py_INCREF(Py_None);
         py_object = Py_None;
     }
-    py_reason = pyg_enum_from_gtype(GLADE_CREATE_REASON, reason);
+    py_reason = pyg_enum_from_gtype(GLADE_TYPE_CREATE_REASON, reason);
     if (!py_reason) {
         if (PyErr_Occurred())
             PyErr_Print();
@@ -1624,7 +1624,7 @@ const PyMethodDef glade_python_gwa_functions[] = {
 void
 glade_python_gwa_add_constants(PyObject *module, const gchar *strip_prefix)
 {
-  pyg_enum_add(module, "GladeCreateReason", strip_prefix, GLADE_CREATE_REASON);
+  pyg_enum_add(module, "GladeCreateReason", strip_prefix, GLADE_TYPE_CREATE_REASON);
 
   if (PyErr_Occurred())
     PyErr_Print();
