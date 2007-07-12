@@ -1,3 +1,21 @@
+2007-07-12  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget-adaptor.c: added gwa_displayable_values_check() and use it to check 
+	  for displayable values in enums and flags properties in  glade_widget_adaptor_from_catalog()
+	  this way we can check every properties not only the ones that are explicited in the catalog.
+
+	* gladeui/glade-property-class.c: removed displayable values check from 
+	  glade_property_class_update_from_node()
+
+	* plugins/gtk+/gtk+.xml.in: added displayable values for
+	  GtkToolbar::icon-size
+	  GtkLabel::wrap-mode
+	  GtkIconView::selection-mode, orientation
+	  GtkRange::lower-stepper-sensitivity, upper-stepper-sensitivity
+	  GtkRuler::metric
+	  GtkList::selection-mode
+	  GtkCList::shadow-type, selection-mode, sort-type
+
 2006-07-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Implemented docking view menu.
