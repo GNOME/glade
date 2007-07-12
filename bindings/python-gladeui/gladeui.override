@@ -95,6 +95,35 @@ glade_python_support_list_from_glist (GList *list)
 	return retval;
 }
 
+static GHashTable *registered_classes = NULL;
+extern PyObject* gladeui_dict;
+PyTypeObject G_GNUC_INTERNAL PyGladeWidgetAdaptor_Type;
+
+static PyTypeObject *
+glade_python_register_class (GType type)
+{
+	GType parent = g_type_parent (type);
+	PyTypeObject *klass, *parent_class;
+	
+	if (parent == 0 || type == GLADE_TYPE_WIDGET_ADAPTOR)
+		return &PyGladeWidgetAdaptor_Type;
+	
+	if (g_hash_table_lookup (registered_classes, GUINT_TO_POINTER (parent)) == NULL)
+		parent_class = glade_python_register_class (parent);
+	else
+		parent_class = pygobject_lookup_class (parent);
+	
+	klass = pygobject_lookup_class (type);
+	
+	pygobject_register_class (PyModule_GetDict(PyImport_ImportModule("gladeui")), g_type_name (type), type, klass,
+				  Py_BuildValue("(O)", parent_class));
+	pyg_set_object_has_new_constructor (type);
+
+	g_hash_table_insert (registered_classes, GUINT_TO_POINTER (type), klass);
+	
+	return klass;
+}
+
 
 %%
 modulename gladeui                     
@@ -119,7 +148,8 @@ import gtk.ListStore as PyGtkListStore_Type
 import gtk.TextView as PyGtkTextView_Type
 %%
 ignore-glob
-  *_get_type                            
+  *_get_type
+  *_free                            
 %%
 override glade_app_get_catalogs_dir
 static PyObject *
@@ -652,7 +682,7 @@ _wrap_GladeWidgetAdaptor__do_child_verify_property(PyObject *cls, PyObject *args
 %%
 override GladeWidgetAdaptor__proxy_do_child_verify_property
 static gboolean
-_wrap_GladeWidgetAdaptor__proxy_do_child_verify_property(GladeWidgetAdaptor *self, GObject*container, GObject*child, const gchar*property_name, GValue*value)
+_wrap_GladeWidgetAdaptor__proxy_do_child_verify_property(GladeWidgetAdaptor *self, GObject*container, GObject*child, const gchar*property_name,const GValue*value)
 {
     PyGILState_STATE __py_state;
     PyObject *py_self;
@@ -1067,5 +1097,39 @@ _wrap_GladeWidgetAdaptor__proxy_do_get_children(GladeWidgetAdaptor *self, GObjec
     pyg_gil_state_release(__py_state);
     
     return retval;
+}
+%%
+define get_adaptor_for_type
+static PyObject *
+_wrap_get_adaptor_for_type (PyObject *self, PyObject *args)
+{
+	GladeWidgetAdaptor *adaptor;
+	PyObject *klass;
+	gchar *name;
+
+	if (PyArg_ParseTuple(args, "s", &name) &&
+	    (adaptor = glade_widget_adaptor_get_by_name (name)))
+	{
+		GType type = G_TYPE_FROM_INSTANCE (adaptor);
+		
+		if (registered_classes == NULL)
+		{
+			/* Create registered_classes hash table (nothing to do with python module */
+			registered_classes = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+			/* Insert GladeWidgetAdaptor class in the hash table */
+			g_hash_table_insert (registered_classes,
+					     GUINT_TO_POINTER (GLADE_TYPE_WIDGET_ADAPTOR),
+		    			     &PyGladeWidgetAdaptor_Type);
+		}
+
+		if ((klass = g_hash_table_lookup (registered_classes, GUINT_TO_POINTER (type))))
+			return (PyObject *) klass;
+		else
+			return (PyObject *) glade_python_register_class (type);
+	}
+
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 %%
