@@ -6,9 +6,11 @@
 void gladeui_register_classes (PyObject *d);
 void gladeui_add_constants(PyObject *module, const gchar *strip_prefix);
 extern PyMethodDef gladeui_functions[];
+
+void init_gladeui (void); 
  
 DL_EXPORT(void)
-init_gladeui(void)
+init_gladeui (void)
 {
 	PyObject *m, *d;
  
@@ -16,7 +18,7 @@ init_gladeui(void)
  
 	m = Py_InitModule ("_gladeui", gladeui_functions);
 
-	gladeui_dict = d = PyModule_GetDict (m); 
+	d = PyModule_GetDict (m); 
  
 	gladeui_register_classes (d);
 	gladeui_add_constants (m, "GLADE_");
