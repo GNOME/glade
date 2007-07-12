@@ -1451,6 +1451,29 @@ create_icon_name_for_adaptor (const gchar *adaptor_name,
 	return name;
 }
 
+static void
+gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
+{
+	GList *l, *p = (packing) ? adaptor->packing_props : adaptor->properties;
+	
+	for (l = p; l; l = g_list_next (l))
+	{
+		GladePropertyClass *klass = l->data;
+		
+		if (adaptor->type == klass->pspec->owner_type &&
+		    (G_IS_PARAM_SPEC_ENUM (klass->pspec) || G_IS_PARAM_SPEC_FLAGS (klass->pspec)) &&
+		    !klass->displayable_values && klass->visible &&
+		    klass->pspec->value_type != GLADE_TYPE_STOCK &&
+		    klass->pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
+		{
+			/* We do not need displayable values if the property is not visible */
+			g_message (_("No displayable values for %sproperty %s::%s"), 
+				   (packing) ? "child " : "",
+				   adaptor->name, klass->id);
+		}
+	}
+}
+
 /**
  * glade_widget_adaptor_from_catalog:
  * @class_node: A #GladeXmlNode
@@ -1610,6 +1633,9 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 		gwa_properties_set_weight (&adaptor->properties, parent_type);
 		gwa_properties_set_weight (&adaptor->packing_props, parent_type);
 	}
+	
+	gwa_displayable_values_check (adaptor, FALSE);
+	gwa_displayable_values_check (adaptor, TRUE);
 	
 	glade_widget_adaptor_register (adaptor);
 

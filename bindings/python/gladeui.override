@@ -124,6 +124,10 @@ glade_python_register_class (GType type)
 	return klass;
 }
 
+/* prototypes to avoid gcc warnings */
+void gladeui_register_classes (PyObject *d);
+void gladeui_add_constants (PyObject *module, const gchar *strip_prefix);
+
 
 %%
 modulename gladeui                     

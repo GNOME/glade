@@ -57,13 +57,19 @@ glade_python_binding_library_load (const gchar *library)
 static void
 glade_python_init (void)
 {
-	char *argv[2] = {"", NULL};
-
-	if (!Py_IsInitialized())
+	char *argv[1];
+	
+	if (Py_IsInitialized ())
 	{
-		Py_InitializeEx (0);
-		PySys_SetArgv (1, argv);
-	}
+		/* Python has already been successfully initialized */
+		return TRUE;
+	}	
+
+	Py_InitializeEx (0);
+
+	argv[0] = g_get_prgname ();
+	
+	PySys_SetArgv (1, argv);
 }
 
 static void

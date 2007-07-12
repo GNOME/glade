@@ -78,10 +78,7 @@ struct _GladeDesignLayoutPrivate
 	gulong widget_event_id;
 };
 
-static GtkBinClass *parent_class = NULL;
-
-
-G_DEFINE_TYPE(GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
+G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
 
 static GladePointerRegion
 glade_design_layout_get_pointer_region (GladeDesignLayout *layout, gint x, gint y)
@@ -584,7 +581,7 @@ glade_design_layout_map (GtkWidget *widget)
 	if (priv->event_window)
 		gdk_window_show (priv->event_window);
 
-	GTK_WIDGET_CLASS (parent_class)->map (widget);
+	GTK_WIDGET_CLASS (glade_design_layout_parent_class)->map (widget);
 
 }
 
@@ -595,7 +592,7 @@ glade_design_layout_unmap (GtkWidget *widget)
 
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	GTK_WIDGET_CLASS (parent_class)->unmap (widget);
+	GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unmap (widget);
 
 	if (priv->event_window)
 		gdk_window_hide (priv->event_window);
@@ -658,7 +655,7 @@ glade_design_layout_unrealize (GtkWidget *widget)
 		priv->event_window = NULL;
 	}
 
-	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+	GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unrealize (widget);
 
 }
 
@@ -676,7 +673,7 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 			  G_CALLBACK (child_size_request_handler),
 			  container);
 
-	GTK_CONTAINER_CLASS (parent_class)->add (container, widget);
+	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container, widget);
 
 	gdk_window_lower (layout->priv->event_window);
 }
@@ -688,7 +685,7 @@ glade_design_layout_remove (GtkContainer *container, GtkWidget *widget)
 					     G_CALLBACK (child_size_request_handler), 
 					     container);	
 
-	GTK_CONTAINER_CLASS (parent_class)->remove (container, widget);
+	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
 }
 
 static void
@@ -709,7 +706,7 @@ glade_design_layout_dispose (GObject *object)
 		priv->cursor_resize_bottom_right = NULL;
 	}
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (glade_design_layout_parent_class)->dispose (object);
 }
 
 static void
@@ -721,7 +718,7 @@ glade_design_layout_finalize (GObject *object)
 
 	g_free (priv->current_size_request);
 	
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
 /* creates a gc to draw a nice border around the child */
@@ -890,7 +887,6 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	GtkContainerClass  *container_class;
 
 	object_class = G_OBJECT_CLASS (klass);
-	parent_class = g_type_class_peek_parent (klass);
 	widget_class = GTK_WIDGET_CLASS (klass);
 	container_class = GTK_CONTAINER_CLASS (klass);
 

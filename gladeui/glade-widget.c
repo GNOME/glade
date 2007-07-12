@@ -98,13 +98,15 @@ enum
 };
 
 static guint         glade_widget_signals[LAST_SIGNAL] = {0};
-static GObjectClass *parent_class = NULL;
 
 /* Sometimes we need to use the project deep in the loading code,
  * this is just a shortcut way to get the project.
  */
 static GladeProject *loading_project = NULL;
 static GQuark        glade_widget_name_quark = 0;
+
+
+G_DEFINE_TYPE (GladeWidget, glade_widget, G_TYPE_OBJECT)
 
 /*******************************************************************************
                            GladeWidget class methods
@@ -640,7 +642,7 @@ glade_widget_constructor (GType                  type,
 	GObject          *ret_obj, *object;
 	GList            *properties = NULL, *list;
 
-	ret_obj = G_OBJECT_CLASS (parent_class)->constructor
+	ret_obj = G_OBJECT_CLASS (glade_widget_parent_class)->constructor
 		(type, n_construct_properties, construct_properties);
 
 	gwidget = GLADE_WIDGET (ret_obj);
@@ -742,7 +744,7 @@ glade_widget_finalize (GObject *object)
 	g_free (widget->internal);
 	g_hash_table_destroy (widget->signals);
 
-	G_OBJECT_CLASS(parent_class)->finalize(object);
+	G_OBJECT_CLASS(glade_widget_parent_class)->finalize(object);
 }
 
 static void
@@ -785,8 +787,7 @@ glade_widget_dispose (GObject *object)
 		g_list_free (widget->packing_actions);
 	}
 	
- 	if (G_OBJECT_CLASS(parent_class)->dispose)
-		G_OBJECT_CLASS(parent_class)->dispose(object);
+	G_OBJECT_CLASS (glade_widget_parent_class)->dispose (object);
 }
 
 static void
@@ -951,7 +952,6 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			g_quark_from_static_string ("GladeWidgetDataTag");
 
 	object_class = G_OBJECT_CLASS (klass);
-	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->constructor     = glade_widget_constructor;
 	object_class->finalize        = glade_widget_finalize;
@@ -1179,33 +1179,6 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
 			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
-}
-
-GType
-glade_widget_get_type (void)
-{
-	static GType widget_type = 0;
-
-	if (!widget_type)
-	{
-		static const GTypeInfo widget_info =
-		{
-			sizeof (GladeWidgetClass),
-			NULL,		/* base_init */
-			NULL,		/* base_finalize */
-			(GClassInitFunc) glade_widget_class_init,
-			NULL,		/* class_finalize */
-			NULL,		/* class_data */
-			sizeof (GladeWidget),
-			0,		/* n_preallocs */
-			(GInstanceInitFunc) glade_widget_init,
-		};
-
-		widget_type = g_type_register_static (G_TYPE_OBJECT, "GladeWidget",
-						      &widget_info, 0);
-	}
-
-	return widget_type;
 }
 
 /*******************************************************************************

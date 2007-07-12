@@ -1752,26 +1752,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
 	
 	/* If this property's value is an enumeration or flag then we try to get the displayable values */
-	if (G_IS_PARAM_SPEC_ENUM(klass->pspec) ||
-	    G_IS_PARAM_SPEC_FLAGS(klass->pspec))
-	{
-		child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES);
-		if (child)
-		{
-			klass->displayable_values = gpc_get_displayable_values_from_node
-				(child, klass, domain);
-		}
-		else if (!klass->displayable_values && klass->visible &&
-			 klass->pspec->value_type != GLADE_TYPE_STOCK &&
-			 klass->pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
-		{
-			/* Displayable values could be defined in the parent class
-			 * We do not need displayable values if the property is not visible
-			 */
-			g_message (_("No displayable values for %s::%s"),
-				   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
-		}
-	}
+	if ((G_IS_PARAM_SPEC_ENUM(klass->pspec) || G_IS_PARAM_SPEC_FLAGS(klass->pspec)) &&
+	    (child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES)))
+		klass->displayable_values = gpc_get_displayable_values_from_node
+							(child, klass, domain);
 	
 	/* A sprinkle of hard-code to get atk properties working right
 	 */
