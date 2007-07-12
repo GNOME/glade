@@ -1,3 +1,11 @@
+2007-07-12  Vincent Geddes <vgeddes@gnome.org>
+
+       * gladeui/glade-widget.c 
+         gladeui/glade-design-layout.c
+         gladeui/glade-placeholder.c
+         gladeui/glade-placeholder.h: Update to use G_DEFINE_TYPE macros. Removed
+         the manual peeks to get the parent class.
+
 2007-07-12  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-widget-adaptor.c: added gwa_displayable_values_check() and use it to check 
@@ -15,6 +23,7 @@
 	  GtkRuler::metric
 	  GtkList::selection-mode
 	  GtkCList::shadow-type, selection-mode, sort-type
+
 
 2006-07-11  Tristan Van Berkom <tvb@gnome.org>
 

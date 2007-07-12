@@ -2,6 +2,9 @@
 /*
  * Copyright (C) 2003, 2004 Joaquin Cuenca Abela
  *
+ * Authors:
+ *   Joaquin Cuenca Abela <e98cuenc@yahoo.com> 
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -16,9 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- * Authors:
- *   Joaquin Cuenca Abela <e98cuenc@yahoo.com>
- */
+*/
 
 #include "config.h"
 
@@ -34,23 +35,29 @@
 #include "glade-widget.h"
 #include "glade-app.h"
 
-static void glade_placeholder_class_init     (GladePlaceholderClass   *klass);
-static void glade_placeholder_init           (GladePlaceholder        *placeholder);
-static void glade_placeholder_finalize       (GObject                 *object);
-static void glade_placeholder_realize        (GtkWidget               *widget);
-static void glade_placeholder_size_allocate  (GtkWidget               *widget,
-					      GtkAllocation           *allocation);
-static void glade_placeholder_send_configure (GladePlaceholder        *placeholder);
-static gboolean glade_placeholder_expose     (GtkWidget               *widget,
-					      GdkEventExpose          *event);
-static gboolean glade_placeholder_motion_notify_event (GtkWidget      *widget,
-						       GdkEventMotion *event);
-static gboolean glade_placeholder_button_press (GtkWidget             *widget,
-						GdkEventButton        *event);
-static gboolean glade_placeholder_popup_menu (GtkWidget               *widget);
+#define WIDTH_REQUISITION    20
+#define HEIGHT_REQUISITION   20
 
+static void      glade_placeholder_finalize       (GObject           *object);
 
-static GtkWidgetClass *parent_class = NULL;
+static void      glade_placeholder_realize        (GtkWidget         *widget);
+
+static void      glade_placeholder_size_allocate  (GtkWidget         *widget,
+					           GtkAllocation     *allocation);
+					      
+static void      glade_placeholder_send_configure (GladePlaceholder  *placeholder);
+
+static gboolean  glade_placeholder_expose         (GtkWidget         *widget,
+					           GdkEventExpose    *event);
+					      
+static gboolean  glade_placeholder_motion_notify_event (GtkWidget      *widget,
+						        GdkEventMotion *event);
+						       
+static gboolean  glade_placeholder_button_press        (GtkWidget      *widget,
+						        GdkEventButton *event);
+						
+static gboolean  glade_placeholder_popup_menu          (GtkWidget      *widget);
+
 
 static char *placeholder_xpm[] = {
 	/* columns rows colors chars-per-pixel */
@@ -68,47 +75,13 @@ static char *placeholder_xpm[] = {
 	"  ..    "
 };
 
-/**
- * glade_placeholder_get_type:
- *
- * Creates the typecode for the #GladePlaceholder object type.
- *
- * Returns: the typecode for the #GladePlaceholder object type
- */
-GType
-glade_placeholder_get_type (void)
-{
-	static GType placeholder_type = 0;
-
-	if (!placeholder_type)
-	{
-		static const GTypeInfo placeholder_info =
-		{
-			sizeof (GladePlaceholderClass),
-			NULL,		/* base_init */
-			NULL,		/* base_finalize */
-			(GClassInitFunc) glade_placeholder_class_init,
-			NULL,		/* class_finalize */
-			NULL,		/* class_data */
-			sizeof (GladePlaceholder),
-			0,		/* n_preallocs */
-			(GInstanceInitFunc) glade_placeholder_init,
-		};
-
-		placeholder_type = g_type_register_static (GTK_TYPE_WIDGET, "GladePlaceholder",
-							   &placeholder_info, 0);
-	}
-
-	return placeholder_type;
-}
+G_DEFINE_TYPE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET)
 
 static void
 glade_placeholder_class_init (GladePlaceholderClass *klass)
 {
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = glade_placeholder_finalize;
 	widget_class->realize = glade_placeholder_realize;
@@ -147,8 +120,8 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (placeholder), GTK_CAN_FOCUS);
 
 	gtk_widget_set_size_request (GTK_WIDGET (placeholder),
-				     GLADE_PLACEHOLDER_WIDTH_REQ,
-				     GLADE_PLACEHOLDER_HEIGHT_REQ);
+				     WIDTH_REQUISITION,
+				     HEIGHT_REQUISITION);
 
 	g_signal_connect (placeholder, "notify::parent",
 			  G_CALLBACK (glade_placeholder_notify_parent),
@@ -187,7 +160,7 @@ glade_placeholder_finalize (GObject *object)
 		g_list_free (placeholder->packing_actions);
 	}
 	
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (glade_placeholder_parent_class)->finalize (object);
 }
 
 static void
