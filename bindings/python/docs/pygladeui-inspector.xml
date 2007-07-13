@@ -1,0 +1,206 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+       <refentry id="class-inspector">
+         <refnamediv>
+           <refname>gladeui.Inspector</refname>
+           <refpurpose>A widget for inspecting objects in a project</refpurpose>
+         </refnamediv>
+         <refsect1>
+           <title>Synopsis</title>
+           <classsynopsis language="python">
+             <ooclass><classname>gladeui.Inspector</classname></ooclass>
+             <ooclass><classname><link linkend="class-gtkdialog">gtk.VBox</link></classname></ooclass>
+             <constructorsynopsis language="python">
+               <methodname><link linkend="constructor-inspector">gladeui.Inspector</link></methodname>
+               <methodparam></methodparam>
+             </constructorsynopsis>
+             <methodsynopsis language="python">
+               <methodname><link linkend="method-inspector--get-project">get_project</link></methodname>
+               <methodparam></methodparam>
+             </methodsynopsis>
+             <methodsynopsis language="python">
+               <methodname><link linkend="method-inspector--set-project">set_project</link></methodname>
+               <methodparam><parameter role="keyword">project</parameter></methodparam>
+             </methodsynopsis>
+             <methodsynopsis language="python">
+               <methodname><link linkend="method-inspector--get-selected-items">get_selected_items</link></methodname>
+               <methodparam></methodparam>
+             </methodsynopsis>             
+           </classsynopsis>
+<programlisting>
+<emphasis role="bold">Functions</emphasis>
+<methodsynopsis language="python">
+<methodname><link linkend="function-gladeui--inspector-new-with-project">gladeui.inspector_new_with_project</link></methodname>
+<methodparam><parameter role="keyword">project</parameter></methodparam>
+</methodsynopsis>
+</programlisting>            
+         </refsect1>
+         <refsect1>
+             <title>Ancestry</title>
+<synopsis>+-- <link linkend="class-gobject">gobject.GObject</link>
+  +-- <link linkend="class-gtkobject">gtk.Object</link>
+    +-- <link linkend="class-gtkwidget">gtk.Widget</link>
+      +-- <link linkend="class-gtkcontainer">gtk.Container</link>
+        +-- <link linkend="class-gtkbin">gtk.Box</link>
+          +-- <link linkend="class-gtkexpander">gtk.VBox</link>
+            +-- <link linkend="class-inspector">gladeui.Inspector</link>          
+</synopsis>
+            </refsect1>
+            <refsect1>
+    <blockquote role="properties">
+      <informaltable pgwide="1" frame="none">
+	<tgroup cols="3">
+	  <colspec column="1" colwidth="1in"/>
+	  <colspec column="2" colwidth="1in"/>
+	  <colspec column="3" colwidth="4in"/>
+	  <tbody>
+
+	    <row valign="top">
+	      <entry>"project"</entry>
+	      <entry>Read-Write</entry>
+	      <entry>The project being inspected.</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+    </blockquote>            
+            </refsect1>
+
+            <refsect1 id="signal-prototypes-inspector">
+              <title>gladeui.Inspector Signal Prototypes</title>
+    <variablelist>
+      <varlistentry>
+        <term>"<link linkend="signal-inspector--item-activated">item-activated</link>"</term>
+        <listitem>
+          <methodsynopsis language="python"><methodname>callback</methodname>
+            <methodparam><parameter>inspector</parameter></methodparam>
+            <methodparam><parameter>user_param1</parameter></methodparam>
+            <methodparam><parameter>...</parameter></methodparam>
+          </methodsynopsis>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>"<link linkend="signal-inspector--selection-changed">selection-changed</link>"</term>
+        <listitem>
+          <methodsynopsis language="python"><methodname>callback</methodname>
+            <methodparam><parameter>inspector</parameter></methodparam>
+            <methodparam><parameter>user_param1</parameter></methodparam>
+            <methodparam><parameter>...</parameter></methodparam>
+          </methodsynopsis>
+        </listitem>
+      </varlistentry>      
+    </variablelist>
+    </refsect1>
+    
+    <refsect1>
+    <title>Description</title>
+      <para>A <link linkend="class-inspector"><classname>gladeui.Inspector</classname></link>
+       is a widget for inspecting the objects that make up a user interface design. 
+      </para>    
+    </refsect1>
+    
+  <refsect1 id="constructor-inspector">
+    <title>Constructor</title>
+
+    <programlisting><constructorsynopsis language="python">
+	<methodname>gladeui.Inspector</methodname>
+	<methodparam></methodparam>
+      </constructorsynopsis></programlisting>
+    <variablelist>
+      <varlistentry>
+	<term><emphasis>Returns</emphasis>&nbsp;:</term>
+	<listitem><simpara>a new <link linkend="class-inspector"><classname>gladeui.Inspector</classname></link> widget.</simpara></listitem>
+      </varlistentry>
+    </variablelist>
+    <para>Creates a new inspector.</para>
+  </refsect1>    
+
+  <refsect1>
+    <title>Methods</title>
+
+
+    <refsect2 id="method-inspector--get-project">
+      <title>gladeui.Inspector.get_project</title>
+
+      <programlisting><methodsynopsis language="python">
+	  <methodname>get_project</methodname>
+	  <methodparam></methodparam>
+	</methodsynopsis></programlisting>
+      <variablelist>
+	<varlistentry>
+	  <term><emphasis>Returns</emphasis>&nbsp;:</term>
+	  <listitem><simpara>The project being inspected.</simpara></listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>The <methodname>get_project</methodname>() gets the current
+      project being inspected.</para>
+
+    </refsect2>
+
+    <refsect2 id="method-inspector--set-project">
+      <title>gladeui.Inspector.set_project</title>
+
+      <programlisting><methodsynopsis language="python">
+	  <methodname>set_project</methodname>
+	  <methodparam><parameter role="keyword">project</parameter></methodparam>
+	</methodsynopsis></programlisting>
+      <variablelist>
+	<varlistentry>
+	  <term><parameter role="keyword">project</parameter>&nbsp;:</term>
+	  <listitem><simpara>project to inspect or None.</simpara></listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>The <methodname>set_project</methodname>() method sets the
+"project" property to the value of <parameter>project</parameter>.</para>
+    </refsect2>
+    
+    <refsect2 id="method-inspector--get-selected-items">
+      <title>gladeui.Inspector.get_selected_items</title>
+
+      <programlisting><methodsynopsis language="python">
+	  <methodname>get_selected_items</methodname>
+	  <methodparam></methodparam>
+	</methodsynopsis></programlisting>
+      <variablelist>
+	<varlistentry>
+	  <term><emphasis>Returns</emphasis>&nbsp;:</term>
+	  <listitem><simpara>A list of items in the current selection.</simpara></listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>The <methodname>get_selected_items</methodname>() gets the list of items
+      in the current selection. This is useful for getting the last item which was activated
+      by the user</para> 
+
+    </refsect2>    
+    
+    </refsect1>
+    
+  <refsect1>
+    <title>Functions</title>
+
+    <refsect2 id="function-gladeui--inspector-new-with-project">
+      <title>gladeui.inspector_new_with_project</title>
+
+      <programlisting><methodsynopsis language="python">
+          <methodname>gladeui.inspector_new_with_project</methodname>
+          <methodparam><parameter role="keyword">project</parameter>
+          </methodparam>
+        </methodsynopsis></programlisting>
+
+      <variablelist>
+        <varlistentry>
+          <term><parameter role="keyword">project</parameter>&nbsp;:</term>
+          <listitem><simpara>a <link linkend="class-project"><classname>gladeui.Project</classname></link></simpara></listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>This is a convenience function to initialize a new inspector with a project.</para>
+
+    </refsect2>    
+</refsect1>
+
+       </refentry>

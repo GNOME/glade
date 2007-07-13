@@ -7,15 +7,16 @@ HTML_STYLE = $(PYGOBJECT_DATADIR)/pygobject/xsl/ref-html-style.xsl
 
 XMLFILES = 				\
 	pygladeui.xml			\
-	pygladeui-introduction.xml	\
-	pygladeui-classes.xml
+	pygladeui-classes.xml		\
+	pygladeui-inspector.xml	
 
 
-HTML_FILES = 	\
-	html/index.html		\
-	html/index.sgml		\
-	html/pygladeui.devhelp	\
-	html/pygladeui-introduction.html
+HTML_FILES =				\
+	html/index.html			\
+	html/index.sgml			\
+	html/pygladeui.devhelp		\
+	html/gladeui-class-reference	\
+	html/class-inspector.html
 
 CSS_FILES = $(PYGOBJECT_PYGDOCS)/style.css
 
