@@ -217,6 +217,19 @@ if test "x$have_python" != "xno"; then
 fi
 
 if test "x$have_python" != "xno"; then
+
+	AC_MSG_CHECKING([for pygobject data dir])
+	PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir pygobject-2.0`
+	AC_MSG_RESULT([$PYGOBJECT_DATADIR])
+
+	AC_MSG_CHECKING([for pygobject fixxref])
+	PYGOBJECT_FIXXREF="$PYTHON `$PKG_CONFIG --variable=fixxref pygobject-2.0`"
+	AC_MSG_RESULT([$PYGOBJECT_FIXXREF])
+
+	AC_MSG_CHECKING([for pygobject docs dir])
+	PYGOBJECT_PYGDOCS="`$PKG_CONFIG --variable=pygdocs pygobject-2.0`"
+	AC_SUBST($PYGOBJECT_PYGDOCS)
+
 	AC_MSG_CHECKING([for pygtk defs])
 	PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
 	AC_MSG_RESULT([$PYGTK_DEFSDIR])
@@ -229,6 +242,10 @@ if test "x$have_python" != "xno"; then
 	PYGTK_H2DEF="$PYTHON `$PKG_CONFIG --variable=codegendir pygtk-2.0`/h2def.py"
 	AC_MSG_RESULT([$PYGTK_H2DEF])
 
+
+	AC_SUBST([PYGOBJECT_DATADIR])
+	AC_SUBST([PYGOBJECT_FIXXREF])
+	AC_SUBST([PYGOBJECT_PYGDOCS])
 	AC_SUBST([PYGTK_DEFSDIR])
 	AC_SUBST([PYGTK_CODEGEN])
 	AC_SUBST([PYGTK_H2DEF])
@@ -260,6 +277,21 @@ elif test "x$enable_python" != "xno"; then
 fi
 
 AM_CONDITIONAL([ENABLE_PYTHON],[test "x$enable_python" = "xyes"])
+
+dnl PyGladeUI documentation
+AC_ARG_ENABLE(python-docs,
+  AC_HELP_STRING([--enable-python-docs], [Enable python documentation building]),enable_python_docs=yes,
+  enable_python_docs=no)
+if test "${enable_python_docs}" != no; then
+  dnl Check for xsltproc
+  AC_PATH_PROG([XSLTPROC], [xsltproc])
+  if test -z "$XSLTPROC"; then
+    enable_python_docs=no
+  fi
+fi
+
+AM_CONDITIONAL(ENABLE_PYTHON_DOCS, test x$enable_python_docs != xno)
+
 
 dnl ================================================================
 dnl Check for windows
@@ -330,6 +362,8 @@ plugins/gnome/icons/16x16/Makefile
 plugins/gnome/icons/22x22/Makefile
 bindings/Makefile
 bindings/python/Makefile
+bindings/python/docs/Makefile
+bindings/python/docs/version.xml
 tests/Makefile
 po/Makefile.in
 doc/Makefile

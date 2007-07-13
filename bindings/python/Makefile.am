@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = docs
+
 INCLUDES = $(PYTHON_INCLUDES) \
 	   $(PYTHON_CFLAGS)   \
 	   $(PYGTK_CFLAGS)    \
