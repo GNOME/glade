@@ -622,7 +622,7 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	g_return_if_fail (GLADE_IS_WINDOW (window));
 
 	label = window->priv->label;
-
+	
 	/* Only update the editor if the selection has changed on
 	 * the currently active project.
 	 */
@@ -653,7 +653,6 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 			gtk_label_set_text (label, _("Properties"));
 		}
 	}
-	
 }
 
 static GladeDesignView *
@@ -1832,6 +1831,16 @@ toggle_editor_help_cb (GtkAction *action, GladeWindow *window)
 		glade_editor_hide_context_info (glade_app_get_editor ());
 }
 
+
+static gboolean
+on_dock_deleted (GtkWidget *widget,
+		 GdkEvent  *event,
+		 GtkAction *dock_action)
+{
+	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (dock_action), TRUE);
+	return TRUE;
+}
+
 static void
 toggle_palette_dock_cb (GtkAction *action, GladeWindow *window)
 {
@@ -1851,8 +1860,9 @@ toggle_palette_dock_cb (GtkAction *action, GladeWindow *window)
 		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 200, 540);
-		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
 		gtk_window_set_title (GTK_WINDOW (toplevel), _("Palette"));
+		g_signal_connect (G_OBJECT (toplevel), "delete-event",
+				  G_CALLBACK (on_dock_deleted), action);
 		
 		g_object_ref (window->priv->palette_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->left_pane), window->priv->palette_dock);
@@ -1884,8 +1894,9 @@ toggle_inspector_dock_cb (GtkAction *action, GladeWindow *window)
 		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 300, 540);
-		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
 		gtk_window_set_title (GTK_WINDOW (toplevel), _("Inspector"));
+		g_signal_connect (G_OBJECT (toplevel), "delete-event",
+				  G_CALLBACK (on_dock_deleted), action);
 		
 		g_object_ref (window->priv->inspector_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->inspector_dock);
@@ -1921,8 +1932,9 @@ toggle_editor_dock_cb (GtkAction *action, GladeWindow *window)
 		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 		
 		gtk_window_set_default_size (GTK_WINDOW (toplevel), 500, 700);
-		gtk_window_set_deletable (GTK_WINDOW (toplevel), FALSE);
 		gtk_window_set_title (GTK_WINDOW (toplevel), _("Properties"));
+		g_signal_connect (G_OBJECT (toplevel), "delete-event",
+				  G_CALLBACK (on_dock_deleted), action);
 		
 		g_object_ref (window->priv->editor_dock);
 		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->editor_dock);
@@ -2867,9 +2879,9 @@ glade_window_init (GladeWindow *window)
 	/* palette */
 	palette = GTK_WIDGET (glade_app_get_palette ());
 	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
-	dockitem = construct_dock_item (window, _("Palette"), palette);
-	gtk_paned_pack1 (GTK_PANED (hpaned2), dockitem, FALSE, FALSE);
-	priv->palette_dock = dockitem;
+	gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
+	priv->palette_dock = palette;
+	gtk_widget_show (palette);
 	
 	/* notebook */
 	priv->notebook = gtk_notebook_new ();
@@ -2883,9 +2895,8 @@ glade_window_init (GladeWindow *window)
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);	
 	gtk_widget_show (priv->inspectors_notebook);	
-	dockitem = construct_dock_item (window, _("Inspector"), priv->inspectors_notebook);
-	gtk_paned_pack1 (GTK_PANED (vpaned), dockitem, FALSE, FALSE); 
-	priv->inspector_dock = dockitem;
+	gtk_paned_pack1 (GTK_PANED (vpaned), priv->inspectors_notebook, FALSE, FALSE); 
+	priv->inspector_dock = priv->inspectors_notebook;
 
 	/* editor */
 	editor = GTK_WIDGET (glade_app_get_editor ());
