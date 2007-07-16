@@ -65,7 +65,7 @@ static gboolean verbose = FALSE;
 
 static GOptionEntry debug_option_entries[] = 
 {
-  { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "be verbose", NULL },
+  { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, N_("be verbose"), NULL },
   { NULL }
 };
 
@@ -101,10 +101,11 @@ main (int argc, char *argv[])
 	g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
 
 	option_group = g_option_group_new ("debug",
-					   "Glade debug options",
-					   "Show Glade debug options",
+					   N_("Glade debug options"),
+					   N_("Show Glade debug options"),
 					   NULL, NULL);
 	g_option_group_add_entries (option_group, debug_option_entries);
+	g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
 	g_option_context_add_group (option_context, option_group);
 
 	/* Add Gtk option group */
