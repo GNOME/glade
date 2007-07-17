@@ -19,6 +19,9 @@
 	  GladeDesignLayout and dispatch the event through glade_design_layout_widget_event()
 	  (this fixes multiple projects recieving the same events, bug 456013).
 
+	* gladeui/glade-fixed.c: Dont connect event handlers to child objects of fixed
+	  containers that are not widgets.
+
 2006-07-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Now undocked windows can be redocked by hitting

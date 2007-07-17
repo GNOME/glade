@@ -676,7 +676,11 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	/* Chain up for the basic parenting */
 	GLADE_WIDGET_CLASS (parent_class)->add_child
 		(GLADE_WIDGET (fixed), child, at_mouse);
-	
+
+	/* We only operate on widgets here */
+	if (!GTK_IS_WIDGET (child->object))
+		return;
+		
 	gtk_widget_add_events (GTK_WIDGET (child->object),
 			       GDK_POINTER_MOTION_MASK      |
 			       GDK_POINTER_MOTION_HINT_MASK |
