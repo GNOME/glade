@@ -1467,7 +1467,7 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
 		    klass->pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
 		{
 			/* We do not need displayable values if the property is not visible */
-			g_message (_("No displayable values for %sproperty %s::%s"), 
+			g_message ("No displayable values for %sproperty %s::%s", 
 				   (packing) ? "child " : "",
 				   adaptor->name, klass->id);
 		}
