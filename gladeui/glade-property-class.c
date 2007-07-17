@@ -1385,8 +1385,7 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node,
 	GArray *array;
 	GladeXmlNode *child;
 	GEnumValue *values;
-	gint n_values, n = 0;
-	gboolean first_not_found = TRUE;
+	gint n_values;
 	
 	if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
 	{
@@ -1460,49 +1459,14 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node,
 			}
 		}
 		
-		if (i == n_values)
-		{
-			if (first_not_found)
-			{
-				g_message (_("Displayable value id not found in %s::%s"),
-					   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
-				first_not_found = FALSE;
-			}
-			g_message ("\t%s",id);
-		}
-		else n++;
-		
 		g_free(id);
 		
 		child = glade_xml_node_next (child);
 	}
 	
-	if (n != n_values)
-	{
-		gint i;
-		
-		g_message (_("%d missing displayable value for %s::%s"), n_values - n,
+	if (n_values != array->len)
+		g_message ("%d missing displayable value for %s::%s", n_values - array->len,
 			   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
-		
-		for(i=0; i < n_values; i++)
-		{
-			gboolean not_found = TRUE;
-			child = glade_xml_node_get_children (node);
-			while (child != NULL)
-			{
-				if(strcmp (glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL),
-					   values[i].value_name) == 0)
-				{
-					not_found = FALSE;
-					break;
-				}
-				child = glade_xml_node_next (child);
-			}
-			
-			if (not_found)
-				g_message ("\t%s", values[i].value_name);
-		}
-	}
 	
 	g_type_class_unref (the_class);
 	
