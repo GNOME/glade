@@ -1,7 +1,18 @@
 2006-07-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget-adaptor.c: untranslate the "half translated" warning
-	message in gwa_displayable_values_check().
+	  message in gwa_displayable_values_check().
+
+	* gladeui/glade-app.[ch]: Removed glade_app_widget_event() and the "widget-event"
+	  signal
+
+	* gladeui/glade-design-layout.c: Expose glade_design_layout_widget_event() to
+	  be used internally by GladeWidget (no longer listening to "widget-event" signal
+	  on glade-app).
+
+	* gladeui/glade-widget.c: glade_widget_event_private() Find the parenting
+	  GladeDesignLayout and dispatch the event through glade_design_layout_widget_event()
+	  (this fixes multiple projects recieving the same events, bug 456013).
 
 2006-07-16  Tristan Van Berkom <tvb@gnome.org>
 

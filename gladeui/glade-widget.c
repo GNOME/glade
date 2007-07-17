@@ -3224,8 +3224,20 @@ glade_widget_event_private (GtkWidget   *widget,
 			    GdkEvent    *event,
 			    GladeWidget *gwidget)
 {
-	/* Whoa, now that's trust. */
-	return glade_app_widget_event (gwidget, event);
+	GtkWidget *layout = widget;
+
+	/* Find the parenting layout container */
+	while (!GLADE_IS_DESIGN_LAYOUT (layout))
+		layout = layout->parent;
+
+	/* Let the parenting GladeDesignLayout decide which GladeWidget to
+	 * marshall this event to.
+	 */
+	if (GLADE_IS_DESIGN_LAYOUT (layout))
+		return glade_design_layout_widget_event (GLADE_DESIGN_LAYOUT (layout),
+							 gwidget, event);
+	else
+		return FALSE;
 }
 
 /**

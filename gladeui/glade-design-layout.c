@@ -74,8 +74,6 @@ struct _GladeDesignLayoutPrivate
 	gint dy;                    /* child.height - event.pointer.y  */
 	gint new_width;             /* user's new requested width */
 	gint new_height;            /* user's new requested height */
-
-	gulong widget_event_id;
 };
 
 G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
@@ -714,15 +712,13 @@ glade_design_layout_finalize (GObject *object)
 {
 	GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (object);
 
-	g_signal_handler_disconnect (glade_app_get (), priv->widget_event_id);
-
 	g_free (priv->current_size_request);
 	
 	G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
 /* creates a gc to draw a nice border around the child */
-GdkGC*
+static GdkGC *
 create_outline_gc (GtkWidget *widget)
 {
 	GdkGC *gc;
@@ -793,17 +789,28 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 	return TRUE;
 }
 
-static gboolean
-glade_design_layout_widget_event (GladeApp          *app,
+/**
+ * glade_design_layout_widget_event:
+ * @layout:        A #GladeDesignLayout
+ * @event_gwidget: the #GladeWidget that recieved event notification
+ * @event:         the #GdkEvent
+ *
+ * This is called internally by a #GladeWidget recieving an event,
+ * it will marshall the event to the proper #GladeWidget according
+ * to its position in @layout.
+ *
+ * Returns: Whether or not the event was handled by the retrieved #GladeWidget
+ */
+gboolean
+glade_design_layout_widget_event (GladeDesignLayout *layout,
 				  GladeWidget       *event_gwidget,
-				  GdkEvent          *event,
-				  GladeDesignLayout *layout)
+				  GdkEvent          *event)
 {
 	GladeWidget *gwidget;
 	GtkWidget   *child;
 	gboolean     retval;
 	gint         x, y;
-
+	
 	gtk_widget_get_pointer (GTK_WIDGET (layout), &x, &y);
 	gwidget = glade_design_layout_deepest_gwidget_at_position
 		(GTK_CONTAINER (layout), GTK_CONTAINER (layout), x, y);
@@ -844,9 +851,8 @@ glade_design_layout_propagate_event (GtkWidget *widget,
 			glade_widget_get_from_gobject (child);
 
 		if (gwidget)
-			return glade_design_layout_widget_event (glade_app_get (),
-								 gwidget, event,
-								 GLADE_DESIGN_LAYOUT (widget));
+			return glade_design_layout_widget_event (GLADE_DESIGN_LAYOUT (widget),
+								 gwidget, event);
 	}		
 	return FALSE;
 }
@@ -871,12 +877,6 @@ glade_design_layout_init (GladeDesignLayout *layout)
 
 	priv->new_width = -1;
 	priv->new_height = -1;
-
-	priv->widget_event_id = 
-		g_signal_connect (glade_app_get (), "widget-event",
-				  G_CALLBACK (glade_design_layout_widget_event),
-				  layout);
-				  
 }
 
 static void

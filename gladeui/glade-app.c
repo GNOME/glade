@@ -44,7 +44,6 @@
 
 enum
 {
-	WIDGET_EVENT,
 	UPDATE_UI,
 	LAST_SIGNAL
 };
@@ -494,30 +493,6 @@ glade_app_class_init (GladeAppClass * klass)
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE, 0);
 
-
-	/**
-	 * GladeApp::widget-event:
-	 * @gladeapp: the #GladeApp which received the signal.
-	 * @arg1: The toplevel #GladeWidget who's hierarchy recieved an event
-	 * @arg2: The #GdkEvent
-	 *
-	 * Emitted when a #GladeWidget or one of its children is a GtkWidget derivative
-	 * and is about to recieve an event from gdk.
-	 *
-	 * Returns: whether the event was handled or not
-	 */
-	glade_app_signals[WIDGET_EVENT] =
-		g_signal_new ("widget-event",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeAppClass,
-					       widget_event),
-			      glade_boolean_handled_accumulator, NULL,
-			      glade_marshal_BOOLEAN__OBJECT_BOXED,
-			      G_TYPE_BOOLEAN, 2, 
-			      GLADE_TYPE_WIDGET, 
-			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
-
 	g_object_class_install_property 
 		(object_class, PROP_ACTIVE_PROJECT,
 		 g_param_spec_object 
@@ -738,38 +713,6 @@ glade_app_update_ui (void)
 	g_signal_emit (G_OBJECT (app),
 		       glade_app_signals[UPDATE_UI], 0);
 }
-
-/**
- * glade_app_widget_event:
- * @widget: the #GladeWidget that recieved the event
- * @event: the #GdkEvent
- *
- * Notifies the core that a widget recieved an event,
- * the core will then take responsability of sending
- * the right event to the right widget.
- *
- * Returns whether the event was handled by glade.
- */
-gboolean
-glade_app_widget_event (GladeWidget *widget, 
-			GdkEvent    *event)
-{
-	GladeApp    *app = glade_app_get ();
-	GladeWidget *toplevel = widget;
-	gboolean     retval = FALSE;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-	g_return_val_if_fail (event != NULL, FALSE);
-	
-	while (toplevel->parent) 
-		toplevel = toplevel->parent;
-
-	g_signal_emit (G_OBJECT (app),
-		       glade_app_signals[WIDGET_EVENT], 0, widget, event, &retval);
-
-	return retval;
-}
-
 
 void
 glade_app_set_window (GtkWidget *window)

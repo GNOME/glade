@@ -77,9 +77,6 @@ struct _GladeAppClass
 	void   (*  hide_properties) (GladeApp* app);
 
 	/* signals */
-	void   (* widget_event)     (GladeApp    *app, 
-				     GladeWidget *toplevel,
-				     GdkEvent    *event);
 	void   (* update_ui_signal) (GladeApp    *app);
 };
 
@@ -94,9 +91,6 @@ GladeApp*          glade_app_get        (void);
 
 void               glade_app_update_ui  (void);
 
-gboolean           glade_app_widget_event (GladeWidget *widget, 
-					   GdkEvent    *event);
- 
 void               glade_app_set_window (GtkWidget *window);
  
 GtkWidget*         glade_app_get_window (void);
