@@ -1,10 +1,10 @@
 /*
  * glade-design-layout.h
  *
- * Copyright (C) 2006 Vincent Geddes
+ * Copyright (C) 2006-2007 Vincent Geddes
  *
  * Authors:
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ *   Vincent Geddes <vgeddes@gnome.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ typedef struct _GladeDesignLayoutClass    GladeDesignLayoutClass;
 
 struct _GladeDesignLayout
 {
-	GtkBin bin; /* The parent is an event box */
+	GtkBin parent_instance;
 
 	GladeDesignLayoutPrivate *priv;
 };
@@ -54,9 +54,9 @@ struct _GladeDesignLayoutClass
 };
 
 
-GType        glade_design_layout_get_type (void) G_GNUC_CONST;
+GType        glade_design_layout_get_type     (void) G_GNUC_CONST;
 
-GtkWidget   *glade_design_layout_new (void);
+GtkWidget   *glade_design_layout_new          (void);
 
 gboolean     glade_design_layout_widget_event (GladeDesignLayout *layout,
                                                GladeWidget       *event_gwidget,
