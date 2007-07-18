@@ -2044,8 +2044,8 @@ about_cb (GtkAction *action, GladeWindow *window)
 		  NULL };
 		  
 	static const gchar * const documenters[] =
-		{ "GNOME Documentation team <gnome-doc-list@gnome.org>",
-		  "Sun GNOME Documentation team <gdocteam@sun.com>",
+		{ "GNOME Documentation Team <gnome-doc-list@gnome.org>",
+		  "Sun GNOME Documentation Team <gdocteam@sun.com>",
 		  NULL };		  		  
 
 	static const gchar license[] =
