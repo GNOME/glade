@@ -2164,7 +2164,7 @@ static GtkActionEntry static_entries[] = {
 	{ "About", GTK_STOCK_ABOUT, NULL, NULL,
 	  N_("About this application"), G_CALLBACK (about_cb) },
 
-	{ "HelpContents", GTK_STOCK_HELP, NULL, "F1",
+	{ "HelpContents", GTK_STOCK_HELP, N_("_Contents"), "F1",
 	  N_("Display the user manual"), G_CALLBACK (show_help_cb) },
 
 	{ "DeveloperReference", NULL, N_("_Developer Reference"), NULL,
