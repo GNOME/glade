@@ -1320,6 +1320,7 @@ static void
 gwa_action_update_from_node (GladeWidgetAdaptor *adaptor,
 			     gboolean is_packing,
 			     GladeXmlNode *node,
+			     const gchar *domain,
 			     gchar *group_path)
 {
 	GladeXmlNode *child;
@@ -1345,13 +1346,23 @@ gwa_action_update_from_node (GladeWidgetAdaptor *adaptor,
 		label = glade_xml_get_property_string (child, GLADE_TAG_NAME);
 		stock = glade_xml_get_property_string (child, GLADE_TAG_STOCK);
 		important = glade_xml_get_property_boolean (child, GLADE_TAG_IMPORTANT, FALSE);
-			
+		
+		if (label) 
+		{
+			gchar *translated = dgettext (domain, label);
+			if (label != translated)
+			{
+				g_free (label);
+				label = g_strdup (translated);
+			}
+		}
+		
 		if (is_packing)
 			glade_widget_adaptor_pack_action_add (adaptor, action_path, label, stock, important);
 		else
 			glade_widget_adaptor_action_add (adaptor, action_path, label, stock, important);
 		
-		if (group) gwa_action_update_from_node (adaptor, is_packing, child, action_path);
+		if (group) gwa_action_update_from_node (adaptor, is_packing, child, domain, action_path);
 		
 		g_free (id);
 		g_free (label);
@@ -1395,12 +1406,12 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 	/* Update actions from child node */
 	if ((child = 
 	     glade_xml_search_child (node, GLADE_TAG_ACTIONS)) != NULL)
-		gwa_action_update_from_node (adaptor, FALSE, child, NULL);
+		gwa_action_update_from_node (adaptor, FALSE, child, domain, NULL);
 	
 	/* Update packing actions from child node */
 	if ((child = 
 	     glade_xml_search_child (node, GLADE_TAG_PACKING_ACTIONS)) != NULL)
-		gwa_action_update_from_node (adaptor, TRUE, child, NULL);
+		gwa_action_update_from_node (adaptor, TRUE, child, domain, NULL);
 	
 	return TRUE;
 }
@@ -1478,7 +1489,8 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
  * glade_widget_adaptor_from_catalog:
  * @class_node: A #GladeXmlNode
  * @catname: the name of the owning catalog
- * @library: the name of the library used to load class methods from
+ * @icon_prefix:
+ * @module: the plugin GModule.
  * @domain: the domain to translate strings from this plugin from
  * @book: the devhelp search domain for the owning catalog.
  *
@@ -2142,7 +2154,7 @@ glade_widget_adaptor_remove (GladeWidgetAdaptor *adaptor,
 }
 
 /**
- * glade_widget_adaptor_remove:
+ * glade_widget_adaptor_get_children:
  * @adaptor:   A #GladeWidgetAdaptor
  * @container: The #GObject container
  *
@@ -2303,13 +2315,13 @@ glade_widget_adaptor_child_verify_property (GladeWidgetAdaptor *adaptor,
 
 /**
  * glade_widget_adaptor_replace_child:
- * @adaptor:       A #GladeWidgetAdaptor
- * @container:     The #GObject container
- * @old:           The old #GObject child
- * @new:           The new #GObject child
+ * @adaptor: A #GladeWidgetAdaptor
+ * @container: The #GObject container
+ * @old_obj: The old #GObject child
+ * @new_obj: The new #GObject child
  *
- * Replaces @old with @new in @container while positioning
- * @new where @old was and assigning it appropriate packing 
+ * Replaces @old_obj with @new_obj in @container while positioning
+ * @new_obj where @old_obj was and assigning it appropriate packing 
  * property values.
  */
 void
@@ -2360,8 +2372,8 @@ glade_widget_adaptor_query (GladeWidgetAdaptor *adaptor)
 /**
  * glade_widget_adaptor_get_packing_default:
  * @child_adaptor:  A #GladeWidgetAdaptor
- * @parent_adaptor: The #GladeWidgetAdaptor for the parent object
- * @property_id:    The string property identifier
+ * @container_adaptor: The #GladeWidgetAdaptor for the parent object
+ * @id:    The string property identifier
  *
  * Gets the default value for @property_id on a widget governed by
  * @child_adaptor when parented in a widget governed by @parent_adaptor
