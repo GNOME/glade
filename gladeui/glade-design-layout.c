@@ -2,10 +2,10 @@
 /*
  * glade-design-layout.c
  *
- * Copyright (C) 2006 Vincent Geddes
+ * Copyright (C) 2006-2007 Vincent Geddes
  *
  * Authors:
- *   Vincent Geddes <vgeddes@metroweb.co.za>
+ *   Vincent Geddes <vgeddes@gnome.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,34 +30,32 @@
 
 #include <gtk/gtk.h>
 
-#define GLADE_DESIGN_LAYOUT_GET_PRIVATE(object) \
-       (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
-	GLADE_TYPE_DESIGN_LAYOUT,               \
-        GladeDesignLayoutPrivate))
+#define GLADE_DESIGN_LAYOUT_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
+						 GLADE_TYPE_DESIGN_LAYOUT,               \
+						 GladeDesignLayoutPrivate))
 
-#define OUTLINE_WIDTH 4
-#define PADDING 12
+#define OUTLINE_WIDTH  4
+#define PADDING        12
 
-
-typedef enum 
-{
-	GLADE_ACTIVITY_NONE,
-	GLADE_ACTIVITY_RESIZE_WIDTH,
-	GLADE_ACTIVITY_RESIZE_HEIGHT,
-	GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT
-
-} GladeActivity;
 
 typedef enum 
 {
-	GLADE_REGION_INSIDE = 0,
-	GLADE_REGION_EAST,
-	GLADE_REGION_SOUTH,
-	GLADE_REGION_SOUTH_EAST,
-	GLADE_REGION_WEST_OF_SOUTH_EAST,
-	GLADE_REGION_NORTH_OF_SOUTH_EAST,
-	GLADE_REGION_OUTSIDE
-} GladePointerRegion;
+	ACTIVITY_NONE,
+	ACTIVITY_RESIZE_WIDTH,
+	ACTIVITY_RESIZE_HEIGHT,
+	ACTIVITY_RESIZE_WIDTH_AND_HEIGHT
+} Activity;
+
+typedef enum 
+{
+	REGION_INSIDE,
+	REGION_EAST,
+	REGION_SOUTH,
+	REGION_SOUTH_EAST,
+	REGION_WEST_OF_SOUTH_EAST,
+	REGION_NORTH_OF_SOUTH_EAST,
+	REGION_OUTSIDE
+} PointerRegion;
 
 struct _GladeDesignLayoutPrivate
 {
@@ -68,7 +66,7 @@ struct _GladeDesignLayoutPrivate
 	GdkCursor *cursor_resize_bottom_right;
 
 	/* state machine */
-	GladeActivity   activity;   /* the current activity */
+	Activity        activity;   /* the current activity */
 	GtkRequisition *current_size_request;
 	gint dx;                    /* child.width - event.pointer.x   */
 	gint dy;                    /* child.height - event.pointer.y  */
@@ -78,12 +76,12 @@ struct _GladeDesignLayoutPrivate
 
 G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
 
-static GladePointerRegion
+static PointerRegion
 glade_design_layout_get_pointer_region (GladeDesignLayout *layout, gint x, gint y)
 {
 	GladeDesignLayoutPrivate  *priv;
 	GtkAllocation             *child_allocation;
-	GladePointerRegion         region = GLADE_REGION_INSIDE;
+	PointerRegion              region = REGION_INSIDE;
 
 	priv  = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
 
@@ -94,36 +92,36 @@ glade_design_layout_get_pointer_region (GladeDesignLayout *layout, gint x, gint 
 	{
 		if ((y < (child_allocation->y + child_allocation->height - OUTLINE_WIDTH)) &&
 		    (y >= child_allocation->y - OUTLINE_WIDTH))
-			region = GLADE_REGION_EAST;
+			region = REGION_EAST;
 
 		else if ((y < (child_allocation->y + child_allocation->height)) &&
 			 (y >= (child_allocation->y + child_allocation->height - OUTLINE_WIDTH)))
-			region = GLADE_REGION_NORTH_OF_SOUTH_EAST;
+			region = REGION_NORTH_OF_SOUTH_EAST;
 
 		else if ((y < (child_allocation->y + child_allocation->height + OUTLINE_WIDTH)) &&
 			 (y >= (child_allocation->y + child_allocation->height)))
-			region = GLADE_REGION_SOUTH_EAST;
+			region = REGION_SOUTH_EAST;
 	}
 	else if ((y >= (child_allocation->y + child_allocation->height)) &&
 	    	 (y < (child_allocation->y + child_allocation->height + OUTLINE_WIDTH)))
 	{
 		if ((x < (child_allocation->x + child_allocation->width - OUTLINE_WIDTH)) &&
 		    (x >= child_allocation->x - OUTLINE_WIDTH))
-			region = GLADE_REGION_SOUTH;
+			region = REGION_SOUTH;
 
 		else if ((x < (child_allocation->x + child_allocation->width)) &&
 			 (x >= (child_allocation->x + child_allocation->width - OUTLINE_WIDTH)))
-			region = GLADE_REGION_WEST_OF_SOUTH_EAST;
+			region = REGION_WEST_OF_SOUTH_EAST;
 
 		else if ((x < (child_allocation->x + child_allocation->width + OUTLINE_WIDTH)) &&
 			 (x >= (child_allocation->x + child_allocation->width)))
-			region = GLADE_REGION_SOUTH_EAST;
+			region = REGION_SOUTH_EAST;
 	}
 
 	if (x < PADDING || y < PADDING ||
 	    x >= (child_allocation->x + child_allocation->width + OUTLINE_WIDTH) ||
 	    y >= (child_allocation->y + child_allocation->height + OUTLINE_WIDTH))
-		region = GLADE_REGION_OUTSIDE;
+		region = REGION_OUTSIDE;
 
 	return region;
 }
@@ -184,7 +182,7 @@ glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	if (priv->activity == GLADE_ACTIVITY_NONE)
+	if (priv->activity == ACTIVITY_NONE)
 		gdk_window_set_cursor (priv->event_window, NULL);
 	
 	return FALSE;
@@ -323,7 +321,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 	GtkWidget                *child;
 	GladeDesignLayoutPrivate *priv;
 	GladeWidget              *child_glade_widget;
-	GladePointerRegion        region;
+	PointerRegion        region;
 	GtkAllocation             allocation;
 	gint                      x, y;
 	gint                      new_width, new_height;
@@ -338,7 +336,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 	child_glade_widget = glade_widget_get_from_gobject (child);
 	allocation         = child->allocation;
 
-	if (priv->activity == GLADE_ACTIVITY_RESIZE_WIDTH)
+	if (priv->activity == ACTIVITY_RESIZE_WIDTH)
 	{
 		new_width = x - priv->dx - PADDING - OUTLINE_WIDTH;
 			
@@ -350,7 +348,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 		glade_design_layout_update_child (GLADE_DESIGN_LAYOUT (widget), 
 						  child, &allocation);
 	}
-	else if (priv->activity == GLADE_ACTIVITY_RESIZE_HEIGHT)
+	else if (priv->activity == ACTIVITY_RESIZE_HEIGHT)
 	{
 		new_height = y - priv->dy - PADDING - OUTLINE_WIDTH;
 		
@@ -362,7 +360,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 		glade_design_layout_update_child (GLADE_DESIGN_LAYOUT (widget), 
 						  child, &allocation);
 	}
-	else if (priv->activity == GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT)
+	else if (priv->activity == ACTIVITY_RESIZE_WIDTH_AND_HEIGHT)
 	{
 		new_width =  x - priv->dx - PADDING - OUTLINE_WIDTH;
 		new_height = y - priv->dy - PADDING - OUTLINE_WIDTH;
@@ -383,23 +381,21 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 	{
 		region = glade_design_layout_get_pointer_region (GLADE_DESIGN_LAYOUT (widget), x, y);
 		
-		if (region == GLADE_REGION_EAST)
+		if (region == REGION_EAST)
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_right);
 		
-		else if (region == GLADE_REGION_SOUTH)
+		else if (region == REGION_SOUTH)
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom);
 		
-		else if (region == GLADE_REGION_SOUTH_EAST ||
-			 region == GLADE_REGION_WEST_OF_SOUTH_EAST ||
-			 region == GLADE_REGION_NORTH_OF_SOUTH_EAST)
+		else if (region == REGION_SOUTH_EAST ||
+			 region == REGION_WEST_OF_SOUTH_EAST ||
+			 region == REGION_NORTH_OF_SOUTH_EAST)
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom_right);
 
-		else if (region == GLADE_REGION_OUTSIDE)
-		{
+		else if (region == REGION_OUTSIDE)
 			gdk_window_set_cursor (priv->event_window, NULL);
-			glade_cursor_set (priv->event_window, GLADE_CURSOR_SELECTOR);
-		}
 	}
+	
 	return FALSE;
 }
 
@@ -407,7 +403,7 @@ static gboolean
 glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 {
 	GtkWidget                *child;
-	GladePointerRegion        region;
+	PointerRegion        region;
 	GladeDesignLayoutPrivate *priv;
 	gint                      x, y;
 
@@ -424,29 +420,29 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 		priv->dx = x - (child->allocation.x + child->allocation.width);
 		priv->dy = y - (child->allocation.y + child->allocation.height);
 		
-		if (region == GLADE_REGION_EAST) 
+		if (region == REGION_EAST) 
 		{
-			priv->activity = GLADE_ACTIVITY_RESIZE_WIDTH;
+			priv->activity = ACTIVITY_RESIZE_WIDTH;
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_right);
 		} 
-		if (region == GLADE_REGION_SOUTH) 
+		if (region == REGION_SOUTH) 
 		{
-			priv->activity = GLADE_ACTIVITY_RESIZE_HEIGHT;
+			priv->activity = ACTIVITY_RESIZE_HEIGHT;
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom);
 		} 
-		if (region == GLADE_REGION_SOUTH_EAST) 
+		if (region == REGION_SOUTH_EAST) 
 		{
-			priv->activity = GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
+			priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom_right);
 		} 
-		if (region == GLADE_REGION_WEST_OF_SOUTH_EAST) 
+		if (region == REGION_WEST_OF_SOUTH_EAST) 
 		{
-			priv->activity = GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
+			priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom_right);
 		} 
-		if (region == GLADE_REGION_NORTH_OF_SOUTH_EAST) 
+		if (region == REGION_NORTH_OF_SOUTH_EAST) 
 		{
-			priv->activity = GLADE_ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
+			priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
 			gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom_right);
 		}
 	}
@@ -465,7 +461,7 @@ glade_design_layout_button_release_event (GtkWidget *widget, GdkEventButton *ev)
 
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	priv->activity = GLADE_ACTIVITY_NONE;
+	priv->activity = ACTIVITY_NONE;
 	gdk_window_set_cursor (priv->event_window, NULL);
 
 	return FALSE;
@@ -712,7 +708,7 @@ glade_design_layout_finalize (GObject *object)
 {
 	GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (object);
 
-	g_free (priv->current_size_request);
+	g_slice_free (GtkRequisition, priv->current_size_request);
 	
 	G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
@@ -839,24 +835,6 @@ glade_design_layout_widget_event (GladeDesignLayout *layout,
 	return FALSE;
 }
 
-static gboolean
-glade_design_layout_propagate_event (GtkWidget *widget,
-				     GdkEvent  *event)
-{
-	GtkWidget *child;
-
-	if ((child = GTK_BIN (widget)->child) != NULL) 
-	{
-		GladeWidget *gwidget = 
-			glade_widget_get_from_gobject (child);
-
-		if (gwidget)
-			return glade_design_layout_widget_event (GLADE_DESIGN_LAYOUT (widget),
-								 gwidget, event);
-	}		
-	return FALSE;
-}
-
 static void
 glade_design_layout_init (GladeDesignLayout *layout)
 {
@@ -867,9 +845,9 @@ glade_design_layout_init (GladeDesignLayout *layout)
 	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (layout), GTK_NO_WINDOW);
 
 	priv->event_window = NULL;
-	priv->activity = GLADE_ACTIVITY_NONE;
+	priv->activity = ACTIVITY_NONE;
 
-	priv->current_size_request = g_new0 (GtkRequisition, 1);
+	priv->current_size_request = g_slice_new0 (GtkRequisition);
 
 	priv->cursor_resize_bottom       = gdk_cursor_new (GDK_BOTTOM_SIDE);
 	priv->cursor_resize_right        = gdk_cursor_new (GDK_RIGHT_SIDE);
@@ -896,7 +874,6 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	container_class->add                = glade_design_layout_add;
 	container_class->remove             = glade_design_layout_remove;
 
-	widget_class->event                 = glade_design_layout_propagate_event;
 	widget_class->motion_notify_event   = glade_design_layout_motion_notify_event;
 	widget_class->leave_notify_event    = glade_design_layout_leave_notify_event;
 	widget_class->button_press_event    = glade_design_layout_button_press_event;
@@ -910,15 +887,11 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	widget_class->size_allocate         = glade_design_layout_size_allocate;
 
 	g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
-
 }
 
 GtkWidget*
 glade_design_layout_new (void)
 {
-	GladeDesignLayout *layout;
-
-	layout = g_object_new (GLADE_TYPE_DESIGN_LAYOUT, NULL);
-
-	return GTK_WIDGET (layout);
+	return g_object_new (GLADE_TYPE_DESIGN_LAYOUT, NULL);
 }
+
