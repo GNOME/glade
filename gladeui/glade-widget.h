@@ -196,11 +196,19 @@ gboolean                glade_widget_event                  (GladeWidget      *g
 gboolean                glade_widget_placeholder_relation   (GladeWidget      *parent, 
 							     GladeWidget      *widget);
 
-GladeWidgetAction *     glade_widget_get_action             (GladeWidget *widget,
+GladeWidgetAction      *glade_widget_get_action             (GladeWidget *widget,
 							     const gchar *action_path);
 
-GladeWidgetAction *     glade_widget_get_pack_action        (GladeWidget *widget,
+GladeWidgetAction      *glade_widget_get_pack_action        (GladeWidget *widget,
 							     const gchar *action_path);
+
+gboolean                glade_widget_set_action_sensitive   (GladeWidget *widget,
+							     const gchar *action_path,
+							     gboolean     sensitive);
+
+gboolean                glade_widget_set_pack_action_sensitive (GladeWidget *widget,
+								const gchar *action_path,
+								gboolean     sensitive);
 
 void                    glade_widget_remove_action          (GladeWidget *widget,
 							     const gchar *action_path);

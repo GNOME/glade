@@ -242,6 +242,38 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
+static void
+widget_parent_changed (GtkWidget          *widget,
+		       GParamSpec         *pspec,
+		       GladeWidgetAdaptor *adaptor)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
+
+	if (gwidget->parent && !GTK_IS_WINDOW (glade_widget_get_object (gwidget->parent)))
+		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
+	else
+		glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
+
+}
+
+void
+glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
+				   GObject            *widget, 
+				   GladeCreateReason   reason)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
+	
+	glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
+
+	if (GTK_IS_WINDOW (widget))
+		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
+
+	/* Watch parents and set actions sensitive/insensitive */
+	g_signal_connect (G_OBJECT (widget), "notify::parent",
+			  G_CALLBACK (widget_parent_changed), adaptor);
+}
+
+
 void
 glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
 			       GObject            *object, 
@@ -283,6 +315,154 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor *adaptor,
 	else 
 		GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
 }
+
+static GList *
+create_command_property_list (GladeWidget *gnew, GList *saved_props)
+{
+	GList *l, *command_properties = NULL;
+	
+	for (l = saved_props; l; l = l->next)
+	{
+		GladeProperty *property = l->data;
+		GladeProperty *orig_prop = glade_widget_get_pack_property (gnew, property->klass->id);
+		GCSetPropData *pdata = g_new0 (GCSetPropData, 1);
+
+		pdata->property  = orig_prop;
+		pdata->old_value = g_new0 (GValue, 1);
+		pdata->new_value = g_new0 (GValue, 1);
+
+		glade_property_get_value (orig_prop, pdata->old_value);
+		glade_property_get_value (property, pdata->new_value);
+
+		command_properties = g_list_prepend (command_properties, pdata);
+	}
+	return g_list_reverse (command_properties);
+}
+
+
+void
+glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
+				  GObject *object,
+				  const gchar *action_path)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
+	GList       this_widget = { 0, }, that_widget = { 0, };
+	GtkWidget   *parent = GTK_WIDGET (object)->parent;
+
+	g_assert (parent);
+
+	gparent = glade_widget_get_from_gobject (parent);
+	
+	if (strcmp (action_path, "remove_parent") == 0)
+	{
+		GladeWidget *new_gparent = gparent->parent;
+
+		/* Since toplevel project objects for now must be GtkWindow,
+		 * we'll just assert this for now (should be an insensitive action).
+		 */
+		g_assert (!GTK_IS_WINDOW (parent));
+		
+		glade_command_push_group (_("Removing parent of %s"), 
+					  gwidget->name);
+
+		/* Remove "this" widget */
+		this_widget.data = gwidget;
+		glade_command_delete (&this_widget);
+		
+		/* Delete the parent */
+		that_widget.data = gparent;
+		glade_command_delete (&that_widget);
+
+		/* Add "this" widget to the new parent */
+		glade_command_paste(&this_widget, new_gparent, NULL);
+		
+		glade_command_pop_group ();
+	}
+	else if (strncmp (action_path, "add_parent/", 11) == 0)
+	{
+		GType new_type = 0;
+		
+		if (strcmp (action_path + 11, "alignment") == 0)
+			new_type = GTK_TYPE_ALIGNMENT;
+		else if (strcmp (action_path + 11, "viewport") == 0)
+			new_type = GTK_TYPE_VIEWPORT;
+		else if (strcmp (action_path + 11, "eventbox") == 0)
+			new_type = GTK_TYPE_EVENT_BOX;
+		else if (strcmp (action_path + 11, "frame") == 0)
+			new_type = GTK_TYPE_FRAME;
+		else if (strcmp (action_path + 11, "aspect_frame") == 0)
+			new_type = GTK_TYPE_ASPECT_FRAME;
+		else if (strcmp (action_path + 11, "scrolled_window") == 0)
+			new_type = GTK_TYPE_SCROLLED_WINDOW;
+		else if (strcmp (action_path + 11, "expander") == 0)
+			new_type = GTK_TYPE_EXPANDER;
+		else if (strcmp (action_path + 11, "table") == 0)
+			new_type = GTK_TYPE_TABLE;
+		else if (strcmp (action_path + 11, "hbox") == 0)
+			new_type = GTK_TYPE_HBOX;
+		else if (strcmp (action_path + 11, "vbox") == 0)
+			new_type = GTK_TYPE_VBOX;
+		else if (strcmp (action_path + 11, "hpaned") == 0)
+			new_type = GTK_TYPE_HPANED;
+		else if (strcmp (action_path + 11, "vpaned") == 0)
+			new_type = GTK_TYPE_VPANED;
+
+		
+		if (new_type)
+		{
+			GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (new_type);
+			GList              *saved_props, *prop_cmds;
+			
+			glade_command_push_group (_("Adding parent %s to %s"), 
+						  adaptor->title, gwidget->name);
+
+			/* Record packing properties */
+			saved_props = glade_widget_dup_properties (gwidget->packing_properties, FALSE);
+			
+			/* Remove "this" widget */
+			this_widget.data = gwidget;
+			glade_command_delete (&this_widget);
+			
+			/* Create new widget and put it where the placeholder was */
+			that_widget.data =
+				glade_command_create (adaptor, gparent, NULL, 
+						      glade_widget_get_project (gparent));
+
+
+			/* Remove the alignment that we added in the frame's post_create... */
+			if (new_type == GTK_TYPE_FRAME)
+			{
+				GObject     *frame = glade_widget_get_object (that_widget.data);
+				GladeWidget *galign = glade_widget_get_from_gobject (GTK_BIN (frame)->child);
+				GList        to_delete = { 0, };
+
+				to_delete.data = galign;
+				glade_command_delete (&to_delete);
+			}
+						
+			/* Create heavy-duty glade-command properties stuff */
+			prop_cmds = create_command_property_list (that_widget.data, saved_props);
+			g_list_foreach (saved_props, (GFunc)g_object_unref, NULL);
+			g_list_free (saved_props);
+
+			/* Apply the properties in an undoable way */
+			if (prop_cmds)
+				glade_command_set_properties_list (glade_widget_get_project (gparent), prop_cmds);
+			
+			/* Add "this" widget to the new parent */
+			glade_command_paste(&this_widget, GLADE_WIDGET (that_widget.data), NULL);
+			
+			glade_command_pop_group ();
+		}
+
+	}
+
+	else
+		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+								object,
+								action_path);
+}
+
 
 /* ----------------------------- GtkContainer ------------------------------ */
 void

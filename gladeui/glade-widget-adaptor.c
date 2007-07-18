@@ -768,6 +768,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	object_class->get_property          = glade_widget_adaptor_real_get_property;
 
 	/* Class methods */
+	adaptor_class->deep_post_create     = NULL;
 	adaptor_class->post_create          = NULL;
 	adaptor_class->get_internal_child   = NULL;
 	adaptor_class->verify_property      = NULL;
@@ -947,7 +948,12 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_CONSTRUCTOR_FUNCTION,
 					  &symbol))
 		object_class->constructor = symbol;
-	
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_DEEP_POST_CREATE_FUNCTION,
+					  &symbol))
+		klass->deep_post_create = symbol;
+
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_POST_CREATE_FUNCTION,
 					  &symbol))
@@ -1981,6 +1987,13 @@ glade_widget_adaptor_post_create (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (G_IS_OBJECT (object));
 	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (object), adaptor->type));
 
+	/* Run post_create in 2 stages, one that chains up and all class adaptors
+	 * in the hierarchy get a peek, another that is used to setup placeholders
+	 * and things that differ from the child/parent implementations
+	 */
+	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->deep_post_create)
+		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->deep_post_create (adaptor, object, reason);
+	
 	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->post_create)
 		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->post_create (adaptor, object, reason);
 	/* XXX Dont complain here if no implementation is found */

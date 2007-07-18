@@ -260,7 +260,7 @@ catalog_sort (GList *catalogs)
 				(catalogs, catalog->dep_catalog,
 				 (GCompareFunc)catalog_find_by_name);
 
-			if ((cat = node->data) == NULL)
+			if (!node || (cat = node->data) == NULL)
 			{
 				g_critical ("Catalog %s depends on catalog %s, not found",
 					    catalog->name, catalog->dep_catalog);

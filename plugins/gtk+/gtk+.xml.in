@@ -7,8 +7,29 @@
 
     <glade-widget-class name="GtkWidget" _title="Widget" default-width="100" default-height="60">
 
+      <deep-post-create-function>glade_gtk_widget_deep_post_create</deep-post-create-function>
       <set-property-function>glade_gtk_widget_set_property</set-property-function>
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
+      <action-activate-function>glade_gtk_widget_action_activate</action-activate-function>
+
+      <actions>
+        <action id="remove_parent" _name="Remove Parent" stock="gtk-remove"/>
+        <action id="add_parent" _name="Add Parent" stock="gtk-add">
+	  <action id="alignment" _name="Alignment"/>
+	  <action id="viewport" _name="Viewport"/>
+	  <action id="eventbox" _name="Event Box"/>
+	  <action id="frame" _name="Frame"/>
+	  <action id="aspect_frame" _name="Aspect Frame"/>
+	  <action id="scrolled_window" _name="Scrolled Window"/>
+	  <action id="expander" _name="Expander"/>
+	  <action id="table" _name="Table"/>
+	  <action id="hbox" _name="Horizontal Box"/>
+	  <action id="vbox" _name="Vertical Box"/>
+	  <action id="hpaned" _name="Horizontal Panes"/>
+	  <action id="vpaned" _name="Vertical Panes"/>
+        </action>
+      </actions>
+
 
       <properties>
 	<property id="visible" default="True" common="True" ignore="True"/>

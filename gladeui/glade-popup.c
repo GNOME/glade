@@ -244,6 +244,7 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
 						(a->actions) ? NULL : a->klass->path);
 		
 		g_object_set_data (G_OBJECT (item), "gwa-data", data);
+
 		gtk_widget_set_sensitive (item, a->sensitive);
 		
 		if (submenu)

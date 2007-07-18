@@ -1,3 +1,19 @@
+2006-07-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-command.[ch]: 
+	  fixed memory leaks of description strings in usage of glade_command_push_group()
+	  
+	* gladeui/glade-widget.[ch]: Added convenience apis to set sensitivity on
+	  GladeWidgetActions.
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.c: Added
+	  deep_post_create() vfunc, in this one you must always chain up to the parent.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added "Add/Remove" parent
+	  feature (bug 343786), implemented types: Alignment, Viewport, Event Box, Frame,
+	  Aspect Frame, Scrolled Window, Expander, Table, Horizontal Box, Vertical Box,
+	  Horizontal Panes, Vertical Panes
+	
 2007-07-18  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-design-layout.h: Make header file look pretty.

@@ -989,6 +989,7 @@ glade_command_add (GList            *widgets,
 /**
  * glade_command_remove:
  * @widgets: a #GList of #GladeWidgets
+ * @return_placeholders: whether or not to return a list of placehodlers
  *
  * Performs a remove command on all widgets in @widgets from @parent.
  */
@@ -998,6 +999,7 @@ glade_command_remove (GList *widgets)
 	GladeCommandAddRemove	*me;
 	GladeWidget				*widget = NULL;
 	CommandData				*cdata;
+	GtkWidget                               *placeholder;
 	GList					*list, *l;
 
 	g_return_if_fail (widgets != NULL);
@@ -1012,8 +1014,8 @@ glade_command_remove (GList *widgets)
 		widget = list->data;
 		if (widget->internal)
 		{
-			glade_util_ui_message (glade_app_get_window(),
-					       GLADE_UI_WARN,
+			glade_util_ui_message (glade_app_get_window(),	
+				       GLADE_UI_WARN,
 					       _("You cannot remove a widget internal to a composite widget."));
 			return;
 		}
@@ -1037,8 +1039,9 @@ glade_command_remove (GList *widgets)
 		    glade_widget_placeholder_relation 
 		    (cdata->parent, cdata->widget))
 		{
-			glade_command_placeholder_connect 
-				(cdata, GLADE_PLACEHOLDER (glade_placeholder_new ()));
+			placeholder = glade_placeholder_new ();
+			glade_command_placeholder_connect
+				(cdata, GLADE_PLACEHOLDER (placeholder));
 		}
 		me->widgets = g_list_prepend (me->widgets, cdata);
 
@@ -1074,7 +1077,7 @@ glade_command_remove (GList *widgets)
 		glade_project_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
-		
+
 } /* end of glade_command_remove() */
 
 static void
@@ -1543,7 +1546,6 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 {
 	GladeWidget *widget;
 	GList *widgets = NULL;
-	gchar *description;	
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
@@ -1557,8 +1559,7 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 		return NULL;
 	}
 	widgets = g_list_prepend(widgets, widget);
-	description = g_strdup_printf (_("Create %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Create %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_add(widgets, parent, placeholder, FALSE);
 	glade_command_pop_group();
 	
@@ -1571,6 +1572,7 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 /**
  * glade_command_delete:
  * @widgets: a #GList of #GladeWidgets
+ * @return_placeholders: whether or not to return a list of placehodlers
  *
  * Performs a delete command on the list of widgets.
  */
@@ -1578,13 +1580,12 @@ void
 glade_command_delete(GList *widgets)
 {
 	GladeWidget *widget;
-	gchar *description;	
+	GList       *placehodlers;
 	
 	g_return_if_fail (widgets != NULL);
-	
+
 	widget = widgets->data;
-	description = g_strdup_printf (_("Delete %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Delete %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_remove(widgets);
 	glade_command_pop_group();
 }
@@ -1600,7 +1601,6 @@ glade_command_cut(GList *widgets)
 {
 	GladeWidget *widget;
 	GList       *l;
-	gchar *description;	
 	
 	g_return_if_fail (widgets != NULL);
 
@@ -1608,8 +1608,7 @@ glade_command_cut(GList *widgets)
 		g_object_set_data (G_OBJECT (l->data), "glade-command-was-cut", GINT_TO_POINTER (TRUE));
 		
 	widget = widgets->data;
-	description = g_strdup_printf (_("Cut %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Cut %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_remove(widgets);
 	glade_command_clipboard_add(widgets);
 	glade_command_pop_group();
@@ -1626,7 +1625,6 @@ glade_command_copy(GList *widgets)
 {
 	GList *list, *copied_widgets = NULL;
 	GladeWidget *copied_widget = NULL;
-	gchar *description;	
 	
 	g_return_if_fail (widgets != NULL);
 	
@@ -1635,8 +1633,7 @@ glade_command_copy(GList *widgets)
 		copied_widget = glade_widget_dup(list->data, FALSE);
 		copied_widgets = g_list_prepend(copied_widgets, copied_widget);
 	}
-	description = g_strdup_printf (_("Copy %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Copy %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
 	glade_command_clipboard_add(copied_widgets);
 	glade_command_pop_group();
 	
@@ -1659,7 +1656,6 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 {
 	GList *list, *copied_widgets = NULL;
 	GladeWidget *copied_widget = NULL;
-	gchar *description;	
 	gboolean exact;
 	
 	g_return_if_fail (widgets != NULL);
@@ -1671,8 +1667,7 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 		copied_widget = glade_widget_dup(list->data, exact);
 		copied_widgets = g_list_prepend(copied_widgets, copied_widget);
 	}
-	description = g_strdup_printf (_("Paste %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Paste %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
 	glade_command_add(copied_widgets, parent, placeholder, TRUE);
 	glade_command_pop_group();
 	
@@ -1694,13 +1689,13 @@ void
 glade_command_dnd(GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
 	GladeWidget *widget;
-	gchar *description;	
+	GList       *placeholders;
 	
 	g_return_if_fail (widgets != NULL);
 	
 	widget = widgets->data;
-	description = g_strdup_printf (_("Drag-n-Drop from %s to %s"), parent->name, g_list_length (widgets) == 1 ? widget->name : _("multiple"));
-	glade_command_push_group(description);
+	glade_command_push_group(_("Drag-n-Drop from %s to %s"),
+				 parent->name, g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_remove(widgets);
 	glade_command_add(widgets, parent, placeholder, TRUE);
 	glade_command_pop_group();

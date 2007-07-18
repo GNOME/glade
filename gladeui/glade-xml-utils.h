@@ -46,6 +46,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_DISABLED                        "disabled"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
+#define GLADE_TAG_DEEP_POST_CREATE_FUNCTION       "deep-post-create-function"
 #define GLADE_TAG_POST_CREATE_FUNCTION            "post-create-function"
 #define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION     "get-internal-child-function"
 #define GLADE_TAG_ADD_CHILD_FUNCTION              "add-child-function"

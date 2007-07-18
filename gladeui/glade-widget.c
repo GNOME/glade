@@ -3890,6 +3890,63 @@ glade_widget_get_pack_action (GladeWidget *widget, const gchar *action_path)
 	return glade_widget_action_lookup (&widget->packing_actions, action_path, FALSE);
 }
 
+
+
+/**
+ * glade_widget_set_action_sensitive:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ * @sensitive: setting sensitive or insensitive
+ *
+ * Sets the sensitivity of @action_path in @widget
+ *
+ * Returns: whether @action_path was found or not.
+ */
+gboolean
+glade_widget_set_action_sensitive (GladeWidget *widget,
+				   const gchar *action_path,
+				   gboolean     sensitive)
+{
+	GladeWidgetAction *action;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((action = glade_widget_get_action (widget, action_path)) != NULL)
+	{
+		glade_widget_action_set_sensitive (action, sensitive);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/**
+ * glade_widget_set_pack_action_sensitive:
+ * @widget: a #GladeWidget
+ * @action_path: a full action path including groups
+ * @sensitive: setting sensitive or insensitive
+ *
+ * Sets the sensitivity of @action_path in @widget
+ *
+ * Returns: whether @action_path was found or not.
+ */
+gboolean
+glade_widget_set_pack_action_sensitive (GladeWidget *widget,
+					const gchar *action_path,
+					gboolean     sensitive)
+{
+	GladeWidgetAction *action;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+	if ((action = glade_widget_get_pack_action (widget, action_path)) != NULL)
+	{
+		glade_widget_action_set_sensitive (action, sensitive);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
 /**
  * glade_widget_remove_action:
  * @widget: a #GladeWidget

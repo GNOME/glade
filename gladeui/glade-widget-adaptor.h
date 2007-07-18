@@ -411,9 +411,17 @@ struct _GladeWidgetAdaptorClass
 	gint                       default_width;  /* Default width in GladeDesignLayout */
 	gint                       default_height; /* Default height in GladeDesignLayout */
 
+	GladePostCreateFunc        deep_post_create;   /* Executed after widget creation: 
+							* plugins use this to setup various
+							* support codes (adaptors must always
+							* chain up in this stage of instantiation).
+							*/
+
 	GladePostCreateFunc        post_create;   /* Executed after widget creation: 
 						   * plugins use this to setup various
-						   * support codes.
+						   * support codes (adaptors are free here
+						   * to chain up or not in this stage of
+						   * instantiation).
 						   */
 
 	GladeGetInternalFunc       get_internal_child; /* Retrieves the the internal child
