@@ -2037,6 +2037,16 @@ about_cb (GtkAction *action, GladeWindow *window)
 		  "Juan Pablo Ugarte <juanpablougarte@gmail.com>",
 		  "Vincent Geddes <vincent.geddes@gmail.com>",
 		  NULL };
+		  
+	static const gchar * const artists[] =
+		{ "Vincent Geddes <vgeddes@gnome.org>",
+		  "Andreas Nilsson <andreas@andreasn.se>",
+		  NULL };
+		  
+	static const gchar * const documenters[] =
+		{ "GNOME Documentation team <gnome-doc-list@gnome.org>",
+		  "Sun GNOME Documentation team <gdocteam@sun.com>",
+		  NULL };		  		  
 
 	static const gchar license[] =
 		N_("Glade is free software; you can redistribute it and/or modify "
@@ -2063,6 +2073,8 @@ about_cb (GtkAction *action, GladeWindow *window)
 			       "name", g_get_application_name (),
 			       "logo-icon-name", "glade-3",
 			       "authors", authors,
+			       "artists", artists,
+			       "documenters", documenters,			       			       
 			       "translator-credits", _("translator-credits"),
 			       "comments", _("A user interface designer for GTK+ and GNOME."),
 			       "license", _(license),
