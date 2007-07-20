@@ -34,9 +34,8 @@
 						 GLADE_TYPE_DESIGN_LAYOUT,               \
 						 GladeDesignLayoutPrivate))
 
-#define OUTLINE_WIDTH  4
-#define PADDING        12
-
+#define OUTLINE_WIDTH     4
+#define PADDING          12
 
 typedef enum 
 {
@@ -713,24 +712,33 @@ glade_design_layout_finalize (GObject *object)
 	G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
-/* creates a gc to draw a nice border around the child */
-static GdkGC *
-create_outline_gc (GtkWidget *widget)
-{
-	GdkGC *gc;
-	GdkGCValues values;
+static inline void
+draw_frame (GtkWidget *widget,
+	    cairo_t   *cr,
+	    int x, int y, int w, int h)
+{	
+	cairo_set_line_width (cr, OUTLINE_WIDTH);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 
-	gc = gdk_gc_new (widget->window);
+	gdk_cairo_set_source_color (cr, &widget->style->bg[GTK_STATE_SELECTED]);
+
+	/* rectangle */
+	cairo_move_to (cr, x, y);
+	cairo_rel_line_to (cr, 0, h);
+	cairo_rel_line_to (cr, w, 0);
+	cairo_rel_line_to (cr, 0, -h);
+	cairo_close_path (cr);	
+	cairo_stroke (cr);
 	
-	/* we want the light_gc values as a start */
-	gdk_gc_copy (gc, widget->style->light_gc[GTK_STATE_SELECTED]);
-
-	values.line_width = OUTLINE_WIDTH;
-	gdk_gc_set_values (gc, &values, GDK_GC_LINE_WIDTH);
-
-	return gc;
+	/* shadow */
+	cairo_set_source_rgba (cr, 0, 0, 0, 0.04);
+		
+	cairo_move_to (cr, x + OUTLINE_WIDTH, y + h + OUTLINE_WIDTH);
+	cairo_rel_line_to (cr, w, 0);
+	cairo_rel_line_to (cr, 0, -h);
+	cairo_stroke (cr);  	      
 }
-
 
 static gboolean
 glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
@@ -740,6 +748,7 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 	GtkWidget *child;
 	gint x, y, w, h;
 	gint border_width;
+	cairo_t *cr;
 
 	layout = GLADE_DESIGN_LAYOUT (widget);
 
@@ -763,13 +772,12 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 		w = child->allocation.width + OUTLINE_WIDTH;
 		h = child->allocation.height + OUTLINE_WIDTH;
 
-		gc = create_outline_gc (widget);
-
-		/* draw outline around child */
-		gdk_draw_rectangle (widget->window,
-				    gc,
-				    FALSE,
-				    x, y, w, h);
+		/* draw frame */
+		cr = gdk_cairo_create (widget->window);
+		
+		draw_frame (widget, cr, x, y, w, h);
+		
+		cairo_destroy (cr);
 
 		/* draw a filled rectangle in case child does not draw 
 		 * it's own background (a GTK_WIDGET_NO_WINDOW child). */
@@ -778,8 +786,6 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 				    TRUE,
 				    x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2, 
 				    w - OUTLINE_WIDTH, h - OUTLINE_WIDTH);
-
-		g_object_unref (gc);
 	}	
 
 	return TRUE;
