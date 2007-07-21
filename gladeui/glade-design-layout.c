@@ -731,13 +731,15 @@ draw_frame (GtkWidget *widget,
 	cairo_close_path (cr);	
 	cairo_stroke (cr);
 	
-	/* shadow */
+#if 0
+	/* shadow effect */
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.04);
 		
 	cairo_move_to (cr, x + OUTLINE_WIDTH, y + h + OUTLINE_WIDTH);
 	cairo_rel_line_to (cr, w, 0);
 	cairo_rel_line_to (cr, 0, -h);
 	cairo_stroke (cr);  	      
+#endif
 }
 
 static gboolean
