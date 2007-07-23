@@ -1580,7 +1580,6 @@ void
 glade_command_delete(GList *widgets)
 {
 	GladeWidget *widget;
-	GList       *placehodlers;
 	
 	g_return_if_fail (widgets != NULL);
 
@@ -1689,7 +1688,6 @@ void
 glade_command_dnd(GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
 	GladeWidget *widget;
-	GList       *placeholders;
 	
 	g_return_if_fail (widgets != NULL);
 	

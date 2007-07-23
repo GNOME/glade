@@ -1,4 +1,32 @@
 ===========
+Glade 3.3.2
+===========
+    - Bindings work has been moved out into a branch
+    - Added toolbar item for "Drag/Resize" mode - Tristan Van Berkom
+    - Added history lists to undo/redo buttons - Tristan Van Berkom
+    - Current notebook page is more consistant (bug 394382) - Tristan Van Berkom
+    - Use gnome-common macros in configure.ac/Makefiles (bug 399134) - Christian Persch
+    - Fixed lots of compiler warnings from new macros - Vincent Geddes
+    - Added a bunch of translatable/displayable values for new enumerations/values - Juan Pablo Ugarte
+    - Display some specially marked backend actions in the toolbar - Juan Pablo Ugarte
+    - Attempt to reload an open project if the user tries to open it again (bug 450483) - Vincent Geddes
+    - Monitor and update project saved state wrt undo (bug 392324) - Vincent Geddes
+    - Properly handle dgettext() operations (bug 453105) - Christian Persch)
+    - Fixed some hangups (bug 453253) - Juan Pablo Ugarte
+    - Remove user name and host from comment in glade file (bug 453174) - Vincent Geddes
+    - Now the palette/inspector and property editor are "dockable" (just 
+      dock/undock via view menu, nothing fancy) - Tristan Van Berkom
+    - Warn about missing displayable values for enums/flags - Juan Pablo Ugarte
+    - Fixed glitch with changing notebook pages (bug 456013) - Tristan Van Berkom
+    - Implemented "Add/Remove Parent" context menu items for all widgets (bug 343786) - Tristan Van Berkom
+    - Added "Remove Slot" action for placeholders inside GtkBoxes (closes bug 387963) - Tristan Van Berkom
+    - Markup & mnemonics in labels load properly now (bug 396446) - Tristan Van Berkom
+    - Context menu for placeholders now have actions that apply to the widget they are in,
+      while "paste" remains contextual to the placeholder in question - Tristan Van Berkom
+    - Misc bug fixes 453105 453107 453111 453110 406039 457224 457222... 
+
+
+===========
 Glade 3.3.1
 ===========
     - Insert before/after & Remove page context menu actions for GtkNotebook (bug 438881) - Juan Pablo Ugarte

@@ -1,3 +1,7 @@
+2006-06-23  Tristan Van Berkom <tvb@gnome.org>
+
+	* NEWS, configure.ac: Rolling 3.3.2
+
 2006-07-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch]: 
@@ -267,10 +271,10 @@
 	  gladeui/Makefile.am: Cygwin build fixes. Only apply "-mwindows" ld flag
 	  if we are in unstable development.
 	  
-        * configure.ac, plugins/gtk+/Makefile.am, plugins/gtk+/glade-gtk.h, 
-          plugins/gnome/glade-gnome.h, plugins/gnome/Makefile.am: Substitute PLUGINS_WARN_CFLAGS
-          as the warning flags for compiling plugins. Don't use the warning flags
-          defined by GNOME_COMPILE_WARNINGS. Delete plugins/gnome/glade-gnome.h.
+	* configure.ac, plugins/gtk+/Makefile.am, plugins/gtk+/glade-gtk.h, 
+	  plugins/gnome/glade-gnome.h, plugins/gnome/Makefile.am: Substitute PLUGINS_WARN_CFLAGS
+	  as the warning flags for compiling plugins. Don't use the warning flags
+	  defined by GNOME_COMPILE_WARNINGS. Delete plugins/gnome/glade-gnome.h.
 
 2007-06-24  Vincent Geddes <vgeddes@gnome.org>
 
@@ -332,7 +336,7 @@
 	* src/glade-project-window.c: Refresh active GladeDesignView upon
 	  update_ui calls (fixes occasional outline glitch in the design-view).
 
-        * doc/gladeui.types: Removed glade_project_view_get_type added
+	* doc/gladeui.types: Removed glade_project_view_get_type added
 	glade_inspector_get_type
 
 2006-06-20  Vincent Geddes <vincent.geddes@gmail.com>
