@@ -549,6 +549,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkLabel" generic-name="label" _title="Label">
+      <post-create-function>glade_gtk_label_post_create</post-create-function>
       <set-property-function>glade_gtk_label_set_property</set-property-function>
 
       <properties>

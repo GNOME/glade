@@ -2724,6 +2724,7 @@ glade_widget_property_get (GladeWidget      *widget,
 	va_list        vl;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 	{
@@ -2754,6 +2755,7 @@ glade_widget_property_set (GladeWidget      *widget,
 	va_list        vl;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 	{
@@ -2784,6 +2786,7 @@ glade_widget_pack_property_get (GladeWidget      *widget,
 	va_list        vl;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 	{
@@ -2814,6 +2817,7 @@ glade_widget_pack_property_set (GladeWidget      *widget,
 	va_list        vl;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 	{
@@ -2846,6 +2850,7 @@ glade_widget_property_set_sensitive (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 	{
@@ -2876,6 +2881,7 @@ glade_widget_pack_property_set_sensitive (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 	{
@@ -2905,6 +2911,7 @@ glade_widget_property_set_enabled (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 	{
@@ -2933,6 +2940,7 @@ glade_widget_pack_property_set_enabled (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 	{
@@ -2964,6 +2972,7 @@ glade_widget_property_set_save_always (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 	{
@@ -2995,6 +3004,7 @@ glade_widget_pack_property_set_save_always (GladeWidget      *widget,
 	GladeProperty *property;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (id_property != NULL, FALSE);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 	{
@@ -3002,6 +3012,69 @@ glade_widget_pack_property_set_save_always (GladeWidget      *widget,
 		return TRUE;
 	}
 	return FALSE;
+}
+
+/**
+ * glade_widget_property_string:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @value: the #GValue to print or %NULL
+ *
+ * Creates a printable string representing @id_property in
+ * @widget, if @value is specified it will be used in place
+ * of @id_property's real value (this is a convinience
+ * function to print/debug properties usually from plugin
+ * backends).
+ *
+ * Returns: A newly allocated string representing @id_property
+ */
+gchar *
+glade_widget_property_string (GladeWidget      *widget,
+			      const gchar      *id_property,
+			      const GValue     *value)
+{
+	GladeProperty *property;
+	gchar         *ret_string = NULL;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (id_property != NULL, NULL);
+
+	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
+		ret_string =
+			glade_property_class_make_string_from_gvalue (property->klass,
+								      value ? value : property->value);
+
+	return ret_string;
+}
+
+/**
+ * glade_widget_pack_property_string:
+ * @widget: a #GladeWidget
+ * @id_property: a string naming a #GladeProperty
+ * @value: the #GValue to print or %NULL
+ *
+ * Same as glade_widget_property_string() but for packing
+ * properties.
+ *
+ * Returns: A newly allocated string representing @id_property
+ */
+gchar *
+glade_widget_pack_property_string (GladeWidget      *widget,
+				   const gchar      *id_property,
+				   const GValue     *value)
+{
+	GladeProperty *property;
+	gchar         *ret_string = NULL;
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (id_property != NULL, NULL);
+
+	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
+		ret_string =
+			glade_property_class_make_string_from_gvalue (property->klass,
+								      value ? value : property->value);
+
+	return ret_string;
 }
 
 

@@ -316,6 +316,15 @@ gboolean                glade_widget_pack_property_set_save_always (GladeWidget 
 								    const gchar      *id_property,
 								    gboolean          setting);
 
+gchar                  *glade_widget_property_string        (GladeWidget      *widget,
+							     const gchar      *id_property,
+							     const GValue     *value);
+
+
+gchar                  *glade_widget_pack_property_string   (GladeWidget      *widget,
+							     const gchar      *id_property,
+							     const GValue     *value);
+
 /*******************************************************************************
                                   Accessors
  *******************************************************************************/

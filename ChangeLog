@@ -1,3 +1,13 @@
+2006-07-23  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.[ch]: Adding convenience funcs that help with
+	  debugging property values in plugins: glade_widget_property_string(),
+	  glade_widget_pack_property_string().
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Reset label/markup/use-underline 
+	  properties at realize time, this fixes load time glitches with markup 
+	  and mnemonics (bug 396446).
+
 2007-07-20  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-design-layout.c:

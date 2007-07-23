@@ -5753,7 +5753,7 @@ glade_gtk_label_set_label (GObject *object, const GValue *value)
 {
 	GladeWidget *glabel;
 	gboolean use_markup = FALSE, use_underline = FALSE;
-	
+
 	g_return_if_fail (GTK_IS_LABEL (object));
 	glabel = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (glabel));
@@ -5768,6 +5768,29 @@ glade_gtk_label_set_label (GObject *object, const GValue *value)
 	glade_widget_property_get (glabel, "use-underline", &use_underline);
 	if (use_underline)
 		gtk_label_set_use_underline (GTK_LABEL (object), use_underline);
+}
+
+static void
+ensure_label_props (GObject            *label,
+		    GladeWidgetAdaptor *adaptor)
+{
+	GladeWidget   *gwidget = glade_widget_get_from_gobject (label);
+	GladeProperty *prop    = glade_widget_get_property (gwidget, "label");
+
+	glade_gtk_label_set_label (label, prop->value);
+}
+
+void
+glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor, 
+			     GObject            *object, 
+			     GladeCreateReason   reason)
+{
+	/* For some reason labels dont show up with markup
+	 * and mnemonic underlines in the runtime at load time,
+	 * resetting them at realize time fixes this glitch.
+	 */
+	g_signal_connect_after (G_OBJECT (object), "realize",
+				G_CALLBACK (ensure_label_props), adaptor);
 }
 
 void
