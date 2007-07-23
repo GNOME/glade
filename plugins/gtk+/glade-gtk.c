@@ -1137,11 +1137,62 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 	glade_widget_property_set (gbox, "size", num_children);
 	
 	gchild = glade_widget_get_from_gobject (child);
+
+	/* The "Remove Slot" operation only makes sence on placeholders,
+	 * otherwise its a "Delete" operation on the child widget.
+	 */
+	if (gchild)
+		glade_widget_remove_pack_action (gchild, "remove_slot");
 	
 	/* Packing props arent around when parenting during a glade_widget_dup() */
 	if (gchild && gchild->packing_properties)
 		glade_widget_pack_property_set (gchild, "position", num_children - 1);
 }
+
+void
+glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
+			    GObject            *object, 
+			    GObject            *child)
+{
+	GladeWidget *gbox;
+	gint size;
+	
+	g_return_if_fail (GTK_IS_BOX (object));
+	g_return_if_fail (GTK_IS_WIDGET (child));
+	
+	gbox = glade_widget_get_from_gobject (object);
+	
+	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
+
+	if (glade_widget_superuser () == FALSE)
+	{
+		glade_widget_property_get (gbox, "size", &size);
+		glade_widget_property_set (gbox, "size", size);
+	}
+}
+
+
+void
+glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
+			     GObject            *container,
+			     GObject            *current,
+			     GObject            *new_widget)
+{
+	GladeWidget  *gchild;
+
+	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
+							   container,
+							   current,
+							   new_widget);
+
+	if ((gchild = glade_widget_get_from_gobject (new_widget)) != NULL)
+		/* The "Remove Slot" operation only makes sence on placeholders,
+		 * otherwise its a "Delete" operation on the child widget.
+		 */
+		glade_widget_remove_pack_action (gchild, "remove_slot");
+
+}
+
 
 GObject *
 glade_gtk_box_get_internal_child (GladeWidgetAdaptor *adaptor,
@@ -1172,28 +1223,6 @@ glade_gtk_box_get_internal_child (GladeWidgetAdaptor *adaptor,
 	return child;
 }
 
-void
-glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
-			    GObject            *object, 
-			    GObject            *child)
-{
-	GladeWidget *gbox;
-	gint size;
-	
-	g_return_if_fail (GTK_IS_BOX (object));
-	g_return_if_fail (GTK_IS_WIDGET (child));
-	
-	gbox = glade_widget_get_from_gobject (object);
-	
-	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
-
-	if (glade_widget_superuser () == FALSE)
-	{
-		glade_widget_property_get (gbox, "size", &size);
-		glade_widget_property_set (gbox, "size", size);
-	}
-}
-
 static void
 glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 						   GObject *container,
@@ -1222,6 +1251,13 @@ glade_gtk_box_child_action_activate (GladeWidgetAdaptor *adaptor,
 								   object, "size",
 								   _("Insert placeholder to %s"),
 								   FALSE, FALSE);
+	}
+	else if (strcmp (action_path, "remove_slot") == 0)
+	{
+		glade_gtk_box_notebook_child_insert_remove_action (adaptor, container,
+								   object, "size",
+								   _("Remove placeholder from %s"),
+								   TRUE, FALSE);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,

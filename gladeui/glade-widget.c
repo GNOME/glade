@@ -136,11 +136,28 @@ glade_widget_add_child_impl (GladeWidget  *widget,
 	 */
 	glade_widget_set_parent (child, widget);
 
+	/* Set packing actions first so we have access from the plugin
+	 */
+	glade_widget_set_packing_actions (child, widget);
+
 	glade_widget_adaptor_add 
 		(widget->adaptor, widget->object, child->object);
 
+	/* XXX FIXME:
+	 * We have a fundamental flaw here, we set packing props
+	 * after parenting the widget so that we can introspect the
+	 * values setup by the runtime widget, in which case the plugin
+	 * cannot access its packing properties and set them sensitive
+	 * or connect to thier signals etc. maybe its not so important
+	 * but its a flaw worthy of note, some kind of double pass api
+	 * would be needed to accomadate this.
+	 */
+
+	
+	/* Setup packing properties here so we can introspect the new
+	 * values from the backend.
+	 */
 	glade_widget_set_packing_properties (child, widget);
-	glade_widget_set_packing_actions (child, widget);
 }
 
 static void
@@ -159,7 +176,15 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	GladeWidget *gnew_widget = glade_widget_get_from_gobject (new_object);
 	GladeWidget *gold_widget = glade_widget_get_from_gobject (old_object);
 
-	if (gnew_widget) gnew_widget->parent = widget;
+	if (gnew_widget)
+	{
+		gnew_widget->parent = widget;
+
+		/* Set packing actions first so we have access from the plugin
+		 */
+		glade_widget_set_packing_actions (gnew_widget, widget);
+	}
+
 	if (gold_widget && gold_widget != gnew_widget)
 		gold_widget->parent = NULL;
 
@@ -171,10 +196,7 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 	 * values from the backend.
 	 */
 	if (gnew_widget)
-	{
 		glade_widget_set_packing_properties (gnew_widget, widget);
-		glade_widget_set_packing_actions (gnew_widget, widget);
-	}
 }
 
 static void
