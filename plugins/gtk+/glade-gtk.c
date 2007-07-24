@@ -489,6 +489,7 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 				   GtkWidget          *new_widget)
 {
 	GParamSpec **param_spec;
+	GladePropertyClass *pclass;
 	GValue *value;
 	guint nproperties;
 	guint i;
@@ -500,7 +501,8 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 		(G_OBJECT_GET_CLASS (container), &nproperties);
 	value = g_malloc0 (sizeof(GValue) * nproperties);
 
-	for (i = 0; i < nproperties; i++) {
+	for (i = 0; i < nproperties; i++) 
+	{
 		g_value_init (&value[i], param_spec[i]->value_type);
 		gtk_container_child_get_property
 			(GTK_CONTAINER (container), current, param_spec[i]->name, &value[i]);
@@ -509,7 +511,23 @@ glade_gtk_container_replace_child (GladeWidgetAdaptor *adaptor,
 	gtk_container_remove (GTK_CONTAINER (container), current);
 	gtk_container_add (GTK_CONTAINER (container), new_widget);
 
-	for (i = 0; i < nproperties; i++) {
+	for (i = 0; i < nproperties; i++) 
+	{
+		/* If the added widget is a placeholder then we
+		 * want to keep all the "tranfer-on-paste" properties
+		 * as default so that it looks fresh (transfer-on-paste
+		 * properties dont effect the position/slot inside a 
+		 * contianer)
+		 */
+		if (GLADE_IS_PLACEHOLDER (new_widget))
+		{
+			pclass = glade_widget_adaptor_get_pack_property_class
+				(adaptor, param_spec[i]->name);
+
+			if (pclass && pclass->transfer_on_paste)
+				continue;
+		}
+
 		gtk_container_child_set_property
 			(GTK_CONTAINER (container), new_widget, param_spec[i]->name, &value[i]);
 	}

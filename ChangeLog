@@ -19,7 +19,10 @@
 
 	* gladeui/glade-project.c: Dont add objects to a project that already contains the said object.
 
-	* plugins/gtk+/glade-gtk.c: Add tab labels by default to notebook pages (bug 345438)
+	* plugins/gtk+/glade-gtk.c: 
+	  - Add tab labels by default to notebook pages (bug 345438)
+	  - Dont transfer "transfer-on-paste" properties to newly added placeholders
+	    in glade_gtk_container_replace_child (fixes bug 459953)
 
 2006-06-23  Tristan Van Berkom <tvb@gnome.org>
 
