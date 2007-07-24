@@ -3332,8 +3332,15 @@ glade_widget_event_private (GtkWidget   *widget,
 	GtkWidget *layout = widget;
 
 	/* Find the parenting layout container */
-	while (!GLADE_IS_DESIGN_LAYOUT (layout))
+	while (layout && !GLADE_IS_DESIGN_LAYOUT (layout))
 		layout = layout->parent;
+
+	/* Event outside the logical heirarchy, could be a menuitem
+	 * or other such popup window, we'll presume to send it directly
+	 * to the GladeWidget that connected here.
+	 */
+	if (!layout)
+		return glade_widget_event (gwidget, event);
 
 	/* Let the parenting GladeDesignLayout decide which GladeWidget to
 	 * marshall this event to.

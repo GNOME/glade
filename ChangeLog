@@ -11,9 +11,11 @@
 	* gladeui/glade-utils.c: Made glade_util_queue_draw_nodes --> glade_util_draw_selection_nodes()
 	  (without the idle timeout now)
 
-	* gladeui/glade-widget.c, gladeui/glade-placeholder.c: Use glade_util_draw_selection_nodes(),
-	  (selection wasnt being drawn on some widgets, now it's working and there's less "flicker"
-	  when drag/resizing widgets too).
+	* gladeui/glade-widget.c, gladeui/glade-placeholder.c: 
+	  - Use glade_util_draw_selection_nodes(), (selection wasnt being drawn on some widgets, 
+	    now it's working and there's less "flicker" when drag/resizing widgets too).
+	  - Now child menu items are selectable (fixed event handling for widgets that are
+	    not in the logical hierarchy)
 
 	* gladeui/glade-project.c: Dont add objects to a project that already contains the said object.
 
