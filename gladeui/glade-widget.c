@@ -373,10 +373,6 @@ glade_widget_event_impl (GladeWidget *gwidget,
 			       glade_widget_signals[MOTION_NOTIFY_EVENT], 0, 
 			       event, &handled);
 		break;
-	case GDK_EXPOSE:
-	case GDK_CONFIGURE:
-		glade_util_queue_draw_nodes (((GdkEventExpose*) event)->window);
-		break;
 	default:
 		break;
 	}
@@ -1700,6 +1696,15 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 	glade_widget_set_actions (widget, adaptor);
 }
 
+static void
+expose_draw_selection (GtkWidget       *widget_gtk,
+		       GdkEventExpose  *event,
+		       GladeWidget     *gwidget)
+{
+	glade_util_draw_selection_nodes (event->window);
+}
+
+
 /* Connects a signal handler to the 'event' signal for a widget and
    all its children recursively. We need this to draw the selection
    rectangles and to get button press/release events reliably. */
@@ -1726,6 +1731,10 @@ glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk,
 		g_signal_connect (G_OBJECT (widget_gtk), "event",
 				  callback, gwidget);
 
+		g_signal_connect_after (G_OBJECT (widget_gtk), "expose-event",
+					G_CALLBACK (expose_draw_selection), gwidget);
+		
+		
 		g_object_set_data (G_OBJECT (widget_gtk),
 				   GLADE_TAG_EVENT_HANDLER_CONNECTED,
 				   GINT_TO_POINTER (1));

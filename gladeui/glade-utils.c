@@ -667,7 +667,7 @@ glade_util_get_window_positioned_in (GtkWidget *widget)
 	return widget->window;
 }
 
-static void
+void
 glade_util_draw_nodes (GdkWindow *window, GdkGC *gc,
 		       gint x, gint y,
 		       gint width, gint height)
@@ -763,17 +763,16 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
 }
 
 /**
- * glade_util_draw_nodes_idle:
+ * glade_util_draw_selection_nodes:
  * @expose_win: a #GdkWindow
  *
  * Redraws any selection nodes that intersect @expose_win. Steps through all
  * selected widgets, finds their coordinates, and calls glade_util_draw_nodes()
  * if appropriate.
  *
- * Returns: %FALSE
  */
-static gboolean
-glade_util_draw_nodes_idle (GdkWindow *expose_win)
+void
+glade_util_draw_selection_nodes (GdkWindow *expose_win)
 {
 	GtkWidget *expose_widget;
 	gint expose_win_x, expose_win_y;
@@ -782,9 +781,7 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 	GdkGC *gc;
 	GList *elem;
 
-	/* Check that the window is still alive. */
-	if (!gdk_window_is_viewable (expose_win))
-		goto out;
+	g_return_if_fail (GDK_IS_WINDOW (expose_win));
 
 	/* Find the corresponding GtkWidget */
 	gdk_window_get_user_data (expose_win, (gpointer)&expose_widget);
@@ -836,37 +833,7 @@ glade_util_draw_nodes_idle (GdkWindow *expose_win)
 			}
 		}
 	}
-
- out:
-	/* Remove the reference added in glade_util_queue_draw_nodes(). */
-	g_object_unref (G_OBJECT (expose_win));
-	
-	/* Return FALSE so the idle handler isn't called again. */
-	return FALSE;
 }
-
-#define GLADE_DRAW_NODES_IDLE_PRIORITY	GTK_PRIORITY_DEFAULT + 10
-
-/**
- * glade_util_queue_draw_nodes:
- * @window: A #GdkWindow
- *
- * This function should be called whenever a widget in the interface receives 
- * an expose event. It sets up an idle function which will redraw any selection
- * nodes that intersect the the exposed window.
- */
-void
-glade_util_queue_draw_nodes (GdkWindow *window)
-{
-	g_return_if_fail (GDK_IS_WINDOW (window));
-
-	g_idle_add_full (GLADE_DRAW_NODES_IDLE_PRIORITY,
-			 (GSourceFunc)glade_util_draw_nodes_idle,
-			 window, NULL);
-
-	g_object_ref (G_OBJECT (window));
-}
-
 
 /**
  * glade_util_add_selection:

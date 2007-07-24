@@ -71,24 +71,18 @@ void              glade_util_clear_selection  (void);
 
 GList            *glade_util_get_selection    (void);
 
-
-void              glade_util_queue_draw_nodes (GdkWindow *window);
-
+void              glade_util_draw_selection_nodes (GdkWindow *expose_win);
 
 GList            *glade_util_container_get_all_children (GtkContainer *container);
 
-
 gint              glade_util_count_placeholders    (GladeWidget *parent);
-
 
 GtkTreeIter      *glade_util_find_iter_by_widget   (GtkTreeModel *model,
 						    GladeWidget  *findme,
 						    gint          column);
 
-
 gboolean          glade_util_basenames_match       (const gchar  *path1,
 						    const gchar  *path2);
-
 
 GList            *glade_util_purify_list           (GList        *list);
 

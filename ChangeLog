@@ -8,6 +8,13 @@
 	  closed, also looks consistant with the rest of the insensitive UI with no project
 	  loaded).
 
+	* gladeui/glade-utils.c: Made glade_util_queue_draw_nodes --> glade_util_draw_selection_nodes()
+	  (without the idle timeout now)
+
+	* gladeui/glade-widget.c, gladeui/glade-placeholder.c: Use glade_util_draw_selection_nodes(),
+	  (selection wasnt being drawn on some widgets, now it's working and there's less "flicker"
+	  when drag/resizing widgets too).
+
 2006-06-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.3.2

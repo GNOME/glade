@@ -274,7 +274,7 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	gdk_draw_line (event->window, dark_gc, 0, h - 1, w - 1, h - 1);
 	gdk_draw_line (event->window, dark_gc, w - 1, 0, w - 1, h - 1);
 
-	glade_util_queue_draw_nodes (event->window);
+	glade_util_draw_selection_nodes (event->window);
 
 	return FALSE;
 }
