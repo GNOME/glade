@@ -2658,7 +2658,8 @@ glade_widget_get_adaptor (GladeWidget *widget)
 void
 glade_widget_set_project (GladeWidget *widget, GladeProject *project)
 {
-	if (widget->project != project) {
+	if (widget->project != project)
+	{
 		widget->project = project;
 		g_object_notify (G_OBJECT (widget), "project");
 	}

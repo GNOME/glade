@@ -15,6 +15,10 @@
 	  (selection wasnt being drawn on some widgets, now it's working and there's less "flicker"
 	  when drag/resizing widgets too).
 
+	* gladeui/glade-project.c: Dont add objects to a project that already contains the said object.
+
+	* plugins/gtk+/glade-gtk.c: Add tab labels by default to notebook pages (bug 345438)
+
 2006-06-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.3.2

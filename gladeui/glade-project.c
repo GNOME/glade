@@ -940,6 +940,10 @@ glade_project_add_object (GladeProject *project,
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
 
+	/* Dont add widgets that are already in the project */
+	if (glade_project_has_object (project, object))
+		return;
+		
 	/* Code body starts here */
 	reentrancy_count++;
 

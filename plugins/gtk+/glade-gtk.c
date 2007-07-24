@@ -2645,6 +2645,7 @@ glade_gtk_notebook_get_first_blank_page (GtkNotebook *notebook)
 static void
 glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 {
+	static GladeWidgetAdaptor *wadaptor = NULL;
 	GladeWidget *widget;
 	GtkNotebook *notebook;
 	GtkWidget   *child_widget, *tab_widget;
@@ -2659,6 +2660,9 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 
 	new_size = g_value_get_int (value);
 
+	if (wadaptor == NULL)
+		wadaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LABEL);
+	
 	/* Ensure base size of notebook */
 	if (glade_widget_superuser () == FALSE)
 	{
@@ -2666,13 +2670,32 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 		{
 			gint position = glade_gtk_notebook_get_first_blank_page (notebook);
 			GtkWidget *placeholder     = glade_placeholder_new ();
-			GtkWidget *tab_placeholder = glade_placeholder_new ();
+
+			GladeWidget *glabel =
+				glade_widget_adaptor_create_widget
+				(wadaptor, FALSE,
+				 "parent", widget, 
+				 "project", glade_widget_get_project (widget), 
+				 NULL);
+			gchar *str = g_strdup_printf ("page %d", i + 1);
+			glade_widget_property_set (glabel, "label", str);
+			g_free (str);
+			
+			g_object_set_data (glabel->object, "special-child-type", "tab");
+			gtk_widget_show (GTK_WIDGET (glabel->object));
 			
 			gtk_notebook_insert_page (notebook, placeholder,
 						  NULL, position);
-			
-			gtk_notebook_set_tab_label (notebook, placeholder, tab_placeholder);
-			g_object_set_data (G_OBJECT (tab_placeholder), "special-child-type", "tab");
+
+			/* Must tell the project that were adding a widget (so that
+			 * saving works properly & it appears in the inspector properly)
+			 */
+			glade_project_add_object (glade_widget_get_project (widget), NULL, glabel->object);
+
+			/* Must pass through GladeWidget api so that packing props
+			 * are correctly assigned.
+			 */
+			glade_widget_add_child (widget, glabel, FALSE);
 		}
 	}
 
@@ -2767,7 +2790,8 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
 	notebook = GTK_NOTEBOOK (object);
 
 	num_page = gtk_notebook_get_n_pages (notebook);
-
+	gwidget = glade_widget_get_from_gobject (object);
+	
 	/* Just append pages blindly when loading/dupping
 	 */
 	if (glade_widget_superuser ())
@@ -2784,7 +2808,6 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
 		{
 			gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 			
-			gwidget = glade_widget_get_from_gobject (object);
 			glade_widget_property_set (gwidget, "pages", num_page + 1);
 			
 			gwidget = glade_widget_get_from_gobject (child);
@@ -4607,7 +4630,7 @@ glade_gtk_menu_shell_delete_child (GladeBaseEditor *editor,
 	GObject *item = glade_widget_get_object (gparent);
 	GtkWidget *submenu = NULL;
 	GList list = {0, };
-	gint n_children;
+	gint n_children = 0;
 	
 	if (GTK_IS_MENU_ITEM (item) &&
 	    (submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (item))))
