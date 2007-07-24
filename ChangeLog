@@ -1,3 +1,13 @@
+2006-06-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive
+	  according to whether there is a project loaded or not
+
+	* gladeui/glade-app.c: Unset editor widget and set insensitive when no project is
+	  loaded (fixes segfaults from editing widgets that dont exist when project is
+	  closed, also looks consistant with the rest of the insensitive UI with no project
+	  loaded).
+
 2006-06-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.3.2

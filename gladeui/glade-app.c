@@ -938,8 +938,9 @@ glade_app_add_project (GladeProject *project)
 	
 	glade_app_set_project (project);
 
-	/* XXX I think the palette should detect this by itself */
+	/* XXX I think the palette & editor should detect this by itself */
 	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->editor), TRUE);
 
 }
 
@@ -960,8 +961,14 @@ glade_app_remove_project (GladeProject *project)
 	/* If no more projects */
 	if (app->priv->projects == NULL)
 	{
-		/* XXX I think the palette should detect this. */
+		/* XXX I think the palette & editor should detect this. */
 		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
+
+		/* set loaded widget to NULL first so that we dont mess
+		 * around with sensitivity of the editor children.
+		 */
+		glade_editor_load_widget (app->priv->editor, NULL);
+		gtk_widget_set_sensitive (GTK_WIDGET (app->priv->editor), FALSE);
 	} 
 	else
 		glade_app_set_project (g_list_last (app->priv->projects)->data);

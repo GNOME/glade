@@ -618,7 +618,9 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	gchar *text;
 	gint num;
 
-	g_return_if_fail (GLADE_IS_PROJECT (project));
+	/* This is sometimes called with a NULL project (to make the label
+	 * insensitive with no projects loaded)
+	 */
 	g_return_if_fail (GLADE_IS_WINDOW (window));
 
 	label = window->priv->label;
@@ -627,8 +629,10 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	 * the currently active project.
 	 */
 	if (glade_app_get_editor() &&
-	    (project == glade_app_get_project ()))
+	    project && (project == glade_app_get_project ()))
 	{
+		gtk_widget_set_sensitive (GTK_WIDGET (label), TRUE);
+
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
 		
@@ -653,6 +657,13 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 			gtk_label_set_text (label, _("Properties"));
 		}
 	}
+	else if (glade_app_get_editor ())
+	{
+		gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+		gtk_label_set_text (label, _("Properties"));
+	}
+	
+		
 }
 
 static GladeDesignView *
@@ -1711,6 +1722,8 @@ notebook_tab_added_cb (GtkNotebook *notebook,
 
 	refresh_title (window);
 
+	project_selection_changed_cb (glade_app_get_project (), window);
+		
 	if (window->priv->num_tabs > 0)
 		gtk_action_group_set_sensitive (window->priv->project_actions, TRUE);
 
@@ -1750,6 +1763,8 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 
 	refresh_title (window);
 
+	project_selection_changed_cb (glade_app_get_project (), window);
+		
 	if (window->priv->active_view)
 		set_sensitivity_according_to_project (window, glade_design_view_get_project (window->priv->active_view));
 	else
