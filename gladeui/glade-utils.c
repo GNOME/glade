@@ -667,7 +667,7 @@ glade_util_get_window_positioned_in (GtkWidget *widget)
 	return widget->window;
 }
 
-void
+static void
 glade_util_draw_nodes (GdkWindow *window, GdkGC *gc,
 		       gint x, gint y,
 		       gint width, gint height)
@@ -1376,6 +1376,20 @@ glade_util_class_implements_interface (GType class_type,
 }
 
 
+static GModule *
+try_load_library (const gchar *library_path,
+		  const gchar *library_name)
+{
+	GModule *module;
+	gchar   *path;
+
+	path = g_module_build_path (library_path, library_name);
+	module = g_module_open (path, G_MODULE_BIND_LAZY);
+	g_free (path);
+
+	return module;
+}
+
 /**
  * glade_util_load_library:
  * @library_name: name of the library
@@ -1391,19 +1405,34 @@ glade_util_class_implements_interface (GType class_type,
 GModule *
 glade_util_load_library (const gchar *library_name)
 {
-	gchar   *path;
-	GModule *module;
-
-	path = g_module_build_path (glade_app_get_modules_dir (), library_name);
-
-	if ((module = g_module_open (path, G_MODULE_BIND_LAZY)) == NULL)
+	GModule      *module = NULL;
+	const gchar  *default_paths[] = { glade_app_get_modules_dir (), "/lib", "/usr/lib", "/usr/local/lib", NULL };
+	const gchar  *search_path;
+	gchar       **split;
+	gint          i;
+	
+	if ((search_path = g_getenv (GLADE_ENV_MODULE_PATH)) != NULL)
 	{
-		g_warning (_("Unable to open the module %s (%s)."),
-			   path, g_module_error());
+		if ((split = g_strsplit (search_path, ":", 0)) != NULL)
+		{
+			for (i = 0; split[i] != NULL; i++)
+				if ((module = try_load_library (split[i], library_name)) != NULL)
+					break;
+
+			g_strfreev (split);
+		}
 	}
 
-	g_free (path);
+	if (!module)
+	{
+		for (i = 0; default_paths[i] != NULL; i++)
+			if ((module = try_load_library (default_paths[i], library_name)) != NULL)
+				break;
+	}
 
+	if (!module)
+		g_critical ("Unable to load module '%s' from any search paths", library_name);
+	
 	return module;
 }
 

@@ -8,6 +8,15 @@
 	  (to counter the evil effects of gtk+ bug 460272, which made it impossible to
 	  set the label-xalign to 0.5).
 
+	* gladeui/glade-catalog.c: Loop through user defined search paths and load
+	  catalogs from there first.
+
+	* gladeui/glade-utils.c: Loop through user defined search paths for modules,
+	  then fallback on the compile time default, then fallback on default system
+	  library paths.
+
+	* gladeui/glade-app.h: Define env variables GLADE_MODULE_PATH & GLADE_CATALOG_PATH
+
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive

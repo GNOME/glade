@@ -438,52 +438,79 @@ catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 	return TRUE;
 }
 
-const GList *
-glade_catalog_load_all (void)
+static GList *
+catalogs_from_path (GList *catalogs, const gchar *path)
 {
+	GladeCatalog *catalog;
 	GDir         *dir;
 	GError       *error = NULL;
 	const gchar  *filename;
-	GList        *catalogs, *l;
-	GladeCatalog *catalog;
-	
-	/* Read all files in catalog dir */
-	dir = g_dir_open (glade_app_get_catalogs_dir (), 0, &error);
-	if (!dir) 
+
+	if ((dir = g_dir_open (path, 0, &error)) != NULL)
 	{
-		g_warning ("Failed to open catalog directory: %s",
-			   error->message);
-		return NULL;
+		while ((filename = g_dir_read_name (dir)))
+		{
+			gchar *catalog_filename;
+			
+			if (!g_str_has_suffix (filename, ".xml")) 
+				continue;
+
+			catalog_filename = g_build_filename (path, filename, NULL);
+			catalog = catalog_open (catalog_filename);
+			g_free (catalog_filename);
+
+			if (catalog)
+			{
+				/* Verify that we are not loading the same catalog twice !
+				 */
+				if (!g_list_find_custom (catalogs, catalog->name,
+							 (GCompareFunc)catalog_find_by_name))
+					catalogs = g_list_prepend (catalogs, catalog);
+				else
+					catalog_destroy (catalog);
+			}
+			else
+				g_warning ("Unable to open the catalog file %s.\n", filename);
+		}
+	}
+	else
+		g_warning ("Failed to open catalog directory '%s': %s", path, error->message);
+	
+
+	return catalogs;
+}
+
+const GList *
+glade_catalog_load_all (void)
+{
+	GList         *catalogs = NULL, *l;
+	GladeCatalog  *catalog;
+	const gchar   *search_path;
+	gchar        **split;
+	gint           i;
+	
+	/* First load catalogs from user specified directories ... */
+	if ((search_path = g_getenv (GLADE_ENV_CATALOG_PATH)) != NULL)
+	{
+		if ((split = g_strsplit (search_path, ":", 0)) != NULL)
+		{
+			for (i = 0; split[i] != NULL; i++)
+				catalogs = catalogs_from_path (catalogs, split[i]);
+
+			g_strfreev (split);
+		}
 	}
 
+	/* ... Then load catalogs from standard install directory */
+	catalogs = catalogs_from_path (catalogs, glade_app_get_catalogs_dir ());
+	
 	/* Catalogs need dependancies, most catalogs depend on
 	 * the gtk+ catalog, but some custom toolkits may depend
 	 * on the gnome catalog for instance.
 	 */
-	catalogs = NULL;
-	while ((filename = g_dir_read_name (dir)))
-	{
-		gchar *catalog_filename;
-
-		if (!g_str_has_suffix (filename, ".xml")) 
-			continue;
-
-		catalog_filename = g_build_filename (glade_app_get_catalogs_dir (),
-						     filename, NULL);
-		catalog = catalog_open (catalog_filename);
-		g_free (catalog_filename);
-
-		if (catalog) 
-			catalogs = g_list_prepend (catalogs, catalog);
-		else
-			g_warning ("Unable to open the catalog file %s.\n", 
-				   filename);
-	}
-	g_dir_close (dir);
-
-	/* After sorting, execute init function and then load */
 	catalogs = catalog_sort (catalogs);
 	
+	/* After sorting, execute init function and then load */
 	for (l = catalogs; l; l = l->next)
 	{
 		catalog = l->data;

@@ -38,6 +38,9 @@ G_BEGIN_DECLS
 
 #define GLADE_TYPE_POINTER_MODE   (glade_pointer_mode_get_type())
 
+#define GLADE_ENV_CATALOG_PATH    "GLADE_CATALOG_PATH"
+#define GLADE_ENV_MODULE_PATH     "GLADE_MODULE_PATH"
+
 typedef struct _GladeApp         GladeApp;
 typedef struct _GladeAppPrivate  GladeAppPrivate;
 typedef struct _GladeAppClass    GladeAppClass;
@@ -155,12 +158,12 @@ void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
 void               glade_app_update_instance_count  (GladeProject *project);
 
  
-GtkWidget 	 *glade_app_undo_button_new (void);
+GtkWidget         *glade_app_undo_button_new (void);
  
-GtkWidget 	 *glade_app_redo_button_new (void);
+GtkWidget         *glade_app_redo_button_new (void);
 
  
-GList            *glade_app_get_selection (void);
+GList             *glade_app_get_selection (void);
 
 
 /* These handle selection on a global scope and take care
