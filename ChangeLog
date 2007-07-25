@@ -4,6 +4,10 @@
 	  (needed to destroy the added tab label project widget and remove it from the
 	  project).
 
+	* plugins/gtk+/gtk+.xml.in: Set "label-xalign" of GtkFrame to be "save-always"
+	  (to counter the evil effects of gtk+ bug 460272, which made it impossible to
+	  set the label-xalign to 0.5).
+
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive
