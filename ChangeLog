@@ -17,6 +17,12 @@
 
 	* gladeui/glade-app.h: Define env variables GLADE_MODULE_PATH & GLADE_CATALOG_PATH
 
+	* gladeui/glade-xml-utils.h: Added GLADE_TAG_PARENT
+
+	* gladeui/glade-widget-adaptor.c: Made it possible to declare a widget class in the
+	  catalog without giving a real type, only automatically derive from a type specified
+	  in the catalog (refit Muntyan's patch from bug 352714).
+
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive

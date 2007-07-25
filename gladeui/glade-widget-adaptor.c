@@ -1491,6 +1491,31 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
 	}
 }
 
+static GType
+generate_type (const char *name, 
+	       const char *parent_name)
+{
+	GType parent_type;
+	GTypeQuery query;
+	GTypeInfo *type_info;
+	
+	g_return_val_if_fail (name != NULL, 0);
+	g_return_val_if_fail (parent_name != NULL, 0);
+	
+	parent_type = glade_util_get_type_from_name (parent_name, FALSE);
+	g_return_val_if_fail (parent_type != 0, 0);
+	
+	g_type_query (parent_type, &query);
+	g_return_val_if_fail (query.type != 0, 0);
+	
+	type_info = g_new0 (GTypeInfo, 1);
+	type_info->class_size = query.class_size;
+	type_info->instance_size = query.instance_size;
+	
+	return g_type_register_static (parent_type, name, type_info, 0);
+}
+
+
 /**
  * glade_widget_adaptor_from_catalog:
  * @class_node: A #GladeXmlNode
@@ -1515,7 +1540,7 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 {
 	GladeWidgetAdaptor *adaptor = NULL;
 	gchar              *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name, *func_name;
-	gchar              *title, *translated_title;
+	gchar              *title, *translated_title, *parent_name;
 	GType               object_type, adaptor_type, parent_type;
 	GWADerivedClassData data;
 	
@@ -1530,12 +1555,30 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	     (class_node, GLADE_TAG_NAME, NULL)) == NULL)
 		return NULL;
 
-	/* get the object type directly by function, if possible, else by name hack */
-	if ((func_name = glade_xml_get_property_string (class_node, GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
+	/* Either get the instance type by:
+	 *
+	 * - Autosubclassing a specified parent type (a fake widget class)
+	 * - parsing the _get_type() function directly from the catalog
+	 * - deriving foo_bar_get_type() from the name FooBar and loading that.
+	 */
+	if ((parent_name = glade_xml_get_property_string (class_node, GLADE_TAG_PARENT)) != NULL)
+	{
+		if (!glade_widget_adaptor_get_by_name (parent_name))
+		{
+			g_warning ("Trying to define class '%s' for parent class '%s', but parent class '%s' "
+				   "is not registered", name, parent_name, parent_name);
+			g_free (name);
+			g_free (parent_name);
+			return NULL;
+		}
+		object_type = generate_type (name, parent_name);
+		g_free (parent_name);
+	}
+	else if ((func_name = glade_xml_get_property_string (class_node, GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
 		object_type = glade_util_get_type_from_name (func_name, TRUE);
 	else
 		object_type = glade_util_get_type_from_name (name, FALSE);
-		
+	
 	if (object_type == 0)
 	{
 		g_warning ("Failed to load the GType for '%s'", name);

@@ -80,6 +80,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_EXPANDED                        "expanded"
 #define GLADE_TAG_GENERIC_NAME                    "generic-name"
 #define GLADE_TAG_NAME                            "name"
+#define GLADE_TAG_PARENT                          "parent"
 #define GLADE_TAG_TITLE                           "title"
 #define GLADE_TAG_ID                              "id"
 #define GLADE_TAG_KEY                             "key"
