@@ -2726,18 +2726,28 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 	 */
 	while (old_size > new_size) {
 		/* Get the last widget. */
+		GladeWidget *gtab;
 		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
 		tab_widget   = gtk_notebook_get_tab_label (notebook, child_widget);
 
-		/* 
-		 * If we got it, and its not a placeholder, remove it
-		 * from project.
+		/* Ok there shouldnt be widget in the content area, that's
+		 * the placeholder, we should clean up the project widget that
+		 * we put in the tab here though (this happens in the case where
+		 * we undo increasing the "pages" property).
 		 */
-		if (glade_widget_get_from_gobject (child_widget) ||
-		    glade_widget_get_from_gobject (tab_widget))
-			break;
-
+		if (glade_widget_get_from_gobject (child_widget))
+			g_critical ("Bug in notebook_set_n_pages()");
+		
 		gtk_notebook_remove_page (notebook, old_size-1);
+
+		/* Cleanup possible tab widgets
+		 */
+		if ((gtab = glade_widget_get_from_gobject (tab_widget)) != NULL)
+		{
+			glade_project_remove_object (glade_widget_get_project (gtab), gtab->object);
+			g_object_unref (gtab);
+		}
+
 		old_size--;
 	}
 }

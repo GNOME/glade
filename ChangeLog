@@ -1,3 +1,9 @@
+2006-06-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c: Make undoing increasing notebook size work properly
+	  (needed to destroy the added tab label project widget and remove it from the
+	  project).
+
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive
