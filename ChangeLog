@@ -1,8 +1,9 @@
 2006-06-25  Tristan Van Berkom <tvb@gnome.org>
 
-	* plugins/gtk+/glade-gtk.c: Make undoing increasing notebook size work properly
-	  (needed to destroy the added tab label project widget and remove it from the
-	  project).
+	* plugins/gtk+/glade-gtk.c: 
+	  - Make undoing increasing notebook size work properly (needed to destroy 
+	    the added tab label project widget and remove it from the project).
+	  - Disable Add/Remove parent actions on GtkToolItem, GtkMenu and GtkMenuItem.
 
 	* plugins/gtk+/gtk+.xml.in: Set "label-xalign" of GtkFrame to be "save-always"
 	  (to counter the evil effects of gtk+ bug 460272, which made it impossible to
@@ -22,6 +23,9 @@
 	* gladeui/glade-widget-adaptor.c: Made it possible to declare a widget class in the
 	  catalog without giving a real type, only automatically derive from a type specified
 	  in the catalog (refit Muntyan's patch from bug 352714).
+
+	* gladeui/glade-popup.c: Fixed placeholder menu to also include actions of the
+	  parent widget.
 
 2006-06-24  Tristan Van Berkom <tvb@gnome.org>
 

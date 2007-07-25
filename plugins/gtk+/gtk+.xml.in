@@ -331,6 +331,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
+      <constructor-function>glade_gtk_menu_item_constructor</constructor-function>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
@@ -485,10 +486,12 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkToolItem" generic-name="toolitem" title="GtkToolItem">
       <post-create-function>glade_gtk_tool_item_post_create</post-create-function>
+      <constructor-function>glade_gtk_tool_item_constructor</constructor-function>
     </glade-widget-class>
     
     <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolitem" _title="Separator Tool Item"/>
 	
+
     <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
 
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
@@ -1146,6 +1149,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
       <!-- We do not want glade_gtk_container_post_create be executed -->
+      <constructor-function>glade_gtk_menu_constructor</constructor-function>
       <post-create-function>empty</post-create-function>
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>

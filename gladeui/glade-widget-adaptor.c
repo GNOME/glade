@@ -943,7 +943,6 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 	 * the thing it that g_module_symbol() should use a function pointer
 	 * instead of a gpointer!
 	 */
-
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_CONSTRUCTOR_FUNCTION,
 					  &symbol))

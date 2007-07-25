@@ -4480,6 +4480,27 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 							       id, value);
 }
 
+/* ----------------------------- GtkMenu ------------------------------ */
+GObject *
+glade_gtk_menu_constructor (GType                  type,
+			    guint                  n_construct_properties,
+			    GObjectConstructParam *construct_properties)
+{
+	GladeWidgetAdaptor   *adaptor;
+	GObject              *ret_obj;
+	
+	ret_obj = GWA_GET_OCLASS(GTK_TYPE_CONTAINER)->constructor
+		(type, n_construct_properties, construct_properties);
+
+	adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
+
+	glade_widget_adaptor_action_remove (adaptor, "add_parent");
+	glade_widget_adaptor_action_remove (adaptor, "remove_parent");
+
+	return ret_obj;
+}
+
+
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
 glade_gtk_menu_shell_add_child (GladeWidgetAdaptor  *adaptor, 
@@ -4822,6 +4843,25 @@ glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkMenuItem(s) ------------------------------ */
+GObject *
+glade_gtk_menu_item_constructor (GType                  type,
+				 guint                  n_construct_properties,
+				 GObjectConstructParam *construct_properties)
+{
+	GladeWidgetAdaptor   *adaptor;
+	GObject              *ret_obj;
+
+	ret_obj = GWA_GET_OCLASS(GTK_TYPE_CONTAINER)->constructor
+		(type, n_construct_properties, construct_properties);
+
+	adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
+
+	glade_widget_adaptor_action_remove (adaptor, "add_parent");
+	glade_widget_adaptor_action_remove (adaptor, "remove_parent");
+
+	return ret_obj;
+}
+
 GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 				 GObject *object)
@@ -5637,6 +5677,25 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkToolItem ------------------------------ */
+GObject *
+glade_gtk_tool_item_constructor (GType                  type,
+				 guint                  n_construct_properties,
+				 GObjectConstructParam *construct_properties)
+{
+	GladeWidgetAdaptor   *adaptor;
+	GObject              *ret_obj;
+	
+	ret_obj = GWA_GET_OCLASS(GTK_TYPE_CONTAINER)->constructor
+		(type, n_construct_properties, construct_properties);
+
+	adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
+
+	glade_widget_adaptor_action_remove (adaptor, "add_parent");
+	glade_widget_adaptor_action_remove (adaptor, "remove_parent");
+
+	return ret_obj;
+}
+
 void
 glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor, 
 				 GObject            *object, 

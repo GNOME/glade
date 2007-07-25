@@ -349,16 +349,33 @@ glade_popup_create_menu (GladeWidget      *widget,
 
 
 	/* packing actions are a little different on placholders */
-	if (placeholder && placeholder->packing_actions)
+	if (placeholder)
 	{
-		GtkWidget *separator = gtk_menu_item_new ();
-		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
-		gtk_widget_show (separator);
+		if (widget->actions)
+		{
+			GtkWidget *separator = gtk_menu_item_new ();
+			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+			gtk_widget_show (separator);
 
-		glade_popup_action_populate_menu_real (popup_menu,
-						       placeholder->packing_actions,
-						       G_CALLBACK (glade_popup_menuitem_ph_packing_activated),
-						       placeholder);
+			glade_popup_action_populate_menu_real
+				(popup_menu,
+				 widget->actions,
+				 G_CALLBACK (glade_popup_menuitem_activated),
+				 widget);
+		}
+
+		if (placeholder->packing_actions)
+		{
+			GtkWidget *separator = gtk_menu_item_new ();
+			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+			gtk_widget_show (separator);
+			
+			glade_popup_action_populate_menu_real
+				(popup_menu,
+				 placeholder->packing_actions,
+				 G_CALLBACK (glade_popup_menuitem_ph_packing_activated),
+				 placeholder);
+		}
 	}
 	else if (widget->actions || (packing && widget->packing_actions))
 	{
