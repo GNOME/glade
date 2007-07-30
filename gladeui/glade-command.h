@@ -23,6 +23,16 @@ typedef struct _GladeCommand      GladeCommand;
 typedef struct _GladeCommandClass GladeCommandClass;
 typedef struct _GCSetPropData     GCSetPropData;
 
+/**
+ * GCSetPropData
+ * @property: A #GladeProperty to set
+ * @new_value: The new #GValue to assign to @property
+ * @old_value: The old #GValue of @property
+ *
+ * #GladeProperties can be set in a list as one command,
+ * for Undo purposes; we store the list of #GCSetPropData with
+ * their old and new #GValue.
+ */
 struct _GCSetPropData {
 	GladeProperty *property;
 	GValue        *new_value;
@@ -126,7 +136,7 @@ void           glade_command_remove_signal (GladeWidget       *glade_widget,
 					    const GladeSignal *signal);
 
 void           glade_command_change_signal (GladeWidget       *glade_widget, 
-					    const GladeSignal *old, 
+					    const GladeSignal *old_signal, 
 					    const GladeSignal *new_signal);
 
 /************************ set i18n ******************************/

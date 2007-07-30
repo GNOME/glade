@@ -24,6 +24,17 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-property-class
+ * @Title: GladePropertyClass
+ * @Short_Description: Property Class-wide metadata.
+ *
+ * #GladePropertyClass is a structure based on a #GParamSpec and parameters
+ * from the Glade catalog files and describes how properties are to be handled
+ * in Glade; it also provides an interface to convert #GValue to strings and
+ * va_lists etc (back and forth).
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <gmodule.h>

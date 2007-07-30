@@ -2,13 +2,11 @@
 GladeEditorProperty
 
 <!-- ##### SECTION Short_Description ##### -->
-A generic widget to edit a #GladeProperty
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The #GladeEditorProperty is a factory that will create the correct
-control for the #GladePropertyClass it was created for and provides
-a simple unified api to them.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -60,6 +58,17 @@ a simple unified api to them.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_editor_property_new_from_widget ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+@use_command: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_editor_property_load ##### -->
 <para>
 
@@ -87,18 +96,7 @@ a simple unified api to them.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_editor_property_new_from_widget ##### -->
-<para>
-
-</para>
-
-@widget: 
-@property: 
-@use_command: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_editor_property_hide_info ##### -->
+<!-- ##### FUNCTION glade_editor_property_show_info ##### -->
 <para>
 
 </para>
@@ -106,7 +104,7 @@ a simple unified api to them.
 @eprop: 
 
 
-<!-- ##### FUNCTION glade_editor_property_show_info ##### -->
+<!-- ##### FUNCTION glade_editor_property_hide_info ##### -->
 <para>
 
 </para>

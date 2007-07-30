@@ -268,8 +268,8 @@ typedef void     (* GladeRemoveChildFunc)         (GladeWidgetAdaptor *adaptor,
 /**
  * GladeReplaceChildFunc:
  * @container: A #GObject container
- * @old: The old #GObject child
- * @new: The new #GObject child to take its place
+ * @old_obj: The old #GObject child
+ * @new_obj: The new #GObject child to take its place
  * 
  * Called to swap placeholders with project objects
  * in containers.
@@ -295,7 +295,6 @@ typedef void     (* GladePostCreateFunc)          (GladeWidgetAdaptor *adaptor,
  * GladeGetInternalFunc:
  * @parent: A #GObject composite object
  * @name: A string identifier
- * @child: A return location for a #GObject
  *
  * Called to lookup @child in composite object @parent by @name.
  */
@@ -590,8 +589,8 @@ gboolean             glade_widget_adaptor_query              (GladeWidgetAdaptor
 
 G_CONST_RETURN
 gchar               *glade_widget_adaptor_get_packing_default(GladeWidgetAdaptor *child_adaptor,
-							      GladeWidgetAdaptor *parent_adaptor,
-							      const gchar        *propert_id);
+							      GladeWidgetAdaptor *container_adaptor,
+							      const gchar        *id);
 
 gboolean             glade_widget_adaptor_is_container       (GladeWidgetAdaptor *adaptor);
 

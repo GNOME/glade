@@ -1,18 +1,12 @@
 <!-- ##### SECTION Title ##### -->
-GladeProperty
+glade-property
 
 <!-- ##### SECTION Short_Description ##### -->
-An interface to properties on the #GladeWidget
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Every object property of every #GladeWidget in every #GladeProject has
-a #GladeProperty to interface with, #GladeProperty provides a means
-to handle properties in the runtime environment.
-</para>
-<para>
-A #GladeProperty can be seen as an instance of a #GladePropertyClass, 
-the #GladePropertyClass describes how a #GladeProperty will function.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -22,6 +16,48 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 
 <!-- ##### SECTION Stability_Level ##### -->
 
+
+<!-- ##### MACRO GLADE_PROPERTY_KLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO GLADE_IS_PROPERTY_KLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO GLADE_PROPERTY_GET_KLASS ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### STRUCT GladePropertyKlass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@dup: 
+@equals_value: 
+@set_value: 
+@get_value: 
+@get_default: 
+@sync: 
+@load: 
+@write: 
+@get_tooltip: 
+@value_changed: 
+@tooltip_changed: 
 
 <!-- ##### STRUCT GladeProperty ##### -->
 <para>
@@ -44,7 +80,7 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 
 @gladeproperty: the object which received the signal.
 @arg1: 
-@Param3: 
+@arg2: 
 
 <!-- ##### ARG GladeProperty:enabled ##### -->
 <para>
@@ -100,7 +136,24 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 @property: 
 
 
+<!-- ##### FUNCTION glade_property_original_reset ##### -->
+<para>
+
+</para>
+
+@property: 
+
+
 <!-- ##### FUNCTION glade_property_default ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_original_default ##### -->
 <para>
 
 </para>
@@ -250,28 +303,6 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_property_superuser ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_push_superuser ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION glade_property_pop_superuser ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION glade_property_get_tooltip ##### -->
 <para>
 
@@ -292,6 +323,24 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 
 
 <!-- ##### FUNCTION glade_property_get_sensitive ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_set_save_always ##### -->
+<para>
+
+</para>
+
+@property: 
+@setting: 
+
+
+<!-- ##### FUNCTION glade_property_get_save_always ##### -->
 <para>
 
 </para>
@@ -369,6 +418,28 @@ the #GladePropertyClass describes how a #GladeProperty will function.
 </para>
 
 @property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_push_superuser ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION glade_property_pop_superuser ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION glade_property_superuser ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

@@ -80,7 +80,7 @@ GladeWidgetAdaptor  *glade_palette_get_current_item         (GladePalette *palet
 GladeItemAppearance  glade_palette_get_item_appearance      (GladePalette *palette);
 
 void                 glade_palette_set_item_appearance      (GladePalette       *palette,
-							     GladeItemAppearance appearance);
+							     GladeItemAppearance item_appearance);
 							     
 gboolean             glade_palette_get_use_small_item_icons (GladePalette *palette);
 

@@ -24,6 +24,15 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-editor-property
+ * @Short_Description: A generic widget to edit a #GladeProperty.
+ *
+ * The #GladeEditorProperty is a factory that will create the correct
+ * control for the #GladePropertyClass it was created for and provides
+ * a simple unified api to them.
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>

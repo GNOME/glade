@@ -2,13 +2,11 @@
 GladeWidget
 
 <!-- ##### SECTION Short_Description ##### -->
-An object wrapper for the Glade runtime environment.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GladeWidget is the proxy between the instantiated runtime object and
-the Glade core metadata. This api will be mostly usefull for its
-convenience api for getting and setting properties (mostly from the plugin).
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -175,101 +173,61 @@ convenience api for getting and setting properties (mostly from the plugin).
 @child: 
 
 
-<!-- ##### FUNCTION glade_widget_set_name ##### -->
+<!-- ##### FUNCTION glade_widget_write ##### -->
 <para>
 
 </para>
 
 @widget: 
-@name: 
+@interface: 
+@Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_set_internal ##### -->
+<!-- ##### FUNCTION glade_widget_read ##### -->
 <para>
 
 </para>
 
-@widget: 
-@internal: 
+@project: 
+@info: 
+@Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_set_object ##### -->
+<!-- ##### FUNCTION glade_widget_replace ##### -->
+<para>
+
+</para>
+
+@parent: 
+@old_object: 
+@new_object: 
+
+
+<!-- ##### FUNCTION glade_widget_rebuild ##### -->
 <para>
 
 </para>
 
 @gwidget: 
-@new_object: 
 
 
-<!-- ##### FUNCTION glade_widget_set_project ##### -->
+<!-- ##### FUNCTION glade_widget_dup ##### -->
 <para>
 
 </para>
 
-@widget: 
-@project: 
-
-
-<!-- ##### FUNCTION glade_widget_get_name ##### -->
-<para>
-
-</para>
-
-@widget: 
+@template_widget: 
+@exact: 
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_get_internal ##### -->
+<!-- ##### FUNCTION glade_widget_copy_signals ##### -->
 <para>
 
 </para>
 
 @widget: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_get_project ##### -->
-<para>
-
-</para>
-
-@widget: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_get_object ##### -->
-<para>
-
-</para>
-
-@widget: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_project_notify ##### -->
-<para>
-
-</para>
-
-@widget: 
-@project: 
-
-
-<!-- ##### FUNCTION glade_widget_show ##### -->
-<para>
-
-</para>
-
-@widget: 
-
-
-<!-- ##### FUNCTION glade_widget_hide ##### -->
-<para>
-
-</para>
-
-@widget: 
+@template_widget: 
 
 
 <!-- ##### FUNCTION glade_widget_copy_properties ##### -->
@@ -290,24 +248,6 @@ convenience api for getting and setting properties (mostly from the plugin).
 @container: 
 
 
-<!-- ##### FUNCTION glade_widget_add_prop_ref ##### -->
-<para>
-
-</para>
-
-@widget: 
-@property: 
-
-
-<!-- ##### FUNCTION glade_widget_remove_prop_ref ##### -->
-<para>
-
-</para>
-
-@widget: 
-@property: 
-
-
 <!-- ##### FUNCTION glade_widget_get_property ##### -->
 <para>
 
@@ -326,6 +266,248 @@ convenience api for getting and setting properties (mostly from the plugin).
 @widget: 
 @id_property: 
 @Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_dup_properties ##### -->
+<para>
+
+</para>
+
+@template_props: 
+@as_load: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+
+
+<!-- ##### FUNCTION glade_widget_show ##### -->
+<para>
+
+</para>
+
+@widget: 
+
+
+<!-- ##### FUNCTION glade_widget_hide ##### -->
+<para>
+
+</para>
+
+@widget: 
+
+
+<!-- ##### FUNCTION glade_widget_add_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_change_signal_handler ##### -->
+<para>
+
+</para>
+
+@widget: 
+@old_signal_handler: 
+@new_signal_handler: 
+
+
+<!-- ##### FUNCTION glade_widget_list_signal_handlers ##### -->
+<para>
+
+</para>
+
+@widget: 
+@signal_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_has_decendant ##### -->
+<para>
+
+</para>
+
+@widget: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_event ##### -->
+<para>
+
+</para>
+
+@gwidget: 
+@event: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_placeholder_relation ##### -->
+<para>
+
+</para>
+
+@parent: 
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_action ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_pack_action ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_action_sensitive ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+@sensitive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_pack_action_sensitive ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+@sensitive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_action ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_pack_action ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+
+
+<!-- ##### FUNCTION glade_widget_create_action_menu ##### -->
+<para>
+
+</para>
+
+@widget: 
+@action_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_project_notify ##### -->
+<para>
+
+</para>
+
+@widget: 
+@project: 
+
+
+<!-- ##### FUNCTION glade_widget_add_prop_ref ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+
+
+<!-- ##### FUNCTION glade_widget_remove_prop_ref ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+
+
+<!-- ##### FUNCTION glade_widget_object_set_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_object_get_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_child_set_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@child: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_child_get_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@child: 
+@property_name: 
+@value: 
 
 
 <!-- ##### FUNCTION glade_widget_property_get ##### -->
@@ -402,6 +584,16 @@ convenience api for getting and setting properties (mostly from the plugin).
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_widget_property_original_default ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_widget_pack_property_default ##### -->
 <para>
 
@@ -458,99 +650,128 @@ convenience api for getting and setting properties (mostly from the plugin).
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_has_decendant ##### -->
+<!-- ##### FUNCTION glade_widget_property_set_save_always ##### -->
 <para>
 
 </para>
 
 @widget: 
-@type: 
+@id_property: 
+@setting: 
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_replace ##### -->
+<!-- ##### FUNCTION glade_widget_pack_property_set_save_always ##### -->
 <para>
 
 </para>
 
-@parent: 
-@old_object: 
-@new_object: 
+@widget: 
+@id_property: 
+@setting: 
+@Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_rebuild ##### -->
+<!-- ##### FUNCTION glade_widget_property_string ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_pack_property_string ##### -->
+<para>
+
+</para>
+
+@widget: 
+@id_property: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_name ##### -->
+<para>
+
+</para>
+
+@widget: 
+@name: 
+
+
+<!-- ##### FUNCTION glade_widget_get_name ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_internal ##### -->
+<para>
+
+</para>
+
+@widget: 
+@internal: 
+
+
+<!-- ##### FUNCTION glade_widget_get_internal ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_object ##### -->
 <para>
 
 </para>
 
 @gwidget: 
+@new_object: 
 
 
-<!-- ##### FUNCTION glade_widget_dup ##### -->
+<!-- ##### FUNCTION glade_widget_get_object ##### -->
 <para>
 
 </para>
 
-@template_widget: 
-@exact: 
+@widget: 
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_widget_add_signal_handler ##### -->
+<!-- ##### FUNCTION glade_widget_set_project ##### -->
 <para>
 
 </para>
 
 @widget: 
-@signal_handler: 
-
-
-<!-- ##### FUNCTION glade_widget_remove_signal_handler ##### -->
-<para>
-
-</para>
-
-@widget: 
-@signal_handler: 
-
-
-<!-- ##### FUNCTION glade_widget_change_signal_handler ##### -->
-<para>
-
-</para>
-
-@widget: 
-@old_signal_handler: 
-@new_signal_handler: 
-
-
-<!-- ##### FUNCTION glade_widget_list_signal_handlers ##### -->
-<para>
-
-</para>
-
-@widget: 
-@signal_name: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_write ##### -->
-<para>
-
-</para>
-
-@widget: 
-@interface: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_read ##### -->
-<para>
-
-</para>
-
 @project: 
-@info: 
+
+
+<!-- ##### FUNCTION glade_widget_get_project ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_get_adaptor ##### -->
+<para>
+
+</para>
+
+@widget: 
 @Returns: 
 
 

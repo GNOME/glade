@@ -24,6 +24,14 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-command
+ * @Short_Description: An event filter to implement the Undo/Redo stack.
+ *
+ * The Glade Command api allows us to view user actions as items and execute 
+ * and undo those items; each #GladeProject has its own Undo/Redo stack.
+ */
+
 #include <gtk/gtk.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>
@@ -1572,7 +1580,6 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 /**
  * glade_command_delete:
  * @widgets: a #GList of #GladeWidgets
- * @return_placeholders: whether or not to return a list of placehodlers
  *
  * Performs a delete command on the list of widgets.
  */
@@ -1858,18 +1865,18 @@ glade_command_remove_signal (GladeWidget *glade_widget, const GladeSignal *signa
 /**
  * glade_command_change_signal:
  * @glade_widget: a #GladeWidget
- * @old: a #GladeSignal
- * @new: a #GladeSignal
+ * @old_signal: a #GladeSignal
+ * @new_signal: a #GladeSignal
  *
  * TODO: write me
  */
 void
 glade_command_change_signal	(GladeWidget *glade_widget, 
-				 const GladeSignal *old, 
+				 const GladeSignal *old_signal, 
 				 const GladeSignal *new_signal)
 {
 	glade_command_add_remove_change_signal 
-		(glade_widget, old, new_signal, GLADE_CHANGE);
+		(glade_widget, old_signal, new_signal, GLADE_CHANGE);
 }
 
 /******************************************************************************

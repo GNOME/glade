@@ -26,6 +26,19 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-property
+ * @Title: GladeProperty
+ * @Short_Description: An interface to properties on the #GladeWidget.
+ *
+ * Every object property of every #GladeWidget in every #GladeProject has
+ * a #GladeProperty to interface with, #GladeProperty provides a means
+ * to handle properties in the runtime environment.
+ * 
+ * A #GladeProperty can be seen as an instance of a #GladePropertyClass, 
+ * the #GladePropertyClass describes how a #GladeProperty will function.
+ */
+
 #include <stdio.h>
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>

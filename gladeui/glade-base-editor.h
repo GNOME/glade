@@ -85,7 +85,7 @@ void                 glade_base_editor_set_show_signal_editor (GladeBaseEditor *
 /* Convenience functions */
 GtkWidget           *glade_base_editor_pack_new_window        (GladeBaseEditor *editor,
 							       gchar *title,
-							       gchar *markup);
+							       gchar *help_markup);
 
 G_END_DECLS
 

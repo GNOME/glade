@@ -2,28 +2,11 @@
 GladeFixed
 
 <!-- ##### SECTION Short_Description ##### -->
-An object wrapper for free-form placement container widgets
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GladeFixed is a specialized #GladeWidget to handle free-form child
-placements in containers that support this, it is designed with properties
-and signals with flexable integration in mind.
-</para>
 
-<para>
-If you set the x-prop/y-prop/width-prop/height-prop properties and
-leave the signals alone, #GladeFixed will assume you are like a 
-GtkFixed/GtkLayout widget and will use pixel counts as units for
-these properties.
-</para>
-
-<para>
-If you handle the configure-child/configure-end[/configure-begin] signals
-and dont let them propagate to the GladeFixed, then the x-prop/y-prop/width-prop/height-prop
-properties will be completely ignored and it is up to the implementor to play
-with whatever child packing properties are available to make a closest match
-for the values passed to configure-child via the #GdkRectangle.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -32,6 +15,38 @@ for the values passed to configure-child via the #GdkRectangle.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_TOP ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_BOTTOM ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_RIGHT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_LEFT ##### -->
+<para>
+
+</para>
+
+@type: 
 
 
 <!-- ##### STRUCT GladeFixed ##### -->
@@ -92,36 +107,4 @@ for the values passed to configure-child via the #GdkRectangle.
 <para>
 
 </para>
-
-<!-- ##### MACRO GLADE_FIXED_CURSOR_BOTTOM ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO GLADE_FIXED_CURSOR_RIGHT ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO GLADE_FIXED_CURSOR_TOP ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO GLADE_FIXED_CURSOR_LEFT ##### -->
-<para>
-
-</para>
-
-@type: 
-
 

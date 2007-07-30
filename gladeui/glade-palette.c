@@ -29,6 +29,15 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-palette
+ * @Short_Description: A widget to select a #GladeWidgetClass for addition.
+ *
+ * #GladePalette is responsible for displaying the list of available
+ * #GladeWidgetClass types and publishing the currently selected class
+ * to the Glade core.
+ */
+
 #include "glade.h"
 #include "glade-app.h"
 #include "glade-palette.h"

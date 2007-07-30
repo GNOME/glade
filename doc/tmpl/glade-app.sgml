@@ -2,14 +2,11 @@
 GladeApp
 
 <!-- ##### SECTION Short_Description ##### -->
-The central control point of the Glade core
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This main control object is where we try to draw the line between
-what is the Glade core and what is the main application. The main
-application must derive from the GladeApp object and create an instance
-to initialize the Glade core.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -18,6 +15,19 @@ to initialize the Glade core.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO GLADE_TYPE_POINTER_MODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT GladeAppPrivate ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### STRUCT GladeApp ##### -->
@@ -42,6 +52,22 @@ to initialize the Glade core.
 <para>
 
 </para>
+
+<!-- ##### FUNCTION glade_app_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_pointer_mode_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 
 <!-- ##### FUNCTION glade_app_get ##### -->
 <para>
@@ -106,6 +132,14 @@ to initialize the Glade core.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_app_get_project ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_app_set_project ##### -->
 <para>
 
@@ -114,12 +148,20 @@ to initialize the Glade core.
 @project: 
 
 
-<!-- ##### FUNCTION glade_app_get_project ##### -->
+<!-- ##### FUNCTION glade_app_get_pointer_mode ##### -->
 <para>
 
 </para>
 
 @Returns: 
+
+
+<!-- ##### FUNCTION glade_app_set_pointer_mode ##### -->
+<para>
+
+</para>
+
+@mode: 
 
 
 <!-- ##### FUNCTION glade_app_add_project ##### -->
@@ -136,15 +178,6 @@ to initialize the Glade core.
 </para>
 
 @project: 
-
-
-<!-- ##### FUNCTION glade_app_get_project_by_path ##### -->
-<para>
-
-</para>
-
-@project_path: 
-@Returns: 
 
 
 <!-- ##### FUNCTION glade_app_get_projects ##### -->
@@ -172,6 +205,15 @@ to initialize the Glade core.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_app_get_project_by_path ##### -->
+<para>
+
+</para>
+
+@project_path: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_app_show_properties ##### -->
 <para>
 
@@ -181,20 +223,6 @@ to initialize the Glade core.
 
 
 <!-- ##### FUNCTION glade_app_hide_properties ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION glade_app_command_undo ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION glade_app_command_redo ##### -->
 <para>
 
 </para>
@@ -231,6 +259,20 @@ to initialize the Glade core.
 
 
 <!-- ##### FUNCTION glade_app_command_delete_clipboard ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION glade_app_command_undo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION glade_app_command_redo ##### -->
 <para>
 
 </para>
@@ -293,6 +335,32 @@ to initialize the Glade core.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_app_get_selection ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_is_selected ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_selection_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@emit_signal: 
+
+
 <!-- ##### FUNCTION glade_app_selection_add ##### -->
 <para>
 
@@ -311,21 +379,6 @@ to initialize the Glade core.
 @emit_signal: 
 
 
-<!-- ##### FUNCTION glade_app_selection_changed ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION glade_app_get_selection ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION glade_app_selection_clear ##### -->
 <para>
 
@@ -334,21 +387,50 @@ to initialize the Glade core.
 @emit_signal: 
 
 
-<!-- ##### FUNCTION glade_app_selection_set ##### -->
+<!-- ##### FUNCTION glade_app_selection_changed ##### -->
 <para>
 
 </para>
 
-@object: 
-@emit_signal: 
 
 
-<!-- ##### FUNCTION glade_app_is_selected ##### -->
+<!-- ##### FUNCTION glade_app_get_catalogs_dir ##### -->
 <para>
 
 </para>
 
-@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_get_modules_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_get_plugins_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_get_pixmaps_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_app_get_locale_dir ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

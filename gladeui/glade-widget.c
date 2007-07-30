@@ -27,6 +27,15 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-widget
+ * @Short_Description: An object wrapper for the Glade runtime environment.
+ *
+ * #GladeWidget is the proxy between the instantiated runtime object and
+ * the Glade core metadata. This api will be mostly usefull for its
+ * convenience api for getting and setting properties (mostly from the plugin).
+ */
+
 #include <string.h>
 #include <glib-object.h>
 #include <gdk/gdkkeysyms.h>
@@ -2405,7 +2414,7 @@ glade_widget_dup (GladeWidget *template_widget,
 
 /**
  * glade_widget_rebuild:
- * @glade_widget: a #GladeWidget
+ * @gwidget: a #GladeWidget
  *
  * Replaces the current widget instance with
  * a new one while preserving all properties children and
@@ -2413,72 +2422,72 @@ glade_widget_dup (GladeWidget *template_widget,
  *
  */
 void
-glade_widget_rebuild (GladeWidget *glade_widget)
+glade_widget_rebuild (GladeWidget *gwidget)
 {
 	GObject            *new_object, *old_object;
 	GladeWidgetAdaptor *adaptor;
 	GList              *children;
 	gboolean            reselect = FALSE, inproject;
 	
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
+	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
 
-	adaptor = glade_widget->adaptor;
+	adaptor = gwidget->adaptor;
 
 	/* Here we take care removing the widget from the project and
 	 * the selection before rebuilding the instance.
 	 */
-	inproject = glade_widget->project ?
+	inproject = gwidget->project ?
 		(glade_project_has_object
-		 (glade_widget->project, glade_widget->object) ? TRUE : FALSE) : FALSE;
+		 (gwidget->project, gwidget->object) ? TRUE : FALSE) : FALSE;
 
 	if (inproject)
 	{
-		if (glade_project_is_selected (glade_widget->project, 
-					       glade_widget->object))
+		if (glade_project_is_selected (gwidget->project, 
+					       gwidget->object))
 		{
 			reselect = TRUE;
 			glade_project_selection_remove
-				(glade_widget->project, glade_widget->object, FALSE);
+				(gwidget->project, gwidget->object, FALSE);
 		}
-		glade_project_remove_object (glade_widget->project, glade_widget->object);
+		glade_project_remove_object (gwidget->project, gwidget->object);
 	}
 
 	/* Extract and keep the child hierarchies aside... */
-	children = glade_widget_extract_children (glade_widget);
+	children = glade_widget_extract_children (gwidget);
 
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
-	new_object = glade_widget_build_object(adaptor, glade_widget, NULL);
-	old_object = g_object_ref(glade_widget_get_object(glade_widget));
+	new_object = glade_widget_build_object(adaptor, gwidget, NULL);
+	old_object = g_object_ref(glade_widget_get_object (gwidget));
 
-	glade_widget_set_object(glade_widget, new_object);
+	glade_widget_set_object (gwidget, new_object);
 
 	/* Only call this once the object has a proper GladeWidget */
 	glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);
 
 	/* Replace old object with new object in parent
 	 */
-	if (glade_widget->parent)
-		glade_widget_replace (glade_widget->parent,
+	if (gwidget->parent)
+		glade_widget_replace (gwidget->parent,
 				      old_object, new_object);
 
 	/* Reparent any children of the old object to the new object
 	 * (this function will consume and free the child list).
 	 */
 	glade_widget_push_superuser ();
-	glade_widget_insert_children (glade_widget, children);
+	glade_widget_insert_children (gwidget, children);
 	glade_widget_pop_superuser ();
 		
 	/* Custom properties aren't transfered in build_object, since build_object
 	 * is only concerned with object creation.
 	 */
-	glade_widget_sync_custom_props (glade_widget);
+	glade_widget_sync_custom_props (gwidget);
 
 	/* Sync packing.
 	 */
-	glade_widget_sync_packing_props (glade_widget);
+	glade_widget_sync_packing_props (gwidget);
 	
 	if (g_type_is_a (adaptor->type, GTK_TYPE_WIDGET))
 	{
@@ -2495,16 +2504,16 @@ glade_widget_rebuild (GladeWidget *glade_widget)
 	 */
 	if (inproject)
 	{
-		glade_project_add_object (glade_widget->project, NULL,
-					  glade_widget->object);
+		glade_project_add_object (gwidget->project, NULL,
+					  gwidget->object);
 		if (reselect)
 			glade_project_selection_add
-				(glade_widget->project, glade_widget->object, TRUE);
+				(gwidget->project, gwidget->object, TRUE);
 	}
 
  	/* We shouldnt show if its not already visible */
-	if (glade_widget->visible)
-		glade_widget_show (glade_widget);
+	if (gwidget->visible)
+		glade_widget_show (gwidget);
 }
 
 /**

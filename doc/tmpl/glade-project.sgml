@@ -2,13 +2,11 @@
 GladeProject
 
 <!-- ##### SECTION Short_Description ##### -->
-The Glade document hub and Load/Save interface
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This object owns all project objects and is responsable for loading and
-saving the glade document, you can monitor the project state via this
-object and its signals.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,6 +15,12 @@ object and its signals.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GladeProjectPrivate ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### STRUCT GladeProject ##### -->
@@ -123,6 +127,25 @@ object and its signals.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_project_load_from_file ##### -->
+<para>
+
+</para>
+
+@project: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_load ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_project_save ##### -->
 <para>
 
@@ -131,6 +154,58 @@ object and its signals.
 @project: 
 @path: 
 @error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_get_path ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_get_name ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_undo ##### -->
+<para>
+
+</para>
+
+@project: 
+
+
+<!-- ##### FUNCTION glade_project_redo ##### -->
+<para>
+
+</para>
+
+@project: 
+
+
+<!-- ##### FUNCTION glade_project_next_undo_item ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_next_redo_item ##### -->
+<para>
+
+</para>
+
+@project: 
 @Returns: 
 
 
@@ -143,23 +218,7 @@ object and its signals.
 @cmd: 
 
 
-<!-- ##### FUNCTION glade_project_redo ##### -->
-<para>
-
-</para>
-
-@project: 
-
-
-<!-- ##### FUNCTION glade_project_undo ##### -->
-<para>
-
-</para>
-
-@project: 
-
-
-<!-- ##### FUNCTION glade_project_next_redo_item ##### -->
+<!-- ##### FUNCTION glade_project_undo_items ##### -->
 <para>
 
 </para>
@@ -168,7 +227,7 @@ object and its signals.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_project_next_undo_item ##### -->
+<!-- ##### FUNCTION glade_project_redo_items ##### -->
 <para>
 
 </para>
@@ -183,6 +242,24 @@ object and its signals.
 </para>
 
 @project: 
+
+
+<!-- ##### FUNCTION glade_project_get_readonly ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_get_objects ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
 
 
 <!-- ##### FUNCTION glade_project_add_object ##### -->
@@ -319,6 +396,15 @@ object and its signals.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_project_get_has_selection ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_project_set_accel_group ##### -->
 <para>
 
@@ -366,7 +452,7 @@ object and its signals.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_project_get_has_selection ##### -->
+<!-- ##### FUNCTION glade_project_get_file_mtime ##### -->
 <para>
 
 </para>
@@ -375,7 +461,25 @@ object and its signals.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_project_get_readonly ##### -->
+<!-- ##### FUNCTION glade_project_get_instance_count ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_set_instance_count ##### -->
+<para>
+
+</para>
+
+@project: 
+@instance_count: 
+
+
+<!-- ##### FUNCTION glade_project_get_modified ##### -->
 <para>
 
 </para>

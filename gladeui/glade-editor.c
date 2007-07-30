@@ -25,6 +25,13 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-editor
+ * @Short_Description: A Widget to edit a #GladeWidget.
+ *
+ * This is the Glade Notebook containing all the controls needed to configure a #GladeWidget.
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>

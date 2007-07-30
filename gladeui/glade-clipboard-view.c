@@ -26,6 +26,14 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-clipboard-view
+ * @Short_Description: A widget to view and control the #GladeClipboard.
+ *
+ * The #GladeClipboardView is a widget to view the #GladeWidget objects
+ * in the #GladeClipboard; the user can paste or delete objects on the clipboard.
+ */
+
 #include <glib/gi18n-lib.h>
 
 #include "glade.h"

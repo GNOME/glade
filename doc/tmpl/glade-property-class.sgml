@@ -1,15 +1,12 @@
 <!-- ##### SECTION Title ##### -->
-GladePropertyClass
+GladeProperty
 
 <!-- ##### SECTION Short_Description ##### -->
-Property Class-wide metadata
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GladePropertyClass is a structure based on a #GParamSpec and parameters
-from the Glade catalog files and describes how properties are to be handled
-in Glade; it also provides an interface to convert #GValue to strings and
-va_lists etc (back and forth).
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -20,38 +17,19 @@ va_lists etc (back and forth).
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### STRUCT GladePropertyClass ##### -->
+<!-- ##### MACRO GPC_OBJECT_DELIMITER ##### -->
 <para>
 
 </para>
 
-@type: 
-@handle: 
-@pspec: 
-@id: 
-@name: 
-@tooltip: 
-@virt: 
-@def: 
-@orig_def: 
-@parameters: 
-@displayable_values: 
-@query: 
-@optional: 
-@optional_default: 
-@construct_only: 
-@common: 
-@packing: 
-@translatable: 
-@visible_lines: 
-@save: 
-@save_always: 
-@visible: 
-@ignore: 
-@is_modified: 
-@resource: 
-@transfer_on_paste: 
-@weight: 
+
+
+<!-- ##### MACRO GPC_PROPERTY_NAMELEN ##### -->
+<para>
+
+</para>
+
+
 
 <!-- ##### ENUM GPCType ##### -->
 <para>
@@ -63,40 +41,6 @@ va_lists etc (back and forth).
 @GPC_ATK_RELATION: 
 @GPC_ATK_ACTION: 
 @GPC_ACCEL_PROPERTY: 
-
-<!-- ##### USER_FUNCTION GladeVerifyPropertyFunc ##### -->
-<para>
-
-</para>
-
-@adaptor: 
-@object: 
-@property_name: 
-@value: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION GladeGetPropertyFunc ##### -->
-<para>
-
-</para>
-
-@adaptor: 
-@object: 
-@property_name: 
-@value: 
-
-
-<!-- ##### USER_FUNCTION GladeSetPropertyFunc ##### -->
-<para>
-
-</para>
-
-@adaptor: 
-@object: 
-@property_name: 
-@value: 
-
 
 <!-- ##### FUNCTION glade_property_class_new ##### -->
 <para>
@@ -114,6 +58,26 @@ va_lists etc (back and forth).
 
 @handle: 
 @spec: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_list_atk_relations ##### -->
+<para>
+
+</para>
+
+@handle: 
+@owner_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_accel_property ##### -->
+<para>
+
+</para>
+
+@handle: 
+@owner_type: 
 @Returns: 
 
 
@@ -193,16 +157,6 @@ va_lists etc (back and forth).
 @vl: 
 
 
-<!-- ##### FUNCTION glade_property_class_get_from_gvalue ##### -->
-<para>
-
-</para>
-
-@klass: 
-@value: 
-@Varargs: 
-
-
 <!-- ##### FUNCTION glade_property_class_make_gvalue ##### -->
 <para>
 
@@ -211,6 +165,16 @@ va_lists etc (back and forth).
 @klass: 
 @Varargs: 
 @Returns: 
+
+
+<!-- ##### FUNCTION glade_property_class_get_from_gvalue ##### -->
+<para>
+
+</para>
+
+@klass: 
+@value: 
+@Varargs: 
 
 
 <!-- ##### FUNCTION glade_property_class_update_from_node ##### -->
@@ -271,26 +235,6 @@ va_lists etc (back and forth).
 </para>
 
 @atk_name: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_class_list_atk_relations ##### -->
-<para>
-
-</para>
-
-@handle: 
-@owner_type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_class_accel_property ##### -->
-<para>
-
-</para>
-
-@handle: 
-@owner_type: 
 @Returns: 
 
 

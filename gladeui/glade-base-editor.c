@@ -22,6 +22,13 @@
 
 #include "config.h"
 
+/**
+ * SECTION:glade-base-editor
+ * @Short_Description: A customisable editor
+ *
+ * Convenience object to edit containers where placeholders do not make sense, like GtkMenubar.
+ */
+
 #include "glade.h"
 #include "glade-editor-property.h"
 #include "glade-base-editor.h"

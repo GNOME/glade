@@ -1,129 +1,54 @@
-<!-- ##### SECTION ./tmpl/glade-project-view.sgml:Long_Description ##### -->
+<!-- ##### SECTION ./tmpl/glade-widget-class.sgml:Long_Description ##### -->
 <para>
-The #GladeProjectView is a heirarchical treeview that allows the
-user to control selection and cut/copy/paste/delete #GladeWidget
-objects in the #GladeProject.
+#GladeWidgetClass is a structure based on a #GType and parameters
+from the Glade catalog files and is the central metadata for object
+classes; it also provides an abstraction later to container apis.
 </para>
 
 
-<!-- ##### SECTION ./tmpl/glade-project-view.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/glade-project-view.sgml:Short_Description ##### -->
-A widget to view the project hierarchy
-
-
-<!-- ##### SECTION ./tmpl/glade-project-view.sgml:Stability_Level ##### -->
-
-
-
-<!-- ##### SECTION ./tmpl/glade-project-view.sgml:Title ##### -->
-GladeProjectView
-
-
-<!-- ##### SIGNAL GladeApp::widget-event ##### -->
+<!-- ##### SECTION ./tmpl/glade-widget-class.sgml:See_Also ##### -->
 <para>
 
 </para>
 
-@gladeapp: the object which received the signal.
-@arg1: 
+
+<!-- ##### SECTION ./tmpl/glade-widget-class.sgml:Short_Description ##### -->
+Object Class-wide metadata
+
+
+<!-- ##### SECTION ./tmpl/glade-widget-class.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/glade-widget-class.sgml:Title ##### -->
+GladeWidgetClass
+
+
+<!-- ##### STRUCT GladeSignalClass ##### -->
+<para>
+
+</para>
+
+@query: 
+@name: 
+@type: 
+
+<!-- ##### STRUCT GladeWidgetClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@add_child: 
+@remove_child: 
+@replace_child: 
+@add_signal_handler: 
+@remove_signal_handler: 
+@change_signal_handler: 
+@button_press_event: 
+@button_release_event: 
+@motion_notify_event: 
 @event: 
-@Returns: 
-
-<!-- ##### USER_FUNCTION GladeEditorLaunchFunc ##### -->
-<para>
-
-</para>
-
-@adaptor: 
-@object: 
-
-<!-- ##### ARG GladeFixed:use-placeholders ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ARG GladeProject:has-unsaved-changes ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SIGNAL GladeWidget::enter-notify-event ##### -->
-<para>
-
-</para>
-
-@gladewidget: the object which received the signal.
-@event: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_app_add_project_view ##### -->
-<para>
-
-</para>
-
-@view: 
-
-<!-- ##### FUNCTION glade_project_display_name ##### -->
-<para>
-
-</para>
-
-@project: 
-@unsaved_changes: 
-@tab_aligned: 
-@mnemonic: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_project_open ##### -->
-<para>
-
-</para>
-
-@path: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_util_any_gtkcontainer_relation ##### -->
-<para>
-
-</para>
-
-@parent: 
-@widgets: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_util_deep_fixed_event ##### -->
-<para>
-
-</para>
-
-@widget: 
-@event: 
-@gwidget: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_util_get_parent ##### -->
-<para>
-
-</para>
-
-@w: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_util_gtkcontainer_relation ##### -->
-<para>
-
-</para>
-
-@parent: 
-@widget: 
-@Returns: 
 
 <!-- ##### FUNCTION glade_util_queue_draw_nodes ##### -->
 <para>
@@ -131,35 +56,4 @@ GladeProjectView
 </para>
 
 @window: 
-
-<!-- ##### FUNCTION glade_util_widget_pastable ##### -->
-<para>
-
-</para>
-
-@child: 
-@parent: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_widget_event_widget ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### FUNCTION glade_widget_has_launcher ##### -->
-<para>
-
-</para>
-
-@widget: 
-@Returns: 
-
-<!-- ##### FUNCTION glade_widget_launch_editor ##### -->
-<para>
-
-</para>
-
-@widget: 
 

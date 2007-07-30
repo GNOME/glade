@@ -1,12 +1,12 @@
 <!-- ##### SECTION Title ##### -->
-Utilities
+glade-utils
 
 <!-- ##### SECTION Short_Description ##### -->
-Welcome to the zoo
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This is where all of that really usefull miscalanious stuff lands up.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,6 +16,25 @@ This is where all of that really usefull miscalanious stuff lands up.
 
 <!-- ##### SECTION Stability_Level ##### -->
 
+
+<!-- ##### ENUM GladeUtilFileDialogType ##### -->
+<para>
+
+</para>
+
+@GLADE_FILE_DIALOG_ACTION_OPEN: 
+@GLADE_FILE_DIALOG_ACTION_SAVE: 
+
+<!-- ##### ENUM GladeUIMessageType ##### -->
+<para>
+
+</para>
+
+@GLADE_UI_INFO: 
+@GLADE_UI_WARN: 
+@GLADE_UI_ERROR: 
+@GLADE_UI_ARE_YOU_SURE: 
+@GLADE_UI_YES_OR_NO: 
 
 <!-- ##### FUNCTION glade_util_widget_set_tooltip ##### -->
 <para>
@@ -44,17 +63,6 @@ This is where all of that really usefull miscalanious stuff lands up.
 @funcname: 
 @Returns: 
 
-
-<!-- ##### ENUM GladeUIMessageType ##### -->
-<para>
-
-</para>
-
-@GLADE_UI_INFO: 
-@GLADE_UI_WARN: 
-@GLADE_UI_ERROR: 
-@GLADE_UI_ARE_YOU_SURE: 
-@GLADE_UI_YES_OR_NO: 
 
 <!-- ##### FUNCTION glade_util_ui_message ##### -->
 <para>
@@ -242,7 +250,7 @@ This is where all of that really usefull miscalanious stuff lands up.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_util_removed_from_list ##### -->
+<!-- ##### FUNCTION glade_util_added_in_list ##### -->
 <para>
 
 </para>
@@ -252,7 +260,7 @@ This is where all of that really usefull miscalanious stuff lands up.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_util_added_in_list ##### -->
+<!-- ##### FUNCTION glade_util_removed_from_list ##### -->
 <para>
 
 </para>
@@ -281,12 +289,13 @@ This is where all of that really usefull miscalanious stuff lands up.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_util_file_is_writeable ##### -->
+<!-- ##### FUNCTION glade_util_class_implements_interface ##### -->
 <para>
 
 </para>
 
-@path: 
+@class_type: 
+@iface_type: 
 @Returns: 
 
 
@@ -299,13 +308,12 @@ This is where all of that really usefull miscalanious stuff lands up.
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_util_class_implements_interface ##### -->
+<!-- ##### FUNCTION glade_util_file_is_writeable ##### -->
 <para>
 
 </para>
 
-@class_type: 
-@iface_type: 
+@path: 
 @Returns: 
 
 
@@ -317,6 +325,15 @@ This is where all of that really usefull miscalanious stuff lands up.
 @Returns: 
 
 
+<!-- ##### FUNCTION glade_util_get_devhelp_icon ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_util_search_devhelp ##### -->
 <para>
 
@@ -325,5 +342,42 @@ This is where all of that really usefull miscalanious stuff lands up.
 @book: 
 @page: 
 @search: 
+
+
+<!-- ##### FUNCTION glade_util_get_placeholder_from_pointer ##### -->
+<para>
+
+</para>
+
+@container: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_util_object_is_loading ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_util_url_show ##### -->
+<para>
+
+</para>
+
+@url: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_util_get_file_mtime ##### -->
+<para>
+
+</para>
+
+@filename: 
+@error: 
+@Returns: 
 
 

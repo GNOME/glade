@@ -22,6 +22,15 @@
 
 #include "config.h"
 
+/**
+ * SECTION:glade-parameter
+ * @Title: Glade Parameter
+ * @Short_Description: Parameters set in the catalog retrievable from the plugin.
+ *
+ * Parameters can be set in your catalog file that may determine how
+ * your plugin will treat certain widget classes.
+ */
+
 #include <stdlib.h> /* for atoi and atof */
 #include <string.h>
 

@@ -22,6 +22,14 @@
  
 #include <config.h>
 
+/**
+ * SECTION:glade-utils
+ * @Title: Glade Utils
+ * @Short_Description: Welcome to the zoo.
+ *
+ * This is where all of that really usefull miscalanious stuff lands up.
+ */
+
 #include "glade.h"
 #include "glade-project.h"
 #include "glade-command.h"
@@ -1106,8 +1114,8 @@ glade_util_purify_list (GList *list)
 
 /**
  * glade_util_added_in_list:
- * @old: the old #GList
- * @new: the new #GList
+ * @old_list: the old #GList
+ * @new_list: the new #GList
  *
  * Returns: A newly allocated #GList of elements that
  *          are in @new but not in @old
@@ -1130,8 +1138,8 @@ glade_util_added_in_list (GList *old_list,
 
 /**
  * glade_util_removed_from_list:
- * @old: the old #GList
- * @new: the new #GList
+ * @old_list: the old #GList
+ * @new_list: the new #GList
  *
  * Returns: A newly allocated #GList of elements that
  *          are in @old no longer in @new

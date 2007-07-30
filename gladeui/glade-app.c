@@ -22,6 +22,16 @@
 
 #include <config.h>
 
+/**
+ * SECTION:glade-app
+ * @Short_Description: The central control point of the Glade core.
+ *
+ * This main control object is where we try to draw the line between
+ * what is the Glade core and what is the main application. The main
+ * application must derive from the GladeApp object and create an instance
+ * to initialize the Glade core.
+ */
+
 #include "glade.h"
 #include "glade-clipboard-view.h"
 #include "glade-debug.h"

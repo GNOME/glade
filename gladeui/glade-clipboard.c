@@ -25,6 +25,15 @@
 
 #include "config.h"
 
+/**
+ * SECTION:glade-clipboard
+ * @Short_Description: A list of #GladeWidget objects not in any #GladeProject.
+ *
+ * The #GladeClipboard is a singleton and is an accumulative shelf
+ * of all cut or copied #GladeWidget in the application. A #GladeWidget
+ * can be cut from one #GladeProject and pasted to another.
+ */
+
 #include <glib/gi18n-lib.h>
 #include "glade.h"
 #include "glade-clipboard-view.h"

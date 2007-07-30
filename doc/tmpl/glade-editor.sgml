@@ -2,12 +2,11 @@
 GladeEditor
 
 <!-- ##### SECTION Short_Description ##### -->
-A Widget to edit a #GladeWidget
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-This is the Glade Notebook containing all the controls needed to
-configure a #GladeWidget.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,6 +16,46 @@ configure a #GladeWidget.
 
 <!-- ##### SECTION Stability_Level ##### -->
 
+
+<!-- ##### MACRO GLADE_EDITOR_TABLE ##### -->
+<para>
+
+</para>
+
+@t: 
+
+
+<!-- ##### MACRO GLADE_IS_EDITOR_TABLE ##### -->
+<para>
+
+</para>
+
+@t: 
+
+
+<!-- ##### STRUCT GladeEditorTable ##### -->
+<para>
+
+</para>
+
+@editor: 
+@adaptor: 
+@table_widget: 
+@name_entry: 
+@properties: 
+@type: 
+@rows: 
+
+<!-- ##### ENUM GladeEditorTableType ##### -->
+<para>
+
+</para>
+
+@TABLE_TYPE_GENERAL: 
+@TABLE_TYPE_COMMON: 
+@TABLE_TYPE_PACKING: 
+@TABLE_TYPE_ATK: 
+@TABLE_TYPE_QUERY: 
 
 <!-- ##### STRUCT GladeEditor ##### -->
 <para>
@@ -95,7 +134,7 @@ configure a #GladeWidget.
 @editor: 
 
 
-<!-- ##### FUNCTION glade_editor_hide_info ##### -->
+<!-- ##### FUNCTION glade_editor_show_context_info ##### -->
 <para>
 
 </para>
@@ -103,7 +142,7 @@ configure a #GladeWidget.
 @editor: 
 
 
-<!-- ##### FUNCTION glade_editor_show_context_info ##### -->
+<!-- ##### FUNCTION glade_editor_hide_info ##### -->
 <para>
 
 </para>

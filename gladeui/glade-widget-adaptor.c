@@ -22,6 +22,13 @@
 
 #include <config.h>
 
+/**
+ * SECTION:glade-widget-adaptor
+ * @Short_Description: Adaptor base class to add runtime support for each widget class.
+ * 
+ * TODO: Add long description.
+ */
+
 #include "glade.h"
 #include "glade-widget-adaptor.h"
 #include "glade-xml-utils.h"

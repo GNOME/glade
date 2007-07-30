@@ -2,13 +2,11 @@
 GladePalette
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget to select a #GladeWidgetClass for addition
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GladePalette is responsible for displaying the list of available
-#GladeWidgetClass types and publishing the currently selected class
-to the Glade core.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,6 +15,12 @@ to the Glade core.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GladePalettePrivate ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### STRUCT GladePalette ##### -->
@@ -57,12 +61,39 @@ to the Glade core.
 
 </para>
 
+<!-- ##### ENUM GladeItemAppearance ##### -->
+<para>
+
+</para>
+
+@GLADE_ITEM_ICON_AND_LABEL: 
+@GLADE_ITEM_ICON_ONLY: 
+@GLADE_ITEM_LABEL_ONLY: 
+
 <!-- ##### FUNCTION glade_palette_new ##### -->
 <para>
 
 </para>
 
 @catalogs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_palette_deselect_current_item ##### -->
+<para>
+
+</para>
+
+@palette: 
+@sticky_aware: 
+
+
+<!-- ##### FUNCTION glade_palette_get_current_item ##### -->
+<para>
+
+</para>
+
+@palette: 
 @Returns: 
 
 
@@ -81,16 +112,7 @@ to the Glade core.
 </para>
 
 @palette: 
-@appearance: 
-
-
-<!-- ##### FUNCTION glade_palette_deselect_current_item ##### -->
-<para>
-
-</para>
-
-@palette: 
-@sticky_aware: 
+@item_appearance: 
 
 
 <!-- ##### FUNCTION glade_palette_get_use_small_item_icons ##### -->
@@ -109,5 +131,23 @@ to the Glade core.
 
 @palette: 
 @use_small_item_icons: 
+
+
+<!-- ##### FUNCTION glade_palette_set_show_selector_button ##### -->
+<para>
+
+</para>
+
+@palette: 
+@show_selector_button: 
+
+
+<!-- ##### FUNCTION glade_palette_get_show_selector_button ##### -->
+<para>
+
+</para>
+
+@palette: 
+@Returns: 
 
 

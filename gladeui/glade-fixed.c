@@ -29,6 +29,26 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-fixed
+ * @Short_Description: An object wrapper for free-form placement container widgets.
+ *
+ * #GladeFixed is a specialized #GladeWidget to handle free-form child
+ * placements in containers that support this, it is designed with properties
+ * and signals with flexable integration in mind.
+ *
+ * If you set the x-prop/y-prop/width-prop/height-prop properties and
+ * leave the signals alone, #GladeFixed will assume you are like a 
+ * GtkFixed/GtkLayout widget and will use pixel counts as units for
+ * these properties.
+ *
+ * If you handle the configure-child/configure-end[/configure-begin] signals
+ * and dont let them propagate to the GladeFixed, then the x-prop/y-prop/width-prop/height-prop
+ * properties will be completely ignored and it is up to the implementor to play
+ * with whatever child packing properties are available to make a closest match
+ * for the values passed to configure-child via the #GdkRectangle.
+ */
+
 #include <glib-object.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>

@@ -22,6 +22,15 @@
 
 #include <config.h>
 
+/**
+ * SECTION:glade-project
+ * @Short_Description: The Glade document hub and Load/Save interface.
+ *
+ * This object owns all project objects and is responsable for loading and
+ * saving the glade document, you can monitor the project state via this
+ * object and its signals.
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>

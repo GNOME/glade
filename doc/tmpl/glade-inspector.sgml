@@ -2,16 +2,11 @@
 GladeInspector
 
 <!-- ##### SECTION Short_Description ##### -->
-A widget for inspecting objects in a #GladeProject
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A #GladeInspector is a widget for inspecting the objects that make up a user interface. 
-</para>
 
-<para>
-An inspector is created by calling either glade_inspector_new() or glade_inspector_new_with_project(). 
-The current project been inspected can be changed by calling glade_inspector_set_project().
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -22,9 +17,15 @@ The current project been inspected can be changed by calling glade_inspector_set
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### STRUCT GladeInspectorPrivate ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT GladeInspector ##### -->
 <para>
-The #GladeInspector struct contains private data only, and should be manipulated using the functions below.
+
 </para>
 
 
@@ -64,15 +65,6 @@ The #GladeInspector struct contains private data only, and should be manipulated
 @Returns: 
 
 
-<!-- ##### FUNCTION glade_inspector_get_project ##### -->
-<para>
-
-</para>
-
-@inspector: 
-@Returns: 
-
-
 <!-- ##### FUNCTION glade_inspector_set_project ##### -->
 <para>
 
@@ -80,6 +72,15 @@ The #GladeInspector struct contains private data only, and should be manipulated
 
 @inspector: 
 @project: 
+
+
+<!-- ##### FUNCTION glade_inspector_get_project ##### -->
+<para>
+
+</para>
+
+@inspector: 
+@Returns: 
 
 
 <!-- ##### FUNCTION glade_inspector_get_selected_items ##### -->

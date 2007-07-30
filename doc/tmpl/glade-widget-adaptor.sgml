@@ -1,0 +1,659 @@
+<!-- ##### SECTION Title ##### -->
+GladeWidgetAdaptor
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GladeWidgetAdaptorPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GWA_IS_FIXED ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO GWA_IS_TOPLEVEL ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO GWA_USE_PLACEHOLDERS ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO GWA_DEFAULT_WIDTH ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO GWA_DEFAULT_HEIGHT ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO GWA_GET_CLASS ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO GWA_GET_OCLASS ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO GLADE_VALID_CREATE_REASON ##### -->
+<para>
+
+</para>
+
+@reason: 
+
+
+<!-- ##### ENUM GladeCreateReason ##### -->
+<para>
+
+</para>
+
+@GLADE_CREATE_USER: 
+@GLADE_CREATE_COPY: 
+@GLADE_CREATE_LOAD: 
+@GLADE_CREATE_REBUILD: 
+@GLADE_CREATE_REASONS: 
+
+<!-- ##### MACRO GLADE_TYPE_CREATE_REASON ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION GladeSetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### USER_FUNCTION GladeGetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### USER_FUNCTION GladeVerifyPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GladeChildSetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+
+
+<!-- ##### USER_FUNCTION GladeChildGetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+
+
+<!-- ##### USER_FUNCTION GladeChildVerifyPropertyFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GladeGetChildrenFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GladeAddChildFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@parent: 
+@child: 
+
+
+<!-- ##### USER_FUNCTION GladeRemoveChildFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@parent: 
+@child: 
+
+
+<!-- ##### USER_FUNCTION GladeReplaceChildFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@old_obj: 
+@new_obj: 
+
+
+<!-- ##### USER_FUNCTION GladePostCreateFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@reason: 
+
+
+<!-- ##### USER_FUNCTION GladeGetInternalFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@parent: 
+@name: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GladeActionActivateFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@action_path: 
+
+
+<!-- ##### USER_FUNCTION GladeChildActionActivateFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@object: 
+@action_path: 
+
+
+<!-- ##### STRUCT GladeWidgetAdaptor ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+@type: 
+@name: 
+@generic_name: 
+@icon_name: 
+@title: 
+@properties: 
+@packing_props: 
+@signals: 
+@child_packings: 
+@actions: 
+@packing_actions: 
+@priv: 
+
+<!-- ##### MACRO glade_widget_adaptor_create_widget ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@query: 
+@...: 
+
+
+<!-- ##### MACRO glade_widget_adaptor_from_pclass ##### -->
+<para>
+
+</para>
+
+@pclass: 
+
+
+<!-- ##### MACRO glade_widget_adaptor_from_pspec ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### FUNCTION glade_create_reason_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_from_catalog ##### -->
+<para>
+
+</para>
+
+@class_node: 
+@catname: 
+@icon_prefix: 
+@module: 
+@domain: 
+@book: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_register ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_create_internal ##### -->
+<para>
+
+</para>
+
+@parent: 
+@internal_object: 
+@internal_name: 
+@parent_name: 
+@anarchist: 
+@reason: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_create_widget_real ##### -->
+<para>
+
+</para>
+
+@query: 
+@first_property: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_by_name ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_by_type ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_property_class ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_pack_property_class ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_default_params ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@construct: 
+@n_params: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_post_create ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@reason: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_internal_child ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@internal_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_set_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_verify_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@property_name: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_add ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_remove ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_children ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_has_child ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_child_set_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_child_get_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_child_verify_property ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@child: 
+@property_name: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_replace_child ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@old_obj: 
+@new_obj: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_query ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_get_packing_default ##### -->
+<para>
+
+</para>
+
+@child_adaptor: 
+@container_adaptor: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_is_container ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_action_add ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@action_path: 
+@label: 
+@stock: 
+@important: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_pack_action_add ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@action_path: 
+@label: 
+@stock: 
+@important: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_action_remove ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@action_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_pack_action_remove ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@action_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_pack_actions_new ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_action_activate ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@object: 
+@action_path: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_child_action_activate ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@container: 
+@object: 
+@action_path: 
+
+

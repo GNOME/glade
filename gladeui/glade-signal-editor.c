@@ -24,6 +24,16 @@
 #include <config.h>
 #endif
 
+/**
+ * SECTION:glade-signal-editor
+ * @Title: GladeSignalEditor
+ * @Short_Description: An interface to edit signals for a #GladeWidget.
+ *
+ * This isnt really a dockable widget, since you need to access the
+ * #GladeSignalEditor struct's '->main_window' widget, the signal editor
+ * is mostly of interest when implementing a custom object editor.
+ */
+
 #include <string.h>
 #include <glib/gi18n-lib.h>
 

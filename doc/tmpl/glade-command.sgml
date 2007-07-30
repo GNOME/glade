@@ -1,13 +1,12 @@
 <!-- ##### SECTION Title ##### -->
-Glade Commands
+GladeCommand
 
 <!-- ##### SECTION Short_Description ##### -->
-An event filter to implement the Undo/Redo stack
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The Glade Command api allows us to view user actions as items and execute 
-and undo those items; each #GladeProject has its own Undo/Redo stack.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,6 +15,37 @@ and undo those items; each #GladeProject has its own Undo/Redo stack.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT GCSetPropData ##### -->
+<para>
+
+</para>
+
+@property: 
+@new_value: 
+@old_value: 
+
+<!-- ##### STRUCT GladeCommand ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION glade_command_push_group ##### -->
+<para>
+
+</para>
+
+@fmt: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION glade_command_pop_group ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION glade_command_execute ##### -->
@@ -55,62 +85,6 @@ and undo those items; each #GladeProject has its own Undo/Redo stack.
 @other: 
 
 
-<!-- ##### FUNCTION glade_command_push_group ##### -->
-<para>
-
-</para>
-
-@fmt: 
-@Varargs: 
-
-
-<!-- ##### FUNCTION glade_command_pop_group ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION glade_command_set_name ##### -->
-<para>
-
-</para>
-
-@glade_widget: 
-@name: 
-
-
-<!-- ##### FUNCTION glade_command_create ##### -->
-<para>
-
-</para>
-
-@adaptor: 
-@parent: 
-@placeholder: 
-@project: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_command_delete ##### -->
-<para>
-
-</para>
-
-@widgets: 
-
-
-<!-- ##### STRUCT GCSetPropData ##### -->
-<para>
-#GladeProperties can be set in a list as one command,
-for Undo purposes; we store the list of #GCSetPropData with
-their old and new #GValue.
-</para>
-
-@property: A #GladeProperty to set
-@new_value: The new #GValue to assign to @property
-@old_value: The old #GValue of @property
-
 <!-- ##### FUNCTION glade_command_set_property ##### -->
 <para>
 
@@ -118,6 +92,15 @@ their old and new #GValue.
 
 @property: 
 @Varargs: 
+
+
+<!-- ##### FUNCTION glade_command_set_property_value ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
 
 
 <!-- ##### FUNCTION glade_command_set_properties ##### -->
@@ -140,6 +123,35 @@ their old and new #GValue.
 @props: 
 
 
+<!-- ##### FUNCTION glade_command_set_name ##### -->
+<para>
+
+</para>
+
+@glade_widget: 
+@name: 
+
+
+<!-- ##### FUNCTION glade_command_delete ##### -->
+<para>
+
+</para>
+
+@widgets: 
+
+
+<!-- ##### FUNCTION glade_command_create ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@parent: 
+@placeholder: 
+@project: 
+@Returns: 
+
+
 <!-- ##### FUNCTION glade_command_cut ##### -->
 <para>
 
@@ -157,6 +169,16 @@ their old and new #GValue.
 
 
 <!-- ##### FUNCTION glade_command_paste ##### -->
+<para>
+
+</para>
+
+@widgets: 
+@parent: 
+@placeholder: 
+
+
+<!-- ##### FUNCTION glade_command_dnd ##### -->
 <para>
 
 </para>
@@ -190,7 +212,18 @@ their old and new #GValue.
 </para>
 
 @glade_widget: 
-@old: 
+@old_signal: 
 @new_signal: 
+
+
+<!-- ##### FUNCTION glade_command_set_i18n ##### -->
+<para>
+
+</para>
+
+@property: 
+@translatable: 
+@has_context: 
+@comment: 
 
 

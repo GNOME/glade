@@ -31,6 +31,7 @@
 #include <gtk/gtkvbox.h>
 
 /* forward declaration */
+/* btw, this makes gtkdoc list GladeProject twice in gladeui-sections.txt wich gives a warning. */
 struct GladeProject;
 
 G_BEGIN_DECLS
@@ -46,6 +47,12 @@ typedef struct _GladeInspector         GladeInspector;
 typedef struct _GladeInspectorClass    GladeInspectorClass;
 typedef struct _GladeInspectorPrivate  GladeInspectorPrivate;
 
+/**
+ * GladeInspector:
+ *
+ * The #GladeInspector struct contains private data only, and should be manipulated using the functions below.
+ *
+ */
 struct _GladeInspector
 {
 	GtkVBox parent_instance;

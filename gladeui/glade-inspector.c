@@ -27,6 +27,16 @@
 
 #include <config.h>
 
+/**
+ * SECTION:glade-inspector
+ * @Short_Description: A widget for inspecting objects in a #GladeProject.
+ *
+ * A #GladeInspector is a widget for inspecting the objects that make up a user interface. 
+ *
+ * An inspector is created by calling either glade_inspector_new() or glade_inspector_new_with_project(). 
+ * The current project been inspected can be changed by calling glade_inspector_set_project().
+ */
+
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-project.h"

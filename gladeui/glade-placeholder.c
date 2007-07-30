@@ -23,6 +23,17 @@
 
 #include "config.h"
 
+/**
+ * SECTION:glade-placeholder
+ * @Short_Description: A #GtkWidget to fill empty places.
+ *
+ * Generally in Glade, container widgets are implemented with #GladePlaceholder 
+ * children to allow users to 'click' and add thier widgets to a container. 
+ * It is the responsability of the plugin writer to create placeholders for 
+ * container widgets where appropriate; usually in #GladePostCreateFunc 
+ * when the #GladeCreateReason is %GLADE_CREATE_USER.
+ */
+
 #include <gtk/gtk.h>
 #include "glade.h"
 #include "glade-placeholder.h"
