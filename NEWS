@@ -1,4 +1,33 @@
 ===========
+Glade 3.3.3
+===========
+    - Add tab labels by default to notebook pages (bug 345438) - Tristan Van Berkom
+    - Now child menu items are selectable (fixed event handling for widgets that are
+      not in the logical hierarchy, in 3.3.2 this was a crash actually) - Tristan Van Berkom
+    - Now we draw selection in g_signal_connect_after (..."expose-event"...) instead
+      of queuing an idle timeout.  - Tristan Van Berkom
+    - Fixed the UI to be insensitive when no projects are loaded (some widgets were
+      sensitive and causing errors) - Tristan Van Berkom
+    - Made it possible to declare a widget class in the catalog without giving a real type, 
+      only automatically derive from a type specified in the catalog (bug 352714) - Yevgen Muntyan
+    - Defined environment variables GLADE_MODULE_PATH & GLADE_CATALOG_PATH, catalogs will be
+      searched in GLADE_CATALOG_PATH and widget libraries/support modules in GLADE_MODULE_PATH. - Tristan Van Berkom
+    - Disable Add/Remove parent actions on GtkToolItem, GtkMenu and GtkMenuItem - Tristan Van Berkom
+    - misc bugfixes 459953 460272
+
+New and updated translations
+============================
+    - Jorge Gonzalez (es)
+    - Takeshi AIHANA (ja)
+    - Daniel Nylander (sv)
+    - Clytie Siddall, Nguyễn Thái Ngọc Duy (vi)
+    - Ilkka Tuohela (fi)
+    - Artur Flinta (pl)
+    - Runa Bhattacharjee (bn_IN)
+    - Gabor Kelemen (hu)
+    - Matic Žgur (sl)
+
+===========
 Glade 3.3.2
 ===========
     - Bindings work has been moved out into a branch
