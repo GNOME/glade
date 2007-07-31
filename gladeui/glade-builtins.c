@@ -50,6 +50,13 @@ struct _GladeParamSpecAccel {
 			     */
 };
 
+typedef struct _GladeStockItem {
+	gchar *value_name;
+	gchar *value_nick;
+	gchar *clean_name;
+	gint  value;
+} GladeStockItem;
+
 
 /************************************************************
  *      Auto-generate the enum type for stock properties    *
@@ -84,73 +91,139 @@ glade_standard_stock_append_prefix (const gchar *prefix)
 	stock_prefixs = g_slist_append (stock_prefixs, g_strdup (prefix));
 }
 
-static GArray *
+
+GladeStockItem *
+new_from_values (const gchar *name, const gchar *nick, gint value)
+{
+	GladeStockItem *new_gsi = NULL;
+	gchar *clean_name;
+	size_t len = 0;
+	guint i = 0;
+	guint j = 0;
+	
+	new_gsi = (GladeStockItem *) g_malloc0 (sizeof(GladeStockItem));
+
+	new_gsi->value_name = g_strdup (name);
+	new_gsi->value_nick = g_strdup (nick);
+	new_gsi->value = value;
+
+	clean_name = g_strdup (name);
+	len = strlen (clean_name);
+
+	while (i+j <= len)
+		{
+			if (clean_name[i+j] == '_')
+				j++;
+			
+			clean_name[i] = clean_name[i+j];
+			i++;				
+		}
+
+	new_gsi->clean_name = g_utf8_collate_key (clean_name, i - 1);
+	
+	g_free (clean_name);
+
+	return new_gsi;
+}
+
+
+gint
+compare_two_gsi (gconstpointer a, gconstpointer b)
+{
+	GladeStockItem *gsi1 = (GladeStockItem *) a;
+	GladeStockItem *gsi2 = (GladeStockItem *) b;
+
+	return strcmp (gsi1->clean_name, gsi2->clean_name);
+}
+
+
+GArray *
 list_stock_items (gboolean include_images)
 {
 	GtkStockItem  item;
-	GSList       *l, *stock_list, *p;
-	gchar        *stock_id, *prefix;
-	gint          stock_enum = 1, i;
+	GSList       *l = NULL, *stock_list = NULL, *p = NULL;
+	gchar        *stock_id = NULL, *prefix = NULL;
+	gint          stock_enum = 1, i = 0;
 	GEnumValue    value;
-	GArray       *values;
-	
-	/* We have ownership of the retuened list & the
-	 * strings within
-	 */
+	GArray       *values = NULL;
+	GladeStockItem *gsi;
+	GSList         *gsi_list = NULL;
+	GSList         *gsi_list_list = NULL;
+
 	stock_list = g_slist_reverse (gtk_stock_list_ids ());
 
 	values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
-				    g_slist_length (stock_list) + 2);
+				    g_slist_length (stock_list) + 1);
 	
-	
-	/* Add first "no stock" element */
-	value.value_nick = g_strdup ("glade-none"); /* Passing ownership here */
-	value.value_name = g_strdup ("None");
-	value.value      = 0;
-	values = g_array_append_val (values, value);
-	
+	/* Add first "no stock" element which is sorted alone ! */
+	gsi = new_from_values ("None", "glade-none", 0);
+	gsi_list = g_slist_insert_sorted (gsi_list, gsi, (GCompareFunc) compare_two_gsi);
+	gsi_list_list = g_slist_append (gsi_list_list, gsi_list);
+	gsi_list = NULL; 
+
 	/* We want gtk+ stock items to appear first */
-	if ((stock_prefixs && strcmp (stock_prefixs->data, "gtk-")) ||
+	if ((stock_prefixs && strcmp (stock_prefixs->data, "gtk-")) || 
 	    stock_prefixs == NULL)
-		stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-"));
+		stock_prefixs = g_slist_prepend (stock_prefixs, g_strdup ("gtk-")); 
 	
 	for (p = stock_prefixs; p; p = g_slist_next (p))
 	{
 		prefix = p->data;
-		
+
 		for (l = stock_list; l; l = g_slist_next (l))
 		{
 			stock_id = l->data;
 			if (g_str_has_prefix (stock_id, prefix) == FALSE ||
 			    gtk_stock_lookup (stock_id, &item) == FALSE )
 				continue;
-			
-			value.value      = stock_enum++;
-			value.value_name = g_strdup (item.label);
-			value.value_nick = stock_id; /* Passing ownership here */
-			values = g_array_append_val (values, value);
+
+			gsi = new_from_values (item.label, stock_id, stock_enum++ );
+			gsi_list = g_slist_insert_sorted (gsi_list, gsi, (GCompareFunc) compare_two_gsi);
 		}
+
+		gsi_list_list = g_slist_append (gsi_list_list, gsi_list);
+		gsi_list = NULL;
 
 		/* Images are appended after the gtk+ group of items */
 		if (include_images && !strcmp (prefix, "gtk-"))
 		{
 			for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
 			{
-				value.value      = stock_enum++;
-				value.value_name = g_strdup (builtin_stock_images[i]);
-				value.value_nick = g_strdup (builtin_stock_images[i]);
-				values = g_array_append_val (values, value);
+				gsi = new_from_values (builtin_stock_images[i], builtin_stock_images[i], stock_enum++);
+				gsi_list = g_slist_insert_sorted (gsi_list, gsi, (GCompareFunc) compare_two_gsi);	
 			}
-		}
-
+			gsi_list_list = g_slist_append (gsi_list_list, gsi_list);
+			gsi_list = NULL;
+		}	
 	}
+
+	for (p = gsi_list_list; p; p = g_slist_next (p))
+	{
+		
+		for (l = (GSList *) p->data; l; l = g_slist_next (l))
+		{
+			gsi = (GladeStockItem *) l->data;
+			value.value = gsi->value;
+			value.value_name = g_strdup (gsi->value_name);
+			value.value_nick = g_strdup (gsi->value_nick);
+			values = g_array_append_val (values, value);
+
+			g_free (gsi->value_nick);
+			g_free (gsi->value_name);
+			g_free (gsi->clean_name);
+			g_free (gsi);
+		}
+		g_slist_free ((GSList *) p->data);	
+	}
+
+	g_slist_free (gsi_list_list);
 
 	/* Add the trailing end marker */
 	value.value      = 0;
 	value.value_name = NULL;
 	value.value_nick = NULL;
 	values = g_array_append_val (values, value);
-	
+
 	stock_prefixs_done = TRUE;
 	g_slist_free (stock_list);
 

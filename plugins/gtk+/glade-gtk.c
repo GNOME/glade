@@ -2687,7 +2687,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 		for (i = gtk_notebook_get_n_pages (notebook); i < new_size; i++)
 		{
 			gint position = glade_gtk_notebook_get_first_blank_page (notebook);
-			GtkWidget *placeholder     = glade_placeholder_new ();
+			GtkWidget *placeholder = glade_placeholder_new ();
+			gchar *str;
 
 			GladeWidget *glabel =
 				glade_widget_adaptor_create_widget
@@ -2695,7 +2696,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 				 "parent", widget, 
 				 "project", glade_widget_get_project (widget), 
 				 NULL);
-			gchar *str = g_strdup_printf ("page %d", i + 1);
+			str = g_strdup_printf ("page %d", i + 1);
 			glade_widget_property_set (glabel, "label", str);
 			g_free (str);
 			
