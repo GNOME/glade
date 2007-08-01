@@ -2836,7 +2836,6 @@ glade_window_init (GladeWindow *window)
 	
 	priv->app = glade_app_new ();
 	
-	gtk_window_maximize (GTK_WINDOW (window));
 	gtk_window_set_default_size (GTK_WINDOW (window), 720, 540);
 
 	vbox = gtk_vbox_new (FALSE, 0);
