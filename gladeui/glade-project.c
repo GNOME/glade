@@ -693,7 +693,7 @@ glade_project_class_init (GladeProjectClass *klass)
 					 PROP_MODIFIED,
 					 g_param_spec_boolean ("modified",
 							       _(""),
-							       _("Whether project has beem modified since it was last saved"),
+							       _("Whether project has been modified since it was last saved"),
 							       FALSE,
 							       G_PARAM_READABLE));
 
