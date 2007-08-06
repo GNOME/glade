@@ -1,3 +1,8 @@
+2006-08-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in: Disabled the "submenu" property of GtkMenuItem
+	  (setting this property to its default NULL value obviously kills menus, bug 460022)
+
 2007-08-02  Theppitak Karoonboonyanan  <thep@linux.thai.net>
 
 	* gladeui/glade-widget-action.c, gladeui/glade-project.c: Fix minor
