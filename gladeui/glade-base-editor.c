@@ -1634,6 +1634,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
  * glade_base_editor_add_properties:
  * @editor: a #GladeBaseEditor
  * @gchild: a #GladeWidget
+ * @packing: whether we are adding packing properties or not
  * @...: A NULL terminated list of properties names.
  * 
  * Add @gchild properties to @editor
@@ -1642,7 +1643,8 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
  */
 void
 glade_base_editor_add_properties (GladeBaseEditor *editor,
-				  GladeWidget *gchild,
+				  GladeWidget     *gchild,
+				  gboolean         packing,
 				  ...)
 {
 	GladeEditorProperty *eprop;
@@ -1652,18 +1654,19 @@ glade_base_editor_add_properties (GladeBaseEditor *editor,
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 	
-	va_start (args, gchild);
+	va_start (args, packing);
 	property = va_arg (args, gchar *);
 	
 	while (property)
 	{
-		eprop = glade_editor_property_new_from_widget (gchild, property, TRUE);
+		eprop = glade_editor_property_new_from_widget (gchild, property, packing, TRUE);
 		if (eprop)
 			glade_base_editor_table_attach (editor, 
 							GLADE_EDITOR_PROPERTY (eprop)->eventbox, 
 							GTK_WIDGET (eprop));
 		property = va_arg (args, gchar *);
 	}
+	va_end (args);
 }
 
 /**

@@ -3764,6 +3764,7 @@ glade_editor_property_new (GladePropertyClass  *klass,
  * glade_editor_property_new_from_widget:
  * @widget: A #GladeWidget
  * @property: The widget's property
+ * @packing: whether @property indicates a packing property or not.
  * @use_command: Whether the undo/redo stack applies here.
  *
  * This is a convenience function to create a GladeEditorProperty corresponding
@@ -3774,12 +3775,16 @@ glade_editor_property_new (GladePropertyClass  *klass,
 GladeEditorProperty *
 glade_editor_property_new_from_widget (GladeWidget *widget,
 				       const gchar *property,
-				       gboolean use_command)
+				       gboolean     packing,
+				       gboolean     use_command)
 {
 	GladeEditorProperty *eprop;
 	GladeProperty *p;
 	
-	p = glade_widget_get_property (widget, property);
+	if (packing)
+		p = glade_widget_get_pack_property (widget, property);
+	else
+		p = glade_widget_get_property (widget, property);
 	g_return_val_if_fail (GLADE_IS_PROPERTY (p), NULL);
 
 	eprop = glade_editor_property_new (p->klass, use_command);

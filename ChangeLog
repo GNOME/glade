@@ -2,6 +2,16 @@
 
 	* configure.ac: Removed bogus output about python bindings.
 
+	* gladeui/glade-editor-property.[ch]: glade_editor_property_new_from_widget() added
+	  "packing" argument.
+
+	* gladeui/glade-base-editor.[ch]: Fixed va_start() without va_end() in
+	  glade_base_editor_add_properties(), also added "packing" argument to
+	  glade_base_editor_add_properties().
+
+	* plugins/gtk+/glade-gtk.c: Added "expand" and "homogeneous" packing properties
+	  to toolbar children in the toolbar editor (bug 429409).
+
 2006-08-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Disabled the "submenu" property of GtkMenuItem

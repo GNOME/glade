@@ -71,6 +71,7 @@ void                 glade_base_editor_add_default_properties (GladeBaseEditor *
 
 void                 glade_base_editor_add_properties         (GladeBaseEditor *editor,
 							       GladeWidget *gchild,
+							       gboolean packing,
 							       ...);
 
 void                 glade_base_editor_add_label              (GladeBaseEditor *editor,

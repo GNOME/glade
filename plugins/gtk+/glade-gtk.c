@@ -4755,14 +4755,14 @@ glade_gtk_menu_shell_child_selected (GladeBaseEditor *editor,
 	
 	glade_base_editor_add_label (editor, "Properties");
 	
-	glade_base_editor_add_properties (editor, gchild, "label", "tooltip", NULL);
+	glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip", NULL);
 
 	if (type == GTK_TYPE_IMAGE_MENU_ITEM)
 	{
 		GtkWidget *image;
 		GladeWidget *internal;
 
-		glade_base_editor_add_properties (editor, gchild, "stock", NULL);
+		glade_base_editor_add_properties (editor, gchild, FALSE, "stock", NULL);
 		
 		if ((image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (child))))
 		{
@@ -4772,17 +4772,17 @@ glade_gtk_menu_shell_child_selected (GladeBaseEditor *editor,
 				glade_base_editor_add_label
 					(editor, "Internal Image Properties");
 				glade_base_editor_add_properties
-					(editor, internal, "glade-type", "pixbuf", 
+					(editor, internal, FALSE, "glade-type", "pixbuf", 
 					 "glade-stock", "icon-name", NULL);
 			}
 		}
 	}
 	else if (type == GTK_TYPE_CHECK_MENU_ITEM)
-		glade_base_editor_add_properties (editor, gchild, 
+		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "active", "draw-as-radio",
 						  "inconsistent", NULL);
 	else if (type == GTK_TYPE_RADIO_MENU_ITEM)
-		glade_base_editor_add_properties (editor, gchild,
+		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "active", "group", NULL);
 }
 
@@ -5607,7 +5607,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	
 	glade_base_editor_add_label (editor, "Properties");
 	
-	glade_base_editor_add_properties (editor, gchild,
+	glade_base_editor_add_properties (editor, gchild, FALSE,
 					  "visible-horizontal",
 					  "visible-vertical",
 					  NULL);
@@ -5615,7 +5615,7 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	if (type == GTK_TYPE_SEPARATOR_TOOL_ITEM) return;
 
 	if (GTK_IS_TOOL_BUTTON (child))
-		glade_base_editor_add_properties (editor, gchild,
+		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "label", 
 						  "glade-type",
 						  "icon",
@@ -5624,8 +5624,13 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 						  NULL);
 	
 	if (type == GTK_TYPE_RADIO_TOOL_BUTTON)
-		glade_base_editor_add_properties (editor, gchild,
+		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "group", "active", NULL);	
+
+	glade_base_editor_add_label (editor, "Packing");
+	glade_base_editor_add_properties (editor, gchild, TRUE,
+					  "expand", "homogeneous", NULL);
+
 }
 
 static void

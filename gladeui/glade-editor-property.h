@@ -87,6 +87,7 @@ GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *
 
 GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
 							    const gchar        *property,
+							    gboolean            packing,
 							    gboolean            use_command);
 
 void                 glade_editor_property_load           (GladeEditorProperty *eprop,
