@@ -234,5 +234,4 @@ Configuration:
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	GNOME UI Widgets:	 ${have_gnome}
-	Python Binding:		 ${have_python}
 "
