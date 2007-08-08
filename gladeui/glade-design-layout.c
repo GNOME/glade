@@ -746,7 +746,6 @@ static gboolean
 glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 {
 	GladeDesignLayout *layout;
-	GdkGC *gc;
 	GtkWidget *child;
 	gint x, y, w, h;
 	gint border_width;

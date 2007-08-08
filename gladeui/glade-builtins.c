@@ -92,7 +92,7 @@ glade_standard_stock_append_prefix (const gchar *prefix)
 }
 
 
-GladeStockItem *
+static GladeStockItem *
 new_from_values (const gchar *name, const gchar *nick, gint value)
 {
 	GladeStockItem *new_gsi = NULL;
@@ -127,7 +127,7 @@ new_from_values (const gchar *name, const gchar *nick, gint value)
 }
 
 
-gint
+static gint
 compare_two_gsi (gconstpointer a, gconstpointer b)
 {
 	GladeStockItem *gsi1 = (GladeStockItem *) a;
@@ -137,7 +137,7 @@ compare_two_gsi (gconstpointer a, gconstpointer b)
 }
 
 
-GArray *
+static GArray *
 list_stock_items (gboolean include_images)
 {
 	GtkStockItem  item;

@@ -1,10 +1,14 @@
-2006-08-08  Tristan Van Berkom <tvb@gnome.org>
+2007-08-08  Yevgen Muntyan <muntyan@tamu.edu>
+
+	* gladeui/glade-builtins.c: Fixed some funcs that should be static
+
+2007-08-08  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-signal-editor.c: Changed "<Type the signal's handler here>" and
 	  "<Type the object's name here>" for "<Type here>" so that the signal editor doesnt
 	  take quite as much space anymore (bug 464505).
 
-2006-08-07  Tristan Van Berkom <tvb@gnome.org>
+2007-08-07  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac: Removed bogus output about python bindings.
 
@@ -18,7 +22,7 @@
 	* plugins/gtk+/glade-gtk.c: Added "expand" and "homogeneous" packing properties
 	  to toolbar children in the toolbar editor (bug 429409).
 
-2006-08-06  Tristan Van Berkom <tvb@gnome.org>
+2007-08-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Disabled the "submenu" property of GtkMenuItem
 	  (setting this property to its default NULL value obviously kills menus, bug 460022)
@@ -28,13 +32,13 @@
 	* gladeui/glade-widget-action.c, gladeui/glade-project.c: Fix minor
 	typos in messages.
 
-2006-08-01  Tristan Van Berkom <tvb@gnome.org>
+2007-08-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Made glade window not maximized by default (Bug 462111, by
 	  request of Frédéric Bellaiche), seems most apps arent maximized by default on
 	  startup anyway.
 
-2006-07-31  Tristan Van Berkom <tvb@gnome.org>
+2007-07-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Fixed compilation with gcc 2.95 (Bug 461923, fix by Jens Granseuer)
 
@@ -62,7 +66,7 @@
 
 	* NEWS, configure.ac: Rolling 3.3.3
 
-2006-07-25  Tristan Van Berkom <tvb@gnome.org>
+2007-07-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: 
 	  - Make undoing increasing notebook size work properly (needed to destroy 
@@ -91,7 +95,7 @@
 	* gladeui/glade-popup.c: Fixed placeholder menu to also include actions of the
 	  parent widget.
 
-2006-07-24  Tristan Van Berkom <tvb@gnome.org>
+2007-07-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Set custom label on the property editor sensitive/insensitive
 	  according to whether there is a project loaded or not
@@ -117,11 +121,11 @@
 	  - Dont transfer "transfer-on-paste" properties to newly added placeholders
 	    in glade_gtk_container_replace_child (fixes bug 459953)
 
-2006-07-23  Tristan Van Berkom <tvb@gnome.org>
+2007-07-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.3.2
 
-2006-07-23  Tristan Van Berkom <tvb@gnome.org>
+2007-07-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch]: 
 	  - Adding convenience funcs that help with debugging property values in plugins: 
@@ -144,7 +148,7 @@
 	  - Use cairo instead of GdkGC to draw frame.
 	  - Draw slightly darker border to ensure border is visible on some themes.
 
-2006-07-18  Tristan Van Berkom <tvb@gnome.org>
+2007-07-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.[ch]: 
 	  fixed memory leaks of description strings in usage of glade_command_push_group()
@@ -178,7 +182,7 @@
 	* gladeui/glade-property-class.c: simplified displayable value message in 
 	  gpc_get_displayable_values_from_node() closes #448915
 
-2006-07-17  Tristan Van Berkom <tvb@gnome.org>
+2007-07-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget-adaptor.c: untranslate the "half translated" warning
 	  message in gwa_displayable_values_check().
@@ -197,7 +201,7 @@
 	* gladeui/glade-fixed.c: Dont connect event handlers to child objects of fixed
 	  containers that are not widgets.
 
-2006-07-16  Tristan Van Berkom <tvb@gnome.org>
+2007-07-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Now undocked windows can be redocked by hitting
 	the close button and UI tool components dont sport redundant indicator labels.
@@ -234,7 +238,7 @@
 	  GtkList::selection-mode
 	  GtkCList::shadow-type, selection-mode, sort-type
 
-2006-07-11  Tristan Van Berkom <tvb@gnome.org>
+2007-07-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c: Implemented docking view menu.
 
@@ -443,11 +447,11 @@
 	* src/Makefile.am: Use gnome-common macro for WARN_CFLAGS. Bug
 	#399134.
 
-2006-06-21  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-21  Vincent Geddes <vincent.geddes@gmail.com>
 	
 	* gladeui/glade-app.[ch], gladeui/glade-widget-adaptor.c: Misc cleanups.
 
-2006-06-20  Tristan Van Berkom <tvb@gnome.org>
+2007-06-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Remember notebook page when 
 	  reconstructing (Fixes bug 394382)
@@ -458,7 +462,7 @@
 	* doc/gladeui.types: Removed glade_project_view_get_type added
 	glade_inspector_get_type
 
-2006-06-20  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-20  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* doc/gladeui-docs.sgml, doc/gladeui.types, doc/gladeui-sections.txt,
 	  doc/tmpl/glade-inspector.sgml: Set up documentation for GladeInspector.
@@ -473,7 +477,7 @@
 	* gladeui/glade-inspector.c: added extra check in project_remove_widget_cb()
 	  iter could be NULL!
 
-2006-06-20  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-20  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-inspector.[ch]: New Inspector implementation.
 	  - The Inspector no longer records session data. 
@@ -488,7 +492,7 @@
 	* src/glade-project-window: A unique GladeInspector is associated with	
 	  each open project. These inspectors are stored in a GtkNotebook. 
 
-2006-06-19  Tristan Van Berkom <tvb@gnome.org>
+2007-06-19  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Added launch_editor action for toolbars.
 
@@ -516,14 +520,14 @@
 
 	* bindings/python/glade-python-gwa.c: updated
 
-2006-06-18  Tristan Van Berkom <tvb@gnome.org>
+2007-06-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.3.1
 
 	* gladeui/plugins/gtk+/glade-gtk.c: Corrected undo item for
 	"remove page" action to say "Removed page from notebook1".
 
-2006-06-17  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-17  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-editor-property.c: Ensure parameter list passed to
 	  gtk_dialog_set_alternative_button_order() is terminated (#424509).
@@ -544,7 +548,7 @@
 	  to GLADE_TYPE_STOCK_IMAGE not GLADE_TYPE_STOCK! fixes bug #444959
 	  (yes I live in UTC -3 you insensitive... heh)
 
-2006-06-14  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-14  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-app.c: Change GtkMessageType of _warning_ dialogs from
 	  GTK_MESSAGE_INFO to GTK_MESSAGE_WARNING. 
@@ -570,7 +574,7 @@
 
 	  - GtkNotebook remove_page
 
-2006-06-13  Tristan Van Berkom <tvb@gnome.org>
+2007-06-13  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: 
 	  - Fixed cut/paste inside notebooks (widgets wanted to stay on the same page they 
@@ -579,7 +583,7 @@
 	    delete/undo combination (a tab widget deleted and brought back was showing up
 	    in the page).
 
-2006-06-13  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-13  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* plugins/gtk+/gtk+.xml.in: HIG: Use "Edit.." instead of "Edit Menu", and so on.
 
@@ -587,7 +591,7 @@
 	
 	* gladeui/gladeui.rc.in: Set the DLL name correctly.
 
-2006-06-10  Vincent Geddes <vincent.geddes@gmail.com>
+2007-06-10  Vincent Geddes <vincent.geddes@gmail.com>
 
 	* gladeui/glade-binding.c: Remove invalid warning. It is not
 	  required that the 'bindings' directory exists.
@@ -625,7 +629,7 @@
 
 	* plugins/gtk+/glade-gtk.c: added glade_gtk_notebook_child_action_activate ()
 
-2006-06-04  Tristan Van Berkom <tvb@gnome.org>
+2007-06-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac, NEWS: Rolling 3.3.0
 
