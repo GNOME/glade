@@ -1,9 +1,15 @@
 2007-08-08  Yevgen Muntyan <muntyan@tamu.edu>
 
-	* gladeui/glade-builtins.c: Fixed some funcs that should be static
+	* gladeui/glade-builtins.c, gladeui/glade-design-layout.c: 
+	  Fixed some funcs that should be static
+
+	* src/glade-window.c: Now saves/restores session data about docking
+	  attached state & undocked window sizes/positions.
 
 2007-08-08  Tristan Van Berkom <tvb@gnome.org>
 
+	* MAINTAINERS: adjusted for new standard format for gnome modules
+	
 	* gladeui/glade-signal-editor.c: Changed "<Type the signal's handler here>" and
 	  "<Type the object's name here>" for "<Type here>" so that the signal editor doesnt
 	  take quite as much space anymore (bug 464505).

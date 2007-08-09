@@ -47,9 +47,35 @@
 #define URL_USER_MANUAL      "http://glade.gnome.org/manual/index.html"
 #define URL_DEVELOPER_MANUAL "http://glade.gnome.org/docs/index.html"
 
+#define CONFIG_GROUP_WINDOWS        "Glade Windows"
+#define GLADE_WINDOW_DEFAULT_WIDTH  720
+#define GLADE_WINDOW_DEFAULT_HEIGHT 540
+#define CONFIG_KEY_X                "x"
+#define CONFIG_KEY_Y                "y"
+#define CONFIG_KEY_WIDTH            "width"
+#define CONFIG_KEY_HEIGHT           "height"
+#define CONFIG_KEY_DETACHED         "detached"
+
 #define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
 					  GLADE_TYPE_WINDOW,                      \
 					  GladeWindowPrivate))
+
+enum {
+	DOCK_PALETTE,
+	DOCK_INSPECTOR,
+	DOCK_EDITOR,
+	N_DOCKS
+};
+
+typedef struct {
+	GtkWidget	    *widget;		/* the widget with scrollbars */
+	GtkWidget	    *paned;		/* GtkPaned in the main window containing which part */
+	gboolean	     first_child;	/* whether this widget is packed with gtk_paned_pack1() */
+	gboolean	     detached;		/* whether this widget should be floating */
+	char		    *title;		/* window title, untranslated */
+	char		    *id;		/* id to use in config file */
+	GdkRectangle         window_pos;	/* x and y == G_MININT means unset */
+} ToolDock;
 
 struct _GladeWindowPrivate
 {
@@ -93,14 +119,12 @@ struct _GladeWindowPrivate
 	GtkWidget           *toolbar;              /* Actions are added to the toolbar */
 	gint                 actions_start;        /* start of action items */
 
-	GtkWidget           *palette_dock;         /* The palette including scrollbars and title */
-	GtkWidget           *inspector_dock;       /* The inspector including scrollbars and title */
-	GtkWidget           *editor_dock;          /* The editor including scrollbars and title */
-
 	/* paned windows that tools get docked into/out of */
 	GtkWidget           *left_pane;
 	GtkWidget           *right_pane;
-	
+
+	GdkRectangle         position;
+	ToolDock	     docks[N_DOCKS];
 };
 
 static void refresh_undo_redo                (GladeWindow      *window);
@@ -110,6 +134,8 @@ static void recent_chooser_item_activated_cb (GtkRecentChooser *chooser,
 
 static void check_reload_project             (GladeWindow      *window,
 					      GladeProject     *project);
+
+static void save_windows_config              (GladeWindow      *window);
 
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
@@ -1536,6 +1562,8 @@ quit_cb (GtkAction *action, GladeWindow *window)
 		do_close (window, glade_design_view_get_from_project (project));
 	}
 
+	save_windows_config (window);
+
 	gtk_main_quit ();
 
 }
@@ -1626,10 +1654,12 @@ inspector_item_activated_cb (GladeInspector     *inspector,
 {
 	GList *item = glade_inspector_get_selected_items (inspector);
 	g_assert (GLADE_IS_WIDGET (item->data) && (item->next == NULL));
-	
+
+	/* bring window on top since inspector may be detached */
+	gtk_window_present (GTK_WINDOW (window));
 	/* switch to this widget in the workspace */
 	glade_widget_show (GLADE_WIDGET (item->data));
-	
+
 	g_list_free (item);
 }
 
@@ -1856,111 +1886,79 @@ on_dock_deleted (GtkWidget *widget,
 	return TRUE;
 }
 
-static void
-toggle_palette_dock_cb (GtkAction *action, GladeWindow *window)
+static gboolean
+on_dock_resized (GtkWidget         *window,
+		 GdkEventConfigure *event,
+		 ToolDock          *dock)
 {
-	GtkWidget *toplevel;
-	
-	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-	{
-		toplevel = gtk_widget_get_toplevel (window->priv->palette_dock);
+	dock->window_pos.width = event->width;
+	dock->window_pos.height = event->height;
 
-		g_object_ref (window->priv->palette_dock);
-		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->palette_dock);
-		gtk_paned_pack1 (GTK_PANED (window->priv->left_pane), window->priv->palette_dock, FALSE, FALSE);
-		g_object_unref (window->priv->palette_dock);
+	gtk_window_get_position (GTK_WINDOW (window),
+				 &dock->window_pos.x,
+				 &dock->window_pos.y);
 
-		gtk_widget_destroy (toplevel);
-	} else {
-		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-
-		gtk_window_set_default_size (GTK_WINDOW (toplevel), 200, 540);
-		gtk_window_set_title (GTK_WINDOW (toplevel), _("Palette"));
-		g_signal_connect (G_OBJECT (toplevel), "delete-event",
-				  G_CALLBACK (on_dock_deleted), action);
-		
-		g_object_ref (window->priv->palette_dock);
-		gtk_container_remove (GTK_CONTAINER (window->priv->left_pane), window->priv->palette_dock);
-		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->palette_dock);
-		g_object_unref (window->priv->palette_dock);
-
-		gtk_window_present (GTK_WINDOW (toplevel));
-	}
+	return FALSE;
 }
 
 static void
-toggle_inspector_dock_cb (GtkAction *action, GladeWindow *window)
+toggle_dock_cb (GtkAction *action, GladeWindow *window)
 {
 	GtkWidget *toplevel;
-	
+	ToolDock *dock;
+	guint dock_type;
+
+	dock_type = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (action), "glade-dock-type"));
+	g_return_if_fail (dock_type < N_DOCKS);
+
+	dock = &window->priv->docks[dock_type];
+
 	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
 	{
-		toplevel = gtk_widget_get_toplevel (window->priv->inspector_dock);
+		toplevel = gtk_widget_get_toplevel (dock->widget);
 
-		g_object_ref (window->priv->inspector_dock);
-		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->inspector_dock);
-		gtk_paned_pack1 (GTK_PANED (window->priv->right_pane), window->priv->inspector_dock, FALSE, FALSE);
-		g_object_unref (window->priv->inspector_dock);
+		g_object_ref (dock->widget);
+		gtk_container_remove (GTK_CONTAINER (toplevel), dock->widget);
+		if (dock->first_child)
+			gtk_paned_pack1 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
+		else
+			gtk_paned_pack2 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
+		g_object_unref (dock->widget);
+
+		gtk_widget_show (dock->paned);
+		dock->detached = FALSE;
 
 		gtk_widget_destroy (toplevel);
-
-		gtk_widget_show (window->priv->right_pane);
 	} else {
 		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-		gtk_window_set_default_size (GTK_WINDOW (toplevel), 300, 540);
-		gtk_window_set_title (GTK_WINDOW (toplevel), _("Inspector"));
+		gtk_window_set_default_size (GTK_WINDOW (toplevel),
+					     dock->window_pos.width,
+					     dock->window_pos.height);
+
+		if (dock->window_pos.x > G_MININT && dock->window_pos.y > G_MININT)
+			gtk_window_move (GTK_WINDOW (toplevel),
+					 dock->window_pos.x,
+					 dock->window_pos.y);
+
+		gtk_window_set_title (GTK_WINDOW (toplevel), dock->title);
+		g_object_ref (dock->widget);
+		gtk_container_remove (GTK_CONTAINER (dock->paned), dock->widget);
+		gtk_container_add (GTK_CONTAINER (toplevel), dock->widget);
+		g_object_unref (dock->widget);
+
 		g_signal_connect (G_OBJECT (toplevel), "delete-event",
 				  G_CALLBACK (on_dock_deleted), action);
-		
-		g_object_ref (window->priv->inspector_dock);
-		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->inspector_dock);
-		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->inspector_dock);
-		g_object_unref (window->priv->inspector_dock);
+		g_signal_connect (G_OBJECT (toplevel), "configure-event",
+				  G_CALLBACK (on_dock_resized), dock);
+
+		if (!GTK_PANED (dock->paned)->child1 &&
+		    !GTK_PANED (dock->paned)->child2)
+			gtk_widget_hide (dock->paned);
+
+		dock->detached = TRUE;
 
 		gtk_window_present (GTK_WINDOW (toplevel));
-
-		if (!GTK_PANED (window->priv->right_pane)->child1 &&
-		    !GTK_PANED (window->priv->right_pane)->child2)
-			gtk_widget_hide (window->priv->right_pane);
-	}
-}
-
-static void
-toggle_editor_dock_cb (GtkAction *action, GladeWindow *window)
-{
-	GtkWidget *toplevel;
-	
-	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-	{
-		toplevel = gtk_widget_get_toplevel (window->priv->editor_dock);
-
-		g_object_ref (window->priv->editor_dock);
-		gtk_container_remove (GTK_CONTAINER (toplevel), window->priv->editor_dock);
-		gtk_paned_pack2 (GTK_PANED (window->priv->right_pane), window->priv->editor_dock, FALSE, FALSE);
-		g_object_unref (window->priv->editor_dock);
-
-		gtk_widget_destroy (toplevel);
-
-		gtk_widget_show (window->priv->right_pane);
-	} else {
-		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-		
-		gtk_window_set_default_size (GTK_WINDOW (toplevel), 500, 700);
-		gtk_window_set_title (GTK_WINDOW (toplevel), _("Properties"));
-		g_signal_connect (G_OBJECT (toplevel), "delete-event",
-				  G_CALLBACK (on_dock_deleted), action);
-		
-		g_object_ref (window->priv->editor_dock);
-		gtk_container_remove (GTK_CONTAINER (window->priv->right_pane), window->priv->editor_dock);
-		gtk_container_add (GTK_CONTAINER (toplevel), window->priv->editor_dock);
-		g_object_unref (window->priv->editor_dock);
-
-		gtk_window_present (GTK_WINDOW (toplevel));
-
-		if (!GTK_PANED (window->priv->right_pane)->child1 &&
-		    !GTK_PANED (window->priv->right_pane)->child2)
-			gtk_widget_hide (window->priv->right_pane);
 	}
 }
 
@@ -2260,15 +2258,15 @@ static GtkToggleActionEntry view_entries[] = {
 
 	{ "DockPalette", NULL, N_("Dock _Palette"), NULL,
 	  N_("Dock the palette into the main window"),
-	  G_CALLBACK (toggle_palette_dock_cb), TRUE },
+	  G_CALLBACK (toggle_dock_cb), TRUE },
 
 	{ "DockInspector", NULL, N_("Dock _Inspector"), NULL,
 	  N_("Dock the inspector into the main window"),
-	  G_CALLBACK (toggle_inspector_dock_cb), TRUE },
+	  G_CALLBACK (toggle_dock_cb), TRUE },
 
 	{ "DockEditor", NULL, N_("Dock _Editor"), NULL,
 	  N_("Dock the editor into the main window"),
-	  G_CALLBACK (toggle_editor_dock_cb), TRUE },
+	  G_CALLBACK (toggle_dock_cb), TRUE },
 
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
@@ -2804,11 +2802,202 @@ glade_window_dispose (GObject *object)
 static void
 glade_window_finalize (GObject *object)
 {
+	guint i;
+
 	g_free (GLADE_WINDOW (object)->priv->default_path);
+
+	for (i = 0; i < N_DOCKS; i++)
+	{
+		ToolDock *dock = &GLADE_WINDOW (object)->priv->docks[i];
+		g_free (dock->title);
+		g_free (dock->id);
+	}
 
 	G_OBJECT_CLASS (glade_window_parent_class)->finalize (object);
 }
 
+
+static gboolean
+glade_window_configure_event (GtkWidget         *widget,
+			      GdkEventConfigure *event)
+{
+	GladeWindow *window = GLADE_WINDOW (widget);
+	gboolean retval;
+
+	window->priv->position.width = event->width;
+	window->priv->position.height = event->height;
+
+	retval = GTK_WIDGET_CLASS(glade_window_parent_class)->configure_event (widget, event);
+
+	gtk_window_get_position (GTK_WINDOW (widget),
+				 &window->priv->position.x,
+				 &window->priv->position.y);
+
+	return retval;
+}
+
+static void
+key_file_set_window_position (GKeyFile     *config,
+			      GdkRectangle *position,
+			      const char   *id,
+			      gboolean      detached,
+			      gboolean      save_detached)
+{
+	char *key_x, *key_y, *key_width, *key_height, *key_detached;
+
+	key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
+	key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
+	key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
+	key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
+	key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
+
+	/* we do not want to save position of docks which
+	 * were never detached */
+	if (position->x > G_MININT)
+		g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS,
+					key_x, position->x);
+	if (position->y > G_MININT)
+		g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS,
+					key_y, position->y);
+
+	g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS,
+				key_width, position->width);
+	g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS,
+				key_height, position->height);
+
+	if (save_detached)
+		g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS,
+					key_detached, detached);
+
+	g_free (key_detached);
+	g_free (key_height);
+	g_free (key_width);
+	g_free (key_y);
+	g_free (key_x);
+}
+
+static void
+save_windows_config (GladeWindow *window)
+{
+	guint i;
+	GKeyFile *config;
+
+	config = glade_app_get_config ();
+
+	for (i = 0; i < N_DOCKS; ++i)
+	{
+		ToolDock *dock = &window->priv->docks[i];
+		key_file_set_window_position (config, &dock->window_pos, dock->id, 
+					      dock->detached, TRUE);
+	}
+
+	key_file_set_window_position (config, &window->priv->position, 
+				      "main", FALSE, FALSE);
+
+	glade_app_config_save ();
+}
+
+static int
+key_file_get_int (GKeyFile   *config,
+		  const char *group,
+		  const char *key,
+		  int         default_value)
+{
+	if (g_key_file_has_key (config, group, key, NULL))
+		return g_key_file_get_integer (config, group, key, NULL);
+	else
+		return default_value;
+}
+
+static void
+key_file_get_window_position (GKeyFile     *config,
+			      const char   *id,
+			      GdkRectangle *pos,
+			      gboolean     *detached)
+{
+	char *key_x, *key_y, *key_width, *key_height, *key_detached;
+
+	key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
+	key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
+	key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
+	key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
+	key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
+
+	pos->x = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_x, pos->x);
+	pos->y = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_y, pos->y);
+	pos->width = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_width, pos->width);
+	pos->height = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_height, pos->height);
+
+	if (detached && g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_detached, NULL))
+		*detached = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_detached, NULL);
+
+	g_free (key_x);
+	g_free (key_y);
+	g_free (key_width);
+	g_free (key_height);
+	g_free (key_detached);
+}
+
+static void
+glade_window_set_initial_size (GladeWindow *window)
+{
+	GKeyFile *config;
+	GdkRectangle position = {
+		G_MININT, G_MININT, GLADE_WINDOW_DEFAULT_WIDTH, GLADE_WINDOW_DEFAULT_HEIGHT
+	};
+
+	config = glade_app_get_config ();
+
+	key_file_get_window_position (config, "main", &position, NULL);
+
+	gtk_window_set_default_size (GTK_WINDOW (window), position.width, position.height);
+
+	if (position.x > G_MININT && position.y > G_MININT)
+		gtk_window_move (GTK_WINDOW (window), position.x, position.y);
+}
+
+static void
+show_dock_first_time (GladeWindow    *window,
+		      guint           dock_type,
+		      const char     *action_id)
+{
+	GKeyFile *config;
+	int detached = -1;
+	GtkAction *action;
+	ToolDock *dock;
+
+	action = gtk_action_group_get_action (window->priv->static_actions, action_id);
+	g_object_set_data (G_OBJECT (action), "glade-dock-type", GUINT_TO_POINTER (dock_type));
+
+	dock = &window->priv->docks[dock_type];
+	config = glade_app_get_config ();
+
+	key_file_get_window_position (config, dock->id, &dock->window_pos, &detached);
+
+	if (detached == 1)
+		gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+}
+
+static void
+setup_dock (ToolDock   *dock,
+	    GtkWidget  *dock_widget,
+	    guint       default_width,
+	    guint       default_height,
+	    const char *window_title,
+	    const char *id,
+	    GtkWidget  *paned,
+	    gboolean    first_child)
+{
+	dock->widget = dock_widget;
+	dock->window_pos.x = dock->window_pos.y = G_MININT;
+	dock->window_pos.width = default_width;
+	dock->window_pos.height = default_height;
+	dock->title = g_strdup (window_title);
+	dock->id = g_strdup (id);
+	dock->paned = paned;
+	dock->first_child = first_child;
+	dock->detached = FALSE;
+}
 
 static void
 glade_window_init (GladeWindow *window)
@@ -2835,8 +3024,8 @@ glade_window_init (GladeWindow *window)
 	priv->default_path = NULL;
 	
 	priv->app = glade_app_new ();
-	
-	gtk_window_set_default_size (GTK_WINDOW (window), 720, 540);
+
+	glade_window_set_initial_size (window);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -2902,13 +3091,6 @@ glade_window_init (GladeWindow *window)
 	gtk_widget_show_all (hpaned2);
 	gtk_widget_show_all (vpaned);
 
-	/* palette */
-	palette = GTK_WIDGET (glade_app_get_palette ());
-	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
-	gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
-	priv->palette_dock = palette;
-	gtk_widget_show (palette);
-	
 	/* notebook */
 	priv->notebook = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), FALSE);
@@ -2916,13 +3098,22 @@ glade_window_init (GladeWindow *window)
 	gtk_paned_pack2 (GTK_PANED (hpaned2), priv->notebook, TRUE, FALSE);
 	gtk_widget_show (priv->notebook);
 
+	/* palette */
+	palette = GTK_WIDGET (glade_app_get_palette ());
+	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
+	gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
+	gtk_widget_show (palette);
+	setup_dock (&priv->docks[DOCK_PALETTE], palette, 200, 540, 
+		    _("Palette"), "palette", hpaned2, TRUE);
+
 	/* inspectors */
 	priv->inspectors_notebook = gtk_notebook_new ();	
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);	
 	gtk_widget_show (priv->inspectors_notebook);	
 	gtk_paned_pack1 (GTK_PANED (vpaned), priv->inspectors_notebook, FALSE, FALSE); 
-	priv->inspector_dock = priv->inspectors_notebook;
+	setup_dock (&priv->docks[DOCK_INSPECTOR], priv->inspectors_notebook, 300, 540,
+		    _("Inspector"), "inspector", vpaned, TRUE);
 
 	/* editor */
 	editor = GTK_WIDGET (glade_app_get_editor ());
@@ -2931,7 +3122,12 @@ glade_window_init (GladeWindow *window)
 	gtk_label_set_ellipsize	(GTK_LABEL (priv->label), PANGO_ELLIPSIZE_END);
 	gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
 	gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, TRUE, FALSE);
-	priv->editor_dock = dockitem;
+	setup_dock (&priv->docks[DOCK_EDITOR], dockitem, 500, 700,
+		    _("Properties"), "properties", vpaned, FALSE);
+
+	show_dock_first_time (window, DOCK_PALETTE, "DockPalette");
+	show_dock_first_time (window, DOCK_INSPECTOR, "DockInspector");
+	show_dock_first_time (window, DOCK_EDITOR, "DockEditor");
 
 	/* status bar */
 	priv->statusbar = gtk_statusbar_new ();
@@ -3056,12 +3252,16 @@ static void
 glade_window_class_init (GladeWindowClass *klass)
 {
 	GObjectClass *object_class;
+	GtkWidgetClass *widget_class;
 
 	object_class = G_OBJECT_CLASS (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
 
 	object_class->dispose  = glade_window_dispose;
 	object_class->finalize = glade_window_finalize;
-	
+
+	widget_class->configure_event = glade_window_configure_event;
+
 	g_type_class_add_private (klass, sizeof (GladeWindowPrivate));
 }
 
