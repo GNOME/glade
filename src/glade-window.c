@@ -1877,6 +1877,29 @@ toggle_editor_help_cb (GtkAction *action, GladeWindow *window)
 }
 
 
+/* This function is meant to be attached to key-press-event of a toplevel,
+ * it simply allows the window contents to treat key events /before/ 
+ * accelerator keys come into play (this way widgets dont get deleted
+ * when cutting text in an entry etc.).
+ */
+static gint
+hijack_key_press (GtkWidget          *win, 
+		  GdkEventKey        *event, 
+		  GladeWindow *window)
+{
+	if (GTK_WINDOW (win)->focus_widget &&
+	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
+	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
+	{
+		return gtk_widget_event (GTK_WINDOW (win)->focus_widget, 
+					 (GdkEvent *)event);
+	}
+	return FALSE;
+}
+
 static gboolean
 on_dock_deleted (GtkWidget *widget,
 		 GdkEvent  *event,
@@ -1955,6 +1978,13 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 		if (!GTK_PANED (dock->paned)->child1 &&
 		    !GTK_PANED (dock->paned)->child2)
 			gtk_widget_hide (dock->paned);
+
+
+		gtk_window_add_accel_group (GTK_WINDOW (toplevel), 
+					    gtk_ui_manager_get_accel_group (window->priv->ui));
+
+		g_signal_connect (G_OBJECT (toplevel), "key-press-event",
+				  G_CALLBACK (hijack_key_press), window);
 
 		dock->detached = TRUE;
 
@@ -2509,25 +2539,6 @@ create_drag_resize_tool_button (GtkToolbar *toolbar)
 	gtk_widget_show (image);
 	
 	return GTK_WIDGET (button);
-}
-
-
-static gint
-hijack_editor_key_press (GtkWidget          *win, 
-			     GdkEventKey        *event, 
-			     GladeWindow *window)
-{
-	if (GTK_WINDOW (win)->focus_widget &&
-	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
-	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
-	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
-	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
-	{
-		return gtk_widget_event (GTK_WINDOW (win)->focus_widget, 
-					 (GdkEvent *)event);
-	}
-	return FALSE;
 }
 
 static void
@@ -3224,8 +3235,7 @@ glade_window_init (GladeWindow *window)
 			  window);
 
 	g_signal_connect (G_OBJECT (window), "key-press-event",
-			  G_CALLBACK (hijack_editor_key_press), window);
-
+			  G_CALLBACK (hijack_key_press), window);
 
        /* GladeApp signals */
 	g_signal_connect (G_OBJECT (priv->app), "update-ui",
@@ -3243,7 +3253,6 @@ glade_window_init (GladeWindow *window)
 	glade_app_set_window (GTK_WIDGET (window));
 
 	accel_group = gtk_ui_manager_get_accel_group(priv->ui);
-	glade_app_set_accel_group (accel_group);
 
 	gtk_window_add_accel_group (GTK_WINDOW (glade_app_get_clipboard_view ()), accel_group);
 }
