@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-06 16:26+0300\n"
+"POT-Creation-Date: 2007-08-13 22:01+0300\n"
 "PO-Revision-Date: 2007-03-12 08:32+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -25,7 +25,7 @@ msgstr "Luo tai avaa GTK+ -ja Gnome-sovellusten käyttöliittymäsuunnitelmia"
 msgid "Glade Interface Designer"
 msgstr "Glade -käyttöliittymäkehitin"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:416
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:442
 msgid "User Interface Designer"
 msgstr "Käyttöliittymäkehitin"
 
@@ -79,84 +79,84 @@ msgstr "Tiedostoa \"%s\" ei voi avata, sitä ei ole olemassa.\n"
 msgid "[Read Only]"
 msgstr "[Vain luku]"
 
-#: ../src/glade-window.c:131
+#: ../src/glade-window.c:157
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "Verkko-osoitetta \"%s\" ei voitu näyttää"
 
-#: ../src/glade-window.c:135
+#: ../src/glade-window.c:161
 msgid "No suitable web browser could be found."
 msgstr "Sopivaa www-selainta ei löytynyt."
 
-#: ../src/glade-window.c:644
+#: ../src/glade-window.c:670
 #, c-format
 msgid "%s [%s] - Properties"
 msgstr "%s [%s] - ominaisuudet"
 
-#: ../src/glade-window.c:657 ../src/glade-window.c:663
-#: ../src/glade-window.c:1950 ../src/glade-window.c:2929
+#: ../src/glade-window.c:683 ../src/glade-window.c:689
+#: ../src/glade-window.c:3131 ../src/glade-window.c:3137
 #: ../gladeui/glade-widget.c:1052
 msgid "Properties"
 msgstr "Ominaisuudet"
 
-#: ../src/glade-window.c:1134
+#: ../src/glade-window.c:1160
 msgid "Open…"
 msgstr "Avaa..."
 
-#: ../src/glade-window.c:1176
+#: ../src/glade-window.c:1202
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Tiedostoa %s on muokattu lukemisen jälkeen"
 
-#: ../src/glade-window.c:1180
+#: ../src/glade-window.c:1206
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Jos tallennat sen, hukataan levylle muualta tehdyt muutokset. Tallennetaanko "
 "joka tapauksessa?"
 
-#: ../src/glade-window.c:1184
+#: ../src/glade-window.c:1210
 msgid "_Save Anyway"
 msgstr "_Tallenna silti"
 
-#: ../src/glade-window.c:1191
+#: ../src/glade-window.c:1217
 msgid "_Don't Save"
 msgstr "Ä_lä tallenna"
 
-#: ../src/glade-window.c:1214
+#: ../src/glade-window.c:1240
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Tiedoston %s tallennus epäonnistui: %s"
 
-#: ../src/glade-window.c:1235
+#: ../src/glade-window.c:1261
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Projekti \"%s\" tallennettu"
 
-#: ../src/glade-window.c:1255
+#: ../src/glade-window.c:1281
 msgid "Save As…"
 msgstr "Tallenna nimellä..."
 
-#: ../src/glade-window.c:1300
+#: ../src/glade-window.c:1326
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Tiedostoa %s ei voitu tallentaa"
 
-#: ../src/glade-window.c:1304
+#: ../src/glade-window.c:1330
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Oikeutesi eivät riitä tiedoston tallentamiseen."
 
-#: ../src/glade-window.c:1325
+#: ../src/glade-window.c:1351
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Tiedostoa %s ei voitu tallentaa. Toinen projekti on auki samassa polussa."
 
 #. Just in case the menu-item or button is not insensitive
-#: ../src/glade-window.c:1349
+#: ../src/glade-window.c:1375
 msgid "No open projects to save"
 msgstr "Ei avoimia projekteja tallennettavaksi"
 
-#: ../src/glade-window.c:1379
+#: ../src/glade-window.c:1405
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -169,43 +169,35 @@ msgstr ""
 "\n"
 "Muutoksesi projektiin hukataan, jos et tallenna niitä."
 
-#: ../src/glade-window.c:1391
+#: ../src/glade-window.c:1417
 msgid "_Close without Saving"
 msgstr "S_ulje tallentamatta"
 
-#: ../src/glade-window.c:1418
+#: ../src/glade-window.c:1444
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Tiedostoa %s ei voitu tallentaa kohteeseen %s: %s"
 
-#: ../src/glade-window.c:1430
+#: ../src/glade-window.c:1456
 msgid "Save…"
 msgstr "Tallenna..."
 
-#: ../src/glade-window.c:1878
-msgid "Palette"
-msgstr "Paletti"
-
-#: ../src/glade-window.c:1912
-msgid "Inspector"
-msgstr "Rakenne"
-
-#: ../src/glade-window.c:1986
+#: ../src/glade-window.c:2014
 msgid "Could not display the online user manual"
 msgstr "Verkko-ohjetta ei voitu näyttää"
 
-#: ../src/glade-window.c:1989 ../src/glade-window.c:2027
+#: ../src/glade-window.c:2017 ../src/glade-window.c:2055
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr "Sivun %s näyttämiseen sopivaa selainta ei löytynyt"
 
-#: ../src/glade-window.c:2024
+#: ../src/glade-window.c:2052
 msgid "Could not display the online developer reference manual"
 msgstr "Kehittäjän referenssiä verkosta ei voitu näyttää"
 
-#: ../src/glade-window.c:2067
+#: ../src/glade-window.c:2095
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -235,291 +227,299 @@ msgstr ""
 "sitä saanut, niin lähetä kirje Free Software Foundation, Inc.:lle, 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/glade-window.c:2093
+#: ../src/glade-window.c:2121
 msgid "translator-credits"
 msgstr ""
 "Ilkka Tuohela, 2007\n"
 "\n"
 "http://www.gnome.fi/"
 
-#: ../src/glade-window.c:2094
+#: ../src/glade-window.c:2122
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Käyttöliittymien suunnittelutyökalu GTK+ -ja Gnome-sovelluksille"
 
 #. File
-#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:5131
+#: ../src/glade-window.c:2195 ../plugins/gtk+/glade-gtk.c:5131
 #: ../plugins/gtk+/glade-gtk.c:5454
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Edit
-#: ../src/glade-window.c:2168 ../plugins/gtk+/glade-gtk.c:5134
+#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:5134
 #: ../plugins/gtk+/glade-gtk.c:5464
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #. View
-#: ../src/glade-window.c:2169 ../plugins/gtk+/glade-gtk.c:5137
+#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:5137
 #: ../plugins/gtk+/glade-gtk.c:5472
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/glade-window.c:2170
+#: ../src/glade-window.c:2198
 msgid "_Projects"
 msgstr "_Projektit"
 
 #. Help
-#: ../src/glade-window.c:2171 ../plugins/gtk+/glade-gtk.c:5149
+#: ../src/glade-window.c:2199 ../plugins/gtk+/glade-gtk.c:5149
 #: ../plugins/gtk+/glade-gtk.c:5475
 msgid "_Help"
 msgstr "O_hje"
 
-#: ../src/glade-window.c:2177
+#: ../src/glade-window.c:2205
 msgid "Create a new project"
 msgstr "Luo uusi projekti"
 
-#: ../src/glade-window.c:2179
+#: ../src/glade-window.c:2207
 msgid "_Open…"
 msgstr "_Avaa..."
 
-#: ../src/glade-window.c:2180
+#: ../src/glade-window.c:2208
 msgid "Open a project"
 msgstr "Avaa projekti"
 
-#: ../src/glade-window.c:2182
+#: ../src/glade-window.c:2210
 msgid "Open _Recent"
 msgstr "Avaa _viimeaikainen"
 
-#: ../src/glade-window.c:2185
+#: ../src/glade-window.c:2213
 msgid "Quit the program"
 msgstr "Lopeta sovellus"
 
 #. ViewMenu
-#: ../src/glade-window.c:2188
+#: ../src/glade-window.c:2216
 msgid "Palette _Appearance"
 msgstr "Paletin _ulkoasu"
 
-#: ../src/glade-window.c:2192
+#: ../src/glade-window.c:2220
 msgid "About this application"
 msgstr "Tietoja sovelluksesta"
 
-#: ../src/glade-window.c:2194
+#: ../src/glade-window.c:2222
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: ../src/glade-window.c:2195
+#: ../src/glade-window.c:2223
 msgid "Display the user manual"
 msgstr "Näytä käyttäjän ohje"
 
-#: ../src/glade-window.c:2197
+#: ../src/glade-window.c:2225
 msgid "_Developer Reference"
 msgstr "_Kehittäjän referenssi"
 
-#: ../src/glade-window.c:2198
+#: ../src/glade-window.c:2226
 msgid "Display the developer reference manual"
 msgstr "Näytä kehittäjän manuaali"
 
-#: ../src/glade-window.c:2207
+#: ../src/glade-window.c:2235
 msgid "Save the current project"
 msgstr "Tallenna nykyinen projekti"
 
-#: ../src/glade-window.c:2209
+#: ../src/glade-window.c:2237
 msgid "Save _As…"
 msgstr "Tallenna _nimellä..."
 
-#: ../src/glade-window.c:2210
+#: ../src/glade-window.c:2238
 msgid "Save the current project with a different name"
 msgstr "Tallenna nykyine nprojekti toisella nimellä"
 
-#: ../src/glade-window.c:2213
+#: ../src/glade-window.c:2241
 msgid "Close the current project"
 msgstr "Sulje nykyinen projekti"
 
-#: ../src/glade-window.c:2217
+#: ../src/glade-window.c:2245
 msgid "Undo the last action"
 msgstr "Peru edellinen toiminto"
 
-#: ../src/glade-window.c:2220
+#: ../src/glade-window.c:2248
 msgid "Redo the last action"
 msgstr "Tee edellinen toiminto uudestaan"
 
-#: ../src/glade-window.c:2223
+#: ../src/glade-window.c:2251
 msgid "Cut the selection"
 msgstr "Leikkaa valinta"
 
-#: ../src/glade-window.c:2226
+#: ../src/glade-window.c:2254
 msgid "Copy the selection"
 msgstr "Kopioi valinta"
 
-#: ../src/glade-window.c:2229
+#: ../src/glade-window.c:2257
 msgid "Paste the clipboard"
 msgstr "Liitä leikepöydältä"
 
-#: ../src/glade-window.c:2232
+#: ../src/glade-window.c:2260
 msgid "Delete the selection"
 msgstr "Poista valinta"
 
 #. ViewMenu
-#: ../src/glade-window.c:2236
+#: ../src/glade-window.c:2264
 msgid "_Clipboard"
 msgstr "_Leikepöytä"
 
-#: ../src/glade-window.c:2237
+#: ../src/glade-window.c:2265
 msgid "Show the clipboard"
 msgstr "Näytä leikepöytä"
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2241
+#: ../src/glade-window.c:2269
 msgid "_Previous Project"
 msgstr "_Edellinen projekti"
 
-#: ../src/glade-window.c:2242
+#: ../src/glade-window.c:2270
 msgid "Activate previous project"
 msgstr "Aktivoi edellinen projekti"
 
-#: ../src/glade-window.c:2244
+#: ../src/glade-window.c:2272
 msgid "_Next Project"
 msgstr "_Seuraava projekti"
 
-#: ../src/glade-window.c:2245
+#: ../src/glade-window.c:2273
 msgid "Activate next project"
 msgstr "Aktivoi seuraava projekti"
 
-#: ../src/glade-window.c:2253
+#: ../src/glade-window.c:2281
 msgid "_Use Small Icons"
 msgstr "_Käytä pieniä kuvakkeita"
 
-#: ../src/glade-window.c:2254
+#: ../src/glade-window.c:2282
 msgid "Show items using small icons"
 msgstr "Näytä kohdat pieninä kuvakkeina"
 
-#: ../src/glade-window.c:2257
+#: ../src/glade-window.c:2285
 msgid "Context _Help"
 msgstr "Konteksti_ohje"
 
-#: ../src/glade-window.c:2258
+#: ../src/glade-window.c:2286
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "Näytä tai piilota kontekstiin liittyvät ohjepainikkeet muokkaimessa"
 
-#: ../src/glade-window.c:2261
+#: ../src/glade-window.c:2289
 msgid "Dock _Palette"
 msgstr "Kiinnitä _paletti"
 
-#: ../src/glade-window.c:2262
+#: ../src/glade-window.c:2290
 msgid "Dock the palette into the main window"
 msgstr "Kiinnitä paletti pääikkunaan"
 
-#: ../src/glade-window.c:2265
+#: ../src/glade-window.c:2293
 msgid "Dock _Inspector"
 msgstr "Kiinnitä _rakenne"
 
-#: ../src/glade-window.c:2266
+#: ../src/glade-window.c:2294
 msgid "Dock the inspector into the main window"
 msgstr "Kiinnitä rakenne pääikkunaan"
 
-#: ../src/glade-window.c:2269
+#: ../src/glade-window.c:2297
 msgid "Dock _Editor"
 msgstr "Kiinnitä _muokkain"
 
-#: ../src/glade-window.c:2270
+#: ../src/glade-window.c:2298
 msgid "Dock the editor into the main window"
 msgstr "Kiinnitä muokkain pääikkunaan"
 
-#: ../src/glade-window.c:2278 ../plugins/gtk+/gtk+.xml.in.h:306
+#: ../src/glade-window.c:2306 ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Text beside icons"
 msgstr "Teksti kuvakkeiden vieressä"
 
-#: ../src/glade-window.c:2279
+#: ../src/glade-window.c:2307
 msgid "Display items as text beside icons"
 msgstr "Näytä kohdat kuvakkeina ja tekstinä"
 
-#: ../src/glade-window.c:2281
+#: ../src/glade-window.c:2309
 msgid "_Icons only"
 msgstr "Va_in kuvakkeet"
 
-#: ../src/glade-window.c:2282
+#: ../src/glade-window.c:2310
 msgid "Display items as icons only"
 msgstr "Näytä kohdat pelkkinä kuvakkeina"
 
-#: ../src/glade-window.c:2284
+#: ../src/glade-window.c:2312
 msgid "_Text only"
 msgstr "Vain _teksti"
 
-#: ../src/glade-window.c:2285
+#: ../src/glade-window.c:2313
 msgid "Display items as text only"
 msgstr "Näytä kohdat pelkkänä tekstinä"
 
-#: ../src/glade-window.c:2475
+#: ../src/glade-window.c:2503
 msgid "Select Widgets"
 msgstr "Valitse ikkunaelementit"
 
-#: ../src/glade-window.c:2479
+#: ../src/glade-window.c:2507
 msgid "Select widgets in the workspace"
 msgstr "Näytä ikkunaelementit työpöydällä"
 
-#: ../src/glade-window.c:2503
+#: ../src/glade-window.c:2531
 msgid "Drag Resize"
 msgstr "Raahaus ja koon muutos"
 
-#: ../src/glade-window.c:2507
+#: ../src/glade-window.c:2535
 msgid "Drag and resize widgets in the workspace"
 msgstr "Raahaa kohteita ja muuta niiden kokoa työtilassa"
 
-#: ../src/glade-window.c:2564
+#: ../src/glade-window.c:2573
 msgid "Could not create a new project."
 msgstr "Uutta projektia ei voitu luoda."
 
-#: ../src/glade-window.c:2618
+#: ../src/glade-window.c:2627
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projektissa %s on tallentamattomia muutoksia"
 
-#: ../src/glade-window.c:2622
+#: ../src/glade-window.c:2631
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Jos lataat sen uudestaan, hukataan kaikki tallentamattomat muutokset. "
 "Ladataanko tiedosti silti uudestaan?"
 
-#: ../src/glade-window.c:2631
+#: ../src/glade-window.c:2640
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Projektitiedostoa %s on muokattu lukemisen jälkeen"
 
-#: ../src/glade-window.c:2635
+#: ../src/glade-window.c:2644
 msgid "Do you want to reload the project?"
 msgstr "Haluatko ladata projektin uudestaan?"
 
-#: ../src/glade-window.c:2641
+#: ../src/glade-window.c:2650
 msgid "_Reload"
 msgstr "_Lataa uudestaan"
 
-#: ../src/glade-window.c:2758
+#: ../src/glade-window.c:2767
 msgid "_Undo"
 msgstr "_Peru"
 
 #. Change tooltips
-#: ../src/glade-window.c:2760 ../gladeui/glade-app.c:271
+#: ../src/glade-window.c:2769 ../gladeui/glade-app.c:271
 #, c-format
 msgid "Undo: %s"
 msgstr "Peru: %s"
 
-#: ../src/glade-window.c:2760 ../src/glade-window.c:2771
+#: ../src/glade-window.c:2769 ../src/glade-window.c:2780
 #: ../gladeui/glade-app.c:272
 msgid "the last action"
 msgstr "viimeisin toiminto"
 
-#: ../src/glade-window.c:2769
+#: ../src/glade-window.c:2778
 msgid "_Redo"
 msgstr "_Tee uudestaan"
 
-#: ../src/glade-window.c:2771 ../gladeui/glade-app.c:271
+#: ../src/glade-window.c:2780 ../gladeui/glade-app.c:271
 #, c-format
 msgid "Redo: %s"
 msgstr "Tee uudestaan: %s"
 
-#: ../src/glade-window.c:2864
+#: ../src/glade-window.c:3064
 msgid "Go back in undo history"
 msgstr "Siirry takaisin perumishistoriassa"
+
+#: ../src/glade-window.c:3118
+msgid "Palette"
+msgstr "Paletti"
+
+#: ../src/glade-window.c:3127
+msgid "Inspector"
+msgstr "Rakenne"
 
 #: ../gladeui/glade-app.c:461
 msgid "Clipboard"
@@ -770,6 +770,7 @@ msgid "Widget"
 msgstr "Ikkunaelementti"
 
 #: ../gladeui/glade-command.c:549
+#, c-format
 msgid "Setting multiple properties"
 msgstr "Asetetaan useita ominaisuuksia"
 
@@ -810,6 +811,7 @@ msgid "Remove %s"
 msgstr "Poista %s"
 
 #: ../gladeui/glade-command.c:1078
+#, c-format
 msgid "Remove multiple"
 msgstr "Poista useita"
 
@@ -877,6 +879,7 @@ msgid "Change signal handler %s"
 msgstr "Muuta signaalikäsittelijää %s"
 
 #: ../gladeui/glade-command.c:2030
+#, c-format
 msgid "Setting i18n metadata"
 msgstr "Asetetaan i18n-metatietoja"
 
@@ -1263,6 +1266,7 @@ msgid "Errors parsing glade file %s"
 msgstr "Virhe tulkittaessa glade-tiedostoa %s"
 
 #: ../gladeui/glade-parser.c:1658
+#, c-format
 msgid "Could not allocate memory for interface"
 msgstr "Käyttöliittymälle ei voitu varata muistia"
 
@@ -1524,12 +1528,8 @@ msgid "Whether or not the translatable string has a context prefix"
 msgstr "Onko käännettävässä merkkijonossa kontekstin etuliite"
 
 #: ../gladeui/glade-signal-editor.c:67
-msgid "<Type the signal's handler here>"
-msgstr "<Lisää tähän signaalinkäsittelijä>"
-
-#: ../gladeui/glade-signal-editor.c:68
-msgid "<Type the object's name here>"
-msgstr "<Lisää tähän kohteen nimi>"
+msgid "<Type here>"
+msgstr "<Kirjoita tähän>"
 
 #: ../gladeui/glade-signal-editor.c:714
 msgid "Handler"
@@ -1937,15 +1937,15 @@ msgstr "Tämä koskee vain vakiopainikkeita"
 msgid "You must remove any children before you can set the type"
 msgstr "Kaikki lapset täytyy poistaa ennen kuin tyypin voi asettaa"
 
-#: ../plugins/gtk+/glade-gtk.c:4256 ../plugins/gtk+/glade-gtk.c:5727
+#: ../plugins/gtk+/glade-gtk.c:4256 ../plugins/gtk+/glade-gtk.c:5732
 msgid "This only applies with file type images"
 msgstr "Tämä koskee vain tiedostopohjaisia kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5731
+#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5736
 msgid "This only applies to Icon Theme type images"
 msgstr "Tämä koskee vain kuvaketeemojen kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:4273 ../plugins/gtk+/glade-gtk.c:5729
+#: ../plugins/gtk+/glade-gtk.c:4273 ../plugins/gtk+/glade-gtk.c:5734
 msgid "This only applies with stock type images"
 msgstr "Tämä koskee vain vakiokuvia"
 
@@ -1977,11 +1977,11 @@ msgstr "Kuva"
 msgid "Check"
 msgstr "Valinta"
 
-#: ../plugins/gtk+/glade-gtk.c:4800 ../plugins/gtk+/glade-gtk.c:5641
+#: ../plugins/gtk+/glade-gtk.c:4800 ../plugins/gtk+/glade-gtk.c:5646
 msgid "Radio"
 msgstr "Vaihtoehto"
 
-#: ../plugins/gtk+/glade-gtk.c:4801 ../plugins/gtk+/glade-gtk.c:5644
+#: ../plugins/gtk+/glade-gtk.c:4801 ../plugins/gtk+/glade-gtk.c:5649
 msgid "Separator"
 msgstr "Erotin"
 
@@ -1993,7 +1993,7 @@ msgstr "Lisää kohta"
 msgid "Add Child Item"
 msgstr "Lisää lapsisolmu"
 
-#: ../plugins/gtk+/glade-gtk.c:4807 ../plugins/gtk+/glade-gtk.c:5653
+#: ../plugins/gtk+/glade-gtk.c:4807 ../plugins/gtk+/glade-gtk.c:5658
 msgid "Add Separator"
 msgstr "Lisää erotin"
 
@@ -2095,55 +2095,55 @@ msgstr "Tämä ei koske vakiokohtia"
 msgid "<custom>"
 msgstr "<oma>"
 
-#: ../plugins/gtk+/glade-gtk.c:5639 ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/glade-gtk.c:5644 ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button"
 msgstr "Painike"
 
-#: ../plugins/gtk+/glade-gtk.c:5640
+#: ../plugins/gtk+/glade-gtk.c:5645
 msgid "Toggle"
 msgstr "Vipu"
 
-#: ../plugins/gtk+/glade-gtk.c:5642 ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/glade-gtk.c:5647 ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Menu"
 msgstr "Valikko"
 
-#: ../plugins/gtk+/glade-gtk.c:5643
+#: ../plugins/gtk+/glade-gtk.c:5648
 msgid "Item"
 msgstr "Kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:5648
+#: ../plugins/gtk+/glade-gtk.c:5653
 msgid "Add Tool Button"
 msgstr "Lisää työkalupainike"
 
-#: ../plugins/gtk+/glade-gtk.c:5649
+#: ../plugins/gtk+/glade-gtk.c:5654
 msgid "Add Toggle Button"
 msgstr "Lisää vipupainike"
 
-#: ../plugins/gtk+/glade-gtk.c:5650
+#: ../plugins/gtk+/glade-gtk.c:5655
 msgid "Add Radio Button"
 msgstr "Lisää vaihtoehtopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:5651
+#: ../plugins/gtk+/glade-gtk.c:5656
 msgid "Add Menu Button"
 msgstr "Lisää valikkopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:5652
+#: ../plugins/gtk+/glade-gtk.c:5657
 msgid "Add Tool Item"
 msgstr "Lisää työkalun kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:5661
+#: ../plugins/gtk+/glade-gtk.c:5666
 msgid "Tool Bar Editor"
 msgstr "Työkalupalkin muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:6477
+#: ../plugins/gtk+/glade-gtk.c:6482
 msgid "Introduction page"
 msgstr "Esittelysivu"
 
-#: ../plugins/gtk+/glade-gtk.c:6481
+#: ../plugins/gtk+/glade-gtk.c:6486
 msgid "Content page"
 msgstr "Sisältösivu"
 
-#: ../plugins/gtk+/glade-gtk.c:6485
+#: ../plugins/gtk+/glade-gtk.c:6490
 msgid "Confirmation page"
 msgstr "Vahvistussivu"
 
@@ -3739,6 +3739,12 @@ msgstr "Valintatila"
 #: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The width of each icon"
 msgstr "Kuvakkeiden leveys"
+
+#~ msgid "<Type the signal's handler here>"
+#~ msgstr "<Lisää tähän signaalinkäsittelijä>"
+
+#~ msgid "<Type the object's name here>"
+#~ msgstr "<Lisää tähän kohteen nimi>"
 
 #~ msgid "Unable to open the module %s (%s)."
 #~ msgstr "Modulia %s ei voitu avata (%s)."
