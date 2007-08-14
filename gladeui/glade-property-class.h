@@ -144,6 +144,12 @@ struct _GladePropertyClass
 			     * popup is used and the resource is copied to the project
 			     * directory).
 			     */
+
+	gboolean themed_icon; /* Some GParamSpecString properties reffer to icon names
+			       * in the icon theme... these need to be specified in the
+			       * property class definition if proper editing tools are to
+			       * be used.
+			       */
 	
 	gboolean transfer_on_paste; /* If this is a packing prop, 
 				     * wether we should transfer it on paste.

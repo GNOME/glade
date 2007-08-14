@@ -98,6 +98,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_IGNORE                          "ignore"
 #define GLADE_TAG_VISIBLE_LINES                   "visible-lines"
 #define GLADE_TAG_RESOURCE                        "resource"
+#define GLADE_TAG_THEMED_ICON                     "themed-icon"
 #define GLADE_TAG_INIT_FUNCTION                   "init-function"
 #define GLADE_TAG_ATK_ACTION                      "atk-action"
 #define GLADE_TAG_ATK_PROPERTY                    "atk-property"

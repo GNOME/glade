@@ -181,6 +181,7 @@ glade_property_class_new (gpointer handle)
 	property_class->save_always = FALSE;
 	property_class->ignore = FALSE;
 	property_class->resource = FALSE;
+	property_class->themed_icon = FALSE;
 	property_class->translatable = FALSE;
 	property_class->type = GPC_NORMAL;
 	property_class->virt = TRUE;
@@ -1715,14 +1716,15 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 							      klass->translatable);
 
 	/* common, optional, etc */
-	klass->common   = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,   klass->common);
-	klass->optional = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL, klass->optional);
-	klass->query    = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,    klass->query);
-	klass->save     = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,     klass->save);
-	klass->visible  = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,  klass->visible);
-	klass->ignore   = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,   klass->ignore);
-	klass->resource = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE, klass->resource);
-	klass->weight   = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,   klass->weight);
+	klass->common      = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,      klass->common);
+	klass->optional    = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,    klass->optional);
+	klass->query       = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,       klass->query);
+	klass->save        = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,        klass->save);
+	klass->visible     = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,     klass->visible);
+	klass->ignore      = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,      klass->ignore);
+	klass->resource    = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE,    klass->resource);
+	klass->themed_icon = glade_xml_get_property_boolean (node, GLADE_TAG_THEMED_ICON, klass->themed_icon);
+	klass->weight      = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,      klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
 	

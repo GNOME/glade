@@ -1,7 +1,18 @@
+2007-08-14  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in: Marked some properties to be "themed-icon"
+
+	* gladeui/glade-xml-utils.h, gladeui/glade-property-class.[ch], 
+	gladeui/glade-editor-property.c: Added a tag to mark string properties
+	that are "themed-icon", use the themed icon chooser for those properties.
+
 2007-08-14  Vincent Geddes <vgeddes@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Made toolbar-style
 	  optional & save always (plus it responds well in the UI) (bug 382785).
+
+	* gladeui/glade-name-icon-chooser.[ch], gladeui/icon-naming-spec.c: Added
+	  themed icon chooser (bug 359640).
 
 2007-08-14  Tristan Van Berkom <tvb@gnome.org>
 

@@ -47,6 +47,7 @@
 #include "glade-project.h"
 #include "glade-builtins.h"
 #include "glade-marshallers.h"
+#include "glade-named-icon-chooser-dialog.h"
 
 enum {
 	PROP_0,
@@ -1299,6 +1300,214 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
 
 	return hbox;
 }
+
+/*******************************************************************************
+                        GladeEditorPropertyNamedIconClass
+ *******************************************************************************/
+typedef struct {
+	GladeEditorProperty  parent_instance;
+
+	GtkWidget           *entry;
+	gchar               *current_context;
+} GladeEPropNamedIcon;
+
+GLADE_MAKE_EPROP (GladeEPropNamedIcon, glade_eprop_named_icon)
+#define GLADE_TYPE_EPROP_NAMED_ICON            (glade_eprop_named_icon_get_type())
+#define GLADE_EPROP_NAMED_ICON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_NAMED_ICON, GladeEPropNamedIcon))
+#define GLADE_EPROP_NAMED_ICON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_NAMED_ICON, GladeEPropNamedIconClass))
+#define GLADE_IS_EPROP_NAMED_ICON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NAMED_ICON))
+#define GLADE_IS_EPROP_NAMED_ICON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_NAMED_ICON))
+#define GLADE_EPROP_NAMED_ICON_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_NAMED_ICON, GladeEPropNamedIconClass))
+
+
+static void
+glade_eprop_named_icon_finalize (GObject *object)
+{
+	/* Chain up */
+	G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static void
+glade_eprop_named_icon_load (GladeEditorProperty *eprop,
+			     GladeProperty       *property)
+{
+	GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
+
+	/* Chain up first */
+	editor_property_class->load (eprop, property);
+	
+	if (property == NULL)
+		return;
+	
+	GtkEntry *entry = GTK_ENTRY (eprop_named_icon->entry);
+	const gchar *text = g_value_get_string (property->value);
+
+	gtk_entry_set_text (entry, text ? text : "");
+}
+
+static void
+glade_eprop_named_icon_changed_common (GladeEditorProperty *eprop,
+				       const gchar *text,
+				       gboolean use_command)
+{
+	GValue  *val;
+	gchar  *prop_text;
+
+	val = g_new0 (GValue, 1);
+	
+	g_value_init (val, G_TYPE_STRING);
+
+	glade_property_get (eprop->property, &prop_text);
+
+	/* Here we try not to modify the project state by not 
+	 * modifying a null value for an unchanged property.
+	 */
+	if (prop_text == NULL &&
+	    text && text[0] == '\0')
+		g_value_set_string (val, NULL);
+	else if (text == NULL &&
+		 prop_text && prop_text == '\0')
+		g_value_set_string (val, "");
+	else
+		g_value_set_string (val, text);
+
+	glade_editor_property_commit (eprop, val);
+	g_value_unset (val);
+	g_free (val);
+}
+
+static void
+glade_eprop_named_icon_changed (GtkWidget           *entry,
+			        GladeEditorProperty *eprop)
+{
+	gchar *text;
+
+	if (eprop->loading)
+		return;
+	
+	text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+	glade_eprop_named_icon_changed_common (eprop, text, eprop->use_command);
+	
+	g_free (text);
+}
+
+static gboolean
+glade_eprop_named_icon_focus_out (GtkWidget           *entry,
+				  GdkEventFocus       *event,
+				  GladeEditorProperty *eprop)
+{
+	glade_eprop_named_icon_changed (entry, eprop);
+	return FALSE;
+}
+
+static void 
+glade_eprop_named_icon_activate (GtkEntry *entry,
+				 GladeEPropNamedIcon *eprop)
+{
+	glade_eprop_named_icon_changed (GTK_WIDGET (entry), GLADE_EDITOR_PROPERTY (eprop));
+}
+
+static void
+chooser_response (GladeNamedIconChooserDialog *dialog,
+		  gint response_id,
+		  GladeEPropNamedIcon *eprop)
+{
+	gchar *icon_name;
+	
+	switch (response_id) {
+	
+	case GTK_RESPONSE_OK:
+	
+		g_free (eprop->current_context);
+		eprop->current_context = glade_named_icon_chooser_dialog_get_context (dialog);
+		icon_name = glade_named_icon_chooser_dialog_get_icon_name (dialog);
+		
+		gtk_entry_set_text (GTK_ENTRY (eprop->entry), icon_name);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+					
+		g_free (icon_name);
+		
+		glade_eprop_named_icon_changed (eprop->entry, GLADE_EDITOR_PROPERTY (eprop));
+		
+		break;
+		
+	case GTK_RESPONSE_CANCEL:
+	
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	
+	case GTK_RESPONSE_HELP:
+	
+		break;
+		
+	case GTK_RESPONSE_DELETE_EVENT:
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+	}		
+}
+
+
+static void
+glade_eprop_named_icon_show_chooser_dialog (GtkWidget           *button,
+				            GladeEditorProperty *eprop)
+{
+	GtkWidget *dialog;
+
+	dialog = glade_named_icon_chooser_dialog_new ("Select Named Icon",
+						       GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (eprop))),
+						       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						       GTK_STOCK_OK, GTK_RESPONSE_OK,
+						       NULL);
+						       
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+	glade_named_icon_chooser_dialog_set_context   (GLADE_NAMED_ICON_CHOOSER_DIALOG (dialog), GLADE_EPROP_NAMED_ICON (eprop)->current_context);
+
+	glade_named_icon_chooser_dialog_set_icon_name (GLADE_NAMED_ICON_CHOOSER_DIALOG (dialog),
+						       gtk_entry_get_text (GTK_ENTRY (GLADE_EPROP_NAMED_ICON (eprop)->entry)));
+
+
+	g_signal_connect (dialog, "response",
+			  G_CALLBACK (chooser_response),
+			  eprop);	
+
+	gtk_widget_show (dialog);
+
+}
+
+static GtkWidget *
+glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
+	GtkWidget       *hbox;
+
+	hbox = gtk_hbox_new (FALSE, 0);
+
+	eprop_named_icon->entry = gtk_entry_new ();
+	gtk_widget_show (eprop_named_icon->entry);
+	
+	eprop_named_icon->current_context = NULL;
+
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_named_icon->entry, TRUE, TRUE, 0); 
+
+	g_signal_connect (G_OBJECT (eprop_named_icon->entry), "activate",
+			  G_CALLBACK (glade_eprop_named_icon_activate),
+			  eprop);
+	
+	g_signal_connect (G_OBJECT (eprop_named_icon->entry), "focus-out-event",
+			  G_CALLBACK (glade_eprop_named_icon_focus_out),
+			  eprop);
+
+	GtkWidget *button = gtk_button_new_with_label ("\342\200\246");
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+	g_signal_connect (button, "clicked",
+			  G_CALLBACK (glade_eprop_named_icon_show_chooser_dialog),
+			  eprop);
+
+	return hbox;
+}
+
+
 
 /*******************************************************************************
                         GladeEditorPropertyTextClass
@@ -3749,7 +3958,12 @@ glade_editor_property_new (GladePropertyClass  *klass,
 			 g_type_name (klass->pspec->value_type));
 
 	/* special case for resource specs which are hand specified in the catalog. */
-	if (klass->resource) type = GLADE_TYPE_EPROP_RESOURCE;
+	if (klass->resource)
+		type = GLADE_TYPE_EPROP_RESOURCE;
+	
+	/* special case for string specs that denote themed application icons. */
+	if (klass->themed_icon)
+		type = GLADE_TYPE_EPROP_NAMED_ICON;
 
 	/* Create and return the correct type of GladeEditorProperty */
 	eprop = g_object_new (type,

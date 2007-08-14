@@ -13,7 +13,7 @@ lib_LTLIBRARIES = libgladeui-1.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = glade-marshallers.list gladeui.rc.in
+EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c
 
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
@@ -31,6 +31,8 @@ libgladeui_1_la_SOURCES = \
 	glade-palette-expander.c \
 	glade-design-layout.c \
 	glade-design-view.c \
+	glade-named-icon-chooser-dialog.c \
+	glade-named-icon-chooser-dialog.h \
 	glade-cursor.c \
 	glade-catalog.c \
 	glade-property.c \
