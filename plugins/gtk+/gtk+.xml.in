@@ -431,7 +431,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar" use-placeholders="False">
-      <post-create-function>empty</post-create-function>
+      <post-create-function>glade_gtk_toolbar_post_create</post-create-function>
       <add-child-function>glade_gtk_toolbar_add_child</add-child-function>
       <remove-child-function>glade_gtk_toolbar_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
@@ -448,7 +448,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
 	  </displayable-values>
 	</property>
-      	<property id="toolbar-style">
+      	<property id="toolbar-style" save-always="True" optional="True" optional-default="False">
   	  <displayable-values>
 	    <value id="GTK_TOOLBAR_ICONS" _name="Icons only"/>
 	    <value id="GTK_TOOLBAR_TEXT" _name="Text only"/>

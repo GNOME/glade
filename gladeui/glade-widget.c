@@ -466,7 +466,8 @@ glade_widget_template_params (GladeWidget      *widget,
 		
 		/* Ignore properties based on some criteria
 		 */
-		if (pclass == NULL  || /* Unaccounted for in the builder */
+		if (!glade_property_get_enabled (glade_property) ||
+		    pclass == NULL  || /* Unaccounted for in the builder */
 		    pclass->virt    || /* should not be set before 
 					  GladeWidget wrapper exists */
 		    pclass->ignore)    /* Catalog explicitly ignores the object */

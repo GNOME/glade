@@ -1,3 +1,13 @@
+2007-08-14  Vincent Geddes <vgeddes@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Made toolbar-style
+	  optional & save always (plus it responds well in the UI) (bug 382785).
+
+2007-08-14  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.c: When building objects based on template params, 
+	  dont assign properties that are disabled by GladeProperty.
+
 2007-08-08  Yevgen Muntyan <muntyan@tamu.edu>
 
 	* gladeui/glade-builtins.c, gladeui/glade-design-layout.c: 
