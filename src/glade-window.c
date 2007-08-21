@@ -2500,7 +2500,7 @@ create_selector_tool_button (GtkToolbar *toolbar)
 	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (button), TRUE);
 	
 	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
-	gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Select Widgets"));
+	gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Select"));
 	
 	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
 				   toolbar->tooltips,
@@ -2520,7 +2520,7 @@ create_drag_resize_tool_button (GtkToolbar *toolbar)
 	GtkWidget    *image;
 	gchar        *image_path;
 	
-	image_path = g_build_filename (glade_app_get_pixmaps_dir (), "selector.png", NULL);
+	image_path = g_build_filename (glade_app_get_pixmaps_dir (), "drag-resize.png", NULL);
 	image = gtk_image_new_from_file (image_path);
 	g_free (image_path);
 	
