@@ -1332,6 +1332,8 @@ glade_eprop_named_icon_load (GladeEditorProperty *eprop,
 			     GladeProperty       *property)
 {
 	GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
+	GtkEntry *entry;
+	const gchar *text;
 
 	/* Chain up first */
 	editor_property_class->load (eprop, property);
@@ -1339,8 +1341,8 @@ glade_eprop_named_icon_load (GladeEditorProperty *eprop,
 	if (property == NULL)
 		return;
 	
-	GtkEntry *entry = GTK_ENTRY (eprop_named_icon->entry);
-	const gchar *text = g_value_get_string (property->value);
+	entry = GTK_ENTRY (eprop_named_icon->entry);
+	text = g_value_get_string (property->value);
 
 	gtk_entry_set_text (entry, text ? text : "");
 }
@@ -1478,7 +1480,8 @@ static GtkWidget *
 glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
-	GtkWidget       *hbox;
+	GtkWidget *hbox;
+	GtkWidget *button;
 
 	hbox = gtk_hbox_new (FALSE, 0);
 
@@ -1497,7 +1500,7 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (glade_eprop_named_icon_focus_out),
 			  eprop);
 
-	GtkWidget *button = gtk_button_new_with_label ("\342\200\246");
+	button = gtk_button_new_with_label ("\342\200\246");
 	gtk_widget_show (button);
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
 	g_signal_connect (button, "clicked",
