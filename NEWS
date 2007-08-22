@@ -1,4 +1,37 @@
 ===========
+Glade 3.3.4
+===========
+    - Moved all gtk-doc stuff outside of the template files (now documentations is
+      entirely in the source) - Juan Pablo Ugarte
+    - Fixed compilation with gcc 2.95 (bug 461923) - Jens Granseuer
+    - Sort the stock icon list alphabetically by locale (bug 454003) - Olivier Delhomme
+    - Made glade window not maximized by default (bug 462111) reported by Frédéric Bellaiche
+    - Added "expand" and "homogeneous" packing properties to toolbar 
+      children in the toolbar editor (bug 429409) - Tristan Van Berkom
+    - Clipped the signal editor texts to simply say "<type here>" (bug 464505) - Tristan Van Berkom
+    - Now saves/restores session data about docking attached state & 
+      undocked window sizes/positions - Yevgen Muntyan
+    - Added themed icon chooser (currently disabled awaiting freeze break approval)
+      (bug 359640) - Vincent Geddes
+    - Made toolbar-style an "optional" property and fixed glitches around this property
+      (bug 382785) - Vincent Geddes
+
+New and updated translations
+============================
+    - Daniel Nylander (sv)
+    - Theppitak Karoonboonyanan (th)
+    - Jorge Gonzalez (es)
+    - Leonardo Ferreira Fontenelle (pt_BR)
+    - Ilkka Tuohela (fi)
+    - Sunil Mohan Adapa (te)
+    - Takeshi AIHANA (ja)
+    - Adam Weinberger (en_CA)
+    - Jovan Naumovski (mk)
+    - Duarte Loreto (pt)
+    - Priit Laes (et)
+
+
+===========
 Glade 3.3.3
 ===========
     - Add tab labels by default to notebook pages (bug 345438) - Tristan Van Berkom
