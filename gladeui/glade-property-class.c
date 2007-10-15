@@ -760,6 +760,8 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 	{
 		GdkPixbuf *pixbuf;
 		
+		if (*string == '\0') return NULL;
+		
 		fullpath = glade_project_resource_fullpath (project, string);
  
 		if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) == NULL)

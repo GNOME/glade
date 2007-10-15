@@ -1,3 +1,14 @@
+2007-10-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: disable GtkImage::stock when edit type is not in stock mode.
+	  This fixs a bug pasting a filename GtkImage.
+
+	* gladeui/glade-property-class.c: glade_property_class_make_object_from_string() now returns NULL
+	  for pixbuf props on an empty string, so you can set up pixbuf props back to NULL.
+
+	* gladeui/glade-widget.c: almost fixed bug #480495, it does not crash anymore.
+	  It refuses to reparent a widget if it cant embed it.
+
 2007-09-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.4.0

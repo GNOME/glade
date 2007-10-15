@@ -74,7 +74,7 @@ static GladeWidget *glade_widget_new_from_widget_info  (GladeWidgetInfo       *i
 							GladeWidget           *parent);
 
 static gboolean     glade_window_is_embedded           (GtkWindow *window);
-static void         glade_widget_embed                 (GladeWidget *widget);
+static gboolean     glade_widget_embed                 (GladeWidget *widget);
 
 enum
 {
@@ -2163,11 +2163,8 @@ glade_widget_show (GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	/* Position window at saved coordinates or in the center */
-	if (GTK_IS_WINDOW (widget->object))
+	if (GTK_IS_WINDOW (widget->object) && glade_widget_embed (widget))
 	{
-		if (!glade_window_is_embedded (GTK_WINDOW (widget->object)))
-			glade_widget_embed (widget);
-			
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
 		
@@ -2178,7 +2175,8 @@ glade_widget_show (GladeWidget *widget)
 
 		gtk_widget_show_all (GTK_WIDGET (widget->object));
 
-	} else if (GTK_IS_WIDGET (widget->object)) {
+	} else if (GTK_IS_WIDGET (widget->object))
+	{
 		gtk_widget_show_all (GTK_WIDGET (widget->object));
 	}
 	widget->visible = TRUE;
@@ -4230,21 +4228,24 @@ embedded_window_size_allocate_handler (GtkWidget *widget)
  *
  * Embeds a window by signal connection method
  */
-static void
+static gboolean
 glade_widget_embed (GladeWidget *widget)
 {
 	GtkWindow *window;
 	
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (GTK_IS_WINDOW (widget->object));
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (GTK_IS_WINDOW (widget->object), FALSE);
 	
 	window = GTK_WINDOW (widget->object);
 	
-	if (glade_window_is_embedded (window) || GTK_WIDGET_REALIZED (GTK_WIDGET (window))) {
-		g_critical ("Cannot embed a window that is already realized or embedded");
-		return;
+	if (glade_window_is_embedded (window)) return TRUE;
+	
+	if (GTK_WIDGET_REALIZED (GTK_WIDGET (window)))
+	{
+		g_critical ("Cannot embed a window that is already realized");
+		return FALSE;
 	}
-
+		
 	GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (window), GTK_TOPLEVEL);
 	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);
 
@@ -4256,5 +4257,7 @@ glade_widget_embed (GladeWidget *widget)
 	/* mark window as embedded */
 	g_object_set_qdata (G_OBJECT (window), 
 			    embedded_window_get_quark (), GINT_TO_POINTER (TRUE));
+	
+	return TRUE;
 }
 
