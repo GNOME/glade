@@ -4232,6 +4232,7 @@ static gboolean
 glade_widget_embed (GladeWidget *widget)
 {
 	GtkWindow *window;
+	GtkWidget *widget;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
 	g_return_val_if_fail (GTK_IS_WINDOW (widget->object), FALSE);
@@ -4240,23 +4241,21 @@ glade_widget_embed (GladeWidget *widget)
 	
 	if (glade_window_is_embedded (window)) return TRUE;
 	
-	if (GTK_WIDGET_REALIZED (GTK_WIDGET (window)))
-	{
-		g_critical ("Cannot embed a window that is already realized");
-		return FALSE;
-	}
+	widget = GTK_WIDGET (window);
+	
+	if (GTK_WIDGET_REALIZED (widget)) gtk_widget_unrealize (widget);
 		
-	GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (window), GTK_TOPLEVEL);
+	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
 	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);
 
-	g_signal_connect (G_OBJECT (window), "realize",
+	g_signal_connect (window, "realize",
 			  G_CALLBACK (embedded_window_realize_handler), NULL);
-	g_signal_connect (G_OBJECT (window), "size-allocate",
+	g_signal_connect (window, "size-allocate",
 			  G_CALLBACK (embedded_window_size_allocate_handler), NULL);
 
 	/* mark window as embedded */
-	g_object_set_qdata (G_OBJECT (window), 
-			    embedded_window_get_quark (), GINT_TO_POINTER (TRUE));
+	g_object_set_qdata (window, embedded_window_get_quark (),
+			    GINT_TO_POINTER (TRUE));
 	
 	return TRUE;
 }

@@ -1,3 +1,8 @@
+2007-10-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget.c: fixed bug #480495, if the widget is realized we just call
+	  gtk_widget_unrealize()
+
 2007-10-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c: disable GtkImage::stock when edit type is not in stock mode.
