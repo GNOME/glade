@@ -4229,19 +4229,20 @@ embedded_window_size_allocate_handler (GtkWidget *widget)
  * Embeds a window by signal connection method
  */
 static gboolean
-glade_widget_embed (GladeWidget *widget)
+glade_widget_embed (GladeWidget *gwidget)
 {
 	GtkWindow *window;
+	GtkWidget *widget;
 	
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-	g_return_val_if_fail (GTK_IS_WINDOW (widget->object), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
+	g_return_val_if_fail (GTK_IS_WINDOW (gwidget->object), FALSE);
 	
-	window = GTK_WINDOW (widget->object);
+	window = GTK_WINDOW (gwidget->object);
+	widget = GTK_WIDGET (window);
 	
 	if (glade_window_is_embedded (window)) return TRUE;
 	
-	if (GTK_WIDGET_REALIZED (GTK_WIDGET (window)))
-		gtk_widget_unrealize (GTK_WIDGET (window));
+	if (GTK_WIDGET_REALIZED (widget)) gtk_widget_unrealize (widget);
 
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
 	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);
