@@ -4232,7 +4232,6 @@ static gboolean
 glade_widget_embed (GladeWidget *widget)
 {
 	GtkWindow *window;
-	GtkWidget *widget;
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
 	g_return_val_if_fail (GTK_IS_WINDOW (widget->object), FALSE);
@@ -4241,10 +4240,9 @@ glade_widget_embed (GladeWidget *widget)
 	
 	if (glade_window_is_embedded (window)) return TRUE;
 	
-	widget = GTK_WIDGET (window);
-	
-	if (GTK_WIDGET_REALIZED (widget)) gtk_widget_unrealize (widget);
-		
+	if (GTK_WIDGET_REALIZED (GTK_WIDGET (window)))
+		gtk_widget_unrealize (GTK_WIDGET (window));
+
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
 	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);
 
@@ -4254,7 +4252,7 @@ glade_widget_embed (GladeWidget *widget)
 			  G_CALLBACK (embedded_window_size_allocate_handler), NULL);
 
 	/* mark window as embedded */
-	g_object_set_qdata (window, embedded_window_get_quark (),
+	g_object_set_qdata (G_OBJECT (window), embedded_window_get_quark (),
 			    GINT_TO_POINTER (TRUE));
 	
 	return TRUE;
