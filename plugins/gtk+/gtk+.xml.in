@@ -743,6 +743,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkRadioButton" generic-name="radiobutton" _title="Radio Button">
+      <set-property-function>glade_gtk_radio_button_set_property</set-property-function>
       <properties>
       	<property id="label" default="radiobutton"/>
 	<property id="draw-indicator" default="True"/>
