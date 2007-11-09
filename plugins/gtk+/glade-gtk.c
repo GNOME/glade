@@ -6656,7 +6656,9 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
 		gint pos, size;
 		gboolean set_current;
 		
-		if ((pos = g_value_get_int (value)) < 0);
+		if ((pos = g_value_get_int (value)) < 0) return;
+		if (pos == glade_gtk_assistant_get_page (assistant, widget))
+			return;
 		set_current = gtk_assistant_get_current_page (assistant) == 
 			      glade_gtk_assistant_get_page (assistant, widget);
 		
