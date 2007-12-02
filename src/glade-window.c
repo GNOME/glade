@@ -2315,13 +2315,12 @@ static GtkRadioActionEntry radio_entries[] = {
 static guint n_radio_entries = G_N_ELEMENTS (radio_entries);
 
 static void
-menu_item_selected_cb (GtkItem *item, GladeWindow *window)
+menu_item_selected_cb (GtkWidget *item, GladeWindow *window)
 {
 	GtkAction *action;
 	gchar *tooltip;
 
-	action = GTK_ACTION (g_object_get_data (G_OBJECT (item), "action-for-proxy"));
-
+        action = gtk_widget_get_action (item);
 	g_object_get (G_OBJECT (action), "tooltip", &tooltip, NULL);
 
 	if (tooltip != NULL)
@@ -2345,10 +2344,8 @@ ui_connect_proxy_cb (GtkUIManager *ui,
 		         GladeWindow *window)
 {	
 	if (GTK_IS_MENU_ITEM (proxy))
-	{	
-		g_object_set_data (G_OBJECT (proxy), "action-for-proxy", action);
-	
-		g_signal_connect(G_OBJECT(proxy), "select", 
+	{
+		g_signal_connect(G_OBJECT(proxy), "select",
 				 G_CALLBACK (menu_item_selected_cb), window);
 		g_signal_connect(G_OBJECT(proxy), "deselect", 
 				 G_CALLBACK (menu_item_deselected_cb), window);
