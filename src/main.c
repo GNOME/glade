@@ -89,8 +89,9 @@ main (int argc, char *argv[])
 
 	/* Set up option groups */
 	option_context = g_option_context_new (NULL);
-	
-	g_option_context_set_summary (option_context, _("Create or edit user interface designs for GTK+ or GNOME applications."));
+
+	g_option_context_set_summary (option_context, N_("Create or edit user interface designs for GTK+ or GNOME applications."));
+	g_option_context_set_translation_domain (option_context, GETTEXT_PACKAGE);
 
 	option_group = g_option_group_new ("glade",
 					   N_("Glade options"),
