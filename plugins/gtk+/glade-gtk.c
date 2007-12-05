@@ -4378,7 +4378,7 @@ glade_gtk_image_set_type (GObject *object, const GValue *value)
 		case GLADEGTK_IMAGE_STOCK:
 			glade_gtk_image_disable_filename (gwidget);
 			glade_gtk_image_disable_icon_name (gwidget);
-			glade_widget_property_set_enabled (gwidget, "stock", FALSE);
+			glade_widget_property_set_enabled (gwidget, "stock", TRUE);
 			glade_gtk_image_refresh (gwidget, "glade-stock");
 		break;
 
