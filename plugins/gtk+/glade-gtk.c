@@ -249,11 +249,14 @@ widget_parent_changed (GtkWidget          *widget,
 {
 	GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
 
-	if (gwidget->parent && !GTK_IS_WINDOW (glade_widget_get_object (gwidget->parent)))
+	if (gwidget->parent && !GTK_IS_WINDOW (glade_widget_get_object (gwidget->parent)) &&
+	    gwidget->parent->internal == NULL)
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
 	else
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 
+	if (gwidget->internal)
+		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);	
 }
 
 void
@@ -265,7 +268,7 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 	
 	glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 
-	if (GTK_IS_WINDOW (widget))
+	if (GTK_IS_WINDOW (widget) || gwidget->internal)
 		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
 
 	/* Watch parents and set actions sensitive/insensitive */
