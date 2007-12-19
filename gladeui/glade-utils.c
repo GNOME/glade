@@ -43,7 +43,6 @@
 #include "glade-fixed.h"
 
 #include <string.h>
-#include <gtk/gtktooltips.h>
 #include <gdk/gdkkeysyms.h>
 #include <gmodule.h>
 #include <glib/gi18n-lib.h>
@@ -65,33 +64,6 @@
 /* List of widgets that have selection
  */
 static GList *glade_util_selection = NULL;
-
-static GtkTooltips *glade_tooltips = NULL;
-
-/**
- * glade_util_widget_set_tooltip:
- * @widget: a #GtkWidget
- * @str: a string
- *
- * Creates a new tooltip from @str and sets @widget to use it.
- */
-void
-glade_util_widget_set_tooltip (GtkWidget *widget, const gchar *str)
-{
-	g_return_if_fail (widget != NULL);
-	if (str == NULL)
-		return;
-
-	if (glade_tooltips == NULL)
-	{
-		glade_tooltips = gtk_tooltips_new ();
-	
-		g_object_ref (G_OBJECT (glade_tooltips));
-		gtk_object_sink (GTK_OBJECT (glade_tooltips));	
-	}
-
-	gtk_tooltips_set_tip (glade_tooltips, widget, str, NULL);
-}
 
 /**
  * glade_util_compose_get_type_func:

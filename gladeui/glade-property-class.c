@@ -1279,7 +1279,6 @@ glade_property_class_new_from_spec (gpointer     handle,
 	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
 
-
 	/* If its on the GtkWidgetClass, it goes in "common" 
 	 * (unless stipulated otherwise in the xml file)
 	 */

@@ -1,3 +1,39 @@
+2007-12-19  Christian Persch  <chpe@gnome.org>
+
+	* configure.ac:
+	* gladeui/glade-app.c: (glade_app_refresh_undo_redo_button):
+	* gladeui/glade-base-editor.c: (glade_base_editor_add_properties):
+	* gladeui/glade-editor-property.c:
+	(glade_editor_property_tooltip_cb),
+	(glade_editor_property_sensitivity_cb),
+	(glade_editor_property_create_info_button),
+	(glade_editor_property_constructor),
+	(glade_editor_property_finalize),
+	(glade_editor_property_load_common),
+	(glade_eprop_text_show_i18n_dialog),
+	(glade_eprop_adjustment_table_add_label):
+	* gladeui/glade-editor-property.h:
+	* gladeui/glade-editor.c: (glade_editor_notebook_page),
+	(glade_editor_create_info_button),
+	(glade_editor_create_reset_button),
+	(glade_editor_table_append_item):
+	* gladeui/glade-palette.c: (glade_palette_dispose),
+	(glade_palette_new_item), (glade_palette_new_item_group),
+	(glade_palette_update_appearance), (glade_palette_init):
+	* gladeui/glade-project.c: (glade_project_dispose),
+	(glade_project_init):
+	* gladeui/glade-project.h:
+	* gladeui/glade-property-class.c:
+	(glade_property_class_new_from_spec):
+	* gladeui/glade-utils.c:
+	* gladeui/glade-widget.c: (expose_draw_selection):
+	* plugins/gtk+/glade-gtk.c: (glade_gtk_widget_set_property),
+	(glade_gtk_widget_get_property):
+	* src/glade-window.c: (format_project_list_item_tooltip),
+	(refresh_projects_list_menu), (glade_window_init): Port to gtk 2.12
+	tooltips API. Bug #500947. Remove the unnecessary event boxes on the property
+	labels, part of bug #490157.
+
 2007-12-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* NEWS, configure.ac: Rolling 3.4.1

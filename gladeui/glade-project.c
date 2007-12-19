@@ -106,7 +106,6 @@ struct _GladeProjectPrivate
 	GList       *prev_redo_item;          /* Points to the item previous to the redo items */
 	GHashTable  *widget_names_allocator;  /* hash table with the used widget names */
 	GHashTable  *widget_old_names;        /* widget -> old name of the widget */
-	GtkTooltips *tooltips;
 	
 	GladeCommand *first_modification; /* we record the first modification, so that we
 	                                   * can set "modification" to FALSE when we
@@ -201,9 +200,6 @@ glade_project_dispose (GObject *object)
 		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
 	}
 	project->priv->objects = NULL;
-
-	gtk_object_destroy (GTK_OBJECT (project->priv->tooltips));
-	project->priv->tooltips = NULL;
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
@@ -489,7 +485,6 @@ glade_project_init (GladeProject *project)
 				       
 	priv->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
 
-	priv->tooltips = gtk_tooltips_new ();
 	priv->accel_group = NULL;
 
 	priv->resources = g_hash_table_new_full (g_direct_hash, 
@@ -2034,19 +2029,6 @@ glade_project_reset_path (GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	project->priv->path = (g_free (project->priv->path), NULL);
-}
-
-/**
- * glade_project_get_tooltips:
- * @project: a #GladeProject
- *
- * Returns: a #GtkTooltips object containing all tooltips for @project
- */
-GtkTooltips *
-glade_project_get_tooltips (GladeProject *project)
-{
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	return project->priv->tooltips;
 }
 
 /**

@@ -1662,7 +1662,7 @@ glade_base_editor_add_properties (GladeBaseEditor *editor,
 		eprop = glade_editor_property_new_from_widget (gchild, property, packing, TRUE);
 		if (eprop)
 			glade_base_editor_table_attach (editor, 
-							GLADE_EDITOR_PROPERTY (eprop)->eventbox, 
+							GLADE_EDITOR_PROPERTY (eprop)->item_label,
 							GTK_WIDGET (eprop));
 		property = va_arg (args, gchar *);
 	}

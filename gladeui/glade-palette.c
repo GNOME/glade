@@ -69,9 +69,6 @@ struct _GladePalettePrivate
 
 	GSList       *sections;          /* List of GladePaletteExpanders */ 
 
-	GtkTooltips  *tooltips;          /* Tooltips for the item buttons */
-	GtkTooltips  *static_tooltips;   /* These tooltips never get disabled */
-
 	GtkSizeGroup *size_group;        /* All items have the same dimensions */
 
 	GladeItemAppearance item_appearance;
@@ -308,16 +305,6 @@ glade_palette_dispose (GObject *object)
 		g_object_unref (priv->tray);
 		priv->tray = NULL;
 	}
-	if (priv->tooltips)
-	{
-		g_object_unref (priv->tooltips);
-		priv->tooltips = NULL;	
-	}
-	if (priv->static_tooltips)
-	{
-		g_object_unref (priv->static_tooltips);
-		priv->static_tooltips = NULL;
-	}
 	
 	G_OBJECT_CLASS (glade_palette_parent_class)->dispose (object);
 }
@@ -468,7 +455,7 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 
 	glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (item), priv->item_appearance);
 
-	gtk_tooltips_set_tip (priv->tooltips, item, adaptor->title, NULL);
+        gtk_widget_set_tooltip_text (item, adaptor->title);
 
 	g_signal_connect (G_OBJECT (item), "toggled",
 			  G_CALLBACK (glade_palette_on_button_toggled), palette);
@@ -484,7 +471,6 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	GtkWidget *box; 
 	GtkWidget *item;
 	GList *l;
-	gchar *title;
 
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
 	g_return_val_if_fail (group != NULL, NULL);
@@ -504,10 +490,8 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 
 	}
 
-	title = g_strdup_printf ("%s", glade_widget_group_get_title (group));
-
 	/* Put items box in a expander */
-	expander = glade_palette_expander_new (title);
+	expander = glade_palette_expander_new (glade_widget_group_get_title (group));
 	glade_palette_expander_set_spacing (GLADE_PALETTE_EXPANDER (expander), 2);
 	glade_palette_expander_set_use_markup (GLADE_PALETTE_EXPANDER (expander), TRUE);
 	gtk_container_set_border_width (GTK_CONTAINER (expander), 0);
@@ -517,8 +501,6 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 					     glade_widget_group_get_expanded (group));
 
 	gtk_container_add (GTK_CONTAINER (expander), box);
-
-	g_free (title);
 
 	return expander;
 }
@@ -549,8 +531,11 @@ glade_palette_update_appearance (GladePalette *palette)
 	GtkWidget *viewport;
 	GSList *sections;
 	GList *items, *i;
+        gboolean show_tooltips;
 
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+
+        show_tooltips = priv->item_appearance == GLADE_ITEM_ICON_ONLY;
 
 	for (sections = priv->sections; sections; sections = sections->next)
 	{
@@ -560,6 +545,8 @@ glade_palette_update_appearance (GladePalette *palette)
 		{
 			glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (i->data), priv->item_appearance);
 			glade_palette_item_set_use_small_icon (GLADE_PALETTE_ITEM (i->data), priv->use_small_item_icons);
+
+                        g_object_set (i->data, "has-tooltip", show_tooltips, NULL);
 		}
 		g_list_free (items);
 	}
@@ -575,12 +562,6 @@ glade_palette_update_appearance (GladePalette *palette)
 		gtk_container_remove (GTK_CONTAINER (viewport), priv->tray);
 		gtk_container_add (GTK_CONTAINER (viewport), priv->tray);
 	}
-
-	if (priv->item_appearance == GLADE_ITEM_ICON_ONLY)
-		gtk_tooltips_enable (priv->tooltips);
-	else
-		gtk_tooltips_disable (priv->tooltips);
-
 }
 
 static GtkWidget*
@@ -635,13 +616,7 @@ glade_palette_init (GladePalette *palette)
 	gtk_widget_show (priv->selector_button);
 	gtk_widget_show (priv->selector_hbox);
 
-	/* create tooltips */
-	priv->tooltips = gtk_tooltips_new ();
-	g_object_ref_sink (GTK_OBJECT (priv->tooltips));
-	priv->static_tooltips = gtk_tooltips_new ();
-	g_object_ref_sink (GTK_OBJECT (priv->static_tooltips));
-
-	gtk_tooltips_set_tip (priv->static_tooltips, priv->selector_button, _("Widget selector"), NULL);
+        gtk_widget_set_tooltip_text (priv->selector_button, _("Widget selector"));
 
 	/* create size group */
 	priv->size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);

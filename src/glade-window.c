@@ -87,8 +87,6 @@ struct _GladeWindowPrivate
 	GladeDesignView     *active_view;
 	gint                 num_tabs;
 	
-	GtkTooltips         *tooltips;
-
 	GtkWidget           *inspectors_notebook;
 
 	GtkWidget           *statusbar;                     /* A pointer to the status bar. */
@@ -711,20 +709,23 @@ format_project_list_item_tooltip (GladeProject *project)
 		
 		if (glade_project_get_readonly (project))
 		{
-			tooltip = g_strdup_printf ("Activate '%s' %s",
+                        /* FIXME add hint for translators */
+			tooltip = g_strdup_printf (_("Activate '%s' %s"),
 					   	   path,
 					   	   READONLY_INDICATOR);
 		}
 		else
 		{
-			tooltip = g_strdup_printf ("Activate '%s'", path);		
+                        /* FIXME add hint for translators */
+			tooltip = g_strdup_printf (_("Activate '%s'"), path);
 		}
 		g_free (path);
 	}
 	else
 	{
 		name = glade_project_get_name (project);
-		tooltip = g_strdup_printf ("Activate '%s'", name);
+                 /* FIXME add hint for translators */
+		tooltip = g_strdup_printf (_("Activate '%s'"), name);
 		g_free (name);
 	}
 	
@@ -1079,10 +1080,10 @@ refresh_projects_list_menu (GladeWindow *window)
 		GtkWidget *view;
 		GladeProject *project;
 		GtkRadioAction *action;
-		gchar *action_name;
+		gchar action_name[32];
 		gchar *project_name;
 		gchar *tooltip;
-		gchar *accel;
+		gchar accel[7];
 
 		view = gtk_notebook_get_nth_page (GTK_NOTEBOOK (p->notebook), i);
 		project = glade_design_view_get_project (GLADE_DESIGN_VIEW (view));
@@ -1095,17 +1096,18 @@ refresh_projects_list_menu (GladeWindow *window)
 		 * the problem is worked around, action with the same name always
 		 * get the same accel.
 		 */
-		action_name = g_strdup_printf ("Tab_%d", i);
+                g_snprintf (action_name, sizeof (action_name), "Tab_%d", i);
 		project_name = get_formatted_project_name_for_display (project,
 								       FORMAT_NAME_MARK_UNSAVED |
 								       FORMAT_NAME_MIDDLE_TRUNCATE |
 								       FORMAT_NAME_ESCAPE_UNDERSCORES);				       
 		tooltip = format_project_list_item_tooltip (project);
-		
-
 
 		/* alt + 1, 2, 3... 0 to switch to the first ten tabs */
-		accel = (i < 10) ? g_strdup_printf ("<alt>%d", (i + 1) % 10) : NULL;
+                if (i < 10)
+                        g_snprintf (accel, sizeof (accel), "<alt>%d", (i + 1) % 10);
+                else
+                        accel[0] = '\0';
 
 		action = gtk_radio_action_new (action_name, 
 					       project_name,
@@ -1117,10 +1119,8 @@ refresh_projects_list_menu (GladeWindow *window)
 		g_object_set_data (G_OBJECT (project), "project-list-action", action);
 		g_object_set_data (G_OBJECT (action), "project", project);
 
-		if (group != NULL)
-			gtk_radio_action_set_group (action, group);
-
 		/* note that group changes each time we add an action, so it must be updated */
+		gtk_radio_action_set_group (action, group);
 		group = gtk_radio_action_get_group (action);
 
 		gtk_action_group_add_action_with_accel (p->projects_list_menu_actions,
@@ -1142,10 +1142,8 @@ refresh_projects_list_menu (GladeWindow *window)
 
 		g_object_unref (action);
 
-		g_free (action_name);
 		g_free (project_name);
 		g_free (tooltip);
-		g_free (accel);
 	}
 
 	p->projects_list_menu_ui_id = id;
@@ -3048,22 +3046,15 @@ glade_window_init (GladeWindow *window)
 	gtk_box_pack_start (GTK_BOX (vbox), priv->toolbar, FALSE, TRUE, 0);
 	gtk_widget_show (priv->toolbar);
 
-	/* tooltips object */
-	priv->tooltips =  gtk_tooltips_new ();
-
 	/* undo/redo buttons */
 	priv->undo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_UNDO);
 	priv->redo = gtk_menu_tool_button_new_from_stock (GTK_STOCK_REDO);
 	gtk_widget_show (GTK_WIDGET (priv->undo));
 	gtk_widget_show (GTK_WIDGET (priv->redo));
-	gtk_menu_tool_button_set_arrow_tooltip (GTK_MENU_TOOL_BUTTON (priv->undo),
-						priv->tooltips,
-						_("Go back in undo history"),
-						NULL);
-	gtk_menu_tool_button_set_arrow_tooltip (GTK_MENU_TOOL_BUTTON (priv->redo),
-						priv->tooltips,
-						("Go forward in undo history"),
-						NULL); 
+	gtk_menu_tool_button_set_arrow_tooltip_text (GTK_MENU_TOOL_BUTTON (priv->undo),
+						     _("Go back in undo history"));
+	gtk_menu_tool_button_set_arrow_tooltip_text (GTK_MENU_TOOL_BUTTON (priv->redo),
+						     _("Go forward in undo history"));
 
 	sep = GTK_WIDGET (gtk_separator_tool_item_new ());
 	gtk_widget_show (sep);

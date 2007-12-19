@@ -1706,12 +1706,13 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 	glade_widget_set_actions (widget, adaptor);
 }
 
-static void
+static gboolean
 expose_draw_selection (GtkWidget       *widget_gtk,
 		       GdkEventExpose  *event,
 		       GladeWidget     *gwidget)
 {
 	glade_util_draw_selection_nodes (event->window);
+        return FALSE;
 }
 
 

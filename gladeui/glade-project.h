@@ -110,8 +110,6 @@ char          *glade_project_new_widget_name     (GladeProject *project, const c
 void           glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget,
 						 const char   *old_name);
 
-GtkTooltips   *glade_project_get_tooltips        (GladeProject *project);
-
 /* Selection */
 
 gboolean       glade_project_is_selected         (GladeProject *project,
