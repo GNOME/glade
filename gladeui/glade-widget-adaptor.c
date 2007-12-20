@@ -1429,29 +1429,29 @@ gwa_extend_with_node (GladeWidgetAdaptor *adaptor,
 }
 
 /** 
- * create_icon_name_for_adaptor:
- * @adaptor_name: The name of the widget class
- * @adaptor_type: The #GType of the adaptor class
+ * create_icon_name_for_object_class:
+ * @class_name: The name of the widget class
+ * @class_type: The #GType of the adaptor class
  * @icon_name:    The icon name as set from the catalog
  * @icon_prefix:  The icon prefix as set from the catalog
  * @generic_name: The generic name for the widget class
  *
- * Creates a suitable icon name for an adaptor, based on several parameters.
+ * Creates a suitable icon name for an object class, based on several parameters.
  *
- * Returns: An icon name, or NULL if the adaptor does not require one.
+ * Returns: An icon name, or NULL if the object class does not require one.
  */
 static gchar *
-create_icon_name_for_adaptor (const gchar *adaptor_name,
-			      GType        adaptor_type,
-			      const gchar *icon_name,
-			      const gchar *icon_prefix,
-			      const gchar *generic_name)
+create_icon_name_for_object_class (const gchar *class_name,
+				   GType        class_type,
+				   const gchar *icon_name,
+				   const gchar *icon_prefix,
+				   const gchar *generic_name)
 {
 	gchar *name;
 
-	/* only certain widget adaptors need to have icons */
-	if (G_TYPE_IS_INSTANTIATABLE (adaptor_type) == FALSE ||
-            G_TYPE_IS_ABSTRACT (adaptor_type) != FALSE ||
+	/* only certain object classes need to have icons */
+	if (G_TYPE_IS_INSTANTIATABLE (class_type) == FALSE ||
+            G_TYPE_IS_ABSTRACT (class_type) != FALSE ||
             generic_name == NULL)
 	{
 		return NULL;
@@ -1466,7 +1466,7 @@ create_icon_name_for_adaptor (const gchar *adaptor_name,
 	/* check if icon is available */
 	if (!gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), name))
 	{
-		g_warning ("No icon named '%s' was found for widget class '%s'.", name, adaptor_name);
+		g_warning ("No icon named '%s' was found for object class '%s'.", name, class_name);
 		g_free (name);
 		name = g_strdup (DEFAULT_ICON_NAME);
 	}
@@ -1627,11 +1627,11 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	icon_name    = glade_xml_get_property_string (class_node, GLADE_TAG_ICON_NAME);
 	
 	/* get a suitable icon name for adaptor */
-	adaptor_icon_name = create_icon_name_for_adaptor (name,
-							  adaptor_type,
-							  icon_name,
-							  icon_prefix,
-							  generic_name);
+	adaptor_icon_name = create_icon_name_for_object_class (name,
+							       object_type,
+							       icon_name,
+							       icon_prefix,
+							       generic_name);
 
 	adaptor = g_object_new (adaptor_type, 
 				"type", object_type,
