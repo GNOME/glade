@@ -665,6 +665,7 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 		
 			glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
 			
+			/* translators: referring to the properties of a widget named '%s [%s]' */
 			text = g_strdup_printf (_("%s [%s] - Properties"),
 						glade_widget_get_name (glade_widget),
 						G_OBJECT_TYPE_NAME (glade_widget->object));
@@ -709,14 +710,16 @@ format_project_list_item_tooltip (GladeProject *project)
 		
 		if (glade_project_get_readonly (project))
 		{
-                        /* FIXME add hint for translators */
+                        /* translators: referring to the action of activating a file named '%s'.
+                         *              we also indicate to users that the file may be read-only with
+                         *              the second '%s' */
 			tooltip = g_strdup_printf (_("Activate '%s' %s"),
 					   	   path,
 					   	   READONLY_INDICATOR);
 		}
 		else
 		{
-                        /* FIXME add hint for translators */
+                       /* translators: referring to the action of activating a file named '%s' */
 			tooltip = g_strdup_printf (_("Activate '%s'"), path);
 		}
 		g_free (path);

@@ -687,7 +687,7 @@ glade_project_class_init (GladeProjectClass *klass)
 	g_object_class_install_property (object_class,
 					 PROP_MODIFIED,
 					 g_param_spec_boolean ("modified",
-							       _(""),
+							       _("Modified"),
 							       _("Whether project has been modified since it was last saved"),
 							       FALSE,
 							       G_PARAM_READABLE));
