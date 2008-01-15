@@ -3084,8 +3084,6 @@ glade_window_init (GladeWindow *window)
 	gtk_paned_pack1 (GTK_PANED (hpaned1), hpaned2, TRUE, FALSE);
 	gtk_paned_pack2 (GTK_PANED (hpaned1), vpaned, FALSE, FALSE);
 
-	/* divider position between design area and editor/inspector */
-	gtk_paned_set_position (GTK_PANED (hpaned1), 350);
 	/* divider position between tree and editor */	
 	gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
@@ -3104,9 +3102,10 @@ glade_window_init (GladeWindow *window)
 	palette = GTK_WIDGET (glade_app_get_palette ());
 	glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
 	gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
-	gtk_widget_show (palette);
 	setup_dock (&priv->docks[DOCK_PALETTE], palette, 200, 540, 
 		    _("Palette"), "palette", hpaned2, TRUE);
+	gtk_widget_set_size_request (palette, 200, 540);
+	gtk_widget_show (palette);
 
 	/* inspectors */
 	priv->inspectors_notebook = gtk_notebook_new ();	

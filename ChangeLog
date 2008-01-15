@@ -1,3 +1,25 @@
+2008-01-15  Juan Pablo Ugarte juanpablougarte@gmail.com>
+
+	* src/glade-window.c:
+	  o set palette a default size
+	  o do not set desing/editor paned position since by default the window is
+	    maximized.
+
+2008-01-15  Ivan Baldo ibaldo@adinet.com.uy
+
+	* gladeui/glade-palette-expander.c: fixed bug #495853
+	  "palette takes up too much space"
+
+2008-01-15  Yang Hong <hongyang@redflag-linux.com>
+
+	* gladeui/glade-project.c: fixed bug #504603
+	  "crash while open .glade file from command line arg"
+
+2008-01-15  Cosimo Cecchi <anarki@lilik.it>
+
+	* gladeui/glade-editor.c: Fixed bug #388869
+	  "Property edits dropped due to bad focus-event handling"
+
 2008-01-13  Vincent Geddes <vgeddes@gnome.org>
 
 	* gladeui/glade-project.c, src/glade-window.c: Fix a few i18n fumbles (#509128).

@@ -416,16 +416,6 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 	g_free (new_name);
 }
 
-
-static gboolean
-glade_editor_widget_name_focus_out (GtkWidget           *entry,
-				    GdkEventFocus       *event,
-				    GladeEditor         *editor)
-{
-	glade_editor_widget_name_changed (entry, editor);
-	return FALSE;
-}
-
 static void
 glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint row)
 {
@@ -481,8 +471,8 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 			  G_CALLBACK (glade_editor_widget_name_changed),
 			  table->editor);
 	
-	g_signal_connect (G_OBJECT (table->name_entry), "focus-out-event",
-			  G_CALLBACK (glade_editor_widget_name_focus_out),
+	g_signal_connect (G_OBJECT (table->name_entry), "changed",
+			  G_CALLBACK (glade_editor_widget_name_changed),
 			  table->editor);
 
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);

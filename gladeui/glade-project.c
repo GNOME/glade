@@ -1966,6 +1966,8 @@ glade_project_undo_items (GladeProject *project)
 	GladeCommand *cmd;
 	GList   *l;
 
+	g_return_val_if_fail (project != NULL, NULL);
+
 	for (l = project->priv->prev_redo_item; l; l = walk_command (l, FALSE))
 	{
 		cmd = l->data;
@@ -2000,6 +2002,8 @@ glade_project_redo_items (GladeProject *project)
 	GtkWidget *item;
 	GladeCommand *cmd;
 	GList   *l;
+
+	g_return_val_if_fail (project != NULL, NULL);
 
 	for (l = project->priv->prev_redo_item ?
 		     project->priv->prev_redo_item->next :

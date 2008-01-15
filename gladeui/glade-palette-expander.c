@@ -207,6 +207,7 @@ glade_palette_expander_init (GladePaletteExpander *expander)
 	gtk_button_set_focus_on_click (GTK_BUTTON (priv->button), FALSE);
 	priv->arrow = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
 	priv->label = gtk_label_new (NULL);
+	gtk_label_set_ellipsize (GTK_LABEL (priv->label), PANGO_ELLIPSIZE_END);
 	gtk_misc_set_alignment (GTK_MISC (priv->label), 0.0, 0.5);
 
 	alignment = gtk_alignment_new (0.0, 0.5, 1, 1);
@@ -216,7 +217,7 @@ glade_palette_expander_init (GladePaletteExpander *expander)
 	gtk_container_add (GTK_CONTAINER (alignment), hbox);
 	gtk_container_add (GTK_CONTAINER (priv->button), alignment);
 	gtk_box_pack_start (GTK_BOX (hbox), priv->arrow, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), priv->label, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->label, TRUE, TRUE, 0);
 	
 	gtk_widget_set_parent (priv->button, GTK_WIDGET (expander));
 	
