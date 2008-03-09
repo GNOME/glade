@@ -5,6 +5,9 @@
 	  - Reset "events" property for newly created widgets
 	    (workaround for bug 472555).
 
+	* plugins/gnome/glade-gnome.c: Fixed some crashes on 
+	  gnome druid page properties (bug 511651).
+	
 	* gladeui/glade-editor-property.c: 
 	  - added return_if_fail guard as per bug 479468.
 	  - Fixed crasher bug 506713.
@@ -13,7 +16,7 @@
 
 	* gladeui/glade-base-editor.c: Made sure idle handlers werent
 	  updating treeviews after the object is destroyed (also bug 506713).
-
+	
 2008-02-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 	
 	* plugins/gtk+/gtk+.xml.in: ignore GtkWindow::accept-focus.

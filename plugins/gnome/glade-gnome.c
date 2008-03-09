@@ -616,6 +616,15 @@ glade_gnome_dps_set_property (GladeWidgetAdaptor *adaptor,
 		glade_gnome_dps_set_color_common (object, "logo-background-gdk", value);
 	else if (!strcmp (id, "title-foreground"))
 		glade_gnome_dps_set_color_common (object, "title-foreground-gdk", value);
+
+
+	else if (!strcmp (id, "background-gdk")  || 
+		 !strcmp (id, "title-foreground-gdk") ||
+		 !strcmp (id, "logo-background-gdk") ||
+		 !strcmp (id, "contents-background-gdk"))
+		{
+			/* XXX Ignore these they crash */
+		}
 	else
 		/* Skip GNOME_TYPE_DRUID_PAGE since we didnt register an
 		 * adaptor for that abstract class.
