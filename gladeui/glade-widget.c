@@ -2168,6 +2168,19 @@ glade_widget_show (GladeWidget *widget)
 	{
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
+
+		/* This case causes a black window */
+		if (layout && !GTK_WIDGET_REALIZED (layout))
+		{
+			/* give her a little kick */
+			g_signal_connect_data (G_OBJECT (layout), "realize",
+					       G_CALLBACK (glade_widget_show), widget,
+					       NULL,
+					       G_CONNECT_AFTER|G_CONNECT_SWAPPED);
+			return;
+		}
+		else if (!layout)
+			return;
 		
 		if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
 			gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));

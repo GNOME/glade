@@ -944,6 +944,21 @@ glade_app_add_project (GladeProject *project)
 	
 	glade_app_set_project (project);
 
+	/* Select the first window in the project */
+	if (g_list_length (app->priv->projects) == 1)
+	{
+		GList *node;
+		for (node = glade_project_get_objects (project);
+		     node != NULL;
+		     node = g_list_next (node))
+		{
+			GObject *obj = G_OBJECT (node->data);
+			if (GTK_IS_WINDOW (obj))
+				glade_widget_show (glade_widget_get_from_gobject (obj));
+			break;
+		}
+	}
+
 	/* XXX I think the palette & editor should detect this by itself */
 	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
 	gtk_widget_set_sensitive (GTK_WIDGET (app->priv->editor), TRUE);

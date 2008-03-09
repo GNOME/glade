@@ -16,7 +16,13 @@
 
 	* gladeui/glade-base-editor.c: Made sure idle handlers werent
 	  updating treeviews after the object is destroyed (also bug 506713).
-	
+
+	* gladeui/glade-app.c: When adding a first project, display the
+	  first toplevel in the design layout.
+
+	* gladeui/glade-widget.c: Handle glade_widget_show() with unrealized
+	  design-view, connect-after the design-view's realize and retry.
+
 2008-02-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 	
 	* plugins/gtk+/gtk+.xml.in: ignore GtkWindow::accept-focus.

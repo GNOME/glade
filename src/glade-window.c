@@ -2548,12 +2548,12 @@ add_project (GladeWindow *window, GladeProject *project)
  	
  	view = glade_design_view_new (project);	
 	gtk_widget_show (view);
-	
+
 	glade_app_add_project (project);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->notebook), GTK_WIDGET (view), NULL);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->notebook), -1);	
-	
+		
 }
 
 void
