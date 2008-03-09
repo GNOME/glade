@@ -8,6 +8,8 @@
 	* gladeui/glade-editor-property.c: 
 	  - added return_if_fail guard as per bug 479468.
 	  - Fixed crasher bug 506713.
+	  - Reverted to real time string editing and not using
+	    focus-out handlers anymore.
 
 	* gladeui/glade-base-editor.c: Made sure idle handlers werent
 	  updating treeviews after the object is destroyed (also bug 506713).

@@ -1590,27 +1590,14 @@ glade_eprop_text_changed (GtkWidget           *entry,
 	g_free (text);
 }
 
-static gboolean
-glade_eprop_text_entry_focus_out (GtkWidget           *entry,
-				  GdkEventFocus       *event,
-				  GladeEditorProperty *eprop)
-{
-	glade_eprop_text_changed (entry, eprop);
-	return FALSE;
-}
-
-static gboolean
-glade_eprop_text_text_view_focus_out (GtkTextView         *view,
-				      GdkEventFocus       *event,
-				      GladeEditorProperty *eprop)
+static void
+glade_eprop_text_buffer_changed (GtkTextBuffer       *buffer,
+				 GladeEditorProperty *eprop)
 {
 	gchar *text;
-	GtkTextBuffer *buffer;
 	GtkTextIter    start, end;
 	
-	if (eprop->loading) return FALSE;
-
-	buffer = gtk_text_view_get_buffer (view);
+	if (eprop->loading) return;
 
 	gtk_text_buffer_get_start_iter (buffer, &start);
 	gtk_text_buffer_get_end_iter (buffer, &end);
@@ -1620,7 +1607,6 @@ glade_eprop_text_text_view_focus_out (GtkTextView         *view,
 	glade_eprop_text_changed_common (eprop, text, eprop->use_command);
 
 	g_free (text);
-	return FALSE;
 }
 
 static void
@@ -1822,6 +1808,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 	    klass->pspec->value_type == G_TYPE_VALUE_ARRAY) 
 	{
 		GtkWidget  *swindow;
+		GtkTextBuffer *buffer;
 
 		swindow = gtk_scrolled_window_new (NULL, NULL);
 
@@ -1830,29 +1817,25 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swindow), GTK_SHADOW_IN);
 
 		eprop_text->text_entry = gtk_text_view_new ();
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
 
 		gtk_container_add (GTK_CONTAINER (swindow), eprop_text->text_entry);
 		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (swindow), TRUE, TRUE, 0); 
 
 		gtk_widget_show_all (swindow);
 		
-		/*  XXX Use changed signal directly !!! */
-
-		g_signal_connect (G_OBJECT (eprop_text->text_entry), "focus-out-event",
-				  G_CALLBACK (glade_eprop_text_text_view_focus_out),
+		g_signal_connect (G_OBJECT (buffer), "changed",
+				  G_CALLBACK (glade_eprop_text_buffer_changed),
 				  eprop);
+
 	} else {
 		eprop_text->text_entry = gtk_entry_new ();
 		gtk_widget_show (eprop_text->text_entry);
 
 		gtk_box_pack_start (GTK_BOX (hbox), eprop_text->text_entry, TRUE, TRUE, 0); 
 
-		g_signal_connect (G_OBJECT (eprop_text->text_entry), "activate",
+		g_signal_connect (G_OBJECT (eprop_text->text_entry), "changed",
 				  G_CALLBACK (glade_eprop_text_changed),
-				  eprop);
-		
-		g_signal_connect (G_OBJECT (eprop_text->text_entry), "focus-out-event",
-				  G_CALLBACK (glade_eprop_text_entry_focus_out),
 				  eprop);
 	}
 	
