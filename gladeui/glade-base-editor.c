@@ -78,6 +78,8 @@ struct _GladeBaseEditorPrivate
 	gint row;
 	
 	gboolean updating_treeview;
+
+	guint properties_idle;
 };
 
 typedef struct _GladeBaseEditorSignal     GladeBaseEditorSignal;
@@ -350,7 +352,9 @@ glade_base_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	GObject *child;
 	GladeWidget *gchild;
 
-	if (! glade_base_editor_get_child_selected (editor, &iter))
+	g_return_if_fail (GTK_IS_TREE_VIEW (treeview));
+
+	if (!glade_base_editor_get_child_selected (editor, &iter))
 		return;
 
 	glade_base_editor_clear (editor);
@@ -372,15 +376,21 @@ glade_base_editor_treeview_cursor_changed (GtkTreeView *treeview,
 static gboolean
 glade_base_editor_update_properties_idle (gpointer data)
 {
-       glade_base_editor_treeview_cursor_changed (NULL, (GladeBaseEditor *)data);
-       return FALSE;
+	GladeBaseEditor *editor = (GladeBaseEditor *)data;
+	glade_base_editor_treeview_cursor_changed (NULL, editor);
+	editor->priv->properties_idle = 0;
+	return FALSE;
 }
 
 
 static void 
 glade_base_editor_update_properties (GladeBaseEditor *editor)
 {
-       g_idle_add (glade_base_editor_update_properties_idle, editor);
+	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
+
+	if (!editor->priv->properties_idle)
+		editor->priv->properties_idle = 
+			g_idle_add (glade_base_editor_update_properties_idle, editor);
 }
 
 static void
@@ -993,6 +1003,12 @@ glade_base_editor_project_disconnect (GladeBaseEditor *editor)
 	
 	g_signal_handlers_disconnect_by_func (e->project,
 			glade_base_editor_project_changed, editor);
+
+
+	if (e->properties_idle)
+		g_source_remove (e->properties_idle);
+	e->properties_idle = 0;
+
 }
 
 static void

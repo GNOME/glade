@@ -1835,6 +1835,8 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (swindow), TRUE, TRUE, 0); 
 
 		gtk_widget_show_all (swindow);
+		
+		/*  XXX Use changed signal directly !!! */
 
 		g_signal_connect (G_OBJECT (eprop_text->text_entry), "focus-out-event",
 				  G_CALLBACK (glade_eprop_text_text_view_focus_out),

@@ -646,6 +646,8 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 	GladeEditorTable *table;
 	GList *list;
 
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
 	for (list = editor->widget_tables; list; list = list->next)
 	{
 		table = list->data;
@@ -741,7 +743,15 @@ glade_editor_load_page (GladeEditor          *editor,
 void
 glade_editor_update_widget_name (GladeEditor *editor)
 {
-	GladeEditorTable *table = glade_editor_get_table_from_class
+	GladeEditorTable *table;
+
+	/* it can happen that a widget name is changing that is only
+	 * available in a custom editor so we have no table
+	 */
+	if (!editor->loaded_adaptor)
+		return;
+
+	table = glade_editor_get_table_from_class
 		(editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL);
 
 	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
