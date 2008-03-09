@@ -270,6 +270,11 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 				   GladeCreateReason   reason)
 {
 	GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
+
+	/* Work around bug 472555 by resetting the default event mask,
+	 * this way only user edits will be saved to the glade file. */
+	if (reason == GLADE_CREATE_USER)
+		glade_widget_property_reset (gwidget, "events");
 	
 	glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 

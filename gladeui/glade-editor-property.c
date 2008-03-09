@@ -4037,6 +4037,8 @@ glade_editor_property_show_info (GladeEditorProperty *eprop)
 
 	adaptor = glade_widget_adaptor_from_pspec (eprop->klass->pspec);
 
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
 	g_object_get (adaptor, "book", &book, NULL);
 
 	if (eprop->klass->virt == FALSE &&

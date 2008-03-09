@@ -1,6 +1,12 @@
 2008-03-09  Tristan Van Berkom <tvb@gnome.org>
 
-	* plugins/gtk+/glade-gtk.c: Fixed a crash detail bug 493418.
+	* plugins/gtk+/glade-gtk.c: 
+	  - Fixed a crash detail bug 493418.
+	  - Reset "events" property for newly created widgets
+	    (workaround for bug 472555).
+
+	* gladeui/glade-editor-property.c: added return_if_fail guard
+	  as per bug 479468.
 
 2008-02-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 	
