@@ -2149,6 +2149,16 @@ glade_widget_debug (GladeWidget *widget)
 	glade_widget_debug_real (widget, 0);
 }
 
+static gboolean
+glade_widget_show_idle (GladeWidget *widget)
+{
+	/* This could be dangerous */ 
+	if (GLADE_IS_WIDGET (widget))
+		glade_widget_show (widget);
+
+	return FALSE;
+}
+
 /**
  * glade_widget_show:
  * @widget: A #GladeWidget
@@ -2172,11 +2182,8 @@ glade_widget_show (GladeWidget *widget)
 		/* This case causes a black window */
 		if (layout && !GTK_WIDGET_REALIZED (layout))
 		{
-			/* give her a little kick */
-			g_signal_connect_data (G_OBJECT (layout), "realize",
-					       G_CALLBACK (glade_widget_show), widget,
-					       NULL,
-					       G_CONNECT_AFTER|G_CONNECT_SWAPPED);
+			/* XXX Dangerous !!! give her a little kick */
+			g_idle_add (glade_widget_show_idle, widget);
 			return;
 		}
 		else if (!layout)
