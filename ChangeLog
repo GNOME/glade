@@ -1,16 +1,20 @@
-2008-02-16  Juan Pablo Ugarte juanpablougarte@gmail.com>
+2008-03-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* plugins/gtk+/glade-gtk.c: Fixed a crash detail bug 493418.
+
+2008-02-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+	
 	* plugins/gtk+/gtk+.xml.in: ignore GtkWindow::accept-focus.
 	  Fixes bug #accept-focus "crash, GtkWindow, Accept focus"
 
-2008-01-15  Juan Pablo Ugarte juanpablougarte@gmail.com>
+2008-01-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-window.c:
 	  o set palette a default size
 	  o do not set desing/editor paned position since by default the window is
 	    maximized.
 
-2008-01-15  Ivan Baldo ibaldo@adinet.com.uy
+2008-01-15  Ivan Baldo <ibaldo@adinet.com.uy>
 
 	* gladeui/glade-palette-expander.c: fixed bug #495853
 	  "palette takes up too much space"

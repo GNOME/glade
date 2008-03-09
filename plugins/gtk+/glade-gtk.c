@@ -249,6 +249,11 @@ widget_parent_changed (GtkWidget          *widget,
 {
 	GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
 
+	/* this could get called for a stale instance of an object
+	 * being rebuilt for a contruct-only property. */
+	if (!gwidget)
+		return;
+
 	if (gwidget->parent && !GTK_IS_WINDOW (glade_widget_get_object (gwidget->parent)) &&
 	    gwidget->parent->internal == NULL)
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
