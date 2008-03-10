@@ -954,7 +954,7 @@ glade_app_add_project (GladeProject *project)
 	    !(layout = glade_design_view_get_layout (view)) ||
 	    !GTK_BIN (layout)->child)
 	{
-		GList *node;
+		const GList *node;
 		for (node = glade_project_get_objects (project);
 		     node != NULL;
 		     node = g_list_next (node))
