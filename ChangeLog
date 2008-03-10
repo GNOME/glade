@@ -4,7 +4,8 @@
 	  - Fixed a crash detail bug 493418.
 	  - Reset "events" property for newly created widgets
 	    (workaround for bug 472555).
-
+	  - Added GtkVolumeButton and GtkScaleButton widgets (Ross Burton)
+	
 	* plugins/gnome/glade-gnome.c: Fixed some crashes on 
 	  gnome druid page properties (bug 511651).
 	
@@ -18,7 +19,7 @@
 	
 	* gladeui/glade-base-editor.c: Made sure idle handlers werent
 	  updating treeviews after the object is destroyed (also bug 506713).
-
+	
 	* gladeui/glade-app.c: When adding a first project, display the
 	  first toplevel in the design layout.
 
