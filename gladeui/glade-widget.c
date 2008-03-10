@@ -1348,14 +1348,7 @@ glade_widget_dup_internal (GladeWidget *parent,
 	}
 	else
 	{
-		gchar *name;
-
-		if (exact)
-			name = g_strdup (template_widget->name);
-		else
-			name = glade_project_new_widget_name (template_widget->project,
-							      template_widget->name);
-		
+		gchar *name = g_strdup (template_widget->name);
 		gwidget = glade_widget_adaptor_create_widget
 			(template_widget->adaptor, FALSE,
 			 "name", name,
@@ -2172,7 +2165,7 @@ glade_widget_show (GladeWidget *widget)
 	GtkWidget *layout;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
+	
 	/* Position window at saved coordinates or in the center */
 	if (GTK_IS_WINDOW (widget->object) && glade_widget_embed (widget))
 	{
@@ -2613,8 +2606,17 @@ glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	if (widget->name != name) {
+
+		if (widget->project && 
+		    glade_project_get_widget_by_name (widget->project, name))
+		{
+			/* print a warning ? */
+			return;
+		}
+
 		if (widget->name)
 			g_free (widget->name);
+		
 		widget->name = g_strdup (name);
 		g_object_notify (G_OBJECT (widget), "name");
 	}
