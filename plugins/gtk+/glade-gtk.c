@@ -367,7 +367,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 
 		/* Remove "this" widget */
 		this_widget.data = gwidget;
-		glade_command_delete (&this_widget);
+		glade_command_cut (&this_widget);
 		
 		/* Delete the parent */
 		that_widget.data = gparent;
@@ -421,7 +421,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 			
 			/* Remove "this" widget */
 			this_widget.data = gwidget;
-			glade_command_delete (&this_widget);
+			glade_command_cut (&this_widget);
 			
 			/* Create new widget and put it where the placeholder was */
 			that_widget.data =
