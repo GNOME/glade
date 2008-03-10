@@ -4,7 +4,14 @@
 
 	* plugins/gtk+/gtk+.xml.in: Backing out GtkScaleButton
 	  and GtkVolumeButton as they introduce strings.
-	
+
+	* gladeui/glade-app.c: Now if an empty project is loaded
+	  and anothther project with widgets is loaded, they will
+	  also be shown at load time (first widget in the layout
+	  gets autoloaded).
+
+	* plugins/gtk+/gtk+.xml.in: Reintroducing GtkScaleButton
+	  and GtkVolumeButton trunk.
 
 2008-03-09  Tristan Van Berkom <tvb@gnome.org>
 
@@ -15,7 +22,7 @@
 	  - Reset "events" property for newly created widgets
 	    (workaround for bug 472555).
 	  - Added GtkVolumeButton and GtkScaleButton widgets (Ross Burton)
-	  - Add/Remove parent doesnt dup widgets anymore (bug 517388)
+	  - Add/Remove parent doesnt dup widgets anymore (bug 517388)er
 	
 	* plugins/gnome/glade-gnome.c: Fixed some crashes on 
 	  gnome druid page properties (bug 511651).
