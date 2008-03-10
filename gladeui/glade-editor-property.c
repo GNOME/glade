@@ -2317,10 +2317,15 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 					 glade_param_spec_objects_get_type 
 					 (GLADE_PARAM_SPEC_OBJECTS(eprop->klass->pspec)));
 				good_type = 
+					g_type_is_a
+					(widget->adaptor->type,
+					 glade_param_spec_objects_get_type 
+					 (GLADE_PARAM_SPEC_OBJECTS(eprop->klass->pspec))) ||
 					glade_util_class_implements_interface
 					(widget->adaptor->type, 
 					 glade_param_spec_objects_get_type 
 					 (GLADE_PARAM_SPEC_OBJECTS(eprop->klass->pspec)));
+
 			}
 			else
 			{
@@ -2434,6 +2439,7 @@ glade_eprop_object_selected (GtkCellRendererToggle *cell,
 	gboolean     enabled, radio;
 
 	radio = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (model), "radio-list"));
+
 
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter,
@@ -2771,8 +2777,11 @@ glade_eprop_objects_selected_widget (GtkTreeModel  *model,
 			    OBJ_COLUMN_SELECTED,  &selected, 
 			    OBJ_COLUMN_WIDGET,    &widget, -1);
 
+
 	if (selected) 
+	{
 		*ret = g_list_append (*ret, widget->object);
+	}
 
 	return FALSE;
 }

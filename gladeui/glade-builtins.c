@@ -514,6 +514,8 @@ param_objects_validate (GParamSpec *pspec,
 			 g_type_is_a (G_OBJECT_TYPE (object), 
 				      ospec->type) == FALSE)
 			toremove = g_list_prepend (toremove, object);
+		
+
 	}
 
 	for (list = toremove; list; list = list->next)
