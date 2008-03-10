@@ -1,16 +1,16 @@
-# translation of glade3.HEAD.po to Malayalam
+# translation of glade3.HEAD.ml.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Ani Peter <apeter@redhat.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: glade3.HEAD\n"
+"Project-Id-Version: glade3.HEAD.ml\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-01 03:34+0000\n"
-"PO-Revision-Date: 2007-03-05 00:05+0530\n"
-"Last-Translator: Ani Peter <apeter@redhat.com>\n"
-"Language-Team: Malayalam <en@li.org>\n"
+"POT-Creation-Date: 2008-01-13 17:06+0000\n"
+"PO-Revision-Date: 2008-03-10 11:18+0530\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,760 +18,878 @@ msgstr ""
 
 #: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
-msgstr "GTK+ പ്റോഗ്റാമുകള്‍ക്കുളള യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ് രീതികള്‍ ഉണ്ടാക്കുക അല്ലെങ്കില്‍ തുറക്കുക"
+msgstr "GTK+ പ്റോഗ്റാമുകള്‍ക്കുളള യൂസറ്‍ ഇന്റര്‍ഫെയിസ് രീതികള്‍ ഉണ്ടാക്കുക അല്ലെങ്കില്‍ തുറക്കുക"
 
 #: ../data/glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
 msgstr "Glade ഇന്‍ററ്‍ഫെയിസ് ഡിസൈനറ്‍"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-project-window.c:210
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:440
 msgid "User Interface Designer"
 msgstr "യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ് ഡിസൈനറ്‍"
 
-#: ../src/main.c:38
+#: ../src/main.c:42
 msgid "Glade"
 msgstr "Glade"
 
-#: ../src/main.c:48
+#: ../src/main.c:52
 msgid "Output version information and exit"
 msgstr "വേറ്‍ഷന്‍ സംബന്ധിച്ചുളള വിവരം ലഭ്യമാക്കി പുറത്ത് കടക്കുക"
 
-#: ../src/main.c:51
+#: ../src/main.c:55
 msgid "Disable Devhelp integration"
 msgstr "Devhelp ഇന്‍റഗ്റേഷന്‍ പ്റവറ്‍ത്തന രഹിതമാക്കുക"
 
-#: ../src/main.c:54
+#: ../src/main.c:58
 msgid "[FILE...]"
 msgstr "[FILE...]"
 
-#: ../src/main.c:86
+#: ../src/main.c:68
+msgid "be verbose"
+msgstr "വെര്‍ബോസ് ആകുക"
+
+#: ../src/main.c:93
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr ""
-"GTK+ അല്ലെങ്കില്‍ GNOME പ്റോഗ്റാമുകള്‍ക്കുളള യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ് രീതികള്‍ "
-"ഉണ്ടാക്കുക അല്ലെങ്കില്‍ മാറ്റം വരുത്തുക"
+"GTK+ അല്ലെങ്കില്‍ GNOME പ്റോഗ്റാമുകള്‍ക്കുളള യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ് രീതികള്‍ ഉണ്ടാക്കുക അല്ലെങ്കില്‍ "
+"മാറ്റം വരുത്തുക"
 
-#: ../src/main.c:89 ../src/main.c:90
+#: ../src/main.c:97 ../src/main.c:98
 msgid "Glade options"
 msgstr "Glade ഉപാധികള്‍"
 
-#: ../src/main.c:140
+#: ../src/main.c:105
+msgid "Glade debug options"
+msgstr "ഗ്ലേഡ് ഡീബഗ് ഉപാധികള്‍"
+
+#: ../src/main.c:106
+msgid "Show Glade debug options"
+msgstr "ഗ്ലേഡ് ഡീബഗ് ഉപാധികള്‍ കാണിക്കുക"
+
+#: ../src/main.c:149
 msgid "gmodule support not found. gmodule support is required for glade to work"
 msgstr "gmodule പിന്തുണ ലഭ്യമല്ല. glade പ്റവറ്‍ത്തിക്കുന്നതിനായി gmodule പിന്തുണ ആവശ്യമുണ്ട്."
 
-#: ../src/main.c:167
+#: ../src/main.c:176
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "'%s' തുറക്കുവാന്‍ സാധ്യമായില്ല, ഫയല്‍ നിലവിലില്ല.\n"
 
-#: ../src/glade-project-window.c:44
+#: ../src/glade-window.c:45
 msgid "[Read Only]"
 msgstr "[Read Only]"
 
-#: ../src/glade-project-window.c:108
+#: ../src/glade-window.c:155
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "URL '%s' ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../src/glade-project-window.c:112
-msgid "No suitable web browser executable could be found."
-msgstr ""
+#: ../src/glade-window.c:159
+msgid "No suitable web browser could be found."
+msgstr "ഉചിതമായ വെബ് ബ്രൌസര്‍ ലഭ്യമായില്ല."
 
-#: ../src/glade-project-window.c:332
+#. translators: referring to the properties of a widget named '%s [%s]'
+#: ../src/glade-window.c:669
 #, c-format
 msgid "%s [%s] - Properties"
 msgstr "%s [%s] - ഗുണഗണങ്ങള്‍"
 
-#: ../src/glade-project-window.c:342 ../src/glade-project-window.c:1999
-#: ../gladeui/glade-widget.c:993
+#: ../src/glade-window.c:682 ../src/glade-window.c:688
+#: ../src/glade-window.c:3122 ../src/glade-window.c:3128
+#: ../gladeui/glade-widget.c:1053
 msgid "Properties"
 msgstr "ഗുണഗണങ്ങള്‍"
 
-#: ../src/glade-project-window.c:609
+#. translators: referring to the action of activating a file named '%s'.
+#. *              we also indicate to users that the file may be read-only with
+#. *              the second '%s'
+#: ../src/glade-window.c:716
 #, c-format
-msgid "Activate %s"
-msgstr "%s സജീവമാക്കുക"
+msgid "Activate '%s' %s"
+msgstr "'%s' %s സജീവമാക്കുക"
 
-#: ../src/glade-project-window.c:727
+#. translators: referring to the action of activating a file named '%s'
+#. FIXME add hint for translators
+#: ../src/glade-window.c:723 ../src/glade-window.c:731
+#, c-format
+msgid "Activate '%s'"
+msgstr "'%s' സജീവമാക്കുക"
+
+#: ../src/glade-window.c:1161
 msgid "Open…"
 msgstr "തുറക്കുക..."
 
-#: ../src/glade-project-window.c:769
+#: ../src/glade-window.c:1203
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "ലഭ്യമാക്കിയ ശേഷം %s എന്ന ഫയലില്‍ മാറ്റം വരുത്തിയിരിക്കുന്നു"
 
-#: ../src/glade-project-window.c:773
+#: ../src/glade-window.c:1207
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr ""
-"നിങ്ങള്‍ ഇത് സൂക്ഷിച്ചാല്‍, പുറമേ വരുത്തിയ മാറ്റങ്ങള്‍ എല്ലാം നഷ്ടമാകും. "
-"എന്നിരുന്നാലും സൂക്ഷിക്കണമോ?"
+msgstr "നിങ്ങള്‍ ഇത് സൂക്ഷിച്ചാല്‍, പുറമേ വരുത്തിയ മാറ്റങ്ങള്‍ എല്ലാം നഷ്ടമാകും. എന്നിരുന്നാലും സൂക്ഷിക്കണമോ?"
 
-#: ../src/glade-project-window.c:777
+#: ../src/glade-window.c:1211
 msgid "_Save Anyway"
 msgstr "എന്താണേലും സൂക്ഷിക്കുക (_S)"
 
-#: ../src/glade-project-window.c:784
+#: ../src/glade-window.c:1218
 msgid "_Don't Save"
 msgstr "സൂക്ഷിക്കേണ്ട (_D)"
 
-#: ../src/glade-project-window.c:807
+#: ../src/glade-window.c:1241
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "%s സൂക്ഷിക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: ../src/glade-project-window.c:828
+#: ../src/glade-window.c:1262
 #, c-format
 msgid "Project '%s' saved"
 msgstr "'%s' എന്ന പ്റൊജക്ട് സൂക്ഷിച്ചിരിക്കുന്നു‌"
 
-#. Just in case the menu-item is not insensitive
-#. Just in case the menu-item or button is not insensitive
-#: ../src/glade-project-window.c:847 ../src/glade-project-window.c:930
-msgid "No open projects to save"
-msgstr "സൂക്ഷിക്കുവാനായി പ്റവറ്‍ത്തനത്തിലുളള പ്റൊജക്ടുകള്‍ ലഭ്യമല്ല"
-
-#: ../src/glade-project-window.c:851
+#: ../src/glade-window.c:1282
 msgid "Save As…"
 msgstr "പേര് മാറ്റി സൂക്ഷിക്കുക..."
 
-#: ../src/glade-project-window.c:893
+#: ../src/glade-window.c:1327
 #, c-format
-msgid ""
-"Could not save the file %s. You do not have the permissions necessary to "
-"save the file."
-msgstr ""
-"ഫയല്‍ %s സൂക്ഷിക്കുവാന്‍ സാധ്യമായില്ല. ഫയല്‍ സൂക്ഷിക്കുന്നതിന് ആവശ്യമായ "
-"അനുവാദങ്ങള്‍ നിങ്ങള്‍ക്ക് ലഭ്യമല്ല."
+msgid "Could not save the file %s"
+msgstr "'%s' ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../src/glade-project-window.c:906
+#: ../src/glade-window.c:1331
+msgid "You do not have the permissions necessary to save the file."
+msgstr "ഫയല്‍ സൂക്ഷിക്കുന്നതിന് ആവശ്യമായ അനുവാദങ്ങള്‍ നിങ്ങള്‍ക്ക് ലഭ്യമല്ല."
+
+#: ../src/glade-window.c:1352
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
-msgstr ""
-"ഫയല്‍ %s സൂക്ഷിക്കുവാന്‍ സാധ്യമായില്ല. ആ പാഥിലുളള മറ്റൊരു പ്റൊജക്ട് "
-"പ്റവറ്‍ത്തനത്തിലാണ്."
+msgstr "ഫയല്‍ %s സൂക്ഷിക്കുവാന്‍ സാധ്യമായില്ല. ആ പാഥിലുളള മറ്റൊരു പ്റൊജക്ട് പ്റവറ്‍ത്തനത്തിലാണ്."
 
-#: ../src/glade-project-window.c:958
+#. Just in case the menu-item or button is not insensitive
+#: ../src/glade-window.c:1376
+msgid "No open projects to save"
+msgstr "സൂക്ഷിക്കുവാനായി പ്റവറ്‍ത്തനത്തിലുളള പ്റൊജക്ടുകള്‍ ലഭ്യമല്ല"
+
+#: ../src/glade-window.c:1406
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
 "closing?</span>\n"
 "\n"
-"Your changes will be lost if you don't save them.\n"
+"Your changes will be lost if you don't save them."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">അടയ്ക്കുന്നതിന് മുന്പ് പ്റൊജക്ട് \"%s\"-ല്‍ വരുത്തിയ "
 "മാറ്റങ്ങള്‍ സൂക്ഷിക്കണമോ?</span>\n"
 "\n"
-"നിങ്ങള്‍ ഇത് സൂക്ഷിച്ചില്ല എങ്കില്‍ വരുത്തിയ മാറ്റങ്ങള്‍ നഷ്ടമാകുന്നു.\n"
+"നിങ്ങള്‍ ഇത് സൂക്ഷിച്ചില്ല എങ്കില്‍ വരുത്തിയ മാറ്റങ്ങള്‍ നഷ്ടമാകുന്നു."
 
-#: ../src/glade-project-window.c:972
+#: ../src/glade-window.c:1418
 msgid "_Close without Saving"
 msgstr "സൂക്ഷിക്കാതെ അടയ്ക്കുക (_C)"
 
-#: ../src/glade-project-window.c:993
+#: ../src/glade-window.c:1445
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "%s, %s ആയി സൂക്ഷിക്കുന്നതില്‍ പരാജയപ്പെട്ടു: %s"
 
-#: ../src/glade-project-window.c:1005
+#: ../src/glade-window.c:1457
 msgid "Save…"
 msgstr "സൂക്ഷിക്കുക..."
 
-#: ../src/glade-project-window.c:1411
+#: ../src/glade-window.c:2015
 msgid "Could not display the online user manual"
 msgstr "ഓണ്‍ലൈന്‍ യൂസറ്‍ മാനുവല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../src/glade-project-window.c:1414 ../src/glade-project-window.c:1452
+#: ../src/glade-window.c:2018 ../src/glade-window.c:2056
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr ""
+"യു ആര്‍എല്‍ കാണിക്കുന്നതിന് പ്രവര്‍ത്തിപ്പിക്കുന്നതിന് ഉചിതമായ ഒരു വെബ് ബ്രൌസര്‍ "
+"ലഭ്യമായില്ല: %s"
 
-#: ../src/glade-project-window.c:1449
+#: ../src/glade-window.c:2053
 msgid "Could not display the online developer reference manual"
 msgstr "ഓണ്‍ലൈന്‍ ഡവലപ്പറ്‍ റിഫറന്‍സ് മാനുവല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../src/glade-project-window.c:1482
+#: ../src/glade-window.c:2096
 msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as\n"
-"published by the Free Software Foundation; either version 2 of the\n"
-"License, or (at your option) any later version.\n"
+"Glade is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
+"Glade is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-"USA."
+"You should have received a copy of the GNU General Public License along with "
+"Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"ഗ്ലേഡ് ഒരു സ്വതന്ത്ര സോഫ്റ്റ്‌വെയര്‍ ആകുന്നു; നിങ്ങള്‍ക്കിത് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ "
+"നിബന്ധനകള്‍ പ്രകാരം (രണ്ടാം ലക്കം അല്ലെങ്കില്‍ നിങ്ങളുടെ താല്‍പര്യമനുസരിച്ച് അതിലും പുതിയ ലക്കം) "
+"വീണ്ടും വിതരണം ചെയ്യുകയോ മാറ്റം വരുത്തുകയോ ചെയ്യാം. ഫ്രീ സോഫ്റ്റ്‌വെയര്‍ "
+"ഫൌണ്ടേഷന്‍ ആണ് ഈ ലൈസന്‍സ് പ്രസിദ്ധീകരിച്ചിട്ടുള്ളത്.\n"
+"\n"
+"വളരെ ഫലപ്രദമായ പ്രോഗ്രാം എന്ന പ്രതീക്ഷയിലാകുന്നു ഗ്ലേഡ് വിതരണം ചെയ്തത്. ഇതിന് വാറന്റി ലഭ്യമല്ല. "
+"കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സ് കാണുക.\n"
+"\n"
+"ഗ്ലേഡിനൊപ്പം നിങ്ങള്‍ക്ക് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പും ലഭിച്ചിരിക്കണം, ഇല്ലായെങ്കില്‍, ‌ "
+"താഴെ പറയുന്ന മേല്‍വിലാസത്തിലേക്ക് എഴുതുക: "
+"Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/glade-project-window.c:1504
+#: ../src/glade-window.c:2122
 msgid "translator-credits"
 msgstr "അനി പീറ്ററ്‍  <peter.ani@gmail.com>"
 
-#: ../src/glade-project-window.c:1505
+#: ../src/glade-window.c:2123
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+, GNOME എന്നിവയ്ക്കുളള യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ് ഡിസൈനറ്‍."
 
 #. File
-#: ../src/glade-project-window.c:1576 ../plugins/gtk+/glade-gtk.c:4404
-#: ../plugins/gtk+/glade-gtk.c:4702
+#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:5123
+#: ../plugins/gtk+/glade-gtk.c:5446
 msgid "_File"
 msgstr "ഫയല്‍ (_F)"
 
 #. Edit
-#: ../src/glade-project-window.c:1577 ../plugins/gtk+/glade-gtk.c:4407
-#: ../plugins/gtk+/glade-gtk.c:4712
+#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:5126
+#: ../plugins/gtk+/glade-gtk.c:5456
 msgid "_Edit"
 msgstr "മാറ്റം വരുത്തുക (_E)"
 
 #. View
-#: ../src/glade-project-window.c:1578 ../plugins/gtk+/glade-gtk.c:4410
-#: ../plugins/gtk+/glade-gtk.c:4720
+#: ../src/glade-window.c:2198 ../plugins/gtk+/glade-gtk.c:5129
+#: ../plugins/gtk+/glade-gtk.c:5464
 msgid "_View"
 msgstr "കാണുന്നത് (_V)"
 
-#: ../src/glade-project-window.c:1579
+#: ../src/glade-window.c:2199
 msgid "_Projects"
 msgstr "പ്റൊജക്ടുകള്‍ (_P)"
 
 #. Help
-#: ../src/glade-project-window.c:1580 ../plugins/gtk+/glade-gtk.c:4422
-#: ../plugins/gtk+/glade-gtk.c:4723
+#: ../src/glade-window.c:2200 ../plugins/gtk+/glade-gtk.c:5141
+#: ../plugins/gtk+/glade-gtk.c:5467
 msgid "_Help"
 msgstr "സഹായം (_H)"
 
-#: ../src/glade-project-window.c:1584
+#: ../src/glade-window.c:2206
 msgid "Create a new project"
 msgstr "ഒരു പുതിയ പ്റൊജക്ട് ഉണ്ടാക്കുക"
 
-#: ../src/glade-project-window.c:1586
+#: ../src/glade-window.c:2208
 msgid "_Open…"
 msgstr "തുറക്കുക (_O)..."
 
-#: ../src/glade-project-window.c:1587
+#: ../src/glade-window.c:2209
 msgid "Open a project"
 msgstr "ഒരു പ്റൊജക്ട് തുറക്കുക"
 
-#: ../src/glade-project-window.c:1589
+#: ../src/glade-window.c:2211
 msgid "Open _Recent"
 msgstr "ഏറ്റവും ഒടുവില്‍ തുറത്തത് തുറക്കുക (_R)"
 
-#: ../src/glade-project-window.c:1592
+#: ../src/glade-window.c:2214
 msgid "Quit the program"
 msgstr "പ്റോഗ്റാമില്‍ നിന്നും പുറത്ത് കടക്കുക"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1595
+#: ../src/glade-window.c:2217
 msgid "Palette _Appearance"
-msgstr ""
+msgstr "പാലെറ്റ് _കാഴ്ച"
 
-#: ../src/glade-project-window.c:1599
+#: ../src/glade-window.c:2221
 msgid "About this application"
 msgstr "ഈ പ്റോഗ്റാം സംബന്ധിച്ച്"
 
-#: ../src/glade-project-window.c:1602
+#: ../src/glade-window.c:2223
+msgid "_Contents"
+msgstr "_ഉള്ളടക്കം"
+
+#: ../src/glade-window.c:2224
 msgid "Display the user manual"
 msgstr "യൂസറ്‍ മാനുവല്‍ ലഭ്യമാക്കുക"
 
-#: ../src/glade-project-window.c:1604
+#: ../src/glade-window.c:2226
 msgid "_Developer Reference"
 msgstr "ഡവലപ്പറ്‍ റിഫറന്‍സ് (_D)"
 
-#: ../src/glade-project-window.c:1605
+#: ../src/glade-window.c:2227
 msgid "Display the developer reference manual"
 msgstr "ഡവലപ്പറ്‍ റിഫറന്‍സ് മാനുവല്‍ ലഭ്യമാക്കുക"
 
-#: ../src/glade-project-window.c:1614
+#: ../src/glade-window.c:2236
 msgid "Save the current project"
 msgstr "നിലവിലുളള പ്റൊജക്ട് സൂക്ഷിക്കുക"
 
-#: ../src/glade-project-window.c:1616
+#: ../src/glade-window.c:2238
 msgid "Save _As…"
 msgstr "പേര് മാറ്റി സൂക്ഷിക്കുക (_A)..."
 
-#: ../src/glade-project-window.c:1617
+#: ../src/glade-window.c:2239
 msgid "Save the current project with a different name"
 msgstr "നിലവിലുളള പ്റൊജക്ട് മറ്റൊരു പേരില്‍ സൂക്ഷിക്കുക"
 
-#: ../src/glade-project-window.c:1620
+#: ../src/glade-window.c:2242
 msgid "Close the current project"
 msgstr "നിലവിലുളള പ്റൊജക്ട് അടയ്ക്കുക"
 
-#: ../src/glade-project-window.c:1624
+#: ../src/glade-window.c:2246
 msgid "Undo the last action"
 msgstr "ഏറ്റവും ഒടുവില്‍ വരുത്തിയ മാറ്റം വേണ്ടെന്ന് വയ്ക്കുക"
 
-#: ../src/glade-project-window.c:1627
+#: ../src/glade-window.c:2249
 msgid "Redo the last action"
 msgstr "വേണ്ടെന്ന് വച്ച ഏറ്റവും ഒടുവിലുളള പ്റവറ്‍ത്തി വീണ്ടും ചെയ്യുക"
 
-#: ../src/glade-project-window.c:1630
+#: ../src/glade-window.c:2252
 msgid "Cut the selection"
 msgstr "തിരഞ്ഞെടുത്തത് വെട്ടി നീക്കുക"
 
-#: ../src/glade-project-window.c:1633
+#: ../src/glade-window.c:2255
 msgid "Copy the selection"
 msgstr "തിരഞ്ഞെടുത്തത് പകറ്‍ത്തുക"
 
-#: ../src/glade-project-window.c:1636
+#: ../src/glade-window.c:2258
 msgid "Paste the clipboard"
 msgstr "ക്ളിപ്പ്ബോറ്‍ഡിലുളളത് ഒട്ടിക്കുക"
 
-#: ../src/glade-project-window.c:1639
+#: ../src/glade-window.c:2261
 msgid "Delete the selection"
 msgstr "തിരഞ്ഞെടുത്തത് നീക്കം ചെയ്യുക"
 
 #. ViewMenu
-#: ../src/glade-project-window.c:1643
+#: ../src/glade-window.c:2265
 msgid "_Clipboard"
 msgstr "ക്ളിപ്പ്ബോറ്‍ഡ് (_C)"
 
-#: ../src/glade-project-window.c:1644
+#: ../src/glade-window.c:2266
 msgid "Show the clipboard"
 msgstr "ക്ളിപ്പ്ബോറ്‍ഡ് കാണിക്കുക"
 
 #. ProjectsMenu
-#: ../src/glade-project-window.c:1648
+#: ../src/glade-window.c:2270
 msgid "_Previous Project"
 msgstr "മുന്പുളള പ്റൊജക്ട് (_P)"
 
-#: ../src/glade-project-window.c:1649
+#: ../src/glade-window.c:2271
 msgid "Activate previous project"
 msgstr "മുന്പുളള പ്റൊജക്ട് സജീവമാക്കുക"
 
-#: ../src/glade-project-window.c:1651
+#: ../src/glade-window.c:2273
 msgid "_Next Project"
 msgstr "അടുത്ത പ്റൊജക്ട് (_N)"
 
-#: ../src/glade-project-window.c:1652
+#: ../src/glade-window.c:2274
 msgid "Activate next project"
 msgstr "അടുത്ത പ്റൊജക്ട് സജീവമാക്കുക"
 
-#: ../src/glade-project-window.c:1660
+#: ../src/glade-window.c:2282
 msgid "_Use Small Icons"
 msgstr "ചെറിയ ഐക്കണുകള്‍ ഉപയോഗിക്കുക (_U)"
 
-#: ../src/glade-project-window.c:1661
+#: ../src/glade-window.c:2283
 msgid "Show items using small icons"
 msgstr "ചെറിയ ഐക്കണുകള്‍ ഉപയോഗിച്ച് വസ്തുക്കള്‍ കാണിക്കുക"
 
-#: ../src/glade-project-window.c:1664
+#: ../src/glade-window.c:2286
 msgid "Context _Help"
-msgstr ""
+msgstr "ഉള്ളടക്കത്തിനുള്ള _സഹായം"
 
-#: ../src/glade-project-window.c:1665
+#: ../src/glade-window.c:2287
 msgid "Show or hide contextual help buttons in the editor"
-msgstr ""
+msgstr "എഡിറ്ററിലുള്ള കോണ്‍ടെക്സ്റ്റ്ച്വല്‍ സഹായത്തിനുള്ള ബട്ടണുകള്‍ കാണിക്കുക അല്ലെങ്കില്‍‍ അദൃശ്യമാക്കുക"
 
-#: ../src/glade-project-window.c:1672
+#: ../src/glade-window.c:2290
+msgid "Dock _Palette"
+msgstr "ഡോക്ക് _പാലറ്റ്"
+
+#: ../src/glade-window.c:2291
+msgid "Dock the palette into the main window"
+msgstr "പ്രധാന ജാലകത്തിലുള്ള പാലറ്റ് ഡോക്ക് ചെയ്യുക"
+
+#: ../src/glade-window.c:2294
+msgid "Dock _Inspector"
+msgstr "ഡോക്ക് _ഇന്‍സ്പെക്ടര്‍"
+
+#: ../src/glade-window.c:2295
+msgid "Dock the inspector into the main window"
+msgstr "പ്രധാന ജാലകത്തിലേക്ക് ഇന്‍സ്പെക്ടറിനെ ഡോക്ക് ചെയ്യുക"
+
+#: ../src/glade-window.c:2298
+msgid "Dock _Editor"
+msgstr "_എഡിറ്റര്‍ ഡോക്ക് ചെയ്യുക"
+
+#: ../src/glade-window.c:2299
+msgid "Dock the editor into the main window"
+msgstr "പ്രധാന ജാലകത്തിലേക്ക് എഡിറ്ററിനെ ഡോക്ക് ചെയ്യുക"
+
+#: ../src/glade-window.c:2307 ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Text beside icons"
-msgstr ""
+msgstr "പ്രതിരൂപങ്ങളുടെ വശത്തുള്ള വാചകം"
 
-#: ../src/glade-project-window.c:1673
+#: ../src/glade-window.c:2308
 msgid "Display items as text beside icons"
-msgstr ""
+msgstr "പ്രതിരൂപങ്ങളുടെ വശത്തുള്ള വാചകം എന്ന പോലെ വസ്തുക്കള്‍ കാണിക്കുക"
 
-#: ../src/glade-project-window.c:1675
+#: ../src/glade-window.c:2310
 msgid "_Icons only"
 msgstr "ഐക്കണുകള്‍ മാത്റം (_I)"
 
-#: ../src/glade-project-window.c:1676
+#: ../src/glade-window.c:2311
 msgid "Display items as icons only"
-msgstr ""
+msgstr "പ്രതിരൂപങ്ങളായി മാത്രം വസ്തുക്കള്‍ കാണിക്കുക"
 
-#: ../src/glade-project-window.c:1678
+#: ../src/glade-window.c:2313
 msgid "_Text only"
 msgstr "ടെക്സ്റ്റ് മാത്റം (_T)"
 
-#: ../src/glade-project-window.c:1679
+#: ../src/glade-window.c:2314
 msgid "Display items as text only"
-msgstr ""
+msgstr "ടെക്സ്റ്റായി മാത്രം വസ്തുക്കള്‍ കാണിക്കുക"
 
-#: ../src/glade-project-window.c:1884
-msgid "Select Widgets"
-msgstr "വിഡ്ജറ്റുകള്‍ തിരഞ്ഞെടുക്കുക"
+#: ../src/glade-window.c:2501
+msgid "Select"
+msgstr "തിരഞ്ഞെടുക്കുക"
 
-#: ../src/glade-project-window.c:1888
+#: ../src/glade-window.c:2505
 msgid "Select widgets in the workspace"
 msgstr "പണിയിടത്തിലുളള വിഡ്ജറ്റുകള്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../src/glade-project-window.c:1977
-msgid "Palette"
-msgstr ""
+#: ../src/glade-window.c:2529
+msgid "Drag Resize"
+msgstr "Drag Resize"
 
-#: ../src/glade-project-window.c:1993
-msgid "Inspector"
-msgstr ""
+#: ../src/glade-window.c:2533
+msgid "Drag and resize widgets in the workspace"
+msgstr "പണിയിടത്തിലുളള വിഡ്ജറ്റുകളുടെ വലിച്ച് വലിപ്പം മാറ്റുക"
 
-#: ../src/glade-project-window.c:2115
+#: ../src/glade-window.c:2571
 msgid "Could not create a new project."
 msgstr "ഒരു പുതിയ പ്റൊജക്ട് ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല."
 
-#: ../src/glade-project-window.c:2134
+#: ../src/glade-window.c:2625
 #, c-format
-msgid "%s is already open"
-msgstr "%s ഇപ്പോള്‍ തുറന്നിരിക്കുന്നു"
+msgid "The project %s has unsaved changes"
+msgstr "പ്രൊജക്ട് %s സൂക്ഷിക്കാത്ത മാറ്റങ്ങള്‍ ഉണ്ട്"
 
-#: ../src/glade-project-window.c:2199
+#: ../src/glade-window.c:2629
+msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
+msgstr "നിങ്ങള്‍ ഇത് വീണ്ടും ലഭ്യമാക്കുമ്പോള്‍, പുറമേ വരുത്തിയ മാറ്റങ്ങള്‍ എല്ലാം നഷ്ടമാകും. എന്നിരുന്നാലും സൂക്ഷിക്കണമോ?"
+
+#: ../src/glade-window.c:2638
+#, c-format
+msgid "The project file %s has been externally modified"
+msgstr " %s എന്ന ഫയലില്‍ പുറത്ത് നിന്നും മാറ്റം വരുത്തിയിരിക്കുന്നു"
+
+#: ../src/glade-window.c:2642
+msgid "Do you want to reload the project?"
+msgstr "നിങ്ങള്‍ക്ക് പ്രൊജക്ട് വീണ്ടും ലഭ്യമാക്കണമോ?"
+
+#: ../src/glade-window.c:2648
+msgid "_Reload"
+msgstr "_വീണ്ടും ലഭ്യമാക്കുക"
+
+#: ../src/glade-window.c:2765
 msgid "_Undo"
 msgstr "ഏറ്റവും ഒടുവില്‍ വരുത്തിയ മാറ്റം വേണ്ടന്ന് വയ്ക്കുക (_U)"
 
 #. Change tooltips
-#: ../src/glade-project-window.c:2201 ../gladeui/glade-app.c:242
+#: ../src/glade-window.c:2767 ../gladeui/glade-app.c:267
 #, c-format
 msgid "Undo: %s"
 msgstr "ഏറ്റവും ഒടുവില്‍ വരുത്തിയ മാറ്റം വേണ്ടന്ന് വയ്ക്കുക: %s"
 
-#: ../src/glade-project-window.c:2201 ../src/glade-project-window.c:2212
-#: ../gladeui/glade-app.c:243
+#: ../src/glade-window.c:2767 ../src/glade-window.c:2778
+#: ../gladeui/glade-app.c:268
 msgid "the last action"
 msgstr "അവസാനം ചെയ്ത പ്റവറ്‍ത്തി"
 
-#: ../src/glade-project-window.c:2210
+#: ../src/glade-window.c:2776
 msgid "_Redo"
 msgstr "ഏറ്റവും ഒടുവില്‍ വേണ്ടെന്ന് വച്ച മാറ്റം വീണ്ടും വരുത്തുക (_R)"
 
-#: ../src/glade-project-window.c:2212 ../gladeui/glade-app.c:242
+#: ../src/glade-window.c:2778 ../gladeui/glade-app.c:267
 #, c-format
 msgid "Redo: %s"
 msgstr "ഏറ്റവും ഒടുവില്‍ വേണ്ടെന്ന് വച്ച മാറ്റം വീണ്ടും വരുത്തുക: %s"
 
-#: ../gladeui/glade-app.c:453
+#: ../src/glade-window.c:3058
+msgid "Go back in undo history"
+msgstr "വരുത്തിയ മാറ്റങ്ങള്‍ വേണ്ടെന്ന് വച്ച ഹിസ്റ്ററിയിലേക്ക് വീണ്ടും പോകുക"
+
+#: ../src/glade-window.c:3060
+msgid "Go forward in undo history"
+msgstr "വരുത്തിയ മാറ്റങ്ങള്‍ വേണ്ടെന്ന് വച്ച ഹിസ്റ്ററിയിലേക്ക് മുന്നോട്ട് പോകുക"
+
+#: ../src/glade-window.c:3109
+msgid "Palette"
+msgstr "പാലറ്റ്"
+
+#: ../src/glade-window.c:3118
+msgid "Inspector"
+msgstr "ഇന്‍സ്പെക്ടര്‍‍"
+
+#: ../gladeui/glade-app.c:457
 msgid "Clipboard"
 msgstr "ക്ളിപ്പ്ബോറ്‍ട്"
 
-#: ../gladeui/glade-app.c:525
+#: ../gladeui/glade-app.c:505
 msgid "Active Project"
 msgstr "പ്രൊജക്ട് സജീവമാക്കുക"
 
-#: ../gladeui/glade-app.c:526
+#: ../gladeui/glade-app.c:506
 msgid "The active project"
 msgstr "സജീവമായ പ്റൊജക്ട്"
 
-#: ../gladeui/glade-app.c:604
+#: ../gladeui/glade-app.c:512
+msgid "Pointer Mode"
+msgstr "പോയിന്റര്‍ മോഡ്"
+
+#: ../gladeui/glade-app.c:513
+msgid "Current mode for the pointer in the workspace"
+msgstr "പണിയിടത്തിലുളള പോയിന്ററിന്റെ നിലവിലുള്ള ശൈകലി"
+
+#: ../gladeui/glade-app.c:592
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
+"സ്വകാര്യ ഡേറ്റാ %s എന്ന ഡയറക്ടറിയിലേക്ക് സൂക്ഷിക്കുവാന്‍ ശ്രമിക്കുന്നു, പക്ഷേ അത് ഒരു സാധാരണ "
+"ഫയലാകുന്നു.\n"
+"ഈ സെഷനില്‍ സ്വകാര്യ ഡേറ്റാ സൂക്ഷിക്കുന്നതല്ല."
 
-#: ../gladeui/glade-app.c:617
+#: ../gladeui/glade-app.c:605
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
+"സ്വകാര്യ ഡേറ്റാ %s എന്ന ഡയറക്ടറിയിലേക്ക് സൂക്ഷിക്കുന്നതില്‍ പരാജയം.\n"
+"ഈ സെഷനില്‍ സ്വകാര്യ ഡേറ്റാ സൂക്ഷിക്കുന്നതല്ല."
 
-#: ../gladeui/glade-app.c:645
+#: ../gladeui/glade-app.c:633
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"സ്വകാര്യ ഡേറ്റാ %s (%s)-ലേക്ക് സൂക്ഷിക്കുന്നതില്‍ പിശക്.\n"
+"ഈ സെഷനില്‍ സ്വകാര്യ ഡേറ്റാ സൂക്ഷിക്കുന്നതല്ല."
 
-#: ../gladeui/glade-app.c:657
+#: ../gladeui/glade-app.c:645
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"(%s) സൂക്ഷിക്കുന്നതിന് ക്രമികരണത്തിനുള്ള ഡേറ്റാ സീരിയലൈസ് ചെയ്യുന്നതില്‍ പിശക്.\n"
+"ഈ സെഷനില്‍ സ്വകാര്യ ഡേറ്റാ സൂക്ഷിക്കുന്നതല്ല."
 
-#: ../gladeui/glade-app.c:670
+#: ../gladeui/glade-app.c:658
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"സ്വകാര്യ ഡേറ്റാ (%s)-ലേക്ക് സൂക്ഷിക്കുന്നതിന് %s തുറക്കുന്നതില്‍ പിശക്.\n"
+"ഈ സെഷനില്‍ സ്വകാര്യ ഡേറ്റാ സൂക്ഷിക്കുന്നതല്ല."
 
-#: ../gladeui/glade-app.c:1109
+#: ../gladeui/glade-app.c:1096
 msgid "You cannot copy a widget internal to a composite widget."
-msgstr ""
+msgstr "ഒരു കോംപോസിറ്റ് വിഡ്ജറ്റിലേക്ക് മറ്റൊരു വിഡ്ജെറ്റ് പകര്‍ത്തുവാന്‍ സാധ്യമല്ല."
 
-#: ../gladeui/glade-app.c:1124 ../gladeui/glade-app.c:1177
-#: ../gladeui/glade-app.c:1352
+#: ../gladeui/glade-app.c:1111 ../gladeui/glade-app.c:1164
+#: ../gladeui/glade-app.c:1338
 msgid "No widget selected."
 msgstr "വിഡ്ജറ്റുകള്‍ ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല."
 
-#: ../gladeui/glade-app.c:1162
+#: ../gladeui/glade-app.c:1149
 msgid "You cannot cut a widget internal to a composite widget."
-msgstr ""
+msgstr "ഒരു കോംപോസിറ്റ് വിഡ്ജറ്റിലേക്ക് മറ്റൊരു വിഡ്ജെറ്റ് മുറിക്കുവാന്‍ സാധ്യമല്ല."
 
-#: ../gladeui/glade-app.c:1221
+#: ../gladeui/glade-app.c:1208
 msgid "Unable to paste to the selected parent"
-msgstr ""
+msgstr "തിരഞ്ഞെടുത്ത പേരന്റിലേക്ക് ഒട്ടിക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../gladeui/glade-app.c:1232
+#: ../gladeui/glade-app.c:1219
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "അനവധി വിഡ്ജറ്റുകളിലേക്ക് ഒട്ടിക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../gladeui/glade-app.c:1242 ../gladeui/glade-app.c:1374
+#: ../gladeui/glade-app.c:1229 ../gladeui/glade-app.c:1359
 msgid "No widget selected on the clipboard"
-msgstr ""
+msgstr "ക്ലിപ്പ് ബോര്‍ഡില്‍ വിഡ്ജറ്റുകള്‍ തിരഞ്ഞെടുത്തിട്ടില്ല"
 
-#: ../gladeui/glade-app.c:1268
+#: ../gladeui/glade-app.c:1255
 #, c-format
 msgid "Unable to paste widget %s without a parent"
-msgstr ""
+msgstr "ഒരു പേരന്റില്ലാതെ %s വിഡ്ജറ്റ് ഒട്ടിക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../gladeui/glade-app.c:1285
+#: ../gladeui/glade-app.c:1272
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
+msgstr "ഈ കണ്ടെയിനറിലേക്ക് ഒരു സമയത്ത് ഒരു വിഡ്ജറ്റ് മാത്രമേ ഒട്ടിക്കുവാന്‍ സാധ്യമാകൂ."
 
-#: ../gladeui/glade-app.c:1297
+#: ../gladeui/glade-app.c:1284
 msgid "Insufficient amount of placeholders in target container"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള കണ്ടെയിനറില്‍ പ്ലെയിസ്ഹോള്‍ഡറുകള്‍ക്ക് ആവശ്യത്തിനുള്ള സ്ഥലം ലഭ്യമല്ല."
 
-#: ../gladeui/glade-app.c:1337 ../gladeui/glade-app.c:1384
+#: ../gladeui/glade-app.c:1323 ../gladeui/glade-app.c:1369
 msgid "You cannot delete a widget internal to a composite widget."
-msgstr ""
+msgstr "ഒരു കോംപോസിറ്റ് ബിഡ്ജറ്റിലേക്ക് ഒരു വിഡ്ജറ്റ് നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല."
 
-#: ../gladeui/glade-builtins.c:183 ../plugins/gtk+/glade-gtk.c:187
-#: ../plugins/gtk+/glade-gtk.c:207
+#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Stock"
 msgstr "സ്റ്റോക്ക്"
 
-#: ../gladeui/glade-builtins.c:184
+#: ../gladeui/glade-builtins.c:266
 msgid "A builtin stock item"
-msgstr ""
+msgstr "ബിള്‍ട്ടിന്‍ ആയ സ്റ്റോക്ക് വസ്തു"
 
-#: ../gladeui/glade-builtins.c:192 ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../gladeui/glade-builtins.c:274 ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Stock Image"
-msgstr ""
+msgstr "സ്റ്റോക്ക് ഇമേജ്"
 
-#: ../gladeui/glade-builtins.c:193 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-builtins.c:275 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A builtin stock image"
-msgstr ""
+msgstr "ഒരു ബിള്‍ട്ടിന്‍ സ്റ്റോക്ക് ഇമേജ്"
 
-#: ../gladeui/glade-builtins.c:523
+#: ../gladeui/glade-builtins.c:605
 msgid "Objects"
 msgstr "വസ്തുക്കള്‍"
 
-#: ../gladeui/glade-builtins.c:524
+#: ../gladeui/glade-builtins.c:606
 msgid "A list of objects"
-msgstr ""
+msgstr "ഒബ്ജക്ടുകളുടെ പട്ടിക"
 
-#: ../gladeui/glade-builtins.c:533
+#: ../gladeui/glade-builtins.c:615
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../gladeui/glade-builtins.c:534
+#: ../gladeui/glade-builtins.c:616
 msgid "A pixbuf value"
-msgstr ""
+msgstr "ഒരു പിക്സ്ബഫ് മൂല്ല്യം"
 
-#: ../gladeui/glade-builtins.c:542
+#: ../gladeui/glade-builtins.c:624
 msgid "GdkColor"
 msgstr "GdkColor"
 
-#: ../gladeui/glade-builtins.c:543
+#: ../gladeui/glade-builtins.c:625
 msgid "A gdk color value"
-msgstr ""
+msgstr "ഒരു ജിഡികെ നിറത്തിനുള്ള മൂല്ല്യം"
 
-#: ../gladeui/glade-builtins.c:551 ../gladeui/glade-property-class.c:1187
+#. Accelerators
+#: ../gladeui/glade-builtins.c:633 ../gladeui/glade-property-class.c:1211
+#: ../plugins/gtk+/gtk+.xml.in.h:11
 msgid "Accelerators"
-msgstr ""
+msgstr "ആക്സിലറേറ്ററുകള്‍"
 
-#: ../gladeui/glade-builtins.c:552 ../gladeui/glade-property-class.c:1188
+#: ../gladeui/glade-builtins.c:634 ../gladeui/glade-property-class.c:1212
 msgid "A list of accelerator keys"
-msgstr ""
+msgstr "ആക്സിലറേറ്റര്‍ കീകളുടെ പട്ടിക"
 
-#: ../gladeui/glade-builtins.c:563
+#: ../gladeui/glade-builtins.c:645
 msgid "Integer"
 msgstr "ഇന്‍റിജറ്‍"
 
-#: ../gladeui/glade-builtins.c:564
+#: ../gladeui/glade-builtins.c:646
 msgid "An integer value"
 msgstr "ഒരു ഇന്‍റിജറ്‍ മൂല്ല്യം"
 
-#: ../gladeui/glade-builtins.c:572
+#: ../gladeui/glade-builtins.c:654
 msgid "Unsigned Integer"
-msgstr ""
+msgstr "ഒപ്പിടാത്ത ഇന്റിജര്‍"
 
-#: ../gladeui/glade-builtins.c:573
+#: ../gladeui/glade-builtins.c:655
 msgid "An unsigned integer value"
-msgstr ""
+msgstr "ഒപ്പിടാത്ത ഇന്റിജര്‍ മൂല്ല്യം"
 
-#: ../gladeui/glade-builtins.c:580
+#: ../gladeui/glade-builtins.c:662
 msgid "String"
 msgstr "സ്ട്രിങ്"
 
-#: ../gladeui/glade-builtins.c:581
+#: ../gladeui/glade-builtins.c:663
 msgid "An entry"
 msgstr "ഒരു മൂല്ല്യം"
 
-#: ../gladeui/glade-builtins.c:588
+#: ../gladeui/glade-builtins.c:670
 msgid "Strv"
 msgstr "Strv"
 
-#: ../gladeui/glade-builtins.c:589
+#: ../gladeui/glade-builtins.c:671
 msgid "String array"
 msgstr "സ്ട്രിങ് അറെ"
 
-#: ../gladeui/glade-builtins.c:597
+#: ../gladeui/glade-builtins.c:679
 msgid "Float"
 msgstr "Float"
 
-#: ../gladeui/glade-builtins.c:598
+#: ../gladeui/glade-builtins.c:680
 msgid "A floating point entry"
-msgstr ""
+msgstr "ഒരു ഫ്ലോട്ടിങ് പോയിന്റെ എന്‍ട്രി"
 
-#: ../gladeui/glade-builtins.c:606
+#: ../gladeui/glade-builtins.c:688
 msgid "Boolean"
 msgstr "Boolean"
 
-#: ../gladeui/glade-builtins.c:607
+#: ../gladeui/glade-builtins.c:689
 msgid "A boolean value"
-msgstr ""
+msgstr "ഒരു ബൂളിയന്‍ മൂല്ല്യം"
 
-#: ../gladeui/glade-base-editor.c:470
+#: ../gladeui/glade-base-editor.c:477
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "%s-ലുള്ള ഒബ്ജക്ടിനെ %s ആയി ക്രമികരിക്കുന്നു"
 
-#: ../gladeui/glade-base-editor.c:635
+#: ../gladeui/glade-base-editor.c:642
 #, c-format
 msgid "Add a %s to %s"
 msgstr "%s-ലേക്ക് ഒരു %s ചേറ്‍ക്കുക"
 
-#: ../gladeui/glade-base-editor.c:712
+#: ../gladeui/glade-base-editor.c:719
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "%s-ല്‍ നിന്നും ഒരു %s ചൈള്‍ഡ് നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-base-editor.c:835
+#: ../gladeui/glade-base-editor.c:842
 #, c-format
 msgid "Reorder %s's children"
 msgstr "%s-ന്‍റെ ചിള്‍ഡ്റന്‍റെ ക്റമം മാറ്റുക"
 
-#: ../gladeui/glade-base-editor.c:1412 ../plugins/gtk+/glade-gtk.c:206
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../gladeui/glade-base-editor.c:1419 ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Label"
 msgstr "ലേബല്‍"
 
-#: ../gladeui/glade-base-editor.c:1425 ../gladeui/glade-widget-adaptor.c:924
+#: ../gladeui/glade-base-editor.c:1432 ../gladeui/glade-widget-adaptor.c:812
 msgid "Type"
 msgstr "ഏത് തരം"
 
 #. Name
-#: ../gladeui/glade-base-editor.c:1598
+#: ../gladeui/glade-base-editor.c:1605
 msgid "Name :"
 msgstr "പേര്: "
 
 #. Type
-#: ../gladeui/glade-base-editor.c:1608
+#: ../gladeui/glade-base-editor.c:1615
 msgid "Type :"
 msgstr "ഏത് തരം: "
 
-#: ../gladeui/glade-clipboard-view.c:205 ../gladeui/glade-project-view.c:721
-#: ../plugins/gtk+/gtk+.xml.in.h:279
+#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:347
 msgid "Widget"
 msgstr "വിഡ്ജറ്റ്"
 
-#: ../gladeui/glade-command.c:541
-msgid "Setting multiple properties"
-msgstr ""
-
 #: ../gladeui/glade-command.c:549
+msgid "Setting multiple properties"
+msgstr "അനവധി ഗുണഗണങ്ങള്‍ ക്രമികരിക്കുന്നു"
+
+#: ../gladeui/glade-command.c:557
 #, c-format
 msgid "Setting %s of %s"
 msgstr "%s-ന്‍റെ %s ക്റമികരിക്കുന്നു"
 
-#: ../gladeui/glade-command.c:553
+#: ../gladeui/glade-command.c:561
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "%s-ന്‍റെ %s, %s ആയി ക്റമികരിക്കുന്നു"
 
-#: ../gladeui/glade-command.c:771 ../gladeui/glade-command.c:798
+#: ../gladeui/glade-command.c:779 ../gladeui/glade-command.c:806
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "%s-നെ %s എന്ന പേരില്‍ സൂക്ഷിക്കുന്നു"
 
-#: ../gladeui/glade-command.c:903
+#: ../gladeui/glade-command.c:911
 #, c-format
 msgid "Add %s"
 msgstr "%s ചേറ്‍ക്കുക"
 
-#: ../gladeui/glade-command.c:904 ../gladeui/glade-command.c:1371
-#: ../gladeui/glade-command.c:1374 ../gladeui/glade-command.c:1537
-#: ../gladeui/glade-command.c:1563 ../gladeui/glade-command.c:1584
-#: ../gladeui/glade-command.c:1611 ../gladeui/glade-command.c:1644
-#: ../gladeui/glade-command.c:1672
+#: ../gladeui/glade-command.c:912 ../gladeui/glade-command.c:1570
+#: ../gladeui/glade-command.c:1594 ../gladeui/glade-command.c:1617
+#: ../gladeui/glade-command.c:1642 ../gladeui/glade-command.c:1676
+#: ../gladeui/glade-command.c:1703
 msgid "multiple"
 msgstr "അനവധി"
 
-#: ../gladeui/glade-command.c:1017
+#: ../gladeui/glade-command.c:1027
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr ""
+msgstr "ഒരു കോംപോസിറ്റ് വിഡ്ജറ്റിലുള്ള വിഡ്ജറ്റിനെ നിങ്ങള്‍ക്ക് നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല."
 
-#: ../gladeui/glade-command.c:1063
+#: ../gladeui/glade-command.c:1074
 #, c-format
 msgid "Remove %s"
 msgstr "%s നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-command.c:1067
+#: ../gladeui/glade-command.c:1078
 msgid "Remove multiple"
-msgstr ""
+msgstr "അനവധി നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-command.c:1371
+#: ../gladeui/glade-command.c:1391
 #, c-format
 msgid "Clipboard add %s"
-msgstr ""
+msgstr "ക്ലിപ്പ്ബോര്‍ഡില്‍ %s ചേര്‍ക്കുക"
 
-#: ../gladeui/glade-command.c:1374
+#: ../gladeui/glade-command.c:1394
+msgid "Clipboard add multiple"
+msgstr "ക്ലിപ്പ് ബോര്‍ഡില്‍ അനവധി ചേര്‍ക്കുക"
+
+#: ../gladeui/glade-command.c:1399
 #, c-format
 msgid "Clipboard remove %s"
-msgstr ""
+msgstr "ക്ലിപ്പ് ബോര്‍ഡില്‍ %s നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-command.c:1537
+#: ../gladeui/glade-command.c:1402
+msgid "Clipboard remove multiple"
+msgstr "ക്ലിപ്പ് ബോര്‍ഡില്‍ അനവധി നീക്കം ചെയ്യുക"
+
+#: ../gladeui/glade-command.c:1570
 #, c-format
 msgid "Create %s"
 msgstr "%s ഉണ്ടാക്കുക"
 
-#: ../gladeui/glade-command.c:1563
+#: ../gladeui/glade-command.c:1594
 #, c-format
 msgid "Delete %s"
 msgstr "%s നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-command.c:1584
+#: ../gladeui/glade-command.c:1617
 #, c-format
 msgid "Cut %s"
 msgstr "%s വെട്ടി നീക്കുക"
 
-#: ../gladeui/glade-command.c:1611
+#: ../gladeui/glade-command.c:1642
 #, c-format
 msgid "Copy %s"
 msgstr "%s പകറ്‍ത്തുക"
 
-#: ../gladeui/glade-command.c:1644
+#: ../gladeui/glade-command.c:1676
 #, c-format
 msgid "Paste %s"
 msgstr "%s ഒട്ടിക്കുക"
 
-#: ../gladeui/glade-command.c:1672
+#: ../gladeui/glade-command.c:1702
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
-msgstr ""
+msgstr "%s-ല്‍ നിന്നും %s-ലേക്ക് വലിച്ചിടുക"
 
-#: ../gladeui/glade-command.c:1794
+#: ../gladeui/glade-command.c:1824
 #, c-format
 msgid "Add signal handler %s"
-msgstr ""
+msgstr "സിഗ്നല്‍ ഹാന്‍ഡിലര്‍ %s-നെ ചേര്‍ക്കുക"
 
-#: ../gladeui/glade-command.c:1795
+#: ../gladeui/glade-command.c:1825
 #, c-format
 msgid "Remove signal handler %s"
-msgstr ""
+msgstr "സിഗ്നല്‍ ഹാന്‍ഡിലര്‍ %s-നെ നീക്കം ചെയ്യുക"
 
-#: ../gladeui/glade-command.c:1796
+#: ../gladeui/glade-command.c:1826
 #, c-format
 msgid "Change signal handler %s"
-msgstr ""
+msgstr "സിഗ്നല്‍ ഹാന്‍ഡിലര്‍ %s-നെ മാറ്റുക"
 
-#: ../gladeui/glade-command.c:2000
+#: ../gladeui/glade-command.c:2030
 msgid "Setting i18n metadata"
 msgstr "i18n മെറ്റാഡേറ്റാ ക്റമികരിക്കുന്നു"
 
@@ -780,666 +898,671 @@ msgstr "i18n മെറ്റാഡേറ്റാ ക്റമികരിക്
 msgid "Unable to load image (%s)"
 msgstr "ഇമേജ് (%s) ലഭ്യമാക്കുവാന്‍ സാധ്യമാകുന്നില്ല"
 
-#: ../gladeui/glade-editor-property.c:274
+#: ../gladeui/glade-editor-property.c:257
 msgid "View GTK+ documentation for this property"
-msgstr ""
+msgstr "ഈ ഗുണഗണത്തിനുള്ള GTK+ വിവരണം കാണുക"
 
-#: ../gladeui/glade-editor-property.c:576
+#: ../gladeui/glade-editor-property.c:542
 msgid "Property Class"
-msgstr ""
+msgstr "പ്രോപ്പര്‍ട്ടി ക്ലാസ്സ്"
 
-#: ../gladeui/glade-editor-property.c:577
+#: ../gladeui/glade-editor-property.c:543
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "GladePropertyClass-യ്ക്കായി ഉണ്ടാക്കിയ GladeEditorProperty"
 
-#: ../gladeui/glade-editor-property.c:583
+#: ../gladeui/glade-editor-property.c:549
 msgid "Use Command"
 msgstr "കമാന്‍ഡ് ഉപയോഗിക്കുക"
 
-#: ../gladeui/glade-editor-property.c:584
+#: ../gladeui/glade-editor-property.c:550
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr ""
+msgstr "വേണ്ടെന്ന് വയ്ക്കുക/വേണ്ടെന്ന് വച്ചത് വീണ്ടും ചെയ്യുക എന്ന സ്റ്റാക്കിന് എപിഐ കമാന്‍ഡ് ഉപയോഗിക്കണമോ"
 
-#: ../gladeui/glade-editor-property.c:590
+#: ../gladeui/glade-editor-property.c:556
 msgid "Show Info"
 msgstr "വിവരങ്ങള്‍ കാണിക്കുക"
 
-#: ../gladeui/glade-editor-property.c:591
+#: ../gladeui/glade-editor-property.c:557
 msgid "Whether we should show an informational button"
-msgstr ""
+msgstr "വിവരങ്ങളടങ്ങുന്ന ബട്ടണ്‍ കാണിക്കണമോ"
 
-#: ../gladeui/glade-editor-property.c:1117
+#: ../gladeui/glade-editor-property.c:1083
 msgid "Select Fields"
 msgstr "ഫീള്‍ഡുകള്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../gladeui/glade-editor-property.c:1139
+#: ../gladeui/glade-editor-property.c:1105
 msgid "_Select individual fields:"
-msgstr ""
+msgstr "ഓരോ ഫീള്‍ഡുകളായി _തിരഞ്ഞെടുക്കക:"
 
-#: ../gladeui/glade-editor-property.c:1466
+#: ../gladeui/glade-editor-property.c:1643
 msgid "Edit Text"
 msgstr "ടെക്‌സ്റ്റില്‍ മാറ്റം വരുത്തുക"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1494
+#: ../gladeui/glade-editor-property.c:1672
 msgid "_Text:"
 msgstr "ടെക്സ്റ്റ് (_T):"
 
-#: ../gladeui/glade-editor-property.c:1530
+#: ../gladeui/glade-editor-property.c:1708
 msgid "T_ranslatable"
 msgstr "തറ്‍ജ്ജിമ ചെയ്യുവാന്‍ സാധിക്കുന്ന (_r)"
 
-#: ../gladeui/glade-editor-property.c:1543
+#: ../gladeui/glade-editor-property.c:1721
 msgid "_Has context prefix"
-msgstr ""
+msgstr "കോണ്‍ടെക്സ്റ്റ് പ്രിഫിക്സ് _ഉണ്ട്"
 
 #. Comments.
-#: ../gladeui/glade-editor-property.c:1561
+#: ../gladeui/glade-editor-property.c:1739
 msgid "Co_mments for translators:"
-msgstr ""
+msgstr "തര്‍ജ്ജമ ചെയ്യുന്നവര്‍ക്കുള്ള _ഉപദേശങ്ങള്‍:"
 
-#: ../gladeui/glade-editor-property.c:1731
-#: ../gladeui/glade-editor-property.c:1747
+#: ../gladeui/glade-editor-property.c:1909
+#: ../gladeui/glade-editor-property.c:1925
 msgid "Yes"
 msgstr "ഉവ്വ്"
 
-#: ../gladeui/glade-editor-property.c:1731
-#: ../gladeui/glade-editor-property.c:1747
-#: ../gladeui/glade-editor-property.c:1762
+#: ../gladeui/glade-editor-property.c:1909
+#: ../gladeui/glade-editor-property.c:1925
+#: ../gladeui/glade-editor-property.c:1940
 msgid "No"
 msgstr "അല്ല"
 
-#: ../gladeui/glade-editor-property.c:2352 ../gladeui/glade-widget.c:945
-#: ../gladeui/glade-widget-adaptor.c:916
+#: ../gladeui/glade-editor-property.c:2529 ../gladeui/glade-widget.c:1005
+#: ../gladeui/glade-widget-adaptor.c:804
 msgid "Name"
 msgstr "പേര്"
 
-#: ../gladeui/glade-editor-property.c:2364
+#: ../gladeui/glade-editor-property.c:2541
 msgid "Class"
 msgstr "ക്ളാസ്സ്"
 
-#: ../gladeui/glade-editor-property.c:2378
+#: ../gladeui/glade-editor-property.c:2555
 #, c-format
 msgid "Choose %s implementors"
-msgstr ""
+msgstr "%s ഇംപ്ലിമെറ്ററുകള്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../gladeui/glade-editor-property.c:2378
+#: ../gladeui/glade-editor-property.c:2555
 #, c-format
 msgid "Choose a %s in this project"
-msgstr ""
+msgstr "ഈ സംരംഭത്തിനായി ഒരു %s തിരഞ്ഞെടുക്കുക"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2442
+#: ../gladeui/glade-editor-property.c:2620
 msgid "O_bjects:"
 msgstr "വസ്തുക്കള്‍ (_b):"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2651
+#: ../gladeui/glade-editor-property.c:2829
 msgid "Objects:"
 msgstr "വസ്തുക്കള്‍:"
 
-#: ../gladeui/glade-editor-property.c:2966
+#: ../gladeui/glade-editor-property.c:3142
 msgid "Value:"
 msgstr "മൂല്ല്യം:"
 
-#: ../gladeui/glade-editor-property.c:2967
+#: ../gladeui/glade-editor-property.c:3143
 msgid "The current value"
 msgstr "ഇപ്പോഴുള്ള മൂല്ല്യം"
 
-#: ../gladeui/glade-editor-property.c:2969
+#: ../gladeui/glade-editor-property.c:3145
 msgid "Lower:"
 msgstr "കുറഞ്ഞ:"
 
-#: ../gladeui/glade-editor-property.c:2970
+#: ../gladeui/glade-editor-property.c:3146
 msgid "The minimum value"
 msgstr "ഏറ്റവും കുറഞ്ഞ മൂല്ല്യം"
 
-#: ../gladeui/glade-editor-property.c:2972
+#: ../gladeui/glade-editor-property.c:3148
 msgid "Upper:"
 msgstr "കൂടിയ:"
 
-#: ../gladeui/glade-editor-property.c:2973
+#: ../gladeui/glade-editor-property.c:3149
 msgid "The maximum value"
 msgstr "ഏറ്റവും കൂടിയ മൂല്ല്യം"
 
-#: ../gladeui/glade-editor-property.c:2975
+#: ../gladeui/glade-editor-property.c:3151
 msgid "Step inc:"
-msgstr ""
+msgstr "Step inc:"
 
-#: ../gladeui/glade-editor-property.c:2976
+#: ../gladeui/glade-editor-property.c:3152
 msgid "The increment to use to make minor changes to the value"
-msgstr ""
+msgstr "മൂല്ല്യത്തിന് ചെറിയ മാറ്റങ്ങള്‍ വരുത്തുന്നതിനുള്ള ഇന്‍ക്രിമെന്റ്"
 
-#: ../gladeui/glade-editor-property.c:2978
+#: ../gladeui/glade-editor-property.c:3154
 msgid "Page inc:"
-msgstr ""
+msgstr "Page inc:"
 
-#: ../gladeui/glade-editor-property.c:2979
+#: ../gladeui/glade-editor-property.c:3155
 msgid "The increment to use to make major changes to the value"
-msgstr ""
+msgstr "മൂല്ല്യത്തിന് വലിയ മാറ്റങ്ങള്‍ വരുത്തുന്നതിനുള്ള ഇന്‍ക്രിമെന്റ്"
 
-#: ../gladeui/glade-editor-property.c:2981
+#: ../gladeui/glade-editor-property.c:3157
 msgid "Page size:"
 msgstr "പേജിന്‍റെ വലിപ്പം:"
 
-#: ../gladeui/glade-editor-property.c:2982
+#: ../gladeui/glade-editor-property.c:3158
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
 msgstr ""
+"താളിന്റെ വ്യാപ്തി (GtkScrollbar-ല്‍ നിലവില്‍ കാണാന്‍ സാധിക്കുന്ന സ്ഥലത്തിന്റെ വ്യാപ്തി "
+"ആകുന്നു)"
 
-#: ../gladeui/glade-editor-property.c:3059
+#: ../gladeui/glade-editor-property.c:3235
 msgid "Alphanumerical"
 msgstr "ആല്‍ഫാന്യൂമെറിക്കല്‍"
 
-#: ../gladeui/glade-editor-property.c:3064
+#: ../gladeui/glade-editor-property.c:3240
 msgid "Extra"
-msgstr ""
+msgstr "എക്സ്ട്രാ"
 
-#: ../gladeui/glade-editor-property.c:3069
+#: ../gladeui/glade-editor-property.c:3245
 msgid "Keypad"
 msgstr "കീപാഡ്"
 
-#: ../gladeui/glade-editor-property.c:3074
+#: ../gladeui/glade-editor-property.c:3250
 msgid "Functions"
 msgstr "ഫംഗഷനുകള്‍"
 
-#: ../gladeui/glade-editor-property.c:3079 ../plugins/gnome/gnome.xml.in.h:43
+#: ../gladeui/glade-editor-property.c:3255 ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Other"
 msgstr "മറ്റുള്ളവ"
 
-#: ../gladeui/glade-editor-property.c:3250
-#: ../gladeui/glade-editor-property.c:3284
-#: ../gladeui/glade-editor-property.c:3329
+#: ../gladeui/glade-editor-property.c:3426
+#: ../gladeui/glade-editor-property.c:3460
+#: ../gladeui/glade-editor-property.c:3505
 msgid "<choose a key>"
 msgstr "<choose a key>"
 
-#: ../gladeui/glade-editor-property.c:3283 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../gladeui/glade-editor-property.c:3459 ../plugins/gtk+/gtk+.xml.in.h:205
 #: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "ശൂന്യം"
 
-#: ../gladeui/glade-editor-property.c:3409
-#: ../gladeui/glade-signal-editor.c:684
+#: ../gladeui/glade-editor-property.c:3585
+#: ../gladeui/glade-signal-editor.c:694
 msgid "Signal"
 msgstr "സിഗ്നല്‍"
 
-#: ../gladeui/glade-editor-property.c:3436
+#: ../gladeui/glade-editor-property.c:3612
 msgid "Key"
 msgstr "കീ"
 
-#: ../gladeui/glade-editor-property.c:3450
+#: ../gladeui/glade-editor-property.c:3626
 msgid "Shift"
 msgstr "Shift"
 
-#: ../gladeui/glade-editor-property.c:3466
+#: ../gladeui/glade-editor-property.c:3642
 msgid "Control"
 msgstr "Control"
 
-#: ../gladeui/glade-editor-property.c:3482
+#: ../gladeui/glade-editor-property.c:3658
 msgid "Alt"
 msgstr "Alt"
 
-#: ../gladeui/glade-editor-property.c:3548
+#: ../gladeui/glade-editor-property.c:3724
 msgid "Choose accelerator keys..."
-msgstr ""
+msgstr "ആക്സിലറേറ്റര്‍ കീ തിരഞ്ഞെടുക്കുക..."
 
-#: ../gladeui/glade-editor.c:146
+#: ../gladeui/glade-editor.c:152
 msgid "Show info"
 msgstr "വിവരങ്ങള്‍ കാണിക്കുക"
 
-#: ../gladeui/glade-editor.c:147
+#: ../gladeui/glade-editor.c:153
 msgid "Whether to show an informational button for the loaded widget"
-msgstr ""
+msgstr "ലഭ്യമാക്കിയ വിഡ്ജറ്റിനുള്ള ബട്ടണ്‍ കാണിക്കണമോ എന്ന്"
 
-#: ../gladeui/glade-editor.c:154
+#: ../gladeui/glade-editor.c:160
 msgid "Show context info"
-msgstr ""
+msgstr "കോണ്‍ടെക്സ്റ്റ് വിവരം കാണിക്കുക"
 
-#: ../gladeui/glade-editor.c:155
+#: ../gladeui/glade-editor.c:161
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
 msgstr ""
+"എഡിറ്ററില്‍ ഓരോ ഗുണഗണത്തിനും സിഗ്നലിനുമുള്ള വിവരം ലഭ്യമാക്കുന്ന ബട്ടണ്‍ കാണിക്കണമോ "
+"എന്ന്"
 
 #. construct tab label widget
-#: ../gladeui/glade-editor.c:196 ../gladeui/glade-editor.c:322
-#: ../gladeui/glade-editor.c:1178
+#: ../gladeui/glade-editor.c:202 ../gladeui/glade-editor.c:321
+#: ../gladeui/glade-editor.c:1183
 msgid "Accessibility"
-msgstr ""
+msgstr "ആക്സസ്സബിളിറ്റി"
 
 #. configure page container
-#: ../gladeui/glade-editor.c:212 ../gladeui/glade-editor.c:321
+#: ../gladeui/glade-editor.c:219 ../gladeui/glade-editor.c:320
 msgid "_Signals"
 msgstr "സിഗ്നലുകള്‍ (_S)"
 
 #: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
-msgstr ""
+msgstr "തിരഞ്ഞെടുത്ത വിഡ്ജറ്റിനുള്ള വിവരണം കാണുക"
 
 #: ../gladeui/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
-msgstr ""
+msgstr "വിഡ്ജറ്റിന്റെ ഗുണഗണങ്ങള്‍ സ്വതവേയുള്ളവയായി വീണ്ടും ക്രമികരിക്കുക"
 
-#: ../gladeui/glade-editor.c:318
+#: ../gladeui/glade-editor.c:317
 msgid "_General"
 msgstr "സാധാരണ (_G)"
 
-#: ../gladeui/glade-editor.c:319
+#: ../gladeui/glade-editor.c:318
 msgid "_Packing"
 msgstr "പാക്കിങ് (_P)"
 
-#: ../gladeui/glade-editor.c:320
+#: ../gladeui/glade-editor.c:319
 msgid "_Common"
 msgstr "പൊതുവായ (_C)"
 
-#: ../gladeui/glade-editor.c:337
-msgid "_Edit..."
-msgstr "മാറ്റം വരുത്തുക (_E)..."
-
 #. Name
-#: ../gladeui/glade-editor.c:483
+#: ../gladeui/glade-editor.c:473
 msgid "Name:"
 msgstr "പേര്:"
 
 #. Class
-#: ../gladeui/glade-editor.c:511
+#: ../gladeui/glade-editor.c:501
 msgid "Class:"
 msgstr "ക്ളാസ്സ്:"
 
-#: ../gladeui/glade-editor.c:991
+#: ../gladeui/glade-editor.c:989
 #, c-format
 msgid "Create a %s"
 msgstr "ഒരു %s ഉണ്ടാക്കുക"
 
-#: ../gladeui/glade-editor.c:1109
+#: ../gladeui/glade-editor.c:1114
 msgid "Reset"
 msgstr "റീസെറ്റ് ചെയ്യുക"
 
-#: ../gladeui/glade-editor.c:1123
+#: ../gladeui/glade-editor.c:1128
 msgid "Property"
 msgstr "ഗുണഗണം"
 
-#: ../gladeui/glade-editor.c:1158
+#: ../gladeui/glade-editor.c:1163
 msgid "General"
 msgstr "സാധാരണ"
 
-#: ../gladeui/glade-editor.c:1168
+#: ../gladeui/glade-editor.c:1173
 msgid "Common"
 msgstr "പൊതുവായ"
 
-#: ../gladeui/glade-editor.c:1213
+#: ../gladeui/glade-editor.c:1218
 msgid "(default)"
 msgstr "(ഡീഫോള്‍ട്ട്)"
 
-#: ../gladeui/glade-editor.c:1228
+#: ../gladeui/glade-editor.c:1233
 msgid "Select the properties that you want to reset to their default values"
-msgstr ""
+msgstr "നിങ്ങള്‍ക്ക് സ്വതവേയുള്ള മൂല്ല്യങ്ങളായി ക്രമികരിക്കുന്നതിന് ആവശ്യമുള്ള ഗുണഗണങ്ങള്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../gladeui/glade-editor.c:1360
+#: ../gladeui/glade-editor.c:1365
 msgid "Reset Widget Properties"
-msgstr ""
+msgstr "വിഡ്ജറ്റ് ഗുണഗണങ്ങള്‍ വീണ്ടും ക്രമികരിക്കുക"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1377
+#: ../gladeui/glade-editor.c:1382
 msgid "_Properties:"
 msgstr "ഗുണഗണങ്ങള്‍ (_P):"
 
-#: ../gladeui/glade-editor.c:1406
+#: ../gladeui/glade-editor.c:1411
 msgid "_Select All"
 msgstr "എല്ലാം തിരഞ്ഞെടുക്കുക (_S)"
 
-#: ../gladeui/glade-editor.c:1413
+#: ../gladeui/glade-editor.c:1418
 msgid "_Unselect All"
 msgstr "തിരഞ്ഞെടുത്തവ എല്ലാം വേണ്ടെന്ന് വയ്ക്കുക (_U)"
 
 #. Description
-#: ../gladeui/glade-editor.c:1422
+#: ../gladeui/glade-editor.c:1427
 msgid "Property _Description:"
-msgstr ""
+msgstr "ഗുണഗണങ്ങളുടെ _വിശദീകരണം:"
 
-#: ../gladeui/glade-fixed.c:462 ../plugins/gtk+/glade-gtk.c:1407
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:1667
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "%s-നുളളില്‍ %s സ്ഥാപിക്കുന്നു"
 
-#: ../gladeui/glade-fixed.c:940
+#: ../gladeui/glade-fixed.c:971
 msgid "X position property"
-msgstr ""
+msgstr "X സ്ഥാനത്തുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:941
+#: ../gladeui/glade-fixed.c:972
 msgid "The property used to set the X position of a child object"
-msgstr ""
+msgstr "ഒരു ചൈള്‍ഡ് ഒബ്ജക്ടിന്റെ X സ്ഥാനം സജ്ജമാക്കുന്നതിനുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:947
+#: ../gladeui/glade-fixed.c:978
 msgid "Y position property"
-msgstr ""
+msgstr "Y സ്ഥാനത്തുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:948
+#: ../gladeui/glade-fixed.c:979
 msgid "The property used to set the Y position of a child object"
-msgstr ""
+msgstr "ഒരു ചൈള്‍ഡ് ഒബ്ജക്ടിന്റെ Y സ്ഥാനം സജ്ജമാക്കുന്നതിനുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:954
+#: ../gladeui/glade-fixed.c:985
 msgid "Width property"
-msgstr ""
+msgstr "വീധി എന്ന ഗുണം"
 
-#: ../gladeui/glade-fixed.c:955
+#: ../gladeui/glade-fixed.c:986
 msgid "The property used to set the width of a child object"
-msgstr ""
+msgstr "ഒരു ചൈള്‍ഡ് ഒബ്ജക്ടിന്റെ വീതി സജ്ജമാക്കുന്നതിനുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:961
+#: ../gladeui/glade-fixed.c:992
 msgid "Height property"
-msgstr ""
+msgstr "ഉയരം എന്ന ഗുണം"
 
-#: ../gladeui/glade-fixed.c:962
+#: ../gladeui/glade-fixed.c:993
 msgid "The property used to set the height of a child object"
-msgstr ""
+msgstr "ഒരു ചൈള്‍ഡ് ഒബ്ജക്ടിന്റെ ഉയരം സജ്ജമാക്കുന്നതിനുള്ള ഗുണഗണം"
 
-#: ../gladeui/glade-fixed.c:968
+#: ../gladeui/glade-fixed.c:999
 msgid "Can resize"
-msgstr ""
+msgstr "വലിപ്പം മാറ്റുവാന്‍ സാധ്യമാണ്"
 
-#: ../gladeui/glade-fixed.c:969
+#: ../gladeui/glade-fixed.c:1000
 msgid "Whether this container supports resizes of child widgets"
-msgstr ""
+msgstr "ചൈള്‍ഡ് വിഡ്ജറ്റുകളുടെ വലിപ്പം മാറ്റുന്നതിനായി കണ്ടെയിനര്‍ പിന്തുണയ്ക്കുന്നുവോ"
 
-#: ../gladeui/glade-palette.c:617
+#: ../gladeui/glade-palette.c:619
 msgid "Widget selector"
-msgstr ""
+msgstr "വിഡ്ജറ്റ് തിരഞ്ഞെടുക്കല്‍ സംവിധാനം"
 
-#: ../gladeui/glade-parser.c:1192
+#: ../gladeui/glade-parser.c:1193
 #, c-format
 msgid "Could not find glade file %s"
-msgstr ""
+msgstr "%s എന്ന ഗ്ലേഡ് ഫയല്‍ ലഭ്യമായില്ല"
 
-#: ../gladeui/glade-parser.c:1211 ../gladeui/glade-parser.c:1219
+#: ../gladeui/glade-parser.c:1212 ../gladeui/glade-parser.c:1220
 #, c-format
 msgid "Errors parsing glade file %s"
-msgstr ""
+msgstr "%s എന്ന ഗ്ലേഡ് ഫയല്‍ പാഴ്സ് ചെയ്യുന്നതില്‍ പിശകുകള്‍"
 
-#: ../gladeui/glade-parser.c:1657
+#: ../gladeui/glade-parser.c:1658
 msgid "Could not allocate memory for interface"
-msgstr ""
+msgstr "ഇന്റര്‍ഫെയിസിനുള്ള മെമ്മറി നല്‍കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../gladeui/glade-popup.c:254
+#: ../gladeui/glade-popup.c:331
 msgid "_Select"
 msgstr "തിരഞ്ഞെടുക്കുക (_S)"
 
-#: ../gladeui/glade-project.c:562
-msgid "Has Unsaved Changes"
-msgstr "സൂക്ഷിക്കാത്ത മാറ്റങ്ങള്‍ ഉണ്ട്"
+#: ../gladeui/glade-project.c:691
+msgid "Whether project has been modified since it was last saved"
+msgstr "ഏറ്റവും ഒടുവില്‍ സൂക്ഷിച്ച ശേഷം പ്രൊജക്ടില്‍ മാറ്റം വരുത്തിയോ"
 
-#: ../gladeui/glade-project.c:563
-msgid "Whether project has unsaved changes"
-msgstr ""
-
-#: ../gladeui/glade-project.c:570
+#: ../gladeui/glade-project.c:698
 msgid "Has Selection"
-msgstr ""
+msgstr "തിരഞ്ഞെടുക്കുവാന്‍ സാധിക്കുന്നു"
 
-#: ../gladeui/glade-project.c:571
+#: ../gladeui/glade-project.c:699
 msgid "Whether project has a selection"
-msgstr ""
+msgstr "സംരംഭത്തിന് തിരഞ്ഞെടുക്കല്‍ സംവിധാനം ഉണ്ടോ"
 
-#: ../gladeui/glade-project.c:578
+#: ../gladeui/glade-project.c:706
 msgid "Read Only"
 msgstr "റീഡ് ഒണ്‍ലി"
 
-#: ../gladeui/glade-project.c:579
+#: ../gladeui/glade-project.c:707
 msgid "Whether project is read only or not"
-msgstr ""
+msgstr "സംരംഭം വായിക്കുവാന്‍ മാത്രം സാധിക്കുകയുള്ളോ"
 
-#: ../gladeui/glade-project.c:687
-#, c-format
-msgid "Unsaved %d"
-msgstr ""
+#: ../gladeui/glade-project.c:714
+msgid "Path"
+msgstr "പാഥ്"
 
-#: ../gladeui/glade-project.c:1460
+#: ../gladeui/glade-project.c:715
+msgid "The filesystem path of the project"
+msgstr "സംരംഭത്തിന്റെ ഫയല്‍സിസ്റ്റം പാഥ്"
+
+#: ../gladeui/glade-project.c:1573
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"%s ലഭ്യമാക്കുന്നതില്‍ പരാജയം.\n"
+"താഴെ പറഞ്ഞിരിക്കുന്ന ആവശ്യമുള്ള കാറ്റലോഗുകള്‍ ലഭ്യമല്ല: %s"
+
+#: ../gladeui/glade-project.c:2239
+#, c-format
+msgid "Unsaved %i"
+msgstr "സൂക്ഷിച്ചിട്ടില്ലാത്ത %i"
 
 #. Atk click property
-#: ../gladeui/glade-property-class.c:56 ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../gladeui/glade-property-class.c:67 ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Click"
 msgstr "ക്ളിക്ക് ചെയ്യുക"
 
 #. Atk click property
-#: ../gladeui/glade-property-class.c:57 ../plugins/gtk+/gtk+.xml.in.h:210
+#: ../gladeui/glade-property-class.c:68 ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Set the description of the Click atk action"
-msgstr ""
+msgstr "ക്ലിക്ക് atk പ്രവര്‍ത്തനത്തിനുള്ള വിവരണം ക്രമികരിക്കുക"
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:58 ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../gladeui/glade-property-class.c:69 ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Press"
-msgstr "അമറ്‍ത്തുക"
+msgstr "അമര്‍ത്തുക"
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:59 ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../gladeui/glade-property-class.c:70 ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Set the description of the Press atk action"
-msgstr ""
+msgstr "atk പ്രവര്‍ത്തനത്തത്തിനായി അമര്‍ത്തുന്നതിനുള്ള വിവരണം ക്രമികരിക്കുക"
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:60 ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../gladeui/glade-property-class.c:71 ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "Release"
-msgstr ""
+msgstr "ലഭ്യമാക്കുക"
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:61 ../plugins/gtk+/gtk+.xml.in.h:214
+#: ../gladeui/glade-property-class.c:72 ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Set the description of the Release atk action"
-msgstr ""
+msgstr "atk പ്രവര്‍ത്തനം ലഭ്യമാക്കുന്നതിനുള്ള വിവരണം ക്രമികരിക്കുക"
 
 #. Atk activate property
-#: ../gladeui/glade-property-class.c:62 ../plugins/gtk+/gtk+.xml.in.h:14
+#: ../gladeui/glade-property-class.c:73 ../plugins/gtk+/gtk+.xml.in.h:16
 msgid "Activate"
 msgstr "സജീവമാക്കുക"
 
 #. Atk activate property
-#: ../gladeui/glade-property-class.c:63 ../plugins/gtk+/gtk+.xml.in.h:208
+#: ../gladeui/glade-property-class.c:74 ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Set the description of the Activate atk action"
-msgstr ""
+msgstr "atk പ്രവര്‍ത്തനം സജീവമാക്കുന്നതിനുള്ള വിവരണം ക്രമികരിക്കുക"
 
-#: ../gladeui/glade-property-class.c:67
+#. Atk relationset properties
+#: ../gladeui/glade-property-class.c:78 ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Controlled By"
-msgstr ""
+msgstr "നിയന്ത്രിക്കുന്നത്"
 
-#: ../gladeui/glade-property-class.c:68
+#. Atk relationset properties
+#: ../gladeui/glade-property-class.c:79 ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Indicates an object controlled by one or more target objects"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഒന്നോ അതിലധികമോ ഒബ്ജക്ടുകളാല്‍ നിയന്ത്രിക്കപ്പെടുന്ന ഒബ്ജക്ടിനെ സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:70
+#: ../gladeui/glade-property-class.c:81 ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Controller For"
-msgstr ""
+msgstr "നിയന്ത്രിക്കുന്നത് എന്തിന്"
 
-#: ../gladeui/glade-property-class.c:71
+#: ../gladeui/glade-property-class.c:82 ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Indicates an object is a controller for one or more target objects"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഒന്നോ അതിലധികമോ ഒബ്ജക്ടുകളെ നിയന്ത്രിക്കുന്ന ഒബ്ജക്ടിനെ സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:73
+#: ../gladeui/glade-property-class.c:84 ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Labelled By"
-msgstr ""
+msgstr "പേരിട്ടത്"
 
-#: ../gladeui/glade-property-class.c:74
+#: ../gladeui/glade-property-class.c:85 ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Indicates an object is labelled by one or more target objects"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഒന്നോ അതിലധികമോ ഒബ്ജക്ടുകള്‍ പേരിടുന്ന ഒബ്ജക്ടിനെ സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:76
+#: ../gladeui/glade-property-class.c:87 ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Label For"
-msgstr ""
+msgstr "ലേബലിടുന്നത് എന്തിന്"
 
-#: ../gladeui/glade-property-class.c:77
+#: ../gladeui/glade-property-class.c:88 ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Indicates an object is a label for one or more target objects"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഒന്നോ അതിലധികമോ ഒബ്ജക്ടുകള്‍ക്കുള്ള പേരിടുന്ന ഒബ്ജക്ടിനെ സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:79
+#: ../gladeui/glade-property-class.c:90 ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Member Of"
-msgstr ""
+msgstr "അംഗമാണ്"
 
-#: ../gladeui/glade-property-class.c:80
+#: ../gladeui/glade-property-class.c:91 ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Indicates an object is a member of a group of one or more target objects"
-msgstr ""
+msgstr "ലക്ഷ്യസ്ഥാനത്തുള്ള ഒന്നോ അതിലധികമോ ഒബ്ജക്ടുകളുടെ അംഗമാകുന്ന ഒബ്ജക്ടിനെ സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:82
+#: ../gladeui/glade-property-class.c:93
 msgid "Child Node Of"
-msgstr ""
+msgstr "ചൈള്‍ഡ് നോഡ്"
 
-#: ../gladeui/glade-property-class.c:83
+#: ../gladeui/glade-property-class.c:94 ../plugins/gtk+/gtk+.xml.in.h:152
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:86
+#: ../gladeui/glade-property-class.c:97 ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Flows To"
-msgstr ""
+msgstr "എങ്ങോട്ടേക്ക്"
 
-#: ../gladeui/glade-property-class.c:87
+#: ../gladeui/glade-property-class.c:98
 msgid ""
 "Indicates that the object has content that flows logically to another "
-"AtkObject in a sequential way, (for instance text-flow)"
+"AtkObject in a sequential way (text-flow, for instance)."
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:90
+#: ../gladeui/glade-property-class.c:101 ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Flows From"
-msgstr ""
+msgstr "എവിടെനിന്നും"
 
-#: ../gladeui/glade-property-class.c:91
+#: ../gladeui/glade-property-class.c:102 ../plugins/gtk+/gtk+.xml.in.h:161
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:94
+#: ../gladeui/glade-property-class.c:105 ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Subwindow Of"
-msgstr ""
+msgstr "എന്തിന്റെ സബ്‌വിന്‍ഡോ"
 
-#: ../gladeui/glade-property-class.c:95
+#: ../gladeui/glade-property-class.c:106 ../plugins/gtk+/gtk+.xml.in.h:149
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
-"connection in  the UI hierarchy to that component"
+"connection in the UI hierarchy to that component"
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:98
+#: ../gladeui/glade-property-class.c:109 ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Embeds"
-msgstr ""
+msgstr "എംബഡ് ചെയ്യുന്നു"
 
-#: ../gladeui/glade-property-class.c:99
+#: ../gladeui/glade-property-class.c:110 ../plugins/gtk+/gtk+.xml.in.h:163
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:102
+#: ../gladeui/glade-property-class.c:113 ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Embedded By"
-msgstr ""
+msgstr "എംബഡ്ഡട് ആകുന്നു"
 
-#: ../gladeui/glade-property-class.c:103
+#: ../gladeui/glade-property-class.c:114 ../plugins/gtk+/gtk+.xml.in.h:174
 msgid ""
-"Inverse of 'Embeds', indicates that this object's content is visualy "
+"Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr ""
 
-#: ../gladeui/glade-property-class.c:106
+#: ../gladeui/glade-property-class.c:117 ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Popup For"
-msgstr ""
+msgstr "എന്തിനുള്ള പോപ്പപ്പ്"
 
-#: ../gladeui/glade-property-class.c:107
+#: ../gladeui/glade-property-class.c:118 ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Indicates that an object is a popup for another object"
-msgstr ""
+msgstr "മറ്റൊരു ഒബ്ജക്ടിനുള്ള പോപ്പപ്പ് ആയ ഒബ്ജക്ട് എന്ന് സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property-class.c:109
+#: ../gladeui/glade-property-class.c:120 ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Parent Window Of"
-msgstr ""
+msgstr "എന്തിന്റെ പേരന്റ് വിന്‍ഡോ"
 
-#: ../gladeui/glade-property-class.c:110
+#: ../gladeui/glade-property-class.c:121 ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "Indicates that an object is a parent window of another object"
-msgstr ""
+msgstr "മറ്റൊരു ഒബ്ജക്ടിനുള്ള പേരന്റ് ജാലകമായ ഒബ്ജക്ട് എന്ന് സൂചിപ്പിക്കുന്നു"
 
-#: ../gladeui/glade-property.c:571
+#: ../gladeui/glade-property.c:605
 msgid "Enabled"
-msgstr ""
+msgstr "സജ്ജമാക്കിയിരിക്കുന്നു"
 
-#: ../gladeui/glade-property.c:572
+#: ../gladeui/glade-property.c:606
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "ഗുണഗണം ഉപാധിയാണ് എങ്കില്‍, ഇത് സജ്ജമാക്കുന്ന അവസ്ഥയിലാണ്"
 
-#: ../gladeui/glade-property.c:578
+#: ../gladeui/glade-property.c:612 ../gladeui/glade-widget-action.c:158
 msgid "Sensitive"
-msgstr ""
+msgstr "സെന്‍സിറ്റീവ്"
 
-#: ../gladeui/glade-property.c:579
+#: ../gladeui/glade-property.c:613
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: ../gladeui/glade-property.c:585
+#: ../gladeui/glade-property.c:619
 msgid "Comment"
-msgstr ""
+msgstr "അഭിപ്രായം"
 
-#: ../gladeui/glade-property.c:586
+#: ../gladeui/glade-property.c:620
 msgid "Comment for translators"
-msgstr ""
+msgstr "തര്‍ജ്ജമചെയ്യുന്നവര്‍ക്കുള്ള ഉപദേശം"
 
-#: ../gladeui/glade-property.c:592
+#: ../gladeui/glade-property.c:626
 msgid "Translatable"
-msgstr ""
+msgstr "തര്‍ജ്ജമ ചെയ്യുവാന്‍ സാധിക്കുന്ന"
 
-#: ../gladeui/glade-property.c:593
+#: ../gladeui/glade-property.c:627
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "ഒരു ഗുണഗണം തര്‍ജ്ജമ ചെയ്യുവാന്‍ സാധ്യമാണോ എന്ന്"
 
-#: ../gladeui/glade-property.c:599
+#: ../gladeui/glade-property.c:633
 msgid "Has Context"
-msgstr ""
+msgstr "കോണ്‍ടെക്സ്റ്റ് ഉണ്ട്"
 
-#: ../gladeui/glade-property.c:600
+#: ../gladeui/glade-property.c:634
 msgid "Whether or not the translatable string has a context prefix"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:57
-msgid "<Type the signal's handler here>"
-msgstr "<Type the signal's handler here>"
+#: ../gladeui/glade-signal-editor.c:67
+msgid "<Type here>"
+msgstr "<Type here>"
 
-#: ../gladeui/glade-signal-editor.c:58
-msgid "<Type the object's name here>"
-msgstr "<Type the object's name here>"
-
-#: ../gladeui/glade-signal-editor.c:704
+#: ../gladeui/glade-signal-editor.c:714
 msgid "Handler"
 msgstr "ഹാന്‍ഡിലറ്‍"
 
-#: ../gladeui/glade-signal-editor.c:726
+#: ../gladeui/glade-signal-editor.c:736
 msgid "User data"
 msgstr "യൂസറ്‍ ഡേറ്റാ"
 
-#: ../gladeui/glade-signal-editor.c:740
+#: ../gladeui/glade-signal-editor.c:750
 msgid "Lookup"
-msgstr ""
+msgstr "ലുക്കപ്പ്"
 
-#: ../gladeui/glade-signal-editor.c:751
+#: ../gladeui/glade-signal-editor.c:761 ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "After"
 msgstr "ശേഷം"
 
-#: ../gladeui/glade-utils.c:169 ../gladeui/glade-utils.c:200
+#: ../gladeui/glade-utils.c:144 ../gladeui/glade-utils.c:175
 #, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr ""
+msgstr "\"%s\"-നുള്ള ചിഹ്നം ലഭ്യമായില്ല"
 
-#: ../gladeui/glade-utils.c:176
+#: ../gladeui/glade-utils.c:151
 #, c-format
 msgid "Could not get the type from \"%s\""
-msgstr ""
+msgstr "\"%s\"-ല്‍ നിന്നും ഏത് തരത്തിലുള്ളവ എന്നറിയുവാന്‍ സാധ്യമായില്ല"
 
-#: ../gladeui/glade-utils.c:541
+#: ../gladeui/glade-utils.c:516
 msgid "All Files"
 msgstr "എല്ലാ ഫയലുകളും"
 
-#: ../gladeui/glade-utils.c:546
+#: ../gladeui/glade-utils.c:521
 msgid "Glade Files"
 msgstr "Glade ഫയലുകള്‍"
 
-#: ../gladeui/glade-utils.c:1294
+#: ../gladeui/glade-utils.c:1236
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1448,394 +1571,488 @@ msgstr ""
 "%s നിലവിലുണ്ട്.\n"
 "നിങ്ങള്‍ക്ക് അത് മാറ്റി എഴുതണമോ?"
 
-#: ../gladeui/glade-utils.c:1322
+#: ../gladeui/glade-utils.c:1264
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "%s-ലേക്ക് എഴുതുന്നതില്‍ പിശക്: %s"
 
-#: ../gladeui/glade-utils.c:1336
+#: ../gladeui/glade-utils.c:1278
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "%s വായിക്കുന്നതില്‍ പിശക്: %s"
 
-#: ../gladeui/glade-utils.c:1351
+#: ../gladeui/glade-utils.c:1293
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
-msgstr ""
+msgstr "I/O ചാനല്‍ %s അടച്ചു പൂട്ടുന്നതില്‍ പിശക്: %s"
 
-#: ../gladeui/glade-utils.c:1361
+#: ../gladeui/glade-utils.c:1303
 #, c-format
 msgid "Failed to open %s for writing: %s"
-msgstr ""
+msgstr "%s-ലേക്ക് എഴുതുന്നതിനായി തുറക്കുന്നതില്‍ പിശക്: %s"
 
-#: ../gladeui/glade-utils.c:1372
+#: ../gladeui/glade-utils.c:1314
 #, c-format
 msgid "Error shutting down io channel %s: %s"
-msgstr ""
+msgstr "io ചാനല്‍ %s അടച്ചുപൂട്ടുന്നതില്‍ പിശക്: %s"
 
-#: ../gladeui/glade-utils.c:1381
+#: ../gladeui/glade-utils.c:1323
 #, c-format
 msgid "Failed to open %s for reading: %s"
-msgstr ""
+msgstr "%s വായിക്കുന്നതിനായി തുറക്കുവാന്‍ സാധ്യമായില്ല: %s"
 
-#: ../gladeui/glade-utils.c:1439
-#, c-format
-msgid "Unable to open the module %s (%s)."
-msgstr ""
-
-#: ../gladeui/glade-widget.c:946
+#: ../gladeui/glade-widget.c:1006
 msgid "The name of the widget"
 msgstr "വിഡ്ജറ്റിന്‍റെ പേര്"
 
-#: ../gladeui/glade-widget.c:953
+#: ../gladeui/glade-widget.c:1013
 msgid "Internal name"
-msgstr ""
+msgstr "ആന്തരിക നാമം"
 
-#: ../gladeui/glade-widget.c:954
+#: ../gladeui/glade-widget.c:1014
 msgid "The internal name of the widget"
-msgstr ""
+msgstr "വിഡ്ജറ്റിനുള്ള ആന്തരിക നാമം"
 
-#: ../gladeui/glade-widget.c:960
+#: ../gladeui/glade-widget.c:1020
 msgid "Anarchist"
-msgstr ""
+msgstr "അനാര്‍ക്കിസ്റ്റ്"
 
-#: ../gladeui/glade-widget.c:961
+#: ../gladeui/glade-widget.c:1021
 msgid "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:968
+#: ../gladeui/glade-widget.c:1028
 msgid "Object"
-msgstr ""
+msgstr "ഒബ്ജക്ട്"
 
-#: ../gladeui/glade-widget.c:969
+#: ../gladeui/glade-widget.c:1029
 msgid "The object associated"
-msgstr ""
+msgstr "അനുബന്ധിച്ചുള്ള ഒബ്ജക്ട്"
 
-#: ../gladeui/glade-widget.c:976
+#: ../gladeui/glade-widget.c:1036
 msgid "Adaptor"
 msgstr "അഡാപ്റ്ററ്‍"
 
-#: ../gladeui/glade-widget.c:977
+#: ../gladeui/glade-widget.c:1037
 msgid "The class adaptor for the associated widget"
-msgstr ""
+msgstr "ഇതിനോടനുബന്ധിച്ച വിഡ്ജറ്റിനുള്ള ക്ലാസ്സ് അഡാപ്റ്റര്‍"
 
-#: ../gladeui/glade-widget.c:984
+#: ../gladeui/glade-widget.c:1044 ../gladeui/glade-inspector.c:199
 msgid "Project"
 msgstr "പ്റൊജക്ട്"
 
-#: ../gladeui/glade-widget.c:985
+#: ../gladeui/glade-widget.c:1045
 msgid "The glade project that this widget belongs to"
-msgstr ""
+msgstr "ഈ വിഡ്ജറ്റ് ഏത് ഗ്ലേഡ് സംരംഭത്തിന്റെ ആകുന്നു"
 
-#: ../gladeui/glade-widget.c:994
+#: ../gladeui/glade-widget.c:1054
 msgid "A list of GladeProperties"
-msgstr ""
+msgstr "ഗ്ലേഡ് ഗുണഗണങ്ങളുടെ പട്ടിക"
 
-#: ../gladeui/glade-widget.c:1000 ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../gladeui/glade-widget.c:1060 ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Parent"
 msgstr "പേരന്‍റ്"
 
-#: ../gladeui/glade-widget.c:1001
+#: ../gladeui/glade-widget.c:1061
 msgid "A pointer to the parenting GladeWidget"
-msgstr ""
+msgstr "പേരന്റിങ് ഗ്ലേഡ് വിഡ്ജറ്റിനുള്ള പോയിന്റര്‍"
 
-#: ../gladeui/glade-widget.c:1008
+#: ../gladeui/glade-widget.c:1068
 msgid "Internal Name"
-msgstr ""
+msgstr "ആന്തരിക നാമം"
 
-#: ../gladeui/glade-widget.c:1009
+#: ../gladeui/glade-widget.c:1069
 msgid "A generic name prefix for internal widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1014
+#: ../gladeui/glade-widget.c:1074
 msgid "Template"
 msgstr "ടെംപ്ളേറ്റ്"
 
-#: ../gladeui/glade-widget.c:1015
+#: ../gladeui/glade-widget.c:1075
 msgid "A GladeWidget template to base a new widget on"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1021 ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../gladeui/glade-widget.c:1081 ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Info"
 msgstr "വിവരങ്ങള്‍"
 
-#: ../gladeui/glade-widget.c:1022
+#: ../gladeui/glade-widget.c:1082
 msgid "A GladeWidgetInfo struct to base a new widget on"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1027
+#: ../gladeui/glade-widget.c:1087
 msgid "Reason"
 msgstr "കാരണം"
 
-#: ../gladeui/glade-widget.c:1028
+#: ../gladeui/glade-widget.c:1088
 msgid "A GladeCreateReason for this creation"
-msgstr ""
+msgstr "ഈ സൃഷ്ടിയ്ക്കുള്ള GladeCreateReason "
 
-#: ../gladeui/glade-widget.c:1036
+#: ../gladeui/glade-widget.c:1096
 msgid "Toplevel Width"
-msgstr ""
+msgstr "ടോപ്പ്‌ലവല്‍ വീതി"
 
-#: ../gladeui/glade-widget.c:1037
+#: ../gladeui/glade-widget.c:1097
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1046
+#: ../gladeui/glade-widget.c:1106
 msgid "Toplevel Height"
-msgstr ""
+msgstr "ടോപ്പ്‌ലവല്‍ ഉയരം"
 
-#: ../gladeui/glade-widget.c:1047
+#: ../gladeui/glade-widget.c:1107
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:184 ../gladeui/glade-widget-adaptor.c:224
-#, c-format
-msgid "Unable to load icon for %s (%s)"
-msgstr ""
-
-#: ../gladeui/glade-widget-adaptor.c:199 ../gladeui/glade-widget-adaptor.c:239
-#, c-format
-msgid "Unable to load stock icon (%s)"
-msgstr ""
-
-#: ../gladeui/glade-widget-adaptor.c:333
+#: ../gladeui/glade-widget-adaptor.c:254
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr ""
+msgstr "%s-ന് ലഭ്യമാക്കിയ അഡാപ്റ്റര്‍‌ (%s) നിലവിലുണ്ട്!"
 
-#: ../gladeui/glade-widget-adaptor.c:917
+#: ../gladeui/glade-widget-adaptor.c:805
 msgid "Name of the class"
 msgstr "ക്ളാസ്സിന്‍റെ പേര്"
 
-#: ../gladeui/glade-widget-adaptor.c:925
+#: ../gladeui/glade-widget-adaptor.c:813
 msgid "GType of the class"
 msgstr "ക്ളാസ്സിന്‍റെ GType"
 
-#: ../gladeui/glade-widget-adaptor.c:932 ../plugins/gnome/gnome.xml.in.h:64
+#: ../gladeui/glade-widget-adaptor.c:820 ../plugins/gnome/gnome.xml.in.h:64
 msgid "Title"
 msgstr "തലക്കെട്ട്"
 
-#: ../gladeui/glade-widget-adaptor.c:933
+#: ../gladeui/glade-widget-adaptor.c:821
 msgid "Translated title for the class used in the glade UI"
-msgstr ""
+msgstr "ഗ്ലേഡ് യുഐയില്‍ ഉപയോഗിക്കുന്ന ക്ലാസ്സിനുള്ള തര്‍ജ്ജമ ചെയ്ത് തലക്കെട്ട്"
 
-#: ../gladeui/glade-widget-adaptor.c:940
+#: ../gladeui/glade-widget-adaptor.c:828
 msgid "Generic Name"
 msgstr "പൊതു നാമം"
 
-#: ../gladeui/glade-widget-adaptor.c:941
+#: ../gladeui/glade-widget-adaptor.c:829
 msgid "Used to generate names of new widgets"
-msgstr ""
+msgstr "പുതിയ വിഡ്ജറ്റുകളുടെ പേരുകള്‍ ഉണ്ടാക്കുന്നതിനായി ഉപയോഗിക്കുന്നു"
 
-#: ../gladeui/glade-widget-adaptor.c:948
+#: ../gladeui/glade-widget-adaptor.c:836 ../plugins/gtk+/gtk+.xml.in.h:138
+msgid "Icon Name"
+msgstr "ഐക്കണ്‍ന്‍റെ പേര്"
+
+#: ../gladeui/glade-widget-adaptor.c:837
+msgid "The icon name"
+msgstr "പ്രതിരൂപത്തിന്റെ പേര് "
+
+#: ../gladeui/glade-widget-adaptor.c:844
 msgid "Catalog"
 msgstr "കാറ്റലോഗ്"
 
-#: ../gladeui/glade-widget-adaptor.c:949
+#: ../gladeui/glade-widget-adaptor.c:845
 msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:956
+#: ../gladeui/glade-widget-adaptor.c:852
 msgid "Book"
 msgstr "പുസ്തകം"
 
-#: ../gladeui/glade-widget-adaptor.c:957
+#: ../gladeui/glade-widget-adaptor.c:853
 msgid "DevHelp search namespace for this widget class"
-msgstr ""
+msgstr "ഈ വിഡ്ജറ്റ് ക്ലാസ്സിനുള്ള നെയിംസ്പെയിസ് DevHelp തിരയുന്നു"
 
-#: ../gladeui/glade-widget-adaptor.c:964
+#: ../gladeui/glade-widget-adaptor.c:860
 msgid "Special Child Type"
-msgstr ""
+msgstr "പ്രത്യേക ചൈള്‍ഡ് രീതി"
 
-#: ../gladeui/glade-widget-adaptor.c:965
+#: ../gladeui/glade-widget-adaptor.c:861
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:973
-msgid "Large Icon"
-msgstr "വലിയ ഐക്കണ്‍"
-
-#: ../gladeui/glade-widget-adaptor.c:974
-msgid "The 22x22 icon for this widget class"
-msgstr ""
-
-#: ../gladeui/glade-widget-adaptor.c:981
-msgid "Small Icon"
-msgstr "ചെറിയ ഐക്കണ്‍"
-
-#: ../gladeui/glade-widget-adaptor.c:982
-msgid "The 16x16 icon for this widget class"
-msgstr ""
-
-#: ../gladeui/glade-widget-adaptor.c:989 ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../gladeui/glade-widget-adaptor.c:869 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cursor"
 msgstr "കറ്‍സറ്‍"
 
-#: ../gladeui/glade-widget-adaptor.c:990
+#: ../gladeui/glade-widget-adaptor.c:870
 msgid "A cursor for inserting widgets in the UI"
-msgstr ""
+msgstr "യുഐയിലേക്ക് വിഡ്ജറ്റുകള്‍ ചേര്‍ക്കുന്നതിനുള്ള കര്‍സര്‍"
 
-#: ../gladeui/glade-project-view.c:646
+#: ../gladeui/glade-inspector.c:200
+msgid "The project being inspected"
+msgstr "നിരീക്ഷിച്ച സംരംഭം"
+
+#: ../gladeui/glade-inspector.c:591
 #, c-format
 msgid "(internal %s)"
-msgstr ""
+msgstr "(ആന്തരിക %s)"
 
-#: ../gladeui/glade-project-view.c:650
+#: ../gladeui/glade-inspector.c:595
 #, c-format
 msgid "(%s child)"
 msgstr "(%s ചൈള്‍ഡ്)"
 
-#: ../gladeui/glade-custom.c:217
+#: ../gladeui/glade-custom.c:216
 msgid "Creation Function"
 msgstr "ഫംഗ്ഷന്‍ ഉണ്ടാക്കുക"
 
-#: ../gladeui/glade-custom.c:218
+#: ../gladeui/glade-custom.c:217
 msgid "The function which creates this widget"
-msgstr ""
+msgstr "ഈ വിഡ്ജറ്റ് ഉണ്ടാക്കുന്ന ഫംഗ്ഷന്‍"
 
-#: ../gladeui/glade-custom.c:224
+#: ../gladeui/glade-custom.c:223
 msgid "String 1"
 msgstr "സ്ട്രിങ് 1"
 
-#: ../gladeui/glade-custom.c:225
+#: ../gladeui/glade-custom.c:224
 msgid "The first string argument to pass to the function"
-msgstr ""
+msgstr "ഫംഗ്ഷനിലേക്ക് നല്‍കുവാനുള്ള ആദ്യത്തെ സ്ട്രിങ് ആര്‍ഗ്യുമെന്റ്"
 
-#: ../gladeui/glade-custom.c:231
+#: ../gladeui/glade-custom.c:230
 msgid "String 2"
 msgstr "സ്ട്രിങ് ൨"
 
-#: ../gladeui/glade-custom.c:232
+#: ../gladeui/glade-custom.c:231
 msgid "The second string argument to pass to the function"
-msgstr ""
+msgstr "ഫംഗ്ഷനിലേക്ക് നല്‍കുവാനുള്ള രണ്ടാമത്തെ സ്ട്രിങ് ആര്‍ഗ്യുമെന്റ്"
+
+#: ../gladeui/glade-custom.c:237
+msgid "Integer 1"
+msgstr "ഇന്‍റിജറ്‍ 1"
 
 #: ../gladeui/glade-custom.c:238
-msgid "Integer 1"
-msgstr "ഇന്‍റിജറ്‍ ൧"
-
-#: ../gladeui/glade-custom.c:239
 msgid "The first integer argument to pass to the function"
-msgstr ""
+msgstr "ഫംഗ്ഷനിലേക്ക് നല്‍കുവാനുള്ള ആദ്യത്തെ ഇന്റിജര്‍ ആര്‍ഗ്യുമെന്റ്"
+
+#: ../gladeui/glade-custom.c:244
+msgid "Integer 2"
+msgstr "ഇന്‍റിജറ്‍ 2"
 
 #: ../gladeui/glade-custom.c:245
-msgid "Integer 2"
-msgstr "ഇന്‍റിജറ്‍ ൨"
-
-#: ../gladeui/glade-custom.c:246
 msgid "The second integer argument to pass to the function"
-msgstr ""
+msgstr "ഫംഗ്ഷനിലേക്ക് നല്‍കുവാനുള്ള രണ്ടാമത്തെ ഇന്റിജര്‍ ആര്‍ഗ്യുമെന്റ്"
 
-#: ../plugins/gtk+/glade-gtk.c:169
+#: ../gladeui/glade-widget-action.c:151
+msgid "class"
+msgstr "ക്ലാസ്സ്"
+
+#: ../gladeui/glade-widget-action.c:152
+msgid "GladeWidgetActionClass structure pointer"
+msgstr "GladeWidgetActionClass സ്ട്രക്ചര്‍ പോയിന്റര്‍"
+
+#: ../gladeui/glade-widget-action.c:159
+msgid "Whether or not this action is sensitive"
+msgstr "ഈ പ്രവര്‍ത്തി സെന്‍സിറ്റീവ് ആണോ എന്ന്"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:479
+msgid "All Contexts"
+msgstr "എല്ലാ കോണ്‍ടെക്സ്റ്റും"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1363
+msgid "Named Icon Chooser"
+msgstr "നെയിമ്ഡ് ഐക്കണ്‍ ചൂസര്‍"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1401
+msgid "Icon _Name:"
+msgstr "പ്രതിരൂപത്തിന്റെ _പേര്:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1484
+msgid "_List standard icons only"
+msgstr "നിലവാരമുള്ള പ്രതിരൂപങ്ങള്‍ മാത്രം _ലിസ്റ്റ് ചെയ്യുക"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1700
+#, c-format
+msgid "Could not create directory: %s"
+msgstr "ഡയറക്ടറി ഉണ്ടാക്കുവാന്‍ സാധ്യമായില്ല: %s"
+
+#: ../gladeui/icon-naming-spec.c:35
+msgid "Actions"
+msgstr "പ്രവര്‍ത്തികള്‍"
+
+#: ../gladeui/icon-naming-spec.c:36
+msgid "Applications"
+msgstr "പ്രയോഗങ്ങള്‍‍"
+
+#: ../gladeui/icon-naming-spec.c:37
+msgid "Categories"
+msgstr "വിഭാഗങ്ങള്‍"
+
+#: ../gladeui/icon-naming-spec.c:38
+msgid "Devices"
+msgstr "ഡിവൈസുകള്‍"
+
+#: ../gladeui/icon-naming-spec.c:39
+msgid "Emblems"
+msgstr "മുദ്രകള്‍"
+
+#: ../gladeui/icon-naming-spec.c:40
+msgid "Emotes"
+msgstr "ഇമോട്ട്സ്"
+
+#: ../gladeui/icon-naming-spec.c:41
+msgid "International"
+msgstr "ആന്താരാഷ്ട്രീയ"
+
+#: ../gladeui/icon-naming-spec.c:42
+msgid "MIME Types"
+msgstr "MIME തരത്തിലുള്ളവ"
+
+#: ../gladeui/icon-naming-spec.c:43
+msgid "Places"
+msgstr "സ്ഥലങ്ങള്‍"
+
+#: ../gladeui/icon-naming-spec.c:44
+msgid "Status"
+msgstr "നിലവാരം"
+
+#: ../plugins/gtk+/glade-gtk.c:170
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:170
+#: ../plugins/gtk+/glade-gtk.c:171
 msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
+msgstr "GnomeUIInfo സ്റ്റോക്ക് വസ്തു തിരഞ്ഞെടുക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:186
-msgid "Filename"
-msgstr "ഫയലിന്‍റെ പേര്"
-
-#: ../plugins/gtk+/glade-gtk.c:188
-msgid "Icon Theme"
-msgstr ""
-
-#: ../plugins/gtk+/glade-gtk.c:208 ../plugins/gtk+/gtk+.xml.in.h:57
-msgid "Container"
-msgstr ""
-
-#: ../plugins/gtk+/glade-gtk.c:218 ../plugins/gtk+/glade-gtk.c:227
+#: ../plugins/gtk+/glade-gtk.c:213 ../plugins/gtk+/glade-gtk.c:222
 msgid "Method"
 msgstr "രീതി"
 
-#: ../plugins/gtk+/glade-gtk.c:219
+#: ../plugins/gtk+/glade-gtk.c:214
 msgid "The method to use to edit this image"
-msgstr ""
+msgstr "ഈ ഇമേജില്‍ മാറ്റം വരുത്തുന്നതിനുള്ള മാര്‍ഗ്ഗം"
 
-#: ../plugins/gtk+/glade-gtk.c:228
+#: ../plugins/gtk+/glade-gtk.c:223
 msgid "The method to use to edit this button"
-msgstr ""
+msgstr "ഈ ബട്ടണില്‍ മാറ്റം വരുത്തുന്നതിനുള്ള മാര്‍ഗ്ഗം"
 
-#: ../plugins/gtk+/glade-gtk.c:585
+#: ../plugins/gtk+/glade-gtk.c:355
+#, c-format
+msgid "Removing parent of %s"
+msgstr "%s-ന്റെ പേരന്റിനെ നീക്കം ചെയ്യുന്നു"
+
+#: ../plugins/gtk+/glade-gtk.c:406
+#, c-format
+msgid "Adding parent %s to %s"
+msgstr "%s എന്ന പേരന്റിലേക്ക് %s-നെ ചേര്‍ക്കുന്നു"
+
+#: ../plugins/gtk+/glade-gtk.c:774
 #, c-format
 msgid "Ordering children of %s"
-msgstr ""
+msgstr "%s-ന്റെ കുട്ടികളെ ക്രമത്തിലാക്കുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3266
-#: ../plugins/gtk+/glade-gtk.c:3441 ../plugins/gtk+/glade-gtk.c:3445
+#: ../plugins/gtk+/glade-gtk.c:1253 ../plugins/gtk+/glade-gtk.c:1260
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "%s-ല്‍ പ്ലെയിസ്ഹോള്‍ഡര്‍ ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/glade-gtk.c:1267
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "%s-ല്‍ നിന്നും പ്ലെയിസ്ഹോള്‍ഡറിനെ നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/glade-gtk.c:2182 ../plugins/gtk+/glade-gtk.c:2190
+#, c-format
+msgid "Insert Row on %s"
+msgstr "%s-ല്‍ വരി ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/glade-gtk.c:2198 ../plugins/gtk+/glade-gtk.c:2206
+#, c-format
+msgid "Insert Column on %s"
+msgstr "%s-ല്‍ നിര ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/glade-gtk.c:2214
+#, c-format
+msgid "Remove Column on %s"
+msgstr "%s-ലുള്ള കളം നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/glade-gtk.c:2222
+#, c-format
+msgid "Remove Row on %s"
+msgstr "%s-ലുള്ള വരി നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/glade-gtk.c:3162 ../plugins/gtk+/glade-gtk.c:3169
+#, c-format
+msgid "Insert page on %s"
+msgstr "%s-ല്‍ താള്‍ ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/glade-gtk.c:3176
+#, c-format
+msgid "Remove page from %s"
+msgstr "%s-ലുള്ള താള്‍ നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/glade-gtk.c:3921 ../plugins/gtk+/glade-gtk.c:3925
+#: ../plugins/gtk+/glade-gtk.c:4100 ../plugins/gtk+/glade-gtk.c:4104
 msgid "This only applies with label type buttons"
-msgstr ""
+msgstr "ഇത് ലേബല്‍ തരത്തിലുള്ള ബട്ടണുകള്‍ക്ക് മാത്രം ബാധകമാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3277 ../plugins/gtk+/glade-gtk.c:3281
-#: ../plugins/gtk+/glade-gtk.c:3433 ../plugins/gtk+/glade-gtk.c:3437
+#: ../plugins/gtk+/glade-gtk.c:3936 ../plugins/gtk+/glade-gtk.c:3940
+#: ../plugins/gtk+/glade-gtk.c:4092 ../plugins/gtk+/glade-gtk.c:4096
 msgid "This only applies with stock type buttons"
-msgstr ""
+msgstr "ഇത് സ്റ്റോക്ക് തരത്തിലുള്ള ബട്ടണുകള്‍ക്ക് മാത്രം ബാധകമാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3541 ../plugins/gtk+/glade-gtk.c:3563
+#: ../plugins/gtk+/glade-gtk.c:4200 ../plugins/gtk+/glade-gtk.c:4222
 msgid "You must remove any children before you can set the type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ളത് എന്ന് ക്രമികരിക്കുന്നതിന് മുമ്പ് കുട്ടികളെ നീക്കം ചെയ്യേണ്ടതാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3587 ../plugins/gtk+/glade-gtk.c:4952
+#: ../plugins/gtk+/glade-gtk.c:4246 ../plugins/gtk+/glade-gtk.c:5759
 msgid "This only applies with file type images"
-msgstr ""
+msgstr "ഇത് ഫയല്‍ തരത്തിലുള്ള ഇമേജുകള്‍ക്ക് മാത്രം ബാധകമാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3595 ../plugins/gtk+/glade-gtk.c:4956
+#: ../plugins/gtk+/glade-gtk.c:4254 ../plugins/gtk+/glade-gtk.c:5763
 msgid "This only applies to Icon Theme type images"
-msgstr ""
+msgstr "ഇത് ഥീം തരത്തിലുള്ള ഇമേജുകള്‍ക്ക് മാത്രം ബാധകമാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3604 ../plugins/gtk+/glade-gtk.c:4954
+#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5761
 msgid "This only applies with stock type images"
-msgstr ""
+msgstr "ഇത് സ്റ്റോക്ക് തരത്തിലുള്ള ഇമേജുകള്‍ക്ക് മാത്രം ബാധകമാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3616
+#: ../plugins/gtk+/glade-gtk.c:4276
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr ""
+"പിക്സലിന്റെ വലിപ്പം പ്രതിരൂപത്തിന്റെ വലിപ്പത്തേക്കാള്‍ പ്രാധാന്യമുള്ളതാകുന്നു; നിങ്ങള്‍ക്ക് പ്രതിരൂപത്തിന്റെ "
+"വ്യാപ്തി ഉപയോഗിക്കണം എങ്കില്‍, പിക്സലിന്റെ വ്യാപ്തി -1 ആക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:3642
+#: ../plugins/gtk+/glade-gtk.c:4302
 msgid "Pixel Size takes precedence over Icon size"
-msgstr ""
+msgstr "പിക്സലിന്റെ വലിപ്പം പ്രതിരൂപത്തിന്റെ വലിപ്പത്തേക്കാള്‍ പ്രാധാന്യമുള്ളതാകുന്നു"
 
-#: ../plugins/gtk+/glade-gtk.c:3933 ../plugins/gtk+/glade-gtk.c:4843
+#: ../plugins/gtk+/glade-gtk.c:4615 ../plugins/gtk+/glade-gtk.c:5609
 msgid "<separator>"
 msgstr "<separator>"
 
-#: ../plugins/gtk+/glade-gtk.c:4107 ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/glade-gtk.c:4789 ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Normal"
 msgstr "സാധാരണ"
 
-#: ../plugins/gtk+/glade-gtk.c:4108 ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/glade-gtk.c:4790 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Image"
 msgstr "ഇമേജ്"
 
-#: ../plugins/gtk+/glade-gtk.c:4109
+#: ../plugins/gtk+/glade-gtk.c:4791
 msgid "Check"
 msgstr "പരിശോധിക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/glade-gtk.c:4902
+#: ../plugins/gtk+/glade-gtk.c:4792 ../plugins/gtk+/glade-gtk.c:5673
 msgid "Radio"
 msgstr "റേഡിയോ"
 
-#: ../plugins/gtk+/glade-gtk.c:4111 ../plugins/gtk+/glade-gtk.c:4905
+#: ../plugins/gtk+/glade-gtk.c:4793 ../plugins/gtk+/glade-gtk.c:5676
 msgid "Separator"
 msgstr "സെപ്പറേറ്ററ്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:4115
+#: ../plugins/gtk+/glade-gtk.c:4797
 msgid "Add Item"
 msgstr "വസ്തു ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4116
+#: ../plugins/gtk+/glade-gtk.c:4798
 msgid "Add Child Item"
 msgstr "ചൈള്‍ഡ് വസ്തു ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4117 ../plugins/gtk+/glade-gtk.c:4914
+#: ../plugins/gtk+/glade-gtk.c:4799 ../plugins/gtk+/glade-gtk.c:5685
 msgid "Add Separator"
 msgstr "സെപ്പറേറ്ററ്‍ ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4130
+#: ../plugins/gtk+/glade-gtk.c:4812
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1843,150 +2060,155 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>സൂചന:</b></big>\n"
+"  * ശാഖരീതിയിലുള്ള ദൃശ്യത്തില്‍ വസ്തുക്കള്‍ ചേര്‍ക്കുന്നതിനായി റൈറ്റ് ക്ലിക്ക് ചെയ്യുക.\n"
+"  * തിരഞ്ഞെടുത്ത വസ്തു വേണ്ടെന്ന് വയ്ക്കുന്നതിനായി നീക്കം ചെയ്യുക എന്ന ബട്ടണ്‍ അമര്‍ത്തുക.\n"
+"  * &amp; വലിച്ചിട്ട് ക്രമം മാറ്റുക.\n"
+"  * നിരയില്‍ മാറ്റം വരുത്തുവാന്‍ സാധിക്കുന്നു."
 
-#: ../plugins/gtk+/glade-gtk.c:4362
+#: ../plugins/gtk+/glade-gtk.c:4828 ../plugins/gtk+/glade-gtk.c:5343
+msgid "Edit Menu Bar"
+msgstr "മെനു ബാറില്‍ മാറ്റം വരുത്തുക"
+
+#: ../plugins/gtk+/glade-gtk.c:4830 ../plugins/gtk+/glade-gtk.c:5345
+msgid "Edit Menu"
+msgstr "മെനുവില്‍ മാറ്റം വരുത്തുക"
+
+#: ../plugins/gtk+/glade-gtk.c:5081
 msgid "Print S_etup"
-msgstr ""
+msgstr "പ്രിന്റ് ക്ര_മികരണം"
 
-#: ../plugins/gtk+/glade-gtk.c:4366
+#: ../plugins/gtk+/glade-gtk.c:5085
 msgid "Find Ne_xt"
 msgstr "അടുത്തത് കണ്ടുപിടിക്കുക (_x)"
 
-#: ../plugins/gtk+/glade-gtk.c:4370
+#: ../plugins/gtk+/glade-gtk.c:5089
 msgid "_Undo Move"
-msgstr ""
+msgstr "നീക്കം വേണ്ടെന്ന് _വയ്ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4374
+#: ../plugins/gtk+/glade-gtk.c:5093
 msgid "_Redo Move"
-msgstr ""
+msgstr "നടത്തിയ നീക്കം _വീണ്ടും ചെയ്യുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4377
+#: ../plugins/gtk+/glade-gtk.c:5096
 msgid "Select _All"
 msgstr "എല്ലാം തിരഞ്ഞെടുക്കുക (_A)"
 
-#: ../plugins/gtk+/glade-gtk.c:4380
+#: ../plugins/gtk+/glade-gtk.c:5099
 msgid "_New Game"
 msgstr "പുതിയ കളി (_N)"
 
-#: ../plugins/gtk+/glade-gtk.c:4383
+#: ../plugins/gtk+/glade-gtk.c:5102
 msgid "_Pause game"
 msgstr "കളി തല്‍ക്കാലത്തേക്ക് നിറ്‍ത്തുക (_P)"
 
-#: ../plugins/gtk+/glade-gtk.c:4386
+#: ../plugins/gtk+/glade-gtk.c:5105
 msgid "_Restart Game"
 msgstr "കളി വീണ്ടും ആരംഭിക്കുക (_R)"
 
-#: ../plugins/gtk+/glade-gtk.c:4389
+#: ../plugins/gtk+/glade-gtk.c:5108
 msgid "_Hint"
 msgstr "സൂചന (_H)"
 
-#: ../plugins/gtk+/glade-gtk.c:4392
+#: ../plugins/gtk+/glade-gtk.c:5111
 msgid "_Scores..."
 msgstr "സ്കോറ്‍ (_S)..."
 
-#: ../plugins/gtk+/glade-gtk.c:4395
+#: ../plugins/gtk+/glade-gtk.c:5114
 msgid "_End Game"
 msgstr "കളി അവസാനിപ്പിക്കുക (_E)"
 
-#: ../plugins/gtk+/glade-gtk.c:4398
+#: ../plugins/gtk+/glade-gtk.c:5117
 msgid "Create New _Window"
 msgstr "പുതിയ ജാലകം ഉണ്ടാക്കുക (_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:4401
+#: ../plugins/gtk+/glade-gtk.c:5120
 msgid "_Close This Window"
 msgstr "ഈ ജാലകം അടയ്ക്കുക (_C)"
 
-#: ../plugins/gtk+/glade-gtk.c:4413
+#: ../plugins/gtk+/glade-gtk.c:5132
 msgid "_Settings"
 msgstr "ക്റമികരണങ്ങള്‍ (_S)"
 
-#: ../plugins/gtk+/glade-gtk.c:4416
+#: ../plugins/gtk+/glade-gtk.c:5135
 msgid "Fi_les"
 msgstr "ഫയലുകള്‍ (_l)"
 
-#: ../plugins/gtk+/glade-gtk.c:4419
+#: ../plugins/gtk+/glade-gtk.c:5138
 msgid "_Windows"
 msgstr "ജാലകങ്ങള്‍ (_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:4425
+#: ../plugins/gtk+/glade-gtk.c:5144
 msgid "_Game"
 msgstr "കളി (_G)"
 
-#: ../plugins/gtk+/glade-gtk.c:4521
+#: ../plugins/gtk+/glade-gtk.c:5240
 msgid "This does not apply with stock items"
-msgstr ""
+msgstr "ഇത് സ്റ്റോക്കിലുള്ള വസ്തുക്കള്‍ക്ക് ബാധകമല്ല"
 
-#: ../plugins/gtk+/glade-gtk.c:4731
-msgid "Menu Bar Editor"
-msgstr ""
-
-#: ../plugins/gtk+/glade-gtk.c:4738
-msgid "Menu Editor"
-msgstr ""
-
-#: ../plugins/gtk+/glade-gtk.c:4852
+#: ../plugins/gtk+/glade-gtk.c:5618
 msgid "<custom>"
 msgstr "<custom>"
 
-#: ../plugins/gtk+/glade-gtk.c:4900 ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/glade-gtk.c:5671 ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button"
 msgstr "ബട്ടണ്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:4901
+#: ../plugins/gtk+/glade-gtk.c:5672
 msgid "Toggle"
-msgstr ""
+msgstr "ടൊഗ്ഗിള്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:4903 ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:5674 ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Menu"
 msgstr "മെനു"
 
-#: ../plugins/gtk+/glade-gtk.c:4904
+#: ../plugins/gtk+/glade-gtk.c:5675
 msgid "Item"
 msgstr "വസ്തു"
 
-#: ../plugins/gtk+/glade-gtk.c:4909
+#: ../plugins/gtk+/glade-gtk.c:5680
 msgid "Add Tool Button"
 msgstr "ടൂള്‍ ബട്ടണ്‍ ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4910
+#: ../plugins/gtk+/glade-gtk.c:5681
 msgid "Add Toggle Button"
 msgstr "ടൊഗിള്‍ ബട്ടണ്‍ ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4911
+#: ../plugins/gtk+/glade-gtk.c:5682
 msgid "Add Radio Button"
 msgstr "റേഡിയോ ബട്ടണ്‍ ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4912
+#: ../plugins/gtk+/glade-gtk.c:5683
 msgid "Add Menu Button"
 msgstr "മെനു ബട്ടണ്‍ ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4913
+#: ../plugins/gtk+/glade-gtk.c:5684
 msgid "Add Tool Item"
 msgstr "ടൂള്‍ ഐറ്റം ചേറ്‍ക്കുക"
 
-#: ../plugins/gtk+/glade-gtk.c:4922
+#: ../plugins/gtk+/glade-gtk.c:5693
 msgid "Tool Bar Editor"
-msgstr ""
+msgstr "ടൂള്‍ ബാര്‍ എഡിറ്റര്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:5675
+#: ../plugins/gtk+/glade-gtk.c:6509
 msgid "Introduction page"
-msgstr ""
+msgstr "അവതരണത്തിനുള്ള താള്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:5679
+#: ../plugins/gtk+/glade-gtk.c:6513
 msgid "Content page"
-msgstr ""
+msgstr "ഉള്ളടക്കത്തിന്റെ താള്‍"
 
-#: ../plugins/gtk+/glade-gtk.c:5683
-msgid "Confirm page"
-msgstr ""
+#: ../plugins/gtk+/glade-gtk.c:6517
+msgid "Confirmation page"
+msgstr "ഉറപ്പ് വരുത്തുന്ന താള്‍"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
-msgstr ""
+msgstr "ഒരു സ്റ്റോക്ക് വസ്തു, നിങ്ങള്‍ക്കിഷ്ടമുള്ള ഇമേജും ലേബലും തിരഞ്ഞെടുക്കുന്നതിനായി ശൂന്യം തിരഞ്ഞെടുക്കുക"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "ഈ വിഡ്ജറ്റിനുള്ള ടൂള്‍ടിപ്പ് ടെക്സ്റ്റ്"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -1994,1046 +2216,1219 @@ msgstr ""
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:8
 msgid "About Dialog"
-msgstr ""
+msgstr "ഡയലോഗ് സംബന്ധിച്ച്"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Label"
-msgstr ""
+msgstr "ആക്സല്‍ ലേബല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accessible Description"
-msgstr ""
+msgstr "ലഭ്യമാകുന്ന വിവരണം"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:12
+#: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accessible Name"
-msgstr ""
+msgstr "ലഭ്യമാകുന്ന പേര്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "Add Parent"
+msgstr "പേരന്റിനെ ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Alignment"
-msgstr ""
+msgstr "അലൈന്‍മെന്റ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "All"
 msgstr "എല്ലാം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:21
 msgid "All Events"
 msgstr "എല്ലാ ഇവന്‍റുകളും"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:18 ../plugins/gnome/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:22 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "എപ്പോഴും"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:23
 msgid "Always Center"
 msgstr "എപ്പോഴും നടുവില്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:20
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Arrow"
 msgstr "ആരോ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:21
-msgid "Aspect Frame"
-msgstr ""
+#: ../plugins/gtk+/gtk+.xml.in.h:25
+msgid "Ascending"
+msgstr "ഏറ്റവും കുറവില്‍ നിന്നും കൂടുതലിലേക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:26
+msgid "Aspect Frame"
+msgstr "ആസ്പെക്ട് ഫ്രെയിം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Assistant"
 msgstr "അസ്സിസ്റ്റന്‍റ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Automatic"
 msgstr "ഓട്ടോമാറ്റിക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:24
-msgid "Both"
-msgstr "രണ്ടും"
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+msgid "Before"
+msgstr "മുമ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:25
-msgid "Both Horizontal"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:26 ../plugins/gnome/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:30 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "താഴ് ഭാഗം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Bottom Left"
 msgstr "താഴെ ഇടത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Bottom Right"
 msgstr "താഴെ വലത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Bottom to Top"
 msgstr "താഴെ മുതല്‍ മുകളില്‍ വരെ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Box"
 msgstr "ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:32
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:35 ../plugins/gnome/canvas.xml.in.h:2
+msgid "Browse"
+msgstr "തിരയുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button 1 Motion"
 msgstr "ബട്ടണ്‍ ൧ മോഷന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button 2 Motion"
 msgstr "ബട്ടണ്‍ ൨ മോഷന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Button 3 Motion"
 msgstr "ബട്ടണ്‍ ൩ മോഷന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:35
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Button Box"
 msgstr "ബട്ടണ്‍ ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Button Motion"
 msgstr "ബട്ടണ്‍ മോഷന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Button Press"
 msgstr "ബട്ടണ്‍ അമറ്‍ത്തുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Button Release"
-msgstr ""
+msgstr "ബട്ടണ്‍ റിലീസ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Calendar"
 msgstr "കലണ്ടറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Cancel"
 msgstr "റദ്ദാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Center"
 msgstr "നടുഭാഗം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Center on Parent"
-msgstr ""
+msgstr "പേരന്റിന്റെ മദ്ധ്യേ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:48
+msgid "Centimeters"
+msgstr "സെന്റീമീറ്ററുകള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Character"
 msgstr "അക്ഷരം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Check Button"
 msgstr "ചെക്ക് ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:45
+#: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Check Menu Item"
-msgstr ""
+msgstr "മെനു വസ്തു പരിശോധിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Close"
 msgstr "അടയ്ക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Color Button"
 msgstr "കളറ്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Color Selection"
 msgstr "നിറം തിരഞ്ഞെടുക്കല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Color Selection Dialog"
-msgstr ""
+msgstr "നിറം തിരഞ്ഞെടുക്കുന്നതിനുള്ള ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:52
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Columned List"
-msgstr ""
+msgstr "നിരയിലുള്ള പട്ടിക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Combo"
 msgstr "കോംപോ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Combo Box"
 msgstr "കോംപോ ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Combo Box Entry"
 msgstr "കോംപോ ബോക്സ് എന്‍ട്രി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:62
 msgid "Confirm"
 msgstr "ഉറപ്പാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:58
-msgid "Containers"
-msgstr ""
+#: ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Container"
+msgstr "കണ്ടെയിനര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:64
+msgid "Containers"
+msgstr "കണ്ടെയിനറുകള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Content"
 msgstr "ഉള്ളടക്കം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Continuous"
 msgstr "തുടറ്‍ച്ചയുളള"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Control and Display"
-msgstr ""
+msgstr "കണ്ട്രോള്‍ ചെയ്ത് കാണിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62 ../plugins/gnome/gnome.xml.in.h:5
+#: ../plugins/gtk+/gtk+.xml.in.h:71 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "ഫോള്‍ഡറ്‍ ഉണ്ടാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Curve"
 msgstr "വളവ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Custom"
 msgstr "കസ്റ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Custom widget"
-msgstr ""
+msgstr "വിഡ്ജറ്റ് യഥേഷ്ടം തയ്യാറാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Default"
 msgstr "ഡീഫോള്‍ട്ട്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Delayed"
-msgstr ""
+msgstr "താമസം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Descending"
+msgstr "ഏറ്റവും കൂടുതലില്‍ നിന്നും കുറവിലേക്ക്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+msgid "Described By"
+msgstr "ആരുടെ വിവരണം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "Description For"
+msgstr "എന്തിനുള്ള വിവരണം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Description of an object, formatted for assistive technology access"
-msgstr ""
+msgstr "അസ്സിസ്റ്റീവ് ടെക്നോളജിയ്ക്കായി ഒബ്ജക്ടിന്റെ വിവരണം ശരിയാക്കിയിരിക്കുന്നു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Desktop"
 msgstr "ഡസ്ക്ടോപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Dialog"
 msgstr "ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Dialog Box"
 msgstr "ഡയലോഗ് ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Discontinuous"
-msgstr ""
+msgstr "തുടര്‍ച്ചയില്ലാത്ത"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Discrete"
-msgstr ""
+msgstr "വിഭിന്നമായ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Dock"
 msgstr "ഡോക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Down"
 msgstr "താഴെ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:89
+msgid "Drag & Drop"
+msgstr "വലിച്ചിടുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Drag and Drop"
-msgstr ""
+msgstr "വലിച്ചിടുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Drawing Area"
-msgstr ""
+msgstr "വരയ്ക്കുന്നതിനുള്ള സ്ഥലം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Drop Down Menu"
-msgstr ""
+msgstr "ഡ്രോപ്പ് ഡൌണ്‍ മെനു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:80
+#: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "East"
 msgstr "കിഴക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Edge"
 msgstr "അറ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Edit Type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള മാറ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83 ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:96
+msgid "Edit&#8230;"
+msgstr "Edit&#8230;"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "അവസാനം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Enter Notify"
-msgstr ""
+msgstr "അറിയിപ്പിലേക്ക് കടക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85 ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "പിശക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86 ../plugins/gnome/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:102 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
-msgstr ""
+msgstr "എച്ച്ട് ഇന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gnome/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:103 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
-msgstr ""
+msgstr "എച്ച്ട് ഔട്ട്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Event Box"
-msgstr ""
+msgstr "ഇന്റ് ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:89 ../plugins/gnome/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:105 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "വികസിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Expander"
-msgstr ""
+msgstr "എക്സ്പാന്‍ഡര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Exposure"
-msgstr ""
+msgstr "എക്സ്പോഷര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:108
+msgid "Extended"
+msgstr "എക്സ്റ്റെന്‍ഡട്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "File Chooser Button"
-msgstr ""
+msgstr "ഫയല്‍ തിരഞ്ഞെടുക്കുന്നതിനുള്ള ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "File Chooser Dialog"
-msgstr ""
+msgstr "ഫയല്‍ തിരഞ്ഞെടുക്കുന്നതിനുള്ള ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "File Chooser Widget"
+msgstr "ഫയല്‍ തിരഞ്ഞെടുക്കുന്നതിനുള്ള വിഡ്ജറ്റ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "File Name"
 msgstr "ഫയലിന്‍റെ പേര്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "File Selection"
-msgstr ""
+msgstr "ഫയല്‍ തിരഞ്ഞെടുക്കല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:96 ../plugins/gnome/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+msgid "Filename"
+msgstr "ഫയലിന്‍റെ പേര്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "നിറയ്ക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Fixed"
-msgstr ""
+msgstr "ഉറപ്പിച്ച"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Focus Change"
-msgstr ""
+msgstr "ഫോക്കസ് മാറ്റുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:99
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Font Button"
-msgstr ""
+msgstr "ഫോണ്ട് ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Font Selection"
-msgstr ""
+msgstr "ഫോണ്ട് തിരഞ്ഞെടുക്കല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "ഫോണ്ട് തിരഞ്ഞെടുക്കുന്നതിനുള്ള ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:102
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Frame"
 msgstr "ഫ്റെയിം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:103
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Free"
 msgstr "ഫ്റീ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Gamma Curve"
-msgstr ""
+msgstr "ഗാമാ കേര്‍വ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:105
+#: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Gtk+ Obsolete"
-msgstr ""
+msgstr "Gtk+ Obsolete"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:106
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Half"
 msgstr "പകുതി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
-msgid "Handle Box"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:108 ../plugins/gnome/bonobo.xml.in.h:6
-msgid "Horizontal"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:109
-msgid "Horizontal Box"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:110
-msgid "Horizontal Button Box"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:111
-msgid "Horizontal Panes"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:112
-msgid "Horizontal Ruler"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:113
-msgid "Horizontal Scale"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:114
-msgid "Horizontal Scrollbar"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:115
-msgid "Horizontal Separator"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:116
-msgid "Horizontal and Vertical"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:117
-msgid "Icon Name"
-msgstr "ഐക്കണ്‍ന്‍റെ പേര്"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:118
-msgid "Icon View"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:119
-msgid "Icons"
-msgstr "ഐക്കണുകള്‍"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:120
-msgid "If Valid"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:122
-msgid "Image Menu Item"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:123
-msgid "Image Type"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:124
-msgid "Immediate"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:125 ../plugins/gnome/bonobo.xml.in.h:7
-msgid "In"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:127
-msgid "Input Dialog"
-msgstr ""
-
 #: ../plugins/gtk+/gtk+.xml.in.h:128
-msgid "Intro"
-msgstr ""
+msgid "Handle Box"
+msgstr "ഹാന്‍ഡില്‍ ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129
-msgid "Items"
-msgstr ""
+#: ../plugins/gtk+/gtk+.xml.in.h:129 ../plugins/gnome/bonobo.xml.in.h:6
+msgid "Horizontal"
+msgstr "നേരെയുള്ള"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:130
-msgid "Key Press"
-msgstr ""
+msgid "Horizontal Box"
+msgstr "നേരെയുള്ള ബോക്സ്"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:131
-msgid "Key Release"
-msgstr ""
+msgid "Horizontal Button Box"
+msgstr "നേരെയുള്ള ബട്ടണ്‍ ബോക്സ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "Horizontal Panes"
+msgstr "നേരെയുള്ള പെയിനുകള്‍"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:133
+msgid "Horizontal Ruler"
+msgstr "നേരെയുള്ള റൂളര്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Horizontal Scale"
+msgstr "നേരെയുള്ള അളവ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Horizontal Scrollbar"
+msgstr "നേരെയുള്ള സ്ക്രോള്‍ബാര്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136
+msgid "Horizontal Separator"
+msgstr "നേരെയുള്ള വിടവടയാളം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+msgid "Horizontal and Vertical"
+msgstr "നേരെയും കുറുകയും"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Icon Theme"
+msgstr "പ്രതിരൂപത്തിന്റെ ഥീം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
+msgid "Icon View"
+msgstr "പ്രതിരൂപ്പത്തിന്റെ കാഴ്ച"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:141
+msgid "Icons only"
+msgstr "പ്രതിരൂപങ്ങള്‍ മാത്രം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "If Valid"
+msgstr "ശരിയെങ്കില്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:144
+msgid "Image Menu Item"
+msgstr "ഇമേജ് മെനു വസ്തു"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+msgid "Image Type"
+msgstr "ഏത് തരത്തിലുള്ള ഇമേജ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
+msgid "Immediate"
+msgstr "ഉടന്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147 ../plugins/gnome/bonobo.xml.in.h:7
+msgid "In"
+msgstr "അകത്ത്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148
+msgid "Inches"
+msgstr "ഇന്‍ഞ്ചുകള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid ""
+"Indicates that an object provides descriptive information about another "
+"object; more verbose than 'Label For'"
+msgstr ""
+"ഒരു ഒബ്ജക്ട് മറ്റൊരു ഒബ്ജക്ടിനെപ്പറ്റിയുള്ള വിവരണം ലഭ്യമാക്കുന്നു എന്ന് സൂചിപ്പിക്കുന്നു; "
+"'ലേബലിടുന്നത് എന്തിന്' എന്നതിനേക്കാള്‍ കൂടുതല്‍ വെര്‍ബോസ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
+msgid ""
+"Indicates that another object provides descriptive information about this "
+"object; more verbose than 'Labelled By'"
+msgstr ""
+"മറ്റൊരു ഒബ്ജക്ട് ഈ ഒബ്ജക്ടിനെപ്പറ്റിയുള്ള വിവരണം ലഭ്യമാക്കുന്നു എന്ന് സൂചിപ്പിക്കുന്നു; "
+"'പേരിട്ടത്' എന്നതിനേക്കാള്‍ കൂടുതല്‍ വെര്‍ബോസ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:162
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"ഒബ്ജക്ടിന്റെ ഉള്ളടക്കം ശരിയായി മറ്റൊരു AtkObject-ലേക്ക് പോകുന്നു എന്ന് "
+"സൂചിപ്പിക്കുന്നു, (ഉടനടിയുള്ള ടെക്സ്റ്റ്-ഫ്ലോയ്ക്ക് വേണ്ടി)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165
+msgid "Input Dialog"
+msgstr "ഡയലോഗ് ഇന്‍പുട്ട് ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166
+msgid "Insert After"
+msgstr "ശേഷം ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167
+msgid "Insert Before"
+msgstr "മുമ്പ് ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168
+msgid "Insert Column"
+msgstr "നിര ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Insert Page After"
+msgstr "ഇതിന് ശേഷം താള്‍ ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+msgid "Insert Page Before"
+msgstr "തൊട്ട് മുമ്പ് താള്‍ ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:171
+msgid "Insert Row"
+msgstr "നിര ചേര്‍ക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:172
+msgid "Intro"
+msgstr "അവതരണം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:173
+msgid "Invalid"
+msgstr "അസാധു"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+msgid "Items"
+msgstr "വസ്തുക്കള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176
+msgid "Key Press"
+msgstr "കീ പ്രെസ്സ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:177
+msgid "Key Release"
+msgstr "കീ റിലീസ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
+msgid "Large Toolbar"
+msgstr "വലിയ ടൂള്‍ബാര്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Layout"
 msgstr "ലേയൌട്ട്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Least Recently Used first"
-msgstr ""
+msgstr "ഏറ്റവും കുറവ് ഉപയോഗിച്ചത് ആദ്യം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Leave Notify"
-msgstr ""
+msgstr "അറിയിപ്പ് ഉപേക്ഷിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136 ../plugins/gnome/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "ഇടത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Left to Right"
 msgstr "ഇടത് മുതല്‍ വലത് വരെ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Linear"
 msgstr "ലീനിയറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Link Button"
 msgstr "ലിങ്ക് ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "List"
 msgstr "ലിസ്റ്റ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "List Item"
-msgstr ""
+msgstr "വസ്തു ലിസ്റ്റ് ചെയ്യുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
-msgid "Maximun Width"
-msgstr ""
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Maximum Width"
+msgstr "ഏറ്റവും കൂടുതല്‍ വീതി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Menu Bar"
 msgstr "മെനു ബാറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145
+#: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Menu Item"
-msgstr ""
+msgstr "മെനു വസ്തു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Menu Shell"
-msgstr ""
+msgstr "മെനു ഷെല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Menu Tool Button"
-msgstr ""
+msgstr "മെനു ടൂള്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Message Dialog"
-msgstr ""
+msgstr "സന്ദേശത്തിനുള്ള ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:149
+#: ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Middle"
 msgstr "മദ്ധ്യഭാഗം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Most Recently Used first"
 msgstr "ഏറ്റവും ഒടുവിലുളളത് ആദ്യം ഉപയോഗിക്കുന്നു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Mouse"
 msgstr "മൌസ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152 ../plugins/gnome/gnome.xml.in.h:41
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:202 ../plugins/gnome/canvas.xml.in.h:17
+msgid "Multiple"
+msgstr "മള്‍ട്ടിപ്പിള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Never"
 msgstr "ഒരിക്കലും ഇല്ല"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:204
+msgid "Node Child Of"
+msgstr "ഏതിന്റെ നോഡ് ചൈള്‍ഡ്"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "North"
 msgstr "തെക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "North East"
 msgstr "തെക്ക് കിഴക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "North West"
 msgstr "തെക്ക് പടിഞ്ഞാറ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:158
+#: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Notebook"
 msgstr "നോട്ട്ബുക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Notification"
 msgstr "അറിയിപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Number of items"
 msgstr "വസ്തുക്കളുടെ എണ്ണം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "Number of pages"
 msgstr "പേജുകളുടെ എണ്ണം"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:163
+#: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Object instance's name formatted for assistive technology access"
-msgstr ""
+msgstr "അസ്സിസ്റ്റീവ് ടെക്നോളജിയ്ക്കായി ഒബ്ജക്ടിന്റെ ഇന്‍സ്റ്റന്‍സ് പേര് ശരിയാക്കിയിരിക്കുന്നു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+msgid "Off"
+msgstr "ഓഫ് ആക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Ok"
 msgstr "ശരി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Ok, Cancel"
 msgstr "ശരി, റദ്ദാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gnome/gnome.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:219
+msgid "On"
+msgstr "ഓണ്‍ ആക്കുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220 ../plugins/gnome/gnome.xml.in.h:42
 msgid "Open"
 msgstr "തുറക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "Option Menu"
-msgstr ""
+msgstr "ഉപാധിയ്ക്കുള്ള മെനു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168 ../plugins/gnome/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "പുറത്തേക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
-msgid "Page Setup Dialog"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Paned"
-msgstr ""
+msgstr "പെയിന്‍ഡ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:227
+msgid "Pixels"
+msgstr "പിക്സലുകള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Pointer Motion"
-msgstr ""
+msgstr "പോയിന്റര്‍ മോഷന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Pointer Motion Hint"
-msgstr ""
+msgstr "പോയിന്റര്‍ മോഷന്‍ സൂചന"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Popup"
 msgstr "പോപ്പപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Popup Menu"
 msgstr "പോപ്പപ്പ് മെനു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176 ../plugins/gnome/glade-gnome.c:655
+#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/glade-gnome.c:649
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Position"
 msgstr "സ്ഥാനം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:179
-msgid "Print Dialog"
-msgstr "പ്റിന്‍റ് ഡയലോഗ്"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Progress"
 msgstr "നിലവാരം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Progress Bar"
-msgstr ""
+msgstr "പുരോഗതി അറിയിക്കുന്ന ബാര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Property Change"
-msgstr ""
+msgstr "ഗുണഗണങ്ങള്‍ മാറ്റുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Proximity  Out"
-msgstr ""
+msgstr "പ്രോക്സിമിറ്റി ഔട്ട്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Proximity In"
-msgstr ""
+msgstr "പ്രോക്സിമിറ്റി ഇന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/gnome.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:241 ../plugins/gnome/gnome.xml.in.h:49
 msgid "Question"
 msgstr "ചോദ്യം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Queue"
 msgstr "ക്യൂ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Radio Button"
 msgstr "റേഡിയോ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Radio Menu Item"
-msgstr ""
+msgstr "റേഡിയോ മെനു വസ്തു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "Radio Tool Button"
-msgstr ""
+msgstr "റേഡിയോ ടൂള്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Range"
-msgstr ""
+msgstr "പരിധി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Recent Chooser"
-msgstr ""
+msgstr "റീസന്റ് ചൂസര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:192
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Recent Chooser Dialog"
-msgstr ""
+msgstr "ഏറ്റവും ഒടുവിലുള്ള ചൂസര്‍ ഡയലോഗ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+msgid "Remove Column"
+msgstr "കളം നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+msgid "Remove Page"
+msgstr "പേജ് നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+msgid "Remove Parent"
+msgstr "പേരന്റിനെ നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+msgid "Remove Row"
+msgstr "വരി നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:255
+msgid "Remove Slot"
+msgstr "സ്ലോട്ട് നീക്കം ചെയ്യുക"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Response ID"
-msgstr ""
+msgstr "റെസ്പോണ്‍സ് ഐഡി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196 ../plugins/gnome/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "വലത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Right to Left"
 msgstr "വലത് മുതല്‍ ഇടത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Ruler"
 msgstr "റൂളറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199 ../plugins/gnome/gnome.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:260 ../plugins/gnome/gnome.xml.in.h:50
 msgid "Save"
 msgstr "സൂക്ഷിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Scale"
 msgstr "അളവ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Scroll"
-msgstr ""
+msgstr "സ്ക്രോള്‍ ചെയ്യുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:202
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Scrolled Window"
-msgstr ""
+msgstr "സ്ക്രോള്‍ ചെയ്യുവാന്‍ സാധിക്കുന്ന ജാലകം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:264 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Select Folder"
 msgstr "ഫോള്‍ഡറ്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Separator Menu Item"
-msgstr ""
+msgstr "സെപ്പറേറ്റര്‍ മെനു വസ്തു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:205
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Separator Tool Item"
-msgstr ""
+msgstr "സെപ്പറേറ്റര്‍ ടൂള്‍ വസ്തു"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "Set the current page (strictly for editing purposes)"
-msgstr ""
+msgstr "നിലവിലുള്ള താള്‍ ക്രമികരിക്കുക (മാറ്റം വരുത്തുന്നതിന് മാത്രം)"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:277
 msgid "Set the text in the view's text buffer"
-msgstr ""
+msgstr "കാഴ്ചയുടെ ടെക്സ്റ്റ് ബഫറില്‍ വാചകം ക്രമികരിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "Shrink"
-msgstr ""
+msgstr "ചെറുതാക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:279 ../plugins/gnome/canvas.xml.in.h:24
+msgid "Single"
+msgstr "സിംഗിള്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Size"
 msgstr "വലിപ്പം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+msgid "Small Toolbar"
+msgstr "ചെറിയ ടൂള്‍ബാര്‍"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "South"
 msgstr "വടക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "South East"
 msgstr "വടക്ക് കിഴക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "South West"
 msgstr "വടക്ക് പടിഞ്ഞാറ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "Spin Button"
 msgstr "സ്പിന്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:286
 msgid "Splash Screen"
 msgstr "സ്പ്ളാഷ് സ്ക്രീന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Spline"
 msgstr "സ്പ്ളൈന്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Spread"
-msgstr ""
+msgstr "പരത്തുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226 ../plugins/gnome/gnome.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:289 ../plugins/gnome/gnome.xml.in.h:55
 msgid "Start"
 msgstr "ആരംഭിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Static"
 msgstr "സ്റ്റാറ്റിക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "Status Bar"
 msgstr "സ്റ്റേറ്റസ് ബാറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "Stock Button"
 msgstr "സ്റ്റോക്ക് ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Stock Item"
 msgstr "സ്റ്റോക്ക് ഐറ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Structure"
 msgstr "ആകൃതി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:297
 msgid "Substructure"
-msgstr ""
+msgstr "സബ്സ്ട്രക്ചര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Summary"
 msgstr "സമ്മറി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Table"
 msgstr "ടേബിള്‍"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:237 ../plugins/gnome/gnome.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:302 ../plugins/gnome/gnome.xml.in.h:58
 msgid "Text"
 msgstr "ടെക്സ്റ്റ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:303
 msgid "Text Entry"
 msgstr "ടെക്സ്റ്റ് എന്‍ട്രി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Text View"
-msgstr ""
+msgstr "വാചകത്തിന്റെ ദൃശ്യം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:305
+msgid "Text below icons"
+msgstr "പ്രതിരൂപത്തിനടിയിലുള്ള വാചകം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:307
+msgid "Text only"
+msgstr "ടെക്സ്റ്റ് മാത്രം"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "The items in this combo box"
-msgstr ""
+msgstr "കോംബോ ബോക്സിലുള്ള വസ്തുക്കള്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "The number of items in the box"
-msgstr ""
+msgstr "പെട്ടിയിലുള്ള വസ്തുക്കളുടെ എണ്ണം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "The number of pages in the notebook"
-msgstr ""
+msgstr "നോട്ട് പുസ്തകത്തിലുള്ള താളുകളുടെ എണ്ണം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:311
 msgid "The page position in the Assistant"
-msgstr ""
+msgstr "അസ്സിസ്റ്റന്റിലുള്ള താളിന്റെ സ്ഥാനം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "The position of the menu item in the menu shell"
-msgstr ""
+msgstr "മെനു ഷെല്ലില്‍ മെനു വസ്തുവിനുള്ള സ്ഥാനം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "The position of the tool item in the toolbar"
-msgstr ""
+msgstr "ടൂള്‍ബാറില്‍ ഈ ഉപകരണത്തിനുള്ള സ്ഥാനം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:314
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr ""
+"ഈ ബട്ടണിന്റെ റെസ്പോണ്‍സ് ഐഡി ഒരു ഡയലോഗ് ആണ് (ഈ ബട്ടണ്‍ GtkDialog-ല്‍ "
+"ഇല്ലായെങ്കില്‍, പ്രയോജനമുള്ള ബട്ടണ്‍ അല്ല)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid "The stock item for this button"
-msgstr ""
+msgstr "ഈ ബട്ടണുള്ള സ്റ്റോക്ക് ഐറ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "The stock item for this image"
-msgstr ""
+msgstr "ഈ ഇമേജിനുള്ള സ്റ്റോക്ക് ഐറ്റം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:249
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid "The text of the menu item"
-msgstr ""
+msgstr "മെനുവിലുള്ള വസ്തുവിനുള്ള വാചകം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "The text to display"
-msgstr ""
+msgstr "പ്രദര്‍ശനത്തിനുള്ള വാചകം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "Toggle Button"
-msgstr ""
+msgstr "ടൊഗിള്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "Toggle Tool Button"
-msgstr ""
+msgstr "ഉപകരണ ബട്ടണ്‍ ടൊഗിള്‍ ചെയ്യുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:321
 msgid "Tool Bar"
 msgstr "ടൂള്‍ ബാറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Tool Button"
 msgstr "ടൂള്‍ ബട്ടണ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "Toolbar"
 msgstr "ടൂള്‍ബാറ്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Tooltip"
 msgstr "ടൂള്‍ടിപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:325 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "മുകള്‍ഭാഗം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Top Left"
 msgstr "മുകളില്‍ ഇടത്ത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:259
+#: ../plugins/gtk+/gtk+.xml.in.h:327
 msgid "Top Level"
-msgstr ""
+msgstr "ടോപ്പ് ലവല്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:260
+#: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Top Right"
 msgstr "മുകളില്‍ വലത്ത്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:261
+#: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Top to Bottom"
 msgstr "മുകളില്‍ നിന്ന് താഴെ വരെ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:330
 msgid "Toplevels"
-msgstr ""
+msgstr "ടോപ്പ്‌ലവലുകള്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Tree View"
 msgstr "ട്റീ വ്യൂ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Up"
 msgstr "മുകളിലേക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Use Underline"
 msgstr "അടിവര ഉപയോഗിക്കുക"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:334
 msgid "Utility"
 msgstr "യൂട്ടിലിറ്റി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267 ../plugins/gnome/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:335 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
-msgstr ""
+msgstr "കുറുകെയുള്ള"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:268
+#: ../plugins/gtk+/gtk+.xml.in.h:336
 msgid "Vertical Box"
-msgstr ""
+msgstr "കുറുകെയുള്ള പെട്ടി"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:269
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Vertical Button Box"
-msgstr ""
+msgstr "കുറുകെയുള്ള ബട്ടണ്‍ ബോക്സ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:270
+#: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Vertical Panes"
-msgstr ""
+msgstr "കുറുകെയുള്ള പെയിനുകള്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:271
+#: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "Vertical Ruler"
-msgstr ""
+msgstr "കുറുകെയുള്ള റൂളര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Vertical Scale"
-msgstr ""
+msgstr "കുറുകെയുള്ള അളവ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:273
+#: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Vertical Scrollbar"
-msgstr ""
+msgstr "കുറുകെയുള്ള സ്ക്രോള്‍ബാര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Vertical Separator"
-msgstr ""
+msgstr "കുറുകെയുള്ള വിടവടയാളം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:275
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "Viewport"
-msgstr ""
+msgstr "വ്യൂപോര്‍ട്ട്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:276
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Visibility Notify"
-msgstr ""
+msgstr "കാഴ്ചയുടെ അറിയിപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:277 ../plugins/gnome/gnome.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:345 ../plugins/gnome/gnome.xml.in.h:72
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "West"
 msgstr "പടിഞ്ഞാറ്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Window"
 msgstr "ജാലകം"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Word"
 msgstr "വാക്ക്"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Word Character"
-msgstr ""
+msgstr "വേര്‍ഡ് ക്യാരക്ടര്‍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Yes, No"
 msgstr "ഉവ്വ്, ഇല്ല"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
 
-#: ../plugins/gnome/glade-gnome.c:298
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:1
+msgid "GTK+ Unix Print Toplevels"
+msgstr "GTK+ യൂണിക്സ് പ്രിന്റ് ടോപലവലുകള്‍"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:2
+msgid "Page Setup Dialog"
+msgstr "താള്‍ ക്രമികരിക്കുന്ന ഡയലോഗ്"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+msgid "Print Dialog"
+msgstr "പ്റിന്‍റ് ഡയലോഗ്"
+
+#: ../plugins/gnome/glade-gnome.c:292
 msgid "Status Message."
-msgstr ""
+msgstr "നിലവാരം അറിയിക്കുന്ന സന്ദേശം."
 
-#: ../plugins/gnome/glade-gnome.c:656
+#: ../plugins/gnome/glade-gnome.c:650
 msgid "The position in the druid"
-msgstr ""
+msgstr "ഡ്രൂയിഡിലുള്ള സ്ഥാനം"
 
-#: ../plugins/gnome/glade-gnome.c:1008
+#: ../plugins/gnome/glade-gnome.c:1002
 msgid "Message box type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള സന്ദേശപ്പെട്ടി"
 
-#: ../plugins/gnome/glade-gnome.c:1009
+#: ../plugins/gnome/glade-gnome.c:1003
 msgid "The type of the message box"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള സന്ദേശപ്പെട്ടി"
 
-#: ../plugins/gnome/glade-gnome.c:1225
+#: ../plugins/gnome/glade-gnome.c:1211
 msgid "This property is valid only in font information mode"
-msgstr ""
+msgstr "ഫോണ്ട് ഇന്‍ഫോര്‍മെഷന്‍ മോഡില്‍ മാത്രമേ ഈ ഗുണഗണം ശരിയാകുള്ളൂ"
 
 #. This is deprecated
-#: ../plugins/gnome/glade-gnome.c:1313 ../plugins/gnome/canvas.xml.in.h:23
+#: ../plugins/gnome/glade-gnome.c:1299 ../plugins/gnome/canvas.xml.in.h:22
 msgid "Selection Mode"
-msgstr ""
+msgstr "തിരഞ്ഞെടുക്കുന്ന മോഡ്"
 
-#: ../plugins/gnome/glade-gnome.c:1314
+#: ../plugins/gnome/glade-gnome.c:1300
 msgid "Choose the Selection Mode"
-msgstr ""
+msgstr "തിരഞ്ഞെടുക്കുന്ന മോഡ് ഏതെന്ന് പറയുക"
 
-#: ../plugins/gnome/glade-gnome.c:1464
+#: ../plugins/gnome/glade-gnome.c:1437
 msgid "Placement"
-msgstr ""
+msgstr "പ്ലെയിസ്മെന്റ്"
 
-#: ../plugins/gnome/glade-gnome.c:1465
+#: ../plugins/gnome/glade-gnome.c:1438
 msgid "Choose the BonoboDockPlacement type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള BonoboDockPlacement എന്ന് തിരഞ്ഞെടുക്കുക"
 
-#: ../plugins/gnome/glade-gnome.c:1493
+#: ../plugins/gnome/glade-gnome.c:1466
 msgid "Behavior"
-msgstr ""
+msgstr "പെരുമാറ്റം"
 
-#: ../plugins/gnome/glade-gnome.c:1494
+#: ../plugins/gnome/glade-gnome.c:1467
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള BonoboDockItemBehavior എന്ന് തിരഞ്ഞെടുക്കുക"
 
-#: ../plugins/gnome/glade-gnome.c:1503
+#: ../plugins/gnome/glade-gnome.c:1476
 msgid "Pack Type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള പാക്ക്"
 
-#: ../plugins/gnome/glade-gnome.c:1504
+#: ../plugins/gnome/glade-gnome.c:1477
 msgid "Choose the Pack Type"
-msgstr ""
+msgstr "ഏത് തരത്തിലുള്ള പാക്ക് എന്ന തിരഞ്ഞെടുക്കുക"
 
 #: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
@@ -3045,11 +3440,11 @@ msgstr "പശ്ചാത്തലത്തിലുളള നിറം"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
-msgstr ""
+msgstr "ഉള്ളടക്കത്തിന്റെ പശ്ചാത്തലത്തിലുള്ള നിറം"
 
 #: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
-msgstr ""
+msgstr "ഡിഥര്‍"
 
 #: ../plugins/gnome/gnome.xml.in.h:10
 msgid "File"
@@ -3060,89 +3455,89 @@ msgid "Font Information"
 msgstr "ലിപി സംബന്ധിച്ചുളള വിവരം"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
+msgid "GNOME About"
+msgstr "ഗ്നോമിനെ സംബന്ധിച്ച്"
+
+#: ../plugins/gnome/gnome.xml.in.h:14
+msgid "GNOME App"
+msgstr "ഗ്നോം പ്രയോഗം"
+
+#: ../plugins/gnome/gnome.xml.in.h:15
+msgid "GNOME App Bar"
+msgstr "ഗ്നോം ആപ്പ് ബാര്‍"
+
+#: ../plugins/gnome/gnome.xml.in.h:16
+msgid "GNOME Color Picker"
+msgstr "ഗ്നോം കളര്‍ പിക്കര്‍"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+msgid "GNOME Date Edit"
+msgstr "ഗ്നോം ഡേറ്റില്‍ മാറ്റം വരുത്തുക"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:19
+msgid "GNOME Dialog"
+msgstr "ഗ്നോ ഡയലോഗ്"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+msgid "GNOME Druid"
+msgstr "ഗ്നോം ഡ്രൂയിഡ്"
+
+#: ../plugins/gnome/gnome.xml.in.h:21
+msgid "GNOME Druid Page Edge"
+msgstr "ഗ്നോ ഡ്രൂയിഡ് പേജ് എഡ്ജ്"
+
+#: ../plugins/gnome/gnome.xml.in.h:22
+msgid "GNOME Druid Page Standard"
+msgstr "ഗ്നോ ഡ്രൂയിഡ് പേജ് സ്റ്റാന്‍ഡേര്‍ഡ്"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+msgid "GNOME File Entry"
+msgstr "ഗ്നോം ഫയല്‍ എന്‍ട്രി"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+msgid "GNOME Font Picker"
+msgstr "ഗ്നോം ഫോണ്ട് പിക്കര്‍"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+msgid "GNOME HRef"
+msgstr "ഗ്നോം HRef"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+msgid "GNOME Icon Entry"
+msgstr "ഗ്നോം പ്രതിരൂപത്തിന്റെ എന്‍ട്രി"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+msgid "GNOME Icon Selection"
+msgstr "ഗ്നോം പ്രതിരൂപം തിരഞ്ഞെടുക്കല്‍"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+msgid "GNOME Message Box"
+msgstr "ഗ്നോം സന്ദേശപ്പെട്ടി"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+msgid "GNOME Pixmap"
+msgstr "ഗ്നോം പിക്സ്മാപ്പ്"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+msgid "GNOME Pixmap Entry"
+msgstr "ഗ്നോം പിക്സ്മാപ്പ് എന്‍ട്രി"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+msgid "GNOME Property Box"
+msgstr "ഗ്നോം ഗുണഗണപ്പെട്ടി"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
 msgid "GNOME UI Obsolete"
 msgstr "GNOME UI Obsolete"
 
-#: ../plugins/gnome/gnome.xml.in.h:14
+#: ../plugins/gnome/gnome.xml.in.h:33
 msgid "GNOME User Interface"
 msgstr "GNOME യൂസറ്‍ ഇന്‍ററ്‍ഫെയിസ്"
 
-#: ../plugins/gnome/gnome.xml.in.h:15
+#: ../plugins/gnome/gnome.xml.in.h:34
 msgid "Generic"
 msgstr "സാധാരണ"
-
-#: ../plugins/gnome/gnome.xml.in.h:16
-msgid "Gnome About"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:17
-msgid "Gnome App"
-msgstr "Gnome App"
-
-#: ../plugins/gnome/gnome.xml.in.h:18
-msgid "Gnome App Bar"
-msgstr "Gnome App ബാറ്‍"
-
-#: ../plugins/gnome/gnome.xml.in.h:19
-msgid "Gnome Color Picker"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:20
-msgid "Gnome Date Edit"
-msgstr ""
-
-#. Deprecated Widget Classes :)
-#: ../plugins/gnome/gnome.xml.in.h:22
-msgid "Gnome Dialog"
-msgstr "Gnome ഡയലോഗ്"
-
-#: ../plugins/gnome/gnome.xml.in.h:23
-msgid "Gnome Druid"
-msgstr "Gnome Druid"
-
-#: ../plugins/gnome/gnome.xml.in.h:24
-msgid "Gnome Druid Page Edge"
-msgstr "Gnome Druid Page Edge"
-
-#: ../plugins/gnome/gnome.xml.in.h:25
-msgid "Gnome Druid Page Standard"
-msgstr "Gnome Druid Page Standard"
-
-#: ../plugins/gnome/gnome.xml.in.h:26
-msgid "Gnome File Entry"
-msgstr "Gnome ഫയല്‍ എന്‍ട്രി"
-
-#: ../plugins/gnome/gnome.xml.in.h:27
-msgid "Gnome Font Picker"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:28
-msgid "Gnome HRef"
-msgstr "Gnome HRef"
-
-#: ../plugins/gnome/gnome.xml.in.h:29
-msgid "Gnome Icon Entry"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:30
-msgid "Gnome Icon Selection"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:31
-msgid "Gnome Message Box"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:32
-msgid "Gnome Pixmap"
-msgstr "Gnome Pixmap"
-
-#: ../plugins/gnome/gnome.xml.in.h:33
-msgid "Gnome Pixmap Entry"
-msgstr ""
-
-#: ../plugins/gnome/gnome.xml.in.h:34
-msgid "Gnome Property Box"
-msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Information"
@@ -3154,11 +3549,11 @@ msgstr "ലോഗോ"
 
 #: ../plugins/gnome/gnome.xml.in.h:37
 msgid "Logo Background Color"
-msgstr ""
+msgstr "ലോഗോയുടെ പശ്ത്താലത്തിലുള്ള നിറം"
 
 #: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Max Saved"
-msgstr ""
+msgstr "ഏറ്റവും കൂടുതല്‍ സൂക്ഷിച്ചിരിക്കുന്ന"
 
 #: ../plugins/gnome/gnome.xml.in.h:39
 msgid "Message"
@@ -3170,7 +3565,7 @@ msgstr "തിങ്കളാഴ്ച ആദ്യം"
 
 #: ../plugins/gnome/gnome.xml.in.h:44
 msgid "Padding"
-msgstr ""
+msgstr "പാഡിങ്"
 
 #: ../plugins/gnome/gnome.xml.in.h:45
 msgid "Pixmap"
@@ -3186,11 +3581,11 @@ msgstr "പ്റോഗ്റാമിന്‍റെ വേറ്‍ഷന്�
 
 #: ../plugins/gnome/gnome.xml.in.h:51
 msgid "Scaled Height"
-msgstr ""
+msgstr "അളവെടുത്ത ഉയരം"
 
 #: ../plugins/gnome/gnome.xml.in.h:52
 msgid "Scaled Width"
-msgstr ""
+msgstr "അളവെടുത്ത വീതി"
 
 #: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Show Time"
@@ -3202,19 +3597,19 @@ msgstr "സ്റ്റേറ്റസ് ബാറ്‍"
 
 #: ../plugins/gnome/gnome.xml.in.h:57
 msgid "Store Config"
-msgstr ""
+msgstr "കോണ്‍ഫിഗ് സൂക്ഷിക്കുക"
 
 #: ../plugins/gnome/gnome.xml.in.h:59
 msgid "Text Foreground Color"
-msgstr ""
+msgstr "വാചകത്തിന്റെ മുന്നിടത്തിലുള്ള നിറം"
 
 #: ../plugins/gnome/gnome.xml.in.h:60
 msgid "The height to scale the pixmap to"
-msgstr ""
+msgstr "പിക്സ്മാപ്പ് അളക്കുന്നതിനുള്ള ഉയരം"
 
 #: ../plugins/gnome/gnome.xml.in.h:61
 msgid "The maximum number of history entries saved"
-msgstr ""
+msgstr "ഹിസ്റ്ററി എന്‍ട്രികളുടെ ഏറ്റവും കൂടുതല്‍ സൂക്ഷിച്ചിരിക്കുന്ന തവണ"
 
 #: ../plugins/gnome/gnome.xml.in.h:62
 msgid "The pixmap file"
@@ -3222,15 +3617,15 @@ msgstr "pixmap ഫയല്‍"
 
 #: ../plugins/gnome/gnome.xml.in.h:63
 msgid "The width to scale the pixmap to"
-msgstr ""
+msgstr "പിക്സ്മാപ്പ് അളക്കുന്നതിനുള്ള വീതി"
 
 #: ../plugins/gnome/gnome.xml.in.h:65
 msgid "Title Foreground Color"
-msgstr ""
+msgstr "തലക്കെട്ടിന്റെ മുന്നിടത്തിലുള്ള നിറം"
 
 #: ../plugins/gnome/gnome.xml.in.h:66
 msgid "Top Watermark"
-msgstr ""
+msgstr "ടോപ്പ് വാട്ടര്‍മാര്‍ക്ക്"
 
 #: ../plugins/gnome/gnome.xml.in.h:67
 msgid "Unknown"
@@ -3257,157 +3652,140 @@ msgstr "യൂസറിന്‍റെ വിഡ്ജറ്റ്"
 
 #: ../plugins/gnome/gnome.xml.in.h:73
 msgid "Watermark"
-msgstr ""
+msgstr "വാട്ടര്‍മാര്‍ക്ക്"
 
 #: ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Exclusive"
-msgstr ""
+msgstr "എക്സ്ക്ലൂസീവ്"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Floating"
-msgstr ""
+msgstr "ഫ്ലോട്ടിങ്"
 
 #: ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Locked"
-msgstr ""
+msgstr "പൂട്ടിയിരിക്കുന്നു"
 
 #: ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Never Floating"
-msgstr ""
+msgstr "ഒരിക്കലും ഫ്ലോട്ടിങ് അല്ല"
 
 #: ../plugins/gnome/bonobo.xml.in.h:11
 msgid "Never Horizontal"
-msgstr ""
+msgstr "ഒരിക്കലും കുറുകെ അല്ല"
 
 #: ../plugins/gnome/bonobo.xml.in.h:12
 msgid "Never Vertical"
-msgstr ""
-
-#. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:2
-msgid "Browse"
-msgstr "തിരയുക"
+msgstr "ഒരിക്കലും നേരെ അല്ല"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:4
 msgid "Column Spacing"
-msgstr ""
+msgstr "കോളം സ്പെയിസിങ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Canvas"
 msgstr "GNOME Canvas"
 
-#: ../plugins/gnome/canvas.xml.in.h:6
-msgid "Gnome Canvas"
-msgstr "Gnome Canvas"
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:7
+msgid "GNOME Icon List"
+msgstr "ഗ്നോം പ്രതിരൂപ പട്ടിക"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:8
-msgid "Gnome Icon List"
-msgstr ""
-
-#. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:10
+#: ../plugins/gnome/canvas.xml.in.h:9
 msgid "Icon Width"
-msgstr ""
+msgstr "പ്രതിരൂപത്തിന്റെ വീതി"
+
+#: ../plugins/gnome/canvas.xml.in.h:10
+msgid "If the icon text can be edited by the user"
+msgstr "പ്രതിരൂപത്തിനുള്ള വാചകം ഉപയോക്താവിന് മാറ്റം വരുത്തുവാന്‍ സാധ്യമാണോ എന്ന്"
 
 #: ../plugins/gnome/canvas.xml.in.h:11
-msgid "If the icon text can be edited by the user"
-msgstr ""
-
-#: ../plugins/gnome/canvas.xml.in.h:12
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
 msgstr ""
+"പ്രതിരൂപത്തിനുള്ള ടെക്സ്റ്റ് സ്റ്റാറ്റിക് ആണ് എങ്കില്‍, അത് GnomeIconList "
+"പകര്‍ത്തുന്നതല്ല"
 
-#: ../plugins/gnome/canvas.xml.in.h:13
+#: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Max X"
 msgstr "Max X"
 
-#: ../plugins/gnome/canvas.xml.in.h:14
+#: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Max Y"
 msgstr "Max Y"
 
-#: ../plugins/gnome/canvas.xml.in.h:15
+#: ../plugins/gnome/canvas.xml.in.h:14
 msgid "Min X"
 msgstr "Min X"
 
-#: ../plugins/gnome/canvas.xml.in.h:16
+#: ../plugins/gnome/canvas.xml.in.h:15
 msgid "Min Y"
 msgstr "Min Y"
 
-#. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:18
-msgid "Multiple"
-msgstr ""
-
-#: ../plugins/gnome/canvas.xml.in.h:19
 msgid "Pixels per unit"
-msgstr ""
+msgstr "ഓരോ യൂണിറ്റിനുമുള്ള പിക്സലുകള്‍"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:21
+#: ../plugins/gnome/canvas.xml.in.h:20
 msgid "Row Spacing"
-msgstr ""
+msgstr "റോ സ്പെയിസിങ്"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:25
-msgid "Single"
-msgstr "സിംഗിള്‍"
-
-#. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:27
+#: ../plugins/gnome/canvas.xml.in.h:26
 msgid "Text Editable"
-msgstr ""
+msgstr "ടെക്സ്റ്റ് എഡിറ്റബിള്‍"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:29
+#: ../plugins/gnome/canvas.xml.in.h:28
 msgid "Text Spacing"
-msgstr ""
+msgstr "ടെക്സ്റ്റ് സ്പെയിസിങ്"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:31
+#: ../plugins/gnome/canvas.xml.in.h:30
 msgid "Text Static"
-msgstr ""
+msgstr "ടെക്സ്റ്റ് സ്റ്റാറ്റിക്"
+
+#: ../plugins/gnome/canvas.xml.in.h:31
+msgid "The maximum x coordinate"
+msgstr "ഏറ്റവും കൂടിയ x കോര്‍ഡിനേറ്റ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:32
-msgid "The maximum x coordinate"
-msgstr ""
+msgid "The maximum y coordinate"
+msgstr "ഏറ്റവും കൂടിയ y കോര്‍ഡിനേറ്റ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:33
-msgid "The maximum y coordinate"
-msgstr ""
+msgid "The minimum x coordinate"
+msgstr "ഏറ്റവും കുറഞ്ഞ x കോര്‍ഡിനേറ്റ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:34
-msgid "The minimum x coordinate"
-msgstr ""
+msgid "The minimum y coordinate"
+msgstr "ഏറ്റവും കുറഞ്ഞ y കോര്‍ഡിനേറ്റ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:35
-msgid "The minimum y coordinate"
-msgstr ""
+msgid "The number of pixels between columns of icons"
+msgstr "പ്രതിരൂപങ്ങളുടെ നിരകള്‍ക്കിടയിലുള്ള പിക്സലുകളുടെ എണ്ണം"
 
 #: ../plugins/gnome/canvas.xml.in.h:36
-msgid "The number of pixels between columns of icons"
-msgstr ""
+msgid "The number of pixels between rows of icons"
+msgstr "പ്രതിരൂപങ്ങളുടെ വരികള്‍ക്കിടയിലുള്ള പിക്സലുകളുടെ എണ്ണം"
 
 #: ../plugins/gnome/canvas.xml.in.h:37
-msgid "The number of pixels between rows of icons"
-msgstr ""
+msgid "The number of pixels between the text and the icon"
+msgstr "വാചകത്തിന്റേയും പ്രതിരൂപത്തിന്റേയും ഇടയ്ക്കുള്ള പിക്സലുകളുടെ എണ്ണം"
 
 #: ../plugins/gnome/canvas.xml.in.h:38
-msgid "The number of pixels between the text and the icon"
-msgstr ""
+msgid "The number of pixels corresponding to one unit"
+msgstr "ഒരു യൂണിറ്റിനുള്ള പിക്സലുകളുടെ എണ്ണം"
 
 #: ../plugins/gnome/canvas.xml.in.h:39
-msgid "The number of pixels corresponding to one unit"
-msgstr ""
+msgid "The selection mode"
+msgstr "തിരഞ്ഞെടുക്കുവാനുള്ള മോഡ്"
 
 #: ../plugins/gnome/canvas.xml.in.h:40
-msgid "The selection mode"
-msgstr ""
-
-#: ../plugins/gnome/canvas.xml.in.h:41
 msgid "The width of each icon"
-msgstr ""
+msgstr "ഓരോ പ്രതിരൂപത്തിന്റേയും വീതി"
 
