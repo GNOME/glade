@@ -778,6 +778,9 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    
+    <!-- Commenting out new widgets untill string freeze is over
+
     <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
       <properties>
         <property id="size">
@@ -795,6 +798,8 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+
+    -->
 
     <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" _title="File Chooser Widget">
       <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
@@ -1696,8 +1701,12 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkColorButton"/>
     <glade-widget-class-ref name="GtkFontButton"/>
     <glade-widget-class-ref name="GtkLinkButton"/>
+
+
+    <!-- Commenting out these widgets until freeze is over
     <glade-widget-class-ref name="GtkScaleButton"/>
-    <glade-widget-class-ref name="GtkVolumeButton"/>
+    <glade-widget-class-ref name="GtkVolumeButton"/>\
+    -->
 
     <glade-widget-class-ref name="GtkImage"/>
     <glade-widget-class-ref name="GtkLabel"/>
