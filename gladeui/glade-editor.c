@@ -647,7 +647,7 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 	GladeEditorTable *table;
 	GList *list;
 
-	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
 	for (list = editor->widget_tables; list; list = list->next)
 	{
