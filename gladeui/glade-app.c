@@ -38,6 +38,7 @@
 #include "glade-cursor.h"
 #include "glade-catalog.h"
 #include "glade-fixed.h"
+#include "glade-design-view.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 
@@ -916,6 +917,8 @@ void
 glade_app_add_project (GladeProject *project)
 {
 	GladeApp  *app;
+	GladeDesignView *view;
+	GladeDesignLayout *layout;
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	/* If the project was previously loaded, don't re-load */
@@ -945,9 +948,12 @@ glade_app_add_project (GladeProject *project)
 	glade_app_set_project (project);
 
 	/* Select the first window in the project */
-	if (g_list_length (app->priv->projects) == 1)
+	if (g_list_length (app->priv->projects) == 1 ||
+	    !(view = glade_design_view_get_from_project (project)) ||
+	    !(layout = glade_design_view_get_layout (view)) ||
+	    !GTK_BIN (layout)->child)
 	{
-		GList *node;
+		const GList *node;
 		for (node = glade_project_get_objects (project);
 		     node != NULL;
 		     node = g_list_next (node))

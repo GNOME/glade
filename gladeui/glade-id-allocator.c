@@ -154,7 +154,7 @@ glade_id_allocator_release (GladeIDAllocator *allocator,
 {
 	g_return_if_fail (allocator != NULL);
 
-	id--;
+	id = id > 0 ? id - 1 : 0;
 	allocator->data[id >> 5] |= 1 << (id & 31);
 }
 

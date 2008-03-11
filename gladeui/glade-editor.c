@@ -412,7 +412,8 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 
 	widget = editor->loaded_widget;
 	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
-	glade_command_set_name (widget, new_name);
+	if (!glade_project_get_widget_by_name (widget->project, new_name))
+		glade_command_set_name (widget, new_name);
 	g_free (new_name);
 }
 
@@ -646,7 +647,7 @@ glade_editor_get_table_from_class (GladeEditor *editor,
 	GladeEditorTable *table;
 	GList *list;
 
-	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 
 	for (list = editor->widget_tables; list; list = list->next)
 	{

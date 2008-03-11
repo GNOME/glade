@@ -1,5 +1,20 @@
 2008-03-10  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/glade-app.c: Now if an empty project is loaded
+	  and anothther project with widgets is loaded, they will
+	  also be shown at load time (first widget in the layout
+	  gets autoloaded).
+
+	* gladeui/glade-id-allocator.c: Avoid crashing on id 0 (bug 442860)
+
+	* gladeui/glade-widget.c, gladeui/glade-project.c: Moved
+	  widget name policing to gladeproject.
+
+	* gladeui/glade-editor.c: Dont commit name values if name
+	  already exists in the project.
+
+2008-03-10  Tristan Van Berkom <tvb@gnome.org>
+
 	* NEWS, configure.ac: Rolling 3.4.3
 
 	* plugins/gtk+/gtk+.xml.in: Backing out GtkScaleButton

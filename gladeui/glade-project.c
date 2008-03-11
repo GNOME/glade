@@ -947,6 +947,15 @@ glade_project_add_object (GladeProject *project,
 	/* Dont add widgets that are already in the project */
 	if (glade_project_has_object (project, object))
 		return;
+
+	/* Police widget names here (just rename them on the way in the project)
+	 */
+	if (glade_project_get_widget_by_name (project, gwidget->name) != NULL)
+	{ 
+		gchar *name = glade_project_new_widget_name (project, gwidget->name);
+		glade_widget_set_name (gwidget, name);
+		g_free (name);
+	}
 		
 	/* Code body starts here */
 	reentrancy_count++;
@@ -1127,10 +1136,28 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 void
 glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name)
 {
+	GladeWidget *iter;
+	GList       *l;
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	glade_project_release_widget_name (project, widget, old_name);
+
+	/* Police widget names here (just rename them on the way in the project)
+	 */
+	for (l = project->priv->objects; l; l = l->next)
+	{
+		iter = glade_widget_get_from_gobject (l->data);
+		
+		if (widget != iter &&
+		    !strcmp (widget->name, iter->name))
+		{ 
+			gchar *name = glade_project_new_widget_name (project, widget->name);
+			glade_widget_set_name (widget, name);
+			g_free (name);
+		}
+		
+	}
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [WIDGET_NAME_CHANGED],
