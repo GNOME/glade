@@ -118,7 +118,10 @@ glade_signal_clone (const GladeSignal *signal)
 				 signal->userdata,
 				 signal->lookup,
 				 signal->after);
+
 }
+
+#if LOADING_WAS_IMPLEMENTED
 
 /**
  * glade_signal_write:
@@ -164,3 +167,4 @@ GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
 
 	return signal;
 }
+#endif // LOADING_WAS_IMPLEMENTED

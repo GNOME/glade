@@ -744,6 +744,7 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 	return (GladeXmlNode *)node;
 }
 
+#if OBSOLETE_CODE_HERE
 gchar *
 glade_xml_alloc_string(GladeInterface *interface, const gchar *string)
 {
@@ -776,6 +777,7 @@ glade_xml_alloc_propname(GladeInterface *interface, const gchar *string)
 
     return glade_xml_alloc_string(interface, norm_str->str);
 }
+#endif // OBSOLETE_CODE_HERE
 
 gboolean
 glade_xml_load_sym_from_node (GladeXmlNode     *node_in,

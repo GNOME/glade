@@ -97,7 +97,7 @@ struct _GladeWidget
 	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
-	GladeWidgetInfo   *construct_info;
+/* 	GladeWidgetInfo   *construct_info; */
 	GladeCreateReason  construct_reason;
 	gchar             *construct_internal;
 };
@@ -136,11 +136,11 @@ void                    glade_widget_add_child              (GladeWidget      *p
 void                    glade_widget_remove_child           (GladeWidget      *parent,
 							     GladeWidget      *child);
  
-GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
-							     GladeInterface   *interface);
+/* XXX GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget, */
+/* 							     GladeInterface   *interface); */
  
-GladeWidget            *glade_widget_read                   (GladeProject     *project,
-							     GladeWidgetInfo  *info);
+/* GladeWidget            *glade_widget_read                   (GladeProject     *project, */
+/* 							     GladeWidgetInfo  *info); */
  
 void                    glade_widget_replace                (GladeWidget      *parent,
 							     GObject          *old_object,

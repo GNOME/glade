@@ -353,6 +353,8 @@ glade_property_load_impl (GladeProperty *property)
 		g_object_get_property (object, property->klass->id, property->value);
 }
 
+#if LOADING_WAS_IMPLEMENTED
+
 static gboolean
 glade_property_write_impl (GladeProperty  *property, 
 			   GladeInterface *interface,
@@ -468,6 +470,9 @@ glade_property_write_impl (GladeProperty  *property,
 
 	return TRUE;
 }
+
+#endif //  LOADING_WAS_IMPLEMENTED
+
 
 static G_CONST_RETURN gchar *
 glade_property_get_tooltip_impl (GladeProperty *property)
@@ -593,7 +598,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->get_default           = glade_property_get_default_impl;
 	prop_class->sync                  = glade_property_sync_impl;
 	prop_class->load                  = glade_property_load_impl;
-	prop_class->write                 = glade_property_write_impl;
+/* XXX	prop_class->write                 = glade_property_write_impl; */
 	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
 	prop_class->value_changed         = NULL;
 	prop_class->tooltip_changed       = NULL;
@@ -689,6 +694,8 @@ glade_property_get_type (void)
 /*******************************************************************************
                         GladeInterface Parsing code
  *******************************************************************************/
+#if LOADING_WAS_IMPLEMENTED
+
 static GValue *
 glade_property_read_packing (GladeProperty      *property, 
 			     GladePropertyClass *pclass,
@@ -987,6 +994,7 @@ glade_property_read_accel_prop (GladeProperty      *property,
 	return gvalue;
 }
 
+#endif // LOADING_WAS_IMPLEMENTED
 
 /*******************************************************************************
                                      API
@@ -1318,6 +1326,9 @@ glade_property_load (GladeProperty *property)
 	GLADE_PROPERTY_GET_KLASS (property)->load (property);
 }
 
+
+#if LOADING_WAS_IMPLEMENTED
+
 /**
  * glade_property_read:
  * @property: a #GladeProperty or #NULL
@@ -1399,6 +1410,9 @@ glade_property_write (GladeProperty *property, GladeInterface *interface, GArray
 	g_return_val_if_fail (props != NULL, FALSE);
 	return GLADE_PROPERTY_GET_KLASS (property)->write (property, interface, props);
 }
+
+#endif // LOADING_WAS_IMPLEMENTED
+
 
 /**
  * glade_property_add_object:

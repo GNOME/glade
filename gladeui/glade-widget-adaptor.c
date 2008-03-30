@@ -73,6 +73,13 @@ struct _GladeChildPacking {
 	GList *packing_defaults;
 };
 
+
+struct _GladePackingDefault {
+    gchar  *id;
+    gchar  *value;
+};
+
+
 enum {
 	PROP_0,
 	PROP_NAME,
@@ -86,7 +93,8 @@ enum {
 	PROP_CURSOR
 };
 
-typedef struct _GladeChildPacking GladeChildPacking;
+typedef struct _GladeChildPacking    GladeChildPacking;
+typedef struct _GladePackingDefault  GladePackingDefault;
 
 static GObjectClass *parent_class = NULL;
 static GHashTable   *adaptor_hash = NULL;

@@ -78,7 +78,7 @@ struct _GladePropertyKlass
 	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
 	void                    (* load)                  (GladeProperty *);
-	gboolean                (* write)                 (GladeProperty *, GladeInterface *, GArray *);
+/* XXX	gboolean                (* write)                 (GladeProperty *, GladeInterface *, GArray *); */
 	G_CONST_RETURN gchar *  (* get_tooltip)           (GladeProperty *);
 
 	/* Signals */
@@ -147,9 +147,9 @@ GValue                 *glade_property_read                  (GladeProperty     
 							      gpointer            info,
 							      gboolean            free_value);
 
-gboolean                glade_property_write                 (GladeProperty      *property, 
-							      GladeInterface     *interface, 
-							      GArray             *props);
+/* XXX gboolean                glade_property_write                 (GladeProperty      *property,  */
+/* 							      GladeInterface     *interface,  */
+/* 							      GArray             *props); */
 
 G_CONST_RETURN gchar   *glade_property_get_tooltip           (GladeProperty      *property);
 

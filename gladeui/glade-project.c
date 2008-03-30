@@ -128,9 +128,9 @@ static guint              glade_project_signals[LAST_SIGNAL] = {0};
 
 static GladeIDAllocator  *unsaved_number_allocator = NULL;
 
-static gboolean glade_project_load_from_interface (GladeProject   *project,
-						   GladeInterface *interface,
-						   const gchar    *path);
+/* XXX static gboolean glade_project_load_from_interface (GladeProject   *project, */
+/* 						   GladeInterface *interface, */
+/* 						   const gchar    *path); */
 
 
 G_DEFINE_TYPE (GladeProject, glade_project, G_TYPE_OBJECT)
@@ -767,6 +767,8 @@ glade_project_new (void)
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
+#if LOADING_WAS_IMPLEMENTED
+
 	GladeInterface *interface;
 	
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE); 
@@ -794,6 +796,8 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	project->priv->modified = FALSE;
 		
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
+
+#endif // LOADING_WAS_IMPLEMENTED
 
 	return TRUE;
 }
@@ -1517,6 +1521,8 @@ glade_project_update_comment (GladeProject *project)
 	g_strfreev (lines);
 }
 
+#if LOADING_WAS_IMPLEMENTED
+
 /**
  * glade_project_write:
  * @project: a #GladeProject
@@ -1606,6 +1612,9 @@ loadable_interface (GladeInterface *interface, const gchar *path)
 	return loadable;
 }
 
+#endif // LOADING_WAS_IMPLEMENTED
+
+
 static void 
 glade_project_fix_object_props (GladeProject *project)
 {
@@ -1644,6 +1653,8 @@ glade_project_fix_object_props (GladeProject *project)
 		}
 	}
 }
+
+#if LOADING_WAS_IMPLEMENTED
 
 static gboolean
 glade_project_load_from_interface (GladeProject   *project,
@@ -1699,6 +1710,9 @@ glade_project_load_from_interface (GladeProject   *project,
 	
 	return TRUE;	
 }
+
+#endif // LOADING_WAS_IMPLEMENTED
+
 
 /**
  * glade_project_load:
@@ -1774,6 +1788,8 @@ glade_project_move_resources (GladeProject *project,
 gboolean
 glade_project_save (GladeProject *project, const gchar *path, GError **error)
 {
+#if LOADING_WAS_IMPLEMENTED
+
 	GladeInterface *interface;
 	gboolean        ret;
 	gchar          *canonical_path;
@@ -1830,6 +1846,9 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	g_free (canonical_path);
 
 	return ret;
+#endif // LOADING_WAS_IMPLEMENTED
+
+	return TRUE;
 }
 
 

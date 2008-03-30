@@ -62,16 +62,16 @@ static void         glade_widget_set_adaptor           (GladeWidget           *w
 							GladeWidgetAdaptor    *adaptor);
 static void         glade_widget_set_properties        (GladeWidget           *widget,
 							GList                 *properties);
-static GParameter  *glade_widget_info_params           (GladeWidgetAdaptor    *adaptor,
-							GladeWidgetInfo       *info,
-							gboolean               construct,
-							guint                 *n_params);
-static void         glade_widget_fill_from_widget_info (GladeWidgetInfo       *info,
-							GladeWidget           *widget,
-							gboolean               apply_props);
-static GladeWidget *glade_widget_new_from_widget_info  (GladeWidgetInfo       *info,
-							GladeProject          *project,
-							GladeWidget           *parent);
+/* XXX static GParameter  *glade_widget_info_params           (GladeWidgetAdaptor    *adaptor, */
+/* 							GladeWidgetInfo       *info, */
+/* 							gboolean               construct, */
+/* 							guint                 *n_params); */
+/* static void         glade_widget_fill_from_widget_info (GladeWidgetInfo       *info, */
+/* 							GladeWidget           *widget, */
+/* 							gboolean               apply_props); */
+/* static GladeWidget *glade_widget_new_from_widget_info  (GladeWidgetInfo       *info, */
+/* 							GladeProject          *project, */
+/* 							GladeWidget           *parent); */
 
 static gboolean     glade_window_is_embedded           (GtkWindow *window);
 static gboolean     glade_widget_embed                 (GladeWidget *widget);
@@ -519,7 +519,7 @@ free_params (GParameter *params, guint n_params)
 }
 
 static GObject *
-glade_widget_build_object (GladeWidgetAdaptor *adaptor, GladeWidget *widget, GladeWidgetInfo *info)
+glade_widget_build_object (GladeWidgetAdaptor *adaptor, GladeWidget *widget, void /* GladeWidgetInfo */ *info)
 {
 	GParameter          *params;
 	GObject             *object;
@@ -527,8 +527,8 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor, GladeWidget *widget, Gla
 
 	if (widget)
 		params = glade_widget_template_params (widget, TRUE, &n_params);
-	else if (info)
-		params = glade_widget_info_params (adaptor, info, TRUE, &n_params);
+/* 	else if (info) */
+/* 		params = glade_widget_info_params (adaptor, info, TRUE, &n_params); */
 	else
 		params = glade_widget_adaptor_default_params (adaptor, TRUE, &n_params);
 
@@ -540,8 +540,8 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor, GladeWidget *widget, Gla
 
 	if (widget)
 		params = glade_widget_template_params (widget, FALSE, &n_params);
-	else if (info)
-		params = glade_widget_info_params (adaptor, info, FALSE, &n_params);
+/* 	else if (info) */
+/* 		params = glade_widget_info_params (adaptor, info, FALSE, &n_params); */
 	else
 		params = glade_widget_adaptor_default_params (adaptor, FALSE, &n_params);
 
@@ -715,7 +715,7 @@ glade_widget_constructor (GType                  type,
 	{
 		object = glade_widget_build_object(gwidget->adaptor, 
 						   gwidget->construct_template, 
-						   gwidget->construct_info);
+						   NULL/* gwidget->construct_info */);
 		glade_widget_set_object (gwidget, object);
 	}
 
@@ -863,9 +863,9 @@ glade_widget_set_real_property (GObject         *object,
 	case PROP_TEMPLATE:
 		widget->construct_template = g_value_get_object (value);
 		break;
-	case PROP_INFO:
-		widget->construct_info = g_value_get_pointer (value);
-		break;
+/* XXX	case PROP_INFO: */
+/* 		widget->construct_info = g_value_get_pointer (value); */
+/* 		break; */
 	case PROP_REASON:
 		widget->construct_reason = g_value_get_int (value);
 		break;
@@ -1076,11 +1076,11 @@ glade_widget_class_init (GladeWidgetClass *klass)
 				      GLADE_TYPE_WIDGET,
 				      G_PARAM_CONSTRUCT_ONLY|G_PARAM_WRITABLE));
 
-	g_object_class_install_property
-		(object_class, 	PROP_INFO,
-		 g_param_spec_pointer ("info", _("Info"),
-				       _("A GladeWidgetInfo struct to base a new widget on"),
-				       G_PARAM_CONSTRUCT_ONLY|G_PARAM_WRITABLE));
+/* XXX	g_object_class_install_property */
+/* 		(object_class, 	PROP_INFO, */
+/* 		 g_param_spec_pointer ("info", _("Info"), */
+/* 				       _("A GladeWidgetInfo struct to base a new widget on"), */
+/* 				       G_PARAM_CONSTRUCT_ONLY|G_PARAM_WRITABLE)); */
 
 	g_object_class_install_property
 		(object_class, 	PROP_REASON,
@@ -1788,6 +1788,7 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 /*******************************************************************************
                            GladeInterface Parsing code
  *******************************************************************************/
+#if LOADING_WAS_IMPLEMENTED
 static gint
 glade_widget_set_child_type_from_child_info (GladeChildInfo     *child_info,
 					     GladeWidgetAdaptor *parent_adaptor,
@@ -2079,7 +2080,7 @@ glade_widget_info_params (GladeWidgetAdaptor *adaptor,
 	*n_params = params->len;
 	return (GParameter *)g_array_free (params, FALSE);
 }
-
+#endif // obsolete loading code
 /*******************************************************************************
                                      API
  *******************************************************************************/
@@ -2176,7 +2177,7 @@ glade_widget_show (GladeWidget *widget)
 		if (layout && !GTK_WIDGET_REALIZED (layout))
 		{
 			/* XXX Dangerous !!! give her a little kick */
-			g_idle_add (glade_widget_show_idle, widget);
+			g_idle_add ((GSourceFunc)glade_widget_show_idle, widget);
 			return;
 		}
 		else if (!layout)
@@ -3609,6 +3610,8 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 }
 
 /* XML Serialization */
+#if LOADING_WAS_IMPLEMENTED
+
 static gboolean
 glade_widget_write_child (GArray *children, GladeWidget *parent, GObject *object, GladeInterface *interface);
 
@@ -3889,6 +3892,7 @@ glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
 
 	return widget;
 }
+#endif // LOADING_WAS_IMPLEMENTED
 
 static gint glade_widget_su_stack = 0;
 
