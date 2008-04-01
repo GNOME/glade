@@ -758,6 +758,25 @@ glade_widget_adaptor_object_child_action_activate (GladeWidgetAdaptor *adaptor,
 		   adaptor->name, action_id);
 }
 
+static void
+glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
+					 GladeWidget        *widget,
+					 GladeXmlNode       *node)
+{
+	/* XXX Here were looking at a GladeWidget object built with native
+	 * defaults
+	 */
+
+	/* first all the properties */
+	g_print ("reading widget '%s' of class '%s'\n", 
+		 widget->name, adaptor->name);
+
+
+
+	/* then all the signals */
+
+}
+
 /*******************************************************************************
             GladeWidgetAdaptor type registration and class initializer
  *******************************************************************************/
@@ -797,6 +816,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->child_get_property   = NULL;
 	adaptor_class->action_activate      = glade_widget_adaptor_object_action_activate;
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
+	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
 
 	/* Base defaults here */
 	adaptor_class->fixed                = FALSE;
@@ -1037,6 +1057,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_CHILD_ACTION_ACTIVATE_FUNCTION,
 					  &symbol))
 		klass->child_action_activate = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_READ_WIDGET_FUNCTION,
+					  &symbol))
+		klass->read_widget = symbol;
 }
 
 static void
@@ -2784,4 +2809,27 @@ glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (container), adaptor->type));
 
 	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->child_action_activate (adaptor, container, object, action_path);
+}
+
+
+
+/**
+ * glade_widget_adaptor_read_widget:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to update @widget from @node 
+ * when loading xml files.
+ */
+void
+glade_widget_adaptor_read_widget (GladeWidgetAdaptor *adaptor,
+				  GladeWidget        *widget,
+				  GladeXmlNode       *node)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (node != NULL);
+
+	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->read_widget (adaptor, widget, node);
 }

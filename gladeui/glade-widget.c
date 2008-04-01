@@ -3863,36 +3863,158 @@ glade_widget_write_child (GArray         *children,
 	return TRUE;
 }
 
+#endif // LOADING_WAS_IMPLEMENTED
+
+
+
+static void
+glade_widget_read_children (GladeWidget  *widget,
+			    GladeXmlNode *node)
+{
+	GladeXmlNode *child, *widget_node;
+	GladeWidget *child_widget;
+	
+	/* 
+	 * Deal with children...
+	 */
+	for (child = glade_xml_node_get_children (node); 
+	     child; child = glade_xml_node_next (child))
+	{
+		const gchar *node_name = glade_xml_node_get_name (child);
+		gchar *internal_name;
+		
+		if (strcmp (node_name, GLADE_XML_TAG_CHILD) != 0) 
+			continue;
+
+		internal_name = 
+			glade_xml_get_property_string 
+			(child, GLADE_XML_TAG_INTERNAL_CHILD);
+
+		if ((widget_node = 
+		     glade_xml_search_child
+		     (child, GLADE_XML_TAG_WIDGET)) != NULL)
+		{
+			child_widget = 
+				glade_widget_read (widget->project, 
+						   widget, 
+						   widget_node, 
+						   internal_name);
+			
+			if (child_widget && !internal_name)
+				glade_widget_adaptor_add
+					(widget->adaptor,
+					 widget->object,
+					 child_widget->object);
+
+
+		} else {
+			GObject *palaceholder = 
+				G_OBJECT (glade_placeholder_new ());
+			/*glade_widget_set_child_type_from_child_info  */
+			/*(info, parent->adaptor, palaceholder); */
+			
+			glade_widget_adaptor_add (widget->adaptor,
+						  widget->object,
+						  palaceholder);
+			
+		}
+		g_free (internal_name);
+	}
+}
+
+
 /**
  * glade_widget_read:
  * @project: a #GladeProject
- * @info: a #GladeWidgetInfo
+ * @parent: The parent #GladeWidget or %NULL
+ * @node: a #GladeXmlNode
  *
- * Returns: a new #GladeWidget for @project, based on @info
+ * Returns: a new #GladeWidget for @project, based on @node
  */
 GladeWidget *
-glade_widget_read (GladeProject *project, GladeWidgetInfo *info)
+glade_widget_read (GladeProject *project, 
+		   GladeWidget  *parent, 
+		   GladeXmlNode *node,
+		   const gchar  *internal)
 {
-	GladeWidget *widget;
+	GladeWidgetAdaptor *adaptor;
+	GladeWidget  *widget = NULL;
+	gchar        *klass, *id;
+
 
 	glade_widget_push_superuser ();
 	loading_project = project;
-		
-	if ((widget = glade_widget_new_from_widget_info
-	     (info, project, NULL)) != NULL)
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+		return NULL;
+
+
+	if ((klass = 
+	     glade_xml_get_property_string_required
+	     (node, GLADE_XML_TAG_CLASS, NULL)) != NULL)
 	{
-#if 0
-		if (glade_verbose)
-			glade_widget_debug (widget);
-#endif
-	}	
+		if ((id = 
+		     glade_xml_get_property_string_required
+		     (node, GLADE_XML_TAG_ID, NULL)) != NULL)
+		{
+			/* 
+			 * Create GladeWidget instance based on type. 
+			 */
+			if ((adaptor = 
+			     glade_widget_adaptor_get_by_name (klass)) != NULL)
+			{
+
+				// Internal children !!!
+				if (internal)
+				{
+					GObject *child_object =
+						glade_widget_get_internal_child 
+						(parent, internal);
+					
+					if (!child_object)
+					{
+						g_warning ("Failed to locate "
+							   "internal child %s of %s",
+							   internal,
+							   glade_widget_get_name (parent));
+						return FALSE;
+					}
+
+					if (!(widget = 
+					      glade_widget_get_from_gobject (child_object)))
+						g_error ("Unable to get GladeWidget "
+							 "for internal child %s\n",
+							 internal);
+
+					/* Apply internal widget name from here */
+					glade_widget_set_name (widget, id);
+				} else { 
+					widget = glade_widget_adaptor_create_widget
+						(adaptor, FALSE,
+						 "name", id, 
+						 "parent", parent, 
+						 "project", project, 
+						 "reason", GLADE_CREATE_LOAD, NULL);
+				}
+
+				glade_widget_adaptor_read_widget (adaptor,
+								  widget,
+								  node);
+
+				glade_widget_read_children (widget, node);
+
+			}
+			g_free (id);
+		}
+		g_free (klass);
+	}
 
 	loading_project = NULL;
 	glade_widget_pop_superuser ();
 
 	return widget;
 }
-#endif // LOADING_WAS_IMPLEMENTED
+
 
 static gint glade_widget_su_stack = 0;
 

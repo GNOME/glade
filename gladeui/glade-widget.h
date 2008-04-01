@@ -139,9 +139,11 @@ void                    glade_widget_remove_child           (GladeWidget      *p
 /* XXX GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget, */
 /* 							     GladeInterface   *interface); */
  
-/* GladeWidget            *glade_widget_read                   (GladeProject     *project, */
-/* 							     GladeWidgetInfo  *info); */
- 
+GladeWidget            *glade_widget_read                   (GladeProject     *project,
+							     GladeWidget      *parent,
+							     GladeXmlNode     *node,
+							     const gchar      *internal);
+
 void                    glade_widget_replace                (GladeWidget      *parent,
 							     GObject          *old_object,
 							     GObject          *new_object);

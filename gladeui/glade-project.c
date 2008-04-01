@@ -764,9 +764,112 @@ glade_project_new (void)
 	return g_object_new (GLADE_TYPE_PROJECT, NULL);
 }
 
+
+static void 
+glade_project_fix_object_props (GladeProject *project)
+{
+	GList         *l, *ll;
+	GValue        *value;
+	GladeWidget   *gwidget;
+	GladeProperty *property;
+	gchar         *txt;
+
+	for (l = project->priv->objects; l; l = l->next)
+	{
+		gwidget = glade_widget_get_from_gobject (l->data);
+
+		for (ll = gwidget->properties; ll; ll = ll->next)
+		{
+			property = GLADE_PROPERTY (ll->data);
+
+			if (glade_property_class_is_object (property->klass) &&
+			    (txt = g_object_get_data (G_OBJECT (property), 
+						      "glade-loaded-object")) != NULL)
+			{
+				/* Parse the object list and set the property to it
+				 * (this magicly works for both objects & object lists)
+				 */
+				value = glade_property_class_make_gvalue_from_string
+					(property->klass, txt, project);
+				
+				glade_property_set_value (property, value);
+				
+				g_value_unset (value);
+				g_free (value);
+				
+				g_object_set_data (G_OBJECT (property), 
+						   "glade-loaded-object", NULL);
+			}
+		}
+	}
+}
+
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	GladeXmlNode    *root;
+	GladeXmlNode    *node;
+	GladeWidget     *widget;
+
+	project->priv->path = glade_util_canonical_path (path);
+	
+	project->priv->selection = NULL;
+	project->priv->objects = NULL;
+	project->priv->loading = TRUE;
+
+
+	/* get the context & root node of the catalog file */
+	if (!(context = 
+	      glade_xml_context_new_from_path (path,
+					       NULL, 
+					       GLADE_XML_TAG_PROJECT)))
+	{
+		g_warning ("Couldn't open glade file [%s].", path);
+		return FALSE;
+	}
+
+	doc  = glade_xml_context_get_doc (context);
+	root = glade_xml_doc_get_root (doc);
+
+	if (!glade_xml_node_verify (root, GLADE_XML_TAG_PROJECT)) 
+	{
+		g_warning ("Glade file root node is not '%s', skipping %s",
+			   GLADE_XML_TAG_PROJECT, path);
+		glade_xml_context_free (context);
+		return FALSE;
+	}
+
+	for (node = glade_xml_node_get_children (root); 
+	     node; node = glade_xml_node_next (node))
+	{
+		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
+			glade_project_add_object (project, NULL, widget->object);
+	}
+
+	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
+		glade_project_set_readonly (project, TRUE);
+
+
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
+
+	/* Reset project status here too so that you get a clean
+	 * slate after calling glade_project_open().
+	 */
+	project->priv->modified = FALSE;
+	project->priv->loading = FALSE;
+
+	/* Emit "parse-finished" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
+	
+	/* Now we have to loop over all the object properties
+	 * and fix'em all ('cause they probably weren't found)
+	 */
+	glade_project_fix_object_props (project);
+
+	return TRUE;
+
 #if LOADING_WAS_IMPLEMENTED
 
 	GladeInterface *interface;
@@ -799,7 +902,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 #endif // LOADING_WAS_IMPLEMENTED
 
-	return TRUE;
 }
 
 
@@ -1614,45 +1716,6 @@ loadable_interface (GladeInterface *interface, const gchar *path)
 
 #endif // LOADING_WAS_IMPLEMENTED
 
-
-static void 
-glade_project_fix_object_props (GladeProject *project)
-{
-	GList         *l, *ll;
-	GValue        *value;
-	GladeWidget   *gwidget;
-	GladeProperty *property;
-	gchar         *txt;
-
-	for (l = project->priv->objects; l; l = l->next)
-	{
-		gwidget = glade_widget_get_from_gobject (l->data);
-
-		for (ll = gwidget->properties; ll; ll = ll->next)
-		{
-			property = GLADE_PROPERTY (ll->data);
-
-			if (glade_property_class_is_object (property->klass) &&
-			    (txt = g_object_get_data (G_OBJECT (property), 
-						      "glade-loaded-object")) != NULL)
-			{
-				/* Parse the object list and set the property to it
-				 * (this magicly works for both objects & object lists)
-				 */
-				value = glade_property_class_make_gvalue_from_string
-					(property->klass, txt, project);
-				
-				glade_property_set_value (property, value);
-				
-				g_value_unset (value);
-				g_free (value);
-				
-				g_object_set_data (G_OBJECT (property), 
-						   "glade-loaded-object", NULL);
-			}
-		}
-	}
-}
 
 #if LOADING_WAS_IMPLEMENTED
 

@@ -330,6 +330,25 @@ typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
 						   GObject            *object,
 						   const gchar        *action_path);
 
+
+
+
+
+/**
+ * GladeReadWidgetFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to update @widget from @node.
+ *
+ */
+typedef void     (* GladeReadWidgetFunc) (GladeWidgetAdaptor *adaptor,
+					  GladeWidget        *widget,
+					  GladeXmlNode       *node);
+
+
+
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
  */
@@ -472,6 +491,9 @@ struct _GladeWidgetAdaptorClass
 	
 	GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
 	GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */
+
+
+	GladeReadWidgetFunc          read_widget; /* Reads widget attributes from xml */
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -622,6 +644,11 @@ void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdap
 								 GObject            *container,
 								 GObject            *object,
 								 const gchar        *action_path);
+
+void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlNode       *node);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */

@@ -63,6 +63,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_CONSTRUCTOR_FUNCTION            "constructor-function"
 #define GLADE_TAG_ACTION_ACTIVATE_FUNCTION        "action-activate-function"
 #define GLADE_TAG_CHILD_ACTION_ACTIVATE_FUNCTION  "child-action-activate-function"
+#define GLADE_TAG_READ_WIDGET_FUNCTION            "read-widget-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
 #define GLADE_TAG_PACKING_PROPERTIES              "packing-properties"
 #define GLADE_TAG_PROPERTY                        "property"
