@@ -694,123 +694,17 @@ glade_property_get_type (void)
 /*******************************************************************************
                         GladeInterface Parsing code
  *******************************************************************************/
+
+static GValue *
+glade_property_real_read (GladeProperty      *property, 
+			  GladePropertyClass *pclass,
+			  GladeProject       *project,
+			  GladeXmlNode       *node,
+			  gboolean            free_value)
+{
+}
+
 #if LOADING_WAS_IMPLEMENTED
-
-static GValue *
-glade_property_read_packing (GladeProperty      *property, 
-			     GladePropertyClass *pclass,
-			     GladeProject       *project,
-			     GladeChildInfo     *info,
-			     gboolean            free_value)
-{
-	GValue    *gvalue = NULL;
-	gint       i;
-	gchar     *id;
-
-	for (i = 0; i < info->n_properties; ++i)
-	{
-		GladePropInfo *pinfo = info->properties + i;
-		
-		id = glade_util_read_prop_name (pinfo->name);
-		
-		if (!strcmp (id, pclass->id))
-		{
-			gvalue = glade_property_class_make_gvalue_from_string
-				(pclass, pinfo->value, project);
-			
-			if (property)
-			{
-				glade_property_i18n_set_translatable
-					(property, pinfo->translatable);
-				glade_property_i18n_set_has_context
-					(property, pinfo->has_context);
-				glade_property_i18n_set_comment
-					(property, pinfo->comment);
-
-				property->enabled = TRUE;
-				
-				GLADE_PROPERTY_GET_KLASS (property)->set_value
-					(property, gvalue);
-			}
-
-			if (free_value)
-			{
-				g_value_unset (gvalue);
-				g_free (gvalue);
-			}
-
-			g_free (id);
-			break;
-		}
-		g_free (id);
-	}
-	return gvalue;
-}
-
-static GValue *
-glade_property_read_normal (GladeProperty      *property, 
-			    GladePropertyClass *pclass,
-			    GladeProject       *project,
-			    GladeWidgetInfo    *info,
-			    gboolean            free_value)
-{
-	GValue    *gvalue = NULL;
-	gint       i;
-	gchar     *id;
-
-	for (i = 0; i < info->n_properties; ++i)
-	{
-		GladePropInfo *pinfo = info->properties + i;
-		
-		id = glade_util_read_prop_name (pinfo->name);
-		
-		if (!strcmp (id, pclass->id))
-		{
-			if (property && glade_property_class_is_object (pclass))
-			{
-				/* we must synchronize this directly after loading this project
-				 * (i.e. lookup the actual objects after they've been parsed and
-				 * are present).
-				 */
-				g_object_set_data_full (G_OBJECT (property), 
-							"glade-loaded-object", 
-							g_strdup (pinfo->value), g_free);
-			}
-			else
-			{
-				gvalue = glade_property_class_make_gvalue_from_string
-					(pclass, pinfo->value, project);
-
-				if (property)
-					GLADE_PROPERTY_GET_KLASS
-						(property)->set_value (property, gvalue);
-
-				if (free_value)
-				{
-					g_value_unset (gvalue);
-					g_free (gvalue);
-				}
-			}
-			
-			if (property)
-			{
-				glade_property_i18n_set_translatable
-					(property, pinfo->translatable);
-				glade_property_i18n_set_has_context
-					(property, pinfo->has_context);
-				glade_property_i18n_set_comment
-					(property, pinfo->comment);
-
-				property->enabled = TRUE;
-			}
-
-			g_free (id);
-			break;
-		}
-		g_free (id);
-	}
-	return gvalue;
-}
 
 static GValue *
 glade_property_read_atk_prop (GladeProperty      *property, 
@@ -993,8 +887,8 @@ glade_property_read_accel_prop (GladeProperty      *property,
 
 	return gvalue;
 }
-
 #endif // LOADING_WAS_IMPLEMENTED
+
 
 /*******************************************************************************
                                      API
@@ -1326,16 +1220,13 @@ glade_property_load (GladeProperty *property)
 	GLADE_PROPERTY_GET_KLASS (property)->load (property);
 }
 
-
-#if LOADING_WAS_IMPLEMENTED
-
 /**
  * glade_property_read:
  * @property: a #GladeProperty or #NULL
  * @pclass: the #GladePropertyClass
  * @project: the #GladeProject
- * @info: a #GladeWidgetInfo struct or a #GladeChildInfo struct if
- *        a packing property is passed.
+ * @node: the #GladeXmlNode to read, will either be a <widget>
+ *        node or a <child> node for packing properties.
  * @free_value: Whether the return value should be freed after applying
  *              it to the property or if it should be returned in tact.
  *
@@ -1351,48 +1242,119 @@ GValue *
 glade_property_read (GladeProperty      *property, 
 		     GladePropertyClass *pclass,
 		     GladeProject       *project,
-		     gpointer            info,
+		     GladeXmlNode       *node,
 		     gboolean            free_value)
 {
-	GValue *ret = NULL;
+	GladeXmlNode *prop;
+	GValue       *gvalue = NULL;
+	gchar        *id, *name, *value;
 
-	g_return_val_if_fail (pclass != NULL, FALSE);
-	g_return_val_if_fail (info != NULL, FALSE);
+	g_return_val_if_fail (pclass != NULL, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
 
-	if (pclass->packing)
+	g_print ("glade_property_read for property '%s', nodename %s\n", 
+		 pclass->id, glade_xml_node_get_name (node));
+
+	/* This code should work the same for <packing> and <widget> */
+	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
+	      glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
+		return NULL;
+
+	for (prop = glade_xml_node_get_children (node); 
+	     prop; prop = glade_xml_node_next (prop))
 	{
-		ret = glade_property_read_packing 
-			(property, pclass, project, (GladeChildInfo *)info, free_value);
-	}
-	else switch (pclass->type)
-	{
-	case GPC_NORMAL:
-		ret = glade_property_read_normal
-			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
-		break;
-	case GPC_ATK_PROPERTY:
-		ret = glade_property_read_atk_prop
-			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
-		break;
-	case GPC_ATK_RELATION:
-		ret = glade_property_read_atk_relation
-			(property, pclass, project, (GladeWidgetInfo *)info);
-		break;
-	case GPC_ATK_ACTION:
-		ret = glade_property_read_atk_action
-			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
-		break;
-	case GPC_ACCEL_PROPERTY:
-		ret = glade_property_read_accel_prop
-			(property, pclass, project, (GladeWidgetInfo *)info, free_value);
-		break;
-	default:
-		break;
+
+		if (!glade_xml_node_verify_silent (prop, GLADE_XML_TAG_PROPERTY))
+			continue;
+
+		if (!(name = glade_xml_get_property_string_required
+		      (prop, GLADE_XML_TAG_NAME, NULL)))
+			continue;
+
+		/* Make sure we are working with dashes and
+		 * not underscores ... 
+		 */
+		id = glade_util_read_prop_name (name);
+		g_free (name);
+
+		if (!strcmp (id, pclass->id))
+		{
+			if (!(value = glade_xml_get_content (prop)))
+			{
+				/* XXX should be glade_xml_get_content_required()... */
+				g_free (id);
+				break;
+			}
+
+
+			if (property && glade_property_class_is_object (pclass))
+			{
+				/* we must synchronize this directly after loading this project
+				 * (i.e. lookup the actual objects after they've been parsed and
+				 * are present).
+				 */
+				g_object_set_data_full (G_OBJECT (property), 
+							"glade-loaded-object", 
+							g_strdup (value), g_free);
+			}
+			else
+			{
+				gvalue = glade_property_class_make_gvalue_from_string
+					(pclass, value, project);
+
+				if (property) 
+				{
+					GLADE_PROPERTY_GET_KLASS
+						(property)->set_value (property, gvalue);
+				}
+
+				if (free_value)
+				{
+					g_value_unset (gvalue);
+					g_free (gvalue);
+					gvalue = NULL;
+				}
+
+				/* If an optional property is specified in the
+				 * glade file, its enabled
+				 */
+				property->enabled = TRUE;
+			}
+
+			if (property)
+			{
+				gint translatable, has_context;
+				gchar *comment;
+
+				translatable = glade_xml_get_property_int
+					(prop, GLADE_TAG_TRANSLATABLE, FALSE);
+				has_context = glade_xml_get_property_int
+					(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
+				comment = glade_xml_get_property_string
+					(prop, GLADE_TAG_COMMENT);
+
+				glade_property_i18n_set_translatable
+					(property, translatable);
+				glade_property_i18n_set_has_context
+					(property, has_context);
+				glade_property_i18n_set_comment
+					(property, comment);
+
+				g_free (comment);
+			}
+
+			g_free (value);
+			g_free (id);
+			break;
+		}
+		g_free (id);
 	}
 
-	return ret;
+	return gvalue;
 }
 
+
+#if LOADING_WAS_IMPLEMENTED
 
 /**
  * glade_property_write:

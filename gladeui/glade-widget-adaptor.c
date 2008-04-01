@@ -763,6 +763,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
 					 GladeXmlNode       *node)
 {
+	GList *props;
 	/* XXX Here were looking at a GladeWidget object built with native
 	 * defaults
 	 */
@@ -771,8 +772,16 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 	g_print ("reading widget '%s' of class '%s'\n", 
 		 widget->name, adaptor->name);
 
-
-
+	/* Get the packing properties */
+	for (props = widget->properties; 
+	     props; props = props->next)
+       	{
+		GladeProperty *property = props->data;
+		glade_property_read
+			(property, property->klass, 
+			 widget->project, node, TRUE);
+	}
+	
 	/* then all the signals */
 
 }

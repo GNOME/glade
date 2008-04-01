@@ -92,6 +92,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_KEY                             "key"
 #define GLADE_TAG_VALUE                           "value"
 #define GLADE_TAG_TRANSLATABLE                    "translatable"
+#define GLADE_TAG_HAS_CONTEXT                     "context"
+#define GLADE_TAG_COMMENT                         "comments"
 #define GLADE_TAG_PACKING_DEFAULTS                "packing-defaults"
 #define GLADE_TAG_PARENT_CLASS                    "parent-class"
 #define GLADE_TAG_CHILD_PROPERTY                  "child-property"

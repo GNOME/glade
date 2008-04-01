@@ -232,7 +232,7 @@ glade_xml_get_value_int_required (GladeXmlNode *node, const gchar *name, gint  *
 	ret = glade_xml_get_value_int (node, name, val);
 
 	if (ret == FALSE)
-		g_warning ("The file did not contained the required value \"%s\"\n"
+		g_warning ("The file did not contain the required value \"%s\"\n"
 			   "Under the \"%s\" tag.", name, glade_xml_node_get_name (node));
 			
 	return ret;
@@ -425,10 +425,10 @@ glade_xml_get_value_string_required (GladeXmlNode *node_in,
 	if (value == NULL)
 	{
 		if (xtra == NULL)
-			g_warning ("The file did not contained the required value \"%s\"\n"
+			g_warning ("The file did not contain the required value \"%s\"\n"
 				   "Under the \"%s\" tag.", name, node->name);
 		else
-			g_warning ("The file did not contained the required value \"%s\"\n"
+			g_warning ("The file did not contain the required value \"%s\"\n"
 				   "Under the \"%s\" tag (%s).", name, node->name, xtra);
 	}
 
@@ -464,10 +464,10 @@ glade_xml_get_property_string_required (GladeXmlNode *node_in,
 	if (value == NULL)
 	{
 		if (xtra == NULL)
-			g_warning ("The file did not contained the required property \"%s\"\n"
+			g_warning ("The file did not contain the required property \"%s\"\n"
 				   "Under the \"%s\" tag.", name, node->name);
 		else
-			g_warning ("The file did not contained the required property \"%s\"\n"
+			g_warning ("The file did not contain the required property \"%s\"\n"
 				   "Under the \"%s\" tag (%s).", name, node->name, xtra);
 	}
 	return value;
@@ -514,7 +514,7 @@ glade_xml_search_child_required (GladeXmlNode *node, const gchar* name)
 	child = glade_xml_search_child (node, name);
 
 	if (child == NULL)
-		g_warning ("The file did not contained the required tag \"%s\"\n"
+		g_warning ("The file did not contain the required tag \"%s\"\n"
 			   "Under the \"%s\" node.", name, glade_xml_node_get_name (node));
 
 	return child;
@@ -579,7 +579,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	name_space = xmlSearchNsByHref (doc, doc->children, BAD_CAST(nspace));
 	if (name_space == NULL && nspace != NULL)
 	{
-		g_warning ("The file did not contained the expected name space\n"
+		g_warning ("The file did not contain the expected name space\n"
 			   "Expected \"%s\" [%s]",
 			   nspace, full_path);
 		xmlFreeDoc (doc);
@@ -589,7 +589,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	root = xmlDocGetRootElement(doc);
 	if ((root->name == NULL) || (xmlStrcmp (root->name, BAD_CAST(root_name)) !=0 ))
 	{
-		g_warning ("The file did not contained the expected root name\n"
+		g_warning ("The file did not contain the expected root name\n"
 			   "Expected \"%s\", actual : \"%s\" [%s]",
 			   root_name, root->name, full_path);
 		xmlFreeDoc (doc);

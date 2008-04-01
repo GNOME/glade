@@ -3871,9 +3871,9 @@ static void
 glade_widget_read_children (GladeWidget  *widget,
 			    GladeXmlNode *node)
 {
-	GladeXmlNode *child, *widget_node;
-	GladeWidget *child_widget;
-	
+	GladeXmlNode *child, *widget_node, *packing_node;
+	GladeWidget  *child_widget;
+	GList        *packing;
 	/* 
 	 * Deal with children...
 	 */
@@ -3900,12 +3900,27 @@ glade_widget_read_children (GladeWidget  *widget,
 						   widget_node, 
 						   internal_name);
 			
-			if (child_widget && !internal_name)
-				glade_widget_adaptor_add
-					(widget->adaptor,
-					 widget->object,
-					 child_widget->object);
+			if (child_widget)
+			{
+				if (!internal_name)
+					glade_widget_add_child (widget, child_widget, FALSE);
+				
+				if ((packing_node =
+				     glade_xml_search_child
+				     (child, GLADE_XML_TAG_PACKING)) != NULL)
+				{
 
+					/* Get the packing properties */
+					for (packing = child_widget->packing_properties; 
+					     packing; packing = packing->next)
+					{
+						GladeProperty *property = packing->data;
+						glade_property_read
+							(property, property->klass, 
+							 loading_project, packing_node, TRUE);
+					}
+				}
+			}
 
 		} else {
 			GObject *palaceholder = 

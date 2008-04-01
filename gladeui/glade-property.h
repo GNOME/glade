@@ -144,7 +144,7 @@ void                    glade_property_load                  (GladeProperty     
 GValue                 *glade_property_read                  (GladeProperty      *property,
 							      GladePropertyClass *pclass,
 							      GladeProject       *project,
-							      gpointer            info,
+							      GladeXmlNode       *node,
 							      gboolean            free_value);
 
 /* XXX gboolean                glade_property_write                 (GladeProperty      *property,  */
