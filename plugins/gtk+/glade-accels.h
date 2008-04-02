@@ -15,7 +15,13 @@
 
 typedef struct _GladeKey                GladeKey;
 typedef struct _GladeParamSpecAccel     GladeParamSpecAccel;
+typedef struct _GladeAccelInfo          GladeAccelInfo;
 
+struct _GladeAccelInfo {
+    guint key;
+    GdkModifierType modifiers;
+    gchar *signal;
+};
 
 struct _GladeKey {
 	guint  value;

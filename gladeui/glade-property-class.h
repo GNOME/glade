@@ -19,7 +19,6 @@ G_BEGIN_DECLS
 #define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
 
 typedef struct _GladePropertyClass GladePropertyClass;
-typedef struct _GladeAccelInfo     GladeAccelInfo;
 
 /**
  * GPCType:
@@ -36,12 +35,6 @@ typedef enum {
 	GPC_ATK_ACTION,
 	GPC_ACCEL_PROPERTY
 } GPCType;
-
-struct _GladeAccelInfo {
-    guint key;
-    GdkModifierType modifiers;
-    gchar *signal;
-};
 
 struct _GladePropertyClass
 {

@@ -243,20 +243,139 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
+#define GLADE_TAG_ACCEL                       "accelerator"
+#define GLADE_TAG_ACCEL_KEY                   "key"
+#define GLADE_TAG_ACCEL_MODIFIERS             "modifiers"
+#define GLADE_TAG_ACCEL_SIGNAL                "signal"
+
+static GdkModifierType
+glade_gtk_parse_modifiers (const gchar *string)
+{
+	const gchar     *pos = string;
+	GdkModifierType	 modifiers = 0;
+
+	while (pos[0])
+	{
+		if (!strncmp(pos, "GDK_", 4)) {
+			pos += 4;
+			if (!strncmp(pos, "SHIFT_MASK", 10)) {
+				modifiers |= GDK_SHIFT_MASK;
+				pos += 10;
+			} else if (!strncmp(pos, "LOCK_MASK", 9)) {
+				modifiers |= GDK_LOCK_MASK;
+				pos += 9;
+			} else if (!strncmp(pos, "CONTROL_MASK", 12)) {
+				modifiers |= GDK_CONTROL_MASK;
+				pos += 12;
+			} else if (!strncmp(pos, "MOD", 3) &&
+				   !strncmp(pos+4, "_MASK", 5)) {
+				switch (pos[3]) {
+				case '1':
+					modifiers |= GDK_MOD1_MASK; break;
+				case '2':
+					modifiers |= GDK_MOD2_MASK; break;
+				case '3':
+					modifiers |= GDK_MOD3_MASK; break;
+				case '4':
+					modifiers |= GDK_MOD4_MASK; break;
+				case '5':
+					modifiers |= GDK_MOD5_MASK; break;
+				}
+				pos += 9;
+			} else if (!strncmp(pos, "BUTTON", 6) &&
+				   !strncmp(pos+7, "_MASK", 5)) {
+				switch (pos[6]) {
+				case '1':
+					modifiers |= GDK_BUTTON1_MASK; break;
+				case '2':
+					modifiers |= GDK_BUTTON2_MASK; break;
+				case '3':
+					modifiers |= GDK_BUTTON3_MASK; break;
+				case '4':
+					modifiers |= GDK_BUTTON4_MASK; break;
+				case '5':
+					modifiers |= GDK_BUTTON5_MASK; break;
+				}
+				pos += 12;
+			} else if (!strncmp(pos, "RELEASE_MASK", 12)) {
+				modifiers |= GDK_RELEASE_MASK;
+				pos += 12;
+			} else
+				pos++;
+		} else
+			pos++;
+	}
+	return modifiers;
+}
+
+static void
+glade_gtk_widget_read_accels (GladeWidget  *widget,
+			      GladeXmlNode *node)
+{
+	GladeProperty  *property;
+	GladeXmlNode   *prop;
+	GladeAccelInfo *ainfo;
+	GValue         *value = NULL;
+	GList          *accels = NULL;
+
+	for (prop = glade_xml_node_get_children (node); 
+	     prop; prop = glade_xml_node_next (prop))
+	{
+		gchar *key, *modifiers, *signal;
+
+
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_ACCEL))
+			continue;
+
+		/* Get from xml... */
+		key = glade_xml_get_property_string_required
+			(prop, GLADE_TAG_ACCEL_KEY, NULL);
+		signal = glade_xml_get_property_string_required
+			(prop, GLADE_TAG_ACCEL_MODIFIERS, NULL);
+		modifiers = glade_xml_get_property_string (prop, GLADE_TAG_ACCEL_MODIFIERS);
+
+		/* translate to GladeAccelInfo... */
+		ainfo = g_new0 (GladeAccelInfo, 1);
+		ainfo->key = gdk_keyval_from_name(key);
+		ainfo->signal = signal; /* take string ownership... */
+		ainfo->modifiers = glade_gtk_parse_modifiers (modifiers);
+
+
+		accels = g_list_prepend (accels, ainfo);
+		g_free (modifiers);
+	}
+
+	if (accels)
+	{
+		value = g_new0 (GValue, 1);
+		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
+		g_value_take_boxed (value, accels);
+
+		property = glade_widget_get_property (widget, "accelerator");
+		glade_property_set_value (property, value);
+
+		g_value_unset (value);
+		g_free (value);
+	}
+}
+
+
 void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
 			      GladeWidget        *widget,
 			      GladeXmlNode       *node)
 {
 	/* This code should work the same for <packing> and <widget> */
-	if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
-	/* First chain up.. */
+	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
+	/* Read in accelerators */
+	glade_gtk_widget_read_accels (widget, node);
 
-	/* Read in atk properties and accelerators */
+	/* Read in atk props */
 
 }
 

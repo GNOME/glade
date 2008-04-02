@@ -393,7 +393,7 @@ glade_property_write_impl (GladeProperty  *property,
 		name = g_strdup (property->klass->id);
 	}
 
-	/* convert the value of this property to a string */
+	/* XXX ??? convert the value of this property to a string */
 	if (property->klass->type == GPC_ACCEL_PROPERTY ||
 	    (value = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
@@ -1244,9 +1244,6 @@ glade_property_read (GladeProperty      *property,
 
 	g_return_val_if_fail (pclass != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
-
-	g_print ("glade_property_read for property '%s', nodename %s\n", 
-		 pclass->id, glade_xml_node_get_name (node));
 
 	/* This code should work the same for <packing> and <widget> */
 	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
