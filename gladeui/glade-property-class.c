@@ -474,41 +474,6 @@ glade_property_class_make_string_from_objects (GladePropertyClass *property_clas
 	return string;
 }
 
-/* This is not used to save in the glade file... and its a one-way conversion.
- * its only usefull to show the values in the UI.
- */
-static gchar *
-glade_property_class_make_string_from_accels (GladePropertyClass *property_class,
-					      GList              *accels)
-{
-	GladeAccelInfo *info;
-	GString        *string;
-	GList          *list;
-
-	string = g_string_new ("");
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-		
-		if (info->modifiers & GDK_SHIFT_MASK)
-			g_string_append (string, "SHIFT-");
-
-		if (info->modifiers & GDK_CONTROL_MASK)
-			g_string_append (string, "CNTL-");
-
-		if (info->modifiers & GDK_MOD1_MASK)
-			g_string_append (string, "ALT-");
-
-		g_string_append (string, glade_builtin_string_from_key (info->key));
-
-		if (list->next)
-			g_string_append (string, ", ");
-	}
-
-	return g_string_free (string, FALSE);
-}
-
 /**
  * glade_property_class_make_string_from_gvalue:
  * @property_class: A #GladePropertyClass
@@ -523,7 +488,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	gchar    *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
 	GObject  *object;
 	GdkColor *color;
-	GList    *objects, *accels;
+	GList    *objects;
 
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
@@ -629,14 +594,8 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		string = glade_property_class_make_string_from_objects
 			(property_class, objects);
 	}
-	else if (GLADE_IS_PARAM_SPEC_ACCEL (property_class->pspec))
-	{
-		accels = g_value_get_boxed (value);
-		string = glade_property_class_make_string_from_accels 
-			(property_class, accels);
-	}
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (value -> string)",
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return string;
@@ -961,7 +920,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		g_value_set_boxed (value, objects);
 	}
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (string -> value)",
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return value;
@@ -1024,7 +983,7 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass  *klass,
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		g_value_set_boxed (value, va_arg (vl, gpointer));
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (vl -> string)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));
 	
 	return value;
@@ -1113,7 +1072,7 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass  *klass,
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (string -> vl)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));
 }
 
@@ -1192,57 +1151,6 @@ glade_property_class_list_atk_relations (gpointer handle,
 }
 
 /**
- * glade_property_class_accel_property:
- * @handle: A generic pointer (i.e. a #GladeWidgetClass)
- * @owner_type: The #GType of the owning widget class.
- *
- * Returns: a newly created #GladePropertyClass for accelerators
- *          of the prescribed @owner_type.
- */
-GladePropertyClass *
-glade_property_class_accel_property (gpointer handle,
-				     GType    owner_type)
-{
-	GladePropertyClass *property_class;
-	GValue             *def_value;
-
-	property_class                    = glade_property_class_new (handle);
-	property_class->pspec             = 
-		glade_param_spec_accel ("accelerators", _("Accelerators"),
-					_("A list of accelerator keys"), 
-					owner_type,
-					G_PARAM_READWRITE);
-
-	
-	property_class->pspec->owner_type = owner_type;
-	property_class->id                = g_strdup (g_param_spec_get_name
-						      (property_class->pspec));
-	property_class->name              = g_strdup (g_param_spec_get_nick
-						      (property_class->pspec));
-	property_class->tooltip           = g_strdup (g_param_spec_get_blurb
-						      (property_class->pspec));
-
-	property_class->type              = GPC_ACCEL_PROPERTY;
-	property_class->ignore            = TRUE;
-	property_class->common            = TRUE;
-
-	/* Setup default */
-	def_value = g_new0 (GValue, 1);
-	g_value_init (def_value, GLADE_TYPE_ACCEL_GLIST);
-	g_value_set_boxed (def_value, NULL);
-	property_class->def = def_value;
-
-	/* Setup original default */
-	def_value = g_new0 (GValue, 1);
-	g_value_init (def_value, GLADE_TYPE_ACCEL_GLIST);
-	g_value_set_boxed (def_value, NULL);
-	property_class->orig_def = def_value;
-
-	return property_class;
-}
-
-
-/**
  * glade_property_class_new_from_spec:
  * @handle: A generic pointer (i.e. a #GladeWidgetClass)
  * @spec: A #GParamSpec
@@ -1254,8 +1162,9 @@ GladePropertyClass *
 glade_property_class_new_from_spec (gpointer     handle,
 				    GParamSpec  *spec)
 {
-	GObjectClass       *gtk_widget_class;
-	GladePropertyClass *property_class;
+	GObjectClass        *gtk_widget_class;
+	GladePropertyClass  *property_class;
+	GladeEditorProperty *eprop;
 
 	g_return_val_if_fail (spec != NULL, NULL);
 	gtk_widget_class = g_type_class_ref (GTK_TYPE_WIDGET);
@@ -1271,13 +1180,17 @@ glade_property_class_new_from_spec (gpointer     handle,
 	if ((spec->flags & G_PARAM_WRITABLE) == 0)
 		goto failed;
 
-	/* Register only editable properties.
-	 */
-	if (!glade_editor_property_supported (property_class->pspec))
-		goto failed;
-	
 	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
+
+	/* Register only editable properties.
+	 */
+	if (!(eprop = glade_widget_adaptor_create_eprop
+	      (GLADE_WIDGET_ADAPTOR (handle), property_class, FALSE)))
+		goto failed;
+
+	/* Just created it to see if it was supported.... destroy now... */
+	gtk_widget_destroy (GTK_WIDGET (eprop));
 
 	/* If its on the GtkWidgetClass, it goes in "common" 
 	 * (unless stipulated otherwise in the xml file)
@@ -1746,11 +1659,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		else
 			klass->type = GPC_ATK_PROPERTY;
 	}
-
-	/* Special case accelerators here.
-	 */
-	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
-		klass->type = GPC_ACCEL_PROPERTY;
 
 	/* Special case pixbuf here.
 	 */

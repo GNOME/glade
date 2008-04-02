@@ -220,8 +220,9 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 #if 0
 	{
-		gchar *str = glade_property_class_make_string_from_gvalue
-			(property->klass, value);
+		gchar *str = glade_widget_adaptor_string_from_value
+			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			      property->klass, value);
 		g_print ("Setting property %s on %s to %s\n",
 			 property->klass->id,
 			 property->widget ? property->widget->name : "unknown", str);
@@ -394,8 +395,9 @@ glade_property_write_impl (GladeProperty  *property,
 
 	/* convert the value of this property to a string */
 	if (property->klass->type == GPC_ACCEL_PROPERTY ||
-	    (value = glade_property_class_make_string_from_gvalue 
-	     (property->klass, property->value)) == NULL)
+	    (value = glade_widget_adaptor_string_from_value
+	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
+	      property->klass, property->value)) == NULL)
 		/* make sure we keep the empty string, also... upcomming
 		 * funcs that may not like NULL.
 		 */
@@ -694,15 +696,6 @@ glade_property_get_type (void)
 /*******************************************************************************
                         GladeInterface Parsing code
  *******************************************************************************/
-
-static GValue *
-glade_property_real_read (GladeProperty      *property, 
-			  GladePropertyClass *pclass,
-			  GladeProject       *project,
-			  GladeXmlNode       *node,
-			  gboolean            free_value)
-{
-}
 
 #if LOADING_WAS_IMPLEMENTED
 

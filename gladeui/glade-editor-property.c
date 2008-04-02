@@ -70,61 +70,6 @@ static guint                      glade_editor_property_signals[LAST_SIGNAL] = {
 #define FLAGS_COLUMN_SETTING             0
 #define FLAGS_COLUMN_SYMBOL              1
 
-/*******************************************************************************
-                Boiler plate macros (inspired from glade-command.c)
- *******************************************************************************/
-#define MAKE_TYPE(func, type, parent)			\
-GType							\
-func ## _get_type (void)				\
-{							\
-	static GType cmd_type = 0;			\
-							\
-	if (!cmd_type)					\
-	{						\
-		static const GTypeInfo info =		\
-		{					\
-			sizeof (type ## Class),		\
-			(GBaseInitFunc) NULL,		\
-			(GBaseFinalizeFunc) NULL,	\
-			(GClassInitFunc) func ## _class_init,	\
-			(GClassFinalizeFunc) NULL,	\
-			NULL,				\
-			sizeof (type),			\
-			0,				\
-			(GInstanceInitFunc) NULL	\
-		};					\
-							\
-		cmd_type = g_type_register_static (parent, #type, &info, 0);	\
-	}						\
-							\
-	return cmd_type;				\
-}							\
-
-
-#define GLADE_MAKE_EPROP(type, func)					\
-static void								\
-func ## _finalize (GObject *object);					\
-static void								\
-func ## _load (GladeEditorProperty *me, GladeProperty *property);	\
-static GtkWidget *							\
-func ## _create_input (GladeEditorProperty *me);			\
-static void								\
-func ## _class_init (gpointer parent_tmp, gpointer notused)		\
-{									\
-	GladeEditorPropertyClass *parent = parent_tmp;			\
-	GObjectClass* object_class;					\
-	object_class = G_OBJECT_CLASS (parent);				\
-	parent->load =  func ## _load;					\
-	parent->create_input =  func ## _create_input;			\
-	object_class->finalize = func ## _finalize;			\
-}									\
-typedef struct {							\
-	GladeEditorPropertyClass cmd;					\
-} type ## Class;							\
-static MAKE_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
-
-
-
 
 /*******************************************************************************
                                GladeEditorPropertyClass
@@ -134,9 +79,15 @@ static MAKE_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
 static void glade_editor_property_load_common (GladeEditorProperty *eprop, 
 					       GladeProperty       *property);
 
-/* For use in editor implementations
+/** 
+ * glade_editor_property_commit:
+ * @eprop: A #GladeEditorProperty
+ * @value: The #GValue
+ *
+ * Commits the value onto the widget and glade-command interface
+ * (for use in GladeEditorProperty implementations)
  */
-static void
+void
 glade_editor_property_commit (GladeEditorProperty *eprop,
 			      GValue              *value)
 {
@@ -596,7 +547,6 @@ typedef struct {
 } GladeEPropNumeric;
 
 GLADE_MAKE_EPROP (GladeEPropNumeric, glade_eprop_numeric)
-#define GLADE_TYPE_EPROP_NUMERIC            (glade_eprop_numeric_get_type())
 #define GLADE_EPROP_NUMERIC(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_NUMERIC, GladeEPropNumeric))
 #define GLADE_EPROP_NUMERIC_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_NUMERIC, GladeEPropNumericClass))
 #define GLADE_IS_EPROP_NUMERIC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NUMERIC))
@@ -717,7 +667,6 @@ typedef struct {
 } GladeEPropEnum;
 
 GLADE_MAKE_EPROP (GladeEPropEnum, glade_eprop_enum)
-#define GLADE_TYPE_EPROP_ENUM            (glade_eprop_enum_get_type())
 #define GLADE_EPROP_ENUM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ENUM, GladeEPropEnum))
 #define GLADE_EPROP_ENUM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ENUM, GladeEPropEnumClass))
 #define GLADE_IS_EPROP_ENUM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ENUM))
@@ -871,7 +820,6 @@ typedef struct {
 } GladeEPropFlags;
 
 GLADE_MAKE_EPROP (GladeEPropFlags, glade_eprop_flags)
-#define GLADE_TYPE_EPROP_FLAGS            (glade_eprop_flags_get_type())
 #define GLADE_EPROP_FLAGS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_FLAGS, GladeEPropFlags))
 #define GLADE_EPROP_FLAGS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_FLAGS, GladeEPropFlagsClass))
 #define GLADE_IS_EPROP_FLAGS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_FLAGS))
@@ -1160,7 +1108,6 @@ typedef struct {
 } GladeEPropColor;
 
 GLADE_MAKE_EPROP (GladeEPropColor, glade_eprop_color)
-#define GLADE_TYPE_EPROP_COLOR            (glade_eprop_color_get_type())
 #define GLADE_EPROP_COLOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_COLOR, GladeEPropColor))
 #define GLADE_EPROP_COLOR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_COLOR, GladeEPropColorClass))
 #define GLADE_IS_EPROP_COLOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_COLOR))
@@ -1187,8 +1134,9 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 	
 	if (property)
 	{
-		if ((text = glade_property_class_make_string_from_gvalue
-		     (eprop->klass, property->value)) != NULL)
+		if ((text = glade_widget_adaptor_string_from_value
+		     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
+		      eprop->klass, property->value)) != NULL)
 		{
 			gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), text);
 			g_free (text);
@@ -1268,7 +1216,6 @@ typedef struct {
 } GladeEPropNamedIcon;
 
 GLADE_MAKE_EPROP (GladeEPropNamedIcon, glade_eprop_named_icon)
-#define GLADE_TYPE_EPROP_NAMED_ICON            (glade_eprop_named_icon_get_type())
 #define GLADE_EPROP_NAMED_ICON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_NAMED_ICON, GladeEPropNamedIcon))
 #define GLADE_EPROP_NAMED_ICON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_NAMED_ICON, GladeEPropNamedIconClass))
 #define GLADE_IS_EPROP_NAMED_ICON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NAMED_ICON))
@@ -1478,7 +1425,6 @@ typedef struct {
 } GladeEPropText;
 
 GLADE_MAKE_EPROP (GladeEPropText, glade_eprop_text)
-#define GLADE_TYPE_EPROP_TEXT            (glade_eprop_text_get_type())
 #define GLADE_EPROP_TEXT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_TEXT, GladeEPropText))
 #define GLADE_EPROP_TEXT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_TEXT, GladeEPropTextClass))
 #define GLADE_IS_EPROP_TEXT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_TEXT))
@@ -1519,8 +1465,9 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 		if (G_VALUE_HOLDS (property->value, G_TYPE_STRV) ||
 		    G_VALUE_HOLDS (property->value, G_TYPE_VALUE_ARRAY))
 		{
-			gchar *text = glade_property_class_make_string_from_gvalue (
-						property->klass, property->value);
+			gchar *text = glade_widget_adaptor_string_from_value
+				(GLADE_WIDGET_ADAPTOR (property->klass->handle),
+				 property->klass, property->value);
 			gtk_text_buffer_set_text (buffer, text ? text : "", -1);
 			g_free (text);
 		}
@@ -1860,7 +1807,6 @@ typedef struct {
 } GladeEPropBool;
 
 GLADE_MAKE_EPROP (GladeEPropBool, glade_eprop_bool)
-#define GLADE_TYPE_EPROP_BOOL            (glade_eprop_bool_get_type())
 #define GLADE_EPROP_BOOL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_BOOL, GladeEPropBool))
 #define GLADE_EPROP_BOOL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_BOOL, GladeEPropBoolClass))
 #define GLADE_IS_EPROP_BOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_BOOL))
@@ -1942,7 +1888,6 @@ typedef struct {
 } GladeEPropUnichar;
 
 GLADE_MAKE_EPROP (GladeEPropUnichar, glade_eprop_unichar)
-#define GLADE_TYPE_EPROP_UNICHAR            (glade_eprop_unichar_get_type())
 #define GLADE_EPROP_UNICHAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_UNICHAR, GladeEPropUnichar))
 #define GLADE_EPROP_UNICHAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_UNICHAR, GladeEPropUnicharClass))
 #define GLADE_IS_EPROP_UNICHAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_UNICHAR))
@@ -2072,7 +2017,6 @@ typedef struct {
 } GladeEPropResource;
 
 GLADE_MAKE_EPROP (GladeEPropResource, glade_eprop_resource)
-#define GLADE_TYPE_EPROP_RESOURCE            (glade_eprop_resource_get_type())
 #define GLADE_EPROP_RESOURCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_RESOURCE, GladeEPropResource))
 #define GLADE_EPROP_RESOURCE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_RESOURCE, GladeEPropResourceClass))
 #define GLADE_IS_EPROP_RESOURCE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_RESOURCE))
@@ -2173,8 +2117,9 @@ glade_eprop_resource_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (property == NULL) return;
 
-	file  = glade_property_class_make_string_from_gvalue
-						(eprop->klass, property->value);
+	file = glade_widget_adaptor_string_from_value
+		(GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
+		 eprop->klass, property->value);
 	if (file)
 	{
 		gtk_entry_set_text (GTK_ENTRY (eprop_resource->entry), file);
@@ -2238,7 +2183,6 @@ typedef struct {
 } GladeEPropObject;
 
 GLADE_MAKE_EPROP (GladeEPropObject, glade_eprop_object)
-#define GLADE_TYPE_EPROP_OBJECT            (glade_eprop_object_get_type())
 #define GLADE_EPROP_OBJECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_OBJECT, GladeEPropObject))
 #define GLADE_EPROP_OBJECT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_OBJECT, GladeEPropObjectClass))
 #define GLADE_IS_EPROP_OBJECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_OBJECT))
@@ -2682,8 +2626,9 @@ glade_eprop_object_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (property == NULL) return;
 
-	if ((obj_name  = glade_property_class_make_string_from_gvalue
-	     (eprop->klass, property->value)) != NULL)
+	if ((obj_name = glade_widget_adaptor_string_from_value
+	     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
+	      eprop->klass, property->value)) != NULL)
 	{
 		gtk_entry_set_text (GTK_ENTRY (eprop_object->entry), obj_name);
 		g_free (obj_name);
@@ -2728,7 +2673,6 @@ typedef struct {
 } GladeEPropObjects;
 
 GLADE_MAKE_EPROP (GladeEPropObjects, glade_eprop_objects)
-#define GLADE_TYPE_EPROP_OBJECTS            (glade_eprop_objects_get_type())
 #define GLADE_EPROP_OBJECTS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_OBJECTS, GladeEPropObjects))
 #define GLADE_EPROP_OBJECTS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_OBJECTS, GladeEPropObjectsClass))
 #define GLADE_IS_EPROP_OBJECTS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_OBJECTS))
@@ -2753,8 +2697,9 @@ glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (property == NULL) return;
 
-	if ((obj_name  = glade_property_class_make_string_from_gvalue
-	     (eprop->klass, property->value)) != NULL)
+	if ((obj_name = glade_widget_adaptor_string_from_value
+	     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
+	      eprop->klass, property->value)) != NULL)
 	{
 		gtk_entry_set_text (GTK_ENTRY (eprop_objects->entry), obj_name);
 		g_free (obj_name);
@@ -2913,7 +2858,6 @@ typedef struct {
 } GladeEPropAdjustment;
 
 GLADE_MAKE_EPROP (GladeEPropAdjustment, glade_eprop_adjustment)
-#define GLADE_TYPE_EPROP_ADJUSTMENT            (glade_eprop_adjustment_get_type())
 #define GLADE_EPROP_ADJUSTMENT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustment))
 #define GLADE_EPROP_ADJUSTMENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustmentClass))
 #define GLADE_IS_EPROP_ADJUSTMENT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ADJUSTMENT))
@@ -3165,811 +3109,8 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
 
 
 /*******************************************************************************
-                        GladeEditorPropertyAccelClass
- *******************************************************************************/
-enum {
-	ACCEL_COLUMN_SIGNAL = 0,
-	ACCEL_COLUMN_REAL_SIGNAL,
-	ACCEL_COLUMN_KEY,
-	ACCEL_COLUMN_MOD_SHIFT,
-	ACCEL_COLUMN_MOD_CNTL,
-	ACCEL_COLUMN_MOD_ALT,
-	ACCEL_COLUMN_IS_CLASS,
-	ACCEL_COLUMN_IS_SIGNAL,
-	ACCEL_COLUMN_KEY_ENTERED,
-	ACCEL_COLUMN_KEY_SLOT,
-	ACCEL_NUM_COLUMNS
-};
-
-enum {
-	ACCEL_COMBO_COLUMN_TEXT = 0,
-	ACCEL_COMBO_NUM_COLUMNS,
-};
-
-typedef struct {
-	GladeEditorProperty parent_instance;
-	
-	GtkWidget    *entry;
-	GList        *parent_iters;
-	GtkTreeModel *model;
-} GladeEPropAccel;
-
-typedef struct {
-	GtkTreeIter *iter;
-	gchar       *name; /* <-- dont free */
-} GladeEpropIterTab;
-
-
-static GtkTreeModel *keysyms_model   = NULL;
-
-GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel)
-#define GLADE_TYPE_EPROP_ACCEL            (glade_eprop_accel_get_type())
-#define GLADE_EPROP_ACCEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccel))
-#define GLADE_EPROP_ACCEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ACCEL, GladeEPropAccelClass))
-#define GLADE_IS_EPROP_ACCEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ACCEL))
-#define GLADE_IS_EPROP_ACCEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ACCEL))
-#define GLADE_EPROP_ACCEL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ACCEL, GladeEPropAccelClass))
-
-
-static GtkTreeModel *
-create_keysyms_model (void)
-{
-	GtkTreeModel *model;
-	GtkTreeIter   iter, alphanum, fkey, keypad, other, extra;
-	GtkTreeIter  *parent;
-	gint          i;
-
-	model = (GtkTreeModel *)gtk_tree_store_new
-		(ACCEL_COMBO_NUM_COLUMNS,
-		 G_TYPE_STRING);       /* The Key charachter name */
-
-	gtk_tree_store_append (GTK_TREE_STORE (model), &alphanum, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &alphanum, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Alphanumerical"), -1);
-
-	gtk_tree_store_append (GTK_TREE_STORE (model), &extra, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &extra, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Extra"), -1);
-
-	gtk_tree_store_append (GTK_TREE_STORE (model), &keypad, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &keypad, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Keypad"), -1);
-
-	gtk_tree_store_append (GTK_TREE_STORE (model), &fkey, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &fkey, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Functions"), -1);
-	
-	gtk_tree_store_append (GTK_TREE_STORE (model), &other, NULL);
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (model), &other, 
-		 ACCEL_COMBO_COLUMN_TEXT, _("Other"), -1);
-
-	parent = &alphanum;
-
-	for (i = 0; GladeKeys[i].name != NULL; i++)
-	{
-		gtk_tree_store_append (GTK_TREE_STORE (model), &iter, parent);
-		gtk_tree_store_set    
-			(GTK_TREE_STORE (model), &iter, 
-			 ACCEL_COMBO_COLUMN_TEXT, GladeKeys[i].name, -1);
-
-		if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_ALPHANUM))
-			parent = &extra;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_EXTRA))
-			parent = &keypad;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_KP))
-			parent = &fkey;
-		else if (!strcmp (GladeKeys[i].name, GLADE_KEYS_LAST_FKEY))
-			parent = &other;
-	}
-	return model;
-}
-
-static void
-glade_eprop_accel_finalize (GObject *object)
-{
-	/* Chain up */
-	G_OBJECT_CLASS (editor_property_class)->finalize (object);
-}
-
-static void
-glade_eprop_accel_load (GladeEditorProperty *eprop, 
-			GladeProperty       *property)
-{
-	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	gchar           *accels;
-
-	/* Chain up first */
-	editor_property_class->load (eprop, property);
-
-	if (property == NULL) return;
-
-	if ((accels  = glade_property_class_make_string_from_gvalue
-	     (eprop->klass, property->value)) != NULL)
-	{
-		gtk_entry_set_text (GTK_ENTRY (eprop_accel->entry), accels);
-		g_free (accels);
-	}
-	else
-		gtk_entry_set_text (GTK_ENTRY (eprop_accel->entry), "");
-
-}
-
-static gint
-eprop_find_iter (GladeEpropIterTab *iter_tab,
-		 gchar             *name)
-{
-	return strcmp (iter_tab->name, name);
-}
-
-static void
-iter_tab_free (GladeEpropIterTab *iter_tab)
-{
-	gtk_tree_iter_free (iter_tab->iter);
-	g_free (iter_tab);
-}
-
-static void
-glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
-				 GtkTreeView         *view)
-{
-	GladeEPropAccel    *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GladeSignalClass   *sclass;
-	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_from_pclass (eprop->klass);
-	GtkTreeStore       *model = (GtkTreeStore *)gtk_tree_view_get_model (view);
-	GtkTreeIter         iter;
-	GladeEpropIterTab  *parent_tab;
-	GladeAccelInfo     *info;
-	GList              *list, *l, *found, *accelerators;
-	gchar              *name;
-
-	accelerators = g_value_get_boxed (eprop->property->value);
-
-	/* First make parent iters...
-	 */
-	for (list = adaptor->signals; list; list = list->next)
-	{
-		sclass = list->data;
-
-		/* Only action signals have accelerators. */
-		if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
-			continue;
-
-		if (g_list_find_custom (eprop_accel->parent_iters, 
-					sclass->type,
-					(GCompareFunc)eprop_find_iter) == NULL)
-		{
-			gtk_tree_store_append (model, &iter, NULL);
-			gtk_tree_store_set (model, &iter,
-					    ACCEL_COLUMN_SIGNAL, sclass->type,
-					    ACCEL_COLUMN_IS_CLASS, TRUE,
-					    ACCEL_COLUMN_IS_SIGNAL, FALSE,
-					    -1);
-			
-			parent_tab = g_new0 (GladeEpropIterTab, 1);
-			parent_tab->name = sclass->type;
-			parent_tab->iter = gtk_tree_iter_copy (&iter);
-
-			eprop_accel->parent_iters = 
-				g_list_prepend (eprop_accel->parent_iters,
-						parent_tab);
-		}
-	}
-
-	/* Now we populate...
-	 */
-	for (list = adaptor->signals; list; list = list->next)
-	{
-		sclass = list->data;
-
-		/* Only action signals have accelerators. */
-		if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
-			continue;
-
-		if ((found = g_list_find_custom (eprop_accel->parent_iters, 
-						 sclass->type,
-						 (GCompareFunc)eprop_find_iter)) != NULL)
-		{
-			parent_tab = found->data;
-			name       = g_strdup_printf ("    %s", sclass->name);
-
-			/* Populate from accelerator list
-			 */
-			for (l = accelerators; l; l = l->next)
-			{
-				info = l->data;
-
-				if (strcmp (info->signal, sclass->name))
-					continue;
-
-				gtk_tree_store_append (model, &iter, parent_tab->iter);
-				gtk_tree_store_set    
-					(model, &iter,
-					 ACCEL_COLUMN_SIGNAL, name,
-					 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
-					 ACCEL_COLUMN_IS_CLASS, FALSE,
-					 ACCEL_COLUMN_IS_SIGNAL, TRUE,
-					 ACCEL_COLUMN_MOD_SHIFT, 
-					 (info->modifiers & GDK_SHIFT_MASK) != 0,
-					 ACCEL_COLUMN_MOD_CNTL, 
-					 (info->modifiers & GDK_CONTROL_MASK) != 0,
-					 ACCEL_COLUMN_MOD_ALT,
-					 (info->modifiers & GDK_MOD1_MASK) != 0,
-					 ACCEL_COLUMN_KEY, 
-					 glade_builtin_string_from_key (info->key),
-					 ACCEL_COLUMN_KEY_ENTERED, TRUE,
-					 ACCEL_COLUMN_KEY_SLOT, FALSE,
-					 -1);
-			}
-
-			/* Append a new empty slot at the end */
-			gtk_tree_store_append (model, &iter, parent_tab->iter);
-			gtk_tree_store_set    
-				(model, &iter,
-				 ACCEL_COLUMN_SIGNAL, name,
-				 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
-				 ACCEL_COLUMN_IS_CLASS, FALSE,
-				 ACCEL_COLUMN_IS_SIGNAL, TRUE,
-				 ACCEL_COLUMN_MOD_SHIFT, FALSE,
-				 ACCEL_COLUMN_MOD_CNTL, FALSE,
-				 ACCEL_COLUMN_MOD_ALT, FALSE,
-				 ACCEL_COLUMN_KEY, _("<choose a key>"),
-				 ACCEL_COLUMN_KEY_ENTERED, FALSE,
-				 ACCEL_COLUMN_KEY_SLOT, TRUE,
-				 -1);
-
-			g_free (name);
-		}
-	}
-}
-
-static void
-key_edited (GtkCellRendererText *cell,
-	    const gchar         *path_string,
-	    const gchar         *new_text,
-	    GladeEditorProperty *eprop)
-{
-	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	gboolean         key_was_set;
-	const gchar     *text;
-	GtkTreeIter      iter, parent_iter, new_iter;
-
-	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
-						  &iter, path_string))
-		return;
-
-	gtk_tree_model_get (eprop_accel->model, &iter,
-			    ACCEL_COLUMN_KEY_ENTERED, &key_was_set,
-			    -1);
-
-	/* If user selects "none"; remove old entry or ignore new one.
-	 */
-	if (!new_text || new_text[0] == '\0' ||
-	    glade_builtin_string_from_key ((guint)new_text[0]) == NULL ||
-	    g_utf8_collate (new_text, _("None")) == 0 ||
-	    g_utf8_collate (new_text, _("<choose a key>")) == 0)
-	{
-		if (key_was_set)
-			gtk_tree_store_remove
-				(GTK_TREE_STORE (eprop_accel->model), &iter);
-
-		return;
-	}
-
-	if (glade_builtin_key_from_string (new_text) != 0)
-		text = new_text;
-	else
-		text = glade_builtin_string_from_key ((guint)new_text[0]);
-
-	gtk_tree_store_set    
-		(GTK_TREE_STORE (eprop_accel->model), &iter,
-		 ACCEL_COLUMN_KEY, text,
-		 ACCEL_COLUMN_KEY_ENTERED, TRUE,
-		 ACCEL_COLUMN_KEY_SLOT, FALSE,
-		 -1);
-
-	/* Append a new one if needed
-	 */
-	if (key_was_set == FALSE &&
-	    gtk_tree_model_iter_parent (eprop_accel->model,
-					&parent_iter, &iter))
-	{	
-		gchar *signal, *real_signal;
-		
-		gtk_tree_model_get (eprop_accel->model, &iter,
-				    ACCEL_COLUMN_SIGNAL, &signal,
-				    ACCEL_COLUMN_REAL_SIGNAL, &real_signal,
-				    -1);
-		
-		/* Append a new empty slot at the end */
-		gtk_tree_store_insert_after (GTK_TREE_STORE (eprop_accel->model), 
-					     &new_iter, &parent_iter, &iter);
-		gtk_tree_store_set (GTK_TREE_STORE (eprop_accel->model), &new_iter,
-				    ACCEL_COLUMN_SIGNAL, signal,
-				    ACCEL_COLUMN_REAL_SIGNAL, real_signal,
-				    ACCEL_COLUMN_IS_CLASS, FALSE,
-				    ACCEL_COLUMN_IS_SIGNAL, TRUE,
-				    ACCEL_COLUMN_MOD_SHIFT, FALSE,
-				    ACCEL_COLUMN_MOD_CNTL, FALSE,
-				    ACCEL_COLUMN_MOD_ALT, FALSE,
-				    ACCEL_COLUMN_KEY, _("<choose a key>"),
-				    ACCEL_COLUMN_KEY_ENTERED, FALSE,
-				    ACCEL_COLUMN_KEY_SLOT, TRUE,
-				    -1);
-		g_free (signal);
-		g_free (real_signal);
-	}
-}
-
-static void
-modifier_toggled (GtkCellRendererToggle *cell,
-		  gchar                 *path_string,
-		  GladeEditorProperty   *eprop)
-{
-	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GtkTreeIter        iter;
-	gint               column;
-	gboolean           active, key_entered;
-
-	if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
-						  &iter, path_string))
-		return;
-
-	column = GPOINTER_TO_INT (g_object_get_data
-				  (G_OBJECT (cell), "model-column"));
-
-	gtk_tree_model_get
-		(eprop_accel->model, &iter,
-		 ACCEL_COLUMN_KEY_ENTERED, &key_entered,
-		 column, &active, -1);
-
-	if (key_entered)
-		gtk_tree_store_set
-			(GTK_TREE_STORE (eprop_accel->model), &iter,
-			 column, !active, -1);
-}
-
-
-static GtkWidget *
-glade_eprop_accel_view (GladeEditorProperty *eprop)
-{
-	GladeEPropAccel   *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GtkWidget         *view_widget;
- 	GtkCellRenderer   *renderer;
-	GtkTreeViewColumn *column;
-
-	eprop_accel->model = (GtkTreeModel *)gtk_tree_store_new
-		(ACCEL_NUM_COLUMNS,
-		 G_TYPE_STRING,        /* The GSignal name formatted for display */
-		 G_TYPE_STRING,        /* The GSignal name */
-		 G_TYPE_STRING,        /* The Gdk keycode */
-		 G_TYPE_BOOLEAN,       /* The shift modifier */
-		 G_TYPE_BOOLEAN,       /* The cntl modifier */
-		 G_TYPE_BOOLEAN,       /* The alt modifier */
-		 G_TYPE_BOOLEAN,       /* Whether this is a class entry */
-		 G_TYPE_BOOLEAN,       /* Whether this is a signal entry (oposite of above) */
-		 G_TYPE_BOOLEAN,       /* Whether the key has been entered for this row */
-		 G_TYPE_BOOLEAN);      /* Oposite of above */
-
-	view_widget = gtk_tree_view_new_with_model (eprop_accel->model);
-	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
-	
-	/********************* fake invisible column *********************/
- 	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "editable", FALSE, "visible", FALSE, NULL);
-
-	column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	gtk_tree_view_column_set_visible (column, FALSE);
-	gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
-
-	/********************* signal name column *********************/
- 	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), 
-		      "editable", FALSE, 
-		      "weight", PANGO_WEIGHT_BOLD,
-		      NULL);
-
-	column = gtk_tree_view_column_new_with_attributes
-		(_("Signal"),  renderer, 
-		 "text", ACCEL_COLUMN_SIGNAL, 
-		 "weight-set", ACCEL_COLUMN_IS_CLASS,
-		 NULL);
-
-	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
-
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	/********************* key name column *********************/
-	if (keysyms_model == NULL)
-		keysyms_model = create_keysyms_model ();
-
- 	renderer = gtk_cell_renderer_combo_new ();
-	g_object_set (G_OBJECT (renderer), 
-		      "editable",    TRUE,
-		      "model",       keysyms_model,
-		      "text-column", ACCEL_COMBO_COLUMN_TEXT,
-		      "has-entry",   TRUE,
-		      "style",       PANGO_STYLE_ITALIC,
-		      "foreground",  "Gray", 
-		      NULL);
-
-	g_signal_connect (renderer, "edited",
-			  G_CALLBACK (key_edited), eprop);
-
-	column = gtk_tree_view_column_new_with_attributes
-		(_("Key"),         renderer, 
-		 "text",           ACCEL_COLUMN_KEY,
-		 "style-set",      ACCEL_COLUMN_KEY_SLOT,
-		 "foreground-set", ACCEL_COLUMN_KEY_SLOT,
- 		 "visible",        ACCEL_COLUMN_IS_SIGNAL,
-		 NULL);
-
-	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
-
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	/********************* shift modifier column *********************/
- 	renderer = gtk_cell_renderer_toggle_new ();
-	column   = gtk_tree_view_column_new_with_attributes
-		(_("Shift"),  renderer, 
-		 "visible", ACCEL_COLUMN_IS_SIGNAL,
-		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
-		 "active", ACCEL_COLUMN_MOD_SHIFT,
-		 NULL);
-
-	g_object_set_data (G_OBJECT (renderer), "model-column",
-			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_SHIFT));
-	g_signal_connect (G_OBJECT (renderer), "toggled",
-			  G_CALLBACK (modifier_toggled), eprop);
-
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	/********************* control modifier column *********************/
- 	renderer = gtk_cell_renderer_toggle_new ();
-	column   = gtk_tree_view_column_new_with_attributes
-		(_("Control"),  renderer, 
-		 "visible", ACCEL_COLUMN_IS_SIGNAL,
-		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
-		 "active", ACCEL_COLUMN_MOD_CNTL,
-		 NULL);
-
-	g_object_set_data (G_OBJECT (renderer), "model-column",
-			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_CNTL));
-	g_signal_connect (G_OBJECT (renderer), "toggled",
-			  G_CALLBACK (modifier_toggled), eprop);
-
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	/********************* alt modifier column *********************/
- 	renderer = gtk_cell_renderer_toggle_new ();
-	column   = gtk_tree_view_column_new_with_attributes
-		(_("Alt"),  renderer, 
-		 "visible", ACCEL_COLUMN_IS_SIGNAL,
-		 "sensitive", ACCEL_COLUMN_KEY_ENTERED,
-		 "active", ACCEL_COLUMN_MOD_ALT,
-		 NULL);
-
-	g_object_set_data (G_OBJECT (renderer), "model-column",
-			   GINT_TO_POINTER (ACCEL_COLUMN_MOD_ALT));
-	g_signal_connect (G_OBJECT (renderer), "toggled",
-			  G_CALLBACK (modifier_toggled), eprop);
-
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	return view_widget;
-}
-
-static gboolean
-glade_eprop_accel_accum_accelerators (GtkTreeModel  *model,
-				      GtkTreePath    *path,
-				      GtkTreeIter    *iter,
-				      GList         **ret)
-{
-	GladeAccelInfo *info;
-	gchar          *signal, *key_str;
-	gboolean        shift, cntl, alt, entered;
-
-	gtk_tree_model_get (model, iter, ACCEL_COLUMN_KEY_ENTERED, &entered, -1);
-	if (entered == FALSE) return FALSE;
-	
-	gtk_tree_model_get (model, iter,
-			    ACCEL_COLUMN_REAL_SIGNAL, &signal,
-			    ACCEL_COLUMN_KEY,         &key_str,
-			    ACCEL_COLUMN_MOD_SHIFT,   &shift,
-			    ACCEL_COLUMN_MOD_CNTL,    &cntl,
-			    ACCEL_COLUMN_MOD_ALT,     &alt,
-			    -1);
-
-	info            = g_new0 (GladeAccelInfo, 1);
-	info->signal    = signal;
-	info->key       = glade_builtin_key_from_string (key_str);
-	info->modifiers = (shift ? GDK_SHIFT_MASK   : 0) |
-			  (cntl  ? GDK_CONTROL_MASK : 0) |
-			  (alt   ? GDK_MOD1_MASK    : 0);
-
-	*ret = g_list_prepend (*ret, info);
-
-	g_free (key_str);
-	
-	return FALSE;
-}
-
-
-static void
-glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
-			       GladeEditorProperty *eprop)
-{
-	GladeEPropAccel  *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GtkWidget        *dialog, *parent, *vbox, *sw, *tree_view;
-	GladeProject     *project;
-	GValue           *value;
-	GList            *accelerators = NULL;
-	gint              res;
-	
-	project = glade_widget_get_project (eprop->property->widget);
-	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
-
-	dialog = gtk_dialog_new_with_buttons (_("Choose accelerator keys..."),
-					      GTK_WINDOW (parent),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-					      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					      GTK_STOCK_OK, GTK_RESPONSE_OK,
-					      NULL);
-
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-
-	vbox = gtk_vbox_new (FALSE, 6);
-	gtk_widget_show (vbox);
-
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
-
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
-
-	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (sw);
-	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
-	gtk_widget_set_size_request (sw, 400, 200);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
-
-	tree_view = glade_eprop_accel_view (eprop);
-	glade_eprop_accel_populate_view (eprop, GTK_TREE_VIEW (tree_view));
-
-	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
-
-	gtk_widget_show (tree_view);
-	gtk_container_add (GTK_CONTAINER (sw), tree_view);
-	
-	/* Run the dialog */
-	res = gtk_dialog_run (GTK_DIALOG (dialog));
-	if (res == GTK_RESPONSE_OK) 
-	{
-		gtk_tree_model_foreach
-			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)),
-			 (GtkTreeModelForeachFunc)
-			 glade_eprop_accel_accum_accelerators, &accelerators);
-		
-		value = g_new0 (GValue, 1);
-		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
-		g_value_take_boxed (value, accelerators);
-
-		glade_editor_property_commit (eprop, value);
-
-		g_value_unset (value);
-		g_free (value);
-	} 
-	else if (res == GLADE_RESPONSE_CLEAR)
-	{
-		value = g_new0 (GValue, 1);
-		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
-		g_value_set_boxed (value, NULL);
-
-		glade_editor_property_commit (eprop, value);
-
-		g_value_unset (value);
-		g_free (value);
-	}
-
-	/* Clean up ...
-	 */
-	gtk_widget_destroy (dialog);
-
-	g_object_unref (G_OBJECT (eprop_accel->model));
-	eprop_accel->model = NULL;
-
-	if (eprop_accel->parent_iters)
-	{
-		g_list_foreach (eprop_accel->parent_iters, (GFunc)iter_tab_free, NULL);
-		g_list_free (eprop_accel->parent_iters);
-		eprop_accel->parent_iters = NULL;
-	}
-
-}
-
-static GtkWidget *
-glade_eprop_accel_create_input (GladeEditorProperty *eprop)
-{
-	GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
-	GtkWidget        *hbox;
-	GtkWidget        *button;
-
-	hbox               = gtk_hbox_new (FALSE, 0);
-	eprop_accel->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_accel->entry), FALSE);
-	gtk_widget_show (eprop_accel->entry);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_accel->entry, TRUE, TRUE, 0);
-
-	button = gtk_button_new_with_label ("...");
-	gtk_widget_show (button);
-	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
-
-	g_signal_connect (G_OBJECT (button), "clicked",
-			  G_CALLBACK (glade_eprop_accel_show_dialog), 
-			  eprop);
-
-	return hbox;
-}
-
-
-
-/*******************************************************************************
-                              Misc static stuff
- *******************************************************************************/
-static GType 
-glade_editor_property_type (GParamSpec *pspec)
-{
-	GType type = 0;
-
-	if (pspec->value_type == GLADE_TYPE_STOCK ||
-	    G_IS_PARAM_SPEC_ENUM(pspec))
-		type = GLADE_TYPE_EPROP_ENUM;
-	else if (G_IS_PARAM_SPEC_FLAGS(pspec))
-		type = GLADE_TYPE_EPROP_FLAGS;
-	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
-	{
-		if (pspec->value_type == G_TYPE_VALUE_ARRAY)
-			type = GLADE_TYPE_EPROP_TEXT;
-	}
-	else if (G_IS_PARAM_SPEC_BOXED(pspec))
-	{
-		if (pspec->value_type == GDK_TYPE_COLOR)
-			type = GLADE_TYPE_EPROP_COLOR;
-		else if (pspec->value_type == G_TYPE_STRV)
-			type = GLADE_TYPE_EPROP_TEXT;
-	}
-	else if (G_IS_PARAM_SPEC_STRING(pspec))
-		type = GLADE_TYPE_EPROP_TEXT;
-	else if (G_IS_PARAM_SPEC_BOOLEAN(pspec))
-		type = GLADE_TYPE_EPROP_BOOL;
-	else if (G_IS_PARAM_SPEC_FLOAT(pspec)  ||
-		 G_IS_PARAM_SPEC_DOUBLE(pspec) ||
-		 G_IS_PARAM_SPEC_INT(pspec)    ||
-		 G_IS_PARAM_SPEC_UINT(pspec)   ||
-		 G_IS_PARAM_SPEC_LONG(pspec)   ||
-		 G_IS_PARAM_SPEC_ULONG(pspec)  ||
-		 G_IS_PARAM_SPEC_INT64(pspec)  ||
-		 G_IS_PARAM_SPEC_UINT64(pspec))
-		type = GLADE_TYPE_EPROP_NUMERIC;
-	else if (G_IS_PARAM_SPEC_UNICHAR(pspec))
-		type = GLADE_TYPE_EPROP_UNICHAR;
-	else if (G_IS_PARAM_SPEC_OBJECT(pspec))
-	{
-		if (pspec->value_type == GDK_TYPE_PIXBUF)
-			type = GLADE_TYPE_EPROP_RESOURCE;
-		else if (pspec->value_type == GTK_TYPE_ADJUSTMENT)
-			type = GLADE_TYPE_EPROP_ADJUSTMENT;
-		else
-			type = GLADE_TYPE_EPROP_OBJECT;
-	}
-	else if (GLADE_IS_PARAM_SPEC_OBJECTS(pspec))
-		type = GLADE_TYPE_EPROP_OBJECTS;
-	else if (GLADE_IS_PARAM_SPEC_ACCEL(pspec))
-		type = GLADE_TYPE_EPROP_ACCEL;
-
-	return type;
-}
-
-/*******************************************************************************
                                      API
  *******************************************************************************/
-
-/**
- * glade_editor_property_new:
- * @klass: A #GladePropertyClass
- * @use_command: Whether the undo/redo stack applies here.
- *
- * This is a factory function to create the correct type of
- * editor property that can edit the said type of #GladePropertyClass
- *
- * Returns: A newly created GladeEditorProperty of the correct type
- */
-GladeEditorProperty *
-glade_editor_property_new (GladePropertyClass  *klass,
-			   gboolean             use_command)
-{
-	GladeEditorProperty *eprop;
-	GType                type = 0;
-
-	/* Find the right type of GladeEditorProperty for this
-	 * GladePropertyClass.
-	 */
-	if ((type = glade_editor_property_type (klass->pspec)) == 0)
-		g_error ("%s : pspec '%s' type '%s' not implemented (%s)\n", 
-			 G_GNUC_PRETTY_FUNCTION, 
-			 klass->name, 
-			 g_type_name (G_PARAM_SPEC_TYPE (klass->pspec)),
-			 g_type_name (klass->pspec->value_type));
-
-	/* special case for resource specs which are hand specified in the catalog. */
-	if (klass->resource)
-		type = GLADE_TYPE_EPROP_RESOURCE;
-	
-	/* special case for string specs that denote themed application icons. */
-	if (klass->themed_icon)
-		type = GLADE_TYPE_EPROP_NAMED_ICON;
-
-	/* Create and return the correct type of GladeEditorProperty */
-	eprop = g_object_new (type,
-			      "property-class", klass, 
-			      "use-command", use_command,
-			      NULL);
-
-	return eprop;
-}
-
-/**
- * glade_editor_property_new_from_widget:
- * @widget: A #GladeWidget
- * @property: The widget's property
- * @packing: whether @property indicates a packing property or not.
- * @use_command: Whether the undo/redo stack applies here.
- *
- * This is a convenience function to create a GladeEditorProperty corresponding
- * to @property
- *
- * Returns: A newly created and connected GladeEditorProperty
- */
-GladeEditorProperty *
-glade_editor_property_new_from_widget (GladeWidget *widget,
-				       const gchar *property,
-				       gboolean     packing,
-				       gboolean     use_command)
-{
-	GladeEditorProperty *eprop;
-	GladeProperty *p;
-	
-	if (packing)
-		p = glade_widget_get_pack_property (widget, property);
-	else
-		p = glade_widget_get_property (widget, property);
-	g_return_val_if_fail (GLADE_IS_PROPERTY (p), NULL);
-
-	eprop = glade_editor_property_new (p->klass, use_command);
-	glade_editor_property_load (eprop, p);
-	
-	return eprop;
-}
-
-/**
- * glade_editor_property_supported:
- * @pspec: A #GParamSpec
- *
- * Returns: whether this pspec is supported by GladeEditorProperties.
- */
-gboolean
-glade_editor_property_supported (GParamSpec *pspec)
-{
-	return glade_editor_property_type (pspec) != 0;
-}
-
 
 /**
  * glade_editor_property_load:
@@ -4009,10 +3150,12 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
 	if (widget)
+	{
 		/* properties are allowed to be missing on some internal widgets */
 		property = glade_widget_get_property (widget, eprop->klass->id);
 
-	glade_editor_property_load (eprop, property);
+		glade_editor_property_load (eprop, property);
+	}
 }
 
 /**

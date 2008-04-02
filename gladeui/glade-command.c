@@ -364,8 +364,9 @@ glade_command_set_property_execute (GladeCommand *cmd)
 #if 0
 		{
 			gchar *str =
-				glade_property_class_make_string_from_gvalue 
-				(sdata->property->klass, &new_value);
+				glade_widget_adaptor_string_from_value
+				(GLADE_WIDGET_ADAPTOR (sdata->property->klass->handle),
+				 sdata->property->klass, &new_value);
 
 			g_print ("Setting %s property of %s to %s (sumode: %d)\n",
 				 sdata->property->klass->id,
@@ -550,8 +551,10 @@ glade_command_set_property_description (GladeCommandSetProperty *me)
 	else 
 	{
 		sdata = me->sdata->data;
-		value_name = glade_property_class_make_string_from_gvalue (sdata->property->klass, 
-									   sdata->new_value);
+		value_name = glade_widget_adaptor_string_from_value
+			(GLADE_WIDGET_ADAPTOR (sdata->property->klass->handle),
+			 sdata->property->klass, sdata->new_value);
+
 		if (!value_name || strlen (value_name) > MAX_UNDO_MENU_ITEM_VALUE_LEN
 		    || strchr (value_name, '_')) {
 			description = g_strdup_printf (_("Setting %s of %s"),

@@ -972,8 +972,9 @@ gp_sync_resources (GladeProject *project,
 
 			glade_property_get_value (property, &value);
 			
-			if ((resource = glade_property_class_make_string_from_gvalue
-			     (property->klass, &value)) != NULL)
+			if ((resource = glade_widget_adaptor_string_from_value
+			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			      property->klass, &value)) != NULL)
 			{
 				full_resource = glade_project_resource_fullpath
 					(prev_project ? prev_project : project, resource);

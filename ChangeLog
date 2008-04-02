@@ -1,3 +1,12 @@
+2008-04-02  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.[ch]: Added new entry points
+	  to create editor widgets for plugin provided pspecs and also
+	  to create strings based on plugin provided pspec.
+
+	Moved all accelerater code out of the core and into the plugin,
+	still working on loading glade files with the new parser...
+
 2008-04-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.[ch],

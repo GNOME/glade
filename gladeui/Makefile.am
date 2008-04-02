@@ -53,7 +53,6 @@ libgladeui_1_la_SOURCES = \
 	glade-accumulators.c \
 	glade-builtins.c \
 	glade-app.c \
-	glade-keysyms.c \
 	glade-fixed.c \
 	glade-base-editor.c \
 	glade-palette-item.h \

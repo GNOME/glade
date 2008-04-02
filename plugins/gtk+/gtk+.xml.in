@@ -11,6 +11,9 @@
       <set-property-function>glade_gtk_widget_set_property</set-property-function>
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
       <action-activate-function>glade_gtk_widget_action_activate</action-activate-function>
+      <read-widget-function>glade_gtk_widget_read_widget</read-widget-function>
+      <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
+      <string-from-value-function>glade_gtk_widget_string_from_value</string-from-value-function>
 
       <actions>
         <action id="remove_parent" _name="Remove Parent" stock="gtk-remove"/>

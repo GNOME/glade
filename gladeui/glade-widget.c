@@ -3104,9 +3104,9 @@ glade_widget_property_string (GladeWidget      *widget,
 	g_return_val_if_fail (id_property != NULL, NULL);
 
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
-		ret_string =
-			glade_property_class_make_string_from_gvalue (property->klass,
-								      value ? value : property->value);
+		ret_string = glade_widget_adaptor_string_from_value
+			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			 property->klass, value ? value : property->value);
 
 	return ret_string;
 }
@@ -3134,9 +3134,9 @@ glade_widget_pack_property_string (GladeWidget      *widget,
 	g_return_val_if_fail (id_property != NULL, NULL);
 
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
-		ret_string =
-			glade_property_class_make_string_from_gvalue (property->klass,
-								      value ? value : property->value);
+		ret_string = glade_widget_adaptor_string_from_value
+			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			 property->klass, value ? value : property->value);
 
 	return ret_string;
 }
@@ -4423,3 +4423,40 @@ glade_widget_embed (GladeWidget *gwidget)
 	return TRUE;
 }
 
+
+
+/**
+ * glade_widget_create_editor_property:
+ * @widget: A #GladeWidget
+ * @property: The widget's property
+ * @packing: whether @property indicates a packing property or not.
+ * @use_command: Whether the undo/redo stack applies here.
+ *
+ * This is a convenience function to create a GladeEditorProperty corresponding
+ * to @property
+ *
+ * Returns: A newly created and connected GladeEditorProperty
+ */
+GladeEditorProperty *
+glade_widget_create_editor_property (GladeWidget *widget,
+				     const gchar *property,
+				     gboolean     packing,
+				     gboolean     use_command)
+{
+	GladeEditorProperty *eprop;
+	GladeProperty *p;
+	
+	if (packing)
+		p = glade_widget_get_pack_property (widget, property);
+	else
+		p = glade_widget_get_property (widget, property);
+
+	g_return_val_if_fail (GLADE_IS_PROPERTY (p), NULL);
+
+	eprop = glade_widget_adaptor_create_eprop (widget->adaptor, 
+						   p->klass, 
+						   use_command);
+	glade_editor_property_load (eprop, p);
+	
+	return eprop;
+}

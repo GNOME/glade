@@ -434,7 +434,10 @@ glade_editor_table_append_item (GladeEditorTable *table,
 {
 	GladeEditorProperty *property;
 
-	property = glade_editor_property_new (klass, from_query_dialog == FALSE);
+	property = glade_widget_adaptor_create_eprop 
+		(GLADE_WIDGET_ADAPTOR (klass->handle), 
+		 klass, from_query_dialog == FALSE);
+
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->item_label);
 

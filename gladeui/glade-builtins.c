@@ -41,15 +41,6 @@ struct _GladeParamSpecObjects {
 			     */
 };
 
-struct _GladeParamSpecAccel {
-	GParamSpec    parent_instance;
-	
-	GType         type; /* The type this accel key is for; this allows
-			     * us to verify the validity of any signals for
-			     * this type.
-			     */
-};
-
 typedef struct _GladeStockItem {
 	gchar *value_name;
 	gchar *value_nick;
@@ -277,10 +268,9 @@ glade_standard_stock_image_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
-
 /****************************************************************
  *  A GList boxed type used by GladeParamSpecObjects and        *
- *  GladeParamSpecAccel                                         *
+ *  GladeParamSpecAccel (which is now in the glade-gtk backend) *
  ****************************************************************/
 GType
 glade_glist_get_type (void)
@@ -293,180 +283,6 @@ glade_glist_get_type (void)
 			 (GBoxedCopyFunc) g_list_copy,
 			 (GBoxedFreeFunc) g_list_free);
 	return type_id;
-}
-
-GList *
-glade_accel_list_copy (GList *accels)
-{
-	GList          *ret = NULL, *list;
-	GladeAccelInfo *info, *dup_info;
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-
-		dup_info            = g_new0 (GladeAccelInfo, 1);
-		dup_info->signal    = g_strdup (info->signal);
-		dup_info->key       = info->key;
-		dup_info->modifiers = info->modifiers;
-
-		ret = g_list_prepend (ret, dup_info);
-	}
-
-	return g_list_reverse (ret);
-}
-
-void
-glade_accel_list_free (GList *accels)
-{
-	GList          *list;
-	GladeAccelInfo *info;
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-
-		g_free (info->signal);
-		g_free (info);
-	}
-	g_list_free (accels);
-}
-
-GType
-glade_accel_glist_get_type (void)
-{
-	static GType type_id = 0;
-
-	if (!type_id)
-		type_id = g_boxed_type_register_static
-			("GladeAccelGList", 
-			 (GBoxedCopyFunc) glade_accel_list_copy,
-			 (GBoxedFreeFunc) glade_accel_list_free);
-	return type_id;
-}
-
-
-/****************************************************************
- *  Built-in GladeParamSpecAccel for accelerator properties     *
- ****************************************************************/
-gboolean
-glade_keyval_valid (guint val)
-{
-	gint i;
-
-	for (i = 0; GladeKeys[i].name != NULL; i++)
-	{
-		if (GladeKeys[i].value == val)
-			return TRUE;
-	}
-	return FALSE;
-}
-
-
-static void
-param_accel_init (GParamSpec *pspec)
-{
-	GladeParamSpecAccel *ospec = GLADE_PARAM_SPEC_ACCEL (pspec);
-	ospec->type = G_TYPE_OBJECT;
-}
-
-static void
-param_accel_set_default (GParamSpec *pspec,
-			 GValue     *value)
-{
-	if (value->data[0].v_pointer != NULL)
-	{
-		g_free (value->data[0].v_pointer);
-	}
-	value->data[0].v_pointer = NULL;
-}
-
-static gboolean
-param_accel_validate (GParamSpec *pspec,
-		      GValue     *value)
-{
-	/* GladeParamSpecAccel *aspec = GLADE_PARAM_SPEC_ACCEL (pspec); */
-	GList               *accels, *list, *toremove = NULL;
-	GladeAccelInfo      *info;
-
-	accels = value->data[0].v_pointer;
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-		
-		/* Is it an invalid key ? */
-		if (glade_keyval_valid (info->key) == FALSE ||
-		    /* Does the modifier contain any unwanted bits ? */
-		    info->modifiers & GDK_MODIFIER_MASK ||
-		    /* Do we have a signal ? */
-		    /* FIXME: Check if the signal is valid for 'type' */
-		    info->signal == NULL)
-			toremove = g_list_prepend (toremove, info);
-	}
-
-	for (list = toremove; list; list = list->next)
-		accels = g_list_remove (accels, list->data);
-
-	if (toremove) g_list_free (toremove);
- 
-	value->data[0].v_pointer = accels;
-
-	return toremove != NULL;
-}
-
-static gint
-param_accel_values_cmp (GParamSpec   *pspec,
-			  const GValue *value1,
-			  const GValue *value2)
-{
-  guint8 *p1 = value1->data[0].v_pointer;
-  guint8 *p2 = value2->data[0].v_pointer;
-
-  /* not much to compare here, try to at least provide stable lesser/greater result */
-
-  return p1 < p2 ? -1 : p1 > p2;
-}
-
-GType
-glade_param_accel_get_type (void)
-{
-	static GType accel_type = 0;
-
-	if (accel_type == 0)
-	{
-		static /* const */ GParamSpecTypeInfo pspec_info = {
-			sizeof (GladeParamSpecAccel),  /* instance_size */
-			16,                         /* n_preallocs */
-			param_accel_init,         /* instance_init */
-			0xdeadbeef,                 /* value_type, assigned further down */
-			NULL,                       /* finalize */
-			param_accel_set_default,  /* value_set_default */
-			param_accel_validate,     /* value_validate */
-			param_accel_values_cmp,   /* values_cmp */
-		};
-		pspec_info.value_type = GLADE_TYPE_ACCEL_GLIST;
-
-		accel_type = g_param_type_register_static
-			("GladeParamAccel", &pspec_info);
-	}
-	return accel_type;
-}
-
-GParamSpec *
-glade_param_spec_accel (const gchar   *name,
-			const gchar   *nick,
-			const gchar   *blurb,
-			GType          widget_type,
-			GParamFlags    flags)
-{
-  GladeParamSpecAccel *pspec;
-
-  pspec = g_param_spec_internal (GLADE_TYPE_PARAM_ACCEL,
-				 name, nick, blurb, flags);
-  
-  pspec->type = widget_type;
-  return G_PARAM_SPEC (pspec);
 }
 
 /****************************************************************
@@ -628,16 +444,6 @@ glade_standard_gdkcolor_spec (void)
 				     G_PARAM_READWRITE);
 }
 
-/* Accelerator spec */
-GParamSpec *
-glade_standard_accel_spec (void)
-{
-	return glade_param_spec_accel ("accelerators", _("Accelerators"),
-				       _("A list of accelerator keys"), 
-				       GTK_TYPE_WIDGET,
-				       G_PARAM_READWRITE);
-}
-
 /****************************************************************
  *                    Basic types follow                        *
  ****************************************************************/
@@ -690,31 +496,6 @@ glade_standard_boolean_spec (void)
 	return g_param_spec_boolean ("boolean", _("Boolean"),
 				     _("A boolean value"), FALSE,
 				     G_PARAM_READWRITE);
-}
-
-guint
-glade_builtin_key_from_string (const gchar *string)
-{
-	gint i;
-
-	g_return_val_if_fail (string != NULL, 0);
-
-	for (i = 0; GladeKeys[i].name != NULL; i++)
-		if (!strcmp (string, GladeKeys[i].name))
-			return GladeKeys[i].value;
-
-	return 0;
-}
-
-const gchar *
-glade_builtin_string_from_key (guint key)
-{
-	gint i;
-
-	for (i = 0; GladeKeys[i].name != NULL; i++)
-		if (GladeKeys[i].value == key)
-			return GladeKeys[i].name;
-	return NULL;
 }
 
 GType

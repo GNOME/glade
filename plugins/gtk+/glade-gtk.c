@@ -26,6 +26,7 @@
 
 #include "glade-gtk.h"
 #include "fixed-bg.xpm"
+#include "glade-accels.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -242,6 +243,58 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
+void
+glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeXmlNode       *node)
+{
+	/* This code should work the same for <packing> and <widget> */
+	if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+		return;
+
+	/* First chain up.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+
+	/* Read in atk properties and accelerators */
+
+}
+
+GladeEditorProperty *
+glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
+			       GladePropertyClass *klass,
+			       gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	/* chain up.. */
+	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
+		eprop = g_object_new (GLADE_TYPE_EPROP_ACCEL,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);
+	else
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+gchar *
+glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
+				    GladePropertyClass *klass,
+				    const GValue       *value)
+{
+	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
+		return glade_accels_make_string (g_value_get_boxed (value));
+	else
+		return GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->string_from_value (adaptor, 
+							    klass, 
+							    value);
+}
+
 static void
 widget_parent_changed (GtkWidget          *widget,
 		       GParamSpec         *pspec,

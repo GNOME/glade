@@ -2,7 +2,68 @@
 #ifndef __GLADE_EDITOR_PROPERTY_H__
 #define __GLADE_EDITOR_PROPERTY_H__
 
+#include <gtk/gtk.h>
+
 G_BEGIN_DECLS
+
+
+
+/*******************************************************************************
+                Boiler plate macros (inspired from glade-command.c)
+ *******************************************************************************/
+/* XXX document me ! */
+
+#define GLADE_MAKE_EPROP_TYPE(func, type, parent)	\
+GType							\
+func ## _get_type (void)				\
+{							\
+	static GType cmd_type = 0;			\
+							\
+	if (!cmd_type)					\
+	{						\
+		static const GTypeInfo info =		\
+		{					\
+			sizeof (type ## Class),		\
+			(GBaseInitFunc) NULL,		\
+			(GBaseFinalizeFunc) NULL,	\
+			(GClassInitFunc) func ## _class_init,	\
+			(GClassFinalizeFunc) NULL,	\
+			NULL,				\
+			sizeof (type),			\
+			0,				\
+			(GInstanceInitFunc) NULL	\
+		};					\
+							\
+		cmd_type = g_type_register_static (parent, #type, &info, 0);	\
+	}						\
+							\
+	return cmd_type;				\
+}							\
+
+
+#define GLADE_MAKE_EPROP(type, func)					\
+static void								\
+func ## _finalize (GObject *object);					\
+static void								\
+func ## _load (GladeEditorProperty *me, GladeProperty *property);	\
+static GtkWidget *							\
+func ## _create_input (GladeEditorProperty *me);			\
+static void								\
+func ## _class_init (gpointer parent_tmp, gpointer notused)		\
+{									\
+	GladeEditorPropertyClass *parent = parent_tmp;			\
+	GObjectClass* object_class;					\
+	object_class = G_OBJECT_CLASS (parent);				\
+	parent->load =  func ## _load;					\
+	parent->create_input =  func ## _create_input;			\
+	object_class->finalize = func ## _finalize;			\
+}									\
+typedef struct {							\
+	GladeEditorPropertyClass cmd;					\
+} type ## Class;							\
+GLADE_MAKE_EPROP_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
+
+
 
 #define GLADE_TYPE_EDITOR_PROPERTY            (glade_editor_property_get_type())
 #define GLADE_EDITOR_PROPERTY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EDITOR_PROPERTY, GladeEditorProperty))
@@ -59,7 +120,6 @@ struct _GladeEditorPropertyClass {
 
 	void        (* load)          (GladeEditorProperty *, GladeProperty *);
 
-	/* private */
 	GtkWidget  *(* create_input)  (GladeEditorProperty *);
 
 	void        (* gtk_doc_search)(GladeEditorProperty *, 
@@ -71,15 +131,7 @@ struct _GladeEditorPropertyClass {
 
 
 
-GType                glade_editor_property_get_type       (void);
-
-GladeEditorProperty *glade_editor_property_new            (GladePropertyClass  *klass,
-							   gboolean             use_command);
-
-GladeEditorProperty *glade_editor_property_new_from_widget (GladeWidget        *widget,
-							    const gchar        *property,
-							    gboolean            packing,
-							    gboolean            use_command);
+GType                glade_editor_property_get_type       (void) G_GNUC_CONST;
 
 void                 glade_editor_property_load           (GladeEditorProperty *eprop,
 							   GladeProperty       *property);
@@ -87,11 +139,39 @@ void                 glade_editor_property_load           (GladeEditorProperty *
 void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 							   GladeWidget         *widget);
 
-gboolean             glade_editor_property_supported      (GParamSpec          *pspec);
-
 void                 glade_editor_property_show_info      (GladeEditorProperty *eprop);
 
 void                 glade_editor_property_hide_info      (GladeEditorProperty *eprop);
+
+void                 glade_editor_property_commit         (GladeEditorProperty *eprop,
+							   GValue              *value);
+
+
+/* Generic eprops */
+#define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
+#define GLADE_TYPE_EPROP_ENUM            (glade_eprop_enum_get_type())
+#define GLADE_TYPE_EPROP_FLAGS           (glade_eprop_flags_get_type())
+#define GLADE_TYPE_EPROP_COLOR           (glade_eprop_color_get_type())
+#define GLADE_TYPE_EPROP_NAMED_ICON      (glade_eprop_named_icon_get_type())
+#define GLADE_TYPE_EPROP_TEXT            (glade_eprop_text_get_type())
+#define GLADE_TYPE_EPROP_BOOL            (glade_eprop_bool_get_type())
+#define GLADE_TYPE_EPROP_UNICHAR         (glade_eprop_unichar_get_type())
+#define GLADE_TYPE_EPROP_RESOURCE        (glade_eprop_resource_get_type())
+#define GLADE_TYPE_EPROP_OBJECT          (glade_eprop_object_get_type())
+#define GLADE_TYPE_EPROP_OBJECTS         (glade_eprop_objects_get_type())
+#define GLADE_TYPE_EPROP_ADJUSTMENT      (glade_eprop_adjustment_get_type())
+GType     glade_eprop_numeric_get_type     (void) G_GNUC_CONST;
+GType     glade_eprop_enum_get_type        (void) G_GNUC_CONST;
+GType     glade_eprop_flags_get_type       (void) G_GNUC_CONST;
+GType     glade_eprop_color_get_type       (void) G_GNUC_CONST;
+GType     glade_eprop_named_icon_get_type  (void) G_GNUC_CONST;
+GType     glade_eprop_text_get_type        (void) G_GNUC_CONST;
+GType     glade_eprop_bool_get_type        (void) G_GNUC_CONST;
+GType     glade_eprop_unichar_get_type     (void) G_GNUC_CONST;
+GType     glade_eprop_resource_get_type    (void) G_GNUC_CONST;
+GType     glade_eprop_object_get_type      (void) G_GNUC_CONST;
+GType     glade_eprop_objects_get_type     (void) G_GNUC_CONST;
+GType     glade_eprop_adjustment_get_type  (void) G_GNUC_CONST;
 
 
 G_END_DECLS

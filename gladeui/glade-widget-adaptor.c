@@ -786,6 +786,97 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 
 }
 
+static GType 
+glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
+{
+	GType type = 0;
+
+	if (pspec->value_type == GLADE_TYPE_STOCK ||
+	    G_IS_PARAM_SPEC_ENUM(pspec))
+		type = GLADE_TYPE_EPROP_ENUM;
+	else if (G_IS_PARAM_SPEC_FLAGS(pspec))
+		type = GLADE_TYPE_EPROP_FLAGS;
+	else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
+	{
+		if (pspec->value_type == G_TYPE_VALUE_ARRAY)
+			type = GLADE_TYPE_EPROP_TEXT;
+	}
+	else if (G_IS_PARAM_SPEC_BOXED(pspec))
+	{
+		if (pspec->value_type == GDK_TYPE_COLOR)
+			type = GLADE_TYPE_EPROP_COLOR;
+		else if (pspec->value_type == G_TYPE_STRV)
+			type = GLADE_TYPE_EPROP_TEXT;
+	}
+	else if (G_IS_PARAM_SPEC_STRING(pspec))
+		type = GLADE_TYPE_EPROP_TEXT;
+	else if (G_IS_PARAM_SPEC_BOOLEAN(pspec))
+		type = GLADE_TYPE_EPROP_BOOL;
+	else if (G_IS_PARAM_SPEC_FLOAT(pspec)  ||
+		 G_IS_PARAM_SPEC_DOUBLE(pspec) ||
+		 G_IS_PARAM_SPEC_INT(pspec)    ||
+		 G_IS_PARAM_SPEC_UINT(pspec)   ||
+		 G_IS_PARAM_SPEC_LONG(pspec)   ||
+		 G_IS_PARAM_SPEC_ULONG(pspec)  ||
+		 G_IS_PARAM_SPEC_INT64(pspec)  ||
+		 G_IS_PARAM_SPEC_UINT64(pspec))
+		type = GLADE_TYPE_EPROP_NUMERIC;
+	else if (G_IS_PARAM_SPEC_UNICHAR(pspec))
+		type = GLADE_TYPE_EPROP_UNICHAR;
+	else if (G_IS_PARAM_SPEC_OBJECT(pspec))
+	{
+		if (pspec->value_type == GDK_TYPE_PIXBUF)
+			type = GLADE_TYPE_EPROP_RESOURCE;
+		else if (pspec->value_type == GTK_TYPE_ADJUSTMENT)
+			type = GLADE_TYPE_EPROP_ADJUSTMENT;
+		else
+			type = GLADE_TYPE_EPROP_OBJECT;
+	}
+	else if (GLADE_IS_PARAM_SPEC_OBJECTS(pspec))
+		type = GLADE_TYPE_EPROP_OBJECTS;
+
+	return type;
+}
+
+static GladeEditorProperty *
+glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
+					  GladePropertyClass *klass,
+					  gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+	GType                type = 0;
+
+	/* Find the right type of GladeEditorProperty for this
+	 * GladePropertyClass.
+	 */
+	if ((type = glade_widget_adaptor_get_eprop_type (klass->pspec)) == 0)
+		return NULL;
+
+	/* special case for resource specs which are hand specified in the catalog. */
+	if (klass->resource)
+		type = GLADE_TYPE_EPROP_RESOURCE;
+	
+	/* special case for string specs that denote themed application icons. */
+	if (klass->themed_icon)
+		type = GLADE_TYPE_EPROP_NAMED_ICON;
+
+	/* Create and return the correct type of GladeEditorProperty */
+	eprop = g_object_new (type,
+			      "property-class", klass, 
+			      "use-command", use_command,
+			      NULL);
+
+	return eprop;
+}
+
+static gchar *
+glade_widget_adaptor_object_string_from_value (GladeWidgetAdaptor *adaptor,
+					       GladePropertyClass *klass,
+					       const GValue       *value)
+{
+	return glade_property_class_make_string_from_gvalue (klass, value);
+}
+
 /*******************************************************************************
             GladeWidgetAdaptor type registration and class initializer
  *******************************************************************************/
@@ -826,6 +917,10 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->action_activate      = glade_widget_adaptor_object_action_activate;
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
 	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
+	adaptor_class->create_eprop         = glade_widget_adaptor_object_create_eprop;
+	adaptor_class->string_from_value    = glade_widget_adaptor_object_string_from_value;
+
+
 
 	/* Base defaults here */
 	adaptor_class->fixed                = FALSE;
@@ -1071,6 +1166,17 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_READ_WIDGET_FUNCTION,
 					  &symbol))
 		klass->read_widget = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CREATE_EPROP_FUNCTION,
+					  &symbol))
+		klass->create_eprop = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_STRING_FROM_VALUE_FUNCTION,
+					  &symbol))
+		klass->string_from_value = symbol;
+
 }
 
 static void
@@ -2841,4 +2947,61 @@ glade_widget_adaptor_read_widget (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (node != NULL);
 
 	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->read_widget (adaptor, widget, node);
+}
+
+
+/**
+ * glade_widget_adaptor_create_eprop:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @klass: The #GladePropertyClass to be edited
+ * @use_command: whether to use the GladeCommand interface
+ * to commit property changes
+ * 
+ * Creates a GladeEditorProperty to edit @klass
+ *
+ * Returns: A newly created #GladeEditorProperty
+ */
+GladeEditorProperty *
+glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
+				   GladePropertyClass *klass,
+				   gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
+
+	eprop = GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->create_eprop (adaptor, klass, use_command);
+
+	/* XXX we really need to print a g_error() here, exept we are
+	 * now using this func to test for unsupported properties
+	 * at init time from glade-property-class */
+
+	return eprop;
+}
+
+
+/**
+ * glade_widget_adaptor_string_from_value:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @klass: The #GladePropertyClass 
+ * @value: The #GValue to convert to a string
+ * 
+ * For normal properties this is used to serialize
+ * property values, for custom properties its still
+ * needed to update the UI for undo/redo items etc.
+ *
+ * Returns: A newly allocated string representation of @value
+ */
+gchar *
+glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
+					GladePropertyClass *klass,
+					const GValue       *value)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
+	g_return_val_if_fail (value != NULL, NULL);
+
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->string_from_value (adaptor, klass, value);
 }
