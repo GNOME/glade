@@ -248,6 +248,12 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 #define GLADE_TAG_ACCEL_MODIFIERS             "modifiers"
 #define GLADE_TAG_ACCEL_SIGNAL                "signal"
 
+#define GLADE_TAG_A11Y_A11Y                    "accessibility"
+#define GLADE_TAG_A11Y_ACTION                  "atkaction"
+#define GLADE_TAG_A11Y_PROPERTY                "atkproperty"
+
+
+
 static GdkModifierType
 glade_gtk_parse_modifiers (const gchar *string)
 {
@@ -340,7 +346,6 @@ glade_gtk_widget_read_accels (GladeWidget  *widget,
 		ainfo->signal = signal; /* take string ownership... */
 		ainfo->modifiers = glade_gtk_parse_modifiers (modifiers);
 
-
 		accels = g_list_prepend (accels, ainfo);
 		g_free (modifiers);
 	}
@@ -359,6 +364,90 @@ glade_gtk_widget_read_accels (GladeWidget  *widget,
 	}
 }
 
+static void
+glade_gtk_parse_atk_props (GladeWidget  *widget,
+			   GladeXmlNode *node)
+{
+	GladeXmlNode  *prop;
+	GladeProperty *property;
+	GValue        *gvalue;
+	gchar         *value, *name, *id, *comment;
+	gint           translatable, has_context;
+
+	for (prop = glade_xml_node_get_children (node); 
+	     prop; prop = glade_xml_node_next (prop))
+	{
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY))
+			continue;
+
+		if (!(name = glade_xml_get_property_string_required
+		      (prop, GLADE_XML_TAG_NAME, NULL)))
+			continue;
+
+		/* Make sure we are working with dashes and
+		 * not underscores ... 
+		 */
+		id = glade_util_read_prop_name (name);
+		g_free (name);
+
+		if ((property = glade_widget_get_property (widget, id)) != NULL)
+		{
+			if (!(value = glade_xml_get_content (prop)))
+			{
+				/* XXX should be glade_xml_get_content_required()... */
+				g_free (id);
+				continue;
+			}
+
+			/* Set the parsed value on the property ... */
+			gvalue = glade_property_class_make_gvalue_from_string
+				(property->klass, value, widget->project);
+			glade_property_set_value (property, gvalue);
+			g_value_unset (gvalue);
+			g_free (gvalue);
+
+			/* Deal with i18n... */
+			translatable = glade_xml_get_property_boolean
+				(prop, GLADE_TAG_TRANSLATABLE, FALSE);
+			has_context = glade_xml_get_property_boolean
+				(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
+			comment = glade_xml_get_property_string
+				(prop, GLADE_TAG_COMMENT);
+
+			glade_property_i18n_set_translatable
+				(property, translatable);
+			glade_property_i18n_set_has_context
+				(property, has_context);
+			glade_property_i18n_set_comment
+				(property, comment);
+			
+			g_free (comment);
+			g_free (value);
+		}
+
+		g_free (id);
+	}
+}
+
+static void
+glade_gtk_widget_read_atk_props (GladeWidget  *widget,
+				 GladeXmlNode *node)
+{
+	GladeXmlNode *atk_node;
+
+	if ((atk_node = 
+	     glade_xml_search_child (node, GLADE_TAG_A11Y_A11Y)) != NULL)
+	{
+		/* Properties */
+		glade_gtk_parse_atk_props (widget, atk_node);
+
+		/* Actions */
+
+		/* Relations */
+
+	}
+
+}
 
 void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
@@ -376,6 +465,7 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
 	glade_gtk_widget_read_accels (widget, node);
 
 	/* Read in atk props */
+	glade_gtk_widget_read_atk_props (widget, node);
 
 }
 

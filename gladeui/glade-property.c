@@ -1316,9 +1316,9 @@ glade_property_read (GladeProperty      *property,
 				gint translatable, has_context;
 				gchar *comment;
 
-				translatable = glade_xml_get_property_int
+				translatable = glade_xml_get_property_boolean
 					(prop, GLADE_TAG_TRANSLATABLE, FALSE);
-				has_context = glade_xml_get_property_int
+				has_context = glade_xml_get_property_boolean
 					(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
 				comment = glade_xml_get_property_string
 					(prop, GLADE_TAG_COMMENT);

@@ -7,8 +7,10 @@
 	Moved all accelerater code out of the core and into the plugin,
 	still working on loading glade files with the new parser...
 
-	* gladeui/glade-gtk.c: Implemented loading of accelerators.
-
+	* gladeui/glade-gtk.c: 
+	  - Implemented loading of accelerators.
+	  - Implemented loading of atk properties (not relations or actions yet...)
+	
 2008-04-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.[ch],
