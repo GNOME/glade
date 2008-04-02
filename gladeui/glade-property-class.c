@@ -1100,57 +1100,6 @@ glade_property_class_get_from_gvalue (GladePropertyClass  *klass,
 }
 
 /**
- * glade_property_class_list_atk_relations:
- * @handle: A generic pointer (i.e. a #GladeWidgetClass)
- * @owner_type: The #GType of the owning widget class.
- *
- * Returns: a #GList of newly created atk relation #GladePropertyClass.
- */
-GList *
-glade_property_class_list_atk_relations (gpointer handle,
-					 GType    owner_type)
-{
-	const GPCAtkPropertyTab *relation_tab = NULL;
-	GladePropertyClass      *property_class;
-	GList                   *list = NULL;
-	gint                     i;
-	
-	/* Loop through our hard-coded table enties */
-	for (i = 0; i < G_N_ELEMENTS (relation_names_table); i++)
-	{
-		relation_tab = &relation_names_table[i];
-
-		property_class                    = glade_property_class_new (handle);
-		property_class->pspec             = 
-			glade_param_spec_objects (relation_tab->id,
-						  _(relation_tab->name),
-						  _(relation_tab->tooltip),
-						  ATK_TYPE_IMPLEMENTOR,
-						  G_PARAM_READWRITE);
-		
-		property_class->pspec->owner_type = owner_type;
-		property_class->id                = g_strdup (relation_tab->id);
-		property_class->name              = g_strdup (_(relation_tab->name));
-		property_class->tooltip           = g_strdup (_(relation_tab->tooltip));
-		property_class->type              = GPC_ATK_RELATION;
-		property_class->visible_lines     = 2;
-		property_class->ignore            = TRUE;
-
-		property_class->def = 
-			glade_property_class_make_gvalue_from_string
-			(property_class, "", NULL);
-		
-		property_class->orig_def = 
-			glade_property_class_make_gvalue_from_string
-			(property_class, "", NULL);
-
-		list = g_list_prepend (list, property_class);
-	}
-
-	return g_list_reverse (list);
-}
-
-/**
  * glade_property_class_new_from_spec:
  * @handle: A generic pointer (i.e. a #GladeWidgetClass)
  * @spec: A #GParamSpec

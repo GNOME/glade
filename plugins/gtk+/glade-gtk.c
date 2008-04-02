@@ -243,15 +243,16 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
-#define GLADE_TAG_ACCEL                       "accelerator"
-#define GLADE_TAG_ACCEL_KEY                   "key"
-#define GLADE_TAG_ACCEL_MODIFIERS             "modifiers"
-#define GLADE_TAG_ACCEL_SIGNAL                "signal"
+#define GLADE_TAG_ACCEL             "accelerator"
+#define GLADE_TAG_ACCEL_KEY         "key"
+#define GLADE_TAG_ACCEL_MODIFIERS   "modifiers"
+#define GLADE_TAG_ACCEL_SIGNAL      "signal"
 
-#define GLADE_TAG_A11Y_A11Y                    "accessibility"
-#define GLADE_TAG_A11Y_ACTION                  "atkaction"
-#define GLADE_TAG_A11Y_PROPERTY                "atkproperty"
-
+#define GLADE_TAG_A11Y_A11Y         "accessibility"
+#define GLADE_TAG_A11Y_ACTION       "atkaction"
+#define GLADE_TAG_A11Y_PROPERTY     "atkproperty"
+#define GLADE_TAG_A11Y_ACTION_NAME  "action_name" /* We should make -/_ synonymous */
+#define GLADE_TAG_A11Y_DESC         "description"
 
 
 static GdkModifierType
@@ -373,15 +374,25 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 	GValue        *gvalue;
 	gchar         *value, *name, *id, *comment;
 	gint           translatable, has_context;
+	gboolean       is_action;
 
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY))
+		if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY))
+			is_action = FALSE;
+		else if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_ACTION))
+			is_action = TRUE;
+		else 
 			continue;
 
-		if (!(name = glade_xml_get_property_string_required
+		if (!is_action && 
+		    !(name = glade_xml_get_property_string_required
 		      (prop, GLADE_XML_TAG_NAME, NULL)))
+			continue;
+		else if (is_action && 
+			 !(name = glade_xml_get_property_string_required
+			   (prop, GLADE_TAG_A11Y_ACTION_NAME, NULL)))
 			continue;
 
 		/* Make sure we are working with dashes and
@@ -390,14 +401,37 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 		id = glade_util_read_prop_name (name);
 		g_free (name);
 
+		/* We are namespacing the action properties internally
+		 * just incase they clash (all property names must be
+		 * unique...)
+		 */
+		if (is_action) 
+		{
+			name = g_strdup_printf ("atk-%s", id);
+			g_free (id);
+			id = name;
+		}
+
 		if ((property = glade_widget_get_property (widget, id)) != NULL)
 		{
-			if (!(value = glade_xml_get_content (prop)))
+
+			g_print ("Found property '%s'\n", id);
+
+			/* Complex statement just getting the value here... */
+			if ((!is_action && 
+			     !(value = glade_xml_get_content (prop))) ||
+			    (is_action &&
+			     !(value = glade_xml_get_property_string_required
+			       (prop, GLADE_TAG_A11Y_DESC, NULL))))
 			{
-				/* XXX should be glade_xml_get_content_required()... */
+				/* XXX should be a glade_xml_get_content_required()... */
 				g_free (id);
 				continue;
 			}
+
+
+			g_print ("got value '%s' for property '%s'\n", value, id);
+
 
 			/* Set the parsed value on the property ... */
 			gvalue = glade_property_class_make_gvalue_from_string
@@ -438,10 +472,8 @@ glade_gtk_widget_read_atk_props (GladeWidget  *widget,
 	if ((atk_node = 
 	     glade_xml_search_child (node, GLADE_TAG_A11Y_A11Y)) != NULL)
 	{
-		/* Properties */
+		/* Properties & actions */
 		glade_gtk_parse_atk_props (widget, atk_node);
-
-		/* Actions */
 
 		/* Relations */
 

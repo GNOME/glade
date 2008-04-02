@@ -403,9 +403,6 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor   *adaptor,
 				       g_list_reverse (list));
 }
 
-/* XXX Atk relations and accel props disregarded - they should
- *     be implemented from the gtk+ catalog instead I think.
- */
 static void
 gwa_setup_properties (GladeWidgetAdaptor *adaptor,
 		      GObjectClass       *object_class,

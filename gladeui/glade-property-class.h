@@ -166,13 +166,6 @@ GladePropertyClass *glade_property_class_new                     (gpointer      
 
 GladePropertyClass *glade_property_class_new_from_spec           (gpointer             handle,
 								  GParamSpec          *spec);
- 
-GList              *glade_property_class_list_atk_relations      (gpointer             handle,
-								  GType                owner_type);
-
-GladePropertyClass *glade_property_class_accel_property          (gpointer             handle,
-								  GType                owner_type);
-
 
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 
