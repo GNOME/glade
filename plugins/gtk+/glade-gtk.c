@@ -253,6 +253,28 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 #define GLADE_TAG_A11Y_PROPERTY     "atkproperty"
 #define GLADE_TAG_A11Y_ACTION_NAME  "action_name" /* We should make -/_ synonymous */
 #define GLADE_TAG_A11Y_DESC         "description"
+#define GLADE_TAG_A11Y_RELATION     "atkrelation"
+#define GLADE_TAG_A11Y_TARGET       "target"
+#define GLADE_TAG_A11Y_TYPE         "type"
+
+static const gchar *atk_relations_list[] = {
+	"controlled-by",
+	"controller-for",
+	"labelled-by",
+	"label-for",
+	"member-of",
+	"node-child-of",
+	"flows-to",
+	"flows-from",
+	"subwindow-of",
+	"embeds",
+	"embedded-by",
+	"popup-for",
+	"parent-window-of",
+	"described-by",
+	"description-for",
+	NULL
+};
 
 
 static GdkModifierType
@@ -414,9 +436,6 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 
 		if ((property = glade_widget_get_property (widget, id)) != NULL)
 		{
-
-			g_print ("Found property '%s'\n", id);
-
 			/* Complex statement just getting the value here... */
 			if ((!is_action && 
 			     !(value = glade_xml_get_content (prop))) ||
@@ -428,10 +447,6 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 				g_free (id);
 				continue;
 			}
-
-
-			g_print ("got value '%s' for property '%s'\n", value, id);
-
 
 			/* Set the parsed value on the property ... */
 			gvalue = glade_property_class_make_gvalue_from_string
@@ -464,10 +479,72 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 }
 
 static void
+glade_gtk_parse_atk_relation (GladeProperty *property,
+			      GladeXmlNode  *node)
+{
+	GladeXmlNode *prop;
+	gchar *type, *target, *id, *tmp;
+	gchar *string = NULL;
+
+	for (prop = glade_xml_node_get_children (node); 
+	     prop; prop = glade_xml_node_next (prop))
+	{
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_RELATION))
+			continue;
+
+		if (!(type = 
+		     glade_xml_get_property_string_required
+		     (prop, GLADE_TAG_A11Y_TYPE, NULL)))
+			continue;
+
+		if (!(target = 
+		      glade_xml_get_property_string_required
+		      (prop, GLADE_TAG_A11Y_TARGET, NULL)))
+		{
+			g_free (type);
+			continue;
+		}
+
+		id = glade_util_read_prop_name (type);
+
+		if (!strcmp (id, property->klass->id))
+		{
+			if (string == NULL)
+				string = g_strdup (target);
+			else
+			{
+				tmp = g_strdup_printf ("%s%s%s", string, 
+						       GPC_OBJECT_DELIMITER, target);
+				string = (g_free (string), tmp);
+			}
+			
+		}
+
+		g_free (id);
+		g_free (type);
+		g_free (target);
+	}
+
+
+	/* we must synchronize this directly after loading this project
+	 * (i.e. lookup the actual objects after they've been parsed and
+	 * are present). this is a feature of object and object list properties
+	 * that needs a better api.
+	 */
+	if (string)
+	{
+		g_object_set_data_full (G_OBJECT (property), "glade-loaded-object", 
+					g_strdup (string), g_free);
+	}
+}
+
+static void
 glade_gtk_widget_read_atk_props (GladeWidget  *widget,
 				 GladeXmlNode *node)
 {
-	GladeXmlNode *atk_node;
+	GladeXmlNode  *atk_node;
+	GladeProperty *property;
+	gint           i;
 
 	if ((atk_node = 
 	     glade_xml_search_child (node, GLADE_TAG_A11Y_A11Y)) != NULL)
@@ -476,9 +553,17 @@ glade_gtk_widget_read_atk_props (GladeWidget  *widget,
 		glade_gtk_parse_atk_props (widget, atk_node);
 
 		/* Relations */
-
+		for (i = 0; atk_relations_list[i]; i++)
+		{
+			if ((property = 
+			     glade_widget_get_property (widget, 
+							atk_relations_list[i])))
+				glade_gtk_parse_atk_relation (property, atk_node);
+			else
+				g_warning ("Couldnt find atk relation %s",
+					   atk_relations_list[i]);
+		}
 	}
-
 }
 
 void

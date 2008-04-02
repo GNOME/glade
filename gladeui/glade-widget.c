@@ -1918,7 +1918,7 @@ glade_widget_fill_from_widget_info (GladeWidgetInfo *info,
 		}
 	}
 
-	/* Signals */
+	/* Signals XXX  */
 	for (i = 0; i < info->n_signals; ++i)
 	{
 		GladeSignal *signal;

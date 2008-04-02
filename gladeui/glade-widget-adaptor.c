@@ -760,16 +760,11 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
 					 GladeXmlNode       *node)
 {
+	GladeXmlNode *sig_node;
 	GList *props;
-	/* XXX Here were looking at a GladeWidget object built with native
-	 * defaults
-	 */
+	GladeSignal *signal;
 
-	/* first all the properties */
-	g_print ("reading widget '%s' of class '%s'\n", 
-		 widget->name, adaptor->name);
-
-	/* Get the packing properties */
+	/* Read in the properties */
 	for (props = widget->properties; 
 	     props; props = props->next)
        	{
@@ -779,8 +774,18 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 			 widget->project, node, TRUE);
 	}
 	
-	/* then all the signals */
+	/* Read in the signals */
+	for (sig_node = glade_xml_node_get_children (node); 
+	     sig_node; sig_node = glade_xml_node_next (sig_node))
+	{
+		if (!glade_xml_node_verify_silent (sig_node, GLADE_XML_TAG_SIGNAL))
+			continue;
+		
+		if (!(signal = glade_signal_read (sig_node)))
+			continue;
 
+		glade_widget_add_signal_handler (widget, signal);
+	}
 }
 
 static GType 

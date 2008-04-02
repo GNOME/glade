@@ -146,25 +146,37 @@ glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
 	return TRUE;
 }
 
+#endif // LOADING_WAS_IMPLEMENTED
+
 /*
  * Returns a new GladeSignal with the attributes defined in node
  */
-GladeSignal *glade_signal_new_from_signal_info (GladeSignalInfo *info)
+GladeSignal *
+glade_signal_read (GladeXmlNode *node)
 {
 	GladeSignal *signal;
+	gchar *name, *handler;
 
-	g_return_val_if_fail (info != NULL, NULL);
+	g_return_val_if_fail (glade_xml_node_verify_silent 
+			      (node, GLADE_XML_TAG_SIGNAL), NULL);
+
+	if (!(name = 
+	      glade_xml_get_property_string_required (node, GLADE_XML_TAG_NAME, NULL)))
+		return NULL;
+	glade_util_replace (name, '_', '-');
+
+	if (!(handler = 
+	      glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER, NULL)))
+	{
+		g_free (name);
+		return NULL;
+	}
 
 	signal = g_new0 (GladeSignal, 1);
-	signal->name     = g_strdup (info->name);
-	glade_util_replace (signal->name, '_', '-');
-	signal->handler  = g_strdup (info->handler);
-	signal->after    = info->after;
-	signal->userdata = g_strdup (info->object);
-
-	if (!signal->name)
-		return NULL;
+	signal->name     = name;
+	signal->handler  = handler;
+	signal->after    = glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
+	signal->userdata = glade_xml_get_property_string (node, GLADE_XML_TAG_OBJECT);
 
 	return signal;
 }
-#endif // LOADING_WAS_IMPLEMENTED

@@ -34,6 +34,9 @@ void         glade_signal_free  (GladeSignal *signal);
 
 gboolean     glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2);
 
+GladeSignal *glade_signal_read  (GladeXmlNode *node);
+
+
 /* XXX gboolean     glade_signal_write (GladeSignalInfo *info, GladeSignal *signal, */
 /* 				 GladeInterface *interface); */
 

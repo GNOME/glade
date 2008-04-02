@@ -53,102 +53,6 @@
 #define NUMERICAL_PAGE_INCREMENT   10
 #define NUMERICAL_PAGE_SIZE        1
 
-
-/* Hardcoded recognized atk actions
- */
-typedef struct {
-	gchar *prop_name;
-	gchar *id;
-	gchar *name;
-	gchar *tooltip;
-} GPCAtkPropertyTab;
-
-static const GPCAtkPropertyTab action_names_table[] = {
-	{ "click",   "atk-click",   N_("Click"),   
-	  N_("Set the description of the Click atk action") },
-	{ "press",   "atk-press",   N_("Press"),   
-	  N_("Set the description of the Press atk action") },
-	{ "release", "atk-release", N_("Release"), 
-	  N_("Set the description of the Release atk action") },
-	{ "activate", "atk-activate", N_("Activate"), 
-	  N_("Set the description of the Activate atk action") }
-};
-
-static const GPCAtkPropertyTab relation_names_table[] = {
-	{ "controlled-by", "atk-controlled-by", N_("Controlled By"),
-	  N_("Indicates an object controlled by one or more target objects") },
-
-	{ "controlled-for", "atk-controlled-for", N_("Controller For"),
-	  N_("Indicates an object is a controller for one or more target objects") },
-
-	{ "labelled-by", "atk-labelled-by", N_("Labelled By"),
-	  N_("Indicates an object is labelled by one or more target objects") },
-
-	{ "label-for", "atk-label-for", N_("Label For"),
-	  N_("Indicates an object is a label for one or more target objects") },
-
-	{ "member-of", "atk-member-of", N_("Member Of"),
-	  N_("Indicates an object is a member of a group of one or more target objects") },
-
-	{ "child-node-of", "atk-child-node-of", N_("Child Node Of"),
-	  N_("Indicates an object is a cell in a treetable which is displayed "
-	     "because a cell in the same column is expanded and identifies that cell") },
-
-	{ "flows-to", "atk-flows-to", N_("Flows To"),
-	  N_("Indicates that the object has content that flows logically to another "
-	     "AtkObject in a sequential way (text-flow, for instance).") },
-
-	{ "flows-from", "atk-flows-from", N_("Flows From"),
-	  N_("Indicates that the object has content that flows logically from another "
-	     "AtkObject in a sequential way, (for instance text-flow)") },
-
-	{ "subwindow-of", "atk-subwindow-of", N_("Subwindow Of"),
-	  N_("Indicates a subwindow attached to a component but otherwise has no "
-	     "connection in the UI hierarchy to that component") },
-
-	{ "embeds", "atk-embeds", N_("Embeds"),
-	  N_("Indicates that the object visually embeds another object's content, "
-	     "i.e. this object's content flows around another's content") },
-
-	{ "embedded-by", "atk-embedded-by", N_("Embedded By"),
-	  N_("Inverse of 'Embeds', indicates that this object's content "
-	     "is visually embedded in another object") },
-
-	{ "popup-for", "atk-popup-for", N_("Popup For"),
-	  N_("Indicates that an object is a popup for another object") },
-
-	{ "parent-window-of", "atk-parent-window-of", N_("Parent Window Of"),
-	  N_("Indicates that an object is a parent window of another object") }
-};
-
-
-/**
- * glade_property_class_atk_realname:
- * @atk_name: The id of the atk property
- *
- * Translates a GladePropertyClass->id to the name that should be
- * saved into the glade file.
- *
- * Returns: a pointer to a constant string.
- */
-G_CONST_RETURN gchar *
-glade_property_class_atk_realname (const gchar *atk_name)
-{
-	gint i;
-
-	g_return_val_if_fail (atk_name != NULL, NULL);
-
-	for (i = 0; i < G_N_ELEMENTS (action_names_table); i++)
-		if (!strcmp (action_names_table[i].id, atk_name))
-			return action_names_table[i].prop_name;
-
-	for (i = 0; i < G_N_ELEMENTS (relation_names_table); i++)
-		if (!strcmp (relation_names_table[i].id, atk_name))
-			return relation_names_table[i].prop_name;
-
-	return atk_name;
-}
-
 /**
  * glade_property_class_new:
  * @handle: A generic pointer (i.e. a #GladeWidgetClass)
@@ -1152,6 +1056,7 @@ glade_property_class_new_from_spec (gpointer     handle,
 	if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
 		property_class->construct_only = TRUE;
 
+	/* XXXX Is this still valid ??? NO !*/
 	if (g_type_is_a (spec->owner_type, ATK_TYPE_OBJECT))
 	{
 		property_class->type    = GPC_ATK_PROPERTY;
