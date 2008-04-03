@@ -22,8 +22,12 @@
 	  from normal props and also accel props for various purposes),
 	  now there is a boolean "atk" member that only means to put
 	  these properties in the atk tab of the editor, one day we can
-	  hopefully even remove this.
-	
+	  hopefully even remove this.	
+
+	* gladeui/glade-widget.c: Fixed special-child-type loading (i.e
+	  notebook tabs and frame labels), and removed some obsolete
+	  loading code from the old implementation.
+
 2008-04-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.[ch],
