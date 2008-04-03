@@ -35,6 +35,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_XML_TAG_PACKING                     "packing"
 #define GLADE_XML_TAG_PLACEHOLDER                 "placeholder"
 #define GLADE_XML_TAG_INTERNAL_CHILD              "internal-child"
+#define GLADE_XML_TAG_I18N_TRUE                   "yes"
+#define GLADE_XML_TAG_SIGNAL_TRUE                 "yes"
 
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
@@ -64,6 +66,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_ACTION_ACTIVATE_FUNCTION        "action-activate-function"
 #define GLADE_TAG_CHILD_ACTION_ACTIVATE_FUNCTION  "child-action-activate-function"
 #define GLADE_TAG_READ_WIDGET_FUNCTION            "read-widget-function"
+#define GLADE_TAG_WRITE_WIDGET_FUNCTION           "write-widget-function"
 #define GLADE_TAG_CREATE_EPROP_FUNCTION           "create-editor-property-function"
 #define GLADE_TAG_STRING_FROM_VALUE_FUNCTION      "string-from-value-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
@@ -171,6 +174,8 @@ gboolean       glade_xml_node_verify (GladeXmlNode * node_in, const gchar *name)
 gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);
 const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
 void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * child);
+void           glade_xml_node_remove (GladeXmlNode *node_in);
+
 
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
@@ -187,9 +192,6 @@ GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
 						   const gchar *nspace,
 						   const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
-
-/* XXX gchar *		glade_xml_alloc_string   (GladeInterface *interface, const gchar *string); */
-/* XXX gchar *		glade_xml_alloc_propname (GladeInterface *interface, const gchar *string); */
 
 gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 					      GModule          *module,

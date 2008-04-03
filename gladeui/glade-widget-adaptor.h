@@ -348,6 +348,21 @@ typedef void     (* GladeReadWidgetFunc) (GladeWidgetAdaptor *adaptor,
 					  GladeXmlNode       *node);
 
 /**
+ * GladeWriteWidgetFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to fill in @node from @widget.
+ *
+ */
+typedef void     (* GladeWriteWidgetFunc) (GladeWidgetAdaptor *adaptor,
+					   GladeWidget        *widget,
+					   GladeXmlContext    *context,
+					   GladeXmlNode       *node);
+
+
+/**
  * GladeCreateEPropFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass to be edited
@@ -524,7 +539,8 @@ struct _GladeWidgetAdaptorClass
 
 
 	GladeReadWidgetFunc          read_widget; /* Reads widget attributes from xml */
-
+	
+	GladeWriteWidgetFunc         write_widget; /* Writes widget attributes to the xml */
 
 	GladeCreateEPropFunc         create_eprop; /* Creates a GladeEditorProperty */
 
@@ -682,6 +698,11 @@ void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdap
 
 void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,
 							      GladeWidget        *widget,
+							      GladeXmlNode       *node);
+
+void                 glade_widget_adaptor_write_widget       (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlContext    *context,
 							      GladeXmlNode       *node);
 
 GladeEditorProperty *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor *adaptor,

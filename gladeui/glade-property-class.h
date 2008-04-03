@@ -103,7 +103,9 @@ struct _GladePropertyClass
 	 * property editor availability & live object updates in the glade environment.
 	 */
 	gboolean save;      /* Whether we should save to the glade file or not
-			     * (mostly just for custom glade properties)
+			     * (mostly just for virtual internal glade properties,
+			     * also used for properties with generic pspecs that
+			     * are saved in custom ways by the plugin)
 			     */
 	gboolean save_always; /* Used to make a special case exception and always
 			       * save this property regardless of what the default
@@ -114,9 +116,8 @@ struct _GladePropertyClass
 	gboolean visible;   /* Whether or not to show this property in the editor
 			     */
 	gboolean ignore;    /* When true, we will not sync the object when the property
-			     * changes.
+			     * changes, or load values from the object.
 			     */
-
 
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */

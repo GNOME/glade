@@ -97,7 +97,6 @@ struct _GladeWidget
 	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
-/* 	GladeWidgetInfo   *construct_info; */
 	GladeCreateReason  construct_reason;
 	gchar             *construct_internal;
 };
@@ -213,9 +212,10 @@ void                    glade_widget_remove_pack_action     (GladeWidget *widget
 GtkWidget *             glade_widget_create_action_menu     (GladeWidget *widget,
 							     const gchar *action_path);
 
-/* XXX GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget, */
-/* 							     GladeInterface   *interface); */
- 
+void                    glade_widget_write                  (GladeWidget     *widget,
+							     GladeXmlContext *context,
+							     GladeXmlNode    *node);
+
 GladeWidget            *glade_widget_read                   (GladeProject     *project,
 							     GladeWidget      *parent,
 							     GladeXmlNode     *node,

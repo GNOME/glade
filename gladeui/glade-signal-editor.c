@@ -102,8 +102,8 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 		g_assert (signal_name != NULL);
 	}
 
-	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
-	new_signal = glade_signal_new (signal_name, handler, userdata, lookup, !after);
+	old_signal = glade_signal_new (signal_name, handler, userdata, after);
+	new_signal = glade_signal_new (signal_name, handler, userdata, !after);
 
 	glade_command_change_signal (editor->widget, old_signal, new_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, COLUMN_AFTER, !after, -1);
@@ -348,7 +348,7 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 	if (slot && !is_void_signal_handler(new_handler))
 	{
 		GladeSignal *new_signal = glade_signal_new (signal_name, new_handler,
-							    NULL, FALSE, FALSE);
+							    NULL, FALSE);
 		glade_command_add_signal (glade_widget, new_signal);
 		glade_signal_free (new_signal);
 		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
@@ -368,7 +368,7 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 			glade_signal_new (signal_name, 
 					  old_handler,
 					  is_void_user_data (userdata) ? NULL : userdata, 
-					  lookup, after);
+					  after);
 		glade_command_remove_signal (glade_widget, old_signal);
 		glade_signal_free (old_signal);
 
@@ -397,14 +397,12 @@ glade_signal_editor_handler_cell_edited (GtkCellRendererText *cell,
 			(signal_name,
 			 old_handler,
 			 is_void_user_data(userdata) ? NULL : userdata,
-			 lookup,
 			 after);
 		GladeSignal *new_signal =
 			glade_signal_new
 			(signal_name,
 			 new_handler,
 			 is_void_user_data(userdata) ? NULL : userdata,
-			 lookup,
 			 after);
 
 		glade_command_change_signal (glade_widget, old_signal, new_signal);
@@ -619,14 +617,12 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 	old_signal =
 		glade_signal_new
 		(signal_name, handler,
-		 is_void_user_data(old_userdata) ? NULL : old_userdata,
-		 lookup, after);
+		 is_void_user_data(old_userdata) ? NULL : old_userdata, after);
 
 	new_signal = 
 		glade_signal_new 
 		(signal_name, handler,
-		 is_void_user_data(new_userdata) ? NULL : new_userdata,
-		 lookup, after);
+		 is_void_user_data(new_userdata) ? NULL : new_userdata, after);
 
 	if (glade_signal_equal (old_signal, new_signal) == FALSE)
 		glade_command_change_signal (glade_widget, old_signal, new_signal);
@@ -921,7 +917,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 COLUMN_USERDATA,
 				 widget_signal->userdata ?
 				 widget_signal->userdata : _(USERDATA_DEFAULT),
-				 COLUMN_LOOKUP,             widget_signal->lookup,
+				 COLUMN_LOOKUP,             FALSE/* widget_signal->lookup */,
 				 COLUMN_LOOKUP_VISIBLE,
 				 widget_signal->userdata ?  TRUE : FALSE,
 				 COLUMN_AFTER_VISIBLE,      TRUE,
@@ -944,7 +940,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 COLUMN_USERDATA,
 					 widget_signal->userdata  ?
 					 widget_signal->userdata : _(USERDATA_DEFAULT),
-					 COLUMN_LOOKUP,           widget_signal->lookup,
+					 COLUMN_LOOKUP,         FALSE/* widget_signal->lookup */,
 					 COLUMN_LOOKUP_VISIBLE,
 					 widget_signal->userdata  ? TRUE : FALSE,
 					 COLUMN_AFTER_VISIBLE,      TRUE,

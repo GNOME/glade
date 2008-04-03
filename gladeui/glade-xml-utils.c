@@ -538,7 +538,7 @@ GladeXmlContext *
 glade_xml_context_new (GladeXmlDoc *doc, const gchar *name_space)
 {
 	/* We are not using the namespace now */
-	return glade_xml_context_new_real (doc, FALSE, NULL);
+	return glade_xml_context_new_real (doc, TRUE, NULL);
 }
 
 void
@@ -629,6 +629,17 @@ glade_xml_node_append_child (GladeXmlNode *node_in, GladeXmlNode *child_in)
 	
 	xmlAddChild (node, child);
 }
+
+void
+glade_xml_node_remove (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	
+	g_return_if_fail (node  != NULL);
+	
+	xmlReplaceNode (node, NULL);
+}
+
 
 GladeXmlNode *
 glade_xml_node_new (GladeXmlContext *context, const gchar *name)
@@ -743,41 +754,6 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 
 	return (GladeXmlNode *)node;
 }
-
-#if OBSOLETE_CODE_HERE
-gchar *
-glade_xml_alloc_string(GladeInterface *interface, const gchar *string)
-{
-    gchar *s;
-
-    s = g_hash_table_lookup(interface->strings, string);
-    if (!s) {
-        s = g_strdup(string);
-        g_hash_table_insert(interface->strings, s, s);
-    }
-
-    return s;
-}
-
-gchar *
-glade_xml_alloc_propname(GladeInterface *interface, const gchar *string)
-{
-    static GString *norm_str;
-    guint i;
-
-    if (!norm_str)
-	norm_str = g_string_new_len(NULL, 64);
-
-    /* assign the string to norm_str */
-    g_string_assign(norm_str, string);
-    /* convert all dashes to underscores */
-    for (i = 0; i < norm_str->len; i++)
-	if (norm_str->str[i] == '-')
-	    norm_str->str[i] = '_';
-
-    return glade_xml_alloc_string(interface, norm_str->str);
-}
-#endif // OBSOLETE_CODE_HERE
 
 gboolean
 glade_xml_load_sym_from_node (GladeXmlNode     *node_in,

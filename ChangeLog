@@ -1,3 +1,11 @@
+2008-04-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* glade-widget, glade-property, glade-gtk (plugin),
+	  glade-project, glade-xml-utils... lots.
+
+	Implemented saving of properties, signals, atkprops
+	accelerators: everything is saving properly now !
+
 2008-04-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget-adaptor.[ch]: Added new entry points
@@ -28,6 +36,10 @@
 	  notebook tabs and frame labels), and removed some obsolete
 	  loading code from the old implementation.
 
+	* gladeui/glade-widget.[ch], gladeui/glade-project.c:
+	  Basic glade file saving framework in place, currently saves
+	  widgets, thier children and class types and widget names.
+	
 2008-04-01  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.[ch],

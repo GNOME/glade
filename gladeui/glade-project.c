@@ -1624,6 +1624,37 @@ glade_project_update_comment (GladeProject *project)
 	g_strfreev (lines);
 }
 
+
+static GladeXmlContext *
+glade_project_write (GladeProject *project)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	GladeXmlNode    *root;
+	GList           *list;
+
+	doc     = glade_xml_doc_new ();
+	context = glade_xml_context_new (doc, NULL);
+	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
+	glade_xml_doc_set_root (doc, root);
+
+
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gobject (list->data);
+
+		/* 
+		 * Append toplevel widgets. Each widget then takes
+		 * care of appending its children.
+		 */
+		if (widget->parent == NULL)
+			glade_widget_write (widget, context, root);
+	}
+	
+	return context;
+}
 #if LOADING_WAS_IMPLEMENTED
 
 /**
@@ -1852,24 +1883,15 @@ glade_project_move_resources (GladeProject *project,
 gboolean
 glade_project_save (GladeProject *project, const gchar *path, GError **error)
 {
-#if LOADING_WAS_IMPLEMENTED
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	gchar           *canonical_path;
+	gint             ret;
 
-	GladeInterface *interface;
-	gboolean        ret;
-	gchar          *canonical_path;
-
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	interface = glade_project_write (project);
-	if (!interface)
-	{
-		g_warning ("Could not write glade document\n");
-		return FALSE;
-	}
-
-	ret = glade_parser_interface_dump (interface, path, error);
-	glade_parser_interface_destroy (interface);
+	context = glade_project_write (project);
+	doc     = glade_xml_context_get_doc (context);
+	ret     = glade_xml_doc_save (doc, path);
+	glade_xml_context_destroy (context);
 
 	canonical_path = glade_util_canonical_path (path);
 	g_assert (canonical_path);
@@ -1909,10 +1931,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 	g_free (canonical_path);
 
-	return ret;
-#endif // LOADING_WAS_IMPLEMENTED
-
-	return TRUE;
+	return ret > 0;
 }
 
 

@@ -12,6 +12,7 @@
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
       <action-activate-function>glade_gtk_widget_action_activate</action-activate-function>
       <read-widget-function>glade_gtk_widget_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_widget_write_widget</write-widget-function>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
       <string-from-value-function>glade_gtk_widget_string_from_value</string-from-value-function>
 
@@ -87,101 +88,101 @@
 	<property id="has-default" ignore="True" common="True"/>
 
 	<!-- Accelerators -->
-	<property id="accelerator" _name="Accelerators" ignore="True" common="True">
+	<property id="accelerator" _name="Accelerators" ignore="True" common="True" save="False">
 	  <spec>glade_standard_accel_spec</spec>
 	</property>
 
 	<!-- Atk name and description properties -->
-	<property id="AtkObject::accessible-name" _name="Accessible Name" ignore="True" atk-property="True" translatable="True">
+	<property id="AtkObject::accessible-name" _name="Accessible Name" ignore="True" atk-property="True" translatable="True" save="False">
 	  <_tooltip>Object instance's name formatted for assistive technology access</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
-	<property id="AtkObject::accessible-description" _name="Accessible Description" ignore="True" atk-property="True" translatable="True">
+	<property id="AtkObject::accessible-description" _name="Accessible Description" ignore="True" atk-property="True" translatable="True" save="False">
 	  <_tooltip>Description of an object, formatted for assistive technology access</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk relationset properties -->
-	<property id="controlled-by" _name="Controlled By" ignore="True" atk-property="True">
+	<property id="controlled-by" _name="Controlled By" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object controlled by one or more target objects</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="controller-for" _name="Controller For" ignore="True" atk-property="True">
+	<property id="controller-for" _name="Controller For" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object is a controller for one or more target objects</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="labelled-by" _name="Labelled By" ignore="True" atk-property="True">
+	<property id="labelled-by" _name="Labelled By" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object is labelled by one or more target objects</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="label-for" _name="Label For" ignore="True" atk-property="True">
+	<property id="label-for" _name="Label For" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object is a label for one or more target objects</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="member-of" _name="Member Of" ignore="True" atk-property="True">
+	<property id="member-of" _name="Member Of" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object is a member of a group of one or more target objects</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="node-child-of" _name="Node Child Of" ignore="True" atk-property="True">
+	<property id="node-child-of" _name="Node Child Of" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates an object is a cell in a treetable which is displayed because a 
 cell in the same column is expanded and identifies that cell</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="flows-to" _name="Flows To" ignore="True" atk-property="True">
+	<property id="flows-to" _name="Flows To" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that the object has content that flows logically to another 
 AtkObject in a sequential way, (for instance text-flow)</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="flows-from" _name="Flows From" ignore="True" atk-property="True">
+	<property id="flows-from" _name="Flows From" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that the object has content that flows logically from another 
 AtkObject in a sequential way, (for instance text-flow)</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="subwindow-of" _name="Subwindow Of" ignore="True" atk-property="True">
+	<property id="subwindow-of" _name="Subwindow Of" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates a subwindow attached to a component but otherwise has no 
 connection in the UI hierarchy to that component</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="embeds" _name="Embeds" ignore="True" atk-property="True">
+	<property id="embeds" _name="Embeds" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that the object visually embeds another object's content, i.e. 
 this object's content flows around another's content</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="embedded-by" _name="Embedded By" ignore="True" atk-property="True">
+	<property id="embedded-by" _name="Embedded By" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Inverse of 'Embeds', indicates that this object's content is visually 
 embedded in another object</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="popup-for" _name="Popup For" ignore="True" atk-property="True">
+	<property id="popup-for" _name="Popup For" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that an object is a popup for another object</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="parent-window-of" _name="Parent Window Of" ignore="True" atk-property="True">
+	<property id="parent-window-of" _name="Parent Window Of" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that an object is a parent window of another object</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="described-by" _name="Described By" ignore="True" atk-property="True">
+	<property id="described-by" _name="Described By" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that another object provides descriptive information about this object; more verbose than 'Labelled By'</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
-	<property id="description-for" _name="Description For" ignore="True" atk-property="True">
+	<property id="description-for" _name="Description For" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Indicates that an object provides descriptive information about another object; more verbose than 'Label For'</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
 	</property>
@@ -354,7 +355,7 @@ embedded in another object</_tooltip>
           <spec>glade_standard_boolean_spec</spec>
         </property>
 	<!-- Atk click property -->
-	<property id="atk-click" _name="Click" ignore="True" atk-property="True">
+	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -608,7 +609,7 @@ embedded in another object</_tooltip>
 	  </displayable-values>
 	</property>
 	<!-- Atk activate property -->
-	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True">
+	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -702,21 +703,21 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- Atk click property -->
-	<property id="atk-click" _name="Click" ignore="True" atk-property="True">
+	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk release property -->
-	<property id="atk-release" _name="Release" ignore="True" atk-property="True">
+	<property id="atk-release" _name="Release" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Release atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -857,7 +858,7 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -1295,7 +1296,7 @@ embedded in another object</_tooltip>
 	<property id="label-widget" disabled="True"/>
 
 	<!-- Atk activate property -->
-	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True">
+	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -1480,7 +1481,7 @@ embedded in another object</_tooltip>
 	<property id="size" disabled="True"/>
 
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -1492,7 +1493,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu">
       <properties>
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>

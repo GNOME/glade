@@ -45,7 +45,6 @@
 GladeSignal *glade_signal_new (const gchar *name,
 			       const gchar *handler,
 			       const gchar *userdata,
-			       gboolean     lookup,
 			       gboolean     after)
 {
 	GladeSignal *signal = g_new0 (GladeSignal, 1);
@@ -53,7 +52,6 @@ GladeSignal *glade_signal_new (const gchar *name,
 	signal->name     = g_strdup (name);
 	signal->handler  = g_strdup (handler);
 	signal->userdata = userdata ? g_strdup (userdata) : NULL;
-	signal->lookup   = lookup;
 	signal->after    = after;
 
 	return signal;
@@ -92,8 +90,7 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 	
 	if (!strcmp (sig1->name, sig2->name)        &&
 	    !strcmp (sig1->handler, sig2->handler)  &&
-	    sig1->after  == sig2->after             &&
-	    sig1->lookup == sig2->lookup)
+	    sig1->after  == sig2->after)
 	{
 		if ((sig1->userdata == NULL && sig2->userdata == NULL) ||
 		    (sig1->userdata != NULL && sig2->userdata != NULL  &&
@@ -116,40 +113,61 @@ glade_signal_clone (const GladeSignal *signal)
 	return glade_signal_new (signal->name,
 				 signal->handler,
 				 signal->userdata,
-				 signal->lookup,
 				 signal->after);
 
 }
 
-#if LOADING_WAS_IMPLEMENTED
-
 /**
  * glade_signal_write:
- * @info:
- * @signal:
- * @interface:
+ * @signal: The #GladeSignal
+ * @context: A #GladeXmlContext
+ * @node: A #GladeXmlNode
  *
- * Returns: TRUE if succeed
+ * Writes @signal to @node
  */
-gboolean
-glade_signal_write (GladeSignalInfo *info, GladeSignal *signal,
-		     GladeInterface *interface)
+void
+glade_signal_write (GladeSignal     *signal,
+		    GladeXmlContext *context,
+		    GladeXmlNode    *node)
 {
-	info->name    = glade_xml_alloc_string(interface, signal->name);
-	glade_util_replace (info->name, '-', '_');
-	info->handler = glade_xml_alloc_string(interface, signal->handler);
-	info->object  =
-		signal->userdata ?
-		glade_xml_alloc_string(interface, signal->userdata) : NULL;
-	info->after   = signal->after;
-	info->lookup  = signal->lookup;
+	GladeXmlNode *signal_node;
+	gchar        *name;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+		return;
+
+	name = g_strdup (signal->name);
+	glade_util_replace (name, '-', '_');
+
+	/* Now dump the node values... */
+	signal_node = glade_xml_node_new (context, GLADE_XML_TAG_SIGNAL);
+	glade_xml_node_append_child (node, signal_node);
+
+	glade_xml_node_set_property_string (signal_node, GLADE_XML_TAG_NAME, name);
+	glade_xml_node_set_property_string (signal_node, GLADE_XML_TAG_HANDLER, signal->handler);
+
+	if (signal->userdata)
+		glade_xml_node_set_property_string (signal_node, 
+						    GLADE_XML_TAG_OBJECT, 
+						    signal->userdata);
+
+	if (signal->after)
+		glade_xml_node_set_property_string (signal_node, 
+						    GLADE_XML_TAG_AFTER, 
+						    GLADE_XML_TAG_SIGNAL_TRUE);
+
+	g_free (name);
 	return TRUE;
 }
 
-#endif // LOADING_WAS_IMPLEMENTED
 
-/*
- * Returns a new GladeSignal with the attributes defined in node
+/**
+ * glade_signal_read:
+ * @node: The #GladeXmlNode to read
+ *
+ * Reads and creates a ner #GladeSignal based on @node
+ *
+ * Returns: A newly created #GladeSignal
  */
 GladeSignal *
 glade_signal_read (GladeXmlNode *node)

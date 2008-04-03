@@ -769,8 +769,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
        	{
 		GladeProperty *property = props->data;
 		glade_property_read
-			(property, property->klass, 
-			 widget->project, node, TRUE);
+			(property, widget->project, node);
 	}
 	
 	/* Read in the signals */
@@ -785,6 +784,52 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 
 		glade_widget_add_signal_handler (widget, signal);
 	}
+}
+
+typedef struct {
+	GladeXmlContext *context;
+	GladeXmlNode    *node;
+} WriteSignalsInfo;
+
+
+static void
+glade_widget_adaptor_write_signals (gpointer key, 
+				    gpointer value, 
+				    gpointer user_data)
+{
+	WriteSignalsInfo *info;
+        GPtrArray *signals;
+	guint i;
+
+	info = (WriteSignalsInfo *) user_data;
+	signals = (GPtrArray *) value;
+	for (i = 0; i < signals->len; i++)
+	{
+		GladeSignal *signal = g_ptr_array_index (signals, i);
+		glade_signal_write (signal,
+				    info->context,
+				    info->node);
+	}
+}
+
+static void
+glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
+					  GladeWidget        *widget,
+					  GladeXmlContext    *context,
+					  GladeXmlNode       *node)
+{
+	GList *props;
+	WriteSignalsInfo info = { context, node };
+
+	/* Write the properties */
+	for (props = widget->properties; 
+	     props; props = props->next)
+		glade_property_write (GLADE_PROPERTY (props->data), context, node);
+
+	/* Write the signals */
+	g_hash_table_foreach (widget->signals,
+			      glade_widget_adaptor_write_signals,
+			      &info);
 }
 
 static GType 
@@ -918,6 +963,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->action_activate      = glade_widget_adaptor_object_action_activate;
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
 	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
+	adaptor_class->write_widget         = glade_widget_adaptor_object_write_widget;
 	adaptor_class->create_eprop         = glade_widget_adaptor_object_create_eprop;
 	adaptor_class->string_from_value    = glade_widget_adaptor_object_string_from_value;
 
@@ -1167,6 +1213,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_READ_WIDGET_FUNCTION,
 					  &symbol))
 		klass->read_widget = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_WRITE_WIDGET_FUNCTION,
+					  &symbol))
+		klass->write_widget = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_CREATE_EPROP_FUNCTION,
@@ -2948,6 +2999,31 @@ glade_widget_adaptor_read_widget (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (node != NULL);
 
 	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->read_widget (adaptor, widget, node);
+}
+
+
+/**
+ * glade_widget_adaptor_write_widget:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @context: The #GladeXmlContext
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to update @widget from @node 
+ * when loading xml files.
+ */
+void
+glade_widget_adaptor_write_widget (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlContext    *context,
+				   GladeXmlNode       *node)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (node != NULL);
+
+	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->write_widget (adaptor, widget, 
+								context, node);
 }
 
 
