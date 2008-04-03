@@ -344,9 +344,10 @@ glade_property_load_impl (GladeProperty *property)
 	
 	if (property->widget == NULL ||
 	    property->klass->packing ||
-	    property->klass->type != GPC_NORMAL ||
+	    property->klass->ignore  ||
 	    !(property->klass->pspec->flags & G_PARAM_READABLE))
 		return;
+
 	object = glade_widget_get_object (property->widget);
 	oclass = G_OBJECT_GET_CLASS (object);
 	

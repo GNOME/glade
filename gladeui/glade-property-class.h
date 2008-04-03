@@ -20,26 +20,8 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyClass GladePropertyClass;
 
-/**
- * GPCType:
- * @GPC_NORMAL: is not an atk property
- * @GPC_ATK_PROPERTY: is a property of an #AtkImplementor object
- * @GPC_ATK_RELATION: is an atk relation set property
- * @GPC_ATK_ACTION: is an atk action property
- * @GPC_ACCEL_PROPERTY: is an accelerator key property
- */
-typedef enum {
-	GPC_NORMAL,
-	GPC_ATK_PROPERTY,
-	GPC_ATK_RELATION,
-	GPC_ATK_ACTION,
-	GPC_ACCEL_PROPERTY
-} GPCType;
-
 struct _GladePropertyClass
 {
-	GPCType type; /* A symbolic type used to load/save properties differently
-		       */
 
 	gpointer    handle; /* The GladeWidgetClass that this property class
 			     * was created for.
@@ -103,7 +85,8 @@ struct _GladePropertyClass
 
 	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
 	
-	gboolean common; /* Common properties go in the common tab */
+	gboolean common;  /* Common properties go in the common tab */
+	gboolean atk;     /* Atk properties go in the atk tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
 	
@@ -212,8 +195,6 @@ gboolean            glade_property_class_match                   (GladePropertyC
 
 gboolean            glade_property_class_void_value              (GladePropertyClass *klass,
 								  GValue             *value);
-
-G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);
 
 G_END_DECLS
 

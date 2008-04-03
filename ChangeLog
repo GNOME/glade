@@ -15,6 +15,14 @@
 
 	* gladeui/glade-widget-adaptor.c, gladeui/glade-signal.c:
 	  Implemented loading of signals.
+
+	* gladeui/glade-property-class.[ch], gladeui/glade-editor.c,
+	  gladeui/glade-property.c, gladeui/glade-widget-adaptor.c:
+	  Removed notion of the GPCType (which differentiated atk props
+	  from normal props and also accel props for various purposes),
+	  now there is a boolean "atk" member that only means to put
+	  these properties in the atk tab of the editor, one day we can
+	  hopefully even remove this.
 	
 2008-04-01  Tristan Van Berkom <tvb@gnome.org>
 

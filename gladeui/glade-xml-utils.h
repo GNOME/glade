@@ -110,7 +110,6 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_RESOURCE                        "resource"
 #define GLADE_TAG_THEMED_ICON                     "themed-icon"
 #define GLADE_TAG_INIT_FUNCTION                   "init-function"
-#define GLADE_TAG_ATK_ACTION                      "atk-action"
 #define GLADE_TAG_ATK_PROPERTY                    "atk-property"
 #define GLADE_TAG_FIXED                           "fixed"
 #define GLADE_TAG_TRANSFER_ON_PASTE               "transfer-on-paste"

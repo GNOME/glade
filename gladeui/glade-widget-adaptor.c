@@ -134,11 +134,10 @@ gwa_properties_set_weight (GList **properties, GType parent)
 	for (l = *properties; l && l->data; l = g_list_next (l))
 	{
 		GladePropertyClass *klass = l->data;
-		GPCType type = klass->type;
 	
 		if (klass->visible &&
 		    (parent) ? parent == klass->pspec->owner_type : TRUE &&
-	    	    (type == GPC_NORMAL || type == GPC_ACCEL_PROPERTY))
+	    	    !klass->atk)
 		{
 			/* Use a different counter for each tab (common, packing and normal) */
 			if (klass->common) common++;

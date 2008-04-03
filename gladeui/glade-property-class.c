@@ -87,7 +87,7 @@ glade_property_class_new (gpointer handle)
 	property_class->resource = FALSE;
 	property_class->themed_icon = FALSE;
 	property_class->translatable = FALSE;
-	property_class->type = GPC_NORMAL;
+	property_class->atk = FALSE;
 	property_class->virt = TRUE;
 	property_class->transfer_on_paste = FALSE;
 	property_class->weight = -1.0;
@@ -1056,18 +1056,6 @@ glade_property_class_new_from_spec (gpointer     handle,
 	if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
 		property_class->construct_only = TRUE;
 
-	/* XXXX Is this still valid ??? NO !*/
-	if (g_type_is_a (spec->owner_type, ATK_TYPE_OBJECT))
-	{
-		property_class->type    = GPC_ATK_PROPERTY;
-		property_class->ignore  = TRUE;
-
-		/* We only use the name and desctription props,
-		 * they are both translatable.
-		 */
-		property_class->translatable = TRUE;
-	}
-
 	if (!property_class->id || !property_class->name)
 	{
 		g_critical ("No name or id for "
@@ -1502,17 +1490,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		klass->displayable_values = gpc_get_displayable_values_from_node
 							(child, klass, domain);
 	
-	/* A sprinkle of hard-code to get atk properties working right
+	/* Right now allowing the backend to specify that some properties
+	 * go in the atk tab, ideally this shouldnt be needed.
 	 */
-	if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_ACTION, FALSE))
-		klass->type = GPC_ATK_ACTION;
-	else if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, FALSE))
-	{
-		if (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec))
-			klass->type = GPC_ATK_RELATION;
-		else
-			klass->type = GPC_ATK_PROPERTY;
-	}
+	klass->atk = glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, klass->atk);
 
 	/* Special case pixbuf here.
 	 */

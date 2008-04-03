@@ -573,13 +573,9 @@ glade_editor_table_append_items (GladeEditorTable     *table,
 			continue;
 		else if (type == TABLE_TYPE_GENERAL && property_class->common)
 			continue;
-		else if (type == TABLE_TYPE_ATK && 
-			 (property_class->type == GPC_NORMAL ||
-			  property_class->type == GPC_ACCEL_PROPERTY))
+		else if (type == TABLE_TYPE_ATK && !property_class->atk)
 			 continue;
-		else if (type != TABLE_TYPE_ATK && 
-			 (property_class->type != GPC_NORMAL &&
-			  property_class->type != GPC_ACCEL_PROPERTY))
+		else if (type != TABLE_TYPE_ATK && property_class->atk)
 			 continue;
 
 		property = glade_editor_table_append_item (table, property_class, 
@@ -1200,8 +1196,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 		if (glade_property_class_is_visible (property->klass) == FALSE)
 			continue;
 		
-		if (property->klass->type != GPC_NORMAL && 
-		    property->klass->type != GPC_ACCEL_PROPERTY)
+		if (property->klass->atk)
 			iter = &atk_iter;
 		else if (property->klass->common)
 			iter = &common_iter;
