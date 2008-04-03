@@ -6,6 +6,9 @@
 	Implemented saving of properties, signals, atkprops
 	accelerators: everything is saving properly now !
 
+	* plugins/gtk+/glade-gtk.c: Fixed crasher on null string
+	  when parsing modifiers.
+
 2008-04-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget-adaptor.[ch]: Added new entry points

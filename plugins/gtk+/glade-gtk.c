@@ -283,7 +283,7 @@ glade_gtk_parse_modifiers (const gchar *string)
 	const gchar     *pos = string;
 	GdkModifierType	 modifiers = 0;
 
-	while (pos[0])
+	while (pos && pos[0])
 	{
 		if (!strncmp(pos, "GDK_", 4)) {
 			pos += 4;
