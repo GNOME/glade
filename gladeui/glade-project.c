@@ -121,6 +121,8 @@ struct _GladeProjectPrivate
 			        */
 			 
 	time_t  mtime;         /* last UTC modification time of file, or 0 if it could not be read */
+
+	GladeProjectFormat format; /* file format */
 };
 
 
@@ -491,7 +493,9 @@ glade_project_init (GladeProject *project)
 						 g_direct_equal, 
 						 NULL, g_free);
 
-	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());	
+	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
+
+	priv->format = GLADE_PROJECT_FORMAT_LIBGLADE;
 }
 
 static void
@@ -2437,3 +2441,18 @@ glade_project_get_modified (GladeProject *project)
 	return project->priv->modified;
 }
 
+void
+glade_project_set_format (GladeProject *project, GladeProjectFormat format)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	project->priv->format = format; 
+}
+
+GladeProjectFormat
+glade_project_get_format (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), -1);
+
+	return project->priv->format;
+}

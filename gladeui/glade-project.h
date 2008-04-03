@@ -4,6 +4,7 @@
 
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-command.h>
+#include <gladeui/glade-utils.h>
 
 G_BEGIN_DECLS
 
@@ -16,6 +17,13 @@ G_BEGIN_DECLS
 
 typedef struct _GladeProjectPrivate  GladeProjectPrivate;
 typedef struct _GladeProjectClass    GladeProjectClass;
+
+
+typedef enum
+{
+	GLADE_PROJECT_FORMAT_LIBGLADE,
+	GLADE_PROJECT_FORMAT_GTKBUILDER
+} GladeProjectFormat;
 
 struct _GladeProject
 {
@@ -157,6 +165,10 @@ guint          glade_project_get_instance_count   (GladeProject *project);
 void           glade_project_set_instance_count   (GladeProject *project, guint instance_count);
 
 gboolean       glade_project_get_modified         (GladeProject *project);
+
+void           glade_project_set_format      	  (GladeProject *project, GladeProjectFormat format);
+
+GladeProjectFormat glade_project_get_format  	  (GladeProject *project);
 
 G_END_DECLS
 
