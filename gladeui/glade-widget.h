@@ -97,7 +97,6 @@ struct _GladeWidget
 	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
-	GladeWidgetInfo   *construct_info;
 	GladeCreateReason  construct_reason;
 	gchar             *construct_internal;
 };
@@ -135,13 +134,7 @@ void                    glade_widget_add_child              (GladeWidget      *p
 
 void                    glade_widget_remove_child           (GladeWidget      *parent,
 							     GladeWidget      *child);
- 
-GladeWidgetInfo        *glade_widget_write                  (GladeWidget      *widget,
-							     GladeInterface   *interface);
- 
-GladeWidget            *glade_widget_read                   (GladeProject     *project,
-							     GladeWidgetInfo  *info);
- 
+
 void                    glade_widget_replace                (GladeWidget      *parent,
 							     GObject          *old_object,
 							     GObject          *new_object);
@@ -218,6 +211,20 @@ void                    glade_widget_remove_pack_action     (GladeWidget *widget
 
 GtkWidget *             glade_widget_create_action_menu     (GladeWidget *widget,
 							     const gchar *action_path);
+
+void                    glade_widget_write                  (GladeWidget     *widget,
+							     GladeXmlContext *context,
+							     GladeXmlNode    *node);
+
+GladeWidget            *glade_widget_read                   (GladeProject     *project,
+							     GladeWidget      *parent,
+							     GladeXmlNode     *node,
+							     const gchar      *internal);
+
+GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
+							     const gchar      *property,
+							     gboolean          packing,
+							     gboolean          use_command);
 
 /*******************************************************************************
                       Project, object property references

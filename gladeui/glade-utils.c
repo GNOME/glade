@@ -569,15 +569,6 @@ glade_util_read_prop_name (const gchar *str)
 
 	glade_util_replace (id, '_', '-');
 
-	if (strstr (id, "::"))
-	{
-		/* Extract the second half of "AtkObject::accessible_name"
-		 */
-		gchar **split = g_strsplit (id, "::", 0);
-		g_free (id);
-		id = g_strdup (split[1]);
-		g_strfreev (split);
-	}
 	return id;
 }
 

@@ -20,28 +20,10 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyClass GladePropertyClass;
 
-/**
- * GPCType:
- * @GPC_NORMAL: is not an atk property
- * @GPC_ATK_PROPERTY: is a property of an #AtkImplementor object
- * @GPC_ATK_RELATION: is an atk relation set property
- * @GPC_ATK_ACTION: is an atk action property
- * @GPC_ACCEL_PROPERTY: is an accelerator key property
- */
-typedef enum {
-	GPC_NORMAL,
-	GPC_ATK_PROPERTY,
-	GPC_ATK_RELATION,
-	GPC_ATK_ACTION,
-	GPC_ACCEL_PROPERTY
-} GPCType;
-
 struct _GladePropertyClass
 {
-	GPCType type; /* A symbolic type used to load/save properties differently
-		       */
 
-	gpointer    handle; /* The GladeWidgetClass that this property class
+	gpointer    handle; /* The GladeWidgetAdaptor that this property class
 			     * was created for.
 			     */
 
@@ -103,7 +85,8 @@ struct _GladePropertyClass
 
 	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
 	
-	gboolean common; /* Common properties go in the common tab */
+	gboolean common;  /* Common properties go in the common tab */
+	gboolean atk;     /* Atk properties go in the atk tab */
 	gboolean packing; /* Packing properties go in the packing tab */
 
 	
@@ -120,7 +103,9 @@ struct _GladePropertyClass
 	 * property editor availability & live object updates in the glade environment.
 	 */
 	gboolean save;      /* Whether we should save to the glade file or not
-			     * (mostly just for custom glade properties)
+			     * (mostly just for virtual internal glade properties,
+			     * also used for properties with generic pspecs that
+			     * are saved in custom ways by the plugin)
 			     */
 	gboolean save_always; /* Used to make a special case exception and always
 			       * save this property regardless of what the default
@@ -131,9 +116,8 @@ struct _GladePropertyClass
 	gboolean visible;   /* Whether or not to show this property in the editor
 			     */
 	gboolean ignore;    /* When true, we will not sync the object when the property
-			     * changes.
+			     * changes, or load values from the object.
 			     */
-
 
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
@@ -166,13 +150,6 @@ GladePropertyClass *glade_property_class_new                     (gpointer      
 
 GladePropertyClass *glade_property_class_new_from_spec           (gpointer             handle,
 								  GParamSpec          *spec);
- 
-GList              *glade_property_class_list_atk_relations      (gpointer             handle,
-								  GType                owner_type);
-
-GladePropertyClass *glade_property_class_accel_property          (gpointer             handle,
-								  GType                owner_type);
-
 
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 
@@ -219,8 +196,6 @@ gboolean            glade_property_class_match                   (GladePropertyC
 
 gboolean            glade_property_class_void_value              (GladePropertyClass *klass,
 								  GValue             *value);
-
-G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);
 
 G_END_DECLS
 

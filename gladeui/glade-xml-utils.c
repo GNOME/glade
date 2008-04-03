@@ -232,7 +232,7 @@ glade_xml_get_value_int_required (GladeXmlNode *node, const gchar *name, gint  *
 	ret = glade_xml_get_value_int (node, name, val);
 
 	if (ret == FALSE)
-		g_warning ("The file did not contained the required value \"%s\"\n"
+		g_warning ("The file did not contain the required value \"%s\"\n"
 			   "Under the \"%s\" tag.", name, glade_xml_node_get_name (node));
 			
 	return ret;
@@ -425,10 +425,10 @@ glade_xml_get_value_string_required (GladeXmlNode *node_in,
 	if (value == NULL)
 	{
 		if (xtra == NULL)
-			g_warning ("The file did not contained the required value \"%s\"\n"
+			g_warning ("The file did not contain the required value \"%s\"\n"
 				   "Under the \"%s\" tag.", name, node->name);
 		else
-			g_warning ("The file did not contained the required value \"%s\"\n"
+			g_warning ("The file did not contain the required value \"%s\"\n"
 				   "Under the \"%s\" tag (%s).", name, node->name, xtra);
 	}
 
@@ -464,10 +464,10 @@ glade_xml_get_property_string_required (GladeXmlNode *node_in,
 	if (value == NULL)
 	{
 		if (xtra == NULL)
-			g_warning ("The file did not contained the required property \"%s\"\n"
+			g_warning ("The file did not contain the required property \"%s\"\n"
 				   "Under the \"%s\" tag.", name, node->name);
 		else
-			g_warning ("The file did not contained the required property \"%s\"\n"
+			g_warning ("The file did not contain the required property \"%s\"\n"
 				   "Under the \"%s\" tag (%s).", name, node->name, xtra);
 	}
 	return value;
@@ -514,7 +514,7 @@ glade_xml_search_child_required (GladeXmlNode *node, const gchar* name)
 	child = glade_xml_search_child (node, name);
 
 	if (child == NULL)
-		g_warning ("The file did not contained the required tag \"%s\"\n"
+		g_warning ("The file did not contain the required tag \"%s\"\n"
 			   "Under the \"%s\" node.", name, glade_xml_node_get_name (node));
 
 	return child;
@@ -538,7 +538,7 @@ GladeXmlContext *
 glade_xml_context_new (GladeXmlDoc *doc, const gchar *name_space)
 {
 	/* We are not using the namespace now */
-	return glade_xml_context_new_real (doc, FALSE, NULL);
+	return glade_xml_context_new_real (doc, TRUE, NULL);
 }
 
 void
@@ -579,7 +579,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	name_space = xmlSearchNsByHref (doc, doc->children, BAD_CAST(nspace));
 	if (name_space == NULL && nspace != NULL)
 	{
-		g_warning ("The file did not contained the expected name space\n"
+		g_warning ("The file did not contain the expected name space\n"
 			   "Expected \"%s\" [%s]",
 			   nspace, full_path);
 		xmlFreeDoc (doc);
@@ -589,7 +589,7 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	root = xmlDocGetRootElement(doc);
 	if ((root->name == NULL) || (xmlStrcmp (root->name, BAD_CAST(root_name)) !=0 ))
 	{
-		g_warning ("The file did not contained the expected root name\n"
+		g_warning ("The file did not contain the expected root name\n"
 			   "Expected \"%s\", actual : \"%s\" [%s]",
 			   root_name, root->name, full_path);
 		xmlFreeDoc (doc);
@@ -629,6 +629,17 @@ glade_xml_node_append_child (GladeXmlNode *node_in, GladeXmlNode *child_in)
 	
 	xmlAddChild (node, child);
 }
+
+void
+glade_xml_node_remove (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	
+	g_return_if_fail (node  != NULL);
+	
+	xmlReplaceNode (node, NULL);
+}
+
 
 GladeXmlNode *
 glade_xml_node_new (GladeXmlContext *context, const gchar *name)
@@ -742,39 +753,6 @@ glade_xml_doc_get_root (GladeXmlDoc *doc)
 	node = xmlDocGetRootElement((xmlDocPtr)(doc));
 
 	return (GladeXmlNode *)node;
-}
-
-gchar *
-glade_xml_alloc_string(GladeInterface *interface, const gchar *string)
-{
-    gchar *s;
-
-    s = g_hash_table_lookup(interface->strings, string);
-    if (!s) {
-        s = g_strdup(string);
-        g_hash_table_insert(interface->strings, s, s);
-    }
-
-    return s;
-}
-
-gchar *
-glade_xml_alloc_propname(GladeInterface *interface, const gchar *string)
-{
-    static GString *norm_str;
-    guint i;
-
-    if (!norm_str)
-	norm_str = g_string_new_len(NULL, 64);
-
-    /* assign the string to norm_str */
-    g_string_assign(norm_str, string);
-    /* convert all dashes to underscores */
-    for (i = 0; i < norm_str->len; i++)
-	if (norm_str->str[i] == '-')
-	    norm_str->str[i] = '_';
-
-    return glade_xml_alloc_string(interface, norm_str->str);
 }
 
 gboolean

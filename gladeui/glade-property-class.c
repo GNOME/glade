@@ -53,102 +53,6 @@
 #define NUMERICAL_PAGE_INCREMENT   10
 #define NUMERICAL_PAGE_SIZE        1
 
-
-/* Hardcoded recognized atk actions
- */
-typedef struct {
-	gchar *prop_name;
-	gchar *id;
-	gchar *name;
-	gchar *tooltip;
-} GPCAtkPropertyTab;
-
-static const GPCAtkPropertyTab action_names_table[] = {
-	{ "click",   "atk-click",   N_("Click"),   
-	  N_("Set the description of the Click atk action") },
-	{ "press",   "atk-press",   N_("Press"),   
-	  N_("Set the description of the Press atk action") },
-	{ "release", "atk-release", N_("Release"), 
-	  N_("Set the description of the Release atk action") },
-	{ "activate", "atk-activate", N_("Activate"), 
-	  N_("Set the description of the Activate atk action") }
-};
-
-static const GPCAtkPropertyTab relation_names_table[] = {
-	{ "controlled-by", "atk-controlled-by", N_("Controlled By"),
-	  N_("Indicates an object controlled by one or more target objects") },
-
-	{ "controlled-for", "atk-controlled-for", N_("Controller For"),
-	  N_("Indicates an object is a controller for one or more target objects") },
-
-	{ "labelled-by", "atk-labelled-by", N_("Labelled By"),
-	  N_("Indicates an object is labelled by one or more target objects") },
-
-	{ "label-for", "atk-label-for", N_("Label For"),
-	  N_("Indicates an object is a label for one or more target objects") },
-
-	{ "member-of", "atk-member-of", N_("Member Of"),
-	  N_("Indicates an object is a member of a group of one or more target objects") },
-
-	{ "child-node-of", "atk-child-node-of", N_("Child Node Of"),
-	  N_("Indicates an object is a cell in a treetable which is displayed "
-	     "because a cell in the same column is expanded and identifies that cell") },
-
-	{ "flows-to", "atk-flows-to", N_("Flows To"),
-	  N_("Indicates that the object has content that flows logically to another "
-	     "AtkObject in a sequential way (text-flow, for instance).") },
-
-	{ "flows-from", "atk-flows-from", N_("Flows From"),
-	  N_("Indicates that the object has content that flows logically from another "
-	     "AtkObject in a sequential way, (for instance text-flow)") },
-
-	{ "subwindow-of", "atk-subwindow-of", N_("Subwindow Of"),
-	  N_("Indicates a subwindow attached to a component but otherwise has no "
-	     "connection in the UI hierarchy to that component") },
-
-	{ "embeds", "atk-embeds", N_("Embeds"),
-	  N_("Indicates that the object visually embeds another object's content, "
-	     "i.e. this object's content flows around another's content") },
-
-	{ "embedded-by", "atk-embedded-by", N_("Embedded By"),
-	  N_("Inverse of 'Embeds', indicates that this object's content "
-	     "is visually embedded in another object") },
-
-	{ "popup-for", "atk-popup-for", N_("Popup For"),
-	  N_("Indicates that an object is a popup for another object") },
-
-	{ "parent-window-of", "atk-parent-window-of", N_("Parent Window Of"),
-	  N_("Indicates that an object is a parent window of another object") }
-};
-
-
-/**
- * glade_property_class_atk_realname:
- * @atk_name: The id of the atk property
- *
- * Translates a GladePropertyClass->id to the name that should be
- * saved into the glade file.
- *
- * Returns: a pointer to a constant string.
- */
-G_CONST_RETURN gchar *
-glade_property_class_atk_realname (const gchar *atk_name)
-{
-	gint i;
-
-	g_return_val_if_fail (atk_name != NULL, NULL);
-
-	for (i = 0; i < G_N_ELEMENTS (action_names_table); i++)
-		if (!strcmp (action_names_table[i].id, atk_name))
-			return action_names_table[i].prop_name;
-
-	for (i = 0; i < G_N_ELEMENTS (relation_names_table); i++)
-		if (!strcmp (relation_names_table[i].id, atk_name))
-			return relation_names_table[i].prop_name;
-
-	return atk_name;
-}
-
 /**
  * glade_property_class_new:
  * @handle: A generic pointer (i.e. a #GladeWidgetClass)
@@ -183,7 +87,7 @@ glade_property_class_new (gpointer handle)
 	property_class->resource = FALSE;
 	property_class->themed_icon = FALSE;
 	property_class->translatable = FALSE;
-	property_class->type = GPC_NORMAL;
+	property_class->atk = FALSE;
 	property_class->virt = TRUE;
 	property_class->transfer_on_paste = FALSE;
 	property_class->weight = -1.0;
@@ -474,41 +378,6 @@ glade_property_class_make_string_from_objects (GladePropertyClass *property_clas
 	return string;
 }
 
-/* This is not used to save in the glade file... and its a one-way conversion.
- * its only usefull to show the values in the UI.
- */
-static gchar *
-glade_property_class_make_string_from_accels (GladePropertyClass *property_class,
-					      GList              *accels)
-{
-	GladeAccelInfo *info;
-	GString        *string;
-	GList          *list;
-
-	string = g_string_new ("");
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-		
-		if (info->modifiers & GDK_SHIFT_MASK)
-			g_string_append (string, "SHIFT-");
-
-		if (info->modifiers & GDK_CONTROL_MASK)
-			g_string_append (string, "CNTL-");
-
-		if (info->modifiers & GDK_MOD1_MASK)
-			g_string_append (string, "ALT-");
-
-		g_string_append (string, glade_builtin_string_from_key (info->key));
-
-		if (list->next)
-			g_string_append (string, ", ");
-	}
-
-	return g_string_free (string, FALSE);
-}
-
 /**
  * glade_property_class_make_string_from_gvalue:
  * @property_class: A #GladePropertyClass
@@ -523,7 +392,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	gchar    *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
 	GObject  *object;
 	GdkColor *color;
-	GList    *objects, *accels;
+	GList    *objects;
 
 	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
 	{
@@ -629,14 +498,8 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 		string = glade_property_class_make_string_from_objects
 			(property_class, objects);
 	}
-	else if (GLADE_IS_PARAM_SPEC_ACCEL (property_class->pspec))
-	{
-		accels = g_value_get_boxed (value);
-		string = glade_property_class_make_string_from_accels 
-			(property_class, accels);
-	}
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (value -> string)",
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return string;
@@ -961,7 +824,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 		g_value_set_boxed (value, objects);
 	}
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (string -> value)",
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return value;
@@ -1024,7 +887,7 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass  *klass,
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		g_value_set_boxed (value, va_arg (vl, gpointer));
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (vl -> string)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));
 	
 	return value;
@@ -1113,7 +976,7 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass  *klass,
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
 	else
-		g_critical ("Unsupported pspec type %s",
+		g_critical ("Unsupported pspec type %s (string -> vl)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));
 }
 
@@ -1141,108 +1004,6 @@ glade_property_class_get_from_gvalue (GladePropertyClass  *klass,
 }
 
 /**
- * glade_property_class_list_atk_relations:
- * @handle: A generic pointer (i.e. a #GladeWidgetClass)
- * @owner_type: The #GType of the owning widget class.
- *
- * Returns: a #GList of newly created atk relation #GladePropertyClass.
- */
-GList *
-glade_property_class_list_atk_relations (gpointer handle,
-					 GType    owner_type)
-{
-	const GPCAtkPropertyTab *relation_tab = NULL;
-	GladePropertyClass      *property_class;
-	GList                   *list = NULL;
-	gint                     i;
-	
-	/* Loop through our hard-coded table enties */
-	for (i = 0; i < G_N_ELEMENTS (relation_names_table); i++)
-	{
-		relation_tab = &relation_names_table[i];
-
-		property_class                    = glade_property_class_new (handle);
-		property_class->pspec             = 
-			glade_param_spec_objects (relation_tab->id,
-						  _(relation_tab->name),
-						  _(relation_tab->tooltip),
-						  ATK_TYPE_IMPLEMENTOR,
-						  G_PARAM_READWRITE);
-		
-		property_class->pspec->owner_type = owner_type;
-		property_class->id                = g_strdup (relation_tab->id);
-		property_class->name              = g_strdup (_(relation_tab->name));
-		property_class->tooltip           = g_strdup (_(relation_tab->tooltip));
-		property_class->type              = GPC_ATK_RELATION;
-		property_class->visible_lines     = 2;
-		property_class->ignore            = TRUE;
-
-		property_class->def = 
-			glade_property_class_make_gvalue_from_string
-			(property_class, "", NULL);
-		
-		property_class->orig_def = 
-			glade_property_class_make_gvalue_from_string
-			(property_class, "", NULL);
-
-		list = g_list_prepend (list, property_class);
-	}
-
-	return g_list_reverse (list);
-}
-
-/**
- * glade_property_class_accel_property:
- * @handle: A generic pointer (i.e. a #GladeWidgetClass)
- * @owner_type: The #GType of the owning widget class.
- *
- * Returns: a newly created #GladePropertyClass for accelerators
- *          of the prescribed @owner_type.
- */
-GladePropertyClass *
-glade_property_class_accel_property (gpointer handle,
-				     GType    owner_type)
-{
-	GladePropertyClass *property_class;
-	GValue             *def_value;
-
-	property_class                    = glade_property_class_new (handle);
-	property_class->pspec             = 
-		glade_param_spec_accel ("accelerators", _("Accelerators"),
-					_("A list of accelerator keys"), 
-					owner_type,
-					G_PARAM_READWRITE);
-
-	
-	property_class->pspec->owner_type = owner_type;
-	property_class->id                = g_strdup (g_param_spec_get_name
-						      (property_class->pspec));
-	property_class->name              = g_strdup (g_param_spec_get_nick
-						      (property_class->pspec));
-	property_class->tooltip           = g_strdup (g_param_spec_get_blurb
-						      (property_class->pspec));
-
-	property_class->type              = GPC_ACCEL_PROPERTY;
-	property_class->ignore            = TRUE;
-	property_class->common            = TRUE;
-
-	/* Setup default */
-	def_value = g_new0 (GValue, 1);
-	g_value_init (def_value, GLADE_TYPE_ACCEL_GLIST);
-	g_value_set_boxed (def_value, NULL);
-	property_class->def = def_value;
-
-	/* Setup original default */
-	def_value = g_new0 (GValue, 1);
-	g_value_init (def_value, GLADE_TYPE_ACCEL_GLIST);
-	g_value_set_boxed (def_value, NULL);
-	property_class->orig_def = def_value;
-
-	return property_class;
-}
-
-
-/**
  * glade_property_class_new_from_spec:
  * @handle: A generic pointer (i.e. a #GladeWidgetClass)
  * @spec: A #GParamSpec
@@ -1254,8 +1015,9 @@ GladePropertyClass *
 glade_property_class_new_from_spec (gpointer     handle,
 				    GParamSpec  *spec)
 {
-	GObjectClass       *gtk_widget_class;
-	GladePropertyClass *property_class;
+	GObjectClass        *gtk_widget_class;
+	GladePropertyClass  *property_class;
+	GladeEditorProperty *eprop;
 
 	g_return_val_if_fail (spec != NULL, NULL);
 	gtk_widget_class = g_type_class_ref (GTK_TYPE_WIDGET);
@@ -1271,13 +1033,17 @@ glade_property_class_new_from_spec (gpointer     handle,
 	if ((spec->flags & G_PARAM_WRITABLE) == 0)
 		goto failed;
 
-	/* Register only editable properties.
-	 */
-	if (!glade_editor_property_supported (property_class->pspec))
-		goto failed;
-	
 	property_class->id   = g_strdup (spec->name);
 	property_class->name = g_strdup (g_param_spec_get_nick (spec));
+
+	/* Register only editable properties.
+	 */
+	if (!(eprop = glade_widget_adaptor_create_eprop
+	      (GLADE_WIDGET_ADAPTOR (handle), property_class, FALSE)))
+		goto failed;
+
+	/* Just created it to see if it was supported.... destroy now... */
+	gtk_widget_destroy (GTK_WIDGET (eprop));
 
 	/* If its on the GtkWidgetClass, it goes in "common" 
 	 * (unless stipulated otherwise in the xml file)
@@ -1289,17 +1055,6 @@ glade_property_class_new_from_spec (gpointer     handle,
 	/* Flag the construct only properties */
 	if (spec->flags & G_PARAM_CONSTRUCT_ONLY)
 		property_class->construct_only = TRUE;
-
-	if (g_type_is_a (spec->owner_type, ATK_TYPE_OBJECT))
-	{
-		property_class->type    = GPC_ATK_PROPERTY;
-		property_class->ignore  = TRUE;
-
-		/* We only use the name and desctription props,
-		 * they are both translatable.
-		 */
-		property_class->translatable = TRUE;
-	}
 
 	if (!property_class->id || !property_class->name)
 	{
@@ -1735,22 +1490,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		klass->displayable_values = gpc_get_displayable_values_from_node
 							(child, klass, domain);
 	
-	/* A sprinkle of hard-code to get atk properties working right
+	/* Right now allowing the backend to specify that some properties
+	 * go in the atk tab, ideally this shouldnt be needed.
 	 */
-	if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_ACTION, FALSE))
-		klass->type = GPC_ATK_ACTION;
-	else if (glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, FALSE))
-	{
-		if (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec))
-			klass->type = GPC_ATK_RELATION;
-		else
-			klass->type = GPC_ATK_PROPERTY;
-	}
-
-	/* Special case accelerators here.
-	 */
-	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
-		klass->type = GPC_ACCEL_PROPERTY;
+	klass->atk = glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, klass->atk);
 
 	/* Special case pixbuf here.
 	 */

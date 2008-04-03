@@ -1,3 +1,64 @@
+2008-04-03  Tristan Van Berkom <tvb@gnome.org>
+
+	* glade-widget, glade-property, glade-gtk (plugin),
+	  glade-project, glade-xml-utils... lots.
+
+	Implemented saving of properties, signals, atkprops
+	accelerators: everything is saving properly now !
+
+2008-04-02  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.[ch]: Added new entry points
+	  to create editor widgets for plugin provided pspecs and also
+	  to create strings based on plugin provided pspec.
+
+	Moved all accelerater code out of the core and into the plugin,
+	still working on loading glade files with the new parser...
+
+	* gladeui/glade-gtk.c: 
+	  - Implemented loading of accelerators.
+	  - Implemented loading of atk properties (not relations or actions yet...)
+	  - Implemented loading of atk actions now...
+	  - Implemented atk relations
+
+	* gladeui/glade-widget-adaptor.c, gladeui/glade-signal.c:
+	  Implemented loading of signals.
+
+	* gladeui/glade-property-class.[ch], gladeui/glade-editor.c,
+	  gladeui/glade-property.c, gladeui/glade-widget-adaptor.c:
+	  Removed notion of the GPCType (which differentiated atk props
+	  from normal props and also accel props for various purposes),
+	  now there is a boolean "atk" member that only means to put
+	  these properties in the atk tab of the editor, one day we can
+	  hopefully even remove this.	
+
+	* gladeui/glade-widget.c: Fixed special-child-type loading (i.e
+	  notebook tabs and frame labels), and removed some obsolete
+	  loading code from the old implementation.
+
+	* gladeui/glade-widget.[ch], gladeui/glade-project.c:
+	  Basic glade file saving framework in place, currently saves
+	  widgets, thier children and class types and widget names.
+	
+2008-04-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.[ch],
+	  various files: Implemented loading and building of the widget
+	  hierarchy, currently only types and widget names, no properties
+	  or packing properties - but internal children and placeholders
+	  are loaded correctly.
+
+	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.c,
+	  gladeui/glade-property.[ch]: Implemented loading of packing
+	  properties and normal properties.
+	
+2008-03-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-parser.[ch]
+
+	* lots of files: removed references to load/save,
+	  disabled load/save - clearing the way for builder support.
+
 2008-03-10  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.4.3

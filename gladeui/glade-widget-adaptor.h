@@ -4,6 +4,7 @@
 
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-property-class.h>
+#include <gladeui/glade-editor-property.h>
 #include <glib-object.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
@@ -237,9 +238,10 @@ typedef gboolean (* GladeChildVerifyPropertyFunc) (GladeWidgetAdaptor *adaptor,
 /**
  * GladeGetChildrenFunc:
  * @container: A #GObject container
- * @Returns: A #GList of #GObject children.
  *
  * A function called to get @containers children.
+ *
+ * Returns: A #GList of #GObject children.
  */
 typedef GList   *(* GladeGetChildrenFunc)         (GladeWidgetAdaptor *adaptor,
 						   GObject            *container);
@@ -297,6 +299,8 @@ typedef void     (* GladePostCreateFunc)          (GladeWidgetAdaptor *adaptor,
  * @name: A string identifier
  *
  * Called to lookup @child in composite object @parent by @name.
+ *
+ * Returns: The specified internal widget.
  */
 typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
 						   GObject            *parent,
@@ -329,6 +333,66 @@ typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
 						   GObject            *container,
 						   GObject            *object,
 						   const gchar        *action_path);
+
+/**
+ * GladeReadWidgetFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to update @widget from @node.
+ *
+ */
+typedef void     (* GladeReadWidgetFunc) (GladeWidgetAdaptor *adaptor,
+					  GladeWidget        *widget,
+					  GladeXmlNode       *node);
+
+/**
+ * GladeWriteWidgetFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to fill in @node from @widget.
+ *
+ */
+typedef void     (* GladeWriteWidgetFunc) (GladeWidgetAdaptor *adaptor,
+					   GladeWidget        *widget,
+					   GladeXmlContext    *context,
+					   GladeXmlNode       *node);
+
+
+/**
+ * GladeCreateEPropFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @klass: The #GladePropertyClass to be edited
+ * @use_command: whether to use the GladeCommand interface
+ * to commit property changes
+ * 
+ * Creates a GladeEditorProperty to edit @klass
+ *
+ * Returns: A newly created #GladeEditorProperty
+ */
+typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adaptor,
+						       GladePropertyClass *klass,
+						       gboolean            use_command);
+
+/**
+ * GladeStringFromValueFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @klass: The #GladePropertyClass 
+ * @value: The #GValue to convert to a string
+ * 
+ * For normal properties this is used to serialize
+ * property values, for custom properties its still
+ * needed to update the UI for undo/redo items etc.
+ *
+ * Returns: A newly allocated string representation of @value
+ */
+typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
+					       GladePropertyClass *klass,
+					       const GValue       *value);
+
 
 /* GladeSignalClass contains all the info we need for a given signal, such as
  * the signal name, and maybe more in the future 
@@ -472,6 +536,15 @@ struct _GladeWidgetAdaptorClass
 	
 	GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
 	GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */
+
+
+	GladeReadWidgetFunc          read_widget; /* Reads widget attributes from xml */
+	
+	GladeWriteWidgetFunc         write_widget; /* Writes widget attributes to the xml */
+
+	GladeCreateEPropFunc         create_eprop; /* Creates a GladeEditorProperty */
+
+	GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -622,6 +695,24 @@ void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdap
 								 GObject            *container,
 								 GObject            *object,
 								 const gchar        *action_path);
+
+void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlNode       *node);
+
+void                 glade_widget_adaptor_write_widget       (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlContext    *context,
+							      GladeXmlNode       *node);
+
+GladeEditorProperty *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor *adaptor,
+							      GladePropertyClass *klass,
+							      gboolean            use_command);
+
+gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
+							      GladePropertyClass *klass,
+							      const GValue       *value);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_ADAPTOR_H__ */

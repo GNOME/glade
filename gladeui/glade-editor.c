@@ -434,7 +434,10 @@ glade_editor_table_append_item (GladeEditorTable *table,
 {
 	GladeEditorProperty *property;
 
-	property = glade_editor_property_new (klass, from_query_dialog == FALSE);
+	property = glade_widget_adaptor_create_eprop 
+		(GLADE_WIDGET_ADAPTOR (klass->handle), 
+		 klass, from_query_dialog == FALSE);
+
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->item_label);
 
@@ -570,13 +573,9 @@ glade_editor_table_append_items (GladeEditorTable     *table,
 			continue;
 		else if (type == TABLE_TYPE_GENERAL && property_class->common)
 			continue;
-		else if (type == TABLE_TYPE_ATK && 
-			 (property_class->type == GPC_NORMAL ||
-			  property_class->type == GPC_ACCEL_PROPERTY))
+		else if (type == TABLE_TYPE_ATK && !property_class->atk)
 			 continue;
-		else if (type != TABLE_TYPE_ATK && 
-			 (property_class->type != GPC_NORMAL &&
-			  property_class->type != GPC_ACCEL_PROPERTY))
+		else if (type != TABLE_TYPE_ATK && property_class->atk)
 			 continue;
 
 		property = glade_editor_table_append_item (table, property_class, 
@@ -1197,8 +1196,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 		if (glade_property_class_is_visible (property->klass) == FALSE)
 			continue;
 		
-		if (property->klass->type != GPC_NORMAL && 
-		    property->klass->type != GPC_ACCEL_PROPERTY)
+		if (property->klass->atk)
 			iter = &atk_iter;
 		else if (property->klass->common)
 			iter = &common_iter;

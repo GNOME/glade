@@ -1675,7 +1675,7 @@ glade_base_editor_add_properties (GladeBaseEditor *editor,
 	
 	while (property)
 	{
-		eprop = glade_editor_property_new_from_widget (gchild, property, packing, TRUE);
+		eprop = glade_widget_create_editor_property (gchild, property, packing, TRUE);
 		if (eprop)
 			glade_base_editor_table_attach (editor, 
 							GLADE_EDITOR_PROPERTY (eprop)->item_label,
