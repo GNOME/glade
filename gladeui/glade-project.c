@@ -130,10 +130,6 @@ static guint              glade_project_signals[LAST_SIGNAL] = {0};
 
 static GladeIDAllocator  *unsaved_number_allocator = NULL;
 
-/* XXX static gboolean glade_project_load_from_interface (GladeProject   *project, */
-/* 						   GladeInterface *interface, */
-/* 						   const gchar    *path); */
-
 
 G_DEFINE_TYPE (GladeProject, glade_project, G_TYPE_OBJECT)
 
@@ -808,6 +804,48 @@ glade_project_fix_object_props (GladeProject *project)
 	}
 }
 
+static gboolean
+loadable_interface (GladeXmlNode *root_node, const gchar *path)
+{
+
+	GString      *string = g_string_new (NULL);
+	GladeXmlNode *node;
+	gchar        *required_lib;
+	gboolean      loadable = TRUE;
+
+	for (node = glade_xml_node_get_children (root_node); 
+	     node; node = glade_xml_node_next (node))
+	{
+		/* Skip "requires" tags */
+		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES))
+			continue;
+
+		if ((required_lib = 
+		     glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
+							     NULL)) != NULL)
+		{
+			if (!glade_catalog_is_loaded (required_lib))
+			{
+				if (!loadable)
+					g_string_append (string, ", ");
+
+				g_string_append (string, required_lib);
+				loadable = FALSE;
+			}
+			
+		}
+	}
+
+	if (!loadable)
+		glade_util_ui_message (glade_app_get_window(),
+				       GLADE_UI_ERROR,
+				       _("Failed to load %s.\n"
+					 "The following required catalogs are unavailable: %s"),
+				       path, string->str);
+	g_string_free (string, TRUE);
+	return loadable;
+}
+
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -817,12 +855,11 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	GladeXmlNode    *node;
 	GladeWidget     *widget;
 
-	project->priv->path = glade_util_canonical_path (path);
-	
 	project->priv->selection = NULL;
 	project->priv->objects = NULL;
 	project->priv->loading = TRUE;
 
+	project->priv->path = glade_util_canonical_path (path);	
 
 	/* get the context & root node of the catalog file */
 	if (!(context = 
@@ -837,6 +874,14 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
+	/* XXX Need to load project->priv->comment ! */
+
+	if (loadable_interface (root, path) == FALSE)
+	{
+		glade_xml_context_free (context);
+		return FALSE;
+	}
+
 	if (!glade_xml_node_verify (root, GLADE_XML_TAG_PROJECT)) 
 	{
 		g_warning ("Glade file root node is not '%s', skipping %s",
@@ -848,6 +893,10 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	for (node = glade_xml_node_get_children (root); 
 	     node; node = glade_xml_node_next (node))
 	{
+		/* Skip "requires" tags */
+		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+			continue;
+
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
 			glade_project_add_object (project, NULL, widget->object);
 	}
@@ -855,6 +904,8 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
 
+	/* Finished with the xml context */
+	glade_xml_context_free (context);
 
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 
@@ -873,38 +924,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	glade_project_fix_object_props (project);
 
 	return TRUE;
-
-#if LOADING_WAS_IMPLEMENTED
-
-	GladeInterface *interface;
-	
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE); 
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	interface = glade_parser_interface_new_from_file (path, NULL);
-
-	if (interface != NULL)
-	{
-		if (!glade_project_load_from_interface (project, interface, path))
-		{
-			glade_parser_interface_destroy (interface);
-			return FALSE;
-		}
-		glade_parser_interface_destroy (interface);
-	}
-	else
-	{
-		return FALSE;
-	}
-
-	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
-		glade_project_set_readonly (project, TRUE);
-
-	project->priv->modified = FALSE;
-		
-	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
-
-#endif // LOADING_WAS_IMPLEMENTED
 
 }
 
@@ -1634,14 +1653,31 @@ glade_project_write (GladeProject *project)
 {
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
-	GladeXmlNode    *root;
-	GList           *list;
+	GladeXmlNode    *root, *req_node, *comment_node;
+	GList           *required, *list;
 
 	doc     = glade_xml_doc_new ();
 	context = glade_xml_context_new (doc, NULL);
 	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
 	glade_xml_doc_set_root (doc, root);
 
+	glade_project_update_comment (project);
+	comment_node = glade_xml_node_new_comment (context, project->priv->comment);
+	glade_xml_node_append_child (root, comment_node);
+
+	if ((required = glade_project_required_libs (project)) != NULL)
+	{
+		for (list = required; list; list = list->next)
+		{
+			req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
+			glade_xml_node_append_child (root, req_node);
+			glade_xml_node_set_property_string (req_node, 
+							    GLADE_XML_TAG_LIB, 
+							    (gchar *)list->data);
+		}
+		g_list_foreach (required, (GFunc)g_free, NULL);
+		g_list_free (required);
+	}
 
 	for (list = project->priv->objects; list; list = list->next)
 	{
@@ -1659,159 +1695,6 @@ glade_project_write (GladeProject *project)
 	
 	return context;
 }
-#if LOADING_WAS_IMPLEMENTED
-
-/**
- * glade_project_write:
- * @project: a #GladeProject
- * 
- * Returns: a libglade's GladeInterface representation of the
- *          project and its contents
- */
-static GladeInterface *
-glade_project_write (GladeProject *project)
-{
-	GladeInterface  *interface;
-	GList           *required, *list, *tops = NULL;
-	gchar          **strv = NULL;
-	guint            i;
-
-	interface = glade_parser_interface_new ();
-
-	if ((required = glade_project_required_libs (project)) != NULL)
-	{
-		strv = g_malloc0 (g_list_length (required) * sizeof (char *));
-		for (i = 0, list = required; list; i++, list = list->next)
-			strv[i] = list->data; /* list->data is allocated for us */
-
-		interface->n_requires = g_list_length (required);
-		interface->requires   = strv;
-
-		g_list_free (required);
-	}
-
-	for (i = 0, list = project->priv->objects; list; list = list->next)
-	{
-		GladeWidget *widget;
-		GladeWidgetInfo *info;
-
-		widget = glade_widget_get_from_gobject (list->data);
-
-		/* 
-		 * Append toplevel widgets. Each widget then takes
-		 * care of appending its children.
-		 */
-		if (widget->parent == NULL)
-		{
-			info = glade_widget_write (widget, interface);
-			if (!info)
-				return NULL;
-
-			tops = g_list_prepend (tops, info);
-			++i;
-		}
-	}
-	interface->n_toplevels = i;
-        interface->toplevels = (GladeWidgetInfo **) g_new (GladeWidgetInfo *, i);
-        for (i = 0, list = tops; list; list = list->next, ++i)
-            interface->toplevels[i] = list->data;
-
-	g_list_free (tops);
-
-	glade_project_update_comment (project);
-	interface->comment = g_strdup (project->priv->comment);
-	
-	return interface;
-}
-
-static gboolean
-loadable_interface (GladeInterface *interface, const gchar *path)
-{
-	GString *string = g_string_new (NULL);
-	gboolean loadable = TRUE;
-	guint i;
-
-	/* Check for required plugins here
-	 */
-	for (i = 0; i < interface->n_requires; i++)
-		if (!glade_catalog_is_loaded (interface->requires[i]))
-		{
-			g_string_append (string, interface->requires[i]);
-			loadable = FALSE;
-		}
-
-	if (loadable == FALSE)
-		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_ERROR,
-				       _("Failed to load %s.\n"
-					 "The following required catalogs are unavailable: %s"),
-				       path, string->str);
-	g_string_free (string, TRUE);
-	return loadable;
-}
-
-#endif // LOADING_WAS_IMPLEMENTED
-
-
-#if LOADING_WAS_IMPLEMENTED
-
-static gboolean
-glade_project_load_from_interface (GladeProject   *project,
-				   GladeInterface *interface,
-				   const gchar    *path)
-{
-	GladeWidget  *widget;
-	guint         i;
-
-	g_return_val_if_fail (project != NULL, FALSE);
-	g_return_val_if_fail (interface != NULL, FALSE);
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	if (loadable_interface (interface, path) == FALSE)
-		return FALSE;
-
-	project->priv->path = glade_util_canonical_path (path);
-	
-	project->priv->selection = NULL;
-	project->priv->objects = NULL;
-	project->priv->loading = TRUE;
-
-	/* keep a comment */
-	if (interface->comment)
-		project->priv->comment = g_strdup (interface->comment);
-	
-	for (i = 0; i < interface->n_toplevels; ++i)
-	{
-		widget = glade_widget_read ((gpointer) project, interface->toplevels[i]);
-		
-		if (!widget)
-		{
-			g_warning ("Failed to read a <widget> tag");
-			continue;
-		}
-
-		glade_project_add_object (project, NULL, widget->object);
-	}
-
-	/* Reset project status here too so that you get a clean
-	 * slate after calling glade_project_open().
-	 */
-	project->priv->modified = FALSE;
-	project->priv->loading = FALSE;
-
-	/* Emit "parse-finished" signal */
-	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
-	/* Now we have to loop over all the object properties
-	 * and fix'em all ('cause they probably weren't found)
-	 */
-	glade_project_fix_object_props (project);
-	
-	return TRUE;	
-}
-
-#endif // LOADING_WAS_IMPLEMENTED
-
 
 /**
  * glade_project_load:

@@ -649,6 +649,16 @@ glade_xml_node_new (GladeXmlContext *context, const gchar *name)
 
 	return (GladeXmlNode *) xmlNewDocNode ((xmlDocPtr) context->doc, context->ns, BAD_CAST(name), NULL);
 }
+
+GladeXmlNode * 
+glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment)
+{
+	g_return_val_if_fail (context != NULL, NULL);
+	g_return_val_if_fail (comment != NULL, NULL);
+
+	return (GladeXmlNode *) xmlNewDocComment ((xmlDocPtr) context->doc, BAD_CAST(comment));
+}
+
 					   
 void
 glade_xml_node_delete (GladeXmlNode *node)

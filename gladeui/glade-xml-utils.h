@@ -22,6 +22,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 /* Used for catalog tags and attributes */
 #define GLADE_XML_TAG_PROJECT                     "glade-interface"
 #define GLADE_XML_TAG_REQUIRES                    "requires"
+#define GLADE_XML_TAG_LIB                         "lib"
 #define GLADE_XML_TAG_WIDGET                      "widget"
 #define GLADE_XML_TAG_PROPERTY                    "property"
 #define GLADE_XML_TAG_CLASS                       "class"
@@ -167,6 +168,7 @@ void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *na
 
 /* Node operations */
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
+GladeXmlNode * glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment);
 void           glade_xml_node_delete (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
