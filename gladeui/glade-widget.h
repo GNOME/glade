@@ -216,10 +216,22 @@ void                    glade_widget_write                  (GladeWidget     *wi
 							     GladeXmlContext *context,
 							     GladeXmlNode    *node);
 
+void                    glade_widget_write_child            (GladeWidget     *widget,
+							     GladeXmlContext *context,
+							     GladeXmlNode    *node);
+
+void                    glade_widget_write_placeholder      (GladeWidget     *parent,
+							     GObject         *object,
+							     GladeXmlContext *context,
+							     GladeXmlNode    *node);
+	
 GladeWidget            *glade_widget_read                   (GladeProject     *project,
 							     GladeWidget      *parent,
 							     GladeXmlNode     *node,
 							     const gchar      *internal);
+
+void                    glade_widget_read_child             (GladeWidget      *widget,
+							     GladeXmlNode     *node);
 
 GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
 							     const gchar      *property,

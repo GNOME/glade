@@ -759,7 +759,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
 					 GladeXmlNode       *node)
 {
-	GladeXmlNode *sig_node;
+	GladeXmlNode *sig_node, *child_node;
 	GList *props;
 	GladeSignal *signal;
 
@@ -783,6 +783,14 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 			continue;
 
 		glade_widget_add_signal_handler (widget, signal);
+	}
+
+	/* Read in children */
+	for (child_node = glade_xml_node_get_children (node); 
+	     child_node; child_node = glade_xml_node_next (child_node))
+	{
+		if (glade_xml_node_verify_silent (child_node, GLADE_XML_TAG_CHILD))
+			glade_widget_read_child (widget, child_node);
 	}
 }
 
@@ -818,7 +826,7 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 					  GladeXmlContext    *context,
 					  GladeXmlNode       *node)
 {
-	GList *props;
+	GList *props, *l, *list;
 	WriteSignalsInfo info = { context, node };
 
 	/* Write the properties */
@@ -830,6 +838,24 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 	g_hash_table_foreach (widget->signals,
 			      glade_widget_adaptor_write_signals,
 			      &info);
+
+	/* Write the children */
+	if ((list =
+	     glade_widget_adaptor_get_children (adaptor, widget->object)) != NULL)
+	{
+		for (l = list; l; l = l->next)
+		{
+			GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+			if (child) 
+				glade_widget_write_child (child, context, node);
+			else if (GLADE_IS_PLACEHOLDER (l->data))
+				glade_widget_write_placeholder (widget, 
+								G_OBJECT (l->data),
+								context, node);
+		}
+		g_list_free (list);
+	}
 }
 
 static GType 
