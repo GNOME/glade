@@ -571,7 +571,6 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
 			      GladeWidget        *widget,
 			      GladeXmlNode       *node)
 {
-	/* This code should work the same for <packing> and <widget> */
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
@@ -890,13 +889,11 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	/* This code should work the same for <packing> and <widget> */
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
 
 	/* Write atk props */
 	glade_gtk_widget_write_atk_props (widget, context, node);
