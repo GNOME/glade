@@ -542,6 +542,12 @@ struct _GladeWidgetAdaptorClass
 	
 	GladeWriteWidgetFunc         write_widget; /* Writes widget attributes to the xml */
 
+	GladeReadWidgetFunc          read_child; /* Reads widget attributes from xml */
+	
+	GladeWriteWidgetFunc         write_child; /* Writes widget attributes to the xml */
+
+
+
 	GladeCreateEPropFunc         create_eprop; /* Creates a GladeEditorProperty */
 
 	GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
@@ -701,6 +707,15 @@ void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor
 							      GladeXmlNode       *node);
 
 void                 glade_widget_adaptor_write_widget       (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlContext    *context,
+							      GladeXmlNode       *node);
+
+void                 glade_widget_adaptor_read_child         (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeXmlNode       *node);
+
+void                 glade_widget_adaptor_write_child        (GladeWidgetAdaptor *adaptor,
 							      GladeWidget        *widget,
 							      GladeXmlContext    *context,
 							      GladeXmlNode       *node);

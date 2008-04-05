@@ -858,6 +858,113 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 	}
 }
 
+static void
+glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
+					GladeWidget        *widget,
+					GladeXmlNode       *node)
+{
+	GladeXmlNode *widget_node, *packing_node;
+	GladeWidget  *child_widget;
+	GList        *packing;
+	gchar        *internal_name;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
+		return;
+
+	internal_name = 
+		glade_xml_get_property_string 
+		(node, GLADE_XML_TAG_INTERNAL_CHILD);
+	
+	if ((widget_node = 
+	     glade_xml_search_child
+	     (node, GLADE_XML_TAG_WIDGET)) != NULL)
+	{
+		child_widget = 
+			glade_widget_read (widget->project, 
+					   widget, 
+					   widget_node, 
+					   internal_name);
+		
+		if (child_widget)
+		{
+			if (!internal_name) {
+				glade_widget_set_child_type_from_node 
+					(adaptor, child_widget->object, node);
+				glade_widget_add_child (widget, child_widget, FALSE);
+			}
+				
+			if ((packing_node =
+			     glade_xml_search_child
+			     (node, GLADE_XML_TAG_PACKING)) != NULL)
+			{
+				
+				/* Get the packing properties */
+				for (packing = child_widget->packing_properties; 
+				     packing; packing = packing->next)
+				{
+					GladeProperty *property = packing->data;
+					glade_property_read (property, 
+							     child_widget->project, 
+							     packing_node);
+				}
+			}
+		}
+		
+	} else {
+		GObject *palaceholder = 
+			G_OBJECT (glade_placeholder_new ());
+		glade_widget_set_child_type_from_node (adaptor, palaceholder, node);
+		glade_widget_adaptor_add (adaptor, widget->object, palaceholder);
+		
+	}
+	g_free (internal_name);
+}
+
+static void
+glade_widget_adaptor_object_write_child (GladeWidgetAdaptor *adaptor,
+					 GladeWidget        *widget,
+					 GladeXmlContext    *context,
+					 GladeXmlNode       *node)
+{
+	GladeXmlNode *child_node, *packing_node;
+	GList        *props;
+
+	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+	glade_xml_node_append_child (node, child_node);
+
+	/* Set internal child */
+	if (widget->internal)
+		glade_xml_node_set_property_string (child_node, 
+						    GLADE_XML_TAG_INTERNAL_CHILD, 
+						    widget->internal);
+
+	/* Write out the widget */
+	glade_widget_write (widget, context, child_node);
+
+	/* Write out packing properties and special-child-type */
+	packing_node = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
+	glade_xml_node_append_child (child_node, packing_node);
+
+	for (props = widget->packing_properties; 
+	     props; props = props->next)
+		glade_property_write (GLADE_PROPERTY (props->data), 
+				      context, packing_node);
+
+	glade_widget_write_special_child_prop (widget->parent,
+					       widget->object,
+					       context, packing_node);
+	
+	/* Default packing properties and such are not saved,
+	 * so lets check afterwords if there was anything saved
+	 * and then just remove the node.
+	 */
+	if (!glade_xml_node_get_children (packing_node))
+	{
+		glade_xml_node_remove (packing_node);
+		glade_xml_node_delete (packing_node);
+	}
+}
+
 static GType 
 glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 {
@@ -990,6 +1097,8 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
 	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
 	adaptor_class->write_widget         = glade_widget_adaptor_object_write_widget;
+	adaptor_class->read_child           = glade_widget_adaptor_object_read_child;
+	adaptor_class->write_child          = glade_widget_adaptor_object_write_child;
 	adaptor_class->create_eprop         = glade_widget_adaptor_object_create_eprop;
 	adaptor_class->string_from_value    = glade_widget_adaptor_object_string_from_value;
 
@@ -1244,6 +1353,16 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_WRITE_WIDGET_FUNCTION,
 					  &symbol))
 		klass->write_widget = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_READ_CHILD_FUNCTION,
+					  &symbol))
+		klass->read_child = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_WRITE_CHILD_FUNCTION,
+					  &symbol))
+		klass->write_child = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_CREATE_EPROP_FUNCTION,
@@ -3035,8 +3154,8 @@ glade_widget_adaptor_read_widget (GladeWidgetAdaptor *adaptor,
  * @context: The #GladeXmlContext
  * @node: The #GladeXmlNode
  *
- * This function is called to update @widget from @node 
- * when loading xml files.
+ * This function is called to write @widget to @node 
+ * when writing xml files.
  */
 void
 glade_widget_adaptor_write_widget (GladeWidgetAdaptor *adaptor,
@@ -3050,6 +3169,55 @@ glade_widget_adaptor_write_widget (GladeWidgetAdaptor *adaptor,
 
 	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->write_widget (adaptor, widget, 
 								context, node);
+}
+
+
+/**
+ * glade_widget_adaptor_read_child:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to update load a child @widget 
+ * from @node when loading xml files (will recurse into
+ * glade_widget_read())
+ */
+void
+glade_widget_adaptor_read_child (GladeWidgetAdaptor *adaptor,
+				 GladeWidget        *widget,
+				 GladeXmlNode       *node)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (node != NULL);
+
+	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->read_child (adaptor, widget, node);
+}
+
+
+/**
+ * glade_widget_adaptor_write_child:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @context: The #GladeXmlContext
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to write the child @widget to @node 
+ * when writing xml files (takes care of packing and recurses
+ * into glade_widget_write())
+ */
+void
+glade_widget_adaptor_write_child (GladeWidgetAdaptor *adaptor,
+				  GladeWidget        *widget,
+				  GladeXmlContext    *context,
+				  GladeXmlNode       *node)
+{
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (node != NULL);
+
+	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->write_child (adaptor, widget, 
+							       context, node);
 }
 
 

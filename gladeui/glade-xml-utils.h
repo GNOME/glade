@@ -68,6 +68,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_CHILD_ACTION_ACTIVATE_FUNCTION  "child-action-activate-function"
 #define GLADE_TAG_READ_WIDGET_FUNCTION            "read-widget-function"
 #define GLADE_TAG_WRITE_WIDGET_FUNCTION           "write-widget-function"
+#define GLADE_TAG_READ_CHILD_FUNCTION             "read-child-function"
+#define GLADE_TAG_WRITE_CHILD_FUNCTION            "write-child-function"
 #define GLADE_TAG_CREATE_EPROP_FUNCTION           "create-editor-property-function"
 #define GLADE_TAG_STRING_FROM_VALUE_FUNCTION      "string-from-value-function"
 #define GLADE_TAG_PROPERTIES                      "properties"

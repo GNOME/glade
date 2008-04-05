@@ -233,6 +233,16 @@ GladeWidget            *glade_widget_read                   (GladeProject     *p
 void                    glade_widget_read_child             (GladeWidget      *widget,
 							     GladeXmlNode     *node);
 
+
+void                    glade_widget_write_special_child_prop (GladeWidget     *parent, 
+							       GObject         *object,
+							       GladeXmlContext *context,
+							       GladeXmlNode    *node);
+
+void                  glade_widget_set_child_type_from_node (GladeWidgetAdaptor  *parent_adaptor,
+							     GObject             *child,
+							     GladeXmlNode        *node);
+
 GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
 							     const gchar      *property,
 							     gboolean          packing,

@@ -5,6 +5,12 @@
 	  children, allowiong you to do stuff before or after children
 	  are written/read from the xml file.
 
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.h,
+	  allow the plugin to handle read_child() write_child() (mostly
+	  just to allow you to skip some children like fake AtkObjects,
+	  but can also be used to parse/write packing stuff (i.e. the
+	  <child> tag) in custom ways).
+
 2008-04-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-project.c: Resurected <requires> code and
