@@ -19,11 +19,23 @@ typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
 
+
+#define GLADE_XML_TAG_PROJECT(type) \
+	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
+	 GLADE_XML_TAG_LIBGLADE_PROJECT : GLADE_XML_TAG_BUILDER_PROJECT)
+
+#define GLADE_XML_TAG_WIDGET(type) \
+	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
+	 GLADE_XML_TAG_LIBGLADE_WIDGET : GLADE_XML_TAG_BUILDER_WIDGET)
+
 /* Used for catalog tags and attributes */
-#define GLADE_XML_TAG_PROJECT                     "glade-interface"
+#define GLADE_XML_TAG_LIBGLADE_PROJECT            "glade-interface"
+#define GLADE_XML_TAG_BUILDER_PROJECT             "interface"
+#define GLADE_XML_TAG_LIBGLADE_WIDGET             "widget"
+#define GLADE_XML_TAG_BUILDER_WIDGET              "object"
+
 #define GLADE_XML_TAG_REQUIRES                    "requires"
 #define GLADE_XML_TAG_LIB                         "lib"
-#define GLADE_XML_TAG_WIDGET                      "widget"
 #define GLADE_XML_TAG_PROPERTY                    "property"
 #define GLADE_XML_TAG_CLASS                       "class"
 #define GLADE_XML_TAG_ID                          "id"
@@ -38,6 +50,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_XML_TAG_INTERNAL_CHILD              "internal-child"
 #define GLADE_XML_TAG_I18N_TRUE                   "yes"
 #define GLADE_XML_TAG_SIGNAL_TRUE                 "yes"
+#define GLADE_XML_TAG_TYPE                        "type"
 
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
@@ -179,6 +192,9 @@ gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar 
 const gchar *  glade_xml_node_get_name (GladeXmlNode *node_in);
 void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * child);
 void           glade_xml_node_remove (GladeXmlNode *node_in);
+gboolean       glade_xml_node_is_comment (GladeXmlNode *node_in);
+GladeXmlNode * glade_xml_node_next_with_comments (GladeXmlNode *node_in);
+GladeXmlNode * glade_xml_node_get_children_with_comments (GladeXmlNode *node);
 
 
 /* Document Operatons */

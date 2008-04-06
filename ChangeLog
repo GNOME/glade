@@ -11,6 +11,15 @@
 	  but can also be used to parse/write packing stuff (i.e. the
 	  <child> tag) in custom ways).
 
+	* gladeui/glade-widget.[ch], gladeui/glade-widget-adaptor.c
+	  gladeui/glade-xml-utils.[ch], gladeui/glade-project.c,
+	  gladeui/glade-property.c, gladeui/glade-signal.c, 
+	  plugins/gtk+/glade-gtk.c, src/glade-window.c:
+	  Added basic builder support, format can be chosen via a
+	  radiomenuitem in the "Edit" menu, currently supports different
+	  names for the interface and widget tags, and saves special
+	  child widgets accordingly (i.e. notebook tabs and frame labels).
+
 2008-04-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-project.c: Resurected <requires> code and

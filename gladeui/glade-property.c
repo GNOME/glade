@@ -928,7 +928,8 @@ glade_property_read (GladeProperty      *property,
 
 	/* This code should work the same for <packing> and <widget> */
 	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
-	      glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
+	      glade_xml_node_verify_silent
+	      (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project)))))
 		return;
 
 	for (prop = glade_xml_node_get_children (node); 
@@ -1032,14 +1033,18 @@ glade_property_write (GladeProperty   *property,
 		      GladeXmlNode    *node)
 {
 	GladeXmlNode *prop_node;
+	GladeProject *project;
 	gchar *name, *value, *tmp;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (node != NULL);
 
+	project = property->widget->project;
+
 	/* This code should work the same for <packing> and <widget> */
 	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
-	      glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
+	      glade_xml_node_verify_silent
+	      (node, GLADE_XML_TAG_WIDGET (glade_project_get_format(project)))))
 		return;
 
 	if (!property->klass->save || !property->enabled)

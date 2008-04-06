@@ -239,7 +239,7 @@ void                    glade_widget_write_special_child_prop (GladeWidget     *
 							       GladeXmlContext *context,
 							       GladeXmlNode    *node);
 
-void                  glade_widget_set_child_type_from_node (GladeWidgetAdaptor  *parent_adaptor,
+void                  glade_widget_set_child_type_from_node (GladeWidget         *parent,
 							     GObject             *child,
 							     GladeXmlNode        *node);
 

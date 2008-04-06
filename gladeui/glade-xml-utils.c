@@ -587,7 +587,8 @@ glade_xml_context_new_from_path (const gchar *full_path,
 	}
 
 	root = xmlDocGetRootElement(doc);
-	if ((root->name == NULL) || (xmlStrcmp (root->name, BAD_CAST(root_name)) !=0 ))
+	if (root_name != NULL &&
+	    ((root->name == NULL) || (xmlStrcmp (root->name, BAD_CAST(root_name)) != 0)))
 	{
 		g_warning ("The file did not contain the expected root name\n"
 			   "Expected \"%s\", actual : \"%s\" [%s]",
@@ -672,8 +673,10 @@ glade_xml_context_get_doc (GladeXmlContext *context)
 	return context->doc;
 }
 
-static gboolean
-glade_libxml_node_is_comment (xmlNodePtr node) {
+gboolean
+glade_xml_node_is_comment (GladeXmlNode *node_in) 
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
 	if (node == NULL)
 		return FALSE;
 	if ((xmlStrcmp ( node->name, BAD_CAST("text")) == 0) ||
@@ -689,10 +692,18 @@ glade_xml_node_get_children (GladeXmlNode *node_in)
 	xmlNodePtr children;
 
 	children = node->children;
-	while (glade_libxml_node_is_comment (children))
+	while (glade_xml_node_is_comment ((GladeXmlNode *)children))
 		children = children->next;
 
 	return (GladeXmlNode *)children;
+}
+
+GladeXmlNode *
+glade_xml_node_get_children_with_comments (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return (GladeXmlNode *)node->children;
 }
 
 GladeXmlNode *
@@ -701,11 +712,20 @@ glade_xml_node_next (GladeXmlNode *node_in)
 	xmlNodePtr node = (xmlNodePtr) node_in;
 
 	node = node->next;
-	while (glade_libxml_node_is_comment (node))
+	while (glade_xml_node_is_comment ((GladeXmlNode *)node))
 		node = node->next;
 
 	return (GladeXmlNode *)node;
 }
+
+GladeXmlNode *
+glade_xml_node_next_with_comments (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return (GladeXmlNode *)node->next;
+}
+
 
 const gchar *
 glade_xml_node_get_name (GladeXmlNode *node_in)

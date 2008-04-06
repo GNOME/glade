@@ -1691,7 +1691,12 @@ notebook_switch_page_cb (GtkNotebook *notebook,
 
 	refresh_title (window);
 	set_sensitivity_according_to_project (window, project);
-	
+
+	/* Set project format here */
+	action = gtk_action_group_get_action (window->priv->static_actions, "LibgladeFormat");
+	gtk_radio_action_set_current_value (GTK_RADIO_ACTION (action), 
+					    glade_project_get_format (project));
+
 	/* switch to the project's inspector */
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);	
 	
@@ -1718,6 +1723,7 @@ notebook_tab_added_cb (GtkNotebook *notebook,
 {
 	GladeProject *project;
 	GtkWidget    *inspector;
+	GtkAction    *action;
 
 	++window->priv->num_tabs;
 	
@@ -1768,6 +1774,7 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 {
 	GladeProject   *project;
 	GladeInspector *inspector;
+	GtkAction      *action;
 
 	--window->priv->num_tabs;
 
@@ -1797,9 +1804,24 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 	project_selection_changed_cb (glade_app_get_project (), window);
 		
 	if (window->priv->active_view)
-		set_sensitivity_according_to_project (window, glade_design_view_get_project (window->priv->active_view));
+	{
+		set_sensitivity_according_to_project
+			(window, glade_design_view_get_project (window->priv->active_view));
+		action = gtk_action_group_get_action
+			(window->priv->static_actions, "LibgladeFormat");
+		gtk_radio_action_set_current_value
+			(GTK_RADIO_ACTION (action), glade_project_get_format
+			 (glade_design_view_get_project (window->priv->active_view)));
+
+	}		
 	else
+	{
+		action = gtk_action_group_get_action
+			(window->priv->static_actions, "ProjectFormat");
+		gtk_action_set_sensitive (action, FALSE);
+
 		gtk_action_group_set_sensitive (window->priv->project_actions, FALSE);	
+	}
 
 }
 
@@ -1827,8 +1849,8 @@ recent_chooser_item_activated_cb (GtkRecentChooser *chooser, GladeWindow *window
 
 static void
 palette_appearance_change_cb (GtkRadioAction *action,
-				  GtkRadioAction *current,
-				  GladeWindow *window)
+			      GtkRadioAction *current,
+			      GladeWindow *window)
 {
 	gint value;
 
@@ -1836,6 +1858,24 @@ palette_appearance_change_cb (GtkRadioAction *action,
 
 	glade_palette_set_item_appearance (glade_app_get_palette (), value);
 
+}
+
+
+static void
+format_change_cb (GtkRadioAction *action,
+		  GtkRadioAction *current,
+		  GladeWindow *window)
+{
+	gint value;
+	GladeProject *project;
+
+	value = gtk_radio_action_get_current_value (action);
+
+	if (window->priv->active_view)
+	{
+		project = glade_design_view_get_project (window->priv->active_view);
+		glade_project_set_format (project, value);
+	}
 }
 
 static void
@@ -2151,6 +2191,11 @@ static const gchar ui_info[] =
 "      <menuitem action='Copy'/>"
 "      <menuitem action='Paste'/>"
 "      <menuitem action='Delete'/>"
+"      <separator/>"
+"      <menu action='ProjectFormat'>"
+"        <menuitem action='LibgladeFormat'/>"
+"        <menuitem action='BuilderFormat'/>"
+"      </menu>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
 "      <menuitem action='Clipboard'/>"
@@ -2212,6 +2257,9 @@ static GtkActionEntry static_entries[] = {
 	
 	{ "Quit", GTK_STOCK_QUIT, NULL, "<control>Q",
 	  N_("Quit the program"), G_CALLBACK (quit_cb) },
+
+	/* Edit Menu */
+	{ "ProjectFormat", NULL, N_("_Project Format") },
 
 	/* ViewMenu */
 	{ "PaletteAppearance", NULL, N_("Palette _Appearance") },
@@ -2302,7 +2350,7 @@ static GtkToggleActionEntry view_entries[] = {
 };
 static guint n_view_entries = G_N_ELEMENTS (view_entries);
 
-static GtkRadioActionEntry radio_entries[] = {
+static GtkRadioActionEntry palette_radio_entries[] = {
 
 	{ "IconsAndLabels", NULL, N_("Text beside icons"), NULL, 
 	  N_("Display items as text beside icons"), GLADE_ITEM_ICON_AND_LABEL },
@@ -2312,8 +2360,21 @@ static GtkRadioActionEntry radio_entries[] = {
 
 	{ "LabelsOnly", NULL, N_("_Text only"), NULL, 
 	  N_("Display items as text only"), GLADE_ITEM_LABEL_ONLY },
+
 };
-static guint n_radio_entries = G_N_ELEMENTS (radio_entries);
+static guint n_palette_radio_entries = G_N_ELEMENTS (palette_radio_entries);
+
+
+static GtkRadioActionEntry format_radio_entries[] = {
+
+	{ "LibgladeFormat", NULL, N_("Libglade"), NULL, 
+	  N_("Set libglade readable file format"), GLADE_PROJECT_FORMAT_LIBGLADE },
+
+	{ "BuilderFormat", NULL, N_("Gtk Builder"), NULL, 
+	  N_("Set Gtk Builder file format"), GLADE_PROJECT_FORMAT_GTKBUILDER },
+
+};
+static guint n_format_radio_entries = G_N_ELEMENTS (format_radio_entries);
 
 static void
 menu_item_selected_cb (GtkWidget *item, GladeWindow *window)
@@ -2384,9 +2445,15 @@ construct_menu (GladeWindow *window)
 					     view_entries,
 					     n_view_entries, 
 					     window);
-	gtk_action_group_add_radio_actions (window->priv->static_actions, radio_entries,
-					    n_radio_entries, GLADE_ITEM_ICON_ONLY,
+
+	gtk_action_group_add_radio_actions (window->priv->static_actions, palette_radio_entries,
+					    n_palette_radio_entries, GLADE_ITEM_ICON_ONLY,
 					    G_CALLBACK (palette_appearance_change_cb), window);
+
+	gtk_action_group_add_radio_actions (window->priv->static_actions, format_radio_entries,
+					    n_format_radio_entries, 
+					    GLADE_PROJECT_FORMAT_GTKBUILDER,
+					    G_CALLBACK (format_change_cb), window);
 
 	window->priv->project_actions = gtk_action_group_new (ACTION_GROUP_PROJECT);
 	gtk_action_group_set_translation_domain (window->priv->project_actions, GETTEXT_PACKAGE);

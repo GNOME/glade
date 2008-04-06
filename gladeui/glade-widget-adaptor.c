@@ -877,7 +877,7 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 	
 	if ((widget_node = 
 	     glade_xml_search_child
-	     (node, GLADE_XML_TAG_WIDGET)) != NULL)
+	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
 	{
 		child_widget = 
 			glade_widget_read (widget->project, 
@@ -889,7 +889,7 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 		{
 			if (!internal_name) {
 				glade_widget_set_child_type_from_node 
-					(adaptor, child_widget->object, node);
+					(widget, child_widget->object, node);
 				glade_widget_add_child (widget, child_widget, FALSE);
 			}
 				
@@ -913,7 +913,7 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 	} else {
 		GObject *palaceholder = 
 			G_OBJECT (glade_placeholder_new ());
-		glade_widget_set_child_type_from_node (adaptor, palaceholder, node);
+		glade_widget_set_child_type_from_node (widget, palaceholder, node);
 		glade_widget_adaptor_add (adaptor, widget->object, palaceholder);
 		
 	}
@@ -952,7 +952,7 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor *adaptor,
 
 	glade_widget_write_special_child_prop (widget->parent,
 					       widget->object,
-					       context, packing_node);
+					       context, child_node);
 	
 	/* Default packing properties and such are not saved,
 	 * so lets check afterwords if there was anything saved

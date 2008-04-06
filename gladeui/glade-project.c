@@ -846,6 +846,15 @@ loadable_interface (GladeXmlNode *root_node, const gchar *path)
 	return loadable;
 }
 
+static void
+glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
+{
+	/* TODO Write me !! Find out how to extract root level comments 
+	 * with libxml2 !!! 
+	 */
+}
+
+
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -865,7 +874,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	if (!(context = 
 	      glade_xml_context_new_from_path (path,
 					       NULL, 
-					       GLADE_XML_TAG_PROJECT)))
+					       NULL)))
 	{
 		g_warning ("Couldn't open glade file [%s].", path);
 		return FALSE;
@@ -874,18 +883,22 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
-	/* XXX Need to load project->priv->comment ! */
-
-	if (loadable_interface (root, path) == FALSE)
+	if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_LIBGLADE_PROJECT))
+		project->priv->format = GLADE_PROJECT_FORMAT_LIBGLADE;
+	else if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_BUILDER_PROJECT))
+		project->priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
+	else
 	{
+		g_warning ("Couldnt determine project format, skipping %s", path);
 		glade_xml_context_free (context);
 		return FALSE;
 	}
 
-	if (!glade_xml_node_verify (root, GLADE_XML_TAG_PROJECT)) 
+	/* XXX Need to load project->priv->comment ! */
+	glade_project_read_comment (project, doc);
+
+	if (loadable_interface (root, path) == FALSE)
 	{
-		g_warning ("Glade file root node is not '%s', skipping %s",
-			   GLADE_XML_TAG_PROJECT, path);
 		glade_xml_context_free (context);
 		return FALSE;
 	}
@@ -894,7 +907,8 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	     node; node = glade_xml_node_next (node))
 	{
 		/* Skip "requires" tags */
-		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+		if (!glade_xml_node_verify_silent
+		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
 			continue;
 
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
@@ -1658,7 +1672,7 @@ glade_project_write (GladeProject *project)
 
 	doc     = glade_xml_doc_new ();
 	context = glade_xml_context_new (doc, NULL);
-	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
+	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
 	glade_xml_doc_set_root (doc, root);
 
 	glade_project_update_comment (project);

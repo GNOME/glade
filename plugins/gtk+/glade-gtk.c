@@ -571,7 +571,8 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
 			      GladeWidget        *widget,
 			      GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -889,7 +890,8 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
 	/* First chain up and read in all the normal properties.. */

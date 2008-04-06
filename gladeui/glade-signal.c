@@ -133,8 +133,9 @@ glade_signal_write (GladeSignal     *signal,
 	GladeXmlNode *signal_node;
 	gchar        *name;
 
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
-		return;
+	/*  Should assert GLADE_XML_TAG_WIDGET tag here, but no 
+	 * access to project, so not really seriosly needed 
+	 */
 
 	name = g_strdup (signal->name);
 	glade_util_replace (name, '-', '_');

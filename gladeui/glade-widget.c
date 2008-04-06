@@ -3289,11 +3289,53 @@ glade_widget_replace (GladeWidget *parent, GObject *old_object, GObject *new_obj
 /*******************************************************************************
  *                           Xml Parsing code                                  *
  *******************************************************************************/
+/* XXX Doc me !*/
+void
+glade_widget_write_special_child_prop (GladeWidget     *parent, 
+				       GObject         *object,
+				       GladeXmlContext *context,
+				       GladeXmlNode    *node)
+{
+	GladeXmlNode *prop_node, *packing_node;
+	gchar        *buff, *special_child_type;
+
+	buff = g_object_get_data (object, "special-child-type");
+	g_object_get (parent->adaptor, "special-child-type", &special_child_type, NULL);
+
+	packing_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
+
+	if (special_child_type && buff)
+	{
+		switch (glade_project_get_format (parent->project))
+		{
+		case GLADE_PROJECT_FORMAT_LIBGLADE:	
+			prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
+			glade_xml_node_append_child (packing_node, prop_node);
+			
+			/* Name and value */
+			glade_xml_node_set_property_string (prop_node, 
+							    GLADE_XML_TAG_NAME, 
+							    special_child_type);
+			glade_xml_set_content (prop_node, buff);
+			break;
+		case GLADE_PROJECT_FORMAT_GTKBUILDER:
+			glade_xml_node_set_property_string (node, 
+							    GLADE_XML_TAG_TYPE, 
+							    buff);
+			break;
+		default:
+			g_assert_not_reached ();
+		}
+		
+	}
+	g_free (special_child_type);
+}
+
 /* XXX Doc me ! */
 void
-glade_widget_set_child_type_from_node (GladeWidgetAdaptor  *parent_adaptor,
-				       GObject             *child,
-				       GladeXmlNode        *node)
+glade_widget_set_child_type_from_node (GladeWidget   *parent,
+				       GObject       *child,
+				       GladeXmlNode  *node)
 {
 	GladeXmlNode *packing_node, *prop;
 	gchar        *special_child_type, *name, *value;
@@ -3301,42 +3343,59 @@ glade_widget_set_child_type_from_node (GladeWidgetAdaptor  *parent_adaptor,
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return;
 
-	g_object_get (parent_adaptor, "special-child-type", &special_child_type, NULL);
+	g_object_get (parent->adaptor, "special-child-type", &special_child_type, NULL);
 	if (!special_child_type)
 		return;
-
-	if ((packing_node = 
-	     glade_xml_search_child (node, GLADE_XML_TAG_PACKING)) != NULL)
+ 
+	switch (glade_project_get_format (parent->project))
 	{
-		for (prop = glade_xml_node_get_children (packing_node); 
-		     prop; prop = glade_xml_node_next (prop))
+	case GLADE_PROJECT_FORMAT_LIBGLADE:	
+		if ((packing_node = 
+		     glade_xml_search_child (node, GLADE_XML_TAG_PACKING)) != NULL)
 		{
-			if (!(name = 
-			      glade_xml_get_property_string_required (prop,
-								      GLADE_XML_TAG_NAME,
-								      NULL)))
-				continue;
-			
-			if (!(value = glade_xml_get_content (prop)))
+			for (prop = glade_xml_node_get_children (packing_node); 
+			     prop; prop = glade_xml_node_next (prop))
 			{
-				/* XXX should be glade_xml_get_content_required()... */
-				g_free (name);
-				continue;
-			}
+				if (!(name = 
+				      glade_xml_get_property_string_required
+				      (prop, GLADE_XML_TAG_NAME, NULL)))
+					continue;
 			
-			if (!strcmp (name, special_child_type))
-			{
-				g_object_set_data_full (child,
-							"special-child-type",
-							g_strdup (value),
-							g_free);
+				if (!(value = glade_xml_get_content (prop)))
+				{
+					/* XXX should be glade_xml_get_content_required()... */
+					g_free (name);
+					continue;
+				}
+			
+				if (!strcmp (name, special_child_type))
+				{
+					g_object_set_data_full (child,
+								"special-child-type",
+								g_strdup (value),
+								g_free);
+					g_free (name);
+					g_free (value);
+					break;
+				}
 				g_free (name);
 				g_free (value);
-				break;
 			}
-			g_free (name);
-			g_free (value);
 		}
+		break;
+	case GLADE_PROJECT_FORMAT_GTKBUILDER:
+		/* all child types here are depicted by the "type" property */
+		if ((value = 
+		     glade_xml_get_property_string (node, GLADE_XML_TAG_TYPE)))
+		{
+			g_object_set_data_full (child,
+						"special-child-type",
+						value,
+						g_free);
+		}
+		break;
+	default:
+		g_assert_not_reached ();
 	}
 	g_free (special_child_type);
 }
@@ -3376,7 +3435,8 @@ glade_widget_read (GladeProject *project,
 
 	glade_widget_push_superuser ();
 
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project))))
 		return NULL;
 
 	if ((klass = 
@@ -3442,36 +3502,6 @@ glade_widget_read (GladeProject *project,
 	return widget;
 }
 
-/* XXX Doc me !*/
-void
-glade_widget_write_special_child_prop (GladeWidget     *parent, 
-				       GObject         *object,
-				       GladeXmlContext *context,
-				       GladeXmlNode    *node)
-{
-	GladeXmlNode *prop_node;
-	gchar        *buff, *special_child_type;
-
-	buff = g_object_get_data (object, "special-child-type");
-	g_object_get (parent->adaptor, "special-child-type", &special_child_type, NULL);
-
-	if (special_child_type && buff)
-	{
-
-		prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
-		glade_xml_node_append_child (node, prop_node);
-
-		/* Name and value */
-		glade_xml_node_set_property_string (prop_node, 
-						    GLADE_XML_TAG_NAME, 
-						    special_child_type);
-		glade_xml_set_content (prop_node, buff);
-
-	}
-	g_free (special_child_type);
-}
-
-
 
 /**
  * glade_widget_write_child:
@@ -3520,7 +3550,7 @@ glade_widget_write_placeholder (GladeWidget     *parent,
 	glade_xml_node_append_child (child_node, packing_node);
 
 	glade_widget_write_special_child_prop (parent, object,
-					       context, packing_node);
+					       context, child_node);
 
 	if (!glade_xml_node_get_children (packing_node))
 	{
@@ -3545,7 +3575,9 @@ glade_widget_write (GladeWidget     *widget,
 {
 	GladeXmlNode *widget_node;
 
-	widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
+	widget_node = 
+		glade_xml_node_new
+		(context, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project)));
 	glade_xml_node_append_child (node, widget_node);
 
 	/* Set class and id */
