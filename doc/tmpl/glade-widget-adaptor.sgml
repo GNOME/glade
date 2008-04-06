@@ -17,11 +17,16 @@ GladeWidgetAdaptor
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### STRUCT GladeWidgetAdaptorPrivate ##### -->
+<!-- ##### ENUM GladeCreateReason ##### -->
 <para>
 
 </para>
 
+@GLADE_CREATE_USER: 
+@GLADE_CREATE_COPY: 
+@GLADE_CREATE_LOAD: 
+@GLADE_CREATE_REBUILD: 
+@GLADE_CREATE_REASONS: 
 
 <!-- ##### MACRO GWA_IS_FIXED ##### -->
 <para>
@@ -86,17 +91,6 @@ GladeWidgetAdaptor
 
 @reason: 
 
-
-<!-- ##### ENUM GladeCreateReason ##### -->
-<para>
-
-</para>
-
-@GLADE_CREATE_USER: 
-@GLADE_CREATE_COPY: 
-@GLADE_CREATE_LOAD: 
-@GLADE_CREATE_REBUILD: 
-@GLADE_CREATE_REASONS: 
 
 <!-- ##### MACRO GLADE_TYPE_CREATE_REASON ##### -->
 <para>
@@ -259,6 +253,49 @@ GladeWidgetAdaptor
 @action_path: 
 
 
+<!-- ##### USER_FUNCTION GladeReadWidgetFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@node: 
+
+
+<!-- ##### USER_FUNCTION GladeWriteWidgetFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@context: 
+@node: 
+
+
+<!-- ##### USER_FUNCTION GladeCreateEPropFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@klass: 
+@use_command: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GladeStringFromValueFunc ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@klass: 
+@value: 
+@Returns: 
+
+
 <!-- ##### STRUCT GladeWidgetAdaptor ##### -->
 <para>
 
@@ -288,6 +325,17 @@ GladeWidgetAdaptor
 @...: 
 
 
+<!-- ##### FUNCTION glade_widget_adaptor_create_eprop ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@klass: 
+@use_command: 
+@Returns: 
+
+
 <!-- ##### MACRO glade_widget_adaptor_from_pclass ##### -->
 <para>
 
@@ -302,14 +350,6 @@ GladeWidgetAdaptor
 </para>
 
 @pspec: 
-
-
-<!-- ##### FUNCTION glade_create_reason_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION glade_widget_adaptor_from_catalog ##### -->
@@ -552,6 +592,48 @@ GladeWidgetAdaptor
 @new_obj: 
 
 
+<!-- ##### FUNCTION glade_widget_adaptor_read_child ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_read_widget ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_write_child ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@context: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_write_widget ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@widget: 
+@context: 
+@node: 
+
+
 <!-- ##### FUNCTION glade_widget_adaptor_query ##### -->
 <para>
 
@@ -655,5 +737,16 @@ GladeWidgetAdaptor
 @container: 
 @object: 
 @action_path: 
+
+
+<!-- ##### FUNCTION glade_widget_adaptor_string_from_value ##### -->
+<para>
+
+</para>
+
+@adaptor: 
+@klass: 
+@value: 
+@Returns: 
 
 

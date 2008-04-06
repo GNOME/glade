@@ -5,10 +5,16 @@ GladeWidget
 glade_widget_get_from_gobject
 glade_widget_add_child
 glade_widget_remove_child
-glade_widget_write
-glade_widget_read
 glade_widget_replace
 glade_widget_rebuild
+glade_widget_read
+glade_widget_write
+glade_widget_read_child
+glade_widget_write_child
+glade_widget_write_placeholder
+glade_widget_write_special_child_prop
+glade_widget_create_editor_property
+glade_widget_set_child_type_from_node
 glade_widget_dup
 glade_widget_copy_signals
 glade_widget_copy_properties
@@ -79,11 +85,12 @@ glade_widget_get_type
 GLADE_WIDGET_CLASS
 GLADE_IS_WIDGET_CLASS
 GLADE_WIDGET_GET_CLASS
+GladeWidgetClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-widget-adaptor</FILE>
-GladeWidgetAdaptorPrivate
+GladeCreateReason
 GWA_IS_FIXED
 GWA_IS_TOPLEVEL
 GWA_USE_PLACEHOLDERS
@@ -92,7 +99,6 @@ GWA_DEFAULT_HEIGHT
 GWA_GET_CLASS
 GWA_GET_OCLASS
 GLADE_VALID_CREATE_REASON
-GladeCreateReason
 GLADE_TYPE_CREATE_REASON
 GladeSetPropertyFunc
 GladeGetPropertyFunc
@@ -108,13 +114,17 @@ GladePostCreateFunc
 GladeGetInternalFunc
 GladeActionActivateFunc
 GladeChildActionActivateFunc
+GladeReadWidgetFunc
+GladeWriteWidgetFunc
+GladeCreateEPropFunc
+GladeStringFromValueFunc
 <TITLE>GladeSignal</TITLE>
 <TITLE>GladeWidgetAdaptor</TITLE>
 GladeWidgetAdaptor
 glade_widget_adaptor_create_widget
+glade_widget_adaptor_create_eprop
 glade_widget_adaptor_from_pclass
 glade_widget_adaptor_from_pspec
-glade_create_reason_get_type
 glade_widget_adaptor_from_catalog
 glade_widget_adaptor_register
 glade_widget_adaptor_create_internal
@@ -137,6 +147,10 @@ glade_widget_adaptor_child_set_property
 glade_widget_adaptor_child_get_property
 glade_widget_adaptor_child_verify_property
 glade_widget_adaptor_replace_child
+glade_widget_adaptor_read_child
+glade_widget_adaptor_read_widget
+glade_widget_adaptor_write_child
+glade_widget_adaptor_write_widget
 glade_widget_adaptor_query
 glade_widget_adaptor_get_packing_default
 glade_widget_adaptor_is_container
@@ -147,19 +161,23 @@ glade_widget_adaptor_pack_action_remove
 glade_widget_adaptor_pack_actions_new
 glade_widget_adaptor_action_activate
 glade_widget_adaptor_child_action_activate
+glade_widget_adaptor_string_from_value
 <SUBSECTION Standard>
 GLADE_WIDGET_ADAPTOR
 GLADE_IS_WIDGET_ADAPTOR
 GLADE_TYPE_WIDGET_ADAPTOR
 glade_widget_adaptor_get_type
+glade_create_reason_get_type
 GLADE_WIDGET_ADAPTOR_CLASS
 GLADE_IS_WIDGET_ADAPTOR_CLASS
 GLADE_WIDGET_ADAPTOR_GET_CLASS
+GladeWidgetAdaptorClass
+GladeSignalClass
+GladeWidgetAdaptorPrivate
 </SECTION>
 
 <SECTION>
 <FILE>glade-design-view</FILE>
-GladeDesignViewPrivate
 <TITLE>GladeDesignView</TITLE>
 GladeDesignView
 glade_design_view_new
@@ -174,18 +192,18 @@ glade_design_view_get_type
 GLADE_DESIGN_VIEW_CLASS
 GLADE_IS_DESIGN_VIEW_CLASS
 GLADE_DESIGN_VIEW_GET_CLASS
+GladeDesignViewClass
+GladeDesignViewPrivate
 </SECTION>
 
 <SECTION>
 <FILE>glade-property-class</FILE>
 GPC_OBJECT_DELIMITER
 GPC_PROPERTY_NAMELEN
-GPCType
 <TITLE>GladePropertyClass</TITLE>
+GladePropertyClass
 glade_property_class_new
 glade_property_class_new_from_spec
-glade_property_class_list_atk_relations
-glade_property_class_accel_property
 glade_property_class_clone
 glade_property_class_free
 glade_property_class_is_visible
@@ -201,7 +219,6 @@ glade_property_class_get_displayable_value
 glade_property_class_make_adjustment
 glade_property_class_match
 glade_property_class_void_value
-glade_property_class_atk_realname
 <SUBSECTION Standard>
 GLADE_PROPERTY_CLASS
 GLADE_IS_PROPERTY_CLASS
@@ -223,11 +240,11 @@ GLADE_CLIPBOARD
 GLADE_IS_CLIPBOARD
 GLADE_TYPE_CLIPBOARD
 glade_clipboard_get_type
+GladeClipboardClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-design-layout</FILE>
-GladeDesignLayoutPrivate
 <TITLE>GladeDesignLayout</TITLE>
 GladeDesignLayout
 glade_design_layout_new
@@ -240,6 +257,8 @@ glade_design_layout_get_type
 GLADE_DESIGN_LAYOUT_CLASS
 GLADE_IS_DESIGN_LAYOUT_CLASS
 GLADE_DESIGN_LAYOUT_GET_CLASS
+GladeDesignLayoutClass
+GladeDesignLayoutPrivate
 </SECTION>
 
 <SECTION>
@@ -249,8 +268,8 @@ glade_signal_new
 glade_signal_clone
 glade_signal_free
 glade_signal_equal
+glade_signal_read
 glade_signal_write
-glade_signal_new_from_signal_info
 <SUBSECTION Standard>
 GLADE_SIGNAL
 GLADE_IS_SIGNAL
@@ -260,11 +279,10 @@ GLADE_IS_SIGNAL
 <FILE>glade-editor-property</FILE>
 <TITLE>GladeEditorProperty</TITLE>
 GladeEditorProperty
-glade_editor_property_new
-glade_editor_property_new_from_widget
+GLADE_MAKE_EPROP_TYPE
 glade_editor_property_load
 glade_editor_property_load_by_widget
-glade_editor_property_supported
+glade_editor_property_commit
 glade_editor_property_show_info
 glade_editor_property_hide_info
 <SUBSECTION Standard>
@@ -275,12 +293,38 @@ glade_editor_property_get_type
 GLADE_EDITOR_PROPERTY_CLASS
 GLADE_IS_EDITOR_PROPERTY_CLASS
 GLADE_EDITOR_PROPERTY_GET_CLASS
+GLADE_TYPE_EPROP_ADJUSTMENT
+GLADE_TYPE_EPROP_BOOL
+GLADE_TYPE_EPROP_COLOR
+GLADE_TYPE_EPROP_ENUM
+GLADE_TYPE_EPROP_FLAGS
+GLADE_TYPE_EPROP_NAMED_ICON
+GLADE_TYPE_EPROP_NUMERIC
+GLADE_TYPE_EPROP_OBJECT
+GLADE_TYPE_EPROP_OBJECTS
+GLADE_TYPE_EPROP_RESOURCE
+GLADE_TYPE_EPROP_TEXT
+GLADE_TYPE_EPROP_UNICHAR
+glade_eprop_adjustment_get_type
+glade_eprop_bool_get_type
+glade_eprop_color_get_type
+glade_eprop_enum_get_type
+glade_eprop_flags_get_type
+glade_eprop_named_icon_get_type
+glade_eprop_numeric_get_type
+glade_eprop_object_get_type
+glade_eprop_objects_get_type
+glade_eprop_resource_get_type
+glade_eprop_text_get_type
+glade_eprop_unichar_get_type
+GladeEditorPropertyClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-widget-action</FILE>
 <TITLE>GWAction</TITLE>
 <TITLE>GladeWidgetAction</TITLE>
+GWActionClass
 GladeWidgetAction
 glade_widget_action_class_free
 glade_widget_action_class_clone
@@ -294,14 +338,11 @@ glade_widget_action_get_type
 GLADE_WIDGET_ACTION_CLASS
 GLADE_IS_WIDGET_ACTION_CLASS
 GLADE_WIDGET_ACTION_GET_CLASS
+GladeWidgetActionClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-fixed</FILE>
-GLADE_FIXED_CURSOR_TOP
-GLADE_FIXED_CURSOR_BOTTOM
-GLADE_FIXED_CURSOR_RIGHT
-GLADE_FIXED_CURSOR_LEFT
 <TITLE>GladeFixed</TITLE>
 GladeFixed
 <SUBSECTION Standard>
@@ -312,6 +353,11 @@ glade_fixed_get_type
 GLADE_FIXED_CLASS
 GLADE_IS_FIXED_CLASS
 GLADE_FIXED_GET_CLASS
+GladeFixedClass
+GLADE_FIXED_CURSOR_TOP
+GLADE_FIXED_CURSOR_BOTTOM
+GLADE_FIXED_CURSOR_RIGHT
+GLADE_FIXED_CURSOR_LEFT
 </SECTION>
 
 <SECTION>
@@ -330,11 +376,11 @@ glade_clipboard_view_get_type
 GLADE_CLIPBOARD_VIEW_CLASS
 GLADE_IS_CLIPBOARD_VIEW_CLASS
 GLADE_CLIPBOARD_VIEW_GET_CLASS
+GladeClipboardViewClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-palette</FILE>
-GladePalettePrivate
 <TITLE>GladePalette</TITLE>
 GladePalette
 GladeItemAppearance
@@ -355,6 +401,8 @@ glade_palette_get_type
 GLADE_PALETTE_CLASS
 GLADE_IS_PALETTE_CLASS
 GLADE_PALETTE_GET_CLASS
+GladePaletteClass
+GladePalettePrivate
 </SECTION>
 
 <SECTION>
@@ -371,14 +419,17 @@ glade_placeholder_get_type
 GLADE_PLACEHOLDER_CLASS
 GLADE_IS_PLACEHOLDER_CLASS
 GLADE_PLACEHOLDER_GET_CLASS
+GladePlaceholderClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-project</FILE>
-GladeProjectPrivate
 <TITLE>GladeProject</TITLE>
 GladeProject
+GladeProjectFormat
 glade_project_new
+glade_project_get_format
+glade_project_set_format
 glade_project_load_from_file
 glade_project_load
 glade_project_save
@@ -400,7 +451,6 @@ glade_project_has_object
 glade_project_get_widget_by_name
 glade_project_new_widget_name
 glade_project_widget_name_changed
-glade_project_get_tooltips
 glade_project_is_selected
 glade_project_selection_set
 glade_project_selection_add
@@ -426,11 +476,12 @@ glade_project_get_type
 GLADE_PROJECT_CLASS
 GLADE_IS_PROJECT_CLASS
 GLADE_PROJECT_GET_CLASS
+GladeProjectClass
+GladeProjectPrivate
 </SECTION>
 
 <SECTION>
 <FILE>glade-base-editor</FILE>
-GladeBaseEditorPrivate
 <TITLE>GladeBaseEditor</TITLE>
 GladeBaseEditor
 glade_base_editor_new
@@ -448,11 +499,12 @@ glade_base_editor_get_type
 GLADE_BASE_EDITOR_CLASS
 GLADE_IS_BASE_EDITOR_CLASS
 GLADE_BASE_EDITOR_GET_CLASS
+GladeBaseEditorClass
+GladeBaseEditorPrivate
 </SECTION>
 
 <SECTION>
 <FILE>glade-inspector</FILE>
-GladeInspectorPrivate
 <TITLE>GladeInspector</TITLE>
 GladeInspector
 glade_inspector_new
@@ -468,6 +520,8 @@ glade_inspector_get_type
 GLADE_INSPECTOR_CLASS
 GLADE_IS_INSPECTOR_CLASS
 GLADE_INSPECTOR_GET_CLASS
+GladeInspectorClass
+GladeInspectorPrivate
 </SECTION>
 
 <SECTION>
@@ -506,12 +560,11 @@ glade_editor_get_type
 GLADE_EDITOR_CLASS
 GLADE_IS_EDITOR_CLASS
 GLADE_EDITOR_GET_CLASS
+GladeEditorClass
 </SECTION>
 
 <SECTION>
 <FILE>glade-app</FILE>
-GLADE_TYPE_POINTER_MODE
-GladeAppPrivate
 <TITLE>GladeApp</TITLE>
 GladeApp
 glade_app_new
@@ -570,14 +623,15 @@ glade_app_get_type
 GLADE_APP_CLASS
 GLADE_IS_APP_CLASS
 GLADE_APP_GET_CLASS
+GladeAppClass
+GLADE_TYPE_POINTER_MODE
+GladeAppPrivate
+GLADE_ENV_CATALOG_PATH
+GLADE_ENV_MODULE_PATH
 </SECTION>
 
 <SECTION>
 <FILE>glade-property</FILE>
-GLADE_PROPERTY_KLASS
-GLADE_IS_PROPERTY_KLASS
-GLADE_PROPERTY_GET_KLASS
-GladePropertyKlass
 GladeProperty
 glade_property_new
 glade_property_dup
@@ -621,6 +675,10 @@ GLADE_PROPERTY
 GLADE_IS_PROPERTY
 GLADE_TYPE_PROPERTY
 glade_property_get_type
+GLADE_PROPERTY_KLASS
+GLADE_IS_PROPERTY_KLASS
+GLADE_PROPERTY_GET_KLASS
+GladePropertyKlass
 </SECTION>
 
 <SECTION>
@@ -657,6 +715,7 @@ glade_command_get_type
 GLADE_COMMAND_CLASS
 GLADE_IS_COMMAND_CLASS
 GLADE_COMMAND_GET_CLASS
+GladeCommandClass
 </SECTION>
 
 <SECTION>
@@ -670,26 +729,6 @@ glade_parameter_get_integer
 glade_parameter_get_boolean
 glade_parameter_get_string
 glade_parameter_list_new_from_node
-</SECTION>
-
-<SECTION>
-<FILE>glade-parser</FILE>
-CAST_BAD
-GladePropInfo
-GladeSignalInfo
-GladeAtkActionInfo
-GladeAccelInfo
-GladeWidgetInfo
-GladeChildInfo
-GladeInterface
-GladeAtkRelationInfo
-GladePackingDefault
-glade_parser_interface_new
-glade_parser_interface_new_from_file
-glade_parser_interface_new_from_buffer
-glade_parser_interface_destroy
-glade_parser_interface_dump
-glade_parser_pvalue_from_winfo
 </SECTION>
 
 <SECTION>
@@ -714,7 +753,6 @@ glade_util_remove_selection
 glade_util_has_selection
 glade_util_clear_selection
 glade_util_get_selection
-glade_util_queue_draw_nodes
 glade_util_container_get_all_children
 glade_util_count_placeholders
 glade_util_find_iter_by_widget
@@ -734,5 +772,6 @@ glade_util_get_placeholder_from_pointer
 glade_util_object_is_loading
 glade_util_url_show
 glade_util_get_file_mtime
+glade_util_draw_selection_nodes
 </SECTION>
 

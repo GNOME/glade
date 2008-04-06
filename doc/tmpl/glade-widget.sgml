@@ -85,11 +85,6 @@ GladeWidget
 
 </para>
 
-<!-- ##### ARG GladeWidget:info ##### -->
-<para>
-
-</para>
-
 <!-- ##### ARG GladeWidget:internal ##### -->
 <para>
 
@@ -173,26 +168,6 @@ GladeWidget
 @child: 
 
 
-<!-- ##### FUNCTION glade_widget_write ##### -->
-<para>
-
-</para>
-
-@widget: 
-@interface: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_widget_read ##### -->
-<para>
-
-</para>
-
-@project: 
-@info: 
-@Returns: 
-
-
 <!-- ##### FUNCTION glade_widget_replace ##### -->
 <para>
 
@@ -209,6 +184,91 @@ GladeWidget
 </para>
 
 @gwidget: 
+
+
+<!-- ##### FUNCTION glade_widget_read ##### -->
+<para>
+
+</para>
+
+@project: 
+@parent: 
+@node: 
+@internal: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_write ##### -->
+<para>
+
+</para>
+
+@widget: 
+@context: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_read_child ##### -->
+<para>
+
+</para>
+
+@widget: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_write_child ##### -->
+<para>
+
+</para>
+
+@widget: 
+@context: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_write_placeholder ##### -->
+<para>
+
+</para>
+
+@parent: 
+@object: 
+@context: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_write_special_child_prop ##### -->
+<para>
+
+</para>
+
+@parent: 
+@object: 
+@context: 
+@node: 
+
+
+<!-- ##### FUNCTION glade_widget_create_editor_property ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+@packing: 
+@use_command: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_widget_set_child_type_from_node ##### -->
+<para>
+
+</para>
+
+@parent: 
+@child: 
+@node: 
 
 
 <!-- ##### FUNCTION glade_widget_dup ##### -->

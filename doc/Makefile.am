@@ -64,6 +64,7 @@ IGNORE_HFILES=\
 	glade-gtk.h \
 	glade-palette-expander.h \
 	glade-palette-item.h \
+	glade-named-icon-chooser-dialog.h \
 	glade-palette-box.h
 
 # Images to copy into HTML directory.

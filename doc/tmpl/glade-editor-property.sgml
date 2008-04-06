@@ -48,26 +48,14 @@ GladeEditorProperty
 
 </para>
 
-<!-- ##### FUNCTION glade_editor_property_new ##### -->
+<!-- ##### MACRO GLADE_MAKE_EPROP_TYPE ##### -->
 <para>
 
 </para>
 
-@klass: 
-@use_command: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_editor_property_new_from_widget ##### -->
-<para>
-
-</para>
-
-@widget: 
-@property: 
-@packing: 
-@use_command: 
-@Returns: 
+@func: 
+@type: 
+@parent: 
 
 
 <!-- ##### FUNCTION glade_editor_property_load ##### -->
@@ -88,13 +76,13 @@ GladeEditorProperty
 @widget: 
 
 
-<!-- ##### FUNCTION glade_editor_property_supported ##### -->
+<!-- ##### FUNCTION glade_editor_property_commit ##### -->
 <para>
 
 </para>
 
-@pspec: 
-@Returns: 
+@eprop: 
+@value: 
 
 
 <!-- ##### FUNCTION glade_editor_property_show_info ##### -->

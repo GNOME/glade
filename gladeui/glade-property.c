@@ -904,8 +904,8 @@ glade_property_load (GladeProperty *property)
  * glade_property_read:
  * @property: a #GladeProperty or #NULL
  * @project: the #GladeProject
- * @node: the #GladeXmlNode to read, will either be a <widget>
- *        node or a <child> node for packing properties.
+ * @node: the #GladeXmlNode to read, will either be a 'widget'
+ *        node or a 'child' node for packing properties.
  *
  * Read the value and any attributes for @property from @node, assumes
  * @property is being loaded for @project

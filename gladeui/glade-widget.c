@@ -3406,7 +3406,7 @@ glade_widget_set_child_type_from_node (GladeWidget   *parent,
  * @widget: A #GladeWidget
  * @node: a #GladeXmlNode
  *
- * Reads in a child widget from the xml (handles <child> tag)
+ * Reads in a child widget from the xml (handles 'child' tag)
  */
 void
 glade_widget_read_child (GladeWidget  *widget,

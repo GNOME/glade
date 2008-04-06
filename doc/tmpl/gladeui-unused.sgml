@@ -1,3 +1,27 @@
+<!-- ##### SECTION ./tmpl/glade-parser.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/glade-parser.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/glade-parser.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/glade-parser.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/glade-parser.sgml:Title ##### -->
+glade-parser
+
+
 <!-- ##### SECTION ./tmpl/glade-project-view.sgml:Long_Description ##### -->
 <para>
 The #GladeProjectView is a heirarchical treeview that allows the
@@ -50,6 +74,216 @@ Object Class-wide metadata
 GladeWidgetClass
 
 
+<!-- ##### MACRO CAST_BAD ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GLADE_ENV_CATALOG_PATH ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GLADE_ENV_MODULE_PATH ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_BOTTOM ##### -->
+<para>
+
+</para>
+
+@type: 
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_LEFT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_RIGHT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+<!-- ##### MACRO GLADE_FIXED_CURSOR_TOP ##### -->
+<para>
+
+</para>
+
+@type: 
+
+<!-- ##### MACRO GLADE_IS_PROPERTY_KLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+<!-- ##### MACRO GLADE_PROPERTY_GET_KLASS ##### -->
+<para>
+
+</para>
+
+@o: 
+
+<!-- ##### MACRO GLADE_PROPERTY_KLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+<!-- ##### MACRO GLADE_TYPE_POINTER_MODE ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GPCType ##### -->
+<para>
+
+</para>
+
+@GPC_NORMAL: 
+@GPC_ATK_PROPERTY: 
+@GPC_ATK_RELATION: 
+@GPC_ATK_ACTION: 
+@GPC_ACCEL_PROPERTY: 
+
+<!-- ##### STRUCT GladeAccelInfo ##### -->
+<para>
+
+</para>
+
+@key: 
+@modifiers: 
+@signal: 
+
+<!-- ##### STRUCT GladeAppPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeAtkActionInfo ##### -->
+<para>
+
+</para>
+
+@action_name: 
+@description: 
+
+<!-- ##### STRUCT GladeAtkRelationInfo ##### -->
+<para>
+
+</para>
+
+@target: 
+@type: 
+
+<!-- ##### STRUCT GladeBaseEditorPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeChildInfo ##### -->
+<para>
+
+</para>
+
+@properties: 
+@n_properties: 
+@child: 
+@internal_child: 
+
+<!-- ##### STRUCT GladeDesignLayoutPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeDesignViewPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeInspectorPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeInterface ##### -->
+<para>
+
+</para>
+
+@requires: 
+@n_requires: 
+@toplevels: 
+@n_toplevels: 
+@names: 
+@strings: 
+@comment: 
+
+<!-- ##### STRUCT GladePackingDefault ##### -->
+<para>
+
+</para>
+
+@id: 
+@value: 
+
+<!-- ##### STRUCT GladePalettePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeProjectPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladePropInfo ##### -->
+<para>
+
+</para>
+
+@name: 
+@value: 
+@comment: 
+@translatable: 
+@has_context: 
+
+<!-- ##### STRUCT GladePropertyKlass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@dup: 
+@equals_value: 
+@set_value: 
+@get_value: 
+@get_default: 
+@sync: 
+@load: 
+@get_tooltip: 
+@value_changed: 
+@tooltip_changed: 
+
 <!-- ##### STRUCT GladeSignalClass ##### -->
 <para>
 
@@ -58,6 +292,29 @@ GladeWidgetClass
 @query: 
 @name: 
 @type: 
+
+<!-- ##### STRUCT GladeSignalInfo ##### -->
+<para>
+
+</para>
+
+@name: 
+@handler: 
+@object: 
+@after: 
+@lookup: 
+
+<!-- ##### ARG GladeWidget:info ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GladeWidgetAdaptorPrivate ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### STRUCT GladeWidgetClass ##### -->
 <para>
@@ -76,12 +333,156 @@ GladeWidgetClass
 @motion_notify_event: 
 @event: 
 
+<!-- ##### STRUCT GladeWidgetInfo ##### -->
+<para>
+
+</para>
+
+@parent: 
+@classname: 
+@name: 
+@properties: 
+@n_properties: 
+@atk_props: 
+@n_atk_props: 
+@signals: 
+@n_signals: 
+@atk_actions: 
+@n_atk_actions: 
+@relations: 
+@n_relations: 
+@accels: 
+@n_accels: 
+@children: 
+@n_children: 
+
+<!-- ##### FUNCTION glade_create_reason_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION glade_editor_property_new ##### -->
+<para>
+
+</para>
+
+@klass: 
+@use_command: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_editor_property_new_from_widget ##### -->
+<para>
+
+</para>
+
+@widget: 
+@property: 
+@packing: 
+@use_command: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_editor_property_supported ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_parser_interface_destroy ##### -->
+<para>
+
+</para>
+
+@interface: 
+
+<!-- ##### FUNCTION glade_parser_interface_dump ##### -->
+<para>
+
+</para>
+
+@interface: 
+@filename: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_parser_interface_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION glade_parser_interface_new_from_buffer ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@domain: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_parser_interface_new_from_file ##### -->
+<para>
+
+</para>
+
+@file: 
+@domain: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_parser_pvalue_from_winfo ##### -->
+<para>
+
+</para>
+
+@winfo: 
+@pname: 
+@Returns: 
+
 <!-- ##### FUNCTION glade_project_get_tooltips ##### -->
 <para>
 
 </para>
 
 @project: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_property_class_accel_property ##### -->
+<para>
+
+</para>
+
+@handle: 
+@owner_type: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_property_class_atk_realname ##### -->
+<para>
+
+</para>
+
+@atk_name: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_property_class_list_atk_relations ##### -->
+<para>
+
+</para>
+
+@handle: 
+@owner_type: 
+@Returns: 
+
+<!-- ##### FUNCTION glade_signal_new_from_signal_info ##### -->
+<para>
+
+</para>
+
+@info: 
 @Returns: 
 
 <!-- ##### FUNCTION glade_util_queue_draw_nodes ##### -->

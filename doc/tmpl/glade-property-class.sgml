@@ -31,16 +31,39 @@ GladeProperty
 
 
 
-<!-- ##### ENUM GPCType ##### -->
+<!-- ##### STRUCT GladePropertyClass ##### -->
 <para>
 
 </para>
 
-@GPC_NORMAL: 
-@GPC_ATK_PROPERTY: 
-@GPC_ATK_RELATION: 
-@GPC_ATK_ACTION: 
-@GPC_ACCEL_PROPERTY: 
+@handle: 
+@pspec: 
+@id: 
+@name: 
+@tooltip: 
+@virt: 
+@def: 
+@orig_def: 
+@parameters: 
+@displayable_values: 
+@query: 
+@optional: 
+@optional_default: 
+@construct_only: 
+@common: 
+@atk: 
+@packing: 
+@translatable: 
+@visible_lines: 
+@save: 
+@save_always: 
+@visible: 
+@ignore: 
+@is_modified: 
+@resource: 
+@themed_icon: 
+@transfer_on_paste: 
+@weight: 
 
 <!-- ##### FUNCTION glade_property_class_new ##### -->
 <para>
@@ -58,26 +81,6 @@ GladeProperty
 
 @handle: 
 @spec: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_class_list_atk_relations ##### -->
-<para>
-
-</para>
-
-@handle: 
-@owner_type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_class_accel_property ##### -->
-<para>
-
-</para>
-
-@handle: 
-@owner_type: 
 @Returns: 
 
 
@@ -226,15 +229,6 @@ GladeProperty
 
 @klass: 
 @value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION glade_property_class_atk_realname ##### -->
-<para>
-
-</para>
-
-@atk_name: 
 @Returns: 
 
 

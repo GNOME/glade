@@ -17,12 +17,6 @@ GladeProject
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### STRUCT GladeProjectPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT GladeProject ##### -->
 <para>
 
@@ -119,12 +113,38 @@ GladeProject
 
 </para>
 
+<!-- ##### ENUM GladeProjectFormat ##### -->
+<para>
+
+</para>
+
+@GLADE_PROJECT_FORMAT_LIBGLADE: 
+@GLADE_PROJECT_FORMAT_GTKBUILDER: 
+
 <!-- ##### FUNCTION glade_project_new ##### -->
 <para>
 
 </para>
 
 @Returns: 
+
+
+<!-- ##### FUNCTION glade_project_get_format ##### -->
+<para>
+
+</para>
+
+@project: 
+@Returns: 
+
+
+<!-- ##### FUNCTION glade_project_set_format ##### -->
+<para>
+
+</para>
+
+@project: 
+@format: 
 
 
 <!-- ##### FUNCTION glade_project_load_from_file ##### -->
