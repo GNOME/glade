@@ -249,13 +249,32 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 #define GLADE_TAG_ACCEL_SIGNAL      "signal"
 
 #define GLADE_TAG_A11Y_A11Y         "accessibility"
-#define GLADE_TAG_A11Y_ACTION       "atkaction"
-#define GLADE_TAG_A11Y_PROPERTY     "atkproperty"
 #define GLADE_TAG_A11Y_ACTION_NAME  "action_name" /* We should make -/_ synonymous */
 #define GLADE_TAG_A11Y_DESC         "description"
-#define GLADE_TAG_A11Y_RELATION     "atkrelation"
 #define GLADE_TAG_A11Y_TARGET       "target"
 #define GLADE_TAG_A11Y_TYPE         "type"
+
+#define GLADE_TAG_A11Y_INTERNAL_NAME         "accessible"
+
+#define GLADE_TAG_A11Y_LIBGLADE_RELATION     "atkrelation"
+#define GLADE_TAG_A11Y_LIBGLADE_ACTION       "atkaction"
+#define GLADE_TAG_A11Y_LIBGLADE_PROPERTY     "atkproperty"
+#define GLADE_TAG_A11Y_GTKBUILDER_RELATION   "relation"
+#define GLADE_TAG_A11Y_GTKBUILDER_ACTION     "action"
+#define GLADE_TAG_A11Y_GTKBUILDER_PROPERTY   "property"
+
+#define GLADE_TAG_A11Y_PROPERTY(type) \
+	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
+	 GLADE_TAG_A11Y_LIBGLADE_PROPERTY : GLADE_TAG_A11Y_GTKBUILDER_PROPERTY)
+
+#define GLADE_TAG_A11Y_ACTION(type) \
+	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
+	 GLADE_TAG_A11Y_LIBGLADE_ACTION : GLADE_TAG_A11Y_GTKBUILDER_ACTION)
+
+#define GLADE_TAG_A11Y_RELATION(type) \
+	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
+	 GLADE_TAG_A11Y_LIBGLADE_RELATION : GLADE_TAG_A11Y_GTKBUILDER_RELATION)
+
 
 static const gchar *atk_relations_list[] = {
 	"controlled-by",
@@ -391,6 +410,7 @@ static void
 glade_gtk_parse_atk_props (GladeWidget  *widget,
 			   GladeXmlNode *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode  *prop;
 	GladeProperty *property;
 	GValue        *gvalue;
@@ -398,12 +418,14 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 	gint           translatable, has_context;
 	gboolean       is_action;
 
+	fmt = glade_project_get_format (widget->project);
+
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY))
+		if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY (fmt)))
 			is_action = FALSE;
-		else if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_ACTION))
+		else if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_ACTION (fmt)))
 			is_action = TRUE;
 		else 
 			continue;
@@ -416,6 +438,7 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 			 !(name = glade_xml_get_property_string_required
 			   (prop, GLADE_TAG_A11Y_ACTION_NAME, NULL)))
 			continue;
+
 
 		/* Make sure we are working with dashes and
 		 * not underscores ... 
@@ -479,17 +502,48 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 }
 
 static void
+glade_gtk_parse_atk_props_gtkbuilder (GladeWidget  *widget, 
+				      GladeXmlNode *node)
+{
+	GladeXmlNode *child, *object_node;
+	gchar        *internal;
+
+	/* Search for internal "accessible" child and redirect parse from there */
+	for (child = glade_xml_node_get_children (node); 
+	     child; child = glade_xml_node_next (child))
+	{
+		if (glade_xml_node_verify_silent (child, GLADE_XML_TAG_CHILD))
+		{
+			if ((internal =
+			     glade_xml_get_property_string (child, GLADE_XML_TAG_INTERNAL_CHILD)))
+			{
+				if (!strcmp (internal, GLADE_TAG_A11Y_INTERNAL_NAME) &&
+				    (object_node = 
+				     glade_xml_search_child_required 
+				     (child, GLADE_XML_TAG_BUILDER_WIDGET)))
+					glade_gtk_parse_atk_props (widget, object_node);
+
+				g_free (internal);
+			}
+		}
+	}
+}
+
+static void
 glade_gtk_parse_atk_relation (GladeProperty *property,
 			      GladeXmlNode  *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode *prop;
 	gchar *type, *target, *id, *tmp;
 	gchar *string = NULL;
 
+	fmt = glade_project_get_format (property->widget->project);
+
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_RELATION))
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_RELATION (fmt)))
 			continue;
 
 		if (!(type = 
@@ -546,6 +600,9 @@ glade_gtk_widget_read_atk_props (GladeWidget  *widget,
 	GladeProperty *property;
 	gint           i;
 
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		glade_gtk_parse_atk_props_gtkbuilder (widget, node);
+
 	if ((atk_node = 
 	     glade_xml_search_child (node, GLADE_TAG_A11Y_A11Y)) != NULL)
 	{
@@ -591,13 +648,16 @@ glade_gtk_widget_write_atk_property (GladeProperty      *property,
 				     GladeXmlContext    *context,
 				     GladeXmlNode       *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode  *prop_node;
 	gchar         *value;
 	
+	fmt = glade_project_get_format (property->widget->project);
+
 	glade_property_get (property, &value);
 	if (value && value[0])
 	{
-		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
+		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY (fmt));
 		glade_xml_node_append_child (node, prop_node);
 
 		glade_xml_node_set_property_string (prop_node, 
@@ -625,9 +685,9 @@ glade_gtk_widget_write_atk_property (GladeProperty      *property,
 }
 
 static void
-glade_gtk_widget_write_atk_properties (GladeWidget        *widget,
-				       GladeXmlContext    *context,
-				       GladeXmlNode       *node)
+glade_gtk_widget_write_atk_properties_libglade (GladeWidget        *widget,
+						GladeXmlContext    *context,
+						GladeXmlNode       *node)
 {
 	GladeProperty *name_prop, *desc_prop;
 
@@ -639,13 +699,59 @@ glade_gtk_widget_write_atk_properties (GladeWidget        *widget,
 }
 
 static void
+glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
+						  GladeXmlContext    *context,
+						  GladeXmlNode       *node)
+{
+	GladeXmlNode  *child_node, *object_node;
+	GladeProperty *name_prop, *desc_prop;
+	
+
+	name_prop = glade_widget_get_property (widget, "AtkObject::accessible-name");
+	desc_prop = glade_widget_get_property (widget, "AtkObject::accessible-description");
+
+	/* Create internal child here if any of these properties are non-null */
+	if (!glade_property_default (name_prop) || 
+	    !glade_property_default (desc_prop))
+	{
+		child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+		glade_xml_node_append_child (node, child_node);
+
+		glade_xml_node_set_property_string (child_node, 
+						    GLADE_XML_TAG_INTERNAL_CHILD, 
+						    GLADE_TAG_A11Y_INTERNAL_NAME);
+
+		object_node = glade_xml_node_new (context, GLADE_XML_TAG_BUILDER_WIDGET);
+		glade_xml_node_append_child (child_node, object_node);
+
+		glade_xml_node_set_property_string (object_node, 
+						    GLADE_XML_TAG_CLASS, 
+						    "AtkObject");
+
+		glade_xml_node_set_property_string (object_node, 
+						    GLADE_XML_TAG_ID, 
+						    "dummy");
+	
+		if (!glade_property_default (name_prop))
+			glade_gtk_widget_write_atk_property (name_prop, context, object_node);
+		if (!glade_property_default (desc_prop))
+			glade_gtk_widget_write_atk_property (desc_prop, context, object_node);
+
+	}
+
+}
+
+static void
 glade_gtk_widget_write_atk_relation (GladeProperty      *property,
 				     GladeXmlContext    *context,
 				     GladeXmlNode       *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	gchar        *value, **split;
 	gint          i;
+	
+	fmt = glade_project_get_format (property->widget->project);
 
 	if ((value = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
@@ -655,7 +761,8 @@ glade_gtk_widget_write_atk_relation (GladeProperty      *property,
 		{
 			for (i = 0; split[i] != NULL; i++)
 			{
-				prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_RELATION);
+				prop_node = glade_xml_node_new (context, 
+								GLADE_TAG_A11Y_RELATION (fmt));
 				glade_xml_node_append_child (node, prop_node);
 
 				glade_xml_node_set_property_string (prop_node, 
@@ -695,14 +802,17 @@ glade_gtk_widget_write_atk_action (GladeProperty      *property,
 				   GladeXmlContext    *context,
 				   GladeXmlNode       *node)
 {
+ 	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	gchar        *value = NULL;
+	
+	fmt = glade_project_get_format (property->widget->project);
 
 	glade_property_get (property, &value);
 
 	if (value && value[0])
 	{
-		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION);
+		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION (fmt));
 		glade_xml_node_append_child (node, prop_node);
 
 		glade_xml_node_set_property_string (prop_node, 
@@ -736,12 +846,17 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 				  GladeXmlContext    *context,
 				  GladeXmlNode       *node)
 {
-	GladeXmlNode *atk_node;
+ 	GladeProjectFormat  fmt;
+	GladeXmlNode       *atk_node;
+
+	fmt = glade_project_get_format (widget->project);
 
 	atk_node = glade_xml_node_new (context, GLADE_TAG_A11Y_A11Y);
 	glade_xml_node_append_child (node, atk_node);
 
-	glade_gtk_widget_write_atk_properties (widget, context, atk_node);
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_gtk_widget_write_atk_properties_libglade (widget, context, atk_node);
+
 	glade_gtk_widget_write_atk_relations (widget, context, atk_node);
 	glade_gtk_widget_write_atk_actions (widget, context, atk_node);
 
@@ -750,6 +865,9 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 		glade_xml_node_remove (atk_node);
 		glade_xml_node_delete (atk_node);
 	}
+
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		glade_gtk_widget_write_atk_properties_gtkbuilder (widget, context, node);
 }
 
 static gchar *
@@ -897,11 +1015,11 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
-	/* Write atk props */
-	glade_gtk_widget_write_atk_props (widget, context, node);
-
 	/* Write accelerators */
 	glade_gtk_widget_write_accels (widget, context, node);
+
+	/* Write atk props */
+	glade_gtk_widget_write_atk_props (widget, context, node);
 
 }
 

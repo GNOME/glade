@@ -1676,8 +1676,10 @@ glade_project_write (GladeProject *project)
 	glade_xml_doc_set_root (doc, root);
 
 	glade_project_update_comment (project);
-	comment_node = glade_xml_node_new_comment (context, project->priv->comment);
-	glade_xml_node_append_child (root, comment_node);
+/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
+
+	/* XXX Need to append this to the doc ! not the ROOT !
+	   glade_xml_node_append_child (root, comment_node); */
 
 	if ((required = glade_project_required_libs (project)) != NULL)
 	{
