@@ -1723,7 +1723,6 @@ notebook_tab_added_cb (GtkNotebook *notebook,
 {
 	GladeProject *project;
 	GtkWidget    *inspector;
-	GtkAction    *action;
 
 	++window->priv->num_tabs;
 	
