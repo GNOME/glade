@@ -939,7 +939,7 @@ glade_util_container_get_all_children (GtkContainer *container)
  * glade_util_count_placeholders:
  * @parent: a #GladeWidget
  *
- * Returns the amount of #GladePlaceholders parented by @parent
+ * Returns: the amount of #GladePlaceholders parented by @parent
  */
 gint
 glade_util_count_placeholders (GladeWidget *parent)

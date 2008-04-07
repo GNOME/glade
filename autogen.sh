@@ -6,7 +6,6 @@ test -z "$srcdir" && srcdir=.
 
 PKG_NAME="glade"
 
-
 (test -f $srcdir/configure.ac \
   && test -f $srcdir/autogen.sh) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
@@ -50,4 +49,4 @@ automake_version=1.9
 #  ;;
 #esac
 
-REQUIRED_GNOME_DOC_UTILS_VERSION=0.9.0 REQUIRED_AUTOMAKE_VERSION="$automake_version" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
+GTKDOCIZE="gtkdocize --flavour no-tmpl" REQUIRED_GNOME_DOC_UTILS_VERSION=0.9.0 REQUIRED_AUTOMAKE_VERSION="$automake_version" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen

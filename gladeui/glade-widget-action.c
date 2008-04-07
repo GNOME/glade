@@ -20,6 +20,16 @@
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  */
 
+/**
+ * SECTION:glade-widget-action
+ * @Title: GladeWidgetAction
+ * @Short_Description: Context menu and toolbar actions.
+ *
+ * Use #GladeWidgetAction to create custom routines to operate
+ * on widgets you add to glade, when running #GladeActionActivateFunc functions
+ * you should make sure to use #GladeCommand. 
+ */
+
 #include "glade-widget-action.h"
 #include "config.h"
 #include <glib/gi18n-lib.h>

@@ -57,7 +57,7 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  * GWA_DEFAULT_WIDTH:
  * @obj: A #GladeWidgetAdaptor
  *
- * Returns the default width to be used when this widget
+ * Returns: the default width to be used when this widget
  * is toplevel in the GladeDesignLayout
  */
 #define GWA_DEFAULT_WIDTH(obj) \
@@ -68,7 +68,7 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  * GWA_DEFAULT_HEIGHT:
  * @obj: A #GladeWidgetAdaptor
  *
- * Returns the default width to be used when this widget
+ * Returns: the default width to be used when this widget
  * is toplevel in the GladeDesignLayout
  */
 #define GWA_DEFAULT_HEIGHT(obj) \
@@ -307,7 +307,7 @@ typedef GObject *(* GladeGetInternalFunc)         (GladeWidgetAdaptor *adaptor,
 						   const gchar        *name);
 
 /**
- * GladeActionActivatedFunc:
+ * GladeActionActivateFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @object: The #GObject
  * @action_path: The action path
@@ -320,7 +320,7 @@ typedef void     (* GladeActionActivateFunc)  (GladeWidgetAdaptor *adaptor,
 					       const gchar        *action_path);
 
 /**
- * GladeChildActionActivatedFunc:
+ * GladeChildActionActivateFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @container: The #GtkContainer
  * @object: The #GObject

@@ -1146,7 +1146,7 @@ glade_project_add_object (GladeProject *project,
  * @project: the #GladeProject the widget is added to
  * @object: the #GObject to search
  *
- * Returns whether this object is in this project.
+ * Returns: whether this object is in this project.
  */
 gboolean
 glade_project_has_object (GladeProject *project, GObject *object)

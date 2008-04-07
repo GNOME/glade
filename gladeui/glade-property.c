@@ -1330,7 +1330,7 @@ glade_property_set_save_always (GladeProperty      *property,
  * glade_property_get_save_always:
  * @property: A #GladeProperty
  *
- * Returns whether this property is special cased
+ * Returns: whether this property is special cased
  * to always be saved regardless of its default value.
  */
 gboolean

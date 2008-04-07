@@ -22,6 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
+
+/**
+ * SECTION:glade-design-view
+ * @Title: GladeDesignView
+ * @Short_Description: A widget to embed the workspace.
+ *
+ * Use this widget to embed the currently active #GtkWindow
+ * in a given #GladeProject.
+ */
  
 #include "config.h"
 

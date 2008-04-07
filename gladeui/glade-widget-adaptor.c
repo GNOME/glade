@@ -1278,12 +1278,7 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_POST_CREATE_FUNCTION,
 					  &symbol))
 		klass->post_create = symbol;
-	
-	if (glade_xml_load_sym_from_node (node, module,
-					  GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
-					  &symbol))
-		klass->get_internal_child = symbol;
-	
+		
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_SET_FUNCTION,
 					  &symbol))
@@ -1308,6 +1303,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_REMOVE_CHILD_FUNCTION,
 					  &symbol))
 		klass->remove = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_REPLACE_CHILD_FUNCTION,
+					  &symbol))
+		klass->replace_child = symbol;
 	
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_GET_CHILDREN_FUNCTION,
@@ -1320,8 +1320,8 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 		klass->child_set_property = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
-				      GLADE_TAG_CHILD_GET_PROP_FUNCTION,
-				      &symbol))
+					  GLADE_TAG_CHILD_GET_PROP_FUNCTION,
+					  &symbol))
 		klass->child_get_property = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
@@ -1330,9 +1330,9 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 		klass->child_verify_property = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
-					  GLADE_TAG_REPLACE_CHILD_FUNCTION,
+					  GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION,
 					  &symbol))
-		klass->replace_child = symbol;
+		klass->get_internal_child = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_ACTION_ACTIVATE_FUNCTION,
@@ -2592,7 +2592,7 @@ glade_widget_adaptor_get_children (GladeWidgetAdaptor *adaptor,
  * @container: The #GObject container
  * @child:     The #GObject child
  *
- * Returns whether @child is infact inside @container.
+ * Returns: whether @child is infact inside @container.
  */
 gboolean
 glade_widget_adaptor_has_child (GladeWidgetAdaptor *adaptor,
@@ -2820,7 +2820,7 @@ glade_widget_adaptor_get_packing_default (GladeWidgetAdaptor *child_adaptor,
  * Checks whether or not this adaptor has support
  * to interface with child objects.
  *
- * Returns whether or not @adaptor is a container
+ * Returns: whether or not @adaptor is a container
  */
 gboolean
 glade_widget_adaptor_is_container (GladeWidgetAdaptor *adaptor)

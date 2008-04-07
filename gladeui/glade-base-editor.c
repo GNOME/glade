@@ -1250,7 +1250,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	 * @child: the #GObject being changed.
          * @type: the new type for @child.
 	 *
-	 * Returns TRUE to stop signal emision.
+	 * Returns: TRUE to stop signal emision.
 	 */
 	glade_base_editor_signals [SIGNAL_CHANGE_TYPE] =
 		g_signal_new ("change-type",
@@ -1269,7 +1269,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	 * @gchild: the child to get display name string to show in @gladebaseeditor
 	 * treeview.
 	 *
-	 * Returns a newly allocated string.
+	 * Returns: a newly allocated string.
 	 */
 	glade_base_editor_signals [SIGNAL_GET_DISPLAY_NAME] =
 		g_signal_new ("get-display-name",
@@ -1290,7 +1290,8 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	 *
 	 * Create a child widget here if something else must be done other than
 	 * calling glade_command_create() such as creating an intermediate parent.
-	 * Returns the newly created #GladeWidget or NULL if child cant be created
+	 *
+	 * Returns: the newly created #GladeWidget or NULL if child cant be created
 	 */
 	glade_base_editor_signals [SIGNAL_BUILD_CHILD] =
 		g_signal_new ("build-child",
@@ -1327,7 +1328,8 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	 * @gchild: the #GladeWidget to move
 	 *
 	 * Move child here if something else must be done other than cut & paste.
-	 * Returns wheater child has been sucessfully moved or not.
+	 *
+	 * Returns: wheater child has been sucessfully moved or not.
 	 */
 	glade_base_editor_signals [SIGNAL_MOVE_CHILD] =
 		g_signal_new ("move-child",
@@ -1531,7 +1533,7 @@ glade_base_editor_get_type ()
  *   o The type name
  *   o The GType the editor will support
  *
- * Returns a new GladeBaseEditor.
+ * Returns: a new GladeBaseEditor.
  */
 GladeBaseEditor *
 glade_base_editor_new (GObject *container, gboolean tree_like, ...)
@@ -1827,7 +1829,8 @@ glade_base_editor_help (GtkButton *button, gchar *markup)
  * @help_markup: the help text
  *
  * This convenience function create a new modal window and packs @editor in it.
- * Returns the newly created window
+ *
+ * Returns: the newly created window
  */ 
 GtkWidget *
 glade_base_editor_pack_new_window (GladeBaseEditor *editor,

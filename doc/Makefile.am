@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # We require automake 1.6 at least.
-AUTOMAKE_OPTIONS = 1.9
+AUTOMAKE_OPTIONS = 1.6
 
 # This is a blank Makefile.am for using gtk-doc.
 # Copy this to your project's API docs directory and modify the variables to
@@ -58,9 +58,8 @@ IGNORE_HFILES=\
 	glade-id-allocator.h \
 	glade-catalog.h \
 	glade.h \
-	glade-xml-utils.h \
+	glade-design-layout.h \
 	glade-popup.h \
-	glade-devhelp.h \
 	glade-gtk.h \
 	glade-palette-expander.h \
 	glade-palette-item.h \
@@ -77,8 +76,7 @@ content_files=\
 	version.xml \
 	catalogintro.sgml \
 	widgetclasses.sgml \
-	properties.sgml \
-	children.sgml
+	properties.sgml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
@@ -86,8 +84,7 @@ content_files=\
 expand_content_files=\
 	catalogintro.sgml \
 	widgetclasses.sgml \
-	properties.sgml \
-	children.sgml
+	properties.sgml
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
@@ -100,7 +97,7 @@ GTKDOC_CFLAGS= \
 	-I$(top_srcdir)           \
 	-I$(top_builddir)         \
 	`pkg-config --cflags gtk+-2.0`
-	
+
 GTKDOC_LIBS=${top_builddir}/gladeui/libgladeui-1.la
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
@@ -110,10 +107,12 @@ include $(top_srcdir)/gtk-doc.make
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += version.xml.in
 
-GTK_HOME = http://developer.gnome.org/doc/API/2.0/gtk
-GDK_HOME = http://developer.gnome.org/doc/API/2.0/gdk
-GOBJECT_HOME = http://developer.gnome.org/doc/API/2.0/gobject
-GLIB_HOME = http://developer.gnome.org/doc/API/2.0/glib
+
+# XXX Seems this is no longer working with gtkdoc 1.9 :(
+GTK_HOME = http://library.gnome.org/devel/gtk/stable
+GDK_HOME = http://library.gnome.org/devel/gdk/stable
+GOBJECT_HOME = http://library.gnome.org/devel/gobject/stable
+GLIB_HOME = http://library.gnome.org/devel/glib/stable
 
 webdocs: all
 	rm -rf html-web

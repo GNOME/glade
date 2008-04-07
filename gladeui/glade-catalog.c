@@ -37,7 +37,6 @@ typedef void   (*GladeCatalogInitFunc) (void);
 
 struct _GladeCatalog
 {
-	gchar *language;	 /* Library language, NULL means language is C */
 	gchar *library;          /* Library name for backend support  */
 
 	gchar *name;             /* Symbolic catalog name             */
@@ -123,7 +122,6 @@ catalog_allocate (void)
 	
 	catalog = g_slice_new0 (GladeCatalog);
 	
-	catalog->language = NULL;
 	catalog->library = NULL;
 	catalog->name = NULL;
 	catalog->dep_catalog = NULL;      
@@ -191,7 +189,7 @@ catalog_open (const gchar *filename)
 	if (!catalog->icon_prefix)
 		catalog->icon_prefix = g_strdup (catalog->name);
 
-	if (catalog->init_function_name && catalog->language == NULL)
+	if (catalog->init_function_name)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
 
@@ -577,7 +575,6 @@ catalog_destroy (GladeCatalog *catalog)
 	g_return_if_fail (GLADE_IS_CATALOG (catalog));
 
 	g_free (catalog->name);
-	g_free (catalog->language);
 	g_free (catalog->library);	
 	g_free (catalog->dep_catalog);      
 	g_free (catalog->domain);           	

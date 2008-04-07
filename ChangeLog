@@ -1,3 +1,24 @@
+2008-04-07  Tristan Van Berkom <tvb@gnome.org>
+
+	* autogen.sh: Run gtkdocize with --flavour=no-tmpl
+	
+	* configure.ac: Require gtk-doc 1.9 and bump to 3.5.0 dev version.
+	
+	* doc/gladeui-overrides.txt, doc/children.sgml, doc/tmpl/*: Removed unneeded.
+
+	* doc/gladeui-docs.sgml, doc/widgetclasses.sgml,
+	doc/catalogintro.sgml, doc/Makefile.am: Mega docs update, added new
+	files and completely rediscribed the catalog in its new form.
+
+	* gladeui/glade-design-view.c, gladeui/glade-widget.c, 
+	gladeui/glade-widget-adaptor.c, gladeui/glade-command.c,
+	gladeui/glade-widget-adaptor.h, gladeui/glade-base-editor.c,
+	gladeui/glade-widget-action.c, gladeui/glade-xml-utils.c,
+	gladeui/glade-utils.c, gladeui/glade-catalog.c, gladeui/glade-property.c,
+	gladeui/glade-project.c: Added some description statements to newly 
+	documented files, fixed some warnings in other sources.
+
+	
 2008-04-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Implemented dual format for atk

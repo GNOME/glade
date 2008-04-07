@@ -205,7 +205,7 @@ glade_command_execute (GladeCommand *command)
  *
  * Undo the effects of @command
  *
- * Returns whether the command was successfully reversed
+ * Returns: whether the command was successfully reversed
  */
 gboolean
 glade_command_undo (GladeCommand *command)
@@ -1550,7 +1550,7 @@ glade_command_clipboard_add_remove_collapse (GladeCommand *this_cmd, GladeComman
  * Creates a new widget using @adaptor and put in place of the @placeholder
  * in the @project
  *
- * Returns the newly created widget.
+ * Returns: the newly created widget.
  */
 GladeWidget*
 glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlaceholder *placeholder, GladeProject *project)

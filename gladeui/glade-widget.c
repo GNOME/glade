@@ -379,7 +379,7 @@ glade_widget_event_impl (GladeWidget *gwidget,
  * Feed an event to be handled on the project GladeWidget
  * hierarchy.
  *
- * Returns whether the event was handled or not.
+ * Returns: whether the event was handled or not.
  */
 gboolean
 glade_widget_event (GladeWidget *gwidget,

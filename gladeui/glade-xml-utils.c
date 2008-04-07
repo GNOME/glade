@@ -8,6 +8,17 @@
  *   Chema Celorio <chema@gnome.org>
  */
 
+/**
+ * SECTION:glade-xml-utils
+ * @Title: Xml Utils
+ * @Short_Description: An api to read and write xml.
+ *
+ * You may need these tools if you are implementing #GladeReadWidgetFunc
+ * and/or #GladeWriteWidgetFunc on your #GladeWidgetAdaptor to read
+ * and write widgets in custom ways
+ */
+
+
 #include "config.h"
 
 #include <string.h>
@@ -86,9 +97,9 @@ glade_xml_set_value (GladeXmlNode *node_in, const gchar *name, const gchar *val)
  * glade_xml_get_content:
  * @node_in: a #GladeXmlNode
  *
- * Returns a string containing the content of @node_in.
- * Note: It is the caller's responsibility to free the memory used by this 
- * string.
+ * Gets a string containing the content of @node_in.
+ *
+ * Returns: A newly allocated string
  */
 gchar *
 glade_xml_get_content (GladeXmlNode *node_in)

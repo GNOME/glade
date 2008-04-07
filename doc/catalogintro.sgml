@@ -12,50 +12,51 @@ How to write and install a catalog
 
   <refsect1>
     <title>Introduction</title>
+
     <para>
-The widgets that are available in the Glade UI builder are handled in a
-dynamic way and additional widgets can be added, for example from other
-libraries, by installing a widget plugin.
+You can provide support for your custom widgets in a few ways, you can
+make a package and install it to the system directories, load additional
+catalogs in user directories, project directories for example, and
+you can optionally provide code support and/or icons, if you dont provide
+icons for the inspector and palette Glade will simply print a warning
+and use a default icon. The catalog file is written in an XML format and
+a DTD for the format can be found in the plugins/ directory of the Glade
+tarball.
     </para>
+
     <para>
-A widget plugin consists of a catalog file and a shared library and
-icons for the widgets to use in the widget palette and widget tree.
+In most cases gtk+ derived widgets can be added with little effort and it
+is enough to simply specify the widget's type; glade will introspect 
+its properties and signals - but due to the organic nature of a widget
+toolkit there are always exceptions. In this document we'll try to provide
+some basic examples and describe a wealth of options that can be used to
+enhance UI editing and workaround exceptions.
     </para>
+
     <para>
-The catalog file is written in an XML format that will be described
-below. There is also a DTD for the format which can be found in the widgets
-directory of the glade-3 package.
-    </para>
-    <para>
-Many properties of widgets can be handled automatically by the GObject
-introspection features. Not all of them can though, and advanced widgets
-often also need additional support from code. This is specified in the
-catalog file, where you can override default values, hide properties,
-specify functions to call in the installed plugin, etc.
-    </para>
-    <para>
-The catalog file is also used to group the widgets in groups that
-correspond to the groups in the Glade widget palette.
-    </para>
-    <para>
-In theory, the catalog file should be enough, but many widgets also need
-supporting code to be usable in Glade, which is where the plugin library
-comes in. An example of both a catalog file and plugin library can be
-found in the Glade sources, since the GTK+ widget set that is supported
-by default in Glade also is implemented this way. The catalog file is
-located in widgets/gtk+.xml, and the source code in src/glade-gtk.c. The
-catalog file starts by specifying the name of the catalog and the plugin
-library to use:
+The catalog file starts by specifying the name of the catalog and the plugin
+library to use, the following examples assume you have a namespace "Foo" and
+are integrating an object "Frobnicator":
       <programlisting>
-<![CDATA[<glade-catalog name="gtk+" library="gladegtk">
+<![CDATA[<glade-catalog name="foo" library="foo" depends="gtk+">
 
   <init-function>my_catalog_init</init-function>
 
   <glade-widget-classes>
 
+    <glade-widget-class name="FooFrobnicator" generic-name="frobnicator" title="Frobnicator"/>
+
     ... widget classes go here
 
   </glade-widget-classes>
+
+  <glade-widget-group name="foo" title="Foo">
+
+    <glade-widget-class-ref name="FooFrobnicator"/>
+
+    ... widget class references go here
+
+  </glade-widget-group>
 
   ... widget groups go here
 
@@ -97,8 +98,13 @@ to the value of the 'name' attribute.
         <term>library</term>
         <listitem>
           <para>
-The 'library' property is a shorthand name for the plugin library which shall 
-be dlopen'd from <literal>$prefix/lib/glade-3/modules/</literal>
+The 'library' property is used to load the types and introspect properties, unless
+you are faking your widget classes (which will be described later on), glade will
+need to load this library, it can either be the name of the library containing the 
+widgets or the plugin library which is assumed to implicitly link to your widget
+library. The library will be loaded either by a user specified path, the system
+plugin directory: <literal>$prefix/lib/glade-3/modules/</literal>, or from
+the default system library paths in the afore mentioned order of precedence.
           </para>
         </listitem>
       </varlistentry>
@@ -120,11 +126,10 @@ declare: 'depends="gtk+"' for your plugin.
         <term>domain</term>
         <listitem>
           <para>
-The 'domain' property is the domain in which to search for translatable 
-strings from the catalog file (such as glade-widget-group `title's and such; translatable
-values will be marked in this document as we go along and should be any strings
-that are displayed in the glade UI). If the 'domain' property is not specified,
-the library property will be used in it's stead.
+The 'domain' property is the domain in which to search for translatable strings from the 
+catalog file; please note that all strings from the catalog that will apear in the UI are
+translated using this domain. If the 'domain' is not specified, the library property will
+be used in it's stead.
           </para>
         </listitem>
       </varlistentry>
@@ -135,16 +140,6 @@ the library property will be used in it's stead.
           <para>
 The 'book' property is used to specify a namespace to search devhelp docs library with
 (specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
-          </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>fixed</term>
-        <listitem>
-          <para>
-The 'fixed' property is used to mark a #GladeWidgetClass for free form placement capacities
-to be handled with a #GladeFixed.
           </para>
         </listitem>
       </varlistentry>
@@ -181,5 +176,20 @@ The icons for palette etc go into the pixmap directory:
 The plugin library should be installed into the modules directory:
       <programlisting>pkg-config --variable=moduledir gladeui-1.0</programlisting>
     </para>
+    <para>
+You can also load your catalog from a user directory by specifying
+additional load path(s) in the environment, for instance:
+      <programlisting>GLADE_CATALOG_PATH=~/mycatalogs:~/work/foo/glade</programlisting>
+    </para>
+
+    <para>
+Same goes for optional plugin libraries, for instance:
+      <programlisting>GLADE_MODULE_PATH=~/work/foo/src</programlisting>
+    </para>
+
+    <para>
+Currently loading icons without installing them is unsupported.
+    </para>
+
   </refsect1>
 </refentry>

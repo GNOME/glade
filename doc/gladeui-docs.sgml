@@ -4,7 +4,6 @@
 <!ENTITY CatalogIntro SYSTEM "xml/catalogintro.sgml">
 <!ENTITY WidgetClasses SYSTEM "xml/widgetclasses.sgml">
 <!ENTITY Properties SYSTEM "xml/properties.sgml">
-<!ENTITY Children SYSTEM "xml/children.sgml">
 <!ENTITY GladeCommand SYSTEM "xml/glade-command.xml">
 <!ENTITY GladeApp SYSTEM "xml/glade-app.xml">
 <!ENTITY GladeClipboardView SYSTEM "xml/glade-clipboard-view.xml">
@@ -24,17 +23,22 @@
 <!ENTITY GladeWidget SYSTEM "xml/glade-widget.xml">
 <!ENTITY GladeFixed SYSTEM "xml/glade-fixed.xml">
 <!ENTITY GladeBaseEditor SYSTEM "xml/glade-base-editor.xml">
+<!ENTITY GladeDesignView SYSTEM "xml/glade-design-view.xml">
+<!ENTITY GladeXmlUtils SYSTEM "xml/glade-xml-utils.xml">
+<!ENTITY GladeWidgetAction SYSTEM "xml/glade-widget-action.xml">
 <!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
   <bookinfo>
-    <title>Glade UI Builder Reference Manual</title>
+    <title>Glade User Interface Designer Reference Manual</title>
     <abstract>
-      <para>This document attempts to describe how to use the Glade UI Builder core
-      library to integrate Glade into your application and how to integrate your
-      custom (GTK+ based) widget toolkit into the Glade UI Builder.</para>
+      <para>
+This document attempts to describe how to use the Glade UI Designer core
+library to integrate Glade into your application and how to integrate your
+custom GTK+ derived widgets into the Glade UI Builder.
+     </para>
 
-      <para>You can always get the latest version of this document here (XXX linkme) 
+      <para>You can always get the latest version of this document <ulink url="http://glade.gnome.org/docs/index.html">here</ulink>
       and you should have received a copy with the glade-3 tarball.</para>
     </abstract>
     <releaseinfo>for &version;</releaseinfo>
@@ -52,7 +56,6 @@
     &CatalogIntro;
     &WidgetClasses;
     &Properties;
-    &Children;
   </part>
 
   <part id="core">
@@ -64,10 +67,12 @@
     &GladeProperty;
     &GladeWidgetAdaptor;
     &GladePropertyClass;
+    &GladeWidgetAction;
     &GladeCommand;
     &GladeClipboard;
     &GladeBaseEditor;
     &GladePlaceholder;
+    &GladeXmlUtils;
   </part>
 
   <part id="dockables">
@@ -78,6 +83,7 @@
     &GladeClipboardView;
     &GladeInspector;
     &GladeSignalEditor;
+    &GladeDesignView;
   </part>
 
   <part id="misc">
