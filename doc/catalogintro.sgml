@@ -17,11 +17,13 @@ How to write and install a catalog
 You can provide support for your custom widgets in a few ways, you can
 make a package and install it to the system directories, load additional
 catalogs in user directories, project directories for example, and
-you can optionally provide code support and/or icons, if you dont provide
-icons for the inspector and palette Glade will simply print a warning
-and use a default icon. The catalog file is written in an XML format and
-a DTD for the format can be found in the plugins/ directory of the Glade
-tarball.
+you can optionally provide code support and/or icons, normally you need
+to at least have the object type in a library somewhere, but you can work
+around this using the 'parent' property described in the next section. 
+If you dont provide icons for the inspector and palette Glade will simply 
+print a warning and use a default icon. The catalog file is written in an
+XML format and a DTD for the format can be found in the plugins/ directory 
+of the Glade tarball.
     </para>
 
     <para>

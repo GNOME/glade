@@ -141,6 +141,18 @@ tree and will be translated before use in the interface.
       </varlistentry>
 
       <varlistentry>
+        <term>parent</term>
+        <listitem>
+          <para>
+Use this to specify the name of the parent your widget derives from, you
+can use this option instead of loading a real widget type (this allows you
+to fake derive and still add properties and run your catalog independantly
+of any plugins or libraries).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term>toplevel</term>
         <listitem>
           <para>
