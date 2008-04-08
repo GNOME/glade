@@ -26,7 +26,11 @@
  * SECTION:glade-widget-adaptor
  * @Short_Description: Adaptor base class to add runtime support for each widget class.
  * 
- * TODO: Add long description.
+ * The #GladeWidgetAdaptor object is a proxy for widget class support in Glade.
+ * it is automatically generated from the xml and allows you to override its
+ * methods in the plugin library for fine grained support on how you load/save
+ * widgets and handle thier properties in the runtime and more.
+ * 
  */
 
 #include "glade.h"

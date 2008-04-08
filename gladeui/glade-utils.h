@@ -51,6 +51,7 @@ gpointer          glade_util_gtk_combo_find	(GtkCombo *combo);
 
 
 GtkWidget        *glade_util_file_dialog_new (const gchar *title,
+					      GladeProject *project,
 					      GtkWindow *parent,
 					      GladeUtilFileDialogType action);
 
