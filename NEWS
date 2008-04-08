@@ -1,4 +1,33 @@
 ===========
+Glade 3.5.0
+===========
+	- Resurrected GtkScaleButton and GtkVolumeButton
+	- We finally have Vincent Geddes's icon choser dialog 
+	  (was skipped before because of string changes)
+	- Not allowed to have duplicate widget names anymore (bug 442860)
+	- Now the first widget in a project shows up automatically
+	  when opening the project.
+	- Old parser was trashed and rewritten from the ground up.
+	- New plugin support for read_widget() and write_widget(), also
+	  create_eprop() which allows the plugin to create widgets to
+	  edit properties in the editor (accelerators are edited from
+	  the plugin now for instance).
+	- Dual file format support available, its a beginning, you dont
+	  get any of the GObjects that GtkBuilder supports but all widgets
+	  you were formerly using with glade can now be loaded/saved in 
+	  builder format.
+	- Api reference docs for embedders and widget authors ressurected
+	  after 2 years, concerning integrating widgets, the docs are
+	  practically rewritten.
+
+New and updated translations
+============================
+	- Priit Laes (et)
+	- Laurent Dhima (sq)
+	- Baris Cicek (tr)
+	- Alexander Shopov (bg)
+
+===========
 Glade 3.4.3
 ===========
 	- Backed out GtkScaleButton and GtkVolumeButton since
