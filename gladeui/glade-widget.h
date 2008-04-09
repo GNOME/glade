@@ -143,6 +143,9 @@ void                    glade_widget_rebuild                (GladeWidget      *g
  
 GladeWidget            *glade_widget_dup                    (GladeWidget      *template_widget,
 							     gboolean          exact);
+
+GList                  *glade_widget_get_signal_list        (GladeWidget      *widget);
+
 void                    glade_widget_copy_signals           (GladeWidget      *widget,
 							     GladeWidget      *template_widget);
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
@@ -248,6 +251,7 @@ GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *w
 							     gboolean          packing,
 							     gboolean          use_command);
 
+gchar                  *glade_widget_generate_path_name     (GladeWidget      *widget);
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

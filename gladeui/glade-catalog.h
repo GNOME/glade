@@ -29,17 +29,27 @@ G_BEGIN_DECLS
 #define GLADE_CATALOG(c)    ((GladeCatalog *) c)
 #define GLADE_IS_CATALOG(c) (c != NULL)
 
-typedef struct _GladeCatalog GladeCatalog;
 
 #define GLADE_WIDGET_GROUP(g)    ((GladeWidgetGroup *) g)
 #define GLADE_IS_WIDGET_GROUP(g) (g != NULL)
 
+typedef struct _GladeCatalog     GladeCatalog;
 typedef struct _GladeWidgetGroup GladeWidgetGroup;
+
+typedef struct {
+	gint major;
+	gint minor;
+} GladeTargetableVersion;
 
 
 const GList  *glade_catalog_load_all                (void);
 
 const gchar  *glade_catalog_get_name                (GladeCatalog     *catalog);
+
+GList        *glade_catalog_get_targets             (GladeCatalog     *catalog);
+
+gint          glade_catalog_get_major_version       (GladeCatalog     *catalog);
+gint          glade_catalog_get_minor_version       (GladeCatalog     *catalog);
 
 GList        *glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
 

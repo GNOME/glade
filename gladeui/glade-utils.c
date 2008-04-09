@@ -186,8 +186,9 @@ glade_utils_get_pspec_from_funcname (const gchar *funcname)
 /**
  * glade_util_ui_message:
  * @parent: a #GtkWindow cast as a #GtkWidget
- * @format: a printf style format string
  * @type:   a #GladeUIMessageType
+ * @widget: a #GtkWidget to append to the dialog vbox
+ * @format: a printf style format string
  * @...:    args for the format.
  *
  * Creates a new warning dialog window as a child of @parent containing
@@ -198,9 +199,10 @@ glade_utils_get_pspec_from_funcname (const gchar *funcname)
  *          selected "OK", True if the @type was GLADE_UI_YES_OR_NO and
  *          the user selected "YES"; False otherwise.
  */
-gboolean
+gint
 glade_util_ui_message (GtkWidget           *parent, 
 		       GladeUIMessageType   type,
+		       GtkWidget           *widget,
 		       const gchar         *format,
 		       ...)
 {
@@ -253,6 +255,12 @@ glade_util_ui_message (GtkWidget           *parent,
 					 message_type,
 					 buttons_type,
 					 string);
+
+	gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
+
+	if (widget)
+		gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), 
+				  widget, TRUE, TRUE, 2);
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
 
@@ -506,7 +514,7 @@ add_format_options (GtkDialog    *dialog,
 	GtkWidget *vbox, *frame;
 	GtkWidget *glade_radio, *builder_radio;
 	GtkWidget *label, *alignment;
-	gchar     *string = g_strdup_printf ("<b>%s</b>", _("Select file format"));
+	gchar     *string = g_strdup_printf ("<b>%s</b>", _("File format"));
 
 	frame = gtk_frame_new (NULL);
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -1308,7 +1316,7 @@ glade_util_copy_file (const gchar  *src_path,
 
 	if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) != FALSE)
 		if (glade_util_ui_message
-		    (glade_app_get_window(), GLADE_UI_YES_OR_NO,
+		    (glade_app_get_window(), GLADE_UI_YES_OR_NO, NULL,
 		     _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)
 		    return FALSE;
 
@@ -1336,7 +1344,7 @@ glade_util_copy_file (const gchar  *src_path,
 				if (write_status == G_IO_STATUS_ERROR)
 				{
 					glade_util_ui_message (glade_app_get_window(),
-							       GLADE_UI_ERROR,
+							       GLADE_UI_ERROR, NULL,
 							       _("Error writing to %s: %s"),
 							       dest_path, error->message);
 					error = (g_error_free (error), NULL);
@@ -1350,7 +1358,7 @@ glade_util_copy_file (const gchar  *src_path,
 			if (read_status == G_IO_STATUS_ERROR)
 			{
 				glade_util_ui_message (glade_app_get_window(),
-						       GLADE_UI_ERROR,
+						       GLADE_UI_ERROR, NULL,
 						       _("Error reading %s: %s"),
 						       src_path, error->message);
 				error = (g_error_free (error), NULL);
@@ -1365,7 +1373,7 @@ glade_util_copy_file (const gchar  *src_path,
 			{
 				glade_util_ui_message
 					(glade_app_get_window(),
-					 GLADE_UI_ERROR,
+					 GLADE_UI_ERROR, NULL,
 					 _("Error shutting down I/O channel %s: %s"),
 						       dest_path, error->message);
 				error = (g_error_free (error), NULL);
@@ -1375,7 +1383,7 @@ glade_util_copy_file (const gchar  *src_path,
 		else
 		{
 			glade_util_ui_message (glade_app_get_window(),
-					       GLADE_UI_ERROR,
+					       GLADE_UI_ERROR, NULL,
 					       _("Failed to open %s for writing: %s"), 
 					       dest_path, error->message);
 			error = (g_error_free (error), NULL);
@@ -1386,7 +1394,7 @@ glade_util_copy_file (const gchar  *src_path,
 		if (g_io_channel_shutdown (src, TRUE, &error) != G_IO_STATUS_NORMAL)
 		{
 			glade_util_ui_message (glade_app_get_window(),
-					       GLADE_UI_ERROR,
+					       GLADE_UI_ERROR, NULL,
 					       _("Error shutting down io channel %s: %s"),
 					       src_path, error->message);
 			success = FALSE;
@@ -1395,7 +1403,7 @@ glade_util_copy_file (const gchar  *src_path,
 	else 
 	{
 		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_ERROR,
+				       GLADE_UI_ERROR, NULL,
 				       _("Failed to open %s for reading: %s"), 
 				       src_path, error->message);
 		error = (g_error_free (error), NULL);
@@ -1897,3 +1905,4 @@ glade_util_get_file_mtime (const gchar *filename, GError **error)
 		return info.st_mtime;
 	}
 }
+

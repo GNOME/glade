@@ -26,6 +26,14 @@ struct _GladePropertyClass
 	gpointer    handle; /* The GladeWidgetAdaptor that this property class
 			     * was created for.
 			     */
+	gpointer    origin_handle; /* The GladeWidgetAdaptor that this property class
+				    * was introduced in.
+				    */
+
+	gint        version_since_major; /* Version in which this property was
+					  * introduced
+					  */
+	gint        version_since_minor; 
 
 	GParamSpec *pspec; /* The Parameter Specification for this property.
 			    */

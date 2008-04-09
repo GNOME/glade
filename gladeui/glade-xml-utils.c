@@ -26,6 +26,7 @@
 #include <errno.h>
 
 #include "glade-xml-utils.h"
+#include "glade-catalog.h"
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -483,6 +484,79 @@ glade_xml_get_property_string_required (GladeXmlNode *node_in,
 	}
 	return value;
 }
+
+gboolean
+glade_xml_get_property_version (GladeXmlNode *node_in, 
+				const gchar  *name, 
+				gint         *major, 
+				gint         *minor)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+	gchar *value = glade_xml_get_property_string (node_in, name);
+	gchar **split;
+
+	if (!value)
+		return FALSE;
+
+	split = g_strsplit (value, ".", 2);
+
+	if (!split[0] || !split[1])
+	{
+		g_warning ("Malformed version property \"%s\"\n"
+			   "Under the \"%s\" tag (%s)", name, node->name, value);
+		return FALSE;
+	}
+
+	*major = g_ascii_strtoll (split[0], NULL, 10);
+	*minor = g_ascii_strtoll (split[1], NULL, 10);
+	
+	g_strfreev (split);
+	
+	return TRUE;
+}
+
+GList *
+glade_xml_get_property_targetable_versions (GladeXmlNode *node_in, 
+					    const gchar  *name)
+{
+	GladeTargetableVersion *version;
+	GList                  *targetable = NULL;
+	xmlNodePtr              node = (xmlNodePtr) node_in;
+	gchar                  *value;
+	gchar                 **split, **maj_min;
+	gint                    i;
+
+	if (!(value = glade_xml_get_property_string (node_in, name)))
+		return NULL;
+
+	if ((split = g_strsplit (value, ",", 0)) != NULL)
+	{
+		for (i = 0; split[i]; i++)
+		{
+			maj_min = g_strsplit (split[i], ".", 2);
+
+			if (!maj_min[0] || !maj_min[1])
+			{
+				g_warning ("Malformed version property \"%s\"\n"
+					   "Under the \"%s\" tag (%s)", name, node->name, value);
+			}
+			else
+			{
+				version = g_new (GladeTargetableVersion, 1);
+				version->major = g_ascii_strtoll (maj_min[0], NULL, 10);
+				version->minor = g_ascii_strtoll (maj_min[1], NULL, 10);
+				
+				targetable = g_list_append (targetable, version);
+			}			
+			g_strfreev (maj_min);
+		}
+
+		g_strfreev (split);
+	}
+	return targetable;
+}
+
+
 
 /*
  * Search a child by name,

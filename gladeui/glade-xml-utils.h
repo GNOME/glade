@@ -29,11 +29,25 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 	 GLADE_XML_TAG_LIBGLADE_WIDGET : GLADE_XML_TAG_BUILDER_WIDGET)
 
 /* Used for catalog tags and attributes */
+
+
+	gdouble                    version_since; /* Version in which this widget was
+						   * introduced
+						   */
+	gboolean                   deprecated; /* If this widget is currently
+							* deprecated
+							*/
+	gboolean                   builder_unsupported; /* If this widget is not supported
+							 * by gtkbuilder
+							 */
+
 #define GLADE_XML_TAG_LIBGLADE_PROJECT            "glade-interface"
 #define GLADE_XML_TAG_BUILDER_PROJECT             "interface"
 #define GLADE_XML_TAG_LIBGLADE_WIDGET             "widget"
 #define GLADE_XML_TAG_BUILDER_WIDGET              "object"
 
+#define GLADE_XML_TAG_VERSION                     "version"
+#define GLADE_XML_TAG_REQUIRES_LIBGLADE_EXTRA     "requires-version"
 #define GLADE_XML_TAG_REQUIRES                    "requires"
 #define GLADE_XML_TAG_LIB                         "lib"
 #define GLADE_XML_TAG_PROPERTY                    "property"
@@ -52,6 +66,13 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_XML_TAG_SIGNAL_TRUE                 "yes"
 #define GLADE_XML_TAG_TYPE                        "type"
 
+
+#define GLADE_TAG_VERSION                         "version"
+#define GLADE_TAG_TARGETABLE                      "targetable"
+#define GLADE_TAG_VERSION_SINCE                   "since"
+#define GLADE_TAG_DEPRECATED                      "deprecated"
+#define GLADE_TAG_BUILDER_UNSUPPORTED             "builder-unsupported"
+
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
 #define GLADE_TAG_GLADE_WIDGET_CLASS              "glade-widget-class"
@@ -62,7 +83,8 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_DEPENDS                         "depends"
 #define GLADE_TAG_DOMAIN                          "domain"
 #define GLADE_TAG_BOOK                            "book"
-#define GLADE_TAG_SIGNAL_NAME                     "signal-name"
+#define GLADE_TAG_SIGNALS                         "signals"
+#define GLADE_TAG_SIGNAL                          "signal"
 #define GLADE_TAG_DEFAULT                         "default"
 #define GLADE_TAG_DISABLED                        "disabled"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
@@ -177,6 +199,9 @@ gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name
 gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
 gdouble  glade_xml_get_property_double (GladeXmlNode *node_in, const gchar *name, gdouble _default);
 gint     glade_xml_get_property_int (GladeXmlNode *node_in, const gchar *name, gint _default);
+gboolean glade_xml_get_property_version (GladeXmlNode *node_in, const gchar *name, gint *major, gint *minor);
+GList   *glade_xml_get_property_targetable_versions (GladeXmlNode *node_in, const gchar *name);
+
 
 void glade_xml_node_set_property_string (GladeXmlNode *node_in, const gchar *name, const gchar *string);
 void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean value);

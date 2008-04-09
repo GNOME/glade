@@ -1,3 +1,30 @@
+2008-04-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in: Filled in all since, deprecated and
+	  builder-unsupported properties.
+
+	* gladeui/glade-widget.c, gladeui/glade-widget.h, gladeui/glade-widget-adaptor.c,
+	gladeui/glade-command.c, gladeui/glade-widget-adaptor.h,
+	gladeui/glade-utils.h, gladeui/glade-catalog.c, 
+	gladeui/glade-catalog.h, gladeui/glade-app.c, gladeui/glade-app.h, 
+	gladeui/glade-property-class.c, gladeui/glade-property-class.h, 
+	gladeui/glade-project.c, gladeui/glade-project.h:
+	Added versioning support, you can always chose the target version of
+	your project starting with gtk+ 2.8 - a project preferences dialog has
+	been added where you can switch your format, switch your target version
+	and test for incompatabilities. incompatability error dialogs are also
+	launched on save as. Target versions are saved to the glade file; 
+	TODO: patch GtkBuilder to test the required gtk+ version from
+	<requires lib="gtk+" version="2.8"> and at least warn, also let
+	third party widget developers test thier own versions using builder.
+
+	* gladeui/glade-xml-utils.h, gladeui/glade-xml-utils.c: routines
+	for parsing version numbers.
+
+
+	* gladeui/glade-utils.c: glade_util_ui_message() takes a widget to
+	embed arg now.
+
 2008-04-08  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS: Rolling 3.5.0

@@ -1970,6 +1970,44 @@ glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
 }
 
 static void
+glade_widget_accum_signal_foreach (const gchar *key,
+				   GPtrArray   *signals,
+				   GList      **list)
+{
+	GladeSignal *signal;
+	gint i;
+
+	for (i = 0; i < signals->len; i++)
+	{
+		signal = (GladeSignal *)signals->pdata[i];
+		*list = g_list_append (*list, signal);
+	}
+}
+
+/**
+ * glade_widget_get_signal_list:
+ * @widget:   a 'dest' #GladeWidget
+ *
+ * Compiles a list of #GladeSignal elements
+ *
+ * Returns: a newly allocated #GList of #GladeSignals, the caller
+ * must call g_list_free() to free the list.
+ */
+GList *
+glade_widget_get_signal_list (GladeWidget *widget)
+{
+	GList *signals = NULL;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	g_hash_table_foreach (widget->signals,
+			      (GHFunc)glade_widget_accum_signal_foreach,
+			      &signals);
+
+	return signals;
+}
+
+static void
 glade_widget_copy_signal_foreach (const gchar *key,
 				  GPtrArray   *signals,
 				  GladeWidget *dest)
@@ -4022,3 +4060,32 @@ glade_widget_create_editor_property (GladeWidget *widget,
 	
 	return eprop;
 }
+
+/**
+ * glade_widget_generate_path_name:
+ * @widget: A #GladeWidget
+ *
+ * Creates a user friendly name to describe project widgets
+ *
+ * Returns: A newly allocated string
+ */
+gchar *
+glade_widget_generate_path_name (GladeWidget *widget)
+{
+	GString     *string;
+	GladeWidget *iter;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	string = g_string_new (widget->name);
+	
+       	for (iter = widget->parent; iter; iter = iter->parent)
+	{
+		gchar *str = g_strdup_printf ("%s / ", iter->name);
+		g_string_prepend (string, str);
+		g_free (str);
+	}
+
+	return g_string_free (string, FALSE);
+}
+

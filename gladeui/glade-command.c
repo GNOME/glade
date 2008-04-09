@@ -1026,7 +1026,7 @@ glade_command_remove (GList *widgets)
 		if (widget->internal)
 		{
 			glade_util_ui_message (glade_app_get_window(),	
-				       GLADE_UI_WARN,
+					       GLADE_UI_WARN, NULL,
 					       _("You cannot remove a widget internal to a composite widget."));
 			return;
 		}

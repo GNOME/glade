@@ -33,6 +33,42 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->fixed : FALSE)
 
 /**
+ * GWA_DEPRECATED:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks whether this widget class is marked as deprecated
+ */
+#define GWA_DEPRECATED(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated : FALSE)
+
+/**
+ * GWA_BUILDER_UNSUPPORTED:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks whether this widget class unsupported by GtkBuilder
+ */
+#define GWA_BUILDER_UNSUPPORTED(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_unsupported : FALSE)
+
+/**
+ * GWA_VERSION_SINCE_MAJOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks major version in which this widget was introduced
+ */
+#define GWA_VERSION_SINCE_MAJOR(obj)						\
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_major : FALSE)
+
+/**
+ * GWA_VERSION_SINCE_MINOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks minor version in which this widget was introduced
+ */
+#define GWA_VERSION_SINCE_MINOR(obj)						\
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_minor : FALSE)
+
+/**
  * GWA_IS_TOPLEVEL:
  * @obj: A #GladeWidgetAdaptor
  *
@@ -400,7 +436,15 @@ typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 typedef struct _GladeSignalClass GladeSignalClass; 
 struct _GladeSignalClass
 {
+	GladeWidgetAdaptor *adaptor; /* The adaptor that originated this signal.
+				      */
+
 	GSignalQuery query;
+
+	gint         version_since_major; /* Version in which this signal was
+					   * introduced
+					   */
+	gint         version_since_minor;
 
 	const gchar *name;         /* Name of the signal, eg clicked */
 	gchar       *type;         /* Name of the object class that this signal belongs to
@@ -461,6 +505,18 @@ struct _GladeWidgetAdaptor
 struct _GladeWidgetAdaptorClass
 {
 	GObjectClass               parent_class;
+
+	gint                       version_since_major; /* Version in which this widget was
+							 * introduced
+							 */
+	gint                       version_since_minor;
+
+	gboolean                   deprecated;     /* If this widget is currently
+						    * deprecated
+						    */
+	gboolean                   builder_unsupported; /* If this widget is not supported
+							 * by gtkbuilder
+							 */
 
 	gboolean                   fixed;      /* If this is a GtkContainer, use free-form
 						* placement with drag/resize/paste at mouse...
@@ -727,6 +783,11 @@ GladeEditorProperty *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor
 gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
 							      GladePropertyClass *klass,
 							      const GValue       *value);
+
+GladeSignalClass    *glade_widget_adaptor_get_signal_class   (GladeWidgetAdaptor *adaptor,
+							      const gchar        *name);
+
+GladeWidgetAdaptor  *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 
 G_END_DECLS
 

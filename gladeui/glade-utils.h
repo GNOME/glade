@@ -6,7 +6,6 @@
 
 G_BEGIN_DECLS
 
-
 typedef enum _GladeUtilFileDialogType
 {
         GLADE_FILE_DIALOG_ACTION_OPEN,
@@ -22,7 +21,6 @@ typedef enum
 	GLADE_UI_YES_OR_NO
 } GladeUIMessageType;
 
-
 void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
 
 GType		glade_util_get_type_from_name	(const gchar *name, gboolean have_func);
@@ -31,6 +29,7 @@ GParamSpec      *glade_utils_get_pspec_from_funcname (const gchar *funcname);
 
 gboolean         glade_util_ui_message           (GtkWidget *parent, 
 						  GladeUIMessageType type,
+						  GtkWidget *widget,
 						  const gchar *format, ...);
 
 void		glade_util_flash_message	(GtkWidget *statusbar, 
@@ -127,6 +126,9 @@ gboolean          glade_util_url_show              (const gchar *url);
 
 
 time_t            glade_util_get_file_mtime        (const gchar *filename, GError **error);
+
+
+gboolean        glade_util_version_lesser_than     (gdouble a, gdouble b);            
 
 G_END_DECLS
 

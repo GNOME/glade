@@ -37,6 +37,11 @@ typedef void   (*GladeCatalogInitFunc) (void);
 
 struct _GladeCatalog
 {
+	gint   major_version;    /* The catalog version               */
+	gint   minor_version;
+
+	GList *targetable_versions; /* list of suitable version targets */
+
 	gchar *library;          /* Library name for backend support  */
 
 	gchar *name;             /* Symbolic catalog name             */
@@ -141,6 +146,7 @@ catalog_allocate (void)
 static GladeCatalog *
 catalog_open (const gchar *filename)
 {
+	GladeTargetableVersion *version;
 	GladeCatalog    *catalog;
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
@@ -177,7 +183,23 @@ catalog_open (const gchar *filename)
 		catalog_destroy (catalog);
 		return NULL;
 	}
-	
+
+
+	glade_xml_get_property_version (root, GLADE_TAG_VERSION, 
+					&catalog->major_version,
+					&catalog->minor_version);
+
+	/* Make one default suitable target */
+	version = g_new (GladeTargetableVersion, 1);
+	version->major = catalog->major_version;
+	version->minor = catalog->minor_version;
+
+	catalog->targetable_versions = 
+		glade_xml_get_property_targetable_versions
+		(root, GLADE_TAG_TARGETABLE);
+
+	catalog->targetable_versions = g_list_prepend (catalog->targetable_versions, version);
+
 	catalog->library      = glade_xml_get_property_string (root, GLADE_TAG_LIBRARY);
 	catalog->dep_catalog  = glade_xml_get_property_string (root, GLADE_TAG_DEPENDS);
 	catalog->domain       = glade_xml_get_property_string (root, GLADE_TAG_DOMAIN);
@@ -533,6 +555,31 @@ glade_catalog_get_name (GladeCatalog *catalog)
 	g_return_val_if_fail (catalog != NULL, NULL);
 
 	return catalog->name;
+}
+
+gint
+glade_catalog_get_major_version (GladeCatalog *catalog)
+{
+	g_return_val_if_fail (catalog != NULL, 0);
+
+	return catalog->major_version;
+}
+
+gint
+glade_catalog_get_minor_version (GladeCatalog *catalog)
+{
+	g_return_val_if_fail (catalog != NULL, 0);
+
+	return catalog->minor_version;
+}
+
+
+GList *
+glade_catalog_get_targets (GladeCatalog *catalog)
+{
+	g_return_val_if_fail (catalog != NULL, NULL);
+
+	return catalog->targetable_versions;
 }
 
 GList *

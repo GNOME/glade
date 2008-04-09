@@ -589,7 +589,7 @@ glade_app_config_save ()
 			/* Config dir exists but is not a directory */
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_ERROR,
+				 GLADE_UI_ERROR, NULL,
 				 _("Trying to save private data to %s directory "
 				   "but it is a regular file.\n"
 				   "No private data will be saved in this session"), 
@@ -602,7 +602,7 @@ glade_app_config_save ()
 			/* Doesnt exist; failed to create */
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_ERROR,
+				 GLADE_UI_ERROR, NULL,
 				 _("Failed to create directory %s to save private data.\n"
 				   "No private data will be saved in this session"), config_dir);
 			error_shown = TRUE;
@@ -630,7 +630,7 @@ glade_app_config_save ()
 			{
 				glade_util_ui_message
 					(glade_app_get_window(),
-					 GLADE_UI_ERROR,
+					 GLADE_UI_ERROR, NULL,
 					 _("Error writing private data to %s (%s).\n"
 					   "No private data will be saved in this session"), 
 					 filename, error->message);
@@ -642,7 +642,7 @@ glade_app_config_save ()
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_ERROR,
+				 GLADE_UI_ERROR, NULL,
 				 _("Error serializing configuration data to save (%s).\n"
 				   "No private data will be saved in this session"), 
 				 error->message);
@@ -655,7 +655,7 @@ glade_app_config_save ()
 	{
 		glade_util_ui_message
 			(glade_app_get_window(),
-			 GLADE_UI_ERROR,
+			 GLADE_UI_ERROR, NULL,
 			 _("Error opening %s to write private data (%s).\n"
 			   "No private data will be saved in this session"), 
 			 filename, error->message);
@@ -728,6 +728,35 @@ glade_app_set_window (GtkWidget *window)
 
 	app->priv->window = window;
 }
+
+void
+glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor)
+{
+	GladeApp *app = glade_app_get ();
+	GList    *list;
+
+	for (list = app->priv->catalogs; list; list = list->next)
+	{
+		GladeCatalog *catalog = list->data;
+		if (strcmp (glade_catalog_get_name (catalog), name))
+		{
+			if (major)
+				*major = glade_catalog_get_major_version (catalog);
+			if (minor)
+				*minor = glade_catalog_get_minor_version (catalog);
+			return;
+		}
+	}
+}
+
+GList *
+glade_app_get_catalogs (void)
+{
+	GladeApp *app = glade_app_get ();
+
+	return app->priv->catalogs; 
+}
+
 
 GtkWidget *
 glade_app_get_window (void)
@@ -1114,7 +1143,7 @@ glade_app_command_copy (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_WARN,
+				 GLADE_UI_WARN, NULL,
 				 _("You cannot copy a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1129,7 +1158,7 @@ glade_app_command_copy (void)
 	}
 	else if (widgets == NULL)
 		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("No widget selected."));
 
 	if (widgets) g_list_free (widgets);
@@ -1167,7 +1196,7 @@ glade_app_command_cut (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_WARN,
+				 GLADE_UI_WARN, NULL,
 				 _("You cannot cut a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1182,7 +1211,7 @@ glade_app_command_cut (void)
 	}
 	else if (widgets == NULL)
 		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("No widget selected."));
 
 	if (widgets) g_list_free (widgets);
@@ -1226,7 +1255,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	    !glade_widget_adaptor_is_container (parent->adaptor))
 	{
 		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("Unable to paste to the selected parent"));
 		return;
 	}
@@ -1237,7 +1266,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 		if (g_list_length (list) != 1)
 		{
 			glade_util_ui_message (glade_app_get_window(),
-					       GLADE_UI_INFO,
+					       GLADE_UI_INFO, NULL,
 					       _("Unable to paste to multiple widgets"));
 
 			return;
@@ -1247,7 +1276,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	/* Check if we have anything to paste */
 	if (g_list_length (clipboard->selection) == 0)
 	{
-		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO,
+		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL,
 				    _("No widget selected on the clipboard"));
 
 		return;
@@ -1273,7 +1302,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 		else if (!GWA_IS_TOPLEVEL (widget->adaptor) && !parent)
 		{
 			glade_util_ui_message (glade_app_get_window (),
-					       GLADE_UI_INFO, 
+					       GLADE_UI_INFO, NULL, 
 					       _("Unable to paste widget %s without a parent"),
 					       widget->name);
 			return;
@@ -1290,7 +1319,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	    g_list_length (clipboard->selection) != 1) 
 	{
 		glade_util_ui_message (glade_app_get_window (), 
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("Only one widget can be pasted at a "
 					 "time to this container"));
 		return;
@@ -1302,7 +1331,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	    glade_util_count_placeholders (parent) < placeholder_relations)
 	{
 		glade_util_ui_message (glade_app_get_window (), 
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("Insufficient amount of placeholders in "
 					 "target container"));
 		return;
@@ -1341,7 +1370,7 @@ glade_app_command_delete (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_WARN,
+				 GLADE_UI_WARN, NULL,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
 			failed = TRUE;
@@ -1356,7 +1385,7 @@ glade_app_command_delete (void)
 	}
 	else if (widgets == NULL)
 		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_INFO,
+				       GLADE_UI_INFO, NULL,
 				       _("No widget selected."));
 
 	if (widgets) g_list_free (widgets);
@@ -1377,7 +1406,7 @@ glade_app_command_delete_clipboard (void)
 	clipboard = glade_app_get_clipboard ();
 
 	if (clipboard->selection == NULL)
-		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO,
+		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL,
 				    _("No widget selected on the clipboard"));
 
 	for (list = clipboard->selection; list; list = list->next)
@@ -1387,7 +1416,7 @@ glade_app_command_delete_clipboard (void)
 		{
 			glade_util_ui_message
 				(glade_app_get_window(),
-				 GLADE_UI_WARN,
+				 GLADE_UI_WARN, NULL,
 				 _("You cannot delete a widget "
 				   "internal to a composite widget."));
 			return;

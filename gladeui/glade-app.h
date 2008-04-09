@@ -98,6 +98,9 @@ void               glade_app_set_window (GtkWidget *window);
  
 GtkWidget*         glade_app_get_window (void);
 
+void               glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor);
+
+GList             *glade_app_get_catalogs (void);
  
 GladeEditor*       glade_app_get_editor (void);
  

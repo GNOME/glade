@@ -65,6 +65,7 @@ glade_property_class_new (gpointer handle)
 	GladePropertyClass *property_class;
 
 	property_class = g_new0 (GladePropertyClass, 1);
+	property_class->origin_handle = handle;
 	property_class->handle = handle;
 	property_class->pspec = NULL;
 	property_class->id = NULL;
@@ -110,8 +111,10 @@ glade_property_class_clone (GladePropertyClass *property_class)
 
 	clone = g_new0 (GladePropertyClass, 1);
 
+	/* copy ints over */
 	memcpy (clone, property_class, sizeof(GladePropertyClass));
 
+	/* Make sure we own our strings */
 	clone->pspec = property_class->pspec;
 	clone->id = g_strdup (clone->id);
 	clone->name = g_strdup (clone->name);
@@ -1461,17 +1464,16 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	/* Visible lines */
 	glade_xml_get_value_int (node, GLADE_TAG_VISIBLE_LINES,  &klass->visible_lines);
 
+	glade_xml_get_property_version
+		(node, GLADE_TAG_VERSION_SINCE, 
+		 &klass->version_since_major,
+		 &klass->version_since_minor);
+
 	/* Get the Parameters */
 	if ((child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS)) != NULL)
 		klass->parameters = glade_parameter_list_new_from_node (klass->parameters, child);
 		
-	/* Whether or not the property is translatable. This is only used for
-	 * string properties.
-	 */
-	klass->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, 
-							      klass->translatable);
-
-	/* common, optional, etc */
+	klass->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, klass->translatable);
 	klass->common      = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,      klass->common);
 	klass->optional    = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,    klass->optional);
 	klass->query       = glade_xml_get_property_boolean (node, GLADE_TAG_QUERY,       klass->query);

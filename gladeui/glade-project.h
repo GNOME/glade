@@ -170,6 +170,8 @@ void           glade_project_set_format      	  (GladeProject *project, GladePro
 
 GladeProjectFormat glade_project_get_format  	  (GladeProject *project);
 
+void           glade_project_preferences          (GladeProject *project);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */

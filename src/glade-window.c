@@ -1238,7 +1238,7 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 	{
 		/* Reset path so future saves will prompt the file chooser */
 		glade_project_reset_path (project);
-		glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, 
+		glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL, 
 				       _("Failed to save %s: %s"),
 				       display_path, error->message);
 		g_error_free (error);
@@ -1349,7 +1349,7 @@ save_as (GladeWindow *window)
 		if (project != another_project) {
 
 			glade_util_ui_message (GTK_WIDGET (window), 
-					       GLADE_UI_ERROR,
+					       GLADE_UI_ERROR, NULL,
 				     	       _("Could not save file %s. Another project with that path is open."), 
 					       real_path);
 
@@ -1374,7 +1374,8 @@ save_cb (GtkAction *action, GladeWindow *window)
 	if (project == NULL)
 	{
 		/* Just in case the menu-item or button is not insensitive */
-		glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_WARN, _("No open projects to save"));
+		glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_WARN, NULL,
+				       _("No open projects to save"));
 		return;
 	}
 
@@ -1442,7 +1443,7 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 			{
 
 				glade_util_ui_message
-					(GTK_WIDGET (window), GLADE_UI_ERROR, 
+					(GTK_WIDGET (window), GLADE_UI_ERROR, NULL, 
 					 _("Failed to save %s to %s: %s"),
 					 project_name, glade_project_get_path (project), error->message);
 				g_error_free (error);
@@ -1597,6 +1598,19 @@ delete_cb (GtkAction *action, GladeWindow *window)
 		return;
 	}
 	glade_app_command_delete ();
+}
+
+static void
+preferences_cb (GtkAction *action, GladeWindow *window)
+{
+	GladeProject *project;
+
+	if (!window->priv->active_view)
+		return;
+
+	project = glade_design_view_get_project (window->priv->active_view);
+
+	glade_project_preferences (project);
 }
 
 static void
@@ -2152,6 +2166,8 @@ static const gchar ui_info[] =
 "      <menuitem action='Copy'/>"
 "      <menuitem action='Paste'/>"
 "      <menuitem action='Delete'/>"
+"      <separator/>"
+"      <menuitem action='Preferences'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
 "      <menuitem action='Clipboard'/>"
@@ -2260,6 +2276,9 @@ static GtkActionEntry project_entries[] = {
 	
 	{ "Delete", GTK_STOCK_DELETE, NULL, "Delete",
 	  N_("Delete the selection"), G_CALLBACK (delete_cb) },
+
+	{ "Preferences", GTK_STOCK_PREFERENCES, NULL, "<control>W",
+	  N_("Modify project preferences"), G_CALLBACK (preferences_cb) },
 
 	/* ViewMenu */
 	
@@ -2568,7 +2587,7 @@ glade_window_new_project (GladeWindow *window)
 	if (!project)
 	{
 		glade_util_ui_message (GTK_WIDGET (window), 
-				       GLADE_UI_ERROR,
+				       GLADE_UI_ERROR, NULL,
 				       _("Could not create a new project."));
 		return;
 	}
