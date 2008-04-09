@@ -4081,7 +4081,7 @@ glade_widget_generate_path_name (GladeWidget *widget)
 	
        	for (iter = widget->parent; iter; iter = iter->parent)
 	{
-		gchar *str = g_strdup_printf ("%s / ", iter->name);
+		gchar *str = g_strdup_printf ("%s:", iter->name);
 		g_string_prepend (string, str);
 		g_free (str);
 	}

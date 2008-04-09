@@ -481,7 +481,7 @@ glade_project_set_target_version (GladeProject *project,
 
 static void
 glade_project_get_target_version (GladeProject *project,
-				  gchar        *catalog,
+				  const gchar  *catalog,
 				  gint         *major,
 				  gint         *minor)
 {
@@ -1927,11 +1927,7 @@ glade_project_verify_property (GladeProperty  *property,
 	gint target_major, target_minor;
 	gchar *catalog;
 
-	if (packing)
-		/* XXX This may be a little incorrect... */
-		adaptor = property->widget->parent->adaptor;
-	else
-		adaptor = GLADE_WIDGET_ADAPTOR (property->klass->origin_handle);
+	adaptor = GLADE_WIDGET_ADAPTOR (property->klass->origin_handle);
 	
 	g_object_get (adaptor, "catalog", &catalog, NULL);
 	glade_project_target_version_for_adaptor (property->widget->project, adaptor, 
@@ -1944,9 +1940,9 @@ glade_project_verify_property (GladeProperty  *property,
 		g_string_append_printf
 				(string,
 				 packing ?
-				 _("(%s) Packing property '%s' of object class '%s' was "
+				 _("[%s] Packing property '%s' of object class '%s' was "
 				   "introduced in %s %d.%d\n") :
-				 _("(%s) Property '%s' of object class '%s' was "
+				 _("[%s] Property '%s' of object class '%s' was "
 				   "introduced in %s %d.%d\n"),
 				 path_name,
 				 property->klass->name, 
@@ -1997,9 +1993,8 @@ glade_project_verify_signal (GladeWidget  *widget,
 		glade_widget_adaptor_get_signal_class (widget->adaptor,
 						       signal->name);
 	g_assert (signal_class);
-
+	g_assert (signal_class->adaptor);
 	
-			
 	g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
 	glade_project_target_version_for_adaptor (widget->project, 
 						  signal_class->adaptor, 
@@ -2011,7 +2006,7 @@ glade_project_verify_signal (GladeWidget  *widget,
 	     target_minor < signal_class->version_since_minor))
 		g_string_append_printf
 			(string, 
-			 _("(%s) Signal '%s' of object class '%s' was "
+			 _("[%s] Signal '%s' of object class '%s' was "
 			   "introduced in %s %d.%d\n"),
 			 path_name,
 			 signal->name,
@@ -2098,7 +2093,6 @@ glade_project_verify_adaptor_supported (GladeProject       *project,
 	{
 
 		g_object_get (adaptor_iter, "catalog", &catalog, NULL);
-
 		glade_project_target_version_for_adaptor (project, adaptor_iter, 
 							  &target_major,
 							  &target_minor);
@@ -2108,7 +2102,7 @@ glade_project_verify_adaptor_supported (GladeProject       *project,
 		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
 			g_string_append_printf
 				(string, 
-				 _("(%s) Object class '%s' was introduced in %s %d.%d\n"),
+				 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
 				 path_name, adaptor_iter->title, catalog,
 				 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
 				 GWA_VERSION_SINCE_MINOR (adaptor_iter));
@@ -2117,15 +2111,14 @@ glade_project_verify_adaptor_supported (GladeProject       *project,
 		    GWA_BUILDER_UNSUPPORTED (adaptor_iter))
 			g_string_append_printf
 				(string,
-				 _("(%s) Object class '%s' of catalog '%s' is not supported "
+				 _("[%s] Object class '%s' of catalog '%s' is not supported "
 				   "by GtkBuilder\n"),
 				 path_name, adaptor_iter->title, catalog);
-
 
 		if (!saving && GWA_DEPRECATED (adaptor_iter))
 			g_string_append_printf
 				(string, 
-				 _("(%s) Object class '%s' of catalog '%s' is deprecated\n"),
+				 _("[%s] Object class '%s' of catalog '%s' is deprecated\n"),
 				 path_name, adaptor_iter->title, catalog);
 
 		g_free (catalog);
@@ -2150,18 +2143,9 @@ glade_project_verify (GladeProject *project,
 
 		path_name = glade_widget_generate_path_name (widget);
 
-#if 0
- 		g_print ("Verifying %s target %d.%d widget %d.%d\n",
-			 path_name, target_version_major, target_version_minor,
-			 GWA_VERSION_SINCE_MAJOR (widget->adaptor),
-			 GWA_VERSION_SINCE_MINOR (widget->adaptor));
-#endif
-
 		glade_project_verify_adaptor_supported (project, widget->adaptor, 
 							path_name, string, saving);
-
 		glade_project_verify_properties (widget, path_name, string);
-
 		glade_project_verify_signals (widget, path_name, string);
 
 		g_free (path_name);
@@ -2856,12 +2840,10 @@ glade_project_build_prefs_box (GladeProject *project)
 		if (g_list_length (glade_catalog_get_targets (catalog)) <= 1)
 			continue;
 
-		major = GPOINTER_TO_INT 
-			(g_hash_table_lookup (project->priv->target_versions_major,
-					      glade_catalog_get_name (catalog)));
-		minor = GPOINTER_TO_INT 
-			(g_hash_table_lookup (project->priv->target_versions_minor,
-					      glade_catalog_get_name (catalog)));
+		glade_project_get_target_version (project,
+						  glade_catalog_get_name (catalog),
+						  &major,
+						  &minor);
 
 		string = g_strdup_printf (_("%s catalog"), 
 					  glade_catalog_get_name (catalog));

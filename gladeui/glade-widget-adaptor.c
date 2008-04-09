@@ -297,8 +297,11 @@ static void
 gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 {
 	guint count, *sig_ids, num_signals;
+	GladeWidgetAdaptor *type_adaptor;
 	GladeSignalClass *cur;
 	GList *list = NULL;
+
+	type_adaptor = glade_widget_adaptor_get_by_type (type);
 	
 	if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
 	{
@@ -315,7 +318,10 @@ gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 			 */
 			g_assert (cur->query.signal_id != 0);
 
-			cur->adaptor = glade_widget_adaptor_get_by_type (type);
+			/* When creating this type, this type is not registered yet,
+			 * but we still get the right value here.
+			 */
+			cur->adaptor = type_adaptor ? type_adaptor : adaptor;
 			cur->name = (cur->query.signal_name);
 			cur->type = (gchar *) g_type_name (type);
 
