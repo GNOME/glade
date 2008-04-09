@@ -44,6 +44,14 @@ Here is the complete example of the form of the `glade-widget-class' definition:
 
   </properties>
 
+  <signals>
+
+    <signal id="frobnicate" since="1.0"/>
+
+    ... signal definitions go here
+
+  </signals>
+
   <packing-properties>
 
     ... child packing property definitions go here
@@ -93,6 +101,34 @@ The class name of the widget; unless the 'get-type-function' property is present
 this will essentially be used to instantiate the actual class by deriving 
 'gtk_label_get_type' from 'GtkLabel' and searching for 'gtk_label_get_type' in the 
 support library.
+          </para>
+        </listitem>
+      </varlistentry>
+
+     <varlistentry>
+        <term>since</term>
+        <listitem>
+          <para>
+A 'major.minor' formed version describing the version of the owning catalog in which this 
+object class was introduced; example: <literal>since="1.0"</literal>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>deprecated</term>
+        <listitem>
+          <para>
+A boolean property depicting that this widget is currently deprecated.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>builder-unsupported</term>
+        <listitem>
+          <para>
+A boolean property depicting that this widget is not supported by #GtkBuilder.
           </para>
         </listitem>
       </varlistentry>
@@ -486,6 +522,16 @@ to a said type of parent, as the example shows above; use the `parent-class' to
 specify what parent (or derivative of that parent) you are targetting and fill
 in any `child-property' tags you need for that parent using `id' property to 
 specify the property name and the `default' property for the value.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Signals</title>
+    <para>
+The signal elements are currently only needed for versioning support, use
+the `signal' child tag as described above and set signal `id' to be supported
+since version `since'. Signals are initialized to be supported since the
+introducing #GladeWidgetAdaptor was supported.
     </para>
   </refsect1>
 

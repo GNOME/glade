@@ -79,19 +79,40 @@ you can also use 'icon-prefix', 'depends' and 'domain'.
         <term>name</term>
         <listitem>
           <para>
-The 'name' property is simply a string identifier for the catalog in 
-question, it will be used to identify your catalog so that the glade file can explicitly
-require it and to manage inter catalog dependencies.
+A string identifier for the catalog in question, it will be used to identify your 
+catalog so that the glade file can explicitly require it and to manage inter 
+catalog dependencies.
           </para>
         </listitem>
       </varlistentry>
       
       <varlistentry>
+        <term>version</term>
+        <listitem>
+          <para>
+A 'major.minor' formed version describing the current version of underlying widget kit;
+example: <literal>version="1.0"</literal>. This is needed for version checking to work. 
+Please note that all versioning related support is completely optional.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>targetable</term>
+        <listitem>
+          <para>
+A comma separated list of 'major.minor' formed versions describing sensable previous
+targetable versions of the underlying toolkit not including the current version; 
+example: <literal>targetable="0.6,0.8"</literal>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term>icon-prefix</term>
         <listitem>
           <para>
-The 'icon-prefix' attribute is used to form icon names for widgets. This property defaults
-to the value of the 'name' attribute.
+Used to form icon names for widgets. This property defaults to the value of the 'name' attribute.
           </para>
         </listitem>
       </varlistentry>
@@ -100,13 +121,13 @@ to the value of the 'name' attribute.
         <term>library</term>
         <listitem>
           <para>
-The 'library' property is used to load the types and introspect properties, unless
-you are faking your widget classes (which will be described later on), glade will
-need to load this library, it can either be the name of the library containing the 
-widgets or the plugin library which is assumed to implicitly link to your widget
-library. The library will be loaded either by a user specified path, the system
-plugin directory: <literal>$prefix/lib/glade-3/modules/</literal>, or from
-the default system library paths in the afore mentioned order of precedence.
+Used to load the types and introspect properties, unless you are faking your widget 
+classes (which will be described later on), glade will need to load this library, 
+it can either be the name of the library containing the widgets or the plugin library
+which is assumed to implicitly link to your widget library. The library will be loaded
+either by a user specified path, the system plugin directory: 
+<literal>$prefix/lib/glade-3/modules/</literal>, or from the default system library 
+paths in the afore mentioned order of precedence.
           </para>
         </listitem>
       </varlistentry>
@@ -115,11 +136,11 @@ the default system library paths in the afore mentioned order of precedence.
         <term>depends</term>
         <listitem>
           <para>
-The 'depends' property is used for inheritance of support code to work 
-properly  (i.e. if your object derives from an object in gtk+, you'll want the default 
-support code in the gladegtk plugin to be enabled for your widget too). This property's 
-value is the `name' property of another installed glade plugin; usually you'll want to
-declare: 'depends="gtk+"' for your plugin.
+Used for inheritance of support code to work properly  (i.e. if your object derives 
+from an object in gtk+, you'll want the default support code in the gladegtk plugin 
+to be enabled for your widget too). This property's value is the `name' property of 
+another installed glade plugin; usually you'll want to declare: 'depends="gtk+"'
+for your plugin.
           </para>
         </listitem>
       </varlistentry>
@@ -128,7 +149,7 @@ declare: 'depends="gtk+"' for your plugin.
         <term>domain</term>
         <listitem>
           <para>
-The 'domain' property is the domain in which to search for translatable strings from the 
+The domain in which to search for translatable strings from the 
 catalog file; please note that all strings from the catalog that will apear in the UI are
 translated using this domain. If the 'domain' is not specified, the library property will
 be used in it's stead.
@@ -140,7 +161,7 @@ be used in it's stead.
         <term>book</term>
         <listitem>
           <para>
-The 'book' property is used to specify a namespace to search devhelp docs library with
+Used to specify a namespace to search devhelp docs library with
 (specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
           </para>
         </listitem>
@@ -150,7 +171,7 @@ The 'book' property is used to specify a namespace to search devhelp docs librar
         <term>init-function</term>
         <listitem>
           <para>
-The 'init-function' tag is used to retrieve an optional global entry point to your plugin; 
+Used to retrieve an optional global entry point to your plugin; 
 if you need to initialize any backends or whatnot this is a good place. 
 Your catalog's init-function will be called before any widget classes are instantiated.
           </para>

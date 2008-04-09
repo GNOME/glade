@@ -60,6 +60,17 @@ The name to be used in the interface.
         </varlistentry>
 
         <varlistentry>
+          <term>since</term>
+          <listitem>
+            <para>
+A 'major.minor' formed version describing the version of the owning catalog in which this 
+property was introduced; example: <literal>since="1.0"</literal>. Properties are initialized
+to be supported since the introducing #GladeWidgetAdaptor was supported.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
           <term>disabled</term>
           <listitem>
             <para>
