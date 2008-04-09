@@ -315,9 +315,13 @@ gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 			 */
 			g_assert (cur->query.signal_id != 0);
 
-			cur->adaptor = adaptor;
+			cur->adaptor = glade_widget_adaptor_get_by_type (type);
 			cur->name = (cur->query.signal_name);
 			cur->type = (gchar *) g_type_name (type);
+
+			/* Initialize signal versions to adaptor version */
+			cur->version_since_major = GWA_VERSION_SINCE_MAJOR (cur->adaptor);
+			cur->version_since_minor = GWA_VERSION_SINCE_MINOR (cur->adaptor);
 
 			list = g_list_prepend (list, cur);
 		}

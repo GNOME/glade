@@ -93,6 +93,9 @@ glade_property_class_new (gpointer handle)
 	property_class->transfer_on_paste = FALSE;
 	property_class->weight = -1.0;
 
+	/* Initialize them to the base version */
+	property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (handle);
+	property_class->version_since_minor = GWA_VERSION_SINCE_MINOR (handle);
 	return property_class;
 }
 
