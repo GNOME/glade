@@ -1,4 +1,17 @@
 ===========
+Glade 3.5.1
+===========
+	- Added versioning support, you can always chose the target version of
+	  your project starting with gtk+ 2.8 - a project preferences dialog has
+	  been added where you can switch your format, switch your target version
+	  and test for incompatabilities. incompatability error dialogs are also
+	  launched on save as. Target versions are saved to the glade file; 
+	  TODO: patch GtkBuilder to test the required gtk+ version from
+	  <requires lib="gtk+" version="2.8"> and at least warn, also let
+	  third party widget developers test thier own versions using builder
+	  (all new catalog tags and properties are also documented).
+
+===========
 Glade 3.5.0
 ===========
 	- Resurrected GtkScaleButton and GtkVolumeButton
