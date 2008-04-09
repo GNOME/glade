@@ -2078,11 +2078,11 @@ glade_project_verify_dialog (GladeProject *project,
 }
 
 static void
-glade_project_verify_adaptor_supported (GladeProject       *project,
-					GladeWidgetAdaptor *adaptor,
-					const gchar        *path_name,
-					GString            *string,
-					gboolean            saving)
+glade_project_verify_adaptor (GladeProject       *project,
+			      GladeWidgetAdaptor *adaptor,
+			      const gchar        *path_name,
+			      GString            *string,
+			      gboolean            saving)
 {
 	GladeWidgetAdaptor *adaptor_iter;
 	gint                target_major, target_minor;
@@ -2111,15 +2111,17 @@ glade_project_verify_adaptor_supported (GladeProject       *project,
 		    GWA_BUILDER_UNSUPPORTED (adaptor_iter))
 			g_string_append_printf
 				(string,
-				 _("[%s] Object class '%s' of catalog '%s' is not supported "
+				 _("[%s] Object class '%s' from %s %d.%d is not supported "
 				   "by GtkBuilder\n"),
-				 path_name, adaptor_iter->title, catalog);
+				 path_name, adaptor_iter->title, catalog,
+				 target_major, target_minor);
 
 		if (!saving && GWA_DEPRECATED (adaptor_iter))
 			g_string_append_printf
 				(string, 
-				 _("[%s] Object class '%s' of catalog '%s' is deprecated\n"),
-				 path_name, adaptor_iter->title, catalog);
+				 _("[%s] Object class '%s' from %s %d.%d is deprecated\n"),
+				 path_name, adaptor_iter->title, catalog,
+				 target_major, target_minor);
 
 		g_free (catalog);
 	}
@@ -2143,8 +2145,8 @@ glade_project_verify (GladeProject *project,
 
 		path_name = glade_widget_generate_path_name (widget);
 
-		glade_project_verify_adaptor_supported (project, widget->adaptor, 
-							path_name, string, saving);
+		glade_project_verify_adaptor (project, widget->adaptor, 
+					      path_name, string, saving);
 		glade_project_verify_properties (widget, path_name, string);
 		glade_project_verify_signals (widget, path_name, string);
 

@@ -1472,11 +1472,11 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 		 &adaptor_class->version_since_minor);
 
 	adaptor_class->deprecated = 
-		glade_xml_get_property_double
+		glade_xml_get_property_boolean
 		(node, GLADE_TAG_DEPRECATED, adaptor_class->deprecated);
 
 	adaptor_class->builder_unsupported = 
-		glade_xml_get_property_double
+		glade_xml_get_property_boolean
 		(node, GLADE_TAG_BUILDER_UNSUPPORTED, adaptor_class->builder_unsupported);
 
 	adaptor_class->fixed = 
