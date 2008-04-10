@@ -36,6 +36,10 @@ struct _GladeWidget
 		      * button2. This is a unique name and is the one
 		      * used when loading widget with libglade
 		      */
+
+	gchar *support_warning; /* A warning message for version incompatabilities
+				 * in this widget
+				 */
 	
 	gchar *internal; /* If the widget is an internal child of 
 			  * another widget this is the name of the 
@@ -394,6 +398,9 @@ gboolean                glade_widget_superuser              (void);
 void                    glade_widget_push_superuser         (void);
  
 void                    glade_widget_pop_superuser          (void);
+
+void                    glade_widget_set_support_warning    (GladeWidget      *widget,
+							     const gchar      *warning);
 
 G_END_DECLS
 

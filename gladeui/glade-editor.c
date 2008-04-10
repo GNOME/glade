@@ -488,21 +488,35 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 static void
 glade_editor_table_append_class_field (GladeEditorTable *table)
 {
-	GtkWidget *label;
-	GtkWidget *class_entry;
+	GtkWidget *label, *class_label, *icon;
+	GtkWidget  *hbox_class_value, *hbox_class_name;
 
-	/* Class */
+
+	hbox_class_name = gtk_hbox_new (FALSE, 4);
 	label = gtk_label_new (_("Class:"));
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox_class_name), label, TRUE, TRUE, 0);
 	
-	class_entry = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (class_entry), table->adaptor->name);
-	gtk_editable_set_editable (GTK_EDITABLE (class_entry), FALSE);
-	gtk_widget_show (class_entry);
+	table->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
+						   GTK_ICON_SIZE_MENU);
+	gtk_widget_set_no_show_all (table->warning, TRUE);
+	gtk_box_pack_start (GTK_BOX (hbox_class_name), table->warning, FALSE, TRUE, 0);
+	gtk_widget_show_all (hbox_class_name);
 
-	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
-	glade_editor_table_attach (table->table_widget, class_entry, 1, table->rows);
+	hbox_class_value = gtk_hbox_new (FALSE, 2);
+	icon = gtk_image_new_from_icon_name 
+		(table->adaptor->icon_name, GTK_ICON_SIZE_MENU);
+	gtk_box_pack_start (GTK_BOX (hbox_class_value), icon, FALSE, TRUE, 4);
+
+	class_label = gtk_label_new (table->adaptor->name);
+	gtk_misc_set_alignment (GTK_MISC (class_label), 0.0, 0.5);
+	gtk_box_pack_start (GTK_BOX (hbox_class_value), class_label, TRUE, TRUE, 0);
+	gtk_widget_show_all (hbox_class_value);
+
+	/* FIXME: find a better way to pack this. */
+	gtk_widget_set_size_request (hbox_class_value, -1, 25);
+	glade_editor_table_attach (table->table_widget, hbox_class_name, 0, table->rows);
+	glade_editor_table_attach (table->table_widget, hbox_class_value, 1, table->rows);
 
 	table->rows++;
 }
@@ -878,6 +892,26 @@ glade_editor_load_table (GladeEditor         *editor,
 }
 
 static void
+glade_editor_update_class_warning_cb (GladeWidget  *widget,
+				      GParamSpec   *pspec,
+				      GladeEditor  *editor)
+{
+	GladeEditorTable *table;
+
+	if (!(table = glade_editor_get_table_from_class
+	      (editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL)))
+		return;
+
+	if (widget->support_warning)
+		gtk_widget_show (table->warning);
+	else
+ 		gtk_widget_hide (table->warning);
+
+	gtk_widget_set_tooltip_text (table->warning, widget->support_warning);
+}
+
+
+static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
 	GladeWidgetAdaptor *adaptor;
@@ -890,7 +924,10 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		project = glade_widget_get_project (editor->loaded_widget);
 		g_signal_handler_disconnect (G_OBJECT (project),
 					     editor->project_closed_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (editor->loaded_widget),
+					     editor->widget_warning_id);
 	}	
+
 	/* Load the GladeWidgetClass */
 	adaptor = widget ? widget->adaptor : NULL;
 	if (editor->loaded_adaptor != adaptor || adaptor == NULL)
@@ -924,11 +961,18 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	editor->loaded_widget = widget;
 	editor->loading = FALSE;
 
+	/* Update warning once */
+	glade_editor_update_class_warning_cb (widget, NULL, editor);
+
 	/* Connect to new widget */
 	project = glade_widget_get_project (editor->loaded_widget);
 	editor->project_closed_signal_id =
 		g_signal_connect (G_OBJECT (project), "close",
 				  G_CALLBACK (glade_editor_close_cb), editor);
+	editor->widget_warning_id =
+		g_signal_connect (G_OBJECT (widget), "notify::support-warning",
+				  G_CALLBACK (glade_editor_update_class_warning_cb),
+				  editor);
 }
 
 /**
@@ -1237,7 +1281,7 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection *selection,
 		text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (desc_view));
 		gtk_tree_model_get (model, &iter, COLUMN_PROPERTY, &property, -1);
 		gtk_text_buffer_set_text (text_buffer,
-					  property ? glade_property_get_tooltip (property) : message,
+					  property ? property->klass->tooltip : message,
 					  -1);
 		if (property)
 			g_object_unref (G_OBJECT (property));

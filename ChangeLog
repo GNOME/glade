@@ -1,3 +1,25 @@
+2008-04-10  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-editor.c, gladeui/glade-editor.h:
+	Loaded and watched the new support_warning on GladeWidget
+
+	* gladeui/glade-editor-property.c, gladeui/glade-editor-property.h:
+	Loaded and watched the new support_warning on GladeProperty
+	
+	* gladeui/glade-widget.c, gladeui/glade-widget.h: Keep a support-warning
+	property around as metadata updated by GladeProject.
+
+	* gladeui/glade-property.c, gladeui/glade-property.h:
+	Added new support_warning and state properties.
+
+	* gladeui/glade-project.c, gladeui/glade-project.h:
+	Now GladeProject generates strings to show in the normal
+	UI along with longer style reports, always updates widgets
+	warning message metadata when they come into the project 
+	or when the format or target versions change.
+
+	* gladeui/glade-signal.c: Removed a bogus return.
+	
 2008-04-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.2. quick bugfix release

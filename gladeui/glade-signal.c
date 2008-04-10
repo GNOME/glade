@@ -158,7 +158,6 @@ glade_signal_write (GladeSignal     *signal,
 						    GLADE_XML_TAG_SIGNAL_TRUE);
 
 	g_free (name);
-	return TRUE;
 }
 
 

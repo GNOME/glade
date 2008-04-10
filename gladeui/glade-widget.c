@@ -91,7 +91,8 @@ enum
 	PROP_TEMPLATE,
 	PROP_REASON,
 	PROP_TOPLEVEL_WIDTH,
-	PROP_TOPLEVEL_HEIGHT
+	PROP_TOPLEVEL_HEIGHT,
+	PROP_SUPPORT_WARNING
 };
 
 static guint         glade_widget_signals[LAST_SIGNAL] = {0};
@@ -902,6 +903,9 @@ glade_widget_get_real_property (GObject         *object,
 	case PROP_TOPLEVEL_HEIGHT:
 		g_value_set_int (value, widget->height);
 		break;
+	case PROP_SUPPORT_WARNING:
+		g_value_set_string (value, widget->support_warning);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -1083,6 +1087,12 @@ glade_widget_class_init (GladeWidgetClass *klass)
 				   G_MAXINT,
 				   -1,
 				   G_PARAM_READWRITE));
+
+	g_object_class_install_property
+		(object_class, 	PROP_SUPPORT_WARNING,
+		 g_param_spec_string ("support warning", _("Support Warning"),
+				      _("A warning string about version mismatches"),
+				      NULL, G_PARAM_READABLE));
 
 	/**
 	 * GladeWidget::add-signal-handler:
@@ -4087,5 +4097,18 @@ glade_widget_generate_path_name (GladeWidget *widget)
 	}
 
 	return g_string_free (string, FALSE);
+}
+
+void
+glade_widget_set_support_warning (GladeWidget *widget,
+				  const gchar *warning)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	
+	if (widget->support_warning)
+		g_free (widget->support_warning);
+	widget->support_warning = g_strdup (warning);
+
+	g_object_notify (G_OBJECT (widget), "support-warning");
 }
 

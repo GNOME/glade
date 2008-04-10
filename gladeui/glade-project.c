@@ -465,19 +465,6 @@ glade_project_changed_impl (GladeProject *project,
 /*******************************************************************
                             Initializers
  *******************************************************************/
-static void
-glade_project_set_target_version (GladeProject *project,
-				  const gchar  *catalog,
-				  gint          major,
-				  gint          minor)
-{
-	g_hash_table_insert (project->priv->target_versions_major,
-			     g_strdup (catalog),
-			     GINT_TO_POINTER (major));
-	g_hash_table_insert (project->priv->target_versions_minor,
-			     g_strdup (catalog),
-			     GINT_TO_POINTER (minor));
-}
 
 static void
 glade_project_get_target_version (GladeProject *project,
@@ -491,6 +478,160 @@ glade_project_get_target_version (GladeProject *project,
 	*minor = GPOINTER_TO_INT 
 		(g_hash_table_lookup (project->priv->target_versions_minor,
 				      catalog));
+}
+
+static void
+glade_project_target_version_for_adaptor (GladeProject        *project, 
+					  GladeWidgetAdaptor  *adaptor,
+					  gint                *major,
+					  gint                *minor)
+{
+	gchar   *catalog = NULL;
+
+	g_object_get (adaptor, "catalog", &catalog, NULL);
+	glade_project_get_target_version (project, catalog, major, minor);
+	g_free (catalog);
+}
+
+static void
+glade_project_verify_adaptor (GladeProject       *project,
+			      GladeWidgetAdaptor *adaptor,
+			      const gchar        *path_name,
+			      GString            *string,
+			      gboolean            saving,
+			      gboolean            forwidget)
+{
+	GladeWidgetAdaptor *adaptor_iter;
+	gint                target_major, target_minor;
+	gchar              *catalog = NULL;
+
+	for (adaptor_iter = adaptor; adaptor_iter;
+	     adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
+	{
+
+		g_object_get (adaptor_iter, "catalog", &catalog, NULL);
+		glade_project_target_version_for_adaptor (project, adaptor_iter, 
+							  &target_major,
+							  &target_minor);
+
+		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
+		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
+		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
+		{
+			if (forwidget)
+			{
+				g_string_append_printf
+					(string, 
+					 _("This widget was introduced in %s %d.%d "
+					   "project targets %s %d.%d"),
+					 catalog,
+					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+					 GWA_VERSION_SINCE_MINOR (adaptor_iter),
+					 catalog, target_major, target_minor);
+			}
+			else
+				g_string_append_printf
+					(string, 
+					 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+					 GWA_VERSION_SINCE_MINOR (adaptor_iter));
+		}
+
+		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		    GWA_BUILDER_UNSUPPORTED (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string,
+					 _("This widget is not supported by GtkBuilder"));
+			}
+			else
+				g_string_append_printf
+					(string,
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is not supported by GtkBuilder\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+		}
+
+		if (!saving && GWA_DEPRECATED (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string, _("This widget is deprecated"));
+			}
+			else
+				g_string_append_printf
+					(string, 
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is deprecated\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+		}
+		g_free (catalog);
+	}
+}
+
+static void
+glade_project_verify_widget_for_ui (GladeWidget *widget)
+{
+	GString *string = g_string_new (NULL);
+
+	glade_project_verify_adaptor (widget->project,
+				      widget->adaptor,
+				      NULL,
+				      string,
+				      FALSE,
+				      TRUE);
+
+	if (string->len > 0)
+		glade_widget_set_support_warning (widget, string->str);
+	else
+		glade_widget_set_support_warning (widget, NULL);
+
+	g_string_free (string, TRUE);
+}
+
+static void
+glade_project_verify_project_for_ui (GladeProject *project)
+{
+	GList *list;
+	GladeWidget *widget;
+
+	/* Sync displayable info here */
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		widget = glade_widget_get_from_gobject (list->data);
+
+		glade_project_verify_widget_for_ui (widget);
+		glade_project_verify_properties (widget);
+
+	}
+}
+
+static void
+glade_project_set_target_version (GladeProject *project,
+				  const gchar  *catalog,
+				  gint          major,
+				  gint          minor)
+{
+
+	g_hash_table_insert (project->priv->target_versions_major,
+			     g_strdup (catalog),
+			     GINT_TO_POINTER (major));
+	g_hash_table_insert (project->priv->target_versions_minor,
+			     g_strdup (catalog),
+			     GINT_TO_POINTER (minor));
+
+	glade_project_verify_project_for_ui (project);
+
 }
 
 static void
@@ -1030,8 +1171,250 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	 */
 	glade_project_fix_object_props (project);
 
+	/* Update ui with versioning info
+	 */
+	glade_project_verify_project_for_ui (project);
+
 	return TRUE;
 
+}
+
+
+
+static void
+glade_project_verify_property (GladeProperty  *property, 
+			       const gchar    *path_name,
+			       GString        *string,
+			       gboolean        forwidget)
+{
+	GladeWidgetAdaptor *adaptor;
+	gint target_major, target_minor;
+	gchar *catalog, *tooltip;
+
+	if (glade_property_original_default (property) && !forwidget)
+		return;
+
+	adaptor = GLADE_WIDGET_ADAPTOR (property->klass->origin_handle);
+	
+	g_object_get (adaptor, "catalog", &catalog, NULL);
+	glade_project_target_version_for_adaptor (property->widget->project, adaptor, 
+						  &target_major,
+						  &target_minor);
+	
+	if (target_major < property->klass->version_since_major ||
+	    (target_major == property->klass->version_since_major &&
+	     target_minor < property->klass->version_since_minor))
+	{
+		if (forwidget)
+		{
+			tooltip = g_strdup_printf
+				(_("This property was introduced in %s %d.%d, "
+				   "project targets %s %d.%d"),
+				 catalog,
+				 property->klass->version_since_major,
+				 property->klass->version_since_minor,
+				 catalog,
+				 target_major, target_minor);
+
+			glade_property_set_support_warning (property, tooltip);
+			g_free (tooltip);
+		}
+		else
+			g_string_append_printf
+				(string,
+				 property->klass->packing ?
+				 _("[%s] Packing property '%s' of object class '%s' was "
+				   "introduced in %s %d.%d\n") :
+				 _("[%s] Property '%s' of object class '%s' was "
+				   "introduced in %s %d.%d\n"),
+				 path_name,
+				 property->klass->name, 
+				 adaptor->title, catalog,
+				 property->klass->version_since_major,
+				 property->klass->version_since_minor);
+	} 
+	else if (forwidget)
+		glade_property_set_support_warning (property, NULL);
+
+	g_free (catalog);
+		
+}
+
+
+static void
+glade_project_verify_properties_internal (GladeWidget  *widget, 
+					  const gchar  *path_name,
+					  GString      *string,
+					  gboolean      forwidget)
+{
+	GList *list;
+	GladeProperty *property;
+
+	for (list = widget->properties; list; list = list->next)
+	{
+		property = list->data;
+		glade_project_verify_property (property, path_name, string, forwidget);
+	}
+
+	for (list = widget->packing_properties; list; list = list->next)
+	{
+		property = list->data;
+
+		g_assert (widget->parent);
+		property = list->data;
+		glade_project_verify_property (property, path_name, string, forwidget);
+	}
+}
+
+
+/**
+ * glade_project_verify_properties:
+ * @widget: A #GladeWidget
+ *
+ * Synchonizes @widget with user visible information
+ * about version compatability
+ */
+void
+glade_project_verify_properties (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	glade_project_verify_properties_internal (widget, NULL, NULL, TRUE);
+}
+
+static void
+glade_project_verify_signal (GladeWidget  *widget,
+			     GladeSignal  *signal,
+			     const gchar  *path_name,
+			     GString      *string)
+{
+	GladeSignalClass *signal_class;
+	gint target_major, target_minor;
+	gchar *catalog;
+
+	signal_class = 
+		glade_widget_adaptor_get_signal_class (widget->adaptor,
+						       signal->name);
+	g_assert (signal_class);
+	g_assert (signal_class->adaptor);
+	
+	g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
+	glade_project_target_version_for_adaptor (widget->project, 
+						  signal_class->adaptor, 
+						  &target_major,
+						  &target_minor);
+
+	if (target_major < signal_class->version_since_major ||
+	    (target_major == signal_class->version_since_major &&
+	     target_minor < signal_class->version_since_minor))
+		g_string_append_printf
+			(string, 
+			 _("[%s] Signal '%s' of object class '%s' was "
+			   "introduced in %s %d.%d\n"),
+			 path_name,
+			 signal->name,
+			 signal_class->adaptor->title, 
+			 catalog,
+			 signal_class->version_since_major,
+			 signal_class->version_since_minor);
+
+	g_free (catalog);
+}
+
+
+static void
+glade_project_verify_signals (GladeWidget  *widget, 
+			      const gchar  *path_name,
+			      GString      *string)
+{
+	GladeSignal      *signal;
+	GList *signals, *list;
+	
+	if ((signals = glade_widget_get_signal_list (widget)) != NULL)
+	{
+		for (list = signals; list; list = list->next)
+		{
+			signal = list->data;
+			glade_project_verify_signal (widget, signal, path_name, string);
+		}
+		g_list_free (signals);
+	}	
+}
+
+static gboolean
+glade_project_verify_dialog (GladeProject *project,
+			     GString      *string,
+			     gboolean      saving)
+{
+	GtkWidget     *swindow;
+	GtkWidget     *textview;
+	GtkWidget     *expander;
+	GtkTextBuffer *buffer;
+	gchar         *name;
+	gboolean ret;
+
+	swindow   = gtk_scrolled_window_new (NULL, NULL);
+	textview  = gtk_text_view_new ();
+	buffer    = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
+	expander  = gtk_expander_new (_("Details"));
+
+	gtk_text_buffer_set_text (buffer, string->str, -1);
+
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swindow),
+					       textview);
+	gtk_container_add (GTK_CONTAINER (expander), swindow);
+	gtk_widget_show_all (expander);
+
+	gtk_widget_set_size_request (swindow, 800, -1);
+	
+	name = glade_project_get_name (project);
+	ret = glade_util_ui_message (glade_app_get_window (),
+				     saving ? GLADE_UI_YES_OR_NO : GLADE_UI_INFO,
+				     expander,
+				     saving ? 
+				     _("Project %s has errors, save anyway ?") :
+				     _("Project %s has deprecated widgets "
+				       "and/or version mismatches."), name);
+	g_free (name);
+
+	return ret;
+}
+
+
+static gboolean
+glade_project_verify (GladeProject *project, 
+		      gboolean      saving)
+{
+	GString     *string = g_string_new (NULL);
+	GladeWidget *widget;
+	GList       *list;
+	gboolean     ret = TRUE;
+	gchar       *path_name;
+
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		widget = glade_widget_get_from_gobject (list->data);
+
+		path_name = glade_widget_generate_path_name (widget);
+
+		glade_project_verify_adaptor (project, widget->adaptor, 
+					      path_name, string, saving, FALSE);
+		glade_project_verify_properties_internal (widget, path_name, string, FALSE);
+		glade_project_verify_signals (widget, path_name, string);
+
+		g_free (path_name);
+	}
+
+	if (string->len > 0)
+	{
+		ret = glade_project_verify_dialog (project, string, saving);
+
+		if (!saving)
+			ret = FALSE;
+	}
+
+	g_string_free (string, TRUE);
+
+	return ret;
 }
 
 
@@ -1164,7 +1547,6 @@ glade_project_add_object (GladeProject *project,
 {
 	GladeWidget   *gwidget;
 	GList         *list, *children;
-	GtkWindow     *transient_parent;
 	static gint    reentrancy_count = 0;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -1173,7 +1555,6 @@ glade_project_add_object (GladeProject *project,
 	/* We don't list placeholders */
 	if (GLADE_IS_PLACEHOLDER (object)) 
 		return;
-
 
 	/* Only widgets accounted for in the catalog or widgets declared
 	 * in the plugin with glade_widget_new_for_internal_child () are
@@ -1185,7 +1566,6 @@ glade_project_add_object (GladeProject *project,
 	/* Dont add widgets that are already in the project */
 	if (glade_project_has_object (project, object))
 		return;
-
 
 	/* Police widget names here (just rename them on the way in the project)
 	 */
@@ -1221,17 +1601,18 @@ glade_project_add_object (GladeProject *project,
 		       glade_project_signals [ADD_WIDGET],
 		       0, gwidget);
 
-	if (GTK_IS_WINDOW (object) &&
-	    (transient_parent = glade_app_get_transient_parent ()) != NULL)
-		gtk_window_set_transient_for (GTK_WINDOW (object), transient_parent);
+	/* Update user visible compatability info */
+	glade_project_verify_properties (gwidget);
 
 	/* Notify widget it was added to the project */
 	glade_widget_project_notify (gwidget, project);
 
-	/* Call this once at the end for every recursive call */
+	/* Run this once at the end for every recursive call */
 	if (--reentrancy_count == 0)
+	{
 		glade_project_sync_resources_for_widget
 			(project, old_project, gwidget, FALSE);
+	}
 }
 
 /**
@@ -1904,269 +2285,6 @@ glade_project_move_resources (GladeProject *project,
 	g_list_free (resources);
 }
 
-static void
-glade_project_target_version_for_adaptor (GladeProject        *project, 
-					  GladeWidgetAdaptor  *adaptor,
-					  gint                *major,
-					  gint                *minor)
-{
-	gchar   *catalog = NULL;
-
-	g_object_get (adaptor, "catalog", &catalog, NULL);
-	glade_project_get_target_version (project, catalog, major, minor);
-	g_free (catalog);
-}
-
-static void
-glade_project_verify_property (GladeProperty  *property, 
-			       const gchar    *path_name,
-			       GString        *string,
-			       gboolean        packing)
-{
-	GladeWidgetAdaptor *adaptor;
-	gint target_major, target_minor;
-	gchar *catalog;
-
-	adaptor = GLADE_WIDGET_ADAPTOR (property->klass->origin_handle);
-	
-	g_object_get (adaptor, "catalog", &catalog, NULL);
-	glade_project_target_version_for_adaptor (property->widget->project, adaptor, 
-						  &target_major,
-						  &target_minor);
-	
-	if (target_major < property->klass->version_since_major ||
-	    (target_major == property->klass->version_since_major &&
-	     target_minor < property->klass->version_since_minor))
-		g_string_append_printf
-				(string,
-				 packing ?
-				 _("[%s] Packing property '%s' of object class '%s' was "
-				   "introduced in %s %d.%d\n") :
-				 _("[%s] Property '%s' of object class '%s' was "
-				   "introduced in %s %d.%d\n"),
-				 path_name,
-				 property->klass->name, 
-				 adaptor->title, catalog,
-				 property->klass->version_since_major,
-				 property->klass->version_since_minor);
-
-	g_free (catalog);
-		
-}
-
-
-static void
-glade_project_verify_properties (GladeWidget  *widget, 
-				 const gchar  *path_name,
-				 GString      *string)
-{
-	GList *list;
-	GladeProperty *property;
-
-	for (list = widget->properties; list; list = list->next)
-	{
-		property = list->data;
-		glade_project_verify_property (property, path_name, string, FALSE);
-	}
-
-	for (list = widget->packing_properties; list; list = list->next)
-	{
-		property = list->data;
-
-		g_assert (widget->parent);
-		property = list->data;
-		glade_project_verify_property (property, path_name, string, FALSE);
-	}
-}
-
-static void
-glade_project_verify_signal (GladeWidget  *widget,
-			     GladeSignal  *signal,
-			     const gchar  *path_name,
-			     GString      *string)
-{
-	GladeSignalClass *signal_class;
-	gint target_major, target_minor;
-	gchar *catalog;
-
-	signal_class = 
-		glade_widget_adaptor_get_signal_class (widget->adaptor,
-						       signal->name);
-	g_assert (signal_class);
-	g_assert (signal_class->adaptor);
-	
-	g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
-	glade_project_target_version_for_adaptor (widget->project, 
-						  signal_class->adaptor, 
-						  &target_major,
-						  &target_minor);
-
-	if (target_major < signal_class->version_since_major ||
-	    (target_major == signal_class->version_since_major &&
-	     target_minor < signal_class->version_since_minor))
-		g_string_append_printf
-			(string, 
-			 _("[%s] Signal '%s' of object class '%s' was "
-			   "introduced in %s %d.%d\n"),
-			 path_name,
-			 signal->name,
-			 signal_class->adaptor->title, 
-			 catalog,
-			 signal_class->version_since_major,
-			 signal_class->version_since_minor);
-
-	g_free (catalog);
-}
-
-
-static void
-glade_project_verify_signals (GladeWidget  *widget, 
-			      const gchar  *path_name,
-			      GString      *string)
-{
-	GladeSignal      *signal;
-	GList *signals, *list;
-	
-	if ((signals = glade_widget_get_signal_list (widget)) != NULL)
-	{
-		for (list = signals; list; list = list->next)
-		{
-			signal = list->data;
-			glade_project_verify_signal (widget, signal, path_name, string);
-		}
-		g_list_free (signals);
-	}	
-}
-
-static gboolean
-glade_project_verify_dialog (GladeProject *project,
-			     GString      *string,
-			     gboolean      saving)
-{
-	GtkWidget     *swindow;
-	GtkWidget     *textview;
-	GtkWidget     *expander;
-	GtkTextBuffer *buffer;
-	gchar         *name;
-	gboolean ret;
-
-	swindow   = gtk_scrolled_window_new (NULL, NULL);
-	textview  = gtk_text_view_new ();
-	buffer    = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
-	expander  = gtk_expander_new (_("Details"));
-
-	gtk_text_buffer_set_text (buffer, string->str, -1);
-
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swindow),
-					       textview);
-	gtk_container_add (GTK_CONTAINER (expander), swindow);
-	gtk_widget_show_all (expander);
-
-	gtk_widget_set_size_request (swindow, 800, -1);
-	
-	name = glade_project_get_name (project);
-	ret = glade_util_ui_message (glade_app_get_window (),
-				     saving ? GLADE_UI_YES_OR_NO : GLADE_UI_INFO,
-				     expander,
-				     saving ? 
-				     _("Project %s has errors, save anyway ?") :
-				     _("Project %s has deprecated widgets "
-				       "and/or version mismatches."), name);
-	g_free (name);
-
-	return ret;
-}
-
-static void
-glade_project_verify_adaptor (GladeProject       *project,
-			      GladeWidgetAdaptor *adaptor,
-			      const gchar        *path_name,
-			      GString            *string,
-			      gboolean            saving)
-{
-	GladeWidgetAdaptor *adaptor_iter;
-	gint                target_major, target_minor;
-	gchar              *catalog = NULL;
-
-	for (adaptor_iter = adaptor; adaptor_iter;
-	     adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
-	{
-
-		g_object_get (adaptor_iter, "catalog", &catalog, NULL);
-		glade_project_target_version_for_adaptor (project, adaptor_iter, 
-							  &target_major,
-							  &target_minor);
-
-		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
-		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
-		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
-			g_string_append_printf
-				(string, 
-				 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
-				 path_name, adaptor_iter->title, catalog,
-				 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-				 GWA_VERSION_SINCE_MINOR (adaptor_iter));
-
-		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		    GWA_BUILDER_UNSUPPORTED (adaptor_iter))
-			g_string_append_printf
-				(string,
-				 _("[%s] Object class '%s' from %s %d.%d is not supported "
-				   "by GtkBuilder\n"),
-				 path_name, adaptor_iter->title, catalog,
-				 target_major, target_minor);
-
-		if (!saving && GWA_DEPRECATED (adaptor_iter))
-			g_string_append_printf
-				(string, 
-				 _("[%s] Object class '%s' from %s %d.%d is deprecated\n"),
-				 path_name, adaptor_iter->title, catalog,
-				 target_major, target_minor);
-
-		g_free (catalog);
-	}
-
-}
-
-
-static gboolean
-glade_project_verify (GladeProject *project, 
-		      gboolean      saving)
-{
-	GString     *string = g_string_new (NULL);
-	GladeWidget *widget;
-	GList       *list;
-	gboolean     ret = TRUE;
-	gchar       *path_name;
-
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		widget = glade_widget_get_from_gobject (list->data);
-
-		path_name = glade_widget_generate_path_name (widget);
-
-		glade_project_verify_adaptor (project, widget->adaptor, 
-					      path_name, string, saving);
-		glade_project_verify_properties (widget, path_name, string);
-		glade_project_verify_signals (widget, path_name, string);
-
-		g_free (path_name);
-	}
-
-	if (string->len > 0)
-	{
-		ret = glade_project_verify_dialog (project, string, saving);
-
-		if (!saving)
-			ret = FALSE;
-	}
-
-	g_string_free (string, TRUE);
-
-	return ret;
-}
-
-
 /**
  * glade_project_save:
  * @project: a #GladeProject
@@ -2743,6 +2861,8 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	project->priv->format = format; 
+
+	glade_project_verify_project_for_ui (project);
 }
 
 GladeProjectFormat
@@ -2988,7 +3108,7 @@ glade_project_preferences (GladeProject *project)
 
 	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (glade_app_get_window ()),
-					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_OK,
 					      GTK_RESPONSE_ACCEPT,
 					      NULL);

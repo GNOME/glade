@@ -102,6 +102,8 @@ struct _GladeEditor
 
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
+	gulong widget_warning_id; /* Update when widget changes warning messages.
+				   */
 	
 	GtkWidget *reset_button; /* The reset button
 				  */
@@ -156,6 +158,11 @@ struct _GladeEditorTable
 				  * we load into the inputs inside this table
 				  * the information about the selected widget.
 				  */
+
+	GtkWidget *warning;   /* A pointer to an icon we can show in the class
+			       * property to publish tooltips for class related
+			       * versioning errors.
+			       */
 	
 	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
 				* the name of the widget. This is the

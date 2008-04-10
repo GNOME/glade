@@ -85,8 +85,15 @@ struct _GladeEditorProperty
 	GladeProperty      *property;       /* The currently loaded property
 					     */
 
-	GtkWidget          *item_label;     /* Name of property (need a handle to set visual insensitive state)
+	GtkWidget          *item_label;     /* The property name portion of the eprop
 					     */
+
+	GtkWidget          *label;          /* The actual property name label
+					     */
+
+	GtkWidget          *warning;        /* Icon to show warnings
+					     */
+
 	GtkWidget          *input;          /* Input part of property (need to set sensitivity seperately)
 					     */
 
@@ -100,6 +107,7 @@ struct _GladeEditorProperty
 	gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
 	gulong              changed_id;     /* signal connection id for value changes          */
 	gulong              enabled_id;     /* signal connection id for enable/disable changes */
+	gulong              state_id;       /* signal connection id for state changes          */
 	
 	gboolean            loading;        /* True during glade_editor_property_load calls, this
 					     * is used to avoid feedback from input widgets.

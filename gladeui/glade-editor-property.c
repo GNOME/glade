@@ -107,14 +107,23 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 }
 
 
-
 static void
 glade_editor_property_tooltip_cb (GladeProperty       *property,
 				  const gchar         *tooltip,
+				  const gchar         *insensitive,
+				  const gchar         *support,
 				  GladeEditorProperty *eprop)
 {
-	gtk_widget_set_tooltip_text (eprop->input, tooltip);
-	gtk_widget_set_tooltip_text (eprop->item_label, tooltip);
+	const gchar *choice_tooltip;
+
+	if (glade_property_get_sensitive (property))
+		choice_tooltip = tooltip;
+	else
+		choice_tooltip = insensitive;
+
+	gtk_widget_set_tooltip_text (eprop->input, choice_tooltip);
+	gtk_widget_set_tooltip_text (eprop->label, choice_tooltip);
+	gtk_widget_set_tooltip_text (eprop->warning, support);
 }
 
 static void
@@ -139,6 +148,59 @@ glade_editor_property_value_changed_cb (GladeProperty       *property,
 {
 	g_assert (eprop->property == property);
 	glade_editor_property_load (eprop, eprop->property);
+}
+
+
+
+
+static void
+glade_editor_property_fix_label (GladeEditorProperty *eprop)
+{
+	gchar *text = NULL;
+
+	if (!eprop->property)
+		return;
+	
+	/* refresh label */
+	switch (eprop->property->state) 
+	{
+	case GLADE_STATE_NORMAL:
+	case GLADE_STATE_UNSUPPORTED:
+		text = g_strdup_printf ("%s:", eprop->klass->name);
+		break;
+	case GLADE_STATE_CHANGED:
+	case GLADE_STATE_UNSUPPORTED_CHANGED:
+		text = g_strdup_printf ("<b>%s:</b>", eprop->klass->name);
+		break;
+	default:
+		g_assert_not_reached ();
+	}
+
+	/* refresh icon */
+	switch (eprop->property->state) 
+	{
+	case GLADE_STATE_NORMAL:
+	case GLADE_STATE_CHANGED:
+		gtk_widget_hide (eprop->warning);
+		break;
+	case GLADE_STATE_UNSUPPORTED:
+	case GLADE_STATE_UNSUPPORTED_CHANGED:
+		gtk_widget_show (eprop->warning);
+		break;
+	default:
+		g_assert_not_reached ();
+	}
+
+	gtk_label_set_markup (GTK_LABEL (eprop->label), text);
+	g_free (text);
+}
+
+static void
+glade_editor_property_state_cb (GladeProperty       *property,
+				GParamSpec          *pspec,
+				GladeEditorProperty *eprop)
+{
+	glade_editor_property_fix_label (eprop);
 }
 
 static void
@@ -210,6 +272,16 @@ glade_editor_property_create_info_button (GladeEditorProperty *eprop)
 	return button;
 }
 
+static GtkWidget *
+glade_editor_property_create_warning_icon (GladeEditorProperty *eprop)
+{
+	GtkWidget *widget = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
+						      GTK_ICON_SIZE_MENU);
+	gtk_widget_set_no_show_all (widget, TRUE);
+	return widget;
+}
+
+
 static GObject *
 glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
@@ -217,20 +289,12 @@ glade_editor_property_constructor (GType                  type,
 {
 	GObject             *obj;
 	GladeEditorProperty *eprop;
-	gchar               *text;
 
 	/* Invoke parent constructor (eprop->klass should be resolved by this point) . */
 	obj = G_OBJECT_CLASS (table_class)->constructor
 		(type, n_construct_properties, construct_properties);
 	
 	eprop = GLADE_EDITOR_PROPERTY (obj);
-
-	/* Create label */
-	text = g_strdup_printf ("%s:", eprop->klass->name);
-	eprop->item_label = gtk_label_new (text);
-	g_free (text);
-
-	gtk_misc_set_alignment (GTK_MISC (eprop->item_label), 1.0, 0.5);
 
 	/* Create hbox and possibly check button
 	 */
@@ -246,14 +310,25 @@ glade_editor_property_constructor (GType                  type,
 	/* Create the class specific input widget and add it */
 	eprop->input = GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->create_input (eprop);
 	gtk_widget_show (eprop->input);
-	gtk_box_pack_start (GTK_BOX (eprop), eprop->input, TRUE, TRUE, 0);
 
 	/* Create the informational button and add it */
 	eprop->info = glade_editor_property_create_info_button (eprop);
 	g_signal_connect (G_OBJECT (eprop->info), "clicked", 
 			  G_CALLBACK (glade_editor_property_info_clicked_cb), eprop);
 
+	/* Create the warning icon and add it */
+	eprop->warning = glade_editor_property_create_warning_icon (eprop);
 
+	/* Create label */
+	eprop->item_label = gtk_hbox_new (FALSE, 4);
+	eprop->label      = gtk_label_new (NULL);
+	gtk_misc_set_alignment (GTK_MISC (eprop->label), 1.0, 0.5);
+	gtk_box_pack_start (GTK_BOX (eprop->item_label), eprop->label, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (eprop->item_label), eprop->warning, FALSE, TRUE, 0);
+
+	glade_editor_property_fix_label (eprop);
+
+	gtk_box_pack_start (GTK_BOX (eprop), eprop->input, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (eprop), eprop->info, FALSE, FALSE, 2);
 
 	return obj;
@@ -330,6 +405,7 @@ glade_eprop_property_finalized (GladeEditorProperty *eprop,
 	eprop->sensitive_id = 0;
 	eprop->changed_id   = 0;
 	eprop->enabled_id   = 0;
+	eprop->state_id     = 0;
 	eprop->property     = NULL;
 
 	glade_editor_property_load (eprop, NULL);
@@ -364,14 +440,15 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		if (eprop->changed_id > 0)
 			g_signal_handler_disconnect (eprop->property,
 						     eprop->changed_id);
-		if (eprop->enabled_id > 0)
+		if (eprop->state_id > 0)
 			g_signal_handler_disconnect (eprop->property, 
-						     eprop->enabled_id);
+						     eprop->state_id);
 
 		eprop->tooltip_id   = 0;
 		eprop->sensitive_id = 0;
 		eprop->changed_id   = 0;
 		eprop->enabled_id   = 0;
+		eprop->state_id     = 0;
 
 		/* Unref it here */
 		g_object_weak_unref (G_OBJECT (eprop->property),
@@ -415,6 +492,12 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 					  "notify::enabled", 
 					  G_CALLBACK (glade_editor_property_enabled_cb),
 					  eprop);
+		eprop->state_id =
+			g_signal_connect (G_OBJECT (eprop->property),
+					  "notify::state", 
+					  G_CALLBACK (glade_editor_property_state_cb),
+					  eprop);
+
 
 		/* In query dialogs when the user hits cancel, 
 		 * these babies go away (so better stay protected).
@@ -426,7 +509,11 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		/* Load initial tooltips
 		 */
 		glade_editor_property_tooltip_cb
-			(property, glade_property_get_tooltip (property), eprop);
+			(property, 
+			 property->klass->tooltip, 
+			 property->insensitive_tooltip,
+			 property->support_warning,
+			 eprop);
 		
 		/* Load initial enabled state
 		 */
@@ -435,6 +522,10 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		/* Load initial sensitive state.
 		 */
 		glade_editor_property_sensitivity_cb (property, NULL, eprop);
+
+		/* Load intial label state
+		 */
+		glade_editor_property_state_cb (property, NULL, eprop);
 	}
 }
 

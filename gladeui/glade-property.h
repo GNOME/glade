@@ -15,6 +15,14 @@ G_BEGIN_DECLS
 
 typedef struct _GladePropertyKlass GladePropertyKlass;
 
+typedef enum {
+	GLADE_STATE_NORMAL = 0,
+	GLADE_STATE_CHANGED,
+	GLADE_STATE_UNSUPPORTED,	
+	GLADE_STATE_UNSUPPORTED_CHANGED,
+	GLADE_N_STATES
+} GladePropertyState;
+
 /* A GladeProperty is an instance of a GladePropertyClass.
  * There will be one GladePropertyClass for "GtkLabel->label" but one
  * GladeProperty for each GtkLabel in the GladeProject.
@@ -29,6 +37,9 @@ struct _GladeProperty
 	GladeWidget        *widget;    /* A pointer to the GladeWidget that this
 					* GladeProperty is modifying
 					*/
+
+	GladePropertyState  state;     /* Current property state, used by editing widgets.
+					*/
 	
 	GValue             *value;     /* The value of the property
 					*/
@@ -37,8 +48,15 @@ struct _GladeProperty
 					* property is "optional" this takes precedence).
 					*/
 	gchar              *insensitive_tooltip; /* Tooltip to display when in insensitive state
-						  * (used to explain why the property is insensitive)
+						  * (used to explain why the property is 
+						  *  insensitive)
 						  */
+
+	gchar              *support_warning; /* Tooltip to display when the property
+					      * has format problems
+					      * (used to explain why the property is 
+					      *  insensitive)
+					      */
 
 	gboolean            enabled;   /* Enabled is a flag that is used for GladeProperties
 					* that have the optional flag set to let us know
@@ -78,11 +96,11 @@ struct _GladePropertyKlass
 	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
 	void                    (* load)                  (GladeProperty *);
-	G_CONST_RETURN gchar *  (* get_tooltip)           (GladeProperty *);
 
 	/* Signals */
 	void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
-	void             (* tooltip_changed)       (GladeProperty *, const gchar *);
+	void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
+						    const gchar   *, const gchar *);
 };
 
 
@@ -148,10 +166,11 @@ void                    glade_property_write                 (GladeProperty     
 							      GladeXmlContext    *context,
 							      GladeXmlNode       *node);
 
-G_CONST_RETURN gchar   *glade_property_get_tooltip           (GladeProperty      *property);
-
 void                    glade_property_set_sensitive         (GladeProperty      *property,
 							      gboolean            sensitive,
+							      const gchar        *reason);
+
+void                    glade_property_set_support_warning   (GladeProperty      *property,
 							      const gchar        *reason);
 
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);

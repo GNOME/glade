@@ -71,7 +71,8 @@ enum
 	PROP_SENSITIVE,
 	PROP_I18N_TRANSLATABLE,
 	PROP_I18N_HAS_CONTEXT,
-	PROP_I18N_COMMENT
+	PROP_I18N_COMMENT,
+	PROP_STATE
 };
 
 static guint         glade_property_signals[LAST_SIGNAL] = { 0 };
@@ -211,6 +212,32 @@ glade_property_verify (GladeProperty *property, const GValue *value)
 }
 
 static void
+glade_property_fix_state (GladeProperty *property)
+{
+	property->state = GLADE_STATE_NORMAL;
+
+	if (!property->sensitive)
+		property->state = GLADE_STATE_NORMAL;
+	else if (property->support_warning)
+	{
+		if (glade_property_default (property))
+			property->state = GLADE_STATE_UNSUPPORTED;
+		else 
+			property->state = GLADE_STATE_UNSUPPORTED_CHANGED;
+	}
+	else
+	{
+		if (glade_property_default (property))
+			property->state = GLADE_STATE_NORMAL;
+		else 
+			property->state = GLADE_STATE_CHANGED;
+	}
+
+	g_object_notify (G_OBJECT (property), "state");
+}
+
+
+static void
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
 	GladeProject *project = property->widget ?
@@ -270,11 +297,15 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 	GLADE_PROPERTY_GET_KLASS (property)->sync (property);
 
+	glade_property_fix_state (property);
+
 	if (changed && property->widget)
 	{
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[VALUE_CHANGED],
 			       0, &old_value, property->value);
+
+		glade_project_verify_properties (property->widget);
 	}
 	
 	g_value_unset (&old_value);
@@ -355,17 +386,6 @@ glade_property_load_impl (GladeProperty *property)
 		g_object_get_property (object, property->klass->id, property->value);
 }
 
-static G_CONST_RETURN gchar *
-glade_property_get_tooltip_impl (GladeProperty *property)
-{
-	gchar *tooltip = NULL;
-	if (property->sensitive == FALSE)
-		tooltip = property->insensitive_tooltip;
-	else
-		tooltip = property->klass->tooltip;
-	return tooltip;
-}
-
 /*******************************************************************************
                       GObjectClass & Object Construction
  *******************************************************************************/
@@ -425,6 +445,9 @@ glade_property_get_real_property (GObject    *object,
 	case PROP_I18N_COMMENT:
 		g_value_set_string (value, glade_property_i18n_get_comment (property));
 		break;
+	case PROP_STATE:
+		g_value_set_int (value, property->state);
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -479,7 +502,6 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->get_default           = glade_property_get_default_impl;
 	prop_class->sync                  = glade_property_sync_impl;
 	prop_class->load                  = glade_property_load_impl;
-	prop_class->get_tooltip           = glade_property_get_tooltip_impl;
 	prop_class->value_changed         = NULL;
 	prop_class->tooltip_changed       = NULL;
 
@@ -519,6 +541,16 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		  _("Whether or not the translatable string has a context prefix"),
 		  FALSE, G_PARAM_READWRITE));
 
+	g_object_class_install_property 
+		(object_class, PROP_STATE,
+		 g_param_spec_int 
+		 ("state", _("Visual State"), 
+		  _("Priority information for the property editor to act on"),
+		  GLADE_STATE_NORMAL,
+		  GLADE_N_STATES - 1,
+		  GLADE_STATE_NORMAL, 
+		  G_PARAM_READABLE));
+
 	/* Signal */
 	glade_property_signals[VALUE_CHANGED] =
 		g_signal_new ("value-changed",
@@ -537,8 +569,8 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 			      G_STRUCT_OFFSET (GladePropertyKlass,
 					       tooltip_changed),
 			      NULL, NULL,
-			      g_cclosure_marshal_VOID__POINTER,
-			      G_TYPE_NONE, 1, G_TYPE_POINTER);
+			      glade_marshal_VOID__STRING_STRING_STRING,
+			      G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
 
 }
@@ -1201,20 +1233,6 @@ glade_property_remove_object (GladeProperty  *property,
 	glade_property_set (property, list);
 }
 
-
-/**
- * glade_property_get_tooltip:
- * @property: a #GladeProperty
- *
- * Returns: The appropriate tooltip for the editor
- */
-G_CONST_RETURN gchar *
-glade_property_get_tooltip (GladeProperty *property)
-{
-	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
-	return GLADE_PROPERTY_GET_KLASS (property)->get_tooltip (property);
-}
-
 /* Parameters for translatable properties. */
 void
 glade_property_i18n_set_comment (GladeProperty *property,
@@ -1285,15 +1303,19 @@ glade_property_set_sensitive (GladeProperty *property,
 
 	if (property->sensitive != sensitive)
 	{
-		gchar *tooltip;
 		property->sensitive = sensitive;
 
-		tooltip = (gchar *)GLADE_PROPERTY_GET_KLASS
-			(property)->get_tooltip (property);
+		/* Clear it */
+		if (sensitive)
+			property->insensitive_tooltip =
+				(g_free (property->insensitive_tooltip), NULL);
 
 		g_signal_emit (G_OBJECT (property),
 			       glade_property_signals[TOOLTIP_CHANGED],
-			       0, tooltip);
+			       0, 
+			       property->klass->tooltip,
+			       property->insensitive_tooltip,
+			       property->support_warning);
 		
 	}
 	g_object_notify (G_OBJECT (property), "sensitive");
@@ -1305,6 +1327,27 @@ glade_property_get_sensitive (GladeProperty *property)
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 	return property->sensitive;
 }
+
+void
+glade_property_set_support_warning (GladeProperty      *property,
+				    const gchar        *reason)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	if (property->support_warning)
+		g_free (property->support_warning);
+	property->support_warning = g_strdup (reason);
+
+	g_signal_emit (G_OBJECT (property),
+		       glade_property_signals[TOOLTIP_CHANGED],
+		       0, 
+		       property->klass->tooltip,
+		       property->insensitive_tooltip,
+		       property->support_warning);
+
+	glade_property_fix_state (property);
+}
+
 
 /**
  * glade_property_set_save_always:
