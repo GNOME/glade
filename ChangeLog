@@ -1,5 +1,15 @@
 2008-04-10  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/glade-palette-item.c, gladeui/glade-palette.c,
+	gladeui/glade-palette-item.h, gladeui/glade-palette.h:
+	Now load insensitive when widgets are unsupported, and use
+	a warning icon when they are deprecated, use tooltips from
+	glade_project_verify_adaptor ().
+
+	* gladeui/glade-app.[ch]: Added glade_app_check_get_project ()
+
+	* gladeui/glade-project.c, gladeui/glade-project.h: fix some mistakes
+	
 	* src/glade-window.c: Added padding on top of undocked tools, removed
 	custom label handling of widget name.
 

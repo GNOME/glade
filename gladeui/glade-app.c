@@ -792,6 +792,14 @@ glade_app_get_project (void)
 	return app->priv->active_project;
 }
 
+GladeProject *
+glade_app_check_get_project (void)
+{
+	if (singleton_app)
+		return glade_app_get_project ();
+	return NULL;
+}
+
 GList *
 glade_app_get_projects (void)
 {
@@ -1061,6 +1069,9 @@ glade_app_set_project (GladeProject *project)
 	/* (XXX really ?) trigger the selection changed signal to update the editor */
 	glade_project_selection_changed (project);
 	
+	/* refresh palette for active project */
+	glade_palette_refresh (glade_app_get_palette ());
+
 	/* Update UI */
 	glade_app_update_ui ();
 

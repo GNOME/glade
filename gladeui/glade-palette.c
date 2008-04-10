@@ -455,8 +455,6 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 
 	glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (item), priv->item_appearance);
 
-        gtk_widget_set_tooltip_text (item, adaptor->title);
-
 	g_signal_connect (G_OBJECT (item), "toggled",
 			  G_CALLBACK (glade_palette_on_button_toggled), palette);
 
@@ -531,11 +529,8 @@ glade_palette_update_appearance (GladePalette *palette)
 	GtkWidget *viewport;
 	GSList *sections;
 	GList *items, *i;
-        gboolean show_tooltips;
 
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
-
-        show_tooltips = priv->item_appearance == GLADE_ITEM_ICON_ONLY;
 
 	for (sections = priv->sections; sections; sections = sections->next)
 	{
@@ -545,8 +540,6 @@ glade_palette_update_appearance (GladePalette *palette)
 		{
 			glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (i->data), priv->item_appearance);
 			glade_palette_item_set_use_small_icon (GLADE_PALETTE_ITEM (i->data), priv->use_small_item_icons);
-
-                        g_object_set (i->data, "has-tooltip", show_tooltips, NULL);
 		}
 		g_list_free (items);
 	}
@@ -763,5 +756,34 @@ glade_palette_get_show_selector_button (GladePalette *palette)
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 
 	return GTK_WIDGET_VISIBLE (palette->priv->selector_hbox);
+}
+
+/**
+ * glade_palette_refresh:
+ * @palette: a #GladePalette
+ *
+ * Refreshes project dependant states of palette buttons
+ */
+void
+glade_palette_refresh (GladePalette *palette)
+{
+	GladePalettePrivate *priv;
+	GSList *sections;
+	GList *items, *i;
+
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
+
+	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+
+	for (sections = priv->sections; sections; sections = sections->next)
+	{
+		items = gtk_container_get_children 
+			(GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (sections->data))));
+
+		for (i = items; i; i = i->next)
+			glade_palette_item_refresh (GLADE_PALETTE_ITEM (i->data));
+
+		g_list_free (items);
+	}
 }
 

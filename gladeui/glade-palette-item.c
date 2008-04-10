@@ -33,6 +33,7 @@
 #include "glade.h"
 #include "glade-palette-item.h"
 
+
 #define GLADE_PALETTE_ITEM_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					       GLADE_TYPE_PALETTE_ITEM,              \
 					       GladePaletteItemPrivate))
@@ -131,6 +132,87 @@ glade_palette_item_set_appearance (GladePaletteItem *item, GladeItemAppearance a
 	}
 }
 
+#if 0
+/* XXX Code doesnt work well, think they are not transperent ? */
+static GdkPixbuf *
+render_deprecated_pixbuf (GladeWidgetAdaptor *adaptor,
+			  gint                size)
+{
+
+	GdkPixbuf *widget_icon, *deprecated_icon;
+
+	if ((widget_icon =
+	     gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+				       adaptor->icon_name, size, 
+				       GTK_ICON_LOOKUP_USE_BUILTIN, NULL)) != NULL)
+	{
+		if ((deprecated_icon =
+		     gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+					       "media-record", size, 
+					       GTK_ICON_LOOKUP_USE_BUILTIN, NULL)) != NULL)
+		{
+			g_print ("rendering deprecated\n");
+			gdk_pixbuf_composite (deprecated_icon, widget_icon,
+					      0, 0, 
+					      gdk_pixbuf_get_width (widget_icon),
+					      gdk_pixbuf_get_height (widget_icon),
+					      0.0, 0.0, 1.0, 1.0, GDK_INTERP_HYPER, 0);
+
+			g_object_unref (G_OBJECT (deprecated_icon));
+		}
+	}
+	return widget_icon;
+}
+#endif
+
+void
+glade_palette_item_refresh (GladePaletteItem *item)
+{
+	GladePaletteItemPrivate *priv;
+	GladeProject            *project;
+	GladeSupportMask         support;
+	gint                     size;
+	gchar                   *warning, *text;
+	
+	priv = GLADE_PALETTE_ITEM_GET_PRIVATE (item);
+	
+	size = priv->use_small_icon ? GTK_ICON_SIZE_MENU : GTK_ICON_SIZE_BUTTON;
+
+	if ((project = glade_app_check_get_project ()) &&
+	    (warning = 
+	     glade_project_verify_widget_adaptor (project, priv->adaptor, &support)) != NULL)
+	{
+
+		/* set sensitivity */
+		gtk_widget_set_sensitive (GTK_WIDGET (item), 
+					  !(support & (GLADE_SUPPORT_BUILDER_UNSUPPORTED | 
+						       GLADE_SUPPORT_MISMATCH)));
+
+		if (support & GLADE_SUPPORT_DEPRECATED)
+			/* XXX Todo, draw a cross overlaying the widget icon */
+			gtk_image_set_from_stock (GTK_IMAGE (priv->icon), 
+						  GTK_STOCK_DIALOG_WARNING, 
+						  size);
+		else
+			gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), 
+						      priv->adaptor->icon_name, 
+						      size);
+		/* prepend widget title */
+		text = g_strdup_printf ("%s: %s", priv->adaptor->title, warning);
+		gtk_widget_set_tooltip_text (priv->icon, text);
+		g_free (text);
+		g_free (warning);
+	} 
+	else 
+	{
+		gtk_widget_set_tooltip_text (GTK_WIDGET (item), priv->adaptor->title);
+		gtk_widget_set_sensitive (GTK_WIDGET (item), TRUE);
+		gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), 
+					      priv->adaptor->icon_name, 
+					      size);
+	}
+}
+
 void
 glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_small_icon)
 {
@@ -143,11 +225,8 @@ glade_palette_item_set_use_small_icon (GladePaletteItem *item, gboolean use_smal
 	{
 		priv->use_small_icon = use_small_icon;		
 
-		if (use_small_icon != FALSE)
-			gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), priv->adaptor->icon_name, GTK_ICON_SIZE_MENU);
-		else
-			gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), priv->adaptor->icon_name, GTK_ICON_SIZE_BUTTON);
-		
+		glade_palette_item_refresh (item);
+
 		g_object_notify (G_OBJECT (item), "use-small-icon");
 	}
 }
@@ -163,7 +242,7 @@ glade_palette_set_adaptor (GladePaletteItem *item, GladeWidgetAdaptor *adaptor)
 	
 	gtk_label_set_text (GTK_LABEL (priv->label), adaptor->title);
 
-	gtk_image_set_from_icon_name (GTK_IMAGE (priv->icon), adaptor->icon_name, GTK_ICON_SIZE_BUTTON);
+	glade_palette_item_refresh (item);
 }
 
 static void 

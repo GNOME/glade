@@ -78,6 +78,7 @@ gboolean              glade_palette_item_get_use_small_icon (GladePaletteItem *i
 void		      glade_palette_item_set_use_small_icon (GladePaletteItem *item,
 							     gboolean          use_small_icon);
 
+void                  glade_palette_item_refresh            (GladePaletteItem *item);
 
 G_END_DECLS
 

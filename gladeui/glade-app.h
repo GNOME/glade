@@ -111,6 +111,8 @@ GladeClipboard*    glade_app_get_clipboard (void);
 GtkWidget*         glade_app_get_clipboard_view (void);
 
 GladeProject*      glade_app_get_project (void);
+
+GladeProject*      glade_app_check_get_project (void);
  
 void               glade_app_set_project (GladeProject *project);
 

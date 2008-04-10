@@ -25,6 +25,14 @@ typedef enum
 	GLADE_PROJECT_FORMAT_GTKBUILDER
 } GladeProjectFormat;
 
+typedef enum
+{
+	GLADE_SUPPORT_OK                   = 0x00,
+	GLADE_SUPPORT_DEPRECATED           = 0x01,
+	GLADE_SUPPORT_MISMATCH             = 0x02,
+	GLADE_SUPPORT_BUILDER_UNSUPPORTED  = 0x04
+} GladeSupportMask;
+
 struct _GladeProject
 {
 	GObject parent_instance;
@@ -174,6 +182,9 @@ void           glade_project_preferences          (GladeProject *project);
 
 void           glade_project_verify_properties    (GladeWidget  *widget);
 
+gchar         *glade_project_verify_widget_adaptor (GladeProject       *project,
+						    GladeWidgetAdaptor *adaptor,
+						    GladeSupportMask   *mask);
 
 G_END_DECLS
 

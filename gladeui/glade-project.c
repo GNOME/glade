@@ -499,8 +499,10 @@ glade_project_verify_adaptor (GladeProject       *project,
 			      const gchar        *path_name,
 			      GString            *string,
 			      gboolean            saving,
-			      gboolean            forwidget)
+			      gboolean            forwidget,
+			      GladeSupportMask   *mask)
 {
+	GladeSupportMask    support_mask = GLADE_SUPPORT_OK;
 	GladeWidgetAdaptor *adaptor_iter;
 	gint                target_major, target_minor;
 	gchar              *catalog = NULL;
@@ -536,6 +538,8 @@ glade_project_verify_adaptor (GladeProject       *project,
 					 path_name, adaptor_iter->title, catalog,
 					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
 					 GWA_VERSION_SINCE_MINOR (adaptor_iter));
+
+			support_mask |= GLADE_SUPPORT_MISMATCH;
 		}
 
 		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
@@ -556,6 +560,8 @@ glade_project_verify_adaptor (GladeProject       *project,
 					   "is not supported by GtkBuilder\n"),
 					 path_name, adaptor_iter->title, catalog,
 					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_BUILDER_UNSUPPORTED;
 		}
 
 		if (!saving && GWA_DEPRECATED (adaptor_iter))
@@ -574,29 +580,48 @@ glade_project_verify_adaptor (GladeProject       *project,
 					   "is deprecated\n"),
 					 path_name, adaptor_iter->title, catalog,
 					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_DEPRECATED;
 		}
 		g_free (catalog);
 	}
+	if (mask)
+		*mask = support_mask;
 }
 
-static void
-glade_project_verify_widget_for_ui (GladeWidget *widget)
+/**
+ * glade_project_verify_widget_adaptor:
+ * @project: A #GladeProject
+ * @adaptor: the #GladeWidgetAdaptor to verify
+ * @mask: a return location for a #GladeSupportMask
+ * 
+ * Checks the supported state of this widget adaptor
+ * and generates a string to show in the UI describing why.
+ *
+ * Returns: A newly allocated string 
+ */
+gchar *
+glade_project_verify_widget_adaptor (GladeProject       *project,
+				     GladeWidgetAdaptor *adaptor,
+				     GladeSupportMask   *mask)
 {
 	GString *string = g_string_new (NULL);
+	gchar   *ret = NULL;
 
-	glade_project_verify_adaptor (widget->project,
-				      widget->adaptor,
-				      NULL,
-				      string,
-				      FALSE,
-				      TRUE);
+	glade_project_verify_adaptor (project, adaptor, NULL,
+				      string, FALSE, TRUE, mask);
 
+	/* there was a '\0' byte... */
 	if (string->len > 0)
-		glade_widget_set_support_warning (widget, string->str);
+	{
+		ret = string->str;
+		g_string_free (string, FALSE);
+	}
 	else
-		glade_widget_set_support_warning (widget, NULL);
+		g_string_free (string, TRUE);
 
-	g_string_free (string, TRUE);
+
+	return ret;
 }
 
 static void
@@ -604,16 +629,25 @@ glade_project_verify_project_for_ui (GladeProject *project)
 {
 	GList *list;
 	GladeWidget *widget;
+	gchar *warning;
 
 	/* Sync displayable info here */
 	for (list = project->priv->objects; list; list = list->next)
 	{
 		widget = glade_widget_get_from_gobject (list->data);
 
-		glade_project_verify_widget_for_ui (widget);
-		glade_project_verify_properties (widget);
+		warning = glade_project_verify_widget_adaptor (project, widget->adaptor, NULL);
+		glade_widget_set_support_warning (widget, warning);
 
+		if (warning)
+			g_free (warning);
+
+		glade_project_verify_properties (widget);
 	}
+
+	/* refresh palette if this is the active project */
+	if (project == glade_app_get_project ())
+		glade_palette_refresh (glade_app_get_palette ());
 }
 
 static void
@@ -1397,7 +1431,7 @@ glade_project_verify (GladeProject *project,
 		path_name = glade_widget_generate_path_name (widget);
 
 		glade_project_verify_adaptor (project, widget->adaptor, 
-					      path_name, string, saving, FALSE);
+					      path_name, string, saving, FALSE, NULL);
 		glade_project_verify_properties_internal (widget, path_name, string, FALSE);
 		glade_project_verify_signals (widget, path_name, string);
 
