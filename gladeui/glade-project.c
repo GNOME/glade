@@ -3061,13 +3061,14 @@ glade_project_build_prefs_box (GladeProject *project)
 	/* Run verify */
 	string = g_strdup_printf ("<b>%s</b>", _("Verify versions and deprications:"));
 	frame = gtk_frame_new (NULL);
-	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-	
+	alignment = gtk_alignment_new (0.0F, 0.5F, 0.0F, 0.0F);
+	gtk_container_set_border_width (GTK_CONTAINER (alignment), 4);	
+
 	button = gtk_button_new_from_stock (GTK_STOCK_EXECUTE);
 	g_signal_connect (G_OBJECT (button), "clicked", 
 			  G_CALLBACK (verify_clicked), project);
 	
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 0, 12, 0);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 4, 12, 0);
 	
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
@@ -3096,9 +3097,9 @@ glade_project_build_prefs_box (GladeProject *project)
 void
 glade_project_preferences (GladeProject *project)
 {
-
-	GtkWidget      *dialog, *widget;
-	gchar          *title, *name;
+	static GtkWidget *dialog = NULL;
+	GtkWidget *widget;
+	gchar     *title, *name;
 
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -3106,11 +3107,15 @@ glade_project_preferences (GladeProject *project)
 	name = glade_project_get_name (project);
 	title = g_strdup_printf ("%s preferences", name);
 
+	/* Could be the user switched projects, just
+	 * destroy and reopen.
+	 */
+	if (dialog)
+		gtk_widget_destroy (dialog);
+
 	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (glade_app_get_window ()),
 					      GTK_DIALOG_DESTROY_WITH_PARENT,
-					      GTK_STOCK_OK,
-					      GTK_RESPONSE_ACCEPT,
 					      NULL);
 	g_free (title);
 	g_free (name);
@@ -3119,6 +3124,15 @@ glade_project_preferences (GladeProject *project)
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), 
 			  widget, TRUE, TRUE, 2);
 
-	gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+
+	/* Were explicitly destroying it anyway */
+	g_signal_connect (G_OBJECT (dialog), "delete-event",
+			  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+	gtk_window_present (GTK_WINDOW (dialog));
 }
