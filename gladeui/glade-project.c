@@ -522,6 +522,9 @@ glade_project_verify_adaptor (GladeProject       *project,
 		{
 			if (forwidget)
 			{
+				/* translators: reffers to a widget
+				 * introduced in toolkit version '%s %d.%d',
+				 * and a project targeting toolkit verion '%s %d.%d' */
 				g_string_append_printf
 					(string, 
 					 _("This widget was introduced in %s %d.%d "
@@ -532,6 +535,8 @@ glade_project_verify_adaptor (GladeProject       *project,
 					 catalog, target_major, target_minor);
 			}
 			else
+				/* translators: reffers to a widget '[%s]'  
+				 * introduced in toolkit version '%s %d.%d' */
 				g_string_append_printf
 					(string, 
 					 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
@@ -554,6 +559,8 @@ glade_project_verify_adaptor (GladeProject       *project,
 					 _("This widget is not supported by GtkBuilder"));
 			}
 			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
 				g_string_append_printf
 					(string,
 					 _("[%s] Object class '%s' from %s %d.%d "
@@ -574,6 +581,8 @@ glade_project_verify_adaptor (GladeProject       *project,
 					(string, _("This widget is deprecated"));
 			}
 			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
 				g_string_append_printf
 					(string, 
 					 _("[%s] Object class '%s' from %s %d.%d "
@@ -1241,6 +1250,9 @@ glade_project_verify_property (GladeProperty  *property,
 	{
 		if (forwidget)
 		{
+			/* translators: reffers to a property introduced in toolkit
+			 * version '%s %d.%d' and a project targeting toolkit
+			 * version '%s %d.%d' */
 			tooltip = g_strdup_printf
 				(_("This property was introduced in %s %d.%d, "
 				   "project targets %s %d.%d"),
@@ -1254,6 +1266,8 @@ glade_project_verify_property (GladeProperty  *property,
 			g_free (tooltip);
 		}
 		else
+			/* translators: reffers to a property '%s' of widget '[%s]' 
+			 * introduced in toolkit version '%s %d.%d' */
 			g_string_append_printf
 				(string,
 				 property->klass->packing ?
@@ -1340,6 +1354,8 @@ glade_project_verify_signal (GladeWidget  *widget,
 	if (target_major < signal_class->version_since_major ||
 	    (target_major == signal_class->version_since_major &&
 	     target_minor < signal_class->version_since_minor))
+		/* translators: reffers to a signal '%s' of widget '[%s]' 
+		 * introduced in toolkit version '%s %d.%d' */
 		g_string_append_printf
 			(string, 
 			 _("[%s] Signal '%s' of object class '%s' was "
@@ -3093,7 +3109,7 @@ glade_project_build_prefs_box (GladeProject *project)
 
 
 	/* Run verify */
-	string = g_strdup_printf ("<b>%s</b>", _("Verify versions and deprications:"));
+	string = g_strdup_printf ("<b>%s</b>", _("Verify versions and deprecations:"));
 	frame = gtk_frame_new (NULL);
 	alignment = gtk_alignment_new (0.0F, 0.5F, 0.0F, 0.0F);
 	gtk_container_set_border_width (GTK_CONTAINER (alignment), 4);	
