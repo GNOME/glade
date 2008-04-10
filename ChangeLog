@@ -1,5 +1,16 @@
 2008-04-10  Tristan Van Berkom <tvb@gnome.org>
 
+	* src/glade-window.c: Added padding on top of undocked tools, removed
+	custom label handling of widget name.
+
+	* gladeui/glade-editor-property.c: Adapted and applied Thomas Rydzynski's patch
+	so that text wraps in property editor (bug 351902)
+
+	* gladeui/glade-editor.c: Trash the class entry and put a class header
+	on the whole editor widget, fixed a bug on my signal disconnections.
+
+2008-04-10  Tristan Van Berkom <tvb@gnome.org>
+
 	* gladeui/glade-editor.c, gladeui/glade-editor.h:
 	Loaded and watched the new support_warning on GladeWidget
 

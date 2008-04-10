@@ -99,9 +99,7 @@ struct _GladeWindowPrivate
 	GtkActionGroup      *static_actions;	            /* All the static actions */
 	GtkActionGroup      *project_actions;               /* All the project actions */
 	GtkActionGroup      *projects_list_menu_actions;    /* Projects list menu actions */
-	
-	GtkLabel            *label;                         /* the title of property editor dock */
-	
+
 	GtkRecentManager    *recent_manager;
 	GtkWidget           *recent_menu;
 
@@ -637,9 +635,7 @@ static void
 project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 {
 	GladeWidget *glade_widget = NULL;
-	GtkLabel *label;
 	GList *list;
-	gchar *text;
 	gint num;
 
 	/* This is sometimes called with a NULL project (to make the label
@@ -647,16 +643,12 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	 */
 	g_return_if_fail (GLADE_IS_WINDOW (window));
 
-	label = window->priv->label;
-	
 	/* Only update the editor if the selection has changed on
 	 * the currently active project.
 	 */
 	if (glade_app_get_editor() &&
 	    project && (project == glade_app_get_project ()))
 	{
-		gtk_widget_set_sensitive (GTK_WIDGET (label), TRUE);
-
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
 		
@@ -664,31 +656,11 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 		{
 		
 			glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
-			
-			/* translators: referring to the properties of a widget named '%s [%s]' */
-			text = g_strdup_printf (_("%s [%s] - Properties"),
-						glade_widget_get_name (glade_widget),
-						G_OBJECT_TYPE_NAME (glade_widget->object));
-					
-			gtk_label_set_text (label, text);
-			
-			g_free (text);
 			clean_actions (window);
 			if (glade_widget->actions)
 				add_actions (window, glade_widget, glade_widget->actions);
 		}	
-		else
-		{
-			gtk_label_set_text (label, _("Properties"));
-		}
 	}
-	else if (glade_app_get_editor ())
-	{
-		gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
-		gtk_label_set_text (label, _("Properties"));
-	}
-	
-		
 }
 
 static GladeDesignView *
@@ -841,38 +813,6 @@ clipboard_notify_handler_cb (GladeClipboard *clipboard, GParamSpec *spec, GladeW
 		gtk_action_set_sensitive (action,
 				 	  glade_clipboard_get_has_selection (clipboard));
 	}
-}
-
-static GtkWidget*
-construct_dock_item (GladeWindow *window, const gchar *title, GtkWidget *child)
-{
-	GtkWidget *vbox;
-	GtkWidget *label;
-	GtkWidget *alignment;
-
-	vbox = gtk_vbox_new (FALSE, 0);
-
-	label = gtk_label_new (title);
-	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	gtk_misc_set_padding (GTK_MISC (label), 2, 5);
-
-	alignment = gtk_alignment_new (0, 0, 1, 1);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 0, 12);
-	
-	gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (alignment), label);
-	
-	gtk_box_pack_start (GTK_BOX (vbox), child, TRUE, TRUE, 0);
-
-	gtk_widget_show (alignment);
-	gtk_widget_show (label);
-	gtk_widget_show (child);
-	gtk_widget_show (vbox);
-	
-	/* FIXME: naughty */
-	g_object_set_data (G_OBJECT (vbox), "dock-label", label);
-
-	return vbox;
 }
 
 static void
@@ -1943,7 +1883,7 @@ on_dock_resized (GtkWidget         *window,
 static void
 toggle_dock_cb (GtkAction *action, GladeWindow *window)
 {
-	GtkWidget *toplevel;
+	GtkWidget *toplevel, *alignment;
 	ToolDock *dock;
 	guint dock_type;
 
@@ -1957,7 +1897,9 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 		toplevel = gtk_widget_get_toplevel (dock->widget);
 
 		g_object_ref (dock->widget);
-		gtk_container_remove (GTK_CONTAINER (toplevel), dock->widget);
+		gtk_container_remove (GTK_CONTAINER 
+				      (GTK_BIN (toplevel)->child), dock->widget);
+
 		if (dock->first_child)
 			gtk_paned_pack1 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
 		else
@@ -1971,6 +1913,13 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 	} else {
 		toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
+		/* Add a little padding on top to match the bottom */
+		alignment = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
+		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment),
+					   4, 0, 0, 0);
+		gtk_container_add (GTK_CONTAINER (toplevel), alignment);
+		gtk_widget_show (alignment);
+
 		gtk_window_set_default_size (GTK_WINDOW (toplevel),
 					     dock->window_pos.width,
 					     dock->window_pos.height);
@@ -1983,7 +1932,7 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 		gtk_window_set_title (GTK_WINDOW (toplevel), dock->title);
 		g_object_ref (dock->widget);
 		gtk_container_remove (GTK_CONTAINER (dock->paned), dock->widget);
-		gtk_container_add (GTK_CONTAINER (toplevel), dock->widget);
+		gtk_container_add (GTK_CONTAINER (alignment), dock->widget);
 		g_object_unref (dock->widget);
 
 		g_signal_connect (G_OBJECT (toplevel), "delete-event",
@@ -2277,7 +2226,7 @@ static GtkActionEntry project_entries[] = {
 	{ "Delete", GTK_STOCK_DELETE, NULL, "Delete",
 	  N_("Delete the selection"), G_CALLBACK (delete_cb) },
 
-	{ "Preferences", GTK_STOCK_PREFERENCES, NULL, "<control>W",
+	{ "Preferences", GTK_STOCK_PREFERENCES, NULL, "<control>P",
 	  N_("Modify project preferences"), G_CALLBACK (preferences_cb) },
 
 	/* ViewMenu */
@@ -3049,7 +2998,6 @@ glade_window_init (GladeWindow *window)
 
 	window->priv = priv = GLADE_WINDOW_GET_PRIVATE (window);
 	
-	priv->label = NULL;
 	priv->default_path = NULL;
 	
 	priv->app = glade_app_new ();
@@ -3137,12 +3085,9 @@ glade_window_init (GladeWindow *window)
 		    _("Inspector"), "inspector", vpaned, TRUE);
 
 	/* editor */
-	editor = GTK_WIDGET (glade_app_get_editor ());
-	dockitem = construct_dock_item (window, _("Properties"), editor);
-	priv->label = GTK_LABEL (g_object_get_data (G_OBJECT (dockitem), "dock-label"));
-	gtk_label_set_ellipsize	(GTK_LABEL (priv->label), PANGO_ELLIPSIZE_END);
-	gtk_misc_set_alignment (GTK_MISC (priv->label), 0, 0.5);
+	dockitem = GTK_WIDGET (glade_app_get_editor ());
 	gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, TRUE, FALSE);
+	gtk_widget_show_all (dockitem);	
 	setup_dock (&priv->docks[DOCK_EDITOR], dockitem, 500, 700,
 		    _("Properties"), "properties", vpaned, FALSE);
 

@@ -628,21 +628,24 @@ add_columns (GtkTreeView *view)
 	GtkCellRenderer *renderer;
 
 	column = gtk_tree_view_column_new ();
-
+	
+	/* Class icon */
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_inspector_cell_function,
 						 GINT_TO_POINTER (CELL_ICON), NULL);
 
+	/* Class name */
 	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), 
 		      "xpad", 6, NULL);
-	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_inspector_cell_function,
 						 GINT_TO_POINTER (CELL_NAME), NULL);	
 	
+	/* Misc internal/special-type */
 	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), 
 		      "style", PANGO_STYLE_ITALIC,

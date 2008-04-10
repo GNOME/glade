@@ -36,6 +36,8 @@
 #include <string.h>
 #include <glib/gi18n-lib.h>
 
+#include <gtk/gtk.h>
+
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-widget-adaptor.h"
@@ -308,6 +310,83 @@ glade_editor_create_reset_button (GladeEditor *editor)
 }
 
 static void
+glade_editor_update_class_warning_cb (GladeWidget  *widget,
+				      GParamSpec   *pspec,
+				      GladeEditor  *editor)
+{
+	if (widget->support_warning)
+		gtk_widget_show (editor->warning);
+	else
+ 		gtk_widget_hide (editor->warning);
+
+	gtk_widget_set_tooltip_text (editor->warning, widget->support_warning);
+}
+
+static void
+glade_editor_update_class_field (GladeEditor *editor)
+{
+	if (editor->loaded_widget)
+	{
+		GladeWidget *widget = editor->loaded_widget;
+		gchar       *text;
+
+		gtk_image_set_from_icon_name (GTK_IMAGE (editor->class_icon),
+					      widget->adaptor->icon_name, 
+					      GTK_ICON_SIZE_BUTTON);
+		gtk_widget_show (editor->class_icon);
+
+		/* translators: referring to the properties of a widget named '%s [%s]' */
+		text = g_strdup_printf (_("%s Properties - %s [%s]"),
+					widget->adaptor->title,
+					widget->adaptor->name,
+					widget->name);
+		gtk_label_set_text (GTK_LABEL (editor->class_label), text);
+		g_free (text);
+
+		glade_editor_update_class_warning_cb (editor->loaded_widget, NULL, editor);
+	}
+	else
+	{
+		gtk_widget_hide (editor->warning);
+		gtk_label_set_text (GTK_LABEL (editor->class_label), _("Properties"));
+	}
+}
+
+static GtkWidget *
+glade_editor_setup_class_field (GladeEditor *editor)
+{
+	PangoAttrList  *attr_list   = pango_attr_list_new ();
+	PangoAttribute *attr_weight = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+	GtkWidget      *hbox;
+	
+	hbox = gtk_hbox_new (FALSE, 4);
+
+	editor->class_icon   = gtk_image_new ();
+	editor->class_label  = gtk_label_new (NULL);
+	editor->warning      = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
+							 GTK_ICON_SIZE_MENU);
+
+	gtk_widget_set_no_show_all (editor->warning, TRUE);
+	gtk_widget_set_no_show_all (editor->class_icon, TRUE);
+
+	pango_attr_list_insert (attr_list, attr_weight);
+	gtk_label_set_attributes (GTK_LABEL (editor->class_label), attr_list);
+	pango_attr_list_unref (attr_list);
+	gtk_misc_set_alignment (GTK_MISC (editor->class_label), 0.0, 0.5);
+	gtk_label_set_ellipsize (GTK_LABEL (editor->class_label), 
+				 PANGO_ELLIPSIZE_END);
+
+	gtk_box_pack_start (GTK_BOX (hbox), editor->class_icon, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), editor->warning, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), editor->class_label, TRUE, TRUE, 0);
+
+	glade_editor_update_class_field (editor);
+	gtk_widget_show_all (hbox);
+
+	return hbox;
+}
+
+static void
 glade_editor_init (GladeEditor *editor)
 {
 	GtkSizeGroup *size_group;
@@ -323,8 +402,11 @@ glade_editor_init (GladeEditor *editor)
 	editor->packing_etable = NULL;
 	editor->loading = FALSE;
 
+	editor->class_field = glade_editor_setup_class_field (editor);
+
 	gtk_container_set_border_width (GTK_CONTAINER (editor->notebook), 0);
 
+	gtk_box_pack_start (GTK_BOX (editor), editor->class_field, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (editor), editor->notebook, TRUE, TRUE, 0);
 
 	hbox = gtk_hbox_new (FALSE, 6);
@@ -462,6 +544,7 @@ static void
 glade_editor_table_append_name_field (GladeEditorTable *table)
 {
 	GtkWidget *label;
+	gchar     *text = _("The Object's name");
 	
 	/* Name */
 	label = gtk_label_new (_("Name:"));
@@ -470,6 +553,9 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 
 	table->name_entry = gtk_entry_new ();
 	gtk_widget_show (table->name_entry);
+
+	gtk_widget_set_tooltip_text (label, text);
+	gtk_widget_set_tooltip_text (table->name_entry, text);
 
 	g_signal_connect (G_OBJECT (table->name_entry), "activate",
 			  G_CALLBACK (glade_editor_widget_name_changed),
@@ -481,42 +567,6 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 
 	glade_editor_table_attach (table->table_widget, label, 0, table->rows);
 	glade_editor_table_attach (table->table_widget, table->name_entry, 1, table->rows);
-
-	table->rows++;
-}
-
-static void
-glade_editor_table_append_class_field (GladeEditorTable *table)
-{
-	GtkWidget *label, *class_label, *icon;
-	GtkWidget  *hbox_class_value, *hbox_class_name;
-
-
-	hbox_class_name = gtk_hbox_new (FALSE, 4);
-	label = gtk_label_new (_("Class:"));
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_box_pack_start (GTK_BOX (hbox_class_name), label, TRUE, TRUE, 0);
-	
-	table->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
-						   GTK_ICON_SIZE_MENU);
-	gtk_widget_set_no_show_all (table->warning, TRUE);
-	gtk_box_pack_start (GTK_BOX (hbox_class_name), table->warning, FALSE, TRUE, 0);
-	gtk_widget_show_all (hbox_class_name);
-
-	hbox_class_value = gtk_hbox_new (FALSE, 2);
-	icon = gtk_image_new_from_icon_name 
-		(table->adaptor->icon_name, GTK_ICON_SIZE_MENU);
-	gtk_box_pack_start (GTK_BOX (hbox_class_value), icon, FALSE, TRUE, 4);
-
-	class_label = gtk_label_new (table->adaptor->name);
-	gtk_misc_set_alignment (GTK_MISC (class_label), 0.0, 0.5);
-	gtk_box_pack_start (GTK_BOX (hbox_class_value), class_label, TRUE, TRUE, 0);
-	gtk_widget_show_all (hbox_class_value);
-
-	/* FIXME: find a better way to pack this. */
-	gtk_widget_set_size_request (hbox_class_value, -1, 25);
-	glade_editor_table_attach (table->table_widget, hbox_class_name, 0, table->rows);
-	glade_editor_table_attach (table->table_widget, hbox_class_value, 1, table->rows);
 
 	table->rows++;
 }
@@ -639,10 +689,7 @@ glade_editor_table_create (GladeEditor          *editor,
 	table->type = type;
 
 	if (type == TABLE_TYPE_GENERAL)
-	{
-		glade_editor_table_append_class_field (table);
 		glade_editor_table_append_name_field (table);
-	}
 
 	if (!glade_editor_table_append_items (table, adaptor, type))
 		return NULL;
@@ -746,31 +793,6 @@ glade_editor_load_page (GladeEditor          *editor,
 		gtk_container_set_focus_hadjustment
 			(GTK_CONTAINER (table->table_widget), adj);
 	}
-}
-
-/**
- * glade_editor_update_widget_name:
- * @editor: a #GladeEditor
- *
- * TODO: write me
- */
-void
-glade_editor_update_widget_name (GladeEditor *editor)
-{
-	GladeEditorTable *table;
-
-	/* it can happen that a widget name is changing that is only
-	 * available in a custom editor so we have no table
-	 */
-	if (!editor->loaded_adaptor)
-		return;
-
-	table = glade_editor_get_table_from_class
-		(editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL);
-
-	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
-	gtk_entry_set_text (GTK_ENTRY (table->name_entry), editor->loaded_widget->name);
-	g_signal_handlers_unblock_by_func (G_OBJECT (table->name_entry), glade_editor_widget_name_changed, editor);
 }
 
 static void
@@ -892,24 +914,25 @@ glade_editor_load_table (GladeEditor         *editor,
 }
 
 static void
-glade_editor_update_class_warning_cb (GladeWidget  *widget,
-				      GParamSpec   *pspec,
-				      GladeEditor  *editor)
+glade_editor_update_widget_name_cb (GladeWidget  *widget,
+				    GParamSpec   *pspec,
+				    GladeEditor  *editor)
 {
 	GladeEditorTable *table;
 
-	if (!(table = glade_editor_get_table_from_class
-	      (editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL)))
-		return;
+	glade_editor_update_class_field (editor);
 
-	if (widget->support_warning)
-		gtk_widget_show (table->warning);
-	else
- 		gtk_widget_hide (table->warning);
+	g_assert (editor->loaded_widget);
 
-	gtk_widget_set_tooltip_text (table->warning, widget->support_warning);
+	table = glade_editor_get_table_from_class
+		(editor, editor->loaded_adaptor, TABLE_TYPE_GENERAL);
+
+	g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), 
+					 glade_editor_widget_name_changed, editor);
+	gtk_entry_set_text (GTK_ENTRY (table->name_entry), editor->loaded_widget->name);
+	g_signal_handlers_unblock_by_func (G_OBJECT (table->name_entry), 
+					   glade_editor_widget_name_changed, editor);
 }
-
 
 static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
@@ -926,6 +949,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 					     editor->project_closed_signal_id);
 		g_signal_handler_disconnect (G_OBJECT (editor->loaded_widget),
 					     editor->widget_warning_id);
+		g_signal_handler_disconnect (G_OBJECT (editor->loaded_widget),
+					     editor->widget_name_id);
 	}	
 
 	/* Load the GladeWidgetClass */
@@ -961,8 +986,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	editor->loaded_widget = widget;
 	editor->loading = FALSE;
 
-	/* Update warning once */
-	glade_editor_update_class_warning_cb (widget, NULL, editor);
+	/* Update class header */
+	glade_editor_update_class_field (editor);
 
 	/* Connect to new widget */
 	project = glade_widget_get_project (editor->loaded_widget);
@@ -972,6 +997,10 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	editor->widget_warning_id =
 		g_signal_connect (G_OBJECT (widget), "notify::support-warning",
 				  G_CALLBACK (glade_editor_update_class_warning_cb),
+				  editor);
+	editor->widget_name_id =
+		g_signal_connect (G_OBJECT (widget), "notify::name",
+				  G_CALLBACK (glade_editor_update_widget_name_cb),
 				  editor);
 }
 

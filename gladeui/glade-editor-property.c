@@ -272,23 +272,15 @@ glade_editor_property_create_info_button (GladeEditorProperty *eprop)
 	return button;
 }
 
-static GtkWidget *
-glade_editor_property_create_warning_icon (GladeEditorProperty *eprop)
-{
-	GtkWidget *widget = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
-						      GTK_ICON_SIZE_MENU);
-	gtk_widget_set_no_show_all (widget, TRUE);
-	return widget;
-}
-
-
 static GObject *
 glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
 				   GObjectConstructParam *construct_properties)
 {
+	GtkRequisition       req = { -1, -1 };
 	GObject             *obj;
 	GladeEditorProperty *eprop;
+	GtkWidget           *hbox;
 
 	/* Invoke parent constructor (eprop->klass should be resolved by this point) . */
 	obj = G_OBJECT_CLASS (table_class)->constructor
@@ -316,15 +308,31 @@ glade_editor_property_constructor (GType                  type,
 	g_signal_connect (G_OBJECT (eprop->info), "clicked", 
 			  G_CALLBACK (glade_editor_property_info_clicked_cb), eprop);
 
-	/* Create the warning icon and add it */
-	eprop->warning = glade_editor_property_create_warning_icon (eprop);
+	/* Create the warning icon */
+	eprop->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
+						   GTK_ICON_SIZE_MENU);
+	gtk_widget_set_no_show_all (eprop->warning, TRUE);
 
-	/* Create label */
-	eprop->item_label = gtk_hbox_new (FALSE, 4);
+	/* Create & setup label */
+	eprop->item_label = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
+	hbox = gtk_hbox_new (FALSE, 4);
 	eprop->label      = gtk_label_new (NULL);
-	gtk_misc_set_alignment (GTK_MISC (eprop->label), 1.0, 0.5);
-	gtk_box_pack_start (GTK_BOX (eprop->item_label), eprop->label, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (eprop->item_label), eprop->warning, FALSE, TRUE, 0);
+
+	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
+	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
+
+
+	/* gtk_label_set_width_chars() was not working well :( */ 
+	gtk_label_set_text (GTK_LABEL (eprop->label), "xxxxxxxxxxxxxxx");
+	gtk_widget_size_request (eprop->label, &req);
+	gtk_widget_set_size_request(GTK_WIDGET(eprop->label), req.width, -1);
+
+	gtk_label_set_justify (GTK_LABEL(eprop->label), GTK_JUSTIFY_RIGHT);
+	gtk_misc_set_alignment (GTK_MISC(eprop->label), 1.0, 0.5);
+
+	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop->label, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (eprop->item_label), hbox);
 
 	glade_editor_property_fix_label (eprop);
 

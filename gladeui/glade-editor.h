@@ -100,16 +100,37 @@ struct _GladeEditor
 			   * was loaded.
 			   */
 
+
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
 	gulong widget_warning_id; /* Update when widget changes warning messages.
 				   */
 	
+	gulong widget_name_id; /* Watch the actual widget name
+				*/
+
 	GtkWidget *reset_button; /* The reset button
 				  */
 	
 	GtkWidget *info_button; /* The actual informational button
 				 */
+
+	GtkWidget *class_field; /* The class header
+				 */
+
+	GtkWidget *warning;   /* A pointer to an icon we can show in the class
+			       * field to publish tooltips for class related
+			       * versioning errors.
+			       */
+
+	GtkWidget *class_icon; /* An image with the current widget's class icon.
+				*/
+
+	GtkWidget *class_label; /* A label with the current class label.
+				 */
+
+	GtkWidget *widget_label; /* A label with the current widget name.
+				  */
 
 	gboolean show_info; /* Whether or not to show an informational button
 			     */
@@ -158,11 +179,6 @@ struct _GladeEditorTable
 				  * we load into the inputs inside this table
 				  * the information about the selected widget.
 				  */
-
-	GtkWidget *warning;   /* A pointer to an icon we can show in the class
-			       * property to publish tooltips for class related
-			       * versioning errors.
-			       */
 	
 	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
 				* the name of the widget. This is the
@@ -193,8 +209,6 @@ void         glade_editor_load_widget        (GladeEditor *editor,
 					      GladeWidget *widget);
 
 void         glade_editor_refresh            (GladeEditor *editor);
-
-void         glade_editor_update_widget_name (GladeEditor *editor);
 
 gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 					      GladeWidget *widget);

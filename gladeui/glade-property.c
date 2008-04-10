@@ -220,14 +220,16 @@ glade_property_fix_state (GladeProperty *property)
 		property->state = GLADE_STATE_NORMAL;
 	else if (property->support_warning)
 	{
-		if (glade_property_default (property))
+		if (property->enabled &&
+		    glade_property_default (property))
 			property->state = GLADE_STATE_UNSUPPORTED;
 		else 
 			property->state = GLADE_STATE_UNSUPPORTED_CHANGED;
 	}
 	else
 	{
-		if (glade_property_default (property))
+		if (property->enabled &&
+		    glade_property_default (property))
 			property->state = GLADE_STATE_NORMAL;
 		else 
 			property->state = GLADE_STATE_CHANGED;

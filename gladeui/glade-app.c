@@ -523,14 +523,6 @@ glade_app_class_init (GladeAppClass * klass)
  *                       Public API                              *
  *****************************************************************/
 static void
-on_widget_name_changed_cb (GladeProject *project,
-			   GladeWidget *widget,
-			   GladeEditor *editor)
-{
-	glade_editor_update_widget_name (editor);
-}
-
-static void
 on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 {
 	GList *list;
@@ -966,8 +958,6 @@ glade_app_add_project (GladeProject *project)
 	app->priv->projects = g_list_append (app->priv->projects, project);
 	
 	/* connect to the project signals so that the editor can be updated */
-	g_signal_connect (G_OBJECT (project), "widget_name_changed",
-			  G_CALLBACK (on_widget_name_changed_cb), app->priv->editor);
 	g_signal_connect (G_OBJECT (project), "selection_changed",
 			  G_CALLBACK (on_project_selection_changed_cb), app);
 
