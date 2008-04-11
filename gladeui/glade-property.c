@@ -67,6 +67,7 @@ enum
 enum
 {
 	PROP_0,
+	PROP_CLASS,
 	PROP_ENABLED,
 	PROP_SENSITIVE,
 	PROP_I18N_TRANSLATABLE,
@@ -87,22 +88,21 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	GladeProperty *property;
 
 	property          = g_object_new (GLADE_TYPE_PROPERTY, 
-					  "enabled", template_prop->enabled,
-					  "sensitive", template_prop->sensitive,
+					  "class", template_prop->klass,
 					  "i18n-translatable", template_prop->i18n_translatable,
 					  "i18n-has-context", template_prop->i18n_has_context,
 					  "i18n-comment", template_prop->i18n_comment,
 					  NULL);
-	property->klass   = template_prop->klass;
 	property->widget  = widget;
 	property->value   = g_new0 (GValue, 1);
 
-	property->insensitive_tooltip =
-		template_prop->insensitive_tooltip ?
-		g_strdup (template_prop->insensitive_tooltip) : NULL;
-
 	g_value_init (property->value, template_prop->value->g_type);
 	g_value_copy (template_prop->value, property->value);
+
+	/* Need value in place here ... */
+	glade_property_set_enabled (property, template_prop->enabled);
+	glade_property_set_sensitive (property, template_prop->sensitive,
+				      template_prop->insensitive_tooltip);
 	
 	return property;
 }
@@ -405,6 +405,9 @@ glade_property_set_real_property (GObject      *object,
 
 	switch (prop_id)
 	{
+	case PROP_CLASS:
+		property->klass = g_value_get_pointer (value);
+		break;
 	case PROP_ENABLED:
 		glade_property_set_enabled (property, g_value_get_boolean (value));
 		break;
@@ -436,6 +439,9 @@ glade_property_get_real_property (GObject    *object,
 
 	switch (prop_id)
 	{
+	case PROP_CLASS:
+		g_value_set_pointer (value, property->klass);
+		break;
 	case PROP_ENABLED:
 		g_value_set_boolean (value, glade_property_get_enabled (property));
 		break;
@@ -512,6 +518,13 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->tooltip_changed       = NULL;
 
 	/* Properties */
+	g_object_class_install_property 
+		(object_class, PROP_CLASS,
+		 g_param_spec_pointer 
+		 ("class", _("Class"), 
+		  _("The GladePropertyClass for this property"),
+		  G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+
 	g_object_class_install_property 
 		(object_class, PROP_ENABLED,
 		 g_param_spec_boolean 

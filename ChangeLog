@@ -1,7 +1,8 @@
 2008-04-10  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-property.c: Fixed bold modified state for 
-	disabled properties.
+	* gladeui/glade-property.c: 
+	  - Fixed bold modified state for disabled properties.
+	  - Added construct "class" property so that dupping doesnt crash.
 
 	* plugins/gtk+/gtk+.xml.in: Made default width/height match
 	the default-width default-height set for each dialog as reasonable
