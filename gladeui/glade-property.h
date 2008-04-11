@@ -60,7 +60,7 @@ struct _GladeProperty
 
 	gboolean            enabled;   /* Enabled is a flag that is used for GladeProperties
 					* that have the optional flag set to let us know
-					* if this widget has this GladeSetting enabled or
+					* if this widget has this setting enabled or
 					* not. (Like default size, it can be specified or
 					* unspecified). This flag also sets the state
 					* of the property->input state for the loaded

@@ -355,8 +355,6 @@ glade_editor_update_class_field (GladeEditor *editor)
 static GtkWidget *
 glade_editor_setup_class_field (GladeEditor *editor)
 {
-	PangoAttrList  *attr_list   = pango_attr_list_new ();
-	PangoAttribute *attr_weight = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
 	GtkWidget      *hbox;
 	
 	hbox = gtk_hbox_new (FALSE, 4);
@@ -369,9 +367,6 @@ glade_editor_setup_class_field (GladeEditor *editor)
 	gtk_widget_set_no_show_all (editor->warning, TRUE);
 	gtk_widget_set_no_show_all (editor->class_icon, TRUE);
 
-	pango_attr_list_insert (attr_list, attr_weight);
-	gtk_label_set_attributes (GTK_LABEL (editor->class_label), attr_list);
-	pango_attr_list_unref (attr_list);
 	gtk_misc_set_alignment (GTK_MISC (editor->class_label), 0.0, 0.5);
 	gtk_label_set_ellipsize (GTK_LABEL (editor->class_label), 
 				 PANGO_ELLIPSIZE_END);

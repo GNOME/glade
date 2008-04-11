@@ -1,5 +1,14 @@
 2008-04-10  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/glade-property.c: Fixed bold modified state for 
+	disabled properties.
+
+	* plugins/gtk+/gtk+.xml.in: Made default width/height match
+	the default-width default-height set for each dialog as reasonable
+	default values.
+
+2008-04-10  Tristan Van Berkom <tvb@gnome.org>
+
 	* gladeui/glade-palette-item.c, gladeui/glade-palette.c,
 	gladeui/glade-palette-item.h, gladeui/glade-palette.h:
 	Now load insensitive when widgets are unsupported, and use

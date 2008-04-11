@@ -220,19 +220,23 @@ glade_property_fix_state (GladeProperty *property)
 		property->state = GLADE_STATE_NORMAL;
 	else if (property->support_warning)
 	{
-		if (property->enabled &&
-		    glade_property_default (property))
-			property->state = GLADE_STATE_UNSUPPORTED;
-		else 
-			property->state = GLADE_STATE_UNSUPPORTED_CHANGED;
+		if (property->enabled)
+		{
+			if (glade_property_original_default (property))
+				property->state = GLADE_STATE_UNSUPPORTED;
+			else 
+				property->state = GLADE_STATE_UNSUPPORTED_CHANGED;
+		}
 	}
 	else
 	{
-		if (property->enabled &&
-		    glade_property_default (property))
-			property->state = GLADE_STATE_NORMAL;
-		else 
-			property->state = GLADE_STATE_CHANGED;
+		if (property->enabled)
+		{
+			if (glade_property_original_default (property))
+				property->state = GLADE_STATE_NORMAL;
+			else 
+				property->state = GLADE_STATE_CHANGED;
+		}
 	}
 
 	g_object_notify (G_OBJECT (property), "state");
@@ -1395,6 +1399,8 @@ glade_property_set_enabled (GladeProperty *property,
 	property->enabled = enabled;
 	if (enabled)
 		glade_property_sync (property);
+
+	glade_property_fix_state (property);
 
 	g_object_notify (G_OBJECT (property), "enabled");
 }

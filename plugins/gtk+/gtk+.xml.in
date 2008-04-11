@@ -287,8 +287,8 @@ embedded in another object</_tooltip>
 	  </displayable-values>
 	</property>
 	<property id="modal" ignore="True"/>
-	<property id="default-width" default="0" optional="True" optional-default="False"/>
-	<property id="default-height" default="0" optional="True" optional-default="False"/>
+	<property id="default-width" default="440" optional="True" optional-default="False"/>
+	<property id="default-height" default="250" optional="True" optional-default="False"/>
 	<property id="type-hint" ignore="True">
   	  <displayable-values>
 	    <value id="GDK_WINDOW_TYPE_HINT_NORMAL" _name="Normal"/>
@@ -1016,8 +1016,8 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_dialog_get_children</get-children-function>
       <set-property-function>glade_gtk_dialog_set_property</set-property-function>
       <properties>
-	<property id="default-width"  default="0" optional="True" optional-default="False"/>
-	<property id="default-height" default="0" optional="True" optional-default="False"/>
+	<property id="default-width"  default="320" optional="True" optional-default="False"/>
+	<property id="default-height" default="260" optional="True" optional-default="False"/>
 	<property id="has-separator"  default="False"/>
 	<property id="type-hint"  save-always="True"/>
       </properties>
@@ -1479,8 +1479,8 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
       <properties>
-	<property id="default-width"  default="0" optional="True" optional-default="False"/>
-	<property id="default-height" default="0" optional="True" optional-default="False"/>
+	<property id="default-width"  default="400" optional="True" optional-default="False"/>
+	<property id="default-height" default="115" optional="True" optional-default="False"/>
 
 	<property common="True" id="sensitive"/>
 	<property common="True" id="can-default"/>

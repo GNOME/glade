@@ -160,7 +160,7 @@ glade_editor_property_fix_label (GladeEditorProperty *eprop)
 
 	if (!eprop->property)
 		return;
-	
+
 	/* refresh label */
 	switch (eprop->property->state) 
 	{
@@ -215,7 +215,7 @@ glade_editor_property_enabled_cb (GladeProperty       *property,
 	{
 		enabled = glade_property_get_enabled (property);
 
-		/* sensitive = enabled &&   */
+		/* sensitive = enabled && sensitive */
 		if (enabled == FALSE)
 			gtk_widget_set_sensitive (eprop->input, FALSE);
 		else if (glade_property_get_sensitive (property))
