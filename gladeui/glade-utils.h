@@ -130,6 +130,12 @@ time_t            glade_util_get_file_mtime        (const gchar *filename, GErro
 
 gboolean        glade_util_version_lesser_than     (gdouble a, gdouble b);            
 
+
+gchar            *glade_util_filename_to_icon_name (const gchar *value);
+
+gchar            *glade_util_icon_name_to_filename (const gchar *value);
+
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

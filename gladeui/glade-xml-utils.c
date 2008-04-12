@@ -498,20 +498,20 @@ glade_xml_get_property_version (GladeXmlNode *node_in,
 	if (!value)
 		return FALSE;
 
-	split = g_strsplit (value, ".", 2);
-
-	if (!split[0] || !split[1])
+	if ((split = g_strsplit (value, ".", 2)))
 	{
-		g_warning ("Malformed version property \"%s\"\n"
-			   "Under the \"%s\" tag (%s)", name, node->name, value);
-		return FALSE;
-	}
+		if (!split[0] || !split[1])
+		{
+			g_warning ("Malformed version property \"%s\"\n"
+				   "Under the \"%s\" tag (%s)", name, node->name, value);
+			return FALSE;
+		}
 
-	*major = g_ascii_strtoll (split[0], NULL, 10);
-	*minor = g_ascii_strtoll (split[1], NULL, 10);
-	
-	g_strfreev (split);
-	
+		*major = g_ascii_strtoll (split[0], NULL, 10);
+		*minor = g_ascii_strtoll (split[1], NULL, 10);
+		
+		g_strfreev (split);
+	}
 	return TRUE;
 }
 

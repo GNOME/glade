@@ -969,23 +969,28 @@ glade_property_read (GladeProperty      *property,
 		     GladeProject       *project,
 		     GladeXmlNode       *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode *prop;
 	GValue       *gvalue = NULL;
 	gchar        *id, *name, *value;
+	const gchar  *search_name;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (node != NULL);
 
+	fmt = glade_project_get_format (project);
+
 	/* This code should work the same for <packing> and <widget> */
 	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
 	      glade_xml_node_verify_silent
-	      (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project)))))
+	      (node, GLADE_XML_TAG_WIDGET (fmt))))
 		return;
 
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
+		search_name = property->klass->id;
 
 		if (!glade_xml_node_verify_silent (prop, GLADE_XML_TAG_PROPERTY))
 			continue;
@@ -994,21 +999,45 @@ glade_property_read (GladeProperty      *property,
 		      (prop, GLADE_XML_TAG_NAME, NULL)))
 			continue;
 
+		if (!(value = glade_xml_get_content (prop)))
+		{
+			/* XXX should be glade_xml_get_content_required()... */
+			g_free (name);
+			g_free (value);
+			continue;
+		}
+
+		/* Switch up the values if we are using GtkIconFactory in builder
+		 * to load some hacked out legacy pixbufs
+		 */
+		if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			gboolean is_loaded_value = 
+				glade_project_is_loaded_factory_file
+				(property->widget->project, value);
+
+			if (property->klass->factory_stock_id && is_loaded_value)
+				search_name = property->klass->factory_stock_id;
+			/* If this property was loaded via another property, skip it... */
+			else if (glade_widget_has_factory_stock_id
+				 (property->widget, property->klass->id) && is_loaded_value)
+			{
+				/* really ?... */
+				g_free (value);
+				g_free (name);
+				break;
+			}
+	
+		}
+
 		/* Make sure we are working with dashes and
 		 * not underscores ... 
 		 */
 		id = glade_util_read_prop_name (name);
 		g_free (name);
 
-		if (!strcmp (id, property->klass->id))
+		if (!strcmp (id, search_name))
 		{
-			if (!(value = glade_xml_get_content (prop)))
-			{
-				/* XXX should be glade_xml_get_content_required()... */
-				g_free (id);
-				break;
-			}
-
 			if (property && glade_property_class_is_object (property->klass))
 			{
 				/* we must synchronize this directly after loading this project
@@ -1021,6 +1050,15 @@ glade_property_read (GladeProperty      *property,
 			}
 			else
 			{
+				if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+				    search_name == property->klass->factory_stock_id)
+				{
+					gchar *filename =
+						glade_util_icon_name_to_filename (value);
+					g_free (value);
+					value = filename;
+				}
+
 				gvalue = glade_property_class_make_gvalue_from_string
 					(property->klass, value, project);
 
@@ -1083,6 +1121,7 @@ glade_property_write (GladeProperty   *property,
 		      GladeXmlContext *context,
 		      GladeXmlNode    *node)
 {
+	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	GladeProject *project;
 	gchar *name, *value, *tmp;
@@ -1092,10 +1131,11 @@ glade_property_write (GladeProperty   *property,
 
 	project = property->widget->project;
 
+	fmt = glade_project_get_format(project);
+
 	/* This code should work the same for <packing> and <widget> */
 	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
-	      glade_xml_node_verify_silent
-	      (node, GLADE_XML_TAG_WIDGET (glade_project_get_format(project)))))
+	      glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET (fmt))))
 		return;
 
 	if (!property->klass->save || !property->enabled)
@@ -1129,6 +1169,25 @@ glade_property_write (GladeProperty   *property,
 		tmp = value;
 		value = g_markup_escape_text (value, -1);
 		g_free (tmp);
+	}
+
+	/* Switch up the values if we are using GtkIconFactory in builder
+	 * to save some hacked out pixbufs
+	 */
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+	    property->klass->factory_stock_id)
+	{
+		gchar *icon_name;
+
+		/* Create a string representation for the icon factory */
+		icon_name = glade_util_filename_to_icon_name (value);
+		g_free (value);
+		value = icon_name;
+
+		/* Use the alternate property name */
+		g_free (name);
+		name = g_strdup (property->klass->factory_stock_id);
+		glade_util_replace (name, '-', '_');
 	}
 
 	/* Now dump the node values... */

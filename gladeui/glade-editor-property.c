@@ -150,9 +150,6 @@ glade_editor_property_value_changed_cb (GladeProperty       *property,
 	glade_editor_property_load (eprop, eprop->property);
 }
 
-
-
-
 static void
 glade_editor_property_fix_label (GladeEditorProperty *eprop)
 {
@@ -333,6 +330,7 @@ glade_editor_property_constructor (GType                  type,
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->label, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (eprop->item_label), hbox);
+	gtk_widget_show_all (eprop->item_label);
 
 	glade_editor_property_fix_label (eprop);
 

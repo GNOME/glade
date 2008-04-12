@@ -1906,3 +1906,34 @@ glade_util_get_file_mtime (const gchar *filename, GError **error)
 	}
 }
 
+gchar *
+glade_util_filename_to_icon_name (const gchar *value)
+{
+	gchar *icon_name, *p;
+	g_return_val_if_fail (value && value[0], NULL);
+
+	icon_name = g_strdup_printf ("glade-generated-%s", value);
+
+	if ((p = strrchr (icon_name, '.')) != NULL)
+		*p = '-';
+	
+	return icon_name;
+}
+
+gchar *
+glade_util_icon_name_to_filename (const gchar *value)
+{
+	/* sscanf makes us allocate a buffer */
+	gchar filename[FILENAME_MAX], *p;
+	g_return_val_if_fail (value && value[0], NULL);
+
+	sscanf (value, "glade-generated-%s", filename);
+
+	/* XXX: Filenames without an extention will evidently
+	 * break here
+	 */
+	if ((p = strrchr (filename, '-')) != NULL)
+		*p = '.';
+	
+	return g_strdup (filename);
+}

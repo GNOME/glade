@@ -122,6 +122,7 @@ glade_property_class_clone (GladePropertyClass *property_class)
 	clone->id = g_strdup (clone->id);
 	clone->name = g_strdup (clone->name);
 	clone->tooltip = g_strdup (clone->tooltip);
+	clone->factory_stock_id = g_strdup (clone->factory_stock_id);
 
 	if (G_IS_VALUE (property_class->def))
 	{
@@ -1489,6 +1490,26 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
 	
+
+	/* Special case pixbuf here.
+	 */
+	if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
+		klass->resource = TRUE;
+
+	if ((buf = glade_xml_get_property_string
+	     (node, GLADE_TAG_FACTORY_STOCK_ID)) != NULL)
+	{
+		if (!klass->resource) /* Assert the early in the game */
+			g_error ("%s only supported on properties that are marked as %s",
+				 GLADE_TAG_FACTORY_STOCK_ID,
+				 GLADE_TAG_RESOURCE);
+
+		if (klass->factory_stock_id)
+			g_free (klass->factory_stock_id);
+		klass->factory_stock_id = buf;
+	}
+
+
 	/* If this property's value is an enumeration or flag then we try to get the displayable values */
 	if ((G_IS_PARAM_SPEC_ENUM(klass->pspec) || G_IS_PARAM_SPEC_FLAGS(klass->pspec)) &&
 	    (child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES)))
@@ -1499,11 +1520,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	 * go in the atk tab, ideally this shouldnt be needed.
 	 */
 	klass->atk = glade_xml_get_property_boolean (node, GLADE_TAG_ATK_PROPERTY, klass->atk);
-
-	/* Special case pixbuf here.
-	 */
-	if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
-		klass->resource = TRUE;
 	
 	if (klass->optional)
 		klass->optional_default =

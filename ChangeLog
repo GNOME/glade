@@ -1,4 +1,20 @@
-2008-04-10  Tristan Van Berkom <tvb@gnome.org>
+2008-04-12  Tristan Van Berkom <tvb@gnome.org>
+
+
+	* gladeui/glade-editor-property.c: Fixed invisible labels in
+	the menu editor.
+
+	* gladeui/glade-widget.c, gladeui/glade-widget.h, gladeui/glade-xml-utils.c,
+	gladeui/glade-utils.c, gladeui/glade-xml-utils.h, gladeui/glade-utils.h,
+	gladeui/glade-property.c, gladeui/glade-property-class.c,
+	gladeui/glade-property-class.h, gladeui/glade-project.c, gladeui/glade-project.h:
+	implemented "factory-stock-id" in the catalog, this allows you to take a resource
+	image file property formerly hacked as a custom property in libglade, and glade
+	will generate a hidden icon factory in builder files so that it will be loaded
+	through the stock system instead, "factory-stock-id" depicts the name of the
+	stock property of the property-class in question.
+
+2008-04-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property.c: 
 	  - Fixed bold modified state for disabled properties.

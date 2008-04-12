@@ -2989,7 +2989,6 @@ glade_window_init (GladeWindow *window)
 	GtkWidget *menubar;
 	GtkWidget *editor_item;
 	GtkWidget *palette;
-	GtkWidget *editor;
 	GtkWidget *dockitem;
 	GtkWidget *widget;
 	GtkWidget *sep;

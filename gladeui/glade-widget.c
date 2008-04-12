@@ -4112,3 +4112,30 @@ glade_widget_set_support_warning (GladeWidget *widget,
 	g_object_notify (G_OBJECT (widget), "support-warning");
 }
 
+gboolean
+glade_widget_has_factory_stock_id (GladeWidget *widget,
+				   const gchar *property_name)
+{
+	GList *l;
+	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (property_name, FALSE);
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+		if (property->klass->factory_stock_id &&
+		    !strcmp (property->klass->factory_stock_id, property_name))
+			return TRUE;
+	}
+
+	for (l = widget->packing_properties; l; l = l->next)
+	{
+		property = l->data;
+		if (property->klass->factory_stock_id &&
+		    !strcmp (property->klass->factory_stock_id, property_name))
+			return TRUE;
+	}
+	return FALSE;
+}

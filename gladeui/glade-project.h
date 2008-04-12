@@ -186,6 +186,9 @@ gchar         *glade_project_verify_widget_adaptor (GladeProject       *project,
 						    GladeWidgetAdaptor *adaptor,
 						    GladeSupportMask   *mask);
 
+gboolean      glade_project_is_loaded_factory_file (GladeProject       *project, 
+						    const gchar        *stock_id);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */
