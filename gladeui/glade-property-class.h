@@ -222,6 +222,9 @@ gboolean            glade_property_class_void_value              (GladePropertyC
 
 G_CONST_RETURN gchar *glade_property_class_atk_realname          (const gchar        *atk_name);
 
+gint                glade_property_class_compare                 (GladePropertyClass *klass,
+								  GValue             *value1,
+								  GValue             *value2);
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */
