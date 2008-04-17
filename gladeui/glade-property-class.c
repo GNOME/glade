@@ -1578,3 +1578,45 @@ glade_property_class_void_value (GladePropertyClass *klass,
 
 	return FALSE;
 }
+
+/**
+ * glade_property_class_compare:
+ * @klass: a #GladePropertyClass
+ * @value1: a GValue of correct type for @klass
+ * @value2: a GValue of correct type for @klass
+ *
+ * Compares value1 with value2 according to @klass.
+ *
+ * Returns: -1, 0 or +1, if value1 is found to be less than,
+ * equal to or greater than value2, respectively.
+ */
+gint
+glade_property_class_compare (GladePropertyClass *klass,
+			      GValue             *value1,
+			      GValue             *value2)
+{
+	gint retval;
+	
+	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), -1);
+	
+	/* GLib does not know how to compare a boxed real value */
+	if (G_PARAM_SPEC_BOXED (klass->pspec))
+	{
+		gchar *val1, *val2;
+		
+		val1 = glade_property_class_make_string_from_gvalue (klass, value1),
+		val2 = glade_property_class_make_string_from_gvalue (klass, value2);
+
+		if (val1 && val2)
+			retval = strcmp (val1, val2);
+		else
+			retval = val1 - val2;
+		
+		g_free (val1);
+		g_free (val2);
+	}
+	else
+		retval = g_param_values_cmp (klass->pspec, value1, value2);
+	
+	return retval;
+}

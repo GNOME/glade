@@ -101,8 +101,8 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 	/* If the value was denied by a verify function, we'll have to
 	 * reload the real value.
 	 */
-	if (g_param_values_cmp (eprop->property->klass->pspec,
-				eprop->property->value, value) != 0)
+	if (glade_property_class_compare (eprop->property->klass,
+					  eprop->property->value, value) != 0)
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
 }
 

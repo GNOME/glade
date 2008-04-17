@@ -214,6 +214,9 @@ gboolean            glade_property_class_match                   (GladePropertyC
 gboolean            glade_property_class_void_value              (GladePropertyClass *klass,
 								  GValue             *value);
 
+gint                glade_property_class_compare                 (GladePropertyClass *klass,
+								  GValue             *value1,
+								  GValue             *value2);
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */
