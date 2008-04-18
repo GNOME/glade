@@ -23,8 +23,6 @@ typedef enum
 } GladeUIMessageType;
 
 
-void		glade_util_widget_set_tooltip	(GtkWidget *widget, const gchar *str);
-
 GType		glade_util_get_type_from_name	(const gchar *name, gboolean have_func);
 
 GParamSpec      *glade_utils_get_pspec_from_funcname (const gchar *funcname);
