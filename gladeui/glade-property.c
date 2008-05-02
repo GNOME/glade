@@ -380,6 +380,7 @@ glade_property_load_impl (GladeProperty *property)
 	GObjectClass *oclass;
 	
 	if (property->widget == NULL ||
+	    property->klass->virt    ||
 	    property->klass->packing ||
 	    property->klass->ignore  ||
 	    !(property->klass->pspec->flags & G_PARAM_READABLE))

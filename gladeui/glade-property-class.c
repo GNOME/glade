@@ -1600,12 +1600,12 @@ glade_property_class_compare (GladePropertyClass *klass,
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), -1);
 	
 	/* GLib does not know how to compare a boxed real value */
-	if (G_PARAM_SPEC_BOXED (klass->pspec))
+	if (G_VALUE_HOLDS_BOXED (value1))
 	{
 		gchar *val1, *val2;
 		
-		val1 = glade_property_class_make_string_from_gvalue (klass, value1),
-		val2 = glade_property_class_make_string_from_gvalue (klass, value2);
+		val1 = glade_widget_adaptor_string_from_value (klass->handle, klass, value1);
+		val2 = glade_widget_adaptor_string_from_value (klass->handle, klass, value2);
 
 		if (val1 && val2)
 			retval = strcmp (val1, val2);

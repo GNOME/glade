@@ -35,10 +35,6 @@ GType        glade_glist_get_type                (void) G_GNUC_CONST;
 GType        glade_param_objects_get_type        (void) G_GNUC_CONST;
 GType        glade_item_appearance_get_type      (void) G_GNUC_CONST;
 
-guint        glade_builtin_key_from_string (const gchar   *string);
-const gchar *glade_builtin_string_from_key (guint          key);
-
-
 GParamSpec  *glade_param_spec_objects      (const gchar   *name,
 					    const gchar   *nick,
 					    const gchar   *blurb,

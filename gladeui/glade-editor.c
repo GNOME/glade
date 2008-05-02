@@ -511,9 +511,14 @@ glade_editor_table_append_item (GladeEditorTable *table,
 {
 	GladeEditorProperty *property;
 
-	property = glade_widget_adaptor_create_eprop 
-		(GLADE_WIDGET_ADAPTOR (klass->handle), 
-		 klass, from_query_dialog == FALSE);
+	if (!(property = glade_widget_adaptor_create_eprop 
+	      (GLADE_WIDGET_ADAPTOR (klass->handle), 
+	       klass, from_query_dialog == FALSE)))
+	{
+		g_critical ("Unable to create editor for property '%s' of class '%s'",
+			    klass->id, GLADE_WIDGET_ADAPTOR (klass->handle)->name);
+		return NULL;
+	}
 
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->item_label);

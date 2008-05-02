@@ -23,12 +23,12 @@ libgladegtk_la_CFLAGS =  \
 	$(PLUGINS_WARN_CFLAGS)         \
 	$(AM_CFLAGS)
 
-libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-keysyms.c fixed-bg.xpm
+libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c fixed-bg.xpm
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
 libgladegtkincludedir= $(includedir)/libgladeui-1.0/gladeui
-libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h
+libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h
 
 if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined

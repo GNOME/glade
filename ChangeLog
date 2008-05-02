@@ -1,9 +1,18 @@
 2008-05-01  Tristan Van Berkom <tvb@gnome.org>
 
-	* plugins/gtk+/glade-keys.c: Removed.
+	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-keysyms.c: Removed generated keysyms file.
 
 	* plugins/gtk+/glade-accels.c: Removed old modifier and handbuilt keycode
 	  menus and obnoxious comboboxrenderers in favour of one simple accelrenderer.
+
+	* gladeui/glade-utils.h, gladeui/glade-builtins.h: Removed unused prototypes
+
+	* gladeui/glade-editor.c: Added safety check.
+
+	* gladeui/glade-property.c: Dont load virtual properties.
+
+	* gladeui/glade-property-class.c: Fixed bug where G_PARAM_SPEC_BOXED was
+	  used to check if the value held a boxed type.
 
 2008-04-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
