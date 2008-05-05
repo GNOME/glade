@@ -93,6 +93,8 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
+	g_signal_handler_block (G_OBJECT (eprop->property), eprop->changed_id);
+
 	if (eprop->use_command == FALSE)
 		glade_property_set_value (eprop->property, value);
 	else
@@ -104,6 +106,8 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 	if (glade_property_class_compare (eprop->property->klass,
 					  eprop->property->value, value) != 0)
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
+
+	g_signal_handler_unblock (G_OBJECT (eprop->property), eprop->changed_id);
 }
 
 
