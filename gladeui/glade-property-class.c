@@ -1836,7 +1836,7 @@ glade_property_class_compare (GladePropertyClass *klass,
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), -1);
 	
 	/* GLib does not know how to compare a boxed real value */
-	if (G_PARAM_SPEC_BOXED (klass->pspec))
+	if (G_VALUE_HOLDS_BOXED (value1))
 	{
 		gchar *val1, *val2;
 		
