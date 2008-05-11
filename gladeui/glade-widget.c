@@ -2142,15 +2142,17 @@ glade_widget_debug (GladeWidget *widget)
 	glade_widget_debug_real (widget, 0);
 }
 
-static gboolean
-glade_widget_show_idle (GladeWidget *widget)
+static void
+glade_widget_add_to_layout (GladeWidget *widget, GtkWidget *layout)
 {
-	/* This could be dangerous */ 
-	if (GLADE_IS_WIDGET (widget))
-		glade_widget_show (widget);
+	if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
+		gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));
 
-	return FALSE;
+	gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->object));
+
+	gtk_widget_show_all (GTK_WIDGET (widget->object));
 }
+
 
 /**
  * glade_widget_show:
@@ -2165,29 +2167,22 @@ glade_widget_show (GladeWidget *widget)
 	GtkWidget *layout;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
+	
 	/* Position window at saved coordinates or in the center */
 	if (GTK_IS_WINDOW (widget->object) && glade_widget_embed (widget))
 	{
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
 
-		/* This case causes a black window */
-		if (layout && !GTK_WIDGET_REALIZED (layout))
-		{
-			/* XXX Dangerous !!! give her a little kick */
-			g_idle_add (glade_widget_show_idle, widget);
-			return;
-		}
-		else if (!layout)
+		if (!layout)
 			return;
 		
-		if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
-			gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));
-		
-		gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->object));
-
-		gtk_widget_show_all (GTK_WIDGET (widget->object));
+		if (GTK_WIDGET_REALIZED (layout))
+			glade_widget_add_to_layout (widget, layout);
+		else
+			g_signal_connect_data (G_OBJECT (layout), "map", 
+					       G_CALLBACK (glade_widget_add_to_layout), 
+					       widget, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
 	} else if (GTK_IS_WIDGET (widget->object))
 	{
