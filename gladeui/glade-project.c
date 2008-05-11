@@ -107,7 +107,9 @@ struct _GladeProjectPrivate
 	GHashTable  *widget_names_allocator;  /* hash table with the used widget names */
 	GHashTable  *widget_old_names;        /* widget -> old name of the widget */
 	
-	GladeCommand *first_modification; /* we record the first modification, so that we
+	gboolean first_modification_is_na; /* the flag indicates that  the first_modification item has been lost */
+	
+	GList *first_modification; /* we record the first modification, so that we
 	                                   * can set "modification" to FALSE when we
 	                                   * undo this modification
 	                                   */
@@ -268,8 +270,7 @@ glade_project_get_property (GObject    *object,
  */
 static void
 glade_project_set_modified (GladeProject *project,
-			    gboolean      modified,
-			    GladeCommand *modification)
+			    gboolean      modified)
 {
 	GladeProjectPrivate *priv = project->priv;
 
@@ -277,16 +278,10 @@ glade_project_set_modified (GladeProject *project,
 	{
 		priv->modified = !priv->modified;
 		
-		if (priv->modified)
+		if (!priv->modified)
 		{
-			g_assert (priv->first_modification == NULL);
-			g_assert (modification != NULL);
-			priv->first_modification = modification;
-		}
-		else
-		{
-			g_assert (priv->first_modification != NULL);
-			priv->first_modification = NULL;
+			priv->first_modification = project->priv->prev_redo_item;
+			priv->first_modification_is_na = FALSE;
 		}
 		
 		g_object_notify (G_OBJECT (project), "modified");
@@ -407,9 +402,8 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 	{
 		g_assert (tmp_redo_item->data);
 		
-		/* just for safety, we might not need this */
-		if (GLADE_COMMAND (tmp_redo_item->data) == priv->first_modification)
-			priv->first_modification = NULL;
+		if (tmp_redo_item == priv->first_modification)
+			priv->first_modification_is_na = TRUE;
 		
 		g_object_unref (G_OBJECT (tmp_redo_item->data));
 		
@@ -451,10 +445,10 @@ glade_project_changed_impl (GladeProject *project,
 		/* if this command is the first modification to cause the project
 		 * to have unsaved changes, then we can now flag the project as unmodified
 		 */
-		if (command == project->priv->first_modification)
-			glade_project_set_modified (project, FALSE, NULL);
+		if (!project->priv->first_modification_is_na && project->priv->prev_redo_item == project->priv->first_modification)
+			glade_project_set_modified (project, FALSE);
 		else
-			glade_project_set_modified (project, TRUE, command);				
+			glade_project_set_modified (project, TRUE);
 	}
 	glade_app_update_ui ();
 }
@@ -478,6 +472,7 @@ glade_project_init (GladeProject *project)
 	priv->undo_stack = NULL;
 	priv->prev_redo_item = NULL;
 	priv->first_modification = NULL;
+	priv->first_modification_is_na = FALSE;
 	priv->widget_names_allocator = g_hash_table_new_full (g_str_hash,
 							      g_str_equal,
 							      g_free, 
@@ -1817,7 +1812,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 	
-	glade_project_set_modified (project, FALSE, NULL);
+	glade_project_set_modified (project, FALSE);
 
 	if (project->priv->unsaved_number > 0)
 	{
