@@ -111,24 +111,8 @@ static gboolean
 glade_property_equals_value_impl (GladeProperty *property,
 				  const GValue  *value)
 {
-	if (G_IS_PARAM_SPEC_STRING (property->klass->pspec))
-	{
-		const gchar *prop_str, *value_str;
-
-		/* in string specs; NULL and '\0' are 
-		 * treated as equivalent.
-		 */
-		prop_str = g_value_get_string (property->value);
-		value_str = g_value_get_string (value);
-
-		if (prop_str == NULL && value_str && value_str[0] == '\0')
-			return TRUE;
-		else if (value_str == NULL && prop_str && prop_str[0] == '\0')
-			return TRUE;
-	}
-
-	return !g_param_values_cmp (property->klass->pspec,
-				    property->value, value);
+	return !glade_property_class_compare (property->klass,
+					      property->value, value);
 }
 
 

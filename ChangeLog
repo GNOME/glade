@@ -1,3 +1,11 @@
+2008-05-11  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.c: Applied patch from Pavel Kostyuchenko to prevent
+	  hangs in anjuta (bug 531585).
+
+	* gladeui/glade-property.c, gladeui/glade-property-class.c: Applied patch from 
+	  Pavel Kostyuchenko to unify duplicate implementation property comparisons (bug 532013)
+
 2008-05-05  Tristan Van Berkom <tvb@gnome.org>
 	
 	* gladeui/glade-editor-property.c: Avoid feedback loops when committing properties,

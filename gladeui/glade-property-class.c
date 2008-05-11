@@ -1592,8 +1592,8 @@ glade_property_class_void_value (GladePropertyClass *klass,
  */
 gint
 glade_property_class_compare (GladePropertyClass *klass,
-			      GValue             *value1,
-			      GValue             *value2)
+			      const GValue       *value1,
+			      const GValue       *value2)
 {
 	gint retval;
 	
@@ -1616,7 +1616,24 @@ glade_property_class_compare (GladePropertyClass *klass,
 		g_free (val2);
 	}
 	else
+	{
+		if (G_IS_PARAM_SPEC_STRING (klass->pspec))
+		{
+			const gchar *value_str1, *value_str2;
+
+			/* in string specs; NULL and '\0' are 
+			 * treated as equivalent.
+			 */
+			value_str1 = g_value_get_string (value1);
+			value_str2 = g_value_get_string (value2);
+
+			if (value_str1 == NULL && value_str2 && value_str2[0] == '\0')
+				return 0;
+			else if (value_str2 == NULL && value_str1 && value_str1[0] == '\0')
+				return 0;
+		}
 		retval = g_param_values_cmp (klass->pspec, value1, value2);
+	}
 	
 	return retval;
 }
