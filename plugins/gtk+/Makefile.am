@@ -28,7 +28,7 @@ libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
 libgladegtkincludedir= $(includedir)/libgladeui-1.0/gladeui
-libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h
+libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h 
 
 if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined
