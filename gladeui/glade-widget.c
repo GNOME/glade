@@ -1868,7 +1868,8 @@ glade_widget_show (GladeWidget *widget)
 		if (GTK_WIDGET_REALIZED (layout))
 			glade_widget_add_to_layout (widget, layout);
 		else
-			g_signal_connect_data (layout, "map", (GCallback) glade_widget_add_to_layout, 
+			g_signal_connect_data (G_OBJECT (layout), "map", 
+					       G_CALLBACK (glade_widget_add_to_layout), 
 					       widget, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
 	} else if (GTK_IS_WIDGET (widget->object))
