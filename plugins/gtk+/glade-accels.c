@@ -244,10 +244,11 @@ enum {
 	ACCEL_COLUMN_SIGNAL = 0,
 	ACCEL_COLUMN_REAL_SIGNAL,
 	ACCEL_COLUMN_TEXT,
-	ACCEL_COLUMN_IS_CLASS,
-	ACCEL_COLUMN_IS_SIGNAL,
+	ACCEL_COLUMN_WEIGHT,
+	ACCEL_COLUMN_STYLE,
+	ACCEL_COLUMN_FOREGROUND,
+	ACCEL_COLUMN_VISIBLE,
 	ACCEL_COLUMN_KEY_ENTERED,
-	ACCEL_COLUMN_KEY_SLOT,
 	ACCEL_COLUMN_KEYCODE,
 	ACCEL_COLUMN_MODIFIERS,
 	ACCEL_NUM_COLUMNS
@@ -354,10 +355,10 @@ glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
 			gtk_tree_store_append (model, &iter, NULL);
 			gtk_tree_store_set (model, &iter,
 					    ACCEL_COLUMN_SIGNAL, sclass->type,
-					    ACCEL_COLUMN_IS_CLASS, TRUE,
-					    ACCEL_COLUMN_IS_SIGNAL, FALSE,
+					    ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_BOLD,
+					    ACCEL_COLUMN_VISIBLE, FALSE,
 					    -1);
-			
+
 			parent_tab = g_new0 (GladeEpropIterTab, 1);
 			parent_tab->name = sclass->type;
 			parent_tab->iter = gtk_tree_iter_copy (&iter);
@@ -402,12 +403,13 @@ glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
 					 ACCEL_COLUMN_SIGNAL, name,
 					 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
 					 ACCEL_COLUMN_TEXT, accel_text,
-					 ACCEL_COLUMN_IS_CLASS, FALSE,
-					 ACCEL_COLUMN_IS_SIGNAL, TRUE,
+					 ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
+					 ACCEL_COLUMN_STYLE, PANGO_STYLE_NORMAL,
+					 ACCEL_COLUMN_FOREGROUND, "Black",
+					 ACCEL_COLUMN_VISIBLE, TRUE,
 					 ACCEL_COLUMN_KEYCODE, info->key,
 					 ACCEL_COLUMN_MODIFIERS, info->modifiers,
 					 ACCEL_COLUMN_KEY_ENTERED, TRUE,
-					 ACCEL_COLUMN_KEY_SLOT, FALSE,
 					 -1);
 
 				g_free (accel_text);
@@ -420,12 +422,13 @@ glade_eprop_accel_populate_view (GladeEditorProperty *eprop,
 				 ACCEL_COLUMN_SIGNAL, name,
 				 ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
 				 ACCEL_COLUMN_TEXT, _("<choose a key>"),
-				 ACCEL_COLUMN_IS_CLASS, FALSE,
-				 ACCEL_COLUMN_IS_SIGNAL, TRUE,
+				 ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
+				 ACCEL_COLUMN_STYLE, PANGO_STYLE_ITALIC,
+				 ACCEL_COLUMN_FOREGROUND, "Grey",
+				 ACCEL_COLUMN_VISIBLE, TRUE,
 				 ACCEL_COLUMN_KEYCODE, 0,
 				 ACCEL_COLUMN_MODIFIERS, 0,
 				 ACCEL_COLUMN_KEY_ENTERED, FALSE,
-				 ACCEL_COLUMN_KEY_SLOT, TRUE,
 				 -1);
 
 			g_free (name);
@@ -458,7 +461,8 @@ accel_edited (GtkCellRendererAccel *accel,
 	gtk_tree_store_set    
 		(GTK_TREE_STORE (eprop_accel->model), &iter,
 		 ACCEL_COLUMN_KEY_ENTERED, TRUE,
-		 ACCEL_COLUMN_KEY_SLOT, FALSE,
+		 ACCEL_COLUMN_STYLE, PANGO_STYLE_NORMAL,
+		 ACCEL_COLUMN_FOREGROUND, "Black",
 		 ACCEL_COLUMN_TEXT, accel_text,
 		 ACCEL_COLUMN_KEYCODE, accel_key,
 		 ACCEL_COLUMN_MODIFIERS, accel_mods,
@@ -486,12 +490,13 @@ accel_edited (GtkCellRendererAccel *accel,
 				    ACCEL_COLUMN_SIGNAL, signal,
 				    ACCEL_COLUMN_REAL_SIGNAL, real_signal,
 				    ACCEL_COLUMN_TEXT, _("<choose a key>"),
-				    ACCEL_COLUMN_IS_CLASS, FALSE,
-				    ACCEL_COLUMN_IS_SIGNAL, TRUE,
+				    ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
+				    ACCEL_COLUMN_STYLE, PANGO_STYLE_ITALIC,
+				    ACCEL_COLUMN_FOREGROUND, "Grey",
+				    ACCEL_COLUMN_VISIBLE, TRUE,
 				    ACCEL_COLUMN_KEYCODE, 0,
 				    ACCEL_COLUMN_MODIFIERS, 0,
 				    ACCEL_COLUMN_KEY_ENTERED, FALSE,
-				    ACCEL_COLUMN_KEY_SLOT, TRUE,
 				    -1);
 		g_free (signal);
 		g_free (real_signal);
@@ -526,49 +531,37 @@ glade_eprop_accel_view (GladeEditorProperty *eprop)
 		 G_TYPE_STRING,        /* The GSignal name formatted for display */
 		 G_TYPE_STRING,        /* The GSignal name */
 		 G_TYPE_STRING,        /* The text to show in the accelerator cell */
-		 G_TYPE_BOOLEAN,       /* Whether this is a class entry */
-		 G_TYPE_BOOLEAN,       /* Whether this is a signal entry (oposite of above) */
+		 G_TYPE_INT,           /* PangoWeight attribute for bold headers */
+		 G_TYPE_INT,           /* PangoStyle attribute for italic grey unset items */
+		 G_TYPE_STRING,        /* Foreground colour for italic grey unset items */
+		 G_TYPE_BOOLEAN,       /* Visible attribute to hide items for header entries */
 		 G_TYPE_BOOLEAN,       /* Whether the key has been entered for this row */
-		 G_TYPE_BOOLEAN,       /* Oposite of above */
 		 G_TYPE_UINT,          /* Hardware keycode */
 		 G_TYPE_INT);          /* GdkModifierType */
 
 	view_widget = gtk_tree_view_new_with_model (eprop_accel->model);
-	g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
-	
-	/********************* fake invisible column *********************/
- 	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "editable", FALSE, "visible", FALSE, NULL);
-
-	column = gtk_tree_view_column_new_with_attributes (NULL, renderer, NULL);
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
-
-	gtk_tree_view_column_set_visible (column, FALSE);
-	gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
+	gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);
+	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view_widget), FALSE);
 
 	/********************* signal name column *********************/
  	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), 
-		      "editable", FALSE, 
-		      "weight", PANGO_WEIGHT_BOLD,
-		      NULL);
+		      "editable", FALSE, NULL);
 
 	column = gtk_tree_view_column_new_with_attributes
 		(_("Signal"),  renderer, 
 		 "text", ACCEL_COLUMN_SIGNAL, 
-		 "weight-set", ACCEL_COLUMN_IS_CLASS,
+		 "weight", ACCEL_COLUMN_WEIGHT,
 		 NULL);
 
-	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
 
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
+	gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (column), TRUE);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
 
 	/********************* accel editor column *********************/
  	renderer = gtk_cell_renderer_accel_new ();
 	g_object_set (G_OBJECT (renderer), 
 		      "editable",    TRUE,
-		      "style",       PANGO_STYLE_ITALIC,
-		      "foreground",  "Gray", 
 		      NULL);
 
 	g_signal_connect (renderer, "accel-edited",
@@ -579,13 +572,12 @@ glade_eprop_accel_view (GladeEditorProperty *eprop)
 	column = gtk_tree_view_column_new_with_attributes
 		(_("Accelerator Key"),       renderer, 
 		 "text",           ACCEL_COLUMN_TEXT, 
-		 "style-set",      ACCEL_COLUMN_KEY_SLOT,
-		 "foreground-set", ACCEL_COLUMN_KEY_SLOT,
- 		 "visible",        ACCEL_COLUMN_IS_SIGNAL,
+		 "foreground",     ACCEL_COLUMN_FOREGROUND,
+		 "style",          ACCEL_COLUMN_STYLE,
+ 		 "visible",        ACCEL_COLUMN_VISIBLE,
 		 NULL);
 
- 	g_object_set (G_OBJECT (column), "expand", TRUE, NULL);
-
+	gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (column), TRUE);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
 
 	return view_widget;
