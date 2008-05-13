@@ -1,3 +1,9 @@
+2008-05-13  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-accels.c: Fixed bold/grey/italics in treeview.
+
+	* gladeui/glade-editor.c: Fixed boldness in reset dialog treeview.
+
 2008-05-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget.c: Applied patch from Pavel Kostyuchenko to prevent
@@ -8,6 +14,9 @@
 
 	* gladeui/glade-project.c: Applied patch from Pavel Kostyuchenko to fix project
 	  modified state flag glitches (bug 532017).
+
+	* gladeui/glade.h: Applied patch from Andreas Henriksson to fix some compile errors
+	  on ia64 platform (bug 530143).
 
 2008-05-05  Tristan Van Berkom <tvb@gnome.org>
 	
