@@ -1115,7 +1115,7 @@ enum {
 	COLUMN_ENABLED = 0,
 	COLUMN_PROP_NAME,
 	COLUMN_PROPERTY,
-	COLUMN_PARENT,
+	COLUMN_WEIGHT,
 	COLUMN_CHILD,
 	COLUMN_DEFAULT,
 	COLUMN_NDEFAULT,
@@ -1155,7 +1155,7 @@ glade_editor_reset_view (GladeEditor *editor)
 		 G_TYPE_BOOLEAN,       /* Enabled  value      */
 		 G_TYPE_STRING,        /* Property name       */
 		 GLADE_TYPE_PROPERTY,  /* The property        */
-		 G_TYPE_BOOLEAN,       /* Parent node ?       */
+		 G_TYPE_INT,           /* Parent node ?       */
 		 G_TYPE_BOOLEAN,       /* Child node ?        */
 		 G_TYPE_BOOLEAN,       /* Has default value   */
 		 G_TYPE_BOOLEAN,       /* Doesn't have defaut */
@@ -1195,12 +1195,13 @@ glade_editor_reset_view (GladeEditor *editor)
  	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (G_OBJECT (renderer), 
 		      "editable", FALSE, 
-		      "weight", PANGO_WEIGHT_BOLD, NULL);
+		      NULL);
+
 	gtk_tree_view_insert_column_with_attributes
 		(GTK_TREE_VIEW (view_widget), COLUMN_PROP_NAME,
 		 _("Property"), renderer, 
 		 "text",       COLUMN_PROP_NAME, 
-		 "weight-set", COLUMN_PARENT,
+		 "weight",     COLUMN_WEIGHT,
 		 NULL);
 
 	/******************* default indicator column *******************/
@@ -1209,6 +1210,7 @@ glade_editor_reset_view (GladeEditor *editor)
 		      "editable", FALSE, 
 		      "style", PANGO_STYLE_ITALIC,
 		      "foreground", "Gray", NULL);
+
 	gtk_tree_view_insert_column_with_attributes
 		(GTK_TREE_VIEW (view_widget), COLUMN_DEFSTRING,
 		 NULL, renderer, 
@@ -1235,7 +1237,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 	gtk_tree_store_set    (model, &general_iter,
 			       COLUMN_PROP_NAME, _("General"),
 			       COLUMN_PROPERTY,  NULL,
-			       COLUMN_PARENT,    TRUE,
+			       COLUMN_WEIGHT,    PANGO_WEIGHT_BOLD,
 			       COLUMN_CHILD,     FALSE,
 			       COLUMN_DEFAULT,   FALSE,
 			       COLUMN_NDEFAULT,  FALSE,
@@ -1245,7 +1247,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 	gtk_tree_store_set    (model, &common_iter,
 			       COLUMN_PROP_NAME, _("Common"),
 			       COLUMN_PROPERTY,  NULL,
-			       COLUMN_PARENT,    TRUE,
+			       COLUMN_WEIGHT,    PANGO_WEIGHT_BOLD,
 			       COLUMN_CHILD,     FALSE,
 			       COLUMN_DEFAULT,   FALSE,
 			       COLUMN_NDEFAULT,  FALSE,
@@ -1255,7 +1257,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 	gtk_tree_store_set    (model, &atk_iter,
 			       COLUMN_PROP_NAME, _("Accessibility"),
 			       COLUMN_PROPERTY,  NULL,
-			       COLUMN_PARENT,    TRUE,
+			       COLUMN_WEIGHT,    PANGO_WEIGHT_BOLD,
 			       COLUMN_CHILD,     FALSE,
 			       COLUMN_DEFAULT,   FALSE,
 			       COLUMN_NDEFAULT,  FALSE,
@@ -1283,7 +1285,7 @@ glade_editor_populate_reset_view (GladeEditor *editor,
 				       COLUMN_ENABLED,   !def,
 				       COLUMN_PROP_NAME, property->klass->name,
 				       COLUMN_PROPERTY,  property,
-				       COLUMN_PARENT,    FALSE,
+				       COLUMN_WEIGHT,    PANGO_WEIGHT_NORMAL,
 				       COLUMN_CHILD,     TRUE,
 				       COLUMN_DEFAULT,   def,
 				       COLUMN_NDEFAULT,  !def,
