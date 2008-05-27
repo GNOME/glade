@@ -30,17 +30,6 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 /* Used for catalog tags and attributes */
 
-
-	gdouble                    version_since; /* Version in which this widget was
-						   * introduced
-						   */
-	gboolean                   deprecated; /* If this widget is currently
-							* deprecated
-							*/
-	gboolean                   builder_unsupported; /* If this widget is not supported
-							 * by gtkbuilder
-							 */
-
 #define GLADE_XML_TAG_LIBGLADE_PROJECT            "glade-interface"
 #define GLADE_XML_TAG_BUILDER_PROJECT             "interface"
 #define GLADE_XML_TAG_LIBGLADE_WIDGET             "widget"
