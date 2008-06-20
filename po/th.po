@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-31 18:05+0700\n"
-"PO-Revision-Date: 2008-01-31 18:14+0700\n"
+"POT-Creation-Date: 2008-06-20 15:33+0700\n"
+"PO-Revision-Date: 2008-06-20 17:06+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "สร้างหรือเปิดแบบของส่วนต
 msgid "Glade Interface Designer"
 msgstr "Glade: เครื่องมือออกแบบส่วนติดต่อผู้ใช้"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:440
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:438
 msgid "User Interface Designer"
 msgstr "เครื่องมือออกแบบส่วนติดต่อผู้ใช้"
 
@@ -80,97 +80,84 @@ msgstr "ไม่สามารถเปิด '%s' ไม่มีแฟ้ม
 msgid "[Read Only]"
 msgstr "[อ่านเท่านั้น]"
 
-#: ../src/glade-window.c:155
+#: ../src/glade-window.c:153
 #, c-format
 msgid "Could not display the URL '%s'"
 msgstr "ไม่สามารถแสดง URL '%s'"
 
-#: ../src/glade-window.c:159
+#: ../src/glade-window.c:157
 msgid "No suitable web browser could be found."
 msgstr "ไม่พบโปรแกรมเว็บเบราว์เซอร์ที่เหมาะสม"
-
-#. translators: referring to the properties of a widget named '%s [%s]'
-#: ../src/glade-window.c:669
-#, c-format
-msgid "%s [%s] - Properties"
-msgstr "%s [%s] - คุณสมบัติ"
-
-#: ../src/glade-window.c:682 ../src/glade-window.c:688
-#: ../src/glade-window.c:3121 ../src/glade-window.c:3127
-#: ../gladeui/glade-widget.c:1053
-msgid "Properties"
-msgstr "คุณสมบัติ"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:716
+#: ../src/glade-window.c:688
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "เรียก '%s' %s"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:723 ../src/glade-window.c:731
+#: ../src/glade-window.c:695 ../src/glade-window.c:703
 #, c-format
 msgid "Activate '%s'"
 msgstr "เรียก '%s'"
 
-#: ../src/glade-window.c:1161
+#: ../src/glade-window.c:1101
 msgid "Open…"
 msgstr "เปิด…"
 
-#: ../src/glade-window.c:1203
+#: ../src/glade-window.c:1144
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "แฟ้ม %s ถูกเปลี่ยนแปลงหลังจากการเปิดอ่านครั้งล่าสุด"
 
-#: ../src/glade-window.c:1207
+#: ../src/glade-window.c:1148
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "ถ้าคุณบันทึก การเปลี่ยนแปลงจากโปรแกรมภายนอกจะสูญหายทั้งหมด ยังยืนยันจะบันทึกหรือไม่?"
 
-#: ../src/glade-window.c:1211
+#: ../src/glade-window.c:1152
 msgid "_Save Anyway"
 msgstr "_ยืนยันบันทึก"
 
-#: ../src/glade-window.c:1218
+#: ../src/glade-window.c:1159
 msgid "_Don't Save"
 msgstr "ไ_ม่บันทึก"
 
-#: ../src/glade-window.c:1241
+#: ../src/glade-window.c:1182
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "บันทึก %s ไม่สำเร็จ: %s"
 
-#: ../src/glade-window.c:1262
+#: ../src/glade-window.c:1203
 #, c-format
 msgid "Project '%s' saved"
 msgstr "บันทึกโครงการ '%s' แล้ว"
 
-#: ../src/glade-window.c:1282
+#: ../src/glade-window.c:1223
 msgid "Save As…"
 msgstr "บันทึกเป็น…"
 
-#: ../src/glade-window.c:1327
+#: ../src/glade-window.c:1268
 #, c-format
 msgid "Could not save the file %s"
 msgstr "ไม่สามารถบันทึกแฟ้ม %s"
 
-#: ../src/glade-window.c:1331
+#: ../src/glade-window.c:1272
 msgid "You do not have the permissions necessary to save the file."
 msgstr "คุณไม่มีสิทธิ์เพียงพอที่จะบันทึกแฟ้มนี้ได้"
 
-#: ../src/glade-window.c:1352
+#: ../src/glade-window.c:1293
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "ไม่สามารถบันทึกแฟ้ม %s ได้ เนื่องจากมีอีกโครงการหนึ่งที่ใช้พาธนั้นเปิดทำงานอยู่"
 
-#. Just in case the menu-item or button is not insensitive
-#: ../src/glade-window.c:1376
+#: ../src/glade-window.c:1318
 msgid "No open projects to save"
 msgstr "ไม่มีโครงการที่เปิดไว้ที่จะบันทึก"
 
-#: ../src/glade-window.c:1406
+#: ../src/glade-window.c:1348
 #, c-format
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
@@ -183,35 +170,35 @@ msgstr ""
 "\n"
 "การเปลี่ยนแปลงของคุณที่ทำไว้จะสูญหาย ถ้าไม่ได้บันทึก"
 
-#: ../src/glade-window.c:1418
+#: ../src/glade-window.c:1360
 msgid "_Close without Saving"
 msgstr "_ปิดโดยไม่บันทึก"
 
-#: ../src/glade-window.c:1445
+#: ../src/glade-window.c:1387
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "บันทึก %s ไปยัง %s ไม่สำเร็จ: %s"
 
-#: ../src/glade-window.c:1457
+#: ../src/glade-window.c:1399
 msgid "Save…"
 msgstr "บันทึก…"
 
-#: ../src/glade-window.c:2015
+#: ../src/glade-window.c:1979
 msgid "Could not display the online user manual"
 msgstr "ไม่สามารถแสดงคู่มือผู้ใช้ออนไลน์ได้"
 
-#: ../src/glade-window.c:2018 ../src/glade-window.c:2056
+#: ../src/glade-window.c:1982 ../src/glade-window.c:2020
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr "ไม่พบโปรแกรมเว็บเบราว์เซอร์ที่เหมาะสม เพื่อจะแสดง URL: %s"
 
-#: ../src/glade-window.c:2053
+#: ../src/glade-window.c:2017
 msgid "Could not display the online developer reference manual"
 msgstr "ไม่สามารถแสดงคู่มืออ้างอิงสำหรับนักพัฒนาออนไลน์ได้"
 
-#: ../src/glade-window.c:2096
+#: ../src/glade-window.c:2060
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -240,325 +227,334 @@ msgstr ""
 "กรุณาติดต่อไปที่ Free Software Foundation, Inc., 51 Franklin Street,\n"
 "Fifth Floor, Boston, MA  02110-1301, USA"
 
-#: ../src/glade-window.c:2122
+#: ../src/glade-window.c:2086
 msgid "translator-credits"
 msgstr ""
 "Supranee Thirawatthanasuk <supranee@opentle.org>\n"
 "Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "aka.ape <aka.ape@gmail.com>"
 
-#: ../src/glade-window.c:2123
+#: ../src/glade-window.c:2087
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "เครื่องมือออกแบบส่วนติดต่อผู้ใช้สำหรับ GTK+ และ GNOME"
 
 #. File
-#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:5123
-#: ../plugins/gtk+/glade-gtk.c:5446
+#: ../src/glade-window.c:2162 ../plugins/gtk+/glade-gtk.c:5950
+#: ../plugins/gtk+/glade-gtk.c:6273
 msgid "_File"
 msgstr "แ_ฟ้ม"
 
 #. Edit
-#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:5126
-#: ../plugins/gtk+/glade-gtk.c:5456
+#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:5953
+#: ../plugins/gtk+/glade-gtk.c:6283
 msgid "_Edit"
 msgstr "แ_ก้ไข"
 
 #. View
-#: ../src/glade-window.c:2198 ../plugins/gtk+/glade-gtk.c:5129
-#: ../plugins/gtk+/glade-gtk.c:5464
+#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:5956
+#: ../plugins/gtk+/glade-gtk.c:6291
 msgid "_View"
 msgstr "มุ_มมอง"
 
-#: ../src/glade-window.c:2199
+#: ../src/glade-window.c:2165
 msgid "_Projects"
 msgstr "โ_ครงการ"
 
 #. Help
-#: ../src/glade-window.c:2200 ../plugins/gtk+/glade-gtk.c:5141
-#: ../plugins/gtk+/glade-gtk.c:5467
+#: ../src/glade-window.c:2166 ../plugins/gtk+/glade-gtk.c:5968
+#: ../plugins/gtk+/glade-gtk.c:6294
 msgid "_Help"
 msgstr "_วิธีใช้"
 
-#: ../src/glade-window.c:2206
+#: ../src/glade-window.c:2172
 msgid "Create a new project"
 msgstr "สร้างโครงการใหม่"
 
-#: ../src/glade-window.c:2208
+#: ../src/glade-window.c:2174
 msgid "_Open…"
 msgstr "_เปิด…"
 
-#: ../src/glade-window.c:2209
+#: ../src/glade-window.c:2175
 msgid "Open a project"
 msgstr "เปิดโครงการ"
 
-#: ../src/glade-window.c:2211
+#: ../src/glade-window.c:2177
 msgid "Open _Recent"
 msgstr "เปิดโครงการ_ล่าสุด"
 
-#: ../src/glade-window.c:2214
+#: ../src/glade-window.c:2180
 msgid "Quit the program"
 msgstr "ออกจากโปรแกรม"
 
 #. ViewMenu
-#: ../src/glade-window.c:2217
+#: ../src/glade-window.c:2183
 msgid "Palette _Appearance"
 msgstr "รูปแ_บบกล่องอุปกรณ์"
 
-#: ../src/glade-window.c:2221
+#: ../src/glade-window.c:2187
 msgid "About this application"
 msgstr "เกี่ยวกับโปรแกรมนี้"
 
-#: ../src/glade-window.c:2223
+#: ../src/glade-window.c:2189
 msgid "_Contents"
 msgstr "เนื้อ_หา"
 
-#: ../src/glade-window.c:2224
+#: ../src/glade-window.c:2190
 msgid "Display the user manual"
 msgstr "แสดงคู่มือวิธีใช้"
 
-#: ../src/glade-window.c:2226
+#: ../src/glade-window.c:2192
 msgid "_Developer Reference"
 msgstr "คู่มือ_อ้างอิงสำหรับนักพัฒนา"
 
-#: ../src/glade-window.c:2227
+#: ../src/glade-window.c:2193
 msgid "Display the developer reference manual"
 msgstr "เปิดคู่มืออ้างอิงสำหรับนักพัฒนา"
 
-#: ../src/glade-window.c:2236
+#: ../src/glade-window.c:2202
 msgid "Save the current project"
 msgstr "บันทึกโครงการปัจจุบัน"
 
-#: ../src/glade-window.c:2238
+#: ../src/glade-window.c:2204
 msgid "Save _As…"
 msgstr "บันทึกเป็_น…"
 
-#: ../src/glade-window.c:2239
+#: ../src/glade-window.c:2205
 msgid "Save the current project with a different name"
 msgstr "บันทึกโครงการปัจจุบันเป็นชื่ออื่น"
 
-#: ../src/glade-window.c:2242
+#: ../src/glade-window.c:2208
 msgid "Close the current project"
 msgstr "ปิดโครงการปัจจุบัน"
 
-#: ../src/glade-window.c:2246
+#: ../src/glade-window.c:2212
 msgid "Undo the last action"
 msgstr "เรียกคืนการปฏิบัติการล่าสุด"
 
-#: ../src/glade-window.c:2249
+#: ../src/glade-window.c:2215
 msgid "Redo the last action"
 msgstr "ทำซ้ำการปฏิบัติการล่าสุด"
 
-#: ../src/glade-window.c:2252
+#: ../src/glade-window.c:2218
 msgid "Cut the selection"
 msgstr "ตัดส่วนที่เลือก"
 
-#: ../src/glade-window.c:2255
+#: ../src/glade-window.c:2221
 msgid "Copy the selection"
 msgstr "คัดลอกส่วนที่เลือก"
 
-#: ../src/glade-window.c:2258
+#: ../src/glade-window.c:2224
 msgid "Paste the clipboard"
 msgstr "แปะคลิปบอร์ด"
 
-#: ../src/glade-window.c:2261
+#: ../src/glade-window.c:2227
 msgid "Delete the selection"
 msgstr "ลบส่วนที่เลือก"
 
+#: ../src/glade-window.c:2230
+msgid "Modify project preferences"
+msgstr "ปรับค่าตั้งของโครงการ"
+
 #. ViewMenu
-#: ../src/glade-window.c:2265
+#: ../src/glade-window.c:2234
 msgid "_Clipboard"
 msgstr "_คลิปบอร์ด"
 
-#: ../src/glade-window.c:2266
+#: ../src/glade-window.c:2235
 msgid "Show the clipboard"
 msgstr "แสดงคลิปบอร์ด"
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2270
+#: ../src/glade-window.c:2239
 msgid "_Previous Project"
 msgstr "โครงการ_ก่อนหน้า"
 
-#: ../src/glade-window.c:2271
+#: ../src/glade-window.c:2240
 msgid "Activate previous project"
 msgstr "เรียกใช้งานโครงการก่อนหน้า"
 
-#: ../src/glade-window.c:2273
+#: ../src/glade-window.c:2242
 msgid "_Next Project"
 msgstr "โครงการ_ถัดไป"
 
-#: ../src/glade-window.c:2274
+#: ../src/glade-window.c:2243
 msgid "Activate next project"
 msgstr "เรียกใช้งานโครงการถัดไป"
 
-#: ../src/glade-window.c:2282
+#: ../src/glade-window.c:2251
 msgid "_Use Small Icons"
 msgstr "ใช้ไ_อคอนเล็ก"
 
-#: ../src/glade-window.c:2283
+#: ../src/glade-window.c:2252
 msgid "Show items using small icons"
 msgstr "แสดงรายการต่างๆ โดยใช้ไอคอนเล็ก"
 
-#: ../src/glade-window.c:2286
+#: ../src/glade-window.c:2255
 msgid "Context _Help"
 msgstr "คู่_มือตามบริบท"
 
-#: ../src/glade-window.c:2287
+#: ../src/glade-window.c:2256
 msgid "Show or hide contextual help buttons in the editor"
 msgstr "ซ่อนหรือแสดงปุ่มเปิดคู่มือตามบริบทในเครื่องมือแก้ไข"
 
-#: ../src/glade-window.c:2290
+#: ../src/glade-window.c:2259
 msgid "Dock _Palette"
 msgstr "Dock _กล่องอุปกรณ์"
 
-#: ../src/glade-window.c:2291
+#: ../src/glade-window.c:2260
 msgid "Dock the palette into the main window"
 msgstr "Dock กล่องอุปกรณ์เข้าในหน้าต่างหลัก"
 
-#: ../src/glade-window.c:2294
+#: ../src/glade-window.c:2263
 msgid "Dock _Inspector"
 msgstr "Dock _ช่องเฝ้ามอง"
 
-#: ../src/glade-window.c:2295
+#: ../src/glade-window.c:2264
 msgid "Dock the inspector into the main window"
 msgstr "Dock ช่องเฝ้ามองเข้าในหน้าต่างหลัก"
 
-#: ../src/glade-window.c:2298
+#: ../src/glade-window.c:2267
 msgid "Dock _Editor"
 msgstr "Dock เครื่องมือ แ_ก้ไข"
 
-#: ../src/glade-window.c:2299
+#: ../src/glade-window.c:2268
 msgid "Dock the editor into the main window"
 msgstr "Dock เครื่องมือแก้ไขเข้าในหน้าต่างหลัก"
 
-#: ../src/glade-window.c:2307 ../plugins/gtk+/gtk+.xml.in.h:306
+#: ../src/glade-window.c:2276 ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "Text beside icons"
 msgstr "ข้อความข้างไอคอน"
 
-#: ../src/glade-window.c:2308
+#: ../src/glade-window.c:2277
 msgid "Display items as text beside icons"
 msgstr "แสดงรายการเป็นข้อความข้างไอคอน"
 
-#: ../src/glade-window.c:2310
+#: ../src/glade-window.c:2279
 msgid "_Icons only"
 msgstr "ไ_อคอนเท่านั้น"
 
-#: ../src/glade-window.c:2311
+#: ../src/glade-window.c:2280
 msgid "Display items as icons only"
 msgstr "แสดงรายการให้เป็นไอคอนเท่านั้น"
 
-#: ../src/glade-window.c:2313
+#: ../src/glade-window.c:2282
 msgid "_Text only"
 msgstr "_ข้อความเท่านั้น"
 
-#: ../src/glade-window.c:2314
+#: ../src/glade-window.c:2283
 msgid "Display items as text only"
 msgstr "แสดงรายการให้เป็นข้อความเท่านั้น"
 
-#: ../src/glade-window.c:2501
+#: ../src/glade-window.c:2470
 msgid "Select"
 msgstr "เลือก"
 
-#: ../src/glade-window.c:2505
+#: ../src/glade-window.c:2474
 msgid "Select widgets in the workspace"
 msgstr "เลือกวิดเจ็ตในพื้นที่ทำงาน"
 
-#: ../src/glade-window.c:2529
+#: ../src/glade-window.c:2498
 msgid "Drag Resize"
 msgstr "ลากปรับขนาด"
 
-#: ../src/glade-window.c:2533
+#: ../src/glade-window.c:2502
 msgid "Drag and resize widgets in the workspace"
 msgstr "ลากและปรับขนาดวิดเจ็ตในพื้นที่ทำงาน"
 
-#: ../src/glade-window.c:2571
+#: ../src/glade-window.c:2540
 msgid "Could not create a new project."
 msgstr "ไม่สามารถสร้างโครงการใหม่"
 
-#: ../src/glade-window.c:2625
+#: ../src/glade-window.c:2594
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "โครงการ %s มีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก"
 
-#: ../src/glade-window.c:2629
+#: ../src/glade-window.c:2598
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "ถ้าคุณเรียกโครงการขึ้นมาใหม่ การเปลี่ยนแปลงที่ยังไม่ได้บันทึกจะสูญหายทั้งหมด "
 "ยังยืนยันจะเรียกใหม่หรือไม่?"
 
-#: ../src/glade-window.c:2638
+#: ../src/glade-window.c:2607
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "แฟ้มโครงการ %s ถูกแก้ไขจากภายนอก"
 
-#: ../src/glade-window.c:2642
+#: ../src/glade-window.c:2611
 msgid "Do you want to reload the project?"
 msgstr "คุณต้องการเรียกโครงการขึ้นมาใหม่หรือไม่?"
 
-#: ../src/glade-window.c:2648
+#: ../src/glade-window.c:2617
 msgid "_Reload"
 msgstr "เ_รียกใหม่"
 
-#: ../src/glade-window.c:2765
+#: ../src/glade-window.c:2734
 msgid "_Undo"
 msgstr "เรี_ยกคืน"
 
 #. Change tooltips
-#: ../src/glade-window.c:2767 ../gladeui/glade-app.c:267
+#: ../src/glade-window.c:2736 ../gladeui/glade-app.c:268
 #, c-format
 msgid "Undo: %s"
 msgstr "เรียกคืน: %s"
 
-#: ../src/glade-window.c:2767 ../src/glade-window.c:2778
-#: ../gladeui/glade-app.c:268
+#: ../src/glade-window.c:2736 ../src/glade-window.c:2747
+#: ../gladeui/glade-app.c:269
 msgid "the last action"
 msgstr "ปฏิบัติการล่าสุด"
 
-#: ../src/glade-window.c:2776
+#: ../src/glade-window.c:2745
 msgid "_Redo"
 msgstr "_ทำซ้ำ"
 
-#: ../src/glade-window.c:2778 ../gladeui/glade-app.c:267
+#: ../src/glade-window.c:2747 ../gladeui/glade-app.c:268
 #, c-format
 msgid "Redo: %s"
 msgstr "ทำซ้ำ: %s"
 
-#: ../src/glade-window.c:3058
+#: ../src/glade-window.c:3025
 msgid "Go back in undo history"
 msgstr "เรียกคืนการกระทำที่ทำไปแล้ว"
 
-#: ../src/glade-window.c:3060
+#: ../src/glade-window.c:3027
 msgid "Go forward in undo history"
 msgstr "ทำซ้ำการกระทำที่เรียกคืนไปแล้ว"
 
-#: ../src/glade-window.c:3106
+#: ../src/glade-window.c:3073
 msgid "Palette"
 msgstr "กล่องอุปกรณ์"
 
-#: ../src/glade-window.c:3117
+#: ../src/glade-window.c:3084
 msgid "Inspector"
 msgstr "ช่องเฝ้ามอง"
 
-#: ../gladeui/glade-app.c:457
+#: ../src/glade-window.c:3091 ../gladeui/glade-editor.c:351
+#: ../gladeui/glade-widget.c:1037
+msgid "Properties"
+msgstr "คุณสมบัติ"
+
+#: ../gladeui/glade-app.c:458
 msgid "Clipboard"
 msgstr "คลิปบอร์ด"
 
-#: ../gladeui/glade-app.c:505
+#: ../gladeui/glade-app.c:506
 msgid "Active Project"
 msgstr "โครงการที่กำลังทำงานอยู่"
 
-#: ../gladeui/glade-app.c:506
+#: ../gladeui/glade-app.c:507
 msgid "The active project"
 msgstr "โครงการที่กำลังทำงานอยู่"
 
-#: ../gladeui/glade-app.c:512
+#: ../gladeui/glade-app.c:513
 msgid "Pointer Mode"
 msgstr "โหมดตัวชี้"
 
-#: ../gladeui/glade-app.c:513
+#: ../gladeui/glade-app.c:514
 msgid "Current mode for the pointer in the workspace"
 msgstr "โหมดปัจจุบันของตัวชึ้ในพื้นที่ทำงาน"
 
-#: ../gladeui/glade-app.c:592
+#: ../gladeui/glade-app.c:585
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -567,7 +563,7 @@ msgstr ""
 "พยายามจะบันทึกข้อมูลส่วนตัวลงในไดเรกทอรี %s แต่ตำแหน่งดังกล่าวเป็นแฟ้มธรรมดา\n"
 "จะไม่มีการบันทึกข้อมูลส่วนตัวในวาระนี้"
 
-#: ../gladeui/glade-app.c:605
+#: ../gladeui/glade-app.c:598
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -576,7 +572,7 @@ msgstr ""
 "สร้างไดเรกทอรี %s เพื่อบันทึกข้อมูลส่วนตัวไม่สำเร็จ\n"
 "จะไม่มีการบันทึกข้อมูลส่วนตัวในวาระนี้"
 
-#: ../gladeui/glade-app.c:633
+#: ../gladeui/glade-app.c:626
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -585,7 +581,7 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะเขียนข้อมูลส่วนตัวลงในแฟ้ม %s (%s)\n"
 "จะไม่มีการบันทึกข้อมูลส่วนตัวในวาระนี้"
 
-#: ../gladeui/glade-app.c:645
+#: ../gladeui/glade-app.c:638
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -594,7 +590,7 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะจัดเรียงข้อมูลเพื่อบันทึก (%s)\n"
 "จะไม่มีการบันทึกข้อมูลส่วนตัวในวาระนี้"
 
-#: ../gladeui/glade-app.c:658
+#: ../gladeui/glade-app.c:651
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -603,298 +599,288 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะเปิดแฟ้ม %s เพื่อเขียนข้อมูลส่วนตัว (%s)\n"
 "จะไม่มีการบันทึกข้อมูลส่วนตัวในวาระนี้"
 
-#: ../gladeui/glade-app.c:1096
+#: ../gladeui/glade-app.c:1148
 msgid "You cannot copy a widget internal to a composite widget."
 msgstr "คุณไม่สามารถคัดลอกวิดเจ็ตภายในของวิดเจ็ตเชิงประกอบได้"
 
-#: ../gladeui/glade-app.c:1111 ../gladeui/glade-app.c:1164
-#: ../gladeui/glade-app.c:1338
+#: ../gladeui/glade-app.c:1163 ../gladeui/glade-app.c:1216
+#: ../gladeui/glade-app.c:1390
 msgid "No widget selected."
 msgstr "ไม่ได้เลือกวิดเจ็ต"
 
-#: ../gladeui/glade-app.c:1149
+#: ../gladeui/glade-app.c:1201
 msgid "You cannot cut a widget internal to a composite widget."
 msgstr "คุณไม่สามารถตัดวิดเจ็ตภายในออกจากวิดเจ็ตเชิงประกอบได้"
 
-#: ../gladeui/glade-app.c:1208
+#: ../gladeui/glade-app.c:1260
 msgid "Unable to paste to the selected parent"
 msgstr "ไม่สามารถแปะลงในวิดเจ็ตแม่ที่เลือก"
 
-#: ../gladeui/glade-app.c:1219
+#: ../gladeui/glade-app.c:1271
 msgid "Unable to paste to multiple widgets"
 msgstr "ไม่สามารถแปะลงในวิดเจ็ตหลายอันได้"
 
-#: ../gladeui/glade-app.c:1229 ../gladeui/glade-app.c:1359
+#: ../gladeui/glade-app.c:1281 ../gladeui/glade-app.c:1411
 msgid "No widget selected on the clipboard"
 msgstr "ไม่ได้เลือกวิดเจ็ตในคลิปบอร์ดไว้"
 
-#: ../gladeui/glade-app.c:1255
+#: ../gladeui/glade-app.c:1307
 #, c-format
 msgid "Unable to paste widget %s without a parent"
 msgstr "ไม่สามารถแปะวิดเจ็ต %s โดยไม่มีวิดเจ็ตแม่ได้"
 
-#: ../gladeui/glade-app.c:1272
+#: ../gladeui/glade-app.c:1324
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "สามารถแปะวิดเจ็ตในเครื่องบรรจุนี้ได้ทีละอันเท่านั้น"
 
-#: ../gladeui/glade-app.c:1284
+#: ../gladeui/glade-app.c:1336
 msgid "Insufficient amount of placeholders in target container"
 msgstr "จำนวนช่องสำหรับวางในเครื่องบรรจุที่เป็นเป้าหมายไม่เพียงพอ"
 
-#: ../gladeui/glade-app.c:1323 ../gladeui/glade-app.c:1369
+#: ../gladeui/glade-app.c:1375 ../gladeui/glade-app.c:1421
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "คุณไม่สามารถลบวิดเจ็ตภายในออกจากวิดเจ็ตเชิงประกอบได้"
 
-#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:292
+#: ../gladeui/glade-builtins.c:256 ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "Stock"
 msgstr "สำเร็จรูป"
 
-#: ../gladeui/glade-builtins.c:266
+#: ../gladeui/glade-builtins.c:257
 msgid "A builtin stock item"
 msgstr "รายการสำเร็จรูปที่มีมาให้"
 
-#: ../gladeui/glade-builtins.c:274 ../plugins/gtk+/gtk+.xml.in.h:294
+#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Stock Image"
 msgstr "ภาพสำเร็จรูป"
 
-#: ../gladeui/glade-builtins.c:275 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-builtins.c:266 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A builtin stock image"
 msgstr "ภาพสำเร็จรูปที่มีมาให้"
 
-#: ../gladeui/glade-builtins.c:605
+#: ../gladeui/glade-builtins.c:423
 msgid "Objects"
-msgstr "วัตถุ"
+msgstr "อ็อบเจกต์"
 
-#: ../gladeui/glade-builtins.c:606
+#: ../gladeui/glade-builtins.c:424
 msgid "A list of objects"
-msgstr "รายการวัตถุ"
+msgstr "รายชื่ออ็อบเจกต์"
 
-#: ../gladeui/glade-builtins.c:615
+#: ../gladeui/glade-builtins.c:433
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../gladeui/glade-builtins.c:616
+#: ../gladeui/glade-builtins.c:434
 msgid "A pixbuf value"
 msgstr "ค่า pixbuf"
 
-#: ../gladeui/glade-builtins.c:624
+#: ../gladeui/glade-builtins.c:442
 msgid "GdkColor"
 msgstr "GdkColor"
 
-#: ../gladeui/glade-builtins.c:625
+#: ../gladeui/glade-builtins.c:443
 msgid "A gdk color value"
 msgstr "ค่าสี gdk"
 
-#. Accelerators
-#: ../gladeui/glade-builtins.c:633 ../gladeui/glade-property-class.c:1211
-#: ../plugins/gtk+/gtk+.xml.in.h:11
-msgid "Accelerators"
-msgstr "คีย์ด่วน"
-
-#: ../gladeui/glade-builtins.c:634 ../gladeui/glade-property-class.c:1212
-msgid "A list of accelerator keys"
-msgstr "รายการคีย์ด่วน"
-
-#: ../gladeui/glade-builtins.c:645
+#: ../gladeui/glade-builtins.c:453
 msgid "Integer"
 msgstr "จำนวนเต็ม"
 
-#: ../gladeui/glade-builtins.c:646
+#: ../gladeui/glade-builtins.c:454
 msgid "An integer value"
 msgstr "ค่าจำนวนเต็ม"
 
-#: ../gladeui/glade-builtins.c:654
+#: ../gladeui/glade-builtins.c:462
 msgid "Unsigned Integer"
 msgstr "จำนวนเต็มไม่มีเครื่องหมาย"
 
-#: ../gladeui/glade-builtins.c:655
+#: ../gladeui/glade-builtins.c:463
 msgid "An unsigned integer value"
 msgstr "ค่าจำนวนเต็มไม่มีเครื่องหมาย"
 
-#: ../gladeui/glade-builtins.c:662
+#: ../gladeui/glade-builtins.c:470
 msgid "String"
 msgstr "สตริง"
 
-#: ../gladeui/glade-builtins.c:663
+#: ../gladeui/glade-builtins.c:471
 msgid "An entry"
 msgstr "ข้อความ"
 
-#: ../gladeui/glade-builtins.c:670
+#: ../gladeui/glade-builtins.c:478
 msgid "Strv"
 msgstr "Strv"
 
-#: ../gladeui/glade-builtins.c:671
+#: ../gladeui/glade-builtins.c:479
 msgid "String array"
 msgstr "แอร์เรย์ของสตริง"
 
-#: ../gladeui/glade-builtins.c:679
+#: ../gladeui/glade-builtins.c:487
 msgid "Float"
 msgstr "เลขทศนิยม"
 
-#: ../gladeui/glade-builtins.c:680
+#: ../gladeui/glade-builtins.c:488
 msgid "A floating point entry"
 msgstr "เลขทศนิยม"
 
-#: ../gladeui/glade-builtins.c:688
+#: ../gladeui/glade-builtins.c:496
 msgid "Boolean"
 msgstr "บูลีน"
 
-#: ../gladeui/glade-builtins.c:689
+#: ../gladeui/glade-builtins.c:497
 msgid "A boolean value"
 msgstr "ค่าบูลีน"
 
-#: ../gladeui/glade-base-editor.c:477
+#: ../gladeui/glade-base-editor.c:487
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr "การกำหนดชนิดวัตถุ %s เป็น %s"
+msgstr "การกำหนดชนิดอ็อบเจกต์ %s เป็น %s"
 
-#: ../gladeui/glade-base-editor.c:642
+#: ../gladeui/glade-base-editor.c:652
 #, c-format
 msgid "Add a %s to %s"
 msgstr "เพิ่ม %s ใน %s"
 
-#: ../gladeui/glade-base-editor.c:719
+#: ../gladeui/glade-base-editor.c:729
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "ลบวิดเจ็ตลูก %s ออกจาก %s"
 
-#: ../gladeui/glade-base-editor.c:842
+#: ../gladeui/glade-base-editor.c:852
 #, c-format
 msgid "Reorder %s's children"
 msgstr "เรียงลำดับวิดเจ็ตลูกของ %s ใหม่"
 
-#: ../gladeui/glade-base-editor.c:1419 ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Label"
 msgstr "ฉลาก"
 
-#: ../gladeui/glade-base-editor.c:1432 ../gladeui/glade-widget-adaptor.c:812
+#: ../gladeui/glade-base-editor.c:1450 ../gladeui/glade-widget-adaptor.c:1206
 msgid "Type"
 msgstr "ชนิด"
 
 #. Name
-#: ../gladeui/glade-base-editor.c:1605
+#: ../gladeui/glade-base-editor.c:1623
 msgid "Name :"
 msgstr "ชื่อ :"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:1615
+#: ../gladeui/glade-base-editor.c:1633
 msgid "Type :"
 msgstr "ชนิด :"
 
-#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:347
+#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Widget"
 msgstr "วิดเจ็ต"
 
-#: ../gladeui/glade-command.c:549
+#: ../gladeui/glade-command.c:550
 #, c-format
 msgid "Setting multiple properties"
 msgstr "การกำหนดคุณสมบัติหลายรายการ"
 
-#: ../gladeui/glade-command.c:557
+#: ../gladeui/glade-command.c:560
 #, c-format
 msgid "Setting %s of %s"
 msgstr "การกำหนด %s ของ %s"
 
-#: ../gladeui/glade-command.c:561
+#: ../gladeui/glade-command.c:564
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "การกำหนด %s ของ %s เป็น %s"
 
-#: ../gladeui/glade-command.c:779 ../gladeui/glade-command.c:806
+#: ../gladeui/glade-command.c:782 ../gladeui/glade-command.c:809
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "การเปลี่ยนชื่อ %s เป็น %s"
 
-#: ../gladeui/glade-command.c:911
+#: ../gladeui/glade-command.c:914
 #, c-format
 msgid "Add %s"
 msgstr "เพิ่ม %s"
 
-#: ../gladeui/glade-command.c:912 ../gladeui/glade-command.c:1570
-#: ../gladeui/glade-command.c:1594 ../gladeui/glade-command.c:1617
-#: ../gladeui/glade-command.c:1642 ../gladeui/glade-command.c:1676
-#: ../gladeui/glade-command.c:1703
+#: ../gladeui/glade-command.c:915 ../gladeui/glade-command.c:1573
+#: ../gladeui/glade-command.c:1597 ../gladeui/glade-command.c:1620
+#: ../gladeui/glade-command.c:1645 ../gladeui/glade-command.c:1679
+#: ../gladeui/glade-command.c:1706
 msgid "multiple"
 msgstr "หลายรายการ"
 
-#: ../gladeui/glade-command.c:1027
+#: ../gladeui/glade-command.c:1030
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "คุณไม่สามารถลบวิดเจ็ตภายในออกจากวิดเจ็ตเชิงประกอบได้"
 
-#: ../gladeui/glade-command.c:1074
+#: ../gladeui/glade-command.c:1077
 #, c-format
 msgid "Remove %s"
 msgstr "ลบ %s"
 
-#: ../gladeui/glade-command.c:1078
+#: ../gladeui/glade-command.c:1081
 #, c-format
 msgid "Remove multiple"
 msgstr "ลบหลายรายการ"
 
-#: ../gladeui/glade-command.c:1391
+#: ../gladeui/glade-command.c:1394
 #, c-format
 msgid "Clipboard add %s"
 msgstr "เพิ่ม %s ในคลิปบอร์ด"
 
-#: ../gladeui/glade-command.c:1394
+#: ../gladeui/glade-command.c:1397
 msgid "Clipboard add multiple"
 msgstr "เพิ่มหลายรายการเข้าในคลิปบอร์ด"
 
-#: ../gladeui/glade-command.c:1399
+#: ../gladeui/glade-command.c:1402
 #, c-format
 msgid "Clipboard remove %s"
 msgstr "ลบ %s ออกจากคลิปบอร์ด"
 
-#: ../gladeui/glade-command.c:1402
+#: ../gladeui/glade-command.c:1405
 msgid "Clipboard remove multiple"
 msgstr "ลบหลายรายการออกจากคลิปบอร์ด"
 
-#: ../gladeui/glade-command.c:1570
+#: ../gladeui/glade-command.c:1573
 #, c-format
 msgid "Create %s"
 msgstr "สร้าง %s"
 
-#: ../gladeui/glade-command.c:1594
+#: ../gladeui/glade-command.c:1597
 #, c-format
 msgid "Delete %s"
 msgstr "ลบ %s"
 
-#: ../gladeui/glade-command.c:1617
+#: ../gladeui/glade-command.c:1620
 #, c-format
 msgid "Cut %s"
 msgstr "ตัด %s"
 
-#: ../gladeui/glade-command.c:1642
+#: ../gladeui/glade-command.c:1645
 #, c-format
 msgid "Copy %s"
 msgstr "คัดลอก %s"
 
-#: ../gladeui/glade-command.c:1676
+#: ../gladeui/glade-command.c:1679
 #, c-format
 msgid "Paste %s"
 msgstr "แปะ %s"
 
-#: ../gladeui/glade-command.c:1702
+#: ../gladeui/glade-command.c:1705
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
 msgstr "ลากวางจาก %s ไปยัง %s"
 
-#: ../gladeui/glade-command.c:1824
+#: ../gladeui/glade-command.c:1827
 #, c-format
 msgid "Add signal handler %s"
 msgstr "เพิ่มฟังก์ชันจัดการสัญญาณ %s"
 
-#: ../gladeui/glade-command.c:1825
+#: ../gladeui/glade-command.c:1828
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "ลบฟังก์ชันจัดการสัญญาณ %s"
 
-#: ../gladeui/glade-command.c:1826
+#: ../gladeui/glade-command.c:1829
 #, c-format
 msgid "Change signal handler %s"
 msgstr "เปลี่ยนฟังก์ชันจัดการสัญญาณ %s"
 
-#: ../gladeui/glade-command.c:2030
+#: ../gladeui/glade-command.c:2033
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "การตั้งค่า metadata i18n"
@@ -904,224 +890,167 @@ msgstr "การตั้งค่า metadata i18n"
 msgid "Unable to load image (%s)"
 msgstr "ไม่สามารถโหลดภาพ (%s)"
 
-#: ../gladeui/glade-editor-property.c:257
+#: ../gladeui/glade-editor-property.c:271
 msgid "View GTK+ documentation for this property"
 msgstr "ดูเอกสาร GTK+ สำหรับคุณสมบัตินี้"
 
-#: ../gladeui/glade-editor-property.c:542
+#: ../gladeui/glade-editor-property.c:594
 msgid "Property Class"
 msgstr "คลาสคุณสมบัติ"
 
-#: ../gladeui/glade-editor-property.c:543
+#: ../gladeui/glade-editor-property.c:595
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr "GladePropertyClass ที่ใช้สร้าง GladeEditorProperty นี้"
+msgstr "GladePropertyClass ที่ GladeEditorProperty นี้ถูกสร้างให้จัดการ"
 
-#: ../gladeui/glade-editor-property.c:549
+#: ../gladeui/glade-editor-property.c:601
 msgid "Use Command"
 msgstr "ใช้คำสั่ง"
 
-#: ../gladeui/glade-editor-property.c:550
+#: ../gladeui/glade-editor-property.c:602
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "กำหนดว่าจะใช้ API คำสั่งสำหรับสแต็ก เรียกคืน/ทำซ้ำ หรือไม่"
 
-#: ../gladeui/glade-editor-property.c:556
+#: ../gladeui/glade-editor-property.c:608
 msgid "Show Info"
 msgstr "แสดงข้อมูล"
 
-#: ../gladeui/glade-editor-property.c:557
+#: ../gladeui/glade-editor-property.c:609
 msgid "Whether we should show an informational button"
 msgstr "กำหนดว่าจะแสดงปุ่มข้อมูลเพิ่มเติมหรือไม่"
 
-#: ../gladeui/glade-editor-property.c:1083
+#: ../gladeui/glade-editor-property.c:1132
 msgid "Select Fields"
 msgstr "เลือกเขตข้อมูล"
 
-#: ../gladeui/glade-editor-property.c:1105
+#: ../gladeui/glade-editor-property.c:1154
 msgid "_Select individual fields:"
 msgstr "เ_ลือกเขตข้อมูลต่างๆ:"
 
-#: ../gladeui/glade-editor-property.c:1643
+#: ../gladeui/glade-editor-property.c:1677
 msgid "Edit Text"
 msgstr "แก้ไขข้อความ"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1672
+#: ../gladeui/glade-editor-property.c:1706
 msgid "_Text:"
 msgstr "_ข้อความ:"
 
-#: ../gladeui/glade-editor-property.c:1708
+#: ../gladeui/glade-editor-property.c:1742
 msgid "T_ranslatable"
 msgstr "แ_ปลได้"
 
-#: ../gladeui/glade-editor-property.c:1721
+#: ../gladeui/glade-editor-property.c:1755
 msgid "_Has context prefix"
 msgstr "_มีบริบทนำหน้า"
 
 #. Comments.
-#: ../gladeui/glade-editor-property.c:1739
+#: ../gladeui/glade-editor-property.c:1773
 msgid "Co_mments for translators:"
 msgstr "คำ_อธิบายสำหรับผู้แปล:"
 
-#: ../gladeui/glade-editor-property.c:1909
-#: ../gladeui/glade-editor-property.c:1925
+#: ../gladeui/glade-editor-property.c:1937
+#: ../gladeui/glade-editor-property.c:1953
 msgid "Yes"
 msgstr "ใช่"
 
-#: ../gladeui/glade-editor-property.c:1909
-#: ../gladeui/glade-editor-property.c:1925
-#: ../gladeui/glade-editor-property.c:1940
+#: ../gladeui/glade-editor-property.c:1937
+#: ../gladeui/glade-editor-property.c:1953
+#: ../gladeui/glade-editor-property.c:1968
 msgid "No"
 msgstr "ไม่"
 
-#: ../gladeui/glade-editor-property.c:2529 ../gladeui/glade-widget.c:1005
-#: ../gladeui/glade-widget-adaptor.c:804
+#: ../gladeui/glade-editor-property.c:2561 ../gladeui/glade-widget.c:989
+#: ../gladeui/glade-widget-adaptor.c:1198
 msgid "Name"
 msgstr "ชื่อ"
 
-#: ../gladeui/glade-editor-property.c:2541
+#: ../gladeui/glade-editor-property.c:2573 ../gladeui/glade-property.c:509
 msgid "Class"
 msgstr "คลาส"
 
-#: ../gladeui/glade-editor-property.c:2555
+#: ../gladeui/glade-editor-property.c:2587
 #, c-format
 msgid "Choose %s implementors"
 msgstr "เลือกตัวอิมพลีเมนต์ %s"
 
-#: ../gladeui/glade-editor-property.c:2555
+#: ../gladeui/glade-editor-property.c:2587
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "เลือก %s ในโครงการนี้"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2620
+#: ../gladeui/glade-editor-property.c:2652
 msgid "O_bjects:"
-msgstr "_วัตถุ:"
+msgstr "_อ็อบเจกต์:"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2829
+#: ../gladeui/glade-editor-property.c:2865
 msgid "Objects:"
-msgstr "วัตถุ:"
+msgstr "อ็อบเจกต์:"
 
-#: ../gladeui/glade-editor-property.c:3142
+#: ../gladeui/glade-editor-property.c:3177
 msgid "Value:"
 msgstr "ค่า:"
 
-#: ../gladeui/glade-editor-property.c:3143
+#: ../gladeui/glade-editor-property.c:3178
 msgid "The current value"
 msgstr "ค่าปัจจุบัน"
 
-#: ../gladeui/glade-editor-property.c:3145
+#: ../gladeui/glade-editor-property.c:3180
 msgid "Lower:"
 msgstr "ขีดล่าง:"
 
-#: ../gladeui/glade-editor-property.c:3146
+#: ../gladeui/glade-editor-property.c:3181
 msgid "The minimum value"
 msgstr "ค่าต่ำสุด"
 
-#: ../gladeui/glade-editor-property.c:3148
+#: ../gladeui/glade-editor-property.c:3183
 msgid "Upper:"
 msgstr "ขีดบน:"
 
-#: ../gladeui/glade-editor-property.c:3149
+#: ../gladeui/glade-editor-property.c:3184
 msgid "The maximum value"
 msgstr "ค่าสูงสุด"
 
-#: ../gladeui/glade-editor-property.c:3151
+#: ../gladeui/glade-editor-property.c:3186
 msgid "Step inc:"
 msgstr "การเพิ่มค่าทีละขั้น:"
 
-#: ../gladeui/glade-editor-property.c:3152
+#: ../gladeui/glade-editor-property.c:3187
 msgid "The increment to use to make minor changes to the value"
 msgstr "การเพิ่มค่าสำหรับการเปลี่ยนค่าเพียงเล็กน้อย"
 
-#: ../gladeui/glade-editor-property.c:3154
+#: ../gladeui/glade-editor-property.c:3189
 msgid "Page inc:"
 msgstr "การเพิ่มค่าทีละหน้า:"
 
-#: ../gladeui/glade-editor-property.c:3155
+#: ../gladeui/glade-editor-property.c:3190
 msgid "The increment to use to make major changes to the value"
 msgstr "การเพิ่มค่าสำหรับการเปลี่ยนค่าแบบกระโดด"
 
-#: ../gladeui/glade-editor-property.c:3157
+#: ../gladeui/glade-editor-property.c:3192
 msgid "Page size:"
 msgstr "ขนาดหน้า:"
 
-#: ../gladeui/glade-editor-property.c:3158
+#: ../gladeui/glade-editor-property.c:3193
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
 msgstr "ขนาดหน้า (ใน GtkScrollbar จะเป็นขนาดของพื้นที่ซึ่งสามารถมองเห็นได้ในปัจจุบัน)"
 
-#: ../gladeui/glade-editor-property.c:3235
-msgid "Alphanumerical"
-msgstr "อักษรและตัวเลข"
-
-#: ../gladeui/glade-editor-property.c:3240
-msgid "Extra"
-msgstr "พิเศษ"
-
-#: ../gladeui/glade-editor-property.c:3245
-msgid "Keypad"
-msgstr "แป้นตัวเลข"
-
-#: ../gladeui/glade-editor-property.c:3250
-msgid "Functions"
-msgstr "ฟังก์ชัน"
-
-#: ../gladeui/glade-editor-property.c:3255 ../plugins/gtk+/gtk+.xml.in.h:222
-#: ../plugins/gnome/gnome.xml.in.h:43
-msgid "Other"
-msgstr "อื่นๆ"
-
-#: ../gladeui/glade-editor-property.c:3426
-#: ../gladeui/glade-editor-property.c:3460
-#: ../gladeui/glade-editor-property.c:3505
-msgid "<choose a key>"
-msgstr "<เลือกปุ่ม>"
-
-#: ../gladeui/glade-editor-property.c:3459 ../plugins/gtk+/gtk+.xml.in.h:205
-#: ../plugins/gnome/bonobo.xml.in.h:13
-msgid "None"
-msgstr "ไม่มี"
-
-#: ../gladeui/glade-editor-property.c:3585
-#: ../gladeui/glade-signal-editor.c:694
-msgid "Signal"
-msgstr "สัญญาณ"
-
-#: ../gladeui/glade-editor-property.c:3612
-msgid "Key"
-msgstr "ปุ่ม"
-
-#: ../gladeui/glade-editor-property.c:3626
-msgid "Shift"
-msgstr "Shift"
-
-#: ../gladeui/glade-editor-property.c:3642
-msgid "Control"
-msgstr "Control"
-
-#: ../gladeui/glade-editor-property.c:3658
-msgid "Alt"
-msgstr "Alt"
-
-#: ../gladeui/glade-editor-property.c:3724
-msgid "Choose accelerator keys..."
-msgstr "เลือกคีย์ด่วน..."
-
-#: ../gladeui/glade-editor.c:152
+#: ../gladeui/glade-editor.c:154
 msgid "Show info"
 msgstr "แสดงข้อมูล"
 
-#: ../gladeui/glade-editor.c:153
+#: ../gladeui/glade-editor.c:155
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "กำหนดว่าจะแสดงปุ่มขอข้อมูลเพิ่มเติมสำหรับวิดเจ็ตที่โหลดหรือไม่"
 
-#: ../gladeui/glade-editor.c:160
+#: ../gladeui/glade-editor.c:162
 msgid "Show context info"
 msgstr "แสดงข้อมูลบริบท"
 
-#: ../gladeui/glade-editor.c:161
+#: ../gladeui/glade-editor.c:163
 msgid ""
 "Whether to show an informational button for each property and signal in the "
 "editor"
@@ -1130,98 +1059,103 @@ msgstr ""
 "ในเครื่องมือแก้ไขหรือไม่"
 
 #. construct tab label widget
-#: ../gladeui/glade-editor.c:202 ../gladeui/glade-editor.c:321
-#: ../gladeui/glade-editor.c:1173
+#: ../gladeui/glade-editor.c:204 ../gladeui/glade-editor.c:395
+#: ../gladeui/glade-editor.c:1258
 msgid "Accessibility"
 msgstr "สิ่งอำนวยความสะดวก"
 
 #. configure page container
-#: ../gladeui/glade-editor.c:219 ../gladeui/glade-editor.c:320
+#: ../gladeui/glade-editor.c:221 ../gladeui/glade-editor.c:394
 msgid "_Signals"
 msgstr "_สัญญาณ"
 
-#: ../gladeui/glade-editor.c:283
+#: ../gladeui/glade-editor.c:285
 msgid "View documentation for the selected widget"
 msgstr "แสดงเอกสารประกอบของวิดเจ็ตที่เลือก"
 
-#: ../gladeui/glade-editor.c:303
+#: ../gladeui/glade-editor.c:305
 msgid "Reset widget properties to their defaults"
 msgstr "ล้างคุณสมบัติต่างๆ ของวิดเจ็ตกลับเป็นค่าปริยาย"
 
-#: ../gladeui/glade-editor.c:317
+#. translators: referring to the properties of a widget named '%s [%s]'
+#: ../gladeui/glade-editor.c:339
+#, c-format
+msgid "%s Properties - %s [%s]"
+msgstr "คุณสมบัติของ %s - %s [%s]"
+
+#: ../gladeui/glade-editor.c:391
 msgid "_General"
 msgstr "_ทั่วไป"
 
-#: ../gladeui/glade-editor.c:318
+#: ../gladeui/glade-editor.c:392
 msgid "_Packing"
 msgstr "การ_บรรจุ"
 
-#: ../gladeui/glade-editor.c:319
+#: ../gladeui/glade-editor.c:393
 msgid "_Common"
 msgstr "สา_มัญ"
 
+#: ../gladeui/glade-editor.c:547
+msgid "The Object's name"
+msgstr "ชื่ออ็อบเจกต์"
+
 #. Name
-#: ../gladeui/glade-editor.c:463
+#: ../gladeui/glade-editor.c:550
 msgid "Name:"
 msgstr "ชื่อ:"
 
-#. Class
-#: ../gladeui/glade-editor.c:491
-msgid "Class:"
-msgstr "คลาส:"
-
-#: ../gladeui/glade-editor.c:979
+#: ../gladeui/glade-editor.c:1062
 #, c-format
 msgid "Create a %s"
 msgstr "สร้าง %s"
 
-#: ../gladeui/glade-editor.c:1104
+#: ../gladeui/glade-editor.c:1187
 msgid "Reset"
 msgstr "ล้างค่า"
 
-#: ../gladeui/glade-editor.c:1118
+#: ../gladeui/glade-editor.c:1202
 msgid "Property"
 msgstr "คุณสมบัติ"
 
-#: ../gladeui/glade-editor.c:1153
+#: ../gladeui/glade-editor.c:1238
 msgid "General"
 msgstr "ทั่วไป"
 
-#: ../gladeui/glade-editor.c:1163
+#: ../gladeui/glade-editor.c:1248
 msgid "Common"
 msgstr "สามัญ"
 
-#: ../gladeui/glade-editor.c:1208
+#: ../gladeui/glade-editor.c:1292
 msgid "(default)"
 msgstr "(ค่าปริยาย)"
 
-#: ../gladeui/glade-editor.c:1223
+#: ../gladeui/glade-editor.c:1307
 msgid "Select the properties that you want to reset to their default values"
 msgstr "เลือกคุณสมบัติที่คุณต้องการจะล้างค่าเป็นค่าปริยาย"
 
-#: ../gladeui/glade-editor.c:1355
+#: ../gladeui/glade-editor.c:1439
 msgid "Reset Widget Properties"
 msgstr "ล้างค่าคุณสมบัติของวิดเจ็ต"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1372
+#: ../gladeui/glade-editor.c:1456
 msgid "_Properties:"
 msgstr "คุณ_สมบัติ:"
 
-#: ../gladeui/glade-editor.c:1401
+#: ../gladeui/glade-editor.c:1485
 msgid "_Select All"
 msgstr "เลือกทั้ง_หมด"
 
-#: ../gladeui/glade-editor.c:1408
+#: ../gladeui/glade-editor.c:1492
 msgid "_Unselect All"
 msgstr "เลิ_กเลือกทั้งหมด"
 
 #. Description
-#: ../gladeui/glade-editor.c:1417
+#: ../gladeui/glade-editor.c:1501
 msgid "Property _Description:"
 msgstr "คำ_อธิบายคุณสมบัติ:"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:1667
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2494
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "การวาง %s ใน %s"
@@ -1232,7 +1166,7 @@ msgstr "คุณสมบัติตำแหน่ง X"
 
 #: ../gladeui/glade-fixed.c:972
 msgid "The property used to set the X position of a child object"
-msgstr "คุณสมบัติที่ใช้กำหนดตำแหน่ง X ของวัตถุลูก"
+msgstr "คุณสมบัติที่ใช้กำหนดตำแหน่ง X ของอ็อบเจกต์ลูก"
 
 #: ../gladeui/glade-fixed.c:978
 msgid "Y position property"
@@ -1240,7 +1174,7 @@ msgstr "คุณสมบัติตำแหน่ง Y"
 
 #: ../gladeui/glade-fixed.c:979
 msgid "The property used to set the Y position of a child object"
-msgstr "คุณสมบัติที่ใช้กำหนดตำแหน่ง Y ของวัตถุลูก"
+msgstr "คุณสมบัติที่ใช้กำหนดตำแหน่ง Y ของอ็อบเจกต์ลูก"
 
 #: ../gladeui/glade-fixed.c:985
 msgid "Width property"
@@ -1248,7 +1182,7 @@ msgstr "คุณสมบัติความกว้าง"
 
 #: ../gladeui/glade-fixed.c:986
 msgid "The property used to set the width of a child object"
-msgstr "คุณสมบัติที่ใช้กำหนดความกว้างของวัตถุลูก"
+msgstr "คุณสมบัติที่ใช้กำหนดความกว้างของอ็อบเจกต์ลูก"
 
 #: ../gladeui/glade-fixed.c:992
 msgid "Height property"
@@ -1256,7 +1190,7 @@ msgstr "คุณสมบัติความสูง"
 
 #: ../gladeui/glade-fixed.c:993
 msgid "The property used to set the height of a child object"
-msgstr "คุณสมบัติที่ใช้กำหนดความสูงของวัตถุลูก"
+msgstr "คุณสมบัติที่ใช้กำหนดความสูงของอ็อบเจกต์ลูก"
 
 #: ../gladeui/glade-fixed.c:999
 msgid "Can resize"
@@ -1266,58 +1200,73 @@ msgstr "ปรับขนาดได้"
 msgid "Whether this container supports resizes of child widgets"
 msgstr "กำหนดว่าเครื่องบรรจุนี้รองรับการปรับขนาดของวิดเจ็ตลูกหรือไม่"
 
-#: ../gladeui/glade-palette.c:619
+#: ../gladeui/glade-palette.c:612
 msgid "Widget selector"
 msgstr "ตัวเลือกวิดเจ็ต"
-
-#: ../gladeui/glade-parser.c:1193
-#, c-format
-msgid "Could not find glade file %s"
-msgstr "ไม่พบแฟ้ม glade %s"
-
-#: ../gladeui/glade-parser.c:1212 ../gladeui/glade-parser.c:1220
-#, c-format
-msgid "Errors parsing glade file %s"
-msgstr "เกิดข้อผิดพลาดขณะแจงแฟ้ม glade %s"
-
-#: ../gladeui/glade-parser.c:1658
-#, c-format
-msgid "Could not allocate memory for interface"
-msgstr "ไม่สามารถจองหน่วยความจำสำหรับส่วนติดต่อ"
 
 #: ../gladeui/glade-popup.c:331
 msgid "_Select"
 msgstr "เ_ลือก"
 
-#: ../gladeui/glade-project.c:691
+#: ../gladeui/glade-project.c:536
+#, c-format
+msgid "This widget was introduced in %s %d.%d project targets %s %d.%d"
+msgstr "วิดเจ็ตนี้ ถูกเพิ่มเข้ามาใน %s %d.%d แต่โครงการมุ่งใช้กับ %s %d.%d"
+
+#: ../gladeui/glade-project.c:548
+#, c-format
+msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] คลาส '%s' ถูกเพิ่มเข้ามาใน %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:565
+#, c-format
+msgid "This widget is not supported by GtkBuilder"
+msgstr "วิดเจ็ตนี้ GtkBuilder ไม่รองรับ"
+
+#: ../gladeui/glade-project.c:572
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is not supported by GtkBuilder\n"
+msgstr "[%s] คลาส '%s' จาก %s %d.%d นี้ GtkBuilder ไม่รองรับ\n"
+
+#: ../gladeui/glade-project.c:587
+#, c-format
+msgid "This widget is deprecated"
+msgstr "วิดเจ็ตนี้ไม่สนับสนุนให้ใช้"
+
+#: ../gladeui/glade-project.c:594
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
+msgstr "[%s] คลาส '%s' จาก %s %d.%d ไม่สนับสนุนให้ใช้\n"
+
+#: ../gladeui/glade-project.c:938
 msgid "Whether project has been modified since it was last saved"
 msgstr "กำหนดว่าโครงการมีการแก้ไขหลังจากการบันทึกครั้งล่าสุดหรือไม่"
 
-#: ../gladeui/glade-project.c:698
+#: ../gladeui/glade-project.c:945
 msgid "Has Selection"
 msgstr "มีการเลือก"
 
-#: ../gladeui/glade-project.c:699
+#: ../gladeui/glade-project.c:946
 msgid "Whether project has a selection"
 msgstr "โครงการมีการเลือกหรือไม่"
 
-#: ../gladeui/glade-project.c:706
+#: ../gladeui/glade-project.c:953
 msgid "Read Only"
 msgstr "อ่านอย่างเดียว"
 
-#: ../gladeui/glade-project.c:707
+#: ../gladeui/glade-project.c:954
 msgid "Whether project is read only or not"
 msgstr "โครงการเปิดแบบอ่านอย่างเดียวหรือไม่"
 
-#: ../gladeui/glade-project.c:714
+#: ../gladeui/glade-project.c:961
 msgid "Path"
 msgstr "พาธ"
 
-#: ../gladeui/glade-project.c:715
+#: ../gladeui/glade-project.c:962
 msgid "The filesystem path of the project"
 msgstr "พาธในระบบแฟ้มของโครงการ"
 
-#: ../gladeui/glade-project.c:1573
+#: ../gladeui/glade-project.c:1126
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1326,236 +1275,145 @@ msgstr ""
 "ไม่สามารถโหลด %s\n"
 "ไม่พบแค็ตตาล็อกที่ต้องใช้คือ: %s"
 
-#: ../gladeui/glade-project.c:2243
+#: ../gladeui/glade-project.c:1472
+#, c-format
+msgid "This property was introduced in %s %d.%d, project targets %s %d.%d"
+msgstr "คุณสมบัตินี้ ถูกเพิ่มเข้ามาใน %s %d.%d แต่โครงการมุ่งใช้กับ %s %d.%d"
+
+#: ../gladeui/glade-project.c:1489
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] คุณสมบัติการบรรจุ '%s' ของคลาส '%s' ถูกเพิ่มเข้ามาใน %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1491
+#, c-format
+msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] คุณสมบัติ '%s' ของคลาส '%s' ถูกเพิ่มเข้ามาใน %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1576
+#, c-format
+msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] สัญญาณ '%s' ของคลาส '%s' ถูกเพิ่มเข้ามาใน %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1623
+msgid "Details"
+msgstr "รายละเอียด"
+
+#: ../gladeui/glade-project.c:1639
+#, c-format
+msgid "Project %s has errors, save anyway ?"
+msgstr "โครงการ %s มีข้อผิดพลาดอยู่ ยังคงบันทึกหรือไม่?"
+
+#: ../gladeui/glade-project.c:1640
+#, c-format
+msgid "Project %s has deprecated widgets and/or version mismatches."
+msgstr "โครงการ %s มีวิดเจ็ตที่ไม่สนับสนุนให้ใช้ และ/หรือ รุ่นไม่ตรงกัน"
+
+#: ../gladeui/glade-project.c:3060
 #, c-format
 msgid "Unsaved %i"
 msgstr "ยังไม่ได้บันทึก %i"
 
-#. Atk click property
-#: ../gladeui/glade-property-class.c:67 ../plugins/gtk+/gtk+.xml.in.h:53
-msgid "Click"
-msgstr "คลิก"
+#: ../gladeui/glade-project.c:3184
+#, c-format
+msgid "Project %s has no deprecated widgets or version mismatches."
+msgstr "โครงการ %s ไม่มีวิดเจ็ตที่ไม่สนับสนุนให้ใช้หรือปัญหารุ่นไม่ตรงกัน"
 
-#. Atk click property
-#: ../gladeui/glade-property-class.c:68 ../plugins/gtk+/gtk+.xml.in.h:271
-msgid "Set the description of the Click atk action"
-msgstr "กำหนดคำบรรยายของการคลิกของ atk"
+#. Project format
+#: ../gladeui/glade-project.c:3199 ../gladeui/glade-project.c:3291
+#: ../gladeui/glade-utils.c:517
+msgid "File format"
+msgstr "ชนิดแฟ้ม"
 
-#. Atk press property
-#: ../gladeui/glade-property-class.c:69 ../plugins/gtk+/gtk+.xml.in.h:235
-msgid "Press"
-msgstr "กด"
+#. Target versions
+#: ../gladeui/glade-project.c:3204
+msgid "Target Versions:"
+msgstr "รุ่นเป้าหมาย:"
 
-#. Atk press property
-#: ../gladeui/glade-property-class.c:70 ../plugins/gtk+/gtk+.xml.in.h:273
-msgid "Set the description of the Press atk action"
-msgstr "กำหนดคำบรรยายของการกดของ atk"
+#: ../gladeui/glade-project.c:3238
+#, c-format
+msgid "%s catalog"
+msgstr "แค็ตตาล็อก %s"
 
-#. Atk release property
-#: ../gladeui/glade-property-class.c:71 ../plugins/gtk+/gtk+.xml.in.h:250
-msgid "Release"
-msgstr "ปล่อย"
+#. Run verify
+#: ../gladeui/glade-project.c:3330
+msgid "Verify versions and deprecations:"
+msgstr "ตรวจสอบรุ่นและสิ่งที่ไม่สนับสนุนให้ใช้:"
 
-#. Atk release property
-#: ../gladeui/glade-property-class.c:72 ../plugins/gtk+/gtk+.xml.in.h:275
-msgid "Set the description of the Release atk action"
-msgstr "กำหนดคำบรรยายของการปล่อยของ atk"
+#: ../gladeui/glade-property.c:510
+msgid "The GladePropertyClass for this property"
+msgstr "GladePropertyClass สำหรับคุณสมบัตินี้"
 
-#. Atk activate property
-#: ../gladeui/glade-property-class.c:73 ../plugins/gtk+/gtk+.xml.in.h:16
-msgid "Activate"
-msgstr "เรียกใช้"
-
-#. Atk activate property
-#: ../gladeui/glade-property-class.c:74 ../plugins/gtk+/gtk+.xml.in.h:269
-msgid "Set the description of the Activate atk action"
-msgstr "กำหนดคำบรรยายของการเรียกใช้ของ atk"
-
-#. Atk relationset properties
-#: ../gladeui/glade-property-class.c:78 ../plugins/gtk+/gtk+.xml.in.h:69
-msgid "Controlled By"
-msgstr "ควบคุมโดย"
-
-#. Atk relationset properties
-#: ../gladeui/glade-property-class.c:79 ../plugins/gtk+/gtk+.xml.in.h:151
-msgid "Indicates an object controlled by one or more target objects"
-msgstr "ระบุว่าออบเจกต์ถูกควบคุมโดยออบเจกต์เป้าหมายตั้งแต่หนึ่งออบเจกต์ขึ้นไป"
-
-#: ../gladeui/glade-property-class.c:81 ../plugins/gtk+/gtk+.xml.in.h:70
-msgid "Controller For"
-msgstr "เป็นตัวควบคุมสำหรับ"
-
-#: ../gladeui/glade-property-class.c:82 ../plugins/gtk+/gtk+.xml.in.h:153
-msgid "Indicates an object is a controller for one or more target objects"
-msgstr "ระบุว่าออบเจกต์เป็นตัวควบคุมออบเจกต์เป้าหมายตั้งแต่หนึ่งออบเจกต์ขึ้นไป"
-
-#: ../gladeui/glade-property-class.c:84 ../plugins/gtk+/gtk+.xml.in.h:180
-msgid "Labelled By"
-msgstr "ปิดป้ายโดย"
-
-#: ../gladeui/glade-property-class.c:85 ../plugins/gtk+/gtk+.xml.in.h:156
-msgid "Indicates an object is labelled by one or more target objects"
-msgstr "ระบุว่าออบเจกต์ถูกปิดป้ายโดยออบเจกต์เป้าหมายตั้งแต่หนึ่งออบเจกต์ขึ้นไป"
-
-#: ../gladeui/glade-property-class.c:87 ../plugins/gtk+/gtk+.xml.in.h:179
-msgid "Label For"
-msgstr "เป็นป้ายสำหรับ"
-
-#: ../gladeui/glade-property-class.c:88 ../plugins/gtk+/gtk+.xml.in.h:154
-msgid "Indicates an object is a label for one or more target objects"
-msgstr "ระบุว่าออบเจกต์เป็นป้ายสำหรับออบเจกต์เป้าหมายตั้งแต่หนึ่งออบเจกต์ขึ้นไป"
-
-#: ../gladeui/glade-property-class.c:90 ../plugins/gtk+/gtk+.xml.in.h:192
-msgid "Member Of"
-msgstr "สมาชิกของ"
-
-#: ../gladeui/glade-property-class.c:91 ../plugins/gtk+/gtk+.xml.in.h:155
-msgid ""
-"Indicates an object is a member of a group of one or more target objects"
-msgstr "ระบุว่าออบเจกต์เป็นสมาชิกของกลุ่มของออบเจกต์เป้าหมายตั้งแต่หนึ่งออบเจกต์ขึ้นไป"
-
-#: ../gladeui/glade-property-class.c:93
-msgid "Child Node Of"
-msgstr "โหนดลูกของ"
-
-#: ../gladeui/glade-property-class.c:94 ../plugins/gtk+/gtk+.xml.in.h:152
-msgid ""
-"Indicates an object is a cell in a treetable which is displayed because a "
-"cell in the same column is expanded and identifies that cell"
-msgstr ""
-"ระบุว่าออบเจกต์เป็นเซลล์ในตารางโครงสร้างต้นไม้ "
-"ซึ่งถูกแสดงผลเพราะเซลล์ในคอลัมน์เดียวกันถูกขยาย โดยระบุถึงเซลล์ดังกล่าว"
-
-#: ../gladeui/glade-property-class.c:97 ../plugins/gtk+/gtk+.xml.in.h:118
-msgid "Flows To"
-msgstr "ไหลต่อไปยัง"
-
-#: ../gladeui/glade-property-class.c:98
-msgid ""
-"Indicates that the object has content that flows logically to another "
-"AtkObject in a sequential way (text-flow, for instance)."
-msgstr ""
-"ระบุว่าออบเจกต์มีเนื้อหาที่ไหลต่อไปยัง AtkObject อื่นตามลำดับ (เช่น ในแบบการไหลของข้อความ)"
-
-#: ../gladeui/glade-property-class.c:101 ../plugins/gtk+/gtk+.xml.in.h:117
-msgid "Flows From"
-msgstr "ไหลต่อมาจาก"
-
-#: ../gladeui/glade-property-class.c:102 ../plugins/gtk+/gtk+.xml.in.h:161
-msgid ""
-"Indicates that the object has content that flows logically from another "
-"AtkObject in a sequential way, (for instance text-flow)"
-msgstr ""
-"ระบุว่าออบเจกต์มีเนื้อหาที่ไหลต่อมาจาก AtkObject อื่นตามลำดับความหมาย (เช่น "
-"ในแบบการไหลของข้อความ)"
-
-#: ../gladeui/glade-property-class.c:105 ../plugins/gtk+/gtk+.xml.in.h:298
-msgid "Subwindow Of"
-msgstr "หน้าต่างย่อยของ"
-
-#: ../gladeui/glade-property-class.c:106 ../plugins/gtk+/gtk+.xml.in.h:149
-msgid ""
-"Indicates a subwindow attached to a component but otherwise has no "
-"connection in the UI hierarchy to that component"
-msgstr ""
-"ระบุหน้าต่างย่อยที่เชื่อมกับองค์ประกอบหนึ่ง แต่ไม่มีความเชื่อมโยงอะไรกันในโครงสร้าง UI "
-"นอกเหนือจากนั้น"
-
-#: ../gladeui/glade-property-class.c:109 ../plugins/gtk+/gtk+.xml.in.h:98
-msgid "Embeds"
-msgstr "ฝังรวม"
-
-#: ../gladeui/glade-property-class.c:110 ../plugins/gtk+/gtk+.xml.in.h:163
-msgid ""
-"Indicates that the object visually embeds another object's content, i.e. "
-"this object's content flows around another's content"
-msgstr ""
-"ระบุว่าออบเจกต์ฝังรวมเนื้อหาของอีกออบเจกต์หนึ่ง กล่าวคือ "
-"เนื้อหาของออบเจกต์นี้ไหลล้อมรอบเนื้อหาของอีกออบเจกต์หนึ่ง"
-
-#: ../gladeui/glade-property-class.c:113 ../plugins/gtk+/gtk+.xml.in.h:97
-msgid "Embedded By"
-msgstr "ฝังรวมโดย"
-
-#: ../gladeui/glade-property-class.c:114 ../plugins/gtk+/gtk+.xml.in.h:174
-msgid ""
-"Inverse of 'Embeds', indicates that this object's content is visually "
-"embedded in another object"
-msgstr "ตรงข้ามกับ 'ฝังรวม' คือระบุว่าเนื้อหาของออบเจกต์นี้ถูกฝังรวมแบบเห็นได้ในอีกออบเจกต์หนึ่ง"
-
-#: ../gladeui/glade-property-class.c:117 ../plugins/gtk+/gtk+.xml.in.h:231
-msgid "Popup For"
-msgstr "ผุดหน้าต่างสำหรับ"
-
-#: ../gladeui/glade-property-class.c:118 ../plugins/gtk+/gtk+.xml.in.h:158
-msgid "Indicates that an object is a popup for another object"
-msgstr "ระบุว่าออบเจกต์เป็นหน้าต่างผุดขึ้นของอีกออบเจกต์หนึ่ง"
-
-#: ../gladeui/glade-property-class.c:120 ../plugins/gtk+/gtk+.xml.in.h:226
-msgid "Parent Window Of"
-msgstr "หน้าต่างแม่ของ"
-
-#: ../gladeui/glade-property-class.c:121 ../plugins/gtk+/gtk+.xml.in.h:157
-msgid "Indicates that an object is a parent window of another object"
-msgstr "ระบุว่าออบเจกต์เป็นหน้าต่างแม่ของอีกออบเจ็กต์หนึ่ง"
-
-#: ../gladeui/glade-property.c:605
+#: ../gladeui/glade-property.c:516
 msgid "Enabled"
 msgstr "เปิดใช้"
 
-#: ../gladeui/glade-property.c:606
+#: ../gladeui/glade-property.c:517
 msgid "If the property is optional, this is its enabled state"
 msgstr "ถ้าคุณสมบัติที่บรรยายเป็นคุณสมบัติเสริม ค่านี้คือสถานะการเปิดใช้ของคุณสมบัติ"
 
-#: ../gladeui/glade-property.c:612 ../gladeui/glade-widget-action.c:158
+#: ../gladeui/glade-property.c:523 ../gladeui/glade-widget-action.c:168
 msgid "Sensitive"
 msgstr "รับรู้โฟกัส"
 
-#: ../gladeui/glade-property.c:613
+#: ../gladeui/glade-property.c:524
 msgid "This gives backends control to set property sensitivity"
 msgstr "ค่านี้เปิดให้แบกเอนด์ต่างๆ สามารถควบคุมการรับรู้โฟกัสของคุณสมบัติ"
 
-#: ../gladeui/glade-property.c:619
+#: ../gladeui/glade-property.c:530
 msgid "Comment"
 msgstr "หมายเหตุ"
 
-#: ../gladeui/glade-property.c:620
+#: ../gladeui/glade-property.c:531
 msgid "Comment for translators"
 msgstr "หมายเหตุสำหรับผู้แปล"
 
-#: ../gladeui/glade-property.c:626
+#: ../gladeui/glade-property.c:537
 msgid "Translatable"
 msgstr "แปลได้"
 
-#: ../gladeui/glade-property.c:627
+#: ../gladeui/glade-property.c:538
 msgid "Whether this property is translatable or not"
 msgstr "กำหนดว่าคุณสมบัตินี้สามารถแปลเป็นภาษาอื่นได้หรือไม่"
 
-#: ../gladeui/glade-property.c:633
+#: ../gladeui/glade-property.c:544
 msgid "Has Context"
 msgstr "มีบริบท"
 
-#: ../gladeui/glade-property.c:634
+#: ../gladeui/glade-property.c:545
 msgid "Whether or not the translatable string has a context prefix"
 msgstr "กำหนดว่าข้อความที่แปลได้นี้มีบริบทนำหน้าหรือไม่"
+
+#: ../gladeui/glade-property.c:551
+msgid "Visual State"
+msgstr "สถานะการแสดงผล"
+
+#: ../gladeui/glade-property.c:552
+msgid "Priority information for the property editor to act on"
+msgstr "ข้อมูลลำดับความสำคัญสำหรับการทำงานของตัวแก้ไขคุณสมบัติ"
 
 #: ../gladeui/glade-signal-editor.c:67
 msgid "<Type here>"
 msgstr "<พิมพ์ที่นี่>"
 
-#: ../gladeui/glade-signal-editor.c:714
+#: ../gladeui/glade-signal-editor.c:690 ../plugins/gtk+/glade-accels.c:552
+msgid "Signal"
+msgstr "สัญญาณ"
+
+#: ../gladeui/glade-signal-editor.c:710
 msgid "Handler"
 msgstr "ฟังก์ชันจัดการ"
 
-#: ../gladeui/glade-signal-editor.c:736
+#: ../gladeui/glade-signal-editor.c:732
 msgid "User data"
 msgstr "ข้อมูลผู้ใช้กำหนด"
 
-#: ../gladeui/glade-signal-editor.c:750
+#: ../gladeui/glade-signal-editor.c:746
 msgid "Lookup"
 msgstr "หา"
 
-#: ../gladeui/glade-signal-editor.c:761 ../plugins/gtk+/gtk+.xml.in.h:18
+#: ../gladeui/glade-signal-editor.c:757 ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "After"
 msgstr "ทีหลัง"
 
@@ -1569,15 +1427,23 @@ msgstr "หาสัญลักษณ์ \"%s\" ไม่พบ"
 msgid "Could not get the type from \"%s\""
 msgstr "ไม่สามารถอ่านชนิดจาก \"%s\""
 
-#: ../gladeui/glade-utils.c:516
+#: ../gladeui/glade-utils.c:598
 msgid "All Files"
 msgstr "ทุกแฟ้ม"
 
-#: ../gladeui/glade-utils.c:521
-msgid "Glade Files"
-msgstr "แฟ้ม Glade"
+#: ../gladeui/glade-utils.c:603
+msgid "Libglade Files"
+msgstr "แฟ้ม Libglade"
 
-#: ../gladeui/glade-utils.c:1236
+#: ../gladeui/glade-utils.c:608
+msgid "GtkBuilder Files"
+msgstr "แฟ้ม GtkBuilder"
+
+#: ../gladeui/glade-utils.c:614
+msgid "All Glade Files"
+msgstr "แฟ้ม Glade ทั้งหมด"
+
+#: ../gladeui/glade-utils.c:1320
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1586,209 +1452,209 @@ msgstr ""
 "%s มีอยู่ก่อนแล้ว\n"
 "คุณต้องการจะเขียนทับหรือไม่?"
 
-#: ../gladeui/glade-utils.c:1264
+#: ../gladeui/glade-utils.c:1348
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนลงที่ %s: %s"
 
-#: ../gladeui/glade-utils.c:1278
+#: ../gladeui/glade-utils.c:1362
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่าน %s: %s"
 
-#: ../gladeui/glade-utils.c:1293
+#: ../gladeui/glade-utils.c:1377
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดช่องสัญญาณ I/O %s: %s"
 
-#: ../gladeui/glade-utils.c:1303
+#: ../gladeui/glade-utils.c:1387
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "เปิด %s เพื่อเขียนไม่สำเร็จ: %s"
 
-#: ../gladeui/glade-utils.c:1314
+#: ../gladeui/glade-utils.c:1398
 #, c-format
 msgid "Error shutting down io channel %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดช่องสัญญาณ I/O %s: %s"
 
-#: ../gladeui/glade-utils.c:1323
+#: ../gladeui/glade-utils.c:1407
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "เปิด %s เพื่ออ่านไม่สำเร็จ: %s"
 
-#: ../gladeui/glade-widget.c:1006
+#: ../gladeui/glade-widget.c:990
 msgid "The name of the widget"
 msgstr "ชื่อของวิดเจ็ต"
 
-#: ../gladeui/glade-widget.c:1013
+#: ../gladeui/glade-widget.c:997
 msgid "Internal name"
 msgstr "ชื่อเรียกภายใน"
 
-#: ../gladeui/glade-widget.c:1014
+#: ../gladeui/glade-widget.c:998
 msgid "The internal name of the widget"
 msgstr "ชื่อเรียกภายในของวิดเจ็ต"
 
-#: ../gladeui/glade-widget.c:1020
+#: ../gladeui/glade-widget.c:1004
 msgid "Anarchist"
 msgstr "อนาธิปัตย์"
 
-#: ../gladeui/glade-widget.c:1021
+#: ../gladeui/glade-widget.c:1005
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "กำหนดว่าลูกวิดเจ็ตเชิงประกอบนี้ เป็นลูกที่รู้เทือกเถาเหล่ากอหรือเป็นลูกอนาธิปัตย์"
 
-#: ../gladeui/glade-widget.c:1028
+#: ../gladeui/glade-widget.c:1012
 msgid "Object"
-msgstr "วัตถุ"
+msgstr "อ็อบเจกต์"
 
-#: ../gladeui/glade-widget.c:1029
+#: ../gladeui/glade-widget.c:1013
 msgid "The object associated"
-msgstr "วัตถุที่เชื่อมอยู่"
+msgstr "อ็อบเจกต์ที่เชื่อมอยู่"
 
-#: ../gladeui/glade-widget.c:1036
+#: ../gladeui/glade-widget.c:1020
 msgid "Adaptor"
 msgstr "ตัวแปลง"
 
-#: ../gladeui/glade-widget.c:1037
+#: ../gladeui/glade-widget.c:1021
 msgid "The class adaptor for the associated widget"
 msgstr "ตัวแปลงคลาสสำหรับวิดเจ็ตที่เชื่อมอยู่"
 
-#: ../gladeui/glade-widget.c:1044 ../gladeui/glade-inspector.c:199
+#: ../gladeui/glade-widget.c:1028 ../gladeui/glade-inspector.c:199
 msgid "Project"
 msgstr "โครงการ"
 
-#: ../gladeui/glade-widget.c:1045
+#: ../gladeui/glade-widget.c:1029
 msgid "The glade project that this widget belongs to"
 msgstr "โครงการ glade ที่เป็นเจ้าของวิดเจ็ตนี้"
 
-#: ../gladeui/glade-widget.c:1054
+#: ../gladeui/glade-widget.c:1038
 msgid "A list of GladeProperties"
-msgstr "รายการของ GladeProperties"
+msgstr "รายชื่อ GladeProperty"
 
-#: ../gladeui/glade-widget.c:1060 ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../gladeui/glade-widget.c:1044 ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Parent"
 msgstr "วิดเจ็ตแม่"
 
-#: ../gladeui/glade-widget.c:1061
+#: ../gladeui/glade-widget.c:1045
 msgid "A pointer to the parenting GladeWidget"
 msgstr "พอยน์เตอร์ไปยัง GladeWidget แม่"
 
-#: ../gladeui/glade-widget.c:1068
+#: ../gladeui/glade-widget.c:1052
 msgid "Internal Name"
 msgstr "ชื่อเรียกภายใน"
 
-#: ../gladeui/glade-widget.c:1069
+#: ../gladeui/glade-widget.c:1053
 msgid "A generic name prefix for internal widgets"
 msgstr "ชื่อขึ้นต้นทั่วไปสำหรับวิดเจ็ตภายใน"
 
-#: ../gladeui/glade-widget.c:1074
+#: ../gladeui/glade-widget.c:1058
 msgid "Template"
 msgstr "ต้นแบบ"
 
-#: ../gladeui/glade-widget.c:1075
+#: ../gladeui/glade-widget.c:1059
 msgid "A GladeWidget template to base a new widget on"
 msgstr "ต้นแบบ GladeWidget ที่จะใช้สร้างวิดเจ็ตใหม่"
 
-#: ../gladeui/glade-widget.c:1081 ../plugins/gtk+/gtk+.xml.in.h:164
-msgid "Info"
-msgstr "ข้อมูล"
-
-#: ../gladeui/glade-widget.c:1082
-msgid "A GladeWidgetInfo struct to base a new widget on"
-msgstr "โครงสร้าง GladeWidgetInfo ที่จะใช้สร้างวิดเจ็ตใหม่"
-
-#: ../gladeui/glade-widget.c:1087
+#: ../gladeui/glade-widget.c:1065
 msgid "Reason"
 msgstr "เหตุผล"
 
-#: ../gladeui/glade-widget.c:1088
+#: ../gladeui/glade-widget.c:1066
 msgid "A GladeCreateReason for this creation"
 msgstr "GladeCreateReason สำหรับการสร้างนี้"
 
-#: ../gladeui/glade-widget.c:1096
+#: ../gladeui/glade-widget.c:1074
 msgid "Toplevel Width"
 msgstr "ความกว้างระดับบนสุด"
 
-#: ../gladeui/glade-widget.c:1097
+#: ../gladeui/glade-widget.c:1075
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "ความกว้างของวิดเจ็ตเมื่อเป็นหน้าต่างระดับบนสุดใน GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1106
+#: ../gladeui/glade-widget.c:1084
 msgid "Toplevel Height"
 msgstr "ความสูงระดับบนสุด"
 
-#: ../gladeui/glade-widget.c:1107
+#: ../gladeui/glade-widget.c:1085
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "ความสูงของวิดเจ็ตเมื่อเป็นหน้าต่างระดับบนสุดใน GladeDesignLayout"
 
-#: ../gladeui/glade-widget-adaptor.c:254
+#: ../gladeui/glade-widget.c:1094
+msgid "Support Warning"
+msgstr "คำเตือนสนับสนุน"
+
+#: ../gladeui/glade-widget.c:1095
+msgid "A warning string about version mismatches"
+msgstr "ข้อความคำเตือนเกี่ยวกับปัญหารุ่นไม่ตรงกัน"
+
+#: ../gladeui/glade-widget-adaptor.c:248
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "ตัวแปลง %s ที่มาจาก %s มีอยู่แล้ว"
 
-#: ../gladeui/glade-widget-adaptor.c:805
+#: ../gladeui/glade-widget-adaptor.c:1199
 msgid "Name of the class"
 msgstr "ชื่อของคลาส"
 
-#: ../gladeui/glade-widget-adaptor.c:813
+#: ../gladeui/glade-widget-adaptor.c:1207
 msgid "GType of the class"
 msgstr "GType ของคลาส"
 
-#: ../gladeui/glade-widget-adaptor.c:820 ../plugins/gnome/gnome.xml.in.h:64
+#: ../gladeui/glade-widget-adaptor.c:1214 ../plugins/gnome/gnome.xml.in.h:64
 msgid "Title"
 msgstr "ชื่อ"
 
-#: ../gladeui/glade-widget-adaptor.c:821
+#: ../gladeui/glade-widget-adaptor.c:1215
 msgid "Translated title for the class used in the glade UI"
 msgstr "ชื่อที่แปลแล้วของคลาสสำหรับใช้ใน UI ของ Glade"
 
-#: ../gladeui/glade-widget-adaptor.c:828
+#: ../gladeui/glade-widget-adaptor.c:1222
 msgid "Generic Name"
 msgstr "ชื่อทั่วไป"
 
-#: ../gladeui/glade-widget-adaptor.c:829
+#: ../gladeui/glade-widget-adaptor.c:1223
 msgid "Used to generate names of new widgets"
 msgstr "ใช้สำหรับสร้างชื่อของวิดเจ็ตใหม่ที่สร้าง"
 
-#: ../gladeui/glade-widget-adaptor.c:836 ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../gladeui/glade-widget-adaptor.c:1230 ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Icon Name"
 msgstr "ชื่อไอคอน"
 
-#: ../gladeui/glade-widget-adaptor.c:837
+#: ../gladeui/glade-widget-adaptor.c:1231
 msgid "The icon name"
 msgstr "ชื่อของไอคอน"
 
-#: ../gladeui/glade-widget-adaptor.c:844
+#: ../gladeui/glade-widget-adaptor.c:1238
 msgid "Catalog"
 msgstr "แค็ตตาล็อก"
 
-#: ../gladeui/glade-widget-adaptor.c:845
+#: ../gladeui/glade-widget-adaptor.c:1239
 msgid "The name of the widget catalog this class was declared by"
 msgstr "ชื่อของแค็ตตาล็อกของวิดเจ็ตที่ใช้ประกาศคลาสนี้"
 
-#: ../gladeui/glade-widget-adaptor.c:852
+#: ../gladeui/glade-widget-adaptor.c:1246
 msgid "Book"
 msgstr "ชื่อหนังสือ"
 
-#: ../gladeui/glade-widget-adaptor.c:853
+#: ../gladeui/glade-widget-adaptor.c:1247
 msgid "DevHelp search namespace for this widget class"
 msgstr "ขอบเขตชื่อสำหรับค้นหาใน DevHelp ของคลาสของวิดเจ็ตนี้"
 
-#: ../gladeui/glade-widget-adaptor.c:860
+#: ../gladeui/glade-widget-adaptor.c:1254
 msgid "Special Child Type"
 msgstr "ชนิดวิดเจ็ตลูกพิเศษ"
 
-#: ../gladeui/glade-widget-adaptor.c:861
+#: ../gladeui/glade-widget-adaptor.c:1255
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr "ชื่อของคุณสมบัติการบรรจุเพื่อใช้บ่งบอกวิดเจ็ตลูกชนิดพิเศษสำหรับคลาสเครื่องบรรจุนี้"
 
-#: ../gladeui/glade-widget-adaptor.c:869 ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../gladeui/glade-widget-adaptor.c:1263 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cursor"
 msgstr "เคอร์เซอร์"
 
-#: ../gladeui/glade-widget-adaptor.c:870
+#: ../gladeui/glade-widget-adaptor.c:1264
 msgid "A cursor for inserting widgets in the UI"
 msgstr "เคอร์เซอร์สำหรับแทรกวิดเจ็ตลงในส่วนติดต่อผู้ใช้"
 
@@ -1846,15 +1712,15 @@ msgstr "จำนวนเต็ม 2"
 msgid "The second integer argument to pass to the function"
 msgstr "อาร์กิวเมนต์ชนิดจำนวนเต็มตัวที่สองที่ส่งให้กับฟังก์ชัน"
 
-#: ../gladeui/glade-widget-action.c:151
+#: ../gladeui/glade-widget-action.c:161
 msgid "class"
 msgstr "คลาส"
 
-#: ../gladeui/glade-widget-action.c:152
+#: ../gladeui/glade-widget-action.c:162
 msgid "GladeWidgetActionClass structure pointer"
 msgstr "ตัวชี้โครงสร้างของ GladeWidgetActionClass"
 
-#: ../gladeui/glade-widget-action.c:159
+#: ../gladeui/glade-widget-action.c:169
 msgid "Whether or not this action is sensitive"
 msgstr "กำหนดว่าปฏิบัติการนี้เปิดทำงานหรือไม่"
 
@@ -1919,155 +1785,155 @@ msgstr "ที่หลักๆ"
 msgid "Status"
 msgstr "สถานะ"
 
-#: ../plugins/gtk+/glade-gtk.c:170
+#: ../plugins/gtk+/glade-gtk.c:171
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:171
+#: ../plugins/gtk+/glade-gtk.c:172
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "เลือกรายการ GnomeUIInfo สำเร็จรูป"
 
-#: ../plugins/gtk+/glade-gtk.c:213 ../plugins/gtk+/glade-gtk.c:222
+#: ../plugins/gtk+/glade-gtk.c:214 ../plugins/gtk+/glade-gtk.c:223
 msgid "Method"
 msgstr "วิธีการ"
 
-#: ../plugins/gtk+/glade-gtk.c:214
+#: ../plugins/gtk+/glade-gtk.c:215
 msgid "The method to use to edit this image"
 msgstr "วิธีการที่จะใช้แก้ไขภาพนี้"
 
-#: ../plugins/gtk+/glade-gtk.c:223
+#: ../plugins/gtk+/glade-gtk.c:224
 msgid "The method to use to edit this button"
 msgstr "วิธีการที่จะใช้แก้ไขปุ่มนี้"
 
-#: ../plugins/gtk+/glade-gtk.c:355
+#: ../plugins/gtk+/glade-gtk.c:1182
 #, c-format
 msgid "Removing parent of %s"
 msgstr "กำลังลบวิดเจ็ตแม่ของ %s"
 
-#: ../plugins/gtk+/glade-gtk.c:406
+#: ../plugins/gtk+/glade-gtk.c:1233
 #, c-format
 msgid "Adding parent %s to %s"
 msgstr "กำลังเพิ่มวิดเจ็ตแม่ %s ให้กับ %s"
 
-#: ../plugins/gtk+/glade-gtk.c:774
+#: ../plugins/gtk+/glade-gtk.c:1601
 #, c-format
 msgid "Ordering children of %s"
 msgstr "กำลังเรียงลำดับวิดเจ็ตลูกของ %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1253 ../plugins/gtk+/glade-gtk.c:1260
+#: ../plugins/gtk+/glade-gtk.c:2080 ../plugins/gtk+/glade-gtk.c:2087
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "แทรกช่องสำหรับวางเข้าใน %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1267
+#: ../plugins/gtk+/glade-gtk.c:2094
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "ลบช่องสำหรับวางออกจาก %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2182 ../plugins/gtk+/glade-gtk.c:2190
+#: ../plugins/gtk+/glade-gtk.c:3009 ../plugins/gtk+/glade-gtk.c:3017
 #, c-format
 msgid "Insert Row on %s"
 msgstr "แทรกแถวใน %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2198 ../plugins/gtk+/glade-gtk.c:2206
+#: ../plugins/gtk+/glade-gtk.c:3025 ../plugins/gtk+/glade-gtk.c:3033
 #, c-format
 msgid "Insert Column on %s"
 msgstr "แทรกคอลัมน์ใน %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2214
+#: ../plugins/gtk+/glade-gtk.c:3041
 #, c-format
 msgid "Remove Column on %s"
 msgstr "ลบคอลัมน์ออกจาก %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2222
+#: ../plugins/gtk+/glade-gtk.c:3049
 #, c-format
 msgid "Remove Row on %s"
 msgstr "ลบแถวออกจาก %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3162 ../plugins/gtk+/glade-gtk.c:3169
+#: ../plugins/gtk+/glade-gtk.c:3989 ../plugins/gtk+/glade-gtk.c:3996
 #, c-format
 msgid "Insert page on %s"
 msgstr "แทรกหน้าใน %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3176
+#: ../plugins/gtk+/glade-gtk.c:4003
 #, c-format
 msgid "Remove page from %s"
 msgstr "ลบหน้าออกจาก %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3921 ../plugins/gtk+/glade-gtk.c:3925
-#: ../plugins/gtk+/glade-gtk.c:4100 ../plugins/gtk+/glade-gtk.c:4104
+#: ../plugins/gtk+/glade-gtk.c:4748 ../plugins/gtk+/glade-gtk.c:4752
+#: ../plugins/gtk+/glade-gtk.c:4927 ../plugins/gtk+/glade-gtk.c:4931
 msgid "This only applies with label type buttons"
 msgstr "ใช้ได้กับปุ่มแบบฉลากเท่านั้น"
 
-#: ../plugins/gtk+/glade-gtk.c:3936 ../plugins/gtk+/glade-gtk.c:3940
-#: ../plugins/gtk+/glade-gtk.c:4092 ../plugins/gtk+/glade-gtk.c:4096
+#: ../plugins/gtk+/glade-gtk.c:4763 ../plugins/gtk+/glade-gtk.c:4767
+#: ../plugins/gtk+/glade-gtk.c:4919 ../plugins/gtk+/glade-gtk.c:4923
 msgid "This only applies with stock type buttons"
 msgstr "ใช้ได้กับปุ่มแบบสำเร็จรูปเท่านั้น"
 
-#: ../plugins/gtk+/glade-gtk.c:4200 ../plugins/gtk+/glade-gtk.c:4222
+#: ../plugins/gtk+/glade-gtk.c:5027 ../plugins/gtk+/glade-gtk.c:5049
 msgid "You must remove any children before you can set the type"
 msgstr "คุณต้องลบวิดเจ็ตลูกทั้งหมดก่อนกำหนดชนิด"
 
-#: ../plugins/gtk+/glade-gtk.c:4246 ../plugins/gtk+/glade-gtk.c:5759
+#: ../plugins/gtk+/glade-gtk.c:5073 ../plugins/gtk+/glade-gtk.c:6586
 msgid "This only applies with file type images"
 msgstr "ใช้ได้กับภาพแบบแฟ้มเท่านั้น"
 
-#: ../plugins/gtk+/glade-gtk.c:4254 ../plugins/gtk+/glade-gtk.c:5763
+#: ../plugins/gtk+/glade-gtk.c:5081 ../plugins/gtk+/glade-gtk.c:6590
 msgid "This only applies to Icon Theme type images"
 msgstr "ใช้ได้กับภาพแบบชุดตกแต่งไอคอนเท่านั้น"
 
-#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5761
+#: ../plugins/gtk+/glade-gtk.c:5091 ../plugins/gtk+/glade-gtk.c:6588
 msgid "This only applies with stock type images"
 msgstr "ใช้ได้กับภาพแบบสำเร็จรูปเท่านั้น"
 
-#: ../plugins/gtk+/glade-gtk.c:4276
+#: ../plugins/gtk+/glade-gtk.c:5103
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr ""
 "ขนาดพิกเซลจะทับค่าขนาดไอคอน ถ้าคุณต้องการใช้ค่าขนาดไอคอน ให้กำหนดขนาดพิกเซลเป็น -1"
 
-#: ../plugins/gtk+/glade-gtk.c:4302
+#: ../plugins/gtk+/glade-gtk.c:5129
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "ขนาดพิกเซลจะทับค่าขนาดไอคอน "
 
-#: ../plugins/gtk+/glade-gtk.c:4615 ../plugins/gtk+/glade-gtk.c:5609
+#: ../plugins/gtk+/glade-gtk.c:5442 ../plugins/gtk+/glade-gtk.c:6436
 msgid "<separator>"
 msgstr "<เส้นแบ่ง>"
 
-#: ../plugins/gtk+/glade-gtk.c:4789 ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../plugins/gtk+/glade-gtk.c:5616 ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Normal"
 msgstr "ปกติ"
 
-#: ../plugins/gtk+/glade-gtk.c:4790 ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:5617 ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Image"
 msgstr "ภาพ"
 
-#: ../plugins/gtk+/glade-gtk.c:4791
+#: ../plugins/gtk+/glade-gtk.c:5618
 msgid "Check"
 msgstr "กา"
 
-#: ../plugins/gtk+/glade-gtk.c:4792 ../plugins/gtk+/glade-gtk.c:5673
+#: ../plugins/gtk+/glade-gtk.c:5619 ../plugins/gtk+/glade-gtk.c:6500
 msgid "Radio"
 msgstr "วิทยุ"
 
-#: ../plugins/gtk+/glade-gtk.c:4793 ../plugins/gtk+/glade-gtk.c:5676
+#: ../plugins/gtk+/glade-gtk.c:5620 ../plugins/gtk+/glade-gtk.c:6503
 msgid "Separator"
 msgstr "เส้นแบ่ง"
 
-#: ../plugins/gtk+/glade-gtk.c:4797
+#: ../plugins/gtk+/glade-gtk.c:5624
 msgid "Add Item"
 msgstr "เพิ่มรายการ"
 
-#: ../plugins/gtk+/glade-gtk.c:4798
+#: ../plugins/gtk+/glade-gtk.c:5625
 msgid "Add Child Item"
 msgstr "เพิ่มรายการลูก"
 
-#: ../plugins/gtk+/glade-gtk.c:4799 ../plugins/gtk+/glade-gtk.c:5685
+#: ../plugins/gtk+/glade-gtk.c:5626 ../plugins/gtk+/glade-gtk.c:6512
 msgid "Add Separator"
 msgstr "เพิ่มเส้นแบ่ง"
 
-#: ../plugins/gtk+/glade-gtk.c:4812
+#: ../plugins/gtk+/glade-gtk.c:5639
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -2081,141 +1947,162 @@ msgstr ""
 "  * ลาก &amp; วางเพื่อเปลี่ยนลำดับ\n"
 "  * คอลัมน์ \"ชนิด\" สามารถแก้ไขได้"
 
-#: ../plugins/gtk+/glade-gtk.c:4828 ../plugins/gtk+/glade-gtk.c:5343
+#: ../plugins/gtk+/glade-gtk.c:5655 ../plugins/gtk+/glade-gtk.c:6170
 msgid "Edit Menu Bar"
 msgstr "แก้ไขแถบเมนู"
 
-#: ../plugins/gtk+/glade-gtk.c:4830 ../plugins/gtk+/glade-gtk.c:5345
+#: ../plugins/gtk+/glade-gtk.c:5657 ../plugins/gtk+/glade-gtk.c:6172
 msgid "Edit Menu"
 msgstr "แก้ไขเมนู"
 
-#: ../plugins/gtk+/glade-gtk.c:5081
+#: ../plugins/gtk+/glade-gtk.c:5908
 msgid "Print S_etup"
 msgstr "ตั้ง_ค่าการพิมพ์"
 
-#: ../plugins/gtk+/glade-gtk.c:5085
+#: ../plugins/gtk+/glade-gtk.c:5912
 msgid "Find Ne_xt"
 msgstr "หา_ถัดไป"
 
-#: ../plugins/gtk+/glade-gtk.c:5089
+#: ../plugins/gtk+/glade-gtk.c:5916
 msgid "_Undo Move"
 msgstr "_ย้อนตากลับ"
 
-#: ../plugins/gtk+/glade-gtk.c:5093
+#: ../plugins/gtk+/glade-gtk.c:5920
 msgid "_Redo Move"
 msgstr "เ_ล่นตาซ้ำ"
 
-#: ../plugins/gtk+/glade-gtk.c:5096
+#: ../plugins/gtk+/glade-gtk.c:5923
 msgid "Select _All"
 msgstr "เลือก_ทั้งหมด"
 
-#: ../plugins/gtk+/glade-gtk.c:5099
+#: ../plugins/gtk+/glade-gtk.c:5926
 msgid "_New Game"
 msgstr "เกมใ_หม่"
 
-#: ../plugins/gtk+/glade-gtk.c:5102
+#: ../plugins/gtk+/glade-gtk.c:5929
 msgid "_Pause game"
 msgstr "_พักเกม"
 
-#: ../plugins/gtk+/glade-gtk.c:5105
+#: ../plugins/gtk+/glade-gtk.c:5932
 msgid "_Restart Game"
 msgstr "_ตั้งต้นเกมใหม่"
 
-#: ../plugins/gtk+/glade-gtk.c:5108
+#: ../plugins/gtk+/glade-gtk.c:5935
 msgid "_Hint"
 msgstr "บอกใ_บ้"
 
-#: ../plugins/gtk+/glade-gtk.c:5111
+#: ../plugins/gtk+/glade-gtk.c:5938
 msgid "_Scores..."
 msgstr "_คะแนน..."
 
-#: ../plugins/gtk+/glade-gtk.c:5114
+#: ../plugins/gtk+/glade-gtk.c:5941
 msgid "_End Game"
 msgstr "_จบเกม"
 
-#: ../plugins/gtk+/glade-gtk.c:5117
+#: ../plugins/gtk+/glade-gtk.c:5944
 msgid "Create New _Window"
 msgstr "สร้าง_หน้าต่างใหม่"
 
-#: ../plugins/gtk+/glade-gtk.c:5120
+#: ../plugins/gtk+/glade-gtk.c:5947
 msgid "_Close This Window"
 msgstr "ปิ_ดหน้าต่างนี้"
 
-#: ../plugins/gtk+/glade-gtk.c:5132
+#: ../plugins/gtk+/glade-gtk.c:5959
 msgid "_Settings"
 msgstr "_ตั้งค่า"
 
-#: ../plugins/gtk+/glade-gtk.c:5135
+#: ../plugins/gtk+/glade-gtk.c:5962
 msgid "Fi_les"
 msgstr "แฟ้_มต่างๆ"
 
-#: ../plugins/gtk+/glade-gtk.c:5138
+#: ../plugins/gtk+/glade-gtk.c:5965
 msgid "_Windows"
 msgstr "_หน้าต่าง"
 
-#: ../plugins/gtk+/glade-gtk.c:5144
+#: ../plugins/gtk+/glade-gtk.c:5971
 msgid "_Game"
 msgstr "เ_กม"
 
-#: ../plugins/gtk+/glade-gtk.c:5240
+#: ../plugins/gtk+/glade-gtk.c:6067
 msgid "This does not apply with stock items"
 msgstr "ใช้ไม่ได้กับรายการสำเร็จรูป"
 
-#: ../plugins/gtk+/glade-gtk.c:5618
+#: ../plugins/gtk+/glade-gtk.c:6445
 msgid "<custom>"
 msgstr "<กำหนดเอง>"
 
-#: ../plugins/gtk+/glade-gtk.c:5671 ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/glade-gtk.c:6498 ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button"
 msgstr "ปุ่ม"
 
-#: ../plugins/gtk+/glade-gtk.c:5672
+#: ../plugins/gtk+/glade-gtk.c:6499
 msgid "Toggle"
 msgstr "ปุ่มสลับ"
 
-#: ../plugins/gtk+/glade-gtk.c:5674 ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/glade-gtk.c:6501 ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Menu"
 msgstr "เมนู"
 
-#: ../plugins/gtk+/glade-gtk.c:5675
+#: ../plugins/gtk+/glade-gtk.c:6502
 msgid "Item"
 msgstr "รายการ"
 
-#: ../plugins/gtk+/glade-gtk.c:5680
+#: ../plugins/gtk+/glade-gtk.c:6507
 msgid "Add Tool Button"
 msgstr "เพิ่มปุ่มเครื่องมือ"
 
-#: ../plugins/gtk+/glade-gtk.c:5681
+#: ../plugins/gtk+/glade-gtk.c:6508
 msgid "Add Toggle Button"
 msgstr "เพิ่มปุ่มสลับ"
 
-#: ../plugins/gtk+/glade-gtk.c:5682
+#: ../plugins/gtk+/glade-gtk.c:6509
 msgid "Add Radio Button"
 msgstr "เพิ่มปุ่มวิทยุ"
 
-#: ../plugins/gtk+/glade-gtk.c:5683
+#: ../plugins/gtk+/glade-gtk.c:6510
 msgid "Add Menu Button"
 msgstr "เพิ่มปุ่มเมนู"
 
-#: ../plugins/gtk+/glade-gtk.c:5684
+#: ../plugins/gtk+/glade-gtk.c:6511
 msgid "Add Tool Item"
 msgstr "เพิ่มรายการเครื่องมือ"
 
-#: ../plugins/gtk+/glade-gtk.c:5693
+#: ../plugins/gtk+/glade-gtk.c:6520
 msgid "Tool Bar Editor"
 msgstr "เครื่องมือแก้ไขแถบเครื่องมือ"
 
-#: ../plugins/gtk+/glade-gtk.c:6509
+#: ../plugins/gtk+/glade-gtk.c:7336
 msgid "Introduction page"
 msgstr "หน้าแนะนำ"
 
-#: ../plugins/gtk+/glade-gtk.c:6513
+#: ../plugins/gtk+/glade-gtk.c:7340
 msgid "Content page"
 msgstr "หน้าเนื้อหา"
 
-#: ../plugins/gtk+/glade-gtk.c:6517
+#: ../plugins/gtk+/glade-gtk.c:7344
 msgid "Confirmation page"
 msgstr "หน้ายืนยัน"
+
+#. Accelerators
+#: ../plugins/gtk+/glade-accels.c:204 ../plugins/gtk+/gtk+.xml.in.h:11
+msgid "Accelerators"
+msgstr "คีย์ด่วน"
+
+#: ../plugins/gtk+/glade-accels.c:205
+msgid "A list of accelerator keys"
+msgstr "รายชื่อคีย์ด่วน"
+
+#: ../plugins/gtk+/glade-accels.c:424 ../plugins/gtk+/glade-accels.c:492
+msgid "<choose a key>"
+msgstr "<เลือกปุ่ม>"
+
+#: ../plugins/gtk+/glade-accels.c:573
+msgid "Accelerator Key"
+msgstr "คีย์ด่วน"
+
+#: ../plugins/gtk+/glade-accels.c:632
+msgid "Choose accelerator keys..."
+msgstr "เลือกคีย์ด่วน..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A stock item, select None to choose a custom image and label"
@@ -2245,6 +2132,11 @@ msgstr "คำบรรยายสำหรับเทคโนโลยีส
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accessible Name"
 msgstr "ชื่อสำหรับเทคโนโลยีสิ่งอำนวยความสะดวก"
+
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:16
+msgid "Activate"
+msgstr "เรียกใช้"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "Add Parent"
@@ -2379,6 +2271,11 @@ msgstr "กล่องกา"
 msgid "Check Menu Item"
 msgstr "รายการเมนูกา"
 
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:53
+msgid "Click"
+msgstr "คลิก"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Close"
 msgstr "ปิด"
@@ -2435,6 +2332,15 @@ msgstr "ต่อเนื่อง"
 msgid "Control and Display"
 msgstr "เครื่องควบคุมและแสดงผล"
 
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:69
+msgid "Controlled By"
+msgstr "ควบคุมโดย"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+msgid "Controller For"
+msgstr "เป็นตัวควบคุมสำหรับ"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:71 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "สร้างโฟลเดอร์"
@@ -2473,7 +2379,7 @@ msgstr "คำบรรยายสำหรับ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Description of an object, formatted for assistive technology access"
-msgstr "คำบรรยายวัตถุ ในรูปแบบสำหรับใช้ในเทคโนโลยีสิ่งอำนวยความสะดวก"
+msgstr "คำบรรยายอ็อบเจกต์ ในรูปแบบสำหรับใช้ในเทคโนโลยีสิ่งอำนวยความสะดวก"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Desktop"
@@ -2534,6 +2440,14 @@ msgstr "ชนิดการแก้ไข"
 #: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Edit&#8230;"
 msgstr "แก้ไข&#8230;"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:97
+msgid "Embedded By"
+msgstr "ฝังรวมโดย"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98
+msgid "Embeds"
+msgstr "ฝังรวม"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:99 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
@@ -2606,6 +2520,14 @@ msgstr "เติม"
 #: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Fixed"
 msgstr "ตรึงตำแหน่ง"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Flows From"
+msgstr "ไหลต่อมาจาก"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+msgid "Flows To"
+msgstr "ไหลต่อไปยัง"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Focus Change"
@@ -2719,25 +2641,91 @@ msgstr "บุ๋มลง"
 msgid "Inches"
 msgstr "นิ้ว"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:149
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in the UI hierarchy to that component"
+msgstr ""
+"ระบุหน้าต่างย่อยที่เชื่อมกับองค์ประกอบหนึ่ง แต่ไม่มีความเชื่อมโยงอะไรกันในโครงสร้าง UI "
+"นอกเหนือจากนั้น"
+
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:151
+msgid "Indicates an object controlled by one or more target objects"
+msgstr "ระบุว่าอ็อบเจกต์ถูกควบคุมโดยอ็อบเจกต์เป้าหมายตั้งแต่หนึ่งอ็อบเจกต์ขึ้นไป"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:152
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+"ระบุว่าอ็อบเจกต์เป็นเซลล์ในตารางโครงสร้างต้นไม้ "
+"ซึ่งถูกแสดงผลเพราะเซลล์ในคอลัมน์เดียวกันถูกขยาย โดยระบุถึงเซลล์ดังกล่าว"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:153
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr "ระบุว่าอ็อบเจกต์เป็นตัวควบคุมอ็อบเจกต์เป้าหมายตั้งแต่หนึ่งอ็อบเจกต์ขึ้นไป"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Indicates an object is a label for one or more target objects"
+msgstr "ระบุว่าอ็อบเจกต์เป็นป้ายสำหรับอ็อบเจกต์เป้าหมายตั้งแต่หนึ่งอ็อบเจกต์ขึ้นไป"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:155
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr "ระบุว่าอ็อบเจกต์เป็นสมาชิกของกลุ่มของอ็อบเจกต์เป้าหมายตั้งแต่หนึ่งอ็อบเจกต์ขึ้นไป"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr "ระบุว่าอ็อบเจกต์ถูกปิดป้ายโดยอ็อบเจกต์เป้าหมายตั้งแต่หนึ่งอ็อบเจกต์ขึ้นไป"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+msgid "Indicates that an object is a parent window of another object"
+msgstr "ระบุว่าอ็อบเจกต์เป็นหน้าต่างแม่ของอีกอ็อบเจ็กต์หนึ่ง"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158
+msgid "Indicates that an object is a popup for another object"
+msgstr "ระบุว่าอ็อบเจกต์เป็นหน้าต่างผุดขึ้นของอีกอ็อบเจกต์หนึ่ง"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
-msgstr "ระบุว่าออบเจกต์ให้คำบรรยายละเอียดแก่อีกออบเจกต์หนึ่ง ซึ่งละเอียดกว่า 'เป็นป้ายสำหรับ'"
+msgstr "ระบุว่าอ็อบเจกต์ให้คำบรรยายละเอียดแก่อีกอ็อบเจกต์หนึ่ง ซึ่งละเอียดกว่า 'เป็นป้ายสำหรับ'"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
-msgstr "ระบุว่ามีออบเจกต์อื่นให้คำบรรยายละเอียดแก่ออบเจกต์นี้ ซึ่งละเอียดกว่า 'เป็นป้ายสำหรับ'"
+msgstr "ระบุว่ามีอ็อบเจกต์อื่นให้คำบรรยายละเอียดแก่อ็อบเจกต์นี้ ซึ่งละเอียดกว่า 'เป็นป้ายสำหรับ'"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:161
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"ระบุว่าอ็อบเจกต์มีเนื้อหาที่ไหลต่อมาจาก AtkObject อื่นตามลำดับความหมาย (เช่น "
+"ในแบบการไหลของข้อความ)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
-"ระบุว่าออบเจกต์มีเนื้อหาที่ไหลต่อไปยัง AtkObject อื่นตามลำดับความหมาย (เช่น "
+"ระบุว่าอ็อบเจกต์มีเนื้อหาที่ไหลต่อไปยัง AtkObject อื่นตามลำดับความหมาย (เช่น "
 "ในแบบการไหลของข้อความ)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr ""
+"ระบุว่าอ็อบเจกต์ฝังรวมเนื้อหาของอีกอ็อบเจกต์หนึ่ง กล่าวคือ "
+"เนื้อหาของอ็อบเจกต์นี้ไหลล้อมรอบเนื้อหาของอีกอ็อบเจกต์หนึ่ง"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid "Info"
+msgstr "ข้อมูล"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Input Dialog"
@@ -2775,6 +2763,12 @@ msgstr "เกริ่น"
 msgid "Invalid"
 msgstr "ไม่ถูกต้อง"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visually "
+"embedded in another object"
+msgstr "ตรงข้ามกับ 'ฝังรวม' คือระบุว่าเนื้อหาของอ็อบเจกต์นี้ถูกฝังรวมแบบเห็นได้ในอีกอ็อบเจกต์หนึ่ง"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "Items"
 msgstr "รายการ"
@@ -2786,6 +2780,14 @@ msgstr "การกดปุ่มแป้นพิมพ์"
 #: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Key Release"
 msgstr "การปล่อยปุ่มแป้นพิมพ์"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Label For"
+msgstr "เป็นป้ายสำหรับ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Labelled By"
+msgstr "ปิดป้ายโดย"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Large Toolbar"
@@ -2830,6 +2832,10 @@ msgstr "รายการในรายการเลือก"
 #: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Maximum Width"
 msgstr "ความกว้างสูงสุด"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+msgid "Member Of"
+msgstr "สมาชิกของ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Menu Bar"
@@ -2876,6 +2882,10 @@ msgstr "ไม่ใช้"
 msgid "Node Child Of"
 msgstr "ลูกของโหนด"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:205 ../plugins/gnome/bonobo.xml.in.h:13
+msgid "None"
+msgstr "ไม่มี"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "North"
 msgstr "เหนือ"
@@ -2907,7 +2917,7 @@ msgstr "จำนวนหน้า"
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Object instance's name formatted for assistive technology access"
-msgstr "ชื่อชิ้นวัตถุ ในรูปแบบสำหรับใช้ในเทคโนโลยีสิ่งอำนวยความสะดวก"
+msgstr "ชื่อชิ้นอ็อบเจกต์ ในรูปแบบสำหรับใช้ในเทคโนโลยีสิ่งอำนวยความสะดวก"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Off"
@@ -2933,6 +2943,10 @@ msgstr "เปิด"
 msgid "Option Menu"
 msgstr "เมนูตัวเลือก"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:222 ../plugins/gnome/gnome.xml.in.h:43
+msgid "Other"
+msgstr "อื่นๆ"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "นูนขึ้น"
@@ -2940,6 +2954,10 @@ msgstr "นูนขึ้น"
 #: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Paned"
 msgstr "ช่องแบ่ง"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:226
+msgid "Parent Window Of"
+msgstr "หน้าต่างแม่ของ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Pixels"
@@ -2957,14 +2975,23 @@ msgstr "ตรวจการเลื่อนเมาส์เป็นคร
 msgid "Popup"
 msgstr "ผุดขึ้น"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+msgid "Popup For"
+msgstr "ผุดหน้าต่างสำหรับ"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Popup Menu"
 msgstr "เมนูผุดขึ้น"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/glade-gnome.c:649
+#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/glade-gnome.c:658
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Position"
 msgstr "ตำแหน่ง"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:235
+msgid "Press"
+msgstr "กด"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Progress"
@@ -3018,6 +3045,11 @@ msgstr "ช่องเลือกรายการล่าสุด"
 msgid "Recent Chooser Dialog"
 msgstr "กล่องโต้ตอบเลือกรายการล่าสุด"
 
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:250
+msgid "Release"
+msgstr "ปล่อย"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Remove Column"
 msgstr "ลบคอลัมน์"
@@ -3063,311 +3095,343 @@ msgid "Scale"
 msgstr "ปุ่มรางเลื่อน"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Scale Button"
+msgstr "ปุ่มควบคุมอัตราส่วน"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Scroll"
 msgstr "เลื่อนกรอบ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Scrolled Window"
 msgstr "หน้าต่างกรอบเลื่อน"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264 ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:265 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Select Folder"
 msgstr "เลือกโฟลเดอร์"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Separator Menu Item"
 msgstr "รายการเมนูเส้นแบ่ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "Separator Tool Item"
 msgstr "รายการเครื่องมือเส้นแบ่ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "กำหนดหน้าที่เปิด (สำหรับการแก้ไขเท่านั้น)"
 
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:270
+msgid "Set the description of the Activate atk action"
+msgstr "กำหนดคำบรรยายของการเรียกใช้ของ atk"
+
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:272
+msgid "Set the description of the Click atk action"
+msgstr "กำหนดคำบรรยายของการคลิกของ atk"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:274
+msgid "Set the description of the Press atk action"
+msgstr "กำหนดคำบรรยายของการกดของ atk"
+
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+msgid "Set the description of the Release atk action"
+msgstr "กำหนดคำบรรยายของการปล่อยของ atk"
+
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:277
+#: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "Set the text in the view's text buffer"
 msgstr "กำหนดข้อความในบัฟเฟอร์ของช่องแสดงข้อความ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Shrink"
 msgstr "หด"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:279 ../plugins/gnome/canvas.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:280 ../plugins/gnome/canvas.xml.in.h:24
 msgid "Single"
 msgstr "เดี่ยว"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:281
 msgid "Size"
 msgstr "ขนาด"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Small Toolbar"
 msgstr "แถบเครื่องมือขนาดเล็ก"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "South"
 msgstr "ใต้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "South East"
 msgstr "ตะวันออกเฉียงใต้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "South West"
 msgstr "ตะวันตกเฉียงใต้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:285
+#: ../plugins/gtk+/gtk+.xml.in.h:286
 msgid "Spin Button"
 msgstr "ปุ่มปรับเลข"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:286
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Splash Screen"
 msgstr "รูปไตเติล"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:287
+#: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Spline"
 msgstr "หมุดเส้นโค้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:288
+#: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "Spread"
 msgstr "กระจาย"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:289 ../plugins/gnome/gnome.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:290 ../plugins/gnome/gnome.xml.in.h:55
 msgid "Start"
 msgstr "ต้น"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:290
+#: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "Static"
 msgstr "ตายตัว"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:291
+#: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Status Bar"
 msgstr "แถบสถานะ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:293
+#: ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Stock Button"
 msgstr "ปุ่มสำเร็จรูป"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:295
+#: ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Stock Item"
 msgstr "รายการสำเร็จรูป"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:296
+#: ../plugins/gtk+/gtk+.xml.in.h:297
 msgid "Structure"
 msgstr "โครงสร้าง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:297
+#: ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Substructure"
 msgstr "โครงสร้างย่อย"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:299
+msgid "Subwindow Of"
+msgstr "หน้าต่างย่อยของ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Summary"
 msgstr "สรุป"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300
+#: ../plugins/gtk+/gtk+.xml.in.h:301
 msgid "Table"
 msgstr "ตาราง"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:302 ../plugins/gnome/gnome.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:303 ../plugins/gnome/gnome.xml.in.h:58
 msgid "Text"
 msgstr "ข้อความ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:303
+#: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Text Entry"
 msgstr "ช่องป้อนข้อความ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:304
+#: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "Text View"
 msgstr "ช่องแสดงข้อความ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:305
+#: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Text below icons"
 msgstr "ข้อความใต้ไอคอน"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:307
+#: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Text only"
 msgstr "ข้อความเท่านั้น"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "The items in this combo box"
 msgstr "รายการในกล่องคอมโบนี้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:309
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "The number of items in the box"
 msgstr "จำนวนรายการในกล่อง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:310
+#: ../plugins/gtk+/gtk+.xml.in.h:311
 msgid "The number of pages in the notebook"
 msgstr "จำนวนหน้าในสมุดบันทึก"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:311
+#: ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "The page position in the Assistant"
 msgstr "ตำแหน่งหน้าในเครื่องมือช่วย"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:312
+#: ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "The position of the menu item in the menu shell"
 msgstr "ตำแหน่งของรายการเมนูในโครงเมนู"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:313
+#: ../plugins/gtk+/gtk+.xml.in.h:314
 msgid "The position of the tool item in the toolbar"
 msgstr "ตำแหน่งของรายการเครื่องมือในแถบเครื่องมือ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:314
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr "หมายเลขคำตอบของปุ่มนี้ในกล่องโต้ตอบ (ไม่มีประโยชน์อะไรกับปุ่มที่ไม่ได้อยู่ใน GtkDialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:315
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "The stock item for this button"
 msgstr "รายการสำเร็จรูปสำหรับปุ่มนี้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:316
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid "The stock item for this image"
 msgstr "รายการสำเร็จรูปสำหรับภาพนี้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:317
+#: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "The text of the menu item"
 msgstr "ข้อความของรายการเมนู"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:318
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "The text to display"
 msgstr "ข้อความที่จะแสดง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:319
+#: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "Toggle Button"
 msgstr "ปุ่มสลับ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:320
+#: ../plugins/gtk+/gtk+.xml.in.h:321
 msgid "Toggle Tool Button"
 msgstr "ปุ่มเครื่องมือสลับ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:321
+#: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Tool Bar"
 msgstr "แถบเครื่องมือ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:322
+#: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "Tool Button"
 msgstr "ปุ่มเครื่องมือ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:323
+#: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Toolbar"
 msgstr "แถบเครื่องมือ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:324
+#: ../plugins/gtk+/gtk+.xml.in.h:325
 msgid "Tooltip"
 msgstr "คำแนะนำเครื่องมือ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:325 ../plugins/gnome/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:326 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "บน"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:326
+#: ../plugins/gtk+/gtk+.xml.in.h:327
 msgid "Top Left"
 msgstr "บนซ้าย"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
+#: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Top Level"
 msgstr "ระดับบนสุด"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Top Right"
 msgstr "บนขวา"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:330
 msgid "Top to Bottom"
 msgstr "บนลงล่าง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Toplevels"
 msgstr "ระดับบนสุด"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
+#: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Tree View"
 msgstr "ช่องข้อมูลแบบต้นไม้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332
+#: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Up"
 msgstr "ขึ้น"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:334
 msgid "Use Underline"
 msgstr "ใช้ตัวขีดเส้นใต้"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Utility"
 msgstr "อรรถประโยชน์"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335 ../plugins/gnome/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:336 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "แนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Vertical Box"
 msgstr "กล่องแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Vertical Button Box"
 msgstr "กล่องเรียงปุ่มแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "Vertical Panes"
 msgstr "ช่องแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Vertical Ruler"
 msgstr "ไม้บรรทัดแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Vertical Scale"
 msgstr "ปุ่มรางเลื่อนแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:341
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Vertical Scrollbar"
 msgstr "แถบเลื่อนแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "Vertical Separator"
 msgstr "เส้นแบ่งแนวตั้ง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:343
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Viewport"
 msgstr "ช่องมอง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Visibility Notify"
 msgstr "แจ้งการปรากฏ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345 ../plugins/gnome/gnome.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:346
+msgid "Volume Button"
+msgstr "ปุ่มควบคุมความดัง"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:347 ../plugins/gnome/gnome.xml.in.h:72
 msgid "Warning"
 msgstr "คำเตือน"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "West"
 msgstr "ตะวันตก"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Window"
 msgstr "หน้าต่าง"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Word"
 msgstr "คำ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid "Word Character"
 msgstr "คำและอักขระ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:353
 msgid "Yes, No"
 msgstr "ใช่, ไม่"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352
+#: ../plugins/gtk+/gtk+.xml.in.h:354
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -3393,52 +3457,52 @@ msgstr "กล่องโต้ตอบสั่งพิมพ์"
 msgid "Status Message."
 msgstr "ข้อความสถานะ"
 
-#: ../plugins/gnome/glade-gnome.c:650
+#: ../plugins/gnome/glade-gnome.c:659
 msgid "The position in the druid"
 msgstr "ตำแหน่งในเครื่องมือวิเศษ"
 
-#: ../plugins/gnome/glade-gnome.c:1002
+#: ../plugins/gnome/glade-gnome.c:1011
 msgid "Message box type"
 msgstr "ชนิดของกล่องข้อความ"
 
-#: ../plugins/gnome/glade-gnome.c:1003
+#: ../plugins/gnome/glade-gnome.c:1012
 msgid "The type of the message box"
 msgstr "ชนิดของกล่องข้อความ"
 
-#: ../plugins/gnome/glade-gnome.c:1211
+#: ../plugins/gnome/glade-gnome.c:1220
 msgid "This property is valid only in font information mode"
 msgstr "คุณสมบัตินี้ใช้ได้ในโหมดแสดงข้อมูลของแบบอักษรเท่านั้น"
 
 #. This is deprecated
-#: ../plugins/gnome/glade-gnome.c:1299 ../plugins/gnome/canvas.xml.in.h:22
+#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:22
 msgid "Selection Mode"
 msgstr "โหมดการเลือก"
 
-#: ../plugins/gnome/glade-gnome.c:1300
+#: ../plugins/gnome/glade-gnome.c:1309
 msgid "Choose the Selection Mode"
 msgstr "เลือกโหมดการเลือก"
 
-#: ../plugins/gnome/glade-gnome.c:1437
+#: ../plugins/gnome/glade-gnome.c:1446
 msgid "Placement"
 msgstr "ตำแหน่งวาง"
 
-#: ../plugins/gnome/glade-gnome.c:1438
+#: ../plugins/gnome/glade-gnome.c:1447
 msgid "Choose the BonoboDockPlacement type"
 msgstr "เลือกชนิดของ BonoboDocPlacement"
 
-#: ../plugins/gnome/glade-gnome.c:1466
+#: ../plugins/gnome/glade-gnome.c:1475
 msgid "Behavior"
 msgstr "พฤติกรรม"
 
-#: ../plugins/gnome/glade-gnome.c:1467
+#: ../plugins/gnome/glade-gnome.c:1476
 msgid "Choose the BonoboDockItemBehavior type"
 msgstr "เลือกชนิดของ BonoboDockItemBehavior"
 
-#: ../plugins/gnome/glade-gnome.c:1476
+#: ../plugins/gnome/glade-gnome.c:1485
 msgid "Pack Type"
 msgstr "ชนิดการบรรจุ"
 
-#: ../plugins/gnome/glade-gnome.c:1477
+#: ../plugins/gnome/glade-gnome.c:1486
 msgid "Choose the Pack Type"
 msgstr "เลือกชนิดการบรรจุ"
 
@@ -3801,14 +3865,63 @@ msgstr "โหมดการเลือก"
 msgid "The width of each icon"
 msgstr "ความกว้างของแต่ละไอคอน"
 
+#~ msgid "%s [%s] - Properties"
+#~ msgstr "%s [%s] - คุณสมบัติ"
+
+#~ msgid "Alphanumerical"
+#~ msgstr "อักษรและตัวเลข"
+
+#~ msgid "Extra"
+#~ msgstr "พิเศษ"
+
+#~ msgid "Keypad"
+#~ msgstr "แป้นตัวเลข"
+
+#~ msgid "Functions"
+#~ msgstr "ฟังก์ชัน"
+
+#~ msgid "Key"
+#~ msgstr "ปุ่ม"
+
+#~ msgid "Shift"
+#~ msgstr "Shift"
+
+#~ msgid "Control"
+#~ msgstr "Control"
+
+#~ msgid "Alt"
+#~ msgstr "Alt"
+
+#~ msgid "Class:"
+#~ msgstr "คลาส:"
+
+#~ msgid "Could not find glade file %s"
+#~ msgstr "ไม่พบแฟ้ม glade %s"
+
+#~ msgid "Errors parsing glade file %s"
+#~ msgstr "เกิดข้อผิดพลาดขณะแจงแฟ้ม glade %s"
+
+#~ msgid "Could not allocate memory for interface"
+#~ msgstr "ไม่สามารถจองหน่วยความจำสำหรับส่วนติดต่อ"
+
+#~ msgid "Child Node Of"
+#~ msgstr "โหนดลูกของ"
+
+#~ msgid ""
+#~ "Indicates that the object has content that flows logically to another "
+#~ "AtkObject in a sequential way (text-flow, for instance)."
+#~ msgstr ""
+#~ "ระบุว่าอ็อบเจกต์มีเนื้อหาที่ไหลต่อไปยัง AtkObject อื่นตามลำดับ (เช่น "
+#~ "ในแบบการไหลของข้อความ)"
+
+#~ msgid "A GladeWidgetInfo struct to base a new widget on"
+#~ msgstr "โครงสร้าง GladeWidgetInfo ที่จะใช้สร้างวิดเจ็ตใหม่"
+
 #~ msgid "Select Widgets"
 #~ msgstr "เลือกวิดเจ็ต"
 
 #~ msgid "<Type the signal's handler here>"
 #~ msgstr "<พิมพ์ชื่อฟังก์ชันจัดการสัญญาณที่นี่>"
-
-#~ msgid "<Type the object's name here>"
-#~ msgstr "<พิมพ์ชื่อวัตถุที่นี่>"
 
 #~ msgid "Unable to open the module %s (%s)."
 #~ msgstr "ไม่สามารถเปิดมอดูล %s (%s)"
