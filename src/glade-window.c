@@ -115,6 +115,7 @@ struct _GladeWindowPrivate
 	GtkWidget           *toolbar;              /* Actions are added to the toolbar */
 	gint                 actions_start;        /* start of action items */
 
+	GtkWidget           *center_pane;
 	/* paned windows that tools get docked into/out of */
 	GtkWidget           *left_pane;
 	GtkWidget           *right_pane;
@@ -131,7 +132,7 @@ static void recent_chooser_item_activated_cb (GtkRecentChooser *chooser,
 static void check_reload_project             (GladeWindow      *window,
 					      GladeProject     *project);
 
-static void save_windows_config              (GladeWindow      *window);
+static void glade_window_config_save (GladeWindow *window);
 
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
@@ -1505,7 +1506,7 @@ quit_cb (GtkAction *action, GladeWindow *window)
 		do_close (window, glade_design_view_get_from_project (project));
 	}
 
-	save_windows_config (window);
+	glade_window_config_save (window);
 
 	gtk_main_quit ();
 
@@ -2855,12 +2856,9 @@ key_file_set_window_position (GKeyFile     *config,
 }
 
 static void
-save_windows_config (GladeWindow *window)
+save_windows_config (GladeWindow *window, GKeyFile *config)
 {
 	guint i;
-	GKeyFile *config;
-
-	config = glade_app_get_config ();
 
 	for (i = 0; i < N_DOCKS; ++i)
 	{
@@ -2871,7 +2869,27 @@ save_windows_config (GladeWindow *window)
 
 	key_file_set_window_position (config, &window->priv->position, 
 				      "main", FALSE, FALSE);
+}
 
+static void 
+save_paned_position (GKeyFile *config, GtkWidget *paned, const gchar *name)
+{
+	g_key_file_set_integer (config, name, "position", 
+				gtk_paned_get_position (GTK_PANED (paned)));
+}
+
+static void
+glade_window_config_save (GladeWindow *window)
+{
+	GKeyFile *config = glade_app_get_config ();
+	
+	save_windows_config (window, config);
+	
+	/* Save main window paned positions */
+	save_paned_position (config, window->priv->center_pane, "center_pane");
+	save_paned_position (config, window->priv->left_pane, "left_pane");
+	save_paned_position (config, window->priv->right_pane, "right_pane");
+	
 	glade_app_config_save ();
 }
 
@@ -2917,14 +2935,11 @@ key_file_get_window_position (GKeyFile     *config,
 }
 
 static void
-glade_window_set_initial_size (GladeWindow *window)
+glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 {
-	GKeyFile *config;
 	GdkRectangle position = {
 		G_MININT, G_MININT, GLADE_WINDOW_DEFAULT_WIDTH, GLADE_WINDOW_DEFAULT_HEIGHT
 	};
-
-	config = glade_app_get_config ();
 
 	key_file_get_window_position (config, "main", &position, NULL);
 
@@ -2932,6 +2947,25 @@ glade_window_set_initial_size (GladeWindow *window)
 
 	if (position.x > G_MININT && position.y > G_MININT)
 		gtk_window_move (GTK_WINDOW (window), position.x, position.y);
+}
+
+static void
+load_paned_position (GKeyFile *config, GtkWidget *pane, const gchar *name)
+{
+	gtk_paned_set_position (GTK_PANED (pane),
+				g_key_file_get_integer (config, name, "position", NULL));
+}
+
+static void
+glade_window_config_load (GladeWindow *window)
+{
+	GKeyFile *config = glade_app_get_config ();
+	
+	glade_window_set_initial_size (window, config);
+	
+	load_paned_position (config, window->priv->center_pane, "center_pane");
+	load_paned_position (config, window->priv->left_pane, "left_pane");
+	load_paned_position (config, window->priv->right_pane, "right_pane");
 }
 
 static void
@@ -3001,8 +3035,6 @@ glade_window_init (GladeWindow *window)
 	
 	priv->app = glade_app_new ();
 
-	glade_window_set_initial_size (window);
-
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -3042,6 +3074,7 @@ glade_window_init (GladeWindow *window)
 	hpaned1 = gtk_hpaned_new ();
 	hpaned2 = gtk_hpaned_new ();
 	vpaned = gtk_vpaned_new ();
+	priv->center_pane = hpaned1;
 	priv->left_pane = hpaned2;
 	priv->right_pane = vpaned;
 	
@@ -3209,6 +3242,9 @@ glade_window_init (GladeWindow *window)
 	accel_group = gtk_ui_manager_get_accel_group(priv->ui);
 
 	gtk_window_add_accel_group (GTK_WINDOW (glade_app_get_clipboard_view ()), accel_group);
+	
+	/* Load widget state */
+	glade_window_config_load (window);
 }
 
 static void
