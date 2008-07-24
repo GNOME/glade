@@ -33,7 +33,7 @@
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 
-typedef void   (*GladeCatalogInitFunc) (void);
+typedef void   (*GladeCatalogInitFunc) (const gchar *name);
 
 struct _GladeCatalog
 {
@@ -535,7 +535,7 @@ glade_catalog_load_all (void)
 	{
 		catalog = l->data;
 		if (catalog->init_function)
-			catalog->init_function ();
+			catalog->init_function (catalog->name);
 	}
 	
 	for (l = catalogs; l; l = l->next)

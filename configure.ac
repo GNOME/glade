@@ -145,6 +145,33 @@ fi
 
 AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
 
+dnl ================================================================
+dnl Python for optional python dev libs
+dnl ================================================================
+AC_ARG_ENABLE(python,
+    AS_HELP_STRING([--disable-python], [disable python catalog]),
+    check_python=$enableval, check_python=yes)
+
+if test x"$check_python" = x"yes"; then
+  PYGTK_REQUIRED_MAJOR=2
+  PYGTK_REQUIRED_MINOR=10
+  PYGTK_REQUIRED_MICRO=0
+  AM_CHECK_PYTHON_HEADERS(, [AC_MSG_ERROR(could not find Python headers)])
+  AM_CHECK_PYTHON_LIBS(, [AC_MSG_ERROR(could not find Python lib)])
+  PKG_CHECK_MODULES(PYGTK, [pygtk-2.0 >= 2.10.0], [have_python=yes],[have_python=no])
+
+  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MAJOR, $PYGTK_REQUIRED_MAJOR, Pygtk mayor version required)
+  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MINOR, $PYGTK_REQUIRED_MINOR, Pygtk minor version required)
+  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MICRO, $PYGTK_REQUIRED_MICRO, Pygtk micro version required)
+
+  AC_SUBST(PYGTK_LIBS)
+  AC_SUBST(PYGTK_CFLAGS)
+else
+  have_python=no
+fi
+
+AM_CONDITIONAL(BUILD_PYTHON, test x"$have_python" = "xyes")
+
 # ==================================================================
 # Glade User Manual (requires gnome-doc-utils)
 # ==================================================================
@@ -218,6 +245,7 @@ plugins/gnome/Makefile
 plugins/gnome/icons/Makefile
 plugins/gnome/icons/16x16/Makefile
 plugins/gnome/icons/22x22/Makefile
+plugins/python/Makefile
 po/Makefile.in
 doc/Makefile
 doc/version.xml
@@ -234,4 +262,5 @@ Configuration:
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	GNOME UI Widgets:	 ${have_gnome}
+	PYTHON Widgets support:	 ${have_python}
 "

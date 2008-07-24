@@ -41,7 +41,7 @@ empty (GObject *container, GladeCreateReason reason)
 
 /* Catalog init function */
 void
-glade_gnomeui_init (void)
+glade_gnomeui_init (const gchar *name)
 {
 	gchar *argv[2] = {"glade-3", NULL};
 	GtkStockItem items [] = {
