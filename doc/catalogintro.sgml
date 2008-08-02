@@ -194,10 +194,10 @@ To validate a file, do this:
 To install a widget plugin, the catalog XML file should be copied into
 the catalog directory, which can be retrieved as:
       <programlisting>pkg-config --variable=catalogdir gladeui-1.0</programlisting>
-The icons for palette etc go into the pixmap directory:
-      <programlisting>pkg-config --variable=pixmapdir gladeui-1.0</programlisting>
 The plugin library should be installed into the modules directory:
       <programlisting>pkg-config --variable=moduledir gladeui-1.0</programlisting>
+Widget icons if provided (recommended) need to be installed into the icon theme,
+this is described in the next chapter.
     </para>
     <para>
 You can also load your catalog from a user directory by specifying
