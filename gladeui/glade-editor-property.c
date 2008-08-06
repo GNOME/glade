@@ -93,8 +93,6 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
-	g_signal_handler_block (G_OBJECT (eprop->property), eprop->changed_id);
-
 	if (eprop->use_command == FALSE)
 		glade_property_set_value (eprop->property, value);
 	else
@@ -107,6 +105,15 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 					  eprop->property->value, value) != 0)
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
 
+}
+
+void glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
+					       GValue              *value)
+{
+	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
+
+	g_signal_handler_block (G_OBJECT (eprop->property), eprop->changed_id);
+	glade_editor_property_commit (eprop, value);
 	g_signal_handler_unblock (G_OBJECT (eprop->property), eprop->changed_id);
 }
 
@@ -734,7 +741,7 @@ glade_eprop_numeric_changed (GtkWidget *spin,
 		g_warning ("Unsupported type %s\n",
 			   g_type_name(G_PARAM_SPEC_TYPE (eprop->klass->pspec)));
 
-	glade_editor_property_commit (eprop, &val);
+	glade_editor_property_commit_no_callback (eprop, &val);
 	g_value_unset (&val);
 }
 
@@ -825,7 +832,7 @@ glade_eprop_enum_changed (GtkWidget           *menu_item,
 	g_value_init (&val, eprop->klass->pspec->value_type);
 	g_value_set_enum (&val, ival);
 
-	glade_editor_property_commit (eprop, &val);
+	glade_editor_property_commit_no_callback (eprop, &val);
 	g_value_unset (&val);
 }
 
@@ -1059,7 +1066,7 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
 		g_value_init (&val, G_VALUE_TYPE (eprop->property->value));
 		g_value_set_flags (&val, new_value);
 
-		glade_editor_property_commit (eprop, &val);
+		glade_editor_property_commit_no_callback (eprop, &val);
 		g_value_unset (&val);
 	}
 
@@ -1278,7 +1285,7 @@ glade_eprop_color_changed (GtkWidget *button,
 	g_value_init (&value, GDK_TYPE_COLOR);
 	g_value_set_boxed (&value, &color);
 
-	glade_editor_property_commit (eprop, &value);
+	glade_editor_property_commit_no_callback (eprop, &value);
 	g_value_unset (&value);
 }
 
@@ -1619,7 +1626,7 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 			g_value_set_string (val, text);
 	}
 
-	glade_editor_property_commit (eprop, val);
+	glade_editor_property_commit_no_callback (eprop, val);
 	g_value_unset (val);
 	g_free (val);
 }
@@ -1955,7 +1962,7 @@ glade_eprop_bool_changed (GtkWidget           *button,
 	g_value_init (&val, G_TYPE_BOOLEAN);
 	g_value_set_boolean (&val, state);
 
-	glade_editor_property_commit (eprop, &val);
+	glade_editor_property_commit_no_callback (eprop, &val);
 
 	g_value_unset (&val);
 }
@@ -2037,7 +2044,7 @@ glade_eprop_unichar_changed (GtkWidget           *entry,
 		g_value_init (&val, G_TYPE_UINT);
 		g_value_set_uint (&val, unich);
 
-		glade_editor_property_commit (eprop, &val);
+		glade_editor_property_commit_no_callback (eprop, &val);
 
 		g_value_unset (&val);
 	}
@@ -3094,7 +3101,7 @@ glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop,
 	g_value_init (&value, GTK_TYPE_ADJUSTMENT);
 	g_value_set_object (&value, G_OBJECT (adjustment));
 
-	glade_editor_property_commit (eprop, &value);
+	glade_editor_property_commit_no_callback (eprop, &value);
 
 	g_value_unset (&value);
 }

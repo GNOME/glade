@@ -154,6 +154,9 @@ void                 glade_editor_property_hide_info      (GladeEditorProperty *
 void                 glade_editor_property_commit         (GladeEditorProperty *eprop,
 							   GValue              *value);
 
+void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
+							       GValue              *value);
+
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
