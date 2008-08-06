@@ -7589,6 +7589,9 @@ glade_gtk_assistant_parse_finished (GladeProject *project,
 	
 	if (pages)
 	{
+		/* also sets pages "complete" and thus allows navigation under glade */
+		glade_gtk_assistant_update_page_type (assistant);
+		
 		gtk_assistant_set_current_page (assistant, 0);
 		glade_widget_property_set (glade_widget_get_from_gobject (object),
 					   "size", pages);
