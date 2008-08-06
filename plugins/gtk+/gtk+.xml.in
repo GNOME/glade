@@ -580,9 +580,17 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkLabel" generic-name="label" _title="Label">
       <post-create-function>glade_gtk_label_post_create</post-create-function>
+      <create-editor-property-function>glade_gtk_label_create_eprop</create-editor-property-function>
       <set-property-function>glade_gtk_label_set_property</set-property-function>
+      <read-widget-function>glade_gtk_label_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_label_write_widget</write-widget-function>
 
       <properties>
+	<property id="glade-attributes" _name="Attributes" save="False">
+	  <spec>glade_gtk_attributes_spec</spec>
+	  <_tooltip>The pango attributes for this label</_tooltip>
+	</property>
+
         <property id="selectable" ignore="True"/>
 	<property id="pattern" default=""/>
 	<property id="max-width-chars" _name="Maximum Width"/>

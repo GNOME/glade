@@ -401,13 +401,13 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	GdkColor *color;
 	GList    *objects;
 
-	if (G_IS_PARAM_SPEC_ENUM(property_class->pspec))
+	if (G_IS_PARAM_SPEC_ENUM (property_class->pspec))
 	{
 		gint eval = g_value_get_enum (value);
 		string = glade_property_class_make_string_from_enum
 			(property_class->pspec->value_type, eval);
 	}
-	else if (G_IS_PARAM_SPEC_FLAGS(property_class->pspec))
+	else if (G_IS_PARAM_SPEC_FLAGS (property_class->pspec))
 	{
 		guint flags = g_value_get_flags (value);
 		string = glade_property_class_make_string_from_flags
@@ -432,7 +432,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 			g_string_free (gstring, FALSE);
 		}
 	}
-	else if (G_IS_PARAM_SPEC_BOXED(property_class->pspec))
+	else if (G_IS_PARAM_SPEC_BOXED (property_class->pspec))
 	{
 		if (property_class->pspec->value_type == GDK_TYPE_COLOR)
 		{
@@ -507,7 +507,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	}
 	else
 		g_critical ("Unsupported pspec type %s (value -> string)",
-			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
+			    g_type_name (G_PARAM_SPEC_TYPE (property_class->pspec)));
 
 	return string;
 }
@@ -889,10 +889,14 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass  *klass,
 		g_value_set_boolean (value, va_arg (vl, gboolean));
 	else if (G_IS_PARAM_SPEC_OBJECT(klass->pspec))
 		g_value_set_object (value, va_arg (vl, gpointer));
+	else if (G_VALUE_HOLDS_BOXED (value))
+		g_value_set_boxed (value, va_arg (vl, gpointer));
+#if THIS_STUFF_SHOULD_BE_COVERED_BY_HOLDS_BOXED
 	else if (G_IS_PARAM_SPEC_BOXED(klass->pspec))
 		g_value_set_boxed (value, va_arg (vl, gpointer));
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		g_value_set_boxed (value, va_arg (vl, gpointer));
+#endif
 	else
 		g_critical ("Unsupported pspec type %s (vl -> string)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));
@@ -978,10 +982,14 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass  *klass,
 		*(gboolean *)(va_arg (vl, gboolean *)) = g_value_get_boolean (value);
 	else if (G_IS_PARAM_SPEC_OBJECT(klass->pspec))
 		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_object (value);
+	else if (G_VALUE_HOLDS_BOXED (value))
+		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
+#if THIS_STUFF_SHOULD_BE_COVERED_BY_HOLDS_BOXED
 	else if (G_IS_PARAM_SPEC_BOXED(klass->pspec))
 		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS(klass->pspec))
 		*(gpointer *)(va_arg (vl, gpointer *)) = g_value_get_boxed (value);
+#endif
 	else
 		g_critical ("Unsupported pspec type %s (string -> vl)",
 			    g_type_name(G_PARAM_SPEC_TYPE (klass->pspec)));

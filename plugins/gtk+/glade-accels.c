@@ -106,6 +106,7 @@ param_accel_set_default (GParamSpec *pspec,
 {
 	if (value->data[0].v_pointer != NULL)
 	{
+		/* XXX FIXME ?? */
 		g_free (value->data[0].v_pointer);
 	}
 	value->data[0].v_pointer = NULL;

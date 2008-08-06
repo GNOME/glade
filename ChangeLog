@@ -1,3 +1,13 @@
+2008-08-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-attributes.[ch]: 
+	  New internal pspec type for attributes and new editor widget for them.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: 
+	  Load/Save/Edit pango attributes on GtkLabel
+
+	* gladeui/glade-utils.[ch]: Added enum value <--> string converters.
+
 2008-08-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* doc/widgetclasses.sgml, doc/catalogintro.sgml: Ammended docs regarding

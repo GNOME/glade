@@ -156,9 +156,19 @@ if test x"$check_python" = x"yes"; then
   PYGTK_REQUIRED_MAJOR=2
   PYGTK_REQUIRED_MINOR=10
   PYGTK_REQUIRED_MICRO=0
-  AM_CHECK_PYTHON_HEADERS(, [AC_MSG_ERROR(could not find Python headers)])
-  AM_CHECK_PYTHON_LIBS(, [AC_MSG_ERROR(could not find Python lib)])
   PKG_CHECK_MODULES(PYGTK, [pygtk-2.0 >= 2.10.0], [have_python=yes],[have_python=no])
+
+  AM_CHECK_PYTHON_HEADERS(, [have_python_headers=no])
+  AM_CHECK_PYTHON_LIBS(, [have_python_lib=no])
+
+  if test x"$have_python_headers" = x"no"; then
+    have_python=no
+  fi
+
+  if test x"$have_python_lib" = x"no"; then
+    have_python=no
+  fi
+
 
   AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MAJOR, $PYGTK_REQUIRED_MAJOR, Pygtk mayor version required)
   AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MINOR, $PYGTK_REQUIRED_MINOR, Pygtk minor version required)

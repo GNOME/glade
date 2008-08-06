@@ -1937,3 +1937,41 @@ glade_util_icon_name_to_filename (const gchar *value)
 	
 	return g_strdup (filename);
 }
+
+gint
+glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
+{
+	GEnumClass *enum_class;
+	GEnumValue *enum_value;
+	gint        value = 0;
+
+	enum_class = g_type_class_ref (enum_type);
+	if ((enum_value = g_enum_get_value_by_nick (enum_class, strval)) != NULL)
+		value = enum_value->value;
+	else
+		g_critical ("Couldnt find enum value for %s, type %s", 
+			    strval, g_type_name (enum_type));
+	
+	g_type_class_unref (enum_class);
+	
+	return value;
+}
+
+gchar *
+glade_utils_enum_string_from_value (GType enum_type, gint value)
+{
+	GEnumClass *enum_class;
+	GEnumValue *enum_value;
+	gchar      *ret = NULL;
+
+	enum_class = g_type_class_ref (enum_type);
+	if ((enum_value = g_enum_get_value (enum_class, value)) != NULL)
+		ret = g_strdup (enum_value->value_nick);
+	else
+		g_critical ("Couldnt find enum value for %d, type %s", 
+			    value, g_type_name (enum_type));
+	
+	g_type_class_unref (enum_class);
+	
+	return ret;
+}
