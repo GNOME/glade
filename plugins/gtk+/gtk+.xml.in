@@ -765,7 +765,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkCheckButton" generic-name="checkbutton" _title="Check Button">
       <properties>
       	<property id="label" default="checkbutton"/>
-	<property id="draw-indicator" default="True"/>
+	<property id="draw-indicator" default="True" save-always="True"/>
       </properties>
     </glade-widget-class>
 
@@ -795,7 +795,6 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_radio_button_set_property</set-property-function>
       <properties>
       	<property id="label" default="radiobutton"/>
-	<property id="draw-indicator" default="True"/>
       </properties>
     </glade-widget-class>
 
