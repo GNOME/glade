@@ -1557,7 +1557,9 @@ glade_project_verify_signal (GladeWidget  *widget,
 	signal_class = 
 		glade_widget_adaptor_get_signal_class (widget->adaptor,
 						       signal->name);
-	g_assert (signal_class);
+	//* Cannot verify unknown signal */
+	if (!signal_class)
+		return;
 	g_assert (signal_class->adaptor);
 	
 	g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
