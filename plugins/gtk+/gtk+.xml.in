@@ -1169,7 +1169,9 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkFrame" generic-name="frame" _title="Frame">
       <post-create-function>glade_gtk_frame_post_create</post-create-function>
       <add-child-function>glade_gtk_frame_add_child</add-child-function>
+      <remove-child-function>glade_gtk_frame_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_frame_replace_child</replace-child-function>
+      <write-child-function>glade_gtk_frame_write_child</write-child-function>
       <special-child-type>type</special-child-type>
 
       <properties>
@@ -1350,6 +1352,7 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_expander_add_child</add-child-function>
       <remove-child-function>glade_gtk_expander_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_expander_replace_child</replace-child-function>
+      <write-child-function>glade_gtk_expander_write_child</write-child-function>
       <special-child-type>type</special-child-type>
 
       <properties>

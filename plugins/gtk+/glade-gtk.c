@@ -31,6 +31,7 @@
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
+#include <gladeui/glade-xml-utils.h>
 
 
 #include <gtk/gtk.h>
@@ -3157,8 +3158,16 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 
 	special_child_type = g_object_get_data (child, "special-child-type");
 
-	if (special_child_type &&
-	    !strcmp (special_child_type, "label_item"))
+	if (special_child_type && !strcmp (special_child_type, "label"))
+	{
+		g_object_set_data (child,
+				   "special-child-type",
+				   "label_item");
+		gtk_frame_set_label_widget (GTK_FRAME (object),
+					    GTK_WIDGET (child));
+	}
+	else if (special_child_type &&
+		 !strcmp (special_child_type, "label_item"))
 	{
 		gtk_frame_set_label_widget (GTK_FRAME (object),
 					    GTK_WIDGET (child));
@@ -3168,6 +3177,78 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 		gtk_container_add (GTK_CONTAINER (object),
 				   GTK_WIDGET (child));
 	}
+}
+
+void
+glade_gtk_frame_remove_child (GladeWidgetAdaptor *adaptor,
+			      GObject            *object, 
+			      GObject            *child)
+{
+	gchar *special_child_type;
+
+	special_child_type = g_object_get_data (child, "special-child-type");
+	if (special_child_type &&
+	    !strcmp (special_child_type, "label_item"))
+	{
+		gtk_frame_set_label_widget (GTK_FRAME (object),
+					    glade_placeholder_new ());
+	}
+	else
+	{
+		gtk_container_remove (GTK_CONTAINER (object),
+				      GTK_WIDGET (child));
+		gtk_container_add (GTK_CONTAINER (object),
+				   glade_placeholder_new ());
+	}
+}
+
+static gboolean
+write_special_child_label_item (GladeWidgetAdaptor *adaptor,
+				GladeWidget        *widget,
+				GladeXmlContext    *context,
+				GladeXmlNode       *node,
+				GladeWriteWidgetFunc write_func)
+{
+	gchar *special_child_type = NULL;
+	GObject *child;
+
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+	{
+		child = widget->object;
+		if (child)
+			special_child_type = g_object_get_data (child, "special-child-type");
+	}
+
+	if (special_child_type && !strcmp (special_child_type, "label_item"))
+	{
+		g_object_set_data (child,
+				   "special-child-type",
+				   "label");
+		write_func (adaptor, widget, context, node);
+		g_object_set_data (child,
+			           "special-child-type",
+				   "label_item");
+		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+void
+glade_gtk_frame_write_child (GladeWidgetAdaptor *adaptor,
+			     GladeWidget        *widget,
+			     GladeXmlContext    *context,
+			     GladeXmlNode       *node)
+{
+
+	if (!write_special_child_label_item (adaptor, widget, context, node,
+					     GWA_GET_CLASS(GTK_TYPE_CONTAINER)->write_child))
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->write_child (adaptor,
+							   widget,
+							   context,
+							   node);
 }
 
 /* ----------------------------- GtkNotebook ------------------------------ */
@@ -4234,7 +4315,16 @@ glade_gtk_expander_add_child (GladeWidgetAdaptor *adaptor,
 	special_child_type = g_object_get_data (child, "special-child-type");
 	
 	if (special_child_type &&
-	    !strcmp (special_child_type, "label_item"))
+	    !strcmp (special_child_type, "label"))
+	{
+		g_object_set_data (child,
+				   "special-child-type",
+				   "label_item");
+		gtk_expander_set_label_widget (GTK_EXPANDER (object),
+					       GTK_WIDGET (child));
+	}
+	else if (special_child_type &&
+		 !strcmp (special_child_type, "label_item"))
 	{
 		gtk_expander_set_label_widget (GTK_EXPANDER (object),
 					       GTK_WIDGET (child));
@@ -4266,6 +4356,24 @@ glade_gtk_expander_remove_child (GladeWidgetAdaptor *adaptor,
 				   glade_placeholder_new ());
 	}
 }
+
+void
+glade_gtk_expander_write_child (GladeWidgetAdaptor *adaptor,
+			        GladeWidget        *widget,
+			        GladeXmlContext    *context,
+			        GladeXmlNode       *node)
+{
+
+	if (!write_special_child_label_item (adaptor, widget, context, node,
+					     GWA_GET_CLASS(GTK_TYPE_CONTAINER)->write_child))
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->write_child (adaptor,
+							   widget,
+							   context,
+							   node);
+}
+
 
 /* -------------------------------- GtkEntry -------------------------------- */
 static void

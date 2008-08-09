@@ -3560,7 +3560,9 @@ glade_widget_write_child (GladeWidget     *widget,
 			  GladeXmlContext *context,
 			  GladeXmlNode    *node)
 {
-	glade_widget_adaptor_write_child (widget->adaptor,
+	g_return_if_fail (widget->parent);
+
+	glade_widget_adaptor_write_child (widget->parent->adaptor,
 					  widget, context, node);
 }
 
