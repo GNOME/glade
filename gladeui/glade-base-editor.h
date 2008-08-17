@@ -23,7 +23,6 @@
 #define __GLADE_BASE_EDITOR_H__
 
 #include <gladeui/glade-widget.h>
-#include <gladeui/glade-marshallers.h>
 
 #include <gtk/gtk.h>
 

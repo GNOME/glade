@@ -30,6 +30,7 @@
  */
 
 #include "glade.h"
+#include "glade-marshallers.h"
 #include "glade-editor-property.h"
 #include "glade-base-editor.h"
 #include "glade-accumulators.h"
