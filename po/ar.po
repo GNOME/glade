@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 02:13+0100\n"
+"POT-Creation-Date: 2008-08-18 15:02+0100\n"
 "PO-Revision-Date: 2007-12-23 13:46+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team:  <doc@arabeyes.org>\n"
@@ -239,20 +239,20 @@ msgid "A user interface designer for GTK+ and GNOME."
 msgstr "انشئ او افتح واجهات مستخدم لتطبيقات جي تي كاي+ (‎GTK+) و جنوم"
 
 #. File
-#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:5950
-#: ../plugins/gtk+/glade-gtk.c:6273
+#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:6062
+#: ../plugins/gtk+/glade-gtk.c:6385
 msgid "_File"
 msgstr "_ملف"
 
 #. Edit
-#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:5953
-#: ../plugins/gtk+/glade-gtk.c:6283
+#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:6065
+#: ../plugins/gtk+/glade-gtk.c:6395
 msgid "_Edit"
 msgstr "_حرّر"
 
 #. View
-#: ../src/glade-window.c:2165 ../plugins/gtk+/glade-gtk.c:5956
-#: ../plugins/gtk+/glade-gtk.c:6291
+#: ../src/glade-window.c:2165 ../plugins/gtk+/glade-gtk.c:6068
+#: ../plugins/gtk+/glade-gtk.c:6403
 msgid "_View"
 msgstr "إ_عرض"
 
@@ -261,8 +261,8 @@ msgid "_Projects"
 msgstr "م_شاريع"
 
 #. Help
-#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:5968
-#: ../plugins/gtk+/glade-gtk.c:6294
+#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:6080
+#: ../plugins/gtk+/glade-gtk.c:6406
 msgid "_Help"
 msgstr "م_ساعدة"
 
@@ -421,7 +421,7 @@ msgstr "أرس محرر"
 msgid "Dock the editor into the main window"
 msgstr "أرس المحرر في النافذة الرئيسية"
 
-#: ../src/glade-window.c:2277 ../plugins/gtk+/gtk+.xml.in.h:307
+#: ../src/glade-window.c:2277 ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Text beside icons"
 msgstr "نص بجانب الأيقونة"
 
@@ -639,7 +639,7 @@ msgstr "عدد غير كاف للفراغات في الحاوية"
 msgid "You cannot delete a widget internal to a composite widget."
 msgstr "لا يمكنك حذف قطعة داخلية في قطعة مركّبة."
 
-#: ../gladeui/glade-builtins.c:256 ../plugins/gtk+/gtk+.xml.in.h:293
+#: ../gladeui/glade-builtins.c:256 ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Stock"
 msgstr "مخزون"
 
@@ -647,7 +647,7 @@ msgstr "مخزون"
 msgid "A builtin stock item"
 msgstr "عنصر مخزون"
 
-#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:295
+#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Stock Image"
 msgstr "صورة مخزنة"
 
@@ -727,45 +727,45 @@ msgstr "منطقي"
 msgid "A boolean value"
 msgstr "قيمة منطقية"
 
-#: ../gladeui/glade-base-editor.c:487
+#: ../gladeui/glade-base-editor.c:488
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "تحديد نوع الجسم على %s من %s"
 
-#: ../gladeui/glade-base-editor.c:652
+#: ../gladeui/glade-base-editor.c:653
 #, c-format
 msgid "Add a %s to %s"
 msgstr "اضف %s إلى %s"
 
-#: ../gladeui/glade-base-editor.c:729
+#: ../gladeui/glade-base-editor.c:730
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "حذف الابن %s من %s"
 
-#: ../gladeui/glade-base-editor.c:852
+#: ../gladeui/glade-base-editor.c:853
 #, c-format
 msgid "Reorder %s's children"
 msgstr "اعادة ترتيب ابناء %s"
 
-#: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../gladeui/glade-base-editor.c:1438 ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Label"
 msgstr "تسمية"
 
-#: ../gladeui/glade-base-editor.c:1450 ../gladeui/glade-widget-adaptor.c:1206
+#: ../gladeui/glade-base-editor.c:1451 ../gladeui/glade-widget-adaptor.c:1206
 msgid "Type"
 msgstr "نوع"
 
 #. Name
-#: ../gladeui/glade-base-editor.c:1623
+#: ../gladeui/glade-base-editor.c:1624
 msgid "Name :"
 msgstr "اسم :"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:1633
+#: ../gladeui/glade-base-editor.c:1634
 msgid "Type :"
 msgstr "نوع :"
 
-#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Widget"
 msgstr "قطعة"
 
@@ -888,149 +888,149 @@ msgstr "ضبط معلومات i18n"
 msgid "Unable to load image (%s)"
 msgstr "لا يمكن تحميل صورة (%s)"
 
-#: ../gladeui/glade-editor-property.c:271
+#: ../gladeui/glade-editor-property.c:278
 msgid "View GTK+ documentation for this property"
 msgstr "عرض توثيق جي تي كاي+ لهذه الخاصية"
 
-#: ../gladeui/glade-editor-property.c:594
+#: ../gladeui/glade-editor-property.c:601
 msgid "Property Class"
 msgstr "صنف خاصية"
 
-#: ../gladeui/glade-editor-property.c:595
+#: ../gladeui/glade-editor-property.c:602
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "GladePropertyClass ل GladeEditorProperty المنشأة"
 
-#: ../gladeui/glade-editor-property.c:601
+#: ../gladeui/glade-editor-property.c:608
 msgid "Use Command"
 msgstr "استعمل امرا"
 
-#: ../gladeui/glade-editor-property.c:602
+#: ../gladeui/glade-editor-property.c:609
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "اذا يتم استعمال اوامر API"
 
-#: ../gladeui/glade-editor-property.c:608
+#: ../gladeui/glade-editor-property.c:615
 msgid "Show Info"
 msgstr "اعرض معلومات"
 
-#: ../gladeui/glade-editor-property.c:609
+#: ../gladeui/glade-editor-property.c:616
 msgid "Whether we should show an informational button"
 msgstr "في ما إذا يتم عرض زر معلوماتي"
 
-#: ../gladeui/glade-editor-property.c:1132
+#: ../gladeui/glade-editor-property.c:1139
 msgid "Select Fields"
 msgstr "اختر الحقول"
 
-#: ../gladeui/glade-editor-property.c:1154
+#: ../gladeui/glade-editor-property.c:1161
 msgid "_Select individual fields:"
 msgstr "ا_ختر حقولا فردية:"
 
-#: ../gladeui/glade-editor-property.c:1677
+#: ../gladeui/glade-editor-property.c:1684
 msgid "Edit Text"
 msgstr "تحرير النص"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1706
+#: ../gladeui/glade-editor-property.c:1713
 msgid "_Text:"
 msgstr "نّ_ص:"
 
-#: ../gladeui/glade-editor-property.c:1742
+#: ../gladeui/glade-editor-property.c:1749
 msgid "T_ranslatable"
 msgstr "_قابل للترجمة"
 
-#: ../gladeui/glade-editor-property.c:1755
+#: ../gladeui/glade-editor-property.c:1762
 msgid "_Has context prefix"
 msgstr "_له بادئة سياقية"
 
 #. Comments.
-#: ../gladeui/glade-editor-property.c:1773
+#: ../gladeui/glade-editor-property.c:1780
 msgid "Co_mments for translators:"
 msgstr "_ملاحظة للمترجمين:"
 
-#: ../gladeui/glade-editor-property.c:1937
-#: ../gladeui/glade-editor-property.c:1953
+#: ../gladeui/glade-editor-property.c:1944
+#: ../gladeui/glade-editor-property.c:1960
 msgid "Yes"
 msgstr "نعم"
 
-#: ../gladeui/glade-editor-property.c:1937
-#: ../gladeui/glade-editor-property.c:1953
-#: ../gladeui/glade-editor-property.c:1968
+#: ../gladeui/glade-editor-property.c:1944
+#: ../gladeui/glade-editor-property.c:1960
+#: ../gladeui/glade-editor-property.c:1975
 msgid "No"
 msgstr "لا"
 
-#: ../gladeui/glade-editor-property.c:2561 ../gladeui/glade-widget.c:989
+#: ../gladeui/glade-editor-property.c:2568 ../gladeui/glade-widget.c:989
 #: ../gladeui/glade-widget-adaptor.c:1198
 msgid "Name"
 msgstr "اسم"
 
-#: ../gladeui/glade-editor-property.c:2573 ../gladeui/glade-property.c:509
+#: ../gladeui/glade-editor-property.c:2580 ../gladeui/glade-property.c:509
 msgid "Class"
 msgstr "صنف"
 
-#: ../gladeui/glade-editor-property.c:2587
+#: ../gladeui/glade-editor-property.c:2594
 #, c-format
 msgid "Choose %s implementors"
 msgstr "اختر %s مطبّقا"
 
-#: ../gladeui/glade-editor-property.c:2587
+#: ../gladeui/glade-editor-property.c:2594
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "اختر %s في هذا المشروع"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2652
+#: ../gladeui/glade-editor-property.c:2659
 msgid "O_bjects:"
 msgstr "أج_سام"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2865
+#: ../gladeui/glade-editor-property.c:2872
 msgid "Objects:"
 msgstr "أجسام:"
 
-#: ../gladeui/glade-editor-property.c:3177
+#: ../gladeui/glade-editor-property.c:3184
 msgid "Value:"
 msgstr "القيمة:"
 
-#: ../gladeui/glade-editor-property.c:3178
+#: ../gladeui/glade-editor-property.c:3185
 msgid "The current value"
 msgstr "القيمة الحالية"
 
-#: ../gladeui/glade-editor-property.c:3180
+#: ../gladeui/glade-editor-property.c:3187
 msgid "Lower:"
 msgstr "أدنى:"
 
-#: ../gladeui/glade-editor-property.c:3181
+#: ../gladeui/glade-editor-property.c:3188
 msgid "The minimum value"
 msgstr "القيمة الدنيا"
 
-#: ../gladeui/glade-editor-property.c:3183
+#: ../gladeui/glade-editor-property.c:3190
 msgid "Upper:"
 msgstr "أعلى:"
 
-#: ../gladeui/glade-editor-property.c:3184
+#: ../gladeui/glade-editor-property.c:3191
 msgid "The maximum value"
 msgstr "القيمة القصوى"
 
-#: ../gladeui/glade-editor-property.c:3186
+#: ../gladeui/glade-editor-property.c:3193
 msgid "Step inc:"
 msgstr "درجة الزيادة:"
 
-#: ../gladeui/glade-editor-property.c:3187
+#: ../gladeui/glade-editor-property.c:3194
 msgid "The increment to use to make minor changes to the value"
 msgstr "الزيادة المستخدمة لعمل تغييرات صغيرة للقيمة"
 
-#: ../gladeui/glade-editor-property.c:3189
+#: ../gladeui/glade-editor-property.c:3196
 msgid "Page inc:"
 msgstr "درجة الزيادة بالصفحة:"
 
-#: ../gladeui/glade-editor-property.c:3190
+#: ../gladeui/glade-editor-property.c:3197
 msgid "The increment to use to make major changes to the value"
 msgstr "الزيادة المستخدمة لعمل تغييرات كبيرة للقيمة"
 
-#: ../gladeui/glade-editor-property.c:3192
+#: ../gladeui/glade-editor-property.c:3199
 msgid "Page size:"
 msgstr "حجم الصفحة:"
 
-#: ../gladeui/glade-editor-property.c:3193
+#: ../gladeui/glade-editor-property.c:3200
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
@@ -1152,7 +1152,7 @@ msgstr "ال_غ اختيار الكلّ"
 msgid "Property _Description:"
 msgstr "و_صف الخاصية:"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2494
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2499
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "وضع %s داخل %s"
@@ -1288,55 +1288,55 @@ msgstr ""
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1576
+#: ../gladeui/glade-project.c:1578
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1623
+#: ../gladeui/glade-project.c:1625
 msgid "Details"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1639
+#: ../gladeui/glade-project.c:1641
 #, fuzzy, c-format
 msgid "Project %s has errors, save anyway ?"
 msgstr "المشروع %s يحتوي على تغيرات غير محفوظة"
 
-#: ../gladeui/glade-project.c:1640
+#: ../gladeui/glade-project.c:1642
 #, c-format
 msgid "Project %s has deprecated widgets and/or version mismatches."
 msgstr ""
 
-#: ../gladeui/glade-project.c:3060
+#: ../gladeui/glade-project.c:3062
 #, c-format
 msgid "Unsaved %i"
 msgstr "غير محفوظ %i"
 
-#: ../gladeui/glade-project.c:3184
+#: ../gladeui/glade-project.c:3186
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 
 #. Project format
-#: ../gladeui/glade-project.c:3199 ../gladeui/glade-project.c:3291
+#: ../gladeui/glade-project.c:3201 ../gladeui/glade-project.c:3293
 #: ../gladeui/glade-utils.c:517
 #, fuzzy
 msgid "File format"
 msgstr "عشري"
 
 #. Target versions
-#: ../gladeui/glade-project.c:3204
+#: ../gladeui/glade-project.c:3206
 #, fuzzy
 msgid "Target Versions:"
 msgstr "نسخة البرنامج"
 
-#: ../gladeui/glade-project.c:3238
+#: ../gladeui/glade-project.c:3240
 #, fuzzy, c-format
 msgid "%s catalog"
 msgstr "فهرس"
 
 #. Run verify
-#: ../gladeui/glade-project.c:3330
+#: ../gladeui/glade-project.c:3332
 msgid "Verify versions and deprecations:"
 msgstr ""
 
@@ -1398,7 +1398,7 @@ msgstr ""
 msgid "<Type here>"
 msgstr "<اكتب هنا>"
 
-#: ../gladeui/glade-signal-editor.c:690 ../plugins/gtk+/glade-accels.c:552
+#: ../gladeui/glade-signal-editor.c:690 ../plugins/gtk+/glade-accels.c:553
 msgid "Signal"
 msgstr "إشارة"
 
@@ -1536,7 +1536,7 @@ msgstr "مشروع جلايد الذي تنتمي له هذه القطعة"
 msgid "A list of GladeProperties"
 msgstr "قائمة GladeProperties"
 
-#: ../gladeui/glade-widget.c:1044 ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../gladeui/glade-widget.c:1044 ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Parent"
 msgstr "أب"
 
@@ -1622,7 +1622,7 @@ msgstr "اسم عام"
 msgid "Used to generate names of new widgets"
 msgstr "يستعمل لانشاء اسماء قطع جديدة"
 
-#: ../gladeui/glade-widget-adaptor.c:1230 ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../gladeui/glade-widget-adaptor.c:1230 ../plugins/gtk+/gtk+.xml.in.h:139
 msgid "Icon Name"
 msgstr "اسم الأيقونة"
 
@@ -1656,7 +1656,7 @@ msgid ""
 "container class"
 msgstr "تحتوي على اسم خاصية التحزيم لرسم أبناء خاصين لهذه الحاوية"
 
-#: ../gladeui/glade-widget-adaptor.c:1263 ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../gladeui/glade-widget-adaptor.c:1263 ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Cursor"
 msgstr "مؤشّر"
 
@@ -1791,110 +1791,230 @@ msgstr "أماكن"
 msgid "Status"
 msgstr "حالة"
 
-#: ../plugins/gtk+/glade-gtk.c:171
+#: ../plugins/gtk+/glade-attributes.c:175 ../plugins/gtk+/gtk+.xml.in.h:28
+msgid "Attributes"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:176
+#, fuzzy
+msgid "A list of attributes"
+msgstr "قائمة اجسام"
+
+#: ../plugins/gtk+/glade-attributes.c:257
+#: ../plugins/gtk+/glade-attributes.c:514
+#, fuzzy
+msgid "Unset"
+msgstr "مستخدم"
+
+#: ../plugins/gtk+/glade-attributes.c:368
+#, fuzzy
+msgid "Style"
+msgstr "عنوان"
+
+#: ../plugins/gtk+/glade-attributes.c:372
+#, fuzzy
+msgid "Weight"
+msgstr "اليمين"
+
+#: ../plugins/gtk+/glade-attributes.c:376
+#, fuzzy
+msgid "Variant"
+msgstr "أب"
+
+#: ../plugins/gtk+/glade-attributes.c:380
+#, fuzzy
+msgid "Stretch"
+msgstr "إبدأ"
+
+#: ../plugins/gtk+/glade-attributes.c:384
+#, fuzzy
+msgid "Underline"
+msgstr "استخدم التسطير"
+
+#: ../plugins/gtk+/glade-attributes.c:388
+msgid "Strikethrough"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:392
+msgid "Gravity"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:396
+msgid "Gravity Hint"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:407 ../plugins/gtk+/gtk+.xml.in.h:282
+msgid "Size"
+msgstr "حجم"
+
+#: ../plugins/gtk+/glade-attributes.c:411
+msgid "Absolute Size"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:418
+#, fuzzy
+msgid "Foreground Color"
+msgstr "اللون الامامي للنص"
+
+#: ../plugins/gtk+/glade-attributes.c:422 ../plugins/gnome/gnome.xml.in.h:3
+msgid "Background Color"
+msgstr "لون الخلفية"
+
+#: ../plugins/gtk+/glade-attributes.c:426
+#, fuzzy
+msgid "Underline Color"
+msgstr "استخدم التسطير"
+
+#: ../plugins/gtk+/glade-attributes.c:430
+#, fuzzy
+msgid "Strikethrough Color"
+msgstr "اللون الامامي للنص"
+
+#: ../plugins/gtk+/glade-attributes.c:440 ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Scale"
+msgstr "المقياس"
+
+#. XXX Interesting... can we get the defaults ? what can we do to let the user
+#. * unset the value ??
+#.
+#: ../plugins/gtk+/glade-attributes.c:471
+#: ../plugins/gtk+/glade-attributes.c:514
+#: ../plugins/gtk+/glade-attributes.c:521
+#: ../plugins/gtk+/glade-attributes.c:525
+#, fuzzy
+msgid "<Enter Value>"
+msgstr "قيمة صحيحة"
+
+#: ../plugins/gtk+/glade-attributes.c:906
+#, fuzzy
+msgid "Select a color"
+msgstr "انتقي مجلّدًا"
+
+#: ../plugins/gtk+/glade-attributes.c:1042
+msgid "Attribute"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:1052
+#, fuzzy
+msgid "Value"
+msgstr "القيمة:"
+
+#: ../plugins/gtk+/glade-attributes.c:1197
+msgid "Setup Text Attributes"
+msgstr ""
+
+#. eprop_attrs->entry = gtk_entry_new ();
+#. gtk_entry_set_editable (GTK_ENTRY (eprop_attrs->entry), FALSE);
+#. gtk_widget_show (eprop_attrs->entry);
+#. gtk_box_pack_start (GTK_BOX (hbox), eprop_attrs->entry, TRUE, TRUE, 0);
+#: ../plugins/gtk+/glade-attributes.c:1307
+msgid "Edit Attributes"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:173
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:172
+#: ../plugins/gtk+/glade-gtk.c:174
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "اختر العنصر المخزون لـ GnomeUIInfo "
 
-#: ../plugins/gtk+/glade-gtk.c:214 ../plugins/gtk+/glade-gtk.c:223
+#: ../plugins/gtk+/glade-gtk.c:216 ../plugins/gtk+/glade-gtk.c:225
 msgid "Method"
 msgstr "طريقة"
 
-#: ../plugins/gtk+/glade-gtk.c:215
+#: ../plugins/gtk+/glade-gtk.c:217
 msgid "The method to use to edit this image"
 msgstr "الطريقة المستخدمة لتحرير الصورة"
 
-#: ../plugins/gtk+/glade-gtk.c:224
+#: ../plugins/gtk+/glade-gtk.c:226
 msgid "The method to use to edit this button"
 msgstr "الطريقة المستخدمة لتحرير الزر"
 
 # Not sure about the context
-#: ../plugins/gtk+/glade-gtk.c:1182
+#: ../plugins/gtk+/glade-gtk.c:1187
 #, c-format
 msgid "Removing parent of %s"
 msgstr "حذف أب %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1233
+#: ../plugins/gtk+/glade-gtk.c:1238
 #, c-format
 msgid "Adding parent %s to %s"
 msgstr "اضافر الأب %s لـ %s"
 
 # Not sure about the context
-#: ../plugins/gtk+/glade-gtk.c:1601
+#: ../plugins/gtk+/glade-gtk.c:1606
 #, c-format
 msgid "Ordering children of %s"
 msgstr "ترتيب أبناء %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2080 ../plugins/gtk+/glade-gtk.c:2087
+#: ../plugins/gtk+/glade-gtk.c:2085 ../plugins/gtk+/glade-gtk.c:2092
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "ادرج محتل مؤقت لـ %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2094
+#: ../plugins/gtk+/glade-gtk.c:2099
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "احذف المحتل المؤقت من %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3009 ../plugins/gtk+/glade-gtk.c:3017
+#: ../plugins/gtk+/glade-gtk.c:3014 ../plugins/gtk+/glade-gtk.c:3022
 #, c-format
 msgid "Insert Row on %s"
 msgstr "ادرج صف على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3025 ../plugins/gtk+/glade-gtk.c:3033
+#: ../plugins/gtk+/glade-gtk.c:3030 ../plugins/gtk+/glade-gtk.c:3038
 #, c-format
 msgid "Insert Column on %s"
 msgstr "ادرج عمود على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3041
+#: ../plugins/gtk+/glade-gtk.c:3046
 #, c-format
 msgid "Remove Column on %s"
 msgstr "احذف عمود على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3049
+#: ../plugins/gtk+/glade-gtk.c:3054
 #, c-format
 msgid "Remove Row on %s"
 msgstr "احذف صف على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3989 ../plugins/gtk+/glade-gtk.c:3996
+#: ../plugins/gtk+/glade-gtk.c:4074 ../plugins/gtk+/glade-gtk.c:4081
 #, c-format
 msgid "Insert page on %s"
 msgstr "ادرج صفحة على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4003
+#: ../plugins/gtk+/glade-gtk.c:4088
 #, c-format
 msgid "Remove page from %s"
 msgstr "احذف صفحة على %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4748 ../plugins/gtk+/glade-gtk.c:4752
-#: ../plugins/gtk+/glade-gtk.c:4927 ../plugins/gtk+/glade-gtk.c:4931
+#: ../plugins/gtk+/glade-gtk.c:4860 ../plugins/gtk+/glade-gtk.c:4864
+#: ../plugins/gtk+/glade-gtk.c:5039 ../plugins/gtk+/glade-gtk.c:5043
 msgid "This only applies with label type buttons"
 msgstr "يطبق هذا فقط لأزرار التسمية"
 
-#: ../plugins/gtk+/glade-gtk.c:4763 ../plugins/gtk+/glade-gtk.c:4767
-#: ../plugins/gtk+/glade-gtk.c:4919 ../plugins/gtk+/glade-gtk.c:4923
+#: ../plugins/gtk+/glade-gtk.c:4875 ../plugins/gtk+/glade-gtk.c:4879
+#: ../plugins/gtk+/glade-gtk.c:5031 ../plugins/gtk+/glade-gtk.c:5035
 msgid "This only applies with stock type buttons"
 msgstr "يطبق هذا فقط للأزرار المخزنة"
 
-#: ../plugins/gtk+/glade-gtk.c:5027 ../plugins/gtk+/glade-gtk.c:5049
+#: ../plugins/gtk+/glade-gtk.c:5139 ../plugins/gtk+/glade-gtk.c:5161
 msgid "You must remove any children before you can set the type"
 msgstr "يجب حذف كل الأبناء قبل تحديد النوع"
 
-#: ../plugins/gtk+/glade-gtk.c:5073 ../plugins/gtk+/glade-gtk.c:6586
+#: ../plugins/gtk+/glade-gtk.c:5185 ../plugins/gtk+/glade-gtk.c:6698
 msgid "This only applies with file type images"
 msgstr "يطبق هذا فقط لصور من ملفات"
 
-#: ../plugins/gtk+/glade-gtk.c:5081 ../plugins/gtk+/glade-gtk.c:6590
+#: ../plugins/gtk+/glade-gtk.c:5193 ../plugins/gtk+/glade-gtk.c:6702
 msgid "This only applies to Icon Theme type images"
 msgstr "يطبق هذا فقط في ايقونات نسق"
 
-#: ../plugins/gtk+/glade-gtk.c:5091 ../plugins/gtk+/glade-gtk.c:6588
+#: ../plugins/gtk+/glade-gtk.c:5203 ../plugins/gtk+/glade-gtk.c:6700
 msgid "This only applies with stock type images"
 msgstr "يطبق هذا فقط في الصور المخزنة"
 
-#: ../plugins/gtk+/glade-gtk.c:5103
+#: ../plugins/gtk+/glade-gtk.c:5215
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
@@ -1902,47 +2022,47 @@ msgstr ""
 "حجم البكسل له اولوية اكبر من حجم الايقونة، اذا اردت استعمال حجم الأيقونة، "
 "حدد حجم البكسل -1"
 
-#: ../plugins/gtk+/glade-gtk.c:5129
+#: ../plugins/gtk+/glade-gtk.c:5241
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "حجم البكسل له اولوية اكبر من حجم الايقونة"
 
-#: ../plugins/gtk+/glade-gtk.c:5442 ../plugins/gtk+/glade-gtk.c:6436
+#: ../plugins/gtk+/glade-gtk.c:5554 ../plugins/gtk+/glade-gtk.c:6548
 msgid "<separator>"
 msgstr "<فاصل>"
 
-#: ../plugins/gtk+/glade-gtk.c:5616 ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../plugins/gtk+/glade-gtk.c:5728 ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Normal"
 msgstr "عادي"
 
-#: ../plugins/gtk+/glade-gtk.c:5617 ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:5729 ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Image"
 msgstr "صورة"
 
-#: ../plugins/gtk+/glade-gtk.c:5618
+#: ../plugins/gtk+/glade-gtk.c:5730
 msgid "Check"
 msgstr "تدقيق"
 
-#: ../plugins/gtk+/glade-gtk.c:5619 ../plugins/gtk+/glade-gtk.c:6500
+#: ../plugins/gtk+/glade-gtk.c:5731 ../plugins/gtk+/glade-gtk.c:6612
 msgid "Radio"
 msgstr "مذياع"
 
-#: ../plugins/gtk+/glade-gtk.c:5620 ../plugins/gtk+/glade-gtk.c:6503
+#: ../plugins/gtk+/glade-gtk.c:5732 ../plugins/gtk+/glade-gtk.c:6615
 msgid "Separator"
 msgstr "فاصل"
 
-#: ../plugins/gtk+/glade-gtk.c:5624
+#: ../plugins/gtk+/glade-gtk.c:5736
 msgid "Add Item"
 msgstr "اضف عنصرا"
 
-#: ../plugins/gtk+/glade-gtk.c:5625
+#: ../plugins/gtk+/glade-gtk.c:5737
 msgid "Add Child Item"
 msgstr "اضف عنصر ابن"
 
-#: ../plugins/gtk+/glade-gtk.c:5626 ../plugins/gtk+/glade-gtk.c:6512
+#: ../plugins/gtk+/glade-gtk.c:5738 ../plugins/gtk+/glade-gtk.c:6624
 msgid "Add Separator"
 msgstr "اضف فاصل"
 
-#: ../plugins/gtk+/glade-gtk.c:5639
+#: ../plugins/gtk+/glade-gtk.c:5751
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1956,161 +2076,161 @@ msgstr ""
 "  * انقر و انقل لاعادة الترتيب.\n"
 "  * عمود النوع قابل للتحرير."
 
-#: ../plugins/gtk+/glade-gtk.c:5655 ../plugins/gtk+/glade-gtk.c:6170
+#: ../plugins/gtk+/glade-gtk.c:5767 ../plugins/gtk+/glade-gtk.c:6282
 msgid "Edit Menu Bar"
 msgstr "عمود قائمة حرر"
 
-#: ../plugins/gtk+/glade-gtk.c:5657 ../plugins/gtk+/glade-gtk.c:6172
+#: ../plugins/gtk+/glade-gtk.c:5769 ../plugins/gtk+/glade-gtk.c:6284
 msgid "Edit Menu"
 msgstr "قائمة حرر"
 
-#: ../plugins/gtk+/glade-gtk.c:5908
+#: ../plugins/gtk+/glade-gtk.c:6020
 msgid "Print S_etup"
 msgstr "_تعيين الطباعة..."
 
-#: ../plugins/gtk+/glade-gtk.c:5912
+#: ../plugins/gtk+/glade-gtk.c:6024
 msgid "Find Ne_xt"
 msgstr "إيجاد الت_الي"
 
-#: ../plugins/gtk+/glade-gtk.c:5916
+#: ../plugins/gtk+/glade-gtk.c:6028
 msgid "_Undo Move"
 msgstr "ت_راجع عن الحركة الأخيرة"
 
-#: ../plugins/gtk+/glade-gtk.c:5920
+#: ../plugins/gtk+/glade-gtk.c:6032
 msgid "_Redo Move"
 msgstr "ت_كرار الحركة الأخيرة"
 
-#: ../plugins/gtk+/glade-gtk.c:5923
+#: ../plugins/gtk+/glade-gtk.c:6035
 msgid "Select _All"
 msgstr "اخت_ر الكل"
 
-#: ../plugins/gtk+/glade-gtk.c:5926
+#: ../plugins/gtk+/glade-gtk.c:6038
 msgid "_New Game"
 msgstr "_لعبة جديدة"
 
-#: ../plugins/gtk+/glade-gtk.c:5929
+#: ../plugins/gtk+/glade-gtk.c:6041
 msgid "_Pause game"
 msgstr "إي_قاف اللعبة"
 
-#: ../plugins/gtk+/glade-gtk.c:5932
+#: ../plugins/gtk+/glade-gtk.c:6044
 msgid "_Restart Game"
 msgstr "بدء اللّعبة من _جديد"
 
-#: ../plugins/gtk+/glade-gtk.c:5935
+#: ../plugins/gtk+/glade-gtk.c:6047
 msgid "_Hint"
 msgstr "_تلميحة"
 
-#: ../plugins/gtk+/glade-gtk.c:5938
+#: ../plugins/gtk+/glade-gtk.c:6050
 msgid "_Scores..."
 msgstr "ال_نتائج..."
 
-#: ../plugins/gtk+/glade-gtk.c:5941
+#: ../plugins/gtk+/glade-gtk.c:6053
 msgid "_End Game"
 msgstr "إ_نهاء اللعبة"
 
-#: ../plugins/gtk+/glade-gtk.c:5944
+#: ../plugins/gtk+/glade-gtk.c:6056
 msgid "Create New _Window"
 msgstr "إ_نشاء نافذة جديدة"
 
-#: ../plugins/gtk+/glade-gtk.c:5947
+#: ../plugins/gtk+/glade-gtk.c:6059
 msgid "_Close This Window"
 msgstr "_غلق هذه النافذة"
 
-#: ../plugins/gtk+/glade-gtk.c:5959
+#: ../plugins/gtk+/glade-gtk.c:6071
 msgid "_Settings"
 msgstr "إ_عدادات"
 
-#: ../plugins/gtk+/glade-gtk.c:5962
+#: ../plugins/gtk+/glade-gtk.c:6074
 msgid "Fi_les"
 msgstr "م_لفات"
 
-#: ../plugins/gtk+/glade-gtk.c:5965
+#: ../plugins/gtk+/glade-gtk.c:6077
 msgid "_Windows"
 msgstr "_نوافذ"
 
-#: ../plugins/gtk+/glade-gtk.c:5971
+#: ../plugins/gtk+/glade-gtk.c:6083
 msgid "_Game"
 msgstr "_لعبة"
 
-#: ../plugins/gtk+/glade-gtk.c:6067
+#: ../plugins/gtk+/glade-gtk.c:6179
 msgid "This does not apply with stock items"
 msgstr "لا يمكن فعل هذا للعناصر المخزنة"
 
-#: ../plugins/gtk+/glade-gtk.c:6445
+#: ../plugins/gtk+/glade-gtk.c:6557
 msgid "<custom>"
 msgstr "<مخصص>"
 
-#: ../plugins/gtk+/glade-gtk.c:6498 ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/glade-gtk.c:6610 ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button"
 msgstr "زر"
 
-#: ../plugins/gtk+/glade-gtk.c:6499
+#: ../plugins/gtk+/glade-gtk.c:6611
 msgid "Toggle"
 msgstr "تحول"
 
-#: ../plugins/gtk+/glade-gtk.c:6501 ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/glade-gtk.c:6613 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Menu"
 msgstr "قائمة"
 
-#: ../plugins/gtk+/glade-gtk.c:6502
+#: ../plugins/gtk+/glade-gtk.c:6614
 msgid "Item"
 msgstr "عنصر"
 
-#: ../plugins/gtk+/glade-gtk.c:6507
+#: ../plugins/gtk+/glade-gtk.c:6619
 msgid "Add Tool Button"
 msgstr "اضف زر اداة"
 
-#: ../plugins/gtk+/glade-gtk.c:6508
+#: ../plugins/gtk+/glade-gtk.c:6620
 msgid "Add Toggle Button"
 msgstr "اضف زر تحول"
 
-#: ../plugins/gtk+/glade-gtk.c:6509
+#: ../plugins/gtk+/glade-gtk.c:6621
 msgid "Add Radio Button"
 msgstr "اضف زر مشع"
 
-#: ../plugins/gtk+/glade-gtk.c:6510
+#: ../plugins/gtk+/glade-gtk.c:6622
 msgid "Add Menu Button"
 msgstr "اضف زر قائمة"
 
-#: ../plugins/gtk+/glade-gtk.c:6511
+#: ../plugins/gtk+/glade-gtk.c:6623
 msgid "Add Tool Item"
 msgstr "اضف زر اداة"
 
-#: ../plugins/gtk+/glade-gtk.c:6520
+#: ../plugins/gtk+/glade-gtk.c:6632
 msgid "Tool Bar Editor"
 msgstr "محرّر ادوات الشريط"
 
-#: ../plugins/gtk+/glade-gtk.c:7336
+#: ../plugins/gtk+/glade-gtk.c:7728
 msgid "Introduction page"
 msgstr "صفحة التقديم"
 
-#: ../plugins/gtk+/glade-gtk.c:7340
+#: ../plugins/gtk+/glade-gtk.c:7732
 msgid "Content page"
 msgstr "صفحة المحتويات"
 
-#: ../plugins/gtk+/glade-gtk.c:7344
+#: ../plugins/gtk+/glade-gtk.c:7736
 msgid "Confirmation page"
 msgstr "صفحة التأكيد"
 
 #. Accelerators
-#: ../plugins/gtk+/glade-accels.c:204 ../plugins/gtk+/gtk+.xml.in.h:11
+#: ../plugins/gtk+/glade-accels.c:205 ../plugins/gtk+/gtk+.xml.in.h:11
 msgid "Accelerators"
 msgstr "مسرّعات"
 
-#: ../plugins/gtk+/glade-accels.c:205
+#: ../plugins/gtk+/glade-accels.c:206
 msgid "A list of accelerator keys"
 msgstr "قائمة مفاتيح مسرعة"
 
-#: ../plugins/gtk+/glade-accels.c:424 ../plugins/gtk+/glade-accels.c:492
+#: ../plugins/gtk+/glade-accels.c:425 ../plugins/gtk+/glade-accels.c:493
 msgid "<choose a key>"
 msgstr "<اختر مفتاحا>"
 
-#: ../plugins/gtk+/glade-accels.c:573
+#: ../plugins/gtk+/glade-accels.c:574
 #, fuzzy
 msgid "Accelerator Key"
 msgstr "مسرّعات"
 
-#: ../plugins/gtk+/glade-accels.c:632
+#: ../plugins/gtk+/glade-accels.c:633
 msgid "Choose accelerator keys..."
 msgstr "اختر المفاتيح السريعة..."
 
@@ -2188,471 +2308,471 @@ msgstr "إطار معدل"
 msgid "Assistant"
 msgstr "مساعد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Automatic"
 msgstr "تلقائي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Before"
 msgstr "قبل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:30 ../plugins/gnome/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:31 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "أدنى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Bottom Left"
 msgstr "أدنى اليسار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:32
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Bottom Right"
 msgstr "أدنى اليمين"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Bottom to Top"
 msgstr "من أسفل إلى أعلى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Box"
 msgstr "صندوق"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:35 ../plugins/gnome/canvas.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:36 ../plugins/gnome/canvas.xml.in.h:2
 msgid "Browse"
 msgstr "تصفح"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button 1 Motion"
 msgstr "حركة الزر 1"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Button 2 Motion"
 msgstr "حركة الزر 2"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Button 3 Motion"
 msgstr "حركة الزر 3"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Button Box"
 msgstr "صندوق الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Button Motion"
 msgstr "حركة الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Button Press"
 msgstr "ضغط الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Button Release"
 msgstr "تسريح الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Calendar"
 msgstr "التقويم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:45
+#: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Cancel"
 msgstr "الغِ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:46
+#: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Center"
 msgstr "وسط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Center on Parent"
 msgstr "وسط الأب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Centimeters"
 msgstr "سنتيمترات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Character"
 msgstr "رمز"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Check Button"
 msgstr "زر تحول"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Check Menu Item"
 msgstr "عنصر القائمة تحكم"
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Click"
 msgstr "نقر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Close"
 msgstr "اغلق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Color Button"
 msgstr "زر الوان"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Color Selection"
 msgstr "انتقاء اللون"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:57
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Color Selection Dialog"
 msgstr "حوار انتقاء الألوان"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Columned List"
 msgstr "قائمة بأعمدة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Combo"
 msgstr "كومبو"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Combo Box"
 msgstr "إطار كومبو"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/gtk+.xml.in.h:62
 msgid "Combo Box Entry"
 msgstr "مدخل إطار كومبو"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62
+#: ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Confirm"
 msgstr "أكّد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Container"
 msgstr "حاوي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Containers"
 msgstr "حاويلت"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Content"
 msgstr "محتويات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Continuous"
 msgstr "مستمر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Control and Display"
 msgstr "العرض و التحكم"
 
 #. Atk relationset properties
-#: ../plugins/gtk+/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Controlled By"
 msgstr "متحكَّمة من طرف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Controller For"
 msgstr "متحكم لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71 ../plugins/gnome/gnome.xml.in.h:5
+#: ../plugins/gtk+/gtk+.xml.in.h:72 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "أنشئ مجلد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Curve"
 msgstr "منحنى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Custom"
 msgstr "مخصص"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Custom widget"
 msgstr "قطعة مخصصة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Default"
 msgstr "افتراضي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Delayed"
 msgstr "متأخر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Descending"
 msgstr "تنازلي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Described By"
 msgstr "وصف من طرف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:80
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Description For"
 msgstr "وصف لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "وصف جسم، مهيئ للنفاذ عبره إلى تقنية المساعدة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Desktop"
 msgstr "سطح المكتب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Dialog"
 msgstr "حوار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Dialog Box"
 msgstr "صندوق حوار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Discontinuous"
 msgstr "غير متواصل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
+#: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Discrete"
 msgstr "متقطع"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Dock"
 msgstr "إرساء"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Down"
 msgstr "أسفل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:89
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Drag & Drop"
 msgstr "السحب و الافلات "
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Drag and Drop"
 msgstr "السحب والإسقاط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Drawing Area"
 msgstr "مساحة رسم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "Drop Down Menu"
 msgstr "قائمة منبثقة سفليا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "East"
 msgstr "شرق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Edge"
 msgstr "حافة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Edit Type"
 msgstr "نوع التحرير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:96
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Edit&#8230;"
 msgstr "حرّر&#8230;"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Embedded By"
 msgstr "محتواة من طرف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Embeds"
 msgstr "تحتوي على"
 
 # I think this is not meant as an order, IIRC it is descriptive
-#: ../plugins/gtk+/gtk+.xml.in.h:99 ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:100 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "نهاية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Enter Notify"
 msgstr "ادخل تنبيه"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:102 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "خطأ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:102 ../plugins/gnome/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:103 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr "مطوية داخليا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:103 ../plugins/gnome/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:104 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr "مطوية خارجيا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Event Box"
 msgstr "صندوق حدث"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:105 ../plugins/gnome/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:106 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "تمديد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:106
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Expander"
 msgstr "موسّع"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Exposure"
 msgstr "تعرض"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Extended"
 msgstr "ممدّد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "File Chooser Button"
 msgstr "زر حوار تصفّح الملفات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "File Chooser Dialog"
 msgstr "حوار تصفّح الملفات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:111
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "File Chooser Widget"
 msgstr "قطعة تصفّح الملفات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "File Name"
 msgstr "اسم الملف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "File Selection"
 msgstr "اختيار الملف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Filename"
 msgstr "اسم الملف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:115 ../plugins/gnome/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:116 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "ملأ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Fixed"
 msgstr "ثابت"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Flows From"
 msgstr "يتدلى من"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Flows To"
 msgstr "يتدلى لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Focus Change"
 msgstr "تغيير التركيز"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Font Button"
 msgstr "زر الخط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Font Selection"
 msgstr "انتقاء خط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Font Selection Dialog"
 msgstr "حوار انتقاء الخط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Frame"
 msgstr "إطار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Free"
 msgstr "متفرّغ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Gamma Curve"
 msgstr "منحنى غاما"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Gtk+ Obsolete"
 msgstr "جي تي كاي+ قديمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Half"
 msgstr "نصف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Handle Box"
 msgstr "صندوق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129 ../plugins/gnome/bonobo.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:130 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
 msgstr "أفقي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Horizontal Box"
 msgstr "صندوق افقي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Horizontal Button Box"
 msgstr "صندوق ازرار افقي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Horizontal Panes"
 msgstr "لوحات افقية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Horizontal Ruler"
 msgstr "مسطرة افقية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Horizontal Scale"
 msgstr "قياس أفقي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Horizontal Scrollbar"
 msgstr "عمود لف أفقي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Horizontal Separator"
 msgstr "فاصل افقي "
 
-#: ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Horizontal and Vertical"
 msgstr "افقي و عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "Icon Theme"
 msgstr "سِمة الأيقونات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "Icon View"
 msgstr "مشهد الأيقونات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Icons only"
 msgstr "أيقونات فقط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "If Valid"
 msgstr "اذا كان صحيحا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "Image Menu Item"
 msgstr "عنصر قائمة صورة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Image Type"
 msgstr "نوع الصورة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Immediate"
 msgstr "حالي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147 ../plugins/gnome/bonobo.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:148 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
 msgstr "داخل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Inches"
 msgstr "بوصات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:149
+#: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -2661,11 +2781,11 @@ msgstr ""
 "المكون"
 
 #. Atk relationset properties
-#: ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "يحدد جسما متحكما به من طرف جسم هدف واحد أو اكثر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -2673,45 +2793,45 @@ msgstr ""
 "يحدد ان جسما هو خلية في جدول شجرة معروضة لأن خلية في نفس العمود متمددة و "
 "تعرّف الخلية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "يحدد جسما متحكما بجسم هدف واحد أو اكثر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "يحدد جسما مُسَمَّيا لجسم هدف واحد أو اكثر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "يحدد أن جسما هو عضو في مجموعة جسم أو أكثر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr "يحدد جسما مُسَمَّا من طرف جسم هدف واحد أو اكثر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Indicates that an object is a parent window of another object"
 msgstr "يحدد ان هذا الجسم هو اب لجسم آخر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:158
+#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Indicates that an object is a popup for another object"
 msgstr "يحدد ان هذا الجسم هو  منبثق لجسم آخر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr "يحدد ان هذا الجسم يوفر معلومات وصفية لجسم آخر، أكثر شرحا من 'تسمية لـ'"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr ""
 "يحدد ان جسما آخر يوفر معلومات وصفية لهذا الجسم، أكثر شرحا من 'تسمية من طرف'"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -2719,7 +2839,7 @@ msgstr ""
 "يحدد ان هذا الجسم له محتويات تتدلى منطقيا من AtkObject آخر بطريقة متعاقبة "
 "(مثال: نص)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:162
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -2727,724 +2847,721 @@ msgstr ""
 "يحدد ان هذا الجسم له محتويات تتدلى منطقيا إلى AtkObject آخر بطريقة متعاقبة "
 "(مثال: نص)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:163
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr "يحدد أن هذا الجسم يحتوي على محتويات جسم آخر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Info"
 msgstr "معلومات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165
+#: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Input Dialog"
 msgstr "حوار ادخال"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Insert After"
 msgstr "ادرج بعد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "Insert Before"
 msgstr "ادرج قبل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Insert Column"
 msgstr "ادرج عمود"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Insert Page After"
 msgstr "ادرج صفحة بعد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Insert Page Before"
 msgstr "ادرج صفحة قبل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Insert Row"
 msgstr "ادرج صف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Intro"
 msgstr "مدخل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Invalid"
 msgstr "غير صحيح"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr "عكس 'يحوي'، يحدد ان هذا الجسم محتوى في جسم آخر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Items"
 msgstr "عناصر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
+#: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Key Press"
 msgstr "ضغط الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Key Release"
 msgstr "ترك الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:179
+#: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Label For"
 msgstr "علامة لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Labelled By"
 msgstr "معلّمة من طرف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Large Toolbar"
 msgstr "شريط أدوات كبير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Layout"
 msgstr "تصميم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Least Recently Used first"
 msgstr "افتح محفوظة مستخدمة مؤخرا آخرا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Leave Notify"
 msgstr "ترك تنبيه"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:186 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "اليسار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Left to Right"
 msgstr "من اليسار إلى اليمين"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Linear"
 msgstr "خطي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Link Button"
 msgstr "زر وصلة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "List"
 msgstr "قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "List Item"
 msgstr "عنصر قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Maximum Width"
 msgstr "العرض الأكبر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:192
+#: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Member Of"
 msgstr "عضو لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Menu Bar"
 msgstr "شريط قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Menu Item"
 msgstr "عنصر قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Menu Shell"
 msgstr "هيكل قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Menu Tool Button"
 msgstr "زر قائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Message Dialog"
 msgstr "حوار رسالة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Middle"
 msgstr "وسط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Most Recently Used first"
 msgstr "افتح محفوظة مستخدمة مؤخرا أولا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Mouse"
 msgstr "الفأرة"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:202 ../plugins/gnome/canvas.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/canvas.xml.in.h:17
 msgid "Multiple"
 msgstr "متعدد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:204 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Never"
 msgstr "أبدًا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Node Child Of"
 msgstr "العقدة الإبن لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:205 ../plugins/gnome/bonobo.xml.in.h:13
+#: ../plugins/gtk+/gtk+.xml.in.h:206 ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "لاشيء"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:207
+#: ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "North"
 msgstr "شمال"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:208
+#: ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "North East"
 msgstr "شمال شرق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:209
+#: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "North West"
 msgstr "شمال غرب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:210
+#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Notebook"
 msgstr "دفتر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:211
+#: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Notification"
 msgstr "اشعار "
 
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "Number of items"
 msgstr "عدد العناصر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Number of pages"
 msgstr "عدد الصفحات"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:215
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "اسم نموذج الكائن المهيئ للاستخدام من قبل التقنية المعاونة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Off"
 msgstr "معطل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Ok"
 msgstr "موافق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "Ok, Cancel"
 msgstr "موافق، الغاء"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "On"
 msgstr "مفعل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220 ../plugins/gnome/gnome.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:221 ../plugins/gnome/gnome.xml.in.h:42
 msgid "Open"
 msgstr "افتح"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Option Menu"
 msgstr "قائمة خيار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:222 ../plugins/gnome/gnome.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/gnome.xml.in.h:43
 msgid "Other"
 msgstr "أخرى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:224 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "خارج"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Paned"
 msgstr "مقسمة الى لوحات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Parent Window Of"
 msgstr "النافذة الأب لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Pixels"
 msgstr "بكسلات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Pointer Motion"
 msgstr "حركة المؤشر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Pointer Motion Hint"
 msgstr "تلميحة حركة المؤشر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Popup"
 msgstr "منبثقة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Popup For"
 msgstr "منبثقة لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Popup Menu"
 msgstr "قائمة منبثقة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/glade-gnome.c:658
+#: ../plugins/gtk+/gtk+.xml.in.h:234 ../plugins/gnome/glade-gnome.c:658
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Position"
 msgstr "الموضع"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Press"
 msgstr "ضغط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Progress"
 msgstr "تقدُّم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Progress Bar"
 msgstr "عمود التقدم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Property Change"
 msgstr "تغيير الخاصية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Proximity  Out"
 msgstr "تقريب خارجي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Proximity In"
 msgstr "تقريب داخلي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241 ../plugins/gnome/gnome.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:242 ../plugins/gnome/gnome.xml.in.h:49
 msgid "Question"
 msgstr "سؤال"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Queue"
 msgstr "طابور"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Radio Button"
 msgstr "زر مشع"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "Radio Menu Item"
 msgstr "زر قائمة زر مشع"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Radio Tool Button"
 msgstr "زر اداة زر مشع"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Range"
 msgstr "مدى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Recent Chooser"
 msgstr "اداة اختيار من جديد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "Recent Chooser Dialog"
 msgstr "حوار اداة اختيار من جديد"
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Release"
 msgstr "تسريح"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Remove Column"
 msgstr "احذف عمود"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Remove Page"
 msgstr "احذف صفحة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Remove Parent"
 msgstr "احذف أب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Remove Row"
 msgstr "احذف سطر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Remove Slot"
 msgstr "احذف خانة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:257
 msgid "Response ID"
 msgstr "هوية الإجابة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:258 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "اليمين"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Right to Left"
 msgstr "من اليمين إلى اليسار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:259
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Ruler"
 msgstr "مسطرة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:260 ../plugins/gnome/gnome.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:261 ../plugins/gnome/gnome.xml.in.h:50
 msgid "Save"
 msgstr "احفظ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:261
-msgid "Scale"
-msgstr "المقياس"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 #, fuzzy
 msgid "Scale Button"
 msgstr "زر مدعوم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Scroll"
 msgstr "لف"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Scrolled Window"
 msgstr "لنافذة ملفوفة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265 ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gtk+/gtk+.xml.in.h:266 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Select Folder"
 msgstr "انتقي مجلّدًا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "Separator Menu Item"
 msgstr "عنصر قائمة فاصل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Separator Tool Item"
 msgstr "عنصر اداة فاصل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:268
+#: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "حدد الصفحة الحالية (للتحرير فقط)"
 
 #. Atk activate property
-#: ../plugins/gtk+/gtk+.xml.in.h:270
+#: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Set the description of the Activate atk action"
 msgstr "حدد وصف عمل تنشيط آ تي كاي atk "
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Set the description of the Click atk action"
 msgstr "حدد وصف حدث atk  نقر "
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Set the description of the Press atk action"
 msgstr "حدد وصف حدث atk ضغط "
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:276
+#: ../plugins/gtk+/gtk+.xml.in.h:277
 msgid "Set the description of the Release atk action"
 msgstr "حدد وصف عمل تسريح آ تي كاي atk "
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Set the text in the view's text buffer"
 msgstr "حدد النص في مكان نص العرض"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:279
+#: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Shrink"
 msgstr "تقليص"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:280 ../plugins/gnome/canvas.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:281 ../plugins/gnome/canvas.xml.in.h:24
 msgid "Single"
 msgstr "وحيد"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
-msgid "Size"
-msgstr "حجم"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Small Toolbar"
 msgstr "شريط أدوات صغير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "South"
 msgstr "جنوب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "South East"
 msgstr "جنوب شرق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:285
+#: ../plugins/gtk+/gtk+.xml.in.h:286
 msgid "South West"
 msgstr "جنوب غرب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:286
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Spin Button"
 msgstr "زر تدوير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:287
+#: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Splash Screen"
 msgstr "شاشة البدأ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:288
+#: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "Spline"
 msgstr "Spline"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:289
+#: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Spread"
 msgstr "انتشار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:290 ../plugins/gnome/gnome.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:291 ../plugins/gnome/gnome.xml.in.h:55
 msgid "Start"
 msgstr "إبدأ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:291
+#: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Static"
 msgstr "ساكن"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:292
+#: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "Status Bar"
 msgstr "عمود حالة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:294
+#: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Stock Button"
 msgstr "زر مدعوم"
 
 # Stock items are images supplied by the library for use in icons and buttons, like the ones you see in most GTK applications
-#: ../plugins/gtk+/gtk+.xml.in.h:296
+#: ../plugins/gtk+/gtk+.xml.in.h:297
 msgid "Stock Item"
 msgstr "عنصر مدعوم"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:297
+#: ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Structure"
 msgstr "بناء"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:298
+#: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Substructure"
 msgstr "بناء ابن"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:299
+#: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Subwindow Of"
 msgstr "نافذة ابن لـ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300
+#: ../plugins/gtk+/gtk+.xml.in.h:301
 msgid "Summary"
 msgstr "ملخّص"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:301
+#: ../plugins/gtk+/gtk+.xml.in.h:302
 msgid "Table"
 msgstr "جدول"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:303 ../plugins/gnome/gnome.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:304 ../plugins/gnome/gnome.xml.in.h:58
 msgid "Text"
 msgstr "نص"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:304
+#: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "Text Entry"
 msgstr "مدخل نص"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:305
+#: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Text View"
 msgstr "عرض النَّص"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:306
+#: ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "Text below icons"
 msgstr "النص تحت الأيقونة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "Text only"
 msgstr "نص فقط"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:309
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "The items in this combo box"
 msgstr "العناصر في هذه الكومبو"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:310
+#: ../plugins/gtk+/gtk+.xml.in.h:311
 msgid "The number of items in the box"
 msgstr "عدد العناصر في الصندوق"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:311
+#: ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "The number of pages in the notebook"
 msgstr "عدد الصفحات في المفكرة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:312
+#: ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "The page position in the Assistant"
 msgstr "مكان الصفحة للمعاون"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:313
+#: ../plugins/gtk+/gtk+.xml.in.h:314
+#, fuzzy
+msgid "The pango attributes for this label"
+msgstr "عنصر مختار لهذه الصورة"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid "The position of the menu item in the menu shell"
 msgstr "موقع عنصر القائمة في هيكل القائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:314
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "The position of the tool item in the toolbar"
 msgstr "موقع عنصر الأداة في شريط الأدوات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:315
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
 msgstr "هوية إجابة الزر في حوار (غير مفيد اذا وُجد الزر خارج حوار)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:316
+#: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "The stock item for this button"
 msgstr "عنصر مختار لهذا الزر"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:317
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "The stock item for this image"
 msgstr "عنصر مختار لهذه الصورة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:318
+#: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "The text of the menu item"
 msgstr "نص عنصر القائمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:319
+#: ../plugins/gtk+/gtk+.xml.in.h:321
 msgid "The text to display"
 msgstr "النص المعروض"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:320
+#: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Toggle Button"
 msgstr "زر تحول"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:321
+#: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "Toggle Tool Button"
 msgstr "تحويل زر الأداة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:322
+#: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Tool Bar"
 msgstr "عمود أدوات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:323
+#: ../plugins/gtk+/gtk+.xml.in.h:325
 msgid "Tool Button"
 msgstr "زر الأداة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:324
+#: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Toolbar"
 msgstr "شريط الأدوات"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:325
+#: ../plugins/gtk+/gtk+.xml.in.h:327
 msgid "Tooltip"
 msgstr "تلميحة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:326 ../plugins/gnome/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:328 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "الأعلى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
+#: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Top Left"
 msgstr "أعلى اليسار"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:330
 msgid "Top Level"
 msgstr "مستوى أعلى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Top Right"
 msgstr "أعلى اليمين"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Top to Bottom"
 msgstr "من الأعلى إلى الأسفل"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
+#: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Toplevels"
 msgstr "المستويات العلوية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332
+#: ../plugins/gtk+/gtk+.xml.in.h:334
 msgid "Tree View"
 msgstr "مشهد شجرة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Up"
 msgstr "أعلى"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:336
 msgid "Use Underline"
 msgstr "استخدم التسطير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Utility"
 msgstr "أداة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336 ../plugins/gnome/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:338 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "Vertical Box"
 msgstr "صندوق عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Vertical Button Box"
 msgstr "صندوق أزرار عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Vertical Panes"
 msgstr "لوحات عمودية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Vertical Ruler"
 msgstr "مسطرة عمودية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:341
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "Vertical Scale"
 msgstr "قياس عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Vertical Scrollbar"
 msgstr "عمود تدريج عمودي"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:343
+#: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Vertical Separator"
 msgstr "فاصل عمودي "
 
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Viewport"
 msgstr "منفذ عرض"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345
+#: ../plugins/gtk+/gtk+.xml.in.h:347
 msgid "Visibility Notify"
 msgstr "تذكير الرؤية"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 #, fuzzy
 msgid "Volume Button"
 msgstr "زر تحول"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:347 ../plugins/gnome/gnome.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:349 ../plugins/gnome/gnome.xml.in.h:72
 msgid "Warning"
 msgstr "تحذير"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "West"
 msgstr "غرب"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid "Window"
 msgstr "نافذة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:353
 msgid "Word"
 msgstr "كلمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352
+#: ../plugins/gtk+/gtk+.xml.in.h:354
 msgid "Word Character"
 msgstr "رمز الكلمة"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:353
+#: ../plugins/gtk+/gtk+.xml.in.h:355
 msgid "Yes, No"
 msgstr "نعم، لا"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:354
+#: ../plugins/gtk+/gtk+.xml.in.h:356
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -3521,10 +3638,6 @@ msgstr "اختر نوع التحزيم"
 #: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
 msgstr "نسق 24 ساعة"
-
-#: ../plugins/gnome/gnome.xml.in.h:3
-msgid "Background Color"
-msgstr "لون الخلفية"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
