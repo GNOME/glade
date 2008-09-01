@@ -1935,6 +1935,38 @@ glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
+#define RESPID_INSENSITIVE_MSG _("this property is only for use in dialog action buttons")
+
+static void
+fix_response_id_on_child (GladeWidget *gbox,
+			  GObject     *child,
+			  gboolean     add)
+{
+	GladeWidget *gchild;
+	const gchar *internal_name;
+
+	gchild = glade_widget_get_from_gobject (child);
+
+	/* Fix response id property on child buttons */
+	if (gchild && GTK_IS_BUTTON (child))
+	{
+		if (add && (internal_name = glade_widget_get_internal (gbox)) &&
+		    !strcmp (internal_name, "action_area"))
+		{
+			glade_widget_property_set_sensitive (gchild, "response-id", TRUE, NULL);
+			glade_widget_property_set_enabled (gchild, "response-id", TRUE);
+		}
+		else
+		{
+			glade_widget_property_set_sensitive (gchild, "response-id", FALSE, 
+							     RESPID_INSENSITIVE_MSG);
+			glade_widget_property_set_enabled (gchild, "response-id", FALSE);
+
+		}
+	}
+}
+
+
 void
 glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 			 GObject            *object,
@@ -1987,6 +2019,9 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 	/* Packing props arent around when parenting during a glade_widget_dup() */
 	if (gchild && gchild->packing_properties)
 		glade_widget_pack_property_set (gchild, "position", num_children - 1);
+
+
+	fix_response_id_on_child (gbox, child, TRUE);
 }
 
 void
@@ -2009,6 +2044,8 @@ glade_gtk_box_remove_child (GladeWidgetAdaptor *adaptor,
 		glade_widget_property_get (gbox, "size", &size);
 		glade_widget_property_set (gbox, "size", size);
 	}
+
+	fix_response_id_on_child (gbox, child, FALSE);
 }
 
 
@@ -2019,6 +2056,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
 			     GObject            *new_widget)
 {
 	GladeWidget  *gchild;
+	GladeWidget  *gbox;
 
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
 							   container,
@@ -2031,6 +2069,9 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
 		 */
 		glade_widget_remove_pack_action (gchild, "remove_slot");
 
+	gbox = glade_widget_get_from_gobject (container);
+	fix_response_id_on_child (gbox, current, FALSE);
+	fix_response_id_on_child (gbox, new_widget, TRUE);
 }
 
 
@@ -4977,6 +5018,13 @@ glade_gtk_button_post_create (GladeWidgetAdaptor  *adaptor,
 				  G_CALLBACK (glade_gtk_button_post_create_parse_finished),
 				  button);
 	}
+
+	/* Disabled response-id until its in an action area */
+	glade_widget_property_set_sensitive (gbutton, "response-id", FALSE, 
+					     RESPID_INSENSITIVE_MSG);
+	glade_widget_property_set_enabled (gbutton, "response-id", FALSE);
+	
+
 }
 
 static void
