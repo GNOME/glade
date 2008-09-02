@@ -1395,7 +1395,7 @@ glade_util_copy_file (const gchar  *src_path,
 		{
 			glade_util_ui_message (glade_app_get_window(),
 					       GLADE_UI_ERROR, NULL,
-					       _("Error shutting down io channel %s: %s"),
+					       _("Error shutting down I/O channel %s: %s"),
 					       src_path, error->message);
 			success = FALSE;
 		}
