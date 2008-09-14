@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-27 12:45+0300\n"
-"PO-Revision-Date: 2008-08-27 12:40+0300\n"
+"POT-Creation-Date: 2008-09-14 15:05+0300\n"
+"PO-Revision-Date: 2008-09-14 15:00+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -241,20 +241,20 @@ msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Käyttöliittymien suunnittelutyökalu GTK+ -ja Gnome-sovelluksille"
 
 #. File
-#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:6062
-#: ../plugins/gtk+/glade-gtk.c:6385
+#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:6110
+#: ../plugins/gtk+/glade-gtk.c:6433
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Edit
-#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:6065
-#: ../plugins/gtk+/glade-gtk.c:6395
+#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:6113
+#: ../plugins/gtk+/glade-gtk.c:6443
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #. View
-#: ../src/glade-window.c:2165 ../plugins/gtk+/glade-gtk.c:6068
-#: ../plugins/gtk+/glade-gtk.c:6403
+#: ../src/glade-window.c:2165 ../plugins/gtk+/glade-gtk.c:6116
+#: ../plugins/gtk+/glade-gtk.c:6451
 msgid "_View"
 msgstr "_Näytä"
 
@@ -263,8 +263,8 @@ msgid "_Projects"
 msgstr "_Projektit"
 
 #. Help
-#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:6080
-#: ../plugins/gtk+/glade-gtk.c:6406
+#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:6128
+#: ../plugins/gtk+/glade-gtk.c:6454
 msgid "_Help"
 msgstr "O_hje"
 
@@ -1159,7 +1159,7 @@ msgstr "Per_u kaikki valinnat"
 msgid "Property _Description:"
 msgstr "Ominaisuuden _kuvaus:"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2499
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2540
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Sijoitetaan %s kohdan %s sisään"
@@ -1215,7 +1215,8 @@ msgstr "_Valitse"
 #: ../gladeui/glade-project.c:536
 #, c-format
 msgid "This widget was introduced in %s %d.%d project targets %s %d.%d"
-msgstr "Tämä ikkunaelementti lisättiin versioon %s %d.%d, projektin kohde on %s %d.%d"
+msgstr ""
+"Tämä ikkunaelementti lisättiin versioon %s %d.%d, projektin kohde on %s %d.%d"
 
 #: ../gladeui/glade-project.c:548
 #, c-format
@@ -1282,24 +1283,28 @@ msgstr ""
 #: ../gladeui/glade-project.c:1472
 #, c-format
 msgid "This property was introduced in %s %d.%d, project targets %s %d.%d"
-msgstr "Tämä ominaisuus lisättiin versioon %s %d.%d, projektin kohde on %s %d.%d"
+msgstr ""
+"Tämä ominaisuus lisättiin versioon %s %d.%d, projektin kohde on %s %d.%d"
 
 #: ../gladeui/glade-project.c:1489
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
-"[%s] Pakkauksen omaisuus \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %d.%d\n"
+"[%s] Pakkauksen omaisuus \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %"
+"d.%d\n"
 
 #: ../gladeui/glade-project.c:1491
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] Ominaisuus \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %d.%d\n"
+msgstr ""
+"[%s] Ominaisuus \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:1578
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr "[%s] Signaali \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %d.%d\n"
+msgstr ""
+"[%s] Signaali \"%s\" olioluokassa \"%s\" esiteltiin versiossa %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:1625
 msgid "Details"
@@ -1313,7 +1318,8 @@ msgstr "Projektissa %s on virheitä, tallennetaanko silti?"
 #: ../gladeui/glade-project.c:1642
 #, c-format
 msgid "Project %s has deprecated widgets and/or version mismatches."
-msgstr "Projektissa %s on vanhentuneita ikkunaelementtejä, tai versio ei täsmää."
+msgstr ""
+"Projektissa %s on vanhentuneita ikkunaelementtejä, tai versio ei täsmää."
 
 #: ../gladeui/glade-project.c:3062
 #, c-format
@@ -1323,7 +1329,8 @@ msgstr "Tallentamaton %i"
 #: ../gladeui/glade-project.c:3186
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr "Projektissa %s ei ole vanhentuneita ikkunaelementtejä tai versioristiriitoja."
+msgstr ""
+"Projektissa %s ei ole vanhentuneita ikkunaelementtejä tai versioristiriitoja."
 
 #. Project format
 #: ../gladeui/glade-project.c:3201 ../gladeui/glade-project.c:3293
@@ -1467,7 +1474,7 @@ msgstr "Virhe kirjoitettaessa tiedostoon %s: %s"
 msgid "Error reading %s: %s"
 msgstr "Virhe luettaessa tiedostoa %s: %s"
 
-#: ../gladeui/glade-utils.c:1377
+#: ../gladeui/glade-utils.c:1377 ../gladeui/glade-utils.c:1398
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "Virhe sammutettaessa IO-kanavaa %s: %s"
@@ -1476,11 +1483,6 @@ msgstr "Virhe sammutettaessa IO-kanavaa %s: %s"
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "Kohdetta %s ei voitu avata kirjoitettavaksi: %s"
-
-#: ../gladeui/glade-utils.c:1398
-#, c-format
-msgid "Error shutting down io channel %s: %s"
-msgstr "IO-kanavaa %s ei voitu sulkea: %s"
 
 #: ../gladeui/glade-utils.c:1407
 #, c-format
@@ -1934,73 +1936,77 @@ msgstr "Lisätään emoelementti %s kohtaan %s"
 msgid "Ordering children of %s"
 msgstr "Järjestetään kohdan %s lapset"
 
-#: ../plugins/gtk+/glade-gtk.c:2085 ../plugins/gtk+/glade-gtk.c:2092
+#: ../plugins/gtk+/glade-gtk.c:1938
+msgid "this property is only for use in dialog action buttons"
+msgstr "Tämä ominaisuus on kelvollinen vain ikkunoiden toimintonapeissa"
+
+#: ../plugins/gtk+/glade-gtk.c:2126 ../plugins/gtk+/glade-gtk.c:2133
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "Lisää säilö kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2099
+#: ../plugins/gtk+/glade-gtk.c:2140
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "Poista säilö kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3014 ../plugins/gtk+/glade-gtk.c:3022
+#: ../plugins/gtk+/glade-gtk.c:3055 ../plugins/gtk+/glade-gtk.c:3063
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Lisää rivi kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3030 ../plugins/gtk+/glade-gtk.c:3038
+#: ../plugins/gtk+/glade-gtk.c:3071 ../plugins/gtk+/glade-gtk.c:3079
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Lisää sarake kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3046
+#: ../plugins/gtk+/glade-gtk.c:3087
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Poista sarake kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3054
+#: ../plugins/gtk+/glade-gtk.c:3095
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Poista rivi kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4074 ../plugins/gtk+/glade-gtk.c:4081
+#: ../plugins/gtk+/glade-gtk.c:4115 ../plugins/gtk+/glade-gtk.c:4122
 #, c-format
 msgid "Insert page on %s"
 msgstr "Lisää sivu kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4088
+#: ../plugins/gtk+/glade-gtk.c:4129
 #, c-format
 msgid "Remove page from %s"
 msgstr "Poista sivu kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4860 ../plugins/gtk+/glade-gtk.c:4864
-#: ../plugins/gtk+/glade-gtk.c:5039 ../plugins/gtk+/glade-gtk.c:5043
+#: ../plugins/gtk+/glade-gtk.c:4901 ../plugins/gtk+/glade-gtk.c:4905
+#: ../plugins/gtk+/glade-gtk.c:5087 ../plugins/gtk+/glade-gtk.c:5091
 msgid "This only applies with label type buttons"
 msgstr "Tämä koskee vain nimikepainikkeita"
 
-#: ../plugins/gtk+/glade-gtk.c:4875 ../plugins/gtk+/glade-gtk.c:4879
-#: ../plugins/gtk+/glade-gtk.c:5031 ../plugins/gtk+/glade-gtk.c:5035
+#: ../plugins/gtk+/glade-gtk.c:4916 ../plugins/gtk+/glade-gtk.c:4920
+#: ../plugins/gtk+/glade-gtk.c:5079 ../plugins/gtk+/glade-gtk.c:5083
 msgid "This only applies with stock type buttons"
 msgstr "Tämä koskee vain vakiopainikkeita"
 
-#: ../plugins/gtk+/glade-gtk.c:5139 ../plugins/gtk+/glade-gtk.c:5161
+#: ../plugins/gtk+/glade-gtk.c:5187 ../plugins/gtk+/glade-gtk.c:5209
 msgid "You must remove any children before you can set the type"
 msgstr "Kaikki lapset täytyy poistaa ennen kuin tyypin voi asettaa"
 
-#: ../plugins/gtk+/glade-gtk.c:5185 ../plugins/gtk+/glade-gtk.c:6698
+#: ../plugins/gtk+/glade-gtk.c:5233 ../plugins/gtk+/glade-gtk.c:6746
 msgid "This only applies with file type images"
 msgstr "Tämä koskee vain tiedostopohjaisia kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:5193 ../plugins/gtk+/glade-gtk.c:6702
+#: ../plugins/gtk+/glade-gtk.c:5241 ../plugins/gtk+/glade-gtk.c:6750
 msgid "This only applies to Icon Theme type images"
 msgstr "Tämä koskee vain kuvaketeemojen kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:5203 ../plugins/gtk+/glade-gtk.c:6700
+#: ../plugins/gtk+/glade-gtk.c:5251 ../plugins/gtk+/glade-gtk.c:6748
 msgid "This only applies with stock type images"
 msgstr "Tämä koskee vain vakiokuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:5215
+#: ../plugins/gtk+/glade-gtk.c:5263
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
@@ -2008,47 +2014,47 @@ msgstr ""
 "Pikselikoko ohittaa kuvakkeen koon. Jos haluat käyttää kuvakekokoa, aseta "
 "pikselikoko arvoon -1"
 
-#: ../plugins/gtk+/glade-gtk.c:5241
+#: ../plugins/gtk+/glade-gtk.c:5289
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "Pikselikoko ohittaa kuvakkeen koon"
 
-#: ../plugins/gtk+/glade-gtk.c:5554 ../plugins/gtk+/glade-gtk.c:6548
+#: ../plugins/gtk+/glade-gtk.c:5602 ../plugins/gtk+/glade-gtk.c:6596
 msgid "<separator>"
 msgstr "<erotin>"
 
-#: ../plugins/gtk+/glade-gtk.c:5728 ../plugins/gtk+/gtk+.xml.in.h:207
+#: ../plugins/gtk+/glade-gtk.c:5776 ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Normal"
 msgstr "Tavallinen"
 
-#: ../plugins/gtk+/glade-gtk.c:5729 ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/glade-gtk.c:5777 ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Image"
 msgstr "Kuva"
 
-#: ../plugins/gtk+/glade-gtk.c:5730
+#: ../plugins/gtk+/glade-gtk.c:5778
 msgid "Check"
 msgstr "Valinta"
 
-#: ../plugins/gtk+/glade-gtk.c:5731 ../plugins/gtk+/glade-gtk.c:6612
+#: ../plugins/gtk+/glade-gtk.c:5779 ../plugins/gtk+/glade-gtk.c:6660
 msgid "Radio"
 msgstr "Vaihtoehto"
 
-#: ../plugins/gtk+/glade-gtk.c:5732 ../plugins/gtk+/glade-gtk.c:6615
+#: ../plugins/gtk+/glade-gtk.c:5780 ../plugins/gtk+/glade-gtk.c:6663
 msgid "Separator"
 msgstr "Erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:5736
+#: ../plugins/gtk+/glade-gtk.c:5784
 msgid "Add Item"
 msgstr "Lisää kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:5737
+#: ../plugins/gtk+/glade-gtk.c:5785
 msgid "Add Child Item"
 msgstr "Lisää lapsisolmu"
 
-#: ../plugins/gtk+/glade-gtk.c:5738 ../plugins/gtk+/glade-gtk.c:6624
+#: ../plugins/gtk+/glade-gtk.c:5786 ../plugins/gtk+/glade-gtk.c:6672
 msgid "Add Separator"
 msgstr "Lisää erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:5751
+#: ../plugins/gtk+/glade-gtk.c:5799
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -2062,139 +2068,139 @@ msgstr ""
 "  * Järjestä uudestaan raahaamalla.\n"
 "  * Tyyppi-saraketta voi muokata."
 
-#: ../plugins/gtk+/glade-gtk.c:5767 ../plugins/gtk+/glade-gtk.c:6282
+#: ../plugins/gtk+/glade-gtk.c:5815 ../plugins/gtk+/glade-gtk.c:6330
 msgid "Edit Menu Bar"
 msgstr "Muokkaa valikkopalkkia"
 
-#: ../plugins/gtk+/glade-gtk.c:5769 ../plugins/gtk+/glade-gtk.c:6284
+#: ../plugins/gtk+/glade-gtk.c:5817 ../plugins/gtk+/glade-gtk.c:6332
 msgid "Edit Menu"
 msgstr "Muokkaa valikkoa"
 
-#: ../plugins/gtk+/glade-gtk.c:6020
+#: ../plugins/gtk+/glade-gtk.c:6068
 msgid "Print S_etup"
 msgstr "Tulostusas_etukset"
 
-#: ../plugins/gtk+/glade-gtk.c:6024
+#: ../plugins/gtk+/glade-gtk.c:6072
 msgid "Find Ne_xt"
 msgstr "Etsi _seuraava"
 
-#: ../plugins/gtk+/glade-gtk.c:6028
+#: ../plugins/gtk+/glade-gtk.c:6076
 msgid "_Undo Move"
 msgstr "_Peru siirto"
 
-#: ../plugins/gtk+/glade-gtk.c:6032
+#: ../plugins/gtk+/glade-gtk.c:6080
 msgid "_Redo Move"
 msgstr "_Siirrä uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:6035
+#: ../plugins/gtk+/glade-gtk.c:6083
 msgid "Select _All"
 msgstr "Valitse k_aikki"
 
-#: ../plugins/gtk+/glade-gtk.c:6038
+#: ../plugins/gtk+/glade-gtk.c:6086
 msgid "_New Game"
 msgstr "_Uusi peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6041
+#: ../plugins/gtk+/glade-gtk.c:6089
 msgid "_Pause game"
 msgstr "_Pysäytä peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6044
+#: ../plugins/gtk+/glade-gtk.c:6092
 msgid "_Restart Game"
 msgstr "A_loita peli uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:6047
+#: ../plugins/gtk+/glade-gtk.c:6095
 msgid "_Hint"
 msgstr "_Vihje"
 
-#: ../plugins/gtk+/glade-gtk.c:6050
+#: ../plugins/gtk+/glade-gtk.c:6098
 msgid "_Scores..."
 msgstr "_Tulokset..."
 
-#: ../plugins/gtk+/glade-gtk.c:6053
+#: ../plugins/gtk+/glade-gtk.c:6101
 msgid "_End Game"
 msgstr "_Lopeta peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6056
+#: ../plugins/gtk+/glade-gtk.c:6104
 msgid "Create New _Window"
 msgstr "Luo uusi _ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:6059
+#: ../plugins/gtk+/glade-gtk.c:6107
 msgid "_Close This Window"
 msgstr "_Sulje tämä ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:6071
+#: ../plugins/gtk+/glade-gtk.c:6119
 msgid "_Settings"
 msgstr "_Asetukset"
 
-#: ../plugins/gtk+/glade-gtk.c:6074
+#: ../plugins/gtk+/glade-gtk.c:6122
 msgid "Fi_les"
 msgstr "_Tiedostot"
 
-#: ../plugins/gtk+/glade-gtk.c:6077
+#: ../plugins/gtk+/glade-gtk.c:6125
 msgid "_Windows"
 msgstr "_Ikkunat"
 
-#: ../plugins/gtk+/glade-gtk.c:6083
+#: ../plugins/gtk+/glade-gtk.c:6131
 msgid "_Game"
 msgstr "_Peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6179
+#: ../plugins/gtk+/glade-gtk.c:6227
 msgid "This does not apply with stock items"
 msgstr "Tämä ei koske vakiokohtia"
 
-#: ../plugins/gtk+/glade-gtk.c:6557
+#: ../plugins/gtk+/glade-gtk.c:6605
 msgid "<custom>"
 msgstr "<oma>"
 
-#: ../plugins/gtk+/glade-gtk.c:6610 ../plugins/gtk+/gtk+.xml.in.h:37
+#: ../plugins/gtk+/glade-gtk.c:6658 ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button"
 msgstr "Painike"
 
-#: ../plugins/gtk+/glade-gtk.c:6611
+#: ../plugins/gtk+/glade-gtk.c:6659
 msgid "Toggle"
 msgstr "Vipu"
 
-#: ../plugins/gtk+/glade-gtk.c:6613 ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/glade-gtk.c:6661 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Menu"
 msgstr "Valikko"
 
-#: ../plugins/gtk+/glade-gtk.c:6614
+#: ../plugins/gtk+/glade-gtk.c:6662
 msgid "Item"
 msgstr "Kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6619
+#: ../plugins/gtk+/glade-gtk.c:6667
 msgid "Add Tool Button"
 msgstr "Lisää työkalupainike"
 
-#: ../plugins/gtk+/glade-gtk.c:6620
+#: ../plugins/gtk+/glade-gtk.c:6668
 msgid "Add Toggle Button"
 msgstr "Lisää vipupainike"
 
-#: ../plugins/gtk+/glade-gtk.c:6621
+#: ../plugins/gtk+/glade-gtk.c:6669
 msgid "Add Radio Button"
 msgstr "Lisää vaihtoehtopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:6622
+#: ../plugins/gtk+/glade-gtk.c:6670
 msgid "Add Menu Button"
 msgstr "Lisää valikkopainike"
 
-#: ../plugins/gtk+/glade-gtk.c:6623
+#: ../plugins/gtk+/glade-gtk.c:6671
 msgid "Add Tool Item"
 msgstr "Lisää työkalun kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6632
+#: ../plugins/gtk+/glade-gtk.c:6680
 msgid "Tool Bar Editor"
 msgstr "Työkalupalkin muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:7728
+#: ../plugins/gtk+/glade-gtk.c:7776
 msgid "Introduction page"
 msgstr "Esittelysivu"
 
-#: ../plugins/gtk+/glade-gtk.c:7732
+#: ../plugins/gtk+/glade-gtk.c:7780
 msgid "Content page"
 msgstr "Sisältösivu"
 
-#: ../plugins/gtk+/glade-gtk.c:7736
+#: ../plugins/gtk+/glade-gtk.c:7784
 msgid "Confirmation page"
 msgstr "Vahvistussivu"
 
@@ -3395,12 +3401,8 @@ msgid "The position of the tool item in the toolbar"
 msgstr "Työkalun sijainti työkalupalkissa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:317
-msgid ""
-"The response ID of this button in a dialog (it's NOT useful if this button "
-"is not in a GtkDialog)"
-msgstr ""
-"Tämän painikkeen vastetunniste valintaikkunassa. Tämä ei ole hyöydyllinen "
-"jos painike ei ole GtkDialog-elementissä."
+msgid "The response ID of this button in a dialog"
+msgstr "Tämän painikkeen vastetunniste valintaikkunassa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "The stock item for this button"
@@ -3982,6 +3984,9 @@ msgstr "Valintatila"
 #: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The width of each icon"
 msgstr "Kuvakkeiden leveys"
+
+#~ msgid "Error shutting down io channel %s: %s"
+#~ msgstr "IO-kanavaa %s ei voitu sulkea: %s"
 
 #~ msgid "%s [%s] - Properties"
 #~ msgstr "%s [%s] - ominaisuudet"
