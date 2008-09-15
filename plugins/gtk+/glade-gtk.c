@@ -7249,6 +7249,37 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 	}
 }
 
+gchar *
+glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
+				   GladePropertyClass *klass,
+				   const GValue       *value)
+{
+	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
+	{
+		GList *l, *list = g_value_get_boxed (value);
+		GString *string = g_string_new ("");
+		gchar *str;
+		
+		for (l = list; l; l = g_list_next (l))
+		{
+			GladeAttribute *attr = l->data;
+			
+			/* Return something usefull at least to for the backend to compare */
+			gchar *attr_str = glade_gtk_string_from_attr (attr);
+			g_string_append_printf (string, "%d=%s ", attr->type, attr_str);
+			g_free (attr_str);
+		}
+		str = string->str;
+		g_string_free (string, FALSE);		
+		return str;
+	}
+	else
+		return GWA_GET_CLASS 
+			(GTK_TYPE_WIDGET)->string_from_value (adaptor, 
+							      klass, 
+							      value);
+}
+
 
 /* ----------------------------- GtkTextView ------------------------------ */
 static void
