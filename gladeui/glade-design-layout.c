@@ -274,12 +274,16 @@ glade_design_layout_deepest_gwidget_at_position (GtkContainer *toplevel,
 	gtk_container_forall (container, (GtkCallback)
 			      glade_design_layout_find_inside_container, &data);
 
-	if (data.found && GTK_IS_CONTAINER (data.found))
-		ret_widget = glade_design_layout_deepest_gwidget_at_position
-			(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
-	else if (data.found)
-		ret_widget = glade_widget_get_from_gobject (data.found);
-	else
+	if (data.found)
+	{
+		if (GTK_IS_CONTAINER (data.found))
+			ret_widget = glade_design_layout_deepest_gwidget_at_position
+				(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
+		else
+			ret_widget = glade_widget_get_from_gobject (data.found);
+	}
+
+	if (!ret_widget)
 		ret_widget = glade_widget_get_from_gobject (container);
 
 	return ret_widget;
