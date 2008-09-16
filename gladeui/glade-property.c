@@ -97,7 +97,16 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	property->value   = g_new0 (GValue, 1);
 
 	g_value_init (property->value, template_prop->value->g_type);
-	g_value_copy (template_prop->value, property->value);
+	/* Cannot duplicate parentless_widget property */
+	if (template_prop->klass->parentless_widget)
+	{
+		if (!G_IS_PARAM_SPEC_OBJECT (template_prop->klass->pspec))
+			g_warning ("Parentless widget property should be of object type");
+
+		g_value_set_object (property->value, NULL);
+	}
+	else
+		g_value_copy (template_prop->value, property->value);
 
 	/* Need value in place here ... */
 	glade_property_set_enabled (property, template_prop->enabled);
@@ -142,13 +151,15 @@ glade_property_update_prop_refs (GladeProperty *property,
 		{
 			old_object = list->data;
 			gold = glade_widget_get_from_gobject (old_object);
-			glade_widget_remove_prop_ref (gold, property);
+			if (gold != NULL)
+				glade_widget_remove_prop_ref (gold, property);
 		}
 		for (list = added; list; list = list->next)
 		{
 			new_object = list->data;
 			gnew = glade_widget_get_from_gobject (new_object);
-			glade_widget_add_prop_ref (gnew, property);
+			if (gnew != NULL)
+				glade_widget_add_prop_ref (gnew, property);
 		}
 
 		g_list_free (removed);
@@ -161,12 +172,14 @@ glade_property_update_prop_refs (GladeProperty *property,
 		if ((old_object = g_value_get_object (old_value)) != NULL)
 		{
 			gold = glade_widget_get_from_gobject (old_object);
+			g_return_if_fail (gold != NULL);
 			glade_widget_remove_prop_ref (gold, property);
 		}
 		
 		if ((new_object = g_value_get_object (new_value)) != NULL)
 		{
 			gnew = glade_widget_get_from_gobject (new_object);
+			g_return_if_fail (gnew != NULL);
 			glade_widget_add_prop_ref (gnew, property);
 		}
 	}
@@ -227,7 +240,7 @@ glade_property_fix_state (GladeProperty *property)
 }
 
 
-static void
+static gboolean
 glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 {
 	GladeProject *project = property->widget ?
@@ -251,7 +264,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	{
 		g_warning ("Trying to assign an incompatible value to property %s\n",
 			    property->klass->id);
-		return;
+		return FALSE;
 	}
 
 	/* Check if the backend doesnt give us permission to
@@ -260,12 +273,13 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	if (glade_property_superuser () == FALSE && property->widget &&
 	    project && glade_project_is_loading (project) == FALSE &&
 	    glade_property_verify (property, value) == FALSE)
-		return;
+	{
+		return FALSE;
+	}
 	
 	/* save "changed" state.
 	 */
-	changed = g_param_values_cmp (property->klass->pspec, 
-				      property->value, value) != 0;
+	changed = !glade_property_equals_value (property, value);
 
 
 	/* Add/Remove references from widget ref stacks here
@@ -299,6 +313,8 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	}
 	
 	g_value_unset (&old_value);
+
+	return TRUE;
 }
 
 static void
@@ -374,7 +390,7 @@ glade_property_load_impl (GladeProperty *property)
 	oclass = G_OBJECT_GET_CLASS (object);
 	
 	if (g_object_class_find_property (oclass, property->klass->id))
-		g_object_get_property (object, property->klass->id, property->value);
+		glade_widget_object_get_property (property->widget, property->klass->id, property->value);
 }
 
 /*******************************************************************************
@@ -798,12 +814,12 @@ glade_property_equals (GladeProperty *property, ...)
  *
  * Sets the property's value
  */
-void
+gboolean
 glade_property_set_value (GladeProperty *property, const GValue *value)
 {
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-	g_return_if_fail (value != NULL);
-	GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+	g_return_val_if_fail (value != NULL, FALSE);
+	return GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
 }
 
 /**
@@ -813,19 +829,22 @@ glade_property_set_value (GladeProperty *property, const GValue *value)
  *
  * Sets the property's value
  */
-void
+gboolean
 glade_property_set_va_list (GladeProperty *property, va_list vl)
 {
 	GValue  *value;
+	gboolean success;
 
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 
 	value = glade_property_class_make_gvalue_from_vl (property->klass, vl);
 
-	GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
-	
+	success = GLADE_PROPERTY_GET_KLASS (property)->set_value (property, value);
+
 	g_value_unset (value);
 	g_free (value);
+
+	return success;
 }
 
 /**
@@ -835,16 +854,19 @@ glade_property_set_va_list (GladeProperty *property, va_list vl)
  *
  * Sets the property's value (in a convenient way)
  */
-void
+gboolean
 glade_property_set (GladeProperty *property, ...)
 {
 	va_list  vl;
+	gboolean success;
 
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
 
 	va_start (vl, property);
-	glade_property_set_va_list (property, vl);
+	success = glade_property_set_va_list (property, vl);
 	va_end (vl);
+
+	return success;
 }
 
 /**
@@ -1286,14 +1308,8 @@ glade_property_remove_object (GladeProperty  *property,
 	}
 	else
 	{
-		glade_property_set (property, object);
+		glade_property_set (property, NULL);
 	}
-
-	glade_property_class_get_from_gvalue (property->klass,
-					      property->value,
-					      &list);
-
-	glade_property_set (property, list);
 }
 
 /* Parameters for translatable properties. */

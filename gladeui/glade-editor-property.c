@@ -2345,7 +2345,8 @@ static void
 glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 				       GtkTreeStore        *model,
 				       GList               *widgets,
-				       GtkTreeIter         *parent_iter)
+				       GtkTreeIter         *parent_iter,
+				       gboolean             recurse)
 {
 	GList *children, *list;
 	GtkTreeIter       iter;
@@ -2360,7 +2361,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 
 			if (GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec))
 			{
-				has_decendant = glade_widget_has_decendant 
+				has_decendant = recurse && glade_widget_has_decendant 
 					(widget, 
 					 glade_param_spec_objects_get_type 
 					 (GLADE_PARAM_SPEC_OBJECTS(eprop->klass->pspec)));
@@ -2377,14 +2378,17 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 			}
 			else
 			{
-				has_decendant = glade_widget_has_decendant 
+				has_decendant = recurse && glade_widget_has_decendant 
 					(widget, eprop->klass->pspec->value_type);
 
 				good_type = g_type_is_a (widget->adaptor->type, 
 							 eprop->klass->pspec->value_type);
 
 			}
-			
+
+			if (eprop->klass->parentless_widget)
+				good_type = good_type && !GWA_IS_TOPLEVEL (widget->adaptor);
+
 			if (good_type || has_decendant)
 			{
 				gtk_tree_store_append (model, &iter, parent_iter);
@@ -2412,7 +2416,7 @@ glade_eprop_object_populate_view_real (GladeEditorProperty *eprop,
 				GtkTreeIter *copy = NULL;
 
 				copy = gtk_tree_iter_copy (&iter);
-				glade_eprop_object_populate_view_real (eprop, model, children, copy);
+				glade_eprop_object_populate_view_real (eprop, model, children, copy, recurse);
 				gtk_tree_iter_free (copy);
 
 				g_list_free (children);
@@ -2441,7 +2445,7 @@ glade_eprop_object_populate_view (GladeEditorProperty *eprop,
 	}
 
 	/* add the widgets and recurse */
-	glade_eprop_object_populate_view_real (eprop, model, toplevels, NULL);
+	glade_eprop_object_populate_view_real (eprop, model, toplevels, NULL, !eprop->klass->parentless_widget);
 	g_list_free (toplevels);
 }
 
@@ -2698,7 +2702,38 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 			GValue *value = glade_property_class_make_gvalue_from_string
 				(eprop->klass, selected->name, project);
 
-			glade_editor_property_commit (eprop, value);
+			/* Unparent the widget so we can reuse it for this property */
+			if (eprop->klass->parentless_widget)
+			{
+				GObject *new_object, *old_object = NULL;
+				GladeWidget *new_widget;
+				GladeProperty *old_ref;
+
+				if (!G_IS_PARAM_SPEC_OBJECT (eprop->klass->pspec))
+					g_warning ("Parentless widget property should be of object type");
+				else
+				{
+					glade_property_get (eprop->property, &old_object);
+					new_object = g_value_get_object (value);
+					new_widget = glade_widget_get_from_gobject (new_object);
+
+					if (new_object && old_object != new_object &&
+					    (old_ref = glade_widget_get_parentless_widget_ref (new_widget)))
+					{
+						gchar *desc = g_strdup_printf (_("Setting %s of %s to %s"),
+									       eprop->property->klass->name,
+									       eprop->property->widget->name, 
+									       new_widget->name);
+						glade_command_push_group (desc);
+						glade_command_set_property (old_ref, NULL);
+						glade_editor_property_commit (eprop, value);
+						glade_command_pop_group ();
+						g_free (desc);
+					}
+				}
+			} 
+			else
+				glade_editor_property_commit (eprop, value);
 
 			g_value_unset (value);
 			g_free (value);

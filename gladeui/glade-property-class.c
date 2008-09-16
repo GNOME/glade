@@ -1497,6 +1497,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->weight      = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,      klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
+	klass->parentless_widget = glade_xml_get_property_boolean (node, GLADE_TAG_PARENTLESS_WIDGET, klass->parentless_widget);
 	
 
 	/* Special case pixbuf here.

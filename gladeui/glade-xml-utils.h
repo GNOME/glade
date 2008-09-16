@@ -79,6 +79,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_SIGNALS                         "signals"
 #define GLADE_TAG_SIGNAL                          "signal"
 #define GLADE_TAG_DEFAULT                         "default"
+#define GLADE_TAG_PARENTLESS_WIDGET               "parentless-widget"
 #define GLADE_TAG_DISABLED                        "disabled"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"

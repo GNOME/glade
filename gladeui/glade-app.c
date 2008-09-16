@@ -300,7 +300,7 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 	/* class may be NULL if the selector was pressed */
 	if (adaptor && GWA_IS_TOPLEVEL (adaptor))
 	{
-		widget = glade_command_create (adaptor, NULL, NULL, app->priv->active_project);
+		widget = glade_palette_create_root_widget (palette, adaptor);
 		
 		/* if this is a top level widget set the accel group */
 		if (widget && app->priv->accel_group && GTK_IS_WINDOW (widget->object))
@@ -308,8 +308,6 @@ on_palette_button_clicked (GladePalette *palette, GladeApp *app)
 			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
 						    app->priv->accel_group);
 		}
-
-		glade_palette_deselect_current_item (palette, FALSE);
 	}
 }
 
@@ -1295,18 +1293,6 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 			 */
 			if (glade_widget_placeholder_relation (parent, widget))
 				placeholder_relations++;
-		}
-
-		/* Check if there is no parent and at least on of the pasted
-		 * widgets is not a toplevel 
-		 */
-		else if (!GWA_IS_TOPLEVEL (widget->adaptor) && !parent)
-		{
-			glade_util_ui_message (glade_app_get_window (),
-					       GLADE_UI_INFO, NULL, 
-					       _("Unable to paste widget %s without a parent"),
-					       widget->name);
-			return;
 		}
 	}
 

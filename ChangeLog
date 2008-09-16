@@ -1,3 +1,109 @@
+2008-09-16  Pavel Kostyuchenko <ShprotX@gmail.com>
+
+        * gladeui/glade-app.c:
+          Creating toplevel widget through unified glade-palette interface.
+          Removed error message when pasting non-toplevel widgets without
+          a parent.
+
+        * gladeui/glade-command.h: A new function for getting depth of command recursion
+
+        * gladeui/glade-command.c:
+          A new function for getting depth of command recursion.
+          A return value of glade_command_set_property_execute function is valid
+          and is respected by glade_command_set_properties_list.
+          indicate success/failure of their execution.
+          Glade-command can be unified to null.
+          Setting property command is always executed as a group, so if there is
+          any recursive command, they will be added to that group.
+          Removed parentless widget message level lowered from critical to
+          message.
+          Widget is treated as toplevel only if it has no parent.
+          Removed an assertion from glade_command_create that doesn't allow
+          creation of non-GtkWindow parentless widgets
+
+        * gladeui/glade-editor-property.c:
+          Object selection dialog will be optionally filled by parentless
+          non-GtkWindow widgets only
+          Unparenting root widgets before setting another property to them
+
+        * gladeui/glade-inspector.c:
+          Popup for clicking even on empty part of widget list
+
+        * gladeui/glade-palette.h:
+          A unified function for creating root widgets
+
+        * gladeui/glade-palette.c:
+          A unified function for creating root widgets
+          A new button for creating root widgets
+
+        * gladeui/glade-placeholder.[ch]:
+          glade_placeholder_get_project has been made public for using in
+          glade-popup
+
+        * gladeui/glade-popup.c:
+          A new function glade_popup_simple_pop for creating a context menu on
+          an empty space of glade-inspector
+          New context menu items for adding widgets
+
+        * gladeui/glade-popup.h:
+          A new function glade_popup_simple_pop for creating a context menu on
+          an empty space of glade-inspector
+
+        * gladeui/glade-project.c:
+          Unifying command even if there's redo items.
+          Unifying atomic commands only.
+          Unifying to null
+
+        * gladeui/glade-property-class.[ch]:
+          A new field for making properties that points to parentless widgets
+
+        * gladeui/glade-property.h:
+          Added a return value to glade_property_set* functions to indicate
+          success/failure that is used in glade-command
+
+        * gladeui/glade-property.c:
+          Ignoring parentless_widget properties while duplicating properties.
+          Additional check while adding/removing property reference
+          Added a return value to glade_property_set* functions to indicate
+          success/failure that is used in glade-command.
+          Determining that property is changed using glade-proproperty method
+          instead of direct comparing GValue.
+          Loading properties through glade-widget-adaptor interface instead of
+          getting them directly.
+          remove_object method now unsets referencing property instead of
+          setting it.
+          Removed dummy duplicated setting of property while unsetting
+          referencing property.
+
+        * gladeui/glade-property.h:
+          Added a return value to glade_property_set* functions to indicate
+          success/failure that is used in glade-command.
+
+        * gladeui/glade-widget.c:
+          Removed setting widget properties to template/default values while
+          building a new object, because they will be set later in constructor.
+          Reloading properties after duplicating a widget.
+          A new function for removing parent reference, that was made by setting
+          parentless_widget property to the widget.
+          Saving and loading parentless_widget properties while rebuilding,
+          because they cannot be duplicated.
+          Corrected destroying of an old widget while rebuilding. Seems like
+          it's not fully correct still.
+
+        * gladeui/glade-widget.h:
+          A new function for removing parent reference, that was made by setting
+          parentless_widget property to the widget.
+
+        * gladeui/glade-xml-utils.h:
+          A new tag "parentless-widget" as a property attribute
+
+        * plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+          Removed an old hack for "image" property of GtkMessageDialog.
+          A new implementation of "image" property using parentless_widget
+          kind of property.
+          Added an ability of working with parentless widgets using
+          "remove parent" and "add parent" items of context menu
+
 2008-09-16  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-design-layout.c: Fixed calculation to get deepest

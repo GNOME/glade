@@ -1022,7 +1022,6 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_dialog_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_dialog_get_children</get-children-function>
-      <set-property-function>glade_gtk_dialog_set_property</set-property-function>
       <properties>
 	<property id="default-width"  default="320" optional="True" optional-default="False"/>
 	<property id="default-height" default="260" optional="True" optional-default="False"/>
@@ -1489,6 +1488,10 @@ embedded in another object</_tooltip>
     </glade-widget-class>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
+      <set-property-function>glade_gtk_message_dialog_set_property</set-property-function>
+      <get-property-function>glade_gtk_message_dialog_get_property</get-property-function>
+      <verify-function>glade_gtk_message_dialog_verify_property</verify-function>
+
       <properties>
 	<property id="default-width"  default="400" optional="True" optional-default="False"/>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
@@ -1498,7 +1501,7 @@ embedded in another object</_tooltip>
 	<property common="True" id="has-default"/>
 	<property common="True" id="can-focus"/>
 
-	<property id="image" since="2.10"/>
+	<property id="image" since="2.10" parentless-widget="True"/>
 	<property id="secondary-text" since="2.10"/>
 	<property id="secondary-use-markup" since="2.10"/>
 	<property id="text" since="2.10"/>

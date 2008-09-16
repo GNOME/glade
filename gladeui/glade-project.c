@@ -387,43 +387,29 @@ glade_project_next_redo_item_impl (GladeProject *project)
 		return l->next ? GLADE_COMMAND (l->next->data) : NULL;
 }
 
+static GList *
+glade_project_free_undo_item (GladeProject *project, GList *item)
+{
+	g_assert (item->data);
+
+	if (item == project->priv->first_modification)
+		project->priv->first_modification_is_na = TRUE;
+
+	g_object_unref (G_OBJECT (item->data));
+
+	return g_list_next (item);
+}
+
 static void
 glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 {
 	GladeProjectPrivate *priv = project->priv;
 	GList *tmp_redo_item;
 
-	/* If there are no "redo" items, and the last "undo" item unifies with
-	   us, then we collapse the two items in one and we're done */
-	if (priv->prev_redo_item != NULL && priv->prev_redo_item->next == NULL)
-	{
-		GladeCommand *cmd1 = priv->prev_redo_item->data;
-		
-		if (glade_command_unifies (cmd1, cmd))
-		{
-			glade_command_collapse (cmd1, cmd);
-			g_object_unref (cmd);
-
-			g_signal_emit (G_OBJECT (project),
-				       glade_project_signals [CHANGED],
-				       0, cmd1, TRUE);
-			return;
-		}
-	}
-
 	/* We should now free all the "redo" items */
 	tmp_redo_item = g_list_next (priv->prev_redo_item);
 	while (tmp_redo_item)
-	{
-		g_assert (tmp_redo_item->data);
-		
-		if (tmp_redo_item == priv->first_modification)
-			priv->first_modification_is_na = TRUE;
-		
-		g_object_unref (G_OBJECT (tmp_redo_item->data));
-		
-		tmp_redo_item = g_list_next (tmp_redo_item);
-	}
+		tmp_redo_item = glade_project_free_undo_item (project, tmp_redo_item);
 
 	if (priv->prev_redo_item)
 	{
@@ -434,6 +420,40 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 	{
 		g_list_free (priv->undo_stack);
 		priv->undo_stack = NULL;
+	}
+
+	/* Try to unify only if group depth is 0 */
+	if (glade_command_get_group_depth() == 0 &&
+	    priv->prev_redo_item != NULL)
+	{
+		GladeCommand *cmd1 = priv->prev_redo_item->data;
+		gboolean is_atomic = FALSE;
+
+		/* Cannot unify with a part of a command group.
+		 * Unify atomic commands only
+		 */
+		if (cmd1->group_id == 0 || cmd->group_id == 0 ||
+		    cmd->group_id != cmd1->group_id)
+			is_atomic = TRUE;
+
+		if (is_atomic && glade_command_unifies (cmd1, cmd))
+		{
+			glade_command_collapse (cmd1, cmd);
+			g_object_unref (cmd);
+
+			if (glade_command_unifies (cmd1, NULL))
+			{
+				tmp_redo_item = priv->prev_redo_item;
+				glade_project_walk_back (project);
+				glade_project_free_undo_item (project, tmp_redo_item);
+				priv->undo_stack = g_list_delete_link (priv->undo_stack, tmp_redo_item);
+			}
+
+			g_signal_emit (G_OBJECT (project),
+				       glade_project_signals [CHANGED],
+				       0, NULL, TRUE);
+			return;
+		}
 	}
 
 	/* and then push the new undo item */

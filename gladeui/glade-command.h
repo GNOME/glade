@@ -72,6 +72,8 @@ void           glade_command_push_group    (const gchar       *fmt,
 
 void           glade_command_pop_group     (void);
 
+gint           glade_command_get_group_depth (void);
+
 
 gboolean       glade_command_execute       (GladeCommand      *command);
 

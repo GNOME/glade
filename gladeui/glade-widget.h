@@ -269,6 +269,8 @@ void                    glade_widget_add_prop_ref           (GladeWidget      *w
 void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
 							     GladeProperty    *property);
 
+GladeProperty          *glade_widget_get_parentless_widget_ref (GladeWidget  *widget);
+
 /*******************************************************************************
             Functions that deal with properties on the runtime object
  *******************************************************************************/

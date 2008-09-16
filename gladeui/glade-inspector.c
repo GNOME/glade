@@ -521,27 +521,31 @@ button_press_cb (GtkWidget      *widget,
 	GtkTreePath      *path      = NULL;
 	gboolean          handled   = FALSE;
 
-	if (event->window == gtk_tree_view_get_bin_window (view) &&
-	    gtk_tree_view_get_path_at_pos (view, (gint) event->x, (gint) event->y,
+	if (event->window == gtk_tree_view_get_bin_window (view))
+	{
+		if (gtk_tree_view_get_path_at_pos (view, (gint) event->x, (gint) event->y,
 					   &path, NULL, 
 					   NULL, NULL) && path != NULL)
-	{
-		GtkTreeIter  iter;
-		GladeWidget *widget = NULL;
-		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (inspector->priv->model),
-					     &iter, path))
 		{
-			/* now we can obtain the widget from the iter.
-			 */
-			gtk_tree_model_get (GTK_TREE_MODEL (inspector->priv->model), &iter,
-					    WIDGET_COLUMN, &widget, -1);
-			if (widget != NULL && event->button == 3)
+			GtkTreeIter  iter;
+			GladeWidget *widget = NULL;
+			if (gtk_tree_model_get_iter (GTK_TREE_MODEL (inspector->priv->model),
+							 &iter, path))
 			{
-				glade_popup_widget_pop (widget, event, FALSE);
-				handled = TRUE;
+				/* now we can obtain the widget from the iter.
+				 */
+				gtk_tree_model_get (GTK_TREE_MODEL (inspector->priv->model), &iter,
+							WIDGET_COLUMN, &widget, -1);
+				if (widget != NULL && event->button == 3)
+				{
+					glade_popup_widget_pop (widget, event, FALSE);
+					handled = TRUE;
+				}
+				gtk_tree_path_free (path);
 			}
-			gtk_tree_path_free (path);
 		}
+		else
+			glade_popup_simple_pop (event);
 	}
 	return handled;
 }

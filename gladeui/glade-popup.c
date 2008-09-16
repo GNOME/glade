@@ -47,6 +47,64 @@ glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 		(glade_widget_get_object (widget), TRUE);
 }
 
+static GladePlaceholder *
+find_placeholder (GObject *object)
+{
+	GtkContainer *container;
+	GladePlaceholder *retval = NULL;
+	GtkWidget *child;
+	GList *c, *l;
+
+	if (!GTK_IS_CONTAINER (object))
+		return NULL;
+
+	container = GTK_CONTAINER (object);
+	
+	for (c = l = glade_util_container_get_all_children (container);
+	     l;
+	     l = g_list_next (l))
+	{
+		child = l->data;
+		
+		if (GLADE_IS_PLACEHOLDER (child))
+		{
+			retval = GLADE_PLACEHOLDER (child);
+			break;
+		}
+	}
+	
+	g_list_free (c);
+
+	return retval;
+}
+
+static void
+glade_popup_placeholder_add_cb (GtkMenuItem *item, GladePlaceholder *placeholder)
+{
+	GladeWidgetAdaptor *adaptor;
+	
+	adaptor = glade_palette_get_current_item (glade_app_get_palette ());
+	g_return_if_fail (adaptor != NULL);
+	
+	glade_command_create (adaptor, glade_placeholder_get_parent (placeholder),
+						  placeholder, glade_placeholder_get_project (placeholder));
+						  
+	glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
+}
+
+static void
+glade_popup_root_add_cb (GtkMenuItem *item, gpointer *user_data)
+{
+	GladeWidgetAdaptor *adaptor;
+	GladePalette *palette;
+	
+	palette = glade_app_get_palette ();
+	adaptor = glade_palette_get_current_item (palette);
+	g_return_if_fail (adaptor != NULL);
+	
+	glade_palette_create_root_widget (palette, adaptor);
+}
+
 static void
 glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 {
@@ -325,8 +383,35 @@ glade_popup_create_menu (GladeWidget      *widget,
 {
 	GtkWidget *popup_menu;
 	gboolean   sensitive;
+	GladePlaceholder *tmp_placeholder;
+
+	sensitive = glade_palette_get_current_item (glade_app_get_palette ()) != NULL;
+
+	if (!sensitive && !widget)
+		return NULL;
 
 	popup_menu = gtk_menu_new ();
+	
+	if (sensitive)
+	{		
+		tmp_placeholder = placeholder;
+		if (!tmp_placeholder && widget)
+			tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
+		glade_popup_append_item (popup_menu, NULL, _("_Add widget here"), tmp_placeholder != NULL,
+					 glade_popup_placeholder_add_cb, tmp_placeholder);
+		glade_popup_append_item (popup_menu, NULL, _("Add widget as _root"), TRUE,
+					 glade_popup_root_add_cb, NULL);
+	}
+
+	if (!widget)
+		return popup_menu;
+		
+	if (sensitive)
+	{
+		GtkWidget *separator = gtk_menu_item_new ();		
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+		gtk_widget_show (separator);
+	}
 
 	glade_popup_append_item (popup_menu, NULL, _("_Select"), TRUE,
 				 glade_popup_select_cb, widget);
@@ -418,7 +503,7 @@ glade_popup_widget_pop (GladeWidget *widget,
 	gint button;
 	gint event_time;
 
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (widget) || widget == NULL);
 
 	popup_menu = glade_popup_create_menu (widget, NULL, packing);
 
@@ -492,3 +577,29 @@ glade_popup_clipboard_pop (GladeWidget    *widget,
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
 			NULL, NULL, button, event_time);
 }
+
+void
+glade_popup_simple_pop (GdkEventButton *event)
+{
+	GtkWidget *popup_menu;
+	gint button;
+	gint event_time;
+	
+	popup_menu = glade_popup_create_menu (NULL, NULL, FALSE);
+	if (!popup_menu)
+		return;
+
+	if (event)
+	{
+		button = event->button;
+		event_time = event->time;
+	}
+	else
+	{
+		button = 0;
+		event_time = gtk_get_current_event_time ();
+	}
+	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
+		NULL, NULL, button, event_time);
+}
+

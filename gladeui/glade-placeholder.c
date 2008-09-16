@@ -259,7 +259,7 @@ glade_placeholder_send_configure (GladePlaceholder *placeholder)
 	gdk_event_free (event);
 }
 
-static GladeProject*
+GladeProject*
 glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
 	GladeWidget *parent;

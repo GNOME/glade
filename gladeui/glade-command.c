@@ -293,6 +293,12 @@ glade_command_pop_group (void)
 			    G_GNUC_PRETTY_FUNCTION);
 }
 
+gint
+glade_command_get_group_depth (void)
+{
+	return gc_group_depth;
+}
+
 static void
 glade_command_check_group (GladeCommand *cmd)
 {
@@ -343,6 +349,8 @@ glade_command_set_property_execute (GladeCommand *cmd)
 {
 	GladeCommandSetProperty* me = (GladeCommandSetProperty*) cmd;
 	GList *l;
+	gboolean success;
+	gboolean retval = FALSE;
 
 	g_return_val_if_fail (me != NULL, FALSE);
 
@@ -395,9 +403,10 @@ glade_command_set_property_execute (GladeCommand *cmd)
 			}
 		}
 
-		glade_property_set_value (sdata->property, &new_value);
+		success = glade_property_set_value (sdata->property, &new_value);
+		retval = retval || success;
 
-		if (!me->set_once)
+		if (!me->set_once && success)
 		{
 			/* If some verify functions didnt pass on 
 			 * the first go.. we need to record the actual
@@ -419,7 +428,7 @@ glade_command_set_property_execute (GladeCommand *cmd)
 	me->set_once = TRUE;
 	me->undo     = !me->undo;
 
-	return TRUE;
+	return retval;
 }
 
 static void
@@ -457,6 +466,27 @@ glade_command_set_property_unifies (GladeCommand *this_cmd, GladeCommand *other_
        GladeCommandSetProperty *cmd1,   *cmd2;
        GCSetPropData           *pdata1, *pdata2;
        GList                   *list, *l;
+
+	if (!other_cmd)
+	{
+		if (GLADE_IS_COMMAND_SET_PROPERTY (this_cmd))
+		{
+			cmd1 = (GladeCommandSetProperty*) this_cmd;
+			
+			for (list = cmd1->sdata; list; list = list->next)
+			{
+				pdata1 = list->data;
+
+				if (glade_property_class_compare (pdata1->property->klass,
+								  pdata1->old_value,
+								  pdata1->new_value))
+					return FALSE;
+			}
+			return TRUE;
+				
+		}
+		return FALSE;
+	}
 
        if (GLADE_IS_COMMAND_SET_PROPERTY (this_cmd) && 
 	   GLADE_IS_COMMAND_SET_PROPERTY (other_cmd))
@@ -579,6 +609,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 	GladeCommand  *cmd;
 	GCSetPropData *sdata;
 	GList         *list;
+	gboolean       success;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (props);
@@ -594,12 +625,17 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 	}
 
 	me->sdata        = props;
-	cmd->description = glade_command_set_property_description (me);
+	cmd->description = NULL;
 
+	glade_command_push_group (glade_command_set_property_description (me));
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	/* Push onto undo stack only if it executes successfully. */
-	if (glade_command_set_property_execute (GLADE_COMMAND (me)))
+	success = glade_command_set_property_execute (GLADE_COMMAND (me));
+
+	glade_command_pop_group ();
+	
+	if (success)
 		glade_project_push_undo (GLADE_PROJECT (project),
 					 GLADE_COMMAND (me));
 	else
@@ -932,7 +968,7 @@ glade_command_add (GList            *widgets,
 		else if (GTK_IS_WINDOW (widget->object) == FALSE)
 			cdata->parent = parent;
 		if (cdata->parent == NULL && GTK_IS_WINDOW (widget->object) == FALSE)
-			g_critical ("Parentless non GtkWindow widget in Add");
+			g_message ("Parentless non GtkWindow widget in Add");
 
 		/* Placeholder */
 		if (placeholder != NULL && g_list_length (widgets) == 1)
@@ -1237,7 +1273,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
 			/* Toplevels get pasted to the active project */
 			if (me->from_clipboard && 
-			    GTK_WIDGET_TOPLEVEL (cdata->widget->object))
+			    cdata->widget->parent == NULL)
 				glade_project_add_object 
 					(active_project, cdata->project,
 					 cdata->widget->object);
@@ -1560,8 +1596,6 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 	
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	if (GWA_IS_TOPLEVEL(adaptor) == FALSE)
-		g_return_val_if_fail (GLADE_IS_WIDGET(parent), NULL);
 		
 	/* attempt to create the widget -- widget may be null, e.g. the user clicked cancel on a query */
 	widget = glade_widget_adaptor_create_widget(adaptor, TRUE, "parent", parent, "project", project, NULL);

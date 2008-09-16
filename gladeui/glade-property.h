@@ -91,7 +91,7 @@ struct _GladePropertyKlass
 	/* Class methods */
 	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
 	gboolean                (* equals_value)          (GladeProperty *, const GValue *);
-	void                    (* set_value)             (GladeProperty *, const GValue *);
+	gboolean                (* set_value)             (GladeProperty *, const GValue *);
 	void                    (* get_value)             (GladeProperty *, GValue *);
 	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
@@ -127,13 +127,13 @@ gboolean                glade_property_equals_value          (GladeProperty     
 gboolean                glade_property_equals                (GladeProperty      *property, 
 							      ...);
 
-void                    glade_property_set_value             (GladeProperty      *property, 
+gboolean                glade_property_set_value             (GladeProperty      *property, 
 							      const GValue       *value);
 
-void                    glade_property_set_va_list           (GladeProperty      *property,
+gboolean                glade_property_set_va_list           (GladeProperty      *property,
 							      va_list             vl);
 
-void                    glade_property_set                   (GladeProperty      *property,
+gboolean                glade_property_set                   (GladeProperty      *property,
 							      ...);
 
 void                    glade_property_get_value             (GladeProperty      *property, 

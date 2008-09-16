@@ -508,7 +508,7 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor,
 {
 	GParameter          *params;
 	GObject             *object;
-	guint                n_params, i;
+	guint                n_params;
 	
 	if (reason == GLADE_CREATE_LOAD)
 		return g_object_new (adaptor->type, NULL);
@@ -521,18 +521,6 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor,
 	/* Create the new object with the correct parameters.
 	 */
 	object = g_object_newv (adaptor->type, n_params, params);
-
-	free_params (params, n_params);
-
-	if (widget)
-		params = glade_widget_template_params (widget, FALSE, &n_params);
-	else
-		params = glade_widget_adaptor_default_params (adaptor, FALSE, &n_params);
-
-	for (i = 0; i < n_params; i++)
-	{
-		g_object_set_property (object, params[i].name, &(params[i].value));
-	}
 
 	free_params (params, n_params);
 
@@ -1301,9 +1289,10 @@ glade_widget_dup_internal (GladeWidget *parent,
 {
 	GladeGetInternalFunc  get_internal;
 	GladeWidget *gwidget = NULL, *internal_parent;
-	GList       *list, *children;
+	GList       *children;
 	GtkWidget   *placeholder;
 	gchar       *child_type;
+	GList       *l;
 	
 	g_return_val_if_fail (template_widget != NULL && GLADE_IS_WIDGET(template_widget), NULL);
 	g_return_val_if_fail (parent == NULL || GLADE_IS_WIDGET (parent), NULL);
@@ -1351,6 +1340,8 @@ glade_widget_dup_internal (GladeWidget *parent,
 	     glade_widget_adaptor_get_children (template_widget->adaptor,
 						template_widget->object)) != NULL)
 	{
+		GList       *list;
+
 		for (list = children; list && list->data; list = list->next)
 		{
 			GObject     *child = G_OBJECT (list->data);
@@ -1416,6 +1407,10 @@ glade_widget_dup_internal (GladeWidget *parent,
 	 * default value, they need to be synced.
 	 */
 	glade_widget_sync_custom_props (gwidget);
+
+	/* Some properties may not be synced so we reload them */
+	for (l = gwidget->properties; l; l = l->next)
+		glade_property_load (GLADE_PROPERTY (l->data));
 
 	/* Special case GtkWindow here and ensure the pasted window
 	 * has the same size as the 'Cut' one.
@@ -1938,6 +1933,25 @@ glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
 		widget->prop_refs = g_list_remove (widget->prop_refs, property);
 }
 
+GladeProperty *
+glade_widget_get_parentless_widget_ref (GladeWidget *widget)
+{
+	GList         *l;
+	GladeProperty *property;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	for (l = widget->prop_refs; l && l->data; l = l->next)
+	{
+		property = GLADE_PROPERTY (l->data);
+
+		if (property->klass->parentless_widget)
+			/* For now only one property can point to the widget */
+			return property;
+	}
+	return NULL;
+}
+
 /**
  * glade_widget_project_notify:
  * @widget: A #GladeWidget
@@ -2146,6 +2160,12 @@ glade_widget_dup (GladeWidget *template_widget,
 	return widget;
 }
 
+typedef struct
+{
+	gchar *name;
+	GValue value;
+} PropertyData;
+
 /**
  * glade_widget_rebuild:
  * @gwidget: a #GladeWidget
@@ -2162,6 +2182,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GladeWidgetAdaptor *adaptor;
 	GList              *children;
 	gboolean            reselect = FALSE, inproject;
+	GList              *npw_properties = NULL;
+	GList              *l;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
@@ -2190,6 +2212,28 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	/* Extract and keep the child hierarchies aside... */
 	children = glade_widget_extract_children (gwidget);
 
+	/* parentless_widget properties should be unset before transfering */
+	for (l = gwidget->properties; l; l = l->next)
+	{
+		GladeProperty *property = GLADE_PROPERTY (l->data);
+		if (property->klass->parentless_widget)
+		{
+			PropertyData *prop_data;
+
+			if (!G_IS_PARAM_SPEC_OBJECT (property->klass->pspec))
+				g_warning ("Parentless widget property should be of object type");
+
+			prop_data = g_new0 (PropertyData, 1);
+			prop_data->name = g_strdup (property->klass->id);
+			g_value_init (&prop_data->value, property->value->g_type);
+			g_value_copy (property->value, &prop_data->value);
+
+			npw_properties = g_list_prepend (npw_properties,
+							 prop_data);
+			glade_property_set (property, NULL);
+		}
+	}
+
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
@@ -2207,6 +2251,12 @@ glade_widget_rebuild (GladeWidget *gwidget)
 		glade_widget_replace (gwidget->parent,
 				      old_object, new_object);
 
+	/* Must call dispose for cases like dialogs and toplevels */
+	if (g_type_is_a (adaptor->type, GTK_TYPE_OBJECT))
+		gtk_object_destroy  (GTK_OBJECT (old_object));
+	else
+		g_object_run_dispose (G_OBJECT (old_object));
+
 	/* Reparent any children of the old object to the new object
 	 * (this function will consume and free the child list).
 	 */
@@ -2219,19 +2269,23 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	 */
 	glade_widget_sync_custom_props (gwidget);
 
+	/* Setting parentless_widget properties back */
+	for (l = npw_properties; l; l = l->next)
+	{
+		PropertyData *prop_data = l->data;
+		GladeProperty *property = glade_widget_get_property (gwidget, prop_data->name);
+
+		glade_property_set_value (property, &prop_data->value);
+
+		g_value_unset (&prop_data->value);
+		g_free (prop_data->name);
+		g_free (prop_data);
+	}
+	npw_properties = NULL;
+
 	/* Sync packing.
 	 */
 	glade_widget_sync_packing_props (gwidget);
-	
-	if (g_type_is_a (adaptor->type, GTK_TYPE_WIDGET))
-	{
-		/* Must use gtk_widget_destroy here for cases like dialogs and toplevels
-		 * (otherwise I'd prefer g_object_unref() )
-		 */
-		gtk_widget_destroy  (GTK_WIDGET(old_object));
-	}
-	else
-		g_object_unref (old_object);
 
 	/* If the widget was in a project (and maybe the selection), then
 	 * restore that stuff.

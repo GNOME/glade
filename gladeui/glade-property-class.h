@@ -159,7 +159,10 @@ struct _GladePropertyClass
 				  * will be used to lookup the theme by the
 				  * implementing widget
 				  */
-	
+
+	gboolean parentless_widget;  /* True if this property should point to a parentless widget
+				      * in the project
+				      */
 };
 
 

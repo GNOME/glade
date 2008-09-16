@@ -1076,8 +1076,7 @@ widget_parent_changed (GtkWidget          *widget,
 	if (!gwidget)
 		return;
 
-	if (gwidget->parent && !GTK_IS_WINDOW (glade_widget_get_object (gwidget->parent)) &&
-	    gwidget->parent->internal == NULL)
+	if (gwidget->parent && gwidget->parent->internal == NULL)
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
 	else
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
@@ -1171,18 +1170,17 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 	GList       this_widget = { 0, }, that_widget = { 0, };
 	GtkWidget   *parent = GTK_WIDGET (object)->parent;
 
-	g_assert (parent);
+	if (parent)
+		gparent = glade_widget_get_from_gobject (parent);
+	else
+		gparent = NULL;
 
-	gparent = glade_widget_get_from_gobject (parent);
-	
 	if (strcmp (action_path, "remove_parent") == 0)
 	{
-		GladeWidget *new_gparent = gparent->parent;
+		GladeWidget *new_gparent;
 
-		/* Since toplevel project objects for now must be GtkWindow,
-		 * we'll just assert this for now (should be an insensitive action).
-		 */
-		g_assert (!GTK_IS_WINDOW (parent));
+		g_return_if_fail (gparent);
+		new_gparent = gparent->parent;
 		
 		glade_command_push_group (_("Removing parent of %s"), 
 					  gwidget->name);
@@ -1234,8 +1232,9 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 		{
 			GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (new_type);
 			GList              *saved_props, *prop_cmds;
+			GladeProject       *project;
 			
-			glade_command_push_group (_("Adding parent %s to %s"), 
+			glade_command_push_group (_("Adding parent %s for %s"), 
 						  adaptor->title, gwidget->name);
 
 			/* Record packing properties */
@@ -1244,11 +1243,15 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 			/* Remove "this" widget */
 			this_widget.data = gwidget;
 			glade_command_cut (&this_widget);
-			
+
+			if (gparent)
+				project = glade_widget_get_project (gparent);
+			else
+				project = glade_app_get_project ();
 			/* Create new widget and put it where the placeholder was */
 			that_widget.data =
 				glade_command_create (adaptor, gparent, NULL, 
-						      glade_widget_get_project (gparent));
+						      project);
 
 
 			/* Remove the alignment that we added in the frame's post_create... */
@@ -4859,27 +4862,6 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 	return list;
 }
 
-
-void
-glade_gtk_dialog_set_property (GladeWidgetAdaptor *adaptor,
-			       GObject            *object, 
-			       const gchar        *id,
-			       const GValue       *value)
-{
-	if (GTK_IS_MESSAGE_DIALOG (object) && !strcmp (id, "image"))
-	{
-		/* Gtk+ 2.10 crashes when you unset the image of 
-		 * a message dialog, so we dont ever unset it.
-		 */
-		if (g_value_get_object (value))
-			gtk_message_dialog_set_image (GTK_MESSAGE_DIALOG (object),
-						      GTK_WIDGET (g_value_get_object (value)));
-	}
-	else
-		GWA_GET_CLASS (GTK_TYPE_WINDOW)->set_property (adaptor, object,
-							       id, value);
-}
-
 /* ----------------------------- GtkFileChooserWidget ------------------------------ */
 void
 glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
@@ -8051,4 +8033,178 @@ glade_gtk_radio_button_set_property (GladeWidgetAdaptor *adaptor,
 							     object,
 							     property_name, 
 							     value);
+}
+
+/*--------------------------- GtkMessageDialog ---------------------------------*/
+static gboolean
+glade_gtk_message_dialog_reset_image (GtkMessageDialog *dialog)
+{
+	gint message_type;
+
+	g_object_get (dialog, "message-type", &message_type, NULL);
+	if (message_type != GTK_MESSAGE_OTHER)
+		return FALSE;
+
+	if (glade_widget_get_from_gobject (dialog->image))
+	{
+		gtk_message_dialog_set_image (dialog,
+					      gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG));
+		gtk_widget_show (dialog->image);
+
+		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+enum {
+	MD_IMAGE_ACTION_INVALID,
+	MD_IMAGE_ACTION_RESET,
+	MD_IMAGE_ACTION_SET
+};
+
+static gint
+glade_gtk_message_dialog_image_determine_action (GtkMessageDialog *dialog,
+					   const GValue *value,
+					   GtkWidget **image,
+					   GladeWidget **gimage)
+{
+	*image = g_value_get_object (value);
+	
+	if (*image == NULL)
+		if (glade_widget_get_from_gobject (dialog->image))
+			return MD_IMAGE_ACTION_RESET;
+		else
+			return MD_IMAGE_ACTION_INVALID;
+	else
+	{
+		*image = GTK_WIDGET (*image);
+		if (dialog->image == *image)
+			return MD_IMAGE_ACTION_INVALID;
+		if (gtk_widget_get_parent (*image))
+			return MD_IMAGE_ACTION_INVALID;
+			
+		*gimage = glade_widget_get_from_gobject (*image);
+
+		if (!*gimage)
+		{
+			g_warning ("Setting property to an object outside the project");
+			return MD_IMAGE_ACTION_INVALID;
+		}
+		
+		if (glade_widget_get_parent (*gimage) || GTK_IS_WINDOW (*image))
+			return MD_IMAGE_ACTION_INVALID;
+
+		return MD_IMAGE_ACTION_SET;
+	}
+}
+
+void
+glade_gtk_message_dialog_set_property (GladeWidgetAdaptor *adaptor,
+			       GObject            *object,
+			       const gchar        *id,
+			       const GValue       *value)
+{
+	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	g_return_if_fail (gwidget);
+
+	if (strcmp (id, "image") == 0)
+	{
+		GtkWidget *image = NULL;
+		GladeWidget *gimage = NULL;
+		gint rslt;
+
+		rslt = glade_gtk_message_dialog_image_determine_action (dialog, value,
+								       &image, &gimage);
+		switch (rslt)
+		{
+		case MD_IMAGE_ACTION_INVALID:
+			return;
+		case MD_IMAGE_ACTION_RESET:
+			glade_gtk_message_dialog_reset_image (dialog);
+			return;
+		case MD_IMAGE_ACTION_SET:
+			break; /* continue setting the property */
+		}
+
+		if (gtk_widget_get_parent (image))
+			g_critical ("Image should have no parent now");
+
+		gtk_message_dialog_set_image (dialog, image);
+
+		{
+			/* syncing "message-type" property */	
+			GladeProperty *property;
+
+			property = glade_widget_get_property (gwidget, "message-type");
+			if (!glade_property_equals (property, GTK_MESSAGE_OTHER))
+				glade_command_set_property (property, GTK_MESSAGE_OTHER);
+		}
+	}
+	else
+	{
+		/* We must reset the image to internal,
+		 * external image would otherwise become internal
+		 */
+		if (!strcmp (id, "message-type") &&
+		    g_value_get_enum (value) != GTK_MESSAGE_OTHER)
+		{
+			GladeProperty *property;
+
+			property = glade_widget_get_property (gwidget, "image");
+			if (!glade_property_equals (property, NULL))
+				glade_command_set_property (property, NULL);
+		}
+		/* Chain up, even if property us message-type because
+		 * it's not fully handled here
+		 */
+		GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object,
+								  id, value);
+	}
+}
+
+gboolean
+glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor *adaptor,
+				 GObject            *object,
+				 const gchar        *id,
+				 const GValue       *value)
+{
+	if (!strcmp (id, "image"))
+	{
+		GtkWidget *image; GladeWidget *gimage;
+
+		gboolean retval = MD_IMAGE_ACTION_INVALID != 
+		       glade_gtk_message_dialog_image_determine_action (GTK_MESSAGE_DIALOG (object),
+									value, &image, &gimage);
+
+		return retval;
+	}
+	else
+		if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+			return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+										    id, value);
+		else
+			return TRUE;
+}
+
+void
+glade_gtk_message_dialog_get_property (GladeWidgetAdaptor *adaptor,
+				  GObject *object,
+				  const gchar *property_name,
+				  GValue *value)
+{
+	if (!strcmp (property_name, "image"))
+	{
+		GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+
+		if (!glade_widget_get_from_gobject (dialog->image))
+			g_value_set_object (value, NULL);
+		else
+			g_value_set_object (value, dialog->image);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
+								  property_name, value);
 }

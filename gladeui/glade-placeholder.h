@@ -25,6 +25,7 @@
 #define __GLADE_PLACEHOLDER_H__
 
 #include <gladeui/glade-widget.h>
+#include <gladeui/glade-project.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -57,6 +58,8 @@ struct _GladePlaceholderClass
 GType        glade_placeholder_get_type   (void) G_GNUC_CONST;
 
 GtkWidget   *glade_placeholder_new        (void);
+
+GladeProject* glade_placeholder_get_project (GladePlaceholder *placeholder);
 
 GladeWidget *glade_placeholder_get_parent (GladePlaceholder *placeholder);
 

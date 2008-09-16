@@ -94,6 +94,9 @@ gboolean             glade_palette_get_show_selector_button (GladePalette *palet
 
 void                 glade_palette_refresh                  (GladePalette *palette);
 
+GladeWidget         *glade_palette_create_root_widget       (GladePalette *palette,
+							     GladeWidgetAdaptor *adaptor);
+
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_H__ */
