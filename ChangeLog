@@ -3,6 +3,9 @@
 	* gladeui/glade-design-layout.c: Fixed calculation to get deepest
 	  wrapped glade widget (bug 539924 - fix by Pavel Kostyuchenko).
 
+	* plugins/gtk+/glade-gtk.c: Made insert/remove column/row on gtktable
+	  take packing property order into account (bug 503355 fix by Eli Collins).
+	
 2008-09-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:

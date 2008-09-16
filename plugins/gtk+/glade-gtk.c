@@ -2958,8 +2958,8 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 					    GObject *object,
 					    const gchar *group_format,
 					    const gchar *n_row_col,
-					    const gchar *attach1,
-					    const gchar *attach2,
+					    const gchar *attach1, /* should be smaller (top/left) attachment */
+					    const gchar *attach2, /* should be larger (bot/right) attachment */
 					    gboolean remove,
 					    gboolean after)
 {
@@ -2969,7 +2969,7 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 	
 	gtk_container_child_get (GTK_CONTAINER (container),
 				 GTK_WIDGET (object),
-				 attach1, &child_pos, NULL);
+				 after ? attach2 : attach1, &child_pos, NULL);
 	
 	parent = glade_widget_get_from_gobject (container);
 	glade_command_push_group (group_format, glade_widget_get_name (parent));
@@ -2987,13 +2987,17 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 		for (l = children; l; l = g_list_next (l))
 		{
 			GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
-			gint pos;
+			gint pos1, pos2;
 			
 			/* Skip placeholders */
 			if (gchild == NULL) continue;
 		
-			glade_widget_pack_property_get (gchild, attach1, &pos);
-			if (pos == child_pos) del = g_list_prepend (del, gchild);
+			glade_widget_pack_property_get (gchild, attach1, &pos1);
+			glade_widget_pack_property_get (gchild, attach2, &pos2);
+			if ((pos1+1 == pos2) && ((after ? pos2 : pos1) == child_pos))
+			{
+				del = g_list_prepend (del, gchild);
+			}
 		}
 		if (del)
 		{
@@ -3014,19 +3018,45 @@ glade_gtk_table_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 	for (l = children; l; l = g_list_next (l))
 	{
 		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
-		gint pos, pos2;
+		gint pos;
 			
 		/* Skip placeholders */
 		if (gchild == NULL) continue;
 		
-		glade_widget_pack_property_get (gchild, attach1, &pos);
-		if ((after) ? pos > child_pos : pos >= child_pos)
+		/* if removing, do top/left before bot/right */
+		if (remove)
 		{
-			glade_widget_pack_property_get (gchild, attach2, &pos2);
-			glade_command_set_property (glade_widget_get_pack_property (gchild, attach1),
-						    pos + offset);
-			glade_command_set_property (glade_widget_get_pack_property (gchild, attach2),
-						    pos2 + offset);
+			/* adjust top-left attachment*/
+			glade_widget_pack_property_get (gchild, attach1, &pos);
+			if(pos > child_pos || (after && pos == child_pos))
+			{
+				glade_command_set_property (glade_widget_get_pack_property (gchild, attach1), pos+offset);
+			}
+
+			/* adjust bottom-right attachment*/
+			glade_widget_pack_property_get (gchild, attach2, &pos);
+			if(pos > child_pos || (after && pos == child_pos))
+			{
+				glade_command_set_property (glade_widget_get_pack_property (gchild, attach2), pos+offset);
+			}
+	
+		}
+		/* if inserting, do bot/right before top/left */
+		else
+		{
+			/* adjust bottom-right attachment*/
+			glade_widget_pack_property_get (gchild, attach2, &pos);
+			if(pos > child_pos)
+			{
+				glade_command_set_property (glade_widget_get_pack_property (gchild, attach2), pos+offset);
+			}
+	
+			/* adjust top-left attachment*/
+			glade_widget_pack_property_get (gchild, attach1, &pos);
+			if(pos >= child_pos)
+			{
+				glade_command_set_property (glade_widget_get_pack_property (gchild, attach1), pos+offset);
+			}
 		}
 	}
 	
@@ -3069,25 +3099,25 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
 	{
 		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
 							    _("Insert Column on %s"),
-							    "n-columns","right-attach",
-							    "left-attach",
+							    "n-columns","left-attach",
+							    "right-attach",
 							    FALSE, TRUE);
 	}
 	else if (strcmp (action_path, "insert_column/before") == 0)
 	{
 		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
 							    _("Insert Column on %s"),
-							    "n-columns","right-attach",
-							    "left-attach",
+							    "n-columns","left-attach",
+							    "right-attach",
 							    FALSE, FALSE);
 	}
 	else if (strcmp (action_path, "remove_column") == 0)
 	{
 		glade_gtk_table_child_insert_remove_action (adaptor, container, object,
 							    _("Remove Column on %s"),
-							    "n-columns","right-attach",
-							    "left-attach",
-							    TRUE, TRUE);
+							    "n-columns","left-attach",
+							    "right-attach",
+							    TRUE, FALSE);
 	}
 	else if (strcmp (action_path, "remove_row") == 0)
 	{
@@ -3095,7 +3125,7 @@ glade_gtk_table_child_action_activate (GladeWidgetAdaptor *adaptor,
 							    _("Remove Row on %s"),
 							    "n-rows","top-attach",
 							    "bottom-attach",
-							    TRUE, TRUE);
+							    TRUE, FALSE);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
