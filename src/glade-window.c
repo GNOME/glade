@@ -2693,6 +2693,7 @@ change_menu_label (GladeWindow *window,
 	GtkBin *bin;
 	GtkLabel *label;
 	gchar *text;
+	gchar *tmp_text;
 
 	g_assert (GLADE_IS_WINDOW (window));
 	g_return_if_fail (path != NULL);
@@ -2704,7 +2705,11 @@ change_menu_label (GladeWindow *window,
 	if (action_description == NULL)
 		text = g_strdup (action_label);
 	else
-		text = g_strdup_printf ("%s: %s", action_label, action_description);
+	{
+		tmp_text = escape_underscores (action_description, -1);
+		text = g_strdup_printf ("%s: %s", action_label, tmp_text);		
+		g_free (tmp_text);
+	}
 	
 	gtk_label_set_text_with_mnemonic (label, text);
 

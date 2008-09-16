@@ -1,5 +1,9 @@
 2008-09-16  Pavel Kostyuchenko <ShprotX@gmail.com>
 
+	Patch adds support for non GtkWindow toplevel project widgets and handles
+	carefully properties that reffer to parentless gtkwidgets (bug 532636).
+	(also fixes GtkMessageDialog ...)
+	
         * gladeui/glade-app.c:
           Creating toplevel widget through unified glade-palette interface.
           Removed error message when pasting non-toplevel widgets without
@@ -111,6 +115,9 @@
 
 	* plugins/gtk+/glade-gtk.c: Made insert/remove column/row on gtktable
 	  take packing property order into account (bug 503355 fix by Eli Collins).
+
+	* src/glade-window.c: Fixed projects menu bug (bug 532156, fix by 
+	  Pavel Kostyuchenko).
 	
 2008-09-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
