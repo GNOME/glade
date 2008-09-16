@@ -2717,18 +2717,22 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 					new_object = g_value_get_object (value);
 					new_widget = glade_widget_get_from_gobject (new_object);
 
-					if (new_object && old_object != new_object &&
-					    (old_ref = glade_widget_get_parentless_widget_ref (new_widget)))
+					if (new_object && old_object != new_object)
 					{
-						gchar *desc = g_strdup_printf (_("Setting %s of %s to %s"),
-									       eprop->property->klass->name,
-									       eprop->property->widget->name, 
-									       new_widget->name);
-						glade_command_push_group (desc);
-						glade_command_set_property (old_ref, NULL);
-						glade_editor_property_commit (eprop, value);
-						glade_command_pop_group ();
-						g_free (desc);
+						if ((old_ref = glade_widget_get_parentless_widget_ref (new_widget)))
+						{
+							gchar *desc = g_strdup_printf (_("Setting %s of %s to %s"),
+										       eprop->property->klass->name,
+										       eprop->property->widget->name, 
+										       new_widget->name);
+							glade_command_push_group (desc);
+							glade_command_set_property (old_ref, NULL);
+							glade_editor_property_commit (eprop, value);
+							glade_command_pop_group ();
+							g_free (desc);
+						}
+						else
+							glade_editor_property_commit (eprop, value);
 					}
 				}
 			} 

@@ -127,6 +127,9 @@
 	  metadata as comments at the toplevel in libglade and older versions
 	  of gtk+ that dont recognize versioning (i.e. gtk+ < 2.14) (bug 536310)
 
+	* gladeui/glade-widget.c: Reverted the above patch portion where built
+	  objects only had thier construct props set, this caused errors, fixed.
+
 2008-09-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:

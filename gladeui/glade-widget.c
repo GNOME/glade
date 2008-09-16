@@ -508,7 +508,7 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor,
 {
 	GParameter          *params;
 	GObject             *object;
-	guint                n_params;
+	guint                n_params, i;
 	
 	if (reason == GLADE_CREATE_LOAD)
 		return g_object_new (adaptor->type, NULL);
@@ -521,6 +521,16 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor,
 	/* Create the new object with the correct parameters.
 	 */
 	object = g_object_newv (adaptor->type, n_params, params);
+
+	free_params (params, n_params);
+
+	if (widget)
+		params = glade_widget_template_params (widget, FALSE, &n_params);
+	else
+		params = glade_widget_adaptor_default_params (adaptor, FALSE, &n_params);
+
+	for (i = 0; i < n_params; i++)
+		g_object_set_property (object, params[i].name, &(params[i].value));
 
 	free_params (params, n_params);
 
