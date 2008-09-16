@@ -1071,6 +1071,35 @@ glade_project_fix_object_props (GladeProject *project)
 	}
 }
 
+
+static gchar *
+glade_project_read_requires_from_comment (GladeXmlNode  *comment,
+					  gint          *major,
+					  gint          *minor)
+{
+	gint maj, min;
+	gchar *value, buffer[256];
+	gchar *required_lib = NULL;
+
+	if (!glade_xml_node_is_comment (comment)) 
+		return FALSE;
+
+	value = glade_xml_get_content (comment);
+	if (value && !strncmp ("interface-requires", value, strlen ("interface-requires")))
+	{
+		if (sscanf (value, "interface-requires %s %d.%d", buffer, &maj, &min) == 3)
+		{
+			if (major) *major = maj;
+			if (minor) *minor = min;
+			required_lib = g_strdup (buffer);
+		}
+	}
+	g_free (value);
+
+	return required_lib;
+}
+					  
+
 static gboolean
 glade_project_read_requires (GladeProject *project,
 			     GladeXmlNode *root_node, 
@@ -1079,66 +1108,47 @@ glade_project_read_requires (GladeProject *project,
 
 	GString      *string = g_string_new (NULL);
 	GladeXmlNode *node;
-	gchar        *required_lib;
+	gchar        *required_lib = NULL;
 	gboolean      loadable = TRUE;
 	gint          major, minor;
 
-	for (node = glade_xml_node_get_children (root_node); 
-	     node; node = glade_xml_node_next (node))
+	for (node = glade_xml_node_get_children_with_comments (root_node); 
+	     node; node = glade_xml_node_next_with_comments (node))
 	{
 		/* Skip non "requires" tags */
-		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES))
+		if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES) ||	
+		      (required_lib = 
+		       glade_project_read_requires_from_comment (node, &major, &minor))))
 			continue;
 
-		if ((required_lib = 
-		     glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
-							     NULL)) != NULL)
+		if (!required_lib)
 		{
-			/* Dont mention gtk+ as a required lib in 
-			 * the generated glade file
-			 */
-			if (!glade_catalog_is_loaded (required_lib))
-			{
-				if (!loadable)
-					g_string_append (string, ", ");
-
-				g_string_append (string, required_lib);
-				loadable = FALSE;
-			}
-			else if (glade_xml_get_property_version (node, 
-								 GLADE_XML_TAG_VERSION, 
-								 &major, &minor))
-				glade_project_set_target_version
-					(project, required_lib, major, minor);
-
-			g_free (required_lib);
+			required_lib =  
+				glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
+									NULL);
+			glade_xml_get_property_version (node, GLADE_XML_TAG_VERSION, 
+							&major, &minor);
 		}
-	}
 
+		if (!required_lib) continue;
 
-	/* We use a different tag to save target version metadata in libglade files */
-	for (node = glade_xml_node_get_children (root_node); 
-	     node; node = glade_xml_node_next (node))
-	{
-		/* Skip non "requires" tags */
-		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES_LIBGLADE_EXTRA))
-			continue;
-
-		if ((required_lib = 
-		     glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
-							     NULL)) != NULL)
+		/* Dont mention gtk+ as a required lib in 
+		 * the generated glade file
+		 */
+		if (!glade_catalog_is_loaded (required_lib))
 		{
-			if (glade_xml_get_property_version (node, 
-							    GLADE_XML_TAG_VERSION, 
-							    &major, &minor))
-				glade_project_set_target_version
-					(project, required_lib, major, minor);
+			if (!loadable)
+				g_string_append (string, ", ");
 
-
-			g_free (required_lib);
+			g_string_append (string, required_lib);
+			loadable = FALSE;
 		}
+		else
+			glade_project_set_target_version
+				(project, required_lib, major, minor);
+		
+		g_free (required_lib);
 	}
-
 
 	if (!loadable)
 		glade_util_ui_message (glade_app_get_window(),
@@ -2422,28 +2432,17 @@ glade_project_update_comment (GladeProject *project)
 	g_strfreev (lines);
 }
 
-
-static GladeXmlContext *
-glade_project_write (GladeProject *project)
+static void
+glade_project_write_required_libs (GladeProject    *project,
+				   GladeXmlContext *context,
+				   GladeXmlNode    *root)
 {
 	GladeProjectFormat fmt;
-	GladeXmlContext *context;
-	GladeXmlDoc     *doc;
-	GladeXmlNode    *root, *req_node, *comment_node;
+	GladeXmlNode    *req_node;
 	GList           *required, *list;
 	gint             major, minor;
 	gchar           *version;
 
-	doc     = glade_xml_doc_new ();
-	context = glade_xml_context_new (doc, NULL);
-	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
-	glade_xml_doc_set_root (doc, root);
-
-	glade_project_update_comment (project);
-/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
-
-	/* XXX Need to append this to the doc ! not the ROOT !
-	   glade_xml_node_append_child (root, comment_node); */
 	fmt = glade_project_get_format (project);
 
 	if ((required = glade_project_required_libs (project)) != NULL)
@@ -2460,12 +2459,23 @@ glade_project_write (GladeProject *project)
 			    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
 			     strcmp ("gtk+", (gchar *)list->data)))
 			{
-				req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
-				glade_xml_node_append_child (root, req_node);
-				glade_xml_node_set_property_string (req_node, 
-								    GLADE_XML_TAG_LIB, 
-								    (gchar *)list->data);
-			
+				if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
+				{
+					req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
+					glade_xml_node_append_child (root, req_node);
+					glade_xml_node_set_property_string (req_node, 
+									    GLADE_XML_TAG_LIB, 
+									    (gchar *)list->data);
+				}
+				else
+				{
+					gchar *comment = 
+						g_strdup_printf ("interface-requires %s %s", 
+								 (gchar *)list->data, version);
+					req_node = glade_xml_node_new_comment (context, comment);
+					glade_xml_node_append_child (root, req_node);
+					g_free (comment);
+				}
 
 				if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
 					glade_xml_node_set_property_string 
@@ -2475,17 +2485,11 @@ glade_project_write (GladeProject *project)
 			/* Add extra metadata for libglade */
 			if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
 			{
-				req_node = glade_xml_node_new
-					(context, GLADE_XML_TAG_REQUIRES_LIBGLADE_EXTRA);
+				gchar *comment = g_strdup_printf ("interface-requires %s %s", 
+								  (gchar *)list->data, version);
+				req_node = glade_xml_node_new_comment (context, comment);
 				glade_xml_node_append_child (root, req_node);
-
-				glade_xml_node_set_property_string (req_node, 
-								    GLADE_XML_TAG_LIB, 
-								    (gchar *)list->data);
-			
-				glade_xml_node_set_property_string (req_node, 
-								    GLADE_XML_TAG_VERSION, 
-								    version);
+				g_free (comment);
 			}
 			g_free (version);
 
@@ -2493,6 +2497,29 @@ glade_project_write (GladeProject *project)
 		g_list_foreach (required, (GFunc)g_free, NULL);
 		g_list_free (required);
 	}
+
+}
+
+static GladeXmlContext *
+glade_project_write (GladeProject *project)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	GladeXmlNode    *root, *comment_node;
+	GList           *list;
+
+	doc     = glade_xml_doc_new ();
+	context = glade_xml_context_new (doc, NULL);
+	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
+	glade_xml_doc_set_root (doc, root);
+
+	glade_project_update_comment (project);
+/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
+
+	/* XXX Need to append this to the doc ! not the ROOT !
+	   glade_xml_node_append_child (root, comment_node); */
+
+	glade_project_write_required_libs (project, context, root);
 
 	/* Any automatically generated stuff goes here */
 	glade_project_generate_nodes (project, context, root);

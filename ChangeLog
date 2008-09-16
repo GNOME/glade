@@ -118,7 +118,15 @@
 
 	* src/glade-window.c: Fixed projects menu bug (bug 532156, fix by 
 	  Pavel Kostyuchenko).
-	
+
+	* gladeui/glade-xml-utils.h: Added version macros
+
+	* plugins/gtk+/gtk+.xml.in: Added version 2.14
+
+	* gladeui/glade-project.c: Now glade loads and saves requires
+	  metadata as comments at the toplevel in libglade and older versions
+	  of gtk+ that dont recognize versioning (i.e. gtk+ < 2.14) (bug 536310)
+
 2008-09-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:

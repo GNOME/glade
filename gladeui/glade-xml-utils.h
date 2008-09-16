@@ -28,15 +28,20 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
 	 GLADE_XML_TAG_LIBGLADE_WIDGET : GLADE_XML_TAG_BUILDER_WIDGET)
 
-/* Used for catalog tags and attributes */
+#define GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR    2
+#define GLADE_GTKBUILDER_VERSIONING_BASE_MINOR    14
+#define GLADE_GTKBUILDER_HAS_VERSIONING(maj, min) \
+	((maj) >= GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR && \
+	 (min) >= GLADE_GTKBUILDER_VERSIONING_BASE_MINOR)
 
+
+/* Used for catalog tags and attributes */
 #define GLADE_XML_TAG_LIBGLADE_PROJECT            "glade-interface"
 #define GLADE_XML_TAG_BUILDER_PROJECT             "interface"
 #define GLADE_XML_TAG_LIBGLADE_WIDGET             "widget"
 #define GLADE_XML_TAG_BUILDER_WIDGET              "object"
 
 #define GLADE_XML_TAG_VERSION                     "version"
-#define GLADE_XML_TAG_REQUIRES_LIBGLADE_EXTRA     "requires-version"
 #define GLADE_XML_TAG_REQUIRES                    "requires"
 #define GLADE_XML_TAG_LIB                         "lib"
 #define GLADE_XML_TAG_PROPERTY                    "property"
