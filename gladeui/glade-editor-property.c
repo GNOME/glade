@@ -275,7 +275,7 @@ glade_editor_property_create_info_button (GladeEditorProperty *eprop)
 
 	gtk_container_add (GTK_CONTAINER (button), image);
 
-	gtk_widget_set_tooltip_text (button, _("View GTK+ documentation for this property"));
+	gtk_widget_set_tooltip_text (button, _("View documentation for this property"));
 
 	return button;
 }

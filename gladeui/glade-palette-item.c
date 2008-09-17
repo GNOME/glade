@@ -32,7 +32,7 @@
 
 #include "glade.h"
 #include "glade-palette-item.h"
-
+#include "glade-popup.h"
 
 #define GLADE_PALETTE_ITEM_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					       GLADE_TYPE_PALETTE_ITEM,              \
@@ -336,16 +336,34 @@ glade_palette_item_dispose (GObject *object)
 	G_OBJECT_CLASS (glade_palette_item_parent_class)->dispose (object);
 }
 
+static gboolean
+glade_palette_item_button_press (GtkWidget      *widget,
+				 GdkEventButton *event)
+{
+	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+	{
+		GladePaletteItemPrivate *priv = GLADE_PALETTE_ITEM_GET_PRIVATE (widget);
+
+		glade_popup_palette_pop (priv->adaptor, event);
+	}
+
+	return GTK_WIDGET_CLASS (glade_palette_item_parent_class)->button_press_event (widget, event);
+}
+
 static void
 glade_palette_item_class_init (GladePaletteItemClass *klass)
 {
-	GObjectClass *object_class;
+	GObjectClass   *object_class;
+	GtkWidgetClass *widget_class;
 
 	object_class = G_OBJECT_CLASS (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
 
 	object_class->get_property = glade_palette_item_get_property;
 	object_class->set_property = glade_palette_item_set_property;
 	object_class->dispose      = glade_palette_item_dispose;
+
+	widget_class->button_press_event = glade_palette_item_button_press;
 
 	g_object_class_install_property (object_class,
 					 PROP_ADAPTOR,

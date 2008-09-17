@@ -2645,6 +2645,31 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 	gtk_container_check_resize (GTK_CONTAINER (table));
 }
 
+static void
+gtk_table_children_callback (GtkWidget *widget,
+				 gpointer client_data)
+{
+	GList **children;
+
+	children = (GList**) client_data;
+	*children = g_list_prepend (*children, widget);
+}
+
+GList *
+glade_gtk_table_get_children (GladeWidgetAdaptor  *adaptor,
+				  GtkContainer        *container)
+{
+	GList *children = NULL;
+
+	g_return_val_if_fail (GTK_IS_TABLE (container), NULL);
+
+	gtk_container_forall (container,
+			      gtk_table_children_callback,
+			      &children);
+
+	/* GtkTable has the children list already reversed */
+	return children;
+}
 
 void
 glade_gtk_table_add_child (GladeWidgetAdaptor *adaptor,

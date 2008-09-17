@@ -333,6 +333,7 @@ update_model (GladeInspector *inspector)
 		if (gwidget->parent == NULL)
 			toplevels = g_list_prepend (toplevels, object);
 	}
+	toplevels = g_list_reverse (toplevels);
 
 	/* recursively fill model */
 	fill_model (priv->model, toplevels, NULL);

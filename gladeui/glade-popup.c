@@ -95,11 +95,11 @@ glade_popup_placeholder_add_cb (GtkMenuItem *item, GladePlaceholder *placeholder
 static void
 glade_popup_root_add_cb (GtkMenuItem *item, gpointer *user_data)
 {
-	GladeWidgetAdaptor *adaptor;
-	GladePalette *palette;
+	GladeWidgetAdaptor *adaptor = (GladeWidgetAdaptor *)user_data;
+	GladePalette *palette = glade_app_get_palette ();
 	
-	palette = glade_app_get_palette ();
-	adaptor = glade_palette_get_current_item (palette);
+	if (!adaptor)
+		adaptor = glade_palette_get_current_item (palette);
 	g_return_if_fail (adaptor != NULL);
 	
 	glade_palette_create_root_widget (palette, adaptor);
@@ -195,6 +195,20 @@ glade_popup_clipboard_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 {
 	glade_app_command_delete_clipboard ();
 }
+
+static void
+glade_popup_docs_cb (GtkMenuItem *item,
+		     GladeWidgetAdaptor *adaptor)
+{
+	gchar *book;
+
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
+	g_object_get (adaptor, "book", &book, NULL);
+	glade_editor_search_doc_search (glade_app_get_editor (), book, adaptor->name, NULL);
+	g_free (book);
+}
+
 
 /********************************************************
                     POPUP BUILDING
@@ -399,7 +413,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 			tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
 		glade_popup_append_item (popup_menu, NULL, _("_Add widget here"), tmp_placeholder != NULL,
 					 glade_popup_placeholder_add_cb, tmp_placeholder);
-		glade_popup_append_item (popup_menu, NULL, _("Add widget as _root"), TRUE,
+		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), TRUE,
 					 glade_popup_root_add_cb, NULL);
 	}
 
@@ -577,6 +591,46 @@ glade_popup_clipboard_pop (GladeWidget    *widget,
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
 			NULL, NULL, button, event_time);
 }
+
+void
+glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
+			 GdkEventButton     *event)
+{
+	GtkWidget *popup_menu;
+	gchar *book = NULL;
+	gint button;
+	gint event_time;
+
+	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
+	popup_menu = gtk_menu_new ();
+
+	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), TRUE,
+				 glade_popup_root_add_cb, adaptor);
+
+
+	g_object_get (adaptor, "book", &book, NULL);
+	if (book)
+		glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), TRUE,
+					 glade_popup_docs_cb, adaptor);
+	g_free (book);
+
+
+	if (event)
+	{
+		button = event->button;
+		event_time = event->time;
+	}
+	else
+	{
+		button = 0;
+		event_time = gtk_get_current_event_time ();
+	}
+
+	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
+			NULL, NULL, button, event_time);
+}
+
 
 void
 glade_popup_simple_pop (GdkEventButton *event)

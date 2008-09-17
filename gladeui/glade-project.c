@@ -1892,7 +1892,7 @@ glade_project_add_object (GladeProject *project,
 	g_signal_connect (G_OBJECT (gwidget), "notify",
 			  (GCallback) glade_project_on_widget_notify, project);
 
-	project->priv->objects = g_list_prepend (project->priv->objects, g_object_ref (object));
+	project->priv->objects = g_list_append (project->priv->objects, g_object_ref (object));
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],
@@ -2379,7 +2379,7 @@ glade_project_required_libs (GladeProject *project)
 				required = g_list_prepend (required, catalog);
 		}
 	}
-	return required;
+	return g_list_reverse (required);
 }
 
 #define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME

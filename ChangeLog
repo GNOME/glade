@@ -1,3 +1,19 @@
+2008-09-17  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-editor.[ch]: Exposed doc_search() command for palette popup
+
+	* gladeui/glade-popup.[ch]: Added glade_popup_palette_pop(), with add
+	  widget as toplevel feature & doc search feature.
+
+	* gladeui/glade-palette-item.c: Handle right-click for popup
+
+	* gladeui/glade-inspector.c: Make inspector list widgets in natural order
+
+	* gladeui/glade-project.c: Fixed widget order list (bug 422823)
+
+	* gladeui/glade-gtk.c: Fixed widget order inside GtkTable
+	  (bug 422823 - patch by Pavel Kostyuchenko)
+
 2008-09-16  Pavel Kostyuchenko <ShprotX@gmail.com>
 
 	Patch adds support for non GtkWindow toplevel project widgets and handles

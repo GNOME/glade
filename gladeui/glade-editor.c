@@ -70,6 +70,22 @@ static guint         glade_editor_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_editor_reset_dialog (GladeEditor *editor);
 
+
+void
+glade_editor_search_doc_search (GladeEditor *editor,
+				const gchar *book,
+				const gchar *page,
+				const gchar *search)
+{
+	g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+	g_signal_emit (G_OBJECT (editor),
+		       glade_editor_signals[GTK_DOC_SEARCH],
+		       0, book, page, search);
+
+}
+
+
 static void
 glade_editor_gtk_doc_search_cb (GladeEditorProperty *eprop,
 				const gchar         *book,
@@ -78,9 +94,7 @@ glade_editor_gtk_doc_search_cb (GladeEditorProperty *eprop,
 				GladeEditor         *editor)
 {
 	/* Just act as a hub for search signals here */
-	g_signal_emit (G_OBJECT (editor),
-		       glade_editor_signals[GTK_DOC_SEARCH],
-		       0, book, page, search);
+	glade_editor_search_doc_search (editor, book, page, search);
 }
 
 static void
@@ -261,9 +275,9 @@ glade_editor_on_docs_click (GtkButton *button,
 	if (editor->loaded_widget)
 	{
 		g_object_get (editor->loaded_widget->adaptor, "book", &book, NULL);
-		g_signal_emit (G_OBJECT (editor),
-			       glade_editor_signals[GTK_DOC_SEARCH],
-			       0, book, editor->loaded_widget->adaptor->name, NULL);
+		glade_editor_search_doc_search (editor, book,
+						editor->loaded_widget->adaptor->name,
+						NULL);
 		g_free (book);
 	}
 }

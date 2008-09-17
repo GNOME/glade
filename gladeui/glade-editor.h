@@ -221,6 +221,10 @@ void         glade_editor_hide_info          (GladeEditor *editor);
 
 void         glade_editor_hide_context_info  (GladeEditor *editor);
 
+void         glade_editor_search_doc_search  (GladeEditor *editor,
+					      const gchar *book,
+					      const gchar *page,
+					      const gchar *search);
 
 
 G_END_DECLS
