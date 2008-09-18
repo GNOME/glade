@@ -290,7 +290,7 @@ glade_command_pop_group (void)
 
 	if (gc_group_depth < 0)
 		g_critical ("Unbalanced group stack detected in %s\n",
-			    G_GNUC_PRETTY_FUNCTION);
+			    G_STRFUNC);
 }
 
 gint

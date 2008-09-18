@@ -881,7 +881,7 @@ glade_app_show_properties (gboolean raise)
 	if (GLADE_APP_GET_CLASS (app)->show_properties)
 		GLADE_APP_GET_CLASS (app)->show_properties (app, raise);
 	else 
-		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
+		g_critical ("%s not implemented\n", G_STRFUNC);
 }
 
 void
@@ -892,7 +892,7 @@ glade_app_hide_properties (void)
 	if (GLADE_APP_GET_CLASS (app)->hide_properties)
 		GLADE_APP_GET_CLASS (app)->hide_properties (app);
 	else 
-		g_critical ("%s not implemented\n", G_GNUC_FUNCTION);
+		g_critical ("%s not implemented\n", G_STRFUNC);
 
 }
 

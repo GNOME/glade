@@ -1,5 +1,12 @@
 2008-09-18  Christian Persch  <chpe@gnome.org>
 
+	* gladeui/glade-app.c: (glade_app_show_properties),
+	(glade_app_hide_properties):
+	* gladeui/glade-command.c: (glade_command_pop_group): Replace the
+	deprecated G_GNUC_PRETTY_FUNCTION with G_STRFUNC. Bug #512559.
+
+2008-09-18  Christian Persch  <chpe@gnome.org>
+
 	* plugins/Makefile.am: Install the catalogue DTD. Bug #552767.
 
 2008-09-17  Tristan Van Berkom <tvb@gnome.org>
