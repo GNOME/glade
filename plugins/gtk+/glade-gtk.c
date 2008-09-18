@@ -4134,7 +4134,7 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 	}
 	
 	/* Reoder children */
-	for (l = children; l; l = g_list_next (l))
+	for (l = g_list_last (children); l; l = g_list_previous (l))
 	{
 		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
 		gint pos;
