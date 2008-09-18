@@ -17,7 +17,10 @@
 	* gladeui/glade-popup.c: Added devhelp icon to documentation menu item, added
 	  docs icon to normal menu.
 
-	* plugins/gtk+/glade-gtk.c: insert before/after in box is working now (bug 550636).
+	* plugins/gtk+/glade-gtk.c: 
+	  - insert before/after in box is working now (bug 550636).
+	  - take into account cancelation of query dialog in add_parent action 
+	    code (bug 549685)
 
 2008-09-18  Christian Persch  <chpe@gnome.org>
 

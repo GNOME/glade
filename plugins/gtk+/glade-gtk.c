@@ -1248,40 +1248,42 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 				project = glade_widget_get_project (gparent);
 			else
 				project = glade_app_get_project ();
+			
 			/* Create new widget and put it where the placeholder was */
-			that_widget.data =
-				glade_command_create (adaptor, gparent, NULL, 
-						      project);
-
-
-			/* Remove the alignment that we added in the frame's post_create... */
-			if (new_type == GTK_TYPE_FRAME)
+			if ((that_widget.data =
+			     glade_command_create (adaptor, gparent, NULL, project)) != NULL)
 			{
-				GObject     *frame = glade_widget_get_object (that_widget.data);
-				GladeWidget *galign = glade_widget_get_from_gobject (GTK_BIN (frame)->child);
-				GList        to_delete = { 0, };
-
-				to_delete.data = galign;
-				glade_command_delete (&to_delete);
+			
+				/* Remove the alignment that we added in the frame's post_create... */
+				if (new_type == GTK_TYPE_FRAME)
+				{
+					GObject     *frame = glade_widget_get_object (that_widget.data);
+					GladeWidget *galign = glade_widget_get_from_gobject (GTK_BIN (frame)->child);
+					GList        to_delete = { 0, };
+					
+					to_delete.data = galign;
+					glade_command_delete (&to_delete);
+				}
+				
+				/* Create heavy-duty glade-command properties stuff */
+				prop_cmds = create_command_property_list (that_widget.data, saved_props);
+				g_list_foreach (saved_props, (GFunc)g_object_unref, NULL);
+				g_list_free (saved_props);
+				
+				/* Apply the properties in an undoable way */
+				if (prop_cmds)
+					glade_command_set_properties_list (glade_widget_get_project (gparent), prop_cmds);
+				
+				/* Add "this" widget to the new parent */
+				glade_command_paste(&this_widget, GLADE_WIDGET (that_widget.data), NULL);
 			}
-						
-			/* Create heavy-duty glade-command properties stuff */
-			prop_cmds = create_command_property_list (that_widget.data, saved_props);
-			g_list_foreach (saved_props, (GFunc)g_object_unref, NULL);
-			g_list_free (saved_props);
+			else
+				/* Create parent was cancelled, paste back to parent */
+				glade_command_paste(&this_widget, gparent, NULL);
 
-			/* Apply the properties in an undoable way */
-			if (prop_cmds)
-				glade_command_set_properties_list (glade_widget_get_project (gparent), prop_cmds);
-			
-			/* Add "this" widget to the new parent */
-			glade_command_paste(&this_widget, GLADE_WIDGET (that_widget.data), NULL);
-			
 			glade_command_pop_group ();
 		}
-
 	}
-
 	else
 		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
 								object,
