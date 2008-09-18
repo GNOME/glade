@@ -1267,8 +1267,6 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 					/* Mark the properties as recorded */
 					cdata->props_recorded = TRUE;
 				}
-				
-				
 			}
 
 			/* Toplevels get pasted to the active project */

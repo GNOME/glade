@@ -787,10 +787,12 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 		/* draw a filled rectangle in case child does not draw 
 		 * it's own background (a GTK_WIDGET_NO_WINDOW child). */
 		gdk_draw_rectangle (widget->window,
-				    widget->style->fg_gc[GTK_STATE_NORMAL],
+				    widget->style->bg_gc[GTK_STATE_NORMAL],
 				    TRUE,
-				    x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2, 
+				    x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2,
 				    w - OUTLINE_WIDTH, h - OUTLINE_WIDTH);
+
+		GTK_WIDGET_CLASS (glade_design_layout_parent_class)->expose_event (widget, ev);
 	}	
 
 	return TRUE;

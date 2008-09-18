@@ -644,19 +644,20 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	 */
 	g_return_if_fail (GLADE_IS_WINDOW (window));
 
-	/* Only update the editor if the selection has changed on
+	/* Only update the toolbar & workspace if the selection has changed on
 	 * the currently active project.
 	 */
-	if (glade_app_get_editor() &&
-	    project && (project == glade_app_get_project ()))
+	if (project == glade_app_get_project ())
 	{
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
 		
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
 		{
-		
 			glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
+
+			glade_widget_show (glade_widget);
+
 			clean_actions (window);
 			if (glade_widget->actions)
 				add_actions (window, glade_widget, glade_widget->actions);
@@ -1606,21 +1607,6 @@ next_project_cb (GtkAction *action, GladeWindow *window)
 }
 
 static void
-inspector_item_activated_cb (GladeInspector     *inspector,
-		             GladeWindow *window)
-{
-	GList *item = glade_inspector_get_selected_items (inspector);
-	g_assert (GLADE_IS_WIDGET (item->data) && (item->next == NULL));
-
-	/* bring window on top since inspector may be detached */
-	gtk_window_present (GTK_WINDOW (window));
-	/* switch to this widget in the workspace */
-	glade_widget_show (GLADE_WIDGET (item->data));
-
-	g_list_free (item);
-}
-
-static void
 notebook_switch_page_cb (GtkNotebook *notebook,
 			     GtkNotebookPage *page,
 			     guint page_num,
@@ -1695,11 +1681,7 @@ notebook_tab_added_cb (GtkNotebook *notebook,
 	inspector = glade_inspector_new ();
 	gtk_widget_show (inspector);
 	glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
-	
-	g_signal_connect (inspector, "item-activated",
-			  G_CALLBACK (inspector_item_activated_cb),
-			  window); 
-	
+		
 	gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), inspector, NULL);
 	
 
@@ -2265,7 +2247,7 @@ static GtkToggleActionEntry view_entries[] = {
 	  N_("Dock the inspector into the main window"),
 	  G_CALLBACK (toggle_dock_cb), TRUE },
 
-	{ "DockEditor", NULL, N_("Dock _Editor"), NULL,
+	{ "DockEditor", NULL, N_("Dock Prop_erties"), NULL,
 	  N_("Dock the editor into the main window"),
 	  G_CALLBACK (toggle_dock_cb), TRUE },
 

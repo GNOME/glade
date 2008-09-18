@@ -1,3 +1,22 @@
+2008-09-18  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/glade-window.c: 
+	  - Show glade widgets in the workspace on selection changes in the project 
+	    and not on item-activated.
+	  - Rename "Dock Editor" -> "Dock Properties" as per bug 487613.
+	
+	* gladeui/glade-design-layout.c: Fixed expose event to chain to parent class
+	  after drawing an orange box (non window widgets are usualy GTK_NO_WINDOW).
+
+	* gladeui/glade-widget.c: Made glade_widget_show() show the toplevel of any
+	  GtkWidget object, also now shows toplevel non window glade widgets in the
+	  workspace, if the widget is referenced by a property that as a result parents
+	  the widget (i.e. bears a "parentless-widget" property reference), then the
+	  referencing widget is shown instead.
+
+	* gladeui/glade-popup.c: Added devhelp icon to documentation menu item, added
+	  docs icon to normal menu.
+
 2008-09-18  Christian Persch  <chpe@gnome.org>
 
 	* gladeui/glade-app.c: (glade_app_show_properties),

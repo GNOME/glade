@@ -217,6 +217,7 @@ static GtkWidget *
 glade_popup_append_item (GtkWidget *popup_menu,
 			 const gchar *stock_id,
 			 const gchar *label,
+			 GtkWidget   *image,
 			 gboolean sensitive,
 			 gpointer callback,
 			 gpointer data)
@@ -228,6 +229,11 @@ glade_popup_append_item (GtkWidget *popup_menu,
 		menu_item = gtk_image_menu_item_new_with_mnemonic (label);
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item),
 			gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_MENU));
+	}
+	else if (image && label)
+	{
+		menu_item = gtk_image_menu_item_new_with_mnemonic (label);
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), image);
 	}
 	else if (stock_id)
 		menu_item = gtk_image_menu_item_new_from_stock (stock_id, NULL);
@@ -311,7 +317,7 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
 				
 		item = glade_popup_append_item (menu, 
 						a->klass->stock,
-						a->klass->label, TRUE,
+						a->klass->label, NULL, TRUE,
 						(a->actions) ? NULL : callback,
 						(a->actions) ? NULL : a->klass->path);
 		
@@ -398,6 +404,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 	GtkWidget *popup_menu;
 	gboolean   sensitive;
 	GladePlaceholder *tmp_placeholder;
+	gchar     *book;
 
 	sensitive = glade_palette_get_current_item (glade_app_get_palette ()) != NULL;
 
@@ -411,9 +418,9 @@ glade_popup_create_menu (GladeWidget      *widget,
 		tmp_placeholder = placeholder;
 		if (!tmp_placeholder && widget)
 			tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
-		glade_popup_append_item (popup_menu, NULL, _("_Add widget here"), tmp_placeholder != NULL,
+		glade_popup_append_item (popup_menu, NULL, _("_Add widget here"), NULL, tmp_placeholder != NULL,
 					 glade_popup_placeholder_add_cb, tmp_placeholder);
-		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), TRUE,
+		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, TRUE,
 					 glade_popup_root_add_cb, NULL);
 	}
 
@@ -427,23 +434,23 @@ glade_popup_create_menu (GladeWidget      *widget,
 		gtk_widget_show (separator);
 	}
 
-	glade_popup_append_item (popup_menu, NULL, _("_Select"), TRUE,
+	glade_popup_append_item (popup_menu, NULL, _("_Select"), NULL, TRUE,
 				 glade_popup_select_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, NULL, TRUE,
 				 glade_popup_cut_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, NULL, TRUE,
 				 glade_popup_copy_cb, widget);
 
 	/* paste is placholder specific when the popup is on a placeholder */
 	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
 	if (placeholder)
-		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
+		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_placeholder_paste_cb, placeholder);
 	else
-		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, sensitive,
+		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_paste_cb, widget);
 
-	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, TRUE,
 				 glade_popup_delete_cb, widget);
 
 
@@ -485,6 +492,21 @@ glade_popup_create_menu (GladeWidget      *widget,
 		glade_popup_action_populate_menu (popup_menu, widget, NULL, packing);
 	}
 
+
+	g_object_get (widget->adaptor, "book", &book, NULL);
+	if (book)
+	{
+		GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
+		GtkWidget *separator = gtk_menu_item_new ();
+		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+		gtk_widget_show (separator);
+
+		glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon, TRUE,
+					 glade_popup_docs_cb, widget->adaptor);
+	}
+	g_free (book);
+
+
 	return popup_menu;
 }
 
@@ -498,11 +520,11 @@ glade_popup_create_clipboard_menu (GladeWidget *widget)
 	if (GTK_WIDGET_TOPLEVEL (glade_widget_get_object (widget)))
 	{
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, 
-					 NULL, TRUE,
+					 NULL, NULL, TRUE,
 					 glade_popup_clipboard_paste_cb, NULL);
 	}
 
-	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, TRUE,
 				 glade_popup_clipboard_delete_cb, widget);
 
 	return popup_menu;
@@ -605,14 +627,17 @@ glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
 
 	popup_menu = gtk_menu_new ();
 
-	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), TRUE,
+	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, TRUE,
 				 glade_popup_root_add_cb, adaptor);
 
 
 	g_object_get (adaptor, "book", &book, NULL);
 	if (book)
-		glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), TRUE,
+	{
+		GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
+		glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon, TRUE,
 					 glade_popup_docs_cb, adaptor);
+	}
 	g_free (book);
 
 

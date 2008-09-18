@@ -1858,12 +1858,29 @@ glade_widget_show (GladeWidget *widget)
 {
 	GladeDesignView *view;
 	GtkWidget *layout;
+	GladeProperty *property;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	
 	/* Position window at saved coordinates or in the center */
-	if (GTK_IS_WINDOW (widget->object) && glade_widget_embed (widget))
+	if (GTK_IS_WIDGET (widget->object) && !widget->parent)
 	{
+		if (GTK_IS_WINDOW (widget->object) && !glade_widget_embed (widget))
+		{
+			g_warning ("Unable to embed %s\n", widget->name);
+			return;
+		}
+
+		/* Maybe a property references this widget internally, show that widget instead */
+		if ((property = glade_widget_get_parentless_widget_ref (widget)) != NULL)
+		{
+			/* will never happen, paranoid check to avoid endless recursion. */
+			if (property->widget != widget)
+				glade_widget_show (property->widget);
+			return;
+		}
+
+
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
 
@@ -1877,9 +1894,12 @@ glade_widget_show (GladeWidget *widget)
 					       G_CALLBACK (glade_widget_add_to_layout), 
 					       widget, NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
-	} else if (GTK_IS_WIDGET (widget->object))
+	} 
+	else if (GTK_IS_WIDGET (widget->object))
 	{
-		gtk_widget_show_all (GTK_WIDGET (widget->object));
+		GladeWidget *toplevel = glade_widget_get_toplevel (widget);
+		if (toplevel != widget)
+			glade_widget_show (toplevel);
 	}
 	widget->visible = TRUE;
 }
@@ -3284,6 +3304,24 @@ glade_widget_set_parent (GladeWidget *widget,
 	if (parent) glade_widget_set_packing_actions (widget, parent);
 
 	g_object_notify (G_OBJECT (widget), "parent");
+}
+
+/**
+ * glade_widget_get_toplevel:
+ * @widget: A #GladeWidget
+ *
+ * Returns: The toplevel #GladeWidget in the hierarchy (or @widget)
+ */
+GladeWidget *
+glade_widget_get_toplevel (GladeWidget *widget)
+{
+	GladeWidget *toplevel = widget;
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	while (toplevel->parent)
+		toplevel = toplevel->parent;
+
+	return toplevel;
 }
 
 /**
