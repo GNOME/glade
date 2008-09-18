@@ -249,7 +249,8 @@ embedded in another object</_tooltip>
       </properties>
 
       <packing-properties>
-        <property id="position" weight="0"/>
+        <!-- position needs to be always saved in case of using pack end -->
+        <property id="position" weight="0" save-always="True"/>
         <property id="padding" transfer-on-paste="True" weight="0.5"/>
         <property id="expand" transfer-on-paste="True"/>
         <property id="fill" transfer-on-paste="True"/>
@@ -498,7 +499,7 @@ embedded in another object</_tooltip>
           <spec>glade_standard_int_spec</spec>
           <_tooltip>The position of the tool item in the toolbar</_tooltip>
         </property>
-	<property id="expand" transfer-on-paste="True"/>
+	<property id="expand" transfer-on-paste="True" save-always="True"/>
         <property id="homogeneous" transfer-on-paste="True"/>
       </packing-properties>
 
@@ -546,7 +547,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button"/>
     
     <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" _title="Menu Tool Button"/>
-    
+
     <glade-widget-class name="GtkHandleBox" generic-name="handlebox" _title="Handle Box">
       <properties>
       	<property id="handle-position">
