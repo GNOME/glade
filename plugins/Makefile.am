@@ -9,3 +9,6 @@ endif
 if BUILD_PYTHON
 SUBDIRS += python
 endif
+
+dtddir = $(pkgdatadir)/catalogs
+dtd_DATA = glade-catalog.dtd
