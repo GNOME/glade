@@ -3628,13 +3628,77 @@ glade_gtk_notebook_switch_page (GtkNotebook     *notebook,
 
 }
 
+/* Track project selection to set the notebook pages to display
+ * the selected widget.
+ */
+static void
+glade_gtk_notebook_selection_changed (GladeProject *project,
+				      GladeWidget  *gwidget)
+{
+	GladeWidget *selected;
+	GList       *list;
+	gint         i;
+	GtkWidget   *page;
+
+	if ((list = glade_project_selection_get (project)) != NULL &&
+	    g_list_length (list) == 1)
+	{
+		selected = glade_widget_get_from_gobject (list->data);
+
+		/* Check if selected widget is inside the notebook */
+		if (GTK_IS_WIDGET (selected->object) &&
+		    gtk_widget_is_ancestor (GTK_WIDGET (selected->object),
+					    GTK_WIDGET (gwidget->object)))
+		{
+			/* Find and activate the page */
+			for (i = 0; i < gtk_notebook_get_n_pages (GTK_NOTEBOOK (gwidget->object)); i++)
+			{
+				page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (gwidget->object), i);
+				if (GTK_WIDGET (selected->object) == page ||
+				    gtk_widget_is_ancestor (GTK_WIDGET (selected->object),
+							    GTK_WIDGET (page)))
+				{
+					glade_widget_property_set (gwidget, "page", i);
+					return;
+				}
+			}
+		}
+	}
+}
+
+static void
+glade_gtk_notebook_project_changed (GladeWidget *gwidget, 
+				    gpointer     userdata)
+{
+	GladeProject
+		*project = glade_widget_get_project (gwidget),
+		*old_project = g_object_get_data (G_OBJECT (gwidget), "notebook-project-ptr");
+	
+	if (old_project)
+		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
+						      G_CALLBACK (glade_gtk_notebook_selection_changed),
+						      gwidget);
+
+	if (project)
+		g_signal_connect (G_OBJECT (project), "selection-changed", 
+				  G_CALLBACK (glade_gtk_notebook_selection_changed), gwidget);
+
+	g_object_set_data (G_OBJECT (gwidget), "notebook-project-ptr", project);
+}
 
 void
 glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
 				GObject            *notebook, 
 				GladeCreateReason   reason)
 {
+	GladeWidget *gwidget = glade_widget_get_from_gobject (notebook);
+
 	gtk_notebook_popup_disable (GTK_NOTEBOOK (notebook));
+
+	g_signal_connect (G_OBJECT (gwidget), "notify::project",
+			  G_CALLBACK (glade_gtk_notebook_project_changed), NULL);
+
+	glade_gtk_notebook_project_changed (gwidget, NULL);
 
 	g_signal_connect (G_OBJECT (notebook), "switch-page",
 			  G_CALLBACK (glade_gtk_notebook_switch_page), NULL);
